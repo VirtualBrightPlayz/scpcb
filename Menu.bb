@@ -33,6 +33,7 @@ Global IntroEnabled% = GetINIInt(OptionFile, "options", "intro enabled")
 Global SelectedInputBox%
 
 Global SavePath$ = "Saves\"
+Global SaveMSG$
 
 ;nykyisen tallennuksen nimi ja samalla missä kansiossa tallennustiedosto sijaitsee saves-kansiossa
 Global CurrSave$
@@ -453,15 +454,32 @@ Function UpdateMainMenu()
 						EndIf
 						
 						If DrawButton(x + 400 * MenuScale, y + 20 * MenuScale, 100 * MenuScale, 30 * MenuScale, "Delete", False) Then
-							DeleteFile(CurrentDir()+SavePath + SaveGames(i - 1)+"\save.txt")
-							DeleteDir(CurrentDir()+SavePath + SaveGames(i - 1))
-							LoadSaveGames()
+							SaveMSG = SaveGames(i - 1)
+							DebugLog SaveMSG
 							Exit
 						EndIf
 						
 						y=y+80 * MenuScale
 					Next
+					
+					If SaveMSG <> ""
+						x = GraphicWidth / 2
+						y = GraphicHeight / 2
+						DrawFrame(x, y, 400 * MenuScale, 200 * MenuScale)
+						AAText(x + 30 * MenuScale, y + 15 * MenuScale, "Are you sure you want to delete this save?")
+						If DrawButton(x + 250 * MenuScale, y + 150 * MenuScale, 100 * MenuScale, 30 * MenuScale, "Yes", False) Then
+							SaveMSG = ""
+							DeleteFile(CurrentDir()+SavePath + SaveGames(i - 1)+"\save.txt")
+							DeleteDir(CurrentDir()+SavePath + SaveGames(i - 1))
+							LoadSaveGames()
+						EndIf
+						If DrawButton(x + 50 * MenuScale, y + 150 * MenuScale, 100 * MenuScale, 30 * MenuScale, "No", False) Then
+							SaveMSG = ""
+						EndIf
+					EndIf
 				EndIf
+				
+				
 				
 				;[End Block]
 			Case 3,5,6,7 ;options
