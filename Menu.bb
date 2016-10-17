@@ -466,15 +466,17 @@ Function UpdateMainMenu()
 						x = GraphicWidth / 2
 						y = GraphicHeight / 2
 						DrawFrame(x, y, 400 * MenuScale, 200 * MenuScale)
-						AAText(x + 30 * MenuScale, y + 15 * MenuScale, "Are you sure you want to delete this save?")
+						AAText(x + 20 * MenuScale, y + 15 * MenuScale, "Are you sure you want to delete this save?")
 						If DrawButton(x + 250 * MenuScale, y + 150 * MenuScale, 100 * MenuScale, 30 * MenuScale, "Yes", False) Then
+							DeleteFile(CurrentDir() + SavePath + SaveMSG + "\save.txt")
+							DebugLog "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+							DeleteDir(CurrentDir() + SavePath + SaveMSG)
 							SaveMSG = ""
-							DeleteFile(CurrentDir()+SavePath + SaveGames(i - 1)+"\save.txt")
-							DeleteDir(CurrentDir()+SavePath + SaveGames(i - 1))
 							LoadSaveGames()
 						EndIf
 						If DrawButton(x + 50 * MenuScale, y + 150 * MenuScale, 100 * MenuScale, 30 * MenuScale, "No", False) Then
 							SaveMSG = ""
+							DebugLog "EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE"
 						EndIf
 					EndIf
 				EndIf
