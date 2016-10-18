@@ -445,21 +445,33 @@ Function UpdateMainMenu()
 						AAText(x + 20 * MenuScale, y + (10+23) * MenuScale, SaveGameTime(i - 1))
 						AAText(x + 120 * MenuScale, y + (10+23) * MenuScale, SaveGameDate(i - 1))
 						
-						If DrawButton(x + 280 * MenuScale, y + 20 * MenuScale, 100 * MenuScale, 30 * MenuScale, "Load", False) Then
-							LoadEntities()
-							LoadGame(SavePath + SaveGames(i - 1) + "\")
-							CurrSave = SaveGames(i - 1)
-							InitLoadGame()
-							MainMenuOpen = False
+						If SaveMSG = "" Then
+							If DrawButton(x + 280 * MenuScale, y + 20 * MenuScale, 100 * MenuScale, 30 * MenuScale, "Load", False) Then
+								LoadEntities()
+								LoadGame(SavePath + SaveGames(i - 1) + "\")
+								CurrSave = SaveGames(i - 1)
+								InitLoadGame()
+								MainMenuOpen = False
+							EndIf
+							
+							If DrawButton(x + 400 * MenuScale, y + 20 * MenuScale, 100 * MenuScale, 30 * MenuScale, "Delete", False) Then
+								SaveMSG = SaveGames(i - 1)
+								DebugLog SaveMSG
+								Exit
+							EndIf
+							
+						Else
+							DrawFrame(x + 280 * MenuScale, y + 20 * MenuScale, 100 * MenuScale, 30 * MenuScale)
+							Color(100, 100, 100)
+							AAText(x + 330 * MenuScale, y + 35 * MenuScale, "Load", True, True)
+							
+							DrawFrame(x + 400 * MenuScale, y + 20 * MenuScale, 100 * MenuScale, 30 * MenuScale)
+							Color(100, 100, 100)
+							AAText(x + 450 * MenuScale, y + 35 * MenuScale, "Delete", True, True)
 						EndIf
 						
-						If DrawButton(x + 400 * MenuScale, y + 20 * MenuScale, 100 * MenuScale, 30 * MenuScale, "Delete", False) Then
-							SaveMSG = SaveGames(i - 1)
-							DebugLog SaveMSG
-							Exit
-						EndIf
+						y = y + 80 * MenuScale
 						
-						y=y+80 * MenuScale
 					Next
 					
 					If SaveMSG <> ""
@@ -469,14 +481,12 @@ Function UpdateMainMenu()
 						AAText(x + 20 * MenuScale, y + 15 * MenuScale, "Are you sure you want to delete this save?")
 						If DrawButton(x + 250 * MenuScale, y + 150 * MenuScale, 100 * MenuScale, 30 * MenuScale, "Yes", False) Then
 							DeleteFile(CurrentDir() + SavePath + SaveMSG + "\save.txt")
-							DebugLog "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
 							DeleteDir(CurrentDir() + SavePath + SaveMSG)
 							SaveMSG = ""
 							LoadSaveGames()
 						EndIf
 						If DrawButton(x + 50 * MenuScale, y + 150 * MenuScale, 100 * MenuScale, 30 * MenuScale, "No", False) Then
 							SaveMSG = ""
-							DebugLog "EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE"
 						EndIf
 					EndIf
 				EndIf
