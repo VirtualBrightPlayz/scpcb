@@ -1665,6 +1665,7 @@ Function UpdateEvents()
 							Next
 
 							CameraFogMode(Camera, 0)
+							SecondaryLightOn = True
 							
 							Music(5) = LoadSound_Strict("SFX\Music\GateB1.ogg")
 							DrawLoading(60,True)
@@ -2109,6 +2110,7 @@ Function UpdateEvents()
 						Next
 
 						CameraFogMode(Camera, 0)
+						SecondaryLightOn = True
 						
 						HideDistance = 35.0
 						

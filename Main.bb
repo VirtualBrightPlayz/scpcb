@@ -1143,7 +1143,7 @@ Function UpdateConsole()
 						EndIf
 					Next
 					
-				Case "unlockexits", "toggle_079_deal"
+				Case "unlockexits"
 					StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 					
 					Select StrTemp
@@ -1151,9 +1151,12 @@ Function UpdateConsole()
 							For e.Events = Each Events
 								If e\EventName = "gateaentrance" Then
 									e\EventState3 = (Not e\EventState3)
+									e\EventState3 = 1
+									e\room\RoomDoors[1]\open = True
 									Exit
 								EndIf
 							Next
+							CreateConsoleMsg("Gate A is now unlocked.")	
 						Case "b"
 							For e.Events = Each Events
 								If e\EventName = "exit1" Then
@@ -1161,10 +1164,23 @@ Function UpdateConsole()
 									Exit
 								EndIf
 							Next
+									e\EventState3 = 1
+									e\room\RoomDoors[4]\open = True
+									Exit
+								EndIf
+							Next	
+							CreateConsoleMsg("Gate B is now unlocked.")	
 						Default
 							For e.Events = Each Events
-								If e\EventName = "exit1" Or e\EventName = "gateaentrance" Then e\EventState3 = (Not e\EventState3)
+								If e\EventName = "gateaentrance" Then
+									e\EventState3 = 1
+									e\room\RoomDoors[1]\open = True
+								ElseIf e\EventName = "exit1" Then
+									e\EventState3 = 1
+									e\room\RoomDoors[4]\open = True
+								EndIf
 							Next
+							CreateConsoleMsg("Gate A and B are now unlocked.")	
 					End Select
 
 					RemoteDoorOn = True
