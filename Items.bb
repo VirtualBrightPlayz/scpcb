@@ -270,7 +270,7 @@ Function InitItemTemplates()
 	
 	it = CreateItemTemplate("Clipboard", "clipboard", "GFX\items\clipboard.b3d", "GFX\items\INVclipboard.jpg", "", 0.003, "", "GFX\items\INVclipboard2.jpg", 1)
 	
-	it = CreateItemTemplate("SCP-1123", "1123", "GFX\items\HGIB_Skull1.b3d", "GFX\items\inv1123.jpg", "", 0.015) : it\sound = 0
+	it = CreateItemTemplate("SCP-1123", "1123", "GFX\items\HGIB_Skull1.b3d", "GFX\items\inv1123.jpg", "", 0.015) : it\sound = 2
 	it = CreateItemTemplate("SCP-178", "scp178", "GFX\items\scp178.b3d", "GFX\items\INV178.jpg", "", 0.02,"","",1)
 	
 	it = CreateItemTemplate("Document SCP-1123", "paper", "GFX\items\paper.x", "GFX\items\INVpaper.jpg", "GFX\items\doc1123.jpg", 0.003) : it\sound = 0
@@ -554,7 +554,18 @@ Function PickItem(item.Items)
 					Case "scp178"
 						SetAnimTime item\model,19.0
 					Case "1123"
-						If Not (Wearing714=1) Then
+						If Not (Wearing714 = 1) Then
+							If PlayerRoom\RoomTemplate\Name <> "room1123" Then
+								ShowEntity Light
+								LightFlash = 7
+								PlaySound_Strict(LoadTempSound("SFX\SCP\1123\Touch.ogg"))		
+								DeathMSG = "Subject D-9341 was shot dead after attempting to attack a member of Nine-Tailed Fox. Surveillance tapes show that the subject had been "
+								DeathMSG = DeathMSG + "wandering around the site approximately 9 minutes prior shouting the phrase " + Chr(34) + "get rid of the four pests" + Chr(34)
+								DeathMSG = DeathMSG + " in chinese. SCP-1123 was found in [REDACTED] nearby, suggesting the subject had come into physical contact with it. How "
+								DeathMSG = DeathMSG + "exactly SCP-1123 was removed from its containment chamber is still unknown."
+								Kill()
+								Return
+							EndIf
 							For e.Events = Each Events
 								If e\eventname = "room1123" Then 
 									If e\eventstate = 0 Then
@@ -566,8 +577,6 @@ Function PickItem(item.Items)
 									Exit
 								EndIf
 							Next
-							
-							Return									
 						EndIf
 					Case "killbat"
 						ShowEntity Light

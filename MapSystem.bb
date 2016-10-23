@@ -3305,7 +3305,6 @@ Function FillRoom(r.Rooms)
 			d.Doors = CreateDoor(0, r\x - 240.0 * RoomScale, 0.0, r\z, 90, r, False)
 			d\open = False : d\AutoClose = False 
 			MoveEntity(d\buttons[0], 0.0, 0.0, 22.0 * RoomScale)
-			DebugLog "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
 			MoveEntity(d\buttons[1], 0.0, 0.0, 22.0 * RoomScale)
 			
 			sc.SecurityCams = CreateSecurityCam(r\x, r\y + 704*RoomScale, r\z + 863*RoomScale, r)
@@ -5892,7 +5891,7 @@ Function UpdateSecurityCams()
 						EndIf
 					EndIf 
 					
-					If sc\InSight And (Not isIn8601) And sc\CoffinEffect=0 Or sc\CoffinEffect=2 Then
+					If sc\InSight And sc\CoffinEffect=0 Or sc\CoffinEffect=2 Then
 						If sc\PlayerState = 0 Then
 							sc\PlayerState = Rand(60000, 65000)
 						EndIf
