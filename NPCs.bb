@@ -2014,7 +2014,7 @@ Function UpdateNPCs()
 								EndIf
 							EndIf
 							
-							If Music(20) = 0 Then Music(20) = LoadSound_Strict("SFX\Horror\Horror12.ogg")
+							If Music(20) = 0 Then Music(20) = LoadSound_Strict("SFX\Music\049Chase.ogg")
 							ShouldPlay = 20
 							
 							If n\CurrSpeed > 0.005 Then
