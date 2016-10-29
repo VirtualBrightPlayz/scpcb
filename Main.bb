@@ -4682,6 +4682,7 @@ Function DrawGUI()
 					EndIf
 					MsgTimer = 70 * 5
 					SelectedItem = Null	
+<<<<<<< HEAD
 					
 				Case "1123"
 					If Not (Wearing714 = 1) Then
@@ -4708,6 +4709,34 @@ Function DrawGUI()
 							EndIf
 						Next
 					EndIf
+=======
+					
+				Case "1123"
+					If Not (Wearing714 = 1) Then
+						If PlayerRoom\RoomTemplate\Name <> "room1123" Then
+							ShowEntity Light
+							LightFlash = 7
+							PlaySound_Strict(LoadTempSound("SFX\SCP\1123\Touch.ogg"))		
+							DeathMSG = "Subject D-9341 was shot dead after attempting to attack a member of Nine-Tailed Fox. Surveillance tapes show that the subject had been "
+							DeathMSG = DeathMSG + "wandering around the site approximately 9 minutes prior, shouting the phrase " + Chr(34) + "get rid of the four pests" + Chr(34)
+							DeathMSG = DeathMSG + " in chinese. SCP-1123 was found in [REDACTED] nearby, suggesting the subject had come into physical contact with it. How "
+							DeathMSG = DeathMSG + "exactly SCP-1123 was removed from its containment chamber is still unknown."
+							Kill()
+							Return
+						EndIf
+						For e.Events = Each Events
+							If e\EventName = "room1123" Then 
+								If e\EventState = 0 Then
+									ShowEntity Light
+									LightFlash = 3
+									PlaySound_Strict(LoadTempSound("SFX\SCP\1123\Touch.ogg"))											
+								EndIf
+								e\EventState = Max(1, e\EventState)
+								Exit
+							EndIf
+						Next
+					EndIf
+>>>>>>> 2545fdf... Removed 294's ability to grant godmode and added more drinks.
 					
 				Case "battery"
 					;InvOpen = True
@@ -4990,7 +5019,6 @@ Function DrawGUI()
 						PlaySound_Strict LoadTempSound(strtemp)
 					EndIf
 					If GetINIInt2(iniStr, loc, "stomachache") Then SCP1025state[3]=1
-					If GetINIInt2(iniStr, loc, "godmode") Then GodMode=True
 					
 					DeathTimer=GetINIInt2(iniStr, loc, "deathtimer")*70
 					
