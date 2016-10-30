@@ -2762,6 +2762,7 @@ Repeat
 			If BlinkEffectTimer > 0 Then
 				BlinkEffectTimer = BlinkEffectTimer - (FPSfactor/70)
 			Else
+				If BlinkEffect <> 1.0 Then BlinkEffect = 1.0
 				BlinkEffect = CurveValue(1.0,BlinkEffect,500)
 			EndIf
 			
@@ -3197,6 +3198,7 @@ Function MovePlayer()
 	If StaminaEffectTimer > 0 Then
 		StaminaEffectTimer = StaminaEffectTimer - (FPSfactor/70)
 	Else
+		If StaminaEffect <> 1.0 Then StaminaEffect = 1.0
 		StaminaEffect = CurveValue(1.0, StaminaEffect, 50)
 	EndIf
 	

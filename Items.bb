@@ -687,9 +687,12 @@ Function DropItem(item.Items)
 			WearingHazmat = False
 		Case "vest", "finevest"
 			WearingVest = False
-		Case "nvgoggles", "supernv"
-			If WearingNightVision Then CameraFogFar = StoredCameraFogFar
-			WearingNightVision = False
+		Case "nvgoggles"
+			If WearingNightVision = 1 Then CameraFogFar = StoredCameraFogFar : WearingNightVision = False
+		Case "supernv"
+			If WearingNightVision = 2 Then CameraFogFar = StoredCameraFogFar : WearingNightVision = False
+		Case "veryfinenvgoggles"
+			If WearingNightVision = 3 Then CameraFogFar = StoredCameraFogFar : WearingNightVision = False
 		Case "scp714"
 			Wearing714 = False
 		Case "scp178"
