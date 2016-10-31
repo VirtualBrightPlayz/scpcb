@@ -1,7 +1,6 @@
 
 
 Function SaveGame(file$)
-	CatchErrors("Uncaught (SaveGame)")
 	If Not Playable Then Return ;don't save if the player can't move at all
 	
 	If DropSpeed#>0.02*FPSfactor Or DropSpeed#<-0.02*FPSfactor Then Return
@@ -438,11 +437,9 @@ Function SaveGame(file$)
 		MsgTimer = 70 * 4
 	EndIf
 	
-	CatchErrors("SaveGame")
 End Function
 
 Function LoadGame(file$)
-	CatchErrors("Uncaught (LoadGame)")
 	DebugLog "---------------------------------------------------------------------------"
 	
 	DropSpeed=0.0
@@ -1081,11 +1078,9 @@ Function LoadGame(file$)
 		Next
 	Next
 	
-	CatchErrors("LoadGame")
 End Function
 
 Function LoadGameQuick(file$)
-	CatchErrors("Uncaught (LoadGameQuick)")
 	DebugLog "---------------------------------------------------------------------------"
 	
 	DebugHUD = False
@@ -1669,11 +1664,9 @@ Function LoadGameQuick(file$)
 	
 	CloseFile f
 	
-	CatchErrors("LoadGameQuick")
 End Function
 
 Function LoadSaveGames()
-	CatchErrors("Uncaught (LoadSaveGames)")
 	SaveGameAmount = 0
 	If FileType(SavePath)=1 Then RuntimeError "Can't create dir "+Chr(34)+SavePath+Chr(34)
 	If FileType(SavePath)=0 Then CreateDir(SavePath)
@@ -1718,13 +1711,10 @@ Function LoadSaveGames()
 		SaveGameDate(i - 1) = ReadString(f)
 		CloseFile f
 	Next
-	
-	CatchErrors("LoadSaveGames")
 End Function
 
 
 Function LoadSavedMaps()
-	CatchErrors("Uncaught (LoadSavedMaps)")
 	Local i, Dir, file$
 	
 	For i = 0 To MAXSAVEDMAPS-1
@@ -1751,11 +1741,9 @@ Function LoadSavedMaps()
 		End If 
 	Forever 
 	CloseDir Dir 
-	CatchErrors("LoadSavedMaps")
 End Function
 
 Function LoadMap(file$)
-	CatchErrors("Uncaught (LoadMap)")
 	Local f%, x%, y%, name$, angle%, prob#
 	Local r.Rooms, rt.RoomTemplates, e.Events
 	
@@ -1877,17 +1865,4 @@ Function LoadMap(file$)
 			If (r\Adjacent[0]<>Null) And (r\Adjacent[1]<>Null) And (r\Adjacent[2]<>Null) And (r\Adjacent[3]<>Null) Then Exit
 		Next
 	Next
-	
-	CatchErrors("LoadMap")
 End Function
-
-
-
-
-
-
-
-
-
-;~IDEal Editor Parameters:
-;~C#Blitz3D

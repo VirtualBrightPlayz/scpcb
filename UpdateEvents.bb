@@ -1,6 +1,5 @@
 
 Function UpdateEvents()
-	CatchErrors("Uncaught (UpdateEvents)")
 	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
 	
 	Local p.Particles, n.NPCs, r.Rooms, e.Events, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
@@ -9180,12 +9179,6 @@ Function UpdateEvents()
 				EndIf
 				;[End Block]
 		End Select
-		
-		If e<>Null Then
-			CatchErrors(Chr(34)+e\EventName+Chr(34)+" event")
-		Else
-			CatchErrors("Deleted event")
-		EndIf
 		
 	Next
 	

@@ -1,13 +1,4 @@
-;This is the Source Code from SCP:CB Version 1.3.0 and onwards. This version was created by the "Third Subdivision Team".
-;Original credit goes to Regalis and all the other contributers to SCP:CB.
-
-;Modified by juanjp600 to remove FastExt and FastText due to stability and compatibility concerns.
-;Removing this code also makes a potential engine conversion marginally easier to do (try parsing the code and converting it to C?),
-;since the strange parts of the extensions are gone.
-;In addition, you won't need FastExt.bb in the first place, making redistribution easier.
-
 Include "StrictLoads.bb"
-Include "fullscreen_window_fix.bb"
 Include "KeyName.bb"
 
 Global OptionFile$ = "options.ini"
@@ -22,8 +13,8 @@ ErrorFile = ErrorFile+Str(ErrorFileInd)+".txt"
 Global Font1%, Font2%, Font3%, Font4%, Font5%
 Global ConsoleFont%
 
-Global VersionNumber$ = "1.3.2"
-Global CompatibleNumber$ = "1.3.2"
+Global VersionNumber$ = "1.CBN"
+Global CompatibleNumber$ = "1.CBN"
 
 AppTitle "SCP - Containment Breach Launcher"
 
@@ -91,21 +82,8 @@ If LauncherEnabled Then
 	AspectRatioRatio = 1.0
 	UpdateLauncher()
 	
-	;New "fake fullscreen" - ENDSHN Psst, it's called borderless windowed mode --Love Mark,
 	If BorderlessWindowed
-		DebugLog "Using Borderless Windowed Mode"
-		Graphics3DExt G_viewport_width, G_viewport_height, 0, 2
-		
-		; -- Change the window style to 'WS_POPUP' and then set the window position to force the style to update.
-		api_SetWindowLong( G_app_handle, C_GWL_STYLE, C_WS_POPUP )
-		api_SetWindowPos( G_app_handle, C_HWND_TOP, G_viewport_x, G_viewport_y, G_viewport_width, G_viewport_height, C_SWP_SHOWWINDOW )
-		
-		RealGraphicWidth = G_viewport_width
-		RealGraphicHeight = G_viewport_height
-		
-		AspectRatioRatio = (Float(GraphicWidth)/Float(GraphicHeight))/(Float(RealGraphicWidth)/Float(RealGraphicHeight))
-		
-		Fullscreen = False
+		RuntimeError "Not implemented! DO NOT USE USERLIBS"
 	Else
 		AspectRatioRatio = 1.0
 		If Fullscreen Then
@@ -132,21 +110,8 @@ Else
 	GraphicWidth = GfxModeWidths(SelectedGFXMode)
 	GraphicHeight = GfxModeHeights(SelectedGFXMode)
 	
-	;New "fake fullscreen" - ENDSHN Psst, it's called borderless windowed mode --Love Mark,
 	If BorderlessWindowed
-		DebugLog "Using Faked Fullscreen"
-		Graphics3DExt G_viewport_width, G_viewport_height, 0, 2
-		
-		; -- Change the window style to 'WS_POPUP' and then set the window position to force the style to update.
-		api_SetWindowLong( G_app_handle, C_GWL_STYLE, C_WS_POPUP )
-		api_SetWindowPos( G_app_handle, C_HWND_TOP, G_viewport_x, G_viewport_y, G_viewport_width, G_viewport_height, C_SWP_SHOWWINDOW )
-		
-		RealGraphicWidth = G_viewport_width
-		RealGraphicHeight = G_viewport_height
-		
-		AspectRatioRatio = (Float(GraphicWidth)/Float(GraphicHeight))/(Float(RealGraphicWidth)/Float(RealGraphicHeight))
-		
-		Fullscreen = False
+		RuntimeError "Not implemented! DO NOT USE USERLIBS"
 	Else
 		AspectRatioRatio = 1.0
 		If Fullscreen Then
@@ -2973,8 +2938,6 @@ Repeat
 	EntityBlend fresize_image,1
 	EntityAlpha fresize_image,1.0
 	
-	CatchErrors("Main loop / uncaught")
-	
 	If Vsync = 0 Then
 		Flip 0
 	Else 
@@ -3165,7 +3128,6 @@ End Function
 ;--------------------------------------- player controls -------------------------------------------
 
 Function MovePlayer()
-	CatchErrors("Uncaught (MovePlayer)")
 	Local Sprint# = 1.0, Speed# = 0.018, i%, angle#
 	
 	If SuperMan Then
@@ -3458,7 +3420,6 @@ Function MovePlayer()
 		HeartBeatVolume = Max(HeartBeatVolume - FPSfactor*0.05, 0)
 	EndIf
 	
-	CatchErrors("MovePlayer")
 End Function
 
 Function MouseLook()
@@ -3748,9 +3709,7 @@ End Function
 
 ;--------------------------------------- GUI, menu etc ------------------------------------------------
 
-Function DrawGUI()
-	CatchErrors("Uncaught (DrawGUI)")
-	
+Function DrawGUI()	
 	Local temp%, x%, y%, z%, i%, yawvalue#, pitchvalue#
 	Local x2#,y2#,z2#
 	Local n%, xtemp, ytemp, strtemp$
@@ -5725,13 +5684,9 @@ Function DrawGUI()
 	EndIf 
 	
 	If PrevInvOpen And (Not InvOpen) Then MoveMouse viewport_center_x, viewport_center_y
-	
-	CatchErrors("DrawGUI")
 End Function
 
 Function DrawMenu()
-	CatchErrors("Uncaught (DrawMenu)")
-	
 	Local x%, y%, width%, height%
 	
 	If MenuOpen Then
@@ -6339,7 +6294,6 @@ Function DrawMenu()
 	
 	AASetFont Font1
 	
-	CatchErrors("DrawMenu")
 End Function
 
 Function MouseOn%(x%, y%, width%, height%)
@@ -6354,7 +6308,6 @@ End Function
 ;----------------------------------------------------------------------------------------------
 
 Function LoadEntities()
-	CatchErrors("Uncaught (LoadEntities)")
 	DrawLoading(0)
 	
 	Local i%
@@ -6716,11 +6669,9 @@ Function LoadEntities()
 	
 	;LoadRoomMeshes()
 	
-	CatchErrors("LoadEntities")
 End Function
 
 Function InitNewGame()
-	CatchErrors("Uncaught (InitNewGame)")
 	Local i%, de.Decals, d.Doors, it.Items, r.Rooms, sc.SecurityCams, e.Events
 	
 	DrawLoading(45)
@@ -6863,11 +6814,9 @@ Function InitNewGame()
 	DropSpeed = 0
 	
 	PrevTime = MilliSecs()
-	CatchErrors("InitNewGame")
 End Function
 
 Function InitLoadGame()
-	CatchErrors("Uncaught (InitLoadGame)")
 	Local d.Doors, sc.SecurityCams, rt.RoomTemplates, e.Events
 	
 	DrawLoading(80)
@@ -6952,7 +6901,6 @@ Function InitLoadGame()
 	
 	FreeTextureCache
 	
-	CatchErrors("InitLoadGame")
 	DrawLoading(100)
 	
 	PrevTime = MilliSecs()
@@ -6960,7 +6908,6 @@ Function InitLoadGame()
 End Function
 
 Function NullGame()
-	CatchErrors("Uncaught (NullGame)")
 	Local i%, x%, y%, lvl
 	Local itt.ItemTemplates, s.Screens, lt.LightTemplates, d.Doors, m.Materials
 	Local wp.WayPoints, twp.TempWayPoints, r.Rooms, it.Items
@@ -7209,7 +7156,6 @@ Function NullGame()
 		If TempSounds[i]<>0 Then FreeSound_Strict TempSounds[i] : TempSounds[i]=0
 	Next
 	
-	CatchErrors("NullGame")
 End Function
 
 Include "save.bb"
@@ -9539,33 +9485,6 @@ End Function
 Function ScaledMouseY%()
 	Return Float(MouseY())*Float(GraphicHeight)/Float(RealGraphicHeight)
 End Function
-
-Function CatchErrors(location$)
-	Local errStr$ = ErrorLog()
-	Local errF%
-	If Len(errStr)>0 Then
-		If FileType(ErrorFile)=0 Then
-			errF = WriteFile(ErrorFile)
-		Else
-			errF = OpenFile(ErrorFile)
-			SeekFile errF,FileSize(ErrorFile)
-		EndIf
-		WriteLine errF,location+" ***************"
-		While Len(errStr)>0
-			WriteLine errF,errStr
-			DebugLog errStr
-			errStr = ErrorLog()
-		Wend
-		
-		Msg = "Blitz3D Error! Details in "+Chr(34)+ErrorFile+Chr(34)
-		MsgTimer = 20*70
-		CloseFile errF
-	EndIf
-End Function
-
-
-
-
 
 ;~IDEal Editor Parameters:
 ;~B#11AB#13E3#1A65
