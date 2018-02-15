@@ -60,8 +60,6 @@ Function UpdateNPCtype173(n.NPCs)
                     EndIf
                 EndIf
                 
-                n\soundChn = LoopSound2(StoneDragSFX, n\soundChn, Camera, n\collider, 10.0, n\state)
-                
                 n\prevX = EntityX(n\collider)
                 n\prevZ = EntityZ(n\collider)				
                 
@@ -107,9 +105,9 @@ Function UpdateNPCtype173(n.NPCs)
                 EndIf									
                     
                 n\lastDist = dist
-                
-                ;n\State = Max(0, n\State - FPSfactor / 20)
             Else 
+                n\soundChn = LoopSound2(StoneDragSFX, n\soundChn, Camera, n\collider, 10.0, n\state)
+
                 ;more than 6 room lengths away from the player -> teleport to a room closer to the player
                 If dist > 50 Then
                     If Rand(70)=1 Then
