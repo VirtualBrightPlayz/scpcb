@@ -1,66 +1,139 @@
-;[Block]
+;TODO: Move to respective NPC file these.
+Global Curr173.NPCs
+Global Curr106.NPCs
+Global Curr096.NPCs
 
-;[End Block]
-Global Curr173.NPCs, Curr106.NPCs, Curr096.NPCs
-Const NPCtype173% = 1, NPCtype106% = 2, NPCtypeGuard% = 3, NPCtypeD% = 4
-Const NPCtype372% = 6, NPCtypeApache% = 7, NPCtypeMTF% = 8, NPCtype096 = 9
-Const NPCtype049% = 10, NPCtypeZombie% = 11, NPCtype5131% = 12, NPCtypeTentacle% = 13
-Const NPCtype860% = 14, NPCtype939% = 15, NPCtype066% = 16, NPCtype178% = 17, NPCtypePdPlane% = 18
-Const NPCtype966% = 19, NPCtype1048a = 20, NPCtype1499% = 21
+Const NPCtype173%       = 1
+Const NPCtype106%       = 2
+Const NPCtype049%       = 3
+Const NPCtype096%       = 4
+Const NPCtype966%       = 5
+Const NPCtype860%       = 6
+Const NPCtype939%       = 7
+Const NPCtype5131%      = 8
+Const NPCtype372%       = 8
+Const NPCtype066%       = 8
+Const NPCtype178%       = 9
+Const NPCtypeD%         = 10
+Const NPCtypeGuard%     = 11
+Const NPCtypeMTF%       = 12
+Const NPCtypeApache%    = 13
+Const NPCtypeZombie%    = 14 ;TODO: Remove.
+Const NPCtypeTentacle%  = 15
+Const NPCtype1499%      = 16
+Const NPCtypePdPlane%   = 18 ;TODO: Remove, don't think this is ever used even.
+Const NPCtype1048a%     = 20 ;TODO: Remove.
 
 Type NPCs
-	Field obj%, obj2%, obj3%, obj4%, Collider%
-	Field NPCtype%, ID%
-	Field DropSpeed#, Gravity%
-	Field State#, State2#, State3#, PrevState%
-	Field MakingNoise%
+	Field obj%
+	Field obj2%
+	Field obj3%
+	Field obj4%
+	Field collider%
+
+	Field npcType%
+	Field ID%
+
+	Field polyData%
+
+	;TODO: Deprecate state2 and state3. Make state an integer.
+	Field state#
+	Field state2#
+	Field state3#
+	Field prevState%
+
+	;TODO: Deprecate?
+	Field makingNoise%
 	
-	Field Frame#
+	Field frame#
+	Field angle#
+
+	Field sound%
+	Field soundChn%
+	Field sound2%
+	Field SoundChn2%
 	
-	Field Angle#
-	Field Sound%, SoundChn%, SoundTimer#
-	Field Sound2%, SoundChn2%
+	;TODO: wtf why aren't we using this more instead of reload?
+	Field soundTimer#
 	
-	Field Speed#, CurrSpeed#
+	Field speed#, CurrSpeed#
 	
 	Field texture$
 	
+	;TODO: Deprecate in favor of state.
 	Field Idle#
 	
+	;TODO: Deprecate in favor of timer.
 	Field Reload#
+
+	Field timer#
 	
-	Field LastSeen%, LastDist#
+	Field lastSeen%
+	Field lastDist#
 	
-	Field PrevX#, PrevY#, PrevZ#
+	Field prevX#
+	Field prevY#
+	Field prevZ#
 	
 	Field Target.NPCs, TargetID%
-	Field EnemyX#, EnemyY#, EnemyZ#
+
+	;TODO: Deprecate in favor of target.
+	Field EnemyX#
+	Field EnemyY#
+	Field EnemyZ#
 	
-	Field Path.WayPoints[20], PathStatus%, PathTimer#, PathLocation%
+	Field targetX#
+	Field targetY#
+	Field targetZ#
 	
-	Field NVX#,NVY#,NVZ#,NVName$
+	Field Path.WayPoints[20]
+	Field PathStatus%
+	Field PathTimer#
+	Field PathLocation%
+	Field PathX#
+	Field PathZ#
 	
-	Field GravityMult# = 1.0
-	Field MaxGravity# = 0.2
+	Field nvX#
+	Field nvY#
+	Field nvZ#
+	Field nvName$
 	
+	Field dropSpeed#
+	Field gravity%
+	Field gravityMult# = 1.0
+
+	;TODO: Deprecate in favor of terminalVelocity.
+	Field maxGravity# = 0.2
+
+	Field terminalVelocity# = 0.2
+	
+	;TODO: Move this to DataMTF
 	Field MTFVariant%
 	Field MTFLeader.NPCs
 	Field IsDead%
 	Field BlinkTimer# = 1.0
 	Field IgnorePlayer%
 	
+	;TODO: If one of these is specific to Shn's ini bone system then remove it.
 	Field ManipulateBone%
 	Field BoneToManipulate$
 	Field BoneToManipulate2$
 	Field ManipulationType%
-	Field BoneX#,BoneY#,BoneZ#
-	Field BonePitch#,BoneYaw#,BoneRoll#
+
+	Field boneX#
+	Field boneY#
+	Field boneZ#
+
+	Field bonePitch#
+	Field boneYaw#
+	Field boneRoll#
+
+	;TODO: Burn this stuff in hell.
 	Field NPCNameInSection$
 	Field InFacility% = True
 	Field CanUseElevator% = False
 	Field CurrElevator.ElevatorObj
 	Field HP%
-	Field PathX#,PathZ#
 	Field Model$
 	Field ModelScaleX#,ModelScaleY#,ModelScaleZ#
 End Type
@@ -356,6 +429,7 @@ Function MeNPCSeesPlayer%(me.NPCs,disablesoundoncrouch%=False)
 	
 End Function
 
+;TODO: Move to MTF file?
 Function TeleportMTFGroup(n.NPCs)
 	Local n2.NPCs
 	
@@ -512,6 +586,7 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 	
 End Function
 
+;TODO: Move to MTF file?
 Function PlayMTFSound(sound%, n.NPCs)
 	If n <> Null Then
 		n\SoundChn = PlaySound2(sound, Camera, n\Collider, 8.0)	
@@ -529,6 +604,7 @@ Function PlayMTFSound(sound%, n.NPCs)
 	EndIf 
 End Function
 
+;TODO: Does this even have anything to do with NPCs? Move to Player file whenever that's made?
 Function MoveToPocketDimension()
 	Local r.Rooms
 	
@@ -582,6 +658,7 @@ Function ForceSetNPCID(n.NPCs, newID%)
 	Next
 End Function
 
+;TODO: Move to 860 creature file.
 Function Find860Angle(n.NPCs, fr.Forest)
 	TFormPoint(EntityX(Collider),EntityY(Collider),EntityZ(Collider),0,PlayerRoom\obj)
 	Local playerx = Floor((TFormedX()*RoomScale+6.0)/12.0)
@@ -612,6 +689,7 @@ Function Find860Angle(n.NPCs, fr.Forest)
 	EndIf		
 End Function
 
+;TODO: Reimplement the revamp of this function from post-1.3.2.
 Function Console_SpawnNPC(c_input$,state%=-9999)
 	Local n.NPCs
 	
@@ -674,6 +752,7 @@ Function Console_SpawnNPC(c_input$,state%=-9999)
 	
 End Function
 
+;TODO: Restore pre-shitty bone system iteration of this function.
 Function ManipulateNPCBones()
 	Local n.NPCs,bone%,bone2%,pvt%,pitch#,yaw#,roll#
 	Local bonename$,bonename2$
@@ -803,6 +882,7 @@ Function ManipulateNPCBones()
 	
 End Function
 
+;TODO: Remove this, go back to being hardcoded.
 Function GetNPCManipulationValue$(NPC$,bone$,section$,valuetype%=0)
 	;valuetype determines what type of variable should the Output be returned
 	;0 - String
@@ -828,6 +908,7 @@ Function GetNPCManipulationValue$(NPC$,bone$,section$,valuetype%=0)
 	
 End Function
 
+;TODO: A function that returns an int or a float depending on context, brilliant! Remove as part of restoration of previous bone system.
 Function TransformNPCManipulationData(NPC$,bone$,section$)
 	;If "section$" = "pitch","yaw" or "roll":
 	;	- 0 means "realpitch" value has detected
@@ -895,6 +976,7 @@ Function PlayerInReachableRoom()
 	
 End Function
 
+;TODO: Remove in favor of doing checks as needed.
 Function CheckForNPCInFacility(n.NPCs)
 	;False (=0): NPC is not in facility (mostly meant for "dimension1499")
 	;True (=1): NPC is in facility
@@ -913,6 +995,7 @@ Function CheckForNPCInFacility(n.NPCs)
 	Return True
 End Function
 
+;TODO: Remove?
 Function FindNextElevator(n.NPCs)
 	Local eo.ElevatorObj, eo2.ElevatorObj
 	
@@ -949,6 +1032,7 @@ Function FindNextElevator(n.NPCs)
 	
 End Function
 
+;TODO: Remove?
 Function GoToElevator(n.NPCs)
 	Local dist#,inside%
 	
