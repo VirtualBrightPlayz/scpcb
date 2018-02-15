@@ -3,6 +3,9 @@ Const STATE173_ATTACK%           = 1
 Const STATE173_MOVE_TO_TARGET%   = 2
 Const STATE173_BEING_CONTAINED%  = 3
 Const STATE173_CONTAINED%        = 4
+Type NPCData173
+    ;TODO: Add SFX here. Remember to deload them when the NPC's deletion is called.
+End Type
 
 Function InitializeNPCtype173(n.NPCs)
     n\nvName = "SCP-173"
@@ -36,7 +39,7 @@ End Function
 Function UpdateNPCtype173(n.NPCs)
     Local dist#
 
-    If n\state = STATE173_CONTAINED Then
+    If (n\state = STATE173_IDLE Or n\state = STATE173_CONTAINED) Then
         Return
     EndIf
 

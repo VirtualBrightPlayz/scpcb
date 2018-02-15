@@ -3,55 +3,73 @@ Include "KeyName.bb"
 
 Global OptionFile$ = "options.ini"
 
+;TODO: FreeFont Font5. Make it local.
 Global Font1%, Font2%, Font3%, Font4%, Font5%
 Global ConsoleFont%
 
 Global VersionNumber$ = "1.CBN"
+;TODO: Deprecate.
 Global CompatibleNumber$ = "1.CBN"
 
 AppTitle "SCP - Containment Breach Launcher"
 
+;TODO: Graphics.bb
 Global MenuWhite%, MenuBlack%
+
+;TODO: Audio.bb
 Global ButtonSFX%
 
+;TODO: Die.
 Global EnableSFXRelease% = GetINIInt(OptionFile, "audio", "sfx release")
 Global EnableSFXRelease_Prev% = EnableSFXRelease%
 
+;TODO: Options.bb
 Global CanOpenConsole% = GetINIInt(OptionFile, "console", "enabled")
 
+;TODO: Assets.bb
 Dim ArrowIMG(4)
 
 ;[Block]
 
+;TODO: Options.bb
 Global LauncherWidth%= Min(GetINIInt(OptionFile, "launcher", "launcher width"), 1024)
 Global LauncherHeight% = Min(GetINIInt(OptionFile, "launcher", "launcher height"), 768)
 Global LauncherEnabled% = GetINIInt(OptionFile, "launcher", "launcher enabled")
 Global LauncherIMG%
 
+;TODO: Options.bb
 Global GraphicWidth% = GetINIInt(OptionFile, "options", "width")
 Global GraphicHeight% = GetINIInt(OptionFile, "options", "height")
-Global Depth% = 0, Fullscreen% = GetINIInt(OptionFile, "options", "fullscreen")
+Global Fullscreen% = GetINIInt(OptionFile, "options", "fullscreen")
 
+Global Depth% = 0
+
+;TODO: Options.bb
 Global SelectedGFXMode%
 Global SelectedGFXDriver% = Max(GetINIInt(OptionFile, "options", "gfx driver"), 1)
 
 Global fresize_image%, fresize_texture%, fresize_texture2%
 Global fresize_cam%
 
+;TODO: Options.bb
 Global ShowFPS = GetINIInt(OptionFile, "options", "show FPS")
 
+;TODO: Move somewhere more relevant.
 Global WireframeState
 Global HalloweenTex
 
 Global TotalGFXModes% = CountGfxModes3D(), GFXModes%
 Dim GfxModeWidths%(TotalGFXModes), GfxModeHeights%(TotalGFXModes)
 
+;TODO: Options.bb
 Global BorderlessWindowed% = GetINIInt(OptionFile, "options", "borderless windowed")
 Global RealGraphicWidth%,RealGraphicHeight%
 Global AspectRatioRatio#
 
+;TODO: Die.
 Global EnableRoomLights% = GetINIInt(OptionFile, "options", "room lights enabled")
 
+;TODO: Options.bb and remove TextureFloat bs.
 Global TextureDetails% = GetINIInt(OptionFile, "options", "texture details")
 Global TextureFloat#
 Select TextureDetails%
@@ -64,26 +82,16 @@ Select TextureDetails%
 	Case 3
 		TextureFloat# = -0.75
 End Select
-Global ConsoleOpening% = GetINIInt(OptionFile, "console", "auto opening")
-Global SFXVolume# = GetINIFloat(OptionFile, "audio", "sound volume")
 
-Global Bit16Mode = GetINIInt(OptionFile, "options", "16bit")
+;TODO: Remove
+Global ConsoleOpening% = GetINIInt(OptionFile, "console", "auto opening")
+
+;TODO: Options.bb
+Global SFXVolume# = GetINIFloat(OptionFile, "audio", "sound volume")
 
 If LauncherEnabled Then 
 	AspectRatioRatio = 1.0
 	UpdateLauncher()
-	
-	If BorderlessWindowed
-		RuntimeError "Not implemented! DO NOT USE USERLIBS"
-	Else
-		AspectRatioRatio = 1.0
-		If Fullscreen Then
-			Graphics3DExt(GraphicWidth, GraphicHeight, (16*Bit16Mode), 1)
-		Else
-			Graphics3DExt(GraphicWidth, GraphicHeight, 0, 2)
-		End If
-	EndIf
-	
 Else
 	For i% = 1 To TotalGFXModes
 		Local samefound% = False
@@ -100,18 +108,13 @@ Else
 	
 	GraphicWidth = GfxModeWidths(SelectedGFXMode)
 	GraphicHeight = GfxModeHeights(SelectedGFXMode)
-	
-	If BorderlessWindowed
-		RuntimeError "Not implemented! DO NOT USE USERLIBS"
-	Else
-		AspectRatioRatio = 1.0
-		If Fullscreen Then
-			Graphics3DExt(GraphicWidth, GraphicHeight, (16*Bit16Mode), 1)
-		Else
-			Graphics3DExt(GraphicWidth, GraphicHeight, 0, 2)
-		End If
-	EndIf
-	
+EndIf
+
+If BorderlessWindowed
+	RuntimeError "Not implemented! DO NOT USE USERLIBS"
+Else
+	AspectRatioRatio = 1.0
+	Graphics3DExt(GraphicWidth, GraphicHeight, 0, (1 + (Fullscreen = True))
 EndIf
 
 Global MenuScale# = (GraphicHeight / 1024.0)
@@ -121,13 +124,16 @@ SetBuffer(BackBuffer())
 Global CurTime%, PrevTime%, LoopDelay%, FPSfactor#, FPSfactor2#
 Local CheckFPS%, ElapsedLoops%, FPS%, ElapsedTime#
 
+;TODO: Options.bb
 Global Framelimit% = GetINIInt(OptionFile, "options", "framelimit")
 Global Vsync% = GetINIInt(OptionFile, "options", "vsync")
 
+;TODO: Options.bb
 Global Opt_AntiAlias = GetINIInt(OptionFile, "options", "antialias")
 
 Global CurrFrameLimit# = Framelimit%
 
+;TODO: Options.bb
 Global ScreenGamma# = GetINIFloat(OptionFile, "options", "screengamma")
 ;If Fullscreen Then UpdateScreenGamma()
 
@@ -138,6 +144,7 @@ SeedRnd MilliSecs()
 
 Global GameSaved%
 
+;TODO: Player.bb
 Global CanSave% = True
 
 AppTitle "SCP - Containment Breach v"+VersionNumber
@@ -145,13 +152,15 @@ AppTitle "SCP - Containment Breach v"+VersionNumber
 ;---------------------------------------------------------------------------------------------------------------------
 
 ;[Block]
-
+;TODO: Assets.bb
 Global CursorIMG% = LoadImage_Strict("GFX\cursor.png")
 
+;TODO: Assets.bb
 Global SelectedLoadingScreen.LoadingScreens, LoadingScreenAmount%, LoadingScreenText%
 Global LoadingBack% = LoadImage_Strict("Loadingscreens\loadingback.jpg")
 InitLoadingScreens("Loadingscreens\loadingscreens.ini")
 
+;TODO: Assets.bb
 ;For some reason, Blitz3D doesn't load fonts that have filenames that
 ;don't match their "internal name" (i.e. their display name in applications
 ;like Word and such). As a workaround, I moved the files and renamed them so they
@@ -166,10 +175,12 @@ ConsoleFont% = LoadFont("Blitz", Int(20 * (GraphicHeight / 1024.0)), 0,0,0)
 
 SetFont Font2
 
+;TODO: Assets.bb
 Global BlinkMeterIMG% = LoadImage_Strict("GFX\blinkmeter.jpg")
 
 DrawLoading(0, True)
 
+;TODO: Player.bb
 ; - -Viewport.
 Global viewport_center_x% = GraphicWidth / 2, viewport_center_y% = GraphicHeight / 2
 
@@ -181,6 +192,7 @@ Global mouse_left_limit% = 250, mouse_right_limit% = GraphicsWidth () - 250
 Global mouse_top_limit% = 150, mouse_bottom_limit% = GraphicsHeight () - 150 ; As above.
 Global mouse_x_speed_1#, mouse_y_speed_1#
 
+;TODO: Options.bb
 Global KEY_RIGHT = GetINIInt(OptionFile, "binds", "Right key")
 Global KEY_LEFT = GetINIInt(OptionFile, "binds", "Left key")
 Global KEY_UP = GetINIInt(OptionFile, "binds", "Up key")
@@ -193,12 +205,11 @@ Global KEY_CROUCH = GetINIInt(OptionFile, "binds", "Crouch key")
 Global KEY_SAVE = GetINIInt(OptionFile, "binds", "Save key")
 Global KEY_CONSOLE = GetINIInt(OptionFile, "binds", "Console key")
 
-Const INFINITY# = (999.0) ^ (99999.0), NAN# = (-1.0) ^ (0.5)
-
 Global Mesh_MinX#, Mesh_MinY#, Mesh_MinZ#
 Global Mesh_MaxX#, Mesh_MaxY#, Mesh_MaxZ#
 Global Mesh_MagX#, Mesh_MagY#, Mesh_MagZ#
 
+;TODO: Player.bb
 ;player stats -------------------------------------------------------------------------------------------------------
 Global KillTimer#, KillAnim%, FallTimer#, DeathTimer#
 Global Sanity#, ForceMove#, ForceAngle#
@@ -210,8 +221,10 @@ Global BlinkTimer#, EyeIrritation#, EyeStuck#, BlinkEffect# = 1.0, BlinkEffectTi
 
 Global Stamina#, StaminaEffect#=1.0, StaminaEffectTimer#
 
+;TODO: Murder.
 Global SCP1025state#[6]
 
+;TODO: Player.bb
 Global HeartBeatRate#, HeartBeatTimer#, HeartBeatVolume#
 
 Global WearingGasMask%, WearingHazmat%, WearingVest%, Wearing714%, WearingNightVision%, Wearing178%
@@ -221,10 +234,12 @@ Global SuperMan%, SuperManTimer#
 
 Global Injuries#, Bloodloss#, Infect#
 
+;TODO: Uhm, Player.bb or remove?
 Global RefinedItems%
 
 Include "Achievements.bb"
 
+;TODO: Player.bb
 ;player coordinates, angle, speed, movement etc ---------------------------------------------------------------------
 Global DropSpeed#, HeadDropSpeed#, CurrSpeed#
 Global user_camera_pitch#, side#
@@ -234,15 +249,20 @@ Global PlayerZone%, PlayerRoom.Rooms
 
 Global GrabbedEntity%
 
+;TODO: Options.bb
 Global InvertMouse% = GetINIInt(OptionFile, "options", "invert mouse y")
+
 Global MouseHit1%, MouseDown1%, MouseHit2%, DoubleClick%, LastMouseHit1%, MouseUp1%
 
 Global GodMode%, NoClip%, NoClipSpeed# = 2.0
 
+;TODO: Make this not global.
 Global CoffinDistance#
 
+;TODO: Player.bb
 Global PlayerSoundVolume#
 
+;TODO: Player.bb?
 ;camera/lighting effects (blur, camera shake, etc)-------------------------------------------------------------------
 Global Shake#
 
@@ -250,6 +270,7 @@ Global ExplosionTimer#, ExplosionSFX%
 
 Global LightsOn% = True
 
+;TODO: Not global assuming this is for 106's containment chamber.
 Global SoundTransmission%
 
 ;menus, GUI ---------------------------------------------------------------------------------------------------------
@@ -263,6 +284,7 @@ Global MsgTimer#, Msg$, DeathMSG$
 Global AccessCode%, KeypadInput$, KeypadTimer#, KeypadMSG$
 
 Global DrawHandIcon%
+;TODO: Assets.bb
 Dim DrawArrowIcon%(4)
 
 ;misc ---------------------------------------------------------------------------------------------------------------
@@ -271,18 +293,26 @@ Include "Difficulty.bb"
 
 Global MTFtimer#, MTFrooms.Rooms[10], MTFroomState%[10]
 
+;TODO: Radio struct.
 Dim RadioState#(10)
 Dim RadioState3%(3)
 Dim RadioState4%(9)
 Dim RadioCHN%(8)
 
+;TODO: Assets.bb
 Dim OldAiPics%(5)
 
+;TODO: Player.bb
 Global PlayTime%
+
+;TODO: Console.bb
 Global ConsoleFlush%
 Global ConsoleFlushSnd% = 0, ConsoleMusFlush% = 0
 
+;TODO: Player.bb
 Global InfiniteStamina% = False
+
+;TODO: Player.bb?
 Global NVBlink%
 Global IsNVGBlinking% = False
 
@@ -296,33 +326,39 @@ Global BlurVolume#, BlurTimer#
 
 Global LightBlink#, LightFlash#
 
+;TODO: Options.bb
 Global BumpEnabled% = GetINIInt("options.ini", "options", "bump mapping enabled")
 Global HUDenabled% = GetINIInt("options.ini", "options", "HUD enabled")
 
 Global Camera%, CameraShake#, CurrCameraZoom#
 
+;TODO: Options.bb.
 Global Brightness% = GetINIFloat("options.ini", "options", "brightness")
 Global CameraFogNear# = GetINIFloat("options.ini", "options", "camera fog near")
 Global CameraFogFar# = GetINIFloat("options.ini", "options", "camera fog far")
 
+;TODO: Player.bb
 Global StoredCameraFogFar# = CameraFogFar
 
+;TODO: Options.bb
 Global MouseSens# = GetINIFloat("options.ini", "options", "mouse sensitivity")
 
 Include "dreamfilter.bb"
 
+;TODO: Assets.bb
 Dim LightSpriteTex(10)
 
 ;----------------------------------------------  Sounds -----------------------------------------------------
 
 ;[Block]
 
+;TODO: Audio.bb
 Global SoundEmitter%
 Global TempSounds%[10]
 Global TempSoundCHN%
 Global TempSoundIndex% = 0
 
-
+;TODO: Use struct of file paths.
 Dim Music%(40)
 Music(0) = LoadSound_Strict("SFX\Music\The Dread.ogg")
 Music(1) = LoadSound_Strict("SFX\Music\HeavyContainment.ogg") 
@@ -347,7 +383,7 @@ Music(11) = LoadSound_Strict("SFX\Music\Menu.ogg")
 ;Music(20): SCP-049 tension theme (for "room2sl")
 ;Music(21): Breath theme after beating the game
 
-
+;TODO: Audio.bb
 Global MusicVolume# = GetINIFloat(OptionFile, "audio", "music volume")
 Global MusicCHN% = PlaySound_Strict(Music(2))
 ChannelVolume(MusicCHN, MusicVolume)
@@ -355,6 +391,7 @@ Global CurrMusicVolume# = 1.0, NowPlaying%=2, ShouldPlay%=11
 
 DrawLoading(10, True)
 
+;TODO: Audio.bb
 Dim OpenDoorSFX%(3,3), CloseDoorSFX%(3,3)
 For i = 0 To 2
 	OpenDoorSFX(0,i) = LoadSound_Strict("SFX\Door\DoorOpen" + (i + 1) + ".ogg")
@@ -367,6 +404,7 @@ For i = 0 To 1
 	CloseDoorSFX(1,i) = LoadSound_Strict("SFX\Door\BigDoorClose" + (i + 1) + ".ogg")
 Next
 
+;TODO: Audio.bb
 Global KeyCardSFX1 = LoadSound_Strict("SFX\Interact\KeyCardUse1.ogg")
 Global KeyCardSFX2 = LoadSound_Strict("SFX\Interact\KeyCardUse2.ogg")
 Global ButtonSFX2 = LoadSound_Strict("SFX\Interact\Button2.ogg")
@@ -436,6 +474,7 @@ For i = 0 To 3
 	PickSFX(i) = LoadSound_Strict("SFX\Interact\PickItem" + i + ".ogg")
 Next
 
+;TODO: More Audio.bb
 Global AmbientSFXCHN%, CurrAmbientSFX%
 Dim AmbientSFXAmount(6)
 ;0 = light containment, 1 = heavy containment, 2 = entrance
@@ -447,6 +486,7 @@ AmbientSFXAmount(5)=10
 
 Dim AmbientSFX%(6, 15)
 
+;TODO: Move to NPCData106.
 Dim OldManSFX%(6)
 For i = 0 To 2
 	OldManSFX(i) = LoadSound_Strict("SFX\SCP\106\Corrosion" + (i + 1) + ".ogg")
@@ -455,11 +495,13 @@ OldManSFX(3) = LoadSound_Strict("SFX\SCP\106\Laugh.ogg")
 OldManSFX(4) = LoadSound_Strict("SFX\SCP\106\Breathing.ogg")
 OldManSFX(5) = LoadSound_Strict("SFX\Room\PocketDimension\Enter.ogg")
 
+;TODO: Move to NPCData173.
 Dim Scp173SFX%(3)
 For i = 0 To 2
 	Scp173SFX(i) = LoadSound_Strict("SFX\SCP\173\Rattle" + (i + 1) + ".ogg")
 Next
 
+;TODO: Most of these sounds are NPC-specific anyway. Divide this up.
 Dim HorrorSFX%(20)
 For i = 0 To 10
 	HorrorSFX(i) = LoadSound_Strict("SFX\Horror\Horror" + i + ".ogg")
@@ -470,6 +512,7 @@ Next
 
 DrawLoading(25, True)
 
+;TODO: Audio.bb
 Dim IntroSFX%(20)
 
 For i = 7 To 9
@@ -482,6 +525,7 @@ Next
 ;IntroSFX(14) = LoadSound_Strict("SFX\intro\shoot2.ogg")
 IntroSFX(15) = LoadSound_Strict("SFX\Room\Intro\173Vent.ogg")
 
+;TODO: Audio.bb
 Dim AlarmSFX%(5)
 AlarmSFX(0) = LoadSound_Strict("SFX\Alarm\Alarm.ogg")
 ;AlarmSFX(1) = LoadSound_Strict("SFX\Alarm\Alarm2.ogg")
@@ -498,29 +542,35 @@ For i = 0 To 4
 	BreathSFX(1,i)=LoadSound_Strict("SFX\Character\D9341\breath"+i+"gas.ogg")
 Next
 
-
+;TODO: Move to NPCData173.
 Dim NeckSnapSFX(3)
 For i = 0 To 2
 	NeckSnapSFX(i) =  LoadSound_Strict("SFX\SCP\173\NeckSnap"+(i+1)+".ogg")
 Next
 
+;TODO: Player struct.
 Dim DamageSFX%(9)
 For i = 0 To 8
 	DamageSFX(i) = LoadSound_Strict("SFX\Character\D9341\Damage"+(i+1)+".ogg")
 Next
 
+;TODO: NPCDataMTF.
 Dim MTFSFX%(8)
 
+;TODO: Player struct.
 Dim CoughSFX%(3)
 Global CoughCHN%
 For i = 0 To 2
 	CoughSFX(i) = LoadSound_Strict("SFX\Character\D9341\Cough" + (i + 1) + ".ogg")
 Next
 
+;TODO: Why the fuck is this a global?
 Global MachineSFX% = LoadSound_Strict("SFX\SCP\914\Refining.ogg")
 
+;TODO: WHY IS THIS A GLOBAL???
 Global ApacheSFX = LoadSound_Strict("SFX\Character\Apache\Propeller.ogg")
 
+;TODO: Player struct.
 Global CurrStepSFX
 Dim StepSFX%(4, 2, 8) ;(normal/metal, walk/run, id)
 For i = 0 To 7
@@ -534,6 +584,7 @@ For i = 0 To 7
 	EndIf
 Next
 
+;TODO: Player struct, also load when actually needed and not be fucking globals.
 Dim Step2SFX(6)
 For i = 0 To 2
 	Step2SFX(i) = LoadSound_Strict("SFX\Step\StepPD" + (i + 1) + ".ogg")
@@ -545,9 +596,11 @@ DrawLoading(30, True)
 ;[End block]
 
 ;[Block]
+;TODO: Die forever.
 Global NTF_1499EnterSFX% = LoadSound_Strict("SFX\SCP\1499\Enter.ogg")
 Global NTF_1499LeaveSFX% = LoadSound_Strict("SFX\SCP\1499\Exit.ogg")
 
+;TODO: Also die forever.
 Global PlayCustomMusic% = False, CustomMusic% = 0
 
 Global Monitor2, Monitor3, MonitorTexture2, MonitorTexture3, MonitorTexture4, MonitorTextureOff
@@ -560,6 +613,7 @@ Global PlayerDetected%
 Global PrevInjuries#,PrevBloodloss#
 Global NoTarget% = False
 
+;TODO: Assets.bb
 Global NVGImages = LoadAnimImage("GFX\battery.png",64,64,0,2)
 MaskImage NVGImages,255,0,255
 
@@ -568,12 +622,14 @@ Global AmbientLightRoomTex%, AmbientLightRoomVal%
 
 ;Global NVGImage% = CreateImage(GraphicWidth,GraphicHeight),NVGCam%
 
+;TODO: Kill.
 Global EnableUserTracks% = GetINIInt(OptionFile, "audio", "enable user tracks")
 Global UserTrackMode% = GetINIInt(OptionFile, "audio", "user track setting")
 Global UserTrackCheck% = 0, UserTrackCheck2% = 0
 Global UserTrackMusicAmount% = 0, CurrUserTrack%, UserTrackFlag% = False
 Dim UserTrackName$(256)
 
+;TODO: Die forever.
 Global NTF_1499PrevX#
 Global NTF_1499PrevY#
 Global NTF_1499PrevZ#
@@ -583,30 +639,37 @@ Global NTF_1499Y#
 Global NTF_1499Z#
 Global NTF_1499Sky%
 
+;TODO: Menu.bb
 Global OptionsMenu% = 0
+
+;TODO: Not sure what to do with this but it should be moved.
 Global QuitMSG% = 0
 
-;Global StoredBrightness% = 40
+;TODO: Die.
 Global InFacility% = True
 
+;TODO: Player struct?
 Global PrevMusicVolume# = MusicVolume#
 Global PrevSFXVolume# = SFXVolume#
 Global DeafPlayer% = False
 Global DeafTimer# = 0.0
 
+;TODO: Remove.
 Global IsZombie% = False
 
+;TODO: This is fucking stupid.
 Global room2gw_brokendoor% = False
 Global room2gw_x# = 0.0
 Global room2gw_z# = 0.0
 ;[End Block]
 
 ;-----------------------------------------  Images ----------------------------------------------------------
-
+;TODO: Assets.bb
 Global PauseMenuIMG% = LoadImage_Strict("GFX\menu\pausemenu.jpg")
 MaskImage PauseMenuIMG, 255,255,0
 ScaleImage PauseMenuIMG,MenuScale,MenuScale
 
+;TODO: Assets.bb
 Global SprintIcon% = LoadImage_Strict("GFX\sprinticon.png")
 Global BlinkIcon% = LoadImage_Strict("GFX\blinkicon.png")
 Global CrouchIcon% = LoadImage_Strict("GFX\sneakicon.png")
@@ -664,9 +727,11 @@ Type Doors
 	Field IsElevatorDoor% = False
 	
 	Field MTFClose% = True
+	;TODO: Not needed?
 	Field NPCCalledElevator% = False
 End Type 
 
+;TODO: Move door stuff to its own file?
 Dim BigDoorOBJ(2), HeavyDoorObj(2)
 
 Function CreateDoor.Doors(lvl, x#, y#, z#, angle#, room.Rooms, dopen% = False,  big% = False, keycard% = False, code$="")
@@ -1140,7 +1205,7 @@ DrawLoading(80,True)
 Include "NPCs.bb"
 
 ;-------------------------------------  Events --------------------------------------------------------------
-
+;TODO: Events.bb
 Type Events
 	Field EventName$
 	Field room.Rooms
@@ -1164,16 +1229,10 @@ Collisions HIT_178, HIT_MAP, 2, 2
 Collisions HIT_178, HIT_178, 1, 3
 Collisions HIT_DEAD, HIT_MAP, 2, 2
 
-Function MilliSecs2()
-	Local retVal% = MilliSecs()
-	If retVal < 0 Then retVal = retVal + 2147483648
-	Return retVal
-End Function
-
 DrawLoading(90, True)
 
 ;----------------------------------- meshes and textures ----------------------------------------------------------------
-
+;TODO: Assets.bb
 Global FogTexture%, Fog%
 Global GasMaskTexture%, GasMaskOverlay%
 Global InfectTexture%, InfectOverlay%
