@@ -123,7 +123,7 @@ Function UpdateNPCtype860(n.NPCs)
                             ;Animate2(n\obj, AnimTime(n\obj), 200, 297, 0.5,False)
                             ;If AnimTime(n\obj)=297 Then SetAnimTime(n\obj,298) : PlaySound2(Step2SFX(Rand(3,5)), Camera, n\Collider, 15.0)
                         Else
-                            angle = CurveAngle(point_direction(EntityX(n\Collider),EntityZ(n\Collider),EntityX(Collider),EntityZ(Collider)),EntityYaw(n\Collider)+90,20.0)
+                            angle = CurveAngle(GetAngle(EntityX(n\Collider),EntityZ(n\Collider),EntityX(Collider),EntityZ(Collider)),EntityYaw(n\Collider)+90,20.0)
                             
                             RotateEntity n\Collider, 0, angle-90, 0, True
                             

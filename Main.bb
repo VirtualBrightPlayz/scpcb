@@ -1204,6 +1204,8 @@ DrawLoading(80,True)
 
 Include "NPCs.bb"
 
+Include "Player.bb"
+
 ;-------------------------------------  Events --------------------------------------------------------------
 ;TODO: Events.bb
 Type Events
@@ -1233,20 +1235,8 @@ DrawLoading(90, True)
 
 ;----------------------------------- meshes and textures ----------------------------------------------------------------
 ;TODO: Assets.bb
-Global FogTexture%, Fog%
-Global GasMaskTexture%, GasMaskOverlay%
-Global InfectTexture%, InfectOverlay%
-Global DarkTexture%, Dark%
-Global Collider%, Head%
-
-Global GlassesTexture%, GlassesOverlay%
-
-Global FogNVTexture%
-Global NVTexture%, NVOverlay%
-
 Global TeslaTexture%
 
-Global LightTexture%, Light%
 Dim LightSpriteTex%(5)
 Global DoorOBJ%, DoorFrameOBJ%
 
@@ -1267,7 +1257,7 @@ Global UnableToMove% = False
 
 ;---------------------------------------------------------------------------------------------------
 
-Include "menu.bb"
+Include "Menu.bb"
 MainMenuOpen = True
 
 ;---------------------------------------------------------------------------------------------------
@@ -1898,8 +1888,6 @@ Function DrawEnding()
 	
 	SetFont Font1
 End Function
-
-Include "Player.bb"
 
 ;--------------------------------------- GUI, menu etc ------------------------------------------------
 

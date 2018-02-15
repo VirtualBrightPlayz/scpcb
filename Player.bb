@@ -1,11 +1,29 @@
 Type Player
 	Field collider%
+	Field head%
+	Field camera%
+	
 	Field moveSpeed#
 	Field dropSpeed#
 	
 	Field blinkTimer#
 	Field stamina#
 End Type
+
+;TODO: move these into the player struct and give them more appropriate names
+Global FogTexture%, Fog%
+Global GasMaskTexture%, GasMaskOverlay%
+Global InfectTexture%, InfectOverlay%
+Global DarkTexture%, Dark%
+Global Collider%, Head%
+
+Global GlassesTexture%, GlassesOverlay%
+
+Global FogNVTexture%
+Global NVTexture%, NVOverlay%
+
+Global LightTexture%, Light%
+
 Global mainPlayer.Player = Null
 
 Function MovePlayer()

@@ -119,20 +119,6 @@ Function Max#(a#, b#)
 	EndIf
 End Function
 
-Function point_direction#(x1#,z1#,x2#,z2#)
-	Local dx#, dz#
-	dx = x1 - x2
-	dz = z1 - z2
-	Return ATan2(dz,dx)
-End Function
-
-Function point_distance#(x1#,z1#,x2#,z2#)
-	Local dx#,dy#
-	dx = x1 - x2
-	dy = z1 - z2
-	Return Sqr((dx*dx)+(dy*dy)) 
-End Function
-
 Function angleDist#(a0#,a1#)
 	Local b# = a0-a1
 	Local bb#
@@ -168,4 +154,3 @@ Function MilliSecs2()
 	If retVal < 0 Then retVal = retVal + 2147483648
 	Return retVal
 End Function
-
