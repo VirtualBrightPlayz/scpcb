@@ -1545,3 +1545,45 @@ Function UpdateNPCtypeMTF(n.NPCs)
 		
 	EndIf
 End Function
+
+Function UpdateMTF%()
+	If PlayerRoom\RoomTemplate\Name = "gateaentrance" Then Return
+	
+	Local r.Rooms, n.NPCs
+	Local dist#, i%
+	
+	;mtf ei vielä spawnannut, spawnataan jos pelaaja menee tarpeeksi lähelle gate b:tä
+	If MTFtimer = 0 Then
+		If Rand(30)=1 And PlayerRoom\RoomTemplate\Name$ <> "dimension1499" Then
+			
+			Local entrance.Rooms = Null
+			For r.Rooms = Each Rooms
+				If Lower(r\RoomTemplate\Name) = "gateaentrance" Then entrance = r : Exit
+			Next
+			
+			If entrance <> Null Then 
+				If Abs(EntityZ(entrance\obj)-EntityZ(Collider))<30.0 Then
+					;If PlayerRoom\RoomTemplate\Name<>"room860" And PlayerRoom\RoomTemplate\Name<>"pocketdimension" Then
+					If PlayerInReachableRoom()
+						PlaySound_Strict LoadTempSound("SFX\Character\MTF\Announc.ogg")
+					EndIf
+					
+					MTFtimer = 1
+					Local leader.NPCs
+					For i = 0 To 2
+						n.NPCs = CreateNPC(NPCtypeMTF, EntityX(entrance\obj)+0.3*(i-1), 1.0,EntityZ(entrance\obj)+8.0)
+						
+						If i = 0 Then 
+							leader = n
+						Else
+							n\MTFLeader = leader
+						EndIf
+						
+						n\PrevX = i
+					Next
+				EndIf
+			EndIf
+		EndIf
+	EndIf
+	
+End Function

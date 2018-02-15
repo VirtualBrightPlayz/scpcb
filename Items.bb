@@ -266,22 +266,16 @@ Function InitItemTemplates()
 	it = CreateItemTemplate("SCP-513", "scp513", "GFX\items\513.x", "GFX\items\INV513.jpg", "", 0.1)
 	it\sound = 2
 	
-	;BoH items
-	
 	it = CreateItemTemplate("Clipboard", "clipboard", "GFX\items\clipboard.b3d", "GFX\items\INVclipboard.jpg", "", 0.003, "", "GFX\items\INVclipboard2.jpg", 1)
 	
 	it = CreateItemTemplate("SCP-1123", "1123", "GFX\items\HGIB_Skull1.b3d", "GFX\items\inv1123.jpg", "", 0.015) : it\sound = 2
 	it = CreateItemTemplate("SCP-178", "scp178", "GFX\items\scp178.b3d", "GFX\items\INV178.jpg", "", 0.02,"","",1)
 	
 	it = CreateItemTemplate("Document SCP-1123", "paper", "GFX\items\paper.x", "GFX\items\INVpaper.jpg", "GFX\items\doc1123.jpg", 0.003) : it\sound = 0
-	;it = CreateItemTemplate("Document SCP-1074", "paper", "GFX\items\paper.x", "GFX\items\INVpaper.jpg", "GFX\items\doc1074.jpg", 0.003) : it\sound = 0
-	;it = CreateItemTemplate("SCP-1074 Containment Notice", "paper", "GFX\items\paper.x", "GFX\items\INVpaper.jpg", "GFX\items\doc_arce.jpg", 0.003) : it\sound = 0
-	
+
 	it = CreateItemTemplate("Night Vision Goggles", "supernv", "GFX\items\NVG.b3d", "GFX\items\INVsupernightvision.jpg", "", 0.02) : it\sound = 2
 	it = CreateItemTemplate("Night Vision Goggles", "nvgoggles", "GFX\items\NVG.b3d", "GFX\items\INVnightvision.jpg", "", 0.02) : it\sound = 2
-	
-	;.........
-	
+
 	it = CreateItemTemplate("SCP-1499","scp1499","GFX\items\SCP-1499.3ds","GFX\items\INVscp1499.jpg", "", 0.023,"GFX\items\SCP-1499.jpg") : it\sound = 2
 	it = CreateItemTemplate("SCP-1499","super1499","GFX\items\SCP-1499.3ds","GFX\items\INVscp1499.jpg", "", 0.023,"GFX\items\SCP-1499.jpg") : it\sound = 2
 	it = CreateItemTemplate("Document SCP-1162", "paper", "GFX\items\paper.x", "GFX\items\INVpaper.jpg", "GFX\items\doc1162.jpg", 0.003) : it\sound = 0
