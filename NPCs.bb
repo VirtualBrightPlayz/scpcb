@@ -261,7 +261,7 @@ Function UpdateNPCs()
 			EndIf
 		Else
 			n\DropSpeed = 0
-		EndIf		
+		EndIf
 	Next
 	
 End Function
@@ -1020,14 +1020,42 @@ Function RotateToDirection(n.NPCs)
 	
 End Function
 
+Function AnimateNPC(n.NPCs, start#, quit#, speed#, loop=True)
+	Local newTime#
+	
+	If speed > 0.0 Then 
+		newTime = Max(Min(n\Frame + speed * FPSfactor,quit),start)
+		
+		If loop And newTime => quit Then
+			newTime = start
+		EndIf
+	Else
+		If start < quit Then
+			temp% = start
+			start = quit
+			quit = temp
+		EndIf
+		
+		If loop Then
+			newTime = n\Frame + speed * FPSfactor
+			
+			If newTime < quit Then 
+				newTime = start
+			Else If newTime > start 
+				newTime = quit
+			EndIf
+		Else
+			newTime = Max(Min(n\Frame + speed * FPSfactor,start),quit)
+		EndIf
+	EndIf
+	SetNPCFrame(n, newTime)
+	
+End Function
 
-
-
-
-
-
-
-;~IDEal Editor Parameters:
-;~F#0
-;~B#197#129F#1339#13D2#1586#1691#1852#18AE
-;~C#Blitz3D
+Function SetNPCFrame(n.NPCs, frame#)
+	If (Abs(n\Frame-frame)<0.001) Then Return
+	
+	SetAnimTime n\obj, frame
+	
+	n\Frame = frame
+End Function
