@@ -603,6 +603,7 @@ Global NTF_1499LeaveSFX% = LoadSound_Strict("SFX\SCP\1499\Exit.ogg")
 ;TODO: Also die forever.
 Global PlayCustomMusic% = False, CustomMusic% = 0
 
+;TODO: Not be globals.
 Global Monitor2, Monitor3, MonitorTexture2, MonitorTexture3, MonitorTexture4, MonitorTextureOff
 Global MonitorTimer# = 0.0, MonitorTimer2# = 0.0, UpdateCheckpoint1%, UpdateCheckpoint2%
 
@@ -617,7 +618,9 @@ Global NoTarget% = False
 Global NVGImages = LoadAnimImage("GFX\battery.png",64,64,0,2)
 MaskImage NVGImages,255,0,255
 
+;TODO: Player.bb
 Global Wearing1499% = False
+
 Global AmbientLightRoomTex%, AmbientLightRoomVal%
 
 ;Global NVGImage% = CreateImage(GraphicWidth,GraphicHeight),NVGCam%
@@ -5361,6 +5364,7 @@ End Function
 
 Include "MathUtils.bb"
 
+;TODO: Player.bb
 Function TakeOffStuff(flag%=0)
 	;FLAG variables:
 		;1: GasMask
@@ -5426,7 +5430,7 @@ Function TakeOffStuff(flag%=0)
 End Function
 
 ;--------------------------------------- decals -------------------------------------------------------
-
+;TODO: Move to their own file?
 Type Decals
 	Field obj%
 	Field SizeChange#, Size#, MaxSize#
@@ -5593,6 +5597,7 @@ Function Graphics3DExt%(width%,height%,depth%=32,mode%=2)
 	InitFastResize()
 	;InitExt()
 	
+	;TODO: Use Options struct value.
 	AntiAlias GetINIInt(OptionFile,"options","antialias")
 	;TextureAnisotropy% (GetINIInt(OptionFile,"options","anisotropy"),-1)
 End Function

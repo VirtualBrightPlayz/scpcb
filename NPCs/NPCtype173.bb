@@ -39,12 +39,11 @@ Function InitializeNPCtype173(n.NPCs)
 End Function
 
 Function UpdateNPCtype173(n.NPCs)
-    Local dist#
-
     If (n\state = STATE173_IDLE Or n\state = STATE173_CONTAINED) Then
         Return
     EndIf
 
+    Local dist#
     Select n\state
         Case STATE173_ATTACK
             dist = EntityDistance(n\Collider, Collider)
