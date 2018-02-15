@@ -31,6 +31,8 @@ Function InitializeNPCtype173(n.NPCs)
     n\obj2 = LoadMesh("GFX\173box.b3d")
     ScaleEntity(n\obj2, RoomScale, RoomScale, RoomScale)
     HideEntity(n\obj2)
+
+	n\state = STATE173_ATTACK
 End Function
 
 Function UpdateNPCtype173(n.NPCs)
@@ -221,9 +223,9 @@ Function UpdateNPCtype173(n.NPCs)
         Case STATE173_MOVE_TO_TARGET
             ;If 173 was given a target then use its position.
             If (n\target <> Null) Then
-                n\targetX = EntityX(n\target)
-                n\targetY = EntityY(n\target)
-                n\targetZ = EntityZ(n\target)
+                n\targetX = EntityX(n\target\collider)
+                n\targetY = EntityY(n\target\collider)
+                n\targetZ = EntityZ(n\target\collider)
             EndIf
 
             If (n\targetX <> 0) Then
