@@ -282,7 +282,6 @@ Function InitItemTemplates()
 	
 	;.........
 	
-	;new Items in SCP:CB 1.3 - ENDSHN
 	it = CreateItemTemplate("SCP-1499","scp1499","GFX\items\SCP-1499.3ds","GFX\items\INVscp1499.jpg", "", 0.023,"GFX\items\SCP-1499.jpg") : it\sound = 2
 	it = CreateItemTemplate("SCP-1499","super1499","GFX\items\SCP-1499.3ds","GFX\items\INVscp1499.jpg", "", 0.023,"GFX\items\SCP-1499.jpg") : it\sound = 2
 	it = CreateItemTemplate("Document SCP-1162", "paper", "GFX\items\paper.x", "GFX\items\INVpaper.jpg", "GFX\items\doc1162.jpg", 0.003) : it\sound = 0

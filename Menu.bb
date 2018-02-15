@@ -68,12 +68,12 @@ Function UpdateMainMenu()
 		MenuBlinkDuration(0) = Rand(200, 500)
 	End If
 	
-	AASetFont Font1
+	SetFont Font1
 	
 	MenuBlinkTimer(1)=MenuBlinkTimer(1)-FPSfactor
 	If MenuBlinkTimer(1) < MenuBlinkDuration(1) Then
 		Color(50, 50, 50)
-		AAText(MenuStrX + Rand(-5, 5), MenuStrY + Rand(-5, 5), MenuStr, True)
+		Text(MenuStrX + Rand(-5, 5), MenuStrY + Rand(-5, 5), MenuStr, True)
 		If MenuBlinkTimer(1) < 0 Then
 			MenuBlinkTimer(1) = Rand(700, 800)
 			MenuBlinkDuration(1) = Rand(10, 35)
@@ -113,7 +113,7 @@ Function UpdateMainMenu()
 		EndIf
 	EndIf
 	
-	AASetFont Font2
+	SetFont Font2
 	
 	DrawImage(MenuText, GraphicWidth / 2 - ImageWidth(MenuText) / 2, GraphicHeight - 20 * MenuScale - ImageHeight(MenuText))
 	
@@ -235,7 +235,6 @@ Function UpdateMainMenu()
 					PutINIValue(OptionFile, "options", "texture details", TextureDetails%)
 					PutINIValue(OptionFile, "console", "enabled", CanOpenConsole%)
 					PutINIValue(OptionFile, "console", "auto opening", ConsoleOpening%)
-					PutINIValue(OptionFile, "options", "antialiased text", AATextEnable)
 					
 					PutINIValue(OptionFile, "audio", "music volume", MusicVolume)
 					PutINIValue(OptionFile, "audio", "sound volume", PrevSFXVolume)
@@ -278,8 +277,8 @@ Function UpdateMainMenu()
 				height = 70 * MenuScale
 				
 				Color(255, 255, 255)
-				AASetFont Font2
-				AAText(x + width / 2, y + height / 2, "NEW GAME", True, True)
+				SetFont Font2
+				Text(x + width / 2, y + height / 2, "NEW GAME", True, True)
 				
 				x = 160 * MenuScale
 				y = y + height + 20 * MenuScale
@@ -288,40 +287,40 @@ Function UpdateMainMenu()
 				
 				DrawFrame(x, y, width, height)				
 				
-				AASetFont Font1
+				SetFont Font1
 				
-				AAText (x + 20 * MenuScale, y + 20 * MenuScale, "Name:")
+				Text (x + 20 * MenuScale, y + 20 * MenuScale, "Name:")
 				CurrSave = InputBox(x + 150 * MenuScale, y + 15 * MenuScale, 200 * MenuScale, 30 * MenuScale, CurrSave, 1)
 				CurrSave = Left(CurrSave, 15)
 				
 				Color 255,255,255
 				If SelectedMap = "" Then
-					AAText (x + 20 * MenuScale, y + 60 * MenuScale, "Map seed:")
+					Text (x + 20 * MenuScale, y + 60 * MenuScale, "Map seed:")
 					RandomSeed = Left(InputBox(x+150*MenuScale, y+55*MenuScale, 200*MenuScale, 30*MenuScale, RandomSeed, 3),15)	
 				Else
-					AAText (x + 20 * MenuScale, y + 60 * MenuScale, "Selected map:")
+					Text (x + 20 * MenuScale, y + 60 * MenuScale, "Selected map:")
 					Color (255, 255, 255)
 					Rect(x+150*MenuScale, y+55*MenuScale, 200*MenuScale, 30*MenuScale)
 					Color (0, 0, 0)
 					Rect(x+150*MenuScale+2, y+55*MenuScale+2, 200*MenuScale-4, 30*MenuScale-4)
 					
 					Color (255, 0,0)
-					AAText(x+150*MenuScale + 100*MenuScale, y+55*MenuScale + 15*MenuScale, SelectedMap, True, True)
+					Text(x+150*MenuScale + 100*MenuScale, y+55*MenuScale + 15*MenuScale, SelectedMap, True, True)
 					
 					If DrawButton(x+370*MenuScale, y+55*MenuScale, 120*MenuScale, 30*MenuScale, "Deselect", False) Then
 						SelectedMap=""
 					EndIf
 				EndIf	
 				
-				AAText(x + 20 * MenuScale, y + 110 * MenuScale, "Enable intro sequence:")
+				Text(x + 20 * MenuScale, y + 110 * MenuScale, "Enable intro sequence:")
 				IntroEnabled = DrawTick(x + 280 * MenuScale, y + 110 * MenuScale, IntroEnabled)	
 				
 				;Local modeName$, modeDescription$, selectedDescription$
-				AAText (x + 20 * MenuScale, y + 150 * MenuScale, "Difficulty:")				
+				Text (x + 20 * MenuScale, y + 150 * MenuScale, "Difficulty:")				
 				For i = SAFE To CUSTOM
 					If DrawTick(x + 20 * MenuScale, y + (180+30*i) * MenuScale, (SelectedDifficulty = difficulties(i))) Then SelectedDifficulty = difficulties(i)
 					
-					AAText(x + 60 * MenuScale, y + (180+30*i) * MenuScale, difficulties(i)\name)
+					Text(x + 60 * MenuScale, y + (180+30*i) * MenuScale, difficulties(i)\name)
 				Next
 				
 				Color(255, 255, 255)
@@ -329,7 +328,7 @@ Function UpdateMainMenu()
 				
 				If SelectedDifficulty\customizable Then
 					SelectedDifficulty\permaDeath =  DrawTick(x + 160 * MenuScale, y + 165 * MenuScale, (SelectedDifficulty\permaDeath))
-					AAText(x + 200 * MenuScale, y + 165 * MenuScale, "Permadeath")
+					Text(x + 200 * MenuScale, y + 165 * MenuScale, "Permadeath")
 					
 					If DrawTick(x + 160 * MenuScale, y + 195 * MenuScale, SelectedDifficulty\saveType = SAVEANYWHERE And (Not SelectedDifficulty\permaDeath), SelectedDifficulty\permaDeath) Then 
 						SelectedDifficulty\saveType = SAVEANYWHERE
@@ -337,10 +336,10 @@ Function UpdateMainMenu()
 						SelectedDifficulty\saveType = SAVEONSCREENS
 					EndIf
 					
-					AAText(x + 200 * MenuScale, y + 195 * MenuScale, "Save anywhere")	
+					Text(x + 200 * MenuScale, y + 195 * MenuScale, "Save anywhere")	
 					
 					SelectedDifficulty\aggressiveNPCs =  DrawTick(x + 160 * MenuScale, y + 225 * MenuScale, SelectedDifficulty\aggressiveNPCs)
-					AAText(x + 200 * MenuScale, y + 225 * MenuScale, "Aggressive NPCs")
+					Text(x + 200 * MenuScale, y + 225 * MenuScale, "Aggressive NPCs")
 					
 					;Other factor's difficulty
 					Color 255,255,255
@@ -358,11 +357,11 @@ Function UpdateMainMenu()
 					Color 255,255,255
 					Select SelectedDifficulty\otherFactors
 						Case EASY
-							AAText(x + 200 * MenuScale, y + 255 * MenuScale, "Other difficulty factors: Easy")
+							Text(x + 200 * MenuScale, y + 255 * MenuScale, "Other difficulty factors: Easy")
 						Case NORMAL
-							AAText(x + 200 * MenuScale, y + 255 * MenuScale, "Other difficulty factors: Normal")
+							Text(x + 200 * MenuScale, y + 255 * MenuScale, "Other difficulty factors: Normal")
 						Case HARD
-							AAText(x + 200 * MenuScale, y + 255 * MenuScale, "Other difficulty factors: Hard")
+							Text(x + 200 * MenuScale, y + 255 * MenuScale, "Other difficulty factors: Hard")
 					End Select
 				Else
 					RowText(SelectedDifficulty\description, x+160*MenuScale, y+160*MenuScale, (410-20)*MenuScale, 200)					
@@ -373,7 +372,7 @@ Function UpdateMainMenu()
 					LoadSavedMaps()
 				EndIf
 				
-				AASetFont Font2
+				SetFont Font2
 				
 				If DrawButton(x + 420 * MenuScale, y + height + 20 * MenuScale, 160 * MenuScale, 70 * MenuScale, "START", False) Then
 					If CurrSave <> "" Then
@@ -423,27 +422,27 @@ Function UpdateMainMenu()
 				height = 70 * MenuScale
 				
 				Color(255, 255, 255)
-				AASetFont Font2
-				AAText(x + width / 2, y + height / 2, "LOAD GAME", True, True)
+				SetFont Font2
+				Text(x + width / 2, y + height / 2, "LOAD GAME", True, True)
 				
 				x = 160 * MenuScale
 				y = y + height + 20 * MenuScale
 				width = 580 * MenuScale
 				height = 296 * MenuScale
 				
-				AASetFont Font1	
+				SetFont Font1	
 				
 				If SaveGameAmount = 0 Then
-					AAText (x + 20 * MenuScale, y + 20 * MenuScale, "No saved games.")
+					Text (x + 20 * MenuScale, y + 20 * MenuScale, "No saved games.")
 				Else
 					x = x + 20 * MenuScale
 					y = y + 20 * MenuScale
 					For i% = 1 To SaveGameAmount
 						DrawFrame(x,y,540* MenuScale, 70* MenuScale)
 						
-						AAText(x + 20 * MenuScale, y + 10 * MenuScale, SaveGames(i - 1))
-						AAText(x + 20 * MenuScale, y + (10+23) * MenuScale, SaveGameTime(i - 1))
-						AAText(x + 120 * MenuScale, y + (10+23) * MenuScale, SaveGameDate(i - 1))
+						Text(x + 20 * MenuScale, y + 10 * MenuScale, SaveGames(i - 1))
+						Text(x + 20 * MenuScale, y + (10+23) * MenuScale, SaveGameTime(i - 1))
+						Text(x + 120 * MenuScale, y + (10+23) * MenuScale, SaveGameDate(i - 1))
 						
 						If SaveMSG = "" Then
 							If DrawButton(x + 280 * MenuScale, y + 20 * MenuScale, 100 * MenuScale, 30 * MenuScale, "Load", False) Then
@@ -463,11 +462,11 @@ Function UpdateMainMenu()
 						Else
 							DrawFrame(x + 280 * MenuScale, y + 20 * MenuScale, 100 * MenuScale, 30 * MenuScale)
 							Color(100, 100, 100)
-							AAText(x + 330 * MenuScale, y + 35 * MenuScale, "Load", True, True)
+							Text(x + 330 * MenuScale, y + 35 * MenuScale, "Load", True, True)
 							
 							DrawFrame(x + 400 * MenuScale, y + 20 * MenuScale, 100 * MenuScale, 30 * MenuScale)
 							Color(100, 100, 100)
-							AAText(x + 450 * MenuScale, y + 35 * MenuScale, "Delete", True, True)
+							Text(x + 450 * MenuScale, y + 35 * MenuScale, "Delete", True, True)
 						EndIf
 						
 						y = y + 80 * MenuScale
@@ -478,7 +477,7 @@ Function UpdateMainMenu()
 						x = GraphicWidth / 2
 						y = GraphicHeight / 2
 						DrawFrame(x, y, 400 * MenuScale, 200 * MenuScale)
-						AAText(x + 20 * MenuScale, y + 15 * MenuScale, "Are you sure you want to delete this save?")
+						Text(x + 20 * MenuScale, y + 15 * MenuScale, "Are you sure you want to delete this save?")
 						If DrawButton(x + 250 * MenuScale, y + 150 * MenuScale, 100 * MenuScale, 30 * MenuScale, "Yes", False) Then
 							DeleteFile(CurrentDir() + SavePath + SaveMSG + "\save.txt")
 							DeleteDir(CurrentDir() + SavePath + SaveMSG)
@@ -504,8 +503,8 @@ Function UpdateMainMenu()
 				height = 70 * MenuScale
 				
 				Color(255, 255, 255)
-				AASetFont Font2
-				AAText(x + width / 2, y + height / 2, "OPTIONS", True, True)
+				SetFont Font2
+				Text(x + width / 2, y + height / 2, "OPTIONS", True, True)
 				
 				x = 160 * MenuScale
 				y = y + height + 20 * MenuScale
@@ -526,7 +525,7 @@ Function UpdateMainMenu()
 				ElseIf MainMenuTab = 7
 					Rect x+440*MenuScale,y+15*MenuScale,width/5,height/2,False
 				EndIf
-				AASetFont Font1
+				SetFont Font1
 				y = y + 70 * MenuScale
 				
 				If MainMenuTab <> 5
@@ -542,13 +541,13 @@ Function UpdateMainMenu()
 					y=y+20*MenuScale
 					
 					Color 255,255,255				
-					AAText(x + 20 * MenuScale, y, "Show HUD:")	
+					Text(x + 20 * MenuScale, y, "Show HUD:")	
 					HUDenabled = DrawTick(x + 310 * MenuScale, y + MenuScale, HUDenabled)	
 					
 					y=y+30*MenuScale
 					
 					Color 100,100,100				
-					AAText(x + 20 * MenuScale, y, "Enable bump mapping:")	
+					Text(x + 20 * MenuScale, y, "Enable bump mapping:")	
 					DrawTick(x + 310 * MenuScale, y + MenuScale, False, True)
 					If MouseOn(x + 310 * MenuScale, y + MenuScale, 20*MenuScale,20*MenuScale)
 						DrawTooltip("Not available in this version")
@@ -557,20 +556,20 @@ Function UpdateMainMenu()
 					y=y+30*MenuScale
 					
 					Color 255,255,255
-					AAText(x + 20 * MenuScale, y, "VSync:")
+					Text(x + 20 * MenuScale, y, "VSync:")
 					Vsync% = DrawTick(x + 310 * MenuScale, y + MenuScale, Vsync%)
 					
 					y=y+30*MenuScale
 					
 					Color 255,255,255
-					AAText(x + 20 * MenuScale, y, "Anti-aliasing:")
+					Text(x + 20 * MenuScale, y, "Anti-aliasing:")
 					Opt_AntiAlias = DrawTick(x + 310 * MenuScale, y + MenuScale, Opt_AntiAlias%)
-					AAText(x + 20 * MenuScale, y + 15 * MenuScale, "(fullscreen mode only)")
+					Text(x + 20 * MenuScale, y + 15 * MenuScale, "(fullscreen mode only)")
 					
 					y=y+40*MenuScale
 					
 					Color 255,255,255
-					AAText(x + 20 * MenuScale, y, "Enable room lights:")
+					Text(x + 20 * MenuScale, y, "Enable room lights:")
 					EnableRoomLights = DrawTick(x + 310 * MenuScale, y + MenuScale, EnableRoomLights)
 					
 					y=y+30+MenuScale
@@ -578,7 +577,7 @@ Function UpdateMainMenu()
 					;Local prevGamma# = ScreenGamma
 					ScreenGamma = (SlideBar(x + 310*MenuScale, y+6*MenuScale, 150*MenuScale, ScreenGamma*50.0)/50.0)
 					Color 255,255,255
-					AAText(x + 20 * MenuScale, y, "Screen gamma")
+					Text(x + 20 * MenuScale, y, "Screen gamma")
 					;Text(x + 20 * MenuScale, y + 15 * MenuScale, "(fullscreen mode only)")
 					
 					;If prevGamma<>ScreenGamma Then
@@ -588,7 +587,7 @@ Function UpdateMainMenu()
 					y = y + 50*MenuScale
 					
 					Color 100,100,100
-					AAText(x + 20 * MenuScale, y, "Texture quality:")
+					Text(x + 20 * MenuScale, y, "Texture quality:")
 					DrawImage ArrowIMG(1),x + 310 * MenuScale, y-4*MenuScale
 					;If MouseHit1
 					;	If ImageRectOverlap(ArrowIMG(1),x + 310 * MenuScale, y-4*MenuScale, ScaledMouseX(),ScaledMouseY(),0,0)
@@ -603,19 +602,19 @@ Function UpdateMainMenu()
 					;Color 255,255,255
 					;Select TextureDetails%
 					;	Case 0
-					;		AAText(x + 340 * MenuScale, y + MenuScale, "LOW")
+					;		Text(x + 340 * MenuScale, y + MenuScale, "LOW")
 					;		TextureFloat# = 1.5
 					;	Case 1
-					;		AAText(x + 340 * MenuScale, y + MenuScale, "MEDIUM")
+					;		Text(x + 340 * MenuScale, y + MenuScale, "MEDIUM")
 					;		TextureFloat# = 0.75
 					;	Case 2
-					;		AAText(x + 340 * MenuScale, y + MenuScale, "HIGH")
+					;		Text(x + 340 * MenuScale, y + MenuScale, "HIGH")
 					;		TextureFloat# = 0.0
 					;	Case 3
-					;		AAText(x + 340 * MenuScale, y + MenuScale, "VERY HIGH")
+					;		Text(x + 340 * MenuScale, y + MenuScale, "VERY HIGH")
 					;		TextureFloat# = -0.75
 					;End Select
-					AAText(x + 340 * MenuScale, y + MenuScale, "DISABLED")
+					Text(x + 340 * MenuScale, y + MenuScale, "DISABLED")
 					If MouseOn(x + 310 * MenuScale, y-4*MenuScale, ImageWidth(ArrowIMG(1)),ImageHeight(ArrowIMG(1)))
 						DrawTooltip("Not available in this version")
 					EndIf
@@ -623,7 +622,7 @@ Function UpdateMainMenu()
 					y=y+30*MenuScale
 					
 					;Color 255,255,255
-					;AAText(x + 20 * MenuScale, y, "Brightness")
+					;Text(x + 20 * MenuScale, y, "Brightness")
 					;[End Block]
 				ElseIf MainMenuTab = 5 ;Audio
 					;[Block]
@@ -634,7 +633,7 @@ Function UpdateMainMenu()
 					
 					MusicVolume = (SlideBar(x + 310*MenuScale, y-4*MenuScale, 150*MenuScale, MusicVolume*100.0)/100.0)
 					Color 255,255,255
-					AAText(x + 20 * MenuScale, y, "Music volume:")
+					Text(x + 20 * MenuScale, y, "Music volume:")
 					
 					y = y + 40*MenuScale
 					
@@ -642,7 +641,7 @@ Function UpdateMainMenu()
 					PrevSFXVolume = (SlideBar(x + 310*MenuScale, y-4*MenuScale, 150*MenuScale, SFXVolume*100.0)/100.0)
 					SFXVolume = PrevSFXVolume
 					Color 255,255,255
-					AAText(x + 20 * MenuScale, y, "Sound volume:")
+					Text(x + 20 * MenuScale, y, "Sound volume:")
 					;If MouseDown1 Then
 					;	If MouseX() >= x And MouseX() <= x + width + 14 And MouseY() >= y And MouseY() <= y + 20 Then
 					;		PlayTestSound(True)
@@ -656,7 +655,7 @@ Function UpdateMainMenu()
 					y = y + 30*MenuScale
 					
 					Color 255,255,255
-					AAText x + 20 * MenuScale, y, "Sound auto-release:"
+					Text x + 20 * MenuScale, y, "Sound auto-release:"
 					EnableSFXRelease = DrawTick(x + 310 * MenuScale, y + MenuScale, EnableSFXRelease)
 					If EnableSFXRelease_Prev% <> EnableSFXRelease
 						If EnableSFXRelease%
@@ -684,18 +683,18 @@ Function UpdateMainMenu()
 					y = y + 30*MenuScale
 					
 					Color 255,255,255
-					AAText x + 20 * MenuScale, y, "Enable user tracks:"
+					Text x + 20 * MenuScale, y, "Enable user tracks:"
 					EnableUserTracks = DrawTick(x + 310 * MenuScale, y + MenuScale, EnableUserTracks)
 					
 					If EnableUserTracks
 						y = y + 30 * MenuScale
 						Color 255,255,255
-						AAText x + 20 * MenuScale, y, "User track mode:"
+						Text x + 20 * MenuScale, y, "User track mode:"
 						UserTrackMode = DrawTick(x + 310 * MenuScale, y + MenuScale, UserTrackMode)
 						If UserTrackMode
-							AAText x + 350 * MenuScale, y + 5 * MenuScale, "Repeat"
+							Text x + 350 * MenuScale, y + 5 * MenuScale, "Repeat"
 						Else
-							AAText x + 350 * MenuScale, y + 5 * MenuScale, "Random"
+							Text x + 350 * MenuScale, y + 5 * MenuScale, "Random"
 						EndIf
 						If DrawButton(x + 20 * MenuScale, y + 30 * MenuScale, 190 * MenuScale, 25 * MenuScale, "Scan for User Tracks",False)
 							DebugLog "User Tracks Check Started"
@@ -721,7 +720,7 @@ Function UpdateMainMenu()
 							DebugLog "User Tracks Check Ended"
 						EndIf
 						If UserTrackCheck%>0
-							AAText x + 180 * MenuScale, y + 30 * MenuScale, "User tracks found ("+UserTrackCheck2+"/"+UserTrackCheck+" successfully loaded)"
+							Text x + 180 * MenuScale, y + 30 * MenuScale, "User tracks found ("+UserTrackCheck2+"/"+UserTrackCheck+" successfully loaded)"
 						EndIf
 					Else
 						UserTrackCheck%=0
@@ -736,38 +735,38 @@ Function UpdateMainMenu()
 					
 					MouseSens = (SlideBar(x + 310*MenuScale, y-4*MenuScale, 150*MenuScale, (MouseSens+0.5)*100.0)/100.0)-0.5
 					Color(255, 255, 255)
-					AAText(x + 20 * MenuScale, y, "Mouse sensitivity:")
+					Text(x + 20 * MenuScale, y, "Mouse sensitivity:")
 					
 					y = y + 40*MenuScale
 					
 					Color(255, 255, 255)
-					AAText(x + 20 * MenuScale, y, "Invert mouse Y-axis:")
+					Text(x + 20 * MenuScale, y, "Invert mouse Y-axis:")
 					InvertMouse = DrawTick(x + 310 * MenuScale, y + MenuScale, InvertMouse)
 					
 					y = y + 30*MenuScale
-					AAText(x + 20 * MenuScale, y, "Control configuration:")
+					Text(x + 20 * MenuScale, y, "Control configuration:")
 					y = y + 10*MenuScale
 					
-					AAText(x + 20 * MenuScale, y + 20 * MenuScale, "Move Forward")
+					Text(x + 20 * MenuScale, y + 20 * MenuScale, "Move Forward")
 					InputBox(x + 160 * MenuScale, y + 20 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(KEY_UP,210)),5)		
-					AAText(x + 20 * MenuScale, y + 40 * MenuScale, "Strafe Left")
+					Text(x + 20 * MenuScale, y + 40 * MenuScale, "Strafe Left")
 					InputBox(x + 160 * MenuScale, y + 40 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(KEY_LEFT,210)),3)	
-					AAText(x + 20 * MenuScale, y + 60 * MenuScale, "Move Backward")
+					Text(x + 20 * MenuScale, y + 60 * MenuScale, "Move Backward")
 					InputBox(x + 160 * MenuScale, y + 60 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(KEY_DOWN,210)),6)				
-					AAText(x + 20 * MenuScale, y + 80 * MenuScale, "Strafe Right")
+					Text(x + 20 * MenuScale, y + 80 * MenuScale, "Strafe Right")
 					InputBox(x + 160 * MenuScale, y + 80 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(KEY_RIGHT,210)),4)	
-					AAText(x + 20 * MenuScale, y + 100 * MenuScale, "Quick Save")
+					Text(x + 20 * MenuScale, y + 100 * MenuScale, "Quick Save")
 					InputBox(x + 160 * MenuScale, y + 100 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(KEY_SAVE,210)),11)
 					
-					AAText(x + 280 * MenuScale, y + 20 * MenuScale, "Manual Blink")
+					Text(x + 280 * MenuScale, y + 20 * MenuScale, "Manual Blink")
 					InputBox(x + 470 * MenuScale, y + 20 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(KEY_BLINK,210)),7)				
-					AAText(x + 280 * MenuScale, y + 40 * MenuScale, "Sprint")
+					Text(x + 280 * MenuScale, y + 40 * MenuScale, "Sprint")
 					InputBox(x + 470 * MenuScale, y + 40 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(KEY_SPRINT,210)),8)
-					AAText(x + 280 * MenuScale, y + 60 * MenuScale, "Open/Close Inventory")
+					Text(x + 280 * MenuScale, y + 60 * MenuScale, "Open/Close Inventory")
 					InputBox(x + 470 * MenuScale, y + 60 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(KEY_INV,210)),9)
-					AAText(x + 280 * MenuScale, y + 80 * MenuScale, "Crouch")
+					Text(x + 280 * MenuScale, y + 80 * MenuScale, "Crouch")
 					InputBox(x + 470 * MenuScale, y + 80 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(KEY_CROUCH,210)),10)	
-					AAText(x + 280 * MenuScale, y + 100 * MenuScale, "Open/Close Console")
+					Text(x + 280 * MenuScale, y + 100 * MenuScale, "Open/Close Console")
 					InputBox(x + 470 * MenuScale, y + 100 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(KEY_CONSOLE,210)),12)
 					
 					For i = 0 To 227
@@ -807,38 +806,38 @@ Function UpdateMainMenu()
 					y = y + 20*MenuScale
 					
 					Color 255,255,255
-					AAText(x + 20 * MenuScale, y, "Enable console:")
+					Text(x + 20 * MenuScale, y, "Enable console:")
 					CanOpenConsole = DrawTick(x + 310 * MenuScale, y + MenuScale, CanOpenConsole)
 					
 					y = y + 30*MenuScale
 					
 					Color 255,255,255
-					AAText(x + 20 * MenuScale, y, "Open console on error:")
+					Text(x + 20 * MenuScale, y, "Open console on error:")
 					ConsoleOpening = DrawTick(x + 310 * MenuScale, y + MenuScale, ConsoleOpening)
 					
 					y = y + 50*MenuScale
 					
 					Color 255,255,255
-					AAText(x + 20 * MenuScale, y, "Achievement popups:")
+					Text(x + 20 * MenuScale, y, "Achievement popups:")
 					AchvMSGenabled% = DrawTick(x + 310 * MenuScale, y + MenuScale, AchvMSGenabled%)
 					
 					y = y + 50*MenuScale
 					
 					Color 255,255,255
-					AAText(x + 20 * MenuScale, y, "Show FPS:")
+					Text(x + 20 * MenuScale, y, "Show FPS:")
 					ShowFPS% = DrawTick(x + 310 * MenuScale, y + MenuScale, ShowFPS%)
 					
 					y = y + 30*MenuScale
 					
 					Color 255,255,255
-					AAText(x + 20 * MenuScale, y, "Framelimit:")
+					Text(x + 20 * MenuScale, y, "Framelimit:")
 					Color 255,255,255
 					If DrawTick(x + 310 * MenuScale, y, CurrFrameLimit > 0.0) Then
 						CurrFrameLimit# = (SlideBar(x + 150*MenuScale, y+30*MenuScale, 100*MenuScale, CurrFrameLimit#*50.0)/50.0)
 						CurrFrameLimit = Max(CurrFrameLimit, 0.1)
 						Framelimit% = CurrFrameLimit#*100.0
 						Color 255,255,0
-						AAText(x + 25 * MenuScale, y + 25 * MenuScale, Framelimit%+" FPS")
+						Text(x + 25 * MenuScale, y + 25 * MenuScale, Framelimit%+" FPS")
 					Else
 						CurrFrameLimit# = 0.0
 						Framelimit = 0
@@ -846,34 +845,6 @@ Function UpdateMainMenu()
 					
 					y = y + 80*MenuScale
 					
-					Color 255,255,255
-					AAText(x + 20 * MenuScale, y, "Antialiased text:")
-					AATextEnable% = DrawTick(x + 310 * MenuScale, y + MenuScale, AATextEnable%)
-					If AATextEnable_Prev% <> AATextEnable
-						For font.AAFont = Each AAFont
-							FreeFont font\lowResFont%
-							If (Not AATextEnable)
-								FreeTexture font\texture
-								FreeImage font\backup
-							EndIf
-							Delete font
-						Next
-						If (Not AATextEnable) Then
-							FreeEntity AATextCam
-							;For i%=0 To 149
-							;	FreeEntity AATextSprite[i]
-							;Next
-						EndIf
-						InitAAFont()
-						Font1% = AALoadFont("GFX\font\cour\Courier New.ttf", Int(18 * (GraphicHeight / 1024.0)), 0,0,0)
-						Font2% = AALoadFont("GFX\font\courbd\Courier New.ttf", Int(58 * (GraphicHeight / 1024.0)), 0,0,0)
-						Font3% = AALoadFont("GFX\font\DS-DIGI\DS-Digital.ttf", Int(22 * (GraphicHeight / 1024.0)), 0,0,0)
-						Font4% = AALoadFont("GFX\font\DS-DIGI\DS-Digital.ttf", Int(60 * (GraphicHeight / 1024.0)), 0,0,0)
-						Font5% = AALoadFont("GFX\font\Journal\Journal.ttf", Int(58 * (GraphicHeight / 1024.0)), 0,0,0)
-						ConsoleFont% = AALoadFont("Blitz", Int(22 * (GraphicHeight / 1024.0)), 0,0,0,1)
-						;ReloadAAFont()
-						AATextEnable_Prev% = AATextEnable
-					EndIf
 					;[End Block]
 				EndIf
 				;[End Block]
@@ -892,19 +863,19 @@ Function UpdateMainMenu()
 				height = 70 * MenuScale
 				
 				Color(255, 255, 255)
-				AASetFont Font2
-				AAText(x + width / 2, y + height / 2, "LOAD MAP", True, True)
-				AASetFont Font1
+				SetFont Font2
+				Text(x + width / 2, y + height / 2, "LOAD MAP", True, True)
+				SetFont Font1
 				
 				x = 160 * MenuScale
 				y = y + height + 20 * MenuScale
 				width = 580 * MenuScale
 				height = 350 * MenuScale
 				
-				AASetFont Font1
+				SetFont Font1
 				
 				If SavedMaps(0)="" Then 
-					AAText (x + 20 * MenuScale, y + 20 * MenuScale, "No saved maps. Use the Map Creator to create new maps.")
+					Text (x + 20 * MenuScale, y + 20 * MenuScale, "No saved maps. Use the Map Creator to create new maps.")
 				Else
 					x = x + 20 * MenuScale
 					y = y + 20 * MenuScale
@@ -937,7 +908,7 @@ Function UpdateMainMenu()
 	
 	If Fullscreen Then DrawImage CursorIMG, ScaledMouseX(),ScaledMouseY()
 	
-	AASetFont Font1
+	SetFont Font1
 End Function
 
 Function UpdateLauncher()
@@ -1280,13 +1251,13 @@ Function DrawLoading(percent%, shortloading=False)
 				EndIf
 			EndIf
 			
-			AASetFont Font2
+			SetFont Font2
 			strtemp$ = ""
 			temp = Rand(2,9)
 			For i = 0 To temp
 				strtemp$ = STRTEMP + Chr(Rand(48,122))
 			Next
-			AAText(GraphicWidth / 2, GraphicHeight / 2 + 80, strtemp, True, True)
+			Text(GraphicWidth / 2, GraphicHeight / 2 + 80, strtemp, True, True)
 			
 			If percent = 0 Then 
 				If Rand(5)=1 Then
@@ -1331,32 +1302,32 @@ Function DrawLoading(percent%, shortloading=False)
 			For i = 0 To Rand(10,15);temp
 				strtemp$ = Replace(SelectedLoadingScreen\txt[0],Mid(SelectedLoadingScreen\txt[0],Rand(1,Len(strtemp)-1),1),Chr(Rand(130,250)))
 			Next		
-			AASetFont Font1
+			SetFont Font1
 			RowText(strtemp, GraphicWidth / 2-200, GraphicHeight / 2 +120,400,300,True)		
 		Else
 			
 			Color 0,0,0
-			AASetFont Font2
-			AAText(GraphicWidth / 2 + 1, GraphicHeight / 2 + 80 + 1, SelectedLoadingScreen\title, True, True)
-			AASetFont Font1
+			SetFont Font2
+			Text(GraphicWidth / 2 + 1, GraphicHeight / 2 + 80 + 1, SelectedLoadingScreen\title, True, True)
+			SetFont Font1
 			RowText(SelectedLoadingScreen\txt[LoadingScreenText], GraphicWidth / 2-200+1, GraphicHeight / 2 +120+1,400,300,True)
 			
 			Color 255,255,255
-			AASetFont Font2
-			AAText(GraphicWidth / 2, GraphicHeight / 2 +80, SelectedLoadingScreen\title, True, True)
-			AASetFont Font1
+			SetFont Font2
+			Text(GraphicWidth / 2, GraphicHeight / 2 +80, SelectedLoadingScreen\title, True, True)
+			SetFont Font1
 			RowText(SelectedLoadingScreen\txt[LoadingScreenText], GraphicWidth / 2-200, GraphicHeight / 2 +120,400,300,True)
 			
 		EndIf
 		
 		Color 0,0,0
-		AAText(GraphicWidth / 2 + 1, GraphicHeight / 2 - 100 + 1, "LOADING - " + percent + " %", True, True)
+		Text(GraphicWidth / 2 + 1, GraphicHeight / 2 - 100 + 1, "LOADING - " + percent + " %", True, True)
 		Color 255,255,255
-		AAText(GraphicWidth / 2, GraphicHeight / 2 - 100, "LOADING - " + percent + " %", True, True)
+		Text(GraphicWidth / 2, GraphicHeight / 2 - 100, "LOADING - " + percent + " %", True, True)
 		
 		If percent = 100 Then 
 			If firstloop And SelectedLoadingScreen\title <> "CWM" Then PlaySound_Strict HorrorSFX(8)
-			AAText(GraphicWidth / 2, GraphicHeight - 50, "PRESS ANY KEY TO CONTINUE", True, True)
+			Text(GraphicWidth / 2, GraphicHeight - 50, "PRESS ANY KEY TO CONTINUE", True, True)
 		Else
 			FlushKeys()
 			FlushMouse()
@@ -1458,10 +1429,10 @@ Function InputBox$(x%, y%, width%, height%, Txt$, ID% = 0)
 	
 	If SelectedInputBox = ID Then
 		Txt = rInput(Txt)
-		If (MilliSecs2() Mod 800) < 400 Then Rect (x + width / 2 + AAStringWidth(Txt) / 2 + 2, y + height / 2 - 5, 2, 12)
+		If (MilliSecs2() Mod 800) < 400 Then Rect (x + width / 2 + StringWidth(Txt) / 2 + 2, y + height / 2 - 5, 2, 12)
 	EndIf	
 	
-	AAText(x + width / 2, y + height / 2, Txt, True, True)
+	Text(x + width / 2, y + height / 2, Txt, True, True)
 	
 	Return Txt
 End Function
@@ -1490,8 +1461,8 @@ Function DrawButton%(x%, y%, width%, height%, txt$, bigfont% = True, waitForMous
 	
 	Color (255, 255, 255)
 	If usingAA Then
-		If bigfont Then AASetFont Font2 Else AASetFont Font1
-		AAText(x + width / 2, y + height / 2, txt, True, True)
+		If bigfont Then SetFont Font2 Else SetFont Font1
+		Text(x + width / 2, y + height / 2, txt, True, True)
 	Else
 		If bigfont Then SetFont Font2 Else SetFont Font1
 		Text(x + width / 2, y + height / 2, txt, True, True)
@@ -1547,8 +1518,8 @@ Function SlideBar#(x%, y%, width%, value#)
 	DrawImage(BlinkMeterIMG, x + width * value / 100.0 +3, y+3)
 	
 	Color 170,170,170 
-	AAText (x - 50 * MenuScale, y + 4*MenuScale, "LOW")					
-	AAText (x + width + 38 * MenuScale, y+4*MenuScale, "HIGH")	
+	Text (x - 50 * MenuScale, y + 4*MenuScale, "LOW")					
+	Text (x + width + 38 * MenuScale, y+4*MenuScale, "HIGH")	
 	
 	Return value
 	
@@ -1564,7 +1535,7 @@ Function RowText(A$, X, Y, W, H, align% = 0, Leading#=1)
 	If H<1 Then H=2048
 	
 	Local LinesShown = 0
-	Local Height = AAStringHeight(A$) + Leading
+	Local Height = StringHeight(A$) + Leading
 	Local b$
 	
 	While Len(A) > 0
@@ -1574,16 +1545,16 @@ Function RowText(A$, X, Y, W, H, align% = 0, Leading#=1)
 		Local trimmed$ = Trim(temp) ;we might ignore a final space 
 		Local extra = 0 ;we haven't ignored it yet
 		;ignore final space If doing so would make a word fit at End of Line:
-		If (AAStringWidth (b$ + temp$) > W) And (AAStringWidth (b$ + trimmed$) <= W) Then
+		If (StringWidth (b$ + temp$) > W) And (StringWidth (b$ + trimmed$) <= W) Then
 			temp = trimmed
 			extra = 1
 		EndIf
 		
-		If AAStringWidth (b$ + temp$) > W Then ;too big, so Print what will fit
+		If StringWidth (b$ + temp$) > W Then ;too big, so Print what will fit
 			If align Then
-				AAText(X + W / 2 - (AAStringWidth(b) / 2), LinesShown * Height + Y, b)
+				Text(X + W / 2 - (StringWidth(b) / 2), LinesShown * Height + Y, b)
 			Else
-				AAText(X, LinesShown * Height + Y, b)
+				Text(X, LinesShown * Height + Y, b)
 			EndIf			
 			
 			LinesShown = LinesShown + 1
@@ -1598,9 +1569,9 @@ Function RowText(A$, X, Y, W, H, align% = 0, Leading#=1)
 	
 	If (b$ <> "") And((LinesShown + 1) <= H) Then
 		If align Then
-			AAText(X + W / 2 - (AAStringWidth(b) / 2), LinesShown * Height + Y, b) ;Print any remaining Text If it'll fit vertically
+			Text(X + W / 2 - (StringWidth(b) / 2), LinesShown * Height + Y, b) ;Print any remaining Text If it'll fit vertically
 		Else
-			AAText(X, LinesShown * Height + Y, b) ;Print any remaining Text If it'll fit vertically
+			Text(X, LinesShown * Height + Y, b) ;Print any remaining Text If it'll fit vertically
 		EndIf
 	EndIf
 End Function
@@ -1611,14 +1582,14 @@ Function LimitText%(txt$, x%, y%, width%, usingAA%=True)
 	Local LetterWidth%
 	If usingAA Then
 		If txt = "" Or width = 0 Then Return 0
-		TextLength = AAStringWidth(txt)
+		TextLength = StringWidth(txt)
 		UnFitting = TextLength - width
 		If UnFitting <= 0 Then ;mahtuu
-			AAText(x, y, txt)
+			Text(x, y, txt)
 		Else ;ei mahdu
 			LetterWidth = TextLength / Len(txt)
 			
-			AAText(x, y, Left(txt, Max(Len(txt) - UnFitting / LetterWidth - 4, 1)) + "...")
+			Text(x, y, Left(txt, Max(Len(txt) - UnFitting / LetterWidth - 4, 1)) + "...")
 		End If
 	Else
 		If txt = "" Or width = 0 Then Return 0
@@ -1637,14 +1608,14 @@ End Function
 Function DrawTooltip(message$)
 	Local scale# = GraphicHeight/768.0
 	
-	Local width = (AAStringWidth(message$))+20*MenuScale
+	Local width = (StringWidth(message$))+20*MenuScale
 	
 	Color 25,25,25
 	Rect(ScaledMouseX()+20,ScaledMouseY(),width,19*scale,True)
 	Color 150,150,150
 	Rect(ScaledMouseX()+20,ScaledMouseY(),width,19*scale,False)
-	AASetFont Font1
-	AAText(ScaledMouseX()+(20*MenuScale)+(width/2),ScaledMouseY()+(12*MenuScale), message$, True, True)
+	SetFont Font1
+	Text(ScaledMouseX()+(20*MenuScale)+(width/2),ScaledMouseY()+(12*MenuScale), message$, True, True)
 End Function
 
 Global QuickLoadPercent% = -1
@@ -1656,8 +1627,8 @@ Function DrawQuickLoading()
 		MidHandle QuickLoadIcon
 		DrawImage QuickLoadIcon,GraphicWidth-90,GraphicHeight-150
 		Color 255,255,255
-		AASetFont Font1
-		AAText GraphicWidth-100,GraphicHeight-90,"LOADING: "+QuickLoadPercent+"%",1
+		SetFont Font1
+		Text GraphicWidth-100,GraphicHeight-90,"LOADING: "+QuickLoadPercent+"%",1
 		If QuickLoadPercent > 99
 			If QuickLoadPercent_DisplayTimer < 70
 				QuickLoadPercent_DisplayTimer# = Min(QuickLoadPercent_DisplayTimer+FPSfactor,70)

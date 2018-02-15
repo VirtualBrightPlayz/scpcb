@@ -797,8 +797,6 @@ Const max_deviation_distance% = 3
 Const return_chance% = 27
 Const center = 5 ;(gridsize-1) / 2
 
-Include "Drawportals.bb"
-
 Type Forest
 	Field TileMesh%[6]
 	Field DetailMesh%[6]
@@ -1498,7 +1496,7 @@ Type Rooms
 	
 	Field SoundCHN%
 	
-	Field dp.DrawPortal, fr.Forest
+	Field fr.Forest
 	
 	Field SoundEmitter%[MaxRoomEmitters]
 	Field SoundEmitterObj%[MaxRoomEmitters]
@@ -1522,7 +1520,6 @@ Type Rooms
 	Field NonFreeAble%[10]
 	Field Textures%[10]
 	
-	;New Room Variables in SCP:CB 1.3 - ENDSHN
 	Field MaxLights% = 0
 	Field LightSpriteHidden%[MaxRoomLights]
 	Field LightSpritesPivot%[MaxRoomLights]
@@ -4400,7 +4397,6 @@ Function FillRoom(r.Rooms)
 			;[Block]
 			w.waypoints = CreateWaypoint(r\x, r\y + 66.0 * RoomScale, r\z, Null, r)
 			;[End Block]
-		;New rooms (in SCP:CB 1.3) - ENDSHN
 		Case "room1lifts"
 			;[Block]
 			r\Objects[0] = CreateButton(r\x + 96.0*RoomScale, r\y + 160.0 * RoomScale, r\z + 64.0 * RoomScale, 0,0,0)

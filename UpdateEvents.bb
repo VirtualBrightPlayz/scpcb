@@ -8035,7 +8035,6 @@ Function UpdateEvents()
 				EndIf
 				
 				;[End Block]
-			;New Events in SCP:CB version 1.3 - ENDSHN	
 			Case "room4tunnels"
 				;[Block]
 				If e\room\dist < 10.0 And e\room\dist > 0 Then
