@@ -114,7 +114,7 @@ If BorderlessWindowed
 	RuntimeError "Not implemented! DO NOT USE USERLIBS"
 Else
 	AspectRatioRatio = 1.0
-	Graphics3DExt(GraphicWidth, GraphicHeight, 0, (1 + (Fullscreen = True))
+	Graphics3DExt(GraphicWidth, GraphicHeight, 0, (1 + (Not Fullscreen)))
 EndIf
 
 Global MenuScale# = (GraphicHeight / 1024.0)
