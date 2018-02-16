@@ -11,11 +11,50 @@ Type Player
 End Type
 
 ;TODO: move these into the player struct and give them more appropriate names
+Global Collider%, Head%
+Global Camera%, CameraShake#, CurrCameraZoom#
+
+Global DropSpeed#, HeadDropSpeed#, CurrSpeed#
+Global user_camera_pitch#, side#
+Global Crouch%, CrouchState#
+
+Global PlayerZone%, PlayerRoom.Rooms
+
+Global GrabbedEntity%
+
+Global Shake#
+
+Global HeartBeatRate#, HeartBeatTimer#, HeartBeatVolume#
+
+Global WearingGasMask%, WearingHazmat%, WearingVest%, Wearing714%, WearingNightVision%, Wearing178%
+Global NVTimer#
+
+Global SuperMan%, SuperManTimer#
+
+Global Injuries#, Bloodloss#, Infect#
+
+Global KillTimer#, KillAnim%, FallTimer#, DeathTimer#
+Global Sanity#, ForceMove#, ForceAngle#
+
+Global Playable% = True
+
+Global BLINKFREQ#
+Global BlinkTimer#, EyeIrritation#, EyeStuck#, BlinkEffect# = 1.0, BlinkEffectTimer#
+
+Global Stamina#, StaminaEffect#=1.0, StaminaEffectTimer#
+
+Global GodMode%, NoClip%, NoClipSpeed# = 2.0
+
+;TODO: Murder.
+Global SCP1025state#[6]
+
+;TODO: maybe remove?
+Global RefinedItems%
+
 Global FogTexture%, Fog%
 Global GasMaskTexture%, GasMaskOverlay%
 Global InfectTexture%, InfectOverlay%
 Global DarkTexture%, Dark%
-Global Collider%, Head%
 
 Global GlassesTexture%, GlassesOverlay%
 
@@ -23,6 +62,31 @@ Global FogNVTexture%
 Global NVTexture%, NVOverlay%
 
 Global LightTexture%, Light%
+
+Global LightBlink#, LightFlash#
+
+Global BlurVolume#, BlurTimer#
+
+Global PlayTime% ;TODO: do we even need this?
+
+;TODO: this is all bad
+Global PlayerSoundVolume#
+
+Global InfiniteStamina% = False
+
+Global NVBlink%
+Global IsNVGBlinking% = False
+
+
+;TODO: initialize these in Options.bb?
+Global CameraFogNear# = GetINIFloat("options.ini", "options", "camera fog near")
+Global CameraFogFar# = GetINIFloat("options.ini", "options", "camera fog far")
+
+Global MouseSens# = GetINIFloat("options.ini", "options", "mouse sensitivity")
+
+Global InvertMouse% = GetINIInt(OptionFile, "options", "invert mouse y")
+
+Global StoredCameraFogFar# = CameraFogFar ;TODO: DELET THIS
 
 Global mainPlayer.Player = Null
 
@@ -320,6 +384,17 @@ Function MovePlayer()
 	EndIf
 	
 End Function
+
+; - -Viewport.
+Global viewport_center_x% = GraphicWidth / 2, viewport_center_y% = GraphicHeight / 2
+
+; -- Mouselook.
+Global mouselook_x_inc# = 0.3 ; This sets both the sensitivity and direction (+/-) of the mouse on the X axis.
+Global mouselook_y_inc# = 0.3 ; This sets both the sensitivity and direction (+/-) of the mouse on the Y axis.
+; Used to limit the mouse movement to within a certain number of pixels (250 is used here) from the center of the screen. This produces smoother mouse movement than continuously moving the mouse back to the center each loop.
+Global mouse_left_limit% = 250, mouse_right_limit% = GraphicsWidth () - 250
+Global mouse_top_limit% = 150, mouse_bottom_limit% = GraphicsHeight () - 150 ; As above.
+Global mouse_x_speed_1#, mouse_y_speed_1#
 
 Function MouseLook()
 	Local i%

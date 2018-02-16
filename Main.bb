@@ -111,7 +111,7 @@ Else
 EndIf
 
 If BorderlessWindowed
-	RuntimeError "Not implemented! DO NOT USE USERLIBS"
+	RuntimeError "Borderless windowed is not implemented! USERLIBS MUST DIE"
 Else
 	AspectRatioRatio = 1.0
 	Graphics3DExt(GraphicWidth, GraphicHeight, 0, (1 + (Not Fullscreen)))
@@ -180,18 +180,6 @@ Global BlinkMeterIMG% = LoadImage_Strict("GFX\blinkmeter.jpg")
 
 DrawLoading(0, True)
 
-;TODO: Player.bb
-; - -Viewport.
-Global viewport_center_x% = GraphicWidth / 2, viewport_center_y% = GraphicHeight / 2
-
-; -- Mouselook.
-Global mouselook_x_inc# = 0.3 ; This sets both the sensitivity and direction (+/-) of the mouse on the X axis.
-Global mouselook_y_inc# = 0.3 ; This sets both the sensitivity and direction (+/-) of the mouse on the Y axis.
-; Used to limit the mouse movement to within a certain number of pixels (250 is used here) from the center of the screen. This produces smoother mouse movement than continuously moving the mouse back to the center each loop.
-Global mouse_left_limit% = 250, mouse_right_limit% = GraphicsWidth () - 250
-Global mouse_top_limit% = 150, mouse_bottom_limit% = GraphicsHeight () - 150 ; As above.
-Global mouse_x_speed_1#, mouse_y_speed_1#
-
 ;TODO: Options.bb
 Global KEY_RIGHT = GetINIInt(OptionFile, "binds", "Right key")
 Global KEY_LEFT = GetINIInt(OptionFile, "binds", "Left key")
@@ -209,66 +197,16 @@ Global Mesh_MinX#, Mesh_MinY#, Mesh_MinZ#
 Global Mesh_MaxX#, Mesh_MaxY#, Mesh_MaxZ#
 Global Mesh_MagX#, Mesh_MagY#, Mesh_MagZ#
 
-;TODO: Player.bb
-;player stats -------------------------------------------------------------------------------------------------------
-Global KillTimer#, KillAnim%, FallTimer#, DeathTimer#
-Global Sanity#, ForceMove#, ForceAngle#
-
-Global Playable% = True
-
-Global BLINKFREQ#
-Global BlinkTimer#, EyeIrritation#, EyeStuck#, BlinkEffect# = 1.0, BlinkEffectTimer#
-
-Global Stamina#, StaminaEffect#=1.0, StaminaEffectTimer#
-
-;TODO: Murder.
-Global SCP1025state#[6]
-
-;TODO: Player.bb
-Global HeartBeatRate#, HeartBeatTimer#, HeartBeatVolume#
-
-Global WearingGasMask%, WearingHazmat%, WearingVest%, Wearing714%, WearingNightVision%, Wearing178%
-Global NVTimer#
-
-Global SuperMan%, SuperManTimer#
-
-Global Injuries#, Bloodloss#, Infect#
-
-;TODO: Uhm, Player.bb or remove?
-Global RefinedItems%
-
 Include "Achievements.bb"
 
-;TODO: Player.bb
-;player coordinates, angle, speed, movement etc ---------------------------------------------------------------------
-Global DropSpeed#, HeadDropSpeed#, CurrSpeed#
-Global user_camera_pitch#, side#
-Global Crouch%, CrouchState#
-
-Global PlayerZone%, PlayerRoom.Rooms
-
-Global GrabbedEntity%
-
-;TODO: Options.bb
-Global InvertMouse% = GetINIInt(OptionFile, "options", "invert mouse y")
-
 Global MouseHit1%, MouseDown1%, MouseHit2%, DoubleClick%, LastMouseHit1%, MouseUp1%
-
-Global GodMode%, NoClip%, NoClipSpeed# = 2.0
 
 ;TODO: Make this not global.
 Global CoffinDistance#
 
-;TODO: Player.bb
-Global PlayerSoundVolume#
+Global ExplosionTimer#, ExplosionSFX% ;gate b explosion?
 
-;TODO: Player.bb?
-;camera/lighting effects (blur, camera shake, etc)-------------------------------------------------------------------
-Global Shake#
-
-Global ExplosionTimer#, ExplosionSFX%
-
-Global LightsOn% = True
+Global LightsOn% = True ;secondary lighting on
 
 ;TODO: Not global assuming this is for 106's containment chamber.
 Global SoundTransmission%
@@ -291,8 +229,6 @@ Dim DrawArrowIcon%(4)
 
 Include "Difficulty.bb"
 
-Global MTFtimer#, MTFrooms.Rooms[10], MTFroomState%[10]
-
 ;TODO: Radio struct.
 Dim RadioState#(10)
 Dim RadioState3%(3)
@@ -302,48 +238,18 @@ Dim RadioCHN%(8)
 ;TODO: Assets.bb
 Dim OldAiPics%(5)
 
-;TODO: Player.bb
-Global PlayTime%
-
-;TODO: Console.bb
-Global ConsoleFlush%
-Global ConsoleFlushSnd% = 0, ConsoleMusFlush% = 0
-
-;TODO: Player.bb
-Global InfiniteStamina% = False
-
-;TODO: Player.bb?
-Global NVBlink%
-Global IsNVGBlinking% = False
-
 ;[End block]
 
 Include "Console.bb"
-
-Global DebugHUD%
-
-Global BlurVolume#, BlurTimer#
-
-Global LightBlink#, LightFlash#
 
 ;TODO: Options.bb
 Global BumpEnabled% = GetINIInt("options.ini", "options", "bump mapping enabled")
 Global HUDenabled% = GetINIInt("options.ini", "options", "HUD enabled")
 
-Global Camera%, CameraShake#, CurrCameraZoom#
-
 ;TODO: Options.bb.
 Global Brightness% = GetINIFloat("options.ini", "options", "brightness")
-Global CameraFogNear# = GetINIFloat("options.ini", "options", "camera fog near")
-Global CameraFogFar# = GetINIFloat("options.ini", "options", "camera fog far")
 
-;TODO: Player.bb
-Global StoredCameraFogFar# = CameraFogFar
-
-;TODO: Options.bb
-Global MouseSens# = GetINIFloat("options.ini", "options", "mouse sensitivity")
-
-Include "dreamfilter.bb"
+Include "Dreamfilter.bb"
 
 ;TODO: Assets.bb
 Dim LightSpriteTex(10)
@@ -5819,33 +5725,6 @@ Function InitFastResize()
 	HideEntity fresize_cam
 End Function
 
-;Function RenderWorldToTexture()
-;	
-;	;EntityAlpha ark_blur_image, 1.0
-;	HideEntity fresize_image
-;	;old_buffer% = BackBuffer();GetBuffer()
-;	;SetBuffer(TextureBuffer(fresize_texture))
-;	RenderWorld()
-;	SetBuffer(old_buffer)
-;	;CopyRect ark_sw / 2 - 1024, ark_sh / 2 - 1024, 2048, 2048, 0, 0, BackBuffer(), TextureBuffer(ark_blur_texture)
-;	;CopyRect 0, 0, GraphicWidth, GraphicHeight, 1024.0 - GraphicWidth/2, 1024.0 - GraphicHeight/2, BackBuffer(), TextureBuffer(ark_blur_texture)
-;	
-;End Function
-
-
-;Function UpdateScreenGamma()
-;	Local n# = 1.0/ScreenGamma
-;	Local k%
-;	
-;	For k=0 To 255
-;		Local c# = Min(Max(0, ((k/255.0)^n)*255), 255)
-;		SetGamma k,k,k,c,c,c
-;	Next
-;	UpdateGamma
-;End Function
-
-;--------------------------------------- Some new 1.3 -functions -------------------------------------------------------
-
 Function UpdateLeave1499()
 	Local r.Rooms, it.Items
 	
@@ -5930,6 +5809,7 @@ Function IsItemGoodFor1162(itt.ItemTemplates)
 	End Select
 End Function
 
+;TODO: remove
 Function ControlSoundVolume()
 	Local snd.Sound,i
 	
@@ -5945,6 +5825,7 @@ Function ControlSoundVolume()
 	
 End Function
 
+;TODO: cleanup
 Function CheckTriggers$()
 	Local i%,sx#,sy#,sz#
 	Local inside% = -1
@@ -5981,7 +5862,3 @@ End Function
 Function ScaledMouseY%()
 	Return Float(MouseY())*Float(GraphicHeight)/Float(RealGraphicHeight)
 End Function
-
-;~IDEal Editor Parameters:
-;~B#11AB#13E3#1A65
-;~C#Blitz3D
