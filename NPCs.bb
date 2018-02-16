@@ -678,14 +678,14 @@ Function Find860Angle(n.NPCs, fr.Forest)
 					
 					;tile (x2,z2) is closer to the player than the monsters current tile
 					If (Abs(playerx-x2)+Abs(playerz-z2))<(Abs(playerx-xt)+Abs(playerz-zt)) Then
-						Return point_direction(x-0.5,z-0.5,x2,z2)+EntityYaw(PlayerRoom\obj)+180
+						Return GetAngle(x-0.5,z-0.5,x2,z2)+EntityYaw(PlayerRoom\obj)+180
 					EndIf
 					
 				EndIf
 			Next
 		Next
 	Else
-		Return point_direction(EntityX(n\Collider),EntityZ(n\Collider),EntityX(Collider),EntityZ(Collider))+180
+		Return GetAngle(EntityX(n\Collider),EntityZ(n\Collider),EntityX(Collider),EntityZ(Collider))+180
 	EndIf		
 End Function
 

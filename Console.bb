@@ -6,6 +6,11 @@ Global ConsoleMouseMem%
 Global ConsoleReissue.ConsoleMsg = Null
 Global ConsoleR% = 255,ConsoleG% = 255,ConsoleB% = 255
 
+Global ConsoleFlush%
+Global ConsoleFlushSnd% = 0, ConsoleMusFlush% = 0
+
+Global DebugHUD%
+
 Type ConsoleMsg
 	Field txt$
 	Field isCommand%
@@ -1009,4 +1014,3 @@ CreateConsoleMsg("  - 173state/106state/096state")
 CreateConsoleMsg("  - spawn [npc type]")
 
 ;---------------------------------------------------------------------------------------------------
-

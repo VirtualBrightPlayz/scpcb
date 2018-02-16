@@ -1717,13 +1717,13 @@ Function UpdateEvents()
 								Sanity = Sanity-(FPSfactor*1.1/WearingNightVision)
 								BlurTimer = Sin(MilliSecs2()/10)*Abs(Sanity)
 								
-								tempF# = point_direction(EntityX(Collider,True),EntityZ(Collider,True),EntityX(e\room\Objects[1],True),EntityZ(e\room\Objects[1],True))
+								tempF# = GetAngle(EntityX(Collider,True),EntityZ(Collider,True),EntityX(e\room\Objects[1],True),EntityZ(e\room\Objects[1],True))
 								tempF2# = EntityYaw(Collider)
 								tempF3# = angleDist(tempF+90+Sin(WrapAngle(e\EventState3/10)),tempF2)
 								
 								TurnEntity Collider, 0,tempF3/4,0,True
 								
-								tempF# = Abs(point_distance(EntityX(Collider,True),EntityZ(Collider,True),EntityX(e\room\Objects[1],True),EntityZ(e\room\Objects[1],True)))
+								tempF# = Abs(Distance(EntityX(Collider,True),EntityZ(Collider,True),EntityX(e\room\Objects[1],True),EntityZ(e\room\Objects[1],True)))
 								tempF2# = -60.0 * Min(Max((2.0-tempF)/2.0,0.0),1.0)
 								
 								user_camera_pitch=(user_camera_pitch * 0.8)+(tempF2 * 0.2)
@@ -5444,8 +5444,8 @@ Function UpdateEvents()
 					;end with that------------
 					
 					
-					bb# = point_direction(EntityX(e\room\Objects[0],True),EntityZ(e\room\Objects[0],True),EntityX(Collider,True),EntityZ(Collider,True))
-					cc# = point_direction(EntityX(e\room\Objects[0],True),EntityZ(e\room\Objects[0],True),EntityX(e\room\Objects[1],True),EntityZ(e\room\Objects[1],True))
+					bb# = GetAngle(EntityX(e\room\Objects[0],True),EntityZ(e\room\Objects[0],True),EntityX(Collider,True),EntityZ(Collider,True))
+					cc# = GetAngle(EntityX(e\room\Objects[0],True),EntityZ(e\room\Objects[0],True),EntityX(e\room\Objects[1],True),EntityZ(e\room\Objects[1],True))
 					
 					
 					If EntityInView(e\room\Objects[0],Camera) And EntityVisible(e\room\Objects[0],Camera) And BlinkTimer > 0 And (Not (Wearing714=1)) And (Not (WearingNightVision>0)) And Abs(angleDist(bb,cc))<95.0 Then
@@ -5457,7 +5457,7 @@ Function UpdateEvents()
 						HeartBeatVolume = 0.5
 						If e\EventState = 1.0 Then e\SoundCHN = PlaySound_Strict(e\Sound) : ChannelVolume e\SoundCHN,1.0
 						;Player saw 1074: walk towards r\Objects[1]
-						tempF# = point_direction(EntityX(Collider,True),EntityZ(Collider,True),EntityX(e\room\Objects[0],True),EntityZ(e\room\Objects[0],True))
+						tempF# = GetAngle(EntityX(Collider,True),EntityZ(Collider,True),EntityX(e\room\Objects[0],True),EntityZ(e\room\Objects[0],True))
 						tempF2# = EntityYaw(Collider)
 						tempF3# = angleDist(tempF+90+Sin(WrapAngle(e\EventState/10)),tempF2)
 						TurnEntity Collider, 0,tempF3/8,0,True
@@ -5467,12 +5467,12 @@ Function UpdateEvents()
 							e\EventState2 = Min(e\EventState2+(0.01*Min(FPSfactor,1.99)),0.5) ;If e\EventState2<0.5 Then 
 							ForceMove = e\EventState2
 							Crouch = 0
-							If point_distance(EntityX(Collider,True),EntityZ(Collider,True),EntityX(e\room\Objects[1],True),EntityZ(e\room\Objects[1],True)) <= RoomScale*800.0 Then
-								ForceAngle = point_direction(EntityX(Collider,True),EntityZ(Collider,True),EntityX(e\room\Objects[1],True),EntityZ(e\room\Objects[1],True))-tempF2+90.0
+							If Distance(EntityX(Collider,True),EntityZ(Collider,True),EntityX(e\room\Objects[1],True),EntityZ(e\room\Objects[1],True)) <= RoomScale*800.0 Then
+								ForceAngle = GetAngle(EntityX(Collider,True),EntityZ(Collider,True),EntityX(e\room\Objects[1],True),EntityZ(e\room\Objects[1],True))-tempF2+90.0
 							Else
-								ForceAngle = point_direction(EntityX(Collider,True),EntityZ(Collider,True),EntityX(e\room\Objects[0],True),EntityZ(e\room\Objects[0],True))-tempF2+90.0
+								ForceAngle = GetAngle(EntityX(Collider,True),EntityZ(Collider,True),EntityX(e\room\Objects[0],True),EntityZ(e\room\Objects[0],True))-tempF2+90.0
 							EndIf
-							If point_distance(EntityX(Collider,True),EntityZ(Collider,True),EntityX(e\room\Objects[1],True),EntityZ(e\room\Objects[1],True)) < RoomScale*8.0 Then
+							If Distance(EntityX(Collider,True),EntityZ(Collider,True),EntityX(e\room\Objects[1],True),EntityZ(e\room\Objects[1],True)) < RoomScale*8.0 Then
 								e\EventState = 106.0
 								Playable = False
 								ForceMove = 0
@@ -7879,7 +7879,7 @@ Function UpdateEvents()
 								AnimateNPC(e\room\NPC[0], 1, 10, 0.12, False)
 								dist# = EntityDistance(Collider,e\room\NPC[0]\Collider)
 								If dist<0.8 Then ;get the player out of the way
-									fdir# = point_direction(EntityX(Collider,True),EntityZ(Collider,True),EntityX(e\room\NPC[0]\Collider,True),EntityZ(e\room\NPC[0]\Collider,True))
+									fdir# = GetAngle(EntityX(Collider,True),EntityZ(Collider,True),EntityX(e\room\NPC[0]\Collider,True),EntityZ(e\room\NPC[0]\Collider,True))
 									TranslateEntity Collider,Cos(-fdir+90)*(dist-0.8)*(dist-0.8),0,Sin(-fdir+90)*(dist-0.8)*(dist-0.8)
 								EndIf
 								

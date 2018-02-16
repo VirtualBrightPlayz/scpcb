@@ -1,3 +1,5 @@
+Global MTFtimer#, MTFrooms.Rooms[10], MTFroomState%[10]
+
 Function InitializeNPCtypeMTF(n.NPCs)
     n\NVName = "Human"
     n\Collider = CreatePivot()
