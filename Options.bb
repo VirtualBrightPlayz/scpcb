@@ -33,55 +33,69 @@ End Type
 
 Global userOptions.Options = Null
 
-Global KEY_RIGHT = GetINIInt(OptionFile, "binds", "Right key")
-Global KEY_LEFT = GetINIInt(OptionFile, "binds", "Left key")
-Global KEY_UP = GetINIInt(OptionFile, "binds", "Up key")
-Global KEY_DOWN = GetINIInt(OptionFile, "binds", "Down key")
+Global KEY_RIGHT%
+Global KEY_LEFT%
+Global KEY_UP%
+Global KEY_DOWN%
 
-Global KEY_BLINK = GetINIInt(OptionFile, "binds", "Blink key")
-Global KEY_SPRINT = GetINIInt(OptionFile, "binds", "Sprint key")
-Global KEY_INV = GetINIInt(OptionFile, "binds", "Inventory key")
-Global KEY_CROUCH = GetINIInt(OptionFile, "binds", "Crouch key")
-Global KEY_SAVE = GetINIInt(OptionFile, "binds", "Save key")
-Global KEY_CONSOLE = GetINIInt(OptionFile, "binds", "Console key")
+Global KEY_BLINK%
+Global KEY_SPRINT%
+Global KEY_INV%
+Global KEY_CROUCH%
+Global KEY_SAVE%
+Global KEY_CONSOLE%
 
 Function LoadOptionsINI()
     Local optGen$ = "general"
     Local optGra$ = "graphics"
     Local optAud$ = "audio"
+    Local optBin$ = "binds"
     Local optHud$ = "hud"
 
-    userOptions\introEnabled = GetINIInt(OptionFile, optGen, "intro enabled")
-    MouseSens = GetINIFloat(OptionFile, optGen, "mouse sensitivity")
-    InvertMouse = GetINIInt(OptionFile, optGen, "invert mouse y")
-    userOptions\allowConsole = GetINIInt(OptionFile, optGen, "enable console")
-    userOptions\consoleOpenOnError = GetINIInt(OptionFile, optGen, "open console on error")
-    userOptions\achvPopup = GetINIInt(OptionFile, optGen, "achievement popup")
-    userOptions\mapWidth = GetINIInt(OptionFile, optGen, "map size")
-    userOptions\roomLights = GetINIInt(OptionFile, optGen, "room lights")
+    userOptions\introEnabled        = GetINIInt(OptionFile, optGen, "intro enabled")
+    MouseSens                       = GetINIFloat(OptionFile, optGen, "mouse sensitivity")
+    InvertMouse                     = GetINIInt(OptionFile, optGen, "invert mouse y")
+    userOptions\allowConsole        = GetINIInt(OptionFile, optGen, "enable console")
+    userOptions\consoleOpenOnError  = GetINIInt(OptionFile, optGen, "open console on error")
+    userOptions\achvPopup           = GetINIInt(OptionFile, optGen, "achievement popup")
+    userOptions\mapWidth            = GetINIInt(OptionFile, optGen, "map size")
+    userOptions\roomLights          = GetINIInt(OptionFile, optGen, "room lights")
 
-    userOptions\screenWidth = GetINIInt(OptionFile, optGra, "screen width")
-    userOptions\screenHeight = GetINIInt(OptionFile, optGra, "screen height")
-    userOptions\fullscreen = GetINIInt(OptionFile, optGra, "fullscreen")
-    userOptions\borderlessWindowed = GetINIInt(OptionFile, optGra, "borderless windowed")
-    userOptions\gfxDriver = Max(GetINIInt(OptionFile, optGra, "gfx driver"), 1)
-    userOptions\screenGamma = GetINIFloat(OptionFile, optGra, "screengamma")
-    userOptions\framelimit = GetINIInt(OptionFile, optGra, "framelimit")
-    userOptions\vsync = GetINIInt(OptionFile, optGra, "vsync")
+    userOptions\screenWidth         = Max(GetINIInt(OptionFile, optGra, "screen width"), 640)
+    userOptions\screenHeight        = Max(GetINIInt(OptionFile, optGra, "screen height"), 480)
+    userOptions\fullscreen          = GetINIInt(OptionFile, optGra, "fullscreen")
+    userOptions\borderlessWindowed  = GetINIInt(OptionFile, optGra, "borderless windowed")
+    userOptions\gfxDriver           = Max(GetINIInt(OptionFile, optGra, "gfx driver"), 1)
+    userOptions\screenGamma         = GetINIFloat(OptionFile, optGra, "screengamma")
+    userOptions\framelimit          = GetINIInt(OptionFile, optGra, "framelimit")
+    userOptions\vsync               = GetINIInt(OptionFile, optGra, "vsync")
 
-    userOptions\musicVolume = GetINIFloat(OptionFile, optAud, "music volume")
-    userOptions\soundVolume = GetINIFloat(OptionFile, optAud, "sound volume")
+    userOptions\musicVolume         = GetINIFloat(OptionFile, optAud, "music volume")
+    userOptions\soundVolume         = GetINIFloat(OptionFile, optAud, "sound volume")
 
-    userOptions\hudEnabled = GetINIInt(OptionFile, optHud, "HUD enabled")
-    userOptions\showFPS = GetINIInt(OptionFile, optHud, "show FPS")
+    userOptions\hudEnabled          = GetINIInt(OptionFile, optHud, "HUD enabled")
+    userOptions\showFPS             = GetINIInt(OptionFile, optHud, "show FPS")
 
-    userOptions\launcher = GetINIInt(OptionFile, "launcher", "launcher enabled")
+    KEY_RIGHT                       = GetINIInt(OptionFile, optBin, "Right key")
+    KEY_LEFT                        = GetINIInt(OptionFile, optBin, "Left key")
+    KEY_UP                          = GetINIInt(OptionFile, optBin, "Up key")
+    KEY_DOWN                        = GetINIInt(OptionFile, optBin, "Down key")
+
+    KEY_BLINK                       = GetINIInt(OptionFile, optBin, "Blink key")
+    KEY_SPRINT                      = GetINIInt(OptionFile, optBin, "Sprint key")
+    KEY_INV                         = GetINIInt(OptionFile, optBin, "Inventory key")
+    KEY_CROUCH                      = GetINIInt(OptionFile, optBin, "Crouch key")
+    KEY_SAVE                        = GetINIInt(OptionFile, optBin, "Save key")
+    KEY_CONSOLE                     = GetINIInt(OptionFile, optBin, "Console key")
+
+    userOptions\launcher            = GetINIInt(OptionFile, "launcher", "launcher enabled")
 End Function
 
 Function SaveOptionsINI()
     Local optGen$ = "general"
     Local optGra$ = "graphics"
     Local optAud$ = "audio"
+    Local optBin$ = "binds"
     Local optHud$ = "hud"
 
     PutINIValue(OptionFile, optGen, "intro enabled", userOptions\introEnabled)
@@ -107,17 +121,17 @@ Function SaveOptionsINI()
     	
     PutINIValue(OptionFile, optHud, "HUD enabled", userOptions\hudEnabled)
     PutINIValue(OptionFile, optHud, "show FPS", userOptions\showFPS)
+    
+    PutINIValue(OptionFile, optBin, "Right key", KEY_RIGHT)
+    PutINIValue(OptionFile, optBin, "Left key", KEY_LEFT)
+    PutINIValue(OptionFile, optBin, "Up key", KEY_UP)
+    PutINIValue(OptionFile, optBin, "Down key", KEY_DOWN)
+    PutINIValue(OptionFile, optBin, "Blink key", KEY_BLINK)
+    PutINIValue(OptionFile, optBin, "Sprint key", KEY_SPRINT)
+    PutINIValue(OptionFile, optBin, "Inventory key", KEY_INV)
+    PutINIValue(OptionFile, optBin, "Crouch key", KEY_CROUCH)
+    PutINIValue(OptionFile, optBin, "Save key", KEY_SAVE)
+    PutINIValue(OptionFile, optBin, "Console key", KEY_CONSOLE)
 
     PutINIValue(OptionFile, "launcher", "launcher enabled", userOptions\launcher)
-    
-    PutINIValue(OptionFile, "binds", "Right key", KEY_RIGHT)
-    PutINIValue(OptionFile, "binds", "Left key", KEY_LEFT)
-    PutINIValue(OptionFile, "binds", "Up key", KEY_UP)
-    PutINIValue(OptionFile, "binds", "Down key", KEY_DOWN)
-    PutINIValue(OptionFile, "binds", "Blink key", KEY_BLINK)
-    PutINIValue(OptionFile, "binds", "Sprint key", KEY_SPRINT)
-    PutINIValue(OptionFile, "binds", "Inventory key", KEY_INV)
-    PutINIValue(OptionFile, "binds", "Crouch key", KEY_CROUCH)
-    PutINIValue(OptionFile, "binds", "Save key", KEY_SAVE)
-    PutINIValue(OptionFile, "binds", "Console key", KEY_CONSOLE)
 End Function

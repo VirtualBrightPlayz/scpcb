@@ -48,6 +48,10 @@ Type NPCs
 	Field frame#
 	Field angle#
 
+	Field sounds$[10]
+	Field soundChannels%[3]
+
+	;Deprecate.
 	Field sound%
 	Field soundChn%
 	Field sound2%
@@ -238,6 +242,20 @@ Function RemoveNPC(n.NPCs)
 		FreeEntity n\obj4
 		n\obj4 = 0
 	EndIf
+
+	Local i%
+
+	For i = 0 to 2
+		If (n\soundChannels[i] <> 0 And ChannelPlaying(n\soundChannels[i])) Then
+			StopChannel(n\soundChannels[i])
+		EndIf
+	Next
+
+	For i = 0 to 9
+		If (n\sounds[i] <> 0) Then
+			FreeSound_Strict(n\sounds[i])
+		EndIf
+	Next
 	
 	If (n\SoundChn <> 0 And ChannelPlaying(n\SoundChn)) Then
 		StopChannel(n\SoundChn)
@@ -247,21 +265,25 @@ Function RemoveNPC(n.NPCs)
 		StopChannel(n\SoundChn2)
 	EndIf
 	
-	If n\Sound<>0 Then FreeSound_Strict n\Sound
-	If n\Sound2<>0 Then FreeSound_Strict n\Sound2
+	If (n\sound <> 0) Then
+		FreeSound_Strict(n\sound)
+	EndIf
 	
-	FreeEntity(n\obj) : n\obj = 0
-	FreeEntity(n\Collider) : n\Collider = 0	
+	If (n\sound2 <> 0) Then
+		FreeSound_Strict(n\sound2)
+	EndIf
 	
-	Delete n
+	FreeEntity(n\obj)
+	n\obj = 0
+	FreeEntity(n\Collider)
+	n\Collider = 0	
+	
+	Delete(n)
 End Function
 
 
 Function UpdateNPCs()
-	Local n.NPCs, n2.NPCs, d.Doors, de.Decals, r.Rooms, eo.ElevatorObj, eo2.ElevatorObj
-	Local i%, dist#, dist2#, angle#, x#, y#, z#, prevFrame#, PlayerSeeAble%, RN$
-	
-	Local target
+	Local n.NPCs
 	
 	For n.NPCs = Each NPCs
 		;A variable to determine if the NPC is in the facility or not
