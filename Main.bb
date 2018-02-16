@@ -5724,7 +5724,6 @@ Function IsItemGoodFor1162(itt.ItemTemplates)
 	End Select
 End Function
 
-;TODO: remove
 Function ControlSoundVolume()
 	Local snd.Sound,i
 	
