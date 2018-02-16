@@ -85,7 +85,7 @@ Function SaveOptionsINI()
     Local optHud$ = "hud"
 
     PutINIValue(OptionFile, optGen, "intro enabled", userOptions\introEnabled)
-    PutINIValue(OptionFile, optGen, "mouse sensitivity", userOptions\mouseSensitivity)
+    PutINIValue(OptionFile, optGen, "mouse sensitivity", MouseSens)
     PutINIValue(OptionFile, optGen, "invert mouse y", InvertMouse)
     PutINIValue(OptionFile, optGen, "enable console", userOptions\allowConsole)
     PutINIValue(OptionFile, optGen, "open console on error", userOptions\consoleOpenOnError)

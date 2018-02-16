@@ -874,51 +874,38 @@ Function UpdateLauncher()
 			y=y+20
 		Next
 		
+		;TODO: Reimplement.
 		userOptions\fullscreen = DrawTick(40 + 430 - 15, 260 - 55 + 5 - 8, userOptions\fullscreen, userOptions\borderlessWindowed)
-		userOptions\borderlessWindowed = DrawTick(40 + 430 - 15, 260 - 55 + 35, userOptions\borderlessWindowed)
-		lock% = False
+		;userOptions\borderlessWindowed = DrawTick(40 + 430 - 15, 260 - 55 + 35, userOptions\borderlessWindowed)
 
-		If userOptions\borderlessWindowed Or (Not userOptions\fullscreen) Then lock% = True
 		userOptions\launcher = DrawTick(40 + 430 - 15, 260 - 55 + 95 + 8, userOptions\launcher)
 
-		If userOptions\borderlessWindowed
- 		   Color 255, 0, 0
- 		   userOptions\fullscreen = False
-		Else
-  		  Color 255, 255, 255
-		EndIf
+		;Don't allow selecting of fullscren when borderless windowed is enabled.
+		;If userOptions\borderlessWindowed
+ 		;   Color 255, 0, 0
+ 		;   userOptions\fullscreen = False
+		;Else
+  		;  Color 255, 255, 255
+		;EndIf
 
 		Text(40 + 430 + 15, 262 - 55 + 5 - 8, "Fullscreen")
-		Color 255, 255, 255
-		Text(40 + 430 + 15, 262 - 55 + 35 - 8, "Borderless",False,False)
-		Text(40 + 430 + 15, 262 - 55 + 35 + 12, "windowed mode",False,False)
 
-		If userOptions\borderlessWindowed Or (Not userOptions\fullscreen)
- 		   Color 255, 0, 0
-		Else
-		    Color 255, 255, 255
-		EndIf
-
-		Text(40 + 430 + 15, 262 - 55 + 65 + 8, "16 Bit")
 		Color 255, 255, 255
+		;Text(40 + 430 + 15, 262 - 55 + 35 - 8, "Borderless",False,False)
+		;Text(40 + 430 + 15, 262 - 55 + 35 + 12, "windowed mode",False,False)
+
 		Text(40 + 430 + 15, 262 - 55 + 95 + 8, "Use launcher")
 		
-		If (Not userOptions\borderlessWindowed)
-			If userOptions\fullscreen
-				Text(40+ 260 + 15, 262 - 55 + 140, "Current Resolution: "+(GfxModeWidths(SelectedGFXMode) + "x" + GfxModeHeights(SelectedGFXMode) + "," + 32)
-			Else
-				Text(40+ 260 + 15, 262 - 55 + 140, "Current Resolution: "+(GfxModeWidths(SelectedGFXMode) + "x" + GfxModeHeights(SelectedGFXMode) + ",32"))
-			EndIf
-		Else
-			Text(40+ 260 + 15, 262 - 55 + 140, "Current Resolution: "+GfxModeWidths(SelectedGFXMode) + "x" + GfxModeHeights(SelectedGFXMode) + ",32")
-			If GfxModeWidths(SelectedGFXMode)<G_viewport_width Then
-				Text(40+ 260 + 65, 262 - 55 + 160, "(upscaled to")
-				Text(40+ 260 + 65, 262 - 55 + 180, G_viewport_width + "x" + G_viewport_height + ",32)")
-			ElseIf GfxModeWidths(SelectedGFXMode)>G_viewport_width Then
-				Text(40+ 260 + 65, 262 - 55 + 160, "(downscaled to")
-				Text(40+ 260 + 65, 262 - 55 + 180, G_viewport_width + "x" + G_viewport_height + ",32)")
-			EndIf
-		EndIf
+		
+		Text(40+ 260 + 15, 262 - 55 + 140, "Current Resolution: "+GfxModeWidths(SelectedGFXMode) + "x" + GfxModeHeights(SelectedGFXMode))
+		
+		;If GfxModeWidths(SelectedGFXMode)<G_viewport_width Then
+		;	Text(40+ 260 + 65, 262 - 55 + 160, "(upscaled to")
+		;ElseIf GfxModeWidths(SelectedGFXMode)>G_viewport_width Then
+		;	Text(40+ 260 + 65, 262 - 55 + 160, "(downscaled to")
+		;EndIf
+		
+		;Text(40+ 260 + 65, 262 - 55 + 180, G_viewport_width + "x" + G_viewport_height + ")")
 		
 		If DrawButton(LauncherWidth - 30 - 90, LauncherHeight - 50 - 55, 100, 30, "LAUNCH", False, False, False) Then
 			userOptions\screenWidth = GfxModeWidths(SelectedGFXMode)

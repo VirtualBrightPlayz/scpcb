@@ -117,7 +117,7 @@ InitLoadingScreens("Loadingscreens\loadingscreens.ini")
 ;don't match their "internal name" (i.e. their display name in applications
 ;like Word and such). As a workaround, I moved the files and renamed them so they
 ;can load without FastText.
-Font1% = LoadFont("GFX\font\cour\Courier New.ttf", Int(18 * MenuScale, 0,0,0)
+Font1% = LoadFont("GFX\font\cour\Courier New.ttf", Int(18 * MenuScale), 0,0,0)
 Font2% = LoadFont("GFX\font\courbd\Courier New.ttf", Int(58 * MenuScale), 0,0,0)
 Font3% = LoadFont("GFX\font\DS-DIGI\DS-Digital.ttf", Int(22 * MenuScale), 0,0,0)
 Font4% = LoadFont("GFX\font\DS-DIGI\DS-Digital.ttf", Int(60 * MenuScale), 0,0,0)
@@ -3819,8 +3819,7 @@ Function DrawMenu()
 					
 					y = y + 30*MenuScale
 					
-					PrevSFXVolume = (SlideBar(x + 250*MenuScale, y-4*MenuScale, 100*MenuScale, SFXVolume*100.0)/100.0)
-					If (Not DeafPlayer) Then SFXVolume# = PrevSFXVolume#
+					SFXVolume = (SlideBar(x + 250*MenuScale, y-4*MenuScale, 100*MenuScale, SFXVolume*100.0)/100.0)
 					Color 255,255,255
 					Text(x, y, "Sound volume:")
 					;[End Block]
