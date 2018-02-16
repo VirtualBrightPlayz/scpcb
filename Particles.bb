@@ -187,9 +187,3 @@ Function CreateEmitter.Emitters(x#, y#, z#, emittertype%)
 	Return e
 		
 End Function
-	
-	
-
-;~IDEal Editor Parameters:
-;~F#4#10#2E#4A#53#65#99
-;~C#Blitz3D

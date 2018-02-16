@@ -7491,13 +7491,3 @@ Function FindAndDeleteFakeMonitor(r.Rooms,x#,y#,z#,Amount%)
 	Next
 	
 End Function
-
-
-
-
-
-
-;~IDEal Editor Parameters:
-;~F#2#A
-;~B#1230
-;~C#Blitz3D

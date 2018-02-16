@@ -179,17 +179,3 @@ Function LoadFont_Strict(file$="Tahoma", height=13, bold=0, italic=0, underline=
 	If tmp = 0 Then RuntimeError "Failed to load Font: " + file$ 
 	Return tmp
 End Function
-
-
-
-
-
-
-
-
-
-
-
-;~IDEal Editor Parameters:
-;~F#F#34#3B
-;~C#Blitz3D

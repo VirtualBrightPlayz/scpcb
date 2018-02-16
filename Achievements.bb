@@ -97,6 +97,3 @@ Function DrawAchvIMG(x%, y%, achvno%)
 	
 	Rect((x+(row*SeparationConst2)), y, 64*scale, 64*scale, False)
 End Function
-;~IDEal Editor Parameters:
-;~F#22#2E#3D
-;~C#Blitz3D
