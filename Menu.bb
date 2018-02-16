@@ -238,9 +238,6 @@ Function UpdateMainMenu()
 					
 					PutINIValue(OptionFile, "audio", "music volume", MusicVolume)
 					PutINIValue(OptionFile, "audio", "sound volume", PrevSFXVolume)
-					PutINIValue(OptionFile, "audio", "sfx release", EnableSFXRelease)
-					PutINIValue(OptionFile, "audio", "enable user tracks", EnableUserTracks%)
-					PutINIValue(OptionFile, "audio", "user track setting", UserTrackMode%)
 					
 					PutINIValue(OptionFile, "binds", "Right key", KEY_RIGHT)
 					PutINIValue(OptionFile, "binds", "Left key", KEY_LEFT)
@@ -252,9 +249,6 @@ Function UpdateMainMenu()
 					PutINIValue(OptionFile, "binds", "Crouch key", KEY_CROUCH)
 					PutINIValue(OptionFile, "binds", "Save key", KEY_SAVE)
 					PutINIValue(OptionFile, "binds", "Console key", KEY_CONSOLE)
-					
-					UserTrackCheck% = 0
-					UserTrackCheck2% = 0
 					
 					AntiAlias Opt_AntiAlias
 					MainMenuTab = 0
@@ -528,11 +522,6 @@ Function UpdateMainMenu()
 				SetFont Font1
 				y = y + 70 * MenuScale
 				
-				If MainMenuTab <> 5
-					UserTrackCheck% = 0
-					UserTrackCheck2% = 0
-				EndIf
-				
 				If MainMenuTab = 3 ;Graphics
 					;[Block]
 					height = 300 * MenuScale
@@ -642,89 +631,6 @@ Function UpdateMainMenu()
 					SFXVolume = PrevSFXVolume
 					Color 255,255,255
 					Text(x + 20 * MenuScale, y, "Sound volume:")
-					;If MouseDown1 Then
-					;	If MouseX() >= x And MouseX() <= x + width + 14 And MouseY() >= y And MouseY() <= y + 20 Then
-					;		PlayTestSound(True)
-					;	Else
-					;		PlayTestSound(False)
-					;	EndIf
-					;Else
-					;	PlayTestSound(False)
-					;EndIf
-					
-					y = y + 30*MenuScale
-					
-					Color 255,255,255
-					Text x + 20 * MenuScale, y, "Sound auto-release:"
-					EnableSFXRelease = DrawTick(x + 310 * MenuScale, y + MenuScale, EnableSFXRelease)
-					If EnableSFXRelease_Prev% <> EnableSFXRelease
-						If EnableSFXRelease%
-							For snd.Sound = Each Sound
-								For i=0 To 31
-									If snd\channels[i]<>0 Then
-										If ChannelPlaying(snd\channels[i]) Then
-											StopChannel(snd\channels[i])
-										EndIf
-									EndIf
-								Next
-								If snd\internalHandle<>0 Then
-									FreeSound snd\internalHandle
-									snd\internalHandle = 0
-								EndIf
-								snd\releaseTime = 0
-							Next
-						Else
-							For snd.Sound = Each Sound
-								If snd\internalHandle = 0 Then snd\internalHandle = LoadSound(snd\name)
-							Next
-						EndIf
-						EnableSFXRelease_Prev% = EnableSFXRelease
-					EndIf
-					y = y + 30*MenuScale
-					
-					Color 255,255,255
-					Text x + 20 * MenuScale, y, "Enable user tracks:"
-					EnableUserTracks = DrawTick(x + 310 * MenuScale, y + MenuScale, EnableUserTracks)
-					
-					If EnableUserTracks
-						y = y + 30 * MenuScale
-						Color 255,255,255
-						Text x + 20 * MenuScale, y, "User track mode:"
-						UserTrackMode = DrawTick(x + 310 * MenuScale, y + MenuScale, UserTrackMode)
-						If UserTrackMode
-							Text x + 350 * MenuScale, y + 5 * MenuScale, "Repeat"
-						Else
-							Text x + 350 * MenuScale, y + 5 * MenuScale, "Random"
-						EndIf
-						If DrawButton(x + 20 * MenuScale, y + 30 * MenuScale, 190 * MenuScale, 25 * MenuScale, "Scan for User Tracks",False)
-							DebugLog "User Tracks Check Started"
-							
-							UserTrackCheck% = 0
-							UserTrackCheck2% = 0
-							
-							Dir=ReadDir("SFX\Radio\UserTracks\")
-							Repeat
-								file$=NextFile(Dir)
-								If file$="" Then Exit
-								If FileType("SFX\Radio\UserTracks\"+file$) = 1 Then
-									UserTrackCheck = UserTrackCheck + 1
-									test = LoadSound("SFX\Radio\UserTracks\"+file$)
-									If test<>0
-										UserTrackCheck2 = UserTrackCheck2 + 1
-									EndIf
-									FreeSound test
-								EndIf
-							Forever
-							CloseDir Dir
-							
-							DebugLog "User Tracks Check Ended"
-						EndIf
-						If UserTrackCheck%>0
-							Text x + 180 * MenuScale, y + 30 * MenuScale, "User tracks found ("+UserTrackCheck2+"/"+UserTrackCheck+" successfully loaded)"
-						EndIf
-					Else
-						UserTrackCheck%=0
-					EndIf
 					;[End Block]
 				ElseIf MainMenuTab = 6 ;Controls
 					;[Block]
@@ -1009,7 +915,6 @@ Function UpdateLauncher()
 		lock% = False
 
 		If BorderlessWindowed Or (Not Fullscreen) Then lock% = True
-		Bit16Mode = DrawTick(40 + 430 - 15, 260 - 55 + 65 + 8, Bit16Mode,lock%)
 		LauncherEnabled = DrawTick(40 + 430 - 15, 260 - 55 + 95 + 8, LauncherEnabled)
 
 		If BorderlessWindowed
@@ -1026,7 +931,6 @@ Function UpdateLauncher()
 
 		If BorderlessWindowed Or (Not Fullscreen)
  		   Color 255, 0, 0
- 		   Bit16Mode = False
 		Else
 		    Color 255, 255, 255
 		EndIf
@@ -1037,7 +941,7 @@ Function UpdateLauncher()
 		
 		If (Not BorderlessWindowed)
 			If Fullscreen
-				Text(40+ 260 + 15, 262 - 55 + 140, "Current Resolution: "+(GfxModeWidths(SelectedGFXMode) + "x" + GfxModeHeights(SelectedGFXMode) + "," + (16+(16*(Not Bit16Mode)))))
+				Text(40+ 260 + 15, 262 - 55 + 140, "Current Resolution: "+(GfxModeWidths(SelectedGFXMode) + "x" + GfxModeHeights(SelectedGFXMode) + "," + 32)
 			Else
 				Text(40+ 260 + 15, 262 - 55 + 140, "Current Resolution: "+(GfxModeWidths(SelectedGFXMode) + "x" + GfxModeHeights(SelectedGFXMode) + ",32"))
 			EndIf
@@ -1080,11 +984,6 @@ Function UpdateLauncher()
 		PutINIValue(OptionFile, "options", "borderless windowed", "true")
 	Else
 		PutINIValue(OptionFile, "options", "borderless windowed", "false")
-	EndIf
-	If Bit16Mode Then
-		PutINIValue(OptionFile, "options", "16bit", "true")
-	Else
-		PutINIValue(OptionFile, "options", "16bit", "false")
 	EndIf
 	PutINIValue(OptionFile, "options", "gfx driver", SelectedGFXDriver)
 	

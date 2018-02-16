@@ -863,28 +863,7 @@ Function UpdateConsole()
 							DeathMSG = "Subject D-9341 found dead in Sector [REDACTED]. "
 							DeathMSG = DeathMSG + "The subject appears to have scribbled the letters "+Chr(34)+"kys"+Chr(34)+" in his own blood beside him. "
 							DeathMSG = DeathMSG + "No other signs of physical trauma or struggle can be observed. Body was sent for autopsy."
-					End Select 
-
-				Case "playmusic"
-					If Instr(ConsoleInput, " ")<>0 Then
-						StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
-					Else
-						StrTemp$ = ""
-					EndIf
-					
-					If StrTemp$ <> ""
-						PlayCustomMusic% = True
-						If CustomMusic <> 0 Then FreeSound_Strict CustomMusic : CustomMusic = 0
-						If MusicCHN <> 0 Then StopChannel MusicCHN
-						CustomMusic = LoadSound_Strict("SFX\Music\Custom\"+StrTemp$)
-						If CustomMusic = 0
-							PlayCustomMusic% = False
-						EndIf
-					Else
-						PlayCustomMusic% = False
-						If CustomMusic <> 0 Then FreeSound_Strict CustomMusic : CustomMusic = 0
-						If MusicCHN <> 0 Then StopChannel MusicCHN
-					EndIf
+					End Select
 
 				Case "tp"
 					For n.NPCs = Each NPCs

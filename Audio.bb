@@ -1,3 +1,5 @@
+
+
 Function PlaySound2%(SoundHandle%, cam%, entity%, range# = 10, volume# = 1.0)
 	range# = Max(range, 1.0)
 	Local soundchn% = 0
@@ -29,7 +31,7 @@ Function LoopSound2%(SoundHandle%, Chn%, cam%, entity%, range# = 10, volume# = 1
 			If Chn = 0 Then
 				Chn% = PlaySound_Strict (SoundHandle)
 			Else
-				If (Not ChannelPlaying(Chn)) Then Chn% = PlaySound_Strict (SoundHandle)
+				If (Not ChannelPlaying(Chn)) Then Chn% = PlaySound_Strict(SoundHandle)
 			EndIf
 			
 			ChannelVolume(Chn, volume# * (1 - dist#)*SFXVolume#)
@@ -71,7 +73,7 @@ Function UpdateMusic()
 	
 	If ConsoleFlush Then
 		If Not ChannelPlaying(MusicCHN) Then MusicCHN = PlaySound(ConsoleMusFlush)
-	ElseIf (Not PlayCustomMusic)
+	Else
 		If FPSfactor > 0 Or OptionsMenu = 2 Then 
 			If NowPlaying <> ShouldPlay Then ; playing the wrong clip, fade out
 				CurrMusicVolume# = Max(CurrMusicVolume - (FPSfactor / 250.0), 0)
@@ -93,12 +95,6 @@ Function UpdateMusic()
 		EndIf
 		
 		ChannelVolume MusicCHN, CurrMusicVolume
-	Else
-		If FPSfactor > 0 Or OptionsMenu = 2 Then
-			;CurrMusicVolume = 1.0
-			If (Not ChannelPlaying(MusicCHN)) Then MusicCHN = PlaySound_Strict(CustomMusic)
-			ChannelVolume MusicCHN,1.0*MusicVolume
-		EndIf
 	EndIf
 	
 End Function 

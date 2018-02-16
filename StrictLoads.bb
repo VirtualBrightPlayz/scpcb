@@ -57,30 +57,6 @@ Type Sound
 	Field releaseTime%
 End Type
 
-Function AutoReleaseSounds()
-	Local snd.Sound
-	For snd.Sound = Each Sound
-		Local tryRelease% = True
-		For i = 0 To 31
-			If snd\channels[i] <> 0 Then
-				If ChannelPlaying(snd\channels[i]) Then
-					tryRelease = False
-					snd\releaseTime = MilliSecs2()+5000
-					Exit
-				EndIf
-			EndIf
-		Next
-		If tryRelease Then
-			If snd\releaseTime < MilliSecs2() Then
-				If snd\internalHandle <> 0 Then
-					FreeSound snd\internalHandle
-					snd\internalHandle = 0
-				EndIf
-			EndIf
-		EndIf
-	Next
-End Function
-
 Function PlaySound_Strict%(sndHandle%)
 	Local snd.Sound = Object.Sound(sndHandle)
 	If snd <> Null Then
@@ -95,7 +71,7 @@ Function PlaySound_Strict%(sndHandle%)
 								ConsoleOpen = True
 							EndIf
 						Else
-							If EnableSFXRelease Then snd\internalHandle = LoadSound(snd\name)
+							;If EnableSFXRelease Then snd\internalHandle = LoadSound(snd\name)
 						EndIf
 						If snd\internalHandle = 0 Then
 							CreateConsoleMsg("Failed to load Sound: " + Chr(34) + snd\name + Chr(34))
@@ -121,7 +97,7 @@ Function PlaySound_Strict%(sndHandle%)
 							ConsoleOpen = True
 						EndIf
 					Else
-						If EnableSFXRelease Then snd\internalHandle = LoadSound(snd\name)
+						;If EnableSFXRelease Then snd\internalHandle = LoadSound(snd\name)
 					EndIf
 						
 					If snd\internalHandle = 0 Then
@@ -151,7 +127,7 @@ Function LoadSound_Strict(file$)
 	snd\name = file
 	snd\internalHandle = 0
 	snd\releaseTime = 0
-	If (Not EnableSFXRelease) Then snd\internalHandle = LoadSound(snd\name)
+	snd\internalHandle = LoadSound(snd\name)
 	
 	Return Handle(snd)
 End Function

@@ -506,9 +506,6 @@ DrawLoading(30, True)
 Global NTF_1499EnterSFX% = LoadSound_Strict("SFX\SCP\1499\Enter.ogg")
 Global NTF_1499LeaveSFX% = LoadSound_Strict("SFX\SCP\1499\Exit.ogg")
 
-;TODO: Also die forever.
-Global PlayCustomMusic% = False, CustomMusic% = 0
-
 ;TODO: Not be globals.
 Global Monitor2, Monitor3, MonitorTexture2, MonitorTexture3, MonitorTexture4, MonitorTextureOff
 Global MonitorTimer# = 0.0, MonitorTimer2# = 0.0, UpdateCheckpoint1%, UpdateCheckpoint2%
@@ -530,13 +527,6 @@ Global Wearing1499% = False
 Global AmbientLightRoomTex%, AmbientLightRoomVal%
 
 ;Global NVGImage% = CreateImage(GraphicWidth,GraphicHeight),NVGCam%
-
-;TODO: Kill.
-Global EnableUserTracks% = GetINIInt(OptionFile, "audio", "enable user tracks")
-Global UserTrackMode% = GetINIInt(OptionFile, "audio", "user track setting")
-Global UserTrackCheck% = 0, UserTrackCheck2% = 0
-Global UserTrackMusicAmount% = 0, CurrUserTrack%, UserTrackFlag% = False
-Dim UserTrackName$(256)
 
 ;TODO: Die forever.
 Global NTF_1499PrevX#
@@ -1226,7 +1216,6 @@ Repeat
 	If (Not MouseDown1) And (Not MouseHit1) Then GrabbedEntity = 0
 	
 	UpdateMusic()
-	If EnableSFXRelease Then AutoReleaseSounds()
 	
 	If MainMenuOpen Then
 		If ShouldPlay = 21 Then
@@ -3095,57 +3084,8 @@ Function DrawGUI()
 							Select Int(SelectedItem\state2)
 								Case 0 ;randomkanava
 									ResumeChannel(RadioCHN(0))
-									strtemp = "        USER TRACK PLAYER - "
-									If (Not EnableUserTracks)
-										If ChannelPlaying(RadioCHN(0)) = False Then RadioCHN(0) = PlaySound_Strict(RadioStatic)
-										strtemp = strtemp + "NOT ENABLED     "
-									ElseIf UserTrackMusicAmount<1
-										If ChannelPlaying(RadioCHN(0)) = False Then RadioCHN(0) = PlaySound_Strict(RadioStatic)
-										strtemp = strtemp + "NO TRACKS FOUND     "
-									Else
-										If (Not ChannelPlaying(RadioCHN(0)))
-											If (Not UserTrackFlag%)
-												If UserTrackMode
-													If RadioState(0)<(UserTrackMusicAmount-1)
-														RadioState(0) = RadioState(0) + 1
-													Else
-														RadioState(0) = 0
-													EndIf
-													UserTrackFlag = True
-												Else
-													RadioState(0) = Rand(0,UserTrackMusicAmount-1)
-												EndIf
-											EndIf
-											If CurrUserTrack%<>0 Then FreeSound_Strict(CurrUserTrack%) : CurrUserTrack% = 0
-											CurrUserTrack% = LoadSound_Strict("SFX\Radio\UserTracks\"+UserTrackName$(RadioState(0)))
-											RadioCHN(0) = PlaySound_Strict(CurrUserTrack%)
-											DebugLog "CurrTrack: "+RadioState(0)
-											DebugLog UserTrackName$(RadioState(0))
-										Else
-											strtemp = strtemp + Upper(UserTrackName$(RadioState(0))) + "          "
-											UserTrackFlag = False
-										EndIf
-										
-										If KeyHit(2) Then
-											PlaySound_Strict RadioSquelch
-											If (Not UserTrackFlag%)
-												If UserTrackMode
-													If RadioState(0)<(UserTrackMusicAmount-1)
-														RadioState(0) = RadioState(0) + 1
-													Else
-														RadioState(0) = 0
-													EndIf
-													UserTrackFlag = True
-												Else
-													RadioState(0) = Rand(0,UserTrackMusicAmount-1)
-												EndIf
-											EndIf
-											If CurrUserTrack%<>0 Then FreeSound_Strict(CurrUserTrack%) : CurrUserTrack% = 0
-											CurrUserTrack% = LoadSound_Strict("SFX\Radio\UserTracks\"+UserTrackName$(RadioState(0)))
-											RadioCHN(0) = PlaySound_Strict(CurrUserTrack%)
-											DebugLog "CurrTrack: "+RadioState(0)
-											DebugLog UserTrackName$(RadioState(0))
-										EndIf
+									If ChannelPlaying(RadioCHN(0)) = False Then
+										RadioCHN(0) = PlaySound(RadioStatic)
 									EndIf
 								Case 1 ;hälytyskanava
 									DebugLog RadioState(1) 
@@ -3871,9 +3811,6 @@ Function DrawMenu()
 				
 				PutINIValue(OptionFile, "audio", "music volume", MusicVolume)
 				PutINIValue(OptionFile, "audio", "sound volume", PrevSFXVolume)
-				PutINIValue(OptionFile, "audio", "sfx release", EnableSFXRelease)
-				PutINIValue(OptionFile, "audio", "enable user tracks", EnableUserTracks%)
-				PutINIValue(OptionFile, "audio", "user track setting", UserTrackMode%)
 				
 				PutINIValue(OptionFile, "binds", "Right key", KEY_RIGHT)
 				PutINIValue(OptionFile, "binds", "Left key", KEY_LEFT)
@@ -3985,36 +3922,6 @@ Function DrawMenu()
 					If (Not DeafPlayer) Then SFXVolume# = PrevSFXVolume#
 					Color 255,255,255
 					Text(x, y, "Sound volume:")
-					
-					y = y + 30*MenuScale
-					
-					Color 100,100,100
-					Text x, y, "Sound auto-release:"
-					EnableSFXRelease = DrawTick(x + 270 * MenuScale, y + MenuScale, EnableSFXRelease,True)
-					If MouseOn(x + 270 * MenuScale, y + MenuScale, 20*MenuScale,20*MenuScale)
-						DrawTooltip("Not available in-game")
-					EndIf
-					
-					y = y + 30*MenuScale
-					
-					Color 100,100,100
-					Text x, y, "Enable user tracks:"
-					EnableUserTracks = DrawTick(x + 270 * MenuScale, y + MenuScale, EnableUserTracks,True)
-					If MouseOn(x + 270 * MenuScale, y + MenuScale, 20*MenuScale,20*MenuScale)
-						DrawTooltip("Not available in-game")
-					EndIf
-					
-					If EnableUserTracks
-						y = y + 30 * MenuScale
-						Color 255,255,255
-						Text x, y, "User track mode:"
-						UserTrackMode = DrawTick(x + 270 * MenuScale, y + MenuScale, UserTrackMode)
-						If UserTrackMode
-							Text x, y + 20 * MenuScale, "Repeat"
-						Else
-							Text x, y + 20 * MenuScale, "Random"
-						EndIf
-					EndIf
 					;[End Block]
 				Case 3 ;Controls
 					;Text(x+210*MenuScale,y,"CONTROLS",True,True)
@@ -5394,7 +5301,10 @@ Function UpdateDecals()
 				;	EntityBlend d\obj, 2
 			End Select
 			
-			If d\Size >= d\MaxSize Then d\SizeChange = 0 : d\Size = d\MaxSize
+			If d\Size >= d\MaxSize Then
+				d\SizeChange = 0
+				d\Size = d\MaxSize
+			EndIf
 		End If
 		
 		If d\AlphaChange <> 0 Then

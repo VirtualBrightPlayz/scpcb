@@ -47,7 +47,7 @@ Function LoadEntities()
 	GasMaskOverlay = CreateSprite(ark_blur_cam)
 	ScaleSprite(GasMaskOverlay, Max(GraphicWidth / 1024.0, 1.0), Max(GraphicHeight / 1024.0 * 0.8, 0.8))
 	EntityTexture(GasMaskOverlay, GasMaskTexture)
-	EntityBlend (GasMaskOverlay, 2)
+	EntityBlend(GasMaskOverlay, 2)
 	EntityFX(GasMaskOverlay, 1)
 	EntityOrder GasMaskOverlay, -1003
 	MoveEntity(GasMaskOverlay, 0, 0, 1.0)
@@ -316,30 +316,6 @@ Function LoadEntities()
 			FreeBrush b
 		EndIf
 	Next
-	
-	UserTrackMusicAmount% = 0
-	If EnableUserTracks Then
-		Local dirPath$ = "SFX\Radio\UserTracks\"
-		If FileType(dirPath)<>2 Then
-			CreateDir(dirPath)
-		EndIf
-		
-		Local Dir% = ReadDir("SFX\Radio\UserTracks\")
-		Repeat
-			file$=NextFile(Dir)
-			If file$="" Then Exit
-			If FileType("SFX\Radio\UserTracks\"+file$) = 1 Then
-				test = LoadSound("SFX\Radio\UserTracks\"+file$)
-				If test<>0
-					UserTrackName$(UserTrackMusicAmount%) = file$
-					UserTrackMusicAmount% = UserTrackMusicAmount% + 1
-				EndIf
-				FreeSound test
-			EndIf
-		Forever
-		CloseDir Dir
-	EndIf
-	If EnableUserTracks Then DebugLog "User Tracks found: "+UserTrackMusicAmount
 	
 	InitItemTemplates()
 	
