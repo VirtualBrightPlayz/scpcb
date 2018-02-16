@@ -2623,8 +2623,6 @@ Function UpdateSecurityCams()
 											ShowEntity(sc\Cam)
 											Cls
 											
-											UpdateRoomLights(sc\Cam)
-											
 											SetBuffer BackBuffer()
 											RenderWorld
 											CopyRect 0,0,512,512,0,0,BackBuffer(),TextureBuffer(ScreenTexs[sc\ScrTexture])
@@ -2638,8 +2636,6 @@ Function UpdateSecurityCams()
 											ShowEntity(CoffinCam\Cam)
 											Cls
 											
-											UpdateRoomLights(CoffinCam\Cam)
-											
 											SetBuffer BackBuffer()
 											RenderWorld
 											CopyRect 0,0,512,512,0,0,BackBuffer(),TextureBuffer(ScreenTexs[sc\ScrTexture])
@@ -2652,8 +2648,6 @@ Function UpdateSecurityCams()
 										HideEntity(Camera)
 										ShowEntity(sc\Cam)
 										Cls
-										
-										UpdateRoomLights(sc\Cam)
 										
 										RenderWorld
 										
@@ -2670,15 +2664,13 @@ Function UpdateSecurityCams()
 									ShowEntity(sc\Cam)
 									Cls
 									
-									UpdateRoomLights(sc\Cam)
-									
 									RenderWorld
 									
 									HideEntity (sc\room\obj)
 									HideEntity(sc\Cam)
 									ShowEntity(Camera)	
 									
-									CopyRect(0,0,userOptions\screenWidth,userOptions\screenHeight,0,0,BackBuffer(),TextureBuffer(sc\Room2slTexs[sc\ScrTexture]))
+									CopyRect(0, 0, userOptions\screenWidth, userOptions\screenHeight, 0, 0, BackBuffer(), TextureBuffer(sc\Room2slTexs[sc\ScrTexture]))
 								EndIf
 								
 							EndIf
@@ -4092,88 +4084,7 @@ End Function
 
 Include "Skybox.bb"
 
-
-Function UpdateRoomLights(cam%)
-	
-	Local r.Rooms, i, random#, alpha#, dist#
-	
-	For r.Rooms = Each Rooms
-		If r\dist < HideDistance*0.7 Or r = PlayerRoom
-			For i = 0 To r\MaxLights%
-				If r\Lights%[i]<>0
-					If userOptions\roomLights
-						If EntityDistance(cam%,r\Lights%[i])<8.5
-							If r\LightHidden[i]
-								ShowEntity r\Lights%[i]
-								r\LightHidden[i] = False
-							EndIf
-						Else
-							If (Not r\LightHidden[i])
-								HideEntity r\Lights%[i]
-								r\LightHidden[i] = True
-							EndIf
-						EndIf
-						
-						If EntityDistance(cam%,r\LightSprites2[i])<8.5
-							If EntityVisible(cam%,r\LightSpritesPivot[i])
-								If r\LightSpriteHidden%[i]
-									ShowEntity r\LightSprites2%[i]
-									r\LightSpriteHidden%[i] = False
-								EndIf
-								If PlayerRoom\RoomTemplate\Name$ = "173"
-									random# = Rnd(0.38,0.42)
-								Else
-									If r\LightFlicker%[i]<5
-										random# = Rnd(0.38,0.42)
-									ElseIf r\LightFlicker%[i]>4 And r\LightFlicker%[i]<10
-										random# = Rnd(0.35,0.45)
-									Else
-										random# = Rnd(0.3,0.5)
-									EndIf
-								EndIf
-								ScaleSprite r\LightSprites2[i],random#,random#
-								dist# = (EntityDistance(cam%,r\LightSpritesPivot[i])+0.5)/7.5
-								dist# = Max(Min(dist#,1.0),0.0)
-								alpha# = Float(Inverse(dist#))
-								
-								If alpha# > 0.0
-									EntityAlpha r\LightSprites2[i],Max(3*(Brightness/255)*(r\LightIntensity[i]/2),1)*alpha#
-								Else
-									;Instead of rendering the sprite invisible, just hiding it if the player is far away from it
-									If (Not r\LightSpriteHidden%[i])
-										HideEntity r\LightSprites2[i]
-										r\LightSpriteHidden%[i]=True
-									EndIf
-								EndIf
-							Else
-								If (Not r\LightSpriteHidden%[i])
-									HideEntity r\LightSprites2%[i]
-									r\LightSpriteHidden%[i] = True
-								EndIf
-							EndIf
-						Else
-							If (Not r\LightSpriteHidden%[i])
-								HideEntity r\LightSprites2%[i]
-								r\LightSpriteHidden%[i] = True
-							EndIf
-						EndIf
-					Else
-						If (Not r\LightHidden[i])
-							HideEntity r\Lights%[i]
-							r\LightHidden[i] = True
-						EndIf
-						If (Not r\LightSpriteHidden[i])
-							HideEntity r\LightSprites2[i]
-							r\LightSpriteHidden[i]=True
-						EndIf
-					EndIf
-				EndIf
-			Next
-		EndIf
-	Next
-	
-End Function
-
+;TODO: Move to checkpoint event.
 Function UpdateCheckpointMonitors(numb%)
 	Local i,sf,b,t1
 	Local entity%

@@ -132,11 +132,11 @@ Function MovePlayer()
 			ElseIf Stamina < 50
 				If BreathCHN=0 Then
 					BreathCHN = PlaySound_Strict(BreathSFX((WearingGasMask>0), Rand(1,3)))
-					ChannelVolume BreathCHN, Min((70.0-Stamina)/70.0,1.0)*SFXVolume
+					ChannelVolume BreathCHN, Min((70.0-Stamina)/70.0,1.0)*userOptions\soundVolume
 				Else
 					If ChannelPlaying(BreathCHN)=False Then
 						BreathCHN = PlaySound_Strict(BreathSFX((WearingGasMask>0), Rand(1,3)))
-						ChannelVolume BreathCHN, Min((70.0-Stamina)/70.0,1.0)*SFXVolume			
+						ChannelVolume BreathCHN, Min((70.0-Stamina)/70.0,1.0)*userOptions\soundVolume			
 					EndIf
 				EndIf
 			EndIf
@@ -196,27 +196,27 @@ Function MovePlayer()
 					If Sprint = 1.0 Then
 						PlayerSoundVolume = Max(4.0,PlayerSoundVolume)
 						tempchn% = PlaySound_Strict(StepSFX(temp, 0, Rand(0, 7)))
-						ChannelVolume tempchn, (1.0-(Crouch*0.6))*SFXVolume#
+						ChannelVolume tempchn, (1.0-(Crouch*0.6))*userOptions\soundVolume
 					Else
 						PlayerSoundVolume = Max(2.5-(Crouch*0.6),PlayerSoundVolume)
 						tempchn% = PlaySound_Strict(StepSFX(temp, 1, Rand(0, 7)))
-						ChannelVolume tempchn, (1.0-(Crouch*0.6))*SFXVolume#
+						ChannelVolume tempchn, (1.0-(Crouch*0.6))*userOptions\soundVolume
 					End If
 				ElseIf CurrStepSFX=1
 					tempchn% = PlaySound_Strict(Step2SFX(Rand(0, 2)))
-					ChannelVolume tempchn, (1.0-(Crouch*0.4))*SFXVolume#
+					ChannelVolume tempchn, (1.0-(Crouch*0.4))*userOptions\soundVolume
 				ElseIf CurrStepSFX=2
 					tempchn% = PlaySound_Strict(Step2SFX(Rand(3,5)))
-					ChannelVolume tempchn, (1.0-(Crouch*0.4))*SFXVolume#
+					ChannelVolume tempchn, (1.0-(Crouch*0.4))*userOptions\soundVolume
 				ElseIf CurrStepSFX=3
 					If Sprint = 1.0 Then
 						PlayerSoundVolume = Max(4.0,PlayerSoundVolume)
 						tempchn% = PlaySound_Strict(StepSFX(0, 0, Rand(0, 7)))
-						ChannelVolume tempchn, (1.0-(Crouch*0.6))*SFXVolume#
+						ChannelVolume tempchn, (1.0-(Crouch*0.6))*userOptions\soundVolume
 					Else
 						PlayerSoundVolume = Max(2.5-(Crouch*0.6),PlayerSoundVolume)
 						tempchn% = PlaySound_Strict(StepSFX(0, 1, Rand(0, 7)))
-						ChannelVolume tempchn, (1.0-(Crouch*0.6))*SFXVolume#
+						ChannelVolume tempchn, (1.0-(Crouch*0.6))*userOptions\soundVolume
 					End If
 				EndIf
 				
@@ -341,7 +341,7 @@ Function MovePlayer()
 			de.decals = CreateDecal(Rand(15,16), PickedX(), PickedY()+0.005, PickedZ(), 90, Rand(360), 0)
 			de\size = Rnd(0.03,0.08)*Min(Injuries,3.0) : EntityAlpha(de\obj, 1.0) : ScaleSprite de\obj, de\size, de\size
 			tempchn% = PlaySound_Strict (DripSFX(Rand(0,2)))
-			ChannelVolume tempchn, Rnd(0.0,0.8)*SFXVolume
+			ChannelVolume tempchn, Rnd(0.0,0.8)*userOptions\soundVolume
 			ChannelPitch tempchn, Rand(20000,30000)
 			
 			FreeEntity pvt
@@ -371,7 +371,7 @@ Function MovePlayer()
 	If HeartBeatVolume > 0 Then
 		If HeartBeatTimer <= 0 Then
 			tempchn = PlaySound_Strict (HeartBeatSFX)
-			ChannelVolume tempchn, HeartBeatVolume*SFXVolume#
+			ChannelVolume tempchn, HeartBeatVolume*userOptions\soundVolume
 			
 			HeartBeatTimer = 70.0*(60.0/Max(HeartBeatRate,1.0))
 		Else

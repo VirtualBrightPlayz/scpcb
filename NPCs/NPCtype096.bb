@@ -75,7 +75,7 @@ Function UpdateNPCtype096(n.NPCs)
                         n\SoundChn2 = PlaySound_Strict (n\Sound2)
                     Else
                         If (Not ChannelPlaying(n\SoundChn2)) Then n\SoundChn2 = PlaySound_Strict(n\Sound2)
-                        ChannelVolume(n\SoundChn2, Min(Max(8.0-dist,0.6),1.0)*SFXVolume#)
+                        ChannelVolume(n\SoundChn2, Min(Max(8.0-dist,0.6),1.0)*userOptions\soundVolume)
                     EndIf
                 EndIf
             EndIf

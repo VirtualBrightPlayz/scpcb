@@ -10,7 +10,7 @@ Function PlaySound2%(SoundHandle%, cam%, entity%, range# = 10, volume# = 1.0)
 			Local panvalue# = Sin(-DeltaYaw(cam,entity))
 			soundchn% = PlaySound_Strict (SoundHandle)
 			
-			ChannelVolume(soundchn, volume# * (1 - dist#)*SFXVolume#)
+			ChannelVolume(soundchn, volume# * (1 - dist#)*userOptions\soundVolume)
 			ChannelPan(soundchn, panvalue)			
 		EndIf
 	EndIf
@@ -34,7 +34,7 @@ Function LoopSound2%(SoundHandle%, Chn%, cam%, entity%, range# = 10, volume# = 1
 				If (Not ChannelPlaying(Chn)) Then Chn% = PlaySound_Strict(SoundHandle)
 			EndIf
 			
-			ChannelVolume(Chn, volume# * (1 - dist#)*SFXVolume#)
+			ChannelVolume(Chn, volume# * (1 - dist#)*userOptions\soundVolume)
 			ChannelPan(Chn, panvalue)
 		EndIf
 	Else
@@ -235,7 +235,7 @@ Function UpdateSoundOrigin(Chn%, cam%, entity%, range# = 10, volume# = 1.0)
 			
 			Local panvalue# = Sin(-DeltaYaw(cam,entity))
 			
-			ChannelVolume(Chn, volume# * (1 - dist#)*SFXVolume#)
+			ChannelVolume(Chn, volume# * (1 - dist#)*userOptions\soundVolume)
 			ChannelPan(Chn, panvalue)
 		EndIf
 	Else

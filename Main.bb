@@ -2,10 +2,6 @@ Include "StrictLoads.bb"
 Include "KeyName.bb"
 Include "Options.bb"
 
-;TODO: Move this elsewhere?
-userOptions = New Options
-LoadOptionsINI()
-
 ;TODO: FreeFont Font5. Make it local.
 Global Font1%, Font2%, Font3%, Font4%, Font5%
 Global ConsoleFont%
@@ -47,9 +43,6 @@ Dim GfxModeWidths%(TotalGFXModes), GfxModeHeights%(TotalGFXModes)
 Global RealGraphicWidth%
 Global RealGraphicHeight%
 Global AspectRatioRatio#
-
-;TODO: Options.bb
-Global SFXVolume# = GetINIFloat(OptionFile, "audio", "sound volume")
 
 If userOptions\launcher Then 
 	AspectRatioRatio = 1.0
@@ -1265,7 +1258,6 @@ Repeat
 			UpdateItems()
 			UpdateParticles()
 			UpdateScreens()
-			UpdateRoomLights(Camera)
 			TimeCheckpointMonitors()
 			UpdateLeave1499()
 		EndIf
@@ -3778,12 +3770,6 @@ Function DrawMenu()
 					Text(x, y, "VSync:")
 					userOptions\vsync = DrawTick(x + 270 * MenuScale, y + MenuScale, userOptions\vsync)
 					
-					y=y+40*MenuScale
-					
-					Color 255,255,255
-					Text(x, y, "Enable room lights:")
-					userOptions\roomLights = DrawTick(x + 270 * MenuScale, y + MenuScale, userOptions\roomLights)
-					
 					y=y+30*MenuScale
 					
 					;Local prevGamma# = userOptions\screenGamma
@@ -3819,7 +3805,7 @@ Function DrawMenu()
 					
 					y = y + 30*MenuScale
 					
-					SFXVolume = (SlideBar(x + 250*MenuScale, y-4*MenuScale, 100*MenuScale, SFXVolume*100.0)/100.0)
+					userOptions\soundVolume = (SlideBar(x + 250*MenuScale, y-4*MenuScale, 100*MenuScale, userOptions\soundVolume*100.0)/100.0)
 					Color 255,255,255
 					Text(x, y, "Sound volume:")
 					;[End Block]
@@ -5626,9 +5612,9 @@ Function ControlSoundVolume()
 	For snd.Sound = Each Sound
 		For i=0 To 31
 			;If snd\channels[i]<>0 Then
-			;	ChannelVolume snd\channels[i],SFXVolume#
+			;	ChannelVolume snd\channels[i],userOptions\soundVolume#
 			;Else
-				ChannelVolume snd\channels[i],SFXVolume#
+				ChannelVolume snd\channels[i],userOptions\soundVolume#
 			;EndIf
 		Next
 	Next

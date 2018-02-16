@@ -519,12 +519,6 @@ Function UpdateMainMenu()
 					
 					y=y+40*MenuScale
 					
-					Color 255,255,255
-					Text(x + 20 * MenuScale, y, "Enable room lights:")
-					userOptions\roomLights = DrawTick(x + 310 * MenuScale, y + MenuScale, userOptions\roomLights)
-					
-					y=y+30+MenuScale
-					
 					;Local prevGamma# = ScreenGamma
 					userOptions\screenGamma = (SlideBar(x + 310*MenuScale, y+6*MenuScale, 150*MenuScale, userOptions\screenGamma*50.0)/50.0)
 					Color 255,255,255
@@ -588,9 +582,7 @@ Function UpdateMainMenu()
 					
 					y = y + 40*MenuScale
 					
-					;SFXVolume = (SlideBar(x + 310*MenuScale, y-4*MenuScale, 150*MenuScale, SFXVolume*100.0)/100.0)
-					PrevSFXVolume = (SlideBar(x + 310*MenuScale, y-4*MenuScale, 150*MenuScale, SFXVolume*100.0)/100.0)
-					SFXVolume = PrevSFXVolume
+					userOptions\soundVolume = (SlideBar(x + 310*MenuScale, y-4*MenuScale, 150*MenuScale, userOptions\soundVolume*100.0)/100.0)
 					Color 255,255,255
 					Text(x + 20 * MenuScale, y, "Sound volume:")
 					;[End Block]

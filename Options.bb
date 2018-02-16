@@ -1,38 +1,5 @@
 Const OptionFile$ = "options.ini"
 
-Type Options
-    ;General
-    Field introEnabled%
-    Field allowConsole%
-    Field consoleOpenOnError%
-    Field achvPopup%
-    Field mapWidth%
-    Field roomLights
-
-    ;Graphics
-    Field screenWidth%
-    Field screenHeight%
-    Field fullscreen%
-    Field borderlessWindowed%
-    Field gfxDriver%
-    Field screenGamma#
-    Field framelimit%
-    Field vsync%
-
-    ;audio
-    Field musicVolume#
-    Field soundVolume#
-
-    ;HUD
-    Field hudEnabled%
-    Field showFPS%
-
-    Field launcher%
-
-End Type
-
-Global userOptions.Options = Null
-
 Global KEY_RIGHT%
 Global KEY_LEFT%
 Global KEY_UP%
@@ -44,6 +11,39 @@ Global KEY_INV%
 Global KEY_CROUCH%
 Global KEY_SAVE%
 Global KEY_CONSOLE%
+
+Type Options
+    ;General
+    Field introEnabled%
+    Field allowConsole%
+    Field consoleOpenOnError%
+    Field achvPopup%
+    Field mapWidth%
+
+    ;Graphics
+    Field screenWidth%
+    Field screenHeight%
+    Field fullscreen%
+    Field borderlessWindowed%
+    Field gfxDriver%
+    Field screenGamma#
+    Field framelimit%
+    Field vsync%
+
+    ;Audio
+    Field musicVolume#
+    Field soundVolume#
+
+    ;HUD
+    Field hudEnabled%
+    Field showFPS%
+
+    Field launcher%
+
+End Type
+
+Global userOptions.Options = New Options
+LoadOptionsINI()
 
 Function LoadOptionsINI()
     Local optGen$ = "general"
@@ -59,8 +59,8 @@ Function LoadOptionsINI()
     userOptions\consoleOpenOnError  = GetINIInt(OptionFile, optGen, "open console on error")
     userOptions\achvPopup           = GetINIInt(OptionFile, optGen, "achievement popup")
     userOptions\mapWidth            = GetINIInt(OptionFile, optGen, "map size")
-    userOptions\roomLights          = GetINIInt(OptionFile, optGen, "room lights")
 
+    ;Min is 640x480.
     userOptions\screenWidth         = Max(GetINIInt(OptionFile, optGra, "screen width"), 640)
     userOptions\screenHeight        = Max(GetINIInt(OptionFile, optGra, "screen height"), 480)
     userOptions\fullscreen          = GetINIInt(OptionFile, optGra, "fullscreen")
@@ -105,7 +105,6 @@ Function SaveOptionsINI()
     PutINIValue(OptionFile, optGen, "open console on error", userOptions\consoleOpenOnError)
     PutINIValue(OptionFile, optGen, "achievement popup", userOptions\achvPopup)
     PutINIValue(OptionFile, optGen, "map size", userOptions\mapWidth)
-    PutINIValue(OptionFile, optGen, "room lights", userOptions\roomLights)
 
     PutINIValue(OptionFile, optGra, "screen width", userOptions\screenWidth)
     PutINIValue(OptionFile, optGra, "screen height", userOptions\screenHeight)
