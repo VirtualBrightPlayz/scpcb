@@ -656,6 +656,3 @@ Else If state=2
 	
 	CloseFile(f)
 EndIf
-;~IDEal Editor Parameters:
-;~F#9#19#29#2E#33#38#49#5F#18A#19F#1AD#1B1#202#210#218#220#224#23B
-;~C#Blitz3D

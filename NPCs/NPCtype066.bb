@@ -84,8 +84,6 @@ Function UpdateNPCtype066(n.NPCs)
                             Case 1
                                 If n\Sound2=0 Then n\Sound2=LoadSound_Strict("SFX\SCP\066\Beethoven.ogg")
                                 n\SoundChn2 = PlaySound2(n\Sound2, Camera, n\Collider)
-                                DeafTimer# = 70*(45+(15*SelectedDifficulty\aggressiveNPCs))
-                                DeafPlayer = True
                                 CameraShake = 10.0
                             Case 2
                                 n\State3 = Rand(700,1400)

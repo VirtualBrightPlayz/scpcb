@@ -9,6 +9,7 @@ Type Difficulty
 	Field customizable%
 End Type
 
+;TODO: Does this really need to be global?
 Dim difficulties.Difficulty(4)
 
 Global SelectedDifficulty.Difficulty
@@ -55,6 +56,3 @@ difficulties(CUSTOM)\customizable = True
 difficulties(SAFE)\otherFactors = EASY
 
 SelectedDifficulty = difficulties(SAFE)
-;~IDEal Editor Parameters:
-;~F#0
-;~C#Blitz3D

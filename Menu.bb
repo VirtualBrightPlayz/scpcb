@@ -27,9 +27,6 @@ Global MenuStr$, MenuStrX%, MenuStrY%
 
 Global MainMenuTab%
 
-
-Global IntroEnabled% = GetINIInt(OptionFile, "options", "intro enabled")
-
 Global SelectedInputBox%
 
 Global SavePath$ = "Saves\"
@@ -53,14 +50,14 @@ Function UpdateMainMenu()
 	Local x%, y%, width%, height%, temp%
 	
 	Color 0,0,0
-	Rect 0,0,GraphicWidth,GraphicHeight,True
+	Rect 0,0,userOptions\screenWidth,userOptions\screenHeight,True
 	
 	ShowPointer()
 	
 	DrawImage(MenuBack, 0, 0)
 	
 	If (MilliSecs2() Mod MenuBlinkTimer(0)) >= Rand(MenuBlinkDuration(0)) Then
-		DrawImage(Menu173, GraphicWidth - ImageWidth(Menu173), GraphicHeight - ImageHeight(Menu173))
+		DrawImage(Menu173, userOptions\screenWidth - ImageWidth(Menu173), userOptions\screenHeight - ImageHeight(Menu173))
 	EndIf
 	
 	If Rand(300) = 1 Then
@@ -115,10 +112,10 @@ Function UpdateMainMenu()
 	
 	SetFont Font2
 	
-	DrawImage(MenuText, GraphicWidth / 2 - ImageWidth(MenuText) / 2, GraphicHeight - 20 * MenuScale - ImageHeight(MenuText))
+	DrawImage(MenuText, userOptions\screenWidth / 2 - ImageWidth(MenuText) / 2, userOptions\screenHeight - 20 * MenuScale - ImageHeight(MenuText))
 	
-	If GraphicWidth > 1240 * MenuScale Then
-		DrawTiledImageRect(MenuWhite, 0, 5, 512, 7 * MenuScale, 985.0 * MenuScale, 407.0 * MenuScale, (GraphicWidth - 1240 * MenuScale) + 300, 7 * MenuScale)
+	If userOptions\screenWidth > 1240 * MenuScale Then
+		DrawTiledImageRect(MenuWhite, 0, 5, 512, 7 * MenuScale, 985.0 * MenuScale, 407.0 * MenuScale, (userOptions\screenWidth - 1240 * MenuScale) + 300, 7 * MenuScale)
 	EndIf
 	
 	If MainMenuTab = 0 Then
@@ -218,39 +215,11 @@ Function UpdateMainMenu()
 		If DrawButton(x + width + 20 * MenuScale, y, 580 * MenuScale - width - 20 * MenuScale, height, "BACK", False) Then 
 			Select MainMenuTab
 				Case 1
-					PutINIValue(OptionFile, "options", "intro enabled", IntroEnabled%)
+					PutINIValue(OptionFile, "general", "intro enabled", userOptions\introEnabled)
 					MainMenuTab = 0
 				Case 3,5,6,7 ;save the options
-					PutINIValue(OptionFile, "options", "mouse sensitivity", MouseSens)
-					PutINIValue(OptionFile, "options", "invert mouse y", InvertMouse)
-					PutINIValue(OptionFile, "options", "bump mapping enabled", BumpEnabled)			
-					PutINIValue(OptionFile, "options", "HUD enabled", HUDenabled)
-					PutINIValue(OptionFile, "options", "screengamma", ScreenGamma)
-					PutINIValue(OptionFile, "options", "antialias", Opt_AntiAlias)
-					PutINIValue(OptionFile, "options", "vsync", Vsync)
-					PutINIValue(OptionFile, "options", "show FPS", ShowFPS)
-					PutINIValue(OptionFile, "options", "framelimit", Framelimit%)
-					PutINIValue(OptionFile, "options", "achievement popup enabled", AchvMSGenabled%)
-					PutINIValue(OptionFile, "options", "room lights enabled", EnableRoomLights%)
-					PutINIValue(OptionFile, "options", "texture details", TextureDetails%)
-					PutINIValue(OptionFile, "console", "enabled", CanOpenConsole%)
-					PutINIValue(OptionFile, "console", "auto opening", ConsoleOpening%)
+					SaveOptionsINI()
 					
-					PutINIValue(OptionFile, "audio", "music volume", MusicVolume)
-					PutINIValue(OptionFile, "audio", "sound volume", PrevSFXVolume)
-					
-					PutINIValue(OptionFile, "binds", "Right key", KEY_RIGHT)
-					PutINIValue(OptionFile, "binds", "Left key", KEY_LEFT)
-					PutINIValue(OptionFile, "binds", "Up key", KEY_UP)
-					PutINIValue(OptionFile, "binds", "Down key", KEY_DOWN)
-					PutINIValue(OptionFile, "binds", "Blink key", KEY_BLINK)
-					PutINIValue(OptionFile, "binds", "Sprint key", KEY_SPRINT)
-					PutINIValue(OptionFile, "binds", "Inventory key", KEY_INV)
-					PutINIValue(OptionFile, "binds", "Crouch key", KEY_CROUCH)
-					PutINIValue(OptionFile, "binds", "Save key", KEY_SAVE)
-					PutINIValue(OptionFile, "binds", "Console key", KEY_CONSOLE)
-					
-					AntiAlias Opt_AntiAlias
 					MainMenuTab = 0
 				Case 4 ;move back to the "new game" tab
 					MainMenuTab = 1
@@ -307,7 +276,7 @@ Function UpdateMainMenu()
 				EndIf	
 				
 				Text(x + 20 * MenuScale, y + 110 * MenuScale, "Enable intro sequence:")
-				IntroEnabled = DrawTick(x + 280 * MenuScale, y + 110 * MenuScale, IntroEnabled)	
+				userOptions\introEnabled = DrawTick(x + 280 * MenuScale, y + 110 * MenuScale, userOptions\introEnabled)	
 				
 				;Local modeName$, modeDescription$, selectedDescription$
 				Text (x + 20 * MenuScale, y + 150 * MenuScale, "Difficulty:")				
@@ -392,7 +361,7 @@ Function UpdateMainMenu()
 						FlushKeys()
 						FlushMouse()
 						
-						PutINIValue(OptionFile, "options", "intro enabled", IntroEnabled%)
+						PutINIValue(OptionFile, "general", "intro enabled", userOptions\introEnabled)
 					Else
 						
 					End If
@@ -468,8 +437,8 @@ Function UpdateMainMenu()
 					Next
 					
 					If SaveMSG <> ""
-						x = GraphicWidth / 2
-						y = GraphicHeight / 2
+						x = userOptions\screenWidth / 2
+						y = userOptions\screenHeight / 2
 						DrawFrame(x, y, 400 * MenuScale, 200 * MenuScale)
 						Text(x + 20 * MenuScale, y + 15 * MenuScale, "Are you sure you want to delete this save?")
 						If DrawButton(x + 250 * MenuScale, y + 150 * MenuScale, 100 * MenuScale, 30 * MenuScale, "Yes", False) Then
@@ -531,7 +500,7 @@ Function UpdateMainMenu()
 					
 					Color 255,255,255				
 					Text(x + 20 * MenuScale, y, "Show HUD:")	
-					HUDenabled = DrawTick(x + 310 * MenuScale, y + MenuScale, HUDenabled)	
+					userOptions\hudEnabled = DrawTick(x + 310 * MenuScale, y + MenuScale, userOptions\hudEnabled)	
 					
 					y=y+30*MenuScale
 					
@@ -546,30 +515,23 @@ Function UpdateMainMenu()
 					
 					Color 255,255,255
 					Text(x + 20 * MenuScale, y, "VSync:")
-					Vsync% = DrawTick(x + 310 * MenuScale, y + MenuScale, Vsync%)
-					
-					y=y+30*MenuScale
-					
-					Color 255,255,255
-					Text(x + 20 * MenuScale, y, "Anti-aliasing:")
-					Opt_AntiAlias = DrawTick(x + 310 * MenuScale, y + MenuScale, Opt_AntiAlias%)
-					Text(x + 20 * MenuScale, y + 15 * MenuScale, "(fullscreen mode only)")
+					userOptions\vsync = DrawTick(x + 310 * MenuScale, y + MenuScale, userOptions\vsync)
 					
 					y=y+40*MenuScale
 					
 					Color 255,255,255
 					Text(x + 20 * MenuScale, y, "Enable room lights:")
-					EnableRoomLights = DrawTick(x + 310 * MenuScale, y + MenuScale, EnableRoomLights)
+					userOptions\roomLights = DrawTick(x + 310 * MenuScale, y + MenuScale, userOptions\roomLights)
 					
 					y=y+30+MenuScale
 					
 					;Local prevGamma# = ScreenGamma
-					ScreenGamma = (SlideBar(x + 310*MenuScale, y+6*MenuScale, 150*MenuScale, ScreenGamma*50.0)/50.0)
+					userOptions\screenGamma = (SlideBar(x + 310*MenuScale, y+6*MenuScale, 150*MenuScale, userOptions\screenGamma*50.0)/50.0)
 					Color 255,255,255
 					Text(x + 20 * MenuScale, y, "Screen gamma")
 					;Text(x + 20 * MenuScale, y + 15 * MenuScale, "(fullscreen mode only)")
 					
-					;If prevGamma<>ScreenGamma Then
+					;If prevGamma<>userOptions\screenGamma Then
 					;	UpdateScreenGamma()
 					;EndIf
 					
@@ -620,7 +582,7 @@ Function UpdateMainMenu()
 					
 					y = y + 20*MenuScale
 					
-					MusicVolume = (SlideBar(x + 310*MenuScale, y-4*MenuScale, 150*MenuScale, MusicVolume*100.0)/100.0)
+					userOptions\musicVolume = (SlideBar(x + 310*MenuScale, y-4*MenuScale, 150*MenuScale, userOptions\musicVolume*100.0)/100.0)
 					Color 255,255,255
 					Text(x + 20 * MenuScale, y, "Music volume:")
 					
@@ -713,19 +675,19 @@ Function UpdateMainMenu()
 					
 					Color 255,255,255
 					Text(x + 20 * MenuScale, y, "Enable console:")
-					CanOpenConsole = DrawTick(x + 310 * MenuScale, y + MenuScale, CanOpenConsole)
+					userOptions\allowConsole = DrawTick(x + 310 * MenuScale, y + MenuScale, userOptions\allowConsole)
 					
 					y = y + 30*MenuScale
 					
 					Color 255,255,255
 					Text(x + 20 * MenuScale, y, "Open console on error:")
-					ConsoleOpening = DrawTick(x + 310 * MenuScale, y + MenuScale, ConsoleOpening)
+					userOptions\consoleOpenOnError = DrawTick(x + 310 * MenuScale, y + MenuScale, userOptions\consoleOpenOnError)
 					
 					y = y + 50*MenuScale
 					
 					Color 255,255,255
 					Text(x + 20 * MenuScale, y, "Achievement popups:")
-					AchvMSGenabled% = DrawTick(x + 310 * MenuScale, y + MenuScale, AchvMSGenabled%)
+					userOptions\achvPopup = DrawTick(x + 310 * MenuScale, y + MenuScale, userOptions\achvPopup)
 					
 					y = y + 50*MenuScale
 					
@@ -741,12 +703,12 @@ Function UpdateMainMenu()
 					If DrawTick(x + 310 * MenuScale, y, CurrFrameLimit > 0.0) Then
 						CurrFrameLimit# = (SlideBar(x + 150*MenuScale, y+30*MenuScale, 100*MenuScale, CurrFrameLimit#*50.0)/50.0)
 						CurrFrameLimit = Max(CurrFrameLimit, 0.1)
-						Framelimit% = CurrFrameLimit#*100.0
+						userOptions\framelimit = CurrFrameLimit#*100.0
 						Color 255,255,0
-						Text(x + 25 * MenuScale, y + 25 * MenuScale, Framelimit%+" FPS")
+						Text(x + 25 * MenuScale, y + 25 * MenuScale, userOptions\framelimit+" FPS")
 					Else
 						CurrFrameLimit# = 0.0
-						Framelimit = 0
+						userOptions\framelimit = 0
 					EndIf
 					
 					y = y + 80*MenuScale
@@ -812,13 +774,15 @@ Function UpdateMainMenu()
 	
 	;DrawTiledImageRect(MenuBack, 985 * MenuScale, 860 * MenuScale, 200 * MenuScale, 20 * MenuScale, 1200 * MenuScale, 866 * MenuScale, 300, 20 * MenuScale)
 	
-	If Fullscreen Then DrawImage CursorIMG, ScaledMouseX(),ScaledMouseY()
+	If userOptions\fullscreen Then DrawImage CursorIMG, ScaledMouseX(),ScaledMouseY()
 	
 	SetFont Font1
 End Function
 
 Function UpdateLauncher()
-	
+	Local LauncherWidth% = Min(GetINIInt(OptionFile, "launcher", "launcher width"), 1024)
+	Local LauncherHeight% = Min(GetINIInt(OptionFile, "launcher", "launcher height"), 768)
+
 	MenuScale = 1
 	
 	Graphics3DExt(LauncherWidth, LauncherHeight, 0, 2)
@@ -827,8 +791,8 @@ Function UpdateLauncher()
 	
 	SetBuffer BackBuffer()
 	
-	RealGraphicWidth = GraphicWidth
-	RealGraphicHeight = GraphicHeight
+	RealGraphicWidth = userOptions\screenWidth
+	RealGraphicHeight = userOptions\screenHeight
 	
 	Font1 = LoadFont_Strict("GFX\font\cour\Courier New.ttf", 18, 0,0,0)
 	SetFont Font1
@@ -851,7 +815,7 @@ Function UpdateLauncher()
 			If GfxModeWidths(n) = GfxModeWidth(i) And GfxModeHeights(n) = GfxModeHeight(i) Then samefound = True : Exit
 		Next
 		If samefound = False Then
-			If GraphicWidth = GfxModeWidth(i) And GraphicHeight = GfxModeHeight(i) Then SelectedGFXMode = GFXModes
+			If userOptions\screenWidth = GfxModeWidth(i) And userOptions\screenHeight = GfxModeHeight(i) Then SelectedGFXMode = GFXModes
 			GfxModeWidths(GFXModes) = GfxModeWidth(i)
 			GfxModeHeights(GFXModes) = GfxModeHeight(i)
 			GFXModes=GFXModes+1 
@@ -898,69 +862,56 @@ Function UpdateLauncher()
 		y=y+10
 		For i = 1 To CountGfxDrivers()
 			Color 0, 0, 0
-			If SelectedGFXDriver = i Then Rect(x - 1, y - 1, 290, 20, False)
+			If userOptions\gfxDriver = i Then Rect(x - 1, y - 1, 290, 20, False)
 			;text(x, y, bbGfxDriverName(i))
 			LimitText(GfxDriverName(i), x, y, 290, False)
 			If MouseOn(x - 1, y - 1, 290, 20) Then
 				Color 100, 100, 100
 				Rect(x - 1, y - 1, 290, 20, False)
-				If MouseHit1 Then SelectedGFXDriver = i
+				If MouseHit1 Then userOptions\gfxDriver = i
 			EndIf
 			
 			y=y+20
 		Next
 		
-		Fullscreen = DrawTick(40 + 430 - 15, 260 - 55 + 5 - 8, Fullscreen, BorderlessWindowed)
-		BorderlessWindowed = DrawTick(40 + 430 - 15, 260 - 55 + 35, BorderlessWindowed)
-		lock% = False
+		;TODO: Reimplement.
+		userOptions\fullscreen = DrawTick(40 + 430 - 15, 260 - 55 + 5 - 8, userOptions\fullscreen, userOptions\borderlessWindowed)
+		;userOptions\borderlessWindowed = DrawTick(40 + 430 - 15, 260 - 55 + 35, userOptions\borderlessWindowed)
 
-		If BorderlessWindowed Or (Not Fullscreen) Then lock% = True
-		LauncherEnabled = DrawTick(40 + 430 - 15, 260 - 55 + 95 + 8, LauncherEnabled)
+		userOptions\launcher = DrawTick(40 + 430 - 15, 260 - 55 + 95 + 8, userOptions\launcher)
 
-		If BorderlessWindowed
- 		   Color 255, 0, 0
- 		   Fullscreen = False
-		Else
-  		  Color 255, 255, 255
-		EndIf
+		;Don't allow selecting of fullscren when borderless windowed is enabled.
+		;If userOptions\borderlessWindowed
+ 		;   Color 255, 0, 0
+ 		;   userOptions\fullscreen = False
+		;Else
+  		;  Color 255, 255, 255
+		;EndIf
 
 		Text(40 + 430 + 15, 262 - 55 + 5 - 8, "Fullscreen")
-		Color 255, 255, 255
-		Text(40 + 430 + 15, 262 - 55 + 35 - 8, "Borderless",False,False)
-		Text(40 + 430 + 15, 262 - 55 + 35 + 12, "windowed mode",False,False)
 
-		If BorderlessWindowed Or (Not Fullscreen)
- 		   Color 255, 0, 0
-		Else
-		    Color 255, 255, 255
-		EndIf
-
-		Text(40 + 430 + 15, 262 - 55 + 65 + 8, "16 Bit")
 		Color 255, 255, 255
+		;Text(40 + 430 + 15, 262 - 55 + 35 - 8, "Borderless",False,False)
+		;Text(40 + 430 + 15, 262 - 55 + 35 + 12, "windowed mode",False,False)
+
 		Text(40 + 430 + 15, 262 - 55 + 95 + 8, "Use launcher")
 		
-		If (Not BorderlessWindowed)
-			If Fullscreen
-				Text(40+ 260 + 15, 262 - 55 + 140, "Current Resolution: "+(GfxModeWidths(SelectedGFXMode) + "x" + GfxModeHeights(SelectedGFXMode) + "," + 32)
-			Else
-				Text(40+ 260 + 15, 262 - 55 + 140, "Current Resolution: "+(GfxModeWidths(SelectedGFXMode) + "x" + GfxModeHeights(SelectedGFXMode) + ",32"))
-			EndIf
-		Else
-			Text(40+ 260 + 15, 262 - 55 + 140, "Current Resolution: "+GfxModeWidths(SelectedGFXMode) + "x" + GfxModeHeights(SelectedGFXMode) + ",32")
-			If GfxModeWidths(SelectedGFXMode)<G_viewport_width Then
-				Text(40+ 260 + 65, 262 - 55 + 160, "(upscaled to")
-				Text(40+ 260 + 65, 262 - 55 + 180, G_viewport_width + "x" + G_viewport_height + ",32)")
-			ElseIf GfxModeWidths(SelectedGFXMode)>G_viewport_width Then
-				Text(40+ 260 + 65, 262 - 55 + 160, "(downscaled to")
-				Text(40+ 260 + 65, 262 - 55 + 180, G_viewport_width + "x" + G_viewport_height + ",32)")
-			EndIf
-		EndIf
+		
+		Text(40+ 260 + 15, 262 - 55 + 140, "Current Resolution: "+GfxModeWidths(SelectedGFXMode) + "x" + GfxModeHeights(SelectedGFXMode))
+		
+		;If GfxModeWidths(SelectedGFXMode)<G_viewport_width Then
+		;	Text(40+ 260 + 65, 262 - 55 + 160, "(upscaled to")
+		;ElseIf GfxModeWidths(SelectedGFXMode)>G_viewport_width Then
+		;	Text(40+ 260 + 65, 262 - 55 + 160, "(downscaled to")
+		;EndIf
+		
+		;Text(40+ 260 + 65, 262 - 55 + 180, G_viewport_width + "x" + G_viewport_height + ")")
 		
 		If DrawButton(LauncherWidth - 30 - 90, LauncherHeight - 50 - 55, 100, 30, "LAUNCH", False, False, False) Then
-			GraphicWidth = GfxModeWidths(SelectedGFXMode)
-			GraphicHeight = GfxModeHeights(SelectedGFXMode)
-			RealGraphicWidth = GraphicWidth
-			RealGraphicHeight = GraphicHeight
+			userOptions\screenWidth = GfxModeWidths(SelectedGFXMode)
+			userOptions\screenHeight = GfxModeHeights(SelectedGFXMode)
+			RealGraphicWidth = userOptions\screenWidth
+			RealGraphicHeight = userOptions\screenHeight
 			Exit
 		EndIf
 		
@@ -968,25 +919,11 @@ Function UpdateLauncher()
 		Flip
 	Forever
 	
-	PutINIValue(OptionFile, "options", "width", GfxModeWidths(SelectedGFXMode))
-	PutINIValue(OptionFile, "options", "height", GfxModeHeights(SelectedGFXMode))
-	If Fullscreen Then
-		PutINIValue(OptionFile, "options", "fullscreen", "true")
-	Else
-		PutINIValue(OptionFile, "options", "fullscreen", "false")
-	EndIf
-	If LauncherEnabled Then
-		PutINIValue(OptionFile, "launcher", "launcher enabled", "true")
-	Else
-		PutINIValue(OptionFile, "launcher", "launcher enabled", "false")
-	EndIf
-	If BorderlessWindowed Then
-		PutINIValue(OptionFile, "options", "borderless windowed", "true")
-	Else
-		PutINIValue(OptionFile, "options", "borderless windowed", "false")
-	EndIf
-	PutINIValue(OptionFile, "options", "gfx driver", SelectedGFXDriver)
-	
+	userOptions\screenWidth = GfxModeWidths(SelectedGFXMode)
+	userOptions\screenHeight = GfxModeHeights(SelectedGFXMode)
+	userOptions\gfxDriver = userOptions\gfxDriver
+
+	SaveOptionsINI()
 End Function
 
 
@@ -1090,7 +1027,7 @@ Function DrawLoading(percent%, shortloading=False)
 	Repeat 
 		
 		;Color 0,0,0
-		;Rect 0,0,GraphicWidth,GraphicHeight,True
+		;Rect 0,0,userOptions\screenWidth,userOptions\screenHeight,True
 		;Color 255, 255, 255
 		ClsColor 0,0,0
 		Cls
@@ -1108,21 +1045,21 @@ Function DrawLoading(percent%, shortloading=False)
 		EndIf
 		
 		If (Not SelectedLoadingScreen\disablebackground) Then
-			DrawImage LoadingBack, GraphicWidth/2 - ImageWidth(LoadingBack)/2, GraphicHeight/2 - ImageHeight(LoadingBack)/2
+			DrawImage LoadingBack, userOptions\screenWidth/2 - ImageWidth(LoadingBack)/2, userOptions\screenHeight/2 - ImageHeight(LoadingBack)/2
 		EndIf	
 		
 		If SelectedLoadingScreen\alignx = 0 Then
-			x = GraphicWidth/2 - ImageWidth(SelectedLoadingScreen\img)/2 
+			x = userOptions\screenWidth/2 - ImageWidth(SelectedLoadingScreen\img)/2 
 		ElseIf  SelectedLoadingScreen\alignx = 1
-			x = GraphicWidth - ImageWidth(SelectedLoadingScreen\img)
+			x = userOptions\screenWidth - ImageWidth(SelectedLoadingScreen\img)
 		Else
 			x = 0
 		EndIf
 		
 		If SelectedLoadingScreen\aligny = 0 Then
-			y = GraphicHeight/2 - ImageHeight(SelectedLoadingScreen\img)/2 
+			y = userOptions\screenHeight/2 - ImageHeight(SelectedLoadingScreen\img)/2 
 		ElseIf  SelectedLoadingScreen\aligny = 1
-			y = GraphicHeight - ImageHeight(SelectedLoadingScreen\img)
+			y = userOptions\screenHeight - ImageHeight(SelectedLoadingScreen\img)
 		Else
 			y = 0
 		EndIf	
@@ -1130,8 +1067,8 @@ Function DrawLoading(percent%, shortloading=False)
 		DrawImage SelectedLoadingScreen\img, x, y
 		
 		Local width% = 300, height% = 20
-		x% = GraphicWidth / 2 - width / 2
-		y% = GraphicHeight / 2 + 30 - 100
+		x% = userOptions\screenWidth / 2 - width / 2
+		y% = userOptions\screenHeight / 2 + 30 - 100
 		
 		Rect(x, y, width+4, height, False)
 		For  i% = 1 To Int((width - 2) * (percent / 100.0) / 10)
@@ -1156,7 +1093,7 @@ Function DrawLoading(percent%, shortloading=False)
 			For i = 0 To temp
 				strtemp$ = STRTEMP + Chr(Rand(48,122))
 			Next
-			Text(GraphicWidth / 2, GraphicHeight / 2 + 80, strtemp, True, True)
+			Text(userOptions\screenWidth / 2, userOptions\screenHeight / 2 + 80, strtemp, True, True)
 			
 			If percent = 0 Then 
 				If Rand(5)=1 Then
@@ -1202,61 +1139,61 @@ Function DrawLoading(percent%, shortloading=False)
 				strtemp$ = Replace(SelectedLoadingScreen\txt[0],Mid(SelectedLoadingScreen\txt[0],Rand(1,Len(strtemp)-1),1),Chr(Rand(130,250)))
 			Next		
 			SetFont Font1
-			RowText(strtemp, GraphicWidth / 2-200, GraphicHeight / 2 +120,400,300,True)		
+			RowText(strtemp, userOptions\screenWidth / 2-200, userOptions\screenHeight / 2 +120,400,300,True)		
 		Else
 			
 			Color 0,0,0
 			SetFont Font2
-			Text(GraphicWidth / 2 + 1, GraphicHeight / 2 + 80 + 1, SelectedLoadingScreen\title, True, True)
+			Text(userOptions\screenWidth / 2 + 1, userOptions\screenHeight / 2 + 80 + 1, SelectedLoadingScreen\title, True, True)
 			SetFont Font1
-			RowText(SelectedLoadingScreen\txt[LoadingScreenText], GraphicWidth / 2-200+1, GraphicHeight / 2 +120+1,400,300,True)
+			RowText(SelectedLoadingScreen\txt[LoadingScreenText], userOptions\screenWidth / 2-200+1, userOptions\screenHeight / 2 +120+1,400,300,True)
 			
 			Color 255,255,255
 			SetFont Font2
-			Text(GraphicWidth / 2, GraphicHeight / 2 +80, SelectedLoadingScreen\title, True, True)
+			Text(userOptions\screenWidth / 2, userOptions\screenHeight / 2 +80, SelectedLoadingScreen\title, True, True)
 			SetFont Font1
-			RowText(SelectedLoadingScreen\txt[LoadingScreenText], GraphicWidth / 2-200, GraphicHeight / 2 +120,400,300,True)
+			RowText(SelectedLoadingScreen\txt[LoadingScreenText], userOptions\screenWidth / 2-200, userOptions\screenHeight / 2 +120,400,300,True)
 			
 		EndIf
 		
 		Color 0,0,0
-		Text(GraphicWidth / 2 + 1, GraphicHeight / 2 - 100 + 1, "LOADING - " + percent + " %", True, True)
+		Text(userOptions\screenWidth / 2 + 1, userOptions\screenHeight / 2 - 100 + 1, "LOADING - " + percent + " %", True, True)
 		Color 255,255,255
-		Text(GraphicWidth / 2, GraphicHeight / 2 - 100, "LOADING - " + percent + " %", True, True)
+		Text(userOptions\screenWidth / 2, userOptions\screenHeight / 2 - 100, "LOADING - " + percent + " %", True, True)
 		
 		If percent = 100 Then 
 			If firstloop And SelectedLoadingScreen\title <> "CWM" Then PlaySound_Strict HorrorSFX(8)
-			Text(GraphicWidth / 2, GraphicHeight - 50, "PRESS ANY KEY TO CONTINUE", True, True)
+			Text(userOptions\screenWidth / 2, userOptions\screenHeight - 50, "PRESS ANY KEY TO CONTINUE", True, True)
 		Else
 			FlushKeys()
 			FlushMouse()
 		EndIf
 		
-		If BorderlessWindowed Then
-			If (RealGraphicWidth<>GraphicWidth) Or (RealGraphicHeight<>GraphicHeight) Then
+		If userOptions\borderlessWindowed Then
+			If (RealGraphicWidth<>userOptions\screenWidth) Or (RealGraphicHeight<>userOptions\screenHeight) Then
 				SetBuffer TextureBuffer(fresize_texture)
 				ClsColor 0,0,0 : Cls
-				CopyRect 0,0,GraphicWidth,GraphicHeight,1024-GraphicWidth/2,1024-GraphicHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
+				CopyRect 0,0,userOptions\screenWidth,userOptions\screenHeight,1024-userOptions\screenWidth/2,1024-userOptions\screenHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
 				SetBuffer BackBuffer()
 				ClsColor 0,0,0 : Cls
-				ScaleRender(0,0,2050.0 / Float(GraphicWidth) * AspectRatioRatio, 2050.0 / Float(GraphicWidth) * AspectRatioRatio)
-				;might want to replace Float(GraphicWidth) with Max(GraphicWidth,GraphicHeight) if portrait sizes cause issues
+				ScaleRender(0,0,2050.0 / Float(userOptions\screenWidth) * AspectRatioRatio, 2050.0 / Float(userOptions\screenWidth) * AspectRatioRatio)
+				;might want to replace Float(userOptions\screenWidth) with Max(userOptions\screenWidth,userOptions\screenHeight) if portrait sizes cause issues
 				;everyone uses landscape so it's probably a non-issue
 			EndIf
 		EndIf
 		
 		;not by any means a perfect solution
 		;Not even proper gamma correction but it's a nice looking alternative that works in windowed mode
-		If ScreenGamma>1.0 Then
+		If userOptions\screenGamma>1.0 Then
 			CopyRect 0,0,RealGraphicWidth,RealGraphicHeight,1024-RealGraphicWidth/2,1024-RealGraphicHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
 			EntityBlend fresize_image,1
 			ClsColor 0,0,0 : Cls
 			ScaleRender(-1.0/Float(RealGraphicWidth),1.0/Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth))
 			EntityFX fresize_image,1+32
 			EntityBlend fresize_image,3
-			EntityAlpha fresize_image,ScreenGamma-1.0
+			EntityAlpha fresize_image,userOptions\screenGamma-1.0
 			ScaleRender(-1.0/Float(RealGraphicWidth),1.0/Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth))
-		ElseIf ScreenGamma<1.0 Then ;todo: maybe optimize this if it's too slow, alternatively give players the option to disable gamma
+		ElseIf userOptions\screenGamma<1.0 Then ;todo: maybe optimize this if it's too slow, alternatively give players the option to disable gamma
 			CopyRect 0,0,RealGraphicWidth,RealGraphicHeight,1024-RealGraphicWidth/2,1024-RealGraphicHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
 			EntityBlend fresize_image,1
 			ClsColor 0,0,0 : Cls
@@ -1265,7 +1202,7 @@ Function DrawLoading(percent%, shortloading=False)
 			EntityBlend fresize_image,2
 			EntityAlpha fresize_image,1.0
 			SetBuffer TextureBuffer(fresize_texture2)
-			ClsColor 255*ScreenGamma,255*ScreenGamma,255*ScreenGamma
+			ClsColor 255*userOptions\screenGamma,255*userOptions\screenGamma,255*userOptions\screenGamma
 			Cls
 			SetBuffer BackBuffer()
 			ScaleRender(-1.0/Float(RealGraphicWidth),1.0/Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth))
@@ -1505,7 +1442,7 @@ Function LimitText%(txt$, x%, y%, width%, usingAA%=True)
 End Function
 
 Function DrawTooltip(message$)
-	Local scale# = GraphicHeight/768.0
+	Local scale# = userOptions\screenHeight/768.0
 	
 	Local width = (StringWidth(message$))+20*MenuScale
 	
@@ -1524,10 +1461,10 @@ Function DrawQuickLoading()
 	
 	If QuickLoadPercent > -1
 		MidHandle QuickLoadIcon
-		DrawImage QuickLoadIcon,GraphicWidth-90,GraphicHeight-150
+		DrawImage QuickLoadIcon,userOptions\screenWidth-90,userOptions\screenHeight-150
 		Color 255,255,255
 		SetFont Font1
-		Text GraphicWidth-100,GraphicHeight-90,"LOADING: "+QuickLoadPercent+"%",1
+		Text userOptions\screenWidth-100,userOptions\screenHeight-90,"LOADING: "+QuickLoadPercent+"%",1
 		If QuickLoadPercent > 99
 			If QuickLoadPercent_DisplayTimer < 70
 				QuickLoadPercent_DisplayTimer# = Min(QuickLoadPercent_DisplayTimer+FPSfactor,70)
@@ -1541,13 +1478,3 @@ Function DrawQuickLoading()
 	EndIf
 	
 End Function
-
-
-
-
-
-
-
-
-;~IDEal Editor Parameters:
-;~C#Blitz3D

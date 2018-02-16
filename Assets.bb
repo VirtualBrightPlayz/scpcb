@@ -20,12 +20,13 @@ Function LoadEntities()
 	SoundEmitter = CreatePivot()
 	
 	Camera = CreateCamera()
-	CameraViewport Camera,0,0,GraphicWidth,GraphicHeight
+	CameraViewport(Camera, 0, 0, userOptions\screenWidth, userOptions\screenHeight)
 	CameraRange(Camera, 0.05, 16)
-	CameraFogMode (Camera, 1)
-	CameraFogRange (Camera, CameraFogNear, CameraFogFar)
-	CameraFogColor (Camera, GetINIInt("options.ini", "options", "fog r"), GetINIInt("options.ini", "options", "fog g"), GetINIInt("options.ini", "options", "fog b"))
-	AmbientLight Brightness, Brightness, Brightness
+	CameraFogMode(Camera, 1)
+	CameraFogRange(Camera, CameraFogNear, CameraFogFar)
+	;TODO: Change tint based on zone?
+	CameraFogColor(Camera, 0, 0, 0)
+	AmbientLight(Brightness, Brightness, Brightness)
 	
 	ScreenTexs[0] = CreateTexture(512, 512, 1+256)
 	ScreenTexs[1] = CreateTexture(512, 512, 1+256)
@@ -36,16 +37,12 @@ Function LoadEntities()
 	
 	FogTexture = LoadTexture_Strict("GFX\fog.jpg", 1)
 	
-	Fog = CreateSprite(ark_blur_cam)
-	ScaleSprite(Fog, Max(GraphicWidth / 1240.0, 1.0), Max(GraphicHeight / 960.0 * 0.8, 0.8))
-	EntityTexture(Fog, FogTexture)
-	EntityBlend (Fog, 2)
-	EntityOrder Fog, -1000
-	MoveEntity(Fog, 0, 0, 1.0)
-	
+	Local scaleWidth# = userOptions\screenWidth / 1024.0
+	Local scaleHeight# = MenuScale * 0.8
+
 	GasMaskTexture = LoadTexture_Strict("GFX\GasmaskOverlay.jpg", 1)
 	GasMaskOverlay = CreateSprite(ark_blur_cam)
-	ScaleSprite(GasMaskOverlay, Max(GraphicWidth / 1024.0, 1.0), Max(GraphicHeight / 1024.0 * 0.8, 0.8))
+	ScaleSprite(GasMaskOverlay, Max(scaleWidth, 1.0), Max(scaleHeight, 0.8))
 	EntityTexture(GasMaskOverlay, GasMaskTexture)
 	EntityBlend(GasMaskOverlay, 2)
 	EntityFX(GasMaskOverlay, 1)
@@ -55,7 +52,7 @@ Function LoadEntities()
 	
 	InfectTexture = LoadTexture_Strict("GFX\InfectOverlay.jpg", 1)
 	InfectOverlay = CreateSprite(ark_blur_cam)
-	ScaleSprite(InfectOverlay, Max(GraphicWidth / 1024.0, 1.0), Max(GraphicHeight / 1024.0 * 0.8, 0.8))
+	ScaleSprite(InfectOverlay, Max(scaleWidth, 1.0), Max(scaleHeight, 0.8))
 	EntityTexture(InfectOverlay, InfectTexture)
 	EntityBlend (InfectOverlay, 3)
 	EntityFX(InfectOverlay, 1)
@@ -66,7 +63,7 @@ Function LoadEntities()
 	
 	NVTexture = LoadTexture_Strict("GFX\NightVisionOverlay.jpg", 1)
 	NVOverlay = CreateSprite(ark_blur_cam)
-	ScaleSprite(NVOverlay, Max(GraphicWidth / 1024.0, 1.0), Max(GraphicHeight / 1024.0 * 0.8, 0.8))
+	ScaleSprite(NVOverlay, Max(scaleWidth, 1.0), Max(scaleHeight, 0.8))
 	EntityTexture(NVOverlay, NVTexture)
 	EntityBlend (NVOverlay, 2)
 	EntityFX(NVOverlay, 1)
@@ -74,7 +71,7 @@ Function LoadEntities()
 	MoveEntity(NVOverlay, 0, 0, 1.0)
 	HideEntity(NVOverlay)
 	NVBlink = CreateSprite(ark_blur_cam)
-	ScaleSprite(NVBlink, Max(GraphicWidth / 1024.0, 1.0), Max(GraphicHeight / 1024.0 * 0.8, 0.8))
+	ScaleSprite(NVBlink, Max(scaleWidth, 1.0), Max(scaleHeight, 0.8))
 	EntityColor(NVBlink,0,0,0)
 	EntityFX(NVBlink, 1)
 	EntityOrder NVBlink, -1005
@@ -83,7 +80,7 @@ Function LoadEntities()
 	
 	GlassesTexture = LoadTexture_Strict("GFX\GlassesOverlay.jpg",1)
 	GlassesOverlay = CreateSprite(ark_blur_cam)
-	ScaleSprite(GlassesOverlay, Max(GraphicWidth / 1024.0, 1.0), Max(GraphicHeight / 1024.0 * 0.8, 0.8))
+	ScaleSprite(GlassesOverlay, Max(scaleWidth, 1.0), Max(scaleHeight, 0.8))
 	EntityTexture(GlassesOverlay, GlassesTexture)
 	EntityBlend (GlassesOverlay, 2)
 	EntityFX(GlassesOverlay, 1)
@@ -100,8 +97,18 @@ Function LoadEntities()
 	Cls
 	SetBuffer BackBuffer()
 	
+	scaleWidth = userOptions\screenWidth / 1240.0
+	scaleHeight = userOptions\screenHeight / 960.0 * 0.8
+
+	Fog = CreateSprite(ark_blur_cam)
+	ScaleSprite(Fog, Max(scaleWidth, 1.0), Max(scaleHeight, 0.8))
+	EntityTexture(Fog, FogTexture)
+	EntityBlend (Fog, 2)
+	EntityOrder Fog, -1000
+	MoveEntity(Fog, 0, 0, 1.0)
+
 	Dark = CreateSprite(Camera)
-	ScaleSprite(Dark, Max(GraphicWidth / 1240.0, 1.0), Max(GraphicHeight / 960.0 * 0.8, 0.8))
+	ScaleSprite(Dark, Max(scaleWidth, 1.0), Max(scaleHeight, 0.8))
 	EntityTexture(Dark, DarkTexture)
 	EntityBlend (Dark, 1)
 	EntityOrder Dark, -1002
@@ -118,7 +125,7 @@ Function LoadEntities()
 	TeslaTexture = LoadTexture_Strict("GFX\map\tesla.jpg", 1+2)
 	
 	Light = CreateSprite(Camera)
-	ScaleSprite(Light, Max(GraphicWidth / 1240.0, 1.0), Max(GraphicHeight / 960.0 * 0.8, 0.8))
+	ScaleSprite(Light, Max(scaleWidth, 1.0), Max(scaleHeight, 0.8))
 	EntityTexture(Light, LightTexture)
 	EntityBlend (Light, 1)
 	EntityOrder Light, -1002
@@ -408,10 +415,10 @@ Function InitNewGame()
 			EndIf
 		EndIf
 		
-		If (r\RoomTemplate\Name = "start" And IntroEnabled = False) Then 
+		If (r\RoomTemplate\Name = "start" And userOptions\introEnabled = False) Then 
 			PositionEntity (Collider, EntityX(r\obj)+3584*RoomScale, 704*RoomScale, EntityZ(r\obj)+1024*RoomScale)
 			PlayerRoom = r
-		ElseIf (r\RoomTemplate\Name = "173" And IntroEnabled) Then
+		ElseIf (r\RoomTemplate\Name = "173" And userOptions\introEnabled) Then
 			PositionEntity (Collider, EntityX(r\obj), 1.0, EntityZ(r\obj))
 			PlayerRoom = r
 		EndIf
@@ -803,11 +810,6 @@ Function NullGame()
 	OptionsMenu% = -1
 	QuitMSG% = -1
 	AchievementsMenu% = -1
-	
-	MusicVolume# = PrevMusicVolume
-	SFXVolume# = PrevSFXVolume
-	DeafPlayer% = False
-	DeafTimer# = 0.0
 	
 	IsZombie% = False
 	

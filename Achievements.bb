@@ -14,7 +14,6 @@ Const Achv1162% = 34, Achv1499% = 35
 Global UsedConsole
 
 Global AchievementsMenu%
-Global AchvMSGenabled% = GetINIInt("options.ini", "options", "achievement popup enabled")
 Dim AchievementStrings$(MAXACHIEVEMENTS)
 Dim AchievementDescs$(MAXACHIEVEMENTS)
 Dim AchvIMG%(MAXACHIEVEMENTS)
@@ -26,16 +25,16 @@ For i = 0 To MAXACHIEVEMENTS-1
 	Local image$ = GetINIString2("Data\achievementstrings.ini", loc2, "image") 
 	
 	AchvIMG(i) = LoadImage_Strict("GFX\menu\achievements\"+image+".jpg")
-	AchvIMG(i) = ResizeImage2(AchvIMG(i),ImageWidth(AchvIMG(i))*GraphicHeight/768.0,ImageHeight(AchvIMG(i))*GraphicHeight/768.0)
+	AchvIMG(i) = ResizeImage2(AchvIMG(i),ImageWidth(AchvIMG(i))*userOptions\screenHeight/768.0,ImageHeight(AchvIMG(i))*userOptions\screenHeight/768.0)
 Next
 
 Global AchvLocked = LoadImage_Strict("GFX\menu\achievements\achvlocked.jpg")
-AchvLocked = ResizeImage2(AchvLocked,ImageWidth(AchvLocked)*GraphicHeight/768.0,ImageHeight(AchvLocked)*GraphicHeight/768.0)
+AchvLocked = ResizeImage2(AchvLocked,ImageWidth(AchvLocked)*userOptions\screenHeight/768.0,ImageHeight(AchvLocked)*userOptions\screenHeight/768.0)
 
 Function GiveAchievement(achvname%, showMessage%=True)
 	If Achievements(achvname)<>True Then
 		Achievements(achvname)=True
-		If AchvMSGenabled And showMessage Then
+		If userOptions\achvPopup And showMessage Then
 			Local loc2% = GetINISectionLocation("Data\achievementstrings.ini", "s"+achvname)
 			Local AchievementName$ = GetINIString2("Data\achievementstrings.ini", loc2, "string1")
 			Msg = "Achievement Unlocked - "+AchievementName
@@ -45,7 +44,7 @@ Function GiveAchievement(achvname%, showMessage%=True)
 End Function
 
 Function AchievementTooltip(achvno%)
-    Local scale# = GraphicHeight/768.0
+    Local scale# = userOptions\screenHeight/768.0
     
     SetFont Font3
     Local width = StringWidth(AchievementStrings(achvno))
@@ -69,7 +68,7 @@ End Function
 
 Function DrawAchvIMG(x%, y%, achvno%)
 	Local row%
-	Local scale# = GraphicHeight/768.0
+	Local scale# = userOptions\screenHeight/768.0
 	Local SeparationConst2 = 76 * scale
 ;	If achvno >= 0 And achvno < 4 Then 
 ;		row = achvno
@@ -98,6 +97,3 @@ Function DrawAchvIMG(x%, y%, achvno%)
 	
 	Rect((x+(row*SeparationConst2)), y, 64*scale, 64*scale, False)
 End Function
-;~IDEal Editor Parameters:
-;~F#22#2E#3D
-;~C#Blitz3D

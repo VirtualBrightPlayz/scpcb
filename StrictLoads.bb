@@ -23,7 +23,7 @@ Function LoadImage_Strict(file$)
 	If tmp = 0 Then
 		;if loading failed again, add an error message to the console and return a black image
 		CreateConsoleMsg("Loading image " + Chr(34) + file$ + Chr(34) + " failed.")
-		If ConsoleOpening Then
+		If userOptions\consoleOpenOnError Then
 			ConsoleOpen = True
 		EndIf
 		
@@ -67,7 +67,7 @@ Function PlaySound_Strict%(sndHandle%)
 					If snd\internalHandle = 0 Then
 						If FileType(snd\name) <> 1 Then
 							CreateConsoleMsg("Sound " + Chr(34) + snd\name + Chr(34) + " not found.")
-							If ConsoleOpening
+							If userOptions\consoleOpenOnError
 								ConsoleOpen = True
 							EndIf
 						Else
@@ -75,7 +75,7 @@ Function PlaySound_Strict%(sndHandle%)
 						EndIf
 						If snd\internalHandle = 0 Then
 							CreateConsoleMsg("Failed to load Sound: " + Chr(34) + snd\name + Chr(34))
-							If ConsoleOpening
+							If userOptions\consoleOpenOnError
 								ConsoleOpen = True
 							EndIf
 						EndIf
@@ -93,7 +93,7 @@ Function PlaySound_Strict%(sndHandle%)
 				If snd\internalHandle = 0 Then
 					If FileType(snd\name) <> 1 Then
 						CreateConsoleMsg("Sound " + Chr(34) + snd\name + Chr(34) + " not found.")
-						If ConsoleOpening
+						If userOptions\consoleOpenOnError
 							ConsoleOpen = True
 						EndIf
 					Else
@@ -102,7 +102,7 @@ Function PlaySound_Strict%(sndHandle%)
 						
 					If snd\internalHandle = 0 Then
 						CreateConsoleMsg("Failed to load Sound: " + Chr(34) + snd\name + Chr(34))
-						If ConsoleOpening
+						If userOptions\consoleOpenOnError
 							ConsoleOpen = True
 						EndIf
 					EndIf
@@ -179,17 +179,3 @@ Function LoadFont_Strict(file$="Tahoma", height=13, bold=0, italic=0, underline=
 	If tmp = 0 Then RuntimeError "Failed to load Font: " + file$ 
 	Return tmp
 End Function
-
-
-
-
-
-
-
-
-
-
-
-;~IDEal Editor Parameters:
-;~F#F#34#3B
-;~C#Blitz3D

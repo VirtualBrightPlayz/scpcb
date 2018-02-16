@@ -64,7 +64,3 @@ Function LoadFont_Strict(file$="Tahoma", height=13)
 	If tmp = 0 Then RuntimeError "Failed to load Font: " + file$ 
 	Return tmp
 End Function
-
-
-;~IDEal Editor Parameters:
-;~C#Blitz3D

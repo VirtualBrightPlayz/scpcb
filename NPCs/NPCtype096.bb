@@ -35,8 +35,8 @@ Function UpdateNPCtype096(n.NPCs)
                     If angle<90 Or angle>270 Then
                         CameraProject Camera,EntityX(n\Collider), EntityY(n\Collider)+0.25, EntityZ(n\Collider)
                         
-                        If ProjectedX()>0 And ProjectedX()<GraphicWidth Then
-                            If ProjectedY()>0 And ProjectedY()<GraphicHeight Then
+                        If ProjectedX()>0 And ProjectedX()<userOptions\screenWidth Then
+                            If ProjectedY()>0 And ProjectedY()<userOptions\screenHeight Then
                                 If EntityVisible(Collider, n\Collider) Then
                                     If (BlinkTimer < - 16 Or BlinkTimer > - 6)
                                         PlaySound_Strict LoadTempSound("SFX\SCP\096\Triggered.ogg")
@@ -336,8 +336,8 @@ Function UpdateNPCtype096(n.NPCs)
                     If angle<55 Or angle>360-55 Then
                         CameraProject Camera,EntityX(n\Collider), EntityY(Collider)+5.8*0.2-0.25, EntityZ(n\Collider)
                         
-                        If ProjectedX()>0 And ProjectedX()<GraphicWidth Then
-                            If ProjectedY()>0 And ProjectedY()<GraphicHeight Then
+                        If ProjectedX()>0 And ProjectedX()<userOptions\screenWidth Then
+                            If ProjectedY()>0 And ProjectedY()<userOptions\screenHeight Then
                                 If EntityVisible(Collider, n\Collider) Then
                                     If (BlinkTimer < - 16 Or BlinkTimer > - 6)
                                         PlaySound_Strict LoadTempSound("SFX\SCP\096\Triggered.ogg")

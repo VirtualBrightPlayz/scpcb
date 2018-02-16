@@ -35,7 +35,7 @@ End Function
 
 Function UpdateConsole()
 	
-	If CanOpenConsole = False Then
+	If userOptions\allowConsole = False Then
 		ConsoleOpen = False
 		Return
 	EndIf
@@ -47,7 +47,7 @@ Function UpdateConsole()
 		
 		ConsoleR = 255 : ConsoleG = 255 : ConsoleB = 255
 	
-		Local x% = 0, y% = GraphicHeight-300*MenuScale, width% = GraphicWidth, height% = 300*MenuScale-30*MenuScale
+		Local x% = 0, y% = userOptions\screenHeight-300*MenuScale, width% = userOptions\screenWidth, height% = 300*MenuScale-30*MenuScale
 		Local StrTemp$, temp%,  i%
 		Local ev.Events, r.Rooms, it.Items
 		
@@ -423,7 +423,7 @@ Function UpdateConsole()
 
 				Case "camerapick"
 					ConsoleR = 0 : ConsoleG = 255 : ConsoleB = 0
-					c = CameraPick(Camera,GraphicWidth/2, GraphicHeight/2)
+					c = CameraPick(Camera, userOptions\screenWidth / 2, userOptions\screenHeight / 2)
 					If c = 0 Then
 						CreateConsoleMsg("******************************")
 						CreateConsoleMsg("No entity  picked")
@@ -698,8 +698,8 @@ Function UpdateConsole()
 					DropSpeed = 0
 					
 				Case "showfps"
-					ShowFPS = Not ShowFPS
-					CreateConsoleMsg("ShowFPS: "+Str(ShowFPS))
+					userOptions\showFPS = Not userOptions\showFPS
+					CreateConsoleMsg("ShowFPS: " + Str(userOptions\showFPS))
 					
 				Case "096state"
 					For n.NPCs = Each NPCs
@@ -764,8 +764,8 @@ Function UpdateConsole()
 					
 				Case "gamma"
 					StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
-					ScreenGamma = Int(StrTemp)
-					CreateConsoleMsg("Gamma set to " + ScreenGamma)
+					userOptions\screenGamma = Int(StrTemp)
+					CreateConsoleMsg("Gamma set to " + userOptions\screenGamma)
 
 				Case "spawn"
 					StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
@@ -964,7 +964,7 @@ Function UpdateConsole()
 		
 		Color 255,255,255
 		
-		If Fullscreen Then DrawImage CursorIMG, ScaledMouseX(),ScaledMouseY()
+		If userOptions\fullscreen Then DrawImage CursorIMG, ScaledMouseX(),ScaledMouseY()
 	End If
 	
 	SetFont Font1

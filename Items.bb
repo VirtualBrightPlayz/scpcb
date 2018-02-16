@@ -682,12 +682,3 @@ Function DropItem(item.Items)
 			Wearing1499 = False
 	End Select	
 End Function
-
-
-
-
-
-
-;~IDEal Editor Parameters:
-;~F#B#1E
-;~C#Blitz3D

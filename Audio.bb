@@ -71,6 +71,7 @@ End Function
 
 Function UpdateMusic()
 	
+	;TODO: Not hack jorge.
 	If ConsoleFlush Then
 		If Not ChannelPlaying(MusicCHN) Then MusicCHN = PlaySound(ConsoleMusFlush)
 	Else
@@ -94,7 +95,7 @@ Function UpdateMusic()
 			EndIf
 		EndIf
 		
-		ChannelVolume MusicCHN, CurrMusicVolume
+		ChannelVolume(MusicCHN, CurrMusicVolume)
 	EndIf
 	
 End Function 
