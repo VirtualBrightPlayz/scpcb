@@ -1,7 +1,10 @@
 Include "StrictLoads.bb"
 Include "KeyName.bb"
+Include "Options.bb"
 
-Global OptionFile$ = "options.ini"
+;TODO: Move this elsewhere?
+userOptions = New Options
+LoadOptionsINI()
 
 ;TODO: FreeFont Font5. Make it local.
 Global Font1%, Font2%, Font3%, Font4%, Font5%
@@ -19,40 +22,20 @@ Global MenuWhite%, MenuBlack%
 ;TODO: Audio.bb
 Global ButtonSFX%
 
-;TODO: Die.
-Global EnableSFXRelease% = GetINIInt(OptionFile, "audio", "sfx release")
-Global EnableSFXRelease_Prev% = EnableSFXRelease%
-
-;TODO: Options.bb
-Global CanOpenConsole% = GetINIInt(OptionFile, "console", "enabled")
-
 ;TODO: Assets.bb
 Dim ArrowIMG(4)
 
 ;[Block]
 
-;TODO: Options.bb
-Global LauncherWidth%= Min(GetINIInt(OptionFile, "launcher", "launcher width"), 1024)
-Global LauncherHeight% = Min(GetINIInt(OptionFile, "launcher", "launcher height"), 768)
-Global LauncherEnabled% = GetINIInt(OptionFile, "launcher", "launcher enabled")
+;TODO: Assets.bb
 Global LauncherIMG%
-
-;TODO: Options.bb
-Global GraphicWidth% = GetINIInt(OptionFile, "options", "width")
-Global GraphicHeight% = GetINIInt(OptionFile, "options", "height")
-Global Fullscreen% = GetINIInt(OptionFile, "options", "fullscreen")
 
 Global Depth% = 0
 
-;TODO: Options.bb
 Global SelectedGFXMode%
-Global SelectedGFXDriver% = Max(GetINIInt(OptionFile, "options", "gfx driver"), 1)
 
 Global fresize_image%, fresize_texture%, fresize_texture2%
 Global fresize_cam%
-
-;TODO: Options.bb
-Global ShowFPS = GetINIInt(OptionFile, "options", "show FPS")
 
 ;TODO: Move somewhere more relevant.
 Global WireframeState
@@ -61,35 +44,14 @@ Global HalloweenTex
 Global TotalGFXModes% = CountGfxModes3D(), GFXModes%
 Dim GfxModeWidths%(TotalGFXModes), GfxModeHeights%(TotalGFXModes)
 
-;TODO: Options.bb
-Global BorderlessWindowed% = GetINIInt(OptionFile, "options", "borderless windowed")
-Global RealGraphicWidth%,RealGraphicHeight%
+Global RealGraphicWidth%
+Global RealGraphicHeight%
 Global AspectRatioRatio#
-
-;TODO: Die.
-Global EnableRoomLights% = GetINIInt(OptionFile, "options", "room lights enabled")
-
-;TODO: Options.bb and remove TextureFloat bs.
-Global TextureDetails% = GetINIInt(OptionFile, "options", "texture details")
-Global TextureFloat#
-Select TextureDetails%
-	Case 0
-		TextureFloat# = 1.5
-	Case 1
-		TextureFloat# = 0.75
-	Case 2
-		TextureFloat# = 0.0
-	Case 3
-		TextureFloat# = -0.75
-End Select
-
-;TODO: Remove
-Global ConsoleOpening% = GetINIInt(OptionFile, "console", "auto opening")
 
 ;TODO: Options.bb
 Global SFXVolume# = GetINIFloat(OptionFile, "audio", "sound volume")
 
-If LauncherEnabled Then 
+If userOptions\launcher Then 
 	AspectRatioRatio = 1.0
 	UpdateLauncher()
 Else
@@ -99,43 +61,33 @@ Else
 			If GfxModeWidths(n) = GfxModeWidth(i) And GfxModeHeights(n) = GfxModeHeight(i) Then samefound = True : Exit
 		Next
 		If samefound = False Then
-			If GraphicWidth = GfxModeWidth(i) And GraphicHeight = GfxModeHeight(i) Then SelectedGFXMode = GFXModes
+			If userOptions\screenWidth = GfxModeWidth(i) And userOptions\screenHeight = GfxModeHeight(i) Then SelectedGFXMode = GFXModes
 			GfxModeWidths(GFXModes) = GfxModeWidth(i)
 			GfxModeHeights(GFXModes) = GfxModeHeight(i)
 			GFXModes=GFXModes+1
 		End If
 	Next
 	
-	GraphicWidth = GfxModeWidths(SelectedGFXMode)
-	GraphicHeight = GfxModeHeights(SelectedGFXMode)
+	userOptions\screenWidth = GfxModeWidths(SelectedGFXMode)
+	userOptions\screenHeight = GfxModeHeights(SelectedGFXMode)
 EndIf
 
-If BorderlessWindowed
+If userOptions\borderlessWindowed
 	RuntimeError "Borderless windowed is not implemented! USERLIBS MUST DIE"
 Else
 	AspectRatioRatio = 1.0
-	Graphics3DExt(GraphicWidth, GraphicHeight, 0, (1 + (Not Fullscreen)))
+	Graphics3DExt(userOptions\screenWidth, userOptions\screenHeight, 0, (1 + (Not userOptions\fullscreen)))
 EndIf
 
-Global MenuScale# = (GraphicHeight / 1024.0)
+Global MenuScale# = (userOptions\screenHeight / 1024.0)
 
 SetBuffer(BackBuffer())
 
 Global CurTime%, PrevTime%, LoopDelay%, FPSfactor#, FPSfactor2#
 Local CheckFPS%, ElapsedLoops%, FPS%, ElapsedTime#
 
-;TODO: Options.bb
-Global Framelimit% = GetINIInt(OptionFile, "options", "framelimit")
-Global Vsync% = GetINIInt(OptionFile, "options", "vsync")
-
-;TODO: Options.bb
-Global Opt_AntiAlias = GetINIInt(OptionFile, "options", "antialias")
-
-Global CurrFrameLimit# = Framelimit%
-
-;TODO: Options.bb
-Global ScreenGamma# = GetINIFloat(OptionFile, "options", "screengamma")
-;If Fullscreen Then UpdateScreenGamma()
+;TODO: wtf is this?
+Global CurrFrameLimit# = userOptions\framelimit
 
 Const HIT_MAP% = 1, HIT_PLAYER% = 2, HIT_ITEM% = 3, HIT_APACHE% = 4, HIT_178% = 5, HIT_DEAD% = 6
 SeedRnd MilliSecs()
@@ -165,13 +117,13 @@ InitLoadingScreens("Loadingscreens\loadingscreens.ini")
 ;don't match their "internal name" (i.e. their display name in applications
 ;like Word and such). As a workaround, I moved the files and renamed them so they
 ;can load without FastText.
-Font1% = LoadFont("GFX\font\cour\Courier New.ttf", Int(18 * (GraphicHeight / 1024.0)), 0,0,0)
-Font2% = LoadFont("GFX\font\courbd\Courier New.ttf", Int(58 * (GraphicHeight / 1024.0)), 0,0,0)
-Font3% = LoadFont("GFX\font\DS-DIGI\DS-Digital.ttf", Int(22 * (GraphicHeight / 1024.0)), 0,0,0)
-Font4% = LoadFont("GFX\font\DS-DIGI\DS-Digital.ttf", Int(60 * (GraphicHeight / 1024.0)), 0,0,0)
-Font5% = LoadFont("GFX\font\Journal\Journal.ttf", Int(58 * (GraphicHeight / 1024.0)), 0,0,0)
+Font1% = LoadFont("GFX\font\cour\Courier New.ttf", Int(18 * MenuScale, 0,0,0)
+Font2% = LoadFont("GFX\font\courbd\Courier New.ttf", Int(58 * MenuScale), 0,0,0)
+Font3% = LoadFont("GFX\font\DS-DIGI\DS-Digital.ttf", Int(22 * MenuScale), 0,0,0)
+Font4% = LoadFont("GFX\font\DS-DIGI\DS-Digital.ttf", Int(60 * MenuScale), 0,0,0)
+Font5% = LoadFont("GFX\font\Journal\Journal.ttf", Int(58 * MenuScale), 0,0,0)
 
-ConsoleFont% = LoadFont("Blitz", Int(20 * (GraphicHeight / 1024.0)), 0,0,0)
+ConsoleFont% = LoadFont("Blitz", Int(20 * MenuScale), 0,0,0)
 
 SetFont Font2
 
@@ -179,19 +131,6 @@ SetFont Font2
 Global BlinkMeterIMG% = LoadImage_Strict("GFX\blinkmeter.jpg")
 
 DrawLoading(0, True)
-
-;TODO: Options.bb
-Global KEY_RIGHT = GetINIInt(OptionFile, "binds", "Right key")
-Global KEY_LEFT = GetINIInt(OptionFile, "binds", "Left key")
-Global KEY_UP = GetINIInt(OptionFile, "binds", "Up key")
-Global KEY_DOWN = GetINIInt(OptionFile, "binds", "Down key")
-
-Global KEY_BLINK = GetINIInt(OptionFile, "binds", "Blink key")
-Global KEY_SPRINT = GetINIInt(OptionFile, "binds", "Sprint key")
-Global KEY_INV = GetINIInt(OptionFile, "binds", "Inventory key")
-Global KEY_CROUCH = GetINIInt(OptionFile, "binds", "Crouch key")
-Global KEY_SAVE = GetINIInt(OptionFile, "binds", "Save key")
-Global KEY_CONSOLE = GetINIInt(OptionFile, "binds", "Console key")
 
 Global Mesh_MinX#, Mesh_MinY#, Mesh_MinZ#
 Global Mesh_MaxX#, Mesh_MaxY#, Mesh_MaxZ#
@@ -242,12 +181,8 @@ Dim OldAiPics%(5)
 
 Include "Console.bb"
 
-;TODO: Options.bb
-Global BumpEnabled% = GetINIInt("options.ini", "options", "bump mapping enabled")
-Global HUDenabled% = GetINIInt("options.ini", "options", "HUD enabled")
-
-;TODO: Options.bb.
-Global Brightness% = GetINIFloat("options.ini", "options", "brightness")
+;TODO: Move somewhere?
+Global Brightness% = 50
 
 Include "Dreamfilter.bb"
 
@@ -290,10 +225,14 @@ Music(11) = LoadSound_Strict("SFX\Music\Menu.ogg")
 ;Music(21): Breath theme after beating the game
 
 ;TODO: Audio.bb
-Global MusicVolume# = GetINIFloat(OptionFile, "audio", "music volume")
 Global MusicCHN% = PlaySound_Strict(Music(2))
-ChannelVolume(MusicCHN, MusicVolume)
-Global CurrMusicVolume# = 1.0, NowPlaying%=2, ShouldPlay%=11
+ChannelVolume(MusicCHN, userOptions\musicVolume)
+
+;TODO: Audio.bb
+;Used for fading out music tracks.
+Global CurrMusicVolume# = 1.0
+Global NowPlaying% = 2
+Global ShouldPlay% = 11
 
 DrawLoading(10, True)
 
@@ -526,7 +465,7 @@ Global Wearing1499% = False
 
 Global AmbientLightRoomTex%, AmbientLightRoomVal%
 
-;Global NVGImage% = CreateImage(GraphicWidth,GraphicHeight),NVGCam%
+;Global NVGImage% = CreateImage(userOptions\screenWidth,userOptions\screenHeight),NVGCam%
 
 ;TODO: Die forever.
 Global NTF_1499PrevX#
@@ -546,12 +485,6 @@ Global QuitMSG% = 0
 
 ;TODO: Die.
 Global InFacility% = True
-
-;TODO: Player struct?
-Global PrevMusicVolume# = MusicVolume#
-Global PrevSFXVolume# = SFXVolume#
-Global DeafPlayer% = False
-Global DeafTimer# = 0.0
 
 ;TODO: Remove.
 Global IsZombie% = False
@@ -1184,9 +1117,9 @@ Repeat
 	
 	If MenuOpen Or InvOpen Or OtherOpen<>Null Or ConsoleOpen Or SelectedDoor <> Null Or SelectedScreen <> Null Or Using294 Then FPSfactor = 0
 	
-	If Framelimit > 0 Then
+	If userOptions\framelimit > 0 Then
 	    ;Framelimit
-		Local WaitingTime% = (1000.0 / Framelimit) - (MilliSecs() - LoopDelay)
+		Local WaitingTime% = (1000.0 / userOptions\framelimit) - (MilliSecs() - LoopDelay)
 		Delay WaitingTime%
 		
 	   LoopDelay = MilliSecs()
@@ -1320,7 +1253,6 @@ Repeat
 			PlayerSoundVolume = CurveValue(0.0, PlayerSoundVolume, 5.0)
 			
 			CanSave% = True
-			UpdateDeafPlayer()
 			UpdateEmitters()
 			MouseLook()			
 			MovePlayer()
@@ -1520,7 +1452,7 @@ Repeat
 		EndIf
 		
 		If KeyHit(KEY_CONSOLE) Then
-			If CanOpenConsole
+			If userOptions\allowConsole
 				If ConsoleOpen Then
 					UsedConsole = True
 					ResumeSounds()
@@ -1555,55 +1487,59 @@ Repeat
 			
 			If (Not temp%)
 				Color 0,0,0
-				Text((GraphicWidth / 2)+1, (GraphicHeight / 2) + 201, Msg, True, False);, Min(MsgTimer / 2, 255)/255.0)
+				Text((userOptions\screenWidth / 2)+1, (userOptions\screenHeight / 2) + 201, Msg, True, False);, Min(MsgTimer / 2, 255)/255.0)
 				Color 255,255,255;Min(MsgTimer / 2, 255), Min(MsgTimer / 2, 255), Min(MsgTimer / 2, 255)
 				If Left(Msg,14)="Blitz3D Error!" Then
 					Color 255,0,0
 				EndIf
-				Text((GraphicWidth / 2), (GraphicHeight / 2) + 200, Msg, True, False);, Min(MsgTimer / 2, 255)/255.0)
+				Text((userOptions\screenWidth / 2), (userOptions\screenHeight / 2) + 200, Msg, True, False);, Min(MsgTimer / 2, 255)/255.0)
 			Else
 				Color 0,0,0
-				Text((GraphicWidth / 2)+1, (GraphicHeight * 0.94) + 1, Msg, True, False);, Min(MsgTimer / 2, 255)/255.0)
+				Text((userOptions\screenWidth / 2)+1, (userOptions\screenHeight * 0.94) + 1, Msg, True, False);, Min(MsgTimer / 2, 255)/255.0)
 				Color 255,255,255;Min(MsgTimer / 2, 255), Min(MsgTimer / 2, 255), Min(MsgTimer / 2, 255)
 				If Left(Msg,14)="Blitz3D Error!" Then
 					Color 255,0,0
 				EndIf
-				Text((GraphicWidth / 2), (GraphicHeight * 0.94), Msg, True, False);, Min(MsgTimer / 2, 255)/255.0)
+				Text((userOptions\screenWidth / 2), (userOptions\screenHeight * 0.94), Msg, True, False);, Min(MsgTimer / 2, 255)/255.0)
 			EndIf
 			MsgTimer=MsgTimer-FPSfactor2 
 		End If
 		
 		Color 255, 255, 255
-		If ShowFPS Then SetFont ConsoleFont : Text 20, 20, "FPS: " + FPS : SetFont Font1
+		If userOptions\showFPS Then
+			SetFont ConsoleFont
+			Text 20, 20, "FPS: " + FPS
+			SetFont Font1
+		EndIf
 		
 		DrawQuickLoading()
 	End If
 	
-	If BorderlessWindowed Then
-		If (RealGraphicWidth<>GraphicWidth) Or (RealGraphicHeight<>GraphicHeight) Then
+	If userOptions\borderlessWindowed Then
+		If (RealGraphicWidth<>userOptions\screenWidth) Or (RealGraphicHeight<>userOptions\screenHeight) Then
 			SetBuffer TextureBuffer(fresize_texture)
 			ClsColor 0,0,0 : Cls
-			CopyRect 0,0,GraphicWidth,GraphicHeight,1024-GraphicWidth/2,1024-GraphicHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
+			CopyRect 0,0,userOptions\screenWidth,userOptions\screenHeight,1024-userOptions\screenWidth/2,1024-userOptions\screenHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
 			SetBuffer BackBuffer()
 			ClsColor 0,0,0 : Cls
-			ScaleRender(0,0,2050.0 / Float(GraphicWidth) * AspectRatioRatio, 2050.0 / Float(GraphicWidth) * AspectRatioRatio)
-			;might want to replace Float(GraphicWidth) with Max(GraphicWidth,GraphicHeight) if portrait sizes cause issues
+			ScaleRender(0,0,2050.0 / Float(userOptions\screenWidth) * AspectRatioRatio, 2050.0 / Float(userOptions\screenWidth) * AspectRatioRatio)
+			;might want to replace Float(userOptions\screenWidth) with Max(userOptions\screenWidth,userOptions\screenHeight) if portrait sizes cause issues
 			;everyone uses landscape so it's probably a non-issue
 		EndIf
 	EndIf
 	
 	;not by any means a perfect solution
 	;Not even proper gamma correction but it's a nice looking alternative that works in windowed mode
-	If ScreenGamma>1.0 Then
+	If userOptions\screenGamma>1.0 Then
 		CopyRect 0,0,RealGraphicWidth,RealGraphicHeight,1024-RealGraphicWidth/2,1024-RealGraphicHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
 		EntityBlend fresize_image,1
 		ClsColor 0,0,0 : Cls
 		ScaleRender(-1.0/Float(RealGraphicWidth),1.0/Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth))
 		EntityFX fresize_image,1+32
 		EntityBlend fresize_image,3
-		EntityAlpha fresize_image,ScreenGamma-1.0
+		EntityAlpha fresize_image,userOptions\screenGamma-1.0
 		ScaleRender(-1.0/Float(RealGraphicWidth),1.0/Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth))
-	ElseIf ScreenGamma<1.0 Then ;todo: maybe optimize this if it's too slow, alternatively give players the option to disable gamma
+	ElseIf userOptions\screenGamma<1.0 Then ;todo: maybe optimize this if it's too slow, alternatively give players the option to disable gamma
 		CopyRect 0,0,RealGraphicWidth,RealGraphicHeight,1024-RealGraphicWidth/2,1024-RealGraphicHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
 		EntityBlend fresize_image,1
 		ClsColor 0,0,0 : Cls
@@ -1612,7 +1548,7 @@ Repeat
 		EntityBlend fresize_image,2
 		EntityAlpha fresize_image,1.0
 		SetBuffer TextureBuffer(fresize_texture2)
-		ClsColor 255*ScreenGamma,255*ScreenGamma,255*ScreenGamma
+		ClsColor 255*userOptions\screenGamma,255*userOptions\screenGamma,255*userOptions\screenGamma
 		Cls
 		SetBuffer BackBuffer()
 		ScaleRender(-1.0/Float(RealGraphicWidth),1.0/Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth))
@@ -1625,7 +1561,7 @@ Repeat
 	EntityBlend fresize_image,1
 	EntityAlpha fresize_image,1.0
 	
-	If Vsync = 0 Then
+	If (Not userOptions\vsync) Then
 		Flip 0
 	Else 
 		Flip 1
@@ -1685,10 +1621,10 @@ Function DrawEnding()
 			;-200 -> -700
 			;Max(50 - (Abs(KillTimer)-200),0)    =    0->50
 			If Rand(1,150)<Min((Abs(EndingTimer)-200),155) Then
-				DrawImage EndingScreen, GraphicWidth/2-400, GraphicHeight/2-400
+				DrawImage EndingScreen, userOptions\screenWidth/2-400, userOptions\screenHeight/2-400
 			Else
 				Color 0,0,0
-				Rect 100,100,GraphicWidth-200,GraphicHeight-200
+				Rect 100,100,userOptions\screenWidth-200,userOptions\screenHeight-200
 				Color 255,255,255
 			EndIf
 			
@@ -1703,14 +1639,14 @@ Function DrawEnding()
 			
 		Else
 			
-			DrawImage EndingScreen, GraphicWidth/2-400, GraphicHeight/2-400
+			DrawImage EndingScreen, userOptions\screenWidth/2-400, userOptions\screenHeight/2-400
 			
 			If EndingTimer < -1000 Then 
 				
 				width = ImageWidth(PauseMenuIMG)
 				height = ImageHeight(PauseMenuIMG)
-				x = GraphicWidth / 2 - width / 2
-				y = GraphicHeight / 2 - height / 2
+				x = userOptions\screenWidth / 2 - width / 2
+				y = userOptions\screenHeight / 2 - height / 2
 				
 				DrawImage PauseMenuIMG, x, y
 				
@@ -1753,8 +1689,8 @@ Function DrawEnding()
 					Text x, y+60*MenuScale, "Documents discovered: " +docsfound+"/"+docamount
 					Text x, y+80*MenuScale, "Items refined in SCP-914: " +RefinedItems			
 					
-					x = GraphicWidth / 2 - width / 2
-					y = GraphicHeight / 2 - height / 2
+					x = userOptions\screenWidth / 2 - width / 2
+					y = userOptions\screenHeight / 2 - height / 2
 					x = x+width/2
 					y = y+height-100*MenuScale
 					
@@ -1782,7 +1718,7 @@ Function DrawEnding()
 		
 	EndIf
 	
-	If Fullscreen Then DrawImage CursorIMG, ScaledMouseX(),ScaledMouseY()
+	If userOptions\fullscreen Then DrawImage CursorIMG, ScaledMouseX(),ScaledMouseY()
 	
 	SetFont Font1
 End Function
@@ -1812,7 +1748,7 @@ Function DrawGUI()
 							If e\img = 0 Then e\img = LoadImage_Strict("GFX\npcs\106face.jpg")
 						EndIf
 					Else
-						DrawImage e\img, GraphicWidth/2-Rand(390,310), GraphicHeight/2-Rand(290,310)
+						DrawImage e\img, userOptions\screenWidth/2-Rand(390,310), userOptions\screenHeight/2-Rand(290,310)
 					EndIf
 				Else
 					If e\img <> 0 Then FreeImage e\img : e\img = 0
@@ -1837,7 +1773,7 @@ Function DrawGUI()
 		
 		FreeEntity (temp)
 		
-		DrawImage(HandIcon, GraphicWidth / 2 + Sin(yawvalue) * (GraphicWidth / 3) - 32, GraphicHeight / 2 - Sin(pitchvalue) * (GraphicHeight / 3) - 32)
+		DrawImage(HandIcon, userOptions\screenWidth / 2 + Sin(yawvalue) * (userOptions\screenWidth / 3) - 32, userOptions\screenHeight / 2 - Sin(pitchvalue) * (userOptions\screenHeight / 3) - 32)
 		
 		If MouseUp1 Then
 			MouseUp1 = False
@@ -1860,14 +1796,14 @@ Function DrawGUI()
 		If pitchvalue > 90 And pitchvalue <= 180 Then pitchvalue = 90
 		If pitchvalue > 180 And pitchvalue < 270 Then pitchvalue = 270
 		
-		DrawImage(HandIcon2, GraphicWidth / 2 + Sin(yawvalue) * (GraphicWidth / 3) - 32, GraphicHeight / 2 - Sin(pitchvalue) * (GraphicHeight / 3) - 32)
+		DrawImage(HandIcon2, userOptions\screenWidth / 2 + Sin(yawvalue) * (userOptions\screenWidth / 3) - 32, userOptions\screenHeight / 2 - Sin(pitchvalue) * (userOptions\screenHeight / 3) - 32)
 	EndIf
 	
-	If DrawHandIcon Then DrawImage(HandIcon, GraphicWidth / 2 - 32, GraphicHeight / 2 - 32)
+	If DrawHandIcon Then DrawImage(HandIcon, userOptions\screenWidth / 2 - 32, userOptions\screenHeight / 2 - 32)
 	For i = 0 To 3
 		If DrawArrowIcon(i) Then
-			x = GraphicWidth / 2 - 32
-			y = GraphicHeight / 2 - 32		
+			x = userOptions\screenWidth / 2 - 32
+			y = userOptions\screenHeight / 2 - 32		
 			Select i
 				Case 0
 					y = y - 64 - 5
@@ -1888,11 +1824,11 @@ Function DrawGUI()
 	
 	If Using294 Then Use294()
 	
-	If HUDenabled Then 
+	If userOptions\hudEnabled Then 
 		
 		Local width% = 204, height% = 20
 		x% = 80
-		y% = GraphicHeight - 95
+		y% = userOptions\screenHeight - 95
 		
 		Color 255, 255, 255	
 		Rect (x, y, width, height, False)
@@ -1912,7 +1848,7 @@ Function DrawGUI()
 		
 		DrawImage BlinkIcon, x - 50, y
 		
-		y = GraphicHeight - 55
+		y = userOptions\screenHeight - 55
 		Color 255, 255, 255
 		Rect (x, y, width, height, False)
 		For i = 1 To Int(((width - 2) * (Stamina / 100.0)) / 10)
@@ -1984,7 +1920,7 @@ Function DrawGUI()
 	EndIf
 	
 	If SelectedScreen <> Null Then
-		DrawImage SelectedScreen\img, GraphicWidth/2-ImageWidth(SelectedScreen\img)/2,GraphicHeight/2-ImageHeight(SelectedScreen\img)/2
+		DrawImage SelectedScreen\img, userOptions\screenWidth/2-ImageWidth(SelectedScreen\img)/2,userOptions\screenHeight/2-ImageHeight(SelectedScreen\img)/2
 		
 		If MouseUp1 Or MouseHit2 Then
 			FreeImage SelectedScreen\img : SelectedScreen\img = 0
@@ -2013,23 +1949,23 @@ Function DrawGUI()
 			CameraProject(Camera, EntityX(ClosestButton,True),EntityY(ClosestButton,True)-MeshHeight(ButtonOBJ)*0.015,EntityZ(ClosestButton,True))
 			scale# = (ProjectedY()-projy)/462.0
 			
-			x = GraphicWidth/2-ImageWidth(KeypadHUD)*scale/2
-			y = GraphicHeight/2-ImageHeight(KeypadHUD)*scale/2		
+			x = userOptions\screenWidth/2-ImageWidth(KeypadHUD)*scale/2
+			y = userOptions\screenHeight/2-ImageHeight(KeypadHUD)*scale/2		
 			
 			SetFont Font3
 			If KeypadMSG <> "" Then 
 				KeypadTimer = KeypadTimer-FPSfactor2
 				
-				If (KeypadTimer Mod 70) < 35 Then Text GraphicWidth/2, y+124*scale, KeypadMSG, True,True
+				If (KeypadTimer Mod 70) < 35 Then Text userOptions\screenWidth/2, y+124*scale, KeypadMSG, True,True
 				If KeypadTimer =<0 Then
 					KeypadMSG = ""
 					SelectedDoor = Null
 					MouseXSpeed() : MouseYSpeed() : MouseZSpeed() : mouse_x_speed_1#=0.0 : mouse_y_speed_1#=0.0
 				EndIf
 			Else
-				Text GraphicWidth/2, y+70*scale, "ACCESS CODE: ",True,True	
+				Text userOptions\screenWidth/2, y+70*scale, "ACCESS CODE: ",True,True	
 				SetFont Font4
-				Text GraphicWidth/2, y+124*scale, KeypadInput,True,True	
+				Text userOptions\screenWidth/2, y+124*scale, KeypadInput,True,True	
 			EndIf
 			
 			x = x+44*scale
@@ -2088,7 +2024,7 @@ Function DrawGUI()
 				Next
 			Next
 			
-			If Fullscreen Then DrawImage CursorIMG, ScaledMouseX(),ScaledMouseY()
+			If userOptions\fullscreen Then DrawImage CursorIMG, ScaledMouseX(),ScaledMouseY()
 			
 			If MouseHit2 Then
 				SelectedDoor = Null
@@ -2170,8 +2106,8 @@ Function DrawGUI()
 		height = 70
 		spacing% = 35
 		
-		x = GraphicWidth / 2 - (width * MaxItemAmount /2 + spacing * (MaxItemAmount / 2 - 1)) / 2
-		y = GraphicHeight / 2 - (height * OtherSize /5 + spacing * (OtherSize / 5 - 1)) / 2;height
+		x = userOptions\screenWidth / 2 - (width * MaxItemAmount /2 + spacing * (MaxItemAmount / 2 - 1)) / 2
+		y = userOptions\screenHeight / 2 - (height * OtherSize /5 + spacing * (OtherSize / 5 - 1)) / 2;height
 		
 		ItemAmount = 0
 		For  n% = 0 To OtherSize - 1
@@ -2236,7 +2172,7 @@ Function DrawGUI()
 			If tempX = 5 Then 
 				tempX=0
 				y = y + height*2 
-				x = GraphicWidth / 2 - (width * MaxItemAmount /2 + spacing * (MaxItemAmount / 2 - 1)) / 2
+				x = userOptions\screenWidth / 2 - (width * MaxItemAmount /2 + spacing * (MaxItemAmount / 2 - 1)) / 2
 			EndIf
 		Next
 		
@@ -2321,7 +2257,7 @@ Function DrawGUI()
 			EndIf
 		EndIf
 		
-		If Fullscreen Then DrawImage CursorIMG,ScaledMouseX(),ScaledMouseY()
+		If userOptions\fullscreen Then DrawImage CursorIMG,ScaledMouseX(),ScaledMouseY()
 		If (closedInv) And (Not InvOpen) Then 
 			ResumeSounds() 
 			OtherOpen=Null
@@ -2351,8 +2287,8 @@ Function DrawGUI()
 		height% = 70
 		spacing% = 35
 		
-		x = GraphicWidth / 2 - (width * MaxItemAmount /2 + spacing * (MaxItemAmount / 2 - 1)) / 2
-		y = GraphicHeight / 2 - height
+		x = userOptions\screenWidth / 2 - (width * MaxItemAmount /2 + spacing * (MaxItemAmount / 2 - 1)) / 2
+		y = userOptions\screenHeight / 2 - height
 		
 		ItemAmount = 0
 		For  n% = 0 To MaxItemAmount - 1
@@ -2461,7 +2397,7 @@ Function DrawGUI()
 			x=x+width + spacing
 			If n = 4 Then 
 				y = y + height*2 
-				x = GraphicWidth / 2 - (width * MaxItemAmount /2 + spacing * (MaxItemAmount / 2 - 1)) / 2
+				x = userOptions\screenWidth / 2 - (width * MaxItemAmount /2 + spacing * (MaxItemAmount / 2 - 1)) / 2
 			EndIf
 		Next
 		
@@ -2614,7 +2550,7 @@ Function DrawGUI()
 			End If
 		End If
 		
-		If Fullscreen Then DrawImage CursorIMG, ScaledMouseX(),ScaledMouseY()
+		If userOptions\fullscreen Then DrawImage CursorIMG, ScaledMouseX(),ScaledMouseY()
 		
 		If InvOpen = False Then 
 			ResumeSounds() 
@@ -2704,7 +2640,7 @@ Function DrawGUI()
 					
 					;SCP1025state[SelectedItem\state]=Max(1,SCP1025state[SelectedItem\state])					
 					
-					DrawImage(SelectedItem\itemtemplate\img, GraphicWidth / 2 - ImageWidth(SelectedItem\itemtemplate\img) / 2, GraphicHeight / 2 - ImageHeight(SelectedItem\itemtemplate\img) / 2)
+					DrawImage(SelectedItem\itemtemplate\img, userOptions\screenWidth / 2 - ImageWidth(SelectedItem\itemtemplate\img) / 2, userOptions\screenHeight / 2 - ImageHeight(SelectedItem\itemtemplate\img) / 2)
 					
 				Case "ring"
 					If Wearing714=2 Then
@@ -2749,7 +2685,7 @@ Function DrawGUI()
 					;InvOpen = True
 
 				Case "key1", "key2", "key3", "key4", "key5", "key6", "keyomni", "scp860", "hand", "hand2"
-					DrawImage(SelectedItem\itemtemplate\invimg, GraphicWidth / 2 - ImageWidth(SelectedItem\itemtemplate\invimg) / 2, GraphicHeight / 2 - ImageHeight(SelectedItem\itemtemplate\invimg) / 2)
+					DrawImage(SelectedItem\itemtemplate\invimg, userOptions\screenWidth / 2 - ImageWidth(SelectedItem\itemtemplate\invimg) / 2, userOptions\screenHeight / 2 - ImageHeight(SelectedItem\itemtemplate\invimg) / 2)
 				Case "scp513"
 					PlaySound_Strict LoadTempSound("SFX\SCP\513\Bell"+Rand(1,3)+".ogg")
 					
@@ -2837,12 +2773,12 @@ Function DrawGUI()
 						CurrSpeed = CurveValue(0, CurrSpeed, 5.0)
 						Crouch = True
 						
-						DrawImage(SelectedItem\itemtemplate\invimg, GraphicWidth / 2 - ImageWidth(SelectedItem\itemtemplate\invimg) / 2, GraphicHeight / 2 - ImageHeight(SelectedItem\itemtemplate\invimg) / 2)
+						DrawImage(SelectedItem\itemtemplate\invimg, userOptions\screenWidth / 2 - ImageWidth(SelectedItem\itemtemplate\invimg) / 2, userOptions\screenHeight / 2 - ImageHeight(SelectedItem\itemtemplate\invimg) / 2)
 						
 						width% = 300
 						height% = 20
-						x% = GraphicWidth / 2 - width / 2
-						y% = GraphicHeight / 2 + 80
+						x% = userOptions\screenWidth / 2 - width / 2
+						y% = userOptions\screenHeight / 2 + 80
 						Rect(x, y, width+4, height, False)
 						For  i% = 1 To Int((width - 2) * (SelectedItem\state / 100.0) / 10)
 							DrawImage(BlinkMeterIMG, x + 3 + 10 * (i - 1), y + 3)
@@ -2978,7 +2914,7 @@ Function DrawGUI()
 						MaskImage(SelectedItem\itemtemplate\img, 255, 0, 255)
 					EndIf
 					
-					DrawImage(SelectedItem\itemtemplate\img, GraphicWidth / 2 - ImageWidth(SelectedItem\itemtemplate\img) / 2, GraphicHeight / 2 - ImageHeight(SelectedItem\itemtemplate\img) / 2)
+					DrawImage(SelectedItem\itemtemplate\img, userOptions\screenWidth / 2 - ImageWidth(SelectedItem\itemtemplate\img) / 2, userOptions\screenHeight / 2 - ImageHeight(SelectedItem\itemtemplate\img) / 2)
 				Case "scp1025"
 					GiveAchievement(Achv1025) 
 					If SelectedItem\itemtemplate\img=0 Then
@@ -2991,7 +2927,7 @@ Function DrawGUI()
 					
 					If (Not Wearing714) Then SCP1025state[SelectedItem\state]=Max(1,SCP1025state[SelectedItem\state])					
 					
-					DrawImage(SelectedItem\itemtemplate\img, GraphicWidth / 2 - ImageWidth(SelectedItem\itemtemplate\img) / 2, GraphicHeight / 2 - ImageHeight(SelectedItem\itemtemplate\img) / 2)
+					DrawImage(SelectedItem\itemtemplate\img, userOptions\screenWidth / 2 - ImageWidth(SelectedItem\itemtemplate\img) / 2, userOptions\screenHeight / 2 - ImageHeight(SelectedItem\itemtemplate\img) / 2)
 					
 				Case "cup"
 					
@@ -3071,8 +3007,8 @@ Function DrawGUI()
 					
 					strtemp$ = ""
 					
-					x = GraphicWidth - ImageWidth(SelectedItem\itemtemplate\img) ;+ 120
-					y = GraphicHeight - ImageHeight(SelectedItem\itemtemplate\img) ;- 30
+					x = userOptions\screenWidth - ImageWidth(SelectedItem\itemtemplate\img) ;+ 120
+					y = userOptions\screenHeight - ImageHeight(SelectedItem\itemtemplate\img) ;- 30
 					
 					DrawImage(SelectedItem\itemtemplate\img, x, y)
 					
@@ -3418,8 +3354,8 @@ Function DrawGUI()
 					
 					If SelectedItem\state <= 100 Then SelectedItem\state = Max(0, SelectedItem\state - FPSfactor * 0.005)
 					
-					x = GraphicWidth - ImageWidth(SelectedItem\itemtemplate\img)*0.5+20
-					y = GraphicHeight - ImageHeight(SelectedItem\itemtemplate\img)*0.4-85
+					x = userOptions\screenWidth - ImageWidth(SelectedItem\itemtemplate\img)*0.5+20
+					y = userOptions\screenHeight - ImageHeight(SelectedItem\itemtemplate\img)*0.4-85
 					width = 287
 					height = 256
 					
@@ -3604,7 +3540,7 @@ Function DrawGUI()
 						MaskImage(SelectedItem\itemtemplate\img, 255, 0, 255)
 					EndIf
 					
-					DrawImage(SelectedItem\itemtemplate\img, GraphicWidth / 2 - ImageWidth(SelectedItem\itemtemplate\img) / 2, GraphicHeight / 2 - ImageHeight(SelectedItem\itemtemplate\img) / 2)
+					DrawImage(SelectedItem\itemtemplate\img, userOptions\screenWidth / 2 - ImageWidth(SelectedItem\itemtemplate\img) / 2, userOptions\screenHeight / 2 - ImageHeight(SelectedItem\itemtemplate\img) / 2)
 					
 					If SelectedItem\state = 0 Then
 						PlaySound_Strict LoadTempSound("SFX\SCP\1162\NostalgiaCancer"+Rand(1,10)+".ogg")
@@ -3634,7 +3570,7 @@ Function DrawGUI()
 						MaskImage(SelectedItem\itemtemplate\img, 255, 0, 255)
 					EndIf
 					
-					DrawImage(SelectedItem\itemtemplate\img, GraphicWidth / 2 - ImageWidth(SelectedItem\itemtemplate\img) / 2, GraphicHeight / 2 - ImageHeight(SelectedItem\itemtemplate\img) / 2)
+					DrawImage(SelectedItem\itemtemplate\img, userOptions\screenWidth / 2 - ImageWidth(SelectedItem\itemtemplate\img) / 2, userOptions\screenHeight / 2 - ImageHeight(SelectedItem\itemtemplate\img) / 2)
 					
 					If SelectedItem\state = 0
 						Select SelectedItem\itemtemplate\name
@@ -3746,8 +3682,8 @@ Function DrawMenu()
 		
 		width = ImageWidth(PauseMenuIMG)
 		height = ImageHeight(PauseMenuIMG)
-		x = GraphicWidth / 2 - width / 2
-		y = GraphicHeight / 2 - height / 2
+		x = userOptions\screenWidth / 2 - width / 2
+		y = userOptions\screenHeight / 2 - height / 2
 		
 		DrawImage PauseMenuIMG, x, y
 		
@@ -3779,7 +3715,7 @@ Function DrawMenu()
 		End If		
 		
 		Local AchvXIMG% = (x + (22*MenuScale))
-		Local scale# = GraphicHeight/768.0
+		Local scale# = userOptions\screenHeight/768.0
 		Local SeparationConst% = 76*scale
 		Local imgsize% = 64
 		
@@ -3794,36 +3730,8 @@ Function DrawMenu()
 				OptionsMenu = 0
 				QuitMSG = 0
 				MouseHit1 = False
-				PutINIValue(OptionFile, "options", "mouse sensitivity", MouseSens)
-				PutINIValue(OptionFile, "options", "invert mouse y", InvertMouse)
-				PutINIValue(OptionFile, "options", "bump mapping enabled", BumpEnabled)			
-				PutINIValue(OptionFile, "options", "HUD enabled", HUDenabled)
-				PutINIValue(OptionFile, "options", "screengamma", ScreenGamma)
-				PutINIValue(OptionFile, "options", "antialias", Opt_AntiAlias)
-				PutINIValue(OptionFile, "options", "vsync", Vsync)
-				PutINIValue(OptionFile, "options", "show FPS", ShowFPS)
-				PutINIValue(OptionFile, "options", "framelimit", Framelimit%)
-				PutINIValue(OptionFile, "options", "achievement popup enabled", AchvMSGenabled%)
-				PutINIValue(OptionFile, "options", "room lights enabled", EnableRoomLights%)
-				PutINIValue(OptionFile, "options", "texture details", TextureDetails%)
-				PutINIValue(OptionFile, "console", "enabled", CanOpenConsole%)
-				PutINIValue(OptionFile, "console", "auto opening", ConsoleOpening%)
 				
-				PutINIValue(OptionFile, "audio", "music volume", MusicVolume)
-				PutINIValue(OptionFile, "audio", "sound volume", PrevSFXVolume)
-				
-				PutINIValue(OptionFile, "binds", "Right key", KEY_RIGHT)
-				PutINIValue(OptionFile, "binds", "Left key", KEY_LEFT)
-				PutINIValue(OptionFile, "binds", "Up key", KEY_UP)
-				PutINIValue(OptionFile, "binds", "Down key", KEY_DOWN)
-				PutINIValue(OptionFile, "binds", "Blink key", KEY_BLINK)
-				PutINIValue(OptionFile, "binds", "Sprint key", KEY_SPRINT)
-				PutINIValue(OptionFile, "binds", "Inventory key", KEY_INV)
-				PutINIValue(OptionFile, "binds", "Crouch key", KEY_CROUCH)
-				PutINIValue(OptionFile, "binds", "Save key", KEY_SAVE)
-				PutINIValue(OptionFile, "binds", "Console key", KEY_CONSOLE)
-				
-				AntiAlias Opt_AntiAlias
+				SaveOptionsINI()
 				;TextureLodBias TextureFloat#
 			EndIf
 			
@@ -3853,7 +3761,7 @@ Function DrawMenu()
 					
 					Color 255,255,255				
 					Text(x, y, "Show HUD:")	
-					HUDenabled = DrawTick(x + 270 * MenuScale, y + MenuScale, HUDenabled)	
+					userOptions\hudEnabled = DrawTick(x + 270 * MenuScale, y + MenuScale, userOptions\hudEnabled)	
 					
 					y=y+30*MenuScale
 					
@@ -3868,30 +3776,23 @@ Function DrawMenu()
 					
 					Color 255,255,255
 					Text(x, y, "VSync:")
-					Vsync% = DrawTick(x + 270 * MenuScale, y + MenuScale, Vsync%)
-					
-					y=y+30*MenuScale
-					
-					Color 255,255,255
-					Text(x, y, "Anti-aliasing:")
-					Opt_AntiAlias = DrawTick(x + 270 * MenuScale, y + MenuScale, Opt_AntiAlias%)
-					Text(x+5*MenuScale, y + 15 * MenuScale, "(fullscreen only)")
+					userOptions\vsync = DrawTick(x + 270 * MenuScale, y + MenuScale, userOptions\vsync)
 					
 					y=y+40*MenuScale
 					
 					Color 255,255,255
 					Text(x, y, "Enable room lights:")
-					EnableRoomLights = DrawTick(x + 270 * MenuScale, y + MenuScale, EnableRoomLights)
+					userOptions\roomLights = DrawTick(x + 270 * MenuScale, y + MenuScale, userOptions\roomLights)
 					
 					y=y+30*MenuScale
 					
-					;Local prevGamma# = ScreenGamma
-					ScreenGamma = (SlideBar(x + 270*MenuScale, y+6*MenuScale, 100*MenuScale, ScreenGamma*50.0)/50.0)
+					;Local prevGamma# = userOptions\screenGamma
+					userOptions\screenGamma = (SlideBar(x + 270*MenuScale, y+6*MenuScale, 100*MenuScale, userOptions\screenGamma*50.0)/50.0)
 					Color 255,255,255
 					Text(x, y, "Screen gamma")
-					;Text(x+5+MenuScale, y + 15 * MenuScale, "(fullscreen only)")
+					;Text(x+5+MenuScale, y + 15 * MenuScale, "(userOptions\fullscreen only)")
 					
-					;If prevGamma<>ScreenGamma Then
+					;If prevGamma<>userOptions\screenGamma Then
 					;	UpdateScreenGamma()
 					;EndIf
 					
@@ -3912,7 +3813,7 @@ Function DrawMenu()
 					;[Block]
 					y = y + 50*MenuScale
 					
-					MusicVolume = (SlideBar(x + 250*MenuScale, y-4*MenuScale, 100*MenuScale, MusicVolume*100.0)/100.0)
+					userOptions\musicVolume = (SlideBar(x + 250*MenuScale, y-4*MenuScale, 100*MenuScale, userOptions\musicVolume*100.0)/100.0)
 					Color 255,255,255
 					Text(x, y, "Music volume:")
 					
@@ -4002,25 +3903,25 @@ Function DrawMenu()
 					
 					Color 255,255,255
 					Text(x, y, "Enable console:")
-					CanOpenConsole = DrawTick(x +270 * MenuScale, y + MenuScale, CanOpenConsole)
+					userOptions\allowConsole = DrawTick(x +270 * MenuScale, y + MenuScale, userOptions\allowConsole)
 					
 					y = y + 30*MenuScale
 					
 					Color 255,255,255
 					Text(x, y, "Open console on error:")
-					ConsoleOpening = DrawTick(x + 270 * MenuScale, y + MenuScale, ConsoleOpening)
+					userOptions\consoleOpenOnError = DrawTick(x + 270 * MenuScale, y + MenuScale, userOptions\consoleOpenOnError)
 					
 					y = y + 50*MenuScale
 					
 					Color 255,255,255
 					Text(x, y, "Achievement popups:")
-					AchvMSGenabled% = DrawTick(x + 270 * MenuScale, y, AchvMSGenabled%)
+					userOptions\achvPopup = DrawTick(x + 270 * MenuScale, y, userOptions\achvPopup)
 					
 					y = y + 50*MenuScale
 					
 					Color 255,255,255
 					Text(x, y, "Show FPS:")
-					ShowFPS% = DrawTick(x + 270 * MenuScale, y, ShowFPS%)
+					userOptions\showFPS = DrawTick(x + 270 * MenuScale, y, userOptions\showFPS)
 					
 					y = y + 30*MenuScale
 					
@@ -4031,12 +3932,12 @@ Function DrawMenu()
 					If DrawTick(x + 270 * MenuScale, y, CurrFrameLimit > 0.0) Then
 						CurrFrameLimit# = (SlideBar(x + 150*MenuScale, y+30*MenuScale, 100*MenuScale, CurrFrameLimit#*50.0)/50.0)
 						CurrFrameLimit = Max(CurrFrameLimit, 0.1)
-						Framelimit% = CurrFrameLimit#*100.0
+						userOptions\framelimit% = CurrFrameLimit#*100.0
 						Color 255,255,0
-						Text(x + 5 * MenuScale, y + 25 * MenuScale, Framelimit%+" FPS")
+						Text(x + 5 * MenuScale, y + 25 * MenuScale, userOptions\framelimit%+" FPS")
 					Else
 						CurrFrameLimit# = 0.0
-						Framelimit = 0
+						userOptions\framelimit = 0
 					EndIf
 					
 					y = y + 80*MenuScale
@@ -4257,7 +4158,7 @@ Function DrawMenu()
 			If KillTimer < 0 Then RowText(DeathMSG$, x, y + 80*MenuScale, 390*MenuScale, 600*MenuScale)
 		EndIf
 		
-		If Fullscreen Then DrawImage CursorIMG, ScaledMouseX(),ScaledMouseY()
+		If userOptions\fullscreen Then DrawImage CursorIMG, ScaledMouseX(),ScaledMouseY()
 		
 	End If
 	
@@ -4867,10 +4768,10 @@ Function Use294()
 	
 	ShowPointer()
 	
-	x = GraphicWidth/2 - (ImageWidth(Panel294)/2)
-	y = GraphicHeight/2 - (ImageHeight(Panel294)/2)
+	x = userOptions\screenWidth/2 - (ImageWidth(Panel294)/2)
+	y = userOptions\screenHeight/2 - (ImageHeight(Panel294)/2)
 	DrawImage Panel294, x, y
-	If Fullscreen Then DrawImage CursorIMG, ScaledMouseX(),ScaledMouseY()
+	If userOptions\fullscreen Then DrawImage CursorIMG, ScaledMouseX(),ScaledMouseY()
 	
 	temp = True
 	If PlayerRoom\SoundCHN<>0 Then temp = False
@@ -5400,10 +5301,6 @@ Function Graphics3DExt%(width%,height%,depth%=32,mode%=2)
 	Graphics3D width,height,depth,mode
 	InitFastResize()
 	;InitExt()
-	
-	;TODO: Use Options struct value.
-	AntiAlias GetINIInt(OptionFile,"options","antialias")
-	;TextureAnisotropy% (GetINIInt(OptionFile,"options","anisotropy"),-1)
 End Function
 
 Function ResizeImage2(image%,width%,height%)
@@ -5414,7 +5311,7 @@ Function ResizeImage2(image%,width%,height%)
 	CopyRect 0,0,oldWidth,oldHeight,1024-oldWidth/2,1024-oldHeight/2,ImageBuffer(image),TextureBuffer(fresize_texture)
 	SetBuffer BackBuffer()
 	ScaleRender(0,0,2048.0 / Float(RealGraphicWidth) * Float(width) / Float(oldWidth), 2048.0 / Float(RealGraphicWidth) * Float(height) / Float(oldHeight))
-	;might want to replace Float(GraphicWidth) with Max(GraphicWidth,GraphicHeight) if portrait sizes cause issues
+	;might want to replace Float(userOptions\screenWidth) with Max(userOptions\screenWidth,userOptions\screenHeight) if portrait sizes cause issues
 	;everyone uses landscape so it's probably a non-issue
 	CopyRect RealGraphicWidth/2-width/2,RealGraphicHeight/2-height/2,width,height,0,0,BackBuffer(),ImageBuffer(img)
 	
@@ -5494,10 +5391,10 @@ Function RenderWorld2()
 			
 			SetFont Font3
 			
-			Text GraphicWidth/2,20*MenuScale,"REFRESHING DATA IN",True,False
+			Text userOptions\screenWidth/2,20*MenuScale,"REFRESHING DATA IN",True,False
 			
-			Text GraphicWidth/2,60*MenuScale,Max(f2s(NVTimer/60.0,1),0.0),True,False
-			Text GraphicWidth/2,100*MenuScale,"SECONDS",True,False
+			Text userOptions\screenWidth/2,60*MenuScale,Max(f2s(NVTimer/60.0,1),0.0),True,False
+			Text userOptions\screenWidth/2,100*MenuScale,"SECONDS",True,False
 			
 			temp% = CreatePivot() : temp2% = CreatePivot()
 			PositionEntity temp, EntityX(Collider), EntityY(Collider), EntityZ(Collider)
@@ -5530,8 +5427,8 @@ Function RenderWorld2()
 						EndIf
 						
 						If (Not IsNVGBlinking%)
-						Text GraphicWidth / 2 + xvalue * (GraphicWidth / 2),GraphicHeight / 2 - yvalue * (GraphicHeight / 2),np\NVName,True,True
-						Text GraphicWidth / 2 + xvalue * (GraphicWidth / 2),GraphicHeight / 2 - yvalue * (GraphicHeight / 2) + 30.0 * MenuScale,f2s(dist,1)+" m",True,True
+						Text userOptions\screenWidth / 2 + xvalue * (userOptions\screenWidth / 2),userOptions\screenHeight / 2 - yvalue * (userOptions\screenHeight / 2),np\NVName,True,True
+						Text userOptions\screenWidth / 2 + xvalue * (userOptions\screenWidth / 2),userOptions\screenHeight / 2 - yvalue * (userOptions\screenHeight / 2) + 30.0 * MenuScale,f2s(dist,1)+" m",True,True
 					EndIf
 				EndIf
 				EndIf
@@ -5541,25 +5438,25 @@ Function RenderWorld2()
 			
 			Color 0,0,55
 			For k=0 To 10
-				Rect 45,GraphicHeight*0.5-(k*20),54,10,True
+				Rect 45,userOptions\screenHeight*0.5-(k*20),54,10,True
 			Next
 			Color 0,0,255
 			For l=0 To Floor((power%+50)*0.01)
-				Rect 45,GraphicHeight*0.5-(l*20),54,10,True
+				Rect 45,userOptions\screenHeight*0.5-(l*20),54,10,True
 			Next
-			DrawImage NVGImages,40,GraphicHeight*0.5+30,1
+			DrawImage NVGImages,40,userOptions\screenHeight*0.5+30,1
 			
 			Color 255,255,255
 		ElseIf WearingNightVision=1 And hasBattery<>0
 			Color 0,55,0
 			For k=0 To 10
-				Rect 45,GraphicHeight*0.5-(k*20),54,10,True
+				Rect 45,userOptions\screenHeight*0.5-(k*20),54,10,True
 			Next
 			Color 0,255,0
 			For l=0 To Floor((power%+50)*0.01)
-				Rect 45,GraphicHeight*0.5-(l*20),54,10,True
+				Rect 45,userOptions\screenHeight*0.5-(l*20),54,10,True
 			Next
-			DrawImage NVGImages,40,GraphicHeight*0.5+30,0
+			DrawImage NVGImages,40,userOptions\screenHeight*0.5+30,0
 		EndIf
 	EndIf
 	
@@ -5574,7 +5471,7 @@ Function RenderWorld2()
 			Color 255,0,0
 			SetFont Font3
 			
-			Text GraphicWidth/2,20*MenuScale,"WARNING: LOW BATTERY",True,False
+			Text userOptions\screenWidth/2,20*MenuScale,"WARNING: LOW BATTERY",True,False
 			Color 255,255,255
 		EndIf
 	EndIf
@@ -5771,9 +5668,9 @@ Function CheckTriggers$()
 End Function
 
 Function ScaledMouseX%()
-	Return Float(MouseX()-(RealGraphicWidth*0.5*(1.0-AspectRatioRatio)))*Float(GraphicWidth)/Float(RealGraphicWidth*AspectRatioRatio)
+	Return Float(MouseX()-(RealGraphicWidth*0.5*(1.0-AspectRatioRatio)))*Float(userOptions\screenWidth)/Float(RealGraphicWidth*AspectRatioRatio)
 End Function
 
 Function ScaledMouseY%()
-	Return Float(MouseY())*Float(GraphicHeight)/Float(RealGraphicHeight)
+	Return Float(MouseY())*Float(userOptions\screenHeight)/Float(RealGraphicHeight)
 End Function

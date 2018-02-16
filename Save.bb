@@ -1088,8 +1088,6 @@ Function LoadGameQuick(file$)
 	NoTarget = False
 	InfiniteStamina = False
 	IsZombie% = False
-	DeafPlayer% = False
-	DeafTimer# = 0.0
 	UnableToMove% = False
 	Msg = ""
 	

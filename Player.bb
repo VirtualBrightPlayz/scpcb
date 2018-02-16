@@ -77,14 +77,12 @@ Global InfiniteStamina% = False
 Global NVBlink%
 Global IsNVGBlinking% = False
 
+Global CameraFogNear# = 0.5
+Global CameraFogFar# = 8.0
 
-;TODO: initialize these in Options.bb?
-Global CameraFogNear# = GetINIFloat("options.ini", "options", "camera fog near")
-Global CameraFogFar# = GetINIFloat("options.ini", "options", "camera fog far")
+Global MouseSens#
 
-Global MouseSens# = GetINIFloat("options.ini", "options", "mouse sensitivity")
-
-Global InvertMouse% = GetINIInt(OptionFile, "options", "invert mouse y")
+Global InvertMouse%
 
 Global StoredCameraFogFar# = CameraFogFar ;TODO: DELET THIS
 
@@ -386,7 +384,7 @@ Function MovePlayer()
 End Function
 
 ; - -Viewport.
-Global viewport_center_x% = GraphicWidth / 2, viewport_center_y% = GraphicHeight / 2
+Global viewport_center_x% = userOptions\screenWidth / 2, viewport_center_y% = userOptions\screenHeight / 2
 
 ; -- Mouselook.
 Global mouselook_x_inc# = 0.3 ; This sets both the sensitivity and direction (+/-) of the mouse on the X axis.
@@ -701,27 +699,4 @@ Function Kill()
 		ResetEntity (Head)
 		RotateEntity(Head, 0, EntityYaw(Camera), 0)		
 	EndIf
-End Function
-
-Function UpdateDeafPlayer()
-	
-	If DeafTimer > 0
-		DeafTimer = DeafTimer-FPSfactor
-		SFXVolume# = 0.0
-		If SFXVolume# > 0.0
-			ControlSoundVolume()
-		EndIf
-		DebugLog DeafTimer
-	Else
-		DeafTimer = 0
-		;If SFXVolume# < PrevSFXVolume#
-		;	SFXVolume# = Min(SFXVolume# + (0.001*PrevSFXVolume)*FPSfactor,PrevSFXVolume#)
-		;	ControlSoundVolume()
-		;Else
-			SFXVolume# = PrevSFXVolume#
-			If DeafPlayer Then ControlSoundVolume()
-			DeafPlayer = False
-		;EndIf
-	EndIf
-	
 End Function

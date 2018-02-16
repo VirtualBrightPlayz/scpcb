@@ -863,7 +863,7 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Rooms)
 	;detail meshes
 	;fr\DetailMesh[0]=LoadMesh_strict("GFX\map\forest\detail\860_1_tree1.b3d")
 	;fr\DetailMesh[1]=LoadMesh_strict("GFX\map\forest\detail\860_1_tree1_leaves.b3d")
-	fr\DetailMesh[1]=LoadMesh_Strict("GFX\map\forest\detail\treetest4.b3d");1.b3d")
+	fr\DetailMesh[1]=LoadMesh_Strict("GFX\map\forest\detail\treetest4.b3d");1.b3d)
 	;EntityParent fr\DetailMesh[1],fr\DetailMesh[0]
 	fr\DetailMesh[2]=LoadMesh_Strict("GFX\map\forest\detail\rock.b3d")
 	fr\DetailMesh[3]=LoadMesh_Strict("GFX\map\forest\detail\rock2.b3d")
@@ -1266,7 +1266,10 @@ LoadRoomTemplates("Data\rooms.ini")
 
 Global RoomScale# = 8.0 / 2048.0
 Const ZONEAMOUNT = 3
-Global MapWidth% = GetINIInt("options.ini", "options", "map size"), MapHeight% = GetINIInt("options.ini", "options", "map size")
+
+Global MapWidth% = userOptions\mapWidth
+Global MapHeight% = userOptions\mapWidth
+
 Dim MapTemp%(MapWidth, MapHeight)
 Dim MapFound%(MapWidth, MapHeight)
 
@@ -5605,7 +5608,7 @@ Function UpdateSecurityCams()
 									HideEntity(sc\Cam)
 									ShowEntity(Camera)	
 									
-									CopyRect(0,0,GraphicWidth,GraphicHeight,0,0,BackBuffer(),TextureBuffer(sc\Room2slTexs[sc\ScrTexture]))
+									CopyRect(0,0,userOptions\screenWidth,userOptions\screenHeight,0,0,BackBuffer(),TextureBuffer(sc\Room2slTexs[sc\ScrTexture]))
 								EndIf
 								
 							EndIf
@@ -7028,7 +7031,7 @@ Function UpdateRoomLights(cam%)
 		If r\dist < HideDistance*0.7 Or r = PlayerRoom
 			For i = 0 To r\MaxLights%
 				If r\Lights%[i]<>0
-					If EnableRoomLights%
+					If userOptions\roomLights
 						If EntityDistance(cam%,r\Lights%[i])<8.5
 							If r\LightHidden[i]
 								ShowEntity r\Lights%[i]
