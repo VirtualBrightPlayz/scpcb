@@ -645,26 +645,26 @@ Function UpdateMainMenu()
 					y = y + 10*MenuScale
 					
 					Text(x + 20 * MenuScale, y + 20 * MenuScale, "Move Forward")
-					InputBox(x + 160 * MenuScale, y + 20 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(KEY_UP,210)),5)		
+					InputBox(x + 160 * MenuScale, y + 20 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(keyBinds\up,210)),5)		
 					Text(x + 20 * MenuScale, y + 40 * MenuScale, "Strafe Left")
-					InputBox(x + 160 * MenuScale, y + 40 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(KEY_LEFT,210)),3)	
+					InputBox(x + 160 * MenuScale, y + 40 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(keyBinds\left,210)),3)	
 					Text(x + 20 * MenuScale, y + 60 * MenuScale, "Move Backward")
-					InputBox(x + 160 * MenuScale, y + 60 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(KEY_DOWN,210)),6)				
+					InputBox(x + 160 * MenuScale, y + 60 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(keyBinds\down,210)),6)				
 					Text(x + 20 * MenuScale, y + 80 * MenuScale, "Strafe Right")
-					InputBox(x + 160 * MenuScale, y + 80 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(KEY_RIGHT,210)),4)	
+					InputBox(x + 160 * MenuScale, y + 80 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(keyBinds\right,210)),4)	
 					Text(x + 20 * MenuScale, y + 100 * MenuScale, "Quick Save")
-					InputBox(x + 160 * MenuScale, y + 100 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(KEY_SAVE,210)),11)
+					InputBox(x + 160 * MenuScale, y + 100 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(keyBinds\save,210)),11)
 					
 					Text(x + 280 * MenuScale, y + 20 * MenuScale, "Manual Blink")
-					InputBox(x + 470 * MenuScale, y + 20 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(KEY_BLINK,210)),7)				
+					InputBox(x + 470 * MenuScale, y + 20 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(keyBinds\blink,210)),7)				
 					Text(x + 280 * MenuScale, y + 40 * MenuScale, "Sprint")
-					InputBox(x + 470 * MenuScale, y + 40 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(KEY_SPRINT,210)),8)
+					InputBox(x + 470 * MenuScale, y + 40 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(keyBinds\sprint,210)),8)
 					Text(x + 280 * MenuScale, y + 60 * MenuScale, "Open/Close Inventory")
-					InputBox(x + 470 * MenuScale, y + 60 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(KEY_INV,210)),9)
+					InputBox(x + 470 * MenuScale, y + 60 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(keyBinds\inv,210)),9)
 					Text(x + 280 * MenuScale, y + 80 * MenuScale, "Crouch")
-					InputBox(x + 470 * MenuScale, y + 80 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(KEY_CROUCH,210)),10)	
+					InputBox(x + 470 * MenuScale, y + 80 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(keyBinds\crouch,210)),10)	
 					Text(x + 280 * MenuScale, y + 100 * MenuScale, "Open/Close Console")
-					InputBox(x + 470 * MenuScale, y + 100 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(KEY_CONSOLE,210)),12)
+					InputBox(x + 470 * MenuScale, y + 100 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(keyBinds\console,210)),12)
 					
 					For i = 0 To 227
 						If KeyHit(i) Then key = i : Exit
@@ -672,25 +672,25 @@ Function UpdateMainMenu()
 					If key<>0 Then
 						Select SelectedInputBox
 							Case 3
-								KEY_LEFT = key
+								keyBinds\left = key
 							Case 4
-								KEY_RIGHT = key
+								keyBinds\right = key
 							Case 5
-								KEY_UP = key
+								keyBinds\up = key
 							Case 6
-								KEY_DOWN = key
+								keyBinds\down = key
 							Case 7
-								KEY_BLINK = key
+								keyBinds\blink = key
 							Case 8
-								KEY_SPRINT = key
+								keyBinds\sprint = key
 							Case 9
-								KEY_INV = key
+								keyBinds\inv = key
 							Case 10
-								KEY_CROUCH = key
+								keyBinds\crouch = key
 							Case 11
-								KEY_SAVE = key
+								keyBinds\save = key
 							Case 12
-								KEY_CONSOLE = key
+								keyBinds\console = key
 						End Select
 						SelectedInputBox = 0
 					EndIf

@@ -307,7 +307,7 @@ Function MovePlayer()
 	EndIf
 	
 	If PlayerRoom\RoomTemplate\Name<>"pocketdimension" Then 
-		If KeyDown(KEY_SPRINT) Then
+		If KeyDown(keyBinds\sprint) Then
 			If Stamina < 5 Then
 				If ChannelPlaying(BreathCHN)=False Then BreathCHN = PlaySound_Strict(BreathSFX((WearingGasMask>0), 0))
 			ElseIf Stamina < 50
@@ -344,9 +344,9 @@ Function MovePlayer()
 	EndIf
 	
 	If (Not NoClip) Then 
-		If ((KeyDown(KEY_DOWN) Xor KeyDown(KEY_UP)) Or (KeyDown(KEY_RIGHT) Xor KeyDown(KEY_LEFT)) And Playable) Or ForceMove>0 Then
+		If ((KeyDown(keyBinds\down) Xor KeyDown(keyBinds\up)) Or (KeyDown(keyBinds\right) Xor KeyDown(keyBinds\left)) And Playable) Or ForceMove>0 Then
 			
-			If Crouch = 0 And (KeyDown(KEY_SPRINT)) And Stamina > 0.0 And (Not IsZombie) Then
+			If Crouch = 0 And (KeyDown(keyBinds\sprint)) And Stamina > 0.0 And (Not IsZombie) Then
 				Sprint = 2.5
 				Stamina = Stamina - FPSfactor * 0.5 * StaminaEffect
 				If Stamina <= 0 Then Stamina = -20.0
@@ -404,14 +404,14 @@ Function MovePlayer()
 			EndIf	
 		EndIf
 	Else ;noclip on
-		If (KeyDown(KEY_SPRINT)) Then 
+		If (KeyDown(keyBinds\sprint)) Then 
 			Sprint = 2.5
-		ElseIf KeyDown(KEY_CROUCH)
+		ElseIf KeyDown(keyBinds\crouch)
 			Sprint = 0.5
 		EndIf
 	EndIf
 	
-	If KeyHit(KEY_CROUCH) And Playable Then Crouch = (Not Crouch)
+	If KeyHit(keyBinds\crouch) And Playable Then Crouch = (Not Crouch)
 	
 	Local temp2# = (Speed * Sprint) / (1.0+CrouchState)
 	
@@ -425,11 +425,11 @@ Function MovePlayer()
 		
 		temp2 = temp2 * NoClipSpeed
 		
-		If KeyDown(KEY_DOWN) Then MoveEntity Collider, 0, 0, -temp2*FPSfactor
-		If KeyDown(KEY_UP) Then MoveEntity Collider, 0, 0, temp2*FPSfactor
+		If KeyDown(keyBinds\down) Then MoveEntity Collider, 0, 0, -temp2*FPSfactor
+		If KeyDown(keyBinds\up) Then MoveEntity Collider, 0, 0, temp2*FPSfactor
 		
-		If KeyDown(KEY_LEFT) Then MoveEntity Collider, -temp2*FPSfactor, 0, 0
-		If KeyDown(KEY_RIGHT) Then MoveEntity Collider, temp2*FPSfactor, 0, 0	
+		If KeyDown(keyBinds\left) Then MoveEntity Collider, -temp2*FPSfactor, 0, 0
+		If KeyDown(keyBinds\right) Then MoveEntity Collider, temp2*FPSfactor, 0, 0	
 		
 		ResetEntity Collider
 	Else
@@ -440,22 +440,22 @@ Function MovePlayer()
 		
 		temp = False
 		If (Not IsZombie%)
-			If KeyDown(KEY_DOWN) And Playable Then
+			If KeyDown(keyBinds\down) And Playable Then
 				temp = True 
 				angle = 180
-				If KeyDown(KEY_LEFT) Then angle = 135 
-				If KeyDown(KEY_RIGHT) Then angle = -135 
-			ElseIf (KeyDown(KEY_UP) And Playable) Then; Or ForceMove>0
+				If KeyDown(keyBinds\left) Then angle = 135 
+				If KeyDown(keyBinds\right) Then angle = -135 
+			ElseIf (KeyDown(keyBinds\up) And Playable) Then; Or ForceMove>0
 				temp = True
 				angle = 0
-				If KeyDown(KEY_LEFT) Then angle = 45 
-				If KeyDown(KEY_RIGHT) Then angle = -45 
+				If KeyDown(keyBinds\left) Then angle = 45 
+				If KeyDown(keyBinds\right) Then angle = -45 
 			ElseIf ForceMove>0 Then
 				temp=True
 				angle = ForceAngle
 			Else If Playable Then
-				If KeyDown(KEY_LEFT) Then angle = 90 : temp = True
-				If KeyDown(KEY_RIGHT) Then angle = -90 : temp = True 
+				If KeyDown(keyBinds\left) Then angle = 90 : temp = True
+				If KeyDown(keyBinds\right) Then angle = -90 : temp = True 
 			EndIf
 		Else
 			temp=True
@@ -544,8 +544,8 @@ Function MovePlayer()
 	EndIf
 	
 	If Playable Then
-		If KeyHit(KEY_BLINK) Then BlinkTimer = 0
-		If KeyDown(KEY_BLINK) And BlinkTimer < - 10 Then BlinkTimer = -10
+		If KeyHit(keyBinds\blink) Then BlinkTimer = 0
+		If KeyDown(keyBinds\blink) And BlinkTimer < - 10 Then BlinkTimer = -10
 	EndIf
 	
 	
