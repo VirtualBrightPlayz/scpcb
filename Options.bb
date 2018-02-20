@@ -15,13 +15,11 @@ Type KeyBinds
     Field console% 
 End Type
 
-Global MouseSens#
-Global InvertMouse%
-
 Type Options
     ;General
     Field introEnabled%
-    Field allowConsole%
+    Field mouseSensitivity#
+    Field invertMouseY%
     Field consoleOpenOnError%
     Field achvPopup%
     Field mapWidth%
@@ -60,8 +58,8 @@ Function LoadOptionsINI()
     Local optHud$ = "hud"
 
     userOptions\introEnabled        = GetINIInt(OptionFile, optGen, "intro enabled")
-    MouseSens                       = GetINIFloat(OptionFile, optGen, "mouse sensitivity")
-    InvertMouse                     = GetINIInt(OptionFile, optGen, "invert mouse y")
+    userOptions\mouseSensitivity    = GetINIFloat(OptionFile, optGen, "mouse sensitivity")
+    userOptions\invertMouseY        = GetINIInt(OptionFile, optGen, "invert mouse y")
     userOptions\consoleOpenOnError  = GetINIInt(OptionFile, optGen, "open console on error")
     userOptions\achvPopup           = GetINIInt(OptionFile, optGen, "achievement popup")
     userOptions\mapWidth            = GetINIInt(OptionFile, optGen, "map size")
@@ -106,9 +104,8 @@ Function SaveOptionsINI()
     Local optHud$ = "hud"
 
     PutINIValue(OptionFile, optGen, "intro enabled", userOptions\introEnabled)
-    PutINIValue(OptionFile, optGen, "mouse sensitivity", MouseSens)
-    PutINIValue(OptionFile, optGen, "invert mouse y", InvertMouse)
-    PutINIValue(OptionFile, optGen, "enable console", userOptions\allowConsole)
+    PutINIValue(OptionFile, optGen, "mouse sensitivity", userOptions\mouseSensitivity)
+    PutINIValue(OptionFile, optGen, "invert mouse y", userOptions\invertMouseY)
     PutINIValue(OptionFile, optGen, "open console on error", userOptions\consoleOpenOnError)
     PutINIValue(OptionFile, optGen, "achievement popup", userOptions\achvPopup)
     PutINIValue(OptionFile, optGen, "map size", userOptions\mapWidth)
