@@ -1063,7 +1063,7 @@ Dim DecalTextures%(20)
 Global Monitor%, MonitorTexture%
 Global CamBaseOBJ%, CamOBJ%
 
-Global LiquidObj%,MTFObj%,GuardObj%,ClassDObj%
+Global LiquidObj%,MTFObj%,ClassDObj%
 Global ApacheObj%,ApacheRotorObj%
 
 Global UnableToMove% = False
@@ -1157,7 +1157,7 @@ Function UpdateGame()
 		
 		If FPSfactor > 0 Then UpdateSecurityCams()
 		
-		If KeyHit(KEY_INV) Then 
+		If KeyHit(keyBinds\inv) Then 
 			If InvOpen Then
 				ResumeSounds()
 				MouseXSpeed() : MouseYSpeed() : MouseZSpeed() : mouse_x_speed_1# = 0.0 : mouse_y_speed_1# = 0.0
@@ -1386,7 +1386,7 @@ Function UpdateGame()
 		
 		;[End block]
 		
-		If KeyHit(KEY_SAVE) Then
+		If KeyHit(keyBinds\save) Then
 			If SelectedDifficulty\saveType = SAVEANYWHERE Then
 				RN$ = PlayerRoom\RoomTemplate\Name$
 				If RN$ = "173" Or RN$ = "exit1" Or RN$ = "gatea"
@@ -1426,14 +1426,14 @@ Function UpdateGame()
 			EndIf
 		Else If SelectedDifficulty\saveType = SAVEONSCREENS And (SelectedScreen<>Null Or SelectedMonitor<>Null)
 			If (Msg<>"Game progress saved." And Msg<>"You cannot save in this location."And Msg<>"You cannot save at this moment.") Or MsgTimer<=0 Then
-				Msg = "Press "+KeyName(KEY_SAVE)+" to save."
+				Msg = "Press "+KeyName(keyBinds\save)+" to save."
 				MsgTimer = 70*4
 			EndIf
 			
 			If MouseHit2 Then SelectedMonitor = Null
 		EndIf
 		
-		If KeyHit(KEY_CONSOLE) Then
+		If KeyHit(keyBinds\console) Then
 			If userOptions\allowConsole
 				If ConsoleOpen Then
 					UsedConsole = True
@@ -3820,26 +3820,26 @@ Function DrawPauseMenu()
 					y = y + 10*MenuScale
 					
 					Text(x, y + 20 * MenuScale, "Move Forward")
-					InputBox(x + 200 * MenuScale, y + 20 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(KEY_UP,210)),5)		
+					InputBox(x + 200 * MenuScale, y + 20 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(keyBinds\up,210)),5)		
 					Text(x, y + 40 * MenuScale, "Strafe Left")
-					InputBox(x + 200 * MenuScale, y + 40 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(KEY_LEFT,210)),3)	
+					InputBox(x + 200 * MenuScale, y + 40 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(keyBinds\left,210)),3)	
 					Text(x, y + 60 * MenuScale, "Move Backward")
-					InputBox(x + 200 * MenuScale, y + 60 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(KEY_DOWN,210)),6)				
+					InputBox(x + 200 * MenuScale, y + 60 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(keyBinds\down,210)),6)				
 					Text(x, y + 80 * MenuScale, "Strafe Right")
-					InputBox(x + 200 * MenuScale, y + 80 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(KEY_RIGHT,210)),4)
+					InputBox(x + 200 * MenuScale, y + 80 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(keyBinds\right,210)),4)
 					
 					Text(x, y + 100 * MenuScale, "Manual Blink")
-					InputBox(x + 200 * MenuScale, y + 100 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(KEY_BLINK,210)),7)				
+					InputBox(x + 200 * MenuScale, y + 100 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(keyBinds\blink,210)),7)				
 					Text(x, y + 120 * MenuScale, "Sprint")
-					InputBox(x + 200 * MenuScale, y + 120 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(KEY_SPRINT,210)),8)
+					InputBox(x + 200 * MenuScale, y + 120 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(keyBinds\sprint,210)),8)
 					Text(x, y + 140 * MenuScale, "Open/Close Inventory")
-					InputBox(x + 200 * MenuScale, y + 140 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(KEY_INV,210)),9)
+					InputBox(x + 200 * MenuScale, y + 140 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(keyBinds\inv,210)),9)
 					Text(x, y + 160 * MenuScale, "Crouch")
-					InputBox(x + 200 * MenuScale, y + 160 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(KEY_CROUCH,210)),10)
+					InputBox(x + 200 * MenuScale, y + 160 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(keyBinds\crouch,210)),10)
 					Text(x, y + 180 * MenuScale, "Quick Save")
-					InputBox(x + 200 * MenuScale, y + 180 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(KEY_SAVE,210)),11)	
+					InputBox(x + 200 * MenuScale, y + 180 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(keyBinds\save,210)),11)	
 					Text(x, y + 200 * MenuScale, "Open/Close Console")
-					InputBox(x + 200 * MenuScale, y + 200 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(KEY_CONSOLE,210)),12)
+					InputBox(x + 200 * MenuScale, y + 200 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(keyBinds\console,210)),12)
 					
 					For i = 0 To 227
 						If KeyHit(i) Then key = i : Exit
@@ -3847,25 +3847,25 @@ Function DrawPauseMenu()
 					If key <> 0 Then
 						Select SelectedInputBox
 							Case 3
-								KEY_LEFT = key
+								keyBinds\left = key
 							Case 4
-								KEY_RIGHT = key
+								keyBinds\right = key
 							Case 5
-								KEY_UP = key
+								keyBinds\up = key
 							Case 6
-								KEY_DOWN = key
+								keyBinds\down = key
 							Case 7
-								KEY_BLINK = key
+								keyBinds\blink = key
 							Case 8
-								KEY_SPRINT = key
+								keyBinds\sprint = key
 							Case 9
-								KEY_INV = key
+								keyBinds\inv = key
 							Case 10
-								KEY_CROUCH = key
+								keyBinds\crouch = key
 							Case 11
-								KEY_SAVE = key
+								keyBinds\save = key
 							Case 12
-								KEY_CONSOLE = key
+								keyBinds\console = key
 						End Select
 						SelectedInputBox = 0
 					EndIf

@@ -273,7 +273,7 @@ Function UpdateEvents()
 						CameraFogRange(Camera, CameraFogNear, CameraFogFar)
 						CameraFogMode(Camera, 1)
 						If SelectedDifficulty\saveType = SAVEANYWHERE Then
-							Msg = "Press "+KeyName(KEY_SAVE)+" to save."
+							Msg = "Press "+KeyName(keyBinds\save)+" to save."
 							MsgTimer = 70*4
 						ElseIf SelectedDifficulty\saveType = SAVEONSCREENS Then
 							Msg = "Saving is only permitted on clickable monitors scattered throughout the facility."
@@ -419,7 +419,7 @@ Function UpdateEvents()
 											PlaySound2 (StoneDragSFX, Camera, Curr173\Collider)
 											PositionEntity Curr173\Collider, 0,0,0
 											ResetEntity Curr173\Collider
-											Msg = "Hold "+KeyName(KEY_SPRINT)+" to run."
+											Msg = "Hold "+KeyName(keyBinds\sprint)+" to run."
 											MsgTimer = 70*8
 										EndIf
 									EndIf
@@ -618,7 +618,7 @@ Function UpdateEvents()
 								EndIf
 							ElseIf e\EventState3 < 35
 								If Inventory(0)<>Null Then
-									Msg = "Press "+KeyName(KEY_INV)+" to open the inventory."
+									Msg = "Press "+KeyName(keyBinds\inv)+" to open the inventory."
 									MsgTimer=70*4
 									e\EventState3 = 40
 									Exit
@@ -1134,7 +1134,7 @@ Function UpdateEvents()
 							If IntroSFX(17)<>0 Then
 								If EntityVisible(Curr173\Collider, Collider) Then
 									If EntityInView(Curr173\obj, Camera) Then
-										Msg = "Press "+KeyName(KEY_BLINK)+" to blink."
+										Msg = "Press "+KeyName(keyBinds\blink)+" to blink."
 										MsgTimer = 70*4
 										PlaySound_Strict IntroSFX(17)
 										IntroSFX(17)=0
@@ -1420,7 +1420,7 @@ Function UpdateEvents()
 										For r.Rooms = Each Rooms
 											If r\RoomTemplate\Name = "start" Then
 												DebugLog "tostart"
-												;Msg = "Press "+KeyName(KEY_SAVE)+" to save."
+												;Msg = "Press "+KeyName(keyBinds\save)+" to save."
 												;MsgTimer = 70*8
 												
 												PlayerRoom = r

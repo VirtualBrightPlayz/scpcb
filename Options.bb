@@ -1,17 +1,19 @@
 Const OptionFile$ = "options.ini"
 
-;TODO: something just isn't right about this
-Global KEY_RIGHT%
-Global KEY_LEFT%
-Global KEY_UP%
-Global KEY_DOWN%
+Type KeyBinds
+    Field right%
+    Field left%
+    Field up%
+    Field down%
 
-Global KEY_BLINK%
-Global KEY_SPRINT%
-Global KEY_INV%
-Global KEY_CROUCH%
-Global KEY_SAVE%
-Global KEY_CONSOLE%
+    Field blink%
+    Field sprint%
+    Field inv%
+    Field crouch%
+
+    Field save%
+    Field console% 
+End Type
 
 Global MouseSens#
 Global InvertMouse%
@@ -46,6 +48,7 @@ Type Options
 
 End Type
 
+Global keyBinds.KeyBinds = new KeyBinds
 Global userOptions.Options = New Options
 LoadOptionsINI()
 
@@ -79,17 +82,18 @@ Function LoadOptionsINI()
     userOptions\hudEnabled          = GetINIInt(OptionFile, optHud, "HUD enabled")
     userOptions\showFPS             = GetINIInt(OptionFile, optHud, "show FPS")
 
-    KEY_RIGHT                       = GetINIInt(OptionFile, optBin, "Right key")
-    KEY_LEFT                        = GetINIInt(OptionFile, optBin, "Left key")
-    KEY_UP                          = GetINIInt(OptionFile, optBin, "Up key")
-    KEY_DOWN                        = GetINIInt(OptionFile, optBin, "Down key")
+    keyBinds\right                  = GetINIInt(OptionFile, optBin, "Right key")
+    keyBinds\left                   = GetINIInt(OptionFile, optBin, "Left key")
+    keyBinds\up                     = GetINIInt(OptionFile, optBin, "Up key")
+    keyBinds\down                   = GetINIInt(OptionFile, optBin, "Down key")
 
-    KEY_BLINK                       = GetINIInt(OptionFile, optBin, "Blink key")
-    KEY_SPRINT                      = GetINIInt(OptionFile, optBin, "Sprint key")
-    KEY_INV                         = GetINIInt(OptionFile, optBin, "Inventory key")
-    KEY_CROUCH                      = GetINIInt(OptionFile, optBin, "Crouch key")
-    KEY_SAVE                        = GetINIInt(OptionFile, optBin, "Save key")
-    KEY_CONSOLE                     = GetINIInt(OptionFile, optBin, "Console key")
+    keyBinds\blink                  = GetINIInt(OptionFile, optBin, "Blink key")
+    keyBinds\sprint                 = GetINIInt(OptionFile, optBin, "Sprint key")
+    keyBinds\inv                    = GetINIInt(OptionFile, optBin, "Inventory key")
+    keyBinds\crouch                 = GetINIInt(OptionFile, optBin, "Crouch key")
+
+    keyBinds\save                   = GetINIInt(OptionFile, optBin, "Save key")
+    keyBinds\console                = GetINIInt(OptionFile, optBin, "Console key")
 
     userOptions\launcher            = GetINIInt(OptionFile, "launcher", "launcher enabled")
 End Function
@@ -124,16 +128,18 @@ Function SaveOptionsINI()
     PutINIValue(OptionFile, optHud, "HUD enabled", userOptions\hudEnabled)
     PutINIValue(OptionFile, optHud, "show FPS", userOptions\showFPS)
     
-    PutINIValue(OptionFile, optBin, "Right key", KEY_RIGHT)
-    PutINIValue(OptionFile, optBin, "Left key", KEY_LEFT)
-    PutINIValue(OptionFile, optBin, "Up key", KEY_UP)
-    PutINIValue(OptionFile, optBin, "Down key", KEY_DOWN)
-    PutINIValue(OptionFile, optBin, "Blink key", KEY_BLINK)
-    PutINIValue(OptionFile, optBin, "Sprint key", KEY_SPRINT)
-    PutINIValue(OptionFile, optBin, "Inventory key", KEY_INV)
-    PutINIValue(OptionFile, optBin, "Crouch key", KEY_CROUCH)
-    PutINIValue(OptionFile, optBin, "Save key", KEY_SAVE)
-    PutINIValue(OptionFile, optBin, "Console key", KEY_CONSOLE)
+    PutINIValue(OptionFile, optBin, "Right key", keyBinds\right)
+    PutINIValue(OptionFile, optBin, "Left key", keyBinds\left)
+    PutINIValue(OptionFile, optBin, "Up key", keyBinds\up)
+    PutINIValue(OptionFile, optBin, "Down key", keyBinds\down)
+
+    PutINIValue(OptionFile, optBin, "Blink key", keyBinds\blink)
+    PutINIValue(OptionFile, optBin, "Sprint key", keyBinds\sprint)
+    PutINIValue(OptionFile, optBin, "Inventory key", keyBinds\inv)
+    PutINIValue(OptionFile, optBin, "Crouch key", keyBinds\crouch)
+
+    PutINIValue(OptionFile, optBin, "Save key", keyBinds\save)
+    PutINIValue(OptionFile, optBin, "Console key", keyBinds\console)
 
     PutINIValue(OptionFile, "launcher", "launcher enabled", userOptions\launcher)
 End Function

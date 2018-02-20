@@ -118,7 +118,8 @@ Type NPCs
 	Field BlinkTimer# = 1.0
 	Field IgnorePlayer%
 	
-	;TODO: If one of these is specific to Shn's ini bone system then remove it.
+	;TODO: Deprecate.
+	Field NPCNameInSection$
 	Field ManipulateBone%
 	Field BoneToManipulate$
 	Field BoneToManipulate2$
@@ -133,7 +134,6 @@ Type NPCs
 	Field boneRoll#
 
 	;TODO: Burn this stuff in hell.
-	Field NPCNameInSection$
 	Field InFacility% = True
 	Field CanUseElevator% = False
 	Field CurrElevator.ElevatorObj
@@ -224,6 +224,19 @@ Function CreateNPC.NPCs(NPCtype%, x#, y#, z#)
 	NPCSpeedChange(n)
 	
 	Return n
+End Function
+
+;Attempts to copy an existing mesh from an NPC of the game time.
+;Otherwise it loads the mesh from the specified filepath.
+Function LoadOrCopyMesh(n.NPCs, filePath$)
+	Local n2.NPCs
+	For n2.NPCs = Each NPCs
+		If (n\npcType = n2\npcType And n <> n2) Then
+			If (n2\obj <> 0) Then
+				n\obj = CopyEntity(n2\obj)
+			EndIf
+		EndIf
+	Next
 End Function
 
 Function RemoveNPC(n.NPCs)
