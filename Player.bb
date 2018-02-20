@@ -13,17 +13,17 @@ Const OVERLAY_008%=5
 Const OVERLAY_178%=6
 
 ;TODO: remove after cleanup
-Const FogTexture%=0, Fog%=0
-Const GasMaskTexture%=0, GasMaskOverlay%=0
-Const InfectTexture%=0, InfectOverlay%=0
-Const DarkTexture%=0, Dark%=0
+Global FogTexture.MarkedForRemoval, Fog.MarkedForRemoval
+Global GasMaskTexture.MarkedForRemoval, GasMaskOverlay.MarkedForRemoval
+Global InfectTexture.MarkedForRemoval, InfectOverlay.MarkedForRemoval
+Global DarkTexture.MarkedForRemoval, Dark.MarkedForRemoval
 
-Const GlassesTexture%=0, GlassesOverlay%=0
+Global GlassesTexture.MarkedForRemoval, GlassesOverlay.MarkedForRemoval
 
-Const FogNVTexture%=0
-Const NVTexture%=0, NVOverlay%=0
+Global FogNVTexture.MarkedForRemoval
+Global NVTexture.MarkedForRemoval, NVOverlay.MarkedForRemoval
 
-Const LightTexture%=0, Light%=0
+Global LightTexture.MarkedForRemoval, Light.MarkedForRemoval
 
 Type Player
 	;entities
@@ -210,39 +210,39 @@ Function DeletePlayer(player.Player)
 End Function
 
 ;TODO: move these into the player struct and give them more appropriate names
-Const Collider%=0, Head%=0
-Const Camera%=0, CameraShake#=0, CurrCameraZoom#=0
+Global Collider.MarkedForRemoval, Head.MarkedForRemoval
+Global Camera.MarkedForRemoval, CameraShake.MarkedForRemoval, CurrCameraZoom.MarkedForRemoval
 
-Const DropSpeed#=0, HeadDropSpeed#=0, CurrSpeed#=0
-Const user_camera_pitch#=0, side#=0
-Const Crouch%=0, CrouchState#=0
+Global DropSpeed.MarkedForRemoval, HeadDropSpeed.MarkedForRemoval, CurrSpeed.MarkedForRemoval
+Global user_camera_pitch.MarkedForRemoval, side.MarkedForRemoval
+Global Crouch.MarkedForRemoval, CrouchState.MarkedForRemoval
 
-Const PlayerZone%=0;, PlayerRoom.Rooms
+Global PlayerZone.MarkedForRemoval;, PlayerRoom.Rooms
 
-Const GrabbedEntity%=0
+Global GrabbedEntity.MarkedForRemoval
 
-Const Shake#=0
+Global Shake.MarkedForRemoval
 
-Const HeartBeatRate#=0, HeartBeatTimer#=0, HeartBeatVolume#=0
+Global HeartBeatRate.MarkedForRemoval, HeartBeatTimer.MarkedForRemoval, HeartBeatVolume.MarkedForRemoval
 
-Const WearingGasMask%=0, WearingHazmat%=0, WearingVest%=0, Wearing714%=0, WearingNightVision%=0, Wearing178%=0
-Const NVTimer#=0
+Global WearingGasMask.MarkedForRemoval, WearingHazmat.MarkedForRemoval, WearingVest.MarkedForRemoval, Wearing714.MarkedForRemoval, WearingNightVision.MarkedForRemoval, Wearing178.MarkedForRemoval
+Global NVTimer.MarkedForRemoval
 
-Const SuperMan%=0, SuperManTimer#=0
+Global SuperMan.MarkedForRemoval, SuperManTimer.MarkedForRemoval
 
-Const Injuries#=0, Bloodloss#=0, Infect#=0
+Global Injuries.MarkedForRemoval, Bloodloss.MarkedForRemoval, Infect.MarkedForRemoval
 
-Const KillTimer#=0, KillAnim%=0, FallTimer#=0, DeathTimer#=0
-Const Sanity#=0, ForceMove#=0, ForceAngle#=0
+Global KillTimer.MarkedForRemoval, KillAnim.MarkedForRemoval, FallTimer.MarkedForRemoval, DeathTimer.MarkedForRemoval
+Global Sanity.MarkedForRemoval, ForceMove.MarkedForRemoval, ForceAngle.MarkedForRemoval
 
-Const Playable%=0
+Global Playable.MarkedForRemoval
 
-Const BLINKFREQ#=0
-Const BlinkTimer#=0, EyeIrritation#=0, EyeStuck#=0, BlinkEffect#=0, BlinkEffectTimer#=0
+Global BLINKFREQ.MarkedForRemoval
+Global BlinkTimer.MarkedForRemoval, EyeIrritation.MarkedForRemoval, EyeStuck.MarkedForRemoval, BlinkEffect.MarkedForRemoval, BlinkEffectTimer.MarkedForRemoval
 
-Const Stamina#=0, StaminaEffect#=0, StaminaEffectTimer#=0
+Global Stamina.MarkedForRemoval, StaminaEffect.MarkedForRemoval, StaminaEffectTimer.MarkedForRemoval
 
-Const GodMode%=0, NoClip%=0, NoClipSpeed#=0
+Global GodMode.MarkedForRemoval, NoClip.MarkedForRemoval, NoClipSpeed.MarkedForRemoval
 
 ;TODO: Murder.
 ;Global SCP1025state#[6]

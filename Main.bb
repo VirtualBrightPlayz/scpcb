@@ -1,3 +1,5 @@
+Include "MarkedForRemoval.bb"
+
 Include "StrictLoads.bb"
 Include "KeyName.bb"
 Include "Options.bb"

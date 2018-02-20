@@ -1,6 +1,6 @@
 ;----------------------------------------------  Console -----------------------------------------------------
 
-Const ConsoleOpen%=0
+Global ConsoleOpen.MarkedForRemoval
 Global ConsoleInput$
 Global ConsoleScroll#,ConsoleScrollDragging%
 Global ConsoleMouseMem%

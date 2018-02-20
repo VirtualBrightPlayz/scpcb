@@ -1,0 +1,3 @@
+;TODO: REMOVE AFTER THE CLEANSING
+Type MarkedForRemoval
+End Type
