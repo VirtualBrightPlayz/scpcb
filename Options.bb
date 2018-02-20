@@ -1,5 +1,6 @@
 Const OptionFile$ = "options.ini"
 
+;TODO: something just isn't right about this
 Global KEY_RIGHT%
 Global KEY_LEFT%
 Global KEY_UP%
@@ -11,6 +12,9 @@ Global KEY_INV%
 Global KEY_CROUCH%
 Global KEY_SAVE%
 Global KEY_CONSOLE%
+
+Global MouseSens#
+Global InvertMouse%
 
 Type Options
     ;General
@@ -55,7 +59,6 @@ Function LoadOptionsINI()
     userOptions\introEnabled        = GetINIInt(OptionFile, optGen, "intro enabled")
     MouseSens                       = GetINIFloat(OptionFile, optGen, "mouse sensitivity")
     InvertMouse                     = GetINIInt(OptionFile, optGen, "invert mouse y")
-    userOptions\allowConsole        = GetINIInt(OptionFile, optGen, "enable console")
     userOptions\consoleOpenOnError  = GetINIInt(OptionFile, optGen, "open console on error")
     userOptions\achvPopup           = GetINIInt(OptionFile, optGen, "achievement popup")
     userOptions\mapWidth            = GetINIInt(OptionFile, optGen, "map size")

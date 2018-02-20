@@ -1,6 +1,7 @@
 ;----------------------------------------------  Console -----------------------------------------------------
 
-Global ConsoleOpen%, ConsoleInput$
+Const ConsoleOpen%=0
+Global ConsoleInput$
 Global ConsoleScroll#,ConsoleScrollDragging%
 Global ConsoleMouseMem%
 Global ConsoleReissue.ConsoleMsg = Null
@@ -34,12 +35,6 @@ Function CreateConsoleMsg(txt$,r%=-1,g%=-1,b%=-1,isCommand%=False)
 End Function
 
 Function UpdateConsole()
-	
-	If userOptions\allowConsole = False Then
-		ConsoleOpen = False
-		Return
-	EndIf
-	
 	If ConsoleOpen Then
 		Local cm.ConsoleMsg
 	
@@ -385,11 +380,10 @@ Function UpdateConsole()
 				Case "asd"
 					WireFrame 1
 					WireframeState=1
-					GodMode = 1
-					NoClip = 1
-					CameraFogNear = 15
-					CameraFogFar = 20
-
+					mainPlayer\godMode = True
+					mainPlayer\noclip = True
+					;CameraFogNear = 15
+					;CameraFogFar = 20
 				Case "status"
 					ConsoleR = 0 : ConsoleG = 255 : ConsoleB = 0
 					CreateConsoleMsg("******************************")

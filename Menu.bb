@@ -1,3 +1,40 @@
+;menus, GUI ---------------------------------------------------------------------------------------------------------
+Const MainMenuOpen%=0, MenuOpen%=0, StopHidingTimer#=0, InvOpen%=0 ;TODO: REMOVE
+;Global OtherOpen.Items = Null
+Const SelectedEnding$="", EndingScreen%=0, EndingTimer#=0
+
+Const GAMESTATE_MAINMENU% = 0
+Const GAMESTATE_PLAYING% = 1
+Const GAMESTATE_PAUSED% = 2
+Const GAMESTATE_CONSOLE% = 3
+Const GAMESTATE_INVENTORY% = 4
+Const GAMESTATE_ENDING% = 5
+
+;Main menu substates
+Const GAMESUBSTATE_MAINMENU_MAIN% = 0
+Const GAMESUBSTATE_MAINMENU_NEWGAME% = 1
+Const GAMESUBSTATE_MAINMENU_CUSTOMMAP% = 2
+Const GAMESUBSTATE_MAINMENU_LOADGAME% = 3
+Const GAMESUBSTATE_MAINMENU_OPTIONS% = 4
+
+;Paused substates
+Const GAMESUBSTATE_PAUSED_MAIN% = 0
+Const GAMESUBSTATE_PAUSED_DEAD% = 1
+Const GAMESUBSTATE_PAUSED_OPTIONS% = 2
+Const GAMESUBSTATE_PAUSED_ACHIEVEMENTS% = 3
+
+Global CurrGameState% = GAMESTATE_MAINMENU
+Global CurrGameSubstate% = GAMESUBSTATE_MAINMENU_START
+Global CurrGameStatePage% = 0
+
+Global MsgTimer#, Msg$, DeathMSG$
+
+Global AccessCode%, KeypadInput$, KeypadTimer#, KeypadMSG$
+
+Global DrawHandIcon%
+;TODO: Assets.bb
+Dim DrawArrowIcon%(4)
+
 Global MenuBack% = LoadImage_Strict("GFX\menu\back.jpg")
 Global MenuText% = LoadImage_Strict("GFX\menu\scptext.jpg")
 Global Menu173% = LoadImage_Strict("GFX\menu\173back.jpg")

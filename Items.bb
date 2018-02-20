@@ -1,9 +1,17 @@
 Global BurntNote%
 
+;TODO: remove, use Inventory type instead
 Const MaxItemAmount% = 10
 Global ItemAmount%
 Dim Inventory.Items(MaxItemAmount + 1)
 Global InvSelect%, SelectedItem.Items
+
+Const MAX_ITEM_COUNT% = 20
+Type Inventory
+	Field items.Items[MAX_ITEM_COUNT]
+	Field size% = 10
+	Field parent.Inventory = Null
+End Type
 
 Global ClosestItem.Items
 
@@ -26,6 +34,8 @@ Type ItemTemplates
 	Field scale#
 	;Field bumptex%
 	Field tex%, texpath$
+	
+	Field inventory.Inventory = Null
 End Type 
 
 Function CreateItemTemplate.ItemTemplates(name$, tempname$, objpath$, invimgpath$, imgpath$, scale#, texturepath$ = "",invimgpath2$="",Anim%=0, texflags%=9)

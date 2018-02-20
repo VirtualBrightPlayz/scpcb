@@ -1,92 +1,273 @@
+Const WORNITEM_SLOT_COUNT%=3
+Const WORNITEM_HEAD_SLOT%=0
+Const WORNITEM_BODY_SLOT%=1
+Const WORNITEM_HAND_SLOT%=2
+
+Const OVERLAY_COUNT%=7
+Const OVERLAY_BLACK%=0
+Const OVERLAY_WHITE%=1
+Const OVERLAY_FOG%=2
+Const OVERLAY_GASMASK%=3
+Const OVERLAY_NIGHTVISION%=4
+Const OVERLAY_008%=5
+Const OVERLAY_178%=6
+
+;TODO: remove after cleanup
+Const FogTexture%=0, Fog%=0
+Const GasMaskTexture%=0, GasMaskOverlay%=0
+Const InfectTexture%=0, InfectOverlay%=0
+Const DarkTexture%=0, Dark%=0
+
+Const GlassesTexture%=0, GlassesOverlay%=0
+
+Const FogNVTexture%=0
+Const NVTexture%=0, NVOverlay%=0
+
+Const LightTexture%=0, Light%=0
+
 Type Player
+	;entities
 	Field collider%
+	
 	Field head%
-	Field camera%
+	Field headPitch#
+	Field headYaw#
+	
+	Field cam%
+	Field camShake#
+	Field camAnimState#
+	Field camZoom#
+	
+	Field overlays%[OVERLAY_COUNT]
+	
+	Field grabbedEntity%
+	;------------
+	
+	;movement states
+	Field crouching%
+	Field crouchState#
 	
 	Field moveSpeed#
 	Field dropSpeed#
 	
 	Field blinkTimer#
 	Field stamina#
+	;------------
+	
+	;ailments
+	Field dead%
+	Field fallTimer#
+	
+	Field injuries#
+	Field bloodloss#
+	
+	Field heartbeatIntensity#
+	
+	Field superMan#
+	
+	Field infect008#
+	
+	Field sanity895#
+	
+	Field forceMove#
+	Field forceAngle#
+	
+	Field disableControls%
+	
+	Field blinkEffect#
+	Field staminaEffect#
+	;------
+	
+	Field inventory.Inventory
+	
+	Field wornItems.Items[WORNITEM_SLOT_COUNT]
+	
+	Field currRoom.Rooms
+	
+	Field godMode%
+	Field noclip%
 End Type
+Global mainPlayer.Player = Null
+
+Function CreatePlayer.Player()
+	Local player.Player = New Player
+	
+	player\cam = CreateCamera()
+	CameraViewport(player\cam, 0, 0, userOptions\screenWidth, userOptions\screenHeight)
+	CameraRange(player\cam, 0.05, 16)
+	CameraFogMode(player\cam, 1)
+	CameraFogRange(player\cam, 0.05, 6) ;TODO: use constants
+	;TODO: Change tint based on zone?
+	CameraFogColor(player\cam, 0, 0, 0)
+	
+	Local fogTexture% = LoadTexture_Strict("GFX\fog.jpg", 1)
+	;FogNVTexture = LoadTexture_Strict("GFX\fogNV.jpg", 1)
+	
+	Local scaleWidth# = userOptions\screenWidth / 1024.0
+	Local scaleHeight# = MenuScale * 0.8
+	
+	;TODO: take ownership of ark_blur_cam
+	Local gasMaskTexture = LoadTexture_Strict("GFX\GasmaskOverlay.jpg", 1)
+	player\overlays[OVERLAY_GASMASK] = CreateSprite(ark_blur_cam)
+	ScaleSprite(player\overlays[OVERLAY_GASMASK], Max(scaleWidth, 1.0), Max(scaleHeight, 0.8))
+	EntityTexture(player\overlays[OVERLAY_GASMASK], gasMaskTexture)
+	EntityBlend(player\overlays[OVERLAY_GASMASK], 2)
+	EntityFX(player\overlays[OVERLAY_GASMASK], 1)
+	EntityOrder player\overlays[OVERLAY_GASMASK], -1003
+	MoveEntity(player\overlays[OVERLAY_GASMASK], 0, 0, 1.0)
+	HideEntity(player\overlays[OVERLAY_GASMASK])
+	
+	Local infectTexture = LoadTexture_Strict("GFX\InfectOverlay.jpg", 1)
+	player\overlays[OVERLAY_008] = CreateSprite(ark_blur_cam)
+	ScaleSprite(player\overlays[OVERLAY_008], Max(scaleWidth, 1.0), Max(scaleHeight, 0.8))
+	EntityTexture(player\overlays[OVERLAY_008], infectTexture)
+	EntityBlend (player\overlays[OVERLAY_008], 3)
+	EntityFX(player\overlays[OVERLAY_008], 1)
+	EntityOrder player\overlays[OVERLAY_008], -1003
+	MoveEntity(player\overlays[OVERLAY_008], 0, 0, 1.0)
+	;EntityAlpha (InfectOverlay, 255.0)
+	HideEntity(player\overlays[OVERLAY_008])
+	
+	Local nvTexture = LoadTexture_Strict("GFX\NightVisionOverlay.jpg", 1)
+	player\overlays[OVERLAY_NIGHTVISION] = CreateSprite(ark_blur_cam)
+	ScaleSprite(player\overlays[OVERLAY_NIGHTVISION], Max(scaleWidth, 1.0), Max(scaleHeight, 0.8))
+	EntityTexture(player\overlays[OVERLAY_NIGHTVISION], nvTexture)
+	EntityBlend (player\overlays[OVERLAY_NIGHTVISION], 2)
+	EntityFX(player\overlays[OVERLAY_NIGHTVISION], 1)
+	EntityOrder player\overlays[OVERLAY_NIGHTVISION], -1003
+	MoveEntity(player\overlays[OVERLAY_NIGHTVISION], 0, 0, 1.0)
+	HideEntity(player\overlays[OVERLAY_NIGHTVISION])
+	
+	;TODO: do we need this?
+	;NVBlink = CreateSprite(ark_blur_cam)
+	;ScaleSprite(NVBlink, Max(scaleWidth, 1.0), Max(scaleHeight, 0.8))
+	;EntityColor(NVBlink,0,0,0)
+	;EntityFX(NVBlink, 1)
+	;EntityOrder NVBlink, -1005
+	;MoveEntity(NVBlink, 0, 0, 1.0)
+	;HideEntity(NVBlink)
+	
+	Local glassesTexture = LoadTexture_Strict("GFX\GlassesOverlay.jpg",1)
+	player\overlays[OVERLAY_178] = CreateSprite(ark_blur_cam)
+	ScaleSprite(player\overlays[OVERLAY_178], Max(scaleWidth, 1.0), Max(scaleHeight, 0.8))
+	EntityTexture(player\overlays[OVERLAY_178], glassesTexture)
+	EntityBlend (player\overlays[OVERLAY_178], 2)
+	EntityFX(player\overlays[OVERLAY_178], 1)
+	EntityOrder player\overlays[OVERLAY_178], -1003
+	MoveEntity(player\overlays[OVERLAY_178], 0, 0, 1.0)
+	HideEntity(player\overlays[OVERLAY_178])
+	
+	Local darkTexture = CreateTexture(1024, 1024, 1 + 2)
+	SetBuffer TextureBuffer(darkTexture)
+	Cls
+	SetBuffer BackBuffer()
+
+	scaleWidth = userOptions\screenWidth / 1240.0
+	scaleHeight = userOptions\screenHeight / 960.0 * 0.8
+
+	player\overlays[OVERLAY_FOG] = CreateSprite(ark_blur_cam)
+	ScaleSprite(player\overlays[OVERLAY_FOG], Max(scaleWidth, 1.0), Max(scaleHeight, 0.8))
+	EntityTexture(player\overlays[OVERLAY_FOG], fogTexture)
+	EntityBlend (player\overlays[OVERLAY_FOG], 2)
+	EntityOrder player\overlays[OVERLAY_FOG], -1000
+	MoveEntity(player\overlays[OVERLAY_FOG], 0, 0, 1.0)
+
+	player\overlays[OVERLAY_BLACK] = CreateSprite(player\cam)
+	ScaleSprite(player\overlays[OVERLAY_BLACK], Max(scaleWidth, 1.0), Max(scaleHeight, 0.8))
+	EntityTexture(player\overlays[OVERLAY_BLACK], darkTexture)
+	EntityBlend (player\overlays[OVERLAY_BLACK], 1)
+	EntityOrder player\overlays[OVERLAY_BLACK], -1002
+	MoveEntity(player\overlays[OVERLAY_BLACK], 0, 0, 1.0)
+	EntityAlpha player\overlays[OVERLAY_BLACK], 0.0
+	
+	Local lightTexture = CreateTexture(1024, 1024, 1 + 2)
+	SetBuffer TextureBuffer(LightTexture)
+	ClsColor 255, 255, 255
+	Cls
+	ClsColor 0, 0, 0
+	SetBuffer BackBuffer()
+	
+	player\overlays[OVERLAY_WHITE] = CreateSprite(player\cam)
+	ScaleSprite(player\overlays[OVERLAY_WHITE], Max(scaleWidth, 1.0), Max(scaleHeight, 0.8))
+	EntityTexture(player\overlays[OVERLAY_WHITE], lightTexture)
+	EntityBlend (player\overlays[OVERLAY_WHITE], 1)
+	EntityOrder player\overlays[OVERLAY_WHITE], -1002
+	MoveEntity(player\overlays[OVERLAY_WHITE], 0, 0, 1.0)
+	HideEntity player\overlays[OVERLAY_WHITE]
+	
+	player\collider = CreatePivot()
+	EntityRadius player\collider, 0.15, 0.30
+	EntityPickMode(player\collider, 1)
+	EntityType player\collider, HIT_PLAYER
+	
+	player\head = CreatePivot()
+	EntityRadius player\collider, 0.15
+	EntityType player\collider, HIT_PLAYER
+End Function
+
+Function DeletePlayer(player.Player)
+	;TODO: delete/drop worn items, delete inventory
+End Function
 
 ;TODO: move these into the player struct and give them more appropriate names
-Global Collider%, Head%
-Global Camera%, CameraShake#, CurrCameraZoom#
+Const Collider%=0, Head%=0
+Const Camera%=0, CameraShake#=0, CurrCameraZoom#=0
 
-Global DropSpeed#, HeadDropSpeed#, CurrSpeed#
-Global user_camera_pitch#, side#
-Global Crouch%, CrouchState#
+Const DropSpeed#=0, HeadDropSpeed#=0, CurrSpeed#=0
+Const user_camera_pitch#=0, side#=0
+Const Crouch%=0, CrouchState#=0
 
-Global PlayerZone%, PlayerRoom.Rooms
+Const PlayerZone%=0;, PlayerRoom.Rooms
 
-Global GrabbedEntity%
+Const GrabbedEntity%=0
 
-Global Shake#
+Const Shake#=0
 
-Global HeartBeatRate#, HeartBeatTimer#, HeartBeatVolume#
+Const HeartBeatRate#=0, HeartBeatTimer#=0, HeartBeatVolume#=0
 
-Global WearingGasMask%, WearingHazmat%, WearingVest%, Wearing714%, WearingNightVision%, Wearing178%
-Global NVTimer#
+Const WearingGasMask%=0, WearingHazmat%=0, WearingVest%=0, Wearing714%=0, WearingNightVision%=0, Wearing178%=0
+Const NVTimer#=0
 
-Global SuperMan%, SuperManTimer#
+Const SuperMan%=0, SuperManTimer#=0
 
-Global Injuries#, Bloodloss#, Infect#
+Const Injuries#=0, Bloodloss#=0, Infect#=0
 
-Global KillTimer#, KillAnim%, FallTimer#, DeathTimer#
-Global Sanity#, ForceMove#, ForceAngle#
+Const KillTimer#=0, KillAnim%=0, FallTimer#=0, DeathTimer#=0
+Const Sanity#=0, ForceMove#=0, ForceAngle#=0
 
-Global Playable% = True
+Const Playable%=0
 
-Global BLINKFREQ#
-Global BlinkTimer#, EyeIrritation#, EyeStuck#, BlinkEffect# = 1.0, BlinkEffectTimer#
+Const BLINKFREQ#=0
+Const BlinkTimer#=0, EyeIrritation#=0, EyeStuck#=0, BlinkEffect#=0, BlinkEffectTimer#=0
 
-Global Stamina#, StaminaEffect#=1.0, StaminaEffectTimer#
+Const Stamina#=0, StaminaEffect#=0, StaminaEffectTimer#=0
 
-Global GodMode%, NoClip%, NoClipSpeed# = 2.0
+Const GodMode%=0, NoClip%=0, NoClipSpeed#=0
 
 ;TODO: Murder.
-Global SCP1025state#[6]
+;Global SCP1025state#[6]
 
 ;TODO: maybe remove?
-Global RefinedItems%
+Const RefinedItems%=0
 
-Global FogTexture%, Fog%
-Global GasMaskTexture%, GasMaskOverlay%
-Global InfectTexture%, InfectOverlay%
-Global DarkTexture%, Dark%
+Const LightBlink#=0, LightFlash#=0
 
-Global GlassesTexture%, GlassesOverlay%
+Const BlurVolume#=0, BlurTimer#=0
 
-Global FogNVTexture%
-Global NVTexture%, NVOverlay%
-
-Global LightTexture%, Light%
-
-Global LightBlink#, LightFlash#
-
-Global BlurVolume#, BlurTimer#
-
-Global PlayTime% ;TODO: do we even need this?
+Const PlayTime%=0 ;TODO: do we even need this?
 
 ;TODO: this is all bad
-Global PlayerSoundVolume#
+Const PlayerSoundVolume#=0
 
-Global InfiniteStamina% = False
+Const InfiniteStamina%=0
 
-Global NVBlink%
-Global IsNVGBlinking% = False
+Const NVBlink%=0
+Const IsNVGBlinking%=0
 
-Global CameraFogNear# = 0.5
-Global CameraFogFar# = 8.0
+Const CameraFogNear#=0
+Const CameraFogFar#=0
 
-Global MouseSens#
-
-Global InvertMouse%
-
-Global StoredCameraFogFar# = CameraFogFar ;TODO: DELET THIS
-
-Global mainPlayer.Player = Null
+Const StoredCameraFogFar# = 0
 
 Function MovePlayer()
 	Local Sprint# = 1.0, Speed# = 0.018, i%, angle#

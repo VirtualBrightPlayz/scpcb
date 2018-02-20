@@ -24,7 +24,7 @@ Function LoadImage_Strict(file$)
 		;if loading failed again, add an error message to the console and return a black image
 		CreateConsoleMsg("Loading image " + Chr(34) + file$ + Chr(34) + " failed.")
 		If userOptions\consoleOpenOnError Then
-			ConsoleOpen = True
+			CurrGameState = GAMESTATE_CONSOLE
 		EndIf
 		
 		Return MenuBlack
@@ -68,7 +68,7 @@ Function PlaySound_Strict%(sndHandle%)
 						If FileType(snd\name) <> 1 Then
 							CreateConsoleMsg("Sound " + Chr(34) + snd\name + Chr(34) + " not found.")
 							If userOptions\consoleOpenOnError
-								ConsoleOpen = True
+								CurrGameState = GAMESTATE_CONSOLE
 							EndIf
 						Else
 							;If EnableSFXRelease Then snd\internalHandle = LoadSound(snd\name)
@@ -76,7 +76,7 @@ Function PlaySound_Strict%(sndHandle%)
 						If snd\internalHandle = 0 Then
 							CreateConsoleMsg("Failed to load Sound: " + Chr(34) + snd\name + Chr(34))
 							If userOptions\consoleOpenOnError
-								ConsoleOpen = True
+								CurrGameState = GAMESTATE_CONSOLE
 							EndIf
 						EndIf
 					EndIf
@@ -94,7 +94,7 @@ Function PlaySound_Strict%(sndHandle%)
 					If FileType(snd\name) <> 1 Then
 						CreateConsoleMsg("Sound " + Chr(34) + snd\name + Chr(34) + " not found.")
 						If userOptions\consoleOpenOnError
-							ConsoleOpen = True
+							CurrGameState = GAMESTATE_CONSOLE
 						EndIf
 					Else
 						;If EnableSFXRelease Then snd\internalHandle = LoadSound(snd\name)
@@ -103,7 +103,7 @@ Function PlaySound_Strict%(sndHandle%)
 					If snd\internalHandle = 0 Then
 						CreateConsoleMsg("Failed to load Sound: " + Chr(34) + snd\name + Chr(34))
 						If userOptions\consoleOpenOnError
-							ConsoleOpen = True
+							CurrGameState = GAMESTATE_CONSOLE
 						EndIf
 					EndIf
 				EndIf

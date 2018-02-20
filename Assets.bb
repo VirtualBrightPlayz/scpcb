@@ -19,13 +19,8 @@ Function LoadEntities()
 	
 	SoundEmitter = CreatePivot()
 	
-	Camera = CreateCamera()
-	CameraViewport(Camera, 0, 0, userOptions\screenWidth, userOptions\screenHeight)
-	CameraRange(Camera, 0.05, 16)
-	CameraFogMode(Camera, 1)
-	CameraFogRange(Camera, CameraFogNear, CameraFogFar)
-	;TODO: Change tint based on zone?
-	CameraFogColor(Camera, 0, 0, 0)
+	mainPlayer = CreatePlayer()
+	
 	AmbientLight(Brightness, Brightness, Brightness)
 	
 	ScreenTexs[0] = CreateTexture(512, 512, 1+256)
@@ -35,112 +30,8 @@ Function LoadEntities()
 	CameraProjMode ark_blur_cam,0
 	;Listener = CreateListener(Camera)
 	
-	FogTexture = LoadTexture_Strict("GFX\fog.jpg", 1)
-	
-	Local scaleWidth# = userOptions\screenWidth / 1024.0
-	Local scaleHeight# = MenuScale * 0.8
-
-	GasMaskTexture = LoadTexture_Strict("GFX\GasmaskOverlay.jpg", 1)
-	GasMaskOverlay = CreateSprite(ark_blur_cam)
-	ScaleSprite(GasMaskOverlay, Max(scaleWidth, 1.0), Max(scaleHeight, 0.8))
-	EntityTexture(GasMaskOverlay, GasMaskTexture)
-	EntityBlend(GasMaskOverlay, 2)
-	EntityFX(GasMaskOverlay, 1)
-	EntityOrder GasMaskOverlay, -1003
-	MoveEntity(GasMaskOverlay, 0, 0, 1.0)
-	HideEntity(GasMaskOverlay)
-	
-	InfectTexture = LoadTexture_Strict("GFX\InfectOverlay.jpg", 1)
-	InfectOverlay = CreateSprite(ark_blur_cam)
-	ScaleSprite(InfectOverlay, Max(scaleWidth, 1.0), Max(scaleHeight, 0.8))
-	EntityTexture(InfectOverlay, InfectTexture)
-	EntityBlend (InfectOverlay, 3)
-	EntityFX(InfectOverlay, 1)
-	EntityOrder InfectOverlay, -1003
-	MoveEntity(InfectOverlay, 0, 0, 1.0)
-	;EntityAlpha (InfectOverlay, 255.0)
-	HideEntity(InfectOverlay)
-	
-	NVTexture = LoadTexture_Strict("GFX\NightVisionOverlay.jpg", 1)
-	NVOverlay = CreateSprite(ark_blur_cam)
-	ScaleSprite(NVOverlay, Max(scaleWidth, 1.0), Max(scaleHeight, 0.8))
-	EntityTexture(NVOverlay, NVTexture)
-	EntityBlend (NVOverlay, 2)
-	EntityFX(NVOverlay, 1)
-	EntityOrder NVOverlay, -1003
-	MoveEntity(NVOverlay, 0, 0, 1.0)
-	HideEntity(NVOverlay)
-	NVBlink = CreateSprite(ark_blur_cam)
-	ScaleSprite(NVBlink, Max(scaleWidth, 1.0), Max(scaleHeight, 0.8))
-	EntityColor(NVBlink,0,0,0)
-	EntityFX(NVBlink, 1)
-	EntityOrder NVBlink, -1005
-	MoveEntity(NVBlink, 0, 0, 1.0)
-	HideEntity(NVBlink)
-	
-	GlassesTexture = LoadTexture_Strict("GFX\GlassesOverlay.jpg",1)
-	GlassesOverlay = CreateSprite(ark_blur_cam)
-	ScaleSprite(GlassesOverlay, Max(scaleWidth, 1.0), Max(scaleHeight, 0.8))
-	EntityTexture(GlassesOverlay, GlassesTexture)
-	EntityBlend (GlassesOverlay, 2)
-	EntityFX(GlassesOverlay, 1)
-	EntityOrder GlassesOverlay, -1003
-	MoveEntity(GlassesOverlay, 0, 0, 1.0)
-	HideEntity(GlassesOverlay)
-	
-	FogNVTexture = LoadTexture_Strict("GFX\fogNV.jpg", 1)
-	
 	DrawLoading(5)
-	
-	DarkTexture = CreateTexture(1024, 1024, 1 + 2)
-	SetBuffer TextureBuffer(DarkTexture)
-	Cls
-	SetBuffer BackBuffer()
-	
-	scaleWidth = userOptions\screenWidth / 1240.0
-	scaleHeight = userOptions\screenHeight / 960.0 * 0.8
-
-	Fog = CreateSprite(ark_blur_cam)
-	ScaleSprite(Fog, Max(scaleWidth, 1.0), Max(scaleHeight, 0.8))
-	EntityTexture(Fog, FogTexture)
-	EntityBlend (Fog, 2)
-	EntityOrder Fog, -1000
-	MoveEntity(Fog, 0, 0, 1.0)
-
-	Dark = CreateSprite(Camera)
-	ScaleSprite(Dark, Max(scaleWidth, 1.0), Max(scaleHeight, 0.8))
-	EntityTexture(Dark, DarkTexture)
-	EntityBlend (Dark, 1)
-	EntityOrder Dark, -1002
-	MoveEntity(Dark, 0, 0, 1.0)
-	EntityAlpha Dark, 0.0
-	
-	LightTexture = CreateTexture(1024, 1024, 1 + 2)
-	SetBuffer TextureBuffer(LightTexture)
-	ClsColor 255, 255, 255
-	Cls
-	ClsColor 0, 0, 0
-	SetBuffer BackBuffer()
-	
 	TeslaTexture = LoadTexture_Strict("GFX\map\tesla.jpg", 1+2)
-	
-	Light = CreateSprite(Camera)
-	ScaleSprite(Light, Max(scaleWidth, 1.0), Max(scaleHeight, 0.8))
-	EntityTexture(Light, LightTexture)
-	EntityBlend (Light, 1)
-	EntityOrder Light, -1002
-	MoveEntity(Light, 0, 0, 1.0)
-	HideEntity Light
-	
-	Collider = CreatePivot()
-	EntityRadius Collider, 0.15, 0.30
-	EntityPickMode(Collider, 1)
-	EntityType Collider, HIT_PLAYER
-	
-	Head = CreatePivot()
-	EntityRadius Head, 0.15
-	EntityType Head, HIT_PLAYER
-	
 	
 	LiquidObj = LoadMesh_Strict("GFX\items\cupliquid.x") ;optimized the cups dispensed by 294
 	HideEntity LiquidObj
@@ -584,7 +475,9 @@ Function NullGame()
 	Local itt.ItemTemplates, s.Screens, lt.LightTemplates, d.Doors, m.Materials
 	Local wp.WayPoints, twp.TempWayPoints, r.Rooms, it.Items
 	
-	ClearTextureCache
+	ClearTextureCache()
+	
+	DeletePlayer(mainPlayer) : mainPlayer = Null
 	
 	UnableToMove% = False
 	
