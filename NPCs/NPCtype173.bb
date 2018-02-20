@@ -35,6 +35,22 @@ Function InitializeNPCtype173(n.NPCs)
 	ScaleEntity(n\obj2, RoomScale, RoomScale, RoomScale)
 	HideEntity(n\obj2)
 
+	n\sounds[0] = LoadSound("SFX\SCP\173\StoneDrag.ogg")
+
+	n\sounds[1] = LoadSound("SFX\SCP\173\Spotted1.ogg")
+	n\sounds[2] = LoadSound("SFX\SCP\173\Spotted2.ogg")
+	n\sounds[3] = LoadSound("SFX\SCP\173\Spotted3.ogg")
+
+	n\sounds[4] = LoadSound("SFX\SCP\173\BigReveal1.ogg")
+	n\sounds[5] = LoadSound("SFX\SCP\173\BigReveal2.ogg")
+	n\sounds[6] = LoadSound("SFX\SCP\173\BigReveal3.ogg")
+	n\sounds[7] = LoadSound("SFX\SCP\173\BigReveal4.ogg")
+	n\sounds[8] = LoadSound("SFX\SCP\173\BigReveal5.ogg")
+
+	n\sounds[9] = LoadSound("SFX\SCP\173\NeckSnap1.ogg")
+	n\sounds[10] = LoadSound("SFX\SCP\173\NeckSnap2.ogg")
+	n\sounds[11] = LoadSound("SFX\SCP\173\NeckSnap3.ogg")
+
 	n\state = STATE173_ATTACK
 End Function
 
@@ -80,35 +96,24 @@ Function UpdateNPCtype173(n.NPCs)
 				
 				;If it's close spoopy horror sound.
 				If dist < 3.5 And MilliSecs2() - n\lastSeen > 60000 And playerVisible Then
-					PlaySound_Strict(HorrorSFX(Rand(3,4)))
+					PlaySound_Strict(n\sounds[Rand(1,3)])
 					
 					n\lastSeen = MilliSecs2()
 				EndIf
-				
-				If dist < 1.5 And Rand(700) = 1 Then PlaySound2(Scp173SFX(Rand(0, 2)), Camera, n\obj)
 				
 				If dist < 1.5 And n\lastDist > 2.0 And playerVisible Then
 					CurrCameraZoom = 40.0
 					HeartBeatRate = Max(HeartBeatRate, 140)
 					HeartBeatVolume = 0.5
 					
-					Select Rand(5)
-						Case 1
-							PlaySound_Strict(HorrorSFX(1))
-						Case 2
-							PlaySound_Strict(HorrorSFX(2))
-						Case 3
-							PlaySound_Strict(HorrorSFX(9))
-						Case 4
-							PlaySound_Strict(HorrorSFX(10))
-						Case 5
-							PlaySound_Strict(HorrorSFX(14))
-					End Select
+					;Jumpscare.
+					PlaySound_Strict(n\sounds[Rand(4,8)])
 				EndIf									
 					
 				n\lastDist = dist
 			Else 
-				n\soundChn = LoopSound2(StoneDragSFX, n\soundChn, Camera, n\collider, 10.0, n\state)
+				;Stonedrag.
+				n\soundChn = LoopSound2(n\sounds[0], n\soundChn, Camera, n\collider, 10.0, n\state)
 
 				;more than 6 room lengths away from the player -> teleport to a room closer to the player
 				If dist > 50 Then
@@ -184,7 +189,11 @@ Function UpdateNPCtype173(n.NPCs)
 								End Select
 								
 								n\state = STATE173_IDLE
-								PlaySound_Strict(NeckSnapSFX(Rand(0,2)))
+								
+								;Necksnap.
+								PlaySound_Strict(n\sounds[Rand(9,11)])
+
+								;TODO: Remove?
 								If Rand(2) = 1 Then 
 									TurnEntity(Camera, 0, Rand(80,100), 0)
 								Else

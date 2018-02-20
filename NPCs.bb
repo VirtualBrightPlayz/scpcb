@@ -48,7 +48,7 @@ Type NPCs
 	Field frame#
 	Field angle#
 
-	Field sounds$[10]
+	Field sounds$[12]
 	Field soundChannels%[3]
 
 	;Deprecate.
@@ -226,7 +226,7 @@ Function CreateNPC.NPCs(NPCtype%, x#, y#, z#)
 	Return n
 End Function
 
-;Attempts to copy an existing mesh from an NPC of the game time.
+;Attempts to copy an existing mesh from an NPC of the same type.
 ;Otherwise it loads the mesh from the specified filepath.
 Function LoadOrCopyMesh(n.NPCs, filePath$)
 	Local n2.NPCs
@@ -264,7 +264,7 @@ Function RemoveNPC(n.NPCs)
 		EndIf
 	Next
 
-	For i = 0 to 9
+	For i = 0 to 11
 		If (n\sounds[i] <> 0) Then
 			FreeSound_Strict(n\sounds[i])
 		EndIf

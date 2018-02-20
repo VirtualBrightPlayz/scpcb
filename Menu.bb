@@ -1,5 +1,5 @@
 ;menus, GUI ---------------------------------------------------------------------------------------------------------
-Global MainMenuOpen.MarkedForRemoval, MenuOpen.MarkedForRemoval, StopHidingTimer.MarkedForRemoval, InvOpen.MarkedForRemoval ;TODO: REMOVE
+Global MainMenuOpen.MarkedForRemoval, MenuOpen.MarkedForRemoval, InvOpen.MarkedForRemoval ;TODO: REMOVE
 ;Global OtherOpen.Items = Null
 Global SelectedEnding.MarkedForRemoval, EndingScreen.MarkedForRemoval, EndingTimer.MarkedForRemoval
 

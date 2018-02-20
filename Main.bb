@@ -244,7 +244,7 @@ Global NuclearSirenSFX%
 
 Global CameraSFX = LoadSound_Strict("SFX\General\Camera.ogg") 
 
-Global StoneDragSFX% = LoadSound_Strict("SFX\SCP\173\StoneDrag.ogg")
+Global StoneDragSFX.MarkedForRemoval
 
 Global GunshotSFX% = LoadSound_Strict("SFX\General\Gunshot.ogg")
 Global Gunshot2SFX% = LoadSound_Strict("SFX\General\Gunshot2.ogg")
@@ -321,14 +321,8 @@ OldManSFX(3) = LoadSound_Strict("SFX\SCP\106\Laugh.ogg")
 OldManSFX(4) = LoadSound_Strict("SFX\SCP\106\Breathing.ogg")
 OldManSFX(5) = LoadSound_Strict("SFX\Room\PocketDimension\Enter.ogg")
 
-;TODO: Move to NPCData173.
-Dim Scp173SFX%(3)
-For i = 0 To 2
-	Scp173SFX(i) = LoadSound_Strict("SFX\SCP\173\Rattle" + (i + 1) + ".ogg")
-Next
-
 ;TODO: Most of these sounds are NPC-specific anyway. Divide this up.
-Dim HorrorSFX%(20)
+Dim HorrorSFX.MarkedForRemoval(20)
 For i = 0 To 10
 	HorrorSFX(i) = LoadSound_Strict("SFX\Horror\Horror" + i + ".ogg")
 Next
@@ -369,7 +363,7 @@ For i = 0 To 4
 Next
 
 ;TODO: Move to NPCData173.
-Dim NeckSnapSFX(3)
+Dim NeckSnapSFX.MarkedForRemoval(3)
 For i = 0 To 2
 	NeckSnapSFX(i) =  LoadSound_Strict("SFX\SCP\173\NeckSnap"+(i+1)+".ogg")
 Next
@@ -3641,24 +3635,6 @@ Function DrawPauseMenu()
 	If MenuOpen Then
 		
 		;DebugLog AchievementsMenu+"|"+OptionsMenu+"|"+QuitMSG
-		
-		If StopHidingTimer = 0 Then
-			If EntityDistance(Curr173\Collider, Collider)<4.0 Or EntityDistance(Curr106\Collider, Collider)<4.0 Then 
-				StopHidingTimer = 1
-			EndIf	
-		ElseIf StopHidingTimer < 40
-			If KillTimer >= 0 Then 
-				StopHidingTimer = StopHidingTimer+FPSfactor
-				
-				If StopHidingTimer => 40 Then
-					PlaySound_Strict(HorrorSFX(15))
-					Msg = "STOP HIDING"
-					MsgTimer = 6*70
-					MenuOpen = False
-					Return
-				EndIf
-			EndIf
-		EndIf
 		
 		InvOpen = False
 		

@@ -403,7 +403,10 @@ Function UpdateEvents()
 								Else
 									If e\EventState-FPSfactor < 900+4*70 Then 
 										PlaySound_Strict(IntroSFX(11)) : LightBlink = 3.0
-										PlaySound2 (StoneDragSFX, Camera, Curr173\Collider)
+										
+										;Stonedrag.
+										PlaySound2 (Curr173\sounds[0], Camera, Curr173\Collider)
+
 										PointEntity Curr173\Collider, e\room\NPC[2]\Collider
 										If EntityY(Collider)<320*RoomScale Then BlinkTimer = -10
 									EndIf
@@ -416,7 +419,10 @@ Function UpdateEvents()
 											LightBlink = 3.0
 											PlaySound_Strict(IntroSFX(11))
 											BlinkTimer = -10
-											PlaySound2 (StoneDragSFX, Camera, Curr173\Collider)
+
+											;Stonedrag.
+											PlaySound2 (Curr173\sounds[0], Camera, Curr173\Collider)
+											
 											PositionEntity Curr173\Collider, 0,0,0
 											ResetEntity Curr173\Collider
 											Msg = "Hold "+KeyName(keyBinds\sprint)+" to run."
