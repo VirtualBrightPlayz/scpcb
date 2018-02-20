@@ -143,20 +143,6 @@ Global LightsOn% = True ;secondary lighting on
 ;TODO: Not global assuming this is for 106's containment chamber.
 Global SoundTransmission%
 
-;menus, GUI ---------------------------------------------------------------------------------------------------------
-Global MainMenuOpen%, MenuOpen%, StopHidingTimer#, InvOpen%
-Global OtherOpen.Items = Null
-
-Global SelectedEnding$, EndingScreen%, EndingTimer#
-
-Global MsgTimer#, Msg$, DeathMSG$
-
-Global AccessCode%, KeypadInput$, KeypadTimer#, KeypadMSG$
-
-Global DrawHandIcon%
-;TODO: Assets.bb
-Dim DrawArrowIcon%(4)
-
 ;misc ---------------------------------------------------------------------------------------------------------------
 
 Include "Difficulty.bb"
@@ -1083,7 +1069,6 @@ Global UnableToMove% = False
 ;---------------------------------------------------------------------------------------------------
 
 Include "Menu.bb"
-MainMenuOpen = True
 
 ;---------------------------------------------------------------------------------------------------
 
@@ -1099,7 +1084,10 @@ LoopDelay = MilliSecs()
 ;----------------------------------------------------------------------------------------------------------------------------------------------------
 
 Repeat
-	
+	UpdateGame()
+Forever
+
+Function UpdateGame()
 	Cls
 	
 	CurTime = MilliSecs()
@@ -1558,7 +1546,7 @@ Repeat
 	Else 
 		Flip 1
 	EndIf
-Forever
+End Function
 
 ;----------------------------------------------------------------------------------------------------------------------------------------------------
 ;----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -3645,7 +3633,7 @@ Function DrawGUI()
 	If PrevInvOpen And (Not InvOpen) Then MoveMouse viewport_center_x, viewport_center_y
 End Function
 
-Function DrawMenu()
+Function DrawPauseMenu()
 	Local x%, y%, width%, height%
 	
 	If MenuOpen Then
