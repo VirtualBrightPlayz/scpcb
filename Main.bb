@@ -2809,7 +2809,7 @@ Function DrawGUI()
 											SuperMan = True
 											Msg = "You have becomed overwhelmedwithadrenalineholyshitWOOOOOO~!"
 										Case 2
-											InvertMouse = (Not InvertMouse)
+											userOptions\invertMouseY = (Not userOptions\invertMouseY)
 											Msg = "You suddenly find it very difficult to turn your head."
 										Case 3
 											BlurTimer = 5000
@@ -3805,7 +3805,7 @@ Function DrawPauseMenu()
 					;[Block]
 					y = y + 50*MenuScale
 					
-					MouseSens = (SlideBar(x + 270*MenuScale, y-4*MenuScale, 100*MenuScale, (MouseSens+0.5)*100.0)/100.0)-0.5
+					userOptions\mouseSensitivity = (SlideBar(x + 270*MenuScale, y-4*MenuScale, 100*MenuScale, (userOptions\mouseSensitivity+0.5)*100.0)/100.0)-0.5
 					Color(255, 255, 255)
 					Text(x, y, "Mouse sensitivity:")
 					
@@ -3813,7 +3813,7 @@ Function DrawPauseMenu()
 					
 					Color(255, 255, 255)
 					Text(x, y, "Invert mouse Y-axis:")
-					InvertMouse = DrawTick(x + 270 * MenuScale, y + MenuScale, InvertMouse)
+					userOptions\invertMouseY = DrawTick(x + 270 * MenuScale, y + MenuScale, userOptions\invertMouseY)
 					
 					y = y + 30*MenuScale
 					Text(x, y, "Control configuration:")

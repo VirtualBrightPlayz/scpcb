@@ -630,7 +630,7 @@ Function UpdateMainMenu()
 					
 					y = y + 20*MenuScale
 					
-					MouseSens = (SlideBar(x + 310*MenuScale, y-4*MenuScale, 150*MenuScale, (MouseSens+0.5)*100.0)/100.0)-0.5
+					userOptions\mouseSensitivity = (SlideBar(x + 310*MenuScale, y-4*MenuScale, 150*MenuScale, (userOptions\mouseSensitivity+0.5)*100.0)/100.0)-0.5
 					Color(255, 255, 255)
 					Text(x + 20 * MenuScale, y, "Mouse sensitivity:")
 					
@@ -638,7 +638,7 @@ Function UpdateMainMenu()
 					
 					Color(255, 255, 255)
 					Text(x + 20 * MenuScale, y, "Invert mouse Y-axis:")
-					InvertMouse = DrawTick(x + 310 * MenuScale, y + MenuScale, InvertMouse)
+					userOptions\invertMouseY = DrawTick(x + 310 * MenuScale, y + MenuScale, userOptions\invertMouseY)
 					
 					y = y + 30*MenuScale
 					Text(x + 20 * MenuScale, y, "Control configuration:")

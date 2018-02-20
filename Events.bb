@@ -8143,7 +8143,7 @@ Function UpdateEvents()
 										Msg = "You notice countless small incisions all around your body. They are bleeding heavily."
 										MsgTimer = 70*8
 									Case "1:1"
-										InvertMouse = (Not InvertMouse)
+										userOptions\invertMouseY = (Not userOptions\invertMouseY)
 									Case "fine", "very fine"
 										SuperMan = True
 								End Select
