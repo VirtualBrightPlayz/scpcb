@@ -146,7 +146,6 @@ Function LoadEntities()
 	HideEntity LiquidObj
 	
 	MTFObj = LoadAnimMesh_Strict("GFX\npcs\MTF2.b3d") ;optimized MTFs
-	GuardObj = LoadAnimMesh_Strict("GFX\npcs\guard.b3d") ;optimized Guards
 	;GuardTex = LoadTexture_Strict("GFX\npcs\body.jpg") ;optimized the guards even more
 	
 	;If BumpEnabled Then
@@ -178,7 +177,6 @@ Function LoadEntities()
 	ApacheRotorObj = LoadAnimMesh_Strict("GFX\apacherotor.b3d") ;optimized the Apaches even more
 	
 	HideEntity MTFObj
-	HideEntity GuardObj
 	HideEntity ClassDObj
 	HideEntity ApacheObj
 	HideEntity ApacheRotorObj
