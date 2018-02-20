@@ -35,7 +35,7 @@ Function CreateConsoleMsg(txt$,r%=-1,g%=-1,b%=-1,isCommand%=False)
 End Function
 
 Function UpdateConsole()
-	If ConsoleOpen Then
+	If CurrGameState=GAMESTATE_CONSOLE Then
 		Local cm.ConsoleMsg
 	
 		SetFont ConsoleFont
@@ -389,16 +389,16 @@ Function UpdateConsole()
 					CreateConsoleMsg("******************************")
 					CreateConsoleMsg("Status: ")
 					CreateConsoleMsg("Coordinates: ")
-					CreateConsoleMsg("    - collider: "+EntityX(Collider)+", "+EntityY(Collider)+", "+EntityZ(Collider))
-					CreateConsoleMsg("    - camera: "+EntityX(Camera)+", "+EntityY(Camera)+", "+EntityZ(Camera))
+					CreateConsoleMsg("    - collider: "+EntityX(mainPlayer\collider)+", "+EntityY(mainPlayer\collider)+", "+EntityZ(mainPlayer\collider))
+					CreateConsoleMsg("    - camera: "+EntityX(mainPlayer\cam)+", "+EntityY(mainPlayer\cam)+", "+EntityZ(mainPlayer\cam))
 					
 					CreateConsoleMsg("Rotation: ")
-					CreateConsoleMsg("    - collider: "+EntityPitch(Collider)+", "+EntityYaw(Collider)+", "+EntityRoll(Collider))
-					CreateConsoleMsg("    - camera: "+EntityPitch(Camera)+", "+EntityYaw(Camera)+", "+EntityRoll(Camera))
+					CreateConsoleMsg("    - collider: "+EntityPitch(mainPlayer\collider)+", "+EntityYaw(mainPlayer\collider)+", "+EntityRoll(mainPlayer\collider))
+					CreateConsoleMsg("    - camera: "+EntityPitch(mainPlayer\cam)+", "+EntityYaw(mainPlayer\cam)+", "+EntityRoll(mainPlayer\cam))
 					
-					CreateConsoleMsg("Room: "+PlayerRoom\RoomTemplate\Name)
+					CreateConsoleMsg("Room: "+mainPlayer\currRoom\RoomTemplate\Name)
 					For ev.Events = Each Events
-						If ev\room = PlayerRoom Then
+						If ev\room = mainPlayer\currRoom Then
 							CreateConsoleMsg("Room event: "+ev\EventName)	
 							CreateConsoleMsg("-    state: "+ev\EventState)
 							CreateConsoleMsg("-    state2: "+ev\EventState2)	
@@ -407,17 +407,17 @@ Function UpdateConsole()
 						EndIf
 					Next
 					
-					CreateConsoleMsg("Room coordinates: "+Floor(EntityX(PlayerRoom\obj) / 8.0 + 0.5)+", "+ Floor(EntityZ(PlayerRoom\obj) / 8.0 + 0.5))
-					CreateConsoleMsg("Stamina: "+Stamina)
-					CreateConsoleMsg("Death timer: "+KillTimer)					
-					CreateConsoleMsg("Blinktimer: "+BlinkTimer)
-					CreateConsoleMsg("Injuries: "+Injuries)
-					CreateConsoleMsg("Bloodloss: "+Bloodloss)
+					CreateConsoleMsg("Room coordinates: "+Floor(EntityX(mainPlayer\currRoom\obj) / 8.0 + 0.5)+", "+ Floor(EntityZ(mainPlayer\currRoom\obj) / 8.0 + 0.5))
+					CreateConsoleMsg("Stamina: "+mainPlayer\stamina)
+					;CreateConsoleMsg("Death timer: "+KillTimer)					
+					CreateConsoleMsg("Blinktimer: "+mainPlayer\blinkTimer)
+					CreateConsoleMsg("Injuries: "+mainPlayer\injuries)
+					CreateConsoleMsg("Bloodloss: "+mainPlayer\bloodloss)
 					CreateConsoleMsg("******************************")
 
 				Case "camerapick"
 					ConsoleR = 0 : ConsoleG = 255 : ConsoleB = 0
-					c = CameraPick(Camera, userOptions\screenWidth / 2, userOptions\screenHeight / 2)
+					c = CameraPick(mainPlayer\cam, userOptions\screenWidth / 2, userOptions\screenHeight / 2)
 					If c = 0 Then
 						CreateConsoleMsg("******************************")
 						CreateConsoleMsg("No entity  picked")
@@ -431,7 +431,9 @@ Function UpdateConsole()
 						texname$ =  StripPath(TextureName(t))
 						CreateConsoleMsg("Texture name: "+texname)
 						CreateConsoleMsg("Coordinates: "+EntityX(c)+", "+EntityY(c)+", "+EntityZ(c))
-						CreateConsoleMsg("******************************")							
+						CreateConsoleMsg("******************************")
+						FreeTexture t
+						FreeBrush b							
 					EndIf
 
 				Case "hidedistance"
@@ -439,28 +441,30 @@ Function UpdateConsole()
 					CreateConsoleMsg("Hidedistance set to "+HideDistance)		
 
 				Case "ending"
-					SelectedEnding = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
-					KillTimer = -0.1
-					;EndingTimer = -0.1
-
-				Case "noclipspeed"
+					CurrGameState = GAMESTATE_ENDING
 					StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 					
-					NoClipSpeed = Float(StrTemp)
+					mainPlayer\dead = True
+
+				Case "noclipspeed"
+					RuntimeError "TODO: reimplement?"
+					;StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
+					
+					;NoClipSpeed = Float(StrTemp)
 
 				Case "injure"
 					StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 					
-					Injuries = Float(StrTemp)
+					mainPlayer\injuries = Float(StrTemp)
 
 				Case "infect"
 					StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 					
-					Infect = Float(StrTemp)
+					mainPlayer\infect008 = Float(StrTemp)
 
 				Case "heal"
-					Injuries = 0
-					Bloodloss = 0
+					mainPlayer\injuries = 0
+					mainPlayer\bloodloss = 0
 
 				Case "teleport"
 					StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
@@ -477,19 +481,19 @@ Function UpdateConsole()
 					For r.Rooms = Each Rooms
 						If r\RoomTemplate\Name = StrTemp Then
 							;PositionEntity (Collider, EntityX(r\obj), 0.7, EntityZ(r\obj))
-							PositionEntity (Collider, EntityX(r\obj), EntityY(r\obj)+0.7, EntityZ(r\obj))
-							ResetEntity(Collider)
+							PositionEntity (mainPlayer\collider, EntityX(r\obj), EntityY(r\obj)+0.7, EntityZ(r\obj))
+							ResetEntity(mainPlayer\collider)
 							UpdateDoors()
 							UpdateRooms()
 							For it.Items = Each Items
 								it\disttimer = 0
 							Next
-							PlayerRoom = r
+							mainPlayer\currRoom = r
 							Exit
 						EndIf
 					Next
 					
-					If PlayerRoom\RoomTemplate\Name <> StrTemp Then CreateConsoleMsg("Room not found.",255,150,0)
+					If mainPlayer\currRoom\RoomTemplate\Name <> StrTemp Then CreateConsoleMsg("Room not found.",255,150,0)
 					
 				Case "spawnitem"
 					StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
@@ -498,13 +502,13 @@ Function UpdateConsole()
 						If (Lower(itt\name) = StrTemp) Then
 							temp = True
 							CreateConsoleMsg(itt\name + " spawned.")
-							it.Items = CreateItem(itt\name, itt\tempname, EntityX(Collider), EntityY(Camera,True), EntityZ(Collider))
+							it.Items = CreateItem(itt\name, itt\tempname, EntityX(mainPlayer\collider), EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider))
 							EntityType(it\collider, HIT_ITEM)
 							Exit
 						Else If (Lower(itt\tempname) = StrTemp) Then
 							temp = True
 							CreateConsoleMsg(itt\name + " spawned.")
-							it.Items = CreateItem(itt\name, itt\tempname, EntityX(Collider), EntityY(Camera,True), EntityZ(Collider))
+							it.Items = CreateItem(itt\name, itt\tempname, EntityX(mainPlayer\collider), EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider))
 							EntityType(it\collider, HIT_ITEM)
 							Exit
 						End If
@@ -559,7 +563,7 @@ Function UpdateConsole()
 
 				Case "spawn106"
 					Curr106\State = -1
-					PositionEntity Curr106\Collider, EntityX(Collider), EntityY(Curr106\Collider), EntityZ(Collider)
+					PositionEntity Curr106\collider, EntityX(mainPlayer\collider), EntityY(Curr106\collider), EntityZ(mainPlayer\collider)
 
 				Case "reset096"
 					For n.NPCs = Each NPCs
@@ -570,7 +574,7 @@ Function UpdateConsole()
 					Next
 
 				Case "disable173"
-					Curr173\Idle = 3 ;This phenominal comment is brought to you by PolyFox. His absolute wisdom in this fatigue of knowledge brought about a new era of 173 state checks.
+					Curr173\Idle = 3 ;TODO: clean up
 					HideEntity Curr173\obj
 					HideEntity Curr173\Collider
 
@@ -605,8 +609,8 @@ Function UpdateConsole()
 					EndIf
 
 				Case "sanic"
-					SuperMan = Not SuperMan
-					If SuperMan = True Then
+					mainPlayer\superMan = Not mainPlayer\superMan
+					If mainPlayer\superMan = True Then
 						CreateConsoleMsg("GOTTA GO FAST")
 					Else
 						CreateConsoleMsg("WHOA SLOW DOWN")
@@ -615,9 +619,9 @@ Function UpdateConsole()
 				Case "scp-420-j","420","weed"
 					For i = 1 To 20
 						If Rand(2)=1 Then
-							it.Items = CreateItem("Some SCP-420-J","420", EntityX(Collider,True)+Cos((360.0/20.0)*i)*Rnd(0.3,0.5), EntityY(Camera,True), EntityZ(Collider,True)+Sin((360.0/20.0)*i)*Rnd(0.3,0.5))
+							it.Items = CreateItem("Some SCP-420-J","420", EntityX(mainPlayer\collider,True)+Cos((360.0/20.0)*i)*Rnd(0.3,0.5), EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider,True)+Sin((360.0/20.0)*i)*Rnd(0.3,0.5))
 						Else
-							it.Items = CreateItem("Joint","420s", EntityX(Collider,True)+Cos((360.0/20.0)*i)*Rnd(0.3,0.5), EntityY(Camera,True), EntityZ(Collider,True)+Sin((360.0/20.0)*i)*Rnd(0.3,0.5))
+							it.Items = CreateItem("Joint","420s", EntityX(mainPlayer\collider,True)+Cos((360.0/20.0)*i)*Rnd(0.3,0.5), EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider,True)+Sin((360.0/20.0)*i)*Rnd(0.3,0.5))
 						EndIf
 						EntityType (it\collider, HIT_ITEM)
 					Next
@@ -628,68 +632,63 @@ Function UpdateConsole()
 					
 					Select StrTemp
 						Case "on", "1", "true"
-							GodMode = True						
+							mainPlayer\godMode = True						
 						Case "off", "0", "false"
-							GodMode = False
+							mainPlayer\godMode = False
 						Default
-							GodMode = Not GodMode
+							mainPlayer\godMode = Not mainPlayer\godMode
 					End Select	
-					If GodMode Then
+					If mainPlayer\godMode Then
 						CreateConsoleMsg("GODMODE ON")
 					Else
 						CreateConsoleMsg("GODMODE OFF")	
 					EndIf
 
 				Case "revive","undead","resurrect"
-					DropSpeed = -0.1
-					HeadDropSpeed = 0.0
-					Shake = 0
-					CurrSpeed = 0
+					mainPlayer\dead = False
+				
+					mainPlayer\dropSpeed = -0.1
+					mainPlayer\camShake = 0
+					mainPlayer\moveSpeed = 0
 					
-					HeartBeatVolume = 0
+					mainPlayer\heartbeatIntensity = 0
 					
-					CameraShake = 0
-					Shake = 0
-					LightFlash = 0
-					BlurTimer = 0
+					mainPlayer\lightFlash = 0
+					mainPlayer\blurTimer = 0
 					
-					FallTimer = 0
-					MenuOpen = False
+					mainPlayer\fallTimer = 0
 					
-					GodMode = 0
-					NoClip = 0
+					mainPlayer\godMode = 0
+					mainPlayer\noclip = 0
 					
-					ShowEntity Collider
-					
-					KillTimer = 0
-					KillAnim = 0
+					ShowEntity mainPlayer\collider
 					
 				Case "noclip","fly"
 					StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 					
 					Select StrTemp
 						Case "on", "1", "true"
-							NoClip = True
-							Playable = True
+							mainPlayer\noclip = True
+							mainPlayer\disableControls = False
 						Case "off", "0", "false"
-							NoClip = False	
-							RotateEntity Collider, 0, EntityYaw(Collider), 0
+							mainPlayer\noclip = False	
+							RotateEntity mainPlayer\collider, 0, EntityYaw(mainPlayer\collider), 0
 						Default
-							NoClip = Not NoClip
-							If NoClip = False Then		
-								RotateEntity Collider, 0, EntityYaw(Collider), 0
+							mainPlayer\noclip = Not mainPlayer\noclip
+							If mainPlayer\noclip = False Then		
+								RotateEntity mainPlayer\collider, 0, EntityYaw(mainPlayer\collider), 0
 							Else
-								Playable = True
+								mainPlayer\disableControls = False
 							EndIf
 					End Select
 
-					If NoClip Then
+					If mainPlayer\noclip Then
 						CreateConsoleMsg("NOCLIP ON")
 					Else
 						CreateConsoleMsg("NOCLIP OFF")
 					EndIf
 					
-					DropSpeed = 0
+					mainPlayer\dropSpeed = 0
 					
 				Case "showfps"
 					userOptions\showFPS = Not userOptions\showFPS
@@ -751,10 +750,11 @@ Function UpdateConsole()
 
 					
 				Case "camerafog"
-					args$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
-					CameraFogNear = Float(Left(args, Len(args) - Instr(args, " ")))
-					CameraFogFar = Float(Right(args, Len(args) - Instr(args, " ")))
-					CreateConsoleMsg("Near set to: " + CameraFogNear + ", far set to: " + CameraFogFar)
+					RuntimeError "TODO: reimplement?"
+					;args$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
+					;CameraFogNear = Float(Left(args, Len(args) - Instr(args, " ")))
+					;CameraFogFar = Float(Right(args, Len(args) - Instr(args, " ")))
+					;CreateConsoleMsg("Near set to: " + CameraFogNear + ", far set to: " + CameraFogFar)
 					
 				Case "gamma"
 					StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
@@ -766,30 +766,24 @@ Function UpdateConsole()
 					Console_SpawnNPC(StrTemp$)
 
 				Case "infinitestamina","infstam"
-					StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
+					RuntimeError "TODO: reimplement?"
 					
-					Select StrTemp
-						Case "on", "1", "true"
-							InfiniteStamina% = True						
-						Case "off", "0", "false"
-							InfiniteStamina% = False
-						Default
-							InfiniteStamina% = Not InfiniteStamina%
-					End Select
+					;StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
+					
+					;Select StrTemp
+					;	Case "on", "1", "true"
+					;		InfiniteStamina% = True						
+					;	Case "off", "0", "false"
+					;		InfiniteStamina% = False
+					;	Default
+					;		InfiniteStamina% = Not InfiniteStamina%
+					;End Select
 
-					If InfiniteStamina
-						CreateConsoleMsg("INFINITE STAMINA ON")
-					Else
-						CreateConsoleMsg("INFINITE STAMINA OFF")	
-					EndIf
-					
-				Case "asd2"
-					GodMode = 1
-					InfiniteStamina = 1
-					Curr173\Idle = 3
-					Curr106\Idle = True
-					Curr106\State = 200000
-					Contained106 = True
+					;If InfiniteStamina
+					;	CreateConsoleMsg("INFINITE STAMINA ON")
+					;Else
+					;	CreateConsoleMsg("INFINITE STAMINA OFF")	
+					;EndIf
 
 				Case "spawnnpcstate"
 					args$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
@@ -843,7 +837,7 @@ Function UpdateConsole()
 					RemoteDoorOn = True
 
 				Case "kill","suicide"
-					KillTimer = -1
+					mainPlayer\dead = True
 					Select Rand(4)
 						Case 1
 							DeathMSG = "[REDACTED]"
@@ -859,12 +853,12 @@ Function UpdateConsole()
 							DeathMSG = DeathMSG + "No other signs of physical trauma or struggle can be observed. Body was sent for autopsy."
 					End Select
 
-				Case "tp"
+				Case "tp_to_mtf"
 					For n.NPCs = Each NPCs
 						If n\NPCtype = NPCtypeMTF
 							If n\MTFLeader = Null
-								PositionEntity Collider,EntityX(n\Collider),EntityY(n\Collider)+5,EntityZ(n\Collider)
-								ResetEntity Collider
+								PositionEntity mainPlayer\collider,EntityX(n\Collider),EntityY(n\Collider)+5,EntityZ(n\Collider)
+								ResetEntity mainPlayer\collider
 								Exit
 							EndIf
 						EndIf
@@ -875,9 +869,9 @@ Function UpdateConsole()
 					StrTemp$ = Piece$(args$,1," ")
 					StrTemp2$ = Piece$(args$,2," ")
 					StrTemp3$ = Piece$(args$,3," ")
-					PositionEntity Collider,StrTemp$,StrTemp2$,StrTemp3$
-					PositionEntity Camera,StrTemp$,StrTemp2$,StrTemp3$
-					CreateConsoleMsg("Teleported to coordinates (X|Y|Z): "+EntityX(Collider)+"|"+EntityY(Collider)+"|"+EntityZ(Collider))
+					PositionEntity mainPlayer\collider,StrTemp$,StrTemp2$,StrTemp3$
+					PositionEntity mainPlayer\cam,StrTemp$,StrTemp2$,StrTemp3$
+					CreateConsoleMsg("Teleported to coordinates (X|Y|Z): "+EntityX(mainPlayer\collider)+"|"+EntityY(mainPlayer\collider)+"|"+EntityZ(mainPlayer\collider))
 
 				Case "notarget"
 					StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
@@ -898,21 +892,21 @@ Function UpdateConsole()
 					EndIf
 
 				Case "spawnradio"
-					it.Items = CreateItem("Radio Transceiver", "fineradio", EntityX(Collider), EntityY(Camera,True), EntityZ(Collider))
+					it.Items = CreateItem("Radio Transceiver", "fineradio", EntityX(mainPlayer\collider), EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider))
 					EntityType(it\collider, HIT_ITEM)
 					it\state = 101
 				Case "spawnnvg"
-					it.Items = CreateItem("Night Vision Goggles", "nvgoggles", EntityX(Collider), EntityY(Camera,True), EntityZ(Collider))
+					it.Items = CreateItem("Night Vision Goggles", "nvgoggles", EntityX(mainPlayer\collider), EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider))
 					EntityType(it\collider, HIT_ITEM)
 					it\state = 1000
 				Case "spawnpumpkin","pumpkin"
 					CreateConsoleMsg("What pumpkin?")
 				Case "spawnnav"
-					it.Items = CreateItem("S-NAV Navigator Ultimate", "nav", EntityX(Collider), EntityY(Camera,True), EntityZ(Collider))
+					it.Items = CreateItem("S-NAV Navigator Ultimate", "nav", EntityX(mainPlayer\collider), EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider))
 					EntityType(it\collider, HIT_ITEM)
 					it\state = 101
 				Case "teleport173"
-					PositionEntity Curr173\Collider,EntityX(Collider),EntityY(Collider)+0.2,EntityZ(Collider)
+					PositionEntity Curr173\Collider,EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider)
 					ResetEntity Curr173\Collider
 				Case Chr($6A)+Chr($6F)+Chr($72)+Chr($67)+Chr($65)
 					ConsoleFlush = True 

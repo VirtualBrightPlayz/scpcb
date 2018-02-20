@@ -1,21 +1,12 @@
 Global BurntNote%
 
 ;TODO: remove, use Inventory type instead
-Const MaxItemAmount% = 10
-Global ItemAmount%
-Dim Inventory.Items(MaxItemAmount + 1)
-Global InvSelect%, SelectedItem.Items
+Global MaxItemAmount.MarkedForRemoval
+Global ItemAmount.MarkedForRemoval
+Dim Inventory.MarkedForRemoval(10)
+Global InvSelect.MarkedForRemoval, SelectedItem.MarkedForRemoval
 
-Const MAX_ITEM_COUNT% = 20
-Type Inventory
-	Field items.Items[MAX_ITEM_COUNT]
-	Field size% = 10
-	Field parent.Inventory = Null
-End Type
-
-Global ClosestItem.Items
-
-Global LastItemID%
+Global ClosestItem.MarkedForRemoval
 
 Type ItemTemplates
 	Field name$
@@ -34,8 +25,6 @@ Type ItemTemplates
 	Field scale#
 	;Field bumptex%
 	Field tex%, texpath$
-	
-	Field inventory.Inventory = Null
 End Type 
 
 Function CreateItemTemplate.ItemTemplates(name$, tempname$, objpath$, invimgpath$, imgpath$, scale#, texturepath$ = "",invimgpath2$="",Anim%=0, texflags%=9)
@@ -342,7 +331,41 @@ Type Items
 	Field SecondInv.Items[20]
 	Field ID%
 	Field invSlots%
+	
+	Field inventory.Inventory = Null
 End Type 
+
+Const MAX_ITEM_COUNT% = 20
+Type Inventory
+	Field items.Items[MAX_ITEM_COUNT]
+	Field size% = 10
+	Field parent.Inventory = Null
+End Type
+
+Function CreateInventory.Inventory(size%)
+	Local inv.Inventory = New Inventory
+	inv\size = size
+	Return inv
+End Function
+
+Function DeleteInventory(inv.Inventory)
+	For i%=0 To MAX_ITEM_COUNT-1
+		If inv\items[i]<>Null Then RemoveItem(inv\items[i])
+	Next
+	Delete inv
+End Function
+
+Function CountItemsInInventory%(inv.Inventory)
+	Local retVal% = 0
+	For i%=0 To inv\size-1
+		If inv\items[i]<>Null Then
+			retVal=retVal+1
+		EndIf
+	Next
+	Return retVal
+End Function
+
+Global LastItemID%
 
 Function CreateItem.Items(name$, tempname$, x#, y#, z#, r%=0,g%=0,b%=0,a#=1.0,invSlots%=0)
 	Local i.Items = New Items
@@ -373,7 +396,7 @@ Function CreateItem.Items(name$, tempname$, x#, y#, z#, r%=0,g%=0,b%=0,a#=1.0,in
 	ResetEntity i\collider		
 	PositionEntity(i\collider, x, y, z, True)
 	RotateEntity (i\collider, 0, Rand(360), 0)
-	i\dist = EntityDistance(Collider, i\collider)
+	i\dist = EntityDistance(mainPlayer\collider, i\collider)
 	i\DropSpeed = 0.0
 	
 	If tempname = "cup" Then
@@ -415,30 +438,13 @@ Function CreateItem.Items(name$, tempname$, x#, y#, z#, r%=0,g%=0,b%=0,a#=1.0,in
 End Function
 
 Function RemoveItem(i.Items)
+	If i\inventory<>Null Then DeleteInventory(i\inventory)
+	
+	DropItem(i,False)
+	
 	Local n
 	FreeEntity(i\model) : FreeEntity(i\collider) : i\collider = 0
 	
-	For n% = 0 To MaxItemAmount - 1
-		If Inventory(n) = i Then Inventory(n) = Null
-	Next
-	If SelectedItem = i Then
-		Select SelectedItem\itemtemplate\tempname 
-			Case "nvgoggles", "supernv"
-				WearingNightVision = False
-			Case "gasmask", "supergasmask", "gasmask2", "gasmask3"
-				WearingGasMask = False
-			Case "vest", "finevest", "veryfinevest"
-				WearingVest = False
-			Case "hazmatsuit","hazmatsuit2"
-				WearingHazmat = False	
-			Case "scp714"
-				Wearing714 = False
-			Case "scp1499","super1499"
-				Wearing1499 = False
-		End Select
-		
-		SelectedItem = Null
-	EndIf
 	If i\itemtemplate\img <> 0
 		FreeImage i\itemtemplate\img
 		i\itemtemplate\img = 0
@@ -456,13 +462,13 @@ Function UpdateItems()
 	Local HideDist = HideDistance*0.5
 	Local deletedItem% = False
 	
-	ClosestItem = Null
+	mainPlayer\closestItem = Null
 	For i.Items = Each Items
 		i\Dropped = 0
 		
 		If (Not i\Picked) Then
 			If i\disttimer < MilliSecs2() Then
-				i\dist = EntityDistance(Collider, i\collider)
+				i\dist = EntityDistance(mainPlayer\collider, i\collider)
 				i\disttimer = MilliSecs2() + Rand(600,800)
 				If i\dist < HideDist Then ShowEntity i\collider
 			EndIf
@@ -470,16 +476,16 @@ Function UpdateItems()
 			If i\dist < HideDist Then
 				ShowEntity i\collider
 				
-				If (Not EntityVisible(i\collider,Camera)) Then
+				If (Not EntityVisible(i\collider,mainPlayer\cam)) Then
 					;the player can't grab this
-					If (Not EntityVisible(i\collider,Collider)) Then i\dist = 2.5
+					If (Not EntityVisible(i\collider,mainPlayer\collider)) Then i\dist = 2.5
 				EndIf
 				
 				If i\dist < 1.2 Then
-					If ClosestItem = Null Then
-						If EntityInView(i\model, Camera) Then ClosestItem = i
-					Else If ClosestItem = i Or i\dist < EntityDistance(Collider, ClosestItem\collider) Then 
-						If EntityInView(i\model, Camera) Then ClosestItem = i
+					If mainPlayer\closestItem = Null Then
+						If EntityInView(i\model, mainPlayer\cam) Then mainPlayer\closestItem = i
+					Else If mainPlayer\closestItem = i Or i\dist < EntityDistance(mainPlayer\collider, mainPlayer\closestItem\collider) Then 
+						If EntityInView(i\model, mainPlayer\cam) Then mainPlayer\closestItem = i
 					End If
 				EndIf					
 				
@@ -529,10 +535,10 @@ Function UpdateItems()
 		deletedItem = False
 	Next
 	
-	If ClosestItem <> Null Then
+	If mainPlayer\closestItem <> Null Then
 		;DrawHandIcon = True
 		
-		If MouseHit1 Then PickItem(ClosestItem)
+		If MouseHit1 Then PickItem(mainPlayer\closestItem)
 	End If
 	
 End Function
@@ -540,17 +546,17 @@ End Function
 Function PickItem(item.Items)
 	Local n% = 0
 	
-	If ItemAmount < MaxItemAmount Then
-		For n% = 0 To MaxItemAmount - 1
-			If Inventory(n) = Null Then
+	If CountItemsInInventory(mainPlayer\inventory) < mainPlayer\inventory\size Then
+		For n% = 0 To mainPlayer\inventory\size - 1
+			If mainPlayer\inventory\items[n] = Null Then
 				Select item\itemtemplate\tempname
 					Case "scp178"
 						SetAnimTime item\model,19.0
 					Case "1123"
-						If Not (Wearing714 = 1) Then
-							If PlayerRoom\RoomTemplate\Name <> "room1123" Then
-								ShowEntity Light
-								LightFlash = 7
+						If IsPlayerWearing(mainPlayer,"scp714",WORNITEM_HAND_SLOT) Then
+							If mainPlayer\currRoom\RoomTemplate\Name <> "room1123" Then
+								ShowEntity mainPlayer\overlays[OVERLAY_WHITE]
+								mainPlayer\lightFlash = 7.0
 								PlaySound_Strict(LoadTempSound("SFX\SCP\1123\Touch.ogg"))		
 								DeathMSG = "Subject D-9341 was shot dead after attempting to attack a member of Nine-Tailed Fox. Surveillance tapes show that the subject had been "
 								DeathMSG = DeathMSG + "wandering around the site approximately 9 minutes prior, shouting the phrase " + Chr(34) + "get rid of the four pests" + Chr(34)
@@ -562,8 +568,8 @@ Function PickItem(item.Items)
 							For e.Events = Each Events
 								If e\eventname = "room1123" Then 
 									If e\eventstate = 0 Then
-										ShowEntity Light
-										LightFlash = 3
+										ShowEntity mainPlayer\overlays[OVERLAY_WHITE]
+										mainPlayer\lightFlash = 3.0
 										PlaySound_Strict(LoadTempSound("SFX\SCP\1123\Touch.ogg"))											
 									EndIf
 									e\eventstate = Max(1, e\eventstate)
@@ -572,8 +578,8 @@ Function PickItem(item.Items)
 							Next
 						EndIf
 					Case "killbat"
-						ShowEntity Light
-						LightFlash = 1.0
+						ShowEntity mainPlayer\overlays[OVERLAY_WHITE]
+						mainPlayer\lightFlash = 1.0
 						PlaySound_Strict(IntroSFX(11))
 						DeathMSG = "Subject D-9341 found dead inside SCP-914's output booth next to what appears to be an ordinary nine-volt battery. The subject is covered in severe "
 						DeathMSG = DeathMSG + "electrical burns, and assumed to be killed via an electrical shock caused by the battery. The battery has been stored for further study."
@@ -596,20 +602,14 @@ Function PickItem(item.Items)
 						If item\itemtemplate\name = "S-NAV Navigator Ultimate" Then GiveAchievement(AchvSNAV)
 					Case "hazmatsuit", "hazmatsuit2", "hazmatsuit3"
 						Msg = "You put on the hazmat suit."
-						TakeOffStuff(1+16)
+						TakeOffStuff(1+16) ;TODO: remove?
 						MsgTimer = 70 * 5
-						If item\itemtemplate\tempname="hazmatsuit3" Then
-							WearingHazmat = 3
-						ElseIf item\itemtemplate\tempname="hazmatsuit2"
-							WearingHazmat = 2
-						Else
-							WearingHazmat = 1
-						EndIf
+						mainPlayer\wornItems[WORNITEM_BODY_SLOT] = item
 						
-						For z% = 0 To MaxItemAmount - 1
-							If Inventory(z) <> Null Then
-								If Inventory(z)\itemtemplate\tempname="hazmatsuit" Or Inventory(z)\itemtemplate\tempname="hazmatsuit2" Or Inventory(z)\itemtemplate\tempname="hazmatsuit3" Then
-									DropItem(Inventory(z))
+						For z% = 0 To mainPlayer\inventory\size - 1
+							If mainPlayer\inventory\items[z] <> Null Then
+								If mainPlayer\inventory\items[z]\itemtemplate\tempname="hazmatsuit" Or mainPlayer\inventory\items[z]\itemtemplate\tempname="hazmatsuit2" Or mainPlayer\inventory\items[z]\itemtemplate\tempname="hazmatsuit3" Then
+									DropItem(mainPlayer\inventory\items[z])
 								EndIf
 							EndIf
 						Next
@@ -622,7 +622,7 @@ Function PickItem(item.Items)
 				
 				item\itemtemplate\found=True
 				
-				Inventory(n) = item
+				mainPlayer\inventory\items[n] = item
 				HideEntity(item\collider)
 				Exit
 			EndIf
@@ -633,16 +633,16 @@ Function PickItem(item.Items)
 	EndIf
 End Function
 
-Function DropItem(item.Items)
-	If item\itemtemplate\sound <> 66 Then PlaySound_Strict(PickSFX(item\itemtemplate\sound))
+Function DropItem(item.Items,playDropSound%=True)
+	If playDropSound And (item\itemtemplate\sound <> 66) Then PlaySound_Strict(PickSFX(item\itemtemplate\sound))
 	
 	item\Dropped = 1
 	
 	ShowEntity(item\collider)
-	PositionEntity(item\collider, EntityX(Camera), EntityY(Camera), EntityZ(Camera))
-	RotateEntity(item\collider, EntityPitch(Camera), EntityYaw(Camera)+Rnd(-20,20), 0)
+	PositionEntity(item\collider, EntityX(mainPlayer\cam), EntityY(mainPlayer\cam), EntityZ(mainPlayer\cam))
+	RotateEntity(item\collider, EntityPitch(mainPlayer\cam), EntityYaw(mainPlayer\cam)+Rnd(-20,20), 0)
 	MoveEntity(item\collider, 0, -0.1, 0.1)
-	RotateEntity(item\collider, 0, EntityYaw(Camera)+Rnd(-110,110), 0)
+	RotateEntity(item\collider, 0, EntityYaw(mainPlayer\cam)+Rnd(-110,110), 0)
 	
 	ResetEntity (item\collider)
 	
@@ -668,27 +668,29 @@ Function DropItem(item.Items)
 	;Next
 	
 	item\Picked = False
-	For z% = 0 To MaxItemAmount - 1
-		If Inventory(z) = item Then Inventory(z) = Null
+	For inv.Inventory = Each Inventory
+		For j%=0 To inv\size-1
+			If inv\items[j]=item Then inv\items[j]=Null
+		Next
 	Next
-	Select item\itemtemplate\tempname
-		Case "gasmask", "supergasmask", "gasmask3"
-			WearingGasMask = False
-		Case "hazmatsuit",  "hazmatsuit2", "hazmatsuit3"
-			WearingHazmat = False
-		Case "vest", "finevest"
-			WearingVest = False
-		Case "nvgoggles"
-			If WearingNightVision = 1 Then CameraFogFar = StoredCameraFogFar : WearingNightVision = False
-		Case "supernv"
-			If WearingNightVision = 2 Then CameraFogFar = StoredCameraFogFar : WearingNightVision = False
-		Case "veryfinenvgoggles"
-			If WearingNightVision = 3 Then CameraFogFar = StoredCameraFogFar : WearingNightVision = False
-		Case "scp714"
-			Wearing714 = False
-		Case "scp178"
-			Wearing178 = False
-		Case "scp1499","super1499"
-			Wearing1499 = False
-	End Select	
+	;Select item\itemtemplate\tempname
+	;	Case "gasmask", "supergasmask", "gasmask3"
+	;		WearingGasMask = False
+	;	Case "hazmatsuit",  "hazmatsuit2", "hazmatsuit3"
+	;		WearingHazmat = False
+	;	Case "vest", "finevest"
+	;		WearingVest = False
+	;	Case "nvgoggles"
+	;		If WearingNightVision = 1 Then CameraFogFar = StoredCameraFogFar : WearingNightVision = False
+	;	Case "supernv"
+	;		If WearingNightVision = 2 Then CameraFogFar = StoredCameraFogFar : WearingNightVision = False
+	;	Case "veryfinenvgoggles"
+	;		If WearingNightVision = 3 Then CameraFogFar = StoredCameraFogFar : WearingNightVision = False
+	;	Case "scp714"
+	;		Wearing714 = False
+	;	Case "scp178"
+	;		Wearing178 = False
+	;	Case "scp1499","super1499"
+	;		Wearing1499 = False
+	;End Select	
 End Function

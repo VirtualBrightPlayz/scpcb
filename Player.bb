@@ -41,6 +41,8 @@ Type Player
 	Field overlays%[OVERLAY_COUNT]
 	
 	Field grabbedEntity%
+	
+	Field closestItem.Items
 	;------------
 	
 	;movement states
@@ -76,6 +78,9 @@ Type Player
 	
 	Field blinkEffect#
 	Field staminaEffect#
+	
+	Field lightFlash#
+	Field blurTimer#
 	;------
 	
 	Field inventory.Inventory
@@ -91,6 +96,8 @@ Global mainPlayer.Player = Null
 
 Function CreatePlayer.Player()
 	Local player.Player = New Player
+	
+	player\inventory = CreateInventory(10)
 	
 	player\cam = CreateCamera()
 	CameraViewport(player\cam, 0, 0, userOptions\screenWidth, userOptions\screenHeight)
@@ -207,6 +214,8 @@ End Function
 
 Function DeletePlayer(player.Player)
 	;TODO: delete/drop worn items, delete inventory
+	DeleteInventory(player\inventory)
+	Delete player
 End Function
 
 ;TODO: move these into the player struct and give them more appropriate names
@@ -245,29 +254,29 @@ Global Stamina.MarkedForRemoval, StaminaEffect.MarkedForRemoval, StaminaEffectTi
 Global GodMode.MarkedForRemoval, NoClip.MarkedForRemoval, NoClipSpeed.MarkedForRemoval
 
 ;TODO: Murder.
-;Global SCP1025state#[6]
+Global SCP1025state.MarkedForRemoval[6]
 
 ;TODO: maybe remove?
-Const RefinedItems%=0
+Global RefinedItems.MarkedForRemoval
 
-Const LightBlink#=0, LightFlash#=0
+Global LightBlink.MarkedForRemoval, LightFlash.MarkedForRemoval
 
-Const BlurVolume#=0, BlurTimer#=0
+Global BlurVolume.MarkedForRemoval, BlurTimer.MarkedForRemoval
 
-Const PlayTime%=0 ;TODO: do we even need this?
+Global PlayTime.MarkedForRemoval ;TODO: do we even need this?
 
 ;TODO: this is all bad
-Const PlayerSoundVolume#=0
+Global PlayerSoundVolume.MarkedForRemoval
 
-Const InfiniteStamina%=0
+Global InfiniteStamina.MarkedForRemoval
 
-Const NVBlink%=0
-Const IsNVGBlinking%=0
+Global NVBlink.MarkedForRemoval
+Global IsNVGBlinking.MarkedForRemoval
 
-Const CameraFogNear#=0
-Const CameraFogFar#=0
+Global CameraFogNear.MarkedForRemoval
+Global CameraFogFar.MarkedForRemoval
 
-Const StoredCameraFogFar# = 0
+Global StoredCameraFogFar.MarkedForRemoval
 
 Function MovePlayer()
 	Local Sprint# = 1.0, Speed# = 0.018, i%, angle#
@@ -856,6 +865,11 @@ Function MouseLook()
 			End Select 
 		EndIf
 	Next
+End Function
+
+Function IsPlayerWearing(player.Player,templateName$,slot%)
+	If player\wornItems[slot]=Null Then Return False
+	Return (player\wornItems[slot]\itemtemplate\tempname=templateName)
 End Function
 
 Function Kill()
