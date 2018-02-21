@@ -14,7 +14,7 @@ Function InitializeNPCtype096(n.NPCs)
 End Function
 
 Function UpdateNPCtype096(n.NPCs)
-    dist = EntityDistance(Collider, n\Collider)
+    dist = EntityDistance(mainPlayer\collider, n\Collider)
     
     Select n\State
         Case 0
@@ -23,22 +23,22 @@ Function UpdateNPCtype096(n.NPCs)
                 If n\Sound = 0 Then
                     n\Sound = LoadSound_Strict("SFX\Music\096.ogg")
                 Else
-                    n\SoundChn = LoopSound2(n\Sound, n\SoundChn, Camera, n\Collider, 8.0, 1.0)
+                    n\SoundChn = LoopSound2(n\Sound, n\SoundChn, mainPlayer\cam, n\Collider, 8.0, 1.0)
                 EndIf
                 
                 AnimateNPC(n, 1085,1412, 0.1) ;sitting
                 ;Animate2(n\obj, AnimTime(n\obj),1085,1412, 0.1) ;sitting
                 
-                angle = WrapAngle(DeltaYaw(n\Collider, Collider));-EntityYaw(n\Collider,True))
+                angle = WrapAngle(DeltaYaw(n\Collider, mainPlayer\collider));-EntityYaw(n\Collider,True))
                 
                 If (Not NoTarget)
                     If angle<90 Or angle>270 Then
-                        CameraProject Camera,EntityX(n\Collider), EntityY(n\Collider)+0.25, EntityZ(n\Collider)
+                        CameraProject mainPlayer\cam,EntityX(n\Collider), EntityY(n\Collider)+0.25, EntityZ(n\Collider)
                         
                         If ProjectedX()>0 And ProjectedX()<userOptions\screenWidth Then
                             If ProjectedY()>0 And ProjectedY()<userOptions\screenHeight Then
-                                If EntityVisible(Collider, n\Collider) Then
-                                    If (BlinkTimer < - 16 Or BlinkTimer > - 6)
+                                If EntityVisible(mainPlayer\collider, n\Collider) Then
+                                    If (mainPlayer\blinkTimer < - 16 Or mainPlayer\blinkTimer > - 6)
                                         PlaySound_Strict LoadTempSound("SFX\SCP\096\Triggered.ogg")
                                         
                                         CurrCameraZoom = 10
@@ -65,7 +65,7 @@ Function UpdateNPCtype096(n.NPCs)
                 If n\Sound = 0 Then
                     n\Sound = LoadSound_Strict("SFX\SCP\096\Scream.ogg")
                 Else
-                    n\SoundChn = LoopSound2(n\Sound, n\SoundChn, Camera, n\Collider, 7.5, 1.0)
+                    n\SoundChn = LoopSound2(n\Sound, n\SoundChn, mainPlayer\cam, n\Collider, 7.5, 1.0)
                 EndIf
                 
                 If n\Sound2 = 0 Then
@@ -87,7 +87,7 @@ Function UpdateNPCtype096(n.NPCs)
                 If MilliSecs2() > n\State3 Then
                     n\LastSeen=0
                     If n\Target=Null Then
-                        If EntityVisible(Collider, n\Collider) Then n\LastSeen=1
+                        If EntityVisible(mainPlayer\collider, n\Collider) Then n\LastSeen=1
                     Else
                         If EntityVisible(n\Target\Collider, n\Collider) Then n\LastSeen=1
                     EndIf
@@ -116,13 +116,13 @@ Function UpdateNPCtype096(n.NPCs)
                                     PlaySound_Strict DamageSFX(4)
                                     
                                     pvt = CreatePivot()
-                                    CameraShake = 30
+                                    mainPlayer\camShake = 30
                                     BlurTimer = 2000
                                     DeathMSG = "A large amount of blood found in [DATA REDACTED]. DNA indentified as Subject D-9341. Most likely [DATA REDACTED] by SCP-096."
                                     Kill()
                                     KillAnim = 1
                                     For i = 0 To 6
-                                        PositionEntity pvt, EntityX(Collider)+Rnd(-0.1,0.1),EntityY(Collider)-0.05,EntityZ(Collider)+Rnd(-0.1,0.1)
+                                        PositionEntity pvt, EntityX(mainPlayer\collider)+Rnd(-0.1,0.1),EntityY(mainPlayer\collider)-0.05,EntityZ(mainPlayer\collider)+Rnd(-0.1,0.1)
                                         TurnEntity pvt, 90, 0, 0
                                         EntityPick(pvt,0.3)
                                         
@@ -135,14 +135,14 @@ Function UpdateNPCtype096(n.NPCs)
                         EndIf
                         
                         If n\Target=Null Then
-                            PointEntity n\Collider, Collider
+                            PointEntity n\Collider, mainPlayer\collider
                         Else
                             PointEntity n\Collider, n\Target\Collider
                         EndIf
                         
                     Else
                         If n\Target=Null Then 
-                            PointEntity n\obj, Collider
+                            PointEntity n\obj, mainPlayer\collider
                         Else
                             PointEntity n\obj, n\Target\Collider
                         EndIf
@@ -194,7 +194,7 @@ Function UpdateNPCtype096(n.NPCs)
                                     If n\Path[n\PathLocation]\door\open = False Then
                                         n\Path[n\PathLocation]\door\open = True
                                         n\Path[n\PathLocation]\door\fastopen = 1
-                                        PlaySound2(OpenDoorFastSFX, Camera, n\Path[n\PathLocation]\door\obj)
+                                        PlaySound2(OpenDoorFastSFX, mainPlayer\cam, n\Path[n\PathLocation]\door\obj)
                                     EndIf
                                 EndIf							
                                 If dist2 < 0.2 Then n\PathLocation = n\PathLocation + 1
@@ -210,7 +210,7 @@ Function UpdateNPCtype096(n.NPCs)
                             If n\Target<>Null Then
                                 n\PathStatus = FindPath(n, EntityX(n\Target\Collider),EntityY(n\Target\Collider)+0.2,EntityZ(n\Target\Collider))	
                             Else
-                                n\PathStatus = FindPath(n, EntityX(Collider),EntityY(Collider)+0.2,EntityZ(Collider))	
+                                n\PathStatus = FindPath(n, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider))	
                             EndIf
                             n\PathTimer = 70*5
                         EndIf
@@ -231,7 +231,7 @@ Function UpdateNPCtype096(n.NPCs)
             If n\Sound = 0 Then
                 n\Sound = LoadSound_Strict("SFX\Music\096Angered.ogg")
             Else
-                n\SoundChn = LoopSound2(n\Sound, n\SoundChn, Camera, n\Collider, 10.0, 1.0)
+                n\SoundChn = LoopSound2(n\Sound, n\SoundChn, mainPlayer\cam, n\Collider, 10.0, 1.0)
             EndIf
             
             If n\State=1 Then ; get up
@@ -279,7 +279,7 @@ Function UpdateNPCtype096(n.NPCs)
                 If n\Sound = 0 Then
                     n\Sound = LoadSound_Strict("SFX\Music\096.ogg")
                 Else
-                    n\SoundChn = LoopSound2(n\Sound, n\SoundChn, Camera, n\Collider, 14.0, 1.0)
+                    n\SoundChn = LoopSound2(n\Sound, n\SoundChn, mainPlayer\cam, n\Collider, 14.0, 1.0)
                 EndIf
                 
                 n\State2=n\State2+FPSfactor
@@ -298,7 +298,7 @@ Function UpdateNPCtype096(n.NPCs)
                     
                     If MilliSecs2() > n\State3 Then
                         n\LastSeen=0
-                        If EntityVisible(Collider, n\Collider) Then 
+                        If EntityVisible(mainPlayer\collider, n\Collider) Then 
                             n\LastSeen=1
                         Else
                             HideEntity n\Collider
@@ -312,7 +312,7 @@ Function UpdateNPCtype096(n.NPCs)
                     EndIf
                     
                     If n\LastSeen Then 
-                        PointEntity n\obj, Collider
+                        PointEntity n\obj, mainPlayer\collider
                         RotateEntity n\Collider, 0, CurveAngle(EntityYaw(n\obj),EntityYaw(n\Collider),130.0),0
                         If dist < 1.5 Then n\State2=0
                     Else
@@ -331,15 +331,15 @@ Function UpdateNPCtype096(n.NPCs)
                     EndIf
                 EndIf
                 
-                angle = WrapAngle(DeltaYaw(n\Collider, Camera));-EntityYaw(n\Collider))
+                angle = WrapAngle(DeltaYaw(n\Collider, mainPlayer\cam));-EntityYaw(n\Collider))
                 If (Not NoTarget)
                     If angle<55 Or angle>360-55 Then
-                        CameraProject Camera,EntityX(n\Collider), EntityY(Collider)+5.8*0.2-0.25, EntityZ(n\Collider)
+                        CameraProject mainPlayer\cam,EntityX(n\Collider), EntityY(mainPlayer\collider)+5.8*0.2-0.25, EntityZ(n\Collider)
                         
                         If ProjectedX()>0 And ProjectedX()<userOptions\screenWidth Then
                             If ProjectedY()>0 And ProjectedY()<userOptions\screenHeight Then
-                                If EntityVisible(Collider, n\Collider) Then
-                                    If (BlinkTimer < - 16 Or BlinkTimer > - 6)
+                                If EntityVisible(mainPlayer\collider, n\Collider) Then
+                                    If (mainPlayer\blinkTimer < - 16 Or mainPlayer\blinkTimer > - 6)
                                         PlaySound_Strict LoadTempSound("SFX\SCP\096\Triggered.ogg")
                                         
                                         CurrCameraZoom = 10

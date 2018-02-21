@@ -28,7 +28,7 @@ Function LoadEntities()
 	
 	CreateBlurImage()
 	CameraProjMode ark_blur_cam,0
-	;Listener = CreateListener(Camera)
+	;Listener = CreateListener(mainPlayer\cam)
 	
 	DrawLoading(5)
 	TeslaTexture = LoadTexture_Strict("GFX\map\tesla.jpg", 1+2)
@@ -305,11 +305,11 @@ Function InitNewGame()
 		EndIf
 		
 		If (r\RoomTemplate\Name = "start" And userOptions\introEnabled = False) Then 
-			PositionEntity (Collider, EntityX(r\obj)+3584*RoomScale, 704*RoomScale, EntityZ(r\obj)+1024*RoomScale)
-			PlayerRoom = r
+			PositionEntity (mainPlayer\collider, EntityX(r\obj)+3584*RoomScale, 704*RoomScale, EntityZ(r\obj)+1024*RoomScale)
+			mainPlayer\currRoom = r
 		ElseIf (r\RoomTemplate\Name = "173" And userOptions\introEnabled) Then
-			PositionEntity (Collider, EntityX(r\obj), 1.0, EntityZ(r\obj))
-			PlayerRoom = r
+			PositionEntity (mainPlayer\collider, EntityX(r\obj), 1.0, EntityZ(r\obj))
+			mainPlayer\currRoom = r
 		EndIf
 		
 	Next
@@ -324,9 +324,9 @@ Function InitNewGame()
 		Delete tw
 	Next
 	
-	TurnEntity(Collider, 0, Rand(160, 200), 0)
+	TurnEntity(mainPlayer\collider, 0, Rand(160, 200), 0)
 	
-	ResetEntity Collider
+	ResetEntity mainPlayer\collider
 	
 	If SelectedMap = "" Then InitEvents()
 	
@@ -351,7 +351,7 @@ Function InitNewGame()
 	
 	HidePointer()
 	
-	BlinkTimer = -10
+	mainPlayer\blinkTimer = -10
 	BlurTimer = 100
 	Stamina = 100
 	
@@ -398,7 +398,7 @@ Function InitLoadGame()
 		EntityParent(sc\obj, 0)
 	Next
 	
-	ResetEntity Collider
+	ResetEntity mainPlayer\collider
 	
 	;InitEvents()
 	
@@ -410,7 +410,7 @@ Function InitLoadGame()
 	
 	HidePointer ()
 	
-	BlinkTimer = BLINKFREQ
+	mainPlayer\blinkTimer = BLINKFREQ
 	Stamina = 100
 	
 	For rt.RoomTemplates = Each RoomTemplates
@@ -451,8 +451,8 @@ Function InitLoadGame()
 				If Music(18)=0 Then Music(18) = LoadSound_Strict("SFX\Music\1499.ogg")
 				DrawLoading(98)
 				UpdateChunks(e\room,15,False)
-				;MoveEntity Collider,0,10,0
-				;ResetEntity Collider
+				;MoveEntity mainPlayer\collider,0,10,0
+				;ResetEntity mainPlayer\collider
 				
 				DebugLog "Loaded dimension1499 successful"
 				
@@ -535,7 +535,7 @@ Function NullGame()
 	EndingTimer = 0
 	ExplosionTimer = 0
 	
-	CameraShake = 0
+	mainPlayer\camShake = 0
 	Shake = 0
 	LightFlash = 0
 	
@@ -707,7 +707,7 @@ Function NullGame()
 	;DeInitExt
 	
 	ClearWorld
-	Camera = 0
+	mainPlayer\cam = 0
 	ark_blur_cam = 0
 	InitFastResize()
 	

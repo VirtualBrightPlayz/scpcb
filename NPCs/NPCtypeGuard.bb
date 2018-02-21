@@ -49,9 +49,9 @@ Function UpdateNPCtypeGuard(n.NPCs)
 
             If n\currSpeed > 0.01 Then
                 If (prevFrame > 1638 And n\Frame < 1620) Then
-                    PlaySound2(StepSFX(2,0,Rand(0,2)), Camera, n\collider, 8.0, Rnd(0.5, 0.7))						
+                    PlaySound2(StepSFX(2,0,Rand(0,2)), mainPlayer\cam, n\collider, 8.0, Rnd(0.5, 0.7))						
                 ElseIf prevFrame < 1627 And n\Frame=>1627
-                    PlaySound2(StepSFX(2,0,Rand(0,2)), Camera, n\collider, 8.0, Rnd(0.5, 0.7))						
+                    PlaySound2(StepSFX(2,0,Rand(0,2)), mainPlayer\cam, n\collider, 8.0, Rnd(0.5, 0.7))						
                 EndIf
             EndIf
             
@@ -72,7 +72,7 @@ Function UpdateNPCtypeGuard(n.NPCs)
             PositionEntity(pvt, targetX, targetY, targetZ)
 
             ;TODO: Make relative to target.
-            PointEntity(pvt, Collider)
+            PointEntity(pvt, mainPlayer\collider)
 
             RotateEntity(pvt, Min(EntityPitch(pvt), 20), EntityYaw(pvt), 0)
             
@@ -80,13 +80,13 @@ Function UpdateNPCtypeGuard(n.NPCs)
             
             ;Start shooting once the aiming animation is done.
             If (n\timer < 0 And n\Frame>1550) Then
-                PlaySound2(GunshotSFX, Camera, n\Collider, 35)
+                PlaySound2(GunshotSFX, mainPlayer\cam, n\Collider, 35)
                 
                 RotateEntity(pvt, EntityPitch(n\Collider), EntityYaw(n\Collider), 0, True)
                 PositionEntity(pvt, EntityX(n\obj), EntityY(n\obj), EntityZ(n\obj))
                 MoveEntity(pvt,0.8*0.079, 10.75*0.079, 6.9*0.079)
                 
-                PointEntity(pvt, Collider)
+                PointEntity(pvt, mainPlayer\collider)
 
                 p.Particles = CreateParticle(EntityX(n\obj, True), EntityY(n\obj, True), EntityZ(n\obj, True), 1, 0.2, 0.0, 5)
                 PositionEntity(p\pvt, EntityX(n\obj), EntityY(n\obj), EntityZ(n\obj))

@@ -26,11 +26,11 @@ Function sky_CreateSky(filename$,parent%=0)
 End Function
 
 Function UpdateSky()
-	PositionEntity Sky, EntityX(Camera),EntityY(Camera),EntityZ(Camera), True
+	PositionEntity Sky, EntityX(mainPlayer\cam),EntityY(mainPlayer\cam),EntityZ(mainPlayer\cam), True
 End Function
 
 Function Update1499Sky()
-	PositionEntity NTF_1499Sky, EntityX(Camera),EntityY(Camera),EntityZ(Camera), True
+	PositionEntity NTF_1499Sky, EntityX(mainPlayer\cam),EntityY(mainPlayer\cam),EntityZ(mainPlayer\cam), True
 End Function
 
 

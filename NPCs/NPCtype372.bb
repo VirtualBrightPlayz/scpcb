@@ -8,20 +8,20 @@ Function InitializeNPCtype372(n.NPCs)
 End Function
 
 Function UpdateNPCtype372(n.NPCs)
-    RN$ = PlayerRoom\RoomTemplate\Name
+    RN$ = mainPlayer\currRoom\RoomTemplate\Name
     If RN$ <> "pocketdimension" And RN$ <> "dimension1499" Then 
         If n\Idle Then
             HideEntity(n\obj)
-            If Rand(50) = 1 And (BlinkTimer < -5 And BlinkTimer > -15) Then
+            If Rand(50) = 1 And (mainPlayer\blinkTimer < -5 And mainPlayer\blinkTimer > -15) Then
                 ShowEntity(n\obj)
-                angle# = EntityYaw(Collider)+Rnd(-90,90)
+                angle# = EntityYaw(mainPlayer\collider)+Rnd(-90,90)
                 
                 dist = Rnd(1.5, 2.0)
-                PositionEntity(n\Collider, EntityX(Collider) + Sin(angle) * dist, EntityY(Collider)+0.2, EntityZ(Collider) + Cos(angle) * dist)
+                PositionEntity(n\Collider, EntityX(mainPlayer\collider) + Sin(angle) * dist, EntityY(mainPlayer\collider)+0.2, EntityZ(mainPlayer\collider) + Cos(angle) * dist)
                 n\Idle = False
                 n\State = Rand(20, 60)
                 
-                If Rand(300)=1 Then PlaySound2(RustleSFX(Rand(0,2)),Camera, n\obj, 8, Rnd(0.0,0.2))
+                If Rand(300)=1 Then PlaySound2(RustleSFX(Rand(0,2)),mainPlayer\cam, n\obj, 8, Rnd(0.0,0.2))
             End If
         Else
             PositionEntity(n\obj, EntityX(n\Collider) + Rnd(-0.005, 0.005), EntityY(n\Collider)+0.3+0.1*Sin(MilliSecs2()/2), EntityZ(n\Collider) + Rnd(-0.005, 0.005))
@@ -30,26 +30,26 @@ Function UpdateNPCtype372(n.NPCs)
             AnimateNPC(n, 32, 113, 0.4)
             ;Animate2(n\obj, AnimTime(n\obj), 32, 113, 0.4)
             
-            If EntityInView(n\obj, Camera) Then
+            If EntityInView(n\obj, mainPlayer\cam) Then
                 GiveAchievement(Achv372)
                 
                 If Rand(30)=1 Then 
                     If (Not ChannelPlaying(n\SoundChn)) Then
-                        If EntityVisible(Camera, n\obj) Then 
-                            n\SoundChn = PlaySound2(RustleSFX(Rand(0,2)),Camera, n\obj, 8, 0.3)
+                        If EntityVisible(mainPlayer\cam, n\obj) Then 
+                            n\SoundChn = PlaySound2(RustleSFX(Rand(0,2)),mainPlayer\cam, n\obj, 8, 0.3)
                         EndIf
                     EndIf
                 EndIf
                 
                 temp = CreatePivot()
-                PositionEntity temp, EntityX(Collider), EntityY(Collider), EntityZ(Collider)
+                PositionEntity temp, EntityX(mainPlayer\collider), EntityY(mainPlayer\collider), EntityZ(mainPlayer\collider)
                 PointEntity temp, n\Collider
                 
-                angle =  WrapAngle(EntityYaw(Collider)-EntityYaw(temp))
+                angle =  WrapAngle(EntityYaw(mainPlayer\collider)-EntityYaw(temp))
                 If angle < 180 Then
-                    RotateEntity n\Collider, 0, EntityYaw(Collider)-80, 0		
+                    RotateEntity n\Collider, 0, EntityYaw(mainPlayer\collider)-80, 0		
                 Else
-                    RotateEntity n\Collider, 0, EntityYaw(Collider)+80, 0
+                    RotateEntity n\Collider, 0, EntityYaw(mainPlayer\collider)+80, 0
                 EndIf
                 FreeEntity temp
                 

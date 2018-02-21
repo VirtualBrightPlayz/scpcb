@@ -348,7 +348,7 @@ Function UpdateNPCs()
 			EntityType n\Collider,HIT_DEAD
 		EndIf
 		
-		Local gravityDist = Distance(EntityX(Collider),EntityZ(Collider),EntityX(n\Collider),EntityZ(n\Collider))
+		Local gravityDist = Distance(EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider),EntityX(n\Collider),EntityZ(n\Collider))
 		
 		If gravityDist<HideDistance*0.7 Or n\NPCtype = NPCtype1499 Then
 			If n\InFacility = InFacility
@@ -387,10 +387,10 @@ Function TeleportCloser(n.NPCs)
 			If xtemp < 10.0 And xtemp > 1.0 Then 
 				ztemp = Abs(EntityZ(w\obj,True)-EntityZ(n\Collider,True))
 				If ztemp < 10.0 And ztemp > 1.0 Then
-					If (EntityDistance(Collider, w\obj)>8) Then
+					If (EntityDistance(mainPlayer\collider, w\obj)>8) Then
 						If (SelectedDifficulty\aggressiveNPCs)Then
 							;teleports to the nearby waypoint that takes it closest to the player
-							Local newDist# = EntityDistance(Collider, w\obj)
+							Local newDist# = EntityDistance(mainPlayer\collider, w\obj)
 							If (newDist < closestDist Or closestWaypoint = Null) Then
 								closestDist = newDist	
 								closestWaypoint = w
@@ -436,13 +436,13 @@ Function MeNPCSeesPlayer%(me.NPCs,disablesoundoncrouch%=False)
 	
 	If (Not PlayerDetected) Or me\NPCtype <> NPCtypeMTF
 		If me\BlinkTimer<=0.0 Then Return False
-		If EntityDistance(Collider,me\Collider)>(8.0-CrouchState+PlayerSoundVolume) Then Return False
+		If EntityDistance(mainPlayer\collider,me\Collider)>(8.0-CrouchState+PlayerSoundVolume) Then Return False
 		
 		;spots the player if he's either in view or making a loud sound
 		If PlayerSoundVolume>1.0
-			If (Abs(DeltaYaw(me\Collider,Collider))>60.0) And EntityVisible(me\Collider,Collider)
+			If (Abs(DeltaYaw(me\Collider,mainPlayer\collider))>60.0) And EntityVisible(me\Collider,mainPlayer\collider)
 				Return 1
-			ElseIf (Not EntityVisible(me\Collider,Collider))
+			ElseIf (Not EntityVisible(me\Collider,mainPlayer\collider))
 				If disablesoundoncrouch% And Crouch%
 					Return False
 				Else
@@ -450,12 +450,12 @@ Function MeNPCSeesPlayer%(me.NPCs,disablesoundoncrouch%=False)
 				EndIf
 			EndIf
 		Else
-			If (Abs(DeltaYaw(me\Collider,Collider))>60.0) Then Return False
+			If (Abs(DeltaYaw(me\Collider,mainPlayer\collider))>60.0) Then Return False
 		EndIf
-		Return EntityVisible(me\Collider,Collider)
+		Return EntityVisible(me\Collider,mainPlayer\collider)
 	Else
-		If EntityDistance(Collider,me\Collider)>(8.0-CrouchState+PlayerSoundVolume) Then Return 3
-		If EntityVisible(me\Collider, Camera) Then Return True
+		If EntityDistance(mainPlayer\collider,me\Collider)>(8.0-CrouchState+PlayerSoundVolume) Then Return 3
+		If EntityVisible(me\Collider, mainPlayer\cam) Then Return True
 		
 		;spots the player if he's either in view or making a loud sound
 		If PlayerSoundVolume>1.0 Then Return 2
@@ -480,7 +480,7 @@ Function TeleportMTFGroup(n.NPCs)
 		EndIf
 	Next
 	
-	DebugLog "Teleported MTF Group (dist:"+EntityDistance(n\Collider,Collider)+")"
+	DebugLog "Teleported MTF Group (dist:"+EntityDistance(n\Collider,mainPlayer\collider)+")"
 	
 End Function
 
@@ -497,7 +497,7 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 		If instaKill Then Kill() : PlaySound_Strict BullethitSFX : Return
 		
 		If Rnd(1.0) =< hitProb Then
-			TurnEntity Camera, Rnd(-3,3), Rnd(-3,3), 0
+			TurnEntity mainPlayer\cam, Rnd(-3,3), Rnd(-3,3), 0
 			
 			Local ShotMessageUpdate$
 			If WearingVest>0 Then
@@ -576,14 +576,14 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 			PlaySound_Strict BullethitSFX
 		ElseIf particles
 			pvt = CreatePivot()
-			PositionEntity pvt, EntityX(Collider),(EntityY(Collider)+EntityY(Camera))/2,EntityZ(Collider)
+			PositionEntity pvt, EntityX(mainPlayer\collider),(EntityY(mainPlayer\collider)+EntityY(mainPlayer\cam))/2,EntityZ(mainPlayer\collider)
 			PointEntity pvt, p\obj
 			TurnEntity pvt, 0, 180, 0
 			
 			EntityPick(pvt, 2.5)
 			
 			If PickedEntity() <> 0 Then 
-				PlaySound2(Gunshot3SFX, Camera, pvt, 0.4, Rnd(0.8,1.0))
+				PlaySound2(Gunshot3SFX, mainPlayer\cam, pvt, 0.4, Rnd(0.8,1.0))
 				
 				If particles Then 
 					;dust/smoke particles
@@ -624,7 +624,7 @@ End Function
 ;TODO: Move to MTF file?
 Function PlayMTFSound(sound%, n.NPCs)
 	If n <> Null Then
-		n\SoundChn = PlaySound2(sound, Camera, n\Collider, 8.0)	
+		n\SoundChn = PlaySound2(sound, mainPlayer\cam, n\Collider, 8.0)	
 	EndIf
 	
 	
@@ -651,15 +651,15 @@ Function MoveToPocketDimension()
 			ShowEntity Collider
 			PlaySound_Strict(Use914SFX)
 			PlaySound_Strict(OldManSFX(5))
-			PositionEntity(Collider, EntityX(r\obj),0.8,EntityZ(r\obj))
+			PositionEntity(mainPlayer\collider, EntityX(r\obj),0.8,EntityZ(r\obj))
 			DropSpeed = 0
 			ResetEntity Collider
 			
-			BlinkTimer = -10
+			mainPlayer\blinkTimer = -10
 			
 			Injuries = Injuries+0.5
 			
-			PlayerRoom = r
+			mainPlayer\currRoom = r
 			
 			Return
 		EndIf
@@ -695,11 +695,11 @@ End Function
 
 ;TODO: Move to 860 creature file.
 Function Find860Angle(n.NPCs, fr.Forest)
-	TFormPoint(EntityX(Collider),EntityY(Collider),EntityZ(Collider),0,PlayerRoom\obj)
+	TFormPoint(EntityX(mainPlayer\collider),EntityY(mainPlayer\collider),EntityZ(mainPlayer\collider),0,mainPlayer\currRoom\obj)
 	Local playerx = Floor((TFormedX()*RoomScale+6.0)/12.0)
 	Local playerz = Floor((TFormedZ()*RoomScale+6.0)/12.0)
 	
-	TFormPoint(EntityX(n\Collider),EntityY(n\Collider),EntityZ(n\Collider),0,PlayerRoom\obj)
+	TFormPoint(EntityX(n\Collider),EntityY(n\Collider),EntityZ(n\Collider),0,mainPlayer\currRoom\obj)
 	Local x# = (TFormedX()*RoomScale+6.0)/12.0
 	Local z# = (TFormedZ()*RoomScale+6.0)/12.0
 	
@@ -713,14 +713,14 @@ Function Find860Angle(n.NPCs, fr.Forest)
 					
 					;tile (x2,z2) is closer to the player than the monsters current tile
 					If (Abs(playerx-x2)+Abs(playerz-z2))<(Abs(playerx-xt)+Abs(playerz-zt)) Then
-						Return GetAngle(x-0.5,z-0.5,x2,z2)+EntityYaw(PlayerRoom\obj)+180
+						Return GetAngle(x-0.5,z-0.5,x2,z2)+EntityYaw(mainPlayer\currRoom\obj)+180
 					EndIf
 					
 				EndIf
 			Next
 		Next
 	Else
-		Return GetAngle(EntityX(n\Collider),EntityZ(n\Collider),EntityX(Collider),EntityZ(Collider))+180
+		Return GetAngle(EntityX(n\Collider),EntityZ(n\Collider),EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider))+180
 	EndIf		
 End Function
 
@@ -730,51 +730,51 @@ Function Console_SpawnNPC(c_input$,state%=-9999)
 	
 	Select c_input$ 
 		Case "mtf"
-			n.NPCs = CreateNPC(NPCtypeMTF, EntityX(Collider),EntityY(Collider)+0.2,EntityZ(Collider))
+			n.NPCs = CreateNPC(NPCtypeMTF, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider))
 		Case "173","scp173","scp-173"
-			n.NPCs = CreateNPC(NPCtype173, EntityX(Collider),EntityY(Collider)+0.2,EntityZ(Collider))
+			n.NPCs = CreateNPC(NPCtype173, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider))
 		Case "106","scp106","scp-106","larry"
-			n.NPCs = CreateNPC(NPCtype106, EntityX(Collider),EntityY(Collider)+0.2,EntityZ(Collider))
+			n.NPCs = CreateNPC(NPCtype106, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider))
 		Case "guard"
-			n.NPCs = CreateNPC(NPCtypeGuard, EntityX(Collider),EntityY(Collider)+0.2,EntityZ(Collider))
+			n.NPCs = CreateNPC(NPCtypeGuard, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider))
 		Case "096","scp096","scp-096"
-			n.NPCs = CreateNPC(NPCtype096, EntityX(Collider),EntityY(Collider)+0.2,EntityZ(Collider))
+			n.NPCs = CreateNPC(NPCtype096, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider))
 			If Curr096 = Null Then Curr096 = n
 		Case "049","scp049","scp-049"
-			n.NPCs = CreateNPC(NPCtype049, EntityX(Collider),EntityY(Collider)+0.2,EntityZ(Collider))
+			n.NPCs = CreateNPC(NPCtype049, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider))
 			If state%=-9999 Then n\State = 2
 		Case "zombie","scp-049-2"
-			n.NPCs = CreateNPC(NPCtypeZombie, EntityX(Collider),EntityY(Collider)+0.2,EntityZ(Collider))
+			n.NPCs = CreateNPC(NPCtypeZombie, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider))
 			If state%=-9999 Then n\State = 1
 		Case "966", "scp966", "scp-966"
-			n.NPCs = CreateNPC(NPCtype966, EntityX(Collider),EntityY(Collider)+0.2,EntityZ(Collider))
+			n.NPCs = CreateNPC(NPCtype966, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider))
 		Case "class-d","classd","d"
-			n.NPCs = CreateNPC(NPCtypeD, EntityX(Collider),EntityY(Collider)+0.2,EntityZ(Collider))
+			n.NPCs = CreateNPC(NPCtypeD, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider))
 		Case "372","scp372","scp-372"
-			n.NPCs = CreateNPC(NPCtype372, EntityX(Collider),EntityY(Collider)+0.2,EntityZ(Collider))
+			n.NPCs = CreateNPC(NPCtype372, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider))
 		Case "apache"
-			n.NPCs = CreateNPC(NPCtypeApache, EntityX(Collider),EntityY(Collider)+0.2,EntityZ(Collider))
+			n.NPCs = CreateNPC(NPCtypeApache, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider))
 		Case "513-1","scp513-1","scp-513-1"
-			n.NPCs = CreateNPC(NPCtype5131, EntityX(Collider),EntityY(Collider)+0.2,EntityZ(Collider))
+			n.NPCs = CreateNPC(NPCtype5131, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider))
 		Case "tentacle"
-			n.NPCs = CreateNPC(NPCtypeTentacle, EntityX(Collider),EntityY(Collider),EntityZ(Collider))
+			n.NPCs = CreateNPC(NPCtypeTentacle, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider),EntityZ(mainPlayer\collider))
 		Case "860-2","scp860-2","scp-860-2"
-			n.NPCs = CreateNPC(NPCtype860, EntityX(Collider),EntityY(Collider)+0.2,EntityZ(Collider))
+			n.NPCs = CreateNPC(NPCtype860, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider))
 		Case "939","scp939","scp-939"
-			n.NPCs = CreateNPC(NPCtype939, EntityX(Collider),EntityY(Collider)+0.2,EntityZ(Collider))
+			n.NPCs = CreateNPC(NPCtype939, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider))
 			If state%=-9999 Then n\State = 1
 		Case "066","scp066","scp-066"
-			n.NPCs = CreateNPC(NPCtype066, EntityX(Collider),EntityY(Collider)+0.2,EntityZ(Collider))
+			n.NPCs = CreateNPC(NPCtype066, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider))
 		Case "npc178"
-			n.NPCs = CreateNPC(NPCtype178, EntityX(Collider),EntityY(Collider)+0.2,EntityZ(Collider))
+			n.NPCs = CreateNPC(NPCtype178, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider))
 		Case "pdplane"
-			n.NPCs = CreateNPC(NPCtypePdPlane, EntityX(Collider),EntityY(Collider)+0.2,EntityZ(Collider))
+			n.NPCs = CreateNPC(NPCtypePdPlane, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider))
 		Case "1048-a","scp1048-a","scp-1048-a","scp1048a","scp-1048a"
-			n.NPCs = CreateNPC(NPCtype1048a, EntityX(Collider),EntityY(Collider)+0.2,EntityZ(Collider))
+			n.NPCs = CreateNPC(NPCtype1048a, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider))
 		Case "scp-008-1","008-1","scp008-1"
-			n.NPCs = CreateNPC(NPCtype008, EntityX(Collider),EntityY(Collider)+0.2,EntityZ(Collider))
+			n.NPCs = CreateNPC(NPCtype008, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider))
 		Case "scp-1499-1","scp1499-1","1499-1"
-			n.NPCs = CreateNPC(NPCtype1499, EntityX(Collider),EntityY(Collider)+0.2,EntityZ(Collider))
+			n.NPCs = CreateNPC(NPCtype1499, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider))
 		Default 
 			CreateConsoleMsg("NPC type not found.")
 	End Select
@@ -847,7 +847,7 @@ Function ManipulateNPCBones()
 					EndIf
 					RotateEntity bone%,pitchvalue#+pitchoffset#,yawvalue#+yawoffset#,rollvalue#+rolloffset#
 				Case 1 ;<--- looking at player #2
-					n\BonePitch# = CurveAngle(DeltaPitch(bone2%,Camera),n\BonePitch#,10.0)
+					n\BonePitch# = CurveAngle(DeltaPitch(bone2%,mainPlayer\cam),n\BonePitch#,10.0)
 					Select TransformNPCManipulationData(n\NPCNameInSection,n\BoneToManipulate,"pitch")
 						Case 0
 							pitchvalue# = n\BonePitch#
@@ -984,7 +984,7 @@ Function NPCSpeedChange(n.NPCs)
 End Function
 
 Function PlayerInReachableRoom()
-	Local RN$ = PlayerRoom\RoomTemplate\Name$
+	Local RN$ = mainPlayer\currRoom\RoomTemplate\Name$
 	Local e.Events, temp
 	
 	;Player is in these rooms, returning false
@@ -992,7 +992,7 @@ Function PlayerInReachableRoom()
 		Return False
 	EndIf
 	;Player is at GateB and is at the surface, returning false
-	If RN = "exit1" And EntityY(Collider)>1040.0*RoomScale
+	If RN = "exit1" And EntityY(mainPlayer\collider)>1040.0*RoomScale
 		Return False
 	EndIf
 	;Player is in 860's test room and inside the forest, returning false

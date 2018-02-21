@@ -43,6 +43,11 @@ Type Player
 	Field grabbedEntity%
 	
 	Field closestItem.Items
+	Field selectedItem.Items
+	
+	Field closestButton%
+	Field closestDoor.Doors
+	Field selectedDoor.Doors
 	;------------
 	
 	;movement states
@@ -226,7 +231,7 @@ Global DropSpeed.MarkedForRemoval, HeadDropSpeed.MarkedForRemoval, CurrSpeed.Mar
 Global user_camera_pitch.MarkedForRemoval, side.MarkedForRemoval
 Global Crouch.MarkedForRemoval, CrouchState.MarkedForRemoval
 
-Global PlayerZone.MarkedForRemoval;, PlayerRoom.Rooms
+Global PlayerZone.MarkedForRemoval;, mainPlayer\currRoom.Rooms
 
 Global GrabbedEntity.MarkedForRemoval
 
@@ -286,7 +291,7 @@ Function MovePlayer()
 		
 		SuperManTimer=SuperManTimer+FPSfactor
 		
-		CameraShake = Sin(SuperManTimer / 5.0) * (SuperManTimer / 1500.0)
+		mainPlayer\camShake = Sin(SuperManTimer / 5.0) * (SuperManTimer / 1500.0)
 		
 		If SuperManTimer > 70 * 50 Then
 			DeathMSG = "A Class D jumpsuit found in [DATA REDACTED]. Upon further examination, the jumpsuit was found to be filled with 12.5 kilograms of blue ash-like substance. "
@@ -315,7 +320,7 @@ Function MovePlayer()
 		StaminaEffect = CurveValue(1.0, StaminaEffect, 50)
 	EndIf
 	
-	If PlayerRoom\RoomTemplate\Name<>"pocketdimension" Then 
+	If mainPlayer\currRoom\RoomTemplate\Name<>"pocketdimension" Then 
 		If KeyDown(keyBinds\sprint) Then
 			If Stamina < 5 Then
 				If ChannelPlaying(BreathCHN)=False Then BreathCHN = PlaySound_Strict(BreathSFX((WearingGasMask>0), 0))
@@ -341,7 +346,7 @@ Function MovePlayer()
 	
 	If Wearing714 Then 
 		Stamina = Min(Stamina, 10)
-		Sanity = Max(-850, Sanity)
+		mainPlayer\sanity895 = Max(-850, mainPlayer\sanity895)
 	EndIf
 	
 	If IsZombie Then Crouch = False
@@ -361,8 +366,8 @@ Function MovePlayer()
 				If Stamina <= 0 Then Stamina = -20.0
 			End If
 			
-			If PlayerRoom\RoomTemplate\Name = "pocketdimension" Then 
-				If EntityY(Collider)<2000*RoomScale Or EntityY(Collider)>2608*RoomScale Then
+			If mainPlayer\currRoom\RoomTemplate\Name = "pocketdimension" Then 
+				If EntityY(mainPlayer\collider)<2000*RoomScale Or EntityY(mainPlayer\collider)>2608*RoomScale Then
 					Stamina = 0
 					Speed = 0.015
 					Sprint = 1.0					
@@ -381,7 +386,7 @@ Function MovePlayer()
 			If (Not UnableToMove%) Then Shake# = (Shake + FPSfactor * Min(Sprint, 1.5) * 7) Mod 720
 			If temp < 180 And (Shake Mod 360) >= 180 And KillTimer>=0 Then
 				If CurrStepSFX=0 Then
-					temp = GetStepSound(Collider)
+					temp = GetStepSound(mainPlayer\collider)
 					
 					If Sprint = 1.0 Then
 						PlayerSoundVolume = Max(4.0,PlayerSoundVolume)
@@ -430,15 +435,15 @@ Function MovePlayer()
 		CrouchState = 0
 		Crouch = 0
 		
-		RotateEntity Collider, WrapAngle(EntityPitch(Camera)), WrapAngle(EntityYaw(Camera)), 0
+		RotateEntity mainPlayer\collider, WrapAngle(EntityPitch(mainPlayer\cam)), WrapAngle(EntityYaw(mainPlayer\cam)), 0
 		
 		temp2 = temp2 * NoClipSpeed
 		
-		If KeyDown(keyBinds\down) Then MoveEntity Collider, 0, 0, -temp2*FPSfactor
-		If KeyDown(keyBinds\up) Then MoveEntity Collider, 0, 0, temp2*FPSfactor
+		If KeyDown(keyBinds\down) Then MoveEntity mainPlayer\collider, 0, 0, -temp2*FPSfactor
+		If KeyDown(keyBinds\up) Then MoveEntity mainPlayer\collider, 0, 0, temp2*FPSfactor
 		
-		If KeyDown(keyBinds\left) Then MoveEntity Collider, -temp2*FPSfactor, 0, 0
-		If KeyDown(keyBinds\right) Then MoveEntity Collider, temp2*FPSfactor, 0, 0	
+		If KeyDown(keyBinds\left) Then MoveEntity mainPlayer\collider, -temp2*FPSfactor, 0, 0
+		If KeyDown(keyBinds\right) Then MoveEntity mainPlayer\collider, temp2*FPSfactor, 0, 0	
 		
 		ResetEntity Collider
 	Else
@@ -471,7 +476,7 @@ Function MovePlayer()
 			angle = ForceAngle
 		EndIf
 		
-		angle = WrapAngle(EntityYaw(Collider,True)+angle+90.0)
+		angle = WrapAngle(EntityYaw(mainPlayer\collider,True)+angle+90.0)
 		
 		If temp Then 
 			CurrSpeed = CurveValue(temp2, CurrSpeed, 20.0)
@@ -479,17 +484,17 @@ Function MovePlayer()
 			CurrSpeed = Max(CurveValue(0.0, CurrSpeed-0.1, 1.0),0.0)
 		EndIf
 		
-		If (Not UnableToMove%) Then TranslateEntity Collider, Cos(angle)*CurrSpeed * FPSfactor, 0, Sin(angle)*CurrSpeed * FPSfactor, True
+		If (Not UnableToMove%) Then TranslateEntity mainPlayer\collider, Cos(angle)*CurrSpeed * FPSfactor, 0, Sin(angle)*CurrSpeed * FPSfactor, True
 		
 		Local CollidedFloor% = False
-		For i = 1 To CountCollisions(Collider)
-			If CollisionY(Collider, i) < EntityY(Collider) - 0.25 Then CollidedFloor = True
+		For i = 1 To CountCollisions(mainPlayer\collider)
+			If CollisionY(mainPlayer\collider, i) < EntityY(mainPlayer\collider) - 0.25 Then CollidedFloor = True
 		Next
 		
 		If CollidedFloor = True Then
 			If DropSpeed# < - 0.07 Then 
 				If CurrStepSFX=0 Then
-					PlaySound_Strict(StepSFX(GetStepSound(Collider), 0, Rand(0, 7)))					
+					PlaySound_Strict(StepSFX(GetStepSound(mainPlayer\collider), 0, Rand(0, 7)))					
 				ElseIf CurrStepSFX=1
 					PlaySound_Strict(Step2SFX(Rand(0, 2)))
 				ElseIf CurrStepSFX=2
@@ -504,7 +509,7 @@ Function MovePlayer()
 			DropSpeed# = Min(Max(DropSpeed - 0.006 * FPSfactor, -2.0), 0.0)
 		EndIf	
 		
-		If (Not UnableToMove%) Then TranslateEntity Collider, 0, DropSpeed * FPSfactor, 0
+		If (Not UnableToMove%) Then TranslateEntity mainPlayer\collider, 0, DropSpeed * FPSfactor, 0
 	EndIf
 	
 	ForceMove = False
@@ -525,7 +530,7 @@ Function MovePlayer()
 	If Bloodloss > 0 Then
 		If Rnd(200)<Min(Injuries,4.0) Then
 			pvt = CreatePivot()
-			PositionEntity pvt, EntityX(Collider)+Rnd(-0.05,0.05),EntityY(Collider)-0.05,EntityZ(Collider)+Rnd(-0.05,0.05)
+			PositionEntity pvt, EntityX(mainPlayer\collider)+Rnd(-0.05,0.05),EntityY(mainPlayer\collider)-0.05,EntityZ(mainPlayer\collider)+Rnd(-0.05,0.05)
 			TurnEntity pvt, 90, 0, 0
 			EntityPick(pvt,0.3)
 			de.decals = CreateDecal(Rand(15,16), PickedX(), PickedY()+0.005, PickedZ(), 90, Rand(360), 0)
@@ -553,8 +558,8 @@ Function MovePlayer()
 	EndIf
 	
 	If Playable Then
-		If KeyHit(keyBinds\blink) Then BlinkTimer = 0
-		If KeyDown(keyBinds\blink) And BlinkTimer < - 10 Then BlinkTimer = -10
+		If KeyHit(keyBinds\blink) Then mainPlayer\blinkTimer = 0
+		If KeyDown(keyBinds\blink) And mainPlayer\blinkTimer < - 10 Then mainPlayer\blinkTimer = -10
 	EndIf
 	
 	
@@ -587,10 +592,10 @@ Global mouse_x_speed_1#, mouse_y_speed_1#
 Function MouseLook()
 	Local i%
 	
-	CameraShake = Max(CameraShake - (FPSfactor / 10), 0)
+	mainPlayer\camShake = Max(mainPlayer\camShake - (FPSfactor / 10), 0)
 	
 	;CameraZoomTemp = CurveValue(CurrCameraZoom,CameraZoomTemp, 5.0)
-	CameraZoom(Camera, Min(1.0+(CurrCameraZoom/400.0),1.1))
+	CameraZoom(mainPlayer\cam, Min(1.0+(CurrCameraZoom/400.0),1.1))
 	CurrCameraZoom = Max(CurrCameraZoom - FPSfactor, 0)
 	
 	If KillTimer >= 0 And FallTimer >=0 Then
@@ -601,10 +606,10 @@ Function MouseLook()
 		;fixing the black screen bug with some bubblegum code 
 		Local Zero# = 0.0
 		Local Nan1# = 0.0 / Zero
-		If Int(EntityX(Collider))=Int(Nan1) Then
+		If Int(EntityX(mainPlayer\collider))=Int(Nan1) Then
 			
-			PositionEntity Collider, EntityX(Camera, True), EntityY(Camera, True) - 0.5, EntityZ(Camera, True), True
-			Msg = "EntityX(Collider) = NaN, RESETTING COORDINATES    -    New coordinates: "+EntityX(Collider)
+			PositionEntity mainPlayer\collider, EntityX(mainPlayer\cam, True), EntityY(mainPlayer\cam, True) - 0.5, EntityZ(mainPlayer\cam, True), True
+			Msg = "EntityX(mainPlayer\collider) = NaN, RESETTING COORDINATES    -    New coordinates: "+EntityX(mainPlayer\collider)
 			MsgTimer = 300				
 		EndIf
 		;EndIf
@@ -613,13 +618,13 @@ Function MouseLook()
 		Local roll# = Max(Min(Sin(Shake/2)*2.5*Min(Injuries+0.25,3.0),8.0),-8.0)
 		
 		;käännetään kameraa sivulle jos pelaaja on vammautunut
-		;RotateEntity Collider, EntityPitch(Collider), EntityYaw(Collider), Max(Min(up*30*Injuries,50),-50)
-		PositionEntity Camera, EntityX(Collider), EntityY(Collider), EntityZ(Collider)
-		RotateEntity Camera, 0, EntityYaw(Collider), roll*0.5
+		;RotateEntity mainPlayer\collider, EntityPitch(mainPlayer\collider), EntityYaw(mainPlayer\collider), Max(Min(up*30*Injuries,50),-50)
+		PositionEntity mainPlayer\cam, EntityX(mainPlayer\collider), EntityY(mainPlayer\collider), EntityZ(mainPlayer\collider)
+		RotateEntity mainPlayer\cam, 0, EntityYaw(mainPlayer\collider), roll*0.5
 		
-		MoveEntity Camera, side, up + 0.6 + CrouchState * -0.3, 0
+		MoveEntity mainPlayer\cam, side, up + 0.6 + CrouchState * -0.3, 0
 		
-		;RotateEntity Collider, EntityPitch(Collider), EntityYaw(Collider), 0
+		;RotateEntity mainPlayer\collider, EntityPitch(mainPlayer\collider), EntityYaw(mainPlayer\collider), 0
 		;moveentity player, side, up, 0	
 		; -- Update the smoothing que To smooth the movement of the mouse.
 		mouse_x_speed_1# = CurveValue(MouseXSpeed() * (userOptions\mouseSensitivity + 0.6) , mouse_x_speed_1, 6.0 / (userOptions\mouseSensitivity + 1.0)) 
@@ -635,23 +640,23 @@ Function MouseLook()
 		Local the_yaw# = ((mouse_x_speed_1#)) * mouselook_x_inc# / (1.0+WearingVest)
 		Local the_pitch# = ((mouse_y_speed_1#)) * mouselook_y_inc# / (1.0+WearingVest)
 		
-		TurnEntity Collider, 0.0, -the_yaw#, 0.0 ; Turn the user on the Y (yaw) axis.
-		user_camera_pitch# = user_camera_pitch# + the_pitch#
+		TurnEntity mainPlayer\collider, 0.0, -the_yaw#, 0.0 ; Turn the user on the Y (yaw) axis.
+		mainPlayer\headPitch# = mainPlayer\headPitch# + the_pitch#
 		; -- Limit the user;s camera To within 180 degrees of pitch rotation. ;EntityPitch(); returns useless values so we need To use a variable To keep track of the camera pitch.
-		If user_camera_pitch# > 70.0 Then user_camera_pitch# = 70.0
-		If user_camera_pitch# < - 70.0 Then user_camera_pitch# = -70.0
+		If mainPlayer\headPitch# > 70.0 Then mainPlayer\headPitch# = 70.0
+		If mainPlayer\headPitch# < - 70.0 Then mainPlayer\headPitch# = -70.0
 		
-		RotateEntity Camera, WrapAngle(user_camera_pitch + Rnd(-CameraShake, CameraShake)), WrapAngle(EntityYaw(Collider) + Rnd(-CameraShake, CameraShake)), roll ; Pitch the user;s camera up And down.
+		RotateEntity mainPlayer\cam, WrapAngle(mainPlayer\headPitch + Rnd(-mainPlayer\camShake, mainPlayer\camShake)), WrapAngle(EntityYaw(mainPlayer\collider) + Rnd(-mainPlayer\camShake, mainPlayer\camShake)), roll ; Pitch the user;s camera up And down.
 		
-		If PlayerRoom\RoomTemplate\Name = "pocketdimension" Then
-			If EntityY(Collider)<2000*RoomScale Or EntityY(Collider)>2608*RoomScale Then
-				RotateEntity Camera, WrapAngle(EntityPitch(Camera)),WrapAngle(EntityYaw(Camera)), roll+WrapAngle(Sin(MilliSecs2()/150.0)*30.0) ; Pitch the user;s camera up And down.
+		If mainPlayer\currRoom\RoomTemplate\Name = "pocketdimension" Then
+			If EntityY(mainPlayer\collider)<2000*RoomScale Or EntityY(mainPlayer\collider)>2608*RoomScale Then
+				RotateEntity mainPlayer\cam, WrapAngle(EntityPitch(mainPlayer\cam)),WrapAngle(EntityYaw(mainPlayer\cam)), roll+WrapAngle(Sin(MilliSecs2()/150.0)*30.0) ; Pitch the user;s camera up And down.
 			EndIf
 		EndIf
 		
 	Else
 		HideEntity Collider
-		PositionEntity Camera, EntityX(Head), EntityY(Head), EntityZ(Head)
+		PositionEntity mainPlayer\cam, EntityX(Head), EntityY(Head), EntityZ(Head)
 		
 		Local CollidedFloor% = False
 		For i = 1 To CountCollisions(Head)
@@ -665,20 +670,20 @@ Function MouseLook()
 			If KillAnim = 0 Then 
 				MoveEntity Head, 0, 0, HeadDropSpeed
 				RotateEntity(Head, CurveAngle(-90.0, EntityPitch(Head), 20.0), EntityYaw(Head), EntityRoll(Head))
-				RotateEntity(Camera, CurveAngle(EntityPitch(Head) - 40.0, EntityPitch(Camera), 40.0), EntityYaw(Camera), EntityRoll(Camera))
+				RotateEntity(mainPlayer\cam, CurveAngle(EntityPitch(Head) - 40.0, EntityPitch(mainPlayer\cam), 40.0), EntityYaw(mainPlayer\cam), EntityRoll(mainPlayer\cam))
 			Else
 				MoveEntity Head, 0, 0, -HeadDropSpeed
 				RotateEntity(Head, CurveAngle(90.0, EntityPitch(Head), 20.0), EntityYaw(Head), EntityRoll(Head))
-				RotateEntity(Camera, CurveAngle(EntityPitch(Head) + 40.0, EntityPitch(Camera), 40.0), EntityYaw(Camera), EntityRoll(Camera))
+				RotateEntity(mainPlayer\cam, CurveAngle(EntityPitch(Head) + 40.0, EntityPitch(mainPlayer\cam), 40.0), EntityYaw(mainPlayer\cam), EntityRoll(mainPlayer\cam))
 			EndIf
 			
 			HeadDropSpeed# = HeadDropSpeed - 0.002 * FPSfactor
 		EndIf
 		
 		If userOptions\invertMouseY Then
-			TurnEntity (Camera, -MouseYSpeed() * 0.05 * FPSfactor, -MouseXSpeed() * 0.15 * FPSfactor, 0)
+			TurnEntity (mainPlayer\cam, -MouseYSpeed() * 0.05 * FPSfactor, -MouseXSpeed() * 0.15 * FPSfactor, 0)
 		Else
-			TurnEntity (Camera, MouseYSpeed() * 0.05 * FPSfactor, -MouseXSpeed() * 0.15 * FPSfactor, 0)
+			TurnEntity (mainPlayer\cam, MouseYSpeed() * 0.05 * FPSfactor, -MouseXSpeed() * 0.15 * FPSfactor, 0)
 		End If
 		
 	EndIf
@@ -686,7 +691,7 @@ Function MouseLook()
 	;pölyhiukkasia
 	If Rand(35) = 1 Then
 		Local pvt% = CreatePivot()
-		PositionEntity(pvt, EntityX(Camera, True), EntityY(Camera, True), EntityZ(Camera, True))
+		PositionEntity(pvt, EntityX(mainPlayer\cam, True), EntityY(mainPlayer\cam, True), EntityZ(mainPlayer\cam, True))
 		RotateEntity(pvt, 0, Rnd(360), 0)
 		If Rand(2) = 1 Then
 			MoveEntity(pvt, 0, Rnd(-0.5, 0.5), Rnd(0.5, 1.0))
@@ -757,7 +762,7 @@ Function MouseLook()
 				If n\State3>0 Then canSpawn178=1
 				If (n\State<=0) And (n\State3=0) Then
 					RemoveNPC(n)
-				Else If EntityDistance(Collider,n\Collider)>HideDistance*1.5 Then
+				Else If EntityDistance(mainPlayer\collider,n\Collider)>HideDistance*1.5 Then
 					RemoveNPC(n)
 				EndIf
 			EndIf
@@ -769,7 +774,7 @@ Function MouseLook()
 		For n.NPCs = Each NPCs
 			If (n\NPCtype = NPCtype178) Then
 				tempint=tempint+1
-				If EntityDistance(Collider,n\Collider)>HideDistance*1.5 Then
+				If EntityDistance(mainPlayer\collider,n\Collider)>HideDistance*1.5 Then
 					RemoveNPC(n)
 				EndIf
 				;If n\State<=0 Then RemoveNPC(n)
@@ -778,7 +783,7 @@ Function MouseLook()
 		If tempint<10 Then ;create the npcs
 			For w.WayPoints = Each WayPoints
 				Local dist#
-				dist=EntityDistance(Collider,w\obj)
+				dist=EntityDistance(mainPlayer\collider,w\obj)
 				If (dist<HideDistance*1.5) And (dist>1.2) And (w\door = Null) And (Rand(0,1)=1) Then
 					tempint2=True
 					For n.NPCs = Each NPCs
@@ -890,8 +895,8 @@ Function Kill()
 		
 		KillTimer = Min(-1, KillTimer)
 		ShowEntity Head
-		PositionEntity(Head, EntityX(Camera, True), EntityY(Camera, True), EntityZ(Camera, True), True)
+		PositionEntity(Head, EntityX(mainPlayer\cam, True), EntityY(mainPlayer\cam, True), EntityZ(mainPlayer\cam, True), True)
 		ResetEntity (Head)
-		RotateEntity(Head, 0, EntityYaw(Camera), 0)		
+		RotateEntity(Head, 0, EntityYaw(mainPlayer\cam), 0)		
 	EndIf
 End Function

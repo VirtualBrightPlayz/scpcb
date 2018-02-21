@@ -12,7 +12,7 @@ Function InitializeNPCtype066(n.NPCs)
 End Function
 
 Function UpdateNPCtype066(n.NPCs)
-    dist = Distance(EntityX(Collider),EntityZ(Collider),EntityX(n\Collider),EntityZ(n\Collider))
+    dist = Distance(EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider),EntityX(n\Collider),EntityZ(n\Collider))
     
     Select n\State
         Case 0 
@@ -44,7 +44,7 @@ Function UpdateNPCtype066(n.NPCs)
         Case 1 ;staring at the player
             
             If n\Frame<451 Then
-                angle = WrapAngle(CurveAngle(DeltaYaw(n\Collider, Collider)-180, (AnimTime(n\obj)-2.0)/1.2445, 15.0))
+                angle = WrapAngle(CurveAngle(DeltaYaw(n\Collider, mainPlayer\collider)-180, (AnimTime(n\obj)-2.0)/1.2445, 15.0))
                 ;0->360 = 2->450
                 SetNPCFrame(n,angle*1.2445+2.0)
                 
@@ -55,9 +55,9 @@ Function UpdateNPCtype066(n.NPCs)
                 ;Animate2(n\obj, AnimTime(n\obj), 636, 646, 0.4, False)
                 ;If AnimTime(n\obj)=646 Then SetAnimTime (n\obj, 2)
             EndIf
-            dist = Distance(EntityX(Collider),EntityZ(Collider),EntityX(n\Collider),EntityZ(n\Collider))
+            dist = Distance(EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider),EntityX(n\Collider),EntityZ(n\Collider))
             
-            If Rand(700)=1 Then PlaySound2(LoadTempSound("SFX\SCP\066\Eric"+Rand(1,3)+".ogg"),Camera, n\Collider, 8.0)
+            If Rand(700)=1 Then PlaySound2(LoadTempSound("SFX\SCP\066\Eric"+Rand(1,3)+".ogg"),mainPlayer\cam, n\Collider, 8.0)
             
             If dist < 1.0+n\LastDist Then n\State = Rand(2,3)
         Case 2 ;roll towards the player and make a sound, and then escape	
@@ -75,16 +75,16 @@ Function UpdateNPCtype066(n.NPCs)
                 If n\Frame=683 Then 
                     If n\State2 = 0 Then
                         If Rand(2)=1 Then
-                            PlaySound2(LoadTempSound("SFX\SCP\066\Eric"+Rand(1,3)+".ogg"),Camera, n\Collider, 8.0)
+                            PlaySound2(LoadTempSound("SFX\SCP\066\Eric"+Rand(1,3)+".ogg"),mainPlayer\cam, n\Collider, 8.0)
                         Else
-                            PlaySound2(LoadTempSound("SFX\SCP\066\Notes"+Rand(1,6)+".ogg"), Camera, n\Collider, 8.0)
+                            PlaySound2(LoadTempSound("SFX\SCP\066\Notes"+Rand(1,6)+".ogg"), mainPlayer\cam, n\Collider, 8.0)
                         EndIf									
                         
                         Select Rand(1,6)
                             Case 1
                                 If n\Sound2=0 Then n\Sound2=LoadSound_Strict("SFX\SCP\066\Beethoven.ogg")
-                                n\SoundChn2 = PlaySound2(n\Sound2, Camera, n\Collider)
-                                CameraShake = 10.0
+                                n\SoundChn2 = PlaySound2(n\Sound2, mainPlayer\cam, n\Collider)
+                                mainPlayer\camShake = 10.0
                             Case 2
                                 n\State3 = Rand(700,1400)
                             Case 3
@@ -98,12 +98,12 @@ Function UpdateNPCtype066(n.NPCs)
                                     EndIf
                                 Next
                             Case 4
-                                If PlayerRoom\RoomTemplate\DisableDecals = False Then
-                                    CameraShake = 5.0
+                                If mainPlayer\currRoom\RoomTemplate\DisableDecals = False Then
+                                    mainPlayer\camShake = 5.0
                                     de.Decals = CreateDecal(1, EntityX(n\Collider), 0.01, EntityZ(n\Collider), 90, Rand(360), 0)
                                     de\Size = 0.3 : UpdateDecals
                                     PlaySound_Strict(LoadTempSound("SFX\General\BodyFall.ogg"))
-                                    If Distance(EntityX(Collider),EntityZ(Collider),EntityX(n\Collider),EntityZ(n\Collider))<0.8 Then
+                                    If Distance(EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider),EntityX(n\Collider),EntityZ(n\Collider))<0.8 Then
                                         Injuries = Injuries + Rnd(0.3,0.5)
                                     EndIf
                                 EndIf
@@ -160,16 +160,16 @@ Function UpdateNPCtype066(n.NPCs)
         If n\Sound = 0 Then n\Sound = LoadSound_Strict("SFX\SCP\066\Rolling.ogg")
         If n\SoundChn<>0 Then
             If ChannelPlaying(n\SoundChn) Then
-                n\SoundChn = LoopSound2(n\Sound, n\SoundChn, Camera, n\Collider, 20)
+                n\SoundChn = LoopSound2(n\Sound, n\SoundChn, mainPlayer\cam, n\Collider, 20)
             EndIf
         Else
-            n\SoundChn = PlaySound2(n\Sound, Camera, n\Collider, 20)
+            n\SoundChn = PlaySound2(n\Sound, mainPlayer\cam, n\Collider, 20)
         EndIf					
     EndIf
     
     ;If n\SoundChn2<>0 Then
     ;	If ChannelPlaying(n\SoundChn2) Then
-    ;		n\SoundChn2 = LoopSound2(n\Sound2, n\SoundChn2, Camera, n\Collider, 20)
+    ;		n\SoundChn2 = LoopSound2(n\Sound2, n\SoundChn2, mainPlayer\cam, n\Collider, 20)
     ;		BlurTimer = Max((5.0-dist)*300,0)
     ;	EndIf
     ;EndIf
@@ -183,7 +183,7 @@ Function UpdateNPCtype066(n.NPCs)
     EndIf
     
     If ChannelPlaying(n\SoundChn2)
-        UpdateSoundOrigin2(n\SoundChn2,Camera,n\Collider,20)
+        UpdateSoundOrigin2(n\SoundChn2,mainPlayer\cam,n\Collider,20)
         BlurTimer = Max((5.0-dist)*300,0)
     EndIf
     

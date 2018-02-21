@@ -18,9 +18,9 @@ Function SaveGame(file$)
 	WriteString f, CurrentDate()
 	
 	WriteInt f, PlayTime
-	WriteFloat f, EntityX(Collider)
-	WriteFloat f, EntityY(Collider)
-	WriteFloat f, EntityZ(Collider)
+	WriteFloat f, EntityX(mainPlayer\collider)
+	WriteFloat f, EntityY(mainPlayer\collider)
+	WriteFloat f, EntityZ(mainPlayer\collider)
 	
 	WriteFloat f, EntityX(Head)
 	WriteFloat f, EntityY(Head)
@@ -28,8 +28,8 @@ Function SaveGame(file$)
 	
 	WriteString f, Str(AccessCode)
 	
-	WriteFloat f, EntityPitch(Collider)
-	WriteFloat f, EntityYaw(Collider)
+	WriteFloat f, EntityPitch(mainPlayer\collider)
+	WriteFloat f, EntityYaw(mainPlayer\collider)
 	
 	;WriteString f, VersionNumber
 	WriteString f, CompatibleNumber
@@ -221,7 +221,7 @@ Function SaveGame(file$)
 		
 		WriteInt f, r\zone
 		
-		If PlayerRoom = r Then 
+		If mainPlayer\currRoom = r Then 
 			WriteByte f, 1
 		Else 
 			WriteByte f, 0
@@ -459,8 +459,8 @@ Function LoadGame(file$)
 	x = ReadFloat(f)
 	y = ReadFloat(f)
 	z = ReadFloat(f)	
-	PositionEntity(Collider, x, y+0.05, z)
-	ResetEntity(Collider)
+	PositionEntity(mainPlayer\collider, x, y+0.05, z)
+	ResetEntity(mainPlayer\collider)
 	
 	x = ReadFloat(f)
 	y = ReadFloat(f)
@@ -472,13 +472,13 @@ Function LoadGame(file$)
 	
 	x = ReadFloat(f)
 	y = ReadFloat(f)
-	RotateEntity(Collider, x, y, 0, 0)
+	RotateEntity(mainPlayer\collider, x, y, 0, 0)
 	
 	strtemp = ReadString(f)
 	;If (strtemp <> VersionNumber) Then RuntimeError("The save files of v"+strtemp+" aren't compatible with SCP - Containment Breach "+VersionNumber+".")
 	If (strtemp <> CompatibleNumber) Then RuntimeError("The save files of v"+strtemp+" aren't compatible with SCP - Containment Breach "+VersionNumber+" (latest compatible version: "+CompatibleNumber+").")
 	
-	BlinkTimer = ReadFloat(f)
+	mainPlayer\blinkTimer = ReadFloat(f)
 	BlinkEffect = ReadFloat(f)	
 	BlinkEffectTimer = ReadFloat(f)	
 	
@@ -519,7 +519,7 @@ Function LoadGame(file$)
 	
 	MonitorTimer = ReadFloat(f)
 	
-	Sanity = ReadFloat(f)
+	mainPlayer\sanity895 = ReadFloat(f)
 	
 	WearingGasMask = ReadByte(f)
 	WearingVest = ReadByte(f)	
@@ -691,7 +691,7 @@ Function LoadGame(file$)
 			End If
 		Next
 		
-		If temp2 = 1 Then PlayerRoom = r.Rooms
+		If temp2 = 1 Then mainPlayer\currRoom = r.Rooms
 		
 		For x = 0 To 11
 			id = ReadInt(f)
@@ -1091,7 +1091,7 @@ Function LoadGameQuick(file$)
 	UnableToMove% = False
 	Msg = ""
 	
-	PositionEntity Collider,0,1000.0,0,True
+	PositionEntity mainPlayer\collider,0,1000.0,0,True
 	ResetEntity Collider
 	
 	Local x#, y#, z#, i%, temp%, strtemp$, id%
@@ -1108,7 +1108,7 @@ Function LoadGameQuick(file$)
 	
 	HeartBeatVolume = 0
 	
-	CameraShake = 0
+	mainPlayer\camShake = 0
 	Shake = 0
 	LightFlash = 0
 	BlurTimer = 0
@@ -1128,8 +1128,8 @@ Function LoadGameQuick(file$)
 	x = ReadFloat(f)
 	y = ReadFloat(f)
 	z = ReadFloat(f)	
-	PositionEntity(Collider, x, y+0.05, z)
-	;ResetEntity(Collider)
+	PositionEntity(mainPlayer\collider, x, y+0.05, z)
+	;ResetEntity(mainPlayer\collider)
 	
 	ShowEntity Collider
 	
@@ -1143,13 +1143,13 @@ Function LoadGameQuick(file$)
 	
 	x = ReadFloat(f)
 	y = ReadFloat(f)
-	RotateEntity(Collider, x, y, 0, 0)
+	RotateEntity(mainPlayer\collider, x, y, 0, 0)
 	
 	strtemp = ReadString(f)
 	;If (strtemp <> VersionNumber) Then RuntimeError("The save files of v"+strtemp+" aren't compatible with SCP - Containment Breach "+VersionNumber+".")
 	If (strtemp <> CompatibleNumber) Then RuntimeError("The save files of v"+strtemp+" aren't compatible with SCP - Containment Breach "+VersionNumber+" (latest compatible version: "+CompatibleNumber+").")
 	
-	BlinkTimer = ReadFloat(f)
+	mainPlayer\blinkTimer = ReadFloat(f)
 	BlinkEffect = ReadFloat(f)	
 	BlinkEffectTimer = ReadFloat(f)	
 	
@@ -1190,7 +1190,7 @@ Function LoadGameQuick(file$)
 	
 	MonitorTimer = ReadFloat(f)
 	
-	Sanity = ReadFloat(f)
+	mainPlayer\sanity895 = ReadFloat(f)
 	
 	WearingGasMask = ReadByte(f)
 	WearingVest = ReadByte(f)	
@@ -1427,7 +1427,7 @@ Function LoadGameQuick(file$)
 			Delete r\fr
 		EndIf
 		
-		If temp2 = 1 Then PlayerRoom = r.Rooms
+		If temp2 = 1 Then mainPlayer\currRoom = r.Rooms
 	Next
 	
 	For r.Rooms = Each Rooms
@@ -1650,14 +1650,14 @@ Function LoadGameQuick(file$)
 		closestroom = Null
 		dist = 30
 		For r.Rooms = Each Rooms
-			dist2# = EntityDistance(r\obj, Collider)
+			dist2# = EntityDistance(r\obj, mainPlayer\collider)
 			If dist2 < dist Then
 				dist = dist2
 				closestroom = r
 			EndIf
 		Next
 		
-		If closestroom<>Null Then PlayerRoom = closestroom
+		If closestroom<>Null Then mainPlayer\currRoom = closestroom
 	EndIf
 	
 	CloseFile f

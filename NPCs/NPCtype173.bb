@@ -62,7 +62,7 @@ Function UpdateNPCtype173(n.NPCs)
 	Local dist#
 	Select n\state
 		Case STATE173_ATTACK
-			dist = EntityDistance(n\Collider, Collider)
+			dist = EntityDistance(n\Collider, mainPlayer\collider)
 			PositionEntity(n\obj, EntityX(n\collider), EntityY(n\collider) - 0.32, EntityZ(n\collider))
 			RotateEntity(n\obj, 0, EntityYaw(n\collider) - 180, 0)
 
@@ -72,17 +72,17 @@ Function UpdateNPCtype173(n.NPCs)
 				If dist < 10.0 Then 
 					If EntityVisible(n\collider, collider) Then
 						playerVisible = True
-						n\targetX = EntityX(Collider, True)
-						n\targetY = EntityY(Collider, True)
-						n\targetZ = EntityZ(Collider, True)
+						n\targetX = EntityX(mainPlayer\collider, True)
+						n\targetY = EntityY(mainPlayer\collider, True)
+						n\targetZ = EntityZ(mainPlayer\collider, True)
 					EndIf
 				EndIf
 				
 				n\prevX = EntityX(n\collider)
 				n\prevZ = EntityZ(n\collider)				
 				
-				If (BlinkTimer < - 16 Or BlinkTimer > - 6) And (Not IsNVGBlinking) Then
-					If EntityInView(n\obj, Camera) Then canMove = False
+				If (mainPlayer\blinkTimer < - 16 Or mainPlayer\blinkTimer > - 6) And (Not IsNVGBlinking) Then
+					If EntityInView(n\obj, mainPlayer\cam) Then canMove = False
 				EndIf
 			EndIf
 			
@@ -113,17 +113,17 @@ Function UpdateNPCtype173(n.NPCs)
 				n\lastDist = dist
 			Else 
 				;Stonedrag.
-				n\soundChn = LoopSound2(n\sounds[0], n\soundChn, Camera, n\collider, 10.0, n\state)
+				n\soundChn = LoopSound2(n\sounds[0], n\soundChn, mainPlayer\cam, n\collider, 10.0, n\state)
 
 				;more than 6 room lengths away from the player -> teleport to a room closer to the player
 				If dist > 50 Then
 					If Rand(70)=1 Then
-						If PlayerRoom\RoomTemplate\Name <> "exit1" And PlayerRoom\RoomTemplate\Name <> "gatea" And PlayerRoom\RoomTemplate\Name <> "pocketdimension" Then
+						If mainPlayer\currRoom\RoomTemplate\Name <> "exit1" And mainPlayer\currRoom\RoomTemplate\Name <> "gatea" And mainPlayer\currRoom\RoomTemplate\Name <> "pocketdimension" Then
 							For w.waypoints = Each WayPoints
 								If w\door=Null And Rand(5)=1 Then
-									x = Abs(EntityX(Collider) - EntityX(w\obj, True))
+									x = Abs(EntityX(mainPlayer\collider) - EntityX(w\obj, True))
 									If x < 25.0 And x > 15.0 Then
-										z = Abs(EntityZ(Collider)-EntityZ(w\obj,True))
+										z = Abs(EntityZ(mainPlayer\collider)-EntityZ(w\obj,True))
 										If z < 25 And z > 15.0 Then
 											DebugLog "MOVING 173 TO " + w\room\roomtemplate\name
 											PositionEntity(n\Collider, EntityX(w\obj,True), EntityY(w\obj,True)+0.25,EntityZ(w\obj,True))
@@ -175,7 +175,7 @@ Function UpdateNPCtype173(n.NPCs)
 						If dist < 0.65 Then
 							If KillTimer >= 0 And (Not GodMode) Then
 								
-								Select PlayerRoom\RoomTemplate\Name
+								Select mainPlayer\currRoom\RoomTemplate\Name
 									Case "lockroom", "room2closets", "coffin"
 										DeathMSG = "Subject D-9341. Cause of death: Fatal cervical fracture. The surveillance tapes confirm that the subject was killed by SCP-173."	
 									Case "173"
@@ -195,15 +195,15 @@ Function UpdateNPCtype173(n.NPCs)
 
 								;TODO: Remove?
 								If Rand(2) = 1 Then 
-									TurnEntity(Camera, 0, Rand(80,100), 0)
+									TurnEntity(mainPlayer\cam, 0, Rand(80,100), 0)
 								Else
-									TurnEntity(Camera, 0, Rand(-100,-80), 0)
+									TurnEntity(mainPlayer\cam, 0, Rand(-100,-80), 0)
 								EndIf
 
 								Kill()
 							EndIf
 						Else
-							PointEntity(n\Collider, Collider)
+							PointEntity(n\Collider, mainPlayer\collider)
 							RotateEntity n\Collider, 0, EntityYaw(n\Collider), EntityRoll(n\Collider)
 							TranslateEntity n\Collider,Cos(EntityYaw(n\Collider)+90.0)*n\Speed*FPSfactor,0.0,Sin(EntityYaw(n\Collider)+90.0)*n\Speed*FPSfactor
 						EndIf
@@ -254,7 +254,7 @@ Function UpdateNPCtype173(n.NPCs)
 			If (n\target <> Null) Then
 				Local tmp = False
 				If dist > HideDistance*0.7
-					If EntityVisible(n\obj,Collider)=False
+					If EntityVisible(n\obj,mainPlayer\collider)=False
 						tmp = True
 					EndIf
 				EndIf

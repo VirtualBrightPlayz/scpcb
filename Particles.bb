@@ -102,8 +102,8 @@ End Type
 Function UpdateEmitters()
 	InSmoke = False
 	For e.emitters = Each Emitters
-		If FPSfactor > 0 And (PlayerRoom = e\room Or e\room\dist < 8) Then
-			;If EntityDistance(Camera, e\Obj) < 6.0 Then
+		If FPSfactor > 0 And (mainPlayer\currRoom = e\room Or e\room\dist < 8) Then
+			;If EntityDistance(mainPlayer\cam, e\Obj) < 6.0 Then
 				Local p.Particles = CreateParticle(EntityX(e\obj, True), EntityY(e\obj, True), EntityZ(e\obj, True), Rand(e\minimage, e\maximage), e\size, e\gravity, e\lifetime)
 				p\speed = e\speed
 				RotateEntity(p\pvt, EntityPitch(e\Obj, True), EntityYaw(e\Obj, True), EntityRoll(e\Obj, True), True)
@@ -115,13 +115,13 @@ Function UpdateEmitters()
 				
 				p\Achange = e\achange
 				
-				e\SoundCHN = LoopSound2(HissSFX, e\SoundCHN, Camera, e\Obj)
+				e\SoundCHN = LoopSound2(HissSFX, e\SoundCHN, mainPlayer\cam, e\Obj)
 				
 				If InSmoke = False Then
-					If WearingGasMask=0 And WearingHazmat=0 Then
-						Local dist# = Distance(EntityX(Camera, True), EntityZ(Camera, True), EntityX(e\obj, True), EntityZ(e\obj, True))
+					If IsPlayerWearing(mainPlayer,"gasmask",WORNITEM_HEAD_SLOT) And IsPlayerWearing(mainPlayer,"hazmatsuit",WORNITEM_BODY_SLOT) Then
+						Local dist# = Distance(EntityX(mainPlayer\cam, True), EntityZ(mainPlayer\cam, True), EntityX(e\obj, True), EntityZ(e\obj, True))
 						If dist < 0.8 Then
-							If Abs(EntityY(Camera, True)-EntityY(e\obj,True))<5.0 Then InSmoke = True
+							If Abs(EntityY(mainPlayer\cam, True)-EntityY(e\obj,True))<5.0 Then InSmoke = True
 						EndIf
 					EndIf					
 				EndIf
@@ -130,13 +130,13 @@ Function UpdateEmitters()
 	Next
 	
 	If InSmoke Then
-		If EyeIrritation > (70 * 6) Then BlurVolume = Max(BlurVolume, (EyeIrritation - (70 * 6)) / (70.0 * 24.0))
-		If EyeIrritation > (70 * 24) Then 
+		If mainPlayer\blinkEffect > (70 * 6) Then mainPlayer\blurTimer = Max(mainPlayer\blurTimer, (mainPlayer\blinkEffect - (70 * 6)) / (70.0 * 24.0))
+		If mainPlayer\blinkEffect > (70 * 24) Then 
 			DeathMSG = "Subject D-9341 found dead in [DATA REDACTED]. Cause of death: Suffocation due to decontamination gas."
 			Kill()
 		EndIf
 		
-		If KillTimer => 0 Then 
+		If Not mainPlayer\dead Then 
 			If Rand(150) = 1 Then
 				If CoughCHN = 0 Then
 					CoughCHN = PlaySound_Strict(CoughSFX(Rand(0, 2)))
@@ -146,7 +146,7 @@ Function UpdateEmitters()
 			EndIf
 		EndIf
 		
-		EyeIrritation=EyeIrritation+FPSfactor * 4
+		mainPlayer\blinkEffect=mainPlayer\blinkEffect+FPSfactor * 4
 	EndIf	
 End Function 
 

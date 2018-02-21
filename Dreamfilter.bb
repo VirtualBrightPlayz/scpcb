@@ -2,7 +2,7 @@ Global ark_blur_image%, ark_blur_texture%, ark_sw%, ark_sh%
 Global ark_blur_cam%
 
 Function CreateBlurImage()
-	;Create blur Camera
+	;Create blur mainPlayer\cam
 	Local cam% = CreateCamera()
 	CameraProjMode cam,2
 	CameraZoom cam,0.1

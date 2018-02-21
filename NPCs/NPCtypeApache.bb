@@ -41,15 +41,15 @@ Function InitializeNPCtypeApache(n.NPCs)
 End Function
 
 Function UpdateNPCtypeApache(n.NPCs)
-    Local dist# = EntityDistance(Collider, n\Collider)
+    Local dist# = EntityDistance(mainPlayer\collider, n\Collider)
     If dist<60.0 Then 
-        If PlayerRoom\RoomTemplate\Name = "exit1" Then 
-            dist2 = Max(Min(EntityDistance(n\Collider, PlayerRoom\Objects[3])/(8000.0*RoomScale),1.0),0.0)
+        If mainPlayer\currRoom\RoomTemplate\Name = "exit1" Then 
+            dist2 = Max(Min(EntityDistance(n\Collider, mainPlayer\currRoom\Objects[3])/(8000.0*RoomScale),1.0),0.0)
         Else 
             dist2 = 1.0
         EndIf
         
-        n\SoundChn = LoopSound2(ApacheSFX, n\SoundChn, Camera, n\Collider, 25.0, dist2)
+        n\SoundChn = LoopSound2(ApacheSFX, n\SoundChn, mainPlayer\cam, n\Collider, 25.0, dist2)
     EndIf
     
     n\DropSpeed = 0
@@ -60,13 +60,13 @@ Function UpdateNPCtypeApache(n.NPCs)
             TurnEntity(n\obj3,20.0*FPSfactor,0,0)
             
             If n\State=1 And (Not NoTarget) Then
-                If Abs(EntityX(Collider)-EntityX(n\Collider))< 30.0 Then
-                    If Abs(EntityZ(Collider)-EntityZ(n\Collider))<30.0 Then
-                        If Abs(EntityY(Collider)-EntityY(n\Collider))<20.0 Then
+                If Abs(EntityX(mainPlayer\collider)-EntityX(n\Collider))< 30.0 Then
+                    If Abs(EntityZ(mainPlayer\collider)-EntityZ(n\Collider))<30.0 Then
+                        If Abs(EntityY(mainPlayer\collider)-EntityY(n\Collider))<20.0 Then
                             If Rand(20)=1 Then 
-                                If EntityVisible(Collider, n\Collider) Then
+                                If EntityVisible(mainPlayer\collider, n\Collider) Then
                                     n\State = 2
-                                    PlaySound2(AlarmSFX(2), Camera, n\Collider, 50, 1.0)
+                                    PlaySound2(AlarmSFX(2), mainPlayer\cam, n\Collider, 50, 1.0)
                                 EndIf
                             EndIf									
                         EndIf
@@ -98,7 +98,7 @@ Function UpdateNPCtypeApache(n.NPCs)
                         
                         n\CurrSpeed = CurveValue(Min(dist-6.5,6.5)*0.008, n\CurrSpeed, 50.0)
                         
-                        ;If Distance(EntityX(Collider),EntityZ(Collider),EntityX(n\collider),EntityZ(n\collider)) > 6.5 Then
+                        ;If Distance(EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider),EntityX(n\collider),EntityZ(n\collider)) > 6.5 Then
                         ;	n\currspeed = CurveValue(0.08,n\currspeed,50.0)
                         ;Else
                         ;	n\currspeed = CurveValue(0.0,n\currspeed,30.0)
@@ -126,7 +126,7 @@ Function UpdateNPCtypeApache(n.NPCs)
                                     PointEntity pvt, target
                                     
                                     If WrapAngle(EntityYaw(pvt)-EntityYaw(n\Collider))<10 Then
-                                        PlaySound2(Gunshot2SFX, Camera, n\Collider, 20)
+                                        PlaySound2(Gunshot2SFX, mainPlayer\cam, n\Collider, 20)
                                         
                                         DeathMSG = Chr(34)+"CH-2 to control. Shot down a runaway Class D at Gate B."+Chr(34)
                                         
@@ -170,7 +170,7 @@ Function UpdateNPCtypeApache(n.NPCs)
                 If EntityDistance(n\obj, target) <0.3 Then
                     If TempSound2 <> 0 Then FreeSound_Strict TempSound2 : TempSound2 = 0
                     TempSound2 = LoadSound_Strict("SFX\Character\Apache\Crash"+Rand(1,2)+".ogg")
-                    CameraShake = Max(CameraShake, 3.0)
+                    mainPlayer\camShake = Max(mainPlayer\camShake, 3.0)
                     PlaySound_Strict TempSound2
                     n\State = 5
                 EndIf

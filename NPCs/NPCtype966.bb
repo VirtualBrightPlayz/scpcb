@@ -34,7 +34,7 @@ Function InitializeNPCtype966(n.NPCs)
 End Function
 
 Function UpdateNPCtype966(n.NPCs)
-    dist = EntityDistance(n\Collider,Collider)
+    dist = EntityDistance(n\Collider,mainPlayer\collider)
     
     If (dist<HideDistance) Then
         
@@ -48,7 +48,7 @@ Function UpdateNPCtype966(n.NPCs)
         ;the ambient sound gets louder when the npcs are attacking
             If n\State > 0 Then temp = 1.0	
             
-            n\SoundChn = LoopSound2(n\Sound, n\SoundChn, Camera, Camera, 10.0,temp)
+            n\SoundChn = LoopSound2(n\Sound, n\SoundChn, mainPlayer\cam, mainPlayer\cam, 10.0,temp)
         EndIf
         
         temp = Rnd(-1.0,1.0)
@@ -141,10 +141,10 @@ Function UpdateNPCtype966(n.NPCs)
                 EndIf
                 
                 If n\Frame>1029.0 And prevFrame<=1029.0 Or n\Frame>1203.0 And prevFrame<=1203.0 Then
-                    PlaySound2(LoadTempSound("SFX\SCP\966\Echo"+Rand(1,3)+".ogg"), Camera, n\Collider)
+                    PlaySound2(LoadTempSound("SFX\SCP\966\Echo"+Rand(1,3)+".ogg"), mainPlayer\cam, n\Collider)
                 EndIf
                 
-                angle = VectorYaw(EntityX(Collider)-EntityX(n\Collider),0,EntityZ(Collider)-EntityZ(n\Collider))
+                angle = VectorYaw(EntityX(mainPlayer\collider)-EntityX(n\Collider),0,EntityZ(mainPlayer\collider)-EntityZ(n\Collider))
                 RotateEntity n\Collider,0.0,CurveAngle(angle,EntityYaw(n\Collider),20.0),0.0
                 
                 If n\State3<900 Then
@@ -188,10 +188,10 @@ Function UpdateNPCtype966(n.NPCs)
                 EndIf
                 
                 If n\Frame>1393.0 And prevFrame<=1393.0 Or n\Frame>1589.0 And prevFrame<=1589.0 Or n\Frame>2000.0 And prevFrame<=2000.0 Then
-                    PlaySound2(LoadTempSound("SFX\SCP\966\Idle"+Rand(1,3)+".ogg"), Camera, n\Collider)
+                    PlaySound2(LoadTempSound("SFX\SCP\966\Idle"+Rand(1,3)+".ogg"), mainPlayer\cam, n\Collider)
                 EndIf
                 
-                angle = VectorYaw(EntityX(Collider)-EntityX(n\Collider),0,EntityZ(Collider)-EntityZ(n\Collider))
+                angle = VectorYaw(EntityX(mainPlayer\collider)-EntityX(n\Collider),0,EntityZ(mainPlayer\collider)-EntityZ(n\Collider))
                 RotateEntity n\Collider,0.0,CurveAngle(angle,EntityYaw(n\Collider),20.0),0.0
             Case 5,6,8 ;walking or chasing
                 If n\Frame<2343.0 Then ;start walking
@@ -202,13 +202,13 @@ Function UpdateNPCtype966(n.NPCs)
                 ;chasing the player
                     If n\State = 8 And dist<32 Then
                         If n\PathTimer <= 0 Then
-                            n\PathStatus = FindPath (n, EntityX(Collider,True), EntityY(Collider,True), EntityZ(Collider,True))
+                            n\PathStatus = FindPath (n, EntityX(mainPlayer\collider,True), EntityY(mainPlayer\collider,True), EntityZ(mainPlayer\collider,True))
                             n\PathTimer = 40*10
                             n\CurrSpeed = 0
                         EndIf
                         n\PathTimer = Max(n\PathTimer-FPSfactor,0)
                         
-                        If (Not EntityVisible(n\Collider,Collider)) Then
+                        If (Not EntityVisible(n\Collider,mainPlayer\collider)) Then
                             If n\PathStatus = 2 Then
                                 n\CurrSpeed = 0
                                 SetNPCFrame(n,201)
@@ -238,7 +238,7 @@ Function UpdateNPCtype966(n.NPCs)
                                 n\CurrSpeed = CurveValue(0,n\CurrSpeed,10.0)
                             EndIf
                         Else
-                            n\Angle = VectorYaw(EntityX(Collider)-EntityX(n\Collider),0,EntityZ(Collider)-EntityZ(n\Collider))
+                            n\Angle = VectorYaw(EntityX(mainPlayer\collider)-EntityX(n\Collider),0,EntityZ(mainPlayer\collider)-EntityZ(n\Collider))
                             
                             If dist<1.0 Then n\State=10
                             
@@ -269,7 +269,7 @@ Function UpdateNPCtype966(n.NPCs)
                 EndIf
             Case 10 ;attack
                 If n\LastSeen=0
-                    PlaySound2(LoadTempSound("SFX\SCP\966\Echo"+Rand(1,3)+".ogg"), Camera, n\Collider)
+                    PlaySound2(LoadTempSound("SFX\SCP\966\Echo"+Rand(1,3)+".ogg"), mainPlayer\cam, n\Collider)
                     n\LastSeen = 1
                 EndIf
                 
@@ -301,12 +301,12 @@ Function UpdateNPCtype966(n.NPCs)
                 
                 If dist<1.0 Then
                     If n\Frame>2173.0 And prevFrame<=2173.0 Or n\Frame>2203.0 And prevFrame<=2203.0 Or n\Frame>2227.0 And prevFrame<=2227.0 Then
-                        PlaySound2(LoadTempSound("SFX\General\Slash"+Rand(1,2)+".ogg"), Camera, n\Collider)
+                        PlaySound2(LoadTempSound("SFX\General\Slash"+Rand(1,2)+".ogg"), mainPlayer\cam, n\Collider)
                         Injuries = Injuries + Rnd(0.5,1.0)								
                     EndIf	
                 EndIf
                 
-                n\Angle = VectorYaw(EntityX(Collider)-EntityX(n\Collider),0,EntityZ(Collider)-EntityZ(n\Collider))
+                n\Angle = VectorYaw(EntityX(mainPlayer\collider)-EntityX(n\Collider),0,EntityZ(mainPlayer\collider)-EntityZ(n\Collider))
                 RotateEntity n\Collider, 0, CurveAngle(n\Angle,EntityYaw(n\Collider),30.0),0
                 
         End Select

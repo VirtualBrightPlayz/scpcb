@@ -1350,9 +1350,9 @@ Function UpdateGrid(grid.Grids)
 	For tx% = 0 To gridsz-1
 		For ty% = 0 To gridsz-1
 			If grid\Entities[tx+(ty*gridsz)]<>0 Then
-				If Abs(EntityY(Collider,True)-EntityY(grid\Entities[tx+(ty*gridsz)],True))>4.0 Then Exit
-				If Abs(EntityX(Collider,True)-EntityX(grid\Entities[tx+(ty*gridsz)],True))<HideDistance Then
-					If Abs(EntityZ(Collider,True)-EntityZ(grid\Entities[tx+(ty*gridsz)],True))<HideDistance Then
+				If Abs(EntityY(mainPlayer\collider,True)-EntityY(grid\Entities[tx+(ty*gridsz)],True))>4.0 Then Exit
+				If Abs(EntityX(mainPlayer\collider,True)-EntityX(grid\Entities[tx+(ty*gridsz)],True))<HideDistance Then
+					If Abs(EntityZ(mainPlayer\collider,True)-EntityZ(grid\Entities[tx+(ty*gridsz)],True))<HideDistance Then
 						ShowEntity grid\Entities[tx+(ty*gridsz)]
 					Else
 						HideEntity grid\Entities[tx+(ty*gridsz)]
@@ -1698,29 +1698,29 @@ Function UpdateRooms()
 	
 	Local x#,z#,hide%=True
 	
-	PlayerZone=Min(Max(GetZone(EntityZ(Collider)/8.0),0),ZONEAMOUNT-1)
+	;PlayerZone=Min(Max(GetZone(EntityZ(mainPlayer\collider)/8.0),0),ZONEAMOUNT-1)
 	
 	TempLightVolume=0
-	Local foundNewPlayerRoom% = False
-	If PlayerRoom<>Null Then
-		If Abs(EntityY(Collider) - EntityY(PlayerRoom\obj)) < 1.5 Then
-			x = Abs(PlayerRoom\x-EntityX(Collider,True))
+	Local foundPlayerRoom% = False
+	If mainPlayer\currRoom<>Null Then
+		If Abs(EntityY(mainPlayer\collider) - EntityY(mainPlayer\currRoom\obj)) < 1.5 Then
+			x = Abs(mainPlayer\currRoom\x-EntityX(mainPlayer\collider,True))
 			If x < 4.0 Then
-				z = Abs(PlayerRoom\z-EntityZ(Collider,True))
+				z = Abs(mainPlayer\currRoom\z-EntityZ(mainPlayer\collider,True))
 				If z < 4.0 Then
-					foundNewPlayerRoom = True
+					foundPlayerRoom = True
 				EndIf
 			EndIf
 			
-			If foundNewPlayerRoom = False Then ;it's likely that an adjacent room is the new player room, check for that
+			If foundPlayerRoom = False Then ;it's likely that an adjacent room is the new player room, check for that
 				For i=0 To 3
-					If PlayerRoom\Adjacent[i]<>Null Then
-						x = Abs(PlayerRoom\Adjacent[i]\x-EntityX(Collider,True))
+					If mainPlayer\currRoom\Adjacent[i]<>Null Then
+						x = Abs(mainPlayer\currRoom\Adjacent[i]\x-EntityX(mainPlayer\collider,True))
 						If x < 4.0 Then
-							z = Abs(PlayerRoom\Adjacent[i]\z-EntityZ(Collider,True))
+							z = Abs(mainPlayer\currRoom\Adjacent[i]\z-EntityZ(mainPlayer\collider,True))
 							If z < 4.0 Then
-								foundNewPlayerRoom = True
-								PlayerRoom = PlayerRoom\Adjacent[i]
+								foundPlayerRoom = True
+								mainPlayer\currRoom = mainPlayer\currRoom\Adjacent[i]
 								Exit
 							EndIf
 						EndIf
@@ -1728,32 +1728,32 @@ Function UpdateRooms()
 				Next
 			EndIf
 		Else
-			foundNewPlayerRoom = True ;PlayerRoom stays the same when you're high up, or deep down
+			foundPlayerRoom = True ;mainPlayer\currRoom stays the same when you're high up, or deep down
 		EndIf
 	EndIf
 	
 	For r.Rooms = Each Rooms
 		
-		x = Abs(r\x-EntityX(Collider,True))
-		z = Abs(r\z-EntityZ(Collider,True))
+		x = Abs(r\x-EntityX(mainPlayer\collider,True))
+		z = Abs(r\z-EntityZ(mainPlayer\collider,True))
 		r\dist = Max(x,z)
 		
 		
 		If x<16 And z < 16 Then
 			For i = 0 To MaxRoomEmitters-1
 				If r\SoundEmitter[i]<>0 Then 
-					dist# = EntityDistance(r\SoundEmitterObj[i],Collider)
+					dist# = EntityDistance(r\SoundEmitterObj[i],mainPlayer\collider)
 					If dist < r\SoundEmitterRange[i] Then
-						r\SoundEmitterCHN[i] = LoopSound2(RoomAmbience[r\SoundEmitter[i]],r\SoundEmitterCHN[i], Camera, r\SoundEmitterObj[i],r\SoundEmitterRange[i])
+						r\SoundEmitterCHN[i] = LoopSound2(RoomAmbience[r\SoundEmitter[i]],r\SoundEmitterCHN[i], mainPlayer\cam, r\SoundEmitterObj[i],r\SoundEmitterRange[i])
 					EndIf
 				EndIf
 			Next
 			
-			If (Not foundNewPlayerRoom) And (PlayerRoom<>r) Then				
+			If (Not foundPlayerRoom) And (mainPlayer\currRoom<>r) Then				
 				If x < 4.0 Then
 					If z < 4.0 Then
-						If Abs(EntityY(Collider) - EntityY(r\obj)) < 1.5 Then PlayerRoom = r
-						foundNewPlayerRoom = True
+						If Abs(EntityY(mainPlayer\collider) - EntityY(r\obj)) < 1.5 Then mainPlayer\currRoom = r
+						foundPlayerRoom = True
 					EndIf
 				EndIf				
 			EndIf
@@ -1761,13 +1761,13 @@ Function UpdateRooms()
 		
 		hide = True
 		
-		If r=PlayerRoom Then hide = False
+		If r=mainPlayer\currRoom Then hide = False
 		If hide Then
-			If IsRoomAdjacent(PlayerRoom,r) Then hide = False
+			If IsRoomAdjacent(mainPlayer\currRoom,r) Then hide = False
 		EndIf
 		If hide Then
 			For i=0 To 3
-				If (IsRoomAdjacent(PlayerRoom\Adjacent[i],r)) Then hide=False : Exit
+				If (IsRoomAdjacent(mainPlayer\currRoom\Adjacent[i],r)) Then hide=False : Exit
 			Next
 		EndIf
 		
@@ -1777,7 +1777,7 @@ Function UpdateRooms()
 			ShowEntity r\obj
 			For i = 0 To MaxRoomLights-1
 				If r\Lights[i] <> 0 Then
-					dist = EntityDistance(Collider,r\Lights[i])
+					dist = EntityDistance(mainPlayer\collider,r\Lights[i])
 					If dist < HideDistance Then
 						TempLightVolume = TempLightVolume + r\LightIntensity[i]*r\LightIntensity[i]*((HideDistance-dist)/HideDistance)
 						;ShowEntity(r\Lights[i]) 						
@@ -1789,30 +1789,30 @@ Function UpdateRooms()
 		EndIf
 	Next
 	
-	MapFound(Floor(EntityX(PlayerRoom\obj) / 8.0), Floor(EntityZ(PlayerRoom\obj) / 8.0)) = 1
-	PlayerRoom\found = True
+	MapFound(Floor(EntityX(mainPlayer\currRoom\obj) / 8.0), Floor(EntityZ(mainPlayer\currRoom\obj) / 8.0)) = 1
+	mainPlayer\currRoom\found = True
 	
 	TempLightVolume = Max(TempLightVolume / 4.5, 1.0)
 	
-	If PlayerRoom<>Null Then
-		EntityAlpha(GetChild(PlayerRoom\obj,2),1)
+	If mainPlayer\currRoom<>Null Then
+		EntityAlpha(GetChild(mainPlayer\currRoom\obj,2),1)
 		For i=0 To 3
-			If PlayerRoom\Adjacent[i]<>Null Then
-				x = Abs(EntityX(Collider,True)-EntityX(PlayerRoom\AdjDoor[i]\frameobj,True))
-				z = Abs(EntityZ(Collider,True)-EntityZ(PlayerRoom\AdjDoor[i]\frameobj,True))
-				If PlayerRoom\AdjDoor[i]\openstate = 0 Then
-					EntityAlpha(GetChild(PlayerRoom\Adjacent[i]\obj,2),0)
-				;ElseIf Abs(DeltaYaw(Camera,PlayerRoom\Adjacent[i]\obj))>90+(((8.0-Max(x,z))/8.0)*90.0) Then
-				;	EntityAlpha(GetChild(PlayerRoom\Adjacent[i]\obj,2),0)
-				ElseIf (Not EntityInView(PlayerRoom\AdjDoor[i]\frameobj,Camera))
-					EntityAlpha(GetChild(PlayerRoom\Adjacent[i]\obj,2),0)
+			If mainPlayer\currRoom\Adjacent[i]<>Null Then
+				x = Abs(EntityX(mainPlayer\collider,True)-EntityX(mainPlayer\currRoom\AdjDoor[i]\frameobj,True))
+				z = Abs(EntityZ(mainPlayer\collider,True)-EntityZ(mainPlayer\currRoom\AdjDoor[i]\frameobj,True))
+				If mainPlayer\currRoom\AdjDoor[i]\openstate = 0 Then
+					EntityAlpha(GetChild(mainPlayer\currRoom\Adjacent[i]\obj,2),0)
+				;ElseIf Abs(DeltaYaw(mainPlayer\cam,mainPlayer\currRoom\Adjacent[i]\obj))>90+(((8.0-Max(x,z))/8.0)*90.0) Then
+				;	EntityAlpha(GetChild(mainPlayer\currRoom\Adjacent[i]\obj,2),0)
+				ElseIf (Not EntityInView(mainPlayer\currRoom\AdjDoor[i]\frameobj,mainPlayer\cam))
+					EntityAlpha(GetChild(mainPlayer\currRoom\Adjacent[i]\obj,2),0)
 				Else
-					EntityAlpha(GetChild(PlayerRoom\Adjacent[i]\obj,2),1)
+					EntityAlpha(GetChild(mainPlayer\currRoom\Adjacent[i]\obj,2),1)
 				EndIf
 				
 				For j=0 To 3
-					If (PlayerRoom\Adjacent[i]\Adjacent[j]<>Null) Then
-						If (PlayerRoom\Adjacent[i]\Adjacent[j]<>PlayerRoom) Then EntityAlpha(GetChild(PlayerRoom\Adjacent[i]\Adjacent[j]\obj,2),0)
+					If (mainPlayer\currRoom\Adjacent[i]\Adjacent[j]<>Null) Then
+						If (mainPlayer\currRoom\Adjacent[i]\Adjacent[j]<>mainPlayer\currRoom) Then EntityAlpha(GetChild(mainPlayer\currRoom\Adjacent[i]\Adjacent[j]\obj,2),0)
 					EndIf
 				Next
 			EndIf
@@ -2391,9 +2391,9 @@ Function UpdateScreens()
 	If SelectedDoor <> Null Then Return
 	
 	For s.screens = Each Screens
-		If s\room = PlayerRoom Then
-			If EntityDistance(Collider,s\obj)<1.2 Then
-				EntityPick(Camera, 1.2)
+		If s\room = mainPlayer\currRoom Then
+			If EntityDistance(mainPlayer\collider,s\obj)<1.2 Then
+				EntityPick(mainPlayer\cam, 1.2)
 				If PickedEntity()=s\obj And s\imgpath<>"" Then
 					DrawHandIcon=True
 					If MouseUp1 Then 
@@ -2521,7 +2521,7 @@ Function UpdateSecurityCams()
 			HideEntity sc\Cam
 		Else
 			If (Not sc\SpecialCam)
-				If sc\room\dist < 6.0 Or PlayerRoom=sc\room Then 
+				If sc\room\dist < 6.0 Or mainPlayer\currRoom=sc\room Then 
 					close = True
 				ElseIf sc\IsRoom2slCam
 					close = True
@@ -2539,11 +2539,11 @@ Function UpdateSecurityCams()
 			If close Or sc=CoffinCam Or sc\IsRoom2slCam Then 
 				If sc\FollowPlayer Then
 					If sc<>CoffinCam
-						If EntityVisible(sc\CameraObj,Camera)
+						If EntityVisible(sc\CameraObj,mainPlayer\cam)
 							PlayerDetected = True
 						EndIf
 					EndIf
-					PointEntity(sc\CameraObj, Camera)
+					PointEntity(sc\CameraObj, mainPlayer\cam)
 					Local temp# = EntityPitch(sc\CameraObj)
 					RotateEntity(sc\obj, 0, CurveAngle(EntityYaw(sc\CameraObj), EntityYaw(sc\obj), 75.0), 0)
 					
@@ -2575,8 +2575,8 @@ Function UpdateSecurityCams()
 					EndIf
 					
 					If sc<>CoffinCam
-						If (Abs(DeltaYaw(sc\CameraObj,Camera))<60.0)
-							If EntityVisible(sc\CameraObj,Camera)
+						If (Abs(DeltaYaw(sc\CameraObj,mainPlayer\cam))<60.0)
+							If EntityVisible(sc\CameraObj,mainPlayer\cam)
 								PlayerDetected = True
 							EndIf
 						EndIf
@@ -2589,7 +2589,7 @@ Function UpdateSecurityCams()
 					sc\State = sc\State+FPSfactor
 					
 					If sc\InSight And sc\AllowSaving Then 
-						If SelectedDifficulty\saveType = SAVEONSCREENS And EntityDistance(Camera, sc\ScrObj)<1.0 Then
+						If SelectedDifficulty\saveType = SAVEONSCREENS And EntityDistance(mainPlayer\cam, sc\ScrObj)<1.0 Then
 							DrawHandIcon = True
 							If MouseHit1 Then SelectedMonitor = sc
 						Else If SelectedMonitor = sc
@@ -2601,14 +2601,14 @@ Function UpdateSecurityCams()
 					
 					If sc\State >= sc\RenderInterval Then
 						sc\InSight = False
-						If BlinkTimer > - 5 And EntityInView(sc\ScrObj, Camera) Then
-							If EntityVisible(Camera,sc\ScrObj) Then
+						If mainPlayer\blinkTimer > - 5 And EntityInView(sc\ScrObj, mainPlayer\cam) Then
+							If EntityVisible(mainPlayer\cam,sc\ScrObj) Then
 								sc\InSight = True
 								
 								If sc\CoffinEffect=1 Or sc\CoffinEffect=3 Then
-									If BlinkTimer > - 5 Then Sanity=Sanity-(FPSfactor * 16)
+									If mainPlayer\blinkTimer > - 5 Then mainPlayer\sanity895=mainPlayer\sanity895-(FPSfactor * 16)
 									
-									If Sanity < (-1000) Then 
+									If mainPlayer\sanity895 < (-1000) Then 
 										DeathMSG = Chr(34)+"What we know is that he died of cardiac arrest. My guess is that it was caused by SCP-895, although it has never been observed affecting video equipment from this far before. "
 										DeathMSG = DeathMSG + "Further testing is needed to determine whether SCP-895's "+Chr(34)+"Red Zone"+Chr(34)+" is increasing."+Chr(34)
 										
@@ -2619,7 +2619,7 @@ Function UpdateSecurityCams()
 								If (Not sc\IsRoom2slCam)
 									If (Not sc\SpecialCam)
 										If CoffinCam = Null Or Rand(5)=5 Or sc\CoffinEffect <> 3 Then
-											HideEntity(Camera)
+											HideEntity(mainPlayer\cam)
 											ShowEntity(sc\Cam)
 											Cls
 											
@@ -2628,9 +2628,9 @@ Function UpdateSecurityCams()
 											CopyRect 0,0,512,512,0,0,BackBuffer(),TextureBuffer(ScreenTexs[sc\ScrTexture])
 											
 											HideEntity(sc\Cam)
-											ShowEntity(Camera)										
+											ShowEntity(mainPlayer\cam)										
 										Else
-											HideEntity(Camera)
+											HideEntity(mainPlayer\cam)
 											ShowEntity (CoffinCam\room\obj)
 											EntityAlpha(GetChild(CoffinCam\room\obj,2),1)
 											ShowEntity(CoffinCam\Cam)
@@ -2642,23 +2642,23 @@ Function UpdateSecurityCams()
 											
 											HideEntity (CoffinCam\room\obj)
 											HideEntity(CoffinCam\Cam)
-											ShowEntity(Camera)										
+											ShowEntity(mainPlayer\cam)										
 										EndIf
 									Else
-										HideEntity(Camera)
+										HideEntity(mainPlayer\cam)
 										ShowEntity(sc\Cam)
 										Cls
 										
 										RenderWorld
 										
 										HideEntity(sc\Cam)
-										ShowEntity(Camera)	
+										ShowEntity(mainPlayer\cam)	
 										
 										CopyRect(0,0,512,512,0,0,BackBuffer(),TextureBuffer(sc\Room2slTexs[sc\ScrTexture]))
 										
 									EndIf
 								Else
-									HideEntity(Camera)
+									HideEntity(mainPlayer\cam)
 									ShowEntity (sc\room\obj)
 									EntityAlpha(GetChild(sc\room\obj,2),1)
 									ShowEntity(sc\Cam)
@@ -2668,7 +2668,7 @@ Function UpdateSecurityCams()
 									
 									HideEntity (sc\room\obj)
 									HideEntity(sc\Cam)
-									ShowEntity(Camera)	
+									ShowEntity(mainPlayer\cam)	
 									
 									CopyRect(0, 0, userOptions\screenWidth, userOptions\screenHeight, 0, 0, BackBuffer(), TextureBuffer(sc\Room2slTexs[sc\ScrTexture]))
 								EndIf
@@ -2682,23 +2682,23 @@ Function UpdateSecurityCams()
 						If sc\InSight Then
 						;If (Not NoClip) Then 
 							Local pvt% = CreatePivot()
-							PositionEntity pvt, EntityX(Camera), EntityY(Camera), EntityZ(Camera)
+							PositionEntity pvt, EntityX(mainPlayer\cam), EntityY(mainPlayer\cam), EntityZ(mainPlayer\cam)
 							PointEntity(pvt, sc\ScrObj)
 							
-							DebugLog("curvea: "+CurveAngle(EntityYaw(pvt), EntityYaw(Collider), Min(Max(15000.0 / (-Sanity), 20.0), 200.0)))
-							RotateEntity(Collider, EntityPitch(Collider), CurveAngle(EntityYaw(pvt), EntityYaw(Collider), Min(Max(15000.0 / (-Sanity), 20.0), 200.0)), 0)
+							DebugLog("curvea: "+CurveAngle(EntityYaw(pvt), EntityYaw(mainPlayer\collider), Min(Max(15000.0 / (-mainPlayer\sanity895), 20.0), 200.0)))
+							RotateEntity(mainPlayer\collider, EntityPitch(mainPlayer\collider), CurveAngle(EntityYaw(pvt), EntityYaw(mainPlayer\collider), Min(Max(15000.0 / (-mainPlayer\sanity895), 20.0), 200.0)), 0)
 							
 							TurnEntity(pvt, 90, 0, 0)
-							user_camera_pitch = CurveAngle(EntityPitch(pvt), user_camera_pitch + 90.0, Min(Max(15000.0 / (-Sanity), 20.0), 200.0))
-							user_camera_pitch=user_camera_pitch-90						
+							mainPlayer\headPitch = CurveAngle(EntityPitch(pvt), mainPlayer\headPitch + 90.0, Min(Max(15000.0 / (-mainPlayer\sanity895), 20.0), 200.0))
+							mainPlayer\headPitch=mainPlayer\headPitch-90						
 							
-							DebugLog("pvt: "+EntityYaw(pvt)+"   - coll: "+EntityYaw(Collider))
+							DebugLog("pvt: "+EntityYaw(pvt)+"   - coll: "+EntityYaw(mainPlayer\collider))
 							
 							
 							FreeEntity pvt
 						;EndIf
 							If sc\CoffinEffect=1 Or sc\CoffinEffect=3 Then
-								If Sanity < - 800 Then
+								If mainPlayer\sanity895 < - 800 Then
 									If Rand(3) = 1 Then EntityTexture(sc\ScrOverlay, MonitorTexture)
 									If Rand(6) < 5 Then
 										EntityTexture(sc\ScrOverlay, GorePics(Rand(0, 5)))
@@ -2712,7 +2712,7 @@ Function UpdateSecurityCams()
 										If sc\CoffinEffect=3 And Rand(200)=1 Then sc\CoffinEffect=2 : sc\PlayerState = Rand(10000, 20000)
 									End If	
 									BlurTimer = 1000
-								ElseIf Sanity < - 500
+								ElseIf mainPlayer\sanity895 < - 500
 									If Rand(7) = 1 Then EntityTexture(sc\ScrOverlay, MonitorTexture)
 									If Rand(50) = 1 Then
 										EntityTexture(sc\ScrOverlay, GorePics(Rand(0, 5)))
@@ -2753,7 +2753,7 @@ Function UpdateSecurityCams()
 					
 				EndIf ;if screen=true
 				
-				If (Not sc\InSight) Then sc\soundCHN = LoopSound2(CameraSFX, sc\soundCHN, Camera, sc\CameraObj, 4.0)
+				If (Not sc\InSight) Then sc\soundCHN = LoopSound2(CameraSFX, sc\soundCHN, mainPlayer\cam, sc\CameraObj, 4.0)
 			Else
 				If SelectedMonitor=sc Then SelectedMonitor=Null
 			EndIf
@@ -2768,12 +2768,12 @@ End Function
 
 Function UpdateLever(obj, locked=False)
 	
-	Local dist# = EntityDistance(Camera, obj)
+	Local dist# = EntityDistance(mainPlayer\cam, obj)
 	If dist < 8.0 Then 
 		If dist < 0.8 And (Not locked) Then 
-			If EntityInView(obj, Camera) Then 
+			If EntityInView(obj, mainPlayer\cam) Then 
 				
-				EntityPick(Camera, 0.65)
+				EntityPick(mainPlayer\cam, 0.65)
 				
 				If PickedEntity() = obj Then
 					DrawHandIcon = True
@@ -2797,9 +2797,9 @@ Function UpdateLever(obj, locked=False)
 				EndIf 
 				
 				If EntityPitch(obj,True) > 75 Then ;p��ll�
-					If prevpitch =< 75 Then PlaySound2(LeverSFX, Camera, obj, 1.0)
+					If prevpitch =< 75 Then PlaySound2(LeverSFX, mainPlayer\cam, obj, 1.0)
 				ElseIf EntityPitch(obj,True) < -75 ;pois p��lt�
-					If prevpitch => -75 Then PlaySound2(LeverSFX, Camera, obj, 1.0)	
+					If prevpitch => -75 Then PlaySound2(LeverSFX, mainPlayer\cam, obj, 1.0)	
 				EndIf						
 			EndIf
 		EndIf
@@ -2825,17 +2825,17 @@ End Function
 
 Function UpdateButton(obj)
 	
-	Local dist# = EntityDistance(Collider, obj);entityDistance(collider, d\buttons[i])
+	Local dist# = EntityDistance(mainPlayer\collider, obj);entityDistance(collider, d\buttons[i])
 	If dist < 0.8 Then
 		Local temp% = CreatePivot()
-		PositionEntity temp, EntityX(Camera), EntityY(Camera), EntityZ(Camera)
+		PositionEntity temp, EntityX(mainPlayer\cam), EntityY(mainPlayer\cam), EntityZ(mainPlayer\cam)
 		PointEntity temp,obj
 		
 		If EntityPick(temp, 0.65) = obj Then
 			If ClosestButton = 0 Then 
 				ClosestButton = obj
 			Else
-				If dist < EntityDistance(Collider, ClosestButton) Then ClosestButton = obj
+				If dist < EntityDistance(mainPlayer\collider, ClosestButton) Then ClosestButton = obj
 			End If							
 		End If
 		
@@ -2884,9 +2884,9 @@ Function UpdateElevators#(State#, door1.Doors, door2.Doors, room1, room2, event.
 		If State < 0 Then ;ylh��lt� alas
 			State = State - FPSfactor
 			;pelaaja hissin sis�ll�
-			If Abs(EntityX(Collider)-EntityX(room1,True))<280.0*RoomScale Then
-				If Abs(EntityZ(Collider)-EntityZ(room1,True))<280.0*RoomScale Then
-					If Abs(EntityY(Collider)-EntityY(room1,True))<280.0*RoomScale Then
+			If Abs(EntityX(mainPlayer\collider)-EntityX(room1,True))<280.0*RoomScale Then
+				If Abs(EntityZ(mainPlayer\collider)-EntityZ(room1,True))<280.0*RoomScale Then
+					If Abs(EntityY(mainPlayer\collider)-EntityY(room1,True))<280.0*RoomScale Then
 						inside = True
 						
 						If event\SoundCHN = 0 Then
@@ -2895,7 +2895,7 @@ Function UpdateElevators#(State#, door1.Doors, door2.Doors, room1, room2, event.
 							If (Not ChannelPlaying(event\SoundCHN)) Then event\SoundCHN = PlaySound_Strict(ElevatorMoveSFX)
 						EndIf
 						
-						CameraShake = Sin(Abs(State)/3.0)*0.3
+						mainPlayer\camShake = Sin(Abs(State)/3.0)*0.3
 					EndIf
 				EndIf
 			EndIf
@@ -2926,10 +2926,10 @@ Function UpdateElevators#(State#, door1.Doors, door2.Doors, room1, room2, event.
 				State = 0
 				
 				If inside Then
-					x# = Max(Min((EntityX(Collider)-EntityX(room1,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
-					z# = Max(Min((EntityZ(Collider)-EntityZ(room1,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
-					PositionEntity(Collider, EntityX(room2,True)+x,0.1+EntityY(room2,True)+(EntityY(Collider)-EntityY(room1,True)),EntityZ(room2,True)+z,True)
-					ResetEntity Collider	
+					x# = Max(Min((EntityX(mainPlayer\collider)-EntityX(room1,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
+					z# = Max(Min((EntityZ(mainPlayer\collider)-EntityZ(room1,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
+					PositionEntity(mainPlayer\collider, EntityX(room2,True)+x,0.1+EntityY(room2,True)+(EntityY(mainPlayer\collider)-EntityY(room1,True)),EntityZ(room2,True)+z,True)
+					ResetEntity mainPlayer\collider	
 					UpdateDoorsTimer = 0
 					DropSpeed = 0
 					UpdateDoors()
@@ -2953,14 +2953,14 @@ Function UpdateElevators#(State#, door1.Doors, door2.Doors, room1, room2, event.
 				
 				UseDoor(door2,False)
 				
-				PlaySound2(ElevatorBeepSFX, Camera, room1, 4.0)
+				PlaySound2(ElevatorBeepSFX, mainPlayer\cam, room1, 4.0)
 			EndIf
 		Else ;alhaalta yl�s
 			State = State + FPSfactor
 			;pelaaja hissin sis�ll�
-			If Abs(EntityX(Collider)-EntityX(room2,True))<280.0*RoomScale Then
-				If Abs(EntityZ(Collider)-EntityZ(room2,True))<280.0*RoomScale Then
-					If Abs(EntityY(Collider)-EntityY(room2,True))<280.0*RoomScale Then
+			If Abs(EntityX(mainPlayer\collider)-EntityX(room2,True))<280.0*RoomScale Then
+				If Abs(EntityZ(mainPlayer\collider)-EntityZ(room2,True))<280.0*RoomScale Then
+					If Abs(EntityY(mainPlayer\collider)-EntityY(room2,True))<280.0*RoomScale Then
 						inside = True
 						
 						If event\SoundCHN = 0 Then
@@ -2969,7 +2969,7 @@ Function UpdateElevators#(State#, door1.Doors, door2.Doors, room1, room2, event.
 							If (Not ChannelPlaying(event\SoundCHN)) Then event\SoundCHN = PlaySound_Strict(ElevatorMoveSFX)
 						EndIf
 						
-						CameraShake = Sin(Abs(State)/3.0)*0.3
+						mainPlayer\camShake = Sin(Abs(State)/3.0)*0.3
 					EndIf
 				EndIf
 			EndIf	
@@ -3001,9 +3001,9 @@ Function UpdateElevators#(State#, door1.Doors, door2.Doors, room1, room2, event.
 				
 				;pelaaja hissin sis�ll�, siirret��n
 				If inside Then	
-					x# = Max(Min((EntityX(Collider)-EntityX(room2,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
-					z# = Max(Min((EntityZ(Collider)-EntityZ(room2,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
-					PositionEntity(Collider, EntityX(room1,True)+x,0.1+EntityY(room1,True)+(EntityY(Collider)-EntityY(room2,True)),EntityZ(room1,True)+z,True)
+					x# = Max(Min((EntityX(mainPlayer\collider)-EntityX(room2,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
+					z# = Max(Min((EntityZ(mainPlayer\collider)-EntityZ(room2,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
+					PositionEntity(mainPlayer\collider, EntityX(room1,True)+x,0.1+EntityY(room1,True)+(EntityY(mainPlayer\collider)-EntityY(room2,True)),EntityZ(room1,True)+z,True)
 					ResetEntity Collider
 					UpdateDoorsTimer = 0
 					DropSpeed = 0
@@ -3028,7 +3028,7 @@ Function UpdateElevators#(State#, door1.Doors, door2.Doors, room1, room2, event.
 				
 				UseDoor(door1,False)
 				
-				PlaySound2(ElevatorBeepSFX, Camera, room2, 4.0)				
+				PlaySound2(ElevatorBeepSFX, mainPlayer\cam, room2, 4.0)				
 			EndIf	
 			
 		EndIf
@@ -3069,9 +3069,9 @@ Function UpdateElevators2#(State#, door1.Doors, door2.Doors, room1, room2, event
 		If State < 0 Then ;ylh��lt?alas
 			State = State - FPSfactor
 			;pelaaja hissin sis�ll?
-			If Abs(EntityX(Collider)-EntityX(room1,True))<280.0*RoomScale Then
-				If Abs(EntityZ(Collider)-EntityZ(room1,True))<280.0*RoomScale Then	
-					If Abs(EntityY(Collider)-EntityY(room1,True))<280.0*RoomScale Then	
+			If Abs(EntityX(mainPlayer\collider)-EntityX(room1,True))<280.0*RoomScale Then
+				If Abs(EntityZ(mainPlayer\collider)-EntityZ(room1,True))<280.0*RoomScale Then	
+					If Abs(EntityY(mainPlayer\collider)-EntityY(room1,True))<280.0*RoomScale Then	
 						inside = True
 						
 						If event\SoundCHN = 0 Then
@@ -3080,7 +3080,7 @@ Function UpdateElevators2#(State#, door1.Doors, door2.Doors, room1, room2, event
 							If (Not ChannelPlaying(event\SoundCHN)) Then event\SoundCHN = PlaySound_Strict(ElevatorMoveSFX)
 						EndIf
 						
-						CameraShake = Sin(Abs(State)/3.0)*0.3
+						mainPlayer\camShake = Sin(Abs(State)/3.0)*0.3
 					EndIf
 				EndIf
 			EndIf
@@ -3094,40 +3094,40 @@ Function UpdateElevators2#(State#, door1.Doors, door2.Doors, room1, room2, event
 				
 				If inside Then
 					
-					dist# = Distance(EntityX(Collider,True),EntityZ(Collider,True),EntityX(room1,True),EntityZ(room1,True))
+					dist# = Distance(EntityX(mainPlayer\collider,True),EntityZ(mainPlayer\collider,True),EntityX(room1,True),EntityZ(room1,True))
 					
-					dir# = GetAngle(EntityX(Collider,True),EntityZ(Collider,True),EntityX(room1,True),EntityZ(room1,True))
+					dir# = GetAngle(EntityX(mainPlayer\collider,True),EntityZ(mainPlayer\collider,True),EntityX(room1,True),EntityZ(room1,True))
 					dir=dir+EntityYaw(room2,True)-EntityYaw(room1,True);EntityYaw(room2,True)+angleDist(dir,EntityYaw(room1,True))
 					;dir=dir-90.0
 					
-;					dir# = EntityYaw(Collider)-EntityYaw(room1,True)+EntityYaw(room2,True)
+;					dir# = EntityYaw(mainPlayer\collider)-EntityYaw(room1,True)+EntityYaw(room2,True)
 					
 					dir=WrapAngle(dir)
 					
 					x# = Max(Min(Cos(dir)*dist,280*RoomScale-0.17),-280*RoomScale+0.17)
 					z# = Max(Min(Sin(dir)*dist,280*RoomScale-0.17),-280*RoomScale+0.17)
 					
-					;x# = Max(Min((EntityX(Collider)-EntityX(room1,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
-					;z# = Max(Min((EntityZ(Collider)-EntityZ(room1,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
+					;x# = Max(Min((EntityX(mainPlayer\collider)-EntityX(room1,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
+					;z# = Max(Min((EntityZ(mainPlayer\collider)-EntityZ(room1,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
 					
-					RotateEntity Collider,EntityPitch(Collider,True),EntityYaw(room2,True)+angleDist(EntityYaw(Collider,True),EntityYaw(room1,True)),EntityRoll(Collider,True),True ;dir
+					RotateEntity mainPlayer\collider,EntityPitch(mainPlayer\collider,True),EntityYaw(room2,True)+angleDist(EntityYaw(mainPlayer\collider,True),EntityYaw(room1,True)),EntityRoll(mainPlayer\collider,True),True ;dir
 					
-					PositionEntity Collider, EntityX(room2,True)+x,0.05+EntityY(room2,True)+(EntityY(Collider)-EntityY(room1,True)),EntityZ(room2,True)+z,True
+					PositionEntity mainPlayer\collider, EntityX(room2,True)+x,0.05+EntityY(room2,True)+(EntityY(mainPlayer\collider)-EntityY(room1,True)),EntityZ(room2,True)+z,True
 					
-					ResetEntity Collider	
+					ResetEntity mainPlayer\collider	
 					UpdateDoors()
 					UpdateRooms()
 				EndIf
 				
-				PlaySound2(ElevatorBeepSFX, Camera, room1, 4.0)	
+				PlaySound2(ElevatorBeepSFX, mainPlayer\cam, room1, 4.0)	
 				;PlaySound_Strict(ElevatorBeepSFX)	
 			EndIf
 		Else ;alhaalta yl�s
 			State = State + FPSfactor
 			;pelaaja hissin sis�ll?
-			If Abs(EntityX(Collider)-EntityX(room2,True))<280.0*RoomScale Then
-				If Abs(EntityZ(Collider)-EntityZ(room2,True))<280.0*RoomScale Then	
-					If Abs(EntityY(Collider)-EntityY(room2,True))<280.0*RoomScale Then
+			If Abs(EntityX(mainPlayer\collider)-EntityX(room2,True))<280.0*RoomScale Then
+				If Abs(EntityZ(mainPlayer\collider)-EntityZ(room2,True))<280.0*RoomScale Then	
+					If Abs(EntityY(mainPlayer\collider)-EntityY(room2,True))<280.0*RoomScale Then
 						inside = True
 						
 						If event\SoundCHN = 0 Then
@@ -3136,7 +3136,7 @@ Function UpdateElevators2#(State#, door1.Doors, door2.Doors, room1, room2, event
 							If (Not ChannelPlaying(event\SoundCHN)) Then event\SoundCHN = PlaySound_Strict(ElevatorMoveSFX)
 						EndIf
 						
-						CameraShake = Sin(Abs(State)/3.0)*0.3
+						mainPlayer\camShake = Sin(Abs(State)/3.0)*0.3
 					EndIf
 				EndIf
 			EndIf	
@@ -3151,32 +3151,32 @@ Function UpdateElevators2#(State#, door1.Doors, door2.Doors, room1, room2, event
 				;pelaaja hissin sis�ll? siirret��n
 				If inside Then	
 					
-					dist# = Distance(EntityX(Collider,True),EntityZ(Collider,True),EntityX(room2,True),EntityZ(room2,True))
+					dist# = Distance(EntityX(mainPlayer\collider,True),EntityZ(mainPlayer\collider,True),EntityX(room2,True),EntityZ(room2,True))
 					
-					dir# = GetAngle(EntityX(Collider,True),EntityZ(Collider,True),EntityX(room2,True),EntityZ(room2,True))
+					dir# = GetAngle(EntityX(mainPlayer\collider,True),EntityZ(mainPlayer\collider,True),EntityX(room2,True),EntityZ(room2,True))
 					dir=dir+EntityYaw(room1,True)-EntityYaw(room2,True) ;EntityYaw(room1,True)+angleDist(dir,EntityYaw(room2,True))
 					;dir=dir-90.0
 					
-;					dir# = EntityYaw(Collider)-EntityYaw(room2,True)+EntityYaw(room1,True)
+;					dir# = EntityYaw(mainPlayer\collider)-EntityYaw(room2,True)+EntityYaw(room1,True)
 					
 					;dir=WrapAngle(dir)
 					
 					x# = Max(Min(Cos(dir)*dist,280*RoomScale-0.17),-280*RoomScale+0.17)
 					z# = Max(Min(Sin(dir)*dist,280*RoomScale-0.17),-280*RoomScale+0.17)
 					
-					;x# = Max(Min((EntityX(Collider)-EntityX(room2,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
-					;z# = Max(Min((EntityZ(Collider)-EntityZ(room2,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
+					;x# = Max(Min((EntityX(mainPlayer\collider)-EntityX(room2,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
+					;z# = Max(Min((EntityZ(mainPlayer\collider)-EntityZ(room2,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
 					
-					RotateEntity Collider,EntityPitch(Collider,True),EntityYaw(room2,True)+angleDist(EntityYaw(Collider,True),EntityYaw(room1,True)),EntityRoll(Collider,True),True ;dir
+					RotateEntity mainPlayer\collider,EntityPitch(mainPlayer\collider,True),EntityYaw(room2,True)+angleDist(EntityYaw(mainPlayer\collider,True),EntityYaw(room1,True)),EntityRoll(mainPlayer\collider,True),True ;dir
 					
-					PositionEntity Collider, EntityX(room1,True)+x,0.05+EntityY(room1,True)+(EntityY(Collider)-EntityY(room2,True)),EntityZ(room1,True)+z,True
+					PositionEntity mainPlayer\collider, EntityX(room1,True)+x,0.05+EntityY(room1,True)+(EntityY(mainPlayer\collider)-EntityY(room2,True)),EntityZ(room1,True)+z,True
 					
 					ResetEntity Collider
 					UpdateDoors()
 					UpdateRooms()
 				EndIf
 				
-				PlaySound2(ElevatorBeepSFX, Camera, room2, 4.0)				
+				PlaySound2(ElevatorBeepSFX, mainPlayer\cam, room2, 4.0)				
 			EndIf	
 			
 		EndIf
@@ -4318,7 +4318,7 @@ Function UpdateChunks(r.Rooms,ChunkPartAmount%,spawnNPCs%=True)
 	Local obj%
 	
 	For ch = Each Chunk
-		;If Distance(EntityX(Collider),EntityZ(Collider),ch\x,ch\z)<ChunkHideDistance
+		;If Distance(EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider),ch\x,ch\z)<ChunkHideDistance
 		;	;If ch\obj <> 0 Then ShowEntity ch\obj
 		;	If ch\obj[0]<>0
 		;		For i = 0 To ch\Amount
@@ -4339,16 +4339,16 @@ Function UpdateChunks(r.Rooms,ChunkPartAmount%,spawnNPCs%=True)
 			Next
 		EndIf
 		y# = ch\y
-		If Abs(EntityX(Collider)-ch\x)<20
-			If Abs(EntityZ(Collider)-ch\z)<20
+		If Abs(EntityX(mainPlayer\collider)-ch\x)<20
+			If Abs(EntityZ(mainPlayer\collider)-ch\z)<20
 				CurrChunkX# = ch\x
 				CurrChunkZ# = ch\z
 			EndIf
 		EndIf
 	Next
 	
-	;CurrChunkX# = Int(EntityX(Collider)/40)*40
-	;CurrChunkZ# = Int(EntityZ(Collider)/40)*40
+	;CurrChunkX# = Int(EntityX(mainPlayer\collider)/40)*40
+	;CurrChunkZ# = Int(EntityZ(mainPlayer\collider)/40)*40
 	
 	x# = -(ChunkHideDistance+(CurrChunkX#))
 	z# = -(ChunkHideDistance+(CurrChunkZ#))

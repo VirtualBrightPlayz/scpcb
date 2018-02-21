@@ -32,14 +32,14 @@ Function InitializeNPCtype178(n.NPCs)
 End Function
 
 Function UpdateNPCtype178(n.NPCs)
-    dist# = EntityDistance(n\Collider,Collider)
+    dist# = EntityDistance(n\Collider,mainPlayer\collider)
     
     If n\Sound > 0 Then
         temp = 0.5
         ;the ambient sound gets louder when the npcs are attacking
         If n\State > 0 Then temp = 1.0	
         
-        n\SoundChn = LoopSound2(n\Sound, n\SoundChn, Camera, Camera, 10.0,temp)
+        n\SoundChn = LoopSound2(n\Sound, n\SoundChn, mainPlayer\cam, mainPlayer\cam, 10.0,temp)
     EndIf
     
     temp = Rnd(-1.0,1.0)
@@ -52,8 +52,8 @@ Function UpdateNPCtype178(n.NPCs)
     
     If Rand(200)=1 Then
         If Rand(5)=1 Then
-            n\PrevX = (EntityX(Collider)-EntityX(n\Collider))*0.9
-            n\PrevZ = (EntityZ(Collider)-EntityZ(n\Collider))*0.9
+            n\PrevX = (EntityX(mainPlayer\collider)-EntityX(n\Collider))*0.9
+            n\PrevZ = (EntityZ(mainPlayer\collider)-EntityZ(n\Collider))*0.9
         Else
             n\PrevX = Rnd(0.1,0.5)
             n\PrevZ = Rnd(0.1,0.5)						
@@ -92,7 +92,7 @@ Function UpdateNPCtype178(n.NPCs)
         EndIf
         
         ;If Rand(1,15)=1 Then EntityColor n\obj,Rand(0,50),0,Rand(50,100)
-        angle = VectorYaw(EntityX(Collider)-EntityX(n\Collider),0,EntityZ(Collider)-EntityZ(n\Collider))
+        angle = VectorYaw(EntityX(mainPlayer\collider)-EntityX(n\Collider),0,EntityZ(mainPlayer\collider)-EntityZ(n\Collider))
         RotateEntity n\Collider,0.0,CurveAngle(angle,EntityYaw(n\Collider),20.0),0.0
         
         For n2.NPCs = Each NPCs
@@ -103,9 +103,9 @@ Function UpdateNPCtype178(n.NPCs)
             EndIf
             If n\State<>0 Then Exit
         Next
-        If dist<1.0 And EntityInView(n\obj,Camera) Then
+        If dist<1.0 And EntityInView(n\obj,mainPlayer\cam) Then
             n\State2=n\State2+FPSfactor
-        ElseIf EntityCollided(n\Collider,HIT_PLAYER)=Collider Then
+        ElseIf EntityCollided(n\Collider,HIT_PLAYER)=mainPlayer\collider Then
             n\State2=50.0
         Else
             n\State2=Max(n\State2-FPSfactor,0.0)
@@ -131,13 +131,13 @@ Function UpdateNPCtype178(n.NPCs)
             n\State=Max(n\State-FPSfactor,0.0)
         EndIf
         If n\PathTimer <= 0 Then
-            n\PathStatus = FindPath (n, EntityX(Collider,True), EntityY(Collider,True), EntityZ(Collider,True))
+            n\PathStatus = FindPath (n, EntityX(mainPlayer\collider,True), EntityY(mainPlayer\collider,True), EntityZ(mainPlayer\collider,True))
             n\PathTimer = 40*10
             n\CurrSpeed = 0
         EndIf
         n\PathTimer = Max(n\PathTimer-FPSfactor,0)
         
-        If (Not EntityVisible(n\Collider,Collider)) Then
+        If (Not EntityVisible(n\Collider,mainPlayer\collider)) Then
             If n\PathStatus = 2 Then
                 n\CurrSpeed = 0
                 n\Frame = 15
@@ -164,7 +164,7 @@ Function UpdateNPCtype178(n.NPCs)
                 n\CurrSpeed = CurveValue(0,n\CurrSpeed,10.0)
             EndIf
         Else
-            angle = VectorYaw(EntityX(Collider)-EntityX(n\Collider),0,EntityZ(Collider)-EntityZ(n\Collider))
+            angle = VectorYaw(EntityX(mainPlayer\collider)-EntityX(n\Collider),0,EntityZ(mainPlayer\collider)-EntityZ(n\Collider))
             RotateEntity n\Collider,0.0,CurveAngle(angle,EntityYaw(n\Collider),10.0),0.0
             
             n\CurrSpeed = CurveValue(n\Speed,n\CurrSpeed,10.0)

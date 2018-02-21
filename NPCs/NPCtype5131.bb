@@ -13,16 +13,16 @@ Function InitializeNPCtype5131(n.NPCs)
 End Function
 
 Function UpdateNPCtype5131(n.NPCs)
-    If PlayerRoom\RoomTemplate\Name <> "pocketdimension" Then 
+    If mainPlayer\currRoom\RoomTemplate\Name <> "pocketdimension" Then 
         If n\Idle Then
             HideEntity(n\obj)
             HideEntity(n\obj2)
             If Rand(200)=1 Then
                 For w.WayPoints = Each WayPoints
-                    If w\room<>PlayerRoom Then
-                        x = Abs(EntityX(Collider)-EntityX(w\obj,True))
+                    If w\room<>mainPlayer\currRoom Then
+                        x = Abs(EntityX(mainPlayer\collider)-EntityX(w\obj,True))
                         If x>3 And x < 9 Then
-                            z = Abs(EntityZ(Collider)-EntityZ(w\obj,True))
+                            z = Abs(EntityZ(mainPlayer\collider)-EntityZ(w\obj,True))
                             If z>3 And z < 9 Then
                                 PositionEntity(n\Collider, EntityX(w\obj,True), EntityY(w\obj,True), EntityZ(w\obj,True))
                                 PositionEntity(n\obj, EntityX(w\obj,True), EntityY(w\obj,True), EntityZ(w\obj,True))
@@ -44,7 +44,7 @@ Function UpdateNPCtype5131(n.NPCs)
                 Next
             End If
         Else
-            dist = EntityDistance(Collider, n\Collider)
+            dist = EntityDistance(mainPlayer\collider, n\Collider)
             
             ;use the prev-values to do a "twitching" effect"
             n\PrevX = CurveValue(0.0, n\PrevX, 10.0)
@@ -52,8 +52,8 @@ Function UpdateNPCtype5131(n.NPCs)
             
             If Rand(100)=1 Then
                 If Rand(5)=1 Then
-                    n\PrevX = (EntityX(Collider)-EntityX(n\Collider))*0.9
-                    n\PrevZ = (EntityZ(Collider)-EntityZ(n\Collider))*0.9
+                    n\PrevX = (EntityX(mainPlayer\collider)-EntityX(n\Collider))*0.9
+                    n\PrevZ = (EntityZ(mainPlayer\collider)-EntityZ(n\Collider))*0.9
                 Else
                     n\PrevX = Rnd(0.1,0.5)
                     n\PrevZ = Rnd(0.1,0.5)						
@@ -75,8 +75,8 @@ Function UpdateNPCtype5131(n.NPCs)
                     If dist < 4 Then n\State = Rand(1,2)
                 Else
                     If dist < 6 And Rand(5)=1 Then
-                        If EntityInView(n\Collider,Camera) Then
-                            If EntityVisible(Collider, n\Collider) Then
+                        If EntityInView(n\Collider,mainPlayer\cam) Then
+                            If EntityVisible(mainPlayer\collider, n\Collider) Then
                                 n\LastSeen = 1
                                 PlaySound_Strict LoadTempSound("SFX\SCP\513\Bell"+Rand(2,3)+".ogg")
                             EndIf
@@ -95,7 +95,7 @@ Function UpdateNPCtype5131(n.NPCs)
                         If x < 8.0 And x > 1.0 Then
                             z = Abs(EntityZ(n\Collider,True)-EntityZ(w\obj,True))
                             If z < 8.0 And z > 1.0 Then
-                                If EntityDistance(Collider, w\obj) > dist Then
+                                If EntityDistance(mainPlayer\collider, w\obj) > dist Then
                                     n\Path[0]=w
                                     Exit
                                 EndIf
@@ -120,11 +120,11 @@ Function UpdateNPCtype5131(n.NPCs)
                     Else
                         For i = 0 To 4
                             If n\Path[0]\connected[i] <> Null Then
-                                If EntityDistance(Collider, n\Path[0]\connected[i]\obj) > dist Then
+                                If EntityDistance(mainPlayer\collider, n\Path[0]\connected[i]\obj) > dist Then
                                     
                                     If n\LastSeen = 0 Then 
-                                        If EntityInView(n\Collider,Camera) Then
-                                            If EntityVisible(Collider, n\Collider) Then
+                                        If EntityInView(n\Collider,mainPlayer\cam) Then
+                                            If EntityVisible(mainPlayer\collider, n\Collider) Then
                                                 n\LastSeen = 1
                                                 PlaySound_Strict LoadTempSound("SFX\SCP\513\Bell"+Rand(2,3)+".ogg")
                                             EndIf

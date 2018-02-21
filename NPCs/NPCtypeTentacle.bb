@@ -19,7 +19,7 @@ Function InitializeNPCtypeTentacle(n.NPCs)
 End Function
 
 Function UpdateNPCtypeTentacle(n.NPCs)
-    dist = EntityDistance(n\Collider,Collider)
+    dist = EntityDistance(n\Collider,mainPlayer\collider)
     
     If dist < 8.0 Then 
         
@@ -30,7 +30,7 @@ Function UpdateNPCtypeTentacle(n.NPCs)
                     HeartBeatVolume = Max(CurveValue(1.0, HeartBeatVolume, 50),HeartBeatVolume)
                     HeartBeatRate = Max(CurveValue(130, HeartBeatRate, 100),HeartBeatRate)
                     
-                    PointEntity n\obj, Collider
+                    PointEntity n\obj, mainPlayer\collider
                     RotateEntity n\Collider, 0, CurveAngle(EntityYaw(n\obj),EntityYaw(n\Collider),25.0), 0
                     
                     AnimateNPC(n, 283, 389, 0.3, False)
@@ -49,7 +49,7 @@ Function UpdateNPCtypeTentacle(n.NPCs)
                 ;idle 33, 174
             Case 1 ;idle
                 If dist < 1.8 Then 
-                    If Abs(DeltaYaw(n\Collider, Collider))<20 Then 
+                    If Abs(DeltaYaw(n\Collider, mainPlayer\collider))<20 Then 
                         n\State = 2
                         If n\Sound<>0 Then FreeSound_Strict n\Sound : n\Sound = 0 
                         If n\Sound2<>0 Then FreeSound_Strict n\Sound2 : n\Sound2 = 0 
@@ -57,7 +57,7 @@ Function UpdateNPCtypeTentacle(n.NPCs)
                     EndIf
                 EndIf
                 
-                PointEntity n\obj, Collider
+                PointEntity n\obj, mainPlayer\collider
                 RotateEntity n\Collider, 0, CurveAngle(EntityYaw(n\obj),EntityYaw(n\Collider),25.0), 0
                 
                 AnimateNPC(n, 33, 174, 0.3, True)
@@ -69,7 +69,7 @@ Function UpdateNPCtypeTentacle(n.NPCs)
                     AnimateNPC(n, 33, 174, 2.0, False)
                     ;Animate2(n\obj, AnimTime(n\obj), 33, 174, 2.0, False)
                 Else
-                    PointEntity n\obj, Collider
+                    PointEntity n\obj, mainPlayer\collider
                     RotateEntity n\Collider, 0, CurveAngle(EntityYaw(n\obj),EntityYaw(n\Collider),10.0), 0							
                     
                     If n\Frame>33 Then 
@@ -83,7 +83,7 @@ Function UpdateNPCtypeTentacle(n.NPCs)
                     
                     If n\Frame>=5 And n\Frame<6 Then
                         If dist < 1.8 Then
-                            If Abs(DeltaYaw(n\Collider, Collider))<20 Then 
+                            If Abs(DeltaYaw(n\Collider, mainPlayer\collider))<20 Then 
                                 If WearingHazmat Then
                                     Injuries = Injuries+Rnd(0.5)
                                     PlaySound_Strict(LoadTempSound("SFX\General\BodyFall.ogg"))

@@ -4,7 +4,7 @@ Function InitializeNPCtypeMTF(n.NPCs)
     n\NVName = "Human"
     n\Collider = CreatePivot()
     EntityRadius n\Collider, 0.2
-    ;EntityRadius Collider, 0.15, 0.30
+    ;EntityRadius mainPlayer\collider, 0.15, 0.30
     EntityType n\Collider, HIT_PLAYER
     ;EntityPickMode n\Collider, 1
     n\obj = CopyEntity(MTFObj) ;LoadAnimMesh_Strict("GFX\npcs\mtf.b3d")
@@ -235,7 +235,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 								If (Not n\Path[n\PathLocation]\door\open)
 									Local sound = 0
 									If n\Path[n\PathLocation]\door\dir = 1 Then sound = 0 Else sound=Rand(0, 2)
-									PlaySound2(OpenDoorSFX(n\Path[n\PathLocation]\door\dir,sound),Camera,n\Path[n\PathLocation]\door\obj)
+									PlaySound2(OpenDoorSFX(n\Path[n\PathLocation]\door\dir,sound),mainPlayer\cam,n\Path[n\PathLocation]\door\obj)
 									PlayMTFSound(MTFSFX(5),n)
 								EndIf
 								n\Path[n\PathLocation]\door\open = True
@@ -324,16 +324,16 @@ Function UpdateNPCtypeMTF(n.NPCs)
 					n\LastDist = 1
 					
 					n\State = 1
-					n\EnemyX = EntityX(Collider,True)
-					n\EnemyY = EntityY(Collider,True)
-					n\EnemyZ = EntityZ(Collider,True)
+					n\EnemyX = EntityX(mainPlayer\collider,True)
+					n\EnemyY = EntityY(mainPlayer\collider,True)
+					n\EnemyZ = EntityZ(mainPlayer\collider,True)
 					n\State2 = 70.0*(15.0*temp) ;give up after 15 seconds (30 seconds if detected by loud noise, over camera: 45)
 					DebugLog "player spotted :"+n\State2
 					n\PathTimer=0.0
 					n\PathStatus=0
 					n\Reload = 200-(100*SelectedDifficulty\aggressiveNPCs)
 					
-					;If EntityDistance(n\Collider,Collider)>HideDistance*0.7
+					;If EntityDistance(n\Collider,mainPlayer\collider)>HideDistance*0.7
 					;	TeleportMTFGroup(n)
 					;EndIf
                 EndIf
@@ -456,18 +456,18 @@ Function UpdateNPCtypeMTF(n.NPCs)
 					;if close enough, start shooting at the player
 					If playerDist < 4.0 Then
 						
-						Local angle# = VectorYaw(EntityX(Collider)-EntityX(n\Collider),0,EntityZ(Collider)-EntityZ(n\Collider))
+						Local angle# = VectorYaw(EntityX(mainPlayer\collider)-EntityX(n\Collider),0,EntityZ(mainPlayer\collider)-EntityZ(n\Collider))
 						
 						RotateEntity(n\Collider, 0, CurveAngle(angle, EntityYaw(n\Collider), 10.0), 0, True)
 						n\Angle = EntityYaw(n\Collider)
 						
 						If n\Reload =< 0 And KillTimer = 0 Then
-							If EntityVisible(n\Collider, Camera) Then
+							If EntityVisible(n\Collider, mainPlayer\cam) Then
 								angle# = WrapAngle(angle - EntityYaw(n\Collider))
 								If angle < 5 Or angle > 355 Then 
 									prev% = KillTimer
 									
-									PlaySound2(GunshotSFX, Camera, n\Collider, 15)
+									PlaySound2(GunshotSFX, mainPlayer\cam, n\Collider, 15)
 									
 									pvt% = CreatePivot()
 									
@@ -500,9 +500,9 @@ Function UpdateNPCtypeMTF(n.NPCs)
 										n2\LastDist = 1
 										
 										n2\State = 1
-										n2\EnemyX = EntityX(Collider,True)
-										n2\EnemyY = EntityY(Collider,True)
-										n2\EnemyZ = EntityZ(Collider,True)
+										n2\EnemyX = EntityX(mainPlayer\collider,True)
+										n2\EnemyY = EntityY(mainPlayer\collider,True)
+										n2\EnemyZ = EntityZ(mainPlayer\collider,True)
 										n2\State2 = n\State2
 										n2\PathTimer=0.0
 										n2\PathStatus=0
@@ -600,7 +600,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 									If (Not n\Path[n\PathLocation]\door\open)
 										sound = 0
 										If n\Path[n\PathLocation]\door\dir = 1 Then sound = 0 Else sound=Rand(0, 2)
-										PlaySound2(OpenDoorSFX(n\Path[n\PathLocation]\door\dir,sound),Camera,n\Path[n\PathLocation]\door\obj)
+										PlaySound2(OpenDoorSFX(n\Path[n\PathLocation]\door\dir,sound),mainPlayer\cam,n\Path[n\PathLocation]\door\obj)
 										PlayMTFSound(MTFSFX(5),n)
 									EndIf
 									n\Path[n\PathLocation]\door\open = True
@@ -654,7 +654,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 						EndIf
 					EndIf
 					
-					;If EntityDistance(n\Collider,Collider)>HideDistance*0.7
+					;If EntityDistance(n\Collider,mainPlayer\collider)>HideDistance*0.7
 					;	TeleportMTFGroup(n)
 					;EndIf
                 EndIf
@@ -883,7 +883,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 										If (Not n\Path[n\PathLocation]\door\open)
 											sound = 0
 											If n\Path[n\PathLocation]\door\dir = 1 Then sound = 0 Else sound=Rand(0, 2)
-											PlaySound2(OpenDoorSFX(n\Path[n\PathLocation]\door\dir,sound),Camera,n\Path[n\PathLocation]\door\obj)
+											PlaySound2(OpenDoorSFX(n\Path[n\PathLocation]\door\dir,sound),mainPlayer\cam,n\Path[n\PathLocation]\door\obj)
 											PlayMTFSound(MTFSFX(5),n)
 										EndIf
 										n\Path[n\PathLocation]\door\open = True
@@ -1112,7 +1112,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 									If (Not n\Path[n\PathLocation]\door\open)
 										sound = 0
 										If n\Path[n\PathLocation]\door\dir = 1 Then sound = 0 Else sound=Rand(0, 2)
-										PlaySound2(OpenDoorSFX(n\Path[n\PathLocation]\door\dir,sound),Camera,n\Path[n\PathLocation]\door\obj)
+										PlaySound2(OpenDoorSFX(n\Path[n\PathLocation]\door\dir,sound),mainPlayer\cam,n\Path[n\PathLocation]\door\obj)
 										PlayMTFSound(MTFSFX(5),n)
 									EndIf
 									n\Path[n\PathLocation]\door\open = True
@@ -1166,7 +1166,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 						;	MoveEntity (pvt,0.8*0.079, 10.75*0.079, 6.9*0.079)
 						;	
 						;	If WrapAngle(EntityYaw(pvt)-EntityYaw(n\Collider))<5 Then
-						;		PlaySound2(GunshotSFX, Camera, n\Collider, 20)
+						;		PlaySound2(GunshotSFX, mainPlayer\cam, n\Collider, 20)
 						;		p.Particles = CreateParticle(EntityX(n\obj, True), EntityY(n\obj, True), EntityZ(n\obj, True), 1, 0.2, 0.0, 5)
 						;		PositionEntity(p\pvt, EntityX(pvt), EntityY(pvt), EntityZ(pvt))
 						;		
@@ -1192,13 +1192,13 @@ Function UpdateNPCtypeMTF(n.NPCs)
 				AnimateNPC(n, 346, 351, 0.2, False)
 				
 				If n\Reload =< 0 And KillTimer = 0 Then
-					If EntityVisible(n\Collider, Collider) Then
+					If EntityVisible(n\Collider, mainPlayer\collider) Then
 						;angle# = WrapAngle(angle - EntityYaw(n\Collider))
 						;If angle < 5 Or angle > 355 Then
-						If (Abs(DeltaYaw(n\Collider,Collider))<50.0)
+						If (Abs(DeltaYaw(n\Collider,mainPlayer\collider))<50.0)
 							;prev% = KillTimer
 							
-							PlaySound2(GunshotSFX, Camera, n\Collider, 15)
+							PlaySound2(GunshotSFX, mainPlayer\cam, n\Collider, 15)
 							
 							pvt% = CreatePivot()
 							
@@ -1229,7 +1229,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 				
 				If n\Reload =< 0 
 					LightVolume = TempLightVolume*1.2
-					PlaySound2(GunshotSFX, Camera, n\Collider, 20)
+					PlaySound2(GunshotSFX, mainPlayer\cam, n\Collider, 20)
 					
 					pvt% = CreatePivot()
 					
@@ -1328,7 +1328,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 								If (Not n\Path[n\PathLocation]\door\open)
 									sound = 0
 									If n\Path[n\PathLocation]\door\dir = 1 Then sound = 0 Else sound=Rand(0, 2)
-									PlaySound2(OpenDoorSFX(n\Path[n\PathLocation]\door\dir,sound),Camera,n\Path[n\PathLocation]\door\obj)
+									PlaySound2(OpenDoorSFX(n\Path[n\PathLocation]\door\dir,sound),mainPlayer\cam,n\Path[n\PathLocation]\door\obj)
 									PlayMTFSound(MTFSFX(5),n)
 								EndIf
 								n\Path[n\PathLocation]\door\open = True
@@ -1405,7 +1405,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 						If (Abs(DeltaYaw(n\Collider,n\Target\Collider))<50.0)
 							;prev% = KillTimer
 							
-							PlaySound2(GunshotSFX, Camera, n\Collider, 15)
+							PlaySound2(GunshotSFX, mainPlayer\cam, n\Collider, 15)
 							
 							pvt% = CreatePivot()
 							
@@ -1479,7 +1479,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 									If (Not n\Path[n\PathLocation]\door\open)
 										sound = 0
 										If n\Path[n\PathLocation]\door\dir = 1 Then sound = 0 Else sound=Rand(0, 2)
-										PlaySound2(OpenDoorSFX(n\Path[n\PathLocation]\door\dir,sound),Camera,n\Path[n\PathLocation]\door\obj)
+										PlaySound2(OpenDoorSFX(n\Path[n\PathLocation]\door\dir,sound),mainPlayer\cam,n\Path[n\PathLocation]\door\obj)
 										PlayMTFSound(MTFSFX(5),n)
 									EndIf
 									n\Path[n\PathLocation]\door\open = True
@@ -1504,9 +1504,9 @@ Function UpdateNPCtypeMTF(n.NPCs)
 		
 		If n\CurrSpeed > 0.01 Then
 			If prevFrame > 500 And n\Frame<495
-				PlaySound2(StepSFX(2,0,Rand(0,2)),Camera, n\Collider, 8.0, Rnd(0.5,0.7))
+				PlaySound2(StepSFX(2,0,Rand(0,2)),mainPlayer\cam, n\Collider, 8.0, Rnd(0.5,0.7))
 			ElseIf prevFrame < 505 And n\Frame=>505
-				PlaySound2(StepSFX(2,0,Rand(0,2)),Camera, n\Collider, 8.0, Rnd(0.5,0.7))
+				PlaySound2(StepSFX(2,0,Rand(0,2)),mainPlayer\cam, n\Collider, 8.0, Rnd(0.5,0.7))
 			EndIf
 		EndIf
 		
@@ -1549,14 +1549,14 @@ Function UpdateNPCtypeMTF(n.NPCs)
 End Function
 
 Function UpdateMTF%()
-	If PlayerRoom\RoomTemplate\Name = "gateaentrance" Then Return
+	If mainPlayer\currRoom\RoomTemplate\Name = "gateaentrance" Then Return
 	
 	Local r.Rooms, n.NPCs
 	Local dist#, i%
 	
 	;mtf ei vielä spawnannut, spawnataan jos pelaaja menee tarpeeksi lähelle gate b:tä
 	If MTFtimer = 0 Then
-		If Rand(30)=1 And PlayerRoom\RoomTemplate\Name$ <> "dimension1499" Then
+		If Rand(30)=1 And mainPlayer\currRoom\RoomTemplate\Name$ <> "dimension1499" Then
 			
 			Local entrance.Rooms = Null
 			For r.Rooms = Each Rooms
@@ -1564,8 +1564,8 @@ Function UpdateMTF%()
 			Next
 			
 			If entrance <> Null Then 
-				If Abs(EntityZ(entrance\obj)-EntityZ(Collider))<30.0 Then
-					;If PlayerRoom\RoomTemplate\Name<>"room860" And PlayerRoom\RoomTemplate\Name<>"pocketdimension" Then
+				If Abs(EntityZ(entrance\obj)-EntityZ(mainPlayer\collider))<30.0 Then
+					;If mainPlayer\currRoom\RoomTemplate\Name<>"room860" And mainPlayer\currRoom\RoomTemplate\Name<>"pocketdimension" Then
 					If PlayerInReachableRoom()
 						PlaySound_Strict LoadTempSound("SFX\Character\MTF\Announc.ogg")
 					EndIf

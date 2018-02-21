@@ -24,12 +24,12 @@ Function UpdateNPCtype049(n.NPCs)
     
     prevFrame# = n\Frame
     
-    dist  = EntityDistance(Collider, n\Collider)
+    dist  = EntityDistance(mainPlayer\collider, n\Collider)
     
     n\BlinkTimer# = 1.0
     
     If n\Idle > 0.1
-        If PlayerRoom\RoomTemplate\Name$ <> "room049"
+        If mainPlayer\currRoom\RoomTemplate\Name$ <> "room049"
             n\Idle = Max(n\Idle-(1+SelectedDifficulty\aggressiveNPCs)*FPSfactor,0.1)
         EndIf
         n\DropSpeed = 0
@@ -63,14 +63,14 @@ Function UpdateNPCtype049(n.NPCs)
             Case 2 ;being active
                 ;[Block]
                 If (dist < HideDistance*2 Or n\InFacility<>1) And (Not n\Idle) ;Checking if the player is in range/if 049 is in facility/if 049 is not idle
-                    n\SoundChn = LoopSound2(n\Sound, n\SoundChn, Camera, n\Collider)
+                    n\SoundChn = LoopSound2(n\Sound, n\SoundChn, mainPlayer\cam, n\Collider)
                     PlayerSeeAble% = MeNPCSeesPlayer(n)
                     If PlayerSeeAble%=True Or n\State2>0 ;Player is visible for 049's sight - attacking
                         ;Playing a sound after detecting the player
                         If n\PrevState < 1 And ChannelPlaying(n\SoundChn2)=False
                             If n\Sound2 <> 0 Then FreeSound_Strict(n\Sound2)
                             n\Sound2 = LoadSound_Strict("SFX\SCP\049\Spotted"+Rand(1,2)+".ogg")
-                            n\SoundChn2 = LoopSound2(n\Sound2,n\SoundChn2,Camera,n\obj)
+                            n\SoundChn2 = LoopSound2(n\Sound2,n\SoundChn2,mainPlayer\cam,n\obj)
                             n\PrevState = 2
                         EndIf
                         n\PathStatus = 0
@@ -94,7 +94,7 @@ Function UpdateNPCtype049(n.NPCs)
                                 BlurTimer = 500.0
                                 
                                 If (Not GodMode) Then
-                                    If PlayerRoom\RoomTemplate\Name$ = "room049"
+                                    If mainPlayer\currRoom\RoomTemplate\Name$ = "room049"
                                         DeathMSG = "Three (3) active instances of SCP-049-2 discovered in the tunnel outside SCP-049's containment chamber. Terminated by Nine-Tailed Fox."
                                         For e.events = Each Events
                                             If e\EventName = "room049" Then e\EventState=-1 : Exit
@@ -187,7 +187,7 @@ Function UpdateNPCtype049(n.NPCs)
                                         Else
                                             n\Sound2 = LoadSound_Strict("SFX\SCP\049\Detected"+Rand(1,3)+".ogg")
                                         EndIf
-                                        n\SoundChn2 = LoopSound2(n\Sound2,n\SoundChn2,Camera,n\obj)
+                                        n\SoundChn2 = LoopSound2(n\Sound2,n\SoundChn2,mainPlayer\cam,n\obj)
                                         n\PrevState = 1
                                     EndIf
                                     
@@ -200,7 +200,7 @@ Function UpdateNPCtype049(n.NPCs)
                                     
                                     If n\State3 > 70*7 ;Upadting the path every 7 seconds
                                         If n\InFacility = InFacility
-                                            n\PathStatus = FindPath(n, EntityX(Collider),EntityY(Collider)+0.2,EntityZ(Collider))
+                                            n\PathStatus = FindPath(n, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider))
                                         EndIf
                                         n\State3 = 0.0
                                     EndIf
@@ -223,7 +223,7 @@ Function UpdateNPCtype049(n.NPCs)
                                     EndIf
                                     If n\PathTimer# > 70*5-(2*SelectedDifficulty\aggressiveNPCs)
                                         If n\InFacility = InFacility
-                                            n\PathStatus = FindPath(n, EntityX(Collider),EntityY(Collider)+0.2,EntityZ(Collider))
+                                            n\PathStatus = FindPath(n, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider))
                                         Else
                                             FindNextElevator(n)
                                         EndIf
@@ -298,7 +298,7 @@ Function UpdateNPCtype049(n.NPCs)
                                         If Rand(8)=3
                                             If n\Sound2 <> 0 Then FreeSound_Strict(n\Sound2)
                                             n\Sound2 = LoadSound_Strict("SFX\SCP\049\Detected4.ogg")
-                                            n\SoundChn2 = LoopSound2(n\Sound2,n\SoundChn2,Camera,n\obj)
+                                            n\SoundChn2 = LoopSound2(n\Sound2,n\SoundChn2,mainPlayer\cam,n\obj)
                                         EndIf
                                         n\PrevState = 1
                                     EndIf
@@ -365,14 +365,14 @@ Function UpdateNPCtype049(n.NPCs)
                     
                     If n\CurrSpeed > 0.005 Then
                         If (prevFrame < 361 And n\Frame=>361) Or (prevFrame < 377 And n\Frame=>377) Then
-                            PlaySound2(StepSFX(3,0,Rand(0,2)),Camera, n\Collider, 8.0, Rnd(0.8,1.0))						
+                            PlaySound2(StepSFX(3,0,Rand(0,2)),mainPlayer\cam, n\Collider, 8.0, Rnd(0.8,1.0))						
                         ElseIf (prevFrame < 431 And n\Frame=>431) Or (prevFrame < 447 And n\Frame=>447)
-                            PlaySound2(StepSFX(3,0,Rand(0,2)),Camera, n\Collider, 8.0, Rnd(0.8,1.0))
+                            PlaySound2(StepSFX(3,0,Rand(0,2)),mainPlayer\cam, n\Collider, 8.0, Rnd(0.8,1.0))
                         EndIf
                     EndIf
                     
                     If ChannelPlaying(n\SoundChn2)
-                        UpdateSoundOrigin(n\SoundChn2,Camera,n\obj)
+                        UpdateSoundOrigin(n\SoundChn2,mainPlayer\cam,n\obj)
                     EndIf
                 ElseIf (Not n\Idle)
                     If ChannelPlaying(n\SoundChn) Then StopChannel(n\SoundChn)
@@ -381,7 +381,7 @@ Function UpdateNPCtype049(n.NPCs)
                         If Rand(50-(20*SelectedDifficulty\aggressiveNPCs))=1
                             For w.waypoints = Each WayPoints
                                 If w\door=Null And w\room\dist < HideDistance And Rand(3)=1 Then
-                                    If EntityDistance(w\room\obj,n\Collider)<EntityDistance(Collider,n\Collider)
+                                    If EntityDistance(w\room\obj,n\Collider)<EntityDistance(mainPlayer\collider,n\Collider)
                                         x = Abs(EntityX(n\Collider)-EntityX(w\obj,True))
                                         If x < 12.0 And x > 4.0 Then
                                             z = Abs(EntityZ(n\Collider)-EntityZ(w\obj,True))
@@ -409,8 +409,8 @@ Function UpdateNPCtype049(n.NPCs)
                 AnimateNPC(n, 537, 660, 0.7, False)
                 
                 ;Animate2(n\obj, AnimTime(n\obj), 537, 660, 0.7, False)
-                PositionEntity n\Collider, CurveValue(EntityX(Collider),EntityX(n\Collider),20.0),EntityY(n\Collider),CurveValue(EntityZ(Collider),EntityZ(n\Collider),20.0)
-                RotateEntity n\Collider, 0, CurveAngle(EntityYaw(Collider)-180.0,EntityYaw(n\Collider),40), 0
+                PositionEntity n\Collider, CurveValue(EntityX(mainPlayer\collider),EntityX(n\Collider),20.0),EntityY(n\Collider),CurveValue(EntityZ(mainPlayer\collider),EntityZ(n\Collider),20.0)
+                RotateEntity n\Collider, 0, CurveAngle(EntityYaw(mainPlayer\collider)-180.0,EntityYaw(n\Collider),40), 0
                 ;[End Block]
             Case 4 ;Standing on catwalk in room4
                 ;[Block]
@@ -418,7 +418,7 @@ Function UpdateNPCtype049(n.NPCs)
                     AnimateNPC(n, 18, 19, 0.05)
                     
                     ;Animate2(n\obj, AnimTime(n\obj), 18, 19, 0.05)
-                    PointEntity n\obj, Collider	
+                    PointEntity n\obj, mainPlayer\collider	
                     RotateEntity n\Collider, 0, CurveAngle(EntityYaw(n\obj), EntityYaw(n\Collider), 45.0), 0
                 ElseIf dist > HideDistance*0.8
                     n\State = 2
@@ -427,7 +427,7 @@ Function UpdateNPCtype049(n.NPCs)
                 ;[End Block]
             Case 5 ;used for "room2sl"
                 ;[Block]
-                n\SoundChn = LoopSound2(n\Sound, n\SoundChn, Camera, n\Collider)
+                n\SoundChn = LoopSound2(n\Sound, n\SoundChn, mainPlayer\cam, n\Collider)
                 PlayerSeeAble% = MeNPCSeesPlayer(n,True)
                 If PlayerSeeAble% = True
                     n\State = 2
@@ -439,10 +439,10 @@ Function UpdateNPCtype049(n.NPCs)
                     n\PrevState = 0
                     PlaySound_Strict LoadTempSound("SFX\Room\Room2SL049Spawn.ogg")
                 ElseIf PlayerSeeAble% = 2 And n\State3 > 0.0
-                    n\PathStatus = FindPath(n,EntityX(Collider),EntityY(Collider),EntityZ(Collider))
+                    n\PathStatus = FindPath(n,EntityX(mainPlayer\collider),EntityY(mainPlayer\collider),EntityZ(mainPlayer\collider))
                 Else
                     If n\State3 = 5.0
-                        If EntityDistance(n\Collider,Collider)>HideDistance
+                        If EntityDistance(n\Collider,mainPlayer\collider)>HideDistance
                             n\State = 2
                             n\PathStatus = 0
                             n\PathLocation = 0
@@ -450,7 +450,7 @@ Function UpdateNPCtype049(n.NPCs)
                             n\State3 = 0
                             n\PrevState = 0
                         Else
-                            If n\PathStatus <> 1 Then n\PathStatus = FindPath(n,EntityX(Collider),EntityY(Collider),EntityZ(Collider))
+                            If n\PathStatus <> 1 Then n\PathStatus = FindPath(n,EntityX(mainPlayer\collider),EntityY(mainPlayer\collider),EntityZ(mainPlayer\collider))
                         EndIf
                     EndIf
                     
@@ -511,14 +511,14 @@ Function UpdateNPCtype049(n.NPCs)
                 
                 If n\CurrSpeed > 0.005 Then
                     If (prevFrame < 361 And n\Frame=>361) Or (prevFrame < 377 And n\Frame=>377) Then
-                        PlaySound2(StepSFX(3,0,Rand(0,2)),Camera, n\Collider, 8.0, Rnd(0.8,1.0))						
+                        PlaySound2(StepSFX(3,0,Rand(0,2)),mainPlayer\cam, n\Collider, 8.0, Rnd(0.8,1.0))						
                     ElseIf (prevFrame < 431 And n\Frame=>431) Or (prevFrame < 447 And n\Frame=>447)
-                        PlaySound2(StepSFX(3,0,Rand(0,2)),Camera, n\Collider, 8.0, Rnd(0.8,1.0))
+                        PlaySound2(StepSFX(3,0,Rand(0,2)),mainPlayer\cam, n\Collider, 8.0, Rnd(0.8,1.0))
                     EndIf
                 EndIf
                 
                 If ChannelPlaying(n\SoundChn2)
-                    UpdateSoundOrigin(n\SoundChn2,Camera,n\obj)
+                    UpdateSoundOrigin(n\SoundChn2,mainPlayer\cam,n\obj)
                 EndIf
                 ;[End Block]
         End Select

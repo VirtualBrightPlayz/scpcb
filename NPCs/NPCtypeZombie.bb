@@ -30,7 +30,7 @@ Function InitializeNPCtypeZombie(n.NPCs)
 End Function
 
 Function UpdateNPCtypeZombie(n.NPCs)
-    If Abs(EntityY(Collider)-EntityY(n\Collider))<4.0 Then
+    If Abs(EntityY(mainPlayer\collider)-EntityY(n\Collider))<4.0 Then
         
         prevFrame# = n\Frame
         
@@ -42,7 +42,7 @@ Function UpdateNPCtypeZombie(n.NPCs)
                     ;Animate2(n\obj, AnimTime(n\obj), 719, 777, 0.2, False)
                     If n\Frame=777 Then
                         If Rand(700)=1 Then 							
-                            If EntityDistance(Collider, n\Collider)<5.0 Then
+                            If EntityDistance(mainPlayer\collider, n\Collider)<5.0 Then
                                 n\Frame = 719
                                 ;SetAnimTime (n\obj, 719)	
                                 If Rand(3)=1 Then 
@@ -66,8 +66,8 @@ Function UpdateNPCtypeZombie(n.NPCs)
                     EndIf
                 Case 2 ;following the player
                     If n\State3 < 0 Then ;check if the player is visible every three seconds
-                        If EntityDistance(Collider, n\Collider)<5.0 Then 
-                            If EntityVisible(Collider, n\Collider) Then n\State2 = 70*5
+                        If EntityDistance(mainPlayer\collider, n\Collider)<5.0 Then 
+                            If EntityVisible(mainPlayer\collider, n\Collider) Then n\State2 = 70*5
                         EndIf
                         n\State3=70*3
                     Else
@@ -75,13 +75,13 @@ Function UpdateNPCtypeZombie(n.NPCs)
                     EndIf
                     
                     If n\State2 > 0 And (Not NoTarget) Then ;player is visible -> attack
-                        n\SoundChn = LoopSound2(n\Sound, n\SoundChn, Camera, n\Collider, 6.0, 0.6)
+                        n\SoundChn = LoopSound2(n\Sound, n\SoundChn, mainPlayer\cam, n\Collider, 6.0, 0.6)
                         
                         n\PathStatus = 0
                         
-                        dist = EntityDistance(Collider, n\Collider)
+                        dist = EntityDistance(mainPlayer\collider, n\Collider)
                         
-                        PointEntity n\obj, Collider
+                        PointEntity n\obj, mainPlayer\collider
                         RotateEntity n\Collider, 0, CurveAngle(EntityYaw(n\obj), EntityYaw(n\Collider), 30.0), 0
                         
                         If dist < 0.7 Then 
@@ -133,7 +133,7 @@ Function UpdateNPCtypeZombie(n.NPCs)
                             
                             n\PathTimer = n\PathTimer-FPSfactor
                             If n\PathTimer =< 0 Then
-                                n\PathStatus = FindPath(n, EntityX(Collider),EntityY(Collider)+0.1,EntityZ(Collider))
+                                n\PathStatus = FindPath(n, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.1,EntityZ(mainPlayer\collider))
                                 n\PathTimer = n\PathTimer+70*5
                             EndIf
                         EndIf
@@ -142,8 +142,8 @@ Function UpdateNPCtypeZombie(n.NPCs)
                     ;65, 80, 93, 109, 123
                     If n\CurrSpeed > 0.005 Then
                         If (prevFrame < 977 And n\Frame=>977) Or (prevFrame > 1010 And n\Frame<940) Then
-                            ;PlaySound2(StepSFX(0,0,Rand(0,2)),Camera, n\Collider, 8.0, Rnd(0.3,0.5))
-                            PlaySound2(StepSFX(2,0,Rand(0,2)),Camera, n\Collider, 8.0, Rnd(0.3,0.5))
+                            ;PlaySound2(StepSFX(0,0,Rand(0,2)),mainPlayer\cam, n\Collider, 8.0, Rnd(0.3,0.5))
+                            PlaySound2(StepSFX(2,0,Rand(0,2)),mainPlayer\cam, n\Collider, 8.0, Rnd(0.3,0.5))
                         EndIf
                     EndIf						
                 Case 3

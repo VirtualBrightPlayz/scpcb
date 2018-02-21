@@ -39,17 +39,17 @@ Function UpdateNPCtypeD(n.NPCs)
         If n\State = 1
             If n\CurrSpeed > 0.01 Then
                 If prevFrame < 244 And AnimTime(n\obj)=>244 Then
-                    PlaySound2(StepSFX(GetStepSound(n\Collider),0,Rand(0,2)),Camera, n\Collider, 8.0, Rnd(0.3,0.5))						
+                    PlaySound2(StepSFX(GetStepSound(n\Collider),0,Rand(0,2)),mainPlayer\cam, n\Collider, 8.0, Rnd(0.3,0.5))						
                 ElseIf prevFrame < 256 And AnimTime(n\obj)=>256
-                    PlaySound2(StepSFX(GetStepSound(n\Collider),0,Rand(0,2)),Camera, n\Collider, 8.0, Rnd(0.3,0.5))
+                    PlaySound2(StepSFX(GetStepSound(n\Collider),0,Rand(0,2)),mainPlayer\cam, n\Collider, 8.0, Rnd(0.3,0.5))
                 EndIf
             EndIf
         ElseIf n\State = 2
             If n\CurrSpeed > 0.01 Then
                 If prevFrame < 309 And AnimTime(n\obj)=>309
-                    PlaySound2(StepSFX(GetStepSound(n\Collider),1,Rand(0,2)),Camera, n\Collider, 8.0, Rnd(0.3,0.5))
+                    PlaySound2(StepSFX(GetStepSound(n\Collider),1,Rand(0,2)),mainPlayer\cam, n\Collider, 8.0, Rnd(0.3,0.5))
                 ElseIf prevFrame =< 319 And AnimTime(n\obj)=<301
-                    PlaySound2(StepSFX(GetStepSound(n\Collider),1,Rand(0,2)),Camera, n\Collider, 8.0, Rnd(0.3,0.5))
+                    PlaySound2(StepSFX(GetStepSound(n\Collider),1,Rand(0,2)),mainPlayer\cam, n\Collider, 8.0, Rnd(0.3,0.5))
                 EndIf
             EndIf
         EndIf

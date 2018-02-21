@@ -28,10 +28,10 @@ Function InitializeNPCtype860(n.NPCs)
 End Function
 
 Function UpdateNPCtype860(n.NPCs)
-    If PlayerRoom\RoomTemplate\Name = "room860" Then
-        Local fr.Forest=PlayerRoom\fr;Object.Forest(e\room\Objects[1])
+    If mainPlayer\currRoom\RoomTemplate\Name = "room860" Then
+        Local fr.Forest=mainPlayer\currRoom\fr;Object.Forest(e\room\Objects[1])
         
-        dist = EntityDistance(Collider,n\Collider)
+        dist = EntityDistance(mainPlayer\collider,n\Collider)
         
         Select n\State
             Case 0 ;idle (hidden)
@@ -46,7 +46,7 @@ Function UpdateNPCtype860(n.NPCs)
                 n\DropSpeed = 0
                 
                 If EntityY(n\Collider)<= -100 Then
-                    TFormPoint(EntityX(Collider),EntityY(Collider),EntityZ(Collider),0,PlayerRoom\obj)
+                    TFormPoint(EntityX(mainPlayer\collider),EntityY(mainPlayer\collider),EntityZ(mainPlayer\collider),0,mainPlayer\currRoom\obj)
                     
                     x = Floor((TFormedX()*RoomScale+6.0)/12.0)
                     z = Floor((TFormedZ()*RoomScale+6.0)/12.0)
@@ -57,11 +57,11 @@ Function UpdateNPCtype860(n.NPCs)
                         For z2 = Max(z-1,0) To Min(z+1,gridsize) Step 2
                             If fr\grid[(z2*gridsize)+x2]=0 Then
                                 
-                                TFormPoint((x*12 + (x2-x)*6)/RoomScale,0,(z*12 + (z2-z)*6)/RoomScale,PlayerRoom\obj,0)
+                                TFormPoint((x*12 + (x2-x)*6)/RoomScale,0,(z*12 + (z2-z)*6)/RoomScale,mainPlayer\currRoom\obj,0)
                                 
                                 PositionEntity n\Collider, TFormedX(), EntityY(fr\Forest_Pivot,True)+2.3, TFormedZ()
                                 
-                                If EntityInView(n\Collider, Camera) Then
+                                If EntityInView(n\Collider, mainPlayer\cam) Then
                                     PositionEntity n\Collider, 0, -110, 0
                                 Else ;only spawn the monster outside the player's field of view
                                     x2 = Min(x+1,gridsize)
@@ -73,7 +73,7 @@ Function UpdateNPCtype860(n.NPCs)
                     Next
                     
                     If EntityY(n\Collider)> -100 Then
-                        PlaySound2(Step2SFX(Rand(3,5)), Camera, n\Collider, 15.0, 0.5)
+                        PlaySound2(Step2SFX(Rand(3,5)), mainPlayer\cam, n\Collider, 15.0, 0.5)
                         
                         Select Rand(3)
                             Case 1
@@ -101,29 +101,29 @@ Function UpdateNPCtype860(n.NPCs)
                     PositionEntity n\Collider, EntityX(n\Collider), EntityY(fr\Forest_Pivot,True)+2.3, EntityZ(n\Collider)
                     
                     If n\State2 = 0 Then ;don't start moving until the player is looking
-                        If EntityInView(n\Collider, Camera) Then 
+                        If EntityInView(n\Collider, mainPlayer\cam) Then 
                             n\State2 = 1
                             If Rand(8)=1 Then
-                                PlaySound2(LoadTempSound("SFX\SCP\860\Cancer"+Rand(0,2)+".ogg"), Camera, n\Collider, 20.0)
+                                PlaySound2(LoadTempSound("SFX\SCP\860\Cancer"+Rand(0,2)+".ogg"), mainPlayer\cam, n\Collider, 20.0)
                             EndIf										
                         EndIf
                     Else
                         If n\Frame<=199 Then
                             AnimateNPC(n, 2, 199, 0.5,False)
-                            If n\Frame=199 Then n\Frame = 298 : PlaySound2(Step2SFX(Rand(3,5)), Camera, n\Collider, 15.0)
+                            If n\Frame=199 Then n\Frame = 298 : PlaySound2(Step2SFX(Rand(3,5)), mainPlayer\cam, n\Collider, 15.0)
                             
                             ;Animate2(n\obj, AnimTime(n\obj), 2, 199, 0.5,False)
-                            ;If AnimTime(n\obj)=199 Then SetAnimTime(n\obj,298) : PlaySound2(Step2SFX(Rand(3,5)), Camera, n\Collider, 15.0)
+                            ;If AnimTime(n\obj)=199 Then SetAnimTime(n\obj,298) : PlaySound2(Step2SFX(Rand(3,5)), mainPlayer\cam, n\Collider, 15.0)
                         ElseIf n\Frame <= 297
                             PointEntity n\Collider, Collider
                             
                             AnimateNPC(n, 200, 297, 0.5, False)
-                            If n\Frame=297 Then n\Frame=298 : PlaySound2(Step2SFX(Rand(3,5)), Camera, n\Collider, 15.0)
+                            If n\Frame=297 Then n\Frame=298 : PlaySound2(Step2SFX(Rand(3,5)), mainPlayer\cam, n\Collider, 15.0)
                             
                             ;Animate2(n\obj, AnimTime(n\obj), 200, 297, 0.5,False)
-                            ;If AnimTime(n\obj)=297 Then SetAnimTime(n\obj,298) : PlaySound2(Step2SFX(Rand(3,5)), Camera, n\Collider, 15.0)
+                            ;If AnimTime(n\obj)=297 Then SetAnimTime(n\obj,298) : PlaySound2(Step2SFX(Rand(3,5)), mainPlayer\cam, n\Collider, 15.0)
                         Else
-                            angle = CurveAngle(GetAngle(EntityX(n\Collider),EntityZ(n\Collider),EntityX(Collider),EntityZ(Collider)),EntityYaw(n\Collider)+90,20.0)
+                            angle = CurveAngle(GetAngle(EntityX(n\Collider),EntityZ(n\Collider),EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider)),EntityYaw(n\Collider)+90,20.0)
                             
                             RotateEntity n\Collider, 0, angle-90, 0, True
                             
@@ -152,7 +152,7 @@ Function UpdateNPCtype860(n.NPCs)
                 prevFrame = n\Frame
                 
                 If EntityY(n\Collider)<= -100 Then
-                    TFormPoint(EntityX(Collider),EntityY(Collider),EntityZ(Collider),0,PlayerRoom\obj)
+                    TFormPoint(EntityX(mainPlayer\collider),EntityY(mainPlayer\collider),EntityZ(mainPlayer\collider),0,mainPlayer\currRoom\obj)
                     x = Floor((TFormedX()*RoomScale+6.0)/12.0)
                     z = Floor((TFormedZ()*RoomScale+6.0)/12.0)
                     
@@ -160,14 +160,14 @@ Function UpdateNPCtype860(n.NPCs)
                         For z2 = Max(z-1,0) To Min(z+1,gridsize)
                             If fr\grid[(z2*gridsize)+x2]>0 And (x2<>x Or z2<>z) And (x2=x Or z2=z) Then
                                 
-                                TFormPoint((x2*12)/RoomScale,0,(z2*12)/RoomScale,PlayerRoom\obj,0)
+                                TFormPoint((x2*12)/RoomScale,0,(z2*12)/RoomScale,mainPlayer\currRoom\obj,0)
                                 
                                 ;PositionEntity n\Collider, TFormedX(), EntityY(fr\Forest_Pivot,True)+0.5, TFormedZ()
                                 PositionEntity n\Collider, TFormedX(), EntityY(fr\Forest_Pivot,True)+1.0, TFormedZ()
                                 DebugLog EntityY(fr\Forest_Pivot,True)
                                 
-                                If EntityInView(n\Collider, Camera) Then
-                                    BlinkTimer=-10
+                                If EntityInView(n\Collider, mainPlayer\cam) Then
+                                    mainPlayer\blinkTimer=-10
                                 Else
                                     x2 = Min(x+1,gridsize)
                                     Exit
@@ -190,10 +190,10 @@ Function UpdateNPCtype860(n.NPCs)
                     
                     If n\State2 = 0 Then
                         If dist<8.0 Then
-                            If EntityInView(n\Collider,Camera) Then
+                            If EntityInView(n\Collider,mainPlayer\cam) Then
                                 PlaySound_Strict LoadTempSound("SFX\SCP\860\Chase"+Rand(1,2)+".ogg")
                                 
-                                PlaySound2(LoadTempSound("SFX\SCP\860\Cancer"+Rand(0,2)+".ogg"), Camera, n\Collider)	
+                                PlaySound2(LoadTempSound("SFX\SCP\860\Cancer"+Rand(0,2)+".ogg"), mainPlayer\cam, n\Collider)	
                                 n\State2 = 1
                             EndIf										
                         EndIf
@@ -207,7 +207,7 @@ Function UpdateNPCtype860(n.NPCs)
                                 If ChannelPlaying (n\SoundChn) Then temp = False
                             EndIf
                             If temp Then
-                                n\SoundChn = PlaySound2(LoadTempSound("SFX\SCP\860\Cancer"+Rand(0,2)+".ogg"), Camera, n\Collider)
+                                n\SoundChn = PlaySound2(LoadTempSound("SFX\SCP\860\Cancer"+Rand(0,2)+".ogg"), mainPlayer\cam, n\Collider)
                             EndIf
                         EndIf
                     Else
@@ -215,7 +215,7 @@ Function UpdateNPCtype860(n.NPCs)
                     EndIf
                     
                     If dist<4.5 Or n\State3 > Rnd(200,250) Then
-                        n\SoundChn = PlaySound2(LoadTempSound("SFX\SCP\860\Cancer"+Rand(3,5)+".ogg"), Camera, n\Collider)
+                        n\SoundChn = PlaySound2(LoadTempSound("SFX\SCP\860\Cancer"+Rand(3,5)+".ogg"), mainPlayer\cam, n\Collider)
                         n\State = 3
                     EndIf
                     
@@ -228,7 +228,7 @@ Function UpdateNPCtype860(n.NPCs)
                 
                 ;535, 568
                 If (prevFrame < 533 And n\Frame=>533) Or (prevFrame > 568 And n\Frame<2) Then
-                    PlaySound2(Step2SFX(Rand(3,5)), Camera, n\Collider, 15.0, 0.6)
+                    PlaySound2(Step2SFX(Rand(3,5)), mainPlayer\cam, n\Collider, 15.0, 0.6)
                 EndIf
                 
             Case 3 ;runs towards the player and attacks
@@ -251,7 +251,7 @@ Function UpdateNPCtype860(n.NPCs)
                     ;Animate2(n\obj, AnimTime(n\obj), 298, 316, n\CurrSpeed*10)
                     
                     If (prevFrame < 307 And n\Frame=>307) Then
-                        PlaySound2(Step2SFX(Rand(3,5)), Camera, n\Collider, 10.0)
+                        PlaySound2(Step2SFX(Rand(3,5)), mainPlayer\cam, n\Collider, 10.0)
                     EndIf
                 Else
                     ;461, 476
@@ -292,7 +292,7 @@ Function UpdateNPCtype860(n.NPCs)
                 ;render distance is set to 8.5 inside the forest,
                 ;so we need to cheat a bit to make the eyes visible if they're further than that
                 pvt = CreatePivot()
-                PositionEntity pvt, EntityX(Camera),EntityY(Camera),EntityZ(Camera)
+                PositionEntity pvt, EntityX(mainPlayer\cam),EntityY(mainPlayer\cam),EntityZ(mainPlayer\cam)
                 PointEntity pvt, n\obj2
                 MoveEntity pvt, 0,0,8.0
                 PositionEntity n\obj2, EntityX(pvt),EntityY(pvt),EntityZ(pvt)
