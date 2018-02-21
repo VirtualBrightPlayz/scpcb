@@ -4933,6 +4933,7 @@ Function UpdateEvents()
 						If e\room\RoomDoors[0]\open = True Then 
 							If e\room\RoomDoors[0]\openstate = 180 Then 
 								e\EventState = 1
+								;TODO: load temp sound.
 								PlaySound_Strict HorrorSFX(5)
 							EndIf
 						Else

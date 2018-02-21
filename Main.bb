@@ -258,7 +258,7 @@ Global TeslaPowerUpSFX = LoadSound_Strict("SFX\Room\Tesla\PowerUp.ogg")
 Global MagnetUpSFX% = LoadSound_Strict("SFX\Room\106Chamber\MagnetUp.ogg"), MagnetDownSFX = LoadSound_Strict("SFX\Room\106Chamber\MagnetDown.ogg")
 Global FemurBreakerSFX%
 
-Dim DecaySFX%(5)
+Dim DecaySFX.MarkedForRemoval(5)
 For i = 0 To 3
 	DecaySFX(i) = LoadSound_Strict("SFX\SCP\106\Decay" + i + ".ogg")
 Next
@@ -313,7 +313,7 @@ AmbientSFXAmount(5)=10
 Dim AmbientSFX%(6, 15)
 
 ;TODO: Move to NPCData106.
-Dim OldManSFX%(6)
+Dim OldManSFX.MarkedForRemoval(6)
 For i = 0 To 2
 	OldManSFX(i) = LoadSound_Strict("SFX\SCP\106\Corrosion" + (i + 1) + ".ogg")
 Next
