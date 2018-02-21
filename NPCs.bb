@@ -344,10 +344,7 @@ Function UpdateNPCs()
 				UpdateNPCtype1499(n)
 		End Select
 		
-		If n\IsDead
-			EntityType n\Collider,HIT_DEAD
-		EndIf
-		
+		;TODO: Rework.
 		Local gravityDist = Distance(EntityX(Collider),EntityZ(Collider),EntityX(n\Collider),EntityZ(n\Collider))
 		
 		If gravityDist<HideDistance*0.7 Or n\NPCtype = NPCtype1499 Then
