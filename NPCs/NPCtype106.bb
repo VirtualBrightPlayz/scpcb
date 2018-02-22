@@ -46,14 +46,14 @@ Function InitializeNPCtype106(n.NPCs)
 End Function
 
 Function UpdateNPCtype106(n.NPCs)
-    Local dist# = EntityDistance(n\collider, collider)
+    Local dist# = EntityDistance(n\collider, mainPlayer\collider)
     Local dist2#
     Local visible%
     Local prevFrame#
 
     Select n\state
         Case STATE106_RISE
-            If (PlayerRoom\RoomTemplate\Name$ = "dimension1499") Then
+            If (mainPlayer\currRoom\RoomTemplate\Name$ = "dimension1499") Then
                 Return
             EndIf
 
@@ -62,17 +62,17 @@ Function UpdateNPCtype106(n.NPCs)
             ;Check if 106's timer is below 0, if not decrease it.
             If (n\timer >= 0) Then
                 n\CurrSpeed = 0
-                MoveEntity(n\Collider, 0, ((EntityY(Collider) - 30) - EntityY(n\Collider)) / 200.0, 0)
+                MoveEntity(n\Collider, 0, ((EntityY(mainPlayer\collider) - 30) - EntityY(n\Collider)) / 200.0, 0)
                 n\Frame = 110
             ;Otherwise begin spawning 106.
-            ElseIf n\time >= -10
-                If EntityY(n\Collider) < EntityY(Collider) - 20.0 - 0.55 Then
-                    If Not PlayerRoom\RoomTemplate\DisableDecals Then
-                        de.Decals = CreateDecal(0, EntityX(Collider), 0.01, EntityZ(Collider), 90, Rand(360), 0)
+            ElseIf n\timer >= -10
+                If EntityY(n\Collider) < EntityY(mainPlayer\collider) - 20.0 - 0.55 Then
+                    If Not mainPlayer\currRoom\RoomTemplate\DisableDecals Then
+                        de.Decals = CreateDecal(0, EntityX(mainPlayer\collider), 0.01, EntityZ(mainPlayer\collider), 90, Rand(360), 0)
                         de\Size = 0.05 : de\SizeChange = 0.001 : EntityAlpha(de\obj, 0.8) : UpdateDecals
                     EndIf
                     
-                    n\PrevY = EntityY(Collider)
+                    n\PrevY = EntityY(mainPlayer\collider)
                     
                     SetAnimTime n\obj, 110
                     
@@ -80,16 +80,16 @@ Function UpdateNPCtype106(n.NPCs)
                 End If
                 
                 ;Corrosion.
-                If Rand(500) = 1 Then PlaySound2(n\sounds[Rand(3, 5)], Camera, n\Collider)
+                If Rand(500) = 1 Then PlaySound2(n\sounds[Rand(3, 5)], mainPlayer\cam, n\Collider)
                 ;Breathing
-                n\soundChn = LoopSound2(n\sounds[1], n\SoundChn, Camera, n\Collider, 8.0, 0.8)
+                n\soundChn = LoopSound2(n\sounds[1], n\SoundChn, mainPlayer\cam, n\Collider, 8.0, 0.8)
                 
                 ;Rising.
                 If n\timer >= - 10 Then
                     ShouldPlay = 66
                     If (n\Frame < 259) Then
                         PositionEntity n\Collider, EntityX(n\Collider), n\PrevY-0.15, EntityZ(n\Collider)
-                        PointEntity n\obj, Collider
+                        PointEntity n\obj, mainPlayer\collider
                         RotateEntity (n\Collider, 0, CurveValue(EntityYaw(n\obj),EntityYaw(n\Collider),100.0), 0, True)
                         
                         AnimateNPC(n, 110, 259, 0.15, False)
@@ -103,27 +103,28 @@ Function UpdateNPCtype106(n.NPCs)
 
         Case STATE106_ATTACK
             ;TODO: Set music to play 106 theme?
-            If (dist < 8.0 And Not NoTarget) Then
-                visible = EntityVisible(n\collider, collider)
+            If (dist < 8.0 And (Not NoTarget)) Then
+                visible = EntityVisible(n\collider, mainPlayer\collider)
             EndIf
 
             ;Show glowing eyes.
-            If dist < CameraFogFar*LightVolume*0.6 Then
-                HideEntity n\obj2
-            Else
-                ShowEntity n\obj2
-                EntityAlpha (n\obj2, Min(dist-CameraFogFar*LightVolume*0.6,1.0))
-            EndIf
+            ;TODO: fix
+			;If dist < CameraFogFar*LightVolume*0.6 Then
+            ;    HideEntity n\obj2
+            ;Else
+            ;    ShowEntity n\obj2
+            ;    EntityAlpha (n\obj2, Min(dist-CameraFogFar*LightVolume*0.6,1.0))
+            ;EndIf
 
             If (visible) Then
-                If EntityInView(n\collider, Camera) Then
+                If EntityInView(n\collider, mainPlayer\cam) Then
                     GiveAchievement(Achv106)
                     
-                    BlurVolume = Max(Max(Min((4.0 - dist) / 6.0, 0.9), 0.1), BlurVolume)
-                    CurrCameraZoom = Max(CurrCameraZoom, (Sin(Float(MilliSecs2())/20.0)+1.0) * 20.0 * Max((4.0-dist)/4.0,0))
+                    mainPlayer\blurTimer = Max(Max(Min((4.0 - dist) / 6.0, 0.9), 0.1), mainPlayer\blurTimer)
+                    mainPlayer\camZoom = Max(mainPlayer\camZoom, (Sin(Float(MilliSecs2())/20.0)+1.0) * 20.0 * Max((4.0-dist)/4.0,0))
                     
                     If (MilliSecs2() - n\lastSeen > 60000) Then 
-                        CurrCameraZoom = 40
+                        mainPlayer\camZoom = 40
                         PlaySound_Strict(n\sounds[2])
                         n\lastSeen = MilliSecs2()
                     EndIf
@@ -140,14 +141,14 @@ Function UpdateNPCtype106(n.NPCs)
                 
                 ;Footstep sounds.
                 If (prevFrame =< 286 And n\frame > 286) Then
-                    PlaySound2(Step2SFX(Rand(0,2)),Camera, n\Collider, 6.0, Rnd(0.8,1.0))	
+                    PlaySound2(Step2SFX(Rand(0,2)),mainPlayer\cam, n\Collider, 6.0, Rnd(0.8,1.0))	
                 ElseIf (prevFrame=<311 And n\frame > 311.0)
-                    PlaySound2(Step2SFX(Rand(0,2)),Camera, n\Collider, 6.0, Rnd(0.8,1.0))
+                    PlaySound2(Step2SFX(Rand(0,2)),mainPlayer\cam, n\Collider, 6.0, Rnd(0.8,1.0))
                 EndIf
 
                 If (dist > 25.0 Or Visible Or n\pathStatus = 2) Then
                     
-                    PointEntity(n\obj, Collider)
+                    PointEntity(n\obj, mainPlayer\collider)
                     RotateEntity(n\collider, 0, CurveAngle(EntityYaw(n\obj), EntityYaw(n\collider), 10.0), 0)
                     
                     n\pathTimer = Max(n\pathTimer - FPSfactor, 0)
@@ -158,7 +159,7 @@ Function UpdateNPCtype106(n.NPCs)
                 Else 
                     ;Pathfind to the player.
                     If n\PathTimer <= 0 Then
-                        n\PathStatus = FindPath (n, EntityX(Collider,True), EntityY(Collider,True), EntityZ(Collider,True))
+                        n\PathStatus = FindPath (n, EntityX(mainPlayer\collider,True), EntityY(mainPlayer\collider,True), EntityZ(mainPlayer\collider,True))
                         n\PathTimer = 70*10
                         n\CurrSpeed = 0
                     Else
@@ -189,7 +190,7 @@ Function UpdateNPCtype106(n.NPCs)
                         EndIf
                     EndIf
                 EndIf
-            ElseIf
+            Else
                 ;Caught.
                 If dist > 0.5 Then 
                     n\currSpeed = CurveValue(n\speed * 2.5, n\currSpeed, 10.0)
@@ -198,20 +199,20 @@ Function UpdateNPCtype106(n.NPCs)
                 EndIf
                 AnimateNPC(n, 105, 110, 0.15, False)
                 
-                If KillTimer >= 0 And FallTimer >= 0 Then
-                    PointEntity(n\obj, Collider)
+                If (Not mainPlayer\dead) And mainPlayer\fallTimer >= 0 Then
+                    PointEntity(n\obj, mainPlayer\collider)
                     RotateEntity(n\collider, 0, CurveAngle(EntityYaw(n\obj), EntityYaw(n\collider), 10.0), 0)									
                     
                     ;TODO: Teleport to pocket dimension.
-                    If Ceil(n\Frame) = 110 And (Not GodMode) Then
+                    If Ceil(n\Frame) = 110 And (Not mainPlayer\godMode) Then
                         PlaySound_Strict(DamageSFX(1))
                         PlaySound_Strict(n\sounds[7])
 
                         PlaySound_Strict(n\sounds[6])
-                        FallTimer = Min(-1, FallTimer)
-                        PositionEntity(Head, EntityX(Camera, True), EntityY(Camera, True), EntityZ(Camera, True), True)
-                        ResetEntity(Head)
-                        RotateEntity(Head, 0, EntityYaw(Camera) + Rand(-45, 45), 0)
+                        mainPlayer\fallTimer = Min(-1, mainPlayer\fallTimer)
+                        PositionEntity(mainPlayer\head, EntityX(mainPlayer\cam, True), EntityY(mainPlayer\cam, True), EntityZ(mainPlayer\cam, True), True)
+                        ResetEntity(mainPlayer\head)
+                        RotateEntity(mainPlayer\head, 0, EntityYaw(mainPlayer\cam) + Rand(-45, 45), 0)
                     EndIf
                 EndIf
             EndIf
@@ -220,7 +221,7 @@ Function UpdateNPCtype106(n.NPCs)
             
             If (dist > 48) Then 
                 ;Reset state.
-                If (Not EntityInView(n\obj,Camera) And Rand(5)=1) Then
+                If (Not EntityInView(n\obj,mainPlayer\cam) And Rand(5)=1) Then
                     n\timer = Rand(22000, 27000)
                     n\state = STATE106_RISE
                 ;Flank.

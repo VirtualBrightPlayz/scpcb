@@ -131,7 +131,7 @@ Function UpdateNPCtype1499(n.NPCs)
                     ShouldPlay = 19
                 EndIf
                 
-                PointEntity n\obj,Collider
+                PointEntity n\obj,mainPlayer\collider
                 RotateEntity n\Collider,0,CurveAngle(EntityYaw(n\obj),EntityYaw(n\Collider),20.0),0
                 
                 dist = EntityDistance(n\Collider,mainPlayer\collider)
@@ -175,9 +175,9 @@ Function UpdateNPCtype1499(n.NPCs)
                         If dist > 0.85 Or Abs(DeltaYaw(n\Collider,mainPlayer\collider))>60.0
                             ;Miss
                         Else
-                            Injuries = Injuries + Rnd(0.75,1.5)
+                            mainPlayer\injuries = mainPlayer\injuries + Rnd(0.75,1.5)
                             PlaySound2(LoadTempSound("SFX\General\Slash"+Rand(1,2)+".ogg"), mainPlayer\cam, n\Collider)
-                            If Injuries > 10.0
+                            If mainPlayer\injuries > 10.0
                                 Kill()
                                 If mainPlayer\currRoom\RoomTemplate\Name$ = "dimension1499"
                                     DeathMSG = "All personnel situated within Evacuation Shelter LC-2 during the breach have been administered "
@@ -200,9 +200,9 @@ Function UpdateNPCtype1499(n.NPCs)
                         If dist > 0.85 Or Abs(DeltaYaw(n\Collider,mainPlayer\collider))>60.0
                             ;Miss
                         Else
-                            Injuries = Injuries + Rnd(0.75,1.5)
+                            mainPlayer\injuries = mainPlayer\injuries + Rnd(0.75,1.5)
                             PlaySound2(LoadTempSound("SFX\General\Slash"+Rand(1,2)+".ogg"), mainPlayer\cam, n\Collider)
-                            If Injuries > 10.0
+                            If mainPlayer\injuries > 10.0
                                 Kill()
                                 If mainPlayer\currRoom\RoomTemplate\Name$ = "dimension1499"
                                     DeathMSG = "All personnel situated within Evacuation Shelter LC-2 during the breach have been administered "
@@ -225,7 +225,7 @@ Function UpdateNPCtype1499(n.NPCs)
                 n\CurrSpeed = CurveValue(0.0,n\CurrSpeed,5.0)
                 AnimateNPC(n,296,317,0.2)
                 
-                PointEntity n\obj,Collider
+                PointEntity n\obj,mainPlayer\collider
                 RotateEntity n\Collider,0,CurveAngle(EntityYaw(n\obj),EntityYaw(n\Collider),20.0),0
                 
                 If dist > 0.85

@@ -12,7 +12,7 @@ Function InitializeNPCtype049(n.NPCs)
     
     n\Sound = LoadSound_Strict("SFX\Horror\Horror12.ogg")
     
-    If HorrorSFX(13)=0 Then HorrorSFX(13)=LoadSound_Strict("SFX\Horror\Horror13.ogg")
+    ;If HorrorSFX(13)=0 Then HorrorSFX(13)=LoadSound_Strict("SFX\Horror\Horror13.ogg") ;TODO: fix
     
     n\CanUseElevator = True
 End Function
@@ -77,23 +77,23 @@ Function UpdateNPCtype049(n.NPCs)
                         n\PathTimer# = 0.0
                         n\PathLocation = 0
                         If PlayerSeeAble%=True Then n\State2 = 70*2
-                        PointEntity n\obj,Collider
+                        PointEntity n\obj,mainPlayer\collider
                         RotateEntity n\Collider,0,CurveAngle(EntityYaw(n\obj),EntityYaw(n\Collider),10.0),0
                         If dist < 0.5 Then
-                            If Wearing714 Then
-                                BlurTimer = BlurTimer+FPSfactor*2.5
-                                If BlurTimer>250 And BlurTimer-FPSfactor*2.5 <= 250 And n\PrevState<>3 Then
+                            If IsPlayerWearing(mainPlayer,"scp714",WORNITEM_HAND_SLOT) Then
+                                mainPlayer\blurTimer = mainPlayer\blurTimer+FPSfactor*2.5
+                                If mainPlayer\blurTimer>250 And mainPlayer\blurTimer-FPSfactor*2.5 <= 250 And n\PrevState<>3 Then
                                     If n\SoundChn2 <> 0 Then StopChannel(n\SoundChn2)
                                     n\SoundChn2 = PlaySound_Strict(LoadTempSound("SFX\SCP\049\714Equipped.ogg"))
                                     n\PrevState=3
-                                ElseIf BlurTimer => 500
-                                    Wearing714=False
+                                ElseIf mainPlayer\blurTimer => 500
+                                    mainPlayer\wornItems[WORNITEM_HAND_SLOT] = Null
                                 EndIf
                             Else
-                                CurrCameraZoom = 20.0
-                                BlurTimer = 500.0
+                                mainPlayer\camZoom = 20.0
+                                mainPlayer\blurTimer = 500.0
                                 
-                                If (Not GodMode) Then
+                                If (Not mainPlayer\godMode) Then
                                     If mainPlayer\currRoom\RoomTemplate\Name$ = "room049"
                                         DeathMSG = "Three (3) active instances of SCP-049-2 discovered in the tunnel outside SCP-049's containment chamber. Terminated by Nine-Tailed Fox."
                                         For e.events = Each Events
@@ -103,7 +103,7 @@ Function UpdateNPCtype049(n.NPCs)
                                         DeathMSG = "An active instance of SCP-049-2 was discovered in [REDACTED]. Terminated by Nine-Tailed Fox."
                                         Kill()
                                     EndIf
-                                    PlaySound_Strict HorrorSFX(13)
+                                    ;PlaySound_Strict HorrorSFX(13) ;TODO: fix
                                     n\State = 3
                                 EndIf										
                             EndIf

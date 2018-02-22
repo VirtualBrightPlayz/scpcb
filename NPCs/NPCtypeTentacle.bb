@@ -27,8 +27,8 @@ Function UpdateNPCtypeTentacle(n.NPCs)
             Case 0 ;spawn
                 
                 If n\Frame>283 Then
-                    HeartBeatVolume = Max(CurveValue(1.0, HeartBeatVolume, 50),HeartBeatVolume)
-                    HeartBeatRate = Max(CurveValue(130, HeartBeatRate, 100),HeartBeatRate)
+                    mainPlayer\heartbeatIntensity = Max(CurveValue(1.0, mainPlayer\heartbeatIntensity, 50),mainPlayer\heartbeatIntensity)
+                    ;HeartBeatRate = Max(CurveValue(130, HeartBeatRate, 100),HeartBeatRate)
                     
                     PointEntity n\obj, mainPlayer\collider
                     RotateEntity n\Collider, 0, CurveAngle(EntityYaw(n\obj),EntityYaw(n\Collider),25.0), 0
@@ -84,15 +84,15 @@ Function UpdateNPCtypeTentacle(n.NPCs)
                     If n\Frame>=5 And n\Frame<6 Then
                         If dist < 1.8 Then
                             If Abs(DeltaYaw(n\Collider, mainPlayer\collider))<20 Then 
-                                If WearingHazmat Then
-                                    Injuries = Injuries+Rnd(0.5)
+                                If IsPlayerWearing(mainPlayer,"hazmatsuit",WORNITEM_BODY_SLOT) Then
+                                    mainPlayer\injuries = mainPlayer\injuries+Rnd(0.5)
                                     PlaySound_Strict(LoadTempSound("SFX\General\BodyFall.ogg"))
                                 Else
-                                    BlurTimer = 100
-                                    Injuries = Injuries+Rnd(1.0,1.5)
+                                    mainPlayer\blurTimer = 100
+                                    mainPlayer\injuries = mainPlayer\injuries+Rnd(1.0,1.5)
                                     PlaySound_Strict DamageSFX(Rand(3,4))
                                     
-                                    If Injuries > 3.0 Then 
+                                    If mainPlayer\injuries > 3.0 Then 
                                         DeathMSG = Chr(34)+"We will need more than the regular cleaning team to care of this. "
                                         DeathMSG = DeathMSG + "Two large and highly active tentacle-like appendages seem "
                                         DeathMSG = DeathMSG + "to have formed inside the chamber. Their level of aggression is "

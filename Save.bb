@@ -3,7 +3,7 @@
 Function SaveGame(file$)
 	If Not Playable Then Return ;don't save if the player can't move at all
 	
-	If DropSpeed#>0.02*FPSfactor Or DropSpeed#<-0.02*FPSfactor Then Return
+	If mainPlayer\dropSpeed#>0.02*FPSfactor Or mainPlayer\dropSpeed#<-0.02*FPSfactor Then Return
 	
 	GameSaved = True
 	
@@ -380,7 +380,7 @@ Function SaveGame(file$)
 		WriteFloat f, it\state
 		WriteByte f, it\Picked
 		
-		If SelectedItem = it Then WriteByte f, 1 Else WriteByte f, 0
+		If mainPlayer\selectedItem = it Then WriteByte f, 1 Else WriteByte f, 0
 		Local ItemFound% = False
 		For i = 0 To MaxItemAmount - 1
 			If Inventory(i) = it Then ItemFound = True : Exit
@@ -442,7 +442,7 @@ End Function
 Function LoadGame(file$)
 	DebugLog "---------------------------------------------------------------------------"
 	
-	DropSpeed=0.0
+	mainPlayer\dropSpeed=0.0
 	
 	DebugHUD = False
 	
@@ -483,18 +483,18 @@ Function LoadGame(file$)
 	BlinkEffectTimer = ReadFloat(f)	
 	
 	DeathTimer = ReadInt(f)	
-	BlurTimer = ReadInt(f)	
+	mainPlayer\blurTimer = ReadInt(f)	
 	
 	Crouch = ReadByte(f)
 	
-	Stamina = ReadFloat(f)
+	mainPlayer\stamina = ReadFloat(f)
 	StaminaEffect = ReadFloat(f)	
 	StaminaEffectTimer = ReadFloat(f)	
 	
 	EyeStuck	= ReadFloat(f)
 	EyeIrritation= ReadFloat(f)
 	
-	Injuries = ReadFloat(f)
+	mainPlayer\injuries = ReadFloat(f)
 	Bloodloss = ReadFloat(f)
 	
 	PrevInjuries = ReadFloat(f)
@@ -961,7 +961,7 @@ Function LoadGame(file$)
 		If it\Picked Then HideEntity(it\collider)
 		
 		nt = ReadByte(f)
-		If nt = True Then SelectedItem = it
+		If nt = True Then mainPlayer\selectedItem = it
 		
 		nt = ReadByte(f)
 		If nt < 66 Then Inventory(nt) = it
@@ -1101,17 +1101,17 @@ Function LoadGameQuick(file$)
 	strtemp = ReadString(f)
 	strtemp = ReadString(f)
 	
-	DropSpeed = -0.1
+	mainPlayer\dropSpeed = -0.1
 	HeadDropSpeed = 0.0
 	Shake = 0
-	CurrSpeed = 0
+	mainPlayer\moveSpeed = 0
 	
 	HeartBeatVolume = 0
 	
 	mainPlayer\camShake = 0
 	Shake = 0
 	LightFlash = 0
-	BlurTimer = 0
+	mainPlayer\blurTimer = 0
 	
 	KillTimer = 0
 	FallTimer = 0
@@ -1154,18 +1154,18 @@ Function LoadGameQuick(file$)
 	BlinkEffectTimer = ReadFloat(f)	
 	
 	DeathTimer = ReadInt(f)	
-	BlurTimer = ReadInt(f)	
+	mainPlayer\blurTimer = ReadInt(f)	
 	
 	Crouch = ReadByte(f)
 	
-	Stamina = ReadFloat(f)
+	mainPlayer\stamina = ReadFloat(f)
 	StaminaEffect = ReadFloat(f)	
 	StaminaEffectTimer = ReadFloat(f)	
 	
 	EyeStuck	= ReadFloat(f)
 	EyeIrritation= ReadFloat(f)
 	
-	Injuries = ReadFloat(f)
+	mainPlayer\injuries = ReadFloat(f)
 	Bloodloss = ReadFloat(f)
 	
 	PrevInjuries = ReadFloat(f)
@@ -1580,7 +1580,7 @@ Function LoadGameQuick(file$)
 		If it\Picked Then HideEntity(it\collider)
 		
 		nt = ReadByte(f)
-		If nt = True Then SelectedItem = it
+		If nt = True Then mainPlayer\selectedItem = it
 		
 		nt = ReadByte(f)
 		If nt < 66 Then Inventory(nt) = it

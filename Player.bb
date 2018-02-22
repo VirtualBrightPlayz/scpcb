@@ -86,16 +86,26 @@ Type Player
 	
 	Field lightFlash#
 	Field blurTimer#
+	
+	Field loudness#
 	;------
 	
+	;items
 	Field inventory.Inventory
 	
 	Field wornItems.Items[WORNITEM_SLOT_COUNT]
+	;------
 	
+	;sound channels
+	Field breathChn%
+	;------
+	
+	;other states
 	Field currRoom.Rooms
 	
 	Field godMode%
 	Field noclip%
+	;------
 End Type
 Global mainPlayer.Player = Null
 
@@ -258,6 +268,8 @@ Global Stamina.MarkedForRemoval, StaminaEffect.MarkedForRemoval, StaminaEffectTi
 
 Global GodMode.MarkedForRemoval, NoClip.MarkedForRemoval, NoClipSpeed.MarkedForRemoval
 
+Global PlayerSoundVolume.MarkedForRemoval
+
 ;TODO: Murder.
 Global SCP1025state.MarkedForRemoval[6]
 
@@ -271,7 +283,7 @@ Global BlurVolume.MarkedForRemoval, BlurTimer.MarkedForRemoval
 Global PlayTime.MarkedForRemoval ;TODO: do we even need this?
 
 ;TODO: this is all bad
-Global PlayerSoundVolume.MarkedForRemoval
+
 
 Global InfiniteStamina.MarkedForRemoval
 
@@ -286,89 +298,89 @@ Global StoredCameraFogFar.MarkedForRemoval
 Function MovePlayer()
 	Local Sprint# = 1.0, Speed# = 0.018, i%, angle#
 	
-	If SuperMan Then
+	If mainPlayer\superMan>0.0 Then
 		Speed = Speed * 3
 		
-		SuperManTimer=SuperManTimer+FPSfactor
+		mainPlayer\superMan=mainPlayer\superMan+FPSfactor
 		
-		mainPlayer\camShake = Sin(SuperManTimer / 5.0) * (SuperManTimer / 1500.0)
+		mainPlayer\camShake = Sin(mainPlayer\superMan / 5.0) * (mainPlayer\superMan / 1500.0)
 		
-		If SuperManTimer > 70 * 50 Then
+		If mainPlayer\superMan > 70 * 50 Then
 			DeathMSG = "A Class D jumpsuit found in [DATA REDACTED]. Upon further examination, the jumpsuit was found to be filled with 12.5 kilograms of blue ash-like substance. "
 			DeathMSG = DeathMSG + "Chemical analysis of the substance remains non-conclusive. Most likely related to SCP-914."
 			Kill()
-			ShowEntity Fog
+			ShowEntity mainPlayer\overlays[OVERLAY_FOG];Fog
 		Else
-			BlurTimer = 500
-			HideEntity Fog
+			mainPlayer\blurTimer = 500
+			HideEntity mainPlayer\overlays[OVERLAY_FOG]
 		EndIf
 	End If
 	
-	If DeathTimer > 0 Then
-		DeathTimer=DeathTimer-FPSfactor
-		If DeathTimer < 1 Then DeathTimer = -1.0
-	ElseIf DeathTimer < 0 
-		Kill()
-	EndIf
+	;If DeathTimer > 0 Then
+	;	DeathTimer=DeathTimer-FPSfactor
+	;	If DeathTimer < 1 Then DeathTimer = -1.0
+	;ElseIf DeathTimer < 0 
+	;	Kill()
+	;EndIf
 	
-	Stamina = Min(Stamina + 0.15 * FPSfactor, 100.0)
+	mainPlayer\stamina = Min(mainPlayer\stamina + 0.15 * FPSfactor, 100.0)
 	
-	If StaminaEffectTimer > 0 Then
-		StaminaEffectTimer = StaminaEffectTimer - (FPSfactor/70)
+	If mainPlayer\staminaEffect > 1 Then
+		mainPlayer\staminaEffect = mainPlayer\staminaEffect - (FPSfactor/70)
 	Else
-		If StaminaEffect <> 1.0 Then StaminaEffect = 1.0
-		StaminaEffect = CurveValue(1.0, StaminaEffect, 50)
+		If mainPlayer\staminaEffect <> 1.0 Then mainPlayer\staminaEffect = 1.0
+		mainPlayer\staminaEffect = CurveValue(1.0, mainPlayer\staminaEffect, 50)
 	EndIf
 	
-	If mainPlayer\currRoom\RoomTemplate\Name<>"pocketdimension" Then 
-		If KeyDown(keyBinds\sprint) Then
-			If Stamina < 5 Then
-				If ChannelPlaying(BreathCHN)=False Then BreathCHN = PlaySound_Strict(BreathSFX((WearingGasMask>0), 0))
-			ElseIf Stamina < 50
-				If BreathCHN=0 Then
-					BreathCHN = PlaySound_Strict(BreathSFX((WearingGasMask>0), Rand(1,3)))
-					ChannelVolume BreathCHN, Min((70.0-Stamina)/70.0,1.0)*userOptions\soundVolume
-				Else
-					If ChannelPlaying(BreathCHN)=False Then
-						BreathCHN = PlaySound_Strict(BreathSFX((WearingGasMask>0), Rand(1,3)))
-						ChannelVolume BreathCHN, Min((70.0-Stamina)/70.0,1.0)*userOptions\soundVolume			
-					EndIf
-				EndIf
-			EndIf
-		EndIf
-	EndIf
+	;If mainPlayer\currRoom\RoomTemplate\Name<>"pocketdimension" Then 
+	;	If KeyDown(keyBinds\sprint) Then
+	;		If mainPlayer\stamina < 5 Then
+	;			If ChannelPlaying(mainPlayer\breathChn)=False Then mainPlayer\breathChn = PlaySound_Strict(BreathSFX((WearingGasMask>0), 0))
+	;		ElseIf mainPlayer\stamina < 50
+	;			If mainPlayer\breathChn=0 Then
+	;				mainPlayer\breathChn = PlaySound_Strict(BreathSFX((WearingGasMask>0), Rand(1,3)))
+	;				ChannelVolume mainPlayer\breathChn, Min((70.0-mainPlayer\stamina)/70.0,1.0)*userOptions\SoundVolume
+	;			Else
+	;				If ChannelPlaying(mainPlayer\breathChn)=False Then
+	;					mainPlayer\breathChn = PlaySound_Strict(BreathSFX((WearingGasMask>0), Rand(1,3)))
+	;					ChannelVolume mainPlayer\breathChn, Min((70.0-mainPlayer\stamina)/70.0,1.0)*userOptions\SoundVolume			
+	;				EndIf
+	;			EndIf
+	;		EndIf
+	;	EndIf
+	;EndIf
 	
-	For i = 0 To MaxItemAmount-1
-		If Inventory(i)<>Null Then
-			If Inventory(i)\itemtemplate\tempname = "finevest" Then Stamina = Min(Stamina, 60)
+	For i%=0 To mainPlayer\inventory\size-1
+		If (mainPlayer\inventory\items[i]<>Null) Then
+			If (mainPlayer\inventory\items[i]\itemtemplate\tempname="finevest") Then mainPlayer\stamina = Min(mainPlayer\stamina,60.0)
 		EndIf
 	Next
 	
-	If Wearing714 Then 
-		Stamina = Min(Stamina, 10)
+	If IsPlayerWearing(mainPlayer,"scp714",WORNITEM_HAND_SLOT) Then 
+		mainPlayer\stamina = Min(mainPlayer\stamina, 10)
 		mainPlayer\sanity895 = Max(-850, mainPlayer\sanity895)
 	EndIf
 	
-	If IsZombie Then Crouch = False
+	;If IsZombie Then Crouch = False
 	
-	If Abs(CrouchState-Crouch)<0.001 Then 
-		CrouchState = Crouch
+	If Abs(mainPlayer\crouchState-mainPlayer\crouching)<0.001 Then 
+		mainPlayer\crouchState = mainPlayer\crouching
 	Else
-		CrouchState = CurveValue(Crouch, CrouchState, 10.0)
+		mainPlayer\crouchState = CurveValue(mainPlayer\crouching, mainPlayer\crouchState, 10.0)
 	EndIf
 	
-	If (Not NoClip) Then 
-		If ((KeyDown(keyBinds\down) Xor KeyDown(keyBinds\up)) Or (KeyDown(keyBinds\right) Xor KeyDown(keyBinds\left)) And Playable) Or ForceMove>0 Then
+	If (Not mainPlayer\noclip) Then 
+		If ((KeyDown(keyBinds\down) Xor KeyDown(keyBinds\up)) Or (KeyDown(keyBinds\rght) Xor KeyDown(keyBinds\lft)) And (Not mainPlayer\disableControls)) Or mainPlayer\forceMove>0 Then
 			
-			If Crouch = 0 And (KeyDown(keyBinds\sprint)) And Stamina > 0.0 And (Not IsZombie) Then
+			If Crouch = 0 And (KeyDown(keyBinds\sprint)) And mainPlayer\stamina > 0.0 And (Not IsZombie) Then
 				Sprint = 2.5
-				Stamina = Stamina - FPSfactor * 0.5 * StaminaEffect
-				If Stamina <= 0 Then Stamina = -20.0
+				mainPlayer\stamina = mainPlayer\stamina - FPSfactor * 0.5 * StaminaEffect
+				If mainPlayer\stamina <= 0 Then mainPlayer\stamina = -20.0
 			End If
 			
 			If mainPlayer\currRoom\RoomTemplate\Name = "pocketdimension" Then 
 				If EntityY(mainPlayer\collider)<2000*RoomScale Or EntityY(mainPlayer\collider)>2608*RoomScale Then
-					Stamina = 0
+					mainPlayer\stamina = 0
 					Speed = 0.015
 					Sprint = 1.0					
 				EndIf
@@ -376,7 +388,7 @@ Function MovePlayer()
 			
 			If ForceMove>0 Then Speed=Speed*ForceMove
 			
-			If SelectedItem<>Null Then
+			If mainPlayer\selectedItem<>Null Then
 				If SelectedItem\itemtemplate\tempname = "firstaid" Or SelectedItem\itemtemplate\tempname = "finefirstaid" Or SelectedItem\itemtemplate\tempname = "firstaid2" Then 
 					Sprint = 0
 				EndIf
@@ -389,11 +401,11 @@ Function MovePlayer()
 					temp = GetStepSound(mainPlayer\collider)
 					
 					If Sprint = 1.0 Then
-						PlayerSoundVolume = Max(4.0,PlayerSoundVolume)
+						mainPlayer\loudness = Max(4.0,mainPlayer\loudness)
 						tempchn% = PlaySound_Strict(StepSFX(temp, 0, Rand(0, 7)))
 						ChannelVolume tempchn, (1.0-(Crouch*0.6))*userOptions\soundVolume
 					Else
-						PlayerSoundVolume = Max(2.5-(Crouch*0.6),PlayerSoundVolume)
+						mainPlayer\loudness = Max(2.5-(Crouch*0.6),mainPlayer\loudness)
 						tempchn% = PlaySound_Strict(StepSFX(temp, 1, Rand(0, 7)))
 						ChannelVolume tempchn, (1.0-(Crouch*0.6))*userOptions\soundVolume
 					End If
@@ -405,11 +417,11 @@ Function MovePlayer()
 					ChannelVolume tempchn, (1.0-(Crouch*0.4))*userOptions\soundVolume
 				ElseIf CurrStepSFX=3
 					If Sprint = 1.0 Then
-						PlayerSoundVolume = Max(4.0,PlayerSoundVolume)
+						mainPlayer\loudness = Max(4.0,mainPlayer\loudness)
 						tempchn% = PlaySound_Strict(StepSFX(0, 0, Rand(0, 7)))
 						ChannelVolume tempchn, (1.0-(Crouch*0.6))*userOptions\soundVolume
 					Else
-						PlayerSoundVolume = Max(2.5-(Crouch*0.6),PlayerSoundVolume)
+						mainPlayer\loudness = Max(2.5-(Crouch*0.6),mainPlayer\loudness)
 						tempchn% = PlaySound_Strict(StepSFX(0, 1, Rand(0, 7)))
 						ChannelVolume tempchn, (1.0-(Crouch*0.6))*userOptions\soundVolume
 					End If
@@ -427,12 +439,12 @@ Function MovePlayer()
 	
 	If KeyHit(keyBinds\crouch) And Playable Then Crouch = (Not Crouch)
 	
-	Local temp2# = (Speed * Sprint) / (1.0+CrouchState)
+	Local temp2# = (Speed * Sprint) / (1.0+mainPlayer\crouchState)
 	
 	If NoClip Then 
 		Shake = 0
-		CurrSpeed = 0
-		CrouchState = 0
+		mainPlayer\moveSpeed = 0
+		mainPlayer\crouchState = 0
 		Crouch = 0
 		
 		RotateEntity mainPlayer\collider, WrapAngle(EntityPitch(mainPlayer\cam)), WrapAngle(EntityYaw(mainPlayer\cam)), 0
@@ -447,8 +459,8 @@ Function MovePlayer()
 		
 		ResetEntity Collider
 	Else
-		temp2# = temp2 / Max((Injuries+3.0)/3.0,1.0)
-		If Injuries > 0.5 Then 
+		temp2# = temp2 / Max((mainPlayer\injuries+3.0)/3.0,1.0)
+		If mainPlayer\injuries > 0.5 Then 
 			temp2 = temp2*Min((Sin(Shake/2)+1.2),1.0)
 		EndIf
 		
@@ -479,12 +491,12 @@ Function MovePlayer()
 		angle = WrapAngle(EntityYaw(mainPlayer\collider,True)+angle+90.0)
 		
 		If temp Then 
-			CurrSpeed = CurveValue(temp2, CurrSpeed, 20.0)
+			mainPlayer\moveSpeed = CurveValue(temp2, mainPlayer\moveSpeed, 20.0)
 		Else
-			CurrSpeed = Max(CurveValue(0.0, CurrSpeed-0.1, 1.0),0.0)
+			mainPlayer\moveSpeed = Max(CurveValue(0.0, mainPlayer\moveSpeed-0.1, 1.0),0.0)
 		EndIf
 		
-		If (Not UnableToMove%) Then TranslateEntity mainPlayer\collider, Cos(angle)*CurrSpeed * FPSfactor, 0, Sin(angle)*CurrSpeed * FPSfactor, True
+		If (Not UnableToMove%) Then TranslateEntity mainPlayer\collider, Cos(angle)*mainPlayer\moveSpeed * FPSfactor, 0, Sin(angle)*mainPlayer\moveSpeed * FPSfactor, True
 		
 		Local CollidedFloor% = False
 		For i = 1 To CountCollisions(mainPlayer\collider)
@@ -492,7 +504,7 @@ Function MovePlayer()
 		Next
 		
 		If CollidedFloor = True Then
-			If DropSpeed# < - 0.07 Then 
+			If mainPlayer\dropSpeed# < - 0.07 Then 
 				If CurrStepSFX=0 Then
 					PlaySound_Strict(StepSFX(GetStepSound(mainPlayer\collider), 0, Rand(0, 7)))					
 				ElseIf CurrStepSFX=1
@@ -502,22 +514,22 @@ Function MovePlayer()
 				ElseIf CurrStepSFX=3
 					PlaySound_Strict(StepSFX(0, 0, Rand(0, 7)))
 				EndIf
-				PlayerSoundVolume = Max(3.0,PlayerSoundVolume)
+				mainPlayer\loudness = Max(3.0,mainPlayer\loudness)
 			EndIf
-			DropSpeed# = 0
+			mainPlayer\dropSpeed# = 0
 		Else
-			DropSpeed# = Min(Max(DropSpeed - 0.006 * FPSfactor, -2.0), 0.0)
+			mainPlayer\dropSpeed# = Min(Max(mainPlayer\dropSpeed - 0.006 * FPSfactor, -2.0), 0.0)
 		EndIf	
 		
-		If (Not UnableToMove%) Then TranslateEntity mainPlayer\collider, 0, DropSpeed * FPSfactor, 0
+		If (Not UnableToMove%) Then TranslateEntity mainPlayer\collider, 0, mainPlayer\dropSpeed * FPSfactor, 0
 	EndIf
 	
 	ForceMove = False
 	
-	If Injuries > 1.0 Then
+	If mainPlayer\injuries > 1.0 Then
 		temp2 = Bloodloss
-		BlurTimer = Max(Max(Sin(MilliSecs2()/100.0)*Bloodloss*30.0,Bloodloss*2*(2.0-CrouchState)),BlurTimer)
-		Bloodloss = Min(Bloodloss + (Min(Injuries,3.5)/300.0)*FPSfactor,100)
+		mainPlayer\blurTimer = Max(Max(Sin(MilliSecs2()/100.0)*Bloodloss*30.0,Bloodloss*2*(2.0-mainPlayer\crouchState)),mainPlayer\blurTimer)
+		Bloodloss = Min(Bloodloss + (Min(mainPlayer\injuries,3.5)/300.0)*FPSfactor,100)
 		
 		If temp2 <= 60 And Bloodloss > 60 Then
 			Msg = "You are feeling faint from the amount of blood you loss."
@@ -528,13 +540,13 @@ Function MovePlayer()
 	UpdateInfect()
 	
 	If Bloodloss > 0 Then
-		If Rnd(200)<Min(Injuries,4.0) Then
+		If Rnd(200)<Min(mainPlayer\injuries,4.0) Then
 			pvt = CreatePivot()
 			PositionEntity pvt, EntityX(mainPlayer\collider)+Rnd(-0.05,0.05),EntityY(mainPlayer\collider)-0.05,EntityZ(mainPlayer\collider)+Rnd(-0.05,0.05)
 			TurnEntity pvt, 90, 0, 0
 			EntityPick(pvt,0.3)
 			de.decals = CreateDecal(Rand(15,16), PickedX(), PickedY()+0.005, PickedZ(), 90, Rand(360), 0)
-			de\size = Rnd(0.03,0.08)*Min(Injuries,3.0) : EntityAlpha(de\obj, 1.0) : ScaleSprite de\obj, de\size, de\size
+			de\size = Rnd(0.03,0.08)*Min(mainPlayer\injuries,3.0) : EntityAlpha(de\obj, 1.0) : ScaleSprite de\obj, de\size, de\size
 			tempchn% = PlaySound_Strict (DripSFX(Rand(0,2)))
 			ChannelVolume tempchn, Rnd(0.0,0.8)*userOptions\soundVolume
 			ChannelPitch tempchn, Rand(20000,30000)
@@ -542,7 +554,7 @@ Function MovePlayer()
 			FreeEntity pvt
 		EndIf
 		
-		CurrCameraZoom = Max(CurrCameraZoom, (Sin(Float(MilliSecs2())/20.0)+1.0)*Bloodloss*0.2)
+		mainPlayer\camZoom = Max(mainPlayer\camZoom, (Sin(Float(MilliSecs2())/20.0)+1.0)*Bloodloss*0.2)
 		
 		If Bloodloss > 60 Then Crouch = True
 		If Bloodloss => 100 Then 
@@ -594,9 +606,9 @@ Function MouseLook()
 	
 	mainPlayer\camShake = Max(mainPlayer\camShake - (FPSfactor / 10), 0)
 	
-	;CameraZoomTemp = CurveValue(CurrCameraZoom,CameraZoomTemp, 5.0)
-	CameraZoom(mainPlayer\cam, Min(1.0+(CurrCameraZoom/400.0),1.1))
-	CurrCameraZoom = Max(CurrCameraZoom - FPSfactor, 0)
+	;CameraZoomTemp = CurveValue(mainPlayer\camZoom,CameraZoomTemp, 5.0)
+	CameraZoom(mainPlayer\cam, Min(1.0+(mainPlayer\camZoom/400.0),1.1))
+	mainPlayer\camZoom = Max(mainPlayer\camZoom - FPSfactor, 0)
 	
 	If KillTimer >= 0 And FallTimer >=0 Then
 		
@@ -614,15 +626,15 @@ Function MouseLook()
 		EndIf
 		;EndIf
 		
-		Local up# = (Sin(Shake) / (20.0+CrouchState*20.0))*0.6;, side# = Cos(Shake / 2.0) / 35.0		
-		Local roll# = Max(Min(Sin(Shake/2)*2.5*Min(Injuries+0.25,3.0),8.0),-8.0)
+		Local up# = (Sin(Shake) / (20.0+mainPlayer\crouchState*20.0))*0.6;, side# = Cos(Shake / 2.0) / 35.0		
+		Local roll# = Max(Min(Sin(Shake/2)*2.5*Min(mainPlayer\injuries+0.25,3.0),8.0),-8.0)
 		
 		;käännetään kameraa sivulle jos pelaaja on vammautunut
-		;RotateEntity mainPlayer\collider, EntityPitch(mainPlayer\collider), EntityYaw(mainPlayer\collider), Max(Min(up*30*Injuries,50),-50)
+		;RotateEntity mainPlayer\collider, EntityPitch(mainPlayer\collider), EntityYaw(mainPlayer\collider), Max(Min(up*30*mainPlayer\injuries,50),-50)
 		PositionEntity mainPlayer\cam, EntityX(mainPlayer\collider), EntityY(mainPlayer\collider), EntityZ(mainPlayer\collider)
 		RotateEntity mainPlayer\cam, 0, EntityYaw(mainPlayer\collider), roll*0.5
 		
-		MoveEntity mainPlayer\cam, side, up + 0.6 + CrouchState * -0.3, 0
+		MoveEntity mainPlayer\cam, side, up + 0.6 + mainPlayer\crouchState * -0.3, 0
 		
 		;RotateEntity mainPlayer\collider, EntityPitch(mainPlayer\collider), EntityYaw(mainPlayer\collider), 0
 		;moveentity player, side, up, 0	
@@ -714,12 +726,12 @@ Function MouseLook()
 	EndIf
 	
 	If WearingGasMask Or WearingHazmat Or Wearing1499 Then
-		If WearingGasMask = 2 Then Stamina = Min(100, Stamina + (100.0-Stamina)*0.01*FPSfactor)
-		If Wearing1499 = 2 Then Stamina = Min(100, Stamina + (100.0-Stamina)*0.01*FPSfactor)
+		If WearingGasMask = 2 Then mainPlayer\stamina = Min(100, mainPlayer\stamina + (100.0-mainPlayer\stamina)*0.01*FPSfactor)
+		If Wearing1499 = 2 Then mainPlayer\stamina = Min(100, mainPlayer\stamina + (100.0-mainPlayer\stamina)*0.01*FPSfactor)
 		If WearingHazmat = 2 Then 
-			Stamina = Min(100, Stamina + (100.0-Stamina)*0.01*FPSfactor)
+			mainPlayer\stamina = Min(100, mainPlayer\stamina + (100.0-mainPlayer\stamina)*0.01*FPSfactor)
 		ElseIf WearingHazmat=1
-			Stamina = Min(60, Stamina)
+			mainPlayer\stamina = Min(60, mainPlayer\stamina)
 		EndIf
 		
 		ShowEntity(GasMaskOverlay)
@@ -815,7 +827,7 @@ Function MouseLook()
 							End If
 						EndIf
 					EndIf
-					Stamina = Stamina - FPSfactor * 0.3
+					mainPlayer\stamina = mainPlayer\stamina - FPSfactor * 0.3
 				Case 1 ;chicken pox
 					If Rand(9000)=1 And Msg="" Then
 						Msg="Your skin is feeling itchy."
@@ -831,33 +843,33 @@ Function MouseLook()
 							End If
 						EndIf
 					EndIf
-					Stamina = Stamina - FPSfactor * 0.1
+					mainPlayer\stamina = mainPlayer\stamina - FPSfactor * 0.1
 				Case 3 ;appendicitis
 					;0.035/sec = 2.1/min
 					SCP1025state[i]=SCP1025state[i]+FPSfactor*0.0005
 					If SCP1025state[i]>20.0 Then
 						If SCP1025state[i]-FPSfactor<=20.0 Then Msg="The pain in your stomach is becoming unbearable."
-						Stamina = Stamina - FPSfactor * 0.3
+						mainPlayer\stamina = mainPlayer\stamina - FPSfactor * 0.3
 					ElseIf SCP1025state[i]>10.0
 						If SCP1025state[i]-FPSfactor<=10.0 Then Msg="Your stomach is aching."
 					EndIf
 				Case 4 ;asthma
-					If Stamina < 35 Then
-						If Rand(Int(140+Stamina*8))=1 Then
+					If mainPlayer\stamina < 35 Then
+						If Rand(Int(140+mainPlayer\stamina*8))=1 Then
 							If CoughCHN = 0 Then
 								CoughCHN = PlaySound_Strict(CoughSFX(Rand(0, 2)))
 							Else
 								If Not ChannelPlaying(CoughCHN) Then CoughCHN = PlaySound_Strict(CoughSFX(Rand(0, 2)))
 							End If
 						EndIf
-						CurrSpeed = CurveValue(0, CurrSpeed, 10+Stamina*15)
+						mainPlayer\moveSpeed = CurveValue(0, mainPlayer\moveSpeed, 10+mainPlayer\stamina*15)
 					EndIf
 				Case 5;cardiac arrest
 					SCP1025state[i]=SCP1025state[i]+FPSfactor*0.35
 					;35/sec
 					If SCP1025state[i]>110 Then
 						HeartBeatRate=0
-						BlurTimer = Max(BlurTimer, 500)
+						mainPlayer\blurTimer = Max(mainPlayer\blurTimer, 500)
 						If SCP1025state[i]>140 Then 
 							DeathMSG = Chr(34)+"He died of a cardiac arrest after reading SCP-1025, that's for sure. Is there such a thing as psychosomatic cardiac arrest, or does SCP-1025 have some "
 							DeathMSG = DeathMSG + "anomalous properties we are not yet aware of?"+Chr(34)
@@ -875,6 +887,70 @@ End Function
 Function IsPlayerWearing(player.Player,templateName$,slot%)
 	If player\wornItems[slot]=Null Then Return False
 	Return (player\wornItems[slot]\itemtemplate\tempname=templateName)
+End Function
+
+Function TakeOffStuff(flag%=0)
+	;FLAG variables:
+		;1: GasMask
+		;2: Hazmat Suit
+		;4: SCP-714
+		;8: SCP-178
+		;16: Kevlar Vest
+		;32: Night Vision Goggles
+		;64: SCP-1499
+	
+	Local numb_flag% = Bin(flag%)
+	
+	If Right(numb_flag%,1) = 1
+		WearingGasMask = False
+		DebugLog "GasMask Off"
+	EndIf
+	If Len(numb_flag%)>1
+		If Mid(numb_flag%,Len(numb_flag%)-1,1) = 1
+			WearingHazmat = False
+			For i = 0 To MaxItemAmount-1
+				If Inventory(i) <> Null Then
+					If Inventory(i)\itemtemplate\name = "Hazmat Suit" Or Inventory(i)\itemtemplate\tempname = "hazmatsuit3"
+						DropItem(Inventory(i))
+						Exit
+					EndIf
+				EndIf
+			Next
+			DebugLog "Hazmat Off"
+		EndIf
+	EndIf
+	If Len(numb_flag%)>2
+		If Mid(numb_flag%,Len(numb_flag%)-2,1) = 1
+			Wearing714 = False
+			DebugLog "SCP-714 Off"
+		EndIf
+	EndIf
+	If Len(numb_flag%)>3
+		If Mid(numb_flag%,Len(numb_flag%)-3,1) = 1
+			Wearing178 = False
+			DebugLog "SCP-178 Off"
+		EndIf
+	EndIf
+	If Len(numb_flag%)>4
+		If Mid(numb_flag%,Len(numb_flag%)-4,1) = 1
+			WearingVest = False
+			DebugLog "Kevlar Off"
+		EndIf
+	EndIf
+	If Len(numb_flag%)>5
+		If Mid(numb_flag%,Len(numb_flag%)-5,1) = 1
+			WearingNightVision = False
+			CameraFogFar = StoredCameraFogFar
+			DebugLog "NVG Off"
+		EndIf
+	EndIf
+	If Len(numb_flag%)>6
+		If Mid(numb_flag%,Len(numb_flag%)-6,1) = 1
+			Wearing1499 = False
+			DebugLog "SCP-1499 Off"
+		EndIf
+	EndIf
+	
 End Function
 
 Function Kill()

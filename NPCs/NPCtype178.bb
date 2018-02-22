@@ -61,7 +61,7 @@ Function UpdateNPCtype178(n.NPCs)
         
     EndIf
     
-    If (Wearing178<>1) And (n\State3=0.0) Then
+    If (Not IsPlayerWearing(mainPlayer,"scp178",WORNITEM_HEAD_SLOT)) And (n\State3=0.0) Then
         If n\State<=0 Then
             ;nothing happens here...
         Else
@@ -125,7 +125,7 @@ Function UpdateNPCtype178(n.NPCs)
         EndIf
         
         ;If Rand(1,15)=1 Then EntityColor n\obj,Rand(50,100),0,Rand(0,50)
-        If (Wearing178=1) Or (n\State3>0) Then
+        If (IsPlayerWearing(mainPlayer,"scp178",WORNITEM_HEAD_SLOT)) Or (n\State3>0) Then
             n\State=Min(n\State+FPSfactor,300.0)
         Else
             n\State=Max(n\State-FPSfactor,0.0)
@@ -184,9 +184,9 @@ Function UpdateNPCtype178(n.NPCs)
         EndIf
         If dist<0.4 Then
             ;Animate2(n\obj, AnimTime(n\obj), 122, 172, 0.2, False)		
-            If (n\State2>=65.0) And (KillTimer>=0) Then
-                Injuries=Injuries+Rnd(0.4,0.8)
-                If Injuries>=4.0 Then
+            If (n\State2>=65.0) And (Not mainPlayer\dead) Then
+                mainPlayer\injuries=mainPlayer\injuries+Rnd(0.4,0.8)
+                If mainPlayer\injuries>=4.0 Then
                     If n\State3=0.0 Then
                         DeathMSG = "A Class D subject wearing SCP-178 was found dead in [REDACTED]. "
                         DeathMSG = DeathMSG + "Presumed to be killed by the "

@@ -67,7 +67,7 @@ Function UpdateNPCtype173(n.NPCs)
 			Local canMove% = True
 			If dist < 15 Then
 				If dist < 10.0 Then 
-					If EntityVisible(n\collider, collider) Then
+					If EntityVisible(n\collider, mainPlayer\collider) Then
 						playerVisible = True
 						n\targetX = EntityX(mainPlayer\collider, True)
 						n\targetY = EntityY(mainPlayer\collider, True)
@@ -78,7 +78,7 @@ Function UpdateNPCtype173(n.NPCs)
 				n\prevX = EntityX(n\collider)
 				n\prevZ = EntityZ(n\collider)				
 				
-				If (mainPlayer\blinkTimer < - 16 Or mainPlayer\blinkTimer > - 6) And (Not IsNVGBlinking) Then
+				If (mainPlayer\blinkTimer < - 16 Or mainPlayer\blinkTimer > - 6) Then
 					If EntityInView(n\obj, mainPlayer\cam) Then canMove = False
 				EndIf
 			EndIf
@@ -88,8 +88,8 @@ Function UpdateNPCtype173(n.NPCs)
 			;player is looking at it -> doesn't move
 			If (Not canMove) Then
 				;Blur and zoom camera slightly when looking at 173.
-				BlurVolume = Max(Max(Min((4.0 - dist) / 6.0, 0.9), 0.1), BlurVolume)
-				CurrCameraZoom = Max(CurrCameraZoom, (Sin(Float(MilliSecs2())/20.0)+1.0)*15.0*Max((3.5-dist)/3.5,0.0))								
+				mainPlayer\blurTimer = Max(Max(Min((4.0 - dist) / 6.0, 0.9), 0.1), mainPlayer\blurTimer)
+				mainPlayer\camZoom = Max(mainPlayer\camZoom, (Sin(Float(MilliSecs2())/20.0)+1.0)*15.0*Max((3.5-dist)/3.5,0.0))								
 				
 				;If it's close spoopy horror sound.
 				If dist < 3.5 And MilliSecs2() - n\lastSeen > 60000 And playerVisible Then
@@ -99,9 +99,9 @@ Function UpdateNPCtype173(n.NPCs)
 				EndIf
 				
 				If dist < 1.5 And n\lastDist > 2.0 And playerVisible Then
-					CurrCameraZoom = 40.0
-					HeartBeatRate = Max(HeartBeatRate, 140)
-					HeartBeatVolume = 0.5
+					mainPlayer\camZoom = 40.0
+					mainPlayer\heartbeatIntensity = Max(mainPlayer\heartbeatIntensity, 140)
+					;HeartBeatVolume = 0.5
 					
 					;Jumpscare.
 					PlaySound_Strict(n\sounds[Rand(4,8)])
@@ -170,7 +170,7 @@ Function UpdateNPCtype173(n.NPCs)
 					;player is not looking and is visible from 173's position -> attack
 					If playerVisible Then 				
 						If dist < 0.65 Then
-							If KillTimer >= 0 And (Not GodMode) Then
+							If (Not mainPlayer\dead) And (Not mainPlayer\godMode) Then
 								
 								Select mainPlayer\currRoom\RoomTemplate\Name
 									Case "lockroom", "room2closets", "coffin"

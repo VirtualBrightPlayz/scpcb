@@ -60,7 +60,7 @@ Type NPCs
 	;TODO: wtf why aren't we using this more instead of reload?
 	Field soundTimer#
 	
-	Field speed#, CurrSpeed#
+	Field speed#, currSpeed#
 	
 	Field texture$
 	
@@ -425,7 +425,7 @@ Function OtherNPCSeesMeNPC%(me.NPCs,other.NPCs)
 	Return False
 End Function
 
-Function MeNPCSeesPlayer%(me.NPCs,disablesoundoncrouch%=False)
+Function MeNPCSeesPlayer%(me.NPCs,disableSoundOnCrouch%=False)
 	;Return values:
 		;False (=0): Player is not detected anyhow
 		;True (=1): Player is detected by vision
@@ -437,14 +437,14 @@ Function MeNPCSeesPlayer%(me.NPCs,disablesoundoncrouch%=False)
 	
 	If (Not PlayerDetected) Or me\NPCtype <> NPCtypeMTF
 		If me\BlinkTimer<=0.0 Then Return False
-		If EntityDistance(mainPlayer\collider,me\Collider)>(8.0-CrouchState+PlayerSoundVolume) Then Return False
+		If EntityDistance(mainPlayer\collider,me\Collider)>(8.0-mainPlayer\crouchState+mainPlayer\loudness) Then Return False
 		
 		;spots the player if he's either in view or making a loud sound
-		If PlayerSoundVolume>1.0
+		If mainPlayer\loudness>1.0
 			If (Abs(DeltaYaw(me\Collider,mainPlayer\collider))>60.0) And EntityVisible(me\Collider,mainPlayer\collider)
 				Return 1
 			ElseIf (Not EntityVisible(me\Collider,mainPlayer\collider))
-				If disablesoundoncrouch% And Crouch%
+				If DisableSoundOnCrouch% And mainPlayer\crouching
 					Return False
 				Else
 					Return 2
@@ -455,11 +455,11 @@ Function MeNPCSeesPlayer%(me.NPCs,disablesoundoncrouch%=False)
 		EndIf
 		Return EntityVisible(me\Collider,mainPlayer\collider)
 	Else
-		If EntityDistance(mainPlayer\collider,me\Collider)>(8.0-CrouchState+PlayerSoundVolume) Then Return 3
+		If EntityDistance(mainPlayer\collider,me\Collider)>(8.0-mainPlayer\crouchState+mainPlayer\loudness) Then Return 3
 		If EntityVisible(me\Collider, mainPlayer\cam) Then Return True
 		
 		;spots the player if he's either in view or making a loud sound
-		If PlayerSoundVolume>1.0 Then Return 2
+		If mainPlayer\loudness>1.0 Then Return 2
 		Return 3
 	EndIf
 	
@@ -493,7 +493,7 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 	
 	LightVolume = TempLightVolume*1.2
 	
-	If (Not GodMode) Then 
+	If (Not mainPlayer\godMode) Then 
 		
 		If instaKill Then Kill() : PlaySound_Strict BullethitSFX : Return
 		
@@ -501,41 +501,45 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 			TurnEntity mainPlayer\cam, Rnd(-3,3), Rnd(-3,3), 0
 			
 			Local ShotMessageUpdate$
-			If WearingVest>0 Then
-				If WearingVest = 1 Then
+			Local WearingVest% = False
+			WearingVest = WearingVest Or IsPlayerWearing(mainPlayer,"vest",WORNITEM_BODY_SLOT)
+			WearingVest = WearingVest Or IsPlayerWearing(mainPlayer,"finevest",WORNITEM_BODY_SLOT)
+			WearingVest = WearingVest Or IsPlayerWearing(mainPlayer,"veryfinevest",WORNITEM_BODY_SLOT)
+			If WearingVest Then
+				If IsPlayerWearing(mainPlayer,"vest",WORNITEM_BODY_SLOT) Then
 					Select Rand(8)
 						Case 1,2,3,4,5
-							BlurTimer = 500
-							Stamina = 0
+							mainPlayer\blurTimer = 500
+							mainPlayer\stamina = 0
 							ShotMessageUpdate = "A bullet penetrated your vest, making you gasp."
-							Injuries = Injuries + Rnd(0.1,0.5)
+							mainPlayer\injuries = mainPlayer\injuries + Rnd(0.1,0.5)
 						Case 6
-							BlurTimer = 500
+							mainPlayer\blurTimer = 500
 							ShotMessageUpdate = "A bullet hit your left leg."
-							Injuries = Injuries + Rnd(0.8,1.2)
+							mainPlayer\injuries = mainPlayer\injuries + Rnd(0.8,1.2)
 						Case 7
-							BlurTimer = 500
+							mainPlayer\blurTimer = 500
 							ShotMessageUpdate = "A bullet hit your right leg."
-							Injuries = Injuries + Rnd(0.8,1.2)
+							mainPlayer\injuries = mainPlayer\injuries + Rnd(0.8,1.2)
 						Case 8
-							BlurTimer = 500
-							Stamina = 0
+							mainPlayer\blurTimer = 500
+							mainPlayer\stamina = 0
 							ShotMessageUpdate = "A bullet struck your neck, making you gasp."
-							Injuries = Injuries + Rnd(1.2,1.6)
+							mainPlayer\injuries = mainPlayer\injuries + Rnd(1.2,1.6)
 					End Select	
 				Else
 					If Rand(10)=1 Then
-						BlurTimer = 500
-						Stamina = Stamina - 1
+						mainPlayer\blurTimer = 500
+						mainPlayer\stamina = mainPlayer\stamina - 1
 						ShotMessageUpdate = "A bullet hit your chest. The vest absorbed some of the damage."
-						Injuries = Injuries + Rnd(0.8,1.1)
+						mainPlayer\injuries = mainPlayer\injuries + Rnd(0.8,1.1)
 					Else
 						ShotMessageUpdate = "A bullet hit your chest. The vest absorbed most of the damage."
-						Injuries = Injuries + Rnd(0.1,0.5)
+						mainPlayer\injuries = mainPlayer\injuries + Rnd(0.1,0.5)
 					EndIf
 				EndIf
 				
-				If Injuries >= 3
+				If mainPlayer\injuries >= 3
 					If Rand(3) = 1 Then Kill()
 				EndIf
 			Else
@@ -543,25 +547,25 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 					Case 1
 						Kill()
 					Case 2
-						BlurTimer = 500
+						mainPlayer\blurTimer = 500
 						ShotMessageUpdate = "A bullet hit your left leg."
-						Injuries = Injuries + Rnd(0.8,1.2)
+						mainPlayer\injuries = mainPlayer\injuries + Rnd(0.8,1.2)
 					Case 3
-						BlurTimer = 500
+						mainPlayer\blurTimer = 500
 						ShotMessageUpdate = "A bullet hit your right leg."
-						Injuries = Injuries + Rnd(0.8,1.2)
+						mainPlayer\injuries = mainPlayer\injuries + Rnd(0.8,1.2)
 					Case 4
-						BlurTimer = 500
+						mainPlayer\blurTimer = 500
 						ShotMessageUpdate = "A bullet hit your right shoulder."
-						Injuries = Injuries + Rnd(0.8,1.2)	
+						mainPlayer\injuries = mainPlayer\injuries + Rnd(0.8,1.2)	
 					Case 5
-						BlurTimer = 500
+						mainPlayer\blurTimer = 500
 						ShotMessageUpdate = "A bullet hit your left shoulder."
-						Injuries = Injuries + Rnd(0.8,1.2)	
+						mainPlayer\injuries = mainPlayer\injuries + Rnd(0.8,1.2)	
 					Case 6
-						BlurTimer = 500
+						mainPlayer\blurTimer = 500
 						ShotMessageUpdate = "A bullet hit your right shoulder."
-						Injuries = Injuries + Rnd(2.5,4.0)
+						mainPlayer\injuries = mainPlayer\injuries + Rnd(2.5,4.0)
 				End Select
 			EndIf
 			
@@ -571,11 +575,11 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 				MsgTimer = 70*6
 			EndIf
 
-			Injuries = Min(Injuries, 4.0)
+			mainPlayer\injuries = Min(mainPlayer\injuries, 4.0)
 			
 			;Kill()
 			PlaySound_Strict BullethitSFX
-		ElseIf particles
+		ElseIf particles Then
 			pvt = CreatePivot()
 			PositionEntity pvt, EntityX(mainPlayer\collider),(EntityY(mainPlayer\collider)+EntityY(mainPlayer\cam))/2,EntityZ(mainPlayer\collider)
 			PointEntity pvt, p\obj
@@ -628,10 +632,9 @@ Function PlayMTFSound(sound%, n.NPCs)
 		n\SoundChn = PlaySound2(sound, mainPlayer\cam, n\Collider, 8.0)	
 	EndIf
 	
-	
-	If SelectedItem <> Null Then
-		If SelectedItem\state2 = 3 And SelectedItem\state > 0 Then 
-			Select SelectedItem\itemtemplate\tempname 
+	If mainPlayer\selectedItem <> Null Then
+		If mainPlayer\selectedItem\state2 = 3 And mainPlayer\selectedItem\state > 0 Then 
+			Select mainPlayer\selectedItem\itemtemplate\tempname 
 				Case "radio","fineradio","18vradio"
 					If RadioCHN(3)<> 0 Then StopChannel RadioCHN(3)
 					RadioCHN(3) = PlaySound_Strict (sound)
@@ -646,19 +649,19 @@ Function MoveToPocketDimension()
 	
 	For r.Rooms = Each Rooms
 		If r\RoomTemplate\Name = "pocketdimension" Then
-			FallTimer = 0
+			mainPlayer\fallTimer = 0
 			UpdateDoors()
 			UpdateRooms()
-			ShowEntity Collider
+			ShowEntity mainPlayer\collider
 			PlaySound_Strict(Use914SFX)
-			PlaySound_Strict(OldManSFX(5))
+			;PlaySound_Strict(OldManSFX(5)) ;TODO: fix
 			PositionEntity(mainPlayer\collider, EntityX(r\obj),0.8,EntityZ(r\obj))
-			DropSpeed = 0
-			ResetEntity Collider
+			mainPlayer\dropSpeed = 0
+			ResetEntity mainPlayer\collider
 			
 			mainPlayer\blinkTimer = -10
 			
-			Injuries = Injuries+0.5
+			mainPlayer\injuries = mainPlayer\injuries+0.5
 			
 			mainPlayer\currRoom = r
 			
@@ -815,8 +818,8 @@ Function ManipulateNPCBones()
 			PositionEntity pvt%,EntityX(bone%,True),EntityY(bone%,True),EntityZ(bone%,True)
 			Select n\ManipulationType
 				Case 0 ;<--- looking at player
-					PointEntity bone%,Camera
-					PointEntity pvt%,Camera
+					PointEntity bone%,mainPlayer\cam
+					PointEntity pvt%,mainPlayer\cam
 					n\BonePitch# = CurveAngle(EntityPitch(pvt%),n\BonePitch#,10.0)
 					Select TransformNPCManipulationData(n\NPCNameInSection,n\BoneToManipulate,"yaw")
 						Case 0
@@ -891,7 +894,7 @@ Function ManipulateNPCBones()
 					EndIf
 					RotateEntity bone%,pitchvalue#+pitchoffset#,yawvalue#+yawoffset#,rollvalue#+rolloffset#
 				Case 3 ;<-- looking and pitching towards the player
-					PointEntity pvt%,Camera
+					PointEntity pvt%,mainPlayer\cam
 					n\BoneYaw# = CurveAngle(EntityPitch(pvt%),n\BoneYaw#,10.0)
 					Select TransformNPCManipulationData(n\NPCNameInSection,n\BoneToManipulate,"yaw")
 						Case 0

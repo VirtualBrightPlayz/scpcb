@@ -41,7 +41,7 @@ Function UpdateNPCtype096(n.NPCs)
                                     If (mainPlayer\blinkTimer < - 16 Or mainPlayer\blinkTimer > - 6)
                                         PlaySound_Strict LoadTempSound("SFX\SCP\096\Triggered.ogg")
                                         
-                                        CurrCameraZoom = 10
+                                        mainPlayer\camZoom = 10
                                         
                                         n\Frame = 307
                                         ;SetAnimTime n\obj, 307
@@ -59,7 +59,7 @@ Function UpdateNPCtype096(n.NPCs)
                 
             EndIf
         Case 4
-            CurrCameraZoom = CurveValue(Max(CurrCameraZoom, (Sin(Float(MilliSecs2())/20.0)+1.0) * 10.0),CurrCameraZoom,8.0)
+            mainPlayer\camZoom = CurveValue(Max(mainPlayer\camZoom, (Sin(Float(MilliSecs2())/20.0)+1.0) * 10.0),mainPlayer\camZoom,8.0)
             
             If n\Target = Null Then 
                 If n\Sound = 0 Then
@@ -82,7 +82,7 @@ Function UpdateNPCtype096(n.NPCs)
             
             If NoTarget And n\Target = Null Then n\State = 5
             
-            If KillTimer =>0 Then
+            If (Not mainPlayer\dead) Then
                 
                 If MilliSecs2() > n\State3 Then
                     n\LastSeen=0
@@ -112,15 +112,15 @@ Function UpdateNPCtype096(n.NPCs)
                             n\CurrSpeed = 0
                             
                             If n\Target=Null Then
-                                If (Not GodMode) Then 
+                                If (Not mainPlayer\godMode) Then 
                                     PlaySound_Strict DamageSFX(4)
                                     
                                     pvt = CreatePivot()
                                     mainPlayer\camShake = 30
-                                    BlurTimer = 2000
+                                    mainPlayer\blurTimer = 2000
                                     DeathMSG = "A large amount of blood found in [DATA REDACTED]. DNA indentified as Subject D-9341. Most likely [DATA REDACTED] by SCP-096."
                                     Kill()
-                                    KillAnim = 1
+                                    ;KillAnim = 1 ;TODO: idk
                                     For i = 0 To 6
                                         PositionEntity pvt, EntityX(mainPlayer\collider)+Rnd(-0.1,0.1),EntityY(mainPlayer\collider)-0.05,EntityZ(mainPlayer\collider)+Rnd(-0.1,0.1)
                                         TurnEntity pvt, 90, 0, 0
@@ -342,7 +342,7 @@ Function UpdateNPCtype096(n.NPCs)
                                     If (mainPlayer\blinkTimer < - 16 Or mainPlayer\blinkTimer > - 6)
                                         PlaySound_Strict LoadTempSound("SFX\SCP\096\Triggered.ogg")
                                         
-                                        CurrCameraZoom = 10
+                                        mainPlayer\camZoom = 10
                                         
                                         n\Frame = 833
                                         ;SetAnimTime n\obj, 833

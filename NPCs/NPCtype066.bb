@@ -104,7 +104,7 @@ Function UpdateNPCtype066(n.NPCs)
                                     de\Size = 0.3 : UpdateDecals
                                     PlaySound_Strict(LoadTempSound("SFX\General\BodyFall.ogg"))
                                     If Distance(EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider),EntityX(n\Collider),EntityZ(n\Collider))<0.8 Then
-                                        Injuries = Injuries + Rnd(0.3,0.5)
+                                        mainPlayer\injuries = mainPlayer\injuries + Rnd(0.3,0.5)
                                     EndIf
                                 EndIf
                         End Select
@@ -117,7 +117,7 @@ Function UpdateNPCtype066(n.NPCs)
                     EndIf
                 Else
                     n\CurrSpeed = CurveValue(n\Speed*1.5, n\CurrSpeed, 10.0)
-                    PointEntity n\obj, Collider
+                    PointEntity n\obj,mainPlayer\collider
                     ;angle = CurveAngle(EntityYaw(n\obj), EntityYaw(n\Collider), 10);1.0/Max(n\CurrSpeed,0.0001))
                     RotateEntity n\Collider, 0, CurveAngle(EntityYaw(n\obj)-180, EntityYaw(n\Collider), 10), 0
                     
@@ -129,7 +129,7 @@ Function UpdateNPCtype066(n.NPCs)
                 EndIf
             EndIf
         Case 3
-            PointEntity n\obj, Collider
+            PointEntity n\obj,mainPlayer\collider
             angle = CurveAngle(EntityYaw(n\obj)+n\Angle-180, EntityYaw(n\Collider), 10);1.0/Max(n\CurrSpeed,0.0001))
             RotateEntity n\Collider, 0, angle, 0
             
@@ -170,7 +170,7 @@ Function UpdateNPCtype066(n.NPCs)
     ;If n\SoundChn2<>0 Then
     ;	If ChannelPlaying(n\SoundChn2) Then
     ;		n\SoundChn2 = LoopSound2(n\Sound2, n\SoundChn2, mainPlayer\cam, n\Collider, 20)
-    ;		BlurTimer = Max((5.0-dist)*300,0)
+    ;		mainPlayer\blurTimer = Max((5.0-dist)*300,0)
     ;	EndIf
     ;EndIf
     
@@ -178,13 +178,13 @@ Function UpdateNPCtype066(n.NPCs)
     If n\State3 > 0 Then
         n\State3 = n\State3-FPSfactor
         LightVolume = TempLightVolume-TempLightVolume*Min(Max(n\State3/500,0.01),0.6)
-        HeartBeatRate = Max(HeartBeatRate, 130)
-        HeartBeatVolume = Max(HeartBeatVolume,Min(n\State3/1000,1.0))
+        mainPlayer\heartbeatIntensity = Max(mainPlayer\heartbeatIntensity, 130)
+        ;HeartBeatVolume = Max(HeartBeatVolume,Min(n\State3/1000,1.0))
     EndIf
     
     If ChannelPlaying(n\SoundChn2)
         UpdateSoundOrigin2(n\SoundChn2,mainPlayer\cam,n\Collider,20)
-        BlurTimer = Max((5.0-dist)*300,0)
+        mainPlayer\blurTimer = Max((5.0-dist)*300,0)
     EndIf
     
     PositionEntity(n\obj, EntityX(n\Collider), EntityY(n\Collider) - 0.2, EntityZ(n\Collider))

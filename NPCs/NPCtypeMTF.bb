@@ -461,11 +461,11 @@ Function UpdateNPCtypeMTF(n.NPCs)
 						RotateEntity(n\Collider, 0, CurveAngle(angle, EntityYaw(n\Collider), 10.0), 0, True)
 						n\Angle = EntityYaw(n\Collider)
 						
-						If n\Reload =< 0 And KillTimer = 0 Then
+						If n\Reload =< 0 And (Not mainPlayer\dead) Then
 							If EntityVisible(n\Collider, mainPlayer\cam) Then
 								angle# = WrapAngle(angle - EntityYaw(n\Collider))
 								If angle < 5 Or angle > 355 Then 
-									prev% = KillTimer
+									prev% = (Not mainPlayer\dead)
 									
 									PlaySound2(GunshotSFX, mainPlayer\cam, n\Collider, 15)
 									
@@ -483,7 +483,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 									DeathMSG="Subject D-9341. Died of blood loss after being shot by Nine-Tailed Fox."
 									
 									;player killed -> "target terminated"
-									If prev => 0 And KillTimer < 0 Then
+									If (Not prev) And mainPlayer\dead Then
 										DeathMSG="Subject D-9341. Terminated by Nine-Tailed Fox."
 										PlayMTFSound(LoadTempSound("SFX\Character\MTF\Targetterminated"+Rand(1,4)+".ogg"),n)
 									EndIf
@@ -1185,13 +1185,14 @@ Function UpdateNPCtypeMTF(n.NPCs)
 			Case 6 ;seeing the player as a 049-2 instance
 				;[Block]
 				
-				PointEntity n\obj,Collider
+				PointEntity n\obj,mainPlayer\collider
+				
 				RotateEntity n\Collider,0,CurveAngle(EntityYaw(n\obj),EntityYaw(n\Collider),20.0),0
 				n\Angle = EntityYaw(n\Collider)
 				
 				AnimateNPC(n, 346, 351, 0.2, False)
 				
-				If n\Reload =< 0 And KillTimer = 0 Then
+				If n\Reload =< 0 And (Not mainPlayer\dead) Then
 					If EntityVisible(n\Collider, mainPlayer\collider) Then
 						;angle# = WrapAngle(angle - EntityYaw(n\Collider))
 						;If angle < 5 Or angle > 355 Then

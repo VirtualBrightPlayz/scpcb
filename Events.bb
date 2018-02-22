@@ -544,7 +544,7 @@ Function UpdateEvents()
 						ShouldPlay = 13
 						
 						;slow the player down to match his speed to the guards
-						CurrSpeed = Min(CurrSpeed - (CurrSpeed * (0.008/EntityDistance(e\room\NPC[3]\Collider, mainPlayer\collider)) * FPSfactor), CurrSpeed)
+						mainPlayer\moveSpeed = Min(mainPlayer\moveSpeed - (mainPlayer\moveSpeed * (0.008/EntityDistance(e\room\NPC[3]\Collider, mainPlayer\collider)) * FPSfactor), mainPlayer\moveSpeed)
 						
 						If e\EventState3 < 170 Then 
 							If e\EventState3 = 1.0 Then
@@ -559,7 +559,7 @@ Function UpdateEvents()
 								NowPlaying = ShouldPlay
 								
 								PlaySound_Strict(IntroSFX(11))
-								BlurTimer = 500
+								mainPlayer\blurTimer = 500
 								ShowEntity Light
 								EntityAlpha(Light, 0.5)
 							EndIf
@@ -601,14 +601,14 @@ Function UpdateEvents()
 									PositionEntity mainPlayer\cam, x, y, z
 									HideEntity Collider
 									PositionEntity mainPlayer\collider, x, 0.302, z	
-									DropSpeed = 0
+									mainPlayer\dropSpeed = 0
 								Else
 									HideEntity Light
 									
 									PositionEntity mainPlayer\collider, EntityX(mainPlayer\collider), 0.302, EntityZ(mainPlayer\collider)
 									ResetEntity Collider
 									ShowEntity Collider
-									DropSpeed = 0
+									mainPlayer\dropSpeed = 0
 									e\EventState3 = 15
 								EndIf
 								
@@ -637,7 +637,7 @@ Function UpdateEvents()
 								EndIf
 							EndIf
 							
-							If SelectedItem <> Null Then
+							If mainPlayer\selectedItem <> Null Then
 								e\EventState3 = e\EventState3+FPSfactor/5.0
 							EndIf							
 							
@@ -1436,7 +1436,7 @@ Function UpdateEvents()
 												z# = EntityZ(r\obj, True)+1312*RoomScale
 												
 												PositionEntity(mainPlayer\collider, x  + (EntityX(mainPlayer\collider) - EntityX(e\room\obj)), y+EntityY(mainPlayer\collider)+0.4, z + (EntityZ(mainPlayer\collider) - EntityZ(e\room\obj)))
-												DropSpeed = 0
+												mainPlayer\dropSpeed = 0
 												ResetEntity(mainPlayer\collider)
 												
 												For i = 0 To 2
@@ -1721,7 +1721,7 @@ Function UpdateEvents()
 							If (CoffinDistance < 4.0) And (hasBatteryFor895) Then
 								
 								mainPlayer\sanity895 = mainPlayer\sanity895-(FPSfactor*1.1/WearingNightVision)
-								BlurTimer = Sin(MilliSecs2()/10)*Abs(mainPlayer\sanity895)
+								mainPlayer\blurTimer = Sin(MilliSecs2()/10)*Abs(mainPlayer\sanity895)
 								
 								tempF# = GetAngle(EntityX(mainPlayer\collider,True),EntityZ(mainPlayer\collider,True),EntityX(e\room\Objects[1],True),EntityZ(e\room\Objects[1],True))
 								tempF2# = EntityYaw(mainPlayer\collider)
@@ -2175,7 +2175,7 @@ Function UpdateEvents()
 												EntityFX ent%,1+2+8
 												ScaleSprite ent%,1.5,1.5
 												ShouldPlay = 0
-												CurrSpeed = 0
+												mainPlayer\moveSpeed = 0
 												PlaySound_Strict LoadTempSound("SFX\Ending\GateB\Gunshot.ogg")
 												GodMode = 0
 												NoClip = 0
@@ -2685,9 +2685,9 @@ Function UpdateEvents()
 									PointEntity e\room\Objects[12], Collider
 									RotateEntity e\room\Objects[12], 0, EntityYaw(e\room\Objects[12]), 0
 									
-									Stamina = -5.0
+									mainPlayer\stamina = -5.0
 									
-									BlurTimer = Sin(e\EventState3*0.7)*1000.0
+									mainPlayer\blurTimer = Sin(e\EventState3*0.7)*1000.0
 									
 									If KillTimer = 0 Then 
 										CameraZoom(mainPlayer\cam, 1.0+Sin(e\EventState3*0.8)*0.2)
@@ -2796,7 +2796,7 @@ Function UpdateEvents()
 									Else
 										
 										ShouldPlay = 0
-										CurrSpeed = 0
+										mainPlayer\moveSpeed = 0
 										If ChannelPlaying(e\SoundCHN)=False Then
 											PlaySound_Strict IntroSFX(9)
 											SelectedEnding = "A2"
@@ -2914,7 +2914,7 @@ Function UpdateEvents()
 				If mainPlayer\currRoom = e\room Then
 					ShowEntity e\room\obj
 					
-					Injuries = Injuries+FPSfactor*0.00005
+					mainPlayer\injuries = mainPlayer\injuries+FPSfactor*0.00005
 					
 					If (EntityY(mainPlayer\collider)<2000*RoomScale Or EntityY(mainPlayer\collider)>2608*RoomScale) Then CurrStepSFX = 1
 					
@@ -2983,7 +2983,7 @@ Function UpdateEvents()
 						If e\EventState3 = 1 Or e\EventState3 = 2 Then ;the "trick room"
 							If e\EventState3 = 1 And (e\room\RoomDoors[0]\openstate>150 Or e\room\RoomDoors[1]\openstate>150) Then
 								PlaySound_Strict LoadTempSound("SFX\Horror\Horror16.ogg")
-								BlurTimer = 800
+								mainPlayer\blurTimer = 800
 								e\EventState3=2
 							EndIf
 							
@@ -3044,7 +3044,7 @@ Function UpdateEvents()
 								ElseIf dist < 8.0
 									e\SoundCHN = LoopSound2(e\Sound, e\SoundCHN, mainPlayer\cam, e\room\Objects[20], 8.0)
 									EntityTexture e\room\Objects[20], e\room\Objects[19]
-									Injuries=Injuries+(8.0-dist)*FPSfactor*0.001
+									mainPlayer\injuries=Injuries+(8.0-dist)*FPSfactor*0.001
 									
 									If dist<7.0 Then 
 										pvt% = CreatePivot()
@@ -3066,7 +3066,7 @@ Function UpdateEvents()
 									LoadEventSound(e,"SFX\Room\PocketDimension\PrisonVoices.ogg",1)
 									
 									;move to the "exit room"
-									BlurTimer = 1500
+									mainPlayer\blurTimer = 1500
 									e\EventState2=1
 									mainPlayer\blinkTimer = -10
 									
@@ -3119,10 +3119,10 @@ Function UpdateEvents()
 								
 								temp = EntityDistance(mainPlayer\collider, e\room\Objects[17])
 								If temp < 2000*RoomScale Then
-									Injuries = Injuries + (FPSfactor/4000)
+									mainPlayer\injuries = mainPlayer\injuries + (FPSfactor/4000)
 									
-									If Injuries > 1.0 Then
-										If Injuries - (FPSfactor/4000)=< 1.0 Then
+									If mainPlayer\injuries > 1.0 Then
+										If mainPlayer\injuries - (FPSfactor/4000)=< 1.0 Then
 											PlaySound_Strict LoadTempSound("SFX\Room\PocketDimension\Kneel.ogg")
 										EndIf
 									EndIf
@@ -3131,7 +3131,7 @@ Function UpdateEvents()
 									
 									e\SoundCHN = LoopSound2(OldManSFX(4), e\SoundCHN, mainPlayer\cam, e\room\Objects[17], 5.0, 0.6)
 									
-									CurrCameraZoom = Max(CurrCameraZoom, (Sin(Float(MilliSecs2()) / 20.0)+1.0)*15.0*Max((6.0-temp)/6.0,0.0))
+									mainPlayer\camZoom = Max(mainPlayer\camZoom, (Sin(Float(MilliSecs2()) / 20.0)+1.0)*15.0*Max((6.0-temp)/6.0,0.0))
 									
 									pvt% = CreatePivot()
 									PositionEntity pvt, EntityX(mainPlayer\cam), EntityY(mainPlayer\cam), EntityZ(mainPlayer\cam)
@@ -3157,10 +3157,10 @@ Function UpdateEvents()
 								ElseIf EntityY(mainPlayer\collider)<-180*RoomScale ;the "exit room"
 									temp = Distance(EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider),EntityX(e\room\Objects[8],True)+1024*RoomScale,EntityZ(e\room\Objects[8],True))
 									If temp<640*RoomScale
-										BlurTimer = (640*RoomScale-temp)*3000
+										mainPlayer\blurTimer = (640*RoomScale-temp)*3000
 										
-										e\SoundCHN2 = LoopSound2(DecaySFX(Rand(1, 3)), e\SoundCHN2, mainPlayer\cam, mainPlayer\collider, 2.0, (640*RoomScale-temp)*Abs(CurrSpeed)*100)
-										CurrSpeed = CurveValue(0.0, CurrSpeed, temp*10)
+										e\SoundCHN2 = LoopSound2(DecaySFX(Rand(1, 3)), e\SoundCHN2, mainPlayer\cam, mainPlayer\collider, 2.0, (640*RoomScale-temp)*Abs(mainPlayer\moveSpeed)*100)
+										mainPlayer\moveSpeed = CurveValue(0.0, mainPlayer\moveSpeed, temp*10)
 										
 										If temp < 130*RoomScale Then
 											
@@ -3197,9 +3197,9 @@ Function UpdateEvents()
 								CameraFogColor mainPlayer\cam, 0,0,0
 								CameraClsColor mainPlayer\cam, 0,0,0
 								
-								DropSpeed = 0
-								BlurTimer = 500
-								BlurTimer = 1500
+								mainPlayer\dropSpeed = 0
+								mainPlayer\blurTimer = 500
+								mainPlayer\blurTimer = 1500
 								PositionEntity(mainPlayer\collider, EntityX(e\room\obj,True), 0.4, EntityX(e\room\obj,True))
 								For r.Rooms = Each Rooms
 									If r\RoomTemplate\Name = "room106" Then
@@ -3229,7 +3229,7 @@ Function UpdateEvents()
 									
 								EndIf
 								KillTimer = Min(-1, KillTimer)	
-								BlurTimer = 3000
+								mainPlayer\blurTimer = 3000
 							EndIf
 						EndIf
 						
@@ -3268,17 +3268,17 @@ Function UpdateEvents()
 									PositionEntity(mainPlayer\collider, EntityX(e\room\Objects[8],True), 0.5, EntityZ(e\room\Objects[8],True))
 									ResetEntity Collider
 								Case 11,12 ;middle of the large starting room
-									BlurTimer = 500
+									mainPlayer\blurTimer = 500
 									PositionEntity mainPlayer\collider,EntityX(e\room\obj), 0.5, EntityZ(e\room\obj)
 								Case 13,14,15 ;"exit room"
-									BlurTimer = 1500
+									mainPlayer\blurTimer = 1500
 									e\EventState2=1
 									mainPlayer\blinkTimer = -10
 									
 									PositionEntity(mainPlayer\collider, EntityX(e\room\Objects[8],True)-400*RoomScale, -304*RoomScale, EntityZ(e\room\Objects[8],True))
 									ResetEntity Collider
 								Case 16,17,18,19
-									BlurTimer = 1500
+									mainPlayer\blurTimer = 1500
 									For r.Rooms = Each Rooms
 										If r\RoomTemplate\Name = "tunnel" Then
 											GiveAchievement(AchvPD)
@@ -3297,7 +3297,7 @@ Function UpdateEvents()
 									ResetEntity Collider
 									e\EventState2 = 15
 								Case 23,24,25
-									BlurTimer = 1500
+									mainPlayer\blurTimer = 1500
 									e\EventState2=1
 									e\EventState3=1
 									mainPlayer\blinkTimer = -10
@@ -3361,8 +3361,8 @@ Function UpdateEvents()
 								CameraFogColor mainPlayer\cam, 0,0,0
 								CameraClsColor mainPlayer\cam, 0,0,0
 								
-								DropSpeed = 0
-								BlurTimer = 500
+								mainPlayer\dropSpeed = 0
+								mainPlayer\blurTimer = 500
 								PositionEntity(mainPlayer\collider, EntityX(e\room\obj), 0.5, EntityZ(e\room\obj))
 								ResetEntity Collider
 								e\EventState2 = 0
@@ -3372,7 +3372,7 @@ Function UpdateEvents()
 							Else ;somewhere else -> must've fallen down
 								If KillTimer => 0 Then PlaySound_Strict HorrorSFX(8)
 								KillTimer = Min(-1, KillTimer)	
-								BlurTimer = 3000
+								mainPlayer\blurTimer = 3000
 							EndIf
 						EndIf 
 						
@@ -3429,7 +3429,7 @@ Function UpdateEvents()
 					For i = 1 To 5 Step 2
 						If PickedEntity() = e\room\Objects[i] Then
 							DrawHandIcon = True
-							If MouseHit1 Then GrabbedEntity = e\room\Objects[i]
+							If MouseHit1 Then mainPlayer\grabbedEntity = e\room\Objects[i]
 							
 							If e\EventState = 0 Then 
 								If i = 3 Then 
@@ -3443,11 +3443,11 @@ Function UpdateEvents()
 						Local prevpitch# = EntityPitch(e\room\Objects[i])
 						
 						If MouseDown1 Or MouseHit1 Then
-							If GrabbedEntity <> 0 Then
-								If GrabbedEntity = e\room\Objects[i] Then
+							If mainPlayer\grabbedEntity <> 0 Then
+								If mainPlayer\grabbedEntity = e\room\Objects[i] Then
 									DrawHandIcon = True
 									TurnEntity(e\room\Objects[i], mouse_y_speed_1 * 2.5, 0, 0)
-									RotateEntity(GrabbedEntity, Max(Min(EntityPitch(e\room\Objects[i]), 85), -85), EntityYaw(e\room\Objects[i]), 0)
+									RotateEntity(mainPlayer\grabbedEntity, Max(Min(EntityPitch(e\room\Objects[i]), 85), -85), EntityYaw(e\room\Objects[i]), 0)
 									
 									DrawArrowIcon(0) = True
 									DrawArrowIcon(2) = True
@@ -3460,7 +3460,7 @@ Function UpdateEvents()
 							Else
 								RotateEntity(e\room\Objects[i], CurveValue(-85, EntityPitch(e\room\Objects[i]), 10), EntityYaw(e\room\Objects[i]), 0)
 							EndIf
-							GrabbedEntity = 0
+							mainPlayer\grabbedEntity = 0
 						End If
 						
 						If EntityPitch(e\room\Objects[i]) > 83 Then
@@ -3781,7 +3781,7 @@ Function UpdateEvents()
 							If Distance(EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider),EntityX(e\room\Objects[i],True),EntityZ(e\room\Objects[i],True)) < 300.0*RoomScale Then
 								;play the activation sound
 								If KillTimer => 0 Then 
-									PlayerSoundVolume = Max(8.0,PlayerSoundVolume)
+									mainPlayer\loudness = Max(8.0,mainPlayer\loudness)
 									StopChannel(e\SoundCHN)
 									e\SoundCHN = PlaySound2(TeslaActivateSFX, mainPlayer\cam, e\room\Objects[3],4.0,0.5)
 									e\EventState = 1
@@ -4009,7 +4009,7 @@ Function UpdateEvents()
 							MoveEntity pvt, 0,0,EntityDistance(pvt,e\room\obj)*2
 							
 							;mainPlayer\camShake = 5.0
-							;BlurTimer = 100
+							;mainPlayer\blurTimer = 100
 							
 							mainPlayer\blinkTimer = -10
 							
@@ -4763,7 +4763,7 @@ Function UpdateEvents()
 						
 						If (e\EventState / 250.0) > 0.3 And ((e\EventState - FPSfactor*0.7) / 250.0) <= 0.3 Then
 							e\SoundCHN = PlaySound_Strict(HorrorSFX(6))
-							BlurTimer = 800
+							mainPlayer\blurTimer = 800
 							d.Decals = CreateDecal(0, EntityX(e\room\Objects[2], True), EntityY(e\room\Objects[2], True), EntityZ(e\room\Objects[2], True), 0, e\room\angle - 90, Rnd(360)) ;90, Rnd(360), 0
 							d\Timer = 90000
 							d\Alpha = 0.01 : d\AlphaChange = 0.005
@@ -4910,11 +4910,11 @@ Function UpdateEvents()
 								DrawHandIcon = True
 								
 								If MouseHit1 Then
-									SelectedItem = CreateItem("Drawing", "paper", 0.0, 0.0, 0.0)
+									mainPlayer\selectedItem = CreateItem("Drawing", "paper", 0.0, 0.0, 0.0)
 									
 									If ItemAmount >= MaxItemAmount Then DropItem(Inventory(0))
 									
-									PickItem(SelectedItem)
+									PickItem(mainPlayer\selectedItem)
 									
 									FreeEntity(e\room\Objects[2])
 									
@@ -5272,7 +5272,7 @@ Function UpdateEvents()
 								i = Rand(MaxItemAmount)
 								If Inventory(i)<>Null Then RemoveItem(Inventory(i))								
 							Case 5
-								Injuries = Injuries + 0.3
+								mainPlayer\injuries = mainPlayer\injuries + 0.3
 							Case 10
 								de.Decals = CreateDecal(3, EntityX(e\room\obj)+Cos(e\room\angle-90)*760*RoomScale, 0.0005, EntityZ(e\room\obj)+Sin(e\room\angle-90)*760*RoomScale,90,Rnd(360),0)
 							Case 14
@@ -5342,7 +5342,7 @@ Function UpdateEvents()
 						If e\room\NPC[0] <> Null Then
 							If EntityDistance(mainPlayer\collider, e\room\NPC[0]\Collider)<3.0 Then
 								If EntityInView(e\room\NPC[0]\obj, mainPlayer\cam) Then
-									CurrCameraZoom = (Sin(Float(MilliSecs2())/20.0)+1.0)*15.0
+									mainPlayer\camZoom = (Sin(Float(MilliSecs2())/20.0)+1.0)*15.0
 									HeartBeatVolume = Max(CurveValue(0.3, HeartBeatVolume, 2.0), HeartBeatVolume)
 									HeartBeatRate = Max(HeartBeatRate, 120)
 								EndIf
@@ -5431,7 +5431,7 @@ Function UpdateEvents()
 					If (e\EventState3 < 1.0 And ((Wearing714=1) Or (WearingNightVision>0))) Then
 						ForceAngle = 0.0
 						e\EventState3 = 1.0
-						If EntityInView(e\room\Objects[0],mainPlayer\cam) And EntityVisible(e\room\Objects[0],mainPlayer\cam) Then mainPlayer\blinkTimer = -2 : BlurTimer = 500
+						If EntityInView(e\room\Objects[0],mainPlayer\cam) And EntityVisible(e\room\Objects[0],mainPlayer\cam) Then mainPlayer\blinkTimer = -2 : mainPlayer\blurTimer = 500
 						If e\SoundCHN <> 0 Then StopChannel e\SoundCHN : e\SoundCHN = 0
 						aa=GetSurfaceBrush(e\room\NonFreeAble[0])
 						BrushTexture aa, e\room\Textures[0], 0, 1
@@ -5441,7 +5441,7 @@ Function UpdateEvents()
 					EndIf
 					If (e\EventState3 > 0.0 And (Not ((Wearing714=1) Or (WearingNightVision>0)))) Then
 						e\EventState3 = 0.0
-						If EntityInView(e\room\Objects[0],mainPlayer\cam) And EntityVisible(e\room\Objects[0],mainPlayer\cam) Then mainPlayer\blinkTimer = -2 : BlurTimer = 500
+						If EntityInView(e\room\Objects[0],mainPlayer\cam) And EntityVisible(e\room\Objects[0],mainPlayer\cam) Then mainPlayer\blinkTimer = -2 : mainPlayer\blurTimer = 500
 						aa=GetSurfaceBrush(e\room\NonFreeAble[0])
 						BrushTexture aa, e\room\Textures[1], 0, 1
 						PaintSurface e\room\NonFreeAble[0],aa
@@ -5502,7 +5502,7 @@ Function UpdateEvents()
 								MsgTimer = 70*5
 							Case 800.0
 								mainPlayer\blinkTimer = -2
-								BlurTimer = 800
+								mainPlayer\blurTimer = 800
 							Case 1200.0
 								Msg = "This event sucks."
 								MsgTimer = 70*5
@@ -5555,7 +5555,7 @@ Function UpdateEvents()
 											DebugLog "%@@= \ {2E6C2=FD gi`h]c"
 											do\open = False
 											do\openstate = 0
-											BlurTimer = 100
+											mainPlayer\blurTimer = 100
 											mainPlayer\camShake = 3.0											
 										EndIf
 										
@@ -5833,8 +5833,8 @@ Function UpdateEvents()
 								
 								HeartBeatRate = 150
 								HeartBeatVolume = Max(3.0-dist,0.0)/3.0
-								BlurVolume = Max((2.0-dist)*(e\EventState3/800.0)*(Sin(Float(MilliSecs2()) / 20.0 + 1.0)),BlurVolume)
-								CurrCameraZoom = Max(CurrCameraZoom, (Sin(Float(MilliSecs2()) / 20.0)+1.0)*8.0*Max((3.0-dist),0.0))
+								mainPlayer\blurTimer = Max((2.0-dist)*(e\EventState3/800.0)*(Sin(Float(MilliSecs2()) / 20.0 + 1.0)),mainPlayer\blurTimer)
+								mainPlayer\camZoom = Max(mainPlayer\camZoom, (Sin(Float(MilliSecs2()) / 20.0)+1.0)*8.0*Max((3.0-dist),0.0))
 								
 								If BreathCHN <> 0 Then
 									If ChannelPlaying(BreathCHN) Then StopChannel(BreathCHN)
@@ -5847,7 +5847,7 @@ Function UpdateEvents()
 									ElseIf e\EventState3>13*70 And e\EventState3-FPSfactor=<13*70
 										Msg="You start pushing your nails into your wrist, drawing blood."
 										MsgTimer = 7*70
-										Injuries=Injuries+0.5
+										mainPlayer\injuries=Injuries+0.5
 										PlaySound_Strict LoadTempSound("SFX\SCP\012\Speech2.ogg")
 									ElseIf e\EventState3>31*70 And e\EventState3-FPSfactor=<31*70
 										tex = LoadTexture_Strict("GFX\map\scp-012_1.jpg")
@@ -5856,19 +5856,19 @@ Function UpdateEvents()
 										
 										Msg="You tear open your left wrist and start writing on the composition with your blood."
 										MsgTimer = 7*70
-										Injuries=Max(Injuries,1.5)
+										mainPlayer\injuries=Max(mainPlayer\injuries,1.5)
 										PlaySound_Strict LoadTempSound("SFX\SCP\012\Speech"+Rand(3,4)+".ogg")
 									ElseIf e\EventState3>49*70 And e\EventState3-FPSfactor=<49*70
 										Msg="You push your fingers deeper into the wound."
 										MsgTimer = 8*70
-										Injuries=Injuries+0.3
+										mainPlayer\injuries=Injuries+0.3
 										PlaySound_Strict LoadTempSound("SFX\SCP\012\Speech5.ogg")
 									ElseIf e\EventState3>63*70 And e\EventState3-FPSfactor=<63*70
 										tex = LoadTexture_Strict("GFX\map\scp-012_2.jpg")
 										EntityTexture (e\room\Objects[4], tex,0,1)	
 										FreeTexture tex
 										
-										Injuries=Injuries+0.5
+										mainPlayer\injuries=Injuries+0.5
 										PlaySound_Strict LoadTempSound("SFX\SCP\012\Speech6.ogg")
 									ElseIf e\EventState3>74*70 And e\EventState3-FPSfactor=<74*70
 										tex = LoadTexture_Strict("GFX\map\scp-012_3.jpg")
@@ -5877,7 +5877,7 @@ Function UpdateEvents()
 										
 										Msg="You rip the wound wide open. Grabbing scoops of blood pouring out."
 										MsgTimer = 7*70
-										Injuries=Injuries+0.8
+										mainPlayer\injuries=Injuries+0.8
 										PlaySound_Strict LoadTempSound("SFX\SCP\012\Speech7.ogg")
 										Crouch = True
 										
@@ -6270,7 +6270,7 @@ Function UpdateEvents()
 											EndIf
 										EndIf
 										
-										Stamina = CurveValue(Min(60,Stamina), Stamina, 20.0)
+										mainPlayer\stamina = CurveValue(Min(60,mainPlayer\stamina), mainPlayer\stamina, 20.0)
 										
 										temp = True
 										
@@ -6282,13 +6282,13 @@ Function UpdateEvents()
 										
 										If (Not Wearing714) And WearingHazmat<3 And WearingGasMask<3 Then
 											mainPlayer\sanity895=Sanity-FPSfactor*1.1
-											BlurTimer = Sin(MilliSecs2()/10)*Abs(mainPlayer\sanity895)
+											mainPlayer\blurTimer = Sin(MilliSecs2()/10)*Abs(mainPlayer\sanity895)
 										EndIf
 										
 										If (Not WearingHazmat) Then
-											Injuries = Injuries + (FPSfactor/5000)
+											mainPlayer\injuries = mainPlayer\injuries + (FPSfactor/5000)
 										Else
-											Injuries = Injuries + (FPSfactor/10000)
+											mainPlayer\injuries = mainPlayer\injuries + (FPSfactor/10000)
 										EndIf
 										
 										If KillTimer < 0 And Bloodloss =>100 Then
@@ -6522,7 +6522,7 @@ Function UpdateEvents()
 								UpdateDoors()
 								UpdateRooms()
 								ShowEntity Collider
-								DropSpeed = 0
+								mainPlayer\dropSpeed = 0
 								mainPlayer\blinkTimer = -10
 								FallTimer = 0
 								PositionEntity mainPlayer\collider, EntityX(e\room\obj,True), EntityY(e\room\Objects[5],True)+0.2, EntityZ(e\room\obj,True)
@@ -6573,9 +6573,9 @@ Function UpdateEvents()
 							EndIf
 						EndIf
 					Else
-						BlurTimer = 800
+						mainPlayer\blurTimer = 800
 						ForceMove = 0.5
-						Injuries = Max(2.0,Injuries)
+						mainPlayer\injuries = Max(2.0,mainPlayer\injuries)
 						Bloodloss = 0
 						
 						;Msg = ""
@@ -6743,7 +6743,7 @@ Function UpdateEvents()
 					temp = e\EventState2
 					
 					Local leverstate = UpdateLever(e\room\Objects[1],((EntityY(e\room\Objects[6],True)<-990*RoomScale) And (EntityY(e\room\Objects[6],True)>-1275.0*RoomScale)))
-					If GrabbedEntity = e\room\Objects[1] And DrawHandIcon = True Then e\EventState2 = leverstate
+					If mainPlayer\grabbedEntity = e\room\Objects[1] And DrawHandIcon = True Then e\EventState2 = leverstate
 					
 					If e\EventState2 <> temp Then 
 						If e\EventState2 = False Then
@@ -6778,7 +6778,7 @@ Function UpdateEvents()
 						EndIf
 						
 						UpdateButton(e\room\Objects[4])
-						If ClosestButton = e\room\Objects[4] And MouseHit1 Then
+						If mainPlayer\closestButton = e\room\Objects[4] And MouseHit1 Then
 							e\EventState = 1 ;start the femur breaker
 							If SoundTransmission = True Then ;only play sounds if transmission is on
 								If e\SoundCHN2 <> 0 Then
@@ -7042,14 +7042,14 @@ Function UpdateEvents()
 									DeathMSG = DeathMSG + "The subject exhibits signs of blunt force trauma typical for personnel who have "
 									DeathMSG = DeathMSG + "entered the chamber when the lights are off."
 									
-									Injuries=Injuries+Rnd(0.4,0.8)
+									mainPlayer\injuries=Injuries+Rnd(0.4,0.8)
 									PlaySound_Strict DamageSFX(Rand(2,3))
 									mainPlayer\camShake = 0.5
 									
 									e\EventState2 = Rnd(-0.1, 0.1)
 									e\EventState3 = Rnd(-0.1, 0.1)
 									
-									If (Injuries>5.0) Kill()
+									If (mainPlayer\injuries>5.0) Kill()
 								EndIf
 								
 								TranslateEntity(mainPlayer\collider, e\EventState2,0,e\EventState3)
@@ -7134,7 +7134,7 @@ Function UpdateEvents()
 						
 						If e\room\NPC[0]<>Null
 							If e\room\NPC[0]\State = 0 Or EntityDistance(mainPlayer\collider, e\room\NPC[0]\Collider)>12.0 Then
-								e\EventState3 = e\EventState3 + (1+CurrSpeed)* FPSfactor
+								e\EventState3 = e\EventState3 + (1+mainPlayer\moveSpeed)* FPSfactor
 								If (e\EventState3 Mod 500) < 10.0 And ((e\EventState3-FPSfactor) Mod 500) > 490.0 Then
 									;If e\EventState3 > 3500 And Rnd(10000)<e\EventState3 Then
 									If e\EventState3 > 3000-(500*SelectedDifficulty\aggressiveNPCs) And Rnd(10000+(500*SelectedDifficulty\aggressiveNPCs)) < e\EventState3
@@ -7221,7 +7221,7 @@ Function UpdateEvents()
 							If (Abs(Distance(EntityX(e\room\Objects[3],True),EntityZ(e\room\Objects[3],True),EntityX(mainPlayer\collider,True),EntityZ(mainPlayer\collider,True)))<1.0) Then
 								DrawHandIcon = True
 								
-								If SelectedItem = Null Then
+								If mainPlayer\selectedItem = Null Then
 									If MouseHit1 Then
 										PlaySound_Strict(LoadTempSound("SFX\Door\WoodenDoorBudge.ogg"))
 										Msg = "The door will not budge."
@@ -7231,7 +7231,7 @@ Function UpdateEvents()
 									If MouseHit1 Then
 										PlaySound_Strict(LoadTempSound("SFX\Door\WoodenDoorOpen.ogg"))
 										ShowEntity fr.Forest\Forest_Pivot
-										SelectedItem = Null
+										mainPlayer\selectedItem = Null
 										
 										mainPlayer\blinkTimer = -10
 										
@@ -7331,7 +7331,7 @@ Function UpdateEvents()
 						;	If Not ChannelPlaying(e\SoundCHN) Then e\SoundCHN = PlaySound_Strict(moddedambience)
 						;End If
 						
-						;Saving Injuries and Bloodloss, so that the player won't be healed automatically
+						;Saving mainPlayer\injuries and Bloodloss, so that the player won't be healed automatically
 						PrevInjuries = Injuries
 						PrevBloodloss = Bloodloss
 						
@@ -7355,15 +7355,15 @@ Function UpdateEvents()
 						ResetEntity Collider
 						;PlaySound_Strict(HorrorSFX(9))
 						mainPlayer\camShake = 1.0
-						BlurTimer = 1200
-						Injuries = 1.0
+						mainPlayer\blurTimer = 1200
+						mainPlayer\injuries = 1.0
 						e\EventState = 2
 						
 					ElseIf e\EventState = 2
 						e\EventState2 = e\EventState2 + FPSfactor
 						
 						PointEntity e\room\NPC[0]\Collider, Collider
-						BlurTimer = Max(BlurTimer, 100)
+						mainPlayer\blurTimer = Max(mainPlayer\blurTimer, 100)
 						
 						If e\EventState2>200 And e\EventState2-FPSfactor=<200 Then 							
 							e\Sound = LoadSound_Strict("SFX\Music\1123.ogg");
@@ -7387,7 +7387,7 @@ Function UpdateEvents()
 							;Animate2(e\room\Objects[4], AnimTime(e\room\Objects[4]), 0, 8, 0.1, False)
 							If EntityDistance(mainPlayer\collider, e\room\Objects[4])>392*RoomScale Then
 								mainPlayer\blinkTimer = -10
-								BlurTimer = 500
+								mainPlayer\blurTimer = 500
 								PositionEntity mainPlayer\collider, EntityX(e\room\Objects[5],True),EntityY(e\room\Objects[5],True),EntityZ(e\room\Objects[5],True),True
 								RotateEntity mainPlayer\collider, 0, EntityYaw(e\room\obj,True)+180, 0
 								ResetEntity(mainPlayer\collider)
@@ -7437,8 +7437,8 @@ Function UpdateEvents()
 									PositionEntity mainPlayer\collider, EntityX(e\room\obj,True),0.3,EntityZ(e\room\obj,True),True
 									ResetEntity mainPlayer\collider									
 									mainPlayer\blinkTimer = -10
-									BlurTimer = 500	
-									Injuries = 1.5
+									mainPlayer\blurTimer = 500	
+									mainPlayer\injuries = 1.5
 									Bloodloss = 70
 								;PlaySound_Strict(LoadTempSound("SFX\Door\WoodenDoorClose.ogg"))							
 								EndIf								
@@ -7467,7 +7467,7 @@ Function UpdateEvents()
 							PositionEntity e\room\NPC[0]\Collider, x,y+0.2,z
 							ResetEntity e\room\NPC[0]\Collider
 							
-							Injuries = 1.5
+							mainPlayer\injuries = 1.5
 							Bloodloss = 70
 							
 							mainPlayer\blinkTimer = -10
@@ -7498,8 +7498,8 @@ Function UpdateEvents()
 						ResetEntity Collider
 						ShowEntity Light
 						LightFlash = 6
-						BlurTimer = 500	
-						Injuries = PrevInjuries
+						mainPlayer\blurTimer = 500	
+						mainPlayer\injuries = PrevInjuries
 						Bloodloss = PrevBloodloss
 						Crouch = False
 						
@@ -7739,7 +7739,7 @@ Function UpdateEvents()
 					If e\room\dist < 15.0 And e\room\dist >= 4.0 Then 
 						e\SoundCHN = LoopSound2(e\Sound, e\SoundCHN, mainPlayer\cam, e\room\NPC[0]\Collider, 15.0)
 						
-					ElseIf e\room\dist<4.0 And PlayerSoundVolume > 1.0 Then
+					ElseIf e\room\dist<4.0 And mainPlayer\loudness > 1.0 Then
 						de.Decals = CreateDecal(3,  EntityX(e\room\Objects[2],True), 0.01, EntityZ(e\room\Objects[2],True),90,Rnd(360),0)
 						de\Size = 0.3 : ScaleSprite (de\obj, de\size, de\size)
 						
@@ -7797,7 +7797,7 @@ Function UpdateEvents()
 										HideEntity e\room\Objects[2]
 										
 										If (Not WearingHazmat) Then 
-											Injuries=Injuries+0.1
+											mainPlayer\injuries=Injuries+0.1
 											Infect=1
 											Msg = "The window shattered and a piece of glass cut your arm."
 											MsgTimer = 70*8
@@ -7931,29 +7931,29 @@ Function UpdateEvents()
 					dist = Distance(EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider),EntityX(e\room\obj),EntityZ(e\room\obj))
 					If dist < 2.0 Then
 						CurrStepSFX=1
-						CurrSpeed = CurveValue(0.0, CurrSpeed, Max(dist*50,1.0))	
-						CrouchState = (2.0-dist)/2.0
+						mainPlayer\moveSpeed = CurveValue(0.0, mainPlayer\moveSpeed, Max(dist*50,1.0))	
+						mainPlayer\crouchState = (2.0-dist)/2.0
 						
 						If dist<0.5 Then
 							If e\EventState2 = 0 Then
 								PlaySound_Strict(LoadTempSound("SFX\Room\SinkholeFall.ogg"))
 							EndIf
 							
-							CurrSpeed = CurveValue(0.0, CurrSpeed, Max(dist*50,1.0))
+							mainPlayer\moveSpeed = CurveValue(0.0, mainPlayer\moveSpeed, Max(dist*50,1.0))
 							
 							x = CurveValue(EntityX(e\room\obj),EntityX(mainPlayer\collider),10.0)
 							y = CurveValue(EntityY(e\room\obj)-e\EventState2,EntityY(mainPlayer\collider),25.0)
 							z = CurveValue(EntityZ(e\room\obj),EntityZ(mainPlayer\collider),10.0)
 							PositionEntity mainPlayer\collider, x, y, z, True
 							
-							DropSpeed = 0
+							mainPlayer\dropSpeed = 0
 							
 							ResetEntity Collider
 							
 							e\EventState2=Min(e\EventState2+FPSfactor/200.0,2.0)
 							
 							LightBlink = Min(e\EventState2*5,10.0)
-							BlurTimer = e\EventState2*500
+							mainPlayer\blurTimer = e\EventState2*500
 							
 							If e\EventState2 = 2.0 Then MoveToPocketDimension()
 						EndIf
@@ -7993,27 +7993,27 @@ Function UpdateEvents()
 					EntityPick(mainPlayer\cam, 1.0)
 					If PickedEntity() = e\room\Objects[0] Then
 						DrawHandIcon = True
-						If MouseHit1 Then GrabbedEntity = e\room\Objects[0]
+						If MouseHit1 Then mainPlayer\grabbedEntity = e\room\Objects[0]
 					ElseIf PickedEntity() = e\room\Objects[1]
 						DrawHandIcon = True
-						If MouseHit1 Then GrabbedEntity = e\room\Objects[1]
+						If MouseHit1 Then mainPlayer\grabbedEntity = e\room\Objects[1]
 					EndIf
 					
 					If MouseDown1 Or MouseHit1 Then
-						If GrabbedEntity <> 0 Then ;avain
-							If GrabbedEntity = e\room\Objects[0] Then
+						If mainPlayer\grabbedEntity <> 0 Then ;avain
+							If mainPlayer\grabbedEntity = e\room\Objects[0] Then
 								If e\EventState = 0 Then
 									DrawHandIcon = True
-									TurnEntity(GrabbedEntity, 0, 0, -mouse_x_speed_1 * 2.5)
+									TurnEntity(mainPlayer\grabbedEntity, 0, 0, -mouse_x_speed_1 * 2.5)
 									
 									angle = WrapAngle(EntityRoll(e\room\Objects[0]))
 									If angle > 181 Then DrawArrowIcon(3) = True
 									DrawArrowIcon(1) = True
 									
 									If angle < 90 Then
-										RotateEntity(GrabbedEntity, 0, 0, 361.0)
+										RotateEntity(mainPlayer\grabbedEntity, 0, 0, 361.0)
 									ElseIf angle < 180
-										RotateEntity(GrabbedEntity, 0, 0, 180)
+										RotateEntity(mainPlayer\grabbedEntity, 0, 0, 180)
 									EndIf
 									
 									If angle < 181 And angle > 90 Then
@@ -8030,10 +8030,10 @@ Function UpdateEvents()
 										Next
 									EndIf
 								End If
-							ElseIf GrabbedEntity = e\room\Objects[1]
+							ElseIf mainPlayer\grabbedEntity = e\room\Objects[1]
 								If e\EventState = 0 Then
 									DrawHandIcon = True
-									TurnEntity(GrabbedEntity, 0, 0, -mouse_x_speed_1 * 2.5)
+									TurnEntity(mainPlayer\grabbedEntity, 0, 0, -mouse_x_speed_1 * 2.5)
 									
 									angle# = WrapAngle(EntityRoll(e\room\Objects[1]))
 									DrawArrowIcon(3) = True
@@ -8041,9 +8041,9 @@ Function UpdateEvents()
 									
 									If angle > 90 Then
 										If angle < 180 Then
-											RotateEntity(GrabbedEntity, 0, 0, 90.0)
+											RotateEntity(mainPlayer\grabbedEntity, 0, 0, 90.0)
 										ElseIf angle < 270
-											RotateEntity(GrabbedEntity, 0, 0, 270)
+											RotateEntity(mainPlayer\grabbedEntity, 0, 0, 270)
 										EndIf
 									EndIf
 									
@@ -8051,12 +8051,12 @@ Function UpdateEvents()
 							End If
 						End If
 					Else
-						GrabbedEntity = 0
+						mainPlayer\grabbedEntity = 0
 					End If
 					
 					Local setting$ = ""
 					
-					If GrabbedEntity <> e\room\Objects[1] Then
+					If mainPlayer\grabbedEntity <> e\room\Objects[1] Then
 						angle# = WrapAngle(EntityRoll(e\room\Objects[1]))
 						If angle < 22.5 Then
 							angle = 0
@@ -8081,11 +8081,11 @@ Function UpdateEvents()
 					EndIf
 					
 					For i% = 0 To 1
-						If GrabbedEntity = e\room\Objects[i] Then
+						If mainPlayer\grabbedEntity = e\room\Objects[i] Then
 							If Not EntityInView(e\room\Objects[i], mainPlayer\cam) Then
-								GrabbedEntity = 0
+								mainPlayer\grabbedEntity = 0
 							ElseIf EntityDistance(e\room\Objects[i], mainPlayer\cam) > 1.0
-								GrabbedEntity = 0
+								mainPlayer\grabbedEntity = 0
 							End If
 						End If
 					Next
@@ -8146,7 +8146,7 @@ Function UpdateEvents()
 							If Distance(EntityX(mainPlayer\collider), EntityZ(mainPlayer\collider), EntityX(e\room\Objects[2], True), EntityZ(e\room\Objects[2], True)) < (160.0 * RoomScale) Then
 								Select setting
 									Case "coarse"
-										Injuries = 4.0
+										mainPlayer\injuries = 4.0
 										Msg = "You notice countless small incisions all around your body. They are bleeding heavily."
 										MsgTimer = 70*8
 									Case "1:1"
@@ -8154,10 +8154,10 @@ Function UpdateEvents()
 									Case "fine", "very fine"
 										SuperMan = True
 								End Select
-								BlurTimer = 1000
+								mainPlayer\blurTimer = 1000
 								PositionEntity(mainPlayer\collider, EntityX(e\room\Objects[3], True), EntityY(e\room\Objects[3], True) + 1.0, EntityZ(e\room\Objects[3], True))
 								ResetEntity(mainPlayer\collider)
-								DropSpeed = 0
+								mainPlayer\dropSpeed = 0
 							EndIf								
 							
 							e\room\RoomDoors[0]\open = True
@@ -8206,7 +8206,7 @@ Function UpdateEvents()
 							
 							Local volume# = Max(1.0 - Abs(prevFrame - 600.0)/100.0, 0.0)
 							
-							BlurTimer = volume*1000.0
+							mainPlayer\blurTimer = volume*1000.0
 							mainPlayer\camShake = volume*10.0
 							
 							PointEntity(e\room\Objects[0], mainPlayer\collider)
@@ -8226,7 +8226,7 @@ Function UpdateEvents()
 						Case 3
 							e\EventState2 = e\EventState2 + FPSfactor
 							
-							BlurTimer = e\EventState2*2.0
+							mainPlayer\blurTimer = e\EventState2*2.0
 							
 							If (e\EventState2>250.0 And e\EventState2-FPSfactor <= 250.0) Then
 								Select Rand(3)
@@ -8394,7 +8394,7 @@ Function UpdateEvents()
 						If EntityY(mainPlayer\collider)<800.0 Then PositionEntity mainPlayer\collider,EntityX(mainPlayer\collider),800.1,EntityZ(mainPlayer\collider),True
 						ResetEntity Collider
 					Else
-						DropSpeed = 0
+						mainPlayer\dropSpeed = 0
 					EndIf
 					CurrStepSFX=3
 				Else
@@ -8457,12 +8457,12 @@ Function UpdateEvents()
 				;e\EventState3 = A check for if a item should be removed
 				;- 0.0 = no item "trade" will happen
 				;- 1.0 = item "trade" will happen
-				;- 2.0 = the player doesn't has any items in the Inventory, giving him heavily Injuries and giving him a random item
+				;- 2.0 = the player doesn't has any items in the Inventory, giving him heavily mainPlayer\injuries and giving him a random item
 				;- 3.0 = player got a memorial item (to explain a bit D-9341's background)
 				;- 3.1 = player got a memorial item + injuries (because he didn't had any item in his inventory before)
 				If mainPlayer\currRoom = e\room
 					
-					GrabbedEntity = 0
+					mainPlayer\grabbedEntity = 0
 					
 					e\EventState = 0
 					
@@ -8480,10 +8480,10 @@ Function UpdateEvents()
 					
 					If EntityDistance(e\room\Objects[0],mainPlayer\collider)<0.75 And Pick1162%
 						DrawHandIcon = True
-						If MouseHit1 Then GrabbedEntity = e\room\Objects[0]
+						If MouseHit1 Then mainPlayer\grabbedEntity = e\room\Objects[0]
 					EndIf
 					
-					If GrabbedEntity <> 0
+					If mainPlayer\grabbedEntity <> 0
 						e\EventState2 = Rand(0,MaxItemAmount-1)
 						If Inventory(e\EventState2)<>Null
 							;randomly picked item slot has an item in it, using this slot
@@ -8602,7 +8602,7 @@ Function UpdateEvents()
 						Next
 					;trade not sucessful (player got in return to injuries a new item)
 					ElseIf e\EventState3 = 2.0
-						Injuries = Injuries + 5.0
+						mainPlayer\injuries = mainPlayer\injuries + 5.0
 						pvt = CreatePivot()
 						PositionEntity pvt, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)-0.05,EntityZ(mainPlayer\collider)
 						TurnEntity pvt, 90, 0, 0
@@ -8617,7 +8617,7 @@ Function UpdateEvents()
 								GiveAchievement(Achv1162)
 								MouseHit1 = False
 								e\EventState3 = 0.0
-								If Injuries > 15
+								If mainPlayer\injuries > 15
 									DeathMSG = "A dead Class D subject was discovered within the containment chamber of SCP-1162."
 									DeathMSG = DeathMSG + " An autopsy revealed that his right lung was missing, which suggests"
 									DeathMSG = DeathMSG + " interaction with SCP-1162."
@@ -8639,7 +8639,7 @@ Function UpdateEvents()
 							PlaySound_Strict LoadTempSound("SFX\SCP\1162\Exchange"+Rand(0,4)+".ogg")
 							RemoveItem(Inventory(e\EventState2))
 						Else
-							Injuries = Injuries + 5.0
+							mainPlayer\injuries = mainPlayer\injuries + 5.0
 							pvt = CreatePivot()
 							PositionEntity pvt, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)-0.05,EntityZ(mainPlayer\collider)
 							TurnEntity pvt, 90, 0, 0
@@ -8647,7 +8647,7 @@ Function UpdateEvents()
 							de.decals = CreateDecal(3, PickedX(), PickedY()+0.005, PickedZ(), 90, Rand(360), 0)
 							de\size = 0.75 : ScaleSprite de\obj, de\size, de\size
 							FreeEntity pvt
-							If Injuries > 15
+							If mainPlayer\injuries > 15
 								DeathMSG = "A dead Class D subject was discovered within the containment chamber of SCP-1162."
 								DeathMSG = DeathMSG + " An autopsy revealed that his right lung was missing, which suggests"
 								DeathMSG = DeathMSG + " interaction with SCP-1162."

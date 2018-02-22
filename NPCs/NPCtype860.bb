@@ -77,15 +77,15 @@ Function UpdateNPCtype860(n.NPCs)
                         
                         Select Rand(3)
                             Case 1
-                                PointEntity n\Collider, Collider
+                                PointEntity n\Collider,mainPlayer\collider
                                 n\Frame = 2
                                 ;SetAnimTime(n\obj, 2)
                             Case 2
-                                PointEntity n\Collider, Collider
+                                PointEntity n\Collider,mainPlayer\collider
                                 n\Frame = 201
                                 ;SetAnimTime(n\obj, 201)
                             Case 3
-                                PointEntity n\Collider, Collider
+                                PointEntity n\Collider,mainPlayer\collider
                                 TurnEntity n\Collider, 0, 90, 0
                                 n\Frame = 299
                                 ;SetAnimTime(n\obj, 299)
@@ -115,7 +115,7 @@ Function UpdateNPCtype860(n.NPCs)
                             ;Animate2(n\obj, AnimTime(n\obj), 2, 199, 0.5,False)
                             ;If AnimTime(n\obj)=199 Then SetAnimTime(n\obj,298) : PlaySound2(Step2SFX(Rand(3,5)), mainPlayer\cam, n\Collider, 15.0)
                         ElseIf n\Frame <= 297
-                            PointEntity n\Collider, Collider
+                            PointEntity n\Collider,mainPlayer\collider
                             
                             AnimateNPC(n, 200, 297, 0.5, False)
                             If n\Frame=297 Then n\Frame=298 : PlaySound2(Step2SFX(Rand(3,5)), mainPlayer\cam, n\Collider, 15.0)
@@ -199,7 +199,7 @@ Function UpdateNPCtype860(n.NPCs)
                         EndIf
                     EndIf
                     
-                    If CurrSpeed > 0.03 Then ;the player is running
+                    If mainPlayer\moveSpeed > 0.03 Then ;the player is running
                         n\State3 = n\State3 + FPSfactor
                         If Rnd(5000)<n\State3 Then
                             temp = True
@@ -244,7 +244,7 @@ Function UpdateNPCtype860(n.NPCs)
                 If n\Sound = 0 Then n\Sound = LoadSound_Strict("SFX\General\Slash1.ogg")
                 If n\Sound2 = 0 Then n\Sound2 = LoadSound_Strict("SFX\General\Slash2.ogg")
                 
-                If dist>1.1 And KillTimer => 0 Then 
+                If dist>1.1 And (Not mainPlayer\dead) Then 
                     n\CurrSpeed = CurveValue(n\Speed*0.8, n\CurrSpeed, 10.0)
                     
                     AnimateNPC(n, 298, 316, n\CurrSpeed*10)
@@ -264,7 +264,7 @@ Function UpdateNPCtype860(n.NPCs)
                     
                     ;Animate2(n\obj, AnimTime(n\obj), 451,493, 0.5, False)
                     If (prevFrame < 461 And n\Frame=>461) Then 
-                        If KillTimer => 0 Then Kill() : KillAnim = 0
+                        If (Not mainPlayer\dead) Then Kill()
                         PlaySound_Strict(n\Sound)
                     EndIf
                     If (prevFrame < 476 And n\Frame=>476) Then PlaySound_Strict(n\Sound2)

@@ -139,19 +139,19 @@ Function UpdateNPCtype939(n.NPCs)
                         If temp Then
                             If Distance(n\EnemyX, n\EnemyZ, EntityX(n\Collider), EntityZ(n\Collider))<1.5 Then
                                 PlaySound_Strict n\Sound2
-                                Injuries = Injuries + Rnd(1.5, 2.5)-WearingVest*0.5
-                                BlurTimer = 500		
+                                mainPlayer\injuries = mainPlayer\injuries + Rnd(1.5, 2.5)-IsPlayerWearing(mainPlayer,"vest",WORNITEM_BODY_SLOT)*0.5
+                                mainPlayer\blurTimer = 500		
                             Else
                                 n\Frame	 = 449
                                 ;SetAnimTime(n\obj, 449)
                             EndIf
                         EndIf
                         
-                        If Injuries>4.0 Then 
+                        If mainPlayer\injuries>4.0 Then 
                             DeathMSG=Chr(34)+"All four (4) escaped SCP-939 specimens have been captured and recontained successfully. "
                             DeathMSG=DeathMSG+"Three (3) of them made quite a mess at Storage Area 6. A cleaning team has been dispatched."+Chr(34)
                             Kill()
-                            If (Not GodMode) Then n\State = 5
+                            If (Not mainPlayer\godMode) Then n\State = 5
                         EndIf								
                     Else
                         If n\LastSeen = 10*7 Then 
@@ -204,7 +204,7 @@ Function UpdateNPCtype939(n.NPCs)
             dist = EntityDistance(n\Collider, mainPlayer\collider)
             
             If dist < 4.0 Then dist = dist - EntityVisible(mainPlayer\collider, n\Collider)
-            If PlayerSoundVolume*1.2>dist Or dist < 1.5 Then
+            If mainPlayer\loudness*1.2>dist Or dist < 1.5 Then
                 If n\State3 = 0 Then
                     If n\Sound <> 0 Then FreeSound_Strict n\Sound : n\Sound = 0
                     n\Sound = LoadSound_Strict("SFX\SCP\939\"+(n\ID Mod 3)+"Attack"+Rand(1,3)+".ogg")
@@ -215,7 +215,7 @@ Function UpdateNPCtype939(n.NPCs)
                 EndIf
                 
                 n\State = 3
-            ElseIf PlayerSoundVolume*1.6>dist
+            ElseIf mainPlayer\loudness*1.6>dist Then
                 If n\State<>1 And n\Reload <= 0 Then
                     If n\Sound <> 0 Then FreeSound_Strict n\Sound : n\Sound = 0
                     n\Sound = LoadSound_Strict("SFX\SCP\939\"+(n\ID Mod 3)+"Alert"+Rand(1,3)+".ogg")

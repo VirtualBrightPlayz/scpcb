@@ -55,7 +55,7 @@ Function UpdateNPCtype966(n.NPCs)
         PositionEntity n\obj,EntityX(n\Collider,True),EntityY(n\Collider,True)-0.2,EntityZ(n\Collider,True)
         RotateEntity n\obj,-90.0,EntityYaw(n\Collider),0.0
         
-        If (WearingNightVision=0) Then
+        If (Not IsPlayerWearing(mainPlayer,"nvgoggles",WORNITEM_HEAD_SLOT)) Then
             HideEntity n\obj
             If dist<1 And n\Reload <= 0 And MsgTimer <= 0 Then
                 Select Rand(6)
@@ -94,7 +94,7 @@ Function UpdateNPCtype966(n.NPCs)
             
         EndIf
         
-        If Stamina<10 Then 
+        If mainPlayer\stamina<10 Then 
             n\State3=n\State3+FPSfactor
         Else If n\State3 < 900.0
             n\State3=Max(n\State3-FPSfactor*0.2,0.0)
@@ -148,18 +148,18 @@ Function UpdateNPCtype966(n.NPCs)
                 RotateEntity n\Collider,0.0,CurveAngle(angle,EntityYaw(n\Collider),20.0),0.0
                 
                 If n\State3<900 Then
-                    BlurTimer = ((Sin(MilliSecs2()/50)+1.0)*200)/dist
+                    mainPlayer\blurTimer = ((Sin(MilliSecs2()/50)+1.0)*200)/dist
                     
-                    If (WearingNightVision>0) Then GiveAchievement(Achv966)
+                    If (IsPlayerWearing(mainPlayer,"nvgoggles",WORNITEM_HEAD_SLOT)) Then GiveAchievement(Achv966)
                     
-                    If (Not Wearing714) And dist<16 Then
-                        BlinkEffect = Max(BlinkEffect, 1.5)
-                        BlinkEffectTimer = 1000
+                    If (Not IsPlayerWearing(mainPlayer,"scp714",WORNITEM_HAND_SLOT)) And dist<16 Then
+                        mainPlayer\blinkEffect = Max(mainPlayer\blinkEffect, 1.5)
+                        ;BlinkEffectTimer = 1000
                         
-                        StaminaEffect = 2.0
-                        StaminaEffectTimer = 1000
+                        mainPlayer\staminaEffect = 2.0
+                        ;StaminaEffectTimer = 1000
                         
-                        If MsgTimer<=0 And StaminaEffect<1.5 Then
+                        If MsgTimer<=0 And mainPlayer\staminaEffect<1.5 Then
                             Select Rand(4)
                                 Case 1
                                     Msg = "You feel exhausted."
@@ -302,7 +302,7 @@ Function UpdateNPCtype966(n.NPCs)
                 If dist<1.0 Then
                     If n\Frame>2173.0 And prevFrame<=2173.0 Or n\Frame>2203.0 And prevFrame<=2203.0 Or n\Frame>2227.0 And prevFrame<=2227.0 Then
                         PlaySound2(LoadTempSound("SFX\General\Slash"+Rand(1,2)+".ogg"), mainPlayer\cam, n\Collider)
-                        Injuries = Injuries + Rnd(0.5,1.0)								
+                        mainPlayer\injuries = mainPlayer\injuries + Rnd(0.5,1.0)								
                     EndIf	
                 EndIf
                 

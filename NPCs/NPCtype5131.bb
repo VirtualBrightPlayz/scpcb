@@ -70,7 +70,7 @@ Function UpdateNPCtype5131(n.NPCs)
                 ;Animate2(n\obj, AnimTime(n\obj), 229, 299, 0.2)
                 
                 If n\LastSeen Then 	
-                    PointEntity n\obj2, Collider
+                    PointEntity n\obj2,mainPlayer\collider
                     RotateEntity n\obj, 0, CurveAngle(EntityYaw(n\obj2),EntityYaw(n\obj),40), 0
                     If dist < 4 Then n\State = Rand(1,2)
                 Else

@@ -2702,21 +2702,21 @@ Function UpdateSecurityCams()
 									If Rand(3) = 1 Then EntityTexture(sc\ScrOverlay, MonitorTexture)
 									If Rand(6) < 5 Then
 										EntityTexture(sc\ScrOverlay, GorePics(Rand(0, 5)))
-										If sc\PlayerState = 1 Then PlaySound_Strict(HorrorSFX(1))
+										;If sc\PlayerState = 1 Then PlaySound_Strict(HorrorSFX(1)) ;TODO: fix
 										sc\PlayerState = 2
 										If sc\soundCHN = 0 Then
-											sc\soundCHN = PlaySound_Strict(HorrorSFX(4))
+											;sc\soundCHN = PlaySound_Strict(HorrorSFX(4)) ;TODO: fix
 										Else
-											If Not ChannelPlaying(sc\soundCHN) Then sc\soundCHN = PlaySound_Strict(HorrorSFX(4))
+											;If Not ChannelPlaying(sc\soundCHN) Then sc\soundCHN = PlaySound_Strict(HorrorSFX(4)) ;TODO: fix
 										End If
 										If sc\CoffinEffect=3 And Rand(200)=1 Then sc\CoffinEffect=2 : sc\PlayerState = Rand(10000, 20000)
 									End If	
-									BlurTimer = 1000
+									mainPlayer\blurTimer = 1000
 								ElseIf mainPlayer\sanity895 < - 500
 									If Rand(7) = 1 Then EntityTexture(sc\ScrOverlay, MonitorTexture)
 									If Rand(50) = 1 Then
 										EntityTexture(sc\ScrOverlay, GorePics(Rand(0, 5)))
-										If sc\PlayerState = 0 Then PlaySound_Strict(HorrorSFX(0))
+										;If sc\PlayerState = 0 Then PlaySound_Strict(HorrorSFX(0)) ;TODO: fix
 										sc\PlayerState = Max(sc\PlayerState, 1)
 										If sc\CoffinEffect=3 And Rand(100)=1 Then sc\CoffinEffect=2 : sc\PlayerState = Rand(10000, 20000)
 									End If
@@ -2777,17 +2777,17 @@ Function UpdateLever(obj, locked=False)
 				
 				If PickedEntity() = obj Then
 					DrawHandIcon = True
-					If MouseHit1 Then GrabbedEntity = obj
+					If MouseHit1 Then mainPlayer\grabbedEntity = obj
 				End If
 				
 				prevpitch# = EntityPitch(obj)
 				
 				If (MouseDown1 Or MouseHit1) Then
-					If GrabbedEntity <> 0 Then
-						If GrabbedEntity = obj Then
+					If mainPlayer\grabbedEntity <> 0 Then
+						If mainPlayer\grabbedEntity = obj Then
 							DrawHandIcon = True 
 							;TurnEntity(obj, , 0, 0)
-							RotateEntity(GrabbedEntity, Max(Min(EntityPitch(obj)+Max(Min(mouse_y_speed_1 * 8,30.0),-30), 80), -80), EntityYaw(obj), 0)
+							RotateEntity(mainPlayer\grabbedEntity, Max(Min(EntityPitch(obj)+Max(Min(mouse_y_speed_1 * 8,30.0),-30), 80), -80), EntityYaw(obj), 0)
 							
 							DrawArrowIcon(0) = True
 							DrawArrowIcon(2) = True
@@ -2810,7 +2810,7 @@ Function UpdateLever(obj, locked=False)
 			Else
 				RotateEntity(obj, CurveValue(-80, EntityPitch(obj), 10), EntityYaw(obj), 0)
 			EndIf
-			GrabbedEntity = 0
+			mainPlayer\grabbedEntity = 0
 		End If
 		
 	EndIf
@@ -2832,10 +2832,10 @@ Function UpdateButton(obj)
 		PointEntity temp,obj
 		
 		If EntityPick(temp, 0.65) = obj Then
-			If ClosestButton = 0 Then 
-				ClosestButton = obj
+			If mainPlayer\closestButton = 0 Then 
+				mainPlayer\closestButton = obj
 			Else
-				If dist < EntityDistance(mainPlayer\collider, ClosestButton) Then ClosestButton = obj
+				If dist < EntityDistance(mainPlayer\collider, mainPlayer\closestButton) Then mainPlayer\closestButton = obj
 			End If							
 		End If
 		
@@ -2851,7 +2851,7 @@ Function UpdateElevators#(State#, door1.Doors, door2.Doors, room1, room2, event.
 	door2\IsElevatorDoor = 1
 	If door1\open = True And door2\open = False Then 
 		State = -1
-		If (ClosestButton = door2\buttons[0] Or ClosestButton = door2\buttons[1]) And MouseHit1 Then
+		If (mainPlayer\closestButton = door2\buttons[0] Or mainPlayer\closestButton = door2\buttons[1]) And MouseHit1 Then
 			UseDoor(door1,False)
 		EndIf
 		If door2\NPCCalledElevator = True
@@ -2860,7 +2860,7 @@ Function UpdateElevators#(State#, door1.Doors, door2.Doors, room1, room2, event.
 		EndIf
 	ElseIf door2\open = True And door1\open = False
 		State = 1
-		If (ClosestButton = door1\buttons[0] Or ClosestButton = door1\buttons[1]) And MouseHit1 Then
+		If (mainPlayer\closestButton = door1\buttons[0] Or mainPlayer\closestButton = door1\buttons[1]) And MouseHit1 Then
 			UseDoor(door2,False)
 		EndIf
 		If door1\NPCCalledElevator = True
@@ -2931,7 +2931,7 @@ Function UpdateElevators#(State#, door1.Doors, door2.Doors, room1, room2, event.
 					PositionEntity(mainPlayer\collider, EntityX(room2,True)+x,0.1+EntityY(room2,True)+(EntityY(mainPlayer\collider)-EntityY(room1,True)),EntityZ(room2,True)+z,True)
 					ResetEntity mainPlayer\collider	
 					UpdateDoorsTimer = 0
-					DropSpeed = 0
+					mainPlayer\dropSpeed = 0
 					UpdateDoors()
 					UpdateRooms()
 				EndIf
@@ -3004,9 +3004,9 @@ Function UpdateElevators#(State#, door1.Doors, door2.Doors, room1, room2, event.
 					x# = Max(Min((EntityX(mainPlayer\collider)-EntityX(room2,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
 					z# = Max(Min((EntityZ(mainPlayer\collider)-EntityZ(room2,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
 					PositionEntity(mainPlayer\collider, EntityX(room1,True)+x,0.1+EntityY(room1,True)+(EntityY(mainPlayer\collider)-EntityY(room2,True)),EntityZ(room1,True)+z,True)
-					ResetEntity Collider
+					ResetEntity mainPlayer\collider
 					UpdateDoorsTimer = 0
-					DropSpeed = 0
+					mainPlayer\dropSpeed = 0
 					UpdateDoors()
 					UpdateRooms()
 				EndIf
@@ -3046,13 +3046,13 @@ Function UpdateElevators2#(State#, door1.Doors, door2.Doors, room1, room2, event
 	If door1\open = True And door2\open = False Then 
 		State = -1
 		door2\IsElevatorDoor = 2
-		If (ClosestButton = door2\buttons[0] Or ClosestButton = door2\buttons[1]) And MouseHit1 Then
+		If (mainPlayer\closestButton = door2\buttons[0] Or mainPlayer\closestButton = door2\buttons[1]) And MouseHit1 Then
 			UseDoor(door1,False)
 		EndIf
 	ElseIf door2\open = True And door1\open = False
 		State = 1
 		door1\IsElevatorDoor = 2
-		If (ClosestButton = door1\buttons[0] Or ClosestButton = door1\buttons[1]) And MouseHit1 Then
+		If (mainPlayer\closestButton = door1\buttons[0] Or mainPlayer\closestButton = door1\buttons[1]) And MouseHit1 Then
 			UseDoor(door2,False)
 		EndIf
 	ElseIf Abs(door1\openstate-door2\openstate)<0.2 Then
@@ -3171,7 +3171,7 @@ Function UpdateElevators2#(State#, door1.Doors, door2.Doors, room1, room2, event
 					
 					PositionEntity mainPlayer\collider, EntityX(room1,True)+x,0.05+EntityY(room1,True)+(EntityY(mainPlayer\collider)-EntityY(room2,True)),EntityZ(room1,True)+z,True
 					
-					ResetEntity Collider
+					ResetEntity mainPlayer\collider
 					UpdateDoors()
 					UpdateRooms()
 				EndIf

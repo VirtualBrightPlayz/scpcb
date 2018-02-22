@@ -311,7 +311,7 @@ Type Items
 	Field name$
 	Field collider%,model%
 	Field itemtemplate.ItemTemplates
-	Field DropSpeed#
+	Field dropSpeed#
 	
 	Field r%,g%,b%,a#
 	

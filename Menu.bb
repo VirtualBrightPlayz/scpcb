@@ -394,7 +394,7 @@ Function UpdateMainMenu()
 						
 						LoadEntities()
 						InitNewGame()
-						MainMenuOpen = False
+						CurrGameState = GAMESTATE_PLAYING
 						FlushKeys()
 						FlushMouse()
 						
@@ -450,7 +450,7 @@ Function UpdateMainMenu()
 								LoadGame(SavePath + SaveGames(i - 1) + "\")
 								CurrSave = SaveGames(i - 1)
 								InitLoadGame()
-								MainMenuOpen = False
+								CurrGameState = GAMESTATE_PLAYING
 							EndIf
 							
 							If DrawButton(x + 400 * MenuScale, y + 20 * MenuScale, 100 * MenuScale, 30 * MenuScale, "Delete", False) Then
@@ -647,11 +647,11 @@ Function UpdateMainMenu()
 					Text(x + 20 * MenuScale, y + 20 * MenuScale, "Move Forward")
 					InputBox(x + 160 * MenuScale, y + 20 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(keyBinds\up,210)),5)		
 					Text(x + 20 * MenuScale, y + 40 * MenuScale, "Strafe Left")
-					InputBox(x + 160 * MenuScale, y + 40 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(keyBinds\left,210)),3)	
+					InputBox(x + 160 * MenuScale, y + 40 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(keyBinds\lft,210)),3)	
 					Text(x + 20 * MenuScale, y + 60 * MenuScale, "Move Backward")
 					InputBox(x + 160 * MenuScale, y + 60 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(keyBinds\down,210)),6)				
 					Text(x + 20 * MenuScale, y + 80 * MenuScale, "Strafe Right")
-					InputBox(x + 160 * MenuScale, y + 80 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(keyBinds\right,210)),4)	
+					InputBox(x + 160 * MenuScale, y + 80 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(keyBinds\rght,210)),4)	
 					Text(x + 20 * MenuScale, y + 100 * MenuScale, "Quick Save")
 					InputBox(x + 160 * MenuScale, y + 100 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(keyBinds\save,210)),11)
 					
@@ -672,9 +672,9 @@ Function UpdateMainMenu()
 					If key<>0 Then
 						Select SelectedInputBox
 							Case 3
-								keyBinds\left = key
+								keyBinds\lft = key
 							Case 4
-								keyBinds\right = key
+								keyBinds\rght = key
 							Case 5
 								keyBinds\up = key
 							Case 6
@@ -703,9 +703,6 @@ Function UpdateMainMenu()
 					y = y + 20*MenuScale
 					
 					Color 255,255,255
-					Text(x + 20 * MenuScale, y, "Enable console:")
-					userOptions\allowConsole = DrawTick(x + 310 * MenuScale, y + MenuScale, userOptions\allowConsole)
-					
 					y = y + 30*MenuScale
 					
 					Color 255,255,255
@@ -1191,7 +1188,7 @@ Function DrawLoading(percent%, shortloading=False)
 		Text(userOptions\screenWidth / 2, userOptions\screenHeight / 2 - 100, "LOADING - " + percent + " %", True, True)
 		
 		If percent = 100 Then 
-			If firstloop And SelectedLoadingScreen\title <> "CWM" Then PlaySound_Strict HorrorSFX(8)
+			;If firstloop And SelectedLoadingScreen\title <> "CWM" Then PlaySound_Strict HorrorSFX(8) ;TODO: fix
 			Text(userOptions\screenWidth / 2, userOptions\screenHeight - 50, "PRESS ANY KEY TO CONTINUE", True, True)
 		Else
 			FlushKeys()

@@ -21,3 +21,181 @@ Function FillRoom2Cafeteria(r.Rooms)
     it = CreateItem("Empty Cup", "emptycup", r\x-540*RoomScale, -187*RoomScale, r\z+124.0*RoomScale)
     EntityParent(it\collider, r\obj)
 End Function
+
+Function Use294()
+	Local x#,y#, xtemp%,ytemp%, strtemp$, temp%
+	
+	ShowPointer()
+	
+	x = userOptions\screenWidth/2 - (ImageWidth(Panel294)/2)
+	y = userOptions\screenHeight/2 - (ImageHeight(Panel294)/2)
+	DrawImage Panel294, x, y
+	If userOptions\fullscreen Then DrawImage CursorIMG, ScaledMouseX(),ScaledMouseY()
+	
+	temp = True
+	If mainPlayer\currRoom\SoundCHN<>0 Then temp = False
+	
+	Text x+907, y+185, Input294, True,True
+	
+	If temp Then
+		If MouseHit1 Then
+			xtemp = Floor((ScaledMouseX()-x-228) / 35.5)
+			ytemp = Floor((ScaledMouseY()-y-342) / 36.5)
+			
+			If ytemp => 0 And ytemp < 5 Then
+				If xtemp => 0 And xtemp < 10 Then PlaySound_Strict ButtonSFX
+			EndIf
+			
+			strtemp = ""
+			
+			temp = False
+			
+			Select ytemp
+				Case 0
+					strtemp = (xtemp + 1) Mod 10
+				Case 1
+					Select xtemp
+						Case 0
+							strtemp = "Q"
+						Case 1
+							strtemp = "W"
+						Case 2
+							strtemp = "E"
+						Case 3
+							strtemp = "R"
+						Case 4
+							strtemp = "T"
+						Case 5
+							strtemp = "Y"
+						Case 6
+							strtemp = "U"
+						Case 7
+							strtemp = "I"
+						Case 8
+							strtemp = "O"
+						Case 9
+							strtemp = "P"
+					End Select
+				Case 2
+					Select xtemp
+						Case 0
+							strtemp = "A"
+						Case 1
+							strtemp = "S"
+						Case 2
+							strtemp = "D"
+						Case 3
+							strtemp = "F"
+						Case 4
+							strtemp = "G"
+						Case 5
+							strtemp = "H"
+						Case 6
+							strtemp = "J"
+						Case 7
+							strtemp = "K"
+						Case 8
+							strtemp = "L"
+						Case 9 ;dispense
+							temp = True
+					End Select
+				Case 3
+					Select xtemp
+						Case 0
+							strtemp = "Z"
+						Case 1
+							strtemp = "X"
+						Case 2
+							strtemp = "C"
+						Case 3
+							strtemp = "V"
+						Case 4
+							strtemp = "B"
+						Case 5
+							strtemp = "N"
+						Case 6
+							strtemp = "M"
+						Case 7
+							strtemp = "-"
+						Case 8
+							strtemp = " "
+						Case 9
+							Input294 = Left(Input294, Max(Len(Input294)-1,0))
+					End Select
+				Case 4
+					strtemp = " "
+			End Select
+			
+			Input294 = Input294 + strtemp
+			
+			Input294 = Left(Input294, Min(Len(Input294),15))
+			
+			If temp And Input294 <> "" Then ;dispense
+				Input294 = Trim(Lower(Input294))
+				If Left(Input294, Min(7,Len(Input294))) = "cup of " Then
+					Input294 = Right(Input294, Len(Input294)-7)
+				ElseIf Left(Input294, Min(9,Len(Input294))) = "a cup of " 
+					Input294 = Right(Input294, Len(Input294)-9)
+				EndIf
+				
+				Local loc% = GetINISectionLocation("DATA\SCP-294.ini", Input294)
+				
+				If loc > 0 Then
+					strtemp$ = GetINIString2("DATA\SCP-294.ini", loc, "dispensesound")
+					If strtemp = "" Then
+						mainPlayer\currRoom\SoundCHN = PlaySound_Strict (LoadTempSound("SFX\SCP\294\dispense1.ogg"))
+					Else
+						mainPlayer\currRoom\SoundCHN = PlaySound_Strict (LoadTempSound(strtemp))
+					EndIf
+					
+					If GetINIInt2("DATA\SCP-294.ini", loc, "explosion")=True Then 
+						ExplosionTimer = 135
+						DeathMSG = GetINIString2("DATA\SCP-294.ini", loc, "deathmessage")
+					EndIf
+					
+					strtemp$ = GetINIString2("DATA\SCP-294.ini", loc, "color")
+					
+					sep1 = Instr(strtemp, ",", 1)
+					sep2 = Instr(strtemp, ",", sep1+1)
+					r% = Trim(Left(strtemp, sep1-1))
+					g% = Trim(Mid(strtemp, sep1+1, sep2-sep1-1))
+					b% = Trim(Right(strtemp, Len(strtemp)-sep2))
+					
+					alpha# = Float(GetINIString2("DATA\SCP-294.ini", loc, "alpha"))
+					glow = GetINIInt2("DATA\SCP-294.ini", loc, "glow")
+					If alpha = 0 Then alpha = 1.0
+					If glow Then alpha = -alpha
+					
+					it.items = CreateItem("Cup", "cup", EntityX(mainPlayer\currRoom\Objects[1],True),EntityY(mainPlayer\currRoom\Objects[1],True),EntityZ(mainPlayer\currRoom\Objects[1],True), r,g,b,alpha)
+					it\name = "Cup of "+Input294
+					EntityType (it\collider, HIT_ITEM)
+				Else
+					;out of range
+					Input294 = "OUT OF RANGE"
+					mainPlayer\currRoom\SoundCHN = PlaySound_Strict (LoadTempSound("SFX\SCP\294\outofrange.ogg"))
+				EndIf
+				
+			EndIf
+			
+		EndIf ;if mousehit1
+		
+		If MouseHit2 Or (Not Using294) Then 
+			HidePointer()
+			Using294 = False
+			Input294 = ""
+		EndIf
+		
+	Else ;playing a dispensing sound
+		If Input294 <> "OUT OF RANGE" Then Input294 = "DISPENSING..." : DebugLog "Generated dat dispenser"
+		
+		If Not ChannelPlaying(mainPlayer\currRoom\SoundCHN) Then
+			If Input294 <> "OUT OF RANGE" Then
+				HidePointer()
+				Using294 = False
+			EndIf
+			Input294=""
+			mainPlayer\currRoom\SoundCHN=0
+		EndIf
+	EndIf
+	
+End Function

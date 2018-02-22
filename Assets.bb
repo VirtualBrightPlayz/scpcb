@@ -352,8 +352,8 @@ Function InitNewGame()
 	HidePointer()
 	
 	mainPlayer\blinkTimer = -10
-	BlurTimer = 100
-	Stamina = 100
+	mainPlayer\blurTimer = 100
+	mainPlayer\stamina = 100
 	
 	For i% = 0 To 70
 		FPSfactor = 1.0
@@ -374,7 +374,7 @@ Function InitNewGame()
 	FlushKeys
 	FlushMouse
 	
-	DropSpeed = 0
+	mainPlayer\dropSpeed = 0
 	
 	PrevTime = MilliSecs()
 End Function
@@ -411,13 +411,13 @@ Function InitLoadGame()
 	HidePointer ()
 	
 	mainPlayer\blinkTimer = BLINKFREQ
-	Stamina = 100
+	mainPlayer\stamina = 100
 	
 	For rt.RoomTemplates = Each RoomTemplates
 		If rt\obj <> 0 Then FreeEntity(rt\obj) : rt\obj = 0
 	Next
 	
-	DropSpeed = 0.0
+	mainPlayer\dropSpeed = 0.0
 	
 	For e.Events = Each Events
 		;Loading the necessary stuff for dimension1499, but this will only be done if the player is in this dimension already
@@ -510,9 +510,9 @@ Function NullGame()
 		itt\found = False
 	Next
 	
-	DropSpeed = 0
+	mainPlayer\dropSpeed = 0
 	Shake = 0
-	CurrSpeed = 0
+	mainPlayer\moveSpeed = 0
 	
 	DeathTimer=0
 	
@@ -524,7 +524,7 @@ Function NullGame()
 	BlinkEffectTimer = 0
 	
 	Bloodloss = 0
-	Injuries = 0
+	mainPlayer\injuries = 0
 	Infect = 0
 	
 	For i = 0 To 5
@@ -586,8 +586,8 @@ Function NullGame()
 	
 	KillTimer = 0
 	FallTimer = 0
-	Stamina = 100
-	BlurTimer = 0
+	mainPlayer\stamina = 100
+	mainPlayer\blurTimer = 0
 	SuperMan = False
 	SuperManTimer = 0
 	
@@ -596,14 +596,14 @@ Function NullGame()
 	Msg = ""
 	MsgTimer = 0
 	
-	SelectedItem = Null
+	mainPlayer\selectedItem = Null
 	
 	For i = 0 To MaxItemAmount - 1
 		Inventory(i) = Null
 	Next
-	SelectedItem = Null
+	mainPlayer\selectedItem = Null
 	
-	ClosestButton = 0
+	mainPlayer\closestButton = 0
 	
 	For d.Doors = Each Doors
 		Delete d
