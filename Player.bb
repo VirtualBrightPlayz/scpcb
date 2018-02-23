@@ -59,6 +59,8 @@ Type Player
 	
 	Field blinkTimer#
 	Field stamina#
+	
+	Field footstepOverride%
 	;------------
 	
 	;ailments
@@ -372,9 +374,9 @@ Function MovePlayer()
 	If (Not mainPlayer\noclip) Then 
 		If ((KeyDown(keyBinds\down) Xor KeyDown(keyBinds\up)) Or (KeyDown(keyBinds\rght) Xor KeyDown(keyBinds\lft)) And (Not mainPlayer\disableControls)) Or mainPlayer\forceMove>0 Then
 			
-			If Crouch = 0 And (KeyDown(keyBinds\sprint)) And mainPlayer\stamina > 0.0 And (Not IsZombie) Then
+			If mainPlayer\crouching = 0 And (KeyDown(keyBinds\sprint)) And mainPlayer\stamina > 0.0 Then; And (Not IsZombie) Then
 				Sprint = 2.5
-				mainPlayer\stamina = mainPlayer\stamina - FPSfactor * 0.5 * StaminaEffect
+				mainPlayer\stamina = mainPlayer\stamina - FPSfactor * 0.5 * (1.0/mainPlayer\staminaEffect)
 				If mainPlayer\stamina <= 0 Then mainPlayer\stamina = -20.0
 			End If
 			
@@ -386,44 +388,45 @@ Function MovePlayer()
 				EndIf
 			EndIf	
 			
-			If ForceMove>0 Then Speed=Speed*ForceMove
+			If mainPlayer\forceMove>0 Then Speed=Speed*mainPlayer\forceMove
 			
 			If mainPlayer\selectedItem<>Null Then
-				If SelectedItem\itemtemplate\tempname = "firstaid" Or SelectedItem\itemtemplate\tempname = "finefirstaid" Or SelectedItem\itemtemplate\tempname = "firstaid2" Then 
+				If mainPlayer\selectedItem\itemtemplate\tempname = "firstaid" Or mainPlayer\selectedItem\itemtemplate\tempname = "finefirstaid" Or mainPlayer\selectedItem\itemtemplate\tempname = "firstaid2" Then 
 					Sprint = 0
 				EndIf
 			EndIf
 			
-			Local temp# = (Shake Mod 360), tempchn%
-			If (Not UnableToMove%) Then Shake# = (Shake + FPSfactor * Min(Sprint, 1.5) * 7) Mod 720
-			If temp < 180 And (Shake Mod 360) >= 180 And KillTimer>=0 Then
-				If CurrStepSFX=0 Then
+			Local temp# = (mainPlayer\camAnimState Mod 360), tempchn%
+			If (Not mainPlayer\disableControls) Then mainPlayer\camAnimState = (mainPlayer\camAnimState + FPSfactor * Min(Sprint, 1.5) * 7) Mod 720
+			If temp < 180 And (mainPlayer\camAnimState Mod 360) >= 180 And (Not mainPlayer\dead) Then
+				;TODO: define constants for each override state
+				If mainPlayer\footstepOverride=0 Then
 					temp = GetStepSound(mainPlayer\collider)
 					
 					If Sprint = 1.0 Then
 						mainPlayer\loudness = Max(4.0,mainPlayer\loudness)
 						tempchn% = PlaySound_Strict(StepSFX(temp, 0, Rand(0, 7)))
-						ChannelVolume tempchn, (1.0-(Crouch*0.6))*userOptions\soundVolume
+						ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\SoundVolume
 					Else
-						mainPlayer\loudness = Max(2.5-(Crouch*0.6),mainPlayer\loudness)
+						mainPlayer\loudness = Max(2.5-(mainPlayer\crouching*0.6),mainPlayer\loudness)
 						tempchn% = PlaySound_Strict(StepSFX(temp, 1, Rand(0, 7)))
-						ChannelVolume tempchn, (1.0-(Crouch*0.6))*userOptions\soundVolume
+						ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\SoundVolume
 					End If
-				ElseIf CurrStepSFX=1
+				ElseIf mainPlayer\footstepOverride=1 Then
 					tempchn% = PlaySound_Strict(Step2SFX(Rand(0, 2)))
-					ChannelVolume tempchn, (1.0-(Crouch*0.4))*userOptions\soundVolume
-				ElseIf CurrStepSFX=2
+					ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.4))*userOptions\SoundVolume
+				ElseIf mainPlayer\footstepOverride=2 Then
 					tempchn% = PlaySound_Strict(Step2SFX(Rand(3,5)))
-					ChannelVolume tempchn, (1.0-(Crouch*0.4))*userOptions\soundVolume
-				ElseIf CurrStepSFX=3
+					ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.4))*userOptions\SoundVolume
+				ElseIf mainPlayer\footstepOverride=3 Then
 					If Sprint = 1.0 Then
 						mainPlayer\loudness = Max(4.0,mainPlayer\loudness)
 						tempchn% = PlaySound_Strict(StepSFX(0, 0, Rand(0, 7)))
-						ChannelVolume tempchn, (1.0-(Crouch*0.6))*userOptions\soundVolume
+						ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\SoundVolume
 					Else
-						mainPlayer\loudness = Max(2.5-(Crouch*0.6),mainPlayer\loudness)
+						mainPlayer\loudness = Max(2.5-(mainPlayer\crouching*0.6),mainPlayer\loudness)
 						tempchn% = PlaySound_Strict(StepSFX(0, 1, Rand(0, 7)))
-						ChannelVolume tempchn, (1.0-(Crouch*0.6))*userOptions\soundVolume
+						ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\SoundVolume
 					End If
 				EndIf
 				
@@ -437,56 +440,56 @@ Function MovePlayer()
 		EndIf
 	EndIf
 	
-	If KeyHit(keyBinds\crouch) And Playable Then Crouch = (Not Crouch)
+	If KeyHit(keyBinds\crouch) And (Not mainPlayer\disableControls) Then mainPlayer\crouching = (Not mainPlayer\crouching)
 	
 	Local temp2# = (Speed * Sprint) / (1.0+mainPlayer\crouchState)
 	
-	If NoClip Then 
-		Shake = 0
+	If mainPlayer\noclip Then 
+		mainPlayer\camAnimState = 0
 		mainPlayer\moveSpeed = 0
 		mainPlayer\crouchState = 0
-		Crouch = 0
+		mainPlayer\crouching = 0
 		
 		RotateEntity mainPlayer\collider, WrapAngle(EntityPitch(mainPlayer\cam)), WrapAngle(EntityYaw(mainPlayer\cam)), 0
 		
-		temp2 = temp2 * NoClipSpeed
+		temp2 = temp2; * NoClipSpeed ;TODO: reimplement
 		
 		If KeyDown(keyBinds\down) Then MoveEntity mainPlayer\collider, 0, 0, -temp2*FPSfactor
 		If KeyDown(keyBinds\up) Then MoveEntity mainPlayer\collider, 0, 0, temp2*FPSfactor
 		
-		If KeyDown(keyBinds\left) Then MoveEntity mainPlayer\collider, -temp2*FPSfactor, 0, 0
-		If KeyDown(keyBinds\right) Then MoveEntity mainPlayer\collider, temp2*FPSfactor, 0, 0	
+		If KeyDown(keyBinds\lft) Then MoveEntity mainPlayer\collider, -temp2*FPSfactor, 0, 0
+		If KeyDown(keyBinds\rght) Then MoveEntity mainPlayer\collider, temp2*FPSfactor, 0, 0	
 		
-		ResetEntity Collider
+		ResetEntity mainPlayer\collider
 	Else
 		temp2# = temp2 / Max((mainPlayer\injuries+3.0)/3.0,1.0)
 		If mainPlayer\injuries > 0.5 Then 
-			temp2 = temp2*Min((Sin(Shake/2)+1.2),1.0)
+			temp2 = temp2*Min((Sin(mainPlayer\camAnimState/2)+1.2),1.0)
 		EndIf
 		
 		temp = False
-		If (Not IsZombie%)
-			If KeyDown(keyBinds\down) And Playable Then
-				temp = True 
-				angle = 180
-				If KeyDown(keyBinds\left) Then angle = 135 
-				If KeyDown(keyBinds\right) Then angle = -135 
-			ElseIf (KeyDown(keyBinds\up) And Playable) Then; Or ForceMove>0
-				temp = True
-				angle = 0
-				If KeyDown(keyBinds\left) Then angle = 45 
-				If KeyDown(keyBinds\right) Then angle = -45 
-			ElseIf ForceMove>0 Then
-				temp=True
-				angle = ForceAngle
-			Else If Playable Then
-				If KeyDown(keyBinds\left) Then angle = 90 : temp = True
-				If KeyDown(keyBinds\right) Then angle = -90 : temp = True 
-			EndIf
-		Else
+		;If (Not IsZombie%)
+		If KeyDown(keyBinds\down) And (Not mainPlayer\disableControls) Then
+			temp = True 
+			angle = 180
+			If KeyDown(keyBinds\lft) Then angle = 135 
+			If KeyDown(keyBinds\rght) Then angle = -135 
+		ElseIf (KeyDown(keyBinds\up) And (Not mainPlayer\disableControls)) Then; Or ForceMove>0
+			temp = True
+			angle = 0
+			If KeyDown(keyBinds\lft) Then angle = 45 
+			If KeyDown(keyBinds\rght) Then angle = -45 
+		ElseIf mainPlayer\forceMove>0 Then
 			temp=True
-			angle = ForceAngle
+			angle = mainPlayer\forceAngle
+		Else If (Not mainPlayer\disableControls) Then
+			If KeyDown(keyBinds\lft) Then angle = 90 : temp = True
+			If KeyDown(keyBinds\rght) Then angle = -90 : temp = True 
 		EndIf
+		;Else
+		;	temp=True
+		;	angle = ForceAngle
+		;EndIf
 		
 		angle = WrapAngle(EntityYaw(mainPlayer\collider,True)+angle+90.0)
 		
@@ -496,7 +499,7 @@ Function MovePlayer()
 			mainPlayer\moveSpeed = Max(CurveValue(0.0, mainPlayer\moveSpeed-0.1, 1.0),0.0)
 		EndIf
 		
-		If (Not UnableToMove%) Then TranslateEntity mainPlayer\collider, Cos(angle)*mainPlayer\moveSpeed * FPSfactor, 0, Sin(angle)*mainPlayer\moveSpeed * FPSfactor, True
+		If (Not mainPlayer\disableControls) Then TranslateEntity mainPlayer\collider, Cos(angle)*mainPlayer\moveSpeed * FPSfactor, 0, Sin(angle)*mainPlayer\moveSpeed * FPSfactor, True
 		
 		Local CollidedFloor% = False
 		For i = 1 To CountCollisions(mainPlayer\collider)
@@ -505,13 +508,13 @@ Function MovePlayer()
 		
 		If CollidedFloor = True Then
 			If mainPlayer\dropSpeed# < - 0.07 Then 
-				If CurrStepSFX=0 Then
+				If mainPlayer\footstepOverride=0 Then
 					PlaySound_Strict(StepSFX(GetStepSound(mainPlayer\collider), 0, Rand(0, 7)))					
-				ElseIf CurrStepSFX=1
+				ElseIf mainPlayer\footstepOverride=1
 					PlaySound_Strict(Step2SFX(Rand(0, 2)))
-				ElseIf CurrStepSFX=2
+				ElseIf mainPlayer\footstepOverride=2
 					PlaySound_Strict(Step2SFX(Rand(3, 5)))
-				ElseIf CurrStepSFX=3
+				ElseIf mainPlayer\footstepOverride=3
 					PlaySound_Strict(StepSFX(0, 0, Rand(0, 7)))
 				EndIf
 				mainPlayer\loudness = Max(3.0,mainPlayer\loudness)
@@ -521,17 +524,17 @@ Function MovePlayer()
 			mainPlayer\dropSpeed# = Min(Max(mainPlayer\dropSpeed - 0.006 * FPSfactor, -2.0), 0.0)
 		EndIf	
 		
-		If (Not UnableToMove%) Then TranslateEntity mainPlayer\collider, 0, mainPlayer\dropSpeed * FPSfactor, 0
+		If (Not mainPlayer\disableControls) Then TranslateEntity mainPlayer\collider, 0, mainPlayer\dropSpeed * FPSfactor, 0
 	EndIf
 	
-	ForceMove = False
+	mainPlayer\forceMove = 0.0
 	
 	If mainPlayer\injuries > 1.0 Then
-		temp2 = Bloodloss
-		mainPlayer\blurTimer = Max(Max(Sin(MilliSecs2()/100.0)*Bloodloss*30.0,Bloodloss*2*(2.0-mainPlayer\crouchState)),mainPlayer\blurTimer)
-		Bloodloss = Min(Bloodloss + (Min(mainPlayer\injuries,3.5)/300.0)*FPSfactor,100)
+		temp2 = mainPlayer\bloodloss
+		mainPlayer\blurTimer = Max(Max(Sin(MilliSecs2()/100.0)*mainPlayer\bloodloss*30.0,mainPlayer\bloodloss*2*(2.0-mainPlayer\crouchState)),mainPlayer\blurTimer)
+		mainPlayer\bloodloss = Min(mainPlayer\bloodloss + (Min(mainPlayer\injuries,3.5)/300.0)*FPSfactor,100)
 		
-		If temp2 <= 60 And Bloodloss > 60 Then
+		If temp2 <= 60 And mainPlayer\bloodloss > 60 Then
 			Msg = "You are feeling faint from the amount of blood you loss."
 			MsgTimer = 70*4
 		EndIf
@@ -539,7 +542,7 @@ Function MovePlayer()
 	
 	UpdateInfect()
 	
-	If Bloodloss > 0 Then
+	If mainPlayer\bloodloss > 0 Then
 		If Rnd(200)<Min(mainPlayer\injuries,4.0) Then
 			pvt = CreatePivot()
 			PositionEntity pvt, EntityX(mainPlayer\collider)+Rnd(-0.05,0.05),EntityY(mainPlayer\collider)-0.05,EntityZ(mainPlayer\collider)+Rnd(-0.05,0.05)
@@ -554,42 +557,36 @@ Function MovePlayer()
 			FreeEntity pvt
 		EndIf
 		
-		mainPlayer\camZoom = Max(mainPlayer\camZoom, (Sin(Float(MilliSecs2())/20.0)+1.0)*Bloodloss*0.2)
+		mainPlayer\camZoom = Max(mainPlayer\camZoom, (Sin(Float(MilliSecs2())/20.0)+1.0)*mainPlayer\bloodloss*0.2)
 		
-		If Bloodloss > 60 Then Crouch = True
-		If Bloodloss => 100 Then 
+		If mainPlayer\bloodloss > 60 Then mainPlayer\crouching = True
+		If mainPlayer\bloodloss => 100 Then 
 			Kill()
-			HeartBeatVolume = 0.0
-		ElseIf Bloodloss > 80.0
-			HeartBeatRate = Max(150-(Bloodloss-80)*5,HeartBeatRate)
-			HeartBeatVolume = Max(HeartBeatVolume, 0.75+(Bloodloss-80.0)*0.0125)	
-		ElseIf Bloodloss > 35.0
-			HeartBeatRate = Max(70+Bloodloss,HeartBeatRate)
-			HeartBeatVolume = Max(HeartBeatVolume, (Bloodloss-35.0)/60.0)			
+			mainPlayer\heartbeatIntensity = 0.0
+		ElseIf mainPlayer\bloodloss > 80.0
+			mainPlayer\heartbeatIntensity = Max(150-(mainPlayer\bloodloss-80)*5,mainPlayer\heartbeatIntensity)
+		ElseIf mainPlayer\bloodloss > 35.0
+			mainPlayer\heartbeatIntensity = Max(70+mainPlayer\bloodloss,mainPlayer\heartbeatIntensity)
 		EndIf
 	EndIf
 	
-	If Playable Then
+	If (Not mainPlayer\disableControls) Then
 		If KeyHit(keyBinds\blink) Then mainPlayer\blinkTimer = 0
 		If KeyDown(keyBinds\blink) And mainPlayer\blinkTimer < - 10 Then mainPlayer\blinkTimer = -10
 	EndIf
 	
 	
-	If HeartBeatVolume > 0 Then
-		If HeartBeatTimer <= 0 Then
-			tempchn = PlaySound_Strict (HeartBeatSFX)
-			ChannelVolume tempchn, HeartBeatVolume*userOptions\soundVolume
-			
-			HeartBeatTimer = 70.0*(60.0/Max(HeartBeatRate,1.0))
-		Else
-			HeartBeatTimer = HeartBeatTimer - FPSfactor
-		EndIf
+	If mainPlayer\heartbeatIntensity > 0 Then
+		tempchn = PlaySound_Strict (HeartBeatSFX)
+		ChannelVolume tempchn, Max(Min((mainPlayer\heartbeatIntensity-80.0)/60.0,1.0),0.0)*userOptions\SoundVolume
 		
-		HeartBeatVolume = Max(HeartBeatVolume - FPSfactor*0.05, 0)
+		mainPlayer\heartbeatIntensity = mainPlayer\heartbeatIntensity - FPSfactor
 	EndIf
 	
 End Function
 
+;TODO: these variable names are awful
+;Also scrap the mouselook speed in favor of just interpolating to a final position
 ; - -Viewport.
 Global viewport_center_x% = userOptions\screenWidth / 2, viewport_center_y% = userOptions\screenHeight / 2
 
@@ -610,10 +607,11 @@ Function MouseLook()
 	CameraZoom(mainPlayer\cam, Min(1.0+(mainPlayer\camZoom/400.0),1.1))
 	mainPlayer\camZoom = Max(mainPlayer\camZoom - FPSfactor, 0)
 	
-	If KillTimer >= 0 And FallTimer >=0 Then
+	If mainPlayer\fallTimer >=0 Then
 		
-		HeadDropSpeed = 0
+		;HeadDropSpeed = 0
 		
+		;TODO: remove after implementing fixed collision code
 		;If 0 Then 
 		;fixing the black screen bug with some bubblegum code 
 		Local Zero# = 0.0
@@ -626,8 +624,8 @@ Function MouseLook()
 		EndIf
 		;EndIf
 		
-		Local up# = (Sin(Shake) / (20.0+mainPlayer\crouchState*20.0))*0.6;, side# = Cos(Shake / 2.0) / 35.0		
-		Local roll# = Max(Min(Sin(Shake/2)*2.5*Min(mainPlayer\injuries+0.25,3.0),8.0),-8.0)
+		Local up# = (Sin(mainPlayer\camAnimState) / (20.0+mainPlayer\crouchState*20.0))*0.6;, side# = Cos(Shake / 2.0) / 35.0		
+		Local roll# = Max(Min(Sin(mainPlayer\camAnimState*0.5)*2.5*Min(mainPlayer\injuries+0.25,3.0),8.0),-8.0)
 		
 		;käännetään kameraa sivulle jos pelaaja on vammautunut
 		;RotateEntity mainPlayer\collider, EntityPitch(mainPlayer\collider), EntityYaw(mainPlayer\collider), Max(Min(up*30*mainPlayer\injuries,50),-50)
@@ -668,28 +666,29 @@ Function MouseLook()
 		
 	Else
 		HideEntity Collider
-		PositionEntity mainPlayer\cam, EntityX(Head), EntityY(Head), EntityZ(Head)
+		PositionEntity mainPlayer\cam, EntityX(mainPlayer\head), EntityY(mainPlayer\head), EntityZ(mainPlayer\head)
 		
 		Local CollidedFloor% = False
-		For i = 1 To CountCollisions(Head)
-			If CollisionY(Head, i) < EntityY(Head) - 0.01 Then CollidedFloor = True
+		For i = 1 To CountCollisions(mainPlayer\head)
+			If CollisionY(mainPlayer\head, i) < EntityY(mainPlayer\head) - 0.01 Then CollidedFloor = True
 		Next
 		
 		If CollidedFloor = True Then
-			HeadDropSpeed# = 0
+			;HeadDropSpeed# = 0
 		Else
 			
-			If KillAnim = 0 Then 
-				MoveEntity Head, 0, 0, HeadDropSpeed
-				RotateEntity(Head, CurveAngle(-90.0, EntityPitch(Head), 20.0), EntityYaw(Head), EntityRoll(Head))
-				RotateEntity(mainPlayer\cam, CurveAngle(EntityPitch(Head) - 40.0, EntityPitch(mainPlayer\cam), 40.0), EntityYaw(mainPlayer\cam), EntityRoll(mainPlayer\cam))
-			Else
-				MoveEntity Head, 0, 0, -HeadDropSpeed
-				RotateEntity(Head, CurveAngle(90.0, EntityPitch(Head), 20.0), EntityYaw(Head), EntityRoll(Head))
-				RotateEntity(mainPlayer\cam, CurveAngle(EntityPitch(Head) + 40.0, EntityPitch(mainPlayer\cam), 40.0), EntityYaw(mainPlayer\cam), EntityRoll(mainPlayer\cam))
-			EndIf
+			;TODO: reimplement head falling
+			;If KillAnim = 0 Then 
+			;	MoveEntity Head, 0, 0, HeadDropSpeed
+			;	RotateEntity(Head, CurveAngle(-90.0, EntityPitch(Head), 20.0), EntityYaw(Head), EntityRoll(Head))
+			;	RotateEntity(mainPlayer\cam, CurveAngle(EntityPitch(Head) - 40.0, EntityPitch(mainPlayer\cam), 40.0), EntityYaw(mainPlayer\cam), EntityRoll(mainPlayer\cam))
+			;Else
+			;	MoveEntity Head, 0, 0, -HeadDropSpeed
+			;	RotateEntity(Head, CurveAngle(90.0, EntityPitch(Head), 20.0), EntityYaw(Head), EntityRoll(Head))
+			;	RotateEntity(mainPlayer\cam, CurveAngle(EntityPitch(Head) + 40.0, EntityPitch(mainPlayer\cam), 40.0), EntityYaw(mainPlayer\cam), EntityRoll(mainPlayer\cam))
+			;EndIf
 			
-			HeadDropSpeed# = HeadDropSpeed - 0.002 * FPSfactor
+			;HeadDropSpeed# = HeadDropSpeed - 0.002 * FPSfactor
 		EndIf
 		
 		If userOptions\invertMouseY Then
@@ -700,7 +699,7 @@ Function MouseLook()
 		
 	EndIf
 	
-	;pölyhiukkasia
+	;DUST PARTICLES
 	If Rand(35) = 1 Then
 		Local pvt% = CreatePivot()
 		PositionEntity(pvt, EntityX(mainPlayer\cam, True), EntityY(mainPlayer\cam, True), EntityZ(mainPlayer\cam, True))

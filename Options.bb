@@ -1,8 +1,8 @@
 Const OptionFile$ = "options.ini"
 
 Type KeyBinds
-    Field right%
-    Field left%
+    Field rght% ;can't call it right because blitz
+    Field lft% ;can't call it left because blitz
     Field up%
     Field down%
 
@@ -80,8 +80,8 @@ Function LoadOptionsINI()
     userOptions\hudEnabled          = GetINIInt(OptionFile, optHud, "HUD enabled")
     userOptions\showFPS             = GetINIInt(OptionFile, optHud, "show FPS")
 
-    keyBinds\right                  = GetINIInt(OptionFile, optBin, "Right key")
-    keyBinds\left                   = GetINIInt(OptionFile, optBin, "Left key")
+    keyBinds\rght                  = GetINIInt(OptionFile, optBin, "Right key")
+    keyBinds\lft                   = GetINIInt(OptionFile, optBin, "Left key")
     keyBinds\up                     = GetINIInt(OptionFile, optBin, "Up key")
     keyBinds\down                   = GetINIInt(OptionFile, optBin, "Down key")
 
@@ -125,8 +125,8 @@ Function SaveOptionsINI()
     PutINIValue(OptionFile, optHud, "HUD enabled", userOptions\hudEnabled)
     PutINIValue(OptionFile, optHud, "show FPS", userOptions\showFPS)
     
-    PutINIValue(OptionFile, optBin, "Right key", keyBinds\right)
-    PutINIValue(OptionFile, optBin, "Left key", keyBinds\left)
+    PutINIValue(OptionFile, optBin, "Right key", keyBinds\rght)
+    PutINIValue(OptionFile, optBin, "Left key", keyBinds\lft)
     PutINIValue(OptionFile, optBin, "Up key", keyBinds\up)
     PutINIValue(OptionFile, optBin, "Down key", keyBinds\down)
 

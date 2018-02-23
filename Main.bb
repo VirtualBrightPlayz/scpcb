@@ -391,7 +391,7 @@ Global MachineSFX% = LoadSound_Strict("SFX\SCP\914\Refining.ogg")
 Global ApacheSFX = LoadSound_Strict("SFX\Character\Apache\Propeller.ogg")
 
 ;TODO: Player struct.
-Global CurrStepSFX
+Global CurrStepSFX.MarkedForRemoval
 Dim StepSFX%(4, 2, 8) ;(normal/metal, walk/run, id)
 For i = 0 To 7
 	StepSFX(0, 0, i) = LoadSound_Strict("SFX\Step\Step" + (i + 1) + ".ogg")
@@ -1068,7 +1068,7 @@ Global CamBaseOBJ%, CamOBJ%
 Global LiquidObj%,MTFObj%,ClassDObj%
 Global ApacheObj%,ApacheRotorObj%
 
-Global UnableToMove% = False
+Global UnableToMove.MarkedForRemoval
 
 FlushKeys()
 FlushMouse()
