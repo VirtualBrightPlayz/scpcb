@@ -601,6 +601,30 @@ Global mouse_x_speed_1#, mouse_y_speed_1#
 Function MouseLook()
 	Local i%
 	
+	Local wearingGasMask%
+	wearingGasMask = IsPlayerWearing(mainPlayer,"gasmask",WORNITEM_HEAD_SLOT)
+	If Not wearingGasMask Then
+		wearingGasMask = IsPlayerWearing(mainPlayer,"supergasmask",WORNITEM_HEAD_SLOT)*2
+	EndIf
+	
+	Local wearingHazmat%
+	wearingHazmat = IsPlayerWearing(mainPlayer,"hazmatsuit",WORNITEM_BODY_SLOT)
+	If Not wearingHazmat Then
+		wearingHazmat = IsPlayerWearing(mainPlayer,"hazmatsuit2",WORNITEM_BODY_SLOT)*2
+	EndIf
+	
+	Local wearing1499%
+	wearing1499 = IsPlayerWearing(mainPlayer,"scp1499",WORNITEM_HEAD_SLOT)
+	If Not wearing1499 Then
+		wearing1499 = IsPlayerWearing(mainPlayer,"super1499",WORNITEM_HEAD_SLOT)*2
+	EndIf
+	
+	Local wearingNightVision%
+	wearingNightVision = IsPlayerWearing(mainPlayer,"nvgoggles",WORNITEM_HEAD_SLOT)
+	If Not wearingNightVision Then
+		wearingNightVision = IsPlayerWearing(mainPlayer,"supernv",WORNITEM_HEAD_SLOT)*2
+	EndIf
+	
 	mainPlayer\camShake = Max(mainPlayer\camShake - (FPSfactor / 10), 0)
 	
 	;CameraZoomTemp = CurveValue(mainPlayer\camZoom,CameraZoomTemp, 5.0)
@@ -624,7 +648,7 @@ Function MouseLook()
 		EndIf
 		;EndIf
 		
-		Local up# = (Sin(mainPlayer\camAnimState) / (20.0+mainPlayer\crouchState*20.0))*0.6;, side# = Cos(Shake / 2.0) / 35.0		
+		Local up# = (Sin(mainPlayer\camAnimState) / (20.0+mainPlayer\crouchState*20.0))*0.6	
 		Local roll# = Max(Min(Sin(mainPlayer\camAnimState*0.5)*2.5*Min(mainPlayer\injuries+0.25,3.0),8.0),-8.0)
 		
 		;käännetään kameraa sivulle jos pelaaja on vammautunut
@@ -632,7 +656,7 @@ Function MouseLook()
 		PositionEntity mainPlayer\cam, EntityX(mainPlayer\collider), EntityY(mainPlayer\collider), EntityZ(mainPlayer\collider)
 		RotateEntity mainPlayer\cam, 0, EntityYaw(mainPlayer\collider), roll*0.5
 		
-		MoveEntity mainPlayer\cam, side, up + 0.6 + mainPlayer\crouchState * -0.3, 0
+		MoveEntity mainPlayer\cam, 0.0, up + 0.6 + mainPlayer\crouchState * -0.3, 0
 		
 		;RotateEntity mainPlayer\collider, EntityPitch(mainPlayer\collider), EntityYaw(mainPlayer\collider), 0
 		;moveentity player, side, up, 0	
@@ -647,8 +671,9 @@ Function MouseLook()
 		EndIf
 		If Int(mouse_y_speed_1) = Int(Nan1) Then mouse_y_speed_1 = 0
 		
-		Local the_yaw# = ((mouse_x_speed_1#)) * mouselook_x_inc# / (1.0+WearingVest)
-		Local the_pitch# = ((mouse_y_speed_1#)) * mouselook_y_inc# / (1.0+WearingVest)
+		;TODO: CHANGE THESE NAMES
+		Local the_yaw# = ((mouse_x_speed_1#)) * mouselook_x_inc# / (1.0+IsPlayerWearing(mainPlayer,"vest",WORNITEM_BODY_SLOT))
+		Local the_pitch# = ((mouse_y_speed_1#)) * mouselook_y_inc# / (1.0+IsPlayerWearing(mainPlayer,"vest",WORNITEM_BODY_SLOT))
 		
 		TurnEntity mainPlayer\collider, 0.0, -the_yaw#, 0.0 ; Turn the user on the Y (yaw) axis.
 		mainPlayer\headPitch# = mainPlayer\headPitch# + the_pitch#
@@ -665,7 +690,7 @@ Function MouseLook()
 		EndIf
 		
 	Else
-		HideEntity Collider
+		HideEntity mainPlayer\collider
 		PositionEntity mainPlayer\cam, EntityX(mainPlayer\head), EntityY(mainPlayer\head), EntityZ(mainPlayer\head)
 		
 		Local CollidedFloor% = False
@@ -724,50 +749,51 @@ Function MouseLook()
 		MoveMouse viewport_center_x, viewport_center_y
 	EndIf
 	
-	If WearingGasMask Or WearingHazmat Or Wearing1499 Then
-		If WearingGasMask = 2 Then mainPlayer\stamina = Min(100, mainPlayer\stamina + (100.0-mainPlayer\stamina)*0.01*FPSfactor)
-		If Wearing1499 = 2 Then mainPlayer\stamina = Min(100, mainPlayer\stamina + (100.0-mainPlayer\stamina)*0.01*FPSfactor)
-		If WearingHazmat = 2 Then 
+	If wearingGasMask Or wearingHazmat Or wearing1499 Then
+		If wearingGasMask = 2 Then mainPlayer\stamina = Min(100, mainPlayer\stamina + (100.0-mainPlayer\stamina)*0.01*FPSfactor)
+		If wearing1499 = 2 Then mainPlayer\stamina = Min(100, mainPlayer\stamina + (100.0-mainPlayer\stamina)*0.01*FPSfactor)
+		If wearingHazmat = 2 Then 
 			mainPlayer\stamina = Min(100, mainPlayer\stamina + (100.0-mainPlayer\stamina)*0.01*FPSfactor)
 		ElseIf WearingHazmat=1
 			mainPlayer\stamina = Min(60, mainPlayer\stamina)
 		EndIf
 		
-		ShowEntity(GasMaskOverlay)
+		ShowEntity(mainPlayer\overlays[OVERLAY_GASMASK])
 	Else
-		HideEntity(GasMaskOverlay)
+		HideEntity(mainPlayer\overlays[OVERLAY_GASMASK])
 	End If
 	
 	If (Not WearingNightVision=0) Then
-		ShowEntity(NVOverlay)
+		ShowEntity(mainPlayer\overlays[OVERLAY_NIGHTVISION])
 		If WearingNightVision=2 Then
-			EntityColor(NVOverlay, 0,100,255)
+			EntityColor(mainPlayer\overlays[OVERLAY_NIGHTVISION], 0,100,255)
 			AmbientLightRooms(15)
 		ElseIf WearingNightVision=3 Then
-			EntityColor(NVOverlay, 255,0,0)
+			EntityColor(mainPlayer\overlays[OVERLAY_NIGHTVISION], 255,0,0)
 			AmbientLightRooms(15)
 		Else
-			EntityColor(NVOverlay, 0,255,0)
+			EntityColor(mainPlayer\overlays[OVERLAY_NIGHTVISION], 0,255,0)
 			AmbientLightRooms(15)
 		EndIf
-		EntityTexture(Fog, FogNVTexture)
+		;EntityTexture(Fog, FogNVTexture)
 	Else
 		AmbientLightRooms(0)
-		HideEntity(NVOverlay)
-		EntityTexture(Fog, FogTexture)
+		HideEntity(mainPlayer\overlays[OVERLAY_NIGHTVISION])
+		;EntityTexture(Fog, FogTexture)
 	EndIf
 	
-	If Wearing178>0 Then
+	;TODO: cleanup
+	If IsPlayerWearing(mainPlayer,"scp178",WORNITEM_HEAD_SLOT) Then
 		If Music(14)=0 Then Music(14)=LoadSound_Strict("SFX\Music\178.ogg")
 		ShouldPlay = 14
-		ShowEntity(GlassesOverlay)
+		ShowEntity(mainPlayer\overlays[OVERLAY_178])
 	Else
-		HideEntity(GlassesOverlay)
+		HideEntity(mainPlayer\overlays[OVERLAY_178])
 	EndIf
 	
 	canSpawn178%=0
 	
-	If Wearing178<>1 Then
+	If Not IsPlayerWearing(mainPlayer,"scp178",WORNITEM_HEAD_SLOT) Then
 		For n.NPCs = Each NPCs
 			If (n\NPCtype = NPCtype178) Then
 				If n\State3>0 Then canSpawn178=1
@@ -780,7 +806,7 @@ Function MouseLook()
 		Next
 	EndIf
 	
-	If (canSpawn178=1) Or (Wearing178=1) Then
+	If (canSpawn178=1) Or IsPlayerWearing(mainPlayer,"scp178",WORNITEM_HEAD_SLOT) Then
 		tempint%=0
 		For n.NPCs = Each NPCs
 			If (n\NPCtype = NPCtype178) Then
@@ -813,74 +839,75 @@ Function MouseLook()
 		EndIf
 	EndIf
 	
-	For i = 0 To 5
-		If SCP1025state[i]>0 Then
-			Select i
-				Case 0 ;common cold
-					If FPSfactor>0 Then 
-						If Rand(1000)=1 Then
-							If CoughCHN = 0 Then
-								CoughCHN = PlaySound_Strict(CoughSFX(Rand(0, 2)))
-							Else
-								If Not ChannelPlaying(CoughCHN) Then CoughCHN = PlaySound_Strict(CoughSFX(Rand(0, 2)))
-							End If
-						EndIf
-					EndIf
-					mainPlayer\stamina = mainPlayer\stamina - FPSfactor * 0.3
-				Case 1 ;chicken pox
-					If Rand(9000)=1 And Msg="" Then
-						Msg="Your skin is feeling itchy."
-						MsgTimer =70*4
-					EndIf
-				Case 2 ;cancer of the lungs
-					If FPSfactor>0 Then 
-						If Rand(800)=1 Then
-							If CoughCHN = 0 Then
-								CoughCHN = PlaySound_Strict(CoughSFX(Rand(0, 2)))
-							Else
-								If Not ChannelPlaying(CoughCHN) Then CoughCHN = PlaySound_Strict(CoughSFX(Rand(0, 2)))
-							End If
-						EndIf
-					EndIf
-					mainPlayer\stamina = mainPlayer\stamina - FPSfactor * 0.1
-				Case 3 ;appendicitis
-					;0.035/sec = 2.1/min
-					SCP1025state[i]=SCP1025state[i]+FPSfactor*0.0005
-					If SCP1025state[i]>20.0 Then
-						If SCP1025state[i]-FPSfactor<=20.0 Then Msg="The pain in your stomach is becoming unbearable."
-						mainPlayer\stamina = mainPlayer\stamina - FPSfactor * 0.3
-					ElseIf SCP1025state[i]>10.0
-						If SCP1025state[i]-FPSfactor<=10.0 Then Msg="Your stomach is aching."
-					EndIf
-				Case 4 ;asthma
-					If mainPlayer\stamina < 35 Then
-						If Rand(Int(140+mainPlayer\stamina*8))=1 Then
-							If CoughCHN = 0 Then
-								CoughCHN = PlaySound_Strict(CoughSFX(Rand(0, 2)))
-							Else
-								If Not ChannelPlaying(CoughCHN) Then CoughCHN = PlaySound_Strict(CoughSFX(Rand(0, 2)))
-							End If
-						EndIf
-						mainPlayer\moveSpeed = CurveValue(0, mainPlayer\moveSpeed, 10+mainPlayer\stamina*15)
-					EndIf
-				Case 5;cardiac arrest
-					SCP1025state[i]=SCP1025state[i]+FPSfactor*0.35
-					;35/sec
-					If SCP1025state[i]>110 Then
-						HeartBeatRate=0
-						mainPlayer\blurTimer = Max(mainPlayer\blurTimer, 500)
-						If SCP1025state[i]>140 Then 
-							DeathMSG = Chr(34)+"He died of a cardiac arrest after reading SCP-1025, that's for sure. Is there such a thing as psychosomatic cardiac arrest, or does SCP-1025 have some "
-							DeathMSG = DeathMSG + "anomalous properties we are not yet aware of?"+Chr(34)
-							Kill()
-						EndIf
-					Else
-						HeartBeatRate=Max(HeartBeatRate, 70+SCP1025state[i])
-						HeartBeatVolume = 1.0
-					EndIf
-			End Select 
-		EndIf
-	Next
+	;TODO: kill
+	;For i = 0 To 5
+	;	If SCP1025state[i]>0 Then
+	;		Select i
+	;			Case 0 ;common cold
+	;				If FPSfactor>0 Then 
+	;					If Rand(1000)=1 Then
+	;						If CoughCHN = 0 Then
+	;							CoughCHN = PlaySound_Strict(CoughSFX(Rand(0, 2)))
+	;						Else
+	;							If Not ChannelPlaying(CoughCHN) Then CoughCHN = PlaySound_Strict(CoughSFX(Rand(0, 2)))
+	;						End If
+	;					EndIf
+	;				EndIf
+	;				mainPlayer\stamina = mainPlayer\stamina - FPSfactor * 0.3
+	;			Case 1 ;chicken pox
+	;				If Rand(9000)=1 And Msg="" Then
+	;					Msg="Your skin is feeling itchy."
+	;					MsgTimer =70*4
+	;				EndIf
+	;			Case 2 ;cancer of the lungs
+	;				If FPSfactor>0 Then 
+	;					If Rand(800)=1 Then
+	;						If CoughCHN = 0 Then
+	;							CoughCHN = PlaySound_Strict(CoughSFX(Rand(0, 2)))
+	;						Else
+	;							If Not ChannelPlaying(CoughCHN) Then CoughCHN = PlaySound_Strict(CoughSFX(Rand(0, 2)))
+	;						End If
+	;					EndIf
+	;				EndIf
+	;				mainPlayer\stamina = mainPlayer\stamina - FPSfactor * 0.1
+	;			Case 3 ;appendicitis
+	;				;0.035/sec = 2.1/min
+	;				SCP1025state[i]=SCP1025state[i]+FPSfactor*0.0005
+	;				If SCP1025state[i]>20.0 Then
+	;					If SCP1025state[i]-FPSfactor<=20.0 Then Msg="The pain in your stomach is becoming unbearable."
+	;					mainPlayer\stamina = mainPlayer\stamina - FPSfactor * 0.3
+	;				ElseIf SCP1025state[i]>10.0
+	;					If SCP1025state[i]-FPSfactor<=10.0 Then Msg="Your stomach is aching."
+	;				EndIf
+	;			Case 4 ;asthma
+	;				If mainPlayer\stamina < 35 Then
+	;					If Rand(Int(140+mainPlayer\stamina*8))=1 Then
+	;						If CoughCHN = 0 Then
+	;							CoughCHN = PlaySound_Strict(CoughSFX(Rand(0, 2)))
+	;						Else
+	;							If Not ChannelPlaying(CoughCHN) Then CoughCHN = PlaySound_Strict(CoughSFX(Rand(0, 2)))
+	;						End If
+	;					EndIf
+	;					mainPlayer\moveSpeed = CurveValue(0, mainPlayer\moveSpeed, 10+mainPlayer\stamina*15)
+	;				EndIf
+	;			Case 5;cardiac arrest
+	;				SCP1025state[i]=SCP1025state[i]+FPSfactor*0.35
+	;				;35/sec
+	;				If SCP1025state[i]>110 Then
+	;					HeartBeatRate=0
+	;					mainPlayer\blurTimer = Max(mainPlayer\blurTimer, 500)
+	;					If SCP1025state[i]>140 Then 
+	;						DeathMSG = Chr(34)+"He died of a cardiac arrest after reading SCP-1025, that's for sure. Is there such a thing as psychosomatic cardiac arrest, or does SCP-1025 have some "
+	;						DeathMSG = DeathMSG + "anomalous properties we are not yet aware of?"+Chr(34)
+	;						Kill()
+	;					EndIf
+	;				Else
+	;					HeartBeatRate=Max(HeartBeatRate, 70+SCP1025state[i])
+	;					HeartBeatVolume = 1.0
+	;				EndIf
+	;		End Select 
+	;	EndIf
+	;Next
 End Function
 
 Function IsPlayerWearing(player.Player,templateName$,slot%)
@@ -898,69 +925,70 @@ Function TakeOffStuff(flag%=0)
 		;32: Night Vision Goggles
 		;64: SCP-1499
 	
-	Local numb_flag% = Bin(flag%)
-	
-	If Right(numb_flag%,1) = 1
-		WearingGasMask = False
-		DebugLog "GasMask Off"
-	EndIf
-	If Len(numb_flag%)>1
-		If Mid(numb_flag%,Len(numb_flag%)-1,1) = 1
-			WearingHazmat = False
-			For i = 0 To MaxItemAmount-1
-				If Inventory(i) <> Null Then
-					If Inventory(i)\itemtemplate\name = "Hazmat Suit" Or Inventory(i)\itemtemplate\tempname = "hazmatsuit3"
-						DropItem(Inventory(i))
-						Exit
-					EndIf
-				EndIf
-			Next
-			DebugLog "Hazmat Off"
-		EndIf
-	EndIf
-	If Len(numb_flag%)>2
-		If Mid(numb_flag%,Len(numb_flag%)-2,1) = 1
-			Wearing714 = False
-			DebugLog "SCP-714 Off"
-		EndIf
-	EndIf
-	If Len(numb_flag%)>3
-		If Mid(numb_flag%,Len(numb_flag%)-3,1) = 1
-			Wearing178 = False
-			DebugLog "SCP-178 Off"
-		EndIf
-	EndIf
-	If Len(numb_flag%)>4
-		If Mid(numb_flag%,Len(numb_flag%)-4,1) = 1
-			WearingVest = False
-			DebugLog "Kevlar Off"
-		EndIf
-	EndIf
-	If Len(numb_flag%)>5
-		If Mid(numb_flag%,Len(numb_flag%)-5,1) = 1
-			WearingNightVision = False
-			CameraFogFar = StoredCameraFogFar
-			DebugLog "NVG Off"
-		EndIf
-	EndIf
-	If Len(numb_flag%)>6
-		If Mid(numb_flag%,Len(numb_flag%)-6,1) = 1
-			Wearing1499 = False
-			DebugLog "SCP-1499 Off"
-		EndIf
-	EndIf
+	;TODO: remove?
+	;Local numb_flag% = Bin(flag%)
+	;
+	;If Right(numb_flag%,1) = 1
+	;	WearingGasMask = False
+	;	DebugLog "GasMask Off"
+	;EndIf
+	;If Len(numb_flag%)>1
+	;	If Mid(numb_flag%,Len(numb_flag%)-1,1) = 1
+	;		WearingHazmat = False
+	;		For i = 0 To MaxItemAmount-1
+	;			If Inventory(i) <> Null Then
+	;				If Inventory(i)\itemtemplate\name = "Hazmat Suit" Or Inventory(i)\itemtemplate\tempname = "hazmatsuit3"
+	;					DropItem(Inventory(i))
+	;					Exit
+	;				EndIf
+	;			EndIf
+	;		Next
+	;		DebugLog "Hazmat Off"
+	;	EndIf
+	;EndIf
+	;If Len(numb_flag%)>2
+	;	If Mid(numb_flag%,Len(numb_flag%)-2,1) = 1
+	;		Wearing714 = False
+	;		DebugLog "SCP-714 Off"
+	;	EndIf
+	;EndIf
+	;If Len(numb_flag%)>3
+	;	If Mid(numb_flag%,Len(numb_flag%)-3,1) = 1
+	;		Wearing178 = False
+	;		DebugLog "SCP-178 Off"
+	;	EndIf
+	;EndIf
+	;If Len(numb_flag%)>4
+	;	If Mid(numb_flag%,Len(numb_flag%)-4,1) = 1
+	;		WearingVest = False
+	;		DebugLog "Kevlar Off"
+	;	EndIf
+	;EndIf
+	;If Len(numb_flag%)>5
+	;	If Mid(numb_flag%,Len(numb_flag%)-5,1) = 1
+	;		WearingNightVision = False
+	;		CameraFogFar = StoredCameraFogFar
+	;		DebugLog "NVG Off"
+	;	EndIf
+	;EndIf
+	;If Len(numb_flag%)>6
+	;	If Mid(numb_flag%,Len(numb_flag%)-6,1) = 1
+	;		Wearing1499 = False
+	;		DebugLog "SCP-1499 Off"
+	;	EndIf
+	;EndIf
 	
 End Function
 
 Function Kill()
-	If GodMode Then Return
+	If mainPlayer\godMode Then Return
 	
-	If BreathCHN <> 0 Then
-		If ChannelPlaying(BreathCHN) Then StopChannel(BreathCHN)
+	If mainPlayer\breathChn <> 0 Then
+		If ChannelPlaying(mainPlayer\breathCHN) Then StopChannel(mainPlayer\breathCHN)
 	EndIf
 	
-	If KillTimer >= 0 Then
-		KillAnim = Rand(0,1)
+	If Not mainPlayer\dead Then
+		;KillAnim = Rand(0,1)
 		PlaySound_Strict(DamageSFX(0))
 		If SelectedDifficulty\permaDeath Then
 			DeleteFile(CurrentDir() + SavePath + CurrSave+"\save.txt") 
@@ -968,10 +996,12 @@ Function Kill()
 			LoadSaveGames()
 		End If
 		
-		KillTimer = Min(-1, KillTimer)
-		ShowEntity Head
-		PositionEntity(Head, EntityX(mainPlayer\cam, True), EntityY(mainPlayer\cam, True), EntityZ(mainPlayer\cam, True), True)
-		ResetEntity (Head)
-		RotateEntity(Head, 0, EntityYaw(mainPlayer\cam), 0)		
+		mainPlayer\dead = True
+		mainPlayer\fallTimer = Min(-1,mainPlayer\fallTimer)
+		;KillTimer = Min(-1, KillTimer)
+		ShowEntity mainPlayer\head
+		PositionEntity(mainPlayer\head, EntityX(mainPlayer\cam, True), EntityY(mainPlayer\cam, True), EntityZ(mainPlayer\cam, True), True)
+		ResetEntity (mainPlayer\head)
+		RotateEntity(mainPlayer\head, 0, EntityYaw(mainPlayer\cam), 0)		
 	EndIf
 End Function

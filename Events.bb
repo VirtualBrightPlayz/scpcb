@@ -245,7 +245,7 @@ Function UpdateEvents()
 	
 	Local angle#
 	
-	CurrStepSFX = 0
+	mainPlayer\footstepOverride = 0
 	
 	UpdateRooms()
 	
