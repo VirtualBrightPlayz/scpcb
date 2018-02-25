@@ -69,3 +69,30 @@ Function FillRoomLockroom(r.Rooms)
     em\Achange = -0.006
     em\Gravity = -0.24
 End Function
+
+Function UpdateEventLockroom173(e.Events)
+	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
+
+	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
+
+	Local CurrTrigger$ = ""
+
+	Local x#, y#, z#
+
+	Local angle#
+
+	;[Block]
+	If e\room\dist < 6.0  And e\room\dist > 0 Then
+		If Curr173\Idle = 2 Then
+			RemoveEvent(e)
+		Else
+			If (Not EntityInView(Curr173\Collider, mainPlayer\cam)) Or EntityDistance(Curr173\Collider, mainPlayer\collider)>15.0 Then 
+				PositionEntity(Curr173\Collider, e\room\x + Cos(225-90 + e\room\angle) * 2, 0.6, e\room\z + Sin(225-90 + e\room\angle) * 2)
+				ResetEntity(Curr173\Collider)
+				RemoveEvent(e)
+			EndIf						
+		EndIf
+	EndIf
+	;[End Block]
+End Function
+

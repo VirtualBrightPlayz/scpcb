@@ -171,3 +171,136 @@ Function FillRoom3Storage(r.Rooms)
         FreeEntity d\buttons[i] : d\buttons[i]=0
     Next
 End Function
+
+
+Function UpdateEventRoom3storage(e.Events)
+	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
+
+	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
+
+	Local CurrTrigger$ = ""
+
+	Local x#, y#, z#
+
+	Local angle#
+
+	;[Block]
+	If mainPlayer\currRoom = e\room Then
+		e\EventState2 = UpdateElevators2(e\EventState2, e\room\RoomDoors[0], e\room\RoomDoors[1],e\room\Objects[0],e\room\Objects[1], e)
+		
+		e\EventState3 = UpdateElevators2(e\EventState3, e\room\RoomDoors[2], e\room\RoomDoors[3],e\room\Objects[2],e\room\Objects[3], e)
+		
+		If EntityY(mainPlayer\collider)<-4600*RoomScale Then
+			
+			GiveAchievement(Achv939)
+			
+			If Music(7)=0 Then Music(7) = LoadSound_Strict("SFX\Music\Room3Storage.ogg") 
+			ShouldPlay = 7
+			
+			;If e\room\NPC[0]=Null Then
+				;DrawLoading(0, True)
+				;e\room\NPC[0]=CreateNPC(NPCtype939, 0,0,0)
+				
+				;DrawLoading(20, True)
+				;e\room\NPC[1]=CreateNPC(NPCtype939, 0,0,0)
+				
+				;DrawLoading(50, True)
+				;e\room\NPC[2]=CreateNPC(NPCtype939, 0,0,0)
+				
+				;DrawLoading(100, True)
+			;EndIf
+			If e\room\NPC[2]=Null Or e\EventState = 3
+				If e\EventState = 0
+					QuickLoadPercent = 0
+					e\EventState = 1
+				ElseIf e\EventState = 1
+					e\room\NPC[0]=CreateNPC(NPCtype939, 0,0,0)
+					QuickLoadPercent = 20
+					e\EventState = 2
+				ElseIf e\EventState = 2
+					e\room\NPC[1]=CreateNPC(NPCtype939, 0,0,0)
+					QuickLoadPercent = 50
+					e\EventState = 3
+				ElseIf e\EventState = 3
+					e\room\NPC[2]=CreateNPC(NPCtype939, 0,0,0)
+					QuickLoadPercent = 100
+					e\EventState = 0
+				EndIf
+			Else
+				If e\EventState = 0 Then
+					;Instance 1
+					PositionEntity(e\room\NPC[0]\Collider, EntityX(e\room\Objects[4],True),EntityY(e\room\Objects[4],True)+0.2,EntityZ(e\room\Objects[4],True))
+					ResetEntity e\room\NPC[0]\Collider
+					e\room\NPC[0]\State = 2
+					e\room\NPC[0]\State2 = 5
+					e\room\NPC[0]\PrevState = 7
+					;Instance 2
+					PositionEntity(e\room\NPC[1]\Collider, EntityX(e\room\Objects[9],True),EntityY(e\room\Objects[9],True)+0.2,EntityZ(e\room\Objects[9],True))
+					ResetEntity e\room\NPC[1]\Collider
+					e\room\NPC[1]\State = 2
+					e\room\NPC[1]\State2 = 10
+					e\room\NPC[1]\PrevState = 12
+					;Instance 3
+					PositionEntity(e\room\NPC[2]\Collider, EntityX(e\room\Objects[13],True),EntityY(e\room\Objects[13],True)+0.2,EntityZ(e\room\Objects[13],True))
+					ResetEntity e\room\NPC[2]\Collider
+					e\room\NPC[2]\State = 2
+					e\room\NPC[2]\State2 = 14
+					e\room\NPC[2]\PrevState = 16
+					;Other
+					e\EventState = 1
+				EndIf
+				
+				If e\room\RoomDoors[4]\open = False
+					If UpdateLever(e\room\Levers[0])
+						e\room\RoomDoors[4]\open = True
+						If e\Sound2 <> 0 Then FreeSound_Strict e\Sound2 : e\Sound2=0
+						e\Sound2 = LoadSound_Strict("SFX\Door\Door2Open1_dist.ogg")
+						e\SoundCHN2 = PlaySound2(e\Sound2,mainPlayer\cam,e\room\RoomDoors[4]\obj,400)
+					EndIf
+					If UpdateLever(e\room\Levers[1])
+						e\room\RoomDoors[4]\open = True
+						If e\Sound2 <> 0 Then FreeSound_Strict e\Sound2 : e\Sound2=0
+						e\Sound2 = LoadSound_Strict("SFX\Door\Door2Open1_dist.ogg")
+						e\SoundCHN2 = PlaySound2(e\Sound2,mainPlayer\cam,e\room\RoomDoors[4]\obj,400)
+					EndIf
+				EndIf
+				
+				UpdateLever(e\room\Levers[0],e\room\RoomDoors[4]\open)
+				UpdateLever(e\room\Levers[1],e\room\RoomDoors[4]\open)
+				
+				e\room\NPC[0]\IgnorePlayer = False
+				e\room\NPC[2]\IgnorePlayer = False
+				
+				CurrTrigger$ = CheckTriggers()
+				
+				Select CurrTrigger$
+					Case "939-1_fix"
+						e\room\NPC[0]\IgnorePlayer = True
+					Case "939-3_fix"
+						e\room\NPC[2]\IgnorePlayer = True
+				End Select
+				
+				If ChannelPlaying(e\SoundCHN2)
+					UpdateSoundOrigin(e\SoundCHN2,mainPlayer\cam,e\room\RoomDoors[4]\obj,400)
+				EndIf
+				
+				If EntityY(mainPlayer\collider)<-6400*RoomScale And KillTimer=>0 Then
+					DeathMSG=""
+					PlaySound_Strict LoadTempSound("SFX\Room\PocketDimension\Impact.ogg")
+					KillTimer=-1.0
+				EndIf
+			EndIf
+		Else
+			e\EventState = 0
+			If e\room\NPC[0]<>Null Then e\room\NPC[0]\State = 66
+			If e\room\NPC[1]<>Null Then e\room\NPC[1]\State = 66
+			If e\room\NPC[2]<>Null Then e\room\NPC[2]\State = 66
+		EndIf
+	Else
+		If e\room\NPC[0]<>Null Then e\room\NPC[0]\State = 66
+		If e\room\NPC[1]<>Null Then e\room\NPC[1]\State = 66
+		If e\room\NPC[2]<>Null Then e\room\NPC[2]\State = 66
+	EndIf 
+	;[End Block]
+End Function
+

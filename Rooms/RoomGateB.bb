@@ -104,3 +104,459 @@ Function FillRoomGateB(r.Rooms)
     PositionEntity(r\Objects[19], r\x+3808.0*RoomScale, 12320.0*RoomScale, r\z-13568.0*RoomScale, True)
     EntityParent r\Objects[19], r\obj
 End Function
+
+Function UpdateEventExit1(e.Events)
+	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
+
+	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
+
+	Local CurrTrigger$ = ""
+
+	Local x#, y#, z#
+
+	Local angle#
+
+	;[Block]
+	If mainPlayer\currRoom = e\room Then
+		
+		If EntityY(mainPlayer\collider)>1040.0*RoomScale Then
+			
+			For r.Rooms = Each Rooms
+				HideEntity r\obj
+			Next					
+			ShowEntity e\room\obj
+			
+			Curr106\State = 20000
+			Curr106\Idle = True
+			
+			If e\EventState = 0 Then
+				DrawLoading(0,True)
+				
+				For i = 0 To 19
+					If e\room\LightSprites[i]<>0 Then 
+						EntityFX e\room\LightSprites[i], 1+8
+					EndIf
+				Next
+
+				CameraFogMode(mainPlayer\cam, 0)
+				SecondaryLightOn = True
+				
+				Music(5) = LoadSound_Strict("SFX\Music\GateB1.ogg")
+				DrawLoading(60,True)
+				Music(6) = LoadSound_Strict("SFX\Music\GateB2.ogg")
+				DrawLoading(90,True)
+				
+				e\room\NPC[0] = CreateNPC(NPCtypeApache, e\room\x, 100.0, e\room\z)
+				e\room\NPC[0]\State = 1
+				
+				e\room\NPC[1] = CreateNPC(NPCtypeGuard, EntityX(e\room\Objects[4],True),EntityY(e\room\Objects[4],True)+0.2,EntityZ(e\room\Objects[4],True))
+				e\room\NPC[1]\State = 0
+				e\room\NPC[1]\State2 = 10
+				
+				
+				pvt = CreatePivot()
+				PositionEntity pvt, EntityX(e\room\Objects[0],True), EntityY(e\room\Objects[0],True), EntityZ(e\room\Objects[0],True)
+				
+				e\room\Objects[0] = LoadMesh_Strict("GFX\map\exit1terrain.b3d", e\room\obj)
+				ScaleEntity e\room\Objects[0],RoomScale,RoomScale,RoomScale,True
+				RotateEntity e\room\Objects[0],0,e\room\angle,0,True
+				PositionEntity(e\room\Objects[0], EntityX(pvt), EntityY(pvt), EntityZ(pvt), True)
+				
+				FreeEntity pvt
+				
+				Sky = sky_CreateSky("GFX\map\sky\sky")
+				RotateEntity Sky,0,e\room\angle-90,0
+				
+				e\EventState = 1.0
+				
+				For n.NPCs = Each NPCs
+					If n\NPCtype = NPCtypeMTF
+						RemoveNPC(n)
+					EndIf
+				Next
+				
+				DrawLoading(100,True)
+			Else
+				
+				;em.Emitters = CreateEmitter(EntityX(e\room\Objects[0],True),EntityY(e\room\Objects[0],True),EntityZ(e\room\Objects[0],True), 1)
+				;TurnEntity(em\Obj, -90, 0, 0)
+				;e\room\Objects[4] = em\Obj
+				;em\RandAngle = 26
+				;em\SizeChange = 0.01
+				;em\Achange = -0.015
+				;em\Gravity = -0.12
+				
+				UpdateSky()
+				
+				If e\EventState < 2.0 Then 
+					If e\room\NPC[0]\State = 2 Then
+						ShouldPlay = 6
+					Else
+						e\EventState2=(e\EventState2+FPSfactor) Mod 3600
+						PositionEntity(e\room\NPC[0]\Collider, EntityX(e\room\obj,True)+Cos(e\EventState2/10)*6000.0*RoomScale,14000*RoomScale,EntityZ(e\room\obj,True)+Sin(e\EventState2/10)*6000.0*RoomScale)
+						RotateEntity e\room\NPC[0]\Collider,7.0,(e\EventState2/10),20.0											
+						ShouldPlay = 5
+					EndIf
+					
+					If EntityDistance(mainPlayer\collider, e\room\Objects[10])<320*RoomScale Then
+						e\EventState = 2.0
+						e\room\RoomDoors[2]\open = False
+						e\room\RoomDoors[2]\locked = 6
+						e\room\RoomDoors[3]\open = False
+						e\room\RoomDoors[3]\locked = 6
+						
+						e\room\NPC[2] = CreateNPC(NPCtypeApache, EntityX(e\room\Objects[9],True),EntityY(e\room\Objects[9],True)+0.5,EntityZ(e\room\Objects[9],True))
+						e\room\NPC[2]\State = 3
+						
+						e\room\NPC[3] = CreateNPC(NPCtypeApache, EntityX(e\room\Objects[7],True),EntityY(e\room\Objects[7],True)-2.0,EntityZ(e\room\Objects[7],True))
+						e\room\NPC[3]\State = 3
+						
+						e\room\NPC[0]\State = 3
+						
+						e\SoundCHN = PlaySound_Strict (LoadTempSound("SFX\Ending\GateB\682Battle.ogg"))
+					EndIf								
+				Else
+					ShouldPlay = 6
+					e\EventState=e\EventState+FPSfactor
+					
+					If e\EventState < 40.0*70 Then 	
+						e\room\NPC[0]\EnemyX = EntityX(e\room\Objects[11],True)+Sin(MilliSecs2()/25.0)*3
+						e\room\NPC[0]\EnemyY = EntityY(e\room\Objects[11],True)+Cos(MilliSecs()/85.0)+9.0
+						e\room\NPC[0]\EnemyZ = EntityZ(e\room\Objects[11],True)+Cos(MilliSecs()/25.0)*3
+						
+						e\room\NPC[2]\EnemyX = EntityX(e\room\Objects[11],True)+Sin(MilliSecs2()/23.0)*3
+						e\room\NPC[2]\EnemyY = EntityY(e\room\Objects[11],True)+Cos(MilliSecs()/83.0)+5.0
+						e\room\NPC[2]\EnemyZ = EntityZ(e\room\Objects[11],True)+Cos(MilliSecs()/23.0)*3
+						
+						If e\room\NPC[3]\State = 3 Then 
+							e\room\NPC[3]\EnemyX = EntityX(e\room\Objects[11],True)+Sin(MilliSecs2()/20.0)*3
+							e\room\NPC[3]\EnemyY = EntityY(e\room\Objects[11],True)+Cos(MilliSecs()/80.0)+3.5
+							e\room\NPC[3]\EnemyZ = EntityZ(e\room\Objects[11],True)+Cos(MilliSecs()/20.0)*3
+						EndIf
+					EndIf
+				EndIf
+				
+				
+				If e\EventState > 0.6*70 And e\EventState < 42.2*70 Then 
+					If e\EventState < 0.7*70 Then
+						mainPlayer\camShake = 0.5
+					ElseIf e\EventState > 3.2*70 And e\EventState < 3.3*70	
+						mainPlayer\camShake = 0.5
+					ElseIf e\EventState > 6.1*70 And e\EventState < 6.2*70	
+						mainPlayer\camShake = 0.5
+					ElseIf e\EventState < 10.8*70 And e\EventState < 10.9*70	
+						mainPlayer\camShake = 0.5
+					ElseIf e\EventState > 12.1*70 And e\EventState < 12.3*70
+						mainPlayer\camShake = 1.0
+					ElseIf e\EventState > 13.3*70 And e\EventState < 13.5*70
+						mainPlayer\camShake = 1.5
+					ElseIf e\EventState > 16.5*70 And e\EventState < 18.5*70
+						mainPlayer\camShake = 3.0
+					ElseIf e\EventState > 21.5*70 And e\EventState < 24.0*70	
+						mainPlayer\camShake = 2.0
+					ElseIf e\EventState > 25.5*70 And e\EventState < 27.0*70	
+						mainPlayer\camShake = 2.0	
+					ElseIf e\EventState > 31.0*70 And e\EventState < 31.5*70	
+						mainPlayer\camShake = 0.5	
+					ElseIf e\EventState > 35.0*70 And e\EventState < 36.5*70	
+						mainPlayer\camShake = 1.5		
+						If e\EventState-FPSfactor =< 35.0*70 Then
+							e\SoundCHN2 = PlaySound_Strict (LoadTempSound("SFX\Ending\GateB\DetonatingAlphaWarheads.ogg"))
+						EndIf									
+					ElseIf e\EventState > 39.5*70 And e\EventState < 39.8*70		
+						mainPlayer\camShake = 1.0
+					ElseIf e\EventState > 42.0*70
+						mainPlayer\camShake = 0.5
+						
+						;helicopters leave
+						e\room\NPC[0]\EnemyX = EntityX(e\room\Objects[19],True)+4.0
+						e\room\NPC[0]\EnemyY = EntityY(e\room\Objects[19],True)+4.0
+						e\room\NPC[0]\EnemyZ = EntityZ(e\room\Objects[19],True)+4.0
+						
+						e\room\NPC[2]\EnemyX = EntityX(e\room\Objects[19],True)
+						e\room\NPC[2]\EnemyY = EntityY(e\room\Objects[19],True)
+						e\room\NPC[2]\EnemyZ = EntityZ(e\room\Objects[19],True)
+						
+					EndIf
+				EndIf
+				
+				If e\EventState => 45.0*70 Then
+					If e\EventState < 75.0*70 Then 
+						If NuclearSirenSFX = 0 Then NuclearSirenSFX = LoadSound_Strict("SFX\Ending\GateB\Siren.ogg")
+						If e\SoundCHN = 0 Then
+							e\SoundCHN = PlaySound_Strict(NuclearSirenSFX)
+						Else
+							If ChannelPlaying(e\SoundCHN)=False Then e\SoundCHN = PlaySound_Strict(NuclearSirenSFX) 
+						EndIf
+					Else
+						If SelectedEnding = "" Then
+							If ChannelPlaying(e\SoundCHN)=False Then 
+								temp = True
+								For e2.Events = Each Events
+									If e2\EventName = "room2nuke" Then
+										temp = e2\EventState
+										Exit
+									EndIf
+								Next
+								
+								If temp = 1 Then ;remote detonation on -> explode
+									ExplosionTimer = Max(ExplosionTimer, 0.1)
+									SelectedEnding = "B2"
+								Else
+									LoadEventSound(e,"SFX\Ending\GateB\AlphaWarheadsFail.ogg")
+									e\SoundCHN = PlaySound_Strict(e\Sound)
+									
+									For i = 0 To 1
+										n.NPCs = CreateNPC(NPCtypeMTF, EntityX(e\room\Objects[18],True)+(i*0.4),EntityY(e\room\Objects[18],True)+0.29,EntityZ(e\room\Objects[18],True)+(i*0.4))
+									Next
+									
+									n.NPCs = CreateNPC(NPCtypeMTF, EntityX(e\room\RoomDoors[2]\obj,True),EntityY(e\room\RoomDoors[2]\obj,True)+0.29,(EntityZ(e\room\RoomDoors[2]\obj,True)+EntityZ(e\room\RoomDoors[3]\obj,True))/2)
+									
+									For n.NPCs = Each NPCs
+										If n\NPCtype = NPCtypeMTF Then
+											n\LastSeen = (70*Rnd(30,35))
+											n\State = 3
+											n\State2 = 10
+											n\EnemyX = EntityX(mainPlayer\collider)
+											n\EnemyY = EntityY(mainPlayer\collider)
+											n\EnemyZ = EntityZ(mainPlayer\collider)
+										EndIf
+									Next
+									
+									DebugLog "MTF Units spawned!"
+									
+									e\EventState = 85.0*70
+									
+									SelectedEnding = "B3"
+								EndIf
+								
+							EndIf										
+						Else
+							If SelectedEnding = "B3" Then
+								e\room\NPC[0]\EnemyX = EntityX(e\room\Objects[11],True)+Sin(MilliSecs2()/25.0)*3
+								e\room\NPC[0]\EnemyY = EntityY(e\room\Objects[11],True)+Cos(MilliSecs()/85.0)+9.0
+								e\room\NPC[0]\EnemyZ = EntityZ(e\room\Objects[11],True)+Cos(MilliSecs()/25.0)*3
+								
+								e\room\NPC[2]\EnemyX = EntityX(e\room\Objects[11],True)+Sin(MilliSecs2()/23.0)*3
+								e\room\NPC[2]\EnemyY = EntityY(e\room\Objects[11],True)+Cos(MilliSecs()/83.0)+5.0
+								e\room\NPC[2]\EnemyZ = EntityZ(e\room\Objects[11],True)+Cos(MilliSecs()/23.0)*3
+								
+								e\room\RoomDoors[5]\open = True
+								
+								;If e\EventState-FPSfactor < 80.0*70 And e\EventState => 80.0*70 Then
+								;	
+								;EndIf
+								
+								;Update the MTF Units everytime they cannot detect the player
+								If e\EventState3 = 0.0
+									For n.NPCs = Each NPCs
+										If n\NPCtype = NPCtypeMTF
+											If n\State = 5
+												n\State = 3
+												n\PathStatus = FindPath(n, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider),EntityZ(mainPlayer\collider))
+												n\PathTimer = 70*Rand(15,20)
+												n\LastSeen = 70*300
+											EndIf
+											If EntityDistance(n\Collider,mainPlayer\collider)<3.0
+												n\State = 5
+												n\PathStatus = 0
+												n\PathTimer = 0
+												n\CurrSpeed = 0
+											EndIf
+										EndIf
+									Next
+								EndIf
+								
+								For n.NPCs = Each NPCs
+									If n\NPCtype = NPCtypeMTF
+										If n\State = 5 And EntityDistance(n\Collider,mainPlayer\collider)<3.0
+											If e\EventState3 = 0.0
+												PlaySound_Strict LoadTempSound("SFX\Ending\GateB\PlayerDetect.ogg")
+												e\EventState3 = e\EventState3 + FPSfactor
+												For n2.NPCs = Each NPCs
+													If n2\NPCtype = n\NPCtype
+														n2\State = 5
+														n2\PathStatus = 0
+														n2\PathTimer = 0
+														n2\CurrSpeed = 0
+													EndIf
+												Next
+												Exit
+											EndIf
+										EndIf
+									EndIf
+								Next
+								
+								If e\EventState3 > 0.0 And e\EventState3 <= 500.0
+									e\EventState3 = e\EventState3 + FPSfactor
+									UnableToMove% = True
+									For n.NPCs = Each NPCs
+										If n\NPCtype = NPCtypeMTF
+											n\EnemyX = EntityX(mainPlayer\collider)
+											n\EnemyY = EntityY(mainPlayer\collider)
+											n\EnemyZ = EntityZ(mainPlayer\collider)
+											n\BoneToManipulate = "spine"
+											n\ManipulateBone = True
+											n\ManipulationType = 1
+											n\Gravity = 0
+											n\GravityMult = 0
+										EndIf
+									Next
+								ElseIf e\EventState3 > 500.0
+									ent% = LoadSprite("GFX\blooddrop1.png",1+2)
+									EntityFX ent%,1+2+8
+									ScaleSprite ent%,1.5,1.5
+									ShouldPlay = 0
+									mainPlayer\moveSpeed = 0
+									PlaySound_Strict LoadTempSound("SFX\Ending\GateB\Gunshot.ogg")
+									GodMode = 0
+									NoClip = 0
+									KillTimer = -0.1
+									DeathMSG = ""
+									Kill()
+									mainPlayer\blinkTimer = -10
+									For n.NPCs = Each NPCs
+										If n\NPCtype = NPCtypeMTF
+											RemoveNPC(n)
+										EndIf
+									Next
+									RemoveEvent(e)
+									Exit
+								EndIf
+								
+							EndIf
+						EndIf
+						
+						
+					EndIf
+				EndIf
+				
+				If e\EventState > 26.5*70 Then
+					If e\room\Objects[12] = 0 Then
+						e\room\Objects[12] = LoadMesh_Strict("GFX\NPCs\682arm.b3d")
+						ScaleEntity e\room\Objects[12], 0.15,0.15,0.15
+						temp = (Min(((EntityDistance(e\room\NPC[3]\Collider,mainPlayer\collider)/RoomScale)-3000.0)/4,1000)+12192.0)*RoomScale
+						PositionEntity e\room\Objects[12],EntityX(e\room\NPC[3]\Collider),12192.0*RoomScale,EntityZ(e\room\NPC[3]\Collider)
+						RotateEntity e\room\Objects[12],0,e\room\angle+Rnd(-10,10),0,True
+						TurnEntity e\room\Objects[12], 0,0,180
+					Else
+						If WrapAngle(EntityRoll(e\room\Objects[12]))<340.0 Then 
+							angle# = WrapAngle(EntityRoll(e\room\Objects[12]))
+							TurnEntity e\room\Objects[12], 0,0,(5.0+Abs(Sin(angle))*2)*FPSfactor
+							If angle < 270 And WrapAngle(EntityRoll(e\room\Objects[12]))=> 270 Then
+								PlaySound_Strict LoadTempSound("SFX\Character\Apache\Crash1.ogg")
+								e\room\NPC[3]\State = 4
+								e\room\NPC[3]\State2 = 1.0
+								e\room\NPC[3]\EnemyX = EntityX(e\room\Objects[7],True)
+								e\room\NPC[3]\EnemyY = EntityY(e\room\Objects[7],True)-2.5
+								e\room\NPC[3]\EnemyZ = EntityZ(e\room\Objects[7],True)
+								
+								em.Emitters = CreateEmitter(EntityX(e\room\NPC[3]\Collider), EntityY(e\room\NPC[3]\Collider), EntityZ(e\room\NPC[3]\Collider),0)
+								em\Room = mainPlayer\currRoom
+								em\RandAngle = 45
+								em\Gravity = -0.18
+								em\LifeTime = 400
+								em\SizeChange = Rnd(0.005,0.007)
+								em\Achange = -0.004
+								TurnEntity(em\Obj, -80+20*i, 0, 0)
+								EntityParent em\Obj, e\room\NPC[3]\Collider
+								
+								For i = 0 To 7
+									p.Particles = CreateParticle(EntityX(e\room\NPC[3]\Collider),EntityY(e\room\NPC[3]\Collider),EntityZ(e\room\NPC[3]\Collider), 0, Rnd(0.5,1.0), -0.1, 200)
+									p\speed = 0.01
+									p\SizeChange = 0.01
+									p\A = 1.0
+									p\Achange = -0.005
+									RotateEntity p\pvt, Rnd(360),Rnd(360),0
+									MoveEntity p\pvt, 0,0,0.3
+								Next
+								
+								For i = 0 To 12
+									p.Particles = CreateParticle(EntityX(e\room\NPC[3]\Collider),EntityY(e\room\NPC[3]\Collider),EntityZ(e\room\NPC[3]\Collider), 0, 0.02, 0.003, 200)
+									p\speed = 0.04
+									p\A = 1.0
+									p\Achange = -0.005
+									RotateEntity p\pvt, Rnd(360),Rnd(360),0
+								Next
+							EndIf
+						Else
+							HideEntity e\room\Objects[12]
+						EndIf
+					EndIf
+				EndIf
+				
+				
+				;0.5
+				;2.1
+				;3.3
+				;6.5 - 8.5
+				;11.5-14
+				;15.5-17
+				;21
+				;25-26.5
+				;29.5
+				;32
+			EndIf
+			
+			;dist = Max(Min(EntityDistance(mainPlayer\collider, e\room\objects[3])/10000.0,1.0),0.0)
+			;EntityAlpha Fog, 1.0-dist
+			HideEntity Fog
+			CameraFogRange mainPlayer\cam, 5,45
+			
+			angle = Max(Sin(EntityYaw(mainPlayer\collider)),0.0)
+			;250,230,200
+			CameraFogColor (mainPlayer\cam,200+(angle*50),200+(angle*30),200)
+			CameraClsColor (mainPlayer\cam,200+(angle*50),200+(angle*30),200)					
+			CameraRange(mainPlayer\cam, 0.05, 60)
+			
+			AmbientLight (140, 140, 140)
+			
+			If Rand(3) = 1 Then
+				p.Particles = CreateParticle(EntityX(mainPlayer\cam)+Rnd(-2.0,2.0), EntityY(mainPlayer\cam)+Rnd(0.9,2.0), EntityZ(mainPlayer\cam)+Rnd(-2.0,2.0), 2, 0.006, 0, 300)
+				p\speed = Rnd(0.002,0.003)
+				RotateEntity(p\pvt, Rnd(-20, 20), e\room\angle-90+Rnd(-15,15),0, 0)
+				
+				p\SizeChange = -0.00001
+			End If
+
+			;Helicopter spots or player is within range. --> Start shooting.
+			If ((EntityDistance(e\room\NPC[1]\Collider,mainPlayer\collider) < 15.0) Or EntityVisible(e\room\NPC[0]\Collider,mainPlayer\collider)) And e\room\NPC[1]\State <> 1
+				e\room\NPC[1]\State = 1
+				e\room\NPC[1]\State3 = 1
+			EndIf
+			
+			;Below roof or inside catwalk. --> Stop shooting.
+			If (EntityDistance(e\room\NPC[1]\Collider,mainPlayer\collider) < 8.9) Or (EntityDistance(e\room\Objects[5],mainPlayer\collider) < 16.9) Then
+				e\room\NPC[1]\State3 = 0
+			Else
+				e\room\NPC[1]\State3 = 1
+			EndIf
+			
+		Else
+			
+			If RemoteDoorOn=False Then
+				e\room\RoomDoors[4]\locked=True
+			ElseIf RemoteDoorOn And e\EventState3=0
+				e\room\RoomDoors[4]\locked=False
+				If e\room\RoomDoors[4]\open Then 
+					If e\room\RoomDoors[4]\openstate > 50 Or EntityDistance(mainPlayer\collider, e\room\RoomDoors[4]\frameobj)<0.5 Then
+						e\room\RoomDoors[4]\openstate = Min(e\room\RoomDoors[4]\openstate,50)
+						e\room\RoomDoors[4]\open = False
+						PlaySound2 (LoadTempSound("SFX\Door\DoorError.ogg"), mainPlayer\cam, e\room\RoomDoors[4]\frameobj)
+					EndIf							
+				EndIf
+			Else
+				e\room\RoomDoors[4]\locked=False
+				
+				e\EventState2 = UpdateElevators(e\EventState2, e\room\RoomDoors[0], e\room\RoomDoors[1], e\room\Objects[8], e\room\Objects[9], e)
+				
+				EntityAlpha Fog, 1.0						
+			EndIf
+			
+			
+		EndIf
+		
+	EndIf
+	;[End Block]
+End Function
+

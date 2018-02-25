@@ -33,3 +33,53 @@ Function FillRoom966(r.Rooms)
     it = CreateItem("Night Vision Goggles", "nvgoggles", r\x + 320.0 * RoomScale, 0.5, r\z + 704.0 * RoomScale)
     EntityParent(it\collider, r\obj)
 End Function
+
+
+Function UpdateEventRoom966(e.Events)
+	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
+
+	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
+
+	Local CurrTrigger$ = ""
+
+	Local x#, y#, z#
+
+	Local angle#
+
+	;[Block]
+	If mainPlayer\currRoom = e\room Then
+		Select e\EventState
+			Case 0
+				;a dirty workaround to hide the pause when loading 966 model
+				LightBlink = 5.0
+				e\EventState = 1
+				PlaySound_Strict LightSFX
+				QuickLoadPercent = 0
+			Case 1
+				e\EventState2 = e\EventState2+FPSfactor
+				If e\EventState2>30 Then
+					If e\EventStr = ""
+						CreateNPC(NPCtype966, EntityX(e\room\Objects[0],True), EntityY(e\room\Objects[0],True), EntityZ(e\room\Objects[0],True))
+						QuickLoadPercent = 50
+						e\EventStr = "load0"
+					ElseIf e\EventStr = "load0"
+						CreateNPC(NPCtype966, EntityX(e\room\Objects[1],True), EntityY(e\room\Objects[1],True), EntityZ(e\room\Objects[1],True))
+						QuickLoadPercent = 70
+						e\EventStr = "load1"
+					ElseIf e\EventStr = "load1"
+						CreateNPC(NPCtype966, EntityX(e\room\Objects[2],True), EntityY(e\room\Objects[2],True), EntityZ(e\room\Objects[2],True))
+						QuickLoadPercent = 100
+						e\EventState=2
+					EndIf
+				Else
+					QuickLoadPercent = Int(e\EventState2)
+				EndIf							
+			Case 2
+				
+				e\EventState = 2
+				RemoveEvent (e)
+		End Select
+	EndIf
+	;[End Block]
+End Function
+

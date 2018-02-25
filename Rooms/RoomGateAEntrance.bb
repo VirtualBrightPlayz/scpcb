@@ -20,3 +20,55 @@ Function FillRoomGateAEntrance(r.Rooms)
     RotateEntity r\RoomDoors[1]\buttons[1],0,r\angle-90,0,True
     PositionEntity(r\RoomDoors[1]\buttons[0], r\x, 20.0, r\z, True)
 End Function
+
+Function UpdateEventGateaentrance(e.Events)
+	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
+
+	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
+
+	Local CurrTrigger$ = ""
+
+	Local x#, y#, z#
+
+	Local angle#
+
+	;[Block]
+	If mainPlayer\currRoom = e\room Then 
+		If RemoteDoorOn=False Then
+			e\room\RoomDoors[1]\locked=True
+		ElseIf RemoteDoorOn And e\EventState3=0
+			e\room\RoomDoors[1]\locked=False
+			If e\room\RoomDoors[1]\open Then 
+				If e\room\RoomDoors[1]\openstate > 50 Or EntityDistance(mainPlayer\collider, e\room\RoomDoors[1]\frameobj)<0.5 Then
+					e\room\RoomDoors[1]\openstate = Min(e\room\RoomDoors[1]\openstate,50)
+					e\room\RoomDoors[1]\open = False
+					PlaySound2 (LoadTempSound("SFX\Door\DoorError.ogg"), mainPlayer\cam, e\room\RoomDoors[1]\frameobj)
+				EndIf							
+			EndIf
+		Else
+			e\room\RoomDoors[1]\locked=False
+			Local gatea.Rooms =Null
+			For r.Rooms = Each Rooms
+				If r\RoomTemplate\Name = "gatea" Then
+					gatea = r 
+					Exit
+				EndIf
+			Next
+			
+			e\EventState = UpdateElevators(e\EventState, e\room\RoomDoors[0], gatea\RoomDoors[1], e\room\Objects[0], e\room\Objects[1], e)
+			If Contained106 = False Then 
+				If e\EventState < -1.5 And e\EventState+FPSfactor=> -1.5 Then
+					PlaySound_Strict(OldManSFX(3))
+				EndIf
+			EndIf
+			
+			If EntityDistance(mainPlayer\collider, e\room\Objects[1])<4.0 Then
+				gatea\RoomDoors[1]\locked = True
+				mainPlayer\currRoom = gatea
+				RemoveEvent(e)
+			EndIf						
+		EndIf
+	EndIf
+	;[End Block]
+End Function
+

@@ -85,3 +85,107 @@ Function FillRoom008(r.Rooms)
     TurnEntity(sc\CameraObj, 20, 0, 0)
     sc\ID = 7
 End Function
+
+
+Function UpdateEvent008(e.Events)
+	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
+
+	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
+
+	Local CurrTrigger$ = ""
+
+	Local x#, y#, z#
+
+	Local angle#
+
+	;[Block]
+	If mainPlayer\currRoom = e\room Then	
+		
+		GiveAchievement(Achv008)=True
+		If Curr173\Idle<2 Then
+			;container open
+			If e\EventState = 0 Then
+				
+				PositionEntity Curr173\Collider, EntityX(e\room\Objects[3],True),0.5,EntityZ(e\room\Objects[3],True),True
+				ResetEntity Curr173\Collider
+				
+				e\EventState = 1
+			ElseIf e\EventState = 1
+				e\SoundCHN = LoopSound2(AlarmSFX(0), e\SoundCHN, mainPlayer\cam, e\room\Objects[0], 5.0)
+				
+				If (MilliSecs2() Mod 1000)<500 Then
+					ShowEntity e\room\Objects[5] 
+				Else
+					HideEntity e\room\Objects[5]
+				EndIf
+				
+				dist = EntityDistance(mainPlayer\collider, e\room\Objects[0])
+				If dist<2.0 Then 
+					e\room\RoomDoors[0]\locked = True
+					e\room\RoomDoors[1]\locked = True
+					
+					If e\EventState2=0 Then
+						ShowEntity e\room\Objects[2]
+						If mainPlayer\blinkTimer<-10 And Curr173\Idle = 0 Then
+							PositionEntity Curr173\Collider, EntityX(e\room\Objects[4],True),0.5,EntityZ(e\room\Objects[4],True),True
+							ResetEntity Curr173\Collider
+							
+							HideEntity e\room\Objects[2]
+							
+							If (Not WearingHazmat) Then 
+								mainPlayer\injuries=Injuries+0.1
+								Infect=1
+								Msg = "The window shattered and a piece of glass cut your arm."
+								MsgTimer = 70*8
+							EndIf
+							
+							PlaySound2(LoadTempSound("SFX\General\GlassBreak.ogg"), mainPlayer\cam, e\room\Objects[0]) 
+							
+							e\EventState2=1
+						EndIf
+					EndIf
+					
+					If dist<1.0 Then
+						If EntityInView(e\room\Objects[0], mainPlayer\cam) Then
+							DrawHandIcon = True
+							
+							If MouseDown1 Then 
+								RotateEntity(e\room\Objects[1], Max(Min(EntityPitch(e\room\Objects[1])+Max(Min(-mouse_y_speed_1,10.0),-10), 89), 35), EntityYaw(e\room\Objects[1]), 0)
+							EndIf
+						EndIf
+					EndIf
+				EndIf
+				
+				If EntityPitch(e\room\Objects[1],True)<40 Then 
+					e\EventState = 2
+					PlaySound_Strict LeverSFX
+				Else
+					p.Particles = CreateParticle(EntityX(e\room\Objects[0],True),EntityY(e\room\Objects[0],True),EntityZ(e\room\Objects[0],True), 6, 0.02, -0.12)
+					RotateEntity (p\pvt,-90,0,0,True)
+					TurnEntity(p\pvt, Rnd(-26,26), Rnd(-26,26), Rnd(360))
+					
+					p\SizeChange = 0.012
+					p\Achange = -0.015
+				EndIf		
+			Else
+				HideEntity e\room\Objects[5]
+				e\room\RoomDoors[0]\locked = False
+				e\room\RoomDoors[1]\locked = False
+				e\room\RoomDoors[2]\locked = False
+				
+				RotateEntity (e\room\Objects[1],CurveAngle(1,EntityPitch(e\room\Objects[1],True),15.0),EntityYaw(e\room\Objects[1],True),0,True)
+				
+				If EntityPitch(e\room\Objects[1],True)=<1.0 Then
+					RemoveEvent(e)
+				EndIf
+			EndIf
+		Else
+			p.Particles = CreateParticle(EntityX(e\room\Objects[0],True),EntityY(e\room\Objects[0],True),EntityZ(e\room\Objects[0],True), 6, 0.02, -0.12)
+			RotateEntity (p\pvt,-90,0,0,True)
+			TurnEntity(p\pvt, Rnd(-26,26), Rnd(-26,26), Rnd(360))
+		EndIf
+		
+	End If
+	;[End Block]
+End Function
+

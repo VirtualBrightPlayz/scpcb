@@ -37,3 +37,27 @@ Function FillRoom2Offices2(r.Rooms)
     temp = Rand(1,4)
     PositionEntity(r\Objects[0], EntityX(r\Objects[temp],True),EntityY(r\Objects[temp],True),EntityZ(r\Objects[temp],True),True)
 End Function
+
+
+Function UpdateEventRoom2offices2(e.Events)
+	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
+
+	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
+
+	Local CurrTrigger$ = ""
+
+	Local x#, y#, z#
+
+	Local angle#
+
+	;[Block]
+	If mainPlayer\currRoom = e\room Then
+		If mainPlayer\blinkTimer<-8 And mainPlayer\blinkTimer >-12 Then
+			temp = Rand(1,4)
+			PositionEntity e\room\Objects[0], EntityX(e\room\Objects[temp],True),EntityY(e\room\Objects[temp],True),EntityZ(e\room\Objects[temp],True),True
+			RotateEntity e\room\Objects[0], 0, Rnd(360), 0
+		EndIf
+	EndIf
+	;[End Block]
+End Function
+

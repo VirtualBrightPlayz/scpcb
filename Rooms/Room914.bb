@@ -586,3 +586,203 @@ Function Use914(item.Items, setting$, x#, y#, z#)
 	
 	If it2 <> Null Then EntityType (it2\collider, HIT_ITEM)
 End Function
+
+
+Function UpdateEvent914(e.Events)
+	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
+
+	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
+
+	Local CurrTrigger$ = ""
+
+	Local x#, y#, z#
+
+	Local angle#
+
+	;[Block]
+	If mainPlayer\currRoom = e\room Then
+		;GiveAchievement(Achv914)
+		
+		If e\room\RoomDoors[2]\open Then GiveAchievement(Achv914)
+		
+		EntityPick(mainPlayer\cam, 1.0)
+		If PickedEntity() = e\room\Objects[0] Then
+			DrawHandIcon = True
+			If MouseHit1 Then mainPlayer\grabbedEntity = e\room\Objects[0]
+		ElseIf PickedEntity() = e\room\Objects[1]
+			DrawHandIcon = True
+			If MouseHit1 Then mainPlayer\grabbedEntity = e\room\Objects[1]
+		EndIf
+		
+		If MouseDown1 Or MouseHit1 Then
+			If mainPlayer\grabbedEntity <> 0 Then ;avain
+				If mainPlayer\grabbedEntity = e\room\Objects[0] Then
+					If e\EventState = 0 Then
+						DrawHandIcon = True
+						TurnEntity(mainPlayer\grabbedEntity, 0, 0, -mouse_x_speed_1 * 2.5)
+						
+						angle = WrapAngle(EntityRoll(e\room\Objects[0]))
+						If angle > 181 Then DrawArrowIcon(3) = True
+						DrawArrowIcon(1) = True
+						
+						If angle < 90 Then
+							RotateEntity(mainPlayer\grabbedEntity, 0, 0, 361.0)
+						ElseIf angle < 180
+							RotateEntity(mainPlayer\grabbedEntity, 0, 0, 180)
+						EndIf
+						
+						If angle < 181 And angle > 90 Then
+							For it.Items = Each Items
+								If it\collider <> 0 And it\Picked = False Then
+									If Abs(EntityX(it\collider) - (e\room\x - 712.0 * RoomScale)) < 200.0 Then
+										If Abs(EntityY(it\collider) - (e\room\y + 648.0 * RoomScale)) < 104.0 Then
+											e\EventState = 1
+											e\SoundCHN = PlaySound2(MachineSFX, mainPlayer\cam, e\room\Objects[1])
+											Exit
+										EndIf
+									End If
+								End If
+							Next
+						EndIf
+					End If
+				ElseIf mainPlayer\grabbedEntity = e\room\Objects[1]
+					If e\EventState = 0 Then
+						DrawHandIcon = True
+						TurnEntity(mainPlayer\grabbedEntity, 0, 0, -mouse_x_speed_1 * 2.5)
+						
+						angle# = WrapAngle(EntityRoll(e\room\Objects[1]))
+						DrawArrowIcon(3) = True
+						DrawArrowIcon(1) = True
+						
+						If angle > 90 Then
+							If angle < 180 Then
+								RotateEntity(mainPlayer\grabbedEntity, 0, 0, 90.0)
+							ElseIf angle < 270
+								RotateEntity(mainPlayer\grabbedEntity, 0, 0, 270)
+							EndIf
+						EndIf
+						
+					End If
+				End If
+			End If
+		Else
+			mainPlayer\grabbedEntity = 0
+		End If
+		
+		Local setting$ = ""
+		
+		If mainPlayer\grabbedEntity <> e\room\Objects[1] Then
+			angle# = WrapAngle(EntityRoll(e\room\Objects[1]))
+			If angle < 22.5 Then
+				angle = 0
+				setting = "1:1"
+			ElseIf angle < 67.5
+				angle = 40
+				setting = "coarse"
+			ElseIf angle < 180
+				angle = 90
+				setting = "rough"
+			ElseIf angle > 337.5
+				angle = 359 - 360
+				setting = "1:1"
+			ElseIf angle > 292.5
+				angle = 320 - 360
+				setting = "fine"
+			Else
+				angle = 270 - 360
+				setting = "very fine"
+			End If
+			RotateEntity(e\room\Objects[1], 0, 0, CurveValue(angle, EntityRoll(e\room\Objects[1]), 20))
+		EndIf
+		
+		For i% = 0 To 1
+			If mainPlayer\grabbedEntity = e\room\Objects[i] Then
+				If Not EntityInView(e\room\Objects[i], mainPlayer\cam) Then
+					mainPlayer\grabbedEntity = 0
+				ElseIf EntityDistance(e\room\Objects[i], mainPlayer\cam) > 1.0
+					mainPlayer\grabbedEntity = 0
+				End If
+			End If
+		Next
+		
+		If e\EventState > 0 Then
+			e\EventState = e\EventState + FPSfactor
+			
+			
+			e\room\RoomDoors[1]\open = False
+			If e\EventState > 70 * 2 Then
+				e\room\RoomDoors[0]\open = False
+			EndIf
+			
+			If Distance(EntityX(mainPlayer\collider), EntityZ(mainPlayer\collider), EntityX(e\room\Objects[2], True), EntityZ(e\room\Objects[2], True)) < (170.0 * RoomScale) Then
+				
+				If setting = "rough" Or setting = "coarse" Then
+					If e\EventState > 70 * 2.6 And e\EventState - FPSfactor2 < 70 * 2.6 Then PlaySound_Strict Death914SFX
+				EndIf
+				
+				If e\EventState > 70 * 3 Then
+					Select setting
+						Case "rough"
+							KillTimer = Min(-1, KillTimer)
+							mainPlayer\blinkTimer = -10
+							If e\SoundCHN <> 0 Then StopChannel e\SoundCHN
+							DeathMSG = Chr(34)+"A heavily mutilated corpse found inside the output booth of SCP-914. DNA testing identified the corpse as Class D Subject D-9341. "
+							DeathMSG = DeathMSG + "The subject had obviously been "+Chr(34)+"refined"+Chr(34)+" by SCP-914 on the "+Chr(34)+"Rough"+Chr(34)+" setting, but we are still confused as to how he "
+							DeathMSG = DeathMSG + "ended up inside the intake booth and who or what wound the key."+Chr(34)
+						Case "coarse"
+							mainPlayer\blinkTimer = -10
+							If e\EventState - FPSfactor2 < 70 * 3 Then PlaySound_Strict Use914SFX
+						Case "1:1"
+							mainPlayer\blinkTimer = -10
+							If e\EventState - FPSfactor2 < 70 * 3 Then PlaySound_Strict Use914SFX
+						Case "fine", "very fine"
+							mainPlayer\blinkTimer = -10
+							If e\EventState - FPSfactor2 < 70 * 3 Then PlaySound_Strict Use914SFX	
+					End Select
+				End If
+			EndIf
+			
+			If e\EventState > (6 * 70) Then	
+				RotateEntity(e\room\Objects[0], EntityPitch(e\room\Objects[0]), EntityYaw(e\room\Objects[0]), CurveAngle(0, EntityRoll(e\room\Objects[0]),10.0))
+			Else
+				RotateEntity(e\room\Objects[0], EntityPitch(e\room\Objects[0]), EntityYaw(e\room\Objects[0]), 180)
+			EndIf
+			
+			If e\EventState > (12 * 70) Then							
+				For it.Items = Each Items
+					If it\collider <> 0 And it\Picked = False Then
+						If Distance(EntityX(it\collider), EntityZ(it\collider), EntityX(e\room\Objects[2], True), EntityZ(e\room\Objects[2], True)) < (180.0 * RoomScale) Then
+							Use914(it, setting, EntityX(e\room\Objects[3], True), EntityY(e\room\Objects[3], True), EntityZ(e\room\Objects[3], True))
+							
+						End If
+					End If
+				Next
+				
+				If Distance(EntityX(mainPlayer\collider), EntityZ(mainPlayer\collider), EntityX(e\room\Objects[2], True), EntityZ(e\room\Objects[2], True)) < (160.0 * RoomScale) Then
+					Select setting
+						Case "coarse"
+							mainPlayer\injuries = 4.0
+							Msg = "You notice countless small incisions all around your body. They are bleeding heavily."
+							MsgTimer = 70*8
+						Case "1:1"
+							userOptions\invertMouseY = (Not userOptions\invertMouseY)
+						Case "fine", "very fine"
+							SuperMan = True
+					End Select
+					mainPlayer\blurTimer = 1000
+					PositionEntity(mainPlayer\collider, EntityX(e\room\Objects[3], True), EntityY(e\room\Objects[3], True) + 1.0, EntityZ(e\room\Objects[3], True))
+					ResetEntity(mainPlayer\collider)
+					mainPlayer\dropSpeed = 0
+				EndIf								
+				
+				e\room\RoomDoors[0]\open = True
+				e\room\RoomDoors[1]\open = True
+				RotateEntity(e\room\Objects[0], 0, 0, 0)
+				e\EventState = 0
+			End If
+		End If
+		
+	EndIf
+	;[End Block]
+End Function
+

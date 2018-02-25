@@ -37,3 +37,26 @@ Function FillRoomLockroom2(r.Rooms)
     PositionEntity(sc\ScrObj, r\x + 96.0 * RoomScale, 1.1, r\z - 668.0 * RoomScale)
     EntityParent(sc\ScrObj, r\obj)
 End Function
+
+Function UpdateEventLockroom096(e.Events)
+	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
+
+	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
+
+	Local CurrTrigger$ = ""
+
+	Local x#, y#, z#
+
+	Local angle#
+
+	;[Block]
+	If mainPlayer\currRoom = e\room Then
+		If Curr096=Null Then
+			Curr096 = CreateNPC(NPCtype096, EntityX(e\room\obj,True), 0.3, EntityZ(e\room\obj,True))
+			RotateEntity Curr096\Collider, 0, e\room\angle+45, 0, True
+		EndIf
+		RemoveEvent(e)
+	End If
+	;[End Block]
+End Function
+

@@ -66,3 +66,26 @@ Function FillRoom2Nuke(r.Rooms)
     TurnEntity(sc\CameraObj, 20, 0, 0)
     sc\ID = 6
 End Function
+
+
+Function UpdateEventRoom2nuke(e.Events)
+	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
+
+	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
+
+	Local CurrTrigger$ = ""
+
+	Local x#, y#, z#
+
+	Local angle#
+
+	;[Block]
+	If mainPlayer\currRoom = e\room Then
+		e\EventState2 = UpdateElevators(e\EventState2, e\room\RoomDoors[0], e\room\RoomDoors[1], e\room\Objects[4], e\room\Objects[5], e)
+		
+		e\EventState = UpdateLever(e\room\Objects[1])
+		UpdateLever(e\room\Objects[3])
+	EndIf
+	;[End Block]
+End Function
+

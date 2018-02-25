@@ -44,3 +44,125 @@ Function FillRoomCheckpoint1(r.Rooms)
         CreateDoor(r\zone, r\x, 0, r\z  - 4.0, 0, r, 0, False, 0, "GEAR")
     EndIf
 End Function
+
+
+Function UpdateEventCheckpoint(e.Events)
+	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
+
+	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
+
+	Local CurrTrigger$ = ""
+
+	Local x#, y#, z#
+
+	Local angle#
+
+	;[Block]
+	If mainPlayer\currRoom = e\room Then
+		;If e\room\RoomDoors[0]\open <> e\EventState Then
+		;	If e\Sound = 0 Then LoadEventSound(e,"SFX\Door\DoorCheckpoint.Ogg")
+		;	PlaySound_Strict e\Sound
+		;EndIf
+		
+		;play a sound clip when the player passes through the gate
+		If e\EventState2 = 0 Then
+			If EntityZ(mainPlayer\collider) < e\room\z Then
+				If PlayerZone = 1 Then
+					PlaySound_Strict(LoadTempSound("SFX\Ambient\ToZone2.ogg"))
+				Else
+					PlaySound_Strict(LoadTempSound("SFX\Ambient\ToZone3.ogg"))
+				EndIf
+				e\EventState2 = 1
+			EndIf
+		EndIf
+		
+		If e\EventState3=0 Then
+			If Rand(2)=1 Then
+				GiveAchievement(Achv1048)
+				e\room\Objects[1]=LoadAnimMesh_Strict("GFX\npcs\scp-1048.b3d")
+				ScaleEntity e\room\Objects[1], 0.05,0.05,0.05
+				PositionEntity(e\room\Objects[1],EntityX(e\room\Objects[0],True),EntityY(e\room\Objects[0],True),EntityZ(e\room\Objects[0],True))
+				SetAnimTime e\room\Objects[1],267	
+			EndIf
+			
+			e\EventState3 = 1
+		ElseIf e\room\Objects[1]<>0
+			If e\EventState3 = 1 Then
+				PointEntity e\room\Objects[1], Collider
+				RotateEntity e\room\Objects[1], -90, EntityYaw(e\room\Objects[1]),0
+				angle = WrapAngle(DeltaYaw(mainPlayer\collider, e\room\Objects[1]))
+				If angle<40 Or angle > 320 Then e\EventState3=2
+			ElseIf e\EventState3 = 2
+				PointEntity e\room\Objects[1], Collider
+				RotateEntity e\room\Objects[1], -90, EntityYaw(e\room\Objects[1]),0
+				Animate2(e\room\Objects[1],AnimTime(e\room\Objects[1]),267,283,0.3,False)
+				If AnimTime(e\room\Objects[1])=283 Then e\EventState3=3
+			ElseIf e\EventState3 = 3
+				Animate2(e\room\Objects[1],AnimTime(e\room\Objects[1]),283,267,-0.2,False)
+				If AnimTime( e\room\Objects[1])=267 Then e\EventState3=4
+			ElseIf e\EventState3 = 4
+				angle = WrapAngle(DeltaYaw(mainPlayer\collider, e\room\Objects[1]))
+				If angle>90 And angle < 270 Then 
+					FreeEntity(e\room\Objects[1])
+					e\room\Objects[1]=0
+					e\EventState3=5
+				EndIf
+			EndIf
+		EndIf
+	EndIf
+	
+	If e\room\RoomTemplate\Name = "checkpoint2"
+		For e2.Events = Each Events
+			If e2\EventName = "008"
+				If e2\EventState = 2
+					If e\room\RoomDoors[0]\locked
+						TurnCheckpointMonitorsOff(1)
+						e\room\RoomDoors[0]\locked = False
+						e\room\RoomDoors[1]\locked = False
+					EndIf
+				Else
+					If e\room\dist < 12
+						UpdateCheckpointMonitors(1)
+						e\room\RoomDoors[0]\locked = True
+						e\room\RoomDoors[1]\locked = True
+					EndIf
+				EndIf
+			EndIf
+		Next
+	Else
+		For e2.Events = Each Events
+			If e2\EventName = "room2sl"
+				If e2\EventState3 = 0
+					If e\room\dist < 12
+						TurnCheckpointMonitorsOff(0)
+						e\room\RoomDoors[0]\locked = False
+						e\room\RoomDoors[1]\locked = False
+					EndIf
+				Else
+					If e\room\dist < 12
+						UpdateCheckpointMonitors(0)
+						e\room\RoomDoors[0]\locked = True
+						e\room\RoomDoors[1]\locked = True
+					EndIf
+				EndIf
+			EndIf
+		Next
+	EndIf
+	
+	If e\room\RoomDoors[0]\open <> e\EventState Then
+		If e\Sound = 0 Then LoadEventSound(e,"SFX\Door\DoorCheckpoint.ogg")
+		e\SoundCHN = PlaySound2(e\Sound,mainPlayer\cam,e\room\RoomDoors[0]\obj)
+		e\SoundCHN2 = PlaySound2(e\Sound,mainPlayer\cam,e\room\RoomDoors[1]\obj)
+	EndIf
+	
+	e\EventState = e\room\RoomDoors[0]\open
+	
+	If ChannelPlaying(e\SoundCHN)
+		UpdateSoundOrigin(e\SoundCHN,mainPlayer\cam,e\room\RoomDoors[0]\obj)
+	EndIf
+	If ChannelPlaying(e\SoundCHN2)
+		UpdateSoundOrigin(e\SoundCHN2,mainPlayer\cam,e\room\RoomDoors[1]\obj)
+	EndIf
+	;[End Block]
+End Function
+

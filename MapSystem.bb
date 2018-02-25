@@ -1502,6 +1502,15 @@ Include "Rooms/Room2SL.bb"
 Include "Rooms/Room2_4.bb"
 Include "Rooms/Room3z2.bb"
 Include "Rooms/RoomLockroom3.bb"
+Include "Rooms/Room2.bb"
+Include "Rooms/Room2Testroom2.bb"
+Include "Rooms/Room3.bb"
+Include "Rooms/Room3_2.bb"
+Include "Rooms/Room4.bb"
+Include "Rooms/Room4Pit.bb"
+Include "Rooms/Room4Tunnels.bb"
+Include "Rooms/RoomDimension1499.bb"
+Include "Rooms/RoomTunnel.bb"
 
 Function FillRoom(r.Rooms)
 	Select r\RoomTemplate\Name

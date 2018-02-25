@@ -199,3 +199,50 @@ Function Use294()
 	EndIf
 	
 End Function
+
+
+Function UpdateEventRoom2cafeteria(e.Events)
+	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
+
+	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
+
+	Local CurrTrigger$ = ""
+
+	Local x#, y#, z#
+
+	Local angle#
+
+	;[Block]
+	If mainPlayer\currRoom = e\room Then
+		If Not Using294 Then
+			If EntityDistance(e\room\Objects[0], mainPlayer\collider)<1.5 Then
+				GiveAchievement(Achv294)
+				If EntityInView(e\room\Objects[0], mainPlayer\cam) Then
+					DrawHandIcon = True
+					If MouseHit1 Then
+						temp = True
+						For it.Items = Each Items
+							If it\Picked=False Then
+								If EntityX(it\collider)-EntityX(e\room\Objects[1],True)=0 Then
+									If EntityZ(it\collider)-EntityZ(e\room\Objects[1],True)=0 Then
+										temp = False
+										Exit
+									EndIf
+								EndIf
+							EndIf
+						Next
+						Using294=temp
+						If Using294 Then MouseHit1=False
+					EndIf
+				EndIf
+			EndIf
+		EndIf		
+	EndIf
+	
+	If e\EventState = 0 Then
+		CreateNPC(NPCtype066, EntityX(e\room\obj), 0.5, EntityZ(e\room\obj))
+		e\EventState = 1
+	EndIf
+	;[End Block]
+End Function
+

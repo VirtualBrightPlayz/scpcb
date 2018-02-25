@@ -43,3 +43,32 @@ Function FillRoom2Offices3(r.Rooms)
     PositionEntity r\RoomDoors[0]\buttons[0], EntityX(r\RoomDoors[0]\buttons[0],True),EntityY(r\RoomDoors[0]\buttons[0],True),r\z + 161.0 * RoomScale,True
     PositionEntity r\RoomDoors[0]\buttons[1], EntityX(r\RoomDoors[0]\buttons[1],True),EntityY(r\RoomDoors[0]\buttons[1],True),r\z + 161.0 * RoomScale,True
 End Function
+
+
+Function UpdateEventRoom2offices3(e.Events)
+	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
+
+	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
+
+	Local CurrTrigger$ = ""
+
+	Local x#, y#, z#
+
+	Local angle#
+
+	;[Block]
+	If mainPlayer\currRoom = e\room Then
+		e\EventState = e\EventState+FPSfactor
+		If e\EventState > 700 Then
+			If EntityDistance(e\room\RoomDoors[0]\obj, mainPlayer\collider)>0.5 Then 
+				If EntityInView(e\room\RoomDoors[0]\obj, mainPlayer\cam)=False Then
+					DebugLog "%@@= \ {2E6C2=FD gi`h]c"
+					e\room\RoomDoors[0]\open = False
+					RemoveEvent(e)
+				EndIf
+			EndIf
+		EndIf
+	EndIf
+	;[End Block]
+End Function
+

@@ -20,3 +20,50 @@ Function FillRoom2SCPs2(r.Rooms)
     it = CreateItem("Emily Ross' Badge", "badge", r\x + 364.0 * RoomScale, r\y + 5.0 * RoomScale, r\z + 716.0 * RoomScale)
     EntityParent(it\collider, r\obj)
 End Function
+
+
+Function UpdateEventRoom2scps2(e.Events)
+	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
+
+	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
+
+	Local CurrTrigger$ = ""
+
+	Local x#, y#, z#
+
+	Local angle#
+
+	;[Block]
+	;If mainPlayer\currRoom = e\room
+	If e\room\dist < 15
+		If Contained106 Then e\EventState = 2.0
+		If Curr106\State < 0 Then e\EventState = 2.0
+		
+		If e\EventState < 2.0
+			If e\EventState = 0.0
+				LoadEventSound(e,"SFX\Character\Scientist\EmilyScream.ogg")
+				e\SoundCHN = PlaySound2(e\Sound, mainPlayer\cam, e\room\Objects[0], 100, 1.0)
+				de.Decals = CreateDecal(0, EntityX(e\room\Objects[0],True), e\room\y+2.0*RoomScale, EntityZ(e\room\Objects[0],True), 90, Rand(360), 0)
+				de\Size = 0.5 : EntityAlpha(de\obj, 0.8)
+				EntityFX de\obj,1
+				e\EventState = 1.0
+			ElseIf e\EventState = 1.0
+				If (Not ChannelPlaying(e\SoundCHN))
+					e\EventState = 2.0
+					e\room\RoomDoors[0]\locked = False
+				Else
+					UpdateSoundOrigin(e\SoundCHN,mainPlayer\cam,e\room\Objects[0],100,1.0)
+				EndIf
+			EndIf
+		Else
+			DebugLog "Removed 'room2scps2' event"
+			e\room\RoomDoors[0]\locked = False
+			de.Decals = CreateDecal(0, EntityX(e\room\Objects[0],True), e\room\y+2.0*RoomScale, EntityZ(e\room\Objects[0],True), 90, Rand(360), 0)
+			de\Size = 0.5 : EntityAlpha(de\obj, 0.8)
+			EntityFX de\obj,1
+			RemoveEvent(e)
+		EndIf
+	EndIf
+	;[End Block]
+End Function
+

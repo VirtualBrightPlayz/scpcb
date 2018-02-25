@@ -63,3 +63,169 @@ Function FillRoom012(r.Rooms)
     ScaleSprite(de\obj, de\Size,de\Size)
     EntityParent de\obj, r\obj
 End Function
+
+
+Function UpdateEventRoom012(e.Events)
+	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
+
+	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
+
+	Local CurrTrigger$ = ""
+
+	Local x#, y#, z#
+
+	Local angle#
+
+	;[Block]
+	If mainPlayer\currRoom = e\room Then
+		
+		If e\EventState=0 Then
+			If EntityDistance(mainPlayer\collider, e\room\RoomDoors[0]\obj)<2.5 And RemoteDoorOn Then
+				GiveAchievement(Achv012)
+				PlaySound_Strict HorrorSFX(7)
+				PlaySound2 (LeverSFX,mainPlayer\cam,e\room\RoomDoors[0]\obj) 
+				e\EventState=1
+				e\room\RoomDoors[0]\locked = False
+				UseDoor(e\room\RoomDoors[0],False)
+				e\room\RoomDoors[0]\locked = True
+			EndIf
+		Else
+			
+			If e\Sound=0 Then LoadEventSound(e,"SFX\Music\012Golgotha.ogg")
+			e\SoundCHN = LoopSound2(e\Sound, e\SoundCHN, mainPlayer\cam, e\room\Objects[3], 5.0)
+			
+			If e\Sound2=0 Then LoadEventSound(e,"SFX\Music\012.ogg",1)
+			
+			If e\EventState<90 Then e\EventState=CurveValue(90,e\EventState,500)
+			PositionEntity e\room\Objects[2], EntityX(e\room\Objects[2],True),(-130-448*Sin(e\EventState))*RoomScale,EntityZ(e\room\Objects[2],True),True
+			
+			If e\EventState2 > 0 And e\EventState2 < 200 Then
+				e\EventState2 = e\EventState2 + FPSfactor
+				RotateEntity(e\room\Objects[1], CurveValue(85, EntityPitch(e\room\Objects[1]), 5), EntityYaw(e\room\Objects[1]), 0)
+			Else
+				e\EventState2 = e\EventState2 + FPSfactor
+				If e\EventState2<250 Then
+					ShowEntity e\room\Objects[3] 
+				Else
+					HideEntity e\room\Objects[3] 
+					If e\EventState2>300 Then e\EventState2=200
+				EndIf
+			EndIf
+			
+			If Wearing714=False And WearingGasMask<3 And WearingHazmat<3 And WearingNightVision=0 Then
+				temp = False
+				If EntityVisible(e\room\Objects[2],mainPlayer\cam) Then temp = True
+				
+				;012 not visible, walk to the door
+				If temp=False Then
+					If EntityVisible(e\room\RoomDoors[0]\frameobj,mainPlayer\cam) Then
+						pvt% = CreatePivot()
+						PositionEntity pvt, EntityX(mainPlayer\cam), EntityY(mainPlayer\collider), EntityZ(mainPlayer\cam)
+						PointEntity(pvt, e\room\RoomDoors[0]\frameobj)
+						;TurnEntity(pvt, 90, 0, 0)
+						mainPlayer\headPitch = CurveAngle(90, mainPlayer\headPitch+90, 100)
+						mainPlayer\headPitch=user_camera_pitch-90
+						RotateEntity(mainPlayer\collider, EntityPitch(mainPlayer\collider), CurveAngle(EntityYaw(pvt), EntityYaw(mainPlayer\collider), 150), 0)
+						
+						angle = WrapAngle(EntityYaw(pvt)-EntityYaw(mainPlayer\collider))
+						If angle<40.0 Then
+							ForceMove = (40.0-angle)*0.008
+						ElseIf angle > 310.0
+							ForceMove = (40.0-Abs(360.0-angle))*0.008
+						EndIf
+						
+						FreeEntity pvt										
+					EndIf
+				Else
+					e\SoundCHN2 = LoopSound2(e\Sound2, e\SoundCHN2, mainPlayer\cam, e\room\Objects[3], 10, e\EventState3/(86.0*70.0))
+					
+					pvt% = CreatePivot()
+					PositionEntity pvt, EntityX(mainPlayer\cam), EntityY(e\room\Objects[2],True)-0.05, EntityZ(mainPlayer\cam)
+					PointEntity(pvt, e\room\Objects[2])
+					RotateEntity(mainPlayer\collider, EntityPitch(mainPlayer\collider), CurveAngle(EntityYaw(pvt), EntityYaw(mainPlayer\collider), 80-(e\EventState3/200.0)), 0)
+					
+					TurnEntity(pvt, 90, 0, 0)
+					mainPlayer\headPitch = CurveAngle(EntityPitch(pvt)+25, mainPlayer\headPitch + 90.0, 80-(e\EventState3/200.0))
+					mainPlayer\headPitch=user_camera_pitch-90
+					
+					dist = Distance(EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider),EntityX(e\room\Objects[2],True),EntityZ(e\room\Objects[2],True))
+					
+					HeartBeatRate = 150
+					HeartBeatVolume = Max(3.0-dist,0.0)/3.0
+					mainPlayer\blurTimer = Max((2.0-dist)*(e\EventState3/800.0)*(Sin(Float(MilliSecs2()) / 20.0 + 1.0)),mainPlayer\blurTimer)
+					mainPlayer\camZoom = Max(mainPlayer\camZoom, (Sin(Float(MilliSecs2()) / 20.0)+1.0)*8.0*Max((3.0-dist),0.0))
+					
+					If BreathCHN <> 0 Then
+						If ChannelPlaying(BreathCHN) Then StopChannel(BreathCHN)
+					EndIf
+					
+					If dist < 0.6 Then
+						e\EventState3=Min(e\EventState3+FPSfactor,86*70)
+						If e\EventState3>70 And e\EventState3-FPSfactor=<70 Then
+							PlaySound_Strict LoadTempSound("SFX\SCP\012\Speech1.ogg")
+						ElseIf e\EventState3>13*70 And e\EventState3-FPSfactor=<13*70
+							Msg="You start pushing your nails into your wrist, drawing blood."
+							MsgTimer = 7*70
+							mainPlayer\injuries=Injuries+0.5
+							PlaySound_Strict LoadTempSound("SFX\SCP\012\Speech2.ogg")
+						ElseIf e\EventState3>31*70 And e\EventState3-FPSfactor=<31*70
+							tex = LoadTexture_Strict("GFX\map\scp-012_1.jpg")
+							EntityTexture (e\room\Objects[4], tex,0,1)
+							FreeTexture tex
+							
+							Msg="You tear open your left wrist and start writing on the composition with your blood."
+							MsgTimer = 7*70
+							mainPlayer\injuries=Max(mainPlayer\injuries,1.5)
+							PlaySound_Strict LoadTempSound("SFX\SCP\012\Speech"+Rand(3,4)+".ogg")
+						ElseIf e\EventState3>49*70 And e\EventState3-FPSfactor=<49*70
+							Msg="You push your fingers deeper into the wound."
+							MsgTimer = 8*70
+							mainPlayer\injuries=Injuries+0.3
+							PlaySound_Strict LoadTempSound("SFX\SCP\012\Speech5.ogg")
+						ElseIf e\EventState3>63*70 And e\EventState3-FPSfactor=<63*70
+							tex = LoadTexture_Strict("GFX\map\scp-012_2.jpg")
+							EntityTexture (e\room\Objects[4], tex,0,1)	
+							FreeTexture tex
+							
+							mainPlayer\injuries=Injuries+0.5
+							PlaySound_Strict LoadTempSound("SFX\SCP\012\Speech6.ogg")
+						ElseIf e\EventState3>74*70 And e\EventState3-FPSfactor=<74*70
+							tex = LoadTexture_Strict("GFX\map\scp-012_3.jpg")
+							EntityTexture (e\room\Objects[4], tex,0,1)
+							FreeTexture tex
+							
+							Msg="You rip the wound wide open. Grabbing scoops of blood pouring out."
+							MsgTimer = 7*70
+							mainPlayer\injuries=Injuries+0.8
+							PlaySound_Strict LoadTempSound("SFX\SCP\012\Speech7.ogg")
+							Crouch = True
+							
+							de.Decals = CreateDecal(17,  EntityX(mainPlayer\collider), -768*RoomScale+0.01, EntityZ(mainPlayer\collider),90,Rnd(360),0)
+							de\Size = 0.1 : de\maxsize = 0.45 : de\sizechange = 0.0002 : UpdateDecals()
+						ElseIf e\EventState3>85*70 And e\EventState3-FPSfactor=<85*70	
+							DeathMSG = "Subject D-9341 found in a pool of blood next to SCP-012. Subject seems to have ripped open his wrists and written three extra "
+							DeathMSG = DeathMSG + "lines to the composition before dying of blood loss."
+							Kill()
+						EndIf
+						
+						RotateEntity(mainPlayer\collider, EntityPitch(mainPlayer\collider), CurveAngle(EntityYaw(mainPlayer\collider)+Sin(e\EventState3*(e\EventState3/2000))*(e\EventState3/300), EntityYaw(mainPlayer\collider), 80), 0)
+						
+					Else
+						angle = WrapAngle(EntityYaw(pvt)-EntityYaw(mainPlayer\collider))
+						If angle<40.0 Then
+							ForceMove = (40.0-angle)*0.02
+						ElseIf angle > 310.0
+							ForceMove = (40.0-Abs(360.0-angle))*0.02
+						EndIf
+					EndIf								
+					
+					FreeEntity pvt								
+				EndIf
+				
+			EndIf
+			
+		EndIf
+	EndIf
+	;[End Block]
+End Function
+

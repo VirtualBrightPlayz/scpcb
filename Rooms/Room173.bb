@@ -84,3 +84,297 @@ Function FillRoom173(r.Rooms)
         EntityParent(r\Objects[i], r\obj)
     Next
 End Function
+
+
+Function UpdateEventAlarm(e.Events)
+	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
+
+	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
+
+	Local CurrTrigger$ = ""
+
+	Local x#, y#, z#
+
+	Local angle#
+
+	;[Block]
+	
+	If e\room\RoomDoors[5]=Null Then
+		For i=0 To 3
+			If e\room\AdjDoor[i]<>Null Then
+				e\room\RoomDoors[5] = e\room\AdjDoor[i]
+				e\room\RoomDoors[5]\open = True
+				Exit
+			EndIf
+		Next
+	EndIf
+	If e\EventState = 0 Then
+		If mainPlayer\currRoom = e\room Then
+			
+			e\room\RoomDoors[2]\open=True
+			
+			ShowEntity Fog
+			AmbientLight Brightness, Brightness, Brightness
+			CameraFogRange(mainPlayer\cam, CameraFogNear, CameraFogFar)
+			CameraFogMode(mainPlayer\cam, 1)
+			If SelectedDifficulty\saveType = SAVEANYWHERE Then
+				Msg = "Press "+KeyName(keyBinds\save)+" to save."
+				MsgTimer = 70*4
+			ElseIf SelectedDifficulty\saveType = SAVEONSCREENS Then
+				Msg = "Saving is only permitted on clickable monitors scattered throughout the facility."
+				MsgTimer = 70 * 8
+			EndIf
+			
+			Curr173\Idle=False
+			
+			While e\room\RoomDoors[1]\openstate < 180
+				e\room\RoomDoors[1]\openstate = Min(180, e\room\RoomDoors[1]\openstate + 0.8)
+				MoveEntity(e\room\RoomDoors[1]\obj, Sin(e\room\RoomDoors[1]\openstate) / 180.0, 0, 0)
+				MoveEntity(e\room\RoomDoors[1]\obj2, -Sin(e\room\RoomDoors[1]\openstate) / 180.0, 0, 0)
+			Wend
+			
+			If e\room\NPC[0] <> Null Then SetNPCFrame(e\room\NPC[0], 74) : e\room\NPC[0]\State = 8
+			
+			If e\room\NPC[1] = Null Then
+				e\room\NPC[1] = CreateNPC(NPCtypeD, 0,0,0)
+				tex = LoadTexture_Strict("GFX\npcs\scientist2.jpg")
+				e\room\NPC[1]\texture = "GFX\npcs\scientist2.jpg"
+				EntityTexture e\room\NPC[1]\obj, tex
+				FreeTexture tex
+			EndIf
+			PositionEntity e\room\NPC[1]\Collider, e\room\x, 0.5, e\room\z-1.0, True
+			ResetEntity e\room\NPC[1]\Collider
+			SetNPCFrame(e\room\NPC[1], 210)
+			
+			If e\room\NPC[2] = Null Then
+				e\room\NPC[2] = CreateNPC(NPCtypeGuard, 0,0,0)
+			EndIf
+			PositionEntity e\room\NPC[2]\Collider, e\room\x-240*RoomScale, 0.5, e\room\z+528*RoomScale, True
+			ResetEntity e\room\NPC[2]\Collider
+			e\room\NPC[2]\State = 7
+			PointEntity e\room\NPC[2]\Collider,e\room\NPC[1]\Collider
+			
+			If e\room\NPC[0]=Null
+				e\room\NPC[3] = CreateNPC(NPCtypeGuard, EntityX(e\room\Objects[2], True), EntityY(e\room\Objects[2], True), EntityZ(e\room\Objects[2], True))
+				;e\room\NPC[3]\Angle = 180
+				RotateEntity e\room\NPC[3]\Collider,0,90,0
+				SetNPCFrame(e\room\NPC[3], 151) : e\room\NPC[3]\State = 8
+				MoveEntity e\room\NPC[3]\Collider,1,0,0
+				
+				e\room\NPC[4] = CreateNPC(NPCtypeD, EntityX(e\room\Objects[3], True), 0.5, EntityZ(e\room\Objects[3], True))
+				;PointEntity(e\room\NPC[4]\Collider, e\room\Objects[7])
+				SetNPCFrame(e\room\NPC[4], 19) : e\room\NPC[4]\State = 3
+				RotateEntity e\room\NPC[4]\Collider,0,270,0
+				MoveEntity e\room\NPC[4]\Collider,0,0,2.65
+				
+				e\room\NPC[5] = CreateNPC(NPCtypeD, EntityX(e\room\Objects[4], True), 0.5, EntityZ(e\room\Objects[4], True))
+				;PointEntity(e\room\NPC[5]\Collider, e\room\Objects[7])
+				SetNPCFrame(e\room\NPC[5], 19) : e\room\NPC[5]\State = 3
+				RotateEntity e\room\NPC[5]\Collider,0,270,0
+				tex = LoadTexture_Strict("GFX\npcs\classd2.jpg")
+				e\room\NPC[5]\texture = "GFX\npcs\classd2.jpg"
+				EntityTexture e\room\NPC[5]\obj, tex
+				FreeTexture tex
+				MoveEntity e\room\NPC[5]\Collider,0.25,0,3.0
+				RotateEntity e\room\NPC[5]\Collider,0,0,0
+				
+				x# = EntityX(e\room\obj, True)+3712*RoomScale
+				y# = 384.0*RoomScale
+				z# = EntityZ(e\room\obj, True)+1312*RoomScale
+				
+				For i = 3 To 5
+					PositionEntity(e\room\NPC[i]\Collider, x + (EntityX(e\room\NPC[i]\Collider) - EntityX(e\room\obj)), y+EntityY(e\room\NPC[i]\Collider)+0.4, z + (EntityZ(e\room\NPC[i]\Collider) - EntityZ(e\room\obj)))
+					ResetEntity(e\room\NPC[i]\Collider)
+				Next
+			EndIf
+			
+			e\EventState = 1
+		EndIf
+	Else
+		
+		If e\room\NPC[0] <> Null Then AnimateNPC(e\room\NPC[0], 113, 151, 0.4, False)
+		
+		CurrTrigger = CheckTriggers()
+		
+		If (CurrTrigger = "173scene_timer") Then
+			e\EventState = e\EventState+FPSfactor
+		Else If (CurrTrigger = "173scene_activated")
+			e\EventState = Max(e\EventState, 500)
+		EndIf
+		
+		
+		If e\EventState >= 500 Then
+			e\EventState = e\EventState+FPSfactor
+			
+			If e\EventState2 = 0 Then
+				CanSave = False
+				If e\EventState > 900 And e\room\RoomDoors[5]\open Then
+					If e\EventState - FPSfactor <= 900 Then 
+						e\room\NPC[1]\Sound = LoadSound_Strict("SFX\Room\Intro\WhatThe.ogg")
+						e\room\NPC[1]\SoundChn = PlaySound2(e\room\NPC[1]\Sound, mainPlayer\cam, e\room\NPC[1]\Collider)
+					EndIf
+					e\room\NPC[1]\State = 3
+					e\room\NPC[1]\CurrSpeed = CurveValue(-0.008, e\room\NPC[1]\CurrSpeed, 5.0)
+					AnimateNPC(e\room\NPC[1], 260, 236, e\room\NPC[1]\CurrSpeed * 18)
+					RotateEntity e\room\NPC[1]\Collider, 0, 0, 0
+					
+					
+					If e\EventState > 900+2.5*70 Then
+						If e\room\NPC[2]\State <> 1
+							e\room\NPC[2]\CurrSpeed = CurveValue(-0.012, e\room\NPC[2]\CurrSpeed, 5.0)
+							AnimateNPC(e\room\NPC[2], 895, 843, e\room\NPC[2]\CurrSpeed*50)
+							MoveEntity e\room\NPC[2]\Collider, 0,0,e\room\NPC[2]\CurrSpeed*FPSfactor
+							e\room\NPC[2]\State = 8
+							
+							If EntityZ(e\room\NPC[2]\Collider) < e\room\z-512*RoomScale Then
+								PointEntity(e\room\NPC[2]\obj, e\room\NPC[1]\Collider)
+								RotateEntity e\room\NPC[2]\Collider, 0, CurveAngle(EntityYaw(e\room\NPC[2]\obj)-180,EntityYaw(e\room\NPC[2]\Collider),15.0), 0
+							Else
+								RotateEntity e\room\NPC[2]\Collider, 0, 0, 0
+							EndIf
+						EndIf
+					EndIf
+					
+					If e\EventState < 900+4*70 Then
+						PositionEntity Curr173\Collider, e\room\x+32*RoomScale, 0.31, e\room\z+1072*RoomScale, True
+						RotateEntity Curr173\Collider,0,190,0
+						
+						If e\EventState > 900+70 And e\EventState < 900+2.5*70 Then
+							AnimateNPC(e\room\NPC[2], 1539, 1553, 0.2, False)
+							PointEntity(e\room\NPC[2]\obj, Curr173\Collider)
+							RotateEntity e\room\NPC[2]\Collider, 0, CurveAngle(EntityYaw(e\room\NPC[2]\obj),EntityYaw(e\room\NPC[2]\Collider),15.0), 0
+						EndIf
+
+					Else
+						If e\EventState-FPSfactor < 900+4*70 Then 
+							PlaySound_Strict(IntroSFX(11)) : LightBlink = 3.0
+							
+							;Stonedrag.
+							PlaySound2 (Curr173\sounds[0], mainPlayer\cam, Curr173\Collider)
+
+							PointEntity Curr173\Collider, e\room\NPC[2]\Collider
+							If EntityY(mainPlayer\collider)<320*RoomScale Then mainPlayer\blinkTimer = -10
+						EndIf
+						
+						PositionEntity Curr173\Collider, e\room\x-96*RoomScale, 0.31, e\room\z+592*RoomScale, True
+						
+						If e\room\NPC[2]\State <> 1 And KillTimer >= 0
+							If EntityZ(e\room\NPC[2]\Collider) < e\room\z-1150*RoomScale Then
+								e\room\RoomDoors[5]\open = False
+								LightBlink = 3.0
+								PlaySound_Strict(IntroSFX(11))
+								mainPlayer\blinkTimer = -10
+
+								;Stonedrag.
+								PlaySound2 (Curr173\sounds[0], mainPlayer\cam, Curr173\Collider)
+								
+								PositionEntity Curr173\Collider, 0,0,0
+								ResetEntity Curr173\Collider
+								Msg = "Hold "+KeyName(keyBinds\sprint)+" to run."
+								MsgTimer = 70*8
+							EndIf
+						EndIf
+					EndIf
+					
+					;If Ulgrin can see the player then start shooting at them.
+					If (CurrTrigger = "173scene_end") And EntityVisible(e\room\NPC[2]\Collider,mainPlayer\collider) And (Not GodMode) Then
+						e\room\NPC[2]\State = 1
+						e\room\NPC[2]\State3 = 1
+					ElseIf e\room\NPC[2]\State = 1 And (Not EntityVisible(e\room\NPC[2]\Collider, mainPlayer\collider))
+						e\room\NPC[2]\State = 0
+						e\room\NPC[2]\State3 = 0
+					EndIf
+					
+					If e\room\NPC[2]\State = 1 Then e\room\RoomDoors[5]\open = True
+				Else
+					CanSave = True
+					If e\room\NPC[2]\State <> 1
+						If EntityX(mainPlayer\collider)<(e\room\x+1384*RoomScale) Then e\EventState = Max(e\EventState,900)
+						
+						If e\room\RoomDoors[5]\openstate = 0 Then 
+							HideEntity e\room\NPC[1]\obj
+							HideEntity e\room\NPC[1]\Collider
+							
+							HideEntity e\room\NPC[2]\obj
+							HideEntity e\room\NPC[2]\Collider
+							e\EventState2=1
+						EndIf
+					EndIf
+				EndIf
+			EndIf
+			
+			
+		;	If e\EventState > 900+3*70 And e\EventState < 900+4*70 Then 
+		;		mainPlayer\camShake = 0.2
+		;	ElseIf e\EventState > 900+32.3*70 And e\EventState < 900+34*70
+		;		mainPlayer\camShake = 0.4
+		;	ElseIf e\EventState > 900+51*70 And e\EventState < 900+53.5*70
+		;		mainPlayer\camShake = 1.0
+		;	ElseIf e\EventState > 900+57.5*70 And e\EventState < 900+58.5*70
+		;		mainPlayer\camShake = 0.4
+		;	EndIf
+			
+			PositionEntity e\room\Objects[0], EntityX(e\room\Objects[0],True), -Max(e\EventState-1300,0)/4500, EntityZ(e\room\Objects[0],True), True
+			RotateEntity e\room\Objects[0], -Max(e\EventState-1320,0)/130, 0, -Max(e\EventState-1300,0)/40, True
+			
+			PositionEntity e\room\Objects[1], EntityX(e\room\Objects[1],True), -Max(e\EventState-1800,0)/5000, EntityZ(e\room\Objects[1],True), True
+			RotateEntity e\room\Objects[1], -Max(e\EventState-2040,0)/135, 0, -Max(e\EventState-2040,0)/43, True
+			
+			If EntityDistance(e\room\Objects[0],mainPlayer\collider)<2.5 Then
+				If Rand(300)=2 Then PlaySound2(DecaySFX(Rand(1,3)),mainPlayer\cam,e\room\Objects[0], 3.0)
+			EndIf
+		EndIf
+		
+		If (e\EventState < 2000) Then
+			If e\SoundCHN = 0 Then
+				e\SoundCHN = PlaySound_Strict(AlarmSFX(0))
+			Else
+				If Not ChannelPlaying(e\SoundCHN) Then e\SoundCHN = PlaySound_Strict(AlarmSFX(0))
+			End If
+		EndIf
+		
+		If (e\EventState3<10) Then
+			If (Not ChannelPlaying(e\SoundCHN2)) Then
+				e\EventState3 = e\EventState3+1
+				
+				If (e\Sound2 <> 0) Then
+					FreeSound_Strict(e\Sound2)
+					e\Sound2 = 0
+				EndIf
+				
+				e\Sound2 = LoadSound_Strict("SFX\Alarm\Alarm2_"+Int(e\EventState3)+".ogg")
+				e\SoundCHN2 = PlaySound_Strict(e\Sound2)
+				Else
+					If Int(e\EventState3) = 8 Then mainPlayer\camShake = 1.0
+			EndIf
+		EndIf
+		
+		If ((e\EventState Mod 600 > 300) And ((e\EventState+FPSfactor) Mod 600 < 300)) Then
+			i = Floor((e\EventState-5000)/600)+1
+			
+			If i = 0 Then PlaySound_Strict(LoadTempSound("SFX\Room\Intro\PA\scripted\scripted6.ogg"))
+			
+			If (i>0 And i<24) Then
+				If Not CommotionState(i) Then ;Prevents the same commotion file from playing more then once.
+					PlaySound_Strict(LoadTempSound("SFX\Room\Intro\Commotion\Commotion"+i+".ogg"))
+					CommotionState(i) = True
+				EndIf
+			EndIf
+			
+			If (i>24) Then
+				If e\room\NPC[0] <> Null Then RemoveNPC(e\room\NPC[0])
+				If e\room\NPC[1] <> Null Then RemoveNPC(e\room\NPC[1])
+				If e\room\NPC[2] <> Null Then RemoveNPC(e\room\NPC[2])
+				
+				FreeEntity e\room\Objects[0]
+				FreeEntity e\room\Objects[1]
+				
+				DebugLog "delete alarm"
+				
+				RemoveEvent(e)							
+			EndIf
+		EndIf					
+	End If
+	;[End Block]
+End Function
+

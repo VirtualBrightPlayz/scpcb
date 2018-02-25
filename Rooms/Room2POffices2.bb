@@ -32,3 +32,43 @@ Function FillRoom2POffices2(r.Rooms)
     it = CreateItem("Dr L's Burnt Note", "paper", r\x - 808.0 * RoomScale, 1.0, r\z - 72.0 * RoomScale)
     EntityParent(it\collider, r\obj)
 End Function
+
+
+Function UpdateEventRoom2poffices2(e.Events)
+	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
+
+	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
+
+	Local CurrTrigger$ = ""
+
+	Local x#, y#, z#
+
+	Local angle#
+
+	;[Block]
+	If mainPlayer\currRoom = e\room Then
+		If e\EventState = 0 Then
+			If e\room\RoomDoors[0]\open = True Then 
+				If e\room\RoomDoors[0]\openstate = 180 Then 
+					e\EventState = 1
+					;TODO: load temp sound.
+					PlaySound_Strict HorrorSFX(5)
+				EndIf
+			Else
+				If (EntityDistance(mainPlayer\collider, e\room\RoomDoors[0]\obj)<1.5) And (RemoteDoorOn) Then
+					e\room\RoomDoors[0]\open = True
+				EndIf
+			EndIf
+		Else
+			If EntityDistance(e\room\Objects[0], mainPlayer\collider) < 2.0 Then
+				HeartBeatVolume = CurveValue(0.5, HeartBeatVolume, 5)
+				HeartBeatRate = CurveValue(120, HeartBeatRate, 150) 
+				e\SoundCHN = LoopSound2(OldManSFX(4), e\SoundCHN, mainPlayer\cam, e\room\obj, 5.0, 0.3)
+				Curr106\State=Curr106\State-FPSfactor*3
+			EndIf
+			
+		EndIf
+	EndIf
+	;[End Block]
+End Function
+

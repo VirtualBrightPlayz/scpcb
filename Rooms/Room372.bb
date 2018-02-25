@@ -18,3 +18,30 @@ Function FillRoom372(r.Rooms)
     EntityType r\Objects[3],HIT_MAP
     EntityAlpha r\Objects[3],0.0
 End Function
+
+
+Function UpdateEventPj(e.Events)
+	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
+
+	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
+
+	Local CurrTrigger$ = ""
+
+	Local x#, y#, z#
+
+	Local angle#
+
+	;[Block]
+	If mainPlayer\currRoom = e\room Then
+		If e\EventState = 0 Then
+			If EntityDistance(mainPlayer\collider, e\room\obj) < 2.5 Then
+				PlaySound_Strict(RustleSFX(Rand(0,2)))
+				CreateNPC(NPCtype372, 0, 0, 0)
+				e\EventState = 1
+				RemoveEvent(e)
+			EndIf					
+		EndIf
+	EndIf
+	;[End Block]
+End Function
+

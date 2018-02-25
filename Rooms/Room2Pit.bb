@@ -33,3 +33,29 @@ Function FillRoom2Pit(r.Rooms)
     PositionEntity(r\Objects[7], r\x - 864.0 * RoomScale, -400.0 * RoomScale, r\z - 632.0 * RoomScale)
     EntityParent(r\Objects[7],r\obj)
 End Function
+
+
+Function UpdateEventRoom2pit(e.Events)
+	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
+
+	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
+
+	Local CurrTrigger$ = ""
+
+	Local x#, y#, z#
+
+	Local angle#
+
+	;[Block]
+	If Curr173\Idle = 0 Then 
+		If e\room\dist < 8.0  And e\room\dist > 0 Then			
+			If (Not EntityVisible(Curr173\Collider, mainPlayer\cam)) And (Not EntityVisible(e\room\Objects[6], mainPlayer\cam)) Then 
+				PositionEntity(Curr173\Collider, EntityX(e\room\Objects[6], True), 0.5, EntityZ(e\room\Objects[6], True))
+				ResetEntity(Curr173\Collider)
+				RemoveEvent(e)
+			EndIf
+		End If
+	EndIf
+	;[End Block]
+End Function
+

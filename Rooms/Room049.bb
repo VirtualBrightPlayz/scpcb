@@ -105,3 +105,291 @@ Function FillRoom049(r.Rooms)
     EntityType r\Objects[10],HIT_MAP
     EntityAlpha r\Objects[10],0.0
 End Function
+
+
+Function UpdateEventRoom049(e.Events)
+	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
+
+	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
+
+	Local CurrTrigger$ = ""
+
+	Local x#, y#, z#
+
+	Local angle#
+
+	;[Block]
+	If mainPlayer\currRoom = e\room Then
+		If EntityY(mainPlayer\collider) > -2848*RoomScale Then
+			e\EventState2 = UpdateElevators(e\EventState2, e\room\RoomDoors[0], e\room\RoomDoors[1],e\room\Objects[0],e\room\Objects[1], e)
+			e\EventState3 = UpdateElevators(e\EventState3, e\room\RoomDoors[2], e\room\RoomDoors[3],e\room\Objects[2],e\room\Objects[3], e)
+		Else
+			If Music(8)=0 Then Music(8) = LoadSound_Strict("SFX\Music\Room049.ogg") 
+			ShouldPlay = 8
+			
+			If e\EventState = 0 Then
+				If e\EventStr = ""
+					QuickLoadPercent = 0
+					e\EventStr = "load0"
+				ElseIf e\EventStr = "load0"
+					n.NPCs = CreateNPC(NPCtypeZombie, EntityX(e\room\Objects[4],True),EntityY(e\room\Objects[4],True),EntityZ(e\room\Objects[4],True))
+					PointEntity n\Collider, e\room\obj
+					TurnEntity n\Collider, 0, 190, 0
+					QuickLoadPercent = 20
+					e\EventStr = "load1"
+				ElseIf e\EventStr = "load1"
+					n.NPCs = CreateNPC(NPCtypeZombie, EntityX(e\room\Objects[5],True),EntityY(e\room\Objects[5],True),EntityZ(e\room\Objects[5],True))
+					PointEntity n\Collider, e\room\obj
+					TurnEntity n\Collider, 0, 20, 0
+					QuickLoadPercent = 60
+					e\EventStr = "load2"
+				ElseIf e\EventStr = "load2"
+					For n.NPCs = Each NPCs
+						If n\NPCtype = NPCtype049
+							e\room\NPC[0]=n
+							e\room\NPC[0]\State = 2
+							e\room\NPC[0]\Idle = 1
+							PositionEntity e\room\NPC[0]\Collider,EntityX(e\room\Objects[4],True),EntityY(e\room\Objects[4],True)+3,EntityZ(e\room\Objects[4],True)
+							ResetEntity e\room\NPC[0]\Collider
+							Exit
+						EndIf
+					Next
+					If e\room\NPC[0]=Null
+						n.NPCs = CreateNPC(NPCtype049, EntityX(e\room\Objects[4],True), EntityY(e\room\Objects[4],True)+3, EntityZ(e\room\Objects[4],True))
+						PointEntity n\Collider, e\room\obj
+						n\State = 2
+						n\Idle = 1
+						e\room\NPC[0]=n
+					EndIf
+					QuickLoadPercent = 100
+					e\EventState=1
+				EndIf
+			ElseIf e\EventState > 0
+				
+				temp = Not UpdateLever(e\room\Objects[7]) ;power feed
+				x = UpdateLever(e\room\Objects[9]) ;generator
+				
+				e\room\RoomDoors[1]\locked = True
+				e\room\RoomDoors[3]\locked = True
+				
+				If temp Or x Then 
+					;049 appears when either of the levers is turned
+					e\EventState = Max(e\EventState,70*180)
+					
+					If temp And x Then
+						e\room\RoomDoors[1]\locked = False
+						e\room\RoomDoors[3]\locked = False								
+						e\EventState2 = UpdateElevators(e\EventState2, e\room\RoomDoors[0], e\room\RoomDoors[1],e\room\Objects[0],e\room\Objects[1], e)
+						e\EventState3 = UpdateElevators(e\EventState3, e\room\RoomDoors[2], e\room\RoomDoors[3],e\room\Objects[2],e\room\Objects[3], e)
+						
+						If e\Sound2=0 Then LoadEventSound(e,"SFX\General\GeneratorOn.ogg",1)
+						e\SoundCHN2=LoopSound2(e\Sound2, e\SoundCHN2, mainPlayer\cam, e\room\Objects[8], 6.0, e\EventState3)
+						
+						If e\room\NPC[0]\Idle > 0
+							i = 0
+							If EntityDistance(mainPlayer\collider,e\room\RoomDoors[1]\frameobj)<3.0
+								i = 1
+							ElseIf EntityDistance(mainPlayer\collider,e\room\RoomDoors[3]\frameobj)<3.0
+								i = 3
+							EndIf
+							If i > 0
+								;If EntityVisible(mainPlayer\collider,e\room\RoomDoors[i]\frameobj)
+								PositionEntity e\room\NPC[0]\Collider,EntityX(e\room\Objects[i],True),EntityY(e\room\Objects[i],True),EntityZ(e\room\Objects[i],True)
+								ResetEntity e\room\NPC[0]\Collider
+								PlaySound2(ElevatorBeepSFX, mainPlayer\cam, e\room\Objects[i], 4.0)
+								UseDoor(e\room\RoomDoors[i],False)
+								e\room\RoomDoors[i-1]\open = False
+								e\room\RoomDoors[i]\open = True
+								e\room\NPC[0]\PathStatus = FindPath(e\room\NPC[0],EntityX(mainPlayer\collider),EntityY(mainPlayer\collider),EntityZ(mainPlayer\collider))
+								PlaySound2(LoadTempSound("SFX\SCP\049\Greeting"+Rand(1,2)+".ogg"),mainPlayer\cam, e\room\NPC[0]\Collider)
+								e\room\NPC[0]\Idle = 0
+								;EndIf
+							EndIf
+						EndIf
+						If EntityVisible(mainPlayer\collider,e\room\NPC[0]\Collider)
+							GiveAchievement(Achv049)
+						EndIf
+					EndIf
+				EndIf
+				
+				If e\EventState < 70*190 Then 
+					e\EventState = Min(e\EventState+FPSfactor,70*190)
+					;049 spawns after 3 minutes
+					If e\EventState > 70*180 Then
+						
+						;If e\room\NPC[0]=Null Then
+						;	For n.NPCs = Each NPCs
+						;		If n\NPCtype=NPCtype049 Then e\room\NPC[0]=n : Exit
+						;	Next
+						;EndIf
+						;e\room\NPC[0]\State = 1
+						
+						e\room\RoomDoors[4]\open = True
+						PlaySound_Strict TeslaPowerUpSFX
+						PlaySound2(OpenDoorSFX(0,Rand(0,2)),mainPlayer\cam, e\room\RoomDoors[4]\obj, 6.0)
+						
+						e\room\RoomDoors[1]\open = False
+						e\room\RoomDoors[3]\open = False
+						e\room\RoomDoors[0]\open = True
+						e\room\RoomDoors[2]\open = True
+						
+						e\EventState= 70*190
+					EndIf
+				ElseIf e\EventState < 70*240
+					;GiveAchievement(Achv049)
+					
+					;If e\room\NPC[0]=Null Then
+					;	For n.NPCs = Each NPCs
+					;		If n\NPCtype=NPCtype049 Then e\room\NPC[0]=n : Exit
+					;	Next
+					;Else
+						;If EntityDistance(e\room\NPC[0]\Collider,mainPlayer\collider)<4.0 Then
+						;	e\EventState=e\EventState+FPSfactor
+						;	If e\EventState > 70*195 And e\EventState-FPSfactor =< 70*195 Then
+						;		For n.NPCs = Each NPCs ;awake the zombies
+						;			If n\NPCtype = NPCtypeZombie And n\State = 0 Then
+						;				n\State = 1
+						;				SetNPCFrame(n, 155)
+						;			EndIf
+						;		Next
+						;		;PlaySound2(LoadTempSound("SFX\SCP\049\Greeting"+Rand(1,2)+".ogg"),mainPlayer\cam, e\room\NPC[0]\Collider)
+						;	ElseIf e\EventState > 70*214 And e\EventState-FPSfactor =< 70*214
+						;		;PlaySound2(LoadTempSound("SFX\SCP\049\Spotted"+Rand(1,2)+".ogg"),mainPlayer\cam, e\room\NPC[0]\Collider)
+						;	ElseIf e\EventState > 70*227 And e\EventState-FPSfactor =< 70*227
+						;		;PlaySound2(LoadTempSound("SFX\SCP\049\Detected"+Rand(1,3)+".ogg"),mainPlayer\cam, e\room\NPC[0]\Collider)
+						;		e\EventState=70*241
+						;	EndIf
+						;EndIf
+					;EndIf
+					
+					For n.NPCs = Each NPCs ;awake the zombies
+						If n\NPCtype = NPCtypeZombie And n\State = 0 Then
+							n\State = 1
+							SetNPCFrame(n, 155)
+						EndIf
+					Next
+					e\EventState=70*241
+				EndIf
+			EndIf
+		EndIf
+	Else
+		e\EventState2 = UpdateElevators(e\EventState2, e\room\RoomDoors[0], e\room\RoomDoors[1],e\room\Objects[0],e\room\Objects[1], e)
+		e\EventState3 = UpdateElevators(e\EventState3, e\room\RoomDoors[2], e\room\RoomDoors[3],e\room\Objects[2],e\room\Objects[3], e)
+	EndIf 
+	
+	If e\EventState < 0 Then
+		If e\EventState > -70*4 Then 
+			If FallTimer => 0 Then 
+				FallTimer = Min(-1, FallTimer)
+				PositionEntity(Head, EntityX(mainPlayer\cam, True), EntityY(mainPlayer\cam, True), EntityZ(mainPlayer\cam, True), True)
+				ResetEntity (Head)
+				RotateEntity(Head, 0, EntityYaw(mainPlayer\cam) + Rand(-45, 45), 0)
+			ElseIf FallTimer < -230
+				FallTimer = -231
+				mainPlayer\blinkTimer = 0
+				e\EventState = e\EventState-FPSfactor
+				
+				If e\EventState =< -70*4 Then 
+					UpdateDoorsTimer = 0
+					UpdateDoors()
+					UpdateRooms()
+					ShowEntity Collider
+					mainPlayer\dropSpeed = 0
+					mainPlayer\blinkTimer = -10
+					FallTimer = 0
+					PositionEntity mainPlayer\collider, EntityX(e\room\obj,True), EntityY(e\room\Objects[5],True)+0.2, EntityZ(e\room\obj,True)
+					ResetEntity mainPlayer\collider										
+					
+					PositionEntity e\room\NPC[0]\Collider, EntityX(e\room\Objects[0],True),EntityY(e\room\Objects[0],True),EntityZ(e\room\Objects[0],True),True
+					ResetEntity e\room\NPC[0]\Collider
+					
+					For n.NPCs = Each NPCs
+						If n\NPCtype = NPCtypeZombie Then
+							PositionEntity n\Collider, EntityX(e\room\Objects[4],True),EntityY(e\room\Objects[4],True),EntityZ(e\room\Objects[4],True),True
+							ResetEntity n\Collider
+							n\State = 4
+							DebugLog "moving zombie"
+						EndIf
+					Next
+					
+					n.NPCs = CreateNPC(NPCtypeMTF, EntityX(e\room\Objects[5],True), EntityY(e\room\Objects[5],True)+0.2, EntityZ(e\room\Objects[5],True))
+					n\State = 6
+					n\Reload = 6*70
+					PointEntity n\Collider,Collider
+					e\room\NPC[1] = n
+					
+					n.NPCs = CreateNPC(NPCtypeMTF, EntityX(e\room\Objects[5],True), EntityY(e\room\Objects[5],True)+0.2, EntityZ(e\room\Objects[5],True))
+					n\State = 6
+					n\Reload = (6*70)+Rnd(15,30)
+					RotateEntity n\Collider,0,EntityYaw(e\room\NPC[1]\Collider),0
+					MoveEntity n\Collider,0.5,0,0
+					PointEntity n\Collider,Collider
+					
+					n.NPCs = CreateNPC(NPCtypeMTF, EntityX(e\room\Objects[5],True), EntityY(e\room\Objects[5],True)+0.2, EntityZ(e\room\Objects[5],True))
+					n\State = 6
+					;n\Reload = 70*4.75
+					n\Reload = 10000
+					RotateEntity n\Collider,0,EntityYaw(e\room\NPC[1]\Collider),0
+					n\State2 = EntityYaw(n\Collider)
+					MoveEntity n\Collider,-0.65,0,0
+					e\room\NPC[2] = n
+					
+					MoveEntity e\room\NPC[1]\Collider,0,0,0.1
+					PointEntity mainPlayer\collider, e\room\NPC[1]\Collider
+					
+					PlaySound_Strict LoadTempSound("SFX\Character\MTF\049\Player0492_1.ogg")
+					
+					LoadEventSound(e,"SFX\SCP\049\0492Breath.ogg")
+					
+					IsZombie = True
+				EndIf
+			EndIf
+		Else
+			mainPlayer\blurTimer = 800
+			ForceMove = 0.5
+			mainPlayer\injuries = Max(2.0,mainPlayer\injuries)
+			Bloodloss = 0
+			
+			;Msg = ""
+			
+			If e\room\NPC[2]\State = 7
+				If e\room\NPC[2]\State3 < 70*1.75
+					e\room\NPC[2]\State3 = e\room\NPC[2]\State3 + FPSfactor
+				Else
+					e\room\NPC[2]\State = 6
+					e\room\NPC[2]\Reload = e\room\NPC[1]\Reload+Rnd(5,10)
+				EndIf
+			ElseIf e\room\NPC[2]\State = 6 And e\room\NPC[2]\Reload > 70*4
+				If e\room\NPC[2]\State3 > -(70*4)
+					e\room\NPC[2]\State3 = e\room\NPC[2]\State3 - FPSfactor
+				Else
+					e\room\NPC[2]\State3 = 0.0
+					e\room\NPC[2]\Reload = 45
+					e\room\NPC[2]\State = 7
+				EndIf
+			EndIf
+			
+			pvt% = CreatePivot()
+			PositionEntity pvt%,EntityX(e\room\NPC[1]\Collider),EntityY(e\room\NPC[1]\Collider)+0.2,EntityZ(e\room\NPC[1]\Collider)
+			
+			PointEntity mainPlayer\collider, e\room\NPC[1]\Collider
+			PointEntity mainPlayer\cam, pvt%
+			
+			FreeEntity pvt%
+			
+			If KillTimer < 0 Then
+				If ChannelPlaying(e\room\NPC[1]\SoundChn) Then StopChannel(e\room\NPC[1]\SoundChn)
+				PlaySound_Strict LoadTempSound("SFX\Character\MTF\049\Player0492_2.ogg")
+				RemoveEvent(e)
+			Else
+				If e\SoundCHN = 0 Then
+					e\SoundCHN = PlaySound_Strict (e\Sound)
+				Else
+					If (Not ChannelPlaying(e\SoundCHN)) Then e\SoundCHN = PlaySound_Strict(e\Sound)
+				EndIf
+			EndIf
+		EndIf
+	EndIf
+	;[End Block]
+End Function
+

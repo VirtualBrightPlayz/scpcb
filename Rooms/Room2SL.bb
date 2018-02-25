@@ -142,3 +142,510 @@ Function FillRoom2SL(r.Rooms)
     EntityType r\Objects[22],HIT_MAP
     EntityAlpha r\Objects[22],0.0
 End Function
+
+
+Function UpdateEventRoom2sl(e.Events)
+	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
+
+	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
+
+	Local CurrTrigger$ = ""
+
+	Local x#, y#, z#
+
+	Local angle#
+
+	;[Block]
+	;e\EventState: Determines if the player already entered the room or not (0 = No, 1 = Yes)
+	;e\EventState2: Variable used for the SCP-049 event
+	;e\EventState3: Checks if Lever is activated or not
+	
+	;mainPlayer\cam-Spawning Code + SCP-049-Spawning (it is a little messy!)
+	;[Block]
+	If mainPlayer\currRoom = e\room
+		If e\EventStr = ""
+			QuickLoadPercent = 0
+			e\EventStr = 0
+		EndIf
+	EndIf
+	If e\EventState = 0 And e\EventStr <> ""
+		For r.Rooms = Each Rooms
+			If ValidRoom2slCamRoom(r)
+				For sc.SecurityCams = Each SecurityCams
+					If sc\room = r And (Not sc\SpecialCam)
+						Local HasCamera% = False
+						For sc2.SecurityCams = Each SecurityCams
+							If sc2\room <> sc\room And (Not sc2\SpecialCam)
+								If sc2\room\RoomTemplate\Name = sc\room\RoomTemplate\Name
+									If sc2\Screen
+										HasCamera% = True
+										DebugLog "HasCamera% = True ("+Chr(34)+sc2\room\RoomTemplate\Name+Chr(34)+")"
+										Exit
+									EndIf
+								EndIf
+							EndIf
+						Next
+						If (Not HasCamera%) Then
+							If Left(e\EventStr,4) <> "load"
+								DebugLog "### "+Int(e\EventStr)
+								If Int(e\EventStr)=sc\ID
+									sc\Screen = True
+									sc\AllowSaving = False
+									
+									sc\RenderInterval = 12
+									
+									scale# = RoomScale * 4.5 * 0.4
+									
+									sc\ScrObj = CreateSprite()
+									EntityFX sc\ScrObj, 17
+									SpriteViewMode(sc\ScrObj, 2)
+									sc\ScrTexture = 0
+										;EntityTexture sc\ScrObj, ScreenTexs[sc\ScrTexture]
+									ScaleSprite(sc\ScrObj, MeshWidth(Monitor) * scale * 0.95* 0.5, MeshHeight(Monitor) * scale * 0.95* 0.5)
+									
+									sc\ScrOverlay = CreateSprite(sc\ScrObj)
+									
+									ScaleSprite(sc\ScrOverlay, MeshWidth(Monitor) * scale * 0.95 * 0.5, MeshHeight(Monitor) * scale * 0.95 * 0.5)
+									MoveEntity(sc\ScrOverlay, 0, 0, -0.0005)
+									EntityTexture(sc\ScrOverlay, MonitorTexture)
+									SpriteViewMode(sc\ScrOverlay, 2)
+									EntityBlend(sc\ScrOverlay , 3)
+									
+									sc\MonitorObj = CopyEntity(Monitor, sc\ScrObj)
+									
+									ScaleEntity(sc\MonitorObj, scale, scale, scale)
+									
+									sc\Cam = CreateCamera()
+									CameraViewport(sc\Cam, 0, 0, 512, 512)
+									CameraRange sc\Cam, 0.05, 6.0
+									CameraZoom(sc\Cam, 0.8)
+									HideEntity(sc\Cam)
+									
+									sc\IsRoom2slCam = True
+									sc\Room2slTexs%[0] = CreateTexture(512, 512, 1+256)
+									EntityTexture sc\ScrObj, sc\Room2slTexs%[0]
+									
+									pvt% = CreatePivot(e\room\obj)
+									Select r\RoomTemplate\Name$
+										Case "room2closets" ;ID=0 q
+											PositionEntity pvt%,-207.94,872.0,-60.0686,False
+											PositionEntity(sc\ScrObj,EntityX(pvt%,True),EntityY(pvt%,True),EntityZ(pvt%,True))
+											EntityParent(sc\ScrObj, e\room\obj)
+											TurnEntity(sc\ScrObj, 0, 105+e\room\angle, 0)
+											FindAndDeleteFakeMonitor(e\room,EntityX(pvt%,True),EntityY(pvt%,True),EntityZ(pvt%,True),14)
+											DebugLog "Created Monitor for "+Chr(34)+"room2closets"+Chr(34)
+										Case "room1archive" ;ID=1 q
+											PositionEntity pvt%,-231.489,872.0,95.7443,False
+											PositionEntity(sc\ScrObj,EntityX(pvt%,True),EntityY(pvt%,True),EntityZ(pvt%,True))
+											EntityParent(sc\ScrObj, e\room\obj)
+											TurnEntity(sc\ScrObj, 0, 90+e\room\angle, 0)
+											FindAndDeleteFakeMonitor(e\room,EntityX(pvt%,True),EntityY(pvt%,True),EntityZ(pvt%,True),14)
+											DebugLog "Created Monitor for "+Chr(34)+"room1archive"+Chr(34)
+										Case "room3z3" ;ID=2 q
+											PositionEntity pvt%,-231.489,872.0,255.744,False
+											PositionEntity(sc\ScrObj,EntityX(pvt%,True),EntityY(pvt%,True),EntityZ(pvt%,True))
+											EntityParent(sc\ScrObj, e\room\obj)
+											TurnEntity(sc\ScrObj, 0, 90+e\room\angle, 0)
+											FindAndDeleteFakeMonitor(e\room,EntityX(pvt%,True),EntityY(pvt%,True),EntityZ(pvt%,True),14)
+											DebugLog "Created Monitor for "+Chr(34)+"room3z3"+Chr(34)
+										Case "room1lifts" ;ID=3 q
+											PositionEntity pvt%,-231.489,872.0,415.744,False
+											PositionEntity(sc\ScrObj,EntityX(pvt%,True),EntityY(pvt%,True),EntityZ(pvt%,True))
+											EntityParent(sc\ScrObj, e\room\obj)
+											TurnEntity(sc\ScrObj, 0, 90+e\room\angle, 0)
+											FindAndDeleteFakeMonitor(e\room,EntityX(pvt%,True),EntityY(pvt%,True),EntityZ(pvt%,True),14)
+											DebugLog "Created Monitor for "+Chr(34)+"room1lifts"+Chr(34)
+										Case "room106" ;ID=4 q
+											PositionEntity pvt%,-208.138,872.0,571.583,False
+											PositionEntity(sc\ScrObj,EntityX(pvt%,True),EntityY(pvt%,True),EntityZ(pvt%,True))
+											EntityParent(sc\ScrObj, e\room\obj)
+											TurnEntity(sc\ScrObj, 0, 75+e\room\angle, 0)
+											FindAndDeleteFakeMonitor(e\room,EntityX(pvt%,True),EntityY(pvt%,True),EntityZ(pvt%,True),14)
+											DebugLog "Created Monitor for "+Chr(34)+"room106"+Chr(34)
+										Case "checkpoint1" ;ID=5 q
+											PositionEntity pvt%,-207.94,760.0,-60.0686,False
+											PositionEntity(sc\ScrObj,EntityX(pvt%,True),EntityY(pvt%,True),EntityZ(pvt%,True))
+											EntityParent(sc\ScrObj, e\room\obj)
+											TurnEntity(sc\ScrObj, 0, 105+e\room\angle, 0)
+											FindAndDeleteFakeMonitor(e\room,EntityX(pvt%,True),EntityY(pvt%,True),EntityZ(pvt%,True),14)
+											DebugLog "Created Monitor for "+Chr(34)+"checkpoint1"+Chr(34)
+										Case "room2nuke" ;ID=6 q
+											PositionEntity pvt%,-231.489,760.0,415.744,False
+											PositionEntity(sc\ScrObj,EntityX(pvt%,True),EntityY(pvt%,True),EntityZ(pvt%,True))
+											EntityParent(sc\ScrObj, e\room\obj)
+											TurnEntity(sc\ScrObj, 0, 90+e\room\angle, 0)
+											FindAndDeleteFakeMonitor(e\room,EntityX(pvt%,True),EntityY(pvt%,True),EntityZ(pvt%,True),14)
+											DebugLog "Created Monitor for "+Chr(34)+"room2nuke"+Chr(34)
+										Case "008" ;ID=7 q
+											PositionEntity pvt%,-208.138,760.0,571.583,False
+											PositionEntity(sc\ScrObj,EntityX(pvt%,True),EntityY(pvt%,True),EntityZ(pvt%,True))
+											EntityParent(sc\ScrObj, e\room\obj)
+											TurnEntity(sc\ScrObj, 0, 75+e\room\angle, 0)
+											FindAndDeleteFakeMonitor(e\room,EntityX(pvt%,True),EntityY(pvt%,True),EntityZ(pvt%,True),14)
+											DebugLog "Created Monitor for "+Chr(34)+"008"+Chr(34)
+										Case "room1162" ;ID=8 q
+											PositionEntity pvt%,-207.94,648.0,-60.0686,False
+											PositionEntity(sc\ScrObj,EntityX(pvt%,True),EntityY(pvt%,True),EntityZ(pvt%,True))
+											EntityParent(sc\ScrObj, e\room\obj)
+											TurnEntity(sc\ScrObj, 0, 105+e\room\angle, 0)
+											FindAndDeleteFakeMonitor(e\room,EntityX(pvt%,True),EntityY(pvt%,True),EntityZ(pvt%,True),14)
+											DebugLog "Created Monitor for "+Chr(34)+"room1162"+Chr(34)
+										Case "room966" ;ID=9 q
+											PositionEntity pvt%,-231.489,648.0,255.744,False
+											PositionEntity(sc\ScrObj,EntityX(pvt%,True),EntityY(pvt%,True),EntityZ(pvt%,True))
+											EntityParent(sc\ScrObj, e\room\obj)
+											TurnEntity(sc\ScrObj, 0, 90+e\room\angle, 0)
+											FindAndDeleteFakeMonitor(e\room,EntityX(pvt%,True),EntityY(pvt%,True),EntityZ(pvt%,True),14)
+											DebugLog "Created Monitor for "+Chr(34)+"room966"+Chr(34)
+										Case "room2ccont" ;ID=10 q
+											PositionEntity pvt%,-231.489,648.0,415.744,False
+											PositionEntity(sc\ScrObj,EntityX(pvt%,True),EntityY(pvt%,True),EntityZ(pvt%,True))
+											EntityParent(sc\ScrObj, e\room\obj)
+											TurnEntity(sc\ScrObj, 0, 90+e\room\angle, 0)
+											FindAndDeleteFakeMonitor(e\room,EntityX(pvt%,True),EntityY(pvt%,True),EntityZ(pvt%,True),14)
+											DebugLog "Created Monitor for "+Chr(34)+"room2ccont"+Chr(34)
+									End Select
+									
+									FreeEntity pvt%
+									
+									Exit
+								EndIf
+							EndIf
+						EndIf
+					EndIf
+				Next
+			EndIf
+		Next
+		If e\EventStr <> "" And Left(e\EventStr,4) <> "load"
+			QuickLoadPercent = QuickLoadPercent + 5
+			If Int(e\EventStr) > 9
+				e\EventStr = "load1"
+			Else
+				e\EventStr = Int(e\EventStr) + 1
+			EndIf
+		ElseIf e\EventStr = "load1"
+			For sc.SecurityCams = Each SecurityCams
+				If sc\SpecialCam Then
+					sc\Screen = True
+					sc\AllowSaving = False
+					
+					sc\RenderInterval = 12
+					
+					scale# = RoomScale * 4.5 * 0.4
+					
+					sc\ScrObj = CreateSprite()
+					EntityFX sc\ScrObj, 17
+					SpriteViewMode(sc\ScrObj, 2)
+					sc\ScrTexture = 0
+					ScaleSprite(sc\ScrObj, MeshWidth(Monitor) * scale * 0.95* 0.5, MeshHeight(Monitor) * scale * 0.95* 0.5)
+					
+					sc\ScrOverlay = CreateSprite(sc\ScrObj)
+					
+					ScaleSprite(sc\ScrOverlay, MeshWidth(Monitor) * scale * 0.95 * 0.5, MeshHeight(Monitor) * scale * 0.95 * 0.5)
+					MoveEntity(sc\ScrOverlay, 0, 0, -0.0005)
+					EntityTexture(sc\ScrOverlay, MonitorTexture)
+					SpriteViewMode(sc\ScrOverlay, 2)
+					EntityBlend(sc\ScrOverlay , 3)
+					
+					sc\MonitorObj = CopyEntity(Monitor, sc\ScrObj)
+					
+					ScaleEntity(sc\MonitorObj, scale, scale, scale)
+					
+					sc\Cam = CreateCamera()
+					CameraViewport(sc\Cam, 0, 0, 512, 512)
+					CameraRange sc\Cam, 0.05, 6.0
+					CameraZoom(sc\Cam, 0.8)
+					HideEntity(sc\Cam)
+					
+					sc\Room2slTexs%[0] = CreateTexture(512, 512, 1+256)
+					EntityTexture sc\ScrObj, sc\Room2slTexs%[0]
+					
+					pvt% = CreatePivot(e\room\obj)
+					
+					PositionEntity pvt%,-231.489,648.0,95.7443,False
+					PositionEntity(sc\ScrObj,EntityX(pvt%,True),EntityY(pvt%,True),EntityZ(pvt%,True))
+					EntityParent(sc\ScrObj, e\room\obj)
+					TurnEntity(sc\ScrObj, 0, 90+e\room\angle, 0)
+					FindAndDeleteFakeMonitor(e\room,EntityX(pvt%,True),EntityY(pvt%,True),EntityZ(pvt%,True),14)
+					DebugLog "Created Monitor for "+Chr(34)+"room2sl"+Chr(34)+" (faked SCP-409 mainPlayer\cam)"
+					
+					FreeEntity pvt%
+					
+					QuickLoadPercent = 70
+					
+					e\EventStr = "load2"
+					Exit
+				EndIf
+			Next
+		ElseIf e\EventStr = "load2"
+				;For SCP-049
+			If e\room\NPC[0]=Null Then
+				For n.NPCs = Each NPCs
+					If n\NPCtype = NPCtype049
+						e\room\NPC[0] = n
+						Exit
+					EndIf
+				Next
+				
+				If e\room\NPC[0]=Null Then
+					e\room\NPC[0] = CreateNPC(NPCtype049,EntityX(e\room\Objects[7],True),EntityY(e\room\Objects[7],True)+5,EntityZ(e\room\Objects[7],True))
+				EndIf
+			EndIf
+			QuickLoadPercent = 80
+			e\EventStr = "load3"
+		ElseIf e\EventStr = "load3"
+			PositionEntity e\room\NPC[0]\Collider,EntityX(e\room\Objects[7],True),EntityY(e\room\Objects[7],True)+5,EntityZ(e\room\Objects[7],True)
+			ResetEntity e\room\NPC[0]\Collider
+			RotateEntity e\room\NPC[0]\Collider,0,e\room\angle+180,0
+			
+			DebugLog(EntityX(e\room\Objects[7],True)+", "+EntityY(e\room\Objects[7],True)+", "+EntityZ(e\room\Objects[7],True))
+			
+			e\room\NPC[0]\State = 0
+			e\room\NPC[0]\PrevState = 2
+			
+			e\EventState = 1
+			If e\EventState2 = 0 Then e\EventState2 = -(70*5)
+			
+			QuickLoadPercent = 100
+		EndIf
+	EndIf
+	;[End Block]
+	
+	;SCP-049
+	;[Block]
+	If e\EventState = 1
+		If e\EventState2 < 0
+			If e\EventState2 = -(70*5)
+				For sc.SecurityCams = Each SecurityCams
+					If sc\room = e\room
+						If EntityDistance(sc\ScrObj,mainPlayer\cam)<5.0
+							If EntityVisible(sc\ScrObj,mainPlayer\cam)
+								e\EventState2 = Min(e\EventState2+FPSfactor,0)
+								Exit
+							EndIf
+						EndIf
+					EndIf
+				Next
+			Else
+				e\EventState2 = Min(e\EventState2+FPSfactor,0)
+			EndIf
+		ElseIf e\EventState2 = 0
+			If e\room\NPC[0] <> Null
+				;PositionEntity e\room\NPC[0]\Collider,EntityX(e\room\NPC[0]\Collider),EntityY(e\room\Objects[7],True),EntityZ(e\room\NPC[0]\Collider)
+				Local AdjDist1# = 0.0
+				Local AdjDist2# = 0.0
+				Local Adj1% = -1
+				Local Adj2% = -1
+				For i = 0 To 3
+					If e\room\AdjDoor[i]<>Null
+						If Adj1 = -1
+							AdjDist1# = EntityDistance(e\room\Objects[7],e\room\AdjDoor[i]\frameobj)
+							Adj1 = i
+						Else
+							AdjDist2# = EntityDistance(e\room\Objects[7],e\room\AdjDoor[i]\frameobj)
+							Adj2 = i
+						EndIf
+					EndIf
+				Next
+				If AdjDist1# > AdjDist2#
+					PositionEntity e\room\NPC[0]\Collider,EntityX(e\room\AdjDoor[Adj1]\frameobj),EntityY(e\room\Objects[7],True),EntityZ(e\room\AdjDoor[Adj1]\frameobj)
+				Else
+					PositionEntity e\room\NPC[0]\Collider,EntityX(e\room\AdjDoor[Adj2]\frameobj),EntityY(e\room\Objects[7],True),EntityZ(e\room\AdjDoor[Adj2]\frameobj)
+				EndIf
+				PointEntity e\room\NPC[0]\Collider,e\room\obj
+				MoveEntity e\room\NPC[0]\Collider,0,0,-1
+				ResetEntity e\room\NPC[0]\Collider
+				e\room\NPC[0]\PathX = EntityX(e\room\NPC[0]\Collider)
+				e\room\NPC[0]\PathZ = EntityZ(e\room\NPC[0]\Collider)
+				e\room\NPC[0]\State = 5
+				DebugLog "aaaaaaaaa"
+				e\EventState2 = 1
+			EndIf
+		ElseIf e\EventState2 = 1
+			If e\room\NPC[0]\PathStatus <> 1
+				e\room\NPC[0]\PathStatus = FindPath(e\room\NPC[0],EntityX(e\room\Objects[15],True),EntityY(e\room\Objects[15],True),EntityZ(e\room\Objects[15],True))
+			Else
+				DebugLog "bbbbbbbbb"
+				e\EventState2 = 2
+			EndIf
+		ElseIf e\EventState2 = 2
+			If e\room\NPC[0]\PathStatus <> 1
+				e\room\NPC[0]\State3 = 1.0
+				e\EventState2 = 3
+				e\room\NPC[0]\PathTimer# = 0.0
+				DebugLog "ccccccccc"
+			Else
+				If EntityDistance(e\room\NPC[0]\Collider,e\room\RoomDoors[0]\frameobj) < 5.0
+					e\room\RoomDoors[0]\locked = True
+					e\room\RoomDoors[1]\locked = True
+					If e\room\NPC[0]\Reload = 0
+						PlaySound_Strict LoadTempSound("SFX\Door\DoorOpen079.ogg")
+						DebugLog "079 - OPEN DOORS IN ROOM2SL"
+						e\room\NPC[0]\Reload = 1
+					EndIf
+					If (Not e\room\RoomDoors[0]\open)
+						e\room\RoomDoors[0]\open = True
+						sound=Rand(0, 2)
+						PlaySound2(OpenDoorSFX(0,sound),mainPlayer\cam,e\room\RoomDoors[0]\obj)
+					EndIf
+					If (Not e\room\RoomDoors[1]\open)
+						e\room\RoomDoors[1]\open = True
+						sound=Rand(0, 2)
+						PlaySound2(OpenDoorSFX(0,sound),mainPlayer\cam,e\room\RoomDoors[1]\obj)
+					EndIf
+				EndIf
+				If e\room\NPC[0]\Reload = 1
+					e\room\NPC[0]\DropSpeed = 0
+				EndIf
+			EndIf
+			
+			If e\room\NPC[0]\State <> 5
+				e\EventState2 = 7
+				DebugLog "fffffffff"
+			EndIf
+		ElseIf e\EventState2 = 3
+			If e\room\NPC[0]\State <> 5
+				e\EventState2 = 7
+				DebugLog "fffffffff"
+			EndIf
+			
+			If MeNPCSeesPlayer(e\room\NPC[0],True)=2
+				e\EventState2 = 4
+				DebugLog "ddddddddd"
+			EndIf
+			
+			If e\room\NPC[0]\PathStatus <> 1
+				;If e\room\NPC[0]\PathTimer# < 70*3
+				If e\room\NPC[0]\PathTimer# = 0.0
+					;e\room\NPC[0]\PathTimer# = e\room\NPC[0]\PathTimer# + FPSfactor
+					If e\room\NPC[0]\PrevState = 1 Then
+						If (e\room\NPC[0]\SoundChn2 = 0) Then
+							e\room\NPC[0]\Sound2 = LoadSound_Strict("SFX\SCP\049\Room2SLEnter.ogg")
+							e\room\NPC[0]\SoundChn2 = PlaySound2(e\room\NPC[0]\Sound2, mainPlayer\cam, e\room\NPC[0]\Collider)
+						Else
+							If (Not ChannelPlaying(e\room\NPC[0]\SoundChn2))
+								e\room\NPC[0]\PathTimer# = 1.0
+							EndIf
+						EndIf
+					ElseIf e\room\NPC[0]\PrevState = 2
+						If e\room\NPC[0]\Frame >= 1118
+							e\room\NPC[0]\PathTimer# = 1.0
+						EndIf
+					EndIf
+				Else
+					Select e\room\NPC[0]\State3
+						Case 1
+							e\room\NPC[0]\PathStatus = FindPath(e\room\NPC[0],EntityX(e\room\Objects[16],True),EntityY(e\room\Objects[16],True),EntityZ(e\room\Objects[16],True))
+							e\room\NPC[0]\PrevState = 1
+							DebugLog "Path1"
+						Case 2
+							e\room\NPC[0]\PathStatus = FindPath(e\room\NPC[0],EntityX(e\room\Objects[15],True),EntityY(e\room\Objects[15],True),EntityZ(e\room\Objects[15],True))
+							e\room\NPC[0]\PrevState = 2
+							DebugLog "Path2"
+						Case 3
+							;e\room\NPC[0]\PathStatus = FindPath(e\room\NPC[0],EntityX(e\room\Objects[7],True),EntityY(e\room\Objects[7],True),EntityZ(e\room\Objects[7],True))
+							;e\room\NPC[0]\PathStatus = FindPath(e\room\NPC[0],EntityX(e\room\obj,True),EntityY(e\room\Objects[7],True),EntityZ(e\room\obj,True))
+							e\room\NPC[0]\PathStatus = FindPath(e\room\NPC[0],e\room\NPC[0]\PathX,0.1,e\room\NPC[0]\PathZ)
+							e\room\NPC[0]\PrevState = 1
+							DebugLog "Path3"
+						Case 4
+							e\EventState2 = 5
+					End Select
+					e\room\NPC[0]\PathTimer# = 0.0
+					e\room\NPC[0]\State3 = e\room\NPC[0]\State3 + 1
+				EndIf
+			EndIf
+		ElseIf e\EventState2 = 4
+			If e\room\NPC[0]\State <> 5
+				e\EventState2 = 7
+				e\room\NPC[0]\State3 = 5.0
+				DebugLog "fffffffff"
+			EndIf
+		ElseIf e\EventState2 = 5
+			;RemoveNPC(e\room\NPC[0])
+			DebugLog "ddddddddd"
+			e\room\NPC[0]\State = 2
+			For r.Rooms = Each Rooms
+				If r <> mainPlayer\currRoom
+					If (EntityDistance(r\obj,e\room\NPC[0]\Collider)<HideDistance*2 And EntityDistance(r\obj,e\room\NPC[0]\Collider)>HideDistance)
+						e\room\NPC[0]\PathStatus = FindPath(e\room\NPC[0],EntityX(r\obj),EntityY(r\obj),EntityZ(r\obj))
+						e\room\NPC[0]\PathTimer = 0.0
+						If e\room\NPC[0]\PathStatus = 1 Then e\EventState2 = 6
+						Exit
+					EndIf
+				EndIf
+			Next
+		ElseIf e\EventState2 = 6
+			If MeNPCSeesPlayer(e\room\NPC[0],True) Or e\room\NPC[0]\State2 > 0 Or e\room\NPC[0]\LastSeen > 0
+				DebugLog "fffffffff"
+				e\EventState2 = 7
+			Else
+				;Still playing the Music for SCP-049 (in the real, SCP-049's State will be set to 2, causing it to stop playing the chasing track)
+				If Music(20) = 0 Then Music(20) = LoadSound_Strict("SFX\Horror\Horror12.ogg")
+				ShouldPlay = 20
+				If e\room\NPC[0]\PathStatus<>1
+					e\room\NPC[0]\Idle = 70*60 ;(Making SCP-049 idle for one minute (twice as fast for aggressive NPCs = True))
+					PositionEntity e\room\NPC[0]\Collider,0,500,0
+					ResetEntity e\room\NPC[0]\Collider
+					DebugLog "eeeeeeeee"
+					e\EventState2 = 7
+				EndIf
+			EndIf
+		;ElseIf e\EventState2 = 7
+		;	e\room\RoomDoors[0]\locked = False
+		;	e\room\RoomDoors[1]\locked = False
+		;	e\EventState2 = 8
+		EndIf
+		
+		If e\room\NPC[0]<>Null
+			If e\EventState2 < 7
+				If e\EventState2 > 2
+					If Abs(EntityY(e\room\RoomDoors[0]\frameobj)-EntityY(e\room\NPC[0]\Collider))>1.0
+						If Abs(EntityY(e\room\RoomDoors[0]\frameobj)-EntityY(mainPlayer\collider))<1.0
+							If e\room\RoomDoors[0]\open
+								e\room\RoomDoors[0]\open = False
+								e\room\RoomDoors[0]\fastopen = 1
+								PlaySound_Strict LoadTempSound("SFX\Door\DoorClose079.ogg")
+								DebugLog "079 - CLOSE DOOR AT HALLWAY IN ROOM2SL"
+							EndIf
+						EndIf
+					Else
+						If e\room\RoomDoors[0]\open = False
+							e\room\RoomDoors[0]\fastopen = 0
+							e\room\RoomDoors[0]\open = True
+							sound=Rand(0, 2)
+							PlaySound2(OpenDoorSFX(0,sound),mainPlayer\cam,e\room\RoomDoors[0]\obj)
+							PlaySound_Strict LoadTempSound("SFX\Door\DoorOpen079.ogg")
+							DebugLog "079 - OPEN DOOR AT HALLWAY IN ROOM2SL"
+						EndIf
+					EndIf
+				EndIf
+				
+				If e\EventState2 > 0 Then CanSave% = False
+			Else
+				If e\room\RoomDoors[0]\open = False
+					e\room\RoomDoors[0]\fastopen = 0
+					e\room\RoomDoors[0]\open = True
+					sound=Rand(0, 2)
+					PlaySound2(OpenDoorSFX(0,sound),mainPlayer\cam,e\room\RoomDoors[0]\obj)
+					PlaySound_Strict LoadTempSound("SFX\Door\DoorOpen079.ogg")
+					DebugLog "079 - OPEN DOOR AT HALLWAY IN ROOM2SL"
+				EndIf
+			EndIf
+		EndIf
+	EndIf
+	;[End Block]
+	
+	;Lever for checkpoint locking (might have a function in the future for the case if the checkpoint needs to be locked again)
+	If mainPlayer\currRoom = e\room
+		e\EventState3 = UpdateLever(e\room\Levers[0])
+		If e\EventState3 = 1 Then
+			UpdateCheckpointMonitors(0)
+		Else
+			TurnCheckpointMonitorsOff(0)
+		EndIf
+	EndIf
+	
+	;[End Block]
+End Function
+

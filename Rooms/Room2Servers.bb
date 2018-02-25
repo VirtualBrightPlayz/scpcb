@@ -63,3 +63,222 @@ Function FillRoom2Servers(r.Rooms)
     r\Objects[9]=CreatePivot(r\obj)
     PositionEntity(r\Objects[9], r\x - 848*RoomScale, 0.5, r\z+576*RoomScale, True)
 End Function
+
+
+Function UpdateEventRoom2servers(e.Events)
+	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
+
+	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
+
+	Local CurrTrigger$ = ""
+
+	Local x#, y#, z#
+
+	Local angle#
+
+	;[Block]
+	If e\EventState=0 Then
+		If mainPlayer\currRoom = e\room Then
+		 ;close the doors when the player enters the room
+			UseDoor(e\room\RoomDoors[0],False)
+			e\room\RoomDoors[0]\locked = True
+			UseDoor(e\room\RoomDoors[1],False)
+			e\room\RoomDoors[1]\locked = True
+			
+			If Curr096=Null Then
+				Curr096 = CreateNPC(NPCtype096, EntityX(e\room\Objects[6],True),EntityY(e\room\Objects[6],True)+0.1,EntityZ(e\room\Objects[6],True))
+			Else
+				PositionEntity Curr096\Collider, EntityX(e\room\Objects[6],True),EntityY(e\room\Objects[6],True)+0.1,EntityZ(e\room\Objects[6],True),True
+			EndIf
+			
+			RotateEntity Curr096\Collider, 0, e\room\angle, 0, True
+			ResetEntity Curr096\Collider
+			Curr096\State=2
+			Curr096\State2=70*10
+			
+			LoadEventSound(e,"SFX\Character\Guard\096ServerRoom1.ogg")
+			e\SoundCHN = PlaySound_Strict (e\Sound)
+			
+			e\room\NPC[0]=CreateNPC(NPCtypeGuard, EntityX(e\room\Objects[7],True),EntityY(e\room\Objects[7],True),EntityZ(e\room\Objects[7],True))
+			
+			GiveAchievement(Achv096)
+			
+			e\EventState=1
+		EndIf
+	ElseIf e\EventState < 70*45
+		If	Rand(200)<5 And mainPlayer\currRoom = e\room Then 
+			LightBlink = Rnd(1.0,2.0)
+			If Rand(5)=1 Then PlaySound2(IntroSFX(Rand(10,12)), mainPlayer\cam, e\room\obj, 8.0, Rnd(0.1,0.3))
+		EndIf
+		
+		e\EventState=Min(e\EventState+FPSfactor,70*43)
+		
+		If e\room\NPC[0]<>Null Then
+			If e\EventState < 70*13 Then
+				
+				If e\EventState > 70*8 Then
+					Curr096\State=Min(Max(2,Curr096\State),3)
+					Curr096\State2=70*10
+				Else
+					Curr096\State = 5
+					PointEntity Curr096\Collider, e\room\Objects[9]
+					RotateEntity Curr096\Collider, 0, EntityYaw(Curr096\Collider,True),0,True								
+					If EntityDistance(Curr096\Collider, e\room\Objects[8])<2.4 Then
+						Curr096\State2 = 0
+					Else
+						Curr096\State2 = 1001
+					EndIf	
+				EndIf
+				
+				e\room\NPC[0]\State=8
+				SetAnimTime e\room\NPC[0]\obj, 115
+				PointEntity e\room\NPC[0]\Collider, Curr096\Collider								
+			ElseIf e\EventState-FPSfactor =< 70*15 Then ;walk to the doorway
+				If e\EventState > 70*15 Then
+					e\room\NPC[0]\State=3
+					e\room\NPC[0]\PathStatus = FindPath(e\room\NPC[0], EntityX(e\room\Objects[8],True),0.5,EntityZ(e\room\Objects[8],True))
+					e\room\NPC[0]\PathTimer=300
+				EndIf
+			ElseIf e\EventState<70*20 Then
+				If e\room\NPC[0]\PathStatus=0 Then  
+					e\room\RoomDoors[2]\open = False
+					
+					e\room\NPC[0]\State=7
+					;SetAnimTime e\room\NPC[0]\obj, 115
+					PointEntity e\room\NPC[0]\obj, Curr096\Collider
+					RotateEntity (e\room\NPC[0]\Collider, 0, CurveAngle(EntityYaw(e\room\NPC[0]\obj),EntityYaw(e\room\NPC[0]\Collider),30),0)
+					
+				EndIf
+			Else ;start walking away
+				
+				If Curr096\State = 4 Then ;shoot at 096 when it starts attacking
+					Curr096\LastSeen=1
+					
+					e\room\NPC[0]\State = 2
+					PointEntity e\room\NPC[0]\obj, Curr096\Collider
+					RotateEntity (e\room\NPC[0]\Collider, 0, CurveAngle(EntityYaw(e\room\NPC[0]\obj),EntityYaw(e\room\NPC[0]\Collider),30),0)
+					If mainPlayer\currRoom = e\room Then LightBlink = (e\room\NPC[0]\Reload)+Rnd(0.5,2.0)
+					Curr096\Target = e\room\NPC[0]
+				Else
+					If e\EventState>70*22 Then Curr096\State = 4
+					If e\room\NPC[0]\State=7 Then
+						e\room\NPC[0]\State=3
+						e\room\NPC[0]\PathStatus = FindPath(e\room\NPC[0], EntityX(e\room\obj,True),0.4,EntityZ(e\room\obj,True))
+						e\room\NPC[0]\PathTimer=300
+					EndIf
+				EndIf
+			EndIf
+			
+			Curr096\Target = e\room\NPC[0]
+			If AnimTime(Curr096\obj)>25 And AnimTime(Curr096\obj)<150 Then
+				FreeSound_Strict e\Sound : e\Sound = 0
+				e\Sound=LoadSound_Strict("SFX\Character\Guard\096ServerRoom2.ogg")
+				e\SoundCHN=PlaySound_Strict(e\Sound)
+				
+				Curr096\CurrSpeed = 0
+				
+				For i = 0 To 6
+					If e\room\angle = 0 Or e\room\angle = 180 Then
+						de.Decals = CreateDecal(Rand(2,3), e\room\x-Rnd(197,199)*Cos(e\room\angle)*RoomScale, 1.0, e\room\z+(140.0*(i-3))*RoomScale,0,e\room\angle+90,Rnd(360))
+						de\size = Rnd(0.8,0.85) : de\sizechange = 0.001
+						de.Decals = CreateDecal(Rand(2,3), e\room\x-Rnd(197,199)*Cos(e\room\angle)*RoomScale, 1.0, e\room\z+(140.0*(i-3))*RoomScale,0,e\room\angle-90,Rnd(360))
+						de\size = Rnd(0.8,0.85) : de\sizechange = 0.001
+					Else
+						de.Decals = CreateDecal(Rand(2,3), e\room\x+(140.0*(i-3))*RoomScale, 1.0, e\room\z-Rnd(197,199)*Sin(e\room\angle)*RoomScale-Rnd(0.001,0.003),0,e\room\angle+90,Rnd(360))
+						de\size = Rnd(0.8,0.85) : de\sizechange = 0.001
+						de.Decals = CreateDecal(Rand(2,3), e\room\x+(140.0*(i-3))*RoomScale, 1.0, e\room\z-Rnd(197,199)*Sin(e\room\angle)*RoomScale-Rnd(0.001,0.003),0,e\room\angle-90,Rnd(360))
+						de\size = Rnd(0.8,0.85) : de\sizechange = 0.001
+					EndIf
+					de.Decals = CreateDecal(Rand(2,3), EntityX(e\room\NPC[0]\Collider)+Rnd(-2,2),Rnd(0.001,0.003),EntityZ(e\room\NPC[0]\Collider)+Rnd(-2,2),90,Rnd(360),0)
+					
+				Next
+				de\Size = Rnd(0.5,0.7)
+				ScaleSprite(de\obj, de\Size,de\Size)
+				
+				Curr096\State=5
+				
+				RemoveNPC(e\room\NPC[0])
+				e\room\NPC[0]=Null
+				
+			EndIf
+		Else
+			
+			If e\EventState >= 70*40 And e\EventState-FPSfactor < 70*40 Then ;open them again to let the player in
+				e\room\RoomDoors[0]\locked=False
+				e\room\RoomDoors[1]\locked=False
+				UseDoor(e\room\RoomDoors[0],False)
+				UseDoor(e\room\RoomDoors[1],False)
+				FreeSound_Strict e\Sound : e\Sound = 0
+				e\room\RoomDoors[0]\locked=True
+				e\room\RoomDoors[1]\locked=True
+			EndIf
+			
+			If mainPlayer\currRoom = e\room Then
+				If e\SoundCHN<>0 Then
+					If	ChannelPlaying(e\SoundCHN) Then 
+						LightBlink = Rnd(0.5,6.0)
+						If Rand(50)=1 Then PlaySound2(IntroSFX(Rand(10,12)), mainPlayer\cam, e\room\obj, 8.0, Rnd(0.1,0.3))
+					EndIf
+				EndIf						
+				
+				If (e\room\angle = 0 Or e\room\angle = 180) Then ;lock the player inside
+					If Abs(EntityX(mainPlayer\collider)-EntityX(e\room\obj,True))> 1.3 Then 
+						e\EventState = 70*50
+						e\Sound=0
+					EndIf
+				Else
+					If Abs(EntityZ(mainPlayer\collider)-EntityZ(e\room\obj,True))> 1.3 Then 
+						e\EventState = 70*50
+						e\Sound=0
+					EndIf
+				EndIf	
+			EndIf
+			
+		EndIf
+		
+	ElseIf mainPlayer\currRoom = e\room
+		temp = UpdateLever(e\room\Objects[1]) ;power switch
+		x = UpdateLever(e\room\Objects[3]) ;fuel pump
+		z = UpdateLever(e\room\Objects[5]) ;generator
+		
+		;fuel pump on
+		If x Then
+			e\EventState2 = Min(1.0, e\EventState2+FPSfactor/350)
+			
+			;generator on
+			If z Then
+				If e\Sound2=0 Then LoadEventSound(e,"SFX\General\GeneratorOn.ogg",1)
+				e\EventState3 = Min(1.0, e\EventState3+FPSfactor/450)
+			Else
+				e\EventState3 = Min(0.0, e\EventState3-FPSfactor/450)
+			EndIf
+		Else
+			e\EventState2 = Max(0, e\EventState2-FPSfactor/350)
+			e\EventState3 = Max(0, e\EventState3-FPSfactor/450)
+		EndIf
+		
+		If e\EventState2>0 Then e\SoundCHN=LoopSound2(RoomAmbience[8], e\SoundCHN, mainPlayer\cam, e\room\Objects[3], 5.0, e\EventState2*0.8)
+		If e\EventState3>0 Then e\SoundCHN2=LoopSound2(e\Sound2, e\SoundCHN2, mainPlayer\cam, e\room\Objects[5], 6.0, e\EventState3)
+		
+		If temp=0 And x And z Then
+			e\room\RoomDoors[0]\locked = False
+			e\room\RoomDoors[1]\locked = False
+		Else
+			If	Rand(200)<5 Then LightBlink = Rnd(0.5,1.0)
+			
+			If e\room\RoomDoors[0]\open Then 
+				e\room\RoomDoors[0]\locked = False
+				UseDoor(e\room\RoomDoors[0],False) 
+			EndIf
+			If e\room\RoomDoors[1]\open Then 
+				e\room\RoomDoors[1]\locked = False
+				UseDoor(e\room\RoomDoors[1],False)
+			EndIf
+			e\room\RoomDoors[0]\locked=True
+			e\room\RoomDoors[1]\locked=True							
+		EndIf 
+	EndIf
+	
+	;[End Block]
+End Function
+

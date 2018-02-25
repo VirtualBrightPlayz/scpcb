@@ -24,3 +24,30 @@ Function FillRoom2Doors(r.Rooms)
     
     d\open = False : d2\open = True
 End Function
+
+
+Function UpdateEventRoom2doors173(e.Events)
+	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
+
+	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
+
+	Local CurrTrigger$ = ""
+
+	Local x#, y#, z#
+
+	Local angle#
+
+	;[Block]
+	If mainPlayer\currRoom = e\room Then
+		If e\EventState = 0 And Curr173\Idle = 0 Then
+			If (Not EntityInView(Curr173\obj, mainPlayer\cam)) Then
+				e\EventState = 1
+				PositionEntity(Curr173\Collider, EntityX(e\room\Objects[0], True), 0.5, EntityZ(e\room\Objects[0], True))
+				ResetEntity(Curr173\Collider)
+				RemoveEvent(e)
+			EndIf
+		EndIf
+	EndIf
+	;[End Block]
+End Function
+
