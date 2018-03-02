@@ -170,7 +170,7 @@ Function UpdateEventRoom2tesla(e.Events)
 						For i = 0 To 2
 							If Distance(EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider),EntityX(e\room\Objects[i],True),EntityZ(e\room\Objects[i],True)) < 250.0*RoomScale Then
 								ShowEntity Light
-								LightFlash = 0.4
+								mainPlayer\lightFlash = 0.4
 								mainPlayer\camShake = 1.0
 								Kill()
 								DeathMSG = "Subject D-9341 killed by the Tesla gate at [REDACTED]."
@@ -186,7 +186,7 @@ Function UpdateEventRoom2tesla(e.Events)
 						For i = 0 To 2
 							If Distance(EntityX(Curr106\Collider),EntityZ(Curr106\Collider),EntityX(e\room\Objects[i],True),EntityZ(e\room\Objects[i],True)) < 250.0*RoomScale Then
 								ShowEntity Light
-								LightFlash = 0.3
+								mainPlayer\lightFlash = 0.3
 								For i = 0 To 10
 									p.Particles = CreateParticle(EntityX(Curr106\Collider, True), EntityY(Curr106\Collider, True), EntityZ(Curr106\Collider, True), 0, 0.015, -0.2, 250)
 									p\size = 0.03

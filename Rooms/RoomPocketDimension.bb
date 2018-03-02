@@ -187,7 +187,7 @@ Function UpdateEventPocketdimension(e.Events)
 		
 		mainPlayer\injuries = mainPlayer\injuries+FPSfactor*0.00005
 		
-		If (EntityY(mainPlayer\collider)<2000*RoomScale Or EntityY(mainPlayer\collider)>2608*RoomScale) Then CurrStepSFX = 1
+		If (EntityY(mainPlayer\collider)<2000*RoomScale Or EntityY(mainPlayer\collider)>2608*RoomScale) Then mainPlayer\footstepOverride = 1
 		
 		If e\Sound = 0 Then LoadEventSound(e,"SFX\Room\PocketDimension\Rumble.ogg")
 		If e\Sound2 = 0 Then e\Sound2 = LoadEventSound(e,"SFX\Room\PocketDimension\PrisonVoices.ogg",1)

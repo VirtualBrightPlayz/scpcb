@@ -25,7 +25,7 @@ Function UpdateEvent106sinkhole(e.Events)
 		EndIf
 		dist = Distance(EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider),EntityX(e\room\obj),EntityZ(e\room\obj))
 		If dist < 2.0 Then
-			CurrStepSFX=1
+			mainPlayer\footstepOverride=1
 			mainPlayer\moveSpeed = CurveValue(0.0, mainPlayer\moveSpeed, Max(dist*50,1.0))	
 			mainPlayer\crouchState = (2.0-dist)/2.0
 			

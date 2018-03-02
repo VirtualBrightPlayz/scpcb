@@ -219,7 +219,7 @@ Function UpdateEventGatea(e.Events)
 				Next
 			Next
 			
-			ResetEntity Collider
+			ResetEntity mainPlayer\collider
 			e\EventState = 1.0
 			
 			If (Not Contained106) Then PlaySound_Strict LoadTempSound("SFX\Ending\GateA\106Escape.ogg") 
@@ -230,7 +230,7 @@ Function UpdateEventGatea(e.Events)
 			ShouldPlay = 5
 			
 			e\EventState = e\EventState+FPSfactor
-			HideEntity Fog
+			HideEntity mainPlayer\overlays[OVERLAY_FOG]
 			CameraFogRange mainPlayer\cam, 5,30
 			
 			angle = Max(Sin(EntityYaw(mainPlayer\collider)+90),0.0)
@@ -262,8 +262,9 @@ Function UpdateEventGatea(e.Events)
 						PositionEntity (Curr106\obj, EntityX(e\room\Objects[3],True),EntityY(mainPlayer\collider)-50.0,EntityZ(e\room\Objects[3],True),True)
 						de.Decals = CreateDecal(0, EntityX(e\room\Objects[3],True),EntityY(e\room\Objects[3],True)+0.01,EntityZ(e\room\Objects[3],True), 90, Rand(360), 0)
 						de\Size = 0.05 : de\SizeChange = 0.001 : EntityAlpha(de\obj, 0.8) : UpdateDecals() 
-						PlaySound_Strict (HorrorSFX(5))
-						PlaySound_Strict DecaySFX(0)
+						;TODO: fix audio
+						;PlaySound_Strict (HorrorSFX(5))
+						;PlaySound_Strict DecaySFX(0)
 					ElseIf Curr106\State < 0
 						HideEntity Curr106\obj2
 						Curr106\PathTimer = 70*100
@@ -383,7 +384,7 @@ Function UpdateEventGatea(e.Events)
 												EntityParent p\pvt, e\room\Objects[10], True
 											ElseIf e\EventState2 < 14.3*70
 												mainPlayer\camShake = 0.5
-												LightFlash = 0.3+EntityInView(e\room\Objects[10],mainPlayer\cam)*0.5
+												mainPlayer\lightFlash = 0.3+EntityInView(e\room\Objects[10],mainPlayer\cam)*0.5
 											EndIf
 										EndIf
 									EndIf
@@ -461,24 +462,24 @@ Function UpdateEventGatea(e.Events)
 								p.Particles = CreateParticle(EntityX(e\room\Objects[11],True),EntityY(mainPlayer\cam,True), EntityZ(e\room\Objects[11],True), 4, 8.0, 0, 50)
 								p\speed = 0.25
 								p\A = 0.5
-								PointEntity p\pvt, Collider
+								PointEntity p\pvt, mainPlayer\collider
 								
 								mainPlayer\camShake = 1.0
-								LightFlash = 1.0
+								mainPlayer\lightFlash = 1.0
 								
 								e\EventState3 = 2.0
 							EndIf
 						EndIf
 					Else
 						e\EventState3=e\EventState3+FPSfactor
-						PointEntity e\room\Objects[12], Collider
+						PointEntity e\room\Objects[12], mainPlayer\collider
 						RotateEntity e\room\Objects[12], 0, EntityYaw(e\room\Objects[12]), 0
 						
 						mainPlayer\stamina = -5.0
 						
 						mainPlayer\blurTimer = Sin(e\EventState3*0.7)*1000.0
 						
-						If KillTimer = 0 Then 
+						If Not mainPlayer\dead Then 
 							CameraZoom(mainPlayer\cam, 1.0+Sin(e\EventState3*0.8)*0.2)
 							
 							dist = EntityDistance(mainPlayer\collider,e\room\Objects[11])
@@ -524,7 +525,7 @@ Function UpdateEventGatea(e.Events)
 							
 							If SelectedEnding <> "" Then
 								mainPlayer\camShake=CurveValue(2.0,mainPlayer\camShake,10.0)
-								LightFlash = CurveValue(2.0,LightFlash,8.0);Min(Abs(KillTimer)/100.0,1.0)
+								mainPlayer\lightFlash = CurveValue(2.0,mainPlayer\lightFlash,8.0);Min(Abs(KillTimer)/100.0,1.0)
 							EndIf
 							
 						EndIf
@@ -611,4 +612,3 @@ Function UpdateEventGatea(e.Events)
 	EndIf
 	;[End Block]
 End Function
-

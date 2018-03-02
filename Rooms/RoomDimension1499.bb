@@ -96,7 +96,7 @@ Function UpdateEventDimension1499(e.Events)
 		Else
 			mainPlayer\dropSpeed = 0
 		EndIf
-		CurrStepSFX=3
+		mainPlayer\footstepOverride=3
 	Else
 		If e\EventState = 2.0
 			HideEntity NTF_1499Sky

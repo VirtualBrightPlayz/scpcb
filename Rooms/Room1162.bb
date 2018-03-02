@@ -209,11 +209,11 @@ Function UpdateEventRoom1162(e.Events)
 						DeathMSG = DeathMSG + " An autopsy revealed that his right lung was missing, which suggests"
 						DeathMSG = DeathMSG + " interaction with SCP-1162."
 						PlaySound_Strict LoadTempSound("SFX\SCP\1162\BodyHorrorExchange"+Rand(1,4)+".ogg")
-						LightFlash = 5.0
+						mainPlayer\lightFlash = 5.0
 						Kill()
 					Else
 						PlaySound_Strict LoadTempSound("SFX\SCP\1162\BodyHorrorExchange"+Rand(1,4)+".ogg")
-						LightFlash = 5.0
+						mainPlayer\lightFlash = 5.0
 						Msg = "You feel a sudden overwhelming pain in your chest."
 						MsgTimer = 70*5
 					EndIf
@@ -239,11 +239,11 @@ Function UpdateEventRoom1162(e.Events)
 					DeathMSG = DeathMSG + " An autopsy revealed that his right lung was missing, which suggests"
 					DeathMSG = DeathMSG + " interaction with SCP-1162."
 					PlaySound_Strict LoadTempSound("SFX\SCP\1162\BodyHorrorExchange"+Rand(1,4)+".ogg")
-					LightFlash = 5.0
+					mainPlayer\lightFlash = 5.0
 					Kill()
 				Else
 					PlaySound_Strict LoadTempSound("SFX\SCP\1162\BodyHorrorExchange"+Rand(1,4)+".ogg")
-					LightFlash = 5.0
+					mainPlayer\lightFlash = 5.0
 					Msg = "You notice something moving in your pockets and a sudden pain in your chest."
 					MsgTimer = 70*5
 				EndIf

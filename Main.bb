@@ -1369,13 +1369,13 @@ Function UpdateGame()
 			EntityAlpha(Dark, darkA)	
 		EndIf
 		
-		If LightFlash > 0 Then
+		If mainPlayer\lightFlash > 0 Then
 			ShowEntity Light
-			EntityAlpha(Light, Max(Min(LightFlash + Rnd(-0.2, 0.2), 1.0), 0.0))
-			LightFlash = Max(LightFlash - (FPSfactor / 70.0), 0)
+			EntityAlpha(Light, Max(Min(mainPlayer\lightFlash + Rnd(-0.2, 0.2), 1.0), 0.0))
+			mainPlayer\lightFlash = Max(mainPlayer\lightFlash - (FPSfactor / 70.0), 0)
 		Else
 			HideEntity Light
-			;EntityAlpha(Light, LightFlash)
+			;EntityAlpha(Light, mainPlayer\lightFlash)
 		End If
 		
 		EntityColor Light,255,255,255
@@ -2637,7 +2637,7 @@ Function DrawGUI()
 					If Not (Wearing714 = 1) Then
 						If mainPlayer\currRoom\RoomTemplate\Name <> "room1123" Then
 							ShowEntity Light
-							LightFlash = 7
+							mainPlayer\lightFlash = 7
 							PlaySound_Strict(LoadTempSound("SFX\SCP\1123\Touch.ogg"))		
 							DeathMSG = "Subject D-9341 was shot dead after attempting to attack a member of Nine-Tailed Fox. Surveillance tapes show that the subject had been "
 							DeathMSG = DeathMSG + "wandering around the site approximately 9 minutes prior, shouting the phrase " + Chr(34) + "get rid of the four pests" + Chr(34)
@@ -2650,7 +2650,7 @@ Function DrawGUI()
 							If e\EventName = "room1123" Then 
 								If e\EventState = 0 Then
 									ShowEntity Light
-									LightFlash = 3
+									mainPlayer\lightFlash = 3
 									PlaySound_Strict(LoadTempSound("SFX\SCP\1123\Touch.ogg"))											
 								EndIf
 								e\EventState = Max(1, e\EventState)

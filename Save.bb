@@ -1110,7 +1110,7 @@ Function LoadGameQuick(file$)
 	
 	mainPlayer\camShake = 0
 	Shake = 0
-	LightFlash = 0
+	mainPlayer\lightFlash = 0
 	mainPlayer\blurTimer = 0
 	
 	KillTimer = 0

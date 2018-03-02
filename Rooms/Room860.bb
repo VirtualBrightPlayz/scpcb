@@ -70,7 +70,7 @@ Function UpdateEventRoom860(e.Events)
 		;Local dp.DrawPortal
 		
 		If e\EventState=1.0 Then ;the player is in the forest
-			CurrStepSFX = 2
+			mainPlayer\footstepOverride = 2
 			
 			Curr106\Idle = True
 			
@@ -159,7 +159,7 @@ Function UpdateEventRoom860(e.Events)
 								RotateEntity mainPlayer\collider, 0, EntityYaw(e\room\obj,True)+e\EventState2*180, 0
 								MoveEntity mainPlayer\collider, 0,0,1.5
 								
-								ResetEntity Collider
+								ResetEntity mainPLayer\collider
 								
 								UpdateDoorsTimer = 0
 								UpdateDoors()
@@ -207,7 +207,7 @@ Function UpdateEventRoom860(e.Events)
 							Msg = "The door will not budge."
 							MsgTimer = 5*70
 						EndIf
-					ElseIf SelectedItem\itemtemplate\tempname="scp860" 
+					ElseIf mainPlayer\selectedItem\itemtemplate\tempname="scp860" 
 						If MouseHit1 Then
 							PlaySound_Strict(LoadTempSound("SFX\Door\WoodenDoorOpen.ogg"))
 							ShowEntity fr.Forest\Forest_Pivot
@@ -238,7 +238,7 @@ Function UpdateEventRoom860(e.Events)
 							EndIf
 							FreeEntity pvt
 							
-							ResetEntity Collider
+							ResetEntity mainPlayer\collider
 							
 							
 							

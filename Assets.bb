@@ -537,7 +537,7 @@ Function NullGame()
 	
 	mainPlayer\camShake = 0
 	Shake = 0
-	LightFlash = 0
+	mainPlayer\lightFlash = 0
 	
 	GodMode = 0
 	NoClip = 0
