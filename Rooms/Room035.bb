@@ -232,7 +232,7 @@ Function UpdateEventRoom035(e.Events)
 						PositionEntity(e\room\Objects[6], EntityX(e\room\Objects[6],True), 10, EntityZ(e\room\Objects[6],True),True)
 						
 						If e\room\NPC[0]\State = 0 Then
-							PointEntity e\room\NPC[0]\obj, Collider
+							PointEntity e\room\NPC[0]\obj, mainPlayer\collider
 							RotateEntity e\room\NPC[0]\Collider, 0, CurveAngle(EntityYaw(e\room\NPC[0]\obj), EntityYaw(e\room\NPC[0]\Collider), 15.0), 0
 							
 							If Rand(500)=1 Then
@@ -392,7 +392,7 @@ Function UpdateEventRoom035(e.Events)
 						ElseIf dist > 0.7
 							If ChannelPlaying (e\room\NPC[0]\SoundChn) Then
 								e\room\NPC[0]\State = 0
-								PointEntity e\room\NPC[0]\obj, Collider
+								PointEntity e\room\NPC[0]\obj, mainPlayer\collider
 								RotateEntity e\room\NPC[0]\Collider, 0, CurveAngle(EntityYaw(e\room\NPC[0]\obj), EntityYaw(e\room\NPC[0]\Collider), 15.0), 0
 							Else
 								PointEntity e\room\NPC[0]\obj, e\room\RoomDoors[0]\frameobj
@@ -473,7 +473,7 @@ Function UpdateEventRoom035(e.Events)
 							e\EventState2 = Min(e\EventState2+(FPSfactor/6000),1.0)
 							e\EventState3 = CurveValue(e\EventState2, e\EventState3, 50)
 							
-							If (Not Wearing714) And WearingHazmat<3 And WearingGasMask<3 Then
+							If (Not IsPlayerWearing(mainPlayer,"scp714",WORNITEM_HAND_SLOT)) And WearingHazmat<3 And WearingGasMask<3 Then
 								mainPlayer\sanity895=Sanity-FPSfactor*1.1
 								mainPlayer\blurTimer = Sin(MilliSecs2()/10)*Abs(mainPlayer\sanity895)
 							EndIf
@@ -512,7 +512,7 @@ Function UpdateEventRoom035(e.Events)
 				e\EventState3 = Max(e\EventState3-(FPSfactor/100),0)
 			EndIf
 			
-			If e\EventState3 > 0 And (Not Wearing714) And WearingHazmat<3 And WearingGasMask<3 Then 
+			If e\EventState3 > 0 And (Not IsPlayerWearing(mainPlayer,"scp714",WORNITEM_HAND_SLOT)) And WearingHazmat<3 And WearingGasMask<3 Then 
 				e\SoundCHN = LoopSound2(e\Sound, e\SoundCHN, mainPlayer\cam, e\room\obj, 10, e\EventState3)
 				e\SoundCHN2 = LoopSound2(e\Sound2, e\SoundCHN2, mainPlayer\cam, e\room\obj, 10, (e\EventState3-0.5)*2)
 			EndIf
@@ -539,4 +539,3 @@ Function UpdateEventRoom035(e.Events)
 	EndIf
 	;[End Block]
 End Function
-

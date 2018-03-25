@@ -389,7 +389,7 @@ Function UpdateEventExit1(e.Events)
 								
 								If e\EventState3 > 0.0 And e\EventState3 <= 500.0
 									e\EventState3 = e\EventState3 + FPSfactor
-									UnableToMove% = True
+									mainPlayer\disableControls = True
 									For n.NPCs = Each NPCs
 										If n\NPCtype = NPCtypeMTF
 											n\EnemyX = EntityX(mainPlayer\collider)
@@ -409,9 +409,8 @@ Function UpdateEventExit1(e.Events)
 									ShouldPlay = 0
 									mainPlayer\moveSpeed = 0
 									PlaySound_Strict LoadTempSound("SFX\Ending\GateB\Gunshot.ogg")
-									GodMode = 0
-									NoClip = 0
-									KillTimer = -0.1
+									mainPlayer\godMode = 0
+									mainPlayer\noclip = 0
 									DeathMSG = ""
 									Kill()
 									mainPlayer\blinkTimer = -10
@@ -421,7 +420,7 @@ Function UpdateEventExit1(e.Events)
 										EndIf
 									Next
 									RemoveEvent(e)
-									Exit
+									Return
 								EndIf
 								
 							EndIf
@@ -500,7 +499,7 @@ Function UpdateEventExit1(e.Events)
 			
 			;dist = Max(Min(EntityDistance(mainPlayer\collider, e\room\objects[3])/10000.0,1.0),0.0)
 			;EntityAlpha Fog, 1.0-dist
-			HideEntity Fog
+			HideEntity mainPlayer\overlays[OVERLAY_FOG]
 			CameraFogRange mainPlayer\cam, 5,45
 			
 			angle = Max(Sin(EntityYaw(mainPlayer\collider)),0.0)
@@ -550,7 +549,7 @@ Function UpdateEventExit1(e.Events)
 				
 				e\EventState2 = UpdateElevators(e\EventState2, e\room\RoomDoors[0], e\room\RoomDoors[1], e\room\Objects[8], e\room\Objects[9], e)
 				
-				EntityAlpha Fog, 1.0						
+				EntityAlpha mainPlayer\overlays[OVERLAY_FOG], 1.0						
 			EndIf
 			
 			
@@ -559,4 +558,3 @@ Function UpdateEventExit1(e.Events)
 	EndIf
 	;[End Block]
 End Function
-

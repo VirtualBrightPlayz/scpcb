@@ -95,9 +95,9 @@ Function UpdateEventRoom2storage(e.Events)
 			Next	
 			
 			TFormPoint TFormedX()-1024, TFormedY(), TFormedZ(),e\room\obj,0
-			HideEntity Collider
+			HideEntity mainPlayer\collider
 			PositionEntity mainPlayer\collider, TFormedX(), EntityY(mainPlayer\collider), TFormedZ(), True
-			ShowEntity Collider
+			ShowEntity mainPlayer\collider
 			DebugLog "tformedx()>720"
 			temp = True
 			
@@ -122,9 +122,9 @@ Function UpdateEventRoom2storage(e.Events)
 			Next
 			
 			TFormPoint TFormedX()+1024, TFormedY(), TFormedZ(),e\room\obj,0
-			HideEntity Collider
+			HideEntity mainPlayer\collider
 			PositionEntity mainPlayer\collider, TFormedX(), EntityY(mainPlayer\collider), TFormedZ(), True
-			ShowEntity Collider
+			ShowEntity mainPlayer\collider
 			
 			DebugLog "tformedx()<720"
 			
@@ -155,22 +155,22 @@ Function UpdateEventRoom2storage(e.Events)
 			
 			Select e\EventState 
 				Case 2
-					i = Rand(MaxItemAmount)
-					If Inventory(i)<>Null Then RemoveItem(Inventory(i))								
+					i = Rand(mainPlayer\inventory\size)
+					If mainPlayer\inventory\items[i]<>Null Then RemoveItem(mainPlayer\inventory\items[i])								
 				Case 5
 					mainPlayer\injuries = mainPlayer\injuries + 0.3
 				Case 10
 					de.Decals = CreateDecal(3, EntityX(e\room\obj)+Cos(e\room\angle-90)*760*RoomScale, 0.0005, EntityZ(e\room\obj)+Sin(e\room\angle-90)*760*RoomScale,90,Rnd(360),0)
 				Case 14
-					For i = 0 To MaxItemAmount-1
-						If Inventory(i)<> Null Then
-							If Inventory(i)\itemtemplate\tempname = "paper" Then
-								RemoveItem(Inventory(i))
+					For i = 0 To mainPlayer\inventory\size-1
+						If mainPlayer\inventory\items[i]<> Null Then
+							If mainPlayer\inventory\items[i]\itemtemplate\tempname = "paper" Then
+								RemoveItem(mainPlayer\inventory\items[i])
 								For itt.ItemTemplates = Each ItemTemplates
 									If itt\tempname = "paper" And Rand(6)=1 Then
-										Inventory(i) = CreateItem(itt\name, itt\tempname, 1,1,1)
-										HideEntity Inventory(i)\collider
-										Inventory(i)\Picked = True
+										mainPlayer\inventory\items[i] = CreateItem(itt\name, itt\tempname, 1,1,1)
+										HideEntity mainPlayer\inventory\items[i]\collider
+										mainPlayer\inventory\items[i]\Picked = True
 										Exit
 									EndIf
 								Next
@@ -192,11 +192,11 @@ Function UpdateEventRoom2storage(e.Events)
 					SetAnimTime(e\room\NPC[0]\obj,80)
 					e\room\NPC[0]\State=10
 				Case 30
-					i = Rand(0,MaxItemAmount-1)
-					If Inventory(i)<>Null Then RemoveItem(Inventory(i))
-					Inventory(i) = CreateItem("Strange Note", "paper", 1,1,1)
-					HideEntity Inventory(i)\collider
-					Inventory(i)\Picked = True
+					i = Rand(0,mainPlayer\inventory\size)
+					If mainPlayer\inventory\items[i]<>Null Then RemoveItem(mainPlayer\inventory\items[i])
+					mainPlayer\inventory\items[i] = CreateItem("Strange Note", "paper", 1,1,1)
+					HideEntity mainPlayer\inventory\items[i]\collider
+					mainPlayer\inventory\items[i]\Picked = True
 				Case 35
 					For i = 0 To 3
 						de.Decals = CreateDecal(17, e\room\x+Rnd(-2,2), 700*RoomScale, e\room\z+Rnd(-2,2), 270, Rand(360), 0)
@@ -229,14 +229,14 @@ Function UpdateEventRoom2storage(e.Events)
 				If EntityDistance(mainPlayer\collider, e\room\NPC[0]\Collider)<3.0 Then
 					If EntityInView(e\room\NPC[0]\obj, mainPlayer\cam) Then
 						mainPlayer\camZoom = (Sin(Float(MilliSecs2())/20.0)+1.0)*15.0
-						HeartBeatVolume = Max(CurveValue(0.3, HeartBeatVolume, 2.0), HeartBeatVolume)
-						HeartBeatRate = Max(HeartBeatRate, 120)
+						;HeartBeatVolume = Max(CurveValue(0.3, HeartBeatVolume, 2.0), HeartBeatVolume)
+						mainPlayer\heartbeatIntensity = Max(mainPlayer\heartbeatIntensity, 120)
 					EndIf
 				EndIf
 			EndIf
 			
 			If e\room\NPC[1] <> Null Then
-				PointEntity e\room\NPC[1]\obj, Collider
+				PointEntity e\room\NPC[1]\obj, mainPlayer\collider
 				RotateEntity e\room\NPC[1]\Collider, 0, CurveAngle(EntityYaw(e\room\NPC[1]\obj),EntityYaw(e\room\NPC[1]\Collider),35),0
 			EndIf
 			
@@ -302,4 +302,3 @@ Function UpdateEventRoom2storage(e.Events)
 	
 	;[End Block]
 End Function
-

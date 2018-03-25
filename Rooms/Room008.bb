@@ -132,9 +132,9 @@ Function UpdateEvent008(e.Events)
 							
 							HideEntity e\room\Objects[2]
 							
-							If (Not WearingHazmat) Then 
-								mainPlayer\injuries=Injuries+0.1
-								Infect=1
+							If (Not IsPlayerWearing(mainPlayer,"hazmatsuit",WORNITEM_BODY_SLOT)) Then 
+								mainPlayer\injuries=mainPlayer\injuries+0.1
+								mainPlayer\infect008=1
 								Msg = "The window shattered and a piece of glass cut your arm."
 								MsgTimer = 70*8
 							EndIf
@@ -188,4 +188,3 @@ Function UpdateEvent008(e.Events)
 	End If
 	;[End Block]
 End Function
-

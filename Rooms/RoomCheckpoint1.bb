@@ -65,16 +65,17 @@ Function UpdateEventCheckpoint(e.Events)
 		;EndIf
 		
 		;play a sound clip when the player passes through the gate
-		If e\EventState2 = 0 Then
-			If EntityZ(mainPlayer\collider) < e\room\z Then
-				If PlayerZone = 1 Then
-					PlaySound_Strict(LoadTempSound("SFX\Ambient\ToZone2.ogg"))
-				Else
-					PlaySound_Strict(LoadTempSound("SFX\Ambient\ToZone3.ogg"))
-				EndIf
-				e\EventState2 = 1
-			EndIf
-		EndIf
+		;TODO: kill
+		;If e\EventState2 = 0 Then
+		;	If EntityZ(mainPlayer\collider) < e\room\z Then
+		;		If PlayerZone = 1 Then
+		;			PlaySound_Strict(LoadTempSound("SFX\Ambient\ToZone2.ogg"))
+		;		Else
+		;			PlaySound_Strict(LoadTempSound("SFX\Ambient\ToZone3.ogg"))
+		;		EndIf
+		;		e\EventState2 = 1
+		;	EndIf
+		;EndIf
 		
 		If e\EventState3=0 Then
 			If Rand(2)=1 Then
@@ -88,12 +89,12 @@ Function UpdateEventCheckpoint(e.Events)
 			e\EventState3 = 1
 		ElseIf e\room\Objects[1]<>0
 			If e\EventState3 = 1 Then
-				PointEntity e\room\Objects[1], Collider
+				PointEntity e\room\Objects[1], mainPlayer\collider
 				RotateEntity e\room\Objects[1], -90, EntityYaw(e\room\Objects[1]),0
 				angle = WrapAngle(DeltaYaw(mainPlayer\collider, e\room\Objects[1]))
 				If angle<40 Or angle > 320 Then e\EventState3=2
 			ElseIf e\EventState3 = 2
-				PointEntity e\room\Objects[1], Collider
+				PointEntity e\room\Objects[1], mainPlayer\collider
 				RotateEntity e\room\Objects[1], -90, EntityYaw(e\room\Objects[1]),0
 				Animate2(e\room\Objects[1],AnimTime(e\room\Objects[1]),267,283,0.3,False)
 				If AnimTime(e\room\Objects[1])=283 Then e\EventState3=3
@@ -165,4 +166,3 @@ Function UpdateEventCheckpoint(e.Events)
 	EndIf
 	;[End Block]
 End Function
-

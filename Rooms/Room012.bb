@@ -112,7 +112,7 @@ Function UpdateEventRoom012(e.Events)
 				EndIf
 			EndIf
 			
-			If Wearing714=False And WearingGasMask<3 And WearingHazmat<3 And WearingNightVision=0 Then
+			If IsPlayerWearing(mainPlayer,"scp714",WORNITEM_HAND_SLOT)=False And WearingGasMask<3 And WearingHazmat<3 And WearingNightVision=0 Then
 				temp = False
 				If EntityVisible(e\room\Objects[2],mainPlayer\cam) Then temp = True
 				

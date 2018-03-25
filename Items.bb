@@ -687,7 +687,7 @@ Function DropItem(item.Items,playDropSound%=True)
 	;	Case "veryfinenvgoggles"
 	;		If WearingNightVision = 3 Then CameraFogFar = StoredCameraFogFar : WearingNightVision = False
 	;	Case "scp714"
-	;		Wearing714 = False
+	;		IsPlayerWearing(mainPlayer,"scp714",WORNITEM_HAND_SLOT) = False
 	;	Case "scp178"
 	;		Wearing178 = False
 	;	Case "scp1499","super1499"

@@ -1,7 +1,8 @@
 ;menus, GUI ---------------------------------------------------------------------------------------------------------
 Global MainMenuOpen.MarkedForRemoval, MenuOpen.MarkedForRemoval, InvOpen.MarkedForRemoval ;TODO: REMOVE
 ;Global OtherOpen.Items = Null
-Global SelectedEnding.MarkedForRemoval, EndingScreen.MarkedForRemoval, EndingTimer.MarkedForRemoval
+Global SelectedEnding$ ;TODO: REMOVE
+Global EndingScreen.MarkedForRemoval, EndingTimer.MarkedForRemoval
 
 Const GAMESTATE_MAINMENU% = 0
 Const GAMESTATE_PLAYING% = 1

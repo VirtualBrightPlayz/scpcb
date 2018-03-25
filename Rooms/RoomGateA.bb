@@ -505,7 +505,7 @@ Function UpdateEventGatea(e.Events)
 								e\SoundCHN = PlaySound_Strict(LoadTempSound("SFX\Ending\GateA\CI.ogg"))
 							EndIf
 							
-							If ChannelPlaying(e\SoundCHN)=False And SelectedEnding="" Then
+							If ChannelPlaying(e\SoundCHN)=False Then; And SelectedEnding="" Then
 								PlaySound_Strict LoadTempSound("SFX\Ending\GateA\Bell2.ogg")
 								
 								p.Particles = CreateParticle(EntityX(e\room\Objects[11],True),EntityY(mainPlayer\cam,True), EntityZ(e\room\Objects[11],True), 4, 8.0, 0, 50)
@@ -515,18 +515,17 @@ Function UpdateEventGatea(e.Events)
 								p\speed = 0.25
 								p\A = 0.5
 								
-								SelectedEnding = "A1"
-								GodMode = 0
-								NoClip = 0
-								KillTimer = -0.1
+								;SelectedEnding = "A1"
+								mainPlayer\godMode = 0
+								mainPlayer\noclip = 0
 								DeathMSG = ""
 								Kill()
 							EndIf
 							
-							If SelectedEnding <> "" Then
-								mainPlayer\camShake=CurveValue(2.0,mainPlayer\camShake,10.0)
-								mainPlayer\lightFlash = CurveValue(2.0,mainPlayer\lightFlash,8.0);Min(Abs(KillTimer)/100.0,1.0)
-							EndIf
+							;If SelectedEnding <> "" Then
+							mainPlayer\camShake=CurveValue(2.0,mainPlayer\camShake,10.0)
+							mainPlayer\lightFlash = CurveValue(2.0,mainPlayer\lightFlash,8.0);Min(Abs(KillTimer)/100.0,1.0)
+							;EndIf
 							
 						EndIf
 					EndIf
@@ -570,7 +569,7 @@ Function UpdateEventGatea(e.Events)
 										e\room\NPC[temp]\EnemyZ = EntityZ(mainPlayer\collider)
 										e\room\NPC[temp]\PathTimer = 70*Rand(7,10)
 										e\room\NPC[temp]\Reload = 2000
-										UnableToMove% = True
+										mainPlayer\disableControls = True
 									Next
 									
 									If e\EventState2=1 Then
@@ -589,15 +588,15 @@ Function UpdateEventGatea(e.Events)
 							mainPlayer\moveSpeed = 0
 							If ChannelPlaying(e\SoundCHN)=False Then
 								PlaySound_Strict IntroSFX(9)
-								SelectedEnding = "A2"
-								GodMode = 0
-								NoClip = 0
-								KillTimer = -0.1
+								;SelectedEnding = "A2"
+								mainPlayer\godMode = 0
+								mainPlayer\noclip = 0
+								;KillTimer = -0.1
 								DeathMSG = ""
 								Kill()
 								mainPlayer\blinkTimer = -10
 								RemoveEvent(e)
-								Exit
+								Return
 							EndIf
 						EndIf									
 						

@@ -948,7 +948,7 @@ Function TakeOffStuff(flag%=0)
 	;EndIf
 	;If Len(numb_flag%)>2
 	;	If Mid(numb_flag%,Len(numb_flag%)-2,1) = 1
-	;		Wearing714 = False
+	;		IsPlayerWearing(mainPlayer,"scp714",WORNITEM_HAND_SLOT) = False
 	;		DebugLog "SCP-714 Off"
 	;	EndIf
 	;EndIf

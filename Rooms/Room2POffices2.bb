@@ -52,7 +52,8 @@ Function UpdateEventRoom2poffices2(e.Events)
 				If e\room\RoomDoors[0]\openstate = 180 Then 
 					e\EventState = 1
 					;TODO: load temp sound.
-					PlaySound_Strict HorrorSFX(5)
+					;TODO: fix
+					;PlaySound_Strict HorrorSFX(5)
 				EndIf
 			Else
 				If (EntityDistance(mainPlayer\collider, e\room\RoomDoors[0]\obj)<1.5) And (RemoteDoorOn) Then
@@ -61,9 +62,10 @@ Function UpdateEventRoom2poffices2(e.Events)
 			EndIf
 		Else
 			If EntityDistance(e\room\Objects[0], mainPlayer\collider) < 2.0 Then
-				HeartBeatVolume = CurveValue(0.5, HeartBeatVolume, 5)
-				HeartBeatRate = CurveValue(120, HeartBeatRate, 150) 
-				e\SoundCHN = LoopSound2(OldManSFX(4), e\SoundCHN, mainPlayer\cam, e\room\obj, 5.0, 0.3)
+				;HeartBeatVolume = CurveValue(0.5, HeartBeatVolume, 5)
+				mainPlayer\heartbeatIntensity = CurveValue(120, mainPlayer\heartbeatIntensity, 150) 
+				;TODO: fix
+				;e\SoundCHN = LoopSound2(OldManSFX(4), e\SoundCHN, mainPlayer\cam, e\room\obj, 5.0, 0.3)
 				Curr106\State=Curr106\State-FPSfactor*3
 			EndIf
 			
@@ -71,4 +73,3 @@ Function UpdateEventRoom2poffices2(e.Events)
 	EndIf
 	;[End Block]
 End Function
-

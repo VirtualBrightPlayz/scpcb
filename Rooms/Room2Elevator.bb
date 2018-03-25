@@ -69,7 +69,7 @@ Function UpdateEventRoom2elevator(e.Events)
 	If e\EventState = 0 Then
 		If e\room\dist < 8.0 And e\room\dist > 0 Then
 			e\room\NPC[0]=CreateNPC(NPCtypeGuard, EntityX(e\room\obj,True), 0.5, EntityZ(e\room\obj,True))
-			PointEntity e\room\NPC[0]\Collider, Collider
+			PointEntity e\room\NPC[0]\Collider, mainPlayer\collider
 			RotateEntity e\room\NPC[0]\Collider, 0, EntityYaw(e\room\NPC[0]\Collider),0, True	
 			
 			e\EventState = 1
@@ -123,4 +123,3 @@ Function UpdateEventRoom2elevator(e.Events)
 	EndIf
 	;[End Block]
 End Function
-

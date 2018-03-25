@@ -2297,10 +2297,10 @@ Function DrawGUI()
 					Case "finevest"
 						If WearingVest=2 Then Rect(x - 3, y - 3, width + 6, height + 6)
 					Case "scp714"
-						If Wearing714=1 Then Rect(x - 3, y - 3, width + 6, height + 6)
+						If IsPlayerWearing(mainPlayer,"scp714",WORNITEM_HAND_SLOT)=1 Then Rect(x - 3, y - 3, width + 6, height + 6)
 						;BoH items
 					;Case "ring"
-					;	If Wearing714=2 Then Rect(x - 3, y - 3, width + 6, height + 6)
+					;	If IsPlayerWearing(mainPlayer,"scp714",WORNITEM_HAND_SLOT)=2 Then Rect(x - 3, y - 3, width + 6, height + 6)
 					;Case "scp178"
 					;	If Wearing178=1 Then Rect(x - 3, y - 3, width + 6, height + 6)
 					;Case "glasses"
@@ -2621,20 +2621,10 @@ Function DrawGUI()
 					DrawImage(SelectedItem\itemtemplate\img, userOptions\screenWidth / 2 - ImageWidth(SelectedItem\itemtemplate\img) / 2, userOptions\screenHeight / 2 - ImageHeight(SelectedItem\itemtemplate\img) / 2)
 					
 				Case "ring"
-					If Wearing714=2 Then
-						Msg = "You removed the ring."
-						Wearing714 = False
-					Else
-						;Achievements(Achv714)=True
-						Msg = "You put on the ring."
-						Wearing714 = 2
-						TakeOffStuff(1+2+8+32+64)
-					EndIf
-					MsgTimer = 70 * 5
-					mainPlayer\selectedItem = Null	
+					;TODO: fix
 
 				Case "1123"
-					If Not (Wearing714 = 1) Then
+					If Not (IsPlayerWearing(mainPlayer,"scp714",WORNITEM_HAND_SLOT) = 1) Then
 						If mainPlayer\currRoom\RoomTemplate\Name <> "room1123" Then
 							ShowEntity Light
 							mainPlayer\lightFlash = 7
@@ -2830,14 +2820,14 @@ Function DrawGUI()
 						
 					EndIf
 				Case "eyedrops"
-					If (Not (Wearing714=1)) Then
+					If (Not (IsPlayerWearing(mainPlayer,"scp714",WORNITEM_HAND_SLOT)=1)) Then
 						BlinkEffect = 0.6
 						BlinkEffectTimer = 70*Rand(20,30)
 						mainPlayer\blurTimer = 200
 					EndIf
 					RemoveItem(mainPlayer\selectedItem)
 				Case "fineeyedrops"
-					If (Not (Wearing714=1)) Then 
+					If (Not (IsPlayerWearing(mainPlayer,"scp714",WORNITEM_HAND_SLOT)=1)) Then 
 						BlinkEffect = 0.4
 						BlinkEffectTimer = 70*Rand(30,40)
 						Bloodloss = Max(Bloodloss-1.0, 0)
@@ -2845,7 +2835,7 @@ Function DrawGUI()
 					EndIf
 					RemoveItem(mainPlayer\selectedItem)
 				Case "supereyedrops"
-					If (Not (Wearing714 = 1)) Then
+					If (Not (IsPlayerWearing(mainPlayer,"scp714",WORNITEM_HAND_SLOT) = 1)) Then
 						BlinkEffect = 0.0
 						BlinkEffectTimer = 60
 						EyeStuck = 10000
@@ -2903,7 +2893,7 @@ Function DrawGUI()
 						MaskImage(SelectedItem\itemtemplate\img, 255, 0, 255)
 					EndIf
 					
-					If (Not Wearing714) Then SCP1025state[SelectedItem\state]=Max(1,SCP1025state[SelectedItem\state])					
+					If (Not IsPlayerWearing(mainPlayer,"scp714",WORNITEM_HAND_SLOT)) Then SCP1025state[SelectedItem\state]=Max(1,SCP1025state[SelectedItem\state])					
 					
 					DrawImage(SelectedItem\itemtemplate\img, userOptions\screenWidth / 2 - ImageWidth(SelectedItem\itemtemplate\img) / 2, userOptions\screenHeight / 2 - ImageHeight(SelectedItem\itemtemplate\img) / 2)
 					
@@ -3243,7 +3233,7 @@ Function DrawGUI()
 
 					MsgTimer = 70 * 5
 				Case "420"
-					If Wearing714=1 Then
+					If IsPlayerWearing(mainPlayer,"scp714",WORNITEM_HAND_SLOT)=1 Then
 						Msg = Chr(34) + "DUDE WTF THIS SHIT DOESN'T EVEN WORK" + Chr(34)
 					Else
 						Msg = Chr(34) + "MAN DATS SUM GOOD ASS SHIT" + Chr(34)
@@ -3255,7 +3245,7 @@ Function DrawGUI()
 					MsgTimer = 70 * 5
 					RemoveItem(mainPlayer\selectedItem)
 				Case "420s"
-					If Wearing714=1 Then
+					If IsPlayerWearing(mainPlayer,"scp714",WORNITEM_HAND_SLOT)=1 Then
 						Msg = Chr(34) + "DUDE WTF THIS SHIT DOESN'T EVEN WORK" + Chr(34)
 					Else
 						DeathMSG = "Subject D-9341 found in a comatose state in [DATA REDACTED]. The subject was holding what appears to be a cigarette while smiling widely. "
@@ -3267,13 +3257,13 @@ Function DrawGUI()
 					MsgTimer = 70 * 6
 					RemoveItem(mainPlayer\selectedItem)
 				Case "scp714"
-					If Wearing714=1 Then
+					If IsPlayerWearing(mainPlayer,"scp714",WORNITEM_HAND_SLOT)=1 Then
 						Msg = "You removed the ring."
-						Wearing714 = False
+						mainPlayer\wornItems[WORNITEM_HAND_SLOT] = Null
 					Else
 						GiveAchievement(Achv714)
 						Msg = "You put on the ring."
-						Wearing714 = True
+						mainPlayer\wornItems[WORNITEM_HAND_SLOT] = mainPlayer\selectedItem
 					EndIf
 					MsgTimer = 70 * 5
 					mainPlayer\selectedItem = Null	

@@ -543,11 +543,6 @@ Function NullGame()
 	NoClip = 0
 	WireframeState = 0
 	WireFrame 0
-	WearingGasMask = 0
-	WearingHazmat = 0
-	WearingVest = 0
-	Wearing714 = 0
-	Wearing178 = 0
 	If WearingNightVision Then
 		CameraFogFar = StoredCameraFogFar
 		WearingNightVision = 0
