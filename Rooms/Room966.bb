@@ -51,7 +51,7 @@ Function UpdateEventRoom966(e.Events)
 		Select e\EventState
 			Case 0
 				;a dirty workaround to hide the pause when loading 966 model
-				LightBlink = 5.0
+				mainPlayer\blinkTimer = -10
 				e\EventState = 1
 				PlaySound_Strict LightSFX
 				QuickLoadPercent = 0
@@ -82,4 +82,3 @@ Function UpdateEventRoom966(e.Events)
 	EndIf
 	;[End Block]
 End Function
-

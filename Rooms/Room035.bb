@@ -473,18 +473,18 @@ Function UpdateEventRoom035(e.Events)
 							e\EventState2 = Min(e\EventState2+(FPSfactor/6000),1.0)
 							e\EventState3 = CurveValue(e\EventState2, e\EventState3, 50)
 							
-							If (Not IsPlayerWearing(mainPlayer,"scp714",WORNITEM_HAND_SLOT)) And WearingHazmat<3 And WearingGasMask<3 Then
-								mainPlayer\sanity895=Sanity-FPSfactor*1.1
+							If (Not IsPlayerWearing(mainPlayer,"scp714",WORNITEM_HAND_SLOT)) And (Not IsPlayerWearing(mainPlayer,"hazmatsuit3",WORNITEM_BODY_SLOT)) And (Not IsPlayerWearing(mainPlayer,"gasmask3",WORNITEM_HEAD_SLOT)) Then
+								mainPlayer\sanity895=mainPlayer\sanity895-FPSfactor*1.1
 								mainPlayer\blurTimer = Sin(MilliSecs2()/10)*Abs(mainPlayer\sanity895)
 							EndIf
 							
-							If (Not WearingHazmat) Then
+							If (Not IsPlayerWearing(mainPlayer,"hazmatsuit3",WORNITEM_BODY_SLOT)) Then
 								mainPlayer\injuries = mainPlayer\injuries + (FPSfactor/5000)
 							Else
 								mainPlayer\injuries = mainPlayer\injuries + (FPSfactor/10000)
 							EndIf
 							
-							If KillTimer < 0 And Bloodloss =>100 Then
+							If mainPlayer\dead = True And mainPlayer\bloodloss =>100 Then
 								DeathMSG = "Class D Subject D-9341 found dead inside SCP-035's containment chamber. "
 								DeathMSG = DeathMSG + "The subject exhibits heavy hemorrhaging of blood vessels around the eyes and inside the mouth and nose. "
 								DeathMSG = DeathMSG + "Sent for autopsy."
@@ -512,7 +512,7 @@ Function UpdateEventRoom035(e.Events)
 				e\EventState3 = Max(e\EventState3-(FPSfactor/100),0)
 			EndIf
 			
-			If e\EventState3 > 0 And (Not IsPlayerWearing(mainPlayer,"scp714",WORNITEM_HAND_SLOT)) And WearingHazmat<3 And WearingGasMask<3 Then 
+			If e\EventState3 > 0 And (Not IsPlayerWearing(mainPlayer,"scp714",WORNITEM_HAND_SLOT)) And (Not IsPlayerWearing(mainPlayer,"hazmatsuit3",WORNITEM_BODY_SLOT)) And (Not IsPlayerWearing(mainPlayer,"gasmask3",WORNITEM_HEAD_SLOT)) Then 
 				e\SoundCHN = LoopSound2(e\Sound, e\SoundCHN, mainPlayer\cam, e\room\obj, 10, e\EventState3)
 				e\SoundCHN2 = LoopSound2(e\Sound2, e\SoundCHN2, mainPlayer\cam, e\room\obj, 10, (e\EventState3-0.5)*2)
 			EndIf

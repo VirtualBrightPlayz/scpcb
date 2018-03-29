@@ -279,13 +279,13 @@ Function UpdateEventRoom049(e.Events)
 	
 	If e\EventState < 0 Then
 		If e\EventState > -70*4 Then 
-			If FallTimer => 0 Then 
-				FallTimer = Min(-1, FallTimer)
-				PositionEntity(Head, EntityX(mainPlayer\cam, True), EntityY(mainPlayer\cam, True), EntityZ(mainPlayer\cam, True), True)
-				ResetEntity (Head)
-				RotateEntity(Head, 0, EntityYaw(mainPlayer\cam) + Rand(-45, 45), 0)
-			ElseIf FallTimer < -230
-				FallTimer = -231
+			If mainPlayer\fallTimer => 0 Then 
+				mainPlayer\fallTimer = Min(-1, mainPlayer\fallTimer)
+				PositionEntity(mainPlayer\head, EntityX(mainPlayer\cam, True), EntityY(mainPlayer\cam, True), EntityZ(mainPlayer\cam, True), True)
+				ResetEntity (mainPlayer\head)
+				RotateEntity(mainPlayer\head, 0, EntityYaw(mainPlayer\cam) + Rand(-45, 45), 0)
+			ElseIf mainPlayer\fallTimer < -230
+				mainPlayer\fallTimer = -231
 				mainPlayer\blinkTimer = 0
 				e\EventState = e\EventState-FPSfactor
 				
@@ -293,10 +293,10 @@ Function UpdateEventRoom049(e.Events)
 					UpdateDoorsTimer = 0
 					UpdateDoors()
 					UpdateRooms()
-					ShowEntity Collider
+					ShowEntity mainPlayer\collider
 					mainPlayer\dropSpeed = 0
 					mainPlayer\blinkTimer = -10
-					FallTimer = 0
+					mainPlayer\fallTimer = 0
 					PositionEntity mainPlayer\collider, EntityX(e\room\obj,True), EntityY(e\room\Objects[5],True)+0.2, EntityZ(e\room\obj,True)
 					ResetEntity mainPlayer\collider										
 					
@@ -315,7 +315,7 @@ Function UpdateEventRoom049(e.Events)
 					n.NPCs = CreateNPC(NPCtypeMTF, EntityX(e\room\Objects[5],True), EntityY(e\room\Objects[5],True)+0.2, EntityZ(e\room\Objects[5],True))
 					n\State = 6
 					n\Reload = 6*70
-					PointEntity n\Collider,Collider
+					PointEntity n\Collider,mainPlayer\collider
 					e\room\NPC[1] = n
 					
 					n.NPCs = CreateNPC(NPCtypeMTF, EntityX(e\room\Objects[5],True), EntityY(e\room\Objects[5],True)+0.2, EntityZ(e\room\Objects[5],True))
@@ -323,7 +323,7 @@ Function UpdateEventRoom049(e.Events)
 					n\Reload = (6*70)+Rnd(15,30)
 					RotateEntity n\Collider,0,EntityYaw(e\room\NPC[1]\Collider),0
 					MoveEntity n\Collider,0.5,0,0
-					PointEntity n\Collider,Collider
+					PointEntity n\Collider,mainPlayer\collider
 					
 					n.NPCs = CreateNPC(NPCtypeMTF, EntityX(e\room\Objects[5],True), EntityY(e\room\Objects[5],True)+0.2, EntityZ(e\room\Objects[5],True))
 					n\State = 6
@@ -346,9 +346,9 @@ Function UpdateEventRoom049(e.Events)
 			EndIf
 		Else
 			mainPlayer\blurTimer = 800
-			ForceMove = 0.5
+			mainPlayer\forceMove = 0.5
 			mainPlayer\injuries = Max(2.0,mainPlayer\injuries)
-			Bloodloss = 0
+			mainPlayer\bloodloss = 0
 			
 			;Msg = ""
 			
@@ -377,7 +377,7 @@ Function UpdateEventRoom049(e.Events)
 			
 			FreeEntity pvt%
 			
-			If KillTimer < 0 Then
+			If mainPlayer\dead = True Then
 				If ChannelPlaying(e\room\NPC[1]\SoundChn) Then StopChannel(e\room\NPC[1]\SoundChn)
 				PlaySound_Strict LoadTempSound("SFX\Character\MTF\049\Player0492_2.ogg")
 				RemoveEvent(e)
@@ -392,4 +392,3 @@ Function UpdateEventRoom049(e.Events)
 	EndIf
 	;[End Block]
 End Function
-

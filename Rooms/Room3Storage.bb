@@ -284,10 +284,10 @@ Function UpdateEventRoom3storage(e.Events)
 					UpdateSoundOrigin(e\SoundCHN2,mainPlayer\cam,e\room\RoomDoors[4]\obj,400)
 				EndIf
 				
-				If EntityY(mainPlayer\collider)<-6400*RoomScale And KillTimer=>0 Then
+				If EntityY(mainPlayer\collider)<-6400*RoomScale And mainPlayer\dead = False Then
 					DeathMSG=""
 					PlaySound_Strict LoadTempSound("SFX\Room\PocketDimension\Impact.ogg")
-					KillTimer=-1.0
+					mainPlayer\dead = True
 				EndIf
 			EndIf
 		Else
@@ -303,4 +303,3 @@ Function UpdateEventRoom3storage(e.Events)
 	EndIf 
 	;[End Block]
 End Function
-
