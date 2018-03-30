@@ -1,7 +1,12 @@
+Global WORNITEM_HEAD_SLOT.MarkedForRemoval
+Global WORNITEM_BODY_SLOT.MarkedForRemoval
+Global WORNITEM_HAND_SLOT.MarkedForRemoval
+
 Const WORNITEM_SLOT_COUNT%=3
-Const WORNITEM_HEAD_SLOT%=0
-Const WORNITEM_BODY_SLOT%=1
-Const WORNITEM_HAND_SLOT%=2
+Const WORNITEM_SLOT_NONE% = WORNITEM_SLOT_COUNT
+Const WORNITEM_SLOT_HEAD%=0
+Const WORNITEM_SLOT_BODY%=1
+Const WORNITEM_SLOT_HAND%=2
 
 Const OVERLAY_COUNT%=7
 Const OVERLAY_BLACK%=0
@@ -910,7 +915,11 @@ Function MouseLook()
 	;Next
 End Function
 
-Function IsPlayerWearing(player.Player,templateName$,slot%)
+Function IsPlayerWearing(player.Player,templateName$)
+	Local it.ItemTemplates = FindItemTemplate(templateName)
+	If it=Null Then Return False
+	Local slot% = it\invSlot
+	If slot=WORNITEM_SLOT_NONE Then Return False
 	If player\wornItems[slot]=Null Then Return False
 	Return (player\wornItems[slot]\itemtemplate\tempname=templateName)
 End Function

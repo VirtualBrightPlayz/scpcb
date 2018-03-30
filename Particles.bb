@@ -118,7 +118,7 @@ Function UpdateEmitters()
 				e\SoundCHN = LoopSound2(HissSFX, e\SoundCHN, mainPlayer\cam, e\Obj)
 				
 				If InSmoke = False Then
-					If IsPlayerWearing(mainPlayer,"gasmask",WORNITEM_HEAD_SLOT) And IsPlayerWearing(mainPlayer,"hazmatsuit",WORNITEM_BODY_SLOT) Then
+					If IsPlayerWearing(mainPlayer,"gasmask") And IsPlayerWearing(mainPlayer,"hazmatsuit") Then
 						Local dist# = Distance(EntityX(mainPlayer\cam, True), EntityZ(mainPlayer\cam, True), EntityX(e\obj, True), EntityZ(e\obj, True))
 						If dist < 0.8 Then
 							If Abs(EntityY(mainPlayer\cam, True)-EntityY(e\obj,True))<5.0 Then InSmoke = True

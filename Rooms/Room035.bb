@@ -473,12 +473,12 @@ Function UpdateEventRoom035(e.Events)
 							e\EventState2 = Min(e\EventState2+(FPSfactor/6000),1.0)
 							e\EventState3 = CurveValue(e\EventState2, e\EventState3, 50)
 							
-							If (Not IsPlayerWearing(mainPlayer,"scp714",WORNITEM_HAND_SLOT)) And (Not IsPlayerWearing(mainPlayer,"hazmatsuit3",WORNITEM_BODY_SLOT)) And (Not IsPlayerWearing(mainPlayer,"gasmask3",WORNITEM_HEAD_SLOT)) Then
+							If (Not IsPlayerWearing(mainPlayer,"scp714")) And (Not IsPlayerWearing(mainPlayer,"hazmatsuit3")) And (Not IsPlayerWearing(mainPlayer,"gasmask3")) Then
 								mainPlayer\sanity895=mainPlayer\sanity895-FPSfactor*1.1
 								mainPlayer\blurTimer = Sin(MilliSecs2()/10)*Abs(mainPlayer\sanity895)
 							EndIf
 							
-							If (Not IsPlayerWearing(mainPlayer,"hazmatsuit3",WORNITEM_BODY_SLOT)) Then
+							If (Not IsPlayerWearing(mainPlayer,"hazmatsuit3")) Then
 								mainPlayer\injuries = mainPlayer\injuries + (FPSfactor/5000)
 							Else
 								mainPlayer\injuries = mainPlayer\injuries + (FPSfactor/10000)
@@ -512,7 +512,7 @@ Function UpdateEventRoom035(e.Events)
 				e\EventState3 = Max(e\EventState3-(FPSfactor/100),0)
 			EndIf
 			
-			If e\EventState3 > 0 And (Not IsPlayerWearing(mainPlayer,"scp714",WORNITEM_HAND_SLOT)) And (Not IsPlayerWearing(mainPlayer,"hazmatsuit3",WORNITEM_BODY_SLOT)) And (Not IsPlayerWearing(mainPlayer,"gasmask3",WORNITEM_HEAD_SLOT)) Then 
+			If e\EventState3 > 0 And (Not IsPlayerWearing(mainPlayer,"scp714")) And (Not IsPlayerWearing(mainPlayer,"hazmatsuit3")) And (Not IsPlayerWearing(mainPlayer,"gasmask3")) Then 
 				e\SoundCHN = LoopSound2(e\Sound, e\SoundCHN, mainPlayer\cam, e\room\obj, 10, e\EventState3)
 				e\SoundCHN2 = LoopSound2(e\Sound2, e\SoundCHN2, mainPlayer\cam, e\room\obj, 10, (e\EventState3-0.5)*2)
 			EndIf

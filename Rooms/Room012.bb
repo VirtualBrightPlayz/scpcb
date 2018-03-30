@@ -82,7 +82,7 @@ Function UpdateEventRoom012(e.Events)
 		If e\EventState=0 Then
 			If EntityDistance(mainPlayer\collider, e\room\RoomDoors[0]\obj)<2.5 And RemoteDoorOn Then
 				GiveAchievement(Achv012)
-				PlaySound_Strict HorrorSFX(7)
+				;PlaySound_Strict HorrorSFX(7)
 				PlaySound2 (LeverSFX,mainPlayer\cam,e\room\RoomDoors[0]\obj) 
 				e\EventState=1
 				e\room\RoomDoors[0]\locked = False
@@ -112,7 +112,7 @@ Function UpdateEventRoom012(e.Events)
 				EndIf
 			EndIf
 			
-			If IsPlayerWearing(mainPlayer,"scp714",WORNITEM_HAND_SLOT)=False And WearingGasMask<3 And WearingHazmat<3 And WearingNightVision=0 Then
+			If IsPlayerWearing(mainPlayer,"scp714")=False And (Not IsPlayerWearing(mainPlayer,"hazmatsuit3")) And (Not IsPlayerWearing(mainPlayer,"gasmask3")) And (Not IsPlayerWearing(mainPlayer,"nvgoggles")) Then
 				temp = False
 				If EntityVisible(e\room\Objects[2],mainPlayer\cam) Then temp = True
 				
@@ -124,14 +124,14 @@ Function UpdateEventRoom012(e.Events)
 						PointEntity(pvt, e\room\RoomDoors[0]\frameobj)
 						;TurnEntity(pvt, 90, 0, 0)
 						mainPlayer\headPitch = CurveAngle(90, mainPlayer\headPitch+90, 100)
-						mainPlayer\headPitch=user_camera_pitch-90
+						mainPlayer\headPitch=mainPlayer\headPitch-90
 						RotateEntity(mainPlayer\collider, EntityPitch(mainPlayer\collider), CurveAngle(EntityYaw(pvt), EntityYaw(mainPlayer\collider), 150), 0)
 						
 						angle = WrapAngle(EntityYaw(pvt)-EntityYaw(mainPlayer\collider))
 						If angle<40.0 Then
-							ForceMove = (40.0-angle)*0.008
+							mainPlayer\forceMove = (40.0-angle)*0.008
 						ElseIf angle > 310.0
-							ForceMove = (40.0-Abs(360.0-angle))*0.008
+							mainPlayer\forceMove = (40.0-Abs(360.0-angle))*0.008
 						EndIf
 						
 						FreeEntity pvt										
@@ -146,7 +146,7 @@ Function UpdateEventRoom012(e.Events)
 					
 					TurnEntity(pvt, 90, 0, 0)
 					mainPlayer\headPitch = CurveAngle(EntityPitch(pvt)+25, mainPlayer\headPitch + 90.0, 80-(e\EventState3/200.0))
-					mainPlayer\headPitch=user_camera_pitch-90
+					mainPlayer\headPitch=mainPlayer\headPitch-90
 					
 					dist = Distance(EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider),EntityX(e\room\Objects[2],True),EntityZ(e\room\Objects[2],True))
 					
@@ -228,4 +228,3 @@ Function UpdateEventRoom012(e.Events)
 	EndIf
 	;[End Block]
 End Function
-
