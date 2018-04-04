@@ -80,32 +80,21 @@ Function UpdateNPCtype049(n.NPCs)
                         PointEntity n\obj,mainPlayer\collider
                         RotateEntity n\Collider,0,CurveAngle(EntityYaw(n\obj),EntityYaw(n\Collider),10.0),0
                         If dist < 0.5 Then
-                            If IsPlayerWearing(mainPlayer,"scp714",WORNITEM_HAND_SLOT) Then
-                                mainPlayer\blurTimer = mainPlayer\blurTimer+FPSfactor*2.5
-                                If mainPlayer\blurTimer>250 And mainPlayer\blurTimer-FPSfactor*2.5 <= 250 And n\PrevState<>3 Then
-                                    If n\SoundChn2 <> 0 Then StopChannel(n\SoundChn2)
-                                    n\SoundChn2 = PlaySound_Strict(LoadTempSound("SFX\SCP\049\714Equipped.ogg"))
-                                    n\PrevState=3
-                                ElseIf mainPlayer\blurTimer => 500
-                                    mainPlayer\wornItems[WORNITEM_HAND_SLOT] = Null
+                            mainPlayer\camZoom = 20.0
+                            mainPlayer\blurTimer = 500.0
+                            
+                            If (Not mainPlayer\godMode) Then
+                                If mainPlayer\currRoom\RoomTemplate\Name$ = "room049"
+                                    DeathMSG = "Three (3) active instances of SCP-049-2 discovered in the tunnel outside SCP-049's containment chamber. Terminated by Nine-Tailed Fox."
+                                    For e.events = Each Events
+                                        If e\EventName = "room049" Then e\EventState=-1 : Exit
+                                    Next
+                                Else
+                                    DeathMSG = "An active instance of SCP-049-2 was discovered in [REDACTED]. Terminated by Nine-Tailed Fox."
+                                    Kill()
                                 EndIf
-                            Else
-                                mainPlayer\camZoom = 20.0
-                                mainPlayer\blurTimer = 500.0
-                                
-                                If (Not mainPlayer\godMode) Then
-                                    If mainPlayer\currRoom\RoomTemplate\Name$ = "room049"
-                                        DeathMSG = "Three (3) active instances of SCP-049-2 discovered in the tunnel outside SCP-049's containment chamber. Terminated by Nine-Tailed Fox."
-                                        For e.events = Each Events
-                                            If e\EventName = "room049" Then e\EventState=-1 : Exit
-                                        Next
-                                    Else
-                                        DeathMSG = "An active instance of SCP-049-2 was discovered in [REDACTED]. Terminated by Nine-Tailed Fox."
-                                        Kill()
-                                    EndIf
-                                    ;PlaySound_Strict HorrorSFX(13) ;TODO: fix
-                                    n\State = 3
-                                EndIf										
+                                ;PlaySound_Strict HorrorSFX(13) ;TODO: fix
+                                n\State = 3
                             EndIf
                         Else
                             n\CurrSpeed = CurveValue(n\Speed, n\CurrSpeed, 20.0)

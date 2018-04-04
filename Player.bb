@@ -363,11 +363,6 @@ Function MovePlayer()
 		EndIf
 	Next
 	
-	If IsPlayerWearing(mainPlayer,"scp714",WORNITEM_HAND_SLOT) Then 
-		mainPlayer\stamina = Min(mainPlayer\stamina, 10)
-		mainPlayer\sanity895 = Max(-850, mainPlayer\sanity895)
-	EndIf
-	
 	;If IsZombie Then Crouch = False
 	
 	If Abs(mainPlayer\crouchState-mainPlayer\crouching)<0.001 Then 
@@ -924,70 +919,7 @@ Function IsPlayerWearing(player.Player,templateName$)
 	Return (player\wornItems[slot]\itemtemplate\tempname=templateName)
 End Function
 
-Function TakeOffStuff(flag%=0)
-	;FLAG variables:
-		;1: GasMask
-		;2: Hazmat Suit
-		;4: SCP-714
-		;8: SCP-178
-		;16: Kevlar Vest
-		;32: Night Vision Goggles
-		;64: SCP-1499
-	
-	;TODO: remove?
-	;Local numb_flag% = Bin(flag%)
-	;
-	;If Right(numb_flag%,1) = 1
-	;	WearingGasMask = False
-	;	DebugLog "GasMask Off"
-	;EndIf
-	;If Len(numb_flag%)>1
-	;	If Mid(numb_flag%,Len(numb_flag%)-1,1) = 1
-	;		WearingHazmat = False
-	;		For i = 0 To MaxItemAmount-1
-	;			If Inventory(i) <> Null Then
-	;				If Inventory(i)\itemtemplate\name = "Hazmat Suit" Or Inventory(i)\itemtemplate\tempname = "hazmatsuit3"
-	;					DropItem(Inventory(i))
-	;					Exit
-	;				EndIf
-	;			EndIf
-	;		Next
-	;		DebugLog "Hazmat Off"
-	;	EndIf
-	;EndIf
-	;If Len(numb_flag%)>2
-	;	If Mid(numb_flag%,Len(numb_flag%)-2,1) = 1
-	;		IsPlayerWearing(mainPlayer,"scp714",WORNITEM_HAND_SLOT) = False
-	;		DebugLog "SCP-714 Off"
-	;	EndIf
-	;EndIf
-	;If Len(numb_flag%)>3
-	;	If Mid(numb_flag%,Len(numb_flag%)-3,1) = 1
-	;		Wearing178 = False
-	;		DebugLog "SCP-178 Off"
-	;	EndIf
-	;EndIf
-	;If Len(numb_flag%)>4
-	;	If Mid(numb_flag%,Len(numb_flag%)-4,1) = 1
-	;		WearingVest = False
-	;		DebugLog "Kevlar Off"
-	;	EndIf
-	;EndIf
-	;If Len(numb_flag%)>5
-	;	If Mid(numb_flag%,Len(numb_flag%)-5,1) = 1
-	;		WearingNightVision = False
-	;		CameraFogFar = StoredCameraFogFar
-	;		DebugLog "NVG Off"
-	;	EndIf
-	;EndIf
-	;If Len(numb_flag%)>6
-	;	If Mid(numb_flag%,Len(numb_flag%)-6,1) = 1
-	;		Wearing1499 = False
-	;		DebugLog "SCP-1499 Off"
-	;	EndIf
-	;EndIf
-	
-End Function
+Global TakeOffStuff.MarkedForRemoval
 
 Function Kill()
 	If mainPlayer\godMode Then Return

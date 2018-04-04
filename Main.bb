@@ -782,7 +782,7 @@ Function UpdateDoors()
 					EndIf
 					If d\AutoClose And RemoteDoorOn = True Then
 						If EntityDistance(mainPlayer\cam, d\obj) < 2.1 Then
-							;If (Not IsPlayerWearing(mainPlayer,"scp714",WORNITEM_HAND_SLOT)) Then PlaySound_Strict HorrorSFX(7) ;TODO: fix
+							;PlaySound_Strict HorrorSFX(7) ;TODO: fix
 							d\open = False : PlaySound2(CloseDoorSFX(Min(d\dir,1), Rand(0, 2)), mainPlayer\cam, d\obj) : d\AutoClose = False
 						EndIf
 					End If				
@@ -2296,16 +2296,7 @@ Function DrawGUI()
 						If WearingVest=1 Then Rect(x - 3, y - 3, width + 6, height + 6)
 					Case "finevest"
 						If WearingVest=2 Then Rect(x - 3, y - 3, width + 6, height + 6)
-					Case "scp714"
-						If IsPlayerWearing(mainPlayer,"scp714",WORNITEM_HAND_SLOT)=1 Then Rect(x - 3, y - 3, width + 6, height + 6)
-						;BoH items
-					;Case "ring"
-					;	If IsPlayerWearing(mainPlayer,"scp714",WORNITEM_HAND_SLOT)=2 Then Rect(x - 3, y - 3, width + 6, height + 6)
-					;Case "scp178"
-					;	If Wearing178=1 Then Rect(x - 3, y - 3, width + 6, height + 6)
-					;Case "glasses"
-					;	If Wearing178=2 Then Rect(x - 3, y - 3, width + 6, height + 6)
-						
+					
 					Case "scp178"
 						If Wearing178=1 Then Rect(x - 3, y - 3, width + 6, height + 6)
 					Case "nvgoggles"
@@ -2620,35 +2611,29 @@ Function DrawGUI()
 					
 					DrawImage(SelectedItem\itemtemplate\img, userOptions\screenWidth / 2 - ImageWidth(SelectedItem\itemtemplate\img) / 2, userOptions\screenHeight / 2 - ImageHeight(SelectedItem\itemtemplate\img) / 2)
 					
-				Case "ring"
-					;TODO: fix
-
 				Case "1123"
-					If Not (IsPlayerWearing(mainPlayer,"scp714",WORNITEM_HAND_SLOT) = 1) Then
-						If mainPlayer\currRoom\RoomTemplate\Name <> "room1123" Then
-							ShowEntity Light
-							mainPlayer\lightFlash = 7
-							PlaySound_Strict(LoadTempSound("SFX\SCP\1123\Touch.ogg"))		
-							DeathMSG = "Subject D-9341 was shot dead after attempting to attack a member of Nine-Tailed Fox. Surveillance tapes show that the subject had been "
-							DeathMSG = DeathMSG + "wandering around the site approximately 9 minutes prior, shouting the phrase " + Chr(34) + "get rid of the four pests" + Chr(34)
-							DeathMSG = DeathMSG + " in chinese. SCP-1123 was found in [REDACTED] nearby, suggesting the subject had come into physical contact with it. How "
-							DeathMSG = DeathMSG + "exactly SCP-1123 was removed from its containment chamber is still unknown."
-							Kill()
-							Return
-						EndIf
-						For e.Events = Each Events
-							If e\EventName = "room1123" Then 
-								If e\EventState = 0 Then
-									ShowEntity Light
-									mainPlayer\lightFlash = 3
-									PlaySound_Strict(LoadTempSound("SFX\SCP\1123\Touch.ogg"))											
-								EndIf
-								e\EventState = Max(1, e\EventState)
-								Exit
-							EndIf
-						Next
+					If mainPlayer\currRoom\RoomTemplate\Name <> "room1123" Then
+						ShowEntity Light
+						mainPlayer\lightFlash = 7
+						PlaySound_Strict(LoadTempSound("SFX\SCP\1123\Touch.ogg"))		
+						DeathMSG = "Subject D-9341 was shot dead after attempting to attack a member of Nine-Tailed Fox. Surveillance tapes show that the subject had been "
+						DeathMSG = DeathMSG + "wandering around the site approximately 9 minutes prior, shouting the phrase " + Chr(34) + "get rid of the four pests" + Chr(34)
+						DeathMSG = DeathMSG + " in chinese. SCP-1123 was found in [REDACTED] nearby, suggesting the subject had come into physical contact with it. How "
+						DeathMSG = DeathMSG + "exactly SCP-1123 was removed from its containment chamber is still unknown."
+						Kill()
+						Return
 					EndIf
-					
+					For e.Events = Each Events
+						If e\EventName = "room1123" Then 
+							If e\EventState = 0 Then
+								ShowEntity Light
+								mainPlayer\lightFlash = 3
+								PlaySound_Strict(LoadTempSound("SFX\SCP\1123\Touch.ogg"))											
+							EndIf
+							e\EventState = Max(1, e\EventState)
+							Exit
+						EndIf
+					Next
 				Case "battery"
 					;InvOpen = True
 
@@ -2820,26 +2805,20 @@ Function DrawGUI()
 						
 					EndIf
 				Case "eyedrops"
-					If (Not (IsPlayerWearing(mainPlayer,"scp714",WORNITEM_HAND_SLOT)=1)) Then
-						BlinkEffect = 0.6
-						BlinkEffectTimer = 70*Rand(20,30)
-						mainPlayer\blurTimer = 200
-					EndIf
+					BlinkEffect = 0.6
+					BlinkEffectTimer = 70*Rand(20,30)
+					mainPlayer\blurTimer = 200
 					RemoveItem(mainPlayer\selectedItem)
 				Case "fineeyedrops"
-					If (Not (IsPlayerWearing(mainPlayer,"scp714",WORNITEM_HAND_SLOT)=1)) Then 
-						BlinkEffect = 0.4
-						BlinkEffectTimer = 70*Rand(30,40)
-						Bloodloss = Max(Bloodloss-1.0, 0)
-						mainPlayer\blurTimer = 200
-					EndIf
+					BlinkEffect = 0.4
+					BlinkEffectTimer = 70*Rand(30,40)
+					Bloodloss = Max(Bloodloss-1.0, 0)
+					mainPlayer\blurTimer = 200
 					RemoveItem(mainPlayer\selectedItem)
 				Case "supereyedrops"
-					If (Not (IsPlayerWearing(mainPlayer,"scp714",WORNITEM_HAND_SLOT) = 1)) Then
-						BlinkEffect = 0.0
-						BlinkEffectTimer = 60
-						EyeStuck = 10000
-					EndIf
+					BlinkEffect = 0.0
+					BlinkEffectTimer = 60
+					EyeStuck = 10000
 					mainPlayer\blurTimer = 1000
 					RemoveItem(mainPlayer\selectedItem)					
 				Case "paper", "ticket"
@@ -2893,7 +2872,7 @@ Function DrawGUI()
 						MaskImage(SelectedItem\itemtemplate\img, 255, 0, 255)
 					EndIf
 					
-					If (Not IsPlayerWearing(mainPlayer,"scp714",WORNITEM_HAND_SLOT)) Then SCP1025state[SelectedItem\state]=Max(1,SCP1025state[SelectedItem\state])					
+					SCP1025state[SelectedItem\state]=Max(1,SCP1025state[SelectedItem\state])					
 					
 					DrawImage(SelectedItem\itemtemplate\img, userOptions\screenWidth / 2 - ImageWidth(SelectedItem\itemtemplate\img) / 2, userOptions\screenHeight / 2 - ImageHeight(SelectedItem\itemtemplate\img) / 2)
 					
@@ -3233,40 +3212,21 @@ Function DrawGUI()
 
 					MsgTimer = 70 * 5
 				Case "420"
-					If IsPlayerWearing(mainPlayer,"scp714",WORNITEM_HAND_SLOT)=1 Then
-						Msg = Chr(34) + "DUDE WTF THIS SHIT DOESN'T EVEN WORK" + Chr(34)
-					Else
-						Msg = Chr(34) + "MAN DATS SUM GOOD ASS SHIT" + Chr(34)
-						mainPlayer\injuries = Max(mainPlayer\injuries-0.5, 0)
-						mainPlayer\blurTimer = 500
-						GiveAchievement(Achv420)
-						PlaySound_Strict LoadTempSound("SFX\Music\420J.ogg")
-					EndIf
+					Msg = Chr(34) + "MAN DATS SUM GOOD ASS SHIT" + Chr(34)
+					mainPlayer\injuries = Max(mainPlayer\injuries-0.5, 0)
+					mainPlayer\blurTimer = 500
+					GiveAchievement(Achv420)
+					PlaySound_Strict LoadTempSound("SFX\Music\420J.ogg")
 					MsgTimer = 70 * 5
 					RemoveItem(mainPlayer\selectedItem)
 				Case "420s"
-					If IsPlayerWearing(mainPlayer,"scp714",WORNITEM_HAND_SLOT)=1 Then
-						Msg = Chr(34) + "DUDE WTF THIS SHIT DOESN'T EVEN WORK" + Chr(34)
-					Else
-						DeathMSG = "Subject D-9341 found in a comatose state in [DATA REDACTED]. The subject was holding what appears to be a cigarette while smiling widely. "
-						DeathMSG = DeathMSG+"Chemical analysis of the cigarette has been inconclusive, although it seems to contain a high concentration of an unidentified chemical "
-						DeathMSG = DeathMSG+"whose molecular structure is remarkably similar to that of tetrahydrocannabinol."
-						Msg = Chr(34) + "UH WHERE... WHAT WAS I DOING AGAIN... MAN I NEED TO TAKE A NAP..." + Chr(34)
-						KillTimer = -1						
-					EndIf
+					DeathMSG = "Subject D-9341 found in a comatose state in [DATA REDACTED]. The subject was holding what appears to be a cigarette while smiling widely. "
+					DeathMSG = DeathMSG+"Chemical analysis of the cigarette has been inconclusive, although it seems to contain a high concentration of an unidentified chemical "
+					DeathMSG = DeathMSG+"whose molecular structure is remarkably similar to that of tetrahydrocannabinol."
+					Msg = Chr(34) + "UH WHERE... WHAT WAS I DOING AGAIN... MAN I NEED TO TAKE A NAP..." + Chr(34)
+					KillTimer = -1
 					MsgTimer = 70 * 6
 					RemoveItem(mainPlayer\selectedItem)
-				Case "scp714"
-					If IsPlayerWearing(mainPlayer,"scp714",WORNITEM_HAND_SLOT)=1 Then
-						Msg = "You removed the ring."
-						mainPlayer\wornItems[WORNITEM_HAND_SLOT] = Null
-					Else
-						GiveAchievement(Achv714)
-						Msg = "You put on the ring."
-						mainPlayer\wornItems[WORNITEM_HAND_SLOT] = mainPlayer\selectedItem
-					EndIf
-					MsgTimer = 70 * 5
-					mainPlayer\selectedItem = Null	
 				Case "hazmatsuit", "hazmatsuit2", "hazmatsuit3"
 					Msg = "You removed the hazmat suit."
 					WearingHazmat = 0

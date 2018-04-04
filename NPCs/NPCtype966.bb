@@ -152,7 +152,7 @@ Function UpdateNPCtype966(n.NPCs)
                     
                     If (IsPlayerWearing(mainPlayer,"nvgoggles",WORNITEM_HEAD_SLOT)) Then GiveAchievement(Achv966)
                     
-                    If (Not IsPlayerWearing(mainPlayer,"scp714",WORNITEM_HAND_SLOT)) And dist<16 Then
+                    If dist<16 Then
                         mainPlayer\blinkEffect = Max(mainPlayer\blinkEffect, 1.5)
                         ;BlinkEffectTimer = 1000
                         
