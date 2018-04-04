@@ -2597,20 +2597,6 @@ Function DrawGUI()
 					EndIf
 					MsgTimer = 70 * 5
 					mainPlayer\selectedItem = Null	
-				Case "book"
-					;Achievements(Achv1025)=True 
-					If SelectedItem\itemtemplate\img=0 Then
-						SelectedItem\state = Rand(0,5)
-						SelectedItem\itemtemplate\img=LoadImage("GFX\items\1025\1025_"+Int(SelectedItem\state)+".jpg")	
-						SelectedItem\itemtemplate\img=ResizeImage2(SelectedItem\itemtemplate\img, ImageWidth(SelectedItem\itemtemplate\img) * MenuScale, ImageHeight(SelectedItem\itemtemplate\img) * MenuScale)
-						
-						MaskImage(SelectedItem\itemtemplate\img, 255, 0, 255)
-					EndIf
-					
-					;SCP1025state[SelectedItem\state]=Max(1,SCP1025state[SelectedItem\state])					
-					
-					DrawImage(SelectedItem\itemtemplate\img, userOptions\screenWidth / 2 - ImageWidth(SelectedItem\itemtemplate\img) / 2, userOptions\screenHeight / 2 - ImageHeight(SelectedItem\itemtemplate\img) / 2)
-					
 				Case "1123"
 					If mainPlayer\currRoom\RoomTemplate\Name <> "room1123" Then
 						ShowEntity Light
@@ -2670,9 +2656,6 @@ Function DrawGUI()
 					Bloodloss = 0
 					Infect = 0
 					mainPlayer\stamina = 100
-					For i = 0 To 5
-						SCP1025state[i]=0
-					Next
 					
 					RemoveItem(mainPlayer\selectedItem)
 					mainPlayer\selectedItem = Null
@@ -2862,20 +2845,6 @@ Function DrawGUI()
 					EndIf
 					
 					DrawImage(SelectedItem\itemtemplate\img, userOptions\screenWidth / 2 - ImageWidth(SelectedItem\itemtemplate\img) / 2, userOptions\screenHeight / 2 - ImageHeight(SelectedItem\itemtemplate\img) / 2)
-				Case "scp1025"
-					GiveAchievement(Achv1025) 
-					If SelectedItem\itemtemplate\img=0 Then
-						SelectedItem\state = Rand(0,5)
-						SelectedItem\itemtemplate\img=LoadImage_Strict("GFX\items\1025\1025_"+Int(SelectedItem\state)+".jpg")	
-						ResizeImage(SelectedItem\itemtemplate\img, ImageWidth(SelectedItem\itemtemplate\img) * MenuScale, ImageHeight(SelectedItem\itemtemplate\img) * MenuScale)
-						
-						MaskImage(SelectedItem\itemtemplate\img, 255, 0, 255)
-					EndIf
-					
-					SCP1025state[SelectedItem\state]=Max(1,SCP1025state[SelectedItem\state])					
-					
-					DrawImage(SelectedItem\itemtemplate\img, userOptions\screenWidth / 2 - ImageWidth(SelectedItem\itemtemplate\img) / 2, userOptions\screenHeight / 2 - ImageHeight(SelectedItem\itemtemplate\img) / 2)
-					
 				Case "cup"
 					
 					SelectedItem\name = Trim(Lower(SelectedItem\name))
@@ -2908,7 +2877,7 @@ Function DrawGUI()
 					If strtemp<>"" Then
 						PlaySound_Strict LoadTempSound(strtemp)
 					EndIf
-					If GetINIInt2(iniStr, loc, "stomachache") Then SCP1025state[3]=1
+					;If GetINIInt2(iniStr, loc, "stomachache") Then ;TODO: fix
 					
 					DeathTimer=GetINIInt2(iniStr, loc, "deathtimer")*70
 					
@@ -3556,13 +3525,6 @@ Function DrawGUI()
 			
 			If MouseHit2 Then
 				EntityAlpha Dark, 0.0
-				
-				IN$ = SelectedItem\itemtemplate\tempname
-				;If IN$ = "paper" Or IN$ = "scp1025" Or IN$ = "badge" Or IN$ = "oldpaper" Then
-				If IN$ = "scp1025" Then
-					If SelectedItem\itemtemplate\img<>0 Then FreeImage(SelectedItem\itemtemplate\img)
-					SelectedItem\itemtemplate\img=0
-				EndIf
 				
 				If SelectedItem\itemtemplate\sound <> 66 Then PlaySound_Strict(PickSFX(SelectedItem\itemtemplate\sound))
 				mainPlayer\selectedItem = Null

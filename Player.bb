@@ -277,9 +277,6 @@ Global GodMode.MarkedForRemoval, NoClip.MarkedForRemoval, NoClipSpeed.MarkedForR
 
 Global PlayerSoundVolume.MarkedForRemoval
 
-;TODO: Murder.
-Global SCP1025state.MarkedForRemoval[6]
-
 ;TODO: maybe remove?
 Global RefinedItems.MarkedForRemoval
 
@@ -838,76 +835,6 @@ Function MouseLook()
 			Next
 		EndIf
 	EndIf
-	
-	;TODO: kill
-	;For i = 0 To 5
-	;	If SCP1025state[i]>0 Then
-	;		Select i
-	;			Case 0 ;common cold
-	;				If FPSfactor>0 Then 
-	;					If Rand(1000)=1 Then
-	;						If CoughCHN = 0 Then
-	;							CoughCHN = PlaySound_Strict(CoughSFX(Rand(0, 2)))
-	;						Else
-	;							If Not ChannelPlaying(CoughCHN) Then CoughCHN = PlaySound_Strict(CoughSFX(Rand(0, 2)))
-	;						End If
-	;					EndIf
-	;				EndIf
-	;				mainPlayer\stamina = mainPlayer\stamina - FPSfactor * 0.3
-	;			Case 1 ;chicken pox
-	;				If Rand(9000)=1 And Msg="" Then
-	;					Msg="Your skin is feeling itchy."
-	;					MsgTimer =70*4
-	;				EndIf
-	;			Case 2 ;cancer of the lungs
-	;				If FPSfactor>0 Then 
-	;					If Rand(800)=1 Then
-	;						If CoughCHN = 0 Then
-	;							CoughCHN = PlaySound_Strict(CoughSFX(Rand(0, 2)))
-	;						Else
-	;							If Not ChannelPlaying(CoughCHN) Then CoughCHN = PlaySound_Strict(CoughSFX(Rand(0, 2)))
-	;						End If
-	;					EndIf
-	;				EndIf
-	;				mainPlayer\stamina = mainPlayer\stamina - FPSfactor * 0.1
-	;			Case 3 ;appendicitis
-	;				;0.035/sec = 2.1/min
-	;				SCP1025state[i]=SCP1025state[i]+FPSfactor*0.0005
-	;				If SCP1025state[i]>20.0 Then
-	;					If SCP1025state[i]-FPSfactor<=20.0 Then Msg="The pain in your stomach is becoming unbearable."
-	;					mainPlayer\stamina = mainPlayer\stamina - FPSfactor * 0.3
-	;				ElseIf SCP1025state[i]>10.0
-	;					If SCP1025state[i]-FPSfactor<=10.0 Then Msg="Your stomach is aching."
-	;				EndIf
-	;			Case 4 ;asthma
-	;				If mainPlayer\stamina < 35 Then
-	;					If Rand(Int(140+mainPlayer\stamina*8))=1 Then
-	;						If CoughCHN = 0 Then
-	;							CoughCHN = PlaySound_Strict(CoughSFX(Rand(0, 2)))
-	;						Else
-	;							If Not ChannelPlaying(CoughCHN) Then CoughCHN = PlaySound_Strict(CoughSFX(Rand(0, 2)))
-	;						End If
-	;					EndIf
-	;					mainPlayer\moveSpeed = CurveValue(0, mainPlayer\moveSpeed, 10+mainPlayer\stamina*15)
-	;				EndIf
-	;			Case 5;cardiac arrest
-	;				SCP1025state[i]=SCP1025state[i]+FPSfactor*0.35
-	;				;35/sec
-	;				If SCP1025state[i]>110 Then
-	;					HeartBeatRate=0
-	;					mainPlayer\blurTimer = Max(mainPlayer\blurTimer, 500)
-	;					If SCP1025state[i]>140 Then 
-	;						DeathMSG = Chr(34)+"He died of a cardiac arrest after reading SCP-1025, that's for sure. Is there such a thing as psychosomatic cardiac arrest, or does SCP-1025 have some "
-	;						DeathMSG = DeathMSG + "anomalous properties we are not yet aware of?"+Chr(34)
-	;						Kill()
-	;					EndIf
-	;				Else
-	;					HeartBeatRate=Max(HeartBeatRate, 70+SCP1025state[i])
-	;					HeartBeatVolume = 1.0
-	;				EndIf
-	;		End Select 
-	;	EndIf
-	;Next
 End Function
 
 Function IsPlayerWearing(player.Player,templateName$)

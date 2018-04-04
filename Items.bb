@@ -275,12 +275,6 @@ Function InitItemTemplates()
 	CreateItemTemplate("ReVision Eyedrops", "eyedrops","GFX\items\eyedrops.b3d", "GFX\items\INVeyedrops.jpg", WORNITEM_SLOT_NONE, "", 0.0012)
 	CreateItemTemplate("RedVision Eyedrops", "eyedrops", "GFX\items\eyedrops.b3d", "GFX\items\INVeyedropsred.jpg", WORNITEM_SLOT_NONE, "", 0.0012,"GFX\items\eyedropsred.jpg")
 	
-	it = CreateItemTemplate("SCP-714", "scp714", "GFX\items\scp714.b3d", "GFX\items\INV714.jpg", WORNITEM_SLOT_HAND, "", 0.3)
-	it\sound = 3
-	
-	it = CreateItemTemplate("SCP-1025", "scp1025", "GFX\items\scp1025.b3d", "GFX\items\INV1025.jpg", WORNITEM_SLOT_NONE, "", 0.1)
-	it\sound = 0
-	
 	it = CreateItemTemplate("SCP-513", "scp513", "GFX\items\513.x", "GFX\items\INV513.jpg", WORNITEM_SLOT_NONE, "", 0.1)
 	it\sound = 2
 	
@@ -572,30 +566,28 @@ Function PickItem(item.Items)
 					Case "scp178"
 						SetAnimTime item\model,19.0
 					Case "1123"
-						If IsPlayerWearing(mainPlayer,"scp714") Then
-							If mainPlayer\currRoom\RoomTemplate\Name <> "room1123" Then
-								ShowEntity mainPlayer\overlays[OVERLAY_WHITE]
-								mainPlayer\lightFlash = 7.0
-								PlaySound_Strict(LoadTempSound("SFX\SCP\1123\Touch.ogg"))		
-								DeathMSG = "Subject D-9341 was shot dead after attempting to attack a member of Nine-Tailed Fox. Surveillance tapes show that the subject had been "
-								DeathMSG = DeathMSG + "wandering around the site approximately 9 minutes prior, shouting the phrase " + Chr(34) + "get rid of the four pests" + Chr(34)
-								DeathMSG = DeathMSG + " in chinese. SCP-1123 was found in [REDACTED] nearby, suggesting the subject had come into physical contact with it. How "
-								DeathMSG = DeathMSG + "exactly SCP-1123 was removed from its containment chamber is still unknown."
-								Kill()
-								Return
-							EndIf
-							For e.Events = Each Events
-								If e\eventname = "room1123" Then 
-									If e\eventstate = 0 Then
-										ShowEntity mainPlayer\overlays[OVERLAY_WHITE]
-										mainPlayer\lightFlash = 3.0
-										PlaySound_Strict(LoadTempSound("SFX\SCP\1123\Touch.ogg"))											
-									EndIf
-									e\eventstate = Max(1, e\eventstate)
-									Exit
-								EndIf
-							Next
+						If mainPlayer\currRoom\RoomTemplate\Name <> "room1123" Then
+							ShowEntity mainPlayer\overlays[OVERLAY_WHITE]
+							mainPlayer\lightFlash = 7.0
+							PlaySound_Strict(LoadTempSound("SFX\SCP\1123\Touch.ogg"))		
+							DeathMSG = "Subject D-9341 was shot dead after attempting to attack a member of Nine-Tailed Fox. Surveillance tapes show that the subject had been "
+							DeathMSG = DeathMSG + "wandering around the site approximately 9 minutes prior, shouting the phrase " + Chr(34) + "get rid of the four pests" + Chr(34)
+							DeathMSG = DeathMSG + " in chinese. SCP-1123 was found in [REDACTED] nearby, suggesting the subject had come into physical contact with it. How "
+							DeathMSG = DeathMSG + "exactly SCP-1123 was removed from its containment chamber is still unknown."
+							Kill()
+							Return
 						EndIf
+						For e.Events = Each Events
+							If e\eventname = "room1123" Then 
+								If e\eventstate = 0 Then
+									ShowEntity mainPlayer\overlays[OVERLAY_WHITE]
+									mainPlayer\lightFlash = 3.0
+									PlaySound_Strict(LoadTempSound("SFX\SCP\1123\Touch.ogg"))											
+								EndIf
+								e\eventstate = Max(1, e\eventstate)
+								Exit
+							EndIf
+						Next
 					Case "killbat"
 						ShowEntity mainPlayer\overlays[OVERLAY_WHITE]
 						mainPlayer\lightFlash = 1.0
@@ -705,8 +697,6 @@ Function DropItem(item.Items,playDropSound%=True)
 	;		If WearingNightVision = 2 Then CameraFogFar = StoredCameraFogFar : WearingNightVision = False
 	;	Case "veryfinenvgoggles"
 	;		If WearingNightVision = 3 Then CameraFogFar = StoredCameraFogFar : WearingNightVision = False
-	;	Case "scp714"
-	;		IsPlayerWearing(mainPlayer,"scp714",WORNITEM_HAND_SLOT) = False
 	;	Case "scp178"
 	;		Wearing178 = False
 	;	Case "scp1499","super1499"

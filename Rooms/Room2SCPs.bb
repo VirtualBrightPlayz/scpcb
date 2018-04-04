@@ -27,9 +27,6 @@ Function FillRoom2SCPs(r.Rooms)
     it = CreateItem("SCP-420-J", "420", r\x - 552.0 * RoomScale, r\y + 220.0 * RoomScale, r\z - 728.0 * RoomScale)
     EntityParent(it\collider, r\obj)
     
-    it = CreateItem("SCP-1025", "scp1025", r\x + 552.0 * RoomScale, r\y + 224.0 * RoomScale, r\z - 758.0 * RoomScale)
-    EntityParent(it\collider, r\obj)
-    
     it = CreateItem("SCP-860", "scp860", r\x + 568.0 * RoomScale, r\y + 178.0 * RoomScale, r\z + 760.0 * RoomScale)
     EntityParent(it\collider, r\obj)
     

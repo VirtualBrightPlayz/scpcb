@@ -527,10 +527,6 @@ Function NullGame()
 	mainPlayer\injuries = 0
 	Infect = 0
 	
-	For i = 0 To 5
-		SCP1025state[i] = 0
-	Next
-	
 	SelectedEnding = ""
 	EndingTimer = 0
 	ExplosionTimer = 0

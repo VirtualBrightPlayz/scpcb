@@ -58,10 +58,6 @@ Function SaveGame(file$)
 	
 	WriteString f, DeathMSG
 	
-	For i = 0 To 5
-		WriteFloat f, SCP1025state[i]
-	Next
-	
 	WriteFloat f, Infect
 	
 	For i = 0 To CUSTOM
@@ -501,10 +497,6 @@ Function LoadGame(file$)
 	PrevBloodloss = ReadFloat(f)
 	
 	DeathMSG = ReadString(f)
-	
-	For i = 0 To 5
-		SCP1025state[i]=ReadFloat(f)
-	Next
 	
 	Infect=ReadFloat(f)
 	
@@ -1172,10 +1164,6 @@ Function LoadGameQuick(file$)
 	PrevBloodloss = ReadFloat(f)
 	
 	DeathMSG = ReadString(f)
-	
-	For i = 0 To 5
-		SCP1025state[i]=ReadFloat(f)
-	Next
 	
 	Infect=ReadFloat(f)
 	
