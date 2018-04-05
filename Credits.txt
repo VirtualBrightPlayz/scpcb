@@ -31,7 +31,6 @@
 		SCP-178 is based on "SCP-178 - "3-D" Specs", by "Dr Wartheim" (http://www.scp-wiki.net/scp-178)				
 		SCP-205 is based on "SCP-205 - Shadow Lamps", by "Sorts" (http://www.scp-wiki.net/scp-205)
 		SCP-294 is based on "SCP-294 - The Coffee Machine", by "far2" (http://www.scp-wiki.net/scp-294)
-		SCP-372 is based on "SCP-372 - Peripheral Jumper" by "Sylocat" (http://www.scp-wiki.net/scp-372)
 		SCP-420-J is based on "SCP-420-J - The Best ____ in the World" by "Quikngruvn" (http://www.scp-wiki.net/scp-420-j)
 		SCP-500 is based on "SCP-500 - Panacea" by "far2" (http://www.scp-wiki.net/scp-500)
 		SCP-513-1 is based on "SCP-513 - A Cowbell" by "beefwit" (http://www.scp-wiki.net/scp-513)

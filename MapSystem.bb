@@ -1439,7 +1439,6 @@ Include "Rooms/RoomLockroom2.bb"
 Include "Rooms/RoomGateA.bb"
 Include "Rooms/RoomGateAEntrance.bb"
 Include "Rooms/RoomGateB.bb"
-Include "Rooms/Room372.bb"
 Include "Rooms/Room079.bb"
 Include "Rooms/RoomCheckpoint1.bb"
 Include "Rooms/RoomCheckpoint2.bb"
@@ -1526,8 +1525,6 @@ Function FillRoom(r.Rooms)
 			FillRoomGateAEntrance(r)
 		Case "exit1"
 			FillRoomGateB(r)
-		Case "roompj"
-			FillRoom372(r)
 		Case "room079"
 			FillRoom079(r)
 		Case "checkpoint1"

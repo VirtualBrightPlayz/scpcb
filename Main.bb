@@ -267,11 +267,6 @@ Global BurstSFX = LoadSound_Strict("SFX\Room\TunnelBurst.ogg")
 
 DrawLoading(20, True)
 
-Dim RustleSFX%(3)
-For i = 0 To 2
-	RustleSFX(i) = LoadSound_Strict("SFX\SCP\372\Rustle" + i + ".ogg")
-Next
-
 Global Death914SFX% = LoadSound_Strict("SFX\SCP\914\PlayerDeath.ogg"), Use914SFX% = LoadSound_Strict("SFX\SCP\914\PlayerUse.ogg")
 
 Dim DripSFX%(4)
@@ -2812,18 +2807,6 @@ Function DrawGUI()
 								SetBuffer ImageBuffer(SelectedItem\itemtemplate\img)
 								Color 0,0,0
 								Text 277, 469, AccessCode, True, True
-								Color 255,255,255
-								SetBuffer BackBuffer()
-							Case "Document SCP-372"
-								SelectedItem\itemtemplate\img = LoadImage_Strict(SelectedItem\itemtemplate\imgpath)	
-								SelectedItem\itemtemplate\img = ResizeImage2(SelectedItem\itemtemplate\img, ImageWidth(SelectedItem\itemtemplate\img) * MenuScale, ImageHeight(SelectedItem\itemtemplate\img) * MenuScale)
-								
-								SetBuffer ImageBuffer(SelectedItem\itemtemplate\img)
-								Color 37,45,137
-								SetFont Font5
-								temp = ((Int(AccessCode)*3) Mod 10000)
-								If temp < 1000 Then temp = temp+1000
-								Text 383*MenuScale, 734*MenuScale, temp, True, True
 								Color 255,255,255
 								SetBuffer BackBuffer()
 							Case "Movie Ticket"

@@ -158,7 +158,6 @@ Function InitItemTemplates()
 	it = CreateItemTemplate("Recall Protocol RP-106-N", "paper", "GFX\items\paper.x", "GFX\items\INVpaper.jpg", WORNITEM_SLOT_NONE, "GFX\items\docRP.jpg", 0.0025) : it\sound = 0
 	it = CreateItemTemplate("Document SCP-682", "paper", "GFX\items\paper.x", "GFX\items\INVpaper.jpg", WORNITEM_SLOT_NONE, "GFX\items\doc682.jpg", 0.003) : it\sound = 0
 	it = CreateItemTemplate("Document SCP-173", "paper", "GFX\items\paper.x", "GFX\items\INVpaper.jpg", WORNITEM_SLOT_NONE, "GFX\items\doc173.jpg", 0.003) : it\sound = 0
-	it = CreateItemTemplate("Document SCP-372", "paper", "GFX\items\paper.x", "GFX\items\INVpaper.jpg", WORNITEM_SLOT_NONE, "GFX\items\doc372.jpg", 0.003) : it\sound = 0
 	it = CreateItemTemplate("Document SCP-049", "paper", "GFX\items\paper.x", "GFX\items\INVpaper.jpg", WORNITEM_SLOT_NONE, "GFX\items\doc049.jpg", 0.003) : it\sound = 0
 	it = CreateItemTemplate("Document SCP-096", "paper", "GFX\items\paper.x", "GFX\items\INVpaper.jpg", WORNITEM_SLOT_NONE, "GFX\items\doc096.jpg", 0.003) : it\sound = 0
 	it = CreateItemTemplate("Document SCP-008", "paper", "GFX\items\paper.x", "GFX\items\INVpaper.jpg", WORNITEM_SLOT_NONE, "GFX\items\doc008.jpg", 0.003) : it\sound = 0

@@ -11,7 +11,6 @@ Const NPCtype966%       = 5
 Const NPCtype860%       = 6
 Const NPCtype939%       = 7
 Const NPCtype5131%      = 8
-Const NPCtype372%       = 9
 Const NPCtype066%       = 10
 Const NPCtype178%       = 11
 Const NPCtypeD%         = 12
@@ -147,7 +146,6 @@ Include "NPCs/NPCtype106.bb"
 Include "NPCs/NPCtypeGuard.bb"
 Include "NPCs/NPCtypeMTF.bb"
 Include "NPCs/NPCtypeD.bb"
-Include "NPCs/NPCtype372.bb"
 Include "NPCs/NPCtype5131.bb"
 Include "NPCs/NPCtype096.bb"
 Include "NPCs/NPCtype049.bb"
@@ -181,8 +179,6 @@ Function CreateNPC.NPCs(NPCtype%, x#, y#, z#)
 			InitializeNPCtypeMTF(n)
 		Case NPCtypeD
 			InitializeNPCtypeD(n)
-		Case NPCtype372
-			InitializeNPCtype372(n)
 		Case NPCtype5131
 			InitializeNPCtype5131(n)
 		Case NPCtype096
@@ -322,8 +318,6 @@ Function UpdateNPCs()
 				UpdateNPCtypeD(n)
 			Case NPCtype5131
 				UpdateNPCtype5131(n)
-			Case NPCtype372
-				UpdateNPCtype372(n)
 			Case NPCtypeApache
 				UpdateNPCtypeApache(n)
 			Case NPCtypeTentacle
@@ -754,8 +748,6 @@ Function Console_SpawnNPC(c_input$,state%=-9999)
 			n.NPCs = CreateNPC(NPCtype966, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider))
 		Case "class-d","classd","d"
 			n.NPCs = CreateNPC(NPCtypeD, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider))
-		Case "372","scp372","scp-372"
-			n.NPCs = CreateNPC(NPCtype372, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider))
 		Case "apache"
 			n.NPCs = CreateNPC(NPCtypeApache, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider))
 		Case "513-1","scp513-1","scp-513-1"
