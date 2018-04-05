@@ -75,7 +75,7 @@ Function UpdateEvent106victim(e.Events)
 					FreeTexture tex
 					e\room\NPC[0]\State=6
 					
-					PlaySound_Strict HorrorSFX(0)
+					;PlaySound_Strict HorrorSFX(0)
 					PlaySound2(DecaySFX(2), mainPlayer\cam, e\room\NPC[0]\Collider, 15.0)
 				EndIf
 				

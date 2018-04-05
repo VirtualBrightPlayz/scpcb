@@ -158,7 +158,7 @@ Function UpdateEvent173(e.Events)
 			If e\EventState3 < 170 Then 
 				If e\EventState3 = 1.0 Then
 					PositionEntity mainPlayer\cam, x, y, z
-					HideEntity Collider
+					HideEntity mainPlayer\collider
 					PositionEntity mainPlayer\collider, x, 0.302, z	
 					RotateEntity mainPlayer\cam, -70, 0, 0
 					
@@ -208,15 +208,15 @@ Function UpdateEvent173(e.Events)
 						RotateEntity mainPlayer\cam, -70.0 + 70.0*Min(Max((e\EventState3-3.0)/5.0,0.0),1.0)+Sin(e\EventState3*12.857)*5.0, -60.0*Max((e\EventState3-10.0)/4.0,0.0), Sin(e\EventState3*25.7)*8.0
 						
 						PositionEntity mainPlayer\cam, x, y, z
-						HideEntity Collider
+						HideEntity mainPlayer\collider
 						PositionEntity mainPlayer\collider, x, 0.302, z	
 						mainPlayer\dropSpeed = 0
 					Else
 						HideEntity Light
 						
 						PositionEntity mainPlayer\collider, EntityX(mainPlayer\collider), 0.302, EntityZ(mainPlayer\collider)
-						ResetEntity Collider
-						ShowEntity Collider
+						ResetEntity mainPlayer\collider
+						ShowEntity mainPlayer\collider
 						mainPlayer\dropSpeed = 0
 						e\EventState3 = 15
 					EndIf
@@ -726,7 +726,7 @@ Function UpdateEvent173(e.Events)
 					ResetEntity(Curr173\Collider)
 					
 					PositionEntity mainPlayer\collider, mainPlayer\currRoom\x-(3072+1024)*RoomScale, 0.3, mainPlayer\currRoom\z+192.0*RoomScale
-					ResetEntity Collider
+					ResetEntity mainPlayer\collider
 					
 					e\EventState = 1
 					e\EventState3 = 1
@@ -967,7 +967,7 @@ Function UpdateEvent173(e.Events)
 					EndIf
 					If e\EventState < 14130 Then 
 						SetAnimTime e\room\NPC[2]\obj,50
-						mainPlayer\blinkTimer = -10 : LightBlink = 1.0
+						mainPlayer\blinkTimer = -10; : LightBlink = 1.0
 					Else 
 						Animate2(e\room\NPC[2]\obj, AnimTime(e\room\NPC[2]\obj), 50, 60, 0.2, False)
 						Curr173\Idle = False
@@ -977,7 +977,7 @@ Function UpdateEvent173(e.Events)
 				Else
 					Animate2(e\room\NPC[2]\obj, AnimTime(e\room\NPC[2]\obj), 45, 60, 0.2, False)
 					If e\EventState > 14300 Then 
-						If e\EventState > 14600 And e\EventState < 14700 Then mainPlayer\blinkTimer = -10 : LightBlink = 1.0
+						If e\EventState > 14600 And e\EventState < 14700 Then mainPlayer\blinkTimer = -10; : LightBlink = 1.0
 						If EntityX(mainPlayer\collider) < (EntityX(e\room\obj)) + 448.0 * RoomScale Then e\EventState = 20000
 					EndIf
 				End If
@@ -1009,7 +1009,7 @@ Function UpdateEvent173(e.Events)
 							PointEntity(Curr173\Collider, e\room\NPC[0]\Collider)
 						EndIf
 						
-						mainPlayer\blinkTimer = -10 : LightBlink = 1.0
+						mainPlayer\blinkTimer = -10; : LightBlink = 1.0
 						mainPlayer\camShake = 3
 					ElseIf e\EventState < 20300 ;lights on, the guard starts shooting at 173
 						PointEntity(e\room\NPC[0]\Collider, Curr173\Collider)
@@ -1020,7 +1020,7 @@ Function UpdateEvent173(e.Events)
 					Else ;lights out, guard dies
 						
 						If e\EventState - FPSfactor < 20300 Then
-							mainPlayer\blinkTimer = -10 : LightBlink = 1.0
+							mainPlayer\blinkTimer = -10; : LightBlink = 1.0
 							mainPlayer\camShake = 3
 							PlaySound_Strict(IntroSFX(11))
 							PlaySound2 (NeckSnapSFX(1), mainPlayer\cam, e\room\NPC[0]\Collider, 8.0)

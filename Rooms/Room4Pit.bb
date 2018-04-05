@@ -108,7 +108,7 @@ Function UpdateEvent096spawn(e.Events)
 				PositionEntity Curr096\Collider,EntityX(pvt%,True),e\room\y+0.5,EntityZ(pvt%,True)
 				ResetEntity Curr096\Collider
 			EndIf
-			PointEntity Curr096\Collider,Collider
+			PointEntity Curr096\Collider,mainPlayer\collider
 			RotateEntity Curr096\Collider,0,EntityYaw(Curr096\Collider)+180,0
 			FreeEntity pvt%
 			Curr096\State = 5

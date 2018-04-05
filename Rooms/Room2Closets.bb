@@ -132,7 +132,7 @@ Function UpdateEventRoom2closets(e.Events)
 			RotateEntity(e\room\NPC[1]\Collider,0,CurveAngle(EntityYaw(e\room\NPC[1]\obj),EntityYaw(e\room\NPC[1]\Collider),30.0),0,True)
 		Else
 			If e\EventState-FPSfactor < 70*6.5 Then 
-				PlaySound_Strict (HorrorSFX(0))
+				;PlaySound_Strict (HorrorSFX(0))
 				PlaySound_Strict (LightSFX)
 			EndIf
 			mainPlayer\blinkTimer = Max((70*6.5-e\EventState)/5.0 - Rnd(0.0,2.0),-10)
@@ -148,7 +148,7 @@ Function UpdateEventRoom2closets(e.Events)
 			
 			If e\EventState > 70*8.5 Then
 				PositionEntity Curr173\Collider, (EntityX(e\room\Objects[0],True)+EntityX(e\room\Objects[1],True))/2,EntityY(e\room\Objects[0],True),(EntityZ(e\room\Objects[0],True)+EntityZ(e\room\Objects[1],True))/2
-				PointEntity Curr173\Collider, Collider
+				PointEntity Curr173\Collider, mainPlayer\collider
 				ResetEntity Curr173\Collider
 				RemoveEvent(e)
 			EndIf

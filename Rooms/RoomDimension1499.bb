@@ -92,7 +92,7 @@ Function UpdateEventDimension1499(e.Events)
 			Update1499Sky()
 			ShouldPlay = 18
 			If EntityY(mainPlayer\collider)<800.0 Then PositionEntity mainPlayer\collider,EntityX(mainPlayer\collider),800.1,EntityZ(mainPlayer\collider),True
-			ResetEntity Collider
+			ResetEntity mainPlayer\collider
 		Else
 			mainPlayer\dropSpeed = 0
 		EndIf

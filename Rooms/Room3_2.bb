@@ -43,11 +43,11 @@ Function UpdateEvent106sinkhole(e.Events)
 				
 				mainPlayer\dropSpeed = 0
 				
-				ResetEntity Collider
+				ResetEntity mainPlayer\collider
 				
 				e\EventState2=Min(e\EventState2+FPSfactor/200.0,2.0)
 				
-				LightBlink = Min(e\EventState2*5,10.0)
+				;LightBlink = Min(e\EventState2*5,10.0)
 				mainPlayer\blurTimer = e\EventState2*500
 				
 				If e\EventState2 = 2.0 Then MoveToPocketDimension()

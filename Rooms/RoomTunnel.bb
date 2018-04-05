@@ -26,7 +26,7 @@ Function UpdateEventTunnel106(e.Events)
 			d\Size = Rnd(0.5, 0.7) : EntityAlpha(d\obj, 0.7) : d\ID = 1 : ScaleSprite(d\obj, d\Size, d\Size)
 			EntityAlpha(d\obj, Rnd(0.7, 0.85))
 			
-			PlaySound_Strict HorrorSFX(10)
+			;PlaySound_Strict HorrorSFX(10)
 		ElseIf e\room\dist > 8.0
 			If Rand(5) = 1 Then
 				Curr106\Idle = False

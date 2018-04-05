@@ -55,11 +55,11 @@ Function UpdateEventRoom2pipes106(e.Events)
 				If EntityDistance(Curr106\Collider, mainPlayer\collider)<4.0 Then
 					pvt = CreatePivot()
 					PositionEntity(pvt, EntityX(Curr106\Collider),EntityY(Curr106\Collider),EntityZ(Curr106\Collider))
-					PointEntity pvt, Collider
+					PointEntity pvt, mainPlayer\collider
 					If WrapAngle(EntityYaw(pvt)-EntityYaw(Curr106\Collider))<80 Then
 						Curr106\State = -11
 						Curr106\Idle = False
-						PlaySound_Strict(HorrorSFX(10))
+						;PlaySound_Strict(HorrorSFX(10)) ;TODO: fix
 						e\EventState = 260
 					EndIf
 					FreeEntity pvt
@@ -80,7 +80,7 @@ Function UpdateEventRoom2pipes106(e.Events)
 			;PositionEntity(Curr106\Collider, EntityX(Curr106\Collider), EntityY(mainPlayer\collider) - 0.20, EntityZ(Curr106\Collider))
 			
 			If (e\EventState / 250.0) > 0.3 And ((e\EventState - FPSfactor*0.7) / 250.0) <= 0.3 Then
-				e\SoundCHN = PlaySound_Strict(HorrorSFX(6))
+				;e\SoundCHN = PlaySound_Strict(HorrorSFX(6))
 				mainPlayer\blurTimer = 800
 				d.Decals = CreateDecal(0, EntityX(e\room\Objects[2], True), EntityY(e\room\Objects[2], True), EntityZ(e\room\Objects[2], True), 0, e\room\angle - 90, Rnd(360)) ;90, Rnd(360), 0
 				d\Timer = 90000
@@ -101,4 +101,3 @@ Function UpdateEventRoom2pipes106(e.Events)
 	EndIf
 	;[End Block]
 End Function
-

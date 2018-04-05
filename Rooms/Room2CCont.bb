@@ -62,7 +62,7 @@ Function UpdateEventRoom2ccont(e.Events)
 				If e\EventState = 0 Then 
 					If i = 3 Then 
 						e\EventState = Max(e\EventState,1)
-						PlaySound_Strict HorrorSFX(7)
+						;PlaySound_Strict HorrorSFX(7)
 						PlaySound_Strict LeverSFX
 					EndIf
 				EndIf 

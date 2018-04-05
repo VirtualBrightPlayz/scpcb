@@ -41,7 +41,7 @@ Function SaveGame(file$)
 	WriteInt f, DeathTimer
 	WriteInt f, BlurTimer
 	
-	WriteByte f, Crouch
+	WriteByte f, mainPlayer\crouching
 	
 	WriteFloat f, Stamina
 	WriteFloat f, StaminaEffect
@@ -50,8 +50,8 @@ Function SaveGame(file$)
 	WriteFloat f, EyeStuck	
 	WriteFloat f, EyeIrritation
 	
-	WriteFloat f, Injuries
-	WriteFloat f, Bloodloss
+	WriteFloat f, mainPlayer\injuries
+	WriteFloat f, mainPlayer\bloodloss
 	
 	WriteFloat f,PrevInjuries
 	WriteFloat f,PrevBloodloss
@@ -481,7 +481,7 @@ Function LoadGame(file$)
 	DeathTimer = ReadInt(f)	
 	mainPlayer\blurTimer = ReadInt(f)	
 	
-	Crouch = ReadByte(f)
+	mainPlayer\crouching = ReadByte(f)
 	
 	mainPlayer\stamina = ReadFloat(f)
 	StaminaEffect = ReadFloat(f)	
@@ -491,7 +491,7 @@ Function LoadGame(file$)
 	EyeIrritation= ReadFloat(f)
 	
 	mainPlayer\injuries = ReadFloat(f)
-	Bloodloss = ReadFloat(f)
+	mainPlayer\bloodloss = ReadFloat(f)
 	
 	PrevInjuries = ReadFloat(f)
 	PrevBloodloss = ReadFloat(f)
@@ -1084,7 +1084,7 @@ Function LoadGameQuick(file$)
 	Msg = ""
 	
 	PositionEntity mainPlayer\collider,0,1000.0,0,True
-	ResetEntity Collider
+	ResetEntity mainPlayer\collider
 	
 	Local x#, y#, z#, i%, temp%, strtemp$, id%
 	Local player_x#,player_y#,player_z#, r.Rooms, n.NPCs, do.Doors
@@ -1115,7 +1115,7 @@ Function LoadGameQuick(file$)
 	PlayTime = ReadInt(f)
 	
 	;HideEntity Head
-	HideEntity Collider
+	HideEntity mainPlayer\collider
 	
 	x = ReadFloat(f)
 	y = ReadFloat(f)
@@ -1123,7 +1123,7 @@ Function LoadGameQuick(file$)
 	PositionEntity(mainPlayer\collider, x, y+0.05, z)
 	;ResetEntity(mainPlayer\collider)
 	
-	ShowEntity Collider
+	ShowEntity mainPlayer\collider
 	
 	x = ReadFloat(f)
 	y = ReadFloat(f)
@@ -1148,7 +1148,7 @@ Function LoadGameQuick(file$)
 	DeathTimer = ReadInt(f)	
 	mainPlayer\blurTimer = ReadInt(f)	
 	
-	Crouch = ReadByte(f)
+	mainPlayer\crouching = ReadByte(f)
 	
 	mainPlayer\stamina = ReadFloat(f)
 	StaminaEffect = ReadFloat(f)	
@@ -1158,7 +1158,7 @@ Function LoadGameQuick(file$)
 	EyeIrritation= ReadFloat(f)
 	
 	mainPlayer\injuries = ReadFloat(f)
-	Bloodloss = ReadFloat(f)
+	mainPlayer\bloodloss = ReadFloat(f)
 	
 	PrevInjuries = ReadFloat(f)
 	PrevBloodloss = ReadFloat(f)

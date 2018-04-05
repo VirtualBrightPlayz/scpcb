@@ -125,7 +125,7 @@ Function UpdateEventRoom3pit1048(e.Events)
 			
 			;e\Sound = LoadSound_Strict("SFX\SCP\Joke\Saxophone.ogg")
 		Else
-			PointEntity e\room\Objects[2], Collider
+			PointEntity e\room\Objects[2], mainPlayer\collider
 			RotateEntity(e\room\Objects[2], -90, EntityYaw(e\room\Objects[2],True),0, True)
 			
 			If e\EventState=0 Then

@@ -1207,7 +1207,7 @@ Function UpdateGame()
 			If Rand(50000) = 3 Then
 				Local RN$ = mainPlayer\currRoom\RoomTemplate\Name$
 				If RN$ <> "room860" And RN$ <> "room1123" And RN$ <> "173" And RN$ <> "dimension1499" Then
-					If FPSfactor > 0 Then LightBlink = Rnd(1.0,2.0)
+					;If FPSfactor > 0 Then LightBlink = Rnd(1.0,2.0)
 					PlaySound_Strict  LoadTempSound("SFX\SCP\079\Broadcast"+Rand(1,7)+".ogg")
 				EndIf 
 			EndIf
@@ -1273,7 +1273,7 @@ Function UpdateGame()
 			End If
 			
 			If EyeStuck > 0 Then 
-				mainPlayer\blinkTimer = BLINKFREQ
+				mainPlayer\blinkTimer = mainPlayer\blinkFreq
 				EyeStuck = Max(EyeStuck-FPSfactor,0)
 				
 				If EyeStuck < 9000 Then mainPlayer\blurTimer = Max(mainPlayer\blurTimer, (9000-EyeStuck)*0.5)
@@ -1297,13 +1297,13 @@ Function UpdateGame()
 					;Randomizes the frequency of blinking. Scales with difficulty.
 					Select SelectedDifficulty\otherFactors
 						Case EASY
-							BLINKFREQ = Rnd(490,700)
+							mainPlayer\blinkFreq = Rnd(490,700)
 						Case NORMAL
-							BLINKFREQ = Rnd(455,665)
+							mainPlayer\blinkFreq = Rnd(455,665)
 						Case HARD
-							BLINKFREQ = Rnd(420,630)
+							mainPlayer\blinkFreq = Rnd(420,630)
 					End Select 
-					mainPlayer\blinkTimer = BLINKFREQ
+					mainPlayer\blinkTimer = mainPlayer\blinkFreq
 				EndIf
 
 				mainPlayer\blinkTimer = mainPlayer\blinkTimer - FPSfactor
@@ -1323,8 +1323,8 @@ Function UpdateGame()
 				BlinkEffect = CurveValue(1.0,BlinkEffect,500)
 			EndIf
 			
-			LightBlink = Max(LightBlink - (FPSfactor / 35.0), 0)
-			If LightBlink > 0 Then darkA = Min(Max(darkA, LightBlink * Rnd(0.3, 0.8)), 1.0)
+			;LightBlink = Max(LightBlink - (FPSfactor / 35.0), 0)
+			;If LightBlink > 0 Then darkA = Min(Max(darkA, LightBlink * Rnd(0.3, 0.8)), 1.0)
 			
 			If Using294 Then darkA=1.0
 			
@@ -1805,7 +1805,7 @@ Function DrawGUI()
 		
 		Color 255, 255, 255	
 		Rect (x, y, width, height, False)
-		For i = 1 To Int(((width - 2) * (mainPlayer\blinkTimer / (BLINKFREQ))) / 10)
+		For i = 1 To Int(((width - 2) * (mainPlayer\blinkTimer / (mainPlayer\blinkFreq))) / 10)
 			DrawImage(BlinkMeterIMG, x + 3 + 10 * (i - 1), y + 3)
 		Next	
 		Color 0, 0, 0
@@ -1833,7 +1833,7 @@ Function DrawGUI()
 		
 		Color 255, 255, 255
 		Rect(x - 50 - 1, y - 1, 30 + 2, 30 + 2, False)
-		If Crouch Then
+		If mainPlayer\crouching Then
 			DrawImage CrouchIcon, x - 50, y
 		Else
 			DrawImage SprintIcon, x - 50, y
@@ -2702,7 +2702,7 @@ Function DrawGUI()
 						mainPlayer\selectedItem = Null
 					Else
 						mainPlayer\moveSpeed = CurveValue(0, mainPlayer\moveSpeed, 5.0)
-						Crouch = True
+						mainPlayer\crouching = True
 						
 						DrawImage(SelectedItem\itemtemplate\invimg, userOptions\screenWidth / 2 - ImageWidth(SelectedItem\itemtemplate\invimg) / 2, userOptions\screenHeight / 2 - ImageHeight(SelectedItem\itemtemplate\invimg) / 2)
 						
@@ -4120,7 +4120,7 @@ Function UpdateInfect()
 					For r.Rooms = Each Rooms
 						If r\RoomTemplate\Name="008" Then
 							PositionEntity mainPlayer\collider, EntityX(r\Objects[7],True),EntityY(r\Objects[7],True),EntityZ(r\Objects[7],True),True
-							ResetEntity Collider
+							ResetEntity mainPlayer\collider
 							r\NPC[0] = CreateNPC(NPCtypeD, EntityX(r\Objects[6],True),EntityY(r\Objects[6],True)+0.2,EntityZ(r\Objects[6],True))
 							r\NPC[0]\Sound = LoadSound_Strict("SFX\SCP\008\KillScientist1.ogg")
 							r\NPC[0]\SoundChn = PlaySound_Strict(r\NPC[0]\Sound)
@@ -4144,10 +4144,10 @@ Function UpdateInfect()
 				
 				If Infect > 94.5 Then mainPlayer\blinkTimer = Max(Min(-50*(Infect-94.5),mainPlayer\blinkTimer),-10)
 				PointEntity mainPlayer\collider, mainPlayer\currRoom\NPC[0]\Collider
-				PointEntity mainPlayer\currRoom\NPC[0]\Collider, Collider
-				ForceMove = 0.4
+				PointEntity mainPlayer\currRoom\NPC[0]\Collider, mainPlayer\collider
+				mainPlayer\forceMove = 0.4
 				mainPlayer\injuries = 2.5
-				Bloodloss = 0
+				mainPlayer\bloodloss = 0
 				
 				Animate2(mainPlayer\currRoom\NPC[0]\obj, AnimTime(mainPlayer\currRoom\NPC[0]\obj), 357, 381, 0.3)
 			ElseIf Infect < 98.5

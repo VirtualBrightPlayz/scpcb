@@ -215,7 +215,7 @@ Function UpdateEventRoom205(e.Events)
 						DeathMSG = DeathMSG + "The subject exhibits signs of blunt force trauma typical for personnel who have "
 						DeathMSG = DeathMSG + "entered the chamber when the lights are off."
 						
-						mainPlayer\injuries=Injuries+Rnd(0.4,0.8)
+						mainPlayer\injuries=mainPlayer\injuries+Rnd(0.4,0.8)
 						PlaySound_Strict DamageSFX(Rand(2,3))
 						mainPlayer\camShake = 0.5
 						

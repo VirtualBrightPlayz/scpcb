@@ -219,7 +219,7 @@ Function UpdateEventPocketdimension(e.Events)
 			
 			If e\EventState > 65*70 Then
 				If Rand(800)=1 And Curr106\State =>0 Then	
-					PlaySound_Strict HorrorSFX(8)
+					;PlaySound_Strict HorrorSFX(8)
 					Curr106\State = -0.1
 					e\EventState = 601
 				EndIf
@@ -315,7 +315,7 @@ Function UpdateEventPocketdimension(e.Events)
 					ElseIf dist < 8.0
 						e\SoundCHN = LoopSound2(e\Sound, e\SoundCHN, mainPlayer\cam, e\room\Objects[20], 8.0)
 						EntityTexture e\room\Objects[20], e\room\Objects[19]
-						mainPlayer\injuries=Injuries+(8.0-dist)*FPSfactor*0.001
+						mainPlayer\injuries=mainPlayer\injuries+(8.0-dist)*FPSfactor*0.001
 						
 						If dist<7.0 Then 
 							pvt% = CreatePivot()
@@ -342,7 +342,7 @@ Function UpdateEventPocketdimension(e.Events)
 						mainPlayer\blinkTimer = -10
 						
 						PositionEntity(mainPlayer\collider, EntityX(e\room\Objects[8],True)-400*RoomScale, -304*RoomScale, EntityZ(e\room\Objects[8],True))
-						ResetEntity Collider
+						ResetEntity mainPlayer\collider
 						
 					EndIf
 					
@@ -356,7 +356,7 @@ Function UpdateEventPocketdimension(e.Events)
 								pvt=CreatePivot()
 								PositionEntity pvt, EntityX(e\room\Objects[i],True),EntityY(mainPlayer\collider),EntityZ(e\room\Objects[i],True)
 								
-								PointEntity pvt, Collider
+								PointEntity pvt, mainPlayer\collider
 								RotateEntity pvt, 0, Int(EntityYaw(pvt)/90)*90,0,True
 								MoveEntity pvt, 0,0,100*RoomScale
 								PositionEntity mainPlayer\collider, EntityX(pvt),EntityY(mainPlayer\collider),EntityZ(pvt)
@@ -385,7 +385,7 @@ Function UpdateEventPocketdimension(e.Events)
 					;106's eyes
 					ShowEntity e\room\Objects[17]
 					PositionEntity e\room\Objects[17], EntityX(e\room\Objects[8],True),1376*RoomScale,EntityZ(e\room\Objects[8],True)-2848*RoomScale
-					PointEntity e\room\Objects[17], Collider
+					PointEntity e\room\Objects[17], mainPlayer\collider
 					TurnEntity e\room\Objects[17], 0, 180, 0
 					
 					temp = EntityDistance(mainPlayer\collider, e\room\Objects[17])
@@ -414,11 +414,11 @@ Function UpdateEventPocketdimension(e.Events)
 						FreeEntity pvt
 						
 						;teleport the player to the trenches
-						If Crouch Then
+						If mainPlayer\crouching Then
 							mainPlayer\blinkTimer = -10
 							PositionEntity mainPlayer\collider, EntityX(e\room\Objects[8],True)-1344*RoomScale,2944*RoomScale,EntityZ(e\room\Objects[8],True)-1184*RoomScale
-							ResetEntity Collider
-							Crouch = False
+							ResetEntity mainPlayer\collider
+							mainPlayer\crouching = False
 							
 							LoadEventSound(e,"SFX\Room\PocketDimension\Explosion.ogg")
 							LoadEventSound(e,"SFX\Room\PocketDimension\TrenchPlane.ogg",1)
@@ -443,14 +443,14 @@ Function UpdateEventPocketdimension(e.Events)
 										FreeSound_Strict Music(3) : Music(3)=0
 										
 										mainPlayer\blinkTimer = -10
-										LightBlink = 5
+										;LightBlink = 5
 										
 										PlaySound_Strict(LoadTempSound("SFX\Room\PocketDimension\Exit.ogg"))
 										
 										de.Decals = CreateDecal(0, EntityX(r\obj), 381*RoomScale, EntityZ(r\obj), 270, Rand(360), 0)
 										
 										PositionEntity(mainPlayer\collider, EntityX(r\obj), 0.4, EntityZ(r\obj))
-										ResetEntity Collider
+										ResetEntity mainPlayer\collider
 										Curr106\Idle = False
 										Exit
 									EndIf
@@ -486,7 +486,7 @@ Function UpdateEventPocketdimension(e.Events)
 							Exit
 						EndIf
 					Next
-					ResetEntity Collider
+					ResetEntity mainPlayer\collider
 					
 					e\EventState2 = 0
 					UpdateDoorsTimer = 0
@@ -495,7 +495,7 @@ Function UpdateEventPocketdimension(e.Events)
 				Else ;the player is not at the exit, must've fallen down
 					
 					If KillTimer => 0 Then 
-						PlaySound_Strict HorrorSFX(8)
+						;PlaySound_Strict HorrorSFX(8)
 						DeathMSG = "In addition to the decomposed appearance typical of the victims of SCP-106, the subject seems to have suffered multiple heavy fractures to both of his legs."
 						
 					EndIf
@@ -524,7 +524,7 @@ Function UpdateEventPocketdimension(e.Events)
 						PointEntity(pvt, e\room\obj)
 						MoveEntity pvt, 0,0,dist*1.9
 						PositionEntity(mainPlayer\collider, EntityX(pvt), EntityY(mainPlayer\collider), EntityZ(pvt))
-						ResetEntity Collider
+						ResetEntity mainPlayer\collider
 						
 						MoveEntity pvt, 0,0,0.8
 						PositionEntity(e\room\Objects[10], EntityX(pvt), 0.0, EntityZ(pvt))
@@ -537,7 +537,7 @@ Function UpdateEventPocketdimension(e.Events)
 						PlaySound_Strict(OldManSFX(3))
 						
 						PositionEntity(mainPlayer\collider, EntityX(e\room\Objects[8],True), 0.5, EntityZ(e\room\Objects[8],True))
-						ResetEntity Collider
+						ResetEntity mainPlayer\collider
 					Case 11,12 ;middle of the large starting room
 						mainPlayer\blurTimer = 500
 						PositionEntity mainPlayer\collider,EntityX(e\room\obj), 0.5, EntityZ(e\room\obj)
@@ -547,7 +547,7 @@ Function UpdateEventPocketdimension(e.Events)
 						mainPlayer\blinkTimer = -10
 						
 						PositionEntity(mainPlayer\collider, EntityX(e\room\Objects[8],True)-400*RoomScale, -304*RoomScale, EntityZ(e\room\Objects[8],True))
-						ResetEntity Collider
+						ResetEntity mainPlayer\collider
 					Case 16,17,18,19
 						mainPlayer\blurTimer = 1500
 						For r.Rooms = Each Rooms
@@ -557,7 +557,7 @@ Function UpdateEventPocketdimension(e.Events)
 								e\EventState2 = 0
 								FreeSound_Strict Music(3) : Music(3)=0
 								PositionEntity(mainPlayer\collider, EntityX(r\obj), 0.4, EntityZ(r\obj))
-								ResetEntity Collider
+								ResetEntity mainPlayer\collider
 								Curr106\Idle = False
 								Exit
 							EndIf
@@ -565,7 +565,7 @@ Function UpdateEventPocketdimension(e.Events)
 					Case 20,21,22 ;the tower room
 						mainPlayer\blinkTimer = -10
 						PositionEntity(mainPlayer\collider, EntityX(e\room\Objects[12],True), 0.6, EntityZ(e\room\Objects[12],True))
-						ResetEntity Collider
+						ResetEntity mainPlayer\collider
 						e\EventState2 = 15
 					Case 23,24,25
 						mainPlayer\blurTimer = 1500
@@ -576,7 +576,7 @@ Function UpdateEventPocketdimension(e.Events)
 						PlaySound_Strict(OldManSFX(3))
 						
 						PositionEntity(mainPlayer\collider, EntityX(e\room\Objects[8],True), 2288*RoomScale, EntityZ(e\room\Objects[8],True))
-						ResetEntity Collider
+						ResetEntity mainPlayer\collider
 				End Select 
 				
 				UpdateDoorsTimer = 0
@@ -610,7 +610,7 @@ Function UpdateEventPocketdimension(e.Events)
 				If Rand(750)=1 And e\EventState2 > 12 Then
 					mainPlayer\blinkTimer = -10
 					e\EventState2 = e\EventState2-1
-					PlaySound_Strict HorrorSFX(8)
+					;PlaySound_Strict HorrorSFX(8)
 				EndIf
 				
 				If e\EventState2 = 12 Then
@@ -635,13 +635,13 @@ Function UpdateEventPocketdimension(e.Events)
 					mainPlayer\dropSpeed = 0
 					mainPlayer\blurTimer = 500
 					PositionEntity(mainPlayer\collider, EntityX(e\room\obj), 0.5, EntityZ(e\room\obj))
-					ResetEntity Collider
+					ResetEntity mainPlayer\collider
 					e\EventState2 = 0
 					UpdateDoorsTimer = 0
 					UpdateDoors()
 					UpdateRooms()
 				Else ;somewhere else -> must've fallen down
-					If KillTimer => 0 Then PlaySound_Strict HorrorSFX(8)
+					;If KillTimer => 0 Then PlaySound_Strict HorrorSFX(8)
 					KillTimer = Min(-1, KillTimer)	
 					mainPlayer\blurTimer = 3000
 				EndIf

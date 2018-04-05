@@ -62,6 +62,7 @@ Type Player
 	Field moveSpeed#
 	Field dropSpeed#
 	
+	Field blinkFreq#
 	Field blinkTimer#
 	Field stamina#
 	

@@ -76,14 +76,14 @@ Function UpdateEventTunnel2(e.Events)
 				If Distance(EntityX(mainPlayer\collider), EntityZ(mainPlayer\collider), EntityX(e\room\obj), EntityZ(e\room\obj)) < 3.5 Then
 					PlaySound_Strict(LightSFX)
 					
-					LightBlink = Rnd(0.0,1.0)*(e\EventState/200)
+					;LightBlink = Rnd(0.0,1.0)*(e\EventState/200)
 					e\EventState = 1
 				End If
 			ElseIf e\EventState < 200
 				
 				mainPlayer\blinkTimer = -10
 				If e\EventState > 30 Then 
-					LightBlink = 1.0 
+					;LightBlink = 1.0 
 					If e\EventState-FPSfactor =< 30 Then 
 						PlaySound_Strict LoadTempSound("SFX\ambient\general\ambient3.ogg")
 					EndIf
@@ -94,10 +94,10 @@ Function UpdateEventTunnel2(e.Events)
 					ResetEntity(Curr173\Collider)					
 					Curr173\Idle = True		
 				EndIf
-				LightBlink = 1.0
+				;LightBlink = 1.0
 				e\EventState = e\EventState + FPSfactor
 			Else
-				mainPlayer\blinkTimer = BLINKFREQ
+				mainPlayer\blinkTimer = mainPlayer\blinkFreq
 				
 				Curr173\Idle = False
 				RemoveEvent(e)
@@ -106,4 +106,3 @@ Function UpdateEventTunnel2(e.Events)
 	EndIf					
 	;[End Block]
 End Function
-

@@ -113,9 +113,9 @@ Function UpdateEventRoom1123(e.Events)
 			;	If Not ChannelPlaying(e\SoundCHN) Then e\SoundCHN = PlaySound_Strict(moddedambience)
 			;End If
 			
-			;Saving mainPlayer\injuries and Bloodloss, so that the player won't be healed automatically
-			PrevInjuries = Injuries
-			PrevBloodloss = Bloodloss
+			;Saving injuries and bloodloss, so that the player won't be healed automatically
+			PrevInjuries = mainPlayer\injuries
+			PrevBloodloss = mainPlayer\bloodloss
 			
 			e\room\NPC[0] = CreateNPC(NPCtypeD, EntityX(e\room\Objects[6],True),EntityY(e\room\Objects[6],True),EntityZ(e\room\Objects[6],True))
 			;e\room\NPC[1] = CreateNPC(NPCtypeD, EntityX(e\room\Objects[7],True),EntityY(e\room\Objects[7],True),EntityZ(e\room\Objects[7],True))
@@ -134,7 +134,7 @@ Function UpdateEventRoom1123(e.Events)
 			FreeEntity nazi
 			
 			PositionEntity mainPlayer\collider, EntityX(e\room\Objects[4],True),EntityY(e\room\Objects[4],True),EntityZ(e\room\Objects[4],True),True
-			ResetEntity Collider
+			ResetEntity mainPlayer\collider
 			;PlaySound_Strict(HorrorSFX(9))
 			mainPlayer\camShake = 1.0
 			mainPlayer\blurTimer = 1200
@@ -144,7 +144,7 @@ Function UpdateEventRoom1123(e.Events)
 		ElseIf e\EventState = 2
 			e\EventState2 = e\EventState2 + FPSfactor
 			
-			PointEntity e\room\NPC[0]\Collider, Collider
+			PointEntity e\room\NPC[0]\Collider, mainPlayer\collider
 			mainPlayer\blurTimer = Max(mainPlayer\blurTimer, 100)
 			
 			If e\EventState2>200 And e\EventState2-FPSfactor=<200 Then 							
@@ -189,7 +189,7 @@ Function UpdateEventRoom1123(e.Events)
 			EndIf
 		ElseIf e\EventState=4
 			
-			;PointEntity e\room\NPC[1]\Collider, Collider
+			;PointEntity e\room\NPC[1]\Collider, mainPlayer\collider
 			
 			TFormPoint EntityX(mainPlayer\collider),EntityY(mainPlayer\collider),EntityZ(mainPlayer\collider),0,e\room\obj
 			
@@ -211,7 +211,7 @@ Function UpdateEventRoom1123(e.Events)
 				RotateEntity e\room\Objects[13], 0, CurveAngle(90, EntityYaw(e\room\Objects[13], False), 40), 0
 				If EntityYaw(e\room\Objects[13], False)>30 Then
 					e\room\NPC[0]\State = 3
-					PointEntity e\room\NPC[0]\Collider, Collider
+					PointEntity e\room\NPC[0]\Collider, mainPlayer\collider
 					AnimateNPC(e\room\NPC[0], 570, 596, 0.5, False)
 					If e\room\NPC[0]\Frame => 596 Then
 						e\EventState = 5
@@ -221,7 +221,7 @@ Function UpdateEventRoom1123(e.Events)
 						mainPlayer\blinkTimer = -10
 						mainPlayer\blurTimer = 500	
 						mainPlayer\injuries = 1.5
-						Bloodloss = 70
+						mainPlayer\bloodloss = 70
 					;PlaySound_Strict(LoadTempSound("SFX\Door\WoodenDoorClose.ogg"))							
 					EndIf								
 				EndIf
@@ -250,7 +250,7 @@ Function UpdateEventRoom1123(e.Events)
 				ResetEntity e\room\NPC[0]\Collider
 				
 				mainPlayer\injuries = 1.5
-				Bloodloss = 70
+				mainPlayer\bloodloss = 70
 				
 				mainPlayer\blinkTimer = -10
 				
@@ -262,7 +262,7 @@ Function UpdateEventRoom1123(e.Events)
 				e\EventState = 6
 			EndIf
 		ElseIf e\EventState = 6
-			PointEntity e\room\NPC[0]\Collider, Collider
+			PointEntity e\room\NPC[0]\Collider, mainPlayer\collider
 			
 			If e\room\NPC[0]\Sound<>0 Then 
 				If e\room\NPC[0]\SoundChn<>0 Then
@@ -277,13 +277,13 @@ Function UpdateEventRoom1123(e.Events)
 			EndIf
 		ElseIf e\EventState=7
 			PositionEntity mainPlayer\collider, EntityX(e\room\obj,True),0.3,EntityZ(e\room\obj,True),True
-			ResetEntity Collider
+			ResetEntity mainPlayer\collider
 			ShowEntity Light
 			mainPlayer\lightFlash = 6
 			mainPlayer\blurTimer = 500	
 			mainPlayer\injuries = PrevInjuries
-			Bloodloss = PrevBloodloss
-			Crouch = False
+			mainPlayer\bloodloss = PrevBloodloss
+			mainPlayer\crouching = False
 			
 			PrevInjuries = 0
 			PrevBloodloss = 0

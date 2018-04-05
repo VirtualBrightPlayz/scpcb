@@ -161,7 +161,7 @@ Function UpdateEventCoffin(e.Events)
 					
 					If (Rand(Int(Max(tempF*100.0,1.0)))=1) And (e\EventState3<0.0) Then
 						EntityTexture(NVOverlay, GorePics(Rand(0, 5)))
-						PlaySound_Strict(HorrorSFX(1))
+						;PlaySound_Strict(HorrorSFX(1))
 						e\EventState3 = 10.0
 						EntityColor(NVOverlay, 255,255,255)
 					EndIf

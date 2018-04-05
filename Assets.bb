@@ -410,7 +410,7 @@ Function InitLoadGame()
 	
 	HidePointer ()
 	
-	mainPlayer\blinkTimer = BLINKFREQ
+	mainPlayer\blinkTimer = mainPlayer\blinkFreq
 	mainPlayer\stamina = 100
 	
 	For rt.RoomTemplates = Each RoomTemplates
@@ -523,7 +523,7 @@ Function NullGame()
 	BlinkEffect = 1.0
 	BlinkEffectTimer = 0
 	
-	Bloodloss = 0
+	mainPlayer\bloodloss = 0
 	mainPlayer\injuries = 0
 	Infect = 0
 	
@@ -544,8 +544,8 @@ Function NullGame()
 		WearingNightVision = 0
 	EndIf
 	
-	ForceMove = 0.0
-	ForceAngle = 0.0	
+	mainPlayer\forceMove = 0.0
+	mainPlayer\forceAngle = 0.0	
 	Playable = True
 	
 	Contained106 = False

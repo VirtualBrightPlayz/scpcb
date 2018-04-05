@@ -150,8 +150,8 @@ Function UpdateEventRoom012(e.Events)
 					
 					dist = Distance(EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider),EntityX(e\room\Objects[2],True),EntityZ(e\room\Objects[2],True))
 					
-					HeartBeatRate = 150
-					HeartBeatVolume = Max(3.0-dist,0.0)/3.0
+					mainPlayer\heartbeatIntensity = 150
+					;HeartBeatVolume = Max(3.0-dist,0.0)/3.0
 					mainPlayer\blurTimer = Max((2.0-dist)*(e\EventState3/800.0)*(Sin(Float(MilliSecs2()) / 20.0 + 1.0)),mainPlayer\blurTimer)
 					mainPlayer\camZoom = Max(mainPlayer\camZoom, (Sin(Float(MilliSecs2()) / 20.0)+1.0)*8.0*Max((3.0-dist),0.0))
 					
@@ -166,7 +166,7 @@ Function UpdateEventRoom012(e.Events)
 						ElseIf e\EventState3>13*70 And e\EventState3-FPSfactor=<13*70
 							Msg="You start pushing your nails into your wrist, drawing blood."
 							MsgTimer = 7*70
-							mainPlayer\injuries=Injuries+0.5
+							mainPlayer\injuries=mainPlayer\injuries+0.5
 							PlaySound_Strict LoadTempSound("SFX\SCP\012\Speech2.ogg")
 						ElseIf e\EventState3>31*70 And e\EventState3-FPSfactor=<31*70
 							tex = LoadTexture_Strict("GFX\map\scp-012_1.jpg")
@@ -180,14 +180,14 @@ Function UpdateEventRoom012(e.Events)
 						ElseIf e\EventState3>49*70 And e\EventState3-FPSfactor=<49*70
 							Msg="You push your fingers deeper into the wound."
 							MsgTimer = 8*70
-							mainPlayer\injuries=Injuries+0.3
+							mainPlayer\injuries=mainPlayer\injuries+0.3
 							PlaySound_Strict LoadTempSound("SFX\SCP\012\Speech5.ogg")
 						ElseIf e\EventState3>63*70 And e\EventState3-FPSfactor=<63*70
 							tex = LoadTexture_Strict("GFX\map\scp-012_2.jpg")
 							EntityTexture (e\room\Objects[4], tex,0,1)	
 							FreeTexture tex
 							
-							mainPlayer\injuries=Injuries+0.5
+							mainPlayer\injuries=mainPlayer\injuries+0.5
 							PlaySound_Strict LoadTempSound("SFX\SCP\012\Speech6.ogg")
 						ElseIf e\EventState3>74*70 And e\EventState3-FPSfactor=<74*70
 							tex = LoadTexture_Strict("GFX\map\scp-012_3.jpg")
@@ -196,9 +196,9 @@ Function UpdateEventRoom012(e.Events)
 							
 							Msg="You rip the wound wide open. Grabbing scoops of blood pouring out."
 							MsgTimer = 7*70
-							mainPlayer\injuries=Injuries+0.8
+							mainPlayer\injuries=mainPlayer\injuries+0.8
 							PlaySound_Strict LoadTempSound("SFX\SCP\012\Speech7.ogg")
-							Crouch = True
+							mainPlayer\crouching = True
 							
 							de.Decals = CreateDecal(17,  EntityX(mainPlayer\collider), -768*RoomScale+0.01, EntityZ(mainPlayer\collider),90,Rnd(360),0)
 							de\Size = 0.1 : de\maxsize = 0.45 : de\sizechange = 0.0002 : UpdateDecals()
@@ -213,9 +213,9 @@ Function UpdateEventRoom012(e.Events)
 					Else
 						angle = WrapAngle(EntityYaw(pvt)-EntityYaw(mainPlayer\collider))
 						If angle<40.0 Then
-							ForceMove = (40.0-angle)*0.02
+							mainPlayer\forceMove = (40.0-angle)*0.02
 						ElseIf angle > 310.0
-							ForceMove = (40.0-Abs(360.0-angle))*0.02
+							mainPlayer\forceMove = (40.0-Abs(360.0-angle))*0.02
 						EndIf
 					EndIf								
 					

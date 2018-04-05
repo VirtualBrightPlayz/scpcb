@@ -247,7 +247,7 @@ Function UpdateEventAlarm(e.Events)
 
 					Else
 						If e\EventState-FPSfactor < 900+4*70 Then 
-							PlaySound_Strict(IntroSFX(11)) : LightBlink = 3.0
+							PlaySound_Strict(IntroSFX(11)); : LightBlink = 3.0
 							
 							;Stonedrag.
 							PlaySound2 (Curr173\sounds[0], mainPlayer\cam, Curr173\Collider)
@@ -261,7 +261,7 @@ Function UpdateEventAlarm(e.Events)
 						If e\room\NPC[2]\State <> 1 And KillTimer >= 0
 							If EntityZ(e\room\NPC[2]\Collider) < e\room\z-1150*RoomScale Then
 								e\room\RoomDoors[5]\open = False
-								LightBlink = 3.0
+								;LightBlink = 3.0
 								PlaySound_Strict(IntroSFX(11))
 								mainPlayer\blinkTimer = -10
 

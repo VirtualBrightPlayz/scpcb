@@ -107,7 +107,7 @@ Function UpdateEventRoom2servers(e.Events)
 		EndIf
 	ElseIf e\EventState < 70*45
 		If	Rand(200)<5 And mainPlayer\currRoom = e\room Then 
-			LightBlink = Rnd(1.0,2.0)
+			;LightBlink = Rnd(1.0,2.0)
 			If Rand(5)=1 Then PlaySound2(IntroSFX(Rand(10,12)), mainPlayer\cam, e\room\obj, 8.0, Rnd(0.1,0.3))
 		EndIf
 		
@@ -157,7 +157,7 @@ Function UpdateEventRoom2servers(e.Events)
 					e\room\NPC[0]\State = 2
 					PointEntity e\room\NPC[0]\obj, Curr096\Collider
 					RotateEntity (e\room\NPC[0]\Collider, 0, CurveAngle(EntityYaw(e\room\NPC[0]\obj),EntityYaw(e\room\NPC[0]\Collider),30),0)
-					If mainPlayer\currRoom = e\room Then LightBlink = (e\room\NPC[0]\Reload)+Rnd(0.5,2.0)
+					;If mainPlayer\currRoom = e\room Then LightBlink = (e\room\NPC[0]\Reload)+Rnd(0.5,2.0)
 					Curr096\Target = e\room\NPC[0]
 				Else
 					If e\EventState>70*22 Then Curr096\State = 4
@@ -216,7 +216,7 @@ Function UpdateEventRoom2servers(e.Events)
 			If mainPlayer\currRoom = e\room Then
 				If e\SoundCHN<>0 Then
 					If	ChannelPlaying(e\SoundCHN) Then 
-						LightBlink = Rnd(0.5,6.0)
+						;LightBlink = Rnd(0.5,6.0)
 						If Rand(50)=1 Then PlaySound2(IntroSFX(Rand(10,12)), mainPlayer\cam, e\room\obj, 8.0, Rnd(0.1,0.3))
 					EndIf
 				EndIf						
@@ -264,7 +264,7 @@ Function UpdateEventRoom2servers(e.Events)
 			e\room\RoomDoors[0]\locked = False
 			e\room\RoomDoors[1]\locked = False
 		Else
-			If	Rand(200)<5 Then LightBlink = Rnd(0.5,1.0)
+			;If Rand(200)<5 Then LightBlink = Rnd(0.5,1.0)
 			
 			If e\room\RoomDoors[0]\open Then 
 				e\room\RoomDoors[0]\locked = False
