@@ -589,9 +589,7 @@ Function NullGame()
 	
 	mainPlayer\selectedItem = Null
 	
-	For i = 0 To MaxItemAmount - 1
-		Inventory(i) = Null
-	Next
+	DeleteInventory(mainPlayer\inventory)
 	mainPlayer\selectedItem = Null
 	
 	mainPlayer\closestButton = 0

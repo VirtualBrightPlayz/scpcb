@@ -378,8 +378,8 @@ Function SaveGame(file$)
 		
 		If mainPlayer\selectedItem = it Then WriteByte f, 1 Else WriteByte f, 0
 		Local ItemFound% = False
-		For i = 0 To MaxItemAmount - 1
-			If Inventory(i) = it Then ItemFound = True : Exit
+		For i = 0 To mainPlayer\inventory\size - 1
+			If mainPlayer\inventory\items[i] = it Then ItemFound = True : Exit
 		Next
 		If ItemFound Then WriteByte f, i Else WriteByte f, 66
 		
@@ -956,7 +956,7 @@ Function LoadGame(file$)
 		If nt = True Then mainPlayer\selectedItem = it
 		
 		nt = ReadByte(f)
-		If nt < 66 Then Inventory(nt) = it
+		If nt < 66 Then mainPlayer\inventory\items[nt] = it
 		
 		For itt.ItemTemplates = Each ItemTemplates
 			If (itt\tempname = tempName) And (itt\name = ittName) Then
@@ -1571,7 +1571,7 @@ Function LoadGameQuick(file$)
 		If nt = True Then mainPlayer\selectedItem = it
 		
 		nt = ReadByte(f)
-		If nt < 66 Then Inventory(nt) = it
+		If nt < 66 Then mainPlayer\inventory\items[nt] = it
 		
 		For itt.ItemTemplates = Each ItemTemplates
 			If itt\tempname = tempName Then

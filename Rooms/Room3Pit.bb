@@ -146,7 +146,7 @@ Function UpdateEventRoom3pit1048(e.Events)
 					If MouseHit1 Then
 						mainPlayer\selectedItem = CreateItem("Drawing", "paper", 0.0, 0.0, 0.0)
 						
-						If ItemAmount >= MaxItemAmount Then DropItem(Inventory(0))
+						If CountItemsInInventory(mainPlayer\inventory) >= mainPlayer\inventory\size Then DropItem(mainPlayer\inventory\items[0])
 						
 						PickItem(mainPlayer\selectedItem)
 						

@@ -288,10 +288,11 @@ Function UpdateEventRoom1123(e.Events)
 			PrevInjuries = 0
 			PrevBloodloss = 0
 			
-			For i = 0 To MaxItemAmount-1
-				If Inventory(i) <> Null Then
-					If Inventory(i)\itemtemplate\name = "Leaflet"
-						RemoveItem(Inventory(i))
+			For i = 0 To mainPlayer\inventory\size-1
+				If mainPlayer\inventory\items[i] <> Null Then
+					If mainPlayer\inventory\items[i]\itemtemplate\name = "Leaflet"
+						mainPlayer\inventory\items[i] = Null
+						RemoveItem(mainPlayer\inventory\items[i])
 						Exit
 					EndIf
 				EndIf

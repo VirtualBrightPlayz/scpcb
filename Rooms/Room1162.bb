@@ -71,19 +71,19 @@ Function UpdateEventRoom1162(e.Events)
 		EndIf
 		
 		If mainPlayer\grabbedEntity <> 0
-			e\EventState2 = Rand(0,MaxItemAmount-1)
-			If Inventory(e\EventState2)<>Null
+			e\EventState2 = Rand(0,mainPlayer\inventory\size-1)
+			If mainPlayer\inventory\items[e\EventState2]<>Null
 				;randomly picked item slot has an item in it, using this slot
 				e\EventState3 = 1.0
 				DebugLog "pick1"
 			Else
 				;randomly picked item slot is empty, getting the first available slot
-				For i = 0 To MaxItemAmount-1
-					Local isSlotEmpty% = (Inventory((i+e\EventState2) Mod MaxItemAmount) = Null)
+				For i = 0 To mainPlayer\inventory\size-1
+					Local isSlotEmpty% = (mainPlayer\inventory\items[(i+e\EventState2) Mod mainPlayer\inventory\size)] = Null
 					
 					If (Not isSlotEmpty) Then
 						;successful
-						e\EventState2 = (i+e\EventState2) Mod MaxItemAmount
+						e\EventState2 = (i+e\EventState2) Mod mainPlayer\inventory\size
 					EndIf
 					
 					If Rand(8)=1 Then
@@ -140,7 +140,7 @@ Function UpdateEventRoom1162(e.Events)
 			
 			For itt.ItemTemplates = Each ItemTemplates
 				If (IsItemGoodFor1162(itt)) Then
-					Select Inventory(e\EventState2)\itemtemplate\tempname
+					Select mainPlayer\inventory\items[e\EventState2]\itemtemplate\tempname
 						Case "key"
 							If itt\tempname = "key1" Or itt\tempname = "key2" And Rand(2)=1
 								shouldCreateItem = True
@@ -175,7 +175,7 @@ Function UpdateEventRoom1162(e.Events)
 				EndIf
 				
 				If (shouldCreateItem) Then
-					RemoveItem(Inventory(e\EventState2))
+					RemoveItem(mainPlayer\inventory\items[e\EventState2])
 					it=CreateItem(itt\name,itt\tempname,EntityX(pp,True),EntityY(pp,True),EntityZ(pp,True))
 					EntityType(it\collider, HIT_ITEM)
 					PlaySound_Strict LoadTempSound("SFX\SCP\1162\Exchange"+Rand(0,4)+".ogg")
@@ -224,7 +224,7 @@ Function UpdateEventRoom1162(e.Events)
 		ElseIf e\EventState3 >= 3.0
 			If e\EventState3 < 3.1
 				PlaySound_Strict LoadTempSound("SFX\SCP\1162\Exchange"+Rand(0,4)+".ogg")
-				RemoveItem(Inventory(e\EventState2))
+				RemoveItem(mainPlayer\inventory\items[e\EventState2])
 			Else
 				mainPlayer\injuries = mainPlayer\injuries + 5.0
 				pvt = CreatePivot()

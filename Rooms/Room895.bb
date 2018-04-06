@@ -130,10 +130,10 @@ Function UpdateEventCoffin(e.Events)
 
 		If WearingNightVision > 0 Then
 			Local hasBatteryFor895% = 0
-			For i% = 0 To MaxItemAmount - 1
-				If (Inventory(i) <> Null) Then
-					If (WearingNightVision = 1 And Inventory(i)\itemtemplate\tempname = "nvgoggles") Or (WearingNightVision = 2 And Inventory(i)\itemtemplate\tempname = "supernv") Then
-						If Inventory(i)\state > 0.0 Then
+			For i% = 0 To mainPlayer\inventory\size - 1
+				If (mainPlayer\inventory\items[i] <> Null) Then
+					If (WearingNightVision = 1 And mainPlayer\inventory\items[i]\itemtemplate\tempname = "nvgoggles") Or (WearingNightVision = 2 And mainPlayer\inventory\items[i]\itemtemplate\tempname = "supernv") Then
+						If mainPlayer\inventory\items[i]\state > 0.0 Then
 							hasBatteryFor895 = 1
 							Exit
 						EndIf

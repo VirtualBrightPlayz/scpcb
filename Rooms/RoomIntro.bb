@@ -232,7 +232,7 @@ Function UpdateEvent173(e.Events)
 						e\EventState3=30
 					EndIf
 				ElseIf e\EventState3 < 35
-					If Inventory(0)<>Null Then
+					If mainPlayer\inventory\items[0]<>Null Then
 						Msg = "Press "+KeyName(keyBinds\inv)+" to open the inventory."
 						MsgTimer=70*4
 						e\EventState3 = 40
