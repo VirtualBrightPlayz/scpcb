@@ -540,7 +540,7 @@ Function NullGame()
 	WireframeState = 0
 	WireFrame 0
 	If WearingNightVision Then
-		CameraFogFar = StoredCameraFogFar
+		;CameraFogFar = StoredCameraFogFar
 		WearingNightVision = 0
 	EndIf
 	

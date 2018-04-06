@@ -1706,7 +1706,7 @@ Function UpdateRooms()
 	
 	;PlayerZone=Min(Max(GetZone(EntityZ(mainPlayer\collider)/8.0),0),ZONEAMOUNT-1)
 	
-	TempLightVolume=0
+	;TempLightVolume=0
 	Local foundPlayerRoom% = False
 	If mainPlayer\currRoom<>Null Then
 		If Abs(EntityY(mainPlayer\collider) - EntityY(mainPlayer\currRoom\obj)) < 1.5 Then
@@ -1785,7 +1785,7 @@ Function UpdateRooms()
 				If r\Lights[i] <> 0 Then
 					dist = EntityDistance(mainPlayer\collider,r\Lights[i])
 					If dist < HideDistance Then
-						TempLightVolume = TempLightVolume + r\LightIntensity[i]*r\LightIntensity[i]*((HideDistance-dist)/HideDistance)
+						;TempLightVolume = TempLightVolume + r\LightIntensity[i]*r\LightIntensity[i]*((HideDistance-dist)/HideDistance)
 						;ShowEntity(r\Lights[i]) 						
 					EndIf
 				Else
@@ -1798,7 +1798,7 @@ Function UpdateRooms()
 	MapFound(Floor(EntityX(mainPlayer\currRoom\obj) / 8.0), Floor(EntityZ(mainPlayer\currRoom\obj) / 8.0)) = 1
 	mainPlayer\currRoom\found = True
 	
-	TempLightVolume = Max(TempLightVolume / 4.5, 1.0)
+	;TempLightVolume = Max(TempLightVolume / 4.5, 1.0)
 	
 	If mainPlayer\currRoom<>Null Then
 		EntityAlpha(GetChild(mainPlayer\currRoom\obj,2),1)
@@ -1838,7 +1838,7 @@ End Function
 
 ;-------------------------------------------------------------------------------------------------------
 
-Global LightVolume#, TempLightVolume#
+Global LightVolume.MarkedForRemoval, TempLightVolume.MarkedForRemoval
 Function AddLight%(room.Rooms, x#, y#, z#, ltype%, range#, r%, g%, b%)
 	Local i
 	

@@ -42,6 +42,9 @@ Type Player
 	Field camShake#
 	Field camAnimState#
 	Field camZoom#
+
+	Field camFogNear#
+	Field camFogFar#
 	
 	Field overlays%[OVERLAY_COUNT]
 	
@@ -314,7 +317,7 @@ Function MovePlayer()
 			DeathMSG = "A Class D jumpsuit found in [DATA REDACTED]. Upon further examination, the jumpsuit was found to be filled with 12.5 kilograms of blue ash-like substance. "
 			DeathMSG = DeathMSG + "Chemical analysis of the substance remains non-conclusive. Most likely related to SCP-914."
 			Kill()
-			ShowEntity mainPlayer\overlays[OVERLAY_FOG];Fog
+			ShowEntity mainPlayer\overlays[OVERLAY_FOG]
 		Else
 			mainPlayer\blurTimer = 500
 			HideEntity mainPlayer\overlays[OVERLAY_FOG]

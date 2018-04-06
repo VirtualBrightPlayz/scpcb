@@ -60,7 +60,7 @@ Function UpdateEventRoom3servers(e.Events)
 		
 		If e\room\Objects[3]>0 Then 
 			If mainPlayer\blinkTimer<-8 And mainPlayer\blinkTimer >-12 Then
-				PointEntity e\room\Objects[3], Camera
+				PointEntity e\room\Objects[3], mainPlayer\cam
 				RotateEntity(e\room\Objects[3], 0, EntityYaw(e\room\Objects[3],True),0, True)
 			EndIf
 			If e\EventState2 = 0 Then 

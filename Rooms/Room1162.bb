@@ -44,7 +44,7 @@ Function UpdateEventRoom1162(e.Events)
 	;e\EventState3 = A check for if a item should be removed
 	;- 0.0 = no item "trade" will happen
 	;- 1.0 = item "trade" will happen
-	;- 2.0 = the player doesn't has any items in the Inventory, giving him heavily mainPlayer\injuries and giving him a random item
+	;- 2.0 = the player doesn't has any items in the Inventory, giving him heavily injuries and giving him a random item
 	;- 3.0 = player got a memorial item (to explain a bit D-9341's background)
 	;- 3.1 = player got a memorial item + injuries (because he didn't had any item in his inventory before)
 	If mainPlayer\currRoom = e\room
@@ -79,7 +79,7 @@ Function UpdateEventRoom1162(e.Events)
 			Else
 				;randomly picked item slot is empty, getting the first available slot
 				For i = 0 To mainPlayer\inventory\size-1
-					Local isSlotEmpty% = (mainPlayer\inventory\items[(i+e\EventState2) Mod mainPlayer\inventory\size)] = Null
+					Local isSlotEmpty% = (mainPlayer\inventory\items[(i+e\EventState2) Mod mainPlayer\inventory\size] = Null)
 					
 					If (Not isSlotEmpty) Then
 						;successful
@@ -270,4 +270,3 @@ Function UpdateEventRoom1162(e.Events)
 	EndIf
 	;[End Block]
 End Function
-

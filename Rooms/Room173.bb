@@ -113,9 +113,9 @@ Function UpdateEventAlarm(e.Events)
 			
 			e\room\RoomDoors[2]\open=True
 			
-			ShowEntity Fog
+			ShowEntity mainPlayer\overlays[OVERLAY_FOG]
 			AmbientLight Brightness, Brightness, Brightness
-			CameraFogRange(mainPlayer\cam, CameraFogNear, CameraFogFar)
+			CameraFogRange(mainPlayer\cam, mainPlayer\camFogNear, mainPlayer\camFogFar)
 			CameraFogMode(mainPlayer\cam, 1)
 			If SelectedDifficulty\saveType = SAVEANYWHERE Then
 				Msg = "Press "+KeyName(keyBinds\save)+" to save."

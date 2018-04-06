@@ -137,8 +137,9 @@ Function UpdateEventRoom2closets(e.Events)
 			EndIf
 			mainPlayer\blinkTimer = Max((70*6.5-e\EventState)/5.0 - Rnd(0.0,2.0),-10)
 			If mainPlayer\blinkTimer =-10 Then
-				If e\EventState > 70*7.5 And e\EventState-FPSfactor =< 70*7.5 Then PlaySound2(NeckSnapSFX(0),mainPlayer\cam,e\room\NPC[0]\Collider,8.0)
-				If e\EventState > 70*8.0 And e\EventState-FPSfactor =< 70*8.0 Then PlaySound2(NeckSnapSFX(1),mainPlayer\cam,e\room\NPC[1]\Collider,8.0)
+				;TODO: fix
+				;If e\EventState > 70*7.5 And e\EventState-FPSfactor =< 70*7.5 Then PlaySound2(NeckSnapSFX(0),mainPlayer\cam,e\room\NPC[0]\Collider,8.0)
+				;If e\EventState > 70*8.0 And e\EventState-FPSfactor =< 70*8.0 Then PlaySound2(NeckSnapSFX(1),mainPlayer\cam,e\room\NPC[1]\Collider,8.0)
 				SetNPCFrame e\room\NPC[0], 60
 				e\room\NPC[0]\State=8
 				
@@ -156,4 +157,3 @@ Function UpdateEventRoom2closets(e.Events)
 	EndIf
 	;[End Block]
 End Function
-

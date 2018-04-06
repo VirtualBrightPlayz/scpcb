@@ -485,7 +485,7 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 	TurnEntity p\obj, 0,0,Rnd(360)
 	p\Achange = -0.15
 	
-	LightVolume = TempLightVolume*1.2
+	;LightVolume = TempLightVolume*1.2
 	
 	If (Not mainPlayer\godMode) Then 
 		

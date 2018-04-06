@@ -1217,11 +1217,11 @@ Function UpdateGame()
 		UpdateCheckpoint2 = False
 		
 		If (Not MenuOpen) And (Not InvOpen) And (OtherOpen=Null) And (SelectedDoor = Null) And (ConsoleOpen = False) And (Using294 = False) And (SelectedScreen = Null) And EndingTimer=>0 Then
-			LightVolume = CurveValue(TempLightVolume, LightVolume, 50.0)
-			CameraFogRange(mainPlayer\cam, CameraFogNear*LightVolume,CameraFogFar*LightVolume)
-			CameraFogColor(mainPlayer\cam, 0,0,0)
-			CameraFogMode mainPlayer\cam,1
-			CameraRange(mainPlayer\cam, 0.05, Min(CameraFogFar*LightVolume*1.5,28))	
+			;LightVolume = CurveValue(TempLightVolume, LightVolume, 50.0)
+			;CameraFogRange(mainPlayer\cam, mainPlayer\camFogNear*LightVolume,mainPlayer\camFogFar*LightVolume)
+			;CameraFogColor(mainPlayer\cam, 0,0,0)
+			;CameraFogMode mainPlayer\cam,1
+			;CameraRange(mainPlayer\cam, 0.05, Min(mainPlayer\camFogFar*LightVolume*1.5,28))	
 			
 			AmbientLight Brightness, Brightness, Brightness	
 			mainPlayer\loudness = CurveValue(0.0, mainPlayer\loudness, 5.0)
@@ -2044,13 +2044,13 @@ Function DrawGUI()
 	If OtherOpen<>Null Then
 		;[Block]
 		If (mainPlayer\currRoom\RoomTemplate\Name = "gatea") Then
-			HideEntity Fog
+			HideEntity mainPlayer\overlays[OVERLAY_FOG]
 			CameraFogRange mainPlayer\cam, 5,30
 			CameraFogColor (mainPlayer\cam,200,200,200)
 			CameraClsColor (mainPlayer\cam,200,200,200)					
 			CameraRange(mainPlayer\cam, 0.05, 30)
 		Else If (mainPlayer\currRoom\RoomTemplate\Name = "exit1") And (EntityY(mainPlayer\collider)>1040.0*RoomScale)
-			HideEntity Fog
+			HideEntity mainPlayer\overlays[OVERLAY_FOG]
 			CameraFogRange mainPlayer\cam, 5,45
 			CameraFogColor (mainPlayer\cam,200,200,200)
 			CameraClsColor (mainPlayer\cam,200,200,200)					
@@ -2238,13 +2238,13 @@ Function DrawGUI()
 	Else If InvOpen Then
 		
 		If (mainPlayer\currRoom\RoomTemplate\Name = "gatea") Then
-			HideEntity Fog
+			HideEntity mainPlayer\overlays[OVERLAY_FOG]
 			CameraFogRange mainPlayer\cam, 5,30
 			CameraFogColor (mainPlayer\cam,200,200,200)
 			CameraClsColor (mainPlayer\cam,200,200,200)					
 			CameraRange(mainPlayer\cam, 0.05, 30)
 		ElseIf (mainPlayer\currRoom\RoomTemplate\Name = "exit1") And (EntityY(mainPlayer\collider)>1040.0*RoomScale)
-			HideEntity Fog
+			HideEntity mainPlayer\overlays[OVERLAY_FOG]
 			CameraFogRange mainPlayer\cam, 5,45
 			CameraFogColor (mainPlayer\cam,200,200,200)
 			CameraClsColor (mainPlayer\cam,200,200,200)					
@@ -2363,7 +2363,7 @@ Function DrawGUI()
 			If MouseDown1 Then
 				If MouseSlot = 66 Then
 					DrawImage(SelectedItem\invimg, ScaledMouseX() - ImageWidth(SelectedItem\itemtemplate\invimg) / 2, ScaledMouseY() - ImageHeight(SelectedItem\itemtemplate\invimg) / 2)
-				ElseIf mainPlayer\selectedItem <> mainPlayer\inventory\items[MouseSlot)
+				ElseIf mainPlayer\selectedItem <> mainPlayer\inventory\items[MouseSlot]
 					DrawImage(SelectedItem\invimg, ScaledMouseX() - ImageWidth(SelectedItem\itemtemplate\invimg) / 2, ScaledMouseY() - ImageHeight(SelectedItem\itemtemplate\invimg) / 2)
 				EndIf
 			Else
@@ -2375,30 +2375,30 @@ Function DrawGUI()
 							
 					MoveMouse viewport_center_x, viewport_center_y
 				Else
-					If mainPlayer\inventory\items[MouseSlot) = Null Then
+					If mainPlayer\inventory\items[MouseSlot] = Null Then
 						For z% = 0 To mainPlayer\inventory\size - 1
 							If mainPlayer\inventory\items[z] = mainPlayer\selectedItem Then mainPlayer\inventory\items[z] = Null
 						Next
-						mainPlayer\inventory\items[MouseSlot) = SelectedItem
+						mainPlayer\inventory\items[MouseSlot] = SelectedItem
 						mainPlayer\selectedItem = Null
-					ElseIf mainPlayer\inventory\items[MouseSlot) <> SelectedItem
+					ElseIf mainPlayer\inventory\items[MouseSlot] <> SelectedItem
 						Select SelectedItem\itemtemplate\tempname
 							Case "paper","key1","key2","key3","key4","key5","key6","misc","oldpaper","badge","ticket" ;BoH stuff
-								If mainPlayer\inventory\items[MouseSlot)\itemtemplate\tempname = "clipboard" Then
+								If mainPlayer\inventory\items[MouseSlot]\itemtemplate\tempname = "clipboard" Then
 									;Add an item to clipboard
 									Local added.Items = Null
 									If SelectedItem\itemtemplate\tempname<>"misc" Or (SelectedItem\itemtemplate\name="Playing Card" Or SelectedItem\itemtemplate\name="Mastercard") Then
-										For c% = 0 To mainPlayer\inventory\items[MouseSlot)\invSlots-1
-											If (mainPlayer\inventory\items[MouseSlot)\SecondInv[c] = Null)
+										For c% = 0 To mainPlayer\inventory\items[MouseSlot]\invSlots-1
+											If (mainPlayer\inventory\items[MouseSlot]\SecondInv[c] = Null)
 												If mainPlayer\selectedItem <> Null Then
-													mainPlayer\inventory\items[MouseSlot)\SecondInv[c] = SelectedItem
-													mainPlayer\inventory\items[MouseSlot)\state = 1.0
-													SetAnimTime mainPlayer\inventory\items[MouseSlot)\model,0.0
-													mainPlayer\inventory\items[MouseSlot)\invimg = mainPlayer\inventory\items[MouseSlot)\itemtemplate\invimg
+													mainPlayer\inventory\items[MouseSlot]\SecondInv[c] = SelectedItem
+													mainPlayer\inventory\items[MouseSlot]\state = 1.0
+													SetAnimTime mainPlayer\inventory\items[MouseSlot]\model,0.0
+													mainPlayer\inventory\items[MouseSlot]\invimg = mainPlayer\inventory\items[MouseSlot]\itemtemplate\invimg
 													
 													For ri% = 0 To mainPlayer\inventory\size - 1
-														If mainPlayer\inventory\items[ri) = mainPlayer\selectedItem Then
-															mainPlayer\inventory\items[ri) = Null
+														If mainPlayer\inventory\items[ri] = mainPlayer\selectedItem Then
+															mainPlayer\inventory\items[ri] = Null
 															PlaySound_Strict(PickSFX(SelectedItem\itemtemplate\sound))
 														EndIf
 													Next
@@ -2428,19 +2428,19 @@ Function DrawGUI()
 								mainPlayer\selectedItem = Null
 								
 							Case "battery", "bat"
-								Select mainPlayer\inventory\items[MouseSlot)\itemtemplate\name
+								Select mainPlayer\inventory\items[MouseSlot]\itemtemplate\name
 									Case "S-NAV Navigator", "S-NAV 300 Navigator", "S-NAV 310 Navigator"
 										If SelectedItem\itemtemplate\sound <> 66 Then PlaySound_Strict(PickSFX(SelectedItem\itemtemplate\sound))	
 										RemoveItem (mainPlayer\selectedItem)
 										mainPlayer\selectedItem = Null
-										mainPlayer\inventory\items[MouseSlot)\state = 100.0
+										mainPlayer\inventory\items[MouseSlot]\state = 100.0
 										Msg = "You replaced the navigator's battery."
 										MsgTimer = 70 * 5
 									Case "S-NAV Navigator Ultimate"
 										Msg = "There seems to be no place for batteries in this navigator."
 										MsgTimer = 70 * 5
 									Case "Radio Transceiver"
-										Select mainPlayer\inventory\items[MouseSlot)\itemtemplate\tempname 
+										Select mainPlayer\inventory\items[MouseSlot]\itemtemplate\tempname 
 											Case "fineradio", "veryfineradio"
 												Msg = "There seems to be no place for batteries in this radio."
 												MsgTimer = 70 * 5
@@ -2451,17 +2451,17 @@ Function DrawGUI()
 												If SelectedItem\itemtemplate\sound <> 66 Then PlaySound_Strict(PickSFX(SelectedItem\itemtemplate\sound))	
 												RemoveItem (mainPlayer\selectedItem)
 												mainPlayer\selectedItem = Null
-												mainPlayer\inventory\items[MouseSlot)\state = 100.0
+												mainPlayer\inventory\items[MouseSlot]\state = 100.0
 												Msg = "You replaced the radio's battery."
 												MsgTimer = 70 * 5
 										End Select
 									Case "Night Vision Goggles"
-										Local nvname$ = mainPlayer\inventory\items[MouseSlot)\itemtemplate\tempname
+										Local nvname$ = mainPlayer\inventory\items[MouseSlot]\itemtemplate\tempname
 										If nvname$="nvgoggles" Or nvname$="supernv" Then
 											If SelectedItem\itemtemplate\sound <> 66 Then PlaySound_Strict(PickSFX(SelectedItem\itemtemplate\sound))	
 											RemoveItem (mainPlayer\selectedItem)
 											mainPlayer\selectedItem = Null
-											mainPlayer\inventory\items[MouseSlot)\state = 1000.0
+											mainPlayer\inventory\items[MouseSlot]\state = 1000.0
 											Msg = "You replaced the goggles' battery."
 											MsgTimer = 70 * 5
 										Else
@@ -2473,7 +2473,7 @@ Function DrawGUI()
 										MsgTimer = 70 * 5	
 								End Select
 							Case "18vbat"
-								Select mainPlayer\inventory\items[MouseSlot)\itemtemplate\name
+								Select mainPlayer\inventory\items[MouseSlot]\itemtemplate\name
 									Case "S-NAV Navigator", "S-NAV 300 Navigator", "S-NAV 310 Navigator"
 										Msg = "The battery does not fit inside this navigator."
 										MsgTimer = 70 * 5
@@ -2481,7 +2481,7 @@ Function DrawGUI()
 										Msg = "There seems to be no place for batteries in this navigator."
 										MsgTimer = 70 * 5
 									Case "Radio Transceiver"
-										Select mainPlayer\inventory\items[MouseSlot)\itemtemplate\tempname 
+										Select mainPlayer\inventory\items[MouseSlot]\itemtemplate\tempname 
 											Case "fineradio", "veryfineradio"
 												Msg = "There seems to be no place for batteries in this radio."
 												MsgTimer = 70 * 5		
@@ -2489,7 +2489,7 @@ Function DrawGUI()
 												If SelectedItem\itemtemplate\sound <> 66 Then PlaySound_Strict(PickSFX(SelectedItem\itemtemplate\sound))	
 												RemoveItem (mainPlayer\selectedItem)
 												mainPlayer\selectedItem = Null
-												mainPlayer\inventory\items[MouseSlot)\state = 100.0
+												mainPlayer\inventory\items[MouseSlot]\state = 100.0
 												Msg = "You replaced the radio's battery."
 												MsgTimer = 70 * 5
 										End Select 
@@ -2524,14 +2524,14 @@ Function DrawGUI()
 					;PlaySound_Strict PickSFX(SelectedItem\itemtemplate\sound)
 					If WearingNightVision = 1 Then
 						Msg = "You removed the goggles."
-						CameraFogFar = StoredCameraFogFar
+						;CameraFogFar = StoredCameraFogFar
 					Else
 						Msg = "You put on the goggles."
 						;WearingGasMask = 0
 						;Wearing178 = False
 						TakeOffStuff(1+2+8+32+64)
-						StoredCameraFogFar = CameraFogFar
-						CameraFogFar = 30
+						;StoredCameraFogFar = CameraFogFar
+						;CameraFogFar = 30
 					EndIf
 					
 					WearingNightVision = (Not WearingNightVision)
@@ -2541,14 +2541,14 @@ Function DrawGUI()
 					;PlaySound_Strict PickSFX(SelectedItem\itemtemplate\sound)
 					If WearingNightVision = 2 Then
 						Msg = "You removed the goggles."
-						CameraFogFar = StoredCameraFogFar
+						;CameraFogFar = StoredCameraFogFar
 					Else
 						Msg = "You put on the goggles."
 						;WearingGasMask = 0
 						;Wearing178 = False
-						TakeOffStuff(1+2+8+32+64)
-						StoredCameraFogFar = CameraFogFar
-						CameraFogFar = 30
+						;TakeOffStuff(1+2+8+32+64)
+						;StoredCameraFogFar = CameraFogFar
+						;CameraFogFar = 30
 					EndIf
 					
 					WearingNightVision = (Not WearingNightVision) * 2
@@ -2558,14 +2558,14 @@ Function DrawGUI()
 					;PlaySound_Strict PickSFX(SelectedItem\itemtemplate\sound)
 					If WearingNightVision = 3 Then
 						Msg = "You removed the goggles."
-						CameraFogFar = StoredCameraFogFar
+						;CameraFogFar = StoredCameraFogFar
 					Else
 						Msg = "You put on the goggles."
 						;WearingGasMask = 0
 						;Wearing178 = False
-						TakeOffStuff(1+2+8+32+64)
-						StoredCameraFogFar = CameraFogFar
-						CameraFogFar = 30
+						;TakeOffStuff(1+2+8+32+64)
+						;StoredCameraFogFar = CameraFogFar
+						;CameraFogFar = 30
 					EndIf
 					
 					WearingNightVision = (Not WearingNightVision) * 3
@@ -2580,7 +2580,7 @@ Function DrawGUI()
 						Msg = "You put on the glasses."
 						Wearing178 = 1
 						;WearingGasMask = 0
-						If WearingNightVision Then CameraFogFar = StoredCameraFogFar
+						;If WearingNightVision Then CameraFogFar = StoredCameraFogFar
 						;WearingNightVision = 0
 						TakeOffStuff(1+2+32+64)
 					EndIf
@@ -3206,7 +3206,7 @@ Function DrawGUI()
 					Else
 						Msg = "You put on the gas mask."
 						;Wearing178 = 0
-						If WearingNightVision Then CameraFogFar = StoredCameraFogFar
+						;If WearingNightVision Then CameraFogFar = StoredCameraFogFar
 						;WearingNightVision = 0
 						TakeOffStuff(2+8+32+64)
 					EndIf
@@ -3369,7 +3369,7 @@ Function DrawGUI()
 						
 						;Wearing178 = 0
 						;WearingGasMask = 0
-						If WearingNightVision Then CameraFogFar = StoredCameraFogFar
+						;If WearingNightVision Then CameraFogFar = StoredCameraFogFar
 						;WearingNightVision = 0
 						TakeOffStuff(1+2+8+32)
 						For r.Rooms = Each Rooms
@@ -4546,7 +4546,7 @@ End Function
 
 
 Function ScaleRender(x#,y#,hscale#=1.0,vscale#=1.0)
-	If mainPlayer\cam<>0 Then HideEntity Camera
+	If mainPlayer\cam<>0 Then HideEntity mainPlayer\cam
 	WireFrame 0
 	ShowEntity fresize_image
 	ScaleEntity fresize_image,hscale,vscale,1.0
@@ -4556,7 +4556,7 @@ Function ScaleRender(x#,y#,hscale#=1.0,vscale#=1.0)
 	HideEntity fresize_cam
 	HideEntity fresize_image
 	WireFrame WireframeState
-	If mainPlayer\cam<>0 Then ShowEntity Camera
+	If mainPlayer\cam<>0 Then ShowEntity mainPlayer\cam
 End Function
 
 Function InitFastResize()

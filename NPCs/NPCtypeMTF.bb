@@ -1229,7 +1229,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 				n\Angle = EntityYaw(n\Collider)
 				
 				If n\Reload =< 0 
-					LightVolume = TempLightVolume*1.2
+					;LightVolume = TempLightVolume*1.2
 					PlaySound2(GunshotSFX, mainPlayer\cam, n\Collider, 20)
 					
 					pvt% = CreatePivot()

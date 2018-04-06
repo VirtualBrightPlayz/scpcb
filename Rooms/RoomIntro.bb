@@ -1092,9 +1092,9 @@ Function UpdateEvent173(e.Events)
 										If sc\room = e\room Then Delete sc
 									Next
 									
-									ShowEntity Fog
+									ShowEntity mainPlayer\overlays[OVERLAY_FOG]
 									AmbientLight Brightness, Brightness, Brightness
-									CameraFogRange(mainPlayer\cam, CameraFogNear, CameraFogFar)
+									CameraFogRange(mainPlayer\cam, mainPlayer\camFogNear, mainPlayer\camFogFar)
 									CameraFogMode(mainPlayer\cam, 1)
 									
 									e\EventState2 = 1
@@ -1136,10 +1136,10 @@ Function UpdateEvent173(e.Events)
 	If mainPlayer\currRoom = e\room Then
 		CameraFogMode(mainPlayer\cam, 0)
 		AmbientLight (140, 140, 140)
-		HideEntity(Fog)
+		HideEntity(mainPlayer\overlays[OVERLAY_FOG])
 		
-		LightVolume = 4.0
-		TempLightVolume = 4.0
+		;LightVolume = 4.0
+		;TempLightVolume = 4.0
 	Else
 		DebugLog "delete intro event"
 		RemoveEvent(e)		

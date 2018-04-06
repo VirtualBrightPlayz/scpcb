@@ -69,7 +69,7 @@ Function UpdateEventRoom2storage(e.Events)
 			e\EventState2 = e\EventState2 - FPSfactor
 		EndIf
 		
-		LightVolume = TempLightVolume*0.5
+		;LightVolume = TempLightVolume*0.5
 		
 		TFormPoint EntityX(mainPlayer\collider),EntityY(mainPlayer\collider),EntityZ(mainPlayer\collider),0,e\room\obj
 		
@@ -284,7 +284,7 @@ Function UpdateEventRoom2storage(e.Events)
 				EndIf
 				e\SoundCHN = LoopSound2(e\Sound, e\SoundCHN, mainPlayer\cam, e\room\NPC[0]\obj);
 				If e\EventState < 30 Then
-					LightVolume = TempLightVolume*0.4
+					;LightVolume = TempLightVolume*0.4
 				ElseIf e\EventState > 60
 					AnimateNPC(e\room\NPC[0], 80, 61, -0.02, False)
 					
