@@ -510,44 +510,6 @@ Function NullGame()
 		itt\found = False
 	Next
 	
-	mainPlayer\dropSpeed = 0
-	Shake = 0
-	mainPlayer\moveSpeed = 0
-	
-	DeathTimer=0
-	
-	HeartBeatVolume = 0
-	
-	StaminaEffect = 1.0
-	StaminaEffectTimer = 0
-	BlinkEffect = 1.0
-	BlinkEffectTimer = 0
-	
-	mainPlayer\bloodloss = 0
-	mainPlayer\injuries = 0
-	Infect = 0
-	
-	SelectedEnding = ""
-	EndingTimer = 0
-	ExplosionTimer = 0
-	
-	mainPlayer\camShake = 0
-	Shake = 0
-	mainPlayer\lightFlash = 0
-	
-	GodMode = 0
-	NoClip = 0
-	WireframeState = 0
-	WireFrame 0
-	If WearingNightVision Then
-		;CameraFogFar = StoredCameraFogFar
-		WearingNightVision = 0
-	EndIf
-	
-	mainPlayer\forceMove = 0.0
-	mainPlayer\forceAngle = 0.0	
-	Playable = True
-	
 	Contained106 = False
 	Curr173\Idle = False
 	

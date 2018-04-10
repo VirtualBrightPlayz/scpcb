@@ -90,22 +90,21 @@ Function UpdateEventCoffin(e.Events)
 	
 	If e\EventState < MilliSecs2() Then
 		;SCP-079 starts broadcasting 895 camera feed on monitors after leaving the first zone
-		If PlayerZone > 0 Then 
-			If EntityPitch(e\room\Levers[0],True) > 0 Then ;camera feed on
-				For sc.SecurityCams = Each SecurityCams
-					If (Not sc\SpecialCam)
-						If sc\CoffinEffect=0 And sc\room\RoomTemplate\Name<>"room106" And sc\room\RoomTemplate\Name<>"room205" Then sc\CoffinEffect = 2
-						If sc\room = e\room Then sc\Screen = True
-					EndIf
-				Next
-			Else ;camera feed off
-				For sc.SecurityCams = Each SecurityCams
-					If (Not sc\SpecialCam)
-						If sc\CoffinEffect<>1 Then sc\CoffinEffect = 0
-						If sc\room = e\room Then sc\Screen = False
-					EndIf
-				Next
-			EndIf						
+		;TODO: rewrite this to adjust for separate zone loading
+		If EntityPitch(e\room\Levers[0],True) > 0 Then ;camera feed on
+			For sc.SecurityCams = Each SecurityCams
+				If (Not sc\SpecialCam)
+					If sc\CoffinEffect=0 And sc\room\RoomTemplate\Name<>"room106" And sc\room\RoomTemplate\Name<>"room205" Then sc\CoffinEffect = 2
+					If sc\room = e\room Then sc\Screen = True
+				EndIf
+			Next
+		Else ;camera feed off
+			For sc.SecurityCams = Each SecurityCams
+				If (Not sc\SpecialCam)
+					If sc\CoffinEffect<>1 Then sc\CoffinEffect = 0
+					If sc\room = e\room Then sc\Screen = False
+				EndIf
+			Next
 		EndIf
 		
 		e\EventState = MilliSecs2()+3000

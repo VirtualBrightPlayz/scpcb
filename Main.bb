@@ -1328,7 +1328,7 @@ Function UpdateGame()
 			
 			If Using294 Then darkA=1.0
 			
-			If (Not WearingNightVision) Then darkA = Max((1.0-SecondaryLightOn)*0.9, darkA)
+			If (Not IsPlayerWearing(mainPlayer,"nvgoggles")) Then darkA = Max((1.0-SecondaryLightOn)*0.9, darkA)
 			
 			If KillTimer >= 0 Then
 				
@@ -2270,37 +2270,9 @@ Function DrawGUI()
 			
 			If mainPlayer\inventory\items[n] <> Null Then
 				Color 200, 200, 200
-				Select mainPlayer\inventory\items[n]\itemtemplate\tempname 
-					Case "gasmask"
-						If WearingGasMask=1 Then Rect(x - 3, y - 3, width + 6, height + 6)
-					Case "supergasmask"
-						If WearingGasMask=2 Then Rect(x - 3, y - 3, width + 6, height + 6)
-					Case "gasmask3"
-						If WearingGasMask=3 Then Rect(x - 3, y - 3, width + 6, height + 6)
-					Case "hazmatsuit"
-						If WearingHazmat=1 Then Rect(x - 3, y - 3, width + 6, height + 6)
-					Case "hazmatsuit2"
-						If WearingHazmat=2 Then Rect(x - 3, y - 3, width + 6, height + 6)
-					Case "hazmatsuit3"
-						If WearingHazmat=3 Then Rect(x - 3, y - 3, width + 6, height + 6)	
-					Case "vest"
-						If WearingVest=1 Then Rect(x - 3, y - 3, width + 6, height + 6)
-					Case "finevest"
-						If WearingVest=2 Then Rect(x - 3, y - 3, width + 6, height + 6)
-					
-					Case "scp178"
-						If Wearing178=1 Then Rect(x - 3, y - 3, width + 6, height + 6)
-					Case "nvgoggles"
-						If WearingNightVision=1 Then Rect(x - 3, y - 3, width + 6, height + 6)
-					Case "supernv"
-						If WearingNightVision=2 Then Rect(x - 3, y - 3, width + 6, height + 6)
-					Case "scp1499"
-						If Wearing1499=1 Then Rect(x - 3, y - 3, width + 6, height + 6)
-					Case "super1499"
-						If Wearing1499=2 Then Rect(x - 3, y - 3, width + 6, height + 6)
-					Case "veryfinenvgoggles"
-						If WearingNightVision=3 Then Rect(x - 3, y - 3, width + 6, height + 6)
-				End Select
+				If IsPlayerWearing(mainPlayer,mainPlayer\inventory\items[n]\itemtemplate\tempname) Then
+					Rect(x - 3, y - 3, width + 6, height + 6)
+				EndIf
 			EndIf
 			
 			If isMouseOn Then
@@ -2520,72 +2492,10 @@ Function DrawGUI()
 			Select SelectedItem\itemtemplate\tempname
 					
 					;[Block]
-				Case "nvgoggles"
-					;PlaySound_Strict PickSFX(SelectedItem\itemtemplate\sound)
-					If WearingNightVision = 1 Then
-						Msg = "You removed the goggles."
-						;CameraFogFar = StoredCameraFogFar
-					Else
-						Msg = "You put on the goggles."
-						;WearingGasMask = 0
-						;Wearing178 = False
-						TakeOffStuff(1+2+8+32+64)
-						;StoredCameraFogFar = CameraFogFar
-						;CameraFogFar = 30
-					EndIf
-					
-					WearingNightVision = (Not WearingNightVision)
-					mainPlayer\selectedItem = Null	
-					
-				Case "supernv"
-					;PlaySound_Strict PickSFX(SelectedItem\itemtemplate\sound)
-					If WearingNightVision = 2 Then
-						Msg = "You removed the goggles."
-						;CameraFogFar = StoredCameraFogFar
-					Else
-						Msg = "You put on the goggles."
-						;WearingGasMask = 0
-						;Wearing178 = False
-						;TakeOffStuff(1+2+8+32+64)
-						;StoredCameraFogFar = CameraFogFar
-						;CameraFogFar = 30
-					EndIf
-					
-					WearingNightVision = (Not WearingNightVision) * 2
-					mainPlayer\selectedItem = Null	
-					
-				Case "veryfinenvgoggles"
-					;PlaySound_Strict PickSFX(SelectedItem\itemtemplate\sound)
-					If WearingNightVision = 3 Then
-						Msg = "You removed the goggles."
-						;CameraFogFar = StoredCameraFogFar
-					Else
-						Msg = "You put on the goggles."
-						;WearingGasMask = 0
-						;Wearing178 = False
-						;TakeOffStuff(1+2+8+32+64)
-						;StoredCameraFogFar = CameraFogFar
-						;CameraFogFar = 30
-					EndIf
-					
-					WearingNightVision = (Not WearingNightVision) * 3
-					mainPlayer\selectedItem = Null	
+				Case "nvgoggles","supernv","veryfinenvgoggles"
+					Equip(mainPlayer,mainPlayer\selectedItem)
 
-				Case "scp178"
-					If Wearing178=1 Then
-						Msg = "You removed the glasses."
-						Wearing178 = 0
-					Else
-						GiveAchievement(Achv178)
-						Msg = "You put on the glasses."
-						Wearing178 = 1
-						;WearingGasMask = 0
-						;If WearingNightVision Then CameraFogFar = StoredCameraFogFar
-						;WearingNightVision = 0
-						TakeOffStuff(1+2+32+64)
-					EndIf
-					MsgTimer = 70 * 5
-					mainPlayer\selectedItem = Null	
+					mainPlayer\selectedItem = Null
 				Case "1123"
 					If mainPlayer\currRoom\RoomTemplate\Name <> "room1123" Then
 						ShowEntity Light
@@ -3201,23 +3111,8 @@ Function DrawGUI()
 					EndIf
 					mainPlayer\selectedItem = Null	
 				Case "gasmask", "supergasmask", "gasmask3"
-					If WearingGasMask Then
-						Msg = "You removed the gas mask."
-					Else
-						Msg = "You put on the gas mask."
-						;Wearing178 = 0
-						;If WearingNightVision Then CameraFogFar = StoredCameraFogFar
-						;WearingNightVision = 0
-						TakeOffStuff(2+8+32+64)
-					EndIf
-					MsgTimer = 70 * 5
-					If SelectedItem\itemtemplate\tempname="gasmask3" Then
-						If WearingGasMask = 0 Then WearingGasMask = 3 Else WearingGasMask=0
-					ElseIf SelectedItem\itemtemplate\tempname="supergasmask"
-						If WearingGasMask = 0 Then WearingGasMask = 2 Else WearingGasMask=0
-					Else
-						WearingGasMask = (Not WearingGasMask)
-					EndIf
+					Equip(mainPlayer,mainPlayer\selectedItem)
+
 					mainPlayer\selectedItem = Null				
 				Case "navigator", "nav"
 					
@@ -3367,11 +3262,8 @@ Function DrawGUI()
 					If (Not Wearing1499%) Then
 						GiveAchievement(Achv1499)
 						
-						;Wearing178 = 0
-						;WearingGasMask = 0
-						;If WearingNightVision Then CameraFogFar = StoredCameraFogFar
-						;WearingNightVision = 0
-						TakeOffStuff(1+2+8+32)
+						Equip(mainPlayer,mainPlayer\selectedItem)
+						
 						For r.Rooms = Each Rooms
 							If r\RoomTemplate\Name = "dimension1499" Then
 								mainPlayer\blinkTimer = -1

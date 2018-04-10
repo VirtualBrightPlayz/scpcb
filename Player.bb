@@ -841,6 +841,23 @@ Function MouseLook()
 	EndIf
 End Function
 
+Function Equip(player.Player,item.Items)
+	If item=Null Then Return
+	If item\itemTemplate\invSlot = WORNITEM_SLOT_NONE Then Return
+	DeEquip(player,item\itemTemplate\invSlot)
+	player\wornItems[item\itemTemplate\invSlot] = item
+End Function
+
+Function DeEquip(player.Player,invSlot%)
+	If player\wornItems[invSlot] = Null Then
+		Return
+	EndIf
+	
+	;TODO: implement as needed
+	
+	player\wornItems[invSlot] = Null
+End Function
+
 Function IsPlayerWearing(player.Player,templateName$)
 	Local it.ItemTemplates = FindItemTemplate(templateName)
 	If it=Null Then Return False
