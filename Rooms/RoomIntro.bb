@@ -143,7 +143,7 @@ Function UpdateEvent173(e.Events)
 
 	;[Block]
 	
-	If KillTimer >= 0 And e\EventState2 = 0 Then
+	If Not mainPlayer\dead And e\EventState2 = 0 Then
 		
 		PlayerZone = 0
 		
@@ -1118,7 +1118,7 @@ Function UpdateEvent173(e.Events)
 		EndIf
 		
 	Else
-		If KillTimer<0 Then
+		If mainPlayer\dead Then
 			If e\room\NPC[3]\State = 1 Then 
 				LoadEventSound(e,"SFX\Room\Intro\Guard\Ulgrin\EscortTerminated.ogg")
 				PlaySound_Strict e\Sound

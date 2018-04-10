@@ -119,7 +119,7 @@ Function UpdateNPCtype096(n.NPCs)
                                     mainPlayer\camShake = 30
                                     mainPlayer\blurTimer = 2000
                                     DeathMSG = "A large amount of blood found in [DATA REDACTED]. DNA indentified as Subject D-9341. Most likely [DATA REDACTED] by SCP-096."
-                                    Kill()
+                                    Kill(mainPlayer)
                                     ;KillAnim = 1 ;TODO: idk
                                     For i = 0 To 6
                                         PositionEntity pvt, EntityX(mainPlayer\collider)+Rnd(-0.1,0.1),EntityY(mainPlayer\collider)-0.05,EntityZ(mainPlayer\collider)+Rnd(-0.1,0.1)

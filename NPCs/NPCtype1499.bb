@@ -178,7 +178,7 @@ Function UpdateNPCtype1499(n.NPCs)
                             mainPlayer\injuries = mainPlayer\injuries + Rnd(0.75,1.5)
                             PlaySound2(LoadTempSound("SFX\General\Slash"+Rand(1,2)+".ogg"), mainPlayer\cam, n\Collider)
                             If mainPlayer\injuries > 10.0
-                                Kill()
+                                Kill(mainPlayer)
                                 If mainPlayer\currRoom\RoomTemplate\Name$ = "dimension1499"
                                     DeathMSG = "All personnel situated within Evacuation Shelter LC-2 during the breach have been administered "
                                     DeathMSG = DeathMSG + "Class-B amnestics due to Incident 1499-E. The Class D subject involved in the event "
@@ -203,7 +203,7 @@ Function UpdateNPCtype1499(n.NPCs)
                             mainPlayer\injuries = mainPlayer\injuries + Rnd(0.75,1.5)
                             PlaySound2(LoadTempSound("SFX\General\Slash"+Rand(1,2)+".ogg"), mainPlayer\cam, n\Collider)
                             If mainPlayer\injuries > 10.0
-                                Kill()
+                                Kill(mainPlayer)
                                 If mainPlayer\currRoom\RoomTemplate\Name$ = "dimension1499"
                                     DeathMSG = "All personnel situated within Evacuation Shelter LC-2 during the breach have been administered "
                                     DeathMSG = DeathMSG + "Class-B amnestics due to Incident 1499-E. The Class D subject involved in the event "

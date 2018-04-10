@@ -1105,8 +1105,8 @@ Function LoadGameQuick(file$)
 	mainPlayer\lightFlash = 0
 	mainPlayer\blurTimer = 0
 	
-	KillTimer = 0
-	FallTimer = 0
+	mainPlayer\dead = 0
+	mainPlayer\fallTimer = 0
 	MenuOpen = False
 	
 	GodMode = 0

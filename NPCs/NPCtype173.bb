@@ -197,7 +197,7 @@ Function UpdateNPCtype173(n.NPCs)
 									TurnEntity(mainPlayer\cam, 0, Rand(-100,-80), 0)
 								EndIf
 
-								Kill()
+								Kill(mainPlayer)
 							EndIf
 						Else
 							PointEntity(n\Collider, mainPlayer\collider)

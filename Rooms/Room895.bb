@@ -172,7 +172,7 @@ Function UpdateEventCoffin(e.Events)
 						Else
 							DeathMSG = Chr(34)+"Class D viewed SCP-895 through a pair of digital night vision goggles, killing him."+Chr(34)
 						EndIf
-						Kill()
+						Kill(mainPlayer)
 					EndIf
 				EndIf
 			;EndIf

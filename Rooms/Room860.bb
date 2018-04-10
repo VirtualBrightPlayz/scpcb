@@ -106,7 +106,7 @@ Function UpdateEventRoom860(e.Events)
 			
 			;the player fell	
 			If EntityY(mainPlayer\collider)<=28.5 Then 
-				Kill() 
+				Kill(mainPlayer) 
 				mainPlayer\blinkTimer=-2
 			ElseIf EntityY(mainPlayer\collider)>EntityY(fr\Forest_Pivot,True)+0.5
 				MoveEntity(mainPlayer\collider, 0, ((EntityY(fr\Forest_Pivot,True)+0.5) - EntityY(mainPlayer\collider))*FPSfactor, 0)

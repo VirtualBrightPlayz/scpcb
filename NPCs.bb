@@ -489,7 +489,7 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 	
 	If (Not mainPlayer\godMode) Then 
 		
-		If instaKill Then Kill() : PlaySound_Strict BullethitSFX : Return
+		If instaKill Then Kill(mainPlayer) : PlaySound_Strict BullethitSFX : Return
 		
 		If Rnd(1.0) =< hitProb Then
 			TurnEntity mainPlayer\cam, Rnd(-3,3), Rnd(-3,3), 0
@@ -534,12 +534,12 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 				EndIf
 				
 				If mainPlayer\injuries >= 3
-					If Rand(3) = 1 Then Kill()
+					If Rand(3) = 1 Then Kill(mainPlayer)
 				EndIf
 			Else
 				Select Rand(6)
 					Case 1
-						Kill()
+						Kill(mainPlayer)
 					Case 2
 						mainPlayer\blurTimer = 500
 						ShotMessageUpdate = "A bullet hit your left leg."
@@ -571,7 +571,7 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 
 			mainPlayer\injuries = Min(mainPlayer\injuries, 4.0)
 			
-			;Kill()
+			;Kill(mainPlayer)
 			PlaySound_Strict BullethitSFX
 		ElseIf particles Then
 			pvt = CreatePivot()

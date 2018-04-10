@@ -98,7 +98,7 @@ Function UpdateNPCtypeTentacle(n.NPCs)
                                         DeathMSG = DeathMSG + "to have formed inside the chamber. Their level of aggression is "
                                         DeathMSG = DeathMSG + "unlike anything we've seen before - it looks like they have "
                                         DeathMSG = DeathMSG + "beaten some unfortunate Class D to death at some point during the breach."+Chr(34)
-                                        Kill()
+                                        Kill(mainPlayer)
                                     EndIf
                                 EndIf
                                 

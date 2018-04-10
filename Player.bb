@@ -316,7 +316,7 @@ Function MovePlayer()
 		If mainPlayer\superMan > 70 * 50 Then
 			DeathMSG = "A Class D jumpsuit found in [DATA REDACTED]. Upon further examination, the jumpsuit was found to be filled with 12.5 kilograms of blue ash-like substance. "
 			DeathMSG = DeathMSG + "Chemical analysis of the substance remains non-conclusive. Most likely related to SCP-914."
-			Kill()
+			Kill(mainPlayer)
 			ShowEntity mainPlayer\overlays[OVERLAY_FOG]
 		Else
 			mainPlayer\blurTimer = 500
@@ -328,7 +328,7 @@ Function MovePlayer()
 	;	DeathTimer=DeathTimer-FPSfactor
 	;	If DeathTimer < 1 Then DeathTimer = -1.0
 	;ElseIf DeathTimer < 0 
-	;	Kill()
+	;	Kill(mainPlayer)
 	;EndIf
 	
 	mainPlayer\stamina = Min(mainPlayer\stamina + 0.15 * FPSfactor, 100.0)
@@ -562,7 +562,7 @@ Function MovePlayer()
 		
 		If mainPlayer\bloodloss > 60 Then mainPlayer\crouching = True
 		If mainPlayer\bloodloss => 100 Then 
-			Kill()
+			Kill(mainPlayer)
 			mainPlayer\heartbeatIntensity = 0.0
 		ElseIf mainPlayer\bloodloss > 80.0
 			mainPlayer\heartbeatIntensity = Max(150-(mainPlayer\bloodloss-80)*5,mainPlayer\heartbeatIntensity)
@@ -852,14 +852,14 @@ End Function
 
 Global TakeOffStuff.MarkedForRemoval
 
-Function Kill()
-	If mainPlayer\godMode Then Return
+Function Kill(player.Player)
+	If player\godMode Then Return
 	
-	If mainPlayer\breathChn <> 0 Then
-		If ChannelPlaying(mainPlayer\breathCHN) Then StopChannel(mainPlayer\breathCHN)
+	If player\breathChn <> 0 Then
+		If ChannelPlaying(player\breathCHN) Then StopChannel(player\breathCHN)
 	EndIf
 	
-	If Not mainPlayer\dead Then
+	If Not player\dead Then
 		;KillAnim = Rand(0,1)
 		PlaySound_Strict(DamageSFX(0))
 		If SelectedDifficulty\permaDeath Then
@@ -868,12 +868,11 @@ Function Kill()
 			LoadSaveGames()
 		End If
 		
-		mainPlayer\dead = True
-		mainPlayer\fallTimer = Min(-1,mainPlayer\fallTimer)
-		;KillTimer = Min(-1, KillTimer)
-		ShowEntity mainPlayer\head
-		PositionEntity(mainPlayer\head, EntityX(mainPlayer\cam, True), EntityY(mainPlayer\cam, True), EntityZ(mainPlayer\cam, True), True)
-		ResetEntity (mainPlayer\head)
-		RotateEntity(mainPlayer\head, 0, EntityYaw(mainPlayer\cam), 0)		
+		player\dead = True
+		player\fallTimer = Min(-1,player\fallTimer)
+		ShowEntity player\head
+		PositionEntity(player\head, EntityX(player\cam, True), EntityY(player\cam, True), EntityZ(player\cam, True), True)
+		ResetEntity (player\head)
+		RotateEntity(player\head, 0, EntityYaw(player\cam), 0)		
 	EndIf
 End Function

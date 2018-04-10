@@ -222,7 +222,7 @@ Function UpdateEventRoom205(e.Events)
 						e\EventState2 = Rnd(-0.1, 0.1)
 						e\EventState3 = Rnd(-0.1, 0.1)
 						
-						If (mainPlayer\injuries>5.0) Kill()
+						If (mainPlayer\injuries>5.0) Kill(mainPlayer)
 					EndIf
 					
 					TranslateEntity(mainPlayer\collider, e\EventState2,0,e\EventState3)

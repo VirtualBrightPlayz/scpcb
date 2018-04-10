@@ -575,13 +575,6 @@ Function NullGame()
 	
 	ShouldPlay = 0
 	
-	KillTimer = 0
-	FallTimer = 0
-	mainPlayer\stamina = 100
-	mainPlayer\blurTimer = 0
-	SuperMan = False
-	SuperManTimer = 0
-	
 	InfiniteStamina% = False
 	
 	Msg = ""

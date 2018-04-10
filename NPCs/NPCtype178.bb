@@ -197,7 +197,7 @@ Function UpdateNPCtype178(n.NPCs)
                         DeathMSG = DeathMSG + "seen when using SCP-178. It is unknown at the current time "
                         DeathMSG = DeathMSG + "whether SCP-178 and these entities are related."
                     EndIf
-                    Kill()
+                    Kill(mainPlayer)
                 EndIf
                 PlaySound_Strict DamageSFX(Rand(2,3))
                 n\State2=0.0

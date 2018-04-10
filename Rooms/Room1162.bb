@@ -210,7 +210,7 @@ Function UpdateEventRoom1162(e.Events)
 						DeathMSG = DeathMSG + " interaction with SCP-1162."
 						PlaySound_Strict LoadTempSound("SFX\SCP\1162\BodyHorrorExchange"+Rand(1,4)+".ogg")
 						mainPlayer\lightFlash = 5.0
-						Kill()
+						Kill(mainPlayer)
 					Else
 						PlaySound_Strict LoadTempSound("SFX\SCP\1162\BodyHorrorExchange"+Rand(1,4)+".ogg")
 						mainPlayer\lightFlash = 5.0
@@ -240,7 +240,7 @@ Function UpdateEventRoom1162(e.Events)
 					DeathMSG = DeathMSG + " interaction with SCP-1162."
 					PlaySound_Strict LoadTempSound("SFX\SCP\1162\BodyHorrorExchange"+Rand(1,4)+".ogg")
 					mainPlayer\lightFlash = 5.0
-					Kill()
+					Kill(mainPlayer)
 				Else
 					PlaySound_Strict LoadTempSound("SFX\SCP\1162\BodyHorrorExchange"+Rand(1,4)+".ogg")
 					mainPlayer\lightFlash = 5.0

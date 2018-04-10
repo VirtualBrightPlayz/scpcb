@@ -2595,7 +2595,7 @@ Function DrawGUI()
 						DeathMSG = DeathMSG + "wandering around the site approximately 9 minutes prior, shouting the phrase " + Chr(34) + "get rid of the four pests" + Chr(34)
 						DeathMSG = DeathMSG + " in chinese. SCP-1123 was found in [REDACTED] nearby, suggesting the subject had come into physical contact with it. How "
 						DeathMSG = DeathMSG + "exactly SCP-1123 was removed from its containment chamber is still unknown."
-						Kill()
+						Kill(mainPlayer)
 						Return
 					EndIf
 					For e.Events = Each Events
@@ -2845,7 +2845,7 @@ Function DrawGUI()
 					
 					If GetINIInt2(iniStr, loc, "lethal") Then 
 						DeathMSG = GetINIString2(iniStr, loc, "deathmessage")
-						Kill()
+						Kill(mainPlayer)
 					EndIf
 					mainPlayer\blurTimer = GetINIInt2(iniStr, loc, "blur")*70;*temp
 					mainPlayer\injuries = Max(mainPlayer\injuries + GetINIInt2(iniStr, loc, "damage"),0);*temp
@@ -4156,7 +4156,7 @@ Function UpdateInfect()
 					DeathMSG = "Subject D-9341 found ingesting Dr. [REDACTED] at Sector [REDACTED]. Subject was immediately terminated by Nine-Tailed Fox and sent for autopsy. "
 					DeathMSG = DeathMSG + "SCP-008 infection was confirmed, after which the body was incinerated."
 					
-					Kill()
+					Kill(mainPlayer)
 					de.Decals = CreateDecal(3, EntityX(mainPlayer\currRoom\NPC[0]\Collider), 544*RoomScale + 0.01, EntityZ(mainPlayer\currRoom\NPC[0]\Collider),90,Rnd(360),0)
 					de\Size = 0.8
 					ScaleSprite(de\obj, de\Size,de\Size)

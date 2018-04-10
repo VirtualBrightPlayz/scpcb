@@ -412,7 +412,7 @@ Function UpdateEventExit1(e.Events)
 									mainPlayer\godMode = 0
 									mainPlayer\noclip = 0
 									DeathMSG = ""
-									Kill()
+									Kill(mainPlayer)
 									mainPlayer\blinkTimer = -10
 									For n.NPCs = Each NPCs
 										If n\NPCtype = NPCtypeMTF

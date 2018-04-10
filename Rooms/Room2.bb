@@ -144,7 +144,7 @@ Function UpdateEvent1048a(e.Events)
 				EndIf
 				
 				If (e\EventState2>70*15) Then
-					Kill()
+					Kill(mainPlayer)
 					e\EventState = 4
 					RemoveEvent(e)
 				EndIf

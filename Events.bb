@@ -415,7 +415,7 @@ Function UpdateEvents()
 				Next
 			EndIf
 			mainPlayer\lightFlash = Min((ExplosionTimer-160.0)/40.0,2.0)
-			If ExplosionTimer > 160 Then KillTimer = Min(KillTimer,-0.1) : EndingTimer = Min(KillTimer,-0.1)
+			If ExplosionTimer > 160 Then Kill(mainPlayer) : EndingTimer = Min(mainPlayer\fallTimer,-0.1)
 			If ExplosionTimer > 500 Then ExplosionTimer = 0
 		EndIf
 		

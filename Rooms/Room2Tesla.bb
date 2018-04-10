@@ -88,7 +88,7 @@ Function UpdateEventRoom2tesla(e.Events)
 			For i = 0 To 2
 				If Distance(EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider),EntityX(e\room\Objects[i],True),EntityZ(e\room\Objects[i],True)) < 300.0*RoomScale Then
 					;play the activation sound
-					If KillTimer => 0 Then 
+					If Not mainPlayer\dead Then 
 						mainPlayer\loudness = Max(8.0,mainPlayer\loudness)
 						StopChannel(e\SoundCHN)
 						e\SoundCHN = PlaySound2(TeslaActivateSFX, mainPlayer\cam, e\room\Objects[3],4.0,0.5)
@@ -137,7 +137,7 @@ Function UpdateEventRoom2tesla(e.Events)
 				For i = 0 To 2
 					If Distance(EntityX(Curr106\Collider),EntityZ(Curr106\Collider),EntityX(e\room\Objects[i],True),EntityZ(e\room\Objects[i],True)) < 300.0*RoomScale Then
 						;play the activation sound
-						If KillTimer => 0 Then 
+						If Not mainPlayer\dead Then 
 							StopChannel(e\SoundCHN)
 							e\SoundCHN = PlaySound2(TeslaActivateSFX, mainPlayer\cam, e\room\Objects[3],4.0,0.5)
 							HideEntity e\room\Objects[4]
@@ -166,13 +166,13 @@ Function UpdateEventRoom2tesla(e.Events)
 				EndIf
 				If e\EventState < 70 Then 
 					
-					If KillTimer => 0 Then 
+					If Not mainPlayer\dead Then 
 						For i = 0 To 2
 							If Distance(EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider),EntityX(e\room\Objects[i],True),EntityZ(e\room\Objects[i],True)) < 250.0*RoomScale Then
 								ShowEntity Light
 								mainPlayer\lightFlash = 0.4
 								mainPlayer\camShake = 1.0
-								Kill()
+								Kill(mainPlayer)
 								DeathMSG = "Subject D-9341 killed by the Tesla gate at [REDACTED]."
 							EndIf
 						Next
@@ -227,7 +227,7 @@ Function UpdateEventRoom2tesla(e.Events)
 			If e\EventState = 0
 				For i = 0 To 2
 					If Distance(EntityX(e\room\NPC[0]\Collider),EntityZ(e\room\NPC[0]\Collider),EntityX(e\room\Objects[i],True),EntityZ(e\room\Objects[i],True)) < 400.0*RoomScale
-						If KillTimer => 0 Then 
+						If Not mainPlayer\dead Then 
 							StopChannel(e\SoundCHN)
 							e\SoundCHN = PlaySound2(TeslaActivateSFX, mainPlayer\cam, e\room\Objects[3],4.0,0.5)
 							HideEntity e\room\Objects[4]

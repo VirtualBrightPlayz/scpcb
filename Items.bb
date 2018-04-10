@@ -573,7 +573,7 @@ Function PickItem(item.Items)
 							DeathMSG = DeathMSG + "wandering around the site approximately 9 minutes prior, shouting the phrase " + Chr(34) + "get rid of the four pests" + Chr(34)
 							DeathMSG = DeathMSG + " in chinese. SCP-1123 was found in [REDACTED] nearby, suggesting the subject had come into physical contact with it. How "
 							DeathMSG = DeathMSG + "exactly SCP-1123 was removed from its containment chamber is still unknown."
-							Kill()
+							Kill(mainPlayer)
 							Return
 						EndIf
 						For e.Events = Each Events
@@ -593,7 +593,7 @@ Function PickItem(item.Items)
 						PlaySound_Strict(IntroSFX(11))
 						DeathMSG = "Subject D-9341 found dead inside SCP-914's output booth next to what appears to be an ordinary nine-volt battery. The subject is covered in severe "
 						DeathMSG = DeathMSG + "electrical burns, and assumed to be killed via an electrical shock caused by the battery. The battery has been stored for further study."
-						Kill()
+						Kill(mainPlayer)
 					Case "scp148"
 						GiveAchievement(Achv148)	
 					Case "scp513"

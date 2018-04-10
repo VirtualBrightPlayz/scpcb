@@ -258,7 +258,7 @@ Function UpdateEventAlarm(e.Events)
 						
 						PositionEntity Curr173\Collider, e\room\x-96*RoomScale, 0.31, e\room\z+592*RoomScale, True
 						
-						If e\room\NPC[2]\State <> 1 And KillTimer >= 0
+						If e\room\NPC[2]\State <> 1 And (Not mainPlayer\dead) Then
 							If EntityZ(e\room\NPC[2]\Collider) < e\room\z-1150*RoomScale Then
 								e\room\RoomDoors[5]\open = False
 								;LightBlink = 3.0
@@ -277,7 +277,7 @@ Function UpdateEventAlarm(e.Events)
 					EndIf
 					
 					;If Ulgrin can see the player then start shooting at them.
-					If (CurrTrigger = "173scene_end") And EntityVisible(e\room\NPC[2]\Collider,mainPlayer\collider) And (Not GodMode) Then
+					If (CurrTrigger = "173scene_end") And EntityVisible(e\room\NPC[2]\Collider,mainPlayer\collider) And (Not mainPlayer\godMode) Then
 						e\room\NPC[2]\State = 1
 						e\room\NPC[2]\State3 = 1
 					ElseIf e\room\NPC[2]\State = 1 And (Not EntityVisible(e\room\NPC[2]\Collider, mainPlayer\collider))
@@ -321,7 +321,7 @@ Function UpdateEventAlarm(e.Events)
 			RotateEntity e\room\Objects[1], -Max(e\EventState-2040,0)/135, 0, -Max(e\EventState-2040,0)/43, True
 			
 			If EntityDistance(e\room\Objects[0],mainPlayer\collider)<2.5 Then
-				If Rand(300)=2 Then PlaySound2(DecaySFX(Rand(1,3)),mainPlayer\cam,e\room\Objects[0], 3.0)
+				;If Rand(300)=2 Then PlaySound2(DecaySFX(Rand(1,3)),mainPlayer\cam,e\room\Objects[0], 3.0)
 			EndIf
 		EndIf
 		
@@ -377,4 +377,3 @@ Function UpdateEventAlarm(e.Events)
 	End If
 	;[End Block]
 End Function
-

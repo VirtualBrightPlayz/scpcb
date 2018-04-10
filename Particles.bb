@@ -133,7 +133,7 @@ Function UpdateEmitters()
 		If mainPlayer\blinkEffect > (70 * 6) Then mainPlayer\blurTimer = Max(mainPlayer\blurTimer, (mainPlayer\blinkEffect - (70 * 6)) / (70.0 * 24.0))
 		If mainPlayer\blinkEffect > (70 * 24) Then 
 			DeathMSG = "Subject D-9341 found dead in [DATA REDACTED]. Cause of death: Suffocation due to decontamination gas."
-			Kill()
+			Kill(mainPlayer)
 		EndIf
 		
 		If Not mainPlayer\dead Then 

@@ -363,12 +363,12 @@ Function UpdateEventPocketdimension(e.Events)
 								
 								FreeEntity pvt
 								
-								If KillTimer = 0 Then
+								If Not mainPlayer\dead Then
 									DeathMSG = "In addition to the decomposed appearance typical of SCP-106's victims, the body exhibits injuries that have not been observed before: "
 									DeathMSG = DeathMSG + "massive skull fracture, three broken ribs, fractured shoulder and multiple heavy lacerations."
 									
 									PlaySound_Strict LoadTempSound("SFX\Room\PocketDimension\Impact.ogg")
-									KillTimer=-1.0
+									Kill(mainPlayer)
 								EndIf
 							EndIf
 							e\SoundCHN = LoopSound2(e\Sound, e\SoundCHN, mainPlayer\cam, e\room\Objects[i], 6.0)	
@@ -494,12 +494,12 @@ Function UpdateEventPocketdimension(e.Events)
 					UpdateRooms()
 				Else ;the player is not at the exit, must've fallen down
 					
-					If KillTimer => 0 Then 
+					If Not mainPlayer\dead Then 
 						;PlaySound_Strict HorrorSFX(8)
 						DeathMSG = "In addition to the decomposed appearance typical of the victims of SCP-106, the subject seems to have suffered multiple heavy fractures to both of his legs."
 						
 					EndIf
-					KillTimer = Min(-1, KillTimer)	
+					Kill(mainPlayer)
 					mainPlayer\blurTimer = 3000
 				EndIf
 			EndIf
@@ -642,7 +642,7 @@ Function UpdateEventPocketdimension(e.Events)
 					UpdateRooms()
 				Else ;somewhere else -> must've fallen down
 					;If KillTimer => 0 Then PlaySound_Strict HorrorSFX(8)
-					KillTimer = Min(-1, KillTimer)	
+					Kill(mainPlayer)
 					mainPlayer\blurTimer = 3000
 				EndIf
 			EndIf 

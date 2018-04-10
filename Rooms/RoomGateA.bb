@@ -519,12 +519,12 @@ Function UpdateEventGatea(e.Events)
 								mainPlayer\godMode = 0
 								mainPlayer\noclip = 0
 								DeathMSG = ""
-								Kill()
+								Kill(mainPlayer)
 							EndIf
 							
 							;If SelectedEnding <> "" Then
 							mainPlayer\camShake=CurveValue(2.0,mainPlayer\camShake,10.0)
-							mainPlayer\lightFlash = CurveValue(2.0,mainPlayer\lightFlash,8.0);Min(Abs(KillTimer)/100.0,1.0)
+							mainPlayer\lightFlash = CurveValue(2.0,mainPlayer\lightFlash,8.0)
 							;EndIf
 							
 						EndIf
@@ -593,7 +593,7 @@ Function UpdateEventGatea(e.Events)
 								mainPlayer\noclip = 0
 								;KillTimer = -0.1
 								DeathMSG = ""
-								Kill()
+								Kill(mainPlayer)
 								mainPlayer\blinkTimer = -10
 								RemoveEvent(e)
 								Return

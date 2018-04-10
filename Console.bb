@@ -409,7 +409,7 @@ Function UpdateConsole()
 					
 					CreateConsoleMsg("Room coordinates: "+Floor(EntityX(mainPlayer\currRoom\obj) / 8.0 + 0.5)+", "+ Floor(EntityZ(mainPlayer\currRoom\obj) / 8.0 + 0.5))
 					CreateConsoleMsg("Stamina: "+mainPlayer\stamina)
-					;CreateConsoleMsg("Death timer: "+KillTimer)					
+					;CreateConsoleMsg("Dead: "+mainPlayer\dead)					
 					CreateConsoleMsg("Blinktimer: "+mainPlayer\blinkTimer)
 					CreateConsoleMsg("Injuries: "+mainPlayer\injuries)
 					CreateConsoleMsg("Bloodloss: "+mainPlayer\bloodloss)
@@ -444,7 +444,7 @@ Function UpdateConsole()
 					CurrGameState = GAMESTATE_ENDING
 					StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 					
-					mainPlayer\dead = True
+					Kill(mainPlayer)
 
 				Case "noclipspeed"
 					RuntimeError "TODO: reimplement?"
@@ -837,7 +837,8 @@ Function UpdateConsole()
 					RemoteDoorOn = True
 
 				Case "kill","suicide"
-					mainPlayer\dead = True
+					Kill(mainPlayer)
+
 					Select Rand(4)
 						Case 1
 							DeathMSG = "[REDACTED]"

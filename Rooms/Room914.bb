@@ -723,7 +723,7 @@ Function UpdateEvent914(e.Events)
 				If e\EventState > 70 * 3 Then
 					Select setting
 						Case "rough"
-							KillTimer = Min(-1, KillTimer)
+							Kill(mainPlayer)
 							mainPlayer\blinkTimer = -10
 							If e\SoundCHN <> 0 Then StopChannel e\SoundCHN
 							DeathMSG = Chr(34)+"A heavily mutilated corpse found inside the output booth of SCP-914. DNA testing identified the corpse as Class D Subject D-9341. "

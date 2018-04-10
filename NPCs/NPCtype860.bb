@@ -264,7 +264,7 @@ Function UpdateNPCtype860(n.NPCs)
                     
                     ;Animate2(n\obj, AnimTime(n\obj), 451,493, 0.5, False)
                     If (prevFrame < 461 And n\Frame=>461) Then 
-                        If (Not mainPlayer\dead) Then Kill()
+                        If (Not mainPlayer\dead) Then Kill(mainPlayer)
                         PlaySound_Strict(n\Sound)
                     EndIf
                     If (prevFrame < 476 And n\Frame=>476) Then PlaySound_Strict(n\Sound2)

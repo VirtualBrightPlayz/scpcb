@@ -150,7 +150,7 @@ Function UpdateNPCtype939(n.NPCs)
                         If mainPlayer\injuries>4.0 Then 
                             DeathMSG=Chr(34)+"All four (4) escaped SCP-939 specimens have been captured and recontained successfully. "
                             DeathMSG=DeathMSG+"Three (3) of them made quite a mess at Storage Area 6. A cleaning team has been dispatched."+Chr(34)
-                            Kill()
+                            Kill(mainPlayer)
                             If (Not mainPlayer\godMode) Then n\State = 5
                         EndIf								
                     Else

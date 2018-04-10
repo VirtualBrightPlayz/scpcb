@@ -205,7 +205,7 @@ Function UpdateEventRoom012(e.Events)
 						ElseIf e\EventState3>85*70 And e\EventState3-FPSfactor=<85*70	
 							DeathMSG = "Subject D-9341 found in a pool of blood next to SCP-012. Subject seems to have ripped open his wrists and written three extra "
 							DeathMSG = DeathMSG + "lines to the composition before dying of blood loss."
-							Kill()
+							Kill(mainPlayer)
 						EndIf
 						
 						RotateEntity(mainPlayer\collider, EntityPitch(mainPlayer\collider), CurveAngle(EntityYaw(mainPlayer\collider)+Sin(e\EventState3*(e\EventState3/2000))*(e\EventState3/300), EntityYaw(mainPlayer\collider), 80), 0)
