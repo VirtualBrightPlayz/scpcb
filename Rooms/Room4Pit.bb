@@ -116,12 +116,12 @@ Function UpdateEvent096spawn(e.Events)
 			DebugLog "SCP-096 successfully placed in "+Chr(34)+e\room\RoomTemplate\Name+Chr(34)
 			e\EventState = 1
 		ElseIf e\EventState = 1
-			PointEntity Curr096\Collider,Collider
+			PointEntity Curr096\Collider,mainPlayer\collider
 			RotateEntity Curr096\Collider,0,EntityYaw(Curr096\Collider)+180,0
 			
 			If EntityDistance(Curr096\Collider,mainPlayer\collider)<HideDistance*0.5
 				If EntityVisible(Curr096\Collider,mainPlayer\cam)
-					PointEntity Curr096\Collider,Collider
+					PointEntity Curr096\Collider,mainPlayer\collider
 					RotateEntity Curr096\Collider,0,EntityYaw(Curr096\Collider)+Rnd(170,190),0
 					e\EventState = 2
 				EndIf
@@ -140,3 +140,6 @@ Function UpdateEvent096spawn(e.Events)
 	EndIf
 	;[End Block]
 End Function
+
+;~IDEal Editor Parameters:
+;~C#Blitz3D

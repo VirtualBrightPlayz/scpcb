@@ -278,7 +278,7 @@ Function UpdateEventRoom1123(e.Events)
 		ElseIf e\EventState=7
 			PositionEntity mainPlayer\collider, EntityX(e\room\obj,True),0.3,EntityZ(e\room\obj,True),True
 			ResetEntity mainPlayer\collider
-			ShowEntity Light
+			ShowEntity mainPlayer\overlays[OVERLAY_WHITE]
 			mainPlayer\lightFlash = 6
 			mainPlayer\blurTimer = 500	
 			mainPlayer\injuries = PrevInjuries
@@ -307,3 +307,6 @@ Function UpdateEventRoom1123(e.Events)
 	
 End Function
 
+
+;~IDEal Editor Parameters:
+;~C#Blitz3D

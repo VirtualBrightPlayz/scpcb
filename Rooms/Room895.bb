@@ -126,12 +126,13 @@ Function UpdateEventCoffin(e.Events)
 				EndIf
 			EndIf
 		EndIf
-
-		If WearingNightVision > 0 Then
+		
+		;TODO: cleanup
+		If IsPlayerWearing(mainPlayer,"nvgoggles") Then
 			Local hasBatteryFor895% = 0
 			For i% = 0 To mainPlayer\inventory\size - 1
 				If (mainPlayer\inventory\items[i] <> Null) Then
-					If (WearingNightVision = 1 And mainPlayer\inventory\items[i]\itemtemplate\tempname = "nvgoggles") Or (WearingNightVision = 2 And mainPlayer\inventory\items[i]\itemtemplate\tempname = "supernv") Then
+					If (IsPlayerWearing(mainPlayer,"nvgoggles") And mainPlayer\inventory\items[i]\itemtemplate\tempname = "nvgoggles") Or (IsPlayerWearing(mainPlayer,"supernv") And mainPlayer\inventory\items[i]\itemtemplate\tempname = "supernv") Then
 						If mainPlayer\inventory\items[i]\state > 0.0 Then
 							hasBatteryFor895 = 1
 							Exit
@@ -144,7 +145,7 @@ Function UpdateEventCoffin(e.Events)
 			;If EntityVisible(mainPlayer\cam,e\room\Objects[1])
 				If (CoffinDistance < 4.0) And (hasBatteryFor895) Then
 					
-					mainPlayer\sanity895 = mainPlayer\sanity895-(FPSfactor*1.1/WearingNightVision)
+					mainPlayer\sanity895 = mainPlayer\sanity895-(FPSfactor*1.1);/WearingNightVision)
 					mainPlayer\blurTimer = Sin(MilliSecs2()/10)*Abs(mainPlayer\sanity895)
 					
 					tempF# = GetAngle(EntityX(mainPlayer\collider,True),EntityZ(mainPlayer\collider,True),EntityX(e\room\Objects[1],True),EntityZ(e\room\Objects[1],True))
@@ -158,14 +159,15 @@ Function UpdateEventCoffin(e.Events)
 					
 					mainPlayer\headPitch=(mainPlayer\headPitch * 0.8)+(tempF2 * 0.2)
 					
-					If (Rand(Int(Max(tempF*100.0,1.0)))=1) And (e\EventState3<0.0) Then
-						EntityTexture(NVOverlay, GorePics(Rand(0, 5)))
-						;PlaySound_Strict(HorrorSFX(1))
-						e\EventState3 = 10.0
-						EntityColor(NVOverlay, 255,255,255)
-					EndIf
+					;TODO: fix
+					;If (Rand(Int(Max(tempF*100.0,1.0)))=1) And (e\EventState3<0.0) Then
+					;	EntityTexture(mainPlayer\overlays[OVERLAY_NIGHTVISION], GorePics(Rand(0, 5)))
+					;	;PlaySound_Strict(HorrorSFX(1))
+					;	e\EventState3 = 10.0
+					;	EntityColor(mainPlayer\overlays[OVERLAY_NIGHTVISION], 255,255,255)
+					;EndIf
 					If mainPlayer\sanity895 < (-1000) Then 
-						If WearingNightVision > 1
+						If IsPlayerWearing(mainPlayer,"supernv") Then
 							DeathMSG = Chr(34)+"Class D viewed SCP-895 through a pair of digital night vision goggles, presumably enhanced by SCP-914. It might be possible that the subject"
 							DeathMSG = DeathMSG + "was able to resist the memetic effects partially through these goggles. The goggles have been stored for further study."+Chr(34)
 						Else
@@ -180,11 +182,12 @@ Function UpdateEventCoffin(e.Events)
 		If e\EventState3>0.0 Then e\EventState3=Max(e\EventState3-FPSfactor,0.0)
 		If e\EventState3=0.0 Then
 			e\EventState3=-1.0
-			EntityTexture(NVOverlay, NVTexture)
-			If WearingNightVision = 1 Then
-				EntityColor(NVOverlay, 0,255,0)
-			ElseIf WearingNightVision = 2 Then
-				EntityColor(NVOverlay, 0,100,255)
+			;TODO: fix
+			;EntityTexture(mainPlayer\overlays[OVERLAY_NIGHTVISION], NVTexture)
+			If IsPlayerWearing(mainPlayer,"nvgoggles") Then
+				EntityColor(mainPlayer\overlays[OVERLAY_NIGHTVISION], 0,255,0)
+			ElseIf IsPlayerWearing(mainPlayer,"supernv") Then
+				EntityColor(mainPlayer\overlays[OVERLAY_NIGHTVISION], 0,100,255)
 			EndIf
 		EndIf
 		
@@ -213,3 +216,6 @@ Function UpdateEventCoffin(e.Events)
 	;[End Block]
 End Function
 
+
+;~IDEal Editor Parameters:
+;~C#Blitz3D

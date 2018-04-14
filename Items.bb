@@ -409,7 +409,7 @@ Function CreateItem.Items(name$, tempname$, x#, y#, z#, r%=0,g%=0,b%=0,a#=1.0,in
 	PositionEntity(i\collider, x, y, z, True)
 	RotateEntity (i\collider, 0, Rand(360), 0)
 	i\dist = EntityDistance(mainPlayer\collider, i\collider)
-	i\DropSpeed = 0.0
+	i\dropSpeed = 0.0
 	
 	If tempname = "cup" Then
 		i\r=r
@@ -502,12 +502,12 @@ Function UpdateItems()
 				EndIf					
 				
 				If EntityCollided(i\collider, HIT_MAP) Then
-					i\DropSpeed = 0
+					i\dropSpeed = 0
 					i\xspeed = 0.0
 					i\zspeed = 0.0
 				Else
-					i\DropSpeed = i\DropSpeed - 0.0004 * FPSfactor
-					TranslateEntity i\collider, i\xspeed*FPSfactor, i\DropSpeed * FPSfactor, i\zspeed*FPSfactor
+					i\dropSpeed = i\dropSpeed - 0.0004 * FPSfactor
+					TranslateEntity i\collider, i\xspeed*FPSfactor, i\dropSpeed * FPSfactor, i\zspeed*FPSfactor
 					If i\WontColl Then ResetEntity(i\collider)
 				EndIf
 				
@@ -701,3 +701,6 @@ Function DropItem(item.Items,playDropSound%=True)
 	;		Wearing1499 = False
 	;End Select	
 End Function
+;~IDEal Editor Parameters:
+;~F#17D#1C3#1D4#22D#284
+;~C#Blitz3D

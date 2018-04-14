@@ -139,7 +139,7 @@ Function UpdateNPCtype939(n.NPCs)
                         If temp Then
                             If Distance(n\EnemyX, n\EnemyZ, EntityX(n\Collider), EntityZ(n\Collider))<1.5 Then
                                 PlaySound_Strict n\Sound2
-                                mainPlayer\injuries = mainPlayer\injuries + Rnd(1.5, 2.5)-IsPlayerWearing(mainPlayer,"vest",WORNITEM_BODY_SLOT)*0.5
+                                mainPlayer\injuries = mainPlayer\injuries + Rnd(1.5, 2.5)-IsPlayerWearing(mainPlayer,"vest")*0.5
                                 mainPlayer\blurTimer = 500		
                             Else
                                 n\Frame	 = 449
@@ -240,3 +240,5 @@ Function UpdateNPCtype939(n.NPCs)
         RotateEntity n\obj, EntityPitch(n\Collider)-90, EntityYaw(n\Collider), EntityRoll(n\Collider), True					
     EndIf
 End Function    
+;~IDEal Editor Parameters:
+;~C#Blitz3D

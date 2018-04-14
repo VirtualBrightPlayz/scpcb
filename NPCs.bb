@@ -254,13 +254,13 @@ Function RemoveNPC(n.NPCs)
 
 	Local i%
 
-	For i = 0 to 2
+	For i = 0 To 2
 		If (n\soundChannels[i] <> 0 And ChannelPlaying(n\soundChannels[i])) Then
 			StopChannel(n\soundChannels[i])
 		EndIf
 	Next
 
-	For i = 0 to 11
+	For i = 0 To 11
 		If (n\sounds[i] <> 0) Then
 			FreeSound_Strict(n\sounds[i])
 		EndIf
@@ -445,12 +445,12 @@ Function MeNPCSeesPlayer%(me.NPCs,disableSoundOnCrouch%=False)
 				EndIf
 			EndIf
 		Else
-			If (Abs(DeltaYaw(me\Collider,mainPlayer\collider))>60.0) Then Return False
+			If (Abs(DeltaYaw(me\collider,mainPlayer\collider))>60.0) Then Return False
 		EndIf
-		Return EntityVisible(me\Collider,mainPlayer\collider)
+		Return EntityVisible(me\collider,mainPlayer\collider)
 	Else
-		If EntityDistance(mainPlayer\collider,me\Collider)>(8.0-mainPlayer\crouchState+mainPlayer\loudness) Then Return 3
-		If EntityVisible(me\Collider, mainPlayer\cam) Then Return True
+		If EntityDistance(mainPlayer\collider,me\collider)>(8.0-mainPlayer\crouchState+mainPlayer\loudness) Then Return 3
+		If EntityVisible(me\collider, mainPlayer\cam) Then Return True
 		
 		;spots the player if he's either in view or making a loud sound
 		If mainPlayer\loudness>1.0 Then Return 2
@@ -468,20 +468,20 @@ Function TeleportMTFGroup(n.NPCs)
 	TeleportCloser(n)
 	
 	For n2 = Each NPCs
-		If n2\NPCtype = NPCtypeMTF
+		If n2\npcType = NPCtypeMTF
 			If n2\MTFLeader <> Null
-				PositionEntity n2\Collider,EntityX(n2\MTFLeader\Collider),EntityY(n2\MTFLeader\Collider)+0.1,EntityZ(n2\MTFLeader\Collider)
+				PositionEntity n2\collider,EntityX(n2\MTFLeader\collider),EntityY(n2\MTFLeader\collider)+0.1,EntityZ(n2\MTFLeader\collider)
 			EndIf
 		EndIf
 	Next
 	
-	DebugLog "Teleported MTF Group (dist:"+EntityDistance(n\Collider,mainPlayer\collider)+")"
+	DebugLog "Teleported MTF Group (dist:"+EntityDistance(n\collider,mainPlayer\collider)+")"
 	
 End Function
 
 Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False)
 	;muzzle flash
-	Local p.Particles = CreateParticle(x,y,z, 1, Rnd(0.08,0.1), 0.0, 5)
+	Local p.particles = CreateParticle(x,y,z, 1, Rnd(0.08,0.1), 0.0, 5)
 	TurnEntity p\obj, 0,0,Rnd(360)
 	p\Achange = -0.15
 	
@@ -496,11 +496,11 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 			
 			Local ShotMessageUpdate$
 			Local WearingVest% = False
-			WearingVest = WearingVest Or IsPlayerWearing(mainPlayer,"vest",WORNITEM_BODY_SLOT)
-			WearingVest = WearingVest Or IsPlayerWearing(mainPlayer,"finevest",WORNITEM_BODY_SLOT)
-			WearingVest = WearingVest Or IsPlayerWearing(mainPlayer,"veryfinevest",WORNITEM_BODY_SLOT)
+			WearingVest = WearingVest Or IsPlayerWearing(mainPlayer,"vest")
+			WearingVest = WearingVest Or IsPlayerWearing(mainPlayer,"finevest")
+			WearingVest = WearingVest Or IsPlayerWearing(mainPlayer,"veryfinevest")
 			If WearingVest Then
-				If IsPlayerWearing(mainPlayer,"vest",WORNITEM_BODY_SLOT) Then
+				If IsPlayerWearing(mainPlayer,"vest") Then
 					Select Rand(8)
 						Case 1,2,3,4,5
 							mainPlayer\blurTimer = 500
@@ -586,7 +586,7 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 				
 				If particles Then 
 					;dust/smoke particles
-					p.Particles = CreateParticle(PickedX(),PickedY(),PickedZ(), 0, 0.03, 0, 80)
+					p.particles = CreateParticle(PickedX(),PickedY(),PickedZ(), 0, 0.03, 0, 80)
 					p\speed = 0.001
 					p\SizeChange = 0.003
 					p\A = 0.8
@@ -594,7 +594,7 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 					RotateEntity p\pvt, EntityPitch(pvt)-180, EntityYaw(pvt),0
 					
 					For i = 0 To Rand(2,3)
-						p.Particles = CreateParticle(PickedX(),PickedY(),PickedZ(), 0, 0.006, 0.003, 80)
+						p.particles = CreateParticle(PickedX(),PickedY(),PickedZ(), 0, 0.006, 0.003, 80)
 						p\speed = 0.02
 						p\A = 0.8
 						p\Achange = -0.01
@@ -1174,3 +1174,5 @@ Function SetNPCFrame(n.NPCs, frame#)
 	
 	n\Frame = frame
 End Function
+;~IDEal Editor Parameters:
+;~C#Blitz3D

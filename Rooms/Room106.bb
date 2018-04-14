@@ -238,7 +238,7 @@ Function UpdateEventRoom106(e.Events)
 					Curr106\Idle = False
 					Curr106\State = -11
 					e\EventState = 2
-					Exit
+					Return
 				EndIf
 				
 				ShouldPlay = 10
@@ -292,7 +292,7 @@ Function UpdateEventRoom106(e.Events)
 						Curr106\State = -11
 						
 						e\EventState = 2
-						Exit
+						Return
 					EndIf
 				EndIf
 				
@@ -311,3 +311,6 @@ Function UpdateEventRoom106(e.Events)
 	;[End Block]
 End Function
 
+
+;~IDEal Editor Parameters:
+;~C#Blitz3D

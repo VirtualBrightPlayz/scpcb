@@ -483,7 +483,8 @@ Global StaminaMeterIMG% = LoadImage_Strict("GFX\staminameter.jpg")
 Global KeypadHUD =  LoadImage_Strict("GFX\keypadhud.jpg")
 MaskImage(KeypadHUD, 255,0,255)
 
-Global Panel294 = LoadImage_Strict("GFX\294panel.jpg"), Using294%, Input294$
+;TODO: cleanup
+Global Panel294 = LoadImage_Strict("GFX\294panel.jpg"), Using294.MarkedForRemoval, Input294$
 MaskImage(Panel294, 255,0,255)
 
 DrawLoading(35, True)
@@ -1089,7 +1090,7 @@ Function UpdateGame()
 	FPSfactor = Max(Min(ElapsedTime * 70, 5.0), 0.2)
 	FPSfactor2 = FPSfactor
 	
-	If MenuOpen Or InvOpen Or OtherOpen<>Null Or ConsoleOpen Or SelectedDoor <> Null Or SelectedScreen <> Null Or Using294 Then FPSfactor = 0
+	If IsPaused() Then FPSfactor = 0
 	
 	If userOptions\framelimit > 0 Then
 	    ;Framelimit
@@ -3554,7 +3555,7 @@ Function DrawPauseMenu()
 					
 					y = y + 30*MenuScale
 					
-					userOptions\soundVolume = (SlideBar(x + 250*MenuScale, y-4*MenuScale, 100*MenuScale, userOptions\soundVolume*100.0)/100.0)
+					userOptions\SoundVolume = (SlideBar(x + 250*MenuScale, y-4*MenuScale, 100*MenuScale, userOptions\SoundVolume*100.0)/100.0)
 					Color 255,255,255
 					Text(x, y, "Sound volume:")
 					;[End Block]
@@ -3581,11 +3582,11 @@ Function DrawPauseMenu()
 					Text(x, y + 20 * MenuScale, "Move Forward")
 					InputBox(x + 200 * MenuScale, y + 20 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(keyBinds\up,210)),5)		
 					Text(x, y + 40 * MenuScale, "Strafe Left")
-					InputBox(x + 200 * MenuScale, y + 40 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(keyBinds\left,210)),3)	
+					InputBox(x + 200 * MenuScale, y + 40 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(keyBinds\Left,210)),3)	
 					Text(x, y + 60 * MenuScale, "Move Backward")
 					InputBox(x + 200 * MenuScale, y + 60 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(keyBinds\down,210)),6)				
 					Text(x, y + 80 * MenuScale, "Strafe Right")
-					InputBox(x + 200 * MenuScale, y + 80 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(keyBinds\right,210)),4)
+					InputBox(x + 200 * MenuScale, y + 80 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(keyBinds\Right,210)),4)
 					
 					Text(x, y + 100 * MenuScale, "Manual Blink")
 					InputBox(x + 200 * MenuScale, y + 100 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(keyBinds\blink,210)),7)				
@@ -3606,9 +3607,9 @@ Function DrawPauseMenu()
 					If key <> 0 Then
 						Select SelectedInputBox
 							Case 3
-								keyBinds\left = key
+								keyBinds\Left = key
 							Case 4
-								keyBinds\right = key
+								keyBinds\Right = key
 							Case 5
 								keyBinds\up = key
 							Case 6
@@ -4283,17 +4284,18 @@ Function RenderWorld2()
 	CameraProjMode ark_blur_cam,0
 	CameraProjMode mainPlayer\cam,1
 	
-	If WearingNightVision>0 And WearingNightVision<3 Then
-		AmbientLight Min(Brightness*2,255), Min(Brightness*2,255), Min(Brightness*2,255)
-	ElseIf WearingNightVision=3
-		AmbientLight 255,255,255
-	ElseIf mainPlayer\currRoom<>Null
-		If (mainPlayer\currRoom\RoomTemplate\Name<>"173") And (mainPlayer\currRoom\RoomTemplate\Name<>"exit1") And (mainPlayer\currRoom\RoomTemplate\Name<>"gatea") Then
-			AmbientLight Brightness, Brightness, Brightness
-		EndIf
-	EndIf
+	;TODO: fix
+	;If WearingNightVision>0 And WearingNightVision<3 Then
+	;	AmbientLight Min(Brightness*2,255), Min(Brightness*2,255), Min(Brightness*2,255)
+	;ElseIf WearingNightVision=3
+	;	AmbientLight 255,255,255
+	;ElseIf mainPlayer\currRoom<>Null
+	;	If (mainPlayer\currRoom\RoomTemplate\Name<>"173") And (mainPlayer\currRoom\RoomTemplate\Name<>"exit1") And (mainPlayer\currRoom\RoomTemplate\Name<>"gatea") Then
+	;		AmbientLight Brightness, Brightness, Brightness
+	;	EndIf
+	;EndIf
 	
-	IsNVGBlinking% = False
+	;IsNVGBlinking% = False
 	HideEntity NVBlink
 	
 	Local hasBattery% = 2
@@ -4325,7 +4327,7 @@ Function RenderWorld2()
 	EndIf
 	
 	If hasBattery=0 And WearingNightVision<>3
-		IsNVGBlinking% = True
+		;IsNVGBlinking% = True
 		ShowEntity NVBlink%
 	EndIf
 	
@@ -4339,7 +4341,7 @@ Function RenderWorld2()
 					np\NVY = EntityY(np\Collider,True)
 					np\NVZ = EntityZ(np\Collider,True)
 				Next
-				IsNVGBlinking% = True
+				;IsNVGBlinking% = True
 				ShowEntity NVBlink%
 				If NVTimer<=-10
 				NVTimer = 600.0
@@ -4385,11 +4387,11 @@ Function RenderWorld2()
 							yvalue# = Sin(pitchvalue)
 						EndIf
 						
-						If (Not IsNVGBlinking%)
-						Text userOptions\screenWidth / 2 + xvalue * (userOptions\screenWidth / 2),userOptions\screenHeight / 2 - yvalue * (userOptions\screenHeight / 2),np\NVName,True,True
-						Text userOptions\screenWidth / 2 + xvalue * (userOptions\screenWidth / 2),userOptions\screenHeight / 2 - yvalue * (userOptions\screenHeight / 2) + 30.0 * MenuScale,f2s(dist,1)+" m",True,True
+						If (Not IsNVGBlinking%) Then
+							Text userOptions\screenWidth / 2 + xvalue * (userOptions\screenWidth / 2),userOptions\screenHeight / 2 - yvalue * (userOptions\screenHeight / 2),np\NVName,True,True
+							Text userOptions\screenWidth / 2 + xvalue * (userOptions\screenWidth / 2),userOptions\screenHeight / 2 - yvalue * (userOptions\screenHeight / 2) + 30.0 * MenuScale,f2s(dist,1)+" m",True,True
+						EndIf
 					EndIf
-				EndIf
 				EndIf
 			Next
 			
@@ -4588,7 +4590,7 @@ Function ControlSoundVolume()
 			;If snd\channels[i]<>0 Then
 			;	ChannelVolume snd\channels[i],userOptions\soundVolume#
 			;Else
-				ChannelVolume snd\channels[i],userOptions\soundVolume#
+				ChannelVolume snd\channels[i],userOptions\SoundVolume#
 			;EndIf
 		Next
 	Next
@@ -4632,3 +4634,5 @@ End Function
 Function ScaledMouseY%()
 	Return Float(MouseY())*Float(userOptions\screenHeight)/Float(RealGraphicHeight)
 End Function
+;~IDEal Editor Parameters:
+;~C#Blitz3D

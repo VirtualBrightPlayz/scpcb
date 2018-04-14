@@ -323,7 +323,7 @@ Function UpdateEventPocketdimension(e.Events)
 							PointEntity(pvt, e\room\Objects[20])
 							TurnEntity(pvt, 90, 0, 0)
 							mainPlayer\headPitch = CurveAngle(EntityPitch(pvt), mainPlayer\headPitch + 90.0, 10.0)
-							mainPlayer\headPitch=user_camera_pitch-90
+							mainPlayer\headPitch=mainPlayer\headPitch-90
 							RotateEntity(mainPlayer\collider, EntityPitch(mainPlayer\collider), CurveAngle(EntityYaw(pvt), EntityYaw(mainPlayer\collider), 10), 0)
 							FreeEntity pvt
 						EndIf
@@ -400,7 +400,8 @@ Function UpdateEventPocketdimension(e.Events)
 						
 						mainPlayer\sanity895 = Max(mainPlayer\sanity895 - FPSfactor / temp / 8,-1000)
 						
-						e\SoundCHN = LoopSound2(OldManSFX(4), e\SoundCHN, mainPlayer\cam, e\room\Objects[17], 5.0, 0.6)
+						;TODO: fix
+						;e\SoundCHN = LoopSound2(OldManSFX(4), e\SoundCHN, mainPlayer\cam, e\room\Objects[17], 5.0, 0.6)
 						
 						mainPlayer\camZoom = Max(mainPlayer\camZoom, (Sin(Float(MilliSecs2()) / 20.0)+1.0)*15.0*Max((6.0-temp)/6.0,0.0))
 						
@@ -409,7 +410,7 @@ Function UpdateEventPocketdimension(e.Events)
 						PointEntity(pvt, e\room\Objects[17])
 						TurnEntity(pvt, 90, 0, 0)
 						mainPlayer\headPitch = CurveAngle(EntityPitch(pvt), mainPlayer\headPitch + 90.0, Min(Max(15000.0 / (-mainPlayer\sanity895), 15.0), 500.0))
-						mainPlayer\headPitch=user_camera_pitch-90
+						mainPlayer\headPitch=mainPlayer\headPitch-90
 						RotateEntity(mainPlayer\collider, EntityPitch(mainPlayer\collider), CurveAngle(EntityYaw(pvt), EntityYaw(mainPlayer\collider), Min(Max(15000.0 / (-mainPlayer\sanity895), 15.0), 500.0)), 0)
 						FreeEntity pvt
 						
@@ -430,7 +431,8 @@ Function UpdateEventPocketdimension(e.Events)
 						If temp<640*RoomScale
 							mainPlayer\blurTimer = (640*RoomScale-temp)*3000
 							
-							e\SoundCHN2 = LoopSound2(DecaySFX(Rand(1, 3)), e\SoundCHN2, mainPlayer\cam, mainPlayer\collider, 2.0, (640*RoomScale-temp)*Abs(mainPlayer\moveSpeed)*100)
+							;TODO: fix
+							;e\SoundCHN2 = LoopSound2(DecaySFX(Rand(1, 3)), e\SoundCHN2, mainPlayer\cam, mainPlayer\collider, 2.0, (640*RoomScale-temp)*Abs(mainPlayer\moveSpeed)*100)
 							mainPlayer\moveSpeed = CurveValue(0.0, mainPlayer\moveSpeed, temp*10)
 							
 							If temp < 130*RoomScale Then
@@ -516,7 +518,8 @@ Function UpdateEventPocketdimension(e.Events)
 				
 				Select Rand(25)
 					Case 1,2,3,4
-						PlaySound_Strict(OldManSFX(3))
+						;TODO: fix
+						;PlaySound_Strict(OldManSFX(3))
 						
 						pvt = CreatePivot()
 						PositionEntity(pvt, EntityX(mainPlayer\collider), EntityY(mainPlayer\collider), EntityZ(mainPlayer\collider))
@@ -534,7 +537,8 @@ Function UpdateEventPocketdimension(e.Events)
 					Case 5,6,7,8,9,10 
 						e\EventState2=1
 						mainPlayer\blinkTimer = -10
-						PlaySound_Strict(OldManSFX(3))
+						;TODO: fix
+						;PlaySound_Strict(OldManSFX(3))
 						
 						PositionEntity(mainPlayer\collider, EntityX(e\room\Objects[8],True), 0.5, EntityZ(e\room\Objects[8],True))
 						ResetEntity mainPlayer\collider
@@ -573,7 +577,8 @@ Function UpdateEventPocketdimension(e.Events)
 						e\EventState3=1
 						mainPlayer\blinkTimer = -10
 						
-						PlaySound_Strict(OldManSFX(3))
+						;TODO: fix
+						;PlaySound_Strict(OldManSFX(3))
 						
 						PositionEntity(mainPlayer\collider, EntityX(e\room\Objects[8],True), 2288*RoomScale, EntityZ(e\room\Objects[8],True))
 						ResetEntity mainPlayer\collider
@@ -660,3 +665,6 @@ Function UpdateEventPocketdimension(e.Events)
 	;[End Block]
 End Function
 
+
+;~IDEal Editor Parameters:
+;~C#Blitz3D

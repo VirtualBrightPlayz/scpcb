@@ -552,7 +552,7 @@ Function MovePlayer()
 			de.decals = CreateDecal(Rand(15,16), PickedX(), PickedY()+0.005, PickedZ(), 90, Rand(360), 0)
 			de\size = Rnd(0.03,0.08)*Min(mainPlayer\injuries,3.0) : EntityAlpha(de\obj, 1.0) : ScaleSprite de\obj, de\size, de\size
 			tempchn% = PlaySound_Strict (DripSFX(Rand(0,2)))
-			ChannelVolume tempchn, Rnd(0.0,0.8)*userOptions\soundVolume
+			ChannelVolume tempchn, Rnd(0.0,0.8)*userOptions\SoundVolume
 			ChannelPitch tempchn, Rand(20000,30000)
 			
 			FreeEntity pvt
@@ -603,27 +603,27 @@ Function MouseLook()
 	Local i%
 	
 	Local wearingGasMask%
-	wearingGasMask = IsPlayerWearing(mainPlayer,"gasmask",WORNITEM_HEAD_SLOT)
+	wearingGasMask = IsPlayerWearing(mainPlayer,"gasmask")
 	If Not wearingGasMask Then
-		wearingGasMask = IsPlayerWearing(mainPlayer,"supergasmask",WORNITEM_HEAD_SLOT)*2
+		wearingGasMask = IsPlayerWearing(mainPlayer,"supergasmask")*2
 	EndIf
 	
 	Local wearingHazmat%
-	wearingHazmat = IsPlayerWearing(mainPlayer,"hazmatsuit",WORNITEM_BODY_SLOT)
+	wearingHazmat = IsPlayerWearing(mainPlayer,"hazmatsuit")
 	If Not wearingHazmat Then
-		wearingHazmat = IsPlayerWearing(mainPlayer,"hazmatsuit2",WORNITEM_BODY_SLOT)*2
+		wearingHazmat = IsPlayerWearing(mainPlayer,"hazmatsuit2")*2
 	EndIf
 	
 	Local wearing1499%
-	wearing1499 = IsPlayerWearing(mainPlayer,"scp1499",WORNITEM_HEAD_SLOT)
+	wearing1499 = IsPlayerWearing(mainPlayer,"scp1499")
 	If Not wearing1499 Then
-		wearing1499 = IsPlayerWearing(mainPlayer,"super1499",WORNITEM_HEAD_SLOT)*2
+		wearing1499 = IsPlayerWearing(mainPlayer,"super1499")*2
 	EndIf
 	
 	Local wearingNightVision%
-	wearingNightVision = IsPlayerWearing(mainPlayer,"nvgoggles",WORNITEM_HEAD_SLOT)
+	wearingNightVision = IsPlayerWearing(mainPlayer,"nvgoggles")
 	If Not wearingNightVision Then
-		wearingNightVision = IsPlayerWearing(mainPlayer,"supernv",WORNITEM_HEAD_SLOT)*2
+		WearingNightVision = IsPlayerWearing(mainPlayer,"supernv")*2
 	EndIf
 	
 	mainPlayer\camShake = Max(mainPlayer\camShake - (FPSfactor / 10), 0)
@@ -673,8 +673,8 @@ Function MouseLook()
 		If Int(mouse_y_speed_1) = Int(Nan1) Then mouse_y_speed_1 = 0
 		
 		;TODO: CHANGE THESE NAMES
-		Local the_yaw# = ((mouse_x_speed_1#)) * mouselook_x_inc# / (1.0+IsPlayerWearing(mainPlayer,"vest",WORNITEM_BODY_SLOT))
-		Local the_pitch# = ((mouse_y_speed_1#)) * mouselook_y_inc# / (1.0+IsPlayerWearing(mainPlayer,"vest",WORNITEM_BODY_SLOT))
+		Local the_yaw# = ((mouse_x_speed_1#)) * mouselook_x_inc# / (1.0+IsPlayerWearing(mainPlayer,"vest"))
+		Local the_pitch# = ((mouse_y_speed_1#)) * mouselook_y_inc# / (1.0+IsPlayerWearing(mainPlayer,"vest"))
 		
 		TurnEntity mainPlayer\collider, 0.0, -the_yaw#, 0.0 ; Turn the user on the Y (yaw) axis.
 		mainPlayer\headPitch# = mainPlayer\headPitch# + the_pitch#
@@ -755,7 +755,7 @@ Function MouseLook()
 		If wearing1499 = 2 Then mainPlayer\stamina = Min(100, mainPlayer\stamina + (100.0-mainPlayer\stamina)*0.01*FPSfactor)
 		If wearingHazmat = 2 Then 
 			mainPlayer\stamina = Min(100, mainPlayer\stamina + (100.0-mainPlayer\stamina)*0.01*FPSfactor)
-		ElseIf WearingHazmat=1
+		ElseIf wearingHazmat=1
 			mainPlayer\stamina = Min(60, mainPlayer\stamina)
 		EndIf
 		
@@ -764,12 +764,12 @@ Function MouseLook()
 		HideEntity(mainPlayer\overlays[OVERLAY_GASMASK])
 	End If
 	
-	If (Not WearingNightVision=0) Then
+	If (Not wearingNightVision=0) Then
 		ShowEntity(mainPlayer\overlays[OVERLAY_NIGHTVISION])
-		If WearingNightVision=2 Then
+		If wearingNightVision=2 Then
 			EntityColor(mainPlayer\overlays[OVERLAY_NIGHTVISION], 0,100,255)
 			AmbientLightRooms(15)
-		ElseIf WearingNightVision=3 Then
+		ElseIf wearingNightVision=3 Then
 			EntityColor(mainPlayer\overlays[OVERLAY_NIGHTVISION], 255,0,0)
 			AmbientLightRooms(15)
 		Else
@@ -784,7 +784,7 @@ Function MouseLook()
 	EndIf
 	
 	;TODO: cleanup
-	If IsPlayerWearing(mainPlayer,"scp178",WORNITEM_HEAD_SLOT) Then
+	If IsPlayerWearing(mainPlayer,"scp178") Then
 		If Music(14)=0 Then Music(14)=LoadSound_Strict("SFX\Music\178.ogg")
 		ShouldPlay = 14
 		ShowEntity(mainPlayer\overlays[OVERLAY_178])
@@ -794,7 +794,7 @@ Function MouseLook()
 	
 	canSpawn178%=0
 	
-	If Not IsPlayerWearing(mainPlayer,"scp178",WORNITEM_HEAD_SLOT) Then
+	If Not IsPlayerWearing(mainPlayer,"scp178") Then
 		For n.NPCs = Each NPCs
 			If (n\NPCtype = NPCtype178) Then
 				If n\State3>0 Then canSpawn178=1
@@ -807,7 +807,7 @@ Function MouseLook()
 		Next
 	EndIf
 	
-	If (canSpawn178=1) Or IsPlayerWearing(mainPlayer,"scp178",WORNITEM_HEAD_SLOT) Then
+	If (canSpawn178=1) Or IsPlayerWearing(mainPlayer,"scp178") Then
 		tempint%=0
 		For n.NPCs = Each NPCs
 			If (n\NPCtype = NPCtype178) Then
@@ -859,7 +859,7 @@ Function DeEquip(player.Player,invSlot%)
 End Function
 
 Function IsPlayerWearing(player.Player,templateName$)
-	Local it.ItemTemplates = FindItemTemplate(templateName)
+	Local it.ItemTemplates = FindItemTemplate("",templateName)
 	If it=Null Then Return False
 	Local slot% = it\invSlot
 	If slot=WORNITEM_SLOT_NONE Then Return False
@@ -873,7 +873,7 @@ Function Kill(player.Player)
 	If player\godMode Then Return
 	
 	If player\breathChn <> 0 Then
-		If ChannelPlaying(player\breathCHN) Then StopChannel(player\breathCHN)
+		If ChannelPlaying(player\breathChn) Then StopChannel(player\breathChn)
 	EndIf
 	
 	If Not player\dead Then
@@ -893,3 +893,5 @@ Function Kill(player.Player)
 		RotateEntity(player\head, 0, EntityYaw(player\cam), 0)		
 	EndIf
 End Function
+;~IDEal Editor Parameters:
+;~C#Blitz3D

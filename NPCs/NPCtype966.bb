@@ -55,7 +55,7 @@ Function UpdateNPCtype966(n.NPCs)
         PositionEntity n\obj,EntityX(n\Collider,True),EntityY(n\Collider,True)-0.2,EntityZ(n\Collider,True)
         RotateEntity n\obj,-90.0,EntityYaw(n\Collider),0.0
         
-        If (Not IsPlayerWearing(mainPlayer,"nvgoggles",WORNITEM_HEAD_SLOT)) Then
+        If (Not IsPlayerWearing(mainPlayer,"nvgoggles")) Then
             HideEntity n\obj
             If dist<1 And n\Reload <= 0 And MsgTimer <= 0 Then
                 Select Rand(6)
@@ -150,7 +150,7 @@ Function UpdateNPCtype966(n.NPCs)
                 If n\State3<900 Then
                     mainPlayer\blurTimer = ((Sin(MilliSecs2()/50)+1.0)*200)/dist
                     
-                    If (IsPlayerWearing(mainPlayer,"nvgoggles",WORNITEM_HEAD_SLOT)) Then GiveAchievement(Achv966)
+                    If (IsPlayerWearing(mainPlayer,"nvgoggles")) Then GiveAchievement(Achv966)
                     
                     If dist<16 Then
                         mainPlayer\blinkEffect = Max(mainPlayer\blinkEffect, 1.5)
@@ -317,3 +317,5 @@ Function UpdateNPCtype966(n.NPCs)
         EndIf
     EndIf
 End Function
+;~IDEal Editor Parameters:
+;~C#Blitz3D

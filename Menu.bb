@@ -9,7 +9,8 @@ Const GAMESTATE_PLAYING% = 1
 Const GAMESTATE_PAUSED% = 2
 Const GAMESTATE_CONSOLE% = 3
 Const GAMESTATE_INVENTORY% = 4
-Const GAMESTATE_ENDING% = 5
+Const GAMESTATE_SCP294% = 5
+Const GAMESTATE_ENDING% = 6
 
 ;Main menu substates
 Const GAMESUBSTATE_MAINMENU_MAIN% = 0
@@ -25,8 +26,12 @@ Const GAMESUBSTATE_PAUSED_OPTIONS% = 2
 Const GAMESUBSTATE_PAUSED_ACHIEVEMENTS% = 3
 
 Global CurrGameState% = GAMESTATE_MAINMENU
-Global CurrGameSubstate% = GAMESUBSTATE_MAINMENU_START
+Global CurrGameSubstate% = GAMESUBSTATE_MAINMENU_MAIN
 Global CurrGameStatePage% = 0
+
+Function IsPaused()
+	Return CurrGameState <> GAMESTATE_PLAYING
+End Function
 
 Global MsgTimer#, Msg$, DeathMSG$
 
@@ -620,7 +625,7 @@ Function UpdateMainMenu()
 					
 					y = y + 40*MenuScale
 					
-					userOptions\soundVolume = (SlideBar(x + 310*MenuScale, y-4*MenuScale, 150*MenuScale, userOptions\soundVolume*100.0)/100.0)
+					userOptions\SoundVolume = (SlideBar(x + 310*MenuScale, y-4*MenuScale, 150*MenuScale, userOptions\SoundVolume*100.0)/100.0)
 					Color 255,255,255
 					Text(x + 20 * MenuScale, y, "Sound volume:")
 					;[End Block]
@@ -1505,3 +1510,5 @@ Function DrawQuickLoading()
 	EndIf
 	
 End Function
+;~IDEal Editor Parameters:
+;~C#Blitz3D

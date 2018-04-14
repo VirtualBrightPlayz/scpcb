@@ -339,8 +339,6 @@ Function UpdateEvents()
 				UpdateEvent008(e)
 			Case "room106"
 				UpdateEventRoom106(e)
-			Case "pj"
-				UpdateEventPj(e)
 			Case "914"
 				UpdateEvent914(e)
 			Case "toiletguard"
@@ -415,9 +413,11 @@ Function UpdateEvents()
 				Next
 			EndIf
 			mainPlayer\lightFlash = Min((ExplosionTimer-160.0)/40.0,2.0)
-			If ExplosionTimer > 160 Then Kill(mainPlayer) : EndingTimer = Min(mainPlayer\fallTimer,-0.1)
+			If ExplosionTimer > 160 Then Kill(mainPlayer); : EndingTimer = Min(mainPlayer\fallTimer,-0.1)
 			If ExplosionTimer > 500 Then ExplosionTimer = 0
 		EndIf
 		
 	EndIf
 End Function
+;~IDEal Editor Parameters:
+;~C#Blitz3D

@@ -767,7 +767,7 @@ Function UpdateEvent914(e.Events)
 						Case "1:1"
 							userOptions\invertMouseY = (Not userOptions\invertMouseY)
 						Case "fine", "very fine"
-							SuperMan = True
+							mainPlayer\superMan = 1.0
 					End Select
 					mainPlayer\blurTimer = 1000
 					PositionEntity(mainPlayer\collider, EntityX(e\room\Objects[3], True), EntityY(e\room\Objects[3], True) + 1.0, EntityZ(e\room\Objects[3], True))
@@ -786,3 +786,6 @@ Function UpdateEvent914(e.Events)
 	;[End Block]
 End Function
 
+
+;~IDEal Editor Parameters:
+;~C#Blitz3D
