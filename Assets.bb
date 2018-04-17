@@ -241,7 +241,8 @@ Function InitNewGame()
 	
 	HideDistance# = 15.0
 	
-	HeartBeatRate = 70
+	mainPlayer\heartbeatIntensity = 70
+	;HeartBeatRate = 70
 	
 	AccessCode = 0
 	For i = 0 To 3
@@ -479,8 +480,6 @@ Function NullGame()
 	
 	DeletePlayer(mainPlayer) : mainPlayer = Null
 	
-	UnableToMove% = False
-	
 	QuickLoadPercent = -1
 	QuickLoadPercent_DisplayTimer# = 0
 	
@@ -527,27 +526,17 @@ Function NullGame()
 	For i = 0 To MAXACHIEVEMENTS-1
 		Achievements(i)=0
 	Next
-	RefinedItems = 0
+	;RefinedItems = 0 ;TODO: reimplement?
 	
 	ConsoleInput = ""
-	ConsoleOpen = False
+	;ConsoleOpen = False
 	
-	EyeIrritation = 0
-	EyeStuck = 0
-	
-	ShouldPlay = 0
-	
-	InfiniteStamina% = False
+	;TODO: fix
+	;EyeIrritation = 0
+	;EyeStuck = 0
 	
 	Msg = ""
 	MsgTimer = 0
-	
-	mainPlayer\selectedItem = Null
-	
-	DeleteInventory(mainPlayer\inventory)
-	mainPlayer\selectedItem = Null
-	
-	mainPlayer\closestButton = 0
 	
 	For d.Doors = Each Doors
 		Delete d
@@ -660,3 +649,5 @@ Function NullGame()
 	Next
 	
 End Function
+;~IDEal Editor Parameters:
+;~C#Blitz3D

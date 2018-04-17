@@ -214,7 +214,7 @@ Function CreatePlayer.Player()
 	EntityAlpha player\overlays[OVERLAY_BLACK], 0.0
 	
 	Local lightTexture = CreateTexture(1024, 1024, 1 + 2)
-	SetBuffer TextureBuffer(LightTexture)
+	SetBuffer TextureBuffer(lightTexture)
 	ClsColor 255, 255, 255
 	Cls
 	ClsColor 0, 0, 0
@@ -623,7 +623,7 @@ Function MouseLook()
 	Local wearingNightVision%
 	wearingNightVision = IsPlayerWearing(mainPlayer,"nvgoggles")
 	If Not wearingNightVision Then
-		WearingNightVision = IsPlayerWearing(mainPlayer,"supernv")*2
+		wearingNightVision = IsPlayerWearing(mainPlayer,"supernv")*2
 	EndIf
 	
 	mainPlayer\camShake = Max(mainPlayer\camShake - (FPSfactor / 10), 0)
@@ -894,4 +894,5 @@ Function Kill(player.Player)
 	EndIf
 End Function
 ;~IDEal Editor Parameters:
+;~F#20#7A#F0#131#259
 ;~C#Blitz3D

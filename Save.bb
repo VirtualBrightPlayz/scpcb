@@ -1,7 +1,7 @@
 
 
 Function SaveGame(file$)
-	If Not Playable Then Return ;don't save if the player can't move at all
+	If mainPlayer\disableControls Then Return ;don't save if the player can't move at all
 	
 	If mainPlayer\dropSpeed#>0.02*FPSfactor Or mainPlayer\dropSpeed#<-0.02*FPSfactor Then Return
 	
@@ -1852,3 +1852,6 @@ Function LoadMap(file$)
 		Next
 	Next
 End Function
+
+;~IDEal Editor Parameters:
+;~C#Blitz3D

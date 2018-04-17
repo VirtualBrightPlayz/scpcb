@@ -179,9 +179,9 @@ Function Use294()
 			
 		EndIf ;if mousehit1
 		
-		If MouseHit2 And GameState=GAMESTATE_SCP294 Then 
+		If MouseHit2 And CurrGameState=GAMESTATE_SCP294 Then 
 			HidePointer()
-			GameState = GAMESTATE_PLAYING
+			CurrGameState = GAMESTATE_PLAYING
 			Input294 = ""
 		EndIf
 		
@@ -191,7 +191,7 @@ Function Use294()
 		If Not ChannelPlaying(mainPlayer\currRoom\SoundCHN) Then
 			If Input294 <> "OUT OF RANGE" Then
 				HidePointer()
-				GameState = GAMESTATE_SCP294
+				CurrGameState = GAMESTATE_SCP294
 			EndIf
 			Input294=""
 			mainPlayer\currRoom\SoundCHN=0
@@ -214,7 +214,7 @@ Function UpdateEventRoom2cafeteria(e.Events)
 
 	;[Block]
 	If mainPlayer\currRoom = e\room Then
-		If GameState<>GAMESTATE_SCP294 Then
+		If CurrGameState<>GAMESTATE_SCP294 Then
 			If EntityDistance(e\room\Objects[0], mainPlayer\collider)<1.5 Then
 				GiveAchievement(Achv294)
 				If EntityInView(e\room\Objects[0], mainPlayer\cam) Then
@@ -232,7 +232,7 @@ Function UpdateEventRoom2cafeteria(e.Events)
 							EndIf
 						Next
 						If temp Then
-							GameState = GAMESTATE_SCP294
+							CurrGameState = GAMESTATE_SCP294
 							MouseHit1=False
 						EndIf
 					EndIf

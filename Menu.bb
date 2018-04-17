@@ -25,6 +25,7 @@ Const GAMESUBSTATE_PAUSED_DEAD% = 1
 Const GAMESUBSTATE_PAUSED_OPTIONS% = 2
 Const GAMESUBSTATE_PAUSED_ACHIEVEMENTS% = 3
 
+Global GameState.MarkedForRemoval
 Global CurrGameState% = GAMESTATE_MAINMENU
 Global CurrGameSubstate% = GAMESUBSTATE_MAINMENU_MAIN
 Global CurrGameStatePage% = 0

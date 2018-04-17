@@ -340,9 +340,7 @@ Type Items
 	Field invimg%
 	Field WontColl% = False
 	Field xspeed#,zspeed#
-	Field SecondInv.Items[20]
 	Field ID%
-	Field invSlots%
 	
 	Field inventory.Inventory = Null
 End Type 
@@ -441,7 +439,10 @@ Function CreateItem.Items(name$, tempname$, x#, y#, z#, r%=0,g%=0,b%=0,a#=1.0,in
 		i\invimg = i\itemtemplate\invimg2
 	EndIf
 	
-	i\invSlots=invSlots
+	i\inventory = Null
+	If invSlots>0 Then
+		i\inventory = CreateInventory(invSlots)
+	EndIf
 	
 	i\ID=LastItemID+1
 	LastItemID=i\ID
@@ -702,5 +703,5 @@ Function DropItem(item.Items,playDropSound%=True)
 	;End Select	
 End Function
 ;~IDEal Editor Parameters:
-;~F#17D#1C3#1D4#22D#284
+;~F#1F#75#84#141#15C#162#168#16F#1D5#22E#285
 ;~C#Blitz3D
