@@ -3588,7 +3588,7 @@ Function DrawPauseMenu()
 						DrawLoading(0)
 						
 						CurrGameState = GAMESTATE_PLAYING
-						LoadGameQuick(SavePath + CurrSave + "\")
+						LoadGame(SavePath + CurrSave + "\",True)
 						
 						MoveMouse viewport_center_x,viewport_center_y
 						SetFont Font1
@@ -3642,7 +3642,7 @@ Function DrawPauseMenu()
 					DrawLoading(0)
 					
 					CurrGameState = GAMESTATE_PLAYING
-					LoadGameQuick(SavePath + CurrSave + "\")
+					LoadGame(SavePath + CurrSave + "\",True)
 					
 					MoveMouse viewport_center_x,viewport_center_y
 					SetFont Font1
@@ -3778,41 +3778,41 @@ End Function
 Function UpdateInfect()
 	Local temp#, i%, r.Rooms
 	
-	If Infect>0 Then
-		ShowEntity InfectOverlay
+	If mainPlayer\infect008>0 Then
+		ShowEntity mainPlayer\overlays[OVERLAY_008]
 		
-		If Infect < 93.0 Then
-			temp=Infect
-			Infect = Min(Infect+FPSfactor*0.002,100)
+		If mainPlayer\infect008 < 93.0 Then
+			temp=mainPlayer\infect008
+			mainPlayer\infect008 = Min(mainPlayer\infect008+FPSfactor*0.002,100)
 			
-			mainPlayer\blurTimer = Max(Infect*3*(2.0-mainPlayer\crouchState),mainPlayer\blurTimer)
+			mainPlayer\blurTimer = Max(mainPlayer\infect008*3*(2.0-mainPlayer\crouchState),mainPlayer\blurTimer)
 			
-			HeartBeatRate = Max(HeartBeatRate, 100)
-			HeartBeatVolume = Max(HeartBeatVolume, Infect/120.0)
+			;HeartBeatRate = Max(HeartBeatRate, 100)
+			mainPlayer\heartbeatIntensity = Max(100, mainPlayer\infect008/120.0)
 			
-			EntityAlpha InfectOverlay, Min(((Infect*0.2)^2)/1000.0,0.5) * (Sin(MilliSecs2()/8.0)+2.0)
+			EntityAlpha mainPlayer\overlays[OVERLAY_008], Min(((mainPlayer\infect008*0.2)^2)/1000.0,0.5) * (Sin(MilliSecs2()/8.0)+2.0)
 			
 			For i = 0 To 6
-				If Infect>i*15+10 And temp =< i*15+10 Then
+				If mainPlayer\infect008>i*15+10 And temp =< i*15+10 Then
 					PlaySound_Strict LoadTempSound("SFX\SCP\008\Voices"+i+".ogg")
 				EndIf
 			Next
 			
-			If Infect > 20 And temp =< 20.0 Then
+			If mainPlayer\infect008 > 20 And temp =< 20.0 Then
 				Msg = "You feel kinda feverish."
 				MsgTimer = 70*6
-			ElseIf Infect > 40 And temp =< 40.0
+			ElseIf mainPlayer\infect008 > 40 And temp =< 40.0
 				Msg = "You feel nauseated."
 				MsgTimer = 70*6
-			ElseIf Infect > 60 And temp =< 60.0
+			ElseIf mainPlayer\infect008 > 60 And temp =< 60.0
 				Msg = "The nausea's getting worse."
 				MsgTimer = 70*6
-			ElseIf Infect > 80 And temp =< 80.0
+			ElseIf mainPlayer\infect008 > 80 And temp =< 80.0
 				Msg = "You feel very faint."
 				MsgTimer = 70*6
-			ElseIf Infect =>91.5
-				mainPlayer\blinkTimer = Max(Min(-10*(Infect-91.5),mainPlayer\blinkTimer),-10)
-				If Infect >= 92.7 And temp < 92.7 Then
+			ElseIf mainPlayer\infect008 =>91.5
+				mainPlayer\blinkTimer = Max(Min(-10*(mainPlayer\infect008-91.5),mainPlayer\blinkTimer),-10)
+				If mainPlayer\infect008 >= 92.7 And temp < 92.7 Then
 					For r.Rooms = Each Rooms
 						If r\RoomTemplate\Name="008" Then
 							PositionEntity mainPlayer\collider, EntityX(r\Objects[7],True),EntityY(r\Objects[7],True),EntityZ(r\Objects[7],True),True
@@ -3831,14 +3831,14 @@ Function UpdateInfect()
 				EndIf
 			EndIf
 		Else
-			temp=Infect
-			Infect = Min(Infect+FPSfactor*0.004,100)
+			temp=mainPlayer\infect008
+			mainPlayer\infect008 = Min(mainPlayer\infect008+FPSfactor*0.004,100)
 			
-			If Infect < 94.7 Then
-				EntityAlpha InfectOverlay, 0.5 * (Sin(MilliSecs2()/8.0)+2.0)
+			If mainPlayer\infect008 < 94.7 Then
+				EntityAlpha mainPlayer\overlays[OVERLAY_008], 0.5 * (Sin(MilliSecs2()/8.0)+2.0)
 				mainPlayer\blurTimer = 900
 				
-				If Infect > 94.5 Then mainPlayer\blinkTimer = Max(Min(-50*(Infect-94.5),mainPlayer\blinkTimer),-10)
+				If mainPlayer\infect008 > 94.5 Then mainPlayer\blinkTimer = Max(Min(-50*(mainPlayer\infect008-94.5),mainPlayer\blinkTimer),-10)
 				PointEntity mainPlayer\collider, mainPlayer\currRoom\NPC[0]\Collider
 				PointEntity mainPlayer\currRoom\NPC[0]\Collider, mainPlayer\collider
 				mainPlayer\forceMove = 0.4
@@ -3846,9 +3846,9 @@ Function UpdateInfect()
 				mainPlayer\bloodloss = 0
 				
 				Animate2(mainPlayer\currRoom\NPC[0]\obj, AnimTime(mainPlayer\currRoom\NPC[0]\obj), 357, 381, 0.3)
-			ElseIf Infect < 98.5
+			ElseIf mainPlayer\infect008 < 98.5
 				
-				EntityAlpha InfectOverlay, 0.5 * (Sin(MilliSecs2()/5.0)+2.0)
+				EntityAlpha mainPlayer\overlays[OVERLAY_008], 0.5 * (Sin(MilliSecs2()/5.0)+2.0)
 				mainPlayer\blurTimer = 950
 				
 				If temp < 94.7 Then 
@@ -3862,12 +3862,14 @@ Function UpdateInfect()
 					de.Decals = CreateDecal(3, EntityX(mainPlayer\currRoom\NPC[0]\Collider), 544*RoomScale + 0.01, EntityZ(mainPlayer\currRoom\NPC[0]\Collider),90,Rnd(360),0)
 					de\Size = 0.8
 					ScaleSprite(de\obj, de\Size,de\Size)
-				ElseIf Infect > 96
-					mainPlayer\blinkTimer = Max(Min(-10*(Infect-96),mainPlayer\blinkTimer),-10)
+				ElseIf mainPlayer\overlays[OVERLAY_008] > 96
+					mainPlayer\blinkTimer = Max(Min(-10*(mainPlayer\infect008-96),mainPlayer\blinkTimer),-10)
 				Else
-					KillTimer = Max(-350, KillTimer)
+					;TODO: wtf??????
+					;KillTimer = Max(-350, KillTimer)
 				EndIf
 				
+				;TODO: this could break
 				If mainPlayer\currRoom\NPC[0]\State2=0 Then
 					Animate2(mainPlayer\currRoom\NPC[0]\obj, AnimTime(mainPlayer\currRoom\NPC[0]\obj), 13, 19, 0.3,False)
 					If AnimTime(mainPlayer\currRoom\NPC[0]\obj) => 19 Then mainPlayer\currRoom\NPC[0]\State2=1
@@ -3885,16 +3887,16 @@ Function UpdateInfect()
 					RotateEntity p\pvt, Rnd(360),Rnd(360),0
 				EndIf
 				
-				PositionEntity Head, EntityX(mainPlayer\currRoom\NPC[0]\Collider,True), EntityY(mainPlayer\currRoom\NPC[0]\Collider,True)+0.65,EntityZ(mainPlayer\currRoom\NPC[0]\Collider,True),True
-				RotateEntity Head, (1.0+Sin(MilliSecs2()/5.0))*15, mainPlayer\currRoom\angle-180, 0, True
-				MoveEntity Head, 0,0,0.4
-				TurnEntity Head, 80+(Sin(MilliSecs2()/5.0))*30,(Sin(MilliSecs2()/5.0))*40,0
+				PositionEntity mainPlayer\head, EntityX(mainPlayer\currRoom\NPC[0]\Collider,True), EntityY(mainPlayer\currRoom\NPC[0]\Collider,True)+0.65,EntityZ(mainPlayer\currRoom\NPC[0]\Collider,True),True
+				RotateEntity mainPlayer\head, (1.0+Sin(MilliSecs2()/5.0))*15, mainPlayer\currRoom\angle-180, 0, True
+				MoveEntity mainPlayer\head, 0,0,0.4
+				TurnEntity mainPlayer\head, 80+(Sin(MilliSecs2()/5.0))*30,(Sin(MilliSecs2()/5.0))*40,0
 			EndIf
 		EndIf
 		
 		
 	Else
-		HideEntity InfectOverlay
+		HideEntity mainPlayer\overlays[OVERLAY_008]
 	EndIf
 End Function
 
@@ -3961,7 +3963,8 @@ Function UpdateDecals()
 						Local temp# = Rnd(d\Size)
 						Local d2.Decals = CreateDecal(1, EntityX(d\obj) + Cos(angle) * temp, EntityY(d\obj) - 0.0005, EntityZ(d\obj) + Sin(angle) * temp, EntityPitch(d\obj), Rnd(360), EntityRoll(d\obj))
 						d2\Size = Rnd(0.1, 0.5) : ScaleSprite(d2\obj, d2\Size, d2\Size)
-						PlaySound2(DecaySFX(Rand(1, 3)), mainPlayer\cam, d2\obj, 10.0, Rnd(0.1, 0.5))
+						;TODO: fix
+						;PlaySound2(DecaySFX(Rand(1, 3)), mainPlayer\cam, d2\obj, 10.0, Rnd(0.1, 0.5))
 						;d\Timer = d\Timer + Rand(50,150)
 						d\Timer = Rand(50, 100)
 					Else
@@ -4105,28 +4108,33 @@ Function RenderWorld2()
 	;EndIf
 	
 	;IsNVGBlinking% = False
-	HideEntity NVBlink
+	;HideEntity NVBlink
 	
 	Local hasBattery% = 2
 	Local power% = 0
-	If (WearingNightVision = 1) Or (WearingNightVision = 2)
-		For i% = 0 To mainPlayer\inventory\size - 1
-			If (mainPlayer\inventory\items[i] <> Null) Then
-				If (WearingNightVision = 1 And mainPlayer\inventory\items[i]\itemtemplate\tempname = "nvgoggles") Or (WearingNightVision = 2 And mainPlayer\inventory\items[i]\itemtemplate\tempname = "supernv") Then
-					mainPlayer\inventory\items[i]\state = mainPlayer\inventory\items[i]\state - (FPSfactor * (0.02 * WearingNightVision))
-					power% = Int(mainPlayer\inventory\items[i]\state)
-					If mainPlayer\inventory\items[i]\state <= 0.0 Then ;this nvg can't be used
-						hasBattery = 0
-						Msg = "The batteries in these night vision goggles died."
-						mainPlayer\blinkTimer = -1.0
-						MsgTimer = 350
-						Exit
-					ElseIf mainPlayer\inventory\items[i]\state <= 100.0 Then
-						hasBattery = 1
-					EndIf
-				EndIf
-			EndIf
-		Next
+	
+	Local wornItem.Items = mainPlayer\wornItems[WORNITEM_SLOT_HEAD]
+	
+	If wornItem<>Null Then
+		If wornItem\itemTemplate\tempname <> "nvgoggles" And wornItem\itemTemplate\tempname <> "supernv" Then
+			wornItem = Null
+		EndIf
+	EndIf
+	
+	If wornItem<>Null Then
+		Local decayMultiplier# = 1.0
+		If wornItem\itemTemplate\tempname = "supernv" Then decayMultiplier = 2.0
+		
+		wornItem\state = wornItem\state - (FPSfactor * (0.02 * decayMultiplier))
+		power = Int(wornItem\state)
+		If wornItem\state <= 0.0 Then ;this nvg can't be used
+			hasBattery = 0
+			Msg = "The batteries in these night vision goggles died."
+			mainPlayer\blinkTimer = -1.0
+			MsgTimer = 350
+		ElseIf mainPlayer\inventory\items[i]\state <= 100.0 Then
+			hasBattery = 1
+		EndIf
 		
 		If (hasBattery) Then
 			RenderWorld()
@@ -4135,27 +4143,27 @@ Function RenderWorld2()
 		RenderWorld()
 	EndIf
 	
-	If hasBattery=0 And WearingNightVision<>3
-		;IsNVGBlinking% = True
-		ShowEntity NVBlink%
-	EndIf
+	;If hasBattery=0 And WearingNightVision<>3
+	;	;IsNVGBlinking% = True
+	;	ShowEntity NVBlink%
+	;EndIf
 	
 	If mainPlayer\blinkTimer < - 16 Or mainPlayer\blinkTimer > - 6
-		If WearingNightVision=2 And hasBattery<>0 Then ;show a HUD
-			NVTimer=NVTimer-FPSfactor
+		If IsPlayerWearing(mainPlayer,"supernv") And hasBattery<>0 Then ;show a HUD
+			;NVTimer=NVTimer-FPSfactor
 			
-			If NVTimer<=0.0 Then
-				For np.NPCs = Each NPCs
-					np\NVX = EntityX(np\Collider,True)
-					np\NVY = EntityY(np\Collider,True)
-					np\NVZ = EntityZ(np\Collider,True)
-				Next
-				;IsNVGBlinking% = True
-				ShowEntity NVBlink%
-				If NVTimer<=-10
-				NVTimer = 600.0
-			EndIf
-			EndIf
+			;If NVTimer<=0.0 Then
+			For np.NPCs = Each NPCs
+				np\NVX = EntityX(np\Collider,True)
+				np\NVY = EntityY(np\Collider,True)
+				np\NVZ = EntityZ(np\Collider,True)
+			Next
+			;IsNVGBlinking% = True
+			;	ShowEntity NVBlink%
+			;	If NVTimer<=-10 Then
+			;		NVTimer = 600.0
+			;	EndIf
+			;EndIf
 			
 			Color 255,255,255
 			
@@ -4163,7 +4171,7 @@ Function RenderWorld2()
 			
 			Text userOptions\screenWidth/2,20*MenuScale,"REFRESHING DATA IN",True,False
 			
-			Text userOptions\screenWidth/2,60*MenuScale,Max(f2s(NVTimer/60.0,1),0.0),True,False
+			;Text userOptions\screenWidth/2,60*MenuScale,Max(f2s(NVTimer/60.0,1),0.0),True,False
 			Text userOptions\screenWidth/2,100*MenuScale,"SECONDS",True,False
 			
 			temp% = CreatePivot() : temp2% = CreatePivot()
@@ -4196,10 +4204,10 @@ Function RenderWorld2()
 							yvalue# = Sin(pitchvalue)
 						EndIf
 						
-						If (Not IsNVGBlinking%) Then
-							Text userOptions\screenWidth / 2 + xvalue * (userOptions\screenWidth / 2),userOptions\screenHeight / 2 - yvalue * (userOptions\screenHeight / 2),np\NVName,True,True
-							Text userOptions\screenWidth / 2 + xvalue * (userOptions\screenWidth / 2),userOptions\screenHeight / 2 - yvalue * (userOptions\screenHeight / 2) + 30.0 * MenuScale,f2s(dist,1)+" m",True,True
-						EndIf
+						;If (Not IsNVGBlinking%) Then
+						Text userOptions\screenWidth / 2 + xvalue * (userOptions\screenWidth / 2),userOptions\screenHeight / 2 - yvalue * (userOptions\screenHeight / 2),np\NVName,True,True
+						Text userOptions\screenWidth / 2 + xvalue * (userOptions\screenWidth / 2),userOptions\screenHeight / 2 - yvalue * (userOptions\screenHeight / 2) + 30.0 * MenuScale,f2s(dist,1)+" m",True,True
+						;EndIf
 					EndIf
 				EndIf
 			Next
@@ -4217,7 +4225,7 @@ Function RenderWorld2()
 			DrawImage NVGImages,40,userOptions\screenHeight*0.5+30,1
 			
 			Color 255,255,255
-		ElseIf WearingNightVision=1 And hasBattery<>0
+		ElseIf IsPlayerWearing(mainPlayer,"nvgoggles") And hasBattery<>0 Then
 			Color 0,55,0
 			For k=0 To 10
 				Rect 45,userOptions\screenHeight*0.5-(k*20),54,10,True
@@ -4237,7 +4245,7 @@ Function RenderWorld2()
 	CameraProjMode ark_blur_cam,0
 	
 	If mainPlayer\blinkTimer < - 16 Or mainPlayer\blinkTimer > - 6
-		If (WearingNightVision=1 Or WearingNightVision=2) And (hasBattery=1) And ((MilliSecs2() Mod 800) < 400) Then
+		If (wornItem<>Null) And (hasBattery=1) And ((MilliSecs2() Mod 800) < 400) Then
 			Color 255,0,0
 			SetFont Font3
 			
