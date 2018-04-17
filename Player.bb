@@ -236,6 +236,8 @@ Function CreatePlayer.Player()
 	player\head = CreatePivot()
 	EntityRadius player\collider, 0.15
 	EntityType player\collider, HIT_PLAYER
+	
+	Return player
 End Function
 
 Function DeletePlayer(player.Player)
@@ -894,5 +896,5 @@ Function Kill(player.Player)
 	EndIf
 End Function
 ;~IDEal Editor Parameters:
-;~F#20#7A#F0#131#259
+;~F#20#F2#133#25B
 ;~C#Blitz3D
