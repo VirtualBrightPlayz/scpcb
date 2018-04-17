@@ -1121,8 +1121,6 @@ Function UpdateGame()
 	
 	MouseHit2 = MouseHit(2)
 	
-	If (Not MouseDown1) And (Not MouseHit1) Then mainPlayer\grabbedEntity = 0
-	
 	UpdateMusic()
 	
 	If CurrGameState=GAMESTATE_MAINMENU Then
@@ -1143,6 +1141,9 @@ Function UpdateGame()
 		EndIf
 		UpdateMainMenu()
 	Else
+		If (Not MouseDown1) And (Not MouseHit1) Then mainPlayer\grabbedEntity = 0
+		
+		
 		ShouldPlay = 0 ;TODO: FIX ;Min(PlayerZone,2)
 		
 		DrawHandIcon = False
@@ -4257,7 +4258,7 @@ End Function
 
 
 Function ScaleRender(x#,y#,hscale#=1.0,vscale#=1.0)
-	If mainPlayer\cam<>0 Then HideEntity mainPlayer\cam
+	If mainPlayer<>Null Then HideEntity mainPlayer\cam
 	WireFrame 0
 	ShowEntity fresize_image
 	ScaleEntity fresize_image,hscale,vscale,1.0
@@ -4267,7 +4268,7 @@ Function ScaleRender(x#,y#,hscale#=1.0,vscale#=1.0)
 	HideEntity fresize_cam
 	HideEntity fresize_image
 	WireFrame WireframeState
-	If mainPlayer\cam<>0 Then ShowEntity mainPlayer\cam
+	If mainPlayer<>Null Then ShowEntity mainPlayer\cam
 End Function
 
 Function InitFastResize()
@@ -4452,5 +4453,5 @@ Function ScaledMouseY%()
 	Return Float(MouseY())*Float(userOptions\screenHeight)/Float(RealGraphicHeight)
 End Function
 ;~IDEal Editor Parameters:
-;~F#607
+;~F#608
 ;~C#Blitz3D

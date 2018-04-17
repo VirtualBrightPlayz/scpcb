@@ -1512,4 +1512,5 @@ Function DrawQuickLoading()
 	
 End Function
 ;~IDEal Editor Parameters:
+;~F#5C#3C2
 ;~C#Blitz3D

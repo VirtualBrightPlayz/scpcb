@@ -1,16 +1,16 @@
 ;achievement menu & messages by InnocentSam
 
 ;TODO: fix
-Const MAXACHIEVEMENTS=36
+Const MAXACHIEVEMENTS=33
 Dim Achievements%(MAXACHIEVEMENTS)
 
 Const Achv008%=0, Achv012%=1, Achv035%=2, Achv049%=3, Achv055=4,  Achv079%=5, Achv096%=6, Achv106%=7, Achv148%=8, Achv178=9, Achv205=10
-Const Achv294%=11, Achv420%=13, Achv500%=14, Achv513%=15, Achv789%=17, Achv860%=18, Achv895%=19
-Const Achv914%=20, Achv939%=21, Achv966%=22, Achv970=23, Achv1048=25, Achv1123=26
+Const Achv294%=11, Achv420%=12, Achv500%=13, Achv513%=14, Achv789%=15, Achv860%=16, Achv895%=17
+Const Achv914%=18, Achv939%=19, Achv966%=20, Achv970=21, Achv1048=22, Achv1123=23
 
-Const AchvMaynard%=27, AchvHarp%=28, AchvSNAV%=29, AchvOmni%=30, AchvConsole%=31, AchvTesla%=32, AchvPD%=33
+Const AchvMaynard%=24, AchvHarp%=25, AchvSNAV%=26, AchvOmni%=27, AchvConsole%=28, AchvTesla%=29, AchvPD%=30
 
-Const Achv1162% = 34, Achv1499% = 35
+Const Achv1162% = 31, Achv1499% = 32
 
 Global UsedConsole
 
@@ -98,3 +98,5 @@ Function DrawAchvIMG(x%, y%, achvno%)
 	
 	Rect((x+(row*SeparationConst2)), y, 64*scale, 64*scale, False)
 End Function
+;~IDEal Editor Parameters:
+;~C#Blitz3D
