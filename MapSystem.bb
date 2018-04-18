@@ -4449,29 +4449,6 @@ Function DeleteElevatorObjects()
 	
 End Function
 
-Function ValidRoom2slCamRoom(r.Rooms)
-	If (r = Null) Then
-		Return False
-	EndIf
-	
-	Local RN$ = r\RoomTemplate\Name$
-	
-	If RN$ = "room2closets" Then Return True
-	If RN$ = "room1archive" Then Return True
-	If RN$ = "room3z3" Then Return True
-	If RN$ = "room1lifts" Then Return True
-	If RN$ = "room106" Then Return True
-	If RN$ = "checkpoint1" Then Return True
-	If RN$ = "room2nuke" Then Return True
-	If RN$ = "008" Then Return True
-	If RN$ = "room1162" Then Return True
-	If RN$ = "room966" Then Return True
-	If RN$ = "room2ccont" Then Return True
-	
-	Return False
-	
-End Function
-
 Function FindAndDeleteFakeMonitor(r.Rooms,x#,y#,z#,Amount%)
 	Local i%
 	

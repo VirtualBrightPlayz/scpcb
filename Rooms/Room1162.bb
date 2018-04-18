@@ -20,7 +20,6 @@ Function FillRoom1162(r.Rooms)
     sc\ID = 8
 End Function
 
-
 Function UpdateEventRoom1162(e.Events)
 	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
 
@@ -270,3 +269,34 @@ Function UpdateEventRoom1162(e.Events)
 	EndIf
 	;[End Block]
 End Function
+
+
+Function IsItemGoodFor1162(itt.ItemTemplates)
+	Local IN$ = itt\tempname$
+	
+	Select itt\tempname
+		Case "key1", "key2", "key3"
+			Return True
+		Case "misc", "420", "cigarette"
+			Return True
+		Case "vest", "finevest","gasmask"
+			Return True
+		Case "radio","18vradio"
+			Return True
+		Case "clipboard","eyedrops","nvgoggles"
+			Return True
+		Default
+			If itt\tempname <> "paper" Then
+				Return False
+			Else If Instr(itt\name, "Leaflet")
+				Return False
+			Else
+				;if the item is a paper, only allow spawning it if the name contains the word "note" or "log"
+				;(because those are items created recently, which D-9341 has most likely never seen)
+				Return ((Not Instr(itt\name, "Note")) And (Not Instr(itt\name, "Log")))
+			EndIf
+	End Select
+End Function
+
+;~IDEal Editor Parameters:
+;~C#Blitz3D

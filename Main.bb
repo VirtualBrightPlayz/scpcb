@@ -28,7 +28,7 @@ Dim ArrowIMG(4)
 ;TODO: Assets.bb
 Global LauncherIMG%
 
-Global Depth% = 0
+Global Depth% = 0 ;TODO: what is this?
 
 Global SelectedGFXMode%
 
@@ -1843,7 +1843,7 @@ Function DrawGUI()
 			SetFont ConsoleFont
 			
 			;Text x + 250, 50, "Zone: " + (EntityZ(mainPlayer\collider)/8.0)
-			Text x - 50, 50, "Player Position: (" + f2s(EntityX(mainPlayer\collider), 3) + ", " + f2s(EntityY(mainPlayer\collider), 3) + ", " + f2s(EntityZ(mainPlayer\collider), 3) + ")"
+			Text x - 50, 50, "Player Position: (" + f2s(EntityX(mainPlayer\collider), 3) + ", " + f2s(EntityY(mainPlayer\collider), 3) + ", " + f2s(EntityZ(mainPlayer\collider), 3) + "), speed: "+f2s(mainPlayer\dropSpeed, 3)
 			Text x - 50, 70, "Camera Position: (" + f2s(EntityX(mainPlayer\cam), 3)+ ", " + f2s(EntityY(mainPlayer\cam), 3) +", " + f2s(EntityZ(mainPlayer\cam), 3) + ")"
 			Text x - 50, 100, "Player Rotation: (" + f2s(EntityPitch(mainPlayer\collider), 3) + ", " + f2s(EntityYaw(mainPlayer\collider), 3) + ", " + f2s(EntityRoll(mainPlayer\collider), 3) + ")"
 			Text x - 50, 120, "Camera Rotation: (" + f2s(EntityPitch(mainPlayer\cam), 3)+ ", " + f2s(EntityYaw(mainPlayer\cam), 3) +", " + f2s(EntityRoll(mainPlayer\cam), 3) + ")"
@@ -2016,7 +2016,7 @@ Function DrawGUI()
 		If IsPaused() Then
 			ResumeSounds()
 			MouseXSpeed() : MouseYSpeed() : MouseZSpeed() : mouse_x_speed_1#=0.0 : mouse_y_speed_1#=0.0
-			CurrGameState = GAMESTATE_INVENTORY
+			CurrGameState = GAMESTATE_PLAYING
 		Else
 			PauseSounds()
 			CurrGameState = GAMESTATE_PAUSED
@@ -4371,33 +4371,6 @@ Function CheckForPlayerInFacility()
 	EndIf
 	
 	Return True
-End Function
-
-Function IsItemGoodFor1162(itt.ItemTemplates)
-	Local IN$ = itt\tempname$
-	
-	Select itt\tempname
-		Case "key1", "key2", "key3"
-			Return True
-		Case "misc", "420", "cigarette"
-			Return True
-		Case "vest", "finevest","gasmask"
-			Return True
-		Case "radio","18vradio"
-			Return True
-		Case "clipboard","eyedrops","nvgoggles"
-			Return True
-		Default
-			If itt\tempname <> "paper" Then
-				Return False
-			Else If Instr(itt\name, "Leaflet")
-				Return False
-			Else
-				;if the item is a paper, only allow spawning it if the name contains the word "note" or "log"
-				;(because those are items created recently, which D-9341 has most likely never seen)
-				Return ((Not Instr(itt\name, "Note")) And (Not Instr(itt\name, "Log")))
-			EndIf
-	End Select
 End Function
 
 Function ControlSoundVolume()

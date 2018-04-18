@@ -207,15 +207,15 @@ Function CreateNPC.NPCs(NPCtype%, x#, y#, z#)
 			InitializeNPCtype1499(n)
 	End Select
 	
-	PositionEntity(n\Collider, x, y, z, True)
+	PositionEntity(n\collider, x, y, z, True)
 	PositionEntity(n\obj, x, y, z, True)
 	
-	ResetEntity(n\Collider)
+	ResetEntity(n\collider)
 	
 	n\ID = 0
 	n\ID = FindFreeNPCID()
 	
-	DebugLog ("Created NPC "+n\NVName+" (ID: "+n\ID+")")
+	DebugLog ("Created NPC "+n\nvName+" (ID: "+n\ID+")")
 	
 	NPCSpeedChange(n)
 	
@@ -230,9 +230,12 @@ Function LoadOrCopyMesh(n.NPCs, filePath$)
 		If (n\npcType = n2\npcType And n <> n2) Then
 			If (n2\obj <> 0) Then
 				n\obj = CopyEntity(n2\obj)
+				Return
 			EndIf
 		EndIf
 	Next
+	
+	n\obj = LoadAnimMesh(filePath)
 End Function
 
 Function RemoveNPC(n.NPCs)

@@ -24,7 +24,7 @@ Function FillRoom2SCPs(r.Rooms)
     r\RoomDoors[3] = CreateDoor(r\zone, r\x + 560.0 * RoomScale, 0, r\z + 272.0 * RoomScale, 180, r, True, False, 3)
     r\RoomDoors[3]\AutoClose = False : r\RoomDoors[3]\open = False
     
-    it = CreateItem("SCP-420-J", "420", r\x - 552.0 * RoomScale, r\y + 220.0 * RoomScale, r\z - 728.0 * RoomScale)
+    it = CreateItem("Some SCP-420-J", "420", r\x - 552.0 * RoomScale, r\y + 220.0 * RoomScale, r\z - 728.0 * RoomScale)
     EntityParent(it\collider, r\obj)
     
     it = CreateItem("SCP-860", "scp860", r\x + 568.0 * RoomScale, r\y + 178.0 * RoomScale, r\z + 760.0 * RoomScale)

@@ -305,10 +305,10 @@ Function InitNewGame()
 			EndIf
 		EndIf
 		
-		If (r\RoomTemplate\Name = "start" And userOptions\introEnabled = False) Then 
+		If (r\RoomTemplate\Name = "room173" And userOptions\introEnabled = False) Then 
 			PositionEntity (mainPlayer\collider, EntityX(r\obj)+3584*RoomScale, 704*RoomScale, EntityZ(r\obj)+1024*RoomScale)
 			mainPlayer\currRoom = r
-		ElseIf (r\RoomTemplate\Name = "173" And userOptions\introEnabled) Then
+		ElseIf (r\RoomTemplate\Name = "roomintro" And userOptions\introEnabled) Then
 			PositionEntity (mainPlayer\collider, EntityX(r\obj), 1.0, EntityZ(r\obj))
 			mainPlayer\currRoom = r
 		EndIf

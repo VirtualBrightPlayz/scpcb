@@ -234,8 +234,8 @@ Function CreatePlayer.Player()
 	EntityType player\collider, HIT_PLAYER
 	
 	player\head = CreatePivot()
-	EntityRadius player\collider, 0.15
-	EntityType player\collider, HIT_PLAYER
+	EntityRadius player\head, 0.15
+	EntityType player\head, HIT_PLAYER
 	
 	Return player
 End Function
@@ -506,7 +506,9 @@ Function MovePlayer()
 		
 		Local CollidedFloor% = False
 		For i = 1 To CountCollisions(mainPlayer\collider)
-			If CollisionY(mainPlayer\collider, i) < EntityY(mainPlayer\collider) - 0.25 Then CollidedFloor = True
+			If (CollisionY(mainPlayer\collider, i) < EntityY(mainPlayer\collider,True)) And (Abs(CollisionNY(mainPlayer\collider, i))>0.7) Then
+				CollidedFloor = True
+			EndIf
 		Next
 		
 		If CollidedFloor = True Then
@@ -896,5 +898,5 @@ Function Kill(player.Player)
 	EndIf
 End Function
 ;~IDEal Editor Parameters:
-;~F#20#F2#133#25B
+;~F#F2#25D
 ;~C#Blitz3D
