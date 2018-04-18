@@ -641,7 +641,6 @@ Function NullGame()
 	;DeInitExt
 	
 	ClearWorld
-	mainPlayer\cam = 0
 	ark_blur_cam = 0
 	InitFastResize()
 	

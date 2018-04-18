@@ -78,8 +78,9 @@ Global MenuScale# = (userOptions\screenHeight / 1024.0)
 
 SetBuffer(BackBuffer())
 
+;TODO: cleanup
 Global CurTime%, PrevTime%, LoopDelay%, FPSfactor#, FPSfactor2#
-Local CheckFPS%, ElapsedLoops%, FPS%, ElapsedTime#
+Global CheckFPS%, ElapsedLoops%, FPS%, ElapsedTime#
 
 ;TODO: wtf is this?
 Global CurrFrameLimit# = userOptions\framelimit
@@ -1445,7 +1446,7 @@ Function UpdateGame()
 		;If EndingTimer < 0 Then
 		;	If SelectedEnding <> "" Then DrawEnding()
 		;Else
-		;	DrawMenu()			
+		DrawPauseMenu()			
 		;EndIf
 		
 		UpdateConsole()
@@ -4452,5 +4453,4 @@ Function ScaledMouseY%()
 	Return Float(MouseY())*Float(userOptions\screenHeight)/Float(RealGraphicHeight)
 End Function
 ;~IDEal Editor Parameters:
-;~F#607
 ;~C#Blitz3D
