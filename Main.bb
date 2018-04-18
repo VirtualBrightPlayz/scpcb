@@ -1143,7 +1143,6 @@ Function UpdateGame()
 	Else
 		If (Not MouseDown1) And (Not MouseHit1) Then mainPlayer\grabbedEntity = 0
 		
-		
 		ShouldPlay = 0 ;TODO: FIX ;Min(PlayerZone,2)
 		
 		DrawHandIcon = False
@@ -4453,5 +4452,5 @@ Function ScaledMouseY%()
 	Return Float(MouseY())*Float(userOptions\screenHeight)/Float(RealGraphicHeight)
 End Function
 ;~IDEal Editor Parameters:
-;~F#608
+;~F#607
 ;~C#Blitz3D

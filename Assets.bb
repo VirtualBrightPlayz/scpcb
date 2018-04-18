@@ -360,6 +360,7 @@ Function InitNewGame()
 		FPSfactor = 1.0
 		FlushKeys()
 		MovePlayer()
+		UpdateRooms()
 		UpdateDoors()
 		UpdateNPCs()
 		UpdateWorld()

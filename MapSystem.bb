@@ -1736,10 +1736,22 @@ Function UpdateRooms()
 		Else
 			foundPlayerRoom = True ;mainPlayer\currRoom stays the same when you're high up, or deep down
 		EndIf
+	Else
+		Local minDist# = 999.0
+		For r.Rooms = Each Rooms
+			x = Abs(r\x-EntityX(mainPlayer\collider,True))
+			z = Abs(r\z-EntityZ(mainPlayer\collider,True))
+			r\dist = Max(x,z)
+			
+			If r\dist<minDist Then
+				mainPlayer\currRoom = r
+				minDist = r\dist
+			EndIf
+		Next
+		Return
 	EndIf
 	
 	For r.Rooms = Each Rooms
-		
 		x = Abs(r\x-EntityX(mainPlayer\collider,True))
 		z = Abs(r\z-EntityZ(mainPlayer\collider,True))
 		r\dist = Max(x,z)
@@ -4479,3 +4491,5 @@ Function FindAndDeleteFakeMonitor(r.Rooms,x#,y#,z#,Amount%)
 	Next
 	
 End Function
+;~IDEal Editor Parameters:
+;~C#Blitz3D
