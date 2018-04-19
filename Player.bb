@@ -246,7 +246,7 @@ Function DeletePlayer(player.Player)
 	Delete player
 End Function
 
-;TODO: move these into the player struct and give them more appropriate names
+;TODO: remove these when we're absolutely sure we're done here
 Global Collider.MarkedForRemoval, Head.MarkedForRemoval
 Global Camera.MarkedForRemoval, CameraShake.MarkedForRemoval, CurrCameraZoom.MarkedForRemoval
 
@@ -263,6 +263,7 @@ Global Shake.MarkedForRemoval
 Global HeartBeatRate.MarkedForRemoval, HeartBeatTimer.MarkedForRemoval, HeartBeatVolume.MarkedForRemoval
 
 Global WearingGasMask.MarkedForRemoval, WearingHazmat.MarkedForRemoval, WearingVest.MarkedForRemoval, Wearing714.MarkedForRemoval, WearingNightVision.MarkedForRemoval, Wearing178.MarkedForRemoval
+Global Wearing1499.MarkedForRemoval
 Global NVTimer.MarkedForRemoval
 
 Global SuperMan.MarkedForRemoval, SuperManTimer.MarkedForRemoval
@@ -862,6 +863,36 @@ Function EquipItem(player.Player,item.Items,toggle%)
 			Case "finevest"
 				Msg = "You put on the vest and feel heavily encumbered."
 				MsgTimer = 70 * 7
+			Case "scp1499","super1499"
+				GiveAchievement(Achv1499)
+				
+				For r.Rooms = Each Rooms
+					If r\RoomTemplate\Name = "dimension1499" Then
+						player\blinkTimer = -1
+						NTF_1499PrevRoom = player\currRoom
+						NTF_1499PrevX# = EntityX(player\collider)
+						NTF_1499PrevY# = EntityY(player\collider)
+						NTF_1499PrevZ# = EntityZ(player\collider)
+						
+						If NTF_1499X# = 0.0 And NTF_1499Y# = 0.0 And NTF_1499Z# = 0.0
+							PositionEntity (player\collider, r\x+676.0*RoomScale, r\y+314.0*RoomScale, r\z-2080.0*RoomScale)
+						Else
+							PositionEntity (player\collider, NTF_1499X#, NTF_1499Y#+0.05, NTF_1499Z#)
+						EndIf
+						ResetEntity(player\collider)
+						UpdateDoors()
+						UpdateRooms()
+						For it.Items = Each Items
+							it\disttimer = 0
+						Next
+						player\currRoom = r
+						PlaySound_Strict NTF_1499EnterSFX%
+						NTF_1499X# = 0.0
+						NTF_1499Y# = 0.0
+						NTF_1499Z# = 0.0
+						Exit
+					EndIf
+				Next
 		End Select
 	EndIf
 End Function
@@ -900,8 +931,9 @@ End Function
 Function UpdateInventory(player.Player)
 	;TODO: handle other inventories here
 	;also cleanup
+	Local PrevInvOpen% = (CurrGameState=GAMESTATE_INVENTORY), MouseSlot% = 66
+	
 	Local spacing%
-	Local PrevOtherOpen.Items
 	
 	Local OtherSize%,OtherAmount%
 	
@@ -1901,47 +1933,6 @@ Function UpdateInventory(player.Player)
 						EndIf
 						
 					EndIf
-				;new Items in SCP:CB 1.3
-				Case "scp1499","super1499"
-					If (Not Wearing1499%) Then
-						GiveAchievement(Achv1499)
-						
-						EquipItem(player,player\selectedItem,True)
-						
-						For r.Rooms = Each Rooms
-							If r\RoomTemplate\Name = "dimension1499" Then
-								player\blinkTimer = -1
-								NTF_1499PrevRoom = player\currRoom
-								NTF_1499PrevX# = EntityX(player\collider)
-								NTF_1499PrevY# = EntityY(player\collider)
-								NTF_1499PrevZ# = EntityZ(player\collider)
-								
-								If NTF_1499X# = 0.0 And NTF_1499Y# = 0.0 And NTF_1499Z# = 0.0
-									PositionEntity (player\collider, r\x+676.0*RoomScale, r\y+314.0*RoomScale, r\z-2080.0*RoomScale)
-								Else
-									PositionEntity (player\collider, NTF_1499X#, NTF_1499Y#+0.05, NTF_1499Z#)
-								EndIf
-								ResetEntity(player\collider)
-								UpdateDoors()
-								UpdateRooms()
-								For it.Items = Each Items
-									it\disttimer = 0
-								Next
-								player\currRoom = r
-								PlaySound_Strict NTF_1499EnterSFX%
-								NTF_1499X# = 0.0
-								NTF_1499Y# = 0.0
-								NTF_1499Z# = 0.0
-								Exit
-							EndIf
-						Next
-					EndIf
-					If player\selectedItem\itemtemplate\tempname="super1499"
-						If Wearing1499%=0 Then Wearing1499% = 2 Else Wearing1499%=0
-					Else
-						Wearing1499% = (Not Wearing1499%)
-					EndIf
-					player\selectedItem = Null
 				Case "badge"
 					If player\selectedItem\itemtemplate\img=0 Then
 						player\selectedItem\itemtemplate\img=LoadImage_Strict(player\selectedItem\itemtemplate\imgpath)	
@@ -2106,5 +2097,5 @@ Function Kill(player.Player)
 	EndIf
 End Function
 ;~IDEal Editor Parameters:
-;~F#F2#133#25D#34F#364#37B#383#80E
+;~F#7A#F2#134#25E#350#383#39A
 ;~C#Blitz3D

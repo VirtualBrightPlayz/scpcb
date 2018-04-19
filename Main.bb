@@ -431,9 +431,6 @@ Global NoTarget% = False
 Global NVGImages = LoadAnimImage("GFX\battery.png",64,64,0,2)
 MaskImage NVGImages,255,0,255
 
-;TODO: Player.bb
-Global Wearing1499% = False
-
 Global AmbientLightRoomTex%, AmbientLightRoomVal%
 
 ;Global NVGImage% = CreateImage(userOptions\screenWidth,userOptions\screenHeight),NVGCam%
@@ -1902,8 +1899,6 @@ Function DrawGUI()
 	EndIf
 	
 	;TODO: cleanup
-	Local PrevInvOpen% = (CurrGameState=GAMESTATE_INVENTORY), MouseSlot% = 66
-	
 	Local shouldDrawHUD%=True
 	If mainPlayer\selectedDoor <> Null Then
 		mainPlayer\selectedItem = Null
@@ -3124,45 +3119,6 @@ Function InitFastResize()
 	HideEntity fresize_cam
 End Function
 
-Function UpdateLeave1499()
-	Local r.Rooms, it.Items
-	
-	If (Not Wearing1499) And mainPlayer\currRoom\RoomTemplate\Name$ = "dimension1499"
-		For r.Rooms = Each Rooms
-			If r = NTF_1499PrevRoom
-				mainPlayer\blinkTimer = -1
-				;Msg = "You removed the gas mask and reappeared inside the facility."
-				;MsgTimer = 70 * 5
-				NTF_1499X# = EntityX(mainPlayer\collider)
-				NTF_1499Y# = EntityY(mainPlayer\collider)
-				NTF_1499Z# = EntityZ(mainPlayer\collider)
-				PositionEntity (mainPlayer\collider, NTF_1499PrevX#, NTF_1499PrevY#+0.05, NTF_1499PrevZ#)
-				ResetEntity(mainPlayer\collider)
-				UpdateDoors()
-				UpdateRooms()
-				For it.Items = Each Items
-					it\disttimer = 0
-					If it\itemtemplate\tempname = "scp1499" Or it\itemtemplate\tempname = "super1499"
-						If EntityY(it\collider) >= EntityY(mainPlayer\currRoom\obj)-5
-							PositionEntity it\collider,NTF_1499PrevX#,NTF_1499PrevY#+(EntityY(it\collider)-EntityY(mainPlayer\currRoom\obj)),NTF_1499PrevZ#
-							ResetEntity it\collider
-						EndIf
-					EndIf
-				Next
-				mainPlayer\currRoom = r
-				PlaySound_Strict NTF_1499LeaveSFX%
-				NTF_1499PrevX# = 0.0
-				NTF_1499PrevY# = 0.0
-				NTF_1499PrevZ# = 0.0
-				NTF_1499PrevRoom = Null
-				;Brightness = StoredBrightness
-				Exit
-			EndIf
-		Next
-	EndIf
-	
-End Function
-
 Function CheckForPlayerInFacility()
 	;False (=0): NPC is not in facility (mostly meant for "dimension1499")
 	;True (=1): NPC is in facility
@@ -3234,5 +3190,5 @@ Function ScaledMouseY%()
 	Return Float(MouseY())*Float(userOptions\screenHeight)/Float(RealGraphicHeight)
 End Function
 ;~IDEal Editor Parameters:
-;~F#608
+;~F#605
 ;~C#Blitz3D

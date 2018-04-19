@@ -1,5 +1,3 @@
-
-
 Function UpdateEventDimension1499(e.Events)
 	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
 
@@ -113,3 +111,45 @@ Function UpdateEventDimension1499(e.Events)
 	;[End Block]
 End Function
 
+Function UpdateLeave1499()
+	Local r.Rooms, it.Items
+	
+	If (Not (IsPlayerWearingTempName(mainPlayer,"scp1499") Or IsPlayerWearingTempName(mainPlayer,"super1499"))) And mainPlayer\currRoom\RoomTemplate\Name$ = "dimension1499"
+		For r.Rooms = Each Rooms
+			If r = NTF_1499PrevRoom
+				mainPlayer\blinkTimer = -1
+				;Msg = "You removed the gas mask and reappeared inside the facility."
+				;MsgTimer = 70 * 5
+				NTF_1499X# = EntityX(mainPlayer\collider)
+				NTF_1499Y# = EntityY(mainPlayer\collider)
+				NTF_1499Z# = EntityZ(mainPlayer\collider)
+				PositionEntity (mainPlayer\collider, NTF_1499PrevX#, NTF_1499PrevY#+0.05, NTF_1499PrevZ#)
+				ResetEntity(mainPlayer\collider)
+				UpdateDoors()
+				UpdateRooms()
+				For it.Items = Each Items
+					it\disttimer = 0
+					If it\itemtemplate\tempname = "scp1499" Or it\itemtemplate\tempname = "super1499"
+						If EntityY(it\collider) >= EntityY(mainPlayer\currRoom\obj)-5
+							PositionEntity it\collider,NTF_1499PrevX#,NTF_1499PrevY#+(EntityY(it\collider)-EntityY(mainPlayer\currRoom\obj)),NTF_1499PrevZ#
+							ResetEntity it\collider
+						EndIf
+					EndIf
+				Next
+				mainPlayer\currRoom = r
+				PlaySound_Strict NTF_1499LeaveSFX%
+				NTF_1499PrevX# = 0.0
+				NTF_1499PrevY# = 0.0
+				NTF_1499PrevZ# = 0.0
+				NTF_1499PrevRoom = Null
+				;Brightness = StoredBrightness
+				Exit
+			EndIf
+		Next
+	EndIf
+	
+End Function
+
+;~IDEal Editor Parameters:
+;~F#0
+;~C#Blitz3D

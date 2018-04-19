@@ -625,7 +625,6 @@ Function NullGame()
 	NTF_1499X# = 0.0
 	NTF_1499Y# = 0.0
 	NTF_1499Z# = 0.0
-	Wearing1499% = False
 	DeleteChunks()
 	
 	DeleteElevatorObjects()

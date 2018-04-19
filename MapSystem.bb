@@ -3842,7 +3842,7 @@ Function CreateMap()
 	
 	r = CreateRoom(0, ROOM1, 8, 800, 0, "dimension1499")
 	MapRoomID(ROOM1)=MapRoomID(ROOM1)+1
-
+	
 	For y = 0 To MapHeight
 		For x = 0 To MapWidth
 			MapTemp(x, y) = Min(MapTemp(x, y),1)
@@ -4405,4 +4405,5 @@ Function FindAndDeleteFakeMonitor(r.Rooms,x#,y#,z#,Amount%)
 	
 End Function
 ;~IDEal Editor Parameters:
+;~F#2#A#2D#3C#4A#51#62#6A#72#202#212#223
 ;~C#Blitz3D
