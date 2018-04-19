@@ -19,6 +19,9 @@ Function LoadEntities()
 	
 	SoundEmitter = CreatePivot()
 	
+	CreateBlurImage()
+	CameraProjMode ark_blur_cam,0
+	
 	mainPlayer = CreatePlayer()
 	
 	AmbientLight(Brightness, Brightness, Brightness)
@@ -26,8 +29,6 @@ Function LoadEntities()
 	ScreenTexs[0] = CreateTexture(512, 512, 1+256)
 	ScreenTexs[1] = CreateTexture(512, 512, 1+256)
 	
-	CreateBlurImage()
-	CameraProjMode ark_blur_cam,0
 	;Listener = CreateListener(mainPlayer\cam)
 	
 	DrawLoading(5)

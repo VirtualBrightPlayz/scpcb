@@ -1,12 +1,7 @@
-Global WORNITEM_HEAD_SLOT.MarkedForRemoval
-Global WORNITEM_BODY_SLOT.MarkedForRemoval
-Global WORNITEM_HAND_SLOT.MarkedForRemoval
-
-Const WORNITEM_SLOT_COUNT%=3
+Const WORNITEM_SLOT_COUNT%=2
 Const WORNITEM_SLOT_NONE% = WORNITEM_SLOT_COUNT
 Const WORNITEM_SLOT_HEAD%=0
 Const WORNITEM_SLOT_BODY%=1
-Const WORNITEM_SLOT_HAND%=2
 
 Const OVERLAY_COUNT%=7
 Const OVERLAY_BLACK%=0
@@ -2097,5 +2092,5 @@ Function Kill(player.Player)
 	EndIf
 End Function
 ;~IDEal Editor Parameters:
-;~F#7A#F2#134#25E#350#383#39A
+;~F#ED#12F#259#37E#395
 ;~C#Blitz3D
