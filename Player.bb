@@ -506,7 +506,7 @@ Function MovePlayer()
 		
 		Local CollidedFloor% = False
 		For i = 1 To CountCollisions(mainPlayer\collider)
-			If (CollisionY(mainPlayer\collider, i) < EntityY(mainPlayer\collider,True)) And (Abs(CollisionNY(mainPlayer\collider, i))>0.7) Then
+			If (CollisionY(mainPlayer\collider, i) < EntityY(mainPlayer\collider,True)) And (Abs(CollisionNY(mainPlayer\collider, i))>0.8) Then
 				CollidedFloor = True
 			EndIf
 		Next
@@ -607,27 +607,27 @@ Function MouseLook()
 	Local i%
 	
 	Local wearingGasMask%
-	wearingGasMask = IsPlayerWearing(mainPlayer,"gasmask")
+	wearingGasMask = IsPlayerWearingTempName(mainPlayer,"gasmask")
 	If Not wearingGasMask Then
-		wearingGasMask = IsPlayerWearing(mainPlayer,"supergasmask")*2
+		wearingGasMask = IsPlayerWearingTempName(mainPlayer,"supergasmask")*2
 	EndIf
 	
 	Local wearingHazmat%
-	wearingHazmat = IsPlayerWearing(mainPlayer,"hazmatsuit")
+	wearingHazmat = IsPlayerWearingTempName(mainPlayer,"hazmatsuit")
 	If Not wearingHazmat Then
-		wearingHazmat = IsPlayerWearing(mainPlayer,"hazmatsuit2")*2
+		wearingHazmat = IsPlayerWearingTempName(mainPlayer,"hazmatsuit2")*2
 	EndIf
 	
 	Local wearing1499%
-	wearing1499 = IsPlayerWearing(mainPlayer,"scp1499")
+	wearing1499 = IsPlayerWearingTempName(mainPlayer,"scp1499")
 	If Not wearing1499 Then
-		wearing1499 = IsPlayerWearing(mainPlayer,"super1499")*2
+		wearing1499 = IsPlayerWearingTempName(mainPlayer,"super1499")*2
 	EndIf
 	
 	Local wearingNightVision%
-	wearingNightVision = IsPlayerWearing(mainPlayer,"nvgoggles")
+	wearingNightVision = IsPlayerWearingTempName(mainPlayer,"nvgoggles")
 	If Not wearingNightVision Then
-		wearingNightVision = IsPlayerWearing(mainPlayer,"supernv")*2
+		wearingNightVision = IsPlayerWearingTempName(mainPlayer,"supernv")*2
 	EndIf
 	
 	mainPlayer\camShake = Max(mainPlayer\camShake - (FPSfactor / 10), 0)
@@ -677,8 +677,8 @@ Function MouseLook()
 		If Int(mouse_y_speed_1) = Int(Nan1) Then mouse_y_speed_1 = 0
 		
 		;TODO: CHANGE THESE NAMES
-		Local the_yaw# = ((mouse_x_speed_1#)) * mouselook_x_inc# / (1.0+IsPlayerWearing(mainPlayer,"vest"))
-		Local the_pitch# = ((mouse_y_speed_1#)) * mouselook_y_inc# / (1.0+IsPlayerWearing(mainPlayer,"vest"))
+		Local the_yaw# = ((mouse_x_speed_1#)) * mouselook_x_inc# / (1.0+IsPlayerWearingTempName(mainPlayer,"vest"))
+		Local the_pitch# = ((mouse_y_speed_1#)) * mouselook_y_inc# / (1.0+IsPlayerWearingTempName(mainPlayer,"vest"))
 		
 		TurnEntity mainPlayer\collider, 0.0, -the_yaw#, 0.0 ; Turn the user on the Y (yaw) axis.
 		mainPlayer\headPitch# = mainPlayer\headPitch# + the_pitch#
@@ -788,7 +788,7 @@ Function MouseLook()
 	EndIf
 	
 	;TODO: cleanup
-	If IsPlayerWearing(mainPlayer,"scp178") Then
+	If IsPlayerWearingTempName(mainPlayer,"scp178") Then
 		If Music(14)=0 Then Music(14)=LoadSound_Strict("SFX\Music\178.ogg")
 		ShouldPlay = 14
 		ShowEntity(mainPlayer\overlays[OVERLAY_178])
@@ -798,7 +798,7 @@ Function MouseLook()
 	
 	canSpawn178%=0
 	
-	If Not IsPlayerWearing(mainPlayer,"scp178") Then
+	If Not IsPlayerWearingTempName(mainPlayer,"scp178") Then
 		For n.NPCs = Each NPCs
 			If (n\NPCtype = NPCtype178) Then
 				If n\State3>0 Then canSpawn178=1
@@ -811,7 +811,7 @@ Function MouseLook()
 		Next
 	EndIf
 	
-	If (canSpawn178=1) Or IsPlayerWearing(mainPlayer,"scp178") Then
+	If (canSpawn178=1) Or IsPlayerWearingTempName(mainPlayer,"scp178") Then
 		tempint%=0
 		For n.NPCs = Each NPCs
 			If (n\NPCtype = NPCtype178) Then
@@ -845,30 +845,75 @@ Function MouseLook()
 	EndIf
 End Function
 
-Function Equip(player.Player,item.Items)
+Function EquipItem(player.Player,item.Items,toggle%)
+	DebugLog "EQUIP "+item\itemtemplate\name
 	If item=Null Then Return
 	If item\itemTemplate\invSlot = WORNITEM_SLOT_NONE Then Return
-	DeEquip(player,item\itemTemplate\invSlot)
-	player\wornItems[item\itemTemplate\invSlot] = item
+	Local currItem.Items = player\wornItems[item\itemTemplate\invSlot]
+	DeEquipSlot(player,item\itemTemplate\invSlot)
+	DebugLog (Not toggle)+" + "+(currItem<>item)
+	If (Not toggle) Or currItem<>item Then
+		player\wornItems[item\itemTemplate\invSlot] = item
+		
+		Select item\itemtemplate\tempname
+			Case "vest"
+				Msg = "You put on the vest and feel slightly encumbered."
+				MsgTimer = 70 * 7
+			Case "finevest"
+				Msg = "You put on the vest and feel heavily encumbered."
+				MsgTimer = 70 * 7
+		End Select
+	EndIf
 End Function
 
-Function DeEquip(player.Player,invSlot%)
+Function DeEquipItem(player.Player,item.Items)
+	If item = Null Then
+		Return
+	EndIf
+	
+	If player\wornItems[item\itemtemplate\invSlot]<>item Then
+		Return
+	EndIf
+	
+	player\wornItems[item\itemtemplate\invSlot] = Null
+	
+	;TODO: implement as needed
+	Select item\itemtemplate\tempname
+		Case "vest","finevest"
+			Msg = "You removed the vest."
+			MsgTimer = 70 * 7
+		Case "hazmatsuit", "hazmatsuit2", "hazmatsuit3"
+			Msg = "You removed the hazmat suit."
+			MsgTimer = 70 * 7
+			DropItem(item)
+	End Select
+End Function
+
+Function DeEquipSlot(player.Player,invSlot%)
 	If player\wornItems[invSlot] = Null Then
 		Return
 	EndIf
 	
-	;TODO: implement as needed
-	
-	player\wornItems[invSlot] = Null
+	DeEquipItem(player,player\wornItems[invSlot])
 End Function
 
-Function IsPlayerWearing(player.Player,templateName$)
+Function IsPlayerWearingTempName(player.Player,templateName$)
 	Local it.ItemTemplates = FindItemTemplate("",templateName)
 	If it=Null Then Return False
 	Local slot% = it\invSlot
 	If slot=WORNITEM_SLOT_NONE Then Return False
 	If player\wornItems[slot]=Null Then Return False
 	Return (player\wornItems[slot]\itemtemplate\tempname=templateName)
+End Function
+
+Function IsPlayerWearingItem(player.Player,item.Items)
+	If item = Null Then
+		Return False
+	EndIf
+	Local slot% = item\itemtemplate\invSlot
+	If slot=WORNITEM_SLOT_NONE Then Return False
+	If player\wornItems[slot]=Null Then Return False
+	Return (player\wornItems[slot] = item)
 End Function
 
 Global TakeOffStuff.MarkedForRemoval
@@ -898,5 +943,5 @@ Function Kill(player.Player)
 	EndIf
 End Function
 ;~IDEal Editor Parameters:
-;~F#F2#25D
+;~F#7A#F2
 ;~C#Blitz3D

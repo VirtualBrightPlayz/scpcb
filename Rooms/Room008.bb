@@ -132,7 +132,7 @@ Function UpdateEvent008(e.Events)
 							
 							HideEntity e\room\Objects[2]
 							
-							If (Not IsPlayerWearing(mainPlayer,"hazmatsuit")) Then 
+							If (Not IsPlayerWearingTempName(mainPlayer,"hazmatsuit")) Then 
 								mainPlayer\injuries=mainPlayer\injuries+0.1
 								mainPlayer\infect008=1
 								Msg = "The window shattered and a piece of glass cut your arm."
@@ -188,3 +188,5 @@ Function UpdateEvent008(e.Events)
 	End If
 	;[End Block]
 End Function
+;~IDEal Editor Parameters:
+;~C#Blitz3D

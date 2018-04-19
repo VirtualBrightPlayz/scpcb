@@ -115,7 +115,8 @@ Function UpdateEventAlarm(e.Events)
 			
 			ShowEntity mainPlayer\overlays[OVERLAY_FOG]
 			AmbientLight Brightness, Brightness, Brightness
-			CameraFogRange(mainPlayer\cam, mainPlayer\camFogNear, mainPlayer\camFogFar)
+			;TODO: fix
+			;CameraFogRange(mainPlayer\cam, mainPlayer\camFogNear, mainPlayer\camFogFar)
 			CameraFogMode(mainPlayer\cam, 1)
 			If SelectedDifficulty\saveType = SAVEANYWHERE Then
 				Msg = "Press "+KeyName(keyBinds\save)+" to save."
@@ -377,3 +378,5 @@ Function UpdateEventAlarm(e.Events)
 	End If
 	;[End Block]
 End Function
+;~IDEal Editor Parameters:
+;~C#Blitz3D

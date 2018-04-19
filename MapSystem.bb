@@ -445,18 +445,6 @@ Function LoadRMesh(file$,rt.RoomTemplates)
 					ReadFloat(f)
 				EndIf
 				
-			Case "playerstart"
-				
-				temp1=ReadFloat(f) : temp2=ReadFloat(f) : temp3=ReadFloat(f)
-				
-				angles$=ReadString(f)
-				pitch#=Piece(angles,1," ")
-				yaw#=Piece(angles,2," ")
-				roll#=Piece(angles,3," ")
-				If cam Then
-					PositionEntity cam,temp1,temp2,temp3
-					RotateEntity cam,pitch,yaw,roll
-				EndIf
 			Case "model"
 				file = ReadString(f)
 				If file<>""
@@ -1593,7 +1581,7 @@ Function FillRoom(r.Rooms)
 			FillRoom2Offices2(r)
 		Case "room2offices3"
 			FillRoom2Offices3(r)
-		Case "start"
+		Case "room173"
 			FillRoom173(r)
 		Case "room2scps"
 			FillRoom2SCPs(r)
@@ -1609,7 +1597,7 @@ Function FillRoom(r.Rooms)
 			FillRoom2Doors(r)
 		Case "914"
 			FillRoom914(r)
-		Case "173"
+		Case "roomintro"
 			FillRoomIntro(r)
 		Case "room2ccont"
 			FillRoom2CCont(r)
@@ -3574,7 +3562,7 @@ Function CreateMap()
 	
 	Local min_pos = 1, max_pos = Room1Amount[0]-1
 	
-	MapRoom(ROOM1, 0) = "start"	
+	MapRoom(ROOM1, 0) = "room173"	
 	SetRoom("roompj", ROOM1, Floor(0.1*Float(Room1Amount[0])),min_pos,max_pos)
 	SetRoom("914", ROOM1, Floor(0.3*Float(Room1Amount[0])),min_pos,max_pos)
 	SetRoom("room1archive",ROOM1,Floor(0.5*Float(Room1Amount[0])),min_pos,max_pos)
@@ -3849,64 +3837,12 @@ Function CreateMap()
 	r = CreateRoom(0, ROOM1, (MapWidth-1) * 8, 0, (MapHeight-1) * 8, "pocketdimension")
 	MapRoomID(ROOM1)=MapRoomID(ROOM1)+1	
 	
-	r = CreateRoom(0, ROOM1, 8, 0, (MapHeight-1) * 8, "173")
+	r = CreateRoom(0, ROOM1, 8, 0, (MapHeight-1) * 8, "roomintro")
 	MapRoomID(ROOM1)=MapRoomID(ROOM1)+1
 	
 	r = CreateRoom(0, ROOM1, 8, 800, 0, "dimension1499")
 	MapRoomID(ROOM1)=MapRoomID(ROOM1)+1
-	
-	If 0 Then 
-		Repeat
-			Cls
-			For x = 0 To MapWidth - 1
-				For y = 0 To MapHeight - 1
-					If MapTemp(x, y) = 0 Then
-						
-						zone=GetZone(y)
-						
-						Color 50*zone, 50*zone, 50*zone
-						Rect(x * 32, y * 32, 30, 30)
-					Else
-						If MapTemp(x, y) = 255 Then
-							Color 0,200,0
-						Else If MapTemp(x,y)=4 Then
-							Color 50,50,255
-						Else If MapTemp(x,y)=3 Then
-							Color 50,255,255
-						Else If MapTemp(x,y)=2 Then
-							Color 255,255,50
-						Else
-							Color 255, 255, 255
-						EndIf
-						Rect(x * 32, y * 32, 30, 30)
-					End If
-				Next
-			Next	
-			
-			For x = 0 To MapWidth - 1
-				For y = 0 To MapHeight - 1
-					
-					If MouseX()>x*32 And MouseX()<x*32+32 Then
-						If MouseY()>y*32 And MouseY()<y*32+32 Then
-							Color 255, 0, 0
-						Else
-							Color 200, 200, 200
-						EndIf
-					Else
-						Color 200, 200, 200
-					EndIf
-					
-					If MapTemp(x, y) > 0 Then
-						Text x * 32 +2, (y) * 32 + 2,MapTemp(x, y) +" "+ MapName(x,y)
-					End If
-				Next
-			Next			
-			
-			Flip
-		Until KeyHit(28)		
-	EndIf
-	
-	
+
 	For y = 0 To MapHeight
 		For x = 0 To MapWidth
 			MapTemp(x, y) = Min(MapTemp(x, y),1)

@@ -61,7 +61,7 @@ Function UpdateNPCtype178(n.NPCs)
         
     EndIf
     
-    If (Not IsPlayerWearing(mainPlayer,"scp178")) And (n\State3=0.0) Then
+    If (Not IsPlayerWearingTempName(mainPlayer,"scp178")) And (n\State3=0.0) Then
         If n\State<=0 Then
             ;nothing happens here...
         Else
@@ -125,7 +125,7 @@ Function UpdateNPCtype178(n.NPCs)
         EndIf
         
         ;If Rand(1,15)=1 Then EntityColor n\obj,Rand(50,100),0,Rand(0,50)
-        If (IsPlayerWearing(mainPlayer,"scp178")) Or (n\State3>0) Then
+        If (IsPlayerWearingTempName(mainPlayer,"scp178")) Or (n\State3>0) Then
             n\State=Min(n\State+FPSfactor,300.0)
         Else
             n\State=Max(n\State-FPSfactor,0.0)

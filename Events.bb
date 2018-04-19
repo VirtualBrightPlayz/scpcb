@@ -58,8 +58,8 @@ End Function
 Function InitEvents()
 	Local e.Events
 	
-	CreateEvent("173", "173", 0)
-	CreateEvent("alarm", "start", 0)
+	CreateEvent("173", "roomintro", 0)
+	CreateEvent("alarm", "room173", 0)
 	
 	CreateEvent("pocketdimension", "pocketdimension", 0)	
 	

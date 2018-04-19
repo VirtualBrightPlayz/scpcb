@@ -1226,7 +1226,7 @@ Function UpdateGame()
 			
 			CanSave% = True
 			UpdateEmitters()
-			MouseLook()			
+			MouseLook()
 			MovePlayer()
 			InFacility = CheckForPlayerInFacility()
 			UpdateDoors()
@@ -1331,7 +1331,7 @@ Function UpdateGame()
 			
 			If CurrGameState=GAMESTATE_SCP294 Then darkA=1.0
 			
-			If (Not IsPlayerWearing(mainPlayer,"nvgoggles")) Then darkA = Max((1.0-SecondaryLightOn)*0.9, darkA)
+			If (Not IsPlayerWearingTempName(mainPlayer,"nvgoggles")) Then darkA = Max((1.0-SecondaryLightOn)*0.9, darkA)
 			
 			If mainPlayer\dead Then
 				CurrGameState = GAMESTATE_PLAYING
@@ -2078,7 +2078,7 @@ Function DrawGUI()
 			
 			If mainPlayer\inventory\items[n] <> Null Then
 				Color 200, 200, 200
-				If IsPlayerWearing(mainPlayer,mainPlayer\inventory\items[n]\itemtemplate\tempname) Then
+				If IsPlayerWearingItem(mainPlayer,mainPlayer\inventory\items[n]) Then
 					Rect(x - 3, y - 3, width + 6, height + 6)
 				EndIf
 			EndIf
@@ -2298,12 +2298,7 @@ Function DrawGUI()
 		
 		If mainPlayer\selectedItem <> Null Then
 			Select mainPlayer\selectedItem\itemtemplate\tempname
-					
 					;[Block]
-				Case "nvgoggles","supernv","veryfinenvgoggles"
-					Equip(mainPlayer,mainPlayer\selectedItem)
-
-					mainPlayer\selectedItem = Null
 				Case "1123"
 					If mainPlayer\currRoom\RoomTemplate\Name <> "room1123" Then
 						ShowEntity mainPlayer\overlays[OVERLAY_WHITE]
@@ -2896,37 +2891,6 @@ Function DrawGUI()
 					Kill(mainPlayer)
 					MsgTimer = 70 * 6
 					RemoveItem(mainPlayer\selectedItem)
-				Case "hazmatsuit", "hazmatsuit2", "hazmatsuit3"
-					Msg = "You removed the hazmat suit."
-					DeEquip(mainPlayer,WORNITEM_SLOT_BODY)
-					MsgTimer = 70 * 5
-					DropItem(mainPlayer\selectedItem)
-					mainPlayer\selectedItem = Null	
-				Case "vest"
-					If IsPlayerWearing(mainPlayer,"vest") Then
-						Msg = "You removed the vest."
-						DeEquip(mainPlayer,WORNITEM_SLOT_BODY)
-					Else
-						Msg = "You put on the vest and feel slightly encumbered."
-						Equip(mainPlayer,mainPlayer\selectedItem)
-						;TakeOffStuff(2)
-					EndIf
-					MsgTimer = 70 * 7
-					mainPlayer\selectedItem = Null
-				Case "finevest"
-					If IsPlayerWearing(mainPlayer,"finevest") Then
-						Msg = "You removed the vest."
-						DeEquip(mainPlayer,WORNITEM_SLOT_BODY)					
-					Else
-						Msg = "You put on the vest and feel heavily encumbered."
-						Equip(mainPlayer,mainPlayer\selectedItem)
-						;TakeOffStuff(2)
-					EndIf
-					mainPlayer\selectedItem = Null	
-				Case "gasmask", "supergasmask", "gasmask3"
-					Equip(mainPlayer,mainPlayer\selectedItem)
-
-					mainPlayer\selectedItem = Null				
 				Case "navigator", "nav"
 					
 					If mainPlayer\selectedItem\itemtemplate\img=0 Then
@@ -3075,7 +3039,7 @@ Function DrawGUI()
 					If (Not Wearing1499%) Then
 						GiveAchievement(Achv1499)
 						
-						Equip(mainPlayer,mainPlayer\selectedItem)
+						EquipItem(mainPlayer,mainPlayer\selectedItem,True)
 						
 						For r.Rooms = Each Rooms
 							If r\RoomTemplate\Name = "dimension1499" Then
@@ -3172,8 +3136,8 @@ Function DrawGUI()
 					mainPlayer\selectedItem\state = 1
 					mainPlayer\selectedItem = Null
 				Default
-					;check if the item is an inventory-type object
 					If mainPlayer\selectedItem\inventory<>Null Then
+						;check if the item is an inventory-type object
 						DoubleClick = 0
 						MouseHit1 = 0
 						MouseDown1 = 0
@@ -3181,8 +3145,11 @@ Function DrawGUI()
 						;TODO: fix
 						;OtherOpen = mainPlayer\selectedItem
 						mainPlayer\selectedItem = Null
+					ElseIf mainPlayer\selectedItem\itemtemplate\invSlot <> WORNITEM_SLOT_NONE Then
+						;check if the item is equippable
+						EquipItem(mainPlayer,mainPlayer\selectedItem,True)
+						mainPlayer\selectedItem = Null
 					EndIf
-					
 			End Select
 			
 			If mainPlayer\selectedItem <> Null Then
@@ -4150,7 +4117,7 @@ Function RenderWorld2()
 	;EndIf
 	
 	If mainPlayer\blinkTimer < - 16 Or mainPlayer\blinkTimer > - 6
-		If IsPlayerWearing(mainPlayer,"supernv") And hasBattery<>0 Then ;show a HUD
+		If IsPlayerWearingTempName(mainPlayer,"supernv") And hasBattery<>0 Then ;show a HUD
 			;NVTimer=NVTimer-FPSfactor
 			
 			;If NVTimer<=0.0 Then
@@ -4226,7 +4193,7 @@ Function RenderWorld2()
 			DrawImage NVGImages,40,userOptions\screenHeight*0.5+30,1
 			
 			Color 255,255,255
-		ElseIf IsPlayerWearing(mainPlayer,"nvgoggles") And hasBattery<>0 Then
+		ElseIf IsPlayerWearingTempName(mainPlayer,"nvgoggles") And hasBattery<>0 Then
 			Color 0,55,0
 			For k=0 To 10
 				Rect 45,userOptions\screenHeight*0.5-(k*20),54,10,True

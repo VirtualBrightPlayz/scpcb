@@ -84,7 +84,7 @@ Function UpdateNPCtypeTentacle(n.NPCs)
                     If n\Frame>=5 And n\Frame<6 Then
                         If dist < 1.8 Then
                             If Abs(DeltaYaw(n\Collider, mainPlayer\collider))<20 Then 
-                                If IsPlayerWearing(mainPlayer,"hazmatsuit") Then
+                                If IsPlayerWearingTempName(mainPlayer,"hazmatsuit") Then
                                     mainPlayer\injuries = mainPlayer\injuries+Rnd(0.5)
                                     PlaySound_Strict(LoadTempSound("SFX\General\BodyFall.ogg"))
                                 Else

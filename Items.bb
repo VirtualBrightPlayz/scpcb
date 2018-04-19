@@ -644,6 +644,10 @@ Function PickItem(item.Items)
 End Function
 
 Function DropItem(item.Items,playDropSound%=True)
+	For player.Player = Each Player
+		DeEquipItem(player,item)
+	Next
+		
 	If playDropSound And (item\itemtemplate\sound <> 66) Then PlaySound_Strict(PickSFX(item\itemtemplate\sound))
 	
 	item\Dropped = 1
@@ -703,5 +707,5 @@ Function DropItem(item.Items,playDropSound%=True)
 	;End Select	
 End Function
 ;~IDEal Editor Parameters:
-;~F#1F#75#141#15C#162#168#16F#1D5#22E#285
+;~F#1F#75#84#141#15C#162#168#16F#1D5
 ;~C#Blitz3D

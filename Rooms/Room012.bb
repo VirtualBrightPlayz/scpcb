@@ -112,7 +112,7 @@ Function UpdateEventRoom012(e.Events)
 				EndIf
 			EndIf
 			
-			If (Not IsPlayerWearing(mainPlayer,"hazmatsuit3")) And (Not IsPlayerWearing(mainPlayer,"gasmask3")) And (Not IsPlayerWearing(mainPlayer,"nvgoggles")) Then
+			If (Not IsPlayerWearingTempName(mainPlayer,"hazmatsuit3")) And (Not IsPlayerWearingTempName(mainPlayer,"gasmask3")) And (Not IsPlayerWearingTempName(mainPlayer,"nvgoggles")) Then
 				temp = False
 				If EntityVisible(e\room\Objects[2],mainPlayer\cam) Then temp = True
 				
@@ -228,3 +228,5 @@ Function UpdateEventRoom012(e.Events)
 	EndIf
 	;[End Block]
 End Function
+;~IDEal Editor Parameters:
+;~C#Blitz3D

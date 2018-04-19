@@ -499,11 +499,11 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 			
 			Local ShotMessageUpdate$
 			Local WearingVest% = False
-			WearingVest = WearingVest Or IsPlayerWearing(mainPlayer,"vest")
-			WearingVest = WearingVest Or IsPlayerWearing(mainPlayer,"finevest")
-			WearingVest = WearingVest Or IsPlayerWearing(mainPlayer,"veryfinevest")
+			WearingVest = WearingVest Or IsPlayerWearingTempName(mainPlayer,"vest")
+			WearingVest = WearingVest Or IsPlayerWearingTempName(mainPlayer,"finevest")
+			WearingVest = WearingVest Or IsPlayerWearingTempName(mainPlayer,"veryfinevest")
 			If WearingVest Then
-				If IsPlayerWearing(mainPlayer,"vest") Then
+				If IsPlayerWearingTempName(mainPlayer,"vest") Then
 					Select Rand(8)
 						Case 1,2,3,4,5
 							mainPlayer\blurTimer = 500
