@@ -3,14 +3,13 @@ Include "MarkedForRemoval.bb"
 Include "StrictLoads.bb"
 Include "KeyName.bb"
 Include "Options.bb"
+Include "FastResize.bb"
 
 ;TODO: FreeFont Font5. Make it local.
 Global Font1%, Font2%, Font3%, Font4%, Font5%
 Global ConsoleFont%
 
 Global VersionNumber$ = "1.CBN"
-;TODO: Deprecate.
-Global CompatibleNumber$ = "1.CBN"
 
 AppTitle "SCP - Containment Breach Launcher"
 
@@ -31,8 +30,6 @@ Global LauncherIMG%
 Global Depth% = 0 ;TODO: what is this?
 
 Global SelectedGFXMode%
-
-Include "FastResize.bb"
 
 ;TODO: Move somewhere more relevant.
 Global WireframeState
@@ -126,10 +123,6 @@ SetFont Font2
 Global BlinkMeterIMG% = LoadImage_Strict("GFX\blinkmeter.jpg")
 
 DrawLoading(0, True)
-
-Global Mesh_MinX#, Mesh_MinY#, Mesh_MinZ#
-Global Mesh_MaxX#, Mesh_MaxY#, Mesh_MaxZ#
-Global Mesh_MagX#, Mesh_MagY#, Mesh_MagZ#
 
 Include "Achievements.bb"
 
@@ -2800,76 +2793,6 @@ Function UpdateDecals()
 End Function
 
 Include "INI.bb"
-
-;--------------------------------------- MakeCollBox -functions -------------------------------------------------------
-
-
-; Create a collision box For a mesh entity taking into account entity scale
-; (will not work in non-uniform scaled space)
-Function MakeCollBox(mesh%)
-	Local sx# = EntityScaleX(mesh, 1)
-	Local sy# = Max(EntityScaleY(mesh, 1), 0.001)
-	Local sz# = EntityScaleZ(mesh, 1)
-	GetMeshExtents(mesh)
-	EntityBox mesh, Mesh_MinX * sx, Mesh_MinY * sy, Mesh_MinZ * sz, Mesh_MagX * sx, Mesh_MagY * sy, Mesh_MagZ * sz
-End Function
-
-; Find mesh extents
-Function GetMeshExtents(Mesh%)
-	Local s%, surf%, surfs%, v%, verts%, x#, y#, z#
-	Local minx# = INFINITY
-	Local miny# = INFINITY
-	Local minz# = INFINITY
-	Local maxx# = -INFINITY
-	Local maxy# = -INFINITY
-	Local maxz# = -INFINITY
-	
-	surfs = CountSurfaces(Mesh)
-	
-	For s = 1 To surfs
-		surf = GetSurface(Mesh, s)
-		verts = CountVertices(surf)
-		
-		For v = 0 To verts - 1
-			x = VertexX(surf, v)
-			y = VertexY(surf, v)
-			z = VertexZ(surf, v)
-			
-			If (x < minx) Then minx = x
-			If (x > maxx) Then maxx = x
-			If (y < miny) Then miny = y
-			If (y > maxy) Then maxy = y
-			If (z < minz) Then minz = z
-			If (z > maxz) Then maxz = z
-		Next
-	Next
-	
-	Mesh_MinX = minx
-	Mesh_MinY = miny
-	Mesh_MinZ = minz
-	Mesh_MaxX = maxx
-	Mesh_MaxY = maxy
-	Mesh_MaxZ = maxz
-	Mesh_MagX = maxx-minx
-	Mesh_MagY = maxy-miny
-	Mesh_MagZ = maxz-minz
-	
-End Function
-
-Function EntityScaleX#(entity%, globl% = False)
-	If globl Then TFormVector 1, 0, 0, entity, 0 Else TFormVector 1, 0, 0, entity, GetParent(entity)
-	Return Sqr(TFormedX() * TFormedX() + TFormedY() * TFormedY() + TFormedZ() * TFormedZ())
-End Function 
-
-Function EntityScaleY#(entity%, globl% = False)
-	If globl Then TFormVector 0, 1, 0, entity, 0 Else TFormVector 0, 1, 0, entity, GetParent(entity)
-	Return Sqr(TFormedX() * TFormedX() + TFormedY() * TFormedY() + TFormedZ() * TFormedZ())
-End Function 
-
-Function EntityScaleZ#(entity%, globl% = False)
-	If globl Then TFormVector 0, 0, 1, entity, 0 Else TFormVector 0, 0, 1, entity, GetParent(entity)
-	Return Sqr(TFormedX() * TFormedX() + TFormedY() * TFormedY() + TFormedZ() * TFormedZ())
-End Function 
 
 Function Graphics3DExt%(width%,height%,depth%=32,mode%=2)
 	;If FE_InitExtFlag = 1 Then DeInitExt() ;prevent FastExt from breaking itself

@@ -3,6 +3,8 @@ Function LoadEntities()
 	
 	Local i%
 	
+	;TODO: there may be a memory leak here,
+	;probably gonna have to rework the tempsound system
 	For i=0 To 9
 		TempSounds[i]=0
 	Next

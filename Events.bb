@@ -73,8 +73,6 @@ Function InitEvents()
 	
 	CreateEvent("room2trick", "room2", 0, 0.15)	
 	
-	CreateEvent("1048a", "room2", 0, 1.0)	
-	
 	CreateEvent("room2storage", "room2storage", 0)	
 	
 	;096 spawns in the first (and last) lockroom2
@@ -263,8 +261,6 @@ Function UpdateEvents()
 				UpdateEventLockroom173(e)
 			Case "room2trick"
 				UpdateEventRoom2trick(e)
-			Case "1048a"
-				UpdateEvent1048a(e)
 			Case "room2storage"
 				UpdateEventRoom2storage(e)
 			Case "lockroom096"
