@@ -1,16 +1,16 @@
 ;achievement menu & messages by InnocentSam
 
-;TODO: fix
-Const MAXACHIEVEMENTS=33
+;TODO: fix because this sucks
+Const MAXACHIEVEMENTS=32
 Dim Achievements%(MAXACHIEVEMENTS)
 
-Const Achv008%=0, Achv012%=1, Achv035%=2, Achv049%=3, Achv055=4,  Achv079%=5, Achv096%=6, Achv106%=7, Achv148%=8, Achv205=10
-Const Achv294%=11, Achv420%=12, Achv500%=13, Achv513%=14, Achv789%=15, Achv860%=16, Achv895%=17
-Const Achv914%=18, Achv939%=19, Achv966%=20, Achv970=21, Achv1048=22, Achv1123=23
+Const Achv008%=0, Achv012%=1, Achv035%=2, Achv049%=3, Achv055=4,  Achv079%=5, Achv096%=6, Achv106%=7, Achv148%=8, Achv205=9
+Const Achv294%=10, Achv420%=11, Achv500%=12, Achv513%=13, Achv789%=14, Achv860%=15, Achv895%=16
+Const Achv914%=17, Achv939%=18, Achv966%=19, Achv970=20, Achv1048=21, Achv1123=22
 
-Const AchvMaynard%=24, AchvHarp%=25, AchvSNAV%=26, AchvOmni%=27, AchvConsole%=28, AchvTesla%=29, AchvPD%=30
+Const AchvMaynard%=23, AchvHarp%=24, AchvSNAV%=25, AchvOmni%=26, AchvConsole%=27, AchvTesla%=28, AchvPD%=29
 
-Const Achv1162% = 31, Achv1499% = 32
+Const Achv1162% = 30, Achv1499% = 31
 
 Global UsedConsole
 
