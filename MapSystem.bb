@@ -2827,7 +2827,6 @@ Function UpdateLever(obj, locked=False)
 End Function
 
 Function UpdateButton(obj)
-	
 	Local dist# = EntityDistance(mainPlayer\collider, obj);entityDistance(collider, d\buttons[i])
 	If dist < 0.8 Then
 		Local temp% = CreatePivot()

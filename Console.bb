@@ -34,17 +34,11 @@ Function CreateConsoleMsg(txt$,r%=-1,g%=-1,b%=-1,isCommand%=False)
 	If (c\b<0) Then c\b = ConsoleB
 End Function
 
-Function UpdateConsole()
+Function DrawConsole()
 	If CurrGameState=GAMESTATE_CONSOLE Then
-		Local cm.ConsoleMsg
-	
 		SetFont ConsoleFont
 		
-		ConsoleR = 255 : ConsoleG = 255 : ConsoleB = 255
-	
 		Local x% = 0, y% = userOptions\screenHeight-300*MenuScale, width% = userOptions\screenWidth, height% = 300*MenuScale-30*MenuScale
-		Local StrTemp$, temp%,  i%
-		Local ev.Events, r.Rooms, it.Items
 		
 		DrawFrame x,y,width,height+30*MenuScale
 		
@@ -68,6 +62,63 @@ Function UpdateConsole()
 		If inBox Then Color 200,200,200
 		If ConsoleScrollDragging Then Color 255,255,255
 		Rect x+width-23*MenuScale,y+height-scrollbarHeight+(ConsoleScroll*scrollbarHeight/height),20*MenuScale,scrollbarHeight,True
+		
+		Color 255, 255, 255
+		
+		Local TempY% = y + height - 25*MenuScale - ConsoleScroll
+		Local count% = 0
+		For cm.ConsoleMsg = Each ConsoleMsg
+			count = count+1
+			If count>1000 Then
+				Delete cm
+			Else
+				If TempY >= y And TempY < y + height - 20*MenuScale Then
+					If cm=ConsoleReissue Then
+						Color cm\r/4,cm\g/4,cm\b/4
+						Rect x,TempY-2*MenuScale,width-30*MenuScale,24*MenuScale,True
+					EndIf
+					Color cm\r,cm\g,cm\b
+					If cm\isCommand Then
+						Text(x + 20*MenuScale, TempY, "> "+cm\txt)
+					Else
+						Text(x + 20*MenuScale, TempY, cm\txt)
+					EndIf
+				EndIf
+				TempY = TempY - 15*MenuScale
+			EndIf
+			
+		Next
+		
+		Color 255,255,255
+		
+		DrawInputBox(x, y + height, width, 30*MenuScale, ConsoleInput, 2)
+		
+		If userOptions\fullscreen Then DrawImage CursorIMG, ScaledMouseX(),ScaledMouseY()
+	EndIf
+End Function
+
+Function UpdateConsole()
+	If CurrGameState=GAMESTATE_CONSOLE Then
+		Local cm.ConsoleMsg
+		
+		ConsoleR = 255 : ConsoleG = 255 : ConsoleB = 255
+	
+		Local x% = 0, y% = userOptions\screenHeight-300*MenuScale, width% = userOptions\screenWidth, height% = 300*MenuScale-30*MenuScale
+		Local StrTemp$, temp%,  i%
+		Local ev.Events, r.Rooms, it.Items
+		
+		Local consoleHeight% = 0
+		Local scrollbarHeight% = 0
+		For cm.ConsoleMsg = Each ConsoleMsg
+			consoleHeight = consoleHeight + 15*MenuScale
+		Next
+		scrollbarHeight = (Float(height)/Float(consoleHeight))*height
+		If scrollbarHeight>height Then scrollbarHeight = height
+		If consoleHeight<height Then consoleHeight = height
+		
+		inBar% = MouseOn(x+width-26*MenuScale,y,26*MenuScale,height)
+		
+		inBox% = MouseOn(x+width-23*MenuScale,y+height-scrollbarHeight+(ConsoleScroll*scrollbarHeight/height),20*MenuScale,scrollbarHeight)
 		
 		If Not MouseDown(1) Then
 			ConsoleScrollDragging=False
@@ -185,11 +236,9 @@ Function UpdateConsole()
 		If ConsoleScroll<-consoleHeight+height Then ConsoleScroll = -consoleHeight+height
 		If ConsoleScroll>0 Then ConsoleScroll = 0
 		
-		Color 255, 255, 255
-		
 		SelectedInputBox = 2
 		Local oldConsoleInput$ = ConsoleInput
-		ConsoleInput = InputBox(x, y + height, width, 30*MenuScale, ConsoleInput, 2)
+		ConsoleInput = UpdateInputBox(x, y + height, width, 30*MenuScale, ConsoleInput, 2)
 		If oldConsoleInput<>ConsoleInput Then
 			ConsoleReissue = Null
 		EndIf
@@ -925,36 +974,8 @@ Function UpdateConsole()
 			End Select
 			
 			ConsoleInput = ""
-		End If
-		
-		Local TempY% = y + height - 25*MenuScale - ConsoleScroll
-		Local count% = 0
-		For cm.ConsoleMsg = Each ConsoleMsg
-			count = count+1
-			If count>1000 Then
-				Delete cm
-			Else
-				If TempY >= y And TempY < y + height - 20*MenuScale Then
-					If cm=ConsoleReissue Then
-						Color cm\r/4,cm\g/4,cm\b/4
-						Rect x,TempY-2*MenuScale,width-30*MenuScale,24*MenuScale,True
-					EndIf
-					Color cm\r,cm\g,cm\b
-					If cm\isCommand Then
-						Text(x + 20*MenuScale, TempY, "> "+cm\txt)
-					Else
-						Text(x + 20*MenuScale, TempY, cm\txt)
-					EndIf
-				EndIf
-				TempY = TempY - 15*MenuScale
-			EndIf
-			
-		Next
-		
-		Color 255,255,255
-		
-		If userOptions\fullscreen Then DrawImage CursorIMG, ScaledMouseX(),ScaledMouseY()
-	End If
+		EndIf
+	EndIf
 	
 	SetFont Font1
 	
@@ -982,3 +1003,5 @@ CreateConsoleMsg("  - 173state/106state/096state")
 CreateConsoleMsg("  - spawn [npc type]")
 
 ;---------------------------------------------------------------------------------------------------
+;~IDEal Editor Parameters:
+;~C#Blitz3D

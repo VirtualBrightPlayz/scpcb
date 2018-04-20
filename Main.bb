@@ -44,7 +44,7 @@ Global AspectRatioRatio#
 
 If userOptions\launcher Then 
 	AspectRatioRatio = 1.0
-	UpdateLauncher()
+	RunLauncher()
 Else
 	For i% = 1 To TotalGFXModes
 		Local samefound% = False
@@ -951,7 +951,7 @@ Function UpdateGame()
 			;If EndingTimer < 0 Then
 			;	If SelectedEnding <> "" Then DrawEnding()
 			;Else
-			DrawPauseMenu()			
+			UpdatePauseMenu()		
 			;EndIf
 			
 			UpdateConsole()
@@ -1035,15 +1035,20 @@ Function UpdateGame()
 		EntityFX fresize_image,1
 		EntityBlend fresize_image,1
 		EntityAlpha fresize_image,1.0
-		
-		If timing\accumulator<=timing\tickDuration Then
-			If (Not userOptions\vsync) Then
-				Flip 0
-			Else 
-				Flip 1
-			EndIf
-		EndIf
 	Wend
+	
+	If CurrGameState=GAMESTATE_MAINMENU Then
+		DrawMainMenu()
+	Else
+		DrawPauseMenu()	
+	EndIf
+	If timing\accumulator<=timing\tickDuration Then
+		If (Not userOptions\vsync) Then
+			Flip 0
+		Else
+			Flip 1
+		EndIf
+	EndIf
 	;[End block]
 End Function
 
@@ -1550,7 +1555,6 @@ Function DrawPauseMenu()
 	Local x%, y%, width%, height%
 	
 	If CurrGameState = GAMESTATE_PAUSED Then
-		
 		width = ImageWidth(PauseMenuIMG)
 		height = ImageHeight(PauseMenuIMG)
 		x = userOptions\screenWidth / 2 - width / 2
@@ -1563,339 +1567,89 @@ Function DrawPauseMenu()
 		x = x+132*MenuScale
 		y = y+122*MenuScale	
 		
-		;TODO: fix
-;		If AchievementsMenu > 0 Then
-;			SetFont Font2
-;			Text(x, y-(122-45)*MenuScale, "ACHIEVEMENTS",False,True)
-;			SetFont Font1
-;		ElseIf OptionsMenu > 0 Then
-;			SetFont Font2
-;			Text(x, y-(122-45)*MenuScale, "OPTIONS",False,True)
-;			SetFont Font1
-;		ElseIf QuitMSG > 0 Then
-;			SetFont Font2
-;			Text(x, y-(122-45)*MenuScale, "QUIT?",False,True)
-;			SetFont Font1
-;		Else
 		If mainPlayer\dead Then
 			titleText = "YOU DIED"
 		End If
 		SetFont Font2
 		Text(x, y-(122-45)*MenuScale, titleText,False,True)
+		
 		SetFont Font1
+		Text x, y, "Difficulty: "+SelectedDifficulty\name
+		Text x, y+20*MenuScale, "Save: "+CurrSave
+		Text x, y+40*MenuScale, "Map seed: "+RandomSeed
+		
+		y = y+10
+		
+		If Not mainPlayer\dead Then
+			y = y+72*MenuScale
+			
+			DrawUIButton(x, y, 390*MenuScale, 60*MenuScale, "Resume", True)
+			y = y + 75*MenuScale
+			If (Not SelectedDifficulty\permaDeath) Then
+				If GameSaved Then
+					DrawUIButton(x, y, 390*MenuScale, 60*MenuScale, "Load Game")
+				Else
+					DrawFrame(x,y,390*MenuScale, 60*MenuScale)
+					Color (100, 100, 100)
+					SetFont Font2
+					Text(x + (390*MenuScale) / 2, y + (60*MenuScale) / 2, "Load Game", True, True)
+				EndIf
+				y = y + 75*MenuScale
+			EndIf
+			
+			DrawUIButton(x, y, 390*MenuScale, 60*MenuScale, "Achievements")
+			y = y + 75*MenuScale
+			DrawUIButton(x, y, 390*MenuScale, 60*MenuScale, "Options")
+			y = y + 75*MenuScale
+			
+			DrawUIButton(x, y, 390*MenuScale, 60*MenuScale, "Quit")
+		Else
+			y = y+104*MenuScale
+			If GameSaved And (Not SelectedDifficulty\permaDeath) Then
+				DrawUIButton(x, y, 390*MenuScale, 60*MenuScale, "Load Game")
+			Else
+				DrawUIButton(x, y, 390*MenuScale, 60*MenuScale, "")
+				Color 50,50,50
+				Text(x + 185*MenuScale, y + 30*MenuScale, "Load Game", True, True)
+			EndIf
+			DrawUIButton(x, y + 80*MenuScale, 390*MenuScale, 60*MenuScale, "Quit to Menu")
+			y = y + 80*MenuScale
+		EndIf
+		
+		SetFont Font1
+		If mainPlayer\dead Then RowText(DeathMSG$, x, y + 80*MenuScale, 390*MenuScale, 600*MenuScale)
+		;EndIf
+		
+		If userOptions\fullscreen Then DrawImage CursorIMG, ScaledMouseX(),ScaledMouseY()
+	EndIf
+	
+	SetFont Font1
+	
+End Function
+
+Function UpdatePauseMenu()
+	Local x%, y%, width%, height%
+	
+	If CurrGameState = GAMESTATE_PAUSED Then
+		width = ImageWidth(PauseMenuIMG)
+		height = ImageHeight(PauseMenuIMG)
+		x = userOptions\screenWidth / 2 - width / 2
+		y = userOptions\screenHeight / 2 - height / 2
+		
+		x = x+132*MenuScale
+		y = y+122*MenuScale	
 		
 		Local AchvXIMG% = (x + (22*MenuScale))
 		Local scale# = userOptions\screenHeight/768.0
 		Local SeparationConst% = 76*scale
 		Local imgsize% = 64
 		
-		;TODO: fix everything
-		;If AchievementsMenu <= 0 And OptionsMenu <= 0 And QuitMSG <= 0
-		SetFont Font1
-		Text x, y, "Difficulty: "+SelectedDifficulty\name
-		Text x, y+20*MenuScale, "Save: "+CurrSave
-		Text x, y+40*MenuScale, "Map seed: "+RandomSeed
-;		ElseIf AchievementsMenu <= 0 And OptionsMenu > 0 And QuitMSG <= 0 And KillTimer >= 0
-;			If DrawButton(x + 101 * MenuScale, y + 390 * MenuScale, 230 * MenuScale, 60 * MenuScale, "Back") Then
-;				AchievementsMenu = 0
-;				OptionsMenu = 0
-;				QuitMSG = 0
-;				MouseHit1 = False
-;				
-;				SaveOptionsINI()
-;				;TextureLodBias TextureFloat#
-;			EndIf
-;			
-;			Color 0,255,0
-;			If OptionsMenu = 1
-;				Rect(x-10*MenuScale,y-5*MenuScale,110*MenuScale,40*MenuScale,True)
-;			ElseIf OptionsMenu = 2
-;				Rect(x+100*MenuScale,y-5*MenuScale,110*MenuScale,40*MenuScale,True)
-;			ElseIf OptionsMenu = 3
-;				Rect(x+210*MenuScale,y-5*MenuScale,110*MenuScale,40*MenuScale,True)
-;			ElseIf OptionsMenu = 4
-;				Rect(x+320*MenuScale,y-5*MenuScale,110*MenuScale,40*MenuScale,True)
-;			EndIf
-;			
-;			If DrawButton(x-5*MenuScale,y,100*MenuScale,30*MenuScale,"GRAPHICS",False) Then OptionsMenu = 1
-;			If DrawButton(x+105*MenuScale,y,100*MenuScale,30*MenuScale,"AUDIO",False) Then OptionsMenu = 2
-;			If DrawButton(x+215*MenuScale,y,100*MenuScale,30*MenuScale,"CONTROLS",False) Then OptionsMenu = 3
-;			If DrawButton(x+325*MenuScale,y,100*MenuScale,30*MenuScale,"ADVANCED",False) Then OptionsMenu = 4
-;			
-;			
-;			Color 255,255,255
-;			Select OptionsMenu
-;				Case 1 ;Graphics
-;					SetFont Font1
-;					;[Block]
-;					y=y+50*MenuScale
-;					
-;					Color 255,255,255				
-;					Text(x, y, "Show HUD:")	
-;					userOptions\hudEnabled = DrawTick(x + 270 * MenuScale, y + MenuScale, userOptions\hudEnabled)	
-;					
-;					y=y+30*MenuScale
-;					
-;					Color 100,100,100				
-;					Text(x, y, "Enable bump mapping:")	
-;					DrawTick(x + 270 * MenuScale, y + MenuScale, False, True)
-;					If MouseOn(x + 270 * MenuScale, y + MenuScale, 20*MenuScale,20*MenuScale)
-;						DrawTooltip("Not available in this version")
-;					EndIf
-;					
-;					y=y+30*MenuScale
-;					
-;					Color 255,255,255
-;					Text(x, y, "VSync:")
-;					userOptions\vsync = DrawTick(x + 270 * MenuScale, y + MenuScale, userOptions\vsync)
-;					
-;					y=y+30*MenuScale
-;					
-;					;Local prevGamma# = userOptions\screenGamma
-;					userOptions\screenGamma = (SlideBar(x + 270*MenuScale, y+6*MenuScale, 100*MenuScale, userOptions\screenGamma*50.0)/50.0)
-;					Color 255,255,255
-;					Text(x, y, "Screen gamma")
-;					;Text(x+5+MenuScale, y + 15 * MenuScale, "(userOptions\fullscreen only)")
-;					
-;					;If prevGamma<>userOptions\screenGamma Then
-;					;	UpdateScreenGamma()
-;					;EndIf
-;					
-;					y=y+40*MenuScale
-;					
-;					Color 100,100,100
-;					Text(x, y, "Texture quality:")
-;					DrawImage ArrowIMG(1),x + 270 * MenuScale, y-4*MenuScale
-;					
-;					Text(x + 300 * MenuScale, y + MenuScale, "DISABLED")
-;					If MouseOn(x + 270 * MenuScale, y-4*MenuScale, ImageWidth(ArrowIMG(1)),ImageHeight(ArrowIMG(1)))
-;						DrawTooltip("Not available in this version")
-;					EndIf
-;					
-;					;[End Block]
-;				Case 2 ;Audio
-;					SetFont Font1
-;					;[Block]
-;					y = y + 50*MenuScale
-;					
-;					userOptions\musicVolume = (SlideBar(x + 250*MenuScale, y-4*MenuScale, 100*MenuScale, userOptions\musicVolume*100.0)/100.0)
-;					Color 255,255,255
-;					Text(x, y, "Music volume:")
-;					
-;					y = y + 30*MenuScale
-;					
-;					userOptions\SoundVolume = (SlideBar(x + 250*MenuScale, y-4*MenuScale, 100*MenuScale, userOptions\SoundVolume*100.0)/100.0)
-;					Color 255,255,255
-;					Text(x, y, "Sound volume:")
-;					;[End Block]
-;				Case 3 ;Controls
-;					;Text(x+210*MenuScale,y,"CONTROLS",True,True)
-;					SetFont Font1
-;					;[Block]
-;					y = y + 50*MenuScale
-;					
-;					userOptions\mouseSensitivity = (SlideBar(x + 270*MenuScale, y-4*MenuScale, 100*MenuScale, (userOptions\mouseSensitivity+0.5)*100.0)/100.0)-0.5
-;					Color(255, 255, 255)
-;					Text(x, y, "Mouse sensitivity:")
-;					
-;					y = y + 30*MenuScale
-;					
-;					Color(255, 255, 255)
-;					Text(x, y, "Invert mouse Y-axis:")
-;					userOptions\invertMouseY = DrawTick(x + 270 * MenuScale, y + MenuScale, userOptions\invertMouseY)
-;					
-;					y = y + 30*MenuScale
-;					Text(x, y, "Control configuration:")
-;					y = y + 10*MenuScale
-;					
-;					Text(x, y + 20 * MenuScale, "Move Forward")
-;					InputBox(x + 200 * MenuScale, y + 20 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(keyBinds\up,210)),5)		
-;					Text(x, y + 40 * MenuScale, "Strafe Left")
-;					InputBox(x + 200 * MenuScale, y + 40 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(keyBinds\Left,210)),3)	
-;					Text(x, y + 60 * MenuScale, "Move Backward")
-;					InputBox(x + 200 * MenuScale, y + 60 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(keyBinds\down,210)),6)				
-;					Text(x, y + 80 * MenuScale, "Strafe Right")
-;					InputBox(x + 200 * MenuScale, y + 80 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(keyBinds\Right,210)),4)
-;					
-;					Text(x, y + 100 * MenuScale, "Manual Blink")
-;					InputBox(x + 200 * MenuScale, y + 100 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(keyBinds\blink,210)),7)				
-;					Text(x, y + 120 * MenuScale, "Sprint")
-;					InputBox(x + 200 * MenuScale, y + 120 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(keyBinds\sprint,210)),8)
-;					Text(x, y + 140 * MenuScale, "Open/Close Inventory")
-;					InputBox(x + 200 * MenuScale, y + 140 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(keyBinds\inv,210)),9)
-;					Text(x, y + 160 * MenuScale, "Crouch")
-;					InputBox(x + 200 * MenuScale, y + 160 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(keyBinds\crouch,210)),10)
-;					Text(x, y + 180 * MenuScale, "Quick Save")
-;					InputBox(x + 200 * MenuScale, y + 180 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(keyBinds\save,210)),11)	
-;					Text(x, y + 200 * MenuScale, "Open/Close Console")
-;					InputBox(x + 200 * MenuScale, y + 200 * MenuScale,100*MenuScale,20*MenuScale,KeyName(Min(keyBinds\console,210)),12)
-;					
-;					For i = 0 To 227
-;						If KeyHit(i) Then key = i : Exit
-;					Next
-;					If key <> 0 Then
-;						Select SelectedInputBox
-;							Case 3
-;								keyBinds\Left = key
-;							Case 4
-;								keyBinds\Right = key
-;							Case 5
-;								keyBinds\up = key
-;							Case 6
-;								keyBinds\down = key
-;							Case 7
-;								keyBinds\blink = key
-;							Case 8
-;								keyBinds\sprint = key
-;							Case 9
-;								keyBinds\inv = key
-;							Case 10
-;								keyBinds\crouch = key
-;							Case 11
-;								keyBinds\save = key
-;							Case 12
-;								keyBinds\console = key
-;						End Select
-;						SelectedInputBox = 0
-;					EndIf
-;					;[End Block]
-;				Case 4 ;Advanced
-;					;Text(x+210*MenuScale,y,"ADVANCED",True,True)
-;					SetFont Font1
-;					;[Block]
-;					y = y + 50*MenuScale
-;					
-;					Color 255,255,255
-;					Text(x, y, "Enable console:")
-;					userOptions\allowConsole = DrawTick(x +270 * MenuScale, y + MenuScale, userOptions\allowConsole)
-;					
-;					y = y + 30*MenuScale
-;					
-;					Color 255,255,255
-;					Text(x, y, "Open console on error:")
-;					userOptions\consoleOpenOnError = DrawTick(x + 270 * MenuScale, y + MenuScale, userOptions\consoleOpenOnError)
-;					
-;					y = y + 50*MenuScale
-;					
-;					Color 255,255,255
-;					Text(x, y, "Achievement popups:")
-;					userOptions\achvPopup = DrawTick(x + 270 * MenuScale, y, userOptions\achvPopup)
-;					
-;					y = y + 50*MenuScale
-;					
-;					Color 255,255,255
-;					Text(x, y, "Show FPS:")
-;					userOptions\showFPS = DrawTick(x + 270 * MenuScale, y, userOptions\showFPS)
-;					
-;					y = y + 30*MenuScale
-;					
-;					Color 255,255,255
-;					Text(x, y, "Framelimit:")
-;					
-;					Color 255,255,255
-;					If DrawTick(x + 270 * MenuScale, y, CurrFrameLimit > 0.0) Then
-;						CurrFrameLimit# = (SlideBar(x + 150*MenuScale, y+30*MenuScale, 100*MenuScale, CurrFrameLimit#*50.0)/50.0)
-;						CurrFrameLimit = Max(CurrFrameLimit, 0.1)
-;						userOptions\framelimit% = CurrFrameLimit#*100.0
-;						Color 255,255,0
-;						Text(x + 5 * MenuScale, y + 25 * MenuScale, userOptions\framelimit%+" FPS")
-;					Else
-;						CurrFrameLimit# = 0.0
-;						userOptions\framelimit = 0
-;					EndIf
-;					
-;					y = y + 80*MenuScale
-;					
-;					;[End Block]
-;			End Select
-;		ElseIf AchievementsMenu <= 0 And OptionsMenu <= 0 And QuitMSG > 0 And KillTimer >= 0
-;			Local QuitButton% = 60 
-;			If SelectedDifficulty\saveType = SAVEONQUIT Or SelectedDifficulty\saveType = SAVEANYWHERE Then
-;				Local RN$ = mainPlayer\currRoom\RoomTemplate\Name$
-;				Local AbleToSave% = True
-;				If RN$ = "173" Or RN$ = "exit1" Or RN$ = "gatea" Then AbleToSave = False
-;				If (Not CanSave) Then AbleToSave = False
-;				If AbleToSave
-;					QuitButton = 140
-;					If DrawButton(x, y + 60*MenuScale, 390*MenuScale, 60*MenuScale, "Save & Quit") Then
-;						mainPlayer\dropSpeed = 0
-;						SaveGame(SavePath + CurrSave + "\")
-;						NullGame()
-;						MenuOpen = False
-;						MainMenuOpen = True
-;						MainMenuTab = 0
-;						CurrSave = ""
-;						FlushKeys()
-;					EndIf
-;				EndIf
-;			EndIf
-;			
-;			If DrawButton(x, y + QuitButton*MenuScale, 390*MenuScale, 60*MenuScale, "Quit") Then
-;				NullGame()
-;				MenuOpen = False
-;				MainMenuOpen = True
-;				MainMenuTab = 0
-;				CurrSave = ""
-;				FlushKeys()
-;			EndIf
-;			
-;			If DrawButton(x+101*MenuScale, y + 344*MenuScale, 230*MenuScale, 60*MenuScale, "Back") Then
-;				AchievementsMenu = 0
-;				OptionsMenu = 0
-;				QuitMSG = 0
-;				MouseHit1 = False
-;			EndIf
-;		Else
-;			If DrawButton(x+101*MenuScale, y + 344*MenuScale, 230*MenuScale, 60*MenuScale, "Back") Then
-;				AchievementsMenu = 0
-;				OptionsMenu = 0
-;				QuitMSG = 0
-;				MouseHit1 = False
-;			EndIf
-;			
-;			If AchievementsMenu>0 Then
-;				;DebugLog AchievementsMenu
-;				If AchievementsMenu <= Floor(Float(MAXACHIEVEMENTS-1)/12.0) Then 
-;					If DrawButton(x+341*MenuScale, y + 344*MenuScale, 50*MenuScale, 60*MenuScale, ">") Then
-;						AchievementsMenu = AchievementsMenu+1
-;					EndIf
-;				EndIf
-;				If AchievementsMenu > 1 Then
-;					If DrawButton(x+41*MenuScale, y + 344*MenuScale, 50*MenuScale, 60*MenuScale, "<") Then
-;						AchievementsMenu = AchievementsMenu-1
-;					EndIf
-;				EndIf
-;				
-;				For i=0 To 11
-;					If i+((AchievementsMenu-1)*12)<MAXACHIEVEMENTS Then
-;						DrawAchvIMG(AchvXIMG,y+((i/4)*120*MenuScale),i+((AchievementsMenu-1)*12))
-;					Else
-;						Exit
-;					EndIf
-;				Next
-;				
-;				For i=0 To 11
-;					If i+((AchievementsMenu-1)*12)<MAXACHIEVEMENTS Then
-;						If MouseOn(AchvXIMG+((i Mod 4)*SeparationConst),y+((i/4)*120*MenuScale),64*scale,64*scale) Then
-;							AchievementTooltip(i+((AchievementsMenu-1)*12))
-;							Exit
-;						EndIf
-;					Else
-;						Exit
-;					EndIf
-;				Next
-;				
-;			EndIf
-;		EndIf
-		
 		y = y+10
 		
-		;TODO: FFS
-		;If AchievementsMenu<=0 And OptionsMenu<=0 And QuitMSG<=0 Then
 		If Not mainPlayer\dead Then
 			y = y+72*MenuScale
 			
-			If DrawButton(x, y, 390*MenuScale, 60*MenuScale, "Resume", True, True) Then
+			If UpdateUIButton(x, y, 390*MenuScale, 60*MenuScale, "Resume", True) Then
 				CurrGameState = GAMESTATE_PLAYING
 				ResumeSounds()
 				MouseXSpeed() : MouseYSpeed() : MouseZSpeed() : mouse_x_speed_1#=0.0 : mouse_y_speed_1#=0.0
@@ -1904,7 +1658,7 @@ Function DrawPauseMenu()
 			y = y + 75*MenuScale
 			If (Not SelectedDifficulty\permaDeath) Then
 				If GameSaved Then
-					If DrawButton(x, y, 390*MenuScale, 60*MenuScale, "Load Game") Then
+					If UpdateUIButton(x, y, 390*MenuScale, 60*MenuScale, "Load Game") Then
 						DrawLoading(0)
 						
 						CurrGameState = GAMESTATE_PLAYING
@@ -1939,23 +1693,22 @@ Function DrawPauseMenu()
 						
 						UpdateWorld 0.0
 					EndIf
-				Else
-					DrawFrame(x,y,390*MenuScale, 60*MenuScale)
-					Color (100, 100, 100)
-					SetFont Font2
-					Text(x + (390*MenuScale) / 2, y + (60*MenuScale) / 2, "Load Game", True, True)
 				EndIf
 				y = y + 75*MenuScale
-		EndIf
+			EndIf
 			
-			If DrawButton(x, y, 390*MenuScale, 60*MenuScale, "Achievements") Then AchievementsMenu = 1
+			If UpdateUIButton(x, y, 390*MenuScale, 60*MenuScale, "Achievements") Then AchievementsMenu = 1
 			y = y + 75*MenuScale
-			If DrawButton(x, y, 390*MenuScale, 60*MenuScale, "Options") Then OptionsMenu = 1
+			If UpdateUIButton(x, y, 390*MenuScale, 60*MenuScale, "Options") Then OptionsMenu = 1
 			y = y + 75*MenuScale
+			If UpdateUIButton(x, y, 390*MenuScale, 60*MenuScale, "Quit") Then
+				RuntimeError "REIMPLEMENT"
+				;QuitMSG = 1
+			EndIf
 		Else
 			y = y+104*MenuScale
 			If GameSaved And (Not SelectedDifficulty\permaDeath) Then
-				If DrawButton(x, y, 390*MenuScale, 60*MenuScale, "Load Game") Then
+				If UpdateUIButton(x, y, 390*MenuScale, 60*MenuScale, "Load Game") Then
 					DrawLoading(0)
 					
 					CurrGameState = GAMESTATE_PLAYING
@@ -1990,12 +1743,9 @@ Function DrawPauseMenu()
 					
 					UpdateWorld 0.0
 				EndIf
-			Else
-				DrawButton(x, y, 390*MenuScale, 60*MenuScale, "")
-				Color 50,50,50
-				Text(x + 185*MenuScale, y + 30*MenuScale, "Load Game", True, True)
 			EndIf
-			If DrawButton(x, y + 80*MenuScale, 390*MenuScale, 60*MenuScale, "Quit to Menu") Then
+			If UpdateUIButton(x, y + 80*MenuScale, 390*MenuScale, 60*MenuScale, "Quit to Menu") Then
+				RuntimeError "REIMPLEMENT"
 				NullGame()
 				CurrGameState = GAMESTATE_MAINMENU
 				MainMenuTab = 0
@@ -2004,21 +1754,7 @@ Function DrawPauseMenu()
 			EndIf
 			y = y + 80*MenuScale
 		EndIf
-		
-		If Not mainPlayer\dead And CurrGameState<>GAMESTATE_MAINMENU Then
-			If DrawButton(x, y, 390*MenuScale, 60*MenuScale, "Quit") Then
-				RuntimeError "REIMPLEMENT"
-				;QuitMSG = 1
-			EndIf
-		EndIf
-		
-		SetFont Font1
-		If mainPlayer\dead Then RowText(DeathMSG$, x, y + 80*MenuScale, 390*MenuScale, 600*MenuScale)
-		;EndIf
-		
-		If userOptions\fullscreen Then DrawImage CursorIMG, ScaledMouseX(),ScaledMouseY()
-		
-	End If
+	EndIf
 	
 	SetFont Font1
 	
