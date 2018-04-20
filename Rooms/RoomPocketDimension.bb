@@ -185,7 +185,7 @@ Function UpdateEventPocketdimension(e.Events)
 	If mainPlayer\currRoom = e\room Then
 		ShowEntity e\room\obj
 		
-		mainPlayer\injuries = mainPlayer\injuries+FPSfactor*0.00005
+		mainPlayer\injuries = mainPlayer\injuries+timing\tickDuration*0.00005
 		
 		If (EntityY(mainPlayer\collider)<2000*RoomScale Or EntityY(mainPlayer\collider)>2608*RoomScale) Then mainPlayer\footstepOverride = 1
 		
@@ -211,7 +211,7 @@ Function UpdateEventPocketdimension(e.Events)
 		Next
 		ScaleEntity(e\room\Objects[9],RoomScale*(1.5 + Abs(Sin(e\EventState/21.0+i*45.0)*0.1)),RoomScale*(1.0 + Sin(e\EventState/14.0+i*20.0)*0.1), RoomScale,True)
 		
-		e\EventState = e\EventState + FPSfactor
+		e\EventState = e\EventState + timing\tickDuration
 		
 		If e\EventState2 = 0 Then 
 			e\room\RoomDoors[0]\open = False
@@ -274,9 +274,9 @@ Function UpdateEventPocketdimension(e.Events)
 						PositionEntity e\room\Objects[20], EntityX(mainPlayer\collider,True)+4000*RoomScale, 12.0, EntityZ(mainPlayer\collider,True)
 					EndIf
 					
-					MoveEntity(mainPlayer\collider, 0, Min((12.0 - EntityY(mainPlayer\collider)),0.0)*FPSfactor, 0)
+					MoveEntity(mainPlayer\collider, 0, Min((12.0 - EntityY(mainPlayer\collider)),0.0)*timing\tickDuration, 0)
 					
-					x = -FPSfactor*RoomScale*4.0
+					x = -timing\tickDuration*RoomScale*4.0
 					y = (17.0-Abs(EntityX(mainPlayer\collider)-EntityX(e\room\Objects[20]))*0.5)-EntityY(e\room\Objects[20])
 					z = EntityZ(mainPlayer\collider,True)-EntityZ(e\room\Objects[20])
 					TranslateEntity e\room\Objects[20], x, y, z,True
@@ -315,7 +315,7 @@ Function UpdateEventPocketdimension(e.Events)
 					ElseIf dist < 8.0
 						e\SoundCHN = LoopSound2(e\Sound, e\SoundCHN, mainPlayer\cam, e\room\Objects[20], 8.0)
 						EntityTexture e\room\Objects[20], e\room\Objects[19]
-						mainPlayer\injuries=mainPlayer\injuries+(8.0-dist)*FPSfactor*0.001
+						mainPlayer\injuries=mainPlayer\injuries+(8.0-dist)*timing\tickDuration*0.001
 						
 						If dist<7.0 Then 
 							pvt% = CreatePivot()
@@ -390,15 +390,15 @@ Function UpdateEventPocketdimension(e.Events)
 					
 					temp = EntityDistance(mainPlayer\collider, e\room\Objects[17])
 					If temp < 2000*RoomScale Then
-						mainPlayer\injuries = mainPlayer\injuries + (FPSfactor/4000)
+						mainPlayer\injuries = mainPlayer\injuries + (timing\tickDuration/4000)
 						
 						If mainPlayer\injuries > 1.0 Then
-							If mainPlayer\injuries - (FPSfactor/4000)=< 1.0 Then
+							If mainPlayer\injuries - (timing\tickDuration/4000)=< 1.0 Then
 								PlaySound_Strict LoadTempSound("SFX\Room\PocketDimension\Kneel.ogg")
 							EndIf
 						EndIf
 						
-						mainPlayer\sanity895 = Max(mainPlayer\sanity895 - FPSfactor / temp / 8,-1000)
+						mainPlayer\sanity895 = Max(mainPlayer\sanity895 - timing\tickDuration / temp / 8,-1000)
 						
 						;TODO: fix
 						;e\SoundCHN = LoopSound2(OldManSFX(4), e\SoundCHN, mainPlayer\cam, e\room\Objects[17], 5.0, 0.6)

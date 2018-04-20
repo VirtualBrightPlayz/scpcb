@@ -384,10 +384,10 @@ Function UpdateEvents()
 	Next
 	
 	If ExplosionTimer > 0 Then
-		ExplosionTimer = ExplosionTimer+FPSfactor
+		ExplosionTimer = ExplosionTimer+timing\tickDuration
 		
 		If ExplosionTimer < 140.0 Then
-			If ExplosionTimer-FPSfactor < 5.0 Then
+			If ExplosionTimer-timing\tickDuration < 5.0 Then
 				ExplosionSFX = LoadSound_Strict("SFX\Ending\GateB\Nuke1.ogg")
 				PlaySound_Strict ExplosionSFX
 				mainPlayer\camShake = 10.0
@@ -397,7 +397,7 @@ Function UpdateEvents()
 			mainPlayer\camShake = CurveValue(ExplosionTimer/60.0,mainPlayer\camShake, 50.0)
 		Else
 			mainPlayer\camShake = Min((ExplosionTimer/20.0),20.0)
-			If ExplosionTimer-FPSfactor < 140.0 Then
+			If ExplosionTimer-timing\tickDuration < 140.0 Then
 				mainPlayer\blinkTimer = 1.0
 				ExplosionSFX = LoadSound_Strict("SFX\Ending\GateB\Nuke2.ogg")
 				PlaySound_Strict ExplosionSFX				

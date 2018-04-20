@@ -64,7 +64,7 @@ Function UpdateEvent106victim(e.Events)
 		
 		If e\EventState > 0 Then 
 			If e\room\NPC[0]=Null Then
-				e\EventState=e\EventState+FPSfactor
+				e\EventState=e\EventState+timing\tickDuration
 			EndIf
 			If e\EventState>200 Then
 				If e\room\NPC[0]=Null Then
@@ -92,7 +92,7 @@ Function UpdateEvent106victim(e.Events)
 					
 					If EntityY(e\room\NPC[0]\Collider)>0.6 Then EntityType e\room\NPC[0]\Collider,0
 				Else
-					e\EventState=e\EventState+FPSfactor
+					e\EventState=e\EventState+timing\tickDuration
 					AnimateNPC(e\room\NPC[0], 11, 19, 0.25, False)
 					If e\Sound=0 Then 
 						;e\Sound = LoadSound("SFX\General\BodyFall.ogg")

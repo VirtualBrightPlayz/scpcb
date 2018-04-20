@@ -295,7 +295,7 @@ Function MovePlayer()
 	If mainPlayer\superMan>0.0 Then
 		Speed = Speed * 3
 		
-		mainPlayer\superMan=mainPlayer\superMan+FPSfactor
+		mainPlayer\superMan=mainPlayer\superMan+timing\tickDuration
 		
 		mainPlayer\camShake = Sin(mainPlayer\superMan / 5.0) * (mainPlayer\superMan / 1500.0)
 		
@@ -311,16 +311,16 @@ Function MovePlayer()
 	End If
 	
 	;If DeathTimer > 0 Then
-	;	DeathTimer=DeathTimer-FPSfactor
+	;	DeathTimer=DeathTimer-timing\tickDuration
 	;	If DeathTimer < 1 Then DeathTimer = -1.0
 	;ElseIf DeathTimer < 0 
 	;	Kill(mainPlayer)
 	;EndIf
 	
-	mainPlayer\stamina = Min(mainPlayer\stamina + 0.15 * FPSfactor, 100.0)
+	mainPlayer\stamina = Min(mainPlayer\stamina + 0.15 * timing\tickDuration, 100.0)
 	
 	If mainPlayer\staminaEffect > 1 Then
-		mainPlayer\staminaEffect = mainPlayer\staminaEffect - (FPSfactor/70)
+		mainPlayer\staminaEffect = mainPlayer\staminaEffect - (timing\tickDuration/70)
 	Else
 		If mainPlayer\staminaEffect <> 1.0 Then mainPlayer\staminaEffect = 1.0
 		mainPlayer\staminaEffect = CurveValue(1.0, mainPlayer\staminaEffect, 50)
@@ -363,7 +363,7 @@ Function MovePlayer()
 			
 			If mainPlayer\crouching = 0 And (KeyDown(keyBinds\sprint)) And mainPlayer\stamina > 0.0 Then; And (Not IsZombie) Then
 				Sprint = 2.5
-				mainPlayer\stamina = mainPlayer\stamina - FPSfactor * 0.5 * (1.0/mainPlayer\staminaEffect)
+				mainPlayer\stamina = mainPlayer\stamina - timing\tickDuration * 0.5 * (1.0/mainPlayer\staminaEffect)
 				If mainPlayer\stamina <= 0 Then mainPlayer\stamina = -20.0
 			End If
 			
@@ -384,7 +384,7 @@ Function MovePlayer()
 			EndIf
 			
 			Local temp# = (mainPlayer\camAnimState Mod 360), tempchn%
-			If (Not mainPlayer\disableControls) Then mainPlayer\camAnimState = (mainPlayer\camAnimState + FPSfactor * Min(Sprint, 1.5) * 7) Mod 720
+			If (Not mainPlayer\disableControls) Then mainPlayer\camAnimState = (mainPlayer\camAnimState + timing\tickDuration * Min(Sprint, 1.5) * 7) Mod 720
 			If temp < 180 And (mainPlayer\camAnimState Mod 360) >= 180 And (Not mainPlayer\dead) Then
 				;TODO: define constants for each override state
 				If mainPlayer\footstepOverride=0 Then
@@ -441,11 +441,11 @@ Function MovePlayer()
 		
 		temp2 = temp2; * NoClipSpeed ;TODO: reimplement
 		
-		If KeyDown(keyBinds\down) Then MoveEntity mainPlayer\collider, 0, 0, -temp2*FPSfactor
-		If KeyDown(keyBinds\up) Then MoveEntity mainPlayer\collider, 0, 0, temp2*FPSfactor
+		If KeyDown(keyBinds\down) Then MoveEntity mainPlayer\collider, 0, 0, -temp2*timing\tickDuration
+		If KeyDown(keyBinds\up) Then MoveEntity mainPlayer\collider, 0, 0, temp2*timing\tickDuration
 		
-		If KeyDown(keyBinds\lft) Then MoveEntity mainPlayer\collider, -temp2*FPSfactor, 0, 0
-		If KeyDown(keyBinds\rght) Then MoveEntity mainPlayer\collider, temp2*FPSfactor, 0, 0	
+		If KeyDown(keyBinds\lft) Then MoveEntity mainPlayer\collider, -temp2*timing\tickDuration, 0, 0
+		If KeyDown(keyBinds\rght) Then MoveEntity mainPlayer\collider, temp2*timing\tickDuration, 0, 0	
 		
 		ResetEntity mainPlayer\collider
 	Else
@@ -486,7 +486,7 @@ Function MovePlayer()
 			mainPlayer\moveSpeed = Max(CurveValue(0.0, mainPlayer\moveSpeed-0.1, 1.0),0.0)
 		EndIf
 		
-		If (Not mainPlayer\disableControls) Then TranslateEntity mainPlayer\collider, Cos(angle)*mainPlayer\moveSpeed * FPSfactor, 0, Sin(angle)*mainPlayer\moveSpeed * FPSfactor, True
+		If (Not mainPlayer\disableControls) Then TranslateEntity mainPlayer\collider, Cos(angle)*mainPlayer\moveSpeed * timing\tickDuration, 0, Sin(angle)*mainPlayer\moveSpeed * timing\tickDuration, True
 		
 		Local CollidedFloor% = False
 		For i = 1 To CountCollisions(mainPlayer\collider)
@@ -510,10 +510,10 @@ Function MovePlayer()
 			EndIf
 			mainPlayer\dropSpeed# = 0
 		Else
-			mainPlayer\dropSpeed# = Min(Max(mainPlayer\dropSpeed - 0.006 * FPSfactor, -2.0), 0.0)
+			mainPlayer\dropSpeed# = Min(Max(mainPlayer\dropSpeed - 0.006 * timing\tickDuration, -2.0), 0.0)
 		EndIf	
 		
-		If (Not mainPlayer\disableControls) Then TranslateEntity mainPlayer\collider, 0, mainPlayer\dropSpeed * FPSfactor, 0
+		If (Not mainPlayer\disableControls) Then TranslateEntity mainPlayer\collider, 0, mainPlayer\dropSpeed * timing\tickDuration, 0
 	EndIf
 	
 	mainPlayer\forceMove = 0.0
@@ -521,7 +521,7 @@ Function MovePlayer()
 	If mainPlayer\injuries > 1.0 Then
 		temp2 = mainPlayer\bloodloss
 		mainPlayer\blurTimer = Max(Max(Sin(MilliSecs2()/100.0)*mainPlayer\bloodloss*30.0,mainPlayer\bloodloss*2*(2.0-mainPlayer\crouchState)),mainPlayer\blurTimer)
-		mainPlayer\bloodloss = Min(mainPlayer\bloodloss + (Min(mainPlayer\injuries,3.5)/300.0)*FPSfactor,100)
+		mainPlayer\bloodloss = Min(mainPlayer\bloodloss + (Min(mainPlayer\injuries,3.5)/300.0)*timing\tickDuration,100)
 		
 		If temp2 <= 60 And mainPlayer\bloodloss > 60 Then
 			Msg = "You are feeling faint from the amount of blood you loss."
@@ -569,7 +569,7 @@ Function MovePlayer()
 		tempchn = PlaySound_Strict (HeartBeatSFX)
 		ChannelVolume tempchn, Max(Min((mainPlayer\heartbeatIntensity-80.0)/60.0,1.0),0.0)*userOptions\SoundVolume
 		
-		mainPlayer\heartbeatIntensity = mainPlayer\heartbeatIntensity - FPSfactor
+		mainPlayer\heartbeatIntensity = mainPlayer\heartbeatIntensity - timing\tickDuration
 	EndIf
 	
 End Function
@@ -614,11 +614,11 @@ Function MouseLook()
 		wearingNightVision = IsPlayerWearingTempName(mainPlayer,"supernv")*2
 	EndIf
 	
-	mainPlayer\camShake = Max(mainPlayer\camShake - (FPSfactor / 10), 0)
+	mainPlayer\camShake = Max(mainPlayer\camShake - (timing\tickDuration / 10), 0)
 	
 	;CameraZoomTemp = CurveValue(mainPlayer\camZoom,CameraZoomTemp, 5.0)
 	CameraZoom(mainPlayer\cam, Min(1.0+(mainPlayer\camZoom/400.0),1.1))
-	mainPlayer\camZoom = Max(mainPlayer\camZoom - FPSfactor, 0)
+	mainPlayer\camZoom = Max(mainPlayer\camZoom - timing\tickDuration, 0)
 	
 	If mainPlayer\fallTimer >=0 Then
 		
@@ -702,13 +702,13 @@ Function MouseLook()
 			;	RotateEntity(mainPlayer\cam, CurveAngle(EntityPitch(Head) + 40.0, EntityPitch(mainPlayer\cam), 40.0), EntityYaw(mainPlayer\cam), EntityRoll(mainPlayer\cam))
 			;EndIf
 			
-			;HeadDropSpeed# = HeadDropSpeed - 0.002 * FPSfactor
+			;HeadDropSpeed# = HeadDropSpeed - 0.002 * timing\tickDuration
 		EndIf
 		
 		If userOptions\invertMouseY Then
-			TurnEntity (mainPlayer\cam, -MouseYSpeed() * 0.05 * FPSfactor, -MouseXSpeed() * 0.15 * FPSfactor, 0)
+			TurnEntity (mainPlayer\cam, -MouseYSpeed() * 0.05 * timing\tickDuration, -MouseXSpeed() * 0.15 * timing\tickDuration, 0)
 		Else
-			TurnEntity (mainPlayer\cam, MouseYSpeed() * 0.05 * FPSfactor, -MouseXSpeed() * 0.15 * FPSfactor, 0)
+			TurnEntity (mainPlayer\cam, MouseYSpeed() * 0.05 * timing\tickDuration, -MouseXSpeed() * 0.15 * timing\tickDuration, 0)
 		End If
 		
 	EndIf
@@ -739,10 +739,10 @@ Function MouseLook()
 	EndIf
 	
 	If wearingGasMask Or wearingHazmat Or wearing1499 Then
-		If wearingGasMask = 2 Then mainPlayer\stamina = Min(100, mainPlayer\stamina + (100.0-mainPlayer\stamina)*0.01*FPSfactor)
-		If wearing1499 = 2 Then mainPlayer\stamina = Min(100, mainPlayer\stamina + (100.0-mainPlayer\stamina)*0.01*FPSfactor)
+		If wearingGasMask = 2 Then mainPlayer\stamina = Min(100, mainPlayer\stamina + (100.0-mainPlayer\stamina)*0.01*timing\tickDuration)
+		If wearing1499 = 2 Then mainPlayer\stamina = Min(100, mainPlayer\stamina + (100.0-mainPlayer\stamina)*0.01*timing\tickDuration)
 		If wearingHazmat = 2 Then 
-			mainPlayer\stamina = Min(100, mainPlayer\stamina + (100.0-mainPlayer\stamina)*0.01*FPSfactor)
+			mainPlayer\stamina = Min(100, mainPlayer\stamina + (100.0-mainPlayer\stamina)*0.01*timing\tickDuration)
 		ElseIf wearingHazmat=1
 			mainPlayer\stamina = Min(60, mainPlayer\stamina)
 		EndIf
@@ -1268,7 +1268,7 @@ Function UpdateInventory(player.Player)
 							DrawImage(BlinkMeterIMG, x + 3 + 10 * (i - 1), y + 3)
 						Next
 						
-						player\selectedItem\state = Min(player\selectedItem\state+(FPSfactor/5.0),100)			
+						player\selectedItem\state = Min(player\selectedItem\state+(timing\tickDuration/5.0),100)			
 						
 						If player\selectedItem\state = 100 Then
 							If player\selectedItem\itemtemplate\tempname = "finefirstaid" Then
@@ -1442,7 +1442,7 @@ Function UpdateInventory(player.Player)
 					EndIf
 					
 				Case "radio","18vradio","fineradio","veryfineradio"
-					If player\selectedItem\state <= 100 Then player\selectedItem\state = Max(0, player\selectedItem\state - FPSfactor * 0.004)
+					If player\selectedItem\state <= 100 Then player\selectedItem\state = Max(0, player\selectedItem\state - timing\tickDuration * 0.004)
 					
 					If player\selectedItem\itemtemplate\img=0 Then
 						player\selectedItem\itemtemplate\img=LoadImage_Strict(player\selectedItem\itemtemplate\imgpath)	
@@ -1646,9 +1646,9 @@ Function UpdateInventory(player.Player)
 								
 								;radiostate(7)=kuinka mones piippaus menossa
 								;radiostate(8)=kuinka mones access coden numero menossa
-								RadioState(6)=RadioState(6) + FPSfactor
+								RadioState(6)=RadioState(6) + timing\tickDuration
 								temp = Mid(Str(AccessCode),RadioState(8)+1,1)
-								If RadioState(6)-FPSfactor =< RadioState(7)*50 And RadioState(6)>RadioState(7)*50 Then
+								If RadioState(6)-timing\tickDuration =< RadioState(7)*50 And RadioState(6)>RadioState(7)*50 Then
 									PlaySound_Strict(RadioBuzz)
 									RadioState(7)=RadioState(7)+1
 									If RadioState(7)=>temp Then
@@ -1743,7 +1743,7 @@ Function UpdateInventory(player.Player)
 						MaskImage(player\selectedItem\itemtemplate\img, 255, 0, 255)
 					EndIf
 					
-					If player\selectedItem\state <= 100 Then player\selectedItem\state = Max(0, player\selectedItem\state - FPSfactor * 0.005)
+					If player\selectedItem\state <= 100 Then player\selectedItem\state = Max(0, player\selectedItem\state - timing\tickDuration * 0.005)
 					
 					x = userOptions\screenWidth - ImageWidth(player\selectedItem\itemtemplate\img)*0.5+20
 					y = userOptions\screenHeight - ImageHeight(player\selectedItem\itemtemplate\img)*0.4-85

@@ -145,7 +145,7 @@ Function UpdateEventCoffin(e.Events)
 			;If EntityVisible(mainPlayer\cam,e\room\Objects[1])
 				If (CoffinDistance < 4.0) And (hasBatteryFor895) Then
 					
-					mainPlayer\sanity895 = mainPlayer\sanity895-(FPSfactor*1.1);/WearingNightVision)
+					mainPlayer\sanity895 = mainPlayer\sanity895-(timing\tickDuration*1.1);/WearingNightVision)
 					mainPlayer\blurTimer = Sin(MilliSecs2()/10)*Abs(mainPlayer\sanity895)
 					
 					tempF# = GetAngle(EntityX(mainPlayer\collider,True),EntityZ(mainPlayer\collider,True),EntityX(e\room\Objects[1],True),EntityZ(e\room\Objects[1],True))
@@ -179,7 +179,7 @@ Function UpdateEventCoffin(e.Events)
 			;EndIf
 		EndIf
 		
-		If e\EventState3>0.0 Then e\EventState3=Max(e\EventState3-FPSfactor,0.0)
+		If e\EventState3>0.0 Then e\EventState3=Max(e\EventState3-timing\tickDuration,0.0)
 		If e\EventState3=0.0 Then
 			e\EventState3=-1.0
 			;TODO: fix

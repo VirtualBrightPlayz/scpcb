@@ -2559,10 +2559,10 @@ Function UpdateSecurityCams()
 				Else
 					If sc\turn > 0 Then
 						If sc\dir = 0 Then
-							sc\CurrAngle=sc\CurrAngle+0.2 * FPSfactor
+							sc\CurrAngle=sc\CurrAngle+0.2 * timing\tickDuration
 							If sc\CurrAngle > (sc\turn * 1.3) Then sc\dir = 1
 						Else
-							sc\CurrAngle=sc\CurrAngle-0.2 * FPSfactor
+							sc\CurrAngle=sc\CurrAngle-0.2 * timing\tickDuration
 							If sc\CurrAngle < (-sc\turn * 1.3) Then sc\dir = 0
 						End If
 					End If
@@ -2589,7 +2589,7 @@ Function UpdateSecurityCams()
 			
 			If close = True Or sc\IsRoom2slCam Or sc\SpecialCam Then
 				If sc\Screen Then 
-					sc\State = sc\State+FPSfactor
+					sc\State = sc\State+timing\tickDuration
 					
 					If sc\InSight And sc\AllowSaving Then 
 						If SelectedDifficulty\saveType = SAVEONSCREENS And EntityDistance(mainPlayer\cam, sc\ScrObj)<1.0 Then
@@ -2609,7 +2609,7 @@ Function UpdateSecurityCams()
 								sc\InSight = True
 								
 								If sc\CoffinEffect=1 Or sc\CoffinEffect=3 Then
-									If mainPlayer\blinkTimer > - 5 Then mainPlayer\sanity895=mainPlayer\sanity895-(FPSfactor * 16)
+									If mainPlayer\blinkTimer > - 5 Then mainPlayer\sanity895=mainPlayer\sanity895-(timing\tickDuration * 16)
 									
 									If mainPlayer\sanity895 < (-1000) Then 
 										DeathMSG = Chr(34)+"What we know is that he died of cardiac arrest. My guess is that it was caused by SCP-895, although it has never been observed affecting video equipment from this far before. "
@@ -2885,7 +2885,7 @@ Function UpdateElevators#(State#, door1.Doors, door2.Doors, room1, room2, event.
 		door1\NPCCalledElevator = 2
 		door2\NPCCalledElevator = 2
 		If State < 0 Then ;ylh��lt� alas
-			State = State - FPSfactor
+			State = State - timing\tickDuration
 			;pelaaja hissin sis�ll�
 			If Abs(EntityX(mainPlayer\collider)-EntityX(room1,True))<280.0*RoomScale Then
 				If Abs(EntityZ(mainPlayer\collider)-EntityZ(room1,True))<280.0*RoomScale Then
@@ -2959,7 +2959,7 @@ Function UpdateElevators#(State#, door1.Doors, door2.Doors, room1, room2, event.
 				PlaySound2(ElevatorBeepSFX, mainPlayer\cam, room1, 4.0)
 			EndIf
 		Else ;alhaalta yl�s
-			State = State + FPSfactor
+			State = State + timing\tickDuration
 			;pelaaja hissin sis�ll�
 			If Abs(EntityX(mainPlayer\collider)-EntityX(room2,True))<280.0*RoomScale Then
 				If Abs(EntityZ(mainPlayer\collider)-EntityZ(room2,True))<280.0*RoomScale Then
@@ -3070,7 +3070,7 @@ Function UpdateElevators2#(State#, door1.Doors, door2.Doors, room1, room2, event
 		door1\locked = True 
 		door2\locked = True 
 		If State < 0 Then ;ylh��lt?alas
-			State = State - FPSfactor
+			State = State - timing\tickDuration
 			;pelaaja hissin sis�ll?
 			If Abs(EntityX(mainPlayer\collider)-EntityX(room1,True))<280.0*RoomScale Then
 				If Abs(EntityZ(mainPlayer\collider)-EntityZ(room1,True))<280.0*RoomScale Then	
@@ -3126,7 +3126,7 @@ Function UpdateElevators2#(State#, door1.Doors, door2.Doors, room1, room2, event
 				;PlaySound_Strict(ElevatorBeepSFX)	
 			EndIf
 		Else ;alhaalta yl�s
-			State = State + FPSfactor
+			State = State + timing\tickDuration
 			;pelaaja hissin sis�ll?
 			If Abs(EntityX(mainPlayer\collider)-EntityX(room2,True))<280.0*RoomScale Then
 				If Abs(EntityZ(mainPlayer\collider)-EntityZ(room2,True))<280.0*RoomScale Then	
@@ -4115,14 +4115,14 @@ Function TimeCheckpointMonitors()
 	
 	If UpdateCheckpoint1
 		If MonitorTimer < 100.0
-			MonitorTimer# = Min(MonitorTimer# + FPSfactor,100.0)
+			MonitorTimer# = Min(MonitorTimer# + timing\tickDuration,100.0)
 		Else
 			MonitorTimer# = 0.0
 		EndIf
 	EndIf
 	If UpdateCheckpoint2
 		If MonitorTimer2 < 100.0
-			MonitorTimer2# = Min(MonitorTimer2# + FPSfactor,100.0)
+			MonitorTimer2# = Min(MonitorTimer2# + timing\tickDuration,100.0)
 		Else
 			MonitorTimer2# = 0.0
 		EndIf

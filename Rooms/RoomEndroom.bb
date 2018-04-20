@@ -88,13 +88,13 @@ Function UpdateEventEndroom106(e.Events)
 					;PlaySound_Strict(HorrorSFX(10))
 					SetNPCFrame(e\room\NPC[0],41)
 				EndIf
-				e\EventState = e\EventState+FPSfactor/2
+				e\EventState = e\EventState+timing\tickDuration/2
 				e\room\NPC[0]\State = 6
 				e\room\NPC[0]\CurrSpeed = CurveValue(0.0, e\room\NPC[0]\CurrSpeed, 25.0)
 				PositionEntity(e\room\NPC[0]\Collider, CurveValue(EntityX(e\room\obj, True), EntityX(e\room\NPC[0]\Collider), 25.0), 0.3-e\EventState/70, CurveValue(EntityZ(e\room\obj, True), EntityZ(e\room\NPC[0]\Collider), 25.0))
 				ResetEntity(e\room\NPC[0]\Collider)
 				
-				;TurnEntity(e\room\NPC[0]\Collider,0,0,0.5*FPSfactor)
+				;TurnEntity(e\room\NPC[0]\Collider,0,0,0.5*timing\tickDuration)
 				AnimateNPC(e\room\NPC[0], 41, 58, 0.1, False)
 				
 				AnimateNPC(Curr106, 206,112, -1.0, False)

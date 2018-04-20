@@ -30,7 +30,7 @@ Function UpdateNPCtype049(n.NPCs)
     
     If n\Idle > 0.1
         If mainPlayer\currRoom\RoomTemplate\Name$ <> "room049"
-            n\Idle = Max(n\Idle-(1+SelectedDifficulty\aggressiveNPCs)*FPSfactor,0.1)
+            n\Idle = Max(n\Idle-(1+SelectedDifficulty\aggressiveNPCs)*timing\tickDuration,0.1)
         EndIf
         n\DropSpeed = 0
         If ChannelPlaying(n\SoundChn) Then StopChannel(n\SoundChn)
@@ -98,7 +98,7 @@ Function UpdateNPCtype049(n.NPCs)
                             EndIf
                         Else
                             n\CurrSpeed = CurveValue(n\Speed, n\CurrSpeed, 20.0)
-                            MoveEntity n\Collider, 0, 0, n\CurrSpeed * FPSfactor	
+                            MoveEntity n\Collider, 0, 0, n\CurrSpeed * timing\tickDuration	
                             
                             If n\PrevState = 3 Then n\PrevState = 2
                             
@@ -141,7 +141,7 @@ Function UpdateNPCtype049(n.NPCs)
                                     n\CurrSpeed = CurveValue(n\Speed, n\CurrSpeed, 20.0)
                                     PointEntity n\obj,n\Path[n\PathLocation]\obj
                                     RotateEntity n\Collider,0,CurveAngle(EntityYaw(n\obj),EntityYaw(n\Collider),10.0),0
-                                    MoveEntity n\Collider,0,0,n\CurrSpeed*FPSfactor
+                                    MoveEntity n\Collider,0,0,n\CurrSpeed*timing\tickDuration
                                     
                                     ;opens doors in front of him
                                     dist2# = EntityDistance(n\Collider,n\Path[n\PathLocation]\obj)
@@ -183,7 +183,7 @@ Function UpdateNPCtype049(n.NPCs)
                                     ;Resetting the "PrevState" value randomly, to make 049 talking randomly 
                                     If Rand(300)=1 And ChannelPlaying(n\SoundChn2)=False Then n\PrevState = 0
                                     
-                                    n\State3 = n\State3 + FPSfactor
+                                    n\State3 = n\State3 + timing\tickDuration
                                     
                                     If n\PrevState > 1 Then n\PrevState = 1
                                     
@@ -206,9 +206,9 @@ Function UpdateNPCtype049(n.NPCs)
                             Else ;No Path to the player found - stands still and tries to find a path
                                 If n\CurrElevator = Null
                                     If n\PathStatus = 2 ;Updating path faster
-                                        n\PathTimer# = n\PathTimer# + 2*FPSfactor
+                                        n\PathTimer# = n\PathTimer# + 2*timing\tickDuration
                                     Else
-                                        n\PathTimer# = n\PathTimer# + FPSfactor
+                                        n\PathTimer# = n\PathTimer# + timing\tickDuration
                                     EndIf
                                     If n\PathTimer# > 70*5-(2*SelectedDifficulty\aggressiveNPCs)
                                         If n\InFacility = InFacility
@@ -226,7 +226,7 @@ Function UpdateNPCtype049(n.NPCs)
                                     GoToElevator(n)
                                     
                                     If n\CurrSpeed > 0.0
-                                        MoveEntity n\Collider,0,0,n\CurrSpeed*FPSfactor
+                                        MoveEntity n\Collider,0,0,n\CurrSpeed*timing\tickDuration
                                         AnimateNPC(n, Max(Min(AnimTime(n\obj),358.0),346), 393.0, n\CurrSpeed*38)
                                     Else
                                         AnimateNPC(n, 269, 345, 0.2)
@@ -258,7 +258,7 @@ Function UpdateNPCtype049(n.NPCs)
                                     n\CurrSpeed = CurveValue(n\Speed, n\CurrSpeed, 20.0)
                                     PointEntity n\obj,n\Path[n\PathLocation]\obj
                                     RotateEntity n\Collider,0,CurveAngle(EntityYaw(n\obj),EntityYaw(n\Collider),10.0),0
-                                    MoveEntity n\Collider,0,0,n\CurrSpeed*FPSfactor
+                                    MoveEntity n\Collider,0,0,n\CurrSpeed*timing\tickDuration
                                     
                                     ;opens doors in front of him
                                     dist2# = EntityDistance(n\Collider,n\Path[n\PathLocation]\obj)
@@ -295,7 +295,7 @@ Function UpdateNPCtype049(n.NPCs)
                                     AnimateNPC(n, Max(Min(AnimTime(n\obj),358.0),346), 393.0, n\CurrSpeed*38)
                                     
                                     n\PrevState = 0
-                                    n\State3 = n\State3 + FPSfactor
+                                    n\State3 = n\State3 + timing\tickDuration
                                     
                                     If n\InFacility = True
                                         If n\State3 > 70*14 ;Breaking the path after 14 seconds
@@ -320,7 +320,7 @@ Function UpdateNPCtype049(n.NPCs)
                                     n\CurrSpeed = 0
                                     AnimateNPC(n, 269, 345, 0.2)
                                     If n\PathTimer# < 300+Rand(100,300)
-                                        n\PathTimer# = n\PathTimer# + FPSfactor
+                                        n\PathTimer# = n\PathTimer# + timing\tickDuration
                                     Else
                                         If n\InFacility = True
                                             If Rand(2)=1
@@ -342,7 +342,7 @@ Function UpdateNPCtype049(n.NPCs)
                                     GoToElevator(n)
                                     
                                     If n\CurrSpeed > 0.0
-                                        MoveEntity n\Collider,0,0,n\CurrSpeed*FPSfactor
+                                        MoveEntity n\Collider,0,0,n\CurrSpeed*timing\tickDuration
                                         AnimateNPC(n, Max(Min(AnimTime(n\obj),358.0),346), 393.0, n\CurrSpeed*38)
                                     Else
                                         AnimateNPC(n, 269, 345, 0.2)
@@ -454,7 +454,7 @@ Function UpdateNPCtype049(n.NPCs)
                             n\CurrSpeed = CurveValue(n\Speed, n\CurrSpeed, 20.0)
                             PointEntity n\obj,n\Path[n\PathLocation]\obj
                             RotateEntity n\Collider,0,CurveAngle(EntityYaw(n\obj),EntityYaw(n\Collider),10.0),0
-                            MoveEntity n\Collider,0,0,n\CurrSpeed*FPSfactor
+                            MoveEntity n\Collider,0,0,n\CurrSpeed*timing\tickDuration
                             
                             ;closes doors behind him
                             If n\PathLocation>0 Then
@@ -517,7 +517,7 @@ Function UpdateNPCtype049(n.NPCs)
     
     RotateEntity n\obj, 0, EntityYaw(n\Collider), 0
     
-    n\LastSeen = Max(n\LastSeen-FPSfactor,0)
+    n\LastSeen = Max(n\LastSeen-timing\tickDuration,0)
     
-    n\State2 = Max(n\State2-FPSfactor,0)
+    n\State2 = Max(n\State2-timing\tickDuration,0)
 End Function

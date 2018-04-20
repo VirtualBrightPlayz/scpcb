@@ -132,7 +132,7 @@ Function UpdateNPCtype860(n.NPCs)
                             ;Animate2(n\obj, AnimTime(n\obj), 298, 316, n\CurrSpeed*10)
                             
                             n\CurrSpeed = CurveValue(n\Speed, n\CurrSpeed, 10.0)
-                            MoveEntity n\Collider, 0,0,n\CurrSpeed*FPSfactor
+                            MoveEntity n\Collider, 0,0,n\CurrSpeed*timing\tickDuration
                             
                             If dist>15.0 Then
                                 PositionEntity n\Collider, 0,-110,0
@@ -182,7 +182,7 @@ Function UpdateNPCtype860(n.NPCs)
                     RotateEntity n\Collider, 0, angle-90, 0, True
                     
                     n\CurrSpeed = CurveValue(n\Speed*0.3, n\CurrSpeed, 50.0)
-                    MoveEntity n\Collider, 0,0,n\CurrSpeed*FPSfactor
+                    MoveEntity n\Collider, 0,0,n\CurrSpeed*timing\tickDuration
                     
                     AnimateNPC(n, 494, 569, n\CurrSpeed*25)
                     
@@ -200,7 +200,7 @@ Function UpdateNPCtype860(n.NPCs)
                     EndIf
                     
                     If mainPlayer\moveSpeed > 0.03 Then ;the player is running
-                        n\State3 = n\State3 + FPSfactor
+                        n\State3 = n\State3 + timing\tickDuration
                         If Rnd(5000)<n\State3 Then
                             temp = True
                             If n\SoundChn <> 0 Then
@@ -211,7 +211,7 @@ Function UpdateNPCtype860(n.NPCs)
                             EndIf
                         EndIf
                     Else
-                        n\State3 = Max(n\State3 - FPSfactor,0)
+                        n\State3 = Max(n\State3 - timing\tickDuration,0)
                     EndIf
                     
                     If dist<4.5 Or n\State3 > Rnd(200,250) Then
@@ -272,7 +272,7 @@ Function UpdateNPCtype860(n.NPCs)
                     
                 EndIf
                 
-                MoveEntity n\Collider, 0,0,n\CurrSpeed*FPSfactor
+                MoveEntity n\Collider, 0,0,n\CurrSpeed*timing\tickDuration
         End Select
         
         If n\State <> 0 Then

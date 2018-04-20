@@ -202,21 +202,21 @@ Function UpdateNPCtype173(n.NPCs)
 						Else
 							PointEntity(n\Collider, mainPlayer\collider)
 							RotateEntity n\Collider, 0, EntityYaw(n\Collider), EntityRoll(n\Collider)
-							TranslateEntity n\Collider,Cos(EntityYaw(n\Collider)+90.0)*n\Speed*FPSfactor,0.0,Sin(EntityYaw(n\Collider)+90.0)*n\Speed*FPSfactor
+							TranslateEntity n\Collider,Cos(EntityYaw(n\Collider)+90.0)*n\Speed*timing\tickDuration,0.0,Sin(EntityYaw(n\Collider)+90.0)*n\Speed*timing\tickDuration
 						EndIf
 						
 					Else ;player is not visible -> move to the location where he was last seen							
 						If n\targetX <> 0 Then						
 							If Distance(EntityX(n\Collider), EntityZ(n\Collider), n\targetX, n\targetZ) > 0.5 Then
 								AlignToVector(n\Collider, n\targetX-EntityX(n\Collider), 0, n\targetZ-EntityZ(n\Collider), 3)
-								MoveEntity(n\Collider, 0, 0, n\Speed * FPSfactor)
+								MoveEntity(n\Collider, 0, 0, n\Speed * timing\tickDuration)
 								If Rand(500) = 1 Then n\targetX = 0 : n\targetY = 0 : n\targetZ = 0
 							Else
 								n\targetX = 0 : n\targetY = 0 : n\targetZ = 0
 							End If
 						Else
 							If Rand(400)=1 Then RotateEntity(n\Collider, 0, Rnd(360), 10)
-							TranslateEntity n\Collider,Cos(EntityYaw(n\Collider)+90.0)*n\Speed*FPSfactor,0.0,Sin(EntityYaw(n\Collider)+90.0)*n\Speed*FPSfactor
+							TranslateEntity n\Collider,Cos(EntityYaw(n\Collider)+90.0)*n\Speed*timing\tickDuration,0.0,Sin(EntityYaw(n\Collider)+90.0)*n\Speed*timing\tickDuration
 							
 						End If
 					EndIf
@@ -237,7 +237,7 @@ Function UpdateNPCtype173(n.NPCs)
 			If (n\targetX <> 0) Then
 				If Distance(EntityX(n\Collider), EntityZ(n\Collider), n\targetX, n\targetZ) > 0.5 Then
 					AlignToVector(n\Collider, n\targetX-EntityX(n\Collider), 0, n\targetZ-EntityZ(n\Collider), 3)
-					MoveEntity(n\Collider, 0, 0, n\Speed * FPSfactor)
+					MoveEntity(n\Collider, 0, 0, n\Speed * timing\tickDuration)
 				Else
 					n\targetX = 0
 					n\targetY = 0
@@ -259,7 +259,7 @@ Function UpdateNPCtype173(n.NPCs)
 					PointEntity n\obj, n\Target\Collider
 					RotateEntity n\Collider, 0, CurveAngle(EntityYaw(n\obj),EntityYaw(n\Collider),10.0), 0, True								
 					dist = EntityDistance(n\Collider, n\Target\Collider)
-					MoveEntity n\Collider, 0, 0, 0.016*FPSfactor*Max(Min((dist*2-1.0)*0.5,1.0),-0.5)
+					MoveEntity n\Collider, 0, 0, 0.016*timing\tickDuration*Max(Min((dist*2-1.0)*0.5,1.0),-0.5)
 				Else
 					PositionEntity n\Collider,EntityX(n\Target\Collider),EntityY(n\Target\Collider)+0.3,EntityZ(n\Target\Collider)
 					ResetEntity n\Collider

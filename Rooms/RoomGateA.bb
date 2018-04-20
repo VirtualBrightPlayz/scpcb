@@ -229,7 +229,7 @@ Function UpdateEventGatea(e.Events)
 			
 			ShouldPlay = 5
 			
-			e\EventState = e\EventState+FPSfactor
+			e\EventState = e\EventState+timing\tickDuration
 			HideEntity mainPlayer\overlays[OVERLAY_FOG]
 			CameraFogRange mainPlayer\cam, 5,30
 			
@@ -254,7 +254,7 @@ Function UpdateEventGatea(e.Events)
 			
 			If e\EventState=>350 Then
 				If Contained106=False Then
-					If e\EventState-FPSfactor < 350
+					If e\EventState-timing\tickDuration < 350
 						Curr106\State = -0.1
 						;Curr106\Idle = True
 						SetNPCFrame(Curr106, 110.0)
@@ -313,8 +313,8 @@ Function UpdateEventGatea(e.Events)
 								
 								FreeEntity pvt
 								
-								If FPSfactor > 0 Then ;decals under 106
-									If ((e\EventState-FPSfactor) Mod 100.0)=<50.0 And (e\EventState Mod 100.0)>50.0 Then
+								If timing\tickDuration > 0 Then ;decals under 106
+									If ((e\EventState-timing\tickDuration) Mod 100.0)=<50.0 And (e\EventState Mod 100.0)>50.0 Then
 										de.Decals = CreateDecal(0, EntityX(Curr106\Collider,True),EntityY(e\room\Objects[3],True)+0.01,EntityZ(Curr106\Collider,True), 90, Rand(360), 0)
 										de\Size = 0.2 : de\SizeChange = 0.004 : de\timer = 90000 : EntityAlpha(de\obj, 0.8) : UpdateDecals() 											
 									EndIf
@@ -340,8 +340,8 @@ Function UpdateEventGatea(e.Events)
 									e\SoundCHN = PlaySound2(e\Sound, mainPlayer\cam, Curr106\Collider, 35.0)
 								EndIf
 								
-								If FPSfactor > 0 Then ;106:n alle ilmestyy decaleita
-									If ((e\EventState-FPSfactor) Mod 160.0)=<50.0 And (e\EventState Mod 160.0)>50.0 Then
+								If timing\tickDuration > 0 Then ;106:n alle ilmestyy decaleita
+									If ((e\EventState-timing\tickDuration) Mod 160.0)=<50.0 And (e\EventState Mod 160.0)>50.0 Then
 										de.Decals = CreateDecal(0, EntityX(Curr106\Collider,True),EntityY(e\room\Objects[3],True)+0.01,EntityZ(Curr106\Collider,True), 90, Rand(360), 0)
 										de\Size = 0.05 : de\SizeChange = 0.004 : de\timer = 90000 : EntityAlpha(de\obj, 0.8) : UpdateDecals() 											
 									EndIf
@@ -349,7 +349,7 @@ Function UpdateEventGatea(e.Events)
 								
 								AnimateNPC(Curr106, 259, 110, -0.1, False)
 								
-								Curr106\State3 = Curr106\State3+FPSfactor
+								Curr106\State3 = Curr106\State3+timing\tickDuration
 								PositionEntity(Curr106\Collider, EntityX(Curr106\Collider,True),CurveValue(EntityY(e\room\Objects[3],True)-(Curr106\State3/4500.0),EntityY(Curr106\Collider,True),100.0),EntityZ(Curr106\Collider,True))
 								If Curr106\State3>700.0 Then
 									Curr106\State = 100000
@@ -368,9 +368,9 @@ Function UpdateEventGatea(e.Events)
 										e\SoundCHN2 = PlaySound_Strict (LoadTempSound("SFX\Ending\GateA\HIDTurret.ogg"))
 										e\EventState2 = 1
 									ElseIf e\EventState2>0
-										e\EventState2=e\EventState2+FPSfactor
+										e\EventState2=e\EventState2+timing\tickDuration
 										If e\EventState2=> 7.5*70 Then
-											If e\EventState2-FPSfactor < 7.5*70 Then
+											If e\EventState2-timing\tickDuration < 7.5*70 Then
 												p.Particles = CreateParticle(EntityX(Curr106\obj,True),EntityY(Curr106\obj,True)+0.4, EntityZ(Curr106\obj,True), 4, 7.0, 0, (6.7*70))
 												p\speed = 0.0
 												p\A = 1.0
@@ -471,7 +471,7 @@ Function UpdateEventGatea(e.Events)
 							EndIf
 						EndIf
 					Else
-						e\EventState3=e\EventState3+FPSfactor
+						e\EventState3=e\EventState3+timing\tickDuration
 						PointEntity e\room\Objects[12], mainPlayer\collider
 						RotateEntity e\room\Objects[12], 0, EntityYaw(e\room\Objects[12]), 0
 						
@@ -501,7 +501,7 @@ Function UpdateEventGatea(e.Events)
 						EndIf
 						
 						If e\EventState3=>230.0 Then
-							If e\EventState3-FPSfactor<230.0 Then
+							If e\EventState3-timing\tickDuration<230.0 Then
 								e\SoundCHN = PlaySound_Strict(LoadTempSound("SFX\Ending\GateA\CI.ogg"))
 							EndIf
 							

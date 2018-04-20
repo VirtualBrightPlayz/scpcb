@@ -38,7 +38,7 @@ Function UpdateEventTunnel106(e.Events)
 			End If
 		EndIf
 	Else
-		e\EventState = e\EventState+FPSfactor
+		e\EventState = e\EventState+timing\tickDuration
 		
 		PositionEntity(Curr106\Collider, EntityX(e\room\obj, True) - Sin(MilliSecs2() / 150.0) / 4.0, EntityY(mainPlayer\collider) + 1.0 - Min(Sin(e\EventState)*1.5,1.1), EntityZ(e\room\obj, True) - Sin(MilliSecs2() / 190.0) / 4.0)
 		
@@ -77,10 +77,10 @@ Function UpdateEvent682roar(e.Events)
 	If e\EventState = 0 Then
 		If mainPlayer\currRoom = e\room Then e\EventState = 70 * Rand(300,1000)
 	ElseIf mainPlayer\currRoom\RoomTemplate\Name <> "pocketdimension" And mainPlayer\currRoom\RoomTemplate\Name <> "room860" And mainPlayer\currRoom\RoomTemplate\Name <> "room1123" And mainPlayer\currRoom\RoomTemplate\Name <> "dimension1499" 
-		e\EventState = e\EventState-FPSfactor
+		e\EventState = e\EventState-timing\tickDuration
 		
 		If e\EventState < 17*70 Then
-			If	e\EventState+FPSfactor => 17*70 Then LoadEventSound(e,"SFX\SCP\682\Roar.ogg") : e\SoundCHN = PlaySound_Strict(e\Sound) ;e\Sound = LoadSound_Strict("SFX\SCP\682\Roar.ogg")
+			If	e\EventState+timing\tickDuration => 17*70 Then LoadEventSound(e,"SFX\SCP\682\Roar.ogg") : e\SoundCHN = PlaySound_Strict(e\Sound) ;e\Sound = LoadSound_Strict("SFX\SCP\682\Roar.ogg")
 			If e\EventState > 17*70 - 3*70 Then mainPlayer\camShake = 0.5
 			If e\EventState < 17*70 - 7.5*70 And e\EventState > 17*70 - 11*70 Then mainPlayer\camShake = 2.0				
 			If e\EventState < 70 Then 

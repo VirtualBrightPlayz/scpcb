@@ -100,10 +100,10 @@ Function UpdateEventRoom012(e.Events)
 			PositionEntity e\room\Objects[2], EntityX(e\room\Objects[2],True),(-130-448*Sin(e\EventState))*RoomScale,EntityZ(e\room\Objects[2],True),True
 			
 			If e\EventState2 > 0 And e\EventState2 < 200 Then
-				e\EventState2 = e\EventState2 + FPSfactor
+				e\EventState2 = e\EventState2 + timing\tickDuration
 				RotateEntity(e\room\Objects[1], CurveValue(85, EntityPitch(e\room\Objects[1]), 5), EntityYaw(e\room\Objects[1]), 0)
 			Else
-				e\EventState2 = e\EventState2 + FPSfactor
+				e\EventState2 = e\EventState2 + timing\tickDuration
 				If e\EventState2<250 Then
 					ShowEntity e\room\Objects[3] 
 				Else
@@ -160,15 +160,15 @@ Function UpdateEventRoom012(e.Events)
 					EndIf
 					
 					If dist < 0.6 Then
-						e\EventState3=Min(e\EventState3+FPSfactor,86*70)
-						If e\EventState3>70 And e\EventState3-FPSfactor=<70 Then
+						e\EventState3=Min(e\EventState3+timing\tickDuration,86*70)
+						If e\EventState3>70 And e\EventState3-timing\tickDuration=<70 Then
 							PlaySound_Strict LoadTempSound("SFX\SCP\012\Speech1.ogg")
-						ElseIf e\EventState3>13*70 And e\EventState3-FPSfactor=<13*70
+						ElseIf e\EventState3>13*70 And e\EventState3-timing\tickDuration=<13*70
 							Msg="You start pushing your nails into your wrist, drawing blood."
 							MsgTimer = 7*70
 							mainPlayer\injuries=mainPlayer\injuries+0.5
 							PlaySound_Strict LoadTempSound("SFX\SCP\012\Speech2.ogg")
-						ElseIf e\EventState3>31*70 And e\EventState3-FPSfactor=<31*70
+						ElseIf e\EventState3>31*70 And e\EventState3-timing\tickDuration=<31*70
 							tex = LoadTexture_Strict("GFX\map\scp-012_1.jpg")
 							EntityTexture (e\room\Objects[4], tex,0,1)
 							FreeTexture tex
@@ -177,19 +177,19 @@ Function UpdateEventRoom012(e.Events)
 							MsgTimer = 7*70
 							mainPlayer\injuries=Max(mainPlayer\injuries,1.5)
 							PlaySound_Strict LoadTempSound("SFX\SCP\012\Speech"+Rand(3,4)+".ogg")
-						ElseIf e\EventState3>49*70 And e\EventState3-FPSfactor=<49*70
+						ElseIf e\EventState3>49*70 And e\EventState3-timing\tickDuration=<49*70
 							Msg="You push your fingers deeper into the wound."
 							MsgTimer = 8*70
 							mainPlayer\injuries=mainPlayer\injuries+0.3
 							PlaySound_Strict LoadTempSound("SFX\SCP\012\Speech5.ogg")
-						ElseIf e\EventState3>63*70 And e\EventState3-FPSfactor=<63*70
+						ElseIf e\EventState3>63*70 And e\EventState3-timing\tickDuration=<63*70
 							tex = LoadTexture_Strict("GFX\map\scp-012_2.jpg")
 							EntityTexture (e\room\Objects[4], tex,0,1)	
 							FreeTexture tex
 							
 							mainPlayer\injuries=mainPlayer\injuries+0.5
 							PlaySound_Strict LoadTempSound("SFX\SCP\012\Speech6.ogg")
-						ElseIf e\EventState3>74*70 And e\EventState3-FPSfactor=<74*70
+						ElseIf e\EventState3>74*70 And e\EventState3-timing\tickDuration=<74*70
 							tex = LoadTexture_Strict("GFX\map\scp-012_3.jpg")
 							EntityTexture (e\room\Objects[4], tex,0,1)
 							FreeTexture tex
@@ -202,7 +202,7 @@ Function UpdateEventRoom012(e.Events)
 							
 							de.Decals = CreateDecal(17,  EntityX(mainPlayer\collider), -768*RoomScale+0.01, EntityZ(mainPlayer\collider),90,Rnd(360),0)
 							de\Size = 0.1 : de\maxsize = 0.45 : de\sizechange = 0.0002 : UpdateDecals()
-						ElseIf e\EventState3>85*70 And e\EventState3-FPSfactor=<85*70	
+						ElseIf e\EventState3>85*70 And e\EventState3-timing\tickDuration=<85*70	
 							DeathMSG = "Subject D-9341 found in a pool of blood next to SCP-012. Subject seems to have ripped open his wrists and written three extra "
 							DeathMSG = DeathMSG + "lines to the composition before dying of blood loss."
 							Kill(mainPlayer)

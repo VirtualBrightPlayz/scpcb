@@ -114,7 +114,7 @@ Function UpdateEventRoom_gw(e.Events)
 			EndIf
 		Else
 			If e\EventState2 < 70*7
-				e\EventState2 = e\EventState2 + FPSfactor
+				e\EventState2 = e\EventState2 + timing\tickDuration
 				e\room\RoomDoors[0]\open = False
 				e\room\RoomDoors[1]\open = False
 				If e\EventState2 < 70*1

@@ -56,8 +56,8 @@ Function UpdateNPCtypeApache(n.NPCs)
     
     Select n\State
         Case 0,1
-            TurnEntity(n\obj2,0,20.0*FPSfactor,0)
-            TurnEntity(n\obj3,20.0*FPSfactor,0,0)
+            TurnEntity(n\obj2,0,20.0*timing\tickDuration,0)
+            TurnEntity(n\obj3,20.0*timing\tickDuration,0,0)
             
             If n\State=1 And (Not NoTarget) Then
                 If Abs(EntityX(mainPlayer\collider)-EntityX(n\Collider))< 30.0 Then
@@ -84,8 +84,8 @@ Function UpdateNPCtypeApache(n.NPCs)
             
             If NoTarget And n\State = 2 Then n\State = 1
             
-            TurnEntity(n\obj2,0,20.0*FPSfactor,0)
-            TurnEntity(n\obj3,20.0*FPSfactor,0,0)
+            TurnEntity(n\obj2,0,20.0*timing\tickDuration,0)
+            TurnEntity(n\obj3,20.0*timing\tickDuration,0,0)
             
             If Abs(EntityX(target)-EntityX(n\Collider)) < 55.0 Then
                 If Abs(EntityZ(target)-EntityZ(n\Collider)) < 55.0 Then
@@ -103,14 +103,14 @@ Function UpdateNPCtypeApache(n.NPCs)
                         ;Else
                         ;	n\currspeed = CurveValue(0.0,n\currspeed,30.0)
                         ;EndIf
-                        MoveEntity n\Collider, 0,0,n\CurrSpeed*FPSfactor
+                        MoveEntity n\Collider, 0,0,n\CurrSpeed*timing\tickDuration
                         
                         
                         If n\PathTimer = 0 Then
                             n\PathStatus = EntityVisible(n\Collider,target)
                             n\PathTimer = Rand(100,200)
                         Else
-                            n\PathTimer = Min(n\PathTimer-FPSfactor,0.0)
+                            n\PathTimer = Min(n\PathTimer-timing\tickDuration,0.0)
                         EndIf
                         
                         If n\PathStatus = 1 Then ;player visible
@@ -143,7 +143,7 @@ Function UpdateNPCtypeApache(n.NPCs)
                         EndIf
                         MoveEntity n\Collider, -EntityRoll(n\Collider)*0.002,0,0
                         
-                        n\Reload=n\Reload-FPSfactor
+                        n\Reload=n\Reload-timing\tickDuration
                         
                         
                     EndIf
@@ -154,17 +154,17 @@ Function UpdateNPCtypeApache(n.NPCs)
         Case 4 ;crash
             If n\State2 < 300 Then
                 
-                TurnEntity(n\obj2,0,20.0*FPSfactor,0)
-                TurnEntity(n\obj3,20.0*FPSfactor,0,0)
+                TurnEntity(n\obj2,0,20.0*timing\tickDuration,0)
+                TurnEntity(n\obj3,20.0*timing\tickDuration,0,0)
                 
-                TurnEntity n\Collider,0,-FPSfactor*7,0;Sin(MilliSecs2()/40)*FPSfactor
-                n\State2=n\State2+FPSfactor*0.3
+                TurnEntity n\Collider,0,-timing\tickDuration*7,0;Sin(MilliSecs2()/40)*timing\tickDuration
+                n\State2=n\State2+timing\tickDuration*0.3
                 
                 target=CreatePivot()
                 PositionEntity target, n\EnemyX, n\EnemyY, n\EnemyZ, True
                 
                 PointEntity n\obj, target
-                MoveEntity n\obj, 0,0,FPSfactor*0.001*n\State2
+                MoveEntity n\obj, 0,0,timing\tickDuration*0.001*n\State2
                 PositionEntity(n\Collider, EntityX(n\obj), EntityY(n\obj), EntityZ(n\obj))
                 
                 If EntityDistance(n\obj, target) <0.3 Then

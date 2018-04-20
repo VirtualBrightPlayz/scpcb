@@ -192,7 +192,7 @@ Function UpdateEventExit1(e.Events)
 					If e\room\NPC[0]\State = 2 Then
 						ShouldPlay = 6
 					Else
-						e\EventState2=(e\EventState2+FPSfactor) Mod 3600
+						e\EventState2=(e\EventState2+timing\tickDuration) Mod 3600
 						PositionEntity(e\room\NPC[0]\Collider, EntityX(e\room\obj,True)+Cos(e\EventState2/10)*6000.0*RoomScale,14000*RoomScale,EntityZ(e\room\obj,True)+Sin(e\EventState2/10)*6000.0*RoomScale)
 						RotateEntity e\room\NPC[0]\Collider,7.0,(e\EventState2/10),20.0											
 						ShouldPlay = 5
@@ -217,7 +217,7 @@ Function UpdateEventExit1(e.Events)
 					EndIf								
 				Else
 					ShouldPlay = 6
-					e\EventState=e\EventState+FPSfactor
+					e\EventState=e\EventState+timing\tickDuration
 					
 					If e\EventState < 40.0*70 Then 	
 						e\room\NPC[0]\EnemyX = EntityX(e\room\Objects[11],True)+Sin(MilliSecs2()/25.0)*3
@@ -260,7 +260,7 @@ Function UpdateEventExit1(e.Events)
 						mainPlayer\camShake = 0.5	
 					ElseIf e\EventState > 35.0*70 And e\EventState < 36.5*70	
 						mainPlayer\camShake = 1.5		
-						If e\EventState-FPSfactor =< 35.0*70 Then
+						If e\EventState-timing\tickDuration =< 35.0*70 Then
 							e\SoundCHN2 = PlaySound_Strict (LoadTempSound("SFX\Ending\GateB\DetonatingAlphaWarheads.ogg"))
 						EndIf									
 					ElseIf e\EventState > 39.5*70 And e\EventState < 39.8*70		
@@ -343,7 +343,7 @@ Function UpdateEventExit1(e.Events)
 								
 								e\room\RoomDoors[5]\open = True
 								
-								;If e\EventState-FPSfactor < 80.0*70 And e\EventState => 80.0*70 Then
+								;If e\EventState-timing\tickDuration < 80.0*70 And e\EventState => 80.0*70 Then
 								;	
 								;EndIf
 								
@@ -372,7 +372,7 @@ Function UpdateEventExit1(e.Events)
 										If n\State = 5 And EntityDistance(n\Collider,mainPlayer\collider)<3.0
 											If e\EventState3 = 0.0
 												PlaySound_Strict LoadTempSound("SFX\Ending\GateB\PlayerDetect.ogg")
-												e\EventState3 = e\EventState3 + FPSfactor
+												e\EventState3 = e\EventState3 + timing\tickDuration
 												For n2.NPCs = Each NPCs
 													If n2\NPCtype = n\NPCtype
 														n2\State = 5
@@ -388,7 +388,7 @@ Function UpdateEventExit1(e.Events)
 								Next
 								
 								If e\EventState3 > 0.0 And e\EventState3 <= 500.0
-									e\EventState3 = e\EventState3 + FPSfactor
+									e\EventState3 = e\EventState3 + timing\tickDuration
 									mainPlayer\disableControls = True
 									For n.NPCs = Each NPCs
 										If n\NPCtype = NPCtypeMTF
@@ -441,7 +441,7 @@ Function UpdateEventExit1(e.Events)
 					Else
 						If WrapAngle(EntityRoll(e\room\Objects[12]))<340.0 Then 
 							angle# = WrapAngle(EntityRoll(e\room\Objects[12]))
-							TurnEntity e\room\Objects[12], 0,0,(5.0+Abs(Sin(angle))*2)*FPSfactor
+							TurnEntity e\room\Objects[12], 0,0,(5.0+Abs(Sin(angle))*2)*timing\tickDuration
 							If angle < 270 And WrapAngle(EntityRoll(e\room\Objects[12]))=> 270 Then
 								PlaySound_Strict LoadTempSound("SFX\Character\Apache\Crash1.ogg")
 								e\room\NPC[3]\State = 4

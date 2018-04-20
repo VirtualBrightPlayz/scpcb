@@ -110,7 +110,7 @@ Function UpdateNPCtype066(n.NPCs)
                         End Select
                     EndIf
                     
-                    n\State2 = n\State2+FPSfactor
+                    n\State2 = n\State2+timing\tickDuration
                     If n\State2>70 Then 
                         n\State = 3
                         n\State2 = 0
@@ -124,7 +124,7 @@ Function UpdateNPCtype066(n.NPCs)
                     AnimateNPC(n, 647, 683, n\CurrSpeed*25, False)
                     ;Animate2(n\obj, AnimTime(n\obj), 647, 683, n\CurrSpeed*25, False)
                     
-                    MoveEntity n\Collider, 0,0,-n\CurrSpeed*FPSfactor
+                    MoveEntity n\Collider, 0,0,-n\CurrSpeed*timing\tickDuration
                     
                 EndIf
             EndIf
@@ -134,13 +134,13 @@ Function UpdateNPCtype066(n.NPCs)
             RotateEntity n\Collider, 0, angle, 0
             
             n\CurrSpeed = CurveValue(n\Speed, n\CurrSpeed, 10.0)
-            MoveEntity n\Collider, 0,0,n\CurrSpeed*FPSfactor
+            MoveEntity n\Collider, 0,0,n\CurrSpeed*timing\tickDuration
             
             ;Animate2(n\obj, AnimTime(n\obj), 684, 647, -n\CurrSpeed*25)
             
             If Rand(100)=1 Then n\Angle = Rnd(-20,20)
             
-            n\State2 = n\State2 + FPSfactor
+            n\State2 = n\State2 + timing\tickDuration
             If n\State2>250 Then 
                 AnimateNPC(n, 684, 647, -n\CurrSpeed*25, False)
                 ;Animate2(n\obj, AnimTime(n\obj), 684, 647, -n\CurrSpeed*25, False)
@@ -176,7 +176,7 @@ Function UpdateNPCtype066(n.NPCs)
     
     
     If n\State3 > 0 Then
-        n\State3 = n\State3-FPSfactor
+        n\State3 = n\State3-timing\tickDuration
         ;LightVolume = TempLightVolume-TempLightVolume*Min(Max(n\State3/500,0.01),0.6)
         mainPlayer\heartbeatIntensity = Max(mainPlayer\heartbeatIntensity, 130)
         ;HeartBeatVolume = Max(HeartBeatVolume,Min(n\State3/1000,1.0))

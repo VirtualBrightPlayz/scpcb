@@ -68,7 +68,7 @@ Function UpdateNPCtype939(n.NPCs)
                 
                 n\LastSeen = 0
                 
-                MoveEntity n\Collider, 0,0,n\CurrSpeed*FPSfactor						
+                MoveEntity n\Collider, 0,0,n\CurrSpeed*timing\tickDuration						
                 
             Case 2
                 n\State2 = Max(n\State2, (n\PrevState-3))
@@ -76,7 +76,7 @@ Function UpdateNPCtype939(n.NPCs)
                 dist = EntityDistance(n\Collider, mainPlayer\currRoom\Objects[n\State2])
                 
                 n\CurrSpeed = CurveValue(n\Speed*0.3*Min(dist,1.0), n\CurrSpeed, 10.0)
-                MoveEntity n\Collider, 0,0,n\CurrSpeed*FPSfactor 
+                MoveEntity n\Collider, 0,0,n\CurrSpeed*timing\tickDuration 
                 
                 prevFrame = n\Frame
                 AnimateNPC(n, 644,683,28*n\CurrSpeed) ;walk
@@ -179,9 +179,9 @@ Function UpdateNPCtype939(n.NPCs)
                     angle = VectorYaw(n\EnemyX-EntityX(n\Collider), 0.0, n\EnemyZ-EntityZ(n\Collider))
                     RotateEntity n\Collider, 0, CurveAngle(angle,EntityYaw(n\Collider),15.0), 0									
                     
-                    MoveEntity n\Collider, 0,0,n\CurrSpeed*FPSfactor							
+                    MoveEntity n\Collider, 0,0,n\CurrSpeed*timing\tickDuration							
                     
-                    n\LastSeen = n\LastSeen - FPSfactor
+                    n\LastSeen = n\LastSeen - timing\tickDuration
                 Else
                     n\State = 2
                 EndIf
@@ -230,7 +230,7 @@ Function UpdateNPCtype939(n.NPCs)
                 
             EndIf
             
-            n\Reload = n\Reload - FPSfactor
+            n\Reload = n\Reload - timing\tickDuration
             
         EndIf				
         

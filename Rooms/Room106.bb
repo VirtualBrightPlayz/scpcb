@@ -139,7 +139,7 @@ Function UpdateEventRoom106(e.Events)
 	
 	If SoundTransmission Then 
 		If e\EventState = 1 Then
-			e\EventState3 = Min(e\EventState3+FPSfactor,4000)
+			e\EventState3 = Min(e\EventState3+timing\tickDuration,4000)
 		EndIf
 		If ChannelPlaying(e\SoundCHN) = False Then e\SoundCHN = PlaySound_Strict(RadioStatic)   
 	EndIf
@@ -231,7 +231,7 @@ Function UpdateEventRoom106(e.Events)
 			
 			If e\EventState3 => 2500 Then
 				
-				If e\EventState2 = 1 And e\EventState3-FPSfactor < 2500 Then
+				If e\EventState2 = 1 And e\EventState3-timing\tickDuration < 2500 Then
 					PositionEntity(Curr106\Collider, EntityX(e\room\Objects[6], True), EntityY(e\room\Objects[6], True), EntityZ(e\room\Objects[6], True))
 					Contained106 = False
 					ShowEntity Curr106\obj
@@ -252,7 +252,7 @@ Function UpdateEventRoom106(e.Events)
 				AnimateNPC(Curr106, 206, 250, 0.1)
 				Curr106\Idle = True	
 				
-				If e\EventState3-FPSfactor < 2500 Then 
+				If e\EventState3-timing\tickDuration < 2500 Then 
 					d.Decals = CreateDecal(0, EntityX(e\room\Objects[5], True), 936.0*RoomScale, EntityZ(e\room\Objects[5], True), 90, 0, Rnd(360)) 
 					d\Timer = 90000
 					d\Alpha = 0.01 : d\AlphaChange = 0.005
@@ -263,7 +263,7 @@ Function UpdateEventRoom106(e.Events)
 					EndIf 
 					LoadEventSound(e,"SFX\Character\LureSubject\106Bait.ogg",1)
 					e\SoundCHN2=PlaySound_Strict(e\Sound2)
-				ElseIf e\EventState3-FPSfactor < 2900 And e\EventState3 => 2900 Then
+				ElseIf e\EventState3-timing\tickDuration < 2900 And e\EventState3 => 2900 Then
 					If FemurBreakerSFX <> 0 Then FreeSound_Strict FemurBreakerSFX : FemurBreakerSFX = 0
 					
 					d.Decals = CreateDecal(0, EntityX(e\room\Objects[7], True), EntityY(e\room\Objects[7], True) , EntityZ(e\room\Objects[7], True), 0, 0, 0) 

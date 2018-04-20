@@ -62,7 +62,7 @@ Function UpdateNPCtypeD(n.NPCs)
         n\IsDead = True
     EndIf
     
-    MoveEntity(n\Collider, 0, 0, n\CurrSpeed * FPSfactor)
+    MoveEntity(n\Collider, 0, 0, n\CurrSpeed * timing\tickDuration)
     
     PositionEntity(n\obj, EntityX(n\Collider), EntityY(n\Collider) - 0.32, EntityZ(n\Collider))
     

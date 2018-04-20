@@ -207,7 +207,7 @@ Function UpdateDoors()
 		
 		UpdateDoorsTimer = 30
 	Else
-		UpdateDoorsTimer = Max(UpdateDoorsTimer-FPSfactor,0)
+		UpdateDoorsTimer = Max(UpdateDoorsTimer-timing\tickDuration,0)
 	EndIf
 	
 	mainPlayer\closestButton = 0
@@ -251,25 +251,25 @@ Function UpdateDoors()
 				If d\openstate < 180 Then
 					Select d\dir
 						Case 0
-							d\openstate = Min(180, d\openstate + FPSfactor * 2 * (d\fastopen+1))
-							MoveEntity(d\obj, Sin(d\openstate) * (d\fastopen*2+1) * FPSfactor / 80.0, 0, 0)
-							If d\obj2 <> 0 Then MoveEntity(d\obj2, Sin(d\openstate)* (d\fastopen+1) * FPSfactor / 80.0, 0, 0)		
+							d\openstate = Min(180, d\openstate + timing\tickDuration * 2 * (d\fastopen+1))
+							MoveEntity(d\obj, Sin(d\openstate) * (d\fastopen*2+1) * timing\tickDuration / 80.0, 0, 0)
+							If d\obj2 <> 0 Then MoveEntity(d\obj2, Sin(d\openstate)* (d\fastopen+1) * timing\tickDuration / 80.0, 0, 0)		
 						Case 1
-							d\openstate = Min(180, d\openstate + FPSfactor * 0.8)
-							MoveEntity(d\obj, Sin(d\openstate) * FPSfactor / 180.0, 0, 0)
-							If d\obj2 <> 0 Then MoveEntity(d\obj2, -Sin(d\openstate) * FPSfactor / 180.0, 0, 0)
+							d\openstate = Min(180, d\openstate + timing\tickDuration * 0.8)
+							MoveEntity(d\obj, Sin(d\openstate) * timing\tickDuration / 180.0, 0, 0)
+							If d\obj2 <> 0 Then MoveEntity(d\obj2, -Sin(d\openstate) * timing\tickDuration / 180.0, 0, 0)
 						Case 2
-							d\openstate = Min(180, d\openstate + FPSfactor * 2 * (d\fastopen+1))
-							MoveEntity(d\obj, Sin(d\openstate) * (d\fastopen+1) * FPSfactor / 85.0, 0, 0)
-							If d\obj2 <> 0 Then MoveEntity(d\obj2, Sin(d\openstate)* (d\fastopen*2+1) * FPSfactor / 120.0, 0, 0)		
+							d\openstate = Min(180, d\openstate + timing\tickDuration * 2 * (d\fastopen+1))
+							MoveEntity(d\obj, Sin(d\openstate) * (d\fastopen+1) * timing\tickDuration / 85.0, 0, 0)
+							If d\obj2 <> 0 Then MoveEntity(d\obj2, Sin(d\openstate)* (d\fastopen*2+1) * timing\tickDuration / 120.0, 0, 0)		
 					End Select
 				Else
 					d\fastopen = 0
 					ResetEntity(d\obj)
 					If d\obj2 <> 0 Then ResetEntity(d\obj2)
 					If d\timerstate > 0 Then
-						d\timerstate = Max(0, d\timerstate - FPSfactor)
-						If d\timerstate + FPSfactor > 110 And d\timerstate <= 110 Then PlaySound2(CautionSFX, mainPlayer\cam, d\obj)
+						d\timerstate = Max(0, d\timerstate - timing\tickDuration)
+						If d\timerstate + timing\tickDuration > 110 And d\timerstate <= 110 Then PlaySound2(CautionSFX, mainPlayer\cam, d\obj)
 						;If d\timerstate = 0 Then d\open = (Not d\open) : PlaySound2(CloseDoorSFX(Min(d\dir,1),Rand(0, 2)), mainPlayer\cam, d\obj)
 						Local sound%
 						If d\dir = 1 Then sound% = Rand(0, 1) Else sound% = Rand(0, 2)
@@ -286,14 +286,14 @@ Function UpdateDoors()
 				If d\openstate > 0 Then
 					Select d\dir
 						Case 0
-							d\openstate = Max(0, d\openstate - FPSfactor * 2 * (d\fastopen+1))
-							MoveEntity(d\obj, Sin(d\openstate) * -FPSfactor * (d\fastopen+1) / 80.0, 0, 0)
-							If d\obj2 <> 0 Then MoveEntity(d\obj2, Sin(d\openstate) * (d\fastopen+1) * -FPSfactor / 80.0, 0, 0)	
+							d\openstate = Max(0, d\openstate - timing\tickDuration * 2 * (d\fastopen+1))
+							MoveEntity(d\obj, Sin(d\openstate) * -timing\tickDuration * (d\fastopen+1) / 80.0, 0, 0)
+							If d\obj2 <> 0 Then MoveEntity(d\obj2, Sin(d\openstate) * (d\fastopen+1) * -timing\tickDuration / 80.0, 0, 0)	
 						Case 1
-							d\openstate = Max(0, d\openstate - FPSfactor*0.8)
-							MoveEntity(d\obj, Sin(d\openstate) * -FPSfactor / 180.0, 0, 0)
-							If d\obj2 <> 0 Then MoveEntity(d\obj2, Sin(d\openstate) * FPSfactor / 180.0, 0, 0)
-							If d\openstate < 15 And d\openstate+FPSfactor => 15
+							d\openstate = Max(0, d\openstate - timing\tickDuration*0.8)
+							MoveEntity(d\obj, Sin(d\openstate) * -timing\tickDuration / 180.0, 0, 0)
+							If d\obj2 <> 0 Then MoveEntity(d\obj2, Sin(d\openstate) * timing\tickDuration / 180.0, 0, 0)
+							If d\openstate < 15 And d\openstate+timing\tickDuration => 15
 								For i = 0 To Rand(75,99)
 									Local pvt% = CreatePivot()
 									PositionEntity(pvt, EntityX(d\frameobj,True)+Rnd(-0.2,0.2), EntityY(d\frameobj,True)+Rnd(0.0,1.2), EntityZ(d\frameobj,True)+Rnd(-0.2,0.2))
@@ -315,9 +315,9 @@ Function UpdateDoors()
 								Next
 							EndIf
 						Case 2
-							d\openstate = Max(0, d\openstate - FPSfactor * 2 * (d\fastopen+1))
-							MoveEntity(d\obj, Sin(d\openstate) * -FPSfactor * (d\fastopen+1) / 85.0, 0, 0)
-							If d\obj2 <> 0 Then MoveEntity(d\obj2, Sin(d\openstate) * (d\fastopen+1) * -FPSfactor / 120.0, 0, 0)
+							d\openstate = Max(0, d\openstate - timing\tickDuration * 2 * (d\fastopen+1))
+							MoveEntity(d\obj, Sin(d\openstate) * -timing\tickDuration * (d\fastopen+1) / 85.0, 0, 0)
+							If d\obj2 <> 0 Then MoveEntity(d\obj2, Sin(d\openstate) * (d\fastopen+1) * -timing\tickDuration / 120.0, 0, 0)
 					End Select
 					
 					If d\angle = 0 Or d\angle=180 Then

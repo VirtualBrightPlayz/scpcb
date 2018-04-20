@@ -57,7 +57,7 @@ Function UpdateNPCtype106(n.NPCs)
                 Return
             EndIf
 
-            n\timer = n\timer - (FPSfactor * (SelectedDifficulty\aggressiveNPCs * 2))
+            n\timer = n\timer - (timing\tickDuration * (SelectedDifficulty\aggressiveNPCs * 2))
 
             ;Check if 106's timer is below 0, if not decrease it.
             If (n\timer >= 0) Then
@@ -151,7 +151,7 @@ Function UpdateNPCtype106(n.NPCs)
                     PointEntity(n\obj, mainPlayer\collider)
                     RotateEntity(n\collider, 0, CurveAngle(EntityYaw(n\obj), EntityYaw(n\collider), 10.0), 0)
                     
-                    n\pathTimer = Max(n\pathTimer - FPSfactor, 0)
+                    n\pathTimer = Max(n\pathTimer - timing\tickDuration, 0)
                     If n\pathTimer =< 0 Then
                         n\PathStatus = 0
                     EndIf
@@ -163,7 +163,7 @@ Function UpdateNPCtype106(n.NPCs)
                         n\PathTimer = 70*10
                         n\CurrSpeed = 0
                     Else
-                        n\PathTimer = Max(n\PathTimer-FPSfactor,0)
+                        n\PathTimer = Max(n\PathTimer-timing\tickDuration,0)
                         
                         If n\PathStatus = 2 Then
                             n\CurrSpeed = 0
@@ -217,7 +217,7 @@ Function UpdateNPCtype106(n.NPCs)
                 EndIf
             EndIf
 
-            MoveEntity(n\collider, 0, 0, n\currSpeed * FPSfactor)
+            MoveEntity(n\collider, 0, 0, n\currSpeed * timing\tickDuration)
             
             If (dist > 48) Then 
                 ;Reset state.

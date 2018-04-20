@@ -47,25 +47,25 @@ End Function
 Function UpdateParticles()
 	Local p.Particles
 	For p.Particles = Each Particles
-		MoveEntity(p\pvt, 0, 0, p\speed * FPSfactor)
-		If p\gravity <> 0 Then p\yspeed = p\yspeed - p\gravity * FPSfactor
-		TranslateEntity(p\pvt, 0, p\yspeed * FPSfactor, 0, True)
+		MoveEntity(p\pvt, 0, 0, p\speed * timing\tickDuration)
+		If p\gravity <> 0 Then p\yspeed = p\yspeed - p\gravity * timing\tickDuration
+		TranslateEntity(p\pvt, 0, p\yspeed * timing\tickDuration, 0, True)
 		
 		PositionEntity(p\obj, EntityX(p\pvt,True), EntityY(p\pvt,True), EntityZ(p\pvt,True), True)
 		
-		;TurnEntity(p\obj, 0, 0, FPSfactor)
+		;TurnEntity(p\obj, 0, 0, timing\tickDuration)
 		
 		If p\Achange <> 0 Then
-			p\A=Min(Max(p\A+p\Achange * FPSfactor,0.0),1.0)
+			p\A=Min(Max(p\A+p\Achange * timing\tickDuration,0.0),1.0)
 			EntityAlpha(p\obj, p\A)		
 		EndIf
 		
 		If p\SizeChange <> 0 Then 
-			p\size= p\size+p\SizeChange * FPSfactor
+			p\size= p\size+p\SizeChange * timing\tickDuration
 			ScaleSprite p\obj, p\size, p\size
 		EndIf
 		
-		p\lifetime=p\lifetime-FPSfactor
+		p\lifetime=p\lifetime-timing\tickDuration
 		If p\lifetime <= 0 Or p\size < 0.00001 Or p\A =< 0 Then
 			RemoveParticle(p)
 		End If
@@ -102,7 +102,7 @@ End Type
 Function UpdateEmitters()
 	InSmoke = False
 	For e.emitters = Each Emitters
-		If FPSfactor > 0 And (mainPlayer\currRoom = e\room Or e\room\dist < 8) Then
+		If timing\tickDuration > 0 And (mainPlayer\currRoom = e\room Or e\room\dist < 8) Then
 			;If EntityDistance(mainPlayer\cam, e\Obj) < 6.0 Then
 				Local p.Particles = CreateParticle(EntityX(e\obj, True), EntityY(e\obj, True), EntityZ(e\obj, True), Rand(e\minimage, e\maximage), e\size, e\gravity, e\lifetime)
 				p\speed = e\speed
@@ -146,7 +146,7 @@ Function UpdateEmitters()
 			EndIf
 		EndIf
 		
-		mainPlayer\blinkEffect=mainPlayer\blinkEffect+FPSfactor * 4
+		mainPlayer\blinkEffect=mainPlayer\blinkEffect+timing\tickDuration * 4
 	EndIf	
 End Function 
 

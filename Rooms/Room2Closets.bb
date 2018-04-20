@@ -111,14 +111,14 @@ Function UpdateEventRoom2closets(e.Events)
 			e\EventState=1
 		EndIf
 	Else
-		e\EventState=e\EventState+FPSfactor
+		e\EventState=e\EventState+timing\tickDuration
 		If e\EventState < 70*3.5 Then
 			RotateEntity(e\room\NPC[1]\Collider,0,CurveAngle(e\room\angle+90,EntityYaw(e\room\NPC[1]\Collider),100.0),0,True)
 			
 			e\room\NPC[0]\State=1
-			If e\EventState > 70*3.2 And e\EventState-FPSfactor =< 70*3.2 Then PlaySound2(IntroSFX(15),mainPlayer\cam,e\room\obj,15.0)
+			If e\EventState > 70*3.2 And e\EventState-timing\tickDuration =< 70*3.2 Then PlaySound2(IntroSFX(15),mainPlayer\cam,e\room\obj,15.0)
 		ElseIf e\EventState < 70*6.5
-			If e\EventState-FPSfactor < 70*3.5 Then
+			If e\EventState-timing\tickDuration < 70*3.5 Then
 				e\room\NPC[0]\State=0
 				e\room\NPC[1]\SoundChn = PlaySound2(e\room\NPC[1]\Sound, mainPlayer\cam, e\room\NPC[1]\Collider,12.0)
 			EndIf
@@ -131,15 +131,15 @@ Function UpdateEventRoom2closets(e.Events)
 			TurnEntity e\room\NPC[1]\obj, 0, Sin(e\EventState)*25, 0
 			RotateEntity(e\room\NPC[1]\Collider,0,CurveAngle(EntityYaw(e\room\NPC[1]\obj),EntityYaw(e\room\NPC[1]\Collider),30.0),0,True)
 		Else
-			If e\EventState-FPSfactor < 70*6.5 Then 
+			If e\EventState-timing\tickDuration < 70*6.5 Then 
 				;PlaySound_Strict (HorrorSFX(0))
 				PlaySound_Strict (LightSFX)
 			EndIf
 			mainPlayer\blinkTimer = Max((70*6.5-e\EventState)/5.0 - Rnd(0.0,2.0),-10)
 			If mainPlayer\blinkTimer =-10 Then
 				;TODO: fix
-				;If e\EventState > 70*7.5 And e\EventState-FPSfactor =< 70*7.5 Then PlaySound2(NeckSnapSFX(0),mainPlayer\cam,e\room\NPC[0]\Collider,8.0)
-				;If e\EventState > 70*8.0 And e\EventState-FPSfactor =< 70*8.0 Then PlaySound2(NeckSnapSFX(1),mainPlayer\cam,e\room\NPC[1]\Collider,8.0)
+				;If e\EventState > 70*7.5 And e\EventState-timing\tickDuration =< 70*7.5 Then PlaySound2(NeckSnapSFX(0),mainPlayer\cam,e\room\NPC[0]\Collider,8.0)
+				;If e\EventState > 70*8.0 And e\EventState-timing\tickDuration =< 70*8.0 Then PlaySound2(NeckSnapSFX(1),mainPlayer\cam,e\room\NPC[1]\Collider,8.0)
 				SetNPCFrame e\room\NPC[0], 60
 				e\room\NPC[0]\State=8
 				

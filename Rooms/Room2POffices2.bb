@@ -66,7 +66,7 @@ Function UpdateEventRoom2poffices2(e.Events)
 				mainPlayer\heartbeatIntensity = CurveValue(120, mainPlayer\heartbeatIntensity, 150) 
 				;TODO: fix
 				;e\SoundCHN = LoopSound2(OldManSFX(4), e\SoundCHN, mainPlayer\cam, e\room\obj, 5.0, 0.3)
-				Curr106\State=Curr106\State-FPSfactor*3
+				Curr106\State=Curr106\State-timing\tickDuration*3
 			EndIf
 			
 		EndIf

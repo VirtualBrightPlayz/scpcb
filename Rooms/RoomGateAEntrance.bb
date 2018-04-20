@@ -57,7 +57,7 @@ Function UpdateEventGateaentrance(e.Events)
 			
 			e\EventState = UpdateElevators(e\EventState, e\room\RoomDoors[0], gatea\RoomDoors[1], e\room\Objects[0], e\room\Objects[1], e)
 			If Contained106 = False Then 
-				If e\EventState < -1.5 And e\EventState+FPSfactor=> -1.5 Then
+				If e\EventState < -1.5 And e\EventState+timing\tickDuration=> -1.5 Then
 					;PlaySound_Strict(OldManSFX(3)) ;TODO: fix
 				EndIf
 			EndIf

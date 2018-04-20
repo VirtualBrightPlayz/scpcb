@@ -46,14 +46,14 @@ Function UpdateNPCtype1499(n.NPCs)
                 If n\CurrSpeed = 0.0
                     If n\State2 < 500.0*Rnd(1,3)
                         n\CurrSpeed = 0.0
-                        n\State2 = n\State2 + FPSfactor
+                        n\State2 = n\State2 + timing\tickDuration
                     Else
                         If n\CurrSpeed = 0.0 Then n\CurrSpeed = n\CurrSpeed + 0.0001
                     EndIf
                 Else
                     If n\State2 < 10000.0*Rnd(1,3)
                         n\CurrSpeed = CurveValue(n\Speed,n\CurrSpeed,10.0)
-                        n\State2 = n\State2 + FPSfactor
+                        n\State2 = n\State2 + timing\tickDuration
                     Else
                         n\CurrSpeed = CurveValue(0.0,n\CurrSpeed,50.0)
                     EndIf
@@ -237,7 +237,7 @@ Function UpdateNPCtype1499(n.NPCs)
             UpdateSoundOrigin(n\SoundChn,mainPlayer\cam,n\Collider,20.0)
         EndIf
         
-        MoveEntity n\Collider,0,0,n\CurrSpeed*FPSfactor
+        MoveEntity n\Collider,0,0,n\CurrSpeed*timing\tickDuration
         
         RotateEntity n\obj,0,EntityYaw(n\Collider)-180,0
         PositionEntity n\obj,EntityX(n\Collider),EntityY(n\Collider)-0.2,EntityZ(n\Collider)

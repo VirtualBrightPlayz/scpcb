@@ -198,19 +198,19 @@ Function UpdateEventAlarm(e.Events)
 		CurrTrigger = CheckTriggers()
 		
 		If (CurrTrigger = "173scene_timer") Then
-			e\EventState = e\EventState+FPSfactor
+			e\EventState = e\EventState+timing\tickDuration
 		Else If (CurrTrigger = "173scene_activated")
 			e\EventState = Max(e\EventState, 500)
 		EndIf
 		
 		
 		If e\EventState >= 500 Then
-			e\EventState = e\EventState+FPSfactor
+			e\EventState = e\EventState+timing\tickDuration
 			
 			If e\EventState2 = 0 Then
 				CanSave = False
 				If e\EventState > 900 And e\room\RoomDoors[5]\open Then
-					If e\EventState - FPSfactor <= 900 Then 
+					If e\EventState - timing\tickDuration <= 900 Then 
 						e\room\NPC[1]\Sound = LoadSound_Strict("SFX\Room\Intro\WhatThe.ogg")
 						e\room\NPC[1]\SoundChn = PlaySound2(e\room\NPC[1]\Sound, mainPlayer\cam, e\room\NPC[1]\Collider)
 					EndIf
@@ -224,7 +224,7 @@ Function UpdateEventAlarm(e.Events)
 						If e\room\NPC[2]\State <> 1
 							e\room\NPC[2]\CurrSpeed = CurveValue(-0.012, e\room\NPC[2]\CurrSpeed, 5.0)
 							AnimateNPC(e\room\NPC[2], 895, 843, e\room\NPC[2]\CurrSpeed*50)
-							MoveEntity e\room\NPC[2]\Collider, 0,0,e\room\NPC[2]\CurrSpeed*FPSfactor
+							MoveEntity e\room\NPC[2]\Collider, 0,0,e\room\NPC[2]\CurrSpeed*timing\tickDuration
 							e\room\NPC[2]\State = 8
 							
 							If EntityZ(e\room\NPC[2]\Collider) < e\room\z-512*RoomScale Then
@@ -247,7 +247,7 @@ Function UpdateEventAlarm(e.Events)
 						EndIf
 
 					Else
-						If e\EventState-FPSfactor < 900+4*70 Then 
+						If e\EventState-timing\tickDuration < 900+4*70 Then 
 							PlaySound_Strict(IntroSFX(11)); : LightBlink = 3.0
 							
 							;Stonedrag.
@@ -350,7 +350,7 @@ Function UpdateEventAlarm(e.Events)
 			EndIf
 		EndIf
 		
-		If ((e\EventState Mod 600 > 300) And ((e\EventState+FPSfactor) Mod 600 < 300)) Then
+		If ((e\EventState Mod 600 > 300) And ((e\EventState+timing\tickDuration) Mod 600 < 300)) Then
 			i = Floor((e\EventState-5000)/600)+1
 			
 			If i = 0 Then PlaySound_Strict(LoadTempSound("SFX\Room\Intro\PA\scripted\scripted6.ogg"))

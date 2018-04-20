@@ -55,7 +55,7 @@ Function UpdateNPCtypeGuard(n.NPCs)
                 EndIf
             EndIf
             
-            MoveEntity(n\collider, 0, 0, n\currSpeed * FPSfactor)
+            MoveEntity(n\collider, 0, 0, n\currSpeed * timing\tickDuration)
 
         Case STATEGUARD_SHOOT_TARGET
             ;Raising gun to aim animation.
@@ -98,6 +98,6 @@ Function UpdateNPCtypeGuard(n.NPCs)
 
             FreeEntity(pvt)
 
-            n\timer = n\timer - FPSfactor
+            n\timer = n\timer - timing\tickDuration
     End Select
 End Function

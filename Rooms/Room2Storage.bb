@@ -66,7 +66,7 @@ Function UpdateEventRoom2storage(e.Events)
 			EndIf
 			e\EventState2 = 70*5
 		Else
-			e\EventState2 = e\EventState2 - FPSfactor
+			e\EventState2 = e\EventState2 - timing\tickDuration
 		EndIf
 		
 		;LightVolume = TempLightVolume*0.5
@@ -292,7 +292,7 @@ Function UpdateEventRoom2storage(e.Events)
 					y = CurveValue(1.5+Sin(Float(MilliSecs2())/20.0)*0.1,EntityY(e\room\NPC[0]\Collider),50.0)
 					
 					PositionEntity e\room\NPC[0]\Collider,EntityX(e\room\NPC[0]\Collider),y,EntityZ(e\room\NPC[0]\Collider)
-					TurnEntity e\room\NPC[0]\Collider,0,0.1*FPSfactor,0
+					TurnEntity e\room\NPC[0]\Collider,0,0.1*timing\tickDuration,0
 				EndIf 								
 			EndIf
 			

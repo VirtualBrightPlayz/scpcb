@@ -52,7 +52,7 @@ Function UpdateEventRoom3pitduck(e.Events)
 			LoadEventSound(e,"SFX\SCP\Joke\Saxophone.ogg")
 		Else
 			If EntityInView(e\room\Objects[2],mainPlayer\cam)=False Then
-				e\EventState = e\EventState + FPSfactor
+				e\EventState = e\EventState + timing\tickDuration
 				If Rand(200)=1 And e\EventState > 300 Then
 					e\EventState = 0
 					e\SoundCHN = PlaySound2(e\Sound, mainPlayer\cam, e\room\Objects[2],6.0)

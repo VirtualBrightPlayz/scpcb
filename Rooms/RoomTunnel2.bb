@@ -84,18 +84,18 @@ Function UpdateEventTunnel2(e.Events)
 				mainPlayer\blinkTimer = -10
 				If e\EventState > 30 Then 
 					;LightBlink = 1.0 
-					If e\EventState-FPSfactor =< 30 Then 
+					If e\EventState-timing\tickDuration =< 30 Then 
 						PlaySound_Strict LoadTempSound("SFX\ambient\general\ambient3.ogg")
 					EndIf
 				EndIf
-				If e\EventState-FPSfactor =< 100 And e\EventState > 100 Then
+				If e\EventState-timing\tickDuration =< 100 And e\EventState > 100 Then
 					PlaySound_Strict LoadTempSound("SFX\ambient\general\ambient6.ogg")
 					PositionEntity(Curr173\Collider, EntityX(e\room\obj), 0.6, EntityZ(e\room\obj))
 					ResetEntity(Curr173\Collider)					
 					Curr173\Idle = True		
 				EndIf
 				;LightBlink = 1.0
-				e\EventState = e\EventState + FPSfactor
+				e\EventState = e\EventState + timing\tickDuration
 			Else
 				mainPlayer\blinkTimer = mainPlayer\blinkFreq
 				

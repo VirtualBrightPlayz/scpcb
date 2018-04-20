@@ -56,7 +56,7 @@ Function UpdateEventRoom966(e.Events)
 				PlaySound_Strict LightSFX
 				QuickLoadPercent = 0
 			Case 1
-				e\EventState2 = e\EventState2+FPSfactor
+				e\EventState2 = e\EventState2+timing\tickDuration
 				If e\EventState2>30 Then
 					If e\EventStr = ""
 						CreateNPC(NPCtype966, EntityX(e\room\Objects[0],True), EntityY(e\room\Objects[0],True), EntityZ(e\room\Objects[0],True))

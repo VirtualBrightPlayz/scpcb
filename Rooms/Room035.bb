@@ -179,14 +179,14 @@ Function UpdateEventRoom035(e.Events)
 						EndIf
 						
 						If e\EventState3 >-30*70 Then 
-							e\EventState3=Abs(e\EventState3)+FPSfactor
-							If e\EventState3 > 1 And e\EventState3-FPSfactor=<1 Then
+							e\EventState3=Abs(e\EventState3)+timing\tickDuration
+							If e\EventState3 > 1 And e\EventState3-timing\tickDuration=<1 Then
 								e\room\NPC[0]\State = 0
 								If e\room\NPC[0]\Sound<>0 Then FreeSound_Strict(e\room\NPC[0]\Sound) : e\room\NPC[0]\Sound = 0
 								e\room\NPC[0]\Sound = LoadSound_Strict("SFX\SCP\035\Gased1.ogg")
 								e\room\NPC[0]\SoundChn = PlaySound_Strict(e\room\NPC[0]\Sound)
 							ElseIf e\EventState3>15*70 And e\EventState3<25*70
-								If e\EventState3-FPSfactor=<15*70 Then
+								If e\EventState3-timing\tickDuration=<15*70 Then
 									If e\room\NPC[0]\Sound<>0 Then FreeSound_Strict(e\room\NPC[0]\Sound) : e\room\NPC[0]\Sound = 0
 									e\room\NPC[0]\Sound = LoadSound_Strict("SFX\SCP\035\Gased2.ogg")
 									e\room\NPC[0]\SoundChn = PlaySound_Strict(e\room\NPC[0]\Sound)
@@ -205,7 +205,7 @@ Function UpdateEventRoom035(e.Events)
 									If e\room\NPC[0]\Frame=553 Then e\room\NPC[0]\State = 0
 								EndIf
 								
-								If e\EventState3-FPSfactor=<35*70 Then 
+								If e\EventState3-timing\tickDuration=<35*70 Then 
 									If e\room\NPC[0]\Sound<>0 Then FreeSound_Strict(e\room\NPC[0]\Sound) : e\room\NPC[0]\Sound = 0
 									e\room\NPC[0]\Sound = LoadSound_Strict("SFX\SCP\035\GasedKilled1.ogg")
 									e\room\NPC[0]\SoundChn = PlaySound_Strict(e\room\NPC[0]\Sound)
@@ -277,25 +277,25 @@ Function UpdateEventRoom035(e.Events)
 							EndIf
 						Else
 							
-							e\EventState = e\EventState+FPSfactor
-							If e\EventState > 4*70 And e\EventState-FPSfactor =<4*70 Then
+							e\EventState = e\EventState+timing\tickDuration
+							If e\EventState > 4*70 And e\EventState-timing\tickDuration =<4*70 Then
 								If e\room\NPC[0]\Sound<>0 Then FreeSound_Strict(e\room\NPC[0]\Sound) : e\room\NPC[0]\Sound = 0
 								e\room\NPC[0]\Sound = LoadSound_Strict("SFX\SCP\035\Help1.ogg")
 								e\room\NPC[0]\SoundChn = PlaySound_Strict(e\room\NPC[0]\Sound)
 								e\EventState = 10*70
-							ElseIf e\EventState > 20*70 And e\EventState-FPSfactor =<20*70
+							ElseIf e\EventState > 20*70 And e\EventState-timing\tickDuration =<20*70
 								If e\room\NPC[0]\Sound<>0 Then FreeSound_Strict(e\room\NPC[0]\Sound) : e\room\NPC[0]\Sound = 0
 								e\room\NPC[0]\Sound = LoadSound_Strict("SFX\SCP\035\Help2.ogg")
 								e\room\NPC[0]\SoundChn = PlaySound_Strict(e\room\NPC[0]\Sound)
-							ElseIf e\EventState > 40*70 And e\EventState-FPSfactor =<40*70
+							ElseIf e\EventState > 40*70 And e\EventState-timing\tickDuration =<40*70
 								If e\room\NPC[0]\Sound<>0 Then FreeSound_Strict(e\room\NPC[0]\Sound) : e\room\NPC[0]\Sound = 0
 								e\room\NPC[0]\Sound = LoadSound_Strict("SFX\SCP\035\Idle1.ogg")
 								e\room\NPC[0]\SoundChn = PlaySound_Strict(e\room\NPC[0]\Sound)
-							ElseIf e\EventState > 50*70 And e\EventState-FPSfactor =<50*70
+							ElseIf e\EventState > 50*70 And e\EventState-timing\tickDuration =<50*70
 								If e\room\NPC[0]\Sound<>0 Then FreeSound_Strict(e\room\NPC[0]\Sound) : e\room\NPC[0]\Sound = 0
 								e\room\NPC[0]\Sound = LoadSound_Strict("SFX\SCP\035\Idle2.ogg")
 								e\room\NPC[0]\SoundChn = PlaySound_Strict(e\room\NPC[0]\Sound)
-							ElseIf e\EventState > 80*70 And e\EventState-FPSfactor =<80*70
+							ElseIf e\EventState > 80*70 And e\EventState-timing\tickDuration =<80*70
 								If e\EventState2 Then ;skip the closet part if player has already opened it
 									e\EventState = 130*70
 								Else
@@ -315,7 +315,7 @@ Function UpdateEventRoom035(e.Events)
 								EndIf
 							ElseIf e\EventState > 80*70
 								If e\EventState2 Then e\EventState = Max(e\EventState,100*70)
-								If e\EventState>110*70 And e\EventState-FPSfactor =<110*70 Then
+								If e\EventState>110*70 And e\EventState-timing\tickDuration =<110*70 Then
 									If e\EventState2 Then
 										If e\room\NPC[0]\Sound<>0 Then FreeSound_Strict(e\room\NPC[0]\Sound) : e\room\NPC[0]\Sound = 0
 										e\room\NPC[0]\Sound = LoadSound_Strict("SFX\SCP\035\Closet2.ogg")
@@ -326,7 +326,7 @@ Function UpdateEventRoom035(e.Events)
 										e\room\NPC[0]\Sound = LoadSound_Strict("SFX\SCP\035\Idle3.ogg")
 										e\room\NPC[0]\SoundChn = PlaySound_Strict(e\room\NPC[0]\Sound)
 									EndIf
-								ElseIf e\EventState>125*70 And e\EventState-FPSfactor =<125*70
+								ElseIf e\EventState>125*70 And e\EventState-timing\tickDuration =<125*70
 									If e\EventState2 Then
 										If e\room\NPC[0]\Sound<>0 Then FreeSound_Strict(e\room\NPC[0]\Sound) : e\room\NPC[0]\Sound = 0
 										e\room\NPC[0]\Sound = LoadSound_Strict("SFX\SCP\035\Closet2.ogg")
@@ -336,11 +336,11 @@ Function UpdateEventRoom035(e.Events)
 										e\room\NPC[0]\Sound = LoadSound_Strict("SFX\SCP\035\Idle4.ogg")
 										e\room\NPC[0]\SoundChn = PlaySound_Strict(e\room\NPC[0]\Sound)
 									EndIf
-								ElseIf e\EventState>150*70 And e\EventState-FPSfactor =<150*70
+								ElseIf e\EventState>150*70 And e\EventState-timing\tickDuration =<150*70
 									If e\room\NPC[0]\Sound<>0 Then FreeSound_Strict(e\room\NPC[0]\Sound) : e\room\NPC[0]\Sound = 0
 									e\room\NPC[0]\Sound = LoadSound_Strict("SFX\SCP\035\Idle5.ogg")
 									e\room\NPC[0]\SoundChn = PlaySound_Strict(e\room\NPC[0]\Sound)
-								ElseIf e\EventState>200*70 And e\EventState-FPSfactor =<200*70
+								ElseIf e\EventState>200*70 And e\EventState-timing\tickDuration =<200*70
 									If e\room\NPC[0]\Sound<>0 Then FreeSound_Strict(e\room\NPC[0]\Sound) : e\room\NPC[0]\Sound = 0
 									e\room\NPC[0]\Sound = LoadSound_Strict("SFX\SCP\035\Idle6.ogg")
 									e\room\NPC[0]\SoundChn = PlaySound_Strict(e\room\NPC[0]\Sound)
@@ -470,18 +470,18 @@ Function UpdateEventRoom035(e.Events)
 							If e\Sound = 0 Then LoadEventSound(e,"SFX\Room\035Chamber\Whispers1.ogg")
 							If e\Sound2 = 0 Then LoadEventSound(e,"SFX\Room\035Chamber\Whispers2.ogg",1)
 							
-							e\EventState2 = Min(e\EventState2+(FPSfactor/6000),1.0)
+							e\EventState2 = Min(e\EventState2+(timing\tickDuration/6000),1.0)
 							e\EventState3 = CurveValue(e\EventState2, e\EventState3, 50)
 							
 							If (Not IsPlayerWearingTempName(mainPlayer,"hazmatsuit3")) And (Not IsPlayerWearingTempName(mainPlayer,"gasmask3")) Then
-								mainPlayer\sanity895=mainPlayer\sanity895-FPSfactor*1.1
+								mainPlayer\sanity895=mainPlayer\sanity895-timing\tickDuration*1.1
 								mainPlayer\blurTimer = Sin(MilliSecs2()/10)*Abs(mainPlayer\sanity895)
 							EndIf
 							
 							If (Not IsPlayerWearingTempName(mainPlayer,"hazmatsuit3")) Then
-								mainPlayer\injuries = mainPlayer\injuries + (FPSfactor/5000)
+								mainPlayer\injuries = mainPlayer\injuries + (timing\tickDuration/5000)
 							Else
-								mainPlayer\injuries = mainPlayer\injuries + (FPSfactor/10000)
+								mainPlayer\injuries = mainPlayer\injuries + (timing\tickDuration/10000)
 							EndIf
 							
 							If mainPlayer\dead = True And mainPlayer\bloodloss =>100 Then
@@ -508,8 +508,8 @@ Function UpdateEventRoom035(e.Events)
 			EndIf
 			
 			If temp = False Then 
-				e\EventState2 = Max(e\EventState2-(FPSfactor/2000),0)
-				e\EventState3 = Max(e\EventState3-(FPSfactor/100),0)
+				e\EventState2 = Max(e\EventState2-(timing\tickDuration/2000),0)
+				e\EventState3 = Max(e\EventState3-(timing\tickDuration/100),0)
 			EndIf
 			
 			If e\EventState3 > 0 And (Not IsPlayerWearingTempName(mainPlayer,"hazmatsuit3")) And (Not IsPlayerWearingTempName(mainPlayer,"gasmask3")) Then 

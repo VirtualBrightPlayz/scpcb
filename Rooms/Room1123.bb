@@ -142,12 +142,12 @@ Function UpdateEventRoom1123(e.Events)
 			e\EventState = 2
 			
 		ElseIf e\EventState = 2
-			e\EventState2 = e\EventState2 + FPSfactor
+			e\EventState2 = e\EventState2 + timing\tickDuration
 			
 			PointEntity e\room\NPC[0]\Collider, mainPlayer\collider
 			mainPlayer\blurTimer = Max(mainPlayer\blurTimer, 100)
 			
-			If e\EventState2>200 And e\EventState2-FPSfactor=<200 Then 							
+			If e\EventState2>200 And e\EventState2-timing\tickDuration=<200 Then 							
 				e\Sound = LoadSound_Strict("SFX\Music\1123.ogg");
 				e\SoundCHN = PlaySound_Strict(e\Sound)
 			EndIf
@@ -160,9 +160,9 @@ Function UpdateEventRoom1123(e.Events)
 				EndIf
 				RotateEntity e\room\Objects[11], 0, CurveAngle(10, EntityYaw(e\room\Objects[11],0), 40), 0
 				
-				If e\EventState2=>1040 And e\EventState2-FPSfactor<1040 Then 
+				If e\EventState2=>1040 And e\EventState2-timing\tickDuration<1040 Then 
 					PlaySound2(LoadTempSound("SFX\SCP\1123\Officer1.ogg"), mainPlayer\cam, e\room\NPC[0]\obj)
-				ElseIf e\EventState2=>1400 And e\EventState2-FPSfactor<1400 Then 
+				ElseIf e\EventState2=>1400 And e\EventState2-timing\tickDuration<1400 Then 
 					PlaySound2(LoadTempSound("SFX\SCP\1123\Officer2.ogg"), mainPlayer\cam, e\room\NPC[0]\obj)
 				EndIf
 				
@@ -232,7 +232,7 @@ Function UpdateEventRoom1123(e.Events)
 			;RemoveNPC(e\room\NPC[1])
 			;RemoveEvent(e)
 		ElseIf e\EventState = 5
-			e\EventState2 = e\EventState2 + FPSfactor
+			e\EventState2 = e\EventState2 + timing\tickDuration
 			If e\EventState2 > 500 Then 
 				RotateEntity e\room\Objects[9],0,90,0,False
 				RotateEntity e\room\Objects[13],0,0,0,False

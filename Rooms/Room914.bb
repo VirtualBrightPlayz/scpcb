@@ -690,7 +690,7 @@ Function UpdateEvent914(e.Events)
 		Next
 		
 		If e\EventState > 0 Then
-			e\EventState = e\EventState + FPSfactor
+			e\EventState = e\EventState + timing\tickDuration
 			
 			
 			e\room\RoomDoors[1]\open = False
@@ -701,7 +701,7 @@ Function UpdateEvent914(e.Events)
 			If Distance(EntityX(mainPlayer\collider), EntityZ(mainPlayer\collider), EntityX(e\room\Objects[2], True), EntityZ(e\room\Objects[2], True)) < (170.0 * RoomScale) Then
 				
 				If setting = "rough" Or setting = "coarse" Then
-					If e\EventState > 70 * 2.6 And e\EventState - FPSfactor2 < 70 * 2.6 Then PlaySound_Strict Death914SFX
+					If e\EventState > 70 * 2.6 And e\EventState - timing\tickDuration < 70 * 2.6 Then PlaySound_Strict Death914SFX
 				EndIf
 				
 				If e\EventState > 70 * 3 Then
@@ -715,13 +715,13 @@ Function UpdateEvent914(e.Events)
 							DeathMSG = DeathMSG + "ended up inside the intake booth and who or what wound the key."+Chr(34)
 						Case "coarse"
 							mainPlayer\blinkTimer = -10
-							If e\EventState - FPSfactor2 < 70 * 3 Then PlaySound_Strict Use914SFX
+							If e\EventState - timing\tickDuration < 70 * 3 Then PlaySound_Strict Use914SFX
 						Case "1:1"
 							mainPlayer\blinkTimer = -10
-							If e\EventState - FPSfactor2 < 70 * 3 Then PlaySound_Strict Use914SFX
+							If e\EventState - timing\tickDuration < 70 * 3 Then PlaySound_Strict Use914SFX
 						Case "fine", "very fine"
 							mainPlayer\blinkTimer = -10
-							If e\EventState - FPSfactor2 < 70 * 3 Then PlaySound_Strict Use914SFX	
+							If e\EventState - timing\tickDuration < 70 * 3 Then PlaySound_Strict Use914SFX	
 					End Select
 				End If
 			EndIf

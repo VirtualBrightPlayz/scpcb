@@ -506,8 +506,8 @@ Function UpdateItems()
 					i\xspeed = 0.0
 					i\zspeed = 0.0
 				Else
-					i\dropSpeed = i\dropSpeed - 0.0004 * FPSfactor
-					TranslateEntity i\collider, i\xspeed*FPSfactor, i\dropSpeed * FPSfactor, i\zspeed*FPSfactor
+					i\dropSpeed = i\dropSpeed - 0.0004 * timing\tickDuration
+					TranslateEntity i\collider, i\xspeed*timing\tickDuration, i\dropSpeed * timing\tickDuration, i\zspeed*timing\tickDuration
 					If i\WontColl Then ResetEntity(i\collider)
 				EndIf
 				

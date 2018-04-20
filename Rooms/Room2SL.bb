@@ -420,14 +420,14 @@ Function UpdateEventRoom2sl(e.Events)
 					If sc\room = e\room
 						If EntityDistance(sc\ScrObj,mainPlayer\cam)<5.0
 							If EntityVisible(sc\ScrObj,mainPlayer\cam)
-								e\EventState2 = Min(e\EventState2+FPSfactor,0)
+								e\EventState2 = Min(e\EventState2+timing\tickDuration,0)
 								Exit
 							EndIf
 						EndIf
 					EndIf
 				Next
 			Else
-				e\EventState2 = Min(e\EventState2+FPSfactor,0)
+				e\EventState2 = Min(e\EventState2+timing\tickDuration,0)
 			EndIf
 		ElseIf e\EventState2 = 0
 			If e\room\NPC[0] <> Null
@@ -517,7 +517,7 @@ Function UpdateEventRoom2sl(e.Events)
 			If e\room\NPC[0]\PathStatus <> 1
 				;If e\room\NPC[0]\PathTimer# < 70*3
 				If e\room\NPC[0]\PathTimer# = 0.0
-					;e\room\NPC[0]\PathTimer# = e\room\NPC[0]\PathTimer# + FPSfactor
+					;e\room\NPC[0]\PathTimer# = e\room\NPC[0]\PathTimer# + timing\tickDuration
 					If e\room\NPC[0]\PrevState = 1 Then
 						If (e\room\NPC[0]\SoundChn2 = 0) Then
 							e\room\NPC[0]\Sound2 = LoadSound_Strict("SFX\SCP\049\Room2SLEnter.ogg")

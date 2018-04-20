@@ -150,7 +150,7 @@ Function UpdateEventRoom2tesla(e.Events)
 				Next
 			EndIf
 		Else
-			e\EventState = e\EventState+FPSfactor
+			e\EventState = e\EventState+timing\tickDuration
 			If e\EventState =< 40 Then
 				If (MilliSecs2() Mod 100) < 50 Then
 					ShowEntity e\room\Objects[4]
@@ -158,11 +158,11 @@ Function UpdateEventRoom2tesla(e.Events)
 					HideEntity e\room\Objects[4]
 				EndIf
 			Else
-				;If e\EventState-FPSfactor =< 40 Then PlaySound_Strict(e\Sound)
+				;If e\EventState-timing\tickDuration =< 40 Then PlaySound_Strict(e\Sound)
 				If e\room\dist < 2
-				If e\EventState-FPSfactor =< 40 Then PlaySound_Strict(e\Sound)	
+				If e\EventState-timing\tickDuration =< 40 Then PlaySound_Strict(e\Sound)	
 				Else
-					If e\EventState-FPSfactor =< 40 Then PlaySound2(e\Sound,mainPlayer\cam,e\room\Objects[2])
+					If e\EventState-timing\tickDuration =< 40 Then PlaySound2(e\Sound,mainPlayer\cam,e\room\Objects[2])
 				EndIf
 				If e\EventState < 70 Then 
 					
@@ -210,7 +210,7 @@ Function UpdateEventRoom2tesla(e.Events)
 						ShowEntity e\room\Objects[3]								
 					EndIf
 				Else 
-					If e\EventState-FPSfactor < 70 Then 
+					If e\EventState-timing\tickDuration < 70 Then 
 						StopChannel(e\SoundCHN)	
 						e\SoundCHN = PlaySound2(TeslaPowerUpSFX, mainPlayer\cam, e\room\Objects[3],4.0,0.5)
 					EndIf 
@@ -261,7 +261,7 @@ Function UpdateEventRoom2tesla(e.Events)
 					RotateEntity(p\pvt, -90, EntityYaw(e\room\NPC[0]\Collider), 0)
 					p\Achange = -0.02
 				EndIf
-				e\EventStr = Float(e\EventStr) + FPSfactor
+				e\EventStr = Float(e\EventStr) + timing\tickDuration
 			Else
 				e\EventStr = "done"
 			EndIf
@@ -293,10 +293,10 @@ Function UpdateEventRoom2tesla(e.Events)
 				If temp = False Then e\EventState2=70*3.5
 				e\EventState3=e\EventState3+140
 			Else
-				e\EventState3=e\EventState3-FPSfactor
+				e\EventState3=e\EventState3-timing\tickDuration
 			EndIf
 		Else
-			e\EventState2 = Max(e\EventState2-FPSfactor,0)
+			e\EventState2 = Max(e\EventState2-timing\tickDuration,0)
 		EndIf					
 	EndIf
 	

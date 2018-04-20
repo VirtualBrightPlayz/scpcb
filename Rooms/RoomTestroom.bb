@@ -71,7 +71,7 @@ Function UpdateEventTestroom(e.Events)
 			EndIf
 			If e\room\Objects[7]<>0 Then
 				Animate2(e\room\Objects[7],AnimTime(e\room\Objects[7]),284,308,0.3)
-				MoveEntity e\room\Objects[7],0,-0.008*FPSfactor,0
+				MoveEntity e\room\Objects[7],0,-0.008*timing\tickDuration,0
 				TFormPoint EntityX(e\room\Objects[7]),EntityY(e\room\Objects[7]),EntityZ(e\room\Objects[7]),0,e\room\obj
 				
 				If Abs(TFormedX())>725 Then

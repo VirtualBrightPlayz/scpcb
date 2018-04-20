@@ -75,9 +75,9 @@ Function UpdateMusic()
 	If ConsoleFlush Then
 		If Not ChannelPlaying(MusicCHN) Then MusicCHN = PlaySound(ConsoleMusFlush)
 	Else
-		If FPSfactor > 0 Or OptionsMenu = 2 Then 
+		If timing\tickDuration > 0 Or OptionsMenu = 2 Then 
 			If NowPlaying <> ShouldPlay Then ; playing the wrong clip, fade out
-				CurrMusicVolume# = Max(CurrMusicVolume - (FPSfactor / 250.0), 0)
+				CurrMusicVolume# = Max(CurrMusicVolume - (timing\tickDuration / 250.0), 0)
 				If CurrMusicVolume = 0 Then
 					NowPlaying = ShouldPlay
 					If MusicCHN <> 0 Then StopChannel MusicCHN

@@ -213,7 +213,7 @@ Function UpdateEventRoom049(e.Events)
 				EndIf
 				
 				If e\EventState < 70*190 Then 
-					e\EventState = Min(e\EventState+FPSfactor,70*190)
+					e\EventState = Min(e\EventState+timing\tickDuration,70*190)
 					;049 spawns after 3 minutes
 					If e\EventState > 70*180 Then
 						
@@ -244,8 +244,8 @@ Function UpdateEventRoom049(e.Events)
 					;	Next
 					;Else
 						;If EntityDistance(e\room\NPC[0]\Collider,mainPlayer\collider)<4.0 Then
-						;	e\EventState=e\EventState+FPSfactor
-						;	If e\EventState > 70*195 And e\EventState-FPSfactor =< 70*195 Then
+						;	e\EventState=e\EventState+timing\tickDuration
+						;	If e\EventState > 70*195 And e\EventState-timing\tickDuration =< 70*195 Then
 						;		For n.NPCs = Each NPCs ;awake the zombies
 						;			If n\NPCtype = NPCtypeZombie And n\State = 0 Then
 						;				n\State = 1
@@ -253,9 +253,9 @@ Function UpdateEventRoom049(e.Events)
 						;			EndIf
 						;		Next
 						;		;PlaySound2(LoadTempSound("SFX\SCP\049\Greeting"+Rand(1,2)+".ogg"),mainPlayer\cam, e\room\NPC[0]\Collider)
-						;	ElseIf e\EventState > 70*214 And e\EventState-FPSfactor =< 70*214
+						;	ElseIf e\EventState > 70*214 And e\EventState-timing\tickDuration =< 70*214
 						;		;PlaySound2(LoadTempSound("SFX\SCP\049\Spotted"+Rand(1,2)+".ogg"),mainPlayer\cam, e\room\NPC[0]\Collider)
-						;	ElseIf e\EventState > 70*227 And e\EventState-FPSfactor =< 70*227
+						;	ElseIf e\EventState > 70*227 And e\EventState-timing\tickDuration =< 70*227
 						;		;PlaySound2(LoadTempSound("SFX\SCP\049\Detected"+Rand(1,3)+".ogg"),mainPlayer\cam, e\room\NPC[0]\Collider)
 						;		e\EventState=70*241
 						;	EndIf
@@ -287,7 +287,7 @@ Function UpdateEventRoom049(e.Events)
 			ElseIf mainPlayer\fallTimer < -230
 				mainPlayer\fallTimer = -231
 				mainPlayer\blinkTimer = 0
-				e\EventState = e\EventState-FPSfactor
+				e\EventState = e\EventState-timing\tickDuration
 				
 				If e\EventState =< -70*4 Then 
 					UpdateDoorsTimer = 0
@@ -354,14 +354,14 @@ Function UpdateEventRoom049(e.Events)
 			
 			If e\room\NPC[2]\State = 7
 				If e\room\NPC[2]\State3 < 70*1.75
-					e\room\NPC[2]\State3 = e\room\NPC[2]\State3 + FPSfactor
+					e\room\NPC[2]\State3 = e\room\NPC[2]\State3 + timing\tickDuration
 				Else
 					e\room\NPC[2]\State = 6
 					e\room\NPC[2]\Reload = e\room\NPC[1]\Reload+Rnd(5,10)
 				EndIf
 			ElseIf e\room\NPC[2]\State = 6 And e\room\NPC[2]\Reload > 70*4
 				If e\room\NPC[2]\State3 > -(70*4)
-					e\room\NPC[2]\State3 = e\room\NPC[2]\State3 - FPSfactor
+					e\room\NPC[2]\State3 = e\room\NPC[2]\State3 - timing\tickDuration
 				Else
 					e\room\NPC[2]\State3 = 0.0
 					e\room\NPC[2]\Reload = 45

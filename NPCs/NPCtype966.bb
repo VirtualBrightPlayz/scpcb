@@ -75,7 +75,7 @@ Function UpdateNPCtype966(n.NPCs)
                 n\Reload = 20*70
                 MsgTimer=8*70
             EndIf
-            n\Reload = n\Reload - FPSfactor
+            n\Reload = n\Reload - timing\tickDuration
             
         Else
             ShowEntity n\obj
@@ -95,9 +95,9 @@ Function UpdateNPCtype966(n.NPCs)
         EndIf
         
         If mainPlayer\stamina<10 Then 
-            n\State3=n\State3+FPSfactor
+            n\State3=n\State3+timing\tickDuration
         Else If n\State3 < 900.0
-            n\State3=Max(n\State3-FPSfactor*0.2,0.0)
+            n\State3=Max(n\State3-timing\tickDuration*0.2,0.0)
         EndIf
         
         If n\State <> 10
@@ -206,7 +206,7 @@ Function UpdateNPCtype966(n.NPCs)
                             n\PathTimer = 40*10
                             n\CurrSpeed = 0
                         EndIf
-                        n\PathTimer = Max(n\PathTimer-FPSfactor,0)
+                        n\PathTimer = Max(n\PathTimer-timing\tickDuration,0)
                         
                         If (Not EntityVisible(n\Collider,mainPlayer\collider)) Then
                             If n\PathStatus = 2 Then

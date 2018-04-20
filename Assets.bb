@@ -360,7 +360,6 @@ Function InitNewGame()
 	mainPlayer\stamina = 100
 	
 	For i% = 0 To 70
-		FPSfactor = 1.0
 		FlushKeys()
 		MovePlayer()
 		UpdateRooms()
@@ -380,8 +379,6 @@ Function InitNewGame()
 	FlushMouse
 	
 	mainPlayer\dropSpeed = 0
-	
-	PrevTime = MilliSecs()
 End Function
 
 Function InitLoadGame()
@@ -470,9 +467,6 @@ Function InitLoadGame()
 	FreeTextureCache
 	
 	DrawLoading(100)
-	
-	PrevTime = MilliSecs()
-	FPSfactor = 0	
 End Function
 
 Function NullGame()

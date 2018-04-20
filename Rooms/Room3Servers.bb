@@ -67,7 +67,7 @@ Function UpdateEventRoom3servers(e.Events)
 				e\EventState = CurveValue(0, e\EventState, 15.0)
 				If Rand(800)=1 Then e\EventState2 = 1
 			Else
-				e\EventState = e\EventState+(FPSfactor*0.5)
+				e\EventState = e\EventState+(timing\tickDuration*0.5)
 				If e\EventState > 360 Then e\EventState = 0	
 				
 				If Rand(1200)=1 Then e\EventState2 = 0

@@ -132,7 +132,7 @@ Function UpdateEventRoom205(e.Events)
 					EndIf
 				EndIf 
 				
-				e\EventState2 = e\EventState2 + FPSfactor							
+				e\EventState2 = e\EventState2 + timing\tickDuration							
 			EndIf
 			
 			
@@ -198,9 +198,9 @@ Function UpdateEventRoom205(e.Events)
 					Animate2(e\room\Objects[5], AnimTime(e\room\Objects[5]), 434, 494, 0.1, False)
 					
 					If AnimTime(e\room\Objects[3])>515 Then
-						;MoveEntity(e\room\Objects[3], 0,-FPSfactor*0.001,0)
-						;MoveEntity(e\room\Objects[4], 0,-FPSfactor*0.001,0)
-						;MoveEntity(e\room\Objects[5], 0,-FPSfactor*0.001,0)
+						;MoveEntity(e\room\Objects[3], 0,-timing\tickDuration*0.001,0)
+						;MoveEntity(e\room\Objects[4], 0,-timing\tickDuration*0.001,0)
+						;MoveEntity(e\room\Objects[5], 0,-timing\tickDuration*0.001,0)
 						If AnimTime(e\room\Objects[3])>533 Then 
 							e\EventState = 67
 							e\EventState2 = 0										
@@ -235,7 +235,7 @@ Function UpdateEventRoom205(e.Events)
 						ShowEntity e\room\Objects[1]
 					EndIf
 					
-					e\EventState3 = e\EventState3 + FPSfactor
+					e\EventState3 = e\EventState3 + timing\tickDuration
 					If (e\EventState3>50) Then
 						ShowEntity e\room\Objects[1]
 						e\EventState = e\EventState+1

@@ -121,7 +121,7 @@ Function UpdateEventRoom2ccont(e.Events)
 		Next
 		
 		If e\EventState > 0 And e\EventState < 200 Then
-			e\EventState = e\EventState + FPSfactor
+			e\EventState = e\EventState + timing\tickDuration
 			RotateEntity(e\room\Objects[3], CurveValue(-85, EntityPitch(e\room\Objects[3]), 5), EntityYaw(e\room\Objects[3]), 0)
 		EndIf 
 		

@@ -111,7 +111,7 @@ Function UpdateEventRoom2servers(e.Events)
 			If Rand(5)=1 Then PlaySound2(IntroSFX(Rand(10,12)), mainPlayer\cam, e\room\obj, 8.0, Rnd(0.1,0.3))
 		EndIf
 		
-		e\EventState=Min(e\EventState+FPSfactor,70*43)
+		e\EventState=Min(e\EventState+timing\tickDuration,70*43)
 		
 		If e\room\NPC[0]<>Null Then
 			If e\EventState < 70*13 Then
@@ -133,7 +133,7 @@ Function UpdateEventRoom2servers(e.Events)
 				e\room\NPC[0]\State=8
 				SetAnimTime e\room\NPC[0]\obj, 115
 				PointEntity e\room\NPC[0]\Collider, Curr096\Collider								
-			ElseIf e\EventState-FPSfactor =< 70*15 Then ;walk to the doorway
+			ElseIf e\EventState-timing\tickDuration =< 70*15 Then ;walk to the doorway
 				If e\EventState > 70*15 Then
 					e\room\NPC[0]\State=3
 					e\room\NPC[0]\PathStatus = FindPath(e\room\NPC[0], EntityX(e\room\Objects[8],True),0.5,EntityZ(e\room\Objects[8],True))
@@ -203,7 +203,7 @@ Function UpdateEventRoom2servers(e.Events)
 			EndIf
 		Else
 			
-			If e\EventState >= 70*40 And e\EventState-FPSfactor < 70*40 Then ;open them again to let the player in
+			If e\EventState >= 70*40 And e\EventState-timing\tickDuration < 70*40 Then ;open them again to let the player in
 				e\room\RoomDoors[0]\locked=False
 				e\room\RoomDoors[1]\locked=False
 				UseDoor(e\room\RoomDoors[0],False)
@@ -243,18 +243,18 @@ Function UpdateEventRoom2servers(e.Events)
 		
 		;fuel pump on
 		If x Then
-			e\EventState2 = Min(1.0, e\EventState2+FPSfactor/350)
+			e\EventState2 = Min(1.0, e\EventState2+timing\tickDuration/350)
 			
 			;generator on
 			If z Then
 				If e\Sound2=0 Then LoadEventSound(e,"SFX\General\GeneratorOn.ogg",1)
-				e\EventState3 = Min(1.0, e\EventState3+FPSfactor/450)
+				e\EventState3 = Min(1.0, e\EventState3+timing\tickDuration/450)
 			Else
-				e\EventState3 = Min(0.0, e\EventState3-FPSfactor/450)
+				e\EventState3 = Min(0.0, e\EventState3-timing\tickDuration/450)
 			EndIf
 		Else
-			e\EventState2 = Max(0, e\EventState2-FPSfactor/350)
-			e\EventState3 = Max(0, e\EventState3-FPSfactor/450)
+			e\EventState2 = Max(0, e\EventState2-timing\tickDuration/350)
+			e\EventState3 = Max(0, e\EventState3-timing\tickDuration/450)
 		EndIf
 		
 		If e\EventState2>0 Then e\SoundCHN=LoopSound2(RoomAmbience[8], e\SoundCHN, mainPlayer\cam, e\room\Objects[3], 5.0, e\EventState2*0.8)

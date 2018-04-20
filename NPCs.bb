@@ -354,7 +354,7 @@ Function UpdateNPCs()
 				If CollidedFloor = True Then
 					n\DropSpeed# = 0
 				Else
-					n\DropSpeed# = Max(n\DropSpeed - 0.005*FPSfactor*n\GravityMult,-n\MaxGravity)
+					n\DropSpeed# = Max(n\DropSpeed - 0.005*timing\tickDuration*n\GravityMult,-n\MaxGravity)
 				EndIf
 			Else
 				n\DropSpeed = 0
@@ -1134,7 +1134,7 @@ Function AnimateNPC(n.NPCs, start#, quit#, speed#, loop=True)
 	Local newTime#
 	
 	If speed > 0.0 Then 
-		newTime = Max(Min(n\Frame + speed * FPSfactor,quit),start)
+		newTime = Max(Min(n\Frame + speed * timing\tickDuration,quit),start)
 		
 		If loop And newTime => quit Then
 			newTime = start
@@ -1147,7 +1147,7 @@ Function AnimateNPC(n.NPCs, start#, quit#, speed#, loop=True)
 		EndIf
 		
 		If loop Then
-			newTime = n\Frame + speed * FPSfactor
+			newTime = n\Frame + speed * timing\tickDuration
 			
 			If newTime < quit Then 
 				newTime = start
@@ -1155,7 +1155,7 @@ Function AnimateNPC(n.NPCs, start#, quit#, speed#, loop=True)
 				newTime = quit
 			EndIf
 		Else
-			newTime = Max(Min(n\Frame + speed * FPSfactor,start),quit)
+			newTime = Max(Min(n\Frame + speed * timing\tickDuration,start),quit)
 		EndIf
 	EndIf
 	SetNPCFrame(n, newTime)

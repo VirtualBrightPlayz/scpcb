@@ -8,22 +8,22 @@ End Function
 
 
 Function CurveValue#(number#, old#, smooth#)
-	If FPSfactor = 0 Then Return old
+	If timing\tickDuration = 0 Then Return old
 	
 	If number < old Then
-		Return Max(old + (number - old) * (1.0 / smooth * FPSfactor), number)
+		Return Max(old + (number - old) * (1.0 / smooth * timing\tickDuration), number)
 	Else
-		Return Min(old + (number - old) * (1.0 / smooth * FPSfactor), number)
+		Return Min(old + (number - old) * (1.0 / smooth * timing\tickDuration), number)
 	EndIf
 End Function
 
 Function CurveAngle#(val#, old#, smooth#)
-	If FPSfactor = 0 Then Return old
+	If timing\tickDuration = 0 Then Return old
 	
    Local diff# = WrapAngle(val) - WrapAngle(old)
    If diff > 180 Then diff = diff - 360
    If diff < - 180 Then diff = diff + 360
-   Return WrapAngle(old + diff * (1.0 / smooth * FPSfactor))
+   Return WrapAngle(old + diff * (1.0 / smooth * timing\tickDuration))
 End Function
 
 

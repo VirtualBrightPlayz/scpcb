@@ -71,7 +71,7 @@ Function UpdateNPCtypeZombie(n.NPCs)
                         EndIf
                         n\State3=70*3
                     Else
-                        n\State3=n\State3-FPSfactor
+                        n\State3=n\State3-timing\tickDuration
                     EndIf
                     
                     If n\State2 > 0 And (Not NoTarget) Then ;player is visible -> attack
@@ -95,7 +95,7 @@ Function UpdateNPCtypeZombie(n.NPCs)
                             EndIf
                         Else
                             n\CurrSpeed = CurveValue(n\Speed, n\CurrSpeed, 20.0)
-                            MoveEntity n\Collider, 0, 0, n\CurrSpeed * FPSfactor
+                            MoveEntity n\Collider, 0, 0, n\CurrSpeed * timing\tickDuration
                             
                             AnimateNPC(n, 936, 1017, n\CurrSpeed*60)
                             
@@ -103,7 +103,7 @@ Function UpdateNPCtypeZombie(n.NPCs)
                             
                         EndIf
                         
-                        n\State2=n\State2-FPSfactor
+                        n\State2=n\State2-timing\tickDuration
                     Else
                         If n\PathStatus = 1 Then ;path found
                             If n\Path[n\PathLocation]=Null Then 
@@ -117,7 +117,7 @@ Function UpdateNPCtypeZombie(n.NPCs)
                                 
                                 RotateEntity n\Collider, 0, CurveAngle(EntityYaw(n\obj), EntityYaw(n\Collider), 30.0), 0
                                 n\CurrSpeed = CurveValue(n\Speed, n\CurrSpeed, 20.0)
-                                MoveEntity n\Collider, 0, 0, n\CurrSpeed * FPSfactor
+                                MoveEntity n\Collider, 0, 0, n\CurrSpeed * timing\tickDuration
                                 
                                 AnimateNPC(n, 936, 1017, n\CurrSpeed*60)
                                 ;Animate2(n\obj, AnimTime(n\obj), 936, 1017, n\CurrSpeed*60)
@@ -131,7 +131,7 @@ Function UpdateNPCtypeZombie(n.NPCs)
                             AnimateNPC(n, 778, 926, 0.1)
                             ;Animate2(n\obj, AnimTime(n\obj), 778, 926, 0.1)
                             
-                            n\PathTimer = n\PathTimer-FPSfactor
+                            n\PathTimer = n\PathTimer-timing\tickDuration
                             If n\PathTimer =< 0 Then
                                 n\PathStatus = FindPath(n, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.1,EntityZ(mainPlayer\collider))
                                 n\PathTimer = n\PathTimer+70*5

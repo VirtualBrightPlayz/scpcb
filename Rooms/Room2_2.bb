@@ -35,7 +35,7 @@ Function UpdateEventRoom2fan(e.Events)
 	;eventstate2 = fan on/off
 	;eventstate3 = the speed of the fan
 	If mainPlayer\currRoom = e\room Then
-		TurnEntity (e\room\Objects[0], e\EventState3*FPSfactor, 0, 0)
+		TurnEntity (e\room\Objects[0], e\EventState3*timing\tickDuration, 0, 0)
 		If e\EventState3 > 0.01 Then
 			e\room\SoundCHN = LoopSound2 (RoomAmbience[9], e\room\SoundCHN, mainPlayer\cam, e\room\Objects[0], 5.0, (e\EventState3/4.0))
 		EndIf
@@ -57,7 +57,7 @@ Function UpdateEventRoom2fan(e.Events)
 				EndIf
 			EndIf
 		Else
-			e\EventState = e\EventState-FPSfactor
+			e\EventState = e\EventState-timing\tickDuration
 		EndIf					
 	EndIf
 	;[End Block]

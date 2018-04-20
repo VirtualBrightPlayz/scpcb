@@ -58,7 +58,7 @@ Function UpdateEventRoom2offices3(e.Events)
 
 	;[Block]
 	If mainPlayer\currRoom = e\room Then
-		e\EventState = e\EventState+FPSfactor
+		e\EventState = e\EventState+timing\tickDuration
 		If e\EventState > 700 Then
 			If EntityDistance(e\room\RoomDoors[0]\obj, mainPlayer\collider)>0.5 Then 
 				If EntityInView(e\room\RoomDoors[0]\obj, mainPlayer\cam)=False Then

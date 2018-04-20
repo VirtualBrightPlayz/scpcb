@@ -53,11 +53,11 @@ Function UpdateNPCtype372(n.NPCs)
                 EndIf
                 FreeEntity temp
                 
-                MoveEntity n\Collider, 0, 0, 0.03*FPSfactor
+                MoveEntity n\Collider, 0, 0, 0.03*timing\tickDuration
                 
-                n\State = n\State-FPSfactor
+                n\State = n\State-timing\tickDuration
             EndIf
-            n\State=n\State-(FPSfactor/80.0)
+            n\State=n\State-(timing\tickDuration/80.0)
             If n\State <= 0 Then n\Idle = True	
         End If
         

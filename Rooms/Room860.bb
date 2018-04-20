@@ -109,13 +109,13 @@ Function UpdateEventRoom860(e.Events)
 				Kill(mainPlayer) 
 				mainPlayer\blinkTimer=-2
 			ElseIf EntityY(mainPlayer\collider)>EntityY(fr\Forest_Pivot,True)+0.5
-				MoveEntity(mainPlayer\collider, 0, ((EntityY(fr\Forest_Pivot,True)+0.5) - EntityY(mainPlayer\collider))*FPSfactor, 0)
+				MoveEntity(mainPlayer\collider, 0, ((EntityY(fr\Forest_Pivot,True)+0.5) - EntityY(mainPlayer\collider))*timing\tickDuration, 0)
 			EndIf
 			
 			If e\room\NPC[0]<>Null
 				If e\room\NPC[0]\State = 0 Or EntityDistance(mainPlayer\collider, e\room\NPC[0]\Collider)>12.0 Then
-					e\EventState3 = e\EventState3 + (1+mainPlayer\moveSpeed)* FPSfactor
-					If (e\EventState3 Mod 500) < 10.0 And ((e\EventState3-FPSfactor) Mod 500) > 490.0 Then
+					e\EventState3 = e\EventState3 + (1+mainPlayer\moveSpeed)* timing\tickDuration
+					If (e\EventState3 Mod 500) < 10.0 And ((e\EventState3-timing\tickDuration) Mod 500) > 490.0 Then
 						;If e\EventState3 > 3500 And Rnd(10000)<e\EventState3 Then
 						If e\EventState3 > 3000-(500*SelectedDifficulty\aggressiveNPCs) And Rnd(10000+(500*SelectedDifficulty\aggressiveNPCs)) < e\EventState3
 							e\room\NPC[0]\State=2

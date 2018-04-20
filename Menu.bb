@@ -111,7 +111,7 @@ Function UpdateMainMenu()
 	
 	SetFont Font1
 	
-	MenuBlinkTimer(1)=MenuBlinkTimer(1)-FPSfactor
+	MenuBlinkTimer(1)=MenuBlinkTimer(1)-timing\tickDuration
 	If MenuBlinkTimer(1) < MenuBlinkDuration(1) Then
 		Color(50, 50, 50)
 		Text(MenuStrX + Rand(-5, 5), MenuStrY + Rand(-5, 5), MenuStr, True)
@@ -1196,6 +1196,7 @@ Function DrawLoading(percent%, shortloading=False)
 		
 		If percent = 100 Then 
 			;If firstloop And SelectedLoadingScreen\title <> "CWM" Then PlaySound_Strict HorrorSFX(8) ;TODO: fix
+			timing\prevTime = MilliSecs()
 			Text(userOptions\screenWidth / 2, userOptions\screenHeight - 50, "PRESS ANY KEY TO CONTINUE", True, True)
 		Else
 			FlushKeys()
@@ -1500,7 +1501,7 @@ Function DrawQuickLoading()
 		Text userOptions\screenWidth-100,userOptions\screenHeight-90,"LOADING: "+QuickLoadPercent+"%",1
 		If QuickLoadPercent > 99
 			If QuickLoadPercent_DisplayTimer < 70
-				QuickLoadPercent_DisplayTimer# = Min(QuickLoadPercent_DisplayTimer+FPSfactor,70)
+				QuickLoadPercent_DisplayTimer# = Min(QuickLoadPercent_DisplayTimer+timing\tickDuration,70)
 			Else
 				QuickLoadPercent = -1
 			EndIf

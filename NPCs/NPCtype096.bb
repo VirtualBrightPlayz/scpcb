@@ -205,7 +205,7 @@ Function UpdateNPCtype096(n.NPCs)
                         AnimateNPC(n, 892,972, 0.2)
                         ;Animate2(n\obj, AnimTime(n\obj),892,972, 0.2)
                         
-                        n\PathTimer = Max(0, n\PathTimer-FPSfactor)
+                        n\PathTimer = Max(0, n\PathTimer-timing\tickDuration)
                         If n\PathTimer=<0 Then
                             If n\Target<>Null Then
                                 n\PathStatus = FindPath(n, EntityX(n\Target\Collider),EntityY(n\Target\Collider)+0.2,EntityZ(n\Target\Collider))	
@@ -255,7 +255,7 @@ Function UpdateNPCtype096(n.NPCs)
                 ;Animate2(n\obj, AnimTime(n\obj),833,972, 0.3, False)
                 If n\Frame=>972 Then n\State = 3 : n\State2=0
             ElseIf n\State=3
-                n\State2 = n\State2+FPSfactor
+                n\State2 = n\State2+timing\tickDuration
                 If n\State2 > 70*18 Then 
                     AnimateNPC(n, 973, 1001, 0.5, False)
                     ;Animate2(n\obj, AnimTime(n\obj),973,1001, 0.5, False)
@@ -282,7 +282,7 @@ Function UpdateNPCtype096(n.NPCs)
                     n\SoundChn = LoopSound2(n\Sound, n\SoundChn, mainPlayer\cam, n\Collider, 14.0, 1.0)
                 EndIf
                 
-                n\State2=n\State2+FPSfactor
+                n\State2=n\State2+timing\tickDuration
                 If n\State2>1000 Then ;walking around
                     If n\State2>1600 Then n\State2=Rand(0,500) : n\Frame = 1652 ;: SetAnimTime(n\obj, 1652)
                     

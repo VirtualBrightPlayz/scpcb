@@ -35,7 +35,7 @@ Function UpdateEventRoom2pipes106(e.Events)
 		If e\EventState = 0 Then
 			If mainPlayer\currRoom = e\room Then e\EventState = 1
 		Else
-			e\EventState=(e\EventState+FPSfactor*0.7)
+			e\EventState=(e\EventState+timing\tickDuration*0.7)
 			;0-50 = walk to the middle
 			;50-200 = look around
 			;200-250 = leave
@@ -79,7 +79,7 @@ Function UpdateEventRoom2pipes106(e.Events)
 			
 			;PositionEntity(Curr106\Collider, EntityX(Curr106\Collider), EntityY(mainPlayer\collider) - 0.20, EntityZ(Curr106\Collider))
 			
-			If (e\EventState / 250.0) > 0.3 And ((e\EventState - FPSfactor*0.7) / 250.0) <= 0.3 Then
+			If (e\EventState / 250.0) > 0.3 And ((e\EventState - timing\tickDuration*0.7) / 250.0) <= 0.3 Then
 				;e\SoundCHN = PlaySound_Strict(HorrorSFX(6))
 				mainPlayer\blurTimer = 800
 				d.Decals = CreateDecal(0, EntityX(e\room\Objects[2], True), EntityY(e\room\Objects[2], True), EntityZ(e\room\Objects[2], True), 0, e\room\angle - 90, Rnd(360)) ;90, Rnd(360), 0
@@ -88,7 +88,7 @@ Function UpdateEventRoom2pipes106(e.Events)
 				d\Size = 0.1 : d\SizeChange = 0.003
 			EndIf
 			
-			If (e\EventState / 250.0) > 0.65 And ((e\EventState - FPSfactor*0.7) / 250.0) <= 0.65 Then
+			If (e\EventState / 250.0) > 0.65 And ((e\EventState - timing\tickDuration*0.7) / 250.0) <= 0.65 Then
 				d.Decals = CreateDecal(0, EntityX(e\room\Objects[3], True), EntityY(e\room\Objects[3], True), EntityZ(e\room\Objects[3], True), 0, e\room\angle + 90, Rnd(360))
 				d\Timer = 90000
 				d\Alpha = 0.01 : d\AlphaChange = 0.005

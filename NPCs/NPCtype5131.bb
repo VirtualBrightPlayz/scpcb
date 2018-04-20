@@ -114,7 +114,7 @@ Function UpdateNPCtype5131(n.NPCs)
                         PointEntity n\obj, n\Path[0]\obj
                         RotateEntity n\Collider, CurveAngle(EntityPitch(n\obj),EntityPitch(n\Collider),15.0), CurveAngle(EntityYaw(n\obj),EntityYaw(n\Collider),15.0), 0, True
                         n\CurrSpeed = CurveValue(0.05*Max((7.0-dist)/7.0,0.0),n\CurrSpeed,15.0)
-                        MoveEntity n\Collider, 0,0,n\CurrSpeed*FPSfactor
+                        MoveEntity n\Collider, 0,0,n\CurrSpeed*timing\tickDuration
                         If Rand(200)=1 Then MoveEntity n\Collider, 0, 0, 0.5
                         RotateEntity n\Collider, 0, EntityYaw(n\Collider), 0, True
                     Else
@@ -156,8 +156,8 @@ Function UpdateNPCtype5131(n.NPCs)
             End Select
             
             If n\State2 > 0 Then
-                If dist < 4.0 Then n\State2 = n\State2-FPSfactor*4
-                n\State2 = n\State2-FPSfactor
+                If dist < 4.0 Then n\State2 = n\State2-timing\tickDuration*4
+                n\State2 = n\State2-timing\tickDuration
             Else
                 n\Path[0]=Null
                 n\Idle = True

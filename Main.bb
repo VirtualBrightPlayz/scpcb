@@ -75,8 +75,37 @@ Global MenuScale# = (userOptions\screenHeight / 1024.0)
 SetBuffer(BackBuffer())
 
 ;TODO: cleanup
-Global CurTime%, PrevTime%, LoopDelay%, FPSfactor#, FPSfactor2#
-Global CheckFPS%, ElapsedLoops%, FPS%, ElapsedTime#
+Type Timing
+	Field tickDuration# ;tick duration (1 = 1/70th of a second) TODO: change this value to be relative to a second
+	Field accumulator# ;accumulated steps
+	
+	Field prevTime%
+	Field currTime%
+	
+	Field fps#
+End Type
+Global timing.Timing = New Timing
+
+Function SetTiming(tickrate%)
+	timing\tickDuration = 70.0/Float(tickrate)
+End Function
+
+Function AddToTimingAccumulator(milliseconds%)
+	If milliseconds<1 Or milliseconds>500 Then
+		;DebugLog milliseconds
+		Return
+	EndIf
+	timing\accumulator = timing\accumulator+Max(0,Float(milliseconds)*70.0/1000.0)
+End Function
+
+Function ResetTimingAccumulator()
+	timing\accumulator = 0.0
+End Function
+
+SetTiming(60)
+
+Global CurTime.MarkedForRemoval, PrevTime.MarkedForRemoval, LoopDelay%, FPSfactor.MarkedForRemoval, FPSfactor2.MarkedForRemoval, ElapsedTime.MarkedForRemoval
+Global CheckFPS.MarkedForRemoval, ElapsedLoops.MarkedForRemoval, FPS.MarkedForRemoval
 
 ;TODO: wtf is this?
 Global CurrFrameLimit# = userOptions\framelimit
@@ -569,314 +598,295 @@ Repeat
 Forever
 
 Function UpdateGame()
-	Cls
+	Local elapsedMilliseconds%
+	timing\currTime = MilliSecs()
+	elapsedMilliseconds = timing\currTime-timing\prevTime
+	AddToTimingAccumulator(elapsedMilliseconds)
+	timing\prevTime = timing\currTime
 	
-	CurTime = MilliSecs()
-	ElapsedTime = (CurTime - PrevTime) / 1000.0
-	PrevTime = CurTime
-	FPSfactor = Max(Min(ElapsedTime * 70, 5.0), 0.2)
-	FPSfactor2 = FPSfactor
-	
-	If IsPaused() Then FPSfactor = 0
-	
-	If userOptions\framelimit > 0 Then
-	    ;Framelimit
-		Local WaitingTime% = (1000.0 / userOptions\framelimit) - (MilliSecs() - LoopDelay)
-		Delay WaitingTime%
-		
-	   LoopDelay = MilliSecs()
-	EndIf
+	;TODO: remove or replace
+	;If userOptions\framelimit > 0 Then
+	;    ;Framelimit
+	;	Local WaitingTime% = (1000.0 / userOptions\framelimit) - (MilliSecs() - LoopDelay)
+	;	Delay WaitingTime%
+	;	
+	;   LoopDelay = MilliSecs()
+	;EndIf
 	
 	;Counting the fps
-	If CheckFPS < MilliSecs2() Then
-		FPS = ElapsedLoops
-		ElapsedLoops = 0
-		CheckFPS = MilliSecs2()+1000
-	EndIf
-	ElapsedLoops = ElapsedLoops + 1
+	Local instantFramerate# = 1000.0/Max(1,elapsedMilliseconds)
+	timing\fps = Max(0,timing\fps*0.9 + instantFramerate*0.1)
 	
-	DoubleClick = False
-	MouseHit1 = MouseHit(1)
-	If MouseHit1 Then
-		If MilliSecs2() - LastMouseHit1 < 800 Then DoubleClick = True
-		LastMouseHit1 = MilliSecs2()
-	EndIf
-	
-	Local prevmousedown1 = MouseDown1
-	MouseDown1 = MouseDown(1)
-	If prevmousedown1 = True And MouseDown1=False Then MouseUp1 = True Else MouseUp1 = False
-	
-	MouseHit2 = MouseHit(2)
-	
-	UpdateMusic()
-	
-	If CurrGameState=GAMESTATE_MAINMENU Then
-		If ShouldPlay = 21 Then
-			If TempSoundCHN = 0 Then
-				For snd.Sound = Each Sound
-					For i = 0 To 31
-						If snd\channels[i]<>0 Then
-							StopChannel snd\channels[i]
-						EndIf
-					Next
-				Next
-				TempSoundCHN = PlaySound_Strict(Music(21))
-			EndIf
-			If (Not ChannelPlaying(TempSoundCHN)) Then FreeSound_Strict Music(21) : ShouldPlay = 11
-		Else
-			ShouldPlay = 11
-		EndIf
-		UpdateMainMenu()
-	Else
-		If (Not MouseDown1) And (Not MouseHit1) Then mainPlayer\grabbedEntity = 0
+	;[Block]
+	While timing\accumulator>0.0
+		timing\accumulator = timing\accumulator-timing\tickDuration
 		
-		ShouldPlay = 0 ;TODO: FIX ;Min(PlayerZone,2)
+		Cls
 		
-		DrawHandIcon = False
-		
-		If FPSfactor > 0 Then UpdateSecurityCams()
-		
-		If KeyHit(keyBinds\inv) Then
-			ToggleInventory(mainPlayer)
+		DoubleClick = False
+		MouseHit1 = MouseHit(1)
+		If MouseHit1 Then
+			If MilliSecs2() - LastMouseHit1 < 800 Then DoubleClick = True
+			LastMouseHit1 = MilliSecs2()
 		EndIf
 		
-		If mainPlayer\currRoom\RoomTemplate\Name <> "pocketdimension" And mainPlayer\currRoom\RoomTemplate\Name <> "gatea" And mainPlayer\currRoom\RoomTemplate\Name <> "exit1" And (Not IsPaused()) Then 
-			
-			If Rand(1500) = 1 Then
-				For i = 0 To 5
-					If AmbientSFX(i,CurrAmbientSFX) <> 0 Then
-						If ChannelPlaying(AmbientSFXCHN) = 0 Then FreeSound_Strict AmbientSFX(i,CurrAmbientSFX) : AmbientSFX(i,CurrAmbientSFX) = 0
-					EndIf			
-				Next
-				
-				PositionEntity (SoundEmitter, EntityX(mainPlayer\cam) + Rnd(-1.0, 1.0), 0.0, EntityZ(mainPlayer\cam) + Rnd(-1.0, 1.0))
-				
-				If mainPlayer\currRoom\RoomTemplate\Name = "room860"
-					For e.Events = Each Events
-						If e\EventName = "room860"
-							If e\EventState = 1.0 Then
-								PositionEntity (SoundEmitter, EntityX(mainPlayer\cam) + Rnd(-1.0, 1.0), 30.0, EntityZ(mainPlayer\cam) + Rnd(-1.0, 1.0))
+		Local prevmousedown1 = MouseDown1
+		MouseDown1 = MouseDown(1)
+		If prevmousedown1 = True And MouseDown1=False Then MouseUp1 = True Else MouseUp1 = False
+		
+		MouseHit2 = MouseHit(2)
+		
+		UpdateMusic()
+		
+		If CurrGameState=GAMESTATE_MAINMENU Then
+			If ShouldPlay = 21 Then
+				If TempSoundCHN = 0 Then
+					For snd.Sound = Each Sound
+						For i = 0 To 31
+							If snd\channels[i]<>0 Then
+								StopChannel snd\channels[i]
 							EndIf
-							
-							Exit
-						EndIf
+						Next
 					Next
+					TempSoundCHN = PlaySound_Strict(Music(21))
 				EndIf
-				
-				;CurrAmbientSFX = Rand(0,AmbientSFXAmount(PlayerZone)-1) ;TODO: fix
-				
-				;Select PlayerZone
-				;	Case 0,1,2
-				;		If AmbientSFX(PlayerZone,CurrAmbientSFX)=0 Then AmbientSFX(PlayerZone,CurrAmbientSFX)=LoadSound_Strict("SFX\Ambient\Zone"+(PlayerZone+1)+"\ambient"+(CurrAmbientSFX+1)+".ogg")
-				;	Case 3
-				;		If AmbientSFX(PlayerZone,CurrAmbientSFX)=0 Then AmbientSFX(PlayerZone,CurrAmbientSFX)=LoadSound_Strict("SFX\Ambient\General\ambient"+(CurrAmbientSFX+1)+".ogg")
-				;	Case 4
-				;		If AmbientSFX(PlayerZone,CurrAmbientSFX)=0 Then AmbientSFX(PlayerZone,CurrAmbientSFX)=LoadSound_Strict("SFX\Ambient\Pre-breach\ambient"+(CurrAmbientSFX+1)+".ogg")
-				;	Case 5
-				;		If AmbientSFX(PlayerZone,CurrAmbientSFX)=0 Then AmbientSFX(PlayerZone,CurrAmbientSFX)=LoadSound_Strict("SFX\Ambient\Forest\ambient"+(CurrAmbientSFX+1)+".ogg")
-				;End Select
-				
-				;AmbientSFXCHN = PlaySound2(AmbientSFX(PlayerZone,CurrAmbientSFX), mainPlayer\cam, SoundEmitter)
-			EndIf
-			
-			If Rand(50000) = 3 Then
-				Local RN$ = mainPlayer\currRoom\RoomTemplate\Name$
-				If RN$ <> "room860" And RN$ <> "room1123" And RN$ <> "173" And RN$ <> "dimension1499" Then
-					;If FPSfactor > 0 Then LightBlink = Rnd(1.0,2.0)
-					PlaySound_Strict  LoadTempSound("SFX\SCP\079\Broadcast"+Rand(1,7)+".ogg")
-				EndIf 
-			EndIf
-		EndIf
-		
-		UpdateCheckpoint1 = False
-		UpdateCheckpoint2 = False
-		
-		If Not IsPaused() Then
-			;LightVolume = CurveValue(TempLightVolume, LightVolume, 50.0)
-			;CameraFogRange(mainPlayer\cam, mainPlayer\camFogNear*LightVolume,mainPlayer\camFogFar*LightVolume)
-			;CameraFogColor(mainPlayer\cam, 0,0,0)
-			;CameraFogMode mainPlayer\cam,1
-			;CameraRange(mainPlayer\cam, 0.05, Min(mainPlayer\camFogFar*LightVolume*1.5,28))	
-			
-			AmbientLight Brightness, Brightness, Brightness	
-			mainPlayer\loudness = CurveValue(0.0, mainPlayer\loudness, 5.0)
-			
-			CanSave% = True
-			UpdateEmitters()
-			MouseLook()
-			MovePlayer()
-			InFacility = CheckForPlayerInFacility()
-			UpdateDoors()
-			UpdateEvents()
-			UpdateDecals()
-			UpdateMTF()
-			UpdateNPCs()
-			UpdateItems()
-			UpdateParticles()
-			UpdateScreens()
-			TimeCheckpointMonitors()
-			UpdateLeave1499()
-		EndIf
-		
-		;If InfiniteStamina Then mainPlayer\stamina = Min(100, mainPlayer\stamina + (100.0-mainPlayer\stamina)*0.01*FPSfactor)
-		
-		UpdateWorld()
-		ManipulateNPCBones()
-		RenderWorld2()
-		
-		mainPlayer\blurTimer = Min(CurveValue(0.0, mainPlayer\blurTimer, 20.0),0.95)
-		If mainPlayer\blurTimer > 0.0 Then
-			mainPlayer\blurTimer = Max(Min(0.95, mainPlayer\blurTimer / 1000.0), mainPlayer\blurTimer)
-			mainPlayer\blurTimer = Max(mainPlayer\blurTimer - FPSfactor, 0.0)
-		End If
-		
-		UpdateBlur(mainPlayer\blurTimer)
-		
-		;[Block]
-		
-		Local darkA# = 0.0
-		If Not IsPaused()  Then
-			If mainPlayer\sanity895 < 0 Then
-				mainPlayer\sanity895 = Min(mainPlayer\sanity895 + FPSfactor, 0.0)
-				If mainPlayer\sanity895 < (-200) Then 
-					darkA = Max(Min((-mainPlayer\sanity895 - 200) / 700.0, 0.6), darkA)
-					If Not mainPlayer\dead Then 
-						;HeartBeatVolume = Min(Abs(mainPlayer\sanity895+200)/500.0,1.0)
-						mainPlayer\heartbeatIntensity = Max(70 + Abs(mainPlayer\sanity895+200)/6.0,mainPlayer\heartbeatIntensity)
-					EndIf
-				EndIf
-			End If
-			
-			;TODO: fix
-;			If EyeStuck > 0 Then 
-;				mainPlayer\blinkTimer = mainPlayer\blinkFreq
-;				EyeStuck = Max(EyeStuck-FPSfactor,0)
-;				
-;				If EyeStuck < 9000 Then mainPlayer\blurTimer = Max(mainPlayer\blurTimer, (9000-EyeStuck)*0.5)
-;				If EyeStuck < 6000 Then darkA = Min(Max(darkA, (6000-EyeStuck)/5000.0),1.0)
-;				If EyeStuck < 9000 And EyeStuck+FPSfactor =>9000 Then 
-;					Msg = "The eyedrops are causing your eyes to tear up."
-;					MsgTimer = 70*6
-;				EndIf
-;			EndIf
-			
-			If mainPlayer\blinkTimer < 0 Then
-				If mainPlayer\blinkTimer > - 5 Then
-					darkA = Max(darkA, Sin(Abs(mainPlayer\blinkTimer * 18.0)))
-				ElseIf mainPlayer\blinkTimer > - 15
-					darkA = 1.0
-				Else
-					darkA = Max(darkA, Abs(Sin(mainPlayer\blinkTimer * 18.0)))
-				EndIf
-				
-				If mainPlayer\blinkTimer <= - 20 Then
-					;Randomizes the frequency of blinking. Scales with difficulty.
-					Select SelectedDifficulty\otherFactors
-						Case EASY
-							mainPlayer\blinkFreq = Rnd(490,700)
-						Case NORMAL
-							mainPlayer\blinkFreq = Rnd(455,665)
-						Case HARD
-							mainPlayer\blinkFreq = Rnd(420,630)
-					End Select 
-					mainPlayer\blinkTimer = mainPlayer\blinkFreq
-				EndIf
-
-				mainPlayer\blinkTimer = mainPlayer\blinkTimer - FPSfactor
+				If (Not ChannelPlaying(TempSoundCHN)) Then FreeSound_Strict Music(21) : ShouldPlay = 11
 			Else
-				mainPlayer\blinkTimer = mainPlayer\blinkTimer - FPSfactor * 0.6
-				;TODO: fix
-				;If EyeIrritation > 0 Then mainPlayer\blinkTimer=BlinkTimer-Min(EyeIrritation / 100.0 + 1.0, 4.0) * FPSfactor * BlinkEffect
-				
-				darkA = Max(darkA, 0.0)
-			End If
-			
-			;TODO: fix
-			;EyeIrritation = Max(0, EyeIrritation - FPSfactor)
-			
-			If mainPlayer\blinkEffect > 0 Then
-				mainPlayer\blinkEffect = mainPlayer\blinkEffect - (FPSfactor/70)
-			;TODO: wtf does this do	
-			;Else
-			;	If BlinkEffect <> 1.0 Then BlinkEffect = 1.0
-			;	BlinkEffect = CurveValue(1.0,BlinkEffect,500)
+				ShouldPlay = 11
 			EndIf
-			
-			;TODO: reimplement
-			;LightBlink = Max(LightBlink - (FPSfactor / 35.0), 0)
-			;If LightBlink > 0 Then darkA = Min(Max(darkA, LightBlink * Rnd(0.3, 0.8)), 1.0)
-			
-			If CurrGameState=GAMESTATE_SCP294 Then darkA=1.0
-			
-			If (Not IsPlayerWearingTempName(mainPlayer,"nvgoggles")) Then darkA = Max((1.0-SecondaryLightOn)*0.9, darkA)
-			
-			If mainPlayer\dead Then
-				CurrGameState = GAMESTATE_PLAYING
-				CurrGameSubstate = GAMESUBSTATE_PAUSED_DEAD
-				mainPlayer\selectedItem = Null
-				SelectedScreen = Null
-				SelectedMonitor = Null
-				;mainPlayer\blurTimer = Abs(mainPlayer\fallTimer*5)
-				;mainPlayer\fallTimer=mainPlayer\fallTimer-(FPSfactor*0.8)
-				If mainPlayer\fallTimer < - 360 Then 
-					CurrGameState = GAMESTATE_PAUSED
-					;TODO: fix
-					;If SelectedEnding <> "" Then EndingTimer = Min(mainPlayer\fallTimer,-0.1)
-				EndIf
-				darkA = Max(darkA, Min(Abs(mainPlayer\fallTimer / 400.0), 1.0))
-			EndIf
-			
-			If mainPlayer\fallTimer < 0 Then
-				CurrGameState = GAMESTATE_PLAYING
-				mainPlayer\selectedItem = Null
-				SelectedScreen = Null
-				SelectedMonitor = Null
-				mainPlayer\blurTimer = Abs(mainPlayer\fallTimer*10)
-				mainPlayer\fallTimer=mainPlayer\fallTimer-FPSfactor
-				darkA = Max(darkA, Min(Abs(mainPlayer\fallTimer / 400.0), 1.0))				
-			EndIf
-			
-			If mainPlayer\selectedItem <> Null Then
-				If mainPlayer\selectedItem\itemtemplate\tempname = "navigator" Or mainPlayer\selectedItem\itemtemplate\tempname = "nav" Then darkA = Max(darkA, 0.5)
-			End If
-			If SelectedScreen <> Null Then darkA = Max(darkA, 0.5)
-			
-			EntityAlpha(mainPlayer\overlays[OVERLAY_BLACK], darkA)	
-		EndIf
-		
-		If mainPlayer\lightFlash > 0 Then
-			ShowEntity mainPlayer\overlays[OVERLAY_WHITE]
-			EntityAlpha(mainPlayer\overlays[OVERLAY_WHITE], Max(Min(mainPlayer\lightFlash + Rnd(-0.2, 0.2), 1.0), 0.0))
-			mainPlayer\lightFlash = Max(mainPlayer\lightFlash - (FPSfactor / 70.0), 0)
+			UpdateMainMenu()
 		Else
-			HideEntity mainPlayer\overlays[OVERLAY_WHITE]
-			;EntityAlpha(Light, mainPlayer\lightFlash)
-		End If
-		
-		EntityColor mainPlayer\overlays[OVERLAY_WHITE],255,255,255
-		
-		;[End block]
-		
-		If KeyHit(keyBinds\save) Then
-			If SelectedDifficulty\saveType = SAVEANYWHERE Then
-				RN$ = mainPlayer\currRoom\RoomTemplate\Name$
-				If RN$ = "173" Or RN$ = "exit1" Or RN$ = "gatea"
-					Msg = "You cannot save in this location."
-					MsgTimer = 70 * 4
-				ElseIf (Not CanSave) Or QuickLoadPercent > -1
-					Msg = "You cannot save at this moment."
-					MsgTimer = 70 * 4
-					If QuickLoadPercent > -1
-						Msg = Msg + " (game is loading)"
+			If (Not MouseDown1) And (Not MouseHit1) Then mainPlayer\grabbedEntity = 0
+			
+			ShouldPlay = 0 ;TODO: FIX ;Min(PlayerZone,2)
+			
+			DrawHandIcon = False
+			
+			If timing\tickDuration > 0 Then UpdateSecurityCams()
+			
+			If KeyHit(keyBinds\inv) Then
+				ToggleInventory(mainPlayer)
+			EndIf
+			
+			If mainPlayer\currRoom\RoomTemplate\Name <> "pocketdimension" And mainPlayer\currRoom\RoomTemplate\Name <> "gatea" And mainPlayer\currRoom\RoomTemplate\Name <> "exit1" And (Not IsPaused()) Then 
+				
+				If Rand(1500) = 1 Then
+					For i = 0 To 5
+						If AmbientSFX(i,CurrAmbientSFX) <> 0 Then
+							If ChannelPlaying(AmbientSFXCHN) = 0 Then FreeSound_Strict AmbientSFX(i,CurrAmbientSFX) : AmbientSFX(i,CurrAmbientSFX) = 0
+						EndIf			
+					Next
+					
+					PositionEntity (SoundEmitter, EntityX(mainPlayer\cam) + Rnd(-1.0, 1.0), 0.0, EntityZ(mainPlayer\cam) + Rnd(-1.0, 1.0))
+					
+					If mainPlayer\currRoom\RoomTemplate\Name = "room860"
+						For e.Events = Each Events
+							If e\EventName = "room860"
+								If e\EventState = 1.0 Then
+									PositionEntity (SoundEmitter, EntityX(mainPlayer\cam) + Rnd(-1.0, 1.0), 30.0, EntityZ(mainPlayer\cam) + Rnd(-1.0, 1.0))
+								EndIf
+								
+								Exit
+							EndIf
+						Next
 					EndIf
-				Else
-					SaveGame(SavePath + CurrSave + "\")
+					
+					;CurrAmbientSFX = Rand(0,AmbientSFXAmount(PlayerZone)-1) ;TODO: fix
+					
+					;Select PlayerZone
+					;	Case 0,1,2
+					;		If AmbientSFX(PlayerZone,CurrAmbientSFX)=0 Then AmbientSFX(PlayerZone,CurrAmbientSFX)=LoadSound_Strict("SFX\Ambient\Zone"+(PlayerZone+1)+"\ambient"+(CurrAmbientSFX+1)+".ogg")
+					;	Case 3
+					;		If AmbientSFX(PlayerZone,CurrAmbientSFX)=0 Then AmbientSFX(PlayerZone,CurrAmbientSFX)=LoadSound_Strict("SFX\Ambient\General\ambient"+(CurrAmbientSFX+1)+".ogg")
+					;	Case 4
+					;		If AmbientSFX(PlayerZone,CurrAmbientSFX)=0 Then AmbientSFX(PlayerZone,CurrAmbientSFX)=LoadSound_Strict("SFX\Ambient\Pre-breach\ambient"+(CurrAmbientSFX+1)+".ogg")
+					;	Case 5
+					;		If AmbientSFX(PlayerZone,CurrAmbientSFX)=0 Then AmbientSFX(PlayerZone,CurrAmbientSFX)=LoadSound_Strict("SFX\Ambient\Forest\ambient"+(CurrAmbientSFX+1)+".ogg")
+					;End Select
+					
+					;AmbientSFXCHN = PlaySound2(AmbientSFX(PlayerZone,CurrAmbientSFX), mainPlayer\cam, SoundEmitter)
 				EndIf
-			ElseIf SelectedDifficulty\saveType = SAVEONSCREENS
-				If SelectedScreen=Null And SelectedMonitor=Null Then
-					Msg = "Saving is only permitted on clickable monitors scattered throughout the facility."
-					MsgTimer = 70 * 4						
+				
+				If Rand(50000) = 3 Then
+					Local RN$ = mainPlayer\currRoom\RoomTemplate\Name$
+					If RN$ <> "room860" And RN$ <> "room1123" And RN$ <> "173" And RN$ <> "dimension1499" Then
+						;If timing\tickDuration > 0 Then LightBlink = Rnd(1.0,2.0)
+						PlaySound_Strict  LoadTempSound("SFX\SCP\079\Broadcast"+Rand(1,7)+".ogg")
+					EndIf 
+				EndIf
+			EndIf
+			
+			UpdateCheckpoint1 = False
+			UpdateCheckpoint2 = False
+			
+			If Not IsPaused() Then
+				;LightVolume = CurveValue(TempLightVolume, LightVolume, 50.0)
+				;CameraFogRange(mainPlayer\cam, mainPlayer\camFogNear*LightVolume,mainPlayer\camFogFar*LightVolume)
+				;CameraFogColor(mainPlayer\cam, 0,0,0)
+				;CameraFogMode mainPlayer\cam,1
+				;CameraRange(mainPlayer\cam, 0.05, Min(mainPlayer\camFogFar*LightVolume*1.5,28))	
+				
+				AmbientLight Brightness, Brightness, Brightness	
+				mainPlayer\loudness = CurveValue(0.0, mainPlayer\loudness, 5.0)
+				
+				CanSave% = True
+				UpdateEmitters()
+				MouseLook()
+				MovePlayer()
+				InFacility = CheckForPlayerInFacility()
+				UpdateDoors()
+				UpdateEvents()
+				UpdateDecals()
+				UpdateMTF()
+				UpdateNPCs()
+				UpdateItems()
+				UpdateParticles()
+				UpdateScreens()
+				TimeCheckpointMonitors()
+				UpdateLeave1499()
+			EndIf
+			
+			;If InfiniteStamina Then mainPlayer\stamina = Min(100, mainPlayer\stamina + (100.0-mainPlayer\stamina)*0.01*timing\tickDuration)
+			
+			UpdateWorld()
+			ManipulateNPCBones()
+			RenderWorld2()
+			
+			mainPlayer\blurTimer = Min(CurveValue(0.0, mainPlayer\blurTimer, 20.0),0.95)
+			If mainPlayer\blurTimer > 0.0 Then
+				mainPlayer\blurTimer = Max(Min(0.95, mainPlayer\blurTimer / 1000.0), mainPlayer\blurTimer)
+				mainPlayer\blurTimer = Max(mainPlayer\blurTimer - timing\tickDuration, 0.0)
+			End If
+			
+			UpdateBlur(mainPlayer\blurTimer)
+			
+			;[Block]
+			
+			Local darkA# = 0.0
+			If Not IsPaused()  Then
+				If mainPlayer\sanity895 < 0 Then
+					mainPlayer\sanity895 = Min(mainPlayer\sanity895 + timing\tickDuration, 0.0)
+					If mainPlayer\sanity895 < (-200) Then 
+						darkA = Max(Min((-mainPlayer\sanity895 - 200) / 700.0, 0.6), darkA)
+						If Not mainPlayer\dead Then 
+							;HeartBeatVolume = Min(Abs(mainPlayer\sanity895+200)/500.0,1.0)
+							mainPlayer\heartbeatIntensity = Max(70 + Abs(mainPlayer\sanity895+200)/6.0,mainPlayer\heartbeatIntensity)
+						EndIf
+					EndIf
+				End If
+				
+				;TODO: fix
+	;			If EyeStuck > 0 Then 
+	;				mainPlayer\blinkTimer = mainPlayer\blinkFreq
+	;				EyeStuck = Max(EyeStuck-timing\tickDuration,0)
+	;				
+	;				If EyeStuck < 9000 Then mainPlayer\blurTimer = Max(mainPlayer\blurTimer, (9000-EyeStuck)*0.5)
+	;				If EyeStuck < 6000 Then darkA = Min(Max(darkA, (6000-EyeStuck)/5000.0),1.0)
+	;				If EyeStuck < 9000 And EyeStuck+timing\tickDuration =>9000 Then 
+	;					Msg = "The eyedrops are causing your eyes to tear up."
+	;					MsgTimer = 70*6
+	;				EndIf
+	;			EndIf
+				
+				If mainPlayer\blinkTimer < 0 Then
+					If mainPlayer\blinkTimer > - 5 Then
+						darkA = Max(darkA, Sin(Abs(mainPlayer\blinkTimer * 18.0)))
+					ElseIf mainPlayer\blinkTimer > - 15
+						darkA = 1.0
+					Else
+						darkA = Max(darkA, Abs(Sin(mainPlayer\blinkTimer * 18.0)))
+					EndIf
+					
+					If mainPlayer\blinkTimer <= - 20 Then
+						;Randomizes the frequency of blinking. Scales with difficulty.
+						Select SelectedDifficulty\otherFactors
+							Case EASY
+								mainPlayer\blinkFreq = Rnd(490,700)
+							Case NORMAL
+								mainPlayer\blinkFreq = Rnd(455,665)
+							Case HARD
+								mainPlayer\blinkFreq = Rnd(420,630)
+						End Select 
+						mainPlayer\blinkTimer = mainPlayer\blinkFreq
+					EndIf
+	
+					mainPlayer\blinkTimer = mainPlayer\blinkTimer - timing\tickDuration
 				Else
+					mainPlayer\blinkTimer = mainPlayer\blinkTimer - timing\tickDuration * 0.6
+					;TODO: fix
+					;If EyeIrritation > 0 Then mainPlayer\blinkTimer=BlinkTimer-Min(EyeIrritation / 100.0 + 1.0, 4.0) * timing\tickDuration * BlinkEffect
+					
+					darkA = Max(darkA, 0.0)
+				End If
+				
+				;TODO: fix
+				;EyeIrritation = Max(0, EyeIrritation - timing\tickDuration)
+				
+				If mainPlayer\blinkEffect > 0 Then
+					mainPlayer\blinkEffect = mainPlayer\blinkEffect - (timing\tickDuration/70)
+				;TODO: wtf does this do	
+				;Else
+				;	If BlinkEffect <> 1.0 Then BlinkEffect = 1.0
+				;	BlinkEffect = CurveValue(1.0,BlinkEffect,500)
+				EndIf
+				
+				;TODO: reimplement
+				;LightBlink = Max(LightBlink - (timing\tickDuration / 35.0), 0)
+				;If LightBlink > 0 Then darkA = Min(Max(darkA, LightBlink * Rnd(0.3, 0.8)), 1.0)
+				
+				If CurrGameState=GAMESTATE_SCP294 Then darkA=1.0
+				
+				If (Not IsPlayerWearingTempName(mainPlayer,"nvgoggles")) Then darkA = Max((1.0-SecondaryLightOn)*0.9, darkA)
+				
+				If mainPlayer\dead Then
+					CurrGameState = GAMESTATE_PLAYING
+					CurrGameSubstate = GAMESUBSTATE_PAUSED_DEAD
+					mainPlayer\selectedItem = Null
+					SelectedScreen = Null
+					SelectedMonitor = Null
+					;mainPlayer\blurTimer = Abs(mainPlayer\fallTimer*5)
+					;mainPlayer\fallTimer=mainPlayer\fallTimer-(timing\tickDuration*0.8)
+					If mainPlayer\fallTimer < - 360 Then 
+						CurrGameState = GAMESTATE_PAUSED
+						;TODO: fix
+						;If SelectedEnding <> "" Then EndingTimer = Min(mainPlayer\fallTimer,-0.1)
+					EndIf
+					darkA = Max(darkA, Min(Abs(mainPlayer\fallTimer / 400.0), 1.0))
+				EndIf
+				
+				If mainPlayer\fallTimer < 0 Then
+					CurrGameState = GAMESTATE_PLAYING
+					mainPlayer\selectedItem = Null
+					SelectedScreen = Null
+					SelectedMonitor = Null
+					mainPlayer\blurTimer = Abs(mainPlayer\fallTimer*10)
+					mainPlayer\fallTimer=mainPlayer\fallTimer-timing\tickDuration
+					darkA = Max(darkA, Min(Abs(mainPlayer\fallTimer / 400.0), 1.0))				
+				EndIf
+				
+				If mainPlayer\selectedItem <> Null Then
+					If mainPlayer\selectedItem\itemtemplate\tempname = "navigator" Or mainPlayer\selectedItem\itemtemplate\tempname = "nav" Then darkA = Max(darkA, 0.5)
+				End If
+				If SelectedScreen <> Null Then darkA = Max(darkA, 0.5)
+				
+				EntityAlpha(mainPlayer\overlays[OVERLAY_BLACK], darkA)	
+			EndIf
+			
+			If mainPlayer\lightFlash > 0 Then
+				ShowEntity mainPlayer\overlays[OVERLAY_WHITE]
+				EntityAlpha(mainPlayer\overlays[OVERLAY_WHITE], Max(Min(mainPlayer\lightFlash + Rnd(-0.2, 0.2), 1.0), 0.0))
+				mainPlayer\lightFlash = Max(mainPlayer\lightFlash - (timing\tickDuration / 70.0), 0)
+			Else
+				HideEntity mainPlayer\overlays[OVERLAY_WHITE]
+				;EntityAlpha(Light, mainPlayer\lightFlash)
+			End If
+			
+			EntityColor mainPlayer\overlays[OVERLAY_WHITE],255,255,255
+			
+			;[End block]
+			
+			If KeyHit(keyBinds\save) Then
+				If SelectedDifficulty\saveType = SAVEANYWHERE Then
 					RN$ = mainPlayer\currRoom\RoomTemplate\Name$
 					If RN$ = "173" Or RN$ = "exit1" Or RN$ = "gatea"
 						Msg = "You cannot save in this location."
@@ -890,129 +900,151 @@ Function UpdateGame()
 					Else
 						SaveGame(SavePath + CurrSave + "\")
 					EndIf
+				ElseIf SelectedDifficulty\saveType = SAVEONSCREENS
+					If SelectedScreen=Null And SelectedMonitor=Null Then
+						Msg = "Saving is only permitted on clickable monitors scattered throughout the facility."
+						MsgTimer = 70 * 4						
+					Else
+						RN$ = mainPlayer\currRoom\RoomTemplate\Name$
+						If RN$ = "173" Or RN$ = "exit1" Or RN$ = "gatea"
+							Msg = "You cannot save in this location."
+							MsgTimer = 70 * 4
+						ElseIf (Not CanSave) Or QuickLoadPercent > -1
+							Msg = "You cannot save at this moment."
+							MsgTimer = 70 * 4
+							If QuickLoadPercent > -1
+								Msg = Msg + " (game is loading)"
+							EndIf
+						Else
+							SaveGame(SavePath + CurrSave + "\")
+						EndIf
+					EndIf
+				Else
+					Msg = "Quick saving is disabled."
+					MsgTimer = 70 * 4
 				EndIf
-			Else
-				Msg = "Quick saving is disabled."
-				MsgTimer = 70 * 4
-			EndIf
-		Else If SelectedDifficulty\saveType = SAVEONSCREENS And (SelectedScreen<>Null Or SelectedMonitor<>Null)
-			If (Msg<>"Game progress saved." And Msg<>"You cannot save in this location."And Msg<>"You cannot save at this moment.") Or MsgTimer<=0 Then
-				Msg = "Press "+KeyName(keyBinds\save)+" to save."
-				MsgTimer = 70*4
+			Else If SelectedDifficulty\saveType = SAVEONSCREENS And (SelectedScreen<>Null Or SelectedMonitor<>Null)
+				If (Msg<>"Game progress saved." And Msg<>"You cannot save in this location."And Msg<>"You cannot save at this moment.") Or MsgTimer<=0 Then
+					Msg = "Press "+KeyName(keyBinds\save)+" to save."
+					MsgTimer = 70*4
+				EndIf
+				
+				If MouseHit2 Then SelectedMonitor = Null
 			EndIf
 			
-			If MouseHit2 Then SelectedMonitor = Null
-		EndIf
-		
-		If KeyHit(keyBinds\console) Then
-			If CurrGameState=GAMESTATE_CONSOLE Then
-				UsedConsole = True
-				ResumeSounds()
-				MouseXSpeed() : MouseYSpeed() : MouseZSpeed() : mouse_x_speed_1#=0.0 : mouse_y_speed_1#=0.0
-				CurrGameState=GAMESTATE_PLAYING
-			Else
-				PauseSounds()
-				CurrGameState=GAMESTATE_CONSOLE
+			If KeyHit(keyBinds\console) Then
+				If CurrGameState=GAMESTATE_CONSOLE Then
+					UsedConsole = True
+					ResumeSounds()
+					MouseXSpeed() : MouseYSpeed() : MouseZSpeed() : mouse_x_speed_1#=0.0 : mouse_y_speed_1#=0.0
+					CurrGameState=GAMESTATE_PLAYING
+				Else
+					PauseSounds()
+					CurrGameState=GAMESTATE_CONSOLE
+				EndIf
+				FlushKeys()
 			EndIf
-			FlushKeys()
-		EndIf
-		
-		DrawGUI()
-		
-		;TODO: fix
-		;If EndingTimer < 0 Then
-		;	If SelectedEnding <> "" Then DrawEnding()
-		;Else
-		DrawPauseMenu()			
-		;EndIf
-		
-		UpdateConsole()
-		
-		If MsgTimer > 0 Then
-			Local temp% = False ;TODO: change this variable's name because it's dumb as hell
-			If CurrGameState<>GAMESTATE_INVENTORY Then
-				If mainPlayer\selectedItem <> Null
-					If mainPlayer\selectedItem\itemtemplate\tempname = "paper" Or mainPlayer\selectedItem\itemtemplate\tempname = "oldpaper"
-						temp% = True
+			
+			DrawGUI()
+			
+			;TODO: fix
+			;If EndingTimer < 0 Then
+			;	If SelectedEnding <> "" Then DrawEnding()
+			;Else
+			DrawPauseMenu()			
+			;EndIf
+			
+			UpdateConsole()
+			
+			If MsgTimer > 0 Then
+				Local temp% = False ;TODO: change this variable's name because it's dumb as hell
+				If CurrGameState<>GAMESTATE_INVENTORY Then
+					If mainPlayer\selectedItem <> Null
+						If mainPlayer\selectedItem\itemtemplate\tempname = "paper" Or mainPlayer\selectedItem\itemtemplate\tempname = "oldpaper"
+							temp% = True
+						EndIf
 					EndIf
 				EndIf
+				
+				If (Not temp%) Then
+					Color 0,0,0
+					Text((userOptions\screenWidth / 2)+1, (userOptions\screenHeight / 2) + 201, Msg, True, False);, Min(MsgTimer / 2, 255)/255.0)
+					Color 255,255,255;Min(MsgTimer / 2, 255), Min(MsgTimer / 2, 255), Min(MsgTimer / 2, 255)
+					Text((userOptions\screenWidth / 2), (userOptions\screenHeight / 2) + 200, Msg, True, False);, Min(MsgTimer / 2, 255)/255.0)
+				Else
+					Color 0,0,0
+					Text((userOptions\screenWidth / 2)+1, (userOptions\screenHeight * 0.94) + 1, Msg, True, False);, Min(MsgTimer / 2, 255)/255.0)
+					Color 255,255,255;Min(MsgTimer / 2, 255), Min(MsgTimer / 2, 255), Min(MsgTimer / 2, 255)
+					Text((userOptions\screenWidth / 2), (userOptions\screenHeight * 0.94), Msg, True, False);, Min(MsgTimer / 2, 255)/255.0)
+				EndIf
+				MsgTimer=MsgTimer-timing\tickDuration 
+			End If
+			
+			Color 255, 255, 255
+			If userOptions\showFPS Then
+				SetFont ConsoleFont
+				Text 20, 20, "FPS: " + Int(timing\fps)
+				SetFont Font1
 			EndIf
 			
-			If (Not temp%) Then
-				Color 0,0,0
-				Text((userOptions\screenWidth / 2)+1, (userOptions\screenHeight / 2) + 201, Msg, True, False);, Min(MsgTimer / 2, 255)/255.0)
-				Color 255,255,255;Min(MsgTimer / 2, 255), Min(MsgTimer / 2, 255), Min(MsgTimer / 2, 255)
-				Text((userOptions\screenWidth / 2), (userOptions\screenHeight / 2) + 200, Msg, True, False);, Min(MsgTimer / 2, 255)/255.0)
-			Else
-				Color 0,0,0
-				Text((userOptions\screenWidth / 2)+1, (userOptions\screenHeight * 0.94) + 1, Msg, True, False);, Min(MsgTimer / 2, 255)/255.0)
-				Color 255,255,255;Min(MsgTimer / 2, 255), Min(MsgTimer / 2, 255), Min(MsgTimer / 2, 255)
-				Text((userOptions\screenWidth / 2), (userOptions\screenHeight * 0.94), Msg, True, False);, Min(MsgTimer / 2, 255)/255.0)
-			EndIf
-			MsgTimer=MsgTimer-FPSfactor2 
+			DrawQuickLoading()
 		End If
 		
-		Color 255, 255, 255
-		If userOptions\showFPS Then
-			SetFont ConsoleFont
-			Text 20, 20, "FPS: " + FPS
-			SetFont Font1
-		EndIf
-		
-		DrawQuickLoading()
-	End If
-	
-	If userOptions\borderlessWindowed Then
-		If (RealGraphicWidth<>userOptions\screenWidth) Or (RealGraphicHeight<>userOptions\screenHeight) Then
-			SetBuffer TextureBuffer(fresize_texture)
-			ClsColor 0,0,0 : Cls
-			CopyRect 0,0,userOptions\screenWidth,userOptions\screenHeight,1024-userOptions\screenWidth/2,1024-userOptions\screenHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
-			SetBuffer BackBuffer()
-			ClsColor 0,0,0 : Cls
-			ScaleRender(0,0,2050.0 / Float(userOptions\screenWidth) * AspectRatioRatio, 2050.0 / Float(userOptions\screenWidth) * AspectRatioRatio)
+		If userOptions\borderlessWindowed Then
+			If (RealGraphicWidth<>userOptions\screenWidth) Or (RealGraphicHeight<>userOptions\screenHeight) Then
+				SetBuffer TextureBuffer(fresize_texture)
+				ClsColor 0,0,0 : Cls
+				CopyRect 0,0,userOptions\screenWidth,userOptions\screenHeight,1024-userOptions\screenWidth/2,1024-userOptions\screenHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
+				SetBuffer BackBuffer()
+				ClsColor 0,0,0 : Cls
+				ScaleRender(0,0,2050.0 / Float(userOptions\screenWidth) * AspectRatioRatio, 2050.0 / Float(userOptions\screenWidth) * AspectRatioRatio)
 			;might want to replace Float(userOptions\screenWidth) with Max(userOptions\screenWidth,userOptions\screenHeight) if portrait sizes cause issues
 			;everyone uses landscape so it's probably a non-issue
+			EndIf
 		EndIf
-	EndIf
-	
-	;not by any means a perfect solution
-	;Not even proper gamma correction but it's a nice looking alternative that works in windowed mode
-	If userOptions\screenGamma>1.0 Then
-		CopyRect 0,0,RealGraphicWidth,RealGraphicHeight,1024-RealGraphicWidth/2,1024-RealGraphicHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
+		
+		;not by any means a perfect solution
+		;Not even proper gamma correction but it's a nice looking alternative that works in windowed mode
+		If userOptions\screenGamma>1.0 Then
+			CopyRect 0,0,RealGraphicWidth,RealGraphicHeight,1024-RealGraphicWidth/2,1024-RealGraphicHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
+			EntityBlend fresize_image,1
+			ClsColor 0,0,0 : Cls
+			ScaleRender(-1.0/Float(RealGraphicWidth),1.0/Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth))
+			EntityFX fresize_image,1+32
+			EntityBlend fresize_image,3
+			EntityAlpha fresize_image,userOptions\screenGamma-1.0
+			ScaleRender(-1.0/Float(RealGraphicWidth),1.0/Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth))
+		ElseIf userOptions\screenGamma<1.0 Then ;todo: maybe optimize this if it's too slow, alternatively give players the option to disable gamma
+			CopyRect 0,0,RealGraphicWidth,RealGraphicHeight,1024-RealGraphicWidth/2,1024-RealGraphicHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
+			EntityBlend fresize_image,1
+			ClsColor 0,0,0 : Cls
+			ScaleRender(-1.0/Float(RealGraphicWidth),1.0/Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth))
+			EntityFX fresize_image,1+32
+			EntityBlend fresize_image,2
+			EntityAlpha fresize_image,1.0
+			SetBuffer TextureBuffer(fresize_texture2)
+			ClsColor 255*userOptions\screenGamma,255*userOptions\screenGamma,255*userOptions\screenGamma
+			Cls
+			SetBuffer BackBuffer()
+			ScaleRender(-1.0/Float(RealGraphicWidth),1.0/Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth))
+			SetBuffer(TextureBuffer(fresize_texture2))
+			ClsColor 0,0,0
+			Cls
+			SetBuffer(BackBuffer())
+		EndIf
+		EntityFX fresize_image,1
 		EntityBlend fresize_image,1
-		ClsColor 0,0,0 : Cls
-		ScaleRender(-1.0/Float(RealGraphicWidth),1.0/Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth))
-		EntityFX fresize_image,1+32
-		EntityBlend fresize_image,3
-		EntityAlpha fresize_image,userOptions\screenGamma-1.0
-		ScaleRender(-1.0/Float(RealGraphicWidth),1.0/Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth))
-	ElseIf userOptions\screenGamma<1.0 Then ;todo: maybe optimize this if it's too slow, alternatively give players the option to disable gamma
-		CopyRect 0,0,RealGraphicWidth,RealGraphicHeight,1024-RealGraphicWidth/2,1024-RealGraphicHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
-		EntityBlend fresize_image,1
-		ClsColor 0,0,0 : Cls
-		ScaleRender(-1.0/Float(RealGraphicWidth),1.0/Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth))
-		EntityFX fresize_image,1+32
-		EntityBlend fresize_image,2
 		EntityAlpha fresize_image,1.0
-		SetBuffer TextureBuffer(fresize_texture2)
-		ClsColor 255*userOptions\screenGamma,255*userOptions\screenGamma,255*userOptions\screenGamma
-		Cls
-		SetBuffer BackBuffer()
-		ScaleRender(-1.0/Float(RealGraphicWidth),1.0/Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth))
-		SetBuffer(TextureBuffer(fresize_texture2))
-		ClsColor 0,0,0
-		Cls
-		SetBuffer(BackBuffer())
-	EndIf
-	EntityFX fresize_image,1
-	EntityBlend fresize_image,1
-	EntityAlpha fresize_image,1.0
-	
-	If (Not userOptions\vsync) Then
-		Flip 0
-	Else 
-		Flip 1
-	EndIf
+		
+		If timing\accumulator<=timing\tickDuration Then
+			If (Not userOptions\vsync) Then
+				Flip 0
+			Else 
+				Flip 1
+			EndIf
+		EndIf
+	Wend
+	;[End block]
 End Function
 
 ;----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1024,8 +1056,8 @@ End Function
 ;	
 ;	ShowPointer()
 ;	
-;	FPSfactor = 0
-;	EndingTimer=EndingTimer-FPSfactor2
+;	timing\tickDuration = 0
+;	EndingTimer=EndingTimer-timing\tickDuration2
 ;	
 ;	GiveAchievement(Achv055)
 ;	If (Not UsedConsole) GiveAchievement(AchvConsole)
@@ -1076,7 +1108,7 @@ End Function
 ;				Color 255,255,255
 ;			EndIf
 ;			
-;			If EndingTimer+FPSfactor2 > -450 And EndingTimer <= -450 Then
+;			If EndingTimer+timing\tickDuration2 > -450 And EndingTimer <= -450 Then
 ;				Select Lower(SelectedEnding)
 ;					Case "a1", "a2"
 ;						PlaySound_Strict LoadTempSound("SFX\Ending\GateA\Ending"+SelectedEnding+".ogg")
@@ -1402,7 +1434,7 @@ Function DrawGUI()
 			
 			SetFont Font3
 			If KeypadMSG <> "" Then 
-				KeypadTimer = KeypadTimer-FPSfactor2
+				KeypadTimer = KeypadTimer-timing\tickDuration
 				
 				If (KeypadTimer Mod 70) < 35 Then Text userOptions\screenWidth/2, y+124*scale, KeypadMSG, True,True
 				If KeypadTimer =<0 Then
@@ -1906,9 +1938,6 @@ Function DrawPauseMenu()
 						mainPlayer\dropSpeed=0
 						
 						UpdateWorld 0.0
-						
-						PrevTime = MilliSecs()
-						FPSfactor = 0
 					EndIf
 				Else
 					DrawFrame(x,y,390*MenuScale, 60*MenuScale)
@@ -1960,9 +1989,6 @@ Function DrawPauseMenu()
 					mainPlayer\dropSpeed=0
 					
 					UpdateWorld 0.0
-					
-					PrevTime = MilliSecs()
-					FPSfactor = 0
 				EndIf
 			Else
 				DrawButton(x, y, 390*MenuScale, 60*MenuScale, "")
@@ -2026,7 +2052,7 @@ Function Animate2#(entity%, curr#, start%, quit%, speed#, loop=True)
 	Local newTime#
 	
 	If speed > 0.0 Then 
-		newTime = Max(Min(curr + speed * FPSfactor,quit),start)
+		newTime = Max(Min(curr + speed * timing\tickDuration,quit),start)
 		
 		If loop Then
 			If newTime => quit Then 
@@ -2046,15 +2072,15 @@ Function Animate2#(entity%, curr#, start%, quit%, speed#, loop=True)
 		EndIf
 		
 		If loop Then
-			newTime = curr + speed * FPSfactor
+			newTime = curr + speed * timing\tickDuration
 			
 			If newTime < quit Then newTime = start
 			If newTime > start Then newTime = quit
 			
 			;SetAnimTime entity, newTime
 		Else
-			;SetAnimTime (entity, Max(Min(curr + speed * FPSfactor,start),quit))
-			newTime = Max(Min(curr + speed * FPSfactor,start),quit)
+			;SetAnimTime (entity, Max(Min(curr + speed * timing\tickDuration,start),quit))
+			newTime = Max(Min(curr + speed * timing\tickDuration,start),quit)
 		EndIf
 	EndIf
 	
@@ -2071,7 +2097,7 @@ Function UpdateInfect()
 		
 		If mainPlayer\infect008 < 93.0 Then
 			temp=mainPlayer\infect008
-			mainPlayer\infect008 = Min(mainPlayer\infect008+FPSfactor*0.002,100)
+			mainPlayer\infect008 = Min(mainPlayer\infect008+timing\tickDuration*0.002,100)
 			
 			mainPlayer\blurTimer = Max(mainPlayer\infect008*3*(2.0-mainPlayer\crouchState),mainPlayer\blurTimer)
 			
@@ -2120,7 +2146,7 @@ Function UpdateInfect()
 			EndIf
 		Else
 			temp=mainPlayer\infect008
-			mainPlayer\infect008 = Min(mainPlayer\infect008+FPSfactor*0.004,100)
+			mainPlayer\infect008 = Min(mainPlayer\infect008+timing\tickDuration*0.004,100)
 			
 			If mainPlayer\infect008 < 94.7 Then
 				EntityAlpha mainPlayer\overlays[OVERLAY_008], 0.5 * (Sin(MilliSecs2()/8.0)+2.0)
@@ -2241,7 +2267,7 @@ Function UpdateDecals()
 	Local d.Decals
 	For d.Decals = Each Decals
 		If d\SizeChange <> 0 Then
-			d\Size=d\Size + d\SizeChange * FPSfactor
+			d\Size=d\Size + d\SizeChange * timing\tickDuration
 			ScaleSprite(d\obj, d\Size, d\Size)
 			
 			Select d\ID
@@ -2256,7 +2282,7 @@ Function UpdateDecals()
 						;d\Timer = d\Timer + Rand(50,150)
 						d\Timer = Rand(50, 100)
 					Else
-						d\Timer= d\Timer-FPSfactor
+						d\Timer= d\Timer-timing\tickDuration
 					End If
 				;Case 6
 				;	EntityBlend d\obj, 2
@@ -2269,12 +2295,12 @@ Function UpdateDecals()
 		End If
 		
 		If d\AlphaChange <> 0 Then
-			d\Alpha = Min(d\Alpha + FPSfactor * d\AlphaChange, 1.0)
+			d\Alpha = Min(d\Alpha + timing\tickDuration * d\AlphaChange, 1.0)
 			EntityAlpha(d\obj, d\Alpha)
 		End If
 		
 		If d\lifetime > 0 Then
-			d\lifetime=Max(d\lifetime-FPSfactor,5)
+			d\lifetime=Max(d\lifetime-timing\tickDuration,5)
 		EndIf
 		
 		If d\Size <= 0 Or d\Alpha <= 0 Or d\lifetime=5.0  Then
@@ -2326,7 +2352,7 @@ Function RenderWorld2()
 		Local decayMultiplier# = 1.0
 		If wornItem\itemTemplate\tempname = "supernv" Then decayMultiplier = 2.0
 		
-		wornItem\state = wornItem\state - (FPSfactor * (0.02 * decayMultiplier))
+		wornItem\state = wornItem\state - (timing\tickDuration * (0.02 * decayMultiplier))
 		power = Int(wornItem\state)
 		If wornItem\state <= 0.0 Then ;this nvg can't be used
 			hasBattery = 0
@@ -2351,7 +2377,7 @@ Function RenderWorld2()
 	
 	If mainPlayer\blinkTimer < - 16 Or mainPlayer\blinkTimer > - 6
 		If IsPlayerWearingTempName(mainPlayer,"supernv") And hasBattery<>0 Then ;show a HUD
-			;NVTimer=NVTimer-FPSfactor
+			;NVTimer=NVTimer-timing\tickDuration
 			
 			;If NVTimer<=0.0 Then
 			For np.NPCs = Each NPCs
@@ -2527,5 +2553,4 @@ Function ScaledMouseY%()
 	Return Float(MouseY())*Float(userOptions\screenHeight)/Float(RealGraphicHeight)
 End Function
 ;~IDEal Editor Parameters:
-;~F#8FA#99D
 ;~C#Blitz3D

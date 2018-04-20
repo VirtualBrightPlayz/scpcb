@@ -94,7 +94,7 @@ Function UpdateEventRoom2elevator(e.Events)
 				e\EventState = 2.05
 			EndIf
 		ElseIf e\EventState < 13*70
-			e\EventState = e\EventState+FPSfactor
+			e\EventState = e\EventState+timing\tickDuration
 			;6.7 - 7.4
 			;8.6 - 10
 			If e\EventState > 6.7*70 And e\EventState < 7.4*70 Then
@@ -103,7 +103,7 @@ Function UpdateEventRoom2elevator(e.Events)
 				mainPlayer\camShake = 10.6-(e\EventState/70.0)
 			ElseIf e\EventState > 12.6*70
 				mainPlayer\camShake = 0
-				If e\EventState-FPSfactor < 12.6*70 And e\room\NPC[0]<>Null Then
+				If e\EventState-timing\tickDuration < 12.6*70 And e\room\NPC[0]<>Null Then
 					RemoveNPC(e\room\NPC[0])
 					e\room\NPC[0]=Null
 					
