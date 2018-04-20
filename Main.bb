@@ -945,7 +945,7 @@ Function UpdateGame()
 				FlushKeys()
 			EndIf
 			
-			DrawGUI()
+			UpdateGUI()
 			
 			;TODO: fix
 			;If EndingTimer < 0 Then
@@ -1040,15 +1040,11 @@ Function UpdateGame()
 	If CurrGameState=GAMESTATE_MAINMENU Then
 		DrawMainMenu()
 	Else
-		DrawPauseMenu()	
+		DrawGUI()
+		DrawPauseMenu()
+		DrawConsole()
 	EndIf
-	If timing\accumulator<=timing\tickDuration Then
-		If (Not userOptions\vsync) Then
-			Flip 0
-		Else
-			Flip 1
-		EndIf
-	EndIf
+	Flip userOptions\vsync<>0
 	;[End block]
 End Function
 
@@ -1211,7 +1207,164 @@ End Function
 
 ;--------------------------------------- GUI, menu etc ------------------------------------------------
 
-Function DrawGUI()	
+Function UpdateGUI()
+	Local temp%, x%, y%, z%, i%, yawvalue#, pitchvalue#
+	Local x2#,y2#,z2#
+	Local n%, xtemp, ytemp, strtemp$
+	
+	If mainPlayer\closestButton <> 0 And mainPlayer\selectedDoor = Null And CurrGameState=GAMESTATE_PLAYING Then
+		If MouseUp1 Then
+			MouseUp1 = False
+			If mainPlayer\closestDoor <> Null Then 
+				If mainPlayer\closestDoor\Code <> "" Then
+					mainPlayer\selectedDoor = mainPlayer\closestDoor
+				ElseIf Not mainPlayer\disableControls Then
+					PlaySound2(ButtonSFX, mainPlayer\cam, mainPlayer\closestButton)
+					UseDoor(mainPlayer\closestDoor,True)			
+				EndIf
+			EndIf
+		EndIf
+	EndIf
+	
+	If CurrGameState=GAMESTATE_SCP294 Then Update294()
+	
+	If SelectedScreen <> Null Then
+		If MouseUp1 Or MouseHit2 Then
+			FreeImage SelectedScreen\img : SelectedScreen\img = 0
+			SelectedScreen = Null
+			MouseUp1 = False
+		EndIf
+	EndIf
+	;TODO: cleanup
+	Local shouldDrawHUD%=True
+	If mainPlayer\selectedDoor <> Null Then
+		mainPlayer\selectedItem = Null
+		
+		If shouldDrawHUD Then
+			pvt = CreatePivot()
+			PositionEntity pvt, EntityX(mainPlayer\closestButton,True),EntityY(mainPlayer\closestButton,True),EntityZ(mainPlayer\closestButton,True)
+			RotateEntity pvt, 0, EntityYaw(mainPlayer\closestButton,True)-180,0
+			MoveEntity pvt, 0,0,0.22
+			PositionEntity mainPlayer\head, EntityX(pvt),EntityY(pvt),EntityZ(pvt)
+			PointEntity mainPlayer\head, mainPlayer\closestButton
+			FreeEntity pvt
+			
+			CameraProject(mainPlayer\cam, EntityX(mainPlayer\closestButton,True),EntityY(mainPlayer\closestButton,True)+MeshHeight(ButtonOBJ)*0.015,EntityZ(mainPlayer\closestButton,True))
+			projY# = ProjectedY()
+			CameraProject(mainPlayer\cam, EntityX(mainPlayer\closestButton,True),EntityY(mainPlayer\closestButton,True)-MeshHeight(ButtonOBJ)*0.015,EntityZ(mainPlayer\closestButton,True))
+			scale# = (ProjectedY()-projy)/462.0
+			
+			x = userOptions\screenWidth/2-ImageWidth(KeypadHUD)*scale/2
+			y = userOptions\screenHeight/2-ImageHeight(KeypadHUD)*scale/2		
+			
+			SetFont Font3
+			If KeypadMSG <> "" Then 
+				KeypadTimer = KeypadTimer-timing\tickDuration
+				
+				If (KeypadTimer Mod 70) < 35 Then Text userOptions\screenWidth/2, y+124*scale, KeypadMSG, True,True
+				If KeypadTimer =<0 Then
+					KeypadMSG = ""
+					SelectedDoor = Null
+					MouseXSpeed() : MouseYSpeed() : MouseZSpeed() : mouse_x_speed_1#=0.0 : mouse_y_speed_1#=0.0
+				EndIf
+			EndIf
+			
+			x = x+44*scale
+			y = y+249*scale
+			
+			For n = 0 To 3
+				For i = 0 To 2
+					xtemp = x+Int(58.5*scale*n)
+					ytemp = y+(67*scale)*i
+					
+					temp = False
+					If MouseOn(xtemp,ytemp, 54*scale,65*scale) And KeypadMSG = "" Then
+						If MouseUp1 Then 
+							PlaySound_Strict ButtonSFX
+							
+							Select (n+1)+(i*4)
+								Case 1,2,3
+									KeypadInput=KeypadInput + ((n+1)+(i*4))
+								Case 4
+									KeypadInput=KeypadInput + "0"
+								Case 5,6,7
+									KeypadInput=KeypadInput + ((n+1)+(i*4)-1)
+								Case 8 ;enter
+									If KeypadInput = mainPlayer\selectedDoor\Code Then
+										PlaySound_Strict ScannerSFX1
+										
+										If mainPlayer\selectedDoor\Code = Str(AccessCode) Then
+											GiveAchievement(AchvMaynard)
+										ElseIf mainPlayer\selectedDoor\Code = "7816" Then ;TODO: do this better
+											GiveAchievement(AchvHarp)
+										EndIf									
+										
+										mainPlayer\selectedDoor\locked = 0
+										UseDoor(mainPlayer\selectedDoor,True)
+										mainPlayer\selectedDoor = Null
+										MouseXSpeed() : MouseYSpeed() : MouseZSpeed() : mouse_x_speed_1#=0.0 : mouse_y_speed_1#=0.0
+									Else
+										PlaySound_Strict ScannerSFX2
+										KeypadMSG = "ACCESS DENIED"
+										KeypadTimer = 210
+										KeypadInput = ""	
+									EndIf
+								Case 9,10,11
+									KeypadInput=KeypadInput + ((n+1)+(i*4)-2)
+								Case 12
+									KeypadInput = ""
+							End Select 
+							
+							If Len(KeypadInput)> 4 Then KeypadInput = Left(KeypadInput,4)
+						EndIf
+						
+					Else
+						temp = False
+					EndIf
+					
+				Next
+			Next
+			
+			If MouseHit2 Then
+				mainPlayer\selectedDoor = Null
+				MouseXSpeed() : MouseYSpeed() : MouseZSpeed() : mouse_x_speed_1#=0.0 : mouse_y_speed_1#=0.0
+			EndIf
+		Else
+			mainPlayer\selectedDoor = Null
+		EndIf
+	Else
+		KeypadInput = ""
+		KeypadTimer = 0
+		KeypadMSG= ""
+	EndIf
+	
+	If KeyHit(1) Then;TODO: fix ;And EndingTimer = 0 Then 
+		If IsPaused() Then
+			If CurrGameState=GAMESTATE_INVENTORY Then
+				ToggleInventory(mainPlayer)
+			Else
+				ResumeSounds()
+				MouseXSpeed() : MouseYSpeed() : MouseZSpeed() : mouse_x_speed_1#=0.0 : mouse_y_speed_1#=0.0
+				CurrGameState = GAMESTATE_PLAYING
+			EndIf
+		Else
+			PauseSounds()
+			CurrGameState = GAMESTATE_PAUSED
+		EndIf
+		
+		;AchievementsMenu = 0
+		;OptionsMenu = 0
+		;QuitMSG = 0
+		
+		mainPlayer\selectedDoor = Null
+		SelectedScreen = Null
+		SelectedMonitor = Null
+	EndIf
+	
+	UpdateInventory(mainPlayer)
+End Function
+
+Function DrawGUI()
 	Local temp%, x%, y%, z%, i%, yawvalue#, pitchvalue#
 	Local x2#,y2#,z2#
 	Local n%, xtemp, ytemp, strtemp$
@@ -1239,38 +1392,21 @@ Function DrawGUI()
 				Else
 					If e\img <> 0 Then FreeImage e\img : e\img = 0
 				EndIf
-					
+				
 				Exit
 			EndIf
 		Next
 	EndIf
 	
 	If mainPlayer\closestButton <> 0 And mainPlayer\selectedDoor = Null And CurrGameState=GAMESTATE_PLAYING Then
-		temp% = CreatePivot()
-		PositionEntity temp, EntityX(mainPlayer\cam), EntityY(mainPlayer\cam), EntityZ(mainPlayer\cam)
-		PointEntity temp, mainPlayer\closestButton
-		yawvalue# = WrapAngle(EntityYaw(mainPlayer\cam) - EntityYaw(temp))
+		yawvalue# = WrapAngle(-DeltaYaw(mainPlayer\cam,mainPlayer\closestButton))
 		If yawvalue > 90 And yawvalue <= 180 Then yawvalue = 90
 		If yawvalue > 180 And yawvalue < 270 Then yawvalue = 270
-		pitchvalue# = WrapAngle(EntityPitch(mainPlayer\cam) - EntityPitch(temp))
+		pitchvalue# = WrapAngle(-DeltaPitch(mainPlayer\cam,mainPlayer\closestButton))
 		If pitchvalue > 90 And pitchvalue <= 180 Then pitchvalue = 90
 		If pitchvalue > 180 And pitchvalue < 270 Then pitchvalue = 270
 		
-		FreeEntity (temp)
-		
 		DrawImage(HandIcon, userOptions\screenWidth / 2 + Sin(yawvalue) * (userOptions\screenWidth / 3) - 32, userOptions\screenHeight / 2 - Sin(pitchvalue) * (userOptions\screenHeight / 3) - 32)
-		
-		If MouseUp1 Then
-			MouseUp1 = False
-			If mainPlayer\closestDoor <> Null Then 
-				If mainPlayer\closestDoor\Code <> "" Then
-					mainPlayer\selectedDoor = mainPlayer\closestDoor
-				ElseIf Not mainPlayer\disableControls Then
-					PlaySound2(ButtonSFX, mainPlayer\cam, mainPlayer\closestButton)
-					UseDoor(mainPlayer\closestDoor,True)				
-				EndIf
-			EndIf
-		EndIf
 	EndIf
 	
 	If mainPlayer\closestItem <> Null Then
@@ -1307,7 +1443,7 @@ Function DrawGUI()
 		End If
 	Next
 	
-	If CurrGameState=GAMESTATE_SCP294 Then Use294()
+	If CurrGameState=GAMESTATE_SCP294 Then Draw294()
 	
 	If userOptions\hudEnabled Then 
 		
@@ -1407,12 +1543,6 @@ Function DrawGUI()
 	
 	If SelectedScreen <> Null Then
 		DrawImage SelectedScreen\img, userOptions\screenWidth/2-ImageWidth(SelectedScreen\img)/2,userOptions\screenHeight/2-ImageHeight(SelectedScreen\img)/2
-		
-		If MouseUp1 Or MouseHit2 Then
-			FreeImage SelectedScreen\img : SelectedScreen\img = 0
-			SelectedScreen = Null
-			MouseUp1 = False
-		EndIf
 	EndIf
 	
 	;TODO: cleanup
@@ -1425,9 +1555,9 @@ Function DrawGUI()
 			PositionEntity pvt, EntityX(mainPlayer\closestButton,True),EntityY(mainPlayer\closestButton,True),EntityZ(mainPlayer\closestButton,True)
 			RotateEntity pvt, 0, EntityYaw(mainPlayer\closestButton,True)-180,0
 			MoveEntity pvt, 0,0,0.22
-			PositionEntity mainPlayer\cam, EntityX(pvt),EntityY(pvt),EntityZ(pvt)
-			PointEntity mainPlayer\cam, mainPlayer\closestButton
-			FreeEntity pvt	
+			PositionEntity mainPlayer\head, EntityX(pvt),EntityY(pvt),EntityZ(pvt)
+			PointEntity mainPlayer\head, mainPlayer\closestButton
+			FreeEntity pvt
 			
 			CameraProject(mainPlayer\cam, EntityX(mainPlayer\closestButton,True),EntityY(mainPlayer\closestButton,True)+MeshHeight(ButtonOBJ)*0.015,EntityZ(mainPlayer\closestButton,True))
 			projY# = ProjectedY()
@@ -1438,116 +1568,17 @@ Function DrawGUI()
 			y = userOptions\screenHeight/2-ImageHeight(KeypadHUD)*scale/2		
 			
 			SetFont Font3
-			If KeypadMSG <> "" Then 
-				KeypadTimer = KeypadTimer-timing\tickDuration
-				
-				If (KeypadTimer Mod 70) < 35 Then Text userOptions\screenWidth/2, y+124*scale, KeypadMSG, True,True
-				If KeypadTimer =<0 Then
-					KeypadMSG = ""
-					SelectedDoor = Null
-					MouseXSpeed() : MouseYSpeed() : MouseZSpeed() : mouse_x_speed_1#=0.0 : mouse_y_speed_1#=0.0
-				EndIf
-			Else
+			If KeypadMSG = "" Then
 				Text userOptions\screenWidth/2, y+70*scale, "ACCESS CODE: ",True,True	
 				SetFont Font4
 				Text userOptions\screenWidth/2, y+124*scale, KeypadInput,True,True	
 			EndIf
 			
-			x = x+44*scale
-			y = y+249*scale
-			
-			For n = 0 To 3
-				For i = 0 To 2
-					xtemp = x+Int(58.5*scale*n)
-					ytemp = y+(67*scale)*i
-					
-					temp = False
-					If MouseOn(xtemp,ytemp, 54*scale,65*scale) And KeypadMSG = "" Then
-						If MouseUp1 Then 
-							PlaySound_Strict ButtonSFX
-							
-							Select (n+1)+(i*4)
-								Case 1,2,3
-									KeypadInput=KeypadInput + ((n+1)+(i*4))
-								Case 4
-									KeypadInput=KeypadInput + "0"
-								Case 5,6,7
-									KeypadInput=KeypadInput + ((n+1)+(i*4)-1)
-								Case 8 ;enter
-									If KeypadInput = mainPlayer\selectedDoor\Code Then
-										PlaySound_Strict ScannerSFX1
-										
-										If mainPlayer\selectedDoor\Code = Str(AccessCode) Then
-											GiveAchievement(AchvMaynard)
-										ElseIf mainPlayer\selectedDoor\Code = "7816" Then ;TODO: do this better
-											GiveAchievement(AchvHarp)
-										EndIf									
-										
-										mainPlayer\selectedDoor\locked = 0
-										UseDoor(mainPlayer\selectedDoor,True)
-										mainPlayer\selectedDoor = Null
-										MouseXSpeed() : MouseYSpeed() : MouseZSpeed() : mouse_x_speed_1#=0.0 : mouse_y_speed_1#=0.0
-									Else
-										PlaySound_Strict ScannerSFX2
-										KeypadMSG = "ACCESS DENIED"
-										KeypadTimer = 210
-										KeypadInput = ""	
-									EndIf
-								Case 9,10,11
-									KeypadInput=KeypadInput + ((n+1)+(i*4)-2)
-								Case 12
-									KeypadInput = ""
-							End Select 
-							
-							If Len(KeypadInput)> 4 Then KeypadInput = Left(KeypadInput,4)
-						EndIf
-						
-					Else
-						temp = False
-					EndIf
-					
-				Next
-			Next
-			
 			If userOptions\fullscreen Then DrawImage CursorIMG, ScaledMouseX(),ScaledMouseY()
-			
-			If MouseHit2 Then
-				mainPlayer\selectedDoor = Null
-				MouseXSpeed() : MouseYSpeed() : MouseZSpeed() : mouse_x_speed_1#=0.0 : mouse_y_speed_1#=0.0
-			EndIf
-		Else
-			mainPlayer\selectedDoor = Null
 		EndIf
-	Else
-		KeypadInput = ""
-		KeypadTimer = 0
-		KeypadMSG= ""
 	EndIf
 	
-	If KeyHit(1) Then;TODO: fix ;And EndingTimer = 0 Then 
-		If IsPaused() Then
-			If CurrGameState=GAMESTATE_INVENTORY Then
-				ToggleInventory(mainPlayer)
-			Else
-				ResumeSounds()
-				MouseXSpeed() : MouseYSpeed() : MouseZSpeed() : mouse_x_speed_1#=0.0 : mouse_y_speed_1#=0.0
-				CurrGameState = GAMESTATE_PLAYING
-			EndIf
-		Else
-			PauseSounds()
-			CurrGameState = GAMESTATE_PAUSED
-		EndIf
-		
-		;AchievementsMenu = 0
-		;OptionsMenu = 0
-		;QuitMSG = 0
-		
-		mainPlayer\selectedDoor = Null
-		SelectedScreen = Null
-		SelectedMonitor = Null
-	EndIf
-	
-	UpdateInventory(mainPlayer)
+	DrawInventory(mainPlayer)
 End Function
 
 Function DrawPauseMenu()
