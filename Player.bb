@@ -973,7 +973,7 @@ Function UpdateInventory(player.Player)
 			CameraRange(player\cam, 0.05, 60)
 		EndIf
 		
-		SelectedDoor = Null
+		mainPlayer\selectedDoor = Null
 		
 		width% = 70
 		height% = 70
