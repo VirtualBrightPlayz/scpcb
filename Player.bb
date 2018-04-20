@@ -98,6 +98,7 @@ Type Player
 	
 	;items
 	Field inventory.Inventory
+	Field openInventory.Inventory
 	
 	Field wornItems.Items[WORNITEM_SLOT_COUNT]
 	;------
@@ -842,7 +843,6 @@ Function MouseLook()
 End Function
 
 Function EquipItem(player.Player,item.Items,toggle%)
-	DebugLog "EQUIP "+item\itemtemplate\name
 	If item=Null Then Return
 	If item\itemTemplate\invSlot = WORNITEM_SLOT_NONE Then Return
 	Local currItem.Items = player\wornItems[item\itemTemplate\invSlot]
@@ -923,10 +923,29 @@ Function DeEquipSlot(player.Player,invSlot%)
 	DeEquipItem(player,player\wornItems[invSlot])
 End Function
 
+Function ToggleInventory(player.Player)
+	If CurrGameState=GAMESTATE_INVENTORY Then
+		If mainPlayer\openInventory = mainPlayer\inventory Then
+			CurrGameState=GAMESTATE_PLAYING
+			ResumeSounds()
+			MouseXSpeed() : MouseYSpeed() : MouseZSpeed() : mouse_x_speed_1# = 0.0 : mouse_y_speed_1# = 0.0
+		Else
+			mainPlayer\openInventory = mainPlayer\inventory
+		EndIf
+	Else
+		CurrGameState=GAMESTATE_INVENTORY
+		mainPlayer\openInventory = mainPlayer\inventory
+		PauseSounds()
+	EndIf
+	
+	mainPlayer\selectedItem = Null 
+End Function
+
 Function UpdateInventory(player.Player)
 	;TODO: handle other inventories here
 	;also cleanup
-	Local PrevInvOpen% = (CurrGameState=GAMESTATE_INVENTORY), MouseSlot% = 66
+	Local PrevInvOpen% = (CurrGameState=GAMESTATE_INVENTORY)
+	Local MouseSlot% = 66
 	
 	Local spacing%
 	
@@ -960,10 +979,12 @@ Function UpdateInventory(player.Player)
 		height% = 70
 		spacing% = 35
 		
-		x = userOptions\screenWidth / 2 - (width * player\inventory\size /2 + spacing * (player\inventory\size / 2 - 1)) / 2
-		y = userOptions\screenHeight / 2 - height
+		itemsPerRow% = 5
 		
-		For  n% = 0 To player\inventory\size - 1
+		x = userOptions\screenWidth / 2 - (width * itemsPerRow + spacing * (itemsPerRow - 1)) / 2
+		y = userOptions\screenHeight / 2 - height * (player\openInventory\size/itemsPerRow) + height / 2
+		
+		For  n% = 0 To player\openInventory\size - 1
 			isMouseOn% = False
 			If ScaledMouseX() > x And ScaledMouseX() < x + width Then
 				If ScaledMouseY() > y And ScaledMouseY() < y + height Then
@@ -971,9 +992,9 @@ Function UpdateInventory(player.Player)
 				End If
 			EndIf
 			
-			If player\inventory\items[n] <> Null Then
+			If player\openInventory\items[n] <> Null Then
 				Color 200, 200, 200
-				If IsPlayerWearingItem(player,player\inventory\items[n]) Then
+				If IsPlayerWearingItem(player,player\openInventory\items[n]) Then
 					Rect(x - 3, y - 3, width + 6, height + 6)
 				EndIf
 			EndIf
@@ -987,22 +1008,22 @@ Function UpdateInventory(player.Player)
 			Color 255, 255, 255
 			DrawFrame(x, y, width, height, (x Mod 64), (x Mod 64))
 			
-			If player\inventory\items[n] <> Null Then
-				If (player\selectedItem <> player\inventory\items[n] Or isMouseOn) Then 
-					DrawImage(player\inventory\items[n]\invimg, x + width / 2 - 32, y + height / 2 - 32)
+			If player\openInventory\items[n] <> Null Then
+				If (player\selectedItem <> player\openInventory\items[n] Or isMouseOn) Then 
+					DrawImage(player\openInventory\items[n]\invimg, x + width / 2 - 32, y + height / 2 - 32)
 				EndIf
 			EndIf
 			
-			If player\inventory\items[n] <> Null And player\selectedItem <> player\inventory\items[n] Then
-				;drawimage(player\inventory\items[n].InvIMG, x + width / 2 - 32, y + height / 2 - 32)
+			If player\openInventory\items[n] <> Null And player\selectedItem <> player\openInventory\items[n] Then
+				;drawimage(player\openInventory\items[n].InvIMG, x + width / 2 - 32, y + height / 2 - 32)
 				If isMouseOn Then
 					If player\selectedItem = Null Then
 						If MouseHit1 Then
-							player\selectedItem = player\inventory\items[n]
+							player\selectedItem = player\openInventory\items[n]
 							MouseHit1 = False
 							
 							If DoubleClick Then
-								If player\inventory\items[n]\itemtemplate\sound <> 66 Then PlaySound_Strict(PickSFX(player\inventory\items[n]\itemtemplate\sound))
+								If player\openInventory\items[n]\itemtemplate\sound <> 66 Then PlaySound_Strict(PickSFX(player\openInventory\items[n]\itemtemplate\sound))
 								CurrGameState = GAMESTATE_PLAYING
 								DoubleClick = False
 							EndIf
@@ -1011,26 +1032,26 @@ Function UpdateInventory(player.Player)
 						
 						SetFont Font1
 						Color 0,0,0
-						Text(x + width / 2 + 1, y + height + spacing - 15 + 1, player\inventory\items[n]\name, True)							
+						Text(x + width / 2 + 1, y + height + spacing - 15 + 1, player\openInventory\items[n]\name, True)							
 						Color 255, 255, 255	
-						Text(x + width / 2, y + height + spacing - 15, player\inventory\items[n]\name, True)	
+						Text(x + width / 2, y + height + spacing - 15, player\openInventory\items[n]\name, True)	
 						
 					EndIf
 				EndIf
 			Else
 				If isMouseOn And MouseHit1 Then
-					For z% = 0 To player\inventory\size - 1
-						If player\inventory\items[z] = player\selectedItem Then player\inventory\items[z] = Null
+					For z% = 0 To player\openInventory\size - 1
+						If player\openInventory\items[z] = player\selectedItem Then player\openInventory\items[z] = Null
 					Next
-					player\inventory\items[n] = player\selectedItem
+					player\openInventory\items[n] = player\selectedItem
 				End If
 				
 			EndIf					
 			
 			x=x+width + spacing
-			If n = 4 Then 
+			If n Mod 5 = 4 Then 
 				y = y + height*2 
-				x = userOptions\screenWidth / 2 - (width * player\inventory\size /2 + spacing * (player\inventory\size / 2 - 1)) / 2
+				x = userOptions\screenWidth / 2 - (width * itemsPerRow + spacing * (itemsPerRow - 1)) / 2
 			EndIf
 		Next
 		
@@ -1038,7 +1059,7 @@ Function UpdateInventory(player.Player)
 			If MouseDown1 Then
 				If MouseSlot = 66 Then
 					DrawImage(player\selectedItem\invimg, ScaledMouseX() - ImageWidth(player\selectedItem\itemtemplate\invimg) / 2, ScaledMouseY() - ImageHeight(player\selectedItem\itemtemplate\invimg) / 2)
-				ElseIf player\selectedItem <> player\inventory\items[MouseSlot]
+				ElseIf player\selectedItem <> player\openInventory\items[MouseSlot]
 					DrawImage(player\selectedItem\invimg, ScaledMouseX() - ImageWidth(player\selectedItem\itemtemplate\invimg) / 2, ScaledMouseY() - ImageHeight(player\selectedItem\itemtemplate\invimg) / 2)
 				EndIf
 			Else
@@ -1050,30 +1071,30 @@ Function UpdateInventory(player.Player)
 					
 					MoveMouse viewport_center_x, viewport_center_y
 				Else
-					If player\inventory\items[MouseSlot] = Null Then
-						For z% = 0 To player\inventory\size - 1
-							If player\inventory\items[z] = player\selectedItem Then player\inventory\items[z] = Null
+					If player\openInventory\items[MouseSlot] = Null Then
+						For z% = 0 To player\openInventory\size - 1
+							If player\openInventory\items[z] = player\selectedItem Then player\openInventory\items[z] = Null
 						Next
-						player\inventory\items[MouseSlot] = player\selectedItem
+						player\openInventory\items[MouseSlot] = player\selectedItem
 						player\selectedItem = Null
-					ElseIf player\inventory\items[MouseSlot] <> player\selectedItem Then
+					ElseIf player\openInventory\items[MouseSlot] <> player\selectedItem Then
 						Select player\selectedItem\itemtemplate\tempname
 							Case "paper","key1","key2","key3","key4","key5","key6","misc","oldpaper","badge","ticket" ;BoH stuff
-								If player\inventory\items[MouseSlot]\itemtemplate\tempname = "clipboard" Then
+								If player\openInventory\items[MouseSlot]\itemtemplate\tempname = "clipboard" Then
 									;Add an item to clipboard
 									Local added.Items = Null
 									If player\selectedItem\itemtemplate\tempname<>"misc" Or (player\selectedItem\itemtemplate\name="Playing Card" Or player\selectedItem\itemtemplate\name="Mastercard") Then
-										For c% = 0 To player\inventory\items[MouseSlot]\inventory\size-1
-											If (player\inventory\items[MouseSlot]\inventory\items[c] = Null)
+										For c% = 0 To player\openInventory\items[MouseSlot]\inventory\size-1
+											If (player\openInventory\items[MouseSlot]\inventory\items[c] = Null)
 												If player\selectedItem <> Null Then
-													player\inventory\items[MouseSlot]\inventory\items[c] = player\selectedItem
-													player\inventory\items[MouseSlot]\state = 1.0
-													SetAnimTime player\inventory\items[MouseSlot]\model,0.0
-													player\inventory\items[MouseSlot]\invimg = player\inventory\items[MouseSlot]\itemtemplate\invimg
+													player\openInventory\items[MouseSlot]\inventory\items[c] = player\selectedItem
+													player\openInventory\items[MouseSlot]\state = 1.0
+													SetAnimTime player\openInventory\items[MouseSlot]\model,0.0
+													player\openInventory\items[MouseSlot]\invimg = player\inventory\items[MouseSlot]\itemtemplate\invimg
 													
-													For ri% = 0 To player\inventory\size - 1
-														If player\inventory\items[ri] = player\selectedItem Then
-															player\inventory\items[ri] = Null
+													For ri% = 0 To player\openInventory\size - 1
+														If player\openInventory\items[ri] = player\selectedItem Then
+															player\openInventory\items[ri] = Null
 															PlaySound_Strict(PickSFX(player\selectedItem\itemtemplate\sound))
 														EndIf
 													Next
@@ -1103,19 +1124,19 @@ Function UpdateInventory(player.Player)
 								player\selectedItem = Null
 								
 							Case "battery", "bat"
-								Select player\inventory\items[MouseSlot]\itemtemplate\name
+								Select player\openInventory\items[MouseSlot]\itemtemplate\name
 									Case "S-NAV Navigator", "S-NAV 300 Navigator", "S-NAV 310 Navigator"
 										If player\selectedItem\itemtemplate\sound <> 66 Then PlaySound_Strict(PickSFX(player\selectedItem\itemtemplate\sound))	
 										RemoveItem (player\selectedItem)
 										player\selectedItem = Null
-										player\inventory\items[MouseSlot]\state = 100.0
+										player\openInventory\items[MouseSlot]\state = 100.0
 										Msg = "You replaced the navigator's battery."
 										MsgTimer = 70 * 5
 									Case "S-NAV Navigator Ultimate"
 										Msg = "There seems to be no place for batteries in this navigator."
 										MsgTimer = 70 * 5
 									Case "Radio Transceiver"
-										Select player\inventory\items[MouseSlot]\itemtemplate\tempname 
+										Select player\openInventory\items[MouseSlot]\itemtemplate\tempname 
 											Case "fineradio", "veryfineradio"
 												Msg = "There seems to be no place for batteries in this radio."
 												MsgTimer = 70 * 5
@@ -1126,17 +1147,17 @@ Function UpdateInventory(player.Player)
 												If player\selectedItem\itemtemplate\sound <> 66 Then PlaySound_Strict(PickSFX(player\selectedItem\itemtemplate\sound))	
 												RemoveItem (player\selectedItem)
 												player\selectedItem = Null
-												player\inventory\items[MouseSlot]\state = 100.0
+												player\openInventory\items[MouseSlot]\state = 100.0
 												Msg = "You replaced the radio's battery."
 												MsgTimer = 70 * 5
 										End Select
 									Case "Night Vision Goggles"
-										Local nvname$ = player\inventory\items[MouseSlot]\itemtemplate\tempname
+										Local nvname$ = player\openInventory\items[MouseSlot]\itemtemplate\tempname
 										If nvname$="nvgoggles" Or nvname$="supernv" Then
 											If player\selectedItem\itemtemplate\sound <> 66 Then PlaySound_Strict(PickSFX(player\selectedItem\itemtemplate\sound))	
 											RemoveItem (player\selectedItem)
 											player\selectedItem = Null
-											player\inventory\items[MouseSlot]\state = 1000.0
+											player\openInventory\items[MouseSlot]\state = 1000.0
 											Msg = "You replaced the goggles' battery."
 											MsgTimer = 70 * 5
 										Else
@@ -1148,7 +1169,7 @@ Function UpdateInventory(player.Player)
 										MsgTimer = 70 * 5	
 								End Select
 							Case "18vbat"
-								Select player\inventory\items[MouseSlot]\itemtemplate\name
+								Select player\openInventory\items[MouseSlot]\itemtemplate\name
 									Case "S-NAV Navigator", "S-NAV 300 Navigator", "S-NAV 310 Navigator"
 										Msg = "The battery does not fit inside this navigator."
 										MsgTimer = 70 * 5
@@ -1156,7 +1177,7 @@ Function UpdateInventory(player.Player)
 										Msg = "There seems to be no place for batteries in this navigator."
 										MsgTimer = 70 * 5
 									Case "Radio Transceiver"
-										Select player\inventory\items[MouseSlot]\itemtemplate\tempname 
+										Select player\openInventory\items[MouseSlot]\itemtemplate\tempname 
 											Case "fineradio", "veryfineradio"
 												Msg = "There seems to be no place for batteries in this radio."
 												MsgTimer = 70 * 5		
@@ -1164,7 +1185,7 @@ Function UpdateInventory(player.Player)
 												If player\selectedItem\itemtemplate\sound <> 66 Then PlaySound_Strict(PickSFX(player\selectedItem\itemtemplate\sound))	
 												RemoveItem (player\selectedItem)
 												player\selectedItem = Null
-												player\inventory\items[MouseSlot]\state = 100.0
+												player\openInventory\items[MouseSlot]\state = 100.0
 												Msg = "You replaced the radio's battery."
 												MsgTimer = 70 * 5
 										End Select 
@@ -1482,8 +1503,8 @@ Function UpdateInventory(player.Player)
 					Else
 						it.Items = CreateItem("Empty Cup", "emptycup", 0,0,0)
 						it\Picked = True
-						For i = 0 To player\inventory\size-1
-							If player\inventory\items[i]=player\selectedItem Then player\inventory\items[i] = it : Exit
+						For i = 0 To player\openInventory\size-1
+							If player\openInventory\items[i]=player\selectedItem Then player\openInventory\items[i] = it : Exit
 						Next					
 						EntityType (it\collider, HIT_ITEM)
 						
@@ -1995,8 +2016,8 @@ Function UpdateInventory(player.Player)
 						MouseHit1 = 0
 						MouseDown1 = 0
 						LastMouseHit1 = 0
-						;TODO: fix
-						;OtherOpen = player\selectedItem
+						CurrGameState = GAMESTATE_INVENTORY
+						player\openInventory = player\selectedItem\inventory
 						player\selectedItem = Null
 					ElseIf player\selectedItem\itemtemplate\invSlot <> WORNITEM_SLOT_NONE Then
 						;check if the item is equippable
@@ -2032,7 +2053,7 @@ Function UpdateInventory(player.Player)
 				If player\selectedItem\itemtemplate\sound <> 66 Then PlaySound_Strict(PickSFX(player\selectedItem\itemtemplate\sound))
 				player\selectedItem = Null
 			EndIf
-		End If		
+		EndIf
 	EndIf
 	
 	If mainPlayer\selectedItem = Null Then
@@ -2092,5 +2113,5 @@ Function Kill(player.Player)
 	EndIf
 End Function
 ;~IDEal Editor Parameters:
-;~F#ED#12F#259#37E#395
+;~F#EE#130#25A#37E#395
 ;~C#Blitz3D

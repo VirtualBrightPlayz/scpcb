@@ -434,7 +434,7 @@ Function CreateItem.Items(name$, tempname$, x#, y#, z#, r%=0,g%=0,b%=0,a#=1.0,in
 	
 	i\invimg = i\itemtemplate\invimg
 	If (tempname="clipboard") And (invSlots=0) Then
-		invSlots = 10
+		invSlots = 20
 		SetAnimTime i\model,17.0
 		i\invimg = i\itemtemplate\invimg2
 	EndIf

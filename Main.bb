@@ -1139,17 +1139,8 @@ Function UpdateGame()
 		
 		If FPSfactor > 0 Then UpdateSecurityCams()
 		
-		If KeyHit(keyBinds\inv) Then 
-			If CurrGameState=GAMESTATE_INVENTORY Then
-				CurrGameState=GAMESTATE_PLAYING
-				ResumeSounds()
-				MouseXSpeed() : MouseYSpeed() : MouseZSpeed() : mouse_x_speed_1# = 0.0 : mouse_y_speed_1# = 0.0
-			Else
-				CurrGameState=GAMESTATE_INVENTORY
-				PauseSounds()
-			EndIf
-			
-			mainPlayer\selectedItem = Null 
+		If KeyHit(keyBinds\inv) Then
+			ToggleInventory(mainPlayer)
 		EndIf
 		
 		If mainPlayer\currRoom\RoomTemplate\Name <> "pocketdimension" And mainPlayer\currRoom\RoomTemplate\Name <> "gatea" And mainPlayer\currRoom\RoomTemplate\Name <> "exit1" And (Not IsPaused()) Then 
@@ -2001,9 +1992,13 @@ Function DrawGUI()
 	
 	If KeyHit(1) Then;TODO: fix ;And EndingTimer = 0 Then 
 		If IsPaused() Then
-			ResumeSounds()
-			MouseXSpeed() : MouseYSpeed() : MouseZSpeed() : mouse_x_speed_1#=0.0 : mouse_y_speed_1#=0.0
-			CurrGameState = GAMESTATE_PLAYING
+			If CurrGameState=GAMESTATE_INVENTORY Then
+				ToggleInventory(mainPlayer)
+			Else
+				ResumeSounds()
+				MouseXSpeed() : MouseYSpeed() : MouseZSpeed() : mouse_x_speed_1#=0.0 : mouse_y_speed_1#=0.0
+				CurrGameState = GAMESTATE_PLAYING
+			EndIf
 		Else
 			PauseSounds()
 			CurrGameState = GAMESTATE_PAUSED
