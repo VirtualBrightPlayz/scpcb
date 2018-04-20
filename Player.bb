@@ -1,24 +1,21 @@
-Const WORNITEM_SLOT_COUNT%=2
-Const WORNITEM_SLOT_NONE% = WORNITEM_SLOT_COUNT
-Const WORNITEM_SLOT_HEAD%=0
-Const WORNITEM_SLOT_BODY%=1
+Const WORNITEM_SLOT_COUNT% = 2
+Const WORNITEM_SLOT_NONE%  = WORNITEM_SLOT_COUNT
+Const WORNITEM_SLOT_HEAD%  = 0
+Const WORNITEM_SLOT_BODY%  = 1
 
-Const OVERLAY_COUNT%=7
-Const OVERLAY_BLACK%=0
-Const OVERLAY_WHITE%=1
-Const OVERLAY_FOG%=2
-Const OVERLAY_GASMASK%=3
-Const OVERLAY_NIGHTVISION%=4
-Const OVERLAY_008%=5
-Const OVERLAY_178%=6
+Const OVERLAY_COUNT%       = 7
+Const OVERLAY_BLACK%       = 0
+Const OVERLAY_WHITE%       = 1
+Const OVERLAY_FOG%         = 2
+Const OVERLAY_GASMASK%     = 3
+Const OVERLAY_NIGHTVISION% = 4
+Const OVERLAY_008%         = 5
 
 ;TODO: remove after cleanup
 Global FogTexture.MarkedForRemoval, Fog.MarkedForRemoval
 Global GasMaskTexture.MarkedForRemoval, GasMaskOverlay.MarkedForRemoval
 Global InfectTexture.MarkedForRemoval, InfectOverlay.MarkedForRemoval
 Global DarkTexture.MarkedForRemoval, Dark.MarkedForRemoval
-
-Global GlassesTexture.MarkedForRemoval, GlassesOverlay.MarkedForRemoval
 
 Global FogNVTexture.MarkedForRemoval
 Global NVTexture.MarkedForRemoval, NVOverlay.MarkedForRemoval
@@ -176,16 +173,6 @@ Function CreatePlayer.Player()
 	;MoveEntity(NVBlink, 0, 0, 1.0)
 	;HideEntity(NVBlink)
 	
-	Local glassesTexture = LoadTexture_Strict("GFX\GlassesOverlay.jpg",1)
-	player\overlays[OVERLAY_178] = CreateSprite(ark_blur_cam)
-	ScaleSprite(player\overlays[OVERLAY_178], Max(scaleWidth, 1.0), Max(scaleHeight, 0.8))
-	EntityTexture(player\overlays[OVERLAY_178], glassesTexture)
-	EntityBlend (player\overlays[OVERLAY_178], 2)
-	EntityFX(player\overlays[OVERLAY_178], 1)
-	EntityOrder player\overlays[OVERLAY_178], -1003
-	MoveEntity(player\overlays[OVERLAY_178], 0, 0, 1.0)
-	HideEntity(player\overlays[OVERLAY_178])
-	
 	Local darkTexture = CreateTexture(1024, 1024, 1 + 2)
 	SetBuffer TextureBuffer(darkTexture)
 	Cls
@@ -258,7 +245,7 @@ Global Shake.MarkedForRemoval
 
 Global HeartBeatRate.MarkedForRemoval, HeartBeatTimer.MarkedForRemoval, HeartBeatVolume.MarkedForRemoval
 
-Global WearingGasMask.MarkedForRemoval, WearingHazmat.MarkedForRemoval, WearingVest.MarkedForRemoval, Wearing714.MarkedForRemoval, WearingNightVision.MarkedForRemoval, Wearing178.MarkedForRemoval
+Global WearingGasMask.MarkedForRemoval, WearingHazmat.MarkedForRemoval, WearingVest.MarkedForRemoval, WearingNightVision.MarkedForRemoval
 Global Wearing1499.MarkedForRemoval
 Global NVTimer.MarkedForRemoval
 
@@ -782,63 +769,6 @@ Function MouseLook()
 		AmbientLightRooms(0)
 		HideEntity(mainPlayer\overlays[OVERLAY_NIGHTVISION])
 		;EntityTexture(Fog, FogTexture)
-	EndIf
-	
-	;TODO: cleanup
-	If IsPlayerWearingTempName(mainPlayer,"scp178") Then
-		If Music(14)=0 Then Music(14)=LoadSound_Strict("SFX\Music\178.ogg")
-		ShouldPlay = 14
-		ShowEntity(mainPlayer\overlays[OVERLAY_178])
-	Else
-		HideEntity(mainPlayer\overlays[OVERLAY_178])
-	EndIf
-	
-	canSpawn178%=0
-	
-	If Not IsPlayerWearingTempName(mainPlayer,"scp178") Then
-		For n.NPCs = Each NPCs
-			If (n\NPCtype = NPCtype178) Then
-				If n\State3>0 Then canSpawn178=1
-				If (n\State<=0) And (n\State3=0) Then
-					RemoveNPC(n)
-				Else If EntityDistance(mainPlayer\collider,n\Collider)>HideDistance*1.5 Then
-					RemoveNPC(n)
-				EndIf
-			EndIf
-		Next
-	EndIf
-	
-	If (canSpawn178=1) Or IsPlayerWearingTempName(mainPlayer,"scp178") Then
-		tempint%=0
-		For n.NPCs = Each NPCs
-			If (n\NPCtype = NPCtype178) Then
-				tempint=tempint+1
-				If EntityDistance(mainPlayer\collider,n\Collider)>HideDistance*1.5 Then
-					RemoveNPC(n)
-				EndIf
-				;If n\State<=0 Then RemoveNPC(n)
-			EndIf
-		Next
-		If tempint<10 Then ;create the npcs
-			For w.WayPoints = Each WayPoints
-				Local dist#
-				dist=EntityDistance(mainPlayer\collider,w\obj)
-				If (dist<HideDistance*1.5) And (dist>1.2) And (w\door = Null) And (Rand(0,1)=1) Then
-					tempint2=True
-					For n.NPCs = Each NPCs
-						If n\NPCtype=NPCtype178 Then
-							If EntityDistance(n\Collider,w\obj)<0.5
-								tempint2=False
-								Exit
-							EndIf
-						EndIf
-					Next
-					If tempint2 Then
-						CreateNPC(NPCtype178, EntityX(w\obj,True),EntityY(w\obj,True)+0.15,EntityZ(w\obj,True))
-					EndIf	
-				EndIf
-			Next
-		EndIf
 	EndIf
 End Function
 

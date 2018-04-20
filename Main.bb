@@ -81,7 +81,7 @@ Global CheckFPS%, ElapsedLoops%, FPS%, ElapsedTime#
 ;TODO: wtf is this?
 Global CurrFrameLimit# = userOptions\framelimit
 
-Const HIT_MAP% = 1, HIT_PLAYER% = 2, HIT_ITEM% = 3, HIT_APACHE% = 4, HIT_178% = 5, HIT_DEAD% = 6
+Const HIT_MAP% = 1, HIT_PLAYER% = 2, HIT_ITEM% = 3, HIT_APACHE% = 4, HIT_DEAD% = 6
 SeedRnd MilliSecs()
 
 ;[End block]
@@ -189,7 +189,6 @@ Music(10) = LoadSound_Strict("SFX\Music\106.ogg")
 Music(11) = LoadSound_Strict("SFX\Music\Menu.ogg")
 ;Music(12) = LoadSound_strict("SFX\Music\8601Cancer.ogg")
 ;Music(13) = LoadSound_strict("SFX\Music\Intro.ogg")
-;Music(14) = LoadSound("SFX\178.ogg")
 ;Music(15) = LoadSound("SFX\Music\PDTrench.ogg")
 ;Music(15) = LoadSound("SFX\Music\205.ogg")
 ;
@@ -528,8 +527,6 @@ Collisions HIT_PLAYER, HIT_MAP, 2, 2
 Collisions HIT_PLAYER, HIT_PLAYER, 1, 3
 Collisions HIT_ITEM, HIT_MAP, 2, 2
 Collisions HIT_APACHE, HIT_APACHE, 1, 2
-Collisions HIT_178, HIT_MAP, 2, 2
-Collisions HIT_178, HIT_178, 1, 3
 Collisions HIT_DEAD, HIT_MAP, 2, 2
 
 DrawLoading(90, True)

@@ -12,16 +12,15 @@ Const NPCtype860%       = 6
 Const NPCtype939%       = 7
 Const NPCtype5131%      = 8
 Const NPCtype066%       = 10
-Const NPCtype178%       = 11
-Const NPCtypeD%         = 12
-Const NPCtypeGuard%     = 13
-Const NPCtypeMTF%       = 14
-Const NPCtypeApache%    = 15
-Const NPCtypeZombie%    = 16 ;TODO: Remove.
-Const NPCtypeTentacle%  = 17
-Const NPCtype1499%      = 18
-Const NPCtypePdPlane%   = 19 ;TODO: Remove, don't think this is ever used even.
-Const NPCtype1048a%     = 20 ;TODO: Remove.
+Const NPCtypeD%         = 11
+Const NPCtypeGuard%     = 12
+Const NPCtypeMTF%       = 13
+Const NPCtypeApache%    = 14
+Const NPCtypeZombie%    = 15 ;TODO: Remove.
+Const NPCtypeTentacle%  = 16
+Const NPCtype1499%      = 17
+Const NPCtypePdPlane%   = 18 ;TODO: Remove, don't think this is ever used even.
+Const NPCtype1048a%     = 19 ;TODO: Remove.
 
 Type NPCs
 	Field obj%
@@ -155,7 +154,6 @@ Include "NPCs/NPCtypeTentacle.bb"
 Include "NPCs/NPCtype860.bb"
 Include "NPCs/NPCtype939.bb"
 Include "NPCs/NPCtype066.bb"
-Include "NPCs/NPCtype178.bb"
 Include "NPCs/NPCtype966.bb"
 Include "NPCs/NPCtype1048a.bb"
 Include "NPCs/NPCtype1499.bb"
@@ -197,8 +195,6 @@ Function CreateNPC.NPCs(NPCtype%, x#, y#, z#)
 			InitializeNPCtype939(n)
 		Case NPCtype066
 			InitializeNPCtype066(n)
-		Case NPCtype178
-			InitializeNPCtype178(n)
 		Case NPCtype966
 			InitializeNPCtype966(n)
 		Case NPCtype1048a
@@ -331,8 +327,6 @@ Function UpdateNPCs()
 				UpdateNPCtype939(n)
 			Case NPCtype066
 				UpdateNPCtype066(n)
-			Case NPCtype178
-				UpdateNPCtype178(n)
 			Case NPCtype966
 				UpdateNPCtype966(n)
 			Case NPCtype1048a
@@ -764,8 +758,6 @@ Function Console_SpawnNPC(c_input$,state%=-9999)
 			If state%=-9999 Then n\State = 1
 		Case "066","scp066","scp-066"
 			n.NPCs = CreateNPC(NPCtype066, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider))
-		Case "npc178"
-			n.NPCs = CreateNPC(NPCtype178, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider))
 		Case "pdplane"
 			n.NPCs = CreateNPC(NPCtypePdPlane, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider))
 		Case "1048-a","scp1048-a","scp-1048-a","scp1048a","scp-1048a"

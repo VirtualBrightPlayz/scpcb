@@ -111,19 +111,6 @@ Function Use914(item.Items, setting$, x#, y#, z#)
 					it2 = CreateItem("Bulky Ballistic Vest", "veryfinevest", x, y, z)
 					RemoveItem(item)
 			End Select
-		Case "3-D Glasses"
-			Select setting
-				Case "rough,coarse"
-					d.Decals = CreateDecal(0, x, 8 * RoomScale + 0.005, z, 90, Rand(360), 0)
-					d\Size = 0.12 : ScaleSprite(d\obj, d\Size, d\Size)
-					RemoveItem(item)
-					For n.NPCs = Each NPCs
-						If n\NPCtype = NPCtype178 Then RemoveNPC(n)
-					Next
-				Case "1:1","fine","very fine"
-					PositionEntity(item\collider, x, y, z)
-					ResetEntity(item\collider)
-			End Select
 		Case "Clipboard"
 			Select setting
 				Case "rough", "coarse"

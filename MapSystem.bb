@@ -1473,7 +1473,6 @@ Include "Rooms/RoomIntro.bb"
 Include "Rooms/Room2CCont.bb"
 Include "Rooms/Room106.bb"
 Include "Rooms/Room1123.bb"
-Include "Rooms/Room178.bb"
 Include "Rooms/RoomPocketDimension.bb"
 Include "Rooms/Room3z3.bb"
 Include "Rooms/Room2_3.bb"
@@ -1605,8 +1604,6 @@ Function FillRoom(r.Rooms)
 			FillRoom106(r)
 		Case "room1123"
 			FillRoom1123(r)
-		Case "room178"
-			FillRoom178(r)
 		Case "pocketdimension"
 			FillRoomPocketDimension(r)
 		Case "room3z3"
@@ -3567,7 +3564,6 @@ Function CreateMap()
 	SetRoom("914", ROOM1, Floor(0.3*Float(Room1Amount[0])),min_pos,max_pos)
 	SetRoom("room1archive",ROOM1,Floor(0.5*Float(Room1Amount[0])),min_pos,max_pos)
 	SetRoom("room205", ROOM1, Floor(0.6*Float(Room1Amount[0])),min_pos,max_pos)
-	SetRoom("room178",ROOM1,Floor(0.7*Float(Room1Amount[0])),min_pos,max_pos)
 	
 	MapRoom(ROOM2C, 0) = "lockroom"
 	

@@ -280,7 +280,6 @@ Function InitItemTemplates()
 	it = CreateItemTemplate("Clipboard", "clipboard", "GFX\items\clipboard.b3d", "GFX\items\INVclipboard.jpg", WORNITEM_SLOT_NONE, "", 0.003, "", "GFX\items\INVclipboard2.jpg", 1)
 	
 	it = CreateItemTemplate("SCP-1123", "1123", "GFX\items\HGIB_Skull1.b3d", "GFX\items\inv1123.jpg", WORNITEM_SLOT_NONE, "", 0.015) : it\sound = 2
-	it = CreateItemTemplate("SCP-178", "scp178", "GFX\items\scp178.b3d", "GFX\items\INV178.jpg", WORNITEM_SLOT_HEAD, "", 0.02,"","",1)
 	
 	it = CreateItemTemplate("Document SCP-1123", "paper", "GFX\items\paper.x", "GFX\items\INVpaper.jpg", WORNITEM_SLOT_NONE, "GFX\items\doc1123.jpg", 0.003) : it\sound = 0
 
@@ -563,8 +562,6 @@ Function PickItem(item.Items)
 		For n% = 0 To mainPlayer\inventory\size - 1
 			If mainPlayer\inventory\items[n] = Null Then
 				Select item\itemtemplate\tempname
-					Case "scp178"
-						SetAnimTime item\model,19.0
 					Case "1123"
 						If mainPlayer\currRoom\RoomTemplate\Name <> "room1123" Then
 							ShowEntity mainPlayer\overlays[OVERLAY_WHITE]
@@ -700,8 +697,6 @@ Function DropItem(item.Items,playDropSound%=True)
 	;		If WearingNightVision = 2 Then CameraFogFar = StoredCameraFogFar : WearingNightVision = False
 	;	Case "veryfinenvgoggles"
 	;		If WearingNightVision = 3 Then CameraFogFar = StoredCameraFogFar : WearingNightVision = False
-	;	Case "scp178"
-	;		Wearing178 = False
 	;	Case "scp1499","super1499"
 	;		Wearing1499 = False
 	;End Select	
