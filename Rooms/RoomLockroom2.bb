@@ -1,3 +1,4 @@
+;TODO: Remove?
 Function FillRoomLockroom2(r.Rooms)
     Local d.Doors, d2.Doors, sc.SecurityCams, de.Decals, r2.Rooms, sc2.SecurityCams
 	Local it.Items, i%

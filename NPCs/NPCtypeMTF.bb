@@ -418,7 +418,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 								DebugLog "049 spotted :"+n\State2
 								;If n\MTFLeader=Null
 								;	If n\Sound <> 0 Then FreeSound_Strict n\Sound : n\Sound = 0
-								;	n\Sound = LoadSound_Strict("SFX\Character\MTF\
+								;	n\Sound = LoadSound_Strict("SFX\Character\MTF\"
 								;	PlayMTFSound(n\Sound, n)
 								;EndIf
 								Exit
@@ -747,7 +747,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 								DebugLog "049 spotted :"+n\State2
 								;If n\MTFLeader=Null
 								;	If n\Sound <> 0 Then FreeSound_Strict n\Sound : n\Sound = 0
-								;	n\Sound = LoadSound_Strict("SFX\Character\MTF\
+								;	n\Sound = LoadSound_Strict("SFX\Character\MTF\"
 								;	PlayMTFSound(n\Sound, n)
 								;EndIf
 								Exit
