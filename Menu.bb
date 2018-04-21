@@ -472,7 +472,7 @@ Function UpdateMainMenu()
 					
 					y = y + 50*MenuScale
 					
-					userOptions\achvPopup = UpdateUITick(x + 310 * MenuScale, y + MenuScale, userOptions\achvPopup)
+					;userOptions\achvPopup = UpdateUITick(x + 310 * MenuScale, y + MenuScale, userOptions\achvPopup)
 					
 					y = y + 50*MenuScale
 					
@@ -1758,5 +1758,4 @@ Function DrawQuickLoading()
 	
 End Function
 ;~IDEal Editor Parameters:
-;~F#4AA
 ;~C#Blitz3D
