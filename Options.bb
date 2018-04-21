@@ -78,8 +78,8 @@ Function LoadOptionsINI()
     userOptions\hudEnabled          = GetINIInt(OptionFile, optHud, "HUD enabled")
     userOptions\showFPS             = GetINIInt(OptionFile, optHud, "show FPS")
 
-    keyBinds\rght                  = GetINIInt(OptionFile, optBin, "Right key")
-    keyBinds\lft                   = GetINIInt(OptionFile, optBin, "Left key")
+    keyBinds\rght                   = GetINIInt(OptionFile, optBin, "Right key")
+    keyBinds\lft                    = GetINIInt(OptionFile, optBin, "Left key")
     keyBinds\up                     = GetINIInt(OptionFile, optBin, "Up key")
     keyBinds\down                   = GetINIInt(OptionFile, optBin, "Down key")
 
