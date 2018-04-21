@@ -79,7 +79,6 @@ Function UpdateEventCheckpoint(e.Events)
 		
 		If e\EventState3=0 Then
 			If Rand(2)=1 Then
-				GiveAchievement(Achv1048)
 				e\room\Objects[1]=LoadAnimMesh_Strict("GFX\npcs\scp-1048.b3d")
 				ScaleEntity e\room\Objects[1], 0.05,0.05,0.05
 				PositionEntity(e\room\Objects[1],EntityX(e\room\Objects[0],True),EntityY(e\room\Objects[0],True),EntityZ(e\room\Objects[0],True))

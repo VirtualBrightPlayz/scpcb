@@ -97,8 +97,6 @@ Function UpdateEventRoom205(e.Events)
 				QuickLoadPercent = 70
 				e\EventStr = "load6"
 			ElseIf e\EventStr = "load6"
-				GiveAchievement(Achv205)
-				
 				HideEntity(e\room\Objects[3])
 				HideEntity(e\room\Objects[4])
 				HideEntity(e\room\Objects[5])

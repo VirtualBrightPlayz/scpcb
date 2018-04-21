@@ -23,7 +23,6 @@ Const GAMESUBSTATE_MAINMENU_OPTIONS% = 4
 Const GAMESUBSTATE_PAUSED_MAIN% = 0
 Const GAMESUBSTATE_PAUSED_DEAD% = 1
 Const GAMESUBSTATE_PAUSED_OPTIONS% = 2
-Const GAMESUBSTATE_PAUSED_ACHIEVEMENTS% = 3
 
 Global CurrGameState% = GAMESTATE_MAINMENU
 Global CurrGameSubstate% = GAMESUBSTATE_MAINMENU_MAIN
@@ -957,12 +956,6 @@ Function DrawMainMenu()
 					Color 255,255,255
 					Text(x + 20 * MenuScale, y, "Open console on error:")
 					DrawUITick(x + 310 * MenuScale, y + MenuScale, userOptions\consoleOpenOnError)
-					
-					y = y + 50*MenuScale
-					
-					Color 255,255,255
-					Text(x + 20 * MenuScale, y, "Achievement popups:")
-					DrawUITick(x + 310 * MenuScale, y + MenuScale, userOptions\achvPopup)
 					
 					y = y + 50*MenuScale
 					

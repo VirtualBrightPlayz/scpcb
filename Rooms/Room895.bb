@@ -113,7 +113,6 @@ Function UpdateEventCoffin(e.Events)
 	If mainPlayer\currRoom = e\room Then
 		CoffinDistance = EntityDistance(mainPlayer\collider, e\room\Objects[1])
 		If CoffinDistance < 1.5 Then 
-			GiveAchievement(Achv895)
 			If (Not Contained106) And e\EventName="coffin106" And e\EventState2 = 0 Then
 				de.Decals = CreateDecal(0, EntityX(e\room\Objects[1],True), -1531.0*RoomScale, EntityZ(e\room\Objects[1],True), 90, Rand(360), 0)
 				de\Size = 0.05 : de\SizeChange = 0.001 : EntityAlpha(de\obj, 0.8) : UpdateDecals()

@@ -87,7 +87,6 @@ Function UpdateEventButtghost(e.Events)
 	If mainPlayer\currRoom = e\room Then
 		If EntityDistance(mainPlayer\collider, e\room\Objects[0]) < 1.8 Then
 			If e\EventState = 0
-				GiveAchievement(Achv789)
 				e\SoundCHN = PlaySound2(ButtGhostSFX, mainPlayer\cam,e\room\Objects[0])
 				e\EventState = 1
 			Else

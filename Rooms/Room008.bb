@@ -99,9 +99,7 @@ Function UpdateEvent008(e.Events)
 	Local angle#
 
 	;[Block]
-	If mainPlayer\currRoom = e\room Then	
-		
-		GiveAchievement(Achv008)=True
+	If mainPlayer\currRoom = e\room Then
 		If Curr173\Idle<2 Then
 			;container open
 			If e\EventState = 0 Then

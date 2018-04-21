@@ -19,7 +19,6 @@ Function UpdateNPCtype096(n.NPCs)
     Select n\State
         Case 0
             If dist<8.0 Then
-                GiveAchievement(Achv096)
                 If n\Sound = 0 Then
                     n\Sound = LoadSound_Strict("SFX\Music\096.ogg")
                 Else
@@ -272,10 +271,6 @@ Function UpdateNPCtype096(n.NPCs)
         Case 5
             If dist < 16.0 Then 
             
-                If dist < 4.0 Then
-                    GiveAchievement(Achv096)
-                EndIf
-                    
                 If n\Sound = 0 Then
                     n\Sound = LoadSound_Strict("SFX\Music\096.ogg")
                 Else

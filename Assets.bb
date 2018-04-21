@@ -485,8 +485,6 @@ Function NullGame()
 	
 	SelectedMap = ""
 	
-	UsedConsole = False
-	
 	DoorTempID = 0
 	RoomTempID = 0
 	
@@ -520,10 +518,7 @@ Function NullGame()
 		If s\img <> 0 Then FreeImage s\img : s\img = 0
 		Delete s
 	Next
-	
-	For i = 0 To MAXACHIEVEMENTS-1
-		Achievements(i)=0
-	Next
+
 	;RefinedItems = 0 ;TODO: reimplement?
 	
 	ConsoleInput = ""
@@ -630,7 +625,6 @@ Function NullGame()
 	
 	OptionsMenu% = -1
 	QuitMSG% = -1
-	AchievementsMenu% = -1
 	
 	IsZombie% = False
 	

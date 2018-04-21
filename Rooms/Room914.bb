@@ -56,6 +56,7 @@ Function FillRoom914(r.Rooms)
     EntityParent(it\collider, r\obj)
 End Function
 
+;TODO: Overhaul keycard system.
 Function Use914(item.Items, setting$, x#, y#, z#)
 	
 	;RefinedItems = RefinedItems+1
@@ -328,63 +329,23 @@ Function Use914(item.Items, setting$, x#, y#, z#)
 							Case "Level 5 Key Card"	
 								Select SelectedDifficulty\otherFactors
 									Case EASY
-										If Rand(500)=1 Then
-											it2 = CreateItem("Key Card Omni", "key6", x, y, z)
-										Else
-											it2 = CreateItem("Mastercard", "misc", x, y, z)
-										EndIf
+										it2 = CreateItem("Mastercard", "misc", x, y, z)
 									Case NORMAL
-										If Rand(700)=1 Then
-											it2 = CreateItem("Key Card Omni", "key6", x, y, z)
-										Else
-											it2 = CreateItem("Mastercard", "misc", x, y, z)
-										EndIf
+										it2 = CreateItem("Mastercard", "misc", x, y, z)
 									Case HARD
-										If Rand(1000)=1 Then
-											it2 = CreateItem("Key Card Omni", "key6", x, y, z)
-										Else
-											it2 = CreateItem("Mastercard", "misc", x, y, z)
-										EndIf
+										it2 = CreateItem("Mastercard", "misc", x, y, z)
 								End Select
 						End Select
 					EndIf
 				Case "very fine"
 					Select SelectedDifficulty\otherFactors
 						Case EASY
-							If Rand(500)=5 Then
-								it2 = CreateItem("Key Card Omni", "key6", x, y, z)
-							Else
-								it2 = CreateItem("Mastercard", "misc", x, y, z)
-							EndIf
+							it2 = CreateItem("Mastercard", "misc", x, y, z)
 						Case NORMAL
-							If Rand(700)=7 Then
-								it2 = CreateItem("Key Card Omni", "key6", x, y, z)
-							Else
-								it2 = CreateItem("Mastercard", "misc", x, y, z)
-							EndIf
+							it2 = CreateItem("Mastercard", "misc", x, y, z)
 						Case HARD
-							If Rand(1000)=10 Then
-								it2 = CreateItem("Key Card Omni", "key6", x, y, z)
-							Else
-								it2 = CreateItem("Mastercard", "misc", x, y, z)
-							EndIf
+							it2 = CreateItem("Mastercard", "misc", x, y, z)
 					End Select
-			End Select			
-			
-			RemoveItem(item)
-		Case "Key Card Omni"
-			Select setting
-				Case "rough", "coarse"
-					d.Decals = CreateDecal(0, x, 8 * RoomScale + 0.005, z, 90, Rand(360), 0)
-					d\Size = 0.07 : ScaleSprite(d\obj, d\Size, d\Size)
-				Case "1:1"
-					If Rand(2)=1 Then
-						it2 = CreateItem("Mastercard", "misc", x, y, z)
-					Else
-						it2 = CreateItem("Playing Card", "misc", x, y, z)			
-					EndIf	
-				Case "fine", "very fine"
-					it2 = CreateItem("Key Card Omni", "key6", x, y, z)
 			End Select			
 			
 			RemoveItem(item)
@@ -585,10 +546,6 @@ Function UpdateEvent914(e.Events)
 
 	;[Block]
 	If mainPlayer\currRoom = e\room Then
-		;GiveAchievement(Achv914)
-		
-		If e\room\RoomDoors[2]\open Then GiveAchievement(Achv914)
-		
 		EntityPick(mainPlayer\cam, 1.0)
 		If PickedEntity() = e\room\Objects[0] Then
 			DrawHandIcon = True

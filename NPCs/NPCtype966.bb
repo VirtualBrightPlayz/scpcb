@@ -150,8 +150,6 @@ Function UpdateNPCtype966(n.NPCs)
                 If n\State3<900 Then
                     mainPlayer\blurTimer = ((Sin(MilliSecs2()/50)+1.0)*200)/dist
                     
-                    If (IsPlayerWearingTempName(mainPlayer,"nvgoggles")) Then GiveAchievement(Achv966)
-                    
                     If dist<16 Then
                         mainPlayer\blinkEffect = Max(mainPlayer\blinkEffect, 1.5)
                         ;BlinkEffectTimer = 1000

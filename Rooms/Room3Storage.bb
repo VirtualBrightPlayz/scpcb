@@ -192,8 +192,6 @@ Function UpdateEventRoom3storage(e.Events)
 		
 		If EntityY(mainPlayer\collider)<-4600*RoomScale Then
 			
-			GiveAchievement(Achv939)
-			
 			If Music(7)=0 Then Music(7) = LoadSound_Strict("SFX\Music\Room3Storage.ogg") 
 			ShouldPlay = 7
 			

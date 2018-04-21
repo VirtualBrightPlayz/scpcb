@@ -369,7 +369,7 @@ Function UpdateConsole()
 							CreateConsoleMsg("Spawns an item at the player's location.")
 							CreateConsoleMsg("Any name that can appear in your inventory")
 							CreateConsoleMsg("is a valid parameter.")
-							CreateConsoleMsg("Example: spawnitem Key Card Omni")
+							CreateConsoleMsg("Example: spawnitem key5")
 							CreateConsoleMsg("******************************")
 						Case "spawn"
 							CreateConsoleMsg("HELP - spawn")

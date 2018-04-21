@@ -75,8 +75,6 @@ Function UpdateEventRoom2storage(e.Events)
 		
 		temp = 0
 		If TFormedX()>730 Then
-			GiveAchievement(Achv970)
-			
 			UpdateWorld()
 			TFormPoint EntityX(mainPlayer\collider),EntityY(mainPlayer\collider),EntityZ(mainPlayer\collider),0,e\room\obj
 			
@@ -102,8 +100,6 @@ Function UpdateEventRoom2storage(e.Events)
 			temp = True
 			
 		ElseIf TFormedX()<-730
-			GiveAchievement(Achv970)
-			
 			UpdateWorld()
 			TFormPoint EntityX(mainPlayer\collider),EntityY(mainPlayer\collider),EntityZ(mainPlayer\collider),0,e\room\obj
 			

@@ -153,8 +153,6 @@ Global BlinkMeterIMG% = LoadImage_Strict("GFX\blinkmeter.jpg")
 
 DrawLoading(0, True)
 
-Include "Achievements.bb"
-
 Global MouseHit1%, MouseDown1%, MouseHit2%, DoubleClick%, LastMouseHit1%, MouseUp1%
 
 ;TODO: Make this not global.
@@ -934,7 +932,6 @@ Function UpdateGame()
 			
 			If KeyHit(keyBinds\console) Then
 				If CurrGameState=GAMESTATE_CONSOLE Then
-					UsedConsole = True
 					ResumeSounds()
 					MouseXSpeed() : MouseYSpeed() : MouseZSpeed() : mouse_x_speed_1#=0.0 : mouse_y_speed_1#=0.0
 					CurrGameState=GAMESTATE_PLAYING
@@ -1060,8 +1057,6 @@ End Function
 ;	timing\tickDuration = 0
 ;	EndingTimer=EndingTimer-timing\tickDuration2
 ;	
-;	GiveAchievement(Achv055)
-;	If (Not UsedConsole) GiveAchievement(AchvConsole)
 ;		
 ;	Local x,y,width,height, temp
 ;	Local itt.ItemTemplates, r.Rooms
@@ -1135,8 +1130,7 @@ End Function
 ;				SetFont Font2
 ;				Text(x + width / 2 + 40*MenuScale, y + 20*MenuScale, "THE END", True)
 ;				SetFont Font1
-;				
-;				If AchievementsMenu=0 Then 
+
 ;					x = x+132*MenuScale
 ;					y = y+122*MenuScale
 ;					
@@ -1156,16 +1150,10 @@ End Function
 ;					
 ;					Local scpsEncountered=1
 ;					For i = 0 To 24
-;						scpsEncountered = scpsEncountered+Achievements(i)
-;					Next
-;					
-;					Local achievementsUnlocked =0
-;					For i = 0 To MAXACHIEVEMENTS-1
-;						achievementsUnlocked = achievementsUnlocked + Achievements(i)
+;						scpsEncountered = scpsEncountered
 ;					Next
 ;					
 ;					Text x, y, "SCPs encountered: " +scpsEncountered
-;					Text x, y+20*MenuScale, "Achievements unlocked: " + achievementsUnlocked+"/"+(MAXACHIEVEMENTS-1)
 ;					Text x, y+40*MenuScale, "Rooms found: " + roomsfound+"/"+roomamount
 ;					Text x, y+60*MenuScale, "Documents discovered: " +docsfound+"/"+docamount
 ;					Text x, y+80*MenuScale, "Items refined in SCP-914: " +RefinedItems			
@@ -1174,10 +1162,6 @@ End Function
 ;					y = userOptions\screenHeight / 2 - height / 2
 ;					x = x+width/2
 ;					y = y+height-100*MenuScale
-;					
-;					If DrawButton(x-145*MenuScale,y-200*MenuScale,390*MenuScale,60*MenuScale,"ACHIEVEMENTS", True) Then
-;						AchievementsMenu = 1
-;					EndIf
 ;					
 ;					If DrawButton(x-145*MenuScale,y-100*MenuScale,390*MenuScale,60*MenuScale,"MAIN MENU", True) Then
 ;						NullGame()
@@ -1192,8 +1176,6 @@ End Function
 ;				Else
 ;					DrawMenu()
 ;				EndIf
-;				
-;			EndIf
 ;			
 ;		EndIf
 ;		
@@ -1291,13 +1273,7 @@ Function UpdateGUI()
 									KeypadInput=KeypadInput + ((n+1)+(i*4)-1)
 								Case 8 ;enter
 									If KeypadInput = mainPlayer\selectedDoor\Code Then
-										PlaySound_Strict ScannerSFX1
-										
-										If mainPlayer\selectedDoor\Code = Str(AccessCode) Then
-											GiveAchievement(AchvMaynard)
-										ElseIf mainPlayer\selectedDoor\Code = "7816" Then ;TODO: do this better
-											GiveAchievement(AchvHarp)
-										EndIf									
+										PlaySound_Strict ScannerSFX1								
 										
 										mainPlayer\selectedDoor\locked = 0
 										UseDoor(mainPlayer\selectedDoor,True)
@@ -1352,7 +1328,6 @@ Function UpdateGUI()
 			CurrGameState = GAMESTATE_PAUSED
 		EndIf
 		
-		;AchievementsMenu = 0
 		;OptionsMenu = 0
 		;QuitMSG = 0
 		
@@ -1628,8 +1603,6 @@ Function DrawPauseMenu()
 				y = y + 75*MenuScale
 			EndIf
 			
-			DrawUIButton(x, y, 390*MenuScale, 60*MenuScale, "Achievements")
-			y = y + 75*MenuScale
 			DrawUIButton(x, y, 390*MenuScale, 60*MenuScale, "Options")
 			y = y + 75*MenuScale
 			
@@ -1728,8 +1701,6 @@ Function UpdatePauseMenu()
 				y = y + 75*MenuScale
 			EndIf
 			
-			If UpdateUIButton(x, y, 390*MenuScale, 60*MenuScale, "Achievements") Then AchievementsMenu = 1
-			y = y + 75*MenuScale
 			If UpdateUIButton(x, y, 390*MenuScale, 60*MenuScale, "Options") Then OptionsMenu = 1
 			y = y + 75*MenuScale
 			If UpdateUIButton(x, y, 390*MenuScale, 60*MenuScale, "Quit") Then

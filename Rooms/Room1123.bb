@@ -102,8 +102,6 @@ Function UpdateEventRoom1123(e.Events)
 
 	;[Block]
 	If mainPlayer\currRoom = e\room Then
-		GiveAchievement(Achv1123)
-		
 		;the event is started when the player picks up SCP-1123 (in Items.bb/UpdateItems())
 		
 		If e\EventState = 1 Then

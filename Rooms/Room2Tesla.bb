@@ -143,7 +143,6 @@ Function UpdateEventRoom2tesla(e.Events)
 							HideEntity e\room\Objects[4]
 							e\EventState = 1
 							Curr106\State = 70 * 60 * Rand(10,13)
-							GiveAchievement(AchvTesla)
 							Exit
 						EndIf
 					EndIf

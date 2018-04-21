@@ -180,8 +180,6 @@ Function UpdateEventRoom1162(e.Events)
 					PlaySound_Strict LoadTempSound("SFX\SCP\1162\Exchange"+Rand(0,4)+".ogg")
 					e\EventState3 = 0.0
 					
-					
-					GiveAchievement(Achv1162)
 					MouseHit1 = False
 					Exit
 				EndIf
@@ -200,7 +198,6 @@ Function UpdateEventRoom1162(e.Events)
 				If IsItemGoodFor1162(itt) And Rand(6)=1
 					it = CreateItem(itt\name, itt\tempname, EntityX(pp,True),EntityY(pp,True),EntityZ(pp,True))
 					EntityType(it\collider, HIT_ITEM)
-					GiveAchievement(Achv1162)
 					MouseHit1 = False
 					e\EventState3 = 0.0
 					If mainPlayer\injuries > 15
@@ -261,7 +258,6 @@ Function UpdateEventRoom1162(e.Events)
 					it = CreateItem("Old Badge","badge",EntityX(pp,True),EntityY(pp,True),EntityZ(pp,True))
 			End Select
 			EntityType(it\collider, HIT_ITEM)
-			GiveAchievement(Achv1162)
 			MouseHit1 = False
 			e\EventState3 = 0.0
 		EndIf

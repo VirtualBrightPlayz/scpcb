@@ -143,7 +143,6 @@ Function InitItemTemplates()
 	CreateItemTemplate("Level 5 Key Card", "key5", "GFX\items\keycard.x", "GFX\items\INVkey5.jpg", WORNITEM_SLOT_NONE, "", 0.0004,"GFX\items\keycard5.jpg")
 	CreateItemTemplate("Playing Card", "misc", "GFX\items\keycard.x", "GFX\items\INVcard.jpg", "", WORNITEM_SLOT_NONE, 0.0004,"GFX\items\card.jpg")
 	CreateItemTemplate("Mastercard", "misc", "GFX\items\keycard.x", "GFX\items\INVmastercard.jpg", WORNITEM_SLOT_NONE, "", 0.0004,"GFX\items\mastercard.jpg")
-	CreateItemTemplate("Key Card Omni", "key6", "GFX\items\keycard.x", "GFX\items\INVkeyomni.jpg", WORNITEM_SLOT_NONE, "", 0.0004,"GFX\items\keycardomni.jpg")
 	
 	it = CreateItemTemplate("SCP-860", "scp860", "GFX\items\key.b3d", "GFX\items\INVkey.jpg", WORNITEM_SLOT_NONE, "", 0.001)
 	it\sound = 3
@@ -592,22 +591,12 @@ Function PickItem(item.Items)
 						DeathMSG = "Subject D-9341 found dead inside SCP-914's output booth next to what appears to be an ordinary nine-volt battery. The subject is covered in severe "
 						DeathMSG = DeathMSG + "electrical burns, and assumed to be killed via an electrical shock caused by the battery. The battery has been stored for further study."
 						Kill(mainPlayer)
-					Case "scp148"
-						GiveAchievement(Achv148)	
-					Case "scp513"
-						GiveAchievement(Achv513)
-					Case "scp860"
-						GiveAchievement(Achv860)
-					Case "key6"
-						GiveAchievement(AchvOmni)
 					Case "veryfinevest"
 						Msg = "The vest is too heavy to pick up."
 						MsgTimer = 70*6
 						Exit
 					Case "firstaid", "finefirstaid", "veryfinefirstaid", "firstaid2"
 						item\state = 0
-					Case "navigator", "nav"
-						If item\itemtemplate\name = "S-NAV Navigator Ultimate" Then GiveAchievement(AchvSNAV)
 					Case "hazmatsuit", "hazmatsuit2", "hazmatsuit3"
 						Msg = "You put on the hazmat suit."
 						MsgTimer = 70 * 5

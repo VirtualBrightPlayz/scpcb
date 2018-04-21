@@ -373,8 +373,6 @@ Function UseDoor(d.Doors, showmsg%=True)
 					temp = 4
 				Case "key5"
 					temp = 5
-				Case "key6"
-					temp = 6
 				Default 
 					temp = -1
 			End Select

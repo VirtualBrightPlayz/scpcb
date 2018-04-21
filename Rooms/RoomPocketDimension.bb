@@ -439,7 +439,6 @@ Function UpdateEventPocketdimension(e.Events)
 								
 								For r.Rooms = Each Rooms
 									If r\RoomTemplate\Name = "room2_3" Then
-										GiveAchievement(AchvPD)
 										e\EventState = 0
 										e\EventState2 = 0
 										FreeSound_Strict Music(3) : Music(3)=0
@@ -480,8 +479,6 @@ Function UpdateEventPocketdimension(e.Events)
 							e\EventState2 = 0
 							FreeSound_Strict Music(3) : Music(3)=0
 							PositionEntity(mainPlayer\collider, EntityX(r\obj,True), 0.4, EntityX(r\obj,True))
-							
-							GiveAchievement(AchvPD)
 							
 							Curr106\State = 10000
 							Curr106\Idle = False
@@ -556,7 +553,6 @@ Function UpdateEventPocketdimension(e.Events)
 						mainPlayer\blurTimer = 1500
 						For r.Rooms = Each Rooms
 							If r\RoomTemplate\Name = "tunnel" Then
-								GiveAchievement(AchvPD)
 								e\EventState = 0
 								e\EventState2 = 0
 								FreeSound_Strict Music(3) : Music(3)=0

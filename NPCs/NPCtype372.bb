@@ -31,8 +31,6 @@ Function UpdateNPCtype372(n.NPCs)
             ;Animate2(n\obj, AnimTime(n\obj), 32, 113, 0.4)
             
             If EntityInView(n\obj, mainPlayer\cam) Then
-                GiveAchievement(Achv372)
-                
                 If Rand(30)=1 Then 
                     If (Not ChannelPlaying(n\SoundChn)) Then
                         If EntityVisible(mainPlayer\cam, n\obj) Then 

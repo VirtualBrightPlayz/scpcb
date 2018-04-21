@@ -789,8 +789,6 @@ Function EquipItem(player.Player,item.Items,toggle%)
 				Msg = "You put on the vest and feel heavily encumbered."
 				MsgTimer = 70 * 7
 			Case "scp1499","super1499"
-				GiveAchievement(Achv1499)
-				
 				For r.Rooms = Each Rooms
 					If r\RoomTemplate\Name = "dimension1499" Then
 						player\blinkTimer = -1
@@ -953,7 +951,7 @@ Function DrawInventory(player.Player)
 	Else
 		If player\selectedItem <> Null Then
 			Select player\selectedItem\itemtemplate\tempname
-				Case "key1", "key2", "key3", "key4", "key5", "key6", "keyomni", "scp860", "hand", "hand2"
+				Case "key1", "key2", "key3", "key4", "key5", "scp860", "hand", "hand2"
 					DrawImage(player\selectedItem\itemtemplate\invimg, userOptions\screenWidth / 2 - ImageWidth(player\selectedItem\itemtemplate\invimg) / 2, userOptions\screenHeight / 2 - ImageHeight(player\selectedItem\itemtemplate\invimg) / 2)
 				Case "firstaid","finefirstaid","firstaid2"
 					DrawImage(player\selectedItem\itemtemplate\invimg, userOptions\screenWidth / 2 - ImageWidth(player\selectedItem\itemtemplate\invimg) / 2, userOptions\screenHeight / 2 - ImageHeight(player\selectedItem\itemtemplate\invimg) / 2)
@@ -1355,7 +1353,7 @@ Function UpdateInventory(player.Player)
 						player\selectedItem = Null
 					ElseIf player\openInventory\items[MouseSlot] <> player\selectedItem Then
 						Select player\selectedItem\itemtemplate\tempname
-							Case "paper","key1","key2","key3","key4","key5","key6","misc","oldpaper","badge","ticket" ;BoH stuff
+							Case "paper","key1","key2","key3","key4","key5","misc","oldpaper","badge","ticket" ;BoH stuff
 								If player\openInventory\items[MouseSlot]\itemtemplate\tempname = "clipboard" Then
 									;Add an item to clipboard
 									Local added.Items = Null
@@ -1512,7 +1510,7 @@ Function UpdateInventory(player.Player)
 							Exit
 						EndIf
 					Next
-				Case "battery","key1", "key2", "key3", "key4", "key5", "key6", "keyomni", "scp860", "hand", "hand2"
+				Case "battery","key1", "key2", "key3", "key4", "key5", "scp860", "hand", "hand2"
 					;do nothing
 				Case "scp513"
 					PlaySound_Strict LoadTempSound("SFX\SCP\513\Bell"+Rand(1,3)+".ogg")
@@ -1529,14 +1527,12 @@ Function UpdateInventory(player.Player)
 					EndIf	
 					player\selectedItem = Null
 				Case "scp500"
-					GiveAchievement(Achv500)
-					
 					If (player\injuries > 0 Or player\bloodloss > 0) And player\infect008 > 0 Then
-						Msg = "You swallowed the pill. Your wounds are healing rapidly and your nausea is fading."
+						Msg = "You swallowed. Your wounds are healing rapidly and your nausea is fading."
 					ElseIf player\infect008 > 0 Then
-						Msg = "You swallowed the pill. Your nausea is fading."
+						Msg = "You swallowed. Your nausea is fading."
 					Else
-						Msg = "You swallowed the pill. Your wounds are healing rapidly."
+						Msg = "You swallowed. Your wounds are healing rapidly."
 					EndIf
 					MsgTimer = 70*7
 					
@@ -1987,7 +1983,6 @@ Function UpdateInventory(player.Player)
 					Msg = Chr(34) + "MAN DATS SUM GOOD ASS SHIT" + Chr(34)
 					player\injuries = Max(player\injuries-0.5, 0)
 					player\blurTimer = 500
-					GiveAchievement(Achv420)
 					PlaySound_Strict LoadTempSound("SFX\Music\420J.ogg")
 					MsgTimer = 70 * 5
 					RemoveItem(player\selectedItem)

@@ -223,7 +223,6 @@ Function UpdateEventRoom2cafeteria(e.Events)
 	If mainPlayer\currRoom = e\room Then
 		If CurrGameState<>GAMESTATE_SCP294 Then
 			If EntityDistance(e\room\Objects[0], mainPlayer\collider)<1.5 Then
-				GiveAchievement(Achv294)
 				If EntityInView(e\room\Objects[0], mainPlayer\cam) Then
 					DrawHandIcon = True
 					If MouseHit1 Then

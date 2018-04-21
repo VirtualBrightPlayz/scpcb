@@ -85,8 +85,7 @@ Function UpdateEventRoom079(e.Events)
 			If e\EventState = 1 Then 
 				e\EventState = 2
 			ElseIf e\EventState = 2
-				If EntityDistance(e\room\Objects[0], mainPlayer\collider)<3.0 Then 
-					GiveAchievement(Achv079)
+				If EntityDistance(e\room\Objects[0], mainPlayer\collider)<3.0 Then
 					e\EventState = 3
 					e\EventState2 = 1
 					;e\Sound = LoadSound_Strict("SFX\SCP\079\Speech.ogg")

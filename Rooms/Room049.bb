@@ -206,9 +206,6 @@ Function UpdateEventRoom049(e.Events)
 								;EndIf
 							EndIf
 						EndIf
-						If EntityVisible(mainPlayer\collider,e\room\NPC[0]\Collider)
-							GiveAchievement(Achv049)
-						EndIf
 					EndIf
 				EndIf
 				
@@ -236,7 +233,6 @@ Function UpdateEventRoom049(e.Events)
 						e\EventState= 70*190
 					EndIf
 				ElseIf e\EventState < 70*240
-					;GiveAchievement(Achv049)
 					
 					;If e\room\NPC[0]=Null Then
 					;	For n.NPCs = Each NPCs

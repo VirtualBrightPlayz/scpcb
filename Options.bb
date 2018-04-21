@@ -21,7 +21,6 @@ Type Options
     Field mouseSensitivity#
     Field invertMouseY%
     Field consoleOpenOnError%
-    Field achvPopup%
     Field mapWidth%
 
     ;Graphics
@@ -61,7 +60,6 @@ Function LoadOptionsINI()
     userOptions\mouseSensitivity    = GetINIFloat(OptionFile, optGen, "mouse sensitivity")
     userOptions\invertMouseY        = GetINIInt(OptionFile, optGen, "invert mouse y")
     userOptions\consoleOpenOnError  = GetINIInt(OptionFile, optGen, "open console on error")
-    userOptions\achvPopup           = GetINIInt(OptionFile, optGen, "achievement popup")
     userOptions\mapWidth            = GetINIInt(OptionFile, optGen, "map size")
 
     ;Min is 640x480.
@@ -107,7 +105,6 @@ Function SaveOptionsINI()
     PutINIValue(OptionFile, optGen, "mouse sensitivity", userOptions\mouseSensitivity)
     PutINIValue(OptionFile, optGen, "invert mouse y", userOptions\invertMouseY)
     PutINIValue(OptionFile, optGen, "open console on error", userOptions\consoleOpenOnError)
-    PutINIValue(OptionFile, optGen, "achievement popup", userOptions\achvPopup)
     PutINIValue(OptionFile, optGen, "map size", userOptions\mapWidth)
 
     PutINIValue(OptionFile, optGra, "screen width", userOptions\screenWidth)

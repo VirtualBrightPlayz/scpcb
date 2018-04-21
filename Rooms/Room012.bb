@@ -81,7 +81,6 @@ Function UpdateEventRoom012(e.Events)
 		
 		If e\EventState=0 Then
 			If EntityDistance(mainPlayer\collider, e\room\RoomDoors[0]\obj)<2.5 And RemoteDoorOn Then
-				GiveAchievement(Achv012)
 				;PlaySound_Strict HorrorSFX(7)
 				PlaySound2 (LeverSFX,mainPlayer\cam,e\room\RoomDoors[0]\obj) 
 				e\EventState=1

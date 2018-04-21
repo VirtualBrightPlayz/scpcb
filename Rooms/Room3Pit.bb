@@ -132,7 +132,6 @@ Function UpdateEventRoom3pit1048(e.Events)
 				If (EntityDistance(mainPlayer\collider, e\room\Objects[2])<3.0) Then
 					If EntityInView(e\room\Objects[2],mainPlayer\cam) Then 
 						e\EventState = 1
-						GiveAchievement(Achv1048)
 					EndIf
 				EndIf
 			Else If e\EventState=1

@@ -101,8 +101,6 @@ Function UpdateEventRoom2servers(e.Events)
 			
 			e\room\NPC[0]=CreateNPC(NPCtypeGuard, EntityX(e\room\Objects[7],True),EntityY(e\room\Objects[7],True),EntityZ(e\room\Objects[7],True))
 			
-			GiveAchievement(Achv096)
-			
 			e\EventState=1
 		EndIf
 	ElseIf e\EventState < 70*45

@@ -155,7 +155,6 @@ Function UpdateEventRoom035(e.Events)
 			If e\EventState=1 Then
 				If EntityDistance(mainPlayer\collider, e\room\Objects[3])<1.2 
 					If EntityInView(e\room\NPC[0]\obj, mainPlayer\cam) Then
-						GiveAchievement(Achv035)
 						PlaySound_Strict(LoadTempSound("SFX\SCP\035\GetUp.ogg"))
 						e\EventState = 1.5
 					EndIf
