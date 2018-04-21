@@ -871,40 +871,16 @@ Function ToggleInventory(player.Player)
 	mainPlayer\selectedItem = Null 
 End Function
 
-Function UpdateInventory(player.Player)
-	;TODO: handle other inventories here
-	;also cleanup
-	Local PrevInvOpen% = (CurrGameState=GAMESTATE_INVENTORY)
+Function DrawInventory(player.Player)
 	Local MouseSlot% = 66
 	
 	Local spacing%
 	
-	Local OtherSize%,OtherAmount%
-	
-	Local isEmpty%
-	
 	Local isMouseOn%
 	
-	Local closedInv%
-	
 	Local strtemp$
+	
 	If CurrGameState=GAMESTATE_INVENTORY Then
-		If (player\currRoom\RoomTemplate\Name = "gatea") Then
-			HideEntity player\overlays[OVERLAY_FOG]
-			CameraFogRange player\cam, 5,30
-			CameraFogColor (player\cam,200,200,200)
-			CameraClsColor (player\cam,200,200,200)					
-			CameraRange(player\cam, 0.05, 30)
-		ElseIf (player\currRoom\RoomTemplate\Name = "exit1") And (EntityY(player\collider)>1040.0*RoomScale)
-			HideEntity player\overlays[OVERLAY_FOG]
-			CameraFogRange player\cam, 5,45
-			CameraFogColor (player\cam,200,200,200)
-			CameraClsColor (player\cam,200,200,200)					
-			CameraRange(player\cam, 0.05, 60)
-		EndIf
-		
-		mainPlayer\selectedDoor = Null
-		
 		width% = 70
 		height% = 70
 		spacing% = 35
@@ -945,37 +921,15 @@ Function UpdateInventory(player.Player)
 			EndIf
 			
 			If player\openInventory\items[n] <> Null And player\selectedItem <> player\openInventory\items[n] Then
-				;drawimage(player\openInventory\items[n].InvIMG, x + width / 2 - 32, y + height / 2 - 32)
 				If isMouseOn Then
 					If player\selectedItem = Null Then
-						If MouseHit1 Then
-							player\selectedItem = player\openInventory\items[n]
-							MouseHit1 = False
-							
-							If DoubleClick Then
-								If player\openInventory\items[n]\itemtemplate\sound <> 66 Then PlaySound_Strict(PickSFX(player\openInventory\items[n]\itemtemplate\sound))
-								CurrGameState = GAMESTATE_PLAYING
-								DoubleClick = False
-							EndIf
-							
-						EndIf
-						
 						SetFont Font1
 						Color 0,0,0
 						Text(x + width / 2 + 1, y + height + spacing - 15 + 1, player\openInventory\items[n]\name, True)							
 						Color 255, 255, 255	
 						Text(x + width / 2, y + height + spacing - 15, player\openInventory\items[n]\name, True)	
-						
 					EndIf
 				EndIf
-			Else
-				If isMouseOn And MouseHit1 Then
-					For z% = 0 To player\openInventory\size - 1
-						If player\openInventory\items[z] = player\selectedItem Then player\openInventory\items[z] = Null
-					Next
-					player\openInventory\items[n] = player\selectedItem
-				End If
-				
 			EndIf					
 			
 			x=x+width + spacing
@@ -992,7 +946,399 @@ Function UpdateInventory(player.Player)
 				ElseIf player\selectedItem <> player\openInventory\items[MouseSlot]
 					DrawImage(player\selectedItem\invimg, ScaledMouseX() - ImageWidth(player\selectedItem\itemtemplate\invimg) / 2, ScaledMouseY() - ImageHeight(player\selectedItem\itemtemplate\invimg) / 2)
 				EndIf
+			End If
+		End If
+		
+		If userOptions\fullscreen Then DrawImage CursorIMG, ScaledMouseX(),ScaledMouseY()
+	Else
+		If player\selectedItem <> Null Then
+			Select player\selectedItem\itemtemplate\tempname
+				Case "key1", "key2", "key3", "key4", "key5", "key6", "keyomni", "scp860", "hand", "hand2"
+					DrawImage(player\selectedItem\itemtemplate\invimg, userOptions\screenWidth / 2 - ImageWidth(player\selectedItem\itemtemplate\invimg) / 2, userOptions\screenHeight / 2 - ImageHeight(player\selectedItem\itemtemplate\invimg) / 2)
+				Case "firstaid","finefirstaid","firstaid2"
+					DrawImage(player\selectedItem\itemtemplate\invimg, userOptions\screenWidth / 2 - ImageWidth(player\selectedItem\itemtemplate\invimg) / 2, userOptions\screenHeight / 2 - ImageHeight(player\selectedItem\itemtemplate\invimg) / 2)
+					
+					width% = 300
+					height% = 20
+					x% = userOptions\screenWidth / 2 - width / 2
+					y% = userOptions\screenHeight / 2 + 80
+					Rect(x, y, width+4, height, False)
+					For  i% = 1 To Int((width - 2) * (player\selectedItem\state / 100.0) / 10)
+						DrawImage(BlinkMeterIMG, x + 3 + 10 * (i - 1), y + 3)
+					Next
+				Case "paper","ticket"
+					If player\selectedItem\itemtemplate\img = 0 Then
+						Select player\selectedItem\itemtemplate\name
+							Case "Burnt Note" 
+								player\selectedItem\itemtemplate\img = LoadImage_Strict("GFX\items\bn.it")
+								SetBuffer ImageBuffer(player\selectedItem\itemtemplate\img)
+								Color 0,0,0
+								Text 277, 469, AccessCode, True, True
+								Color 255,255,255
+								SetBuffer BackBuffer()
+							Case "Movie Ticket"
+								;don't resize because it messes up the masking
+								;TODO: this is retarded, fix
+								player\selectedItem\itemtemplate\img=LoadImage_Strict(player\selectedItem\itemtemplate\imgpath)	
+								
+								If (player\selectedItem\state = 0) Then
+									Msg = Chr(34)+"Hey, I remember getting this ticket from the kickstarter! Wonder if it ever came out..."+Chr(34)
+									MsgTimer = 70*10
+									PlaySound_Strict LoadTempSound("SFX\SCP\1162\NostalgiaCancer"+Rand(1,10)+".ogg")
+									player\selectedItem\state = 1
+								EndIf
+							Default 
+								player\selectedItem\itemtemplate\img=LoadImage_Strict(player\selectedItem\itemtemplate\imgpath)	
+								player\selectedItem\itemtemplate\img = ResizeImage2(player\selectedItem\itemtemplate\img, ImageWidth(player\selectedItem\itemtemplate\img) * MenuScale, ImageHeight(player\selectedItem\itemtemplate\img) * MenuScale)
+						End Select
+						
+						MaskImage(player\selectedItem\itemtemplate\img, 255, 0, 255)
+					EndIf
+					
+					DrawImage(player\selectedItem\itemtemplate\img, userOptions\screenWidth / 2 - ImageWidth(player\selectedItem\itemtemplate\img) / 2, userOptions\screenHeight / 2 - ImageHeight(player\selectedItem\itemtemplate\img) / 2)
+				Case "radio","18vradio","fineradio","veryfineradio"
+					strtemp$ = ""
+					
+					If player\selectedItem\itemtemplate\img=0 Then
+						player\selectedItem\itemtemplate\img=LoadImage_Strict(player\selectedItem\itemtemplate\imgpath)	
+						MaskImage(player\selectedItem\itemtemplate\img, 255, 0, 255)
+					EndIf
+					
+					x = userOptions\screenWidth - ImageWidth(player\selectedItem\itemtemplate\img) ;+ 120
+					y = userOptions\screenHeight - ImageHeight(player\selectedItem\itemtemplate\img) ;- 30
+					
+					DrawImage(player\selectedItem\itemtemplate\img, x, y)
+					
+					If player\selectedItem\state > 0 Then
+						;TODO: remove coffindistance
+						If Not (player\currRoom\RoomTemplate\Name = "pocketdimension" Or CoffinDistance < 4.0) Then
+							Select Int(player\selectedItem\state2)
+								Case 1 ;hälytyskanava
+									strtemp = "        WARNING - CONTAINMENT BREACH          "
+								Case 2 ;scp-radio
+									ResumeChannel(RadioCHN(2))
+									strtemp = "        SCP Foundation On-Site Radio          "
+								Case 3
+									strtemp = "             EMERGENCY CHANNEL - RESERVED FOR COMMUNICATION IN THE EVENT OF A CONTAINMENT BREACH         "
+							End Select 
+							
+							x=x+66
+							y=y+419
+							
+							Color (30,30,30)
+							
+							If player\selectedItem\state <= 100 Then
+								;Text (x - 60, y - 20, "BATTERY")
+								For i = 0 To 4
+									Rect(x, y+8*i, 43 - i * 6, 4, Ceil(player\selectedItem\state / 20.0) > 4 - i )
+								Next
+							EndIf	
+							
+							SetFont Font3
+							Text(x+60, y, "CHN")						
+							
+							If player\selectedItem\itemtemplate\tempname = "veryfineradio" Then ;"KOODIKANAVA"
+								strtemp = ""
+								For i = 0 To Rand(5, 30)
+									strtemp = strtemp + Chr(Rand(1,100))
+								Next
+								
+								SetFont Font4
+								Text(x+97, y+16, Rand(0,9),True,True)
+							Else
+								SetFont Font4
+								Text(x+97, y+16, Int(player\selectedItem\state2+1),True,True)
+							EndIf
+							
+							SetFont Font3
+							If strtemp <> "" Then
+								strtemp = Right(Left(strtemp, (Int(MilliSecs2()/300) Mod Len(strtemp))),10)
+								Text(x+32, y+33, strtemp)
+							EndIf
+							
+							SetFont Font1
+						EndIf
+					EndIf
+				Case "navigator", "nav"
+					If player\selectedItem\itemtemplate\img=0 Then
+						player\selectedItem\itemtemplate\img=LoadImage_Strict(player\selectedItem\itemtemplate\imgpath)	
+						MaskImage(player\selectedItem\itemtemplate\img, 255, 0, 255)
+					EndIf
+					
+					x = userOptions\screenWidth - ImageWidth(player\selectedItem\itemtemplate\img)*0.5+20
+					y = userOptions\screenHeight - ImageHeight(player\selectedItem\itemtemplate\img)*0.4-85
+					width = 287
+					height = 256
+					
+					DrawImage(player\selectedItem\itemtemplate\img, x - ImageWidth(player\selectedItem\itemtemplate\img) / 2, y - ImageHeight(player\selectedItem\itemtemplate\img) / 2 + 85)
+					
+					SetFont Font3
+					
+					If player\currRoom\RoomTemplate\Name = "pocketdimension" Then
+						If (MilliSecs2() Mod 1000) > 300 Then	
+							Text(x, y + height / 2 - 80, "ERROR 06", True)
+							Text(x, y + height / 2 - 60, "LOCATION UNKNOWN", True)						
+						EndIf
+					Else
+						
+						If player\selectedItem\state > 0 And (Rnd(CoffinDistance + 15.0) > 1.0 Or player\currRoom\RoomTemplate\Name <> "coffin") Then
+							
+							If player\selectedItem\itemtemplate\name = "S-NAV Navigator" Then 
+								Color(100, 0, 0)
+							Else
+								Color (30,30,30)
+							EndIf
+							If (MilliSecs2() Mod 1000) > 300 Then
+								If player\selectedItem\itemtemplate\name <> "S-NAV 310 Navigator" And player\selectedItem\itemtemplate\name <> "S-NAV Navigator Ultimate" Then
+									Text(x, y + height / 2 - 40, "COULD NOT CONNECT", True)
+									Text(x, y + height / 2 - 20, "TO MAP DATABASE", True)
+								EndIf
+								
+								yawvalue = EntityYaw(player\collider)-90
+								x1 = x+Cos(yawvalue)*6 : y1 = y-Sin(yawvalue)*6
+								x2 = x+Cos(yawvalue-140)*5 : y2 = y-Sin(yawvalue-140)*5				
+								x3 = x+Cos(yawvalue+140)*5 : y3 = y-Sin(yawvalue+140)*5
+								
+								Line x1,y1,x2,y2
+								Line x1,y1,x3,y3
+								Line x2,y2,x3,y3
+							EndIf
+							
+							Local PlayerX% = Floor(EntityX(player\currRoom\obj) / 8.0 + 0.5), PlayerZ% = Floor(EntityZ(player\currRoom\obj) / 8.0 + 0.5)
+							Local SCPs_found% = 0
+							If player\selectedItem\itemtemplate\name = "S-NAV Navigator Ultimate" And (MilliSecs2() Mod 600) < 400 Then
+								Local dist# = EntityDistance(player\cam, Curr173\obj)
+								dist = Ceil(dist / 8.0) * 8.0
+								If dist < 8.0 * 4 Then
+									Color 100, 0, 0
+									Oval(x - dist * 3, y - 7 - dist * 3, dist * 3 * 2, dist * 3 * 2, False)
+									Text(x - width / 2 + 20, y - height / 2 + 20, "SCP-173")
+									SCPs_found% = SCPs_found% + 1
+								EndIf
+								dist# = EntityDistance(player\cam, Curr106\obj)
+								If dist < 8.0 * 4 Then
+									Color 100, 0, 0
+									Oval(x - dist * 1.5, y - 7 - dist * 1.5, dist * 3, dist * 3, False)
+									Text(x - width / 2 + 20, y - height / 2 + 20 + (20*SCPs_found), "SCP-106")
+									SCPs_found% = SCPs_found% + 1
+								EndIf
+								If Curr096<>Null Then 
+									dist# = EntityDistance(player\cam, Curr096\obj)
+									If dist < 8.0 * 4 Then
+										Color 100, 0, 0
+										Oval(x - dist * 1.5, y - 7 - dist * 1.5, dist * 3, dist * 3, False)
+										Text(x - width / 2 + 20, y - height / 2 + 20 + (20*SCPs_found), "SCP-096")
+										SCPs_found% = SCPs_found% + 1
+									EndIf
+								EndIf
+								For np.NPCs = Each NPCs
+									If np\NPCtype = NPCtype049
+										dist# = EntityDistance(player\cam, np\obj)
+										If dist < 8.0 * 4 Then
+											Color 100, 0, 0
+											Oval(x - dist * 1.5, y - 7 - dist * 1.5, dist * 3, dist * 3, False)
+											Text(x - width / 2 + 20, y - height / 2 + 20 + (20*SCPs_found), "SCP-049")
+											SCPs_found% = SCPs_found% + 1
+										EndIf
+									EndIf
+								Next
+								
+								If player\currRoom\RoomTemplate\Name = "coffin" Then
+									If CoffinDistance < 8.0 Then
+										dist = Rnd(4.0, 8.0)
+										Color 100, 0, 0
+										Oval(x - dist * 1.5, y - 7 - dist * 1.5, dist * 3, dist * 3, False)
+										Text(x - width / 2 + 20, y - height / 2 + 20 + (20*SCPs_found), "SCP-895")
+									EndIf
+								EndIf
+							End If
+							
+							Color (30,30,30)
+							If player\selectedItem\itemtemplate\name = "S-NAV Navigator" Then Color(100, 0, 0)
+							If player\selectedItem\state <= 100 Then
+								Text (x - width/2 + 10, y - height/2 + 10, "BATTERY")
+								xtemp = x - width/2 + 10
+								ytemp = y - height/2 + 30		
+								Line xtemp, ytemp, xtemp+20, ytemp
+								Line xtemp, ytemp+100, xtemp+20, ytemp+100
+								Line xtemp, ytemp, xtemp, ytemp+100
+								Line xtemp+20, ytemp, xtemp+20, ytemp+100
+								
+								SetFont Font4
+								For i = 1 To Ceil(player\selectedItem\state / 10.0)
+									Text (xtemp+11, ytemp+i*10-26, "-", True)
+									;Rect(x - width/2, y+i*15, 40 - i * 6, 5, Ceil(player\selectedItem\state / 20.0) > 4 - i)
+								Next
+								SetFont Font3
+							EndIf
+							
+							x = x - 19 + ((EntityX(player\collider) - 4.0) Mod 8.0)*3
+							y = y + 14 - ((EntityZ(player\collider)-4.0) Mod 8.0)*3
+							For x2 = Max(1, PlayerX - 4) To Min(MapWidth - 1, PlayerX + 4)
+								For z2 = Max(1, PlayerZ - 4) To Min(MapHeight - 1, PlayerZ + 4)
+									
+									If CoffinDistance > 16.0 Or Rnd(16.0)<CoffinDistance Then 
+										If MapTemp(x2, z2) And (MapFound(x2, z2) > 0 Or player\selectedItem\itemtemplate\name = "S-NAV 310 Navigator" Or player\selectedItem\itemtemplate\name = "S-NAV Navigator Ultimate") Then
+											Local drawx% = x + (PlayerX - x2) * 24 , drawy% = y - (PlayerZ - z2) * 24 
+											
+											Color (30,30,30)
+											If player\selectedItem\itemtemplate\name = "S-NAV Navigator" Then Color(100, 0, 0)
+											
+											If MapTemp(x2 + 1, z2) = False Then Line(drawx - 12, drawy - 12, drawx - 12, drawy + 12)
+											If MapTemp(x2 - 1, z2) = False Then Line(drawx + 12, drawy - 12, drawx + 12, drawy + 12)
+											
+											If MapTemp(x2, z2 - 1) = False Then Line(drawx - 12, drawy - 12, drawx + 12, drawy - 12)
+											If MapTemp(x2, z2 + 1)= False Then Line(drawx - 12, drawy + 12, drawx + 12, drawy + 12)
+										EndIf
+									EndIf
+								Next
+							Next
+						EndIf
+					EndIf
+				Case "badge"
+					If player\selectedItem\itemtemplate\img=0 Then
+						player\selectedItem\itemtemplate\img=LoadImage_Strict(player\selectedItem\itemtemplate\imgpath)	
+						;player\selectedItem\itemtemplate\img = ResizeImage2(player\selectedItem\itemtemplate\img, ImageWidth(player\selectedItem\itemtemplate\img) * MenuScale, ImageHeight(player\selectedItem\itemtemplate\img) * MenuScale)
+						
+						MaskImage(player\selectedItem\itemtemplate\img, 255, 0, 255)
+					EndIf
+					
+					DrawImage(player\selectedItem\itemtemplate\img, userOptions\screenWidth / 2 - ImageWidth(player\selectedItem\itemtemplate\img) / 2, userOptions\screenHeight / 2 - ImageHeight(player\selectedItem\itemtemplate\img) / 2)
+					
+					If player\selectedItem\state = 0 Then
+						PlaySound_Strict LoadTempSound("SFX\SCP\1162\NostalgiaCancer"+Rand(1,10)+".ogg")
+						Select player\selectedItem\itemtemplate\name
+							Case "Old Badge"
+								Msg = Chr(34)+"Huh? This guy looks just like me!"+Chr(34)
+								MsgTimer = 70*10
+						End Select
+						
+						player\selectedItem\state = 1
+					EndIf
+				Case "key"
+					If player\selectedItem\state = 0 Then
+						PlaySound_Strict LoadTempSound("SFX\SCP\1162\NostalgiaCancer"+Rand(1,10)+".ogg")
+						
+						Msg = Chr(34)+"Isn't this the key to that old shack? The one where I... No, it can't be."+Chr(34)
+						MsgTimer = 70*10						
+					EndIf
+					
+					player\selectedItem\state = 1
+					player\selectedItem = Null
+				Case "oldpaper"
+					If player\selectedItem\itemtemplate\img = 0 Then
+						player\selectedItem\itemtemplate\img = LoadImage_Strict(player\selectedItem\itemtemplate\imgpath)	
+						player\selectedItem\itemtemplate\img = ResizeImage2(player\selectedItem\itemtemplate\img, ImageWidth(player\selectedItem\itemtemplate\img) * MenuScale, ImageHeight(player\selectedItem\itemtemplate\img) * MenuScale)
+						
+						MaskImage(player\selectedItem\itemtemplate\img, 255, 0, 255)
+					EndIf
+					
+					DrawImage(player\selectedItem\itemtemplate\img, userOptions\screenWidth / 2 - ImageWidth(player\selectedItem\itemtemplate\img) / 2, userOptions\screenHeight / 2 - ImageHeight(player\selectedItem\itemtemplate\img) / 2)
+					
+					If player\selectedItem\state = 0
+						Select player\selectedItem\itemtemplate\name
+							Case "Disciplinary Hearing DH-S-4137-17092"
+								player\blurTimer = 1000
+								
+								Msg = Chr(34)+"Why does this seem so familiar?"+Chr(34)
+								MsgTimer = 70*10
+								PlaySound_Strict LoadTempSound("SFX\SCP\1162\NostalgiaCancer"+Rand(1,10)+".ogg")
+								player\selectedItem\state = 1
+						End Select
+					EndIf
+			End Select
+		EndIf
+	EndIf
+	
+End Function
+
+Function UpdateInventory(player.Player)
+	;TODO: cleanup
+	Local PrevInvOpen% = (CurrGameState=GAMESTATE_INVENTORY)
+	Local MouseSlot% = 66
+	
+	Local spacing%
+	
+	Local OtherSize.MarkedForRemoval,OtherAmount.MarkedForRemoval
+	
+	Local isEmpty.MarkedForRemoval
+	
+	Local isMouseOn%
+	
+	Local closedInv.MarkedForRemoval
+	
+	Local strtemp$
+	If CurrGameState=GAMESTATE_INVENTORY Then
+		If (player\currRoom\RoomTemplate\Name = "gatea") Then
+			HideEntity player\overlays[OVERLAY_FOG]
+			CameraFogRange player\cam, 5,30
+			CameraFogColor (player\cam,200,200,200)
+			CameraClsColor (player\cam,200,200,200)					
+			CameraRange(player\cam, 0.05, 30)
+		ElseIf (player\currRoom\RoomTemplate\Name = "exit1") And (EntityY(player\collider)>1040.0*RoomScale)
+			HideEntity player\overlays[OVERLAY_FOG]
+			CameraFogRange player\cam, 5,45
+			CameraFogColor (player\cam,200,200,200)
+			CameraClsColor (player\cam,200,200,200)					
+			CameraRange(player\cam, 0.05, 60)
+		EndIf
+		
+		mainPlayer\selectedDoor = Null
+		
+		width% = 70
+		height% = 70
+		spacing% = 35
+		
+		itemsPerRow% = 5
+		
+		x = userOptions\screenWidth / 2 - (width * itemsPerRow + spacing * (itemsPerRow - 1)) / 2
+		y = userOptions\screenHeight / 2 - height * (player\openInventory\size/itemsPerRow) + height / 2
+		
+		For  n% = 0 To player\openInventory\size - 1
+			isMouseOn% = False
+			If ScaledMouseX() > x And ScaledMouseX() < x + width Then
+				If ScaledMouseY() > y And ScaledMouseY() < y + height Then
+					isMouseOn = True
+				End If
+			EndIf
+			
+			If player\openInventory\items[n] <> Null And player\selectedItem <> player\openInventory\items[n] Then
+				If isMouseOn Then
+					If player\selectedItem = Null Then
+						If MouseHit1 Then
+							player\selectedItem = player\openInventory\items[n]
+							MouseHit1 = False
+							
+							If DoubleClick Then
+								If player\openInventory\items[n]\itemtemplate\sound <> 66 Then PlaySound_Strict(PickSFX(player\openInventory\items[n]\itemtemplate\sound))
+								CurrGameState = GAMESTATE_PLAYING
+								DoubleClick = False
+							EndIf
+						EndIf
+					EndIf
+				EndIf
 			Else
+				If isMouseOn And MouseHit1 Then
+					For z% = 0 To player\openInventory\size - 1
+						If player\openInventory\items[z] = player\selectedItem Then player\openInventory\items[z] = Null
+					Next
+					player\openInventory\items[n] = player\selectedItem
+				End If
+			EndIf
+			
+			If isMouseOn Then
+				MouseSlot = n
+			EndIf
+			
+			x=x+width + spacing
+			If n Mod 5 = 4 Then 
+				y = y + height*2 
+				x = userOptions\screenWidth / 2 - (width * itemsPerRow + spacing * (itemsPerRow - 1)) / 2
+			EndIf
+		Next
+		
+		If player\selectedItem <> Null Then
+			If Not MouseDown1 Then
 				If MouseSlot = 66 Then
 					DropItem(player\selectedItem)		
 					
@@ -1140,8 +1486,7 @@ Function UpdateInventory(player.Player)
 			ResumeSounds() 
 			MouseXSpeed() : MouseYSpeed() : MouseZSpeed() : mouse_x_speed_1#=0.0 : mouse_y_speed_1#=0.0
 		EndIf
-	Else ;invopen = False
-		
+	Else
 		If player\selectedItem <> Null Then
 			Select player\selectedItem\itemtemplate\tempname
 				Case "1123"
@@ -1167,11 +1512,8 @@ Function UpdateInventory(player.Player)
 							Exit
 						EndIf
 					Next
-				Case "battery"
-					;InvOpen = True
-					
-				Case "key1", "key2", "key3", "key4", "key5", "key6", "keyomni", "scp860", "hand", "hand2"
-					DrawImage(player\selectedItem\itemtemplate\invimg, userOptions\screenWidth / 2 - ImageWidth(player\selectedItem\itemtemplate\invimg) / 2, userOptions\screenHeight / 2 - ImageHeight(player\selectedItem\itemtemplate\invimg) / 2)
+				Case "battery","key1", "key2", "key3", "key4", "key5", "key6", "keyomni", "scp860", "hand", "hand2"
+					;do nothing
 				Case "scp513"
 					PlaySound_Strict LoadTempSound("SFX\SCP\513\Bell"+Rand(1,3)+".ogg")
 					
@@ -1256,17 +1598,6 @@ Function UpdateInventory(player.Player)
 					Else
 						player\moveSpeed = CurveValue(0, player\moveSpeed, 5.0)
 						player\crouching = True
-						
-						DrawImage(player\selectedItem\itemtemplate\invimg, userOptions\screenWidth / 2 - ImageWidth(player\selectedItem\itemtemplate\invimg) / 2, userOptions\screenHeight / 2 - ImageHeight(player\selectedItem\itemtemplate\invimg) / 2)
-						
-						width% = 300
-						height% = 20
-						x% = userOptions\screenWidth / 2 - width / 2
-						y% = userOptions\screenHeight / 2 + 80
-						Rect(x, y, width+4, height, False)
-						For  i% = 1 To Int((width - 2) * (player\selectedItem\state / 100.0) / 10)
-							DrawImage(BlinkMeterIMG, x + 3 + 10 * (i - 1), y + 3)
-						Next
 						
 						player\selectedItem\state = Min(player\selectedItem\state+(timing\tickDuration/5.0),100)			
 						
@@ -1354,35 +1685,7 @@ Function UpdateInventory(player.Player)
 					player\blurTimer = 1000
 					RemoveItem(player\selectedItem)					
 				Case "paper", "ticket"
-					If player\selectedItem\itemtemplate\img = 0 Then
-						Select player\selectedItem\itemtemplate\name
-							Case "Burnt Note" 
-								player\selectedItem\itemtemplate\img = LoadImage_Strict("GFX\items\bn.it")
-								SetBuffer ImageBuffer(player\selectedItem\itemtemplate\img)
-								Color 0,0,0
-								Text 277, 469, AccessCode, True, True
-								Color 255,255,255
-								SetBuffer BackBuffer()
-							Case "Movie Ticket"
-								;don't resize because it messes up the masking
-								;TODO: this is retarded, fix
-								player\selectedItem\itemtemplate\img=LoadImage_Strict(player\selectedItem\itemtemplate\imgpath)	
-								
-								If (player\selectedItem\state = 0) Then
-									Msg = Chr(34)+"Hey, I remember getting this ticket from the kickstarter! Wonder if it ever came out..."+Chr(34)
-									MsgTimer = 70*10
-									PlaySound_Strict LoadTempSound("SFX\SCP\1162\NostalgiaCancer"+Rand(1,10)+".ogg")
-									player\selectedItem\state = 1
-								EndIf
-							Default 
-								player\selectedItem\itemtemplate\img=LoadImage_Strict(player\selectedItem\itemtemplate\imgpath)	
-								player\selectedItem\itemtemplate\img = ResizeImage2(player\selectedItem\itemtemplate\img, ImageWidth(player\selectedItem\itemtemplate\img) * MenuScale, ImageHeight(player\selectedItem\itemtemplate\img) * MenuScale)
-						End Select
-						
-						MaskImage(player\selectedItem\itemtemplate\img, 255, 0, 255)
-					EndIf
-					
-					DrawImage(player\selectedItem\itemtemplate\img, userOptions\screenWidth / 2 - ImageWidth(player\selectedItem\itemtemplate\img) / 2, userOptions\screenHeight / 2 - ImageHeight(player\selectedItem\itemtemplate\img) / 2)
+					;do nothing
 				Case "cup"
 					
 					player\selectedItem\name = Trim(Lower(player\selectedItem\name))
@@ -1444,11 +1747,6 @@ Function UpdateInventory(player.Player)
 				Case "radio","18vradio","fineradio","veryfineradio"
 					If player\selectedItem\state <= 100 Then player\selectedItem\state = Max(0, player\selectedItem\state - timing\tickDuration * 0.004)
 					
-					If player\selectedItem\itemtemplate\img=0 Then
-						player\selectedItem\itemtemplate\img=LoadImage_Strict(player\selectedItem\itemtemplate\imgpath)	
-						MaskImage(player\selectedItem\itemtemplate\img, 255, 0, 255)
-					EndIf
-					
 					;radiostate(5) = has the "use the number keys" -message been shown yet (true/false)
 					;radiostate(6) = a timer for the "code channel"
 					;RadioState(7) = another timer for the "code channel"
@@ -1459,13 +1757,6 @@ Function UpdateInventory(player.Player)
 						RadioState(5) = 1
 						RadioState(0) = -1
 					EndIf
-					
-					strtemp$ = ""
-					
-					x = userOptions\screenWidth - ImageWidth(player\selectedItem\itemtemplate\img) ;+ 120
-					y = userOptions\screenHeight - ImageHeight(player\selectedItem\itemtemplate\img) ;- 30
-					
-					DrawImage(player\selectedItem\itemtemplate\img, x, y)
 					
 					If player\selectedItem\state > 0 Then
 						;TODO: remove coffindistance
@@ -1483,7 +1774,7 @@ Function UpdateInventory(player.Player)
 									DebugLog RadioState(1) 
 									
 									ResumeChannel(RadioCHN(1))
-									strtemp = "        WARNING - CONTAINMENT BREACH          "
+									;strtemp = "        WARNING - CONTAINMENT BREACH          "
 									If ChannelPlaying(RadioCHN(1)) = False Then
 										
 										If RadioState(1) => 5 Then
@@ -1498,7 +1789,7 @@ Function UpdateInventory(player.Player)
 									
 								Case 2 ;scp-radio
 									ResumeChannel(RadioCHN(2))
-									strtemp = "        SCP Foundation On-Site Radio          "
+									;strtemp = "        SCP Foundation On-Site Radio          "
 									If ChannelPlaying(RadioCHN(2)) = False Then
 										RadioState(2)=RadioState(2)+1
 										If RadioState(2) = 17 Then RadioState(2) = 1
@@ -1510,7 +1801,7 @@ Function UpdateInventory(player.Player)
 									EndIf 
 								Case 3
 									ResumeChannel(RadioCHN(3))
-									strtemp = "             EMERGENCY CHANNEL - RESERVED FOR COMMUNICATION IN THE EVENT OF A CONTAINMENT BREACH         "
+									;strtemp = "             EMERGENCY CHANNEL - RESERVED FOR COMMUNICATION IN THE EVENT OF A CONTAINMENT BREACH         "
 									If ChannelPlaying(RadioCHN(3)) = False Then RadioCHN(3) = PlaySound_Strict(RadioStatic)
 									
 									If MTFtimer > 0 Then 
@@ -1628,17 +1919,12 @@ Function UpdateInventory(player.Player)
 							x=x+66
 							y=y+419
 							
-							Color (30,30,30)
-							
 							If player\selectedItem\state <= 100 Then
 								;Text (x - 60, y - 20, "BATTERY")
 								For i = 0 To 4
 									Rect(x, y+8*i, 43 - i * 6, 4, Ceil(player\selectedItem\state / 20.0) > 4 - i )
 								Next
 							EndIf	
-							
-							SetFont Font3
-							Text(x+60, y, "CHN")						
 							
 							If player\selectedItem\itemtemplate\tempname = "veryfineradio" Then ;"KOODIKANAVA"
 								ResumeChannel(RadioCHN(0))
@@ -1658,15 +1944,6 @@ Function UpdateInventory(player.Player)
 										If RadioState(8)=4 Then RadioState(8)=0 : RadioState(6)=-200
 									EndIf
 								EndIf
-								
-								strtemp = ""
-								For i = 0 To Rand(5, 30)
-									strtemp = strtemp + Chr(Rand(1,100))
-								Next
-								
-								SetFont Font4
-								Text(x+97, y+16, Rand(0,9),True,True)
-								
 							Else
 								For i = 2 To 6
 									If KeyHit(i) Then
@@ -1679,23 +1956,9 @@ Function UpdateInventory(player.Player)
 										If RadioCHN(player\selectedItem\state2)<>0 Then ResumeChannel(RadioCHN(player\selectedItem\state2))
 									EndIf
 								Next
-								
-								SetFont Font4
-								Text(x+97, y+16, Int(player\selectedItem\state2+1),True,True)
 							EndIf
-							
-							SetFont Font3
-							If strtemp <> "" Then
-								strtemp = Right(Left(strtemp, (Int(MilliSecs2()/300) Mod Len(strtemp))),10)
-								Text(x+32, y+33, strtemp)
-							EndIf
-							
-							SetFont Font1
-							
 						EndIf
-						
 					EndIf
-					
 				Case "cigarette"
 					If player\selectedItem\state = 0 Then
 						Select Rand(6)
@@ -1737,199 +2000,7 @@ Function UpdateInventory(player.Player)
 					MsgTimer = 70 * 6
 					RemoveItem(player\selectedItem)
 				Case "navigator", "nav"
-					
-					If player\selectedItem\itemtemplate\img=0 Then
-						player\selectedItem\itemtemplate\img=LoadImage_Strict(player\selectedItem\itemtemplate\imgpath)	
-						MaskImage(player\selectedItem\itemtemplate\img, 255, 0, 255)
-					EndIf
-					
 					If player\selectedItem\state <= 100 Then player\selectedItem\state = Max(0, player\selectedItem\state - timing\tickDuration * 0.005)
-					
-					x = userOptions\screenWidth - ImageWidth(player\selectedItem\itemtemplate\img)*0.5+20
-					y = userOptions\screenHeight - ImageHeight(player\selectedItem\itemtemplate\img)*0.4-85
-					width = 287
-					height = 256
-					
-					DrawImage(player\selectedItem\itemtemplate\img, x - ImageWidth(player\selectedItem\itemtemplate\img) / 2, y - ImageHeight(player\selectedItem\itemtemplate\img) / 2 + 85)
-					
-					SetFont Font3
-					
-					If player\currRoom\RoomTemplate\Name = "pocketdimension" Then
-						If (MilliSecs2() Mod 1000) > 300 Then	
-							Text(x, y + height / 2 - 80, "ERROR 06", True)
-							Text(x, y + height / 2 - 60, "LOCATION UNKNOWN", True)						
-						EndIf
-					Else
-						
-						If player\selectedItem\state > 0 And (Rnd(CoffinDistance + 15.0) > 1.0 Or player\currRoom\RoomTemplate\Name <> "coffin") Then
-							
-							If player\selectedItem\itemtemplate\name = "S-NAV Navigator" Then 
-								Color(100, 0, 0)
-							Else
-								Color (30,30,30)
-							EndIf
-							If (MilliSecs2() Mod 1000) > 300 Then
-								If player\selectedItem\itemtemplate\name <> "S-NAV 310 Navigator" And player\selectedItem\itemtemplate\name <> "S-NAV Navigator Ultimate" Then
-									Text(x, y + height / 2 - 40, "COULD NOT CONNECT", True)
-									Text(x, y + height / 2 - 20, "TO MAP DATABASE", True)
-								EndIf
-								
-								yawvalue = EntityYaw(player\collider)-90
-								x1 = x+Cos(yawvalue)*6 : y1 = y-Sin(yawvalue)*6
-								x2 = x+Cos(yawvalue-140)*5 : y2 = y-Sin(yawvalue-140)*5				
-								x3 = x+Cos(yawvalue+140)*5 : y3 = y-Sin(yawvalue+140)*5
-								
-								Line x1,y1,x2,y2
-								Line x1,y1,x3,y3
-								Line x2,y2,x3,y3
-							EndIf
-							
-							Local PlayerX% = Floor(EntityX(player\currRoom\obj) / 8.0 + 0.5), PlayerZ% = Floor(EntityZ(player\currRoom\obj) / 8.0 + 0.5)
-							Local SCPs_found% = 0
-							If player\selectedItem\itemtemplate\name = "S-NAV Navigator Ultimate" And (MilliSecs2() Mod 600) < 400 Then
-								Local dist# = EntityDistance(player\cam, Curr173\obj)
-								dist = Ceil(dist / 8.0) * 8.0
-								If dist < 8.0 * 4 Then
-									Color 100, 0, 0
-									Oval(x - dist * 3, y - 7 - dist * 3, dist * 3 * 2, dist * 3 * 2, False)
-									Text(x - width / 2 + 20, y - height / 2 + 20, "SCP-173")
-									SCPs_found% = SCPs_found% + 1
-								EndIf
-								dist# = EntityDistance(player\cam, Curr106\obj)
-								If dist < 8.0 * 4 Then
-									Color 100, 0, 0
-									Oval(x - dist * 1.5, y - 7 - dist * 1.5, dist * 3, dist * 3, False)
-									Text(x - width / 2 + 20, y - height / 2 + 20 + (20*SCPs_found), "SCP-106")
-									SCPs_found% = SCPs_found% + 1
-								EndIf
-								If Curr096<>Null Then 
-									dist# = EntityDistance(player\cam, Curr096\obj)
-									If dist < 8.0 * 4 Then
-										Color 100, 0, 0
-										Oval(x - dist * 1.5, y - 7 - dist * 1.5, dist * 3, dist * 3, False)
-										Text(x - width / 2 + 20, y - height / 2 + 20 + (20*SCPs_found), "SCP-096")
-										SCPs_found% = SCPs_found% + 1
-									EndIf
-								EndIf
-								For np.NPCs = Each NPCs
-									If np\NPCtype = NPCtype049
-										dist# = EntityDistance(player\cam, np\obj)
-										If dist < 8.0 * 4 Then
-											Color 100, 0, 0
-											Oval(x - dist * 1.5, y - 7 - dist * 1.5, dist * 3, dist * 3, False)
-											Text(x - width / 2 + 20, y - height / 2 + 20 + (20*SCPs_found), "SCP-049")
-											SCPs_found% = SCPs_found% + 1
-										EndIf
-									EndIf
-								Next
-								
-								If player\currRoom\RoomTemplate\Name = "coffin" Then
-									If CoffinDistance < 8.0 Then
-										dist = Rnd(4.0, 8.0)
-										Color 100, 0, 0
-										Oval(x - dist * 1.5, y - 7 - dist * 1.5, dist * 3, dist * 3, False)
-										Text(x - width / 2 + 20, y - height / 2 + 20 + (20*SCPs_found), "SCP-895")
-									EndIf
-								EndIf
-							End If
-							
-							Color (30,30,30)
-							If player\selectedItem\itemtemplate\name = "S-NAV Navigator" Then Color(100, 0, 0)
-							If player\selectedItem\state <= 100 Then
-								Text (x - width/2 + 10, y - height/2 + 10, "BATTERY")
-								xtemp = x - width/2 + 10
-								ytemp = y - height/2 + 30		
-								Line xtemp, ytemp, xtemp+20, ytemp
-								Line xtemp, ytemp+100, xtemp+20, ytemp+100
-								Line xtemp, ytemp, xtemp, ytemp+100
-								Line xtemp+20, ytemp, xtemp+20, ytemp+100
-								
-								SetFont Font4
-								For i = 1 To Ceil(player\selectedItem\state / 10.0)
-									Text (xtemp+11, ytemp+i*10-26, "-", True)
-									;Rect(x - width/2, y+i*15, 40 - i * 6, 5, Ceil(player\selectedItem\state / 20.0) > 4 - i)
-								Next
-								SetFont Font3
-							EndIf
-							
-							x = x - 19 + ((EntityX(player\collider) - 4.0) Mod 8.0)*3
-							y = y + 14 - ((EntityZ(player\collider)-4.0) Mod 8.0)*3
-							For x2 = Max(1, PlayerX - 4) To Min(MapWidth - 1, PlayerX + 4)
-								For z2 = Max(1, PlayerZ - 4) To Min(MapHeight - 1, PlayerZ + 4)
-									
-									If CoffinDistance > 16.0 Or Rnd(16.0)<CoffinDistance Then 
-										If MapTemp(x2, z2) And (MapFound(x2, z2) > 0 Or player\selectedItem\itemtemplate\name = "S-NAV 310 Navigator" Or player\selectedItem\itemtemplate\name = "S-NAV Navigator Ultimate") Then
-											Local drawx% = x + (PlayerX - x2) * 24 , drawy% = y - (PlayerZ - z2) * 24 
-											
-											Color (30,30,30)
-											If player\selectedItem\itemtemplate\name = "S-NAV Navigator" Then Color(100, 0, 0)
-											
-											If MapTemp(x2 + 1, z2) = False Then Line(drawx - 12, drawy - 12, drawx - 12, drawy + 12)
-											If MapTemp(x2 - 1, z2) = False Then Line(drawx + 12, drawy - 12, drawx + 12, drawy + 12)
-											
-											If MapTemp(x2, z2 - 1) = False Then Line(drawx - 12, drawy - 12, drawx + 12, drawy - 12)
-											If MapTemp(x2, z2 + 1)= False Then Line(drawx - 12, drawy + 12, drawx + 12, drawy + 12)
-											
-										End If
-									EndIf
-									
-								Next
-							Next
-							
-						EndIf
-						
-					EndIf
-				Case "badge"
-					If player\selectedItem\itemtemplate\img=0 Then
-						player\selectedItem\itemtemplate\img=LoadImage_Strict(player\selectedItem\itemtemplate\imgpath)	
-						;player\selectedItem\itemtemplate\img = ResizeImage2(player\selectedItem\itemtemplate\img, ImageWidth(player\selectedItem\itemtemplate\img) * MenuScale, ImageHeight(player\selectedItem\itemtemplate\img) * MenuScale)
-						
-						MaskImage(player\selectedItem\itemtemplate\img, 255, 0, 255)
-					EndIf
-					
-					DrawImage(player\selectedItem\itemtemplate\img, userOptions\screenWidth / 2 - ImageWidth(player\selectedItem\itemtemplate\img) / 2, userOptions\screenHeight / 2 - ImageHeight(player\selectedItem\itemtemplate\img) / 2)
-					
-					If player\selectedItem\state = 0 Then
-						PlaySound_Strict LoadTempSound("SFX\SCP\1162\NostalgiaCancer"+Rand(1,10)+".ogg")
-						Select player\selectedItem\itemtemplate\name
-							Case "Old Badge"
-								Msg = Chr(34)+"Huh? This guy looks just like me!"+Chr(34)
-								MsgTimer = 70*10
-						End Select
-						
-						player\selectedItem\state = 1
-					EndIf
-				Case "key"
-					If player\selectedItem\state = 0 Then
-						PlaySound_Strict LoadTempSound("SFX\SCP\1162\NostalgiaCancer"+Rand(1,10)+".ogg")
-						
-						Msg = Chr(34)+"Isn't this the key to that old shack? The one where I... No, it can't be."+Chr(34)
-						MsgTimer = 70*10						
-					EndIf
-					
-					player\selectedItem\state = 1
-					player\selectedItem = Null
-				Case "oldpaper"
-					If player\selectedItem\itemtemplate\img = 0 Then
-						player\selectedItem\itemtemplate\img = LoadImage_Strict(player\selectedItem\itemtemplate\imgpath)	
-						player\selectedItem\itemtemplate\img = ResizeImage2(player\selectedItem\itemtemplate\img, ImageWidth(player\selectedItem\itemtemplate\img) * MenuScale, ImageHeight(player\selectedItem\itemtemplate\img) * MenuScale)
-						
-						MaskImage(player\selectedItem\itemtemplate\img, 255, 0, 255)
-					EndIf
-					
-					DrawImage(player\selectedItem\itemtemplate\img, userOptions\screenWidth / 2 - ImageWidth(player\selectedItem\itemtemplate\img) / 2, userOptions\screenHeight / 2 - ImageHeight(player\selectedItem\itemtemplate\img) / 2)
-					
-					If player\selectedItem\state = 0
-						Select player\selectedItem\itemtemplate\name
-							Case "Disciplinary Hearing DH-S-4137-17092"
-								player\blurTimer = 1000
-								
-								Msg = Chr(34)+"Why does this seem so familiar?"+Chr(34)
-								MsgTimer = 70*10
-								PlaySound_Strict LoadTempSound("SFX\SCP\1162\NostalgiaCancer"+Rand(1,10)+".ogg")
-								player\selectedItem\state = 1
-						End Select
-					EndIf
 				Case "coin"
 					If player\selectedItem\state = 0
 						PlaySound_Strict LoadTempSound("SFX\SCP\1162\NostalgiaCancer"+Rand(1,10)+".ogg")
@@ -2043,5 +2114,4 @@ Function Kill(player.Player)
 	EndIf
 End Function
 ;~IDEal Editor Parameters:
-;~F#EE#130#25A#37E#395
 ;~C#Blitz3D

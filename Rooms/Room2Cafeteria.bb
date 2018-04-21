@@ -22,20 +22,28 @@ Function FillRoom2Cafeteria(r.Rooms)
     EntityParent(it\collider, r\obj)
 End Function
 
-Function Use294()
+Function Draw294()
 	Local x#,y#, xtemp%,ytemp%, strtemp$, temp%
 	
 	ShowPointer()
 	
 	x = userOptions\screenWidth/2 - (ImageWidth(Panel294)/2)
 	y = userOptions\screenHeight/2 - (ImageHeight(Panel294)/2)
+	
 	DrawImage Panel294, x, y
 	If userOptions\fullscreen Then DrawImage CursorIMG, ScaledMouseX(),ScaledMouseY()
 	
+	Text x+907, y+185, Input294, True,True
+End Function
+
+Function Update294()
+	Local x#,y#, xtemp%,ytemp%, strtemp$, temp%
+	
+	x = userOptions\screenWidth/2 - (ImageWidth(Panel294)/2)
+	y = userOptions\screenHeight/2 - (ImageHeight(Panel294)/2)
+	
 	temp = True
 	If mainPlayer\currRoom\SoundCHN<>0 Then temp = False
-	
-	Text x+907, y+185, Input294, True,True
 	
 	If temp Then
 		If MouseHit1 Then
@@ -186,7 +194,7 @@ Function Use294()
 		EndIf
 		
 	Else ;playing a dispensing sound
-		If Input294 <> "OUT OF RANGE" Then Input294 = "DISPENSING..." : DebugLog "Generated dat dispenser"
+		If Input294 <> "OUT OF RANGE" Then Input294 = "DISPENSING..." : DebugLog "cringe"
 		
 		If Not ChannelPlaying(mainPlayer\currRoom\SoundCHN) Then
 			If Input294 <> "OUT OF RANGE" Then
@@ -199,7 +207,6 @@ Function Use294()
 	EndIf
 	
 End Function
-
 
 Function UpdateEventRoom2cafeteria(e.Events)
 	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
