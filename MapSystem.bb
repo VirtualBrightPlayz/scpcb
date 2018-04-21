@@ -1178,13 +1178,13 @@ Function LoadRoomTemplates(file$)
 			Select StrTemp
 				Case "room1", "1"
 					rt\Shape = ROOM1
-				Case "room2", "2"
+				Case "hll_plain_2", "2"
 					rt\Shape = ROOM2
-				Case "room2c", "2c"
+				Case "hll_plain_2c", "2c"
 					rt\Shape = ROOM2C
-				Case "room3", "3"
+				Case "hll_plain_3", "3"
 					rt\Shape = ROOM3
-				Case "room4", "4"
+				Case "hll_plain_4", "4"
 					rt\Shape = ROOM4
 				Default
 			End Select
@@ -1421,219 +1421,218 @@ Function CreateRoom.Rooms(zone%, roomshape%, x#, y#, z#, name$ = "")
 	
 End Function
 
-Include "Rooms/Room860.bb"
-Include "Rooms/RoomLockroom.bb"
-Include "Rooms/RoomLockroom2.bb"
-Include "Rooms/RoomGateA.bb"
-Include "Rooms/RoomGateAEntrance.bb"
-Include "Rooms/RoomGateB.bb"
-Include "Rooms/Room079.bb"
-Include "Rooms/RoomCheckpoint1.bb"
-Include "Rooms/RoomCheckpoint2.bb"
-Include "Rooms/Room2Pit.bb"
-Include "Rooms/Room2Testroom.bb"
-Include "Rooms/Room3Tunnel.bb"
-Include "Rooms/Room2Toilets.bb"
-Include "Rooms/Room2Storage.bb"
-Include "Rooms/Room2SRoom.bb"
-Include "Rooms/Room2POffices.bb"
-Include "Rooms/Room2POffices2.bb"
-Include "Rooms/Room2Elevator.bb"
-Include "Rooms/Room2Cafeteria.bb"
-Include "Rooms/Room2Nuke.bb"
-Include "Rooms/Room2Tunnel.bb"
-Include "Rooms/Room008.bb"
-Include "Rooms/Room035.bb"
-Include "Rooms/Room513.bb"
-Include "Rooms/Room966.bb"
-Include "Rooms/Room3Storage.bb"
-Include "Rooms/Room049.bb"
-Include "Rooms/Room2_2.bb"
-Include "Rooms/Room012.bb"
-Include "Rooms/RoomTunnel2.bb"
-Include "Rooms/Room2Pipes.bb"
-Include "Rooms/Room3Pit.bb"
-Include "Rooms/Room2Servers.bb"
-Include "Rooms/Room3Servers.bb"
-Include "Rooms/Room3Servers2.bb"
-Include "Rooms/RoomTestroom.bb"
-Include "Rooms/Room2Closets.bb"
-Include "Rooms/Room2Offices.bb"
-Include "Rooms/Room2Offices2.bb"
-Include "Rooms/Room2Offices3.bb"
-Include "Rooms/Room173.bb"
-Include "Rooms/Room2SCPs.bb"
-Include "Rooms/Room205.bb"
-Include "Rooms/RoomEndroom.bb"
-Include "Rooms/Room895.bb"
-Include "Rooms/Room2Tesla.bb"
-Include "Rooms/Room2Doors.bb"
-Include "Rooms/Room914.bb"
-Include "Rooms/RoomIntro.bb"
-Include "Rooms/Room2CCont.bb"
-Include "Rooms/Room106.bb"
-Include "Rooms/Room1123.bb"
-Include "Rooms/RoomPocketDimension.bb"
-Include "Rooms/Room3z3.bb"
-Include "Rooms/Room2_3.bb"
-Include "Rooms/Room1Lifts.bb"
-Include "Rooms/Room2Servers2.bb"
-Include "Rooms/Room2GW.bb"
-Include "Rooms/Room3GW.bb"
-Include "Rooms/Room1162.bb"
-Include "Rooms/Room2SCPs2.bb"
-Include "Rooms/Room3Offices.bb"
-Include "Rooms/Room2Offices4.bb"
-Include "Rooms/Room2SL.bb"
-Include "Rooms/Room2_4.bb"
-Include "Rooms/Room3z2.bb"
-Include "Rooms/RoomLockroom3.bb"
-Include "Rooms/Room2.bb"
-Include "Rooms/Room2Testroom2.bb"
-Include "Rooms/Room3.bb"
-Include "Rooms/Room3_2.bb"
-Include "Rooms/Room4.bb"
-Include "Rooms/Room4Pit.bb"
-Include "Rooms/Room4Tunnels.bb"
-Include "Rooms/RoomDimension1499.bb"
-Include "Rooms/RoomTunnel.bb"
+Include "Rooms/Room_chck_hcz_ez_2.bb"
+Include "Rooms/Room_chck_lcz_hcz_2.bb"
+Include "Rooms/Room_closets_2.bb"
+Include "Rooms/Room_cont_008_1.bb"
+Include "Rooms/Room_cont_012_2.bb"
+Include "Rooms/Room_cont_035_1.bb"
+Include "Rooms/Room_cont_049_2.bb"
+Include "Rooms/Room_cont_079_1.bb"
+Include "Rooms/Room_cont_106_1.bb"
+Include "Rooms/Room_cont_1123_2.bb"
+Include "Rooms/Room_cont_1162_2c.bb"
+Include "Rooms/Room_cont_173_1.bb"
+Include "Rooms/Room_cont_205_1.bb"
+Include "Rooms/Room_cont_500_1499_2.bb"
+Include "Rooms/Room_cont_513_3.bb"
+Include "Rooms/Room_cont_714_860_1025_2.bb"
+Include "Rooms/Room_cont_895_1.bb"
+Include "Rooms/Room_cont_914_1.bb"
+Include "Rooms/Room_cont_966_3.bb"
+Include "Rooms/Room_dimension1499.bb"
+Include "Rooms/Room_end_1.bb"
+Include "Rooms/Room_exit_gatea_1.bb"
+Include "Rooms/Room_exit_gateb_1.bb"
+Include "Rooms/Room_extend_gatea_1.bb"
+Include "Rooms/Room_hll_bench_3.bb"
+Include "Rooms/Room_hll_caf_2.bb"
+Include "Rooms/Room_hll_dirty_3.bb"
+Include "Rooms/Room_hll_ele_2.bb"
+Include "Rooms/Room_hll_fan_2.bb"
+Include "Rooms/Room_hll_gas_2.bb"
+Include "Rooms/Room_hll_gas_3.bb"
+Include "Rooms/Room_hll_gas_4.bb"
+Include "Rooms/Room_hll_lights_2.bb"
+Include "Rooms/Room_hll_lshape_2.bb"
+Include "Rooms/Room_hll_pipes_3.bb"
+Include "Rooms/Room_hll_plain_2.bb"
+Include "Rooms/Room_hll_plain_3.bb"
+Include "Rooms/Room_hll_plain_4.bb"
+Include "Rooms/Room_hll_sl_2.bb"
+Include "Rooms/Room_hll_toilets_2.bb"
+Include "Rooms/Room_intro.bb"
+Include "Rooms/Room_lck_096_2c.bb"
+Include "Rooms/Room_lck_air_2.bb"
+Include "Rooms/Room_lck_broke_2c.bb"
+Include "Rooms/Room_lck_cam_2c.bb"
+Include "Rooms/Room_lck_ez_3.bb"
+Include "Rooms/Room_lck_tshape_2.bb"
+Include "Rooms/Room_lifts_1.bb"
+Include "Rooms/Room_off_2level_2.bb"
+Include "Rooms/Room_off_bain_2.bb"
+Include "Rooms/Room_off_gears_may_har_2.bb"
+Include "Rooms/Room_off_glss_3.bb"
+Include "Rooms/Room_off_lower_2.bb"
+Include "Rooms/Room_off_l_conf_2.bb"
+Include "Rooms/Room_off_plain_2.bb"
+Include "Rooms/Room_off_rosewood_2.bb"
+Include "Rooms/Room_pocketdimension.bb"
+Include "Rooms/Room_scp_970_2.bb"
+Include "Rooms/Room_srvr_096_2.bb"
+Include "Rooms/Room_srvr_farm_3.bb"
+Include "Rooms/Room_srvr_lshape_3.bb"
+Include "Rooms/Room_srvr_pc_2.bb"
+Include "Rooms/Room_strg_939_2.bb"
+Include "Rooms/Room_strg_elec_2c.bb"
+Include "Rooms/Room_test_682_2.bb"
+Include "Rooms/Room_test_860_2.bb"
+Include "Rooms/Room_test_smallwindow_2.bb"
+Include "Rooms/Room_tnnl_elec_2.bb"
+Include "Rooms/Room_tnnl_maintenance_2.bb"
+Include "Rooms/Room_tnnl_pipes_2.bb"
+Include "Rooms/Room_tnnl_plain_2.bb"
+Include "Rooms/Room_tnnl_plain_3.bb"
+Include "Rooms/Room_tnnl_plain_4.bb"
+Include "Rooms/Room_tsl_ez_2.bb"
+Include "Rooms/Room_tunnl_nuke_2.bb"
 
 Function FillRoom(r.Rooms)
 	Select r\RoomTemplate\Name
-		Case "room860"
-			FillRoom860(r)
-		Case "lockroom"
-			FillRoomLockroom(r)
-		Case "lockroom2"
-			FillRoomLockroom2(r)
-		Case "gatea"
-			FillRoomGateA(r)
-		Case "gateaentrance"
-			FillRoomGateAEntrance(r)
+		Case "test_860_2"
+			FillRoom_test_860_2(r)
+		Case "lck_cam_2c"
+			FillRoom_lck_cam_2c(r)
+		Case "lck_096_2c"
+			FillRoom_lck_096_2c(r)
+		Case "extend_gatea_1"
+			FillRoom_extend_gatea_1(r)
+		Case "exit_gatea_1"
+			FillRoom_exit_gatea_1(r)
 		Case "exit1"
-			FillRoomGateB(r)
-		Case "room079"
-			FillRoom079(r)
-		Case "checkpoint1"
-			FillRoomCheckpoint1(r)
-		Case "checkpoint2"
-			FillRoomCheckpoint2(r)
-		Case "room2pit"
-			FillRoom2Pit(r)
+			FillRoom_exit_gateb_1(r)
+		Case "cont_079_1"
+			FillRoom_cont_079_1(r)
+		Case "chck_lcz_hcz_2"
+			FillRoom_chck_lcz_hcz_2(r)
+		Case "chck_hcz_ez_2"
+			FillRoom_chck_hcz_ez_2(r)
+		Case "hll_gas_2"
+			FillRoom_hll_gas_2(r)
 		Case "room2testroom2"
-			FillRoom2Testroom(r)
-		Case "room3tunnel"
-			FillRoom3Tunnel(r)
-		Case "room2toilets"
-			FillRoom2Toilets(r)
-		Case "room2storage"
-			FillRoom2Storage(r)
-		Case "room2sroom"
-			FillRoom2SRoom(r)
-		Case "room2poffices"
-			FillRoom2POffices(r)
-		Case "room2poffices2"
-			FillRoom2POffices2(r)
-		Case "room2elevator"
-			FillRoom2Elevator(r)
-		Case "room2cafeteria"
-			FillRoom2Cafeteria(r)
-		Case "room2nuke"
-			FillRoom2Nuke(r)
-		Case "room2tunnel"
-			FillRoom2Tunnel(r)
-		Case "008"
-			FillRoom008(r)
-		Case "room035"
-			FillRoom035(r)
-		Case "room513"
-			FillRoom513(r)
-		Case "room966"
-			FillRoom966(r)
-		Case "room3storage"
-			FillRoom3Storage(r)
-		Case "room049"
-			FillRoom049(r)
-		Case "room2_2"
-			FillRoom2_2(r)
-		Case "room012"
-			FillRoom012(r)
-		Case "tunnel2"
-			FillRoomTunnel2(r)
-		Case "room2pipes"
-			FillRoom2Pipes(r)
-		Case "room3pit"
-			FillRoom3Pit(r)
-		Case "room2servers"
-			FillRoom2Servers(r)
-		Case "room3servers"
-			FillRoom3Servers(r)
-		Case "room3servers2"
-			FillRoom3Servers2(r)
-		Case "testroom"
-			FillRoomTestroom(r)
-		Case "room2closets"
-			FillRoom2Closets(r)
-		Case "room2offices"
-			FillRoom2Offices(r)
-		Case "room2offices2"
-			FillRoom2Offices2(r)
-		Case "room2offices3"
-			FillRoom2Offices3(r)
-		Case "room173"
-			FillRoom173(r)
-		Case "room2scps"
-			FillRoom2SCPs(r)
-		Case "room205"
-			FillRoom205(r)
-		Case "endroom"
-			FillRoomEndroom(r)
+			FillRoom_test_smallwindow_2(r)
+		Case "tnnl_plain_3"
+			FillRoom_tnnl_plain_3(r)
+		Case "hll_toilets_2"
+			FillRoom_hll_toilets_2(r)
+		Case "scp_970_2"
+			FillRoom_scp_970_2(r)
+		Case "off_rosewood_2"
+			FillRoom_off_rosewood_2(r)
+		Case "off_gears_may_har_2"
+			FillRoom_off_gears_may_har_2(r)
+		Case "off_l_conf_2"
+			FillRoom_off_l_conf_2(r)
+		Case "hll_ele_2"
+			FillRoom_hll_ele_2(r)
+		Case "hll_caf_2"
+			FillRoom_hll_caf_2(r)
+		Case "tunnl_nuke_2"
+			FillRoom_tunnl_nuke_2(r)
+		Case "tnnl_maintenance_2"
+			FillRoom_tnnl_maintenance_2(r)
+		Case "cont_008_1"
+			FillRoom_cont_008_1(r)
+		Case "cont_035_1"
+			FillRoom_cont_035_1(r)
+		Case "cont_513_3"
+			FillRoom_cont_513_3(r)
+		Case "cont_966_3"
+			FillRoom_cont_966_3(r)
+		Case "strg_939_2"
+			FillRoom_strg_939_2(r)
+		Case "cont_049_2"
+			FillRoom_cont_049_2(r)
+		Case "hll_fan_2"
+			FillRoom_hll_fan_2(r)
+		Case "cont_012_2"
+			FillRoom_cont_012_2(r)
+		Case "tnnl_elec_2"
+			FillRoom_tnnl_elec_2(r)
+		Case "tnnl_pipes_2"
+			FillRoom_tnnl_pipes_2(r)
+		Case "hll_gas_3"
+			FillRoom_hll_gas_3(r)
+		Case "srvr_096_2"
+			FillRoom_srvr_096_2(r)
+		Case "srvr_farm_3"
+			FillRoom_srvr_farm_3(r)
+		Case "srvr_lshape_3"
+			FillRoom_srvr_lshape_3(r)
+		Case "test_682_2"
+			FillRoom_test_682_2(r)
+		Case "closets_2"
+			FillRoom_closets_2(r)
+		Case "off_plain_2"
+			FillRoom_off_plain_2(r)
+		Case "off_lower_2"
+			FillRoom_off_lower_2(r)
+		Case "off_2level_2"
+			FillRoom_off_2level_2(r)
+		Case "cont_173_1"
+			FillRoom_cont_173_1(r)
+		Case "cont_714_860_1025_2"
+			FillRoom_cont_714_860_1025_2(r)
+		Case "cont_205_1"
+			FillRoom_cont_205_1(r)
+		Case "end_1"
+			FillRoom_end_1(r)
 		Case "coffin"
-			FillRoom895(r)
-		Case "room2tesla","room2tesla_lcz","room2tesla_hcz"
-			FillRoom2Tesla(r)
-		Case "room2doors"
-			FillRoom2Doors(r)
-		Case "914"
-			FillRoom914(r)
+			FillRoom_cont_895_1(r)
+		Case "tsl_ez_2","tsl_lcz_2","room2tesla_hcz"
+			FillRoom_tsl_ez_2(r)
+		Case "lck_tshape_2"
+			FillRoom_lck_tshape_2(r)
+		Case "cont_914_1"
+			FillRoom_cont_914_1(r)
 		Case "roomintro"
-			FillRoomIntro(r)
-		Case "room2ccont"
-			FillRoom2CCont(r)
-		Case "room106"
-			FillRoom106(r)
-		Case "room1123"
-			FillRoom1123(r)
+			FillRoom_intro(r)
+		Case "strg_elec_2c"
+			FillRoom_strg_elec_2c(r)
+		Case "cont_106_1"
+			FillRoom_cont_106_1(r)
+		Case "cont_1123_2"
+			FillRoom_cont_1123_2(r)
 		Case "pocketdimension"
-			FillRoomPocketDimension(r)
-		Case "room3z3"
-			FillRoom3z3(r)
-		Case "room2_3"
-			FillRoom2_3(r)
-		Case "room1lifts"
-			FillRoom1Lifts(r)
-		Case "room2servers2"
-			FillRoom2Servers2(r)
-		Case "room2gw","room2gw_b"
-		    FillRoom2GW(r)
-		Case "room3gw"
-	        FillRoom3GW(r)
-		Case "room1162"
-			FillRoom1162(r)
-		Case "room2scps2"
-			FillRoom2SCPs2(r)
-		Case "room3offices"
-			FillRoom3Offices(r)
-		Case "room2offices4"
-			FillRoom2Offices4(r)
-		Case "room2sl"
-			FillRoom2SL(r)
-		Case "room2_4"
-			FillRoom2_4(r)
-		Case "room3z2"
-			FillRoom3z2(r)
-		Case "lockroom3"
-			FillRoomLockroom3(r)
+			FillRoom_pocketdimension(r)
+		Case "hll_bench_3"
+			FillRoom_hll_bench_3(r)
+		Case "hll_lights_2"
+			FillRoom_hll_lights_2(r)
+		Case "lifts_1"
+			FillRoom_lifts_1(r)
+		Case "srvr_pc_2"
+			FillRoom_srvr_pc_2(r)
+		Case "lck_air_2","lck_air_broke_2"
+		    FillRoom_lck_air_2(r)
+		Case "lck_ez_3"
+	        FillRoom_lck_ez_3(r)
+		Case "cont_1162_2c"
+			FillRoom_cont_1162_2c(r)
+		Case "cont_500_1499_2"
+			FillRoom_cont_500_1499_2(r)
+		Case "off_glss_3"
+			FillRoom_off_glss_3(r)
+		Case "off_bain_2"
+			FillRoom_off_bain_2(r)
+		Case "hll_sl_2"
+			FillRoom_hll_sl_2(r)
+		Case "hll_lshape_2"
+			FillRoom_hll_lshape_2(r)
+		Case "hll_dirty_3"
+			FillRoom_hll_dirty_3(r)
+		Case "lck_broke_2c"
+			FillRoom_lck_broke_2c(r)
 	End Select
 	
 	For lt.lighttemplates = Each LightTemplates
@@ -2535,7 +2534,7 @@ Function UpdateSecurityCams()
 			
 			If sc\IsRoom2slCam Then sc\CoffinEffect = 0
 			If sc\room <> Null
-				If sc\room\RoomTemplate\Name$ = "room2sl" Then sc\CoffinEffect = 0
+				If sc\room\RoomTemplate\Name$ = "hll_sl_2" Then sc\CoffinEffect = 0
 			EndIf
 			If sc\SpecialCam Then sc\CoffinEffect = 0
 			
@@ -3558,83 +3557,83 @@ Function CreateMap()
 	
 	Local min_pos = 1, max_pos = Room1Amount[0]-1
 	
-	MapRoom(ROOM1, 0) = "room173"	
+	MapRoom(ROOM1, 0) = "cont_173_1"	
 	SetRoom("roompj", ROOM1, Floor(0.1*Float(Room1Amount[0])),min_pos,max_pos)
-	SetRoom("914", ROOM1, Floor(0.3*Float(Room1Amount[0])),min_pos,max_pos)
-	SetRoom("room1archive",ROOM1,Floor(0.5*Float(Room1Amount[0])),min_pos,max_pos)
-	SetRoom("room205", ROOM1, Floor(0.6*Float(Room1Amount[0])),min_pos,max_pos)
+	SetRoom("cont_914_1", ROOM1, Floor(0.3*Float(Room1Amount[0])),min_pos,max_pos)
+	SetRoom("strg_archive_1",ROOM1,Floor(0.5*Float(Room1Amount[0])),min_pos,max_pos)
+	SetRoom("cont_205_1", ROOM1, Floor(0.6*Float(Room1Amount[0])),min_pos,max_pos)
 	
-	MapRoom(ROOM2C, 0) = "lockroom"
+	MapRoom(ROOM2C, 0) = "lck_cam_2c"
 	
 	min_pos = 1
 	max_pos = Room2Amount[0]-1
 	
-	MapRoom(ROOM2, 0) = "room2closets"
+	MapRoom(ROOM2, 0) = "closets_2"
 	SetRoom("room2testroom2", ROOM2, Floor(0.1*Float(Room2Amount[0])),min_pos,max_pos)
-	SetRoom("room2scps", ROOM2, Floor(0.2*Float(Room2Amount[0])),min_pos,max_pos)
-	SetRoom("room2storage", ROOM2, Floor(0.3*Float(Room2Amount[0])),min_pos,max_pos)
-	SetRoom("room012", ROOM2, Floor(0.55*Float(Room2Amount[0])),min_pos,max_pos)
-	SetRoom("room1123",ROOM2,Floor(0.7*Float(Room2Amount[0])),min_pos,max_pos)
-	SetRoom("room2elevator",ROOM2,Floor(0.85*Float(Room2Amount[0])),min_pos,max_pos)
+	SetRoom("cont_714_860_1025_2", ROOM2, Floor(0.2*Float(Room2Amount[0])),min_pos,max_pos)
+	SetRoom("scp_970_2", ROOM2, Floor(0.3*Float(Room2Amount[0])),min_pos,max_pos)
+	SetRoom("cont_012_2", ROOM2, Floor(0.55*Float(Room2Amount[0])),min_pos,max_pos)
+	SetRoom("cont_1123_2",ROOM2,Floor(0.7*Float(Room2Amount[0])),min_pos,max_pos)
+	SetRoom("hll_ele_2",ROOM2,Floor(0.85*Float(Room2Amount[0])),min_pos,max_pos)
 	;If (Rand(0,100)<2) Then SetRoom("room2test1074",ROOM2,Floor(0.95*Float(Room2Amount[0])),min_pos,max_pos) ;yeah, no, i'm not giving you any chances
-	SetRoom("room2scps2",ROOM2,Floor(0.6*Float(Room2Amount[0])),min_pos,max_pos)
-	SetRoom("room2gw_b", ROOM2, Floor(0.4*Float(Room2Amount[0])),min_pos,max_pos)
-	SetRoom("room2sl", ROOM2, Floor(0.5*Float(Room2Amount[0])),min_pos,max_pos)
+	SetRoom("cont_500_1499_2",ROOM2,Floor(0.6*Float(Room2Amount[0])),min_pos,max_pos)
+	SetRoom("lck_air_broke_2", ROOM2, Floor(0.4*Float(Room2Amount[0])),min_pos,max_pos)
+	SetRoom("hll_sl_2", ROOM2, Floor(0.5*Float(Room2Amount[0])),min_pos,max_pos)
 	
-	MapRoom(ROOM3, Floor(Rnd(0.2,0.8)*Float(Room3Amount[0]))) = "room3storage"
+	MapRoom(ROOM3, Floor(Rnd(0.2,0.8)*Float(Room3Amount[0]))) = "strg_939_2"
 	
-	MapRoom(ROOM2C, Floor(0.5*Float(Room2CAmount[0]))) = "room1162"
+	MapRoom(ROOM2C, Floor(0.5*Float(Room2CAmount[0]))) = "cont_1162_2c"
 	
 	;zone 2 --------------------------------------------------------------------------------------------------
 	
 	min_pos = Room1Amount[0]
 	max_pos = Room1Amount[0]+Room1Amount[1]-1	
 	
-	MapRoom(ROOM1, Room1Amount[0]+Floor(0.1*Float(Room1Amount[1]))) = "room079"
-	SetRoom("room106", ROOM1, Room1Amount[0]+Floor(0.3*Float(Room1Amount[1])),min_pos,max_pos)
+	MapRoom(ROOM1, Room1Amount[0]+Floor(0.1*Float(Room1Amount[1]))) = "cont_079_1"
+	SetRoom("cont_106_1", ROOM1, Room1Amount[0]+Floor(0.3*Float(Room1Amount[1])),min_pos,max_pos)
 	SetRoom("coffin", ROOM1, Room1Amount[0]+Floor(0.5*Float(Room1Amount[1])),min_pos,max_pos)
-	SetRoom("room035", ROOM1, Room1Amount[0]+Floor(0.7*Float(Room1Amount[1])),min_pos,max_pos)
-	SetRoom("008", ROOM1, Room1Amount[0]+Floor(0.9*Float(Room1Amount[1])),min_pos,max_pos)
+	SetRoom("cont_035_1", ROOM1, Room1Amount[0]+Floor(0.7*Float(Room1Amount[1])),min_pos,max_pos)
+	SetRoom("cont_008_1", ROOM1, Room1Amount[0]+Floor(0.9*Float(Room1Amount[1])),min_pos,max_pos)
 	
 	min_pos = Room2Amount[0]
 	max_pos = Room2Amount[0]+Room2Amount[1]-1
 	
-	MapRoom(ROOM2, Room2Amount[0]+Floor(0.1*Float(Room2Amount[1]))) = "room2nuke"
-	SetRoom("room2tunnel", ROOM2, Room2Amount[0]+Floor(0.25*Float(Room2Amount[1])),min_pos,max_pos)
-	SetRoom("room049", ROOM2, Room2Amount[0]+Floor(0.4*Float(Room2Amount[1])),min_pos,max_pos)
-	SetRoom("room2servers", ROOM2, Room2Amount[0]+Floor(0.7*Room2Amount[1]),min_pos,max_pos)
-	SetRoom("testroom", ROOM2, Room2Amount[0]+Floor(0.9*Float(Room2Amount[1])),min_pos,max_pos)
+	MapRoom(ROOM2, Room2Amount[0]+Floor(0.1*Float(Room2Amount[1]))) = "tunnl_nuke_2"
+	SetRoom("tnnl_maintenance_2", ROOM2, Room2Amount[0]+Floor(0.25*Float(Room2Amount[1])),min_pos,max_pos)
+	SetRoom("cont_049_2", ROOM2, Room2Amount[0]+Floor(0.4*Float(Room2Amount[1])),min_pos,max_pos)
+	SetRoom("srvr_096_2", ROOM2, Room2Amount[0]+Floor(0.7*Room2Amount[1]),min_pos,max_pos)
+	SetRoom("test_682_2", ROOM2, Room2Amount[0]+Floor(0.9*Float(Room2Amount[1])),min_pos,max_pos)
 	
-	MapRoom(ROOM3, Room3Amount[0]+Floor(0.3*Float(Room3Amount[1]))) = "room513"
-	MapRoom(ROOM3, Room3Amount[0]+Floor(0.6*Float(Room3Amount[1]))) = "room966"
+	MapRoom(ROOM3, Room3Amount[0]+Floor(0.3*Float(Room3Amount[1]))) = "cont_513_3"
+	MapRoom(ROOM3, Room3Amount[0]+Floor(0.6*Float(Room3Amount[1]))) = "cont_966_3"
 	
 	
 	;zone 3  --------------------------------------------------------------------------------------------------
 	
 	MapRoom(ROOM1, Room1Amount[0]+Room1Amount[1]+Room1Amount[2]-2) = "exit1"
-	MapRoom(ROOM1, Room1Amount[0]+Room1Amount[1]+Room1Amount[2]-1) = "gateaentrance"
-	MapRoom(ROOM1, Room1Amount[0]+Room1Amount[1]) = "room1lifts"
+	MapRoom(ROOM1, Room1Amount[0]+Room1Amount[1]+Room1Amount[2]-1) = "exit_gatea_1"
+	MapRoom(ROOM1, Room1Amount[0]+Room1Amount[1]) = "lifts_1"
 	
 	min_pos = Room2Amount[0]+Room2Amount[1]
 	max_pos = Room2Amount[0]+Room2Amount[1]+Room2Amount[2]-1		
 	
-	MapRoom(ROOM2, min_pos+Floor(0.1*Float(Room2Amount[2]))) = "room2poffices"
-	SetRoom("room2cafeteria", ROOM2, min_pos+Floor(0.2*Float(Room2Amount[2])),min_pos,max_pos)
-	SetRoom("room2sroom", ROOM2, min_pos+Floor(0.3*Float(Room2Amount[2])),min_pos,max_pos)
-	SetRoom("room2offices", ROOM2, min_pos+Floor(0.45*Room2Amount[2]),min_pos,max_pos)
-	SetRoom("room860", ROOM2, min_pos+Floor(0.6*Room2Amount[2]),min_pos,max_pos)
-	SetRoom("room2poffices2", ROOM2, min_pos+Floor(0.8*Room2Amount[2]),min_pos,max_pos)
-	SetRoom("room2offices2", ROOM2, min_pos+Floor(0.9*Float(Room2Amount[2])),min_pos,max_pos)
-	SetRoom("room2servers2", ROOM2, min_pos+Floor(0.4*Room2Amount[2]),min_pos,max_pos)
-	SetRoom("room2offices4", ROOM2, min_pos+Floor(0.5*Room2Amount[2]),min_pos,max_pos)
+	MapRoom(ROOM2, min_pos+Floor(0.1*Float(Room2Amount[2]))) = "off_gears_may_har_2"
+	SetRoom("hll_caf_2", ROOM2, min_pos+Floor(0.2*Float(Room2Amount[2])),min_pos,max_pos)
+	SetRoom("off_rosewood_2", ROOM2, min_pos+Floor(0.3*Float(Room2Amount[2])),min_pos,max_pos)
+	SetRoom("off_plain_2", ROOM2, min_pos+Floor(0.45*Room2Amount[2]),min_pos,max_pos)
+	SetRoom("test_860_2", ROOM2, min_pos+Floor(0.6*Room2Amount[2]),min_pos,max_pos)
+	SetRoom("off_l_conf_2", ROOM2, min_pos+Floor(0.8*Room2Amount[2]),min_pos,max_pos)
+	SetRoom("off_lower_2", ROOM2, min_pos+Floor(0.9*Float(Room2Amount[2])),min_pos,max_pos)
+	SetRoom("srvr_pc_2", ROOM2, min_pos+Floor(0.4*Room2Amount[2]),min_pos,max_pos)
+	SetRoom("off_bain_2", ROOM2, min_pos+Floor(0.5*Room2Amount[2]),min_pos,max_pos)
 	
-	MapRoom(ROOM2C, Room2CAmount[0]+Room2CAmount[1]) = "room2ccont"	
-	MapRoom(ROOM2C, Room2CAmount[0]+Room2CAmount[1]+1) = "lockroom2"		
+	MapRoom(ROOM2C, Room2CAmount[0]+Room2CAmount[1]) = "strg_elec_2c"	
+	MapRoom(ROOM2C, Room2CAmount[0]+Room2CAmount[1]+1) = "lck_096_2c"		
 	
-	MapRoom(ROOM3, Room3Amount[0]+Room3Amount[1]+Floor(0.3*Float(Room3Amount[2]))) = "room3servers"
-	MapRoom(ROOM3, Room3Amount[0]+Room3Amount[1]+Floor(0.7*Float(Room3Amount[2]))) = "room3servers2"
-	;MapRoom(ROOM3, Room3Amount[0]+Room3Amount[1]) = "room3gw"
-	MapRoom(ROOM3, Room3Amount[0]+Room3Amount[1]+Floor(0.5*Float(Room3Amount[2]))) = "room3offices"
+	MapRoom(ROOM3, Room3Amount[0]+Room3Amount[1]+Floor(0.3*Float(Room3Amount[2]))) = "srvr_farm_3"
+	MapRoom(ROOM3, Room3Amount[0]+Room3Amount[1]+Floor(0.7*Float(Room3Amount[2]))) = "srvr_lshape_3"
+	;MapRoom(ROOM3, Room3Amount[0]+Room3Amount[1]) = "lck_ez_3"
+	MapRoom(ROOM3, Room3Amount[0]+Room3Amount[1]+Floor(0.5*Float(Room3Amount[2]))) = "off_glss_3"
 	
 	;----------------------- luodaan kartta --------------------------------
 	
@@ -3655,9 +3654,9 @@ Function CreateMap()
 		For x = 1 To MapWidth - 2
 			If MapTemp(x, y) = 255 Then
 				If y>MapHeight/2 Then ;zone = 2
-					r = CreateRoom(zone, ROOM2, x * 8, 0, y * 8, "checkpoint1")
+					r = CreateRoom(zone, ROOM2, x * 8, 0, y * 8, "chck_lcz_hcz_2")
 				Else ;If zone = 3
-					r = CreateRoom(zone, ROOM2, x * 8, 0, y * 8, "checkpoint2")
+					r = CreateRoom(zone, ROOM2, x * 8, 0, y * 8, "chck_hcz_ez_2")
 				EndIf
 				
 			ElseIf MapTemp(x, y) > 0
@@ -3826,7 +3825,7 @@ Function CreateMap()
 		Next
 	Next		
 	
-	r = CreateRoom(0, ROOM1, 0, 0, 8, "gatea")
+	r = CreateRoom(0, ROOM1, 0, 0, 8, "extend_gatea_1")
 	MapRoomID(ROOM1)=MapRoomID(ROOM1)+1
 	
 	r = CreateRoom(0, ROOM1, (MapWidth-1) * 8, 0, (MapHeight-1) * 8, "pocketdimension")

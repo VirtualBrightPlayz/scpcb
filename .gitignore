@@ -17,3 +17,5 @@ NewEvents_old.bb
 OldEvents.bb
 Rooms_old/
 NewEvents - Copy.bb
+RoomIncludes.txt
+FixRooms.bb

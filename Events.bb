@@ -59,83 +59,83 @@ Function InitEvents()
 	Local e.Events
 	
 	CreateEvent("173", "roomintro", 0)
-	CreateEvent("alarm", "room173", 0)
+	CreateEvent("alarm", "cont_173_1", 0)
 	
 	CreateEvent("pocketdimension", "pocketdimension", 0)	
 	
-	;there's a 7% chance that 106 appears in the rooms named "tunnel"
-	CreateEvent("tunnel106", "tunnel", 0, 0.07 + (0.1*SelectedDifficulty\aggressiveNPCs))
+	;there's a 7% chance that 106 appears in the rooms named "tnnl_plain_2"
+	CreateEvent("tunnel106", "tnnl_plain_2", 0, 0.07 + (0.1*SelectedDifficulty\aggressiveNPCs))
 	
 	;the chance for 173 appearing in the first lockroom is about 66%
 	;there's a 30% chance that it appears in the later lockrooms
-	If Rand(3)<3 Then CreateEvent("lockroom173", "lockroom", 0)
-	CreateEvent("lockroom173", "lockroom", 0, 0.3 + (0.5*SelectedDifficulty\aggressiveNPCs))
+	If Rand(3)<3 Then CreateEvent("lockroom173", "lck_cam_2c", 0)
+	CreateEvent("lockroom173", "lck_cam_2c", 0, 0.3 + (0.5*SelectedDifficulty\aggressiveNPCs))
 	
-	CreateEvent("room2trick", "room2", 0, 0.15)	
+	CreateEvent("room2trick", "hll_plain_2", 0, 0.15)	
 	
-	CreateEvent("room2storage", "room2storage", 0)	
+	CreateEvent("scp_970_2", "scp_970_2", 0)	
 	
 	;096 spawns in the first (and last) lockroom2
-	CreateEvent("lockroom096", "lockroom2", 0)
+	CreateEvent("lockroom096", "lck_096_2c", 0)
 	
-	CreateEvent("endroom106", "endroom", Rand(0,1))
+	CreateEvent("endroom106", "end_1", Rand(0,1))
 	
-	CreateEvent("room2poffices2", "room2poffices2", 0)
+	CreateEvent("off_l_conf_2", "off_l_conf_2", 0)
 	
-	CreateEvent("room2fan", "room2_2", 0, 1.0)
+	CreateEvent("room2fan", "hll_fan_2", 0, 1.0)
 	
-	CreateEvent("room2elevator2", "room2elevator", 0)
-	;CreateEvent("room2elevator", "room2elevator", 0, 1)
-	CreateEvent("room2elevator", "room2elevator", Rand(1,2))
+	CreateEvent("room2elevator2", "hll_ele_2", 0)
+	;CreateEvent("hll_ele_2", "hll_ele_2", 0, 1)
+	CreateEvent("hll_ele_2", "hll_ele_2", Rand(1,2))
 	
-	CreateEvent("room3storage", "room3storage", 0, 0)
+	CreateEvent("strg_939_2", "strg_939_2", 0, 0)
 	
-	CreateEvent("tunnel2smoke", "tunnel2", 0, 0.2)
-	CreateEvent("tunnel2", "tunnel2", Rand(0,2), 0)
-	CreateEvent("tunnel2", "tunnel2", 0, (0.2*SelectedDifficulty\aggressiveNPCs))
+	CreateEvent("tunnel2smoke", "tnnl_elec_2", 0, 0.2)
+	CreateEvent("tnnl_elec_2", "tnnl_elec_2", Rand(0,2), 0)
+	CreateEvent("tnnl_elec_2", "tnnl_elec_2", 0, (0.2*SelectedDifficulty\aggressiveNPCs))
 	
-	;173 appears in half of the "room2doors" -rooms
-	CreateEvent("room2doors173", "room2doors", 0, 0.5 + (0.4*SelectedDifficulty\aggressiveNPCs))
+	;173 appears in half of the "lck_tshape_2" -rooms
+	CreateEvent("room2doors173", "lck_tshape_2", 0, 0.5 + (0.4*SelectedDifficulty\aggressiveNPCs))
 	
 	;the anomalous duck in room2offices2-rooms
-	CreateEvent("room2offices2", "room2offices2", 0, 0.7)
+	CreateEvent("off_lower_2", "off_lower_2", 0, 0.7)
 	
-	CreateEvent("room2closets", "room2closets", 0)	
+	CreateEvent("closets_2", "closets_2", 0)	
 	
-	CreateEvent("room2cafeteria", "room2cafeteria", 0)	
+	CreateEvent("hll_caf_2", "hll_caf_2", 0)	
 	
-	CreateEvent("room3pitduck", "room3pit", 0)
-	CreateEvent("room3pit1048", "room3pit", 1)
+	CreateEvent("room3pitduck", "hll_gas_3", 0)
+	CreateEvent("room3pit1048", "hll_gas_3", 1)
 	
 	;the event that causes the door to open by itself in room2offices3
-	CreateEvent("room2offices3", "room2offices3", 0, 1.0)	
+	CreateEvent("off_2level_2", "off_2level_2", 0, 1.0)	
 	
-	CreateEvent("room2servers", "room2servers", 0)	
+	CreateEvent("srvr_096_2", "srvr_096_2", 0)	
 	
-	CreateEvent("room3servers", "room3servers", 0)	
-	CreateEvent("room3servers", "room3servers2", 0)
+	CreateEvent("srvr_farm_3", "srvr_farm_3", 0)	
+	CreateEvent("srvr_farm_3", "srvr_lshape_3", 0)
 	
 	;the dead guard
-	CreateEvent("room3tunnel","room3tunnel", 0, 0.08)
+	CreateEvent("tnnl_plain_3","tnnl_plain_3", 0, 0.08)
 	
-	CreateEvent("room4","room4", 0)
+	CreateEvent("hll_plain_4","hll_plain_4", 0)
 	
 	If Rand(5)<5 Then 
 		Select Rand(3)
 			Case 1
-				CreateEvent("682roar", "tunnel", Rand(0,2), 0)	
+				CreateEvent("682roar", "tnnl_plain_2", Rand(0,2), 0)	
 			Case 2
-				CreateEvent("682roar", "room3pit", Rand(0,2), 0)		
+				CreateEvent("682roar", "hll_gas_3", Rand(0,2), 0)		
 			Case 3
-				CreateEvent("682roar", "room2offices", 0, 0)	
+				CreateEvent("682roar", "off_plain_2", 0, 0)	
 		End Select 
 	EndIf 
 	
 	CreateEvent("testroom173", "room2testroom2", 0, 1.0)	
 	
-	CreateEvent("room2tesla", "room2tesla", 0, 0.9)
+	CreateEvent("tsl_ez_2", "tsl_ez_2", 0, 0.9)
 	
-	CreateEvent("room2nuke", "room2nuke", 0, 0)
+	CreateEvent("tunnl_nuke_2", "tunnl_nuke_2", 0, 0)
 	
 	If Rand(5) < 5 Then 
 		CreateEvent("coffin106", "coffin", 0, 0)
@@ -143,91 +143,91 @@ Function InitEvents()
 		CreateEvent("coffin", "coffin", 0, 0)
 	EndIf 
 	
-	CreateEvent("checkpoint", "checkpoint1", 0, 1.0)
-	CreateEvent("checkpoint", "checkpoint2", 0, 1.0)
+	CreateEvent("checkpoint", "chck_lcz_hcz_2", 0, 1.0)
+	CreateEvent("checkpoint", "chck_hcz_ez_2", 0, 1.0)
 	
-	CreateEvent("room3door", "room3", 0, 0.1)
-	CreateEvent("room3door", "room3tunnel", 0, 0.1)	
+	CreateEvent("room3door", "hll_plain_3", 0, 0.1)
+	CreateEvent("room3door", "tnnl_plain_3", 0, 0.1)	
 	
 	If Rand(2)=1 Then
-		CreateEvent("106victim", "room3", Rand(1,2))
-		CreateEvent("106sinkhole", "room3_2", Rand(2,3))
+		CreateEvent("106victim", "hll_plain_3", Rand(1,2))
+		CreateEvent("106sinkhole", "hll_pipes_3", Rand(2,3))
 	Else
-		CreateEvent("106victim", "room3_2", Rand(1,2))
-		CreateEvent("106sinkhole", "room3", Rand(2,3))
+		CreateEvent("106victim", "hll_pipes_3", Rand(1,2))
+		CreateEvent("106sinkhole", "hll_plain_3", Rand(2,3))
 	EndIf
-	CreateEvent("106sinkhole", "room4", Rand(1,2))
+	CreateEvent("106sinkhole", "hll_plain_4", Rand(1,2))
 	
-	CreateEvent("room079", "room079", 0, 0)	
+	CreateEvent("cont_079_1", "cont_079_1", 0, 0)	
 	
-	CreateEvent("room049", "room049", 0, 0)
+	CreateEvent("cont_049_2", "cont_049_2", 0, 0)
 	
-	CreateEvent("room012", "room012", 0, 0)
+	CreateEvent("cont_012_2", "cont_012_2", 0, 0)
 	
-	CreateEvent("room035", "room035", 0, 0)
+	CreateEvent("cont_035_1", "cont_035_1", 0, 0)
 	
-	CreateEvent("008", "008", 0, 0)
+	CreateEvent("cont_008_1", "cont_008_1", 0, 0)
 	
-	CreateEvent("room106", "room106", 0, 0)	
+	CreateEvent("cont_106_1", "cont_106_1", 0, 0)	
 	
 	CreateEvent("pj", "roompj", 0, 0)
 	
-	CreateEvent("914", "914", 0, 0)
+	CreateEvent("cont_914_1", "cont_914_1", 0, 0)
 	
-	CreateEvent("toiletguard", "room2toilets", 1)
-	CreateEvent("buttghost", "room2toilets", 0, 0.8)
+	CreateEvent("toiletguard", "hll_toilets_2", 1)
+	CreateEvent("buttghost", "hll_toilets_2", 0, 0.8)
 	
-	CreateEvent("room2pipes106", "room2pipes", Rand(0, 3)) 
+	CreateEvent("room2pipes106", "tnnl_pipes_2", Rand(0, 3)) 
 	
-	CreateEvent("room2pit", "room2pit", 0, 0.4 + (0.4*SelectedDifficulty\aggressiveNPCs))
+	CreateEvent("hll_gas_2", "hll_gas_2", 0, 0.4 + (0.4*SelectedDifficulty\aggressiveNPCs))
 	
-	CreateEvent("testroom", "testroom", 0)
+	CreateEvent("test_682_2", "test_682_2", 0)
 	
-	CreateEvent("room2tunnel", "room2tunnel", 0)
+	CreateEvent("tnnl_maintenance_2", "tnnl_maintenance_2", 0)
 	
-	CreateEvent("room2ccont", "room2ccont", 0)
+	CreateEvent("strg_elec_2c", "strg_elec_2c", 0)
 	
-	CreateEvent("gateaentrance", "gateaentrance", 0)
-	CreateEvent("gatea", "gatea", 0)	
+	CreateEvent("exit_gatea_1", "exit_gatea_1", 0)
+	CreateEvent("extend_gatea_1", "extend_gatea_1", 0)	
 	CreateEvent("exit1", "exit1", 0)
 	
-	CreateEvent("room205", "room205", 0)
+	CreateEvent("cont_205_1", "cont_205_1", 0)
 	
-	CreateEvent("room860","room860", 0)
+	CreateEvent("test_860_2","test_860_2", 0)
 	
-	CreateEvent("room966","room966", 0)
+	CreateEvent("cont_966_3","cont_966_3", 0)
 	
-	CreateEvent("room1123", "room1123", 0, 0)
+	CreateEvent("cont_1123_2", "cont_1123_2", 0, 0)
 	;CreateEvent("room2test1074","room2test1074",0)
 	;CreateEvent("room038","room038",0,0)
 	;CreateEvent("room009","room009",0,0)
 	;CreateEvent("medibay", "medibay", 0)
 	;CreateEvent("room409", "room409", 0)
 	;CreateEvent("room020", "room020", 0)
-	CreateEvent("room2tesla", "room2tesla_lcz", 0, 0.9)
-	CreateEvent("room2tesla", "room2tesla_hcz", 0, 0.9)
+	CreateEvent("tsl_ez_2", "tsl_lcz_2", 0, 0.9)
+	CreateEvent("tsl_ez_2", "room2tesla_hcz", 0, 0.9)
 	
-	CreateEvent("room4tunnels","room4tunnels",0)
-	CreateEvent("room_gw","room2gw",0,1.0)
+	CreateEvent("tnnl_plain_4","tnnl_plain_4",0)
+	CreateEvent("room_gw","lck_air_2",0,1.0)
 	CreateEvent("dimension1499","dimension1499",0)
-	CreateEvent("room1162","room1162",0)
-	CreateEvent("room2scps2","room2scps2",0)
-	CreateEvent("room_gw","room3gw",0,1.0)
-	CreateEvent("room2sl","room2sl",0)
+	CreateEvent("cont_1162_2c","cont_1162_2c",0)
+	CreateEvent("cont_500_1499_2","cont_500_1499_2",0)
+	CreateEvent("room_gw","lck_ez_3",0,1.0)
+	CreateEvent("hll_sl_2","hll_sl_2",0)
 	
-	CreateEvent("room2gw_b","room2gw_b",Rand(0,1))
+	CreateEvent("lck_air_broke_2","lck_air_broke_2",Rand(0,1))
 	
-	CreateEvent("096spawn","room4pit",0,0.6+(0.2*SelectedDifficulty\aggressiveNPCs))
-	CreateEvent("096spawn","room3pit",0,0.6+(0.2*SelectedDifficulty\aggressiveNPCs))
-	CreateEvent("096spawn","room2pipes",0,0.4+(0.2*SelectedDifficulty\aggressiveNPCs))
-	CreateEvent("096spawn","room2pit",0,0.5+(0.2*SelectedDifficulty\aggressiveNPCs))
-	CreateEvent("096spawn","room3tunnel",0,0.6+(0.2*SelectedDifficulty\aggressiveNPCs))
-	CreateEvent("096spawn","room4tunnels",0,0.7+(0.2*SelectedDifficulty\aggressiveNPCs))
-	CreateEvent("096spawn","tunnel",0,0.6+(0.2*SelectedDifficulty\aggressiveNPCs))
-	CreateEvent("096spawn","tunnel2",0,0.4+(0.2*SelectedDifficulty\aggressiveNPCs))
-	CreateEvent("096spawn","room3z2",0,0.7+(0.2*SelectedDifficulty\aggressiveNPCs))
+	CreateEvent("096spawn","hll_gas_4",0,0.6+(0.2*SelectedDifficulty\aggressiveNPCs))
+	CreateEvent("096spawn","hll_gas_3",0,0.6+(0.2*SelectedDifficulty\aggressiveNPCs))
+	CreateEvent("096spawn","tnnl_pipes_2",0,0.4+(0.2*SelectedDifficulty\aggressiveNPCs))
+	CreateEvent("096spawn","hll_gas_2",0,0.5+(0.2*SelectedDifficulty\aggressiveNPCs))
+	CreateEvent("096spawn","tnnl_plain_3",0,0.6+(0.2*SelectedDifficulty\aggressiveNPCs))
+	CreateEvent("096spawn","tnnl_plain_4",0,0.7+(0.2*SelectedDifficulty\aggressiveNPCs))
+	CreateEvent("096spawn","tnnl_plain_2",0,0.6+(0.2*SelectedDifficulty\aggressiveNPCs))
+	CreateEvent("096spawn","tnnl_elec_2",0,0.4+(0.2*SelectedDifficulty\aggressiveNPCs))
+	CreateEvent("096spawn","hll_dirty_3",0,0.7+(0.2*SelectedDifficulty\aggressiveNPCs))
 	
-	CreateEvent("room2pit","room2_4",0,0.4 + (0.4*SelectedDifficulty\aggressiveNPCs))
+	CreateEvent("hll_gas_2","hll_lshape_2",0,0.4 + (0.4*SelectedDifficulty\aggressiveNPCs))
 	
 End Function
 
@@ -253,63 +253,63 @@ Function UpdateEvents()
 			Case "alarm"
 				UpdateEventAlarm(e)
 			Case "pocketdimension"
-				UpdateEventPocketdimension(e)
+				UpdateEvent_pocketdimension(e)
 			Case "tunnel106"
 				UpdateEventTunnel106(e)
 			Case "lockroom173"
 				UpdateEventLockroom173(e)
 			Case "room2trick"
 				UpdateEventRoom2trick(e)
-			Case "room2storage"
-				UpdateEventRoom2storage(e)
+			Case "scp_970_2"
+				UpdateEvent_scp_970_2(e)
 			Case "lockroom096"
 				UpdateEventLockroom096(e)
 			Case "endroom106"
 				UpdateEventEndroom106(e)
-			Case "room2poffices2"
-				UpdateEventRoom2poffices2(e)
+			Case "off_l_conf_2"
+				UpdateEvent_off_l_conf_2(e)
 			Case "room2fan"
 				UpdateEventRoom2fan(e)
 			Case "room2elevator2"
 				UpdateEventRoom2elevator2(e)
-			Case "room2elevator"
-				UpdateEventRoom2elevator(e)
-			Case "room3storage"
-				UpdateEventRoom3storage(e)
+			Case "hll_ele_2"
+				UpdateEvent_hll_ele_2(e)
+			Case "strg_939_2"
+				UpdateEvent_strg_939_2(e)
 			Case "tunnel2smoke"
 				UpdateEventTunnel2smoke(e)
-			Case "tunnel2"
-				UpdateEventTunnel2(e)
+			Case "tnnl_elec_2"
+				UpdateEvent_tnnl_elec_2(e)
 			Case "room2doors173"
 				UpdateEventRoom2doors173(e)
-			Case "room2offices2"
-				UpdateEventRoom2offices2(e)
-			Case "room2closets"
-				UpdateEventRoom2closets(e)
-			Case "room2cafeteria"
-				UpdateEventRoom2cafeteria(e)
+			Case "off_lower_2"
+				UpdateEvent_off_lower_2(e)
+			Case "closets_2"
+				UpdateEvent_closets_2(e)
+			Case "hll_caf_2"
+				UpdateEvent_hll_caf_2(e)
 			Case "room3pitduck"
 				UpdateEventRoom3pitduck(e)
 			Case "room3pit1048"
 				UpdateEventRoom3pit1048(e)
-			Case "room2offices3"
-				UpdateEventRoom2offices3(e)
-			Case "room2servers"
-				UpdateEventRoom2servers(e)
-			Case "room3servers"
-				UpdateEventRoom3servers(e)
-			Case "room3tunnel"
-				UpdateEventRoom3tunnel(e)
-			Case "room4"
-				UpdateEventRoom4(e)
+			Case "off_2level_2"
+				UpdateEvent_off_2level_2(e)
+			Case "srvr_096_2"
+				UpdateEvent_srvr_096_2(e)
+			Case "srvr_farm_3"
+				UpdateEvent_srvr_farm_3(e)
+			Case "tnnl_plain_3"
+				UpdateEvent_tnnl_plain_3(e)
+			Case "hll_plain_4"
+				UpdateEvent_hll_plain_4(e)
 			Case "682roar"
 				UpdateEvent682roar(e)
 			Case "testroom173"
 				UpdateEventTestroom173(e)
-			Case "room2tesla"
-				UpdateEventRoom2tesla(e)
-			Case "room2nuke"
-				UpdateEventRoom2nuke(e)
+			Case "tsl_ez_2"
+				UpdateEvent_tsl_ez_2(e)
+			Case "tunnl_nuke_2"
+				UpdateEvent_tunnl_nuke_2(e)
 			Case "coffin106"
 				UpdateEventCoffin106(e)
 			Case "coffin"
@@ -322,61 +322,61 @@ Function UpdateEvents()
 				UpdateEvent106victim(e)
 			Case "106sinkhole"
 				UpdateEvent106sinkhole(e)
-			Case "room079"
-				UpdateEventRoom079(e)
-			Case "room049"
-				UpdateEventRoom049(e)
-			Case "room012"
-				UpdateEventRoom012(e)
-			Case "room035"
-				UpdateEventRoom035(e)
-			Case "008"
-				UpdateEvent008(e)
-			Case "room106"
-				UpdateEventRoom106(e)
-			Case "914"
-				UpdateEvent914(e)
+			Case "cont_079_1"
+				UpdateEvent_cont_079_1(e)
+			Case "cont_049_2"
+				UpdateEvent_cont_049_2(e)
+			Case "cont_012_2"
+				UpdateEvent_cont_012_2(e)
+			Case "cont_035_1"
+				UpdateEvent_cont_035_1(e)
+			Case "cont_008_1"
+				UpdateEvent_cont_008_1(e)
+			Case "cont_106_1"
+				UpdateEvent_cont_106_1(e)
+			Case "cont_914_1"
+				UpdateEvent_cont_914_1(e)
 			Case "toiletguard"
 				UpdateEventToiletguard(e)
 			Case "buttghost"
 				UpdateEventButtghost(e)
 			Case "room2pipes106"
 				UpdateEventRoom2pipes106(e)
-			Case "room2pit"
-				UpdateEventRoom2pit(e)
-			Case "testroom"
-				UpdateEventTestroom(e)
-			Case "room2tunnel"
-				UpdateEventRoom2tunnel(e)
-			Case "room2ccont"
-				UpdateEventRoom2ccont(e)
-			Case "gateaentrance"
-				UpdateEventGateaentrance(e)
-			Case "gatea"
-				UpdateEventGatea(e)
+			Case "hll_gas_2"
+				UpdateEvent_hll_gas_2(e)
+			Case "test_682_2"
+				UpdateEvent_test_682_2(e)
+			Case "tnnl_maintenance_2"
+				UpdateEvent_tnnl_maintenance_2(e)
+			Case "strg_elec_2c"
+				UpdateEvent_strg_elec_2c(e)
+			Case "exit_gatea_1"
+				UpdateEvent_exit_gatea_1(e)
+			Case "extend_gatea_1"
+				UpdateEvent_extend_gatea_1(e)
 			Case "exit1"
 				UpdateEventExit1(e)
-			Case "room205"
-				UpdateEventRoom205(e)
-			Case "room860"
-				UpdateEventRoom860(e)
-			Case "room966"
-				UpdateEventRoom966(e)
-			Case "room1123"
-				UpdateEventRoom1123(e)
-			Case "room4tunnels"
-				UpdateEventRoom4tunnels(e)
+			Case "cont_205_1"
+				UpdateEvent_cont_205_1(e)
+			Case "test_860_2"
+				UpdateEvent_test_860_2(e)
+			Case "cont_966_3"
+				UpdateEvent_cont_966_3(e)
+			Case "cont_1123_2"
+				UpdateEvent_cont_1123_2(e)
+			Case "tnnl_plain_4"
+				UpdateEvent_tnnl_plain_4(e)
 			Case "room_gw"
 				UpdateEventRoom_gw(e)
 			Case "dimension1499"
-				UpdateEventDimension1499(e)
-			Case "room1162"
-				UpdateEventRoom1162(e)
-			Case "room2scps2"
-				UpdateEventRoom2scps2(e)
-			Case "room2sl"
-				UpdateEventRoom2sl(e)
-			Case "room2gw_b"
+				UpdateEvent_dimension1499(e)
+			Case "cont_1162_2c"
+				UpdateEvent_cont_1162_2c(e)
+			Case "cont_500_1499_2"
+				UpdateEvent_cont_500_1499_2(e)
+			Case "hll_sl_2"
+				UpdateEvent_hll_sl_2(e)
+			Case "lck_air_broke_2"
 				UpdateEventRoom2gw_b(e)
 			Case "096spawn"
 				UpdateEvent096spawn(e)
@@ -414,5 +414,6 @@ Function UpdateEvents()
 		
 	EndIf
 End Function
+
 ;~IDEal Editor Parameters:
 ;~C#Blitz3D
