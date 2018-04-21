@@ -78,11 +78,12 @@ Function UpdateEvent_tesla(e.Events)
 				HideEntity e\room\Objects[4]
 			EndIf						
 			
-			If e\room\dist < 8
-			If e\SoundCHN = 0 Then ;humming when the player isn't close
-				e\SoundCHN = PlaySound2(TeslaIdleSFX, mainPlayer\cam, e\room\Objects[3],4.0,0.5)
-			Else
-				If Not ChannelPlaying(e\SoundCHN) Then e\SoundCHN = PlaySound2(TeslaIdleSFX, mainPlayer\cam, e\room\Objects[3],4.0,0.5)
+			If e\room\dist < 8 Then
+				If e\SoundCHN = 0 Then ;humming when the player isn't close
+					e\SoundCHN = PlaySound2(TeslaIdleSFX, mainPlayer\cam, e\room\Objects[3],4.0,0.5)
+				Else
+					If Not ChannelPlaying(e\SoundCHN) Then e\SoundCHN = PlaySound2(TeslaIdleSFX, mainPlayer\cam, e\room\Objects[3],4.0,0.5)
+				EndIf
 			EndIf
 			
 			For i = 0 To 2
@@ -216,6 +217,7 @@ Function UpdateEvent_tesla(e.Events)
 	
 	;[End Block]
 End Function
+
 
 
 ;~IDEal Editor Parameters:

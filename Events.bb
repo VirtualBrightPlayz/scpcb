@@ -282,7 +282,7 @@ Function UpdateEvents()
 			Case "evt_tesla"
 				UpdateEvent_tesla(e)
 			Case "evt_tnnl_nuke"
-				UpdateEvent_tunnl_nuke_2(e)
+				UpdateEvent_tnnl_nuke_2(e)
 			Case "evt_cont_895_106"
 				UpdateEventCoffin106(e)
 			Case "evt_cont_895"

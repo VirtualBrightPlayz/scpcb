@@ -1,4 +1,4 @@
-Function FillRoom_tunnl_nuke_2(r.Rooms)
+Function FillRoom_tnnl_nuke_2(r.Rooms)
     Local d.Doors, d2.Doors, sc.SecurityCams, de.Decals, r2.Rooms, sc2.SecurityCams
 	Local it.Items, i%
 	Local xtemp%, ytemp%, ztemp%
@@ -68,7 +68,7 @@ Function FillRoom_tunnl_nuke_2(r.Rooms)
 End Function
 
 
-Function UpdateEvent_tunnl_nuke_2(e.Events)
+Function UpdateEvent_tnnl_nuke_2(e.Events)
 	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
 
 	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams

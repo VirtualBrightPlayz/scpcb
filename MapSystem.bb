@@ -1494,7 +1494,7 @@ Include "Rooms/Room_tnnl_plain_2.bb"
 Include "Rooms/Room_tnnl_plain_3.bb"
 Include "Rooms/Room_tnnl_plain_4.bb"
 Include "Rooms/Room_tsl_ez_2.bb"
-Include "Rooms/Room_tunnl_nuke_2.bb"
+Include "Rooms/Room_tnnl_nuke_2.bb"
 
 Function FillRoom(r.Rooms)
 	Select r\RoomTemplate\Name
@@ -1536,8 +1536,8 @@ Function FillRoom(r.Rooms)
 			FillRoom_hll_ele_2(r)
 		Case "hll_caf_2"
 			FillRoom_hll_caf_2(r)
-		Case "tunnl_nuke_2"
-			FillRoom_tunnl_nuke_2(r)
+		Case "tnnl_nuke_2"
+			FillRoom_tnnl_nuke_2(r)
 		Case "tnnl_maintenance_2"
 			FillRoom_tnnl_maintenance_2(r)
 		Case "cont_008_1"
@@ -3597,7 +3597,7 @@ Function CreateMap()
 	min_pos = Room2Amount[0]
 	max_pos = Room2Amount[0]+Room2Amount[1]-1
 	
-	MapRoom(ROOM2, Room2Amount[0]+Floor(0.1*Float(Room2Amount[1]))) = "tunnl_nuke_2"
+	MapRoom(ROOM2, Room2Amount[0]+Floor(0.1*Float(Room2Amount[1]))) = "tnnl_nuke_2"
 	SetRoom("tnnl_maintenance_2", ROOM2, Room2Amount[0]+Floor(0.25*Float(Room2Amount[1])),min_pos,max_pos)
 	SetRoom("cont_049_2", ROOM2, Room2Amount[0]+Floor(0.4*Float(Room2Amount[1])),min_pos,max_pos)
 	SetRoom("srvr_096_2", ROOM2, Room2Amount[0]+Floor(0.7*Room2Amount[1]),min_pos,max_pos)
