@@ -40,7 +40,7 @@ Function UpdateEventTunnel106(e.Events)
 	Else
 		e\EventState = e\EventState+timing\tickDuration
 		
-		PositionEntity(Curr106\Collider, EntityX(e\room\obj, True) - Sin(MilliSecs2() / 150.0) / 4.0, EntityY(mainPlayer\collider) + 1.0 - Min(Sin(e\EventState)*1.5,1.1), EntityZ(e\room\obj, True) - Sin(MilliSecs2() / 190.0) / 4.0)
+		PositionEntity(Curr106\Collider, EntityX(e\room\obj, True) - Sin(TimeInPosMilliSecs() / 150.0) / 4.0, EntityY(mainPlayer\collider) + 1.0 - Min(Sin(e\EventState)*1.5,1.1), EntityZ(e\room\obj, True) - Sin(TimeInPosMilliSecs() / 190.0) / 4.0)
 		
 		;TranslateEntity(Curr106\Collider, 0, -Max((3.0-dist),0), 0, True)
 		PointEntity(Curr106\Collider, mainPlayer\cam)

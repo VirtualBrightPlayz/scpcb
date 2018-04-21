@@ -111,7 +111,7 @@ Function UpdateEvent_cont_008_1(e.Events)
 			ElseIf e\EventState = 1
 				e\SoundCHN = LoopSound2(AlarmSFX(0), e\SoundCHN, mainPlayer\cam, e\room\Objects[0], 5.0)
 				
-				If (MilliSecs2() Mod 1000)<500 Then
+				If (TimeInPosMilliSecs() Mod 1000)<500 Then
 					ShowEntity e\room\Objects[5] 
 				Else
 					HideEntity e\room\Objects[5]

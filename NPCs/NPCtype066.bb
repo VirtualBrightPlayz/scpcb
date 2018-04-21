@@ -23,7 +23,7 @@ Function UpdateNPCtype066(n.NPCs)
                 AnimateNPC(n, 451, 612, 0.2, True)
                 ;Animate2(n\obj, AnimTime(n\obj), 451, 612, 0.2, True)
                 
-                If n\State2 < MilliSecs2() Then
+                If n\State2 < TimeInPosMilliSecs() Then
                     For w.waypoints = Each WayPoints
                         If w\door = Null Then
                             If Abs(EntityX(w\obj,True)-EntityX(n\Collider))<4.0 Then
@@ -35,7 +35,7 @@ Function UpdateNPCtype066(n.NPCs)
                             EndIf
                         EndIf
                     Next
-                    n\State2 = MilliSecs2()+5000
+                    n\State2 = TimeInPosMilliSecs()+5000
                 EndIf
             ElseIf dist < 8.0
                 n\LastDist = Rnd(1.0, 2.5)

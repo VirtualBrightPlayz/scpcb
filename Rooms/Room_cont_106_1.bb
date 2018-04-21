@@ -301,8 +301,8 @@ Function UpdateEvent_cont_106_1(e.Events)
 		EndIf
 		
 		If e\EventState2 Then
-			PositionEntity (e\room\Objects[6],EntityX(e\room\Objects[6],True),CurveValue(-980.0*RoomScale + Sin(Float(MilliSecs2())*0.04)*0.07,EntityY(e\room\Objects[6],True),200.0),EntityZ(e\room\Objects[6],True),True)
-			RotateEntity(e\room\Objects[6], Sin(Float(MilliSecs2())*0.03), EntityYaw(e\room\Objects[6],True), -Sin(Float(MilliSecs2())*0.025), True)
+			PositionEntity (e\room\Objects[6],EntityX(e\room\Objects[6],True),CurveValue(-980.0*RoomScale + Sin(Float(TimeInPosMilliSecs())*0.04)*0.07,EntityY(e\room\Objects[6],True),200.0),EntityZ(e\room\Objects[6],True),True)
+			RotateEntity(e\room\Objects[6], Sin(Float(TimeInPosMilliSecs())*0.03), EntityYaw(e\room\Objects[6],True), -Sin(Float(TimeInPosMilliSecs())*0.025), True)
 		Else
 			PositionEntity (e\room\Objects[6],EntityX(e\room\Objects[6],True),CurveValue(-1280.0*RoomScale,EntityY(e\room\Objects[6],True),200.0),EntityZ(e\room\Objects[6],True),True)
 			RotateEntity(e\room\Objects[6], 0, EntityYaw(e\room\Objects[6],True), 0, True)

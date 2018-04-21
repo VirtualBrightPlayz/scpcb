@@ -472,10 +472,6 @@ Function UpdateMainMenu()
 					
 					y = y + 50*MenuScale
 					
-					;userOptions\achvPopup = UpdateUITick(x + 310 * MenuScale, y + MenuScale, userOptions\achvPopup)
-					
-					y = y + 50*MenuScale
-					
 					ShowFPS% = UpdateUITick(x + 310 * MenuScale, y + MenuScale, ShowFPS%)
 					
 					y = y + 30*MenuScale
@@ -549,7 +545,7 @@ Function DrawMainMenu()
 	
 	DrawImage(MenuBack, 0, 0)
 	
-	If (MilliSecs2() Mod MenuBlinkTimer(0)) >= Rand(MenuBlinkDuration(0)) Then
+	If (TimeInPosMilliSecs() Mod MenuBlinkTimer(0)) >= Rand(MenuBlinkDuration(0)) Then
 		DrawImage(Menu173, userOptions\screenWidth - ImageWidth(Menu173), userOptions\screenHeight - ImageHeight(Menu173))
 	EndIf
 	
@@ -1536,7 +1532,7 @@ Function DrawInputBox$(x%, y%, width%, height%, Txt$, ID% = 0)
 	Color (255, 255, 255)	
 	
 	If SelectedInputBox = ID Then
-		If (MilliSecs2() Mod 800) < 400 Then Rect (x + width / 2 + StringWidth(Txt) / 2 + 2, y + height / 2 - 5, 2, 12)
+		If (TimeInPosMilliSecs() Mod 800) < 400 Then Rect (x + width / 2 + StringWidth(Txt) / 2 + 2, y + height / 2 - 5, 2, 12)
 	EndIf	
 	
 	Text(x + width / 2, y + height / 2, Txt, True, True)

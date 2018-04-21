@@ -46,7 +46,7 @@ Function UpdateNPCtype5131(n.NPCs)
         Else
             dist = EntityDistance(mainPlayer\collider, n\Collider)
             
-            ;use the prev-values to do a "twitching" effect"
+            ;use the prev-values to do a "twitching" effect
             n\PrevX = CurveValue(0.0, n\PrevX, 10.0)
             n\PrevZ = CurveValue(0.0, n\PrevZ, 10.0)
             
@@ -61,7 +61,7 @@ Function UpdateNPCtype5131(n.NPCs)
             EndIf
             
             temp = Rnd(-1.0,1.0)
-            PositionEntity n\obj2, EntityX(n\Collider)+n\PrevX*temp, EntityY(n\Collider) - 0.2 + Sin((MilliSecs2()/8-45) Mod 360)*0.05, EntityZ(n\Collider)+n\PrevZ*temp
+            PositionEntity n\obj2, EntityX(n\Collider)+n\PrevX*temp, EntityY(n\Collider) - 0.2 + Sin((TimeInPosMilliSecs()/8-45) Mod 360)*0.05, EntityZ(n\Collider)+n\PrevZ*temp
             RotateEntity n\obj2, 0, EntityYaw(n\obj), 0
             If (Floor(AnimTime(n\obj2))<>Floor(n\Frame)) Then SetAnimTime n\obj2, n\Frame
             
@@ -142,7 +142,7 @@ Function UpdateNPCtype5131(n.NPCs)
                 EndIf
             EndIf
             
-            PositionEntity(n\obj, EntityX(n\Collider), EntityY(n\Collider) - 0.2 + Sin((MilliSecs2()/8) Mod 360)*0.1, EntityZ(n\Collider))
+            PositionEntity(n\obj, EntityX(n\Collider), EntityY(n\Collider) - 0.2 + Sin((TimeInPosMilliSecs()/8) Mod 360)*0.1, EntityZ(n\Collider))
             
             Select n\State 
                 Case 1

@@ -58,7 +58,7 @@ Function UpdateNPCtype096(n.NPCs)
                 
             EndIf
         Case 4
-            mainPlayer\camZoom = CurveValue(Max(mainPlayer\camZoom, (Sin(Float(MilliSecs2())/20.0)+1.0) * 10.0),mainPlayer\camZoom,8.0)
+            mainPlayer\camZoom = CurveValue(Max(mainPlayer\camZoom, (Sin(Float(TimeInPosMilliSecs())/20.0)+1.0) * 10.0),mainPlayer\camZoom,8.0)
             
             If n\Target = Null Then 
                 If n\Sound = 0 Then
@@ -83,14 +83,14 @@ Function UpdateNPCtype096(n.NPCs)
             
             If (Not mainPlayer\dead) Then
                 
-                If MilliSecs2() > n\State3 Then
+                If TimeInPosMilliSecs() > n\State3 Then
                     n\LastSeen=0
                     If n\Target=Null Then
                         If EntityVisible(mainPlayer\collider, n\Collider) Then n\LastSeen=1
                     Else
                         If EntityVisible(n\Target\Collider, n\Collider) Then n\LastSeen=1
                     EndIf
-                    n\State3=MilliSecs2()+3000
+                    n\State3=TimeInPosMilliSecs()+3000
                 EndIf
                 
                 If n\LastSeen=1 Then
@@ -291,7 +291,7 @@ Function UpdateNPCtype096(n.NPCs)
                         ;Animate2(n\obj, AnimTime(n\obj),1653,1724, n\CurrSpeed*45) ;walk
                     EndIf
                     
-                    If MilliSecs2() > n\State3 Then
+                    If TimeInPosMilliSecs() > n\State3 Then
                         n\LastSeen=0
                         If EntityVisible(mainPlayer\collider, n\Collider) Then 
                             n\LastSeen=1
@@ -303,7 +303,7 @@ Function UpdateNPCtype096(n.NPCs)
                             EndIf
                             ShowEntity n\Collider
                         EndIf
-                        n\State3=MilliSecs2()+3000
+                        n\State3=TimeInPosMilliSecs()+3000
                     EndIf
                     
                     If n\LastSeen Then 

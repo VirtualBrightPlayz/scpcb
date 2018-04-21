@@ -157,7 +157,7 @@ Function UpdateNPCtypeApache(n.NPCs)
                 TurnEntity(n\obj2,0,20.0*timing\tickDuration,0)
                 TurnEntity(n\obj3,20.0*timing\tickDuration,0,0)
                 
-                TurnEntity n\Collider,0,-timing\tickDuration*7,0;Sin(MilliSecs2()/40)*timing\tickDuration
+                TurnEntity n\Collider,0,-timing\tickDuration*7,0;Sin(TimeInPosMilliSecs()/40)*timing\tickDuration
                 n\State2=n\State2+timing\tickDuration*0.3
                 
                 target=CreatePivot()

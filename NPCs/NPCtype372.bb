@@ -24,8 +24,8 @@ Function UpdateNPCtype372(n.NPCs)
                 If Rand(300)=1 Then PlaySound2(RustleSFX(Rand(0,2)),mainPlayer\cam, n\obj, 8, Rnd(0.0,0.2))
             End If
         Else
-            PositionEntity(n\obj, EntityX(n\Collider) + Rnd(-0.005, 0.005), EntityY(n\Collider)+0.3+0.1*Sin(MilliSecs2()/2), EntityZ(n\Collider) + Rnd(-0.005, 0.005))
-            RotateEntity n\obj, 0, EntityYaw(n\Collider), ((MilliSecs2()/5) Mod 360)
+            PositionEntity(n\obj, EntityX(n\Collider) + Rnd(-0.005, 0.005), EntityY(n\Collider)+0.3+0.1*Sin(TimeInPosMilliSecs()/2), EntityZ(n\Collider) + Rnd(-0.005, 0.005))
+            RotateEntity n\obj, 0, EntityYaw(n\Collider), ((TimeInPosMilliSecs()/5) Mod 360)
             
             AnimateNPC(n, 32, 113, 0.4)
             ;Animate2(n\obj, AnimTime(n\obj), 32, 113, 0.4)

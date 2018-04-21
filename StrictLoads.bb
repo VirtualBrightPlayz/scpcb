@@ -86,7 +86,7 @@ Function PlaySound_Strict%(sndHandle%)
 						snd\channels[i] = PlaySound(snd\internalHandle)
 					EndIf
 					ChannelVolume snd\channels[i],userOptions\soundVolume
-					snd\releaseTime = MilliSecs2()+5000 ;release after 5 seconds
+					snd\releaseTime = TimeInPosMilliSecs()+5000 ;release after 5 seconds
 					Return snd\channels[i]
 				EndIf
 			Else
@@ -113,7 +113,7 @@ Function PlaySound_Strict%(sndHandle%)
 					snd\channels[i] = PlaySound(snd\internalHandle)
 				EndIf
 				ChannelVolume snd\channels[i],userOptions\soundVolume
-				snd\releaseTime = MilliSecs2()+5000 ;release after 5 seconds
+				snd\releaseTime = TimeInPosMilliSecs()+5000 ;release after 5 seconds
 				Return snd\channels[i]
 			EndIf
 		Next

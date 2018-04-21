@@ -62,7 +62,7 @@ Function CircleToLineSegIsect% (cx#, cy#, r#, l1x#, l1y#, l2x#, l2y#)
 		Return True
 	EndIf	
 	
-	;Vektorit (janan vektori ja vektorit janan päätepisteistä ympyrän keskipisteeseen)
+	;Vectors (vector of a line and vectors at end points of a segment at the center of a circle)
 	Local SegVecX# = l2x - l1x
 	Local SegVecY# = l2y - l1y
 	
@@ -72,34 +72,34 @@ Function CircleToLineSegIsect% (cx#, cy#, r#, l1x#, l1y#, l2x#, l2y#)
 	Local PntVec2X# = cx - l2x
 	Local PntVec2Y# = cy - l2y
 	
-	;Em. vektorien pistetulot
+	;Em. the points of the vectors
 	Local dp1# = SegVecX * PntVec1X + SegVecY * PntVec1Y
 	Local dp2# = -SegVecX * PntVec2X - SegVecY * PntVec2Y
 	
-	;Tarkistaa onko toisen pistetulon arvo 0
+	;Checks whether the value of another point is 0
 	;tai molempien merkki sama
 	If dp1 = 0 Or dp2 = 0 Then
 	ElseIf (dp1 > 0 And dp2 > 0) Or (dp1 < 0 And dp2 < 0) Then
 	Else
-		;Ei kumpikaan -> ei leikkausta
+		;Neither -> no cutting
 		Return False
 	EndIf
 	
-	;Janan päätepisteiden kautta kulkevan suoran ;yhtälö; (ax + by + c = 0)
+	;The straight line passing through the endpoints ;equation; (ax + by + c = 0)
 	Local a# = (l2y - l1y) / (l2x - l1x)
 	Local b# = -1
 	Local c# = -(l2y - l1y) / (l2x - l1x) * l1x + l1y
 	
-	;Ympyrän keskipisteen etäisyys suorasta
+	;Distance from the center of the circle
 	Local d# = Abs(a * cx + b * cy + c) / Sqr(a * a + b * b)
 	
-	;Ympyrä on liian kaukana
-	;-> ei leikkausta
+	;The circle is too far away
+	;-> not cutting
 	If d > r Then Return False
 	
 	;Local kateetin_pituus# = Cos(angle) * hyp
 	
-	;Jos päästään tänne saakka, ympyrä ja jana leikkaavat (tai ovat sisäkkäin)
+	;If you get this far, a circle and a line segment intersect (or are intertwined)
 	Return True
 End Function
 
@@ -149,7 +149,7 @@ Function Rnd_Array(numb1#,numb2#,Array1#,Array2#)
 	
 End Function
 
-Function MilliSecs2()
+Function TimeInPosMilliSecs()
 	Local retVal% = MilliSecs()
 	If retVal < 0 Then retVal = retVal + 2147483648
 	Return retVal

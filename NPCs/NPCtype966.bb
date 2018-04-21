@@ -148,7 +148,7 @@ Function UpdateNPCtype966(n.NPCs)
                 RotateEntity n\Collider,0.0,CurveAngle(angle,EntityYaw(n\Collider),20.0),0.0
                 
                 If n\State3<900 Then
-                    mainPlayer\blurTimer = ((Sin(MilliSecs2()/50)+1.0)*200)/dist
+                    mainPlayer\blurTimer = ((Sin(TimeInPosMilliSecs()/50)+1.0)*200)/dist
                     
                     If dist<16 Then
                         mainPlayer\blinkEffect = Max(mainPlayer\blinkEffect, 1.5)
@@ -244,7 +244,7 @@ Function UpdateNPCtype966(n.NPCs)
                         
                         n\CurrSpeed = CurveValue(n\Speed,n\CurrSpeed,10.0)
                     Else
-                        If MilliSecs2() > n\State2 And dist<16.0 Then
+                        If TimeInPosMilliSecs() > n\State2 And dist<16.0 Then
                             HideEntity n\Collider
                             EntityPick(n\Collider, 1.5)
                             If PickedEntity() <> 0 Then
@@ -252,7 +252,7 @@ Function UpdateNPCtype966(n.NPCs)
                             EndIf
                             ShowEntity n\Collider
                             
-                            n\State2=MilliSecs2()+1000
+                            n\State2=TimeInPosMilliSecs()+1000
                             
                             If Rand(5)=1 Then n\State=0
                         EndIf	

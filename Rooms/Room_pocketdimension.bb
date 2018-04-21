@@ -403,7 +403,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 						;TODO: fix
 						;e\SoundCHN = LoopSound2(OldManSFX(4), e\SoundCHN, mainPlayer\cam, e\room\Objects[17], 5.0, 0.6)
 						
-						mainPlayer\camZoom = Max(mainPlayer\camZoom, (Sin(Float(MilliSecs2()) / 20.0)+1.0)*15.0*Max((6.0-temp)/6.0,0.0))
+						mainPlayer\camZoom = Max(mainPlayer\camZoom, (Sin(Float(TimeInPosMilliSecs()) / 20.0)+1.0)*15.0*Max((6.0-temp)/6.0,0.0))
 						
 						pvt% = CreatePivot()
 						PositionEntity pvt, EntityX(mainPlayer\cam), EntityY(mainPlayer\cam), EntityZ(mainPlayer\cam)
@@ -605,8 +605,8 @@ Function UpdateEvent_pocketdimension(e.Events)
 				PositionEntity(Curr106\Collider, EntityX(e\room\Objects[e\EventState2],True),0.27, EntityZ(e\room\Objects[e\EventState2],True))
 				
 				PointEntity(Curr106\Collider, mainPlayer\cam)
-				TurnEntity(Curr106\Collider, 0, Sin(MilliSecs2() / 20) * 6.0, 0, True)
-				MoveEntity(Curr106\Collider, 0, 0, Sin(MilliSecs2() / 15) * 0.06)
+				TurnEntity(Curr106\Collider, 0, Sin(TimeInPosMilliSecs() / 20) * 6.0, 0, True)
+				MoveEntity(Curr106\Collider, 0, 0, Sin(TimeInPosMilliSecs() / 15) * 0.06)
 				
 				If Rand(750)=1 And e\EventState2 > 12 Then
 					mainPlayer\blinkTimer = -10

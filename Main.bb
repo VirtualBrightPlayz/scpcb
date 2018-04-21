@@ -624,8 +624,8 @@ Function UpdateGame()
 		DoubleClick = False
 		MouseHit1 = MouseHit(1)
 		If MouseHit1 Then
-			If MilliSecs2() - LastMouseHit1 < 800 Then DoubleClick = True
-			LastMouseHit1 = MilliSecs2()
+			If TimeInPosMilliSecs() - LastMouseHit1 < 800 Then DoubleClick = True
+			LastMouseHit1 = TimeInPosMilliSecs()
 		EndIf
 		
 		Local prevmousedown1 = MouseDown1
@@ -1842,7 +1842,7 @@ Function UpdateInfect()
 			;HeartBeatRate = Max(HeartBeatRate, 100)
 			mainPlayer\heartbeatIntensity = Max(100, mainPlayer\infect008/120.0)
 			
-			EntityAlpha mainPlayer\overlays[OVERLAY_008], Min(((mainPlayer\infect008*0.2)^2)/1000.0,0.5) * (Sin(MilliSecs2()/8.0)+2.0)
+			EntityAlpha mainPlayer\overlays[OVERLAY_008], Min(((mainPlayer\infect008*0.2)^2)/1000.0,0.5) * (Sin(TimeInPosMilliSecs()/8.0)+2.0)
 			
 			For i = 0 To 6
 				If mainPlayer\infect008>i*15+10 And temp =< i*15+10 Then
@@ -1887,7 +1887,7 @@ Function UpdateInfect()
 			mainPlayer\infect008 = Min(mainPlayer\infect008+timing\tickDuration*0.004,100)
 			
 			If mainPlayer\infect008 < 94.7 Then
-				EntityAlpha mainPlayer\overlays[OVERLAY_008], 0.5 * (Sin(MilliSecs2()/8.0)+2.0)
+				EntityAlpha mainPlayer\overlays[OVERLAY_008], 0.5 * (Sin(TimeInPosMilliSecs()/8.0)+2.0)
 				mainPlayer\blurTimer = 900
 				
 				If mainPlayer\infect008 > 94.5 Then mainPlayer\blinkTimer = Max(Min(-50*(mainPlayer\infect008-94.5),mainPlayer\blinkTimer),-10)
@@ -1900,7 +1900,7 @@ Function UpdateInfect()
 				Animate2(mainPlayer\currRoom\NPC[0]\obj, AnimTime(mainPlayer\currRoom\NPC[0]\obj), 357, 381, 0.3)
 			ElseIf mainPlayer\infect008 < 98.5
 				
-				EntityAlpha mainPlayer\overlays[OVERLAY_008], 0.5 * (Sin(MilliSecs2()/5.0)+2.0)
+				EntityAlpha mainPlayer\overlays[OVERLAY_008], 0.5 * (Sin(TimeInPosMilliSecs()/5.0)+2.0)
 				mainPlayer\blurTimer = 950
 				
 				If temp < 94.7 Then 
@@ -1940,9 +1940,9 @@ Function UpdateInfect()
 				EndIf
 				
 				PositionEntity mainPlayer\head, EntityX(mainPlayer\currRoom\NPC[0]\Collider,True), EntityY(mainPlayer\currRoom\NPC[0]\Collider,True)+0.65,EntityZ(mainPlayer\currRoom\NPC[0]\Collider,True),True
-				RotateEntity mainPlayer\head, (1.0+Sin(MilliSecs2()/5.0))*15, mainPlayer\currRoom\angle-180, 0, True
+				RotateEntity mainPlayer\head, (1.0+Sin(TimeInPosMilliSecs()/5.0))*15, mainPlayer\currRoom\angle-180, 0, True
 				MoveEntity mainPlayer\head, 0,0,0.4
-				TurnEntity mainPlayer\head, 80+(Sin(MilliSecs2()/5.0))*30,(Sin(MilliSecs2()/5.0))*40,0
+				TurnEntity mainPlayer\head, 80+(Sin(TimeInPosMilliSecs()/5.0))*30,(Sin(TimeInPosMilliSecs()/5.0))*40,0
 			EndIf
 		EndIf
 		
@@ -2210,7 +2210,7 @@ Function RenderWorld2()
 	CameraProjMode ark_blur_cam,0
 	
 	If mainPlayer\blinkTimer < - 16 Or mainPlayer\blinkTimer > - 6
-		If (wornItem<>Null) And (hasBattery=1) And ((MilliSecs2() Mod 800) < 400) Then
+		If (wornItem<>Null) And (hasBattery=1) And ((TimeInPosMilliSecs() Mod 800) < 400) Then
 			Color 255,0,0
 			SetFont Font3
 			

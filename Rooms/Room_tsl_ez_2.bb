@@ -52,7 +52,7 @@ Function FillRoom_tsl_ez_2(r.Rooms)
 End Function
 
 
-Function UpdateEvent_tsl_ez_2(e.Events)
+Function UpdateEvent_tesla(e.Events)
 	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
 
 	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
@@ -72,7 +72,7 @@ Function UpdateEvent_tsl_ez_2(e.Events)
 		If e\Sound = 0 Then e\Sound = LoadSound_Strict("SFX\Room\Tesla\Shock.ogg")
 		
 		If e\EventState = 0 Then
-			If (MilliSecs2() Mod 1500) < 800 Then
+			If (TimeInPosMilliSecs() Mod 1500) < 800 Then
 				ShowEntity e\room\Objects[4]
 			Else
 				HideEntity e\room\Objects[4]
@@ -98,41 +98,6 @@ Function UpdateEvent_tsl_ez_2(e.Events)
 				EndIf
 			Next
 			
-			Local temp2 = True
-			For e2.Events = Each Events
-				If e2\EventName = e\EventName And e2 <> e
-					If e2\EventStr <> ""
-						temp2 = False
-						e\EventStr = "done"
-						Exit
-					EndIf
-				EndIf
-			Next
-			
-			Local temp3 = 0
-			If temp2
-					If e\EventStr = "" And mainPlayer\currRoom = e\room
-					If EntityDistance(e\room\Objects[5],mainPlayer\collider)<EntityDistance(e\room\Objects[6],mainPlayer\collider)
-						temp3 = 6
-					Else
-						temp3 = 5
-					EndIf
-					e\room\NPC[0] = CreateNPC(NPCtypeD,EntityX(e\room\Objects[temp3],True),0.5,EntityZ(e\room\Objects[temp3],True))
-					PointEntity e\room\NPC[0]\Collider,e\room\Objects[2]
-					FreeEntity e\room\NPC[0]\obj
-					e\room\NPC[0]\obj = LoadAnimMesh_Strict("GFX\npcs\clerk.b3d")
-					e\room\NPC[0]\State = 2
-					Local tempscale# = 0.5 / MeshWidth(e\room\NPC[0]\obj)
-					ScaleEntity e\room\NPC[0]\obj, tempscale#, tempscale#, tempscale#
-					e\room\NPC[0]\Model$ = "GFX\npcs\clerk.b3d"
-					e\room\NPC[0]\ModelScaleX = tempscale#
-					e\room\NPC[0]\ModelScaleY = tempscale#
-					e\room\NPC[0]\ModelScaleZ = tempscale#
-					e\EventStr = "step1"
-					EndIf
-				EndIf
-			EndIf
-			
 			If Curr106\State < -10 And e\EventState = 0 Then 
 				For i = 0 To 2
 					If Distance(EntityX(Curr106\Collider),EntityZ(Curr106\Collider),EntityX(e\room\Objects[i],True),EntityZ(e\room\Objects[i],True)) < 300.0*RoomScale Then
@@ -151,7 +116,7 @@ Function UpdateEvent_tsl_ez_2(e.Events)
 		Else
 			e\EventState = e\EventState+timing\tickDuration
 			If e\EventState =< 40 Then
-				If (MilliSecs2() Mod 100) < 50 Then
+				If (TimeInPosMilliSecs() Mod 100) < 50 Then
 					ShowEntity e\room\Objects[4]
 				Else
 					HideEntity e\room\Objects[4]
@@ -175,10 +140,6 @@ Function UpdateEvent_tsl_ez_2(e.Events)
 								DeathMSG = "Subject D-9341 killed by the Tesla gate at [REDACTED]."
 							EndIf
 						Next
-					EndIf
-					
-					If e\EventStr = "step1"
-						e\room\NPC[0]\State = 3
 					EndIf
 					
 					If Curr106\State < -10 Then
@@ -217,52 +178,6 @@ Function UpdateEvent_tsl_ez_2(e.Events)
 					
 					If e\EventState > 150 Then e\EventState = 0
 				EndIf
-			EndIf
-		EndIf
-	EndIf
-	
-	If e\room\NPC[0] <> Null
-		If e\EventStr = "step1" And e\room\NPC[0]\State <> 3
-			If e\EventState = 0
-				For i = 0 To 2
-					If Distance(EntityX(e\room\NPC[0]\Collider),EntityZ(e\room\NPC[0]\Collider),EntityX(e\room\Objects[i],True),EntityZ(e\room\Objects[i],True)) < 400.0*RoomScale
-						If Not mainPlayer\dead Then 
-							StopChannel(e\SoundCHN)
-							e\SoundCHN = PlaySound2(TeslaActivateSFX, mainPlayer\cam, e\room\Objects[3],4.0,0.5)
-							HideEntity e\room\Objects[4]
-							e\EventState = 1
-							Exit
-						EndIf
-					EndIf
-				Next
-			EndIf
-		ElseIf e\EventStr = "step1" And e\room\NPC[0]\State = 3
-			e\room\NPC[0]\CurrSpeed = 0
-			AnimateNPC(e\room\NPC[0],41,60,0.5,False)
-			If e\room\NPC[0]\Frame = 60
-				e\room\NPC[0]\IsDead = True
-				e\EventStr = "step2"
-				SetNPCFrame(e\room\NPC[0],57)
-			EndIf
-		ElseIf e\EventStr = "step2"
-			AnimateNPC(e\room\NPC[0],57,60,0.5,False)
-			If e\room\NPC[0]\Frame = 60
-				e\EventStr = "0"
-			EndIf
-		ElseIf e\EventStr <> "" And e\EventStr <> "step1" And e\EventStr <> "done"
-			If Float(e\EventStr)<70*10
-				If Rand(10)=1
-					;p.Particles = CreateParticle(EntityX(e\room\NPC[0]\Collider),EntityY(e\room\NPC[0]\obj)+0.05,EntityZ(e\room\NPC[0]\Collider),6,0.05,0,60)
-					p.Particles = CreateParticle(EntityX(e\room\NPC[0]\Collider),EntityY(e\room\NPC[0]\obj)+0.05,EntityZ(e\room\NPC[0]\Collider),0,0.05,0,60)
-					p\speed = 0.002
-					RotateEntity(p\pvt, 0, EntityYaw(e\room\NPC[0]\Collider), 0)
-					MoveEntity p\pvt,Rnd(-0.1,0.1),0,0.1+Rnd(0,0.5)
-					RotateEntity(p\pvt, -90, EntityYaw(e\room\NPC[0]\Collider), 0)
-					p\Achange = -0.02
-				EndIf
-				e\EventStr = Float(e\EventStr) + timing\tickDuration
-			Else
-				e\EventStr = "done"
 			EndIf
 		EndIf
 	EndIf

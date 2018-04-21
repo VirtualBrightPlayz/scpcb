@@ -89,13 +89,13 @@ Function UpdateNPCtype173(n.NPCs)
 			If (Not canMove) Then
 				;Blur and zoom camera slightly when looking at 173.
 				mainPlayer\blurTimer = Max(Max(Min((4.0 - dist) / 6.0, 0.9), 0.1), mainPlayer\blurTimer)
-				mainPlayer\camZoom = Max(mainPlayer\camZoom, (Sin(Float(MilliSecs2())/20.0)+1.0)*15.0*Max((3.5-dist)/3.5,0.0))								
+				mainPlayer\camZoom = Max(mainPlayer\camZoom, (Sin(Float(TimeInPosMilliSecs())/20.0)+1.0)*15.0*Max((3.5-dist)/3.5,0.0))								
 				
 				;If it's close spoopy horror sound.
-				If dist < 3.5 And MilliSecs2() - n\lastSeen > 60000 And playerVisible Then
+				If dist < 3.5 And TimeInPosMilliSecs() - n\lastSeen > 60000 And playerVisible Then
 					PlaySound_Strict(n\sounds[Rand(1,3)])
 					
-					n\lastSeen = MilliSecs2()
+					n\lastSeen = TimeInPosMilliSecs()
 				EndIf
 				
 				If dist < 1.5 And n\lastDist > 2.0 And playerVisible Then
@@ -270,12 +270,12 @@ Function UpdateNPCtype173(n.NPCs)
 				EndIf
 			EndIf
 			
-			PositionEntity(n\obj, EntityX(n\Collider), EntityY(n\Collider) + 0.05 + Sin(MilliSecs2()*0.08)*0.02, EntityZ(n\Collider))
+			PositionEntity(n\obj, EntityX(n\Collider), EntityY(n\Collider) + 0.05 + Sin(TimeInPosMilliSecs()*0.08)*0.02, EntityZ(n\Collider))
 			RotateEntity (n\obj, 0, EntityYaw(n\Collider)-180, 0)
 			
 			ShowEntity n\obj2
 			
-			PositionEntity(n\obj2, EntityX(n\Collider), EntityY(n\Collider) - 0.05 + Sin(MilliSecs2()*0.08)*0.02, EntityZ(n\Collider))
+			PositionEntity(n\obj2, EntityX(n\Collider), EntityY(n\Collider) - 0.05 + Sin(TimeInPosMilliSecs()*0.08)*0.02, EntityZ(n\Collider))
 			RotateEntity (n\obj2, 0, EntityYaw(n\Collider)-180, 0)
 	End Select
 End Function

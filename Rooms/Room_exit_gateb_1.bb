@@ -220,16 +220,16 @@ Function UpdateEventExit1(e.Events)
 					e\EventState=e\EventState+timing\tickDuration
 					
 					If e\EventState < 40.0*70 Then 	
-						e\room\NPC[0]\EnemyX = EntityX(e\room\Objects[11],True)+Sin(MilliSecs2()/25.0)*3
+						e\room\NPC[0]\EnemyX = EntityX(e\room\Objects[11],True)+Sin(TimeInPosMilliSecs()/25.0)*3
 						e\room\NPC[0]\EnemyY = EntityY(e\room\Objects[11],True)+Cos(MilliSecs()/85.0)+9.0
 						e\room\NPC[0]\EnemyZ = EntityZ(e\room\Objects[11],True)+Cos(MilliSecs()/25.0)*3
 						
-						e\room\NPC[2]\EnemyX = EntityX(e\room\Objects[11],True)+Sin(MilliSecs2()/23.0)*3
+						e\room\NPC[2]\EnemyX = EntityX(e\room\Objects[11],True)+Sin(TimeInPosMilliSecs()/23.0)*3
 						e\room\NPC[2]\EnemyY = EntityY(e\room\Objects[11],True)+Cos(MilliSecs()/83.0)+5.0
 						e\room\NPC[2]\EnemyZ = EntityZ(e\room\Objects[11],True)+Cos(MilliSecs()/23.0)*3
 						
 						If e\room\NPC[3]\State = 3 Then 
-							e\room\NPC[3]\EnemyX = EntityX(e\room\Objects[11],True)+Sin(MilliSecs2()/20.0)*3
+							e\room\NPC[3]\EnemyX = EntityX(e\room\Objects[11],True)+Sin(TimeInPosMilliSecs()/20.0)*3
 							e\room\NPC[3]\EnemyY = EntityY(e\room\Objects[11],True)+Cos(MilliSecs()/80.0)+3.5
 							e\room\NPC[3]\EnemyZ = EntityZ(e\room\Objects[11],True)+Cos(MilliSecs()/20.0)*3
 						EndIf
@@ -333,11 +333,11 @@ Function UpdateEventExit1(e.Events)
 							EndIf										
 						Else
 							If SelectedEnding = "B3" Then
-								e\room\NPC[0]\EnemyX = EntityX(e\room\Objects[11],True)+Sin(MilliSecs2()/25.0)*3
+								e\room\NPC[0]\EnemyX = EntityX(e\room\Objects[11],True)+Sin(TimeInPosMilliSecs()/25.0)*3
 								e\room\NPC[0]\EnemyY = EntityY(e\room\Objects[11],True)+Cos(MilliSecs()/85.0)+9.0
 								e\room\NPC[0]\EnemyZ = EntityZ(e\room\Objects[11],True)+Cos(MilliSecs()/25.0)*3
 								
-								e\room\NPC[2]\EnemyX = EntityX(e\room\Objects[11],True)+Sin(MilliSecs2()/23.0)*3
+								e\room\NPC[2]\EnemyX = EntityX(e\room\Objects[11],True)+Sin(TimeInPosMilliSecs()/23.0)*3
 								e\room\NPC[2]\EnemyY = EntityY(e\room\Objects[11],True)+Cos(MilliSecs()/83.0)+5.0
 								e\room\NPC[2]\EnemyZ = EntityZ(e\room\Objects[11],True)+Cos(MilliSecs()/23.0)*3
 								

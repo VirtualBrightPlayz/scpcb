@@ -119,12 +119,12 @@ Function UpdateNPCtype106(n.NPCs)
             If (visible) Then
                 If EntityInView(n\collider, mainPlayer\cam) Then
                     mainPlayer\blurTimer = Max(Max(Min((4.0 - dist) / 6.0, 0.9), 0.1), mainPlayer\blurTimer)
-                    mainPlayer\camZoom = Max(mainPlayer\camZoom, (Sin(Float(MilliSecs2())/20.0)+1.0) * 20.0 * Max((4.0-dist)/4.0,0))
+                    mainPlayer\camZoom = Max(mainPlayer\camZoom, (Sin(Float(TimeInPosMilliSecs())/20.0)+1.0) * 20.0 * Max((4.0-dist)/4.0,0))
                     
-                    If (MilliSecs2() - n\lastSeen > 60000) Then 
+                    If (TimeInPosMilliSecs() - n\lastSeen > 60000) Then 
                         mainPlayer\camZoom = 40
                         PlaySound_Strict(n\sounds[2])
-                        n\lastSeen = MilliSecs2()
+                        n\lastSeen = TimeInPosMilliSecs()
                     EndIf
                 EndIf
             EndIf

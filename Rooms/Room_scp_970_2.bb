@@ -224,7 +224,7 @@ Function UpdateEvent_scp_970_2(e.Events)
 			If e\room\NPC[0] <> Null Then
 				If EntityDistance(mainPlayer\collider, e\room\NPC[0]\Collider)<3.0 Then
 					If EntityInView(e\room\NPC[0]\obj, mainPlayer\cam) Then
-						mainPlayer\camZoom = (Sin(Float(MilliSecs2())/20.0)+1.0)*15.0
+						mainPlayer\camZoom = (Sin(Float(TimeInPosMilliSecs())/20.0)+1.0)*15.0
 						;HeartBeatVolume = Max(CurveValue(0.3, HeartBeatVolume, 2.0), HeartBeatVolume)
 						mainPlayer\heartbeatIntensity = Max(mainPlayer\heartbeatIntensity, 120)
 					EndIf
@@ -285,7 +285,7 @@ Function UpdateEvent_scp_970_2(e.Events)
 					AnimateNPC(e\room\NPC[0], 80, 61, -0.02, False)
 					
 					e\room\NPC[0]\DropSpeed = 0
-					y = CurveValue(1.5+Sin(Float(MilliSecs2())/20.0)*0.1,EntityY(e\room\NPC[0]\Collider),50.0)
+					y = CurveValue(1.5+Sin(Float(TimeInPosMilliSecs())/20.0)*0.1,EntityY(e\room\NPC[0]\Collider),50.0)
 					
 					PositionEntity e\room\NPC[0]\Collider,EntityX(e\room\NPC[0]\Collider),y,EntityZ(e\room\NPC[0]\Collider)
 					TurnEntity e\room\NPC[0]\Collider,0,0.1*timing\tickDuration,0

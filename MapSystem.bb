@@ -1452,7 +1452,6 @@ Include "Rooms/Room_hll_ele_2.bb"
 Include "Rooms/Room_hll_fan_2.bb"
 Include "Rooms/Room_hll_gas_2.bb"
 Include "Rooms/Room_hll_gas_3.bb"
-Include "Rooms/Room_hll_gas_4.bb"
 Include "Rooms/Room_hll_lights_2.bb"
 Include "Rooms/Room_hll_lshape_2.bb"
 Include "Rooms/Room_hll_pipes_3.bb"
@@ -1519,7 +1518,7 @@ Function FillRoom(r.Rooms)
 			FillRoom_chck_hcz_ez_2(r)
 		Case "hll_gas_2"
 			FillRoom_hll_gas_2(r)
-		Case "room2testroom2"
+		Case "test_smallwindow_2"
 			FillRoom_test_smallwindow_2(r)
 		Case "tnnl_plain_3"
 			FillRoom_tnnl_plain_3(r)
@@ -1589,7 +1588,7 @@ Function FillRoom(r.Rooms)
 			FillRoom_end_1(r)
 		Case "coffin"
 			FillRoom_cont_895_1(r)
-		Case "tsl_ez_2","tsl_lcz_2","room2tesla_hcz"
+		Case "tsl_ez_2","tsl_lcz_2","tsl_hcz_2"
 			FillRoom_tsl_ez_2(r)
 		Case "lck_tshape_2"
 			FillRoom_lck_tshape_2(r)
@@ -2096,7 +2095,7 @@ Function InitWayPoints(loadingstart=45)
 		Next
 	Next
 	
-	DebugLog "InitWaypoints() - "+(MilliSecs2()-temper)
+	DebugLog "InitWaypoints() - "+(TimeInPosMilliSecs()-temper)
 	
 End Function
 
@@ -2738,7 +2737,7 @@ Function UpdateSecurityCams()
 							EntityTexture(sc\ScrOverlay, OldAiPics(0))
 						End If
 						
-						If (MilliSecs2() Mod sc\PlayerState) >= Rand(600) Then
+						If (TimeInPosMilliSecs() Mod sc\PlayerState) >= Rand(600) Then
 							EntityTexture(sc\ScrOverlay, MonitorTexture)
 						Else
 							If sc\soundCHN = 0 Then
@@ -3569,7 +3568,7 @@ Function CreateMap()
 	max_pos = Room2Amount[0]-1
 	
 	MapRoom(ROOM2, 0) = "closets_2"
-	SetRoom("room2testroom2", ROOM2, Floor(0.1*Float(Room2Amount[0])),min_pos,max_pos)
+	SetRoom("test_smallwindow_2", ROOM2, Floor(0.1*Float(Room2Amount[0])),min_pos,max_pos)
 	SetRoom("cont_714_860_1025_2", ROOM2, Floor(0.2*Float(Room2Amount[0])),min_pos,max_pos)
 	SetRoom("scp_970_2", ROOM2, Floor(0.3*Float(Room2Amount[0])),min_pos,max_pos)
 	SetRoom("cont_012_2", ROOM2, Floor(0.55*Float(Room2Amount[0])),min_pos,max_pos)

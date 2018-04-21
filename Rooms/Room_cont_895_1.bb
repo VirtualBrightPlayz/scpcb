@@ -88,7 +88,7 @@ Function UpdateEventCoffin(e.Events)
 
 	;[Block]
 	
-	If e\EventState < MilliSecs2() Then
+	If e\EventState < TimeInPosMilliSecs() Then
 		;SCP-079 starts broadcasting 895 camera feed on monitors after leaving the first zone
 		;TODO: rewrite this to adjust for separate zone loading
 		If EntityPitch(e\room\Levers[0],True) > 0 Then ;camera feed on
@@ -107,7 +107,7 @@ Function UpdateEventCoffin(e.Events)
 			Next
 		EndIf
 		
-		e\EventState = MilliSecs2()+3000
+		e\EventState = TimeInPosMilliSecs()+3000
 	EndIf
 	
 	If mainPlayer\currRoom = e\room Then
@@ -145,7 +145,7 @@ Function UpdateEventCoffin(e.Events)
 				If (CoffinDistance < 4.0) And (hasBatteryFor895) Then
 					
 					mainPlayer\sanity895 = mainPlayer\sanity895-(timing\tickDuration*1.1);/WearingNightVision)
-					mainPlayer\blurTimer = Sin(MilliSecs2()/10)*Abs(mainPlayer\sanity895)
+					mainPlayer\blurTimer = Sin(TimeInPosMilliSecs()/10)*Abs(mainPlayer\sanity895)
 					
 					tempF# = GetAngle(EntityX(mainPlayer\collider,True),EntityZ(mainPlayer\collider,True),EntityX(e\room\Objects[1],True),EntityZ(e\room\Objects[1],True))
 					tempF2# = EntityYaw(mainPlayer\collider)

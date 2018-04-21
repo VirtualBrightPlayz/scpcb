@@ -151,8 +151,8 @@ Function UpdateEvent_cont_012_2(e.Events)
 					
 					mainPlayer\heartbeatIntensity = 150
 					;HeartBeatVolume = Max(3.0-dist,0.0)/3.0
-					mainPlayer\blurTimer = Max((2.0-dist)*(e\EventState3/800.0)*(Sin(Float(MilliSecs2()) / 20.0 + 1.0)),mainPlayer\blurTimer)
-					mainPlayer\camZoom = Max(mainPlayer\camZoom, (Sin(Float(MilliSecs2()) / 20.0)+1.0)*8.0*Max((3.0-dist),0.0))
+					mainPlayer\blurTimer = Max((2.0-dist)*(e\EventState3/800.0)*(Sin(Float(TimeInPosMilliSecs()) / 20.0 + 1.0)),mainPlayer\blurTimer)
+					mainPlayer\camZoom = Max(mainPlayer\camZoom, (Sin(Float(TimeInPosMilliSecs()) / 20.0)+1.0)*8.0*Max((3.0-dist),0.0))
 					
 					If BreathCHN <> 0 Then
 						If ChannelPlaying(BreathCHN) Then StopChannel(BreathCHN)

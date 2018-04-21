@@ -478,9 +478,9 @@ Function UpdateItems()
 		i\Dropped = 0
 		
 		If (Not i\Picked) Then
-			If i\disttimer < MilliSecs2() Then
+			If i\disttimer < TimeInPosMilliSecs() Then
 				i\dist = EntityDistance(mainPlayer\collider, i\collider)
-				i\disttimer = MilliSecs2() + Rand(600,800)
+				i\disttimer = TimeInPosMilliSecs() + Rand(600,800)
 				If i\dist < HideDist Then ShowEntity i\collider
 			EndIf
 			

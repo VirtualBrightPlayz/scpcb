@@ -520,7 +520,7 @@ Function MovePlayer()
 	
 	If mainPlayer\injuries > 1.0 Then
 		temp2 = mainPlayer\bloodloss
-		mainPlayer\blurTimer = Max(Max(Sin(MilliSecs2()/100.0)*mainPlayer\bloodloss*30.0,mainPlayer\bloodloss*2*(2.0-mainPlayer\crouchState)),mainPlayer\blurTimer)
+		mainPlayer\blurTimer = Max(Max(Sin(TimeInPosMilliSecs()/100.0)*mainPlayer\bloodloss*30.0,mainPlayer\bloodloss*2*(2.0-mainPlayer\crouchState)),mainPlayer\blurTimer)
 		mainPlayer\bloodloss = Min(mainPlayer\bloodloss + (Min(mainPlayer\injuries,3.5)/300.0)*timing\tickDuration,100)
 		
 		If temp2 <= 60 And mainPlayer\bloodloss > 60 Then
@@ -546,7 +546,7 @@ Function MovePlayer()
 			FreeEntity pvt
 		EndIf
 		
-		mainPlayer\camZoom = Max(mainPlayer\camZoom, (Sin(Float(MilliSecs2())/20.0)+1.0)*mainPlayer\bloodloss*0.2)
+		mainPlayer\camZoom = Max(mainPlayer\camZoom, (Sin(Float(TimeInPosMilliSecs())/20.0)+1.0)*mainPlayer\bloodloss*0.2)
 		
 		If mainPlayer\bloodloss > 60 Then mainPlayer\crouching = True
 		If mainPlayer\bloodloss => 100 Then 
@@ -674,7 +674,7 @@ Function MouseLook()
 		
 		If mainPlayer\currRoom\RoomTemplate\Name = "pocketdimension" Then
 			If EntityY(mainPlayer\collider)<2000*RoomScale Or EntityY(mainPlayer\collider)>2608*RoomScale Then
-				RotateEntity mainPlayer\cam, WrapAngle(EntityPitch(mainPlayer\cam)),WrapAngle(EntityYaw(mainPlayer\cam)), roll+WrapAngle(Sin(MilliSecs2()/150.0)*30.0) ; Pitch the user;s camera up And down.
+				RotateEntity mainPlayer\cam, WrapAngle(EntityPitch(mainPlayer\cam)),WrapAngle(EntityYaw(mainPlayer\cam)), roll+WrapAngle(Sin(TimeInPosMilliSecs()/150.0)*30.0) ; Pitch the user;s camera up And down.
 			EndIf
 		EndIf
 		
@@ -1050,7 +1050,7 @@ Function DrawInventory(player.Player)
 							
 							SetFont Font3
 							If strtemp <> "" Then
-								strtemp = Right(Left(strtemp, (Int(MilliSecs2()/300) Mod Len(strtemp))),10)
+								strtemp = Right(Left(strtemp, (Int(TimeInPosMilliSecs()/300) Mod Len(strtemp))),10)
 								Text(x+32, y+33, strtemp)
 							EndIf
 							
@@ -1073,7 +1073,7 @@ Function DrawInventory(player.Player)
 					SetFont Font3
 					
 					If player\currRoom\RoomTemplate\Name = "pocketdimension" Then
-						If (MilliSecs2() Mod 1000) > 300 Then	
+						If (TimeInPosMilliSecs() Mod 1000) > 300 Then	
 							Text(x, y + height / 2 - 80, "ERROR 06", True)
 							Text(x, y + height / 2 - 60, "LOCATION UNKNOWN", True)						
 						EndIf
@@ -1086,7 +1086,7 @@ Function DrawInventory(player.Player)
 							Else
 								Color (30,30,30)
 							EndIf
-							If (MilliSecs2() Mod 1000) > 300 Then
+							If (TimeInPosMilliSecs() Mod 1000) > 300 Then
 								If player\selectedItem\itemtemplate\name <> "S-NAV 310 Navigator" And player\selectedItem\itemtemplate\name <> "S-NAV Navigator Ultimate" Then
 									Text(x, y + height / 2 - 40, "COULD NOT CONNECT", True)
 									Text(x, y + height / 2 - 20, "TO MAP DATABASE", True)
@@ -1104,7 +1104,7 @@ Function DrawInventory(player.Player)
 							
 							Local PlayerX% = Floor(EntityX(player\currRoom\obj) / 8.0 + 0.5), PlayerZ% = Floor(EntityZ(player\currRoom\obj) / 8.0 + 0.5)
 							Local SCPs_found% = 0
-							If player\selectedItem\itemtemplate\name = "S-NAV Navigator Ultimate" And (MilliSecs2() Mod 600) < 400 Then
+							If player\selectedItem\itemtemplate\name = "S-NAV Navigator Ultimate" And (TimeInPosMilliSecs() Mod 600) < 400 Then
 								Local dist# = EntityDistance(player\cam, Curr173\obj)
 								dist = Ceil(dist / 8.0) * 8.0
 								If dist < 8.0 * 4 Then

@@ -474,7 +474,7 @@ Function UpdateEvent_cont_035_1(e.Events)
 							
 							If (Not IsPlayerWearingTempName(mainPlayer,"hazmatsuit3")) And (Not IsPlayerWearingTempName(mainPlayer,"gasmask3")) Then
 								mainPlayer\sanity895=mainPlayer\sanity895-timing\tickDuration*1.1
-								mainPlayer\blurTimer = Sin(MilliSecs2()/10)*Abs(mainPlayer\sanity895)
+								mainPlayer\blurTimer = Sin(TimeInPosMilliSecs()/10)*Abs(mainPlayer\sanity895)
 							EndIf
 							
 							If (Not IsPlayerWearingTempName(mainPlayer,"hazmatsuit3")) Then
