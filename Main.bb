@@ -613,11 +613,12 @@ Function UpdateGame()
 	
 	;Counting the fps
 	Local instantFramerate# = 1000.0/Max(1,elapsedMilliseconds)
-	timing\fps = Max(0,timing\fps*0.9 + instantFramerate*0.1)
+	timing\fps = Max(0,timing\fps*0.99 + instantFramerate*0.01)
 	
 	;[Block]
 	While timing\accumulator>0.0
 		timing\accumulator = timing\accumulator-timing\tickDuration
+		If timing\accumulator<=0.0 Then CaptureWorld
 		
 		Cls
 		
@@ -748,15 +749,13 @@ Function UpdateGame()
 			
 			UpdateWorld()
 			ManipulateNPCBones()
-			RenderWorld2()
+			UpdateNVG()
 			
 			mainPlayer\blurTimer = Min(CurveValue(0.0, mainPlayer\blurTimer, 20.0),0.95)
 			If mainPlayer\blurTimer > 0.0 Then
 				mainPlayer\blurTimer = Max(Min(0.95, mainPlayer\blurTimer / 1000.0), mainPlayer\blurTimer)
 				mainPlayer\blurTimer = Max(mainPlayer\blurTimer - timing\tickDuration, 0.0)
 			End If
-			
-			UpdateBlur(mainPlayer\blurTimer)
 			
 			;[Block]
 			
@@ -976,71 +975,76 @@ Function UpdateGame()
 				EndIf
 				MsgTimer=MsgTimer-timing\tickDuration 
 			End If
-			
-			Color 255, 255, 255
-			If userOptions\showFPS Then
-				SetFont ConsoleFont
-				Text 20, 20, "FPS: " + Int(timing\fps)
-				SetFont Font1
-			EndIf
-			
-			DrawQuickLoading()
 		End If
-		
-		If userOptions\borderlessWindowed Then
-			If (RealGraphicWidth<>userOptions\screenWidth) Or (RealGraphicHeight<>userOptions\screenHeight) Then
-				SetBuffer TextureBuffer(fresize_texture)
-				ClsColor 0,0,0 : Cls
-				CopyRect 0,0,userOptions\screenWidth,userOptions\screenHeight,1024-userOptions\screenWidth/2,1024-userOptions\screenHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
-				SetBuffer BackBuffer()
-				ClsColor 0,0,0 : Cls
-				ScaleRender(0,0,2050.0 / Float(userOptions\screenWidth) * AspectRatioRatio, 2050.0 / Float(userOptions\screenWidth) * AspectRatioRatio)
-			;might want to replace Float(userOptions\screenWidth) with Max(userOptions\screenWidth,userOptions\screenHeight) if portrait sizes cause issues
-			;everyone uses landscape so it's probably a non-issue
-			EndIf
-		EndIf
-		
-		;not by any means a perfect solution
-		;Not even proper gamma correction but it's a nice looking alternative that works in windowed mode
-		If userOptions\screenGamma>1.0 Then
-			CopyRect 0,0,RealGraphicWidth,RealGraphicHeight,1024-RealGraphicWidth/2,1024-RealGraphicHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
-			EntityBlend fresize_image,1
-			ClsColor 0,0,0 : Cls
-			ScaleRender(-1.0/Float(RealGraphicWidth),1.0/Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth))
-			EntityFX fresize_image,1+32
-			EntityBlend fresize_image,3
-			EntityAlpha fresize_image,userOptions\screenGamma-1.0
-			ScaleRender(-1.0/Float(RealGraphicWidth),1.0/Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth))
-		ElseIf userOptions\screenGamma<1.0 Then ;todo: maybe optimize this if it's too slow, alternatively give players the option to disable gamma
-			CopyRect 0,0,RealGraphicWidth,RealGraphicHeight,1024-RealGraphicWidth/2,1024-RealGraphicHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
-			EntityBlend fresize_image,1
-			ClsColor 0,0,0 : Cls
-			ScaleRender(-1.0/Float(RealGraphicWidth),1.0/Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth))
-			EntityFX fresize_image,1+32
-			EntityBlend fresize_image,2
-			EntityAlpha fresize_image,1.0
-			SetBuffer TextureBuffer(fresize_texture2)
-			ClsColor 255*userOptions\screenGamma,255*userOptions\screenGamma,255*userOptions\screenGamma
-			Cls
-			SetBuffer BackBuffer()
-			ScaleRender(-1.0/Float(RealGraphicWidth),1.0/Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth))
-			SetBuffer(TextureBuffer(fresize_texture2))
-			ClsColor 0,0,0
-			Cls
-			SetBuffer(BackBuffer())
-		EndIf
-		EntityFX fresize_image,1
-		EntityBlend fresize_image,1
-		EntityAlpha fresize_image,1.0
 	Wend
 	
 	If CurrGameState=GAMESTATE_MAINMENU Then
 		DrawMainMenu()
 	Else
+		RenderWorld2()
+		
+		UpdateBlur(mainPlayer\blurTimer)
+		
 		DrawGUI()
 		DrawPauseMenu()
 		DrawConsole()
+		
+		Color 255, 255, 255
+		If userOptions\showFPS Then
+			SetFont ConsoleFont
+			Text 20, 20, "FPS: " + Int(timing\fps)
+			SetFont Font1
+		EndIf
+		
+		DrawQuickLoading()
 	EndIf
+	
+	If userOptions\borderlessWindowed Then
+		If (RealGraphicWidth<>userOptions\screenWidth) Or (RealGraphicHeight<>userOptions\screenHeight) Then
+			SetBuffer TextureBuffer(fresize_texture)
+			ClsColor 0,0,0 : Cls
+			CopyRect 0,0,userOptions\screenWidth,userOptions\screenHeight,1024-userOptions\screenWidth/2,1024-userOptions\screenHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
+			SetBuffer BackBuffer()
+			ClsColor 0,0,0 : Cls
+			ScaleRender(0,0,2050.0 / Float(userOptions\screenWidth) * AspectRatioRatio, 2050.0 / Float(userOptions\screenWidth) * AspectRatioRatio)
+			;might want to replace Float(userOptions\screenWidth) with Max(userOptions\screenWidth,userOptions\screenHeight) if portrait sizes cause issues
+			;everyone uses landscape so it's probably a non-issue
+		EndIf
+	EndIf
+	
+	;not by any means a perfect solution
+	;Not even proper gamma correction but it's a nice looking alternative that works in windowed mode
+	If userOptions\screenGamma>1.0 Then
+		CopyRect 0,0,RealGraphicWidth,RealGraphicHeight,1024-RealGraphicWidth/2,1024-RealGraphicHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
+		EntityBlend fresize_image,1
+		ClsColor 0,0,0 : Cls
+		ScaleRender(-1.0/Float(RealGraphicWidth),1.0/Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth))
+		EntityFX fresize_image,1+32
+		EntityBlend fresize_image,3
+		EntityAlpha fresize_image,userOptions\screenGamma-1.0
+		ScaleRender(-1.0/Float(RealGraphicWidth),1.0/Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth))
+	ElseIf userOptions\screenGamma<1.0 Then ;todo: maybe optimize this if it's too slow, alternatively give players the option to disable gamma
+		CopyRect 0,0,RealGraphicWidth,RealGraphicHeight,1024-RealGraphicWidth/2,1024-RealGraphicHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
+		EntityBlend fresize_image,1
+		ClsColor 0,0,0 : Cls
+		ScaleRender(-1.0/Float(RealGraphicWidth),1.0/Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth))
+		EntityFX fresize_image,1+32
+		EntityBlend fresize_image,2
+		EntityAlpha fresize_image,1.0
+		SetBuffer TextureBuffer(fresize_texture2)
+		ClsColor 255*userOptions\screenGamma,255*userOptions\screenGamma,255*userOptions\screenGamma
+		Cls
+		SetBuffer BackBuffer()
+		ScaleRender(-1.0/Float(RealGraphicWidth),1.0/Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth))
+		SetBuffer(TextureBuffer(fresize_texture2))
+		ClsColor 0,0,0
+		Cls
+		SetBuffer(BackBuffer())
+	EndIf
+	EntityFX fresize_image,1
+	EntityBlend fresize_image,1
+	EntityAlpha fresize_image,1.0
+	
 	Flip userOptions\vsync<>0
 	;[End block]
 End Function
@@ -2057,6 +2061,20 @@ Function Graphics3DExt%(width%,height%,depth%=32,mode%=2)
 	;InitExt()
 End Function
 
+Function UpdateNVG()
+	Local wornItem.Items = mainPlayer\wornItems[WORNITEM_SLOT_HEAD]
+	
+	If wornItem<>Null Then
+		If wornItem\itemTemplate\tempname <> "nvgoggles" And wornItem\itemTemplate\tempname <> "supernv" Then
+			wornItem = Null
+		EndIf
+	EndIf
+	
+    If wornItem<>Null Then
+        wornItem\state = Max(-1.0,wornItem\state - (timing\tickDuration * (0.02 * decayMultiplier)))
+    EndIf
+End Function
+
 Function RenderWorld2()
 	CameraProjMode ark_blur_cam,0
 	CameraProjMode mainPlayer\cam,1
@@ -2080,7 +2098,7 @@ Function RenderWorld2()
 	
 	Local wornItem.Items = mainPlayer\wornItems[WORNITEM_SLOT_HEAD]
 	
-	If wornItem<>Null Then
+    If wornItem<>Null Then
 		If wornItem\itemTemplate\tempname <> "nvgoggles" And wornItem\itemTemplate\tempname <> "supernv" Then
 			wornItem = Null
 		EndIf
@@ -2090,7 +2108,6 @@ Function RenderWorld2()
 		Local decayMultiplier# = 1.0
 		If wornItem\itemTemplate\tempname = "supernv" Then decayMultiplier = 2.0
 		
-		wornItem\state = wornItem\state - (timing\tickDuration * (0.02 * decayMultiplier))
 		power = Int(wornItem\state)
 		If wornItem\state <= 0.0 Then ;this nvg can't be used
 			hasBattery = 0
@@ -2102,10 +2119,10 @@ Function RenderWorld2()
 		EndIf
 		
 		If (hasBattery) Then
-			RenderWorld()
+			RenderWorld(Max(0.0,1.0+(timing\accumulator/timing\tickDuration)))
 		EndIf
 	Else
-		RenderWorld()
+		RenderWorld(Max(0.0,1.0+(timing\accumulator/timing\tickDuration)))
 	EndIf
 	
 	;If hasBattery=0 And WearingNightVision<>3
