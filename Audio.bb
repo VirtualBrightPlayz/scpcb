@@ -48,7 +48,7 @@ End Function
 
 Function LoadTempSound(file$)
 	If TempSounds[TempSoundIndex]<>0 Then FreeSound_Strict(TempSounds[TempSoundIndex])
-	TempSound = LoadSound_Strict(file)
+	Local TempSound% = LoadSound_Strict(file)
 	TempSounds[TempSoundIndex] = TempSound
 	
 	TempSoundIndex=(TempSoundIndex+1) Mod 10
@@ -235,7 +235,7 @@ Function UpdateSoundOrigin(Chn%, cam%, entity%, range# = 10, volume# = 1.0)
 			
 			Local panvalue# = Sin(-DeltaYaw(cam,entity))
 			
-			ChannelVolume(Chn, volume# * (1 - dist#)*userOptions\soundVolume)
+			ChannelVolume(Chn, volume# * (1 - dist#)*userOptions\SoundVolume)
 			ChannelPan(Chn, panvalue)
 		EndIf
 	Else
