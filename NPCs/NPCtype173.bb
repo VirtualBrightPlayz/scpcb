@@ -59,7 +59,7 @@ Function UpdateNPCtype173(n.NPCs)
 	Local dist#
 	Select n\state
 		Case STATE173_ATTACK
-			dist = EntityDistance(n\Collider, mainPlayer\collider)
+			dist = EntityDistance(n\collider, mainPlayer\collider)
 			PositionEntity(n\obj, EntityX(n\collider), EntityY(n\collider) - 0.32, EntityZ(n\collider))
 			RotateEntity(n\obj, 0, EntityYaw(n\collider) - 180, 0)
 
@@ -123,8 +123,8 @@ Function UpdateNPCtype173(n.NPCs)
 										z = Abs(EntityZ(mainPlayer\collider)-EntityZ(w\obj,True))
 										If z < 25 And z > 15.0 Then
 											DebugLog "MOVING 173 TO " + w\room\roomtemplate\name
-											PositionEntity(n\Collider, EntityX(w\obj,True), EntityY(w\obj,True)+0.25,EntityZ(w\obj,True))
-											ResetEntity(n\Collider)
+											PositionEntity(n\collider, EntityX(w\obj,True), EntityY(w\obj,True)+0.25,EntityZ(w\obj,True))
+											ResetEntity(n\collider)
 											Exit
 										EndIf
 									EndIf
@@ -200,25 +200,25 @@ Function UpdateNPCtype173(n.NPCs)
 								Kill(mainPlayer)
 							EndIf
 						Else
-							PointEntity(n\Collider, mainPlayer\collider)
-							RotateEntity n\Collider, 0, EntityYaw(n\Collider), EntityRoll(n\Collider)
-							TranslateEntity n\Collider,Cos(EntityYaw(n\Collider)+90.0)*n\Speed*timing\tickDuration,0.0,Sin(EntityYaw(n\Collider)+90.0)*n\Speed*timing\tickDuration
+							PointEntity(n\collider, mainPlayer\collider)
+							RotateEntity n\collider, 0, EntityYaw(n\collider), EntityRoll(n\collider)
+							TranslateEntity n\collider,Cos(EntityYaw(n\collider)+90.0)*n\speed*timing\tickDuration,0.0,Sin(EntityYaw(n\collider)+90.0)*n\speed*timing\tickDuration
 						EndIf
 						
 					Else ;player is not visible -> move to the location where he was last seen							
-						If n\targetX <> 0 Then						
-							If Distance(EntityX(n\Collider), EntityZ(n\Collider), n\targetX, n\targetZ) > 0.5 Then
-								AlignToVector(n\Collider, n\targetX-EntityX(n\Collider), 0, n\targetZ-EntityZ(n\Collider), 3)
-								MoveEntity(n\Collider, 0, 0, n\Speed * timing\tickDuration)
+						If (n\targetX <> 0) Then						
+							If Distance(EntityX(n\collider), EntityZ(n\collider), n\targetX, n\targetZ) > 0.5 Then
+								AlignToVector(n\collider, n\targetX-EntityX(n\collider), 0, n\targetZ-EntityZ(n\collider), 3)
+								MoveEntity(n\collider, 0, 0, n\speed * timing\tickDuration)
 								If Rand(500) = 1 Then n\targetX = 0 : n\targetY = 0 : n\targetZ = 0
 							Else
 								n\targetX = 0 : n\targetY = 0 : n\targetZ = 0
-							End If
+							EndIf
 						Else
-							If Rand(400)=1 Then RotateEntity(n\Collider, 0, Rnd(360), 10)
-							TranslateEntity n\Collider,Cos(EntityYaw(n\Collider)+90.0)*n\Speed*timing\tickDuration,0.0,Sin(EntityYaw(n\Collider)+90.0)*n\Speed*timing\tickDuration
+							If Rand(400)=1 Then RotateEntity(n\collider, 0, Rnd(360), 10)
+							TranslateEntity n\collider,Cos(EntityYaw(n\collider)+90.0)*n\speed*timing\tickDuration,0.0,Sin(EntityYaw(n\collider)+90.0)*n\speed*timing\tickDuration
 							
-						End If
+						EndIf
 					EndIf
 					
 				EndIf ; less than 2 rooms away from the player
@@ -228,16 +228,16 @@ Function UpdateNPCtype173(n.NPCs)
 			EndIf
 		Case STATE173_MOVE_TO_TARGET
 			;If 173 was given a target then use its position.
-			If (n\target <> Null) Then
-				n\targetX = EntityX(n\target\collider)
-				n\targetY = EntityY(n\target\collider)
-				n\targetZ = EntityZ(n\target\collider)
+			If (n\Target <> Null) Then
+				n\targetX = EntityX(n\Target\collider)
+				n\targetY = EntityY(n\Target\collider)
+				n\targetZ = EntityZ(n\Target\collider)
 			EndIf
 
 			If (n\targetX <> 0) Then
-				If Distance(EntityX(n\Collider), EntityZ(n\Collider), n\targetX, n\targetZ) > 0.5 Then
-					AlignToVector(n\Collider, n\targetX-EntityX(n\Collider), 0, n\targetZ-EntityZ(n\Collider), 3)
-					MoveEntity(n\Collider, 0, 0, n\Speed * timing\tickDuration)
+				If Distance(EntityX(n\collider), EntityZ(n\collider), n\targetX, n\targetZ) > 0.5 Then
+					AlignToVector(n\collider, n\targetX-EntityX(n\collider), 0, n\targetZ-EntityZ(n\collider), 3)
+					MoveEntity(n\collider, 0, 0, n\speed * timing\tickDuration)
 				Else
 					n\targetX = 0
 					n\targetY = 0
@@ -248,7 +248,7 @@ Function UpdateNPCtype173(n.NPCs)
 				n\state = STATE173_IDLE
 			EndIf
 		Case STATE173_BEING_CONTAINED
-			If (n\target <> Null) Then
+			If (n\Target <> Null) Then
 				Local tmp = False
 				If dist > HideDistance*0.7
 					If EntityVisible(n\obj,mainPlayer\collider)=False
@@ -256,13 +256,13 @@ Function UpdateNPCtype173(n.NPCs)
 					EndIf
 				EndIf
 				If (Not tmp)
-					PointEntity n\obj, n\Target\Collider
-					RotateEntity n\Collider, 0, CurveAngle(EntityYaw(n\obj),EntityYaw(n\Collider),10.0), 0, True								
-					dist = EntityDistance(n\Collider, n\Target\Collider)
-					MoveEntity n\Collider, 0, 0, 0.016*timing\tickDuration*Max(Min((dist*2-1.0)*0.5,1.0),-0.5)
+					PointEntity n\obj, n\Target\collider
+					RotateEntity n\collider, 0, CurveAngle(EntityYaw(n\obj),EntityYaw(n\collider),10.0), 0, True								
+					dist = EntityDistance(n\collider, n\Target\collider)
+					MoveEntity n\collider, 0, 0, 0.016*timing\tickDuration*Max(Min((dist*2-1.0)*0.5,1.0),-0.5)
 				Else
-					PositionEntity n\Collider,EntityX(n\Target\Collider),EntityY(n\Target\Collider)+0.3,EntityZ(n\Target\Collider)
-					ResetEntity n\Collider
+					PositionEntity n\collider,EntityX(n\Target\collider),EntityY(n\Target\collider)+0.3,EntityZ(n\Target\collider)
+					ResetEntity n\collider
 					;PointEntity n\Collider, n\Target\Collider
 					;RotateEntity n\Collider, 0, CurveAngle(EntityYaw(n\obj),EntityYaw(n\Collider),10.0), 0, True
 					;dist = EntityDistance(n\Collider, n\Target\Collider)
@@ -270,12 +270,12 @@ Function UpdateNPCtype173(n.NPCs)
 				EndIf
 			EndIf
 			
-			PositionEntity(n\obj, EntityX(n\Collider), EntityY(n\Collider) + 0.05 + Sin(TimeInPosMilliSecs()*0.08)*0.02, EntityZ(n\Collider))
-			RotateEntity (n\obj, 0, EntityYaw(n\Collider)-180, 0)
+			PositionEntity(n\obj, EntityX(n\collider), EntityY(n\collider) + 0.05 + Sin(TimeInPosMilliSecs()*0.08)*0.02, EntityZ(n\collider))
+			RotateEntity (n\obj, 0, EntityYaw(n\collider)-180, 0)
 			
 			ShowEntity n\obj2
 			
-			PositionEntity(n\obj2, EntityX(n\Collider), EntityY(n\Collider) - 0.05 + Sin(TimeInPosMilliSecs()*0.08)*0.02, EntityZ(n\Collider))
-			RotateEntity (n\obj2, 0, EntityYaw(n\Collider)-180, 0)
+			PositionEntity(n\obj2, EntityX(n\collider), EntityY(n\collider) - 0.05 + Sin(TimeInPosMilliSecs()*0.08)*0.02, EntityZ(n\collider))
+			RotateEntity (n\obj2, 0, EntityYaw(n\collider)-180, 0)
 	End Select
 End Function
