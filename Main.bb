@@ -5,6 +5,8 @@ Include "KeyName.bb"
 Include "Options.bb"
 Include "FastResize.bb"
 
+Include "Array2D.bb"
+
 ;TODO: FreeFont Font5. Make it local.
 Global Font1%, Font2%, Font3%, Font4%, Font5%
 Global ConsoleFont%
@@ -751,11 +753,11 @@ Function UpdateGame()
 			ManipulateNPCBones()
 			UpdateNVG()
 			
-			mainPlayer\blurTimer = Min(CurveValue(0.0, mainPlayer\blurTimer, 20.0),0.95)
-			If mainPlayer\blurTimer > 0.0 Then
-				mainPlayer\blurTimer = Max(Min(0.95, mainPlayer\blurTimer / 1000.0), mainPlayer\blurTimer)
-				mainPlayer\blurTimer = Max(mainPlayer\blurTimer - timing\tickDuration, 0.0)
-			End If
+			mainPlayer\blurTimer = Min(CurveValue(0.0, mainPlayer\blurTimer, 20.0),1000.0)
+			;If mainPlayer\blurTimer > 0.0 Then
+			;	mainPlayer\blurTimer = Max(Min(0.95, mainPlayer\blurTimer / 1000.0), mainPlayer\blurTimer)
+			;	mainPlayer\blurTimer = Max(mainPlayer\blurTimer - timing\tickDuration, 0.0)
+			;End If
 			
 			;[Block]
 			
@@ -983,7 +985,7 @@ Function UpdateGame()
 	Else
 		RenderWorld2()
 		
-		UpdateBlur(mainPlayer\blurTimer)
+		UpdateBlur(Sqr(mainPlayer\blurTimer/1400.0))
 		
 		DrawGUI()
 		DrawPauseMenu()

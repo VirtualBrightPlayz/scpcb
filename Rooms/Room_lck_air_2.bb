@@ -29,7 +29,7 @@ Function FillRoom_lck_air_2(r.Rooms)
     
     For r2.Rooms = Each Rooms
         If r2<>r Then
-            If r2\RoomTemplate\Name = "room2gw" Or r2\RoomTemplate\Name = "room2gw_b" Then
+            If r2\RoomTemplate\Name = "lck_air_2" Or r2\RoomTemplate\Name = "lck_air_broke_2" Then
                 r\Objects[3] = CopyEntity(r2\Objects[3],r\obj) ;don't load the mesh again
                 Exit
             EndIf
@@ -38,7 +38,7 @@ Function FillRoom_lck_air_2(r.Rooms)
     If r\Objects[3]=0 Then r\Objects[3] = LoadMesh_Strict("GFX\map\room2gw_pipes.b3d",r\obj)
     EntityPickMode r\Objects[3],2
     
-    If r\RoomTemplate\Name = "room2gw"
+    If r\RoomTemplate\Name = "lck_air_2"
         r\Objects[0] = CreatePivot()
         ;PositionEntity r\Objects[0],r\x-48.0*RoomScale,128.0*RoomScale,r\z+320.0*RoomScale
         PositionEntity r\Objects[0],r\x+344.0*RoomScale,128.0*RoomScale,r\z
@@ -146,7 +146,7 @@ Function UpdateEventRoom_gw(e.Events)
 				ElseIf e\EventState2 > 70*3 And e\EventState < 70*5.5
 					pvt% = CreatePivot(e\room\obj)								
 					For i = 0 To 1
-						If e\room\RoomTemplate\Name$ = "room3gw"
+						If e\room\RoomTemplate\Name$ = "lck_ez_3"
 							If i = 0
 								PositionEntity pvt%,-288.0,416.0,320.0,False
 							Else
@@ -225,3 +225,6 @@ Function UpdateEventRoom2gw_b(e.Events)
 	;[End Block]
 End Function
 
+
+;~IDEal Editor Parameters:
+;~C#Blitz3D

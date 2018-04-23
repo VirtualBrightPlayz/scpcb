@@ -486,7 +486,6 @@ Function NullGame()
 	SelectedMap = ""
 	
 	DoorTempID = 0
-	RoomTempID = 0
 	
 	GameSaved = 0
 	
