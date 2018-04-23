@@ -491,15 +491,6 @@ Function NullGame()
 	
 	HideDistance# = 15.0
 	
-	For lvl = 0 To 0
-		For x = 0 To MapWidth - 1
-			For y = 0 To MapHeight - 1
-				MapTemp(x, y) = 0
-				MapFound(x, y) = 0
-			Next
-		Next
-	Next
-	
 	For itt.ItemTemplates = Each ItemTemplates
 		itt\found = False
 	Next

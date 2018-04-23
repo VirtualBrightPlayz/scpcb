@@ -1,5 +1,3 @@
-
-
 Type Materials
 	Field name$
 	Field Diff
@@ -1214,7 +1212,7 @@ Function LoadRoomTemplates(file$)
 				
 				AmountRange = GetINIInt(file, TemporaryString, "amount", False)
 				If Instr(AmountRange,"-")>0 Then
-					rt\MinAmount = Float(Left(AmountRange,Instr(AmountRange,"-"))
+					rt\MinAmount = Float(Left(AmountRange,Instr(AmountRange,"-")))
 					rt\MaxAmount = Float(Mid(AmountRange,Instr(AmountRange,"-")+1))
 				Else
 					rt\MinAmount = Float(AmountRange)
@@ -1234,10 +1232,10 @@ Function LoadRoomTemplates(file$)
 					yRange = "0-1"
 				EndIf
 				
-				rt\xRangeStart = Float(Left(xRange,Instr(xRange,"-"))
+				rt\xRangeStart = Float(Left(xRange,Instr(xRange,"-")))
 				rt\xRangeEnd = Float(Mid(xRange,Instr(xRange,"-")+1))
 				
-				rt\yRangeStart = Float(Left(yRange,Instr(yRange,"-"))
+				rt\yRangeStart = Float(Left(yRange,Instr(yRange,"-")))
 				rt\yrangeEnd = Float(Mid(yRange,Instr(yRange,"-")+1))
 			Else
 				rt\MinAmount = 0
@@ -1400,72 +1398,39 @@ Function UpdateGrid(grid.Grids)
 	Next
 End Function
 
-Function CreateRoom.Rooms(zone%, roomshape%, x#, y#, z#, name$ = "")
+Function GetRoomTemplate.RoomTemplates(name$)
+	name = Lower(name)
+	For rt.RoomTemplates = Each RoomTemplates
+		If rt\Name = name Then
+			Return rt
+		EndIf
+	Next
+End Function
+
+Function PickRoomTemplate(zone%, roomshape%)
+	
+End Function
+
+Function CreateRoom.Rooms(rt.RoomTemplates, x#, y#, z#)
 	Local r.Rooms = New Rooms
-	Local rt.RoomTemplates
 	
 	r\zone = zone
 	
 	r\x = x : r\y = y : r\z = z
 	
-	If name <> "" Then
-		name = Lower(name)
-		For rt.RoomTemplates = Each RoomTemplates
-			If rt\Name = name Then
-				r\RoomTemplate = rt
-				
-				If rt\obj=0 Then LoadRoomMesh(rt)
-				
-				r\obj = CopyEntity(rt\obj)
-				ScaleEntity(r\obj, RoomScale, RoomScale, RoomScale)
-				EntityType(r\obj, HIT_MAP)
-				EntityPickMode(r\obj, 2)
-				
-				PositionEntity(r\obj, x, y, z)
-				FillRoom(r)
-				
-				Return r
-			EndIf
-		Next
-	EndIf
+	r\RoomTemplate = rt
+			
+	If rt\obj=0 Then LoadRoomMesh(rt)
 	
-	Local temp% = 0
-	For rt.RoomTemplates = Each RoomTemplates
-		
-		For i = 0 To 4
-			If rt\zone[i]=zone Then 
-				If rt\Shape = roomshape Then temp=temp+rt\Commonness : Exit
-			EndIf
-		Next
-		
-	Next
+	r\obj = CopyEntity(rt\obj)
+	ScaleEntity(r\obj, RoomScale, RoomScale, RoomScale)
+	EntityType(r\obj, HIT_MAP)
+	EntityPickMode(r\obj, 2)
 	
-	Local RandomRoom% = Rand(temp)
-	temp = 0
-	For rt.RoomTemplates = Each RoomTemplates
-		For i = 0 To 4
-			If rt\zone[i]=zone And rt\Shape = roomshape Then
-				temp=temp+rt\Commonness
-				If RandomRoom > temp - rt\Commonness And RandomRoom <= temp Then
-					r\RoomTemplate = rt
-					
-					If rt\obj=0 Then LoadRoomMesh(rt)
-					
-					r\obj = CopyEntity(rt\obj)
-					ScaleEntity(r\obj, RoomScale, RoomScale, RoomScale)
-					EntityType(r\obj, HIT_MAP)
-					EntityPickMode(r\obj, 2)
-					
-					PositionEntity(r\obj, x, y, z)
-					FillRoom(r)
-					
-					Return r
-				End If
-			EndIf
-		Next
+	PositionEntity(r\obj, x, y, z)
+	FillRoom(r)
 		
-	Next
-	
+	Return r
 End Function
 
 Include "Rooms/Room_chck_hcz_ez_2.bb"
@@ -1837,7 +1802,7 @@ Function UpdateRooms()
 		EndIf
 	Next
 	
-	MapFound(Floor(EntityX(mainPlayer\currRoom\obj) / 8.0), Floor(EntityZ(mainPlayer\currRoom\obj) / 8.0)) = 1
+	;MapFound(Floor(EntityX(mainPlayer\currRoom\obj) / 8.0), Floor(EntityZ(mainPlayer\currRoom\obj) / 8.0)) = 1
 	mainPlayer\currRoom\found = True
 	
 	;TempLightVolume = Max(TempLightVolume / 4.5, 1.0)
@@ -2152,9 +2117,9 @@ Function RemoveWaypoint(w.WayPoints)
 End Function
 
 
-Dim MapF(MapWidth+1, MapHeight+1), MapG(MapWidth+1, MapHeight+1), MapH(MapWidth+1, MapHeight+1)
-Dim MapState(MapWidth+1, MapHeight+1)
-Dim MapParent(MapWidth+1, MapHeight+1, 2)
+Dim MapF.MarkedForRemoval(userOptions\mapWidth, userOptions\mapWidth), MapG.MarkedForRemoval(userOptions\mapWidth, userOptions\mapWidth), MapH.MarkedForRemoval(userOptions\mapWidth, userOptions\mapWidth)
+Dim MapState.MarkedForRemoval(userOptions\mapWidth, userOptions\mapWidth)
+Dim MapParent.MarkedForRemoval(userOptions\mapWidth, userOptions\mapWidth, 2)
 Function FindPath(n.NPCs, x#, y#, z#)
 	
 	DebugLog "findpath: "+n\NPCtype
@@ -2459,7 +2424,7 @@ Function UpdateScreens()
 	
 End Function
 
-Dim MapName.MarkedForRemoval(MapWidth, MapHeight)
+Dim MapName.MarkedForRemoval(userOptions\mapWidth, userOptions\mapWidth)
 Dim MapRoomID.MarkedForRemoval(ROOM4 + 1)
 Dim MapRoom.MarkedForRemoval(ROOM4 + 1, 0)
 
@@ -3264,109 +3229,16 @@ Function CreateMap()
 	Next
 	SeedRnd Abs(Int(strtemp))
 	
-	
-	r = CreateRoom(0, ROOM1, 0, 0, 8, "extend_gatea_1")
-	MapRoomID(ROOM1)=MapRoomID(ROOM1)+1
-	
-	r = CreateRoom(0, ROOM1, (MapWidth-1) * 8, 0, (MapHeight-1) * 8, "pocketdimension")
-	MapRoomID(ROOM1)=MapRoomID(ROOM1)+1	
-	
-	r = CreateRoom(0, ROOM1, 8, 0, (MapHeight-1) * 8, "roomintro")
-	MapRoomID(ROOM1)=MapRoomID(ROOM1)+1
-	
-	r = CreateRoom(0, ROOM1, 8, 800, 0, "dimension1499")
-	MapRoomID(ROOM1)=MapRoomID(ROOM1)+1
-	
-	
-	
-	For r.Rooms = Each Rooms
-		r\Adjacent[0]=Null
-		r\Adjacent[1]=Null
-		r\Adjacent[2]=Null
-		r\Adjacent[3]=Null
-		For r2.Rooms = Each Rooms
-			If r<>r2 Then
-				If r2\z=r\z Then
-					If (r2\x)=(r\x+8.0) Then
-						r\Adjacent[0]=r2
-						If r\AdjDoor[0] = Null Then r\AdjDoor[0] = r2\AdjDoor[2]
-					ElseIf (r2\x)=(r\x-8.0)
-						r\Adjacent[2]=r2
-						If r\AdjDoor[2] = Null Then r\AdjDoor[2] = r2\AdjDoor[0]
-					EndIf
-				ElseIf r2\x=r\x Then
-					If (r2\z)=(r\z-8.0) Then
-						r\Adjacent[1]=r2
-						If r\AdjDoor[1] = Null Then r\AdjDoor[1] = r2\AdjDoor[3]
-					ElseIf (r2\z)=(r\z+8.0)
-						r\Adjacent[3]=r2
-						If r\AdjDoor[3] = Null Then r\AdjDoor[3] = r2\AdjDoor[1]
-					EndIf
-				EndIf
-			EndIf
-			If (r\Adjacent[0]<>Null) And (r\Adjacent[1]<>Null) And (r\Adjacent[2]<>Null) And (r\Adjacent[3]<>Null) Then Exit
-		Next
-	Next
-	
+	Local layout.IntArray2D = CreateIntArray2D(userOptions\mapWidth,userOptions\mapWidth)
 End Function
 
 
 Function CheckRoomOverlap(roomname$, x%, y%)
-	Return False
-	
-	roomname = Lower(roomname)
-	
-	Local rt.RoomTemplates
-	For rt.RoomTemplates = Each RoomTemplates
-		If rt\Name = roomname Then
-			If (Not rt\Large) Then Return False
-			
-			For x2= Max(0,x-1) To Min(MapWidth-1,x+1)
-				For y2= Max(0,y-1) To Min(MapHeight-1,y+1)
-					If x2<>x And y2<>y Then
-						If MapTemp(x2,y2)>1 Then Return True
-					EndIf
-				Next
-			Next
-			
-			Return False
-		EndIf
-	Next
-End Function
-
-Function SetRoom(room_name$,room_type%,pos%,min_pos%,max_pos%) ;place a room without overwriting others
-	
-	If max_pos<min_pos Then DebugLog "Can't place "+room_name : Return False
-	
-	DebugLog "--- SETROOM: "+Upper(room_name)+" ---"
-	Local looped%,can_place%
-	looped = False
-	can_place = True
-	While MapRoom(room_type,pos)<>""
-		DebugLog "found "+MapRoom(room_type,pos)
-		pos=pos+1
-		If pos>max_pos Then
-			If looped=False Then
-				pos=min_pos+1 : looped=True
-			Else
-				can_place=False
-				Exit
-			EndIf
-		EndIf
-	Wend
-	DebugLog room_name+" "+Str(pos)
-	If can_place=True Then
-		DebugLog "--------------"
-		MapRoom(room_type,pos)=room_name
-		Return True
-	Else
-		DebugLog "couldn't place "+room_name
-		Return False
-	EndIf
+	Return False ;TODO: reimplement?
 End Function
 
 Function GetZone(y%)
-	Return Min(Floor((Float(MapWidth-y)/MapWidth*ZONEAMOUNT)),ZONEAMOUNT-1)
+	Return -1;TODO: reimplement
 End Function
 
 ;-------------------------------------------------------------------------------------------------------
@@ -3836,5 +3708,5 @@ Function FindAndDeleteFakeMonitor(r.Rooms,x#,y#,z#,Amount%)
 End Function
 
 ;~IDEal Editor Parameters:
-;~F#2#A#2D#3C#4A#51#62#6A#72#202#212#223
+;~F#0#8#2B#3A#48#4F#60#68#70#200#210#221
 ;~C#Blitz3D

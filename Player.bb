@@ -1172,25 +1172,26 @@ Function DrawInventory(player.Player)
 							
 							x = x - 19 + ((EntityX(player\collider) - 4.0) Mod 8.0)*3
 							y = y + 14 - ((EntityZ(player\collider)-4.0) Mod 8.0)*3
-							For x2 = Max(1, PlayerX - 4) To Min(MapWidth - 1, PlayerX + 4)
-								For z2 = Max(1, PlayerZ - 4) To Min(MapHeight - 1, PlayerZ + 4)
-									
-									If CoffinDistance > 16.0 Or Rnd(16.0)<CoffinDistance Then 
-										If MapTemp(x2, z2) And (MapFound(x2, z2) > 0 Or player\selectedItem\itemtemplate\name = "S-NAV 310 Navigator" Or player\selectedItem\itemtemplate\name = "S-NAV Navigator Ultimate") Then
-											Local drawx% = x + (PlayerX - x2) * 24 , drawy% = y - (PlayerZ - z2) * 24 
-											
-											Color (30,30,30)
-											If player\selectedItem\itemtemplate\name = "S-NAV Navigator" Then Color(100, 0, 0)
-											
-											If MapTemp(x2 + 1, z2) = False Then Line(drawx - 12, drawy - 12, drawx - 12, drawy + 12)
-											If MapTemp(x2 - 1, z2) = False Then Line(drawx + 12, drawy - 12, drawx + 12, drawy + 12)
-											
-											If MapTemp(x2, z2 - 1) = False Then Line(drawx - 12, drawy - 12, drawx + 12, drawy - 12)
-											If MapTemp(x2, z2 + 1)= False Then Line(drawx - 12, drawy + 12, drawx + 12, drawy + 12)
-										EndIf
-									EndIf
-								Next
-							Next
+							;TODO: fix
+							;For x2 = Max(1, PlayerX - 4) To Min(MapWidth - 1, PlayerX + 4)
+							;	For z2 = Max(1, PlayerZ - 4) To Min(MapHeight - 1, PlayerZ + 4)
+							;		
+							;		If CoffinDistance > 16.0 Or Rnd(16.0)<CoffinDistance Then 
+							;			If MapTemp(x2, z2) And (MapFound(x2, z2) > 0 Or player\selectedItem\itemtemplate\name = "S-NAV 310 Navigator" Or player\selectedItem\itemtemplate\name = "S-NAV Navigator Ultimate") Then
+							;				Local drawx% = x + (PlayerX - x2) * 24 , drawy% = y - (PlayerZ - z2) * 24 
+							;				
+							;				Color (30,30,30)
+							;				If player\selectedItem\itemtemplate\name = "S-NAV Navigator" Then Color(100, 0, 0)
+							;				
+							;				If MapTemp(x2 + 1, z2) = False Then Line(drawx - 12, drawy - 12, drawx - 12, drawy + 12)
+							;				If MapTemp(x2 - 1, z2) = False Then Line(drawx + 12, drawy - 12, drawx + 12, drawy + 12)
+							;				
+							;				If MapTemp(x2, z2 - 1) = False Then Line(drawx - 12, drawy - 12, drawx + 12, drawy - 12)
+							;				If MapTemp(x2, z2 + 1)= False Then Line(drawx - 12, drawy + 12, drawx + 12, drawy + 12)
+							;			EndIf
+							;		EndIf
+							;	Next
+							;Next
 						EndIf
 					EndIf
 				Case "badge"

@@ -34,7 +34,7 @@ Function FillRoom_chck_hcz_ez_2(r.Rooms)
     r\RoomDoors[0]\timer = 70 * 5
     r\RoomDoors[1]\timer = 70 * 5
     
-    If MapTemp(Floor(r\x / 8.0),Floor(r\z /8.0)-1)=0 Then
-        CreateDoor(r\zone, r\x, 0, r\z  - 4.0, 0, r, 0, False, 0, "GEAR")
-    EndIf
+    ;If MapTemp(Floor(r\x / 8.0),Floor(r\z /8.0)-1)=0 Then
+    ;    CreateDoor(r\zone, r\x, 0, r\z  - 4.0, 0, r, 0, False, 0, "GEAR")
+    ;EndIf
 End Function
