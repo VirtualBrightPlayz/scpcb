@@ -1138,7 +1138,7 @@ Type RoomTemplates
 	Field Large%
 	
 	Field Commonness#
-	Field MinAmount%,MaxAmount%
+	Field MinAmount%, MaxAmount%
 	Field xRangeStart#, xRangeEnd#
 	Field yRangeStart#, yrangeEnd#
 	Field DisableDecals%
@@ -1210,12 +1210,15 @@ Function LoadRoomTemplates(file$)
 			If rt\Shape<>ROOM0 Then
 				rt\Commonness = Max(Min(GetINIFloat(file, TemporaryString, "commonness"), 100), 0)
 				
-				AmountRange = GetINIInt(file, TemporaryString, "amount", False)
-				If Instr(AmountRange,"-")>0 Then
-					rt\MinAmount = Float(Left(AmountRange,Instr(AmountRange,"-")))
-					rt\MaxAmount = Float(Mid(AmountRange,Instr(AmountRange,"-")+1))
+				AmountRange = GetINIString(file, TemporaryString, "amount", "")
+				If AmountRange="" Then
+					rt\MinAmount = -1
+					rt\MaxAmount = -1
+				ElseIf Instr(AmountRange,"-")>0 Then
+					rt\MinAmount = Int(Left(AmountRange,Instr(AmountRange,"-")))
+					rt\MaxAmount = Int(Mid(AmountRange,Instr(AmountRange,"-")+1))
 				Else
-					rt\MinAmount = Float(AmountRange)
+					rt\MinAmount = Int(AmountRange)
 					rt\MaxAmount = rt\MinAmount
 				EndIf
 				
@@ -1407,8 +1410,12 @@ Function GetRoomTemplate.RoomTemplates(name$)
 	Next
 End Function
 
-Function PickRoomTemplate(zone%, roomshape%)
-	
+Function CountRooms%(rt.RoomTemplates)
+	Local count% = 0
+	For r.Rooms = Each Rooms
+		If r\RoomTemplate = rt Then count=count+1
+	Next
+	Return count
 End Function
 
 Function CreateRoom.Rooms(rt.RoomTemplates, x#, y#, z#)
@@ -3220,6 +3227,45 @@ End Function
 
 ;-------------------------------------------------------------------------------------------------------
 
+Function DetermineRoomTypes(layout.IntArray2D,mapDim%)
+	Local horNeighborCount% = 0
+	Local vertNeighborCount% = 0
+	For y% = 0 To mapDim-1
+		For x% = 0 To mapDim-1
+			If GetIntArray2DElem(layout,x,y)<>0 Then
+				horNeighborCount = 0
+				If x>0 Then
+					horNeighborCount=horNeighborCount+(GetIntArray2DElem(layout,x-1,y)<>0)
+				EndIf
+				If x<mapDim-1 Then
+					horNeighborCount=horNeighborCount+(GetIntArray2DElem(layout,x+1,y)<>0)
+				EndIf
+				vertNeighborCount = 0
+				If y>0 Then
+					vertNeighborCount=vertNeighborCount+(GetIntArray2DElem(layout,x,y-1)<>0)
+				EndIf
+				If y<mapDim-1 Then
+					vertNeighborCount=vertNeighborCount+(GetIntArray2DElem(layout,x,y+1)<>0)
+				EndIf
+				
+				If horNeighborCount+vertNeighborCount = 1 Then
+					SetIntArray2DElem(layout,x,y,ROOM1)
+				ElseIf horNeighborCount+vertNeighborCount = 3 Then
+					SetIntArray2DElem(layout,x,y,ROOM3)
+				ElseIf horNeighborCount+vertNeighborCount = 4 Then
+					SetIntArray2DElem(layout,x,y,ROOM4)
+				ElseIf (horNeighborCount = 1) And (vertNeighborCount = 1) Then
+					SetIntArray2DElem(layout,x,y,ROOM2C)
+				ElseIf (horNeighborCount = 2) Xor (vertNeighborCount = 2) Then
+					SetIntArray2DElem(layout,x,y,ROOM2)
+				Else
+					SetIntArray2DElem(layout,x,y,0)
+				EndIf
+			EndIf
+		Next
+	Next
+End Function
+
 Function CreateMap()
 	DebugLog ("Generating a map using the seed "+RandomSeed)
 	
@@ -3229,9 +3275,118 @@ Function CreateMap()
 	Next
 	SeedRnd Abs(Int(strtemp))
 	
-	Local layout.IntArray2D = CreateIntArray2D(userOptions\mapWidth,userOptions\mapWidth)
+	Local mapDim% = userOptions\mapWidth
+	Local layout.IntArray2D = CreateIntArray2D(mapDim,mapDim)
+	
+	;clear the grid
+	For y% = 0 To mapDim-1
+		For x% = 0 To mapDim-1
+			SetIntArray2DElem(layout,x,y,0)
+		Next
+	Next
+	
+	;4x4 squares, offset 1 slot from 0,0
+	Local rectWidth% = 3
+	Local rectHeight% = 3
+	For y% = 0 To mapDim-1
+		For x% = 0 To mapDim-1
+			If (x Mod rectWidth=1) Or (y Mod rectHeight=1) Then
+				If (x>=rectWidth And x<mapDim-rectWidth) Or (y>=rectHeight And y<mapDim-rectHeight) Then
+					SetIntArray2DElem(layout,x,y,1)
+				EndIf
+			EndIf
+		Next
+	Next
+	
+	DetermineRoomTypes(layout,mapDim)
+	
+	;shift some horizontal corridors
+	Local shift%
+	Local nonShiftStreak% = Rand(0,5)
+	For y% = 1 To mapDim-2
+		For x% = 0 To mapDim-2
+			If y>6 Or x>6 Then
+				If (y Mod rectHeight=1) And GetIntArray2DElem(layout,x,y)=ROOM2 Then
+					shift = Rand(0,1)
+					If nonShiftStreak=0 Then shift = 0
+					If nonShiftStreak>5 Then shift = 1
+					If (x/rectWidth) Mod 2 Then shift = -shift
+					If shift<>0 Then
+						For i% = 0 To rectWidth-2
+							SetIntArray2DElem(layout,x+i,y,0)
+							SetIntArray2DElem(layout,x+i,y+shift,ROOM2)
+						Next
+						nonShiftStreak = 0
+					Else
+						nonShiftStreak=nonShiftStreak+1
+					EndIf
+					x = x+rectWidth-1
+				EndIf
+			EndIf
+		Next
+	Next
+	
+	DetermineRoomTypes(layout,mapDim)
+	
+	;punch out some holes to get room2c's
+	Local punchOffset% = Rand(0,1)
+	Local roomAbove%
+	Local roomBelow%
+	For y% = 1 To mapDim-4
+		For x% = 0 To mapDim-1
+			If (((x/rectWidth) Mod 2)=(((y/rectHeight)+punchOffset) Mod 2)) And (GetIntArray2DElem(layout,x,y)=ROOM2) Then
+				roomAbove = GetIntArray2DElem(layout,x,y-1)
+				roomBelow = GetIntArray2DElem(layout,x,y+1)
+				If ((roomAbove>=ROOM2) And (roomBelow>=ROOM2)) And ((roomAbove+roomBelow)>(ROOM2+ROOM3)) Then
+					SetIntArray2DElem(layout,x,y,0)
+				EndIf
+			EndIf
+		Next
+	Next
+	
+	DetermineRoomTypes(layout,mapDim)
+	
+	Local zone% = ZONE_LCZ
+	Local zoneTemplateCount% = 0
+	For rt.RoomTemplates = Each RoomTemplates
+		If (rt\zones And zone)<>0 Then
+			zoneTemplateCount=zoneTemplateCount+1
+		EndIf
+	Next
+	Local zoneTemplates.IntArray2D = CreateIntArray2D(zoneTemplateCount,1) ;TODO: replace with an array of the right type once we move to C++
+	Local index% = 0
+	For rt.RoomTemplates = Each RoomTemplates
+		If (rt\zones And zone)<>0 Then
+			SetIntArray2DElem(zoneTemplates,index,0,Handle(rt))
+			index=index+1
+		EndIf
+	Next
+	
+	;shuffle the templates so that they don't get placed in the same locations every time
+	Local handle1%,handle2%
+	For i% = 0 To zoneTemplateCount-1
+		handle1 = GetIntArray2DElem(zoneTemplates,i,0)
+		index = Rand(0,zoneTemplateCount-1)
+		handle2 = GetIntArray2DElem(zoneTemplates,index,0)
+		SetIntArray2DElem(zoneTemplates,i,0,handle2)
+		SetIntArray2DElem(zoneTemplates,index,0,handle1)
+	Next
+	
+	Local roomCount% = 0
+	Local roomCandidate.RoomTemplates = Null
+	For y% = 0 To mapDim-1
+		For x% = 0 To mapDim-1
+			roomCount% = 0
+			roomCandidate.RoomTemplates = Null
+			If GetIntArray2DElem(layout,x,y)<>0 Then
+				
+			EndIf
+		Next
+	Next
+	
+	DeleteIntArray2D(zoneTemplates)
+	DeleteIntArray2D(layout)
 End Function
-
 
 Function CheckRoomOverlap(roomname$, x%, y%)
 	Return False ;TODO: reimplement?
@@ -3708,5 +3863,5 @@ Function FindAndDeleteFakeMonitor(r.Rooms,x#,y#,z#,Amount%)
 End Function
 
 ;~IDEal Editor Parameters:
-;~F#0#8#2B#3A#48#4F#60#68#70#200#210#221
+;~F#0#8#2B#3A#48#4F#60#68#200#210#221
 ;~C#Blitz3D

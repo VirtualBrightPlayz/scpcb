@@ -13,11 +13,11 @@ Function CreateIntArray2D.IntArray2D(w%,h%)
 End Function
 
 Function GetIntArray2DElem%(array.IntArray2D,x%,y%)
-	Return PeekInt(array\bank,4*y*array\w+x)
+	Return PeekInt(array\bank,4*(y*array\w+x))
 End Function
 
 Function SetIntArray2DElem(array.IntArray2D,x%,y%,val%)
-	PokeInt(array\bank,4*y*array\w+x,val)
+	PokeInt(array\bank,4*(y*array\w+x),val)
 End Function
 
 Function DeleteIntArray2D(array.IntArray2D)
