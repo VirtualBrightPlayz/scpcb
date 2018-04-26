@@ -3349,8 +3349,9 @@ Function CreateMap()
 	
 	DetermineRoomTypes(layout,mapDim)
 	
-	;start off by placing rooms that ask to be placed a certain amount of times
 	Local zone% = ZONE_LCZ
+	
+	;start off by placing rooms that ask to be placed a certain amount of times
 	Local prioritizedTemplateCount% = 0
 	For rt.RoomTemplates = Each RoomTemplates
 		If ((rt\zones And zone)<>0) And (rt\MaxAmount>0) And (rt\Shape<>ROOM0) Then
@@ -3360,7 +3361,7 @@ Function CreateMap()
 	Local prioritizedTemplates.IntArray2D = CreateIntArray2D(prioritizedTemplateCount,1) ;TODO: replace with an array of the right type once we move to C++
 	Local tempTemplate.RoomTemplates
 	Local tempTemplate2.RoomTemplates
-	SetIntArray2DElem(prioritizedTemplates,index,0,0)
+	SetIntArray2DElem(prioritizedTemplates,0,0,0)
 	For rt.RoomTemplates = Each RoomTemplates
 		If ((rt\zones And zone)<>0) And (rt\MaxAmount>0) And (rt\Shape<>ROOM0) Then
 			tempTemplate = rt
@@ -3393,6 +3394,8 @@ Function CreateMap()
 	For i% = 1 To ROOM4
 		DebugLog "Type"+i+" count: "+RoomCount[i]
 	Next
+	
+	Local r.Rooms
 	
 	Local placementCount%
 	Local loopStartX%
@@ -3428,9 +3431,11 @@ Function CreateMap()
 					x% = ((i+offsetX) Mod (loopX+1)) + loopStartX
 					y% = ((j+offsetY) Mod (loopY+1)) + loopStartY
 					
-					If GetIntArray2DElem(layout,x,y)<>0 And GetIntArray2DElem(layout,x,y)=rt\Shape Then
-						CreateRoom(rt,x*8.0,0.0,y*8.0)
-						SetIntArray2DElem(layout,x,y,-1)
+					If (GetIntArray2DElem(layout,x,y)>0) And (GetIntArray2DElem(layout,x,y)=rt\Shape) Then
+						r = CreateRoom(rt,x*8.0,0.0,y*8.0)
+						r\angle = DetermineRotation(layout,x,y)
+						TurnEntity r\obj,0,r\angle,0
+						SetIntArray2DElem(layout,x,y,-1) ;mark as used
 						placed = True
 					EndIf
 					
@@ -3443,7 +3448,117 @@ Function CreateMap()
 	Next
 	
 	DeleteIntArray2D(prioritizedTemplates)
+	
+	Local randomTemplateCount%
+	Local totalCommonness%[ROOM4+1]
+	For i% = 1 To ROOM4
+		totalCommonness[i] = 0
+	Next
+	For rt.RoomTemplates = Each RoomTemplates
+		If ((rt\zones And zone)<>0) And (rt\MaxAmount<0) And (rt\Shape<>ROOM0) Then
+			randomTemplateCount=randomTemplateCount+1
+			totalCommonness[rt\Shape]=totalCommonness[rt\Shape]+rt\Commonness
+		EndIf
+	Next
+	Local randomTemplates.IntArray2D = CreateIntArray2D(randomTemplateCount,1)
+	Local index% = 0
+	Local tempHandle1%
+	Local tempHandle2%
+	
+	For rt.RoomTemplates = Each RoomTemplates
+		If ((rt\zones And zone)<>0) And (rt\MaxAmount<0) And (rt\Shape<>ROOM0) Then
+			SetIntArray2DElem(randomTemplates,index,0,Handle(rt))
+			index=index+1
+		EndIf
+	Next
+	
+	;shuffle the templates
+	For i% = 0 To randomTemplateCount-1
+		index = Rand(0,randomTemplateCount-1)
+		tempHandle1 = GetIntArray2DElem(randomTemplates,i,0)
+		tempHandle2 = GetIntArray2DElem(randomTemplates,index,0)
+		SetIntArray2DElem(randomTemplates,i,0,tempHandle2)
+		SetIntArray2DElem(randomTemplates,index,0,tempHandle1)
+	Next
+	
+	Local targetCommonness% = 0
+	Local commonnessAccumulator% = 0
+	Local currType%
+	For y% = 0 To mapDim-1
+		For x% = 0 To mapDim-1
+			commonnessAccumulator = 0
+			currType = GetIntArray2DElem(layout,x,y)
+			If (currType>0) Then
+				targetCommonness = Rand(0,totalCommonness[currType])
+				
+				For i% = 0 To randomTemplateCount-1
+					tempTemplate = Object.RoomTemplates(GetIntArray2DElem(randomTemplates,i,0))
+					If tempTemplate\Shape = currType Then
+						commonnessAccumulator=commonnessAccumulator+tempTemplate\Commonness
+						If commonnessAccumulator>=targetCommonness Then
+							r = CreateRoom(tempTemplate,x*8.0,0.0,y*8.0)
+							r\angle = DetermineRotation(layout,x,y)
+							TurnEntity r\obj,0,r\angle,0
+							SetIntArray2DElem(layout,x,y,-1) ;mark as used
+							Exit
+						EndIf
+					EndIf
+				Next
+			EndIf
+		Next
+	Next
+	
+	DeleteIntArray2D(randomTemplates)
 	DeleteIntArray2D(layout)
+End Function
+
+Function DetermineRotation%(layout.IntArray2D,x%,y%)
+	Select GetIntArray2DElem(layout,x,y)
+		Case ROOM1
+			If (x>0) And (GetIntArray2DElem(layout,x-1,y)<>0) Then
+				Return 270
+			ElseIf (x<layout\w-1) And (GetIntArray2DElem(layout,x+1,y)<>0) Then
+				Return 90
+			ElseIf (y>0) And (GetIntArray2DElem(layout,x,y-1)<>0) Then
+				Return 0
+			Else
+				Return 180
+			EndIf
+		Case ROOM2
+			If (GetIntArray2DElem(layout,x-1,y)<>0) Then
+				Return 90+Rand(0,1)*180
+			Else
+				Return (Rand(0,1)*180)
+			EndIf
+		Case ROOM2C
+			If (x>0) And (GetIntArray2DElem(layout,x-1,y)<>0) Then
+				If (y>0) And (GetIntArray2DElem(layout,x,y-1)<>0) Then
+					Return 270
+				Else
+					Return 180
+				EndIf
+			Else
+				If (y>0) And (GetIntArray2DElem(layout,x,y-1)<>0) Then
+					Return 0
+				Else
+					Return 90
+				EndIf
+			EndIf
+		Case ROOM3
+			If (x>0) And (GetIntArray2DElem(layout,x-1,y)=0) Then
+				Return 90
+			ElseIf (y>0) And (GetIntArray2DElem(layout,x,y-1)=0) Then
+				Return 180
+			ElseIf (x<layout\w-1) And (GetIntArray2DElem(layout,x+1,y)=0) Then
+				Return 270
+			Else
+				Return 0
+			EndIf
+		Case ROOM4
+			Return Rand(0,3)*90
+		Default
+			Return -1
+	End Select
 End Function
 
 Function CheckRoomOverlap(roomname$, x%, y%)
@@ -3921,5 +4036,5 @@ Function FindAndDeleteFakeMonitor(r.Rooms,x#,y#,z#,Amount%)
 End Function
 
 ;~IDEal Editor Parameters:
-;~F#0#8#2B#3A#48#4F#60#68#200#210#221
+;~F#0#8#2B#3A#48#4F#60#68#70#200#210#221#247#255#265#26A#275#31B#424#443
 ;~C#Blitz3D
