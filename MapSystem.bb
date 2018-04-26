@@ -3269,6 +3269,8 @@ Function DetermineRoomTypes(layout.IntArray2D,mapDim%)
 	Next
 End Function
 
+Global MapRooms.IntArray2D = Null ;TODO: replace with an array of the proper type after moving to C++
+
 Function CreateMap()
 	DebugLog ("Generating a map using the seed "+RandomSeed)
 	
@@ -3280,11 +3282,13 @@ Function CreateMap()
 	
 	Local mapDim% = MAP_SIZE
 	Local layout.IntArray2D = CreateIntArray2D(mapDim,mapDim)
+	MapRooms = CreateIntArray2D(mapDim,mapDim)
 	
 	;clear the grid
 	For y% = 0 To mapDim-1
 		For x% = 0 To mapDim-1
 			SetIntArray2DElem(layout,x,y,0)
+			SetIntArray2DElem(MapRooms,x,y,0)
 		Next
 	Next
 	
@@ -3335,9 +3339,9 @@ Function CreateMap()
 	Local punchOffset% = Rand(0,1)
 	Local roomAbove%
 	Local roomBelow%
-	For y% = 1 To mapDim-4
+	For y% = 2 To mapDim-4
 		For x% = 0 To mapDim-1
-			If (((x/rectWidth) Mod 2)=(((y/rectHeight)+punchOffset) Mod 2)) And (GetIntArray2DElem(layout,x,y)=ROOM2) Then
+			If (((x/rectWidth) Mod 2)=punchOffset) And (GetIntArray2DElem(layout,x,y)=ROOM2) Then
 				roomAbove = GetIntArray2DElem(layout,x,y-1)
 				roomBelow = GetIntArray2DElem(layout,x,y+1)
 				If ((roomAbove>=ROOM2) And (roomBelow>=ROOM2)) And ((roomAbove+roomBelow)>(ROOM2+ROOM3)) Then
@@ -3436,6 +3440,7 @@ Function CreateMap()
 						r\angle = DetermineRotation(layout,x,y)
 						TurnEntity r\obj,0,r\angle,0
 						SetIntArray2DElem(layout,x,y,-1) ;mark as used
+						SetIntArray2DElem(MapRooms,x,y,Handle(r)) ;add to the MapRooms array
 						placed = True
 					EndIf
 					
@@ -3500,6 +3505,7 @@ Function CreateMap()
 							r\angle = DetermineRotation(layout,x,y)
 							TurnEntity r\obj,0,r\angle,0
 							SetIntArray2DElem(layout,x,y,-1) ;mark as used
+							SetIntArray2DElem(MapRooms,x,y,Handle(r)) ;add to the MapRooms array
 							Exit
 						EndIf
 					EndIf
@@ -3510,6 +3516,55 @@ Function CreateMap()
 	
 	DeleteIntArray2D(randomTemplates)
 	DeleteIntArray2D(layout)
+	
+	;finally, let rooms know who their neighbors are
+	For y% = 0 To mapDim-1
+		For x% = 0 To mapDim-1
+			r = Object.Rooms(GetIntArray2DElem(MapRooms,x,y))
+			If r<>Null Then
+				If x>0 Then
+					r\Adjacent[2] = Object.Rooms(GetIntArray2DElem(MapRooms,x-1,y))
+					If (r\Adjacent[2]<>Null) Then
+						If (r\Adjacent[2]\AdjDoor[0]=Null) Then
+							r\AdjDoor[2] = CreateDoor(zone,r\x-4.0,0.0,r\z,90.0,Null)
+						Else
+							r\AdjDoor[2] = r\Adjacent[2]\AdjDoor[0]
+						EndIf
+					EndIf
+				EndIf
+				If x<mapDim-1 Then
+					r\Adjacent[0] = Object.Rooms(GetIntArray2DElem(MapRooms,x+1,y))
+					If (r\Adjacent[0]<>Null) Then
+						If (r\Adjacent[0]\AdjDoor[2]=Null) Then
+							r\AdjDoor[0] = CreateDoor(zone,r\x+4.0,0.0,r\z,90.0,Null)
+						Else
+							r\AdjDoor[0] = r\Adjacent[0]\AdjDoor[2]
+						EndIf
+					EndIf
+				EndIf
+				If y>0 Then
+					r\Adjacent[1] = Object.Rooms(GetIntArray2DElem(MapRooms,x,y-1))
+					If (r\Adjacent[1]<>Null) Then
+						If (r\Adjacent[1]\AdjDoor[3]=Null) Then
+							r\AdjDoor[1] = CreateDoor(zone,r\x,0.0,r\z-4.0,0.0,Null)
+						Else
+							r\AdjDoor[1] = r\Adjacent[1]\AdjDoor[3]
+						EndIf
+					EndIf
+				EndIf
+				If y<mapDim-1 Then
+					r\Adjacent[3] = Object.Rooms(GetIntArray2DElem(MapRooms,x,y+1))
+					If (r\Adjacent[3]<>Null) Then
+						If (r\Adjacent[3]\AdjDoor[1]=Null) Then
+							r\AdjDoor[3] = CreateDoor(zone,r\x,0.0,r\z+4.0,0.0,Null)
+						Else
+							r\AdjDoor[3] = r\Adjacent[3]\AdjDoor[1]
+						EndIf
+					EndIf
+				EndIf
+			EndIf
+		Next
+	Next
 End Function
 
 Function DetermineRotation%(layout.IntArray2D,x%,y%)
