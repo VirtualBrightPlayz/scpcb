@@ -154,8 +154,8 @@ Function UpdateEvent_cont_012_2(e.Events)
 					mainPlayer\blurTimer = Max((2.0-dist)*(e\EventState3/800.0)*(Sin(Float(TimeInPosMilliSecs()) / 20.0 + 1.0)),mainPlayer\blurTimer)
 					mainPlayer\camZoom = Max(mainPlayer\camZoom, (Sin(Float(TimeInPosMilliSecs()) / 20.0)+1.0)*8.0*Max((3.0-dist),0.0))
 					
-					If BreathCHN <> 0 Then
-						If ChannelPlaying(BreathCHN) Then StopChannel(BreathCHN)
+					If mainPlayer\breathChn <> 0 Then
+						If ChannelPlaying(mainPlayer\breathChn) Then StopChannel(mainPlayer\breathChn)
 					EndIf
 					
 					If dist < 0.6 Then
@@ -227,5 +227,6 @@ Function UpdateEvent_cont_012_2(e.Events)
 	EndIf
 	;[End Block]
 End Function
+
 ;~IDEal Editor Parameters:
 ;~C#Blitz3D

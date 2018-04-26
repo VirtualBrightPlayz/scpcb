@@ -125,10 +125,6 @@ Function PauseSounds()
 	If AmbientSFXCHN <> 0 Then
 		If ChannelPlaying(AmbientSFXCHN) Then PauseChannel(AmbientSFXCHN)
 	EndIf
-	
-	If BreathCHN <> 0 Then
-		If ChannelPlaying(BreathCHN) Then PauseChannel(BreathCHN)
-	EndIf
 End Function
 
 Function ResumeSounds()
@@ -155,10 +151,6 @@ Function ResumeSounds()
 	
 	If AmbientSFXCHN <> 0 Then
 		If ChannelPlaying(AmbientSFXCHN) Then ResumeChannel(AmbientSFXCHN)
-	EndIf	
-	
-	If BreathCHN <> 0 Then
-		If ChannelPlaying(BreathCHN) Then ResumeChannel(BreathCHN)
 	EndIf
 End Function
 

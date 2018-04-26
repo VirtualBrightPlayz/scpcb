@@ -372,7 +372,7 @@ Dim CommotionState%(23)
 Global HeartBeatSFX = LoadSound_Strict("SFX\Character\D9341\Heartbeat.ogg")
 
 Dim BreathSFX(2,5)
-Global BreathCHN%
+Global BreathCHN.MarkedForRemoval
 For i = 0 To 4
 	BreathSFX(0,i)=LoadSound_Strict("SFX\Character\D9341\breath"+i+".ogg")
 	BreathSFX(1,i)=LoadSound_Strict("SFX\Character\D9341\breath"+i+"gas.ogg")
