@@ -1421,6 +1421,8 @@ End Function
 Function CreateRoom.Rooms(rt.RoomTemplates, x#, y#, z#)
 	Local r.Rooms = New Rooms
 	
+	DebugLog "Placing "+rt\Name
+	
 	r\zone = zone
 	
 	r\x = x : r\y = y : r\z = z
@@ -3346,45 +3348,100 @@ Function CreateMap()
 	
 	DetermineRoomTypes(layout,mapDim)
 	
+	;start off by placing rooms that ask to be placed a certain amount of times
 	Local zone% = ZONE_LCZ
-	Local zoneTemplateCount% = 0
+	Local prioritizedTemplateCount% = 0
 	For rt.RoomTemplates = Each RoomTemplates
-		If (rt\zones And zone)<>0 Then
-			zoneTemplateCount=zoneTemplateCount+1
+		If ((rt\zones And zone)<>0) And (rt\MaxAmount>0) And (rt\Shape<>ROOM0) Then
+			prioritizedTemplateCount=prioritizedTemplateCount+1
 		EndIf
 	Next
-	Local zoneTemplates.IntArray2D = CreateIntArray2D(zoneTemplateCount,1) ;TODO: replace with an array of the right type once we move to C++
-	Local index% = 0
+	Local prioritizedTemplates.IntArray2D = CreateIntArray2D(prioritizedTemplateCount,1) ;TODO: replace with an array of the right type once we move to C++
+	Local tempTemplate.RoomTemplates
+	Local tempTemplate2.RoomTemplates
+	SetIntArray2DElem(prioritizedTemplates,index,0,0)
 	For rt.RoomTemplates = Each RoomTemplates
-		If (rt\zones And zone)<>0 Then
-			SetIntArray2DElem(zoneTemplates,index,0,Handle(rt))
-			index=index+1
+		If ((rt\zones And zone)<>0) And (rt\MaxAmount>0) And (rt\Shape<>ROOM0) Then
+			tempTemplate = rt
+			DebugLog "queueing up "+rt\Name
+			For i%=0 To prioritizedTemplateCount-1
+				If GetIntArray2DElem(prioritizedTemplates,i,0)=0 Then
+					If i<prioritizedTemplateCount-1 Then
+						SetIntArray2DElem(prioritizedTemplates,i+1,0,0)
+					EndIf
+					SetIntArray2DElem(prioritizedTemplates,i,0,Handle(tempTemplate))
+					Exit
+				Else
+					tempTemplate2 = Object.RoomTemplates(GetIntArray2DElem(prioritizedTemplates,i,0))
+					If tempTemplate2\MaxAmount>tempTemplate\MaxAmount Then
+						SetIntArray2DElem(prioritizedTemplates,i,0,Handle(tempTemplate))
+						;DebugLog "swapping "+tempTemplate2\Name+" for "+tempTemplate\Name
+						tempTemplate = tempTemplate2
+					EndIf
+				EndIf
+			Next
 		EndIf
 	Next
 	
-	;shuffle the templates so that they don't get placed in the same locations every time
-	Local handle1%,handle2%
-	For i% = 0 To zoneTemplateCount-1
-		handle1 = GetIntArray2DElem(zoneTemplates,i,0)
-		index = Rand(0,zoneTemplateCount-1)
-		handle2 = GetIntArray2DElem(zoneTemplates,index,0)
-		SetIntArray2DElem(zoneTemplates,i,0,handle2)
-		SetIntArray2DElem(zoneTemplates,index,0,handle1)
+	Local RoomCount%[ROOM4+1]
+	For y% = 0 To 18
+		For x% = 0 To 18
+			If GetIntArray2DElem(layout,x,y)<>ROOM0 Then RoomCount[GetIntArray2DElem(layout,x,y)]=RoomCount[GetIntArray2DElem(layout,x,y)]+1
+		Next
+	Next
+	For i% = 1 To ROOM4
+		DebugLog "Type"+i+" count: "+RoomCount[i]
 	Next
 	
-	Local roomCount% = 0
-	Local roomCandidate.RoomTemplates = Null
-	For y% = 0 To mapDim-1
-		For x% = 0 To mapDim-1
-			roomCount% = 0
-			roomCandidate.RoomTemplates = Null
-			If GetIntArray2DElem(layout,x,y)<>0 Then
-				
-			EndIf
+	Local placementCount%
+	Local loopStartX%
+	Local loopStartY%
+	Local loopEndX%
+	Local loopEndY%
+	Local loopX%
+	Local loopY%
+	Local offsetX%
+	Local offsetY%
+	Local placed%
+	For k%=0 To prioritizedTemplateCount-1
+		rt.RoomTemplates = Object.RoomTemplates(GetIntArray2DElem(prioritizedTemplates,k,0))
+		
+		placementCount = Rand(rt\MinAmount,rt\MaxAmount)
+		
+		DebugLog "trying to place "+placementCount+" "+rt\Name
+		For c% = 1 To placementCount
+			loopStartX = Int(Min(Floor(mapDim*rt\xRangeStart),mapDim-1))
+			loopStartY = Int(Min(Floor(mapDim*rt\yRangeStart),mapDim-1))
+			loopEndX = Int(Min(Floor(mapDim*rt\xRangeEnd),mapDim-1))
+			loopEndY = Int(Min(Floor(mapDim*rt\yRangeEnd),mapDim-1))
+			
+			loopX = loopEndX-loopStartX
+			loopY = loopEndY-loopStartY
+			
+			offsetX = Rand(0,loopX)
+			offsetY = Rand(0,loopY)
+			
+			placed = False
+			For j% = 0 To loopY
+				For i% = 0 To loopX
+					x% = ((i+offsetX) Mod (loopX+1)) + loopStartX
+					y% = ((j+offsetY) Mod (loopY+1)) + loopStartY
+					
+					If GetIntArray2DElem(layout,x,y)<>0 And GetIntArray2DElem(layout,x,y)=rt\Shape Then
+						CreateRoom(rt,x*8.0,0.0,y*8.0)
+						SetIntArray2DElem(layout,x,y,-1)
+						placed = True
+					EndIf
+					
+					If placed Then Exit
+				Next
+				If placed Then Exit
+			Next
+			If Not placed Then RuntimeError "(seed: "+RandomSeed+") Failed To place "+rt\Name+" around ("+loopStartX+","+loopStartY+","+loopEndX+","+loopEndY+")"
 		Next
 	Next
 	
-	DeleteIntArray2D(zoneTemplates)
+	DeleteIntArray2D(prioritizedTemplates)
 	DeleteIntArray2D(layout)
 End Function
 
