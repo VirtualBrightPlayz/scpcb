@@ -237,6 +237,13 @@ End Function
 Function DeletePlayer(player.Player)
 	;TODO: delete/drop worn items, delete inventory
 	DeleteInventory(player\inventory)
+
+	Local i%
+	For i = 0 To 4
+		FreeSound(GetIntArray2DElem(player\breathingSFX, 0, i))
+		FreeSound(GetIntArray2DElem(player\breathingSFX, 1, i))
+	Next
+
 	Delete player
 End Function
 
@@ -2116,7 +2123,7 @@ Function Kill(player.Player)
 		player\fallTimer = Min(-1,player\fallTimer)
 		ShowEntity player\head
 		PositionEntity(player\head, EntityX(player\cam, True), EntityY(player\cam, True), EntityZ(player\cam, True), True)
-		ResetEntity (player\head)
+		ResetEntity(player\head)
 		RotateEntity(player\head, 0, EntityYaw(player\cam), 0)		
 	EndIf
 End Function
