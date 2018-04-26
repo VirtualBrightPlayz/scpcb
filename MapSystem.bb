@@ -1302,6 +1302,7 @@ End Function
 
 LoadRoomTemplates("Data\rooms.ini")
 
+Const MAP_SIZE = 19
 Global RoomScale# = 8.0 / 2048.0
 Global ZONEAMOUNT.MarkedForRemoval
 
@@ -2126,9 +2127,9 @@ Function RemoveWaypoint(w.WayPoints)
 End Function
 
 
-Dim MapF.MarkedForRemoval(userOptions\mapWidth, userOptions\mapWidth), MapG.MarkedForRemoval(userOptions\mapWidth, userOptions\mapWidth), MapH.MarkedForRemoval(userOptions\mapWidth, userOptions\mapWidth)
-Dim MapState.MarkedForRemoval(userOptions\mapWidth, userOptions\mapWidth)
-Dim MapParent.MarkedForRemoval(userOptions\mapWidth, userOptions\mapWidth, 2)
+Dim MapF.MarkedForRemoval(MAP_SIZE, MAP_SIZE), MapG.MarkedForRemoval(MAP_SIZE, MAP_SIZE), MapH.MarkedForRemoval(MAP_SIZE, MAP_SIZE)
+Dim MapState.MarkedForRemoval(MAP_SIZE, MAP_SIZE)
+Dim MapParent.MarkedForRemoval(MAP_SIZE, MAP_SIZE, 2)
 Function FindPath(n.NPCs, x#, y#, z#)
 	
 	DebugLog "findpath: "+n\NPCtype
@@ -2433,7 +2434,7 @@ Function UpdateScreens()
 	
 End Function
 
-Dim MapName.MarkedForRemoval(userOptions\mapWidth, userOptions\mapWidth)
+Dim MapName.MarkedForRemoval(MAP_SIZE, MAP_SIZE)
 Dim MapRoomID.MarkedForRemoval(ROOM4 + 1)
 Dim MapRoom.MarkedForRemoval(ROOM4 + 1, 0)
 
@@ -3277,7 +3278,7 @@ Function CreateMap()
 	Next
 	SeedRnd Abs(Int(strtemp))
 	
-	Local mapDim% = userOptions\mapWidth
+	Local mapDim% = MAP_SIZE
 	Local layout.IntArray2D = CreateIntArray2D(mapDim,mapDim)
 	
 	;clear the grid
