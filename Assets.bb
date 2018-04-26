@@ -308,11 +308,13 @@ Function InitNewGame()
 			EndIf
 		EndIf
 		
-		If (r\RoomTemplate\Name = "cont_173_1" And userOptions\introEnabled = False) Then 
-			PositionEntity (mainPlayer\collider, EntityX(r\obj)+3584*RoomScale, 704*RoomScale, EntityZ(r\obj)+1024*RoomScale)
+		If (r\RoomTemplate\Name = "cont_173_1" And (userOptions\introEnabled = False)) Then 
+			PositionEntity (mainPlayer\collider, EntityX(r\obj)+3584*RoomScale, 714*RoomScale, EntityZ(r\obj)+1024*RoomScale)
+			ResetEntity mainPlayer\collider
 			mainPlayer\currRoom = r
 		ElseIf (r\RoomTemplate\Name = "intro" And userOptions\introEnabled) Then
 			PositionEntity (mainPlayer\collider, EntityX(r\obj), 1.0, EntityZ(r\obj))
+			ResetEntity mainPlayer\collider
 			mainPlayer\currRoom = r
 		EndIf
 		
@@ -334,20 +336,21 @@ Function InitNewGame()
 	
 	If SelectedMap = "" Then InitEvents()
 	
-	For e.Events = Each Events
-		If e\EventName = "room2nuke"
-			e\EventState = 1
-			DebugLog "room2nuke"
-		EndIf
-		If e\EventName = "room106"
-			e\EventState2 = 1
-			DebugLog "room106"
-		EndIf	
-		If e\EventName = "room2sl"
-			e\EventState3 = 1
-			DebugLog "room2sl"
-		EndIf
-	Next
+	;TODO: fix
+;	For e.Events = Each Events
+;		If e\EventName = "room2nuke"
+;			e\EventState = 1
+;			DebugLog "room2nuke"
+;		EndIf
+;		If e\EventName = "room106"
+;			e\EventState2 = 1
+;			DebugLog "room106"
+;		EndIf	
+;		If e\EventName = "room2sl"
+;			e\EventState3 = 1
+;			DebugLog "room2sl"
+;		EndIf
+;	Next
 	
 	MoveMouse viewport_center_x,viewport_center_y;320, 240
 	

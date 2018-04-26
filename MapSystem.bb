@@ -3390,8 +3390,8 @@ Function CreateMap()
 	Next
 	
 	Local RoomCount%[ROOM4+1]
-	For y% = 0 To 18
-		For x% = 0 To 18
+	For y% = 0 To mapDim-1
+		For x% = 0 To mapDim-1
 			If GetIntArray2DElem(layout,x,y)<>ROOM0 Then RoomCount[GetIntArray2DElem(layout,x,y)]=RoomCount[GetIntArray2DElem(layout,x,y)]+1
 		Next
 	Next
@@ -3418,10 +3418,10 @@ Function CreateMap()
 		
 		DebugLog "trying to place "+placementCount+" "+rt\Name
 		For c% = 1 To placementCount
-			loopStartX = Int(Min(Floor(mapDim*rt\xRangeStart),mapDim-1))
-			loopStartY = Int(Min(Floor(mapDim*rt\yRangeStart),mapDim-1))
-			loopEndX = Int(Min(Floor(mapDim*rt\xRangeEnd),mapDim-1))
-			loopEndY = Int(Min(Floor(mapDim*rt\yRangeEnd),mapDim-1))
+			loopStartX = Int(Min(Floor(Float(mapDim)*rt\xRangeStart),mapDim-1))
+			loopStartY = Int(Min(Floor(Float(mapDim)*rt\yRangeStart),mapDim-1))
+			loopEndX = Int(Min(Floor(Float(mapDim)*rt\xRangeEnd),mapDim-1))
+			loopEndY = Int(Min(Floor(Float(mapDim)*rt\yRangeEnd),mapDim-1))
 			
 			loopX = loopEndX-loopStartX
 			loopY = loopEndY-loopStartY
