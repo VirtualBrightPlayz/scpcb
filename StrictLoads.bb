@@ -15,7 +15,7 @@
 ;added zero checks since blitz load functions return zero sometimes even if the filetype exists
 Function LoadImage_Strict(file$)
 	If FileType(file$)<>1 Then RuntimeError "Image " + Chr(34) + file$ + Chr(34) + " missing. "
-	tmp = LoadImage(file$)
+	Local tmp% = LoadImage(file$)
 	
 	;attempt to load the image again
 	If tmp = 0 Then LoadImage(file)
@@ -61,6 +61,7 @@ Function PlaySound_Strict%(sndHandle%)
 	Local snd.Sound = Object.Sound(sndHandle)
 	If snd <> Null Then
 		Local shouldPlay% = True
+		Local i%
 		For i = 0 To 31
 			If snd\channels[i] <> 0 Then
 				If Not ChannelPlaying(snd\channels[i]) Then
@@ -145,7 +146,8 @@ End Function
 
 Function LoadMesh_Strict(File$,parent=0)
 	If FileType(File$) <> 1 Then RuntimeError "3D Mesh " + File$ + " not found."
-	tmp = LoadMesh(File$, parent)
+	
+	Local tmp = LoadMesh(File$, parent)
 	If tmp = 0 Then RuntimeError "Failed to load 3D Mesh: " + File$ 
 	Return tmp  
 End Function   
@@ -153,7 +155,8 @@ End Function
 Function LoadAnimMesh_Strict(File$,parent=0)
 	DebugLog File
 	If FileType(File$) <> 1 Then RuntimeError "3D Animated Mesh " + File$ + " not found."
-	tmp = LoadAnimMesh(File$, parent)
+	
+	Local tmp% = LoadAnimMesh(File$, parent)
 	If tmp = 0 Then RuntimeError "Failed to load 3D Animated Mesh: " + File$ 
 	Return tmp
 End Function   
@@ -161,21 +164,26 @@ End Function
 ;don't use in LoadRMesh, as Reg does this manually there. If you wanna fuck around with the logic in that function, be my guest 
 Function LoadTexture_Strict(File$,flags=1)
 	If FileType(File$) <> 1 Then RuntimeError "Texture " + File$ + " not found."
-	tmp = LoadTexture(File$, flags)
+	
+	Local tmp% = LoadTexture(File$, flags)
 	If tmp = 0 Then RuntimeError "Failed to load Texture: " + File$ 
 	Return tmp 
 End Function   
 
 Function LoadBrush_Strict(file$,flags,u#=1.0,v#=1.0)
 	If FileType(file$)<>1 Then RuntimeError "Brush Texture " + file$ + "not found."
-	tmp = LoadBrush(file$, flags, u, v)
+	
+	Local tmp% = LoadBrush(file$, flags, u, v)
 	If tmp = 0 Then RuntimeError "Failed to load Brush: " + file$ 
 	Return tmp 
 End Function 
 
 Function LoadFont_Strict(file$="Tahoma", height=13, bold=0, italic=0, underline=0)
 	If FileType(file$)<>1 Then RuntimeError "Font " + file$ + " not found."
-	tmp = LoadFont(file, height, bold, italic, underline)  
+	
+	Local tmp% = LoadFont(file, height, bold, italic, underline)  
 	If tmp = 0 Then RuntimeError "Failed to load Font: " + file$ 
 	Return tmp
 End Function
+;~IDEal Editor Parameters:
+;~C#Blitz3D

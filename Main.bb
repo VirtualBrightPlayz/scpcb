@@ -263,9 +263,7 @@ Global CautionSFX% = LoadSound_Strict("SFX\Room\LockroomSiren.ogg")
 
 Global NuclearSirenSFX%
 
-Global CameraSFX = LoadSound_Strict("SFX\General\Camera.ogg") 
-
-Global StoneDragSFX.MarkedForRemoval
+Global CameraSFX = LoadSound_Strict("SFX\General\Camera.ogg")
 
 Global GunshotSFX% = LoadSound_Strict("SFX\General\Gunshot.ogg")
 Global Gunshot2SFX% = LoadSound_Strict("SFX\General\Gunshot2.ogg")
@@ -371,12 +369,7 @@ Dim CommotionState%(23)
 
 Global HeartBeatSFX = LoadSound_Strict("SFX\Character\D9341\Heartbeat.ogg")
 
-Dim BreathSFX(2,5)
 Global BreathCHN.MarkedForRemoval
-For i = 0 To 4
-	BreathSFX(0,i)=LoadSound_Strict("SFX\Character\D9341\breath"+i+".ogg")
-	BreathSFX(1,i)=LoadSound_Strict("SFX\Character\D9341\breath"+i+"gas.ogg")
-Next
 
 ;TODO: Move to NPCData173.
 Dim NeckSnapSFX.MarkedForRemoval(3)

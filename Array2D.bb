@@ -7,7 +7,7 @@ End Type
 
 Function CreateIntArray2D.IntArray2D(w%,h%)
 	Local array.IntArray2D = New IntArray2D
-	array\bank = CreateBank(4* (w*h))
+	array\bank = CreateBank(4 * (w * h))
 	array\w = w : array\h = h
 	Return array
 End Function

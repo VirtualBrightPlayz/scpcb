@@ -55,7 +55,7 @@ Type NPCs
 	Field sound%
 	Field soundChn%
 	Field sound2%
-	Field SoundChn2%
+	Field soundChn2%
 	
 	;TODO: wtf why aren't we using this more instead of reload?
 	Field soundTimer#
@@ -79,7 +79,7 @@ Type NPCs
 	Field prevY#
 	Field prevZ#
 	
-	Field Target.NPCs, TargetID%
+	Field target.NPCs, targetID%
 
 	;TODO: Deprecate in favor of target.
 	Field EnemyX#
@@ -90,12 +90,12 @@ Type NPCs
 	Field targetY#
 	Field targetZ#
 	
-	Field Path.WayPoints[20]
-	Field PathStatus%
-	Field PathTimer#
-	Field PathLocation%
-	Field PathX#
-	Field PathZ#
+	Field path.WayPoints[20]
+	Field pathStatus%
+	Field pathTimer#
+	Field pathLocation%
+	Field pathX#
+	Field pathZ#
 	
 	Field nvX#
 	Field nvY#
@@ -253,14 +253,9 @@ Function RemoveNPC(n.NPCs)
 		n\obj4 = 0
 	EndIf
 
+	NPCStopAllChannels(n)
+	
 	Local i%
-
-	For i = 0 To 2
-		If (n\soundChannels[i] <> 0 And ChannelPlaying(n\soundChannels[i])) Then
-			StopChannel(n\soundChannels[i])
-		EndIf
-	Next
-
 	For i = 0 To 11
 		If (n\sounds[i] <> 0) Then
 			FreeSound_Strict(n\sounds[i])
@@ -271,8 +266,8 @@ Function RemoveNPC(n.NPCs)
 		StopChannel(n\soundChn)
 	EndIf
 	
-	If n\SoundChn2 <> 0 And ChannelPlaying(n\SoundChn2) Then
-		StopChannel(n\SoundChn2)
+	If n\soundChn2 <> 0 And ChannelPlaying(n\soundChn2) Then
+		StopChannel(n\soundChn2)
 	EndIf
 	
 	If (n\sound <> 0) Then
@@ -382,6 +377,16 @@ Function UpdateNPCs()
 		EndIf
 	Next
 	
+End Function
+
+;Stops all audio channels for a given NPC.
+Function NPCStopAllChannels(n.NPCs)
+	Local i%
+	For i = 0 To 2
+		If (n\soundChannels[i] <> 0 And ChannelPlaying(n\soundChannels[i])) Then
+			StopChannel(n\soundChannels[i])
+		EndIf
+	Next
 End Function
 
 Function TeleportCloser(n.NPCs)

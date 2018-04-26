@@ -3,7 +3,7 @@ Const WORNITEM_SLOT_NONE%  = WORNITEM_SLOT_COUNT
 Const WORNITEM_SLOT_HEAD%  = 0
 Const WORNITEM_SLOT_BODY%  = 1
 
-Const OVERLAY_COUNT%       = 7
+Const OVERLAY_COUNT%       = 6
 Const OVERLAY_BLACK%       = 0
 Const OVERLAY_WHITE%       = 1
 Const OVERLAY_FOG%         = 2
@@ -100,7 +100,9 @@ Type Player
 	Field wornItems.Items[WORNITEM_SLOT_COUNT]
 	;------
 	
-	;sound channels
+	;sounds
+	Field breathingSFX.IntArray2D
+	
 	Field breathChn%
 	;------
 	
@@ -220,6 +222,15 @@ Function CreatePlayer.Player()
 	EntityRadius player\head, 0.15
 	EntityType player\head, HIT_PLAYER
 	
+	;Sounds
+	player\breathingSFX = CreateIntArray2D(2, 5)
+	
+	Local i%
+	For i = 0 To 4
+		SetIntArray2DElem(player\breathingSFX, 0, i, LoadSound_Strict("SFX\Character\D9341\breath"+i+".ogg"))
+		SetIntArray2DElem(player\breathingSFX, 1, i, LoadSound_Strict("SFX\Character\D9341\breath"+i+"gas.ogg"))
+	Next
+	
 	Return player
 End Function
 
@@ -326,23 +337,23 @@ Function MovePlayer()
 		mainPlayer\staminaEffect = CurveValue(1.0, mainPlayer\staminaEffect, 50)
 	EndIf
 	
-	;If mainPlayer\currRoom\RoomTemplate\Name<>"pocketdimension" Then 
-	;	If KeyDown(keyBinds\sprint) Then
-	;		If mainPlayer\stamina < 5 Then
-	;			If ChannelPlaying(mainPlayer\breathChn)=False Then mainPlayer\breathChn = PlaySound_Strict(BreathSFX((WearingGasMask>0), 0))
-	;		ElseIf mainPlayer\stamina < 50
-	;			If mainPlayer\breathChn=0 Then
-	;				mainPlayer\breathChn = PlaySound_Strict(BreathSFX((WearingGasMask>0), Rand(1,3)))
-	;				ChannelVolume mainPlayer\breathChn, Min((70.0-mainPlayer\stamina)/70.0,1.0)*userOptions\SoundVolume
-	;			Else
-	;				If ChannelPlaying(mainPlayer\breathChn)=False Then
-	;					mainPlayer\breathChn = PlaySound_Strict(BreathSFX((WearingGasMask>0), Rand(1,3)))
-	;					ChannelVolume mainPlayer\breathChn, Min((70.0-mainPlayer\stamina)/70.0,1.0)*userOptions\SoundVolume			
-	;				EndIf
-	;			EndIf
-	;		EndIf
-	;	EndIf
-	;EndIf
+	If (mainPlayer\currRoom\RoomTemplate\Name <> "pocketdimension") Then 
+		If KeyDown(keyBinds\sprint) Then
+			If (mainPlayer\stamina < 5) Then ;out of breath
+				If (Not ChannelPlaying(mainPlayer\breathChn)) Then mainPlayer\breathChn = PlaySound_Strict(GetIntArray2DElem(mainPlayer\breathingSFX, IsPlayerWearingTempName(mainPlayer,"gasmask"), 0))
+			ElseIf (mainPlayer\stamina < 50) ;panting
+				If (mainPlayer\breathChn = 0) Then
+					mainPlayer\breathChn = PlaySound_Strict(GetIntArray2DElem(mainPlayer\breathingSFX, IsPlayerWearingTempName(mainPlayer,"gasmask"), Rand(1, 3)))
+					ChannelVolume(mainPlayer\breathChn, Min((70.0-mainPlayer\stamina)/70.0,1.0)*userOptions\soundVolume)
+				Else
+					If (Not ChannelPlaying(mainPlayer\breathChn)) Then
+						mainPlayer\breathChn = PlaySound_Strict(GetIntArray2DElem(mainPlayer\breathingSFX, IsPlayerWearingTempName(mainPlayer,"gasmask"), Rand(1, 3)))
+						ChannelVolume(mainPlayer\breathChn, Min((70.0-mainPlayer\stamina)/70.0,1.0)*userOptions\soundVolume)		
+					EndIf
+				EndIf
+			EndIf
+		EndIf
+	EndIf
 	
 	For i%=0 To mainPlayer\inventory\size-1
 		If (mainPlayer\inventory\items[i]<>Null) Then
