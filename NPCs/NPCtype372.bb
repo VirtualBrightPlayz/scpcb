@@ -21,7 +21,7 @@ Function UpdateNPCtype372(n.NPCs)
                 n\Idle = False
                 n\State = Rand(20, 60)
                 
-                If Rand(300)=1 Then PlaySound2(RustleSFX(Rand(0,2)),mainPlayer\cam, n\obj, 8, Rnd(0.0,0.2))
+                If Rand(300)=1 Then PlayRangedSound(RustleSFX(Rand(0,2)),mainPlayer\cam, n\obj, 8, Rnd(0.0,0.2))
             End If
         Else
             PositionEntity(n\obj, EntityX(n\Collider) + Rnd(-0.005, 0.005), EntityY(n\Collider)+0.3+0.1*Sin(TimeInPosMilliSecs()/2), EntityZ(n\Collider) + Rnd(-0.005, 0.005))
@@ -32,9 +32,9 @@ Function UpdateNPCtype372(n.NPCs)
             
             If EntityInView(n\obj, mainPlayer\cam) Then
                 If Rand(30)=1 Then 
-                    If (Not ChannelPlaying(n\SoundChn)) Then
+                    If (Not IsChannelPlaying(n\SoundChn)) Then
                         If EntityVisible(mainPlayer\cam, n\obj) Then 
-                            n\SoundChn = PlaySound2(RustleSFX(Rand(0,2)),mainPlayer\cam, n\obj, 8, 0.3)
+                            n\SoundChn = PlayRangedSound(RustleSFX(Rand(0,2)),mainPlayer\cam, n\obj, 8, 0.3)
                         EndIf
                     EndIf
                 EndIf

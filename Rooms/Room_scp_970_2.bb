@@ -278,7 +278,7 @@ Function UpdateEvent_scp_970_2(e.Events)
 				If e\sounds[0] = 0 Then
 					e\sounds[0] = LoadSound("SFX\SCP\970\Corpse.ogg")
 				EndIf
-				e\soundChannels[0] = LoopSound2(e\sounds[0], e\soundChannels[0], mainPlayer\cam, e\room\NPC[0]\obj);
+				e\soundChannels[0] = LoopRangedSound(e\sounds[0], e\soundChannels[0], mainPlayer\cam, e\room\NPC[0]\obj);
 				If e\EventState < 30 Then
 					;LightVolume = TempLightVolume*0.4
 				ElseIf e\EventState > 60

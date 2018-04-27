@@ -86,7 +86,7 @@ Function UpdateEvent_closets_2(e.Events)
 			e\EventStr = "load2"
 		ElseIf e\EventStr = "load2"
 			QuickLoadPercent = 35
-			e\room\NPC[0]\SoundChn = PlaySound2(e\room\NPC[0]\Sound, mainPlayer\cam, e\room\NPC[0]\Collider, 12)
+			e\room\NPC[0]\SoundChn = PlayRangedSound(e\room\NPC[0]\Sound, mainPlayer\cam, e\room\NPC[0]\Collider, 12)
 			e\EventStr = "load3"
 		ElseIf e\EventStr = "load3"
 			QuickLoadPercent = 55
@@ -116,11 +116,11 @@ Function UpdateEvent_closets_2(e.Events)
 			RotateEntity(e\room\NPC[1]\Collider,0,CurveAngle(e\room\angle+90,EntityYaw(e\room\NPC[1]\Collider),100.0),0,True)
 			
 			e\room\NPC[0]\State=1
-			If e\EventState > 70*3.2 And e\EventState-timing\tickDuration =< 70*3.2 Then PlaySound2(IntroSFX(15),mainPlayer\cam,e\room\obj,15.0)
+			If e\EventState > 70*3.2 And e\EventState-timing\tickDuration =< 70*3.2 Then PlayRangedSound(IntroSFX(15),mainPlayer\cam,e\room\obj,15.0)
 		ElseIf e\EventState < 70*6.5
 			If e\EventState-timing\tickDuration < 70*3.5 Then
 				e\room\NPC[0]\State=0
-				e\room\NPC[1]\SoundChn = PlaySound2(e\room\NPC[1]\Sound, mainPlayer\cam, e\room\NPC[1]\Collider,12.0)
+				e\room\NPC[1]\SoundChn = PlayRangedSound(e\room\NPC[1]\Sound, mainPlayer\cam, e\room\NPC[1]\Collider,12.0)
 			EndIf
 			
 			If e\EventState > 70*4.5 Then
@@ -138,8 +138,8 @@ Function UpdateEvent_closets_2(e.Events)
 			mainPlayer\blinkTimer = Max((70*6.5-e\EventState)/5.0 - Rnd(0.0,2.0),-10)
 			If mainPlayer\blinkTimer =-10 Then
 				;TODO: fix
-				;If e\EventState > 70*7.5 And e\EventState-timing\tickDuration =< 70*7.5 Then PlaySound2(NeckSnapSFX(0),mainPlayer\cam,e\room\NPC[0]\Collider,8.0)
-				;If e\EventState > 70*8.0 And e\EventState-timing\tickDuration =< 70*8.0 Then PlaySound2(NeckSnapSFX(1),mainPlayer\cam,e\room\NPC[1]\Collider,8.0)
+				;If e\EventState > 70*7.5 And e\EventState-timing\tickDuration =< 70*7.5 Then PlayRangedSound(NeckSnapSFX(0),mainPlayer\cam,e\room\NPC[0]\Collider,8.0)
+				;If e\EventState > 70*8.0 And e\EventState-timing\tickDuration =< 70*8.0 Then PlayRangedSound(NeckSnapSFX(1),mainPlayer\cam,e\room\NPC[1]\Collider,8.0)
 				SetNPCFrame e\room\NPC[0], 60
 				e\room\NPC[0]\State=8
 				

@@ -109,7 +109,7 @@ Function UpdateEvent_cont_008_1(e.Events)
 				
 				e\EventState = 1
 			ElseIf e\EventState = 1
-				e\soundChannels[0] = LoopSound2(AlarmSFX(0), e\soundChannels[0], mainPlayer\cam, e\room\Objects[0], 5.0)
+				e\soundChannels[0] = LoopRangedSound(AlarmSFX(0), e\soundChannels[0], mainPlayer\cam, e\room\Objects[0], 5.0)
 				
 				If (TimeInPosMilliSecs() Mod 1000)<500 Then
 					ShowEntity e\room\Objects[5] 
@@ -137,7 +137,7 @@ Function UpdateEvent_cont_008_1(e.Events)
 								MsgTimer = 70*8
 							EndIf
 							
-							PlaySound2(LoadTempSound("SFX\General\GlassBreak.ogg"), mainPlayer\cam, e\room\Objects[0]) 
+							PlayRangedSound(LoadTempSound("SFX\General\GlassBreak.ogg"), mainPlayer\cam, e\room\Objects[0]) 
 							
 							e\EventState2=1
 						EndIf

@@ -286,11 +286,11 @@ Function UpdateEventExit1(e.Events)
 						If e\soundChannels[0] = 0 Then
 							e\soundChannels[0] = PlaySound(NuclearSirenSFX)
 						Else
-							If ChannelPlaying(e\soundChannels[0])=False Then e\soundChannels[0] = PlaySound(NuclearSirenSFX) 
+							If IsChannelPlaying(e\soundChannels[0])=False Then e\soundChannels[0] = PlaySound(NuclearSirenSFX) 
 						EndIf
 					Else
 						If SelectedEnding = "" Then
-							If ChannelPlaying(e\soundChannels[0])=False Then 
+							If IsChannelPlaying(e\soundChannels[0])=False Then 
 								temp = True
 								For e2.Events = Each Events
 									If e2\EventName = "room2nuke" Then
@@ -541,7 +541,7 @@ Function UpdateEventExit1(e.Events)
 					If e\room\RoomDoors[4]\openstate > 50 Or EntityDistance(mainPlayer\collider, e\room\RoomDoors[4]\frameobj)<0.5 Then
 						e\room\RoomDoors[4]\openstate = Min(e\room\RoomDoors[4]\openstate,50)
 						e\room\RoomDoors[4]\open = False
-						PlaySound2 (LoadTempSound("SFX\Door\DoorError.ogg"), mainPlayer\cam, e\room\RoomDoors[4]\frameobj)
+						PlayRangedSound (LoadTempSound("SFX\Door\DoorError.ogg"), mainPlayer\cam, e\room\RoomDoors[4]\frameobj)
 					EndIf							
 				EndIf
 			Else

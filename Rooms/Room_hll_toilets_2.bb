@@ -44,7 +44,7 @@ Function UpdateEventToiletguard(e.Events)
 	Else
 		If e\sounds[0] = 0 Then e\sounds[0] = LoadSound("SFX\Character\Guard\SuicideGuard1.ogg")
 		If e\room\dist < 15.0 And e\room\dist >= 4.0 Then 
-			e\soundChannels[0] = LoopSound2(e\sounds[0], e\soundChannels[0], mainPlayer\cam, e\room\NPC[0]\Collider, 15.0)
+			e\soundChannels[0] = LoopRangedSound(e\sounds[0], e\soundChannels[0], mainPlayer\cam, e\room\NPC[0]\Collider, 15.0)
 			
 		ElseIf e\room\dist<4.0 And mainPlayer\loudness > 1.0 Then
 			de.Decals = CreateDecal(3,  EntityX(e\room\Objects[2],True), 0.01, EntityZ(e\room\Objects[2],True),90,Rnd(360),0)
@@ -60,10 +60,10 @@ Function UpdateEventToiletguard(e.Events)
 				StopChannel(e\soundChannels[0])
 				FreeSound(e\sounds[0])
 				e\room\NPC[0]\Sound = LoadSound("SFX\Character\Guard\SuicideGuard2.ogg")
-				e\soundChannels[1] = PlaySound2(e\room\NPC[0]\Sound, mainPlayer\cam, e\room\NPC[0]\Collider, 15.0)
+				e\soundChannels[1] = PlayRangedSound(e\room\NPC[0]\Sound, mainPlayer\cam, e\room\NPC[0]\Collider, 15.0)
 			EndIf
 			UpdateSoundOrigin(e\soundChannels[1],mainPlayer\cam,e\room\NPC[0]\Collider,15.0)
-			If (Not ChannelPlaying(e\soundChannels[1])) Then RemoveEvent(e)
+			If (Not IsChannelPlaying(e\soundChannels[1])) Then RemoveEvent(e)
 		EndIf
 	EndIf
 	;[End Block]
@@ -87,10 +87,10 @@ Function UpdateEventButtghost(e.Events)
 	If mainPlayer\currRoom = e\room Then
 		If EntityDistance(mainPlayer\collider, e\room\Objects[0]) < 1.8 Then
 			If e\EventState = 0
-				e\soundChannels[0] = PlaySound2(ButtGhostSFX, mainPlayer\cam,e\room\Objects[0])
+				e\soundChannels[0] = PlayRangedSound(ButtGhostSFX, mainPlayer\cam,e\room\Objects[0])
 				e\EventState = 1
 			Else
-				If (Not ChannelPlaying(e\soundChannels[0]))
+				If (Not IsChannelPlaying(e\soundChannels[0]))
 					RemoveEvent(e)
 				EndIf
 			EndIf

@@ -108,7 +108,7 @@ Function UpdateEvent_cont_1123_2(e.Events)
 			;If e\soundChannels[0] = 0 Then
 			;	e\soundChannels[0] = 
 			;Else
-			;	If Not ChannelPlaying(e\soundChannels[0]) Then e\soundChannels[0] = PlaySound(moddedambience)
+			;	If Not IsChannelPlaying(e\soundChannels[0]) Then e\soundChannels[0] = PlaySound(moddedambience)
 			;End If
 			
 			;Saving injuries and bloodloss, so that the player won't be healed automatically
@@ -159,9 +159,9 @@ Function UpdateEvent_cont_1123_2(e.Events)
 				RotateEntity e\room\Objects[11], 0, CurveAngle(10, EntityYaw(e\room\Objects[11],0), 40), 0
 				
 				If e\EventState2=>1040 And e\EventState2-timing\tickDuration<1040 Then 
-					PlaySound2(LoadTempSound("SFX\SCP\1123\Officer1.ogg"), mainPlayer\cam, e\room\NPC[0]\obj)
+					PlayRangedSound(LoadTempSound("SFX\SCP\1123\Officer1.ogg"), mainPlayer\cam, e\room\NPC[0]\obj)
 				ElseIf e\EventState2=>1400 And e\EventState2-timing\tickDuration<1400 Then 
-					PlaySound2(LoadTempSound("SFX\SCP\1123\Officer2.ogg"), mainPlayer\cam, e\room\NPC[0]\obj)
+					PlayRangedSound(LoadTempSound("SFX\SCP\1123\Officer2.ogg"), mainPlayer\cam, e\room\NPC[0]\obj)
 				EndIf
 				
 				;Animate2(e\room\Objects[4], AnimTime(e\room\Objects[4]), 0, 8, 0.1, False)
@@ -264,14 +264,14 @@ Function UpdateEvent_cont_1123_2(e.Events)
 			
 			If e\room\NPC[0]\Sound<>0 Then 
 				If e\room\NPC[0]\SoundChn<>0 Then
-					If (Not ChannelPlaying(e\room\NPC[0]\SoundChn)) Then 
+					If (Not IsChannelPlaying(e\room\NPC[0]\SoundChn)) Then 
 						PlaySound(LoadTempSound("SFX\SCP\1123\Gunshot.ogg"))
 						e\EventState = 7
 						FreeSound e\room\NPC[0]\Sound : e\room\NPC[0]\Sound=0	
 					EndIf
 				EndIf
 				
-				If e\room\NPC[0]\Sound<>0 Then e\room\NPC[0]\SoundChn = LoopSound2(e\room\NPC[0]\Sound, e\room\NPC[0]\SoundChn, mainPlayer\cam, e\room\NPC[0]\Collider, 7.0)
+				If e\room\NPC[0]\Sound<>0 Then e\room\NPC[0]\SoundChn = LoopRangedSound(e\room\NPC[0]\Sound, e\room\NPC[0]\SoundChn, mainPlayer\cam, e\room\NPC[0]\Collider, 7.0)
 			EndIf
 		ElseIf e\EventState=7
 			PositionEntity mainPlayer\collider, EntityX(e\room\obj,True),0.3,EntityZ(e\room\obj,True),True

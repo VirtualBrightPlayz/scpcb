@@ -147,8 +147,8 @@ Function UpdateEvent_cont_035_1(e.Events)
 			EndIf
 			
 			If e\room\NPC[0]\SoundChn <> 0 Then
-				If ChannelPlaying(e\room\NPC[0]\SoundChn) Then
-					e\room\NPC[0]\SoundChn=LoopSound2(e\room\NPC[0]\Sound, e\room\NPC[0]\SoundChn, mainPlayer\cam, e\room\obj, 6.0)
+				If IsChannelPlaying(e\room\NPC[0]\SoundChn) Then
+					e\room\NPC[0]\SoundChn=LoopRangedSound(e\room\NPC[0]\Sound, e\room\NPC[0]\SoundChn, mainPlayer\cam, e\room\obj, 6.0)
 				EndIf
 			EndIf
 			
@@ -389,7 +389,7 @@ Function UpdateEvent_cont_035_1(e.Events)
 							PointEntity e\room\NPC[0]\obj, e\room\RoomDoors[1]\frameobj
 							RotateEntity e\room\NPC[0]\Collider, 0, CurveAngle(EntityYaw(e\room\NPC[0]\obj), EntityYaw(e\room\NPC[0]\Collider), 15.0), 0
 						ElseIf dist > 0.7
-							If ChannelPlaying (e\room\NPC[0]\SoundChn) Then
+							If IsChannelPlaying (e\room\NPC[0]\SoundChn) Then
 								e\room\NPC[0]\State = 0
 								PointEntity e\room\NPC[0]\obj, mainPlayer\collider
 								RotateEntity e\room\NPC[0]\Collider, 0, CurveAngle(EntityYaw(e\room\NPC[0]\obj), EntityYaw(e\room\NPC[0]\Collider), 15.0), 0
@@ -512,8 +512,8 @@ Function UpdateEvent_cont_035_1(e.Events)
 			EndIf
 			
 			If e\EventState3 > 0 And (Not IsPlayerWearingTempName(mainPlayer,"hazmatsuit3")) And (Not IsPlayerWearingTempName(mainPlayer,"gasmask3")) Then 
-				e\soundChannels[0] = LoopSound2(e\sounds[0], e\soundChannels[0], mainPlayer\cam, e\room\obj, 10, e\EventState3)
-				e\soundChannels[1] = LoopSound2(e\sounds[1], e\soundChannels[1], mainPlayer\cam, e\room\obj, 10, (e\EventState3-0.5)*2)
+				e\soundChannels[0] = LoopRangedSound(e\sounds[0], e\soundChannels[0], mainPlayer\cam, e\room\obj, 10, e\EventState3)
+				e\soundChannels[1] = LoopRangedSound(e\sounds[1], e\soundChannels[1], mainPlayer\cam, e\room\obj, 10, (e\EventState3-0.5)*2)
 			EndIf
 			
 		EndIf

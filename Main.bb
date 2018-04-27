@@ -1,3 +1,4 @@
+Global AG = 147
 Include "MarkedForRemoval.bb"
 
 Include "KeyName.bb"
@@ -631,7 +632,7 @@ Function UpdateGame()
 ;					Next
 ;					TempSoundCHN = PlaySound(Music(21))
 ;				EndIf
-;				If (Not ChannelPlaying(TempSoundCHN)) Then FreeSound Music(21) : ShouldPlay = 11
+;				If (Not IsChannelPlaying(TempSoundCHN)) Then FreeSound Music(21) : ShouldPlay = 11
 ;			Else
 ;				ShouldPlay = 11
 ;			EndIf
@@ -654,7 +655,7 @@ Function UpdateGame()
 				If Rand(1500) = 1 Then
 					For i = 0 To 5
 						If AmbientSFX(i,CurrAmbientSFX) <> 0 Then
-							If ChannelPlaying(AmbientSFXCHN) = 0 Then FreeSound AmbientSFX(i,CurrAmbientSFX) : AmbientSFX(i,CurrAmbientSFX) = 0
+							If IsChannelPlaying(AmbientSFXCHN) = 0 Then FreeSound AmbientSFX(i,CurrAmbientSFX) : AmbientSFX(i,CurrAmbientSFX) = 0
 						EndIf			
 					Next
 					
@@ -685,7 +686,7 @@ Function UpdateGame()
 					;		If AmbientSFX(PlayerZone,CurrAmbientSFX)=0 Then AmbientSFX(PlayerZone,CurrAmbientSFX)=LoadSound("SFX\Ambient\Forest\ambient"+(CurrAmbientSFX+1)+".ogg")
 					;End Select
 					
-					;AmbientSFXCHN = PlaySound2(AmbientSFX(PlayerZone,CurrAmbientSFX), mainPlayer\cam, SoundEmitter)
+					;AmbientSFXCHN = PlayRangedSound(AmbientSFX(PlayerZone,CurrAmbientSFX), mainPlayer\cam, SoundEmitter)
 				EndIf
 				
 				If Rand(50000) = 3 Then
@@ -1061,7 +1062,7 @@ End Function
 ;	If EndingTimer<-200 Then
 ;		
 ;		If BreathCHN <> 0 Then
-;			If ChannelPlaying(BreathCHN) Then StopChannel BreathCHN : mainPlayer\stamina = 100
+;			If IsChannelPlaying(BreathCHN) Then StopChannel BreathCHN : mainPlayer\stamina = 100
 ;		EndIf
 ;		
 ;		If EndingTimer <-400 Then 
@@ -1187,7 +1188,7 @@ Function UpdateGUI()
 				If mainPlayer\closestDoor\Code <> "" Then
 					mainPlayer\selectedDoor = mainPlayer\closestDoor
 				ElseIf Not mainPlayer\disableControls Then
-					PlaySound2(ButtonSFX, mainPlayer\cam, mainPlayer\closestButton)
+					PlayRangedSound(ButtonSFX, mainPlayer\cam, mainPlayer\closestButton)
 					UseDoor(mainPlayer\closestDoor,True)			
 				EndIf
 			EndIf
@@ -2002,7 +2003,7 @@ Function UpdateDecals()
 						Local d2.Decals = CreateDecal(1, EntityX(d\obj) + Cos(angle) * temp, EntityY(d\obj) - 0.0005, EntityZ(d\obj) + Sin(angle) * temp, EntityPitch(d\obj), Rnd(360), EntityRoll(d\obj))
 						d2\Size = Rnd(0.1, 0.5) : ScaleSprite(d2\obj, d2\Size, d2\Size)
 						;TODO: fix
-						;PlaySound2(DecaySFX(Rand(1, 3)), mainPlayer\cam, d2\obj, 10.0, Rnd(0.1, 0.5))
+						;PlayRangedSound(DecaySFX(Rand(1, 3)), mainPlayer\cam, d2\obj, 10.0, Rnd(0.1, 0.5))
 						;d\Timer = d\Timer + Rand(50,150)
 						d\Timer = Rand(50, 100)
 					Else

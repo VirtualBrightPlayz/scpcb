@@ -253,13 +253,13 @@ Function UpdateEvent_strg_939_2(e.Events)
 						e\room\RoomDoors[4]\open = True
 						If e\sounds[1] <> 0 Then FreeSound e\sounds[1] : e\sounds[1]=0
 						e\sounds[1] = LoadSound("SFX\Door\Door2Open1_dist.ogg")
-						e\soundChannels[1] = PlaySound2(e\sounds[1],mainPlayer\cam,e\room\RoomDoors[4]\obj,400)
+						e\soundChannels[1] = PlayRangedSound(e\sounds[1],mainPlayer\cam,e\room\RoomDoors[4]\obj,400)
 					EndIf
 					If UpdateLever(e\room\Levers[1])
 						e\room\RoomDoors[4]\open = True
 						If e\sounds[1] <> 0 Then FreeSound e\sounds[1] : e\sounds[1]=0
 						e\sounds[1] = LoadSound("SFX\Door\Door2Open1_dist.ogg")
-						e\soundChannels[1] = PlaySound2(e\sounds[1],mainPlayer\cam,e\room\RoomDoors[4]\obj,400)
+						e\soundChannels[1] = PlayRangedSound(e\sounds[1],mainPlayer\cam,e\room\RoomDoors[4]\obj,400)
 					EndIf
 				EndIf
 				
@@ -278,7 +278,7 @@ Function UpdateEvent_strg_939_2(e.Events)
 						e\room\NPC[2]\IgnorePlayer = True
 				End Select
 				
-				If ChannelPlaying(e\soundChannels[1])
+				If IsChannelPlaying(e\soundChannels[1])
 					UpdateSoundOrigin(e\soundChannels[1],mainPlayer\cam,e\room\RoomDoors[4]\obj,400)
 				EndIf
 				

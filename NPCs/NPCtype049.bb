@@ -49,8 +49,8 @@ Function UpdateNPCtype049(n.NPCs)
 		Case STATE049_ATTACK
 			;[Block]
 			;Playing a sound after detecting the player
-			If (n\prevState = STATE049_ROAMING And (Not ChannelPlaying(n\soundChannels[0])))
-				n\soundChannels[0] = LoopSound2(n\sounds[Rand(1,2)], n\soundChannels[0], mainPlayer\cam, n\obj)
+			If (n\prevState = STATE049_ROAMING And (Not IsChannelPlaying(n\soundChannels[0])))
+				n\soundChannels[0] = LoopRangedSound(n\sounds[Rand(1,2)], n\soundChannels[0], mainPlayer\cam, n\obj)
 			EndIf
 			
 			n\pathStatus = 0
@@ -161,13 +161,13 @@ Function UpdateNPCtype049(n.NPCs)
 						AnimateNPC(n, Max(Min(AnimTime(n\obj),358.0),346), 393.0, n\currSpeed*38)
 						
 						;Playing a sound if he hears the player
-						If (n\soundTimer < 0 And (Not ChannelPlaying(n\soundChannels[0])))
+						If (n\soundTimer < 0 And (Not IsChannelPlaying(n\soundChannels[0])))
 							n\soundTimer = Rand(10, 20) * 70
 							
 							If Rand(8)=3 Then
-								n\soundChannels[0] = LoopSound2(n\sounds[6], n\soundChannels[0], mainPlayer\cam, n\obj)
+								n\soundChannels[0] = LoopRangedSound(n\sounds[6], n\soundChannels[0], mainPlayer\cam, n\obj)
 							Else
-								n\soundChannels[0] = LoopSound2(n\sounds[Rand(3, 5)], n\soundChannels[0], mainPlayer\cam, n\obj)
+								n\soundChannels[0] = LoopRangedSound(n\sounds[Rand(3, 5)], n\soundChannels[0], mainPlayer\cam, n\obj)
 							EndIf
 						EndIf
 						
@@ -325,9 +325,9 @@ Function UpdateNPCtype049(n.NPCs)
 			
 			If n\currSpeed > 0.005 Then
 				If (prevFrame < 361 And n\frame=>361) Or (prevFrame < 377 And n\frame=>377) Then
-					PlaySound2(StepSFX(3,0,Rand(0,2)),mainPlayer\cam, n\collider, 8.0, Rnd(0.8,1.0))						
+					PlayRangedSound(StepSFX(3,0,Rand(0,2)),mainPlayer\cam, n\collider, 8.0, Rnd(0.8,1.0))						
 				ElseIf (prevFrame < 431 And n\frame=>431) Or (prevFrame < 447 And n\frame=>447)
-					PlaySound2(StepSFX(3,0,Rand(0,2)),mainPlayer\cam, n\collider, 8.0, Rnd(0.8,1.0))
+					PlayRangedSound(StepSFX(3,0,Rand(0,2)),mainPlayer\cam, n\collider, 8.0, Rnd(0.8,1.0))
 				EndIf
 			EndIf
 			;[End Block]

@@ -337,7 +337,7 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 									SetNPCFrame(Curr106, 259.0)
 									If e\sounds[0] <> 0 Then FreeSound e\sounds[0] : e\sounds[0] = 0
 									LoadEventSound(e,"SFX\Ending\GateA\106Retreat.ogg")
-									e\soundChannels[0] = PlaySound2(e\sounds[0], mainPlayer\cam, Curr106\Collider, 35.0)
+									e\soundChannels[0] = PlayRangedSound(e\sounds[0], mainPlayer\cam, Curr106\Collider, 35.0)
 								EndIf
 								
 								If timing\tickDuration > 0 Then ;106:n alle ilmestyy decaleita
@@ -364,7 +364,7 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 								EndIf
 							Else
 								If dist < 8.5 Then 
-									If e\EventState2=0;ChannelPlaying(e\soundChannels[1]) = 0 Then
+									If e\EventState2=0;IsChannelPlaying(e\soundChannels[1]) = 0 Then
 										e\soundChannels[1] = PlaySound (LoadTempSound("SFX\Ending\GateA\HIDTurret.ogg"))
 										e\EventState2 = 1
 									ElseIf e\EventState2>0
@@ -420,7 +420,7 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 									e\room\NPC[i]\LastSeen = 70*100
 								Next
 								e\room\NPC[5]\Sound = LoadSound("SFX\Character\MTF\ThereHeIs1.ogg")
-								PlaySound2(e\room\NPC[5]\Sound, mainPlayer\cam, e\room\NPC[5]\Collider, 25.0)
+								PlayRangedSound(e\room\NPC[5]\Sound, mainPlayer\cam, e\room\NPC[5]\Collider, 25.0)
 								
 								e\room\RoomDoors[2]\open = True
 								
@@ -454,7 +454,7 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 								obj = CopyEntity(e\room\Objects[12])
 								PositionEntity obj, EntityX(e\room\obj,True)-4064*RoomScale, EntityY(e\room\Objects[11],True), EntityZ(e\room\obj,True)-2112*RoomScale
 								
-								e\soundChannels[0] = PlaySound2(LoadTempSound("SFX\Ending\GateA\Bell1.ogg"), mainPlayer\cam, e\room\Objects[12])
+								e\soundChannels[0] = PlayRangedSound(LoadTempSound("SFX\Ending\GateA\Bell1.ogg"), mainPlayer\cam, e\room\Objects[12])
 								
 								p.Particles = CreateParticle(EntityX(e\room\Objects[11],True),EntityY(mainPlayer\cam,True), EntityZ(e\room\Objects[11],True), 4, 8.0, 0, 50)
 								p\speed = 0.15
@@ -505,7 +505,7 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 								e\soundChannels[0] = PlaySound(LoadTempSound("SFX\Ending\GateA\CI.ogg"))
 							EndIf
 							
-							If ChannelPlaying(e\soundChannels[0])=False Then; And SelectedEnding="" Then
+							If IsChannelPlaying(e\soundChannels[0])=False Then; And SelectedEnding="" Then
 								PlaySound LoadTempSound("SFX\Ending\GateA\Bell2.ogg")
 								
 								p.Particles = CreateParticle(EntityX(e\room\Objects[11],True),EntityY(mainPlayer\cam,True), EntityZ(e\room\Objects[11],True), 4, 8.0, 0, 50)
@@ -586,7 +586,7 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 							
 							ShouldPlay = 0
 							mainPlayer\moveSpeed = 0
-							If ChannelPlaying(e\soundChannels[0])=False Then
+							If IsChannelPlaying(e\soundChannels[0])=False Then
 								PlaySound IntroSFX(9)
 								;SelectedEnding = "A2"
 								mainPlayer\godMode = 0

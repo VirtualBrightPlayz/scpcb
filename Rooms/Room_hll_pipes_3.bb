@@ -21,7 +21,7 @@ Function UpdateEvent106sinkhole(e.Events)
 		If e\sounds[0]=0 Then
 			e\sounds[0]=LoadSound("SFX\Room\Sinkhole.ogg")
 		Else
-			e\soundChannels[0] = LoopSound2(e\sounds[0], e\soundChannels[0], mainPlayer\cam, e\room\obj, 4.5, 1.5)
+			e\soundChannels[0] = LoopRangedSound(e\sounds[0], e\soundChannels[0], mainPlayer\cam, e\room\obj, 4.5, 1.5)
 		EndIf
 		dist = Distance(EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider),EntityX(e\room\obj),EntityZ(e\room\obj))
 		If dist < 2.0 Then

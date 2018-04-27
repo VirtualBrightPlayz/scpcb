@@ -92,21 +92,21 @@ Function UpdateEvent_strg_elec_2c(e.Events)
 			End If
 			
 			If EntityPitch(e\room\Objects[i]) > 83 Then
-				If prevpitch =< 83 Then PlaySound2(LeverSFX, mainPlayer\cam, e\room\Objects[i])
+				If prevpitch =< 83 Then PlayRangedSound(LeverSFX, mainPlayer\cam, e\room\Objects[i])
 				If i = 3 Then 
 					SecondaryLightOn = CurveValue(1.0, SecondaryLightOn, 10.0)
 					If prevpitch =< 83 Then
-						PlaySound2(LightSFX, mainPlayer\cam, e\room\Objects[i])
+						PlayRangedSound(LightSFX, mainPlayer\cam, e\room\Objects[i])
 					EndIf		
 				Else
 					RemoteDoorOn = True
 				EndIf
 			ElseIf EntityPitch(e\room\Objects[i]) < -83
 				
-				If prevpitch => -83 Then PlaySound2(LeverSFX, mainPlayer\cam, e\room\Objects[i])
+				If prevpitch => -83 Then PlayRangedSound(LeverSFX, mainPlayer\cam, e\room\Objects[i])
 				If i = 3 Then 
 					If prevpitch => -83 Then
-						PlaySound2(LightSFX, mainPlayer\cam, e\room\Objects[i])
+						PlayRangedSound(LightSFX, mainPlayer\cam, e\room\Objects[i])
 						For r.Rooms = Each Rooms
 							For z = 0 To 19
 								If r\LightSprites[z] <> 0 Then HideEntity r\LightSprites[z]

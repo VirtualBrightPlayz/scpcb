@@ -306,14 +306,14 @@ Function UpdateEvent_pocketdimension(e.Events)
 					
 					dist = EntityDistance(mainPlayer\collider, e\room\Objects[20])
 					
-					If e\soundChannels[1]<>0 And ChannelPlaying(e\soundChannels[1])
-						e\soundChannels[1] = LoopSound2(e\sounds[1], e\soundChannels[1], mainPlayer\cam, mainPlayer\cam, 10.0, 0.3+(Not safe)*0.6)
+					If e\soundChannels[1]<>0 And IsChannelPlaying(e\soundChannels[1])
+						e\soundChannels[1] = LoopRangedSound(e\sounds[1], e\soundChannels[1], mainPlayer\cam, mainPlayer\cam, 10.0, 0.3+(Not safe)*0.6)
 					EndIf	
 					
 					If safe Then
 						EntityTexture e\room\Objects[20], e\room\Objects[18]
 					ElseIf dist < 8.0
-						e\soundChannels[0] = LoopSound2(e\sounds[0], e\soundChannels[0], mainPlayer\cam, e\room\Objects[20], 8.0)
+						e\soundChannels[0] = LoopRangedSound(e\sounds[0], e\soundChannels[0], mainPlayer\cam, e\room\Objects[20], 8.0)
 						EntityTexture e\room\Objects[20], e\room\Objects[19]
 						mainPlayer\injuries=mainPlayer\injuries+(8.0-dist)*timing\tickDuration*0.001
 						
@@ -371,14 +371,14 @@ Function UpdateEvent_pocketdimension(e.Events)
 									Kill(mainPlayer)
 								EndIf
 							EndIf
-							e\soundChannels[0] = LoopSound2(e\sounds[0], e\soundChannels[0], mainPlayer\cam, e\room\Objects[i], 6.0)	
+							e\soundChannels[0] = LoopRangedSound(e\sounds[0], e\soundChannels[0], mainPlayer\cam, e\room\Objects[i], 6.0)	
 						EndIf
 					Next
 					
 					pvt=CreatePivot()
 					PositionEntity pvt, EntityX(e\room\Objects[8],True)-1536*RoomScale,500*RoomScale,EntityZ(e\room\Objects[8],True)+608*RoomScale
 					If EntityDistance(pvt, mainPlayer\collider)<5.0 Then 
-						e\soundChannels[1] = LoopSound2(e\sounds[1], e\soundChannels[1], mainPlayer\cam, pvt, 3.0)
+						e\soundChannels[1] = LoopRangedSound(e\sounds[1], e\soundChannels[1], mainPlayer\cam, pvt, 3.0)
 					EndIf
 					FreeEntity pvt
 					
@@ -401,7 +401,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 						mainPlayer\sanity895 = Max(mainPlayer\sanity895 - timing\tickDuration / temp / 8,-1000)
 						
 						;TODO: fix
-						;e\soundChannels[0] = LoopSound2(OldManSFX(4), e\soundChannels[0], mainPlayer\cam, e\room\Objects[17], 5.0, 0.6)
+						;e\soundChannels[0] = LoopRangedSound(OldManSFX(4), e\soundChannels[0], mainPlayer\cam, e\room\Objects[17], 5.0, 0.6)
 						
 						mainPlayer\camZoom = Max(mainPlayer\camZoom, (Sin(Float(TimeInPosMilliSecs()) / 20.0)+1.0)*15.0*Max((6.0-temp)/6.0,0.0))
 						
@@ -432,7 +432,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 							mainPlayer\blurTimer = (640*RoomScale-temp)*3000
 							
 							;TODO: fix
-							;e\soundChannels[1] = LoopSound2(DecaySFX(Rand(1, 3)), e\soundChannels[1], mainPlayer\cam, mainPlayer\collider, 2.0, (640*RoomScale-temp)*Abs(mainPlayer\moveSpeed)*100)
+							;e\soundChannels[1] = LoopRangedSound(DecaySFX(Rand(1, 3)), e\soundChannels[1], mainPlayer\cam, mainPlayer\collider, 2.0, (640*RoomScale-temp)*Abs(mainPlayer\moveSpeed)*100)
 							mainPlayer\moveSpeed = CurveValue(0.0, mainPlayer\moveSpeed, temp*10)
 							
 							If temp < 130*RoomScale Then

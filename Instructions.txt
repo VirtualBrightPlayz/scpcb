@@ -58,7 +58,7 @@ of how the events work.
 	- Sound% = a variable for storing a sound clip, to make it easier to free the clip
 	when it is no longer needed
 	- SoundCHN%, SoundCHN2% = These can be used to track whether a sound clip is playing
-	(using "ChannelPlaying"-function). They are also automatically paused when the
+	(using "IsChannelPlaying"-function). They are also automatically paused when the
 	inventory or the menu is opened.
 	- img% = a variable for storing an image, if one is needed in the event
 

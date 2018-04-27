@@ -141,7 +141,7 @@ Function UpdateEvent_cont_106_1(e.Events)
 		If e\EventState = 1 Then
 			e\EventState3 = Min(e\EventState3+timing\tickDuration,4000)
 		EndIf
-		If ChannelPlaying(e\soundChannels[0]) = False Then e\soundChannels[0] = PlaySound(RadioStatic)   
+		If IsChannelPlaying(e\soundChannels[0]) = False Then e\soundChannels[0] = PlaySound(RadioStatic)   
 	EndIf
 	
 	If e\room\NPC[0]=Null Then ;add the lure subject
@@ -187,10 +187,10 @@ Function UpdateEvent_cont_106_1(e.Events)
 		EndIf
 		If (Not SoundTransmission) Then
 			If (e\soundChannels[1]<>0) Then
-				If ChannelPlaying(e\soundChannels[1]) Then StopChannel e\soundChannels[1]
+				If IsChannelPlaying(e\soundChannels[1]) Then StopChannel e\soundChannels[1]
 			EndIf
 			If (e\soundChannels[0]<>0) Then
-				If ChannelPlaying(e\soundChannels[0]) Then StopChannel e\soundChannels[0]
+				If IsChannelPlaying(e\soundChannels[0]) Then StopChannel e\soundChannels[0]
 			EndIf
 		EndIf
 		
@@ -200,7 +200,7 @@ Function UpdateEvent_cont_106_1(e.Events)
 					LoadEventSound(e,"SFX\Character\LureSubject\Idle"+Rand(1,6)+".ogg",1)
 					e\soundChannels[1] = PlaySound(e\sounds[1])								
 				EndIf
-				If ChannelPlaying(e\soundChannels[1]) = False Then
+				If IsChannelPlaying(e\soundChannels[1]) = False Then
 					LoadEventSound(e,"SFX\Character\LureSubject\Idle"+Rand(1,6)+".ogg",1)
 					e\soundChannels[1] = PlaySound(e\sounds[1])
 				EndIf
@@ -211,7 +211,7 @@ Function UpdateEvent_cont_106_1(e.Events)
 				e\EventState = 1 ;start the femur breaker
 				If SoundTransmission = True Then ;only play sounds if transmission is on
 					If e\soundChannels[1] <> 0 Then
-						If ChannelPlaying(e\soundChannels[1]) Then StopChannel e\soundChannels[1]
+						If IsChannelPlaying(e\soundChannels[1]) Then StopChannel e\soundChannels[1]
 					EndIf 
 					FemurBreakerSFX = LoadSound("SFX\Room\106Chamber\FemurBreaker.ogg")
 					e\soundChannels[1] = PlaySound (FemurBreakerSFX)
@@ -223,7 +223,7 @@ Function UpdateEvent_cont_106_1(e.Events)
 					LoadEventSound(e,"SFX\Character\LureSubject\Sniffling.ogg",1)
 					e\soundChannels[1] = PlaySound(e\sounds[1])								
 				EndIf
-				If ChannelPlaying(e\soundChannels[1]) = False Then
+				If IsChannelPlaying(e\soundChannels[1]) = False Then
 					LoadEventSound(e,"SFX\Character\LureSubject\Sniffling.ogg",1)
 					e\soundChannels[1] = PlaySound(e\sounds[1])
 				EndIf
@@ -259,7 +259,7 @@ Function UpdateEvent_cont_106_1(e.Events)
 					d\Size = 0.1 : d\SizeChange = 0.003	
 					
 					If e\soundChannels[1] <> 0 Then
-						If ChannelPlaying(e\soundChannels[1]) Then StopChannel e\soundChannels[1]
+						If IsChannelPlaying(e\soundChannels[1]) Then StopChannel e\soundChannels[1]
 					EndIf 
 					LoadEventSound(e,"SFX\Character\LureSubject\106Bait.ogg",1)
 					e\soundChannels[1]=PlaySound(e\sounds[1])

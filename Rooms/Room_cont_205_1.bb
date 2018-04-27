@@ -148,7 +148,7 @@ Function UpdateEvent_cont_205_1(e.Events)
 					Animate2(e\room\Objects[6], AnimTime(e\room\Objects[6]), 228, 376, 0.2)
 					If e\EventState2 > 40*70 Then 
 						e\EventState = e\EventState+1
-						PlaySound2(LoadTempSound("SFX\SCP\205\Horror.ogg"), mainPlayer\cam, e\room\Objects[6], 10, 0.3)
+						PlayRangedSound(LoadTempSound("SFX\SCP\205\Horror.ogg"), mainPlayer\cam, e\room\Objects[6], 10, 0.3)
 					EndIf	
 				Case 7
 					;first demon appears
@@ -158,7 +158,7 @@ Function UpdateEvent_cont_205_1(e.Events)
 					;TurnEntity(e\room\Objects[6], 0.0, DeltaYaw(e\room\Objects[6], e\room\Objects[5])*0.01, 0.0, True)
 					If e\EventState2 > 60*70 Then 
 						e\EventState = e\EventState+1
-						PlaySound2(LoadTempSound("SFX\SCP\205\Horror.ogg"), mainPlayer\cam, e\room\Objects[6], 10, 0.5)
+						PlayRangedSound(LoadTempSound("SFX\SCP\205\Horror.ogg"), mainPlayer\cam, e\room\Objects[6], 10, 0.5)
 					EndIf
 				Case 9
 					;second demon appears

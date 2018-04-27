@@ -80,9 +80,9 @@ Function UpdateNPCtype106(n.NPCs)
                 End If
                 
                 ;Corrosion.
-                If Rand(500) = 1 Then PlaySound2(n\sounds[Rand(3, 5)], mainPlayer\cam, n\Collider)
+                If Rand(500) = 1 Then PlayRangedSound(n\sounds[Rand(3, 5)], mainPlayer\cam, n\Collider)
                 ;Breathing
-                n\soundChn = LoopSound2(n\sounds[1], n\SoundChn, mainPlayer\cam, n\Collider, 8.0, 0.8)
+                n\soundChn = LoopRangedSound(n\sounds[1], n\SoundChn, mainPlayer\cam, n\Collider, 8.0, 0.8)
                 
                 ;Rising.
                 If n\timer >= - 10 Then
@@ -139,9 +139,9 @@ Function UpdateNPCtype106(n.NPCs)
                 
                 ;Footstep sounds.
                 If (prevFrame =< 286 And n\frame > 286) Then
-                    PlaySound2(Step2SFX(Rand(0,2)),mainPlayer\cam, n\Collider, 6.0, Rnd(0.8,1.0))	
+                    PlayRangedSound(Step2SFX(Rand(0,2)),mainPlayer\cam, n\Collider, 6.0, Rnd(0.8,1.0))	
                 ElseIf (prevFrame=<311 And n\frame > 311.0)
-                    PlaySound2(Step2SFX(Rand(0,2)),mainPlayer\cam, n\Collider, 6.0, Rnd(0.8,1.0))
+                    PlayRangedSound(Step2SFX(Rand(0,2)),mainPlayer\cam, n\Collider, 6.0, Rnd(0.8,1.0))
                 EndIf
 
                 If (dist > 25.0 Or Visible Or n\pathStatus = 2) Then

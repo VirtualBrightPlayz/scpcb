@@ -75,7 +75,7 @@ Function UpdateNPCtypeZombie(n.NPCs)
                     EndIf
                     
                     If n\State2 > 0 And (Not NoTarget) Then ;player is visible -> attack
-                        n\SoundChn = LoopSound2(n\Sound, n\SoundChn, mainPlayer\cam, n\Collider, 6.0, 0.6)
+                        n\SoundChn = LoopRangedSound(n\Sound, n\SoundChn, mainPlayer\cam, n\Collider, 6.0, 0.6)
                         
                         n\PathStatus = 0
                         
@@ -142,8 +142,8 @@ Function UpdateNPCtypeZombie(n.NPCs)
                     ;65, 80, 93, 109, 123
                     If n\CurrSpeed > 0.005 Then
                         If (prevFrame < 977 And n\Frame=>977) Or (prevFrame > 1010 And n\Frame<940) Then
-                            ;PlaySound2(StepSFX(0,0,Rand(0,2)),mainPlayer\cam, n\Collider, 8.0, Rnd(0.3,0.5))
-                            PlaySound2(StepSFX(2,0,Rand(0,2)),mainPlayer\cam, n\Collider, 8.0, Rnd(0.3,0.5))
+                            ;PlayRangedSound(StepSFX(0,0,Rand(0,2)),mainPlayer\cam, n\Collider, 8.0, Rnd(0.3,0.5))
+                            PlayRangedSound(StepSFX(2,0,Rand(0,2)),mainPlayer\cam, n\Collider, 8.0, Rnd(0.3,0.5))
                         EndIf
                     EndIf						
                 Case 3

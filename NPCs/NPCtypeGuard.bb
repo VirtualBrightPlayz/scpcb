@@ -49,9 +49,9 @@ Function UpdateNPCtypeGuard(n.NPCs)
 
             If n\currSpeed > 0.01 Then
                 If (prevFrame > 1638 And n\Frame < 1620) Then
-                    PlaySound2(StepSFX(2,0,Rand(0,2)), mainPlayer\cam, n\collider, 8.0, Rnd(0.5, 0.7))						
+                    PlayRangedSound(StepSFX(2,0,Rand(0,2)), mainPlayer\cam, n\collider, 8.0, Rnd(0.5, 0.7))						
                 ElseIf prevFrame < 1627 And n\Frame=>1627
-                    PlaySound2(StepSFX(2,0,Rand(0,2)), mainPlayer\cam, n\collider, 8.0, Rnd(0.5, 0.7))						
+                    PlayRangedSound(StepSFX(2,0,Rand(0,2)), mainPlayer\cam, n\collider, 8.0, Rnd(0.5, 0.7))						
                 EndIf
             EndIf
             
@@ -80,7 +80,7 @@ Function UpdateNPCtypeGuard(n.NPCs)
             
             ;Start shooting once the aiming animation is done.
             If (n\timer < 0 And n\Frame>1550) Then
-                PlaySound2(GunshotSFX, mainPlayer\cam, n\Collider, 35)
+                PlayRangedSound(GunshotSFX, mainPlayer\cam, n\Collider, 35)
                 
                 RotateEntity(pvt, EntityPitch(n\Collider), EntityYaw(n\Collider), 0, True)
                 PositionEntity(pvt, EntityX(n\obj), EntityY(n\obj), EntityZ(n\obj))

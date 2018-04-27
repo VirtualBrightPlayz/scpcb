@@ -196,7 +196,7 @@ Function Update294()
 	Else ;playing a dispensing sound
 		If Input294 <> "OUT OF RANGE" Then Input294 = "DISPENSING..." : DebugLog "cringe"
 		
-		If Not ChannelPlaying(mainPlayer\currRoom\SoundCHN) Then
+		If Not IsChannelPlaying(mainPlayer\currRoom\SoundCHN) Then
 			If Input294 <> "OUT OF RANGE" Then
 				HidePointer()
 				CurrGameState = GAMESTATE_SCP294

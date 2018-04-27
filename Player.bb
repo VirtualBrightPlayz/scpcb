@@ -347,13 +347,13 @@ Function MovePlayer()
 	If (mainPlayer\currRoom\RoomTemplate\Name <> "pocketdimension") Then 
 		If KeyDown(keyBinds\sprint) Then
 			If (mainPlayer\stamina < 5) Then ;out of breath
-				If (Not ChannelPlaying(mainPlayer\breathChn)) Then mainPlayer\breathChn = PlaySound(GetIntArray2DElem(mainPlayer\breathingSFX, IsPlayerWearingTempName(mainPlayer,"gasmask"), 0))
+				If (Not IsChannelPlaying(mainPlayer\breathChn)) Then mainPlayer\breathChn = PlaySound(GetIntArray2DElem(mainPlayer\breathingSFX, IsPlayerWearingTempName(mainPlayer,"gasmask"), 0))
 			ElseIf (mainPlayer\stamina < 50) ;panting
 				If (mainPlayer\breathChn = 0) Then
 					mainPlayer\breathChn = PlaySound(GetIntArray2DElem(mainPlayer\breathingSFX, IsPlayerWearingTempName(mainPlayer,"gasmask"), Rand(1, 3)))
 					ChannelVolume(mainPlayer\breathChn, Min((70.0-mainPlayer\stamina)/70.0,1.0)*userOptions\soundVolume)
 				Else
-					If (Not ChannelPlaying(mainPlayer\breathChn)) Then
+					If (Not IsChannelPlaying(mainPlayer\breathChn)) Then
 						mainPlayer\breathChn = PlaySound(GetIntArray2DElem(mainPlayer\breathingSFX, IsPlayerWearingTempName(mainPlayer,"gasmask"), Rand(1, 3)))
 						ChannelVolume(mainPlayer\breathChn, Min((70.0-mainPlayer\stamina)/70.0,1.0)*userOptions\soundVolume)		
 					EndIf
@@ -1779,12 +1779,12 @@ Function UpdateInventory(player.Player)
 						;TODO: remove coffindistance
 						If player\currRoom\RoomTemplate\Name = "pocketdimension" Or CoffinDistance < 4.0 Then
 							ResumeChannel(RadioCHN(5))
-							If ChannelPlaying(RadioCHN(5)) = False Then RadioCHN(5) = PlaySound(RadioStatic)	
+							If IsChannelPlaying(RadioCHN(5)) = False Then RadioCHN(5) = PlaySound(RadioStatic)	
 						Else
 							Select Int(player\selectedItem\state2)
 								Case 0 ;randomkanava
 									ResumeChannel(RadioCHN(0))
-									If ChannelPlaying(RadioCHN(0)) = False Then
+									If IsChannelPlaying(RadioCHN(0)) = False Then
 										RadioCHN(0) = PlaySound(RadioStatic)
 									EndIf
 								Case 1 ;hälytyskanava
@@ -1792,7 +1792,7 @@ Function UpdateInventory(player.Player)
 									
 									ResumeChannel(RadioCHN(1))
 									;strtemp = "        WARNING - CONTAINMENT BREACH          "
-									If ChannelPlaying(RadioCHN(1)) = False Then
+									If IsChannelPlaying(RadioCHN(1)) = False Then
 										
 										If RadioState(1) => 5 Then
 											RadioCHN(1) = PlaySound(RadioSFX(1,1))	
@@ -1807,7 +1807,7 @@ Function UpdateInventory(player.Player)
 								Case 2 ;scp-radio
 									ResumeChannel(RadioCHN(2))
 									;strtemp = "        SCP Foundation On-Site Radio          "
-									If ChannelPlaying(RadioCHN(2)) = False Then
+									If IsChannelPlaying(RadioCHN(2)) = False Then
 										RadioState(2)=RadioState(2)+1
 										If RadioState(2) = 17 Then RadioState(2) = 1
 										If Floor(RadioState(2)/2)=Ceil(RadioState(2)/2) Then ;parillinen, soitetaan normiviesti
@@ -1819,7 +1819,7 @@ Function UpdateInventory(player.Player)
 								Case 3
 									ResumeChannel(RadioCHN(3))
 									;strtemp = "             EMERGENCY CHANNEL - RESERVED FOR COMMUNICATION IN THE EVENT OF A CONTAINMENT BREACH         "
-									If ChannelPlaying(RadioCHN(3)) = False Then RadioCHN(3) = PlaySound(RadioStatic)
+									If IsChannelPlaying(RadioCHN(3)) = False Then RadioCHN(3) = PlaySound(RadioStatic)
 									
 									If MTFtimer > 0 Then 
 										RadioState(3)=RadioState(3)+Max(Rand(-10,1),0)
@@ -1852,10 +1852,10 @@ Function UpdateInventory(player.Player)
 									EndIf
 								Case 4
 									ResumeChannel(RadioCHN(6)) ;taustalle kohinaa
-									If ChannelPlaying(RadioCHN(6)) = False Then RadioCHN(6) = PlaySound(RadioStatic)									
+									If IsChannelPlaying(RadioCHN(6)) = False Then RadioCHN(6) = PlaySound(RadioStatic)									
 									
 									ResumeChannel(RadioCHN(4))
-									If ChannelPlaying(RadioCHN(4)) = False Then 
+									If IsChannelPlaying(RadioCHN(4)) = False Then 
 										If RemoteDoorOn = False And RadioState(8) = False Then
 											RadioCHN(4) = PlaySound(LoadTempSound("SFX\radio\Chatter3.ogg"))	
 											RadioState(8) = True
@@ -1930,7 +1930,7 @@ Function UpdateInventory(player.Player)
 									
 								Case 5
 									ResumeChannel(RadioCHN(5))
-									If ChannelPlaying(RadioCHN(5)) = False Then RadioCHN(5) = PlaySound(RadioStatic)
+									If IsChannelPlaying(RadioCHN(5)) = False Then RadioCHN(5) = PlaySound(RadioStatic)
 							End Select 
 							
 							x=x+66
@@ -1945,7 +1945,7 @@ Function UpdateInventory(player.Player)
 							
 							If player\selectedItem\itemtemplate\tempname = "veryfineradio" Then ;"KOODIKANAVA"
 								ResumeChannel(RadioCHN(0))
-								If ChannelPlaying(RadioCHN(0)) = False Then RadioCHN(0) = PlaySound(RadioStatic)
+								If IsChannelPlaying(RadioCHN(0)) = False Then RadioCHN(0) = PlaySound(RadioStatic)
 								
 								;radiostate(7)=kuinka mones piippaus menossa
 								;radiostate(8)=kuinka mones access coden numero menossa
@@ -2076,7 +2076,7 @@ Function UpdateInventory(player.Player)
 	If mainPlayer\selectedItem = Null Then
 		For i = 0 To 6
 			If RadioCHN(i) <> 0 Then 
-				If ChannelPlaying(RadioCHN(i)) Then PauseChannel(RadioCHN(i))
+				If IsChannelPlaying(RadioCHN(i)) Then PauseChannel(RadioCHN(i))
 			EndIf
 		Next
 	EndIf 
@@ -2109,7 +2109,7 @@ Function Kill(player.Player)
 	If player\godMode Then Return
 	
 	If player\breathChn <> 0 Then
-		If ChannelPlaying(player\breathChn) Then StopChannel(player\breathChn)
+		If IsChannelPlaying(player\breathChn) Then StopChannel(player\breathChn)
 	EndIf
 	
 	If Not player\dead Then

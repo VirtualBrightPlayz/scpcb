@@ -80,9 +80,9 @@ Function UpdateEvent_tesla(e.Events)
 			
 			If e\room\dist < 8 Then
 				If e\soundChannels[0] = 0 Then ;humming when the player isn't close
-					e\soundChannels[0] = PlaySound2(TeslaIdleSFX, mainPlayer\cam, e\room\Objects[3],4.0,0.5)
+					e\soundChannels[0] = PlayRangedSound(TeslaIdleSFX, mainPlayer\cam, e\room\Objects[3],4.0,0.5)
 				Else
-					If Not ChannelPlaying(e\soundChannels[0]) Then e\soundChannels[0] = PlaySound2(TeslaIdleSFX, mainPlayer\cam, e\room\Objects[3],4.0,0.5)
+					If Not IsChannelPlaying(e\soundChannels[0]) Then e\soundChannels[0] = PlayRangedSound(TeslaIdleSFX, mainPlayer\cam, e\room\Objects[3],4.0,0.5)
 				EndIf
 			EndIf
 			
@@ -92,7 +92,7 @@ Function UpdateEvent_tesla(e.Events)
 					If Not mainPlayer\dead Then 
 						mainPlayer\loudness = Max(8.0,mainPlayer\loudness)
 						StopChannel(e\soundChannels[0])
-						e\soundChannels[0] = PlaySound2(TeslaActivateSFX, mainPlayer\cam, e\room\Objects[3],4.0,0.5)
+						e\soundChannels[0] = PlayRangedSound(TeslaActivateSFX, mainPlayer\cam, e\room\Objects[3],4.0,0.5)
 						e\EventState = 1
 						Exit
 					EndIf
@@ -105,7 +105,7 @@ Function UpdateEvent_tesla(e.Events)
 						;play the activation sound
 						If Not mainPlayer\dead Then 
 							StopChannel(e\soundChannels[0])
-							e\soundChannels[0] = PlaySound2(TeslaActivateSFX, mainPlayer\cam, e\room\Objects[3],4.0,0.5)
+							e\soundChannels[0] = PlayRangedSound(TeslaActivateSFX, mainPlayer\cam, e\room\Objects[3],4.0,0.5)
 							HideEntity e\room\Objects[4]
 							e\EventState = 1
 							Curr106\State = 70 * 60 * Rand(10,13)
@@ -127,7 +127,7 @@ Function UpdateEvent_tesla(e.Events)
 				If e\room\dist < 2
 				If e\EventState-timing\tickDuration =< 40 Then PlaySound(e\sounds[0])	
 				Else
-					If e\EventState-timing\tickDuration =< 40 Then PlaySound2(e\sounds[0],mainPlayer\cam,e\room\Objects[2])
+					If e\EventState-timing\tickDuration =< 40 Then PlayRangedSound(e\sounds[0],mainPlayer\cam,e\room\Objects[2])
 				EndIf
 				If e\EventState < 70 Then 
 					
@@ -173,7 +173,7 @@ Function UpdateEvent_tesla(e.Events)
 				Else 
 					If e\EventState-timing\tickDuration < 70 Then 
 						StopChannel(e\soundChannels[0])	
-						e\soundChannels[0] = PlaySound2(TeslaPowerUpSFX, mainPlayer\cam, e\room\Objects[3],4.0,0.5)
+						e\soundChannels[0] = PlayRangedSound(TeslaPowerUpSFX, mainPlayer\cam, e\room\Objects[3],4.0,0.5)
 					EndIf 
 					HideEntity e\room\Objects[3]
 					

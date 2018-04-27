@@ -71,7 +71,7 @@ Function RemoveEvent(e.Events)
 		EndIf
 		
 		If (e\soundChannels[i] <> 0) Then
-			If (ChannelPlaying(e\soundChannels[i])) Then
+			If (IsChannelPlaying(e\soundChannels[i])) Then
 				StopChannel(e\soundChannels[i])
 			EndIf
 		EndIf

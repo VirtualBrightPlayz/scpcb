@@ -486,12 +486,12 @@ Function UpdateEvent_hll_sl_2(e.Events)
 					If (Not e\room\RoomDoors[0]\open)
 						e\room\RoomDoors[0]\open = True
 						sound=Rand(0, 2)
-						PlaySound2(OpenDoorSFX(0,sound),mainPlayer\cam,e\room\RoomDoors[0]\obj)
+						PlayRangedSound(OpenDoorSFX(0,sound),mainPlayer\cam,e\room\RoomDoors[0]\obj)
 					EndIf
 					If (Not e\room\RoomDoors[1]\open)
 						e\room\RoomDoors[1]\open = True
 						sound=Rand(0, 2)
-						PlaySound2(OpenDoorSFX(0,sound),mainPlayer\cam,e\room\RoomDoors[1]\obj)
+						PlayRangedSound(OpenDoorSFX(0,sound),mainPlayer\cam,e\room\RoomDoors[1]\obj)
 					EndIf
 				EndIf
 				If e\room\NPC[0]\Reload = 1
@@ -521,9 +521,9 @@ Function UpdateEvent_hll_sl_2(e.Events)
 					If e\room\NPC[0]\PrevState = 1 Then
 						If (e\room\NPC[0]\SoundChn2 = 0) Then
 							e\room\NPC[0]\Sound2 = LoadSound("SFX\SCP\049\Room2SLEnter.ogg")
-							e\room\NPC[0]\SoundChn2 = PlaySound2(e\room\NPC[0]\Sound2, mainPlayer\cam, e\room\NPC[0]\Collider)
+							e\room\NPC[0]\SoundChn2 = PlayRangedSound(e\room\NPC[0]\Sound2, mainPlayer\cam, e\room\NPC[0]\Collider)
 						Else
-							If (Not ChannelPlaying(e\room\NPC[0]\SoundChn2))
+							If (Not IsChannelPlaying(e\room\NPC[0]\SoundChn2))
 								e\room\NPC[0]\PathTimer# = 1.0
 							EndIf
 						EndIf
@@ -614,7 +614,7 @@ Function UpdateEvent_hll_sl_2(e.Events)
 							e\room\RoomDoors[0]\fastopen = 0
 							e\room\RoomDoors[0]\open = True
 							sound=Rand(0, 2)
-							PlaySound2(OpenDoorSFX(0,sound),mainPlayer\cam,e\room\RoomDoors[0]\obj)
+							PlayRangedSound(OpenDoorSFX(0,sound),mainPlayer\cam,e\room\RoomDoors[0]\obj)
 							PlaySound LoadTempSound("SFX\Door\DoorOpen079.ogg")
 							DebugLog "079 - OPEN DOOR AT HALLWAY IN ROOM2SL"
 						EndIf
@@ -627,7 +627,7 @@ Function UpdateEvent_hll_sl_2(e.Events)
 					e\room\RoomDoors[0]\fastopen = 0
 					e\room\RoomDoors[0]\open = True
 					sound=Rand(0, 2)
-					PlaySound2(OpenDoorSFX(0,sound),mainPlayer\cam,e\room\RoomDoors[0]\obj)
+					PlayRangedSound(OpenDoorSFX(0,sound),mainPlayer\cam,e\room\RoomDoors[0]\obj)
 					PlaySound LoadTempSound("SFX\Door\DoorOpen079.ogg")
 					DebugLog "079 - OPEN DOOR AT HALLWAY IN ROOM2SL"
 				EndIf

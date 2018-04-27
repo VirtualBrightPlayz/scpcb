@@ -184,7 +184,7 @@ Function UpdateEvent_cont_049_2(e.Events)
 						e\EventState3 = UpdateElevators(e\EventState3, e\room\RoomDoors[2], e\room\RoomDoors[3],e\room\Objects[2],e\room\Objects[3], e)
 						
 						If e\sounds[1]=0 Then LoadEventSound(e,"SFX\General\GeneratorOn.ogg",1)
-						e\soundChannels[1]=LoopSound2(e\sounds[1], e\soundChannels[1], mainPlayer\cam, e\room\Objects[8], 6.0, e\EventState3)
+						e\soundChannels[1]=LoopRangedSound(e\sounds[1], e\soundChannels[1], mainPlayer\cam, e\room\Objects[8], 6.0, e\EventState3)
 						
 						If e\room\NPC[0]\Idle > 0
 							i = 0
@@ -197,12 +197,12 @@ Function UpdateEvent_cont_049_2(e.Events)
 								;If EntityVisible(mainPlayer\collider,e\room\RoomDoors[i]\frameobj)
 								PositionEntity e\room\NPC[0]\Collider,EntityX(e\room\Objects[i],True),EntityY(e\room\Objects[i],True),EntityZ(e\room\Objects[i],True)
 								ResetEntity e\room\NPC[0]\Collider
-								PlaySound2(ElevatorBeepSFX, mainPlayer\cam, e\room\Objects[i], 4.0)
+								PlayRangedSound(ElevatorBeepSFX, mainPlayer\cam, e\room\Objects[i], 4.0)
 								UseDoor(e\room\RoomDoors[i],False)
 								e\room\RoomDoors[i-1]\open = False
 								e\room\RoomDoors[i]\open = True
 								e\room\NPC[0]\PathStatus = FindPath(e\room\NPC[0],EntityX(mainPlayer\collider),EntityY(mainPlayer\collider),EntityZ(mainPlayer\collider))
-								PlaySound2(LoadTempSound("SFX\SCP\049\Greeting"+Rand(1,2)+".ogg"),mainPlayer\cam, e\room\NPC[0]\Collider)
+								PlayRangedSound(LoadTempSound("SFX\SCP\049\Greeting"+Rand(1,2)+".ogg"),mainPlayer\cam, e\room\NPC[0]\Collider)
 								e\room\NPC[0]\Idle = 0
 								;EndIf
 							EndIf
@@ -224,7 +224,7 @@ Function UpdateEvent_cont_049_2(e.Events)
 						
 						e\room\RoomDoors[4]\open = True
 						PlaySound TeslaPowerUpSFX
-						PlaySound2(OpenDoorSFX(0,Rand(0,2)),mainPlayer\cam, e\room\RoomDoors[4]\obj, 6.0)
+						PlayRangedSound(OpenDoorSFX(0,Rand(0,2)),mainPlayer\cam, e\room\RoomDoors[4]\obj, 6.0)
 						
 						e\room\RoomDoors[1]\open = False
 						e\room\RoomDoors[3]\open = False
@@ -249,11 +249,11 @@ Function UpdateEvent_cont_049_2(e.Events)
 						;				SetNPCFrame(n, 155)
 						;			EndIf
 						;		Next
-						;		;PlaySound2(LoadTempSound("SFX\SCP\049\Greeting"+Rand(1,2)+".ogg"),mainPlayer\cam, e\room\NPC[0]\Collider)
+						;		;PlayRangedSound(LoadTempSound("SFX\SCP\049\Greeting"+Rand(1,2)+".ogg"),mainPlayer\cam, e\room\NPC[0]\Collider)
 						;	ElseIf e\EventState > 70*214 And e\EventState-timing\tickDuration =< 70*214
-						;		;PlaySound2(LoadTempSound("SFX\SCP\049\Spotted"+Rand(1,2)+".ogg"),mainPlayer\cam, e\room\NPC[0]\Collider)
+						;		;PlayRangedSound(LoadTempSound("SFX\SCP\049\Spotted"+Rand(1,2)+".ogg"),mainPlayer\cam, e\room\NPC[0]\Collider)
 						;	ElseIf e\EventState > 70*227 And e\EventState-timing\tickDuration =< 70*227
-						;		;PlaySound2(LoadTempSound("SFX\SCP\049\Detected"+Rand(1,3)+".ogg"),mainPlayer\cam, e\room\NPC[0]\Collider)
+						;		;PlayRangedSound(LoadTempSound("SFX\SCP\049\Detected"+Rand(1,3)+".ogg"),mainPlayer\cam, e\room\NPC[0]\Collider)
 						;		e\EventState=70*241
 						;	EndIf
 						;EndIf
@@ -375,14 +375,14 @@ Function UpdateEvent_cont_049_2(e.Events)
 			FreeEntity pvt%
 			
 			If mainPlayer\dead = True Then
-				If ChannelPlaying(e\room\NPC[1]\SoundChn) Then StopChannel(e\room\NPC[1]\SoundChn)
+				If IsChannelPlaying(e\room\NPC[1]\SoundChn) Then StopChannel(e\room\NPC[1]\SoundChn)
 				PlaySound LoadTempSound("SFX\Character\MTF\049\Player0492_2.ogg")
 				RemoveEvent(e)
 			Else
 				If e\soundChannels[0] = 0 Then
 					e\soundChannels[0] = PlaySound (e\sounds[0])
 				Else
-					If (Not ChannelPlaying(e\soundChannels[0])) Then e\soundChannels[0] = PlaySound(e\sounds[0])
+					If (Not IsChannelPlaying(e\soundChannels[0])) Then e\soundChannels[0] = PlaySound(e\sounds[0])
 				EndIf
 			EndIf
 		EndIf

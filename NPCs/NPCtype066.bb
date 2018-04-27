@@ -57,7 +57,7 @@ Function UpdateNPCtype066(n.NPCs)
             EndIf
             dist = Distance(EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider),EntityX(n\Collider),EntityZ(n\Collider))
             
-            If Rand(700)=1 Then PlaySound2(LoadTempSound("SFX\SCP\066\Eric"+Rand(1,3)+".ogg"),mainPlayer\cam, n\Collider, 8.0)
+            If Rand(700)=1 Then PlayRangedSound(LoadTempSound("SFX\SCP\066\Eric"+Rand(1,3)+".ogg"),mainPlayer\cam, n\Collider, 8.0)
             
             If dist < 1.0+n\LastDist Then n\State = Rand(2,3)
         Case 2 ;roll towards the player and make a sound, and then escape	
@@ -75,15 +75,15 @@ Function UpdateNPCtype066(n.NPCs)
                 If n\Frame=683 Then 
                     If n\State2 = 0 Then
                         If Rand(2)=1 Then
-                            PlaySound2(LoadTempSound("SFX\SCP\066\Eric"+Rand(1,3)+".ogg"),mainPlayer\cam, n\Collider, 8.0)
+                            PlayRangedSound(LoadTempSound("SFX\SCP\066\Eric"+Rand(1,3)+".ogg"),mainPlayer\cam, n\Collider, 8.0)
                         Else
-                            PlaySound2(LoadTempSound("SFX\SCP\066\Notes"+Rand(1,6)+".ogg"), mainPlayer\cam, n\Collider, 8.0)
+                            PlayRangedSound(LoadTempSound("SFX\SCP\066\Notes"+Rand(1,6)+".ogg"), mainPlayer\cam, n\Collider, 8.0)
                         EndIf									
                         
                         Select Rand(1,6)
                             Case 1
                                 If n\Sound2=0 Then n\Sound2=LoadSound("SFX\SCP\066\Beethoven.ogg")
-                                n\SoundChn2 = PlaySound2(n\Sound2, mainPlayer\cam, n\Collider)
+                                n\SoundChn2 = PlayRangedSound(n\Sound2, mainPlayer\cam, n\Collider)
                                 mainPlayer\camShake = 10.0
                             Case 2
                                 n\State3 = Rand(700,1400)
@@ -159,17 +159,17 @@ Function UpdateNPCtype066(n.NPCs)
     If n\State > 1 Then
         If n\Sound = 0 Then n\Sound = LoadSound("SFX\SCP\066\Rolling.ogg")
         If n\SoundChn<>0 Then
-            If ChannelPlaying(n\SoundChn) Then
-                n\SoundChn = LoopSound2(n\Sound, n\SoundChn, mainPlayer\cam, n\Collider, 20)
+            If IsChannelPlaying(n\SoundChn) Then
+                n\SoundChn = LoopRangedSound(n\Sound, n\SoundChn, mainPlayer\cam, n\Collider, 20)
             EndIf
         Else
-            n\SoundChn = PlaySound2(n\Sound, mainPlayer\cam, n\Collider, 20)
+            n\SoundChn = PlayRangedSound(n\Sound, mainPlayer\cam, n\Collider, 20)
         EndIf					
     EndIf
     
     ;If n\SoundChn2<>0 Then
-    ;	If ChannelPlaying(n\SoundChn2) Then
-    ;		n\SoundChn2 = LoopSound2(n\Sound2, n\SoundChn2, mainPlayer\cam, n\Collider, 20)
+    ;	If IsChannelPlaying(n\SoundChn2) Then
+    ;		n\SoundChn2 = LoopRangedSound(n\Sound2, n\SoundChn2, mainPlayer\cam, n\Collider, 20)
     ;		mainPlayer\blurTimer = Max((5.0-dist)*300,0)
     ;	EndIf
     ;EndIf
@@ -182,7 +182,7 @@ Function UpdateNPCtype066(n.NPCs)
         ;HeartBeatVolume = Max(HeartBeatVolume,Min(n\State3/1000,1.0))
     EndIf
     
-    If ChannelPlaying(n\SoundChn2)
+    If IsChannelPlaying(n\SoundChn2)
         UpdateSoundOrigin2(n\SoundChn2,mainPlayer\cam,n\Collider,20)
         mainPlayer\blurTimer = Max((5.0-dist)*300,0)
     EndIf

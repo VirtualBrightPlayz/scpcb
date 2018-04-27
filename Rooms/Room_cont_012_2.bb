@@ -82,7 +82,7 @@ Function UpdateEvent_cont_012_2(e.Events)
 		If e\EventState=0 Then
 			If EntityDistance(mainPlayer\collider, e\room\RoomDoors[0]\obj)<2.5 And RemoteDoorOn Then
 				;PlaySound HorrorSFX(7)
-				PlaySound2 (LeverSFX,mainPlayer\cam,e\room\RoomDoors[0]\obj) 
+				PlayRangedSound (LeverSFX,mainPlayer\cam,e\room\RoomDoors[0]\obj) 
 				e\EventState=1
 				e\room\RoomDoors[0]\locked = False
 				UseDoor(e\room\RoomDoors[0],False)
@@ -91,7 +91,7 @@ Function UpdateEvent_cont_012_2(e.Events)
 		Else
 			
 			If (e\sounds[0] = 0) Then LoadEventSound(e,"SFX\Music\012Golgotha.ogg")
-			e\soundChannels[0] = LoopSound2(e\sounds[0], e\soundChannels[0], mainPlayer\cam, e\room\Objects[3], 5.0)
+			e\soundChannels[0] = LoopRangedSound(e\sounds[0], e\soundChannels[0], mainPlayer\cam, e\room\Objects[3], 5.0)
 			
 			; TODO: Move to musicmanager.
 			If (e\sounds[1] = 0) Then LoadEventSound(e, "SFX\Music\012.ogg", 1)
@@ -137,7 +137,7 @@ Function UpdateEvent_cont_012_2(e.Events)
 						FreeEntity pvt										
 					EndIf
 				Else
-					e\soundChannels[1] = LoopSound2(e\sounds[1], e\soundChannels[1], mainPlayer\cam, e\room\Objects[3], 10, e\EventState3/(86.0*70.0))
+					e\soundChannels[1] = LoopRangedSound(e\sounds[1], e\soundChannels[1], mainPlayer\cam, e\room\Objects[3], 10, e\EventState3/(86.0*70.0))
 					
 					pvt% = CreatePivot()
 					PositionEntity pvt, EntityX(mainPlayer\cam), EntityY(e\room\Objects[2],True)-0.05, EntityZ(mainPlayer\cam)
@@ -156,7 +156,7 @@ Function UpdateEvent_cont_012_2(e.Events)
 					mainPlayer\camZoom = Max(mainPlayer\camZoom, (Sin(Float(TimeInPosMilliSecs()) / 20.0)+1.0)*8.0*Max((3.0-dist),0.0))
 					
 					If mainPlayer\breathChn <> 0 Then
-						If ChannelPlaying(mainPlayer\breathChn) Then StopChannel(mainPlayer\breathChn)
+						If IsChannelPlaying(mainPlayer\breathChn) Then StopChannel(mainPlayer\breathChn)
 					EndIf
 					
 					If dist < 0.6 Then

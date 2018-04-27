@@ -152,16 +152,16 @@ Function UpdateEventCheckpoint(e.Events)
 	If e\room\RoomDoors[0]\open <> e\EventState Then
 		If e\sounds[0] = 0 Then LoadEventSound(e,"SFX\Door\DoorCheckpoint.ogg")
 		;TODO: wtf is this bullshit
-		e\soundChannels[0] = PlaySound2(e\sounds[0], mainPlayer\cam, e\room\RoomDoors[0]\obj)
-		e\soundChannels[1] = PlaySound2(e\sounds[0], mainPlayer\cam, e\room\RoomDoors[1]\obj)
+		e\soundChannels[0] = PlayRangedSound(e\sounds[0], mainPlayer\cam, e\room\RoomDoors[0]\obj)
+		e\soundChannels[1] = PlayRangedSound(e\sounds[0], mainPlayer\cam, e\room\RoomDoors[1]\obj)
 	EndIf
 	
 	e\EventState = e\room\RoomDoors[0]\open
 	
-	If ChannelPlaying(e\soundChannels[0])
+	If IsChannelPlaying(e\soundChannels[0])
 		UpdateSoundOrigin(e\soundChannels[0], mainPlayer\cam, e\room\RoomDoors[0]\obj)
 	EndIf
-	If ChannelPlaying(e\soundChannels[1])
+	If IsChannelPlaying(e\soundChannels[1])
 		UpdateSoundOrigin(e\soundChannels[1], mainPlayer\cam, e\room\RoomDoors[1]\obj)
 	EndIf
 	;[End Block]

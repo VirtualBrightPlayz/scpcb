@@ -8,7 +8,7 @@ End Type
 Global soundManager.SoundManager = New SoundManager
 
 ; Creates a new sound object.
-Function CreateSound_SM.Sound(fileName$)
+Function LoadSound_SM.Sound(fileName$)
 	Local snd.Sound = New Sound
 	snd\file = fileName
 
@@ -16,8 +16,8 @@ Function CreateSound_SM.Sound(fileName$)
 End Function
 
 ; Creates a new sound object and loads the given sound.
-Function LoadSound_SM.Sound(fileName$)
-	Local snd.Sound = CreateSound_SM(fileName)
+Function StoreSound_SM.Sound(fileName$)
+	Local snd.Sound = LoadSound_SM(fileName)
 	snd\internal = LoadSound(fileName)
 
 	Return snd
@@ -43,26 +43,34 @@ Function FreeSound_SM(snd.Sound)
 	Delete snd
 End Function
 
-Function PlaySound2%(SoundHandle%, cam%, entity%, range# = 10, volume# = 1.0)
+Function IsChannelPlaying(chn%)
+	If (chn = 0) Then
+		Return False
+	EndIf
+
+	Return ChannelPlaying(chn)
+End Function
+
+Function PlayRangedSound%(soundHandle%, cam%, entity%, range# = 10, volume# = 1.0)
 	range# = Max(range, 1.0)
-	Local soundchn% = 0
+	Local soundChn% = 0
 	
 	If (volume > 0) Then
 		Local dist# = EntityDistance(cam, entity) / range#
 		If (1 - dist# > 0 And 1 - dist# < 1) Then
 			Local panvalue# = Sin(-DeltaYaw(cam,entity))
-			soundchn% = PlaySound (SoundHandle)
+			soundChn% = PlaySound(soundHandle)
 			
-			ChannelVolume(soundchn, volume# * (1 - dist#)*userOptions\soundVolume)
-			ChannelPan(soundchn, panvalue)
+			ChannelVolume(soundChn, volume# * (1 - dist#)*userOptions\soundVolume)
+			ChannelPan(soundChn, panvalue)
 		EndIf
 	EndIf
 	
-	Return soundchn
+	Return soundChn
 End Function
 
 ; Only begins playing the sound if the sound channel isn't playing anything else.
-Function LoopSound2%(SoundHandle%, Chn%, cam%, entity%, range# = 10, volume# = 1.0)
+Function LoopRangedSound%(soundHandle%, chn%, cam%, entity%, range# = 10, volume# = 1.0)
 	range# = Max(range,1.0)
 	
 	If volume>0 Then
@@ -72,10 +80,10 @@ Function LoopSound2%(SoundHandle%, Chn%, cam%, entity%, range# = 10, volume# = 1
 			
 			Local panvalue# = Sin(-DeltaYaw(cam,entity))
 			
-			If Chn = 0 Then
-				Chn% = PlaySound (SoundHandle)
+			If chn = 0 Then
+				chn% = PlaySound(soundHandle)
 			Else
-				If (Not ChannelPlaying(Chn)) Then Chn% = PlaySound(SoundHandle)
+				If (Not IsChannelPlaying(chn)) Then chn% = PlaySound(soundHandle)
 			EndIf
 			
 			ChannelVolume(Chn, volume# * (1 - dist#)*userOptions\soundVolume)
@@ -115,7 +123,7 @@ Function UpdateMusic()
 	
 	;TODO: Not hack jorge.
 	If ConsoleFlush Then
-		If Not ChannelPlaying(MusicCHN) Then MusicCHN = PlaySound(ConsoleMusFlush)
+		If Not IsChannelPlaying(MusicCHN) Then MusicCHN = PlaySound(ConsoleMusFlush)
 	Else
 		If timing\tickDuration > 0 Or OptionsMenu = 2 Then 
 			If NowPlaying <> ShouldPlay Then ; playing the wrong clip, fade out
@@ -133,7 +141,7 @@ Function UpdateMusic()
 			If MusicCHN = 0 Then
 				MusicCHN = PlaySound(Music(NowPlaying))
 			Else
-				If (Not ChannelPlaying(MusicCHN)) Then MusicCHN = PlaySound(Music(NowPlaying))
+				If (Not IsChannelPlaying(MusicCHN)) Then MusicCHN = PlaySound(Music(NowPlaying))
 			EndIf
 		EndIf
 		
@@ -143,69 +151,74 @@ Function UpdateMusic()
 End Function 
 
 Function PauseSounds()
-	For e.events = Each Events
+	Local e.Events, n.NPCs, d.Doors
+
+	For e = Each Events
 		If e\soundChannels[0] <> 0 Then
-			If ChannelPlaying(e\soundChannels[0]) Then PauseChannel(e\soundChannels[0])
+			If IsChannelPlaying(e\soundChannels[0]) Then PauseChannel(e\soundChannels[0])
 		EndIf
 		If e\soundChannels[1] <> 0 Then
-			If ChannelPlaying(e\soundChannels[1]) Then PauseChannel(e\soundChannels[1])
+			If IsChannelPlaying(e\soundChannels[1]) Then PauseChannel(e\soundChannels[1])
 		EndIf		
 	Next
 	
-	For n.npcs = Each NPCs
+	For n = Each NPCs
 		If n\soundchn <> 0 Then
-			If ChannelPlaying(n\soundchn) Then PauseChannel(n\soundchn)
+			If IsChannelPlaying(n\soundchn) Then PauseChannel(n\soundchn)
 		EndIf
 	Next	
 	
-	For d.doors = Each Doors
+	For d = Each Doors
 		If d\soundchn <> 0 Then
-			If ChannelPlaying(d\soundchn) Then PauseChannel(d\soundchn)
+			If IsChannelPlaying(d\soundchn) Then PauseChannel(d\soundchn)
 		EndIf
 	Next	
 	
 	If AmbientSFXCHN <> 0 Then
-		If ChannelPlaying(AmbientSFXCHN) Then PauseChannel(AmbientSFXCHN)
+		If IsChannelPlaying(AmbientSFXCHN) Then PauseChannel(AmbientSFXCHN)
 	EndIf
 End Function
 
 Function ResumeSounds()
-	For e.events = Each Events
+	Local e.Events, n.NPCs, d.Doors
+
+	For e = Each Events
 		If e\soundChannels[0] <> 0 Then
-			If ChannelPlaying(e\soundChannels[0]) Then ResumeChannel(e\soundChannels[0])
+			If IsChannelPlaying(e\soundChannels[0]) Then ResumeChannel(e\soundChannels[0])
 		EndIf
 		If e\soundChannels[1] <> 0 Then
-			If ChannelPlaying(e\soundChannels[1]) Then ResumeChannel(e\soundChannels[1])
+			If IsChannelPlaying(e\soundChannels[1]) Then ResumeChannel(e\soundChannels[1])
 		EndIf	
 	Next
 	
-	For n.npcs = Each NPCs
+	For n = Each NPCs
 		If n\soundchn <> 0 Then
-			If ChannelPlaying(n\soundchn) Then ResumeChannel(n\soundchn)
+			If IsChannelPlaying(n\soundchn) Then ResumeChannel(n\soundchn)
 		EndIf
 	Next	
 	
-	For d.doors = Each Doors
+	For d = Each Doors
 		If d\soundchn <> 0 Then
-			If ChannelPlaying(d\soundchn) Then ResumeChannel(d\soundchn)
+			If IsChannelPlaying(d\soundchn) Then ResumeChannel(d\soundchn)
 		EndIf
 	Next	
 	
 	If AmbientSFXCHN <> 0 Then
-		If ChannelPlaying(AmbientSFXCHN) Then ResumeChannel(AmbientSFXCHN)
+		If IsChannelPlaying(AmbientSFXCHN) Then ResumeChannel(AmbientSFXCHN)
 	EndIf
 End Function
 
 Function GetStepSound(entity%)
-    Local picker%,brush%,texture%,name$
-    Local mat.Materials
-    
-    picker = LinePick(EntityX(entity),EntityY(entity),EntityZ(entity),0,-1,0)
+    Local picker% = LinePick(EntityX(entity),EntityY(entity),EntityZ(entity),0,-1,0)
+
     If picker <> 0 Then
         If GetEntityType(picker) <> HIT_MAP Then Return 0
-        brush = GetSurfaceBrush(GetSurface(picker,CountSurfaces(picker)))
+        Local brush% = GetSurfaceBrush(GetSurface(picker,CountSurfaces(picker)))
         If brush <> 0 Then
-            texture = GetBrushTexture(brush,2)
+            Local texture% = GetBrushTexture(brush,2)
+			Local name$
+			Local mat.Materials
+
             If texture <> 0 Then
                 name = StripPath(TextureName(texture))
                 If (name <> "") FreeTexture(texture)
@@ -278,6 +291,3 @@ Function UpdateSoundOrigin(Chn%, cam%, entity%, range# = 10, volume# = 1.0)
 		EndIf 
 	EndIf
 End Function
-
-;~IDEal Editor Parameters:
-;~C#Blitz3D

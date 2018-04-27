@@ -262,11 +262,11 @@ Function RemoveNPC(n.NPCs)
 		EndIf
 	Next
 	
-	If (n\soundChn <> 0 And ChannelPlaying(n\soundChn)) Then
+	If (n\soundChn <> 0 And IsChannelPlaying(n\soundChn)) Then
 		StopChannel(n\soundChn)
 	EndIf
 	
-	If n\soundChn2 <> 0 And ChannelPlaying(n\soundChn2) Then
+	If n\soundChn2 <> 0 And IsChannelPlaying(n\soundChn2) Then
 		StopChannel(n\soundChn2)
 	EndIf
 	
@@ -347,7 +347,7 @@ Function UpdateNPCs()
 		;Update sound locations.
 		Local i%
 		For i = 0 To 2
-			If (ChannelPlaying(n\soundChannels[i])) Then
+			If (IsChannelPlaying(n\soundChannels[i])) Then
 				UpdateSoundOrigin2(n\soundChannels[i], mainPlayer\cam, n\obj)
 			EndIf
 		Next
@@ -383,7 +383,7 @@ End Function
 Function NPCStopAllChannels(n.NPCs)
 	Local i%
 	For i = 0 To 2
-		If (n\soundChannels[i] <> 0 And ChannelPlaying(n\soundChannels[i])) Then
+		If (n\soundChannels[i] <> 0 And IsChannelPlaying(n\soundChannels[i])) Then
 			StopChannel(n\soundChannels[i])
 		EndIf
 	Next
@@ -602,7 +602,7 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 			EntityPick(pvt, 2.5)
 			
 			If PickedEntity() <> 0 Then 
-				PlaySound2(Gunshot3SFX, mainPlayer\cam, pvt, 0.4, Rnd(0.8,1.0))
+				PlayRangedSound(Gunshot3SFX, mainPlayer\cam, pvt, 0.4, Rnd(0.8,1.0))
 				
 				If particles Then 
 					;dust/smoke particles
@@ -644,7 +644,7 @@ End Function
 ;TODO: Move to MTF file?
 Function PlayMTFSound(sound%, n.NPCs)
 	If n <> Null Then
-		n\soundChn = PlaySound2(sound, mainPlayer\cam, n\collider, 8.0)	
+		n\soundChn = PlayRangedSound(sound, mainPlayer\cam, n\collider, 8.0)	
 	EndIf
 	
 	If mainPlayer\selectedItem <> Null Then

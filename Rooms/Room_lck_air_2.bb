@@ -99,7 +99,7 @@ Function UpdateEventRoom_gw(e.Events)
 				If brokendoor
 					If e\sounds[1] <> 0 Then FreeSound(e\sounds[1]) : e\sounds[1] = 0
 					e\sounds[1] = LoadSound("SFX\Door\DoorSparks.ogg")
-					e\soundChannels[1] = PlaySound2(e\sounds[1],mainPlayer\cam,e\room\Objects[1],5)
+					e\soundChannels[1] = PlayRangedSound(e\sounds[1],mainPlayer\cam,e\room\Objects[1],5)
 				EndIf
 				StopChannel e\soundChannels[0]
 				e\soundChannels[0] = 0
@@ -168,7 +168,7 @@ Function UpdateEventRoom_gw(e.Events)
 					Next
 					
 					FreeEntity pvt
-					If e\soundChannels[0] = 0 Then e\soundChannels[0] = PlaySound2(e\sounds[0],mainPlayer\cam,e\room\Objects[0],5)
+					If e\soundChannels[0] = 0 Then e\soundChannels[0] = PlayRangedSound(e\sounds[0],mainPlayer\cam,e\room\Objects[0],5)
 				EndIf
 			Else
 				e\EventState = 0.0
@@ -184,11 +184,11 @@ Function UpdateEventRoom_gw(e.Events)
 		EndIf
 		
 		If brokendoor
-			If ChannelPlaying(e\soundChannels[1])
+			If IsChannelPlaying(e\soundChannels[1])
 				UpdateSoundOrigin(e\soundChannels[1],mainPlayer\cam,e\room\Objects[1],5)
 			EndIf
 		EndIf
-		If ChannelPlaying(e\soundChannels[0])
+		If IsChannelPlaying(e\soundChannels[0])
 			UpdateSoundOrigin(e\soundChannels[0],mainPlayer\cam,e\room\Objects[0],5)
 		EndIf
 	Else
