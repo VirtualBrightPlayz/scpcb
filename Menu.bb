@@ -257,10 +257,7 @@ Function UpdateMainMenu()
 							RandomSeed = Abs(MilliSecs())
 						EndIf
 						Local strtemp$ = ""
-						For i = 1 To Len(RandomSeed)
-							strtemp = strtemp+Asc(Mid(RandomSeed,i,1))
-						Next
-						SeedRnd Abs(Int(strtemp))
+						SeedRnd SeedStringToInt(RandomSeed)
 						
 						Local SameFound% = False
 						For  i% = 1 To SaveGameAmount

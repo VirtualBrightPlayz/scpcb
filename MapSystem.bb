@@ -2734,11 +2734,7 @@ Global MapRooms.IntArray2D = Null ;TODO: replace with an array of the proper typ
 Function CreateMap()
 	DebugLog ("Generating a map using the seed "+RandomSeed)
 	
-	Local strtemp$ = ""
-	For i = 1 To Len(RandomSeed)
-		strtemp = strtemp+Asc(Mid(RandomSeed,i,1))
-	Next
-	SeedRnd Abs(Int(strtemp))
+	SeedRnd SeedStringToInt(RandomSeed)
 	
 	Local mapDim% = MAP_SIZE
 	Local layout.IntArray2D = CreateIntArray2D(mapDim,mapDim)
@@ -3311,11 +3307,7 @@ Function CreateChunkParts(r.Rooms)
 	Local chp.ChunkPart,chp2.ChunkPart
 	Local obj%
 	
-	StrTemp$ = ""
-	For i = 1 To Len(RandomSeed)
-		StrTemp = StrTemp+Asc(Mid(RandomSeed,i,1))
-	Next
-	SeedRnd Abs(Int(StrTemp))
+	SeedRnd SeedStringToInt(RandomSeed)
 	
 	For i = 0 To ChunkAmount%
 		Local loc% = GetINISectionLocation(File$,"chunk"+i)
@@ -3453,10 +3445,7 @@ Function UpdateChunks(r.Rooms,ChunkPartAmount%,spawnNPCs%=True)
 	z# = -(ChunkHideDistance+(CurrChunkZ#))
 	
 	Local StrTemp$ = ""
-	For i = 1 To Len(RandomSeed)
-		StrTemp = StrTemp+Asc(Mid(RandomSeed,i,1))
-	Next
-	SeedRnd Abs(Int(StrTemp))
+	SeedRnd SeedStringToInt(RandomSeed)
 	
 	Repeat
 		temp2% = False
