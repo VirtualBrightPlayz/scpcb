@@ -183,7 +183,6 @@ Function UpdateNPCtype066(n.NPCs)
     EndIf
     
     If IsChannelPlaying(n\SoundChn2)
-        UpdateSoundOrigin2(n\SoundChn2,mainPlayer\cam,n\Collider,20)
         mainPlayer\blurTimer = Max((5.0-dist)*300,0)
     EndIf
     

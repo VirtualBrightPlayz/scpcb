@@ -4,8 +4,20 @@ Type Sound
 End Type
 
 Type SoundManager
+	Field Footstep
 End Type
-Global soundManager.SoundManager = New SoundManager
+Global soundManager.SoundManager
+
+Function CreateSoundManager.SoundManager()
+	Local sndManager = New SoundManager
+
+
+	Return sndManager
+End Function
+
+Function DeleteSoundManager(sndManager.SoundManager)
+
+End Function
 
 ; Creates a new sound object.
 Function LoadSound_SM.Sound(fileName$)
@@ -58,10 +70,10 @@ Function PlayRangedSound%(soundHandle%, cam%, entity%, range# = 10, volume# = 1.
 	If (volume > 0) Then
 		Local dist# = EntityDistance(cam, entity) / range#
 		If (1 - dist# > 0 And 1 - dist# < 1) Then
-			Local panvalue# = Sin(-DeltaYaw(cam,entity))
+			Local panvalue# = Sin(-DeltaYaw(cam, entity))
 			soundChn% = PlaySound(soundHandle)
 			
-			ChannelVolume(soundChn, volume# * (1 - dist#)*userOptions\soundVolume)
+			ChannelVolume(soundChn, volume# * (1 - dist#) * userOptions\soundVolume)
 			ChannelPan(soundChn, panvalue)
 		EndIf
 	EndIf
@@ -252,7 +264,7 @@ Function GetStepSound(entity%)
     Return 0
 End Function
 
-Function UpdateSoundOrigin2(Chn%, cam%, entity%, range# = 10, volume# = 1.0)
+Function UpdateRangedSoundOrigin(Chn%, cam%, entity%, range# = 10, volume# = 1.0)
 	range# = Max(range,1.0)
 	
 	If volume>0 Then

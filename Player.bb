@@ -642,19 +642,6 @@ Function MouseLook()
 		
 		;HeadDropSpeed = 0
 		
-		;TODO: remove after implementing fixed collision code
-		;If 0 Then 
-		;fixing the black screen bug with some bubblegum code 
-		Local Zero# = 0.0
-		Local Nan1# = 0.0 / Zero
-		If Int(EntityX(mainPlayer\collider))=Int(Nan1) Then
-			
-			PositionEntity mainPlayer\collider, EntityX(mainPlayer\cam, True), EntityY(mainPlayer\cam, True) - 0.5, EntityZ(mainPlayer\cam, True), True
-			Msg = "EntityX(mainPlayer\collider) = NaN, RESETTING COORDINATES    -    New coordinates: "+EntityX(mainPlayer\collider)
-			MsgTimer = 300				
-		EndIf
-		;EndIf
-		
 		Local up# = (Sin(mainPlayer\camAnimState) / (20.0+mainPlayer\crouchState*20.0))*0.6	
 		Local roll# = Max(Min(Sin(mainPlayer\camAnimState*0.5)*2.5*Min(mainPlayer\injuries+0.25,3.0),8.0),-8.0)
 		

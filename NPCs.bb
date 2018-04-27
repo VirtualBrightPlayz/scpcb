@@ -290,7 +290,7 @@ End Function
 Function UpdateNPCs()
 	Local n.NPCs
 	
-	For n.NPCs = Each NPCs
+	For n = Each NPCs
 		;A variable to determine if the NPC is in the facility or not
 		;TODO: remove because this is practically useless
 		n\InFacility = CheckForNPCInFacility(n)
@@ -341,19 +341,19 @@ Function UpdateNPCs()
 		End Select
 		
 		If n\IsDead
-			EntityType n\collider,HIT_DEAD
+			EntityType(n\collider, HIT_DEAD)
 		EndIf
 		
 		;Update sound locations.
 		Local i%
 		For i = 0 To 2
 			If (IsChannelPlaying(n\soundChannels[i])) Then
-				UpdateSoundOrigin2(n\soundChannels[i], mainPlayer\cam, n\obj)
+				UpdateRangedSoundOrigin(n\soundChannels[i], mainPlayer\cam, n\obj)
 			EndIf
 		Next
 
 		;TODO: Rework.
-		Local gravityDist = Distance(EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider),EntityX(n\collider),EntityZ(n\collider))
+		Local gravityDist# = Distance(EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider),EntityX(n\collider),EntityZ(n\collider))
 		
 		If gravityDist<HideDistance*0.7 Or n\npcType = NPCtype1499 Then
 			If n\InFacility = InFacility
@@ -383,7 +383,7 @@ End Function
 Function NPCStopAllChannels(n.NPCs)
 	Local i%
 	For i = 0 To 2
-		If (n\soundChannels[i] <> 0 And IsChannelPlaying(n\soundChannels[i])) Then
+		If (IsChannelPlaying(n\soundChannels[i])) Then
 			StopChannel(n\soundChannels[i])
 		EndIf
 	Next

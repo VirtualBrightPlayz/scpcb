@@ -258,7 +258,7 @@ Global ButtonSFX2 = LoadSound("SFX\Interact\Button2.ogg")
 Global ScannerSFX1 = LoadSound("SFX\Interact\ScannerUse1.ogg")
 Global ScannerSFX2 = LoadSound("SFX\Interact\ScannerUse2.ogg")
 
-Global OpenDoorFastSFX=LoadSound("SFX\Door\DoorOpenFast.ogg")
+Global OpenDoorFastSFX = LoadSound("SFX\Door\DoorOpenFast.ogg")
 Global CautionSFX% = LoadSound("SFX\Room\LockroomSiren.ogg")
 
 Global NuclearSirenSFX%
