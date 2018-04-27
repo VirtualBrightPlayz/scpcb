@@ -34,7 +34,7 @@ Function UpdateEventEndroom106(e.Events)
 					
 					e\room\NPC[0]=CreateNPC(NPCtypeD, EntityX(e\room\RoomDoors[0]\obj,True), 0.5, EntityZ(e\room\RoomDoors[0]\obj,True))
 					
-					tex = LoadTexture_Strict("GFX\npcs\janitor.jpg")
+					tex = LoadTexture("GFX\npcs\janitor.jpg")
 					e\room\NPC[0]\texture = "GFX\npcs\janitor.jpg"
 					EntityTexture e\room\NPC[0]\obj, tex
 					FreeTexture tex
@@ -51,19 +51,19 @@ Function UpdateEventEndroom106(e.Events)
 			EndIf
 		ElseIf e\EventState = 1
 			If mainPlayer\currRoom = e\room Then
-				;PlaySound_Strict(CloseDoorSFX(1,0))
-				;PlaySound_Strict(DecaySFX(0))
+				;PlaySound(CloseDoorSFX(1,0))
+				;PlaySound(DecaySFX(0))
 				;e\room\RoomDoors[0]\open = False
 				e\room\NPC[0]\State = 1
 				e\EventState = 2
 				
-				e\Sound = LoadSound_Strict("SFX\Character\Janitor\106Abduct.ogg")
-				PlaySound_Strict(e\Sound)		
+				e\sounds[0] = LoadSound("SFX\Character\Janitor\106Abduct.ogg")
+				PlaySound(e\sounds[0])		
 				
-				If e\SoundCHN<>0 Then StopChannel e\SoundCHN
+				If e\soundChannels[0]<>0 Then StopChannel e\soundChannels[0]
 			ElseIf e\room\dist < 8
-				If e\Sound = 0 Then e\Sound = LoadSound_Strict("SFX\Character\Janitor\Idle.ogg")
-				e\SoundCHN = LoopSound2(e\Sound, e\SoundCHN, mainPlayer\cam, e\room\NPC[0]\obj, 15.0)
+				If e\sounds[0] = 0 Then e\sounds[0] = LoadSound("SFX\Character\Janitor\Idle.ogg")
+				e\soundChannels[0] = LoopSound2(e\sounds[0], e\soundChannels[0], mainPlayer\cam, e\room\NPC[0]\obj, 15.0)
 			EndIf
 		ElseIf e\EventState = 2
 			dist = EntityDistance(e\room\NPC[0]\Collider, e\room\obj)
@@ -72,7 +72,7 @@ Function UpdateEventEndroom106(e.Events)
 				de\Size = 0.05 : de\SizeChange = 0.008 : de\timer=10000 : UpdateDecals
 				e\EventState = 3
 				
-				;PlaySound_Strict(DecaySFX(1))
+				;PlaySound(DecaySFX(1))
 			EndIf					
 		Else
 			dist = Distance(EntityX(e\room\NPC[0]\Collider),EntityZ(e\room\NPC[0]\Collider), EntityX(e\room\obj),EntityZ(e\room\obj))
@@ -85,7 +85,7 @@ Function UpdateEventEndroom106(e.Events)
 			
 			If dist<0.4 Then
 				If e\room\NPC[0]\State=1 Then 
-					;PlaySound_Strict(HorrorSFX(10))
+					;PlaySound(HorrorSFX(10))
 					SetNPCFrame(e\room\NPC[0],41)
 				EndIf
 				e\EventState = e\EventState+timing\tickDuration/2

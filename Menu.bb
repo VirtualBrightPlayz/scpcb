@@ -40,13 +40,13 @@ Global DrawHandIcon%
 ;TODO: Assets.bb
 Dim DrawArrowIcon%(4)
 
-Global MenuBack% = LoadImage_Strict("GFX\menu\back.jpg")
-Global MenuText% = LoadImage_Strict("GFX\menu\scptext.jpg")
-Global Menu173% = LoadImage_Strict("GFX\menu\173back.jpg")
-MenuWhite = LoadImage_Strict("GFX\menu\menuwhite.jpg")
-MenuBlack = LoadImage_Strict("GFX\menu\menublack.jpg")
+Global MenuBack% = LoadImage("GFX\menu\back.jpg")
+Global MenuText% = LoadImage("GFX\menu\scptext.jpg")
+Global Menu173% = LoadImage("GFX\menu\173back.jpg")
+MenuWhite = LoadImage("GFX\menu\menuwhite.jpg")
+MenuBlack = LoadImage("GFX\menu\menublack.jpg")
 MaskImage MenuBlack, 255,255,0
-Global QuickLoadIcon% = LoadImage_Strict("GFX\menu\QuickLoading.png")
+Global QuickLoadIcon% = LoadImage("GFX\menu\QuickLoading.png")
 
 ResizeImage(MenuBack, ImageWidth(MenuBack) * MenuScale, ImageHeight(MenuBack) * MenuScale)
 ResizeImage(MenuText, ImageWidth(MenuText) * MenuScale, ImageHeight(MenuText) * MenuScale)
@@ -54,7 +54,7 @@ ResizeImage(Menu173, ImageWidth(Menu173) * MenuScale, ImageHeight(Menu173) * Men
 ResizeImage(QuickLoadIcon, ImageWidth(QuickLoadIcon) * MenuScale, ImageHeight(QuickLoadIcon) * MenuScale)
 
 For i = 0 To 3
-	ArrowIMG(i) = LoadImage_Strict("GFX\menu\arrow.png")
+	ArrowIMG(i) = LoadImage("GFX\menu\arrow.png")
 	RotateImage(ArrowIMG(i), 90 * i)
 	HandleImage(ArrowIMG(i), 0, 0)
 Next
@@ -241,7 +241,7 @@ Function UpdateMainMenu()
 							Else
 								SelectedDifficulty\otherFactors = EASY
 							EndIf
-							PlaySound_Strict(ButtonSFX)
+							PlaySound(ButtonSFX)
 						EndIf
 					EndIf			
 				EndIf
@@ -1044,17 +1044,17 @@ Function RunLauncher()
 	RealGraphicWidth = userOptions\screenWidth
 	RealGraphicHeight = userOptions\screenHeight
 	
-	Font1 = LoadFont_Strict("GFX\font\cour\Courier New.ttf", 18, 0,0,0)
+	Font1 = LoadFont("GFX\font\cour\Courier New.ttf", 18, 0,0,0)
 	SetFont Font1
-	MenuWhite = LoadImage_Strict("GFX\menu\menuwhite.jpg")
-	MenuBlack = LoadImage_Strict("GFX\menu\menublack.jpg")	
+	MenuWhite = LoadImage("GFX\menu\menuwhite.jpg")
+	MenuBlack = LoadImage("GFX\menu\menublack.jpg")	
 	MaskImage MenuBlack, 255,255,0
-	LauncherIMG = LoadImage_Strict("GFX\menu\launcher.jpg")
-	ButtonSFX% = LoadSound_Strict("SFX\Interact\Button.ogg")
+	LauncherIMG = LoadImage("GFX\menu\launcher.jpg")
+	ButtonSFX% = LoadSound("SFX\Interact\Button.ogg")
 	Local i%	
 	
 	For i = 0 To 3
-		ArrowIMG(i) = LoadImage_Strict("GFX\menu\arrow.png")
+		ArrowIMG(i) = LoadImage("GFX\menu\arrow.png")
 		RotateImage(ArrowIMG(i), 90 * i)
 		HandleImage(ArrowIMG(i), 0, 0)
 	Next
@@ -1270,7 +1270,7 @@ Function DrawLoading(percent%, shortloading=False)
 		temp = Rand(1,LoadingScreenAmount)
 		For ls.loadingscreens = Each LoadingScreens
 			If ls\id = temp Then
-				If ls\img=0 Then ls\img = LoadImage_Strict("Loadingscreens\"+ls\imgpath)
+				If ls\img=0 Then ls\img = LoadImage("Loadingscreens\"+ls\imgpath)
 				SelectedLoadingScreen = ls 
 				Exit
 			EndIf
@@ -1334,9 +1334,9 @@ Function DrawLoading(percent%, shortloading=False)
 			If Not shortloading Then 
 				If firstloop Then 
 					If percent = 0 Then
-						PlaySound_Strict LoadTempSound("SFX\SCP\990\cwm1.cwm")
+						PlaySound LoadTempSound("SFX\SCP\990\cwm1.cwm")
 					ElseIf percent = 100
-						PlaySound_Strict LoadTempSound("SFX\SCP\990\cwm2.cwm")
+						PlaySound LoadTempSound("SFX\SCP\990\cwm2.cwm")
 					EndIf
 				EndIf
 			EndIf
@@ -1416,7 +1416,7 @@ Function DrawLoading(percent%, shortloading=False)
 		Text(userOptions\screenWidth / 2, userOptions\screenHeight / 2 - 100, "LOADING - " + percent + " %", True, True)
 		
 		If percent = 100 Then
-			;If firstloop And SelectedLoadingScreen\title <> "CWM" Then PlaySound_Strict HorrorSFX(8) ;TODO: fix
+			;If firstloop And SelectedLoadingScreen\title <> "CWM" Then PlaySound HorrorSFX(8) ;TODO: fix
 			timing\prevTime = MilliSecs()
 			Text(userOptions\screenWidth / 2, userOptions\screenHeight - 50, "PRESS ANY KEY TO CONTINUE", True, True)
 		Else
@@ -1566,7 +1566,7 @@ Function UpdateUIButton%(x%, y%, width%, height, txt$="", waitForMouseUp%=False)
 	If MouseOn(x, y, width, height) Then
 		If (MouseHit1 And (Not waitForMouseUp)) Or (MouseUp1 And waitForMouseUp) Then 
 			clicked = True
-			PlaySound_Strict(ButtonSFX)
+			PlaySound(ButtonSFX)
 		EndIf
 	EndIf
 	
@@ -1609,7 +1609,7 @@ Function UpdateUITick%(x%, y%, selected%, locked% = False)
 	Local Highlight% = MouseOn(x, y, width, height) And (Not locked)
 	
 	If Highlight Then
-		If MouseHit1 Then selected = (Not selected) : PlaySound_Strict (ButtonSFX)
+		If MouseHit1 Then selected = (Not selected) : PlaySound (ButtonSFX)
 	End If
 	
 	Return selected

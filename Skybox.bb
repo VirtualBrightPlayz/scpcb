@@ -8,7 +8,7 @@ Function sky_CreateSky(filename$,parent%=0)
 		Read direction$
 		Local fname$ = filename$ + direction$ + ".jpg"
 		If FileType(fname$)=1
-			Local b = LoadBrush_Strict(fname$,%110001)
+			Local b = LoadBrush(fname$,%110001)
 			s = CreateSurface(sky,b)
 			For vert = 1 To 4
 				Read x,y,z,u,v

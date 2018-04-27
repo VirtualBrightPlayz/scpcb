@@ -13,14 +13,14 @@ Function InitializeNPCtype106(n.NPCs)
     n\collider = CreatePivot()
     EntityRadius(n\Collider, 0.2)
     EntityType(n\Collider, HIT_PLAYER)
-    n\obj = LoadAnimMesh_Strict("GFX\npcs\106_2.b3d")
+    n\obj = LoadAnimMesh("GFX\npcs\106_2.b3d")
 
     n\gravity = False
 
     Local temp# = (GetINIFloat("DATA\NPCs.ini", "SCP-106", "scale") / 2.2)		
     ScaleEntity(n\obj, temp, temp, temp)
 
-    Local oldManEyes% = LoadTexture_Strict("GFX\npcs\oldmaneyes.jpg")
+    Local oldManEyes% = LoadTexture("GFX\npcs\oldmaneyes.jpg")
 
     n\Speed = (GetINIFloat("DATA\NPCs.ini", "SCP-106", "speed") / 100.0)
 
@@ -33,14 +33,14 @@ Function InitializeNPCtype106(n.NPCs)
 
     FreeTexture(oldManEyes)
 
-    n\sounds[0] = LoadSound_Strict("SFX\SCP\106\Spawn.ogg")
-    n\sounds[1] = LoadSound_Strict("SFX\SCP\106\Breathing.ogg")
-    n\sounds[2] = LoadSound_Strict("SFX\SCP\106\Seen.ogg")
-    n\sounds[3] = LoadSound_Strict("SFX\SCP\106\Corrosion1.ogg")
-    n\sounds[4] = LoadSound_Strict("SFX\SCP\106\Corrosion2.ogg")
-    n\sounds[5] = LoadSound_Strict("SFX\SCP\106\Corrosion3.ogg")
-    n\sounds[6] = LoadSound_Strict("SFX\SCP\106\Laugh.ogg")
-    n\sounds[7] = LoadSound_Strict("SFX\SCP\106\Catch.ogg")
+    n\sounds[0] = LoadSound("SFX\SCP\106\Spawn.ogg")
+    n\sounds[1] = LoadSound("SFX\SCP\106\Breathing.ogg")
+    n\sounds[2] = LoadSound("SFX\SCP\106\Seen.ogg")
+    n\sounds[3] = LoadSound("SFX\SCP\106\Corrosion1.ogg")
+    n\sounds[4] = LoadSound("SFX\SCP\106\Corrosion2.ogg")
+    n\sounds[5] = LoadSound("SFX\SCP\106\Corrosion3.ogg")
+    n\sounds[6] = LoadSound("SFX\SCP\106\Laugh.ogg")
+    n\sounds[7] = LoadSound("SFX\SCP\106\Catch.ogg")
 
     n\timer = Rand(22000, 27000)
 End Function
@@ -76,7 +76,7 @@ Function UpdateNPCtype106(n.NPCs)
                     
                     SetAnimTime n\obj, 110
                     
-                    PlaySound_Strict(n\sounds[0])
+                    PlaySound(n\sounds[0])
                 End If
                 
                 ;Corrosion.
@@ -123,7 +123,7 @@ Function UpdateNPCtype106(n.NPCs)
                     
                     If (TimeInPosMilliSecs() - n\lastSeen > 60000) Then 
                         mainPlayer\camZoom = 40
-                        PlaySound_Strict(n\sounds[2])
+                        PlaySound(n\sounds[2])
                         n\lastSeen = TimeInPosMilliSecs()
                     EndIf
                 EndIf
@@ -203,10 +203,10 @@ Function UpdateNPCtype106(n.NPCs)
                     
                     ;TODO: Teleport to pocket dimension.
                     If Ceil(n\Frame) = 110 And (Not mainPlayer\godMode) Then
-                        PlaySound_Strict(DamageSFX(1))
-                        PlaySound_Strict(n\sounds[7])
+                        PlaySound(DamageSFX(1))
+                        PlaySound(n\sounds[7])
 
-                        PlaySound_Strict(n\sounds[6])
+                        PlaySound(n\sounds[6])
                         mainPlayer\fallTimer = Min(-1, mainPlayer\fallTimer)
                         PositionEntity(mainPlayer\head, EntityX(mainPlayer\cam, True), EntityY(mainPlayer\cam, True), EntityZ(mainPlayer\cam, True), True)
                         ResetEntity(mainPlayer\head)

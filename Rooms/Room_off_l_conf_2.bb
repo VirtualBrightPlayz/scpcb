@@ -53,7 +53,7 @@ Function UpdateEvent_off_l_conf_2(e.Events)
 					e\EventState = 1
 					;TODO: load temp sound.
 					;TODO: fix
-					;PlaySound_Strict HorrorSFX(5)
+					;PlaySound HorrorSFX(5)
 				EndIf
 			Else
 				If (EntityDistance(mainPlayer\collider, e\room\RoomDoors[0]\obj)<1.5) And (RemoteDoorOn) Then
@@ -65,7 +65,7 @@ Function UpdateEvent_off_l_conf_2(e.Events)
 				;HeartBeatVolume = CurveValue(0.5, HeartBeatVolume, 5)
 				mainPlayer\heartbeatIntensity = CurveValue(120, mainPlayer\heartbeatIntensity, 150) 
 				;TODO: fix
-				;e\SoundCHN = LoopSound2(OldManSFX(4), e\SoundCHN, mainPlayer\cam, e\room\obj, 5.0, 0.3)
+				;e\soundChannels[0] = LoopSound2(OldManSFX(4), e\soundChannels[0], mainPlayer\cam, e\room\obj, 5.0, 0.3)
 				Curr106\State=Curr106\State-timing\tickDuration*3
 			EndIf
 			

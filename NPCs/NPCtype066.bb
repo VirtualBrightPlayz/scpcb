@@ -4,7 +4,7 @@ Function InitializeNPCtype066(n.NPCs)
     EntityRadius n\Collider, 0.2
     EntityType n\Collider, HIT_PLAYER
     
-    n\obj = LoadAnimMesh_Strict("GFX\NPCs\scp-066.b3d")
+    n\obj = LoadAnimMesh("GFX\NPCs\scp-066.b3d")
     temp# = GetINIFloat("DATA\NPCs.ini", "SCP-066", "scale")/2.5
     ScaleEntity n\obj, temp, temp, temp		
     
@@ -82,7 +82,7 @@ Function UpdateNPCtype066(n.NPCs)
                         
                         Select Rand(1,6)
                             Case 1
-                                If n\Sound2=0 Then n\Sound2=LoadSound_Strict("SFX\SCP\066\Beethoven.ogg")
+                                If n\Sound2=0 Then n\Sound2=LoadSound("SFX\SCP\066\Beethoven.ogg")
                                 n\SoundChn2 = PlaySound2(n\Sound2, mainPlayer\cam, n\Collider)
                                 mainPlayer\camShake = 10.0
                             Case 2
@@ -102,7 +102,7 @@ Function UpdateNPCtype066(n.NPCs)
                                     mainPlayer\camShake = 5.0
                                     de.Decals = CreateDecal(1, EntityX(n\Collider), 0.01, EntityZ(n\Collider), 90, Rand(360), 0)
                                     de\Size = 0.3 : UpdateDecals
-                                    PlaySound_Strict(LoadTempSound("SFX\General\BodyFall.ogg"))
+                                    PlaySound(LoadTempSound("SFX\General\BodyFall.ogg"))
                                     If Distance(EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider),EntityX(n\Collider),EntityZ(n\Collider))<0.8 Then
                                         mainPlayer\injuries = mainPlayer\injuries + Rnd(0.3,0.5)
                                     EndIf
@@ -157,7 +157,7 @@ Function UpdateNPCtype066(n.NPCs)
     End Select
     
     If n\State > 1 Then
-        If n\Sound = 0 Then n\Sound = LoadSound_Strict("SFX\SCP\066\Rolling.ogg")
+        If n\Sound = 0 Then n\Sound = LoadSound("SFX\SCP\066\Rolling.ogg")
         If n\SoundChn<>0 Then
             If ChannelPlaying(n\SoundChn) Then
                 n\SoundChn = LoopSound2(n\Sound, n\SoundChn, mainPlayer\cam, n\Collider, 20)

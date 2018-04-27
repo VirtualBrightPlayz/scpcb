@@ -141,9 +141,9 @@ Function UpdateEventExit1(e.Events)
 				CameraFogMode(mainPlayer\cam, 0)
 				SecondaryLightOn = True
 				
-				Music(5) = LoadSound_Strict("SFX\Music\GateB1.ogg")
+				Music(5) = LoadSound("SFX\Music\GateB1.ogg")
 				DrawLoading(60,True)
-				Music(6) = LoadSound_Strict("SFX\Music\GateB2.ogg")
+				Music(6) = LoadSound("SFX\Music\GateB2.ogg")
 				DrawLoading(90,True)
 				
 				e\room\NPC[0] = CreateNPC(NPCtypeApache, e\room\x, 100.0, e\room\z)
@@ -157,7 +157,7 @@ Function UpdateEventExit1(e.Events)
 				pvt = CreatePivot()
 				PositionEntity pvt, EntityX(e\room\Objects[0],True), EntityY(e\room\Objects[0],True), EntityZ(e\room\Objects[0],True)
 				
-				e\room\Objects[0] = LoadMesh_Strict("GFX\map\exit1terrain.b3d", e\room\obj)
+				e\room\Objects[0] = LoadMesh("GFX\map\exit1terrain.b3d", e\room\obj)
 				ScaleEntity e\room\Objects[0],RoomScale,RoomScale,RoomScale,True
 				RotateEntity e\room\Objects[0],0,e\room\angle,0,True
 				PositionEntity(e\room\Objects[0], EntityX(pvt), EntityY(pvt), EntityZ(pvt), True)
@@ -213,7 +213,7 @@ Function UpdateEventExit1(e.Events)
 						
 						e\room\NPC[0]\State = 3
 						
-						e\SoundCHN = PlaySound_Strict (LoadTempSound("SFX\Ending\GateB\682Battle.ogg"))
+						e\soundChannels[0] = PlaySound (LoadTempSound("SFX\Ending\GateB\682Battle.ogg"))
 					EndIf								
 				Else
 					ShouldPlay = 6
@@ -261,7 +261,7 @@ Function UpdateEventExit1(e.Events)
 					ElseIf e\EventState > 35.0*70 And e\EventState < 36.5*70	
 						mainPlayer\camShake = 1.5		
 						If e\EventState-timing\tickDuration =< 35.0*70 Then
-							e\SoundCHN2 = PlaySound_Strict (LoadTempSound("SFX\Ending\GateB\DetonatingAlphaWarheads.ogg"))
+							e\soundChannels[1] = PlaySound (LoadTempSound("SFX\Ending\GateB\DetonatingAlphaWarheads.ogg"))
 						EndIf									
 					ElseIf e\EventState > 39.5*70 And e\EventState < 39.8*70		
 						mainPlayer\camShake = 1.0
@@ -282,15 +282,15 @@ Function UpdateEventExit1(e.Events)
 				
 				If e\EventState => 45.0*70 Then
 					If e\EventState < 75.0*70 Then 
-						If NuclearSirenSFX = 0 Then NuclearSirenSFX = LoadSound_Strict("SFX\Ending\GateB\Siren.ogg")
-						If e\SoundCHN = 0 Then
-							e\SoundCHN = PlaySound_Strict(NuclearSirenSFX)
+						If NuclearSirenSFX = 0 Then NuclearSirenSFX = LoadSound("SFX\Ending\GateB\Siren.ogg")
+						If e\soundChannels[0] = 0 Then
+							e\soundChannels[0] = PlaySound(NuclearSirenSFX)
 						Else
-							If ChannelPlaying(e\SoundCHN)=False Then e\SoundCHN = PlaySound_Strict(NuclearSirenSFX) 
+							If ChannelPlaying(e\soundChannels[0])=False Then e\soundChannels[0] = PlaySound(NuclearSirenSFX) 
 						EndIf
 					Else
 						If SelectedEnding = "" Then
-							If ChannelPlaying(e\SoundCHN)=False Then 
+							If ChannelPlaying(e\soundChannels[0])=False Then 
 								temp = True
 								For e2.Events = Each Events
 									If e2\EventName = "room2nuke" Then
@@ -304,7 +304,7 @@ Function UpdateEventExit1(e.Events)
 									SelectedEnding = "B2"
 								Else
 									LoadEventSound(e,"SFX\Ending\GateB\AlphaWarheadsFail.ogg")
-									e\SoundCHN = PlaySound_Strict(e\Sound)
+									e\soundChannels[0] = PlaySound(e\sounds[0])
 									
 									For i = 0 To 1
 										n.NPCs = CreateNPC(NPCtypeMTF, EntityX(e\room\Objects[18],True)+(i*0.4),EntityY(e\room\Objects[18],True)+0.29,EntityZ(e\room\Objects[18],True)+(i*0.4))
@@ -371,7 +371,7 @@ Function UpdateEventExit1(e.Events)
 									If n\NPCtype = NPCtypeMTF
 										If n\State = 5 And EntityDistance(n\Collider,mainPlayer\collider)<3.0
 											If e\EventState3 = 0.0
-												PlaySound_Strict LoadTempSound("SFX\Ending\GateB\PlayerDetect.ogg")
+												PlaySound LoadTempSound("SFX\Ending\GateB\PlayerDetect.ogg")
 												e\EventState3 = e\EventState3 + timing\tickDuration
 												For n2.NPCs = Each NPCs
 													If n2\NPCtype = n\NPCtype
@@ -408,7 +408,7 @@ Function UpdateEventExit1(e.Events)
 									ScaleSprite ent%,1.5,1.5
 									ShouldPlay = 0
 									mainPlayer\moveSpeed = 0
-									PlaySound_Strict LoadTempSound("SFX\Ending\GateB\Gunshot.ogg")
+									PlaySound LoadTempSound("SFX\Ending\GateB\Gunshot.ogg")
 									mainPlayer\godMode = 0
 									mainPlayer\noclip = 0
 									DeathMSG = ""
@@ -432,7 +432,7 @@ Function UpdateEventExit1(e.Events)
 				
 				If e\EventState > 26.5*70 Then
 					If e\room\Objects[12] = 0 Then
-						e\room\Objects[12] = LoadMesh_Strict("GFX\NPCs\682arm.b3d")
+						e\room\Objects[12] = LoadMesh("GFX\NPCs\682arm.b3d")
 						ScaleEntity e\room\Objects[12], 0.15,0.15,0.15
 						temp = (Min(((EntityDistance(e\room\NPC[3]\Collider,mainPlayer\collider)/RoomScale)-3000.0)/4,1000)+12192.0)*RoomScale
 						PositionEntity e\room\Objects[12],EntityX(e\room\NPC[3]\Collider),12192.0*RoomScale,EntityZ(e\room\NPC[3]\Collider)
@@ -443,7 +443,7 @@ Function UpdateEventExit1(e.Events)
 							angle# = WrapAngle(EntityRoll(e\room\Objects[12]))
 							TurnEntity e\room\Objects[12], 0,0,(5.0+Abs(Sin(angle))*2)*timing\tickDuration
 							If angle < 270 And WrapAngle(EntityRoll(e\room\Objects[12]))=> 270 Then
-								PlaySound_Strict LoadTempSound("SFX\Character\Apache\Crash1.ogg")
+								PlaySound LoadTempSound("SFX\Character\Apache\Crash1.ogg")
 								e\room\NPC[3]\State = 4
 								e\room\NPC[3]\State2 = 1.0
 								e\room\NPC[3]\EnemyX = EntityX(e\room\Objects[7],True)

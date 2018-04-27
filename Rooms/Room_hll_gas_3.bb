@@ -40,9 +40,9 @@ Function UpdateEventRoom3pitduck(e.Events)
 	;[Block]
 	If mainPlayer\currRoom = e\room Then
 		If e\room\Objects[2] = 0 Then
-			e\room\Objects[2] =	LoadMesh_Strict("GFX\npcs\duck_low_res.b3d")
+			e\room\Objects[2] =	LoadMesh("GFX\npcs\duck_low_res.b3d")
 			ScaleEntity(e\room\Objects[2], 0.07, 0.07, 0.07)
-			tex = LoadTexture_Strict("GFX\npcs\duck1.png")
+			tex = LoadTexture("GFX\npcs\duck1.png")
 			EntityTexture e\room\Objects[2], tex
 			FreeTexture tex
 			PositionEntity (e\room\Objects[2], EntityX(e\room\Objects[0],True), EntityY(e\room\Objects[0],True), EntityZ(e\room\Objects[0],True))
@@ -55,11 +55,11 @@ Function UpdateEventRoom3pitduck(e.Events)
 				e\EventState = e\EventState + timing\tickDuration
 				If Rand(200)=1 And e\EventState > 300 Then
 					e\EventState = 0
-					e\SoundCHN = PlaySound2(e\Sound, mainPlayer\cam, e\room\Objects[2],6.0)
+					e\soundChannels[0] = PlaySound2(e\sounds[0], mainPlayer\cam, e\room\Objects[2],6.0)
 				EndIf
 			Else
-				If e\SoundCHN <> 0 Then
-					If ChannelPlaying(e\SoundCHN) Then StopChannel e\SoundCHN
+				If e\soundChannels[0] <> 0 Then
+					If ChannelPlaying(e\soundChannels[0]) Then StopChannel e\soundChannels[0]
 				EndIf
 			EndIf						
 		EndIf
@@ -83,7 +83,7 @@ Function UpdateEventRoom3pit1048(e.Events)
 	;[Block]
 	If mainPlayer\currRoom = e\room Then
 		If e\room\Objects[2] = 0 Then
-			e\room\Objects[2] =	LoadAnimMesh_Strict("GFX\npcs\scp-1048pp.b3d")
+			e\room\Objects[2] =	LoadAnimMesh("GFX\npcs\scp-1048pp.b3d")
 			ScaleEntity e\room\Objects[2], 0.05,0.05,0.05
 			SetAnimTime(e\room\Objects[2], 414)
 			
@@ -93,7 +93,7 @@ Function UpdateEventRoom3pit1048(e.Events)
 			For itt.ItemTemplates = Each ItemTemplates
 				If itt\name = "Drawing" Then
 					If itt\img<>0 Then FreeImage itt\img	
-					itt\img = LoadImage_Strict(imgPath)
+					itt\img = LoadImage(imgPath)
 					MaskImage(itt\img, 255,0,255)
 					itt\imgpath = imgPath
 					
@@ -101,8 +101,8 @@ Function UpdateEventRoom3pit1048(e.Events)
 				EndIf
 			Next
 			
-			tex% = LoadTexture_Strict(imgPath)
-			Local brush% = LoadBrush_Strict(imgPath, 1)
+			tex% = LoadTexture(imgPath)
+			Local brush% = LoadBrush(imgPath, 1)
 			
 			For i = 1 To CountSurfaces(e\room\Objects[2])
 				sf% = GetSurface(e\room\Objects[2],i)
@@ -123,7 +123,7 @@ Function UpdateEventRoom3pit1048(e.Events)
 			
 			PositionEntity (e\room\Objects[2], EntityX(e\room\Objects[0],True), EntityY(e\room\Objects[0],True), EntityZ(e\room\Objects[0],True))
 			
-			;e\Sound = LoadSound_Strict("SFX\SCP\Joke\Saxophone.ogg")
+			;e\sounds[0] = LoadSound("SFX\SCP\Joke\Saxophone.ogg")
 		Else
 			PointEntity e\room\Objects[2], mainPlayer\collider
 			RotateEntity(e\room\Objects[2], -90, EntityYaw(e\room\Objects[2],True),0, True)

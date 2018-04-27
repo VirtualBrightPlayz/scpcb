@@ -1,7 +1,7 @@
 Function InitializeNPCtype372(n.NPCs)
     n\Collider = CreatePivot()
     EntityRadius n\Collider, 0.2
-    n\obj = LoadAnimMesh_Strict("GFX\npcs\372.b3d")
+    n\obj = LoadAnimMesh("GFX\npcs\372.b3d")
     
     temp# = 0.35 / MeshWidth(n\obj)
     ScaleEntity n\obj, temp, temp, temp

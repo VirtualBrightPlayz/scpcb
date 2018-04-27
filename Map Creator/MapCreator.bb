@@ -62,7 +62,7 @@ EndIf
 
 ChangeDir ".."
 
-Global ButtonSFX% = LoadSound_Strict("SFX\Interact\Button.ogg")
+Global ButtonSFX% = LoadSound("SFX\Interact\Button.ogg")
 
 ChangeDir "Map Creator"
 
@@ -366,17 +366,17 @@ End Function
 
 ChangeDir ".."
 
-Global Font1 = LoadFont_Strict("GFX\cour.ttf", 16*ResFactor)
+Global Font1 = LoadFont("GFX\cour.ttf", 16*ResFactor)
 
 ChangeDir "Map Creator"
 SetFont Font1
 
 Dim MapIcons(5,4)
-MapIcons(ROOM1, 0)=LoadImage_Strict("room1.png")
-MapIcons(ROOM2, 0)=LoadImage_Strict("room2.png")
-MapIcons(ROOM2C, 0)=LoadImage_Strict("room2C.png")
-MapIcons(ROOM3, 0)=LoadImage_Strict("room3.png")
-MapIcons(ROOM4, 0)=LoadImage_Strict("room4.png")
+MapIcons(ROOM1, 0)=LoadImage("room1.png")
+MapIcons(ROOM2, 0)=LoadImage("room2.png")
+MapIcons(ROOM2C, 0)=LoadImage("room2C.png")
+MapIcons(ROOM3, 0)=LoadImage("room3.png")
+MapIcons(ROOM4, 0)=LoadImage("room4.png")
 
 For i = ROOM1 To ROOM4
 	MaskImage MapIcons(i,0), 255,255,255
@@ -392,7 +392,7 @@ For i = ROOM1 To ROOM4
 Next
 
 Dim Arrows(4)
-Arrows(0) = LoadImage_Strict("arrows.png")
+Arrows(0) = LoadImage("arrows.png")
 ScaleImage Arrows(0),ResFactor,ResFactor
 HandleImage Arrows(0),ImageWidth(Arrows(0))/2,ImageHeight(Arrows(0))/2
 For i = 1 To 3
@@ -435,7 +435,7 @@ For rt.RoomTemplates = Each RoomTemplates
 	RoomTemplateAmount = RoomTemplateAmount + 1
 Next
 
-Global TickIMG = LoadImage_Strict("tickimg.png")
+Global TickIMG = LoadImage("tickimg.png")
 ScaleImage TickIMG,ResFactor,ResFactor
 
 strtemp$ = "aaaa"

@@ -3,7 +3,7 @@ Function InitializeNPCtype096(n.NPCs)
     n\Collider = CreatePivot()
     EntityRadius n\Collider, 0.3
     EntityType n\Collider, HIT_PLAYER
-    n\obj = LoadAnimMesh_Strict("GFX\npcs\scp096.b3d")
+    n\obj = LoadAnimMesh("GFX\npcs\scp096.b3d")
     
     n\Speed = (GetINIFloat("DATA\NPCs.ini", "SCP-096", "speed") / 100.0)
     
@@ -20,7 +20,7 @@ Function UpdateNPCtype096(n.NPCs)
         Case 0
             If dist<8.0 Then
                 If n\Sound = 0 Then
-                    n\Sound = LoadSound_Strict("SFX\Music\096.ogg")
+                    n\Sound = LoadSound("SFX\Music\096.ogg")
                 Else
                     n\SoundChn = LoopSound2(n\Sound, n\SoundChn, mainPlayer\cam, n\Collider, 8.0, 1.0)
                 EndIf
@@ -38,14 +38,14 @@ Function UpdateNPCtype096(n.NPCs)
                             If ProjectedY()>0 And ProjectedY()<userOptions\screenHeight Then
                                 If EntityVisible(mainPlayer\collider, n\Collider) Then
                                     If (mainPlayer\blinkTimer < - 16 Or mainPlayer\blinkTimer > - 6)
-                                        PlaySound_Strict LoadTempSound("SFX\SCP\096\Triggered.ogg")
+                                        PlaySound LoadTempSound("SFX\SCP\096\Triggered.ogg")
                                         
                                         mainPlayer\camZoom = 10
                                         
                                         n\Frame = 307
                                         ;SetAnimTime n\obj, 307
                                         StopChannel n\SoundChn
-                                        FreeSound_Strict n\Sound
+                                        FreeSound n\Sound
                                         n\Sound = 0
                                         n\State = 1
                                     EndIf
@@ -62,18 +62,18 @@ Function UpdateNPCtype096(n.NPCs)
             
             If n\Target = Null Then 
                 If n\Sound = 0 Then
-                    n\Sound = LoadSound_Strict("SFX\SCP\096\Scream.ogg")
+                    n\Sound = LoadSound("SFX\SCP\096\Scream.ogg")
                 Else
                     n\SoundChn = LoopSound2(n\Sound, n\SoundChn, mainPlayer\cam, n\Collider, 7.5, 1.0)
                 EndIf
                 
                 If n\Sound2 = 0 Then
-                    n\Sound2 = LoadSound_Strict("SFX\Music\096Chase.ogg")
+                    n\Sound2 = LoadSound("SFX\Music\096Chase.ogg")
                 Else
                     If n\SoundChn2 = 0 Then
-                        n\SoundChn2 = PlaySound_Strict (n\Sound2)
+                        n\SoundChn2 = PlaySound (n\Sound2)
                     Else
-                        If (Not ChannelPlaying(n\SoundChn2)) Then n\SoundChn2 = PlaySound_Strict(n\Sound2)
+                        If (Not ChannelPlaying(n\SoundChn2)) Then n\SoundChn2 = PlaySound(n\Sound2)
                         ChannelVolume(n\SoundChn2, Min(Max(8.0-dist,0.6),1.0)*userOptions\soundVolume)
                     EndIf
                 EndIf
@@ -112,7 +112,7 @@ Function UpdateNPCtype096(n.NPCs)
                             
                             If n\Target=Null Then
                                 If (Not mainPlayer\godMode) Then 
-                                    PlaySound_Strict DamageSFX(4)
+                                    PlaySound DamageSFX(4)
                                     
                                     pvt = CreatePivot()
                                     mainPlayer\camShake = 30
@@ -228,7 +228,7 @@ Function UpdateNPCtype096(n.NPCs)
             
         Case 1,2,3
             If n\Sound = 0 Then
-                n\Sound = LoadSound_Strict("SFX\Music\096Angered.ogg")
+                n\Sound = LoadSound("SFX\Music\096Angered.ogg")
             Else
                 n\SoundChn = LoopSound2(n\Sound, n\SoundChn, mainPlayer\cam, n\Collider, 10.0, 1.0)
             EndIf
@@ -261,7 +261,7 @@ Function UpdateNPCtype096(n.NPCs)
                     If n\Frame>1000.9 Then 
                         n\State = 4
                         StopChannel n\SoundChn
-                        FreeSound_Strict n\Sound : n\Sound = 0
+                        FreeSound n\Sound : n\Sound = 0
                     EndIf
                 Else
                     AnimateNPC(n, 892,978, 0.3)
@@ -272,7 +272,7 @@ Function UpdateNPCtype096(n.NPCs)
             If dist < 16.0 Then 
             
                 If n\Sound = 0 Then
-                    n\Sound = LoadSound_Strict("SFX\Music\096.ogg")
+                    n\Sound = LoadSound("SFX\Music\096.ogg")
                 Else
                     n\SoundChn = LoopSound2(n\Sound, n\SoundChn, mainPlayer\cam, n\Collider, 14.0, 1.0)
                 EndIf
@@ -335,14 +335,14 @@ Function UpdateNPCtype096(n.NPCs)
                             If ProjectedY()>0 And ProjectedY()<userOptions\screenHeight Then
                                 If EntityVisible(mainPlayer\collider, n\Collider) Then
                                     If (mainPlayer\blinkTimer < - 16 Or mainPlayer\blinkTimer > - 6)
-                                        PlaySound_Strict LoadTempSound("SFX\SCP\096\Triggered.ogg")
+                                        PlaySound LoadTempSound("SFX\SCP\096\Triggered.ogg")
                                         
                                         mainPlayer\camZoom = 10
                                         
                                         n\Frame = 833
                                         ;SetAnimTime n\obj, 833
                                         StopChannel n\SoundChn
-                                        FreeSound_Strict n\Sound
+                                        FreeSound n\Sound
                                         n\Sound = 0
                                         n\State = 2
                                     EndIf

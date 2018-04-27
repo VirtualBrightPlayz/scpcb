@@ -698,7 +698,7 @@ Function UpdateEvent_tnnl_maintenance_2(e.Events)
 		EndIf
 		
 		If EntityY(mainPlayer\collider,True)>4.0 Then
-			If Music(7)=0 Then Music(7) = LoadSound_Strict("SFX\Music\Room3Storage.ogg") 
+			If Music(7)=0 Then Music(7) = LoadSound("SFX\Music\Room3Storage.ogg") 
 			ShouldPlay = 7
 			
 			If e\EventState = 0 Then

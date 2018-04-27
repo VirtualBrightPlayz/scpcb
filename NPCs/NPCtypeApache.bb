@@ -4,9 +4,9 @@ Function InitializeNPCtypeApache(n.NPCs)
     n\MaxGravity = 0.0
     n\Collider = CreatePivot()
     EntityRadius n\Collider, 0.2
-    n\obj = CopyEntity(ApacheObj);LoadAnimMesh_Strict("GFX\apache.b3d")
+    n\obj = CopyEntity(ApacheObj);LoadAnimMesh("GFX\apache.b3d")
     
-    n\obj2 = CopyEntity(ApacheRotorObj);LoadAnimMesh_Strict("GFX\apacherotor.b3d",n\obj)
+    n\obj2 = CopyEntity(ApacheRotorObj);LoadAnimMesh("GFX\apacherotor.b3d",n\obj)
     EntityParent n\obj2,n\obj
     
     For i = -1 To 1 Step 2
@@ -15,7 +15,7 @@ Function InitializeNPCtypeApache(n.NPCs)
         EntityAlpha rotor2, 0.5
     Next
     
-    n\obj3 = LoadAnimMesh_Strict("GFX\apacherotor2.b3d",n\obj)
+    n\obj3 = LoadAnimMesh("GFX\apacherotor2.b3d",n\obj)
     PositionEntity n\obj3, 0.0, 2.15, -5.48
     
     EntityType n\Collider, HIT_APACHE
@@ -168,10 +168,10 @@ Function UpdateNPCtypeApache(n.NPCs)
                 PositionEntity(n\Collider, EntityX(n\obj), EntityY(n\obj), EntityZ(n\obj))
                 
                 If EntityDistance(n\obj, target) <0.3 Then
-                    If TempSound2 <> 0 Then FreeSound_Strict TempSound2 : TempSound2 = 0
-                    TempSound2 = LoadSound_Strict("SFX\Character\Apache\Crash"+Rand(1,2)+".ogg")
+                    If TempSound2 <> 0 Then FreeSound TempSound2 : TempSound2 = 0
+                    TempSound2 = LoadSound("SFX\Character\Apache\Crash"+Rand(1,2)+".ogg")
                     mainPlayer\camShake = Max(mainPlayer\camShake, 3.0)
-                    PlaySound_Strict TempSound2
+                    PlaySound TempSound2
                     n\State = 5
                 EndIf
                 

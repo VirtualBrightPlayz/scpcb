@@ -34,16 +34,16 @@ Function LoadEntities()
 	;Listener = CreateListener(mainPlayer\cam)
 	
 	DrawLoading(5)
-	TeslaTexture = LoadTexture_Strict("GFX\map\tesla.jpg", 1+2)
+	TeslaTexture = LoadTexture("GFX\map\tesla.jpg", 1+2)
 	
-	LiquidObj = LoadMesh_Strict("GFX\items\cupliquid.x") ;optimized the cups dispensed by 294
+	LiquidObj = LoadMesh("GFX\items\cupliquid.x") ;optimized the cups dispensed by 294
 	HideEntity LiquidObj
 	
-	MTFObj = LoadAnimMesh_Strict("GFX\npcs\MTF2.b3d") ;optimized MTFs
-	;GuardTex = LoadTexture_Strict("GFX\npcs\body.jpg") ;optimized the guards even more
+	MTFObj = LoadAnimMesh("GFX\npcs\MTF2.b3d") ;optimized MTFs
+	;GuardTex = LoadTexture("GFX\npcs\body.jpg") ;optimized the guards even more
 	
 	;If BumpEnabled Then
-	;	bump1 = LoadTexture_Strict("GFX\npcs\mtf_newnormal01.png")
+	;	bump1 = LoadTexture("GFX\npcs\mtf_newnormal01.png")
 	;	;TextureBlend bump1, FE_BUMP ;USE DOT3
 	;		
 	;	For i = 2 To CountSurfaces(MTFObj)
@@ -66,51 +66,51 @@ Function LoadEntities()
 	
 	
 	
-	ClassDObj = LoadAnimMesh_Strict("GFX\npcs\classd.b3d") ;optimized Class-D's and scientists/researchers
-	ApacheObj = LoadAnimMesh_Strict("GFX\apache.b3d") ;optimized Apaches (helicopters)
-	ApacheRotorObj = LoadAnimMesh_Strict("GFX\apacherotor.b3d") ;optimized the Apaches even more
+	ClassDObj = LoadAnimMesh("GFX\npcs\classd.b3d") ;optimized Class-D's and scientists/researchers
+	ApacheObj = LoadAnimMesh("GFX\apache.b3d") ;optimized Apaches (helicopters)
+	ApacheRotorObj = LoadAnimMesh("GFX\apacherotor.b3d") ;optimized the Apaches even more
 	
 	HideEntity MTFObj
 	HideEntity ClassDObj
 	HideEntity ApacheObj
 	HideEntity ApacheRotorObj
 	
-	LightSpriteTex(0) = LoadTexture_Strict("GFX\light1.jpg", 1)
-	LightSpriteTex(1) = LoadTexture_Strict("GFX\light2.jpg", 1)
-	LightSpriteTex(2) = LoadTexture_Strict("GFX\lightsprite.jpg",1)
+	LightSpriteTex(0) = LoadTexture("GFX\light1.jpg", 1)
+	LightSpriteTex(1) = LoadTexture("GFX\light2.jpg", 1)
+	LightSpriteTex(2) = LoadTexture("GFX\lightsprite.jpg",1)
 	
 	DrawLoading(10)
 	
-	DoorOBJ = LoadMesh_Strict("GFX\map\door01.x")
+	DoorOBJ = LoadMesh("GFX\map\door01.x")
 	HideEntity DoorOBJ
-	DoorFrameOBJ = LoadMesh_Strict("GFX\map\doorframe.x")
+	DoorFrameOBJ = LoadMesh("GFX\map\doorframe.x")
 	HideEntity DoorFrameOBJ
 	
-	HeavyDoorObj(0) = LoadMesh_Strict("GFX\map\heavydoor1.x")
+	HeavyDoorObj(0) = LoadMesh("GFX\map\heavydoor1.x")
 	HideEntity HeavyDoorObj(0)
-	HeavyDoorObj(1) = LoadMesh_Strict("GFX\map\heavydoor2.x")
+	HeavyDoorObj(1) = LoadMesh("GFX\map\heavydoor2.x")
 	HideEntity HeavyDoorObj(1)
 	
-	DoorColl = LoadMesh_Strict("GFX\map\doorcoll.x")
+	DoorColl = LoadMesh("GFX\map\doorcoll.x")
 	HideEntity DoorColl
 	
-	ButtonOBJ = LoadMesh_Strict("GFX\map\Button.x")
+	ButtonOBJ = LoadMesh("GFX\map\Button.x")
 	HideEntity ButtonOBJ
-	ButtonKeyOBJ = LoadMesh_Strict("GFX\map\ButtonKeycard.x")
+	ButtonKeyOBJ = LoadMesh("GFX\map\ButtonKeycard.x")
 	HideEntity ButtonKeyOBJ
-	ButtonCodeOBJ = LoadMesh_Strict("GFX\map\ButtonCode.x")
+	ButtonCodeOBJ = LoadMesh("GFX\map\ButtonCode.x")
 	HideEntity ButtonCodeOBJ	
-	ButtonScannerOBJ = LoadMesh_Strict("GFX\map\ButtonScanner.x")
+	ButtonScannerOBJ = LoadMesh("GFX\map\ButtonScanner.x")
 	HideEntity ButtonScannerOBJ	
 	
-	BigDoorOBJ(0) = LoadMesh_Strict("GFX\map\ContDoorLeft.x")
+	BigDoorOBJ(0) = LoadMesh("GFX\map\ContDoorLeft.x")
 	HideEntity BigDoorOBJ(0)
-	BigDoorOBJ(1) = LoadMesh_Strict("GFX\map\ContDoorRight.x")
+	BigDoorOBJ(1) = LoadMesh("GFX\map\ContDoorRight.x")
 	HideEntity BigDoorOBJ(1)
 	
-	LeverBaseOBJ = LoadMesh_Strict("GFX\map\leverbase.x")
+	LeverBaseOBJ = LoadMesh("GFX\map\leverbase.x")
 	HideEntity LeverBaseOBJ
-	LeverOBJ = LoadMesh_Strict("GFX\map\leverhandle.x")
+	LeverOBJ = LoadMesh("GFX\map\leverhandle.x")
 	HideEntity LeverOBJ
 	
 	;For i = 0 To 1
@@ -118,9 +118,9 @@ Function LoadEntities()
 	;	;If BumpEnabled And 0 Then
 	;	If BumpEnabled
 	;		
-	;		Local bumptex = LoadTexture_Strict("GFX\map\containmentdoorsbump.jpg")
+	;		Local bumptex = LoadTexture("GFX\map\containmentdoorsbump.jpg")
 	;		;TextureBlend bumptex, FE_BUMP
-	;		Local tex = LoadTexture_Strict("GFX\map\containment_doors.jpg")	
+	;		Local tex = LoadTexture("GFX\map\containment_doors.jpg")	
 	;		EntityTexture BigDoorOBJ(i), bumptex, 0, 0
 	;		EntityTexture BigDoorOBJ(i), tex, 0, 1
 	;		
@@ -134,49 +134,49 @@ Function LoadEntities()
 	DrawLoading(15)
 	
 	For i = 0 To 5
-		GorePics(i) = LoadTexture_Strict("GFX\895pics\pic" + (i + 1) + ".jpg")
+		GorePics(i) = LoadTexture("GFX\895pics\pic" + (i + 1) + ".jpg")
 	Next
 	
-	OldAiPics(0) = LoadTexture_Strict("GFX\AIface.jpg")
-	OldAiPics(1) = LoadTexture_Strict("GFX\AIface2.jpg")	
+	OldAiPics(0) = LoadTexture("GFX\AIface.jpg")
+	OldAiPics(1) = LoadTexture("GFX\AIface2.jpg")	
 	
 	DrawLoading(20)
 	
 	For i = 0 To 6
-		DecalTextures(i) = LoadTexture_Strict("GFX\decal" + (i + 1) + ".png", 1 + 2)
+		DecalTextures(i) = LoadTexture("GFX\decal" + (i + 1) + ".png", 1 + 2)
 	Next
-	DecalTextures(7) = LoadTexture_Strict("GFX\items\INVpaperstrips.jpg", 1 + 2)
+	DecalTextures(7) = LoadTexture("GFX\items\INVpaperstrips.jpg", 1 + 2)
 	For i = 8 To 12
-		DecalTextures(i) = LoadTexture_Strict("GFX\decalpd"+(i-7)+".jpg", 1 + 2)	
+		DecalTextures(i) = LoadTexture("GFX\decalpd"+(i-7)+".jpg", 1 + 2)	
 	Next
 	For i = 13 To 14
-		DecalTextures(i) = LoadTexture_Strict("GFX\bullethole"+(i-12)+".jpg", 1 + 2)	
+		DecalTextures(i) = LoadTexture("GFX\bullethole"+(i-12)+".jpg", 1 + 2)	
 	Next	
 	For i = 15 To 16
-		DecalTextures(i) = LoadTexture_Strict("GFX\blooddrop"+(i-14)+".png", 1 + 2)	
+		DecalTextures(i) = LoadTexture("GFX\blooddrop"+(i-14)+".png", 1 + 2)	
 	Next
-	DecalTextures(17) = LoadTexture_Strict("GFX\decal8.png", 1 + 2)	
-	DecalTextures(18) = LoadTexture_Strict("GFX\decalpd6.dc", 1 + 2)	
-	DecalTextures(19) = LoadTexture_Strict("GFX\decal19.png", 1 + 2)
+	DecalTextures(17) = LoadTexture("GFX\decal8.png", 1 + 2)	
+	DecalTextures(18) = LoadTexture("GFX\decalpd6.dc", 1 + 2)	
+	DecalTextures(19) = LoadTexture("GFX\decal19.png", 1 + 2)
 	
 	DrawLoading(25)
 	
-	Monitor = LoadMesh_Strict("GFX\map\monitor.b3d")
+	Monitor = LoadMesh("GFX\map\monitor.b3d")
 	HideEntity Monitor
-	MonitorTexture = LoadTexture_Strict("GFX\monitortexture.jpg")
+	MonitorTexture = LoadTexture("GFX\monitortexture.jpg")
 	
-	CamBaseOBJ = LoadMesh_Strict("GFX\map\cambase.x")
+	CamBaseOBJ = LoadMesh("GFX\map\cambase.x")
 	HideEntity(CamBaseOBJ)
-	CamOBJ = LoadMesh_Strict("GFX\map\CamHead.b3d")
+	CamOBJ = LoadMesh("GFX\map\CamHead.b3d")
 	HideEntity(CamOBJ)
 	
-	Monitor2 = LoadMesh_Strict("GFX\map\monitor_checkpoint.b3d")
+	Monitor2 = LoadMesh("GFX\map\monitor_checkpoint.b3d")
 	HideEntity Monitor2
-	Monitor3 = LoadMesh_Strict("GFX\map\monitor_checkpoint.b3d")
+	Monitor3 = LoadMesh("GFX\map\monitor_checkpoint.b3d")
 	HideEntity Monitor3
-	MonitorTexture2 = LoadTexture_Strict("GFX\map\LockdownScreen2.jpg")
-	MonitorTexture3 = LoadTexture_Strict("GFX\map\LockdownScreen.jpg")
-	MonitorTexture4 = LoadTexture_Strict("GFX\map\LockdownScreen3.jpg")
+	MonitorTexture2 = LoadTexture("GFX\map\LockdownScreen2.jpg")
+	MonitorTexture3 = LoadTexture("GFX\map\LockdownScreen.jpg")
+	MonitorTexture4 = LoadTexture("GFX\map\LockdownScreen3.jpg")
 	MonitorTextureOff = CreateTexture(1,1)
 	SetBuffer TextureBuffer(MonitorTextureOff)
 	ClsColor 0,0,0
@@ -218,14 +218,14 @@ Function LoadEntities()
 	
 	InitItemTemplates()
 	
-	ParticleTextures(0) = LoadTexture_Strict("GFX\smoke.png", 1 + 2)
-	ParticleTextures(1) = LoadTexture_Strict("GFX\flash.jpg", 1 + 2)
-	ParticleTextures(2) = LoadTexture_Strict("GFX\dust.jpg", 1 + 2)
-	ParticleTextures(3) = LoadTexture_Strict("GFX\npcs\hg.pt", 1 + 2)
-	ParticleTextures(4) = LoadTexture_Strict("GFX\map\sun.jpg", 1 + 2)
-	ParticleTextures(5) = LoadTexture_Strict("GFX\bloodsprite.png", 1 + 2)
-	ParticleTextures(6) = LoadTexture_Strict("GFX\smoke2.png", 1 + 2)
-	ParticleTextures(7) = LoadTexture_Strict("GFX\spark.jpg", 1 + 2)
+	ParticleTextures(0) = LoadTexture("GFX\smoke.png", 1 + 2)
+	ParticleTextures(1) = LoadTexture("GFX\flash.jpg", 1 + 2)
+	ParticleTextures(2) = LoadTexture("GFX\dust.jpg", 1 + 2)
+	ParticleTextures(3) = LoadTexture("GFX\npcs\hg.pt", 1 + 2)
+	ParticleTextures(4) = LoadTexture("GFX\map\sun.jpg", 1 + 2)
+	ParticleTextures(5) = LoadTexture("GFX\bloodsprite.png", 1 + 2)
+	ParticleTextures(6) = LoadTexture("GFX\smoke2.png", 1 + 2)
+	ParticleTextures(7) = LoadTexture("GFX\spark.jpg", 1 + 2)
 	
 	LoadMaterials("DATA\materials.ini")
 	
@@ -431,7 +431,7 @@ Function InitLoadGame()
 				;[Block]
 				DrawLoading(91)
 				e\room\Objects[0] = CreatePlane()
-				Local planetex% = LoadTexture_Strict("GFX\map\dimension1499\grit3.jpg")
+				Local planetex% = LoadTexture("GFX\map\dimension1499\grit3.jpg")
 				EntityTexture e\room\Objects[0],planetex%
 				FreeTexture planetex%
 				PositionEntity e\room\Objects[0],0,EntityY(e\room\obj),0
@@ -441,7 +441,7 @@ Function InitLoadGame()
 				NTF_1499Sky = sky_CreateSky("GFX\map\sky\1499sky")
 				DrawLoading(93)
 				For i = 1 To 15
-					e\room\Objects[i] = LoadMesh_Strict("GFX\map\dimension1499\1499object"+i+".b3d")
+					e\room\Objects[i] = LoadMesh("GFX\map\dimension1499\1499object"+i+".b3d")
 					HideEntity e\room\Objects[i]
 				Next
 				DrawLoading(96)
@@ -453,7 +453,7 @@ Function InitLoadGame()
 				For i = -2 To 2 Step 2
 					ch = CreateChunk(-1,x#*(i*2.5),EntityY(e\room\obj),z#)
 				Next
-				If Music(18)=0 Then Music(18) = LoadSound_Strict("SFX\Music\1499.ogg")
+				If Music(18)=0 Then Music(18) = LoadSound("SFX\Music\1499.ogg")
 				DrawLoading(98)
 				UpdateChunks(e\room,15,False)
 				;MoveEntity mainPlayer\collider,0,10,0
@@ -579,8 +579,8 @@ Function NullGame()
 	
 	Local e.Events
 	For e.Events = Each Events
-		If e\Sound<>0 Then FreeSound_Strict e\Sound
-		If e\Sound2<>0 Then FreeSound_Strict e\Sound2
+		If e\sounds[0]<>0 Then FreeSound e\sounds[0]
+		If e\sounds[1]<>0 Then FreeSound e\sounds[1]
 		Delete e
 	Next
 	

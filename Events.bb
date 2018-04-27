@@ -1,3 +1,18 @@
+Type Events
+	Field EventName$
+	Field room.Rooms
+	
+	Field EventState#, EventState2#, EventState3#
+	
+	;TODO: Probably remove this bs.
+	Field EventStr$
+	
+	Field img%
+	
+	Field soundChannels[2]
+	Field sounds[2]
+End Type
+
 Function CreateEvent.Events(eventname$, roomname$, id%, prob# = 0.0)
 	;roomname = the name of the room(s) you want the event to be assigned to
 	
@@ -49,9 +64,21 @@ Function CreateEvent.Events(eventname$, roomname$, id%, prob# = 0.0)
 End Function
 
 Function RemoveEvent(e.Events)
-	If e\Sound<>0 Then FreeSound_Strict e\Sound
-	If e\Sound2<>0 Then FreeSound_Strict e\Sound2
-	If e\img<>0 Then FreeImage e\img
+	Local i%
+	For i = 0 To 1
+		If (e\sounds[i] <> 0) Then
+			FreeSound(e\sounds[i])
+		EndIf
+		
+		If (e\soundChannels[i] <> 0) Then
+			If (ChannelPlaying(e\soundChannels[i])) Then
+				StopChannel(e\soundChannels[i])
+			EndIf
+		EndIf
+	Next
+	
+	If (e\img<>0) Then FreeImage e\img
+	
 	Delete e
 End Function
 
@@ -357,8 +384,8 @@ Function UpdateEvents()
 		
 		If ExplosionTimer < 140.0 Then
 			If ExplosionTimer-timing\tickDuration < 5.0 Then
-				ExplosionSFX = LoadSound_Strict("SFX\Ending\GateB\Nuke1.ogg")
-				PlaySound_Strict ExplosionSFX
+				ExplosionSFX = LoadSound("SFX\Ending\GateB\Nuke1.ogg")
+				PlaySound ExplosionSFX
 				mainPlayer\camShake = 10.0
 				ExplosionTimer = 5.0
 			EndIf
@@ -368,8 +395,8 @@ Function UpdateEvents()
 			mainPlayer\camShake = Min((ExplosionTimer/20.0),20.0)
 			If ExplosionTimer-timing\tickDuration < 140.0 Then
 				mainPlayer\blinkTimer = 1.0
-				ExplosionSFX = LoadSound_Strict("SFX\Ending\GateB\Nuke2.ogg")
-				PlaySound_Strict ExplosionSFX				
+				ExplosionSFX = LoadSound("SFX\Ending\GateB\Nuke2.ogg")
+				PlaySound ExplosionSFX				
 				For i = 0 To 40
 					p.Particles = CreateParticle(EntityX(mainPlayer\collider)+Rnd(-0.5,0.5),EntityY(mainPlayer\collider)-Rnd(0.2,1.5),EntityZ(mainPlayer\collider)+Rnd(-0.5,0.5),0, Rnd(0.2,0.6), 0.0, 350)	
 					RotateEntity p\pvt,-90,0,0,True

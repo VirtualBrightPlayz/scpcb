@@ -277,7 +277,7 @@ Function UpdateDoors()
 					EndIf
 					If d\AutoClose And RemoteDoorOn = True Then
 						If EntityDistance(mainPlayer\cam, d\obj) < 2.1 Then
-							;PlaySound_Strict HorrorSFX(7) ;TODO: fix
+							;PlaySound HorrorSFX(7) ;TODO: fix
 							d\open = False : PlaySound2(CloseDoorSFX(Min(d\dir,1), Rand(0, 2)), mainPlayer\cam, d\obj) : d\AutoClose = False
 						EndIf
 					End If				
@@ -387,12 +387,12 @@ Function UseDoor(d.Doors, showmsg%=True)
 				mainPlayer\selectedItem = Null
 				If showmsg = True Then
 					If d\locked Then
-						PlaySound_Strict KeyCardSFX2
+						PlaySound KeyCardSFX2
 						Msg = "The keycard was inserted into the slot but nothing happened."
 						MsgTimer = 70 * 5
 						Return
 					Else
-						PlaySound_Strict KeyCardSFX1
+						PlaySound KeyCardSFX1
 						Msg = "The keycard was inserted into the slot."
 						MsgTimer = 70 * 5		
 					EndIf
@@ -400,7 +400,7 @@ Function UseDoor(d.Doors, showmsg%=True)
 			Else
 				mainPlayer\selectedItem = Null
 				If showmsg = True Then 
-					PlaySound_Strict KeyCardSFX2					
+					PlaySound KeyCardSFX2					
 					If d\locked Then
 						Msg = "The keycard was inserted into the slot but nothing happened."
 					Else
@@ -417,12 +417,12 @@ Function UseDoor(d.Doors, showmsg%=True)
 			temp = (mainPlayer\selectedItem\itemtemplate\tempname = "hand" And d\KeyCard=-1) Or (mainPlayer\selectedItem\itemtemplate\tempname = "hand2" And d\KeyCard=-2)
 		EndIf
 		If temp <> 0 Then
-			PlaySound_Strict ScannerSFX1
+			PlaySound ScannerSFX1
 			Msg = "You place the palm of the hand onto the scanner. The scanner reads: "+Chr(34)+"DNA verified. Access granted."+Chr(34)
 			MsgTimer = 70 * 10
 		Else
 			If showmsg = True Then 
-				PlaySound_Strict ScannerSFX2
+				PlaySound ScannerSFX2
 				Msg = "You placed your palm onto the scanner. The scanner reads: "+Chr(34)+"DNA does not match known sample. Access denied."+Chr(34)
 				MsgTimer = 70 * 10
 			EndIf
@@ -432,7 +432,7 @@ Function UseDoor(d.Doors, showmsg%=True)
 		If d\locked Then
 			If showmsg = True Then 
 				If Not (d\IsElevatorDoor>0) Then
-					PlaySound_Strict ButtonSFX2
+					PlaySound ButtonSFX2
 					Msg = "The door appears to be locked."
 					MsgTimer = 70 * 5
 				Else

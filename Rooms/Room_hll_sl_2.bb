@@ -70,7 +70,7 @@ Function FillRoom_hll_sl_2(r.Rooms)
     EntityParent r\Objects[16],r\obj
     
     ;Faked room409
-    r\Objects[17] = LoadMesh_Strict("GFX\map\room2sl_2.b3d",r\obj)
+    r\Objects[17] = LoadMesh("GFX\map\room2sl_2.b3d",r\obj)
     sc.SecurityCams = CreateSecurityCam(r\x-160.0*RoomScale,r\y-22689.1*RoomScale,r\z-288.0*RoomScale,Null)
     sc\angle = 225
     TurnEntity sc\CameraObj, 20, 0, 0
@@ -137,7 +137,7 @@ Function FillRoom_hll_sl_2(r.Rooms)
     
     ;r\MaxWayPointY# = 400.0*RoomScale
     
-    r\Objects[22] = LoadMesh_Strict("GFX\map\room2sl_hb.b3d",r\obj)
+    r\Objects[22] = LoadMesh("GFX\map\room2sl_hb.b3d",r\obj)
     EntityPickMode r\Objects[22],2
     EntityType r\Objects[22],HIT_MAP
     EntityAlpha r\Objects[22],0.0
@@ -479,7 +479,7 @@ Function UpdateEvent_hll_sl_2(e.Events)
 					e\room\RoomDoors[0]\locked = True
 					e\room\RoomDoors[1]\locked = True
 					If e\room\NPC[0]\Reload = 0
-						PlaySound_Strict LoadTempSound("SFX\Door\DoorOpen079.ogg")
+						PlaySound LoadTempSound("SFX\Door\DoorOpen079.ogg")
 						DebugLog "079 - OPEN DOORS IN ROOM2SL"
 						e\room\NPC[0]\Reload = 1
 					EndIf
@@ -520,7 +520,7 @@ Function UpdateEvent_hll_sl_2(e.Events)
 					;e\room\NPC[0]\PathTimer# = e\room\NPC[0]\PathTimer# + timing\tickDuration
 					If e\room\NPC[0]\PrevState = 1 Then
 						If (e\room\NPC[0]\SoundChn2 = 0) Then
-							e\room\NPC[0]\Sound2 = LoadSound_Strict("SFX\SCP\049\Room2SLEnter.ogg")
+							e\room\NPC[0]\Sound2 = LoadSound("SFX\SCP\049\Room2SLEnter.ogg")
 							e\room\NPC[0]\SoundChn2 = PlaySound2(e\room\NPC[0]\Sound2, mainPlayer\cam, e\room\NPC[0]\Collider)
 						Else
 							If (Not ChannelPlaying(e\room\NPC[0]\SoundChn2))
@@ -581,7 +581,7 @@ Function UpdateEvent_hll_sl_2(e.Events)
 				e\EventState2 = 7
 			Else
 				;Still playing the Music for SCP-049 (in the real, SCP-049's State will be set to 2, causing it to stop playing the chasing track)
-				If Music(20) = 0 Then Music(20) = LoadSound_Strict("SFX\Horror\Horror12.ogg")
+				If Music(20) = 0 Then Music(20) = LoadSound("SFX\Horror\Horror12.ogg")
 				ShouldPlay = 20
 				If e\room\NPC[0]\PathStatus<>1
 					e\room\NPC[0]\Idle = 70*60 ;(Making SCP-049 idle for one minute (twice as fast for aggressive NPCs = True))
@@ -605,7 +605,7 @@ Function UpdateEvent_hll_sl_2(e.Events)
 							If e\room\RoomDoors[0]\open
 								e\room\RoomDoors[0]\open = False
 								e\room\RoomDoors[0]\fastopen = 1
-								PlaySound_Strict LoadTempSound("SFX\Door\DoorClose079.ogg")
+								PlaySound LoadTempSound("SFX\Door\DoorClose079.ogg")
 								DebugLog "079 - CLOSE DOOR AT HALLWAY IN ROOM2SL"
 							EndIf
 						EndIf
@@ -615,7 +615,7 @@ Function UpdateEvent_hll_sl_2(e.Events)
 							e\room\RoomDoors[0]\open = True
 							sound=Rand(0, 2)
 							PlaySound2(OpenDoorSFX(0,sound),mainPlayer\cam,e\room\RoomDoors[0]\obj)
-							PlaySound_Strict LoadTempSound("SFX\Door\DoorOpen079.ogg")
+							PlaySound LoadTempSound("SFX\Door\DoorOpen079.ogg")
 							DebugLog "079 - OPEN DOOR AT HALLWAY IN ROOM2SL"
 						EndIf
 					EndIf
@@ -628,7 +628,7 @@ Function UpdateEvent_hll_sl_2(e.Events)
 					e\room\RoomDoors[0]\open = True
 					sound=Rand(0, 2)
 					PlaySound2(OpenDoorSFX(0,sound),mainPlayer\cam,e\room\RoomDoors[0]\obj)
-					PlaySound_Strict LoadTempSound("SFX\Door\DoorOpen079.ogg")
+					PlaySound LoadTempSound("SFX\Door\DoorOpen079.ogg")
 					DebugLog "079 - OPEN DOOR AT HALLWAY IN ROOM2SL"
 				EndIf
 			EndIf

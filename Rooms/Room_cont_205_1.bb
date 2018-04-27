@@ -62,24 +62,24 @@ Function UpdateEvent_cont_205_1(e.Events)
 				QuickLoadPercent = 0
 				e\EventStr = "load0"
 			ElseIf e\EventStr = "load0"
-				e\room\Objects[3] = LoadAnimMesh_Strict("GFX\npcs\205_demon1.b3d")
+				e\room\Objects[3] = LoadAnimMesh("GFX\npcs\205_demon1.b3d")
 				QuickLoadPercent = 10
 				e\EventStr = "load1"
 			ElseIf e\EventStr = "load1"
-				e\room\Objects[4] = LoadAnimMesh_Strict("GFX\npcs\205_demon2.b3d")
+				e\room\Objects[4] = LoadAnimMesh("GFX\npcs\205_demon2.b3d")
 				QuickLoadPercent = 20
 				e\EventStr = "load2"
 			ElseIf e\EventStr = "load2"
-				e\room\Objects[5] = LoadAnimMesh_Strict("GFX\npcs\205_demon3.b3d")
+				e\room\Objects[5] = LoadAnimMesh("GFX\npcs\205_demon3.b3d")
 				QuickLoadPercent = 30
 				e\EventStr = "load3"
 			ElseIf e\EventStr = "load3"
-				e\room\Objects[6] = LoadAnimMesh_Strict("GFX\npcs\205_woman.b3d")
+				e\room\Objects[6] = LoadAnimMesh("GFX\npcs\205_woman.b3d")
 				QuickLoadPercent = 40
 				e\EventStr = "load4"
 			ElseIf e\EventStr = "load4"
 				If Music(15) = 0 Then
-					Music(15) = LoadSound_Strict("SFX\Music\205.ogg")
+					Music(15) = LoadSound("SFX\Music\205.ogg")
 				EndIf
 				QuickLoadPercent = 50
 				e\EventStr = "load5"
@@ -108,7 +108,7 @@ Function UpdateEvent_cont_205_1(e.Events)
 			
 			If (e\EventState<65) Then
 				If (Distance(EntityX(mainPlayer\collider), EntityZ(mainPlayer\collider), EntityX(e\room\Objects[0],True), EntityZ(e\room\Objects[0],True))<2.0) Then
-					PlaySound_Strict(LoadTempSound("SFX\SCP\205\Enter.ogg"))
+					PlaySound(LoadTempSound("SFX\SCP\205\Enter.ogg"))
 					
 					e\EventState = Max(e\EventState, 65)
 					
@@ -171,7 +171,7 @@ Function UpdateEvent_cont_205_1(e.Events)
 					
 					If e\EventState2 > 80*70 Then 
 						e\EventState = e\EventState+1
-						PlaySound_Strict(LoadTempSound("SFX\SCP\205\Horror.ogg"))
+						PlaySound(LoadTempSound("SFX\SCP\205\Horror.ogg"))
 					EndIf
 				Case 11
 					;third demon
@@ -214,7 +214,7 @@ Function UpdateEvent_cont_205_1(e.Events)
 						DeathMSG = DeathMSG + "entered the chamber when the lights are off."
 						
 						mainPlayer\injuries=mainPlayer\injuries+Rnd(0.4,0.8)
-						PlaySound_Strict DamageSFX(Rand(2,3))
+						PlaySound DamageSFX(Rand(2,3))
 						mainPlayer\camShake = 0.5
 						
 						e\EventState2 = Rnd(-0.1, 0.1)

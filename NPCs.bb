@@ -258,7 +258,7 @@ Function RemoveNPC(n.NPCs)
 	Local i%
 	For i = 0 To 11
 		If (n\sounds[i] <> 0) Then
-			FreeSound_Strict(n\sounds[i])
+			FreeSound(n\sounds[i])
 		EndIf
 	Next
 	
@@ -271,11 +271,11 @@ Function RemoveNPC(n.NPCs)
 	EndIf
 	
 	If (n\sound <> 0) Then
-		FreeSound_Strict(n\sound)
+		FreeSound(n\sound)
 	EndIf
 	
 	If (n\sound2 <> 0) Then
-		FreeSound_Strict(n\sound2)
+		FreeSound(n\sound2)
 	EndIf
 	
 	FreeEntity(n\obj)
@@ -509,7 +509,7 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 	
 	If (Not mainPlayer\godMode) Then 
 		
-		If instaKill Then Kill(mainPlayer) : PlaySound_Strict BullethitSFX : Return
+		If instaKill Then Kill(mainPlayer) : PlaySound BullethitSFX : Return
 		
 		If Rnd(1.0) =< hitProb Then
 			TurnEntity mainPlayer\cam, Rnd(-3,3), Rnd(-3,3), 0
@@ -592,7 +592,7 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 			mainPlayer\injuries = Min(mainPlayer\injuries, 4.0)
 			
 			;Kill(mainPlayer)
-			PlaySound_Strict BullethitSFX
+			PlaySound BullethitSFX
 		ElseIf particles Then
 			Local pvt% = CreatePivot()
 			PositionEntity pvt, EntityX(mainPlayer\collider),(EntityY(mainPlayer\collider)+EntityY(mainPlayer\cam))/2,EntityZ(mainPlayer\collider)
@@ -652,7 +652,7 @@ Function PlayMTFSound(sound%, n.NPCs)
 			Select mainPlayer\selectedItem\itemtemplate\tempname 
 				Case "radio","fineradio","18vradio"
 					If RadioCHN(3)<> 0 Then StopChannel RadioCHN(3)
-					RadioCHN(3) = PlaySound_Strict (sound)
+					RadioCHN(3) = PlaySound (sound)
 			End Select
 		EndIf
 	EndIf 
@@ -668,8 +668,8 @@ Function MoveToPocketDimension()
 			UpdateDoors()
 			UpdateRooms()
 			ShowEntity mainPlayer\collider
-			PlaySound_Strict(Use914SFX)
-			;PlaySound_Strict(OldManSFX(5)) ;TODO: fix
+			PlaySound(Use914SFX)
+			;PlaySound(OldManSFX(5)) ;TODO: fix
 			PositionEntity(mainPlayer\collider, EntityX(r\obj),0.8,EntityZ(r\obj))
 			mainPlayer\dropSpeed = 0
 			ResetEntity mainPlayer\collider

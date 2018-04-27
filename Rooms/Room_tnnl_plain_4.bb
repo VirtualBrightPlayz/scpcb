@@ -15,7 +15,7 @@ Function UpdateEvent_tnnl_plain_4(e.Events)
 	If e\room\dist < 10.0 And e\room\dist > 0 Then
 		e\room\NPC[0]=CreateNPC(NPCtypeD, EntityX(e\room\obj,True)+1.0, 0.5, EntityZ(e\room\obj,True)+1.0)
 		e\room\NPC[0]\texture = "GFX\npcs\body1.jpg"
-		tex = LoadTexture_Strict(e\room\NPC[0]\texture)
+		tex = LoadTexture(e\room\NPC[0]\texture)
 		EntityTexture(e\room\NPC[0]\obj, tex)
 		FreeTexture tex
 		;EntityTexture e\room\NPC[0]\obj,NTF_BodyTextures(0)

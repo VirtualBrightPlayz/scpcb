@@ -26,7 +26,7 @@ Function UpdateEventTunnel106(e.Events)
 			d\Size = Rnd(0.5, 0.7) : EntityAlpha(d\obj, 0.7) : d\ID = 1 : ScaleSprite(d\obj, d\Size, d\Size)
 			EntityAlpha(d\obj, Rnd(0.7, 0.85))
 			
-			;PlaySound_Strict HorrorSFX(10)
+			;PlaySound HorrorSFX(10)
 		ElseIf e\room\dist > 8.0
 			If Rand(5) = 1 Then
 				Curr106\Idle = False
@@ -80,11 +80,11 @@ Function UpdateEvent682roar(e.Events)
 		e\EventState = e\EventState-timing\tickDuration
 		
 		If e\EventState < 17*70 Then
-			If	e\EventState+timing\tickDuration => 17*70 Then LoadEventSound(e,"SFX\SCP\682\Roar.ogg") : e\SoundCHN = PlaySound_Strict(e\Sound) ;e\Sound = LoadSound_Strict("SFX\SCP\682\Roar.ogg")
+			If	e\EventState+timing\tickDuration => 17*70 Then LoadEventSound(e,"SFX\SCP\682\Roar.ogg") : e\soundChannels[0] = PlaySound(e\sounds[0]) ;e\sounds[0] = LoadSound("SFX\SCP\682\Roar.ogg")
 			If e\EventState > 17*70 - 3*70 Then mainPlayer\camShake = 0.5
 			If e\EventState < 17*70 - 7.5*70 And e\EventState > 17*70 - 11*70 Then mainPlayer\camShake = 2.0				
 			If e\EventState < 70 Then 
-				If e\Sound<>0 Then FreeSound_Strict (e\Sound) 
+				If e\sounds[0]<>0 Then FreeSound (e\sounds[0]) 
 				RemoveEvent(e)
 			EndIf
 		EndIf

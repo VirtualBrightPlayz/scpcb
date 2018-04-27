@@ -14,8 +14,8 @@ Function FillRoom_cont_914_1(r.Rooms)
     PositionEntity (r\RoomDoors[2]\buttons[0], r\x - 496.0 * RoomScale, 0.7, r\z - 272.0 * RoomScale, True)
     TurnEntity(r\RoomDoors[2]\buttons[0], 0, 90, 0)
     
-    r\Objects[0] = LoadMesh_Strict("GFX\map\914key.x")
-    r\Objects[1] = LoadMesh_Strict("GFX\map\914knob.x")
+    r\Objects[0] = LoadMesh("GFX\map\914key.x")
+    r\Objects[1] = LoadMesh("GFX\map\914knob.x")
     
     For  i% = 0 To 1
         ScaleEntity(r\Objects[i], RoomScale, RoomScale, RoomScale)
@@ -91,7 +91,7 @@ Function Use914(item.Items, setting$, x#, y#, z#)
 				Case "very fine"
 					n.NPCs = CreateNPC(NPCtype1499,x,y,z)
 					n\State = 1
-					n\Sound = LoadSound_Strict("SFX\SCP\1499\Triggered.ogg")
+					n\Sound = LoadSound("SFX\SCP\1499\Triggered.ogg")
 					n\SoundChn = PlaySound2(n\Sound, mainPlayer\cam, n\Collider,20.0)
 					n\State3 = 1
 					RemoveItem(item)
@@ -395,7 +395,7 @@ Function Use914(item.Items, setting$, x#, y#, z#)
 		Case "SCP-513"
 			Select setting
 				Case "rough", "coarse"
-					PlaySound_Strict LoadTempSound("SFX\SCP\513\914Refine.ogg")
+					PlaySound LoadTempSound("SFX\SCP\513\914Refine.ogg")
 					For n.npcs = Each NPCs
 						If n\npctype = NPCtype5131 Then RemoveNPC(n)
 					Next
@@ -578,7 +578,7 @@ Function UpdateEvent_cont_914_1(e.Events)
 									If Abs(EntityX(it\collider) - (e\room\x - 712.0 * RoomScale)) < 200.0 Then
 										If Abs(EntityY(it\collider) - (e\room\y + 648.0 * RoomScale)) < 104.0 Then
 											e\EventState = 1
-											e\SoundCHN = PlaySound2(MachineSFX, mainPlayer\cam, e\room\Objects[1])
+											e\soundChannels[0] = PlaySound2(MachineSFX, mainPlayer\cam, e\room\Objects[1])
 											Exit
 										EndIf
 									End If
@@ -658,7 +658,7 @@ Function UpdateEvent_cont_914_1(e.Events)
 			If Distance(EntityX(mainPlayer\collider), EntityZ(mainPlayer\collider), EntityX(e\room\Objects[2], True), EntityZ(e\room\Objects[2], True)) < (170.0 * RoomScale) Then
 				
 				If setting = "rough" Or setting = "coarse" Then
-					If e\EventState > 70 * 2.6 And e\EventState - timing\tickDuration < 70 * 2.6 Then PlaySound_Strict Death914SFX
+					If e\EventState > 70 * 2.6 And e\EventState - timing\tickDuration < 70 * 2.6 Then PlaySound Death914SFX
 				EndIf
 				
 				If e\EventState > 70 * 3 Then
@@ -666,19 +666,19 @@ Function UpdateEvent_cont_914_1(e.Events)
 						Case "rough"
 							Kill(mainPlayer)
 							mainPlayer\blinkTimer = -10
-							If e\SoundCHN <> 0 Then StopChannel e\SoundCHN
+							If e\soundChannels[0] <> 0 Then StopChannel e\soundChannels[0]
 							DeathMSG = Chr(34)+"A heavily mutilated corpse found inside the output booth of SCP-914. DNA testing identified the corpse as Class D Subject D-9341. "
 							DeathMSG = DeathMSG + "The subject had obviously been "+Chr(34)+"refined"+Chr(34)+" by SCP-914 on the "+Chr(34)+"Rough"+Chr(34)+" setting, but we are still confused as to how he "
 							DeathMSG = DeathMSG + "ended up inside the intake booth and who or what wound the key."+Chr(34)
 						Case "coarse"
 							mainPlayer\blinkTimer = -10
-							If e\EventState - timing\tickDuration < 70 * 3 Then PlaySound_Strict Use914SFX
+							If e\EventState - timing\tickDuration < 70 * 3 Then PlaySound Use914SFX
 						Case "1:1"
 							mainPlayer\blinkTimer = -10
-							If e\EventState - timing\tickDuration < 70 * 3 Then PlaySound_Strict Use914SFX
+							If e\EventState - timing\tickDuration < 70 * 3 Then PlaySound Use914SFX
 						Case "fine", "very fine"
 							mainPlayer\blinkTimer = -10
-							If e\EventState - timing\tickDuration < 70 * 3 Then PlaySound_Strict Use914SFX	
+							If e\EventState - timing\tickDuration < 70 * 3 Then PlaySound Use914SFX	
 					End Select
 				End If
 			EndIf

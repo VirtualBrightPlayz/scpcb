@@ -42,17 +42,17 @@ Function UpdateEvent_cont_500_1499_2(e.Events)
 		If e\EventState < 2.0
 			If e\EventState = 0.0
 				LoadEventSound(e,"SFX\Character\Scientist\EmilyScream.ogg")
-				e\SoundCHN = PlaySound2(e\Sound, mainPlayer\cam, e\room\Objects[0], 100, 1.0)
+				e\soundChannels[0] = PlaySound2(e\sounds[0], mainPlayer\cam, e\room\Objects[0], 100, 1.0)
 				de.Decals = CreateDecal(0, EntityX(e\room\Objects[0],True), e\room\y+2.0*RoomScale, EntityZ(e\room\Objects[0],True), 90, Rand(360), 0)
 				de\Size = 0.5 : EntityAlpha(de\obj, 0.8)
 				EntityFX de\obj,1
 				e\EventState = 1.0
 			ElseIf e\EventState = 1.0
-				If (Not ChannelPlaying(e\SoundCHN))
+				If (Not ChannelPlaying(e\soundChannels[0]))
 					e\EventState = 2.0
 					e\room\RoomDoors[0]\locked = False
 				Else
-					UpdateSoundOrigin(e\SoundCHN,mainPlayer\cam,e\room\Objects[0],100,1.0)
+					UpdateSoundOrigin(e\soundChannels[0],mainPlayer\cam,e\room\Objects[0],100,1.0)
 				EndIf
 			EndIf
 		Else

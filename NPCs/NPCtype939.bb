@@ -26,7 +26,7 @@ Function InitializeNPCtype939(n.NPCs)
     Next
     
     If n\obj = 0 Then 
-        n\obj = LoadAnimMesh_Strict("GFX\NPCs\scp-939.b3d")
+        n\obj = LoadAnimMesh("GFX\NPCs\scp-939.b3d")
         
         temp# = GetINIFloat("DATA\NPCs.ini", "SCP-939", "scale")/2.5
         ScaleEntity n\obj, temp, temp, temp		
@@ -94,8 +94,8 @@ Function UpdateNPCtype939(n.NPCs)
                             temp = True
                         EndIf
                         If temp Then
-                            If n\Sound <> 0 Then FreeSound_Strict n\Sound : n\Sound = 0
-                            n\Sound = LoadSound_Strict("SFX\SCP\939\"+(n\ID Mod 3)+"Lure"+Rand(1,10)+".ogg")
+                            If n\Sound <> 0 Then FreeSound n\Sound : n\Sound = 0
+                            n\Sound = LoadSound("SFX\SCP\939\"+(n\ID Mod 3)+"Lure"+Rand(1,10)+".ogg")
                             n\SoundChn = PlaySound2(n\Sound, mainPlayer\cam, n\Collider)
                         EndIf
                     EndIf
@@ -112,7 +112,7 @@ Function UpdateNPCtype939(n.NPCs)
                 
             Case 3
                 If EntityVisible(mainPlayer\collider, n\Collider) Then
-                    If n\Sound2 = 0 Then n\Sound2 = LoadSound_Strict("SFX\General\Slash1.ogg")
+                    If n\Sound2 = 0 Then n\Sound2 = LoadSound("SFX\General\Slash1.ogg")
                     
                     n\EnemyX = EntityX(mainPlayer\collider)
                     n\EnemyZ = EntityZ(mainPlayer\collider)
@@ -138,7 +138,7 @@ Function UpdateNPCtype939(n.NPCs)
                         
                         If temp Then
                             If Distance(n\EnemyX, n\EnemyZ, EntityX(n\Collider), EntityZ(n\Collider))<1.5 Then
-                                PlaySound_Strict n\Sound2
+                                PlaySound n\Sound2
                                 mainPlayer\injuries = mainPlayer\injuries + Rnd(1.5, 2.5)-IsPlayerWearingTempName(mainPlayer,"vest")*0.5
                                 mainPlayer\blurTimer = 500		
                             Else
@@ -206,19 +206,19 @@ Function UpdateNPCtype939(n.NPCs)
             If dist < 4.0 Then dist = dist - EntityVisible(mainPlayer\collider, n\Collider)
             If mainPlayer\loudness*1.2>dist Or dist < 1.5 Then
                 If n\State3 = 0 Then
-                    If n\Sound <> 0 Then FreeSound_Strict n\Sound : n\Sound = 0
-                    n\Sound = LoadSound_Strict("SFX\SCP\939\"+(n\ID Mod 3)+"Attack"+Rand(1,3)+".ogg")
+                    If n\Sound <> 0 Then FreeSound n\Sound : n\Sound = 0
+                    n\Sound = LoadSound("SFX\SCP\939\"+(n\ID Mod 3)+"Attack"+Rand(1,3)+".ogg")
                     n\SoundChn = PlaySound2(n\Sound, mainPlayer\cam, n\Collider)										
                     
-                    PlaySound_Strict(LoadTempSound("SFX\SCP\939\attack.ogg"))
+                    PlaySound(LoadTempSound("SFX\SCP\939\attack.ogg"))
                     n\State3 = 1
                 EndIf
                 
                 n\State = 3
             ElseIf mainPlayer\loudness*1.6>dist Then
                 If n\State<>1 And n\Reload <= 0 Then
-                    If n\Sound <> 0 Then FreeSound_Strict n\Sound : n\Sound = 0
-                    n\Sound = LoadSound_Strict("SFX\SCP\939\"+(n\ID Mod 3)+"Alert"+Rand(1,3)+".ogg")
+                    If n\Sound <> 0 Then FreeSound n\Sound : n\Sound = 0
+                    n\Sound = LoadSound("SFX\SCP\939\"+(n\ID Mod 3)+"Alert"+Rand(1,3)+".ogg")
                     n\SoundChn = PlaySound2(n\Sound, mainPlayer\cam, n\Collider)	
                     
                     n\Frame = 175

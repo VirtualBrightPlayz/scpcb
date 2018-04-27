@@ -74,7 +74,7 @@ Function UpdateEvent_tnnl_elec_2(e.Events)
 		Else		
 			If e\EventState = 0 Then
 				If Distance(EntityX(mainPlayer\collider), EntityZ(mainPlayer\collider), EntityX(e\room\obj), EntityZ(e\room\obj)) < 3.5 Then
-					PlaySound_Strict(LightSFX)
+					PlaySound(LightSFX)
 					
 					;LightBlink = Rnd(0.0,1.0)*(e\EventState/200)
 					e\EventState = 1
@@ -85,11 +85,11 @@ Function UpdateEvent_tnnl_elec_2(e.Events)
 				If e\EventState > 30 Then 
 					;LightBlink = 1.0 
 					If e\EventState-timing\tickDuration =< 30 Then 
-						PlaySound_Strict LoadTempSound("SFX\ambient\general\ambient3.ogg")
+						PlaySound LoadTempSound("SFX\ambient\general\ambient3.ogg")
 					EndIf
 				EndIf
 				If e\EventState-timing\tickDuration =< 100 And e\EventState > 100 Then
-					PlaySound_Strict LoadTempSound("SFX\ambient\general\ambient6.ogg")
+					PlaySound LoadTempSound("SFX\ambient\general\ambient6.ogg")
 					PositionEntity(Curr173\Collider, EntityX(e\room\obj), 0.6, EntityZ(e\room\obj))
 					ResetEntity(Curr173\Collider)					
 					Curr173\Idle = True		

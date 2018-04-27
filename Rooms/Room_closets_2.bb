@@ -75,14 +75,14 @@ Function UpdateEvent_closets_2(e.Events)
 				e\room\NPC[0] = CreateNPC(NPCtypeD, EntityX(e\room\Objects[0],True),EntityY(e\room\Objects[0],True),EntityZ(e\room\Objects[0],True))
 			EndIf
 			e\room\NPC[0]\texture = "GFX\npcs\janitor.jpg"
-			tex = LoadTexture_Strict(e\room\NPC[0]\texture)
+			tex = LoadTexture(e\room\NPC[0]\texture)
 			
 			EntityTexture e\room\NPC[0]\obj, tex
 			FreeTexture tex
 			e\EventStr = "load1"
 		ElseIf e\EventStr = "load1"
 			QuickLoadPercent = 20
-			e\room\NPC[0]\Sound=LoadSound_Strict("SFX\Room\Storeroom\Escape1.ogg")
+			e\room\NPC[0]\Sound=LoadSound("SFX\Room\Storeroom\Escape1.ogg")
 			e\EventStr = "load2"
 		ElseIf e\EventStr = "load2"
 			QuickLoadPercent = 35
@@ -94,14 +94,14 @@ Function UpdateEvent_closets_2(e.Events)
 				e\room\NPC[1] = CreateNPC(NPCtypeD, EntityX(e\room\Objects[1],True),EntityY(e\room\Objects[1],True),EntityZ(e\room\Objects[1],True))
 			EndIf
 			e\room\NPC[1]\texture = "GFX\npcs\scientist.jpg"
-			tex = LoadTexture_Strict(e\room\NPC[1]\texture)
+			tex = LoadTexture(e\room\NPC[1]\texture)
 			EntityTexture e\room\NPC[1]\obj, tex
 			
 			FreeTexture tex
 			e\EventStr = "load4"
 		ElseIf e\EventStr = "load4"
 			QuickLoadPercent = 80
-			e\room\NPC[1]\Sound=LoadSound_Strict("SFX\Room\Storeroom\Escape2.ogg")
+			e\room\NPC[1]\Sound=LoadSound("SFX\Room\Storeroom\Escape2.ogg")
 			e\EventStr = "load5"
 		ElseIf e\EventStr = "load5"
 			QuickLoadPercent = 100
@@ -132,8 +132,8 @@ Function UpdateEvent_closets_2(e.Events)
 			RotateEntity(e\room\NPC[1]\Collider,0,CurveAngle(EntityYaw(e\room\NPC[1]\obj),EntityYaw(e\room\NPC[1]\Collider),30.0),0,True)
 		Else
 			If e\EventState-timing\tickDuration < 70*6.5 Then 
-				;PlaySound_Strict (HorrorSFX(0))
-				PlaySound_Strict (LightSFX)
+				;PlaySound (HorrorSFX(0))
+				PlaySound (LightSFX)
 			EndIf
 			mainPlayer\blinkTimer = Max((70*6.5-e\EventState)/5.0 - Rnd(0.0,2.0),-10)
 			If mainPlayer\blinkTimer =-10 Then

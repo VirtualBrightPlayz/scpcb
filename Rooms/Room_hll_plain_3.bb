@@ -35,7 +35,7 @@ Function UpdateEvent106victim(e.Events)
 					FreeTexture tex
 					e\room\NPC[0]\State=6
 					
-					;PlaySound_Strict HorrorSFX(0)
+					;PlaySound HorrorSFX(0)
 					;TODO: fix
 					;PlaySound2(DecaySFX(2), mainPlayer\cam, e\room\NPC[0]\Collider, 15.0)
 				EndIf
@@ -53,17 +53,17 @@ Function UpdateEvent106victim(e.Events)
 				Else
 					e\EventState=e\EventState+timing\tickDuration
 					AnimateNPC(e\room\NPC[0], 11, 19, 0.25, False)
-					If e\Sound=0 Then 
-						;e\Sound = LoadSound("SFX\General\BodyFall.ogg")
+					If e\sounds[0]=0 Then 
+						;e\sounds[0] = LoadSound("SFX\General\BodyFall.ogg")
 						LoadEventSound(e,"SFX\General\BodyFall.ogg")
-						PlaySound_Strict e\Sound
+						PlaySound e\sounds[0]
 						
 						de.Decals = CreateDecal(0, EntityX(e\room\obj), 0.001, EntityZ(e\room\obj), 90, Rand(360), 0)
 						de\Size = 0.4 : EntityAlpha(de\obj, 0.8) : UpdateDecals()			
 					EndIf
 					
 					If e\EventState>400 Then
-						If e\Sound<>0 Then FreeSound_Strict e\Sound : e\Sound=0
+						If e\sounds[0]<>0 Then FreeSound e\sounds[0] : e\sounds[0]=0
 						RemoveEvent(e)
 					EndIf								
 				EndIf

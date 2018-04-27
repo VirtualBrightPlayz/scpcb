@@ -1,15 +1,15 @@
 Type Sound
-	Field handle%
+	Field internal%
 	Field file$
 End Type
 
 Type SoundManager
 End Type
-Global soundManager.SoundManager = new SoundManager
+Global soundManager.SoundManager = New SoundManager
 
 ; Creates a new sound object.
 Function CreateSound_SM.Sound(fileName$)
-	Local snd.Sound = new Sound
+	Local snd.Sound = New Sound
 	snd\file = fileName
 
 	Return snd
@@ -18,26 +18,26 @@ End Function
 ; Creates a new sound object and loads the given sound.
 Function LoadSound_SM.Sound(fileName$)
 	Local snd.Sound = CreateSound_SM(fileName)
-	snd\handle = LoadSound(fileName)
+	snd\internal = LoadSound(fileName)
 
 	Return snd
 End Function
 
 Function PlaySound_SM%(snd.Sound)
 	;If the sound hasn't been loaded yet then do that.
-	If (snd\handle = 0) Then
-		snd\handle = LoadSound(fileName)
+	If (snd\internal = 0) Then
+		snd\internal = LoadSound(fileName)
 	EndIf
 
 	;Play the sound.
-	Local chn% = PlaySound(snd\handle)
+	Local chn% = PlaySound(snd\internal)
 	Return chn
 End Function
 
 Function FreeSound_SM(snd.Sound)
-	If (snd\handle <> 0) Then
-		FreeSound(snd\handle)
-		snd\handle = 0
+	If (snd\internal <> 0) Then
+		FreeSound(snd\internal)
+		snd\internal = 0
 	EndIf
 
 	Delete snd
@@ -51,7 +51,7 @@ Function PlaySound2%(SoundHandle%, cam%, entity%, range# = 10, volume# = 1.0)
 		Local dist# = EntityDistance(cam, entity) / range#
 		If (1 - dist# > 0 And 1 - dist# < 1) Then
 			Local panvalue# = Sin(-DeltaYaw(cam,entity))
-			soundchn% = PlaySound_Strict (SoundHandle)
+			soundchn% = PlaySound (SoundHandle)
 			
 			ChannelVolume(soundchn, volume# * (1 - dist#)*userOptions\soundVolume)
 			ChannelPan(soundchn, panvalue)
@@ -61,6 +61,7 @@ Function PlaySound2%(SoundHandle%, cam%, entity%, range# = 10, volume# = 1.0)
 	Return soundchn
 End Function
 
+; Only begins playing the sound if the sound channel isn't playing anything else.
 Function LoopSound2%(SoundHandle%, Chn%, cam%, entity%, range# = 10, volume# = 1.0)
 	range# = Max(range,1.0)
 	
@@ -72,9 +73,9 @@ Function LoopSound2%(SoundHandle%, Chn%, cam%, entity%, range# = 10, volume# = 1
 			Local panvalue# = Sin(-DeltaYaw(cam,entity))
 			
 			If Chn = 0 Then
-				Chn% = PlaySound_Strict (SoundHandle)
+				Chn% = PlaySound (SoundHandle)
 			Else
-				If (Not ChannelPlaying(Chn)) Then Chn% = PlaySound_Strict(SoundHandle)
+				If (Not ChannelPlaying(Chn)) Then Chn% = PlaySound(SoundHandle)
 			EndIf
 			
 			ChannelVolume(Chn, volume# * (1 - dist#)*userOptions\soundVolume)
@@ -100,16 +101,14 @@ Function LoadTempSound(file$)
 End Function
 
 Function LoadEventSound(e.Events,file$,num%=0)
-	
-	If num=0 Then
-		If e\Sound<>0 Then FreeSound_Strict e\Sound : e\Sound=0
-		e\Sound=LoadSound_Strict(file)
-		Return e\Sound
-	Else If num=1 Then
-		If e\Sound2<>0 Then FreeSound_Strict e\Sound2 : e\Sound2=0
-		e\Sound2=LoadSound_Strict(file)
-		Return e\Sound2
-	EndIf
+	Local i%
+	For i = 0 To 1
+		If (num = i) Then
+			If (e\sounds[i]<>0) Then FreeSound(e\sounds[i]) : e\sounds[i]=0
+			e\sounds[i]=LoadSound(file)
+			Return e\sounds[i]
+		EndIf
+	Next
 End Function
 
 Function UpdateMusic()
@@ -132,9 +131,9 @@ Function UpdateMusic()
 		
 		If NowPlaying < 66 Then
 			If MusicCHN = 0 Then
-				MusicCHN = PlaySound_Strict(Music(NowPlaying))
+				MusicCHN = PlaySound(Music(NowPlaying))
 			Else
-				If (Not ChannelPlaying(MusicCHN)) Then MusicCHN = PlaySound_Strict(Music(NowPlaying))
+				If (Not ChannelPlaying(MusicCHN)) Then MusicCHN = PlaySound(Music(NowPlaying))
 			EndIf
 		EndIf
 		
@@ -145,11 +144,11 @@ End Function
 
 Function PauseSounds()
 	For e.events = Each Events
-		If e\soundchn <> 0 Then
-			If ChannelPlaying(e\soundchn) Then PauseChannel(e\soundchn)
+		If e\soundChannels[0] <> 0 Then
+			If ChannelPlaying(e\soundChannels[0]) Then PauseChannel(e\soundChannels[0])
 		EndIf
-		If e\soundchn2 <> 0 Then
-			If ChannelPlaying(e\soundchn2) Then PauseChannel(e\soundchn2)
+		If e\soundChannels[1] <> 0 Then
+			If ChannelPlaying(e\soundChannels[1]) Then PauseChannel(e\soundChannels[1])
 		EndIf		
 	Next
 	
@@ -172,11 +171,11 @@ End Function
 
 Function ResumeSounds()
 	For e.events = Each Events
-		If e\soundchn <> 0 Then
-			If ChannelPlaying(e\soundchn) Then ResumeChannel(e\soundchn)
+		If e\soundChannels[0] <> 0 Then
+			If ChannelPlaying(e\soundChannels[0]) Then ResumeChannel(e\soundChannels[0])
 		EndIf
-		If e\soundchn2 <> 0 Then
-			If ChannelPlaying(e\soundchn2) Then ResumeChannel(e\soundchn2)
+		If e\soundChannels[1] <> 0 Then
+			If ChannelPlaying(e\soundChannels[1]) Then ResumeChannel(e\soundChannels[1])
 		EndIf	
 	Next
 	
@@ -279,3 +278,6 @@ Function UpdateSoundOrigin(Chn%, cam%, entity%, range# = 10, volume# = 1.0)
 		EndIf 
 	EndIf
 End Function
+
+;~IDEal Editor Parameters:
+;~C#Blitz3D

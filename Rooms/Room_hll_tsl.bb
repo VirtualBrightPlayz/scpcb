@@ -69,7 +69,7 @@ Function UpdateEvent_tesla(e.Events)
 	
 	If temp And EntityY(mainPlayer\collider, True) > EntityY(e\room\obj,True) And EntityY(mainPlayer\collider, True) < 4.0 Then
 		
-		If e\Sound = 0 Then e\Sound = LoadSound_Strict("SFX\Room\Tesla\Shock.ogg")
+		If e\sounds[0] = 0 Then e\sounds[0] = LoadSound("SFX\Room\Tesla\Shock.ogg")
 		
 		If e\EventState = 0 Then
 			If (TimeInPosMilliSecs() Mod 1500) < 800 Then
@@ -79,10 +79,10 @@ Function UpdateEvent_tesla(e.Events)
 			EndIf						
 			
 			If e\room\dist < 8 Then
-				If e\SoundCHN = 0 Then ;humming when the player isn't close
-					e\SoundCHN = PlaySound2(TeslaIdleSFX, mainPlayer\cam, e\room\Objects[3],4.0,0.5)
+				If e\soundChannels[0] = 0 Then ;humming when the player isn't close
+					e\soundChannels[0] = PlaySound2(TeslaIdleSFX, mainPlayer\cam, e\room\Objects[3],4.0,0.5)
 				Else
-					If Not ChannelPlaying(e\SoundCHN) Then e\SoundCHN = PlaySound2(TeslaIdleSFX, mainPlayer\cam, e\room\Objects[3],4.0,0.5)
+					If Not ChannelPlaying(e\soundChannels[0]) Then e\soundChannels[0] = PlaySound2(TeslaIdleSFX, mainPlayer\cam, e\room\Objects[3],4.0,0.5)
 				EndIf
 			EndIf
 			
@@ -91,8 +91,8 @@ Function UpdateEvent_tesla(e.Events)
 					;play the activation sound
 					If Not mainPlayer\dead Then 
 						mainPlayer\loudness = Max(8.0,mainPlayer\loudness)
-						StopChannel(e\SoundCHN)
-						e\SoundCHN = PlaySound2(TeslaActivateSFX, mainPlayer\cam, e\room\Objects[3],4.0,0.5)
+						StopChannel(e\soundChannels[0])
+						e\soundChannels[0] = PlaySound2(TeslaActivateSFX, mainPlayer\cam, e\room\Objects[3],4.0,0.5)
 						e\EventState = 1
 						Exit
 					EndIf
@@ -104,8 +104,8 @@ Function UpdateEvent_tesla(e.Events)
 					If Distance(EntityX(Curr106\Collider),EntityZ(Curr106\Collider),EntityX(e\room\Objects[i],True),EntityZ(e\room\Objects[i],True)) < 300.0*RoomScale Then
 						;play the activation sound
 						If Not mainPlayer\dead Then 
-							StopChannel(e\SoundCHN)
-							e\SoundCHN = PlaySound2(TeslaActivateSFX, mainPlayer\cam, e\room\Objects[3],4.0,0.5)
+							StopChannel(e\soundChannels[0])
+							e\soundChannels[0] = PlaySound2(TeslaActivateSFX, mainPlayer\cam, e\room\Objects[3],4.0,0.5)
 							HideEntity e\room\Objects[4]
 							e\EventState = 1
 							Curr106\State = 70 * 60 * Rand(10,13)
@@ -123,11 +123,11 @@ Function UpdateEvent_tesla(e.Events)
 					HideEntity e\room\Objects[4]
 				EndIf
 			Else
-				;If e\EventState-timing\tickDuration =< 40 Then PlaySound_Strict(e\Sound)
+				;If e\EventState-timing\tickDuration =< 40 Then PlaySound(e\sounds[0])
 				If e\room\dist < 2
-				If e\EventState-timing\tickDuration =< 40 Then PlaySound_Strict(e\Sound)	
+				If e\EventState-timing\tickDuration =< 40 Then PlaySound(e\sounds[0])	
 				Else
-					If e\EventState-timing\tickDuration =< 40 Then PlaySound2(e\Sound,mainPlayer\cam,e\room\Objects[2])
+					If e\EventState-timing\tickDuration =< 40 Then PlaySound2(e\sounds[0],mainPlayer\cam,e\room\Objects[2])
 				EndIf
 				If e\EventState < 70 Then 
 					
@@ -172,8 +172,8 @@ Function UpdateEvent_tesla(e.Events)
 					EndIf
 				Else 
 					If e\EventState-timing\tickDuration < 70 Then 
-						StopChannel(e\SoundCHN)	
-						e\SoundCHN = PlaySound2(TeslaPowerUpSFX, mainPlayer\cam, e\room\Objects[3],4.0,0.5)
+						StopChannel(e\soundChannels[0])	
+						e\soundChannels[0] = PlaySound2(TeslaPowerUpSFX, mainPlayer\cam, e\room\Objects[3],4.0,0.5)
 					EndIf 
 					HideEntity e\room\Objects[3]
 					
@@ -193,11 +193,11 @@ Function UpdateEvent_tesla(e.Events)
 							If Abs(EntityZ(n\Collider)-EntityZ(e\room\obj,True))<4.0 Then
 								temp = True
 								If e\EventState2 = 0 Then
-									n\Sound = LoadSound_Strict("SFX\Character\MTF\Tesla0.ogg")
+									n\Sound = LoadSound("SFX\Character\MTF\Tesla0.ogg")
 									PlayMTFSound(n\Sound,n)
 									
 									LoadEventSound(e,"SFX\Character\MTF\Tesla1.ogg")
-									e\SoundCHN = PlaySound_Strict (e\Sound)
+									e\soundChannels[0] = PlaySound (e\sounds[0])
 									n\Idle = 70*10
 									e\EventState2 = 70*100
 								EndIf

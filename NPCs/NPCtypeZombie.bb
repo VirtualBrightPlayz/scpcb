@@ -12,7 +12,7 @@ Function InitializeNPCtypeZombie(n.NPCs)
     Next
     
     If n\obj = 0 Then 
-        n\obj = LoadAnimMesh_Strict("GFX\npcs\zombie1.b3d")
+        n\obj = LoadAnimMesh("GFX\npcs\zombie1.b3d")
         
         temp# = (GetINIFloat("DATA\NPCs.ini", "SCP-049-2", "scale") / 2.5)
         ScaleEntity n\obj, temp, temp, temp
@@ -24,7 +24,7 @@ Function InitializeNPCtypeZombie(n.NPCs)
     
     SetAnimTime(n\obj, 107)
     
-    n\Sound = LoadSound_Strict("SFX\SCP\049\0492Breath.ogg")
+    n\Sound = LoadSound("SFX\SCP\049\0492Breath.ogg")
     
     n\HP = 100
 End Function
@@ -153,7 +153,7 @@ Function UpdateNPCtypeZombie(n.NPCs)
                         
                         ;Animate2(n\obj, AnimTime(n\obj), 2, 65, 0.7, False)
                         If prevFrame < 23 And n\Frame=>23 Then 
-                            PlaySound_Strict DamageSFX(Rand(5,8))
+                            PlaySound DamageSFX(Rand(5,8))
                             mainPlayer\injuries = mainPlayer\injuries+Rnd(0.4,1.0)
                             DeathMSG = "Subject D-9341. Cause of death: multiple lacerations and severe blunt force trauma caused by an instance of SCP-049-2."
                         ElseIf n\Frame=65 Then
@@ -163,7 +163,7 @@ Function UpdateNPCtypeZombie(n.NPCs)
                         AnimateNPC(n, 66, 132, 0.7, False)
                         ;Animate2(n\obj, AnimTime(n\obj), 66, 132, 0.7, False)
                         If prevFrame < 90 And n\Frame=>90 Then 
-                            PlaySound_Strict DamageSFX(Rand(5,8))
+                            PlaySound DamageSFX(Rand(5,8))
                             mainPlayer\injuries = mainPlayer\injuries+Rnd(0.4,1.0)
                             DeathMSG = "Subject D-9341. Cause of death: multiple lacerations and severe blunt force trauma caused by an instance of SCP-049-2."
                         ElseIf n\Frame=132 Then

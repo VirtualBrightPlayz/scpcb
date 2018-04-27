@@ -53,7 +53,7 @@ Function UpdateEvent_cont_966_3(e.Events)
 				;a dirty workaround to hide the pause when loading 966 model
 				mainPlayer\blinkTimer = -10
 				e\EventState = 1
-				PlaySound_Strict LightSFX
+				PlaySound LightSFX
 				QuickLoadPercent = 0
 			Case 1
 				e\EventState2 = e\EventState2+timing\tickDuration

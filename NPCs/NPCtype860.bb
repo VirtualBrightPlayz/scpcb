@@ -4,11 +4,11 @@ Function InitializeNPCtype860(n.NPCs)
     n\Collider = CreatePivot()
     EntityRadius n\Collider, 0.25
     EntityType n\Collider, HIT_PLAYER
-    n\obj = LoadAnimMesh_Strict("GFX\npcs\forestmonster.b3d")
+    n\obj = LoadAnimMesh("GFX\npcs\forestmonster.b3d")
     
     EntityFX(n\obj, 1)
     
-    tex = LoadTexture_Strict("GFX\npcs\860_eyes.png",1+2)
+    tex = LoadTexture("GFX\npcs\860_eyes.png",1+2)
     
     n\obj2 = CreateSprite()
     ScaleSprite(n\obj2, 0.1, 0.1)
@@ -191,7 +191,7 @@ Function UpdateNPCtype860(n.NPCs)
                     If n\State2 = 0 Then
                         If dist<8.0 Then
                             If EntityInView(n\Collider,mainPlayer\cam) Then
-                                PlaySound_Strict LoadTempSound("SFX\SCP\860\Chase"+Rand(1,2)+".ogg")
+                                PlaySound LoadTempSound("SFX\SCP\860\Chase"+Rand(1,2)+".ogg")
                                 
                                 PlaySound2(LoadTempSound("SFX\SCP\860\Cancer"+Rand(0,2)+".ogg"), mainPlayer\cam, n\Collider)	
                                 n\State2 = 1
@@ -241,8 +241,8 @@ Function UpdateNPCtype860(n.NPCs)
                 
                 RotateEntity n\Collider, 0, angle-90, 0, True
                 
-                If n\Sound = 0 Then n\Sound = LoadSound_Strict("SFX\General\Slash1.ogg")
-                If n\Sound2 = 0 Then n\Sound2 = LoadSound_Strict("SFX\General\Slash2.ogg")
+                If n\Sound = 0 Then n\Sound = LoadSound("SFX\General\Slash1.ogg")
+                If n\Sound2 = 0 Then n\Sound2 = LoadSound("SFX\General\Slash2.ogg")
                 
                 If dist>1.1 And (Not mainPlayer\dead) Then 
                     n\CurrSpeed = CurveValue(n\Speed*0.8, n\CurrSpeed, 10.0)
@@ -265,10 +265,10 @@ Function UpdateNPCtype860(n.NPCs)
                     ;Animate2(n\obj, AnimTime(n\obj), 451,493, 0.5, False)
                     If (prevFrame < 461 And n\Frame=>461) Then 
                         If (Not mainPlayer\dead) Then Kill(mainPlayer)
-                        PlaySound_Strict(n\Sound)
+                        PlaySound(n\Sound)
                     EndIf
-                    If (prevFrame < 476 And n\Frame=>476) Then PlaySound_Strict(n\Sound2)
-                    If (prevFrame < 486 And n\Frame=>486) Then PlaySound_Strict(n\Sound2)
+                    If (prevFrame < 476 And n\Frame=>476) Then PlaySound(n\Sound2)
+                    If (prevFrame < 486 And n\Frame=>486) Then PlaySound(n\Sound2)
                     
                 EndIf
                 

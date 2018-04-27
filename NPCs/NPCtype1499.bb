@@ -11,7 +11,7 @@ Function InitializeNPCtype1499(n.NPCs)
     Next
     
     If n\obj = 0 Then 
-        n\obj = LoadAnimMesh_Strict("GFX\npcs\1499-1.b3d")
+        n\obj = LoadAnimMesh("GFX\npcs\1499-1.b3d")
     EndIf
     
     n\Speed = (GetINIFloat("DATA\NPCs.ini", "SCP-1499-1", "speed") / 100.0) * Rnd(0.9,1.1)
@@ -88,8 +88,8 @@ Function UpdateNPCtype1499(n.NPCs)
                     If Not ChannelPlaying(n\SoundChn) Then
                         dist = EntityDistance(n\Collider,mainPlayer\collider)
                         If (dist < 20.0) Then
-                            If n\Sound <> 0 Then FreeSound_Strict n\Sound : n\Sound = 0
-                            n\Sound = LoadSound_Strict("SFX\SCP\1499\Idle"+Rand(1,4)+".ogg")
+                            If n\Sound <> 0 Then FreeSound n\Sound : n\Sound = 0
+                            n\Sound = LoadSound("SFX\SCP\1499\Idle"+Rand(1,4)+".ogg")
                             n\SoundChn = PlaySound2(n\Sound, mainPlayer\cam, n\Collider, 20.0)
                         EndIf
                     EndIf
@@ -102,8 +102,8 @@ Function UpdateNPCtype1499(n.NPCs)
                             ;play the "screaming animation"
                             n\State = 2
                             If dist < 5.0 Then
-                                If n\Sound <> 0 Then FreeSound_Strict n\Sound : n\Sound = 0
-                                n\Sound = LoadSound_Strict("SFX\SCP\1499\Triggered.ogg")
+                                If n\Sound <> 0 Then FreeSound n\Sound : n\Sound = 0
+                                n\Sound = LoadSound("SFX\SCP\1499\Triggered.ogg")
                                 n\SoundChn = PlaySound2(n\Sound, mainPlayer\cam, n\Collider,20.0)
                                 
                                 n\State2 = 1 ;if player is too close, switch to attack after screaming
@@ -127,7 +127,7 @@ Function UpdateNPCtype1499(n.NPCs)
                 If NoTarget Then n\State = 0
                 
                 If mainPlayer\currRoom\RoomTemplate\Name = "dimension1499"
-                    If Music(19)=0 Then Music(19) = LoadSound_Strict("SFX\Music\1499Danger.ogg")
+                    If Music(19)=0 Then Music(19) = LoadSound("SFX\Music\1499Danger.ogg")
                     ShouldPlay = 19
                 EndIf
                 

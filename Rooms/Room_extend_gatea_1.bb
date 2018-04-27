@@ -91,12 +91,12 @@ Function FillRoom_extend_gatea_1(r.Rooms)
     PositionEntity(r\Objects[11], r\x-4064.0*RoomScale, -1248.0*RoomScale, r\z-1696.0*RoomScale, True)
     EntityParent r\Objects[11], r\obj
     
-    r\Objects[13]=LoadMesh_Strict("GFX\map\gateawall1.b3d",r\obj)
+    r\Objects[13]=LoadMesh("GFX\map\gateawall1.b3d",r\obj)
     PositionEntity(r\Objects[13], r\x-4308.0*RoomScale, -1045.0*RoomScale, r\z+544.0*RoomScale, True)
     EntityColor r\Objects[13], 25,25,25
     ;EntityFX(r\Objects[13],1)
     
-    r\Objects[14]=LoadMesh_Strict("GFX\map\gateawall2.b3d",r\obj)
+    r\Objects[14]=LoadMesh("GFX\map\gateawall2.b3d",r\obj)
     PositionEntity(r\Objects[14], r\x-3820.0*RoomScale, -1045.0*RoomScale, r\z+544.0*RoomScale, True)	
     EntityColor r\Objects[14], 25,25,25
     ;EntityFX(r\Objects[14],1)
@@ -125,7 +125,7 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 		
 		If e\EventState = 0 Then
 			DrawLoading(0)
-			e\room\Objects[0] = LoadMesh_Strict("GFX\MAP\gateatunnel.b3d")
+			e\room\Objects[0] = LoadMesh("GFX\MAP\gateatunnel.b3d")
 			PositionEntity e\room\Objects[0], EntityX(e\room\obj,True),EntityY(e\room\obj,True),EntityZ(e\room\obj,True)
 			ScaleEntity (e\room\Objects[0],RoomScale,RoomScale,RoomScale)
 			EntityType e\room\Objects[0], HIT_MAP
@@ -150,7 +150,7 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 				e\room\NPC[i]\State = (Not Contained106)
 			Next
 			
-			Music(5) = LoadSound_Strict("SFX\Music\GateA.ogg")
+			Music(5) = LoadSound("SFX\Music\GateA.ogg")
 			
 			CreateConsoleMsg("WARNING! Teleporting away from this area may cause bugs or crashing.")
 			
@@ -198,11 +198,11 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 			ztemp#=EntityZ(e\room\Objects[9],True)
 			FreeEntity e\room\Objects[9]
 			
-			e\room\Objects[9] = LoadMesh_Strict("GFX\map\lightgunbase.b3d")
+			e\room\Objects[9] = LoadMesh("GFX\map\lightgunbase.b3d")
 			ScaleEntity e\room\Objects[9], RoomScale,RoomScale,RoomScale
 			EntityFX(e\room\Objects[9],0)
 			PositionEntity(e\room\Objects[9], xtemp, (992.0+12000.0)*RoomScale, ztemp)
-			e\room\Objects[10] = LoadMesh_Strict("GFX\map\lightgun.b3d")
+			e\room\Objects[10] = LoadMesh("GFX\map\lightgun.b3d")
 			EntityFX(e\room\Objects[10],0)
 			ScaleEntity e\room\Objects[10], RoomScale,RoomScale,RoomScale
 			PositionEntity(e\room\Objects[10], xtemp, (992.0+12000.0+288.0)*RoomScale, ztemp-176.0*RoomScale,True)
@@ -222,7 +222,7 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 			ResetEntity mainPlayer\collider
 			e\EventState = 1.0
 			
-			If (Not Contained106) Then PlaySound_Strict LoadTempSound("SFX\Ending\GateA\106Escape.ogg") 
+			If (Not Contained106) Then PlaySound LoadTempSound("SFX\Ending\GateA\106Escape.ogg") 
 			
 			DrawLoading(100)
 		Else
@@ -263,8 +263,8 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 						de.Decals = CreateDecal(0, EntityX(e\room\Objects[3],True),EntityY(e\room\Objects[3],True)+0.01,EntityZ(e\room\Objects[3],True), 90, Rand(360), 0)
 						de\Size = 0.05 : de\SizeChange = 0.001 : EntityAlpha(de\obj, 0.8) : UpdateDecals() 
 						;TODO: fix audio
-						;PlaySound_Strict (HorrorSFX(5))
-						;PlaySound_Strict DecaySFX(0)
+						;PlaySound (HorrorSFX(5))
+						;PlaySound DecaySFX(0)
 					ElseIf Curr106\State < 0
 						HideEntity Curr106\obj2
 						Curr106\PathTimer = 70*100
@@ -326,8 +326,8 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 						
 						Curr106\CurrSpeed = CurveValue(0, Curr106\CurrSpeed, Max(5*dist,2.0))
 						If dist < 15.0 Then
-							If e\SoundCHN2 = 0 Then
-								e\SoundCHN2 = PlaySound_Strict (LoadTempSound("SFX\Ending\GateA\Franklin.ogg"))
+							If e\soundChannels[1] = 0 Then
+								e\soundChannels[1] = PlaySound (LoadTempSound("SFX\Ending\GateA\Franklin.ogg"))
 							EndIf
 							
 							If dist<0.4 Then
@@ -335,9 +335,9 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 								Curr106\PathTimer = 70*200
 								If Curr106\State3=0 Then 
 									SetNPCFrame(Curr106, 259.0)
-									If e\Sound <> 0 Then FreeSound_Strict e\Sound : e\Sound = 0
+									If e\sounds[0] <> 0 Then FreeSound e\sounds[0] : e\sounds[0] = 0
 									LoadEventSound(e,"SFX\Ending\GateA\106Retreat.ogg")
-									e\SoundCHN = PlaySound2(e\Sound, mainPlayer\cam, Curr106\Collider, 35.0)
+									e\soundChannels[0] = PlaySound2(e\sounds[0], mainPlayer\cam, Curr106\Collider, 35.0)
 								EndIf
 								
 								If timing\tickDuration > 0 Then ;106:n alle ilmestyy decaleita
@@ -364,8 +364,8 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 								EndIf
 							Else
 								If dist < 8.5 Then 
-									If e\EventState2=0;ChannelPlaying(e\SoundCHN2) = 0 Then
-										e\SoundCHN2 = PlaySound_Strict (LoadTempSound("SFX\Ending\GateA\HIDTurret.ogg"))
+									If e\EventState2=0;ChannelPlaying(e\soundChannels[1]) = 0 Then
+										e\soundChannels[1] = PlaySound (LoadTempSound("SFX\Ending\GateA\HIDTurret.ogg"))
 										e\EventState2 = 1
 									ElseIf e\EventState2>0
 										e\EventState2=e\EventState2+timing\tickDuration
@@ -419,7 +419,7 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 									e\room\NPC[i]\PathTimer = 70*2
 									e\room\NPC[i]\LastSeen = 70*100
 								Next
-								e\room\NPC[5]\Sound = LoadSound_Strict("SFX\Character\MTF\ThereHeIs1.ogg")
+								e\room\NPC[5]\Sound = LoadSound("SFX\Character\MTF\ThereHeIs1.ogg")
 								PlaySound2(e\room\NPC[5]\Sound, mainPlayer\cam, e\room\NPC[5]\Collider, 25.0)
 								
 								e\room\RoomDoors[2]\open = True
@@ -440,7 +440,7 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 						
 						If Abs(EntityY(mainPlayer\collider)-EntityY(e\room\Objects[11],True))<1.0 Then
 							If Distance(EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider),EntityX(e\room\Objects[11],True),EntityZ(e\room\Objects[11],True)) < 7.0 Then
-								e\room\Objects[12] = LoadMesh_Strict("GFX\npcs\s2.b3d")
+								e\room\Objects[12] = LoadMesh("GFX\npcs\s2.b3d")
 								EntityColor e\room\Objects[12], 0,0,0
 								ScaleMesh (e\room\Objects[12], 0.32/21.3, 0.32/21.3, 0.32/21.3)
 								PositionEntity e\room\Objects[12], EntityX(e\room\Objects[11],True), EntityY(e\room\Objects[11],True), EntityZ(e\room\Objects[11],True)
@@ -454,7 +454,7 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 								obj = CopyEntity(e\room\Objects[12])
 								PositionEntity obj, EntityX(e\room\obj,True)-4064*RoomScale, EntityY(e\room\Objects[11],True), EntityZ(e\room\obj,True)-2112*RoomScale
 								
-								e\SoundCHN = PlaySound2(LoadTempSound("SFX\Ending\GateA\Bell1.ogg"), mainPlayer\cam, e\room\Objects[12])
+								e\soundChannels[0] = PlaySound2(LoadTempSound("SFX\Ending\GateA\Bell1.ogg"), mainPlayer\cam, e\room\Objects[12])
 								
 								p.Particles = CreateParticle(EntityX(e\room\Objects[11],True),EntityY(mainPlayer\cam,True), EntityZ(e\room\Objects[11],True), 4, 8.0, 0, 50)
 								p\speed = 0.15
@@ -502,11 +502,11 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 						
 						If e\EventState3=>230.0 Then
 							If e\EventState3-timing\tickDuration<230.0 Then
-								e\SoundCHN = PlaySound_Strict(LoadTempSound("SFX\Ending\GateA\CI.ogg"))
+								e\soundChannels[0] = PlaySound(LoadTempSound("SFX\Ending\GateA\CI.ogg"))
 							EndIf
 							
-							If ChannelPlaying(e\SoundCHN)=False Then; And SelectedEnding="" Then
-								PlaySound_Strict LoadTempSound("SFX\Ending\GateA\Bell2.ogg")
+							If ChannelPlaying(e\soundChannels[0])=False Then; And SelectedEnding="" Then
+								PlaySound LoadTempSound("SFX\Ending\GateA\Bell2.ogg")
 								
 								p.Particles = CreateParticle(EntityX(e\room\Objects[11],True),EntityY(mainPlayer\cam,True), EntityZ(e\room\Objects[11],True), 4, 8.0, 0, 50)
 								p\speed = 0.15
@@ -573,7 +573,7 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 									Next
 									
 									If e\EventState2=1 Then
-										e\SoundCHN = PlaySound_Strict (LoadTempSound("SFX\Ending\GateA\STOPRIGHTTHERE.ogg"))
+										e\soundChannels[0] = PlaySound (LoadTempSound("SFX\Ending\GateA\STOPRIGHTTHERE.ogg"))
 										e\EventState2=2			
 									EndIf
 								Else
@@ -586,8 +586,8 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 							
 							ShouldPlay = 0
 							mainPlayer\moveSpeed = 0
-							If ChannelPlaying(e\SoundCHN)=False Then
-								PlaySound_Strict IntroSFX(9)
+							If ChannelPlaying(e\soundChannels[0])=False Then
+								PlaySound IntroSFX(9)
 								;SelectedEnding = "A2"
 								mainPlayer\godMode = 0
 								mainPlayer\noclip = 0

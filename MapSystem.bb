@@ -25,7 +25,7 @@ Function LoadMaterials(file$)
 			;If BumpEnabled Then
 			;	StrTemp = GetINIString(file, TemporaryString, "bump")
 			;	If StrTemp <> "" Then 
-			;		mat\Bump =  LoadTexture_Strict(StrTemp)
+			;		mat\Bump =  LoadTexture(StrTemp)
 			;		
 			;		TextureBlend mat\Bump, FE_BUMP				
 			;	EndIf
@@ -84,7 +84,7 @@ Function AddTextureToCache(texture%)
 		tc\name=StripPath(TextureName(texture))
 		;Local temp$=GetINIString("Data\materials.ini",tc\name,"bump")
 		;If temp<>"" Then
-		;	tc\Bump=LoadTexture_Strict(temp)
+		;	tc\Bump=LoadTexture(temp)
 		;	TextureBlend tc\Bump,FE_BUMP
 		;Else
 		;	tc\Bump=0
@@ -705,7 +705,7 @@ Function LoadRoomTemplates(file$)
 		StrTemp = GetINIString(file, "room ambience", "ambience"+i)
 		If StrTemp = "" Then Exit
 		
-		RoomAmbience[i]=LoadSound_Strict(StrTemp)
+		RoomAmbience[i]=LoadSound(StrTemp)
 		i=i+1
 	Forever
 	
@@ -854,7 +854,9 @@ End Function
 
 Function GetRoomTemplate.RoomTemplates(name$)
 	name = Lower(name)
-	For rt.RoomTemplates = Each RoomTemplates
+	
+	Local rt.RoomTemplates
+	For rt = Each RoomTemplates
 		If rt\Name = name Then
 			Return rt
 		EndIf
@@ -863,7 +865,9 @@ End Function
 
 Function CountRooms%(rt.RoomTemplates)
 	Local count% = 0
-	For r.Rooms = Each Rooms
+	
+	Local r.Rooms
+	For r = Each Rooms
 		If r\RoomTemplate = rt Then count=count+1
 	Next
 	Return count
@@ -874,6 +878,7 @@ Function CreateRoom.Rooms(rt.RoomTemplates, x#, y#, z#)
 	
 	DebugLog "Placing "+rt\Name
 	
+	; TODO: Does 'zone' exist?
 	r\zone = zone
 	
 	r\x = x : r\y = y : r\z = z
@@ -965,7 +970,7 @@ Include "Rooms/Room_tnnl_pipes_2.bb"
 Include "Rooms/Room_tnnl_plain_2.bb"
 Include "Rooms/Room_tnnl_plain_3.bb"
 Include "Rooms/Room_tnnl_plain_4.bb"
-Include "Rooms/Room_tsl_ez_2.bb"
+Include "Rooms/Room_hll_tsl.bb"
 Include "Rooms/Room_tnnl_nuke_2.bb"
 
 Function FillRoom(r.Rooms)
@@ -1383,7 +1388,7 @@ Type LightTemplates
 End Type 
 
 Function AddTempLight.LightTemplates(rt.RoomTemplates, x#, y#, z#, ltype%, range#, r%, g%, b%)
-	lt.lighttemplates = New LightTemplates
+	Local lt.LightTemplates = New LightTemplates
 	lt\roomtemplate = rt
 	lt\x = x
 	lt\y = y
@@ -1421,7 +1426,7 @@ End Type
 
 Function CreateWaypoint.WayPoints(x#,y#,z#,door.Doors, room.Rooms)
 	
-	w.waypoints = New WayPoints
+	Local w.WayPoints = New WayPoints
 	
 	If 1 Then
 		w\obj = CreatePivot()
@@ -1448,7 +1453,7 @@ Function InitWayPoints(loadingstart=45)
 	
 	Local x#, y#, z#
 	
-	temper = MilliSecs()
+	Local temper% = MilliSecs()
 	
 	Local dist#, dist2#
 	
@@ -1480,7 +1485,7 @@ Function InitWayPoints(loadingstart=45)
 		If (Not d\DisableWaypoint) Then CreateWaypoint(EntityX(d\frameobj, True), EntityY(d\frameobj, True)+0.18, EntityZ(d\frameobj, True), d, ClosestRoom)
 	Next
 	
-	amount# = 0
+	Local amount# = 0
 	For w.WayPoints = Each WayPoints
 		EntityPickMode w\obj, 1, True
 		EntityRadius w\obj, 0.2
@@ -1490,8 +1495,8 @@ Function InitWayPoints(loadingstart=45)
 	
 	;pvt = CreatePivot()
 	
-	number = 0
-	iter = 0
+	Local number% = 0
+	Local iter% = 0
 	For w.WayPoints = Each WayPoints
 		
 		number = number + 1
@@ -1522,6 +1527,7 @@ Function InitWayPoints(loadingstart=45)
 				If dist < 7.0 Then
 					If canCreateWayPoint
 						If EntityVisible(w\obj, w2\obj) Then;e=w2\obj Then 
+							Local i%
 							For i = 0 To 4
 								If w\connected[i] = Null Then
 									w\connected[i] = w2.WayPoints 
@@ -1530,10 +1536,10 @@ Function InitWayPoints(loadingstart=45)
 								EndIf
 							Next
 							
-							For n = 0 To 4
-								If w2\connected[n] = Null Then 
-									w2\connected[n] = w.WayPoints 
-									w2\dist[n] = dist
+							For i = 0 To 4
+								If w2\connected[i] = Null Then 
+									w2\connected[i] = w.WayPoints 
+									w2\dist[i] = dist
 									Exit
 								EndIf					
 							Next
@@ -1560,7 +1566,7 @@ Function InitWayPoints(loadingstart=45)
 		
 		For i = 0 To 4
 			If w\connected[i]<>Null Then 
-				tline = CreateLine(EntityX(w\obj,True),EntityY(w\obj,True),EntityZ(w\obj,True),EntityX(w\connected[i]\obj,True),EntityY(w\connected[i]\obj,True),EntityZ(w\connected[i]\obj,True))
+				Local tline = CreateLine(EntityX(w\obj,True),EntityY(w\obj,True),EntityZ(w\obj,True),EntityX(w\connected[i]\obj,True),EntityY(w\connected[i]\obj,True),EntityZ(w\connected[i]\obj,True))
 				EntityColor(tline, 255,0,0)
 				EntityParent tline, w\obj
 			EndIf
@@ -1612,6 +1618,8 @@ Function FindPath(n.NPCs, x#, y#, z#)
 	
 	n\pathStatus = 0
 	n\pathLocation = 0
+	
+	Local i%
 	For i = 0 To 19
 		n\path[i] = Null
 	Next
@@ -1687,7 +1695,7 @@ Function FindPath(n.NPCs, x#, y#, z#)
 	Repeat
 		
 		temp% = False
-		smallest.WayPoints = Null
+		Local smallest.WayPoints = Null
 		dist# = 10000.0
 		For w.WayPoints = Each WayPoints
 			If w\state = 1 Then
@@ -1709,7 +1717,7 @@ Function FindPath(n.NPCs, x#, y#, z#)
 					If w\connected[i]\state < 2 Then
 						
 						If w\connected[i]\state=1 Then ;open list
-							gtemp# = w\Gcost+w\dist[i]
+							Local gtemp# = w\Gcost+w\dist[i]
 							If n\npcType = NPCtypeMTF Then
 								If w\connected[i]\door = Null Then gtemp = gtemp + 0.5
 							EndIf
@@ -1804,6 +1812,7 @@ Function FindPath(n.NPCs, x#, y#, z#)
 	
 End Function
 Function CreateLine(x1#,y1#,z1#, x2#,y2#,z2#, mesh=0)
+	Local surf, verts
 	
 	If mesh = 0 Then 
 		mesh=CreateMesh()
@@ -1846,7 +1855,7 @@ Type TempScreens
 End Type
 
 Function CreateScreen.Screens(x#,y#,z#,imgpath$,r.Rooms)
-	s.screens = New Screens
+	Local s.Screens = New Screens
 	s\obj = CreatePivot()
 	EntityPickMode(s\obj, 1)	
 	EntityRadius s\obj, 0.1
@@ -1863,7 +1872,8 @@ Function UpdateScreens()
 	If SelectedScreen <> Null Then Return
 	If SelectedDoor <> Null Then Return
 	
-	For s.screens = Each Screens
+	Local s.Screens
+	For s = Each Screens
 		If s\room = mainPlayer\currRoom Then
 			If EntityDistance(mainPlayer\collider,s\obj)<1.2 Then
 				EntityPick(mainPlayer\cam, 1.2)
@@ -1871,10 +1881,10 @@ Function UpdateScreens()
 					DrawHandIcon=True
 					If MouseUp1 Then 
 						SelectedScreen=s
-						s\img = LoadImage_Strict("GFX\screens\"+s\imgpath)
+						s\img = LoadImage("GFX\screens\"+s\imgpath)
 						s\img = ResizeImage2(s\img, ImageWidth(s\img) * MenuScale, ImageHeight(s\img) * MenuScale)
 						MaskImage s\img, 255,0,255
-						PlaySound_Strict ButtonSFX
+						PlaySound ButtonSFX
 						MouseUp1=False
 					EndIf
 				EndIf
@@ -2175,12 +2185,12 @@ Function UpdateSecurityCams()
 									If Rand(3) = 1 Then EntityTexture(sc\ScrOverlay, MonitorTexture)
 									If Rand(6) < 5 Then
 										EntityTexture(sc\ScrOverlay, GorePics(Rand(0, 5)))
-										;If sc\PlayerState = 1 Then PlaySound_Strict(HorrorSFX(1)) ;TODO: fix
+										;If sc\PlayerState = 1 Then PlaySound(HorrorSFX(1)) ;TODO: fix
 										sc\PlayerState = 2
 										If sc\soundCHN = 0 Then
-											;sc\soundCHN = PlaySound_Strict(HorrorSFX(4)) ;TODO: fix
+											;sc\soundCHN = PlaySound(HorrorSFX(4)) ;TODO: fix
 										Else
-											;If Not ChannelPlaying(sc\soundCHN) Then sc\soundCHN = PlaySound_Strict(HorrorSFX(4)) ;TODO: fix
+											;If Not ChannelPlaying(sc\soundCHN) Then sc\soundCHN = PlaySound(HorrorSFX(4)) ;TODO: fix
 										End If
 										If sc\CoffinEffect=3 And Rand(200)=1 Then sc\CoffinEffect=2 : sc\PlayerState = Rand(10000, 20000)
 									End If	
@@ -2189,7 +2199,7 @@ Function UpdateSecurityCams()
 									If Rand(7) = 1 Then EntityTexture(sc\ScrOverlay, MonitorTexture)
 									If Rand(50) = 1 Then
 										EntityTexture(sc\ScrOverlay, GorePics(Rand(0, 5)))
-										;If sc\PlayerState = 0 Then PlaySound_Strict(HorrorSFX(0)) ;TODO: fix
+										;If sc\PlayerState = 0 Then PlaySound(HorrorSFX(0)) ;TODO: fix
 										sc\PlayerState = Max(sc\PlayerState, 1)
 										If sc\CoffinEffect=3 And Rand(100)=1 Then sc\CoffinEffect=2 : sc\PlayerState = Rand(10000, 20000)
 									End If
@@ -2213,10 +2223,10 @@ Function UpdateSecurityCams()
 							EntityTexture(sc\ScrOverlay, MonitorTexture)
 						Else
 							If sc\soundCHN = 0 Then
-								sc\soundCHN = PlaySound_Strict(LoadTempSound("SFX\SCP\079\Broadcast"+Rand(1,3)+".ogg"))
+								sc\soundCHN = PlaySound(LoadTempSound("SFX\SCP\079\Broadcast"+Rand(1,3)+".ogg"))
 								If sc\CoffinEffect=2 Then sc\CoffinEffect=3 : sc\PlayerState = 0
 							ElseIf (Not ChannelPlaying(sc\soundCHN))
-								sc\soundCHN = PlaySound_Strict(LoadTempSound("SFX\SCP\079\Broadcast"+Rand(1,3)+".ogg"))
+								sc\soundCHN = PlaySound(LoadTempSound("SFX\SCP\079\Broadcast"+Rand(1,3)+".ogg"))
 								If sc\CoffinEffect=2 Then sc\CoffinEffect=3 : sc\PlayerState = 0
 							EndIf
 							EntityTexture(sc\ScrOverlay, OldAiPics(0))
@@ -2361,10 +2371,10 @@ Function UpdateElevators#(State#, door1.Doors, door2.Doors, room1, room2, event.
 					If Abs(EntityY(mainPlayer\collider)-EntityY(room1,True))<280.0*RoomScale Then
 						inside = True
 						
-						If event\SoundCHN = 0 Then
-							event\SoundCHN = PlaySound_Strict(ElevatorMoveSFX)
+						If event\soundChannels[0] = 0 Then
+							event\soundChannels[0] = PlaySound(ElevatorMoveSFX)
 						Else
-							If (Not ChannelPlaying(event\SoundCHN)) Then event\SoundCHN = PlaySound_Strict(ElevatorMoveSFX)
+							If (Not ChannelPlaying(event\soundChannels[0])) Then event\soundChannels[0] = PlaySound(ElevatorMoveSFX)
 						EndIf
 						
 						mainPlayer\camShake = Sin(Abs(State)/3.0)*0.3
@@ -2435,10 +2445,10 @@ Function UpdateElevators#(State#, door1.Doors, door2.Doors, room1, room2, event.
 					If Abs(EntityY(mainPlayer\collider)-EntityY(room2,True))<280.0*RoomScale Then
 						inside = True
 						
-						If event\SoundCHN = 0 Then
-							event\SoundCHN = PlaySound_Strict(ElevatorMoveSFX)
+						If event\soundChannels[0] = 0 Then
+							event\soundChannels[0] = PlaySound(ElevatorMoveSFX)
 						Else
-							If (Not ChannelPlaying(event\SoundCHN)) Then event\SoundCHN = PlaySound_Strict(ElevatorMoveSFX)
+							If (Not ChannelPlaying(event\soundChannels[0])) Then event\soundChannels[0] = PlaySound(ElevatorMoveSFX)
 						EndIf
 						
 						mainPlayer\camShake = Sin(Abs(State)/3.0)*0.3
@@ -2546,10 +2556,10 @@ Function UpdateElevators2#(State#, door1.Doors, door2.Doors, room1, room2, event
 					If Abs(EntityY(mainPlayer\collider)-EntityY(room1,True))<280.0*RoomScale Then	
 						inside = True
 						
-						If event\SoundCHN = 0 Then
-							event\SoundCHN = PlaySound_Strict(ElevatorMoveSFX)
+						If event\soundChannels[0] = 0 Then
+							event\soundChannels[0] = PlaySound(ElevatorMoveSFX)
 						Else
-							If (Not ChannelPlaying(event\SoundCHN)) Then event\SoundCHN = PlaySound_Strict(ElevatorMoveSFX)
+							If (Not ChannelPlaying(event\soundChannels[0])) Then event\soundChannels[0] = PlaySound(ElevatorMoveSFX)
 						EndIf
 						
 						mainPlayer\camShake = Sin(Abs(State)/3.0)*0.3
@@ -2592,7 +2602,7 @@ Function UpdateElevators2#(State#, door1.Doors, door2.Doors, room1, room2, event
 				EndIf
 				
 				PlaySound2(ElevatorBeepSFX, mainPlayer\cam, room1, 4.0)	
-				;PlaySound_Strict(ElevatorBeepSFX)	
+				;PlaySound(ElevatorBeepSFX)	
 			EndIf
 		Else ;alhaalta yl�s
 			State = State + timing\tickDuration
@@ -2602,10 +2612,10 @@ Function UpdateElevators2#(State#, door1.Doors, door2.Doors, room1, room2, event
 					If Abs(EntityY(mainPlayer\collider)-EntityY(room2,True))<280.0*RoomScale Then
 						inside = True
 						
-						If event\SoundCHN = 0 Then
-							event\SoundCHN = PlaySound_Strict(ElevatorMoveSFX)
+						If event\soundChannels[0] = 0 Then
+							event\soundChannels[0] = PlaySound(ElevatorMoveSFX)
 						Else
-							If (Not ChannelPlaying(event\SoundCHN)) Then event\SoundCHN = PlaySound_Strict(ElevatorMoveSFX)
+							If (Not ChannelPlaying(event\soundChannels[0])) Then event\soundChannels[0] = PlaySound(ElevatorMoveSFX)
 						EndIf
 						
 						mainPlayer\camShake = Sin(Abs(State)/3.0)*0.3

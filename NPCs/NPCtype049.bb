@@ -9,22 +9,22 @@ Function InitializeNPCtype049(n.NPCs)
     EntityRadius(n\collider, 0.2)
     EntityType(n\collider, HIT_PLAYER)
 	
-    n\obj = LoadAnimMesh_Strict("GFX\npcs\scp-049.b3d")
+    n\obj = LoadAnimMesh("GFX\npcs\scp-049.b3d")
     
     n\speed = GetINIFloat("DATA\NPCs.ini", "SCP-049", "speed") / 100.0
     
     Local temp# = GetINIFloat("DATA\NPCs.ini", "SCP-049", "scale")
     ScaleEntity(n\obj, temp, temp, temp)
     
-    n\sounds[0] = LoadSound_Strict("SFX\SCP\049\Catch.ogg")
-	n\sounds[1] = LoadSound_Strict("SFX\SCP\049\Spotted1.ogg")
-	n\sounds[2] = LoadSound_Strict("SFX\SCP\049\Spotted2.ogg")
-	n\sounds[3] = LoadSound_Strict("SFX\SCP\049\Detected1.ogg")
-	n\sounds[4] = LoadSound_Strict("SFX\SCP\049\Detected2.ogg")
-	n\sounds[5] = LoadSound_Strict("SFX\SCP\049\Detected3.ogg")
-	n\sounds[6] = LoadSound_Strict("SFX\SCP\049\Detected4.ogg")
+    n\sounds[0] = LoadSound("SFX\SCP\049\Catch.ogg")
+	n\sounds[1] = LoadSound("SFX\SCP\049\Spotted1.ogg")
+	n\sounds[2] = LoadSound("SFX\SCP\049\Spotted2.ogg")
+	n\sounds[3] = LoadSound("SFX\SCP\049\Detected1.ogg")
+	n\sounds[4] = LoadSound("SFX\SCP\049\Detected2.ogg")
+	n\sounds[5] = LoadSound("SFX\SCP\049\Detected3.ogg")
+	n\sounds[6] = LoadSound("SFX\SCP\049\Detected4.ogg")
     
-    ;If HorrorSFX(13)=0 Then HorrorSFX(13)=LoadSound_Strict("SFX\Music\049Chase.ogg") ;TODO: implement
+    ;If HorrorSFX(13)=0 Then HorrorSFX(13)=LoadSound("SFX\Music\049Chase.ogg") ;TODO: implement
 End Function
 
 Function UpdateNPCtype049(n.NPCs)
@@ -78,7 +78,7 @@ Function UpdateNPCtype049(n.NPCs)
 					EndIf
 					
 					NPCStopAllChannels(n)
-					PlaySound_Strict(n\sounds[0])
+					PlaySound(n\sounds[0])
 					
 					n\state = STATE049_IDLE
 				EndIf

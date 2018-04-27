@@ -23,7 +23,7 @@ Function FillRoom_cont_106_1(r.Rooms)
     d = CreateDoor(r\zone, r\x - 624.0 * RoomScale, -1280.0 * RoomScale, r\z, 90, r, False, False, 4)
     d\AutoClose = False : d\open = False	
     
-    r\Objects[6] = LoadMesh_Strict("GFX\map\room1062.b3d")
+    r\Objects[6] = LoadMesh("GFX\map\room1062.b3d")
     
     ScaleEntity (r\Objects[6],RoomScale,RoomScale,RoomScale)
     EntityType r\Objects[6], HIT_MAP
@@ -141,7 +141,7 @@ Function UpdateEvent_cont_106_1(e.Events)
 		If e\EventState = 1 Then
 			e\EventState3 = Min(e\EventState3+timing\tickDuration,4000)
 		EndIf
-		If ChannelPlaying(e\SoundCHN) = False Then e\SoundCHN = PlaySound_Strict(RadioStatic)   
+		If ChannelPlaying(e\soundChannels[0]) = False Then e\soundChannels[0] = PlaySound(RadioStatic)   
 	EndIf
 	
 	If e\room\NPC[0]=Null Then ;add the lure subject
@@ -176,9 +176,9 @@ Function UpdateEvent_cont_106_1(e.Events)
 		
 		If e\EventState2 <> temp Then 
 			If e\EventState2 = False Then
-				PlaySound_Strict(MagnetDownSFX)
+				PlaySound(MagnetDownSFX)
 			Else
-				PlaySound_Strict(MagnetUpSFX)	
+				PlaySound(MagnetUpSFX)	
 			EndIf
 		EndIf
 		
@@ -186,23 +186,23 @@ Function UpdateEvent_cont_106_1(e.Events)
 			SoundTransmission% = UpdateLever(e\room\Objects[3])
 		EndIf
 		If (Not SoundTransmission) Then
-			If (e\SoundCHN2<>0) Then
-				If ChannelPlaying(e\SoundCHN2) Then StopChannel e\SoundCHN2
+			If (e\soundChannels[1]<>0) Then
+				If ChannelPlaying(e\soundChannels[1]) Then StopChannel e\soundChannels[1]
 			EndIf
-			If (e\SoundCHN<>0) Then
-				If ChannelPlaying(e\SoundCHN) Then StopChannel e\SoundCHN
+			If (e\soundChannels[0]<>0) Then
+				If ChannelPlaying(e\soundChannels[0]) Then StopChannel e\soundChannels[0]
 			EndIf
 		EndIf
 		
 		If e\EventState = 0 Then 
 			If SoundTransmission And Rand(100)=1 Then
-				If e\SoundCHN2 = 0 Then
+				If e\soundChannels[1] = 0 Then
 					LoadEventSound(e,"SFX\Character\LureSubject\Idle"+Rand(1,6)+".ogg",1)
-					e\SoundCHN2 = PlaySound_Strict(e\Sound2)								
+					e\soundChannels[1] = PlaySound(e\sounds[1])								
 				EndIf
-				If ChannelPlaying(e\SoundCHN2) = False Then
+				If ChannelPlaying(e\soundChannels[1]) = False Then
 					LoadEventSound(e,"SFX\Character\LureSubject\Idle"+Rand(1,6)+".ogg",1)
-					e\SoundCHN2 = PlaySound_Strict(e\Sound2)
+					e\soundChannels[1] = PlaySound(e\sounds[1])
 				EndIf
 			EndIf
 			
@@ -210,22 +210,22 @@ Function UpdateEvent_cont_106_1(e.Events)
 			If mainPlayer\closestButton = e\room\Objects[4] And MouseHit1 Then
 				e\EventState = 1 ;start the femur breaker
 				If SoundTransmission = True Then ;only play sounds if transmission is on
-					If e\SoundCHN2 <> 0 Then
-						If ChannelPlaying(e\SoundCHN2) Then StopChannel e\SoundCHN2
+					If e\soundChannels[1] <> 0 Then
+						If ChannelPlaying(e\soundChannels[1]) Then StopChannel e\soundChannels[1]
 					EndIf 
-					FemurBreakerSFX = LoadSound_Strict("SFX\Room\106Chamber\FemurBreaker.ogg")
-					e\SoundCHN2 = PlaySound_Strict (FemurBreakerSFX)
+					FemurBreakerSFX = LoadSound("SFX\Room\106Chamber\FemurBreaker.ogg")
+					e\soundChannels[1] = PlaySound (FemurBreakerSFX)
 				EndIf
 			EndIf
 		ElseIf e\EventState = 1 ;bone broken
 			If SoundTransmission And e\EventState3 < 2000 Then 
-				If e\SoundCHN2 = 0 Then 
+				If e\soundChannels[1] = 0 Then 
 					LoadEventSound(e,"SFX\Character\LureSubject\Sniffling.ogg",1)
-					e\SoundCHN2 = PlaySound_Strict(e\Sound2)								
+					e\soundChannels[1] = PlaySound(e\sounds[1])								
 				EndIf
-				If ChannelPlaying(e\SoundCHN2) = False Then
+				If ChannelPlaying(e\soundChannels[1]) = False Then
 					LoadEventSound(e,"SFX\Character\LureSubject\Sniffling.ogg",1)
-					e\SoundCHN2 = PlaySound_Strict(e\Sound2)
+					e\soundChannels[1] = PlaySound(e\sounds[1])
 				EndIf
 			EndIf
 			
@@ -258,13 +258,13 @@ Function UpdateEvent_cont_106_1(e.Events)
 					d\Alpha = 0.01 : d\AlphaChange = 0.005
 					d\Size = 0.1 : d\SizeChange = 0.003	
 					
-					If e\SoundCHN2 <> 0 Then
-						If ChannelPlaying(e\SoundCHN2) Then StopChannel e\SoundCHN2
+					If e\soundChannels[1] <> 0 Then
+						If ChannelPlaying(e\soundChannels[1]) Then StopChannel e\soundChannels[1]
 					EndIf 
 					LoadEventSound(e,"SFX\Character\LureSubject\106Bait.ogg",1)
-					e\SoundCHN2=PlaySound_Strict(e\Sound2)
+					e\soundChannels[1]=PlaySound(e\sounds[1])
 				ElseIf e\EventState3-timing\tickDuration < 2900 And e\EventState3 => 2900 Then
-					If FemurBreakerSFX <> 0 Then FreeSound_Strict FemurBreakerSFX : FemurBreakerSFX = 0
+					If FemurBreakerSFX <> 0 Then FreeSound FemurBreakerSFX : FemurBreakerSFX = 0
 					
 					d.Decals = CreateDecal(0, EntityX(e\room\Objects[7], True), EntityY(e\room\Objects[7], True) , EntityZ(e\room\Objects[7], True), 0, 0, 0) 
 					RotateEntity(d\obj, EntityPitch(e\room\Objects[7], True)+Rand(10,20), EntityYaw(e\room\Objects[7], True)+30, EntityRoll(d\obj))

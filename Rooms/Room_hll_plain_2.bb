@@ -28,7 +28,7 @@ Function UpdateEventRoom2trick(e.Events)
 				
 				mainPlayer\blinkTimer = -10
 				
-				PlaySound_Strict DripSFX(0);HorrorSFX(11)
+				PlaySound DripSFX(0);HorrorSFX(11)
 				
 				PositionEntity mainPlayer\collider, EntityX(pvt),EntityY(pvt)+0.05,EntityZ(pvt)
 				UpdateWorld()

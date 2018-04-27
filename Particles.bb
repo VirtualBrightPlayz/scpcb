@@ -79,7 +79,7 @@ Function RemoveParticle(p.Particles)
 End Function
 
 Global InSmoke%
-Global HissSFX% = LoadSound_Strict("SFX\General\Hiss.ogg")
+Global HissSFX% = LoadSound("SFX\General\Hiss.ogg")
 
 Type Emitters
 	Field Obj%
@@ -93,7 +93,7 @@ Type Emitters
 	
 	Field Room.Rooms
 	
-	Field SoundCHN%
+	Field soundCHN%
 	
 	Field Speed#, RandAngle#
 	Field SizeChange#, Achange#
@@ -115,7 +115,7 @@ Function UpdateEmitters()
 				
 				p\Achange = e\achange
 				
-				e\SoundCHN = LoopSound2(HissSFX, e\SoundCHN, mainPlayer\cam, e\Obj)
+				e\soundCHN = LoopSound2(HissSFX, e\soundCHN, mainPlayer\cam, e\Obj)
 				
 				If InSmoke = False Then
 					If IsPlayerWearingTempName(mainPlayer,"gasmask") And IsPlayerWearingTempName(mainPlayer,"hazmatsuit") Then
@@ -139,9 +139,9 @@ Function UpdateEmitters()
 		If Not mainPlayer\dead Then 
 			If Rand(150) = 1 Then
 				If CoughCHN = 0 Then
-					CoughCHN = PlaySound_Strict(CoughSFX(Rand(0, 2)))
+					CoughCHN = PlaySound(CoughSFX(Rand(0, 2)))
 				Else
-					If Not ChannelPlaying(CoughCHN) Then CoughCHN = PlaySound_Strict(CoughSFX(Rand(0, 2)))
+					If Not ChannelPlaying(CoughCHN) Then CoughCHN = PlaySound(CoughSFX(Rand(0, 2)))
 				End If
 			EndIf
 		EndIf

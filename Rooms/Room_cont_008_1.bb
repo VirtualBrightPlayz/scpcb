@@ -10,14 +10,14 @@ Function FillRoom_cont_008_1(r.Rooms)
     PositionEntity(r\Objects[0], r\x + 292.0 * RoomScale, 130.0*RoomScale, r\z + 516.0 * RoomScale, True)
     
     ;the lid of the container
-    r\Objects[1] = LoadMesh_Strict("GFX\map\008_2.b3d")
+    r\Objects[1] = LoadMesh("GFX\map\008_2.b3d")
     ScaleEntity r\Objects[1], RoomScale, RoomScale, RoomScale
     PositionEntity(r\Objects[1], r\x + 292 * RoomScale, 151 * RoomScale, r\z + 576.0 * RoomScale, 0)
     EntityParent(r\Objects[1], r\obj)
     
     RotateEntity(r\Objects[1],89,0,0,True)
     
-    Glasstex = LoadTexture_Strict("GFX\map\glass.png",1+2)
+    Glasstex = LoadTexture("GFX\map\glass.png",1+2)
     r\Objects[2] = CreateSprite()
     EntityTexture(r\Objects[2],Glasstex)
     SpriteViewMode(r\Objects[2],2)
@@ -104,12 +104,12 @@ Function UpdateEvent_cont_008_1(e.Events)
 			;container open
 			If e\EventState = 0 Then
 				
-				PositionEntity Curr173\Collider, EntityX(e\room\Objects[3],True),0.5,EntityZ(e\room\Objects[3],True),True
-				ResetEntity Curr173\Collider
+				PositionEntity Curr173\collider, EntityX(e\room\Objects[3],True),0.5,EntityZ(e\room\Objects[3],True),True
+				ResetEntity Curr173\collider
 				
 				e\EventState = 1
 			ElseIf e\EventState = 1
-				e\SoundCHN = LoopSound2(AlarmSFX(0), e\SoundCHN, mainPlayer\cam, e\room\Objects[0], 5.0)
+				e\soundChannels[0] = LoopSound2(AlarmSFX(0), e\soundChannels[0], mainPlayer\cam, e\room\Objects[0], 5.0)
 				
 				If (TimeInPosMilliSecs() Mod 1000)<500 Then
 					ShowEntity e\room\Objects[5] 
@@ -156,7 +156,7 @@ Function UpdateEvent_cont_008_1(e.Events)
 				
 				If EntityPitch(e\room\Objects[1],True)<40 Then 
 					e\EventState = 2
-					PlaySound_Strict LeverSFX
+					PlaySound LeverSFX
 				Else
 					p.Particles = CreateParticle(EntityX(e\room\Objects[0],True),EntityY(e\room\Objects[0],True),EntityZ(e\room\Objects[0],True), 6, 0.02, -0.12)
 					RotateEntity (p\pvt,-90,0,0,True)
@@ -186,5 +186,6 @@ Function UpdateEvent_cont_008_1(e.Events)
 	End If
 	;[End Block]
 End Function
+
 ;~IDEal Editor Parameters:
 ;~C#Blitz3D

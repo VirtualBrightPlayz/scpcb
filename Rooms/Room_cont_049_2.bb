@@ -101,7 +101,7 @@ Function FillRoom_cont_049_2(r.Rooms)
     it = CreateItem("First Aid Kit", "firstaid", r\x +385.0 * RoomScale, r\y - 3412.0 * RoomScale, r\z + 271.0 * RoomScale)
     EntityParent(it\collider, r\obj)
     
-    r\Objects[10] = LoadMesh_Strict("GFX\map\room049_hb.b3d",r\obj)
+    r\Objects[10] = LoadMesh("GFX\map\room049_hb.b3d",r\obj)
     EntityPickMode r\Objects[10],2
     EntityType r\Objects[10],HIT_MAP
     EntityAlpha r\Objects[10],0.0
@@ -125,7 +125,7 @@ Function UpdateEvent_cont_049_2(e.Events)
 			e\EventState2 = UpdateElevators(e\EventState2, e\room\RoomDoors[0], e\room\RoomDoors[1],e\room\Objects[0],e\room\Objects[1], e)
 			e\EventState3 = UpdateElevators(e\EventState3, e\room\RoomDoors[2], e\room\RoomDoors[3],e\room\Objects[2],e\room\Objects[3], e)
 		Else
-			If Music(8)=0 Then Music(8) = LoadSound_Strict("SFX\Music\Room049.ogg") 
+			If Music(8)=0 Then Music(8) = LoadSound("SFX\Music\Room049.ogg") 
 			ShouldPlay = 8
 			
 			If e\EventState = 0 Then
@@ -183,8 +183,8 @@ Function UpdateEvent_cont_049_2(e.Events)
 						e\EventState2 = UpdateElevators(e\EventState2, e\room\RoomDoors[0], e\room\RoomDoors[1],e\room\Objects[0],e\room\Objects[1], e)
 						e\EventState3 = UpdateElevators(e\EventState3, e\room\RoomDoors[2], e\room\RoomDoors[3],e\room\Objects[2],e\room\Objects[3], e)
 						
-						If e\Sound2=0 Then LoadEventSound(e,"SFX\General\GeneratorOn.ogg",1)
-						e\SoundCHN2=LoopSound2(e\Sound2, e\SoundCHN2, mainPlayer\cam, e\room\Objects[8], 6.0, e\EventState3)
+						If e\sounds[1]=0 Then LoadEventSound(e,"SFX\General\GeneratorOn.ogg",1)
+						e\soundChannels[1]=LoopSound2(e\sounds[1], e\soundChannels[1], mainPlayer\cam, e\room\Objects[8], 6.0, e\EventState3)
 						
 						If e\room\NPC[0]\Idle > 0
 							i = 0
@@ -223,7 +223,7 @@ Function UpdateEvent_cont_049_2(e.Events)
 						;e\room\NPC[0]\State = 1
 						
 						e\room\RoomDoors[4]\open = True
-						PlaySound_Strict TeslaPowerUpSFX
+						PlaySound TeslaPowerUpSFX
 						PlaySound2(OpenDoorSFX(0,Rand(0,2)),mainPlayer\cam, e\room\RoomDoors[4]\obj, 6.0)
 						
 						e\room\RoomDoors[1]\open = False
@@ -334,7 +334,7 @@ Function UpdateEvent_cont_049_2(e.Events)
 					MoveEntity e\room\NPC[1]\Collider,0,0,0.1
 					PointEntity mainPlayer\collider, e\room\NPC[1]\Collider
 					
-					PlaySound_Strict LoadTempSound("SFX\Character\MTF\049\Player0492_1.ogg")
+					PlaySound LoadTempSound("SFX\Character\MTF\049\Player0492_1.ogg")
 					
 					LoadEventSound(e,"SFX\SCP\049\0492Breath.ogg")
 					
@@ -376,13 +376,13 @@ Function UpdateEvent_cont_049_2(e.Events)
 			
 			If mainPlayer\dead = True Then
 				If ChannelPlaying(e\room\NPC[1]\SoundChn) Then StopChannel(e\room\NPC[1]\SoundChn)
-				PlaySound_Strict LoadTempSound("SFX\Character\MTF\049\Player0492_2.ogg")
+				PlaySound LoadTempSound("SFX\Character\MTF\049\Player0492_2.ogg")
 				RemoveEvent(e)
 			Else
-				If e\SoundCHN = 0 Then
-					e\SoundCHN = PlaySound_Strict (e\Sound)
+				If e\soundChannels[0] = 0 Then
+					e\soundChannels[0] = PlaySound (e\sounds[0])
 				Else
-					If (Not ChannelPlaying(e\SoundCHN)) Then e\SoundCHN = PlaySound_Strict(e\Sound)
+					If (Not ChannelPlaying(e\soundChannels[0])) Then e\soundChannels[0] = PlaySound(e\sounds[0])
 				EndIf
 			EndIf
 		EndIf

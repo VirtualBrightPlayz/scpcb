@@ -97,7 +97,7 @@ Function UpdateEvent_srvr_096_2(e.Events)
 			Curr096\State2=70*10
 			
 			LoadEventSound(e,"SFX\Character\Guard\096ServerRoom1.ogg")
-			e\SoundCHN = PlaySound_Strict (e\Sound)
+			e\soundChannels[0] = PlaySound (e\sounds[0])
 			
 			e\room\NPC[0]=CreateNPC(NPCtypeGuard, EntityX(e\room\Objects[7],True),EntityY(e\room\Objects[7],True),EntityZ(e\room\Objects[7],True))
 			
@@ -169,9 +169,9 @@ Function UpdateEvent_srvr_096_2(e.Events)
 			
 			Curr096\Target = e\room\NPC[0]
 			If AnimTime(Curr096\obj)>25 And AnimTime(Curr096\obj)<150 Then
-				FreeSound_Strict e\Sound : e\Sound = 0
-				e\Sound=LoadSound_Strict("SFX\Character\Guard\096ServerRoom2.ogg")
-				e\SoundCHN=PlaySound_Strict(e\Sound)
+				FreeSound e\sounds[0] : e\sounds[0] = 0
+				e\sounds[0]=LoadSound("SFX\Character\Guard\096ServerRoom2.ogg")
+				e\soundChannels[0]=PlaySound(e\sounds[0])
 				
 				Curr096\CurrSpeed = 0
 				
@@ -206,14 +206,14 @@ Function UpdateEvent_srvr_096_2(e.Events)
 				e\room\RoomDoors[1]\locked=False
 				UseDoor(e\room\RoomDoors[0],False)
 				UseDoor(e\room\RoomDoors[1],False)
-				FreeSound_Strict e\Sound : e\Sound = 0
+				FreeSound e\sounds[0] : e\sounds[0] = 0
 				e\room\RoomDoors[0]\locked=True
 				e\room\RoomDoors[1]\locked=True
 			EndIf
 			
 			If mainPlayer\currRoom = e\room Then
-				If e\SoundCHN<>0 Then
-					If	ChannelPlaying(e\SoundCHN) Then 
+				If e\soundChannels[0]<>0 Then
+					If	ChannelPlaying(e\soundChannels[0]) Then 
 						;LightBlink = Rnd(0.5,6.0)
 						If Rand(50)=1 Then PlaySound2(IntroSFX(Rand(10,12)), mainPlayer\cam, e\room\obj, 8.0, Rnd(0.1,0.3))
 					EndIf
@@ -222,12 +222,12 @@ Function UpdateEvent_srvr_096_2(e.Events)
 				If (e\room\angle = 0 Or e\room\angle = 180) Then ;lock the player inside
 					If Abs(EntityX(mainPlayer\collider)-EntityX(e\room\obj,True))> 1.3 Then 
 						e\EventState = 70*50
-						e\Sound=0
+						e\sounds[0]=0
 					EndIf
 				Else
 					If Abs(EntityZ(mainPlayer\collider)-EntityZ(e\room\obj,True))> 1.3 Then 
 						e\EventState = 70*50
-						e\Sound=0
+						e\sounds[0]=0
 					EndIf
 				EndIf	
 			EndIf
@@ -245,7 +245,7 @@ Function UpdateEvent_srvr_096_2(e.Events)
 			
 			;generator on
 			If z Then
-				If e\Sound2=0 Then LoadEventSound(e,"SFX\General\GeneratorOn.ogg",1)
+				If e\sounds[1]=0 Then LoadEventSound(e,"SFX\General\GeneratorOn.ogg",1)
 				e\EventState3 = Min(1.0, e\EventState3+timing\tickDuration/450)
 			Else
 				e\EventState3 = Min(0.0, e\EventState3-timing\tickDuration/450)
@@ -255,8 +255,8 @@ Function UpdateEvent_srvr_096_2(e.Events)
 			e\EventState3 = Max(0, e\EventState3-timing\tickDuration/450)
 		EndIf
 		
-		If e\EventState2>0 Then e\SoundCHN=LoopSound2(RoomAmbience[8], e\SoundCHN, mainPlayer\cam, e\room\Objects[3], 5.0, e\EventState2*0.8)
-		If e\EventState3>0 Then e\SoundCHN2=LoopSound2(e\Sound2, e\SoundCHN2, mainPlayer\cam, e\room\Objects[5], 6.0, e\EventState3)
+		If e\EventState2>0 Then e\soundChannels[0]=LoopSound2(RoomAmbience[8], e\soundChannels[0], mainPlayer\cam, e\room\Objects[3], 5.0, e\EventState2*0.8)
+		If e\EventState3>0 Then e\soundChannels[1]=LoopSound2(e\sounds[1], e\soundChannels[1], mainPlayer\cam, e\room\Objects[5], 6.0, e\EventState3)
 		
 		If temp=0 And x And z Then
 			e\room\RoomDoors[0]\locked = False

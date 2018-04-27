@@ -38,7 +38,7 @@ Function FillRoom_cont_173_1(r.Rooms)
     d.Doors = CreateDoor(r\zone, r\x, 0, r\z + 1184.0 * RoomScale, 0, r, False)
     d\locked = True
     
-    r\Objects[0] = LoadMesh_Strict("GFX\map\IntroDesk.b3d")
+    r\Objects[0] = LoadMesh("GFX\map\IntroDesk.b3d")
     ScaleEntity r\Objects[0], RoomScale, RoomScale ,RoomScale
     PositionEntity r\Objects[0], r\x + 272.0 * RoomScale, 0, r\z + 400.0 * RoomScale
     EntityParent r\Objects[0], r\obj
@@ -46,7 +46,7 @@ Function FillRoom_cont_173_1(r.Rooms)
     de.Decals = CreateDecal(0, r\x + 272.0 * RoomScale, 0.005, r\z + 262.0 * RoomScale, 90, Rand(360), 0)
     EntityParent(de\obj, r\obj)
     
-    r\Objects[1] = LoadMesh_Strict("GFX\map\IntroDrawer.b3d")
+    r\Objects[1] = LoadMesh("GFX\map\IntroDrawer.b3d")
     ScaleEntity r\Objects[1], RoomScale, RoomScale ,RoomScale
     PositionEntity r\Objects[1], r\x + 448.0 * RoomScale, 0, r\z + 192.0 * RoomScale
     EntityParent r\Objects[1], r\obj
@@ -138,7 +138,7 @@ Function UpdateEventAlarm(e.Events)
 			
 			If e\room\NPC[1] = Null Then
 				e\room\NPC[1] = CreateNPC(NPCtypeD, 0,0,0)
-				tex = LoadTexture_Strict("GFX\npcs\scientist2.jpg")
+				tex = LoadTexture("GFX\npcs\scientist2.jpg")
 				e\room\NPC[1]\texture = "GFX\npcs\scientist2.jpg"
 				EntityTexture e\room\NPC[1]\obj, tex
 				FreeTexture tex
@@ -172,7 +172,7 @@ Function UpdateEventAlarm(e.Events)
 				;PointEntity(e\room\NPC[5]\Collider, e\room\Objects[7])
 				SetNPCFrame(e\room\NPC[5], 19) : e\room\NPC[5]\State = 3
 				RotateEntity e\room\NPC[5]\Collider,0,270,0
-				tex = LoadTexture_Strict("GFX\npcs\classd2.jpg")
+				tex = LoadTexture("GFX\npcs\classd2.jpg")
 				e\room\NPC[5]\texture = "GFX\npcs\classd2.jpg"
 				EntityTexture e\room\NPC[5]\obj, tex
 				FreeTexture tex
@@ -211,7 +211,7 @@ Function UpdateEventAlarm(e.Events)
 				CanSave = False
 				If e\EventState > 900 And e\room\RoomDoors[5]\open Then
 					If e\EventState - timing\tickDuration <= 900 Then 
-						e\room\NPC[1]\Sound = LoadSound_Strict("SFX\Room\Intro\WhatThe.ogg")
+						e\room\NPC[1]\Sound = LoadSound("SFX\Room\Intro\WhatThe.ogg")
 						e\room\NPC[1]\SoundChn = PlaySound2(e\room\NPC[1]\Sound, mainPlayer\cam, e\room\NPC[1]\Collider)
 					EndIf
 					e\room\NPC[1]\State = 3
@@ -248,7 +248,7 @@ Function UpdateEventAlarm(e.Events)
 
 					Else
 						If e\EventState-timing\tickDuration < 900+4*70 Then 
-							PlaySound_Strict(IntroSFX(11)); : LightBlink = 3.0
+							PlaySound(IntroSFX(11)); : LightBlink = 3.0
 							
 							;Stonedrag.
 							PlaySound2 (Curr173\sounds[0], mainPlayer\cam, Curr173\Collider)
@@ -263,7 +263,7 @@ Function UpdateEventAlarm(e.Events)
 							If EntityZ(e\room\NPC[2]\Collider) < e\room\z-1150*RoomScale Then
 								e\room\RoomDoors[5]\open = False
 								;LightBlink = 3.0
-								PlaySound_Strict(IntroSFX(11))
+								PlaySound(IntroSFX(11))
 								mainPlayer\blinkTimer = -10
 
 								;Stonedrag.
@@ -327,24 +327,24 @@ Function UpdateEventAlarm(e.Events)
 		EndIf
 		
 		If (e\EventState < 2000) Then
-			If e\SoundCHN = 0 Then
-				e\SoundCHN = PlaySound_Strict(AlarmSFX(0))
+			If e\soundChannels[0] = 0 Then
+				e\soundChannels[0] = PlaySound(AlarmSFX(0))
 			Else
-				If Not ChannelPlaying(e\SoundCHN) Then e\SoundCHN = PlaySound_Strict(AlarmSFX(0))
+				If Not ChannelPlaying(e\soundChannels[0]) Then e\soundChannels[0] = PlaySound(AlarmSFX(0))
 			End If
 		EndIf
 		
 		If (e\EventState3<10) Then
-			If (Not ChannelPlaying(e\SoundCHN2)) Then
+			If (Not ChannelPlaying(e\soundChannels[1])) Then
 				e\EventState3 = e\EventState3+1
 				
-				If (e\Sound2 <> 0) Then
-					FreeSound_Strict(e\Sound2)
-					e\Sound2 = 0
+				If (e\sounds[1] <> 0) Then
+					FreeSound(e\sounds[1])
+					e\sounds[1] = 0
 				EndIf
 				
-				e\Sound2 = LoadSound_Strict("SFX\Alarm\Alarm2_"+Int(e\EventState3)+".ogg")
-				e\SoundCHN2 = PlaySound_Strict(e\Sound2)
+				e\sounds[1] = LoadSound("SFX\Alarm\Alarm2_"+Int(e\EventState3)+".ogg")
+				e\soundChannels[1] = PlaySound(e\sounds[1])
 				Else
 					If Int(e\EventState3) = 8 Then mainPlayer\camShake = 1.0
 			EndIf
@@ -353,11 +353,11 @@ Function UpdateEventAlarm(e.Events)
 		If ((e\EventState Mod 600 > 300) And ((e\EventState+timing\tickDuration) Mod 600 < 300)) Then
 			i = Floor((e\EventState-5000)/600)+1
 			
-			If i = 0 Then PlaySound_Strict(LoadTempSound("SFX\Room\Intro\PA\scripted\scripted6.ogg"))
+			If i = 0 Then PlaySound(LoadTempSound("SFX\Room\Intro\PA\scripted\scripted6.ogg"))
 			
 			If (i>0 And i<24) Then
 				If Not CommotionState(i) Then ;Prevents the same commotion file from playing more then once.
-					PlaySound_Strict(LoadTempSound("SFX\Room\Intro\Commotion\Commotion"+i+".ogg"))
+					PlaySound(LoadTempSound("SFX\Room\Intro\Commotion\Commotion"+i+".ogg"))
 					CommotionState(i) = True
 				EndIf
 			EndIf

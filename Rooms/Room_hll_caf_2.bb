@@ -51,7 +51,7 @@ Function Update294()
 			ytemp = Floor((ScaledMouseY()-y-342) / 36.5)
 			
 			If ytemp => 0 And ytemp < 5 Then
-				If xtemp => 0 And xtemp < 10 Then PlaySound_Strict ButtonSFX
+				If xtemp => 0 And xtemp < 10 Then PlaySound ButtonSFX
 			EndIf
 			
 			strtemp = ""
@@ -151,9 +151,9 @@ Function Update294()
 				If loc > 0 Then
 					strtemp$ = GetINIString2("DATA\SCP-294.ini", loc, "dispensesound")
 					If strtemp = "" Then
-						mainPlayer\currRoom\SoundCHN = PlaySound_Strict (LoadTempSound("SFX\SCP\294\dispense1.ogg"))
+						mainPlayer\currRoom\SoundCHN = PlaySound (LoadTempSound("SFX\SCP\294\dispense1.ogg"))
 					Else
-						mainPlayer\currRoom\SoundCHN = PlaySound_Strict (LoadTempSound(strtemp))
+						mainPlayer\currRoom\SoundCHN = PlaySound (LoadTempSound(strtemp))
 					EndIf
 					
 					If GetINIInt2("DATA\SCP-294.ini", loc, "explosion")=True Then 
@@ -180,7 +180,7 @@ Function Update294()
 				Else
 					;out of range
 					Input294 = "OUT OF RANGE"
-					mainPlayer\currRoom\SoundCHN = PlaySound_Strict (LoadTempSound("SFX\SCP\294\outofrange.ogg"))
+					mainPlayer\currRoom\SoundCHN = PlaySound (LoadTempSound("SFX\SCP\294\outofrange.ogg"))
 				EndIf
 				
 			EndIf

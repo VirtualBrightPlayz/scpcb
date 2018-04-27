@@ -35,7 +35,7 @@ Function FillRoom_lck_air_2(r.Rooms)
             EndIf
         EndIf
     Next
-    If r\Objects[3]=0 Then r\Objects[3] = LoadMesh_Strict("GFX\map\room2gw_pipes.b3d",r\obj)
+    If r\Objects[3]=0 Then r\Objects[3] = LoadMesh("GFX\map\room2gw_pipes.b3d",r\obj)
     EntityPickMode r\Objects[3],2
     
     If r\RoomTemplate\Name = "lck_air_2"
@@ -97,14 +97,14 @@ Function UpdateEventRoom_gw(e.Events)
 			If EntityDistance(e\room\Objects[0],mainPlayer\collider)<1.4 And e\EventState3 = 0.0
 				e\EventState = 1.0
 				If brokendoor
-					If e\Sound2 <> 0 Then FreeSound_Strict(e\Sound2) : e\Sound2 = 0
-					e\Sound2 = LoadSound_Strict("SFX\Door\DoorSparks.ogg")
-					e\SoundCHN2 = PlaySound2(e\Sound2,mainPlayer\cam,e\room\Objects[1],5)
+					If e\sounds[1] <> 0 Then FreeSound(e\sounds[1]) : e\sounds[1] = 0
+					e\sounds[1] = LoadSound("SFX\Door\DoorSparks.ogg")
+					e\soundChannels[1] = PlaySound2(e\sounds[1],mainPlayer\cam,e\room\Objects[1],5)
 				EndIf
-				StopChannel e\SoundCHN
-				e\SoundCHN = 0
-				If e\Sound <> 0 Then FreeSound_Strict(e\Sound) : e\Sound = 0
-				e\Sound = LoadSound_Strict("SFX\Door\Airlock.ogg")
+				StopChannel e\soundChannels[0]
+				e\soundChannels[0] = 0
+				If e\sounds[0] <> 0 Then FreeSound(e\sounds[0]) : e\sounds[0] = 0
+				e\sounds[0] = LoadSound("SFX\Door\Airlock.ogg")
 				e\room\RoomDoors[0]\locked = False
 				e\room\RoomDoors[1]\locked = False
 				UseDoor(e\room\RoomDoors[0])
@@ -168,7 +168,7 @@ Function UpdateEventRoom_gw(e.Events)
 					Next
 					
 					FreeEntity pvt
-					If e\SoundCHN = 0 Then e\SoundCHN = PlaySound2(e\Sound,mainPlayer\cam,e\room\Objects[0],5)
+					If e\soundChannels[0] = 0 Then e\soundChannels[0] = PlaySound2(e\sounds[0],mainPlayer\cam,e\room\Objects[0],5)
 				EndIf
 			Else
 				e\EventState = 0.0
@@ -184,12 +184,12 @@ Function UpdateEventRoom_gw(e.Events)
 		EndIf
 		
 		If brokendoor
-			If ChannelPlaying(e\SoundCHN2)
-				UpdateSoundOrigin(e\SoundCHN2,mainPlayer\cam,e\room\Objects[1],5)
+			If ChannelPlaying(e\soundChannels[1])
+				UpdateSoundOrigin(e\soundChannels[1],mainPlayer\cam,e\room\Objects[1],5)
 			EndIf
 		EndIf
-		If ChannelPlaying(e\SoundCHN)
-			UpdateSoundOrigin(e\SoundCHN,mainPlayer\cam,e\room\Objects[0],5)
+		If ChannelPlaying(e\soundChannels[0])
+			UpdateSoundOrigin(e\soundChannels[0],mainPlayer\cam,e\room\Objects[0],5)
 		EndIf
 	Else
 		e\EventState3 = 0.0

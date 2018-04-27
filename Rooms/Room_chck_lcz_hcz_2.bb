@@ -60,8 +60,8 @@ Function UpdateEventCheckpoint(e.Events)
 	;[Block]
 	If mainPlayer\currRoom = e\room Then
 		;If e\room\RoomDoors[0]\open <> e\EventState Then
-		;	If e\Sound = 0 Then LoadEventSound(e,"SFX\Door\DoorCheckpoint.Ogg")
-		;	PlaySound_Strict e\Sound
+		;	If e\sounds[0] = 0 Then LoadEventSound(e,"SFX\Door\DoorCheckpoint.Ogg")
+		;	PlaySound e\sounds[0]
 		;EndIf
 		
 		;play a sound clip when the player passes through the gate
@@ -69,9 +69,9 @@ Function UpdateEventCheckpoint(e.Events)
 		;If e\EventState2 = 0 Then
 		;	If EntityZ(mainPlayer\collider) < e\room\z Then
 		;		If PlayerZone = 1 Then
-		;			PlaySound_Strict(LoadTempSound("SFX\Ambient\ToZone2.ogg"))
+		;			PlaySound(LoadTempSound("SFX\Ambient\ToZone2.ogg"))
 		;		Else
-		;			PlaySound_Strict(LoadTempSound("SFX\Ambient\ToZone3.ogg"))
+		;			PlaySound(LoadTempSound("SFX\Ambient\ToZone3.ogg"))
 		;		EndIf
 		;		e\EventState2 = 1
 		;	EndIf
@@ -79,7 +79,7 @@ Function UpdateEventCheckpoint(e.Events)
 		
 		If e\EventState3=0 Then
 			If Rand(2)=1 Then
-				e\room\Objects[1]=LoadAnimMesh_Strict("GFX\npcs\scp-1048.b3d")
+				e\room\Objects[1]=LoadAnimMesh("GFX\npcs\scp-1048.b3d")
 				ScaleEntity e\room\Objects[1], 0.05,0.05,0.05
 				PositionEntity(e\room\Objects[1],EntityX(e\room\Objects[0],True),EntityY(e\room\Objects[0],True),EntityZ(e\room\Objects[0],True))
 				SetAnimTime e\room\Objects[1],267	
@@ -150,18 +150,22 @@ Function UpdateEventCheckpoint(e.Events)
 	EndIf
 	
 	If e\room\RoomDoors[0]\open <> e\EventState Then
-		If e\Sound = 0 Then LoadEventSound(e,"SFX\Door\DoorCheckpoint.ogg")
-		e\SoundCHN = PlaySound2(e\Sound,mainPlayer\cam,e\room\RoomDoors[0]\obj)
-		e\SoundCHN2 = PlaySound2(e\Sound,mainPlayer\cam,e\room\RoomDoors[1]\obj)
+		If e\sounds[0] = 0 Then LoadEventSound(e,"SFX\Door\DoorCheckpoint.ogg")
+		;TODO: wtf is this bullshit
+		e\soundChannels[0] = PlaySound2(e\sounds[0], mainPlayer\cam, e\room\RoomDoors[0]\obj)
+		e\soundChannels[1] = PlaySound2(e\sounds[0], mainPlayer\cam, e\room\RoomDoors[1]\obj)
 	EndIf
 	
 	e\EventState = e\room\RoomDoors[0]\open
 	
-	If ChannelPlaying(e\SoundCHN)
-		UpdateSoundOrigin(e\SoundCHN,mainPlayer\cam,e\room\RoomDoors[0]\obj)
+	If ChannelPlaying(e\soundChannels[0])
+		UpdateSoundOrigin(e\soundChannels[0], mainPlayer\cam, e\room\RoomDoors[0]\obj)
 	EndIf
-	If ChannelPlaying(e\SoundCHN2)
-		UpdateSoundOrigin(e\SoundCHN2,mainPlayer\cam,e\room\RoomDoors[1]\obj)
+	If ChannelPlaying(e\soundChannels[1])
+		UpdateSoundOrigin(e\soundChannels[1], mainPlayer\cam, e\room\RoomDoors[1]\obj)
 	EndIf
 	;[End Block]
 End Function
+
+;~IDEal Editor Parameters:
+;~C#Blitz3D

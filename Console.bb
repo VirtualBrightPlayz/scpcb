@@ -254,6 +254,7 @@ Function UpdateConsole()
 				StrTemp$ = Lower(ConsoleInput)
 			End If
 			
+			;TODO: Overhaul this. Move all of the argument stuff to dedicated functions to this is actually readable/maintainable.
 			Select Lower(StrTemp)
 				Case "help"
 					If Instr(ConsoleInput, " ")<>0 Then
@@ -587,31 +588,31 @@ Function UpdateConsole()
 
 				Case "173speed"
 					StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
-					Curr173\Speed = Float(StrTemp)
+					Curr173\speed = Float(StrTemp)
 					CreateConsoleMsg("173's speed set to " + StrTemp)
 
 				Case "106speed"
 					StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
-					Curr106\Speed = Float(StrTemp)
+					Curr106\speed = Float(StrTemp)
 					CreateConsoleMsg("106's speed set to " + StrTemp)
 
 				Case "173state"
 					CreateConsoleMsg("SCP-173")
 					CreateConsoleMsg("Position: " + EntityX(Curr173\obj) + ", " + EntityY(Curr173\obj) + ", " + EntityZ(Curr173\obj))
 					CreateConsoleMsg("Idle: " + Curr173\Idle)
-					CreateConsoleMsg("State: " + Curr173\State)
+					CreateConsoleMsg("State: " + Curr173\state)
 
 				Case "106state"
 					CreateConsoleMsg("SCP-106")
 					CreateConsoleMsg("Position: " + EntityX(Curr106\obj) + ", " + EntityY(Curr106\obj) + ", " + EntityZ(Curr106\obj))
 					CreateConsoleMsg("Idle: " + Curr106\Idle)
-					CreateConsoleMsg("State: " + Curr106\State)
+					CreateConsoleMsg("State: " + Curr106\state)
 
 				Case "spawn513-1"
 					CreateNPC(NPCtype5131, 0,0,0)
 
 				Case "spawn106"
-					Curr106\State = -1
+					Curr106\state = -1
 					PositionEntity Curr106\collider, EntityX(mainPlayer\collider), EntityY(Curr106\collider), EntityZ(mainPlayer\collider)
 
 				Case "reset096"
@@ -625,33 +626,33 @@ Function UpdateConsole()
 				Case "disable173"
 					Curr173\Idle = 3 ;TODO: clean up
 					HideEntity Curr173\obj
-					HideEntity Curr173\Collider
+					HideEntity Curr173\collider
 
 				Case "enable173"
 					Curr173\Idle = False
 					ShowEntity Curr173\obj
-					ShowEntity Curr173\Collider
+					ShowEntity Curr173\collider
 
 				Case "disable106"
 					Curr106\Idle = True
-					Curr106\State = 200000
+					Curr106\state = 200000
 					Contained106 = True
 
 				Case "enable106"
 					Curr106\Idle = False
 					Contained106 = False
-					ShowEntity Curr106\Collider
+					ShowEntity Curr106\collider
 					ShowEntity Curr106\obj
 
 				Case "halloween"
 					HalloweenTex = Not HalloweenTex
 					If HalloweenTex Then
-						Local tex = LoadTexture_Strict("GFX\npcs\173h.pt", 1)
+						Local tex = LoadTexture("GFX\npcs\173h.pt", 1)
 						EntityTexture Curr173\obj, tex, 0, 0
 						FreeTexture tex
 						CreateConsoleMsg("173 JACK-O-LANTERN ON")
 					Else
-						Local tex2 = LoadTexture_Strict("GFX\npcs\173texture.png", 1)
+						Local tex2 = LoadTexture("GFX\npcs\173texture.png", 1)
 						EntityTexture Curr173\obj, tex2, 0, 0
 						FreeTexture tex2
 						CreateConsoleMsg("173 JACK-O-LANTERN OFF")
@@ -674,7 +675,7 @@ Function UpdateConsole()
 						EndIf
 						EntityType (it\collider, HIT_ITEM)
 					Next
-					PlaySound_Strict LoadTempSound("SFX\Music\420J.ogg")
+					PlaySound LoadTempSound("SFX\Music\420J.ogg")
 
 				Case "godmode"
 					StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
@@ -773,30 +774,7 @@ Function UpdateConsole()
 					EndIf
 
 				Case "stopsound", "stfu"
-					For snd.Sound = Each Sound
-						For i = 0 To 31
-							If snd\channels[i]<>0 Then
-								StopChannel snd\channels[i]
-							EndIf
-						Next
-					Next
-
-					For e.events = Each Events
-						If e\eventname = "alarm" Then 
-							If e\room\NPC[0] <> Null Then RemoveNPC(e\room\NPC[0])
-							If e\room\NPC[1] <> Null Then RemoveNPC(e\room\NPC[1])
-							If e\room\NPC[2] <> Null Then RemoveNPC(e\room\NPC[2])
-							
-							FreeEntity e\room\Objects[0]
-							FreeEntity e\room\Objects[1]
-							PositionEntity Curr173\Collider, 0,0,0
-							ResetEntity Curr173\Collider
-							RemoveEvent(e)
-							Exit
-						EndIf
-					Next
-					CreateConsoleMsg("Stopped all sounds.")
-
+					RuntimeError "TODO: reimplement"
 					
 				Case "camerafog"
 					RuntimeError "TODO: reimplement?"

@@ -5,15 +5,15 @@ Function FillRoom_pocketdimension(r.Rooms)
     
     Local t1;, Bump
 
-    Local hallway = LoadMesh_Strict("GFX\map\pocketdimension2.b3d") ;the tunnels in the first room
-    r\Objects[8]=LoadMesh_Strict("GFX\map\pocketdimension3.b3d")	;the room with the throne, moving pillars etc 
-    r\Objects[9]=LoadMesh_Strict("GFX\map\pocketdimension4.b3d") ;the flying pillar
+    Local hallway = LoadMesh("GFX\map\pocketdimension2.b3d") ;the tunnels in the first room
+    r\Objects[8]=LoadMesh("GFX\map\pocketdimension3.b3d")	;the room with the throne, moving pillars etc 
+    r\Objects[9]=LoadMesh("GFX\map\pocketdimension4.b3d") ;the flying pillar
     r\Objects[10]=CopyEntity(r\Objects[9])
     
-    r\Objects[11]=LoadMesh_Strict("GFX\map\pocketdimension5.b3d") ;the pillar room
+    r\Objects[11]=LoadMesh("GFX\map\pocketdimension5.b3d") ;the pillar room
     
     
-    terrain = LoadMesh_Strict("GFX\map\pocketdimensionterrain.b3d")
+    terrain = LoadMesh("GFX\map\pocketdimensionterrain.b3d")
     ScaleEntity terrain,RoomScale,RoomScale,RoomScale,True
     ;RotateEntity terrain,0,e\room\angle,0,True
     PositionEntity terrain, 0, 2944, 0, True
@@ -134,7 +134,7 @@ Function FillRoom_pocketdimension(r.Rooms)
         
     Next
     
-    Local OldManEyes% = LoadTexture_Strict("GFX\npcs\oldmaneyes.jpg")
+    Local OldManEyes% = LoadTexture("GFX\npcs\oldmaneyes.jpg")
     r\Objects[17] = CreateSprite()
     ScaleSprite(r\Objects[17], 0.03, 0.03)
     EntityTexture(r\Objects[17], OldManEyes)
@@ -142,8 +142,8 @@ Function FillRoom_pocketdimension(r.Rooms)
     EntityFX(r\Objects[17], 1 + 8)
     SpriteViewMode(r\Objects[17], 2)
     
-    r\Objects[18] = LoadTexture_Strict("GFX\npcs\pdplane.png", 1+2)
-    r\Objects[19] = LoadTexture_Strict("GFX\npcs\pdplaneeye.png", 1+2)		
+    r\Objects[18] = LoadTexture("GFX\npcs\pdplane.png", 1+2)
+    r\Objects[19] = LoadTexture("GFX\npcs\pdplaneeye.png", 1+2)		
     
     r\Objects[20] = CreateSprite()
     ScaleSprite(r\Objects[20], 8.0, 8.0)
@@ -189,8 +189,8 @@ Function UpdateEvent_pocketdimension(e.Events)
 		
 		If (EntityY(mainPlayer\collider)<2000*RoomScale Or EntityY(mainPlayer\collider)>2608*RoomScale) Then mainPlayer\footstepOverride = 1
 		
-		If e\Sound = 0 Then LoadEventSound(e,"SFX\Room\PocketDimension\Rumble.ogg")
-		If e\Sound2 = 0 Then e\Sound2 = LoadEventSound(e,"SFX\Room\PocketDimension\PrisonVoices.ogg",1)
+		If e\sounds[0] = 0 Then LoadEventSound(e,"SFX\Room\PocketDimension\Rumble.ogg")
+		If e\sounds[1] = 0 Then e\sounds[1] = LoadEventSound(e,"SFX\Room\PocketDimension\PrisonVoices.ogg",1)
 		
 		If e\EventState = 0 Then
 			CameraFogColor mainPlayer\cam, 0,0,0
@@ -198,7 +198,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 			e\EventState = 0.1
 		EndIf
 		
-		If Music(3)=0 Then Music(3) = LoadSound_Strict("SFX\Music\PD.ogg")	
+		If Music(3)=0 Then Music(3) = LoadSound("SFX\Music\PD.ogg")	
 		If EntityY(mainPlayer\collider)<2000*RoomScale Or e\EventState3=0 Or EntityY(mainPlayer\collider)>2608*RoomScale Then 
 			ShouldPlay = 3
 		Else 
@@ -219,7 +219,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 			
 			If e\EventState > 65*70 Then
 				If Rand(800)=1 And Curr106\State =>0 Then	
-					;PlaySound_Strict HorrorSFX(8)
+					;PlaySound HorrorSFX(8)
 					Curr106\State = -0.1
 					e\EventState = 601
 				EndIf
@@ -253,7 +253,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 			
 			If e\EventState3 = 1 Or e\EventState3 = 2 Then ;the "trick room"
 				If e\EventState3 = 1 And (e\room\RoomDoors[0]\openstate>150 Or e\room\RoomDoors[1]\openstate>150) Then
-					PlaySound_Strict LoadTempSound("SFX\Horror\Horror16.ogg")
+					PlaySound LoadTempSound("SFX\Horror\Horror16.ogg")
 					mainPlayer\blurTimer = 800
 					e\EventState3=2
 				EndIf
@@ -269,7 +269,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 					CameraClsColor mainPlayer\cam, 38, 55, 47
 					
 					If EntityX(e\room\Objects[20],True)<EntityX(e\room\Objects[8],True)-4000*RoomScale Then
-						e\SoundCHN2 = PlaySound_Strict(e\Sound2)
+						e\soundChannels[1] = PlaySound(e\sounds[1])
 						
 						PositionEntity e\room\Objects[20], EntityX(mainPlayer\collider,True)+4000*RoomScale, 12.0, EntityZ(mainPlayer\collider,True)
 					EndIf
@@ -306,14 +306,14 @@ Function UpdateEvent_pocketdimension(e.Events)
 					
 					dist = EntityDistance(mainPlayer\collider, e\room\Objects[20])
 					
-					If e\SoundCHN2<>0 And ChannelPlaying(e\SoundCHN2)
-						e\SoundCHN2 = LoopSound2(e\Sound2, e\SoundCHN2, mainPlayer\cam, mainPlayer\cam, 10.0, 0.3+(Not safe)*0.6)
+					If e\soundChannels[1]<>0 And ChannelPlaying(e\soundChannels[1])
+						e\soundChannels[1] = LoopSound2(e\sounds[1], e\soundChannels[1], mainPlayer\cam, mainPlayer\cam, 10.0, 0.3+(Not safe)*0.6)
 					EndIf	
 					
 					If safe Then
 						EntityTexture e\room\Objects[20], e\room\Objects[18]
 					ElseIf dist < 8.0
-						e\SoundCHN = LoopSound2(e\Sound, e\SoundCHN, mainPlayer\cam, e\room\Objects[20], 8.0)
+						e\soundChannels[0] = LoopSound2(e\sounds[0], e\soundChannels[0], mainPlayer\cam, e\room\Objects[20], 8.0)
 						EntityTexture e\room\Objects[20], e\room\Objects[19]
 						mainPlayer\injuries=mainPlayer\injuries+(8.0-dist)*timing\tickDuration*0.001
 						
@@ -367,18 +367,18 @@ Function UpdateEvent_pocketdimension(e.Events)
 									DeathMSG = "In addition to the decomposed appearance typical of SCP-106's victims, the body exhibits injuries that have not been observed before: "
 									DeathMSG = DeathMSG + "massive skull fracture, three broken ribs, fractured shoulder and multiple heavy lacerations."
 									
-									PlaySound_Strict LoadTempSound("SFX\Room\PocketDimension\Impact.ogg")
+									PlaySound LoadTempSound("SFX\Room\PocketDimension\Impact.ogg")
 									Kill(mainPlayer)
 								EndIf
 							EndIf
-							e\SoundCHN = LoopSound2(e\Sound, e\SoundCHN, mainPlayer\cam, e\room\Objects[i], 6.0)	
+							e\soundChannels[0] = LoopSound2(e\sounds[0], e\soundChannels[0], mainPlayer\cam, e\room\Objects[i], 6.0)	
 						EndIf
 					Next
 					
 					pvt=CreatePivot()
 					PositionEntity pvt, EntityX(e\room\Objects[8],True)-1536*RoomScale,500*RoomScale,EntityZ(e\room\Objects[8],True)+608*RoomScale
 					If EntityDistance(pvt, mainPlayer\collider)<5.0 Then 
-						e\SoundCHN2 = LoopSound2(e\Sound2, e\SoundCHN2, mainPlayer\cam, pvt, 3.0)
+						e\soundChannels[1] = LoopSound2(e\sounds[1], e\soundChannels[1], mainPlayer\cam, pvt, 3.0)
 					EndIf
 					FreeEntity pvt
 					
@@ -394,14 +394,14 @@ Function UpdateEvent_pocketdimension(e.Events)
 						
 						If mainPlayer\injuries > 1.0 Then
 							If mainPlayer\injuries - (timing\tickDuration/4000)=< 1.0 Then
-								PlaySound_Strict LoadTempSound("SFX\Room\PocketDimension\Kneel.ogg")
+								PlaySound LoadTempSound("SFX\Room\PocketDimension\Kneel.ogg")
 							EndIf
 						EndIf
 						
 						mainPlayer\sanity895 = Max(mainPlayer\sanity895 - timing\tickDuration / temp / 8,-1000)
 						
 						;TODO: fix
-						;e\SoundCHN = LoopSound2(OldManSFX(4), e\SoundCHN, mainPlayer\cam, e\room\Objects[17], 5.0, 0.6)
+						;e\soundChannels[0] = LoopSound2(OldManSFX(4), e\soundChannels[0], mainPlayer\cam, e\room\Objects[17], 5.0, 0.6)
 						
 						mainPlayer\camZoom = Max(mainPlayer\camZoom, (Sin(Float(TimeInPosMilliSecs()) / 20.0)+1.0)*15.0*Max((6.0-temp)/6.0,0.0))
 						
@@ -432,7 +432,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 							mainPlayer\blurTimer = (640*RoomScale-temp)*3000
 							
 							;TODO: fix
-							;e\SoundCHN2 = LoopSound2(DecaySFX(Rand(1, 3)), e\SoundCHN2, mainPlayer\cam, mainPlayer\collider, 2.0, (640*RoomScale-temp)*Abs(mainPlayer\moveSpeed)*100)
+							;e\soundChannels[1] = LoopSound2(DecaySFX(Rand(1, 3)), e\soundChannels[1], mainPlayer\cam, mainPlayer\collider, 2.0, (640*RoomScale-temp)*Abs(mainPlayer\moveSpeed)*100)
 							mainPlayer\moveSpeed = CurveValue(0.0, mainPlayer\moveSpeed, temp*10)
 							
 							If temp < 130*RoomScale Then
@@ -441,12 +441,12 @@ Function UpdateEvent_pocketdimension(e.Events)
 									If r\RoomTemplate\Name = "room2_3" Then
 										e\EventState = 0
 										e\EventState2 = 0
-										FreeSound_Strict Music(3) : Music(3)=0
+										FreeSound Music(3) : Music(3)=0
 										
 										mainPlayer\blinkTimer = -10
 										;LightBlink = 5
 										
-										PlaySound_Strict(LoadTempSound("SFX\Room\PocketDimension\Exit.ogg"))
+										PlaySound(LoadTempSound("SFX\Room\PocketDimension\Exit.ogg"))
 										
 										de.Decals = CreateDecal(0, EntityX(r\obj), 381*RoomScale, EntityZ(r\obj), 270, Rand(360), 0)
 										
@@ -477,7 +477,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 						If r\RoomTemplate\Name = "room106" Then
 							e\EventState = 0
 							e\EventState2 = 0
-							FreeSound_Strict Music(3) : Music(3)=0
+							FreeSound Music(3) : Music(3)=0
 							PositionEntity(mainPlayer\collider, EntityX(r\obj,True), 0.4, EntityX(r\obj,True))
 							
 							Curr106\State = 10000
@@ -494,7 +494,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 				Else ;the player is not at the exit, must've fallen down
 					
 					If Not mainPlayer\dead Then 
-						;PlaySound_Strict HorrorSFX(8)
+						;PlaySound HorrorSFX(8)
 						DeathMSG = "In addition to the decomposed appearance typical of the victims of SCP-106, the subject seems to have suffered multiple heavy fractures to both of his legs."
 						
 					EndIf
@@ -516,7 +516,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 				Select Rand(25)
 					Case 1,2,3,4
 						;TODO: fix
-						;PlaySound_Strict(OldManSFX(3))
+						;PlaySound(OldManSFX(3))
 						
 						pvt = CreatePivot()
 						PositionEntity(pvt, EntityX(mainPlayer\collider), EntityY(mainPlayer\collider), EntityZ(mainPlayer\collider))
@@ -535,7 +535,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 						e\EventState2=1
 						mainPlayer\blinkTimer = -10
 						;TODO: fix
-						;PlaySound_Strict(OldManSFX(3))
+						;PlaySound(OldManSFX(3))
 						
 						PositionEntity(mainPlayer\collider, EntityX(e\room\Objects[8],True), 0.5, EntityZ(e\room\Objects[8],True))
 						ResetEntity mainPlayer\collider
@@ -555,7 +555,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 							If r\RoomTemplate\Name = "tunnel" Then
 								e\EventState = 0
 								e\EventState2 = 0
-								FreeSound_Strict Music(3) : Music(3)=0
+								FreeSound Music(3) : Music(3)=0
 								PositionEntity(mainPlayer\collider, EntityX(r\obj), 0.4, EntityZ(r\obj))
 								ResetEntity mainPlayer\collider
 								Curr106\Idle = False
@@ -574,7 +574,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 						mainPlayer\blinkTimer = -10
 						
 						;TODO: fix
-						;PlaySound_Strict(OldManSFX(3))
+						;PlaySound(OldManSFX(3))
 						
 						PositionEntity(mainPlayer\collider, EntityX(e\room\Objects[8],True), 2288*RoomScale, EntityZ(e\room\Objects[8],True))
 						ResetEntity mainPlayer\collider
@@ -611,7 +611,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 				If Rand(750)=1 And e\EventState2 > 12 Then
 					mainPlayer\blinkTimer = -10
 					e\EventState2 = e\EventState2-1
-					;PlaySound_Strict HorrorSFX(8)
+					;PlaySound HorrorSFX(8)
 				EndIf
 				
 				If e\EventState2 = 12 Then
@@ -642,7 +642,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 					UpdateDoors()
 					UpdateRooms()
 				Else ;somewhere else -> must've fallen down
-					;If KillTimer => 0 Then PlaySound_Strict HorrorSFX(8)
+					;If KillTimer => 0 Then PlaySound HorrorSFX(8)
 					Kill(mainPlayer)
 					mainPlayer\blurTimer = 3000
 				EndIf

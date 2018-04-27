@@ -16,7 +16,7 @@ Function InitializeNPCtype966(n.NPCs)
     Next
     
     If n\obj = 0 Then 
-        n\obj = LoadAnimMesh_Strict("GFX\npcs\scp-966.b3d")
+        n\obj = LoadAnimMesh("GFX\npcs\scp-966.b3d")
     EndIf
     
     EntityFX n\obj,1

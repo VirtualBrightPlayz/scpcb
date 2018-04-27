@@ -6,12 +6,12 @@ Function FillRoom_test_860_2(r.Rooms)
 	Local t1;, Bump	
 
     ;the wooden door
-    r\Objects[2] = LoadMesh_Strict("GFX\map\forest\door_frame.b3d")
+    r\Objects[2] = LoadMesh("GFX\map\forest\door_frame.b3d")
     PositionEntity r\Objects[2],r\x + 184.0 * RoomScale,0,r\z,True
     ScaleEntity r\Objects[2],45.0*RoomScale,45.0*RoomScale,80.0*RoomScale,True
     EntityParent r\Objects[2],r\obj
     
-    r\Objects[3] =  LoadMesh_Strict("GFX\map\forest\door.b3d")
+    r\Objects[3] =  LoadMesh("GFX\map\forest\door.b3d")
     PositionEntity r\Objects[3],r\x + 112.0 * RoomScale,0,r\z+0.05,True
     EntityType r\Objects[3], HIT_MAP
     
@@ -83,12 +83,12 @@ Function UpdateEvent_test_860_2(e.Events)
 				QuickLoadPercent = 0
 				e\EventStr = "load0"
 			ElseIf e\EventStr = "load0"
-				If Music(9) = 0 Then Music(9) = LoadSound_Strict("SFX\Music\8601.ogg")
+				If Music(9) = 0 Then Music(9) = LoadSound("SFX\Music\8601.ogg")
 				QuickLoadPercent = 15
 				e\EventStr = "load1"
 			ElseIf e\EventStr = "load1"
 				QuickLoadPercent = 40
-				If Music(12) = 0 Then Music(12) = LoadSound_Strict("SFX\Music\8601Cancer.ogg")
+				If Music(12) = 0 Then Music(12) = LoadSound("SFX\Music\8601Cancer.ogg")
 				e\EventStr = "load2"
 			ElseIf e\EventStr = "load2"
 				QuickLoadPercent = 100
@@ -146,7 +146,7 @@ Function UpdateEvent_test_860_2(e.Events)
 							If i=1 Then
 								mainPlayer\blinkTimer = -10
 								
-								PlaySound_Strict(LoadTempSound("SFX\Door\WoodenDoorOpen.ogg"))
+								PlaySound(LoadTempSound("SFX\Door\WoodenDoorOpen.ogg"))
 								
 								RotateEntity e\room\Objects[3], 0, 0, 0
 								RotateEntity e\room\Objects[4], 0, 180, 0
@@ -167,7 +167,7 @@ Function UpdateEvent_test_860_2(e.Events)
 								e\EventState = 0.0
 								
 							Else
-								PlaySound_Strict(LoadTempSound("SFX\Door\WoodenDoorBudge.ogg"))
+								PlaySound(LoadTempSound("SFX\Door\WoodenDoorBudge.ogg"))
 								Msg = "The door will not budge."
 								MsgTimer = 70*5
 							EndIf
@@ -203,13 +203,13 @@ Function UpdateEvent_test_860_2(e.Events)
 					
 					If mainPlayer\selectedItem = Null Then
 						If MouseHit1 Then
-							PlaySound_Strict(LoadTempSound("SFX\Door\WoodenDoorBudge.ogg"))
+							PlaySound(LoadTempSound("SFX\Door\WoodenDoorBudge.ogg"))
 							Msg = "The door will not budge."
 							MsgTimer = 5*70
 						EndIf
 					ElseIf mainPlayer\selectedItem\itemtemplate\tempname="scp860" 
 						If MouseHit1 Then
-							PlaySound_Strict(LoadTempSound("SFX\Door\WoodenDoorOpen.ogg"))
+							PlaySound(LoadTempSound("SFX\Door\WoodenDoorOpen.ogg"))
 							ShowEntity fr.Forest\Forest_Pivot
 							mainPlayer\selectedItem = Null
 							
@@ -517,25 +517,25 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Rooms)
 	;load assets
 	
 	Local hmap[ROOM4], mask[ROOM4]
-	Local GroundTexture = LoadTexture_Strict("GFX\map\forest\forestfloor.jpg")
+	Local GroundTexture = LoadTexture("GFX\map\forest\forestfloor.jpg")
 	;TextureBlend GroundTexture, FE_ALPHACURRENT
-	Local PathTexture = LoadTexture_Strict("GFX\map\forest\forestpath.jpg")
+	Local PathTexture = LoadTexture("GFX\map\forest\forestpath.jpg")
 	;TextureBlend PathTexture, FE_ALPHACURRENT
 	
-	hmap[ROOM1]=LoadImage_Strict("GFX\map\forest\forest1h.png")
-	mask[ROOM1]=LoadTexture_Strict("GFX\map\forest\forest1h_mask.png",1+2)
+	hmap[ROOM1]=LoadImage("GFX\map\forest\forest1h.png")
+	mask[ROOM1]=LoadTexture("GFX\map\forest\forest1h_mask.png",1+2)
 	
-	hmap[ROOM2]=LoadImage_Strict("GFX\map\forest\forest2h.png")
-	mask[ROOM2]=LoadTexture_Strict("GFX\map\forest\forest2h_mask.png",1+2)
+	hmap[ROOM2]=LoadImage("GFX\map\forest\forest2h.png")
+	mask[ROOM2]=LoadTexture("GFX\map\forest\forest2h_mask.png",1+2)
 	
-	hmap[ROOM2C]=LoadImage_Strict("GFX\map\forest\forest2Ch.png")
-	mask[ROOM2C]=LoadTexture_Strict("GFX\map\forest\forest2Ch_mask.png",1+2)
+	hmap[ROOM2C]=LoadImage("GFX\map\forest\forest2Ch.png")
+	mask[ROOM2C]=LoadTexture("GFX\map\forest\forest2Ch_mask.png",1+2)
 	
-	hmap[ROOM3]=LoadImage_Strict("GFX\map\forest\forest3h.png")
-	mask[ROOM3]=LoadTexture_Strict("GFX\map\forest\forest3h_mask.png",1+2)
+	hmap[ROOM3]=LoadImage("GFX\map\forest\forest3h.png")
+	mask[ROOM3]=LoadTexture("GFX\map\forest\forest3h_mask.png",1+2)
 	
-	hmap[ROOM4]=LoadImage_Strict("GFX\map\forest\forest4h.png")
-	mask[ROOM4]=LoadTexture_Strict("GFX\map\forest\forest4h_mask.png",1+2)
+	hmap[ROOM4]=LoadImage("GFX\map\forest\forest4h.png")
+	mask[ROOM4]=LoadTexture("GFX\map\forest\forest4h_mask.png",1+2)
 	
 	For i = ROOM1 To ROOM4
 		;TextureBlend mask[i], FE_ALPHAMODULATE
@@ -544,14 +544,14 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Rooms)
 	Next
 	
 	;detail meshes
-	;fr\DetailMesh[0]=LoadMesh_strict("GFX\map\forest\detail\860_1_tree1.b3d")
-	;fr\DetailMesh[1]=LoadMesh_strict("GFX\map\forest\detail\860_1_tree1_leaves.b3d")
-	fr\DetailMesh[1]=LoadMesh_Strict("GFX\map\forest\detail\treetest4.b3d");1.b3d)
+	;fr\DetailMesh[0]=LoadMesh("GFX\map\forest\detail\860_1_tree1.b3d")
+	;fr\DetailMesh[1]=LoadMesh("GFX\map\forest\detail\860_1_tree1_leaves.b3d")
+	fr\DetailMesh[1]=LoadMesh("GFX\map\forest\detail\treetest4.b3d");1.b3d)
 	;EntityParent fr\DetailMesh[1],fr\DetailMesh[0]
-	fr\DetailMesh[2]=LoadMesh_Strict("GFX\map\forest\detail\rock.b3d")
-	fr\DetailMesh[3]=LoadMesh_Strict("GFX\map\forest\detail\rock2.b3d")
-	fr\DetailMesh[4]=LoadMesh_Strict("GFX\map\forest\detail\treetest5.b3d")
-	fr\DetailMesh[5]=LoadMesh_Strict("GFX\map\forest\wall.b3d")
+	fr\DetailMesh[2]=LoadMesh("GFX\map\forest\detail\rock.b3d")
+	fr\DetailMesh[3]=LoadMesh("GFX\map\forest\detail\rock2.b3d")
+	fr\DetailMesh[4]=LoadMesh("GFX\map\forest\detail\treetest5.b3d")
+	fr\DetailMesh[5]=LoadMesh("GFX\map\forest\wall.b3d")
 	
 	For i%=ROOM1 To ROOM4
 		HideEntity fr\TileMesh[i]

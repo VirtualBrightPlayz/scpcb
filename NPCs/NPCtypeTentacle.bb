@@ -11,7 +11,7 @@ Function InitializeNPCtypeTentacle(n.NPCs)
     Next
     
     If n\obj = 0 Then 
-        n\obj = LoadAnimMesh_Strict("GFX\NPCs\035tentacle.b3d")
+        n\obj = LoadAnimMesh("GFX\NPCs\035tentacle.b3d")
         ScaleEntity n\obj, 0.065,0.065,0.065
     EndIf
     
@@ -40,8 +40,8 @@ Function UpdateNPCtypeTentacle(n.NPCs)
                 Else
                     If dist < 2.5 Then 
                         SetNPCFrame(n, 284)
-                        n\Sound2 = LoadSound_Strict("SFX\Room\035Chamber\TentacleSpawn.ogg")
-                        PlaySound_Strict(n\Sound2)
+                        n\Sound2 = LoadSound("SFX\Room\035Chamber\TentacleSpawn.ogg")
+                        PlaySound(n\Sound2)
                     EndIf
                 EndIf
                 ;spawn 283,389
@@ -51,8 +51,8 @@ Function UpdateNPCtypeTentacle(n.NPCs)
                 If dist < 1.8 Then 
                     If Abs(DeltaYaw(n\Collider, mainPlayer\collider))<20 Then 
                         n\State = 2
-                        If n\Sound<>0 Then FreeSound_Strict n\Sound : n\Sound = 0 
-                        If n\Sound2<>0 Then FreeSound_Strict n\Sound2 : n\Sound2 = 0 
+                        If n\Sound<>0 Then FreeSound n\Sound : n\Sound = 0 
+                        If n\Sound2<>0 Then FreeSound n\Sound2 : n\Sound2 = 0 
                         
                     EndIf
                 EndIf
@@ -75,8 +75,8 @@ Function UpdateNPCtypeTentacle(n.NPCs)
                     If n\Frame>33 Then 
                         ;SetAnimTime(n\obj,2)
                         n\Frame = 2
-                        n\Sound = LoadSound_Strict("SFX\Room\035Chamber\TentacleAttack"+Rand(1,2)+".ogg")
-                        PlaySound_Strict(n\Sound)
+                        n\Sound = LoadSound("SFX\Room\035Chamber\TentacleAttack"+Rand(1,2)+".ogg")
+                        PlaySound(n\Sound)
                     EndIf
                     AnimateNPC(n, 2, 32, 0.3, False)
                     ;Animate2(n\obj, AnimTime(n\obj), 2, 32, 0.3, False)
@@ -86,11 +86,11 @@ Function UpdateNPCtypeTentacle(n.NPCs)
                             If Abs(DeltaYaw(n\Collider, mainPlayer\collider))<20 Then 
                                 If IsPlayerWearingTempName(mainPlayer,"hazmatsuit") Then
                                     mainPlayer\injuries = mainPlayer\injuries+Rnd(0.5)
-                                    PlaySound_Strict(LoadTempSound("SFX\General\BodyFall.ogg"))
+                                    PlaySound(LoadTempSound("SFX\General\BodyFall.ogg"))
                                 Else
                                     mainPlayer\blurTimer = 100
                                     mainPlayer\injuries = mainPlayer\injuries+Rnd(1.0,1.5)
-                                    PlaySound_Strict DamageSFX(Rand(3,4))
+                                    PlaySound DamageSFX(Rand(3,4))
                                     
                                     If mainPlayer\injuries > 3.0 Then 
                                         DeathMSG = Chr(34)+"We will need more than the regular cleaning team to care of this. "

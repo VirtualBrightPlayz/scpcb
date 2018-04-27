@@ -18,10 +18,10 @@ Function UpdateEvent106sinkhole(e.Events)
 		
 		e\EventState=1
 	ElseIf mainPlayer\currRoom = e\room
-		If e\Sound=0 Then
-			e\Sound=LoadSound_Strict("SFX\Room\Sinkhole.ogg")
+		If e\sounds[0]=0 Then
+			e\sounds[0]=LoadSound("SFX\Room\Sinkhole.ogg")
 		Else
-			e\SoundCHN = LoopSound2(e\Sound, e\SoundCHN, mainPlayer\cam, e\room\obj, 4.5, 1.5)
+			e\soundChannels[0] = LoopSound2(e\sounds[0], e\soundChannels[0], mainPlayer\cam, e\room\obj, 4.5, 1.5)
 		EndIf
 		dist = Distance(EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider),EntityX(e\room\obj),EntityZ(e\room\obj))
 		If dist < 2.0 Then
@@ -31,7 +31,7 @@ Function UpdateEvent106sinkhole(e.Events)
 			
 			If dist<0.5 Then
 				If e\EventState2 = 0 Then
-					PlaySound_Strict(LoadTempSound("SFX\Room\SinkholeFall.ogg"))
+					PlaySound(LoadTempSound("SFX\Room\SinkholeFall.ogg"))
 				EndIf
 				
 				mainPlayer\moveSpeed = CurveValue(0.0, mainPlayer\moveSpeed, Max(dist*50,1.0))
