@@ -26,9 +26,6 @@ Function CurveAngle#(val#, old#, smooth#)
    Return WrapAngle(old + diff * (1.0 / smooth * timing\tickDuration))
 End Function
 
-
-
-
 Function WrapAngle#(angle#)
 	If angle = INFINITY Then Return 0.0
 	While angle < 0
@@ -228,6 +225,17 @@ Function EntityScaleZ#(entity%, globl% = False)
 	Return Sqr(TFormedX() * TFormedX() + TFormedY() * TFormedY() + TFormedZ() * TFormedZ())
 End Function 
 
+;----------------------------
 
+Function SeedStringToInt%(seed$)
+	Local char%
+	Local retVal% = 0
+	For i% = 1 To Len(seed)
+		char = Asc(Mid(seed,i,1))
+		retVal = (retVal Shl 1) + char
+	Next
+	If retVal=0 Then retVal = 1
+	Return Abs(retVal)
+End Function
 ;~IDEal Editor Parameters:
 ;~C#Blitz3D

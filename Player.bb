@@ -11,17 +11,6 @@ Const OVERLAY_GASMASK%     = 3
 Const OVERLAY_NIGHTVISION% = 4
 Const OVERLAY_008%         = 5
 
-;TODO: remove after cleanup
-Global FogTexture.MarkedForRemoval, Fog.MarkedForRemoval
-Global GasMaskTexture.MarkedForRemoval, GasMaskOverlay.MarkedForRemoval
-Global InfectTexture.MarkedForRemoval, InfectOverlay.MarkedForRemoval
-Global DarkTexture.MarkedForRemoval, Dark.MarkedForRemoval
-
-Global FogNVTexture.MarkedForRemoval
-Global NVTexture.MarkedForRemoval, NVOverlay.MarkedForRemoval
-
-Global LightTexture.MarkedForRemoval, Light.MarkedForRemoval
-
 Type Player
 	;entities
 	Field collider%
@@ -246,66 +235,6 @@ Function DeletePlayer(player.Player)
 
 	Delete player
 End Function
-
-;TODO: remove these when we're absolutely sure we're done here
-Global Collider.MarkedForRemoval, Head.MarkedForRemoval
-Global Camera.MarkedForRemoval, CameraShake.MarkedForRemoval, CurrCameraZoom.MarkedForRemoval
-
-Global DropSpeed.MarkedForRemoval, HeadDropSpeed.MarkedForRemoval, CurrSpeed.MarkedForRemoval
-Global user_camera_pitch.MarkedForRemoval, side.MarkedForRemoval
-Global Crouch.MarkedForRemoval, CrouchState.MarkedForRemoval
-
-Global PlayerZone.MarkedForRemoval;, mainPlayer\currRoom.Rooms
-
-Global GrabbedEntity.MarkedForRemoval
-
-Global Shake.MarkedForRemoval
-
-Global HeartBeatRate.MarkedForRemoval, HeartBeatTimer.MarkedForRemoval, HeartBeatVolume.MarkedForRemoval
-
-Global WearingGasMask.MarkedForRemoval, WearingHazmat.MarkedForRemoval, WearingVest.MarkedForRemoval, WearingNightVision.MarkedForRemoval
-Global Wearing1499.MarkedForRemoval
-Global NVTimer.MarkedForRemoval
-
-Global SuperMan.MarkedForRemoval, SuperManTimer.MarkedForRemoval
-
-Global Injuries.MarkedForRemoval, Bloodloss.MarkedForRemoval, Infect.MarkedForRemoval
-
-Global KillTimer.MarkedForRemoval, KillAnim.MarkedForRemoval, FallTimer.MarkedForRemoval, DeathTimer.MarkedForRemoval
-Global Sanity.MarkedForRemoval, ForceMove.MarkedForRemoval, ForceAngle.MarkedForRemoval
-
-Global Playable.MarkedForRemoval
-
-Global BLINKFREQ.MarkedForRemoval
-Global BlinkTimer.MarkedForRemoval, EyeIrritation.MarkedForRemoval, EyeStuck.MarkedForRemoval, BlinkEffect.MarkedForRemoval, BlinkEffectTimer.MarkedForRemoval
-
-Global Stamina.MarkedForRemoval, StaminaEffect.MarkedForRemoval, StaminaEffectTimer.MarkedForRemoval
-
-Global GodMode.MarkedForRemoval, NoClip.MarkedForRemoval, NoClipSpeed.MarkedForRemoval
-
-Global PlayerSoundVolume.MarkedForRemoval
-
-;TODO: maybe remove?
-Global RefinedItems.MarkedForRemoval
-
-Global LightBlink.MarkedForRemoval, LightFlash.MarkedForRemoval
-
-Global BlurVolume.MarkedForRemoval, BlurTimer.MarkedForRemoval
-
-Global PlayTime.MarkedForRemoval ;TODO: do we even need this?
-
-;TODO: this is all bad
-
-
-Global InfiniteStamina.MarkedForRemoval
-
-Global NVBlink.MarkedForRemoval
-Global IsNVGBlinking.MarkedForRemoval
-
-Global CameraFogNear.MarkedForRemoval
-Global CameraFogFar.MarkedForRemoval
-
-Global StoredCameraFogFar.MarkedForRemoval
 
 Function MovePlayer()
 	Local Sprint# = 1.0, Speed# = 0.018, i%, angle#
@@ -1265,13 +1194,7 @@ Function UpdateInventory(player.Player)
 	
 	Local spacing%
 	
-	Local OtherSize.MarkedForRemoval,OtherAmount.MarkedForRemoval
-	
-	Local isEmpty.MarkedForRemoval
-	
 	Local isMouseOn%
-	
-	Local closedInv.MarkedForRemoval
 	
 	Local strtemp$
 	If CurrGameState=GAMESTATE_INVENTORY Then
@@ -2089,8 +2012,6 @@ Function IsPlayerWearingItem(player.Player,item.Items)
 	If player\wornItems[slot]=Null Then Return False
 	Return (player\wornItems[slot] = item)
 End Function
-
-Global TakeOffStuff.MarkedForRemoval
 
 Function Kill(player.Player)
 	If player\godMode Then Return
