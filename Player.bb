@@ -404,27 +404,27 @@ Function MovePlayer()
 					If Sprint = 1.0 Then
 						mainPlayer\loudness = Max(4.0,mainPlayer\loudness)
 						tempchn% = PlaySound_Strict(StepSFX(temp, 0, Rand(0, 7)))
-						ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\SoundVolume
+						ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\soundVolume
 					Else
 						mainPlayer\loudness = Max(2.5-(mainPlayer\crouching*0.6),mainPlayer\loudness)
 						tempchn% = PlaySound_Strict(StepSFX(temp, 1, Rand(0, 7)))
-						ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\SoundVolume
+						ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\soundVolume
 					End If
 				ElseIf mainPlayer\footstepOverride=1 Then
 					tempchn% = PlaySound_Strict(Step2SFX(Rand(0, 2)))
-					ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.4))*userOptions\SoundVolume
+					ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.4))*userOptions\soundVolume
 				ElseIf mainPlayer\footstepOverride=2 Then
 					tempchn% = PlaySound_Strict(Step2SFX(Rand(3,5)))
-					ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.4))*userOptions\SoundVolume
+					ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.4))*userOptions\soundVolume
 				ElseIf mainPlayer\footstepOverride=3 Then
 					If Sprint = 1.0 Then
 						mainPlayer\loudness = Max(4.0,mainPlayer\loudness)
 						tempchn% = PlaySound_Strict(StepSFX(0, 0, Rand(0, 7)))
-						ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\SoundVolume
+						ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\soundVolume
 					Else
 						mainPlayer\loudness = Max(2.5-(mainPlayer\crouching*0.6),mainPlayer\loudness)
 						tempchn% = PlaySound_Strict(StepSFX(0, 1, Rand(0, 7)))
-						ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\SoundVolume
+						ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\soundVolume
 					End If
 				EndIf
 				
@@ -544,14 +544,14 @@ Function MovePlayer()
 	
 	If mainPlayer\bloodloss > 0 Then
 		If Rnd(200)<Min(mainPlayer\injuries,4.0) Then
-			pvt = CreatePivot()
+			Local pvt% = CreatePivot()
 			PositionEntity pvt, EntityX(mainPlayer\collider)+Rnd(-0.05,0.05),EntityY(mainPlayer\collider)-0.05,EntityZ(mainPlayer\collider)+Rnd(-0.05,0.05)
 			TurnEntity pvt, 90, 0, 0
 			EntityPick(pvt,0.3)
 			de.decals = CreateDecal(Rand(15,16), PickedX(), PickedY()+0.005, PickedZ(), 90, Rand(360), 0)
 			de\size = Rnd(0.03,0.08)*Min(mainPlayer\injuries,3.0) : EntityAlpha(de\obj, 1.0) : ScaleSprite de\obj, de\size, de\size
 			tempchn% = PlaySound_Strict (DripSFX(Rand(0,2)))
-			ChannelVolume tempchn, Rnd(0.0,0.8)*userOptions\SoundVolume
+			ChannelVolume tempchn, Rnd(0.0,0.8)*userOptions\soundVolume
 			ChannelPitch tempchn, Rand(20000,30000)
 			
 			FreeEntity pvt
@@ -578,7 +578,7 @@ Function MovePlayer()
 	
 	If mainPlayer\heartbeatIntensity > 0 Then
 		tempchn = PlaySound_Strict (HeartBeatSFX)
-		ChannelVolume tempchn, Max(Min((mainPlayer\heartbeatIntensity-80.0)/60.0,1.0),0.0)*userOptions\SoundVolume
+		ChannelVolume tempchn, Max(Min((mainPlayer\heartbeatIntensity-80.0)/60.0,1.0),0.0)*userOptions\soundVolume
 		
 		mainPlayer\heartbeatIntensity = mainPlayer\heartbeatIntensity - timing\tickDuration
 	EndIf
@@ -785,13 +785,14 @@ End Function
 
 Function EquipItem(player.Player,item.Items,toggle%)
 	If item=Null Then Return
-	If item\itemTemplate\invSlot = WORNITEM_SLOT_NONE Then Return
-	Local currItem.Items = player\wornItems[item\itemTemplate\invSlot]
-	DeEquipSlot(player,item\itemTemplate\invSlot)
+	If item\itemtemplate\invSlot = WORNITEM_SLOT_NONE Then Return
+	Local currItem.Items = player\wornItems[item\itemtemplate\invSlot]
+	DeEquipSlot(player,item\itemtemplate\invSlot)
 	DebugLog (Not toggle)+" + "+(currItem<>item)
 	If (Not toggle) Or currItem<>item Then
-		player\wornItems[item\itemTemplate\invSlot] = item
+		player\wornItems[item\itemtemplate\invSlot] = item
 		
+		Local r.Rooms, it.Items
 		Select item\itemtemplate\tempname
 			Case "vest"
 				Msg = "You put on the vest and feel slightly encumbered."
@@ -1140,8 +1141,9 @@ Function DrawInventory(player.Player)
 										SCPs_found% = SCPs_found% + 1
 									EndIf
 								EndIf
-								For np.NPCs = Each NPCs
-									If np\NPCtype = NPCtype049
+								Local np.NPCs
+								For np = Each NPCs
+									If np\npcType = NPCtype049
 										dist# = EntityDistance(player\cam, np\obj)
 										If dist < 8.0 * 4 Then
 											Color 100, 0, 0

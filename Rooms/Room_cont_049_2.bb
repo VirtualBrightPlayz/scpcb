@@ -28,6 +28,7 @@ Function FillRoom_cont_049_2(r.Rooms)
     r\Objects[5] = CreatePivot(r\obj)
     PositionEntity(r\Objects[5], r\x  + 64.0 * RoomScale, -3440.0 * RoomScale, r\z - 1000.0 * RoomScale, True)
     
+	Local n%
     For n% = 0 To 1
         r\Objects[n * 2 + 6] = CopyEntity(LeverBaseOBJ)
         r\Objects[n * 2 + 7] = CopyEntity(LeverOBJ)
