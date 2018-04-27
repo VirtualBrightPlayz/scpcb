@@ -237,6 +237,13 @@ End Function
 Function DeletePlayer(player.Player)
 	;TODO: delete/drop worn items, delete inventory
 	DeleteInventory(player\inventory)
+
+	Local i%
+	For i = 0 To 4
+		FreeSound(GetIntArray2DElem(player\breathingSFX, 0, i))
+		FreeSound(GetIntArray2DElem(player\breathingSFX, 1, i))
+	Next
+
 	Delete player
 End Function
 
@@ -651,7 +658,7 @@ Function MouseLook()
 		Local up# = (Sin(mainPlayer\camAnimState) / (20.0+mainPlayer\crouchState*20.0))*0.6	
 		Local roll# = Max(Min(Sin(mainPlayer\camAnimState*0.5)*2.5*Min(mainPlayer\injuries+0.25,3.0),8.0),-8.0)
 		
-		;käännetään kameraa sivulle jos pelaaja on vammautunut
+		;tilt the camera to the side if the player is injured
 		;RotateEntity mainPlayer\collider, EntityPitch(mainPlayer\collider), EntityYaw(mainPlayer\collider), Max(Min(up*30*mainPlayer\injuries,50),-50)
 		PositionEntity mainPlayer\cam, EntityX(mainPlayer\collider), EntityY(mainPlayer\collider), EntityZ(mainPlayer\collider)
 		RotateEntity mainPlayer\cam, 0, EntityYaw(mainPlayer\collider), roll*0.5
@@ -2118,7 +2125,7 @@ Function Kill(player.Player)
 		player\fallTimer = Min(-1,player\fallTimer)
 		ShowEntity player\head
 		PositionEntity(player\head, EntityX(player\cam, True), EntityY(player\cam, True), EntityZ(player\cam, True), True)
-		ResetEntity (player\head)
+		ResetEntity(player\head)
 		RotateEntity(player\head, 0, EntityYaw(player\cam), 0)		
 	EndIf
 End Function

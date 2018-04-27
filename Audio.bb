@@ -1,17 +1,60 @@
+Type Sound
+	Field handle%
+	Field file$
+End Type
 
+Type SoundManager
+End Type
+Global soundManager.SoundManager = new SoundManager
+
+; Creates a new sound object.
+Function CreateSound_SM.Sound(fileName$)
+	Local snd.Sound = new Sound
+	snd\file = fileName
+
+	Return snd
+End Function
+
+; Creates a new sound object and loads the given sound.
+Function LoadSound_SM.Sound(fileName$)
+	Local snd.Sound = CreateSound_SM(fileName)
+	snd\handle = LoadSound(fileName)
+
+	Return snd
+End Function
+
+Function PlaySound_SM%(snd.Sound)
+	;If the sound hasn't been loaded yet then do that.
+	If (snd\handle = 0) Then
+		snd\handle = LoadSound(fileName)
+	EndIf
+
+	;Play the sound.
+	Local chn% = PlaySound(snd\handle)
+	Return chn
+End Function
+
+Function FreeSound_SM(snd.Sound)
+	If (snd\handle <> 0) Then
+		FreeSound(snd\handle)
+		snd\handle = 0
+	EndIf
+
+	Delete snd
+End Function
 
 Function PlaySound2%(SoundHandle%, cam%, entity%, range# = 10, volume# = 1.0)
 	range# = Max(range, 1.0)
 	Local soundchn% = 0
 	
-	If volume > 0 Then 
+	If (volume > 0) Then
 		Local dist# = EntityDistance(cam, entity) / range#
-		If 1 - dist# > 0 And 1 - dist# < 1
+		If (1 - dist# > 0 And 1 - dist# < 1) Then
 			Local panvalue# = Sin(-DeltaYaw(cam,entity))
 			soundchn% = PlaySound_Strict (SoundHandle)
 			
 			ChannelVolume(soundchn, volume# * (1 - dist#)*userOptions\soundVolume)
-			ChannelPan(soundchn, panvalue)			
+			ChannelPan(soundchn, panvalue)
 		EndIf
 	EndIf
 	
@@ -42,17 +85,17 @@ Function LoopSound2%(SoundHandle%, Chn%, cam%, entity%, range# = 10, volume# = 1
 			ChannelVolume (Chn, 0)
 		EndIf 
 	EndIf
-	
+
 	Return Chn
 End Function
 
 Function LoadTempSound(file$)
-	If TempSounds[TempSoundIndex]<>0 Then FreeSound_Strict(TempSounds[TempSoundIndex])
-	Local TempSound% = LoadSound_Strict(file)
+	If TempSounds[TempSoundIndex]<>0 Then FreeSound(TempSounds[TempSoundIndex])
+	Local TempSound% = LoadSound(file)
 	TempSounds[TempSoundIndex] = TempSound
-	
+
 	TempSoundIndex=(TempSoundIndex+1) Mod 10
-	
+
 	Return TempSound
 End Function
 
