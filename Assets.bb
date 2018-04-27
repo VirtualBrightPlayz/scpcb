@@ -601,7 +601,7 @@ Function NullGame()
 	Next
 	
 	For i = 0 To 5
-		If ChannelPlaying(RadioCHN(i)) Then StopChannel(RadioCHN(i))
+		If IsChannelPlaying(RadioCHN(i)) Then StopChannel(RadioCHN(i))
 	Next
 	
 	NTF_1499PrevX# = 0.0

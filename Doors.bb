@@ -269,16 +269,16 @@ Function UpdateDoors()
 					If d\obj2 <> 0 Then ResetEntity(d\obj2)
 					If d\timerstate > 0 Then
 						d\timerstate = Max(0, d\timerstate - timing\tickDuration)
-						If d\timerstate + timing\tickDuration > 110 And d\timerstate <= 110 Then PlaySound2(CautionSFX, mainPlayer\cam, d\obj)
-						;If d\timerstate = 0 Then d\open = (Not d\open) : PlaySound2(CloseDoorSFX(Min(d\dir,1),Rand(0, 2)), mainPlayer\cam, d\obj)
+						If d\timerstate + timing\tickDuration > 110 And d\timerstate <= 110 Then PlayRangedSound(CautionSFX, mainPlayer\cam, d\obj)
+						;If d\timerstate = 0 Then d\open = (Not d\open) : PlayRangedSound(CloseDoorSFX(Min(d\dir,1),Rand(0, 2)), mainPlayer\cam, d\obj)
 						Local sound%
 						If d\dir = 1 Then sound% = Rand(0, 1) Else sound% = Rand(0, 2)
-						If d\timerstate = 0 Then d\open = (Not d\open) : PlaySound2(CloseDoorSFX(d\dir,sound%), mainPlayer\cam, d\obj)
+						If d\timerstate = 0 Then d\open = (Not d\open) : PlayRangedSound(CloseDoorSFX(d\dir,sound%), mainPlayer\cam, d\obj)
 					EndIf
 					If d\AutoClose And RemoteDoorOn = True Then
 						If EntityDistance(mainPlayer\cam, d\obj) < 2.1 Then
 							;PlaySound HorrorSFX(7) ;TODO: fix
-							d\open = False : PlaySound2(CloseDoorSFX(Min(d\dir,1), Rand(0, 2)), mainPlayer\cam, d\obj) : d\AutoClose = False
+							d\open = False : PlayRangedSound(CloseDoorSFX(Min(d\dir,1), Rand(0, 2)), mainPlayer\cam, d\obj) : d\AutoClose = False
 						EndIf
 					End If				
 				End If
@@ -477,9 +477,9 @@ Function UseDoor(d.Doors, showmsg%=True)
 	If d\open Then
 		If d\LinkedDoor <> Null Then d\LinkedDoor\timerstate = d\LinkedDoor\timer
 		d\timerstate = d\timer
-		d\SoundCHN = PlaySound2 (OpenDoorSFX(d\dir, sound), mainPlayer\cam, d\obj)
+		d\SoundCHN = PlayRangedSound (OpenDoorSFX(d\dir, sound), mainPlayer\cam, d\obj)
 	Else
-		d\SoundCHN = PlaySound2 (CloseDoorSFX(d\dir, sound), mainPlayer\cam, d\obj)
+		d\SoundCHN = PlayRangedSound (CloseDoorSFX(d\dir, sound), mainPlayer\cam, d\obj)
 	End If
 	
 	
@@ -497,6 +497,3 @@ Function RemoveDoor(d.Doors)
 	
 	Delete d
 End Function
-
-;~IDEal Editor Parameters:
-;~C#Blitz3D

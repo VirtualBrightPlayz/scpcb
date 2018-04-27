@@ -22,7 +22,7 @@ Function UpdateNPCtype096(n.NPCs)
                 If n\Sound = 0 Then
                     n\Sound = LoadSound("SFX\Music\096.ogg")
                 Else
-                    n\SoundChn = LoopSound2(n\Sound, n\SoundChn, mainPlayer\cam, n\Collider, 8.0, 1.0)
+                    n\SoundChn = LoopRangedSound(n\Sound, n\SoundChn, mainPlayer\cam, n\Collider, 8.0, 1.0)
                 EndIf
                 
                 AnimateNPC(n, 1085,1412, 0.1) ;sitting
@@ -64,7 +64,7 @@ Function UpdateNPCtype096(n.NPCs)
                 If n\Sound = 0 Then
                     n\Sound = LoadSound("SFX\SCP\096\Scream.ogg")
                 Else
-                    n\SoundChn = LoopSound2(n\Sound, n\SoundChn, mainPlayer\cam, n\Collider, 7.5, 1.0)
+                    n\SoundChn = LoopRangedSound(n\Sound, n\SoundChn, mainPlayer\cam, n\Collider, 7.5, 1.0)
                 EndIf
                 
                 If n\Sound2 = 0 Then
@@ -73,7 +73,7 @@ Function UpdateNPCtype096(n.NPCs)
                     If n\SoundChn2 = 0 Then
                         n\SoundChn2 = PlaySound (n\Sound2)
                     Else
-                        If (Not ChannelPlaying(n\SoundChn2)) Then n\SoundChn2 = PlaySound(n\Sound2)
+                        If (Not IsChannelPlaying(n\SoundChn2)) Then n\SoundChn2 = PlaySound(n\Sound2)
                         ChannelVolume(n\SoundChn2, Min(Max(8.0-dist,0.6),1.0)*userOptions\soundVolume)
                     EndIf
                 EndIf
@@ -193,7 +193,7 @@ Function UpdateNPCtype096(n.NPCs)
                                     If n\Path[n\PathLocation]\door\open = False Then
                                         n\Path[n\PathLocation]\door\open = True
                                         n\Path[n\PathLocation]\door\fastopen = 1
-                                        PlaySound2(OpenDoorFastSFX, mainPlayer\cam, n\Path[n\PathLocation]\door\obj)
+                                        PlayRangedSound(OpenDoorFastSFX, mainPlayer\cam, n\Path[n\PathLocation]\door\obj)
                                     EndIf
                                 EndIf							
                                 If dist2 < 0.2 Then n\PathLocation = n\PathLocation + 1
@@ -230,7 +230,7 @@ Function UpdateNPCtype096(n.NPCs)
             If n\Sound = 0 Then
                 n\Sound = LoadSound("SFX\Music\096Angered.ogg")
             Else
-                n\SoundChn = LoopSound2(n\Sound, n\SoundChn, mainPlayer\cam, n\Collider, 10.0, 1.0)
+                n\SoundChn = LoopRangedSound(n\Sound, n\SoundChn, mainPlayer\cam, n\Collider, 10.0, 1.0)
             EndIf
             
             If n\State=1 Then ; get up
@@ -274,7 +274,7 @@ Function UpdateNPCtype096(n.NPCs)
                 If n\Sound = 0 Then
                     n\Sound = LoadSound("SFX\Music\096.ogg")
                 Else
-                    n\SoundChn = LoopSound2(n\Sound, n\SoundChn, mainPlayer\cam, n\Collider, 14.0, 1.0)
+                    n\SoundChn = LoopRangedSound(n\Sound, n\SoundChn, mainPlayer\cam, n\Collider, 14.0, 1.0)
                 EndIf
                 
                 n\State2=n\State2+timing\tickDuration

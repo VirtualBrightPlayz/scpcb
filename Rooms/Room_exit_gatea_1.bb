@@ -42,7 +42,7 @@ Function UpdateEvent_exit_gatea_1(e.Events)
 				If e\room\RoomDoors[1]\openstate > 50 Or EntityDistance(mainPlayer\collider, e\room\RoomDoors[1]\frameobj)<0.5 Then
 					e\room\RoomDoors[1]\openstate = Min(e\room\RoomDoors[1]\openstate,50)
 					e\room\RoomDoors[1]\open = False
-					PlaySound2 (LoadTempSound("SFX\Door\DoorError.ogg"), mainPlayer\cam, e\room\RoomDoors[1]\frameobj)
+					PlayRangedSound (LoadTempSound("SFX\Door\DoorError.ogg"), mainPlayer\cam, e\room\RoomDoors[1]\frameobj)
 				EndIf							
 			EndIf
 		Else

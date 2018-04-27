@@ -49,7 +49,7 @@ Function UpdateNPCtypeApache(n.NPCs)
             dist2 = 1.0
         EndIf
         
-        n\SoundChn = LoopSound2(ApacheSFX, n\SoundChn, mainPlayer\cam, n\Collider, 25.0, dist2)
+        n\SoundChn = LoopRangedSound(ApacheSFX, n\SoundChn, mainPlayer\cam, n\Collider, 25.0, dist2)
     EndIf
     
     n\DropSpeed = 0
@@ -66,7 +66,7 @@ Function UpdateNPCtypeApache(n.NPCs)
                             If Rand(20)=1 Then 
                                 If EntityVisible(mainPlayer\collider, n\Collider) Then
                                     n\State = 2
-                                    PlaySound2(AlarmSFX(2), mainPlayer\cam, n\Collider, 50, 1.0)
+                                    PlayRangedSound(AlarmSFX(2), mainPlayer\cam, n\Collider, 50, 1.0)
                                 EndIf
                             EndIf									
                         EndIf
@@ -126,7 +126,7 @@ Function UpdateNPCtypeApache(n.NPCs)
                                     PointEntity pvt, target
                                     
                                     If WrapAngle(EntityYaw(pvt)-EntityYaw(n\Collider))<10 Then
-                                        PlaySound2(Gunshot2SFX, mainPlayer\cam, n\Collider, 20)
+                                        PlayRangedSound(Gunshot2SFX, mainPlayer\cam, n\Collider, 20)
                                         
                                         DeathMSG = Chr(34)+"CH-2 to control. Shot down a runaway Class D at Gate B."+Chr(34)
                                         

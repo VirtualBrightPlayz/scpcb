@@ -85,12 +85,12 @@ Function UpdateNPCtype1499(n.NPCs)
                     n\State = 2
                     n\State2 = 0
                     
-                    If Not ChannelPlaying(n\SoundChn) Then
+                    If Not IsChannelPlaying(n\SoundChn) Then
                         dist = EntityDistance(n\Collider,mainPlayer\collider)
                         If (dist < 20.0) Then
                             If n\Sound <> 0 Then FreeSound n\Sound : n\Sound = 0
                             n\Sound = LoadSound("SFX\SCP\1499\Idle"+Rand(1,4)+".ogg")
-                            n\SoundChn = PlaySound2(n\Sound, mainPlayer\cam, n\Collider, 20.0)
+                            n\SoundChn = PlayRangedSound(n\Sound, mainPlayer\cam, n\Collider, 20.0)
                         EndIf
                     EndIf
                 EndIf
@@ -104,7 +104,7 @@ Function UpdateNPCtype1499(n.NPCs)
                             If dist < 5.0 Then
                                 If n\Sound <> 0 Then FreeSound n\Sound : n\Sound = 0
                                 n\Sound = LoadSound("SFX\SCP\1499\Triggered.ogg")
-                                n\SoundChn = PlaySound2(n\Sound, mainPlayer\cam, n\Collider,20.0)
+                                n\SoundChn = PlayRangedSound(n\Sound, mainPlayer\cam, n\Collider,20.0)
                                 
                                 n\State2 = 1 ;if player is too close, switch to attack after screaming
                                 
@@ -176,7 +176,7 @@ Function UpdateNPCtype1499(n.NPCs)
                             ;Miss
                         Else
                             mainPlayer\injuries = mainPlayer\injuries + Rnd(0.75,1.5)
-                            PlaySound2(LoadTempSound("SFX\General\Slash"+Rand(1,2)+".ogg"), mainPlayer\cam, n\Collider)
+                            PlayRangedSound(LoadTempSound("SFX\General\Slash"+Rand(1,2)+".ogg"), mainPlayer\cam, n\Collider)
                             If mainPlayer\injuries > 10.0
                                 Kill(mainPlayer)
                                 If mainPlayer\currRoom\RoomTemplate\Name$ = "dimension1499"
@@ -201,7 +201,7 @@ Function UpdateNPCtype1499(n.NPCs)
                             ;Miss
                         Else
                             mainPlayer\injuries = mainPlayer\injuries + Rnd(0.75,1.5)
-                            PlaySound2(LoadTempSound("SFX\General\Slash"+Rand(1,2)+".ogg"), mainPlayer\cam, n\Collider)
+                            PlayRangedSound(LoadTempSound("SFX\General\Slash"+Rand(1,2)+".ogg"), mainPlayer\cam, n\Collider)
                             If mainPlayer\injuries > 10.0
                                 Kill(mainPlayer)
                                 If mainPlayer\currRoom\RoomTemplate\Name$ = "dimension1499"
@@ -233,7 +233,7 @@ Function UpdateNPCtype1499(n.NPCs)
                 EndIf
         End Select
         
-        If n\SoundChn <> 0 And ChannelPlaying(n\SoundChn) Then
+        If n\SoundChn <> 0 And IsChannelPlaying(n\SoundChn) Then
             UpdateSoundOrigin(n\SoundChn,mainPlayer\cam,n\Collider,20.0)
         EndIf
         

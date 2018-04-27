@@ -16,7 +16,7 @@ Function UpdateEvent106victim(e.Events)
 				de.Decals = CreateDecal(0, EntityX(e\room\obj), 799.0*RoomScale, EntityZ(e\room\obj), -90, Rand(360), 0)
 				de\Size = 0.05 : de\SizeChange = 0.0015 : EntityAlpha(de\obj, 0.8) : UpdateDecals()			
 				;TODO: fix
-				;PlaySound2(DecaySFX(3), mainPlayer\cam, de\obj, 15.0)
+				;PlayRangedSound(DecaySFX(3), mainPlayer\cam, de\obj, 15.0)
 				e\EventState=1
 			EndIf
 		EndIf
@@ -37,7 +37,7 @@ Function UpdateEvent106victim(e.Events)
 					
 					;PlaySound HorrorSFX(0)
 					;TODO: fix
-					;PlaySound2(DecaySFX(2), mainPlayer\cam, e\room\NPC[0]\Collider, 15.0)
+					;PlayRangedSound(DecaySFX(2), mainPlayer\cam, e\room\NPC[0]\Collider, 15.0)
 				EndIf
 				
 				EntityType e\room\NPC[0]\Collider,HIT_PLAYER

@@ -81,7 +81,7 @@ Function UpdateEventTestroom173(e.Events)
 							;left and 173 moved to some other room?) -> disable the event
 							RemoveEvent(e)
 						Else
-							PlaySound2(LoadTempSound("SFX\General\GlassBreak.ogg"), mainPlayer\cam, Curr173\obj) 
+							PlayRangedSound(LoadTempSound("SFX\General\GlassBreak.ogg"), mainPlayer\cam, Curr173\obj) 
 							FreeEntity(e\room\Objects[2])
 							PositionEntity(Curr173\Collider, EntityX(e\room\Objects[1], True), 0.5, EntityZ(e\room\Objects[1], True))
 							ResetEntity(Curr173\Collider)

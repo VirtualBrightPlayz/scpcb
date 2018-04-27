@@ -94,7 +94,7 @@ Function UpdateEvent_cont_079_1(e.Events)
 				EndIf							
 			ElseIf e\EventState = 3
 				If e\EventState < 3500 Then 
-					If ChannelPlaying(e\soundChannels[0]) Then 
+					If IsChannelPlaying(e\soundChannels[0]) Then 
 						If Rand(3) = 1 Then
 							EntityTexture(e\room\Objects[1], OldAiPics(0))
 							ShowEntity (e\room\Objects[1])

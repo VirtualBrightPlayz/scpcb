@@ -106,7 +106,7 @@ Function UpdateEvent_srvr_096_2(e.Events)
 	ElseIf e\EventState < 70*45
 		If	Rand(200)<5 And mainPlayer\currRoom = e\room Then 
 			;LightBlink = Rnd(1.0,2.0)
-			If Rand(5)=1 Then PlaySound2(IntroSFX(Rand(10,12)), mainPlayer\cam, e\room\obj, 8.0, Rnd(0.1,0.3))
+			If Rand(5)=1 Then PlayRangedSound(IntroSFX(Rand(10,12)), mainPlayer\cam, e\room\obj, 8.0, Rnd(0.1,0.3))
 		EndIf
 		
 		e\EventState=Min(e\EventState+timing\tickDuration,70*43)
@@ -213,9 +213,9 @@ Function UpdateEvent_srvr_096_2(e.Events)
 			
 			If mainPlayer\currRoom = e\room Then
 				If e\soundChannels[0]<>0 Then
-					If	ChannelPlaying(e\soundChannels[0]) Then 
+					If	IsChannelPlaying(e\soundChannels[0]) Then 
 						;LightBlink = Rnd(0.5,6.0)
-						If Rand(50)=1 Then PlaySound2(IntroSFX(Rand(10,12)), mainPlayer\cam, e\room\obj, 8.0, Rnd(0.1,0.3))
+						If Rand(50)=1 Then PlayRangedSound(IntroSFX(Rand(10,12)), mainPlayer\cam, e\room\obj, 8.0, Rnd(0.1,0.3))
 					EndIf
 				EndIf						
 				
@@ -255,8 +255,8 @@ Function UpdateEvent_srvr_096_2(e.Events)
 			e\EventState3 = Max(0, e\EventState3-timing\tickDuration/450)
 		EndIf
 		
-		If e\EventState2>0 Then e\soundChannels[0]=LoopSound2(RoomAmbience[8], e\soundChannels[0], mainPlayer\cam, e\room\Objects[3], 5.0, e\EventState2*0.8)
-		If e\EventState3>0 Then e\soundChannels[1]=LoopSound2(e\sounds[1], e\soundChannels[1], mainPlayer\cam, e\room\Objects[5], 6.0, e\EventState3)
+		If e\EventState2>0 Then e\soundChannels[0]=LoopRangedSound(RoomAmbience[8], e\soundChannels[0], mainPlayer\cam, e\room\Objects[3], 5.0, e\EventState2*0.8)
+		If e\EventState3>0 Then e\soundChannels[1]=LoopRangedSound(e\sounds[1], e\soundChannels[1], mainPlayer\cam, e\room\Objects[5], 6.0, e\EventState3)
 		
 		If temp=0 And x And z Then
 			e\room\RoomDoors[0]\locked = False

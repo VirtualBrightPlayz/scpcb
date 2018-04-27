@@ -235,7 +235,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 								If (Not n\Path[n\PathLocation]\door\open)
 									Local sound = 0
 									If n\Path[n\PathLocation]\door\dir = 1 Then sound = 0 Else sound=Rand(0, 2)
-									PlaySound2(OpenDoorSFX(n\Path[n\PathLocation]\door\dir,sound),mainPlayer\cam,n\Path[n\PathLocation]\door\obj)
+									PlayRangedSound(OpenDoorSFX(n\Path[n\PathLocation]\door\dir,sound),mainPlayer\cam,n\Path[n\PathLocation]\door\obj)
 									PlayMTFSound(MTFSFX(5),n)
 								EndIf
 								n\Path[n\PathLocation]\door\open = True
@@ -467,7 +467,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 								If angle < 5 Or angle > 355 Then 
 									prev% = (Not mainPlayer\dead)
 									
-									PlaySound2(GunshotSFX, mainPlayer\cam, n\Collider, 15)
+									PlayRangedSound(GunshotSFX, mainPlayer\cam, n\Collider, 15)
 									
 									pvt% = CreatePivot()
 									
@@ -600,7 +600,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 									If (Not n\Path[n\PathLocation]\door\open)
 										sound = 0
 										If n\Path[n\PathLocation]\door\dir = 1 Then sound = 0 Else sound=Rand(0, 2)
-										PlaySound2(OpenDoorSFX(n\Path[n\PathLocation]\door\dir,sound),mainPlayer\cam,n\Path[n\PathLocation]\door\obj)
+										PlayRangedSound(OpenDoorSFX(n\Path[n\PathLocation]\door\dir,sound),mainPlayer\cam,n\Path[n\PathLocation]\door\obj)
 										PlayMTFSound(MTFSFX(5),n)
 									EndIf
 									n\Path[n\PathLocation]\door\open = True
@@ -883,7 +883,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 										If (Not n\Path[n\PathLocation]\door\open)
 											sound = 0
 											If n\Path[n\PathLocation]\door\dir = 1 Then sound = 0 Else sound=Rand(0, 2)
-											PlaySound2(OpenDoorSFX(n\Path[n\PathLocation]\door\dir,sound),mainPlayer\cam,n\Path[n\PathLocation]\door\obj)
+											PlayRangedSound(OpenDoorSFX(n\Path[n\PathLocation]\door\dir,sound),mainPlayer\cam,n\Path[n\PathLocation]\door\obj)
 											PlayMTFSound(MTFSFX(5),n)
 										EndIf
 										n\Path[n\PathLocation]\door\open = True
@@ -1112,7 +1112,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 									If (Not n\Path[n\PathLocation]\door\open)
 										sound = 0
 										If n\Path[n\PathLocation]\door\dir = 1 Then sound = 0 Else sound=Rand(0, 2)
-										PlaySound2(OpenDoorSFX(n\Path[n\PathLocation]\door\dir,sound),mainPlayer\cam,n\Path[n\PathLocation]\door\obj)
+										PlayRangedSound(OpenDoorSFX(n\Path[n\PathLocation]\door\dir,sound),mainPlayer\cam,n\Path[n\PathLocation]\door\obj)
 										PlayMTFSound(MTFSFX(5),n)
 									EndIf
 									n\Path[n\PathLocation]\door\open = True
@@ -1166,7 +1166,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 						;	MoveEntity (pvt,0.8*0.079, 10.75*0.079, 6.9*0.079)
 						;	
 						;	If WrapAngle(EntityYaw(pvt)-EntityYaw(n\Collider))<5 Then
-						;		PlaySound2(GunshotSFX, mainPlayer\cam, n\Collider, 20)
+						;		PlayRangedSound(GunshotSFX, mainPlayer\cam, n\Collider, 20)
 						;		p.Particles = CreateParticle(EntityX(n\obj, True), EntityY(n\obj, True), EntityZ(n\obj, True), 1, 0.2, 0.0, 5)
 						;		PositionEntity(p\pvt, EntityX(pvt), EntityY(pvt), EntityZ(pvt))
 						;		
@@ -1199,7 +1199,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 						If (Abs(DeltaYaw(n\Collider,mainPlayer\collider))<50.0)
 							;prev% = KillTimer
 							
-							PlaySound2(GunshotSFX, mainPlayer\cam, n\Collider, 15)
+							PlayRangedSound(GunshotSFX, mainPlayer\cam, n\Collider, 15)
 							
 							pvt% = CreatePivot()
 							
@@ -1230,7 +1230,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 				
 				If n\Reload =< 0 
 					;LightVolume = TempLightVolume*1.2
-					PlaySound2(GunshotSFX, mainPlayer\cam, n\Collider, 20)
+					PlayRangedSound(GunshotSFX, mainPlayer\cam, n\Collider, 20)
 					
 					pvt% = CreatePivot()
 					
@@ -1329,7 +1329,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 								If (Not n\Path[n\PathLocation]\door\open)
 									sound = 0
 									If n\Path[n\PathLocation]\door\dir = 1 Then sound = 0 Else sound=Rand(0, 2)
-									PlaySound2(OpenDoorSFX(n\Path[n\PathLocation]\door\dir,sound),mainPlayer\cam,n\Path[n\PathLocation]\door\obj)
+									PlayRangedSound(OpenDoorSFX(n\Path[n\PathLocation]\door\dir,sound),mainPlayer\cam,n\Path[n\PathLocation]\door\obj)
 									PlayMTFSound(MTFSFX(5),n)
 								EndIf
 								n\Path[n\PathLocation]\door\open = True
@@ -1406,7 +1406,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 						If (Abs(DeltaYaw(n\Collider,n\Target\Collider))<50.0)
 							;prev% = KillTimer
 							
-							PlaySound2(GunshotSFX, mainPlayer\cam, n\Collider, 15)
+							PlayRangedSound(GunshotSFX, mainPlayer\cam, n\Collider, 15)
 							
 							pvt% = CreatePivot()
 							
@@ -1480,7 +1480,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 									If (Not n\Path[n\PathLocation]\door\open)
 										sound = 0
 										If n\Path[n\PathLocation]\door\dir = 1 Then sound = 0 Else sound=Rand(0, 2)
-										PlaySound2(OpenDoorSFX(n\Path[n\PathLocation]\door\dir,sound),mainPlayer\cam,n\Path[n\PathLocation]\door\obj)
+										PlayRangedSound(OpenDoorSFX(n\Path[n\PathLocation]\door\dir,sound),mainPlayer\cam,n\Path[n\PathLocation]\door\obj)
 										PlayMTFSound(MTFSFX(5),n)
 									EndIf
 									n\Path[n\PathLocation]\door\open = True
@@ -1505,9 +1505,9 @@ Function UpdateNPCtypeMTF(n.NPCs)
 		
 		If n\CurrSpeed > 0.01 Then
 			If prevFrame > 500 And n\Frame<495
-				PlaySound2(StepSFX(2,0,Rand(0,2)),mainPlayer\cam, n\Collider, 8.0, Rnd(0.5,0.7))
+				PlayRangedSound(StepSFX(2,0,Rand(0,2)),mainPlayer\cam, n\Collider, 8.0, Rnd(0.5,0.7))
 			ElseIf prevFrame < 505 And n\Frame=>505
-				PlaySound2(StepSFX(2,0,Rand(0,2)),mainPlayer\cam, n\Collider, 8.0, Rnd(0.5,0.7))
+				PlayRangedSound(StepSFX(2,0,Rand(0,2)),mainPlayer\cam, n\Collider, 8.0, Rnd(0.5,0.7))
 			EndIf
 		EndIf
 		

@@ -44,7 +44,7 @@ Function UpdateEventEndroom106(e.Events)
 					MoveEntity e\room\NPC[0]\Collider, 0,0,0.5 
 					
 					e\room\RoomDoors[0]\open = False
-					PlaySound2(LoadTempSound("SFX\Door\EndroomDoor.ogg"), mainPlayer\cam, e\room\obj, 15)
+					PlayRangedSound(LoadTempSound("SFX\Door\EndroomDoor.ogg"), mainPlayer\cam, e\room\obj, 15)
 					
 					e\EventState = 1							
 				EndIf
@@ -63,7 +63,7 @@ Function UpdateEventEndroom106(e.Events)
 				If e\soundChannels[0]<>0 Then StopChannel e\soundChannels[0]
 			ElseIf e\room\dist < 8
 				If e\sounds[0] = 0 Then e\sounds[0] = LoadSound("SFX\Character\Janitor\Idle.ogg")
-				e\soundChannels[0] = LoopSound2(e\sounds[0], e\soundChannels[0], mainPlayer\cam, e\room\NPC[0]\obj, 15.0)
+				e\soundChannels[0] = LoopRangedSound(e\sounds[0], e\soundChannels[0], mainPlayer\cam, e\room\NPC[0]\obj, 15.0)
 			EndIf
 		ElseIf e\EventState = 2
 			dist = EntityDistance(e\room\NPC[0]\Collider, e\room\obj)
@@ -103,7 +103,7 @@ Function UpdateEventEndroom106(e.Events)
 			EndIf
 			
 			If e\EventState > 35 Then
-				;PlaySound2(OldManSFX(Rand(1,2)), mainPlayer\cam, e\room\NPC[0]\Collider)
+				;PlayRangedSound(OldManSFX(Rand(1,2)), mainPlayer\cam, e\room\NPC[0]\Collider)
 				
 				PositionEntity(Curr106\obj, EntityX(Curr106\Collider), -100.0, EntityZ(Curr106\Collider), True)
 				PositionEntity(Curr106\Collider, EntityX(Curr106\Collider), -100.0, EntityZ(Curr106\Collider), True)

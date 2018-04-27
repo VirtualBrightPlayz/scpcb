@@ -37,7 +37,7 @@ Function UpdateEventRoom2fan(e.Events)
 	If mainPlayer\currRoom = e\room Then
 		TurnEntity (e\room\Objects[0], e\EventState3*timing\tickDuration, 0, 0)
 		If e\EventState3 > 0.01 Then
-			e\room\SoundCHN = LoopSound2 (RoomAmbience[9], e\room\SoundCHN, mainPlayer\cam, e\room\Objects[0], 5.0, (e\EventState3/4.0))
+			e\room\SoundCHN = LoopRangedSound (RoomAmbience[9], e\room\SoundCHN, mainPlayer\cam, e\room\Objects[0], 5.0, (e\EventState3/4.0))
 		EndIf
 		e\EventState3 = CurveValue(e\EventState2*5, e\EventState3, 150.0)			
 	EndIf
@@ -51,9 +51,9 @@ Function UpdateEventRoom2fan(e.Events)
 				e\EventState3 = e\EventState2*5
 			Else
 				If temp = 0 And e\EventState2 = 1.0 Then ;turn on the fan
-					PlaySound2 (LoadTempSound("SFX\ambient\Room ambience\FanOn.ogg"), mainPlayer\cam, e\room\Objects[0], 8.0)
+					PlayRangedSound (LoadTempSound("SFX\ambient\Room ambience\FanOn.ogg"), mainPlayer\cam, e\room\Objects[0], 8.0)
 				ElseIf temp = 1 And e\EventState2 = 0.0 ;turn off the fan
-					PlaySound2 (LoadTempSound("SFX\ambient\Room ambience\FanOff.ogg"), mainPlayer\cam, e\room\Objects[0], 8.0)
+					PlayRangedSound (LoadTempSound("SFX\ambient\Room ambience\FanOff.ogg"), mainPlayer\cam, e\room\Objects[0], 8.0)
 				EndIf
 			EndIf
 		Else

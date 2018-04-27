@@ -48,7 +48,7 @@ Function UpdateNPCtype966(n.NPCs)
         ;the ambient sound gets louder when the npcs are attacking
             If n\State > 0 Then temp = 1.0	
             
-            n\SoundChn = LoopSound2(n\Sound, n\SoundChn, mainPlayer\cam, mainPlayer\cam, 10.0,temp)
+            n\SoundChn = LoopRangedSound(n\Sound, n\SoundChn, mainPlayer\cam, mainPlayer\cam, 10.0,temp)
         EndIf
         
         temp = Rnd(-1.0,1.0)
@@ -141,7 +141,7 @@ Function UpdateNPCtype966(n.NPCs)
                 EndIf
                 
                 If n\Frame>1029.0 And prevFrame<=1029.0 Or n\Frame>1203.0 And prevFrame<=1203.0 Then
-                    PlaySound2(LoadTempSound("SFX\SCP\966\Echo"+Rand(1,3)+".ogg"), mainPlayer\cam, n\Collider)
+                    PlayRangedSound(LoadTempSound("SFX\SCP\966\Echo"+Rand(1,3)+".ogg"), mainPlayer\cam, n\Collider)
                 EndIf
                 
                 angle = VectorYaw(EntityX(mainPlayer\collider)-EntityX(n\Collider),0,EntityZ(mainPlayer\collider)-EntityZ(n\Collider))
@@ -186,7 +186,7 @@ Function UpdateNPCtype966(n.NPCs)
                 EndIf
                 
                 If n\Frame>1393.0 And prevFrame<=1393.0 Or n\Frame>1589.0 And prevFrame<=1589.0 Or n\Frame>2000.0 And prevFrame<=2000.0 Then
-                    PlaySound2(LoadTempSound("SFX\SCP\966\Idle"+Rand(1,3)+".ogg"), mainPlayer\cam, n\Collider)
+                    PlayRangedSound(LoadTempSound("SFX\SCP\966\Idle"+Rand(1,3)+".ogg"), mainPlayer\cam, n\Collider)
                 EndIf
                 
                 angle = VectorYaw(EntityX(mainPlayer\collider)-EntityX(n\Collider),0,EntityZ(mainPlayer\collider)-EntityZ(n\Collider))
@@ -267,7 +267,7 @@ Function UpdateNPCtype966(n.NPCs)
                 EndIf
             Case 10 ;attack
                 If n\LastSeen=0
-                    PlaySound2(LoadTempSound("SFX\SCP\966\Echo"+Rand(1,3)+".ogg"), mainPlayer\cam, n\Collider)
+                    PlayRangedSound(LoadTempSound("SFX\SCP\966\Echo"+Rand(1,3)+".ogg"), mainPlayer\cam, n\Collider)
                     n\LastSeen = 1
                 EndIf
                 
@@ -299,7 +299,7 @@ Function UpdateNPCtype966(n.NPCs)
                 
                 If dist<1.0 Then
                     If n\Frame>2173.0 And prevFrame<=2173.0 Or n\Frame>2203.0 And prevFrame<=2203.0 Or n\Frame>2227.0 And prevFrame<=2227.0 Then
-                        PlaySound2(LoadTempSound("SFX\General\Slash"+Rand(1,2)+".ogg"), mainPlayer\cam, n\Collider)
+                        PlayRangedSound(LoadTempSound("SFX\General\Slash"+Rand(1,2)+".ogg"), mainPlayer\cam, n\Collider)
                         mainPlayer\injuries = mainPlayer\injuries + Rnd(0.5,1.0)								
                     EndIf	
                 EndIf

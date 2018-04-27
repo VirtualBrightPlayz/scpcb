@@ -27,7 +27,7 @@ Function UpdateEventTunnel2smoke(e.Events)
 	;[Block]
 	If mainPlayer\currRoom = e\room Then
 		If e\room\dist < 3.5 Then
-			PlaySound2(BurstSFX, mainPlayer\cam, e\room\obj) 
+			PlayRangedSound(BurstSFX, mainPlayer\cam, e\room\obj) 
 			For i = 0 To 1
 				em.Emitters = CreateEmitter(EntityX(e\room\Objects[i],True),EntityY(e\room\Objects[i],True), EntityZ(e\room\Objects[i],True),0)
 				TurnEntity(em\Obj, 90, 0, 0, True)

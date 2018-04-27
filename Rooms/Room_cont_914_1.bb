@@ -92,7 +92,7 @@ Function Use914(item.Items, setting$, x#, y#, z#)
 					n.NPCs = CreateNPC(NPCtype1499,x,y,z)
 					n\State = 1
 					n\Sound = LoadSound("SFX\SCP\1499\Triggered.ogg")
-					n\SoundChn = PlaySound2(n\Sound, mainPlayer\cam, n\Collider,20.0)
+					n\SoundChn = PlayRangedSound(n\Sound, mainPlayer\cam, n\Collider,20.0)
 					n\State3 = 1
 					RemoveItem(item)
 			End Select
@@ -578,7 +578,7 @@ Function UpdateEvent_cont_914_1(e.Events)
 									If Abs(EntityX(it\collider) - (e\room\x - 712.0 * RoomScale)) < 200.0 Then
 										If Abs(EntityY(it\collider) - (e\room\y + 648.0 * RoomScale)) < 104.0 Then
 											e\EventState = 1
-											e\soundChannels[0] = PlaySound2(MachineSFX, mainPlayer\cam, e\room\Objects[1])
+											e\soundChannels[0] = PlayRangedSound(MachineSFX, mainPlayer\cam, e\room\Objects[1])
 											Exit
 										EndIf
 									End If

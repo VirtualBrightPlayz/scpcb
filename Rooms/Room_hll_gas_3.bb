@@ -55,11 +55,11 @@ Function UpdateEventRoom3pitduck(e.Events)
 				e\EventState = e\EventState + timing\tickDuration
 				If Rand(200)=1 And e\EventState > 300 Then
 					e\EventState = 0
-					e\soundChannels[0] = PlaySound2(e\sounds[0], mainPlayer\cam, e\room\Objects[2],6.0)
+					e\soundChannels[0] = PlayRangedSound(e\sounds[0], mainPlayer\cam, e\room\Objects[2],6.0)
 				EndIf
 			Else
 				If e\soundChannels[0] <> 0 Then
-					If ChannelPlaying(e\soundChannels[0]) Then StopChannel e\soundChannels[0]
+					If IsChannelPlaying(e\soundChannels[0]) Then StopChannel e\soundChannels[0]
 				EndIf
 			EndIf						
 		EndIf

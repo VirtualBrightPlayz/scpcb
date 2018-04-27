@@ -212,7 +212,7 @@ Function UpdateEventAlarm(e.Events)
 				If e\EventState > 900 And e\room\RoomDoors[5]\open Then
 					If e\EventState - timing\tickDuration <= 900 Then 
 						e\room\NPC[1]\Sound = LoadSound("SFX\Room\Intro\WhatThe.ogg")
-						e\room\NPC[1]\SoundChn = PlaySound2(e\room\NPC[1]\Sound, mainPlayer\cam, e\room\NPC[1]\Collider)
+						e\room\NPC[1]\SoundChn = PlayRangedSound(e\room\NPC[1]\Sound, mainPlayer\cam, e\room\NPC[1]\Collider)
 					EndIf
 					e\room\NPC[1]\State = 3
 					e\room\NPC[1]\CurrSpeed = CurveValue(-0.008, e\room\NPC[1]\CurrSpeed, 5.0)
@@ -251,7 +251,7 @@ Function UpdateEventAlarm(e.Events)
 							PlaySound(IntroSFX(11)); : LightBlink = 3.0
 							
 							;Stonedrag.
-							PlaySound2 (Curr173\sounds[0], mainPlayer\cam, Curr173\Collider)
+							PlayRangedSound (Curr173\sounds[0], mainPlayer\cam, Curr173\Collider)
 
 							PointEntity Curr173\Collider, e\room\NPC[2]\Collider
 							If EntityY(mainPlayer\collider)<320*RoomScale Then mainPlayer\blinkTimer = -10
@@ -267,7 +267,7 @@ Function UpdateEventAlarm(e.Events)
 								mainPlayer\blinkTimer = -10
 
 								;Stonedrag.
-								PlaySound2 (Curr173\sounds[0], mainPlayer\cam, Curr173\Collider)
+								PlayRangedSound (Curr173\sounds[0], mainPlayer\cam, Curr173\Collider)
 								
 								PositionEntity Curr173\Collider, 0,0,0
 								ResetEntity Curr173\Collider
@@ -322,7 +322,7 @@ Function UpdateEventAlarm(e.Events)
 			RotateEntity e\room\Objects[1], -Max(e\EventState-2040,0)/135, 0, -Max(e\EventState-2040,0)/43, True
 			
 			If EntityDistance(e\room\Objects[0],mainPlayer\collider)<2.5 Then
-				;If Rand(300)=2 Then PlaySound2(DecaySFX(Rand(1,3)),mainPlayer\cam,e\room\Objects[0], 3.0)
+				;If Rand(300)=2 Then PlayRangedSound(DecaySFX(Rand(1,3)),mainPlayer\cam,e\room\Objects[0], 3.0)
 			EndIf
 		EndIf
 		
@@ -330,12 +330,12 @@ Function UpdateEventAlarm(e.Events)
 			If e\soundChannels[0] = 0 Then
 				e\soundChannels[0] = PlaySound(AlarmSFX(0))
 			Else
-				If Not ChannelPlaying(e\soundChannels[0]) Then e\soundChannels[0] = PlaySound(AlarmSFX(0))
+				If Not IsChannelPlaying(e\soundChannels[0]) Then e\soundChannels[0] = PlaySound(AlarmSFX(0))
 			End If
 		EndIf
 		
 		If (e\EventState3<10) Then
-			If (Not ChannelPlaying(e\soundChannels[1])) Then
+			If (Not IsChannelPlaying(e\soundChannels[1])) Then
 				e\EventState3 = e\EventState3+1
 				
 				If (e\sounds[1] <> 0) Then
