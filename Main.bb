@@ -1,4 +1,3 @@
-Global AG = 147
 Include "MarkedForRemoval.bb"
 
 Include "KeyName.bb"
