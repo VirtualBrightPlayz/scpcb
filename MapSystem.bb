@@ -1061,7 +1061,7 @@ Function FillRoom(r.Rooms)
 		Case "coffin"
 			FillRoom_cont_895_1(r)
 		Case "tsl_ez_2","tsl_lcz_2","tsl_hcz_2"
-			FillRoom_tsl_ez_2(r)
+			FillRoom_hll_tsl(r)
 		Case "lck_tshape_2"
 			FillRoom_lck_tshape_2(r)
 		Case "cont_914_1"
@@ -1582,14 +1582,14 @@ Dim MapState.MarkedForRemoval(MAP_SIZE, MAP_SIZE)
 Dim MapParent.MarkedForRemoval(MAP_SIZE, MAP_SIZE, 2)
 Function FindPath(n.NPCs, x#, y#, z#)
 	
-	DebugLog "findpath: "+n\NPCtype
+	DebugLog "findpath: "+n\npcType
 	
 	Local temp%, dist#, dist2#
 	Local xtemp#, ytemp#, ztemp#
 	
 	Local w.WayPoints, StartPoint.WayPoints, EndPoint.WayPoints   
 	
-	Local StartX% = Floor(EntityX(n\Collider,True) / 8.0 + 0.5), StartZ% = Floor(EntityZ(n\Collider,True) / 8.0 + 0.5)
+	Local StartX% = Floor(EntityX(n\collider,True) / 8.0 + 0.5), StartZ% = Floor(EntityZ(n\collider,True) / 8.0 + 0.5)
        ;If StartX < 0 Or StartX > MapWidth Then Return 2
        ;If StartZ < 0 Or StartZ > MapWidth Then Return 2
 	
@@ -1610,17 +1610,17 @@ Function FindPath(n.NPCs, x#, y#, z#)
 		w\Hcost = 0
 	Next
 	
-	n\PathStatus = 0
-	n\PathLocation = 0
+	n\pathStatus = 0
+	n\pathLocation = 0
 	For i = 0 To 19
-		n\Path[i] = Null
+		n\path[i] = Null
 	Next
 	
 	Local pvt = CreatePivot()
 	PositionEntity(pvt, x,y,z, True)   
 	
 	temp = CreatePivot()
-	PositionEntity(temp, EntityX(n\Collider,True), EntityY(n\Collider,True)+0.15, EntityZ(n\Collider,True))
+	PositionEntity(temp, EntityX(n\collider,True), EntityY(n\collider,True)+0.15, EntityZ(n\collider,True))
 	
 	dist = 350.0
 	For w.WayPoints = Each WayPoints
@@ -1676,7 +1676,7 @@ Function FindPath(n.NPCs, x#, y#, z#)
 		If dist < 0.4 Then
 			Return 0
 		Else
-			n\Path[0]=EndPoint
+			n\path[0]=EndPoint
 			Return 1               
 		EndIf
 	EndIf
@@ -1710,7 +1710,7 @@ Function FindPath(n.NPCs, x#, y#, z#)
 						
 						If w\connected[i]\state=1 Then ;open list
 							gtemp# = w\Gcost+w\dist[i]
-							If n\NPCtype = NPCtypeMTF Then
+							If n\npcType = NPCtypeMTF Then
 								If w\connected[i]\door = Null Then gtemp = gtemp + 0.5
 							EndIf
 							If gtemp < w\connected[i]\Gcost Then ;parempi reitti -> overwrite
@@ -1721,7 +1721,7 @@ Function FindPath(n.NPCs, x#, y#, z#)
 						Else
 							w\connected[i]\Hcost# = Abs(EntityX(w\connected[i]\obj,True)-EntityX(EndPoint\obj,True))+Abs(EntityZ(w\connected[i]\obj,True)-EntityZ(EndPoint\obj,True))
 							gtemp# = w\Gcost+w\dist[i]
-							If n\NPCtype = NPCtypeMTF Then
+							If n\npcType = NPCtypeMTF Then
 								If w\connected[i]\door = Null Then gtemp = gtemp + 0.5
 							EndIf
 							w\connected[i]\Gcost = gtemp
@@ -1768,7 +1768,7 @@ Function FindPath(n.NPCs, x#, y#, z#)
 			length=Min(length-1,19)
              ;DebugLog "LENGTH "+length
 			twentiethpoint = twentiethpoint\parent
-			n\Path[length] = twentiethpoint
+			n\path[length] = twentiethpoint
 		Wend
 		
 		Return 1
@@ -2374,9 +2374,9 @@ Function UpdateElevators#(State#, door1.Doors, door2.Doors, room1, room2, event.
 			
 			For n.NPCs = Each NPCs
 				If n\CanUseElevator
-					If Abs(EntityX(n\Collider)-EntityX(room1,True))<280.0*RoomScale
-						If Abs(EntityZ(n\Collider)-EntityZ(room1,True))<280.0*RoomScale Then
-							If Abs(EntityY(n\Collider)-EntityY(room1,True))<280.0*RoomScale Then
+					If Abs(EntityX(n\collider)-EntityX(room1,True))<280.0*RoomScale
+						If Abs(EntityZ(n\collider)-EntityZ(room1,True))<280.0*RoomScale Then
+							If Abs(EntityY(n\collider)-EntityY(room1,True))<280.0*RoomScale Then
 								NPC_inside = n
 							EndIf
 						EndIf
@@ -2409,15 +2409,15 @@ Function UpdateElevators#(State#, door1.Doors, door2.Doors, room1, room2, event.
 				EndIf
 				
 				If NPC_inside <> Null
-					x# = Max(Min((EntityX(NPC_inside\Collider)-EntityX(room1,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
-					z# = Max(Min((EntityZ(NPC_inside\Collider)-EntityZ(room1,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
-					PositionEntity(NPC_inside\Collider, EntityX(room2,True)+x,0.1+EntityY(room2,True)+(EntityY(NPC_inside\Collider)-EntityY(room1,True)),EntityZ(room2,True)+z,True)
-					ResetEntity NPC_inside\Collider	
+					x# = Max(Min((EntityX(NPC_inside\collider)-EntityX(room1,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
+					z# = Max(Min((EntityZ(NPC_inside\collider)-EntityZ(room1,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
+					PositionEntity(NPC_inside\collider, EntityX(room2,True)+x,0.1+EntityY(room2,True)+(EntityY(NPC_inside\collider)-EntityY(room1,True)),EntityZ(room2,True)+z,True)
+					ResetEntity NPC_inside\collider	
 					UpdateDoorsTimer = 0
-					NPC_inside\DropSpeed = 0
+					NPC_inside\dropSpeed = 0
 					If NPC_inside\Idle
 						TurnEntity NPC_inside\obj,0,180,0
-						TurnEntity NPC_inside\Collider,0,180,0
+						TurnEntity NPC_inside\collider,0,180,0
 						NPC_inside\Idle = False
 					EndIf
 					NPC_inside\CurrElevator = Null
@@ -2448,9 +2448,9 @@ Function UpdateElevators#(State#, door1.Doors, door2.Doors, room1, room2, event.
 			
 			For n.NPCs = Each NPCs
 				If n\CanUseElevator
-					If Abs(EntityX(n\Collider)-EntityX(room2,True))<280.0*RoomScale
-						If Abs(EntityZ(n\Collider)-EntityZ(room2,True))<280.0*RoomScale Then
-							If Abs(EntityY(n\Collider)-EntityY(room2,True))<280.0*RoomScale Then
+					If Abs(EntityX(n\collider)-EntityX(room2,True))<280.0*RoomScale
+						If Abs(EntityZ(n\collider)-EntityZ(room2,True))<280.0*RoomScale Then
+							If Abs(EntityY(n\collider)-EntityY(room2,True))<280.0*RoomScale Then
 								NPC_inside = n
 							EndIf
 						EndIf
@@ -2484,15 +2484,15 @@ Function UpdateElevators#(State#, door1.Doors, door2.Doors, room1, room2, event.
 				EndIf
 				
 				If NPC_inside <> Null
-					x# = Max(Min((EntityX(NPC_inside\Collider)-EntityX(room2,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
-					z# = Max(Min((EntityZ(NPC_inside\Collider)-EntityZ(room2,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
-					PositionEntity(NPC_inside\Collider, EntityX(room1,True)+x,0.1+EntityY(room1,True)+(EntityY(NPC_inside\Collider)-EntityY(room2,True)),EntityZ(room1,True)+z,True)
-					ResetEntity NPC_inside\Collider
+					x# = Max(Min((EntityX(NPC_inside\collider)-EntityX(room2,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
+					z# = Max(Min((EntityZ(NPC_inside\collider)-EntityZ(room2,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
+					PositionEntity(NPC_inside\collider, EntityX(room1,True)+x,0.1+EntityY(room1,True)+(EntityY(NPC_inside\collider)-EntityY(room2,True)),EntityZ(room1,True)+z,True)
+					ResetEntity NPC_inside\collider
 					UpdateDoorsTimer = 0
-					NPC_inside\DropSpeed = 0
+					NPC_inside\dropSpeed = 0
 					If NPC_inside\Idle
 						TurnEntity NPC_inside\obj,0,180,0
-						TurnEntity NPC_inside\Collider,0,180,0
+						TurnEntity NPC_inside\collider,0,180,0
 						NPC_inside\Idle = False
 					EndIf
 					NPC_inside\CurrElevator = Null

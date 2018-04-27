@@ -1,4 +1,4 @@
-Function FillRoom_tsl_ez_2(r.Rooms)
+Function FillRoom_hll_tsl(r.Rooms)
     Local d.Doors, d2.Doors, sc.SecurityCams, de.Decals, r2.Rooms, sc2.SecurityCams
     Local it.Items, i%
     Local xtemp%, ytemp%, ztemp%
