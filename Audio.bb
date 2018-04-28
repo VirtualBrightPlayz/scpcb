@@ -9,7 +9,7 @@ End Type
 Global soundManager.SoundManager
 
 Function CreateSoundManager.SoundManager()
-	Local sndManager = New SoundManager
+	Local sndManager.SoundManager = New SoundManager
 
 
 	Return sndManager
@@ -73,7 +73,7 @@ Function PlayRangedSound%(soundHandle%, cam%, entity%, range# = 10, volume# = 1.
 			Local panvalue# = Sin(-DeltaYaw(cam, entity))
 			soundChn% = PlaySound(soundHandle)
 			
-			ChannelVolume(soundChn, volume# * (1 - dist#) * userOptions\soundVolume)
+			ChannelVolume(soundChn, volume# * (1 - dist#) * userOptions\SoundVolume)
 			ChannelPan(soundChn, panvalue)
 		EndIf
 	EndIf
@@ -98,7 +98,7 @@ Function LoopRangedSound%(soundHandle%, chn%, cam%, entity%, range# = 10, volume
 				If (Not IsChannelPlaying(chn)) Then chn% = PlaySound(soundHandle)
 			EndIf
 			
-			ChannelVolume(Chn, volume# * (1 - dist#)*userOptions\soundVolume)
+			ChannelVolume(Chn, volume# * (1 - dist#)*userOptions\SoundVolume)
 			ChannelPan(Chn, panvalue)
 		EndIf
 	Else
@@ -303,3 +303,5 @@ Function UpdateSoundOrigin(Chn%, cam%, entity%, range# = 10, volume# = 1.0)
 		EndIf 
 	EndIf
 End Function
+;~IDEal Editor Parameters:
+;~C#Blitz3D

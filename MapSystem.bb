@@ -2690,46 +2690,46 @@ End Function
 
 ;-------------------------------------------------------------------------------------------------------
 
-Function DetermineRoomTypes(layout.IntArray2D,mapDim%)
+Function DetermineRoomTypes(layout.IntArray,mapDim%)
 	Local horNeighborCount% = 0
 	Local vertNeighborCount% = 0
 	For y% = 0 To mapDim-1
 		For x% = 0 To mapDim-1
-			If GetIntArray2DElem(layout,x,y)<>0 Then
+			If GetIntArrayElem(layout,x,y)<>0 Then
 				horNeighborCount = 0
 				If x>0 Then
-					horNeighborCount=horNeighborCount+(GetIntArray2DElem(layout,x-1,y)<>0)
+					horNeighborCount=horNeighborCount+(GetIntArrayElem(layout,x-1,y)<>0)
 				EndIf
 				If x<mapDim-1 Then
-					horNeighborCount=horNeighborCount+(GetIntArray2DElem(layout,x+1,y)<>0)
+					horNeighborCount=horNeighborCount+(GetIntArrayElem(layout,x+1,y)<>0)
 				EndIf
 				vertNeighborCount = 0
 				If y>0 Then
-					vertNeighborCount=vertNeighborCount+(GetIntArray2DElem(layout,x,y-1)<>0)
+					vertNeighborCount=vertNeighborCount+(GetIntArrayElem(layout,x,y-1)<>0)
 				EndIf
 				If y<mapDim-1 Then
-					vertNeighborCount=vertNeighborCount+(GetIntArray2DElem(layout,x,y+1)<>0)
+					vertNeighborCount=vertNeighborCount+(GetIntArrayElem(layout,x,y+1)<>0)
 				EndIf
 				
 				If horNeighborCount+vertNeighborCount = 1 Then
-					SetIntArray2DElem(layout,x,y,ROOM1)
+					SetIntArrayElem(layout,ROOM1,x,y)
 				ElseIf horNeighborCount+vertNeighborCount = 3 Then
-					SetIntArray2DElem(layout,x,y,ROOM3)
+					SetIntArrayElem(layout,ROOM3,x,y)
 				ElseIf horNeighborCount+vertNeighborCount = 4 Then
-					SetIntArray2DElem(layout,x,y,ROOM4)
+					SetIntArrayElem(layout,ROOM4,x,y)
 				ElseIf (horNeighborCount = 1) And (vertNeighborCount = 1) Then
-					SetIntArray2DElem(layout,x,y,ROOM2C)
+					SetIntArrayElem(layout,ROOM2C,x,y)
 				ElseIf (horNeighborCount = 2) Xor (vertNeighborCount = 2) Then
-					SetIntArray2DElem(layout,x,y,ROOM2)
+					SetIntArrayElem(layout,ROOM2,x,y)
 				Else
-					SetIntArray2DElem(layout,x,y,0)
+					SetIntArrayElem(layout,0,x,y)
 				EndIf
 			EndIf
 		Next
 	Next
 End Function
 
-Global MapRooms.IntArray2D = Null ;TODO: replace with an array of the proper type after moving to C++
+Global MapRooms.IntArray = Null ;TODO: replace with an array of the proper type after moving to C++
 
 Function CreateMap()
 	DebugLog ("Generating a map using the seed "+RandomSeed)
@@ -2737,14 +2737,14 @@ Function CreateMap()
 	SeedRnd SeedStringToInt(RandomSeed)
 	
 	Local mapDim% = MAP_SIZE
-	Local layout.IntArray2D = CreateIntArray2D(mapDim,mapDim)
-	MapRooms = CreateIntArray2D(mapDim,mapDim)
+	Local layout.IntArray = CreateIntArray(mapDim,mapDim)
+	MapRooms = CreateIntArray(mapDim,mapDim)
 	
 	;clear the grid
 	For y% = 0 To mapDim-1
 		For x% = 0 To mapDim-1
-			SetIntArray2DElem(layout,x,y,0)
-			SetIntArray2DElem(MapRooms,x,y,0)
+			SetIntArrayElem(layout,0,x,y)
+			SetIntArrayElem(MapRooms,0,x,y)
 		Next
 	Next
 	
@@ -2755,7 +2755,7 @@ Function CreateMap()
 		For x% = 0 To mapDim-1
 			If (x Mod rectWidth=1) Or (y Mod rectHeight=1) Then
 				If (x>=rectWidth And x<mapDim-rectWidth) Or (y>=rectHeight And y<mapDim-rectHeight) Then
-					SetIntArray2DElem(layout,x,y,1)
+					SetIntArrayElem(layout,1,x,y)
 				EndIf
 			EndIf
 		Next
@@ -2769,15 +2769,15 @@ Function CreateMap()
 	For y% = 1 To mapDim-2
 		For x% = 0 To mapDim-2
 			If y>6 Or x>6 Then
-				If (y Mod rectHeight=1) And GetIntArray2DElem(layout,x,y)=ROOM2 Then
+				If (y Mod rectHeight=1) And GetIntArrayElem(layout,x,y)=ROOM2 Then
 					shift = Rand(0,1)
 					If nonShiftStreak=0 Then shift = 0
 					If nonShiftStreak>5 Then shift = 1
 					If (x/rectWidth) Mod 2 Then shift = -shift
 					If shift<>0 Then
 						For i% = 0 To rectWidth-2
-							SetIntArray2DElem(layout,x+i,y,0)
-							SetIntArray2DElem(layout,x+i,y+shift,ROOM2)
+							SetIntArrayElem(layout,0,x+i,y)
+							SetIntArrayElem(layout,ROOM2,x+i,y+shift)
 						Next
 						nonShiftStreak = 0
 					Else
@@ -2797,11 +2797,11 @@ Function CreateMap()
 	Local roomBelow%
 	For y% = 2 To mapDim-4
 		For x% = 0 To mapDim-1
-			If (((x/rectWidth) Mod 2)=punchOffset) And (GetIntArray2DElem(layout,x,y)=ROOM2) Then
-				roomAbove = GetIntArray2DElem(layout,x,y-1)
-				roomBelow = GetIntArray2DElem(layout,x,y+1)
+			If (((x/rectWidth) Mod 2)=punchOffset) And (GetIntArrayElem(layout,x,y)=ROOM2) Then
+				roomAbove = GetIntArrayElem(layout,x,y-1)
+				roomBelow = GetIntArrayElem(layout,x,y+1)
 				If ((roomAbove>=ROOM2) And (roomBelow>=ROOM2)) And ((roomAbove+roomBelow)>(ROOM2+ROOM3)) Then
-					SetIntArray2DElem(layout,x,y,0)
+					SetIntArrayElem(layout,0,x,y)
 				EndIf
 			EndIf
 		Next
@@ -2818,25 +2818,25 @@ Function CreateMap()
 			prioritizedTemplateCount=prioritizedTemplateCount+1
 		EndIf
 	Next
-	Local prioritizedTemplates.IntArray2D = CreateIntArray2D(prioritizedTemplateCount,1) ;TODO: replace with an array of the right type once we move to C++
+	Local prioritizedTemplates.IntArray = CreateIntArray(prioritizedTemplateCount,1) ;TODO: replace with an array of the right type once we move to C++
 	Local tempTemplate.RoomTemplates
 	Local tempTemplate2.RoomTemplates
-	SetIntArray2DElem(prioritizedTemplates,0,0,0)
+	SetIntArrayElem(prioritizedTemplates,0,0,0)
 	For rt.RoomTemplates = Each RoomTemplates
 		If ((rt\zones And zone)<>0) And (rt\MaxAmount>0) And (rt\Shape<>ROOM0) Then
 			tempTemplate = rt
 			DebugLog "queueing up "+rt\Name
 			For i%=0 To prioritizedTemplateCount-1
-				If GetIntArray2DElem(prioritizedTemplates,i,0)=0 Then
+				If GetIntArrayElem(prioritizedTemplates,i,0)=0 Then
 					If i<prioritizedTemplateCount-1 Then
-						SetIntArray2DElem(prioritizedTemplates,i+1,0,0)
+						SetIntArrayElem(prioritizedTemplates,0,i+1,0)
 					EndIf
-					SetIntArray2DElem(prioritizedTemplates,i,0,Handle(tempTemplate))
+					SetIntArrayElem(prioritizedTemplates,Handle(tempTemplate),i,0)
 					Exit
 				Else
-					tempTemplate2 = Object.RoomTemplates(GetIntArray2DElem(prioritizedTemplates,i,0))
+					tempTemplate2 = Object.RoomTemplates(GetIntArrayElem(prioritizedTemplates,i,0))
 					If tempTemplate2\MaxAmount>tempTemplate\MaxAmount Then
-						SetIntArray2DElem(prioritizedTemplates,i,0,Handle(tempTemplate))
+						SetIntArrayElem(prioritizedTemplates,Handle(tempTemplate),i,0)
 						;DebugLog "swapping "+tempTemplate2\Name+" for "+tempTemplate\Name
 						tempTemplate = tempTemplate2
 					EndIf
@@ -2848,7 +2848,7 @@ Function CreateMap()
 	Local RoomCount%[ROOM4+1]
 	For y% = 0 To mapDim-1
 		For x% = 0 To mapDim-1
-			If GetIntArray2DElem(layout,x,y)<>ROOM0 Then RoomCount[GetIntArray2DElem(layout,x,y)]=RoomCount[GetIntArray2DElem(layout,x,y)]+1
+			If GetIntArrayElem(layout,x,y)<>ROOM0 Then RoomCount[GetIntArrayElem(layout,x,y)]=RoomCount[GetIntArrayElem(layout,x,y)]+1
 		Next
 	Next
 	For i% = 1 To ROOM4
@@ -2868,7 +2868,7 @@ Function CreateMap()
 	Local offsetY%
 	Local placed%
 	For k%=0 To prioritizedTemplateCount-1
-		rt.RoomTemplates = Object.RoomTemplates(GetIntArray2DElem(prioritizedTemplates,k,0))
+		rt.RoomTemplates = Object.RoomTemplates(GetIntArrayElem(prioritizedTemplates,k,0))
 		
 		placementCount = Rand(rt\MinAmount,rt\MaxAmount)
 		
@@ -2891,12 +2891,12 @@ Function CreateMap()
 					x% = ((i+offsetX) Mod (loopX+1)) + loopStartX
 					y% = ((j+offsetY) Mod (loopY+1)) + loopStartY
 					
-					If (GetIntArray2DElem(layout,x,y)>0) And (GetIntArray2DElem(layout,x,y)=rt\Shape) Then
+					If (GetIntArrayElem(layout,x,y)>0) And (GetIntArrayElem(layout,x,y)=rt\Shape) Then
 						r = CreateRoom(rt,x*8.0,0.0,y*8.0)
 						r\angle = DetermineRotation(layout,x,y)
 						TurnEntity r\obj,0,r\angle,0
-						SetIntArray2DElem(layout,x,y,-1) ;mark as used
-						SetIntArray2DElem(MapRooms,x,y,Handle(r)) ;add to the MapRooms array
+						SetIntArrayElem(layout,-1,x,y) ;mark as used
+						SetIntArrayElem(MapRooms,Handle(r),x,y) ;add to the MapRooms array
 						placed = True
 					EndIf
 					
@@ -2908,7 +2908,7 @@ Function CreateMap()
 		Next
 	Next
 	
-	DeleteIntArray2D(prioritizedTemplates)
+	DeleteIntArray(prioritizedTemplates)
 	
 	Local randomTemplateCount%
 	Local totalCommonness%[ROOM4+1]
@@ -2921,14 +2921,14 @@ Function CreateMap()
 			totalCommonness[rt\Shape]=totalCommonness[rt\Shape]+rt\Commonness
 		EndIf
 	Next
-	Local randomTemplates.IntArray2D = CreateIntArray2D(randomTemplateCount,1)
+	Local randomTemplates.IntArray = CreateIntArray(randomTemplateCount,1)
 	Local index% = 0
 	Local tempHandle1%
 	Local tempHandle2%
 	
 	For rt.RoomTemplates = Each RoomTemplates
 		If ((rt\zones And zone)<>0) And (rt\MaxAmount<0) And (rt\Shape<>ROOM0) Then
-			SetIntArray2DElem(randomTemplates,index,0,Handle(rt))
+			SetIntArrayElem(randomTemplates,Handle(rt),index,0)
 			index=index+1
 		EndIf
 	Next
@@ -2936,10 +2936,10 @@ Function CreateMap()
 	;shuffle the templates
 	For i% = 0 To randomTemplateCount-1
 		index = Rand(0,randomTemplateCount-1)
-		tempHandle1 = GetIntArray2DElem(randomTemplates,i,0)
-		tempHandle2 = GetIntArray2DElem(randomTemplates,index,0)
-		SetIntArray2DElem(randomTemplates,i,0,tempHandle2)
-		SetIntArray2DElem(randomTemplates,index,0,tempHandle1)
+		tempHandle1 = GetIntArrayElem(randomTemplates,i,0)
+		tempHandle2 = GetIntArrayElem(randomTemplates,index,0)
+		SetIntArrayElem(randomTemplates,tempHandle2,i,0)
+		SetIntArrayElem(randomTemplates,tempHandle1,index,0)
 	Next
 	
 	Local targetCommonness% = 0
@@ -2948,20 +2948,20 @@ Function CreateMap()
 	For y% = 0 To mapDim-1
 		For x% = 0 To mapDim-1
 			commonnessAccumulator = 0
-			currType = GetIntArray2DElem(layout,x,y)
+			currType = GetIntArrayElem(layout,x,y)
 			If (currType>0) Then
 				targetCommonness = Rand(0,totalCommonness[currType])
 				
 				For i% = 0 To randomTemplateCount-1
-					tempTemplate = Object.RoomTemplates(GetIntArray2DElem(randomTemplates,i,0))
+					tempTemplate = Object.RoomTemplates(GetIntArrayElem(randomTemplates,i,0))
 					If tempTemplate\Shape = currType Then
 						commonnessAccumulator=commonnessAccumulator+tempTemplate\Commonness
 						If commonnessAccumulator>=targetCommonness Then
 							r = CreateRoom(tempTemplate,x*8.0,0.0,y*8.0)
 							r\angle = DetermineRotation(layout,x,y)
 							TurnEntity r\obj,0,r\angle,0
-							SetIntArray2DElem(layout,x,y,-1) ;mark as used
-							SetIntArray2DElem(MapRooms,x,y,Handle(r)) ;add to the MapRooms array
+							SetIntArrayElem(layout,-1,x,y) ;mark as used
+							SetIntArrayElem(MapRooms,Handle(r),x,y) ;add to the MapRooms array
 							Exit
 						EndIf
 					EndIf
@@ -2970,16 +2970,16 @@ Function CreateMap()
 		Next
 	Next
 	
-	DeleteIntArray2D(randomTemplates)
-	DeleteIntArray2D(layout)
+	DeleteIntArray(randomTemplates)
+	DeleteIntArray(layout)
 	
 	;finally, let rooms know who their neighbors are
 	For y% = 0 To mapDim-1
 		For x% = 0 To mapDim-1
-			r = Object.Rooms(GetIntArray2DElem(MapRooms,x,y))
+			r = Object.Rooms(GetIntArrayElem(MapRooms,x,y))
 			If r<>Null Then
 				If x>0 Then
-					r\Adjacent[2] = Object.Rooms(GetIntArray2DElem(MapRooms,x-1,y))
+					r\Adjacent[2] = Object.Rooms(GetIntArrayElem(MapRooms,x-1,y))
 					If (r\Adjacent[2]<>Null) Then
 						If (r\Adjacent[2]\AdjDoor[0]=Null) Then
 							r\AdjDoor[2] = CreateDoor(zone,r\x-4.0,0.0,r\z,90.0,Null)
@@ -2989,7 +2989,7 @@ Function CreateMap()
 					EndIf
 				EndIf
 				If x<mapDim-1 Then
-					r\Adjacent[0] = Object.Rooms(GetIntArray2DElem(MapRooms,x+1,y))
+					r\Adjacent[0] = Object.Rooms(GetIntArrayElem(MapRooms,x+1,y))
 					If (r\Adjacent[0]<>Null) Then
 						If (r\Adjacent[0]\AdjDoor[2]=Null) Then
 							r\AdjDoor[0] = CreateDoor(zone,r\x+4.0,0.0,r\z,90.0,Null)
@@ -2999,7 +2999,7 @@ Function CreateMap()
 					EndIf
 				EndIf
 				If y>0 Then
-					r\Adjacent[1] = Object.Rooms(GetIntArray2DElem(MapRooms,x,y-1))
+					r\Adjacent[1] = Object.Rooms(GetIntArrayElem(MapRooms,x,y-1))
 					If (r\Adjacent[1]<>Null) Then
 						If (r\Adjacent[1]\AdjDoor[3]=Null) Then
 							r\AdjDoor[1] = CreateDoor(zone,r\x,0.0,r\z-4.0,0.0,Null)
@@ -3009,7 +3009,7 @@ Function CreateMap()
 					EndIf
 				EndIf
 				If y<mapDim-1 Then
-					r\Adjacent[3] = Object.Rooms(GetIntArray2DElem(MapRooms,x,y+1))
+					r\Adjacent[3] = Object.Rooms(GetIntArrayElem(MapRooms,x,y+1))
 					If (r\Adjacent[3]<>Null) Then
 						If (r\Adjacent[3]\AdjDoor[1]=Null) Then
 							r\AdjDoor[3] = CreateDoor(zone,r\x,0.0,r\z+4.0,0.0,Null)
@@ -3023,44 +3023,44 @@ Function CreateMap()
 	Next
 End Function
 
-Function DetermineRotation%(layout.IntArray2D,x%,y%)
-	Select GetIntArray2DElem(layout,x,y)
+Function DetermineRotation%(layout.IntArray,x%,y%)
+	Select GetIntArrayElem(layout,x,y)
 		Case ROOM1
-			If (x>0) And (GetIntArray2DElem(layout,x-1,y)<>0) Then
+			If (x>0) And (GetIntArrayElem(layout,x-1,y)<>0) Then
 				Return 270
-			ElseIf (x<layout\w-1) And (GetIntArray2DElem(layout,x+1,y)<>0) Then
+			ElseIf (x<layout\xDim-1) And (GetIntArrayElem(layout,x+1,y)<>0) Then
 				Return 90
-			ElseIf (y>0) And (GetIntArray2DElem(layout,x,y-1)<>0) Then
+			ElseIf (y>0) And (GetIntArrayElem(layout,x,y-1)<>0) Then
 				Return 0
 			Else
 				Return 180
 			EndIf
 		Case ROOM2
-			If (GetIntArray2DElem(layout,x-1,y)<>0) Then
+			If (GetIntArrayElem(layout,x-1,y)<>0) Then
 				Return 90+Rand(0,1)*180
 			Else
 				Return (Rand(0,1)*180)
 			EndIf
 		Case ROOM2C
-			If (x>0) And (GetIntArray2DElem(layout,x-1,y)<>0) Then
-				If (y>0) And (GetIntArray2DElem(layout,x,y-1)<>0) Then
+			If (x>0) And (GetIntArrayElem(layout,x-1,y)<>0) Then
+				If (y>0) And (GetIntArrayElem(layout,x,y-1)<>0) Then
 					Return 270
 				Else
 					Return 180
 				EndIf
 			Else
-				If (y>0) And (GetIntArray2DElem(layout,x,y-1)<>0) Then
+				If (y>0) And (GetIntArrayElem(layout,x,y-1)<>0) Then
 					Return 0
 				Else
 					Return 90
 				EndIf
 			EndIf
 		Case ROOM3
-			If (x>0) And (GetIntArray2DElem(layout,x-1,y)=0) Then
+			If (x>0) And (GetIntArrayElem(layout,x-1,y)=0) Then
 				Return 90
-			ElseIf (y>0) And (GetIntArray2DElem(layout,x,y-1)=0) Then
+			ElseIf (y>0) And (GetIntArrayElem(layout,x,y-1)=0) Then
 				Return 180
-			ElseIf (x<layout\w-1) And (GetIntArray2DElem(layout,x+1,y)=0) Then
+			ElseIf (x<layout\xDim-1) And (GetIntArrayElem(layout,x+1,y)=0) Then
 				Return 270
 			Else
 				Return 0

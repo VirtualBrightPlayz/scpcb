@@ -549,7 +549,7 @@ Function NullGame()
 	For r.Rooms = Each Rooms
 		Delete r
 	Next
-	DeleteIntArray2D(MapRooms)
+	DeleteIntArray(MapRooms)
 	
 	For itt.ItemTemplates = Each ItemTemplates
 		Delete itt

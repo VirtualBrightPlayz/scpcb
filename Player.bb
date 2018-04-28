@@ -90,7 +90,7 @@ Type Player
 	;------
 	
 	;sounds
-	Field breathingSFX.IntArray2D
+	Field breathingSFX.IntArray
 	
 	Field breathChn%
 	;------
@@ -212,12 +212,12 @@ Function CreatePlayer.Player()
 	EntityType player\head, HIT_PLAYER
 	
 	;Sounds
-	player\breathingSFX = CreateIntArray2D(2, 5)
+	player\breathingSFX = CreateIntArray(2, 5)
 	
 	Local i%
 	For i = 0 To 4
-		SetIntArray2DElem(player\breathingSFX, 0, i, LoadSound("SFX\Character\D9341\breath"+i+".ogg"))
-		SetIntArray2DElem(player\breathingSFX, 1, i, LoadSound("SFX\Character\D9341\breath"+i+"gas.ogg"))
+		SetIntArrayElem(player\breathingSFX, LoadSound("SFX\Character\D9341\breath"+i+".ogg"), 0, i)
+		SetIntArrayElem(player\breathingSFX, LoadSound("SFX\Character\D9341\breath"+i+"gas.ogg"), 1, i)
 	Next
 	
 	Return player
@@ -229,8 +229,8 @@ Function DeletePlayer(player.Player)
 
 	Local i%
 	For i = 0 To 4
-		FreeSound(GetIntArray2DElem(player\breathingSFX, 0, i))
-		FreeSound(GetIntArray2DElem(player\breathingSFX, 1, i))
+		FreeSound(GetIntArrayElem(player\breathingSFX, 0, i))
+		FreeSound(GetIntArrayElem(player\breathingSFX, 1, i))
 	Next
 
 	Delete player
@@ -276,15 +276,15 @@ Function MovePlayer()
 	If (mainPlayer\currRoom\RoomTemplate\Name <> "pocketdimension") Then 
 		If KeyDown(keyBinds\sprint) Then
 			If (mainPlayer\stamina < 5) Then ;out of breath
-				If (Not IsChannelPlaying(mainPlayer\breathChn)) Then mainPlayer\breathChn = PlaySound(GetIntArray2DElem(mainPlayer\breathingSFX, IsPlayerWearingTempName(mainPlayer,"gasmask"), 0))
+				If (Not IsChannelPlaying(mainPlayer\breathChn)) Then mainPlayer\breathChn = PlaySound(GetIntArrayElem(mainPlayer\breathingSFX, IsPlayerWearingTempName(mainPlayer,"gasmask"), 0))
 			ElseIf (mainPlayer\stamina < 50) ;panting
 				If (mainPlayer\breathChn = 0) Then
-					mainPlayer\breathChn = PlaySound(GetIntArray2DElem(mainPlayer\breathingSFX, IsPlayerWearingTempName(mainPlayer,"gasmask"), Rand(1, 3)))
-					ChannelVolume(mainPlayer\breathChn, Min((70.0-mainPlayer\stamina)/70.0,1.0)*userOptions\soundVolume)
+					mainPlayer\breathChn = PlaySound(GetIntArrayElem(mainPlayer\breathingSFX, IsPlayerWearingTempName(mainPlayer,"gasmask"), Rand(1, 3)))
+					ChannelVolume(mainPlayer\breathChn, Min((70.0-mainPlayer\stamina)/70.0,1.0)*userOptions\SoundVolume)
 				Else
 					If (Not IsChannelPlaying(mainPlayer\breathChn)) Then
-						mainPlayer\breathChn = PlaySound(GetIntArray2DElem(mainPlayer\breathingSFX, IsPlayerWearingTempName(mainPlayer,"gasmask"), Rand(1, 3)))
-						ChannelVolume(mainPlayer\breathChn, Min((70.0-mainPlayer\stamina)/70.0,1.0)*userOptions\soundVolume)		
+						mainPlayer\breathChn = PlaySound(GetIntArrayElem(mainPlayer\breathingSFX, IsPlayerWearingTempName(mainPlayer,"gasmask"), Rand(1, 3)))
+						ChannelVolume(mainPlayer\breathChn, Min((70.0-mainPlayer\stamina)/70.0,1.0)*userOptions\SoundVolume)		
 					EndIf
 				EndIf
 			EndIf
@@ -340,27 +340,27 @@ Function MovePlayer()
 					If Sprint = 1.0 Then
 						mainPlayer\loudness = Max(4.0,mainPlayer\loudness)
 						tempchn% = PlaySound(StepSFX(temp, 0, Rand(0, 7)))
-						ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\soundVolume
+						ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\SoundVolume
 					Else
 						mainPlayer\loudness = Max(2.5-(mainPlayer\crouching*0.6),mainPlayer\loudness)
 						tempchn% = PlaySound(StepSFX(temp, 1, Rand(0, 7)))
-						ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\soundVolume
+						ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\SoundVolume
 					End If
 				ElseIf mainPlayer\footstepOverride=1 Then
 					tempchn% = PlaySound(Step2SFX(Rand(0, 2)))
-					ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.4))*userOptions\soundVolume
+					ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.4))*userOptions\SoundVolume
 				ElseIf mainPlayer\footstepOverride=2 Then
 					tempchn% = PlaySound(Step2SFX(Rand(3,5)))
-					ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.4))*userOptions\soundVolume
+					ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.4))*userOptions\SoundVolume
 				ElseIf mainPlayer\footstepOverride=3 Then
 					If Sprint = 1.0 Then
 						mainPlayer\loudness = Max(4.0,mainPlayer\loudness)
 						tempchn% = PlaySound(StepSFX(0, 0, Rand(0, 7)))
-						ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\soundVolume
+						ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\SoundVolume
 					Else
 						mainPlayer\loudness = Max(2.5-(mainPlayer\crouching*0.6),mainPlayer\loudness)
 						tempchn% = PlaySound(StepSFX(0, 1, Rand(0, 7)))
-						ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\soundVolume
+						ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\SoundVolume
 					End If
 				EndIf
 				
@@ -487,7 +487,7 @@ Function MovePlayer()
 			de.decals = CreateDecal(Rand(15,16), PickedX(), PickedY()+0.005, PickedZ(), 90, Rand(360), 0)
 			de\size = Rnd(0.03,0.08)*Min(mainPlayer\injuries,3.0) : EntityAlpha(de\obj, 1.0) : ScaleSprite de\obj, de\size, de\size
 			tempchn% = PlaySound (DripSFX(Rand(0,2)))
-			ChannelVolume tempchn, Rnd(0.0,0.8)*userOptions\soundVolume
+			ChannelVolume tempchn, Rnd(0.0,0.8)*userOptions\SoundVolume
 			ChannelPitch tempchn, Rand(20000,30000)
 			
 			FreeEntity pvt
@@ -514,7 +514,7 @@ Function MovePlayer()
 	
 	If mainPlayer\heartbeatIntensity > 0 Then
 		tempchn = PlaySound (HeartBeatSFX)
-		ChannelVolume tempchn, Max(Min((mainPlayer\heartbeatIntensity-80.0)/60.0,1.0),0.0)*userOptions\soundVolume
+		ChannelVolume tempchn, Max(Min((mainPlayer\heartbeatIntensity-80.0)/60.0,1.0),0.0)*userOptions\SoundVolume
 		
 		mainPlayer\heartbeatIntensity = mainPlayer\heartbeatIntensity - timing\tickDuration
 	EndIf

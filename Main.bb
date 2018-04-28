@@ -4,7 +4,7 @@ Include "KeyName.bb"
 Include "Options.bb"
 Include "FastResize.bb"
 
-Include "Array2D.bb"
+Include "Array.bb"
 
 ;TODO: FreeFont Font5. Make it local.
 Global Font1%, Font2%, Font3%, Font4%, Font5%
