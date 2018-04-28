@@ -68,3 +68,6 @@ Function UpdateNPCtypeD(n.NPCs)
     
     RotateEntity n\obj, EntityPitch(n\Collider), EntityYaw(n\Collider)-180.0, 0
 End Function
+
+;~IDEal Editor Parameters:
+;~C#Blitz3D

@@ -181,3 +181,5 @@ Function UpdateNPCtypeZombie(n.NPCs)
         RotateEntity n\obj, -90, EntityYaw(n\Collider), 0
     EndIf
 End Function
+;~IDEal Editor Parameters:
+;~C#Blitz3D

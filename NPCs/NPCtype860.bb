@@ -73,7 +73,7 @@ Function UpdateNPCtype860(n.NPCs)
                     Next
                     
                     If EntityY(n\Collider)> -100 Then
-                        PlayRangedSound(Step2SFX(Rand(3,5)), mainPlayer\cam, n\Collider, 15.0, 0.5)
+                        ;PlayRangedSound(Step2SFX(Rand(3,5)), mainPlayer\cam, n\Collider, 15.0, 0.5)
                         
                         Select Rand(3)
                             Case 1
@@ -110,7 +110,7 @@ Function UpdateNPCtype860(n.NPCs)
                     Else
                         If n\Frame<=199 Then
                             AnimateNPC(n, 2, 199, 0.5,False)
-                            If n\Frame=199 Then n\Frame = 298 : PlayRangedSound(Step2SFX(Rand(3,5)), mainPlayer\cam, n\Collider, 15.0)
+                            If n\Frame=199 Then n\Frame = 298 : ;PlayRangedSound(Step2SFX(Rand(3,5)), mainPlayer\cam, n\Collider, 15.0)
                             
                             ;Animate2(n\obj, AnimTime(n\obj), 2, 199, 0.5,False)
                             ;If AnimTime(n\obj)=199 Then SetAnimTime(n\obj,298) : PlayRangedSound(Step2SFX(Rand(3,5)), mainPlayer\cam, n\Collider, 15.0)
@@ -303,3 +303,5 @@ Function UpdateNPCtype860(n.NPCs)
         EndIf
     EndIf
 End Function
+;~IDEal Editor Parameters:
+;~C#Blitz3D

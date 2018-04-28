@@ -223,10 +223,10 @@ Function CreatePlayer.Player()
 
 	player\footstepSFX = CreateIntArray(2, 2, 8) ;(normal/metal, walk/run, id)
 	For i = 0 To 7
-		SetIntArrayElem(player\footstepSFX, LoadSound("SFX\Step\Step" + (i + 1) + ".ogg", 0, 0, i)
-		SetIntArrayElem(player\footstepSFX, LoadSound("SFX\Step\Run" + (i + 1) + ".ogg", 0, 1, i)
-		SetIntArrayElem(player\footstepSFX, LoadSound("SFX\Step\StepMetal" + (i + 1) + ".ogg", 1, 0, i)
-		SetIntArrayElem(player\footstepSFX, LoadSound("SFX\Step\RunMetal" + (i + 1) + ".ogg", 1, 1, i)
+		SetIntArrayElem(player\footstepSFX, LoadSound("SFX\Step\Step" + (i + 1) + ".ogg", 0, 0, i))
+		SetIntArrayElem(player\footstepSFX, LoadSound("SFX\Step\Run" + (i + 1) + ".ogg", 0, 1, i))
+		SetIntArrayElem(player\footstepSFX, LoadSound("SFX\Step\StepMetal" + (i + 1) + ".ogg", 1, 0, i))
+		SetIntArrayElem(player\footstepSFX, LoadSound("SFX\Step\RunMetal" + (i + 1) + ".ogg", 1, 1, i))
 	Next
 	
 	Return player
@@ -454,13 +454,13 @@ Function MovePlayer()
 		If CollidedFloor = True Then
 			If mainPlayer\dropSpeed# < - 0.07 Then 
 				If mainPlayer\footstepOverride=0 Then
-					PlaySound(GetIntArrayElem(mainPlayer\footstepSFX, GetStepSound(mainPlayer\collider), 0, Rand(0, 7))))					
+					PlaySound(GetIntArrayElem(mainPlayer\footstepSFX, GetStepSound(mainPlayer\collider), 0, Rand(0, 7)))					
 				ElseIf mainPlayer\footstepOverride=1
 					PlaySound(Step2SFX(Rand(0, 2)))
 				ElseIf mainPlayer\footstepOverride=2
 					PlaySound(Step2SFX(Rand(3, 5)))
 				ElseIf mainPlayer\footstepOverride=3
-					PlaySound(GetIntArrayElem(mainPlayer\footstepSFX, (0, 0, Rand(0, 7))))
+					PlaySound(GetIntArrayElem(mainPlayer\footstepSFX, 0, 0, Rand(0, 7)))
 				EndIf
 				mainPlayer\loudness = Max(3.0,mainPlayer\loudness)
 			EndIf

@@ -101,3 +101,5 @@ Function UpdateNPCtypeGuard(n.NPCs)
             n\timer = n\timer - timing\tickDuration
     End Select
 End Function
+;~IDEal Editor Parameters:
+;~C#Blitz3D

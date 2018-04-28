@@ -229,3 +229,5 @@ Function UpdateNPCtype106(n.NPCs)
             EndIf
     End Select
 End Function
+;~IDEal Editor Parameters:
+;~C#Blitz3D
