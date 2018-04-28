@@ -91,7 +91,6 @@ Type Player
 	
 	;sounds
 	Field breathingSFX.IntArray
-	Field footstepSFX.IntArray
 	
 	Field breathChn%
 	;------
@@ -220,14 +219,6 @@ Function CreatePlayer.Player()
 		SetIntArrayElem(player\breathingSFX, LoadSound("SFX\Character\D9341\breath"+i+".ogg"), 0, i)
 		SetIntArrayElem(player\breathingSFX, LoadSound("SFX\Character\D9341\breath"+i+"gas.ogg"), 1, i)
 	Next
-
-	player\footstepSFX = CreateIntArray(2, 2, 8) ;(normal/metal, walk/run, id)
-	For i = 0 To 7
-		SetIntArrayElem(player\footstepSFX, LoadSound("SFX\Step\Step" + (i + 1) + ".ogg", 0, 0, i))
-		SetIntArrayElem(player\footstepSFX, LoadSound("SFX\Step\Run" + (i + 1) + ".ogg", 0, 1, i))
-		SetIntArrayElem(player\footstepSFX, LoadSound("SFX\Step\StepMetal" + (i + 1) + ".ogg", 1, 0, i))
-		SetIntArrayElem(player\footstepSFX, LoadSound("SFX\Step\RunMetal" + (i + 1) + ".ogg", 1, 1, i))
-	Next
 	
 	Return player
 End Function
@@ -344,31 +335,43 @@ Function MovePlayer()
 			If temp < 180 And (mainPlayer\camAnimState Mod 360) >= 180 And (Not mainPlayer\dead) Then
 				;TODO: define constants for each override state
 				If mainPlayer\footstepOverride=0 Then
-					temp = GetStepSound(mainPlayer\collider)
+					temp = GetMaterialStepSound(mainPlayer\collider)
 					
 					If Sprint = 1.0 Then
 						mainPlayer\loudness = Max(4.0,mainPlayer\loudness)
-						tempchn% = PlaySound(StepSFX(temp, 0, Rand(0, 7)))
+
+						If (temp = 1) Then
+							tempchn% = PlaySound_SM(sndManager\footstepMetal[Rand(0, 7)])
+						Else
+							tempchn% = PlaySound_SM(sndManager\footstep[Rand(0, 7)])
+						EndIf
+
 						ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\SoundVolume
 					Else
 						mainPlayer\loudness = Max(2.5-(mainPlayer\crouching*0.6),mainPlayer\loudness)
-						tempchn% = PlaySound(StepSFX(temp, 1, Rand(0, 7)))
+
+						If (temp = 1) Then
+							tempchn% = PlaySound_SM(sndManager\footstepMetalRun[Rand(0, 7)])
+						Else
+							tempchn% = PlaySound_SM(sndManager\footstepRun[Rand(0, 7)])
+						EndIf
+						
 						ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\SoundVolume
 					End If
 				ElseIf mainPlayer\footstepOverride=1 Then
-					tempchn% = PlaySound(Step2SFX(Rand(0, 2)))
+					tempchn% = PlaySound_SM(sndManager\footstepPD[Rand(0, 2)])
 					ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.4))*userOptions\SoundVolume
 				ElseIf mainPlayer\footstepOverride=2 Then
-					tempchn% = PlaySound(Step2SFX(Rand(3,5)))
+					tempchn% = PlaySound_SM(sndManager\footstep8601[Rand(0, 2)])
 					ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.4))*userOptions\SoundVolume
 				ElseIf mainPlayer\footstepOverride=3 Then
 					If Sprint = 1.0 Then
 						mainPlayer\loudness = Max(4.0,mainPlayer\loudness)
-						tempchn% = PlaySound(StepSFX(0, 0, Rand(0, 7)))
+						tempchn% = PlaySound_SM(sndManager\footstep[Rand(0, 7)])
 						ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\SoundVolume
 					Else
 						mainPlayer\loudness = Max(2.5-(mainPlayer\crouching*0.6),mainPlayer\loudness)
-						tempchn% = PlaySound(StepSFX(0, 1, Rand(0, 7)))
+						tempchn% = PlaySound_SM(sndManager\footstepRun[Rand(0, 7)])
 						ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\SoundVolume
 					End If
 				EndIf
@@ -454,13 +457,17 @@ Function MovePlayer()
 		If CollidedFloor = True Then
 			If mainPlayer\dropSpeed# < - 0.07 Then 
 				If mainPlayer\footstepOverride=0 Then
-					PlaySound(GetIntArrayElem(mainPlayer\footstepSFX, GetStepSound(mainPlayer\collider), 0, Rand(0, 7)))					
+					If (GetMaterialStepSound(mainPlayer\collider) = 1) Then
+						PlaySound_SM(sndManager\footstepMetal[Rand(0, 7)])
+					Else
+						PlaySound_SM(sndManager\footstep[Rand(0, 7)])
+					EndIf
 				ElseIf mainPlayer\footstepOverride=1
-					PlaySound(Step2SFX(Rand(0, 2)))
+					PlaySound_SM(sndManager\footstepPD[Rand(0, 2)])
 				ElseIf mainPlayer\footstepOverride=2
-					PlaySound(Step2SFX(Rand(3, 5)))
-				ElseIf mainPlayer\footstepOverride=3
-					PlaySound(GetIntArrayElem(mainPlayer\footstepSFX, 0, 0, Rand(0, 7)))
+					PlaySound_SM(sndManager\footstep8601[Rand(0, 2)])
+				Else
+					PlaySound_SM(sndManager\footstep[Rand(0, 7)])
 				EndIf
 				mainPlayer\loudness = Max(3.0,mainPlayer\loudness)
 			EndIf

@@ -137,15 +137,7 @@ Function UpdateNPCtypeZombie(n.NPCs)
                                 n\PathTimer = n\PathTimer+70*5
                             EndIf
                         EndIf
-                    EndIf
-                    
-                    ;65, 80, 93, 109, 123
-                    If n\CurrSpeed > 0.005 Then
-                        If (prevFrame < 977 And n\Frame=>977) Or (prevFrame > 1010 And n\Frame<940) Then
-                            ;PlayRangedSound(StepSFX(0,0,Rand(0,2)),mainPlayer\cam, n\Collider, 8.0, Rnd(0.3,0.5))
-                            PlayRangedSound(StepSFX(2,0,Rand(0,2)),mainPlayer\cam, n\Collider, 8.0, Rnd(0.3,0.5))
-                        EndIf
-                    EndIf						
+                    EndIf					
                 Case 3
                     If NoTarget Then n\State = 2
                     If n\Frame < 66 Then

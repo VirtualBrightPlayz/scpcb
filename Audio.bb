@@ -4,19 +4,48 @@ Type Sound
 End Type
 
 Type SoundManager
-	Field footstep
+	; Footsteps
+	Field footstep.Sound[8]
+	Field footstepRun.Sound[8]
+	Field footstepMetal.Sound[8]
+	Field footstepMetalRun.Sound[8]
+	Field footstepPD.Sound[3]
+	Field footstep8601.Sound[3]
 End Type
-Global soundManager.SoundManager
+Global sndManager.SoundManager
 
 Function CreateSoundManager.SoundManager()
 	Local sndManager.SoundManager = New SoundManager
 
+	Local i%
+	For i = 0 to 7
+		sndManager\footstep = StoreSound_SM("SFX\Step\Step" + (i + 1) + ".ogg")
+		sndManager\footstepRun = StoreSound_SM("SFX\Step\Run" + (i + 1) + ".ogg", 0, 1, i))
+		sndManager\footstepMetal = StoreSound_SM("SFX\Step\StepMetal" + (i + 1) + ".ogg", 1, 0, i))
+		sndManager\footstepMetalRun = StoreSound_SM("SFX\Step\RunMetal" + (i + 1) + ".ogg", 1, 1, i))
+	Next
+
+	For i = 0 to 2
+		sndManager\footstepPD = LoadSound_SM("SFX\Step\StepPD" + (i + 1) + ".ogg")
+		sndManager\footstep8601 = LoadSound_SM("SFX\Step\StepForest" + (i + 1) + ".ogg")
+	Next
 
 	Return sndManager
 End Function
 
-Function DeleteSoundManager(sndManager.SoundManager)
+Function DeloadSoundManager(sndManager.SoundManager)
+	Local i%
+	For i = 0 to 7
+		FreeSound_SM(sndManager\footstep[i])
+		FreeSound_SM(sndManager\footstepRun[i])
+		FreeSound_SM(sndManager\footstepMetal[i])
+		FreeSound_SM(sndManager\footstepMetalRun[i])
+	Next
 
+	For i = 0 to 2
+		FreeSound_SM(sndManager\footstepPD[i])
+		FreeSound_SM(sndManager\footstep8601[i])
+	Next
 End Function
 
 ; Creates a new sound object.
@@ -220,7 +249,7 @@ Function ResumeSounds()
 	EndIf
 End Function
 
-Function GetStepSound(entity%)
+Function GetMaterialStepSound(entity%)
     Local picker% = LinePick(EntityX(entity),EntityY(entity),EntityZ(entity),0,-1,0)
 
     If picker <> 0 Then
@@ -238,7 +267,7 @@ Function GetStepSound(entity%)
                     If mat\name = name Then
                         If mat\StepSound > 0 Then
                             FreeBrush(brush)
-                            Return mat\StepSound-1
+                            Return mat\StepSound
                         EndIf
                         Exit
                     EndIf
@@ -252,7 +281,7 @@ Function GetStepSound(entity%)
                 For mat.Materials = Each Materials
                     If mat\name = name Then
                         If mat\StepSound > 0 Then
-                            Return mat\StepSound-1
+                            Return mat\StepSound
                         EndIf
                         Exit
                     EndIf
@@ -265,26 +294,6 @@ Function GetStepSound(entity%)
 End Function
 
 Function UpdateRangedSoundOrigin(Chn%, cam%, entity%, range# = 10, volume# = 1.0)
-	range# = Max(range,1.0)
-	
-	If volume>0 Then
-		
-		Local dist# = EntityDistance(cam, entity) / range#
-		If 1 - dist# > 0 And 1 - dist# < 1 Then
-			
-			Local panvalue# = Sin(-DeltaYaw(cam,entity))
-			
-			ChannelVolume(Chn, volume# * (1 - dist#))
-			ChannelPan(Chn, panvalue)
-		EndIf
-	Else
-		If Chn <> 0 Then
-			ChannelVolume (Chn, 0)
-		EndIf 
-	EndIf
-End Function
-
-Function UpdateSoundOrigin(Chn%, cam%, entity%, range# = 10, volume# = 1.0)
 	range# = Max(range,1.0)
 	
 	If volume>0 Then

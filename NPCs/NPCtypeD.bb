@@ -35,33 +35,6 @@ Function UpdateNPCtypeD(n.NPCs)
             Animate2(n\obj, AnimTime(n\obj), 301, 319, n\CurrSpeed * 18)
     End Select
     
-    If n\State2 <> 2
-        If n\State = 1
-            If n\CurrSpeed > 0.01 Then
-                If prevFrame < 244 And AnimTime(n\obj)=>244 Then
-                    PlayRangedSound(StepSFX(GetStepSound(n\Collider),0,Rand(0,2)),mainPlayer\cam, n\Collider, 8.0, Rnd(0.3,0.5))						
-                ElseIf prevFrame < 256 And AnimTime(n\obj)=>256
-                    PlayRangedSound(StepSFX(GetStepSound(n\Collider),0,Rand(0,2)),mainPlayer\cam, n\Collider, 8.0, Rnd(0.3,0.5))
-                EndIf
-            EndIf
-        ElseIf n\State = 2
-            If n\CurrSpeed > 0.01 Then
-                If prevFrame < 309 And AnimTime(n\obj)=>309
-                    PlayRangedSound(StepSFX(GetStepSound(n\Collider),1,Rand(0,2)),mainPlayer\cam, n\Collider, 8.0, Rnd(0.3,0.5))
-                ElseIf prevFrame =< 319 And AnimTime(n\obj)=<301
-                    PlayRangedSound(StepSFX(GetStepSound(n\Collider),1,Rand(0,2)),mainPlayer\cam, n\Collider, 8.0, Rnd(0.3,0.5))
-                EndIf
-            EndIf
-        EndIf
-    EndIf
-    
-    If n\Frame = 19 Or n\Frame = 60
-        n\IsDead = True
-    EndIf
-    If AnimTime(n\obj)=19 Or AnimTime(n\obj)=60
-        n\IsDead = True
-    EndIf
-    
     MoveEntity(n\Collider, 0, 0, n\CurrSpeed * timing\tickDuration)
     
     PositionEntity(n\obj, EntityX(n\Collider), EntityY(n\Collider) - 0.32, EntityZ(n\Collider))

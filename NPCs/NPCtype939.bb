@@ -85,7 +85,7 @@ Function UpdateNPCtype939(n.NPCs)
                 ;Animate2(n\obj,AnimTime(n\obj),644,683,28*n\CurrSpeed) ;walk
                 
                 If (prevFrame<664 And n\Frame=>664) Or (prevFrame>673 And n\Frame<654) Then
-                    PlayRangedSound(StepSFX(1, 0, Rand(0,3)), mainPlayer\cam, n\Collider, 12.0)
+                    PlayRangedSound(sndManager\footstepMetal[Rand(0,7)]\internal, mainPlayer\cam, n\Collider, 12.0)
                     If Rand(10)=1 Then
                         temp = False
                         If n\SoundChn = 0 Then 
@@ -161,7 +161,7 @@ Function UpdateNPCtype939(n.NPCs)
                             ;Animate2(n\obj,AnimTime(n\obj),449,464,6*n\CurrSpeed) ;run
                             
                             If (prevFrame<452 And n\Frame=>452) Or (prevFrame<459 And n\Frame=>459) Then
-                                PlayRangedSound(StepSFX(1, 1, Rand(0,3)), mainPlayer\cam, n\Collider, 12.0)
+                                PlayRangedSound(sndManager\footstepMetalRun[Rand(0,7)]\internal, mainPlayer\cam, n\Collider, 12.0)
                             EndIf										
                             
                             If Distance(n\EnemyX, n\EnemyZ, EntityX(n\Collider), EntityZ(n\Collider))<1.1 Then ;player is visible

@@ -1505,9 +1505,9 @@ Function UpdateNPCtypeMTF(n.NPCs)
 		
 		If n\CurrSpeed > 0.01 Then
 			If prevFrame > 500 And n\Frame<495
-				PlayRangedSound(StepSFX(2,0,Rand(0,2)),mainPlayer\cam, n\Collider, 8.0, Rnd(0.5,0.7))
+				PlayRangedSound(sndManager\footstepMetal[Rand(0,7)]\internal, mainPlayer\cam, n\Collider, 8.0, Rnd(0.5,0.7))
 			ElseIf prevFrame < 505 And n\Frame=>505
-				PlayRangedSound(StepSFX(2,0,Rand(0,2)),mainPlayer\cam, n\Collider, 8.0, Rnd(0.5,0.7))
+				PlayRangedSound(sndManager\footstepMetal[Rand(0,7)]\internal, mainPlayer\cam, n\Collider, 8.0, Rnd(0.5,0.7))
 			EndIf
 		EndIf
 		

@@ -31,7 +31,7 @@ Function LoadMaterials(file$)
 			;	EndIf
 			;EndIf
 			
-			mat\StepSound = (GetINIInt(file, TemporaryString, "stepsound")+1)
+			mat\StepSound = GetINIInt(file, TemporaryString, "stepsound")
 		EndIf
 	Wend
 	
