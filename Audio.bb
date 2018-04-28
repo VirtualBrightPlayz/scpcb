@@ -4,7 +4,7 @@ Type Sound
 End Type
 
 Type SoundManager
-	Field Footstep
+	Field footstep
 End Type
 Global soundManager.SoundManager
 

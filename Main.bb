@@ -398,22 +398,8 @@ Global MachineSFX% = LoadSound("SFX\SCP\914\Refining.ogg")
 ;TODO: WHY IS THIS A GLOBAL???
 Global ApacheSFX = LoadSound("SFX\Character\Apache\Propeller.ogg")
 
-;TODO: Player struct.
-Global CurrStepSFX.MarkedForRemoval
-Dim StepSFX%(4, 2, 8) ;(normal/metal, walk/run, id)
-For i = 0 To 7
-	StepSFX(0, 0, i) = LoadSound("SFX\Step\Step" + (i + 1) + ".ogg")
-	StepSFX(1, 0, i) = LoadSound("SFX\Step\StepMetal" + (i + 1) + ".ogg")
-	StepSFX(0, 1, i)= LoadSound("SFX\Step\Run" + (i + 1) + ".ogg")
-	StepSFX(1, 1, i) = LoadSound("SFX\Step\RunMetal" + (i + 1) + ".ogg")
-	If i < 3
-		StepSFX(2, 0, i) = LoadSound("SFX\Character\MTF\Step" + (i + 1) + ".ogg")
-		StepSFX(3, 0, i) = LoadSound("SFX\SCP\049\Step"+ (i + 1) + ".ogg")
-	EndIf
-Next
-
 ;TODO: Player struct, also load when actually needed and not be fucking globals.
-Dim Step2SFX(6)
+Dim Step2SFX.MarkedForRemoval(6)
 For i = 0 To 2
 	Step2SFX(i) = LoadSound("SFX\Step\StepPD" + (i + 1) + ".ogg")
 	Step2SFX(i+3) = LoadSound("SFX\Step\StepForest" + (i + 1) + ".ogg")

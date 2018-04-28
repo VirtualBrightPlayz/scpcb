@@ -324,10 +324,11 @@ Function UpdateNPCtype049(n.NPCs)
 			EndIf
 			
 			If n\currSpeed > 0.005 Then
+				;TODO: Re-implement.
 				If (prevFrame < 361 And n\frame=>361) Or (prevFrame < 377 And n\frame=>377) Then
-					PlayRangedSound(StepSFX(3,0,Rand(0,2)),mainPlayer\cam, n\collider, 8.0, Rnd(0.8,1.0))						
+					;PlayRangedSound(StepSFX(3,0,Rand(0,2)),mainPlayer\cam, n\collider, 8.0, Rnd(0.8,1.0))						
 				ElseIf (prevFrame < 431 And n\frame=>431) Or (prevFrame < 447 And n\frame=>447)
-					PlayRangedSound(StepSFX(3,0,Rand(0,2)),mainPlayer\cam, n\collider, 8.0, Rnd(0.8,1.0))
+					;PlayRangedSound(StepSFX(3,0,Rand(0,2)),mainPlayer\cam, n\collider, 8.0, Rnd(0.8,1.0))
 				EndIf
 			EndIf
 			;[End Block]
