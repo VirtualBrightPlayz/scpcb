@@ -279,7 +279,7 @@ Function UpdateEvent_strg_939_2(e.Events)
 				End Select
 				
 				If IsChannelPlaying(e\soundChannels[1])
-					UpdateSoundOrigin(e\soundChannels[1],mainPlayer\cam,e\room\RoomDoors[4]\obj,400)
+					UpdateRangedSoundOrigin(e\soundChannels[1],mainPlayer\cam,e\room\RoomDoors[4]\obj,400)
 				EndIf
 				
 				If EntityY(mainPlayer\collider)<-6400*RoomScale And mainPlayer\dead = False Then

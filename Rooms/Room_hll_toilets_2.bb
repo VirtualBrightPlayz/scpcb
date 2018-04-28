@@ -62,7 +62,7 @@ Function UpdateEventToiletguard(e.Events)
 				e\room\NPC[0]\Sound = LoadSound("SFX\Character\Guard\SuicideGuard2.ogg")
 				e\soundChannels[1] = PlayRangedSound(e\room\NPC[0]\Sound, mainPlayer\cam, e\room\NPC[0]\Collider, 15.0)
 			EndIf
-			UpdateSoundOrigin(e\soundChannels[1],mainPlayer\cam,e\room\NPC[0]\Collider,15.0)
+			UpdateRangedSoundOrigin(e\soundChannels[1],mainPlayer\cam,e\room\NPC[0]\Collider,15.0)
 			If (Not IsChannelPlaying(e\soundChannels[1])) Then RemoveEvent(e)
 		EndIf
 	EndIf

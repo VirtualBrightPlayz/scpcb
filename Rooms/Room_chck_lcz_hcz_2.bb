@@ -159,10 +159,10 @@ Function UpdateEventCheckpoint(e.Events)
 	e\EventState = e\room\RoomDoors[0]\open
 	
 	If IsChannelPlaying(e\soundChannels[0])
-		UpdateSoundOrigin(e\soundChannels[0], mainPlayer\cam, e\room\RoomDoors[0]\obj)
+		UpdateRangedSoundOrigin(e\soundChannels[0], mainPlayer\cam, e\room\RoomDoors[0]\obj)
 	EndIf
 	If IsChannelPlaying(e\soundChannels[1])
-		UpdateSoundOrigin(e\soundChannels[1], mainPlayer\cam, e\room\RoomDoors[1]\obj)
+		UpdateRangedSoundOrigin(e\soundChannels[1], mainPlayer\cam, e\room\RoomDoors[1]\obj)
 	EndIf
 	;[End Block]
 End Function

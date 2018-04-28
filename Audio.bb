@@ -18,14 +18,14 @@ Function CreateSoundManager.SoundManager()
 	Local sndManager.SoundManager = New SoundManager
 
 	Local i%
-	For i = 0 to 7
+	For i = 0 To 7
 		sndManager\footstep = StoreSound_SM("SFX\Step\Step" + (i + 1) + ".ogg")
-		sndManager\footstepRun = StoreSound_SM("SFX\Step\Run" + (i + 1) + ".ogg", 0, 1, i))
-		sndManager\footstepMetal = StoreSound_SM("SFX\Step\StepMetal" + (i + 1) + ".ogg", 1, 0, i))
-		sndManager\footstepMetalRun = StoreSound_SM("SFX\Step\RunMetal" + (i + 1) + ".ogg", 1, 1, i))
+		sndManager\footstepRun = StoreSound_SM("SFX\Step\Run" + (i + 1) + ".ogg", 0, 1, i)
+		sndManager\footstepMetal = StoreSound_SM("SFX\Step\StepMetal" + (i + 1) + ".ogg", 1, 0, i)
+		sndManager\footstepMetalRun = StoreSound_SM("SFX\Step\RunMetal" + (i + 1) + ".ogg", 1, 1, i)
 	Next
 
-	For i = 0 to 2
+	For i = 0 To 2
 		sndManager\footstepPD = LoadSound_SM("SFX\Step\StepPD" + (i + 1) + ".ogg")
 		sndManager\footstep8601 = LoadSound_SM("SFX\Step\StepForest" + (i + 1) + ".ogg")
 	Next
@@ -35,14 +35,14 @@ End Function
 
 Function DeloadSoundManager(sndManager.SoundManager)
 	Local i%
-	For i = 0 to 7
+	For i = 0 To 7
 		FreeSound_SM(sndManager\footstep[i])
 		FreeSound_SM(sndManager\footstepRun[i])
 		FreeSound_SM(sndManager\footstepMetal[i])
 		FreeSound_SM(sndManager\footstepMetalRun[i])
 	Next
 
-	For i = 0 to 2
+	For i = 0 To 2
 		FreeSound_SM(sndManager\footstepPD[i])
 		FreeSound_SM(sndManager\footstep8601[i])
 	Next
@@ -114,27 +114,9 @@ End Function
 Function LoopRangedSound%(soundHandle%, chn%, cam%, entity%, range# = 10, volume# = 1.0)
 	range# = Max(range,1.0)
 	
-	If volume>0 Then
-		
-		Local dist# = EntityDistance(cam, entity) / range#
-		If 1 - dist# > 0 And 1 - dist# < 1 Then
-			
-			Local panvalue# = Sin(-DeltaYaw(cam,entity))
-			
-			If chn = 0 Then
-				chn% = PlaySound(soundHandle)
-			Else
-				If (Not IsChannelPlaying(chn)) Then chn% = PlaySound(soundHandle)
-			EndIf
-			
-			ChannelVolume(Chn, volume# * (1 - dist#)*userOptions\SoundVolume)
-			ChannelPan(Chn, panvalue)
-		EndIf
-	Else
-		If Chn <> 0 Then
-			ChannelVolume (Chn, 0)
-		EndIf 
-	EndIf
+	If (Not IsChannelPlaying(chn)) Then chn% = PlaySound(soundHandle)
+	
+	UpdateRangedSoundOrigin(chn,cam,entity,range,volume)
 
 	Return Chn
 End Function

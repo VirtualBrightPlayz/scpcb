@@ -234,7 +234,7 @@ Function UpdateNPCtype1499(n.NPCs)
         End Select
         
         If n\SoundChn <> 0 And IsChannelPlaying(n\SoundChn) Then
-            UpdateSoundOrigin(n\SoundChn,mainPlayer\cam,n\Collider,20.0)
+            UpdateRangedSoundOrigin(n\SoundChn,mainPlayer\cam,n\Collider,20.0)
         EndIf
         
         MoveEntity n\Collider,0,0,n\CurrSpeed*timing\tickDuration

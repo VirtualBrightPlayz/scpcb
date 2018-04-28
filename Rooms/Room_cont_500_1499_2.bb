@@ -52,7 +52,7 @@ Function UpdateEvent_cont_500_1499_2(e.Events)
 					e\EventState = 2.0
 					e\room\RoomDoors[0]\locked = False
 				Else
-					UpdateSoundOrigin(e\soundChannels[0],mainPlayer\cam,e\room\Objects[0],100,1.0)
+					UpdateRangedSoundOrigin(e\soundChannels[0],mainPlayer\cam,e\room\Objects[0],100,1.0)
 				EndIf
 			EndIf
 		Else

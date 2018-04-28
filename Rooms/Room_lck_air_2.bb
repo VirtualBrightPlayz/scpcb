@@ -185,11 +185,11 @@ Function UpdateEventRoom_gw(e.Events)
 		
 		If brokendoor
 			If IsChannelPlaying(e\soundChannels[1])
-				UpdateSoundOrigin(e\soundChannels[1],mainPlayer\cam,e\room\Objects[1],5)
+				UpdateRangedSoundOrigin(e\soundChannels[1],mainPlayer\cam,e\room\Objects[1],5)
 			EndIf
 		EndIf
 		If IsChannelPlaying(e\soundChannels[0])
-			UpdateSoundOrigin(e\soundChannels[0],mainPlayer\cam,e\room\Objects[0],5)
+			UpdateRangedSoundOrigin(e\soundChannels[0],mainPlayer\cam,e\room\Objects[0],5)
 		EndIf
 	Else
 		e\EventState3 = 0.0
