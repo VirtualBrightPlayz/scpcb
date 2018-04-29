@@ -25,15 +25,15 @@ End Function
 Function LoadSoundManager(sndMan.SoundManager)
 	Local i%
 	For i = 0 To 7
-		sndMan\footstep = StoreSound_SM("SFX\Step\Step" + (i + 1) + ".ogg")
-		sndMan\footstepRun = StoreSound_SM("SFX\Step\Run" + (i + 1) + ".ogg", 0, 1, i)
-		sndMan\footstepMetal = StoreSound_SM("SFX\Step\StepMetal" + (i + 1) + ".ogg", 1, 0, i)
-		sndMan\footstepMetalRun = StoreSound_SM("SFX\Step\RunMetal" + (i + 1) + ".ogg", 1, 1, i)
+		sndMan\footstep[i] = StoreSound_SM("SFX\Step\Step" + (i + 1) + ".ogg")
+		sndMan\footstepRun[i] = StoreSound_SM("SFX\Step\Run" + (i + 1) + ".ogg")
+		sndMan\footstepMetal[i] = StoreSound_SM("SFX\Step\StepMetal" + (i + 1) + ".ogg")
+		sndMan\footstepMetalRun[i] = StoreSound_SM("SFX\Step\RunMetal" + (i + 1) + ".ogg")
 	Next
 
 	For i = 0 To 2
-		sndMan\footstepPD = LoadSound_SM("SFX\Step\StepPD" + (i + 1) + ".ogg")
-		sndMan\footstep8601 = LoadSound_SM("SFX\Step\StepForest" + (i + 1) + ".ogg")
+		sndMan\footstepPD[i] = LoadSound_SM("SFX\Step\StepPD" + (i + 1) + ".ogg")
+		sndMan\footstep8601[i] = LoadSound_SM("SFX\Step\StepForest" + (i + 1) + ".ogg")
 	Next
 End Function
 
