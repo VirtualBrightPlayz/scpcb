@@ -27,5 +27,47 @@ Function DeleteIntArray(array.IntArray)
 	FreeBank array\bank
 	Delete array
 End Function
+
+Type IntArrayList
+	Field bank%
+	
+	Field size%
+	Field capacity%
+End Type
+
+Const ARRAYLIST_INITIAL_CAPACITY% = 8
+
+Function CreateIntArrayList.IntArrayList()
+	Local arrayList.IntArrayList = New IntArrayList
+	arrayList\bank = CreateBank(INT_SIZE * ARRAYLIST_INITIAL_CAPACITY)
+	arrayList\size = 0
+	arrayList\capacity = ARRAYLIST_INITIAL_CAPACITY
+	Return arrayList
+End Function
+
+Function GetIntArrayListElem(arrayList.IntArrayList,i%)
+	Return PeekInt(arrayList\bank,i*INT_SIZE)
+End Function
+
+Function SetIntArrayListElem(arrayList.IntArrayList,val%,i%)
+	PokeInt(arrayList\bank,i*INT_SIZE,val)
+End Function
+
+Function PushIntArrayListElem(arrayList.IntArrayList,val%)
+	If (arrayList\size>=arrayList\capacity) Then
+		arrayList\capacity=arrayList\capacity*2
+		ResizeBank arrayList\bank,arrayList\capacity
+	EndIf
+	
+	SetIntArrayListElem(arrayList,val,arrayList\size)
+	arrayList\size=arrayList\size+1
+End Function
+
+Function DeleteIntArrayList(arrayList.IntArrayList)
+	FreeBank arrayList\bank
+	Delete arrayList
+End Function
+
+
 ;~IDEal Editor Parameters:
 ;~C#Blitz3D
