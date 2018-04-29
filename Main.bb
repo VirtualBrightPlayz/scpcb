@@ -14,56 +14,56 @@ Global VersionNumber$ = "1.CBN"
 
 AppTitle "SCP - Containment Breach Launcher"
 
-;TODO: Graphics.bb
-Global MenuWhite%, MenuBlack%
-
-;TODO: Audio.bb
-Global ButtonSFX%
-
 ;TODO: Assets.bb
 Dim ArrowIMG(4)
+For i = 0 To 3
+	ArrowIMG(i) = LoadImage("GFX\menu\arrow.png")
+	RotateImage(ArrowIMG(i), 90 * i)
+	HandleImage(ArrowIMG(i), 0, 0)
+Next
 
 ;[Block]
 
-;TODO: Assets.bb
-Global LauncherIMG%
-
 Global Depth% = 0 ;TODO: what is this?
-
-Global SelectedGFXMode%
 
 ;TODO: Move somewhere more relevant.
 Global WireframeState
 Global HalloweenTex
 
-Global TotalGFXModes% = CountGfxModes3D(), GFXModes%
-Dim GfxModeWidths%(TotalGFXModes), GfxModeHeights%(TotalGFXModes)
-
 Global RealGraphicWidth%
 Global RealGraphicHeight%
 Global AspectRatioRatio#
 
-If userOptions\launcher Then 
-	AspectRatioRatio = 1.0
-	RunLauncher()
-Else
-	For i% = 1 To TotalGFXModes
-		Local samefound% = False
-		For  n% = 0 To TotalGFXModes - 1
-			If GfxModeWidths(n) = GfxModeWidth(i) And GfxModeHeights(n) = GfxModeHeight(i) Then samefound = True : Exit
-		Next
-		If samefound = False Then
-			If userOptions\screenWidth = GfxModeWidth(i) And userOptions\screenHeight = GfxModeHeight(i) Then SelectedGFXMode = GFXModes
-			GfxModeWidths(GFXModes) = GfxModeWidth(i)
-			GfxModeHeights(GFXModes) = GfxModeHeight(i)
-			GFXModes=GFXModes+1
-		End If
+Function VerifyResolution%()
+	Local selectedMode% = 1
+
+	Local i%
+	For i = 1 To CountGfxModes3D()
+		If (GfxModeDepth(i) <> 16) Then
+			If (userOptions\screenWidth = GfxModeWidth(i)) And (userOptions\screenHeight = GfxModeHeight(i)) Then
+				selectedMode = i
+			EndIf
+		EndIf
 	Next
 	
-	userOptions\screenWidth = GfxModeWidths(SelectedGFXMode)
-	userOptions\screenHeight = GfxModeHeights(SelectedGFXMode)
+	userOptions\screenWidth = GfxModeWidth(selectedMode)
+	userOptions\screenHeight = GfxModeWidth(selectedMode)
+
+	Return selectedMode
+End Function
+Local selectedGFXMode% = VerifyResolution()
+
+Include "Launcher.bb"
+
+If userOptions\launcher Then
+	launcher = InitializeLauncher()
+	launcher\selectedGFXMode = selectedGFXMode
+
+	AspectRatioRatio = 1.0
+	CreateLauncher()
 EndIf
 
+;TODO
 If userOptions\borderlessWindowed
 	RuntimeError "Borderless windowed is not implemented! USERLIBS MUST DIE"
 Else

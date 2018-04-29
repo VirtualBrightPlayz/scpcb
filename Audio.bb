@@ -4,6 +4,8 @@ Type Sound
 End Type
 
 Type SoundManager
+	Field button.Sound
+	
 	; Footsteps
 	Field footstep.Sound[8]
 	Field footstepRun.Sound[8]
@@ -17,12 +19,12 @@ Global sndManager.SoundManager
 Function CreateSoundManager.SoundManager()
 	Local sndMan.SoundManager = New SoundManager
 
-
+	sndMan\button = StoreSound_SM("SFX\Interact\Button.ogg")
 
 	Return sndMan
 End Function
 
-Function LoadSoundManager(sndMan.SoundManager)
+Function LoadInGameSounds(sndMan.SoundManager)
 	Local i%
 	For i = 0 To 7
 		sndMan\footstep[i] = StoreSound_SM("SFX\Step\Step" + (i + 1) + ".ogg")
@@ -37,7 +39,7 @@ Function LoadSoundManager(sndMan.SoundManager)
 	Next
 End Function
 
-Function DeloadSoundManager(sndMan.SoundManager)
+Function DeloadInGameSounds(sndMan.SoundManager)
 	Local i%
 	For i = 0 To 7
 		FreeSound_SM(sndMan\footstep[i])

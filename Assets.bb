@@ -263,7 +263,7 @@ Function InitNewGame()
 	
 	Curr173 = CreateNPC(NPCtype173, 0, -30.0, 0)
 	Curr106 = CreateNPC(NPCtype106, 0, -30.0, 0)
-	Curr106\State = 70 * 60 * Rand(12,17)
+	Curr106\state = 70 * 60 * Rand(12,17)
 	
 	For d.Doors = Each Doors
 		EntityParent(d\obj, 0)
