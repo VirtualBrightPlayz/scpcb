@@ -73,7 +73,7 @@ Function UpdateNPCtype860(n.NPCs)
                     Next
                     
                     If EntityY(n\Collider)> -100 Then
-                        ;PlayRangedSound(Step2SFX(Rand(3,5)), mainPlayer\cam, n\Collider, 15.0, 0.5)
+                        PlayRangedSound(sndManager\footstep8601[Rand(0, 2)]\internal, mainPlayer\cam, n\Collider, 15.0, 0.5)
                         
                         Select Rand(3)
                             Case 1
@@ -110,18 +110,18 @@ Function UpdateNPCtype860(n.NPCs)
                     Else
                         If n\Frame<=199 Then
                             AnimateNPC(n, 2, 199, 0.5,False)
-                            If n\Frame=199 Then n\Frame = 298 : ;PlayRangedSound(Step2SFX(Rand(3,5)), mainPlayer\cam, n\Collider, 15.0)
+                            If n\Frame=199 Then n\Frame = 298 : ;PlayRangedSound(sndManager\footstep8601[Rand(0, 2)]\internal, mainPlayer\cam, n\Collider, 15.0)
                             
                             ;Animate2(n\obj, AnimTime(n\obj), 2, 199, 0.5,False)
-                            ;If AnimTime(n\obj)=199 Then SetAnimTime(n\obj,298) : PlayRangedSound(Step2SFX(Rand(3,5)), mainPlayer\cam, n\Collider, 15.0)
+                            ;If AnimTime(n\obj)=199 Then SetAnimTime(n\obj,298) : PlayRangedSound(sndManager\footstep8601[Rand(0, 2)]\internal, mainPlayer\cam, n\Collider, 15.0)
                         ElseIf n\Frame <= 297
                             PointEntity n\Collider,mainPlayer\collider
                             
                             AnimateNPC(n, 200, 297, 0.5, False)
-                            If n\Frame=297 Then n\Frame=298 : PlayRangedSound(Step2SFX(Rand(3,5)), mainPlayer\cam, n\Collider, 15.0)
+                            If n\Frame=297 Then n\Frame=298 : PlayRangedSound(sndManager\footstep8601[Rand(0, 2)]\internal, mainPlayer\cam, n\Collider, 15.0)
                             
                             ;Animate2(n\obj, AnimTime(n\obj), 200, 297, 0.5,False)
-                            ;If AnimTime(n\obj)=297 Then SetAnimTime(n\obj,298) : PlayRangedSound(Step2SFX(Rand(3,5)), mainPlayer\cam, n\Collider, 15.0)
+                            ;If AnimTime(n\obj)=297 Then SetAnimTime(n\obj,298) : PlayRangedSound(sndManager\footstep8601[Rand(0, 2)]\internal, mainPlayer\cam, n\Collider, 15.0)
                         Else
                             angle = CurveAngle(GetAngle(EntityX(n\Collider),EntityZ(n\Collider),EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider)),EntityYaw(n\Collider)+90,20.0)
                             
@@ -228,7 +228,7 @@ Function UpdateNPCtype860(n.NPCs)
                 
                 ;535, 568
                 If (prevFrame < 533 And n\Frame=>533) Or (prevFrame > 568 And n\Frame<2) Then
-                    PlayRangedSound(Step2SFX(Rand(3,5)), mainPlayer\cam, n\Collider, 15.0, 0.6)
+                    PlayRangedSound(sndManager\footstep8601[Rand(0, 2)]\internal, mainPlayer\cam, n\Collider, 15.0, 0.6)
                 EndIf
                 
             Case 3 ;runs towards the player and attacks
@@ -251,7 +251,7 @@ Function UpdateNPCtype860(n.NPCs)
                     ;Animate2(n\obj, AnimTime(n\obj), 298, 316, n\CurrSpeed*10)
                     
                     If (prevFrame < 307 And n\Frame=>307) Then
-                        PlayRangedSound(Step2SFX(Rand(3,5)), mainPlayer\cam, n\Collider, 10.0)
+                        PlayRangedSound(sndManager\footstep8601[Rand(0, 2)]\internal, mainPlayer\cam, n\Collider, 10.0)
                     EndIf
                 Else
                     ;461, 476

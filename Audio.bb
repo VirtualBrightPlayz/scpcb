@@ -15,36 +15,40 @@ End Type
 Global sndManager.SoundManager
 
 Function CreateSoundManager.SoundManager()
-	Local sndManager.SoundManager = New SoundManager
+	Local sndMan.SoundManager = New SoundManager
 
-	Local i%
-	For i = 0 To 7
-		sndManager\footstep = StoreSound_SM("SFX\Step\Step" + (i + 1) + ".ogg")
-		sndManager\footstepRun = StoreSound_SM("SFX\Step\Run" + (i + 1) + ".ogg", 0, 1, i)
-		sndManager\footstepMetal = StoreSound_SM("SFX\Step\StepMetal" + (i + 1) + ".ogg", 1, 0, i)
-		sndManager\footstepMetalRun = StoreSound_SM("SFX\Step\RunMetal" + (i + 1) + ".ogg", 1, 1, i)
-	Next
 
-	For i = 0 To 2
-		sndManager\footstepPD = LoadSound_SM("SFX\Step\StepPD" + (i + 1) + ".ogg")
-		sndManager\footstep8601 = LoadSound_SM("SFX\Step\StepForest" + (i + 1) + ".ogg")
-	Next
 
-	Return sndManager
+	Return sndMan
 End Function
 
-Function DeloadSoundManager(sndManager.SoundManager)
+Function LoadSoundManager(sndMan.SoundManager)
 	Local i%
 	For i = 0 To 7
-		FreeSound_SM(sndManager\footstep[i])
-		FreeSound_SM(sndManager\footstepRun[i])
-		FreeSound_SM(sndManager\footstepMetal[i])
-		FreeSound_SM(sndManager\footstepMetalRun[i])
+		sndMan\footstep = StoreSound_SM("SFX\Step\Step" + (i + 1) + ".ogg")
+		sndMan\footstepRun = StoreSound_SM("SFX\Step\Run" + (i + 1) + ".ogg", 0, 1, i)
+		sndMan\footstepMetal = StoreSound_SM("SFX\Step\StepMetal" + (i + 1) + ".ogg", 1, 0, i)
+		sndMan\footstepMetalRun = StoreSound_SM("SFX\Step\RunMetal" + (i + 1) + ".ogg", 1, 1, i)
 	Next
 
 	For i = 0 To 2
-		FreeSound_SM(sndManager\footstepPD[i])
-		FreeSound_SM(sndManager\footstep8601[i])
+		sndMan\footstepPD = LoadSound_SM("SFX\Step\StepPD" + (i + 1) + ".ogg")
+		sndMan\footstep8601 = LoadSound_SM("SFX\Step\StepForest" + (i + 1) + ".ogg")
+	Next
+End Function
+
+Function DeloadSoundManager(sndMan.SoundManager)
+	Local i%
+	For i = 0 To 7
+		FreeSound_SM(sndMan\footstep[i])
+		FreeSound_SM(sndMan\footstepRun[i])
+		FreeSound_SM(sndMan\footstepMetal[i])
+		FreeSound_SM(sndMan\footstepMetalRun[i])
+	Next
+
+	For i = 0 To 2
+		FreeSound_SM(sndMan\footstepPD[i])
+		FreeSound_SM(sndMan\footstep8601[i])
 	Next
 End Function
 

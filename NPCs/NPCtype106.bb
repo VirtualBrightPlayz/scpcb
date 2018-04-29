@@ -138,10 +138,8 @@ Function UpdateNPCtype106(n.NPCs)
                 AnimateNPC(n, 284, 333, n\CurrSpeed * 43)
                 
                 ;Footstep sounds.
-                If (prevFrame =< 286 And n\frame > 286) Then
-                    PlayRangedSound(Step2SFX(Rand(0,2)),mainPlayer\cam, n\Collider, 6.0, Rnd(0.8,1.0))	
-                ElseIf (prevFrame=<311 And n\frame > 311.0)
-                    PlayRangedSound(Step2SFX(Rand(0,2)),mainPlayer\cam, n\Collider, 6.0, Rnd(0.8,1.0))
+                If (prevFrame =< 286 And n\frame > 286) Or (prevFrame=<311 And n\frame > 311.0) Then
+                    PlayRangedSound(sndManager\footstepPD[Rand(0, 2)]\internal, mainPlayer\cam, n\Collider, 6.0, Rnd(0.8,1.0))
                 EndIf
 
                 If (dist > 25.0 Or Visible Or n\pathStatus = 2) Then
