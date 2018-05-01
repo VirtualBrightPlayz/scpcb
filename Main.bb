@@ -6,33 +6,27 @@ Include "FastResize.bb"
 
 Include "Array.bb"
 
-;TODO: FreeFont Font5. Make it local.
-Global Font1%, Font2%, Font3%, Font4%, Font5%
-Global ConsoleFont%
+Include "Difficulty.bb"
+
+Include "Menu.bb"
 
 Global VersionNumber$ = "1.CBN"
 
 AppTitle "SCP - Containment Breach Launcher"
 
-;TODO: Assets.bb
-Dim ArrowIMG(4)
-For i = 0 To 3
-	ArrowIMG(i) = LoadImage("GFX\menu\arrow.png")
-	RotateImage(ArrowIMG(i), 90 * i)
-	HandleImage(ArrowIMG(i), 0, 0)
-Next
+Dim ArrowIMG.MarkedForRemoval(4)
 
 ;[Block]
 
-Global Depth% = 0 ;TODO: what is this?
+Global Depth.MarkedForRemoval
 
 ;TODO: Move somewhere more relevant.
 Global WireframeState
 Global HalloweenTex
 
-Global RealGraphicWidth%
-Global RealGraphicHeight%
-Global AspectRatioRatio#
+Global RealGraphicWidth.MarkedForRemoval
+Global RealGraphicHeight.MarkedForRemoval
+Global AspectRatioRatio.MarkedForRemoval
 
 Function VerifyResolution%()
 	Local selectedMode% = 1
@@ -56,24 +50,28 @@ Local selectedGFXMode% = VerifyResolution()
 Include "Launcher.bb"
 
 If userOptions\launcher Then
-	launcher = InitializeLauncher()
+	launcher = CreateLauncher()
+	
 	launcher\selectedGFXMode = selectedGFXMode
-
-	AspectRatioRatio = 1.0
-	CreateLauncher()
+	
+	DestroyLauncher(launcher)
 EndIf
 
 ;TODO
 If userOptions\borderlessWindowed
 	RuntimeError "Borderless windowed is not implemented! USERLIBS MUST DIE"
 Else
-	AspectRatioRatio = 1.0
 	Graphics3DExt(userOptions\screenWidth, userOptions\screenHeight, 0, (1 + (Not userOptions\fullscreen)))
 EndIf
 
-Global MenuScale# = (userOptions\screenHeight / 1024.0)
+MenuScale = (userOptions\screenHeight / 1024.0)
 
 SetBuffer(BackBuffer())
+
+;TODO: FreeFont Font5. Make it local.
+Global Font1%, Font2%, Font3%, Font4%, Font5%
+Global ConsoleFont%
+
 
 ;TODO: cleanup
 Type Timing
@@ -165,10 +163,6 @@ Global LightsOn% = True ;secondary lighting on
 
 ;TODO: Not global assuming this is for 106's containment chamber.
 Global SoundTransmission%
-
-;misc ---------------------------------------------------------------------------------------------------------------
-
-Include "Difficulty.bb"
 
 ;TODO: Radio struct.
 Dim RadioState#(10)
@@ -489,12 +483,6 @@ Include "Particles.bb"
 ;-------------------------------------  Doors --------------------------------------------------------------
 
 Include "Doors.bb"
-
-;---------------------------------------------------------------------------------------------------
-
-Include "Menu.bb"
-
-;---------------------------------------------------------------------------------------------------
 
 DrawLoading(40,True)
 
@@ -961,7 +949,7 @@ Function UpdateGame()
 	EndIf
 	
 	If userOptions\borderlessWindowed Then
-		If (RealGraphicWidth<>userOptions\screenWidth) Or (RealGraphicHeight<>userOptions\screenHeight) Then
+		If (GraphicWidth<>userOptions\screenWidth) Or (GraphicHeight<>userOptions\screenHeight) Then
 			SetBuffer TextureBuffer(fresize_texture)
 			ClsColor 0,0,0 : Cls
 			CopyRect 0,0,userOptions\screenWidth,userOptions\screenHeight,1024-userOptions\screenWidth/2,1024-userOptions\screenHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
@@ -976,19 +964,19 @@ Function UpdateGame()
 	;not by any means a perfect solution
 	;Not even proper gamma correction but it's a nice looking alternative that works in windowed mode
 	If userOptions\screenGamma>1.0 Then
-		CopyRect 0,0,RealGraphicWidth,RealGraphicHeight,1024-RealGraphicWidth/2,1024-RealGraphicHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
+		CopyRect 0,0,GraphicWidth,GraphicHeight,1024-GraphicWidth/2,1024-GraphicHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
 		EntityBlend fresize_image,1
 		ClsColor 0,0,0 : Cls
-		ScaleRender(-1.0/Float(RealGraphicWidth),1.0/Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth))
+		ScaleRender(-1.0/Float(GraphicWidth),1.0/Float(GraphicWidth),2048.0 / Float(GraphicWidth),2048.0 / Float(GraphicWidth))
 		EntityFX fresize_image,1+32
 		EntityBlend fresize_image,3
 		EntityAlpha fresize_image,userOptions\screenGamma-1.0
-		ScaleRender(-1.0/Float(RealGraphicWidth),1.0/Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth))
+		ScaleRender(-1.0/Float(GraphicWidth),1.0/Float(GraphicWidth),2048.0 / Float(GraphicWidth),2048.0 / Float(GraphicWidth))
 	ElseIf userOptions\screenGamma<1.0 Then ;todo: maybe optimize this if it's too slow, alternatively give players the option to disable gamma
-		CopyRect 0,0,RealGraphicWidth,RealGraphicHeight,1024-RealGraphicWidth/2,1024-RealGraphicHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
+		CopyRect 0,0,GraphicWidth,GraphicHeight,1024-GraphicWidth/2,1024-GraphicHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
 		EntityBlend fresize_image,1
 		ClsColor 0,0,0 : Cls
-		ScaleRender(-1.0/Float(RealGraphicWidth),1.0/Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth))
+		ScaleRender(-1.0/Float(GraphicWidth),1.0/Float(GraphicWidth),2048.0 / Float(GraphicWidth),2048.0 / Float(GraphicWidth))
 		EntityFX fresize_image,1+32
 		EntityBlend fresize_image,2
 		EntityAlpha fresize_image,1.0
@@ -996,7 +984,7 @@ Function UpdateGame()
 		ClsColor 255*userOptions\screenGamma,255*userOptions\screenGamma,255*userOptions\screenGamma
 		Cls
 		SetBuffer BackBuffer()
-		ScaleRender(-1.0/Float(RealGraphicWidth),1.0/Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth))
+		ScaleRender(-1.0/Float(GraphicWidth),1.0/Float(GraphicWidth),2048.0 / Float(GraphicWidth),2048.0 / Float(GraphicWidth))
 		SetBuffer(TextureBuffer(fresize_texture2))
 		ClsColor 0,0,0
 		Cls
@@ -1378,7 +1366,7 @@ Function DrawGUI()
 			DrawImage(HandIcon, x, y)
 			Color 0, 0, 0
 			Rect(x + 4, y + 4, 64 - 8, 64 - 8)
-			DrawImage(ArrowIMG(i), x + 21, y + 21)
+			DrawImage(uiTextures\arrow[i], x + 21, y + 21)
 			DrawArrowIcon(i) = False
 		End If
 	Next
@@ -2262,11 +2250,11 @@ Function CheckTriggers$()
 End Function
 
 Function ScaledMouseX%()
-	Return Float(MouseX()-(RealGraphicWidth*0.5*(1.0-AspectRatioRatio)))*Float(userOptions\screenWidth)/Float(RealGraphicWidth*AspectRatioRatio)
+	Return Float(MouseX()-(GraphicWidth*0.5*(1.0-AspectRatioRatio)))*Float(userOptions\screenWidth)/Float(GraphicWidth*AspectRatioRatio)
 End Function
 
 Function ScaledMouseY%()
-	Return Float(MouseY())*Float(userOptions\screenHeight)/Float(RealGraphicHeight)
+	Return Float(MouseY())*Float(userOptions\screenHeight)/Float(GraphicHeight)
 End Function
 ;~IDEal Editor Parameters:
 ;~C#Blitz3D

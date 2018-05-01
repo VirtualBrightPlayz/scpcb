@@ -16,18 +16,11 @@ Type Launcher
 End Type
 Global launcher.Launcher
 
-Function InitializeLauncher.Launcher()
+Function CreateLauncher.Launcher()
     Local launch.Launcher = New Launcher
 
     launch\width = Min(GetINIInt(OptionFile, "launcher", "launcher width"), 1024)
     launch\height = Min(GetINIInt(OptionFile, "launcher", "launcher height"), 768)
-
-    launch\background = LoadImage("GFX\menu\launcher.jpg")
-
-    launch\tileWhite = LoadImage("GFX\menu\menuwhite.jpg")
-    launch\tileBlack = LoadImage("GFX\menu\menublack.jpg")
-
-    launch\font = LoadFont("GFX\font\cour\Courier New.ttf", 18, 0,0,0)
 	
 	launch\resWidths = CreateIntArray(CountGfxModes3D())
 	launch\resHeights = CreateIntArray(CountGfxModes3D())
@@ -39,7 +32,23 @@ Function InitializeLauncher.Launcher()
             SetIntArrayElem(launch\resHeights, GfxModeHeight(i), i - 1) 
 		EndIf
 	Next
-
+	
+	Graphics3DExt(launcher\width, launcher\height, 0, 2)
+	
+	MenuScale = 1
+	
+	launcher\background = LoadImage("GFX\menu\launcher.jpg")
+	
+    launcher\tileWhite = LoadImage("GFX\menu\menuwhite.jpg")
+    launcher\tileBlack = LoadImage("GFX\menu\menublack.jpg")
+	
+    launcher\font = LoadFont("GFX\font\cour\Courier New.ttf", 18, 0,0,0)
+	
+	SetBuffer BackBuffer()
+	
+	SetFont(launcher\font)
+	MaskImage(launcher\tileBlack, 255,255,0)
+	
     Return launch
 End Function
 
@@ -52,22 +61,6 @@ Function DestroyLauncher(launch.Launcher)
     FreeFont(launch\font)
 
     Delete launch
-End Function
-
-Function CreateLauncher()
-	MenuScale = 1
-	
-	Graphics3DExt(launcher\width, launcher\height, 0, 2)
-
-	;InitExt
-	
-	SetBuffer BackBuffer()
-	
-	RealGraphicWidth = userOptions\screenWidth
-	RealGraphicHeight = userOptions\screenHeight
-
-	SetFont(launcher\font)
-	MaskImage(launcher\tileBlack, 255,255,0)
 End Function
 
 Function UpdateLauncher()
@@ -136,8 +129,8 @@ Function UpdateLauncher()
     If UpdateUIButton(launcher\width - 30 - 90, launcher\height - 50 - 55, 100, 30, "LAUNCH", False) Then
         userOptions\screenWidth = GetIntArrayElem(launcher\resWidths, launcher\selectedGFXMode)
         userOptions\screenHeight = GetIntArrayElem(launcher\resHeights, launcher\selectedGFXMode)
-        RealGraphicWidth = userOptions\screenWidth
-        RealGraphicHeight = userOptions\screenHeight
+        GraphicWidth = userOptions\screenWidth
+        GraphicHeight = userOptions\screenHeight
 		
         userOptions\gfxDriver = userOptions\gfxDriver
 

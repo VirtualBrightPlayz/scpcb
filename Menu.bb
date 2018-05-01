@@ -37,27 +37,30 @@ Global MsgTimer#, Msg$, DeathMSG$
 Global AccessCode%, KeypadInput$, KeypadTimer#, KeypadMSG$
 
 Global DrawHandIcon%
+
+Global MenuScale#
+
 ;TODO: Assets.bb
 Dim DrawArrowIcon%(4)
 
-Global MenuBack% = LoadImage("GFX\menu\back.jpg")
-Global MenuText% = LoadImage("GFX\menu\scptext.jpg")
-Global Menu173% = LoadImage("GFX\menu\173back.jpg")
-MenuWhite = LoadImage("GFX\menu\menuwhite.jpg")
-MenuBlack = LoadImage("GFX\menu\menublack.jpg")
-MaskImage MenuBlack, 255,255,0
-Global QuickLoadIcon% = LoadImage("GFX\menu\QuickLoading.png")
+Type UITextures
+	Field back%
+	Field scpText%
+	Field tileWhite%
+	Field tileBlack%
+	Field scp173%
+	Field arrow%[4]
+End Type
 
-ResizeImage(MenuBack, ImageWidth(MenuBack) * MenuScale, ImageHeight(MenuBack) * MenuScale)
-ResizeImage(MenuText, ImageWidth(MenuText) * MenuScale, ImageHeight(MenuText) * MenuScale)
-ResizeImage(Menu173, ImageWidth(Menu173) * MenuScale, ImageHeight(Menu173) * MenuScale)
-ResizeImage(QuickLoadIcon, ImageWidth(QuickLoadIcon) * MenuScale, ImageHeight(QuickLoadIcon) * MenuScale)
+Global uiTextures.UITextures
 
-For i = 0 To 3
-	ArrowIMG(i) = LoadImage("GFX\menu\arrow.png")
-	RotateImage(ArrowIMG(i), 90 * i)
-	HandleImage(ArrowIMG(i), 0, 0)
-Next
+Global QuickLoadIcon.MarkedForRemoval
+
+Global MenuBack.MarkedForRemoval
+Global MenuText.MarkedForRemoval
+Global Menu173.MarkedForRemoval
+Global MenuWhite.MarkedForRemoval
+Global MenuBlack.MarkedForRemoval
 
 Global RandomSeed$
 
@@ -87,6 +90,27 @@ Dim SavedMaps$(MAXSAVEDMAPS)
 Global SelectedMap$
 
 LoadSaveGames()
+
+Function InitializeUITextures()
+	uiTextures = New UITextures
+	
+	uiTextures\back = LoadImage("GFX\menu\back.jpg")
+	uiTextures\scpText = LoadImage("GFX\menu\scptext.jpg")
+	uiTextures\scp173 = LoadImage("GFX\menu\173back.jpg")
+	uiTextures\tileWhite = LoadImage("GFX\menu\menuwhite.jpg")
+	uiTextures\tileBlack = LoadImage("GFX\menu\menublack.jpg")
+	MaskImage uiTextures\tileBlack, 255,255,0
+	
+	ResizeImage(uiTextures\back, ImageWidth(uiTextures\back) * MenuScale, ImageHeight(uiTextures\back) * MenuScale)
+	ResizeImage(uiTextures\scpText, ImageWidth(uiTextures\scpText) * MenuScale, ImageHeight(uiTextures\scpText) * MenuScale)
+	ResizeImage(uiTextures\scp173, ImageWidth(uiTextures\scp173) * MenuScale, ImageHeight(uiTextures\scp173) * MenuScale)
+	
+	For i = 0 To 3
+		uiTextures\arrow[i] = LoadImage("GFX\menu\arrow.png")
+		RotateImage(uiTextures\arrow[i], 90 * i)
+		HandleImage(uiTextures\arrow[i], 0, 0)
+	Next
+End Function
 
 Function UpdateMainMenu()
 	Local x%, y%, width%, height%, temp.MarkedForRemoval
@@ -235,7 +259,7 @@ Function UpdateMainMenu()
 					
 					;Other factor's difficulty
 					If MouseHit1 Then
-						If MouseOn(x + 155 * MenuScale, y+251*MenuScale, ImageWidth(ArrowIMG(1)), ImageHeight(ArrowIMG(1))) Then
+						If MouseOn(x + 155 * MenuScale, y+251*MenuScale, ImageWidth(uiTextures\arrow[1]), ImageHeight(uiTextures\arrow[1])) Then
 							If SelectedDifficulty\otherFactors < HARD
 								SelectedDifficulty\otherFactors = SelectedDifficulty\otherFactors + 1
 							Else
@@ -389,7 +413,7 @@ Function UpdateMainMenu()
 					
 					y = y + 40*MenuScale
 					
-					userOptions\soundVolume = (UpdateSlideBar(x + 310*MenuScale, y-4*MenuScale, 150*MenuScale, userOptions\soundVolume*100.0)/100.0)
+					userOptions\SoundVolume = (UpdateSlideBar(x + 310*MenuScale, y-4*MenuScale, 150*MenuScale, userOptions\SoundVolume*100.0)/100.0)
 					;[End Block]
 				ElseIf MainMenuTab = 6 ;Controls
 					;[Block]
@@ -540,10 +564,10 @@ Function DrawMainMenu()
 	
 	ShowPointer()
 	
-	DrawImage(MenuBack, 0, 0)
+	DrawImage(uiTextures\back, 0, 0)
 	
 	If (TimeInPosMilliSecs() Mod MenuBlinkTimer(0)) >= Rand(MenuBlinkDuration(0)) Then
-		DrawImage(Menu173, userOptions\screenWidth - ImageWidth(Menu173), userOptions\screenHeight - ImageHeight(Menu173))
+		DrawImage(uiTextures\scp173, userOptions\screenWidth - ImageWidth(uiTextures\scp173), userOptions\screenHeight - ImageHeight(uiTextures\scp173))
 	EndIf
 	
 	If Rand(300) = 1 Then
@@ -598,10 +622,10 @@ Function DrawMainMenu()
 	
 	SetFont Font2
 	
-	DrawImage(MenuText, userOptions\screenWidth / 2 - ImageWidth(MenuText) / 2, userOptions\screenHeight - 20 * MenuScale - ImageHeight(MenuText))
+	DrawImage(uiTextures\scpText, userOptions\screenWidth / 2 - ImageWidth(uiTextures\scpText) / 2, userOptions\screenHeight - 20 * MenuScale - ImageHeight(uiTextures\scpText))
 	
 	If userOptions\screenWidth > 1240 * MenuScale Then
-		DrawTiledImageRect(MenuWhite, 0, 5, 512, 7 * MenuScale, 985.0 * MenuScale, 407.0 * MenuScale, (userOptions\screenWidth - 1240 * MenuScale) + 300, 7 * MenuScale)
+		DrawTiledImageRect(uiTextures\tileWhite, 0, 5, 512, 7 * MenuScale, 985.0 * MenuScale, 407.0 * MenuScale, (userOptions\screenWidth - 1240 * MenuScale) + 300, 7 * MenuScale)
 	EndIf
 	
 	If MainMenuTab = 0 Then
@@ -707,7 +731,7 @@ Function DrawMainMenu()
 					
 					;Other factor's difficulty
 					Color 255,255,255
-					DrawImage ArrowIMG(1),x + 155 * MenuScale, y+251*MenuScale
+					DrawImage uiTextures\arrow[1],x + 155 * MenuScale, y+251*MenuScale
 					
 					Color 255,255,255
 					Select SelectedDifficulty\otherFactors
@@ -867,10 +891,10 @@ Function DrawMainMenu()
 					
 					Color 100,100,100
 					Text(x + 20 * MenuScale, y, "Texture quality:")
-					DrawImage ArrowIMG(1),x + 310 * MenuScale, y-4*MenuScale
+					DrawImage uiTextures\arrow[1],x + 310 * MenuScale, y-4*MenuScale
 					
 					Text(x + 340 * MenuScale, y + MenuScale, "DISABLED")
-					If MouseOn(x + 310 * MenuScale, y-4*MenuScale, ImageWidth(ArrowIMG(1)),ImageHeight(ArrowIMG(1)))
+					If MouseOn(x + 310 * MenuScale, y-4*MenuScale, ImageWidth(uiTextures\arrow[1]),ImageHeight(uiTextures\arrow[1]))
 						DrawTooltip("Not available in this version")
 					EndIf
 					
@@ -1269,35 +1293,22 @@ Function DrawLoading(percent%, shortloading=False)
 			FlushMouse()
 		EndIf
 		
-		If userOptions\borderlessWindowed Then
-			If (RealGraphicWidth<>userOptions\screenWidth) Or (RealGraphicHeight<>userOptions\screenHeight) Then
-				SetBuffer TextureBuffer(fresize_texture)
-				ClsColor 0,0,0 : Cls
-				CopyRect 0,0,userOptions\screenWidth,userOptions\screenHeight,1024-userOptions\screenWidth/2,1024-userOptions\screenHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
-				SetBuffer BackBuffer()
-				ClsColor 0,0,0 : Cls
-				ScaleRender(0,0,2050.0 / Float(userOptions\screenWidth) * AspectRatioRatio, 2050.0 / Float(userOptions\screenWidth) * AspectRatioRatio)
-				;might want to replace Float(userOptions\screenWidth) with Max(userOptions\screenWidth,userOptions\screenHeight) if portrait sizes cause issues
-				;everyone uses landscape so it's probably a non-issue
-			EndIf
-		EndIf
-		
 		;not by any means a perfect solution
 		;Not even proper gamma correction but it's a nice looking alternative that works in windowed mode
 		If userOptions\screenGamma>1.0 Then
-			CopyRect 0,0,RealGraphicWidth,RealGraphicHeight,1024-RealGraphicWidth/2,1024-RealGraphicHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
+			CopyRect 0,0,GraphicWidth,GraphicHeight,1024-GraphicWidth/2,1024-GraphicHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
 			EntityBlend fresize_image,1
 			ClsColor 0,0,0 : Cls
-			ScaleRender(-1.0/Float(RealGraphicWidth),1.0/Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth))
+			ScaleRender(-1.0/Float(GraphicWidth),1.0/Float(GraphicWidth),2048.0 / Float(GraphicWidth),2048.0 / Float(GraphicWidth))
 			EntityFX fresize_image,1+32
 			EntityBlend fresize_image,3
 			EntityAlpha fresize_image,userOptions\screenGamma-1.0
-			ScaleRender(-1.0/Float(RealGraphicWidth),1.0/Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth))
+			ScaleRender(-1.0/Float(GraphicWidth),1.0/Float(GraphicWidth),2048.0 / Float(GraphicWidth),2048.0 / Float(GraphicWidth))
 		ElseIf userOptions\screenGamma<1.0 Then ;todo: maybe optimize this if it's too slow, alternatively give players the option to disable gamma
-			CopyRect 0,0,RealGraphicWidth,RealGraphicHeight,1024-RealGraphicWidth/2,1024-RealGraphicHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
+			CopyRect 0,0,GraphicWidth,GraphicHeight,1024-GraphicWidth/2,1024-GraphicHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
 			EntityBlend fresize_image,1
 			ClsColor 0,0,0 : Cls
-			ScaleRender(-1.0/Float(RealGraphicWidth),1.0/Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth))
+			ScaleRender(-1.0/Float(GraphicWidth),1.0/Float(GraphicWidth),2048.0 / Float(GraphicWidth),2048.0 / Float(GraphicWidth))
 			EntityFX fresize_image,1+32
 			EntityBlend fresize_image,2
 			EntityAlpha fresize_image,1.0
@@ -1305,7 +1316,7 @@ Function DrawLoading(percent%, shortloading=False)
 			ClsColor 255*userOptions\screenGamma,255*userOptions\screenGamma,255*userOptions\screenGamma
 			Cls
 			SetBuffer BackBuffer()
-			ScaleRender(-1.0/Float(RealGraphicWidth),1.0/Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth),2048.0 / Float(RealGraphicWidth))
+			ScaleRender(-1.0/Float(GraphicWidth),1.0/Float(GraphicWidth),2048.0 / Float(GraphicWidth),2048.0 / Float(GraphicWidth))
 			SetBuffer(TextureBuffer(fresize_texture2))
 			ClsColor 0,0,0
 			Cls
@@ -1363,7 +1374,7 @@ End Function
 Function DrawInputBox$(x%, y%, width%, height%, Txt$, ID% = 0)
 	;TextBox(x,y,width,height,Txt$)
 	Color (255, 255, 255)
-	DrawTiledImageRect(MenuWhite, (x Mod 256), (y Mod 256), 512, 512, x, y, width, height)
+	DrawTiledImageRect(uiTextures\tileWhite, (x Mod 256), (y Mod 256), 512, 512, x, y, width, height)
 	;Rect(x, y, width, height)
 	Color (0, 0, 0)
 	
@@ -1385,9 +1396,9 @@ End Function
 
 Function DrawFrame(x%, y%, width%, height%, xoffset%=0, yoffset%=0)
 	Color 255, 255, 255
-	DrawTiledImageRect(MenuWhite, xoffset, (y Mod 256), 512, 512, x, y, width, height)
+	DrawTiledImageRect(uiTextures\tileWhite, xoffset, (y Mod 256), 512, 512, x, y, width, height)
 	
-	DrawTiledImageRect(MenuBlack, yoffset, (y Mod 256), 512, 512, x+3*MenuScale, y+3*MenuScale, width-6*MenuScale, height-6*MenuScale)	
+	DrawTiledImageRect(uiTextures\tileBlack, yoffset, (y Mod 256), 512, 512, x+3*MenuScale, y+3*MenuScale, width-6*MenuScale, height-6*MenuScale)	
 End Function
 
 Function DrawUIButton(x%, y%, width%, height%, txt$, bigfont% = True)
@@ -1422,7 +1433,7 @@ Function DrawUITick(x%, y%, selected%, locked% = False)
 	Local width% = 20 * MenuScale, height% = 20 * MenuScale
 	
 	Color (255, 255, 255)
-	DrawTiledImageRect(MenuWhite, (x Mod 256), (y Mod 256), 512, 512, x, y, width, height)
+	DrawTiledImageRect(uiTextures\tileWhite, (x Mod 256), (y Mod 256), 512, 512, x, y, width, height)
 	;Rect(x, y, width, height)
 	
 	Local Highlight% = MouseOn(x, y, width, height) And (Not locked)
@@ -1441,7 +1452,7 @@ Function DrawUITick(x%, y%, selected%, locked% = False)
 		Else
 			Color 200,200,200
 		EndIf
-		DrawTiledImageRect(MenuWhite, (x Mod 256), (y Mod 256), 512, 512, x + 4, y + 4, width - 8, height - 8)
+		DrawTiledImageRect(uiTextures\tileWhite, (x Mod 256), (y Mod 256), 512, 512, x + 4, y + 4, width - 8, height - 8)
 		;Rect(x + 4, y + 4, width - 8, height - 8)
 	EndIf
 	

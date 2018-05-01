@@ -11,10 +11,10 @@ Function ResizeImage2(image%,width%,height%)
 	oldHeight% = ImageHeight(image)
 	CopyRect 0,0,oldWidth,oldHeight,1024-oldWidth/2,1024-oldHeight/2,ImageBuffer(image),TextureBuffer(fresize_texture)
 	SetBuffer BackBuffer()
-	ScaleRender(0,0,2048.0 / Float(RealGraphicWidth) * Float(width) / Float(oldWidth), 2048.0 / Float(RealGraphicWidth) * Float(height) / Float(oldHeight))
+	ScaleRender(0,0,2048.0 / Float(GraphicWidth) * Float(width) / Float(oldWidth), 2048.0 / Float(GraphicWidth) * Float(height) / Float(oldHeight))
 	;might want to replace Float(userOptions\screenWidth) with Max(userOptions\screenWidth,userOptions\screenHeight) if portrait sizes cause issues
 	;everyone uses landscape so it's probably a non-issue
-	CopyRect RealGraphicWidth/2-width/2,RealGraphicHeight/2-height/2,width,height,0,0,BackBuffer(),ImageBuffer(img)
+	CopyRect GraphicWidth/2-width/2,GraphicHeight/2-height/2,width,height,0,0,BackBuffer(),ImageBuffer(img)
 	
     FreeImage image
     Return img
@@ -58,7 +58,7 @@ Function InitFastResize()
 	AddTriangle sf, 0, 1, 2
 	AddTriangle sf, 3, 2, 1
 	EntityFX spr, 17
-	ScaleEntity spr, 2048.0 / Float(RealGraphicWidth), 2048.0 / Float(RealGraphicHeight), 1
+	ScaleEntity spr, 2048.0 / Float(GraphicWidth), 2048.0 / Float(GraphicHeight), 1
 	PositionEntity spr, 0, 0, 1.0001
 	EntityOrder spr, -100001
 	EntityBlend spr, 1
