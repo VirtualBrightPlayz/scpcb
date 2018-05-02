@@ -955,7 +955,7 @@ Function UpdateGame()
 			CopyRect 0,0,userOptions\screenWidth,userOptions\screenHeight,1024-userOptions\screenWidth/2,1024-userOptions\screenHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
 			SetBuffer BackBuffer()
 			ClsColor 0,0,0 : Cls
-			ScaleRender(0,0,2050.0 / Float(userOptions\screenWidth) * AspectRatioRatio, 2050.0 / Float(userOptions\screenWidth) * AspectRatioRatio)
+			ScaleRender(0,0,2050.0 / Float(userOptions\screenWidth), 2050.0 / Float(userOptions\screenWidth)) ;TODO: aspectratioratio??
 			;might want to replace Float(userOptions\screenWidth) with Max(userOptions\screenWidth,userOptions\screenHeight) if portrait sizes cause issues
 			;everyone uses landscape so it's probably a non-issue
 		EndIf
@@ -1134,7 +1134,7 @@ End Function
 ;		
 ;	EndIf
 ;	
-;	If userOptions\fullscreen Then DrawImage CursorIMG, ScaledMouseX(),ScaledMouseY()
+;	If userOptions\fullscreen Then DrawImage CursorIMG, MouseX(),MouseY()
 ;	
 ;	SetFont Font1
 ;End Function
@@ -1502,7 +1502,7 @@ Function DrawGUI()
 				Text userOptions\screenWidth/2, y+124*scale, KeypadInput,True,True	
 			EndIf
 			
-			If userOptions\fullscreen Then DrawImage CursorIMG, ScaledMouseX(),ScaledMouseY()
+			If userOptions\fullscreen Then DrawImage CursorIMG, MouseX(),MouseY()
 		EndIf
 	EndIf
 	
@@ -1577,7 +1577,7 @@ Function DrawPauseMenu()
 		If mainPlayer\dead Then RowText(DeathMSG$, x, y + 80*MenuScale, 390*MenuScale, 600*MenuScale)
 		;EndIf
 		
-		If userOptions\fullscreen Then DrawImage CursorIMG, ScaledMouseX(),ScaledMouseY()
+		If userOptions\fullscreen Then DrawImage CursorIMG, MouseX(),MouseY()
 	EndIf
 	
 	SetFont Font1
@@ -1716,8 +1716,8 @@ Function UpdatePauseMenu()
 End Function
 
 Function MouseOn%(x%, y%, width%, height%)
-	If ScaledMouseX() > x And ScaledMouseX() < x + width Then
-		If ScaledMouseY() > y And ScaledMouseY() < y + height Then
+	If MouseX() > x And MouseX() < x + width Then
+		If MouseY() > y And MouseY() < y + height Then
 			Return True
 		End If
 	End If
@@ -2249,12 +2249,5 @@ Function CheckTriggers$()
 	
 End Function
 
-Function ScaledMouseX%()
-	Return Float(MouseX()-(GraphicWidth*0.5*(1.0-AspectRatioRatio)))*Float(userOptions\screenWidth)/Float(GraphicWidth*AspectRatioRatio)
-End Function
-
-Function ScaledMouseY%()
-	Return Float(MouseY())*Float(userOptions\screenHeight)/Float(GraphicHeight)
-End Function
 ;~IDEal Editor Parameters:
 ;~C#Blitz3D

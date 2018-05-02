@@ -93,7 +93,7 @@ Function DrawConsole()
 		
 		DrawInputBox(x, y + height, width, 30*MenuScale, ConsoleInput, 2)
 		
-		If userOptions\fullscreen Then DrawImage CursorIMG, ScaledMouseX(),ScaledMouseY()
+		If userOptions\fullscreen Then DrawImage CursorIMG, MouseX(),MouseY()
 	EndIf
 End Function
 
@@ -123,17 +123,17 @@ Function UpdateConsole()
 		If Not MouseDown(1) Then
 			ConsoleScrollDragging=False
 		ElseIf ConsoleScrollDragging Then
-			ConsoleScroll = ConsoleScroll+((ScaledMouseY()-ConsoleMouseMem)*height/scrollbarHeight)
-			ConsoleMouseMem = ScaledMouseY()
+			ConsoleScroll = ConsoleScroll+((MouseY()-ConsoleMouseMem)*height/scrollbarHeight)
+			ConsoleMouseMem = MouseY()
 		EndIf
 		
 		If (Not ConsoleScrollDragging) Then
 			If MouseHit1 Then
 				If inBox Then
 					ConsoleScrollDragging=True
-					ConsoleMouseMem = ScaledMouseY()
+					ConsoleMouseMem = MouseY()
 				ElseIf inBar Then
-					ConsoleScroll = ConsoleScroll+((ScaledMouseY()-(y+height))*consoleHeight/height+(height/2))
+					ConsoleScroll = ConsoleScroll+((MouseY()-(y+height))*consoleHeight/height+(height/2))
 					ConsoleScroll = ConsoleScroll/2
 				EndIf
 			EndIf

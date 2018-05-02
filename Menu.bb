@@ -1045,7 +1045,7 @@ Function DrawMainMenu()
 	
 	;DrawTiledImageRect(MenuBack, 985 * MenuScale, 860 * MenuScale, 200 * MenuScale, 20 * MenuScale, 1200 * MenuScale, 866 * MenuScale, 300, 20 * MenuScale)
 	
-	If userOptions\fullscreen Then DrawImage CursorIMG, ScaledMouseX(),ScaledMouseY()
+	If userOptions\fullscreen Then DrawImage CursorIMG, MouseX(),MouseY()
 	
 	SetFont Font1
 End Function
@@ -1473,8 +1473,8 @@ End Function
 
 Function UpdateSlideBar#(x%, y%, width%, value#)
 	If MouseDown1 Then
-		If ScaledMouseX() >= x And ScaledMouseX() <= x + width + 14 And ScaledMouseY() >= y And ScaledMouseY() <= y + 20 Then
-			value = Min(Max((ScaledMouseX() - x) * 100 / width, 0), 100)
+		If MouseX() >= x And MouseX() <= x + width + 14 And MouseY() >= y And MouseY() <= y + 20 Then
+			value = Min(Max((MouseX() - x) * 100 / width, 0), 100)
 		EndIf
 	EndIf
 	
@@ -1578,11 +1578,11 @@ Function DrawTooltip(message$)
 	Local width = (StringWidth(message$))+20*MenuScale
 	
 	Color 25,25,25
-	Rect(ScaledMouseX()+20,ScaledMouseY(),width,19*scale,True)
+	Rect(MouseX()+20,MouseY(),width,19*scale,True)
 	Color 150,150,150
-	Rect(ScaledMouseX()+20,ScaledMouseY(),width,19*scale,False)
+	Rect(MouseX()+20,MouseY(),width,19*scale,False)
 	SetFont Font1
-	Text(ScaledMouseX()+(20*MenuScale)+(width/2),ScaledMouseY()+(12*MenuScale), message$, True, True)
+	Text(MouseX()+(20*MenuScale)+(width/2),MouseY()+(12*MenuScale), message$, True, True)
 End Function
 
 Global QuickLoadPercent% = -1
@@ -1590,14 +1590,12 @@ Global QuickLoadPercent_DisplayTimer# = 0
 
 Function DrawQuickLoading()
 	
-	If QuickLoadPercent > -1
-		MidHandle QuickLoadIcon
-		DrawImage QuickLoadIcon,userOptions\screenWidth-90,userOptions\screenHeight-150
+	If QuickLoadPercent > -1 Then
 		Color 255,255,255
 		SetFont Font1
 		Text userOptions\screenWidth-100,userOptions\screenHeight-90,"LOADING: "+QuickLoadPercent+"%",1
-		If QuickLoadPercent > 99
-			If QuickLoadPercent_DisplayTimer < 70
+		If QuickLoadPercent > 99 Then
+			If QuickLoadPercent_DisplayTimer < 70 Then
 				QuickLoadPercent_DisplayTimer# = Min(QuickLoadPercent_DisplayTimer+timing\tickDuration,70)
 			Else
 				QuickLoadPercent = -1

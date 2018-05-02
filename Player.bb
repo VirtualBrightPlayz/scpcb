@@ -841,8 +841,8 @@ Function DrawInventory(player.Player)
 		
 		For  n% = 0 To player\openInventory\size - 1
 			isMouseOn% = False
-			If ScaledMouseX() > x And ScaledMouseX() < x + width Then
-				If ScaledMouseY() > y And ScaledMouseY() < y + height Then
+			If MouseX() > x And MouseX() < x + width Then
+				If MouseY() > y And MouseY() < y + height Then
 					isMouseOn = True
 				End If
 			EndIf
@@ -891,14 +891,14 @@ Function DrawInventory(player.Player)
 		If player\selectedItem <> Null Then
 			If MouseDown1 Then
 				If MouseSlot = 66 Then
-					DrawImage(player\selectedItem\invimg, ScaledMouseX() - ImageWidth(player\selectedItem\itemtemplate\invimg) / 2, ScaledMouseY() - ImageHeight(player\selectedItem\itemtemplate\invimg) / 2)
+					DrawImage(player\selectedItem\invimg, MouseX() - ImageWidth(player\selectedItem\itemtemplate\invimg) / 2, MouseY() - ImageHeight(player\selectedItem\itemtemplate\invimg) / 2)
 				ElseIf player\selectedItem <> player\openInventory\items[MouseSlot]
-					DrawImage(player\selectedItem\invimg, ScaledMouseX() - ImageWidth(player\selectedItem\itemtemplate\invimg) / 2, ScaledMouseY() - ImageHeight(player\selectedItem\itemtemplate\invimg) / 2)
+					DrawImage(player\selectedItem\invimg, MouseX() - ImageWidth(player\selectedItem\itemtemplate\invimg) / 2, MouseY() - ImageHeight(player\selectedItem\itemtemplate\invimg) / 2)
 				EndIf
 			End If
 		End If
 		
-		If userOptions\fullscreen Then DrawImage CursorIMG, ScaledMouseX(),ScaledMouseY()
+		If userOptions\fullscreen Then DrawImage CursorIMG, MouseX(),MouseY()
 	Else
 		If player\selectedItem <> Null Then
 			Select player\selectedItem\itemtemplate\tempname
@@ -1241,8 +1241,8 @@ Function UpdateInventory(player.Player)
 		
 		For  n% = 0 To player\openInventory\size - 1
 			isMouseOn% = False
-			If ScaledMouseX() > x And ScaledMouseX() < x + width Then
-				If ScaledMouseY() > y And ScaledMouseY() < y + height Then
+			If MouseX() > x And MouseX() < x + width Then
+				If MouseY() > y And MouseY() < y + height Then
 					isMouseOn = True
 				End If
 			EndIf
@@ -1425,7 +1425,7 @@ Function UpdateInventory(player.Player)
 			End If
 		End If
 		
-		If userOptions\fullscreen Then DrawImage CursorIMG, ScaledMouseX(),ScaledMouseY()
+		If userOptions\fullscreen Then DrawImage CursorIMG, MouseX(),MouseY()
 		
 		If CurrGameState = GAMESTATE_PLAYING Then 
 			ResumeSounds() 

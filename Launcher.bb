@@ -33,21 +33,21 @@ Function CreateLauncher.Launcher()
 		EndIf
 	Next
 	
-	Graphics3DExt(launcher\width, launcher\height, 0, 2)
+	Graphics3DExt(launch\width, launch\height, 0, 2)
 	
 	MenuScale = 1
 	
-	launcher\background = LoadImage("GFX\menu\launcher.jpg")
+	launch\background = LoadImage("GFX\menu\launcher.jpg")
 	
-    launcher\tileWhite = LoadImage("GFX\menu\menuwhite.jpg")
-    launcher\tileBlack = LoadImage("GFX\menu\menublack.jpg")
+    launch\tileWhite = LoadImage("GFX\menu\menuwhite.jpg")
+    launch\tileBlack = LoadImage("GFX\menu\menublack.jpg")
 	
-    launcher\font = LoadFont("GFX\font\cour\Courier New.ttf", 18, 0,0,0)
+    launch\font = LoadFont("GFX\font\cour\Courier New.ttf", 18, 0,0,0)
 	
 	SetBuffer BackBuffer()
 	
-	SetFont(launcher\font)
-	MaskImage(launcher\tileBlack, 255,255,0)
+	SetFont(launch\font)
+	MaskImage(launch\tileBlack, 255,255,0)
 	
     Return launch
 End Function

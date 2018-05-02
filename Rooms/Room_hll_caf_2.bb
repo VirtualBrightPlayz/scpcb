@@ -31,7 +31,7 @@ Function Draw294()
 	y = userOptions\screenHeight/2 - (ImageHeight(Panel294)/2)
 	
 	DrawImage Panel294, x, y
-	If userOptions\fullscreen Then DrawImage CursorIMG, ScaledMouseX(),ScaledMouseY()
+	If userOptions\fullscreen Then DrawImage CursorIMG, MouseX(),MouseY()
 	
 	Text x+907, y+185, Input294, True,True
 End Function
@@ -47,8 +47,8 @@ Function Update294()
 	
 	If temp Then
 		If MouseHit1 Then
-			xtemp = Floor((ScaledMouseX()-x-228) / 35.5)
-			ytemp = Floor((ScaledMouseY()-y-342) / 36.5)
+			xtemp = Floor((MouseX()-x-228) / 35.5)
+			ytemp = Floor((MouseY()-y-342) / 36.5)
 			
 			If ytemp => 0 And ytemp < 5 Then
 				If xtemp => 0 And xtemp < 10 Then PlaySound ButtonSFX
