@@ -57,12 +57,7 @@ If userOptions\launcher Then
 	DestroyLauncher(launcher)
 EndIf
 
-;TODO
-If userOptions\borderlessWindowed
-	RuntimeError "Borderless windowed is not implemented! USERLIBS MUST DIE"
-Else
-	Graphics3DExt(userOptions\screenWidth, userOptions\screenHeight, 0, (1 + (Not userOptions\fullscreen)))
-EndIf
+Graphics3DExt(userOptions\screenWidth, userOptions\screenHeight, 0, (1 + (Not userOptions\fullscreen)))
 
 MenuScale = (userOptions\screenHeight / 1024.0)
 
@@ -937,19 +932,6 @@ Function UpdateGame()
 			SetFont ConsoleFont
 			Text 20, 20, "FPS: " + Int(timing\fps)
 			SetFont Font1
-		EndIf
-	EndIf
-	
-	If userOptions\borderlessWindowed Then
-		If (userOptions\screenWidth<>userOptions\screenWidth) Or (userOptions\screenHeight<>userOptions\screenHeight) Then
-			SetBuffer TextureBuffer(fresize_texture)
-			ClsColor 0,0,0 : Cls
-			CopyRect 0,0,userOptions\screenWidth,userOptions\screenHeight,1024-userOptions\screenWidth/2,1024-userOptions\screenHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
-			SetBuffer BackBuffer()
-			ClsColor 0,0,0 : Cls
-			ScaleRender(0,0,2050.0 / Float(userOptions\screenWidth), 2050.0 / Float(userOptions\screenWidth)) ;TODO: aspectratioratio??
-			;might want to replace Float(userOptions\screenWidth) with Max(userOptions\screenWidth,userOptions\screenHeight) if portrait sizes cause issues
-			;everyone uses landscape so it's probably a non-issue
 		EndIf
 	EndIf
 	

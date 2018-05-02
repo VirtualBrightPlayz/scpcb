@@ -109,23 +109,8 @@ Function UpdateLauncher()
         y = y + 20
     Next
     
-    ;TODO: Reimplement.
-    userOptions\fullscreen = UpdateUITick(40 + 430 - 15, 260 - 55 + 5 - 8, userOptions\fullscreen, userOptions\borderlessWindowed)
-    
-    ;userOptions\borderlessWindowed = DrawTick(40 + 430 - 15, 260 - 55 + 35, userOptions\borderlessWindowed)
-
     userOptions\launcher = UpdateUITick(40 + 430 - 15, 260 - 55 + 95 + 8, userOptions\launcher)
 
-    ;Don't allow selecting of fullscren when borderless windowed is enabled.
-    ;If userOptions\borderlessWindowed
-    ;   Color 255, 0, 0
-    ;   userOptions\fullscreen = False
-    ;Else
-    ;  Color 255, 255, 255
-    ;EndIf
-
-    
-    
     If UpdateUIButton(launcher\width - 30 - 90, launcher\height - 50 - 55, 100, 30, "LAUNCH", False) Then
         userOptions\screenWidth = GetIntArrayElem(launcher\resWidths, launcher\selectedGFXMode)
         userOptions\screenHeight = GetIntArrayElem(launcher\resHeights, launcher\selectedGFXMode)
@@ -195,7 +180,6 @@ Function DrawLauncher()
         y = y + 20
     Next
 
-    DrawUITick(40 + 430 - 15, 260 - 55 + 5 - 8, userOptions\fullscreen, userOptions\borderlessWindowed)
     DrawUITick(40 + 430 - 15, 260 - 55 + 95 + 8, userOptions\launcher)
 
     Text(40 + 430 + 15, 262 - 55 + 5 - 8, "Fullscreen")
