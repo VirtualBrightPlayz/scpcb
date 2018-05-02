@@ -941,7 +941,7 @@ Function UpdateGame()
 	EndIf
 	
 	If userOptions\borderlessWindowed Then
-		If (GraphicWidth<>userOptions\screenWidth) Or (GraphicHeight<>userOptions\screenHeight) Then
+		If (userOptions\screenWidth<>userOptions\screenWidth) Or (userOptions\screenHeight<>userOptions\screenHeight) Then
 			SetBuffer TextureBuffer(fresize_texture)
 			ClsColor 0,0,0 : Cls
 			CopyRect 0,0,userOptions\screenWidth,userOptions\screenHeight,1024-userOptions\screenWidth/2,1024-userOptions\screenHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
@@ -956,19 +956,19 @@ Function UpdateGame()
 	;not by any means a perfect solution
 	;Not even proper gamma correction but it's a nice looking alternative that works in windowed mode
 	If userOptions\screenGamma>1.0 Then
-		CopyRect 0,0,GraphicWidth,GraphicHeight,1024-GraphicWidth/2,1024-GraphicHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
+		CopyRect 0,0,userOptions\screenWidth,userOptions\screenHeight,1024-userOptions\screenWidth/2,1024-userOptions\screenHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
 		EntityBlend fresize_image,1
 		ClsColor 0,0,0 : Cls
-		ScaleRender(-1.0/Float(GraphicWidth),1.0/Float(GraphicWidth),2048.0 / Float(GraphicWidth),2048.0 / Float(GraphicWidth))
+		ScaleRender(-1.0/Float(userOptions\screenWidth),1.0/Float(userOptions\screenWidth),2048.0 / Float(userOptions\screenWidth),2048.0 / Float(userOptions\screenWidth))
 		EntityFX fresize_image,1+32
 		EntityBlend fresize_image,3
 		EntityAlpha fresize_image,userOptions\screenGamma-1.0
-		ScaleRender(-1.0/Float(GraphicWidth),1.0/Float(GraphicWidth),2048.0 / Float(GraphicWidth),2048.0 / Float(GraphicWidth))
+		ScaleRender(-1.0/Float(userOptions\screenWidth),1.0/Float(userOptions\screenWidth),2048.0 / Float(userOptions\screenWidth),2048.0 / Float(userOptions\screenWidth))
 	ElseIf userOptions\screenGamma<1.0 Then ;todo: maybe optimize this if it's too slow, alternatively give players the option to disable gamma
-		CopyRect 0,0,GraphicWidth,GraphicHeight,1024-GraphicWidth/2,1024-GraphicHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
+		CopyRect 0,0,userOptions\screenWidth,userOptions\screenHeight,1024-userOptions\screenWidth/2,1024-userOptions\screenHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
 		EntityBlend fresize_image,1
 		ClsColor 0,0,0 : Cls
-		ScaleRender(-1.0/Float(GraphicWidth),1.0/Float(GraphicWidth),2048.0 / Float(GraphicWidth),2048.0 / Float(GraphicWidth))
+		ScaleRender(-1.0/Float(userOptions\screenWidth),1.0/Float(userOptions\screenWidth),2048.0 / Float(userOptions\screenWidth),2048.0 / Float(userOptions\screenWidth))
 		EntityFX fresize_image,1+32
 		EntityBlend fresize_image,2
 		EntityAlpha fresize_image,1.0
@@ -976,7 +976,7 @@ Function UpdateGame()
 		ClsColor 255*userOptions\screenGamma,255*userOptions\screenGamma,255*userOptions\screenGamma
 		Cls
 		SetBuffer BackBuffer()
-		ScaleRender(-1.0/Float(GraphicWidth),1.0/Float(GraphicWidth),2048.0 / Float(GraphicWidth),2048.0 / Float(GraphicWidth))
+		ScaleRender(-1.0/Float(userOptions\screenWidth),1.0/Float(userOptions\screenWidth),2048.0 / Float(userOptions\screenWidth),2048.0 / Float(userOptions\screenWidth))
 		SetBuffer(TextureBuffer(fresize_texture2))
 		ClsColor 0,0,0
 		Cls

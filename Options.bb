@@ -26,7 +26,6 @@ Type Options
     Field screenWidth%
     Field screenHeight%
     Field fullscreen%
-    Field borderlessWindowed%
     Field gfxDriver%
     Field screenGamma#
     Field framelimit%
@@ -64,7 +63,6 @@ Function LoadOptionsINI()
     userOptions\screenWidth         = Max(GetINIInt(OptionFile, optGra, "screen width"), 640)
     userOptions\screenHeight        = Max(GetINIInt(OptionFile, optGra, "screen height"), 480)
     userOptions\fullscreen          = GetINIInt(OptionFile, optGra, "fullscreen")
-    userOptions\borderlessWindowed  = GetINIInt(OptionFile, optGra, "borderless windowed")
     userOptions\gfxDriver           = Max(GetINIInt(OptionFile, optGra, "gfx driver"), 1)
     userOptions\screenGamma         = GetINIFloat(OptionFile, optGra, "screengamma")
     userOptions\framelimit          = GetINIInt(OptionFile, optGra, "framelimit")
@@ -107,7 +105,6 @@ Function SaveOptionsINI()
     PutINIValue(OptionFile, optGra, "screen width", userOptions\screenWidth)
     PutINIValue(OptionFile, optGra, "screen height", userOptions\screenHeight)
     PutINIValue(OptionFile, optGra, "fullscreen", userOptions\fullscreen)
-    PutINIValue(OptionFile, optGra, "borderless windowed", userOptions\borderlessWindowed)
     PutINIValue(OptionFile, optGra, "gfx driver", userOptions\gfxDriver)
     PutINIValue(OptionFile, optGra, "screengamma", userOptions\screenGamma)
     PutINIValue(OptionFile, optGra, "framelimit", userOptions\framelimit)

@@ -11,8 +11,8 @@ Function CreateBlurImage()
 	MoveEntity cam, 0, 0, 10000
 	ark_blur_cam = cam
 	
-	ark_sw = userOptions\screenWidth;GraphicsWidth()
-	ark_sh = userOptions\screenHeight;GraphicsHeight()
+	ark_sw = userOptions\screenWidth
+	ark_sh = userOptions\screenHeight
 	CameraViewport cam,0,0,ark_sw,ark_sh
 	
 	;Create sprite

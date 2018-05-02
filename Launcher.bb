@@ -129,8 +129,6 @@ Function UpdateLauncher()
     If UpdateUIButton(launcher\width - 30 - 90, launcher\height - 50 - 55, 100, 30, "LAUNCH", False) Then
         userOptions\screenWidth = GetIntArrayElem(launcher\resWidths, launcher\selectedGFXMode)
         userOptions\screenHeight = GetIntArrayElem(launcher\resHeights, launcher\selectedGFXMode)
-        GraphicWidth = userOptions\screenWidth
-        GraphicHeight = userOptions\screenHeight
 		
         userOptions\gfxDriver = userOptions\gfxDriver
 
