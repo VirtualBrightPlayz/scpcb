@@ -20,10 +20,8 @@ Function UpdateEvent_dimension1499(e.Events)
 			;[Block]
 			If e\EventState = 0.0
 				If e\EventStr = ""
-					QuickLoadPercent = 0
 					e\EventStr = "load0"
 				ElseIf e\EventStr = "load0"
-					QuickLoadPercent = 10
 					e\room\Objects[0] = CreatePlane()
 					Local planetex% = LoadTexture("GFX\map\dimension1499\grit3.jpg")
 					EntityTexture e\room\Objects[0],planetex%
@@ -33,21 +31,17 @@ Function UpdateEvent_dimension1499(e.Events)
 					;EntityParent e\room\Objects[0],e\room\obj
 					e\EventStr = "load1"
 				ElseIf e\EventStr = "load1"
-					QuickLoadPercent = 30
 					NTF_1499Sky = sky_CreateSky("GFX\map\sky\1499sky")
 					e\EventStr = 1
 				Else
 					If Int(e\EventStr)<16
-						QuickLoadPercent = QuickLoadPercent + 2
 						e\room\Objects[Int(e\EventStr)] = LoadMesh("GFX\map\dimension1499\1499object"+(Int(e\EventStr))+".b3d")
 						HideEntity e\room\Objects[Int(e\EventStr)]
 						e\EventStr = Int(e\EventStr)+1
 					ElseIf Int(e\EventStr)=16
-						QuickLoadPercent = 90
 						CreateChunkParts(e\room)
 						e\EventStr = 17
 					ElseIf Int(e\EventStr) = 17
-						QuickLoadPercent = 100
 						x# = EntityX(e\room\obj)
 						z# = EntityZ(e\room\obj)
 						Local ch.Chunk
@@ -84,16 +78,14 @@ Function UpdateEvent_dimension1499(e.Events)
 			HideEntity r\obj
 		Next
 		ShowEntity e\room\obj
-		If QuickLoadPercent = 100 Or QuickLoadPercent = -1
-			UpdateChunks(e\room,15)
-			ShowEntity NTF_1499Sky
-			Update1499Sky()
-			ShouldPlay = 18
-			If EntityY(mainPlayer\collider)<800.0 Then PositionEntity mainPlayer\collider,EntityX(mainPlayer\collider),800.1,EntityZ(mainPlayer\collider),True
-			ResetEntity mainPlayer\collider
-		Else
-			mainPlayer\dropSpeed = 0
-		EndIf
+		
+		UpdateChunks(e\room,15)
+		ShowEntity NTF_1499Sky
+		Update1499Sky()
+		ShouldPlay = 18
+		If EntityY(mainPlayer\collider)<800.0 Then PositionEntity mainPlayer\collider,EntityX(mainPlayer\collider),800.1,EntityZ(mainPlayer\collider),True
+		ResetEntity mainPlayer\collider
+			
 		mainPlayer\footstepOverride=3
 	Else
 		If e\EventState = 2.0

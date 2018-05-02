@@ -164,7 +164,6 @@ Function UpdateEvent_hll_sl_2(e.Events)
 	;[Block]
 	If mainPlayer\currRoom = e\room
 		If e\EventStr = ""
-			QuickLoadPercent = 0
 			e\EventStr = 0
 		EndIf
 	EndIf
@@ -317,7 +316,6 @@ Function UpdateEvent_hll_sl_2(e.Events)
 			EndIf
 		Next
 		If e\EventStr <> "" And Left(e\EventStr,4) <> "load"
-			QuickLoadPercent = QuickLoadPercent + 5
 			If Int(e\EventStr) > 9
 				e\EventStr = "load1"
 			Else
@@ -371,8 +369,6 @@ Function UpdateEvent_hll_sl_2(e.Events)
 					
 					FreeEntity pvt%
 					
-					QuickLoadPercent = 70
-					
 					e\EventStr = "load2"
 					Exit
 				EndIf
@@ -391,7 +387,6 @@ Function UpdateEvent_hll_sl_2(e.Events)
 					e\room\NPC[0] = CreateNPC(NPCtype049,EntityX(e\room\Objects[7],True),EntityY(e\room\Objects[7],True)+5,EntityZ(e\room\Objects[7],True))
 				EndIf
 			EndIf
-			QuickLoadPercent = 80
 			e\EventStr = "load3"
 		ElseIf e\EventStr = "load3"
 			PositionEntity e\room\NPC[0]\Collider,EntityX(e\room\Objects[7],True),EntityY(e\room\Objects[7],True)+5,EntityZ(e\room\Objects[7],True)
@@ -405,8 +400,6 @@ Function UpdateEvent_hll_sl_2(e.Events)
 			
 			e\EventState = 1
 			If e\EventState2 = 0 Then e\EventState2 = -(70*5)
-			
-			QuickLoadPercent = 100
 		EndIf
 	EndIf
 	;[End Block]

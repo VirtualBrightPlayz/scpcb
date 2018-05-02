@@ -65,12 +65,10 @@ Function UpdateEvent_closets_2(e.Events)
 	If e\EventState = 0 Then
 		If mainPlayer\currRoom = e\room And Curr173\Idle<2 Then
 			If e\EventStr = ""
-				QuickLoadPercent = 0
 				e\EventStr = "load0"
 			EndIf
 		EndIf
 		If e\EventStr = "load0"
-			QuickLoadPercent = 10
 			If e\room\NPC[0]=Null Then
 				e\room\NPC[0] = CreateNPC(NPCtypeD, EntityX(e\room\Objects[0],True),EntityY(e\room\Objects[0],True),EntityZ(e\room\Objects[0],True))
 			EndIf
@@ -81,15 +79,12 @@ Function UpdateEvent_closets_2(e.Events)
 			FreeTexture tex
 			e\EventStr = "load1"
 		ElseIf e\EventStr = "load1"
-			QuickLoadPercent = 20
 			e\room\NPC[0]\Sound=LoadSound("SFX\Room\Storeroom\Escape1.ogg")
 			e\EventStr = "load2"
 		ElseIf e\EventStr = "load2"
-			QuickLoadPercent = 35
 			e\room\NPC[0]\SoundChn = PlayRangedSound(e\room\NPC[0]\Sound, mainPlayer\cam, e\room\NPC[0]\Collider, 12)
 			e\EventStr = "load3"
 		ElseIf e\EventStr = "load3"
-			QuickLoadPercent = 55
 			If e\room\NPC[1]=Null Then
 				e\room\NPC[1] = CreateNPC(NPCtypeD, EntityX(e\room\Objects[1],True),EntityY(e\room\Objects[1],True),EntityZ(e\room\Objects[1],True))
 			EndIf
@@ -100,11 +95,9 @@ Function UpdateEvent_closets_2(e.Events)
 			FreeTexture tex
 			e\EventStr = "load4"
 		ElseIf e\EventStr = "load4"
-			QuickLoadPercent = 80
 			e\room\NPC[1]\Sound=LoadSound("SFX\Room\Storeroom\Escape2.ogg")
 			e\EventStr = "load5"
 		ElseIf e\EventStr = "load5"
-			QuickLoadPercent = 100
 			PointEntity e\room\NPC[0]\Collider, e\room\NPC[1]\Collider
 			PointEntity e\room\NPC[1]\Collider, e\room\NPC[0]\Collider
 			

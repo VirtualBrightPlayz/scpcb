@@ -837,12 +837,9 @@ Function UpdateGame()
 					If RN$ = "173" Or RN$ = "exit1" Or RN$ = "gatea"
 						Msg = "You cannot save in this location."
 						MsgTimer = 70 * 4
-					ElseIf (Not CanSave) Or QuickLoadPercent > -1
+					ElseIf (Not CanSave)
 						Msg = "You cannot save at this moment."
 						MsgTimer = 70 * 4
-						If QuickLoadPercent > -1
-							Msg = Msg + " (game is loading)"
-						EndIf
 					Else
 						SaveGame(SavePath + CurrSave + "\")
 					EndIf
@@ -855,12 +852,9 @@ Function UpdateGame()
 						If RN$ = "173" Or RN$ = "exit1" Or RN$ = "gatea"
 							Msg = "You cannot save in this location."
 							MsgTimer = 70 * 4
-						ElseIf (Not CanSave) Or QuickLoadPercent > -1
+						ElseIf (Not CanSave)
 							Msg = "You cannot save at this moment."
 							MsgTimer = 70 * 4
-							If QuickLoadPercent > -1
-								Msg = Msg + " (game is loading)"
-							EndIf
 						Else
 							SaveGame(SavePath + CurrSave + "\")
 						EndIf
@@ -944,8 +938,6 @@ Function UpdateGame()
 			Text 20, 20, "FPS: " + Int(timing\fps)
 			SetFont Font1
 		EndIf
-		
-		DrawQuickLoading()
 	EndIf
 	
 	If userOptions\borderlessWindowed Then

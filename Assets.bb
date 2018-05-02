@@ -481,9 +481,6 @@ Function NullGame()
 	
 	DeletePlayer(mainPlayer) : mainPlayer = Null
 	
-	QuickLoadPercent = -1
-	QuickLoadPercent_DisplayTimer# = 0
-	
 	DeathMSG$=""
 	
 	SelectedMap = ""

@@ -54,25 +54,19 @@ Function UpdateEvent_cont_966_3(e.Events)
 				mainPlayer\blinkTimer = -10
 				e\EventState = 1
 				PlaySound LightSFX
-				QuickLoadPercent = 0
 			Case 1
 				e\EventState2 = e\EventState2+timing\tickDuration
 				If e\EventState2>30 Then
 					If e\EventStr = ""
 						CreateNPC(NPCtype966, EntityX(e\room\Objects[0],True), EntityY(e\room\Objects[0],True), EntityZ(e\room\Objects[0],True))
-						QuickLoadPercent = 50
 						e\EventStr = "load0"
 					ElseIf e\EventStr = "load0"
 						CreateNPC(NPCtype966, EntityX(e\room\Objects[1],True), EntityY(e\room\Objects[1],True), EntityZ(e\room\Objects[1],True))
-						QuickLoadPercent = 70
 						e\EventStr = "load1"
 					ElseIf e\EventStr = "load1"
 						CreateNPC(NPCtype966, EntityX(e\room\Objects[2],True), EntityY(e\room\Objects[2],True), EntityZ(e\room\Objects[2],True))
-						QuickLoadPercent = 100
 						e\EventState=2
 					EndIf
-				Else
-					QuickLoadPercent = Int(e\EventState2)
 				EndIf							
 			Case 2
 				

@@ -1585,27 +1585,9 @@ Function DrawTooltip(message$)
 	Text(MouseX()+(20*MenuScale)+(width/2),MouseY()+(12*MenuScale), message$, True, True)
 End Function
 
-Global QuickLoadPercent% = -1
-Global QuickLoadPercent_DisplayTimer# = 0
+Global QuickLoadPercent.MarkedForRemoval
+Global QuickLoadPercent_DisplayTimer.MarkedForRemoval
 
-Function DrawQuickLoading()
-	
-	If QuickLoadPercent > -1 Then
-		Color 255,255,255
-		SetFont Font1
-		Text userOptions\screenWidth-100,userOptions\screenHeight-90,"LOADING: "+QuickLoadPercent+"%",1
-		If QuickLoadPercent > 99 Then
-			If QuickLoadPercent_DisplayTimer < 70 Then
-				QuickLoadPercent_DisplayTimer# = Min(QuickLoadPercent_DisplayTimer+timing\tickDuration,70)
-			Else
-				QuickLoadPercent = -1
-			EndIf
-		EndIf
-	Else
-		QuickLoadPercent = -1
-		QuickLoadPercent_DisplayTimer# = 0
-	EndIf
-	
-End Function
+
 ;~IDEal Editor Parameters:
 ;~C#Blitz3D

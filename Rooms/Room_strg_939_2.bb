@@ -209,19 +209,15 @@ Function UpdateEvent_strg_939_2(e.Events)
 			;EndIf
 			If e\room\NPC[2]=Null Or e\EventState = 3
 				If e\EventState = 0
-					QuickLoadPercent = 0
 					e\EventState = 1
 				ElseIf e\EventState = 1
 					e\room\NPC[0]=CreateNPC(NPCtype939, 0,0,0)
-					QuickLoadPercent = 20
 					e\EventState = 2
 				ElseIf e\EventState = 2
 					e\room\NPC[1]=CreateNPC(NPCtype939, 0,0,0)
-					QuickLoadPercent = 50
 					e\EventState = 3
 				ElseIf e\EventState = 3
 					e\room\NPC[2]=CreateNPC(NPCtype939, 0,0,0)
-					QuickLoadPercent = 100
 					e\EventState = 0
 				EndIf
 			Else

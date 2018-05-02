@@ -80,18 +80,14 @@ Function UpdateEvent_test_860_2(e.Events)
 			UpdateForest(fr,mainPlayer\collider)
 			
 			If e\EventStr = ""
-				QuickLoadPercent = 0
 				e\EventStr = "load0"
 			ElseIf e\EventStr = "load0"
 				If Music(9) = 0 Then Music(9) = LoadSound("SFX\Music\8601.ogg")
-				QuickLoadPercent = 15
 				e\EventStr = "load1"
 			ElseIf e\EventStr = "load1"
-				QuickLoadPercent = 40
 				If Music(12) = 0 Then Music(12) = LoadSound("SFX\Music\8601Cancer.ogg")
 				e\EventStr = "load2"
 			ElseIf e\EventStr = "load2"
-				QuickLoadPercent = 100
 				If e\room\NPC[0]=Null Then e\room\NPC[0]=CreateNPC(NPCtype860, 0,0,0)
 				e\EventStr = "loaddone"
 			EndIf

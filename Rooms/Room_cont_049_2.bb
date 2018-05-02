@@ -130,19 +130,16 @@ Function UpdateEvent_cont_049_2(e.Events)
 			
 			If e\EventState = 0 Then
 				If e\EventStr = ""
-					QuickLoadPercent = 0
 					e\EventStr = "load0"
 				ElseIf e\EventStr = "load0"
 					n.NPCs = CreateNPC(NPCtypeZombie, EntityX(e\room\Objects[4],True),EntityY(e\room\Objects[4],True),EntityZ(e\room\Objects[4],True))
 					PointEntity n\Collider, e\room\obj
 					TurnEntity n\Collider, 0, 190, 0
-					QuickLoadPercent = 20
 					e\EventStr = "load1"
 				ElseIf e\EventStr = "load1"
 					n.NPCs = CreateNPC(NPCtypeZombie, EntityX(e\room\Objects[5],True),EntityY(e\room\Objects[5],True),EntityZ(e\room\Objects[5],True))
 					PointEntity n\Collider, e\room\obj
 					TurnEntity n\Collider, 0, 20, 0
-					QuickLoadPercent = 60
 					e\EventStr = "load2"
 				ElseIf e\EventStr = "load2"
 					For n.NPCs = Each NPCs
@@ -162,7 +159,6 @@ Function UpdateEvent_cont_049_2(e.Events)
 						n\Idle = 1
 						e\room\NPC[0]=n
 					EndIf
-					QuickLoadPercent = 100
 					e\EventState=1
 				EndIf
 			ElseIf e\EventState > 0
