@@ -10,6 +10,8 @@ Include "Difficulty.bb"
 
 Include "Menu.bb"
 
+Include "Launcher.bb"
+
 Global VersionNumber$ = "1.CBN"
 
 AppTitle "SCP - Containment Breach Launcher"
@@ -33,21 +35,20 @@ Function VerifyResolution%()
 
 	Local i%
 	For i = 1 To CountGfxModes3D()
-		If (GfxModeDepth(i) <> 16) Then
+		If (GfxModeDepth(i) = 32) Then
 			If (userOptions\screenWidth = GfxModeWidth(i)) And (userOptions\screenHeight = GfxModeHeight(i)) Then
 				selectedMode = i
+				Exit
 			EndIf
 		EndIf
 	Next
 	
 	userOptions\screenWidth = GfxModeWidth(selectedMode)
-	userOptions\screenHeight = GfxModeWidth(selectedMode)
+	userOptions\screenHeight = GfxModeHeight(selectedMode)
 
 	Return selectedMode
 End Function
 Local selectedGFXMode% = VerifyResolution()
-
-Include "Launcher.bb"
 
 If userOptions\launcher Then
 	launcher = CreateLauncher()
@@ -67,7 +68,6 @@ SetBuffer(BackBuffer())
 Global Font1%, Font2%, Font3%, Font4%, Font5%
 Global ConsoleFont%
 
-
 ;TODO: cleanup
 Type Timing
 	Field tickDuration# ;tick duration (1 = 1/70th of a second) TODO: change this value to be relative to a second
@@ -80,7 +80,7 @@ Type Timing
 End Type
 Global timing.Timing = New Timing
 
-Function SetTiming(tickrate%)
+Function SetTickrate(tickrate%)
 	timing\tickDuration = 70.0/Float(tickrate)
 End Function
 
@@ -96,7 +96,7 @@ Function ResetTimingAccumulator()
 	timing\accumulator = 0.0
 End Function
 
-SetTiming(60)
+SetTickrate(60)
 
 Global CurTime.MarkedForRemoval, PrevTime.MarkedForRemoval, LoopDelay%, FPSfactor.MarkedForRemoval, FPSfactor2.MarkedForRemoval, ElapsedTime.MarkedForRemoval
 Global CheckFPS.MarkedForRemoval, ElapsedLoops.MarkedForRemoval, FPS.MarkedForRemoval
@@ -137,6 +137,8 @@ Font2% = LoadFont("GFX\font\courbd\Courier New.ttf", Int(58 * MenuScale), 0,0,0)
 Font3% = LoadFont("GFX\font\DS-DIGI\DS-Digital.ttf", Int(22 * MenuScale), 0,0,0)
 Font4% = LoadFont("GFX\font\DS-DIGI\DS-Digital.ttf", Int(60 * MenuScale), 0,0,0)
 Font5% = LoadFont("GFX\font\Journal\Journal.ttf", Int(58 * MenuScale), 0,0,0)
+
+InitializeUITextures()
 
 ConsoleFont% = LoadFont("Blitz", Int(20 * MenuScale), 0,0,0)
 

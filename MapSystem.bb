@@ -1582,10 +1582,6 @@ Function RemoveWaypoint(w.WayPoints)
 	Delete w
 End Function
 
-
-Dim MapF.MarkedForRemoval(MAP_SIZE, MAP_SIZE), MapG.MarkedForRemoval(MAP_SIZE, MAP_SIZE), MapH.MarkedForRemoval(MAP_SIZE, MAP_SIZE)
-Dim MapState.MarkedForRemoval(MAP_SIZE, MAP_SIZE)
-Dim MapParent.MarkedForRemoval(MAP_SIZE, MAP_SIZE, 2)
 Function FindPath(n.NPCs, x#, y#, z#)
 	
 	DebugLog "findpath: "+n\npcType
@@ -1893,10 +1889,6 @@ Function UpdateScreens()
 	Next
 	
 End Function
-
-Dim MapName.MarkedForRemoval(MAP_SIZE, MAP_SIZE)
-Dim MapRoomID.MarkedForRemoval(ROOM4 + 1)
-Dim MapRoom.MarkedForRemoval(ROOM4 + 1, 0)
 
 ;-------------------------------------------------------------------------------------------------------
 
