@@ -16,7 +16,7 @@ Include "Console.bb"
 
 Include "Dreamfilter.bb"
 
-Global VersionNumber$ = "1.CBN"
+Const VERSION$ = "1.CBN"
 
 AppTitle "SCP - Containment Breach Launcher"
 
@@ -138,6 +138,36 @@ Global TempSoundIndex% = 0
 ;TODO: Use struct of file paths.
 Dim Music%(40)
 
+;TODO: Audio.bb
+Dim OpenDoorSFX%(3,3), CloseDoorSFX%(3,3)
+
+;TODO: Audio.bb
+Global KeyCardSFX1
+Global KeyCardSFX2
+Global ButtonSFX2
+Global ScannerSFX1
+Global ScannerSFX2
+
+Global OpenDoorFastSFX
+Global CautionSFX%
+
+Global NuclearSirenSFX%
+
+Global CameraSFX
+
+Global GunshotSFX%
+Global Gunshot2SFX%
+Global Gunshot3SFX%
+Global BullethitSFX%
+
+Global TeslaIdleSFX
+Global TeslaActivateSFX
+Global TeslaPowerUpSFX
+
+Global MagnetUpSFX%
+Global MagnetDownSFX
+Global FemurBreakerSFX%
+
 Function Main%()
 	If userOptions\launcher Then
 		launcher = CreateLauncher()
@@ -149,7 +179,7 @@ Function Main%()
 	
 	Graphics3DExt(userOptions\screenWidth, userOptions\screenHeight, 0, (1 + (Not userOptions\fullscreen)))
 	
-	AppTitle "SCP - Containment Breach v"+VersionNumber
+	AppTitle "SCP - Containment Breach v"+VERSION
 	
 	MenuScale = (userOptions\screenHeight / 1024.0)
 	
@@ -216,68 +246,46 @@ Function Main%()
 	;Music(20): SCP-049 tension theme (for "room2sl", the bastard)
 	;Music(21): Breath theme after beating the game
 	
+	DrawLoading(10, True)
+	
+	For i = 0 To 2
+		OpenDoorSFX(0,i) = LoadSound("SFX\Door\DoorOpen" + (i + 1) + ".ogg")
+		CloseDoorSFX(0,i) = LoadSound("SFX\Door\DoorClose" + (i + 1) + ".ogg")
+		OpenDoorSFX(2,i) = LoadSound("SFX\Door\Door2Open" + (i + 1) + ".ogg")
+		CloseDoorSFX(2,i) = LoadSound("SFX\Door\Door2Close" + (i + 1) + ".ogg")
+	Next
+	For i = 0 To 1
+		OpenDoorSFX(1,i) = LoadSound("SFX\Door\BigDoorOpen" + (i + 1) + ".ogg")
+		CloseDoorSFX(1,i) = LoadSound("SFX\Door\BigDoorClose" + (i + 1) + ".ogg")
+	Next
+	
+	KeyCardSFX1 = LoadSound("SFX\Interact\KeyCardUse1.ogg")
+	KeyCardSFX2 = LoadSound("SFX\Interact\KeyCardUse2.ogg")
+	ButtonSFX2 = LoadSound("SFX\Interact\Button2.ogg")
+	ScannerSFX1 = LoadSound("SFX\Interact\ScannerUse1.ogg")
+	ScannerSFX2 = LoadSound("SFX\Interact\ScannerUse2.ogg")
+	
+	OpenDoorFastSFX = LoadSound("SFX\Door\DoorOpenFast.ogg")
+	CautionSFX% = LoadSound("SFX\Room\LockroomSiren.ogg")
+	
+	CameraSFX = LoadSound("SFX\General\Camera.ogg")
+	
+	GunshotSFX% = LoadSound("SFX\General\Gunshot.ogg")
+	Gunshot2SFX% = LoadSound("SFX\General\Gunshot2.ogg")
+	Gunshot3SFX% = LoadSound("SFX\General\BulletMiss.ogg")
+	BullethitSFX% = LoadSound("SFX\General\BulletHit.ogg")
+	
+	TeslaIdleSFX = LoadSound("SFX\Room\Tesla\Idle.ogg")
+	TeslaActivateSFX = LoadSound("SFX\Room\Tesla\WindUp.ogg")
+	TeslaPowerUpSFX = LoadSound("SFX\Room\Tesla\PowerUp.ogg")
+	
+	MagnetUpSFX% = LoadSound("SFX\Room\106Chamber\MagnetUp.ogg")
+	MagnetDownSFX = LoadSound("SFX\Room\106Chamber\MagnetDown.ogg")
 End Function
 
 ;----------------------------------------------  Sounds -----------------------------------------------------
 
 ;[Block]
-
-
-;TODO: Audio.bb
-Global MusicCHN% = PlaySound(Music(2))
-ChannelVolume(MusicCHN, userOptions\musicVolume)
-
-;TODO: Audio.bb
-;Used for fading out music tracks.
-Global CurrMusicVolume# = 1.0
-Global NowPlaying% = 2
-Global ShouldPlay% = 11
-
-DrawLoading(10, True)
-
-;TODO: Audio.bb
-Dim OpenDoorSFX%(3,3), CloseDoorSFX%(3,3)
-For i = 0 To 2
-	OpenDoorSFX(0,i) = LoadSound("SFX\Door\DoorOpen" + (i + 1) + ".ogg")
-	CloseDoorSFX(0,i) = LoadSound("SFX\Door\DoorClose" + (i + 1) + ".ogg")
-	OpenDoorSFX(2,i) = LoadSound("SFX\Door\Door2Open" + (i + 1) + ".ogg")
-	CloseDoorSFX(2,i) = LoadSound("SFX\Door\Door2Close" + (i + 1) + ".ogg")
-Next
-For i = 0 To 1
-	OpenDoorSFX(1,i) = LoadSound("SFX\Door\BigDoorOpen" + (i + 1) + ".ogg")
-	CloseDoorSFX(1,i) = LoadSound("SFX\Door\BigDoorClose" + (i + 1) + ".ogg")
-Next
-
-;TODO: Audio.bb
-Global KeyCardSFX1 = LoadSound("SFX\Interact\KeyCardUse1.ogg")
-Global KeyCardSFX2 = LoadSound("SFX\Interact\KeyCardUse2.ogg")
-Global ButtonSFX2 = LoadSound("SFX\Interact\Button2.ogg")
-Global ScannerSFX1 = LoadSound("SFX\Interact\ScannerUse1.ogg")
-Global ScannerSFX2 = LoadSound("SFX\Interact\ScannerUse2.ogg")
-
-Global OpenDoorFastSFX = LoadSound("SFX\Door\DoorOpenFast.ogg")
-Global CautionSFX% = LoadSound("SFX\Room\LockroomSiren.ogg")
-
-Global NuclearSirenSFX%
-
-Global CameraSFX = LoadSound("SFX\General\Camera.ogg")
-
-Global GunshotSFX% = LoadSound("SFX\General\Gunshot.ogg")
-Global Gunshot2SFX% = LoadSound("SFX\General\Gunshot2.ogg")
-Global Gunshot3SFX% = LoadSound("SFX\General\BulletMiss.ogg")
-Global BullethitSFX% = LoadSound("SFX\General\BulletHit.ogg")
-
-Global TeslaIdleSFX = LoadSound("SFX\Room\Tesla\Idle.ogg")
-Global TeslaActivateSFX = LoadSound("SFX\Room\Tesla\WindUp.ogg")
-Global TeslaPowerUpSFX = LoadSound("SFX\Room\Tesla\PowerUp.ogg")
-
-Global MagnetUpSFX% = LoadSound("SFX\Room\106Chamber\MagnetUp.ogg"), MagnetDownSFX = LoadSound("SFX\Room\106Chamber\MagnetDown.ogg")
-Global FemurBreakerSFX%
-
-Dim DecaySFX.MarkedForRemoval(5)
-;For i = 0 To 3
-;	DecaySFX(i) = LoadSound("SFX\SCP\106\Decay" + i + ".ogg")
-;Next
 
 Global BurstSFX = LoadSound("SFX\Room\TunnelBurst.ogg")
 
