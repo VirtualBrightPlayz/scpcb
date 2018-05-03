@@ -196,37 +196,6 @@ Function LoadEventSound(e.Events,file$,num%=0)
 	Next
 End Function
 
-Function UpdateMusic()
-	
-	;TODO: Not hack jorge.
-	If ConsoleFlush Then
-		If Not IsChannelPlaying(MusicCHN) Then MusicCHN = PlaySound(ConsoleMusFlush)
-	Else
-		If timing\tickDuration > 0 Or OptionsMenu = 2 Then 
-			If NowPlaying <> ShouldPlay Then ; playing the wrong clip, fade out
-				CurrMusicVolume# = Max(CurrMusicVolume - (timing\tickDuration / 250.0), 0)
-				If CurrMusicVolume = 0 Then
-					NowPlaying = ShouldPlay
-					If MusicCHN <> 0 Then StopChannel MusicCHN
-				EndIf
-			Else ; playing the right clip
-				CurrMusicVolume = CurrMusicVolume + (MusicVolume - CurrMusicVolume) * 0.1
-			EndIf
-		EndIf
-		
-		If NowPlaying < 66 Then
-			If MusicCHN = 0 Then
-				MusicCHN = PlaySound(Music(NowPlaying))
-			Else
-				If (Not IsChannelPlaying(MusicCHN)) Then MusicCHN = PlaySound(Music(NowPlaying))
-			EndIf
-		EndIf
-		
-		ChannelVolume(MusicCHN, CurrMusicVolume)
-	EndIf
-	
-End Function 
-
 Function PauseSounds()
 	Local e.Events, n.NPCs, d.Doors
 
@@ -348,5 +317,100 @@ Function UpdateRangedSoundOrigin(Chn%, cam%, entity%, range# = 10, volume# = 1.0
 		EndIf 
 	EndIf
 End Function
-;~IDEal Editor Parameters:
-;~C#Blitz3D
+
+;;; Music
+Const MUS_DEFAULT$ = ""
+Const MUS_MENU$    = "SFX\Music\Menu.ogg"
+Const MUS_INTRO$   = "SFX\Music\Intro.ogg"
+Const MUS_LCZ$     = "SFX\Music\The Dread.ogg"
+Const MUS_EZ$      = "SFX\Music\EntranceZone.ogg"
+Const MUS_HCZ$     = "SFX\Music\HeavyContainment.ogg"
+Const MUS_049$     = "SFX\Music\Room049.ogg"
+Const MUS_079$     = "SFX\Music\079.ogg"
+Const MUS_106$     = "SFX\Music\106.ogg"
+Const MUS_205$     = "SFX\Music\205.ogg"
+Const MUS_939$     = "SFX\Music\Room939.ogg"
+Const MUS_8601$    = "SFX\Music\8601.ogg"
+Const MUS_8602$    = "SFX\Music\8601Cancer.ogg"
+Const MUS_14991$   = "SFX\Music\1499.ogg"
+Const MUS_14992$   = "SFX\Music\1499.ogg"
+Const MUS_PD$      = "SFX\Music\PD.ogg"
+Const MUS_TRENCH$  = "SFX\Music\PDTrench.ogg"
+Const MUS_GATEA$   = "SFX\Music\GateA.ogg"
+Const MUS_GATEB1$  = "SFX\Music\GateB1.ogg"
+Const MUS_GATEB2$  = "SFX\Music\GateB2.ogg"
+Const MUS_END$     = "SFX\Music\Ending.ogg"
+Const MUS_BREATH$  = "SFX\Music\Breath.ogg"
+
+Type MusicManager
+	Field currMusic%
+	Field channel%
+
+	Field nowPlaying$
+	Field shouldPlay$
+
+	; Used for fading out tracks.
+	Field fadeOut%
+	Field currMusicVolume#
+End Type
+Global musManager.MusicManager
+
+Function CreateMusicManager.MusicManager()
+	Local musMan.MusicManager = New MusicManager
+	GetMusicTrack(musMan)
+
+	Return musMan
+End Function
+
+Function SetNextMusicTrack(musMan.MusicManager, trackName$, fadeOut% = True)
+	musMan\shouldPlay = trackName
+	musMan\fadeOut = fadeOut
+End Function
+
+Function GetNextMusicTrack(musMan.MusicManager)
+
+	If (musMan\shouldPlay = MUS_DEFAULT) Then
+		;TODO: Play zone/intro/menu track here depending on game's current state.
+	ElseIf (musMan\nowPlaying <> musMan\shouldPlay) Then
+		musMan\nowPlaying = musMan\shouldPlay
+		FreeMusic(musMan)
+		musMan\currMusic = LoadSound(musMan\nowPlaying)
+	EndIf
+End Function
+
+; Frees the current music track. Should only be called by UpdateMusic().
+Function FreeMusic(musMan.MusicManager)
+	If (musMan\currMusic <> 0) Then
+		FreeSound(musMan\currMusic)
+		musMan\currMusic = 0
+	EndIf
+End Function
+
+;TODO: Not hack jorge.
+Function UpdateMusic(musMan.MusicManager)
+	If (userOptions\musicVolume <= 0) Then
+		Return
+	EndIf
+
+	If (musMan\nowPlaying <> musMan\shouldPlay) Then
+		If (musMan\fadeOut And musMan\currMusicVolume > 0) Then
+			musMan\currMusicVolume = musMan\currMusicVolume - (timing\tickDuration / 250.0)
+		Else
+			If (musMan\channel <> 0) Then
+				StopChannel(musMan\channel)
+				musMan\channel = 0
+			EndIf
+
+			musMan\fadeOut = False
+			musMan\currMusicVolume = userOptions\musicVolume
+		EndIf
+	EndIf
+
+	;If nothing is playing then figure out what the next track is.
+	If (Not IsChannelPlaying(musMan\channel)) Then
+		GetNextMusicTrack(musMan)
+		musMan\channel = PlaySound(musMan\currMusic)
+	EndIf
+	
+	ChannelVolume(musMan\channel, musMan\currMusicVolume)
+End Function
