@@ -453,7 +453,7 @@ Function InitLoadGame()
 				For i = -2 To 2 Step 2
 					ch = CreateChunk(-1,x#*(i*2.5),EntityY(e\room\obj),z#)
 				Next
-				If Music(18)=0 Then Music(18) = LoadSound("SFX\Music\1499.ogg")
+				;If Music(18)=0 Then Music(18) = LoadSound("SFX\Music\1499.ogg") ;TODO: fix
 				DrawLoading(98)
 				UpdateChunks(e\room,15,False)
 				;MoveEntity mainPlayer\collider,0,10,0
@@ -614,8 +614,8 @@ Function NullGame()
 	
 	NoTarget% = False
 	
-	OptionsMenu% = -1
-	QuitMSG% = -1
+	;OptionsMenu% = -1
+	;QuitMSG% = -1
 	
 	IsZombie% = False
 	

@@ -540,14 +540,17 @@ End Function
 ;TODO: these variable names are awful
 ;Also scrap the mouselook speed in favor of just interpolating to a final position
 ; - -Viewport.
-Global viewport_center_x% = userOptions\screenWidth / 2, viewport_center_y% = userOptions\screenHeight / 2
+Global viewport_center_x%
+Global viewport_center_y%
 
 ; -- Mouselook.
 Global mouselook_x_inc# = 0.3 ; This sets both the sensitivity and direction (+/-) of the mouse on the X axis.
 Global mouselook_y_inc# = 0.3 ; This sets both the sensitivity and direction (+/-) of the mouse on the Y axis.
 ; Used to limit the mouse movement to within a certain number of pixels (250 is used here) from the center of the screen. This produces smoother mouse movement than continuously moving the mouse back to the center each loop.
-Global mouse_left_limit% = 250, mouse_right_limit% = GraphicsWidth () - 250
-Global mouse_top_limit% = 150, mouse_bottom_limit% = GraphicsHeight () - 150 ; As above.
+Global mouse_left_limit%
+Global mouse_right_limit%
+Global mouse_top_limit%
+Global mouse_bottom_limit%
 Global mouse_x_speed_1#, mouse_y_speed_1#
 
 Function MouseLook()
@@ -2054,4 +2057,5 @@ Function Kill(player.Player)
 	EndIf
 End Function
 ;~IDEal Editor Parameters:
+;~F#D#6A#E1#EE#22B#2D7#308#31F#327#339#4B8#7DF#7E8#7F2
 ;~C#Blitz3D

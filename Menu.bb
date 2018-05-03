@@ -1158,7 +1158,7 @@ Function DrawLoading(percent%, shortloading=False)
 		;Cls(True,False)
 		
 		If percent > 20 Then
-			UpdateMusic()
+			;UpdateMusic()
 		EndIf
 		
 		If shortloading = False Then

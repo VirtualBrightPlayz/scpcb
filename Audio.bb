@@ -357,7 +357,7 @@ Global musManager.MusicManager
 
 Function CreateMusicManager.MusicManager()
 	Local musMan.MusicManager = New MusicManager
-	GetMusicTrack(musMan)
+	;GetMusicTrack(musMan) ;TODO: fix
 
 	Return musMan
 End Function
@@ -414,3 +414,5 @@ Function UpdateMusic(musMan.MusicManager)
 	
 	ChannelVolume(musMan\channel, musMan\currMusicVolume)
 End Function
+;~IDEal Editor Parameters:
+;~C#Blitz3D

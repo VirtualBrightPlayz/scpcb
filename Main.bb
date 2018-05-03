@@ -1,24 +1,109 @@
 Include "MarkedForRemoval.bb"
 
+;TODO: kill all the dims
+;I have to place them up here because the includes depend
+;on them being declared Before they are used
+;[Block]
+
+;TODO: Radio struct.
+Dim RadioState#(10)
+Dim RadioState3%(3)
+Dim RadioState4%(9)
+Dim RadioCHN%(8)
+
+;TODO: Assets.bb
+Dim OldAiPics%(5)
+
+;TODO: Assets.bb
+Dim LightSpriteTex(10)
+
+;TODO: Use struct of file paths.
+Dim Music.MarkedForRemoval(40)
+
+;TODO: Audio.bb
+Dim OpenDoorSFX.MarkedForRemoval(3,3), CloseDoorSFX.MarkedForRemoval(3,3)
+
+Dim DripSFX%(4)
+
+Dim RadioSFX(5,10)
+
+Dim PickSFX%(10)
+
+Dim AmbientSFXAmount(6)
+
+Dim AmbientSFX%(6, 15)
+
+;TODO: Move to NPCData106.
+Dim OldManSFX.MarkedForRemoval(6)
+;For i = 0 To 2
+;	OldManSFX(i) = LoadSound("SFX\SCP\106\Corrosion" + (i + 1) + ".ogg")
+;Next
+;OldManSFX(3) = LoadSound("SFX\SCP\106\Laugh.ogg")
+;OldManSFX(4) = LoadSound("SFX\SCP\106\Breathing.ogg")
+;OldManSFX(5) = LoadSound("SFX\Room\PocketDimension\Enter.ogg")
+
+;TODO: Most of these sounds are NPC-specific anyway. Divide this up.
+Dim HorrorSFX.MarkedForRemoval(20)
+;For i = 0 To 10
+;	HorrorSFX(i) = LoadSound("SFX\Horror\Horror" + i + ".ogg")
+;Next
+;For i = 14 To 15
+;	HorrorSFX(i) = LoadSound("SFX\Horror\Horror" + i + ".ogg")
+;Next
+
+;TODO: Audio.bb
+Dim IntroSFX%(20)
+
+;TODO: Audio.bb
+Dim AlarmSFX%(5)
+
+Dim CommotionState%(23)
+
+;TODO: Move to NPCData173.
+Dim NeckSnapSFX.MarkedForRemoval(3)
+;For i = 0 To 2
+;	NeckSnapSFX(i) =  LoadSound("SFX\SCP\173\NeckSnap"+(i+1)+".ogg")
+;Next
+
+;TODO: Player struct.
+Dim DamageSFX%(9)
+
+;TODO: NPCDataMTF.
+Dim MTFSFX%(8)
+
+;TODO: Player struct.
+Dim CoughSFX%(3)
+
+Dim LightSpriteTex%(5)
+
+Dim DecalTextures%(20)
+;[End Block]
+
 Include "KeyName.bb"
 Include "Options.bb"
 Include "FastResize.bb"
-
 Include "Array.bb"
-
 Include "Difficulty.bb"
-
 Include "Menu.bb"
-
 Include "Launcher.bb"
-
 Include "Console.bb"
-
 Include "Dreamfilter.bb"
+Include "Items.bb"
+Include "Particles.bb"
+Include "Doors.bb"
+Include "MapSystem.bb"
+Include "NPCs.bb"
+Include "Player.bb"
+Include "Events.bb"
+Include "Assets.bb"
+Include "Save.bb"
+Include "Audio.bb"
+Include "MathUtils.bb"
+Include "INI.bb"
+
+Main() ;TODO: remove once we move to C++
 
 Const VERSION$ = "1.CBN"
-
-AppTitle "SCP - Containment Breach Launcher"
 
 ;[Block]
 
@@ -114,32 +199,14 @@ Global LightsOn% = True ;secondary lighting on
 ;TODO: Not global assuming this is for 106's containment chamber.
 Global SoundTransmission%
 
-;TODO: Radio struct.
-Dim RadioState#(10)
-Dim RadioState3%(3)
-Dim RadioState4%(9)
-Dim RadioCHN%(8)
-
-;TODO: Assets.bb
-Dim OldAiPics%(5)
-
 ;TODO: Move somewhere?
 Global Brightness%
-
-;TODO: Assets.bb
-Dim LightSpriteTex(10)
 
 ;TODO: Audio.bb
 Global SoundEmitter%
 Global TempSounds%[10]
 Global TempSoundCHN%
 Global TempSoundIndex% = 0
-
-;TODO: Use struct of file paths.
-Dim Music.MarkedForRemoval(40)
-
-;TODO: Audio.bb
-Dim OpenDoorSFX.MarkedForRemoval(3,3), CloseDoorSFX.MarkedForRemoval(3,3)
 
 ;TODO: Audio.bb
 Global KeyCardSFX1
@@ -172,14 +239,10 @@ Global BurstSFX
 
 Global Death914SFX%
 
-Dim DripSFX%(4)
-
 Global LeverSFX%
 Global LightSFX%
 
 Global ButtGhostSFX%
-
-Dim RadioSFX(5,10)
 
 Global RadioSquelch
 Global RadioStatic
@@ -188,37 +251,107 @@ Global RadioBuzz
 Global ElevatorBeepSFX
 Global ElevatorMoveSFX
 
-Dim PickSFX%(10)
-
 ;TODO: More Audio.bb
 Global AmbientSFXCHN%, CurrAmbientSFX%
-Dim AmbientSFXAmount(6)
-;0 = light containment, 1 = heavy containment, 2 = entrance
-AmbientSFXAmount(0)=8 : AmbientSFXAmount(1)=11 : AmbientSFXAmount(2)=12
-;3 = general, 4 = pre-breach
-AmbientSFXAmount(3)=15 : AmbientSFXAmount(4)=5
-;5 = forest
-AmbientSFXAmount(5)=10
 
-Dim AmbientSFX%(6, 15)
+Global HeartBeatSFX
 
-;TODO: Move to NPCData106.
-Dim OldManSFX.MarkedForRemoval(6)
-;For i = 0 To 2
-;	OldManSFX(i) = LoadSound("SFX\SCP\106\Corrosion" + (i + 1) + ".ogg")
-;Next
-;OldManSFX(3) = LoadSound("SFX\SCP\106\Laugh.ogg")
-;OldManSFX(4) = LoadSound("SFX\SCP\106\Breathing.ogg")
-;OldManSFX(5) = LoadSound("SFX\Room\PocketDimension\Enter.ogg")
+Global BreathCHN.MarkedForRemoval
 
-;TODO: Most of these sounds are NPC-specific anyway. Divide this up.
-Dim HorrorSFX.MarkedForRemoval(20)
-;For i = 0 To 10
-;	HorrorSFX(i) = LoadSound("SFX\Horror\Horror" + i + ".ogg")
-;Next
-;For i = 14 To 15
-;	HorrorSFX(i) = LoadSound("SFX\Horror\Horror" + i + ".ogg")
-;Next
+;TODO: player struct
+Global CoughCHN%
+
+;TODO: Why the fuck is this a global?
+Global MachineSFX%
+
+;TODO: WHY IS THIS A GLOBAL???
+Global ApacheSFX
+
+;TODO: Die forever.
+Global NTF_1499EnterSFX%
+Global NTF_1499LeaveSFX%
+
+;TODO: Not be globals.
+Global Monitor2, Monitor3, MonitorTexture2, MonitorTexture3, MonitorTexture4, MonitorTextureOff
+Global MonitorTimer#, MonitorTimer2#
+Global UpdateCheckpoint1.MarkedForRemoval, UpdateCheckpoint2.MarkedForRemoval
+
+;TODO: die
+;This variable is for when a camera detected the player
+	;False: Player is not seen (will be set after every call of the Main Loop
+	;True: The Player got detected by a camera
+Global PlayerDetected%
+Global PrevInjuries#,PrevBloodloss#
+Global NoTarget%
+
+;TODO: Assets.bb
+Global NVGImages
+
+Global AmbientLightRoomTex%, AmbientLightRoomVal%
+
+;Global NVGImage% = CreateImage(userOptions\screenWidth,userOptions\screenHeight),NVGCam%
+
+;TODO: Die forever.
+Global NTF_1499PrevX#
+Global NTF_1499PrevY#
+Global NTF_1499PrevZ#
+Global NTF_1499PrevRoom.Rooms
+Global NTF_1499X#
+Global NTF_1499Y#
+Global NTF_1499Z#
+Global NTF_1499Sky%
+
+;TODO: Redo using CurrGameSubstate
+Global OptionsMenu.MarkedForRemoval
+Global QuitMSG.MarkedForRemoval
+
+;TODO: Die.
+Global InFacility%
+
+;TODO: Remove.
+Global IsZombie%
+
+;TODO: This is fucking stupid.
+Global room2gw_brokendoor%
+Global room2gw_x#
+Global room2gw_z#
+
+;TODO: Assets.bb
+Global PauseMenuIMG%
+
+;TODO: Assets.bb
+Global SprintIcon%
+Global BlinkIcon%
+Global CrouchIcon%
+Global HandIcon%
+Global HandIcon2%
+
+Global StaminaMeterIMG%
+
+Global KeypadHUD
+
+;TODO: cleanup
+Global Panel294
+Global Using294.MarkedForRemoval
+Global Input294$
+
+;TODO: Assets.bb
+Global TeslaTexture%
+
+Global DoorOBJ%, DoorFrameOBJ%
+
+Global LeverOBJ%, LeverBaseOBJ%
+
+Global DoorColl%
+Global ButtonOBJ%, ButtonKeyOBJ%, ButtonCodeOBJ%, ButtonScannerOBJ%
+
+Global Monitor%, MonitorTexture%
+Global CamBaseOBJ%, CamOBJ%
+
+Global LiquidObj%,MTFObj%,ClassDObj%
+Global ApacheObj%,ApacheRotorObj%
+
+Global UnableToMove.MarkedForRemoval
 
 Function Main%()
 	If userOptions\launcher Then
@@ -230,7 +363,6 @@ Function Main%()
 	EndIf
 	
 	Graphics3DExt(userOptions\screenWidth, userOptions\screenHeight, 0, (1 + (Not userOptions\fullscreen)))
-	
 	AppTitle "SCP - Containment Breach v"+VERSION
 	
 	MenuScale = (userOptions\screenHeight / 1024.0)
@@ -277,6 +409,14 @@ Function Main%()
 	Brightness% = 50
 	
 	DrawLoading(10, True)
+	
+	;TODO: doesn't need to be hardcoded
+	;0 = light containment, 1 = heavy containment, 2 = entrance
+	AmbientSFXAmount(0)=8 : AmbientSFXAmount(1)=11 : AmbientSFXAmount(2)=12
+	;3 = general, 4 = pre-breach
+	AmbientSFXAmount(3)=15 : AmbientSFXAmount(4)=5
+	;5 = forest
+	AmbientSFXAmount(5)=10
 	
 	KeyCardSFX1 = LoadSound("SFX\Interact\KeyCardUse1.ogg")
 	KeyCardSFX2 = LoadSound("SFX\Interact\KeyCardUse2.ogg")
@@ -326,223 +466,134 @@ Function Main%()
 	RadioStatic = LoadSound("SFX\Radio\static.ogg")
 	RadioBuzz = LoadSound("SFX\Radio\buzz.ogg")
 	
-	ElevatorBeepSFX = LoadSound("SFX\General\Elevator\Beep.ogg"), ElevatorMoveSFX = LoadSound("SFX\General\Elevator\Moving.ogg") 
+	ElevatorBeepSFX = LoadSound("SFX\General\Elevator\Beep.ogg")
+	ElevatorMoveSFX = LoadSound("SFX\General\Elevator\Moving.ogg") 
 	
 	For i = 0 To 3
 		PickSFX(i) = LoadSound("SFX\Interact\PickItem" + i + ".ogg")
 	Next
 	
 	DrawLoading(25, True)
+	;TODO: Audio.bb
+	For i = 7 To 9
+		IntroSFX(i) = LoadSound("SFX\Room\Intro\Bang" + (i - 6) + ".ogg")
+	Next
+	For i = 10 To 12
+		IntroSFX(i) = LoadSound("SFX\Room\Intro\Light" + (i - 9) + ".ogg")
+	Next
+	;IntroSFX(13) = LoadSound("SFX\intro\shoot1.ogg")
+	;IntroSFX(14) = LoadSound("SFX\intro\shoot2.ogg")
+	IntroSFX(15) = LoadSound("SFX\Room\Intro\173Vent.ogg")
 	
+	;TODO: Audio.bb
+	AlarmSFX(0) = LoadSound("SFX\Alarm\Alarm.ogg")
+	;AlarmSFX(1) = LoadSound("SFX\Alarm\Alarm2.ogg")
+	AlarmSFX(2) = LoadSound("SFX\Alarm\Alarm3.ogg")
+	
+	HeartBeatSFX = LoadSound("SFX\Character\D9341\Heartbeat.ogg")
+	
+	For i = 0 To 8
+		DamageSFX(i) = LoadSound("SFX\Character\D9341\Damage"+(i+1)+".ogg")
+	Next
+	
+	;TODO: Player struct.
+	For i = 0 To 2
+		CoughSFX(i) = LoadSound("SFX\Character\D9341\Cough" + (i + 1) + ".ogg")
+	Next
+	
+	;TODO: Why the fuck is this a global?
+	MachineSFX% = LoadSound("SFX\SCP\914\Refining.ogg")
+	
+	;TODO: WHY IS THIS A GLOBAL???
+	ApacheSFX = LoadSound("SFX\Character\Apache\Propeller.ogg")
+	
+	HissSFX = LoadSound("SFX\General\Hiss.ogg")
+	
+	DrawLoading(30, True)
+	
+	;TODO: Die forever.
+	NTF_1499EnterSFX% = LoadSound("SFX\SCP\1499\Enter.ogg")
+	NTF_1499LeaveSFX% = LoadSound("SFX\SCP\1499\Exit.ogg")
+	
+	;TODO: Assets.bb
+	NVGImages = LoadAnimImage("GFX\battery.png",64,64,0,2)
+	MaskImage NVGImages,255,0,255
+	
+	;TODO: Die.
+	InFacility% = True
+	
+	;TODO: Remove.
+	IsZombie% = False
+	
+	;TODO: This is fucking stupid.
+	room2gw_brokendoor% = False
+	room2gw_x# = 0.0
+	room2gw_z# = 0.0
+	
+	MonitorTimer# = 0.0
+	MonitorTimer2# = 0.0
+	
+	;TODO: Assets.bb
+	PauseMenuIMG% = LoadImage("GFX\menu\pausemenu.jpg")
+	MaskImage PauseMenuIMG, 255,255,0
+	ScaleImage PauseMenuIMG,MenuScale,MenuScale
+	
+	;TODO: Assets.bb
+	SprintIcon% = LoadImage("GFX\sprinticon.png")
+	BlinkIcon% = LoadImage("GFX\blinkicon.png")
+	CrouchIcon% = LoadImage("GFX\sneakicon.png")
+	HandIcon% = LoadImage("GFX\handsymbol.png")
+	HandIcon2% = LoadImage("GFX\handsymbol2.png")
+	
+	StaminaMeterIMG% = LoadImage("GFX\staminameter.jpg")
+	
+	KeypadHUD =  LoadImage("GFX\keypadhud.jpg")
+	MaskImage(KeypadHUD, 255,0,255)
+	
+	;TODO: cleanup
+	Panel294 = LoadImage("GFX\294panel.jpg")
+	MaskImage(Panel294, 255,0,255)
+	
+	DrawLoading(40,True)
+	
+	LoadRoomTemplates("Data\rooms.ini")
+	
+	;TODO: remove/replace with functions
+	SecondaryLightOn# = True
+	RemoteDoorOn = True
+	Contained106 = False
+	
+	DrawLoading(80,True)
+	
+	viewport_center_x% = userOptions\screenWidth / 2
+	viewport_center_y% = userOptions\screenHeight / 2
+	
+	mouse_left_limit% = 250
+	mouse_right_limit% = userOptions\screenWidth - 250
+	mouse_top_limit% = 150
+	mouse_bottom_limit% = userOptions\screenHeight - 150
+	
+	Collisions HIT_PLAYER, HIT_MAP, 2, 2
+	Collisions HIT_PLAYER, HIT_PLAYER, 1, 3
+	Collisions HIT_ITEM, HIT_MAP, 2, 2
+	Collisions HIT_APACHE, HIT_APACHE, 1, 2
+	Collisions HIT_DEAD, HIT_MAP, 2, 2
+	
+	DrawLoading(90, True)
+	
+	FlushKeys()
+	FlushMouse()
+	
+	DrawLoading(100, True)
+	
+	Repeat
+		UpdateGame()
+	Forever
 End Function
-
-;----------------------------------------------  Sounds -----------------------------------------------------
-
-;[Block]
-
-
-;TODO: Audio.bb
-Dim IntroSFX%(20)
-
-For i = 7 To 9
-	IntroSFX(i) = LoadSound("SFX\Room\Intro\Bang" + (i - 6) + ".ogg")
-Next
-For i = 10 To 12
-	IntroSFX(i) = LoadSound("SFX\Room\Intro\Light" + (i - 9) + ".ogg")
-Next
-;IntroSFX(13) = LoadSound("SFX\intro\shoot1.ogg")
-;IntroSFX(14) = LoadSound("SFX\intro\shoot2.ogg")
-IntroSFX(15) = LoadSound("SFX\Room\Intro\173Vent.ogg")
-
-;TODO: Audio.bb
-Dim AlarmSFX%(5)
-AlarmSFX(0) = LoadSound("SFX\Alarm\Alarm.ogg")
-;AlarmSFX(1) = LoadSound("SFX\Alarm\Alarm2.ogg")
-AlarmSFX(2) = LoadSound("SFX\Alarm\Alarm3.ogg")
-
-Dim CommotionState%(23)
-
-Global HeartBeatSFX = LoadSound("SFX\Character\D9341\Heartbeat.ogg")
-
-Global BreathCHN.MarkedForRemoval
-
-;TODO: Move to NPCData173.
-Dim NeckSnapSFX.MarkedForRemoval(3)
-;For i = 0 To 2
-;	NeckSnapSFX(i) =  LoadSound("SFX\SCP\173\NeckSnap"+(i+1)+".ogg")
-;Next
-
-;TODO: Player struct.
-Dim DamageSFX%(9)
-For i = 0 To 8
-	DamageSFX(i) = LoadSound("SFX\Character\D9341\Damage"+(i+1)+".ogg")
-Next
-
-;TODO: NPCDataMTF.
-Dim MTFSFX%(8)
-
-;TODO: Player struct.
-Dim CoughSFX%(3)
-Global CoughCHN%
-For i = 0 To 2
-	CoughSFX(i) = LoadSound("SFX\Character\D9341\Cough" + (i + 1) + ".ogg")
-Next
-
-;TODO: Why the fuck is this a global?
-Global MachineSFX% = LoadSound("SFX\SCP\914\Refining.ogg")
-
-;TODO: WHY IS THIS A GLOBAL???
-Global ApacheSFX = LoadSound("SFX\Character\Apache\Propeller.ogg")
-
-DrawLoading(30, True)
-
-;[End block]
-
-;[Block]
-;TODO: Die forever.
-Global NTF_1499EnterSFX% = LoadSound("SFX\SCP\1499\Enter.ogg")
-Global NTF_1499LeaveSFX% = LoadSound("SFX\SCP\1499\Exit.ogg")
-
-;TODO: Not be globals.
-Global Monitor2, Monitor3, MonitorTexture2, MonitorTexture3, MonitorTexture4, MonitorTextureOff
-Global MonitorTimer# = 0.0, MonitorTimer2# = 0.0, UpdateCheckpoint1%, UpdateCheckpoint2%
-
-;This variable is for when a camera detected the player
-	;False: Player is not seen (will be set after every call of the Main Loop
-	;True: The Player got detected by a camera
-Global PlayerDetected%
-Global PrevInjuries#,PrevBloodloss#
-Global NoTarget% = False
-
-;TODO: Assets.bb
-Global NVGImages = LoadAnimImage("GFX\battery.png",64,64,0,2)
-MaskImage NVGImages,255,0,255
-
-Global AmbientLightRoomTex%, AmbientLightRoomVal%
-
-;Global NVGImage% = CreateImage(userOptions\screenWidth,userOptions\screenHeight),NVGCam%
-
-;TODO: Die forever.
-Global NTF_1499PrevX#
-Global NTF_1499PrevY#
-Global NTF_1499PrevZ#
-Global NTF_1499PrevRoom.Rooms
-Global NTF_1499X#
-Global NTF_1499Y#
-Global NTF_1499Z#
-Global NTF_1499Sky%
-
-;TODO: Menu.bb
-Global OptionsMenu% = 0
-
-;TODO: Not sure what to do with this but it should be moved.
-Global QuitMSG% = 0
-
-;TODO: Die.
-Global InFacility% = True
-
-;TODO: Remove.
-Global IsZombie% = False
-
-;TODO: This is fucking stupid.
-Global room2gw_brokendoor% = False
-Global room2gw_x# = 0.0
-Global room2gw_z# = 0.0
-;[End Block]
-
-;-----------------------------------------  Images ----------------------------------------------------------
-;TODO: Assets.bb
-Global PauseMenuIMG% = LoadImage("GFX\menu\pausemenu.jpg")
-MaskImage PauseMenuIMG, 255,255,0
-ScaleImage PauseMenuIMG,MenuScale,MenuScale
-
-;TODO: Assets.bb
-Global SprintIcon% = LoadImage("GFX\sprinticon.png")
-Global BlinkIcon% = LoadImage("GFX\blinkicon.png")
-Global CrouchIcon% = LoadImage("GFX\sneakicon.png")
-Global HandIcon% = LoadImage("GFX\handsymbol.png")
-Global HandIcon2% = LoadImage("GFX\handsymbol2.png")
-
-Global StaminaMeterIMG% = LoadImage("GFX\staminameter.jpg")
-
-Global KeypadHUD =  LoadImage("GFX\keypadhud.jpg")
-MaskImage(KeypadHUD, 255,0,255)
-
-;TODO: cleanup
-Global Panel294 = LoadImage("GFX\294panel.jpg"), Using294.MarkedForRemoval, Input294$
-MaskImage(Panel294, 255,0,255)
-
-DrawLoading(35, True)
-
-;----------------------------------------------  Items  -----------------------------------------------------
-
-Include "Items.bb"
-
-;--------------------------------------- Particles ------------------------------------------------------------
-
-Include "Particles.bb"
-
-;-------------------------------------  Doors --------------------------------------------------------------
-
-Include "Doors.bb"
-
-DrawLoading(40,True)
-
-Include "MapSystem.bb"
-
-DrawLoading(80,True)
-
-Include "NPCs.bb"
-
-Include "Player.bb"
-
-;-------------------------------------  Events --------------------------------------------------------------
-
-Include "Events.bb"
-
-Collisions HIT_PLAYER, HIT_MAP, 2, 2
-Collisions HIT_PLAYER, HIT_PLAYER, 1, 3
-Collisions HIT_ITEM, HIT_MAP, 2, 2
-Collisions HIT_APACHE, HIT_APACHE, 1, 2
-Collisions HIT_DEAD, HIT_MAP, 2, 2
-
-DrawLoading(90, True)
-
-;----------------------------------- meshes and textures ----------------------------------------------------------------
-;TODO: Assets.bb
-Global TeslaTexture%
-
-Dim LightSpriteTex%(5)
-Global DoorOBJ%, DoorFrameOBJ%
-
-Global LeverOBJ%, LeverBaseOBJ%
-
-Global DoorColl%
-Global ButtonOBJ%, ButtonKeyOBJ%, ButtonCodeOBJ%, ButtonScannerOBJ%
-
-Dim DecalTextures%(20)
-
-Global Monitor%, MonitorTexture%
-Global CamBaseOBJ%, CamOBJ%
-
-Global LiquidObj%,MTFObj%,ClassDObj%
-Global ApacheObj%,ApacheRotorObj%
-
-Global UnableToMove.MarkedForRemoval
-
-FlushKeys()
-FlushMouse()
-
-DrawLoading(100, True)
 
 ;----------------------------------------------------------------------------------------------------------------------------------------------------
 ;----------------------------------------------       		MAIN LOOP                 ---------------------------------------------------------------
 ;----------------------------------------------------------------------------------------------------------------------------------------------------
-
-Repeat
-	UpdateGame()
-Forever
-
 Function UpdateGame()
 	Local elapsedMilliseconds%
 	timing\currTime = MilliSecs()
@@ -583,7 +634,7 @@ Function UpdateGame()
 		
 		MouseHit2 = MouseHit(2)
 		
-		UpdateMusic()
+		;UpdateMusic() ;TODO: fix
 		
 		If CurrGameState=GAMESTATE_MAINMENU Then
 			;TODO: Re-implement.
@@ -664,8 +715,8 @@ Function UpdateGame()
 				EndIf
 			EndIf
 			
-			UpdateCheckpoint1 = False
-			UpdateCheckpoint2 = False
+			;UpdateCheckpoint1 = False
+			;UpdateCheckpoint2 = False
 			
 			If Not IsPaused() Then
 				;LightVolume = CurveValue(TempLightVolume, LightVolume, 50.0)
@@ -1633,7 +1684,7 @@ Function UpdatePauseMenu()
 				y = y + 75*MenuScale
 			EndIf
 			
-			If UpdateUIButton(x, y, 390*MenuScale, 60*MenuScale, "Options") Then OptionsMenu = 1
+			;If UpdateUIButton(x, y, 390*MenuScale, 60*MenuScale, "Options") Then OptionsMenu = 1 ;TODO: fix
 			y = y + 75*MenuScale
 			If UpdateUIButton(x, y, 390*MenuScale, 60*MenuScale, "Quit") Then
 				RuntimeError "REIMPLEMENT"
@@ -1702,14 +1753,6 @@ Function MouseOn%(x%, y%, width%, height%)
 	End If
 	Return False
 End Function
-
-;----------------------------------------------------------------------------------------------
-
-Include "Assets.bb"
-
-Include "Save.bb"
-
-Include "Audio.bb"
 
 ;--------------------------------------- random -------------------------------------------------------
 
@@ -1884,8 +1927,6 @@ Function UpdateInfect()
 	EndIf
 End Function
 
-Include "MathUtils.bb"
-
 ;--------------------------------------- decals -------------------------------------------------------
 ;TODO: Move to their own file?
 Type Decals
@@ -1979,8 +2020,6 @@ Function UpdateDecals()
 		End If
 	Next
 End Function
-
-Include "INI.bb"
 
 Function Graphics3DExt%(width%,height%,depth%=32,mode%=2)
 	;If FE_InitExtFlag = 1 Then DeInitExt() ;prevent FastExt from breaking itself
@@ -2229,4 +2268,5 @@ Function CheckTriggers$()
 End Function
 
 ;~IDEal Editor Parameters:
+;~F#5#163#40A#496#52C#605#6D3#6DE#6E2#70C#78B#79A#7B8#7E7#7EE#7FC#89E#8C0
 ;~C#Blitz3D

@@ -79,7 +79,7 @@ Function RemoveParticle(p.Particles)
 End Function
 
 Global InSmoke%
-Global HissSFX% = LoadSound("SFX\General\Hiss.ogg")
+Global HissSFX%
 
 Type Emitters
 	Field Obj%
@@ -138,11 +138,7 @@ Function UpdateEmitters()
 		
 		If Not mainPlayer\dead Then 
 			If Rand(150) = 1 Then
-				If CoughCHN = 0 Then
-					CoughCHN = PlaySound(CoughSFX(Rand(0, 2)))
-				Else
-					If Not IsChannelPlaying(CoughCHN) Then CoughCHN = PlaySound(CoughSFX(Rand(0, 2)))
-				End If
+				;If Not IsChannelPlaying(CoughCHN) Then CoughCHN = PlaySound(CoughSFX(Rand(0, 2))) ;TODO: fix by not using a dim
 			EndIf
 		EndIf
 		
@@ -188,4 +184,5 @@ Function CreateEmitter.Emitters(x#, y#, z#, emittertype%)
 		
 End Function
 ;~IDEal Editor Parameters:
+;~F#4#10#2E#4A#53#95
 ;~C#Blitz3D

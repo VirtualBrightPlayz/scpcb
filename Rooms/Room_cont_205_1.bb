@@ -73,9 +73,10 @@ Function UpdateEvent_cont_205_1(e.Events)
 				e\room\Objects[6] = LoadAnimMesh("GFX\npcs\205_woman.b3d")
 				e\EventStr = "load4"
 			ElseIf e\EventStr = "load4"
-				If Music(15) = 0 Then
-					Music(15) = LoadSound("SFX\Music\205.ogg")
-				EndIf
+				;TODO: fix
+				;If Music(15) = 0 Then
+				;	Music(15) = LoadSound("SFX\Music\205.ogg")
+				;EndIf
 				e\EventStr = "load5"
 			ElseIf e\EventStr = "load5"
 				For i = 3 To 6
@@ -245,3 +246,6 @@ Function UpdateEvent_cont_205_1(e.Events)
 	;[End block]
 End Function
 
+
+;~IDEal Editor Parameters:
+;~C#Blitz3D

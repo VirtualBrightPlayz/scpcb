@@ -34,6 +34,7 @@ Function CreateLauncher.Launcher()
 	Next
 	
 	Graphics3DExt(launch\width, launch\height, 0, 2)
+	AppTitle "SCP - Containment Breach Launcher"
 	
 	MenuScale = 1
 	

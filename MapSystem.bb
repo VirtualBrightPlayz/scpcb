@@ -1,3 +1,80 @@
+Include "Rooms/Room_chck_hcz_ez_2.bb"
+Include "Rooms/Room_chck_lcz_hcz_2.bb"
+Include "Rooms/Room_closets_2.bb"
+Include "Rooms/Room_cont_008_1.bb"
+Include "Rooms/Room_cont_012_2.bb"
+Include "Rooms/Room_cont_035_1.bb"
+Include "Rooms/Room_cont_049_2.bb"
+Include "Rooms/Room_cont_079_1.bb"
+Include "Rooms/Room_cont_106_1.bb"
+Include "Rooms/Room_cont_1123_2.bb"
+Include "Rooms/Room_cont_1162_2c.bb"
+Include "Rooms/Room_cont_173_1.bb"
+Include "Rooms/Room_cont_205_1.bb"
+Include "Rooms/Room_cont_500_1499_2.bb"
+Include "Rooms/Room_cont_513_3.bb"
+Include "Rooms/Room_cont_714_860_1025_2.bb"
+Include "Rooms/Room_cont_895_1.bb"
+Include "Rooms/Room_cont_914_1.bb"
+Include "Rooms/Room_cont_966_3.bb"
+Include "Rooms/Room_dimension1499.bb"
+Include "Rooms/Room_end_1.bb"
+Include "Rooms/Room_exit_gatea_1.bb"
+Include "Rooms/Room_exit_gateb_1.bb"
+Include "Rooms/Room_extend_gatea_1.bb"
+Include "Rooms/Room_hll_bench_3.bb"
+Include "Rooms/Room_hll_caf_2.bb"
+Include "Rooms/Room_hll_dirty_3.bb"
+Include "Rooms/Room_hll_ele_2.bb"
+Include "Rooms/Room_hll_fan_2.bb"
+Include "Rooms/Room_hll_gas_2.bb"
+Include "Rooms/Room_hll_gas_3.bb"
+Include "Rooms/Room_hll_lights_2.bb"
+Include "Rooms/Room_hll_lshape_2.bb"
+Include "Rooms/Room_hll_pipes_3.bb"
+Include "Rooms/Room_hll_plain_2.bb"
+Include "Rooms/Room_hll_plain_3.bb"
+Include "Rooms/Room_hll_plain_4.bb"
+Include "Rooms/Room_hll_sl_2.bb"
+Include "Rooms/Room_hll_toilets_2.bb"
+Include "Rooms/Room_intro.bb"
+Include "Rooms/Room_lck_096_2c.bb"
+Include "Rooms/Room_lck_air_2.bb"
+Include "Rooms/Room_lck_broke_2c.bb"
+Include "Rooms/Room_lck_cam_2c.bb"
+Include "Rooms/Room_lck_ez_3.bb"
+Include "Rooms/Room_lck_tshape_2.bb"
+Include "Rooms/Room_lifts_1.bb"
+Include "Rooms/Room_off_2level_2.bb"
+Include "Rooms/Room_off_bain_2.bb"
+Include "Rooms/Room_off_gears_may_har_2.bb"
+Include "Rooms/Room_off_glss_3.bb"
+Include "Rooms/Room_off_lower_2.bb"
+Include "Rooms/Room_off_l_conf_2.bb"
+Include "Rooms/Room_off_plain_2.bb"
+Include "Rooms/Room_off_rosewood_2.bb"
+Include "Rooms/Room_pocketdimension.bb"
+Include "Rooms/Room_scp_970_2.bb"
+Include "Rooms/Room_srvr_096_2.bb"
+Include "Rooms/Room_srvr_farm_3.bb"
+Include "Rooms/Room_srvr_lshape_3.bb"
+Include "Rooms/Room_srvr_pc_2.bb"
+Include "Rooms/Room_strg_939_2.bb"
+Include "Rooms/Room_strg_elec_2c.bb"
+Include "Rooms/Room_test_682_2.bb"
+Include "Rooms/Room_test_860_2.bb"
+Include "Rooms/Room_test_smallwindow_2.bb"
+Include "Rooms/Room_tnnl_elec_2.bb"
+Include "Rooms/Room_tnnl_maintenance_2.bb"
+Include "Rooms/Room_tnnl_pipes_2.bb"
+Include "Rooms/Room_tnnl_plain_2.bb"
+Include "Rooms/Room_tnnl_plain_3.bb"
+Include "Rooms/Room_tnnl_plain_4.bb"
+Include "Rooms/Room_hll_tsl.bb"
+Include "Rooms/Room_tnnl_nuke_2.bb"
+
+Include "Skybox.bb"
+
 Type Materials
 	Field name$
 	Field Diff
@@ -749,9 +826,6 @@ Function LoadRoomMeshes()
 	Next
 End Function
 
-
-LoadRoomTemplates("Data\rooms.ini")
-
 Const MAP_SIZE = 19
 Global RoomScale# = 8.0 / 2048.0
 Global ZONEAMOUNT.MarkedForRemoval
@@ -766,9 +840,9 @@ Global Sky%
 Global HideDistance# = 15.0
 
 ;TODO: remove/replace with functions
-Global SecondaryLightOn# = True
-Global RemoteDoorOn = True
-Global Contained106 = False
+Global SecondaryLightOn#
+Global RemoteDoorOn
+Global Contained106
 
 Type Rooms
 	Field zone%
@@ -898,80 +972,6 @@ Function CreateRoom.Rooms(rt.RoomTemplates, x#, y#, z#)
 	Return r
 End Function
 
-Include "Rooms/Room_chck_hcz_ez_2.bb"
-Include "Rooms/Room_chck_lcz_hcz_2.bb"
-Include "Rooms/Room_closets_2.bb"
-Include "Rooms/Room_cont_008_1.bb"
-Include "Rooms/Room_cont_012_2.bb"
-Include "Rooms/Room_cont_035_1.bb"
-Include "Rooms/Room_cont_049_2.bb"
-Include "Rooms/Room_cont_079_1.bb"
-Include "Rooms/Room_cont_106_1.bb"
-Include "Rooms/Room_cont_1123_2.bb"
-Include "Rooms/Room_cont_1162_2c.bb"
-Include "Rooms/Room_cont_173_1.bb"
-Include "Rooms/Room_cont_205_1.bb"
-Include "Rooms/Room_cont_500_1499_2.bb"
-Include "Rooms/Room_cont_513_3.bb"
-Include "Rooms/Room_cont_714_860_1025_2.bb"
-Include "Rooms/Room_cont_895_1.bb"
-Include "Rooms/Room_cont_914_1.bb"
-Include "Rooms/Room_cont_966_3.bb"
-Include "Rooms/Room_dimension1499.bb"
-Include "Rooms/Room_end_1.bb"
-Include "Rooms/Room_exit_gatea_1.bb"
-Include "Rooms/Room_exit_gateb_1.bb"
-Include "Rooms/Room_extend_gatea_1.bb"
-Include "Rooms/Room_hll_bench_3.bb"
-Include "Rooms/Room_hll_caf_2.bb"
-Include "Rooms/Room_hll_dirty_3.bb"
-Include "Rooms/Room_hll_ele_2.bb"
-Include "Rooms/Room_hll_fan_2.bb"
-Include "Rooms/Room_hll_gas_2.bb"
-Include "Rooms/Room_hll_gas_3.bb"
-Include "Rooms/Room_hll_lights_2.bb"
-Include "Rooms/Room_hll_lshape_2.bb"
-Include "Rooms/Room_hll_pipes_3.bb"
-Include "Rooms/Room_hll_plain_2.bb"
-Include "Rooms/Room_hll_plain_3.bb"
-Include "Rooms/Room_hll_plain_4.bb"
-Include "Rooms/Room_hll_sl_2.bb"
-Include "Rooms/Room_hll_toilets_2.bb"
-Include "Rooms/Room_intro.bb"
-Include "Rooms/Room_lck_096_2c.bb"
-Include "Rooms/Room_lck_air_2.bb"
-Include "Rooms/Room_lck_broke_2c.bb"
-Include "Rooms/Room_lck_cam_2c.bb"
-Include "Rooms/Room_lck_ez_3.bb"
-Include "Rooms/Room_lck_tshape_2.bb"
-Include "Rooms/Room_lifts_1.bb"
-Include "Rooms/Room_off_2level_2.bb"
-Include "Rooms/Room_off_bain_2.bb"
-Include "Rooms/Room_off_gears_may_har_2.bb"
-Include "Rooms/Room_off_glss_3.bb"
-Include "Rooms/Room_off_lower_2.bb"
-Include "Rooms/Room_off_l_conf_2.bb"
-Include "Rooms/Room_off_plain_2.bb"
-Include "Rooms/Room_off_rosewood_2.bb"
-Include "Rooms/Room_pocketdimension.bb"
-Include "Rooms/Room_scp_970_2.bb"
-Include "Rooms/Room_srvr_096_2.bb"
-Include "Rooms/Room_srvr_farm_3.bb"
-Include "Rooms/Room_srvr_lshape_3.bb"
-Include "Rooms/Room_srvr_pc_2.bb"
-Include "Rooms/Room_strg_939_2.bb"
-Include "Rooms/Room_strg_elec_2c.bb"
-Include "Rooms/Room_test_682_2.bb"
-Include "Rooms/Room_test_860_2.bb"
-Include "Rooms/Room_test_smallwindow_2.bb"
-Include "Rooms/Room_tnnl_elec_2.bb"
-Include "Rooms/Room_tnnl_maintenance_2.bb"
-Include "Rooms/Room_tnnl_pipes_2.bb"
-Include "Rooms/Room_tnnl_plain_2.bb"
-Include "Rooms/Room_tnnl_plain_3.bb"
-Include "Rooms/Room_tnnl_plain_4.bb"
-Include "Rooms/Room_hll_tsl.bb"
-Include "Rooms/Room_tnnl_nuke_2.bb"
 
 Function FillRoom(r.Rooms)
 	Select r\RoomTemplate\Name
@@ -1807,6 +1807,7 @@ Function FindPath(n.NPCs, x#, y#, z#)
 	EndIf
 	
 End Function
+
 Function CreateLine(x1#,y1#,z1#, x2#,y2#,z2#, mesh=0)
 	Local surf, verts
 	
@@ -2318,6 +2319,7 @@ Function UpdateButton(obj)
 	
 End Function
 
+;TODO: rewrite elevator code, use only one function
 Function UpdateElevators#(State#, door1.Doors, door2.Doors, room1, room2, event.Events)
 	Local x#, z#, n.NPCs, NPC_inside.NPCs
 	
@@ -2682,45 +2684,6 @@ End Function
 
 ;-------------------------------------------------------------------------------------------------------
 
-Function DetermineRoomTypes(layout.IntArray,mapDim%)
-	Local horNeighborCount% = 0
-	Local vertNeighborCount% = 0
-	For y% = 0 To mapDim-1
-		For x% = 0 To mapDim-1
-			If GetIntArrayElem(layout,x,y)<>0 Then
-				horNeighborCount = 0
-				If x>0 Then
-					horNeighborCount=horNeighborCount+(GetIntArrayElem(layout,x-1,y)<>0)
-				EndIf
-				If x<mapDim-1 Then
-					horNeighborCount=horNeighborCount+(GetIntArrayElem(layout,x+1,y)<>0)
-				EndIf
-				vertNeighborCount = 0
-				If y>0 Then
-					vertNeighborCount=vertNeighborCount+(GetIntArrayElem(layout,x,y-1)<>0)
-				EndIf
-				If y<mapDim-1 Then
-					vertNeighborCount=vertNeighborCount+(GetIntArrayElem(layout,x,y+1)<>0)
-				EndIf
-				
-				If horNeighborCount+vertNeighborCount = 1 Then
-					SetIntArrayElem(layout,ROOM1,x,y)
-				ElseIf horNeighborCount+vertNeighborCount = 3 Then
-					SetIntArrayElem(layout,ROOM3,x,y)
-				ElseIf horNeighborCount+vertNeighborCount = 4 Then
-					SetIntArrayElem(layout,ROOM4,x,y)
-				ElseIf (horNeighborCount = 1) And (vertNeighborCount = 1) Then
-					SetIntArrayElem(layout,ROOM2C,x,y)
-				ElseIf (horNeighborCount = 2) Xor (vertNeighborCount = 2) Then
-					SetIntArrayElem(layout,ROOM2,x,y)
-				Else
-					SetIntArrayElem(layout,0,x,y)
-				EndIf
-			EndIf
-		Next
-	Next
-End Function
-
 Global MapRooms.IntArray = Null ;TODO: replace with an array of the proper type after moving to C++
 
 Function CreateMap()
@@ -3015,6 +2978,45 @@ Function CreateMap()
 	Next
 End Function
 
+Function DetermineRoomTypes(layout.IntArray,mapDim%)
+	Local horNeighborCount% = 0
+	Local vertNeighborCount% = 0
+	For y% = 0 To mapDim-1
+		For x% = 0 To mapDim-1
+			If GetIntArrayElem(layout,x,y)<>0 Then
+				horNeighborCount = 0
+				If x>0 Then
+					horNeighborCount=horNeighborCount+(GetIntArrayElem(layout,x-1,y)<>0)
+				EndIf
+				If x<mapDim-1 Then
+					horNeighborCount=horNeighborCount+(GetIntArrayElem(layout,x+1,y)<>0)
+				EndIf
+				vertNeighborCount = 0
+				If y>0 Then
+					vertNeighborCount=vertNeighborCount+(GetIntArrayElem(layout,x,y-1)<>0)
+				EndIf
+				If y<mapDim-1 Then
+					vertNeighborCount=vertNeighborCount+(GetIntArrayElem(layout,x,y+1)<>0)
+				EndIf
+				
+				If horNeighborCount+vertNeighborCount = 1 Then
+					SetIntArrayElem(layout,ROOM1,x,y)
+				ElseIf horNeighborCount+vertNeighborCount = 3 Then
+					SetIntArrayElem(layout,ROOM3,x,y)
+				ElseIf horNeighborCount+vertNeighborCount = 4 Then
+					SetIntArrayElem(layout,ROOM4,x,y)
+				ElseIf (horNeighborCount = 1) And (vertNeighborCount = 1) Then
+					SetIntArrayElem(layout,ROOM2C,x,y)
+				ElseIf (horNeighborCount = 2) Xor (vertNeighborCount = 2) Then
+					SetIntArrayElem(layout,ROOM2,x,y)
+				Else
+					SetIntArrayElem(layout,0,x,y)
+				EndIf
+			EndIf
+		Next
+	Next
+End Function
+
 Function DetermineRotation%(layout.IntArray,x%,y%)
 	Select GetIntArrayElem(layout,x,y)
 		Case ROOM1
@@ -3167,10 +3169,6 @@ Function load_terrain(hmap,yscale#=0.7,t1%,t2%,mask%)
 	Return mesh
 End Function
 
-
-
-Include "Skybox.bb"
-
 ;TODO: Move to checkpoint event.
 Function UpdateCheckpointMonitors(numb%)
 	Local i,sf,b,t1
@@ -3178,10 +3176,10 @@ Function UpdateCheckpointMonitors(numb%)
 	
 	If numb% = 0
 		entity% = Monitor2
-		UpdateCheckpoint1 = True
+		;UpdateCheckpoint1 = True
 	Else
 		entity% = Monitor3
-		UpdateCheckpoint2 = True
+		;UpdateCheckpoint2 = True
 	EndIf
 	
 	For i = 2 To CountSurfaces(entity)
@@ -3221,11 +3219,11 @@ Function TurnCheckpointMonitorsOff(numb%)
 	
 	If numb% = 0
 		entity% = Monitor2
-		UpdateCheckpoint1 = False
+		;UpdateCheckpoint1 = False
 		MonitorTimer# = 0.0
 	Else
 		entity% = Monitor3
-		UpdateCheckpoint2 = False
+		;UpdateCheckpoint2 = False
 		MonitorTimer2# = 0.0
 	EndIf
 	
@@ -3250,20 +3248,20 @@ End Function
 
 Function TimeCheckpointMonitors()
 	
-	If UpdateCheckpoint1
-		If MonitorTimer < 100.0
-			MonitorTimer# = Min(MonitorTimer# + timing\tickDuration,100.0)
-		Else
-			MonitorTimer# = 0.0
-		EndIf
-	EndIf
-	If UpdateCheckpoint2
-		If MonitorTimer2 < 100.0
-			MonitorTimer2# = Min(MonitorTimer2# + timing\tickDuration,100.0)
-		Else
-			MonitorTimer2# = 0.0
-		EndIf
-	EndIf
+;	If UpdateCheckpoint1
+;		If MonitorTimer < 100.0
+;			MonitorTimer# = Min(MonitorTimer# + timing\tickDuration,100.0)
+;		Else
+;			MonitorTimer# = 0.0
+;		EndIf
+;	EndIf
+;	If UpdateCheckpoint2
+;		If MonitorTimer2 < 100.0
+;			MonitorTimer2# = Min(MonitorTimer2# + timing\tickDuration,100.0)
+;		Else
+;			MonitorTimer2# = 0.0
+;		EndIf
+;	EndIf
 	
 End Function
 
@@ -3532,5 +3530,8 @@ Function FindAndDeleteFakeMonitor(r.Rooms,x#,y#,z#,Amount%)
 End Function
 
 ;~IDEal Editor Parameters:
-;~F#0#8#2B#3A#48#4F#60#68#70#200#210#221
+;~F#4D#55#78#87#95#9C#AD#B5#BD#24D#25D#26E#28D#2A6#2AE#319#327#34E#383#38B
+;~F#3A0#3AB#3B5#3CF#489#515#521#562#56D#57E#583#592#5A9#62B#630#712#730#737#73D#74B
+;~F#76B#78C#7BF#8C4#8FD#912#9D4#A69#A6E#A80#BA4#BCB#BFC#C00#C07#CC3#CD5#CDC#D0C#D13
+;~F#D41#D8C#D9A#DA1#DA7#DB1#DB7
 ;~C#Blitz3D
