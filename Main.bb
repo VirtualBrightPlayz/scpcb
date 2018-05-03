@@ -131,12 +131,11 @@ Function VerifyResolution%()
 	userOptions\screenWidth = GfxModeWidth(selectedMode)
 	userOptions\screenHeight = GfxModeHeight(selectedMode)
 
-	Return selectedMode
+	Return selectedMode-1
 End Function
 
-;TODO: FreeFont Font5. Make it local.
-Global Font1%, Font2%, Font3%, Font4%, Font5%
-Global ConsoleFont%
+Global Font1.MarkedForRemoval, Font2.MarkedForRemoval, Font3.MarkedForRemoval, Font4.MarkedForRemoval, Font5.MarkedForRemoval
+Global ConsoleFont.MarkedForRemoval
 
 ;TODO: cleanup
 Type Timing
@@ -351,28 +350,33 @@ Global ApacheObj%,ApacheRotorObj%
 Global UnableToMove.MarkedForRemoval
 
 Function Main%()
-	Local selectedGFXMode% = VerifyResolution()
-	
 	keyBinds.keyBinds = New keyBinds
 	userOptions.Options = New Options
 	LoadOptionsINI()
 	
+	timing = New Timing
+	SetTickrate(60)
+	
 	If userOptions\launcher Then
+		CurrGameState = GAMESTATE_LAUNCHER
 		launcher = CreateLauncher()
-		
-		launcher\selectedGFXMode = selectedGFXMode
-		
-		DestroyLauncher(launcher)
+	Else
+		InitializeMainGame()
 	EndIf
+	
+	Repeat
+		UpdateGame()
+	Forever
+End Function
+
+Function InitializeMainGame()
+	CurrGameState = GAMESTATE_MAINMENU
+	CurrGameSubstate = GAMESUBSTATE_MAINMENU_MAIN
 	
 	Graphics3DExt(userOptions\screenWidth, userOptions\screenHeight, 0, (1 + (Not userOptions\fullscreen)))
 	AppTitle "SCP - Containment Breach v"+VERSION
 	
 	MenuScale = (userOptions\screenHeight / 1024.0)
-	
-	timing = New Timing
-	
-	SetTickrate(60)
 	
 	CurrFrameLimit = userOptions\framelimit
 	
@@ -387,22 +391,11 @@ Function Main%()
 	LoadingBack = LoadImage("Loadingscreens\loadingback.jpg")
 	InitLoadingScreens("Loadingscreens\loadingscreens.ini")
 	
-	;TODO: Assets.bb
-	;For some reason, Blitz3D doesn't load fonts that have filenames that
-	;don't match their "internal name" (i.e. their display name in applications
-	;like Word and such). As a workaround, I moved the files and renamed them so they
-	;can load without FastText.
-	Font1% = LoadFont("GFX\font\cour\Courier New.ttf", Int(18 * MenuScale), 0,0,0)
-	Font2% = LoadFont("GFX\font\courbd\Courier New.ttf", Int(58 * MenuScale), 0,0,0)
-	Font3% = LoadFont("GFX\font\DS-DIGI\DS-Digital.ttf", Int(22 * MenuScale), 0,0,0)
-	Font4% = LoadFont("GFX\font\DS-DIGI\DS-Digital.ttf", Int(60 * MenuScale), 0,0,0)
-	Font5% = LoadFont("GFX\font\Journal\Journal.ttf", Int(58 * MenuScale), 0,0,0)
+	InitializeUIAssets()
 	
-	InitializeUITextures()
+	uiAssets\consoleFont% = LoadFont("Blitz", Int(20 * MenuScale), 0,0,0)
 	
-	ConsoleFont% = LoadFont("Blitz", Int(20 * MenuScale), 0,0,0)
-	
-	SetFont Font2
+	SetFont uiAssets\font[1]
 	
 	;TODO: Assets.bb
 	BlinkMeterIMG% = LoadImage("GFX\blinkmeter.jpg")
@@ -584,14 +577,12 @@ Function Main%()
 	
 	DrawLoading(90, True)
 	
+	LoadSaveGames()
+	
 	FlushKeys()
 	FlushMouse()
 	
 	DrawLoading(100, True)
-	
-	Repeat
-		UpdateGame()
-	Forever
 End Function
 
 ;----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -639,7 +630,9 @@ Function UpdateGame()
 		
 		;UpdateMusic() ;TODO: fix
 		
-		If CurrGameState=GAMESTATE_MAINMENU Then
+		If CurrGameState=GAMESTATE_LAUNCHER Then
+			UpdateLauncher()
+		ElseIf CurrGameState=GAMESTATE_MAINMENU Then
 			;TODO: Re-implement.
 ;			If ShouldPlay = 21 Then
 ;				If TempSoundCHN = 0 Then
@@ -975,7 +968,9 @@ Function UpdateGame()
 		End If
 	Wend
 	
-	If CurrGameState=GAMESTATE_MAINMENU Then
+	If CurrGameState=GAMESTATE_LAUNCHER Then
+		If launcher<>Null Then DrawLauncher()
+	ElseIf CurrGameState=GAMESTATE_MAINMENU Then
 		DrawMainMenu()
 	Else
 		RenderWorld2()
@@ -988,9 +983,9 @@ Function UpdateGame()
 		
 		Color 255, 255, 255
 		If userOptions\showFPS Then
-			SetFont ConsoleFont
+			SetFont uiAssets\consoleFont
 			Text 20, 20, "FPS: " + Int(timing\fps)
-			SetFont Font1
+			SetFont uiAssets\font[0]
 		EndIf
 	EndIf
 	
@@ -1113,9 +1108,9 @@ End Function
 ;				DrawImage PauseMenuIMG, x, y
 ;				
 ;				Color(255, 255, 255)
-;				SetFont Font2
+;				SetFont uiAssets\font[1]
 ;				Text(x + width / 2 + 40*MenuScale, y + 20*MenuScale, "THE END", True)
-;				SetFont Font1
+;				SetFont uiAssets\font[0]
 
 ;					x = x+132*MenuScale
 ;					y = y+122*MenuScale
@@ -1169,7 +1164,7 @@ End Function
 ;	
 ;	If userOptions\fullscreen Then DrawImage CursorIMG, MouseX(),MouseY()
 ;	
-;	SetFont Font1
+;	SetFont uiAssets\font[0]
 ;End Function
 ;[End Block]
 
@@ -1225,7 +1220,7 @@ Function UpdateGUI()
 			x = userOptions\screenWidth/2-ImageWidth(KeypadHUD)*scale/2
 			y = userOptions\screenHeight/2-ImageHeight(KeypadHUD)*scale/2		
 			
-			SetFont Font3
+			SetFont uiAssets\font[2]
 			If KeypadMSG <> "" Then 
 				KeypadTimer = KeypadTimer-timing\tickDuration
 				
@@ -1399,7 +1394,7 @@ Function DrawGUI()
 			DrawImage(HandIcon, x, y)
 			Color 0, 0, 0
 			Rect(x + 4, y + 4, 64 - 8, 64 - 8)
-			DrawImage(uiTextures\arrow[i], x + 21, y + 21)
+			DrawImage(uiAssets\arrow[i], x + 21, y + 21)
 			DrawArrowIcon(i) = False
 		End If
 	Next
@@ -1451,7 +1446,7 @@ Function DrawGUI()
 		
 		If DebugHUD Then
 			Color 255, 255, 255
-			SetFont ConsoleFont
+			SetFont uiAssets\consoleFont
 			
 			;Text x + 250, 50, "Zone: " + (EntityZ(mainPlayer\collider)/8.0)
 			Text x - 50, 50, "Player Position: (" + f2s(EntityX(mainPlayer\collider), 3) + ", " + f2s(EntityY(mainPlayer\collider), 3) + ", " + f2s(EntityZ(mainPlayer\collider), 3) + "), speed: "+f2s(mainPlayer\dropSpeed, 3)
@@ -1497,7 +1492,7 @@ Function DrawGUI()
 				EndIf
 			Next
 			
-			SetFont Font1
+			SetFont uiAssets\font[0]
 		EndIf
 		
 	EndIf
@@ -1528,10 +1523,10 @@ Function DrawGUI()
 			x = userOptions\screenWidth/2-ImageWidth(KeypadHUD)*scale/2
 			y = userOptions\screenHeight/2-ImageHeight(KeypadHUD)*scale/2		
 			
-			SetFont Font3
+			SetFont uiAssets\font[2]
 			If KeypadMSG = "" Then
 				Text userOptions\screenWidth/2, y+70*scale, "ACCESS CODE: ",True,True	
-				SetFont Font4
+				SetFont uiAssets\font[3]
 				Text userOptions\screenWidth/2, y+124*scale, KeypadInput,True,True	
 			EndIf
 			
@@ -1562,10 +1557,10 @@ Function DrawPauseMenu()
 		If mainPlayer\dead Then
 			titleText = "YOU DIED"
 		End If
-		SetFont Font2
+		SetFont uiAssets\font[1]
 		Text(x, y-(122-45)*MenuScale, titleText,False,True)
 		
-		SetFont Font1
+		SetFont uiAssets\font[0]
 		Text x, y, "Difficulty: "+SelectedDifficulty\name
 		Text x, y+20*MenuScale, "Save: "+CurrSave
 		Text x, y+40*MenuScale, "Map seed: "+RandomSeed
@@ -1583,7 +1578,7 @@ Function DrawPauseMenu()
 				Else
 					DrawFrame(x,y,390*MenuScale, 60*MenuScale)
 					Color (100, 100, 100)
-					SetFont Font2
+					SetFont uiAssets\font[1]
 					Text(x + (390*MenuScale) / 2, y + (60*MenuScale) / 2, "Load Game", True, True)
 				EndIf
 				y = y + 75*MenuScale
@@ -1606,14 +1601,14 @@ Function DrawPauseMenu()
 			y = y + 80*MenuScale
 		EndIf
 		
-		SetFont Font1
+		SetFont uiAssets\font[0]
 		If mainPlayer\dead Then RowText(DeathMSG$, x, y + 80*MenuScale, 390*MenuScale, 600*MenuScale)
 		;EndIf
 		
 		If userOptions\fullscreen Then DrawImage CursorIMG, MouseX(),MouseY()
 	EndIf
 	
-	SetFont Font1
+	SetFont uiAssets\font[0]
 	
 End Function
 
@@ -1655,7 +1650,7 @@ Function UpdatePauseMenu()
 						LoadGame(SavePath + CurrSave + "\",True)
 						
 						MoveMouse viewport_center_x,viewport_center_y
-						SetFont Font1
+						SetFont uiAssets\font[0]
 						HidePointer ()
 						
 						FlushKeys()
@@ -1703,7 +1698,7 @@ Function UpdatePauseMenu()
 					LoadGame(SavePath + CurrSave + "\",True)
 					
 					MoveMouse viewport_center_x,viewport_center_y
-					SetFont Font1
+					SetFont uiAssets\font[0]
 					HidePointer ()
 					
 					FlushKeys()
@@ -1744,7 +1739,7 @@ Function UpdatePauseMenu()
 		EndIf
 	EndIf
 	
-	SetFont Font1
+	SetFont uiAssets\font[0]
 	
 End Function
 
@@ -2119,7 +2114,7 @@ Function RenderWorld2()
 			
 			Color 255,255,255
 			
-			SetFont Font3
+			SetFont uiAssets\font[2]
 			
 			Text userOptions\screenWidth/2,20*MenuScale,"REFRESHING DATA IN",True,False
 			
@@ -2199,7 +2194,7 @@ Function RenderWorld2()
 	If mainPlayer\blinkTimer < - 16 Or mainPlayer\blinkTimer > - 6
 		If (wornItem<>Null) And (hasBattery=1) And ((TimeInPosMilliSecs() Mod 800) < 400) Then
 			Color 255,0,0
-			SetFont Font3
+			SetFont uiAssets\font[2]
 			
 			Text userOptions\screenWidth/2,20*MenuScale,"WARNING: LOW BATTERY",True,False
 			Color 255,255,255
@@ -2271,6 +2266,6 @@ Function CheckTriggers$()
 End Function
 
 ;~IDEal Editor Parameters:
-;~F#5#75#8D#257#40D#499#52F#608#653#6D6#6E1#6E5#70F#78E#79D#7BB#7EA#7F1#7FF#8A1
-;~F#8C3
+;~F#5#8C#97#9B#A3#408#494#52A#603#64E#6D1#6DC#6E0#70A#789#798#7B6#7E5#7EC#7FA
+;~F#89C#8BE
 ;~C#Blitz3D

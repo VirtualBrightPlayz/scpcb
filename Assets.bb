@@ -354,7 +354,7 @@ Function InitNewGame()
 	
 	MoveMouse viewport_center_x,viewport_center_y;320, 240
 	
-	SetFont Font1
+	SetFont uiAssets\font[0]
 	
 	HidePointer()
 	
@@ -411,7 +411,7 @@ Function InitLoadGame()
 	
 	MoveMouse viewport_center_x,viewport_center_y
 	
-	SetFont Font1
+	SetFont uiAssets\font[0]
 	
 	HidePointer ()
 	

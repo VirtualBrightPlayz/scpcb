@@ -11,6 +11,7 @@ Const GAMESTATE_CONSOLE% = 3
 Const GAMESTATE_INVENTORY% = 4
 Const GAMESTATE_SCP294% = 5
 Const GAMESTATE_ENDING% = 6
+Const GAMESTATE_LAUNCHER% = 7
 
 ;Main menu substates
 Const GAMESUBSTATE_MAINMENU_MAIN% = 0
@@ -43,16 +44,20 @@ Global MenuScale#
 ;TODO: Assets.bb
 Dim DrawArrowIcon%(4)
 
-Type UITextures
+Type UIAssets
 	Field back%
 	Field scpText%
 	Field tileWhite%
 	Field tileBlack%
 	Field scp173%
 	Field arrow%[4]
+	
+	;TODO: FreeFont uiAssets\font[4]. Make it local.
+	Field font%[5]
+	Field consoleFont%
 End Type
 
-Global uiTextures.UITextures
+Global uiAssets.UIAssets
 
 Global QuickLoadIcon.MarkedForRemoval
 
@@ -89,27 +94,53 @@ Const MAXSAVEDMAPS = 20
 Dim SavedMaps$(MAXSAVEDMAPS)
 Global SelectedMap$
 
-LoadSaveGames()
-
-Function InitializeUITextures()
-	uiTextures = New UITextures
+Function InitializeUIAssets()
+	uiAssets = New UIAssets
 	
-	uiTextures\back = LoadImage("GFX\menu\back.jpg")
-	uiTextures\scpText = LoadImage("GFX\menu\scptext.jpg")
-	uiTextures\scp173 = LoadImage("GFX\menu\173back.jpg")
-	uiTextures\tileWhite = LoadImage("GFX\menu\menuwhite.jpg")
-	uiTextures\tileBlack = LoadImage("GFX\menu\menublack.jpg")
-	MaskImage uiTextures\tileBlack, 255,255,0
+	uiAssets\back = LoadImage("GFX\menu\back.jpg")
+	uiAssets\scpText = LoadImage("GFX\menu\scptext.jpg")
+	uiAssets\scp173 = LoadImage("GFX\menu\173back.jpg")
+	uiAssets\tileWhite = LoadImage("GFX\menu\menuwhite.jpg")
+	uiAssets\tileBlack = LoadImage("GFX\menu\menublack.jpg")
+	MaskImage uiAssets\tileBlack, 255,255,0
 	
-	ResizeImage(uiTextures\back, ImageWidth(uiTextures\back) * MenuScale, ImageHeight(uiTextures\back) * MenuScale)
-	ResizeImage(uiTextures\scpText, ImageWidth(uiTextures\scpText) * MenuScale, ImageHeight(uiTextures\scpText) * MenuScale)
-	ResizeImage(uiTextures\scp173, ImageWidth(uiTextures\scp173) * MenuScale, ImageHeight(uiTextures\scp173) * MenuScale)
+	ResizeImage(uiAssets\back, ImageWidth(uiAssets\back) * MenuScale, ImageHeight(uiAssets\back) * MenuScale)
+	ResizeImage(uiAssets\scpText, ImageWidth(uiAssets\scpText) * MenuScale, ImageHeight(uiAssets\scpText) * MenuScale)
+	ResizeImage(uiAssets\scp173, ImageWidth(uiAssets\scp173) * MenuScale, ImageHeight(uiAssets\scp173) * MenuScale)
 	
 	For i = 0 To 3
-		uiTextures\arrow[i] = LoadImage("GFX\menu\arrow.png")
-		RotateImage(uiTextures\arrow[i], 90 * i)
-		HandleImage(uiTextures\arrow[i], 0, 0)
+		uiAssets\arrow[i] = LoadImage("GFX\menu\arrow.png")
+		RotateImage(uiAssets\arrow[i], 90 * i)
+		HandleImage(uiAssets\arrow[i], 0, 0)
 	Next
+	
+	;For some reason, Blitz3D doesn't load fonts that have filenames that
+	;don't match their "internal name" (i.e. their display name in applications
+	;like Word and such). As a workaround, I moved the files and renamed them so they
+	;can load without FastText.
+	uiAssets\font[0] = LoadFont("GFX\font\cour\Courier New.ttf", Int(18 * MenuScale), 0,0,0)
+	uiAssets\font[1] = LoadFont("GFX\font\courbd\Courier New.ttf", Int(58 * MenuScale), 0,0,0)
+	uiAssets\font[2] = LoadFont("GFX\font\DS-DIGI\DS-Digital.ttf", Int(22 * MenuScale), 0,0,0)
+	uiAssets\font[3] = LoadFont("GFX\font\DS-DIGI\DS-Digital.ttf", Int(60 * MenuScale), 0,0,0)
+	uiAssets\font[4] = LoadFont("GFX\font\Journal\Journal.ttf", Int(58 * MenuScale), 0,0,0)
+End Function
+
+Function ReleaseUIAssets()
+	FreeImage(uiAssets\back)
+	FreeImage(uiAssets\scpText)
+	FreeImage(uiAssets\scp173)
+	FreeImage(uiAssets\tileWhite)
+	FreeImage(uiAssets\tileBlack)
+	
+	For i = 0 To 3
+		FreeImage(uiAssets\arrow[i])
+	Next
+	
+	For i = 0 To 4
+		FreeFont(uiAssets\font[i])
+	Next
+	
+	Delete uiAssets
 End Function
 
 Function UpdateMainMenu()
@@ -259,7 +290,7 @@ Function UpdateMainMenu()
 					
 					;Other factor's difficulty
 					If MouseHit1 Then
-						If MouseOn(x + 155 * MenuScale, y+251*MenuScale, ImageWidth(uiTextures\arrow[1]), ImageHeight(uiTextures\arrow[1])) Then
+						If MouseOn(x + 155 * MenuScale, y+251*MenuScale, ImageWidth(uiAssets\arrow[1]), ImageHeight(uiAssets\arrow[1])) Then
 							If SelectedDifficulty\otherFactors < HARD
 								SelectedDifficulty\otherFactors = SelectedDifficulty\otherFactors + 1
 							Else
@@ -564,10 +595,10 @@ Function DrawMainMenu()
 	
 	ShowPointer()
 	
-	DrawImage(uiTextures\back, 0, 0)
+	DrawImage(uiAssets\back, 0, 0)
 	
 	If (TimeInPosMilliSecs() Mod MenuBlinkTimer(0)) >= Rand(MenuBlinkDuration(0)) Then
-		DrawImage(uiTextures\scp173, userOptions\screenWidth - ImageWidth(uiTextures\scp173), userOptions\screenHeight - ImageHeight(uiTextures\scp173))
+		DrawImage(uiAssets\scp173, userOptions\screenWidth - ImageWidth(uiAssets\scp173), userOptions\screenHeight - ImageHeight(uiAssets\scp173))
 	EndIf
 	
 	If Rand(300) = 1 Then
@@ -575,7 +606,7 @@ Function DrawMainMenu()
 		MenuBlinkDuration(0) = Rand(200, 500)
 	End If
 	
-	SetFont Font1
+	SetFont uiAssets\font[0]
 	
 	MenuBlinkTimer(1)=MenuBlinkTimer(1)-timing\tickDuration
 	If MenuBlinkTimer(1) < MenuBlinkDuration(1) Then
@@ -620,12 +651,12 @@ Function DrawMainMenu()
 		EndIf
 	EndIf
 	
-	SetFont Font2
+	SetFont uiAssets\font[1]
 	
-	DrawImage(uiTextures\scpText, userOptions\screenWidth / 2 - ImageWidth(uiTextures\scpText) / 2, userOptions\screenHeight - 20 * MenuScale - ImageHeight(uiTextures\scpText))
+	DrawImage(uiAssets\scpText, userOptions\screenWidth / 2 - ImageWidth(uiAssets\scpText) / 2, userOptions\screenHeight - 20 * MenuScale - ImageHeight(uiAssets\scpText))
 	
 	If userOptions\screenWidth > 1240 * MenuScale Then
-		DrawTiledImageRect(uiTextures\tileWhite, 0, 5, 512, 7 * MenuScale, 985.0 * MenuScale, 407.0 * MenuScale, (userOptions\screenWidth - 1240 * MenuScale) + 300, 7 * MenuScale)
+		DrawTiledImageRect(uiAssets\tileWhite, 0, 5, 512, 7 * MenuScale, 985.0 * MenuScale, 407.0 * MenuScale, (userOptions\screenWidth - 1240 * MenuScale) + 300, 7 * MenuScale)
 	EndIf
 	
 	If MainMenuTab = 0 Then
@@ -672,7 +703,7 @@ Function DrawMainMenu()
 				height = 70 * MenuScale
 				
 				Color(255, 255, 255)
-				SetFont Font2
+				SetFont uiAssets\font[1]
 				Text(x + width / 2, y + height / 2, "NEW GAME", True, True)
 				
 				x = 160 * MenuScale
@@ -682,7 +713,7 @@ Function DrawMainMenu()
 				
 				DrawFrame(x, y, width, height)				
 				
-				SetFont Font1
+				SetFont uiAssets\font[0]
 				
 				Text (x + 20 * MenuScale, y + 20 * MenuScale, "Name:")
 				DrawInputBox(x + 150 * MenuScale, y + 15 * MenuScale, 200 * MenuScale, 30 * MenuScale, CurrSave, 1)
@@ -731,7 +762,7 @@ Function DrawMainMenu()
 					
 					;Other factor's difficulty
 					Color 255,255,255
-					DrawImage uiTextures\arrow[1],x + 155 * MenuScale, y+251*MenuScale
+					DrawImage uiAssets\arrow[1],x + 155 * MenuScale, y+251*MenuScale
 					
 					Color 255,255,255
 					Select SelectedDifficulty\otherFactors
@@ -748,7 +779,7 @@ Function DrawMainMenu()
 				
 				DrawUIButton(x, y + height + 20 * MenuScale, 160 * MenuScale, 70 * MenuScale, "Load map", False)
 				
-				SetFont Font2
+				SetFont uiAssets\font[1]
 				
 				DrawUIButton(x + 420 * MenuScale, y + height + 20 * MenuScale, 160 * MenuScale, 70 * MenuScale, "START", False)
 				;[End Block]
@@ -768,7 +799,7 @@ Function DrawMainMenu()
 				height = 70 * MenuScale
 				
 				Color(255, 255, 255)
-				SetFont Font2
+				SetFont uiAssets\font[1]
 				Text(x + width / 2, y + height / 2, "LOAD GAME", True, True)
 				
 				x = 160 * MenuScale
@@ -776,7 +807,7 @@ Function DrawMainMenu()
 				width = 580 * MenuScale
 				height = 296 * MenuScale
 				
-				SetFont Font1	
+				SetFont uiAssets\font[0]	
 				
 				If SaveGameAmount = 0 Then
 					Text (x + 20 * MenuScale, y + 20 * MenuScale, "No saved games.")
@@ -830,7 +861,7 @@ Function DrawMainMenu()
 				height = 70 * MenuScale
 				
 				Color(255, 255, 255)
-				SetFont Font2
+				SetFont uiAssets\font[1]
 				Text(x + width / 2, y + height / 2, "OPTIONS", True, True)
 				
 				x = 160 * MenuScale
@@ -852,7 +883,7 @@ Function DrawMainMenu()
 				ElseIf MainMenuTab = 7
 					Rect x+440*MenuScale,y+15*MenuScale,width/5,height/2,False
 				EndIf
-				SetFont Font1
+				SetFont uiAssets\font[0]
 				y = y + 70 * MenuScale
 				
 				If MainMenuTab = 3 ;Graphics
@@ -891,10 +922,10 @@ Function DrawMainMenu()
 					
 					Color 100,100,100
 					Text(x + 20 * MenuScale, y, "Texture quality:")
-					DrawImage uiTextures\arrow[1],x + 310 * MenuScale, y-4*MenuScale
+					DrawImage uiAssets\arrow[1],x + 310 * MenuScale, y-4*MenuScale
 					
 					Text(x + 340 * MenuScale, y + MenuScale, "DISABLED")
-					If MouseOn(x + 310 * MenuScale, y-4*MenuScale, ImageWidth(uiTextures\arrow[1]),ImageHeight(uiTextures\arrow[1]))
+					If MouseOn(x + 310 * MenuScale, y-4*MenuScale, ImageWidth(uiAssets\arrow[1]),ImageHeight(uiAssets\arrow[1]))
 						DrawTooltip("Not available in this version")
 					EndIf
 					
@@ -1007,16 +1038,16 @@ Function DrawMainMenu()
 				height = 70 * MenuScale
 				
 				Color(255, 255, 255)
-				SetFont Font2
+				SetFont uiAssets\font[1]
 				Text(x + width / 2, y + height / 2, "LOAD MAP", True, True)
-				SetFont Font1
+				SetFont uiAssets\font[0]
 				
 				x = 160 * MenuScale
 				y = y + height + 20 * MenuScale
 				width = 580 * MenuScale
 				height = 350 * MenuScale
 				
-				SetFont Font1
+				SetFont uiAssets\font[0]
 				
 				If SavedMaps(0)="" Then 
 					Text (x + 20 * MenuScale, y + 20 * MenuScale, "No saved maps. Use the Map Creator to create new maps.")
@@ -1047,7 +1078,7 @@ Function DrawMainMenu()
 	
 	If userOptions\fullscreen Then DrawImage CursorIMG, MouseX(),MouseY()
 	
-	SetFont Font1
+	SetFont uiAssets\font[0]
 End Function
 
 Function DrawTiledImageRect(img%, srcX%, srcY%, srcwidth#, srcheight#, x%, y%, width%, height%)
@@ -1210,7 +1241,7 @@ Function DrawLoading(percent%, shortloading=False)
 				EndIf
 			EndIf
 			
-			SetFont Font2
+			SetFont uiAssets\font[1]
 			strtemp$ = ""
 			temp = Rand(2,9)
 			For i = 0 To temp
@@ -1261,20 +1292,20 @@ Function DrawLoading(percent%, shortloading=False)
 			For i = 0 To Rand(10,15);temp
 				strtemp$ = Replace(SelectedLoadingScreen\txt[0],Mid(SelectedLoadingScreen\txt[0],Rand(1,Len(strtemp)-1),1),Chr(Rand(130,250)))
 			Next		
-			SetFont Font1
+			SetFont uiAssets\font[0]
 			RowText(strtemp, userOptions\screenWidth / 2-200, userOptions\screenHeight / 2 +120,400,300,True)		
 		Else
 			
 			Color 0,0,0
-			SetFont Font2
+			SetFont uiAssets\font[1]
 			Text(userOptions\screenWidth / 2 + 1, userOptions\screenHeight / 2 + 80 + 1, SelectedLoadingScreen\title, True, True)
-			SetFont Font1
+			SetFont uiAssets\font[0]
 			RowText(SelectedLoadingScreen\txt[LoadingScreenText], userOptions\screenWidth / 2-200+1, userOptions\screenHeight / 2 +120+1,400,300,True)
 			
 			Color 255,255,255
-			SetFont Font2
+			SetFont uiAssets\font[1]
 			Text(userOptions\screenWidth / 2, userOptions\screenHeight / 2 +80, SelectedLoadingScreen\title, True, True)
-			SetFont Font1
+			SetFont uiAssets\font[0]
 			RowText(SelectedLoadingScreen\txt[LoadingScreenText], userOptions\screenWidth / 2-200, userOptions\screenHeight / 2 +120,400,300,True)
 			
 		EndIf
@@ -1374,7 +1405,7 @@ End Function
 Function DrawInputBox$(x%, y%, width%, height%, Txt$, ID% = 0)
 	;TextBox(x,y,width,height,Txt$)
 	Color (255, 255, 255)
-	DrawTiledImageRect(uiTextures\tileWhite, (x Mod 256), (y Mod 256), 512, 512, x, y, width, height)
+	DrawTiledImageRect(uiAssets\tileWhite, (x Mod 256), (y Mod 256), 512, 512, x, y, width, height)
 	;Rect(x, y, width, height)
 	Color (0, 0, 0)
 	
@@ -1396,9 +1427,9 @@ End Function
 
 Function DrawFrame(x%, y%, width%, height%, xoffset%=0, yoffset%=0)
 	Color 255, 255, 255
-	DrawTiledImageRect(uiTextures\tileWhite, xoffset, (y Mod 256), 512, 512, x, y, width, height)
+	DrawTiledImageRect(uiAssets\tileWhite, xoffset, (y Mod 256), 512, 512, x, y, width, height)
 	
-	DrawTiledImageRect(uiTextures\tileBlack, yoffset, (y Mod 256), 512, 512, x+3*MenuScale, y+3*MenuScale, width-6*MenuScale, height-6*MenuScale)	
+	DrawTiledImageRect(uiAssets\tileBlack, yoffset, (y Mod 256), 512, 512, x+3*MenuScale, y+3*MenuScale, width-6*MenuScale, height-6*MenuScale)	
 End Function
 
 Function DrawUIButton(x%, y%, width%, height%, txt$, bigfont% = True)
@@ -1412,7 +1443,7 @@ Function DrawUIButton(x%, y%, width%, height%, txt$, bigfont% = True)
 	EndIf
 	
 	Color (255, 255, 255)
-	If bigfont Then SetFont Font2 Else SetFont Font1
+	If bigfont Then SetFont uiAssets\font[1] Else SetFont uiAssets\font[0]
 	Text(x + width / 2, y + height / 2, txt, True, True)
 End Function
 
@@ -1433,7 +1464,7 @@ Function DrawUITick(x%, y%, selected%, locked% = False)
 	Local width% = 20 * MenuScale, height% = 20 * MenuScale
 	
 	Color (255, 255, 255)
-	DrawTiledImageRect(uiTextures\tileWhite, (x Mod 256), (y Mod 256), 512, 512, x, y, width, height)
+	DrawTiledImageRect(uiAssets\tileWhite, (x Mod 256), (y Mod 256), 512, 512, x, y, width, height)
 	;Rect(x, y, width, height)
 	
 	Local Highlight% = MouseOn(x, y, width, height) And (Not locked)
@@ -1452,7 +1483,7 @@ Function DrawUITick(x%, y%, selected%, locked% = False)
 		Else
 			Color 200,200,200
 		EndIf
-		DrawTiledImageRect(uiTextures\tileWhite, (x Mod 256), (y Mod 256), 512, 512, x + 4, y + 4, width - 8, height - 8)
+		DrawTiledImageRect(uiAssets\tileWhite, (x Mod 256), (y Mod 256), 512, 512, x + 4, y + 4, width - 8, height - 8)
 		;Rect(x + 4, y + 4, width - 8, height - 8)
 	EndIf
 	
@@ -1581,7 +1612,7 @@ Function DrawTooltip(message$)
 	Rect(MouseX()+20,MouseY(),width,19*scale,True)
 	Color 150,150,150
 	Rect(MouseX()+20,MouseY(),width,19*scale,False)
-	SetFont Font1
+	SetFont uiAssets\font[0]
 	Text(MouseX()+(20*MenuScale)+(width/2),MouseY()+(12*MenuScale), message$, True, True)
 End Function
 
@@ -1590,4 +1621,5 @@ Global QuickLoadPercent_DisplayTimer.MarkedForRemoval
 
 
 ;~IDEal Editor Parameters:
+;~F#91#43B#44D#457#48A#559#56C#57C#593#59A#5A9#5B6#5D4#5E0#5EA#5F8#628#645
 ;~C#Blitz3D

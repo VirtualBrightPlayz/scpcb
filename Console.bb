@@ -36,7 +36,7 @@ End Function
 
 Function DrawConsole()
 	If CurrGameState=GAMESTATE_CONSOLE Then
-		SetFont ConsoleFont
+		SetFont uiAssets\consoleFont
 		
 		Local x% = 0, y% = userOptions\screenHeight-300*MenuScale, width% = userOptions\screenWidth, height% = 300*MenuScale-30*MenuScale
 		
@@ -946,7 +946,7 @@ Function UpdateConsole()
 		EndIf
 	EndIf
 	
-	SetFont Font1
+	SetFont uiAssets\font[0]
 	
 End Function
 
