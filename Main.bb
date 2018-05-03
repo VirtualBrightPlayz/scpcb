@@ -168,6 +168,58 @@ Global MagnetUpSFX%
 Global MagnetDownSFX
 Global FemurBreakerSFX%
 
+Global BurstSFX
+
+Global Death914SFX%
+
+Dim DripSFX%(4)
+
+Global LeverSFX%
+Global LightSFX%
+
+Global ButtGhostSFX%
+
+Dim RadioSFX(5,10)
+
+Global RadioSquelch
+Global RadioStatic
+Global RadioBuzz
+
+Global ElevatorBeepSFX
+Global ElevatorMoveSFX
+
+Dim PickSFX%(10)
+
+;TODO: More Audio.bb
+Global AmbientSFXCHN%, CurrAmbientSFX%
+Dim AmbientSFXAmount(6)
+;0 = light containment, 1 = heavy containment, 2 = entrance
+AmbientSFXAmount(0)=8 : AmbientSFXAmount(1)=11 : AmbientSFXAmount(2)=12
+;3 = general, 4 = pre-breach
+AmbientSFXAmount(3)=15 : AmbientSFXAmount(4)=5
+;5 = forest
+AmbientSFXAmount(5)=10
+
+Dim AmbientSFX%(6, 15)
+
+;TODO: Move to NPCData106.
+Dim OldManSFX.MarkedForRemoval(6)
+;For i = 0 To 2
+;	OldManSFX(i) = LoadSound("SFX\SCP\106\Corrosion" + (i + 1) + ".ogg")
+;Next
+;OldManSFX(3) = LoadSound("SFX\SCP\106\Laugh.ogg")
+;OldManSFX(4) = LoadSound("SFX\SCP\106\Breathing.ogg")
+;OldManSFX(5) = LoadSound("SFX\Room\PocketDimension\Enter.ogg")
+
+;TODO: Most of these sounds are NPC-specific anyway. Divide this up.
+Dim HorrorSFX.MarkedForRemoval(20)
+;For i = 0 To 10
+;	HorrorSFX(i) = LoadSound("SFX\Horror\Horror" + i + ".ogg")
+;Next
+;For i = 14 To 15
+;	HorrorSFX(i) = LoadSound("SFX\Horror\Horror" + i + ".ogg")
+;Next
+
 Function Main%()
 	If userOptions\launcher Then
 		launcher = CreateLauncher()
@@ -281,75 +333,46 @@ Function Main%()
 	
 	MagnetUpSFX% = LoadSound("SFX\Room\106Chamber\MagnetUp.ogg")
 	MagnetDownSFX = LoadSound("SFX\Room\106Chamber\MagnetDown.ogg")
+	
+	BurstSFX = LoadSound("SFX\Room\TunnelBurst.ogg")
+	
+	DrawLoading(20, True)
+	
+	Death914SFX% = LoadSound("SFX\SCP\914\PlayerDeath.ogg")
+	Use914SFX% = LoadSound("SFX\SCP\914\PlayerUse.ogg")
+	
+	For i = 0 To 3
+		DripSFX(i) = LoadSound("SFX\Character\D9341\BloodDrip" + i + ".ogg")
+	Next
+	
+	LeverSFX% = LoadSound("SFX\Interact\LeverFlip.ogg")
+	LightSFX% = LoadSound("SFX\General\LightSwitch.ogg")
+	
+	ButtGhostSFX% = LoadSound("SFX\SCP\Joke\789J.ogg")
+	
+	RadioSFX(1,0) = LoadSound("SFX\Radio\RadioAlarm.ogg")
+	RadioSFX(1,1) = LoadSound("SFX\Radio\RadioAlarm2.ogg")
+	For i = 0 To 8
+		RadioSFX(2,i) = LoadSound("SFX\Radio\scpradio"+i+".ogg")
+	Next
+	RadioSquelch = LoadSound("SFX\Radio\squelch.ogg")
+	RadioStatic = LoadSound("SFX\Radio\static.ogg")
+	RadioBuzz = LoadSound("SFX\Radio\buzz.ogg")
+	
+	ElevatorBeepSFX = LoadSound("SFX\General\Elevator\Beep.ogg"), ElevatorMoveSFX = LoadSound("SFX\General\Elevator\Moving.ogg") 
+	
+	For i = 0 To 3
+		PickSFX(i) = LoadSound("SFX\Interact\PickItem" + i + ".ogg")
+	Next
+	
+	DrawLoading(25, True)
+	
 End Function
 
 ;----------------------------------------------  Sounds -----------------------------------------------------
 
 ;[Block]
 
-Global BurstSFX = LoadSound("SFX\Room\TunnelBurst.ogg")
-
-DrawLoading(20, True)
-
-Global Death914SFX% = LoadSound("SFX\SCP\914\PlayerDeath.ogg"), Use914SFX% = LoadSound("SFX\SCP\914\PlayerUse.ogg")
-
-Dim DripSFX%(4)
-For i = 0 To 3
-	DripSFX(i) = LoadSound("SFX\Character\D9341\BloodDrip" + i + ".ogg")
-Next
-
-Global LeverSFX% = LoadSound("SFX\Interact\LeverFlip.ogg"), LightSFX% = LoadSound("SFX\General\LightSwitch.ogg")
-
-Global ButtGhostSFX% = LoadSound("SFX\SCP\Joke\789J.ogg")
-
-Dim RadioSFX(5,10)
-RadioSFX(1,0) = LoadSound("SFX\Radio\RadioAlarm.ogg")
-RadioSFX(1,1) = LoadSound("SFX\Radio\RadioAlarm2.ogg")
-For i = 0 To 8
-	RadioSFX(2,i) = LoadSound("SFX\Radio\scpradio"+i+".ogg")
-Next
-Global RadioSquelch = LoadSound("SFX\Radio\squelch.ogg")
-Global RadioStatic = LoadSound("SFX\Radio\static.ogg")
-Global RadioBuzz = LoadSound("SFX\Radio\buzz.ogg")
-
-Global ElevatorBeepSFX = LoadSound("SFX\General\Elevator\Beep.ogg"), ElevatorMoveSFX = LoadSound("SFX\General\Elevator\Moving.ogg") 
-
-Dim PickSFX%(10)
-For i = 0 To 3
-	PickSFX(i) = LoadSound("SFX\Interact\PickItem" + i + ".ogg")
-Next
-
-;TODO: More Audio.bb
-Global AmbientSFXCHN%, CurrAmbientSFX%
-Dim AmbientSFXAmount(6)
-;0 = light containment, 1 = heavy containment, 2 = entrance
-AmbientSFXAmount(0)=8 : AmbientSFXAmount(1)=11 : AmbientSFXAmount(2)=12
-;3 = general, 4 = pre-breach
-AmbientSFXAmount(3)=15 : AmbientSFXAmount(4)=5
-;5 = forest
-AmbientSFXAmount(5)=10
-
-Dim AmbientSFX%(6, 15)
-
-;TODO: Move to NPCData106.
-Dim OldManSFX.MarkedForRemoval(6)
-;For i = 0 To 2
-;	OldManSFX(i) = LoadSound("SFX\SCP\106\Corrosion" + (i + 1) + ".ogg")
-;Next
-;OldManSFX(3) = LoadSound("SFX\SCP\106\Laugh.ogg")
-;OldManSFX(4) = LoadSound("SFX\SCP\106\Breathing.ogg")
-;OldManSFX(5) = LoadSound("SFX\Room\PocketDimension\Enter.ogg")
-
-;TODO: Most of these sounds are NPC-specific anyway. Divide this up.
-Dim HorrorSFX.MarkedForRemoval(20)
-;For i = 0 To 10
-;	HorrorSFX(i) = LoadSound("SFX\Horror\Horror" + i + ".ogg")
-;Next
-;For i = 14 To 15
-;	HorrorSFX(i) = LoadSound("SFX\Horror\Horror" + i + ".ogg")
-;Next
-
-DrawLoading(25, True)
 
 ;TODO: Audio.bb
 Dim IntroSFX%(20)
