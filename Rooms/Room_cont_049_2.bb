@@ -220,7 +220,7 @@ Function UpdateEvent_cont_049_2(e.Events)
 						
 						e\room\RoomDoors[4]\open = True
 						PlaySound TeslaPowerUpSFX
-						PlayRangedSound(OpenDoorSFX(0,Rand(0,2)),mainPlayer\cam, e\room\RoomDoors[4]\obj, 6.0)
+						PlayRangedSound_SM(sndManager\openDoor[Rand(0,2)], mainPlayer\cam, e\room\RoomDoors[4]\obj, 6.0)
 						
 						e\room\RoomDoors[1]\open = False
 						e\room\RoomDoors[3]\open = False

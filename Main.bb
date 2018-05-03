@@ -136,10 +136,10 @@ Global TempSoundCHN%
 Global TempSoundIndex% = 0
 
 ;TODO: Use struct of file paths.
-Dim Music%(40)
+Dim Music.MarkedForRemoval(40)
 
 ;TODO: Audio.bb
-Dim OpenDoorSFX%(3,3), CloseDoorSFX%(3,3)
+Dim OpenDoorSFX.MarkedForRemoval(3,3), CloseDoorSFX.MarkedForRemoval(3,3)
 
 ;TODO: Audio.bb
 Global KeyCardSFX1
@@ -276,40 +276,7 @@ Function Main%()
 	
 	Brightness% = 50
 	
-	Music(0) = LoadSound("SFX\Music\The Dread.ogg")
-	Music(1) = LoadSound("SFX\Music\HeavyContainment.ogg") 
-	Music(2) = LoadSound("SFX\Music\EntranceZone.ogg") 
-	;Music(3) = LoadSound("SFX\Music\PD.ogg")
-	;Music(4) = LoadSound("SFX\Music\079.ogg")
-	;Music(5) = LoadSound("SFX\Music\GateB1.ogg")
-	;Music(6) = LoadSound("SFX\Music\GateB2.ogg")
-	;Music(7) = LoadSound("SFX\Music\Room3Storage.ogg") 
-	;Music(8) = LoadSound("SFX\Music\Room049.ogg") 
-	;Music(9) = LoadSound("SFX\Music\8601.ogg") 
-	Music(10) = LoadSound("SFX\Music\106.ogg")
-	Music(11) = LoadSound("SFX\Music\Menu.ogg")
-	;Music(12) = LoadSound("SFX\Music\8601Cancer.ogg")
-	;Music(13) = LoadSound("SFX\Music\Intro.ogg")
-	;Music(15) = LoadSound("SFX\Music\PDTrench.ogg")
-	;Music(15) = LoadSound("SFX\Music\205.ogg")
-	;
-	;Music(18): Dimension1499 normal theme
-	;Music(19): Dimension1499 aggressive theme
-	;Music(20): SCP-049 tension theme (for "room2sl", the bastard)
-	;Music(21): Breath theme after beating the game
-	
 	DrawLoading(10, True)
-	
-	For i = 0 To 2
-		OpenDoorSFX(0,i) = LoadSound("SFX\Door\DoorOpen" + (i + 1) + ".ogg")
-		CloseDoorSFX(0,i) = LoadSound("SFX\Door\DoorClose" + (i + 1) + ".ogg")
-		OpenDoorSFX(2,i) = LoadSound("SFX\Door\Door2Open" + (i + 1) + ".ogg")
-		CloseDoorSFX(2,i) = LoadSound("SFX\Door\Door2Close" + (i + 1) + ".ogg")
-	Next
-	For i = 0 To 1
-		OpenDoorSFX(1,i) = LoadSound("SFX\Door\BigDoorOpen" + (i + 1) + ".ogg")
-		CloseDoorSFX(1,i) = LoadSound("SFX\Door\BigDoorClose" + (i + 1) + ".ogg")
-	Next
 	
 	KeyCardSFX1 = LoadSound("SFX\Interact\KeyCardUse1.ogg")
 	KeyCardSFX2 = LoadSound("SFX\Interact\KeyCardUse2.ogg")
