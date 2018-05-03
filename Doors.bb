@@ -270,15 +270,32 @@ Function UpdateDoors()
 					If d\timerstate > 0 Then
 						d\timerstate = Max(0, d\timerstate - timing\tickDuration)
 						If d\timerstate + timing\tickDuration > 110 And d\timerstate <= 110 Then PlayRangedSound(CautionSFX, mainPlayer\cam, d\obj)
-						;If d\timerstate = 0 Then d\open = (Not d\open) : PlayRangedSound(CloseDoorSFX(Min(d\dir,1),Rand(0, 2)), mainPlayer\cam, d\obj)
-						Local sound%
-						If d\dir = 1 Then sound% = Rand(0, 1) Else sound% = Rand(0, 2)
-						If d\timerstate = 0 Then d\open = (Not d\open) : PlayRangedSound(CloseDoorSFX(d\dir,sound%), mainPlayer\cam, d\obj)
+
+						If d\timerstate = 0 Then
+							d\open = (Not d\open)
+							Select (d\dir)
+								Case 1
+									d\SoundCHN = PlayRangedSound_SM(sndManager\closeBigDoor[Rand(0, 1)], mainPlayer\cam, d\obj)
+								Case 2
+									d\SoundCHN = PlayRangedSound_SM(sndManager\closeHCZDoor[Rand(0, 2)], mainPlayer\cam, d\obj)
+								Default
+									d\SoundCHN = PlayRangedSound_SM(sndManager\closeDoor[Rand(0, 2)], mainPlayer\cam, d\obj)
+							End Select
+						EndIf
 					EndIf
 					If d\AutoClose And RemoteDoorOn = True Then
 						If EntityDistance(mainPlayer\cam, d\obj) < 2.1 Then
 							;PlaySound HorrorSFX(7) ;TODO: fix
-							d\open = False : PlayRangedSound(CloseDoorSFX(Min(d\dir,1), Rand(0, 2)), mainPlayer\cam, d\obj) : d\AutoClose = False
+							d\open = False
+							Select (d\dir)
+								Case 1
+									d\SoundCHN = PlayRangedSound_SM(sndManager\closeBigDoor[Rand(0, 1)], mainPlayer\cam, d\obj)
+								Case 2
+									d\SoundCHN = PlayRangedSound_SM(sndManager\closeHCZDoor[Rand(0, 2)], mainPlayer\cam, d\obj)
+								Default
+									d\SoundCHN = PlayRangedSound_SM(sndManager\closeDoor[Rand(0, 2)], mainPlayer\cam, d\obj)
+							End Select
+							d\AutoClose = False
 						EndIf
 					End If				
 				End If
@@ -470,19 +487,29 @@ Function UseDoor(d.Doors, showmsg%=True)
 	d\open = (Not d\open)
 	If d\LinkedDoor <> Null Then d\LinkedDoor\open = (Not d\LinkedDoor\open)
 	
-	Local sound = 0
-	;If d\dir = 1 Then sound = 0 Else sound=Rand(0, 2)
 	If d\dir = 1 Then sound=Rand(0, 1) Else sound=Rand(0, 2)
 	
 	If d\open Then
 		If d\LinkedDoor <> Null Then d\LinkedDoor\timerstate = d\LinkedDoor\timer
 		d\timerstate = d\timer
-		d\SoundCHN = PlayRangedSound (OpenDoorSFX(d\dir, sound), mainPlayer\cam, d\obj)
+		Select (d\dir)
+			Case 1
+				d\SoundCHN = PlayRangedSound_SM(sndManager\openBigDoor[Rand(0, 1)], mainPlayer\cam, d\obj)
+			Case 2
+				d\SoundCHN = PlayRangedSound_SM(sndManager\openHCZDoor[Rand(0, 2)], mainPlayer\cam, d\obj)
+			Default
+				d\SoundCHN = PlayRangedSound_SM(sndManager\openDoor[Rand(0, 2)], mainPlayer\cam, d\obj)
+		End Select
 	Else
-		d\SoundCHN = PlayRangedSound (CloseDoorSFX(d\dir, sound), mainPlayer\cam, d\obj)
+		Select (d\dir)
+			Case 1
+				d\SoundCHN = PlayRangedSound_SM(sndManager\closeBigDoor[Rand(0, 1)], mainPlayer\cam, d\obj)
+			Case 2
+				d\SoundCHN = PlayRangedSound_SM(sndManager\closeHCZDoor[Rand(0, 2)], mainPlayer\cam, d\obj)
+			Default
+				d\SoundCHN = PlayRangedSound_SM(sndManager\closeDoor[Rand(0, 2)], mainPlayer\cam, d\obj)
+		End Select
 	End If
-	
-	
 End Function
 
 Function RemoveDoor(d.Doors)

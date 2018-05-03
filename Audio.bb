@@ -13,13 +13,22 @@ Type SoundManager
 	Field footstepMetalRun.Sound[8]
 	Field footstepPD.Sound[3]
 	Field footstep8601.Sound[3]
+
+	; Doors
+	Field openDoor.Sound[3]
+	Field openBigDoor.Sound[2]
+	Field openHCZDoor.Sound[3]
+
+	Field closeDoor.Sound[3]
+	Field closeBigDoor.Sound[2]
+	Field closeHCZDoor.Sound[3]
 End Type
 Global sndManager.SoundManager
 
 Function CreateSoundManager.SoundManager()
 	Local sndMan.SoundManager = New SoundManager
 
-	sndMan\button = StoreSound_SM("SFX\Interact\Button.ogg")
+	sndMan\button = LoadSound_SM("SFX\Interact\Button.ogg")
 
 	Return sndMan
 End Function
@@ -27,15 +36,27 @@ End Function
 Function LoadInGameSounds(sndMan.SoundManager)
 	Local i%
 	For i = 0 To 7
-		sndMan\footstep[i] = StoreSound_SM("SFX\Step\Step" + (i + 1) + ".ogg")
-		sndMan\footstepRun[i] = StoreSound_SM("SFX\Step\Run" + (i + 1) + ".ogg")
-		sndMan\footstepMetal[i] = StoreSound_SM("SFX\Step\StepMetal" + (i + 1) + ".ogg")
-		sndMan\footstepMetalRun[i] = StoreSound_SM("SFX\Step\RunMetal" + (i + 1) + ".ogg")
+		sndMan\footstep[i] = LoadSound_SM("SFX\Step\Step" + (i + 1) + ".ogg")
+		sndMan\footstepRun[i] = LoadSound_SM("SFX\Step\Run" + (i + 1) + ".ogg")
+		sndMan\footstepMetal[i] = LoadSound_SM("SFX\Step\StepMetal" + (i + 1) + ".ogg")
+		sndMan\footstepMetalRun[i] = LoadSound_SM("SFX\Step\RunMetal" + (i + 1) + ".ogg")
 	Next
 
 	For i = 0 To 2
-		sndMan\footstepPD[i] = LoadSound_SM("SFX\Step\StepPD" + (i + 1) + ".ogg")
-		sndMan\footstep8601[i] = LoadSound_SM("SFX\Step\StepForest" + (i + 1) + ".ogg")
+		sndMan\footstepPD[i] = InitializeSound_SM("SFX\Step\StepPD" + (i + 1) + ".ogg")
+		sndMan\footstep8601[i] = InitializeSound_SM("SFX\Step\StepForest" + (i + 1) + ".ogg")
+	Next
+
+	For i = 0 To 2
+		sndMan\openDoor[i] = InitializeSound_SM("SFX\Door\DoorOpen" + (i + 1) + ".ogg")
+		sndMan\closeDoor[i] = InitializeSound_SM("SFX\Door\DoorClose" + (i + 1) + ".ogg")
+		sndMan\openHCZDoor[i] = InitializeSound_SM("SFX\Door\Door2Open" + (i + 1) + ".ogg")
+		sndMan\closeHCZDoor[i] = InitializeSound_SM("SFX\Door\Door2Close" + (i + 1) + ".ogg")
+	Next
+
+	For i = 0 To 1
+		sndMan\openBigDoor[i] = InitializeSound_SM("SFX\Door\BigDoorOpen" + (i + 1) + ".ogg")
+		sndMan\closeBigDoor[i] = InitializeSound_SM("SFX\Door\BigDoorClose" + (i + 1) + ".ogg")
 	Next
 End Function
 
@@ -52,10 +73,33 @@ Function DeloadInGameSounds(sndMan.SoundManager)
 		FreeSound_SM(sndMan\footstepPD[i])
 		FreeSound_SM(sndMan\footstep8601[i])
 	Next
+
+	For i = 0 To 2
+		FreeSound_SM(sndMan\openDoor[i])
+		FreeSound_SM(sndMan\closeDoor[i])
+		FreeSound_SM(sndMan\openHCZDoor[i])
+		FreeSound_SM(sndMan\closeHCZDoor[i])
+	Next
+
+	For i = 0 To 1
+		FreeSound_SM(sndMan\openBigDoor[i])
+		FreeSound_SM(sndMan\closeBigDoor[i])
+	Next
+End Function
+
+; Add a channel to the list.
+Function AddChannel(sndMan.SoundManager, chn%)
+	If (chn = 0) Then
+		Return
+	EndIf
+End Function
+
+Function UpdateChannelList(sndMan.SoundManager)
+
 End Function
 
 ; Creates a new sound object.
-Function LoadSound_SM.Sound(fileName$)
+Function InitializeSound_SM.Sound(fileName$)
 	Local snd.Sound = New Sound
 	snd\file = fileName
 
@@ -63,8 +107,8 @@ Function LoadSound_SM.Sound(fileName$)
 End Function
 
 ; Creates a new sound object and loads the given sound.
-Function StoreSound_SM.Sound(fileName$)
-	Local snd.Sound = LoadSound_SM(fileName)
+Function LoadSound_SM.Sound(fileName$)
+	Local snd.Sound = InitializeSound_SM(fileName)
 	snd\internal = LoadSound(fileName)
 
 	Return snd
@@ -114,6 +158,10 @@ Function PlayRangedSound%(soundHandle%, cam%, entity%, range# = 10, volume# = 1.
 	EndIf
 	
 	Return soundChn
+End Function
+
+Function PlayRangedSound_SM%(snd.Sound, cam%, entity%, range# = 10, volume# = 1.0)
+	Return PlayRangedSound(snd\internal, cam, entity, range, volume)
 End Function
 
 ; Only begins playing the sound if the sound channel isn't playing anything else.

@@ -229,17 +229,7 @@ Global ShouldPlay% = 11
 DrawLoading(10, True)
 
 ;TODO: Audio.bb
-Dim OpenDoorSFX%(3,3), CloseDoorSFX%(3,3)
-For i = 0 To 2
-	OpenDoorSFX(0,i) = LoadSound("SFX\Door\DoorOpen" + (i + 1) + ".ogg")
-	CloseDoorSFX(0,i) = LoadSound("SFX\Door\DoorClose" + (i + 1) + ".ogg")
-	OpenDoorSFX(2,i) = LoadSound("SFX\Door\Door2Open" + (i + 1) + ".ogg")
-	CloseDoorSFX(2,i) = LoadSound("SFX\Door\Door2Close" + (i + 1) + ".ogg")
-Next
-For i = 0 To 1
-	OpenDoorSFX(1,i) = LoadSound("SFX\Door\BigDoorOpen" + (i + 1) + ".ogg")
-	CloseDoorSFX(1,i) = LoadSound("SFX\Door\BigDoorClose" + (i + 1) + ".ogg")
-Next
+Dim OpenDoorSFX.MarkedForRemoval(3,3), CloseDoorSFX.MarkedForRemoval(3,3)
 
 ;TODO: Audio.bb
 Global KeyCardSFX1 = LoadSound("SFX\Interact\KeyCardUse1.ogg")
@@ -327,12 +317,6 @@ Dim OldManSFX.MarkedForRemoval(6)
 
 ;TODO: Most of these sounds are NPC-specific anyway. Divide this up.
 Dim HorrorSFX.MarkedForRemoval(20)
-;For i = 0 To 10
-;	HorrorSFX(i) = LoadSound("SFX\Horror\Horror" + i + ".ogg")
-;Next
-;For i = 14 To 15
-;	HorrorSFX(i) = LoadSound("SFX\Horror\Horror" + i + ".ogg")
-;Next
 
 DrawLoading(25, True)
 

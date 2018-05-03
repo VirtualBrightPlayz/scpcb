@@ -235,7 +235,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 								If (Not n\Path[n\PathLocation]\door\open)
 									Local sound = 0
 									If n\Path[n\PathLocation]\door\dir = 1 Then sound = 0 Else sound=Rand(0, 2)
-									PlayRangedSound(OpenDoorSFX(n\Path[n\PathLocation]\door\dir,sound),mainPlayer\cam,n\Path[n\PathLocation]\door\obj)
+									;PlayRangedSound(OpenDoorSFX(n\Path[n\PathLocation]\door\dir,sound),mainPlayer\cam,n\Path[n\PathLocation]\door\obj)
 									PlayMTFSound(MTFSFX(5),n)
 								EndIf
 								n\Path[n\PathLocation]\door\open = True
@@ -600,7 +600,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 									If (Not n\Path[n\PathLocation]\door\open)
 										sound = 0
 										If n\Path[n\PathLocation]\door\dir = 1 Then sound = 0 Else sound=Rand(0, 2)
-										PlayRangedSound(OpenDoorSFX(n\Path[n\PathLocation]\door\dir,sound),mainPlayer\cam,n\Path[n\PathLocation]\door\obj)
+										;PlayRangedSound(OpenDoorSFX(n\Path[n\PathLocation]\door\dir,sound),mainPlayer\cam,n\Path[n\PathLocation]\door\obj)
 										PlayMTFSound(MTFSFX(5),n)
 									EndIf
 									n\Path[n\PathLocation]\door\open = True
@@ -883,7 +883,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 										If (Not n\Path[n\PathLocation]\door\open)
 											sound = 0
 											If n\Path[n\PathLocation]\door\dir = 1 Then sound = 0 Else sound=Rand(0, 2)
-											PlayRangedSound(OpenDoorSFX(n\Path[n\PathLocation]\door\dir,sound),mainPlayer\cam,n\Path[n\PathLocation]\door\obj)
+											;PlayRangedSound(OpenDoorSFX(n\Path[n\PathLocation]\door\dir,sound),mainPlayer\cam,n\Path[n\PathLocation]\door\obj)
 											PlayMTFSound(MTFSFX(5),n)
 										EndIf
 										n\Path[n\PathLocation]\door\open = True
@@ -1112,7 +1112,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 									If (Not n\Path[n\PathLocation]\door\open)
 										sound = 0
 										If n\Path[n\PathLocation]\door\dir = 1 Then sound = 0 Else sound=Rand(0, 2)
-										PlayRangedSound(OpenDoorSFX(n\Path[n\PathLocation]\door\dir,sound),mainPlayer\cam,n\Path[n\PathLocation]\door\obj)
+										;PlayRangedSound(OpenDoorSFX(n\Path[n\PathLocation]\door\dir,sound),mainPlayer\cam,n\Path[n\PathLocation]\door\obj)
 										PlayMTFSound(MTFSFX(5),n)
 									EndIf
 									n\Path[n\PathLocation]\door\open = True
@@ -1329,7 +1329,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 								If (Not n\Path[n\PathLocation]\door\open)
 									sound = 0
 									If n\Path[n\PathLocation]\door\dir = 1 Then sound = 0 Else sound=Rand(0, 2)
-									PlayRangedSound(OpenDoorSFX(n\Path[n\PathLocation]\door\dir,sound),mainPlayer\cam,n\Path[n\PathLocation]\door\obj)
+									;PlayRangedSound(OpenDoorSFX(n\Path[n\PathLocation]\door\dir,sound),mainPlayer\cam,n\Path[n\PathLocation]\door\obj)
 									PlayMTFSound(MTFSFX(5),n)
 								EndIf
 								n\Path[n\PathLocation]\door\open = True
@@ -1480,7 +1480,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 									If (Not n\Path[n\PathLocation]\door\open)
 										sound = 0
 										If n\Path[n\PathLocation]\door\dir = 1 Then sound = 0 Else sound=Rand(0, 2)
-										PlayRangedSound(OpenDoorSFX(n\Path[n\PathLocation]\door\dir,sound),mainPlayer\cam,n\Path[n\PathLocation]\door\obj)
+										;PlayRangedSound(OpenDoorSFX(n\Path[n\PathLocation]\door\dir,sound),mainPlayer\cam,n\Path[n\PathLocation]\door\obj)
 										PlayMTFSound(MTFSFX(5),n)
 									EndIf
 									n\Path[n\PathLocation]\door\open = True
