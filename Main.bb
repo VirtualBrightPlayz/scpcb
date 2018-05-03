@@ -12,11 +12,13 @@ Include "Menu.bb"
 
 Include "Launcher.bb"
 
-Global VersionNumber$ = "1.CBN"
+Include "Console.bb"
+
+Include "Dreamfilter.bb"
+
+Const VERSION$ = "1.CBN"
 
 AppTitle "SCP - Containment Breach Launcher"
-
-Dim ArrowIMG.MarkedForRemoval(4)
 
 ;[Block]
 
@@ -50,20 +52,6 @@ Function VerifyResolution%()
 End Function
 Local selectedGFXMode% = VerifyResolution()
 
-If userOptions\launcher Then
-	launcher = CreateLauncher()
-	
-	launcher\selectedGFXMode = selectedGFXMode
-	
-	DestroyLauncher(launcher)
-EndIf
-
-Graphics3DExt(userOptions\screenWidth, userOptions\screenHeight, 0, (1 + (Not userOptions\fullscreen)))
-
-MenuScale = (userOptions\screenHeight / 1024.0)
-
-SetBuffer(BackBuffer())
-
 ;TODO: FreeFont Font5. Make it local.
 Global Font1%, Font2%, Font3%, Font4%, Font5%
 Global ConsoleFont%
@@ -78,7 +66,7 @@ Type Timing
 	
 	Field fps#
 End Type
-Global timing.Timing = New Timing
+Global timing.Timing
 
 Function SetTickrate(tickrate%)
 	timing\tickDuration = 70.0/Float(tickrate)
@@ -96,58 +84,23 @@ Function ResetTimingAccumulator()
 	timing\accumulator = 0.0
 End Function
 
-SetTickrate(60)
-
-Global CurTime.MarkedForRemoval, PrevTime.MarkedForRemoval, LoopDelay%, FPSfactor.MarkedForRemoval, FPSfactor2.MarkedForRemoval, ElapsedTime.MarkedForRemoval
-Global CheckFPS.MarkedForRemoval, ElapsedLoops.MarkedForRemoval, FPS.MarkedForRemoval
-
-;TODO: wtf is this?
-Global CurrFrameLimit# = userOptions\framelimit
+Global CurrFrameLimit# ;TODO: what is this
 
 Const HIT_MAP% = 1, HIT_PLAYER% = 2, HIT_ITEM% = 3, HIT_APACHE% = 4, HIT_DEAD% = 6
-SeedRnd MilliSecs()
-
-;[End block]
 
 Global GameSaved%
 
 ;TODO: Player.bb
-Global CanSave% = True
+Global CanSave%
 
-AppTitle "SCP - Containment Breach v"+VersionNumber
-
-;---------------------------------------------------------------------------------------------------------------------
-
-;[Block]
 ;TODO: Assets.bb
-Global CursorIMG% = LoadImage("GFX\cursor.png")
+Global CursorIMG%
 
 ;TODO: Assets.bb
 Global SelectedLoadingScreen.LoadingScreens, LoadingScreenAmount%, LoadingScreenText%
-Global LoadingBack% = LoadImage("Loadingscreens\loadingback.jpg")
-InitLoadingScreens("Loadingscreens\loadingscreens.ini")
+Global LoadingBack%
 
-;TODO: Assets.bb
-;For some reason, Blitz3D doesn't load fonts that have filenames that
-;don't match their "internal name" (i.e. their display name in applications
-;like Word and such). As a workaround, I moved the files and renamed them so they
-;can load without FastText.
-Font1% = LoadFont("GFX\font\cour\Courier New.ttf", Int(18 * MenuScale), 0,0,0)
-Font2% = LoadFont("GFX\font\courbd\Courier New.ttf", Int(58 * MenuScale), 0,0,0)
-Font3% = LoadFont("GFX\font\DS-DIGI\DS-Digital.ttf", Int(22 * MenuScale), 0,0,0)
-Font4% = LoadFont("GFX\font\DS-DIGI\DS-Digital.ttf", Int(60 * MenuScale), 0,0,0)
-Font5% = LoadFont("GFX\font\Journal\Journal.ttf", Int(58 * MenuScale), 0,0,0)
-
-InitializeUITextures()
-
-ConsoleFont% = LoadFont("Blitz", Int(20 * MenuScale), 0,0,0)
-
-SetFont Font2
-
-;TODO: Assets.bb
-Global BlinkMeterIMG% = LoadImage("GFX\blinkmeter.jpg")
-
-DrawLoading(0, True)
+Global BlinkMeterIMG%
 
 Global MouseHit1%, MouseDown1%, MouseHit2%, DoubleClick%, LastMouseHit1%, MouseUp1%
 
@@ -170,21 +123,11 @@ Dim RadioCHN%(8)
 ;TODO: Assets.bb
 Dim OldAiPics%(5)
 
-;[End block]
-
-Include "Console.bb"
-
 ;TODO: Move somewhere?
-Global Brightness% = 50
-
-Include "Dreamfilter.bb"
+Global Brightness%
 
 ;TODO: Assets.bb
 Dim LightSpriteTex(10)
-
-;----------------------------------------------  Sounds -----------------------------------------------------
-
-;[Block]
 
 ;TODO: Audio.bb
 Global SoundEmitter%
@@ -194,73 +137,144 @@ Global TempSoundIndex% = 0
 
 ;TODO: Use struct of file paths.
 Dim Music%(40)
-Music(0) = LoadSound("SFX\Music\The Dread.ogg")
-Music(1) = LoadSound("SFX\Music\HeavyContainment.ogg") 
-Music(2) = LoadSound("SFX\Music\EntranceZone.ogg") 
-;Music(3) = LoadSound("SFX\Music\PD.ogg")
-;Music(4) = LoadSound("SFX\Music\079.ogg")
-;Music(5) = LoadSound("SFX\Music\GateB1.ogg")
-;Music(6) = LoadSound("SFX\Music\GateB2.ogg")
-;Music(7) = LoadSound("SFX\Music\Room3Storage.ogg") 
-;Music(8) = LoadSound("SFX\Music\Room049.ogg") 
-;Music(9) = LoadSound("SFX\Music\8601.ogg") 
-Music(10) = LoadSound("SFX\Music\106.ogg")
-Music(11) = LoadSound("SFX\Music\Menu.ogg")
-;Music(12) = LoadSound("SFX\Music\8601Cancer.ogg")
-;Music(13) = LoadSound("SFX\Music\Intro.ogg")
-;Music(15) = LoadSound("SFX\Music\PDTrench.ogg")
-;Music(15) = LoadSound("SFX\Music\205.ogg")
-;
-;Music(18): Dimension1499 normal theme
-;Music(19): Dimension1499 aggressive theme
-;Music(20): SCP-049 tension theme (for "room2sl")
-;Music(21): Breath theme after beating the game
-
-;TODO: Audio.bb
-Global MusicCHN% = PlaySound(Music(2))
-ChannelVolume(MusicCHN, userOptions\musicVolume)
-
-;TODO: Audio.bb
-;Used for fading out music tracks.
-Global CurrMusicVolume# = 1.0
-Global NowPlaying% = 2
-Global ShouldPlay% = 11
-
-DrawLoading(10, True)
 
 ;TODO: Audio.bb
 Dim OpenDoorSFX.MarkedForRemoval(3,3), CloseDoorSFX.MarkedForRemoval(3,3)
 
 ;TODO: Audio.bb
-Global KeyCardSFX1 = LoadSound("SFX\Interact\KeyCardUse1.ogg")
-Global KeyCardSFX2 = LoadSound("SFX\Interact\KeyCardUse2.ogg")
-Global ButtonSFX2 = LoadSound("SFX\Interact\Button2.ogg")
-Global ScannerSFX1 = LoadSound("SFX\Interact\ScannerUse1.ogg")
-Global ScannerSFX2 = LoadSound("SFX\Interact\ScannerUse2.ogg")
+Global KeyCardSFX1
+Global KeyCardSFX2
+Global ButtonSFX2
+Global ScannerSFX1
+Global ScannerSFX2
 
-Global OpenDoorFastSFX = LoadSound("SFX\Door\DoorOpenFast.ogg")
-Global CautionSFX% = LoadSound("SFX\Room\LockroomSiren.ogg")
+Global OpenDoorFastSFX
+Global CautionSFX%
 
 Global NuclearSirenSFX%
 
-Global CameraSFX = LoadSound("SFX\General\Camera.ogg")
+Global CameraSFX
 
-Global GunshotSFX% = LoadSound("SFX\General\Gunshot.ogg")
-Global Gunshot2SFX% = LoadSound("SFX\General\Gunshot2.ogg")
-Global Gunshot3SFX% = LoadSound("SFX\General\BulletMiss.ogg")
-Global BullethitSFX% = LoadSound("SFX\General\BulletHit.ogg")
+Global GunshotSFX%
+Global Gunshot2SFX%
+Global Gunshot3SFX%
+Global BullethitSFX%
 
-Global TeslaIdleSFX = LoadSound("SFX\Room\Tesla\Idle.ogg")
-Global TeslaActivateSFX = LoadSound("SFX\Room\Tesla\WindUp.ogg")
-Global TeslaPowerUpSFX = LoadSound("SFX\Room\Tesla\PowerUp.ogg")
+Global TeslaIdleSFX
+Global TeslaActivateSFX
+Global TeslaPowerUpSFX
 
-Global MagnetUpSFX% = LoadSound("SFX\Room\106Chamber\MagnetUp.ogg"), MagnetDownSFX = LoadSound("SFX\Room\106Chamber\MagnetDown.ogg")
+Global MagnetUpSFX%
+Global MagnetDownSFX
 Global FemurBreakerSFX%
 
-Dim DecaySFX.MarkedForRemoval(5)
-;For i = 0 To 3
-;	DecaySFX(i) = LoadSound("SFX\SCP\106\Decay" + i + ".ogg")
-;Next
+Function Main%()
+	If userOptions\launcher Then
+		launcher = CreateLauncher()
+		
+		launcher\selectedGFXMode = selectedGFXMode
+		
+		DestroyLauncher(launcher)
+	EndIf
+	
+	Graphics3DExt(userOptions\screenWidth, userOptions\screenHeight, 0, (1 + (Not userOptions\fullscreen)))
+	
+	AppTitle "SCP - Containment Breach v"+VERSION
+	
+	MenuScale = (userOptions\screenHeight / 1024.0)
+	
+	timing = New Timing
+	
+	SetTickrate(60)
+	
+	CurrFrameLimit = userOptions\framelimit
+	
+	SetBuffer(BackBuffer())
+	
+	SeedRnd MilliSecs()
+	
+	CanSave = True
+	
+	CursorIMG = LoadImage("GFX\cursor.png")
+	
+	LoadingBack = LoadImage("Loadingscreens\loadingback.jpg")
+	InitLoadingScreens("Loadingscreens\loadingscreens.ini")
+	
+	;TODO: Assets.bb
+	;For some reason, Blitz3D doesn't load fonts that have filenames that
+	;don't match their "internal name" (i.e. their display name in applications
+	;like Word and such). As a workaround, I moved the files and renamed them so they
+	;can load without FastText.
+	Font1% = LoadFont("GFX\font\cour\Courier New.ttf", Int(18 * MenuScale), 0,0,0)
+	Font2% = LoadFont("GFX\font\courbd\Courier New.ttf", Int(58 * MenuScale), 0,0,0)
+	Font3% = LoadFont("GFX\font\DS-DIGI\DS-Digital.ttf", Int(22 * MenuScale), 0,0,0)
+	Font4% = LoadFont("GFX\font\DS-DIGI\DS-Digital.ttf", Int(60 * MenuScale), 0,0,0)
+	Font5% = LoadFont("GFX\font\Journal\Journal.ttf", Int(58 * MenuScale), 0,0,0)
+	
+	InitializeUITextures()
+	
+	ConsoleFont% = LoadFont("Blitz", Int(20 * MenuScale), 0,0,0)
+	
+	SetFont Font2
+	
+	;TODO: Assets.bb
+	BlinkMeterIMG% = LoadImage("GFX\blinkmeter.jpg")
+	
+	DrawLoading(0, True)
+	
+	Brightness% = 50
+	
+	Music(0) = LoadSound("SFX\Music\The Dread.ogg")
+	Music(1) = LoadSound("SFX\Music\HeavyContainment.ogg") 
+	Music(2) = LoadSound("SFX\Music\EntranceZone.ogg") 
+	;Music(3) = LoadSound("SFX\Music\PD.ogg")
+	;Music(4) = LoadSound("SFX\Music\079.ogg")
+	;Music(5) = LoadSound("SFX\Music\GateB1.ogg")
+	;Music(6) = LoadSound("SFX\Music\GateB2.ogg")
+	;Music(7) = LoadSound("SFX\Music\Room3Storage.ogg") 
+	;Music(8) = LoadSound("SFX\Music\Room049.ogg") 
+	;Music(9) = LoadSound("SFX\Music\8601.ogg") 
+	Music(10) = LoadSound("SFX\Music\106.ogg")
+	Music(11) = LoadSound("SFX\Music\Menu.ogg")
+	;Music(12) = LoadSound("SFX\Music\8601Cancer.ogg")
+	;Music(13) = LoadSound("SFX\Music\Intro.ogg")
+	;Music(15) = LoadSound("SFX\Music\PDTrench.ogg")
+	;Music(15) = LoadSound("SFX\Music\205.ogg")
+	;
+	;Music(18): Dimension1499 normal theme
+	;Music(19): Dimension1499 aggressive theme
+	;Music(20): SCP-049 tension theme (for "room2sl", the bastard)
+	;Music(21): Breath theme after beating the game
+	
+	DrawLoading(10, True)
+	
+	KeyCardSFX1 = LoadSound("SFX\Interact\KeyCardUse1.ogg")
+	KeyCardSFX2 = LoadSound("SFX\Interact\KeyCardUse2.ogg")
+	ButtonSFX2 = LoadSound("SFX\Interact\Button2.ogg")
+	ScannerSFX1 = LoadSound("SFX\Interact\ScannerUse1.ogg")
+	ScannerSFX2 = LoadSound("SFX\Interact\ScannerUse2.ogg")
+	
+	OpenDoorFastSFX = LoadSound("SFX\Door\DoorOpenFast.ogg")
+	CautionSFX% = LoadSound("SFX\Room\LockroomSiren.ogg")
+	
+	CameraSFX = LoadSound("SFX\General\Camera.ogg")
+	
+	GunshotSFX% = LoadSound("SFX\General\Gunshot.ogg")
+	Gunshot2SFX% = LoadSound("SFX\General\Gunshot2.ogg")
+	Gunshot3SFX% = LoadSound("SFX\General\BulletMiss.ogg")
+	BullethitSFX% = LoadSound("SFX\General\BulletHit.ogg")
+	
+	TeslaIdleSFX = LoadSound("SFX\Room\Tesla\Idle.ogg")
+	TeslaActivateSFX = LoadSound("SFX\Room\Tesla\WindUp.ogg")
+	TeslaPowerUpSFX = LoadSound("SFX\Room\Tesla\PowerUp.ogg")
+	
+	MagnetUpSFX% = LoadSound("SFX\Room\106Chamber\MagnetUp.ogg")
+	MagnetDownSFX = LoadSound("SFX\Room\106Chamber\MagnetDown.ogg")
+End Function
+
+;----------------------------------------------  Sounds -----------------------------------------------------
+
+;[Block]
 
 Global BurstSFX = LoadSound("SFX\Room\TunnelBurst.ogg")
 
@@ -513,8 +527,6 @@ FlushKeys()
 FlushMouse()
 
 DrawLoading(100, True)
-
-LoopDelay = MilliSecs()
 
 ;----------------------------------------------------------------------------------------------------------------------------------------------------
 ;----------------------------------------------       		MAIN LOOP                 ---------------------------------------------------------------
