@@ -43,9 +43,8 @@ Type Options
 
 End Type
 
-Global keyBinds.KeyBinds = new KeyBinds
-Global userOptions.Options = New Options
-LoadOptionsINI()
+Global keyBinds.KeyBinds
+Global userOptions.Options
 
 Function LoadOptionsINI()
     Local optGen$ = "general"
@@ -131,3 +130,6 @@ Function SaveOptionsINI()
 
     PutINIValue(OptionFile, "launcher", "launcher enabled", userOptions\launcher)
 End Function
+;~IDEal Editor Parameters:
+;~F#2#11#30#5B
+;~C#Blitz3D

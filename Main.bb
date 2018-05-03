@@ -2,7 +2,7 @@ Include "MarkedForRemoval.bb"
 
 ;TODO: kill all the dims
 ;I have to place them up here because the includes depend
-;on them being declared Before they are used
+;on them being declared before they are used
 ;[Block]
 
 ;TODO: Radio struct.
@@ -105,8 +105,6 @@ Main() ;TODO: remove once we move to C++
 
 Const VERSION$ = "1.CBN"
 
-;[Block]
-
 Global Depth.MarkedForRemoval
 
 ;TODO: Move somewhere more relevant.
@@ -135,7 +133,6 @@ Function VerifyResolution%()
 
 	Return selectedMode
 End Function
-Local selectedGFXMode% = VerifyResolution()
 
 ;TODO: FreeFont Font5. Make it local.
 Global Font1%, Font2%, Font3%, Font4%, Font5%
@@ -354,6 +351,12 @@ Global ApacheObj%,ApacheRotorObj%
 Global UnableToMove.MarkedForRemoval
 
 Function Main%()
+	Local selectedGFXMode% = VerifyResolution()
+	
+	keyBinds.keyBinds = New keyBinds
+	userOptions.Options = New Options
+	LoadOptionsINI()
+	
 	If userOptions\launcher Then
 		launcher = CreateLauncher()
 		
@@ -2268,5 +2271,6 @@ Function CheckTriggers$()
 End Function
 
 ;~IDEal Editor Parameters:
-;~F#5#163#40A#496#52C#605#6D3#6DE#6E2#70C#78B#79A#7B8#7E7#7EE#7FC#89E#8C0
+;~F#5#75#8D#160#257#40D#499#52F#608#6D6#6E1#6E5#70F#78E#79D#7BB#7EA#7F1#7FF#8A1
+;~F#8C3
 ;~C#Blitz3D
