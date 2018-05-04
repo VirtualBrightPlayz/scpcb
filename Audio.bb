@@ -319,7 +319,6 @@ Function UpdateRangedSoundOrigin(Chn%, cam%, entity%, range# = 10, volume# = 1.0
 End Function
 
 ;;; Music
-Const MUS_DEFAULT$ = ""
 Const MUS_MENU$    = "SFX\Music\Menu.ogg"
 Const MUS_INTRO$   = "SFX\Music\Intro.ogg"
 Const MUS_LCZ$     = "SFX\Music\The Dread.ogg"
@@ -333,7 +332,7 @@ Const MUS_939$     = "SFX\Music\Room939.ogg"
 Const MUS_8601$    = "SFX\Music\8601.ogg"
 Const MUS_8602$    = "SFX\Music\8601Cancer.ogg"
 Const MUS_14991$   = "SFX\Music\1499.ogg"
-Const MUS_14992$   = "SFX\Music\1499.ogg"
+Const MUS_14992$   = "SFX\Music\1499Danger.ogg"
 Const MUS_PD$      = "SFX\Music\PD.ogg"
 Const MUS_TRENCH$  = "SFX\Music\PDTrench.ogg"
 Const MUS_GATEA$   = "SFX\Music\GateA.ogg"
@@ -346,6 +345,10 @@ Type MusicManager
 	Field currMusic%
 	Field channel%
 
+	; Whether the music playing should be relevant to the current zone/menu
+	; the player is in.
+	Field useDefault%
+
 	Field nowPlaying$
 	Field shouldPlay$
 
@@ -353,64 +356,72 @@ Type MusicManager
 	Field fadeOut%
 	Field currMusicVolume#
 End Type
-Global musManager.MusicManager
+Global musicManager.MusicManager
 
 Function CreateMusicManager.MusicManager()
 	Local musMan.MusicManager = New MusicManager
-	GetMusicTrack(musMan)
+	musMan\useDefault = True
 
 	Return musMan
 End Function
 
-Function SetNextMusicTrack(musMan.MusicManager, trackName$, fadeOut% = True)
-	musMan\shouldPlay = trackName
-	musMan\fadeOut = fadeOut
+Function RestoreDefaultMusic()
+	musicManager\useDefault = True
 End Function
 
-Function GetNextMusicTrack(musMan.MusicManager)
-
-	If (musMan\shouldPlay = MUS_DEFAULT) Then
-		;TODO: Play zone/intro/menu track here depending on game's current state.
-	ElseIf (musMan\nowPlaying <> musMan\shouldPlay) Then
-		musMan\nowPlaying = musMan\shouldPlay
-		FreeMusic(musMan)
-		musMan\currMusic = LoadSound(musMan\nowPlaying)
+Function SetNextMusicTrack(trackName$, fadeOut% = True)
+	If (musMan\shouldPlay = trackName) Then
+		Return
 	EndIf
+
+	musicManager\useDefault = False
+	musicManager\shouldPlay = trackName
+	musicManager\fadeOut = fadeOut
 End Function
 
-; Frees the current music track. Should only be called by UpdateMusic().
-Function FreeMusic(musMan.MusicManager)
-	If (musMan\currMusic <> 0) Then
-		FreeSound(musMan\currMusic)
-		musMan\currMusic = 0
+; Frees the current music track.
+Function FreeMusic()
+	If (musicManager\currMusic <> 0) Then
+		FreeSound(musicManager\currMusic)
+		musicManager\currMusic = 0
 	EndIf
 End Function
 
 ;TODO: Not hack jorge.
-Function UpdateMusic(musMan.MusicManager)
+Function UpdateMusic()
 	If (userOptions\musicVolume <= 0) Then
 		Return
 	EndIf
 
-	If (musMan\nowPlaying <> musMan\shouldPlay) Then
-		If (musMan\fadeOut And musMan\currMusicVolume > 0) Then
-			musMan\currMusicVolume = musMan\currMusicVolume - (timing\tickDuration / 250.0)
+	If (musicManager\useDefault) Then
+		If (CurrGameState = GAMESTATE_MAINMENU) Then
+			musicManager\shouldPlay = MUS_MENU
+		EndIf
+		;TODO: Play zone/intro track here depending on game's current state.
+	EndIf
+
+	If (musicManager\nowPlaying <> musicManager\shouldPlay) Then
+		If (musicManager\fadeOut And musicManager\currMusicVolume > 0) Then
+			musicManager\currMusicVolume = musicManager\currMusicVolume - (timing\tickDuration / 250.0)
 		Else
-			If (musMan\channel <> 0) Then
-				StopChannel(musMan\channel)
-				musMan\channel = 0
+			If (musicManager\channel <> 0) Then
+				StopChannel(musicManager\channel)
+				musicManager\channel = 0
+
+				FreeMusic(musicManager)
+				musicManager\nowPlaying = musicManager\shouldPlay
+				musicManager\currMusic = LoadSound(musicManager\nowPlaying)
 			EndIf
 
-			musMan\fadeOut = False
-			musMan\currMusicVolume = userOptions\musicVolume
+			musicManager\fadeOut = False
+			musicManager\currMusicVolume = userOptions\musicVolume
 		EndIf
 	EndIf
 
 	;If nothing is playing then figure out what the next track is.
-	If (Not IsChannelPlaying(musMan\channel)) Then
-		GetNextMusicTrack(musMan)
-		musMan\channel = PlaySound(musMan\currMusic)
+	If (Not IsChannelPlaying(musicManager\channel)) Then
+		musicManager\channel = PlaySound(musicManager\currMusic)
 	EndIf
 	
-	ChannelVolume(musMan\channel, musMan\currMusicVolume)
+	ChannelVolume(musicManager\channel, musicManager\currMusicVolume)
 End Function

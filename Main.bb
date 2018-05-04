@@ -337,11 +337,7 @@ Global HeartBeatSFX = LoadSound("SFX\Character\D9341\Heartbeat.ogg")
 
 Global BreathCHN.MarkedForRemoval
 
-;TODO: Move to NPCData173.
 Dim NeckSnapSFX.MarkedForRemoval(3)
-;For i = 0 To 2
-;	NeckSnapSFX(i) =  LoadSound("SFX\SCP\173\NeckSnap"+(i+1)+".ogg")
-;Next
 
 ;TODO: Player struct.
 Dim DamageSFX%(9)
