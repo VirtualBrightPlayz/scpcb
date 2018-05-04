@@ -163,7 +163,7 @@ Function PlayRangedSound%(soundHandle%, cam%, entity%, range# = 10, volume# = 1.
 			Local panvalue# = Sin(-DeltaYaw(cam, entity))
 			soundChn% = PlaySound(soundHandle)
 			
-			ChannelVolume(soundChn, volume# * (1 - dist#) * userOptions\SoundVolume)
+			ChannelVolume(soundChn, volume# * (1 - dist#) * userOptions\soundVolume)
 			ChannelPan(soundChn, panvalue)
 		EndIf
 	EndIf
@@ -183,7 +183,7 @@ Function LoopRangedSound%(soundHandle%, chn%, cam%, entity%, range# = 10, volume
 	
 	UpdateRangedSoundOrigin(chn,cam,entity,range,volume)
 
-	Return Chn
+	Return chn
 End Function
 
 Function LoadTempSound(file$)
@@ -220,14 +220,14 @@ Function PauseSounds()
 	Next
 	
 	For n = Each NPCs
-		If n\soundchn <> 0 Then
-			If IsChannelPlaying(n\soundchn) Then PauseChannel(n\soundchn)
+		If n\soundChn <> 0 Then
+			If IsChannelPlaying(n\soundChn) Then PauseChannel(n\soundChn)
 		EndIf
 	Next	
 	
 	For d = Each Doors
-		If d\soundchn <> 0 Then
-			If IsChannelPlaying(d\soundchn) Then PauseChannel(d\soundchn)
+		If d\SoundCHN <> 0 Then
+			If IsChannelPlaying(d\SoundCHN) Then PauseChannel(d\SoundCHN)
 		EndIf
 	Next	
 	
@@ -249,14 +249,14 @@ Function ResumeSounds()
 	Next
 	
 	For n = Each NPCs
-		If n\soundchn <> 0 Then
-			If IsChannelPlaying(n\soundchn) Then ResumeChannel(n\soundchn)
+		If n\soundChn <> 0 Then
+			If IsChannelPlaying(n\soundChn) Then ResumeChannel(n\soundChn)
 		EndIf
 	Next	
 	
 	For d = Each Doors
-		If d\soundchn <> 0 Then
-			If IsChannelPlaying(d\soundchn) Then ResumeChannel(d\soundchn)
+		If d\SoundCHN <> 0 Then
+			If IsChannelPlaying(d\SoundCHN) Then ResumeChannel(d\SoundCHN)
 		EndIf
 	Next	
 	
@@ -319,7 +319,7 @@ Function UpdateRangedSoundOrigin(chn%, cam%, entity%, range# = 10, volume# = 1.0
 			
 			Local panvalue# = Sin(-DeltaYaw(cam,entity))
 			
-			ChannelVolume(chn, volume# * (1 - dist#)*userOptions\SoundVolume)
+			ChannelVolume(chn, volume# * (1 - dist#)*userOptions\soundVolume)
 			ChannelPan(chn, panvalue)
 		EndIf
 	Else
@@ -379,6 +379,7 @@ Function CreateMusicManager.MusicManager()
 End Function
 
 Function RestoreDefaultMusic()
+	musicManager\fadeOut = True
 	musicManager\useDefault = True
 End Function
 
@@ -410,9 +411,9 @@ Function UpdateMusic()
 		If (CurrGameState = GAMESTATE_MAINMENU) Then
 			musicManager\shouldPlay = MUS_MENU
 		EndIf
-		;TODO: Play zone/intro track here depending on game's current state.
+		;TODO: Play zone track here depending on game's current state.
 	EndIf
-
+	
 	If (musicManager\nowPlaying <> musicManager\shouldPlay) Then
 		If (musicManager\fadeOut And musicManager\currMusicVolume > 0) Then
 			musicManager\currMusicVolume = musicManager\currMusicVolume - (timing\tickDuration / 250.0)
@@ -420,11 +421,11 @@ Function UpdateMusic()
 			If (musicManager\channel <> 0) Then
 				StopChannel(musicManager\channel)
 				musicManager\channel = 0
-
-				FreeMusic()
-				musicManager\nowPlaying = musicManager\shouldPlay
-				musicManager\currMusic = LoadSound(musicManager\nowPlaying)
 			EndIf
+			
+			FreeMusic()
+			musicManager\nowPlaying = musicManager\shouldPlay
+			musicManager\currMusic = LoadSound(musicManager\nowPlaying)
 
 			musicManager\fadeOut = False
 			musicManager\currMusicVolume = userOptions\musicVolume

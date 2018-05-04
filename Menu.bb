@@ -1165,9 +1165,10 @@ Function DrawLoading(percent%, shortloading=False)
 	If percent = 0 Then
 		LoadingScreenText=0
 		
-		temp = Rand(1,LoadingScreenAmount)
-		For ls.loadingscreens = Each LoadingScreens
-			If ls\id = temp Then
+		Local temp% = Rand(1,LoadingScreenAmount)
+		Local ls.LoadingScreens
+		For ls = Each LoadingScreens
+			If ls\ID = temp Then
 				If ls\img=0 Then ls\img = LoadImage("Loadingscreens\"+ls\imgpath)
 				SelectedLoadingScreen = ls 
 				Exit
@@ -1175,7 +1176,7 @@ Function DrawLoading(percent%, shortloading=False)
 		Next
 	EndIf	
 	
-	firstloop = True
+	Local firstloop% = True
 	Repeat 
 		
 		;Color 0,0,0
@@ -1185,6 +1186,10 @@ Function DrawLoading(percent%, shortloading=False)
 		Cls
 		
 		;Cls(True,False)
+		
+		If percent > 24 Then
+			UpdateMusic()
+		EndIf
 		
 		If shortloading = False Then
 			If percent > (100.0 / SelectedLoadingScreen\txtamount)*(LoadingScreenText+1) Then
@@ -1356,11 +1361,13 @@ Function DrawLoading(percent%, shortloading=False)
 		firstloop = False
 		If (percent <> 100) Then
 			Exit
-		Else
-			RestoreDefaultMusic()
 		EndIf
 		
 	Until (GetKey()<>0 Or MouseHit(1))
+	
+	If (percent >= 100) Then
+		RestoreDefaultMusic()
+	EndIf
 End Function
 
 

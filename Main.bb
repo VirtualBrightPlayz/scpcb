@@ -207,7 +207,6 @@ Global TempSoundIndex% = 0
 ;TODO: Audio.bb
 Global KeyCardSFX1
 Global KeyCardSFX2
-Global ButtonSFX.MarkedForRemoval
 Global ButtonSFX2
 Global ScannerSFX1
 Global ScannerSFX2
@@ -632,8 +631,10 @@ Function UpdateGame()
 		If prevmousedown1 = True And MouseDown1=False Then MouseUp1 = True Else MouseUp1 = False
 		
 		MouseHit2 = MouseHit(2)
-		
-		;UpdateMusic() ;TODO: fix
+		;TODO: A better way?
+		If (CurrGameState <> GAMESTATE_LAUNCHER) Then
+			UpdateMusic()
+		EndIf
 		
 		If CurrGameState=GAMESTATE_LAUNCHER Then
 			UpdateLauncher()
