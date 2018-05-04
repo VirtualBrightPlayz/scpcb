@@ -356,6 +356,8 @@ Function Main%()
 	
 	timing = New Timing
 	SetTickrate(60)
+
+	sndManager.SoundManager = CreateSoundManager()
 	
 	If userOptions\launcher Then
 		CurrGameState = GAMESTATE_LAUNCHER
@@ -369,6 +371,7 @@ Function Main%()
 	Forever
 End Function
 
+;TODO: Shuffle the initialization of stuff around in between DrawLoading() calls.
 Function InitializeMainGame()
 	CurrGameState = GAMESTATE_MAINMENU
 	CurrGameSubstate = GAMESUBSTATE_MAINMENU_MAIN
@@ -392,6 +395,9 @@ Function InitializeMainGame()
 	InitLoadingScreens("Loadingscreens\loadingscreens.ini")
 	
 	InitializeUIAssets()
+
+	musicManager.MusicManager = CreateMusicManager()
+	SetNextMusicTrack(MUS_EZ, False)
 	
 	uiAssets\consoleFont% = LoadFont("Blitz", Int(20 * MenuScale), 0,0,0)
 	
@@ -633,22 +639,6 @@ Function UpdateGame()
 		If CurrGameState=GAMESTATE_LAUNCHER Then
 			UpdateLauncher()
 		ElseIf CurrGameState=GAMESTATE_MAINMENU Then
-			;TODO: Re-implement.
-;			If ShouldPlay = 21 Then
-;				If TempSoundCHN = 0 Then
-;					For snd.Sound = Each Sound
-;						For i = 0 To 31
-;							If snd\channels[i]<>0 Then
-;								StopChannel snd\channels[i]
-;							EndIf
-;						Next
-;					Next
-;					TempSoundCHN = PlaySound(Music(21))
-;				EndIf
-;				If (Not IsChannelPlaying(TempSoundCHN)) Then FreeSound Music(21) : ShouldPlay = 11
-;			Else
-;				ShouldPlay = 11
-;			EndIf
 			UpdateMainMenu()
 		Else
 			If (Not MouseDown1) And (Not MouseHit1) Then mainPlayer\grabbedEntity = 0

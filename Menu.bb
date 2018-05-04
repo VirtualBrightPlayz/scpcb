@@ -51,9 +51,7 @@ Type UIAssets
 	Field tileBlack%
 	Field scp173%
 	Field arrow%[4]
-	
-	;TODO: FreeFont uiAssets\font[4]. Make it local.
-	Field font%[5]
+	Field font%[4]
 	Field consoleFont%
 End Type
 
@@ -122,7 +120,6 @@ Function InitializeUIAssets()
 	uiAssets\font[1] = LoadFont("GFX\font\courbd\Courier New.ttf", Int(58 * MenuScale), 0,0,0)
 	uiAssets\font[2] = LoadFont("GFX\font\DS-DIGI\DS-Digital.ttf", Int(22 * MenuScale), 0,0,0)
 	uiAssets\font[3] = LoadFont("GFX\font\DS-DIGI\DS-Digital.ttf", Int(60 * MenuScale), 0,0,0)
-	uiAssets\font[4] = LoadFont("GFX\font\Journal\Journal.ttf", Int(58 * MenuScale), 0,0,0)
 End Function
 
 Function ReleaseUIAssets()
@@ -136,7 +133,7 @@ Function ReleaseUIAssets()
 		FreeImage(uiAssets\arrow[i])
 	Next
 	
-	For i = 0 To 4
+	For i = 0 To 3
 		FreeFont(uiAssets\font[i])
 	Next
 	
@@ -1188,10 +1185,6 @@ Function DrawLoading(percent%, shortloading=False)
 		
 		;Cls(True,False)
 		
-		If percent > 20 Then
-			;UpdateMusic()
-		EndIf
-		
 		If shortloading = False Then
 			If percent > (100.0 / SelectedLoadingScreen\txtamount)*(LoadingScreenText+1) Then
 				LoadingScreenText=LoadingScreenText+1
@@ -1360,7 +1353,11 @@ Function DrawLoading(percent%, shortloading=False)
 		Flip False
 		
 		firstloop = False
-		If percent <> 100 Then Exit
+		If (percent <> 100) Then
+			Exit
+		Else
+			RestoreDefaultMusic()
+		EndIf
 		
 	Until (GetKey()<>0 Or MouseHit(1))
 End Function

@@ -94,7 +94,7 @@ Function UpdateEvent_cont_012_2(e.Events)
 			e\soundChannels[0] = LoopRangedSound(e\sounds[0], e\soundChannels[0], mainPlayer\cam, e\room\Objects[3], 5.0)
 			
 			; TODO: Move to musicmanager.
-			If (e\sounds[1] = 0) Then LoadEventSound(e, "SFX\Music\012.ogg", 1)
+			;If (e\sounds[1] = 0) Then LoadEventSound(e, "SFX\Music\012.ogg", 1)
 			
 			If e\EventState<90 Then e\EventState=CurveValue(90,e\EventState,500)
 			PositionEntity e\room\Objects[2], EntityX(e\room\Objects[2],True),(-130-448*Sin(e\EventState))*RoomScale,EntityZ(e\room\Objects[2],True),True

@@ -4,6 +4,8 @@ Type Sound
 End Type
 
 Type SoundManager
+	Field chnList.IntArrayList
+
 	Field button.Sound
 	
 	; Footsteps
@@ -28,6 +30,7 @@ Global sndManager.SoundManager
 Function CreateSoundManager.SoundManager()
 	Local sndMan.SoundManager = New SoundManager
 
+	sndMan\chnList = CreateIntArrayList()
 	sndMan\button = LoadSound_SM("SFX\Interact\Button.ogg")
 
 	Return sndMan
@@ -88,14 +91,22 @@ Function DeloadInGameSounds(sndMan.SoundManager)
 End Function
 
 ; Add a channel to the list.
-Function AddChannel(sndMan.SoundManager, chn%)
+Function AddChannel(chn%)
 	If (chn = 0) Then
 		Return
 	EndIf
+
+	PushIntArrayListElem(sndManager\chnList, chn)
 End Function
 
-Function UpdateChannelList(sndMan.SoundManager)
-
+Function UpdateChannelList()
+	Local i%
+	For i = 0 to sndManager\chnList\size-1
+		If (Not IsChannelPlaying(GetIntArrayListElem(sndManager\chnList, i))) Then
+			EraseIntArrayListElem(sndManager\chnList, i)
+			i = i - 1
+		EndIf
+	Next
 End Function
 
 ; Creates a new sound object.
@@ -298,7 +309,7 @@ Function GetMaterialStepSound(entity%)
     Return 0
 End Function
 
-Function UpdateRangedSoundOrigin(Chn%, cam%, entity%, range# = 10, volume# = 1.0)
+Function UpdateRangedSoundOrigin(chn%, cam%, entity%, range# = 10, volume# = 1.0)
 	range# = Max(range,1.0)
 	
 	If volume>0 Then
@@ -308,15 +319,17 @@ Function UpdateRangedSoundOrigin(Chn%, cam%, entity%, range# = 10, volume# = 1.0
 			
 			Local panvalue# = Sin(-DeltaYaw(cam,entity))
 			
-			ChannelVolume(Chn, volume# * (1 - dist#)*userOptions\SoundVolume)
-			ChannelPan(Chn, panvalue)
+			ChannelVolume(chn, volume# * (1 - dist#)*userOptions\SoundVolume)
+			ChannelPan(chn, panvalue)
 		EndIf
 	Else
-		If Chn <> 0 Then
-			ChannelVolume (Chn, 0)
+		If chn <> 0 Then
+			ChannelVolume (chn, 0)
 		EndIf 
 	EndIf
 End Function
+
+
 
 ;;; Music
 Const MUS_MENU$    = "SFX\Music\Menu.ogg"

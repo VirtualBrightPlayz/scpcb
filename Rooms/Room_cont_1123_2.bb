@@ -146,7 +146,7 @@ Function UpdateEvent_cont_1123_2(e.Events)
 			mainPlayer\blurTimer = Max(mainPlayer\blurTimer, 100)
 			
 			If e\EventState2>200 And e\EventState2-timing\tickDuration=<200 Then 							
-				e\sounds[0] = LoadSound("SFX\Music\1123.ogg");
+				;e\sounds[0] = LoadSound("SFX\Music\1123.ogg");TODO: fix
 				e\soundChannels[0] = PlaySound(e\sounds[0])
 			EndIf
 			

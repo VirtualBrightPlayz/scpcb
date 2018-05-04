@@ -928,6 +928,27 @@ Function DrawInventory(player.Player)
 								Text 277, 469, AccessCode, True, True
 								Color 255,255,255
 								SetBuffer BackBuffer()
+							Case "Document SCP-513"
+								SelectedItem\itemtemplate\img = LoadImage(SelectedItem\itemtemplate\imgpath)	
+								SelectedItem\itemtemplate\img = ResizeImage2(SelectedItem\itemtemplate\img, ImageWidth(SelectedItem\itemtemplate\img) * MenuScale, ImageHeight(SelectedItem\itemtemplate\img) * MenuScale)
+								
+								SetBuffer ImageBuffer(SelectedItem\itemtemplate\img)
+								Color 37,45,137
+
+								Local journalFont% = LoadFont("GFX\font\Journal\Journal.ttf", Int(58 * MenuScale), 0,0,0)
+								SetFont(journalFont)
+
+								;TODO: This looks stupid.
+								Local code% = ((Int(AccessCode)*3) Mod 10000)
+								If (code < 1000) Then
+									temp = temp+1000
+								EndIf
+
+								Text(383 * MenuScale, 734 * MenuScale, temp, True, True)
+
+								FreeFont(journalFont)
+								Color 255,255,255
+								SetBuffer BackBuffer()
 							Case "Movie Ticket"
 								;don't resize because it messes up the masking
 								;TODO: this is retarded, fix

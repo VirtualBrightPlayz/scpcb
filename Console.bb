@@ -315,7 +315,6 @@ Function UpdateConsole()
 						Case "3"
 							CreateConsoleMsg("- spawn [npc type]")
 							CreateConsoleMsg("- infinitestamina")
-							CreateConsoleMsg("- playmusic [clip + .wav/.ogg]")
 							CreateConsoleMsg("- notarget")
 							CreateConsoleMsg("- spawnnpcstate [npc type] [state]")
 							CreateConsoleMsg("- unlockexits")
@@ -415,12 +414,6 @@ Function UpdateConsole()
 							CreateConsoleMsg("HELP - 420")
 							CreateConsoleMsg("******************************")
 							CreateConsoleMsg("Generates dank memes.")
-							CreateConsoleMsg("******************************")
-						Case "playmusic"
-							CreateConsoleMsg("HELP - playmusic")
-							CreateConsoleMsg("******************************")
-							CreateConsoleMsg("Will play tracks in .ogg/.wav format")
-							CreateConsoleMsg("from "+Chr(34)+"SFX\Music\Custom\"+Chr(34)+".")
 							CreateConsoleMsg("******************************")
 							
 						Default
