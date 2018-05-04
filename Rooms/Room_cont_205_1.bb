@@ -56,29 +56,15 @@ Function UpdateEvent_cont_205_1(e.Events)
 
 	;[Block]
 	If mainPlayer\currRoom = e\room Then
-		ShouldPlay = 15
+		e\overwriteMusic = True
 		If e\EventState=0 Or e\room\Objects[0]=0 Then
-			If e\EventStr = ""
-				e\EventStr = "load0"
-			ElseIf e\EventStr = "load0"
+			If (Not e\loaded) Then
+				
 				e\room\Objects[3] = LoadAnimMesh("GFX\npcs\205_demon1.b3d")
-				e\EventStr = "load1"
-			ElseIf e\EventStr = "load1"
 				e\room\Objects[4] = LoadAnimMesh("GFX\npcs\205_demon2.b3d")
-				e\EventStr = "load2"
-			ElseIf e\EventStr = "load2"
 				e\room\Objects[5] = LoadAnimMesh("GFX\npcs\205_demon3.b3d")
-				e\EventStr = "load3"
-			ElseIf e\EventStr = "load3"
 				e\room\Objects[6] = LoadAnimMesh("GFX\npcs\205_woman.b3d")
-				e\EventStr = "load4"
-			ElseIf e\EventStr = "load4"
-				;TODO: fix
-				;If Music(15) = 0 Then
-				;	Music(15) = LoadSound("SFX\Music\205.ogg")
-				;EndIf
-				e\EventStr = "load5"
-			ElseIf e\EventStr = "load5"
+				
 				For i = 3 To 6
 				;EntityColor e\room\Objects[i], 30,30,30
 				;EntityShininess e\room\Objects[i],0.0
@@ -89,11 +75,13 @@ Function UpdateEvent_cont_205_1(e.Events)
 					RotateEntity e\room\Objects[i], -90, EntityYaw(e\room\Objects[0],True), 0, True
 					ScaleEntity(e\room\Objects[i], 0.05, 0.05, 0.05, True)
 				Next
-				e\EventStr = "load6"
-			ElseIf e\EventStr = "load6"
+				
 				HideEntity(e\room\Objects[3])
 				HideEntity(e\room\Objects[4])
 				HideEntity(e\room\Objects[5])
+				
+				e\musicTrack = MUS_205
+				e\loaded = True
 				e\EventState = 1
 			EndIf
 			
@@ -234,14 +222,9 @@ Function UpdateEvent_cont_205_1(e.Events)
 					EndIf
 			End Select
 		EndIf
-	Else If (e\room\Objects[3]<>0)
-		HideEntity(e\room\Objects[3])
-		HideEntity(e\room\Objects[4])
-		HideEntity(e\room\Objects[5])
-		HideEntity(e\room\Objects[6])
 	Else
 		e\EventState = 0
-		e\EventStr = ""
+		e\overwriteMusic = False
 	EndIf
 	;[End block]
 End Function

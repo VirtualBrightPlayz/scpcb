@@ -242,6 +242,8 @@ Function InitNewGame()
 	
 	DrawLoading(45)
 	
+	LoadInGameSounds(sndManager)
+	
 	HideDistance# = 15.0
 	
 	mainPlayer\heartbeatIntensity = 70
@@ -476,6 +478,8 @@ Function NullGame()
 	Local i%, x%, y%, lvl
 	Local itt.ItemTemplates, s.Screens, lt.LightTemplates, d.Doors, m.Materials
 	Local wp.WayPoints, twp.TempWayPoints, r.Rooms, it.Items
+	
+	DeloadInGameSounds(sndManager)
 	
 	ClearTextureCache()
 	

@@ -36,43 +36,17 @@ End Function
 
 
 Function UpdateEvent_cont_966_3(e.Events)
-	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
-
-	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
-
-	Local CurrTrigger$ = ""
-
-	Local x#, y#, z#
-
-	Local angle#
-
-	;[Block]
 	If mainPlayer\currRoom = e\room Then
-		Select e\EventState
-			Case 0
-				;a dirty workaround to hide the pause when loading 966 model
-				mainPlayer\blinkTimer = -10
-				e\EventState = 1
-				PlaySound LightSFX
-			Case 1
-				e\EventState2 = e\EventState2+timing\tickDuration
-				If e\EventState2>30 Then
-					If e\EventStr = ""
-						CreateNPC(NPCtype966, EntityX(e\room\Objects[0],True), EntityY(e\room\Objects[0],True), EntityZ(e\room\Objects[0],True))
-						e\EventStr = "load0"
-					ElseIf e\EventStr = "load0"
-						CreateNPC(NPCtype966, EntityX(e\room\Objects[1],True), EntityY(e\room\Objects[1],True), EntityZ(e\room\Objects[1],True))
-						e\EventStr = "load1"
-					ElseIf e\EventStr = "load1"
-						CreateNPC(NPCtype966, EntityX(e\room\Objects[2],True), EntityY(e\room\Objects[2],True), EntityZ(e\room\Objects[2],True))
-						e\EventState=2
-					EndIf
-				EndIf							
-			Case 2
-				
-				e\EventState = 2
-				RemoveEvent (e)
-		End Select
+		If (Not e\loaded) Then
+			CreateNPC(NPCtype966, EntityX(e\room\Objects[0],True), EntityY(e\room\Objects[0],True), EntityZ(e\room\Objects[0],True))
+			CreateNPC(NPCtype966, EntityX(e\room\Objects[1],True), EntityY(e\room\Objects[1],True), EntityZ(e\room\Objects[1],True))
+			CreateNPC(NPCtype966, EntityX(e\room\Objects[2],True), EntityY(e\room\Objects[2],True), EntityZ(e\room\Objects[2],True))
+			
+			e\loaded = True
+		EndIf
+		RemoveEvent(e)
 	EndIf
-	;[End Block]
 End Function
+
+;~IDEal Editor Parameters:
+;~C#Blitz3D

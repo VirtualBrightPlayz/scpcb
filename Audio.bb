@@ -401,7 +401,6 @@ Function FreeMusic()
 	EndIf
 End Function
 
-;TODO: Not hack jorge.
 Function UpdateMusic()
 	If (userOptions\musicVolume <= 0) Then
 		Return
@@ -410,6 +409,8 @@ Function UpdateMusic()
 	If (musicManager\useDefault) Then
 		If (CurrGameState = GAMESTATE_MAINMENU) Then
 			musicManager\shouldPlay = MUS_MENU
+		Else
+			musicManager\shouldPlay = MUS_LCZ
 		EndIf
 		;TODO: Play zone track here depending on game's current state.
 	EndIf

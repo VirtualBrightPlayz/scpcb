@@ -18,44 +18,45 @@ Function UpdateEvent_dimension1499(e.Events)
 		If e\EventState < 2.0
 			;1499 random generator
 			;[Block]
-			If e\EventState = 0.0
-				If e\EventStr = ""
-					e\EventStr = "load0"
-				ElseIf e\EventStr = "load0"
-					e\room\Objects[0] = CreatePlane()
-					Local planetex% = LoadTexture("GFX\map\dimension1499\grit3.jpg")
-					EntityTexture e\room\Objects[0],planetex%
-					FreeTexture planetex%
-					PositionEntity e\room\Objects[0],0,EntityY(e\room\obj),0
-					EntityType e\room\Objects[0],HIT_MAP
-					;EntityParent e\room\Objects[0],e\room\obj
-					e\EventStr = "load1"
-				ElseIf e\EventStr = "load1"
-					NTF_1499Sky = sky_CreateSky("GFX\map\sky\1499sky")
-					e\EventStr = 1
-				Else
-					If Int(e\EventStr)<16
-						e\room\Objects[Int(e\EventStr)] = LoadMesh("GFX\map\dimension1499\1499object"+(Int(e\EventStr))+".b3d")
-						HideEntity e\room\Objects[Int(e\EventStr)]
-						e\EventStr = Int(e\EventStr)+1
-					ElseIf Int(e\EventStr)=16
-						CreateChunkParts(e\room)
-						e\EventStr = 17
-					ElseIf Int(e\EventStr) = 17
-						x# = EntityX(e\room\obj)
-						z# = EntityZ(e\room\obj)
-						Local ch.Chunk
-						For i = -2 To 2 Step 2
-							ch = CreateChunk(-1,x#*(i*2.5),EntityY(e\room\obj),z#)
-						Next
-						;If Music(18)=0 Then Music(18) = LoadSound("SFX\Music\1499.ogg")
-						e\EventState = 2.0
-						e\EventStr = 18
-					EndIf
-				EndIf
-			Else
-				e\EventState = 2.0
-			EndIf
+			;TODO: Reimplement.
+;			If e\EventState = 0.0
+;				If e\EventStr = ""
+;					e\EventStr = "load0"
+;				ElseIf e\EventStr = "load0"
+;					e\room\Objects[0] = CreatePlane()
+;					Local planetex% = LoadTexture("GFX\map\dimension1499\grit3.jpg")
+;					EntityTexture e\room\Objects[0],planetex%
+;					FreeTexture planetex%
+;					PositionEntity e\room\Objects[0],0,EntityY(e\room\obj),0
+;					EntityType e\room\Objects[0],HIT_MAP
+;					;EntityParent e\room\Objects[0],e\room\obj
+;					e\EventStr = "load1"
+;				ElseIf e\EventStr = "load1"
+;					NTF_1499Sky = sky_CreateSky("GFX\map\sky\1499sky")
+;					e\EventStr = 1
+;				Else
+;					If Int(e\EventStr)<16
+;						e\room\Objects[Int(e\EventStr)] = LoadMesh("GFX\map\dimension1499\1499object"+(Int(e\EventStr))+".b3d")
+;						HideEntity e\room\Objects[Int(e\EventStr)]
+;						e\EventStr = Int(e\EventStr)+1
+;					ElseIf Int(e\EventStr)=16
+;						CreateChunkParts(e\room)
+;						e\EventStr = 17
+;					ElseIf Int(e\EventStr) = 17
+;						x# = EntityX(e\room\obj)
+;						z# = EntityZ(e\room\obj)
+;						Local ch.Chunk
+;						For i = -2 To 2 Step 2
+;							ch = CreateChunk(-1,x#*(i*2.5),EntityY(e\room\obj),z#)
+;						Next
+;						;If Music(18)=0 Then Music(18) = LoadSound("SFX\Music\1499.ogg")
+;						e\EventState = 2.0
+;						e\EventStr = 18
+;					EndIf
+;				EndIf
+;			Else
+;				e\EventState = 2.0
+;			EndIf
 			;[End Block]
 			For n.NPCs = Each NPCs
 				If n\NPCtype = NPCtype1499
@@ -142,6 +143,6 @@ Function UpdateLeave1499()
 	
 End Function
 
+
 ;~IDEal Editor Parameters:
-;~F#0
 ;~C#Blitz3D

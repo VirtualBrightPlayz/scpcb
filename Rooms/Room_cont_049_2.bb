@@ -124,41 +124,40 @@ Function UpdateEvent_cont_049_2(e.Events)
 		If EntityY(mainPlayer\collider) > -2848*RoomScale Then
 			e\EventState2 = UpdateElevators(e\EventState2, e\room\RoomDoors[0], e\room\RoomDoors[1],e\room\Objects[0],e\room\Objects[1], e)
 			e\EventState3 = UpdateElevators(e\EventState3, e\room\RoomDoors[2], e\room\RoomDoors[3],e\room\Objects[2],e\room\Objects[3], e)
+			e\overwriteMusic = False
 		Else
-			;If Music(8)=0 Then Music(8) = LoadSound("SFX\Music\Room049.ogg") ;TODO: fix
-			ShouldPlay = 8
+			e\overwriteMusic = True
 			
 			If e\EventState = 0 Then
-				If e\EventStr = ""
-					e\EventStr = "load0"
-				ElseIf e\EventStr = "load0"
+				If (Not e\loaded) Then
 					n.NPCs = CreateNPC(NPCtypeZombie, EntityX(e\room\Objects[4],True),EntityY(e\room\Objects[4],True),EntityZ(e\room\Objects[4],True))
-					PointEntity n\Collider, e\room\obj
-					TurnEntity n\Collider, 0, 190, 0
-					e\EventStr = "load1"
-				ElseIf e\EventStr = "load1"
+					PointEntity n\collider, e\room\obj
+					TurnEntity n\collider, 0, 190, 0
+					
 					n.NPCs = CreateNPC(NPCtypeZombie, EntityX(e\room\Objects[5],True),EntityY(e\room\Objects[5],True),EntityZ(e\room\Objects[5],True))
-					PointEntity n\Collider, e\room\obj
-					TurnEntity n\Collider, 0, 20, 0
-					e\EventStr = "load2"
-				ElseIf e\EventStr = "load2"
+					PointEntity n\collider, e\room\obj
+					TurnEntity n\collider, 0, 20, 0
+					
 					For n.NPCs = Each NPCs
-						If n\NPCtype = NPCtype049
+						If n\npcType = NPCtype049
 							e\room\NPC[0]=n
-							e\room\NPC[0]\State = 2
+							e\room\NPC[0]\state = 2
 							e\room\NPC[0]\Idle = 1
-							PositionEntity e\room\NPC[0]\Collider,EntityX(e\room\Objects[4],True),EntityY(e\room\Objects[4],True)+3,EntityZ(e\room\Objects[4],True)
-							ResetEntity e\room\NPC[0]\Collider
+							PositionEntity e\room\NPC[0]\collider,EntityX(e\room\Objects[4],True),EntityY(e\room\Objects[4],True)+3,EntityZ(e\room\Objects[4],True)
+							ResetEntity e\room\NPC[0]\collider
 							Exit
 						EndIf
 					Next
 					If e\room\NPC[0]=Null
 						n.NPCs = CreateNPC(NPCtype049, EntityX(e\room\Objects[4],True), EntityY(e\room\Objects[4],True)+3, EntityZ(e\room\Objects[4],True))
-						PointEntity n\Collider, e\room\obj
-						n\State = 2
+						PointEntity n\collider, e\room\obj
+						n\state = 2
 						n\Idle = 1
 						e\room\NPC[0]=n
 					EndIf
+					
+					e\musicTrack = MUS_049
+					e\loaded = True
 					e\EventState=1
 				EndIf
 			ElseIf e\EventState > 0
@@ -191,14 +190,14 @@ Function UpdateEvent_cont_049_2(e.Events)
 							EndIf
 							If i > 0
 								;If EntityVisible(mainPlayer\collider,e\room\RoomDoors[i]\frameobj)
-								PositionEntity e\room\NPC[0]\Collider,EntityX(e\room\Objects[i],True),EntityY(e\room\Objects[i],True),EntityZ(e\room\Objects[i],True)
-								ResetEntity e\room\NPC[0]\Collider
+								PositionEntity e\room\NPC[0]\collider,EntityX(e\room\Objects[i],True),EntityY(e\room\Objects[i],True),EntityZ(e\room\Objects[i],True)
+								ResetEntity e\room\NPC[0]\collider
 								PlayRangedSound(ElevatorBeepSFX, mainPlayer\cam, e\room\Objects[i], 4.0)
 								UseDoor(e\room\RoomDoors[i],False)
 								e\room\RoomDoors[i-1]\open = False
 								e\room\RoomDoors[i]\open = True
-								e\room\NPC[0]\PathStatus = FindPath(e\room\NPC[0],EntityX(mainPlayer\collider),EntityY(mainPlayer\collider),EntityZ(mainPlayer\collider))
-								PlayRangedSound(LoadTempSound("SFX\SCP\049\Greeting"+Rand(1,2)+".ogg"),mainPlayer\cam, e\room\NPC[0]\Collider)
+								e\room\NPC[0]\pathStatus = FindPath(e\room\NPC[0],EntityX(mainPlayer\collider),EntityY(mainPlayer\collider),EntityZ(mainPlayer\collider))
+								PlayRangedSound(LoadTempSound("SFX\SCP\049\Greeting"+Rand(1,2)+".ogg"),mainPlayer\cam, e\room\NPC[0]\collider)
 								e\room\NPC[0]\Idle = 0
 								;EndIf
 							EndIf
@@ -256,8 +255,8 @@ Function UpdateEvent_cont_049_2(e.Events)
 					;EndIf
 					
 					For n.NPCs = Each NPCs ;awake the zombies
-						If n\NPCtype = NPCtypeZombie And n\State = 0 Then
-							n\State = 1
+						If n\npcType = NPCtypeZombie And n\state = 0 Then
+							n\state = 1
 							SetNPCFrame(n, 155)
 						EndIf
 					Next
@@ -268,6 +267,7 @@ Function UpdateEvent_cont_049_2(e.Events)
 	Else
 		e\EventState2 = UpdateElevators(e\EventState2, e\room\RoomDoors[0], e\room\RoomDoors[1],e\room\Objects[0],e\room\Objects[1], e)
 		e\EventState3 = UpdateElevators(e\EventState3, e\room\RoomDoors[2], e\room\RoomDoors[3],e\room\Objects[2],e\room\Objects[3], e)
+		e\overwriteMusic = False
 	EndIf 
 	
 	If e\EventState < 0 Then
@@ -293,14 +293,14 @@ Function UpdateEvent_cont_049_2(e.Events)
 					PositionEntity mainPlayer\collider, EntityX(e\room\obj,True), EntityY(e\room\Objects[5],True)+0.2, EntityZ(e\room\obj,True)
 					ResetEntity mainPlayer\collider										
 					
-					PositionEntity e\room\NPC[0]\Collider, EntityX(e\room\Objects[0],True),EntityY(e\room\Objects[0],True),EntityZ(e\room\Objects[0],True),True
-					ResetEntity e\room\NPC[0]\Collider
+					PositionEntity e\room\NPC[0]\collider, EntityX(e\room\Objects[0],True),EntityY(e\room\Objects[0],True),EntityZ(e\room\Objects[0],True),True
+					ResetEntity e\room\NPC[0]\collider
 					
 					For n.NPCs = Each NPCs
-						If n\NPCtype = NPCtypeZombie Then
-							PositionEntity n\Collider, EntityX(e\room\Objects[4],True),EntityY(e\room\Objects[4],True),EntityZ(e\room\Objects[4],True),True
-							ResetEntity n\Collider
-							n\State = 4
+						If n\npcType = NPCtypeZombie Then
+							PositionEntity n\collider, EntityX(e\room\Objects[4],True),EntityY(e\room\Objects[4],True),EntityZ(e\room\Objects[4],True),True
+							ResetEntity n\collider
+							n\state = 4
 							DebugLog "moving zombie"
 						EndIf
 					Next

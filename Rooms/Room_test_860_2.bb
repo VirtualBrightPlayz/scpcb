@@ -71,6 +71,7 @@ Function UpdateEvent_test_860_2(e.Events)
 		
 		If e\EventState=1.0 Then ;the player is in the forest
 			mainPlayer\footstepOverride = 2
+			e\overwriteMusic = True
 			
 			Curr106\Idle = True
 			
@@ -79,24 +80,22 @@ Function UpdateEvent_test_860_2(e.Events)
 			
 			UpdateForest(fr,mainPlayer\collider)
 			
-			If e\EventStr = ""
-				e\EventStr = "load0"
-			ElseIf e\EventStr = "load0"
-				;If Music(9) = 0 Then Music(9) = LoadSound("SFX\Music\8601.ogg") ;TODO: fix
-				e\EventStr = "load1"
-			ElseIf e\EventStr = "load1"
+			If (Not e\loaded) Then
+				e\musicTrack = MUS_8601
 				;If Music(12) = 0 Then Music(12) = LoadSound("SFX\Music\8601Cancer.ogg") ;TODO: fix
-				e\EventStr = "load2"
-			ElseIf e\EventStr = "load2"
-				If e\room\NPC[0]=Null Then e\room\NPC[0]=CreateNPC(NPCtype860, 0,0,0)
-				e\EventStr = "loaddone"
+				If e\room\NPC[0]=Null Then
+					e\room\NPC[0]=CreateNPC(NPCtype860, 0,0,0)
+				EndIf
+				
+				e\loaded = True
 			EndIf
 			
 			If e\room\NPC[0]<>Null Then
-				If e\room\NPC[0]\State2 = 1 And e\room\NPC[0]\State>1 Then ;the monster is chasing the player
-					ShouldPlay = 12
+				If e\room\NPC[0]\state2 = 1 And e\room\NPC[0]\state>1 Then ;the monster is chasing the player
+					e\overwriteMusic = False
+					SetNextMusicTrack(MUS_8602, False)
 				Else
-					ShouldPlay = 9
+					e\overwriteMusic = True
 				EndIf
 			EndIf
 			
@@ -109,19 +108,19 @@ Function UpdateEvent_test_860_2(e.Events)
 			EndIf
 			
 			If e\room\NPC[0]<>Null
-				If e\room\NPC[0]\State = 0 Or EntityDistance(mainPlayer\collider, e\room\NPC[0]\Collider)>12.0 Then
+				If e\room\NPC[0]\state = 0 Or EntityDistance(mainPlayer\collider, e\room\NPC[0]\collider)>12.0 Then
 					e\EventState3 = e\EventState3 + (1+mainPlayer\moveSpeed)* timing\tickDuration
 					If (e\EventState3 Mod 500) < 10.0 And ((e\EventState3-timing\tickDuration) Mod 500) > 490.0 Then
 						;If e\EventState3 > 3500 And Rnd(10000)<e\EventState3 Then
 						If e\EventState3 > 3000-(500*SelectedDifficulty\aggressiveNPCs) And Rnd(10000+(500*SelectedDifficulty\aggressiveNPCs)) < e\EventState3
-							e\room\NPC[0]\State=2
-							PositionEntity e\room\NPC[0]\Collider, 0,-110,0
+							e\room\NPC[0]\state=2
+							PositionEntity e\room\NPC[0]\collider, 0,-110,0
 							;e\EventState3=e\EventState3-Rnd(2000,3000)
 							e\EventState3=e\EventState3-Rnd(1000,2000-(500*SelectedDifficulty\aggressiveNPCs))
 							DebugLog "attack"
 						Else
-							e\room\NPC[0]\State=1
-							PositionEntity e\room\NPC[0]\Collider, 0,-110,0
+							e\room\NPC[0]\state=1
+							PositionEntity e\room\NPC[0]\collider, 0,-110,0
 							DebugLog "spawn"
 						EndIf
 					EndIf

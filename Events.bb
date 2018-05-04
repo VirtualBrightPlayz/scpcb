@@ -3,14 +3,15 @@ Type Events
 	Field room.Rooms
 	
 	Field EventState#, EventState2#, EventState3#
-	
-	;TODO: Probably remove this bs.
-	Field EventStr$
+	Field loaded%
 	
 	Field img%
 	
 	Field soundChannels[2]
 	Field sounds[2]
+	
+	Field musicTrack$
+	Field overwriteMusic%
 End Type
 
 Function CreateEvent.Events(eventname$, roomname$, id%, prob# = 0.0)
@@ -249,6 +250,16 @@ Function UpdateEvents()
 	UpdateRooms()
 	
     For e.Events = Each Events
+		; Does the event have music to play?
+		If (e\overwriteMusic) Then
+			SetNextMusicTrack(e\musicTrack)
+		ElseIf (Not musicManager\useDefault) Then
+			; If the event was previously playing music then go back to the default.
+			If (e\musicTrack = musicManager\nowPlaying) Then
+				RestoreDefaultMusic()
+			EndIf
+		EndIf
+		
 		Select e\EventName
 			Case "evt_intro"
 				UpdateEvent173(e)

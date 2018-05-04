@@ -160,14 +160,11 @@ Function UpdateEvent_hll_sl_2(e.Events)
 	;e\EventState2: Variable used for the SCP-049 event
 	;e\EventState3: Checks if Lever is activated or not
 	
-	;mainPlayer\cam-Spawning Code + SCP-049-Spawning (it is a little messy!)
+	;mainPlayer\cam-Spawning Code + SCP-049-Spawning (it is a little messy!) ;TODO: reimplement
 	;[Block]
 	If mainPlayer\currRoom = e\room
-		If e\EventStr = ""
-			e\EventStr = 0
-		EndIf
 	EndIf
-	If e\EventState = 0 And e\EventStr <> ""
+	If e\EventState = 0
 		For r.Rooms = Each Rooms
 			If ValidRoom2slCamRoom(r)
 				For sc.SecurityCams = Each SecurityCams
@@ -185,9 +182,8 @@ Function UpdateEvent_hll_sl_2(e.Events)
 							EndIf
 						Next
 						If (Not HasCamera%) Then
-							If Left(e\EventStr,4) <> "load"
-								DebugLog "### "+Int(e\EventStr)
-								If Int(e\EventStr)=sc\ID
+							If (Not e\loaded) Then
+								For i = 0 To 9
 									sc\Screen = True
 									sc\AllowSaving = False
 									
@@ -306,22 +302,14 @@ Function UpdateEvent_hll_sl_2(e.Events)
 									End Select
 									
 									FreeEntity pvt%
-									
-									Exit
-								EndIf
+								Next
 							EndIf
 						EndIf
 					EndIf
 				Next
 			EndIf
 		Next
-		If e\EventStr <> "" And Left(e\EventStr,4) <> "load"
-			If Int(e\EventStr) > 9
-				e\EventStr = "load1"
-			Else
-				e\EventStr = Int(e\EventStr) + 1
-			EndIf
-		ElseIf e\EventStr = "load1"
+		If (Not e\loaded) Then
 			For sc.SecurityCams = Each SecurityCams
 				If sc\SpecialCam Then
 					sc\Screen = True
@@ -368,16 +356,14 @@ Function UpdateEvent_hll_sl_2(e.Events)
 					DebugLog "Created Monitor for "+Chr(34)+"room2sl"+Chr(34)+" (faked SCP-409 mainPlayer\cam)"
 					
 					FreeEntity pvt%
-					
-					e\EventStr = "load2"
 					Exit
 				EndIf
 			Next
-		ElseIf e\EventStr = "load2"
+			
 				;For SCP-049
 			If e\room\NPC[0]=Null Then
 				For n.NPCs = Each NPCs
-					If n\NPCtype = NPCtype049
+					If n\npcType = NPCtype049
 						e\room\NPC[0] = n
 						Exit
 					EndIf
@@ -387,17 +373,17 @@ Function UpdateEvent_hll_sl_2(e.Events)
 					e\room\NPC[0] = CreateNPC(NPCtype049,EntityX(e\room\Objects[7],True),EntityY(e\room\Objects[7],True)+5,EntityZ(e\room\Objects[7],True))
 				EndIf
 			EndIf
-			e\EventStr = "load3"
-		ElseIf e\EventStr = "load3"
-			PositionEntity e\room\NPC[0]\Collider,EntityX(e\room\Objects[7],True),EntityY(e\room\Objects[7],True)+5,EntityZ(e\room\Objects[7],True)
-			ResetEntity e\room\NPC[0]\Collider
-			RotateEntity e\room\NPC[0]\Collider,0,e\room\angle+180,0
+			
+			PositionEntity e\room\NPC[0]\collider,EntityX(e\room\Objects[7],True),EntityY(e\room\Objects[7],True)+5,EntityZ(e\room\Objects[7],True)
+			ResetEntity e\room\NPC[0]\collider
+			RotateEntity e\room\NPC[0]\collider,0,e\room\angle+180,0
 			
 			DebugLog(EntityX(e\room\Objects[7],True)+", "+EntityY(e\room\Objects[7],True)+", "+EntityZ(e\room\Objects[7],True))
 			
-			e\room\NPC[0]\State = 0
-			e\room\NPC[0]\PrevState = 2
+			e\room\NPC[0]\state = 0
+			e\room\NPC[0]\prevState = 2
 			
+			e\loaded = True
 			e\EventState = 1
 			If e\EventState2 = 0 Then e\EventState2 = -(70*5)
 		EndIf
@@ -441,34 +427,34 @@ Function UpdateEvent_hll_sl_2(e.Events)
 					EndIf
 				Next
 				If AdjDist1# > AdjDist2#
-					PositionEntity e\room\NPC[0]\Collider,EntityX(e\room\AdjDoor[Adj1]\frameobj),EntityY(e\room\Objects[7],True),EntityZ(e\room\AdjDoor[Adj1]\frameobj)
+					PositionEntity e\room\NPC[0]\collider,EntityX(e\room\AdjDoor[Adj1]\frameobj),EntityY(e\room\Objects[7],True),EntityZ(e\room\AdjDoor[Adj1]\frameobj)
 				Else
-					PositionEntity e\room\NPC[0]\Collider,EntityX(e\room\AdjDoor[Adj2]\frameobj),EntityY(e\room\Objects[7],True),EntityZ(e\room\AdjDoor[Adj2]\frameobj)
+					PositionEntity e\room\NPC[0]\collider,EntityX(e\room\AdjDoor[Adj2]\frameobj),EntityY(e\room\Objects[7],True),EntityZ(e\room\AdjDoor[Adj2]\frameobj)
 				EndIf
-				PointEntity e\room\NPC[0]\Collider,e\room\obj
-				MoveEntity e\room\NPC[0]\Collider,0,0,-1
-				ResetEntity e\room\NPC[0]\Collider
-				e\room\NPC[0]\PathX = EntityX(e\room\NPC[0]\Collider)
-				e\room\NPC[0]\PathZ = EntityZ(e\room\NPC[0]\Collider)
-				e\room\NPC[0]\State = 5
+				PointEntity e\room\NPC[0]\collider,e\room\obj
+				MoveEntity e\room\NPC[0]\collider,0,0,-1
+				ResetEntity e\room\NPC[0]\collider
+				e\room\NPC[0]\pathX = EntityX(e\room\NPC[0]\collider)
+				e\room\NPC[0]\pathZ = EntityZ(e\room\NPC[0]\collider)
+				e\room\NPC[0]\state = 5
 				DebugLog "aaaaaaaaa"
 				e\EventState2 = 1
 			EndIf
 		ElseIf e\EventState2 = 1
-			If e\room\NPC[0]\PathStatus <> 1
-				e\room\NPC[0]\PathStatus = FindPath(e\room\NPC[0],EntityX(e\room\Objects[15],True),EntityY(e\room\Objects[15],True),EntityZ(e\room\Objects[15],True))
+			If e\room\NPC[0]\pathStatus <> 1
+				e\room\NPC[0]\pathStatus = FindPath(e\room\NPC[0],EntityX(e\room\Objects[15],True),EntityY(e\room\Objects[15],True),EntityZ(e\room\Objects[15],True))
 			Else
 				DebugLog "bbbbbbbbb"
 				e\EventState2 = 2
 			EndIf
 		ElseIf e\EventState2 = 2
-			If e\room\NPC[0]\PathStatus <> 1
-				e\room\NPC[0]\State3 = 1.0
+			If e\room\NPC[0]\pathStatus <> 1
+				e\room\NPC[0]\state3 = 1.0
 				e\EventState2 = 3
-				e\room\NPC[0]\PathTimer# = 0.0
+				e\room\NPC[0]\pathTimer# = 0.0
 				DebugLog "ccccccccc"
 			Else
-				If EntityDistance(e\room\NPC[0]\Collider,e\room\RoomDoors[0]\frameobj) < 5.0
+				If EntityDistance(e\room\NPC[0]\collider,e\room\RoomDoors[0]\frameobj) < 5.0
 					e\room\RoomDoors[0]\locked = True
 					e\room\RoomDoors[1]\locked = True
 					If e\room\NPC[0]\Reload = 0
@@ -488,16 +474,16 @@ Function UpdateEvent_hll_sl_2(e.Events)
 					EndIf
 				EndIf
 				If e\room\NPC[0]\Reload = 1
-					e\room\NPC[0]\DropSpeed = 0
+					e\room\NPC[0]\dropSpeed = 0
 				EndIf
 			EndIf
 			
-			If e\room\NPC[0]\State <> 5
+			If e\room\NPC[0]\state <> 5
 				e\EventState2 = 7
 				DebugLog "fffffffff"
 			EndIf
 		ElseIf e\EventState2 = 3
-			If e\room\NPC[0]\State <> 5
+			If e\room\NPC[0]\state <> 5
 				e\EventState2 = 7
 				DebugLog "fffffffff"
 			EndIf
@@ -507,79 +493,79 @@ Function UpdateEvent_hll_sl_2(e.Events)
 				DebugLog "ddddddddd"
 			EndIf
 			
-			If e\room\NPC[0]\PathStatus <> 1
+			If e\room\NPC[0]\pathStatus <> 1
 				;If e\room\NPC[0]\PathTimer# < 70*3
-				If e\room\NPC[0]\PathTimer# = 0.0
+				If e\room\NPC[0]\pathTimer# = 0.0
 					;e\room\NPC[0]\PathTimer# = e\room\NPC[0]\PathTimer# + timing\tickDuration
-					If e\room\NPC[0]\PrevState = 1 Then
-						If (e\room\NPC[0]\SoundChn2 = 0) Then
-							e\room\NPC[0]\Sound2 = LoadSound("SFX\SCP\049\Room2SLEnter.ogg")
-							e\room\NPC[0]\SoundChn2 = PlayRangedSound(e\room\NPC[0]\Sound2, mainPlayer\cam, e\room\NPC[0]\Collider)
+					If e\room\NPC[0]\prevState = 1 Then
+						If (e\room\NPC[0]\soundChn2 = 0) Then
+							e\room\NPC[0]\sound2 = LoadSound("SFX\SCP\049\Room2SLEnter.ogg")
+							e\room\NPC[0]\soundChn2 = PlayRangedSound(e\room\NPC[0]\sound2, mainPlayer\cam, e\room\NPC[0]\collider)
 						Else
-							If (Not IsChannelPlaying(e\room\NPC[0]\SoundChn2))
-								e\room\NPC[0]\PathTimer# = 1.0
+							If (Not IsChannelPlaying(e\room\NPC[0]\soundChn2))
+								e\room\NPC[0]\pathTimer# = 1.0
 							EndIf
 						EndIf
-					ElseIf e\room\NPC[0]\PrevState = 2
-						If e\room\NPC[0]\Frame >= 1118
-							e\room\NPC[0]\PathTimer# = 1.0
+					ElseIf e\room\NPC[0]\prevState = 2
+						If e\room\NPC[0]\frame >= 1118
+							e\room\NPC[0]\pathTimer# = 1.0
 						EndIf
 					EndIf
 				Else
-					Select e\room\NPC[0]\State3
+					Select e\room\NPC[0]\state3
 						Case 1
-							e\room\NPC[0]\PathStatus = FindPath(e\room\NPC[0],EntityX(e\room\Objects[16],True),EntityY(e\room\Objects[16],True),EntityZ(e\room\Objects[16],True))
-							e\room\NPC[0]\PrevState = 1
+							e\room\NPC[0]\pathStatus = FindPath(e\room\NPC[0],EntityX(e\room\Objects[16],True),EntityY(e\room\Objects[16],True),EntityZ(e\room\Objects[16],True))
+							e\room\NPC[0]\prevState = 1
 							DebugLog "Path1"
 						Case 2
-							e\room\NPC[0]\PathStatus = FindPath(e\room\NPC[0],EntityX(e\room\Objects[15],True),EntityY(e\room\Objects[15],True),EntityZ(e\room\Objects[15],True))
-							e\room\NPC[0]\PrevState = 2
+							e\room\NPC[0]\pathStatus = FindPath(e\room\NPC[0],EntityX(e\room\Objects[15],True),EntityY(e\room\Objects[15],True),EntityZ(e\room\Objects[15],True))
+							e\room\NPC[0]\prevState = 2
 							DebugLog "Path2"
 						Case 3
 							;e\room\NPC[0]\PathStatus = FindPath(e\room\NPC[0],EntityX(e\room\Objects[7],True),EntityY(e\room\Objects[7],True),EntityZ(e\room\Objects[7],True))
 							;e\room\NPC[0]\PathStatus = FindPath(e\room\NPC[0],EntityX(e\room\obj,True),EntityY(e\room\Objects[7],True),EntityZ(e\room\obj,True))
-							e\room\NPC[0]\PathStatus = FindPath(e\room\NPC[0],e\room\NPC[0]\PathX,0.1,e\room\NPC[0]\PathZ)
-							e\room\NPC[0]\PrevState = 1
+							e\room\NPC[0]\pathStatus = FindPath(e\room\NPC[0],e\room\NPC[0]\pathX,0.1,e\room\NPC[0]\pathZ)
+							e\room\NPC[0]\prevState = 1
 							DebugLog "Path3"
 						Case 4
 							e\EventState2 = 5
 					End Select
-					e\room\NPC[0]\PathTimer# = 0.0
-					e\room\NPC[0]\State3 = e\room\NPC[0]\State3 + 1
+					e\room\NPC[0]\pathTimer# = 0.0
+					e\room\NPC[0]\state3 = e\room\NPC[0]\state3 + 1
 				EndIf
 			EndIf
 		ElseIf e\EventState2 = 4
-			If e\room\NPC[0]\State <> 5
+			If e\room\NPC[0]\state <> 5
 				e\EventState2 = 7
-				e\room\NPC[0]\State3 = 5.0
+				e\room\NPC[0]\state3 = 5.0
 				DebugLog "fffffffff"
 			EndIf
 		ElseIf e\EventState2 = 5
 			;RemoveNPC(e\room\NPC[0])
 			DebugLog "ddddddddd"
-			e\room\NPC[0]\State = 2
+			e\room\NPC[0]\state = 2
 			For r.Rooms = Each Rooms
 				If r <> mainPlayer\currRoom
-					If (EntityDistance(r\obj,e\room\NPC[0]\Collider)<HideDistance*2 And EntityDistance(r\obj,e\room\NPC[0]\Collider)>HideDistance)
-						e\room\NPC[0]\PathStatus = FindPath(e\room\NPC[0],EntityX(r\obj),EntityY(r\obj),EntityZ(r\obj))
-						e\room\NPC[0]\PathTimer = 0.0
-						If e\room\NPC[0]\PathStatus = 1 Then e\EventState2 = 6
+					If (EntityDistance(r\obj,e\room\NPC[0]\collider)<HideDistance*2 And EntityDistance(r\obj,e\room\NPC[0]\collider)>HideDistance)
+						e\room\NPC[0]\pathStatus = FindPath(e\room\NPC[0],EntityX(r\obj),EntityY(r\obj),EntityZ(r\obj))
+						e\room\NPC[0]\pathTimer = 0.0
+						If e\room\NPC[0]\pathStatus = 1 Then e\EventState2 = 6
 						Exit
 					EndIf
 				EndIf
 			Next
 		ElseIf e\EventState2 = 6
-			If MeNPCSeesPlayer(e\room\NPC[0],True) Or e\room\NPC[0]\State2 > 0 Or e\room\NPC[0]\LastSeen > 0
+			If MeNPCSeesPlayer(e\room\NPC[0],True) Or e\room\NPC[0]\state2 > 0 Or e\room\NPC[0]\lastSeen > 0
 				DebugLog "fffffffff"
 				e\EventState2 = 7
 			Else
 				;Still playing the Music for SCP-049 (in the real, SCP-049's State will be set to 2, causing it to stop playing the chasing track)
 				;If Music(20) = 0 Then Music(20) = LoadSound("SFX\Horror\Horror12.ogg") ;TODO: fix
 				ShouldPlay = 20
-				If e\room\NPC[0]\PathStatus<>1
+				If e\room\NPC[0]\pathStatus<>1
 					e\room\NPC[0]\Idle = 70*60 ;(Making SCP-049 idle for one minute (twice as fast for aggressive NPCs = True))
-					PositionEntity e\room\NPC[0]\Collider,0,500,0
-					ResetEntity e\room\NPC[0]\Collider
+					PositionEntity e\room\NPC[0]\collider,0,500,0
+					ResetEntity e\room\NPC[0]\collider
 					DebugLog "eeeeeeeee"
 					e\EventState2 = 7
 				EndIf
@@ -593,7 +579,7 @@ Function UpdateEvent_hll_sl_2(e.Events)
 		If e\room\NPC[0]<>Null
 			If e\EventState2 < 7
 				If e\EventState2 > 2
-					If Abs(EntityY(e\room\RoomDoors[0]\frameobj)-EntityY(e\room\NPC[0]\Collider))>1.0
+					If Abs(EntityY(e\room\RoomDoors[0]\frameobj)-EntityY(e\room\NPC[0]\collider))>1.0
 						If Abs(EntityY(e\room\RoomDoors[0]\frameobj)-EntityY(mainPlayer\collider))<1.0
 							If e\room\RoomDoors[0]\open
 								e\room\RoomDoors[0]\open = False
