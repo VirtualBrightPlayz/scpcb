@@ -123,6 +123,8 @@ Function InitializeUIAssets()
 	uiAssets\font[2] = LoadFont("GFX\font\DS-DIGI\DS-Digital.ttf", Int(22 * MenuScale), 0,0,0)
 	uiAssets\font[3] = LoadFont("GFX\font\DS-DIGI\DS-Digital.ttf", Int(60 * MenuScale), 0,0,0)
 	uiAssets\font[4] = LoadFont("GFX\font\Journal\Journal.ttf", Int(58 * MenuScale), 0,0,0)
+	
+	uiAssets\consoleFont% = LoadFont("Blitz", Int(20 * MenuScale), 0,0,0)
 End Function
 
 Function ReleaseUIAssets()
@@ -1386,6 +1388,17 @@ Function rInput$(aString$)
 	End If
 End Function
 
+
+
+Function MouseOn%(x%, y%, width%, height%)
+	If MouseX() > x And MouseX() < x + width Then
+		If MouseY() > y And MouseY() < y + height Then
+			Return True
+		End If
+	End If
+	Return False
+End Function
+
 Function UpdateInputBox$(x%, y%, width%, height%, Txt$, ID% = 0)
 	Local MouseOnBox% = False
 	If MouseOn(x, y, width, height) Then
@@ -1621,5 +1634,5 @@ Global QuickLoadPercent_DisplayTimer.MarkedForRemoval
 
 
 ;~IDEal Editor Parameters:
-;~F#91#43B#44D#457#48A#559#56C#57C#593#59A#5A9#5B6#5D4#5E0#5EA#5F8#628#645
+;~F#93#43D#44F#459#48C#55B#570#579#589#5A0#5A7#5B6#5C3#5E1#5ED#5F7#605#635#652
 ;~C#Blitz3D

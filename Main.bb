@@ -167,7 +167,7 @@ End Function
 
 Global CurrFrameLimit# ;TODO: what is this
 
-Const HIT_MAP% = 1, HIT_PLAYER% = 2, HIT_ITEM% = 3, HIT_APACHE% = 4, HIT_DEAD% = 6
+Const HIT_MAP% = 1, HIT_PLAYER% = 2, HIT_ITEM% = 3, HIT_APACHE% = 4, HIT_DEAD% = 5
 
 Global GameSaved%
 
@@ -392,8 +392,6 @@ Function InitializeMainGame()
 	InitLoadingScreens("Loadingscreens\loadingscreens.ini")
 	
 	InitializeUIAssets()
-	
-	uiAssets\consoleFont% = LoadFont("Blitz", Int(20 * MenuScale), 0,0,0)
 	
 	SetFont uiAssets\font[1]
 	
@@ -1743,15 +1741,6 @@ Function UpdatePauseMenu()
 	
 End Function
 
-Function MouseOn%(x%, y%, width%, height%)
-	If MouseX() > x And MouseX() < x + width Then
-		If MouseY() > y And MouseY() < y + height Then
-			Return True
-		End If
-	End If
-	Return False
-End Function
-
 ;--------------------------------------- random -------------------------------------------------------
 
 Function f2s$(n#, count%)
@@ -2266,6 +2255,6 @@ Function CheckTriggers$()
 End Function
 
 ;~IDEal Editor Parameters:
-;~F#5#8C#97#9B#A3#408#494#52A#603#64E#6D1#6DC#6E0#70A#789#798#7B6#7E5#7EC#7FA
-;~F#89C#8BE
+;~F#5#75#8C#97#9B#A3#15F#173#24C#406#492#528#601#64C#6D1#6D5#6FF#77E#78D#7AB
+;~F#7DA#7E1#7EF#891#8B3
 ;~C#Blitz3D
