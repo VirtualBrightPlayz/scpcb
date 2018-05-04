@@ -294,7 +294,7 @@ Function UpdateMainMenu()
 							Else
 								SelectedDifficulty\otherFactors = EASY
 							EndIf
-							PlaySound(ButtonSFX)
+							PlaySound_SM(sndManager\button)
 						EndIf
 					EndIf			
 				EndIf
@@ -1462,7 +1462,7 @@ Function UpdateUIButton%(x%, y%, width%, height, txt$="", waitForMouseUp%=False)
 	If MouseOn(x, y, width, height) Then
 		If (MouseHit1 And (Not waitForMouseUp)) Or (MouseUp1 And waitForMouseUp) Then 
 			clicked = True
-			PlaySound(ButtonSFX)
+			PlaySound_SM(sndManager\button)
 		EndIf
 	EndIf
 	
@@ -1505,8 +1505,11 @@ Function UpdateUITick%(x%, y%, selected%, locked% = False)
 	Local Highlight% = MouseOn(x, y, width, height) And (Not locked)
 	
 	If Highlight Then
-		If MouseHit1 Then selected = (Not selected) : PlaySound (ButtonSFX)
-	End If
+		If MouseHit1 Then
+			selected = (Not selected)
+			PlaySound_SM(sndManager\button)
+		EndIf
+	EndIf
 	
 	Return selected
 End Function

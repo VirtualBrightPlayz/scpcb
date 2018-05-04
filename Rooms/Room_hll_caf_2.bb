@@ -51,7 +51,9 @@ Function Update294()
 			ytemp = Floor((MouseY()-y-342) / 36.5)
 			
 			If ytemp => 0 And ytemp < 5 Then
-				If xtemp => 0 And xtemp < 10 Then PlaySound ButtonSFX
+				If xtemp => 0 And xtemp < 10 Then
+					PlaySound_SM(sndManager\button)
+				EndIf
 			EndIf
 			
 			strtemp = ""

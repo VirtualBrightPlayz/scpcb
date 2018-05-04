@@ -1881,7 +1881,7 @@ Function UpdateScreens()
 						s\img = LoadImage("GFX\screens\"+s\imgpath)
 						s\img = ResizeImage2(s\img, ImageWidth(s\img) * MenuScale, ImageHeight(s\img) * MenuScale)
 						MaskImage s\img, 255,0,255
-						PlaySound ButtonSFX
+						PlaySound_SM(sndManager\button)
 						MouseUp1=False
 					EndIf
 				EndIf

@@ -207,6 +207,7 @@ Global TempSoundIndex% = 0
 ;TODO: Audio.bb
 Global KeyCardSFX1
 Global KeyCardSFX2
+Global ButtonSFX.MarkedForRemoval
 Global ButtonSFX2
 Global ScannerSFX1
 Global ScannerSFX2
@@ -1170,7 +1171,7 @@ Function UpdateGUI()
 				If mainPlayer\closestDoor\Code <> "" Then
 					mainPlayer\selectedDoor = mainPlayer\closestDoor
 				ElseIf Not mainPlayer\disableControls Then
-					PlayRangedSound(ButtonSFX, mainPlayer\cam, mainPlayer\closestButton)
+					PlayRangedSound_SM(sndManager\button, mainPlayer\cam, mainPlayer\closestButton)
 					UseDoor(mainPlayer\closestDoor,True)			
 				EndIf
 			EndIf
@@ -1231,7 +1232,7 @@ Function UpdateGUI()
 					temp = False
 					If MouseOn(xtemp,ytemp, 54*scale,65*scale) And KeypadMSG = "" Then
 						If MouseUp1 Then 
-							PlaySound ButtonSFX
+							PlaySound_SM(sndManager\button)
 							
 							Select (n+1)+(i*4)
 								Case 1,2,3
