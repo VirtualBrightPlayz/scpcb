@@ -3,18 +3,13 @@ Type Launcher
     Field height%
 
     Field background%
-
-    Field tileWhite%
-    Field tileBlack%
-
-    Field font%
-    
+	
 	Field resWidths.IntArray
 	Field resHeights.IntArray
 
     Field selectedGFXMode%
 End Type
-Global launcher.Launcher
+Global launcher.Launcher = Null
 
 Function CreateLauncher.Launcher()
     Local launch.Launcher = New Launcher
@@ -27,60 +22,47 @@ Function CreateLauncher.Launcher()
 	
     Local i%
 	For i = 1 To CountGfxModes3D()
-		If (GfxModeDepth(i) <> 16) Then
-			SetIntArrayElem(launch\resWidths, GfxModeWidth(i), i - 1) 
-            SetIntArrayElem(launch\resHeights, GfxModeHeight(i), i - 1) 
+		If (GfxModeDepth(i) = 32) Then
+			SetIntArrayElem(launch\resWidths, GfxModeWidth(i), i - 1)
+            SetIntArrayElem(launch\resHeights, GfxModeHeight(i), i - 1)
 		EndIf
 	Next
 	
+	launch\selectedGFXMode = VerifyResolution()
+	
 	Graphics3DExt(launch\width, launch\height, 0, 2)
+	AppTitle "SCP - Containment Breach Launcher"
 	
 	MenuScale = 1
 	
 	launch\background = LoadImage("GFX\menu\launcher.jpg")
 	
-    launch\tileWhite = LoadImage("GFX\menu\menuwhite.jpg")
-    launch\tileBlack = LoadImage("GFX\menu\menublack.jpg")
-	
-    launch\font = LoadFont("GFX\font\cour\Courier New.ttf", 18, 0,0,0)
+    InitializeUIAssets()
 	
 	SetBuffer BackBuffer()
 	
-	SetFont(launch\font)
-	MaskImage(launch\tileBlack, 255,255,0)
+	SetFont(uiAssets\font[0])
 	
     Return launch
 End Function
 
 Function DestroyLauncher(launch.Launcher)
     FreeImage(launch\background)
-
-    FreeImage(launch\tileWhite)
-    FreeImage(launch\tileBlack)
-
-    FreeFont(launch\font)
+	
+	ReleaseUIAssets()
 
     Delete launch
 End Function
 
 Function UpdateLauncher()
-    ;Cls
-    Color(0,0,0)
-    
-    MouseHit1 = MouseHit(1)
-    
-    Color(255, 255, 255)
-    
     Local x% = 40
     Local y% = 280 - 65
 
     Local i%
     For i = 1 To CountGfxModes3D()
-        If (GfxModeDepth(i) <> 16) Then
-            Color(0, 0, 0)
-
+        If (GfxModeDepth(i) = 32) Then
             If MouseOn(x - 1, y - 1, 100, 20) Then
-                If MouseHit1 Then launcher\selectedGFXMode = i
+                If MouseHit1 Then launcher\selectedGFXMode = i-1
             EndIf
             
             y=y+20
@@ -92,16 +74,11 @@ Function UpdateLauncher()
     Next
     
     ;-----------------------------------------------------------------
-    Color(255, 255, 255)
     x = 30
     y = 369
     
     y = y + 10
     For i = 1 To CountGfxDrivers()
-        Color(0, 0, 0)
-        If userOptions\gfxDriver = i Then Rect(x - 1, y - 1, 290, 20, False)
-        
-        LimitText(GfxDriverName(i), x, y, 290, False)
         If MouseOn(x - 1, y - 1, 290, 20) Then
             If MouseHit1 Then userOptions\gfxDriver = i
         EndIf
@@ -109,6 +86,8 @@ Function UpdateLauncher()
         y = y + 20
     Next
     
+	userOptions\fullscreen = UpdateUITick(40 + 430 - 15, 260 - 55 + 5 - 8, userOptions\fullscreen)
+	
     userOptions\launcher = UpdateUITick(40 + 430 - 15, 260 - 55 + 95 + 8, userOptions\launcher)
 
     If UpdateUIButton(launcher\width - 30 - 90, launcher\height - 50 - 55, 100, 30, "LAUNCH", False) Then
@@ -118,7 +97,10 @@ Function UpdateLauncher()
         userOptions\gfxDriver = userOptions\gfxDriver
 
         SaveOptionsINI()
-        DestroyLauncher(launcher)
+        DestroyLauncher(launcher) : launcher = Null
+		
+		InitializeMainGame()
+		
         Return
     EndIf
     
@@ -126,6 +108,9 @@ Function UpdateLauncher()
 End Function
 
 Function DrawLauncher()
+	SetFont(uiAssets\font[0])
+	
+	Color 0,0,0
     Rect(0, 0, launcher\width, launcher\height, True)
 
     Color(255, 255, 255)
@@ -138,10 +123,10 @@ Function DrawLauncher()
 
     Local i%
     For i = 1 To CountGfxModes3D()
-        If (GfxModeDepth(i) <> 16) Then
+        If (GfxModeDepth(i) = 32) Then
             Color(0, 0, 0)
 
-            If (launcher\selectedGFXMode = i) Then
+            If (launcher\selectedGFXMode = (i-1)) Then
                 Rect(x - 1, y - 1, 100, 20, False)
             EndIf
             
@@ -179,16 +164,16 @@ Function DrawLauncher()
         
         y = y + 20
     Next
-
-    DrawUITick(40 + 430 - 15, 260 - 55 + 95 + 8, userOptions\launcher)
-
-    Text(40 + 430 + 15, 262 - 55 + 5 - 8, "Fullscreen")
+	
+	DrawUITick(40 + 430 - 15, 260 - 55 + 5 - 8, userOptions\fullscreen)
+    Text(40 + 430 + 15,       262 - 55 + 5 - 8, "Fullscreen")
 
     Color 255, 255, 255
     ;Text(40 + 430 + 15, 262 - 55 + 35 - 8, "Borderless",False,False)
     ;Text(40 + 430 + 15, 262 - 55 + 35 + 12, "windowed mode",False,False)
-
-    Text(40 + 430 + 15, 262 - 55 + 95 + 8, "Use launcher")
+	
+    DrawUITick(40 + 430 - 15, 260 - 55 + 95 + 8, userOptions\launcher)
+    Text(40 + 430 + 15,       262 - 55 + 95 + 8, "Use launcher")
     
     Text(40+ 260 + 15, 262 - 55 + 140, "Current Resolution: "+GetIntArrayElem(launcher\resWidths, launcher\selectedGFXMode) + "x" + GetIntArrayElem(launcher\resHeights, launcher\selectedGFXMode))
     
@@ -200,10 +185,11 @@ Function DrawLauncher()
     
     ;Text(40+ 260 + 65, 262 - 55 + 180, G_viewport_width + "x" + G_viewport_height + ")")
 
-    DrawUIButton(LauncherWidth - 30 - 90, LauncherHeight - 50 - 55, 100, 30, "LAUNCH", False)
+    DrawUIButton(launcher\width - 30 - 90, launcher\height - 50 - 55, 100, 30, "LAUNCH", False)
 
-    DrawUIButton(LauncherWidth - 30 - 90, LauncherHeight - 50, 100, 30, "EXIT", False)
+    DrawUIButton(launcher\width - 30 - 90, launcher\height - 50, 100, 30, "EXIT", False)
     Flip
 End Function
 ;~IDEal Editor Parameters:
+;~F#30
 ;~C#Blitz3D

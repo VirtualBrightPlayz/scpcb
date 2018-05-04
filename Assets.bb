@@ -354,7 +354,7 @@ Function InitNewGame()
 	
 	MoveMouse viewport_center_x,viewport_center_y;320, 240
 	
-	SetFont Font1
+	SetFont uiAssets\font[0]
 	
 	HidePointer()
 	
@@ -411,7 +411,7 @@ Function InitLoadGame()
 	
 	MoveMouse viewport_center_x,viewport_center_y
 	
-	SetFont Font1
+	SetFont uiAssets\font[0]
 	
 	HidePointer ()
 	
@@ -453,7 +453,7 @@ Function InitLoadGame()
 				For i = -2 To 2 Step 2
 					ch = CreateChunk(-1,x#*(i*2.5),EntityY(e\room\obj),z#)
 				Next
-				If Music(18)=0 Then Music(18) = LoadSound("SFX\Music\1499.ogg")
+				;If Music(18)=0 Then Music(18) = LoadSound("SFX\Music\1499.ogg") ;TODO: fix
 				DrawLoading(98)
 				UpdateChunks(e\room,15,False)
 				;MoveEntity mainPlayer\collider,0,10,0
@@ -614,8 +614,8 @@ Function NullGame()
 	
 	NoTarget% = False
 	
-	OptionsMenu% = -1
-	QuitMSG% = -1
+	;OptionsMenu% = -1
+	;QuitMSG% = -1
 	
 	IsZombie% = False
 	
@@ -631,4 +631,5 @@ Function NullGame()
 	
 End Function
 ;~IDEal Editor Parameters:
+;~F#0#EF#182#1DA
 ;~C#Blitz3D

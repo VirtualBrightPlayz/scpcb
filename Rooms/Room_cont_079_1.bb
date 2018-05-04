@@ -61,7 +61,7 @@ Function UpdateEvent_cont_079_1(e.Events)
 	If mainPlayer\currRoom = e\room Then
 		
 		If e\EventState = 0 Then
-			Music(4) = LoadSound("SFX\Music\079.ogg")
+			;Music(4) = LoadSound("SFX\Music\079.ogg") ;TODO: fix
 			e\room\NPC[0]=CreateNPC(NPCtypeGuard, EntityX(e\room\Objects[2],True), EntityY(e\room\Objects[2],True)+0.5, EntityZ(e\room\Objects[2],True))
 			PointEntity e\room\NPC[0]\Collider, e\room\obj
 			RotateEntity e\room\NPC[0]\Collider, 0, EntityYaw(e\room\NPC[0]\Collider),0, True
@@ -141,3 +141,6 @@ Function UpdateEvent_cont_079_1(e.Events)
 	;[End Block]
 End Function
 
+
+;~IDEal Editor Parameters:
+;~C#Blitz3D

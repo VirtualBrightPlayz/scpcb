@@ -141,9 +141,9 @@ Function UpdateEventExit1(e.Events)
 				CameraFogMode(mainPlayer\cam, 0)
 				SecondaryLightOn = True
 				
-				Music(5) = LoadSound("SFX\Music\GateB1.ogg")
+				;Music(5) = LoadSound("SFX\Music\GateB1.ogg") ;TODO: fix
 				DrawLoading(60,True)
-				Music(6) = LoadSound("SFX\Music\GateB2.ogg")
+				;Music(6) = LoadSound("SFX\Music\GateB2.ogg") ;TODO: fix
 				DrawLoading(90,True)
 				
 				e\room\NPC[0] = CreateNPC(NPCtypeApache, e\room\x, 100.0, e\room\z)

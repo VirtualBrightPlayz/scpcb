@@ -574,7 +574,7 @@ Function UpdateEvent_hll_sl_2(e.Events)
 				e\EventState2 = 7
 			Else
 				;Still playing the Music for SCP-049 (in the real, SCP-049's State will be set to 2, causing it to stop playing the chasing track)
-				If Music(20) = 0 Then Music(20) = LoadSound("SFX\Horror\Horror12.ogg")
+				;If Music(20) = 0 Then Music(20) = LoadSound("SFX\Horror\Horror12.ogg") ;TODO: fix
 				ShouldPlay = 20
 				If e\room\NPC[0]\PathStatus<>1
 					e\room\NPC[0]\Idle = 70*60 ;(Making SCP-049 idle for one minute (twice as fast for aggressive NPCs = True))

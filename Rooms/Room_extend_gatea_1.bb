@@ -150,7 +150,7 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 				e\room\NPC[i]\State = (Not Contained106)
 			Next
 			
-			Music(5) = LoadSound("SFX\Music\GateA.ogg")
+			;Music(5) = LoadSound("SFX\Music\GateA.ogg") ;TODO: fix
 			
 			CreateConsoleMsg("WARNING! Teleporting away from this area may cause bugs or crashing.")
 			

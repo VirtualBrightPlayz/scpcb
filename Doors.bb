@@ -34,7 +34,8 @@ Type Doors
 	Field NPCCalledElevator% = False
 End Type 
 
-Dim BigDoorOBJ(2), HeavyDoorObj(2)
+Dim BigDoorOBJ(2)
+Dim HeavyDoorObj(2)
 
 Function CreateDoor.Doors(lvl, x#, y#, z#, angle#, room.Rooms, dopen% = False,  big% = False, keycard% = False, code$="")
 	Local d.Doors, parent, i%
@@ -524,3 +525,7 @@ Function RemoveDoor(d.Doors)
 	
 	Delete d
 End Function
+
+;~IDEal Editor Parameters:
+;~F#4#27#9F#AC#174#203
+;~C#Blitz3D

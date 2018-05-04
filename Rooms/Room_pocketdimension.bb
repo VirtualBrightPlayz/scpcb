@@ -198,7 +198,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 			e\EventState = 0.1
 		EndIf
 		
-		If Music(3)=0 Then Music(3) = LoadSound("SFX\Music\PD.ogg")	
+		;If Music(3)=0 Then Music(3) = LoadSound("SFX\Music\PD.ogg") ;TODO: fix	
 		If EntityY(mainPlayer\collider)<2000*RoomScale Or e\EventState3=0 Or EntityY(mainPlayer\collider)>2608*RoomScale Then 
 			ShouldPlay = 3
 		Else 
@@ -263,7 +263,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 				;the trenches
 				If EntityY(mainPlayer\collider)>6.0 Then
 					ShouldPlay = 15
-					If Music(15)=0 Then Music(15) = LoadSound("SFX\Music\PDTrench.ogg")
+					;If Music(15)=0 Then Music(15) = LoadSound("SFX\Music\PDTrench.ogg") ;TODO: fix
 					
 					CameraFogColor mainPlayer\cam, 38, 55, 47
 					CameraClsColor mainPlayer\cam, 38, 55, 47
@@ -441,7 +441,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 									If r\RoomTemplate\Name = "room2_3" Then
 										e\EventState = 0
 										e\EventState2 = 0
-										FreeSound Music(3) : Music(3)=0
+										;FreeSound Music(3) : Music(3)=0 ;TODO: fix
 										
 										mainPlayer\blinkTimer = -10
 										;LightBlink = 5
@@ -477,7 +477,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 						If r\RoomTemplate\Name = "room106" Then
 							e\EventState = 0
 							e\EventState2 = 0
-							FreeSound Music(3) : Music(3)=0
+							;FreeSound Music(3) : Music(3)=0 ;TODO: fix
 							PositionEntity(mainPlayer\collider, EntityX(r\obj,True), 0.4, EntityX(r\obj,True))
 							
 							Curr106\State = 10000
@@ -555,7 +555,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 							If r\RoomTemplate\Name = "tunnel" Then
 								e\EventState = 0
 								e\EventState2 = 0
-								FreeSound Music(3) : Music(3)=0
+								;FreeSound Music(3) : Music(3)=0 ;TODO: fix
 								PositionEntity(mainPlayer\collider, EntityX(r\obj), 0.4, EntityZ(r\obj))
 								ResetEntity mainPlayer\collider
 								Curr106\Idle = False

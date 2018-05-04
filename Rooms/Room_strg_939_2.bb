@@ -192,7 +192,7 @@ Function UpdateEvent_strg_939_2(e.Events)
 		
 		If EntityY(mainPlayer\collider)<-4600*RoomScale Then
 			
-			If Music(7)=0 Then Music(7) = LoadSound("SFX\Music\Room3Storage.ogg") 
+			;If Music(7)=0 Then Music(7) = LoadSound("SFX\Music\Room3Storage.ogg") ;TODO: fix 
 			ShouldPlay = 7
 			
 			;If e\room\NPC[0]=Null Then

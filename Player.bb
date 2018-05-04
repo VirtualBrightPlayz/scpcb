@@ -540,14 +540,17 @@ End Function
 ;TODO: these variable names are awful
 ;Also scrap the mouselook speed in favor of just interpolating to a final position
 ; - -Viewport.
-Global viewport_center_x% = userOptions\screenWidth / 2, viewport_center_y% = userOptions\screenHeight / 2
+Global viewport_center_x%
+Global viewport_center_y%
 
 ; -- Mouselook.
 Global mouselook_x_inc# = 0.3 ; This sets both the sensitivity and direction (+/-) of the mouse on the X axis.
 Global mouselook_y_inc# = 0.3 ; This sets both the sensitivity and direction (+/-) of the mouse on the Y axis.
 ; Used to limit the mouse movement to within a certain number of pixels (250 is used here) from the center of the screen. This produces smoother mouse movement than continuously moving the mouse back to the center each loop.
-Global mouse_left_limit% = 250, mouse_right_limit% = GraphicsWidth () - 250
-Global mouse_top_limit% = 150, mouse_bottom_limit% = GraphicsHeight () - 150 ; As above.
+Global mouse_left_limit%
+Global mouse_right_limit%
+Global mouse_top_limit%
+Global mouse_bottom_limit%
 Global mouse_x_speed_1#, mouse_y_speed_1#
 
 Function MouseLook()
@@ -872,7 +875,7 @@ Function DrawInventory(player.Player)
 			If player\openInventory\items[n] <> Null And player\selectedItem <> player\openInventory\items[n] Then
 				If isMouseOn Then
 					If player\selectedItem = Null Then
-						SetFont Font1
+						SetFont uiAssets\font[0]
 						Color 0,0,0
 						Text(x + width / 2 + 1, y + height + spacing - 15 + 1, player\openInventory\items[n]\name, True)							
 						Color 255, 255, 255	
@@ -983,7 +986,7 @@ Function DrawInventory(player.Player)
 								Next
 							EndIf	
 							
-							SetFont Font3
+							SetFont uiAssets\font[2]
 							Text(x+60, y, "CHN")						
 							
 							If player\selectedItem\itemtemplate\tempname = "veryfineradio" Then ;"KOODIKANAVA"
@@ -992,20 +995,20 @@ Function DrawInventory(player.Player)
 									strtemp = strtemp + Chr(Rand(1,100))
 								Next
 								
-								SetFont Font4
+								SetFont uiAssets\font[3]
 								Text(x+97, y+16, Rand(0,9),True,True)
 							Else
-								SetFont Font4
+								SetFont uiAssets\font[3]
 								Text(x+97, y+16, Int(player\selectedItem\state2+1),True,True)
 							EndIf
 							
-							SetFont Font3
+							SetFont uiAssets\font[2]
 							If strtemp <> "" Then
 								strtemp = Right(Left(strtemp, (Int(TimeInPosMilliSecs()/300) Mod Len(strtemp))),10)
 								Text(x+32, y+33, strtemp)
 							EndIf
 							
-							SetFont Font1
+							SetFont uiAssets\font[0]
 						EndIf
 					EndIf
 				Case "navigator", "nav"
@@ -1021,7 +1024,7 @@ Function DrawInventory(player.Player)
 					
 					DrawImage(player\selectedItem\itemtemplate\img, x - ImageWidth(player\selectedItem\itemtemplate\img) / 2, y - ImageHeight(player\selectedItem\itemtemplate\img) / 2 + 85)
 					
-					SetFont Font3
+					SetFont uiAssets\font[2]
 					
 					If player\currRoom\RoomTemplate\Name = "pocketdimension" Then
 						If (TimeInPosMilliSecs() Mod 1000) > 300 Then	
@@ -1114,12 +1117,12 @@ Function DrawInventory(player.Player)
 								Line xtemp, ytemp, xtemp, ytemp+100
 								Line xtemp+20, ytemp, xtemp+20, ytemp+100
 								
-								SetFont Font4
+								SetFont uiAssets\font[3]
 								For i = 1 To Ceil(player\selectedItem\state / 10.0)
 									Text (xtemp+11, ytemp+i*10-26, "-", True)
 									;Rect(x - width/2, y+i*15, 40 - i * 6, 5, Ceil(player\selectedItem\state / 20.0) > 4 - i)
 								Next
-								SetFont Font3
+								SetFont uiAssets\font[2]
 							EndIf
 							
 							x = x - 19 + ((EntityX(player\collider) - 4.0) Mod 8.0)*3
@@ -2054,4 +2057,5 @@ Function Kill(player.Player)
 	EndIf
 End Function
 ;~IDEal Editor Parameters:
+;~F#D#6A#E1#EE#22B#2D7#308#31F#327#339#4B8#7DF#7E8#7F2
 ;~C#Blitz3D

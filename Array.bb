@@ -63,6 +63,23 @@ Function PushIntArrayListElem(arrayList.IntArrayList,val%)
 	arrayList\size=arrayList\size+1
 End Function
 
+Function PopIntArrayListElem(arrayList.IntArrayList)
+	arrayList\size=arrayList\size-1
+	If arrayList\size<0 Then
+		arrayList\size = 0
+	EndIf
+End Function
+
+Function EraseIntArrayListElem(arrayList.IntArrayList,pos%)
+	Local val%
+	If pos>=arrayList\size Then Return
+	For i% = pos To arrayList\size-2
+		val = PeekInt(arrayList\bank,(i+1)*INT_SIZE)
+		PokeInt(arrayList\bank,i*INT_SIZE,val)
+	Next
+	PopIntArrayListElem(arrayList)
+End Function
+
 Function DeleteIntArrayList(arrayList.IntArrayList)
 	FreeBank arrayList\bank
 	Delete arrayList

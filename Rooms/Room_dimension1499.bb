@@ -48,7 +48,7 @@ Function UpdateEvent_dimension1499(e.Events)
 						For i = -2 To 2 Step 2
 							ch = CreateChunk(-1,x#*(i*2.5),EntityY(e\room\obj),z#)
 						Next
-						If Music(18)=0 Then Music(18) = LoadSound("SFX\Music\1499.ogg")
+						;If Music(18)=0 Then Music(18) = LoadSound("SFX\Music\1499.ogg")
 						e\EventState = 2.0
 						e\EventStr = 18
 					EndIf

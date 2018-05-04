@@ -150,3 +150,6 @@ Function UpdateEvent_closets_2(e.Events)
 	EndIf
 	;[End Block]
 End Function
+
+;~IDEal Editor Parameters:
+;~C#Blitz3D

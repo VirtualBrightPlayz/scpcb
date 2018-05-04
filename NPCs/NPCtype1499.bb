@@ -127,7 +127,7 @@ Function UpdateNPCtype1499(n.NPCs)
                 If NoTarget Then n\State = 0
                 
                 If mainPlayer\currRoom\RoomTemplate\Name = "dimension1499"
-                    If Music(19)=0 Then Music(19) = LoadSound("SFX\Music\1499Danger.ogg")
+                    ;If Music(19)=0 Then Music(19) = LoadSound("SFX\Music\1499Danger.ogg") ;TODO: fix
                     ShouldPlay = 19
                 EndIf
                 

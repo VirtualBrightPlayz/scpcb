@@ -691,5 +691,5 @@ Function DropItem(item.Items,playDropSound%=True)
 	;End Select	
 End Function
 ;~IDEal Editor Parameters:
-;~F#1F#75#141#15C#162#168#16F#1D5
+;~F#1F#75
 ;~C#Blitz3D

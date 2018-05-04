@@ -1,4 +1,22 @@
-;TODO: Move to respective NPC file these.
+Include "NPCs/NPCtype173.bb"
+Include "NPCs/NPCtype106.bb"
+Include "NPCs/NPCtypeGuard.bb"
+Include "NPCs/NPCtypeMTF.bb"
+Include "NPCs/NPCtypeD.bb"
+Include "NPCs/NPCtype5131.bb"
+Include "NPCs/NPCtype096.bb"
+Include "NPCs/NPCtype049.bb"
+Include "NPCs/NPCtypeZombie.bb"
+Include "NPCs/NPCtypeApache.bb"
+Include "NPCs/NPCtypeTentacle.bb"
+Include "NPCs/NPCtype860.bb"
+Include "NPCs/NPCtype939.bb"
+Include "NPCs/NPCtype066.bb"
+Include "NPCs/NPCtype966.bb"
+Include "NPCs/NPCtype1048a.bb"
+Include "NPCs/NPCtype1499.bb"
+
+;TODO: replace with functions that return the first instance of each NPC
 Global Curr173.NPCs
 Global Curr106.NPCs
 Global Curr096.NPCs
@@ -141,24 +159,6 @@ Type NPCs
 	Field Model$
 	Field ModelScaleX#,ModelScaleY#,ModelScaleZ#
 End Type
-
-Include "NPCs/NPCtype173.bb"
-Include "NPCs/NPCtype106.bb"
-Include "NPCs/NPCtypeGuard.bb"
-Include "NPCs/NPCtypeMTF.bb"
-Include "NPCs/NPCtypeD.bb"
-Include "NPCs/NPCtype5131.bb"
-Include "NPCs/NPCtype096.bb"
-Include "NPCs/NPCtype049.bb"
-Include "NPCs/NPCtypeZombie.bb"
-Include "NPCs/NPCtypeApache.bb"
-Include "NPCs/NPCtypeTentacle.bb"
-Include "NPCs/NPCtype860.bb"
-Include "NPCs/NPCtype939.bb"
-Include "NPCs/NPCtype066.bb"
-Include "NPCs/NPCtype966.bb"
-Include "NPCs/NPCtype1048a.bb"
-Include "NPCs/NPCtype1499.bb"
 
 Function CreateNPC.NPCs(NPCtype%, x#, y#, z#)
 	Local n.NPCs = New NPCs, n2.NPCs
@@ -428,6 +428,7 @@ Function TeleportCloser(n.NPCs)
 	
 End Function
 
+;TODO: rename lol
 Function OtherNPCSeesMeNPC%(me.NPCs,other.NPCs)
 	If other\BlinkTimer<=0.0 Then Return False
 	
@@ -501,7 +502,7 @@ End Function
 
 Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False)
 	;muzzle flash
-	Local p.Particles = CreateParticle(x,y,z, 1, Rnd(0.08,0.1), 0.0, 5)
+	Local p.particles = CreateParticle(x,y,z, 1, Rnd(0.08,0.1), 0.0, 5)
 	TurnEntity p\obj, 0,0,Rnd(360)
 	p\Achange = -0.15
 	
@@ -1060,7 +1061,7 @@ Function FindNextElevator(n.NPCs)
 						If eo2\InFacility = n\InFacility
 							If Abs(EntityY(eo2\obj,True)-EntityY(n\collider))<10.0
 								If EntityDistance(eo2\obj,n\collider)<EntityDistance(eo\obj,n\collider)
-									n\PathStatus = FindPath(n, EntityX(eo2\obj,True),EntityY(eo2\obj,True),EntityZ(eo2\obj,True))
+									n\pathStatus = FindPath(n, EntityX(eo2\obj,True),EntityY(eo2\obj,True),EntityZ(eo2\obj,True))
 									n\CurrElevator = eo2
 									DebugLog "eo2 found for "+n\npcType
 									Exit
@@ -1089,7 +1090,7 @@ End Function
 Function GoToElevator(n.NPCs)
 	Local dist#,inside%
 	
-	If n\PathStatus <> 1
+	If n\pathStatus <> 1
 		PointEntity n\obj,n\CurrElevator\obj
 		RotateEntity n\collider,0,CurveAngle(EntityYaw(n\obj),EntityYaw(n\collider),20.0),0
 		
@@ -1197,4 +1198,6 @@ Function SetNPCFrame(n.NPCs, frame#)
 	n\frame = frame
 End Function
 ;~IDEal Editor Parameters:
+;~F#2A#A2#E0#EE#121#17E#187#1AF#1BA#1E3#1F6#285#296#2B0#2C3#2CF#2EE#329#3AB#3C5
+;~F#3DE#3EC#409#41C#441#464#472#488#4A8
 ;~C#Blitz3D
