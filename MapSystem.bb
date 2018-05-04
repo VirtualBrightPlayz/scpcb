@@ -187,6 +187,14 @@ Function FreeTextureCache()
 	Next
 End Function
 
+Function LoadRMeshTexture%(roompath$,name$,flags%)
+	If FileType(roompath+name)=1 Then
+		Return LoadTexture(roompath+name,flags)
+	Else
+		Return LoadTexture("GFX/map/"+name,flags) ;TODO: don't hardcode?
+	EndIf
+End Function
+
 Function LoadRMesh(file$,rt.RoomTemplates)
 	;generate a texture made of white
 	Local blankTexture%
@@ -223,6 +231,7 @@ Function LoadRMesh(file$,rt.RoomTemplates)
 		Else
 			Exit
 		EndIf
+		Delay 100
 	Next
 	If f=0 Then RuntimeError "Error reading file "+Chr(34)+file+Chr(34)
 	Local isRMesh$ = ReadString(f)
@@ -271,9 +280,9 @@ Function LoadRMesh(file$,rt.RoomTemplates)
 				If tex[j]=0 Then ;texture is not in cache
 					Select True
 						Case temp1i<3
-							tex[j]=LoadTexture(file+temp1s,1)
+							tex[j]=LoadRMeshTexture(file,temp1s,1)
 						Default
-							tex[j]=LoadTexture(file+temp1s,3)
+							tex[j]=LoadRMeshTexture(file,temp1s,3)
 					End Select
 					
 					If tex[j]<>0 Then
@@ -3530,8 +3539,8 @@ Function FindAndDeleteFakeMonitor(r.Rooms,x#,y#,z#,Amount%)
 End Function
 
 ;~IDEal Editor Parameters:
-;~F#4D#55#78#87#95#9C#AD#B5#BD#24D#25D#26E#28D#2A6#2AE#319#327#34E#383#38B
-;~F#3A0#3AB#3B5#3CF#489#515#521#562#56D#57E#583#592#5A9#62B#630#712#730#737#73D#74B
-;~F#76B#78C#7BF#8C4#8FD#912#9D4#A69#A6E#A80#BA4#BCB#BFC#C00#C07#CC3#CD5#CDC#D0C#D13
-;~F#D41#D8C#D9A#DA1#DA7#DB1#DB7
+;~F#4D#78#87#95#AD#B5#258#268#279#298#2B1#2B9#324#332#359#38E#396#3AB#3B6#3C0
+;~F#3DA#494#520#52C#56D#578#589#58E#59D#5B4#636#63B#71D#73B#742#748#756#776#797#7CA
+;~F#8CF#908#91D#9DF#A74#A79#A8B#BAF#BD6#C07#C0B#C12#C6F#C9A#CCE#CE0#CE7#D17#D1E#D4C
+;~F#D97#DA5#DAC#DB2#DBC#DC2
 ;~C#Blitz3D

@@ -218,7 +218,7 @@ Function PutINIValue%(file$, INI_sSection$, INI_sKey$, INI_sValue$)
 				If (INI_sCurrentSection = INI_sUpperSection) Then INI_bSectionFound = True
 				
 			Else
-				If Left(INI_sTemp, 1) = ":" Then
+				If (Left(INI_sTemp, 1) = ":") Or (Left(INI_sTemp, 1) = ";") Then
 					WriteLine INI_lFileHandle, INI_sTemp
 				Else
 						; KEY=VALUE				
@@ -286,3 +286,6 @@ Function INI_CreateKey%(INI_lFileHandle%, INI_sKey$, INI_sValue$)
 	
 End Function
 
+
+;~IDEal Editor Parameters:
+;~C#Blitz3D

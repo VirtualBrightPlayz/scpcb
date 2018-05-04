@@ -372,6 +372,7 @@ Function Main%()
 End Function
 
 ;TODO: Shuffle the initialization of stuff around in between DrawLoading() calls.
+;also don't initialize all of the sounds here, that's just ridiculous
 Function InitializeMainGame()
 	CurrGameState = GAMESTATE_MAINMENU
 	CurrGameSubstate = GAMESUBSTATE_MAINMENU_MAIN
@@ -2247,6 +2248,5 @@ Function CheckTriggers$()
 End Function
 
 ;~IDEal Editor Parameters:
-;~F#5#75#8C#97#9B#A3#15F#173#24C#406#492#528#601#64C#6D1#6D5#6FF#77E#78D#7AB
-;~F#7DA#7E1#7EF#891#8B3
+;~F#5#75#8C#97#9B#A3
 ;~C#Blitz3D
