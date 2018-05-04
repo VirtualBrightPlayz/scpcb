@@ -101,7 +101,7 @@ End Function
 
 Function UpdateChannelList()
 	Local i%
-	For i = 0 to sndManager\chnList\size-1
+	For i = 0 To sndManager\chnList\size-1
 		If (Not IsChannelPlaying(GetIntArrayListElem(sndManager\chnList, i))) Then
 			EraseIntArrayListElem(sndManager\chnList, i)
 			i = i - 1
@@ -383,7 +383,7 @@ Function RestoreDefaultMusic()
 End Function
 
 Function SetNextMusicTrack(trackName$, fadeOut% = True)
-	If (musMan\shouldPlay = trackName) Then
+	If (musicManager\shouldPlay = trackName) Then
 		Return
 	EndIf
 
@@ -421,7 +421,7 @@ Function UpdateMusic()
 				StopChannel(musicManager\channel)
 				musicManager\channel = 0
 
-				FreeMusic(musicManager)
+				FreeMusic()
 				musicManager\nowPlaying = musicManager\shouldPlay
 				musicManager\currMusic = LoadSound(musicManager\nowPlaying)
 			EndIf
