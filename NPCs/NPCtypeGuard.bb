@@ -27,6 +27,21 @@ Function UpdateNPCtypeGuard(n.NPCs)
     Local prevFrame# = n\frame
     
     Select n\state
+		Case STATEGUARD_IDLE_LOOK
+			Local head = FindChild(n\obj,"head")
+			Local headangle = EntityYaw(head)
+			
+			If (n\target <> Null) Then
+				n\targetX = EntityX(n\target\collider)
+				n\targetY = EntityY(n\target\collider)
+				n\targetZ = EntityZ(n\target\collider)
+			EndIf
+
+			If (headangle > -45 And headangle < 45) Then
+				PointEntity(head,n\target\collider)
+			EndIf
+
+			AnimateNPC(n,77,201,0.2)
         Case STATEGUARD_MOVE_TO_TARGET
             ;If guard was given a target then use its position.
 			If (n\target <> Null) Then
@@ -99,6 +114,12 @@ Function UpdateNPCtypeGuard(n.NPCs)
             FreeEntity(pvt)
 
             n\timer = n\timer - timing\tickDuration
+		Case STATEGUARD_DEAD
+			If n\frame <= 151 Then
+				SetNPCFrame(n,151)
+			Else
+				AnimateNPC(n,113,151,0.2)
+			EndIf
     End Select
 End Function
 ;~IDEal Editor Parameters:
