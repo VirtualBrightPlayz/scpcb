@@ -24,13 +24,13 @@ End Function
 Function UpdateNPCtypeGuard(n.NPCs)
 	Local dist#
 
+	Local head = FindChild(n\obj,"head")
+	Local headangle = EntityYaw(head)
+
     Local prevFrame# = n\frame
     
     Select n\state
 		Case STATEGUARD_IDLE_LOOK
-			Local head = FindChild(n\obj,"head")
-			Local headangle = EntityYaw(head)
-			
 			If (n\target <> Null) Then
 				n\targetX = EntityX(n\target\collider)
 				n\targetY = EntityY(n\target\collider)
