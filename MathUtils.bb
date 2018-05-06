@@ -2,7 +2,9 @@ Const INFINITY# = (999.0) ^ (99999.0) ;Bigger!
 Const NAN# = (-1.0) ^ (0.5) ;Bigger?
 
 Function Distance#(x1#, y1#, x2#, y2#)
-	Local x# = x2 - x1, y# = y2 - y1
+	Local x# = x2 - x1
+	Local y# = y2 - y1
+
 	Return(Sqr(x*x + y*y))
 End Function
 

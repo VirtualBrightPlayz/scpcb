@@ -90,21 +90,57 @@ Function DeloadInGameSounds(sndMan.SoundManager)
 	Next
 End Function
 
+Type SoundChannel
+	Field internal%
+
+	Field camera%
+	Field point%
+
+	Field range#
+	Field volume#
+End Type
+
 ; Add a channel to the list.
-Function AddChannel(chn%)
-	If (chn = 0) Then
+Function AddChannel(ref%)
+	If (ref = 0) Then
 		Return
 	EndIf
 
+	Local chn.SoundChannel = New SoundChannel
+	chn\internal = ref
+
 	PushIntArrayListElem(sndManager\chnList, chn)
+End Function
+
+Function AddPositionalChannel(ref%, cam%, ent%, range# = 10, vol# = 1.0)
+	If (ref = 0) Then
+		Return
+	EndIf
+
+	Local chn.SoundChannel = New SoundChannel
+	chn\internal = ref
+	chn\camera = cam
+	chn\point = CreatePivot()
+	PositionEntity(chn\point, EntityX(ent), EntityY(ent), EntityZ(ent))
+	chn\range = range
+	chn\volume = vol
+
+	PushIntArrayListElem(sndManager\chnList, Handle(chn))
 End Function
 
 Function UpdateChannelList()
 	Local i%
 	For i = 0 To sndManager\chnList\size-1
-		If (Not IsChannelPlaying(GetIntArrayListElem(sndManager\chnList, i))) Then
+		Local chn.SoundChannel =  Object.SoundChannel(GetIntArrayListElem(sndManager\chnList, i))
+		If (Not IsChannelPlaying(chn\internal)) Then
 			EraseIntArrayListElem(sndManager\chnList, i)
+			FreeEntity(chn\point)
 			i = i - 1
+			Continue
+		EndIf
+
+		If (chn\cam <> 0) Then
+			UpdateRangedSoundOrigin_SM(chn)
 		EndIf
 	Next
 End Function
@@ -145,7 +181,7 @@ Function FreeSound_SM(snd.Sound)
 	Delete snd
 End Function
 
-Function IsChannelPlaying(chn%)
+Function IsChannelPlaying%(chn%)
 	If (chn = 0) Then
 		Return False
 	EndIf
@@ -153,45 +189,81 @@ Function IsChannelPlaying(chn%)
 	Return ChannelPlaying(chn)
 End Function
 
-Function PlayRangedSound%(soundHandle%, cam%, entity%, range# = 10, volume# = 1.0)
+Function PlayRangedSound(soundHandle%, cam%, entity%, range# = 10, volume# = 1.0)
 	range# = Max(range, 1.0)
 	Local soundChn% = 0
 	
 	If (volume > 0) Then
-		Local dist# = EntityDistance(cam, entity) / range#
-		If (1 - dist# > 0 And 1 - dist# < 1) Then
+		Local dist# = EntityDistance(cam, entity) / range
+		If (1 - dist > 0 And 1 - dist < 1) Then
 			Local panvalue# = Sin(-DeltaYaw(cam, entity))
-			soundChn% = PlaySound(soundHandle)
+			soundChn = PlaySound(soundHandle)
 			
-			ChannelVolume(soundChn, volume# * (1 - dist#) * userOptions\soundVolume)
+			ChannelVolume(soundChn, volume * (1 - dist) * userOptions\soundVolume)
 			ChannelPan(soundChn, panvalue)
 		EndIf
 	EndIf
 	
-	Return soundChn
+	AddPositionalChannel(soundChn, cam, entity, range, volume)
 End Function
 
-Function PlayRangedSound_SM%(snd.Sound, cam%, entity%, range# = 10, volume# = 1.0)
-	Return PlayRangedSound(snd\internal, cam, entity, range, volume)
+Function PlayRangedSound_SM(snd.Sound, cam%, entity%, range# = 10, volume# = 1.0)
+	PlayRangedSound(snd\internal, cam, entity, range, volume)
 End Function
 
 ; Only begins playing the sound if the sound channel isn't playing anything else.
 Function LoopRangedSound%(soundHandle%, chn%, cam%, entity%, range# = 10, volume# = 1.0)
-	range# = Max(range,1.0)
+	range = Max(range,1.0)
 	
 	If (Not IsChannelPlaying(chn)) Then chn% = PlaySound(soundHandle)
 	
-	UpdateRangedSoundOrigin(chn,cam,entity,range,volume)
+	UpdateRangedSoundOrigin(chn, cam, entity, range, volume)
 
 	Return chn
 End Function
 
+Function UpdateRangedSoundOrigin(chn%, cam%, entity%, range# = 10, volume# = 1.0)
+	range = Max(range, 1.0)
+	
+	If (volume > 0) Then
+		
+		Local dist# = EntityDistance(cam, entity) / range
+		If (1 - dist > 0 And 1 - dist < 1) Then
+			Local panvalue# = Sin(-DeltaYaw(cam,entity))
+			
+			ChannelVolume(chn, volume * (1 - dist) * userOptions\soundVolume)
+			ChannelPan(chn, panvalue)
+		EndIf
+	Else
+		If (chn <> 0) Then
+			ChannelVolume(chn, 0)
+		EndIf 
+	EndIf
+End Function
+
+Function UpdateRangedSoundOrigin_SM(chn.SoundChannel)
+	If (volume > 0) Then
+		Local dist# = EntityDistance(chn\camera, chn\point) / chn\range
+		If (1 - dist > 0 And 1 - dist < 1) Then
+			Local panvalue# = Sin(-DeltaYaw(chn\camera, chn\point))
+			
+			ChannelVolume(chn, volume * (1 - dist) * userOptions\soundVolume)
+			ChannelPan(chn, panvalue)
+		EndIf
+	Else
+		ChannelVolume(chn, 0)
+	EndIf
+End Function
+
 Function LoadTempSound(file$)
-	If TempSounds[TempSoundIndex]<>0 Then FreeSound(TempSounds[TempSoundIndex])
+	If (TempSounds[TempSoundIndex] <> 0) Then
+		FreeSound(TempSounds[TempSoundIndex])
+	EndIf
+
 	Local TempSound% = LoadSound(file)
 	TempSounds[TempSoundIndex] = TempSound
 
-	TempSoundIndex=(TempSoundIndex+1) Mod 10
+	TempSoundIndex = (TempSoundIndex + 1) Mod 10
 
 	Return TempSound
 End Function
@@ -201,7 +273,7 @@ Function LoadEventSound(e.Events,file$,num%=0)
 	For i = 0 To 1
 		If (num = i) Then
 			If (e\sounds[i]<>0) Then FreeSound(e\sounds[i]) : e\sounds[i]=0
-			e\sounds[i]=LoadSound(file)
+			e\sounds[i] = LoadSound(file)
 			Return e\sounds[i]
 		EndIf
 	Next
@@ -309,26 +381,6 @@ Function GetMaterialStepSound(entity%)
     Return 0
 End Function
 
-Function UpdateRangedSoundOrigin(chn%, cam%, entity%, range# = 10, volume# = 1.0)
-	range# = Max(range,1.0)
-	
-	If volume>0 Then
-		
-		Local dist# = EntityDistance(cam, entity) / range#
-		If 1 - dist# > 0 And 1 - dist# < 1 Then
-			
-			Local panvalue# = Sin(-DeltaYaw(cam,entity))
-			
-			ChannelVolume(chn, volume# * (1 - dist#)*userOptions\soundVolume)
-			ChannelPan(chn, panvalue)
-		EndIf
-	Else
-		If chn <> 0 Then
-			ChannelVolume (chn, 0)
-		EndIf 
-	EndIf
-End Function
-
 
 
 ;;; Music
@@ -431,6 +483,8 @@ Function UpdateMusic()
 			musicManager\fadeOut = False
 			musicManager\currMusicVolume = userOptions\musicVolume
 		EndIf
+	ElseIf (musicManager\currMusicVolume <> userOptions\musicVolume) Then
+		musicManager\currMusicVolume = userOptions\musicVolume
 	EndIf
 
 	;If nothing is playing then figure out what the next track is.

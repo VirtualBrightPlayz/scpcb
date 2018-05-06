@@ -40,6 +40,8 @@ Const NPCtype1499%      = 17
 Const NPCtypePdPlane%   = 18 ;TODO: Remove, don't think this is ever used even.
 Const NPCtype1048a%     = 19 ;TODO: Remove.
 
+Const NPC_SOUND_COUNT% = 12
+Const NPC_CHANNEL_COUNT% = 3
 Type NPCs
 	Field obj%
 	Field obj2%
@@ -64,8 +66,8 @@ Type NPCs
 	Field frame#
 	Field angle#
 
-	Field sounds%[12]
-	Field soundChannels%[3]
+	Field sounds%[NPC_SOUND_COUNT]
+	Field soundChannels%[NPC_CHANNEL_COUNT]
 	
 	Field playerDistance#
 
@@ -237,8 +239,9 @@ Function LoadOrCopyMesh(n.NPCs, filePath$)
 End Function
 
 Function RemoveNPC(n.NPCs)
-	
-	If n=Null Then Return
+	If (n = Null) Then
+		Return
+	EndIf
 	
 	If n\obj2 <> 0 Then 
 		FreeEntity n\obj2
@@ -256,7 +259,7 @@ Function RemoveNPC(n.NPCs)
 	NPCStopAllChannels(n)
 	
 	Local i%
-	For i = 0 To 11
+	For i = 0 To NPC_SOUND_COUNT-1
 		If (n\sounds[i] <> 0) Then
 			FreeSound(n\sounds[i])
 		EndIf
@@ -382,7 +385,7 @@ End Function
 ;Stops all audio channels for a given NPC.
 Function NPCStopAllChannels(n.NPCs)
 	Local i%
-	For i = 0 To 2
+	For i = 0 To NPC_CHANNEL_COUNT-1
 		If (IsChannelPlaying(n\soundChannels[i])) Then
 			StopChannel(n\soundChannels[i])
 		EndIf
