@@ -120,13 +120,14 @@ Function UpdateNPCtype049(n.NPCs)
 						;closes doors behind him
 						If n\pathLocation>0 Then
 							If n\path[n\pathLocation-1] <> Null
-								If n\path[n\pathLocation-1]\door <> Null Then
-									If (Not n\path[n\pathLocation-1]\door\IsElevatorDoor)
-										If EntityDistance(n\path[n\pathLocation-1]\obj,n\collider)>0.3
-											If n\path[n\pathLocation-1]\door\open Then UseDoor(n\path[n\pathLocation-1]\door, False)
-										EndIf
-									EndIf
-								EndIf
+								;TODO: fix
+								;If n\path[n\pathLocation-1]\door <> Null Then
+								;	If (Not n\path[n\pathLocation-1]\door\IsElevatorDoor)
+								;		If EntityDistance(n\path[n\pathLocation-1]\obj,n\collider)>0.3
+								;			If n\path[n\pathLocation-1]\door\open Then UseDoor(n\path[n\pathLocation-1]\door, False)
+								;		EndIf
+								;	EndIf
+								;EndIf
 							EndIf
 						EndIf
 						
@@ -139,16 +140,17 @@ Function UpdateNPCtype049(n.NPCs)
 						dist2# = EntityDistance(n\collider,n\path[n\pathLocation]\obj)
 						If (dist2 < 0.6) Then
 							Local temp% = True
-							If (n\path[n\pathLocation]\door <> Null) Then
-								If (Not n\path[n\pathLocation]\door\IsElevatorDoor)
-									If n\path[n\pathLocation]\door\locked Or n\path[n\pathLocation]\door\KeyCard>0 Or n\path[n\pathLocation]\door\Code<>"" Then
-										temp = False
-										;n\CurrSpeed = 0
-									Else
-										If n\path[n\pathLocation]\door\open = False Then UseDoor(n\path[n\pathLocation]\door, False)
-									EndIf
-								EndIf
-							EndIf
+							;TODO: fix
+							;If (n\path[n\pathLocation]\door <> Null) Then
+							;	If (Not n\path[n\pathLocation]\door\IsElevatorDoor)
+							;		If n\path[n\pathLocation]\door\locked Or n\path[n\pathLocation]\door\KeyCard>0 Or n\path[n\pathLocation]\door\Code<>"" Then
+							;			temp = False
+							;			;n\CurrSpeed = 0
+							;		Else
+							;			If n\path[n\pathLocation]\door\open = False Then UseDoor(n\path[n\pathLocation]\door, False)
+							;		EndIf
+							;	EndIf
+							;EndIf
 							If dist2#<0.2 And temp
 								n\pathLocation = n\pathLocation + 1
 							ElseIf dist2#<0.5 And (Not temp)
@@ -227,13 +229,14 @@ Function UpdateNPCtype049(n.NPCs)
 						;closes doors behind him
 						If n\pathLocation>0 Then
 							If n\path[n\pathLocation-1] <> Null
-								If n\path[n\pathLocation-1]\door <> Null Then
-									If (Not n\path[n\pathLocation-1]\door\IsElevatorDoor)
-										If EntityDistance(n\path[n\pathLocation-1]\obj,n\collider)>0.3
-											If n\path[n\pathLocation-1]\door\open Then UseDoor(n\path[n\pathLocation-1]\door, False)
-										EndIf
-									EndIf
-								EndIf
+								;TODO: ffs
+								;If n\path[n\pathLocation-1]\door <> Null Then
+								;	If (Not n\path[n\pathLocation-1]\door\IsElevatorDoor)
+								;		If EntityDistance(n\path[n\pathLocation-1]\obj,n\collider)>0.3
+								;			If n\path[n\pathLocation-1]\door\open Then UseDoor(n\path[n\pathLocation-1]\door, False)
+								;		EndIf
+								;	EndIf
+								;endIf
 							EndIf
 						EndIf
 						
@@ -246,16 +249,17 @@ Function UpdateNPCtype049(n.NPCs)
 						dist2# = EntityDistance(n\collider,n\path[n\pathLocation]\obj)
 						If dist2 < 0.6 Then
 							temp = True
-							If n\path[n\pathLocation]\door <> Null Then
-								If (Not n\path[n\pathLocation]\door\IsElevatorDoor)
-									If n\path[n\pathLocation]\door\locked Or n\path[n\pathLocation]\door\KeyCard>0 Or n\path[n\pathLocation]\door\Code<>"" Then
-										temp = False
-										;n\CurrSpeed = 0
-									Else
-										If n\path[n\pathLocation]\door\open = False Then UseDoor(n\path[n\pathLocation]\door, False)
-									EndIf
-								EndIf
-							EndIf
+							;TODO: AAAAAHHHHH
+							;If n\path[n\pathLocation]\door <> Null Then
+							;	If (Not n\path[n\pathLocation]\door\IsElevatorDoor)
+							;		If n\path[n\pathLocation]\door\locked Or n\path[n\pathLocation]\door\KeyCard>0 Or n\path[n\pathLocation]\door\Code<>"" Then
+							;			temp = False
+							;			;n\CurrSpeed = 0
+							;		Else
+							;			If n\path[n\pathLocation]\door\open = False Then UseDoor(n\path[n\pathLocation]\door, False)
+							;		EndIf
+							;	EndIf
+							;EndIf
 							If dist2#<0.2 And temp
 								n\pathLocation = n\pathLocation + 1
 							ElseIf dist2#<0.5 And (Not temp)

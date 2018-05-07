@@ -117,7 +117,7 @@ Function UpdateNPCtype173(n.NPCs)
 					If Rand(70)=1 Then
 						If mainPlayer\currRoom\RoomTemplate\Name <> "exit1" And mainPlayer\currRoom\RoomTemplate\Name <> "gatea" And mainPlayer\currRoom\RoomTemplate\Name <> "pocketdimension" Then
 							For w.waypoints = Each WayPoints
-								If w\door=Null And Rand(5)=1 Then
+								If Rand(5)=1 Then ;w\door=Null And (TODO: fix?)
 									x = Abs(EntityX(mainPlayer\collider) - EntityX(w\obj, True))
 									If x < 25.0 And x > 15.0 Then
 										z = Abs(EntityZ(mainPlayer\collider)-EntityZ(w\obj,True))
@@ -279,3 +279,5 @@ Function UpdateNPCtype173(n.NPCs)
 			RotateEntity (n\obj2, 0, EntityYaw(n\collider)-180, 0)
 	End Select
 End Function
+;~IDEal Editor Parameters:
+;~C#Blitz3D

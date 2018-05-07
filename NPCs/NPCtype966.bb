@@ -225,9 +225,10 @@ Function UpdateNPCtype966(n.NPCs)
                                     dist2 = EntityDistance(n\Collider,n\Path[n\PathLocation]\obj)
                                     
                                     If dist2 < 0.8 Then 
-                                        If n\Path[n\PathLocation]\door<>Null Then
-                                            If (Not n\Path[n\PathLocation]\door\open) Then UseDoor(n\Path[n\PathLocation]\door,False)
-                                        EndIf
+                                        ;TODO: fix
+										;If n\Path[n\PathLocation]\door<>Null Then
+                                        ;    If (Not n\Path[n\PathLocation]\door\open) Then UseDoor(n\Path[n\PathLocation]\door,False)
+                                        ;EndIf
                                         If dist < 0.2 Then n\PathLocation = n\PathLocation + 1
                                     EndIf
                                     

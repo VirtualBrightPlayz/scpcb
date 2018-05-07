@@ -74,7 +74,7 @@ Function UpdateNPCtype096(n.NPCs)
                         n\SoundChn2 = PlaySound (n\Sound2)
                     Else
                         If (Not IsChannelPlaying(n\SoundChn2)) Then n\SoundChn2 = PlaySound(n\Sound2)
-                        ChannelVolume(n\SoundChn2, Min(Max(8.0-dist,0.6),1.0)*userOptions\soundVolume)
+                        ChannelVolume(n\SoundChn2, Min(Max(8.0-dist,0.6),1.0)*userOptions\SoundVolume)
                     EndIf
                 EndIf
             EndIf
@@ -189,13 +189,14 @@ Function UpdateNPCtype096(n.NPCs)
                             
                             dist2# = EntityDistance(n\Collider,n\Path[n\PathLocation]\obj)
                             If dist2 < 0.4 Then
-                                If n\Path[n\PathLocation]\door <> Null Then
-                                    If n\Path[n\PathLocation]\door\open = False Then
-                                        n\Path[n\PathLocation]\door\open = True
-                                        n\Path[n\PathLocation]\door\fastopen = 1
-                                        PlayRangedSound(OpenDoorFastSFX, mainPlayer\cam, n\Path[n\PathLocation]\door\obj)
-                                    EndIf
-                                EndIf							
+								;TODO: fix
+;                                If n\Path[n\PathLocation]\door <> Null Then
+;									If n\Path[n\PathLocation]\door\open = False Then
+;										n\Path[n\PathLocation]\door\open = True
+;                                        n\Path[n\PathLocation]\door\fastopen = 1
+;                                        PlayRangedSound(OpenDoorFastSFX, mainPlayer\cam, n\Path[n\PathLocation]\door\obj)
+;                                    EndIf
+;                                EndIf							
                                 If dist2 < 0.2 Then n\PathLocation = n\PathLocation + 1
                             EndIf 
                         EndIf
@@ -362,3 +363,5 @@ Function UpdateNPCtype096(n.NPCs)
     
     RotateEntity n\obj, EntityPitch(n\Collider), EntityYaw(n\Collider), 0
 End Function
+;~IDEal Editor Parameters:
+;~C#Blitz3D

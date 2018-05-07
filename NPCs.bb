@@ -397,28 +397,28 @@ Function TeleportCloser(n.NPCs)
 	Local xtemp#, ztemp#
 	
 	For w.WayPoints = Each WayPoints
-		If w\door = Null Then
-			xtemp = Abs(EntityX(w\obj,True)-EntityX(n\collider,True))
-			If xtemp < 10.0 And xtemp > 1.0 Then 
-				ztemp = Abs(EntityZ(w\obj,True)-EntityZ(n\collider,True))
-				If ztemp < 10.0 And ztemp > 1.0 Then
-					If (EntityDistance(mainPlayer\collider, w\obj)>8) Then
-						If (SelectedDifficulty\aggressiveNPCs)Then
-							;teleports to the nearby waypoint that takes it closest to the player
-							Local newDist# = EntityDistance(mainPlayer\collider, w\obj)
-							If (newDist < closestDist Or closestWaypoint = Null) Then
-								closestDist = newDist	
-								closestWaypoint = w
-							EndIf
-						Else 
-							;just teleports to the first nearby waypoint it finds
+		;If w\door = Null Then ;TODO: fix?
+		xtemp = Abs(EntityX(w\obj,True)-EntityX(n\collider,True))
+		If xtemp < 10.0 And xtemp > 1.0 Then 
+			ztemp = Abs(EntityZ(w\obj,True)-EntityZ(n\collider,True))
+			If ztemp < 10.0 And ztemp > 1.0 Then
+				If (EntityDistance(mainPlayer\collider, w\obj)>8) Then
+					If (SelectedDifficulty\aggressiveNPCs)Then
+						;teleports to the nearby waypoint that takes it closest to the player
+						Local newDist# = EntityDistance(mainPlayer\collider, w\obj)
+						If (newDist < closestDist Or closestWaypoint = Null) Then
+							closestDist = newDist	
 							closestWaypoint = w
-							Exit
-						EndIf						
-					EndIf
+						EndIf
+					Else 
+						;just teleports to the first nearby waypoint it finds
+						closestWaypoint = w
+						Exit
+					EndIf						
 				EndIf
 			EndIf
 		EndIf
+		;EndIf
 	Next
 	
 	If (closestWaypoint<>Null) Then
@@ -1198,6 +1198,6 @@ Function SetNPCFrame(n.NPCs, frame#)
 	n\frame = frame
 End Function
 ;~IDEal Editor Parameters:
-;~F#2A#A2#E0#EE#121#17E#187#1AF#1BA#1E3#1F6#285#296#2B0#2C3#2CF#2EE#329#3AB#3C5
-;~F#3DE#3EC#409#41C#441#464#472#488#4A8
+;~F#2A#A2#E0#EE#121#17E#1AF#1BA#1E3#1F6#285#296#2B0#2C3#2CF#2EE#329#3AB#3C5#3DE
+;~F#3EC#409#41C#441#464#472#488#4A8
 ;~C#Blitz3D

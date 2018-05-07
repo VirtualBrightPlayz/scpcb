@@ -1139,7 +1139,7 @@ Function FillRoom(r.Rooms)
 	Local waypoint.WayPoints
 	For tw.TempWayPoints = Each TempWayPoints
 		If tw\roomtemplate = r\RoomTemplate Then
-			waypoint = CreateWaypoint(r\x+tw\x*RoomScale, r\y+tw\y*RoomScale, r\z+tw\z*RoomScale, Null, r)
+			waypoint = CreateWaypoint(r\x+tw\x*RoomScale, r\y+tw\y*RoomScale, r\z+tw\z*RoomScale, r)
 			PushIntArrayListElem(waypoints,Handle(waypoint))
 		EndIf
 	Next
@@ -1450,7 +1450,6 @@ End Type
 
 Type WayPoints
 	Field obj
-	Field door.Doors
 	Field room.Rooms
 	Field state%
 	;Field tempDist#
@@ -1463,7 +1462,7 @@ Type WayPoints
 	Field parent.WayPoints
 End Type
 
-Function CreateWaypoint.WayPoints(x#,y#,z#,door.Doors, room.Rooms)
+Function CreateWaypoint.WayPoints(x#,y#,z#,room.Rooms)
 	Local w.WayPoints = New WayPoints
 	
 	w\obj = CreatePivot()
@@ -1472,7 +1471,6 @@ Function CreateWaypoint.WayPoints(x#,y#,z#,door.Doors, room.Rooms)
 	EntityParent w\obj, room\obj
 	
 	w\room = room
-	w\door=door
 	
 	Return w
 End Function
@@ -1641,9 +1639,10 @@ Function FindPath(n.NPCs, x#, y#, z#)
 						
 						If w\connected[i]\state=1 Then ;open list
 							Local gtemp# = w\Gcost+w\dist[i]
-							If n\npcType = NPCtypeMTF Then
-								If w\connected[i]\door = Null Then gtemp = gtemp + 0.5
-							EndIf
+							;TODO: fix?
+							;If n\npcType = NPCtypeMTF Then
+							;	If w\connected[i]\door = Null Then gtemp = gtemp + 0.5
+							;EndIf
 							If gtemp < w\connected[i]\Gcost Then ;parempi reitti -> overwrite
 								w\connected[i]\Gcost = gtemp
 								w\connected[i]\Fcost = w\connected[i]\Gcost + w\connected[i]\Hcost
@@ -1652,9 +1651,10 @@ Function FindPath(n.NPCs, x#, y#, z#)
 						Else
 							w\connected[i]\Hcost# = Abs(EntityX(w\connected[i]\obj,True)-EntityX(EndPoint\obj,True))+Abs(EntityZ(w\connected[i]\obj,True)-EntityZ(EndPoint\obj,True))
 							gtemp# = w\Gcost+w\dist[i]
-							If n\npcType = NPCtypeMTF Then
-								If w\connected[i]\door = Null Then gtemp = gtemp + 0.5
-							EndIf
+							;TODO: fix?
+							;If n\npcType = NPCtypeMTF Then
+							;	If w\connected[i]\door = Null Then gtemp = gtemp + 0.5
+							;EndIf
 							w\connected[i]\Gcost = gtemp
 							w\connected[i]\Fcost = w\Gcost+w\Hcost
 							w\connected[i]\parent = w
@@ -2871,50 +2871,93 @@ Function CreateMap()
 	DeleteIntArray(layout)
 	
 	;finally, let rooms know who their neighbors are
+	Local tempX%
+	Local tempY%
+	Local tempWaypoint.WayPoints
+	Local newWaypoint.WayPoints
+	Local roomAWaypoint.WayPoints
+	Local roomBWaypoint.WayPoints
 	For y% = 0 To mapDim-1
 		For x% = 0 To mapDim-1
 			r = Object.Rooms(GetIntArrayElem(MapRooms,x,y))
 			If r<>Null Then
-				If x>0 Then
-					r\Adjacent[2] = Object.Rooms(GetIntArrayElem(MapRooms,x-1,y))
-					If (r\Adjacent[2]<>Null) Then
-						If (r\Adjacent[2]\AdjDoor[0]=Null) Then
-							r\AdjDoor[2] = CreateDoor(zone,r\x-4.0,0.0,r\z,90.0,Null)
-						Else
-							r\AdjDoor[2] = r\Adjacent[2]\AdjDoor[0]
+				For i% = 0 To 3
+					Select i
+						Case 0
+							tempX = 1
+							tempY = 0
+						Case 1
+							tempX = 0
+							tempY = -1
+						Case 2
+							tempX = -1
+							tempY = 0
+						Case 3
+							tempX = 0
+							tempY = 1
+					End Select
+					
+					If (x+tempX>=0) And (x+tempX<mapDim) And (y+tempY>=0) And (y+tempY<mapDim) Then
+						r\Adjacent[i] = Object.Rooms(GetIntArrayElem(MapRooms,x+tempX,y+tempY))
+						If r\Adjacent[i]<>Null Then
+							If (r\Adjacent[i]\AdjDoor[(i+2) Mod 4]=Null) Then
+								r\AdjDoor[i] = CreateDoor(zone,r\x+4.0*tempX,0.0,r\z+4.0*tempY,90.0*((i+1) Mod 2),Null)
+								newWaypoint = CreateWaypoint(r\x+4.0*tempX,50.0*RoomScale,r\z+4.0*tempY,r)
+								
+								DebugLog "step1"
+								roomAWaypoint = Null : roomBWaypoint = Null
+								For tempWaypoint = Each WayPoints
+									If tempWaypoint<>newWaypoint Then
+										If tempWaypoint\room = r Then
+											If roomAWaypoint = Null Then
+												roomAWaypoint = tempWaypoint
+											ElseIf EntityDistance(roomAWaypoint\obj,newWaypoint\obj)>EntityDistance(tempWaypoint\obj,newWaypoint\obj) Then
+												roomAWaypoint = tempWaypoint
+											EndIf
+										EndIf
+										
+										If tempWaypoint\room = r\Adjacent[i] Then
+											If roomBWaypoint = Null Then
+												roomBWaypoint = tempWaypoint
+											ElseIf EntityDistance(roomBWaypoint\obj,newWaypoint\obj)>EntityDistance(tempWaypoint\obj,newWaypoint\obj) Then
+												roomBWaypoint = tempWaypoint
+											EndIf
+										EndIf
+									EndIf
+								Next
+								
+								DebugLog "step2"
+								If roomAWaypoint<>Null And roomBWaypoint<>Null Then
+									For j% = 0 To 15
+										If roomAWaypoint\connected[j]=Null Then
+											roomAWaypoint\connected[j]=newWaypoint
+											Exit
+										EndIf
+									Next
+									
+									For j% = 0 To 15
+										If roomBWaypoint\connected[j]=Null Then
+											roomBWaypoint\connected[j]=newWaypoint
+											Exit
+										EndIf
+									Next
+									
+									For j% = 0 To 15
+										If newWaypoint\connected[j]=Null Then
+											newWaypoint\connected[j]=roomAWaypoint
+											newWaypoint\connected[j+1]=roomBWaypoint
+											Exit
+										EndIf
+									Next
+								EndIf
+								
+								DebugLog "step3"
+							Else
+								r\AdjDoor[i] = r\Adjacent[i]\AdjDoor[(i+2) Mod 4]
+							EndIf
 						EndIf
 					EndIf
-				EndIf
-				If x<mapDim-1 Then
-					r\Adjacent[0] = Object.Rooms(GetIntArrayElem(MapRooms,x+1,y))
-					If (r\Adjacent[0]<>Null) Then
-						If (r\Adjacent[0]\AdjDoor[2]=Null) Then
-							r\AdjDoor[0] = CreateDoor(zone,r\x+4.0,0.0,r\z,90.0,Null)
-						Else
-							r\AdjDoor[0] = r\Adjacent[0]\AdjDoor[2]
-						EndIf
-					EndIf
-				EndIf
-				If y>0 Then
-					r\Adjacent[1] = Object.Rooms(GetIntArrayElem(MapRooms,x,y-1))
-					If (r\Adjacent[1]<>Null) Then
-						If (r\Adjacent[1]\AdjDoor[3]=Null) Then
-							r\AdjDoor[1] = CreateDoor(zone,r\x,0.0,r\z-4.0,0.0,Null)
-						Else
-							r\AdjDoor[1] = r\Adjacent[1]\AdjDoor[3]
-						EndIf
-					EndIf
-				EndIf
-				If y<mapDim-1 Then
-					r\Adjacent[3] = Object.Rooms(GetIntArrayElem(MapRooms,x,y+1))
-					If (r\Adjacent[3]<>Null) Then
-						If (r\Adjacent[3]\AdjDoor[1]=Null) Then
-							r\AdjDoor[3] = CreateDoor(zone,r\x,0.0,r\z+4.0,0.0,Null)
-						Else
-							r\AdjDoor[3] = r\Adjacent[3]\AdjDoor[1]
-						EndIf
-					EndIf
-				EndIf
+				Next
 			EndIf
 		Next
 	Next
