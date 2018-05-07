@@ -73,6 +73,8 @@ Include "Rooms/Room_tnnl_plain_4.bb"
 Include "Rooms/Room_hll_tsl.bb"
 Include "Rooms/Room_tnnl_nuke_2.bb"
 
+Include "RM2.bb"
+
 Include "Skybox.bb"
 
 Type Materials
@@ -98,15 +100,6 @@ Function LoadMaterials(file$)
 			mat.Materials = New Materials
 			
 			mat\name = Lower(TemporaryString)
-			
-			;If BumpEnabled Then
-			;	StrTemp = GetINIString(file, TemporaryString, "bump")
-			;	If StrTemp <> "" Then 
-			;		mat\Bump =  LoadTexture(StrTemp)
-			;		
-			;		TextureBlend mat\Bump, FE_BUMP				
-			;	EndIf
-			;EndIf
 			
 			mat\StepSound = GetINIInt(file, TemporaryString, "stepsound")
 		EndIf
@@ -139,13 +132,6 @@ Function GetTextureFromCache%(name$)
 	Next
 	Return 0
 End Function
-
-;Function GetBumpFromCache%(name$)
-;	For tc.Materials=Each Materials
-;		If tc\name = name Then Return tc\Bump
-;	Next
-;	Return 0
-;End Function
 
 Function GetCache.Materials(name$)
 	For tc.Materials=Each Materials
@@ -593,7 +579,6 @@ Function LoadRMesh(file$,rt.RoomTemplates)
 	
 End Function
 
-
 ;-----------;;;;
 
 Function StripPath$(file$) 
@@ -662,6 +647,7 @@ Const ZONE_LCZ% = 1, ZONE_HCZ% = 2, ZONE_EZ% = 4
 Global RoomTempID.MarkedForRemoval
 Type RoomTemplates
 	Field obj%
+	Field collisionObjs.IntArrayList
 	Field objPath$
 	
 	Field zones%
@@ -803,7 +789,7 @@ End Function
 Function LoadRoomMesh(rt.RoomTemplates)
 	
 	If Instr(rt\objPath,".rmesh")<>0 Then ;file is roommesh
-		rt\obj = LoadRMesh(rt\objPath, rt)
+		LoadRM2(Replace(rt\objPath,".rmesh",".rm2"), rt)
 	Else
 		RuntimeError Chr(34)+rt\objPath+Chr(34)+" is not RMesh!"
 	EndIf
@@ -1138,11 +1124,29 @@ Function FillRoom(r.Rooms)
 		EndIf
 	Next
 	
+	Local waypoints.IntArrayList = CreateIntArrayList()
+	Local waypoint.WayPoints
 	For tw.TempWayPoints = Each TempWayPoints
 		If tw\roomtemplate = r\RoomTemplate Then
-			CreateWaypoint(r\x+tw\x, r\y+tw\y, r\z+tw\z, Null, r)
+			waypoint = CreateWaypoint(r\x+tw\x, r\y+tw\y, r\z+tw\z, Null, r)
+			PushIntArrayListElem(waypoints,Handle(waypoint))
 		EndIf
 	Next
+	
+	Local i% = 0
+	For tw.TempWayPoints = Each TempWayPoints
+		If tw\roomtemplate = r\RoomTemplate Then
+			waypoint = Object.WayPoints(GetIntArrayListElem(waypoints,i))
+			For j% = 0 To 15
+				If tw\connectedTo[j]=0 Then Exit
+				waypoint\connected[j] = Object.WayPoints(GetIntArrayListElem(waypoints,tw\connectedTo[j]-1))
+				waypoint\dist[j] = EntityDistance(waypoint\obj,waypoint\connected[j]\obj)
+			Next
+			i=i+1
+		EndIf
+	Next
+	
+	DeleteIntArrayList(waypoints)
 	
 	If r\RoomTemplate\TempTriggerboxAmount > 0
 		r\TriggerboxAmount = r\RoomTemplate\TempTriggerboxAmount
@@ -1282,24 +1286,24 @@ Function UpdateRooms()
 	;TempLightVolume = Max(TempLightVolume / 4.5, 1.0)
 	
 	If mainPlayer\currRoom<>Null Then
-		EntityAlpha(GetChild(mainPlayer\currRoom\obj,2),1)
+		ShowEntity(GetChild(mainPlayer\currRoom\obj,1))
 		For i=0 To 3
 			If mainPlayer\currRoom\Adjacent[i]<>Null Then
 				x = Abs(EntityX(mainPlayer\collider,True)-EntityX(mainPlayer\currRoom\AdjDoor[i]\frameobj,True))
 				z = Abs(EntityZ(mainPlayer\collider,True)-EntityZ(mainPlayer\currRoom\AdjDoor[i]\frameobj,True))
 				If mainPlayer\currRoom\AdjDoor[i]\openstate = 0 Then
-					EntityAlpha(GetChild(mainPlayer\currRoom\Adjacent[i]\obj,2),0)
+					HideEntity(GetChild(mainPlayer\currRoom\Adjacent[i]\obj,1))
 				;ElseIf Abs(DeltaYaw(mainPlayer\cam,mainPlayer\currRoom\Adjacent[i]\obj))>90+(((8.0-Max(x,z))/8.0)*90.0) Then
 				;	EntityAlpha(GetChild(mainPlayer\currRoom\Adjacent[i]\obj,2),0)
 				ElseIf (Not EntityInView(mainPlayer\currRoom\AdjDoor[i]\frameobj,mainPlayer\cam))
-					EntityAlpha(GetChild(mainPlayer\currRoom\Adjacent[i]\obj,2),0)
+					HideEntity(GetChild(mainPlayer\currRoom\Adjacent[i]\obj,1))
 				Else
-					EntityAlpha(GetChild(mainPlayer\currRoom\Adjacent[i]\obj,2),1)
+					ShowEntity(GetChild(mainPlayer\currRoom\Adjacent[i]\obj,1))
 				EndIf
 				
 				For j=0 To 3
 					If (mainPlayer\currRoom\Adjacent[i]\Adjacent[j]<>Null) Then
-						If (mainPlayer\currRoom\Adjacent[i]\Adjacent[j]<>mainPlayer\currRoom) Then EntityAlpha(GetChild(mainPlayer\currRoom\Adjacent[i]\Adjacent[j]\obj,2),0)
+						If (mainPlayer\currRoom\Adjacent[i]\Adjacent[j]<>mainPlayer\currRoom) Then HideEntity(GetChild(mainPlayer\currRoom\Adjacent[i]\Adjacent[j]\obj,1))
 					EndIf
 				Next
 			EndIf
@@ -1393,8 +1397,11 @@ Type LightTemplates
 	Field r%, g%, b%
 	
 	Field pitch#, yaw#
-	Field innerconeangle%, outerconeangle#
+	Field innerconeangle#, outerconeangle#
 End Type 
+
+Const LIGHTTYPE_POINT% = 2
+Const LIGHTTYPE_SPOT% = 3
 
 Function AddTempLight.LightTemplates(rt.RoomTemplates, x#, y#, z#, ltype%, range#, r%, g%, b%)
 	Local lt.LightTemplates = New LightTemplates
@@ -1415,6 +1422,7 @@ End Function
 
 Type TempWayPoints
 	Field x#, y#, z#
+	Field connectedTo%[32]
 	Field roomtemplate.RoomTemplates
 End Type 
 
@@ -1425,8 +1433,8 @@ Type WayPoints
 	Field state%
 	;Field tempDist#
 	;Field tempSteps%
-	Field connected.WayPoints[5]
-	Field dist#[5]
+	Field connected.WayPoints[16]
+	Field dist#[16]
 	
 	Field Fcost#, Gcost#, Hcost#
 	
@@ -1434,19 +1442,10 @@ Type WayPoints
 End Type
 
 Function CreateWaypoint.WayPoints(x#,y#,z#,door.Doors, room.Rooms)
-	
 	Local w.WayPoints = New WayPoints
 	
-	If 1 Then
-		w\obj = CreatePivot()
-		PositionEntity w\obj, x,y,z	
-	Else
-		w\obj = CreateSprite()
-		PositionEntity(w\obj, x, y, z)
-		ScaleSprite(w\obj, 0.15 , 0.15)
-		EntityTexture(w\obj, LightSpriteTex(0))
-		EntityBlend (w\obj, 3)	
-	EndIf
+	w\obj = CreatePivot()
+	PositionEntity w\obj, x,y,z	
 	
 	EntityParent w\obj, room\obj
 	
@@ -1465,109 +1464,6 @@ Function InitWayPoints(loadingstart=45)
 	Local temper% = MilliSecs()
 	
 	Local dist#, dist2#
-	
-	For d.Doors = Each Doors
-		If d\obj <> 0 Then HideEntity d\obj
-		If d\obj2 <> 0 Then HideEntity d\obj2	
-		If d\frameobj <> 0 Then HideEntity d\frameobj
-		
-		If d\room = Null Then 
-			ClosestRoom.Rooms = Null
-			dist# = 30
-			For r.Rooms = Each Rooms
-				x# = Abs(EntityX(r\obj,True)-EntityX(d\frameobj,True))
-				If x < 20.0 Then
-					z# = Abs(EntityZ(r\obj,True)-EntityZ(d\frameobj,True))
-					If z < 20.0 Then
-						dist2 = x*x+z*z
-						If dist2 < dist Then
-							ClosestRoom = r
-							dist = dist2
-						EndIf
-					EndIf
-				EndIf
-			Next
-		Else
-			ClosestRoom = d\room
-		EndIf
-		
-		If (Not d\DisableWaypoint) Then CreateWaypoint(EntityX(d\frameobj, True), EntityY(d\frameobj, True)+0.18, EntityZ(d\frameobj, True), d, ClosestRoom)
-	Next
-	
-	Local amount# = 0
-	For w.WayPoints = Each WayPoints
-		EntityPickMode w\obj, 1, True
-		EntityRadius w\obj, 0.2
-		amount=amount+1
-	Next
-	
-	
-	;pvt = CreatePivot()
-	
-	Local number% = 0
-	Local iter% = 0
-	For w.WayPoints = Each WayPoints
-		
-		number = number + 1
-		iter = iter + 1
-		If iter = 20 Then 
-			DrawLoading(loadingstart+Floor((35.0/amount)*number)) 
-			iter = 0
-		EndIf
-		
-		w2.WayPoints = After(w)
-		
-		Local canCreateWayPoint% = False
-		
-		While (w2<>Null)
-			
-			If (w\room=w2\room Or w\door<>Null Or w2\door<>Null)
-				
-				dist# = EntityDistance(w\obj, w2\obj);;Sqr(x*x+y*y+z*z)
-				
-				If w\room\MaxWayPointY# = 0.0 Or w2\room\MaxWayPointY# = 0.0
-					canCreateWayPoint = True
-				Else
-					If Abs(EntityY(w\obj)-EntityY(w2\obj))<=w\room\MaxWayPointY
-						canCreateWayPoint = True
-					EndIf
-				EndIf
-				
-				If dist < 7.0 Then
-					If canCreateWayPoint
-						If EntityVisible(w\obj, w2\obj) Then;e=w2\obj Then 
-							Local i%
-							For i = 0 To 4
-								If w\connected[i] = Null Then
-									w\connected[i] = w2.WayPoints 
-									w\dist[i] = dist
-									Exit
-								EndIf
-							Next
-							
-							For i = 0 To 4
-								If w2\connected[i] = Null Then 
-									w2\connected[i] = w.WayPoints 
-									w2\dist[i] = dist
-									Exit
-								EndIf					
-							Next
-						EndIf
-					EndIf	
-				EndIf
-			EndIf
-			w2 = After(w2)
-		Wend
-		
-	Next
-	
-	;FreeEntity pvt	
-	
-	For d.Doors = Each Doors
-		If d\obj <> 0 Then ShowEntity d\obj
-		If d\obj2 <> 0 Then ShowEntity d\obj2	
-		If d\frameobj <> 0 Then ShowEntity d\frameobj		
-	Next
 	
 	For w.WayPoints = Each WayPoints
 		EntityPickMode w\obj, 0, 0
@@ -1717,7 +1613,7 @@ Function FindPath(n.NPCs, x#, y#, z#)
 			w = smallest
 			w\state = 2
 			
-			For i = 0 To 4
+			For i = 0 To 15
                 If w\connected[i]<>Null Then
 					If w\connected[i]\state < 2 Then
 						
@@ -2117,7 +2013,7 @@ Function UpdateSecurityCams()
 										Else
 											HideEntity(mainPlayer\cam)
 											ShowEntity (CoffinCam\room\obj)
-											EntityAlpha(GetChild(CoffinCam\room\obj,2),1)
+											ShowEntity(GetChild(CoffinCam\room\obj,1))
 											ShowEntity(CoffinCam\Cam)
 											Cls
 											
@@ -2145,7 +2041,7 @@ Function UpdateSecurityCams()
 								Else
 									HideEntity(mainPlayer\cam)
 									ShowEntity (sc\room\obj)
-									EntityAlpha(GetChild(sc\room\obj,2),1)
+									ShowEntity(GetChild(sc\room\obj,1))
 									ShowEntity(sc\Cam)
 									Cls
 									
@@ -3537,10 +3433,6 @@ Function FindAndDeleteFakeMonitor(r.Rooms,x#,y#,z#,Amount%)
 	Next
 	
 End Function
-
 ;~IDEal Editor Parameters:
-;~F#4D#78#87#95#AD#B5#258#268#279#298#2B1#2B9#324#332#359#38E#396#3AB#3B6#3C0
-;~F#3DA#494#520#52C#56D#578#589#58E#59D#5B4#636#63B#71D#73B#742#748#756#776#797#7CA
-;~F#8CF#908#91D#9DF#A74#A79#A8B#BAF#BD6#C07#C0B#C12#C6F#C9A#CCE#CE0#CE7#D17#D1E#D4C
-;~F#D97#DA5#DAC#DB2#DBC#DC2
+;~F#4F#57#71#80#87#9F#A7#247#257#268#2A9
 ;~C#Blitz3D

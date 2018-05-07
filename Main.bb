@@ -557,8 +557,6 @@ Function InitializeMainGame()
 	
 	DrawLoading(40,True)
 	
-	LoadRoomTemplates("Data\rooms.ini")
-	
 	;TODO: remove/replace with functions
 	SecondaryLightOn# = True
 	RemoteDoorOn = True

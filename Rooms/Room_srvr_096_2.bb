@@ -14,7 +14,7 @@ Function FillRoom_srvr_096_2(r.Rooms)
     r\RoomDoors[1]\AutoClose=False
     
     r\RoomDoors[2] = CreateDoor(r\zone, r\x - 672.0 * RoomScale, 0.0, r\z - 1024.0 * RoomScale, 0, r, False, False, False, "GEAR")
-    r\RoomDoors[2]\AutoClose=False : r\RoomDoors[2]\DisableWaypoint = True 
+    r\RoomDoors[2]\AutoClose=False
     FreeEntity(r\RoomDoors[2]\buttons[0]) : r\RoomDoors[2]\buttons[0]=0
     FreeEntity(r\RoomDoors[2]\buttons[1]) : r\RoomDoors[2]\buttons[1]=0
     
@@ -280,3 +280,6 @@ Function UpdateEvent_srvr_096_2(e.Events)
 	;[End Block]
 End Function
 
+
+;~IDEal Editor Parameters:
+;~C#Blitz3D

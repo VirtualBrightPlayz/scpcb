@@ -10,8 +10,6 @@ Type Doors
 	Field KeyCard%
 	Field room.Rooms
 	
-	Field DisableWaypoint%
-	
 	Field dist#
 	
 	Field SoundCHN%
@@ -527,5 +525,5 @@ Function RemoveDoor(d.Doors)
 End Function
 
 ;~IDEal Editor Parameters:
-;~F#4#27#9F#AC#174#203
+;~F#25#9D#AA#172#201
 ;~C#Blitz3D

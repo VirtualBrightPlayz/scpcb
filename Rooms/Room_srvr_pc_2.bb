@@ -12,9 +12,11 @@ Function FillRoom_srvr_pc_2(r.Rooms)
     d.Doors = CreateDoor(r\zone, r\x -512.0 * RoomScale, -768.0*RoomScale, r\z -336.0 * RoomScale, 0, r, False, False, 3)
     d.Doors = CreateDoor(r\zone, r\x -509.0 * RoomScale, -768.0*RoomScale, r\z -1037.0 * RoomScale, 0, r, False, False, 3)
     d.Doors\locked = True
-    d.Doors\DisableWaypoint = True
     it = CreateItem("Night Vision Goggles", "nvgoggles", r\x + 56.0154 * RoomScale, r\y - 648.0 * RoomScale, r\z + 749.638 * RoomScale)
     it\state = 20
     RotateEntity it\collider, 0, r\angle+Rand(245), 0
     EntityParent(it\collider, r\obj)
 End Function
+
+;~IDEal Editor Parameters:
+;~C#Blitz3D
