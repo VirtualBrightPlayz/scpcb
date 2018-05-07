@@ -375,7 +375,7 @@ Function LoadEventSound(e.Events,file$,num%=0)
 End Function
 
 Function PauseSounds()
-	Local sc.SoundChannel, sc2.SecurityCams, e.Events, n.NPCs, i%
+	Local sc.SoundChannel, sc2.SecurityCams, e.Events, n.NPCs, em.Emitters, i%
 
 	For sc = Each SoundChannel
 		If (IsChannelPlaying(sc\internal)) Then
@@ -404,10 +404,16 @@ Function PauseSounds()
 			EndIf
 		Next
 	Next
+	
+	For em = Each Emitters
+		If (IsChannelPlaying(em\soundCHN)) Then
+			PauseChannel(em\soundCHN)
+		EndIf
+	Next
 End Function
 
 Function ResumeSounds()
-	Local sc.SoundChannel, sc2.SecurityCams, e.Events, n.NPCs, i%
+	Local sc.SoundChannel, sc2.SecurityCams, e.Events, n.NPCs, em.Emitters, i%
 
 	For sc = Each SoundChannel
 		If (IsChannelPlaying(sc\internal)) Then
@@ -435,6 +441,12 @@ Function ResumeSounds()
 				ResumeChannel(n\soundChannels[i])
 			EndIf
 		Next
+	Next
+	
+	For em = Each Emitters
+		If (IsChannelPlaying(em\soundCHN)) Then
+			ResumeChannel(em\soundCHN)
+		EndIf
 	Next
 End Function
 
