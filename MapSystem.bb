@@ -182,6 +182,8 @@ Function LoadRMeshTexture%(roompath$,name$,flags%)
 End Function
 
 Function LoadRMesh(file$,rt.RoomTemplates)
+	RuntimeError "RMesh is obsolete. Convert to RM2."
+	
 	;generate a texture made of white
 	Local blankTexture%
 	blankTexture=CreateTexture(4,4,1,1)
@@ -391,20 +393,20 @@ Function LoadRMesh(file$,rt.RoomTemplates)
 		DebugLog "TriggerBoxEnable"
 		rt\TempTriggerboxAmount = ReadInt(f)
 		For tb = 0 To rt\TempTriggerboxAmount-1
-			rt\TempTriggerbox[tb] = CreateMesh(rt\obj)
+			;rt\TempTriggerbox[tb] = CreateMesh(rt\obj)
 			count = ReadInt(f)
 			For i%=1 To count
-				surf=CreateSurface(rt\TempTriggerbox[tb])
+				;surf=CreateSurface(rt\TempTriggerbox[tb])
 				count2=ReadInt(f)
 				For j%=1 To count2
 					x=ReadFloat(f) : y=ReadFloat(f) : z=ReadFloat(f)
-					vertex=AddVertex(surf,x,y,z)
+					;vertex=AddVertex(surf,x,y,z)
 				Next
 				count2=ReadInt(f)
 				For j%=1 To count2
 					temp1i = ReadInt(f) : temp2i = ReadInt(f) : temp3i = ReadInt(f)
-					AddTriangle(surf,temp1i,temp2i,temp3i)
-					AddTriangle(surf,temp1i,temp3i,temp2i)
+					;AddTriangle(surf,temp1i,temp2i,temp3i)
+					;AddTriangle(surf,temp1i,temp3i,temp2i)
 				Next
 			Next
 			rt\TempTriggerboxName[tb] = ReadString(f)
@@ -518,20 +520,20 @@ Function LoadRMesh(file$,rt.RoomTemplates)
 			Case "model"
 				file = ReadString(f)
 				If file<>""
-					Local model = CreatePropObj("GFX\Map\Props\"+file);LoadMesh("GFX\Map\Props\"+file)
+					;Local model = CreatePropObj("GFX\Map\Props\"+file);LoadMesh("GFX\Map\Props\"+file)
 					
 					temp1=ReadFloat(f) : temp2=ReadFloat(f) : temp3=ReadFloat(f)
-					PositionEntity model,temp1,temp2,temp3
+					;PositionEntity model,temp1,temp2,temp3
 					
 					temp1=ReadFloat(f) : temp2=ReadFloat(f) : temp3=ReadFloat(f)
-					RotateEntity model,temp1,temp2,temp3
+					;RotateEntity model,temp1,temp2,temp3
 					
 					temp1=ReadFloat(f) : temp2=ReadFloat(f) : temp3=ReadFloat(f)
-					ScaleEntity model,temp1,temp2,temp3
+					;ScaleEntity model,temp1,temp2,temp3
 					
-					EntityParent model,Opaque
-					EntityType model,HIT_MAP
-					EntityPickMode model,2
+					;EntityParent model,Opaque
+					;EntityType model,HIT_MAP
+					;EntityPickMode model,2
 				Else
 					DebugLog "file = 0"
 					temp1=ReadFloat(f) : temp2=ReadFloat(f) : temp3=ReadFloat(f)
@@ -646,18 +648,24 @@ Const ZONE_LCZ% = 1, ZONE_HCZ% = 2, ZONE_EZ% = 4
 
 Global RoomTempID.MarkedForRemoval
 Type RoomTemplates
-	Field obj%
-	Field collisionObjs.IntArrayList
+	Field name$
+	Field shape%
+	Field large% ;TODO: might not be needed?
+	
 	Field objPath$
+	Field loaded%
+	
+	Field opaqueMesh%
+	Field alphaMesh%
+	Field collisionObjs.IntArrayList
+	Field props.IntArrayList
 	
 	Field zones%
 	
+	;TODO: cleanup?
 	Field TempSoundEmitter%[MaxRoomEmitters]
 	Field TempSoundEmitterX#[MaxRoomEmitters],TempSoundEmitterY#[MaxRoomEmitters],TempSoundEmitterZ#[MaxRoomEmitters]
 	Field TempSoundEmitterRange#[MaxRoomEmitters]
-	
-	Field Shape%, Name$
-	Field Large%
 	
 	Field Commonness#
 	Field MinAmount%, MaxAmount%
@@ -675,6 +683,7 @@ Function CreateRoomTemplate.RoomTemplates(meshpath$)
 	Local rt.RoomTemplates = New RoomTemplates
 	
 	rt\objPath = meshpath
+	rt\loaded = False
 	
 	Return rt
 End Function
@@ -785,40 +794,9 @@ Function LoadRoomTemplates(file$)
 	
 End Function
 
-
 Function LoadRoomMesh(rt.RoomTemplates)
-	
-	If Instr(rt\objPath,".rmesh")<>0 Then ;file is roommesh
-		LoadRM2(Replace(rt\objPath,".rmesh",".rm2"), rt)
-	Else
-		RuntimeError Chr(34)+rt\objPath+Chr(34)+" is not RMesh!"
-	EndIf
-	
-	If (Not rt\obj) Then RuntimeError "Failed to load map file "+Chr(34)+mapfile+Chr(34)+"."
-	
-	HideEntity(rt\obj)
-	
-End Function
-
-Function LoadRoomMeshes()
-	Local temp% = 0
-	For rt.RoomTemplates = Each RoomTemplates
-		temp=temp+1
-	Next	
-	
-	Local i = 0
-	For rt.RoomTemplates = Each RoomTemplates
-		If Instr(rt\objpath,".rmesh")<>0 Then ;file is roommesh
-			rt\obj = LoadRMesh(rt\objPath, rt)
-		Else
-			RuntimeError Chr(34)+rt\objPath+Chr(34)+" is not RMesh!"
-		EndIf
-		If (Not rt\obj) Then RuntimeError "Failed to load map file "+Chr(34)+mapfile+Chr(34)+"."
-		
-		HideEntity(rt\obj)
-		DrawLoading(Int(30 + (15.0 / temp)*i))
-		i=i+1
-	Next
+	rt\objPath = Replace(rt\objPath,".rmesh",".rm2") ;TODO: remove
+	LoadRM2(rt)
 End Function
 
 Const MAP_SIZE = 19
@@ -844,10 +822,15 @@ Type Rooms
 	
 	Field found%
 	
-	Field obj%
 	Field x#, y#, z#
 	Field angle%
 	Field RoomTemplate.RoomTemplates
+	
+	Field obj% ;TODO: rename
+	Field opaqueMesh%
+	Field alphaMesh%
+	Field collisionObjs.IntArray
+	Field props.IntArray
 	
 	Field dist#
 	
@@ -855,6 +838,7 @@ Type Rooms
 	
 	Field fr.Forest
 	
+	;TODO: use arraylists for all this stuff?
 	Field SoundEmitter%[MaxRoomEmitters]
 	Field SoundEmitterObj%[MaxRoomEmitters]
 	Field SoundEmitterRange#[MaxRoomEmitters]
@@ -926,7 +910,7 @@ Function GetRoomTemplate.RoomTemplates(name$)
 	
 	Local rt.RoomTemplates
 	For rt = Each RoomTemplates
-		If rt\Name = name Then
+		If rt\name = name Then
 			Return rt
 		EndIf
 	Next
@@ -945,7 +929,7 @@ End Function
 Function CreateRoom.Rooms(rt.RoomTemplates, x#, y#, z#)
 	Local r.Rooms = New Rooms
 	
-	DebugLog "Placing "+rt\Name
+	DebugLog "Placing "+rt\name
 	
 	; TODO: Does 'zone' exist?
 	r\zone = zone
@@ -953,13 +937,41 @@ Function CreateRoom.Rooms(rt.RoomTemplates, x#, y#, z#)
 	r\x = x : r\y = y : r\z = z
 	
 	r\RoomTemplate = rt
-			
-	If rt\obj=0 Then LoadRoomMesh(rt)
 	
-	r\obj = CopyEntity(rt\obj)
-	ScaleEntity(r\obj, RoomScale, RoomScale, RoomScale)
-	EntityType(r\obj, HIT_MAP)
-	EntityPickMode(r\obj, 2)
+	If Not rt\loaded Then LoadRoomMesh(rt)
+	
+	Local tempObj%
+	Local tempProp.Props
+	
+	r\obj = CreatePivot()
+	r\opaqueMesh = CopyEntity(rt\opaqueMesh) : ScaleEntity(r\opaqueMesh, RoomScale, RoomScale, RoomScale)
+	EntityParent(r\opaqueMesh,r\obj)
+	ShowEntity(r\opaqueMesh)
+	If rt\alphaMesh<>0 Then
+		r\alphaMesh = CopyEntity(rt\alphaMesh) : ScaleEntity(r\alphaMesh, RoomScale, RoomScale, RoomScale)
+		ShowEntity(r\alphaMesh)
+		EntityParent(r\alphaMesh,r\obj)
+	EndIf
+	r\collisionObjs = CreateIntArray(rt\collisionObjs\size)
+	For i% = 0 To rt\collisionObjs\size-1
+		tempObj = CopyEntity(GetIntArrayListElem(rt\collisionObjs,i)) : ScaleEntity(tempObj, RoomScale, RoomScale, RoomScale)
+		SetIntArrayElem(r\collisionObjs,tempObj,i)
+		ShowEntity(tempObj) : EntityAlpha(tempObj,0.0)
+		EntityParent(tempObj,r\obj)
+	Next
+	If rt\props<>Null Then
+		r\props = CreateIntArray(rt\props\size)
+		For i% = 0 To rt\props\size-1
+			tempProp = Object.Props(GetIntArrayListElem(rt\props,i))
+			tempObj = CopyEntity(tempProp\obj)
+			SetIntArrayElem(r\props,tempObj,i)
+			PositionEntity(tempObj,tempProp\x*RoomScale,tempProp\y*RoomScale,tempProp\z*RoomScale)
+			RotateEntity(tempObj,tempProp\pitch,tempProp\yaw,tempProp\roll)
+			ScaleEntity(tempObj,tempProp\xScale*RoomScale,tempProp\yScale*RoomScale,tempProp\zScale*RoomScale)
+			ShowEntity(tempObj)
+			EntityParent(tempObj,r\obj)
+		Next
+	EndIf
 	
 	PositionEntity(r\obj, x, y, z)
 	FillRoom(r)
@@ -967,9 +979,8 @@ Function CreateRoom.Rooms(rt.RoomTemplates, x#, y#, z#)
 	Return r
 End Function
 
-
 Function FillRoom(r.Rooms)
-	Select r\RoomTemplate\Name
+	Select r\RoomTemplate\name
 		Case "test_860_2"
 			FillRoom_test_860_2(r)
 		Case "lck_cam_2c"
@@ -1108,7 +1119,7 @@ Function FillRoom(r.Rooms)
 	
 	For lt.lighttemplates = Each LightTemplates
 		If lt\roomtemplate = r\RoomTemplate Then
-			newlt = AddLight(r, r\x+lt\x, r\y+lt\y, r\z+lt\z, lt\ltype, lt\range, lt\r, lt\g, lt\b)
+			newlt = AddLight(r, r\x+lt\x*RoomScale, r\y+lt\y*RoomScale, r\z+lt\z*RoomScale, lt\ltype, lt\range, lt\r, lt\g, lt\b)
 			If newlt <> 0 Then 
 				If lt\ltype = 3 Then
 					LightConeAngles(newlt, lt\innerconeangle, lt\outerconeangle)
@@ -1120,7 +1131,7 @@ Function FillRoom(r.Rooms)
 	
 	For ts.tempscreens = Each TempScreens
 		If ts\roomtemplate = r\RoomTemplate Then
-			CreateScreen(r\x+ts\x, r\y+ts\y, r\z+ts\z, ts\imgpath, r)
+			CreateScreen(r\x+ts\x*RoomScale, r\y+ts\y*RoomScale, r\z+ts\z*RoomScale, ts\imgpath, r)
 		EndIf
 	Next
 	
@@ -1128,7 +1139,7 @@ Function FillRoom(r.Rooms)
 	Local waypoint.WayPoints
 	For tw.TempWayPoints = Each TempWayPoints
 		If tw\roomtemplate = r\RoomTemplate Then
-			waypoint = CreateWaypoint(r\x+tw\x, r\y+tw\y, r\z+tw\z, Null, r)
+			waypoint = CreateWaypoint(r\x+tw\x*RoomScale, r\y+tw\y*RoomScale, r\z+tw\z*RoomScale, Null, r)
 			PushIntArrayListElem(waypoints,Handle(waypoint))
 		EndIf
 	Next
@@ -1148,21 +1159,21 @@ Function FillRoom(r.Rooms)
 	
 	DeleteIntArrayList(waypoints)
 	
-	If r\RoomTemplate\TempTriggerboxAmount > 0
-		r\TriggerboxAmount = r\RoomTemplate\TempTriggerboxAmount
-		For i = 0 To r\TriggerboxAmount-1
-			r\Triggerbox[i] = CopyEntity(r\RoomTemplate\TempTriggerbox[i],r\obj)
-			EntityAlpha r\Triggerbox[i],0.0
-			r\TriggerboxName[i] = r\RoomTemplate\TempTriggerboxName[i]
-			DebugLog "Triggerbox found: "+i
-			DebugLog "Triggerbox "+i+" name: "+r\TriggerboxName[i]
-		Next
-	EndIf
+;	If r\RoomTemplate\TempTriggerboxAmount > 0
+;		r\TriggerboxAmount = r\RoomTemplate\TempTriggerboxAmount
+;		For i = 0 To r\TriggerboxAmount-1
+;			r\Triggerbox[i] = CopyEntity(r\RoomTemplate\TempTriggerbox[i],r\obj)
+;			EntityAlpha r\Triggerbox[i],0.0
+;			r\TriggerboxName[i] = r\RoomTemplate\TempTriggerboxName[i]
+;			DebugLog "Triggerbox found: "+i
+;			DebugLog "Triggerbox "+i+" name: "+r\TriggerboxName[i]
+;		Next
+;	EndIf
 	
 	For i = 0 To MaxRoomEmitters-1
 		If r\RoomTemplate\TempSoundEmitter[i]<>0 Then
 			r\SoundEmitterObj[i]=CreatePivot(r\obj)
-			PositionEntity r\SoundEmitterObj[i], r\x+r\RoomTemplate\TempSoundEmitterX[i],r\y+r\RoomTemplate\TempSoundEmitterY[i],r\z+r\RoomTemplate\TempSoundEmitterZ[i],True
+			PositionEntity r\SoundEmitterObj[i], r\x+r\RoomTemplate\TempSoundEmitterX[i]*RoomScale,r\y+r\RoomTemplate\TempSoundEmitterY[i]*RoomScale,r\z+r\RoomTemplate\TempSoundEmitterZ[i]*RoomScale,True
 			EntityParent(r\SoundEmitterObj[i],r\obj)
 			
 			r\SoundEmitter[i] = r\RoomTemplate\TempSoundEmitter[i]
@@ -1170,6 +1181,20 @@ Function FillRoom(r.Rooms)
 		EndIf
 	Next
 	
+End Function
+
+Function SetRoomVisibility(r.Rooms,on%)
+	If on Then
+		ShowEntity(r\opaqueMesh)
+		If r\alphaMesh<>0 Then
+			ShowEntity(r\alphaMesh)
+		EndIf
+	Else
+		HideEntity(r\opaqueMesh)
+		If r\alphaMesh<>0 Then
+			HideEntity(r\alphaMesh)
+		EndIf
+	EndIf
 End Function
 
 Function UpdateRooms()
@@ -1286,24 +1311,21 @@ Function UpdateRooms()
 	;TempLightVolume = Max(TempLightVolume / 4.5, 1.0)
 	
 	If mainPlayer\currRoom<>Null Then
-		ShowEntity(GetChild(mainPlayer\currRoom\obj,1))
 		For i=0 To 3
 			If mainPlayer\currRoom\Adjacent[i]<>Null Then
 				x = Abs(EntityX(mainPlayer\collider,True)-EntityX(mainPlayer\currRoom\AdjDoor[i]\frameobj,True))
 				z = Abs(EntityZ(mainPlayer\collider,True)-EntityZ(mainPlayer\currRoom\AdjDoor[i]\frameobj,True))
 				If mainPlayer\currRoom\AdjDoor[i]\openstate = 0 Then
-					HideEntity(GetChild(mainPlayer\currRoom\Adjacent[i]\obj,1))
-				;ElseIf Abs(DeltaYaw(mainPlayer\cam,mainPlayer\currRoom\Adjacent[i]\obj))>90+(((8.0-Max(x,z))/8.0)*90.0) Then
-				;	EntityAlpha(GetChild(mainPlayer\currRoom\Adjacent[i]\obj,2),0)
+					SetRoomVisibility(mainPlayer\currRoom\Adjacent[i],False)
 				ElseIf (Not EntityInView(mainPlayer\currRoom\AdjDoor[i]\frameobj,mainPlayer\cam))
-					HideEntity(GetChild(mainPlayer\currRoom\Adjacent[i]\obj,1))
+					SetRoomVisibility(mainPlayer\currRoom\Adjacent[i],False)
 				Else
-					ShowEntity(GetChild(mainPlayer\currRoom\Adjacent[i]\obj,1))
+					SetRoomVisibility(mainPlayer\currRoom\Adjacent[i],True)
 				EndIf
 				
 				For j=0 To 3
 					If (mainPlayer\currRoom\Adjacent[i]\Adjacent[j]<>Null) Then
-						If (mainPlayer\currRoom\Adjacent[i]\Adjacent[j]<>mainPlayer\currRoom) Then HideEntity(GetChild(mainPlayer\currRoom\Adjacent[i]\Adjacent[j]\obj,1))
+						If (mainPlayer\currRoom\Adjacent[i]\Adjacent[j]<>mainPlayer\currRoom) Then SetRoomVisibility(mainPlayer\currRoom\Adjacent[i]\Adjacent[j],False)
 					EndIf
 				Next
 			EndIf
@@ -1913,7 +1935,7 @@ Function UpdateSecurityCams()
 			
 			If sc\IsRoom2slCam Then sc\CoffinEffect = 0
 			If sc\room <> Null
-				If sc\room\RoomTemplate\Name$ = "hll_sl_2" Then sc\CoffinEffect = 0
+				If sc\room\RoomTemplate\name$ = "hll_sl_2" Then sc\CoffinEffect = 0
 			EndIf
 			If sc\SpecialCam Then sc\CoffinEffect = 0
 			
@@ -2013,7 +2035,7 @@ Function UpdateSecurityCams()
 										Else
 											HideEntity(mainPlayer\cam)
 											ShowEntity (CoffinCam\room\obj)
-											ShowEntity(GetChild(CoffinCam\room\obj,1))
+											SetRoomVisibility(CoffinCam\room,True)
 											ShowEntity(CoffinCam\Cam)
 											Cls
 											
@@ -2041,7 +2063,7 @@ Function UpdateSecurityCams()
 								Else
 									HideEntity(mainPlayer\cam)
 									ShowEntity (sc\room\obj)
-									ShowEntity(GetChild(sc\room\obj,1))
+									SetRoomVisibility(sc\room,True)
 									ShowEntity(sc\Cam)
 									Cls
 									
@@ -2570,21 +2592,36 @@ End Function
 
 Type Props
 	Field file$
-	Field obj
+	Field obj%
+	
+	Field x#,y#,z#
+	Field pitch#,yaw#,roll#
+	Field xScale#,yScale#,zScale#
 End Type
 
-Function CreatePropObj(file$)
+Function LoadProp.Props(file$,x#,y#,z#,pitch#,yaw#,roll#,xScale#,yScale#,zScale#)
 	Local p.Props
-	For p.Props = Each Props
-		If p\file = file Then
-			Return CopyEntity(p\obj)
+	p.Props = New Props
+	p\file = file
+	p\x = x
+	p\y = y
+	p\z = z
+	p\pitch = pitch
+	p\yaw = yaw
+	p\roll = roll
+	p\xScale = xScale
+	p\yScale = yScale
+	p\zScale = zScale
+	For p2.Props = Each Props
+		If (p<>p2) And (p2\file = file) Then
+			p\obj = CopyEntity(p2\obj)
+			Exit
 		EndIf
 	Next
 	
-	p.Props = New Props
-	p\file = file
-	p\obj = LoadMesh(file)
-	Return p\obj
+	If p\obj=0 Then p\obj = LoadMesh(file)
+	HideEntity(p\obj)
+	Return p
 End Function
 
 ;-------------------------------------------------------------------------------------------------------
@@ -2814,7 +2851,7 @@ Function CreateMap()
 				
 				For i% = 0 To randomTemplateCount-1
 					tempTemplate = Object.RoomTemplates(GetIntArrayElem(randomTemplates,i,0))
-					If tempTemplate\Shape = currType Then
+					If tempTemplate\shape = currType Then
 						commonnessAccumulator=commonnessAccumulator+tempTemplate\Commonness
 						If commonnessAccumulator>=targetCommonness Then
 							r = CreateRoom(tempTemplate,x*8.0,0.0,y*8.0)
@@ -3434,5 +3471,5 @@ Function FindAndDeleteFakeMonitor(r.Rooms,x#,y#,z#,Amount%)
 	
 End Function
 ;~IDEal Editor Parameters:
-;~F#4F#57#71#80#87#9F#A7#247#257#268#2A9
+;~F#4F#57#71#80#87#8E#9F#A7#AF#249#259#26A#289#2B2#31C
 ;~C#Blitz3D

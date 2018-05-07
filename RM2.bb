@@ -1,3 +1,8 @@
+;this should be the ONLY header, do NOT make another for new features
+Const RM2_HEADER$ = ".RM2"
+
+;should you need any extra features, add a constant to this list
+;and add a case to the select in LoadRM2
 Const RM2_TEXTURES% = 1
 Const RM2_OPAQUE% = 2
 Const RM2_ALPHA% = 3
@@ -9,9 +14,11 @@ Const RM2_SPOTLIGHT% = 8
 Const RM2_SOUNDEMITTER% = 9
 Const RM2_PROP% = 10
 
+;note: these flags do not necessarily match the options Blitz3D provides for loading textures
 Const RM2_LOADFLAG_COLOR% = 1
 Const RM2_LOADFLAG_ALPHA% = 2
 
+;note: these flags do not necessarily match the options Blitz3D provides for blending textures
 Const RM2_BLENDFLAG_NORMAL% = 0
 Const RM2_BLENDFLAG_DIFFUSE% = 1
 Const RM2_BLENDFLAG_LM% = 2
@@ -25,29 +32,33 @@ Function ReadByteString$(stream%)
 	Return retVal
 End Function
 
-Function LoadRM2(fullFilename$,rt.RoomTemplates)
-	DebugLog fullFilename
+Function LoadRM2(rt.RoomTemplates)
+	Local fullFilename$ = rt\objPath
 	
-	Local obj% = CreatePivot()
 	Local opaqueMesh% = CreateMesh()
-	EntityParent(opaqueMesh,obj)
 	Local alphaMesh% = 0
 	
 	Local usedTextures.IntArrayList = CreateIntArrayList()
+	
 	Local collisionObjs.IntArrayList = CreateIntArrayList()
+	Local props.IntArrayList = Null
 	
 	Local filename$ = StripPath(fullFilename)
 	Local filepath$ = StripFilename(fullFilename)
 	
 	Local file% = ReadFile(fullFilename)
 	
+	If file=0 Then
+		RuntimeError("Failed to read "+fullFilename)
+	EndIf
+	
 	Local header$ = ""
 	For i% = 0 To 3
 		header=header+Chr(ReadByte(file))
 	Next
 	
-	If header<>".RM2" Then
-		RuntimeError("Error while loading "+fullFilename+": expected .RM2, found "+header)
+	If header<>RM2_HEADER Then
+		RuntimeError("Error while loading "+fullFilename+": expected "+RM2_HEADER+", found "+header)
 	EndIf
 	
 	Local partType%
@@ -101,7 +112,7 @@ Function LoadRM2(fullFilename$,rt.RoomTemplates)
 	Local xScale#
 	Local yScale#
 	Local zScale#
-	Local prop%
+	Local prop.props
 	
 	Local prevType%
 	While Not Eof(file)
@@ -207,10 +218,11 @@ Function LoadRM2(fullFilename$,rt.RoomTemplates)
 				ElseIf partType=RM2_ALPHA Then
 					If alphaMesh=0 Then alphaMesh = CreateMesh()
 					AddMesh(mesh,alphaMesh)
+					If Instr(fullFilename,"closet")>0 Then
+						DebugLog "ALPHA"
+					EndIf
 				EndIf
-				EntityParent(mesh,obj)
 				EntityPickMode(mesh,2,True)
-				EntityFX(mesh,1+2)
 				
 				;double-sided collision bois
 				clonedMesh = CopyMesh(mesh)
@@ -221,7 +233,7 @@ Function LoadRM2(fullFilename$,rt.RoomTemplates)
 				EntityAlpha(mesh,0.0)
 				
 				EntityType mesh,HIT_MAP
-				PushIntArrayListElem(collisionObjs,mesh)
+				PushIntArrayListElem(collisionObjs,mesh) : HideEntity(mesh)
 				;[End Block]
 			Case RM2_INVISIBLE
 				;[Block]
@@ -247,10 +259,9 @@ Function LoadRM2(fullFilename$,rt.RoomTemplates)
 					AddTriangle(surf,vert1,vert2,vert3)
 				Next
 				
-				EntityParent(mesh,obj)
 				EntityAlpha(mesh,1.0)
 				EntityType mesh,HIT_MAP
-				PushIntArrayListElem(collisionObjs,mesh)
+				PushIntArrayListElem(collisionObjs,mesh) : HideEntity(mesh)
 				
 				If Instr(fullFilename,"closet")>0 Then
 					DebugLog "INVISIBLE"
@@ -260,9 +271,9 @@ Function LoadRM2(fullFilename$,rt.RoomTemplates)
 			Case RM2_SCREEN
 				;[Block]
 				tempScreen = New TempScreens	
-				tempScreen\x = ReadFloat(file)*RoomScale
-				tempScreen\y = ReadFloat(file)*RoomScale
-				tempScreen\z = ReadFloat(file)*RoomScale
+				tempScreen\x = ReadFloat(file)
+				tempScreen\y = ReadFloat(file)
+				tempScreen\z = ReadFloat(file)
 				tempScreen\imgpath = ReadByteString(file)
 				tempScreen\roomtemplate = rt
 				;[End Block]
@@ -272,20 +283,20 @@ Function LoadRM2(fullFilename$,rt.RoomTemplates)
 					DebugLog "WAYPOINT"
 				EndIf
 				waypointTemp = New TempWaypoints
-				waypointTemp\x = ReadFloat(file)*RoomScale
-				waypointTemp\y = ReadFloat(file)*RoomScale
-				waypointTemp\z = ReadFloat(file)*RoomScale
+				waypointTemp\x = ReadFloat(file)
+				waypointTemp\y = ReadFloat(file)
+				waypointTemp\z = ReadFloat(file)
 				For i% = 0 To 16
 					waypointTemp\connectedTo[i] = ReadByte(file)
 					If waypointTemp\connectedTo[i]=0 Then Exit
 				Next
 				waypointTemp\roomTemplate = rt
 				;did some waypoint-based lifeform just say... ICE
-				cuboid% = CreateCube()
-				ScaleMesh(cuboid,100.0,100.0,100.0)
-				PositionMesh(cuboid,waypointTemp\x/RoomScale,waypointTemp\y/RoomScale,waypointTemp\z/RoomScale)
-				AddMesh(cuboid,opaqueMesh)
-				FreeEntity cuboid
+;				cuboid% = CreateCube()
+;				ScaleMesh(cuboid,60.0,60.0,60.0)
+;				PositionMesh(cuboid,waypointTemp\x,waypointTemp\y,waypointTemp\z)
+;				AddMesh(cuboid,opaqueMesh)
+;				FreeEntity cuboid
 				;GET ICCED DUMMY
 				;RT FOR FREE IPOD
 				;you may now access
@@ -299,11 +310,11 @@ Function LoadRM2(fullFilename$,rt.RoomTemplates)
 				;[End Block]
 			Case RM2_POINTLIGHT
 				;[Block]
-				x = ReadFloat(file)*RoomScale
-				y = ReadFloat(file)*RoomScale
-				z = ReadFloat(file)*RoomScale
+				x = ReadFloat(file)
+				y = ReadFloat(file)
+				z = ReadFloat(file)
 				
-				range = (ReadFloat(file)/8.0)*RoomScale
+				range = ReadFloat(file)
 				
 				r = ReadByte(file)
 				g = ReadByte(file)
@@ -314,11 +325,11 @@ Function LoadRM2(fullFilename$,rt.RoomTemplates)
 				;[End Block]
 			Case RM2_SPOTLIGHT
 				;[Block]
-				x = ReadFloat(file)*RoomScale
-				y = ReadFloat(file)*RoomScale
-				z = ReadFloat(file)*RoomScale
+				x = ReadFloat(file)
+				y = ReadFloat(file)
+				z = ReadFloat(file)
 				
-				range = (ReadFloat(file)/8.0)*RoomScale
+				range = ReadFloat(file)
 				
 				r = ReadByte(file)
 				g = ReadByte(file)
@@ -331,7 +342,7 @@ Function LoadRM2(fullFilename$,rt.RoomTemplates)
 				innerConeAngle = ReadFloat(file)
 				outerConeAngle = ReadFloat(file)
 				
-				lightTemplate = AddTempLight(rt, x,y,z, LIGHTTYPE_SPOT, range, r,g,b)
+				lightTemplate = AddTempLight(rt, x,y,z, LIGHTTYPE_SPOT, range, r*intensity,g*intensity,b*intensity)
 				
 				lightTemplate\pitch = pitch
 				lightTemplate\yaw = yaw
@@ -340,9 +351,9 @@ Function LoadRM2(fullFilename$,rt.RoomTemplates)
 				;[End Block]
 			Case RM2_SOUNDEMITTER
 				;[Block]
-				x = ReadFloat(file)*RoomScale
-				y = ReadFloat(file)*RoomScale
-				z = ReadFloat(file)*RoomScale
+				x = ReadFloat(file)
+				y = ReadFloat(file)
+				z = ReadFloat(file)
 				
 				ambienceInd = ReadByte(file)
 				
@@ -365,9 +376,9 @@ Function LoadRM2(fullFilename$,rt.RoomTemplates)
 				;[Block]
 				propName = ReadByteString(file)
 				
-				x = ReadFloat(file)*RoomScale
-				y = ReadFloat(file)*RoomScale
-				z = ReadFloat(file)*RoomScale
+				x = ReadFloat(file)
+				y = ReadFloat(file)
+				z = ReadFloat(file)
 				
 				pitch = ReadFloat(file)
 				yaw = ReadFloat(file)
@@ -377,15 +388,13 @@ Function LoadRM2(fullFilename$,rt.RoomTemplates)
 				yScale = ReadFloat(file)
 				zScale = ReadFloat(file)
 				
-				prop = CreatePropObj("GFX/Map/Props/"+propName)
+				prop = LoadProp("GFX/map/Props/"+propName,x,y,z,pitch,yaw,roll,xScale,yScale,zScale)
+				If Instr(fullFilename,"closet")>0 Then
+					DebugLog "PROP: "+propName+" at "+x+" "+y+" "+z
+				EndIf
 				
-				PositionEntity prop,x,y,z
-				RotateEntity prop,pitch,yaw,roll
-				ScaleEntity prop,temp1,temp2,temp3
-				
-				EntityParent prop,obj
-				EntityType prop,HIT_MAP
-				EntityPickMode prop,2
+				If props=Null Then props=CreateIntArrayList()
+				PushIntArrayListElem(props,Handle(prop))
 				;[End Block]
 			Default
 				RuntimeError "Error after reading type "+prevType
@@ -396,12 +405,17 @@ Function LoadRM2(fullFilename$,rt.RoomTemplates)
 	
 	EntityFX(opaqueMesh,1+2)
 	If alphaMesh<>0 Then
-		EntityParent(alphaMesh,opaqueMesh)
 		EntityFX(alphaMesh,1+2+16)
 	EndIf
 	
-	rt\obj = obj
+	rt\opaqueMesh = opaqueMesh : HideEntity(opaqueMesh)
+	If alphaMesh<>0 Then
+		rt\alphaMesh = alphaMesh : HideEntity(alphaMesh)
+	EndIf
 	rt\collisionObjs = collisionObjs
+	rt\props = props
+	
+	rt\loaded = True
 	
 	CloseFile(file)
 End Function

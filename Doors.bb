@@ -525,5 +525,5 @@ Function RemoveDoor(d.Doors)
 End Function
 
 ;~IDEal Editor Parameters:
-;~F#25#9D#AA#172#201
+;~F#9D#AA#172#201
 ;~C#Blitz3D

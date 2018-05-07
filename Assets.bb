@@ -332,8 +332,20 @@ Function InitNewGame()
 			Next
 			DeleteIntArrayList(rt\collisionObjs) : rt\collisionObjs = Null
 		EndIf
-		FreeEntity rt\obj
-	Next	
+		
+		FreeEntity rt\opaqueMesh
+		If rt\alphaMesh<>0 Then FreeEntity rt\alphaMesh
+		
+		Local prop.Props
+		If rt\props<>Null Then
+			For i% = 0 To rt\props\size-1
+				prop = Object.Props(GetIntArrayListElem(rt\props,i))
+				FreeEntity(prop\obj)
+				Delete prop
+			Next
+			DeleteIntArrayList(rt\props) : rt\props = Null
+		EndIf
+	Next
 	
 	Local tw.TempWayPoints
 	For tw.TempWayPoints = Each TempWayPoints
@@ -435,7 +447,19 @@ Function InitLoadGame()
 			Next
 			DeleteIntArrayList(rt\collisionObjs) : rt\collisionObjs = Null
 		EndIf
-		FreeEntity rt\obj
+		
+		FreeEntity rt\opaqueMesh
+		If rt\alphaMesh<>0 Then FreeEntity rt\alphaMesh
+		
+		Local prop.Props
+		If rt\props<>Null Then
+			For i% = 0 To rt\props\size-1
+				prop = Object.Props(GetIntArrayListElem(rt\props,i))
+				FreeEntity(prop\obj)
+				Delete prop
+			Next
+			DeleteIntArrayList(rt\props) : rt\props = Null
+		EndIf
 	Next
 	
 	mainPlayer\dropSpeed = 0.0
@@ -562,6 +586,8 @@ Function NullGame()
 	Next	
 	
 	For r.Rooms = Each Rooms
+		DeleteIntArray(r\collisionObjs)
+		If r\props<>Null Then DeleteIntArray(r\props)
 		Delete r
 	Next
 	DeleteIntArray(MapRooms)

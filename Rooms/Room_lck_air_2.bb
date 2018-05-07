@@ -148,15 +148,15 @@ Function UpdateEventRoom_gw(e.Events)
 					For i = 0 To 1
 						If e\room\RoomTemplate\Name$ = "lck_ez_3"
 							If i = 0
-								PositionEntity pvt%,-288.0,416.0,320.0,False
+								PositionEntity pvt%,-288.0*RoomScale,416.0*RoomScale,320.0*RoomScale,False
 							Else
-								PositionEntity pvt%,192.0,416.0,320.0,False
+								PositionEntity pvt%,192.0*RoomScale,416.0*RoomScale,320.0*RoomScale,False
 							EndIf
 						Else
 							If i = 0
-								PositionEntity pvt%,312.0,416.0,-128.0,False
+								PositionEntity pvt%,312.0*RoomScale,416.0*RoomScale,-128.0*RoomScale,False
 							Else
-								PositionEntity pvt%,312.0,416.0,224.0,False
+								PositionEntity pvt%,312.0*RoomScale,416.0*RoomScale,224.0*RoomScale,False
 							EndIf
 						EndIf
 						
