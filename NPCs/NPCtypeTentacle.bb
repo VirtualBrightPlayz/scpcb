@@ -1,10 +1,10 @@
 Function InitializeNPCtypeTentacle(n.NPCs)
-    n\NVName = "Unidentified"
+    n\nvName = "Unidentified"
     
-    n\Collider = CreatePivot()
+    n\collider = CreatePivot()
     
     For n2.NPCs = Each NPCs
-        If n\NPCtype = n2\NPCtype And n<>n2 Then
+        If n\npcType = n2\NPCtype And n<>n2 Then
             n\obj = CopyEntity (n2\obj)
             Exit
         EndIf
@@ -14,76 +14,69 @@ Function InitializeNPCtypeTentacle(n.NPCs)
         n\obj = LoadAnimMesh("GFX\NPCs\035tentacle.b3d")
         ScaleEntity n\obj, 0.065,0.065,0.065
     EndIf
+	
+	n\sounds[0] = LoadSound("SFX\Room\035Chamber\TentacleSpawn.ogg")
+	n\sounds[1] = LoadSound("SFX\Room\035Chamber\TentacleAttack1.ogg")
+	n\sounds[2] = LoadSound("SFX\Room\035Chamber\TentacleAttack2.ogg")
     
     SetAnimTime n\obj, 283
 End Function
 
 Function UpdateNPCtypeTentacle(n.NPCs)
-    dist = EntityDistance(n\Collider,mainPlayer\collider)
+    dist = EntityDistance(n\collider,mainPlayer\collider)
     
     If dist < 8.0 Then 
         
-        Select n\State 
+        Select n\state 
             Case 0 ;spawn
                 
-                If n\Frame>283 Then
+                If n\frame>283 Then
                     mainPlayer\heartbeatIntensity = Max(CurveValue(1.0, mainPlayer\heartbeatIntensity, 50),mainPlayer\heartbeatIntensity)
                     ;HeartBeatRate = Max(CurveValue(130, HeartBeatRate, 100),HeartBeatRate)
                     
                     PointEntity n\obj, mainPlayer\collider
-                    RotateEntity n\Collider, 0, CurveAngle(EntityYaw(n\obj),EntityYaw(n\Collider),25.0), 0
+                    RotateEntity n\collider, 0, CurveAngle(EntityYaw(n\obj),EntityYaw(n\collider),25.0), 0
                     
                     AnimateNPC(n, 283, 389, 0.3, False)
                     ;Animate2(n\obj, AnimTime(n\obj), 283, 389, 0.3, False)
                     
-                    If n\Frame>388 Then n\State = 1
+                    If n\frame>388 Then n\state = 1
                 Else
                     If dist < 2.5 Then 
                         SetNPCFrame(n, 284)
-                        n\Sound2 = LoadSound("SFX\Room\035Chamber\TentacleSpawn.ogg")
-                        PlaySound(n\Sound2)
+                        PlaySound(n\sounds[0])
                     EndIf
                 EndIf
                 ;spawn 283,389
                 ;attack 2, 32
                 ;idle 33, 174
             Case 1 ;idle
-                If dist < 1.8 Then 
-                    If Abs(DeltaYaw(n\Collider, mainPlayer\collider))<20 Then 
-                        n\State = 2
-                        If n\Sound<>0 Then FreeSound n\Sound : n\Sound = 0 
-                        If n\Sound2<>0 Then FreeSound n\Sound2 : n\Sound2 = 0 
-                        
-                    EndIf
-                EndIf
-                
                 PointEntity n\obj, mainPlayer\collider
-                RotateEntity n\Collider, 0, CurveAngle(EntityYaw(n\obj),EntityYaw(n\Collider),25.0), 0
+                RotateEntity n\collider, 0, CurveAngle(EntityYaw(n\obj),EntityYaw(n\collider),25.0), 0
                 
                 AnimateNPC(n, 33, 174, 0.3, True)
                 ;Animate2(n\obj, AnimTime(n\obj), 33, 174, 0.3, True)
             Case 2
                 
                 ;finish the idle animation before playing the attack animation
-                If n\Frame>33 And n\Frame<174 Then
+                If n\frame>33 And n\frame<174 Then
                     AnimateNPC(n, 33, 174, 2.0, False)
                     ;Animate2(n\obj, AnimTime(n\obj), 33, 174, 2.0, False)
                 Else
                     PointEntity n\obj, mainPlayer\collider
-                    RotateEntity n\Collider, 0, CurveAngle(EntityYaw(n\obj),EntityYaw(n\Collider),10.0), 0							
+                    RotateEntity n\collider, 0, CurveAngle(EntityYaw(n\obj),EntityYaw(n\collider),10.0), 0							
                     
-                    If n\Frame>33 Then 
+                    If n\frame>33 Then 
                         ;SetAnimTime(n\obj,2)
-                        n\Frame = 2
-                        n\Sound = LoadSound("SFX\Room\035Chamber\TentacleAttack"+Rand(1,2)+".ogg")
-                        PlaySound(n\Sound)
+                        n\frame = 2
+                        PlaySound(n\sounds[Rand(1,2)])
                     EndIf
                     AnimateNPC(n, 2, 32, 0.3, False)
                     ;Animate2(n\obj, AnimTime(n\obj), 2, 32, 0.3, False)
                     
-                    If n\Frame>=5 And n\Frame<6 Then
+                    If n\frame>=5 And n\frame<6 Then
                         If dist < 1.8 Then
-                            If Abs(DeltaYaw(n\Collider, mainPlayer\collider))<20 Then 
+                            If Abs(DeltaYaw(n\collider, mainPlayer\collider))<20 Then 
                                 If IsPlayerWearingTempName(mainPlayer,"hazmatsuit") Then
                                     mainPlayer\injuries = mainPlayer\injuries+Rnd(0.5)
                                     PlaySound(LoadTempSound("SFX\General\BodyFall.ogg"))

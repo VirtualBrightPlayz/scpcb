@@ -1,11 +1,11 @@
 Function InitializeNPCtypeZombie(n.NPCs)
-    n\NVName = "Human"
-    n\Collider = CreatePivot()
-    EntityRadius n\Collider, 0.2
-    EntityType n\Collider, HIT_PLAYER
+    n\nvName = "Human"
+    n\collider = CreatePivot()
+    EntityRadius n\collider, 0.2
+    EntityType n\collider, HIT_PLAYER
     
     For n2.NPCs = Each NPCs
-        If n\NPCtype = n2\NPCtype And n<>n2 Then
+        If n\npcType = n2\NPCtype And n<>n2 Then
             n\obj = CopyEntity (n2\obj)
             Exit
         EndIf
@@ -20,43 +20,43 @@ Function InitializeNPCtypeZombie(n.NPCs)
         MeshCullBox (n\obj, -MeshWidth(n\obj), -MeshHeight(n\obj), -MeshDepth(n\obj), MeshWidth(n\obj)*2, MeshHeight(n\obj)*2, MeshDepth(n\obj)*2)
     EndIf
     
-    n\Speed = (GetINIFloat("DATA\NPCs.ini", "SCP-049-2", "speed") / 100.0)
+    n\speed = (GetINIFloat("DATA\NPCs.ini", "SCP-049-2", "speed") / 100.0)
     
     SetAnimTime(n\obj, 107)
     
-    n\Sound = LoadSound("SFX\SCP\049\0492Breath.ogg")
+    n\sounds[0] = LoadSound("SFX\SCP\049\0492Breath.ogg")
     
     n\HP = 100
 End Function
 
 Function UpdateNPCtypeZombie(n.NPCs)
-    If Abs(EntityY(mainPlayer\collider)-EntityY(n\Collider))<4.0 Then
+    If Abs(EntityY(mainPlayer\collider)-EntityY(n\collider))<4.0 Then
         
-        prevFrame# = n\Frame
+        prevFrame# = n\frame
         
         If (Not n\IsDead)
-            Select n\State
+            Select n\state
                 Case 0
                     AnimateNPC(n, 719, 777, 0.2, False)
                     
                     ;Animate2(n\obj, AnimTime(n\obj), 719, 777, 0.2, False)
-                    If n\Frame=777 Then
+                    If n\frame=777 Then
                         If Rand(700)=1 Then 							
-                            If EntityDistance(mainPlayer\collider, n\Collider)<5.0 Then
-                                n\Frame = 719
+                            If EntityDistance(mainPlayer\collider, n\collider)<5.0 Then
+                                n\frame = 719
                                 ;SetAnimTime (n\obj, 719)	
                                 If Rand(3)=1 Then 
-                                    n\State=1
-                                    n\Frame = 155
+                                    n\state=1
+                                    n\frame = 155
                                     ;SetAnimTime n\obj, 155
                                 EndIf
                             EndIf
                         EndIf
                     EndIf
                 Case 1 ;stands up
-                    If n\Frame=>682 Then 
+                    If n\frame=>682 Then 
                         AnimateNPC(n, 926, 935, 0.3, False)
-                        If n\Frame = 935 Then n\State = 2
+                        If n\frame = 935 Then n\state = 2
                         
                         ;Animate2(n\obj, AnimTime(n\obj), 926, 935, 0.3, False)
                         ;If AnimTime(n\obj)=935 Then n\State = 2
@@ -65,21 +65,21 @@ Function UpdateNPCtypeZombie(n.NPCs)
                         ;Animate2(n\obj, AnimTime(n\obj), 155, 682, 1.5, False)
                     EndIf
                 Case 2 ;following the player
-                    If n\State3 < 0 Then ;check if the player is visible every three seconds
-                        If EntityDistance(mainPlayer\collider, n\Collider)<5.0 Then 
-                            If EntityVisible(mainPlayer\collider, n\Collider) Then n\State2 = 70*5
+                    If n\state3 < 0 Then ;check if the player is visible every three seconds
+                        If EntityDistance(mainPlayer\collider, n\collider)<5.0 Then 
+                            If EntityVisible(mainPlayer\collider, n\collider) Then n\state2 = 70*5
                         EndIf
-                        n\State3=70*3
+                        n\state3=70*3
                     Else
-                        n\State3=n\State3-timing\tickDuration
+                        n\state3=n\state3-timing\tickDuration
                     EndIf
                     
-                    If n\State2 > 0 And (Not NoTarget) Then ;player is visible -> attack
-                        n\SoundChn = LoopRangedSound(n\Sound, n\SoundChn, mainPlayer\cam, n\Collider, 6.0, 0.6)
+                    If n\state2 > 0 And (Not NoTarget) Then ;player is visible -> attack
+                        n\soundChannels[0] = LoopRangedSound(n\sounds[0], n\soundChannels[0], mainPlayer\cam, n\collider, 6.0, 0.6)
                         
-                        n\PathStatus = 0
+                        n\pathStatus = 0
                         
-                        dist = EntityDistance(mainPlayer\collider, n\Collider)
+                        dist = EntityDistance(mainPlayer\collider, n\collider)
                         
                         PointEntity n\obj, mainPlayer\collider
                         RotateEntity n\Collider, 0, CurveAngle(EntityYaw(n\obj), EntityYaw(n\Collider), 30.0), 0

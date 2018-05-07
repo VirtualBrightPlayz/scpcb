@@ -259,14 +259,6 @@ Function RemoveNPC(n.NPCs)
 		EndIf
 	Next
 	
-	If (n\sound <> 0) Then
-		FreeSound(n\sound)
-	EndIf
-	
-	If (n\sound2 <> 0) Then
-		FreeSound(n\sound2)
-	EndIf
-	
 	FreeEntity(n\obj)
 	n\obj = 0
 	FreeEntity(n\collider)
@@ -285,6 +277,13 @@ Function UpdateNPCs()
 		n\InFacility = CheckForNPCInFacility(n)
 		
 		n\playerDistance = EntityDistance(mainPlayer\collider, n\collider)
+		
+		;If the npc was given a target then use its position.
+		If (n\target <> Null) Then
+			n\targetX = EntityX(n\target\collider)
+			n\targetY = EntityY(n\target\collider)
+			n\targetZ = EntityZ(n\target\collider)
+		EndIf
 		
 		;If the player is too far away then don't run the update code.
 		If (n\playerDistance >= HideDistance*2) Then
@@ -491,7 +490,7 @@ End Function
 
 Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False)
 	;muzzle flash
-	Local p.particles = CreateParticle(x,y,z, 1, Rnd(0.08,0.1), 0.0, 5)
+	Local p.Particles = CreateParticle(x,y,z, 1, Rnd(0.08,0.1), 0.0, 5)
 	TurnEntity p\obj, 0,0,Rnd(360)
 	p\Achange = -0.15
 	
@@ -499,7 +498,11 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 	
 	If (Not mainPlayer\godMode) Then 
 		
-		If instaKill Then Kill(mainPlayer) : PlaySound BullethitSFX : Return
+		If instaKill Then
+			Kill(mainPlayer)
+			PlaySound_SM(sndManager\bulletHit)
+			Return
+		EndIf
 		
 		If Rnd(1.0) =< hitProb Then
 			TurnEntity mainPlayer\cam, Rnd(-3,3), Rnd(-3,3), 0
@@ -582,7 +585,7 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 			mainPlayer\injuries = Min(mainPlayer\injuries, 4.0)
 			
 			;Kill(mainPlayer)
-			PlaySound BullethitSFX
+			PlaySound_SM(sndManager\bulletHit)
 		ElseIf particles Then
 			Local pvt% = CreatePivot()
 			PositionEntity pvt, EntityX(mainPlayer\collider),(EntityY(mainPlayer\collider)+EntityY(mainPlayer\cam))/2,EntityZ(mainPlayer\collider)
@@ -592,7 +595,7 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 			EntityPick(pvt, 2.5)
 			
 			If PickedEntity() <> 0 Then 
-				PlayRangedSound(Gunshot3SFX, mainPlayer\cam, pvt, 0.4, Rnd(0.8,1.0))
+				PlayRangedSound_SM(sndManager\bulletMiss, mainPlayer\cam, pvt, 0.4, Rnd(0.8,1.0))
 				
 				If particles Then 
 					;dust/smoke particles
@@ -634,7 +637,7 @@ End Function
 ;TODO: Move to MTF file?
 Function PlayMTFSound(sound%, n.NPCs)
 	If n <> Null Then
-		n\soundChn = PlayRangedSound(sound, mainPlayer\cam, n\collider, 8.0)	
+		n\soundChannels[0] = PlayRangedSound(sound, mainPlayer\cam, n\collider, 8.0)	
 	EndIf
 	
 	If mainPlayer\selectedItem <> Null Then
@@ -658,7 +661,7 @@ Function MoveToPocketDimension()
 			UpdateDoors()
 			UpdateRooms()
 			ShowEntity mainPlayer\collider
-			PlaySound(Use914SFX)
+			PlaySound(LoadTempSound("SFX\SCP\914\PlayerUse.ogg"))
 			;PlaySound(OldManSFX(5)) ;TODO: fix
 			PositionEntity(mainPlayer\collider, EntityX(r\obj),0.8,EntityZ(r\obj))
 			mainPlayer\dropSpeed = 0
@@ -1187,6 +1190,5 @@ Function SetNPCFrame(n.NPCs, frame#)
 	n\frame = frame
 End Function
 ;~IDEal Editor Parameters:
-;~F#2A#A2#E0#EE#121#17E#187#1AF#1BA#1E3#1F6#285#296#2B0#2C3#2CF#2EE#329#3AB#3C5
-;~F#3DE#3EC#409#41C#441#464#472#488#4A8
+;~F#1AE
 ;~C#Blitz3D

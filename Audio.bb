@@ -36,17 +36,24 @@ Type SoundManager
 	Field elevatorBeep.Sound
 	Field elevatorMove.Sound
 	
-	;Tesla
+	; Tesla
 	Field teslaIdle.Sound
 	Field teslaActive.Sound
 	Field teslaPowerUp.Sound
 	Field teslaShock.Sound
 	
+	; Bullets
+	Field gunshot.Sound[2]
+	Field bulletHit.Sound
+	Field bulletMiss.Sound
+	
 	Field caution.Sound
+	Field hiss.Sound
 	Field lightSwitch.Sound
 	Field lever.Sound
 	Field burst.Sound
 	Field camera.Sound
+	Field heartbeat.Sound
 End Type
 Global sndManager.SoundManager
 
@@ -101,11 +108,18 @@ Function LoadInGameSounds(sndMan.SoundManager)
 	sndMan\teslaPowerUp = InitializeSound_SM("SFX\Room\Tesla\PowerUp.ogg")
 	sndMan\teslaShock = InitializeSound_SM("SFX\Room\Tesla\Shock.ogg")
 	
+	sndMan\gunshot[0] = InitializeSound_SM("SFX\General\Gunshot.ogg")
+	sndMan\gunshot[1] = InitializeSound_SM("SFX\General\Gunshot2.ogg")
+	sndMan\bulletHit = InitializeSound_SM("SFX\General\BulletHit.ogg")
+	sndMan\bulletMiss = InitializeSound_SM("SFX\General\BulletMiss.ogg")
+	
 	sndMan\caution = InitializeSound_SM("SFX\Room\LockroomSiren.ogg")
+	sndMan\hiss = InitializeSound_SM("SFX\General\Hiss.ogg")
 	sndMan\lightSwitch = InitializeSound_SM("SFX\General\LightSwitch.ogg")
 	sndMan\lever = InitializeSound_SM("SFX\Interact\LeverFlip.ogg")
 	sndMan\burst = InitializeSound_SM("SFX\Room\TunnelBurst.ogg")
 	sndMan\camera = InitializeSound_SM("SFX\General\Camera.ogg")
+	sndMan\heartbeat = InitializeSound_SM("SFX\Character\D9341\Heartbeat.ogg")
 End Function
 ; TODO: Free all the shit above.
 Function DeloadInGameSounds(sndMan.SoundManager)
@@ -133,6 +147,32 @@ Function DeloadInGameSounds(sndMan.SoundManager)
 		FreeSound_SM(sndMan\openBigDoor[i])
 		FreeSound_SM(sndMan\closeBigDoor[i])
 	Next
+
+	FreeSound_SM(sndMan\keycardErr)
+	FreeSound_SM(sndMan\keycardUse)
+	FreeSound_SM(sndMan\scannerUse)
+	FreeSound_SM(sndMan\scannerErr)
+	
+	FreeSound_SM(sndMan\elevatorBeep)
+	FreeSound_SM(sndMan\elevatorMove)
+	
+	FreeSound_SM(sndMan\teslaIdle)
+	FreeSound_SM(sndMan\teslaActive)
+	FreeSound_SM(sndMan\teslaPowerUp)
+	FreeSound_SM(sndMan\teslaShock)
+	
+	FreeSound_SM(sndMan\gunshot[0])
+	FreeSound_SM(sndMan\gunshot[1])
+	FreeSound_SM(sndMan\bulletHit)
+	FreeSound_SM(sndMan\bulletMiss)
+	
+	FreeSound_SM(sndMan\caution)
+	FreeSound_SM(sndMan\hiss)
+	FreeSound_SM(sndMan\lightSwitch)
+	FreeSound_SM(sndMan\lever)
+	FreeSound_SM(sndMan\burst)
+	FreeSound_SM(sndMan\camera)
+	FreeSound_SM(sndMan\heartbeat)
 End Function
 
 Type SoundChannel
@@ -210,7 +250,7 @@ End Function
 Function PlaySound_SM(snd.Sound)
 	;If the sound hasn't been loaded yet then do that.
 	If (snd\internal = 0) Then
-		snd\internal = LoadSound(fileName)
+		snd\internal = LoadSound(snd\file)
 	EndIf
 
 	;Play the sound.
@@ -270,11 +310,11 @@ Function LoopRangedSound%(soundHandle%, chn%, cam%, entity%, range# = 10, volume
 	Return chn
 End Function
 
-Function LoopRangedSound_SM%(snd.Sound, cam%, entity%, range# = 10, volume# = 1.0)
+Function LoopRangedSound_SM%(snd.Sound, chn%, cam%, entity%, range# = 10, volume# = 1.0)
 	If (snd\internal = 0) Then
 		snd\internal = LoadSound(snd\file)
 	EndIf
-	Return LoopRangedSound(snd\internal, cam, entity, range, volume)
+	Return LoopRangedSound(snd\internal, chn, cam, entity, range, volume)
 End Function
 
 Function UpdateRangedSoundOrigin(chn%, cam%, entity%, range# = 10, volume# = 1.0)
@@ -302,7 +342,7 @@ Function UpdateRangedSoundOrigin_SM(chn.SoundChannel)
 		If (1 - dist > 0 And 1 - dist < 1) Then
 			Local panvalue# = Sin(-DeltaYaw(chn\camera, chn\point))
 			
-			ChannelVolume(chn\internal, chn\volume * (1 - dist) * userOptions\SoundVolume)
+			ChannelVolume(chn\internal, chn\volume * (1 - dist) * userOptions\soundVolume)
 			ChannelPan(chn\internal, panvalue)
 		EndIf
 	Else
@@ -335,11 +375,17 @@ Function LoadEventSound(e.Events,file$,num%=0)
 End Function
 
 Function PauseSounds()
-	Local sc.SoundChannel, e.Events, n.NPCs, d.Doors, i%
+	Local sc.SoundChannel, sc2.SecurityCams, e.Events, n.NPCs, i%
 
-	For sc = Each Sound
+	For sc = Each SoundChannel
 		If (IsChannelPlaying(sc\internal)) Then
 			PauseChannel(sc\internal)
+		EndIf
+	Next
+	
+	For sc2 = Each SecurityCams
+		If (IsChannelPlaying(sc2\soundCHN)) Then
+			PauseChannel(sc2\soundCHN)
 		EndIf
 	Next
 
@@ -357,27 +403,21 @@ Function PauseSounds()
 				PauseChannel(n\soundChannels[i])
 			EndIf
 		Next
-	Next	
-	
-	For d = Each Doors
-		If IsChannelPlaying(d\SoundCHN) Then
-			PauseChannel(d\SoundCHN)
-		EndIf
-	Next	
-	
-	If IsChannelPlaying(AmbientSFXCHN) Then
-		PauseChannel(AmbientSFXCHN)
-	EndIf
-
-
+	Next
 End Function
 
 Function ResumeSounds()
-	Local sc.SoundChannel, e.Events, n.NPCs, d.Doors, i%
+	Local sc.SoundChannel, sc2.SecurityCams, e.Events, n.NPCs, i%
 
-	For sc = Each Sound
+	For sc = Each SoundChannel
 		If (IsChannelPlaying(sc\internal)) Then
 			ResumeChannel(sc\internal)
+		EndIf
+	Next
+	
+	For sc2 = Each SecurityCams
+		If (IsChannelPlaying(sc2\soundCHN)) Then
+			ResumeChannel(sc2\soundCHN)
 		EndIf
 	Next
 
@@ -395,17 +435,7 @@ Function ResumeSounds()
 				ResumeChannel(n\soundChannels[i])
 			EndIf
 		Next
-	Next	
-	
-	For d = Each Doors
-		If IsChannelPlaying(d\SoundCHN) Then
-			ResumeChannel(d\SoundCHN)
-		EndIf
-	Next	
-	
-	If IsChannelPlaying(AmbientSFXCHN) Then
-		ResumeChannel(AmbientSFXCHN)
-	EndIf
+	Next
 End Function
 
 Function GetMaterialStepSound(entity%)

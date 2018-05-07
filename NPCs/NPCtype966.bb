@@ -1,15 +1,15 @@
 Function InitializeNPCtype966(n.NPCs)
     i = 1
     For n2.NPCs = Each NPCs
-        If (n\NPCtype = n2\NPCtype) And (n<>n2) Then i=i+1
+        If (n\npcType = n2\NPCtype) And (n<>n2) Then i=i+1
     Next
-    n\NVName = "SCP-966-"+i
+    n\nvName = "SCP-966-"+i
     
-    n\Collider = CreatePivot()
-    EntityRadius n\Collider,0.2
+    n\collider = CreatePivot()
+    EntityRadius n\collider,0.2
     
     For n2.NPCs = Each NPCs
-        If (n\NPCtype = n2\NPCtype) And (n<>n2) Then
+        If (n\npcType = n2\NPCtype) And (n<>n2) Then
             n\obj = CopyEntity (n2\obj)
             Exit
         EndIf
@@ -28,32 +28,32 @@ Function InitializeNPCtype966(n.NPCs)
     
     SetAnimTime n\obj,15.0
     
-    EntityType n\Collider,HIT_PLAYER
+    EntityType n\collider,HIT_PLAYER
     
-    n\Speed = 0.02
+    n\speed = 0.02
 End Function
 
 Function UpdateNPCtype966(n.NPCs)
-    dist = EntityDistance(n\Collider,mainPlayer\collider)
+    dist = EntityDistance(n\collider,mainPlayer\collider)
     
     If (dist<HideDistance) Then
         
     ;n\state = the "general" state (idle/wander/attack/echo etc)
     ;n\state2 = timer for doing raycasts
         
-        prevFrame = n\Frame
+        prevFrame = n\frame
         
-        If n\Sound > 0 Then
+        If n\sounds[0] > 0 Then
             temp = 0.5
         ;the ambient sound gets louder when the npcs are attacking
-            If n\State > 0 Then temp = 1.0	
+            If n\state > 0 Then temp = 1.0	
             
-            n\SoundChn = LoopRangedSound(n\Sound, n\SoundChn, mainPlayer\cam, mainPlayer\cam, 10.0,temp)
+            n\soundChannels[0] = LoopRangedSound(n\sounds[0], n\soundChannels[0], mainPlayer\cam, mainPlayer\cam, 10.0,temp)
         EndIf
         
         temp = Rnd(-1.0,1.0)
-        PositionEntity n\obj,EntityX(n\Collider,True),EntityY(n\Collider,True)-0.2,EntityZ(n\Collider,True)
-        RotateEntity n\obj,-90.0,EntityYaw(n\Collider),0.0
+        PositionEntity n\obj,EntityX(n\collider,True),EntityY(n\collider,True)-0.2,EntityZ(n\collider,True)
+        RotateEntity n\obj,-90.0,EntityYaw(n\collider),0.0
         
         If (Not IsPlayerWearingTempName(mainPlayer,"nvgoggles")) Then
             HideEntity n\obj

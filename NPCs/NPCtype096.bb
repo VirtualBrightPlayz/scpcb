@@ -1,53 +1,54 @@
 Function InitializeNPCtype096(n.NPCs)
-    n\NVName = "SCP-096"
-    n\Collider = CreatePivot()
-    EntityRadius n\Collider, 0.3
-    EntityType n\Collider, HIT_PLAYER
+    n\nvName = "SCP-096"
+    n\collider = CreatePivot()
+    EntityRadius n\collider, 0.3
+    EntityType n\collider, HIT_PLAYER
     n\obj = LoadAnimMesh("GFX\npcs\scp096.b3d")
+	n\sounds[2] = LoadSound("SFX\Door\DoorOpenFast.ogg")
     
-    n\Speed = (GetINIFloat("DATA\NPCs.ini", "SCP-096", "speed") / 100.0)
+    n\speed = (GetINIFloat("DATA\NPCs.ini", "SCP-096", "speed") / 100.0)
     
-    temp# = (GetINIFloat("DATA\NPCs.ini", "SCP-096", "scale") / 3.0)
+    Local temp# = (GetINIFloat("DATA\NPCs.ini", "SCP-096", "scale") / 3.0)
     ScaleEntity n\obj, temp, temp, temp	
     
     MeshCullBox (n\obj, -MeshWidth(n\obj)*2, -MeshHeight(n\obj)*2, -MeshDepth(n\obj)*2, MeshWidth(n\obj)*2, MeshHeight(n\obj)*4, MeshDepth(n\obj)*4)
 End Function
 
 Function UpdateNPCtype096(n.NPCs)
-    dist = EntityDistance(mainPlayer\collider, n\Collider)
-    
-    Select n\State
+	Local angle%, i%, pvt%, de.Decals
+	
+    Select n\state
         Case 0
-            If dist<8.0 Then
-                If n\Sound = 0 Then
-                    n\Sound = LoadSound("SFX\Music\096.ogg")
+            If (n\playerDistance < 8.0) Then
+                If n\sounds[0] = 0 Then
+                    n\sounds[0] = LoadSound("SFX\Music\096.ogg")
                 Else
-                    n\SoundChn = LoopRangedSound(n\Sound, n\SoundChn, mainPlayer\cam, n\Collider, 8.0, 1.0)
+                    n\soundChannels[0] = LoopRangedSound(n\sounds[0], n\soundChannels[0], mainPlayer\cam, n\collider, 8.0, 1.0)
                 EndIf
                 
                 AnimateNPC(n, 1085,1412, 0.1) ;sitting
                 ;Animate2(n\obj, AnimTime(n\obj),1085,1412, 0.1) ;sitting
                 
-                angle = WrapAngle(DeltaYaw(n\Collider, mainPlayer\collider));-EntityYaw(n\Collider,True))
+                angle = WrapAngle(DeltaYaw(n\collider, mainPlayer\collider));-EntityYaw(n\Collider,True))
                 
                 If (Not NoTarget)
                     If angle<90 Or angle>270 Then
-                        CameraProject mainPlayer\cam,EntityX(n\Collider), EntityY(n\Collider)+0.25, EntityZ(n\Collider)
+                        CameraProject mainPlayer\cam,EntityX(n\collider), EntityY(n\collider)+0.25, EntityZ(n\collider)
                         
                         If ProjectedX()>0 And ProjectedX()<userOptions\screenWidth Then
                             If ProjectedY()>0 And ProjectedY()<userOptions\screenHeight Then
-                                If EntityVisible(mainPlayer\collider, n\Collider) Then
+                                If EntityVisible(mainPlayer\collider, n\collider) Then
                                     If (mainPlayer\blinkTimer < - 16 Or mainPlayer\blinkTimer > - 6)
                                         PlaySound LoadTempSound("SFX\SCP\096\Triggered.ogg")
                                         
                                         mainPlayer\camZoom = 10
                                         
-                                        n\Frame = 307
+                                        n\frame = 307
                                         ;SetAnimTime n\obj, 307
-                                        StopChannel n\SoundChn
-                                        FreeSound n\Sound
-                                        n\Sound = 0
-                                        n\State = 1
+                                        StopChannel n\soundChannels[0]
+                                        FreeSound n\sounds[0]
+                                        n\sounds[0] = 0
+                                        n\state = 1
                                     EndIf
                                 EndIf									
                             EndIf
@@ -60,57 +61,55 @@ Function UpdateNPCtype096(n.NPCs)
         Case 4
             mainPlayer\camZoom = CurveValue(Max(mainPlayer\camZoom, (Sin(Float(TimeInPosMilliSecs())/20.0)+1.0) * 10.0),mainPlayer\camZoom,8.0)
             
-            If n\Target = Null Then 
-                If n\Sound = 0 Then
-                    n\Sound = LoadSound("SFX\SCP\096\Scream.ogg")
+            If n\target = Null Then 
+                If n\sounds[0] = 0 Then
+                    n\sounds[0] = LoadSound("SFX\SCP\096\Scream.ogg")
                 Else
-                    n\SoundChn = LoopRangedSound(n\Sound, n\SoundChn, mainPlayer\cam, n\Collider, 7.5, 1.0)
+                    n\soundChannels[0] = LoopRangedSound(n\sounds[0], n\soundChannels[0], mainPlayer\cam, n\collider, 7.5, 1.0)
                 EndIf
                 
-                If n\Sound2 = 0 Then
-                    n\Sound2 = LoadSound("SFX\Music\096Chase.ogg")
+                If n\sounds[1] = 0 Then
+                    n\sounds[1] = LoadSound("SFX\Music\096Chase.ogg")
                 Else
-                    If n\SoundChn2 = 0 Then
-                        n\SoundChn2 = PlaySound (n\Sound2)
+                    If n\soundChannels[1] = 0 Then
+                        n\soundChannels[1] = PlaySound (n\sounds[1])
                     Else
-                        If (Not IsChannelPlaying(n\SoundChn2)) Then n\SoundChn2 = PlaySound(n\Sound2)
-                        ChannelVolume(n\SoundChn2, Min(Max(8.0-dist,0.6),1.0)*userOptions\soundVolume)
+                        If (Not IsChannelPlaying(n\soundChannels[1])) Then n\soundChannels[1] = PlaySound(n\sounds[1])
+                        ChannelVolume(n\soundChannels[1], Min(Max(8.0-n\playerDistance,0.6),1.0)*userOptions\SoundVolume)
                     EndIf
                 EndIf
             EndIf
             
-            If NoTarget And n\Target = Null Then n\State = 5
+            If NoTarget And n\target = Null Then n\state = 5
             
             If (Not mainPlayer\dead) Then
                 
-                If TimeInPosMilliSecs() > n\State3 Then
-                    n\LastSeen=0
-                    If n\Target=Null Then
-                        If EntityVisible(mainPlayer\collider, n\Collider) Then n\LastSeen=1
+                If TimeInPosMilliSecs() > n\state3 Then
+                    n\lastSeen=0
+                    If n\target=Null Then
+                        If EntityVisible(mainPlayer\collider, n\collider) Then n\lastSeen=1
                     Else
-                        If EntityVisible(n\Target\Collider, n\Collider) Then n\LastSeen=1
+                        If EntityVisible(n\target\collider, n\collider) Then n\lastSeen=1
                     EndIf
-                    n\State3=TimeInPosMilliSecs()+3000
+                    n\state3=TimeInPosMilliSecs()+3000
                 EndIf
                 
-                If n\LastSeen=1 Then
-                    n\PathTimer=Max(70*3, n\PathTimer)
-                    n\PathStatus=0
+                If n\lastSeen=1 Then
+                    n\pathTimer=Max(70*3, n\pathTimer)
+                    n\pathStatus=0
                     
-                    If n\Target<> Null Then dist = EntityDistance(n\Target\Collider, n\Collider)
-                    
-                    If dist < 2.8 Or n\Frame<150 Then 
-                        If n\Frame>193 Then n\Frame = 2.0 ;go to the start of the jump animation
+                    If n\playerDistance < 2.8 Or n\frame<150 Then 
+                        If n\frame>193 Then n\frame = 2.0 ;go to the start of the jump animation
                         
                         AnimateNPC(n, 2, 193, 0.7)
                         ;Animate2(n\obj, AnimTime(n\obj), 2, 193, 0.7)
                         
-                        If dist > 1.0 Then 
-                            n\CurrSpeed = CurveValue(n\Speed*2.0,n\CurrSpeed,15.0)
+                        If n\playerDistance > 1.0 Then 
+                            n\currSpeed = CurveValue(n\speed*2.0,n\currSpeed,15.0)
                         Else
-                            n\CurrSpeed = 0
+                            n\currSpeed = 0
                             
-                            If n\Target=Null Then
+                            If n\target=Null Then
                                 If (Not mainPlayer\godMode) Then 
                                     PlaySound DamageSFX(4)
                                     
@@ -133,70 +132,70 @@ Function UpdateNPCtype096(n.NPCs)
                             EndIf				
                         EndIf
                         
-                        If n\Target=Null Then
-                            PointEntity n\Collider, mainPlayer\collider
+                        If n\target=Null Then
+                            PointEntity n\collider, mainPlayer\collider
                         Else
-                            PointEntity n\Collider, n\Target\Collider
+                            PointEntity n\collider, n\target\collider
                         EndIf
                         
                     Else
-                        If n\Target=Null Then 
+                        If n\target=Null Then 
                             PointEntity n\obj, mainPlayer\collider
                         Else
-                            PointEntity n\obj, n\Target\Collider
+                            PointEntity n\obj, n\target\collider
                         EndIf
                         
-                        RotateEntity n\Collider, 0, CurveAngle(EntityYaw(n\obj), EntityYaw(n\Collider), 5.0), 0
+                        RotateEntity n\collider, 0, CurveAngle(EntityYaw(n\obj), EntityYaw(n\collider), 5.0), 0
                         
-                        If n\Frame>1000 Then n\CurrSpeed = CurveValue(n\Speed,n\CurrSpeed,20.0)
+                        If n\frame>1000 Then n\currSpeed = CurveValue(n\speed,n\currSpeed,20.0)
                         
-                        If n\Frame<1058 Then
-                            AnimateNPC(n, 892, 1058, n\Speed*5, False)	
+                        If n\frame<1058 Then
+                            AnimateNPC(n, 892, 1058, n\speed*5, False)	
                             ;Animate2(n\obj, AnimTime(n\obj),892,1058, n\Speed*5, False)	
                         Else
-                            AnimateNPC(n, 1059, 1074, n\CurrSpeed*5)	
+                            AnimateNPC(n, 1059, 1074, n\currSpeed*5)	
                             ;Animate2(n\obj, AnimTime(n\obj),1059,1074, n\CurrSpeed*5)	
                         EndIf
                     EndIf
                     
-                    RotateEntity n\Collider, 0, EntityYaw(n\Collider), 0, True
-                    MoveEntity n\Collider, 0,0,n\CurrSpeed
+                    RotateEntity n\collider, 0, EntityYaw(n\collider), 0, True
+                    MoveEntity n\collider, 0,0,n\currSpeed
                     
                 Else
-                    If n\PathStatus = 1 Then
+                    If n\pathStatus = 1 Then
                         
-                        If n\Path[n\PathLocation]=Null Then 
-                            If n\PathLocation > 19 Then 
-                                n\PathLocation = 0 : n\PathStatus = 0
+                        If n\path[n\pathLocation]=Null Then 
+                            If n\pathLocation > 19 Then 
+                                n\pathLocation = 0 : n\pathStatus = 0
                             Else
-                                n\PathLocation = n\PathLocation + 1
+                                n\pathLocation = n\pathLocation + 1
                             EndIf
                         Else
-                            PointEntity n\obj, n\Path[n\PathLocation]\obj
+                            PointEntity n\obj, n\path[n\pathLocation]\obj
                             
-                            RotateEntity n\Collider, 0, CurveAngle(EntityYaw(n\obj), EntityYaw(n\Collider), 5.0), 0
+                            RotateEntity n\collider, 0, CurveAngle(EntityYaw(n\obj), EntityYaw(n\collider), 5.0), 0
                             
-                            If n\Frame>1000 Then n\CurrSpeed = CurveValue(n\Speed*1.5,n\CurrSpeed,15.0)
-                            MoveEntity n\Collider, 0,0,n\CurrSpeed
+                            If n\frame>1000 Then n\currSpeed = CurveValue(n\speed*1.5,n\currSpeed,15.0)
+                            MoveEntity n\collider, 0,0,n\currSpeed
                             
-                            If n\Frame<1058 Then
-                                AnimateNPC(n, 892,1058, n\Speed*8, False)
+                            If n\frame<1058 Then
+                                AnimateNPC(n, 892,1058, n\speed*8, False)
                                 ;Animate2(n\obj, AnimTime(n\obj),892,1058, n\Speed*8, False)
                             Else
-                                AnimateNPC(n, 1059,1084, n\CurrSpeed*8)	
+                                AnimateNPC(n, 1059,1084, n\currSpeed*8)	
                                 ;Animate2(n\obj, AnimTime(n\obj),1059,1084, n\CurrSpeed*8)	
                             EndIf
                             
-                            dist2# = EntityDistance(n\Collider,n\Path[n\PathLocation]\obj)
+                            dist2# = EntityDistance(n\collider,n\path[n\pathLocation]\obj)
                             If dist2 < 0.4 Then
-                                If n\Path[n\PathLocation]\door <> Null Then
-                                    If n\Path[n\PathLocation]\door\open = False Then
-                                        n\Path[n\PathLocation]\door\open = True
-                                        n\Path[n\PathLocation]\door\fastopen = 1
-                                        PlayRangedSound(OpenDoorFastSFX, mainPlayer\cam, n\Path[n\PathLocation]\door\obj)
+                                If n\path[n\pathLocation]\door <> Null Then
+                                    If n\path[n\pathLocation]\door\open = False Then
+                                        n\path[n\pathLocation]\door\open = True
+                                        n\path[n\pathLocation]\door\fastopen = 1
+                                        PlayRangedSound(n\sounds[2], mainPlayer\cam, n\path[n\pathLocation]\door\obj)
                                     EndIf
                                 EndIf							
-                                If dist2 < 0.2 Then n\PathLocation = n\PathLocation + 1
+                                If dist2 < 0.2 Then n\pathLocation = n\pathLocation + 1
                             EndIf 
                         EndIf
                         
@@ -204,19 +203,19 @@ Function UpdateNPCtype096(n.NPCs)
                         AnimateNPC(n, 892,972, 0.2)
                         ;Animate2(n\obj, AnimTime(n\obj),892,972, 0.2)
                         
-                        n\PathTimer = Max(0, n\PathTimer-timing\tickDuration)
-                        If n\PathTimer=<0 Then
-                            If n\Target<>Null Then
-                                n\PathStatus = FindPath(n, EntityX(n\Target\Collider),EntityY(n\Target\Collider)+0.2,EntityZ(n\Target\Collider))	
+                        n\pathTimer = Max(0, n\pathTimer-timing\tickDuration)
+                        If n\pathTimer=<0 Then
+                            If n\target<>Null Then
+                                n\pathStatus = FindPath(n, EntityX(n\target\collider),EntityY(n\target\collider)+0.2,EntityZ(n\target\collider))	
                             Else
-                                n\PathStatus = FindPath(n, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider))	
+                                n\pathStatus = FindPath(n, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider))	
                             EndIf
-                            n\PathTimer = 70*5
+                            n\pathTimer = 70*5
                         EndIf
                     EndIf
                 EndIf
                 
-                If dist > 32.0 Or EntityY(n\Collider)<-50 Then
+                If n\playerDistance > 32.0 Or EntityY(n\collider)<-50 Then
                     If Rand(50)=1 Then TeleportCloser(n)
                 EndIf
             Else ;play the eating animation if killtimer < 0 
@@ -227,10 +226,10 @@ Function UpdateNPCtype096(n.NPCs)
             
             
         Case 1,2,3
-            If n\Sound = 0 Then
-                n\Sound = LoadSound("SFX\Music\096Angered.ogg")
+            If n\sounds[0] = 0 Then
+                n\sounds[0] = LoadSound("SFX\Music\096Angered.ogg")
             Else
-                n\SoundChn = LoopRangedSound(n\Sound, n\SoundChn, mainPlayer\cam, n\Collider, 10.0, 1.0)
+                n\soundChannels[0] = LoopRangedSound(n\sounds[0], n\soundChannels[0], mainPlayer\cam, n\Collider, 10.0, 1.0)
             EndIf
             
             If n\State=1 Then ; get up
@@ -260,8 +259,8 @@ Function UpdateNPCtype096(n.NPCs)
                     ;Animate2(n\obj, AnimTime(n\obj),973,1001, 0.5, False)
                     If n\Frame>1000.9 Then 
                         n\State = 4
-                        StopChannel n\SoundChn
-                        FreeSound n\Sound : n\Sound = 0
+                        StopChannel n\soundChannels[0]
+                        FreeSound n\sounds[0] : n\sounds[0] = 0
                     EndIf
                 Else
                     AnimateNPC(n, 892,978, 0.3)
@@ -271,10 +270,10 @@ Function UpdateNPCtype096(n.NPCs)
         Case 5
             If dist < 16.0 Then 
             
-                If n\Sound = 0 Then
-                    n\Sound = LoadSound("SFX\Music\096.ogg")
+                If n\sounds[0] = 0 Then
+                    n\sounds[0] = LoadSound("SFX\Music\096.ogg")
                 Else
-                    n\SoundChn = LoopRangedSound(n\Sound, n\SoundChn, mainPlayer\cam, n\Collider, 14.0, 1.0)
+                    n\soundChannels[0] = LoopRangedSound(n\sounds[0], n\soundChannels[0], mainPlayer\cam, n\Collider, 14.0, 1.0)
                 EndIf
                 
                 n\State2=n\State2+timing\tickDuration
@@ -341,9 +340,9 @@ Function UpdateNPCtype096(n.NPCs)
                                         
                                         n\Frame = 833
                                         ;SetAnimTime n\obj, 833
-                                        StopChannel n\SoundChn
-                                        FreeSound n\Sound
-                                        n\Sound = 0
+                                        StopChannel n\soundChannels[0]
+                                        FreeSound n\sounds[0]
+                                        n\sounds[0] = 0
                                         n\State = 2
                                     EndIf
                                 EndIf									
@@ -362,3 +361,5 @@ Function UpdateNPCtype096(n.NPCs)
     
     RotateEntity n\obj, EntityPitch(n\Collider), EntityYaw(n\Collider), 0
 End Function
+;~IDEal Editor Parameters:
+;~C#Blitz3D

@@ -345,7 +345,7 @@ Global ApacheObj%,ApacheRotorObj%
 Global UnableToMove.MarkedForRemoval
 
 Function Main%()
-	keyBinds.keyBinds = New keyBinds
+	keyBinds.KeyBinds = New KeyBinds
 	userOptions.Options = New Options
 	LoadOptionsINI()
 	
@@ -414,43 +414,11 @@ Function InitializeMainGame()
 	;5 = forest
 	AmbientSFXAmount(5)=10
 	
-	KeyCardSFX1 = LoadSound("SFX\Interact\KeyCardUse1.ogg")
-	KeyCardSFX2 = LoadSound("SFX\Interact\KeyCardUse2.ogg")
-	ButtonSFX2 = LoadSound("SFX\Interact\Button2.ogg")
-	ScannerSFX1 = LoadSound("SFX\Interact\ScannerUse1.ogg")
-	ScannerSFX2 = LoadSound("SFX\Interact\ScannerUse2.ogg")
-	
-	OpenDoorFastSFX = LoadSound("SFX\Door\DoorOpenFast.ogg")
-	
-	CameraSFX = LoadSound("SFX\General\Camera.ogg")
-	
-	GunshotSFX = LoadSound("SFX\General\Gunshot.ogg")
-	Gunshot2SFX = LoadSound("SFX\General\Gunshot2.ogg")
-	Gunshot3SFX = LoadSound("SFX\General\BulletMiss.ogg")
-	BullethitSFX = LoadSound("SFX\General\BulletHit.ogg")
-	
-	TeslaIdleSFX = LoadSound("SFX\Room\Tesla\Idle.ogg")
-	TeslaActivateSFX = LoadSound("SFX\Room\Tesla\WindUp.ogg")
-	TeslaPowerUpSFX = LoadSound("SFX\Room\Tesla\PowerUp.ogg")
-	
-	MagnetUpSFX = LoadSound("SFX\Room\106Chamber\MagnetUp.ogg")
-	MagnetDownSFX = LoadSound("SFX\Room\106Chamber\MagnetDown.ogg")
-	
-	BurstSFX = LoadSound("SFX\Room\TunnelBurst.ogg")
-	
 	DrawLoading(20, True)
-	
-	Death914SFX = LoadSound("SFX\SCP\914\PlayerDeath.ogg")
-	Use914SFX = LoadSound("SFX\SCP\914\PlayerUse.ogg")
 	
 	For i = 0 To 3
 		DripSFX(i) = LoadSound("SFX\Character\D9341\BloodDrip" + i + ".ogg")
 	Next
-	
-	LeverSFX = LoadSound("SFX\Interact\LeverFlip.ogg")
-	LightSFX = LoadSound("SFX\General\LightSwitch.ogg")
-	
-	ButtGhostSFX = LoadSound("SFX\SCP\Joke\789J.ogg")
 	
 	RadioSFX(1,0) = LoadSound("SFX\Radio\RadioAlarm.ogg")
 	RadioSFX(1,1) = LoadSound("SFX\Radio\RadioAlarm2.ogg")
@@ -460,9 +428,6 @@ Function InitializeMainGame()
 	RadioSquelch = LoadSound("SFX\Radio\squelch.ogg")
 	RadioStatic = LoadSound("SFX\Radio\static.ogg")
 	RadioBuzz = LoadSound("SFX\Radio\buzz.ogg")
-	
-	ElevatorBeepSFX = LoadSound("SFX\General\Elevator\Beep.ogg")
-	ElevatorMoveSFX = LoadSound("SFX\General\Elevator\Moving.ogg") 
 	
 	For i = 0 To 3
 		PickSFX(i) = LoadSound("SFX\Interact\PickItem" + i + ".ogg")
@@ -485,8 +450,6 @@ Function InitializeMainGame()
 	;AlarmSFX(1) = LoadSound("SFX\Alarm\Alarm2.ogg")
 	AlarmSFX(2) = LoadSound("SFX\Alarm\Alarm3.ogg")
 	
-	HeartBeatSFX = LoadSound("SFX\Character\D9341\Heartbeat.ogg")
-	
 	For i = 0 To 8
 		DamageSFX(i) = LoadSound("SFX\Character\D9341\Damage"+(i+1)+".ogg")
 	Next
@@ -496,19 +459,7 @@ Function InitializeMainGame()
 		CoughSFX(i) = LoadSound("SFX\Character\D9341\Cough" + (i + 1) + ".ogg")
 	Next
 	
-	;TODO: Why the fuck is this a global?
-	MachineSFX = LoadSound("SFX\SCP\914\Refining.ogg")
-	
-	;TODO: WHY IS THIS A GLOBAL???
-	ApacheSFX = LoadSound("SFX\Character\Apache\Propeller.ogg")
-	
-	HissSFX = LoadSound("SFX\General\Hiss.ogg")
-	
 	DrawLoading(30, True)
-	
-	;TODO: Die forever.
-	NTF_1499EnterSFX% = LoadSound("SFX\SCP\1499\Enter.ogg")
-	NTF_1499LeaveSFX% = LoadSound("SFX\SCP\1499\Exit.ogg")
 	
 	;TODO: Assets.bb
 	NVGImages = LoadAnimImage("GFX\battery.png",64,64,0,2)
@@ -651,25 +602,26 @@ Function UpdateGame()
 			If mainPlayer\currRoom\RoomTemplate\Name <> "pocketdimension" And mainPlayer\currRoom\RoomTemplate\Name <> "gatea" And mainPlayer\currRoom\RoomTemplate\Name <> "exit1" And (Not IsPaused()) Then 
 				
 				If Rand(1500) = 1 Then
-					For i = 0 To 5
-						If AmbientSFX(i,CurrAmbientSFX) <> 0 Then
-							If IsChannelPlaying(AmbientSFXCHN) = 0 Then FreeSound AmbientSFX(i,CurrAmbientSFX) : AmbientSFX(i,CurrAmbientSFX) = 0
-						EndIf			
-					Next
-					
-					PositionEntity (SoundEmitter, EntityX(mainPlayer\cam) + Rnd(-1.0, 1.0), 0.0, EntityZ(mainPlayer\cam) + Rnd(-1.0, 1.0))
-					
-					If mainPlayer\currRoom\RoomTemplate\Name = "room860"
-						For e.Events = Each Events
-							If e\EventName = "room860"
-								If e\EventState = 1.0 Then
-									PositionEntity (SoundEmitter, EntityX(mainPlayer\cam) + Rnd(-1.0, 1.0), 30.0, EntityZ(mainPlayer\cam) + Rnd(-1.0, 1.0))
-								EndIf
-								
-								Exit
-							EndIf
-						Next
-					EndIf
+					;TODO: reimplement
+;					For i = 0 To 5
+;						If AmbientSFX(i,CurrAmbientSFX) <> 0 Then
+;							If IsChannelPlaying(AmbientSFXCHN) = 0 Then FreeSound AmbientSFX(i,CurrAmbientSFX) : AmbientSFX(i,CurrAmbientSFX) = 0
+;						EndIf			
+;					Next
+;					
+;					PositionEntity (SoundEmitter, EntityX(mainPlayer\cam) + Rnd(-1.0, 1.0), 0.0, EntityZ(mainPlayer\cam) + Rnd(-1.0, 1.0))
+;					
+;					If mainPlayer\currRoom\RoomTemplate\Name = "room860"
+;						For e.Events = Each Events
+;							If e\EventName = "room860"
+;								If e\EventState = 1.0 Then
+;									PositionEntity (SoundEmitter, EntityX(mainPlayer\cam) + Rnd(-1.0, 1.0), 30.0, EntityZ(mainPlayer\cam) + Rnd(-1.0, 1.0))
+;								EndIf
+;								
+;								Exit
+;							EndIf
+;						Next
+;					EndIf
 					
 					;CurrAmbientSFX = Rand(0,AmbientSFXAmount(PlayerZone)-1) ;TODO: fix
 					
@@ -1239,14 +1191,14 @@ Function UpdateGUI()
 									KeypadInput=KeypadInput + ((n+1)+(i*4)-1)
 								Case 8 ;enter
 									If KeypadInput = mainPlayer\selectedDoor\Code Then
-										PlaySound ScannerSFX1								
+										PlaySound_SM(sndManager\scannerUse)								
 										
 										mainPlayer\selectedDoor\locked = 0
 										UseDoor(mainPlayer\selectedDoor,True)
 										mainPlayer\selectedDoor = Null
 										MouseXSpeed() : MouseYSpeed() : MouseZSpeed() : mouse_x_speed_1#=0.0 : mouse_y_speed_1#=0.0
 									Else
-										PlaySound ScannerSFX2
+										PlaySound_SM(sndManager\scannerErr)
 										KeypadMSG = "ACCESS DENIED"
 										KeypadTimer = 210
 										KeypadInput = ""	
@@ -1819,12 +1771,12 @@ Function UpdateInfect()
 							PositionEntity mainPlayer\collider, EntityX(r\Objects[7],True),EntityY(r\Objects[7],True),EntityZ(r\Objects[7],True),True
 							ResetEntity mainPlayer\collider
 							r\NPC[0] = CreateNPC(NPCtypeD, EntityX(r\Objects[6],True),EntityY(r\Objects[6],True)+0.2,EntityZ(r\Objects[6],True))
-							r\NPC[0]\Sound = LoadSound("SFX\SCP\008\KillScientist1.ogg")
-							r\NPC[0]\SoundChn = PlaySound(r\NPC[0]\Sound)
+							r\NPC[0]\sounds[0] = LoadSound("SFX\SCP\008\KillScientist1.ogg")
+							r\NPC[0]\soundChannels[0] = PlaySound(r\NPC[0]\sounds[0])
 							tex = LoadTexture("GFX\npcs\scientist2.jpg")
 							EntityTexture r\NPC[0]\obj, tex
 							FreeTexture tex
-							r\NPC[0]\State=6
+							r\NPC[0]\state=6
 							mainPlayer\currRoom = r
 							Exit
 						EndIf
@@ -1840,8 +1792,8 @@ Function UpdateInfect()
 				mainPlayer\blurTimer = 900
 				
 				If mainPlayer\infect008 > 94.5 Then mainPlayer\blinkTimer = Max(Min(-50*(mainPlayer\infect008-94.5),mainPlayer\blinkTimer),-10)
-				PointEntity mainPlayer\collider, mainPlayer\currRoom\NPC[0]\Collider
-				PointEntity mainPlayer\currRoom\NPC[0]\Collider, mainPlayer\collider
+				PointEntity mainPlayer\collider, mainPlayer\currRoom\NPC[0]\collider
+				PointEntity mainPlayer\currRoom\NPC[0]\collider, mainPlayer\collider
 				mainPlayer\forceMove = 0.4
 				mainPlayer\injuries = 2.5
 				mainPlayer\bloodloss = 0
@@ -1853,8 +1805,8 @@ Function UpdateInfect()
 				mainPlayer\blurTimer = 950
 				
 				If temp < 94.7 Then 
-					mainPlayer\currRoom\NPC[0]\Sound = LoadSound("SFX\SCP\008\KillScientist2.ogg")
-					mainPlayer\currRoom\NPC[0]\SoundChn = PlaySound(mainPlayer\currRoom\NPC[0]\Sound)
+					mainPlayer\currRoom\NPC[0]\sounds[0] = LoadSound("SFX\SCP\008\KillScientist2.ogg")
+					mainPlayer\currRoom\NPC[0]\soundChannels[0] = PlaySound(mainPlayer\currRoom\NPC[0]\sounds[0])
 					
 					DeathMSG = "Subject D-9341 found ingesting Dr. [REDACTED] at Sector [REDACTED]. Subject was immediately terminated by Nine-Tailed Fox and sent for autopsy. "
 					DeathMSG = DeathMSG + "SCP-008 infection was confirmed, after which the body was incinerated."

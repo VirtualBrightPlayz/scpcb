@@ -1,7 +1,8 @@
-Const STATEGUARD_IDLE_LOOK%        = 0 ;TODO: Implement.
-Const STATEGUARD_MOVE_TO_TARGET%   = 1
-Const STATEGUARD_SHOOT_TARGET%     = 2
-Const STATEGUARD_DEAD%             = 3
+Const STATEGUARD_IDLE%             = 0
+Const STATEGUARD_LOOK%             = 1 ;TODO: Implement.
+Const STATEGUARD_MOVE_TO_TARGET%   = 2
+Const STATEGUARD_SHOOT_TARGET%     = 3
+Const STATEGUARD_DEAD%             = 4
 
 ;AnimateNPC(n, 923, 1071, 0.2) ; IDLE STATE
 
@@ -13,7 +14,7 @@ Function InitializeNPCtypeGuard(n.NPCs)
 
     LoadOrCopyMesh(n, "GFX\npcs\guard.b3d")
     
-    n\Speed = (GetINIFloat("DATA\NPCs.ini", "Guard", "speed") / 100.0)
+    n\speed = (GetINIFloat("DATA\NPCs.ini", "Guard", "speed") / 100.0)
 
     Local temp# = (GetINIFloat("DATA\NPCs.ini", "Guard", "scale") / 2.5)
     ScaleEntity(n\obj, temp, temp, temp)
@@ -24,13 +25,18 @@ End Function
 Function UpdateNPCtypeGuard(n.NPCs)
 	Local dist#
 
-	Local head = FindChild(n\obj,"head")
-	Local headangle = EntityYaw(head)
+	Local head%
+	Local headangle%
+	Local pvt%
+	Local p.Particles
 
     Local prevFrame# = n\frame
     
     Select n\state
-		Case STATEGUARD_IDLE_LOOK
+		Case STATEGUARD_LOOK
+			head = FindChild(n\obj,"head")
+			headangle = EntityYaw(head)
+			
 			If (n\target <> Null) Then
 				n\targetX = EntityX(n\target\collider)
 				n\targetY = EntityY(n\target\collider)
@@ -43,13 +49,6 @@ Function UpdateNPCtypeGuard(n.NPCs)
 
 			AnimateNPC(n,77,201,0.2)
         Case STATEGUARD_MOVE_TO_TARGET
-            ;If guard was given a target then use its position.
-			If (n\target <> Null) Then
-				n\targetX = EntityX(n\target\collider)
-				n\targetY = EntityY(n\target\collider)
-				n\targetZ = EntityZ(n\target\collider)
-            EndIf
-
             RotateEntity(n\collider, 0, CurveAngle(VectorYaw(n\targetX-EntityX(n\collider), 0, n\targetZ-EntityZ(n\collider))+n\angle, EntityYaw(n\collider), 20.0), 0)
             
             dist# = Distance(EntityX(n\collider), EntityZ(n\collider), n\targetX, n\targetZ)
@@ -63,9 +62,9 @@ Function UpdateNPCtypeGuard(n.NPCs)
             EndIf
 
             If n\currSpeed > 0.01 Then
-                If (prevFrame > 1638 And n\Frame < 1620) Then
+                If (prevFrame > 1638 And n\frame < 1620) Then
                     PlayRangedSound(sndManager\footstepMetal[Rand(0,7)]\internal, mainPlayer\cam, n\collider, 8.0, Rnd(0.5, 0.7))						
-                ElseIf prevFrame < 1627 And n\Frame=>1627
+                ElseIf prevFrame < 1627 And n\frame=>1627
                     PlayRangedSound(sndManager\footstepMetal[Rand(0,7)]\internal, mainPlayer\cam, n\collider, 8.0, Rnd(0.5, 0.7))						
                 EndIf
             EndIf
@@ -75,16 +74,9 @@ Function UpdateNPCtypeGuard(n.NPCs)
         Case STATEGUARD_SHOOT_TARGET
             ;Raising gun to aim animation.
             AnimateNPC(n, 1539, 1553, 0.2, False)
-            
-            ;If guard was given a target then use its position.
-			If (n\target <> Null) Then
-				n\targetX = EntityX(n\target\collider)
-				n\targetY = EntityY(n\target\collider)
-				n\targetZ = EntityZ(n\target\collider)
-            EndIf
 
-            Local pvt% = CreatePivot()
-            PositionEntity(pvt, targetX, targetY, targetZ)
+            pvt = CreatePivot()
+            PositionEntity(pvt, n\targetX, n\targetY, n\targetZ)
 
             ;TODO: Make relative to target.
             PointEntity(pvt, mainPlayer\collider)
@@ -94,10 +86,10 @@ Function UpdateNPCtypeGuard(n.NPCs)
             RotateEntity(n\collider, CurveAngle(EntityPitch(pvt), EntityPitch(n\collider), 10), CurveAngle(EntityYaw(pvt), EntityYaw(n\collider), 10), 0, True)
             
             ;Start shooting once the aiming animation is done.
-            If (n\timer < 0 And n\Frame>1550) Then
-                PlayRangedSound(GunshotSFX, mainPlayer\cam, n\Collider, 35)
+            If (n\timer < 0 And n\frame>1550) Then
+                PlayRangedSound_SM(sndManager\gunshot[0], mainPlayer\cam, n\collider, 35)
                 
-                RotateEntity(pvt, EntityPitch(n\Collider), EntityYaw(n\Collider), 0, True)
+                RotateEntity(pvt, EntityPitch(n\collider), EntityYaw(n\collider), 0, True)
                 PositionEntity(pvt, EntityX(n\obj), EntityY(n\obj), EntityZ(n\obj))
                 MoveEntity(pvt,0.8*0.079, 10.75*0.079, 6.9*0.079)
                 
@@ -105,7 +97,7 @@ Function UpdateNPCtypeGuard(n.NPCs)
 
                 p.Particles = CreateParticle(EntityX(n\obj, True), EntityY(n\obj, True), EntityZ(n\obj, True), 1, 0.2, 0.0, 5)
                 PositionEntity(p\pvt, EntityX(n\obj), EntityY(n\obj), EntityZ(n\obj))
-                RotateEntity(p\pvt, EntityPitch(n\Collider), EntityYaw(n\Collider), 0, True)
+                RotateEntity(p\pvt, EntityPitch(n\collider), EntityYaw(n\collider), 0, True)
                 MoveEntity (p\pvt,0.8*0.079, 10.75*0.079, 6.9*0.079)
 
                 n\Reload = 7

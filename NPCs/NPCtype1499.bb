@@ -85,12 +85,12 @@ Function UpdateNPCtype1499(n.NPCs)
                     n\State = 2
                     n\State2 = 0
                     
-                    If Not IsChannelPlaying(n\SoundChn) Then
+                    If Not IsChannelPlaying(n\soundChannels[0]) Then
                         dist = EntityDistance(n\Collider,mainPlayer\collider)
                         If (dist < 20.0) Then
-                            If n\Sound <> 0 Then FreeSound n\Sound : n\Sound = 0
-                            n\Sound = LoadSound("SFX\SCP\1499\Idle"+Rand(1,4)+".ogg")
-                            n\SoundChn = PlayRangedSound(n\Sound, mainPlayer\cam, n\Collider, 20.0)
+                            If n\sounds[0] <> 0 Then FreeSound n\sounds[0] : n\sounds[0] = 0
+                            n\sounds[0] = LoadSound("SFX\SCP\1499\Idle"+Rand(1,4)+".ogg")
+                            n\soundChannels[0] = PlayRangedSound(n\sounds[0], mainPlayer\cam, n\Collider, 20.0)
                         EndIf
                     EndIf
                 EndIf
@@ -102,9 +102,9 @@ Function UpdateNPCtype1499(n.NPCs)
                             ;play the "screaming animation"
                             n\State = 2
                             If dist < 5.0 Then
-                                If n\Sound <> 0 Then FreeSound n\Sound : n\Sound = 0
-                                n\Sound = LoadSound("SFX\SCP\1499\Triggered.ogg")
-                                n\SoundChn = PlayRangedSound(n\Sound, mainPlayer\cam, n\Collider,20.0)
+                                If n\sounds[0] <> 0 Then FreeSound n\sounds[0] : n\sounds[0] = 0
+                                n\sounds[0] = LoadSound("SFX\SCP\1499\Triggered.ogg")
+                                n\soundChannels[0] = PlayRangedSound(n\sounds[0], mainPlayer\cam, n\Collider,20.0)
                                 
                                 n\State2 = 1 ;if player is too close, switch to attack after screaming
                                 
@@ -233,8 +233,8 @@ Function UpdateNPCtype1499(n.NPCs)
                 EndIf
         End Select
         
-        If n\SoundChn <> 0 And IsChannelPlaying(n\SoundChn) Then
-            UpdateRangedSoundOrigin(n\SoundChn,mainPlayer\cam,n\Collider,20.0)
+        If n\soundChannels[0] <> 0 And IsChannelPlaying(n\soundChannels[0]) Then
+            UpdateRangedSoundOrigin(n\soundChannels[0],mainPlayer\cam,n\Collider,20.0)
         EndIf
         
         MoveEntity n\Collider,0,0,n\CurrSpeed*timing\tickDuration
