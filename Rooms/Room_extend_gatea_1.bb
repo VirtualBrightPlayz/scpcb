@@ -419,8 +419,8 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 									e\room\NPC[i]\PathTimer = 70*2
 									e\room\NPC[i]\LastSeen = 70*100
 								Next
-								e\room\NPC[5]\Sound = LoadSound("SFX\Character\MTF\ThereHeIs1.ogg")
-								PlayRangedSound(e\room\NPC[5]\Sound, mainPlayer\cam, e\room\NPC[5]\Collider, 25.0)
+								e\room\NPC[5]\sounds[0] = LoadSound("SFX\Character\MTF\ThereHeIs1.ogg")
+								PlayRangedSound(e\room\NPC[5]\sounds[0], mainPlayer\cam, e\room\NPC[5]\Collider, 25.0)
 								
 								e\room\RoomDoors[2]\open = True
 								
@@ -611,3 +611,6 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 	EndIf
 	;[End Block]
 End Function
+
+;~IDEal Editor Parameters:
+;~C#Blitz3D

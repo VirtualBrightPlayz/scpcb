@@ -12,8 +12,6 @@ Type Doors
 	
 	Field dist#
 	
-	Field SoundCHN%
-	
 	Field Code$
 	
 	Field ID%
@@ -268,17 +266,17 @@ Function UpdateDoors()
 					If d\obj2 <> 0 Then ResetEntity(d\obj2)
 					If d\timerstate > 0 Then
 						d\timerstate = Max(0, d\timerstate - timing\tickDuration)
-						If d\timerstate + timing\tickDuration > 110 And d\timerstate <= 110 Then PlayRangedSound(CautionSFX, mainPlayer\cam, d\obj)
+						If d\timerstate + timing\tickDuration > 110 And d\timerstate <= 110 Then PlayRangedSound_SM(sndManager\caution, mainPlayer\cam, d\obj)
 
 						If d\timerstate = 0 Then
 							d\open = (Not d\open)
 							Select (d\dir)
 								Case 1
-									d\SoundCHN = PlayRangedSound_SM(sndManager\closeBigDoor[Rand(0, 1)], mainPlayer\cam, d\obj)
+									PlayRangedSound_SM(sndManager\closeBigDoor[Rand(0, 1)], mainPlayer\cam, d\obj)
 								Case 2
-									d\SoundCHN = PlayRangedSound_SM(sndManager\closeHCZDoor[Rand(0, 2)], mainPlayer\cam, d\obj)
+									PlayRangedSound_SM(sndManager\closeHCZDoor[Rand(0, 2)], mainPlayer\cam, d\obj)
 								Default
-									d\SoundCHN = PlayRangedSound_SM(sndManager\closeDoor[Rand(0, 2)], mainPlayer\cam, d\obj)
+									PlayRangedSound_SM(sndManager\closeDoor[Rand(0, 2)], mainPlayer\cam, d\obj)
 							End Select
 						EndIf
 					EndIf
@@ -288,11 +286,11 @@ Function UpdateDoors()
 							d\open = False
 							Select (d\dir)
 								Case 1
-									d\SoundCHN = PlayRangedSound_SM(sndManager\closeBigDoor[Rand(0, 1)], mainPlayer\cam, d\obj)
+									PlayRangedSound_SM(sndManager\closeBigDoor[Rand(0, 1)], mainPlayer\cam, d\obj)
 								Case 2
-									d\SoundCHN = PlayRangedSound_SM(sndManager\closeHCZDoor[Rand(0, 2)], mainPlayer\cam, d\obj)
+									PlayRangedSound_SM(sndManager\closeHCZDoor[Rand(0, 2)], mainPlayer\cam, d\obj)
 								Default
-									d\SoundCHN = PlayRangedSound_SM(sndManager\closeDoor[Rand(0, 2)], mainPlayer\cam, d\obj)
+									PlayRangedSound_SM(sndManager\closeDoor[Rand(0, 2)], mainPlayer\cam, d\obj)
 							End Select
 							d\AutoClose = False
 						EndIf
@@ -403,12 +401,12 @@ Function UseDoor(d.Doors, showmsg%=True)
 				mainPlayer\selectedItem = Null
 				If showmsg = True Then
 					If d\locked Then
-						PlaySound KeyCardSFX2
+						PlaySound_SM(sndManager\keycardErr)
 						Msg = "The keycard was inserted into the slot but nothing happened."
 						MsgTimer = 70 * 5
 						Return
 					Else
-						PlaySound KeyCardSFX1
+						PlaySound_SM(sndManager\keycardUse)
 						Msg = "The keycard was inserted into the slot."
 						MsgTimer = 70 * 5		
 					EndIf
@@ -416,7 +414,7 @@ Function UseDoor(d.Doors, showmsg%=True)
 			Else
 				mainPlayer\selectedItem = Null
 				If showmsg = True Then 
-					PlaySound KeyCardSFX2					
+					PlaySound_SM(sndManager\keycardErr)	
 					If d\locked Then
 						Msg = "The keycard was inserted into the slot but nothing happened."
 					Else
@@ -433,12 +431,12 @@ Function UseDoor(d.Doors, showmsg%=True)
 			temp = (mainPlayer\selectedItem\itemtemplate\tempname = "hand" And d\KeyCard=-1) Or (mainPlayer\selectedItem\itemtemplate\tempname = "hand2" And d\KeyCard=-2)
 		EndIf
 		If temp <> 0 Then
-			PlaySound ScannerSFX1
+			PlaySound_SM(sndManager\scannerUse)
 			Msg = "You place the palm of the hand onto the scanner. The scanner reads: "+Chr(34)+"DNA verified. Access granted."+Chr(34)
 			MsgTimer = 70 * 10
 		Else
 			If showmsg = True Then 
-				PlaySound ScannerSFX2
+				PlaySound_SM(sndManager\scannerErr)
 				Msg = "You placed your palm onto the scanner. The scanner reads: "+Chr(34)+"DNA does not match known sample. Access denied."+Chr(34)
 				MsgTimer = 70 * 10
 			EndIf
@@ -448,7 +446,7 @@ Function UseDoor(d.Doors, showmsg%=True)
 		If d\locked Then
 			If showmsg = True Then 
 				If Not (d\IsElevatorDoor>0) Then
-					PlaySound ButtonSFX2
+					PlaySound_SM(sndManager\buttonErr)
 					Msg = "The door appears to be locked."
 					MsgTimer = 70 * 5
 				Else
@@ -486,27 +484,25 @@ Function UseDoor(d.Doors, showmsg%=True)
 	d\open = (Not d\open)
 	If d\LinkedDoor <> Null Then d\LinkedDoor\open = (Not d\LinkedDoor\open)
 	
-	If d\dir = 1 Then sound=Rand(0, 1) Else sound=Rand(0, 2)
-	
 	If d\open Then
 		If d\LinkedDoor <> Null Then d\LinkedDoor\timerstate = d\LinkedDoor\timer
 		d\timerstate = d\timer
 		Select (d\dir)
 			Case 1
-				d\SoundCHN = PlayRangedSound_SM(sndManager\openBigDoor[Rand(0, 1)], mainPlayer\cam, d\obj)
+				PlayRangedSound_SM(sndManager\openBigDoor[Rand(0, 1)], mainPlayer\cam, d\obj)
 			Case 2
-				d\SoundCHN = PlayRangedSound_SM(sndManager\openHCZDoor[Rand(0, 2)], mainPlayer\cam, d\obj)
+				PlayRangedSound_SM(sndManager\openHCZDoor[Rand(0, 2)], mainPlayer\cam, d\obj)
 			Default
-				d\SoundCHN = PlayRangedSound_SM(sndManager\openDoor[Rand(0, 2)], mainPlayer\cam, d\obj)
+				PlayRangedSound_SM(sndManager\openDoor[Rand(0, 2)], mainPlayer\cam, d\obj)
 		End Select
 	Else
 		Select (d\dir)
 			Case 1
-				d\SoundCHN = PlayRangedSound_SM(sndManager\closeBigDoor[Rand(0, 1)], mainPlayer\cam, d\obj)
+				PlayRangedSound_SM(sndManager\closeBigDoor[Rand(0, 1)], mainPlayer\cam, d\obj)
 			Case 2
-				d\SoundCHN = PlayRangedSound_SM(sndManager\closeHCZDoor[Rand(0, 2)], mainPlayer\cam, d\obj)
+				PlayRangedSound_SM(sndManager\closeHCZDoor[Rand(0, 2)], mainPlayer\cam, d\obj)
 			Default
-				d\SoundCHN = PlayRangedSound_SM(sndManager\closeDoor[Rand(0, 2)], mainPlayer\cam, d\obj)
+				PlayRangedSound_SM(sndManager\closeDoor[Rand(0, 2)], mainPlayer\cam, d\obj)
 		End Select
 	End If
 End Function

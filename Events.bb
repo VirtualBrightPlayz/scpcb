@@ -1,3 +1,5 @@
+Const EVENT_SOUND_COUNT = 5
+Const EVENT_CHANNEL_COUNT = 2
 Type Events
 	Field EventName$
 	Field room.Rooms
@@ -7,8 +9,8 @@ Type Events
 	
 	Field img%
 	
-	Field soundChannels[2]
-	Field sounds[2]
+	Field soundChannels[EVENT_CHANNEL_COUNT]
+	Field sounds[EVENT_SOUND_COUNT]
 	
 	Field musicTrack$
 	Field overwriteMusic%
@@ -66,11 +68,13 @@ End Function
 
 Function RemoveEvent(e.Events)
 	Local i%
-	For i = 0 To 1
+	For i = 0 To EVENT_SOUND_COUNT-1
 		If (e\sounds[i] <> 0) Then
 			FreeSound(e\sounds[i])
 		EndIf
-		
+	Next
+	
+	For i = 0 To EVENT_CHANNEL_COUNT-1
 		If (e\soundChannels[i] <> 0) Then
 			If (IsChannelPlaying(e\soundChannels[i])) Then
 				StopChannel(e\soundChannels[i])
@@ -423,5 +427,4 @@ Function UpdateEvents()
 End Function
 
 ;~IDEal Editor Parameters:
-;~F#0#F#41#54#EB
 ;~C#Blitz3D

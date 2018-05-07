@@ -4,8 +4,8 @@ Function InitializeNPCtype1048a(n.NPCs)
     ScaleEntity n\obj, 0.05,0.05,0.05
     SetAnimTime(n\obj, 2)
     
-    n\Sound = LoadSound("SFX\SCP\1048A\Shriek.ogg")
-    n\Sound2 = LoadSound("SFX\SCP\1048A\Growth.ogg")
+    n\sounds[0] = LoadSound("SFX\SCP\1048A\Shriek.ogg")
+    n\sounds[1] = LoadSound("SFX\SCP\1048A\Growth.ogg")
 End Function
 
 Function UpdateNPCtype1048a(n.NPCs)

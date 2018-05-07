@@ -110,7 +110,7 @@ Function UpdateNPCtype173(n.NPCs)
 				n\lastDist = dist
 			Else 
 				;Stonedrag.
-				n\soundChn = LoopRangedSound(n\sounds[0], n\soundChn, mainPlayer\cam, n\collider, 10.0, n\state)
+				n\soundChannels[0] = LoopRangedSound(n\sounds[0], n\soundChannels[0], mainPlayer\cam, n\collider, 10.0, n\state)
 
 				;more than 6 room lengths away from the player -> teleport to a room closer to the player
 				If dist > 50 Then

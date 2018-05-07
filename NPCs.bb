@@ -40,6 +40,8 @@ Const NPCtype1499%      = 17
 Const NPCtypePdPlane%   = 18 ;TODO: Remove, don't think this is ever used even.
 Const NPCtype1048a%     = 19 ;TODO: Remove.
 
+Const NPC_SOUND_COUNT% = 12
+Const NPC_CHANNEL_COUNT% = 3
 Type NPCs
 	Field obj%
 	Field obj2%
@@ -64,16 +66,10 @@ Type NPCs
 	Field frame#
 	Field angle#
 
-	Field sounds%[12]
-	Field soundChannels%[3]
+	Field sounds%[NPC_SOUND_COUNT]
+	Field soundChannels%[NPC_CHANNEL_COUNT]
 	
 	Field playerDistance#
-
-	;Deprecate.
-	Field sound%
-	Field soundChn%
-	Field sound2%
-	Field soundChn2%
 	
 	;TODO: wtf why aren't we using this more instead of reload?
 	Field soundTimer#
@@ -237,8 +233,9 @@ Function LoadOrCopyMesh(n.NPCs, filePath$)
 End Function
 
 Function RemoveNPC(n.NPCs)
-	
-	If n=Null Then Return
+	If (n = Null) Then
+		Return
+	EndIf
 	
 	If n\obj2 <> 0 Then 
 		FreeEntity n\obj2
@@ -256,27 +253,11 @@ Function RemoveNPC(n.NPCs)
 	NPCStopAllChannels(n)
 	
 	Local i%
-	For i = 0 To 11
+	For i = 0 To NPC_SOUND_COUNT-1
 		If (n\sounds[i] <> 0) Then
 			FreeSound(n\sounds[i])
 		EndIf
 	Next
-	
-	If (n\soundChn <> 0 And IsChannelPlaying(n\soundChn)) Then
-		StopChannel(n\soundChn)
-	EndIf
-	
-	If n\soundChn2 <> 0 And IsChannelPlaying(n\soundChn2) Then
-		StopChannel(n\soundChn2)
-	EndIf
-	
-	If (n\sound <> 0) Then
-		FreeSound(n\sound)
-	EndIf
-	
-	If (n\sound2 <> 0) Then
-		FreeSound(n\sound2)
-	EndIf
 	
 	FreeEntity(n\obj)
 	n\obj = 0
@@ -296,6 +277,13 @@ Function UpdateNPCs()
 		n\InFacility = CheckForNPCInFacility(n)
 		
 		n\playerDistance = EntityDistance(mainPlayer\collider, n\collider)
+		
+		;If the npc was given a target then use its position.
+		If (n\target <> Null) Then
+			n\targetX = EntityX(n\target\collider)
+			n\targetY = EntityY(n\target\collider)
+			n\targetZ = EntityZ(n\target\collider)
+		EndIf
 		
 		;If the player is too far away then don't run the update code.
 		If (n\playerDistance >= HideDistance*2) Then
@@ -382,7 +370,7 @@ End Function
 ;Stops all audio channels for a given NPC.
 Function NPCStopAllChannels(n.NPCs)
 	Local i%
-	For i = 0 To 2
+	For i = 0 To NPC_CHANNEL_COUNT-1
 		If (IsChannelPlaying(n\soundChannels[i])) Then
 			StopChannel(n\soundChannels[i])
 		EndIf
@@ -502,7 +490,7 @@ End Function
 
 Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False)
 	;muzzle flash
-	Local p.particles = CreateParticle(x,y,z, 1, Rnd(0.08,0.1), 0.0, 5)
+	Local p.Particles = CreateParticle(x,y,z, 1, Rnd(0.08,0.1), 0.0, 5)
 	TurnEntity p\obj, 0,0,Rnd(360)
 	p\Achange = -0.15
 	
@@ -510,7 +498,11 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 	
 	If (Not mainPlayer\godMode) Then 
 		
-		If instaKill Then Kill(mainPlayer) : PlaySound BullethitSFX : Return
+		If instaKill Then
+			Kill(mainPlayer)
+			PlaySound_SM(sndManager\bulletHit)
+			Return
+		EndIf
 		
 		If Rnd(1.0) =< hitProb Then
 			TurnEntity mainPlayer\cam, Rnd(-3,3), Rnd(-3,3), 0
@@ -593,7 +585,7 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 			mainPlayer\injuries = Min(mainPlayer\injuries, 4.0)
 			
 			;Kill(mainPlayer)
-			PlaySound BullethitSFX
+			PlaySound_SM(sndManager\bulletHit)
 		ElseIf particles Then
 			Local pvt% = CreatePivot()
 			PositionEntity pvt, EntityX(mainPlayer\collider),(EntityY(mainPlayer\collider)+EntityY(mainPlayer\cam))/2,EntityZ(mainPlayer\collider)
@@ -603,7 +595,7 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 			EntityPick(pvt, 2.5)
 			
 			If PickedEntity() <> 0 Then 
-				PlayRangedSound(Gunshot3SFX, mainPlayer\cam, pvt, 0.4, Rnd(0.8,1.0))
+				PlayRangedSound_SM(sndManager\bulletMiss, mainPlayer\cam, pvt, 0.4, Rnd(0.8,1.0))
 				
 				If particles Then 
 					;dust/smoke particles
@@ -645,7 +637,7 @@ End Function
 ;TODO: Move to MTF file?
 Function PlayMTFSound(sound%, n.NPCs)
 	If n <> Null Then
-		n\soundChn = PlayRangedSound(sound, mainPlayer\cam, n\collider, 8.0)	
+		n\soundChannels[0] = PlayRangedSound(sound, mainPlayer\cam, n\collider, 8.0)	
 	EndIf
 	
 	If mainPlayer\selectedItem <> Null Then
@@ -669,7 +661,7 @@ Function MoveToPocketDimension()
 			UpdateDoors()
 			UpdateRooms()
 			ShowEntity mainPlayer\collider
-			PlaySound(Use914SFX)
+			PlaySound(LoadTempSound("SFX\SCP\914\PlayerUse.ogg"))
 			;PlaySound(OldManSFX(5)) ;TODO: fix
 			PositionEntity(mainPlayer\collider, EntityX(r\obj),0.8,EntityZ(r\obj))
 			mainPlayer\dropSpeed = 0

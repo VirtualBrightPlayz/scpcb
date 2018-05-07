@@ -7,6 +7,7 @@ Type SoundManager
 	Field chnList.IntArrayList
 
 	Field button.Sound
+	Field buttonErr.Sound
 	
 	; Footsteps
 	Field footstep.Sound[8]
@@ -24,6 +25,35 @@ Type SoundManager
 	Field closeDoor.Sound[3]
 	Field closeBigDoor.Sound[2]
 	Field closeHCZDoor.Sound[3]
+	
+	; Keycards
+	Field keycardUse.Sound
+	Field keycardErr.Sound
+	Field scannerUse.Sound
+	Field scannerErr.Sound
+	
+	; Elevator
+	Field elevatorBeep.Sound
+	Field elevatorMove.Sound
+	
+	; Tesla
+	Field teslaIdle.Sound
+	Field teslaActive.Sound
+	Field teslaPowerUp.Sound
+	Field teslaShock.Sound
+	
+	; Bullets
+	Field gunshot.Sound[2]
+	Field bulletHit.Sound
+	Field bulletMiss.Sound
+	
+	Field caution.Sound
+	Field hiss.Sound
+	Field lightSwitch.Sound
+	Field lever.Sound
+	Field burst.Sound
+	Field camera.Sound
+	Field heartbeat.Sound
 End Type
 Global sndManager.SoundManager
 
@@ -38,6 +68,9 @@ End Function
 
 Function LoadInGameSounds(sndMan.SoundManager)
 	Local i%
+	
+	sndMan\buttonErr = InitializeSound_SM("SFX\Interact\Button2.ogg")
+	
 	For i = 0 To 7
 		sndMan\footstep[i] = LoadSound_SM("SFX\Step\Step" + (i + 1) + ".ogg")
 		sndMan\footstepRun[i] = LoadSound_SM("SFX\Step\Run" + (i + 1) + ".ogg")
@@ -61,8 +94,34 @@ Function LoadInGameSounds(sndMan.SoundManager)
 		sndMan\openBigDoor[i] = InitializeSound_SM("SFX\Door\BigDoorOpen" + (i + 1) + ".ogg")
 		sndMan\closeBigDoor[i] = InitializeSound_SM("SFX\Door\BigDoorClose" + (i + 1) + ".ogg")
 	Next
+	
+	sndMan\keycardUse = InitializeSound_SM("SFX\Interact\KeyCardUse1.ogg")
+	sndMan\keycardErr = InitializeSound_SM("SFX\Interact\KeyCardUse2.ogg")
+	sndMan\scannerUse = InitializeSound_SM("SFX\Interact\ScannerUse1.ogg")
+	sndMan\scannerErr = InitializeSound_SM("SFX\Interact\ScannerUse2.ogg")
+	
+	sndMan\elevatorBeep = InitializeSound_SM("SFX\General\Elevator\Beep.ogg")
+	sndMan\elevatorMove = InitializeSound_SM("SFX\General\Elevator\Moving.ogg")
+	
+	sndMan\teslaIdle = InitializeSound_SM("SFX\Room\Tesla\Idle.ogg")
+	sndMan\teslaActive = InitializeSound_SM("SFX\Room\Tesla\WindUp.ogg")
+	sndMan\teslaPowerUp = InitializeSound_SM("SFX\Room\Tesla\PowerUp.ogg")
+	sndMan\teslaShock = InitializeSound_SM("SFX\Room\Tesla\Shock.ogg")
+	
+	sndMan\gunshot[0] = InitializeSound_SM("SFX\General\Gunshot.ogg")
+	sndMan\gunshot[1] = InitializeSound_SM("SFX\General\Gunshot2.ogg")
+	sndMan\bulletHit = InitializeSound_SM("SFX\General\BulletHit.ogg")
+	sndMan\bulletMiss = InitializeSound_SM("SFX\General\BulletMiss.ogg")
+	
+	sndMan\caution = InitializeSound_SM("SFX\Room\LockroomSiren.ogg")
+	sndMan\hiss = InitializeSound_SM("SFX\General\Hiss.ogg")
+	sndMan\lightSwitch = InitializeSound_SM("SFX\General\LightSwitch.ogg")
+	sndMan\lever = InitializeSound_SM("SFX\Interact\LeverFlip.ogg")
+	sndMan\burst = InitializeSound_SM("SFX\Room\TunnelBurst.ogg")
+	sndMan\camera = InitializeSound_SM("SFX\General\Camera.ogg")
+	sndMan\heartbeat = InitializeSound_SM("SFX\Character\D9341\Heartbeat.ogg")
 End Function
-
+; TODO: Free all the shit above.
 Function DeloadInGameSounds(sndMan.SoundManager)
 	Local i%
 	For i = 0 To 7
@@ -88,23 +147,82 @@ Function DeloadInGameSounds(sndMan.SoundManager)
 		FreeSound_SM(sndMan\openBigDoor[i])
 		FreeSound_SM(sndMan\closeBigDoor[i])
 	Next
+
+	FreeSound_SM(sndMan\keycardErr)
+	FreeSound_SM(sndMan\keycardUse)
+	FreeSound_SM(sndMan\scannerUse)
+	FreeSound_SM(sndMan\scannerErr)
+	
+	FreeSound_SM(sndMan\elevatorBeep)
+	FreeSound_SM(sndMan\elevatorMove)
+	
+	FreeSound_SM(sndMan\teslaIdle)
+	FreeSound_SM(sndMan\teslaActive)
+	FreeSound_SM(sndMan\teslaPowerUp)
+	FreeSound_SM(sndMan\teslaShock)
+	
+	FreeSound_SM(sndMan\gunshot[0])
+	FreeSound_SM(sndMan\gunshot[1])
+	FreeSound_SM(sndMan\bulletHit)
+	FreeSound_SM(sndMan\bulletMiss)
+	
+	FreeSound_SM(sndMan\caution)
+	FreeSound_SM(sndMan\hiss)
+	FreeSound_SM(sndMan\lightSwitch)
+	FreeSound_SM(sndMan\lever)
+	FreeSound_SM(sndMan\burst)
+	FreeSound_SM(sndMan\camera)
+	FreeSound_SM(sndMan\heartbeat)
 End Function
 
+Type SoundChannel
+	Field internal%
+
+	Field camera%
+	Field point%
+
+	Field range#
+	Field volume#
+End Type
+
 ; Add a channel to the list.
-Function AddChannel(chn%)
-	If (chn = 0) Then
+Function AddChannel(ref%)
+	If (ref = 0) Then
 		Return
 	EndIf
 
-	PushIntArrayListElem(sndManager\chnList, chn)
+	Local chn.SoundChannel = New SoundChannel
+	chn\internal = ref
+
+	PushIntArrayListElem(sndManager\chnList, Handle(chn))
+End Function
+
+Function AddPositionalChannel(ref%, cam%, ent%, range# = 10, vol# = 1.0)
+	If (ref = 0) Then
+		Return
+	EndIf
+
+	Local chn.SoundChannel = New SoundChannel
+	chn\internal = ref
+	chn\camera = cam
+	chn\point = CreatePivot()
+	PositionEntity(chn\point, EntityX(ent), EntityY(ent), EntityZ(ent))
+	chn\range = range
+	chn\volume = vol
+
+	PushIntArrayListElem(sndManager\chnList, Handle(chn))
 End Function
 
 Function UpdateChannelList()
 	Local i%
 	For i = 0 To sndManager\chnList\size-1
-		If (Not IsChannelPlaying(GetIntArrayListElem(sndManager\chnList, i))) Then
+		Local chn.SoundChannel =  Object.SoundChannel(GetIntArrayListElem(sndManager\chnList, i))
+		If (Not IsChannelPlaying(chn\internal)) Then
 			EraseIntArrayListElem(sndManager\chnList, i)
+			FreeEntity(chn\point)
 			i = i - 1
+		ElseIf (chn\camera <> 0) Then
+			UpdateRangedSoundOrigin_SM(chn)
 		EndIf
 	Next
 End Function
@@ -125,15 +243,18 @@ Function LoadSound_SM.Sound(fileName$)
 	Return snd
 End Function
 
-Function PlaySound_SM%(snd.Sound)
+Function PlaySound2(snd%)
+	AddChannel(PlaySound(snd))
+End Function
+
+Function PlaySound_SM(snd.Sound)
 	;If the sound hasn't been loaded yet then do that.
 	If (snd\internal = 0) Then
-		snd\internal = LoadSound(fileName)
+		snd\internal = LoadSound(snd\file)
 	EndIf
 
 	;Play the sound.
-	Local chn% = PlaySound(snd\internal)
-	Return chn
+	PlaySound2(snd\internal)
 End Function
 
 Function FreeSound_SM(snd.Sound)
@@ -145,7 +266,7 @@ Function FreeSound_SM(snd.Sound)
 	Delete snd
 End Function
 
-Function IsChannelPlaying(chn%)
+Function IsChannelPlaying%(chn%)
 	If (chn = 0) Then
 		Return False
 	EndIf
@@ -153,116 +274,180 @@ Function IsChannelPlaying(chn%)
 	Return ChannelPlaying(chn)
 End Function
 
-Function PlayRangedSound%(soundHandle%, cam%, entity%, range# = 10, volume# = 1.0)
+Function PlayRangedSound(soundHandle%, cam%, entity%, range# = 10, volume# = 1.0)
 	range# = Max(range, 1.0)
 	Local soundChn% = 0
 	
 	If (volume > 0) Then
-		Local dist# = EntityDistance(cam, entity) / range#
-		If (1 - dist# > 0 And 1 - dist# < 1) Then
+		Local dist# = EntityDistance(cam, entity) / range
+		If (1 - dist > 0 And 1 - dist < 1) Then
 			Local panvalue# = Sin(-DeltaYaw(cam, entity))
-			soundChn% = PlaySound(soundHandle)
+			soundChn = PlaySound(soundHandle)
 			
-			ChannelVolume(soundChn, volume# * (1 - dist#) * userOptions\soundVolume)
+			ChannelVolume(soundChn, volume * (1 - dist) * userOptions\soundVolume)
 			ChannelPan(soundChn, panvalue)
 		EndIf
 	EndIf
 	
-	Return soundChn
+	AddPositionalChannel(soundChn, cam, entity, range, volume)
 End Function
 
-Function PlayRangedSound_SM%(snd.Sound, cam%, entity%, range# = 10, volume# = 1.0)
-	Return PlayRangedSound(snd\internal, cam, entity, range, volume)
+Function PlayRangedSound_SM(snd.Sound, cam%, entity%, range# = 10, volume# = 1.0)
+	If (snd\internal = 0) Then
+		snd\internal = LoadSound(snd\file)
+	EndIf
+	PlayRangedSound(snd\internal, cam, entity, range, volume)
 End Function
 
 ; Only begins playing the sound if the sound channel isn't playing anything else.
 Function LoopRangedSound%(soundHandle%, chn%, cam%, entity%, range# = 10, volume# = 1.0)
-	range# = Max(range,1.0)
+	range = Max(range,1.0)
 	
 	If (Not IsChannelPlaying(chn)) Then chn% = PlaySound(soundHandle)
 	
-	UpdateRangedSoundOrigin(chn,cam,entity,range,volume)
+	UpdateRangedSoundOrigin(chn, cam, entity, range, volume)
 
 	Return chn
 End Function
 
-Function LoadTempSound(file$)
-	If TempSounds[TempSoundIndex]<>0 Then FreeSound(TempSounds[TempSoundIndex])
+Function LoopRangedSound_SM%(snd.Sound, chn%, cam%, entity%, range# = 10, volume# = 1.0)
+	If (snd\internal = 0) Then
+		snd\internal = LoadSound(snd\file)
+	EndIf
+	Return LoopRangedSound(snd\internal, chn, cam, entity, range, volume)
+End Function
+
+Function UpdateRangedSoundOrigin(chn%, cam%, entity%, range# = 10, volume# = 1.0)
+	range = Max(range, 1.0)
+	
+	If (volume > 0) Then
+		
+		Local dist# = EntityDistance(cam, entity) / range
+		If (1 - dist > 0 And 1 - dist < 1) Then
+			Local panvalue# = Sin(-DeltaYaw(cam,entity))
+			
+			ChannelVolume(chn, volume * (1 - dist) * userOptions\soundVolume)
+			ChannelPan(chn, panvalue)
+		EndIf
+	Else
+		If (chn <> 0) Then
+			ChannelVolume(chn, 0)
+		EndIf 
+	EndIf
+End Function
+
+Function UpdateRangedSoundOrigin_SM(chn.SoundChannel)
+	If (chn\volume > 0) Then
+		Local dist# = EntityDistance(chn\camera, chn\point) / chn\range
+		If (1 - dist > 0 And 1 - dist < 1) Then
+			Local panvalue# = Sin(-DeltaYaw(chn\camera, chn\point))
+			
+			ChannelVolume(chn\internal, chn\volume * (1 - dist) * userOptions\soundVolume)
+			ChannelPan(chn\internal, panvalue)
+		EndIf
+	Else
+		ChannelVolume(chn\internal, 0)
+	EndIf
+End Function
+
+Function LoadTempSound%(file$)
+	If (TempSounds[TempSoundIndex] <> 0) Then
+		FreeSound(TempSounds[TempSoundIndex])
+	EndIf
+
 	Local TempSound% = LoadSound(file)
 	TempSounds[TempSoundIndex] = TempSound
 
-	TempSoundIndex=(TempSoundIndex+1) Mod 10
+	TempSoundIndex = (TempSoundIndex + 1) Mod 10
 
 	Return TempSound
 End Function
 
 Function LoadEventSound(e.Events,file$,num%=0)
 	Local i%
-	For i = 0 To 1
+	For i = 0 To EVENT_CHANNEL_COUNT-1
 		If (num = i) Then
 			If (e\sounds[i]<>0) Then FreeSound(e\sounds[i]) : e\sounds[i]=0
-			e\sounds[i]=LoadSound(file)
+			e\sounds[i] = LoadSound(file)
 			Return e\sounds[i]
 		EndIf
 	Next
 End Function
 
 Function PauseSounds()
-	Local e.Events, n.NPCs, d.Doors
+	Local sc.SoundChannel, sc2.SecurityCams, e.Events, n.NPCs, em.Emitters, i%
+
+	For sc = Each SoundChannel
+		If (IsChannelPlaying(sc\internal)) Then
+			PauseChannel(sc\internal)
+		EndIf
+	Next
+	
+	For sc2 = Each SecurityCams
+		If (IsChannelPlaying(sc2\soundCHN)) Then
+			PauseChannel(sc2\soundCHN)
+		EndIf
+	Next
 
 	For e = Each Events
-		If e\soundChannels[0] <> 0 Then
-			If IsChannelPlaying(e\soundChannels[0]) Then PauseChannel(e\soundChannels[0])
-		EndIf
-		If e\soundChannels[1] <> 0 Then
-			If IsChannelPlaying(e\soundChannels[1]) Then PauseChannel(e\soundChannels[1])
-		EndIf		
+		For i = 0 To EVENT_CHANNEL_COUNT-1
+			If IsChannelPlaying(e\soundChannels[i]) Then
+				PauseChannel(e\soundChannels[i])
+			EndIf
+		Next
 	Next
 	
 	For n = Each NPCs
-		If n\soundChn <> 0 Then
-			If IsChannelPlaying(n\soundChn) Then PauseChannel(n\soundChn)
-		EndIf
-	Next	
+		For i = 0 To NPC_CHANNEL_COUNT-1
+			If IsChannelPlaying(n\soundChannels[i]) Then
+				PauseChannel(n\soundChannels[i])
+			EndIf
+		Next
+	Next
 	
-	For d = Each Doors
-		If d\SoundCHN <> 0 Then
-			If IsChannelPlaying(d\SoundCHN) Then PauseChannel(d\SoundCHN)
+	For em = Each Emitters
+		If (IsChannelPlaying(em\soundCHN)) Then
+			PauseChannel(em\soundCHN)
 		EndIf
-	Next	
-	
-	If AmbientSFXCHN <> 0 Then
-		If IsChannelPlaying(AmbientSFXCHN) Then PauseChannel(AmbientSFXCHN)
-	EndIf
+	Next
 End Function
 
 Function ResumeSounds()
-	Local e.Events, n.NPCs, d.Doors
+	Local sc.SoundChannel, sc2.SecurityCams, e.Events, n.NPCs, em.Emitters, i%
+
+	For sc = Each SoundChannel
+		If (IsChannelPlaying(sc\internal)) Then
+			ResumeChannel(sc\internal)
+		EndIf
+	Next
+	
+	For sc2 = Each SecurityCams
+		If (IsChannelPlaying(sc2\soundCHN)) Then
+			ResumeChannel(sc2\soundCHN)
+		EndIf
+	Next
 
 	For e = Each Events
-		If e\soundChannels[0] <> 0 Then
-			If IsChannelPlaying(e\soundChannels[0]) Then ResumeChannel(e\soundChannels[0])
-		EndIf
-		If e\soundChannels[1] <> 0 Then
-			If IsChannelPlaying(e\soundChannels[1]) Then ResumeChannel(e\soundChannels[1])
-		EndIf	
+		For i = 0 To EVENT_CHANNEL_COUNT-1
+			If IsChannelPlaying(e\soundChannels[i]) Then
+				ResumeChannel(e\soundChannels[i])
+			EndIf
+		Next
 	Next
 	
 	For n = Each NPCs
-		If n\soundChn <> 0 Then
-			If IsChannelPlaying(n\soundChn) Then ResumeChannel(n\soundChn)
-		EndIf
-	Next	
+		For i = 0 To NPC_CHANNEL_COUNT-1
+			If IsChannelPlaying(n\soundChannels[i]) Then
+				ResumeChannel(n\soundChannels[i])
+			EndIf
+		Next
+	Next
 	
-	For d = Each Doors
-		If d\SoundCHN <> 0 Then
-			If IsChannelPlaying(d\SoundCHN) Then ResumeChannel(d\SoundCHN)
+	For em = Each Emitters
+		If (IsChannelPlaying(em\soundCHN)) Then
+			ResumeChannel(em\soundCHN)
 		EndIf
-	Next	
-	
-	If AmbientSFXCHN <> 0 Then
-		If IsChannelPlaying(AmbientSFXCHN) Then ResumeChannel(AmbientSFXCHN)
-	EndIf
+	Next
 End Function
 
 Function GetMaterialStepSound(entity%)
@@ -307,26 +492,6 @@ Function GetMaterialStepSound(entity%)
     EndIf
     
     Return 0
-End Function
-
-Function UpdateRangedSoundOrigin(chn%, cam%, entity%, range# = 10, volume# = 1.0)
-	range# = Max(range,1.0)
-	
-	If volume>0 Then
-		
-		Local dist# = EntityDistance(cam, entity) / range#
-		If 1 - dist# > 0 And 1 - dist# < 1 Then
-			
-			Local panvalue# = Sin(-DeltaYaw(cam,entity))
-			
-			ChannelVolume(chn, volume# * (1 - dist#)*userOptions\soundVolume)
-			ChannelPan(chn, panvalue)
-		EndIf
-	Else
-		If chn <> 0 Then
-			ChannelVolume (chn, 0)
-		EndIf 
-	EndIf
 End Function
 
 
@@ -431,6 +596,8 @@ Function UpdateMusic()
 			musicManager\fadeOut = False
 			musicManager\currMusicVolume = userOptions\musicVolume
 		EndIf
+	ElseIf (musicManager\currMusicVolume <> userOptions\musicVolume) Then
+		musicManager\currMusicVolume = userOptions\musicVolume
 	EndIf
 
 	;If nothing is playing then figure out what the next track is.
@@ -440,3 +607,5 @@ Function UpdateMusic()
 	
 	ChannelVolume(musicManager\channel, musicManager\currMusicVolume)
 End Function
+;~IDEal Editor Parameters:
+;~C#Blitz3D

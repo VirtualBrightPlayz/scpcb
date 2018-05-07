@@ -2156,7 +2156,7 @@ Function UpdateSecurityCams()
 					
 				EndIf ;if screen=true
 				
-				If (Not sc\InSight) Then sc\soundCHN = LoopRangedSound(CameraSFX, sc\soundCHN, mainPlayer\cam, sc\CameraObj, 4.0)
+				If (Not sc\InSight) Then sc\soundCHN = LoopRangedSound_SM(sndManager\camera, sc\soundCHN, mainPlayer\cam, sc\CameraObj, 4.0)
 			Else
 				If SelectedMonitor=sc Then SelectedMonitor=Null
 			EndIf
@@ -2200,9 +2200,9 @@ Function UpdateLever(obj, locked=False)
 				EndIf 
 				
 				If EntityPitch(obj,True) > 75 Then ;p��ll�
-					If prevpitch =< 75 Then PlayRangedSound(LeverSFX, mainPlayer\cam, obj, 1.0)
+					If prevpitch =< 75 Then PlayRangedSound_SM(sndManager\lever, mainPlayer\cam, obj, 1.0)
 				ElseIf EntityPitch(obj,True) < -75 ;pois p��lt�
-					If prevpitch => -75 Then PlayRangedSound(LeverSFX, mainPlayer\cam, obj, 1.0)	
+					If prevpitch => -75 Then PlayRangedSound_SM(sndManager\lever, mainPlayer\cam, obj, 1.0)	
 				EndIf						
 			EndIf
 		EndIf
@@ -2292,10 +2292,8 @@ Function UpdateElevators#(State#, door1.Doors, door2.Doors, room1, room2, event.
 					If Abs(EntityY(mainPlayer\collider)-EntityY(room1,True))<280.0*RoomScale Then
 						inside = True
 						
-						If event\soundChannels[0] = 0 Then
-							event\soundChannels[0] = PlaySound(ElevatorMoveSFX)
-						Else
-							If (Not IsChannelPlaying(event\soundChannels[0])) Then event\soundChannels[0] = PlaySound(ElevatorMoveSFX)
+						If (Not IsChannelPlaying(event\soundChannels[0])) Then
+							event\soundChannels[0] = PlaySound_SM(sndManager\elevatorMove)
 						EndIf
 						
 						mainPlayer\camShake = Sin(Abs(State)/3.0)*0.3
@@ -2356,7 +2354,7 @@ Function UpdateElevators#(State#, door1.Doors, door2.Doors, room1, room2, event.
 				
 				UseDoor(door2,False)
 				
-				PlayRangedSound(ElevatorBeepSFX, mainPlayer\cam, room1, 4.0)
+				PlayRangedSound_SM(sndManager\elevatorBeep, mainPlayer\cam, room2, 4.0)
 			EndIf
 		Else ;alhaalta yl�s
 			State = State + timing\tickDuration
@@ -2366,10 +2364,8 @@ Function UpdateElevators#(State#, door1.Doors, door2.Doors, room1, room2, event.
 					If Abs(EntityY(mainPlayer\collider)-EntityY(room2,True))<280.0*RoomScale Then
 						inside = True
 						
-						If event\soundChannels[0] = 0 Then
-							event\soundChannels[0] = PlaySound(ElevatorMoveSFX)
-						Else
-							If (Not IsChannelPlaying(event\soundChannels[0])) Then event\soundChannels[0] = PlaySound(ElevatorMoveSFX)
+						If (Not IsChannelPlaying(event\soundChannels[0])) Then
+							event\soundChannels[0] = PlaySound_SM(sndManager\elevatorMove)
 						EndIf
 						
 						mainPlayer\camShake = Sin(Abs(State)/3.0)*0.3
@@ -2431,7 +2427,7 @@ Function UpdateElevators#(State#, door1.Doors, door2.Doors, room1, room2, event.
 				
 				UseDoor(door1,False)
 				
-				PlayRangedSound(ElevatorBeepSFX, mainPlayer\cam, room2, 4.0)				
+				PlayRangedSound_SM(sndManager\elevatorBeep, mainPlayer\cam, room1, 4.0)				
 			EndIf	
 			
 		EndIf
@@ -2477,10 +2473,8 @@ Function UpdateElevators2#(State#, door1.Doors, door2.Doors, room1, room2, event
 					If Abs(EntityY(mainPlayer\collider)-EntityY(room1,True))<280.0*RoomScale Then	
 						inside = True
 						
-						If event\soundChannels[0] = 0 Then
-							event\soundChannels[0] = PlaySound(ElevatorMoveSFX)
-						Else
-							If (Not IsChannelPlaying(event\soundChannels[0])) Then event\soundChannels[0] = PlaySound(ElevatorMoveSFX)
+						If (Not IsChannelPlaying(event\soundChannels[0])) Then
+							event\soundChannels[0] = PlaySound_SM(sndManager\elevatorMove)
 						EndIf
 						
 						mainPlayer\camShake = Sin(Abs(State)/3.0)*0.3
@@ -2522,7 +2516,7 @@ Function UpdateElevators2#(State#, door1.Doors, door2.Doors, room1, room2, event
 					UpdateRooms()
 				EndIf
 				
-				PlayRangedSound(ElevatorBeepSFX, mainPlayer\cam, room1, 4.0)	
+				PlayRangedSound_SM(sndManager\elevatorBeep, mainPlayer\cam, room2, 4.0)
 				;PlaySound(ElevatorBeepSFX)	
 			EndIf
 		Else ;alhaalta yl�s
@@ -2533,10 +2527,8 @@ Function UpdateElevators2#(State#, door1.Doors, door2.Doors, room1, room2, event
 					If Abs(EntityY(mainPlayer\collider)-EntityY(room2,True))<280.0*RoomScale Then
 						inside = True
 						
-						If event\soundChannels[0] = 0 Then
-							event\soundChannels[0] = PlaySound(ElevatorMoveSFX)
-						Else
-							If (Not IsChannelPlaying(event\soundChannels[0])) Then event\soundChannels[0] = PlaySound(ElevatorMoveSFX)
+						If (Not IsChannelPlaying(event\soundChannels[0])) Then
+							event\soundChannels[0] = PlaySound_SM(sndManager\elevatorMove)
 						EndIf
 						
 						mainPlayer\camShake = Sin(Abs(State)/3.0)*0.3
@@ -2579,7 +2571,7 @@ Function UpdateElevators2#(State#, door1.Doors, door2.Doors, room1, room2, event
 					UpdateRooms()
 				EndIf
 				
-				PlayRangedSound(ElevatorBeepSFX, mainPlayer\cam, room2, 4.0)				
+				PlayRangedSound_SM(sndManager\elevatorBeep, mainPlayer\cam, room1, 4.0)			
 			EndIf	
 			
 		EndIf

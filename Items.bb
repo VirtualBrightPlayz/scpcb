@@ -327,8 +327,6 @@ Type Items
 	
 	Field level
 	
-	Field SoundChn%
-	
 	Field dist#, disttimer#
 	
 	Field state#, state2#

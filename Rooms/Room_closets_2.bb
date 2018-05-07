@@ -73,9 +73,9 @@ Function UpdateEvent_closets_2(e.Events)
 			EntityTexture e\room\NPC[0]\obj, tex
 			FreeTexture tex
 			
-			e\room\NPC[0]\sound=LoadSound("SFX\Room\Storeroom\Escape1.ogg")
+			e\room\NPC[0]\sounds[0] = LoadSound("SFX\Room\Storeroom\Escape1.ogg")
 			
-			e\room\NPC[0]\soundChn = PlayRangedSound(e\room\NPC[0]\sound, mainPlayer\cam, e\room\NPC[0]\collider, 12)
+			e\room\NPC[0]\soundChannels[0] = PlayRangedSound(e\room\NPC[0]\sounds[0], mainPlayer\cam, e\room\NPC[0]\collider, 12)
 			
 			If e\room\NPC[1]=Null Then
 				e\room\NPC[1] = CreateNPC(NPCtypeD, EntityX(e\room\Objects[1],True),EntityY(e\room\Objects[1],True),EntityZ(e\room\Objects[1],True))
@@ -86,7 +86,7 @@ Function UpdateEvent_closets_2(e.Events)
 			
 			FreeTexture tex
 			
-			e\room\NPC[1]\sound=LoadSound("SFX\Room\Storeroom\Escape2.ogg")
+			e\room\NPC[1]\sounds[0] = LoadSound("SFX\Room\Storeroom\Escape2.ogg")
 			
 			PointEntity e\room\NPC[0]\collider, e\room\NPC[1]\collider
 			PointEntity e\room\NPC[1]\collider, e\room\NPC[0]\collider
@@ -104,7 +104,7 @@ Function UpdateEvent_closets_2(e.Events)
 		ElseIf e\EventState < 70*6.5
 			If e\EventState-timing\tickDuration < 70*3.5 Then
 				e\room\NPC[0]\state=0
-				e\room\NPC[1]\soundChn = PlayRangedSound(e\room\NPC[1]\sound, mainPlayer\cam, e\room\NPC[1]\collider,12.0)
+				e\room\NPC[1]\soundChannels[0] = PlayRangedSound(e\room\NPC[1]\sounds[0], mainPlayer\cam, e\room\NPC[1]\collider,12.0)
 			EndIf
 			
 			If e\EventState > 70*4.5 Then
@@ -115,9 +115,8 @@ Function UpdateEvent_closets_2(e.Events)
 			TurnEntity e\room\NPC[1]\obj, 0, Sin(e\EventState)*25, 0
 			RotateEntity(e\room\NPC[1]\collider,0,CurveAngle(EntityYaw(e\room\NPC[1]\obj),EntityYaw(e\room\NPC[1]\collider),30.0),0,True)
 		Else
-			If e\EventState-timing\tickDuration < 70*6.5 Then 
-				;PlaySound (HorrorSFX(0))
-				PlaySound (LightSFX)
+			If e\EventState-timing\tickDuration < 70*6.5 Then
+				PlaySound_SM(sndManager\lightSwitch)
 			EndIf
 			mainPlayer\blinkTimer = Max((70*6.5-e\EventState)/5.0 - Rnd(0.0,2.0),-10)
 			If mainPlayer\blinkTimer =-10 Then

@@ -125,8 +125,8 @@ Function UpdateEvent_cont_008_1(e.Events)
 					If e\EventState2=0 Then
 						ShowEntity e\room\Objects[2]
 						If mainPlayer\blinkTimer<-10 And Curr173\Idle = 0 Then
-							PositionEntity Curr173\Collider, EntityX(e\room\Objects[4],True),0.5,EntityZ(e\room\Objects[4],True),True
-							ResetEntity Curr173\Collider
+							PositionEntity Curr173\collider, EntityX(e\room\Objects[4],True),0.5,EntityZ(e\room\Objects[4],True),True
+							ResetEntity Curr173\collider
 							
 							HideEntity e\room\Objects[2]
 							
@@ -156,7 +156,7 @@ Function UpdateEvent_cont_008_1(e.Events)
 				
 				If EntityPitch(e\room\Objects[1],True)<40 Then 
 					e\EventState = 2
-					PlaySound LeverSFX
+					PlaySound_SM(sndManager\lever)
 				Else
 					p.Particles = CreateParticle(EntityX(e\room\Objects[0],True),EntityY(e\room\Objects[0],True),EntityZ(e\room\Objects[0],True), 6, 0.02, -0.12)
 					RotateEntity (p\pvt,-90,0,0,True)

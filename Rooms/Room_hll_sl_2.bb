@@ -498,11 +498,11 @@ Function UpdateEvent_hll_sl_2(e.Events)
 				If e\room\NPC[0]\pathTimer# = 0.0
 					;e\room\NPC[0]\PathTimer# = e\room\NPC[0]\PathTimer# + timing\tickDuration
 					If e\room\NPC[0]\prevState = 1 Then
-						If (e\room\NPC[0]\soundChn2 = 0) Then
-							e\room\NPC[0]\sound2 = LoadSound("SFX\SCP\049\Room2SLEnter.ogg")
-							e\room\NPC[0]\soundChn2 = PlayRangedSound(e\room\NPC[0]\sound2, mainPlayer\cam, e\room\NPC[0]\collider)
+						If (e\room\NPC[0]\soundChannels[1] = 0) Then
+							e\room\NPC[0]\sounds[1] = LoadSound("SFX\SCP\049\Room2SLEnter.ogg")
+							e\room\NPC[0]\soundChannels[1] = PlayRangedSound(e\room\NPC[0]\sounds[1], mainPlayer\cam, e\room\NPC[0]\collider)
 						Else
-							If (Not IsChannelPlaying(e\room\NPC[0]\soundChn2))
+							If (Not IsChannelPlaying(e\room\NPC[0]\soundChannels[1]))
 								e\room\NPC[0]\pathTimer# = 1.0
 							EndIf
 						EndIf
@@ -651,6 +651,7 @@ Function ValidRoom2slCamRoom(r.Rooms)
 	Return False
 	
 End Function
+
 
 ;~IDEal Editor Parameters:
 ;~C#Blitz3D

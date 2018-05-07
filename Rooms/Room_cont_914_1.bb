@@ -61,7 +61,7 @@ Function Use914(item.Items, setting$, x#, y#, z#)
 	
 	;RefinedItems = RefinedItems+1
 	
-	Local it2.Items
+	Local it2.Items, d.Decals, n.NPCs
 	Select item\itemtemplate\name
 		Case "Gas Mask", "Heavy Gas Mask"
 			Select setting
@@ -90,10 +90,10 @@ Function Use914(item.Items, setting$, x#, y#, z#)
 					RemoveItem(item)
 				Case "very fine"
 					n.NPCs = CreateNPC(NPCtype1499,x,y,z)
-					n\State = 1
-					n\Sound = LoadSound("SFX\SCP\1499\Triggered.ogg")
-					n\SoundChn = PlayRangedSound(n\Sound, mainPlayer\cam, n\Collider,20.0)
-					n\State3 = 1
+					n\state = 1
+					n\sounds[0] = LoadSound("SFX\SCP\1499\Triggered.ogg")
+					n\soundChannels[0] = PlayRangedSound(n\sounds[0], mainPlayer\cam, n\collider,20.0)
+					n\state3 = 1
 					RemoveItem(item)
 			End Select
 		Case "Ballistic Vest"
@@ -546,6 +546,14 @@ Function UpdateEvent_cont_914_1(e.Events)
 
 	;[Block]
 	If mainPlayer\currRoom = e\room Then
+		If (Not e\loaded) Then
+			e\sounds[0] = LoadSound("SFX\SCP\914\Refining.ogg")
+			e\sounds[1] = LoadSound("SFX\SCP\914\PlayerUse.ogg")
+			e\sounds[2] = LoadSound("SFX\SCP\914\PlayerDeath.ogg")
+
+			e\loaded = True
+		EndIf
+		
 		EntityPick(mainPlayer\cam, 1.0)
 		If PickedEntity() = e\room\Objects[0] Then
 			DrawHandIcon = True
@@ -578,7 +586,7 @@ Function UpdateEvent_cont_914_1(e.Events)
 									If Abs(EntityX(it\collider) - (e\room\x - 712.0 * RoomScale)) < 200.0 Then
 										If Abs(EntityY(it\collider) - (e\room\y + 648.0 * RoomScale)) < 104.0 Then
 											e\EventState = 1
-											e\soundChannels[0] = PlayRangedSound(MachineSFX, mainPlayer\cam, e\room\Objects[1])
+											e\soundChannels[0] = PlayRangedSound(e\sounds[0], mainPlayer\cam, e\room\Objects[1])
 											Exit
 										EndIf
 									End If
@@ -658,7 +666,7 @@ Function UpdateEvent_cont_914_1(e.Events)
 			If Distance(EntityX(mainPlayer\collider), EntityZ(mainPlayer\collider), EntityX(e\room\Objects[2], True), EntityZ(e\room\Objects[2], True)) < (170.0 * RoomScale) Then
 				
 				If setting = "rough" Or setting = "coarse" Then
-					If e\EventState > 70 * 2.6 And e\EventState - timing\tickDuration < 70 * 2.6 Then PlaySound Death914SFX
+					If e\EventState > 70 * 2.6 And e\EventState - timing\tickDuration < 70 * 2.6 Then PlaySound(e\sounds[2])
 				EndIf
 				
 				If e\EventState > 70 * 3 Then
@@ -672,13 +680,13 @@ Function UpdateEvent_cont_914_1(e.Events)
 							DeathMSG = DeathMSG + "ended up inside the intake booth and who or what wound the key."+Chr(34)
 						Case "coarse"
 							mainPlayer\blinkTimer = -10
-							If e\EventState - timing\tickDuration < 70 * 3 Then PlaySound Use914SFX
+							If e\EventState - timing\tickDuration < 70 * 3 Then PlaySound(LoadSound(e\sounds[1]))
 						Case "1:1"
 							mainPlayer\blinkTimer = -10
-							If e\EventState - timing\tickDuration < 70 * 3 Then PlaySound Use914SFX
+							If e\EventState - timing\tickDuration < 70 * 3 Then PlaySound(LoadSound(e\sounds[1]))
 						Case "fine", "very fine"
 							mainPlayer\blinkTimer = -10
-							If e\EventState - timing\tickDuration < 70 * 3 Then PlaySound Use914SFX	
+							If e\EventState - timing\tickDuration < 70 * 3 Then PlaySound(LoadSound(e\sounds[1]))
 					End Select
 				End If
 			EndIf
@@ -726,6 +734,7 @@ Function UpdateEvent_cont_914_1(e.Events)
 	EndIf
 	;[End Block]
 End Function
+
 
 
 ;~IDEal Editor Parameters:

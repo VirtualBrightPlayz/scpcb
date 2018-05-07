@@ -82,7 +82,7 @@ Function RemoveParticle(p.Particles)
 End Function
 
 Global InSmoke%
-Global HissSFX%
+Global HissSFX.MarkedForRemoval
 
 Type Emitters
 	Field Obj%
@@ -118,7 +118,7 @@ Function UpdateEmitters()
 				
 				p\Achange = e\achange
 				
-				e\soundCHN = LoopRangedSound(HissSFX, e\soundCHN, mainPlayer\cam, e\Obj)
+				e\soundCHN = LoopRangedSound_SM(sndManager\hiss, e\soundCHN, mainPlayer\cam, e\Obj)
 				
 				If InSmoke = False Then
 					If IsPlayerWearingTempName(mainPlayer,"gasmask") And IsPlayerWearingTempName(mainPlayer,"hazmatsuit") Then

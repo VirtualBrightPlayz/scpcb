@@ -203,11 +203,11 @@ Function UpdateNPCtype860(n.NPCs)
                         n\State3 = n\State3 + timing\tickDuration
                         If Rnd(5000)<n\State3 Then
                             temp = True
-                            If n\SoundChn <> 0 Then
-                                If IsChannelPlaying (n\SoundChn) Then temp = False
+                            If n\soundChannels[0] <> 0 Then
+                                If IsChannelPlaying (n\soundChannels[0]) Then temp = False
                             EndIf
                             If temp Then
-                                n\SoundChn = PlayRangedSound(LoadTempSound("SFX\SCP\860\Cancer"+Rand(0,2)+".ogg"), mainPlayer\cam, n\Collider)
+                                n\soundChannels[0] = PlayRangedSound(LoadTempSound("SFX\SCP\860\Cancer"+Rand(0,2)+".ogg"), mainPlayer\cam, n\Collider)
                             EndIf
                         EndIf
                     Else
@@ -215,7 +215,7 @@ Function UpdateNPCtype860(n.NPCs)
                     EndIf
                     
                     If dist<4.5 Or n\State3 > Rnd(200,250) Then
-                        n\SoundChn = PlayRangedSound(LoadTempSound("SFX\SCP\860\Cancer"+Rand(3,5)+".ogg"), mainPlayer\cam, n\Collider)
+                        n\soundChannels[0] = PlayRangedSound(LoadTempSound("SFX\SCP\860\Cancer"+Rand(3,5)+".ogg"), mainPlayer\cam, n\Collider)
                         n\State = 3
                     EndIf
                     
@@ -241,8 +241,8 @@ Function UpdateNPCtype860(n.NPCs)
                 
                 RotateEntity n\Collider, 0, angle-90, 0, True
                 
-                If n\Sound = 0 Then n\Sound = LoadSound("SFX\General\Slash1.ogg")
-                If n\Sound2 = 0 Then n\Sound2 = LoadSound("SFX\General\Slash2.ogg")
+                If n\sounds[0] = 0 Then n\sounds[0] = LoadSound("SFX\General\Slash1.ogg")
+                If n\sounds[1] = 0 Then n\sounds[1] = LoadSound("SFX\General\Slash2.ogg")
                 
                 If dist>1.1 And (Not mainPlayer\dead) Then 
                     n\CurrSpeed = CurveValue(n\Speed*0.8, n\CurrSpeed, 10.0)
@@ -265,10 +265,10 @@ Function UpdateNPCtype860(n.NPCs)
                     ;Animate2(n\obj, AnimTime(n\obj), 451,493, 0.5, False)
                     If (prevFrame < 461 And n\Frame=>461) Then 
                         If (Not mainPlayer\dead) Then Kill(mainPlayer)
-                        PlaySound(n\Sound)
+                        PlaySound(n\sounds[0])
                     EndIf
-                    If (prevFrame < 476 And n\Frame=>476) Then PlaySound(n\Sound2)
-                    If (prevFrame < 486 And n\Frame=>486) Then PlaySound(n\Sound2)
+                    If (prevFrame < 476 And n\Frame=>476) Then PlaySound(n\sounds[1])
+                    If (prevFrame < 486 And n\Frame=>486) Then PlaySound(n\sounds[1])
                     
                 EndIf
                 

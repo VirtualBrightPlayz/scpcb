@@ -27,7 +27,7 @@ Function UpdateEventTunnel2smoke(e.Events)
 	;[Block]
 	If mainPlayer\currRoom = e\room Then
 		If e\room\dist < 3.5 Then
-			PlayRangedSound(BurstSFX, mainPlayer\cam, e\room\obj) 
+			PlayRangedSound(LoadTempSound("SFX\SCP\914\PlayerUse.ogg"), mainPlayer\cam, e\room\obj) 
 			For i = 0 To 1
 				em.Emitters = CreateEmitter(EntityX(e\room\Objects[i],True),EntityY(e\room\Objects[i],True), EntityZ(e\room\Objects[i],True),0)
 				TurnEntity(em\Obj, 90, 0, 0, True)
@@ -74,7 +74,7 @@ Function UpdateEvent_tnnl_elec_2(e.Events)
 		Else		
 			If e\EventState = 0 Then
 				If Distance(EntityX(mainPlayer\collider), EntityZ(mainPlayer\collider), EntityX(e\room\obj), EntityZ(e\room\obj)) < 3.5 Then
-					PlaySound(LightSFX)
+					PlaySound_SM(sndManager\lightSwitch)
 					
 					;LightBlink = Rnd(0.0,1.0)*(e\EventState/200)
 					e\EventState = 1
@@ -106,3 +106,6 @@ Function UpdateEvent_tnnl_elec_2(e.Events)
 	EndIf					
 	;[End Block]
 End Function
+
+;~IDEal Editor Parameters:
+;~C#Blitz3D

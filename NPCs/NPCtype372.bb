@@ -32,9 +32,9 @@ Function UpdateNPCtype372(n.NPCs)
             
             If EntityInView(n\obj, mainPlayer\cam) Then
                 If Rand(30)=1 Then 
-                    If (Not IsChannelPlaying(n\SoundChn)) Then
+                    If (Not IsChannelPlaying(n\soundChannels[0])) Then
                         If EntityVisible(mainPlayer\cam, n\obj) Then 
-                            n\SoundChn = PlayRangedSound(RustleSFX(Rand(0,2)),mainPlayer\cam, n\obj, 8, 0.3)
+                            n\soundChannels[0] = PlayRangedSound(RustleSFX(Rand(0,2)),mainPlayer\cam, n\obj, 8, 0.3)
                         EndIf
                     EndIf
                 EndIf
