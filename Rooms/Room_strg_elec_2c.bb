@@ -63,7 +63,7 @@ Function UpdateEvent_strg_elec_2c(e.Events)
 					If i = 3 Then 
 						e\EventState = Max(e\EventState,1)
 						;PlaySound HorrorSFX(7)
-						PlaySound LeverSFX
+						PlaySound_SM(sndManager\lever)
 					EndIf
 				EndIf 
 			End If
@@ -92,21 +92,21 @@ Function UpdateEvent_strg_elec_2c(e.Events)
 			End If
 			
 			If EntityPitch(e\room\Objects[i]) > 83 Then
-				If prevpitch =< 83 Then PlayRangedSound(LeverSFX, mainPlayer\cam, e\room\Objects[i])
+				If prevpitch =< 83 Then PlayRangedSound_SM(sndManager\lever, mainPlayer\cam, e\room\Objects[i])
 				If i = 3 Then 
 					SecondaryLightOn = CurveValue(1.0, SecondaryLightOn, 10.0)
 					If prevpitch =< 83 Then
-						PlayRangedSound(LightSFX, mainPlayer\cam, e\room\Objects[i])
+						PlayRangedSound_SM(sndManager\lightSwitch, mainPlayer\cam, e\room\Objects[i])
 					EndIf		
 				Else
 					RemoteDoorOn = True
 				EndIf
 			ElseIf EntityPitch(e\room\Objects[i]) < -83
 				
-				If prevpitch => -83 Then PlayRangedSound(LeverSFX, mainPlayer\cam, e\room\Objects[i])
+				If prevpitch => -83 Then PlayRangedSound_SM(sndManager\lever, mainPlayer\cam, e\room\Objects[i])
 				If i = 3 Then 
 					If prevpitch => -83 Then
-						PlayRangedSound(LightSFX, mainPlayer\cam, e\room\Objects[i])
+						PlayRangedSound_SM(sndManager\lightSwitch, mainPlayer\cam, e\room\Objects[i])
 						For r.Rooms = Each Rooms
 							For z = 0 To 19
 								If r\LightSprites[z] <> 0 Then HideEntity r\LightSprites[z]
@@ -129,3 +129,6 @@ Function UpdateEvent_strg_elec_2c(e.Events)
 	;[End Block]
 End Function
 
+
+;~IDEal Editor Parameters:
+;~C#Blitz3D

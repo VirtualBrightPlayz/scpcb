@@ -141,33 +141,38 @@ Function UpdateEvent_cont_106_1(e.Events)
 		If e\EventState = 1 Then
 			e\EventState3 = Min(e\EventState3+timing\tickDuration,4000)
 		EndIf
-		If IsChannelPlaying(e\soundChannels[0]) = False Then e\soundChannels[0] = PlaySound(RadioStatic)   
+		If (Not IsChannelPlaying(e\soundChannels[0])) Then e\soundChannels[0] = PlaySound(RadioStatic)   
 	EndIf
 	
 	If e\room\NPC[0]=Null Then ;add the lure subject
 		TFormPoint(1088, 1096, 1728, e\room\obj, 0)
 		e\room\NPC[0] = CreateNPC(NPCtypeD, TFormedX(), TFormedY(), TFormedZ())
-		TurnEntity e\room\NPC[0]\Collider,0,e\room\angle+90,0,True
+		TurnEntity e\room\NPC[0]\collider,0,e\room\angle+90,0,True
 	EndIf
 	
 	If mainPlayer\currRoom = e\room And e\room\NPC[0]<>Null Then
+		If (Not e\loaded) Then
+			e\sounds[2] = LoadSound("SFX\Room\106Chamber\MagnetUp.ogg")
+			e\sounds[3] = LoadSound("SFX\Room\106Chamber\MagnetDown.ogg")
+			e\sounds[4] = LoadSound("SFX\Room\106Chamber\FemurBreaker.ogg")
+			
+			e\loaded = True
+		EndIf
 		
 		;ShowEntity e\room\NPC[0]\obj
 		
-		ShouldPlay = 66
-		
-		e\room\NPC[0]\State=6
+		e\room\NPC[0]\state=6
 		If e\room\NPC[0]\Idle = 0 Then
 			AnimateNPC(e\room\NPC[0], 17.0, 19.0, 0.01, False)
-			If e\room\NPC[0]\Frame = 19.0 Then e\room\NPC[0]\Idle = 1
+			If e\room\NPC[0]\frame = 19.0 Then e\room\NPC[0]\Idle = 1
 		Else
 			AnimateNPC(e\room\NPC[0], 19.0, 17.0, -0.01, False)	
-			If e\room\NPC[0]\Frame = 17.0 Then e\room\NPC[0]\Idle = 0
+			If e\room\NPC[0]\frame = 17.0 Then e\room\NPC[0]\Idle = 0
 		EndIf
 		
-		PositionEntity(e\room\NPC[0]\Collider, EntityX(e\room\Objects[5],True),EntityY(e\room\Objects[5],True)+0.1,EntityZ(e\room\Objects[5],True),True)
-		RotateEntity(e\room\NPC[0]\Collider,EntityPitch(e\room\Objects[5],True),EntityYaw(e\room\Objects[5],True),0,True)
-		ResetEntity(e\room\NPC[0]\Collider)
+		PositionEntity(e\room\NPC[0]\collider, EntityX(e\room\Objects[5],True),EntityY(e\room\Objects[5],True)+0.1,EntityZ(e\room\Objects[5],True),True)
+		RotateEntity(e\room\NPC[0]\collider,EntityPitch(e\room\Objects[5],True),EntityYaw(e\room\Objects[5],True),0,True)
+		ResetEntity(e\room\NPC[0]\collider)
 		
 		temp = e\EventState2
 		
@@ -176,9 +181,9 @@ Function UpdateEvent_cont_106_1(e.Events)
 		
 		If e\EventState2 <> temp Then 
 			If e\EventState2 = False Then
-				PlaySound(MagnetDownSFX)
+				PlaySound(e\sounds[3])
 			Else
-				PlaySound(MagnetUpSFX)	
+				PlaySound(e\sounds[2])	
 			EndIf
 		EndIf
 		
@@ -186,12 +191,9 @@ Function UpdateEvent_cont_106_1(e.Events)
 			SoundTransmission% = UpdateLever(e\room\Objects[3])
 		EndIf
 		If (Not SoundTransmission) Then
-			If (e\soundChannels[1]<>0) Then
-				If IsChannelPlaying(e\soundChannels[1]) Then StopChannel e\soundChannels[1]
-			EndIf
-			If (e\soundChannels[0]<>0) Then
-				If IsChannelPlaying(e\soundChannels[0]) Then StopChannel e\soundChannels[0]
-			EndIf
+			If IsChannelPlaying(e\soundChannels[1]) Then StopChannel e\soundChannels[1]
+			
+			If IsChannelPlaying(e\soundChannels[0]) Then StopChannel e\soundChannels[0]
 		EndIf
 		
 		If e\EventState = 0 Then 
@@ -210,11 +212,9 @@ Function UpdateEvent_cont_106_1(e.Events)
 			If mainPlayer\closestButton = e\room\Objects[4] And MouseHit1 Then
 				e\EventState = 1 ;start the femur breaker
 				If SoundTransmission = True Then ;only play sounds if transmission is on
-					If e\soundChannels[1] <> 0 Then
-						If IsChannelPlaying(e\soundChannels[1]) Then StopChannel e\soundChannels[1]
-					EndIf 
-					FemurBreakerSFX = LoadSound("SFX\Room\106Chamber\FemurBreaker.ogg")
-					e\soundChannels[1] = PlaySound (FemurBreakerSFX)
+					If IsChannelPlaying(e\soundChannels[1]) Then StopChannel e\soundChannels[1]
+					
+					e\soundChannels[1] = PlaySound(e\sounds[4])
 				EndIf
 			EndIf
 		ElseIf e\EventState = 1 ;bone broken
@@ -232,23 +232,21 @@ Function UpdateEvent_cont_106_1(e.Events)
 			If e\EventState3 => 2500 Then
 				
 				If e\EventState2 = 1 And e\EventState3-timing\tickDuration < 2500 Then
-					PositionEntity(Curr106\Collider, EntityX(e\room\Objects[6], True), EntityY(e\room\Objects[6], True), EntityZ(e\room\Objects[6], True))
+					PositionEntity(Curr106\collider, EntityX(e\room\Objects[6], True), EntityY(e\room\Objects[6], True), EntityZ(e\room\Objects[6], True))
 					Contained106 = False
 					ShowEntity Curr106\obj
 					Curr106\Idle = False
-					Curr106\State = -11
+					Curr106\state = -11
 					e\EventState = 2
 					Return
 				EndIf
 				
-				ShouldPlay = 10
-				
-				PositionEntity(Curr106\Collider, EntityX(e\room\Objects[5], True), (700.0 + 108.0*(Min(e\EventState3-2500.0,800)/320.0))*RoomScale , EntityZ(e\room\Objects[5], True))
+				PositionEntity(Curr106\collider, EntityX(e\room\Objects[5], True), (700.0 + 108.0*(Min(e\EventState3-2500.0,800)/320.0))*RoomScale , EntityZ(e\room\Objects[5], True))
 				HideEntity Curr106\obj2
 				
 				;PointEntity(Curr106\Collider, mainPlayer\cam)
-				RotateEntity(Curr106\Collider,0, EntityYaw(e\room\Objects[5],True)+180.0, 0, True)
-				Curr106\State = -11
+				RotateEntity(Curr106\collider,0, EntityYaw(e\room\Objects[5],True)+180.0, 0, True)
+				Curr106\state = -11
 				AnimateNPC(Curr106, 206, 250, 0.1)
 				Curr106\Idle = True	
 				
@@ -258,14 +256,11 @@ Function UpdateEvent_cont_106_1(e.Events)
 					d\Alpha = 0.01 : d\AlphaChange = 0.005
 					d\Size = 0.1 : d\SizeChange = 0.003	
 					
-					If e\soundChannels[1] <> 0 Then
-						If IsChannelPlaying(e\soundChannels[1]) Then StopChannel e\soundChannels[1]
-					EndIf 
+					If IsChannelPlaying(e\soundChannels[1]) Then StopChannel e\soundChannels[1]
+					
 					LoadEventSound(e,"SFX\Character\LureSubject\106Bait.ogg",1)
 					e\soundChannels[1]=PlaySound(e\sounds[1])
 				ElseIf e\EventState3-timing\tickDuration < 2900 And e\EventState3 => 2900 Then
-					If FemurBreakerSFX <> 0 Then FreeSound FemurBreakerSFX : FemurBreakerSFX = 0
-					
 					d.Decals = CreateDecal(0, EntityX(e\room\Objects[7], True), EntityY(e\room\Objects[7], True) , EntityZ(e\room\Objects[7], True), 0, 0, 0) 
 					RotateEntity(d\obj, EntityPitch(e\room\Objects[7], True)+Rand(10,20), EntityYaw(e\room\Objects[7], True)+30, EntityRoll(d\obj))
 					MoveEntity d\obj, 0,0,0.15
@@ -284,12 +279,12 @@ Function UpdateEvent_cont_106_1(e.Events)
 					If e\EventState2 = True Then ;magnets off -> 106 caught
 						Contained106 = True
 					Else ;magnets off -> 106 comes out and attacks
-						PositionEntity(Curr106\Collider, EntityX(e\room\Objects[6], True), EntityY(e\room\Objects[6], True), EntityZ(e\room\Objects[6], True))
+						PositionEntity(Curr106\collider, EntityX(e\room\Objects[6], True), EntityY(e\room\Objects[6], True), EntityZ(e\room\Objects[6], True))
 						
 						Contained106 = False
 						ShowEntity Curr106\obj
 						Curr106\Idle = False
-						Curr106\State = -11
+						Curr106\state = -11
 						
 						e\EventState = 2
 						Return
@@ -310,6 +305,7 @@ Function UpdateEvent_cont_106_1(e.Events)
 	EndIf
 	;[End Block]
 End Function
+
 
 
 ;~IDEal Editor Parameters:

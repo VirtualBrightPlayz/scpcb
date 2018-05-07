@@ -201,71 +201,66 @@ Global Brightness%
 ;TODO: Audio.bb
 Global SoundEmitter%
 Global TempSounds%[10]
-Global TempSoundCHN%
 Global TempSoundIndex% = 0
 
 ;TODO: Audio.bb
-Global KeyCardSFX1
-Global KeyCardSFX2
-Global ButtonSFX2
-Global ScannerSFX1
-Global ScannerSFX2
+Global KeyCardSFX1.MarkedForRemoval
+Global KeyCardSFX2.MarkedForRemoval
+Global ButtonSFX2.MarkedForRemoval
+Global ScannerSFX1.MarkedForRemoval
+Global ScannerSFX2.MarkedForRemoval
 
-Global OpenDoorFastSFX
-Global CautionSFX%
+Global OpenDoorFastSFX.MarkedForRemoval
+Global CautionSFX.MarkedForRemoval
 
-Global NuclearSirenSFX%
+Global NuclearSirenSFX.MarkedForRemoval
 
-Global CameraSFX
+Global CameraSFX.MarkedForRemoval
 
-Global GunshotSFX%
-Global Gunshot2SFX%
-Global Gunshot3SFX%
-Global BullethitSFX%
+Global GunshotSFX.MarkedForRemoval
+Global Gunshot2SFX.MarkedForRemoval
+Global Gunshot3SFX.MarkedForRemoval
+Global BullethitSFX.MarkedForRemoval
 
-Global TeslaIdleSFX
-Global TeslaActivateSFX
-Global TeslaPowerUpSFX
+Global TeslaIdleSFX.MarkedForRemoval
+Global TeslaActivateSFX.MarkedForRemoval
+Global TeslaPowerUpSFX.MarkedForRemoval
 
-Global MagnetUpSFX%
-Global MagnetDownSFX
-Global FemurBreakerSFX%
+Global MagnetUpSFX.MarkedForRemoval
+Global MagnetDownSFX.MarkedForRemoval
+Global FemurBreakerSFX.MarkedForRemoval
 
-Global BurstSFX
+Global BurstSFX.MarkedForRemoval
 
-Global Death914SFX%
+Global Death914SFX.MarkedForRemoval
+Global Use914SFX.MarkedForRemoval
 
-Global LeverSFX%
-Global LightSFX%
+Global LeverSFX.MarkedForRemoval
+Global LightSFX.MarkedForRemoval
 
-Global ButtGhostSFX%
+Global ButtGhostSFX.MarkedForRemoval
 
 Global RadioSquelch
 Global RadioStatic
 Global RadioBuzz
 
-Global ElevatorBeepSFX
-Global ElevatorMoveSFX
+Global ElevatorBeepSFX.MarkedForRemoval
+Global ElevatorMoveSFX.MarkedForRemoval
 
 ;TODO: More Audio.bb
-Global AmbientSFXCHN%, CurrAmbientSFX%
+Global AmbientSFXCHN.MarkedForRemoval, CurrAmbientSFX%
 
-Global HeartBeatSFX
-
-Global BreathCHN.MarkedForRemoval
-
-;TODO: player struct
-Global CoughCHN%
+Global HeartBeatSFX.MarkedForRemoval
 
 ;TODO: Why the fuck is this a global?
-Global MachineSFX%
+Global MachineSFX.MarkedForRemoval
 
 ;TODO: WHY IS THIS A GLOBAL???
-Global ApacheSFX
+Global ApacheSFX.MarkedForRemoval
 
 ;TODO: Die forever.
-Global NTF_1499EnterSFX%
-Global NTF_1499LeaveSFX%
+Global NTF_1499EnterSFX.MarkedForRemoval
+Global NTF_1499LeaveSFX.MarkedForRemoval
 
 ;TODO: Not be globals.
 Global Monitor2, Monitor3, MonitorTexture2, MonitorTexture3, MonitorTexture4, MonitorTextureOff
@@ -426,37 +421,36 @@ Function InitializeMainGame()
 	ScannerSFX2 = LoadSound("SFX\Interact\ScannerUse2.ogg")
 	
 	OpenDoorFastSFX = LoadSound("SFX\Door\DoorOpenFast.ogg")
-	CautionSFX% = LoadSound("SFX\Room\LockroomSiren.ogg")
 	
 	CameraSFX = LoadSound("SFX\General\Camera.ogg")
 	
-	GunshotSFX% = LoadSound("SFX\General\Gunshot.ogg")
-	Gunshot2SFX% = LoadSound("SFX\General\Gunshot2.ogg")
-	Gunshot3SFX% = LoadSound("SFX\General\BulletMiss.ogg")
-	BullethitSFX% = LoadSound("SFX\General\BulletHit.ogg")
+	GunshotSFX = LoadSound("SFX\General\Gunshot.ogg")
+	Gunshot2SFX = LoadSound("SFX\General\Gunshot2.ogg")
+	Gunshot3SFX = LoadSound("SFX\General\BulletMiss.ogg")
+	BullethitSFX = LoadSound("SFX\General\BulletHit.ogg")
 	
 	TeslaIdleSFX = LoadSound("SFX\Room\Tesla\Idle.ogg")
 	TeslaActivateSFX = LoadSound("SFX\Room\Tesla\WindUp.ogg")
 	TeslaPowerUpSFX = LoadSound("SFX\Room\Tesla\PowerUp.ogg")
 	
-	MagnetUpSFX% = LoadSound("SFX\Room\106Chamber\MagnetUp.ogg")
+	MagnetUpSFX = LoadSound("SFX\Room\106Chamber\MagnetUp.ogg")
 	MagnetDownSFX = LoadSound("SFX\Room\106Chamber\MagnetDown.ogg")
 	
 	BurstSFX = LoadSound("SFX\Room\TunnelBurst.ogg")
 	
 	DrawLoading(20, True)
 	
-	Death914SFX% = LoadSound("SFX\SCP\914\PlayerDeath.ogg")
-	Use914SFX% = LoadSound("SFX\SCP\914\PlayerUse.ogg")
+	Death914SFX = LoadSound("SFX\SCP\914\PlayerDeath.ogg")
+	Use914SFX = LoadSound("SFX\SCP\914\PlayerUse.ogg")
 	
 	For i = 0 To 3
 		DripSFX(i) = LoadSound("SFX\Character\D9341\BloodDrip" + i + ".ogg")
 	Next
 	
-	LeverSFX% = LoadSound("SFX\Interact\LeverFlip.ogg")
-	LightSFX% = LoadSound("SFX\General\LightSwitch.ogg")
+	LeverSFX = LoadSound("SFX\Interact\LeverFlip.ogg")
+	LightSFX = LoadSound("SFX\General\LightSwitch.ogg")
 	
-	ButtGhostSFX% = LoadSound("SFX\SCP\Joke\789J.ogg")
+	ButtGhostSFX = LoadSound("SFX\SCP\Joke\789J.ogg")
 	
 	RadioSFX(1,0) = LoadSound("SFX\Radio\RadioAlarm.ogg")
 	RadioSFX(1,1) = LoadSound("SFX\Radio\RadioAlarm2.ogg")
@@ -503,7 +497,7 @@ Function InitializeMainGame()
 	Next
 	
 	;TODO: Why the fuck is this a global?
-	MachineSFX% = LoadSound("SFX\SCP\914\Refining.ogg")
+	MachineSFX = LoadSound("SFX\SCP\914\Refining.ogg")
 	
 	;TODO: WHY IS THIS A GLOBAL???
 	ApacheSFX = LoadSound("SFX\Character\Apache\Propeller.ogg")

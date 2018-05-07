@@ -82,7 +82,7 @@ Function UpdateEvent_cont_012_2(e.Events)
 		If e\EventState=0 Then
 			If EntityDistance(mainPlayer\collider, e\room\RoomDoors[0]\obj)<2.5 And RemoteDoorOn Then
 				;PlaySound HorrorSFX(7)
-				PlayRangedSound (LeverSFX,mainPlayer\cam,e\room\RoomDoors[0]\obj) 
+				PlayRangedSound_SM(sndManager\lever,mainPlayer\cam,e\room\RoomDoors[0]\obj) 
 				e\EventState=1
 				e\room\RoomDoors[0]\locked = False
 				UseDoor(e\room\RoomDoors[0],False)

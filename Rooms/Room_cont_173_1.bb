@@ -211,8 +211,8 @@ Function UpdateEventAlarm(e.Events)
 				CanSave = False
 				If e\EventState > 900 And e\room\RoomDoors[5]\open Then
 					If e\EventState - timing\tickDuration <= 900 Then 
-						e\room\NPC[1]\Sound = LoadSound("SFX\Room\Intro\WhatThe.ogg")
-						e\room\NPC[1]\SoundChn = PlayRangedSound(e\room\NPC[1]\Sound, mainPlayer\cam, e\room\NPC[1]\Collider)
+						e\room\NPC[1]\soundChannels[0] = LoadSound("SFX\Room\Intro\WhatThe.ogg")
+						e\room\NPC[1]\soundChannels[0] = PlayRangedSound(e\room\NPC[1]\soundChannels[0], mainPlayer\cam, e\room\NPC[1]\Collider)
 					EndIf
 					e\room\NPC[1]\State = 3
 					e\room\NPC[1]\CurrSpeed = CurveValue(-0.008, e\room\NPC[1]\CurrSpeed, 5.0)

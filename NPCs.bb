@@ -70,12 +70,6 @@ Type NPCs
 	Field soundChannels%[NPC_CHANNEL_COUNT]
 	
 	Field playerDistance#
-
-	;Deprecate.
-	Field sound%
-	Field soundChn%
-	Field sound2%
-	Field soundChn2%
 	
 	;TODO: wtf why aren't we using this more instead of reload?
 	Field soundTimer#
@@ -264,14 +258,6 @@ Function RemoveNPC(n.NPCs)
 			FreeSound(n\sounds[i])
 		EndIf
 	Next
-	
-	If (n\soundChn <> 0 And IsChannelPlaying(n\soundChn)) Then
-		StopChannel(n\soundChn)
-	EndIf
-	
-	If n\soundChn2 <> 0 And IsChannelPlaying(n\soundChn2) Then
-		StopChannel(n\soundChn2)
-	EndIf
 	
 	If (n\sound <> 0) Then
 		FreeSound(n\sound)

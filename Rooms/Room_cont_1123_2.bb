@@ -255,23 +255,23 @@ Function UpdateEvent_cont_1123_2(e.Events)
 				de.Decals = CreateDecal(3, EntityX(mainPlayer\collider), 512*RoomScale + 0.0005, EntityZ(mainPlayer\collider),90,Rnd(360),0)
 				de\size = 0.5 : ScaleSprite de\obj, de\size, de\size
 				
-				e\room\NPC[0]\Sound = LoadSound("SFX\SCP\1123\Officer3.ogg")
+				e\room\NPC[0]\sounds[0] = LoadSound("SFX\SCP\1123\Officer3.ogg")
 				
 				e\EventState = 6
 			EndIf
 		ElseIf e\EventState = 6
 			PointEntity e\room\NPC[0]\Collider, mainPlayer\collider
 			
-			If e\room\NPC[0]\Sound<>0 Then 
-				If e\room\NPC[0]\SoundChn<>0 Then
-					If (Not IsChannelPlaying(e\room\NPC[0]\SoundChn)) Then 
+			If e\room\NPC[0]\sounds[0]<>0 Then 
+				If e\room\NPC[0]\soundChannels[0]<>0 Then
+					If (Not IsChannelPlaying(e\room\NPC[0]\soundChannels[0])) Then 
 						PlaySound(LoadTempSound("SFX\SCP\1123\Gunshot.ogg"))
 						e\EventState = 7
-						FreeSound e\room\NPC[0]\Sound : e\room\NPC[0]\Sound=0	
+						FreeSound e\room\NPC[0]\sounds[0] : e\room\NPC[0]\sounds[0]=0	
 					EndIf
 				EndIf
 				
-				If e\room\NPC[0]\Sound<>0 Then e\room\NPC[0]\SoundChn = LoopRangedSound(e\room\NPC[0]\Sound, e\room\NPC[0]\SoundChn, mainPlayer\cam, e\room\NPC[0]\Collider, 7.0)
+				If e\room\NPC[0]\sounds[0]<>0 Then e\room\NPC[0]\soundChannels[0] = LoopRangedSound(e\room\NPC[0]\sounds[0], e\room\NPC[0]\soundChannels[0], mainPlayer\cam, e\room\NPC[0]\Collider, 7.0)
 			EndIf
 		ElseIf e\EventState=7
 			PositionEntity mainPlayer\collider, EntityX(e\room\obj,True),0.3,EntityZ(e\room\obj,True),True
@@ -304,6 +304,7 @@ Function UpdateEvent_cont_1123_2(e.Events)
 	
 	
 End Function
+
 
 
 ;~IDEal Editor Parameters:

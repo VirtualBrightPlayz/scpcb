@@ -130,7 +130,7 @@ Function UpdateLeave1499()
 					EndIf
 				Next
 				mainPlayer\currRoom = r
-				PlaySound NTF_1499LeaveSFX%
+				PlaySound(LoadTempSound(LoadSound("SFX\SCP\1499\Exit.ogg")))
 				NTF_1499PrevX# = 0.0
 				NTF_1499PrevY# = 0.0
 				NTF_1499PrevZ# = 0.0

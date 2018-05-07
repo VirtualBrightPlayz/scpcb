@@ -11,8 +11,8 @@ End Type
 Function InitializeNPCtype106(n.NPCs)
     n\nvName = "SCP-106"
     n\collider = CreatePivot()
-    EntityRadius(n\Collider, 0.2)
-    EntityType(n\Collider, HIT_PLAYER)
+    EntityRadius(n\collider, 0.2)
+    EntityType(n\collider, HIT_PLAYER)
     n\obj = LoadAnimMesh("GFX\npcs\106_2.b3d")
 
     n\gravity = False
@@ -22,7 +22,7 @@ Function InitializeNPCtype106(n.NPCs)
 
     Local oldManEyes% = LoadTexture("GFX\npcs\oldmaneyes.jpg")
 
-    n\Speed = (GetINIFloat("DATA\NPCs.ini", "SCP-106", "speed") / 100.0)
+    n\speed = (GetINIFloat("DATA\NPCs.ini", "SCP-106", "speed") / 100.0)
 
     n\obj2 = CreateSprite()
     ScaleSprite(n\obj2, 0.03, 0.03)
@@ -61,18 +61,18 @@ Function UpdateNPCtype106(n.NPCs)
 
             ;Check if 106's timer is below 0, if not decrease it.
             If (n\timer >= 0) Then
-                n\CurrSpeed = 0
-                MoveEntity(n\Collider, 0, ((EntityY(mainPlayer\collider) - 30) - EntityY(n\Collider)) / 200.0, 0)
-                n\Frame = 110
+                n\currSpeed = 0
+                MoveEntity(n\collider, 0, ((EntityY(mainPlayer\collider) - 30) - EntityY(n\collider)) / 200.0, 0)
+                n\frame = 110
             ;Otherwise begin spawning 106.
             ElseIf n\timer >= -10
-                If EntityY(n\Collider) < EntityY(mainPlayer\collider) - 20.0 - 0.55 Then
+                If EntityY(n\collider) < EntityY(mainPlayer\collider) - 20.0 - 0.55 Then
                     If Not mainPlayer\currRoom\RoomTemplate\DisableDecals Then
                         de.Decals = CreateDecal(0, EntityX(mainPlayer\collider), 0.01, EntityZ(mainPlayer\collider), 90, Rand(360), 0)
                         de\Size = 0.05 : de\SizeChange = 0.001 : EntityAlpha(de\obj, 0.8) : UpdateDecals
                     EndIf
                     
-                    n\PrevY = EntityY(mainPlayer\collider)
+                    n\prevY = EntityY(mainPlayer\collider)
                     
                     SetAnimTime n\obj, 110
                     
@@ -80,14 +80,14 @@ Function UpdateNPCtype106(n.NPCs)
                 End If
                 
                 ;Corrosion.
-                If Rand(500) = 1 Then PlayRangedSound(n\sounds[Rand(3, 5)], mainPlayer\cam, n\Collider)
+                If Rand(500) = 1 Then PlayRangedSound(n\sounds[Rand(3, 5)], mainPlayer\cam, n\collider)
                 ;Breathing
-                n\soundChn = LoopRangedSound(n\sounds[1], n\SoundChn, mainPlayer\cam, n\Collider, 8.0, 0.8)
+                n\soundChannels[0] = LoopRangedSound(n\sounds[1], n\soundChannels[0], mainPlayer\cam, n\collider, 8.0, 0.8)
                 
                 ;Rising.
                 If n\timer >= - 10 Then
                     ShouldPlay = 66
-                    If (n\Frame < 259) Then
+                    If (n\frame < 259) Then
                         PositionEntity n\Collider, EntityX(n\Collider), n\PrevY-0.15, EntityZ(n\Collider)
                         PointEntity n\obj, mainPlayer\collider
                         RotateEntity (n\Collider, 0, CurveValue(EntityYaw(n\obj),EntityYaw(n\Collider),100.0), 0, True)

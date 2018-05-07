@@ -192,7 +192,7 @@ Function UpdateEvent_cont_049_2(e.Events)
 								;If EntityVisible(mainPlayer\collider,e\room\RoomDoors[i]\frameobj)
 								PositionEntity e\room\NPC[0]\collider,EntityX(e\room\Objects[i],True),EntityY(e\room\Objects[i],True),EntityZ(e\room\Objects[i],True)
 								ResetEntity e\room\NPC[0]\collider
-								PlayRangedSound(ElevatorBeepSFX, mainPlayer\cam, e\room\Objects[i], 4.0)
+								PlayRangedSound_SM(sndManager\elevatorBeep, mainPlayer\cam, e\room\Objects[i], 4.0)
 								UseDoor(e\room\RoomDoors[i],False)
 								e\room\RoomDoors[i-1]\open = False
 								e\room\RoomDoors[i]\open = True
@@ -218,7 +218,7 @@ Function UpdateEvent_cont_049_2(e.Events)
 						;e\room\NPC[0]\State = 1
 						
 						e\room\RoomDoors[4]\open = True
-						PlaySound TeslaPowerUpSFX
+						PlaySound(LoadTempSound("SFX\Room\Tesla\PowerUp.ogg"))
 						PlayRangedSound_SM(sndManager\openDoor[Rand(0,2)], mainPlayer\cam, e\room\RoomDoors[4]\obj, 6.0)
 						
 						e\room\RoomDoors[1]\open = False
@@ -322,13 +322,13 @@ Function UpdateEvent_cont_049_2(e.Events)
 					n\State = 6
 					;n\Reload = 70*4.75
 					n\Reload = 10000
-					RotateEntity n\Collider,0,EntityYaw(e\room\NPC[1]\Collider),0
-					n\State2 = EntityYaw(n\Collider)
-					MoveEntity n\Collider,-0.65,0,0
+					RotateEntity n\collider,0,EntityYaw(e\room\NPC[1]\collider),0
+					n\state2 = EntityYaw(n\collider)
+					MoveEntity n\collider,-0.65,0,0
 					e\room\NPC[2] = n
 					
-					MoveEntity e\room\NPC[1]\Collider,0,0,0.1
-					PointEntity mainPlayer\collider, e\room\NPC[1]\Collider
+					MoveEntity e\room\NPC[1]\collider,0,0,0.1
+					PointEntity mainPlayer\collider, e\room\NPC[1]\collider
 					
 					PlaySound LoadTempSound("SFX\Character\MTF\049\Player0492_1.ogg")
 					
@@ -345,33 +345,33 @@ Function UpdateEvent_cont_049_2(e.Events)
 			
 			;Msg = ""
 			
-			If e\room\NPC[2]\State = 7
-				If e\room\NPC[2]\State3 < 70*1.75
-					e\room\NPC[2]\State3 = e\room\NPC[2]\State3 + timing\tickDuration
+			If e\room\NPC[2]\state = 7
+				If e\room\NPC[2]\state3 < 70*1.75
+					e\room\NPC[2]\state3 = e\room\NPC[2]\state3 + timing\tickDuration
 				Else
-					e\room\NPC[2]\State = 6
+					e\room\NPC[2]\state = 6
 					e\room\NPC[2]\Reload = e\room\NPC[1]\Reload+Rnd(5,10)
 				EndIf
-			ElseIf e\room\NPC[2]\State = 6 And e\room\NPC[2]\Reload > 70*4
-				If e\room\NPC[2]\State3 > -(70*4)
-					e\room\NPC[2]\State3 = e\room\NPC[2]\State3 - timing\tickDuration
+			ElseIf e\room\NPC[2]\state = 6 And e\room\NPC[2]\Reload > 70*4
+				If e\room\NPC[2]\state3 > -(70*4)
+					e\room\NPC[2]\state3 = e\room\NPC[2]\state3 - timing\tickDuration
 				Else
-					e\room\NPC[2]\State3 = 0.0
+					e\room\NPC[2]\state3 = 0.0
 					e\room\NPC[2]\Reload = 45
-					e\room\NPC[2]\State = 7
+					e\room\NPC[2]\state = 7
 				EndIf
 			EndIf
 			
 			pvt% = CreatePivot()
-			PositionEntity pvt%,EntityX(e\room\NPC[1]\Collider),EntityY(e\room\NPC[1]\Collider)+0.2,EntityZ(e\room\NPC[1]\Collider)
+			PositionEntity pvt%,EntityX(e\room\NPC[1]\collider),EntityY(e\room\NPC[1]\collider)+0.2,EntityZ(e\room\NPC[1]\collider)
 			
-			PointEntity mainPlayer\collider, e\room\NPC[1]\Collider
+			PointEntity mainPlayer\collider, e\room\NPC[1]\collider
 			PointEntity mainPlayer\cam, pvt%
 			
 			FreeEntity pvt%
 			
 			If mainPlayer\dead = True Then
-				If IsChannelPlaying(e\room\NPC[1]\SoundChn) Then StopChannel(e\room\NPC[1]\SoundChn)
+				If IsChannelPlaying(e\room\NPC[1]\soundChannels[0]) Then StopChannel(e\room\NPC[1]\soundChannels[0])
 				PlaySound LoadTempSound("SFX\Character\MTF\049\Player0492_2.ogg")
 				RemoveEvent(e)
 			Else

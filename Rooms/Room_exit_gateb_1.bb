@@ -126,7 +126,7 @@ Function UpdateEventExit1(e.Events)
 			Next					
 			ShowEntity e\room\obj
 			
-			Curr106\State = 20000
+			Curr106\state = 20000
 			Curr106\Idle = True
 			
 			If e\EventState = 0 Then
@@ -147,11 +147,11 @@ Function UpdateEventExit1(e.Events)
 				DrawLoading(90,True)
 				
 				e\room\NPC[0] = CreateNPC(NPCtypeApache, e\room\x, 100.0, e\room\z)
-				e\room\NPC[0]\State = 1
+				e\room\NPC[0]\state = 1
 				
 				e\room\NPC[1] = CreateNPC(NPCtypeGuard, EntityX(e\room\Objects[4],True),EntityY(e\room\Objects[4],True)+0.2,EntityZ(e\room\Objects[4],True))
-				e\room\NPC[1]\State = 0
-				e\room\NPC[1]\State2 = 10
+				e\room\NPC[1]\state = 0
+				e\room\NPC[1]\state2 = 10
 				
 				
 				pvt = CreatePivot()
@@ -170,7 +170,7 @@ Function UpdateEventExit1(e.Events)
 				e\EventState = 1.0
 				
 				For n.NPCs = Each NPCs
-					If n\NPCtype = NPCtypeMTF
+					If n\npcType = NPCtypeMTF
 						RemoveNPC(n)
 					EndIf
 				Next
@@ -189,12 +189,12 @@ Function UpdateEventExit1(e.Events)
 				UpdateSky()
 				
 				If e\EventState < 2.0 Then 
-					If e\room\NPC[0]\State = 2 Then
+					If e\room\NPC[0]\state = 2 Then
 						ShouldPlay = 6
 					Else
 						e\EventState2=(e\EventState2+timing\tickDuration) Mod 3600
-						PositionEntity(e\room\NPC[0]\Collider, EntityX(e\room\obj,True)+Cos(e\EventState2/10)*6000.0*RoomScale,14000*RoomScale,EntityZ(e\room\obj,True)+Sin(e\EventState2/10)*6000.0*RoomScale)
-						RotateEntity e\room\NPC[0]\Collider,7.0,(e\EventState2/10),20.0											
+						PositionEntity(e\room\NPC[0]\collider, EntityX(e\room\obj,True)+Cos(e\EventState2/10)*6000.0*RoomScale,14000*RoomScale,EntityZ(e\room\obj,True)+Sin(e\EventState2/10)*6000.0*RoomScale)
+						RotateEntity e\room\NPC[0]\collider,7.0,(e\EventState2/10),20.0											
 						ShouldPlay = 5
 					EndIf
 					
@@ -206,12 +206,12 @@ Function UpdateEventExit1(e.Events)
 						e\room\RoomDoors[3]\locked = 6
 						
 						e\room\NPC[2] = CreateNPC(NPCtypeApache, EntityX(e\room\Objects[9],True),EntityY(e\room\Objects[9],True)+0.5,EntityZ(e\room\Objects[9],True))
-						e\room\NPC[2]\State = 3
+						e\room\NPC[2]\state = 3
 						
 						e\room\NPC[3] = CreateNPC(NPCtypeApache, EntityX(e\room\Objects[7],True),EntityY(e\room\Objects[7],True)-2.0,EntityZ(e\room\Objects[7],True))
-						e\room\NPC[3]\State = 3
+						e\room\NPC[3]\state = 3
 						
-						e\room\NPC[0]\State = 3
+						e\room\NPC[0]\state = 3
 						
 						e\soundChannels[0] = PlaySound (LoadTempSound("SFX\Ending\GateB\682Battle.ogg"))
 					EndIf								
@@ -228,7 +228,7 @@ Function UpdateEventExit1(e.Events)
 						e\room\NPC[2]\EnemyY = EntityY(e\room\Objects[11],True)+Cos(MilliSecs()/83.0)+5.0
 						e\room\NPC[2]\EnemyZ = EntityZ(e\room\Objects[11],True)+Cos(MilliSecs()/23.0)*3
 						
-						If e\room\NPC[3]\State = 3 Then 
+						If e\room\NPC[3]\state = 3 Then 
 							e\room\NPC[3]\EnemyX = EntityX(e\room\Objects[11],True)+Sin(TimeInPosMilliSecs()/20.0)*3
 							e\room\NPC[3]\EnemyY = EntityY(e\room\Objects[11],True)+Cos(MilliSecs()/80.0)+3.5
 							e\room\NPC[3]\EnemyZ = EntityZ(e\room\Objects[11],True)+Cos(MilliSecs()/20.0)*3
@@ -261,7 +261,7 @@ Function UpdateEventExit1(e.Events)
 					ElseIf e\EventState > 35.0*70 And e\EventState < 36.5*70	
 						mainPlayer\camShake = 1.5		
 						If e\EventState-timing\tickDuration =< 35.0*70 Then
-							e\soundChannels[1] = PlaySound (LoadTempSound("SFX\Ending\GateB\DetonatingAlphaWarheads.ogg"))
+							e\soundChannels[1] = PlaySound(LoadTempSound("SFX\Ending\GateB\DetonatingAlphaWarheads.ogg"))
 						EndIf									
 					ElseIf e\EventState > 39.5*70 And e\EventState < 39.8*70		
 						mainPlayer\camShake = 1.0
@@ -281,12 +281,9 @@ Function UpdateEventExit1(e.Events)
 				EndIf
 				
 				If e\EventState => 45.0*70 Then
-					If e\EventState < 75.0*70 Then 
-						If NuclearSirenSFX = 0 Then NuclearSirenSFX = LoadSound("SFX\Ending\GateB\Siren.ogg")
-						If e\soundChannels[0] = 0 Then
-							e\soundChannels[0] = PlaySound(NuclearSirenSFX)
-						Else
-							If IsChannelPlaying(e\soundChannels[0])=False Then e\soundChannels[0] = PlaySound(NuclearSirenSFX) 
+					If e\EventState < 75.0*70 Then
+						If (Not IsChannelPlaying(e\soundChannels[0])) Then
+							e\soundChannels[0] = PlaySound(LoadTempSound("SFX\Ending\GateB\Siren.ogg"))
 						EndIf
 					Else
 						If SelectedEnding = "" Then
@@ -558,3 +555,6 @@ Function UpdateEventExit1(e.Events)
 	EndIf
 	;[End Block]
 End Function
+
+;~IDEal Editor Parameters:
+;~C#Blitz3D
