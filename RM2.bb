@@ -118,9 +118,6 @@ Function LoadRM2(rt.RoomTemplates)
 	While Not Eof(file)
 		prevType = partType
 		partType = ReadByte(file)
-		If Instr(fullFilename,"closet")>0 Then
-			DebugLog "parttype: "+partType
-		EndIf
 		Select partType
 			Case RM2_TEXTURES
 				;[Block]
@@ -218,9 +215,6 @@ Function LoadRM2(rt.RoomTemplates)
 				ElseIf partType=RM2_ALPHA Then
 					If alphaMesh=0 Then alphaMesh = CreateMesh()
 					AddMesh(mesh,alphaMesh)
-					If Instr(fullFilename,"closet")>0 Then
-						DebugLog "ALPHA"
-					EndIf
 				EndIf
 				EntityPickMode(mesh,2,True)
 				
@@ -243,14 +237,23 @@ Function LoadRM2(rt.RoomTemplates)
 				
 				;vertices
 				count = ReadShort(file)
+				If Instr(fullFilename,"_sl_")>0 Then
+					DebugLog "HYPE "+count
+				EndIf
+				
 				For i%=0 To count-1
 					x = ReadFloat(file) : y = ReadFloat(file) : z = ReadFloat(file)
 					
 					AddVertex(surf,x,y,z)
+					VertexColor(surf,i,0,255,0)
 				Next
 				
 				;triangles
 				count = ReadShort(file)
+				If Instr(fullFilename,"_sl_")>0 Then
+					DebugLog "HYPE "+count
+				EndIf
+				
 				For i%=0 To count-1
 					vert1 = ReadShort(file)
 					vert2 = ReadShort(file)
@@ -259,14 +262,11 @@ Function LoadRM2(rt.RoomTemplates)
 					AddTriangle(surf,vert1,vert2,vert3)
 				Next
 				
+				EntityFX(mesh,1+2)
 				EntityAlpha(mesh,1.0)
 				EntityType mesh,HIT_MAP
+				AddMesh(mesh,opaqueMesh)
 				PushIntArrayListElem(collisionObjs,mesh) : HideEntity(mesh)
-				
-				If Instr(fullFilename,"closet")>0 Then
-					DebugLog "INVISIBLE"
-					If Eof(file) Then RuntimeError "AAAA"
-				EndIf
 				;[End Block]
 			Case RM2_SCREEN
 				;[Block]
@@ -279,9 +279,6 @@ Function LoadRM2(rt.RoomTemplates)
 				;[End Block]
 			Case RM2_WAYPOINT
 				;[Block]
-				If Instr(fullFilename,"closet")>0 Then
-					DebugLog "WAYPOINT"
-				EndIf
 				waypointTemp = New TempWaypoints
 				waypointTemp\x = ReadFloat(file)
 				waypointTemp\y = ReadFloat(file)
@@ -389,9 +386,6 @@ Function LoadRM2(rt.RoomTemplates)
 				zScale = ReadFloat(file)
 				
 				prop = LoadProp("GFX/map/Props/"+propName,x,y,z,pitch,yaw,roll,xScale,yScale,zScale)
-				If Instr(fullFilename,"closet")>0 Then
-					DebugLog "PROP: "+propName+" at "+x+" "+y+" "+z
-				EndIf
 				
 				If props=Null Then props=CreateIntArrayList()
 				PushIntArrayListElem(props,Handle(prop))

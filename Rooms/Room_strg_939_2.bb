@@ -60,10 +60,10 @@ Function FillRoom_strg_939_2(r.Rooms)
     r\Objects[16] = CreatePivot(r\obj)
     PositionEntity(r\Objects[16], r\x - 432.0 * RoomScale, -5550.0 * RoomScale, r\z + 2976.0 * RoomScale, True)
     
-    r\Objects[20] = LoadMesh("GFX\map\room3storage_hb.b3d",r\obj)
-    EntityPickMode r\Objects[20],2
-    EntityType r\Objects[20],HIT_MAP
-    EntityAlpha r\Objects[20],0.0
+    ;r\Objects[20] = LoadMesh("GFX\map\room3storage_hb.b3d",r\obj)
+    ;EntityPickMode r\Objects[20],2
+    ;EntityType r\Objects[20],HIT_MAP
+    ;EntityAlpha r\Objects[20],0.0
     
     ;Doors
     r\RoomDoors[0] = CreateDoor(r\zone, r\x, 0.0, r\z + 448.0 * RoomScale, 0, r, True)

@@ -3506,5 +3506,5 @@ Function FindAndDeleteFakeMonitor(r.Rooms,x#,y#,z#,Amount%)
 	
 End Function
 ;~IDEal Editor Parameters:
-;~F#4F#57#71#80#87#8E#9F#A7#AF#249#259#26A#289#2B2#31C
+;~F#4F#57#71#80#87#8E#9F#A7#AF#249#259#26A#2B2#31C
 ;~C#Blitz3D

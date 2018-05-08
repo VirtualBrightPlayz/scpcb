@@ -137,10 +137,11 @@ Function FillRoom_hll_sl_2(r.Rooms)
     
     ;r\MaxWayPointY# = 400.0*RoomScale
     
-    r\Objects[22] = LoadMesh("GFX\map\room2sl_hb.b3d",r\obj)
-    EntityPickMode r\Objects[22],2
-    EntityType r\Objects[22],HIT_MAP
-    EntityAlpha r\Objects[22],0.0
+    ;r\Objects[22] = LoadMesh("GFX\map\room2sl_hb.b3d",r\obj)
+	;ScaleEntity r\Objects[22],RoomScale,RoomScale,RoomScale
+    ;EntityPickMode r\Objects[22],2
+    ;EntityType r\Objects[22],HIT_MAP
+    ;EntityAlpha r\Objects[22],1.0
 End Function
 
 

@@ -82,10 +82,10 @@ Function FillRoom_cont_1123_2(r.Rooms)
     ScaleEntity r\Objects[13],46.0*RoomScale,45.0*RoomScale,46.0*RoomScale,True
     EntityParent r\Objects[13],r\obj	
     
-    r\Objects[14] = LoadMesh("GFX\map\1123_hb.b3d",r\obj)
-    EntityPickMode r\Objects[14],2
-    EntityType r\Objects[14],HIT_MAP
-    EntityAlpha r\Objects[14],0.0
+    ;r\Objects[14] = LoadMesh("GFX\map\1123_hb.b3d",r\obj)
+    ;EntityPickMode r\Objects[14],2
+    ;EntityType r\Objects[14],HIT_MAP
+    ;EntityAlpha r\Objects[14],0.0
 End Function
 
 

@@ -341,6 +341,28 @@ Function LoadRMesh(file$)
 							loadflags = RM2_LOADFLAG_COLOR Or RM2_LOADFLAG_ALPHA
 					End Select
 					
+					If tex[j]=0 Then
+						If temp1s="labelcont_173_1.jpg" Then
+							temp1s = "label173.jpg"
+						ElseIf temp1s="labelcont_1123_2.png" Then
+							temp1s = "label1123.png"
+						ElseIf temp1s="labelcont_008_1.jpg" Then
+							temp1s = "label008.jpg"
+						ElseIf temp1s="door" Then ;what
+							temp1s = "wood.jpg"
+						ElseIf temp1s<>"" Then
+							RuntimeError temp1s+" don't exist!"
+						EndIf
+						Select True
+							Case temp1i<3
+								tex[j]=LoadRMeshTexture(file,temp1s,1)
+								loadflags = RM2_LOADFLAG_COLOR
+							Default
+								tex[j]=LoadRMeshTexture(file,temp1s,3)
+								loadflags = RM2_LOADFLAG_COLOR Or RM2_LOADFLAG_ALPHA
+						End Select
+					EndIf
+					
 					If tex[j]<>0 Then
 						If temp1i=1 Then ;wtf does this mean????
 							TextureBlend tex[j],5
@@ -350,18 +372,7 @@ Function LoadRMesh(file$)
 							TextureBlend tex[j],3
 							blendflags = RM2_BLENDFLAG_LM
 						EndIf
-					ElseIf temp1s="labelcont_173_1.jpg" Then
-						temp1s = "label173.jpg"
-					ElseIf temp1s="labelcont_1123_2.png" Then
-						temp1s = "label1123.png"
-					ElseIf temp1s="labelcont_008_1.jpg" Then
-						temp1s = "label008.jpg"
-					ElseIf temp1s="door" Then ;what
-						temp1s = "wood.jpg"
-					ElseIf temp1s<>"" Then
-						RuntimeError temp1s+" don't exist!"
 					EndIf
-					
 				EndIf
 				If tex[j]<>0 Then
 					isAlpha=2
@@ -458,6 +469,9 @@ Function LoadRMesh(file$)
 	WriteByte(rm2,count)
 	For tc.Materials = Each Materials
 		WriteByteString(rm2,tc\Name)
+		If Instr(origFile,"1123")>0 Then
+			DebugLog tc\Name
+		EndIf
 		WriteByte(rm2,(tc\loadflags Shl 4) Or tc\blendflags)
 		WriteByte(rm2,tc\uvSet)
 	Next
@@ -584,17 +598,63 @@ Function LoadRMesh(file$)
 		EndIf
 	Next
 	
-	Local hiddenMesh%
+	Local hiddenMesh% = 0
+	Local hbMesh% = 0
+	Local hbSurf% = 0
 	
 	Local totalVerts% = 0
 	Local totalTris% = 0
 	
+	DebugLog Replace(StripPath(origFile),".rmesh","")
+	Select Replace(StripPath(origFile),".rmesh","")
+		Case "cont_049_2"
+			hbMesh = LoadMesh("GFX/map/room049_hb.b3d")
+		Case "cont_1123_2"
+			hbMesh = LoadMesh("GFX/map/1123_hb.b3d")
+		Case "hll_dirty_3"
+			hbMesh = LoadMesh("GFX/map/room3z2_hb.b3d")
+		Case "hll_sl_2"
+			hbMesh = LoadMesh("GFX/map/room2sl_hb.b3d")
+			DebugLog "HBMESH "+hbMesh
+		Case "off_glss_3"
+			hbMesh = LoadMesh("GFX/map/room3offices_hb.b3d")
+		Case "strg_939_2"
+			hbMesh = LoadMesh("GFX/map/room3storage_hb.b3d")
+	End Select
+	
+	If hbMesh<>0 Then
+		hiddenMesh = CreateMesh()
+		surf = CreateSurface(hiddenMesh)
+		
+		For i% = 1 To CountSurfaces(hbMesh)
+			hbSurf = GetSurface(hbMesh,i)
+			For j% = 0 To CountVertices(hbSurf)-1
+				AddVertex(surf,VertexX(hbSurf,j),VertexY(hbSurf,j),VertexZ(hbSurf,j))
+			Next
+			
+			For j% = 0 To CountTriangles(hbSurf)-1
+				AddTriangle(surf,TriangleVertex(hbSurf,j,0)+totalVerts,TriangleVertex(hbSurf,j,1)+totalVerts,TriangleVertex(hbSurf,j,2)+totalVerts)
+			Next
+			
+			totalVerts=totalVerts+CountVertices(hbSurf)
+			totalTris=totalTris+CountTriangles(hbSurf)
+		Next
+		FreeEntity hbMesh
+	EndIf
+	
 	count=ReadInt(f) ;invisible collision mesh
 	If count>0 Then
-		hiddenMesh=CreateMesh()
-		surf=CreateSurface(hiddenMesh)
+		If hiddenMesh=0 Then
+			hiddenMesh=CreateMesh()
+			surf=CreateSurface(hiddenMesh)
+		Else
+			surf=GetSurface(hiddenMesh,1)
+		EndIf
 		For i%=1 To count
 			count2=ReadInt(f) ;vertices
+			If Instr(origFile,"_sl_")>0 Then
+				DebugLog "SL3 "+count2
+			EndIf
 			totalVerts=totalVerts+count2
 			For j%=1 To count2
 				;world coords
@@ -609,8 +669,14 @@ Function LoadRMesh(file$)
 				AddTriangle(surf,totalVerts+temp1i,totalVerts+temp2i,totalVerts+temp3i)
 			Next
 		Next
-		
+	EndIf
+	
+	If hiddenMesh<>0 Then
 		WriteByte(rm2,RM2_INVISIBLE)
+		surf = GetSurface(hiddenMesh,1)
+		If Instr(origFile,"_sl_")>0 Then
+			DebugLog "SL4 "+CountVertices(surf)
+		EndIf
 		WriteShort(rm2,CountVertices(surf))
 		For i% = 1 To CountVertices(surf)
 			WriteFloat(rm2,VertexX(surf,i-1))
@@ -784,7 +850,7 @@ Function LoadRMesh(file$)
 			CreateWaypoint(-624.0,50.0-1280.0,0)
 		Case "cont_1123_2"
 			CreateWaypoint(832.0,50.0+0.0,367.0)
-			CreateWaypoint(280.0,50.0+0.0,-607.0)
+			;CreateWaypoint(280.0,50.0+0.0,-607.0)
 			CreateWaypoint(280.0,50.0+512.0,-607.0)
 		Case "cont_1162_2c"
 			CreateWaypoint(248.0,50.0+0.0,-736.0)
@@ -956,6 +1022,11 @@ Function LoadRMesh(file$)
 		Case "tnnl_pipes_2"
 		Case "tnnl_plain_3"
 	End Select
+	
+	If ((First WaypointTemp)=Null) And (Instr(origFile,"_2.rmesh")>0) Then
+		DebugLog "CENTER WAYPOINT OOOO"
+		CreateWaypoint(0.0,50.0,0.0)
+	EndIf
 	
 	a% = 0
 	For wpt.WaypointTemp = Each WaypointTemp

@@ -11,8 +11,8 @@ Function FillRoom_hll_dirty_3(r.Rooms)
             Exit
         EndIf
     Next
-    If r\Objects[0]=0 Then r\Objects[0] = LoadMesh("GFX\map\room3z2_hb.b3d",r\obj)
-    EntityPickMode r\Objects[0],2
-    EntityType r\Objects[0],HIT_MAP
-    EntityAlpha r\Objects[0],0.0
+    ;If r\Objects[0]=0 Then r\Objects[0] = LoadMesh("GFX\map\room3z2_hb.b3d",r\obj)
+    ;EntityPickMode r\Objects[0],2
+    ;EntityType r\Objects[0],HIT_MAP
+    ;EntityAlpha r\Objects[0],0.0
 End Function

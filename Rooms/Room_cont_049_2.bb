@@ -101,10 +101,10 @@ Function FillRoom_cont_049_2(r.Rooms)
     it = CreateItem("First Aid Kit", "firstaid", r\x +385.0 * RoomScale, r\y - 3412.0 * RoomScale, r\z + 271.0 * RoomScale)
     EntityParent(it\collider, r\obj)
     
-    r\Objects[10] = LoadMesh("GFX\map\room049_hb.b3d",r\obj)
-    EntityPickMode r\Objects[10],2
-    EntityType r\Objects[10],HIT_MAP
-    EntityAlpha r\Objects[10],0.0
+    ;r\Objects[10] = LoadMesh("GFX\map\room049_hb.b3d",r\obj)
+    ;EntityPickMode r\Objects[10],2
+    ;EntityType r\Objects[10],HIT_MAP
+    ;EntityAlpha r\Objects[10],0.0
 End Function
 
 
