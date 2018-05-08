@@ -97,7 +97,7 @@ Function UpdateEvent_srvr_096_2(e.Events)
 			Curr096\State2=70*10
 			
 			LoadEventSound(e,"SFX\Character\Guard\096ServerRoom1.ogg")
-			e\soundChannels[0] = PlaySound (e\sounds[0])
+			e\soundChannels[0] = PlaySound(e\sounds[0])
 			
 			e\room\NPC[0]=CreateNPC(NPCtypeGuard, EntityX(e\room\Objects[7],True),EntityY(e\room\Objects[7],True),EntityZ(e\room\Objects[7],True))
 			

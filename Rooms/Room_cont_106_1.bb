@@ -181,9 +181,9 @@ Function UpdateEvent_cont_106_1(e.Events)
 		
 		If e\EventState2 <> temp Then 
 			If e\EventState2 = False Then
-				PlaySound(e\sounds[3])
+				PlaySound2(e\sounds[3])
 			Else
-				PlaySound(e\sounds[2])	
+				PlaySound2(e\sounds[2])	
 			EndIf
 		EndIf
 		

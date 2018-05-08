@@ -81,7 +81,7 @@ Function UpdateEvent_cont_012_2(e.Events)
 		
 		If e\EventState=0 Then
 			If EntityDistance(mainPlayer\collider, e\room\RoomDoors[0]\obj)<2.5 And RemoteDoorOn Then
-				;PlaySound HorrorSFX(7)
+				;PlaySound2 HorrorSFX(7)
 				PlayRangedSound_SM(sndManager\lever,mainPlayer\cam,e\room\RoomDoors[0]\obj) 
 				e\EventState=1
 				e\room\RoomDoors[0]\locked = False
@@ -162,12 +162,12 @@ Function UpdateEvent_cont_012_2(e.Events)
 					If dist < 0.6 Then
 						e\EventState3=Min(e\EventState3+timing\tickDuration,86*70)
 						If e\EventState3>70 And e\EventState3-timing\tickDuration=<70 Then
-							PlaySound LoadTempSound("SFX\SCP\012\Speech1.ogg")
+							PlaySound2 LoadTempSound("SFX\SCP\012\Speech1.ogg")
 						ElseIf e\EventState3>13*70 And e\EventState3-timing\tickDuration=<13*70
 							Msg="You start pushing your nails into your wrist, drawing blood."
 							MsgTimer = 7*70
 							mainPlayer\injuries=mainPlayer\injuries+0.5
-							PlaySound LoadTempSound("SFX\SCP\012\Speech2.ogg")
+							PlaySound2 LoadTempSound("SFX\SCP\012\Speech2.ogg")
 						ElseIf e\EventState3>31*70 And e\EventState3-timing\tickDuration=<31*70
 							tex = LoadTexture("GFX\map\scp-012_1.jpg")
 							EntityTexture (e\room\Objects[4], tex,0,1)
@@ -176,19 +176,19 @@ Function UpdateEvent_cont_012_2(e.Events)
 							Msg="You tear open your left wrist and start writing on the composition with your blood."
 							MsgTimer = 7*70
 							mainPlayer\injuries=Max(mainPlayer\injuries,1.5)
-							PlaySound LoadTempSound("SFX\SCP\012\Speech"+Rand(3,4)+".ogg")
+							PlaySound2 LoadTempSound("SFX\SCP\012\Speech"+Rand(3,4)+".ogg")
 						ElseIf e\EventState3>49*70 And e\EventState3-timing\tickDuration=<49*70
 							Msg="You push your fingers deeper into the wound."
 							MsgTimer = 8*70
 							mainPlayer\injuries=mainPlayer\injuries+0.3
-							PlaySound LoadTempSound("SFX\SCP\012\Speech5.ogg")
+							PlaySound2 LoadTempSound("SFX\SCP\012\Speech5.ogg")
 						ElseIf e\EventState3>63*70 And e\EventState3-timing\tickDuration=<63*70
 							tex = LoadTexture("GFX\map\scp-012_2.jpg")
 							EntityTexture (e\room\Objects[4], tex,0,1)	
 							FreeTexture tex
 							
 							mainPlayer\injuries=mainPlayer\injuries+0.5
-							PlaySound LoadTempSound("SFX\SCP\012\Speech6.ogg")
+							PlaySound2 LoadTempSound("SFX\SCP\012\Speech6.ogg")
 						ElseIf e\EventState3>74*70 And e\EventState3-timing\tickDuration=<74*70
 							tex = LoadTexture("GFX\map\scp-012_3.jpg")
 							EntityTexture (e\room\Objects[4], tex,0,1)
@@ -197,7 +197,7 @@ Function UpdateEvent_cont_012_2(e.Events)
 							Msg="You rip the wound wide open. Grabbing scoops of blood pouring out."
 							MsgTimer = 7*70
 							mainPlayer\injuries=mainPlayer\injuries+0.8
-							PlaySound LoadTempSound("SFX\SCP\012\Speech7.ogg")
+							PlaySound2 LoadTempSound("SFX\SCP\012\Speech7.ogg")
 							mainPlayer\crouching = True
 							
 							de.Decals = CreateDecal(17,  EntityX(mainPlayer\collider), -768*RoomScale+0.01, EntityZ(mainPlayer\collider),90,Rnd(360),0)

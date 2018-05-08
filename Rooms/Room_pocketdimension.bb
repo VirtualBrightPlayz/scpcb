@@ -219,7 +219,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 			
 			If e\EventState > 65*70 Then
 				If Rand(800)=1 And Curr106\State =>0 Then	
-					;PlaySound HorrorSFX(8)
+					;PlaySound2 HorrorSFX(8)
 					Curr106\State = -0.1
 					e\EventState = 601
 				EndIf
@@ -253,7 +253,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 			
 			If e\EventState3 = 1 Or e\EventState3 = 2 Then ;the "trick room"
 				If e\EventState3 = 1 And (e\room\RoomDoors[0]\openstate>150 Or e\room\RoomDoors[1]\openstate>150) Then
-					PlaySound LoadTempSound("SFX\Horror\Horror16.ogg")
+					PlaySound2 LoadTempSound("SFX\Horror\Horror16.ogg")
 					mainPlayer\blurTimer = 800
 					e\EventState3=2
 				EndIf
@@ -367,7 +367,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 									DeathMSG = "In addition to the decomposed appearance typical of SCP-106's victims, the body exhibits injuries that have not been observed before: "
 									DeathMSG = DeathMSG + "massive skull fracture, three broken ribs, fractured shoulder and multiple heavy lacerations."
 									
-									PlaySound LoadTempSound("SFX\Room\PocketDimension\Impact.ogg")
+									PlaySound2 LoadTempSound("SFX\Room\PocketDimension\Impact.ogg")
 									Kill(mainPlayer)
 								EndIf
 							EndIf
@@ -394,7 +394,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 						
 						If mainPlayer\injuries > 1.0 Then
 							If mainPlayer\injuries - (timing\tickDuration/4000)=< 1.0 Then
-								PlaySound LoadTempSound("SFX\Room\PocketDimension\Kneel.ogg")
+								PlaySound2 LoadTempSound("SFX\Room\PocketDimension\Kneel.ogg")
 							EndIf
 						EndIf
 						
@@ -446,7 +446,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 										mainPlayer\blinkTimer = -10
 										;LightBlink = 5
 										
-										PlaySound(LoadTempSound("SFX\Room\PocketDimension\Exit.ogg"))
+										PlaySound2(LoadTempSound("SFX\Room\PocketDimension\Exit.ogg"))
 										
 										de.Decals = CreateDecal(0, EntityX(r\obj), 381*RoomScale, EntityZ(r\obj), 270, Rand(360), 0)
 										
@@ -494,7 +494,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 				Else ;the player is not at the exit, must've fallen down
 					
 					If Not mainPlayer\dead Then 
-						;PlaySound HorrorSFX(8)
+						;PlaySound2 HorrorSFX(8)
 						DeathMSG = "In addition to the decomposed appearance typical of the victims of SCP-106, the subject seems to have suffered multiple heavy fractures to both of his legs."
 						
 					EndIf
@@ -516,7 +516,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 				Select Rand(25)
 					Case 1,2,3,4
 						;TODO: fix
-						;PlaySound(OldManSFX(3))
+						;PlaySound2(OldManSFX(3))
 						
 						pvt = CreatePivot()
 						PositionEntity(pvt, EntityX(mainPlayer\collider), EntityY(mainPlayer\collider), EntityZ(mainPlayer\collider))
@@ -535,7 +535,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 						e\EventState2=1
 						mainPlayer\blinkTimer = -10
 						;TODO: fix
-						;PlaySound(OldManSFX(3))
+						;PlaySound2(OldManSFX(3))
 						
 						PositionEntity(mainPlayer\collider, EntityX(e\room\Objects[8],True), 0.5, EntityZ(e\room\Objects[8],True))
 						ResetEntity mainPlayer\collider
@@ -574,7 +574,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 						mainPlayer\blinkTimer = -10
 						
 						;TODO: fix
-						;PlaySound(OldManSFX(3))
+						;PlaySound2(OldManSFX(3))
 						
 						PositionEntity(mainPlayer\collider, EntityX(e\room\Objects[8],True), 2288*RoomScale, EntityZ(e\room\Objects[8],True))
 						ResetEntity mainPlayer\collider
@@ -611,7 +611,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 				If Rand(750)=1 And e\EventState2 > 12 Then
 					mainPlayer\blinkTimer = -10
 					e\EventState2 = e\EventState2-1
-					;PlaySound HorrorSFX(8)
+					;PlaySound2 HorrorSFX(8)
 				EndIf
 				
 				If e\EventState2 = 12 Then
@@ -642,7 +642,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 					UpdateDoors()
 					UpdateRooms()
 				Else ;somewhere else -> must've fallen down
-					;If KillTimer => 0 Then PlaySound HorrorSFX(8)
+					;If KillTimer => 0 Then PlaySound2 HorrorSFX(8)
 					Kill(mainPlayer)
 					mainPlayer\blurTimer = 3000
 				EndIf
@@ -660,6 +660,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 	EndIf
 	;[End Block]
 End Function
+
 
 
 ;~IDEal Editor Parameters:

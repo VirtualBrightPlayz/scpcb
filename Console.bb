@@ -668,7 +668,7 @@ Function UpdateConsole()
 						EndIf
 						EntityType (it\collider, HIT_ITEM)
 					Next
-					PlaySound LoadTempSound("SFX\Music\420J.ogg")
+					PlaySound2 LoadTempSound("SFX\Music\420J.ogg")
 
 				Case "godmode"
 					StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))

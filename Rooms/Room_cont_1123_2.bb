@@ -108,7 +108,7 @@ Function UpdateEvent_cont_1123_2(e.Events)
 			;If e\soundChannels[0] = 0 Then
 			;	e\soundChannels[0] = 
 			;Else
-			;	If Not IsChannelPlaying(e\soundChannels[0]) Then e\soundChannels[0] = PlaySound(moddedambience)
+			;	If Not IsChannelPlaying(e\soundChannels[0]) Then e\soundChannels[0] = PlaySound2(moddedambience)
 			;End If
 			
 			;Saving injuries and bloodloss, so that the player won't be healed automatically
@@ -133,7 +133,7 @@ Function UpdateEvent_cont_1123_2(e.Events)
 			
 			PositionEntity mainPlayer\collider, EntityX(e\room\Objects[4],True),EntityY(e\room\Objects[4],True),EntityZ(e\room\Objects[4],True),True
 			ResetEntity mainPlayer\collider
-			;PlaySound(HorrorSFX(9))
+			;PlaySound2(HorrorSFX(9))
 			mainPlayer\camShake = 1.0
 			mainPlayer\blurTimer = 1200
 			mainPlayer\injuries = 1.0
@@ -142,7 +142,7 @@ Function UpdateEvent_cont_1123_2(e.Events)
 		ElseIf e\EventState = 2
 			e\EventState2 = e\EventState2 + timing\tickDuration
 			
-			PointEntity e\room\NPC[0]\Collider, mainPlayer\collider
+			PointEntity e\room\NPC[0]\collider, mainPlayer\collider
 			mainPlayer\blurTimer = Max(mainPlayer\blurTimer, 100)
 			
 			If e\EventState2>200 And e\EventState2-timing\tickDuration=<200 Then 							
@@ -180,8 +180,8 @@ Function UpdateEvent_cont_1123_2(e.Events)
 				If e\sounds[0]=0 Then e\sounds[0] = LoadSound("SFX\Music\1123.ogg")
 				e\soundChannels[0] = PlaySound(e\sounds[0])
 				
-				PositionEntity e\room\NPC[0]\Collider, EntityX(e\room\Objects[7],True),EntityY(e\room\Objects[7],True),EntityZ(e\room\Objects[7],True)
-				ResetEntity e\room\NPC[0]\Collider
+				PositionEntity e\room\NPC[0]\collider, EntityX(e\room\Objects[7],True),EntityY(e\room\Objects[7],True),EntityZ(e\room\Objects[7],True)
+				ResetEntity e\room\NPC[0]\collider
 				
 				e\EventState=4
 			EndIf
@@ -201,7 +201,7 @@ Function UpdateEvent_cont_1123_2(e.Events)
 					DrawHandIcon = True
 					If MouseHit1 Then
 						RotateEntity e\room\Objects[13], 0, 1, 0, False
-						PlaySound(LoadTempSound("SFX\SCP\1123\Horror.ogg"))
+						PlaySound2(LoadTempSound("SFX\SCP\1123\Horror.ogg"))
 					EndIf
 				EndIf							
 			Else
@@ -220,7 +220,7 @@ Function UpdateEvent_cont_1123_2(e.Events)
 						mainPlayer\blurTimer = 500	
 						mainPlayer\injuries = 1.5
 						mainPlayer\bloodloss = 70
-					;PlaySound(LoadTempSound("SFX\Door\WoodenDoorClose.ogg"))							
+					;PlaySound2(LoadTempSound("SFX\Door\WoodenDoorClose.ogg"))							
 					EndIf								
 				EndIf
 				
@@ -265,7 +265,7 @@ Function UpdateEvent_cont_1123_2(e.Events)
 			If e\room\NPC[0]\sounds[0]<>0 Then 
 				If e\room\NPC[0]\soundChannels[0]<>0 Then
 					If (Not IsChannelPlaying(e\room\NPC[0]\soundChannels[0])) Then 
-						PlaySound(LoadTempSound("SFX\SCP\1123\Gunshot.ogg"))
+						PlaySound2(LoadTempSound("SFX\SCP\1123\Gunshot.ogg"))
 						e\EventState = 7
 						FreeSound e\room\NPC[0]\sounds[0] : e\room\NPC[0]\sounds[0]=0	
 					EndIf

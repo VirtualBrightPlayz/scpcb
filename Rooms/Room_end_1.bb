@@ -51,14 +51,14 @@ Function UpdateEventEndroom106(e.Events)
 			EndIf
 		ElseIf e\EventState = 1
 			If mainPlayer\currRoom = e\room Then
-				;PlaySound(CloseDoorSFX(1,0))
-				;PlaySound(DecaySFX(0))
+				;PlaySound2(CloseDoorSFX(1,0))
+				;PlaySound2(DecaySFX(0))
 				;e\room\RoomDoors[0]\open = False
 				e\room\NPC[0]\State = 1
 				e\EventState = 2
 				
 				e\sounds[0] = LoadSound("SFX\Character\Janitor\106Abduct.ogg")
-				PlaySound(e\sounds[0])		
+				PlaySound2(e\sounds[0])		
 				
 				If e\soundChannels[0]<>0 Then StopChannel e\soundChannels[0]
 			ElseIf e\room\dist < 8
@@ -72,7 +72,7 @@ Function UpdateEventEndroom106(e.Events)
 				de\Size = 0.05 : de\SizeChange = 0.008 : de\timer=10000 : UpdateDecals
 				e\EventState = 3
 				
-				;PlaySound(DecaySFX(1))
+				;PlaySound2(DecaySFX(1))
 			EndIf					
 		Else
 			dist = Distance(EntityX(e\room\NPC[0]\Collider),EntityZ(e\room\NPC[0]\Collider), EntityX(e\room\obj),EntityZ(e\room\obj))
@@ -85,7 +85,7 @@ Function UpdateEventEndroom106(e.Events)
 			
 			If dist<0.4 Then
 				If e\room\NPC[0]\State=1 Then 
-					;PlaySound(HorrorSFX(10))
+					;PlaySound2(HorrorSFX(10))
 					SetNPCFrame(e\room\NPC[0],41)
 				EndIf
 				e\EventState = e\EventState+timing\tickDuration/2

@@ -213,7 +213,7 @@ Function UpdateEventExit1(e.Events)
 						
 						e\room\NPC[0]\state = 3
 						
-						e\soundChannels[0] = PlaySound (LoadTempSound("SFX\Ending\GateB\682Battle.ogg"))
+						e\soundChannels[0] = PlaySound(LoadTempSound("SFX\Ending\GateB\682Battle.ogg"))
 					EndIf								
 				Else
 					ShouldPlay = 6
@@ -310,10 +310,10 @@ Function UpdateEventExit1(e.Events)
 									n.NPCs = CreateNPC(NPCtypeMTF, EntityX(e\room\RoomDoors[2]\obj,True),EntityY(e\room\RoomDoors[2]\obj,True)+0.29,(EntityZ(e\room\RoomDoors[2]\obj,True)+EntityZ(e\room\RoomDoors[3]\obj,True))/2)
 									
 									For n.NPCs = Each NPCs
-										If n\NPCtype = NPCtypeMTF Then
-											n\LastSeen = (70*Rnd(30,35))
-											n\State = 3
-											n\State2 = 10
+										If n\npcType = NPCtypeMTF Then
+											n\lastSeen = (70*Rnd(30,35))
+											n\state = 3
+											n\state2 = 10
 											n\EnemyX = EntityX(mainPlayer\collider)
 											n\EnemyY = EntityY(mainPlayer\collider)
 											n\EnemyZ = EntityZ(mainPlayer\collider)
@@ -347,31 +347,31 @@ Function UpdateEventExit1(e.Events)
 								;Update the MTF Units everytime they cannot detect the player
 								If e\EventState3 = 0.0
 									For n.NPCs = Each NPCs
-										If n\NPCtype = NPCtypeMTF
-											If n\State = 5
-												n\State = 3
-												n\PathStatus = FindPath(n, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider),EntityZ(mainPlayer\collider))
-												n\PathTimer = 70*Rand(15,20)
-												n\LastSeen = 70*300
+										If n\npcType = NPCtypeMTF
+											If n\state = 5
+												n\state = 3
+												n\pathStatus = FindPath(n, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider),EntityZ(mainPlayer\collider))
+												n\pathTimer = 70*Rand(15,20)
+												n\lastSeen = 70*300
 											EndIf
-											If EntityDistance(n\Collider,mainPlayer\collider)<3.0
-												n\State = 5
-												n\PathStatus = 0
-												n\PathTimer = 0
-												n\CurrSpeed = 0
+											If EntityDistance(n\collider,mainPlayer\collider)<3.0
+												n\state = 5
+												n\pathStatus = 0
+												n\pathTimer = 0
+												n\currSpeed = 0
 											EndIf
 										EndIf
 									Next
 								EndIf
 								
 								For n.NPCs = Each NPCs
-									If n\NPCtype = NPCtypeMTF
-										If n\State = 5 And EntityDistance(n\Collider,mainPlayer\collider)<3.0
+									If n\npcType = NPCtypeMTF
+										If n\state = 5 And EntityDistance(n\collider,mainPlayer\collider)<3.0
 											If e\EventState3 = 0.0
-												PlaySound LoadTempSound("SFX\Ending\GateB\PlayerDetect.ogg")
+												PlaySound2 LoadTempSound("SFX\Ending\GateB\PlayerDetect.ogg")
 												e\EventState3 = e\EventState3 + timing\tickDuration
 												For n2.NPCs = Each NPCs
-													If n2\NPCtype = n\NPCtype
+													If n2\NPCtype = n\npcType
 														n2\State = 5
 														n2\PathStatus = 0
 														n2\PathTimer = 0
@@ -405,7 +405,7 @@ Function UpdateEventExit1(e.Events)
 									ScaleSprite ent%,1.5,1.5
 									ShouldPlay = 0
 									mainPlayer\moveSpeed = 0
-									PlaySound LoadTempSound("SFX\Ending\GateB\Gunshot.ogg")
+									PlaySound2 LoadTempSound("SFX\Ending\GateB\Gunshot.ogg")
 									mainPlayer\godMode = 0
 									mainPlayer\noclip = 0
 									DeathMSG = ""
@@ -440,7 +440,7 @@ Function UpdateEventExit1(e.Events)
 							angle# = WrapAngle(EntityRoll(e\room\Objects[12]))
 							TurnEntity e\room\Objects[12], 0,0,(5.0+Abs(Sin(angle))*2)*timing\tickDuration
 							If angle < 270 And WrapAngle(EntityRoll(e\room\Objects[12]))=> 270 Then
-								PlaySound LoadTempSound("SFX\Character\Apache\Crash1.ogg")
+								PlaySound2 LoadTempSound("SFX\Character\Apache\Crash1.ogg")
 								e\room\NPC[3]\State = 4
 								e\room\NPC[3]\State2 = 1.0
 								e\room\NPC[3]\EnemyX = EntityX(e\room\Objects[7],True)

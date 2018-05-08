@@ -563,7 +563,7 @@ Function PickItem(item.Items)
 						If mainPlayer\currRoom\RoomTemplate\Name <> "room1123" Then
 							ShowEntity mainPlayer\overlays[OVERLAY_WHITE]
 							mainPlayer\lightFlash = 7.0
-							PlaySound(LoadTempSound("SFX\SCP\1123\Touch.ogg"))		
+							PlaySound2(LoadTempSound("SFX\SCP\1123\Touch.ogg"))		
 							DeathMSG = "Subject D-9341 was shot dead after attempting to attack a member of Nine-Tailed Fox. Surveillance tapes show that the subject had been "
 							DeathMSG = DeathMSG + "wandering around the site approximately 9 minutes prior, shouting the phrase " + Chr(34) + "get rid of the four pests" + Chr(34)
 							DeathMSG = DeathMSG + " in chinese. SCP-1123 was found in [REDACTED] nearby, suggesting the subject had come into physical contact with it. How "
@@ -576,7 +576,7 @@ Function PickItem(item.Items)
 								If e\eventstate = 0 Then
 									ShowEntity mainPlayer\overlays[OVERLAY_WHITE]
 									mainPlayer\lightFlash = 3.0
-									PlaySound(LoadTempSound("SFX\SCP\1123\Touch.ogg"))											
+									PlaySound2(LoadTempSound("SFX\SCP\1123\Touch.ogg"))											
 								EndIf
 								e\eventstate = Max(1, e\eventstate)
 								Exit
@@ -585,7 +585,7 @@ Function PickItem(item.Items)
 					Case "killbat"
 						ShowEntity mainPlayer\overlays[OVERLAY_WHITE]
 						mainPlayer\lightFlash = 1.0
-						PlaySound(IntroSFX(11))
+						PlaySound2(IntroSFX(11))
 						DeathMSG = "Subject D-9341 found dead inside SCP-914's output booth next to what appears to be an ordinary nine-volt battery. The subject is covered in severe "
 						DeathMSG = DeathMSG + "electrical burns, and assumed to be killed via an electrical shock caused by the battery. The battery has been stored for further study."
 						Kill(mainPlayer)
@@ -610,7 +610,7 @@ Function PickItem(item.Items)
 						
 				End Select
 				
-				If item\itemtemplate\sound <> 66 Then PlaySound(PickSFX(item\itemtemplate\sound))
+				If item\itemtemplate\sound <> 66 Then PlaySound2(PickSFX(item\itemtemplate\sound))
 				item\Picked = True
 				item\Dropped = -1
 				
@@ -632,7 +632,7 @@ Function DropItem(item.Items,playDropSound%=True)
 		DeEquipItem(player,item)
 	Next
 		
-	If playDropSound And (item\itemtemplate\sound <> 66) Then PlaySound(PickSFX(item\itemtemplate\sound))
+	If playDropSound And (item\itemtemplate\sound <> 66) Then PlaySound2(PickSFX(item\itemtemplate\sound))
 	
 	item\Dropped = 1
 	

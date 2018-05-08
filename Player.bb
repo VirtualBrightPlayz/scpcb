@@ -276,7 +276,7 @@ Function MovePlayer()
 		mainPlayer\staminaEffect = CurveValue(1.0, mainPlayer\staminaEffect, 50)
 	EndIf
 	
-	If (mainPlayer\currRoom\RoomTemplate\Name <> "pocketdimension") Then 
+	If (mainPlayer\currRoom\RoomTemplate\name <> "pocketdimension") Then 
 		If KeyDown(keyBinds\sprint) Then
 			If (mainPlayer\stamina < 5) Then ;out of breath
 				If (Not IsChannelPlaying(mainPlayer\breathChn)) Then mainPlayer\breathChn = PlaySound(GetIntArrayElem(mainPlayer\breathingSFX, IsPlayerWearingTempName(mainPlayer,"gasmask"), 0))
@@ -349,7 +349,7 @@ Function MovePlayer()
 							tempchn% = PlaySound_SM(sndManager\footstep[Rand(0, 7)])
 						EndIf
 
-						ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\soundVolume
+						ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\SoundVolume
 					Else
 						mainPlayer\loudness = Max(2.5-(mainPlayer\crouching*0.6),mainPlayer\loudness)
 
@@ -359,23 +359,23 @@ Function MovePlayer()
 							tempchn% = PlaySound_SM(sndManager\footstepRun[Rand(0, 7)])
 						EndIf
 						
-						ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\soundVolume
+						ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\SoundVolume
 					End If
 				ElseIf mainPlayer\footstepOverride=1 Then
 					tempchn% = PlaySound_SM(sndManager\footstepPD[Rand(0, 2)])
-					ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.4))*userOptions\soundVolume
+					ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.4))*userOptions\SoundVolume
 				ElseIf mainPlayer\footstepOverride=2 Then
 					tempchn% = PlaySound_SM(sndManager\footstep8601[Rand(0, 2)])
-					ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.4))*userOptions\soundVolume
+					ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.4))*userOptions\SoundVolume
 				ElseIf mainPlayer\footstepOverride=3 Then
 					If Sprint = 1.0 Then
 						mainPlayer\loudness = Max(4.0,mainPlayer\loudness)
 						tempchn% = PlaySound_SM(sndManager\footstep[Rand(0, 7)])
-						ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\soundVolume
+						ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\SoundVolume
 					Else
 						mainPlayer\loudness = Max(2.5-(mainPlayer\crouching*0.6),mainPlayer\loudness)
 						tempchn% = PlaySound_SM(sndManager\footstepRun[Rand(0, 7)])
-						ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\soundVolume
+						ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\SoundVolume
 					End If
 				EndIf
 				
@@ -505,7 +505,7 @@ Function MovePlayer()
 			EntityPick(pvt,0.3)
 			de.decals = CreateDecal(Rand(15,16), PickedX(), PickedY()+0.005, PickedZ(), 90, Rand(360), 0)
 			de\size = Rnd(0.03,0.08)*Min(mainPlayer\injuries,3.0) : EntityAlpha(de\obj, 1.0) : ScaleSprite de\obj, de\size, de\size
-			tempchn% = PlaySound (DripSFX(Rand(0,2)))
+			tempchn% = PlaySound(DripSFX(Rand(0,2)))
 			ChannelVolume tempchn, Rnd(0.0,0.8)*userOptions\soundVolume
 			ChannelPitch tempchn, Rand(20000,30000)
 			
@@ -766,7 +766,7 @@ Function EquipItem(player.Player,item.Items,toggle%)
 							it\disttimer = 0
 						Next
 						player\currRoom = r
-						PlaySound(LoadTempSound("SFX\SCP\1499\Enter.ogg"))
+						PlaySound2(LoadTempSound("SFX\SCP\1499\Enter.ogg"))
 						NTF_1499X# = 0.0
 						NTF_1499Y# = 0.0
 						NTF_1499Z# = 0.0
@@ -960,7 +960,7 @@ Function DrawInventory(player.Player)
 								If (player\selectedItem\state = 0) Then
 									Msg = Chr(34)+"Hey, I remember getting this ticket from the kickstarter! Wonder if it ever came out..."+Chr(34)
 									MsgTimer = 70*10
-									PlaySound LoadTempSound("SFX\SCP\1162\NostalgiaCancer"+Rand(1,10)+".ogg")
+									PlaySound2 LoadTempSound("SFX\SCP\1162\NostalgiaCancer"+Rand(1,10)+".ogg")
 									player\selectedItem\state = 1
 								EndIf
 							Default 
@@ -1184,7 +1184,7 @@ Function DrawInventory(player.Player)
 					DrawImage(player\selectedItem\itemtemplate\img, userOptions\screenWidth / 2 - ImageWidth(player\selectedItem\itemtemplate\img) / 2, userOptions\screenHeight / 2 - ImageHeight(player\selectedItem\itemtemplate\img) / 2)
 					
 					If player\selectedItem\state = 0 Then
-						PlaySound LoadTempSound("SFX\SCP\1162\NostalgiaCancer"+Rand(1,10)+".ogg")
+						PlaySound2 LoadTempSound("SFX\SCP\1162\NostalgiaCancer"+Rand(1,10)+".ogg")
 						Select player\selectedItem\itemtemplate\name
 							Case "Old Badge"
 								Msg = Chr(34)+"Huh? This guy looks just like me!"+Chr(34)
@@ -1195,7 +1195,7 @@ Function DrawInventory(player.Player)
 					EndIf
 				Case "key"
 					If player\selectedItem\state = 0 Then
-						PlaySound LoadTempSound("SFX\SCP\1162\NostalgiaCancer"+Rand(1,10)+".ogg")
+						PlaySound2 LoadTempSound("SFX\SCP\1162\NostalgiaCancer"+Rand(1,10)+".ogg")
 						
 						Msg = Chr(34)+"Isn't this the key to that old shack? The one where I... No, it can't be."+Chr(34)
 						MsgTimer = 70*10						
@@ -1220,7 +1220,7 @@ Function DrawInventory(player.Player)
 								
 								Msg = Chr(34)+"Why does this seem so familiar?"+Chr(34)
 								MsgTimer = 70*10
-								PlaySound LoadTempSound("SFX\SCP\1162\NostalgiaCancer"+Rand(1,10)+".ogg")
+								PlaySound2 LoadTempSound("SFX\SCP\1162\NostalgiaCancer"+Rand(1,10)+".ogg")
 								player\selectedItem\state = 1
 						End Select
 					EndIf
@@ -1282,7 +1282,7 @@ Function UpdateInventory(player.Player)
 							MouseHit1 = False
 							
 							If DoubleClick Then
-								If player\openInventory\items[n]\itemtemplate\sound <> 66 Then PlaySound(PickSFX(player\openInventory\items[n]\itemtemplate\sound))
+								If player\openInventory\items[n]\itemtemplate\sound <> 66 Then PlaySound2(PickSFX(player\openInventory\items[n]\itemtemplate\sound))
 								CurrGameState = GAMESTATE_PLAYING
 								DoubleClick = False
 							EndIf
@@ -1343,7 +1343,7 @@ Function UpdateInventory(player.Player)
 													For ri% = 0 To player\openInventory\size - 1
 														If player\openInventory\items[ri] = player\selectedItem Then
 															player\openInventory\items[ri] = Null
-															PlaySound(PickSFX(player\selectedItem\itemtemplate\sound))
+															PlaySound2(PickSFX(player\selectedItem\itemtemplate\sound))
 														EndIf
 													Next
 													added = player\selectedItem
@@ -1374,7 +1374,7 @@ Function UpdateInventory(player.Player)
 							Case "battery", "bat"
 								Select player\openInventory\items[MouseSlot]\itemtemplate\name
 									Case "S-NAV Navigator", "S-NAV 300 Navigator", "S-NAV 310 Navigator"
-										If player\selectedItem\itemtemplate\sound <> 66 Then PlaySound(PickSFX(player\selectedItem\itemtemplate\sound))	
+										If player\selectedItem\itemtemplate\sound <> 66 Then PlaySound2(PickSFX(player\selectedItem\itemtemplate\sound))	
 										RemoveItem (player\selectedItem)
 										player\selectedItem = Null
 										player\openInventory\items[MouseSlot]\state = 100.0
@@ -1392,7 +1392,7 @@ Function UpdateInventory(player.Player)
 												Msg = "The battery does not fit inside this radio."
 												MsgTimer = 70 * 5
 											Case "radio"
-												If player\selectedItem\itemtemplate\sound <> 66 Then PlaySound(PickSFX(player\selectedItem\itemtemplate\sound))	
+												If player\selectedItem\itemtemplate\sound <> 66 Then PlaySound2(PickSFX(player\selectedItem\itemtemplate\sound))	
 												RemoveItem (player\selectedItem)
 												player\selectedItem = Null
 												player\openInventory\items[MouseSlot]\state = 100.0
@@ -1402,7 +1402,7 @@ Function UpdateInventory(player.Player)
 									Case "Night Vision Goggles"
 										Local nvname$ = player\openInventory\items[MouseSlot]\itemtemplate\tempname
 										If nvname$="nvgoggles" Or nvname$="supernv" Then
-											If player\selectedItem\itemtemplate\sound <> 66 Then PlaySound(PickSFX(player\selectedItem\itemtemplate\sound))	
+											If player\selectedItem\itemtemplate\sound <> 66 Then PlaySound2(PickSFX(player\selectedItem\itemtemplate\sound))	
 											RemoveItem (player\selectedItem)
 											player\selectedItem = Null
 											player\openInventory\items[MouseSlot]\state = 1000.0
@@ -1430,7 +1430,7 @@ Function UpdateInventory(player.Player)
 												Msg = "There seems to be no place for batteries in this radio."
 												MsgTimer = 70 * 5		
 											Case "18vradio"
-												If player\selectedItem\itemtemplate\sound <> 66 Then PlaySound(PickSFX(player\selectedItem\itemtemplate\sound))	
+												If player\selectedItem\itemtemplate\sound <> 66 Then PlaySound2(PickSFX(player\selectedItem\itemtemplate\sound))	
 												RemoveItem (player\selectedItem)
 												player\selectedItem = Null
 												player\openInventory\items[MouseSlot]\state = 100.0
@@ -1465,7 +1465,7 @@ Function UpdateInventory(player.Player)
 					If player\currRoom\RoomTemplate\Name <> "room1123" Then
 						ShowEntity player\overlays[OVERLAY_WHITE]
 						player\lightFlash = 7
-						PlaySound(LoadTempSound("SFX\SCP\1123\Touch.ogg"))		
+						PlaySound2(LoadTempSound("SFX\SCP\1123\Touch.ogg"))		
 						DeathMSG = "Subject D-9341 was shot dead after attempting to attack a member of Nine-Tailed Fox. Surveillance tapes show that the subject had been "
 						DeathMSG = DeathMSG + "wandering around the site approximately 9 minutes prior, shouting the phrase " + Chr(34) + "get rid of the four pests" + Chr(34)
 						DeathMSG = DeathMSG + " in chinese. SCP-1123 was found in [REDACTED] nearby, suggesting the subject had come into physical contact with it. How "
@@ -1478,7 +1478,7 @@ Function UpdateInventory(player.Player)
 							If e\EventState = 0 Then
 								ShowEntity player\overlays[OVERLAY_WHITE]
 								player\lightFlash = 3
-								PlaySound(LoadTempSound("SFX\SCP\1123\Touch.ogg"))											
+								PlaySound2(LoadTempSound("SFX\SCP\1123\Touch.ogg"))											
 							EndIf
 							e\EventState = Max(1, e\EventState)
 							Exit
@@ -1487,7 +1487,7 @@ Function UpdateInventory(player.Player)
 				Case "battery","key1", "key2", "key3", "key4", "key5", "scp860", "hand", "hand2"
 					;do nothing
 				Case "scp513"
-					PlaySound LoadTempSound("SFX\SCP\513\Bell"+Rand(1,3)+".ogg")
+					PlaySound2 LoadTempSound("SFX\SCP\513\Bell"+Rand(1,3)+".ogg")
 					
 					temp = True
 					For np.NPCs = Each NPCs
@@ -1670,7 +1670,7 @@ Function UpdateInventory(player.Player)
 					player\bloodloss = Max(player\bloodloss + GetINIInt2(iniStr, loc, "blood loss"),0);*temp
 					strtemp =  GetINIString2(iniStr, loc, "sound")
 					If strtemp<>"" Then
-						PlaySound LoadTempSound(strtemp)
+						PlaySound2 LoadTempSound(strtemp)
 					EndIf
 					;If GetINIInt2(iniStr, loc, "stomachache") Then ;TODO: fix
 					
@@ -1714,7 +1714,7 @@ Function UpdateInventory(player.Player)
 					
 					If player\selectedItem\state > 0 Then
 						;TODO: remove coffindistance
-						If player\currRoom\RoomTemplate\Name = "pocketdimension" Or CoffinDistance < 4.0 Then
+						If player\currRoom\RoomTemplate\name = "pocketdimension" Or CoffinDistance < 4.0 Then
 							ResumeChannel(RadioCHN(5))
 							If IsChannelPlaying(RadioCHN(5)) = False Then RadioCHN(5) = PlaySound(RadioStatic)	
 						Else
@@ -1889,7 +1889,7 @@ Function UpdateInventory(player.Player)
 								RadioState(6)=RadioState(6) + timing\tickDuration
 								temp = Mid(Str(AccessCode),RadioState(8)+1,1)
 								If RadioState(6)-timing\tickDuration =< RadioState(7)*50 And RadioState(6)>RadioState(7)*50 Then
-									PlaySound(RadioBuzz)
+									PlaySound2(RadioBuzz)
 									RadioState(7)=RadioState(7)+1
 									If RadioState(7)=>temp Then
 										RadioState(7)=0
@@ -1902,7 +1902,7 @@ Function UpdateInventory(player.Player)
 								For i = 2 To 6
 									If KeyHit(i) Then
 										If player\selectedItem\state2 <> i-2 Then ;pausetetaan nykyinen radiokanava
-											PlaySound RadioSquelch
+											PlaySound2 RadioSquelch
 											If RadioCHN(Int(player\selectedItem\state2)) <> 0 Then PauseChannel(RadioCHN(Int(player\selectedItem\state2)))
 										EndIf
 										player\selectedItem\state2 = i-2
@@ -1941,7 +1941,7 @@ Function UpdateInventory(player.Player)
 					Msg = Chr(34) + "MAN DATS SUM GOOD ASS SHIT" + Chr(34)
 					player\injuries = Max(player\injuries-0.5, 0)
 					player\blurTimer = 500
-					PlaySound LoadTempSound("SFX\Music\420J.ogg")
+					PlaySound2 LoadTempSound("SFX\Music\420J.ogg")
 					MsgTimer = 70 * 5
 					RemoveItem(player\selectedItem)
 				Case "420s"
@@ -1956,7 +1956,7 @@ Function UpdateInventory(player.Player)
 					If player\selectedItem\state <= 100 Then player\selectedItem\state = Max(0, player\selectedItem\state - timing\tickDuration * 0.005)
 				Case "coin"
 					If player\selectedItem\state = 0
-						PlaySound LoadTempSound("SFX\SCP\1162\NostalgiaCancer"+Rand(1,10)+".ogg")
+						PlaySound2 LoadTempSound("SFX\SCP\1162\NostalgiaCancer"+Rand(1,10)+".ogg")
 					EndIf
 					
 					Msg = ""
@@ -2004,7 +2004,7 @@ Function UpdateInventory(player.Player)
 			If MouseHit2 Then
 				EntityAlpha player\overlays[OVERLAY_BLACK], 0.0
 				
-				If player\selectedItem\itemtemplate\sound <> 66 Then PlaySound(PickSFX(player\selectedItem\itemtemplate\sound))
+				If player\selectedItem\itemtemplate\sound <> 66 Then PlaySound2(PickSFX(player\selectedItem\itemtemplate\sound))
 				player\selectedItem = Null
 			EndIf
 		EndIf
@@ -2049,7 +2049,7 @@ Function Kill(player.Player)
 	
 	If Not player\dead Then
 		;KillAnim = Rand(0,1)
-		PlaySound(DamageSFX(0))
+		PlaySound2(DamageSFX(0))
 		If SelectedDifficulty\permaDeath Then
 			DeleteFile(CurrentDir() + SavePath + CurrSave+"\save.txt") 
 			DeleteDir(SavePath + CurrSave)
@@ -2065,5 +2065,5 @@ Function Kill(player.Player)
 	EndIf
 End Function
 ;~IDEal Editor Parameters:
-;~F#6B#E3#F1#22E#30B#322#32A#33C
+;~F#6B#E3#22E#30B#322#32A#33C
 ;~C#Blitz3D

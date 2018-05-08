@@ -252,7 +252,7 @@ Function PlaySound_SM(snd.Sound)
 	If (snd\internal = 0) Then
 		snd\internal = LoadSound(snd\file)
 	EndIf
-
+	
 	;Play the sound.
 	PlaySound2(snd\internal)
 End Function
@@ -274,7 +274,7 @@ Function IsChannelPlaying%(chn%)
 	Return ChannelPlaying(chn)
 End Function
 
-Function PlayRangedSound(soundHandle%, cam%, entity%, range# = 10, volume# = 1.0)
+Function PlayRangedSound%(soundHandle%, cam%, entity%, range# = 10, volume# = 1.0)
 	range# = Max(range, 1.0)
 	Local soundChn% = 0
 	
@@ -290,13 +290,16 @@ Function PlayRangedSound(soundHandle%, cam%, entity%, range# = 10, volume# = 1.0
 	EndIf
 	
 	AddPositionalChannel(soundChn, cam, entity, range, volume)
+	
+	Return soundChn
 End Function
 
-Function PlayRangedSound_SM(snd.Sound, cam%, entity%, range# = 10, volume# = 1.0)
+Function PlayRangedSound_SM%(snd.Sound, cam%, entity%, range# = 10, volume# = 1.0)
 	If (snd\internal = 0) Then
 		snd\internal = LoadSound(snd\file)
 	EndIf
-	PlayRangedSound(snd\internal, cam, entity, range, volume)
+	
+	Return PlayRangedSound(snd\internal, cam, entity, range, volume)
 End Function
 
 ; Only begins playing the sound if the sound channel isn't playing anything else.
@@ -375,7 +378,7 @@ Function LoadEventSound(e.Events,file$,num%=0)
 End Function
 
 Function PauseSounds()
-	Local sc.SoundChannel, sc2.SecurityCams, e.Events, n.NPCs, em.Emitters, i%
+	Local sc.SoundChannel, sc2.SecurityCams, r.Rooms, e.Events, n.NPCs, em.Emitters, i%
 
 	For sc = Each SoundChannel
 		If (IsChannelPlaying(sc\internal)) Then
@@ -386,6 +389,12 @@ Function PauseSounds()
 	For sc2 = Each SecurityCams
 		If (IsChannelPlaying(sc2\soundCHN)) Then
 			PauseChannel(sc2\soundCHN)
+		EndIf
+	Next
+	
+	For r = Each Rooms
+		If (IsChannelPlaying(r\SoundCHN)) Then
+			PauseChannel(r\SoundCHN)
 		EndIf
 	Next
 
@@ -410,10 +419,14 @@ Function PauseSounds()
 			PauseChannel(em\soundCHN)
 		EndIf
 	Next
+	
+	If (IsChannelPlaying(mainPlayer\breathChn)) Then
+		PauseChannel(mainPlayer\breathChn)
+	EndIf
 End Function
 
 Function ResumeSounds()
-	Local sc.SoundChannel, sc2.SecurityCams, e.Events, n.NPCs, em.Emitters, i%
+	Local sc.SoundChannel, sc2.SecurityCams, r.Rooms, e.Events, n.NPCs, em.Emitters, i%
 
 	For sc = Each SoundChannel
 		If (IsChannelPlaying(sc\internal)) Then
@@ -424,6 +437,12 @@ Function ResumeSounds()
 	For sc2 = Each SecurityCams
 		If (IsChannelPlaying(sc2\soundCHN)) Then
 			ResumeChannel(sc2\soundCHN)
+		EndIf
+	Next
+	
+	For r = Each Rooms
+		If (IsChannelPlaying(r\SoundCHN)) Then
+			ResumeChannel(r\SoundCHN)
 		EndIf
 	Next
 
@@ -448,6 +467,10 @@ Function ResumeSounds()
 			ResumeChannel(em\soundCHN)
 		EndIf
 	Next
+	
+	If (IsChannelPlaying(mainPlayer\breathChn)) Then
+		ResumeChannel(mainPlayer\breathChn)
+	EndIf
 End Function
 
 Function GetMaterialStepSound(entity%)
@@ -550,6 +573,11 @@ End Function
 
 Function SetNextMusicTrack(trackName$, fadeOut% = True)
 	If (musicManager\shouldPlay = trackName) Then
+		Return
+	EndIf
+	
+	;If the track's already being overwritten then don't let anything else change it.
+	If (Not musicManager\useDefault) Then
 		Return
 	EndIf
 

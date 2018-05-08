@@ -479,7 +479,7 @@ Repeat
 					If (Not LockRoom(rt))
 						Rect (x+1)*ResFactor,(y+9)*ResFactor,(width-3)*ResFactor,FontHeight()+2*ResFactor,False
 						If MouseHit1 Then
-							PlaySound ButtonSFX
+							PlaySound2 ButtonSFX
 							If SelectedRoomTemplate = rt Then
 								SelectedRoomTemplate = Null
 							Else
@@ -728,7 +728,7 @@ Repeat
 				If MouseY()> y*ResFactor And MouseY()<(y+19)*ResFactor Then
 					Rect (x+1)*ResFactor,y*ResFactor,(width-3)*ResFactor,20*ResFactor,False
 					If MouseHit1 Then 
-						PlaySound ButtonSFX
+						PlaySound2 ButtonSFX
 						SavePath = SavedMaps(i)
 						CurrMap = SavePath
 						LoadMap("Maps\"+SavedMaps(i))
@@ -826,7 +826,7 @@ Function Button%(x,y,width,height,txt$, disabled%=False)
 	
 	Color 0,0,0
 	
-	If Pushed And MouseHit1 Then PlaySound ButtonSFX : Return True
+	If Pushed And MouseHit1 Then PlaySound2 ButtonSFX : Return True
 End Function
 
 Function Tick(x,y,selected%)
@@ -838,7 +838,7 @@ Function Tick(x,y,selected%)
 	
 	If MouseX() > x*ResFactor And MouseX() < (x+13)*ResFactor Then
 		If MouseY() > y*ResFactor And MouseY() < (y+13)*ResFactor Then
-			If MouseHit1 Then PlaySound ButtonSFX : Return (Not selected)
+			If MouseHit1 Then PlaySound2 ButtonSFX : Return (Not selected)
 		EndIf
 	EndIf	
 	

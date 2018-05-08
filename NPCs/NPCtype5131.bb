@@ -78,7 +78,7 @@ Function UpdateNPCtype5131(n.NPCs)
                         If EntityInView(n\Collider,mainPlayer\cam) Then
                             If EntityVisible(mainPlayer\collider, n\Collider) Then
                                 n\LastSeen = 1
-                                PlaySound LoadTempSound("SFX\SCP\513\Bell"+Rand(2,3)+".ogg")
+                                PlaySound2 LoadTempSound("SFX\SCP\513\Bell"+Rand(2,3)+".ogg")
                             EndIf
                         EndIf
                     EndIf								
@@ -126,7 +126,7 @@ Function UpdateNPCtype5131(n.NPCs)
                                         If EntityInView(n\Collider,mainPlayer\cam) Then
                                             If EntityVisible(mainPlayer\collider, n\Collider) Then
                                                 n\LastSeen = 1
-                                                PlaySound LoadTempSound("SFX\SCP\513\Bell"+Rand(2,3)+".ogg")
+                                                PlaySound2 LoadTempSound("SFX\SCP\513\Bell"+Rand(2,3)+".ogg")
                                             EndIf
                                         EndIf
                                     EndIf

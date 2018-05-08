@@ -161,7 +161,7 @@ Function UpdateEventCoffin(e.Events)
 					;TODO: fix
 					;If (Rand(Int(Max(tempF*100.0,1.0)))=1) And (e\EventState3<0.0) Then
 					;	EntityTexture(mainPlayer\overlays[OVERLAY_NIGHTVISION], GorePics(Rand(0, 5)))
-					;	;PlaySound(HorrorSFX(1))
+					;	;PlaySound2(HorrorSFX(1))
 					;	e\EventState3 = 10.0
 					;	EntityColor(mainPlayer\overlays[OVERLAY_NIGHTVISION], 255,255,255)
 					;EndIf

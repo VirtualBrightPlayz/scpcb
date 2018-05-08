@@ -61,7 +61,7 @@ Function UpdateEventCheckpoint(e.Events)
 	If mainPlayer\currRoom = e\room Then
 		;If e\room\RoomDoors[0]\open <> e\EventState Then
 		;	If e\sounds[0] = 0 Then LoadEventSound(e,"SFX\Door\DoorCheckpoint.Ogg")
-		;	PlaySound e\sounds[0]
+		;	PlaySound2 e\sounds[0]
 		;EndIf
 		
 		;play a sound clip when the player passes through the gate
@@ -69,9 +69,9 @@ Function UpdateEventCheckpoint(e.Events)
 		;If e\EventState2 = 0 Then
 		;	If EntityZ(mainPlayer\collider) < e\room\z Then
 		;		If PlayerZone = 1 Then
-		;			PlaySound(LoadTempSound("SFX\Ambient\ToZone2.ogg"))
+		;			PlaySound2(LoadTempSound("SFX\Ambient\ToZone2.ogg"))
 		;		Else
-		;			PlaySound(LoadTempSound("SFX\Ambient\ToZone3.ogg"))
+		;			PlaySound2(LoadTempSound("SFX\Ambient\ToZone3.ogg"))
 		;		EndIf
 		;		e\EventState2 = 1
 		;	EndIf

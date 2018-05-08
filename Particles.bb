@@ -141,7 +141,7 @@ Function UpdateEmitters()
 		
 		If Not mainPlayer\dead Then 
 			If Rand(150) = 1 Then
-				;If Not IsChannelPlaying(CoughCHN) Then CoughCHN = PlaySound(CoughSFX(Rand(0, 2))) ;TODO: fix by not using a dim
+				;If Not IsChannelPlaying(CoughCHN) Then CoughCHN = PlaySound2(CoughSFX(Rand(0, 2))) ;TODO: fix by not using a dim
 			EndIf
 		EndIf
 		

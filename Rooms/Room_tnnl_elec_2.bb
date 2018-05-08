@@ -85,11 +85,11 @@ Function UpdateEvent_tnnl_elec_2(e.Events)
 				If e\EventState > 30 Then 
 					;LightBlink = 1.0 
 					If e\EventState-timing\tickDuration =< 30 Then 
-						PlaySound LoadTempSound("SFX\ambient\general\ambient3.ogg")
+						PlaySound2 LoadTempSound("SFX\ambient\general\ambient3.ogg")
 					EndIf
 				EndIf
 				If e\EventState-timing\tickDuration =< 100 And e\EventState > 100 Then
-					PlaySound LoadTempSound("SFX\ambient\general\ambient6.ogg")
+					PlaySound2 LoadTempSound("SFX\ambient\general\ambient6.ogg")
 					PositionEntity(Curr173\Collider, EntityX(e\room\obj), 0.6, EntityZ(e\room\obj))
 					ResetEntity(Curr173\Collider)					
 					Curr173\Idle = True		

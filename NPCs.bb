@@ -645,7 +645,7 @@ Function PlayMTFSound(sound%, n.NPCs)
 			Select mainPlayer\selectedItem\itemtemplate\tempname 
 				Case "radio","fineradio","18vradio"
 					If RadioCHN(3)<> 0 Then StopChannel RadioCHN(3)
-					RadioCHN(3) = PlaySound (sound)
+					RadioCHN(3) = PlaySound(sound)
 			End Select
 		EndIf
 	EndIf 
@@ -661,8 +661,8 @@ Function MoveToPocketDimension()
 			UpdateDoors()
 			UpdateRooms()
 			ShowEntity mainPlayer\collider
-			PlaySound(LoadTempSound("SFX\SCP\914\PlayerUse.ogg"))
-			;PlaySound(OldManSFX(5)) ;TODO: fix
+			PlaySound2(LoadTempSound("SFX\SCP\914\PlayerUse.ogg"))
+			;PlaySound2(OldManSFX(5)) ;TODO: fix
 			PositionEntity(mainPlayer\collider, EntityX(r\obj),0.8,EntityZ(r\obj))
 			mainPlayer\dropSpeed = 0
 			ResetEntity mainPlayer\collider
@@ -1190,6 +1190,4 @@ Function SetNPCFrame(n.NPCs, frame#)
 	n\frame = frame
 End Function
 ;~IDEal Editor Parameters:
-;~F#2A#A2#E0#EE#121#17E#1AF#1BA#1E3#1F6#285#296#2B0#2C3#2CF#2EE#329#3AB#3C5#3DE
-;~F#3EC#409#41C#441#464#472#488#4A8
 ;~C#Blitz3D

@@ -31,7 +31,7 @@ Function UpdateEvent106sinkhole(e.Events)
 			
 			If dist<0.5 Then
 				If e\EventState2 = 0 Then
-					PlaySound(LoadTempSound("SFX\Room\SinkholeFall.ogg"))
+					PlaySound2(LoadTempSound("SFX\Room\SinkholeFall.ogg"))
 				EndIf
 				
 				mainPlayer\moveSpeed = CurveValue(0.0, mainPlayer\moveSpeed, Max(dist*50,1.0))

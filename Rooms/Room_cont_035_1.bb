@@ -153,7 +153,7 @@ Function UpdateEvent_cont_035_1(e.Events)
 			If e\EventState=1 Then
 				If EntityDistance(mainPlayer\collider, e\room\Objects[3])<1.2 
 					If EntityInView(e\room\NPC[0]\obj, mainPlayer\cam) Then
-						PlaySound(LoadTempSound("SFX\SCP\035\GetUp.ogg"))
+						PlaySound2(LoadTempSound("SFX\SCP\035\GetUp.ogg"))
 						e\EventState = 1.5
 					EndIf
 				EndIf
@@ -206,7 +206,7 @@ Function UpdateEvent_cont_035_1(e.Events)
 									If e\room\NPC[0]\sounds[0]<>0 Then FreeSound(e\room\NPC[0]\sounds[0]) : e\room\NPC[0]\sounds[0] = 0
 									e\room\NPC[0]\sounds[0] = LoadSound("SFX\SCP\035\GasedKilled1.ogg")
 									e\room\NPC[0]\soundChannels[0] = PlaySound(e\room\NPC[0]\sounds[0])
-									PlaySound(LoadTempSound("SFX\SCP\035\KilledGetUp.ogg"))
+									PlaySound2(LoadTempSound("SFX\SCP\035\KilledGetUp.ogg"))
 									e\EventState = 60*70
 								EndIf
 							EndIf
@@ -519,7 +519,7 @@ Function UpdateEvent_cont_035_1(e.Events)
 			If e\sounds[0] = 0 Then
 				If EntityDistance(mainPlayer\collider, e\room\obj) < 20 Then
 					LoadEventSound(e,"SFX\Room\035Chamber\InProximity.ogg")
-					PlaySound e\sounds[0]
+					PlaySound2 e\sounds[0]
 				EndIf
 			EndIf
 		ElseIf e\EventState < 0

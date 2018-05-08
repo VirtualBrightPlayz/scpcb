@@ -44,7 +44,7 @@ Function UpdateNPCtypeTentacle(n.NPCs)
                 Else
                     If dist < 2.5 Then 
                         SetNPCFrame(n, 284)
-                        PlaySound(n\sounds[0])
+                        PlaySound2(n\sounds[0])
                     EndIf
                 EndIf
                 ;spawn 283,389
@@ -69,7 +69,7 @@ Function UpdateNPCtypeTentacle(n.NPCs)
                     If n\frame>33 Then 
                         ;SetAnimTime(n\obj,2)
                         n\frame = 2
-                        PlaySound(n\sounds[Rand(1,2)])
+                        PlaySound2(n\sounds[Rand(1,2)])
                     EndIf
                     AnimateNPC(n, 2, 32, 0.3, False)
                     ;Animate2(n\obj, AnimTime(n\obj), 2, 32, 0.3, False)
@@ -79,11 +79,11 @@ Function UpdateNPCtypeTentacle(n.NPCs)
                             If Abs(DeltaYaw(n\collider, mainPlayer\collider))<20 Then 
                                 If IsPlayerWearingTempName(mainPlayer,"hazmatsuit") Then
                                     mainPlayer\injuries = mainPlayer\injuries+Rnd(0.5)
-                                    PlaySound(LoadTempSound("SFX\General\BodyFall.ogg"))
+                                    PlaySound2(LoadTempSound("SFX\General\BodyFall.ogg"))
                                 Else
                                     mainPlayer\blurTimer = 100
                                     mainPlayer\injuries = mainPlayer\injuries+Rnd(1.0,1.5)
-                                    PlaySound DamageSFX(Rand(3,4))
+                                    PlaySound2 DamageSFX(Rand(3,4))
                                     
                                     If mainPlayer\injuries > 3.0 Then 
                                         DeathMSG = Chr(34)+"We will need more than the regular cleaning team to care of this. "

@@ -248,7 +248,7 @@ Function UpdateEventAlarm(e.Events)
 
 					Else
 						If e\EventState-timing\tickDuration < 900+4*70 Then 
-							PlaySound(IntroSFX(11)); : LightBlink = 3.0
+							PlaySound2(IntroSFX(11)); : LightBlink = 3.0
 							
 							;Stonedrag.
 							PlayRangedSound (Curr173\sounds[0], mainPlayer\cam, Curr173\Collider)
@@ -263,7 +263,7 @@ Function UpdateEventAlarm(e.Events)
 							If EntityZ(e\room\NPC[2]\Collider) < e\room\z-1150*RoomScale Then
 								e\room\RoomDoors[5]\open = False
 								;LightBlink = 3.0
-								PlaySound(IntroSFX(11))
+								PlaySound2(IntroSFX(11))
 								mainPlayer\blinkTimer = -10
 
 								;Stonedrag.
@@ -279,25 +279,25 @@ Function UpdateEventAlarm(e.Events)
 					
 					;If Ulgrin can see the player then start shooting at them.
 					If (CurrTrigger = "173scene_end") And EntityVisible(e\room\NPC[2]\Collider,mainPlayer\collider) And (Not mainPlayer\godMode) Then
-						e\room\NPC[2]\State = 1
-						e\room\NPC[2]\State3 = 1
-					ElseIf e\room\NPC[2]\State = 1 And (Not EntityVisible(e\room\NPC[2]\Collider, mainPlayer\collider))
-						e\room\NPC[2]\State = 0
-						e\room\NPC[2]\State3 = 0
+						e\room\NPC[2]\state = 1
+						e\room\NPC[2]\state3 = 1
+					ElseIf e\room\NPC[2]\state = 1 And (Not EntityVisible(e\room\NPC[2]\collider, mainPlayer\collider))
+						e\room\NPC[2]\state = 0
+						e\room\NPC[2]\state3 = 0
 					EndIf
 					
-					If e\room\NPC[2]\State = 1 Then e\room\RoomDoors[5]\open = True
+					If e\room\NPC[2]\state = 1 Then e\room\RoomDoors[5]\open = True
 				Else
 					CanSave = True
-					If e\room\NPC[2]\State <> 1
+					If e\room\NPC[2]\state <> 1
 						If EntityX(mainPlayer\collider)<(e\room\x+1384*RoomScale) Then e\EventState = Max(e\EventState,900)
 						
 						If e\room\RoomDoors[5]\openstate = 0 Then 
 							HideEntity e\room\NPC[1]\obj
-							HideEntity e\room\NPC[1]\Collider
+							HideEntity e\room\NPC[1]\collider
 							
 							HideEntity e\room\NPC[2]\obj
-							HideEntity e\room\NPC[2]\Collider
+							HideEntity e\room\NPC[2]\collider
 							e\EventState2=1
 						EndIf
 					EndIf
@@ -353,11 +353,11 @@ Function UpdateEventAlarm(e.Events)
 		If ((e\EventState Mod 600 > 300) And ((e\EventState+timing\tickDuration) Mod 600 < 300)) Then
 			i = Floor((e\EventState-5000)/600)+1
 			
-			If i = 0 Then PlaySound(LoadTempSound("SFX\Room\Intro\PA\scripted\scripted6.ogg"))
+			If i = 0 Then PlaySound2(LoadTempSound("SFX\Room\Intro\PA\scripted\scripted6.ogg"))
 			
 			If (i>0 And i<24) Then
 				If Not CommotionState(i) Then ;Prevents the same commotion file from playing more then once.
-					PlaySound(LoadTempSound("SFX\Room\Intro\Commotion\Commotion"+i+".ogg"))
+					PlaySound2(LoadTempSound("SFX\Room\Intro\Commotion\Commotion"+i+".ogg"))
 					CommotionState(i) = True
 				EndIf
 			EndIf
@@ -378,5 +378,6 @@ Function UpdateEventAlarm(e.Events)
 	End If
 	;[End Block]
 End Function
+
 ;~IDEal Editor Parameters:
 ;~C#Blitz3D

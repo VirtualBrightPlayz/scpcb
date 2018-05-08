@@ -641,7 +641,7 @@ Function UpdateGame()
 					Local RN$ = mainPlayer\currRoom\RoomTemplate\Name$
 					If RN$ <> "room860" And RN$ <> "room1123" And RN$ <> "173" And RN$ <> "dimension1499" Then
 						;If timing\tickDuration > 0 Then LightBlink = Rnd(1.0,2.0)
-						PlaySound  LoadTempSound("SFX\SCP\079\Broadcast"+Rand(1,7)+".ogg")
+						PlaySound2  LoadTempSound("SFX\SCP\079\Broadcast"+Rand(1,7)+".ogg")
 					EndIf 
 				EndIf
 			EndIf
@@ -1003,9 +1003,9 @@ End Function
 ;			EndingScreen = LoadImage("GFX\endingscreen.pt")
 ;			
 ;			temp = LoadSound ("SFX\Music\Ending.ogg")
-;			PlaySound temp
+;			PlaySound2 temp
 ;			
-;			PlaySound LightSFX
+;			PlaySound2 LightSFX
 ;		EndIf
 ;		
 ;		If EndingTimer > -700 Then 
@@ -1023,9 +1023,9 @@ End Function
 ;			If EndingTimer+timing\tickDuration2 > -450 And EndingTimer <= -450 Then
 ;				Select Lower(SelectedEnding)
 ;					Case "a1", "a2"
-;						PlaySound LoadTempSound("SFX\Ending\GateA\Ending"+SelectedEnding+".ogg")
+;						PlaySound2 LoadTempSound("SFX\Ending\GateA\Ending"+SelectedEnding+".ogg")
 ;					Case "b1", "b2", "b3"
-;						PlaySound LoadTempSound("SFX\Ending\GateB\Ending"+SelectedEnding+".ogg")
+;						PlaySound2 LoadTempSound("SFX\Ending\GateB\Ending"+SelectedEnding+".ogg")
 ;				End Select
 ;			EndIf			
 ;			
@@ -1274,7 +1274,7 @@ Function DrawGUI()
 				If mainPlayer\blinkTimer < -3 And mainPlayer\blinkTimer > -11 Then
 					If e\img = 0 Then
 						If mainPlayer\blinkTimer > -5 And Rand(30)=1 Then
-							If Rand(5)<5 Then PlaySound DripSFX(0)
+							If Rand(5)<5 Then PlaySound2 DripSFX(0)
 							If e\img = 0 Then e\img = LoadImage("GFX\npcs\106face.jpg")
 						EndIf
 					Else
@@ -1745,7 +1745,7 @@ Function UpdateInfect()
 			
 			For i = 0 To 6
 				If mainPlayer\infect008>i*15+10 And temp =< i*15+10 Then
-					PlaySound LoadTempSound("SFX\SCP\008\Voices"+i+".ogg")
+					PlaySound2 LoadTempSound("SFX\SCP\008\Voices"+i+".ogg")
 				EndIf
 			Next
 			
