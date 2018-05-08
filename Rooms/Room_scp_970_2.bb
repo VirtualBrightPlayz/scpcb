@@ -216,10 +216,11 @@ Function UpdateEvent_scp_970_2(e.Events)
 					EndIf
 			End Select
 			
-			If Rand(10)=1 Then
-				temp = Rand(0,2)
-				PlaySound2(AmbientSFX(temp, Rand(0,AmbientSFXAmount(temp)-1)))
-			EndIf
+			;TODO: Reimplement
+			;If Rand(10)=1 Then
+			;	temp = Rand(0,2)
+			;	PlaySound2(AmbientSFX(temp, Rand(0,AmbientSFXAmount(temp)-1)))
+			;EndIf
 		Else
 			If e\room\NPC[0] <> Null Then
 				If EntityDistance(mainPlayer\collider, e\room\NPC[0]\Collider)<3.0 Then

@@ -610,7 +610,7 @@ Function PickItem(item.Items)
 						
 				End Select
 				
-				If item\itemtemplate\sound <> 66 Then PlaySound2(PickSFX(item\itemtemplate\sound))
+				If item\itemtemplate\sound <> 66 Then PlaySound_SM(sndManager\itemPick[item\itemtemplate\sound])
 				item\Picked = True
 				item\Dropped = -1
 				
@@ -632,7 +632,7 @@ Function DropItem(item.Items,playDropSound%=True)
 		DeEquipItem(player,item)
 	Next
 		
-	If playDropSound And (item\itemtemplate\sound <> 66) Then PlaySound2(PickSFX(item\itemtemplate\sound))
+	If playDropSound And (item\itemtemplate\sound <> 66) Then PlaySound_SM(sndManager\itemPick[item\itemtemplate\sound])
 	
 	item\Dropped = 1
 	

@@ -15,7 +15,7 @@ Dim RadioCHN%(8)
 Dim OldAiPics%(5)
 
 ;TODO: Assets.bb
-Dim LightSpriteTex(10)
+Dim LightSpriteTex%(10)
 
 ;TODO: Use struct of file paths.
 Dim Music.MarkedForRemoval(40)
@@ -23,15 +23,16 @@ Dim Music.MarkedForRemoval(40)
 ;TODO: Audio.bb
 Dim OpenDoorSFX.MarkedForRemoval(3,3), CloseDoorSFX.MarkedForRemoval(3,3)
 
-Dim DripSFX%(4)
+Dim DripSFX.MarkedForRemoval(4)
 
+;TODO: Radio struct.
 Dim RadioSFX(5,10)
 
-Dim PickSFX%(10)
+Dim PickSFX.MarkedForRemoval(10)
 
-Dim AmbientSFXAmount(6)
+Dim AmbientSFXAmount.MarkedForRemoval(6)
 
-Dim AmbientSFX%(6, 15)
+Dim AmbientSFX.MarkedForRemoval(6, 15)
 
 ;TODO: Move to NPCData106.
 Dim OldManSFX.MarkedForRemoval(6)
@@ -408,17 +409,13 @@ Function InitializeMainGame()
 	
 	;TODO: doesn't need to be hardcoded
 	;0 = light containment, 1 = heavy containment, 2 = entrance
-	AmbientSFXAmount(0)=8 : AmbientSFXAmount(1)=11 : AmbientSFXAmount(2)=12
+	;AmbientSFXAmount(0)=8 : AmbientSFXAmount(1)=11 : AmbientSFXAmount(2)=12
 	;3 = general, 4 = pre-breach
-	AmbientSFXAmount(3)=15 : AmbientSFXAmount(4)=5
+	;AmbientSFXAmount(3)=15 : AmbientSFXAmount(4)=5
 	;5 = forest
-	AmbientSFXAmount(5)=10
+	;AmbientSFXAmount(5)=10
 	
 	DrawLoading(20, True)
-	
-	For i = 0 To 3
-		DripSFX(i) = LoadSound("SFX\Character\D9341\BloodDrip" + i + ".ogg")
-	Next
 	
 	RadioSFX(1,0) = LoadSound("SFX\Radio\RadioAlarm.ogg")
 	RadioSFX(1,1) = LoadSound("SFX\Radio\RadioAlarm2.ogg")
@@ -428,10 +425,6 @@ Function InitializeMainGame()
 	RadioSquelch = LoadSound("SFX\Radio\squelch.ogg")
 	RadioStatic = LoadSound("SFX\Radio\static.ogg")
 	RadioBuzz = LoadSound("SFX\Radio\buzz.ogg")
-	
-	For i = 0 To 3
-		PickSFX(i) = LoadSound("SFX\Interact\PickItem" + i + ".ogg")
-	Next
 	
 	DrawLoading(25, True)
 	;TODO: Audio.bb
@@ -597,7 +590,7 @@ Function UpdateGame()
 				ToggleInventory(mainPlayer)
 			EndIf
 			
-			If mainPlayer\currRoom\RoomTemplate\Name <> "pocketdimension" And mainPlayer\currRoom\RoomTemplate\Name <> "gatea" And mainPlayer\currRoom\RoomTemplate\Name <> "exit1" And (Not IsPaused()) Then 
+			If mainPlayer\currRoom\RoomTemplate\name <> "pocketdimension" And mainPlayer\currRoom\RoomTemplate\name <> "gatea" And mainPlayer\currRoom\RoomTemplate\name <> "exit1" And (Not IsPaused()) Then 
 				
 				If Rand(1500) = 1 Then
 					;TODO: reimplement
@@ -638,7 +631,7 @@ Function UpdateGame()
 				EndIf
 				
 				If Rand(50000) = 3 Then
-					Local RN$ = mainPlayer\currRoom\RoomTemplate\Name$
+					Local RN$ = mainPlayer\currRoom\RoomTemplate\name$
 					If RN$ <> "room860" And RN$ <> "room1123" And RN$ <> "173" And RN$ <> "dimension1499" Then
 						;If timing\tickDuration > 0 Then LightBlink = Rnd(1.0,2.0)
 						PlaySound2  LoadTempSound("SFX\SCP\079\Broadcast"+Rand(1,7)+".ogg")
@@ -815,7 +808,7 @@ Function UpdateGame()
 			
 			If KeyHit(keyBinds\save) Then
 				If SelectedDifficulty\saveType = SAVEANYWHERE Then
-					RN$ = mainPlayer\currRoom\RoomTemplate\Name$
+					RN$ = mainPlayer\currRoom\RoomTemplate\name$
 					If RN$ = "173" Or RN$ = "exit1" Or RN$ = "gatea"
 						Msg = "You cannot save in this location."
 						MsgTimer = 70 * 4
@@ -830,7 +823,7 @@ Function UpdateGame()
 						Msg = "Saving is only permitted on clickable monitors scattered throughout the facility."
 						MsgTimer = 70 * 4						
 					Else
-						RN$ = mainPlayer\currRoom\RoomTemplate\Name$
+						RN$ = mainPlayer\currRoom\RoomTemplate\name$
 						If RN$ = "173" Or RN$ = "exit1" Or RN$ = "gatea"
 							Msg = "You cannot save in this location."
 							MsgTimer = 70 * 4
@@ -1268,13 +1261,12 @@ Function DrawGUI()
 		HidePointer()
 	EndIf 	
 	
-	If mainPlayer\currRoom\RoomTemplate\Name = "pocketdimension" Then
+	If mainPlayer\currRoom\RoomTemplate\name = "pocketdimension" Then
 		For e.Events = Each Events
 			If e\room = mainPlayer\currRoom And e\EventState > 600 Then
 				If mainPlayer\blinkTimer < -3 And mainPlayer\blinkTimer > -11 Then
 					If e\img = 0 Then
 						If mainPlayer\blinkTimer > -5 And Rand(30)=1 Then
-							If Rand(5)<5 Then PlaySound2 DripSFX(0)
 							If e\img = 0 Then e\img = LoadImage("GFX\npcs\106face.jpg")
 						EndIf
 					Else

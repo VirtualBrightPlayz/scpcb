@@ -32,6 +32,9 @@ Type SoundManager
 	Field scannerUse.Sound
 	Field scannerErr.Sound
 	
+	; Pickups
+	Field itemPick.Sound[4]
+	
 	; Elevator
 	Field elevatorBeep.Sound
 	Field elevatorMove.Sound
@@ -84,21 +87,25 @@ Function LoadInGameSounds(sndMan.SoundManager)
 	Next
 
 	For i = 0 To 2
-		sndMan\openDoor[i] = InitializeSound_SM("SFX\Door\DoorOpen" + (i + 1) + ".ogg")
-		sndMan\closeDoor[i] = InitializeSound_SM("SFX\Door\DoorClose" + (i + 1) + ".ogg")
-		sndMan\openHCZDoor[i] = InitializeSound_SM("SFX\Door\Door2Open" + (i + 1) + ".ogg")
-		sndMan\closeHCZDoor[i] = InitializeSound_SM("SFX\Door\Door2Close" + (i + 1) + ".ogg")
+		sndMan\openDoor[i] = LoadSound_SM("SFX\Door\DoorOpen" + (i + 1) + ".ogg")
+		sndMan\closeDoor[i] = LoadSound_SM("SFX\Door\DoorClose" + (i + 1) + ".ogg")
+		sndMan\openHCZDoor[i] = LoadSound_SM("SFX\Door\Door2Open" + (i + 1) + ".ogg")
+		sndMan\closeHCZDoor[i] = LoadSound_SM("SFX\Door\Door2Close" + (i + 1) + ".ogg")
 	Next
 
 	For i = 0 To 1
-		sndMan\openBigDoor[i] = InitializeSound_SM("SFX\Door\BigDoorOpen" + (i + 1) + ".ogg")
-		sndMan\closeBigDoor[i] = InitializeSound_SM("SFX\Door\BigDoorClose" + (i + 1) + ".ogg")
+		sndMan\openBigDoor[i] = LoadSound_SM("SFX\Door\BigDoorOpen" + (i + 1) + ".ogg")
+		sndMan\closeBigDoor[i] = LoadSound_SM("SFX\Door\BigDoorClose" + (i + 1) + ".ogg")
 	Next
 	
 	sndMan\keycardUse = InitializeSound_SM("SFX\Interact\KeyCardUse1.ogg")
 	sndMan\keycardErr = InitializeSound_SM("SFX\Interact\KeyCardUse2.ogg")
 	sndMan\scannerUse = InitializeSound_SM("SFX\Interact\ScannerUse1.ogg")
 	sndMan\scannerErr = InitializeSound_SM("SFX\Interact\ScannerUse2.ogg")
+	
+	For i = 0 To 3
+		sndMan\itemPick[i] = LoadSound_SM("SFX\Interact\PickItem" + i + ".ogg")
+	Next
 	
 	sndMan\elevatorBeep = InitializeSound_SM("SFX\General\Elevator\Beep.ogg")
 	sndMan\elevatorMove = InitializeSound_SM("SFX\General\Elevator\Moving.ogg")
@@ -121,7 +128,7 @@ Function LoadInGameSounds(sndMan.SoundManager)
 	sndMan\camera = InitializeSound_SM("SFX\General\Camera.ogg")
 	sndMan\heartbeat = InitializeSound_SM("SFX\Character\D9341\Heartbeat.ogg")
 End Function
-; TODO: Free all the shit above.
+
 Function DeloadInGameSounds(sndMan.SoundManager)
 	Local i%
 	For i = 0 To 7
@@ -152,6 +159,10 @@ Function DeloadInGameSounds(sndMan.SoundManager)
 	FreeSound_SM(sndMan\keycardUse)
 	FreeSound_SM(sndMan\scannerUse)
 	FreeSound_SM(sndMan\scannerErr)
+	
+	For i = 0 To 3
+		FreeSound_SM(sndMan\itemPick[i])
+	Next
 	
 	FreeSound_SM(sndMan\elevatorBeep)
 	FreeSound_SM(sndMan\elevatorMove)
@@ -243,18 +254,20 @@ Function LoadSound_SM.Sound(fileName$)
 	Return snd
 End Function
 
-Function PlaySound2(snd%)
-	AddChannel(PlaySound(snd))
+Function PlaySound2%(snd%)
+	Local chn% = PlaySound(snd)
+	AddChannel(chn)
+	Return chn
 End Function
 
-Function PlaySound_SM(snd.Sound)
+Function PlaySound_SM%(snd.Sound)
 	;If the sound hasn't been loaded yet then do that.
 	If (snd\internal = 0) Then
 		snd\internal = LoadSound(snd\file)
 	EndIf
 	
 	;Play the sound.
-	PlaySound2(snd\internal)
+	Return PlaySound2(snd\internal)
 End Function
 
 Function FreeSound_SM(snd.Sound)
@@ -284,7 +297,7 @@ Function PlayRangedSound%(soundHandle%, cam%, entity%, range# = 10, volume# = 1.
 			Local panvalue# = Sin(-DeltaYaw(cam, entity))
 			soundChn = PlaySound(soundHandle)
 			
-			ChannelVolume(soundChn, volume * (1 - dist) * userOptions\soundVolume)
+			ChannelVolume(soundChn, volume * (1 - dist) * userOptions\SoundVolume)
 			ChannelPan(soundChn, panvalue)
 		EndIf
 	EndIf
@@ -329,7 +342,7 @@ Function UpdateRangedSoundOrigin(chn%, cam%, entity%, range# = 10, volume# = 1.0
 		If (1 - dist > 0 And 1 - dist < 1) Then
 			Local panvalue# = Sin(-DeltaYaw(cam,entity))
 			
-			ChannelVolume(chn, volume * (1 - dist) * userOptions\soundVolume)
+			ChannelVolume(chn, volume * (1 - dist) * userOptions\SoundVolume)
 			ChannelPan(chn, panvalue)
 		EndIf
 	Else
@@ -345,7 +358,7 @@ Function UpdateRangedSoundOrigin_SM(chn.SoundChannel)
 		If (1 - dist > 0 And 1 - dist < 1) Then
 			Local panvalue# = Sin(-DeltaYaw(chn\camera, chn\point))
 			
-			ChannelVolume(chn\internal, chn\volume * (1 - dist) * userOptions\soundVolume)
+			ChannelVolume(chn\internal, chn\volume * (1 - dist) * userOptions\SoundVolume)
 			ChannelPan(chn\internal, panvalue)
 		EndIf
 	Else

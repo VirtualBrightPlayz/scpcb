@@ -92,6 +92,7 @@ Type Player
 	;sounds
 	Field breathingSFX.IntArray
 	Field heartbeat%
+	Field bloodDrip%[4]
 	
 	Field breathChn%
 	;------
@@ -220,7 +221,11 @@ Function CreatePlayer.Player()
 		SetIntArrayElem(player\breathingSFX, LoadSound("SFX\Character\D9341\breath"+i+".ogg"), 0, i)
 		SetIntArrayElem(player\breathingSFX, LoadSound("SFX\Character\D9341\breath"+i+"gas.ogg"), 1, i)
 	Next
+	For i = 0 To 3
+		player\bloodDrip[i] = LoadSound("SFX\Character\D9341\BloodDrip" + i + ".ogg")
+	Next
 	player\heartbeat = LoadSound("SFX\Character\D9341\Heartbeat.ogg")
+	
 	
 	Return player
 End Function
@@ -233,6 +238,9 @@ Function DeletePlayer(player.Player)
 	For i = 0 To 4
 		FreeSound(GetIntArrayElem(player\breathingSFX, 0, i))
 		FreeSound(GetIntArrayElem(player\breathingSFX, 1, i))
+	Next
+	For i = 0 To 3
+		FreeSound(player\bloodDrip[i])
 	Next
 	FreeSound(player\heartbeat)
 	
@@ -283,11 +291,11 @@ Function MovePlayer()
 			ElseIf (mainPlayer\stamina < 50) ;panting
 				If (mainPlayer\breathChn = 0) Then
 					mainPlayer\breathChn = PlaySound(GetIntArrayElem(mainPlayer\breathingSFX, IsPlayerWearingTempName(mainPlayer,"gasmask"), Rand(1, 3)))
-					ChannelVolume(mainPlayer\breathChn, Min((70.0-mainPlayer\stamina)/70.0,1.0)*userOptions\soundVolume)
+					ChannelVolume(mainPlayer\breathChn, Min((70.0-mainPlayer\stamina)/70.0,1.0)*userOptions\SoundVolume)
 				Else
 					If (Not IsChannelPlaying(mainPlayer\breathChn)) Then
 						mainPlayer\breathChn = PlaySound(GetIntArrayElem(mainPlayer\breathingSFX, IsPlayerWearingTempName(mainPlayer,"gasmask"), Rand(1, 3)))
-						ChannelVolume(mainPlayer\breathChn, Min((70.0-mainPlayer\stamina)/70.0,1.0)*userOptions\soundVolume)		
+						ChannelVolume(mainPlayer\breathChn, Min((70.0-mainPlayer\stamina)/70.0,1.0)*userOptions\SoundVolume)		
 					EndIf
 				EndIf
 			EndIf
@@ -317,7 +325,7 @@ Function MovePlayer()
 				If mainPlayer\stamina <= 0 Then mainPlayer\stamina = -20.0
 			End If
 			
-			If mainPlayer\currRoom\RoomTemplate\Name = "pocketdimension" Then 
+			If mainPlayer\currRoom\RoomTemplate\name = "pocketdimension" Then 
 				If EntityY(mainPlayer\collider)<2000*RoomScale Or EntityY(mainPlayer\collider)>2608*RoomScale Then
 					mainPlayer\stamina = 0
 					Speed = 0.015
@@ -503,10 +511,10 @@ Function MovePlayer()
 			PositionEntity pvt, EntityX(mainPlayer\collider)+Rnd(-0.05,0.05),EntityY(mainPlayer\collider)-0.05,EntityZ(mainPlayer\collider)+Rnd(-0.05,0.05)
 			TurnEntity pvt, 90, 0, 0
 			EntityPick(pvt,0.3)
-			de.decals = CreateDecal(Rand(15,16), PickedX(), PickedY()+0.005, PickedZ(), 90, Rand(360), 0)
-			de\size = Rnd(0.03,0.08)*Min(mainPlayer\injuries,3.0) : EntityAlpha(de\obj, 1.0) : ScaleSprite de\obj, de\size, de\size
-			tempchn% = PlaySound(DripSFX(Rand(0,2)))
-			ChannelVolume tempchn, Rnd(0.0,0.8)*userOptions\soundVolume
+			Local de.Decals = CreateDecal(Rand(15,16), PickedX(), PickedY()+0.005, PickedZ(), 90, Rand(360), 0)
+			de\Size = Rnd(0.03,0.08)*Min(mainPlayer\injuries,3.0) : EntityAlpha(de\obj, 1.0) : ScaleSprite de\obj, de\Size, de\Size
+			tempchn% = PlaySound2(mainPlayer\bloodDrip[Rand(0,3)])
+			ChannelVolume tempchn, Rnd(0.0,0.8)*userOptions\SoundVolume
 			ChannelPitch tempchn, Rand(20000,30000)
 			
 			FreeEntity pvt
@@ -532,8 +540,8 @@ Function MovePlayer()
 	
 	
 	If mainPlayer\heartbeatIntensity > 0 Then
-		tempchn = PlaySound(mainPlayer\heartbeat)
-		ChannelVolume tempchn, Max(Min((mainPlayer\heartbeatIntensity-80.0)/60.0,1.0),0.0)*userOptions\soundVolume
+		tempchn = PlaySound2(mainPlayer\heartbeat)
+		ChannelVolume tempchn, Max(Min((mainPlayer\heartbeatIntensity-80.0)/60.0,1.0),0.0)*userOptions\SoundVolume
 		
 		mainPlayer\heartbeatIntensity = mainPlayer\heartbeatIntensity - timing\tickDuration
 	EndIf
@@ -1241,13 +1249,13 @@ Function UpdateInventory(player.Player)
 	
 	Local strtemp$
 	If CurrGameState=GAMESTATE_INVENTORY Then
-		If (player\currRoom\RoomTemplate\Name = "gatea") Then
+		If (player\currRoom\RoomTemplate\name = "gatea") Then
 			HideEntity player\overlays[OVERLAY_FOG]
 			CameraFogRange player\cam, 5,30
 			CameraFogColor (player\cam,200,200,200)
 			CameraClsColor (player\cam,200,200,200)					
 			CameraRange(player\cam, 0.05, 30)
-		ElseIf (player\currRoom\RoomTemplate\Name = "exit1") And (EntityY(player\collider)>1040.0*RoomScale)
+		ElseIf (player\currRoom\RoomTemplate\name = "exit1") And (EntityY(player\collider)>1040.0*RoomScale)
 			HideEntity player\overlays[OVERLAY_FOG]
 			CameraFogRange player\cam, 5,45
 			CameraFogColor (player\cam,200,200,200)
@@ -1282,7 +1290,7 @@ Function UpdateInventory(player.Player)
 							MouseHit1 = False
 							
 							If DoubleClick Then
-								If player\openInventory\items[n]\itemtemplate\sound <> 66 Then PlaySound2(PickSFX(player\openInventory\items[n]\itemtemplate\sound))
+								If player\openInventory\items[n]\itemtemplate\sound <> 66 Then PlaySound_SM(sndManager\itemPick[player\openInventory\items[n]\itemtemplate\sound])
 								CurrGameState = GAMESTATE_PLAYING
 								DoubleClick = False
 							EndIf
@@ -1343,7 +1351,7 @@ Function UpdateInventory(player.Player)
 													For ri% = 0 To player\openInventory\size - 1
 														If player\openInventory\items[ri] = player\selectedItem Then
 															player\openInventory\items[ri] = Null
-															PlaySound2(PickSFX(player\selectedItem\itemtemplate\sound))
+															PlaySound_SM(sndManager\itemPick[player\selectedItem\itemtemplate\sound])
 														EndIf
 													Next
 													added = player\selectedItem
@@ -1374,7 +1382,7 @@ Function UpdateInventory(player.Player)
 							Case "battery", "bat"
 								Select player\openInventory\items[MouseSlot]\itemtemplate\name
 									Case "S-NAV Navigator", "S-NAV 300 Navigator", "S-NAV 310 Navigator"
-										If player\selectedItem\itemtemplate\sound <> 66 Then PlaySound2(PickSFX(player\selectedItem\itemtemplate\sound))	
+										If player\selectedItem\itemtemplate\sound <> 66 Then PlaySound_SM(sndManager\itemPick[player\selectedItem\itemtemplate\sound])
 										RemoveItem (player\selectedItem)
 										player\selectedItem = Null
 										player\openInventory\items[MouseSlot]\state = 100.0
@@ -1392,7 +1400,7 @@ Function UpdateInventory(player.Player)
 												Msg = "The battery does not fit inside this radio."
 												MsgTimer = 70 * 5
 											Case "radio"
-												If player\selectedItem\itemtemplate\sound <> 66 Then PlaySound2(PickSFX(player\selectedItem\itemtemplate\sound))	
+												If player\selectedItem\itemtemplate\sound <> 66 Then PlaySound_SM(sndManager\itemPick[player\selectedItem\itemtemplate\sound])	
 												RemoveItem (player\selectedItem)
 												player\selectedItem = Null
 												player\openInventory\items[MouseSlot]\state = 100.0
@@ -1402,7 +1410,7 @@ Function UpdateInventory(player.Player)
 									Case "Night Vision Goggles"
 										Local nvname$ = player\openInventory\items[MouseSlot]\itemtemplate\tempname
 										If nvname$="nvgoggles" Or nvname$="supernv" Then
-											If player\selectedItem\itemtemplate\sound <> 66 Then PlaySound2(PickSFX(player\selectedItem\itemtemplate\sound))	
+											If player\selectedItem\itemtemplate\sound <> 66 Then PlaySound_SM(sndManager\itemPick[player\selectedItem\itemtemplate\sound])
 											RemoveItem (player\selectedItem)
 											player\selectedItem = Null
 											player\openInventory\items[MouseSlot]\state = 1000.0
@@ -1430,7 +1438,7 @@ Function UpdateInventory(player.Player)
 												Msg = "There seems to be no place for batteries in this radio."
 												MsgTimer = 70 * 5		
 											Case "18vradio"
-												If player\selectedItem\itemtemplate\sound <> 66 Then PlaySound2(PickSFX(player\selectedItem\itemtemplate\sound))	
+												If player\selectedItem\itemtemplate\sound <> 66 Then PlaySound_SM(sndManager\itemPick[player\selectedItem\itemtemplate\sound])
 												RemoveItem (player\selectedItem)
 												player\selectedItem = Null
 												player\openInventory\items[MouseSlot]\state = 100.0
@@ -2004,7 +2012,7 @@ Function UpdateInventory(player.Player)
 			If MouseHit2 Then
 				EntityAlpha player\overlays[OVERLAY_BLACK], 0.0
 				
-				If player\selectedItem\itemtemplate\sound <> 66 Then PlaySound2(PickSFX(player\selectedItem\itemtemplate\sound))
+				If player\selectedItem\itemtemplate\sound <> 66 Then PlaySound_SM(sndManager\itemPick[player\selectedItem\itemtemplate\sound])
 				player\selectedItem = Null
 			EndIf
 		EndIf
