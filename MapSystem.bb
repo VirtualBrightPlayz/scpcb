@@ -181,406 +181,6 @@ Function LoadRMeshTexture%(roompath$,name$,flags%)
 	EndIf
 End Function
 
-Function LoadRMesh(file$,rt.RoomTemplates)
-	RuntimeError "RMesh is obsolete. Convert to RM2."
-	
-	;generate a texture made of white
-	Local blankTexture%
-	blankTexture=CreateTexture(4,4,1,1)
-	ClsColor 255,255,255
-	SetBuffer TextureBuffer(blankTexture)
-	Cls
-	SetBuffer BackBuffer()
-	
-	Local pinkTexture%
-	pinkTexture=CreateTexture(4,4,1,1)
-	ClsColor 255,255,255
-	SetBuffer TextureBuffer(pinkTexture)
-	Cls
-	SetBuffer BackBuffer()
-	
-	ClsColor 0,0,0
-	
-	;read the file
-	Local f%=ReadFile(file)
-	Local i%,j%,k%,x#,y#,z#,yaw#
-	Local vertex%
-	Local temp1i%,temp2i%,temp3i%
-	Local temp1#,temp2#,temp3#
-	Local temp1s$, temp2s$
-	
-	Local collisionMeshes% = CreatePivot()
-	
-	Local hasTriggerBox% = False
-	
-	For i=0 To 3 ;reattempt up to 3 times
-		If f=0 Then
-			f=ReadFile(file)
-		Else
-			Exit
-		EndIf
-		Delay 100
-	Next
-	If f=0 Then RuntimeError "Error reading file "+Chr(34)+file+Chr(34)
-	Local isRMesh$ = ReadString(f)
-	If isRMesh$="RoomMesh"
-		;Continue
-	ElseIf isRMesh$="RoomMesh.HasTriggerBox"
-		;RuntimeError Chr(34)+file+Chr(34)+" has the triggerbox header, therefore making it an invalid RMesh file. Clean this shit up."
-		hasTriggerBox% = True
-	Else
-		RuntimeError Chr(34)+file+Chr(34)+" is Not RMESH ("+isRMesh+")"
-	EndIf
-	
-	file=StripFilename(file)
-	
-	Local count%,count2%
-	
-	;drawn meshes
-	Local Opaque%,Alpha%
-	
-	Opaque=CreateMesh()
-	Alpha=CreateMesh()
-	
-	count = ReadInt(f)
-	Local childMesh%
-	Local surf%,tex%[2],brush%
-	
-	Local isAlpha%
-	
-	Local u#,v#
-	
-	For i=1 To count ;drawn mesh
-		childMesh=CreateMesh()
-		
-		surf=CreateSurface(childMesh)
-		
-		brush=CreateBrush()
-		
-		tex[0]=0 : tex[1]=0
-		
-		isAlpha=0
-		For j=0 To 1
-			temp1i=ReadByte(f)
-			If temp1i<>0 Then
-				temp1s=ReadString(f)
-				tex[j]=GetTextureFromCache(temp1s)
-				If tex[j]=0 Then ;texture is not in cache
-					Select True
-						Case temp1i<3
-							tex[j]=LoadRMeshTexture(file,temp1s,1)
-						Default
-							tex[j]=LoadRMeshTexture(file,temp1s,3)
-					End Select
-					
-					If tex[j]<>0 Then
-						If temp1i=1 Then TextureBlend tex[j],5
-						If Instr(Lower(temp1s),"_lm")<>0 Then
-							TextureBlend tex[j],3
-						EndIf
-						AddTextureToCache(tex[j])
-					EndIf
-					
-				EndIf
-				If tex[j]<>0 Then
-					isAlpha=2
-					If temp1i=3 Then isAlpha=1
-					
-					TextureCoords tex[j],1-j
-				EndIf
-			EndIf
-		Next
-		
-		If isAlpha=1 Then
-			If tex[1]<>0 Then
-				TextureBlend tex[1],2
-				BrushTexture brush,tex[1],0,0
-			Else
-				BrushTexture brush,blankTexture,0,0
-			EndIf
-		Else
-			
-			If tex[0]<>0 And tex[1]<>0 Then
-				For j=0 To 1
-					BrushTexture brush,tex[j],0,j+1
-				Next
-				BrushTexture brush,AmbientLightRoomTex,0
-			Else
-				For j=0 To 1
-					If tex[j]<>0 Then
-						BrushTexture brush,tex[j],0,j
-					Else
-						BrushTexture brush,blankTexture,0,j
-					EndIf
-				Next
-			EndIf
-		EndIf
-		
-		surf=CreateSurface(childMesh)
-		
-		If isAlpha>0 Then PaintSurface surf,brush
-		
-		FreeBrush brush : brush = 0
-		
-		count2=ReadInt(f) ;vertices
-		
-		For j%=1 To count2
-			;world coords
-			x=ReadFloat(f) : y=ReadFloat(f) : z=ReadFloat(f)
-			vertex=AddVertex(surf,x,y,z)
-			
-			;texture coords
-			For k%=0 To 1
-				u=ReadFloat(f) : v=ReadFloat(f)
-				VertexTexCoords surf,vertex,u,v,0.0,k
-			Next
-			
-			;colors
-			temp1i=ReadByte(f)
-			temp2i=ReadByte(f)
-			temp3i=ReadByte(f)
-			VertexColor surf,vertex,temp1i,temp2i,temp3i,1.0
-		Next
-		
-		count2=ReadInt(f) ;polys
-		For j%=1 To count2
-			temp1i = ReadInt(f) : temp2i = ReadInt(f) : temp3i = ReadInt(f)
-			AddTriangle(surf,temp1i,temp2i,temp3i)
-		Next
-		
-		If isAlpha=1 Then
-			AddMesh childMesh,Alpha
-		Else
-			AddMesh childMesh,Opaque
-			EntityParent childMesh,collisionMeshes
-			EntityAlpha childMesh,0.0
-			EntityType childMesh,HIT_MAP
-			EntityPickMode childMesh,2
-			
-			;make collision double-sided
-			Local flipChild% = CopyMesh(childMesh)
-			FlipMesh(flipChild)
-			AddMesh flipChild,childMesh
-			FreeEntity flipChild			
-		EndIf
-		
-		
-	Next
-	
-	Local hiddenMesh%
-	hiddenMesh=CreateMesh()
-	
-	count=ReadInt(f) ;invisible collision mesh
-	For i%=1 To count
-		surf=CreateSurface(hiddenMesh)
-		count2=ReadInt(f) ;vertices
-		For j%=1 To count2
-			;world coords
-			x=ReadFloat(f) : y=ReadFloat(f) : z=ReadFloat(f)
-			vertex=AddVertex(surf,x,y,z)
-		Next
-		
-		count2=ReadInt(f) ;polys
-		For j%=1 To count2
-			temp1i = ReadInt(f) : temp2i = ReadInt(f) : temp3i = ReadInt(f)
-			AddTriangle(surf,temp1i,temp2i,temp3i)
-			AddTriangle(surf,temp1i,temp3i,temp2i)
-		Next
-	Next
-	
-	;trigger boxes
-	If hasTriggerBox
-		DebugLog "TriggerBoxEnable"
-		rt\TempTriggerboxAmount = ReadInt(f)
-		For tb = 0 To rt\TempTriggerboxAmount-1
-			;rt\TempTriggerbox[tb] = CreateMesh(rt\obj)
-			count = ReadInt(f)
-			For i%=1 To count
-				;surf=CreateSurface(rt\TempTriggerbox[tb])
-				count2=ReadInt(f)
-				For j%=1 To count2
-					x=ReadFloat(f) : y=ReadFloat(f) : z=ReadFloat(f)
-					;vertex=AddVertex(surf,x,y,z)
-				Next
-				count2=ReadInt(f)
-				For j%=1 To count2
-					temp1i = ReadInt(f) : temp2i = ReadInt(f) : temp3i = ReadInt(f)
-					;AddTriangle(surf,temp1i,temp2i,temp3i)
-					;AddTriangle(surf,temp1i,temp3i,temp2i)
-				Next
-			Next
-			rt\TempTriggerboxName[tb] = ReadString(f)
-		Next
-	EndIf
-	
-	count=ReadInt(f) ;point entities
-	For i%=1 To count
-		temp1s=ReadString(f)
-		Select temp1s
-			Case "screen"
-				
-				temp1=ReadFloat(f)*RoomScale
-				temp2=ReadFloat(f)*RoomScale
-				temp3=ReadFloat(f)*RoomScale
-				
-				temp2s$ =ReadString(f)
-				
-				If temp1<>0 Or temp2<>0 Or temp3<>0 Then 
-					Local ts.TempScreens = New TempScreens	
-					ts\x = temp1
-					ts\y = temp2
-					ts\z = temp3
-					ts\imgpath = temp2s
-					ts\roomtemplate = rt
-				EndIf
-				
-			Case "waypoint"
-				
-				temp1=ReadFloat(f)*RoomScale
-				temp2=ReadFloat(f)*RoomScale
-				temp3=ReadFloat(f)*RoomScale
-				
-				Local w.TempWayPoints = New TempWayPoints
-				w\roomtemplate = rt
-				w\x = temp1
-				w\y = temp2
-				w\z = temp3
-				
-			Case "light"
-				
-				temp1=ReadFloat(f)*RoomScale
-				temp2=ReadFloat(f)*RoomScale
-				temp3=ReadFloat(f)*RoomScale
-				
-				If temp1<>0 Or temp2<>0 Or temp3<>0 Then 
-					range# = ReadFloat(f)/2000.0
-					lcolor$=ReadString(f)
-					intensity# = Min(ReadFloat(f)*0.8,1.0)
-					r%=Int(Piece(lcolor,1," "))*intensity
-					g%=Int(Piece(lcolor,2," "))*intensity
-					b%=Int(Piece(lcolor,3," "))*intensity
-					
-					AddTempLight(rt, temp1,temp2,temp3, 2, range, r,g,b)
-				Else
-					ReadFloat(f) : ReadString(f) : ReadFloat(f)
-				EndIf
-				
-			Case "spotlight"
-				
-				temp1=ReadFloat(f)*RoomScale
-				temp2=ReadFloat(f)*RoomScale
-				temp3=ReadFloat(f)*RoomScale
-				
-				If temp1<>0 Or temp2<>0 Or temp3<>0 Then 
-					range# = ReadFloat(f)/2000.0
-					lcolor$=ReadString(f)
-					intensity# = Min(ReadFloat(f)*0.8,1.0)
-					r%=Int(Piece(lcolor,1," "))*intensity
-					g%=Int(Piece(lcolor,2," "))*intensity
-					b%=Int(Piece(lcolor,3," "))*intensity
-					
-					Local lt.LightTemplates = AddTempLight(rt, temp1,temp2,temp3, 2, range, r,g,b)
-					angles$=ReadString(f)
-					pitch#=Piece(angles,1," ")
-					yaw#=Piece(angles,2," ")
-					lt\pitch = pitch
-					lt\yaw = yaw
-					
-					lt\innerconeangle = ReadInt(f)
-					lt\outerconeangle = ReadInt(f)
-				Else
-					ReadFloat(f) : ReadString(f) : ReadFloat(f) : ReadString(f) : ReadInt(f) : ReadInt(f)
-				EndIf
-				
-			Case "soundemitter"
-				
-				temp1i=0
-				
-				For j = 0 To MaxRoomEmitters-1
-					If rt\TempSoundEmitter[j]=0 Then
-						rt\TempSoundEmitterX[j]=ReadFloat(f)*RoomScale
-						rt\TempSoundEmitterY[j]=ReadFloat(f)*RoomScale
-						rt\TempSoundEmitterZ[j]=ReadFloat(f)*RoomScale
-						rt\TempSoundEmitter[j]=ReadInt(f)
-						
-						rt\TempSoundEmitterRange[j]=ReadFloat(f)
-						temp1i=1
-						Exit
-					EndIf
-				Next
-				
-				If temp1i=0 Then
-					ReadFloat(f)
-					ReadFloat(f)
-					ReadFloat(f)
-					ReadInt(f)
-					ReadFloat(f)
-				EndIf
-				
-			Case "model"
-				file = ReadString(f)
-				If file<>""
-					;Local model = CreatePropObj("GFX\Map\Props\"+file);LoadMesh("GFX\Map\Props\"+file)
-					
-					temp1=ReadFloat(f) : temp2=ReadFloat(f) : temp3=ReadFloat(f)
-					;PositionEntity model,temp1,temp2,temp3
-					
-					temp1=ReadFloat(f) : temp2=ReadFloat(f) : temp3=ReadFloat(f)
-					;RotateEntity model,temp1,temp2,temp3
-					
-					temp1=ReadFloat(f) : temp2=ReadFloat(f) : temp3=ReadFloat(f)
-					;ScaleEntity model,temp1,temp2,temp3
-					
-					;EntityParent model,Opaque
-					;EntityType model,HIT_MAP
-					;EntityPickMode model,2
-				Else
-					DebugLog "file = 0"
-					temp1=ReadFloat(f) : temp2=ReadFloat(f) : temp3=ReadFloat(f)
-					DebugLog temp1+", "+temp2+", "+temp3
-					
-					;Stop
-				EndIf
-		End Select
-	Next
-	
-	Local obj%
-	
-	temp1i=CopyMesh(Alpha)
-	FlipMesh temp1i
-	AddMesh temp1i,Alpha
-	FreeEntity temp1i
-	
-	If brush <> 0 Then FreeBrush brush
-	
-	AddMesh Alpha,Opaque
-	FreeEntity Alpha
-	
-	EntityFX Opaque,3
-	
-	EntityAlpha hiddenMesh,0.0
-	EntityAlpha Opaque,1.0
-	
-	;EntityType Opaque,HIT_MAP
-	EntityType hiddenMesh,HIT_MAP
-	FreeTexture blankTexture
-	
-	;AddMesh hiddenMesh,BigRoomMesh
-	
-	obj=CreatePivot()
-	CreatePivot(obj) ;skip "meshes" object
-	EntityParent Opaque,obj
-	EntityParent hiddenMesh,obj
-	CreatePivot(obj) ;skip "pointentites" object
-	CreatePivot(obj) ;skip "solidentites" object
-	EntityParent collisionMeshes,obj
-	
-	CloseFile f
-	
-	Return obj%
-	
-End Function
-
 ;-----------;;;;
 
 Function StripPath$(file$) 
@@ -705,25 +305,25 @@ Function LoadRoomTemplates(file$)
 			StrTemp = GetINIString(file, TemporaryString, "meshpath")
 			
 			rt = CreateRoomTemplate(StrTemp)
-			rt\Name = Lower(TemporaryString)
+			rt\name = Lower(TemporaryString)
 			
 			StrTemp = Lower(GetINIString(file, TemporaryString, "shape", "0"))
 			
 			Select StrTemp
 				Case "room0", "0"
-					rt\Shape = ROOM0
+					rt\shape = ROOM0
 				Case "room1", "1"
-					rt\Shape = ROOM1
+					rt\shape = ROOM1
 				Case "room2", "2"
-					rt\Shape = ROOM2
+					rt\shape = ROOM2
 				Case "room2c", "2c"
-					rt\Shape = ROOM2C
+					rt\shape = ROOM2C
 				Case "room3", "3"
-					rt\Shape = ROOM3
+					rt\shape = ROOM3
 				Case "room4", "4"
-					rt\Shape = ROOM4
+					rt\shape = ROOM4
 				Default
-					rt\Shape = ROOM0
+					rt\shape = ROOM0
 			End Select
 			
 			Zones = Lower(GetINIString(file, TemporaryString, "zones"))
@@ -738,7 +338,7 @@ Function LoadRoomTemplates(file$)
 				rt\zones = rt\zones Or ZONE_EZ
 			EndIf
 			
-			If rt\Shape<>ROOM0 Then
+			If rt\shape<>ROOM0 Then
 				rt\Commonness = Max(Min(GetINIFloat(file, TemporaryString, "commonness"), 100), 0)
 				
 				AmountRange = GetINIString(file, TemporaryString, "amount", "")
@@ -753,7 +353,7 @@ Function LoadRoomTemplates(file$)
 					rt\MaxAmount = rt\MinAmount
 				EndIf
 				
-				rt\Large = GetINIInt(file, TemporaryString, "large")
+				rt\large = GetINIInt(file, TemporaryString, "large")
 				rt\DisableDecals = GetINIInt(file, TemporaryString, "disabledecals")
 				
 				xRange = GetINIString(file, TemporaryString, "xrange")
@@ -795,7 +395,6 @@ Function LoadRoomTemplates(file$)
 End Function
 
 Function LoadRoomMesh(rt.RoomTemplates)
-	rt\objPath = Replace(rt\objPath,".rmesh",".rm2") ;TODO: remove
 	LoadRM2(rt)
 End Function
 
@@ -1311,6 +910,7 @@ Function UpdateRooms()
 	;TempLightVolume = Max(TempLightVolume / 4.5, 1.0)
 	
 	If mainPlayer\currRoom<>Null Then
+		SetRoomVisibility(mainPlayer\currRoom,True)
 		For i=0 To 3
 			If mainPlayer\currRoom\Adjacent[i]<>Null Then
 				x = Abs(EntityX(mainPlayer\collider,True)-EntityX(mainPlayer\currRoom\AdjDoor[i]\frameobj,True))
@@ -3506,5 +3106,5 @@ Function FindAndDeleteFakeMonitor(r.Rooms,x#,y#,z#,Amount%)
 	
 End Function
 ;~IDEal Editor Parameters:
-;~F#4F#57#71#80#87#8E#9F#A7#AF#249#259#26A#2B2#31C
+;~F#4F#57#71#80#87#8E#9F#A7#AF#B9#C9#DA#1A2#1DD#1E5#1FA#205#20F#244#310
 ;~C#Blitz3D

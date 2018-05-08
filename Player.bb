@@ -113,9 +113,9 @@ Function CreatePlayer.Player()
 	
 	player\cam = CreateCamera()
 	CameraViewport(player\cam, 0, 0, userOptions\screenWidth, userOptions\screenHeight)
-	CameraRange(player\cam, 0.05, 16)
+	CameraRange(player\cam, 0.05, 60)
 	CameraFogMode(player\cam, 1)
-	CameraFogRange(player\cam, 0.05, 6) ;TODO: use constants
+	CameraFogRange(player\cam, 0.05, 60) ;TODO: use constants
 	;TODO: Change tint based on zone?
 	CameraFogColor(player\cam, 0, 0, 0)
 	
@@ -284,18 +284,20 @@ Function MovePlayer()
 		mainPlayer\staminaEffect = CurveValue(1.0, mainPlayer\staminaEffect, 50)
 	EndIf
 	
-	If (mainPlayer\currRoom\RoomTemplate\name <> "pocketdimension") Then 
-		If KeyDown(keyBinds\sprint) Then
-			If (mainPlayer\stamina < 5) Then ;out of breath
-				If (Not IsChannelPlaying(mainPlayer\breathChn)) Then mainPlayer\breathChn = PlaySound(GetIntArrayElem(mainPlayer\breathingSFX, IsPlayerWearingTempName(mainPlayer,"gasmask"), 0))
-			ElseIf (mainPlayer\stamina < 50) ;panting
-				If (mainPlayer\breathChn = 0) Then
-					mainPlayer\breathChn = PlaySound(GetIntArrayElem(mainPlayer\breathingSFX, IsPlayerWearingTempName(mainPlayer,"gasmask"), Rand(1, 3)))
-					ChannelVolume(mainPlayer\breathChn, Min((70.0-mainPlayer\stamina)/70.0,1.0)*userOptions\SoundVolume)
-				Else
-					If (Not IsChannelPlaying(mainPlayer\breathChn)) Then
+	If mainPlayer\currRoom<>Null Then
+		If (mainPlayer\currRoom\RoomTemplate\name <> "pocketdimension") Then 
+			If KeyDown(keyBinds\sprint) Then
+				If (mainPlayer\stamina < 5) Then ;out of breath
+					If (Not IsChannelPlaying(mainPlayer\breathChn)) Then mainPlayer\breathChn = PlaySound(GetIntArrayElem(mainPlayer\breathingSFX, IsPlayerWearingTempName(mainPlayer,"gasmask"), 0))
+				ElseIf (mainPlayer\stamina < 50) ;panting
+					If (mainPlayer\breathChn = 0) Then
 						mainPlayer\breathChn = PlaySound(GetIntArrayElem(mainPlayer\breathingSFX, IsPlayerWearingTempName(mainPlayer,"gasmask"), Rand(1, 3)))
-						ChannelVolume(mainPlayer\breathChn, Min((70.0-mainPlayer\stamina)/70.0,1.0)*userOptions\SoundVolume)		
+						ChannelVolume(mainPlayer\breathChn, Min((70.0-mainPlayer\stamina)/70.0,1.0)*userOptions\SoundVolume)
+					Else
+						If (Not IsChannelPlaying(mainPlayer\breathChn)) Then
+							mainPlayer\breathChn = PlaySound(GetIntArrayElem(mainPlayer\breathingSFX, IsPlayerWearingTempName(mainPlayer,"gasmask"), Rand(1, 3)))
+							ChannelVolume(mainPlayer\breathChn, Min((70.0-mainPlayer\stamina)/70.0,1.0)*userOptions\SoundVolume)		
+						EndIf
 					EndIf
 				EndIf
 			EndIf
@@ -1260,7 +1262,7 @@ Function UpdateInventory(player.Player)
 			CameraFogRange player\cam, 5,45
 			CameraFogColor (player\cam,200,200,200)
 			CameraClsColor (player\cam,200,200,200)					
-			CameraRange(player\cam, 0.05, 60)
+			CameraRange(player\cam, 0.05, 45)
 		EndIf
 		
 		mainPlayer\selectedDoor = Null
@@ -2073,5 +2075,5 @@ Function Kill(player.Player)
 	EndIf
 End Function
 ;~IDEal Editor Parameters:
-;~F#6B#E3#22E#30B#322#32A#33C
+;~F#32C
 ;~C#Blitz3D
