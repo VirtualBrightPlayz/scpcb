@@ -2187,12 +2187,12 @@ Function UpdateSecurityCams()
 									If Rand(3) = 1 Then EntityTexture(sc\ScrOverlay, MonitorTexture)
 									If Rand(6) < 5 Then
 										EntityTexture(sc\ScrOverlay, GorePics(Rand(0, 5)))
-										;If sc\PlayerState = 1 Then PlaySound(HorrorSFX(1)) ;TODO: fix
+										;If sc\PlayerState = 1 Then PlaySound2(HorrorSFX(1)) ;TODO: fix
 										sc\PlayerState = 2
 										If sc\soundCHN = 0 Then
-											;sc\soundCHN = PlaySound(HorrorSFX(4)) ;TODO: fix
+											;sc\soundCHN = PlaySound2(HorrorSFX(4)) ;TODO: fix
 										Else
-											;If Not IsChannelPlaying(sc\soundCHN) Then sc\soundCHN = PlaySound(HorrorSFX(4)) ;TODO: fix
+											;If Not IsChannelPlaying(sc\soundCHN) Then sc\soundCHN = PlaySound2(HorrorSFX(4)) ;TODO: fix
 										End If
 										If sc\CoffinEffect=3 And Rand(200)=1 Then sc\CoffinEffect=2 : sc\PlayerState = Rand(10000, 20000)
 									End If	
@@ -2201,7 +2201,7 @@ Function UpdateSecurityCams()
 									If Rand(7) = 1 Then EntityTexture(sc\ScrOverlay, MonitorTexture)
 									If Rand(50) = 1 Then
 										EntityTexture(sc\ScrOverlay, GorePics(Rand(0, 5)))
-										;If sc\PlayerState = 0 Then PlaySound(HorrorSFX(0)) ;TODO: fix
+										;If sc\PlayerState = 0 Then PlaySound2(HorrorSFX(0)) ;TODO: fix
 										sc\PlayerState = Max(sc\PlayerState, 1)
 										If sc\CoffinEffect=3 And Rand(100)=1 Then sc\CoffinEffect=2 : sc\PlayerState = Rand(10000, 20000)
 									End If
@@ -2225,10 +2225,10 @@ Function UpdateSecurityCams()
 							EntityTexture(sc\ScrOverlay, MonitorTexture)
 						Else
 							If sc\soundCHN = 0 Then
-								sc\soundCHN = PlaySound(LoadTempSound("SFX\SCP\079\Broadcast"+Rand(1,3)+".ogg"))
+								PlaySound2(LoadTempSound("SFX\SCP\079\Broadcast"+Rand(1,3)+".ogg"))
 								If sc\CoffinEffect=2 Then sc\CoffinEffect=3 : sc\PlayerState = 0
 							ElseIf (Not IsChannelPlaying(sc\soundCHN))
-								sc\soundCHN = PlaySound(LoadTempSound("SFX\SCP\079\Broadcast"+Rand(1,3)+".ogg"))
+								PlaySound2(LoadTempSound("SFX\SCP\079\Broadcast"+Rand(1,3)+".ogg"))
 								If sc\CoffinEffect=2 Then sc\CoffinEffect=3 : sc\PlayerState = 0
 							EndIf
 							EntityTexture(sc\ScrOverlay, OldAiPics(0))
@@ -2599,7 +2599,7 @@ Function UpdateElevators2#(State#, door1.Doors, door2.Doors, room1, room2, event
 				EndIf
 				
 				PlayRangedSound_SM(sndManager\elevatorBeep, mainPlayer\cam, room1, 4.0)	
-				;PlaySound(ElevatorBeepSFX)	
+				;PlaySound2(ElevatorBeepSFX)	
 			EndIf
 		Else ;alhaalta yl�s
 			State = State + timing\tickDuration

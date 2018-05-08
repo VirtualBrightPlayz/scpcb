@@ -645,7 +645,7 @@ Function PlayMTFSound(sound%, n.NPCs)
 			Select mainPlayer\selectedItem\itemtemplate\tempname 
 				Case "radio","fineradio","18vradio"
 					If RadioCHN(3)<> 0 Then StopChannel RadioCHN(3)
-					RadioCHN(3) = PlaySound (sound)
+					RadioCHN(3) = PlaySound2 (sound)
 			End Select
 		EndIf
 	EndIf 
@@ -661,8 +661,8 @@ Function MoveToPocketDimension()
 			UpdateDoors()
 			UpdateRooms()
 			ShowEntity mainPlayer\collider
-			PlaySound(LoadTempSound("SFX\SCP\914\PlayerUse.ogg"))
-			;PlaySound(OldManSFX(5)) ;TODO: fix
+			PlaySound2(LoadTempSound("SFX\SCP\914\PlayerUse.ogg"))
+			;PlaySound2(OldManSFX(5)) ;TODO: fix
 			PositionEntity(mainPlayer\collider, EntityX(r\obj),0.8,EntityZ(r\obj))
 			mainPlayer\dropSpeed = 0
 			ResetEntity mainPlayer\collider

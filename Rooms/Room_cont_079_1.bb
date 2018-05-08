@@ -78,7 +78,7 @@ Function UpdateEvent_cont_079_1(e.Events)
 				If e\room\RoomDoors[0]\openstate > 50 Or EntityDistance(mainPlayer\collider, e\room\RoomDoors[0]\frameobj)<0.5 Then
 					e\room\RoomDoors[0]\openstate = Min(e\room\RoomDoors[0]\openstate,50)
 					e\room\RoomDoors[0]\open = False
-					PlaySound (LoadTempSound("SFX\Door\DoorError.ogg"))
+					PlaySound2 (LoadTempSound("SFX\Door\DoorError.ogg"))
 				EndIf							
 			EndIf
 		ElseIf e\EventState < 10000
@@ -90,7 +90,7 @@ Function UpdateEvent_cont_079_1(e.Events)
 					e\EventState2 = 1
 					;e\sounds[0] = LoadSound("SFX\SCP\079\Speech.ogg")
 					LoadEventSound(e,"SFX\SCP\079\Speech.ogg")
-					e\soundChannels[0] = PlaySound (e\sounds[0])
+					e\soundChannels[0] = PlaySound2 (e\sounds[0])
 				EndIf							
 			ElseIf e\EventState = 3
 				If e\EventState < 3500 Then 
@@ -111,7 +111,7 @@ Function UpdateEvent_cont_079_1(e.Events)
 						e\EventState = 10001
 						;e\sounds[0] = LoadSound("SFX\SCP\079\Refuse.ogg")
 						LoadEventSound(e,"SFX\SCP\079\Refuse.ogg")
-						e\soundChannels[0] = PlaySound (e\sounds[0])
+						e\soundChannels[0] = PlaySound2 (e\sounds[0])
 						EntityTexture(e\room\Objects[1], OldAiPics(1))
 						ShowEntity (e\room\Objects[1])								
 					EndIf
@@ -127,7 +127,7 @@ Function UpdateEvent_cont_079_1(e.Events)
 	If e\EventState2 = 1 Then
 		If RemoteDoorOn Then 	
 			LoadEventSound(e,"SFX\SCP\079\GateB.ogg")
-			e\soundChannels[0] = PlaySound (e\sounds[0])						
+			e\soundChannels[0] = PlaySound2 (e\sounds[0])						
 			e\EventState2 = 2
 			
 			For e2.Events = Each Events

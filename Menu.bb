@@ -1233,9 +1233,9 @@ Function DrawLoading(percent%, shortloading=False)
 			If Not shortloading Then 
 				If firstloop Then 
 					If percent = 0 Then
-						PlaySound LoadTempSound("SFX\SCP\990\cwm1.cwm")
+						PlaySound2 LoadTempSound("SFX\SCP\990\cwm1.cwm")
 					ElseIf percent = 100
-						PlaySound LoadTempSound("SFX\SCP\990\cwm2.cwm")
+						PlaySound2 LoadTempSound("SFX\SCP\990\cwm2.cwm")
 					EndIf
 				EndIf
 			EndIf
@@ -1315,7 +1315,7 @@ Function DrawLoading(percent%, shortloading=False)
 		Text(userOptions\screenWidth / 2, userOptions\screenHeight / 2 - 100, "LOADING - " + percent + " %", True, True)
 		
 		If percent = 100 Then
-			;If firstloop And SelectedLoadingScreen\title <> "CWM" Then PlaySound HorrorSFX(8) ;TODO: fix
+			;If firstloop And SelectedLoadingScreen\title <> "CWM" Then PlaySound2 HorrorSFX(8) ;TODO: fix
 			timing\prevTime = MilliSecs()
 			Text(userOptions\screenWidth / 2, userOptions\screenHeight - 50, "PRESS ANY KEY TO CONTINUE", True, True)
 		Else

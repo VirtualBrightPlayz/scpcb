@@ -118,11 +118,10 @@ Function UpdateEvent_tesla(e.Events)
 					HideEntity e\room\Objects[4]
 				EndIf
 			Else
-				;If e\EventState-timing\tickDuration =< 40 Then PlaySound(e\sounds[0])
 				If e\room\dist < 2
-				If e\EventState-timing\tickDuration =< 40 Then PlaySound(e\sounds[0])	
+					If e\EventState-timing\tickDuration =< 40 Then PlaySound_SM(sndManager\teslaShock)	
 				Else
-					If e\EventState-timing\tickDuration =< 40 Then PlayRangedSound(e\sounds[0],mainPlayer\cam,e\room\Objects[2])
+					If e\EventState-timing\tickDuration =< 40 Then PlayRangedSound_SM(sndManager\teslaShock,mainPlayer\cam,e\room\Objects[2])
 				EndIf
 				If e\EventState < 70 Then 
 					
@@ -192,7 +191,7 @@ Function UpdateEvent_tesla(e.Events)
 									PlayMTFSound(n\sounds[0],n)
 									
 									LoadEventSound(e,"SFX\Character\MTF\Tesla1.ogg")
-									e\soundChannels[0] = PlaySound (e\sounds[0])
+									e\soundChannels[0] = PlaySound2 (e\sounds[0])
 									n\Idle = 70*10
 									e\EventState2 = 70*100
 								EndIf

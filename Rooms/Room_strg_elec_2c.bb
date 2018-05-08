@@ -62,7 +62,7 @@ Function UpdateEvent_strg_elec_2c(e.Events)
 				If e\EventState = 0 Then 
 					If i = 3 Then 
 						e\EventState = Max(e\EventState,1)
-						;PlaySound HorrorSFX(7)
+						;PlaySound2 HorrorSFX(7)
 						PlaySound_SM(sndManager\lever)
 					EndIf
 				EndIf 

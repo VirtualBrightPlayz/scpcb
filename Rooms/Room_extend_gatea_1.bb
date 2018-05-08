@@ -222,7 +222,7 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 			ResetEntity mainPlayer\collider
 			e\EventState = 1.0
 			
-			If (Not Contained106) Then PlaySound LoadTempSound("SFX\Ending\GateA\106Escape.ogg") 
+			If (Not Contained106) Then PlaySound2 LoadTempSound("SFX\Ending\GateA\106Escape.ogg") 
 			
 			DrawLoading(100)
 		Else
@@ -263,8 +263,8 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 						de.Decals = CreateDecal(0, EntityX(e\room\Objects[3],True),EntityY(e\room\Objects[3],True)+0.01,EntityZ(e\room\Objects[3],True), 90, Rand(360), 0)
 						de\Size = 0.05 : de\SizeChange = 0.001 : EntityAlpha(de\obj, 0.8) : UpdateDecals() 
 						;TODO: fix audio
-						;PlaySound (HorrorSFX(5))
-						;PlaySound DecaySFX(0)
+						;PlaySound2 (HorrorSFX(5))
+						;PlaySound2 DecaySFX(0)
 					ElseIf Curr106\State < 0
 						HideEntity Curr106\obj2
 						Curr106\PathTimer = 70*100
@@ -327,7 +327,7 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 						Curr106\CurrSpeed = CurveValue(0, Curr106\CurrSpeed, Max(5*dist,2.0))
 						If dist < 15.0 Then
 							If e\soundChannels[1] = 0 Then
-								e\soundChannels[1] = PlaySound (LoadTempSound("SFX\Ending\GateA\Franklin.ogg"))
+								e\soundChannels[1] = PlaySound2 (LoadTempSound("SFX\Ending\GateA\Franklin.ogg"))
 							EndIf
 							
 							If dist<0.4 Then
@@ -365,7 +365,7 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 							Else
 								If dist < 8.5 Then 
 									If e\EventState2=0;IsChannelPlaying(e\soundChannels[1]) = 0 Then
-										e\soundChannels[1] = PlaySound (LoadTempSound("SFX\Ending\GateA\HIDTurret.ogg"))
+										e\soundChannels[1] = PlaySound2 (LoadTempSound("SFX\Ending\GateA\HIDTurret.ogg"))
 										e\EventState2 = 1
 									ElseIf e\EventState2>0
 										e\EventState2=e\EventState2+timing\tickDuration
@@ -502,11 +502,11 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 						
 						If e\EventState3=>230.0 Then
 							If e\EventState3-timing\tickDuration<230.0 Then
-								e\soundChannels[0] = PlaySound(LoadTempSound("SFX\Ending\GateA\CI.ogg"))
+								e\soundChannels[0] = PlaySound2(LoadTempSound("SFX\Ending\GateA\CI.ogg"))
 							EndIf
 							
 							If IsChannelPlaying(e\soundChannels[0])=False Then; And SelectedEnding="" Then
-								PlaySound LoadTempSound("SFX\Ending\GateA\Bell2.ogg")
+								PlaySound2 LoadTempSound("SFX\Ending\GateA\Bell2.ogg")
 								
 								p.Particles = CreateParticle(EntityX(e\room\Objects[11],True),EntityY(mainPlayer\cam,True), EntityZ(e\room\Objects[11],True), 4, 8.0, 0, 50)
 								p\speed = 0.15
@@ -573,7 +573,7 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 									Next
 									
 									If e\EventState2=1 Then
-										e\soundChannels[0] = PlaySound (LoadTempSound("SFX\Ending\GateA\STOPRIGHTTHERE.ogg"))
+										e\soundChannels[0] = PlaySound2 (LoadTempSound("SFX\Ending\GateA\STOPRIGHTTHERE.ogg"))
 										e\EventState2=2			
 									EndIf
 								Else
@@ -587,7 +587,7 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 							ShouldPlay = 0
 							mainPlayer\moveSpeed = 0
 							If IsChannelPlaying(e\soundChannels[0])=False Then
-								PlaySound IntroSFX(9)
+								PlaySound2 IntroSFX(9)
 								;SelectedEnding = "A2"
 								mainPlayer\godMode = 0
 								mainPlayer\noclip = 0

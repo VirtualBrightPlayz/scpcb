@@ -141,7 +141,7 @@ Function UpdateEvent_cont_106_1(e.Events)
 		If e\EventState = 1 Then
 			e\EventState3 = Min(e\EventState3+timing\tickDuration,4000)
 		EndIf
-		If (Not IsChannelPlaying(e\soundChannels[0])) Then e\soundChannels[0] = PlaySound(RadioStatic)   
+		If (Not IsChannelPlaying(e\soundChannels[0])) Then e\soundChannels[0] = PlaySound2(RadioStatic)   
 	EndIf
 	
 	If e\room\NPC[0]=Null Then ;add the lure subject
@@ -181,9 +181,9 @@ Function UpdateEvent_cont_106_1(e.Events)
 		
 		If e\EventState2 <> temp Then 
 			If e\EventState2 = False Then
-				PlaySound(e\sounds[3])
+				PlaySound2(e\sounds[3])
 			Else
-				PlaySound(e\sounds[2])	
+				PlaySound2(e\sounds[2])	
 			EndIf
 		EndIf
 		
@@ -200,11 +200,11 @@ Function UpdateEvent_cont_106_1(e.Events)
 			If SoundTransmission And Rand(100)=1 Then
 				If e\soundChannels[1] = 0 Then
 					LoadEventSound(e,"SFX\Character\LureSubject\Idle"+Rand(1,6)+".ogg",1)
-					e\soundChannels[1] = PlaySound(e\sounds[1])								
+					e\soundChannels[1] = PlaySound2(e\sounds[1])								
 				EndIf
 				If IsChannelPlaying(e\soundChannels[1]) = False Then
 					LoadEventSound(e,"SFX\Character\LureSubject\Idle"+Rand(1,6)+".ogg",1)
-					e\soundChannels[1] = PlaySound(e\sounds[1])
+					e\soundChannels[1] = PlaySound2(e\sounds[1])
 				EndIf
 			EndIf
 			
@@ -214,18 +214,18 @@ Function UpdateEvent_cont_106_1(e.Events)
 				If SoundTransmission = True Then ;only play sounds if transmission is on
 					If IsChannelPlaying(e\soundChannels[1]) Then StopChannel e\soundChannels[1]
 					
-					e\soundChannels[1] = PlaySound(e\sounds[4])
+					e\soundChannels[1] = PlaySound2(e\sounds[4])
 				EndIf
 			EndIf
 		ElseIf e\EventState = 1 ;bone broken
 			If SoundTransmission And e\EventState3 < 2000 Then 
 				If e\soundChannels[1] = 0 Then 
 					LoadEventSound(e,"SFX\Character\LureSubject\Sniffling.ogg",1)
-					e\soundChannels[1] = PlaySound(e\sounds[1])								
+					e\soundChannels[1] = PlaySound2(e\sounds[1])								
 				EndIf
 				If IsChannelPlaying(e\soundChannels[1]) = False Then
 					LoadEventSound(e,"SFX\Character\LureSubject\Sniffling.ogg",1)
-					e\soundChannels[1] = PlaySound(e\sounds[1])
+					e\soundChannels[1] = PlaySound2(e\sounds[1])
 				EndIf
 			EndIf
 			
@@ -259,7 +259,7 @@ Function UpdateEvent_cont_106_1(e.Events)
 					If IsChannelPlaying(e\soundChannels[1]) Then StopChannel e\soundChannels[1]
 					
 					LoadEventSound(e,"SFX\Character\LureSubject\106Bait.ogg",1)
-					e\soundChannels[1]=PlaySound(e\sounds[1])
+					e\soundChannels[1]=PlaySound2(e\sounds[1])
 				ElseIf e\EventState3-timing\tickDuration < 2900 And e\EventState3 => 2900 Then
 					d.Decals = CreateDecal(0, EntityX(e\room\Objects[7], True), EntityY(e\room\Objects[7], True) , EntityZ(e\room\Objects[7], True), 0, 0, 0) 
 					RotateEntity(d\obj, EntityPitch(e\room\Objects[7], True)+Rand(10,20), EntityYaw(e\room\Objects[7], True)+30, EntityRoll(d\obj))

@@ -59,7 +59,7 @@ Function UpdateEventRoom2pipes106(e.Events)
 					If WrapAngle(EntityYaw(pvt)-EntityYaw(Curr106\Collider))<80 Then
 						Curr106\State = -11
 						Curr106\Idle = False
-						;PlaySound(HorrorSFX(10)) ;TODO: fix
+						;PlaySound2(HorrorSFX(10)) ;TODO: fix
 						e\EventState = 260
 					EndIf
 					FreeEntity pvt
@@ -80,7 +80,7 @@ Function UpdateEventRoom2pipes106(e.Events)
 			;PositionEntity(Curr106\Collider, EntityX(Curr106\Collider), EntityY(mainPlayer\collider) - 0.20, EntityZ(Curr106\Collider))
 			
 			If (e\EventState / 250.0) > 0.3 And ((e\EventState - timing\tickDuration*0.7) / 250.0) <= 0.3 Then
-				;e\soundChannels[0] = PlaySound(HorrorSFX(6))
+				;e\soundChannels[0] = PlaySound2(HorrorSFX(6))
 				mainPlayer\blurTimer = 800
 				d.Decals = CreateDecal(0, EntityX(e\room\Objects[2], True), EntityY(e\room\Objects[2], True), EntityZ(e\room\Objects[2], True), 0, e\room\angle - 90, Rnd(360)) ;90, Rnd(360), 0
 				d\Timer = 90000

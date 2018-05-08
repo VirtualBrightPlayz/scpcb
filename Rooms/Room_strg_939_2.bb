@@ -280,7 +280,7 @@ Function UpdateEvent_strg_939_2(e.Events)
 				
 				If EntityY(mainPlayer\collider)<-6400*RoomScale And mainPlayer\dead = False Then
 					DeathMSG=""
-					PlaySound LoadTempSound("SFX\Room\PocketDimension\Impact.ogg")
+					PlaySound2 LoadTempSound("SFX\Room\PocketDimension\Impact.ogg")
 					mainPlayer\dead = True
 				EndIf
 			EndIf

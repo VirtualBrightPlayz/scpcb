@@ -39,7 +39,7 @@ Function UpdateNPCtype096(n.NPCs)
                             If ProjectedY()>0 And ProjectedY()<userOptions\screenHeight Then
                                 If EntityVisible(mainPlayer\collider, n\collider) Then
                                     If (mainPlayer\blinkTimer < - 16 Or mainPlayer\blinkTimer > - 6)
-                                        PlaySound LoadTempSound("SFX\SCP\096\Triggered.ogg")
+                                        PlaySound2 LoadTempSound("SFX\SCP\096\Triggered.ogg")
                                         
                                         mainPlayer\camZoom = 10
                                         
@@ -72,9 +72,9 @@ Function UpdateNPCtype096(n.NPCs)
                     n\sounds[1] = LoadSound("SFX\Music\096Chase.ogg")
                 Else
                     If n\soundChannels[1] = 0 Then
-                        n\soundChannels[1] = PlaySound (n\sounds[1])
+                        n\soundChannels[1] = PlaySound2 (n\sounds[1])
                     Else
-                        If (Not IsChannelPlaying(n\soundChannels[1])) Then n\soundChannels[1] = PlaySound(n\sounds[1])
+                        If (Not IsChannelPlaying(n\soundChannels[1])) Then n\soundChannels[1] = PlaySound2(n\sounds[1])
                         ChannelVolume(n\soundChannels[1], Min(Max(8.0-n\playerDistance,0.6),1.0)*userOptions\SoundVolume)
                     EndIf
                 EndIf
@@ -111,7 +111,7 @@ Function UpdateNPCtype096(n.NPCs)
                             
                             If n\target=Null Then
                                 If (Not mainPlayer\godMode) Then 
-                                    PlaySound DamageSFX(4)
+                                    PlaySound2 DamageSFX(4)
                                     
                                     pvt = CreatePivot()
                                     mainPlayer\camShake = 30
@@ -334,7 +334,7 @@ Function UpdateNPCtype096(n.NPCs)
                             If ProjectedY()>0 And ProjectedY()<userOptions\screenHeight Then
                                 If EntityVisible(mainPlayer\collider, n\Collider) Then
                                     If (mainPlayer\blinkTimer < - 16 Or mainPlayer\blinkTimer > - 6)
-                                        PlaySound LoadTempSound("SFX\SCP\096\Triggered.ogg")
+                                        PlaySound2 LoadTempSound("SFX\SCP\096\Triggered.ogg")
                                         
                                         mainPlayer\camZoom = 10
                                         

@@ -89,7 +89,7 @@ Function UpdateEvent_cont_205_1(e.Events)
 			
 			If (e\EventState<65) Then
 				If (Distance(EntityX(mainPlayer\collider), EntityZ(mainPlayer\collider), EntityX(e\room\Objects[0],True), EntityZ(e\room\Objects[0],True))<2.0) Then
-					PlaySound(LoadTempSound("SFX\SCP\205\Enter.ogg"))
+					PlaySound2(LoadTempSound("SFX\SCP\205\Enter.ogg"))
 					
 					e\EventState = Max(e\EventState, 65)
 					
@@ -152,7 +152,7 @@ Function UpdateEvent_cont_205_1(e.Events)
 					
 					If e\EventState2 > 80*70 Then 
 						e\EventState = e\EventState+1
-						PlaySound(LoadTempSound("SFX\SCP\205\Horror.ogg"))
+						PlaySound2(LoadTempSound("SFX\SCP\205\Horror.ogg"))
 					EndIf
 				Case 11
 					;third demon
@@ -195,7 +195,7 @@ Function UpdateEvent_cont_205_1(e.Events)
 						DeathMSG = DeathMSG + "entered the chamber when the lights are off."
 						
 						mainPlayer\injuries=mainPlayer\injuries+Rnd(0.4,0.8)
-						PlaySound DamageSFX(Rand(2,3))
+						PlaySound2 DamageSFX(Rand(2,3))
 						mainPlayer\camShake = 0.5
 						
 						e\EventState2 = Rnd(-0.1, 0.1)

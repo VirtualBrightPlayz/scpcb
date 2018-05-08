@@ -243,8 +243,11 @@ Function LoadSound_SM.Sound(fileName$)
 	Return snd
 End Function
 
-Function PlaySound2(snd%)
-	AddChannel(PlaySound(snd))
+Function PlaySound2%(snd%)
+	Local chn% = PlaySound(snd)
+	AddChannel(chn)
+
+	Return chn
 End Function
 
 Function PlaySound_SM(snd.Sound)
@@ -252,7 +255,7 @@ Function PlaySound_SM(snd.Sound)
 	If (snd\internal = 0) Then
 		snd\internal = LoadSound(snd\file)
 	EndIf
-
+	
 	;Play the sound.
 	PlaySound2(snd\internal)
 End Function
@@ -274,7 +277,7 @@ Function IsChannelPlaying%(chn%)
 	Return ChannelPlaying(chn)
 End Function
 
-Function PlayRangedSound(soundHandle%, cam%, entity%, range# = 10, volume# = 1.0)
+Function PlayRangedSound%(soundHandle%, cam%, entity%, range# = 10, volume# = 1.0)
 	range# = Max(range, 1.0)
 	Local soundChn% = 0
 	
@@ -290,13 +293,16 @@ Function PlayRangedSound(soundHandle%, cam%, entity%, range# = 10, volume# = 1.0
 	EndIf
 	
 	AddPositionalChannel(soundChn, cam, entity, range, volume)
+	
+	Return soundChn
 End Function
 
-Function PlayRangedSound_SM(snd.Sound, cam%, entity%, range# = 10, volume# = 1.0)
+Function PlayRangedSound_SM%(snd.Sound, cam%, entity%, range# = 10, volume# = 1.0)
 	If (snd\internal = 0) Then
 		snd\internal = LoadSound(snd\file)
 	EndIf
-	PlayRangedSound(snd\internal, cam, entity, range, volume)
+	
+	Return PlayRangedSound(snd\internal, cam, entity, range, volume)
 End Function
 
 ; Only begins playing the sound if the sound channel isn't playing anything else.
@@ -550,6 +556,11 @@ End Function
 
 Function SetNextMusicTrack(trackName$, fadeOut% = True)
 	If (musicManager\shouldPlay = trackName) Then
+		Return
+	EndIf
+	
+	;If the track's already being overwritten then don't let anything else change it.
+	If (Not musicManager\useDefault) Then
 		Return
 	EndIf
 

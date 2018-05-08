@@ -93,7 +93,7 @@ Function UpdateNPCtype173(n.NPCs)
 				
 				;If it's close spoopy horror sound.
 				If dist < 3.5 And TimeInPosMilliSecs() - n\lastSeen > 60000 And playerVisible Then
-					PlaySound(n\sounds[Rand(1,3)])
+					PlaySound2(n\sounds[Rand(1,3)])
 					
 					n\lastSeen = TimeInPosMilliSecs()
 				EndIf
@@ -104,7 +104,7 @@ Function UpdateNPCtype173(n.NPCs)
 					;HeartBeatVolume = 0.5
 					
 					;Jumpscare.
-					PlaySound(n\sounds[Rand(4,8)])
+					PlaySound2(n\sounds[Rand(4,8)])
 				EndIf									
 					
 				n\lastDist = dist
@@ -148,7 +148,7 @@ Function UpdateNPCtype173(n.NPCs)
 											If Abs(EntityZ(n\collider) - EntityZ(d\buttons[i])) < 0.5 Then
 												If (d\openstate >= 180 Or d\openstate <= 0) Then
 													If DeltaYaw(n\collider, d\buttons[i]) < 60 And DeltaYaw(d\buttons[i], n\collider) < 60 Then 
-														PlaySound(LoadTempSound("SFX\Door\DoorOpen173.ogg"))
+														PlaySound2(LoadTempSound("SFX\Door\DoorOpen173.ogg"))
 														UseDoor(d,False)
 													EndIf
 												EndIf
@@ -188,7 +188,7 @@ Function UpdateNPCtype173(n.NPCs)
 								n\state = STATE173_IDLE
 								
 								;Necksnap.
-								PlaySound(n\sounds[Rand(9,11)])
+								PlaySound2(n\sounds[Rand(9,11)])
 
 								;TODO: Remove?
 								If Rand(2) = 1 Then 

@@ -458,7 +458,7 @@ Function UpdateEvent_hll_sl_2(e.Events)
 					e\room\RoomDoors[0]\locked = True
 					e\room\RoomDoors[1]\locked = True
 					If e\room\NPC[0]\Reload = 0
-						PlaySound LoadTempSound("SFX\Door\DoorOpen079.ogg")
+						PlaySound2 LoadTempSound("SFX\Door\DoorOpen079.ogg")
 						DebugLog "079 - OPEN DOORS IN ROOM2SL"
 						e\room\NPC[0]\Reload = 1
 					EndIf
@@ -584,7 +584,7 @@ Function UpdateEvent_hll_sl_2(e.Events)
 							If e\room\RoomDoors[0]\open
 								e\room\RoomDoors[0]\open = False
 								e\room\RoomDoors[0]\fastopen = 1
-								PlaySound LoadTempSound("SFX\Door\DoorClose079.ogg")
+								PlaySound2 LoadTempSound("SFX\Door\DoorClose079.ogg")
 								DebugLog "079 - CLOSE DOOR AT HALLWAY IN ROOM2SL"
 							EndIf
 						EndIf
@@ -594,7 +594,7 @@ Function UpdateEvent_hll_sl_2(e.Events)
 							e\room\RoomDoors[0]\open = True
 							sound=Rand(0, 2)
 							;PlayRangedSound(OpenDoorSFX(0,sound),mainPlayer\cam,e\room\RoomDoors[0]\obj)
-							PlaySound LoadTempSound("SFX\Door\DoorOpen079.ogg")
+							PlaySound2 LoadTempSound("SFX\Door\DoorOpen079.ogg")
 							DebugLog "079 - OPEN DOOR AT HALLWAY IN ROOM2SL"
 						EndIf
 					EndIf
@@ -607,7 +607,7 @@ Function UpdateEvent_hll_sl_2(e.Events)
 					e\room\RoomDoors[0]\open = True
 					sound=Rand(0, 2)
 					;PlayRangedSound(OpenDoorSFX(0,sound),mainPlayer\cam,e\room\RoomDoors[0]\obj)
-					PlaySound LoadTempSound("SFX\Door\DoorOpen079.ogg")
+					PlaySound2 LoadTempSound("SFX\Door\DoorOpen079.ogg")
 					DebugLog "079 - OPEN DOOR AT HALLWAY IN ROOM2SL"
 				EndIf
 			EndIf

@@ -136,7 +136,7 @@ Function UpdateNPCtype939(n.NPCs)
                         
                         If temp Then
                             If Distance(n\EnemyX, n\EnemyZ, EntityX(n\collider), EntityZ(n\collider))<1.5 Then
-                                PlaySound(n\sounds[1])
+                                PlaySound2(n\sounds[1])
                                 mainPlayer\injuries = mainPlayer\injuries + Rnd(1.5, 2.5)-IsPlayerWearingTempName(mainPlayer,"vest")*0.5
                                 mainPlayer\blurTimer = 500		
                             Else
@@ -208,7 +208,7 @@ Function UpdateNPCtype939(n.NPCs)
                     n\sounds[0] = LoadSound("SFX\SCP\939\"+(n\ID Mod 3)+"Attack"+Rand(1,3)+".ogg")
                     n\soundChannels[0] = PlayRangedSound(n\sounds[0], mainPlayer\cam, n\collider)										
                     
-                    PlaySound(LoadTempSound("SFX\SCP\939\attack.ogg"))
+                    PlaySound2(LoadTempSound("SFX\SCP\939\attack.ogg"))
                     n\state3 = 1
                 EndIf
                 

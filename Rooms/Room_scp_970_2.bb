@@ -199,7 +199,7 @@ Function UpdateEvent_scp_970_2(e.Events)
 						de\Size = 0.05 : de\SizeChange = 0.0005 : EntityAlpha(de\obj, 0.8) : UpdateDecals
 					Next
 				Case 40
-					PlaySound(LoadTempSound("SFX\radio\franklin4.ogg"))
+					PlaySound2(LoadTempSound("SFX\radio\franklin4.ogg"))
 				Case 50
 					e\room\NPC[1]=CreateNPC(NPCtypeGuard, EntityX(e\room\obj)+Cos(e\room\angle+90)*600*RoomScale, 0.35, EntityZ(e\room\obj)+Sin(e\room\angle+90)*600*RoomScale)
 					e\room\NPC[1]\State=7
@@ -218,7 +218,7 @@ Function UpdateEvent_scp_970_2(e.Events)
 			
 			If Rand(10)=1 Then
 				temp = Rand(0,2)
-				PlaySound(AmbientSFX(temp, Rand(0,AmbientSFXAmount(temp)-1)))
+				PlaySound2(AmbientSFX(temp, Rand(0,AmbientSFXAmount(temp)-1)))
 			EndIf
 		Else
 			If e\room\NPC[0] <> Null Then

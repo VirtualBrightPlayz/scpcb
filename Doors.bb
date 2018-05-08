@@ -284,7 +284,7 @@ Function UpdateDoors()
 					EndIf
 					If d\AutoClose And RemoteDoorOn = True Then
 						If EntityDistance(mainPlayer\cam, d\obj) < 2.1 Then
-							;PlaySound HorrorSFX(7) ;TODO: fix
+							;PlaySound2 HorrorSFX(7) ;TODO: fix
 							d\open = False
 							Select (d\dir)
 								Case 1

@@ -395,7 +395,7 @@ Function Use914(item.Items, setting$, x#, y#, z#)
 		Case "SCP-513"
 			Select setting
 				Case "rough", "coarse"
-					PlaySound LoadTempSound("SFX\SCP\513\914Refine.ogg")
+					PlaySound2 LoadTempSound("SFX\SCP\513\914Refine.ogg")
 					For n.npcs = Each NPCs
 						If n\npctype = NPCtype5131 Then RemoveNPC(n)
 					Next
@@ -666,7 +666,7 @@ Function UpdateEvent_cont_914_1(e.Events)
 			If Distance(EntityX(mainPlayer\collider), EntityZ(mainPlayer\collider), EntityX(e\room\Objects[2], True), EntityZ(e\room\Objects[2], True)) < (170.0 * RoomScale) Then
 				
 				If setting = "rough" Or setting = "coarse" Then
-					If e\EventState > 70 * 2.6 And e\EventState - timing\tickDuration < 70 * 2.6 Then PlaySound(e\sounds[2])
+					If e\EventState > 70 * 2.6 And e\EventState - timing\tickDuration < 70 * 2.6 Then PlaySound2(e\sounds[2])
 				EndIf
 				
 				If e\EventState > 70 * 3 Then
@@ -680,13 +680,13 @@ Function UpdateEvent_cont_914_1(e.Events)
 							DeathMSG = DeathMSG + "ended up inside the intake booth and who or what wound the key."+Chr(34)
 						Case "coarse"
 							mainPlayer\blinkTimer = -10
-							If e\EventState - timing\tickDuration < 70 * 3 Then PlaySound(LoadSound(e\sounds[1]))
+							If e\EventState - timing\tickDuration < 70 * 3 Then PlaySound2(LoadSound(e\sounds[1]))
 						Case "1:1"
 							mainPlayer\blinkTimer = -10
-							If e\EventState - timing\tickDuration < 70 * 3 Then PlaySound(LoadSound(e\sounds[1]))
+							If e\EventState - timing\tickDuration < 70 * 3 Then PlaySound2(LoadSound(e\sounds[1]))
 						Case "fine", "very fine"
 							mainPlayer\blinkTimer = -10
-							If e\EventState - timing\tickDuration < 70 * 3 Then PlaySound(LoadSound(e\sounds[1]))
+							If e\EventState - timing\tickDuration < 70 * 3 Then PlaySound2(LoadSound(e\sounds[1]))
 					End Select
 				End If
 			EndIf

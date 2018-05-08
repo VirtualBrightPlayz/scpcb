@@ -248,7 +248,7 @@ Function UpdateEventAlarm(e.Events)
 
 					Else
 						If e\EventState-timing\tickDuration < 900+4*70 Then 
-							PlaySound(IntroSFX(11)); : LightBlink = 3.0
+							PlaySound2(IntroSFX(11)); : LightBlink = 3.0
 							
 							;Stonedrag.
 							PlayRangedSound (Curr173\sounds[0], mainPlayer\cam, Curr173\Collider)
@@ -263,7 +263,7 @@ Function UpdateEventAlarm(e.Events)
 							If EntityZ(e\room\NPC[2]\Collider) < e\room\z-1150*RoomScale Then
 								e\room\RoomDoors[5]\open = False
 								;LightBlink = 3.0
-								PlaySound(IntroSFX(11))
+								PlaySound2(IntroSFX(11))
 								mainPlayer\blinkTimer = -10
 
 								;Stonedrag.
@@ -328,9 +328,9 @@ Function UpdateEventAlarm(e.Events)
 		
 		If (e\EventState < 2000) Then
 			If e\soundChannels[0] = 0 Then
-				e\soundChannels[0] = PlaySound(AlarmSFX(0))
+				e\soundChannels[0] = PlaySound2(AlarmSFX(0))
 			Else
-				If Not IsChannelPlaying(e\soundChannels[0]) Then e\soundChannels[0] = PlaySound(AlarmSFX(0))
+				If Not IsChannelPlaying(e\soundChannels[0]) Then e\soundChannels[0] = PlaySound2(AlarmSFX(0))
 			End If
 		EndIf
 		
@@ -344,7 +344,7 @@ Function UpdateEventAlarm(e.Events)
 				EndIf
 				
 				e\sounds[1] = LoadSound("SFX\Alarm\Alarm2_"+Int(e\EventState3)+".ogg")
-				e\soundChannels[1] = PlaySound(e\sounds[1])
+				e\soundChannels[1] = PlaySound2(e\sounds[1])
 				Else
 					If Int(e\EventState3) = 8 Then mainPlayer\camShake = 1.0
 			EndIf
@@ -353,11 +353,11 @@ Function UpdateEventAlarm(e.Events)
 		If ((e\EventState Mod 600 > 300) And ((e\EventState+timing\tickDuration) Mod 600 < 300)) Then
 			i = Floor((e\EventState-5000)/600)+1
 			
-			If i = 0 Then PlaySound(LoadTempSound("SFX\Room\Intro\PA\scripted\scripted6.ogg"))
+			If i = 0 Then PlaySound2(LoadTempSound("SFX\Room\Intro\PA\scripted\scripted6.ogg"))
 			
 			If (i>0 And i<24) Then
 				If Not CommotionState(i) Then ;Prevents the same commotion file from playing more then once.
-					PlaySound(LoadTempSound("SFX\Room\Intro\Commotion\Commotion"+i+".ogg"))
+					PlaySound2(LoadTempSound("SFX\Room\Intro\Commotion\Commotion"+i+".ogg"))
 					CommotionState(i) = True
 				EndIf
 			EndIf

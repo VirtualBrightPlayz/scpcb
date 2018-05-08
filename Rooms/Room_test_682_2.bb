@@ -57,7 +57,7 @@ Function UpdateEvent_test_682_2(e.Events)
 				e\EventState = 1
 			EndIf
 			If EntityDistance(mainPlayer\collider, e\room\Objects[6]) < 2.5 And e\EventState > 0 Then
-				PlaySound(LoadTempSound("SFX\SCP\079\TestroomWarning.ogg"))
+				PlaySound2(LoadTempSound("SFX\SCP\079\TestroomWarning.ogg"))
 				For i = 0 To 5
 					em.Emitters = CreateEmitter(EntityX(e\room\Objects[i], True), EntityY(e\room\Objects[i], True), EntityZ(e\room\Objects[i], True), 0)
 					TurnEntity(em\Obj, 90, 0, 0, True)

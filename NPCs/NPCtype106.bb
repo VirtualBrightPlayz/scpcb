@@ -76,7 +76,7 @@ Function UpdateNPCtype106(n.NPCs)
                     
                     SetAnimTime n\obj, 110
                     
-                    PlaySound(n\sounds[0])
+                    PlaySound2(n\sounds[0])
                 End If
                 
                 ;Corrosion.
@@ -123,7 +123,7 @@ Function UpdateNPCtype106(n.NPCs)
                     
                     If (TimeInPosMilliSecs() - n\lastSeen > 60000) Then 
                         mainPlayer\camZoom = 40
-                        PlaySound(n\sounds[2])
+                        PlaySound2(n\sounds[2])
                         n\lastSeen = TimeInPosMilliSecs()
                     EndIf
                 EndIf
@@ -201,10 +201,10 @@ Function UpdateNPCtype106(n.NPCs)
                     
                     ;TODO: Teleport to pocket dimension.
                     If Ceil(n\Frame) = 110 And (Not mainPlayer\godMode) Then
-                        PlaySound(DamageSFX(1))
-                        PlaySound(n\sounds[7])
+                        PlaySound2(DamageSFX(1))
+                        PlaySound2(n\sounds[7])
 
-                        PlaySound(n\sounds[6])
+                        PlaySound2(n\sounds[6])
                         mainPlayer\fallTimer = Min(-1, mainPlayer\fallTimer)
                         PositionEntity(mainPlayer\head, EntityX(mainPlayer\cam, True), EntityY(mainPlayer\cam, True), EntityZ(mainPlayer\cam, True), True)
                         ResetEntity(mainPlayer\head)

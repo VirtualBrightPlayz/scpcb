@@ -173,7 +173,7 @@ Function UpdateNPCtypeApache(n.NPCs)
                     If TempSound2 <> 0 Then FreeSound TempSound2 : TempSound2 = 0
                     TempSound2 = LoadSound("SFX\Character\Apache\Crash"+Rand(1,2)+".ogg")
                     mainPlayer\camShake = Max(mainPlayer\camShake, 3.0)
-                    PlaySound TempSound2
+                    PlaySound2 TempSound2
                     n\state = 5
                 EndIf
                 

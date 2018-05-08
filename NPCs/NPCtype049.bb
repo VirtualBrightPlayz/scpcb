@@ -78,7 +78,7 @@ Function UpdateNPCtype049(n.NPCs)
 					EndIf
 					
 					NPCStopAllChannels(n)
-					PlaySound(n\sounds[0])
+					PlaySound2(n\sounds[0])
 					
 					n\state = STATE049_IDLE
 				EndIf

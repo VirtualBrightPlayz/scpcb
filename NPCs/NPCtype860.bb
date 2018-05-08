@@ -191,7 +191,7 @@ Function UpdateNPCtype860(n.NPCs)
                     If n\State2 = 0 Then
                         If dist<8.0 Then
                             If EntityInView(n\Collider,mainPlayer\cam) Then
-                                PlaySound LoadTempSound("SFX\SCP\860\Chase"+Rand(1,2)+".ogg")
+                                PlaySound2 LoadTempSound("SFX\SCP\860\Chase"+Rand(1,2)+".ogg")
                                 
                                 PlayRangedSound(LoadTempSound("SFX\SCP\860\Cancer"+Rand(0,2)+".ogg"), mainPlayer\cam, n\Collider)	
                                 n\State2 = 1
@@ -265,10 +265,10 @@ Function UpdateNPCtype860(n.NPCs)
                     ;Animate2(n\obj, AnimTime(n\obj), 451,493, 0.5, False)
                     If (prevFrame < 461 And n\Frame=>461) Then 
                         If (Not mainPlayer\dead) Then Kill(mainPlayer)
-                        PlaySound(n\sounds[0])
+                        PlaySound2(n\sounds[0])
                     EndIf
-                    If (prevFrame < 476 And n\Frame=>476) Then PlaySound(n\sounds[1])
-                    If (prevFrame < 486 And n\Frame=>486) Then PlaySound(n\sounds[1])
+                    If (prevFrame < 476 And n\Frame=>476) Then PlaySound2(n\sounds[1])
+                    If (prevFrame < 486 And n\Frame=>486) Then PlaySound2(n\sounds[1])
                     
                 EndIf
                 

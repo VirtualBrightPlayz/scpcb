@@ -1562,7 +1562,7 @@ Function UpdateMTF%()
 				If Abs(EntityZ(entrance\obj)-EntityZ(mainPlayer\collider))<30.0 Then
 					;If mainPlayer\currRoom\RoomTemplate\Name<>"room860" And mainPlayer\currRoom\RoomTemplate\Name<>"pocketdimension" Then
 					If PlayerInReachableRoom()
-						PlaySound LoadTempSound("SFX\Character\MTF\Announc.ogg")
+						PlaySound2 LoadTempSound("SFX\Character\MTF\Announc.ogg")
 					EndIf
 					
 					MTFtimer = 1

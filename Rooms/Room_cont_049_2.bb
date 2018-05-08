@@ -330,7 +330,7 @@ Function UpdateEvent_cont_049_2(e.Events)
 					MoveEntity e\room\NPC[1]\collider,0,0,0.1
 					PointEntity mainPlayer\collider, e\room\NPC[1]\collider
 					
-					PlaySound LoadTempSound("SFX\Character\MTF\049\Player0492_1.ogg")
+					PlaySound2 LoadTempSound("SFX\Character\MTF\049\Player0492_1.ogg")
 					
 					LoadEventSound(e,"SFX\SCP\049\0492Breath.ogg")
 					
@@ -372,13 +372,13 @@ Function UpdateEvent_cont_049_2(e.Events)
 			
 			If mainPlayer\dead = True Then
 				If IsChannelPlaying(e\room\NPC[1]\soundChannels[0]) Then StopChannel(e\room\NPC[1]\soundChannels[0])
-				PlaySound LoadTempSound("SFX\Character\MTF\049\Player0492_2.ogg")
+				PlaySound2 LoadTempSound("SFX\Character\MTF\049\Player0492_2.ogg")
 				RemoveEvent(e)
 			Else
 				If e\soundChannels[0] = 0 Then
-					e\soundChannels[0] = PlaySound (e\sounds[0])
+					e\soundChannels[0] = PlaySound2 (e\sounds[0])
 				Else
-					If (Not IsChannelPlaying(e\soundChannels[0])) Then e\soundChannels[0] = PlaySound(e\sounds[0])
+					If (Not IsChannelPlaying(e\soundChannels[0])) Then e\soundChannels[0] = PlaySound2(e\sounds[0])
 				EndIf
 			EndIf
 		EndIf

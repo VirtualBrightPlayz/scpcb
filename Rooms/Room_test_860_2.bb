@@ -141,7 +141,7 @@ Function UpdateEvent_test_860_2(e.Events)
 							If i=1 Then
 								mainPlayer\blinkTimer = -10
 								
-								PlaySound(LoadTempSound("SFX\Door\WoodenDoorOpen.ogg"))
+								PlaySound2(LoadTempSound("SFX\Door\WoodenDoorOpen.ogg"))
 								
 								RotateEntity e\room\Objects[3], 0, 0, 0
 								RotateEntity e\room\Objects[4], 0, 180, 0
@@ -162,7 +162,7 @@ Function UpdateEvent_test_860_2(e.Events)
 								e\EventState = 0.0
 								
 							Else
-								PlaySound(LoadTempSound("SFX\Door\WoodenDoorBudge.ogg"))
+								PlaySound2(LoadTempSound("SFX\Door\WoodenDoorBudge.ogg"))
 								Msg = "The door will not budge."
 								MsgTimer = 70*5
 							EndIf
@@ -198,13 +198,13 @@ Function UpdateEvent_test_860_2(e.Events)
 					
 					If mainPlayer\selectedItem = Null Then
 						If MouseHit1 Then
-							PlaySound(LoadTempSound("SFX\Door\WoodenDoorBudge.ogg"))
+							PlaySound2(LoadTempSound("SFX\Door\WoodenDoorBudge.ogg"))
 							Msg = "The door will not budge."
 							MsgTimer = 5*70
 						EndIf
 					ElseIf mainPlayer\selectedItem\itemtemplate\tempname="scp860" 
 						If MouseHit1 Then
-							PlaySound(LoadTempSound("SFX\Door\WoodenDoorOpen.ogg"))
+							PlaySound2(LoadTempSound("SFX\Door\WoodenDoorOpen.ogg"))
 							ShowEntity fr.Forest\Forest_Pivot
 							mainPlayer\selectedItem = Null
 							

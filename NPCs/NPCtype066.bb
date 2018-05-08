@@ -102,7 +102,7 @@ Function UpdateNPCtype066(n.NPCs)
                                     mainPlayer\camShake = 5.0
                                     de.Decals = CreateDecal(1, EntityX(n\Collider), 0.01, EntityZ(n\Collider), 90, Rand(360), 0)
                                     de\Size = 0.3 : UpdateDecals
-                                    PlaySound(LoadTempSound("SFX\General\BodyFall.ogg"))
+                                    PlaySound2(LoadTempSound("SFX\General\BodyFall.ogg"))
                                     If Distance(EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider),EntityX(n\Collider),EntityZ(n\Collider))<0.8 Then
                                         mainPlayer\injuries = mainPlayer\injuries + Rnd(0.3,0.5)
                                     EndIf
