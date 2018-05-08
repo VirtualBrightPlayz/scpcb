@@ -130,6 +130,45 @@ Function FindItemTemplate.ItemTemplates(name$,tempname$)
 	Return candidate
 End Function
 
+Function LoadItemTemplates(file$)
+	Local f% = OpenFile(file)
+	Local it.ItemTemplates
+	Local section$
+	
+	While Not Eof(f)
+		section = Trim(ReadLine(f))
+		If Left(section,1) = "[" Then
+			section = Mid(section, 2, Len(section) - 2)
+			
+			Local invName$     = GetINIString(file, section, "invname")
+			Local objPath$     = GetINIString(file, section, "objpath")
+			Local scale#       = GetINIFloat(file, section, "scale")
+			Local texturepath$ = GetINIString(file, section, "texturepath")
+			Local animated%    = GetINIInt(file, section, "animated")
+			Local flags%       = GetINIInt(file, section, "textureflags", 9)
+			Local invimgpath$  = GetINIString(file, section, "invimgpath")
+			Local invimgpath2$ = GetINIString(file, section, "invimgpath2")
+			Local imgpath$     = GetINIString(file, section, "imgpath")
+			
+			Local slot$        = GetINIString(file, section, "slot", "none")
+			Local slotFlag% = WORNITEM_SLOT_NONE
+			
+			Select slot
+				Case "head"
+					slotFlag% = WORNITEM_SLOT_HEAD
+				Case "body"
+					slotFlag% = WORNITEM_SLOT_BODY
+			End Select
+			Local picksound% = GetINIInt(file, section, "picksound")
+			
+			it = CreateItemTemplate(invName, section, objPath, invimgpath, slotFlag, imgpath, scale, texturepath, invimgpath2, animated, flags)
+			it\sound = picksound
+		EndIf
+	Wend
+	
+	CloseFile f
+End Function
+
 Function InitItemTemplates()
 	Local it.ItemTemplates,it2.ItemTemplates
 	
@@ -560,7 +599,7 @@ Function PickItem(item.Items)
 			If mainPlayer\inventory\items[n] = Null Then
 				Select item\itemtemplate\tempname
 					Case "1123"
-						If mainPlayer\currRoom\RoomTemplate\Name <> "room1123" Then
+						If mainPlayer\currRoom\RoomTemplate\name <> "room1123" Then
 							ShowEntity mainPlayer\overlays[OVERLAY_WHITE]
 							mainPlayer\lightFlash = 7.0
 							PlaySound2(LoadTempSound("SFX\SCP\1123\Touch.ogg"))		
@@ -689,5 +728,5 @@ Function DropItem(item.Items,playDropSound%=True)
 	;End Select	
 End Function
 ;~IDEal Editor Parameters:
-;~F#1F#75
+;~F#75
 ;~C#Blitz3D

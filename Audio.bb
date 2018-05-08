@@ -231,6 +231,7 @@ Function UpdateChannelList()
 		If (Not IsChannelPlaying(chn\internal)) Then
 			EraseIntArrayListElem(sndManager\chnList, i)
 			FreeEntity(chn\point)
+			Delete chn
 			i = i - 1
 		ElseIf (chn\camera <> 0) Then
 			UpdateRangedSoundOrigin_SM(chn)
