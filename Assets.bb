@@ -233,6 +233,8 @@ Function LoadEntities()
 	
 	DrawLoading(30)
 	
+	LoadRoomTemplates("Data\rooms.ini")
+	
 	;LoadRoomMeshes()
 	
 End Function
@@ -324,8 +326,26 @@ Function InitNewGame()
 	
 	Local rt.RoomTemplates
 	For rt.RoomTemplates = Each RoomTemplates
-		FreeEntity (rt\obj)
-	Next	
+		If rt\collisionObjs<>Null Then
+			For i% = 0 To rt\collisionObjs\size-1
+				FreeEntity GetIntArrayListElem(rt\collisionObjs,i)
+			Next
+			DeleteIntArrayList(rt\collisionObjs) : rt\collisionObjs = Null
+		EndIf
+		
+		FreeEntity rt\opaqueMesh
+		If rt\alphaMesh<>0 Then FreeEntity rt\alphaMesh
+		
+		Local prop.Props
+		If rt\props<>Null Then
+			For i% = 0 To rt\props\size-1
+				prop = Object.Props(GetIntArrayListElem(rt\props,i))
+				FreeEntity(prop\obj)
+				Delete prop
+			Next
+			DeleteIntArrayList(rt\props) : rt\props = Null
+		EndIf
+	Next
 	
 	Local tw.TempWayPoints
 	For tw.TempWayPoints = Each TempWayPoints
@@ -421,7 +441,25 @@ Function InitLoadGame()
 	mainPlayer\stamina = 100
 	
 	For rt.RoomTemplates = Each RoomTemplates
-		If rt\obj <> 0 Then FreeEntity(rt\obj) : rt\obj = 0
+		If rt\collisionObjs<>Null Then
+			For i% = 0 To rt\collisionObjs\size-1
+				FreeEntity GetIntArrayListElem(rt\collisionObjs,i)
+			Next
+			DeleteIntArrayList(rt\collisionObjs) : rt\collisionObjs = Null
+		EndIf
+		
+		FreeEntity rt\opaqueMesh
+		If rt\alphaMesh<>0 Then FreeEntity rt\alphaMesh
+		
+		Local prop.Props
+		If rt\props<>Null Then
+			For i% = 0 To rt\props\size-1
+				prop = Object.Props(GetIntArrayListElem(rt\props,i))
+				FreeEntity(prop\obj)
+				Delete prop
+			Next
+			DeleteIntArrayList(rt\props) : rt\props = Null
+		EndIf
 	Next
 	
 	mainPlayer\dropSpeed = 0.0
@@ -548,9 +586,15 @@ Function NullGame()
 	Next	
 	
 	For r.Rooms = Each Rooms
+		DeleteIntArray(r\collisionObjs)
+		If r\props<>Null Then DeleteIntArray(r\props)
 		Delete r
 	Next
 	DeleteIntArray(MapRooms)
+	
+	For rt.RoomTemplates = Each RoomTemplates
+		Delete rt
+	Next
 	
 	For itt.ItemTemplates = Each ItemTemplates
 		Delete itt
@@ -597,10 +641,6 @@ Function NullGame()
 		Delete p
 	Next
 	
-	For rt.RoomTemplates = Each RoomTemplates
-		rt\obj = 0
-	Next
-	
 	For i = 0 To 5
 		If IsChannelPlaying(RadioCHN(i)) Then StopChannel(RadioCHN(i))
 	Next
@@ -635,5 +675,4 @@ Function NullGame()
 	
 End Function
 ;~IDEal Editor Parameters:
-;~F#0#EF#182#1DA
 ;~C#Blitz3D

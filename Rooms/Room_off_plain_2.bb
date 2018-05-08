@@ -17,8 +17,12 @@ Function FillRoom_off_plain_2(r.Rooms)
     it = CreateItem("Notification", "paper", r\x -137.0 * RoomScale, r\y + 153.0 * RoomScale, r\z + 464.0 * RoomScale)
     EntityParent(it\collider, r\obj)
     
-    w.waypoints = CreateWaypoint(r\x - 32.0 * RoomScale, r\y + 66.0 * RoomScale, r\z + 288.0 * RoomScale, Null, r)
-    w2.waypoints = CreateWaypoint(r\x, r\y + 66.0 * RoomScale, r\z - 448.0 * RoomScale, Null, r)
-    w\connected[0] = w2 : w\dist[0] = EntityDistance(w\obj, w2\obj)
-    w2\connected[0] = w : w2\dist[0] = w\dist[0]
+	;TODO: fix?
+    ;w.waypoints = CreateWaypoint(r\x - 32.0 * RoomScale, r\y + 66.0 * RoomScale, r\z + 288.0 * RoomScale, Null, r)
+    ;w2.waypoints = CreateWaypoint(r\x, r\y + 66.0 * RoomScale, r\z - 448.0 * RoomScale, Null, r)
+    ;w\connected[0] = w2 : w\dist[0] = EntityDistance(w\obj, w2\obj)
+    ;w2\connected[0] = w : w2\dist[0] = w\dist[0]
 End Function
+
+;~IDEal Editor Parameters:
+;~C#Blitz3D

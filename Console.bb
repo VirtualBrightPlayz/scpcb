@@ -524,7 +524,7 @@ Function UpdateConsole()
 					For r.Rooms = Each Rooms
 						If r\RoomTemplate\Name = StrTemp Then
 							;PositionEntity (mainPlayer\collider, EntityX(r\obj), 0.7, EntityZ(r\obj))
-							PositionEntity (mainPlayer\collider, EntityX(r\obj), EntityY(r\obj)+0.7, EntityZ(r\obj))
+							PositionEntity (mainPlayer\collider, r\x, r\y+0.7, r\z)
 							ResetEntity(mainPlayer\collider)
 							UpdateDoors()
 							UpdateRooms()

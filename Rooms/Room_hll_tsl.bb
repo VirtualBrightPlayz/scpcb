@@ -29,10 +29,11 @@ Function FillRoom_hll_tsl(r.Rooms)
     HideEntity r\Objects[3]
     EntityParent(r\Objects[3], r\obj)
     
-    w.waypoints = CreateWaypoint(r\x, r\y + 66.0 * RoomScale, r\z + 292.0 * RoomScale, Null, r)
-    w2.waypoints = CreateWaypoint(r\x, r\y + 66.0 * RoomScale, r\z - 284.0 * RoomScale, Null, r)
-    w\connected[0] = w2 : w\dist[0] = EntityDistance(w\obj, w2\obj)
-    w2\connected[0] = w : w2\dist[0] = w\dist[0]
+	;TODO: fix?
+    ;w.waypoints = CreateWaypoint(r\x, r\y + 66.0 * RoomScale, r\z + 292.0 * RoomScale, Null, r)
+    ;w2.waypoints = CreateWaypoint(r\x, r\y + 66.0 * RoomScale, r\z - 284.0 * RoomScale, Null, r)
+    ;w\connected[0] = w2 : w\dist[0] = EntityDistance(w\obj, w2\obj)
+    ;w2\connected[0] = w : w2\dist[0] = w\dist[0]
     
     r\Objects[4] = CreateSprite()
     PositionEntity(r\Objects[4], r\x - 32 * RoomScale, 568 * RoomScale, r\z)

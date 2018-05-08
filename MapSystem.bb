@@ -73,6 +73,8 @@ Include "Rooms/Room_tnnl_plain_4.bb"
 Include "Rooms/Room_hll_tsl.bb"
 Include "Rooms/Room_tnnl_nuke_2.bb"
 
+Include "RM2.bb"
+
 Include "Skybox.bb"
 
 Type Materials
@@ -98,15 +100,6 @@ Function LoadMaterials(file$)
 			mat.Materials = New Materials
 			
 			mat\name = Lower(TemporaryString)
-			
-			;If BumpEnabled Then
-			;	StrTemp = GetINIString(file, TemporaryString, "bump")
-			;	If StrTemp <> "" Then 
-			;		mat\Bump =  LoadTexture(StrTemp)
-			;		
-			;		TextureBlend mat\Bump, FE_BUMP				
-			;	EndIf
-			;EndIf
 			
 			mat\StepSound = GetINIInt(file, TemporaryString, "stepsound")
 		EndIf
@@ -139,13 +132,6 @@ Function GetTextureFromCache%(name$)
 	Next
 	Return 0
 End Function
-
-;Function GetBumpFromCache%(name$)
-;	For tc.Materials=Each Materials
-;		If tc\name = name Then Return tc\Bump
-;	Next
-;	Return 0
-;End Function
 
 Function GetCache.Materials(name$)
 	For tc.Materials=Each Materials
@@ -196,6 +182,8 @@ Function LoadRMeshTexture%(roompath$,name$,flags%)
 End Function
 
 Function LoadRMesh(file$,rt.RoomTemplates)
+	RuntimeError "RMesh is obsolete. Convert to RM2."
+	
 	;generate a texture made of white
 	Local blankTexture%
 	blankTexture=CreateTexture(4,4,1,1)
@@ -405,20 +393,20 @@ Function LoadRMesh(file$,rt.RoomTemplates)
 		DebugLog "TriggerBoxEnable"
 		rt\TempTriggerboxAmount = ReadInt(f)
 		For tb = 0 To rt\TempTriggerboxAmount-1
-			rt\TempTriggerbox[tb] = CreateMesh(rt\obj)
+			;rt\TempTriggerbox[tb] = CreateMesh(rt\obj)
 			count = ReadInt(f)
 			For i%=1 To count
-				surf=CreateSurface(rt\TempTriggerbox[tb])
+				;surf=CreateSurface(rt\TempTriggerbox[tb])
 				count2=ReadInt(f)
 				For j%=1 To count2
 					x=ReadFloat(f) : y=ReadFloat(f) : z=ReadFloat(f)
-					vertex=AddVertex(surf,x,y,z)
+					;vertex=AddVertex(surf,x,y,z)
 				Next
 				count2=ReadInt(f)
 				For j%=1 To count2
 					temp1i = ReadInt(f) : temp2i = ReadInt(f) : temp3i = ReadInt(f)
-					AddTriangle(surf,temp1i,temp2i,temp3i)
-					AddTriangle(surf,temp1i,temp3i,temp2i)
+					;AddTriangle(surf,temp1i,temp2i,temp3i)
+					;AddTriangle(surf,temp1i,temp3i,temp2i)
 				Next
 			Next
 			rt\TempTriggerboxName[tb] = ReadString(f)
@@ -532,20 +520,20 @@ Function LoadRMesh(file$,rt.RoomTemplates)
 			Case "model"
 				file = ReadString(f)
 				If file<>""
-					Local model = CreatePropObj("GFX\Map\Props\"+file);LoadMesh("GFX\Map\Props\"+file)
+					;Local model = CreatePropObj("GFX\Map\Props\"+file);LoadMesh("GFX\Map\Props\"+file)
 					
 					temp1=ReadFloat(f) : temp2=ReadFloat(f) : temp3=ReadFloat(f)
-					PositionEntity model,temp1,temp2,temp3
+					;PositionEntity model,temp1,temp2,temp3
 					
 					temp1=ReadFloat(f) : temp2=ReadFloat(f) : temp3=ReadFloat(f)
-					RotateEntity model,temp1,temp2,temp3
+					;RotateEntity model,temp1,temp2,temp3
 					
 					temp1=ReadFloat(f) : temp2=ReadFloat(f) : temp3=ReadFloat(f)
-					ScaleEntity model,temp1,temp2,temp3
+					;ScaleEntity model,temp1,temp2,temp3
 					
-					EntityParent model,Opaque
-					EntityType model,HIT_MAP
-					EntityPickMode model,2
+					;EntityParent model,Opaque
+					;EntityType model,HIT_MAP
+					;EntityPickMode model,2
 				Else
 					DebugLog "file = 0"
 					temp1=ReadFloat(f) : temp2=ReadFloat(f) : temp3=ReadFloat(f)
@@ -592,7 +580,6 @@ Function LoadRMesh(file$,rt.RoomTemplates)
 	Return obj%
 	
 End Function
-
 
 ;-----------;;;;
 
@@ -661,17 +648,24 @@ Const ZONE_LCZ% = 1, ZONE_HCZ% = 2, ZONE_EZ% = 4
 
 Global RoomTempID.MarkedForRemoval
 Type RoomTemplates
-	Field obj%
+	Field name$
+	Field shape%
+	Field large% ;TODO: might not be needed?
+	
 	Field objPath$
+	Field loaded%
+	
+	Field opaqueMesh%
+	Field alphaMesh%
+	Field collisionObjs.IntArrayList
+	Field props.IntArrayList
 	
 	Field zones%
 	
+	;TODO: cleanup?
 	Field TempSoundEmitter%[MaxRoomEmitters]
 	Field TempSoundEmitterX#[MaxRoomEmitters],TempSoundEmitterY#[MaxRoomEmitters],TempSoundEmitterZ#[MaxRoomEmitters]
 	Field TempSoundEmitterRange#[MaxRoomEmitters]
-	
-	Field Shape%, Name$
-	Field Large%
 	
 	Field Commonness#
 	Field MinAmount%, MaxAmount%
@@ -689,6 +683,7 @@ Function CreateRoomTemplate.RoomTemplates(meshpath$)
 	Local rt.RoomTemplates = New RoomTemplates
 	
 	rt\objPath = meshpath
+	rt\loaded = False
 	
 	Return rt
 End Function
@@ -799,40 +794,9 @@ Function LoadRoomTemplates(file$)
 	
 End Function
 
-
 Function LoadRoomMesh(rt.RoomTemplates)
-	
-	If Instr(rt\objPath,".rmesh")<>0 Then ;file is roommesh
-		rt\obj = LoadRMesh(rt\objPath, rt)
-	Else
-		RuntimeError Chr(34)+rt\objPath+Chr(34)+" is not RMesh!"
-	EndIf
-	
-	If (Not rt\obj) Then RuntimeError "Failed to load map file "+Chr(34)+mapfile+Chr(34)+"."
-	
-	HideEntity(rt\obj)
-	
-End Function
-
-Function LoadRoomMeshes()
-	Local temp% = 0
-	For rt.RoomTemplates = Each RoomTemplates
-		temp=temp+1
-	Next	
-	
-	Local i = 0
-	For rt.RoomTemplates = Each RoomTemplates
-		If Instr(rt\objpath,".rmesh")<>0 Then ;file is roommesh
-			rt\obj = LoadRMesh(rt\objPath, rt)
-		Else
-			RuntimeError Chr(34)+rt\objPath+Chr(34)+" is not RMesh!"
-		EndIf
-		If (Not rt\obj) Then RuntimeError "Failed to load map file "+Chr(34)+mapfile+Chr(34)+"."
-		
-		HideEntity(rt\obj)
-		DrawLoading(Int(30 + (15.0 / temp)*i))
-		i=i+1
-	Next
+	rt\objPath = Replace(rt\objPath,".rmesh",".rm2") ;TODO: remove
+	LoadRM2(rt)
 End Function
 
 Const MAP_SIZE = 19
@@ -858,10 +822,15 @@ Type Rooms
 	
 	Field found%
 	
-	Field obj%
 	Field x#, y#, z#
 	Field angle%
 	Field RoomTemplate.RoomTemplates
+	
+	Field obj% ;TODO: rename
+	Field opaqueMesh%
+	Field alphaMesh%
+	Field collisionObjs.IntArray
+	Field props.IntArray
 	
 	Field dist#
 	
@@ -869,6 +838,7 @@ Type Rooms
 	
 	Field fr.Forest
 	
+	;TODO: use arraylists for all this stuff?
 	Field SoundEmitter%[MaxRoomEmitters]
 	Field SoundEmitterObj%[MaxRoomEmitters]
 	Field SoundEmitterRange#[MaxRoomEmitters]
@@ -940,7 +910,7 @@ Function GetRoomTemplate.RoomTemplates(name$)
 	
 	Local rt.RoomTemplates
 	For rt = Each RoomTemplates
-		If rt\Name = name Then
+		If rt\name = name Then
 			Return rt
 		EndIf
 	Next
@@ -959,7 +929,7 @@ End Function
 Function CreateRoom.Rooms(rt.RoomTemplates, x#, y#, z#)
 	Local r.Rooms = New Rooms
 	
-	DebugLog "Placing "+rt\Name
+	DebugLog "Placing "+rt\name
 	
 	; TODO: Does 'zone' exist?
 	r\zone = zone
@@ -967,13 +937,41 @@ Function CreateRoom.Rooms(rt.RoomTemplates, x#, y#, z#)
 	r\x = x : r\y = y : r\z = z
 	
 	r\RoomTemplate = rt
-			
-	If rt\obj=0 Then LoadRoomMesh(rt)
 	
-	r\obj = CopyEntity(rt\obj)
-	ScaleEntity(r\obj, RoomScale, RoomScale, RoomScale)
-	EntityType(r\obj, HIT_MAP)
-	EntityPickMode(r\obj, 2)
+	If Not rt\loaded Then LoadRoomMesh(rt)
+	
+	Local tempObj%
+	Local tempProp.Props
+	
+	r\obj = CreatePivot()
+	r\opaqueMesh = CopyEntity(rt\opaqueMesh) : ScaleEntity(r\opaqueMesh, RoomScale, RoomScale, RoomScale)
+	EntityParent(r\opaqueMesh,r\obj)
+	ShowEntity(r\opaqueMesh)
+	If rt\alphaMesh<>0 Then
+		r\alphaMesh = CopyEntity(rt\alphaMesh) : ScaleEntity(r\alphaMesh, RoomScale, RoomScale, RoomScale)
+		ShowEntity(r\alphaMesh)
+		EntityParent(r\alphaMesh,r\obj)
+	EndIf
+	r\collisionObjs = CreateIntArray(rt\collisionObjs\size)
+	For i% = 0 To rt\collisionObjs\size-1
+		tempObj = CopyEntity(GetIntArrayListElem(rt\collisionObjs,i)) : ScaleEntity(tempObj, RoomScale, RoomScale, RoomScale)
+		SetIntArrayElem(r\collisionObjs,tempObj,i)
+		ShowEntity(tempObj) : EntityAlpha(tempObj,0.0)
+		EntityParent(tempObj,r\obj)
+	Next
+	If rt\props<>Null Then
+		r\props = CreateIntArray(rt\props\size)
+		For i% = 0 To rt\props\size-1
+			tempProp = Object.Props(GetIntArrayListElem(rt\props,i))
+			tempObj = CopyEntity(tempProp\obj)
+			SetIntArrayElem(r\props,tempObj,i)
+			PositionEntity(tempObj,tempProp\x*RoomScale,tempProp\y*RoomScale,tempProp\z*RoomScale)
+			RotateEntity(tempObj,tempProp\pitch,tempProp\yaw,tempProp\roll)
+			ScaleEntity(tempObj,tempProp\xScale*RoomScale,tempProp\yScale*RoomScale,tempProp\zScale*RoomScale)
+			ShowEntity(tempObj)
+			EntityParent(tempObj,r\obj)
+		Next
+	EndIf
 	
 	PositionEntity(r\obj, x, y, z)
 	FillRoom(r)
@@ -981,9 +979,8 @@ Function CreateRoom.Rooms(rt.RoomTemplates, x#, y#, z#)
 	Return r
 End Function
 
-
 Function FillRoom(r.Rooms)
-	Select r\RoomTemplate\Name
+	Select r\RoomTemplate\name
 		Case "test_860_2"
 			FillRoom_test_860_2(r)
 		Case "lck_cam_2c"
@@ -1122,7 +1119,7 @@ Function FillRoom(r.Rooms)
 	
 	For lt.lighttemplates = Each LightTemplates
 		If lt\roomtemplate = r\RoomTemplate Then
-			newlt = AddLight(r, r\x+lt\x, r\y+lt\y, r\z+lt\z, lt\ltype, lt\range, lt\r, lt\g, lt\b)
+			newlt = AddLight(r, r\x+lt\x*RoomScale, r\y+lt\y*RoomScale, r\z+lt\z*RoomScale, lt\ltype, lt\range, lt\r, lt\g, lt\b)
 			If newlt <> 0 Then 
 				If lt\ltype = 3 Then
 					LightConeAngles(newlt, lt\innerconeangle, lt\outerconeangle)
@@ -1134,31 +1131,49 @@ Function FillRoom(r.Rooms)
 	
 	For ts.tempscreens = Each TempScreens
 		If ts\roomtemplate = r\RoomTemplate Then
-			CreateScreen(r\x+ts\x, r\y+ts\y, r\z+ts\z, ts\imgpath, r)
+			CreateScreen(r\x+ts\x*RoomScale, r\y+ts\y*RoomScale, r\z+ts\z*RoomScale, ts\imgpath, r)
 		EndIf
 	Next
 	
+	Local waypoints.IntArrayList = CreateIntArrayList()
+	Local waypoint.WayPoints
 	For tw.TempWayPoints = Each TempWayPoints
 		If tw\roomtemplate = r\RoomTemplate Then
-			CreateWaypoint(r\x+tw\x, r\y+tw\y, r\z+tw\z, Null, r)
+			waypoint = CreateWaypoint(r\x+tw\x*RoomScale, r\y+tw\y*RoomScale, r\z+tw\z*RoomScale, r)
+			PushIntArrayListElem(waypoints,Handle(waypoint))
 		EndIf
 	Next
 	
-	If r\RoomTemplate\TempTriggerboxAmount > 0
-		r\TriggerboxAmount = r\RoomTemplate\TempTriggerboxAmount
-		For i = 0 To r\TriggerboxAmount-1
-			r\Triggerbox[i] = CopyEntity(r\RoomTemplate\TempTriggerbox[i],r\obj)
-			EntityAlpha r\Triggerbox[i],0.0
-			r\TriggerboxName[i] = r\RoomTemplate\TempTriggerboxName[i]
-			DebugLog "Triggerbox found: "+i
-			DebugLog "Triggerbox "+i+" name: "+r\TriggerboxName[i]
-		Next
-	EndIf
+	Local i% = 0
+	For tw.TempWayPoints = Each TempWayPoints
+		If tw\roomtemplate = r\RoomTemplate Then
+			waypoint = Object.WayPoints(GetIntArrayListElem(waypoints,i))
+			For j% = 0 To 15
+				If tw\connectedTo[j]=0 Then Exit
+				waypoint\connected[j] = Object.WayPoints(GetIntArrayListElem(waypoints,tw\connectedTo[j]-1))
+				waypoint\dist[j] = EntityDistance(waypoint\obj,waypoint\connected[j]\obj)
+			Next
+			i=i+1
+		EndIf
+	Next
+	
+	DeleteIntArrayList(waypoints)
+	
+;	If r\RoomTemplate\TempTriggerboxAmount > 0
+;		r\TriggerboxAmount = r\RoomTemplate\TempTriggerboxAmount
+;		For i = 0 To r\TriggerboxAmount-1
+;			r\Triggerbox[i] = CopyEntity(r\RoomTemplate\TempTriggerbox[i],r\obj)
+;			EntityAlpha r\Triggerbox[i],0.0
+;			r\TriggerboxName[i] = r\RoomTemplate\TempTriggerboxName[i]
+;			DebugLog "Triggerbox found: "+i
+;			DebugLog "Triggerbox "+i+" name: "+r\TriggerboxName[i]
+;		Next
+;	EndIf
 	
 	For i = 0 To MaxRoomEmitters-1
 		If r\RoomTemplate\TempSoundEmitter[i]<>0 Then
 			r\SoundEmitterObj[i]=CreatePivot(r\obj)
-			PositionEntity r\SoundEmitterObj[i], r\x+r\RoomTemplate\TempSoundEmitterX[i],r\y+r\RoomTemplate\TempSoundEmitterY[i],r\z+r\RoomTemplate\TempSoundEmitterZ[i],True
+			PositionEntity r\SoundEmitterObj[i], r\x+r\RoomTemplate\TempSoundEmitterX[i]*RoomScale,r\y+r\RoomTemplate\TempSoundEmitterY[i]*RoomScale,r\z+r\RoomTemplate\TempSoundEmitterZ[i]*RoomScale,True
 			EntityParent(r\SoundEmitterObj[i],r\obj)
 			
 			r\SoundEmitter[i] = r\RoomTemplate\TempSoundEmitter[i]
@@ -1166,6 +1181,20 @@ Function FillRoom(r.Rooms)
 		EndIf
 	Next
 	
+End Function
+
+Function SetRoomVisibility(r.Rooms,on%)
+	If on Then
+		ShowEntity(r\opaqueMesh)
+		If r\alphaMesh<>0 Then
+			ShowEntity(r\alphaMesh)
+		EndIf
+	Else
+		HideEntity(r\opaqueMesh)
+		If r\alphaMesh<>0 Then
+			HideEntity(r\alphaMesh)
+		EndIf
+	EndIf
 End Function
 
 Function UpdateRooms()
@@ -1282,24 +1311,21 @@ Function UpdateRooms()
 	;TempLightVolume = Max(TempLightVolume / 4.5, 1.0)
 	
 	If mainPlayer\currRoom<>Null Then
-		EntityAlpha(GetChild(mainPlayer\currRoom\obj,2),1)
 		For i=0 To 3
 			If mainPlayer\currRoom\Adjacent[i]<>Null Then
 				x = Abs(EntityX(mainPlayer\collider,True)-EntityX(mainPlayer\currRoom\AdjDoor[i]\frameobj,True))
 				z = Abs(EntityZ(mainPlayer\collider,True)-EntityZ(mainPlayer\currRoom\AdjDoor[i]\frameobj,True))
 				If mainPlayer\currRoom\AdjDoor[i]\openstate = 0 Then
-					EntityAlpha(GetChild(mainPlayer\currRoom\Adjacent[i]\obj,2),0)
-				;ElseIf Abs(DeltaYaw(mainPlayer\cam,mainPlayer\currRoom\Adjacent[i]\obj))>90+(((8.0-Max(x,z))/8.0)*90.0) Then
-				;	EntityAlpha(GetChild(mainPlayer\currRoom\Adjacent[i]\obj,2),0)
+					SetRoomVisibility(mainPlayer\currRoom\Adjacent[i],False)
 				ElseIf (Not EntityInView(mainPlayer\currRoom\AdjDoor[i]\frameobj,mainPlayer\cam))
-					EntityAlpha(GetChild(mainPlayer\currRoom\Adjacent[i]\obj,2),0)
+					SetRoomVisibility(mainPlayer\currRoom\Adjacent[i],False)
 				Else
-					EntityAlpha(GetChild(mainPlayer\currRoom\Adjacent[i]\obj,2),1)
+					SetRoomVisibility(mainPlayer\currRoom\Adjacent[i],True)
 				EndIf
 				
 				For j=0 To 3
 					If (mainPlayer\currRoom\Adjacent[i]\Adjacent[j]<>Null) Then
-						If (mainPlayer\currRoom\Adjacent[i]\Adjacent[j]<>mainPlayer\currRoom) Then EntityAlpha(GetChild(mainPlayer\currRoom\Adjacent[i]\Adjacent[j]\obj,2),0)
+						If (mainPlayer\currRoom\Adjacent[i]\Adjacent[j]<>mainPlayer\currRoom) Then SetRoomVisibility(mainPlayer\currRoom\Adjacent[i]\Adjacent[j],False)
 					EndIf
 				Next
 			EndIf
@@ -1393,8 +1419,11 @@ Type LightTemplates
 	Field r%, g%, b%
 	
 	Field pitch#, yaw#
-	Field innerconeangle%, outerconeangle#
+	Field innerconeangle#, outerconeangle#
 End Type 
+
+Const LIGHTTYPE_POINT% = 2
+Const LIGHTTYPE_SPOT% = 3
 
 Function AddTempLight.LightTemplates(rt.RoomTemplates, x#, y#, z#, ltype%, range#, r%, g%, b%)
 	Local lt.LightTemplates = New LightTemplates
@@ -1415,43 +1444,33 @@ End Function
 
 Type TempWayPoints
 	Field x#, y#, z#
+	Field connectedTo%[32]
 	Field roomtemplate.RoomTemplates
 End Type 
 
 Type WayPoints
 	Field obj
-	Field door.Doors
 	Field room.Rooms
 	Field state%
 	;Field tempDist#
 	;Field tempSteps%
-	Field connected.WayPoints[5]
-	Field dist#[5]
+	Field connected.WayPoints[16]
+	Field dist#[16]
 	
 	Field Fcost#, Gcost#, Hcost#
 	
 	Field parent.WayPoints
 End Type
 
-Function CreateWaypoint.WayPoints(x#,y#,z#,door.Doors, room.Rooms)
-	
+Function CreateWaypoint.WayPoints(x#,y#,z#,room.Rooms)
 	Local w.WayPoints = New WayPoints
 	
-	If 1 Then
-		w\obj = CreatePivot()
-		PositionEntity w\obj, x,y,z	
-	Else
-		w\obj = CreateSprite()
-		PositionEntity(w\obj, x, y, z)
-		ScaleSprite(w\obj, 0.15 , 0.15)
-		EntityTexture(w\obj, LightSpriteTex(0))
-		EntityBlend (w\obj, 3)	
-	EndIf
+	w\obj = CreatePivot()
+	PositionEntity w\obj, x,y,z	
 	
 	EntityParent w\obj, room\obj
 	
 	w\room = room
-	w\door=door
 	
 	Return w
 End Function
@@ -1465,109 +1484,6 @@ Function InitWayPoints(loadingstart=45)
 	Local temper% = MilliSecs()
 	
 	Local dist#, dist2#
-	
-	For d.Doors = Each Doors
-		If d\obj <> 0 Then HideEntity d\obj
-		If d\obj2 <> 0 Then HideEntity d\obj2	
-		If d\frameobj <> 0 Then HideEntity d\frameobj
-		
-		If d\room = Null Then 
-			ClosestRoom.Rooms = Null
-			dist# = 30
-			For r.Rooms = Each Rooms
-				x# = Abs(EntityX(r\obj,True)-EntityX(d\frameobj,True))
-				If x < 20.0 Then
-					z# = Abs(EntityZ(r\obj,True)-EntityZ(d\frameobj,True))
-					If z < 20.0 Then
-						dist2 = x*x+z*z
-						If dist2 < dist Then
-							ClosestRoom = r
-							dist = dist2
-						EndIf
-					EndIf
-				EndIf
-			Next
-		Else
-			ClosestRoom = d\room
-		EndIf
-		
-		If (Not d\DisableWaypoint) Then CreateWaypoint(EntityX(d\frameobj, True), EntityY(d\frameobj, True)+0.18, EntityZ(d\frameobj, True), d, ClosestRoom)
-	Next
-	
-	Local amount# = 0
-	For w.WayPoints = Each WayPoints
-		EntityPickMode w\obj, 1, True
-		EntityRadius w\obj, 0.2
-		amount=amount+1
-	Next
-	
-	
-	;pvt = CreatePivot()
-	
-	Local number% = 0
-	Local iter% = 0
-	For w.WayPoints = Each WayPoints
-		
-		number = number + 1
-		iter = iter + 1
-		If iter = 20 Then 
-			DrawLoading(loadingstart+Floor((35.0/amount)*number)) 
-			iter = 0
-		EndIf
-		
-		w2.WayPoints = After(w)
-		
-		Local canCreateWayPoint% = False
-		
-		While (w2<>Null)
-			
-			If (w\room=w2\room Or w\door<>Null Or w2\door<>Null)
-				
-				dist# = EntityDistance(w\obj, w2\obj);;Sqr(x*x+y*y+z*z)
-				
-				If w\room\MaxWayPointY# = 0.0 Or w2\room\MaxWayPointY# = 0.0
-					canCreateWayPoint = True
-				Else
-					If Abs(EntityY(w\obj)-EntityY(w2\obj))<=w\room\MaxWayPointY
-						canCreateWayPoint = True
-					EndIf
-				EndIf
-				
-				If dist < 7.0 Then
-					If canCreateWayPoint
-						If EntityVisible(w\obj, w2\obj) Then;e=w2\obj Then 
-							Local i%
-							For i = 0 To 4
-								If w\connected[i] = Null Then
-									w\connected[i] = w2.WayPoints 
-									w\dist[i] = dist
-									Exit
-								EndIf
-							Next
-							
-							For i = 0 To 4
-								If w2\connected[i] = Null Then 
-									w2\connected[i] = w.WayPoints 
-									w2\dist[i] = dist
-									Exit
-								EndIf					
-							Next
-						EndIf
-					EndIf	
-				EndIf
-			EndIf
-			w2 = After(w2)
-		Wend
-		
-	Next
-	
-	;FreeEntity pvt	
-	
-	For d.Doors = Each Doors
-		If d\obj <> 0 Then ShowEntity d\obj
-		If d\obj2 <> 0 Then ShowEntity d\obj2	
-		If d\frameobj <> 0 Then ShowEntity d\frameobj		
-	Next
 	
 	For w.WayPoints = Each WayPoints
 		EntityPickMode w\obj, 0, 0
@@ -1717,15 +1633,16 @@ Function FindPath(n.NPCs, x#, y#, z#)
 			w = smallest
 			w\state = 2
 			
-			For i = 0 To 4
+			For i = 0 To 15
                 If w\connected[i]<>Null Then
 					If w\connected[i]\state < 2 Then
 						
 						If w\connected[i]\state=1 Then ;open list
 							Local gtemp# = w\Gcost+w\dist[i]
-							If n\npcType = NPCtypeMTF Then
-								If w\connected[i]\door = Null Then gtemp = gtemp + 0.5
-							EndIf
+							;TODO: fix?
+							;If n\npcType = NPCtypeMTF Then
+							;	If w\connected[i]\door = Null Then gtemp = gtemp + 0.5
+							;EndIf
 							If gtemp < w\connected[i]\Gcost Then ;parempi reitti -> overwrite
 								w\connected[i]\Gcost = gtemp
 								w\connected[i]\Fcost = w\connected[i]\Gcost + w\connected[i]\Hcost
@@ -1734,9 +1651,10 @@ Function FindPath(n.NPCs, x#, y#, z#)
 						Else
 							w\connected[i]\Hcost# = Abs(EntityX(w\connected[i]\obj,True)-EntityX(EndPoint\obj,True))+Abs(EntityZ(w\connected[i]\obj,True)-EntityZ(EndPoint\obj,True))
 							gtemp# = w\Gcost+w\dist[i]
-							If n\npcType = NPCtypeMTF Then
-								If w\connected[i]\door = Null Then gtemp = gtemp + 0.5
-							EndIf
+							;TODO: fix?
+							;If n\npcType = NPCtypeMTF Then
+							;	If w\connected[i]\door = Null Then gtemp = gtemp + 0.5
+							;EndIf
 							w\connected[i]\Gcost = gtemp
 							w\connected[i]\Fcost = w\Gcost+w\Hcost
 							w\connected[i]\parent = w
@@ -2017,7 +1935,7 @@ Function UpdateSecurityCams()
 			
 			If sc\IsRoom2slCam Then sc\CoffinEffect = 0
 			If sc\room <> Null
-				If sc\room\RoomTemplate\Name$ = "hll_sl_2" Then sc\CoffinEffect = 0
+				If sc\room\RoomTemplate\name$ = "hll_sl_2" Then sc\CoffinEffect = 0
 			EndIf
 			If sc\SpecialCam Then sc\CoffinEffect = 0
 			
@@ -2117,7 +2035,7 @@ Function UpdateSecurityCams()
 										Else
 											HideEntity(mainPlayer\cam)
 											ShowEntity (CoffinCam\room\obj)
-											EntityAlpha(GetChild(CoffinCam\room\obj,2),1)
+											SetRoomVisibility(CoffinCam\room,True)
 											ShowEntity(CoffinCam\Cam)
 											Cls
 											
@@ -2145,7 +2063,7 @@ Function UpdateSecurityCams()
 								Else
 									HideEntity(mainPlayer\cam)
 									ShowEntity (sc\room\obj)
-									EntityAlpha(GetChild(sc\room\obj,2),1)
+									SetRoomVisibility(sc\room,True)
 									ShowEntity(sc\Cam)
 									Cls
 									
@@ -2187,12 +2105,12 @@ Function UpdateSecurityCams()
 									If Rand(3) = 1 Then EntityTexture(sc\ScrOverlay, MonitorTexture)
 									If Rand(6) < 5 Then
 										EntityTexture(sc\ScrOverlay, GorePics(Rand(0, 5)))
-										;If sc\PlayerState = 1 Then PlaySound2(HorrorSFX(1)) ;TODO: fix
+										;If sc\PlayerState = 1 Then PlaySound(HorrorSFX(1)) ;TODO: fix
 										sc\PlayerState = 2
 										If sc\soundCHN = 0 Then
-											;sc\soundCHN = PlaySound2(HorrorSFX(4)) ;TODO: fix
+											;sc\soundCHN = PlaySound(HorrorSFX(4)) ;TODO: fix
 										Else
-											;If Not IsChannelPlaying(sc\soundCHN) Then sc\soundCHN = PlaySound2(HorrorSFX(4)) ;TODO: fix
+											;If Not IsChannelPlaying(sc\soundCHN) Then sc\soundCHN = PlaySound(HorrorSFX(4)) ;TODO: fix
 										End If
 										If sc\CoffinEffect=3 And Rand(200)=1 Then sc\CoffinEffect=2 : sc\PlayerState = Rand(10000, 20000)
 									End If	
@@ -2201,7 +2119,7 @@ Function UpdateSecurityCams()
 									If Rand(7) = 1 Then EntityTexture(sc\ScrOverlay, MonitorTexture)
 									If Rand(50) = 1 Then
 										EntityTexture(sc\ScrOverlay, GorePics(Rand(0, 5)))
-										;If sc\PlayerState = 0 Then PlaySound2(HorrorSFX(0)) ;TODO: fix
+										;If sc\PlayerState = 0 Then PlaySound(HorrorSFX(0)) ;TODO: fix
 										sc\PlayerState = Max(sc\PlayerState, 1)
 										If sc\CoffinEffect=3 And Rand(100)=1 Then sc\CoffinEffect=2 : sc\PlayerState = Rand(10000, 20000)
 									End If
@@ -2225,10 +2143,10 @@ Function UpdateSecurityCams()
 							EntityTexture(sc\ScrOverlay, MonitorTexture)
 						Else
 							If sc\soundCHN = 0 Then
-								PlaySound2(LoadTempSound("SFX\SCP\079\Broadcast"+Rand(1,3)+".ogg"))
+								sc\soundCHN = PlaySound(LoadTempSound("SFX\SCP\079\Broadcast"+Rand(1,3)+".ogg"))
 								If sc\CoffinEffect=2 Then sc\CoffinEffect=3 : sc\PlayerState = 0
 							ElseIf (Not IsChannelPlaying(sc\soundCHN))
-								PlaySound2(LoadTempSound("SFX\SCP\079\Broadcast"+Rand(1,3)+".ogg"))
+								sc\soundCHN = PlaySound(LoadTempSound("SFX\SCP\079\Broadcast"+Rand(1,3)+".ogg"))
 								If sc\CoffinEffect=2 Then sc\CoffinEffect=3 : sc\PlayerState = 0
 							EndIf
 							EntityTexture(sc\ScrOverlay, OldAiPics(0))
@@ -2436,7 +2354,7 @@ Function UpdateElevators#(State#, door1.Doors, door2.Doors, room1, room2, event.
 				
 				UseDoor(door2,False)
 				
-				PlayRangedSound_SM(sndManager\elevatorBeep, mainPlayer\cam, room1, 4.0)
+				PlayRangedSound_SM(sndManager\elevatorBeep, mainPlayer\cam, room2, 4.0)
 			EndIf
 		Else ;alhaalta yl�s
 			State = State + timing\tickDuration
@@ -2509,7 +2427,7 @@ Function UpdateElevators#(State#, door1.Doors, door2.Doors, room1, room2, event.
 				
 				UseDoor(door1,False)
 				
-				PlayRangedSound_SM(sndManager\elevatorBeep, mainPlayer\cam, room2, 4.0)				
+				PlayRangedSound_SM(sndManager\elevatorBeep, mainPlayer\cam, room1, 4.0)				
 			EndIf	
 			
 		EndIf
@@ -2598,8 +2516,8 @@ Function UpdateElevators2#(State#, door1.Doors, door2.Doors, room1, room2, event
 					UpdateRooms()
 				EndIf
 				
-				PlayRangedSound_SM(sndManager\elevatorBeep, mainPlayer\cam, room1, 4.0)	
-				;PlaySound2(ElevatorBeepSFX)	
+				PlayRangedSound_SM(sndManager\elevatorBeep, mainPlayer\cam, room2, 4.0)
+				;PlaySound(ElevatorBeepSFX)	
 			EndIf
 		Else ;alhaalta yl�s
 			State = State + timing\tickDuration
@@ -2653,7 +2571,7 @@ Function UpdateElevators2#(State#, door1.Doors, door2.Doors, room1, room2, event
 					UpdateRooms()
 				EndIf
 				
-				PlayRangedSound_SM(sndManager\elevatorBeep, mainPlayer\cam, room2, 4.0)				
+				PlayRangedSound_SM(sndManager\elevatorBeep, mainPlayer\cam, room1, 4.0)			
 			EndIf	
 			
 		EndIf
@@ -2666,21 +2584,36 @@ End Function
 
 Type Props
 	Field file$
-	Field obj
+	Field obj%
+	
+	Field x#,y#,z#
+	Field pitch#,yaw#,roll#
+	Field xScale#,yScale#,zScale#
 End Type
 
-Function CreatePropObj(file$)
+Function LoadProp.Props(file$,x#,y#,z#,pitch#,yaw#,roll#,xScale#,yScale#,zScale#)
 	Local p.Props
-	For p.Props = Each Props
-		If p\file = file Then
-			Return CopyEntity(p\obj)
+	p.Props = New Props
+	p\file = file
+	p\x = x
+	p\y = y
+	p\z = z
+	p\pitch = pitch
+	p\yaw = yaw
+	p\roll = roll
+	p\xScale = xScale
+	p\yScale = yScale
+	p\zScale = zScale
+	For p2.Props = Each Props
+		If (p<>p2) And (p2\file = file) Then
+			p\obj = CopyEntity(p2\obj)
+			Exit
 		EndIf
 	Next
 	
-	p.Props = New Props
-	p\file = file
-	p\obj = LoadMesh(file)
-	Return p\obj
+	If p\obj=0 Then p\obj = LoadMesh(file)
+	HideEntity(p\obj)
+	Return p
 End Function
 
 ;-------------------------------------------------------------------------------------------------------
@@ -2910,7 +2843,7 @@ Function CreateMap()
 				
 				For i% = 0 To randomTemplateCount-1
 					tempTemplate = Object.RoomTemplates(GetIntArrayElem(randomTemplates,i,0))
-					If tempTemplate\Shape = currType Then
+					If tempTemplate\shape = currType Then
 						commonnessAccumulator=commonnessAccumulator+tempTemplate\Commonness
 						If commonnessAccumulator>=targetCommonness Then
 							r = CreateRoom(tempTemplate,x*8.0,0.0,y*8.0)
@@ -2930,50 +2863,93 @@ Function CreateMap()
 	DeleteIntArray(layout)
 	
 	;finally, let rooms know who their neighbors are
+	Local tempX%
+	Local tempY%
+	Local tempWaypoint.WayPoints
+	Local newWaypoint.WayPoints
+	Local roomAWaypoint.WayPoints
+	Local roomBWaypoint.WayPoints
 	For y% = 0 To mapDim-1
 		For x% = 0 To mapDim-1
 			r = Object.Rooms(GetIntArrayElem(MapRooms,x,y))
 			If r<>Null Then
-				If x>0 Then
-					r\Adjacent[2] = Object.Rooms(GetIntArrayElem(MapRooms,x-1,y))
-					If (r\Adjacent[2]<>Null) Then
-						If (r\Adjacent[2]\AdjDoor[0]=Null) Then
-							r\AdjDoor[2] = CreateDoor(zone,r\x-4.0,0.0,r\z,90.0,Null)
-						Else
-							r\AdjDoor[2] = r\Adjacent[2]\AdjDoor[0]
+				For i% = 0 To 3
+					Select i
+						Case 0
+							tempX = 1
+							tempY = 0
+						Case 1
+							tempX = 0
+							tempY = -1
+						Case 2
+							tempX = -1
+							tempY = 0
+						Case 3
+							tempX = 0
+							tempY = 1
+					End Select
+					
+					If (x+tempX>=0) And (x+tempX<mapDim) And (y+tempY>=0) And (y+tempY<mapDim) Then
+						r\Adjacent[i] = Object.Rooms(GetIntArrayElem(MapRooms,x+tempX,y+tempY))
+						If r\Adjacent[i]<>Null Then
+							If (r\Adjacent[i]\AdjDoor[(i+2) Mod 4]=Null) Then
+								r\AdjDoor[i] = CreateDoor(zone,r\x+4.0*tempX,0.0,r\z+4.0*tempY,90.0*((i+1) Mod 2),Null)
+								newWaypoint = CreateWaypoint(r\x+4.0*tempX,50.0*RoomScale,r\z+4.0*tempY,r)
+								
+								DebugLog "step1"
+								roomAWaypoint = Null : roomBWaypoint = Null
+								For tempWaypoint = Each WayPoints
+									If tempWaypoint<>newWaypoint Then
+										If tempWaypoint\room = r Then
+											If roomAWaypoint = Null Then
+												roomAWaypoint = tempWaypoint
+											ElseIf EntityDistance(roomAWaypoint\obj,newWaypoint\obj)>EntityDistance(tempWaypoint\obj,newWaypoint\obj) Then
+												roomAWaypoint = tempWaypoint
+											EndIf
+										EndIf
+										
+										If tempWaypoint\room = r\Adjacent[i] Then
+											If roomBWaypoint = Null Then
+												roomBWaypoint = tempWaypoint
+											ElseIf EntityDistance(roomBWaypoint\obj,newWaypoint\obj)>EntityDistance(tempWaypoint\obj,newWaypoint\obj) Then
+												roomBWaypoint = tempWaypoint
+											EndIf
+										EndIf
+									EndIf
+								Next
+								
+								DebugLog "step2"
+								If roomAWaypoint<>Null And roomBWaypoint<>Null Then
+									For j% = 0 To 15
+										If roomAWaypoint\connected[j]=Null Then
+											roomAWaypoint\connected[j]=newWaypoint
+											Exit
+										EndIf
+									Next
+									
+									For j% = 0 To 15
+										If roomBWaypoint\connected[j]=Null Then
+											roomBWaypoint\connected[j]=newWaypoint
+											Exit
+										EndIf
+									Next
+									
+									For j% = 0 To 15
+										If newWaypoint\connected[j]=Null Then
+											newWaypoint\connected[j]=roomAWaypoint
+											newWaypoint\connected[j+1]=roomBWaypoint
+											Exit
+										EndIf
+									Next
+								EndIf
+								
+								DebugLog "step3"
+							Else
+								r\AdjDoor[i] = r\Adjacent[i]\AdjDoor[(i+2) Mod 4]
+							EndIf
 						EndIf
 					EndIf
-				EndIf
-				If x<mapDim-1 Then
-					r\Adjacent[0] = Object.Rooms(GetIntArrayElem(MapRooms,x+1,y))
-					If (r\Adjacent[0]<>Null) Then
-						If (r\Adjacent[0]\AdjDoor[2]=Null) Then
-							r\AdjDoor[0] = CreateDoor(zone,r\x+4.0,0.0,r\z,90.0,Null)
-						Else
-							r\AdjDoor[0] = r\Adjacent[0]\AdjDoor[2]
-						EndIf
-					EndIf
-				EndIf
-				If y>0 Then
-					r\Adjacent[1] = Object.Rooms(GetIntArrayElem(MapRooms,x,y-1))
-					If (r\Adjacent[1]<>Null) Then
-						If (r\Adjacent[1]\AdjDoor[3]=Null) Then
-							r\AdjDoor[1] = CreateDoor(zone,r\x,0.0,r\z-4.0,0.0,Null)
-						Else
-							r\AdjDoor[1] = r\Adjacent[1]\AdjDoor[3]
-						EndIf
-					EndIf
-				EndIf
-				If y<mapDim-1 Then
-					r\Adjacent[3] = Object.Rooms(GetIntArrayElem(MapRooms,x,y+1))
-					If (r\Adjacent[3]<>Null) Then
-						If (r\Adjacent[3]\AdjDoor[1]=Null) Then
-							r\AdjDoor[3] = CreateDoor(zone,r\x,0.0,r\z+4.0,0.0,Null)
-						Else
-							r\AdjDoor[3] = r\Adjacent[3]\AdjDoor[1]
-						EndIf
-					EndIf
-				EndIf
+				Next
 			EndIf
 		Next
 	Next
@@ -3529,7 +3505,6 @@ Function FindAndDeleteFakeMonitor(r.Rooms,x#,y#,z#,Amount%)
 	Next
 	
 End Function
-
 ;~IDEal Editor Parameters:
-;~F#4D#78#87#95#AD#B5
+;~F#4F#57#71#80#87#8E#9F#A7#AF#249#259#26A#289#2B2#31C
 ;~C#Blitz3D

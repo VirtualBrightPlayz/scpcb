@@ -63,7 +63,7 @@ Function FillRoom_intro(r.Rooms)
     r\RoomDoors[7]\AutoClose = False : r\RoomDoors[7]\open = True
     
     d.Doors = CreateDoor(r\zone, r\x - 3712 * RoomScale, -385*RoomScale, r\z - 2336 * RoomScale, 0, r, False)
-    d\locked = True : d\DisableWaypoint = True
+    d\locked = True
     
     ;the door from the concrete tunnel to the large hall
     d.Doors = CreateDoor(r\zone, r\x - 6864 * RoomScale, 0, r\z - 1248 * RoomScale, 90, r, True)
@@ -72,23 +72,22 @@ Function FillRoom_intro(r.Rooms)
     
     ;the locked door to the lower level of the hall
     d.Doors = CreateDoor(r\zone, r\x - 5856 * RoomScale, 0, r\z - 1504 * RoomScale, 0, r, False)
-    d\locked = True : d\DisableWaypoint = True
+    d\locked = True
     
     ;the door to the staircase in the office room
     d.Doors = CreateDoor(r\zone, r\x - 2432 * RoomScale, 0, r\z - 1000 * RoomScale, 0, r, False)
     PositionEntity(d\buttons[0], r\x - 2592 * RoomScale, EntityY(d\buttons[0],True), r\z - 1024 * RoomScale, True)
     PositionEntity(d\buttons[1], r\x - 2592 * RoomScale, EntityY(d\buttons[0],True), r\z - 992 * RoomScale, True)
-    d\locked = True : d\DisableWaypoint = True
+    d\locked = True
     
     tex = LoadTexture("GFX\map\Door02.jpg")
     For ztemp = 0 To 1
         d.Doors = CreateDoor(r\zone, r\x - 5760 * RoomScale, 0, r\z + (320+896*ztemp) * RoomScale, 0, r, False)
         d\locked = True
-        d\DisableWaypoint = True
         
         d.Doors = CreateDoor(r\zone, r\x - 8288 * RoomScale, 0, r\z + (320+896*ztemp) * RoomScale, 0, r, False)
         d\locked = True
-        If ztemp = 0 Then d\open = True Else d\DisableWaypoint = True
+        If ztemp = 0 Then d\open = True
         
         For xtemp = 0 To 2
             d.Doors = CreateDoor(r\zone, r\x - (7424.0-512.0*xtemp) * RoomScale, 0, r\z + (1008.0-480.0*ztemp) * RoomScale, 180*(Not ztemp), r, False)
@@ -97,7 +96,6 @@ Function FillRoom_intro(r.Rooms)
             FreeEntity d\obj2 : d\obj2=0
             FreeEntity d\buttons[0] : d\buttons[0]=0
             FreeEntity d\buttons[1] : d\buttons[1]=0
-            d\DisableWaypoint = True
         Next					
         For xtemp = 0 To 4
             d.Doors = CreateDoor(r\zone, r\x - (5120.0-512.0*xtemp) * RoomScale, 0, r\z + (1008.0-480.0*ztemp) * RoomScale, 180*(Not ztemp), r, False)
@@ -106,7 +104,6 @@ Function FillRoom_intro(r.Rooms)
             FreeEntity d\obj2 : d\obj2=0
             FreeEntity d\buttons[0] : d\buttons[0]=0
             FreeEntity d\buttons[1] : d\buttons[1]=0	
-            d\DisableWaypoint = True
             
             If xtemp = 2 And ztemp = 1 Then r\RoomDoors[6] = d
         Next	
@@ -133,6 +130,7 @@ End Function
 Function UpdateEvent173(e.Events)
 	;TODO: REDO
 End Function
+
 
 
 ;~IDEal Editor Parameters:

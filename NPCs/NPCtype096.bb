@@ -188,14 +188,16 @@ Function UpdateNPCtype096(n.NPCs)
                             
                             dist2# = EntityDistance(n\collider,n\path[n\pathLocation]\obj)
                             If dist2 < 0.4 Then
-                                If n\path[n\pathLocation]\door <> Null Then
-                                    If n\path[n\pathLocation]\door\open = False Then
-                                        n\path[n\pathLocation]\door\open = True
-                                        n\path[n\pathLocation]\door\fastopen = 1
-                                        PlayRangedSound(n\sounds[2], mainPlayer\cam, n\path[n\pathLocation]\door\obj)
-                                    EndIf
-                                EndIf							
-                                If dist2 < 0.2 Then n\pathLocation = n\pathLocation + 1
+								;TODO: fix
+;                                If n\Path[n\PathLocation]\door <> Null Then
+;									If n\Path[n\PathLocation]\door\open = False Then
+;										n\Path[n\PathLocation]\door\open = True
+;                                        n\Path[n\PathLocation]\door\fastopen = 1
+;                                        PlayRangedSound(n\sounds[2], mainPlayer\cam, n\path[n\pathLocation]\door\obj)
+;                                    EndIf
+;                                EndIf							
+                                If dist2 < 0.2 Then n\PathLocation = n\PathLocation + 1
+
                             EndIf 
                         EndIf
                         

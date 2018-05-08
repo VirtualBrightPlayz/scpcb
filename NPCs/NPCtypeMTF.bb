@@ -175,11 +175,11 @@ Function UpdateNPCtypeMTF(n.NPCs)
 						Wend
 						If n\PathLocation<19 Then
 							If (n\Path[n\PathLocation]<>Null) And (n\Path[n\PathLocation+1]<>Null) Then
-								If (n\Path[n\PathLocation]\door=Null) Then
-									If Abs(DeltaYaw(n\Collider,n\Path[n\PathLocation]\obj))>Abs(DeltaYaw(n\Collider,n\Path[n\PathLocation+1]\obj)) Then
-										n\PathLocation=n\PathLocation+1
-									EndIf
+								;If (n\Path[n\PathLocation]\door=Null) Then ;TODO: fix?
+								If Abs(DeltaYaw(n\Collider,n\Path[n\PathLocation]\obj))>Abs(DeltaYaw(n\Collider,n\Path[n\PathLocation+1]\obj)) Then
+									n\PathLocation=n\PathLocation+1
 								EndIf
+								;EndIf
 							EndIf
 						EndIf
 					EndIf
@@ -230,17 +230,18 @@ Function UpdateNPCtypeMTF(n.NPCs)
 							
 							newDist# = EntityDistance(n\Collider,n\Path[n\PathLocation]\obj)
 							
-							If (newDist<1.0 And n\Path[n\PathLocation]\door<>Null) Then
-								;open the door and make it automatically close after 5 seconds
-								If (Not n\Path[n\PathLocation]\door\open)
-									PlayMTFSound(MTFSFX(5),n)
-								EndIf
-								n\Path[n\PathLocation]\door\open = True
-								If n\Path[n\PathLocation]\door\MTFClose
-									n\Path[n\PathLocation]\door\timerstate = 70.0*5.0
-								EndIf
-							EndIf
-                            
+							;TODO: fix
+							;If (newDist<1.0 And n\Path[n\PathLocation]\door<>Null) Then
+							;	;open the door and make it automatically close after 5 seconds
+							;	If (Not n\Path[n\PathLocation]\door\open)
+							;		PlayMTFSound(MTFSFX(5),n)
+							;	EndIf
+							;	n\Path[n\PathLocation]\door\open = True
+							;	If n\Path[n\PathLocation]\door\MTFClose
+							;		n\Path[n\PathLocation]\door\timerstate = 70.0*5.0
+							;	EndIf
+							;EndIf
+
 							If (newDist<0.2) Or ((prevDist<newDist) And (prevDist<1.0)) Then
 								n\PathLocation=n\PathLocation+1
 							EndIf
@@ -592,19 +593,20 @@ Function UpdateNPCtypeMTF(n.NPCs)
 								
 								newDist# = EntityDistance(n\Collider,n\Path[n\PathLocation]\obj)
 								
-								If (newDist<1.0 And n\Path[n\PathLocation]\door<>Null) Then
-									;open the door and make it automatically close after 5 seconds
-									If (Not n\Path[n\PathLocation]\door\open)
-										sound = 0
-										If n\Path[n\PathLocation]\door\dir = 1 Then sound = 0 Else sound=Rand(0, 2)
-										;PlayRangedSound(OpenDoorSFX(n\Path[n\PathLocation]\door\dir,sound),mainPlayer\cam,n\Path[n\PathLocation]\door\obj)
-										PlayMTFSound(MTFSFX(5),n)
-									EndIf
-									n\Path[n\PathLocation]\door\open = True
-									If n\Path[n\PathLocation]\door\MTFClose
-										n\Path[n\PathLocation]\door\timerstate = 70.0*5.0
-									EndIf
-								EndIf
+								;TODO: fix
+								;If (newDist<1.0 And n\Path[n\PathLocation]\door<>Null) Then
+								;	;open the door and make it automatically close after 5 seconds
+								;	If (Not n\Path[n\PathLocation]\door\open)
+								;		sound = 0
+								;		If n\Path[n\PathLocation]\door\dir = 1 Then sound = 0 Else sound=Rand(0, 2)
+								;		;PlayRangedSound(OpenDoorSFX(n\Path[n\PathLocation]\door\dir,sound),mainPlayer\cam,n\Path[n\PathLocation]\door\obj)
+								;		PlayMTFSound(MTFSFX(5),n)
+								;	EndIf
+								;	n\Path[n\PathLocation]\door\open = True
+								;	If n\Path[n\PathLocation]\door\MTFClose
+								;		n\Path[n\PathLocation]\door\timerstate = 70.0*5.0
+								;	EndIf
+								;EndIf
 								
 								If (newDist<0.2) Or ((prevDist<newDist) And (prevDist<1.0)) Then
 									n\PathLocation=n\PathLocation+1
@@ -875,19 +877,20 @@ Function UpdateNPCtypeMTF(n.NPCs)
 									
 									newDist# = EntityDistance(n\Collider,n\Path[n\PathLocation]\obj)
 									
-									If (newDist<1.0 And n\Path[n\PathLocation]\door<>Null) Then
-										;open the door and make it automatically close after 5 seconds
-										If (Not n\Path[n\PathLocation]\door\open)
-											sound = 0
-											If n\Path[n\PathLocation]\door\dir = 1 Then sound = 0 Else sound=Rand(0, 2)
-											;PlayRangedSound(OpenDoorSFX(n\Path[n\PathLocation]\door\dir,sound),mainPlayer\cam,n\Path[n\PathLocation]\door\obj)
-											PlayMTFSound(MTFSFX(5),n)
-										EndIf
-										n\Path[n\PathLocation]\door\open = True
-										If n\Path[n\PathLocation]\door\MTFClose
-											n\Path[n\PathLocation]\door\timerstate = 70.0*5.0
-										EndIf
-									EndIf
+									;TODO: fix
+									;If (newDist<1.0 And n\Path[n\PathLocation]\door<>Null) Then
+									;	;open the door and make it automatically close after 5 seconds
+									;	If (Not n\Path[n\PathLocation]\door\open)
+									;		sound = 0
+									;		If n\Path[n\PathLocation]\door\dir = 1 Then sound = 0 Else sound=Rand(0, 2)
+									;		;PlayRangedSound(OpenDoorSFX(n\Path[n\PathLocation]\door\dir,sound),mainPlayer\cam,n\Path[n\PathLocation]\door\obj)
+									;		PlayMTFSound(MTFSFX(5),n)
+									;	EndIf
+									;	n\Path[n\PathLocation]\door\open = True
+									;	If n\Path[n\PathLocation]\door\MTFClose
+									;		n\Path[n\PathLocation]\door\timerstate = 70.0*5.0
+									;	EndIf
+									;EndIf
 									
 									If (newDist<0.2) Or ((prevDist<newDist) And (prevDist<1.0)) Then
 										n\PathLocation=n\PathLocation+1
@@ -926,13 +929,14 @@ Function UpdateNPCtypeMTF(n.NPCs)
 							n\PathLocation = n\PathLocation + 1
 						EndIf
 					Else
-						If n\Path[n\PathLocation]\door <> Null Then
-							If n\Path[n\PathLocation]\door\open = False Then
-								n\Path[n\PathLocation]\door\open = True
-								n\Path[n\PathLocation]\door\timerstate = 8.0*70.0
-								PlayMTFSound(MTFSFX(5),n)
-							EndIf
-						EndIf
+						;TODO: fix
+						;If n\Path[n\PathLocation]\door <> Null Then
+						;	If n\Path[n\PathLocation]\door\open = False Then
+						;		n\Path[n\PathLocation]\door\open = True
+						;		n\Path[n\PathLocation]\door\timerstate = 8.0*70.0
+						;		PlayMTFSound(MTFSFX(5),n)
+						;	EndIf
+						;EndIf
 						
 						If dist < HideDistance*0.7 Then 
 							dist2# = EntityDistance(n\Collider,n\Path[n\PathLocation]\obj) 
@@ -1074,11 +1078,11 @@ Function UpdateNPCtypeMTF(n.NPCs)
 							Wend
 							If n\PathLocation<19 Then
 								If (n\Path[n\PathLocation]<>Null) And (n\Path[n\PathLocation+1]<>Null) Then
-									If (n\Path[n\PathLocation]\door=Null) Then
-										If Abs(DeltaYaw(n\Collider,n\Path[n\PathLocation]\obj))>Abs(DeltaYaw(n\Collider,n\Path[n\PathLocation+1]\obj)) Then
-											n\PathLocation=n\PathLocation+1
-										EndIf
+									;If (n\Path[n\PathLocation]\door=Null) Then ;TODO: fix?
+									If Abs(DeltaYaw(n\Collider,n\Path[n\PathLocation]\obj))>Abs(DeltaYaw(n\Collider,n\Path[n\PathLocation+1]\obj)) Then
+										n\PathLocation=n\PathLocation+1
 									EndIf
+									;EndIf
 								EndIf
 							EndIf
 						EndIf
@@ -1105,18 +1109,19 @@ Function UpdateNPCtypeMTF(n.NPCs)
 								
 								newDist# = EntityDistance(n\Collider,n\Path[n\PathLocation]\obj)
 								
-								If (newDist<2.0 And n\Path[n\PathLocation]\door<>Null) Then
-									If (Not n\Path[n\PathLocation]\door\open)
-										sound = 0
-										If n\Path[n\PathLocation]\door\dir = 1 Then sound = 0 Else sound=Rand(0, 2)
-										;PlayRangedSound(OpenDoorSFX(n\Path[n\PathLocation]\door\dir,sound),mainPlayer\cam,n\Path[n\PathLocation]\door\obj)
-										PlayMTFSound(MTFSFX(5),n)
-									EndIf
-									n\Path[n\PathLocation]\door\open = True
-									If n\Path[n\PathLocation]\door\MTFClose
-										n\Path[n\PathLocation]\door\timerstate = 70.0*5.0
-									EndIf
-								EndIf
+								;TODO: fix and remove duplicates maybe???
+								;If (newDist<2.0 And n\Path[n\PathLocation]\door<>Null) Then
+								;	If (Not n\Path[n\PathLocation]\door\open)
+								;		sound = 0
+								;		If n\Path[n\PathLocation]\door\dir = 1 Then sound = 0 Else sound=Rand(0, 2)
+								;		;PlayRangedSound(OpenDoorSFX(n\Path[n\PathLocation]\door\dir,sound),mainPlayer\cam,n\Path[n\PathLocation]\door\obj)
+								;		PlayMTFSound(MTFSFX(5),n)
+								;	EndIf
+								;	n\Path[n\PathLocation]\door\open = True
+								;	If n\Path[n\PathLocation]\door\MTFClose
+								;		n\Path[n\PathLocation]\door\timerstate = 70.0*5.0
+								;	EndIf
+								;EndIf
 								
 								If (newDist<0.2) Or ((prevDist<newDist) And (prevDist<1.0)) Then
 									n\PathLocation=n\PathLocation+1
@@ -1271,11 +1276,11 @@ Function UpdateNPCtypeMTF(n.NPCs)
 						Wend
 						If n\PathLocation<19 Then
 							If (n\Path[n\PathLocation]<>Null) And (n\Path[n\PathLocation+1]<>Null) Then
-								If (n\Path[n\PathLocation]\door=Null) Then
-									If Abs(DeltaYaw(n\Collider,n\Path[n\PathLocation]\obj))>Abs(DeltaYaw(n\Collider,n\Path[n\PathLocation+1]\obj)) Then
-										n\PathLocation=n\PathLocation+1
-									EndIf
+								;If (n\Path[n\PathLocation]\door=Null) Then ;TODO: fix?
+								If Abs(DeltaYaw(n\Collider,n\Path[n\PathLocation]\obj))>Abs(DeltaYaw(n\Collider,n\Path[n\PathLocation+1]\obj)) Then
+									n\PathLocation=n\PathLocation+1
 								EndIf
+								;EndIf
 							EndIf
 						EndIf
 					EndIf
@@ -1321,19 +1326,20 @@ Function UpdateNPCtypeMTF(n.NPCs)
 							
 							newDist# = EntityDistance(n\Collider,n\Path[n\PathLocation]\obj)
 							
-							If (newDist<1.0 And n\Path[n\PathLocation]\door<>Null) Then
-								;open the door and make it automatically close after 5 seconds
-								If (Not n\Path[n\PathLocation]\door\open)
-									sound = 0
-									If n\Path[n\PathLocation]\door\dir = 1 Then sound = 0 Else sound=Rand(0, 2)
-									;PlayRangedSound(OpenDoorSFX(n\Path[n\PathLocation]\door\dir,sound),mainPlayer\cam,n\Path[n\PathLocation]\door\obj)
-									PlayMTFSound(MTFSFX(5),n)
-								EndIf
-								n\Path[n\PathLocation]\door\open = True
-								If n\Path[n\PathLocation]\door\MTFClose
-									n\Path[n\PathLocation]\door\timerstate = 70.0*5.0
-								EndIf
-							EndIf
+							;TODO: fix AND REMOVE DUPLICATES OMG
+							;If (newDist<1.0 And n\Path[n\PathLocation]\door<>Null) Then
+							;	;open the door and make it automatically close after 5 seconds
+							;	If (Not n\Path[n\PathLocation]\door\open)
+							;		sound = 0
+							;		If n\Path[n\PathLocation]\door\dir = 1 Then sound = 0 Else sound=Rand(0, 2)
+							;		;PlayRangedSound(OpenDoorSFX(n\Path[n\PathLocation]\door\dir,sound),mainPlayer\cam,n\Path[n\PathLocation]\door\obj)
+							;		PlayMTFSound(MTFSFX(5),n)
+							;	EndIf
+							;	n\Path[n\PathLocation]\door\open = True
+							;	If n\Path[n\PathLocation]\door\MTFClose
+							;		n\Path[n\PathLocation]\door\timerstate = 70.0*5.0
+							;	EndIf
+							;EndIf
                             
 							If (newDist<0.2) Or ((prevDist<newDist) And (prevDist<1.0)) Then
 								n\PathLocation=n\PathLocation+1
@@ -1442,11 +1448,11 @@ Function UpdateNPCtypeMTF(n.NPCs)
 							Wend
 							If n\PathLocation<19 Then
 								If (n\Path[n\PathLocation]<>Null) And (n\Path[n\PathLocation+1]<>Null) Then
-									If (n\Path[n\PathLocation]\door=Null) Then
-										If Abs(DeltaYaw(n\Collider,n\Path[n\PathLocation]\obj))>Abs(DeltaYaw(n\Collider,n\Path[n\PathLocation+1]\obj)) Then
-											n\PathLocation=n\PathLocation+1
-										EndIf
+									;If (n\Path[n\PathLocation]\door=Null) Then ;TODO: fix
+									If Abs(DeltaYaw(n\Collider,n\Path[n\PathLocation]\obj))>Abs(DeltaYaw(n\Collider,n\Path[n\PathLocation+1]\obj)) Then
+										n\PathLocation=n\PathLocation+1
 									EndIf
+									;EndIf
 								EndIf
 							EndIf
 						EndIf
@@ -1473,15 +1479,16 @@ Function UpdateNPCtypeMTF(n.NPCs)
 								
 								newDist# = EntityDistance(n\Collider,n\Path[n\PathLocation]\obj)
 								
-								If (newDist<1.0 And n\Path[n\PathLocation]\door<>Null) Then
-									If (Not n\Path[n\PathLocation]\door\open)
-										PlayMTFSound(MTFSFX(5),n)
-									EndIf
-									n\Path[n\PathLocation]\door\open = True
-									If n\Path[n\PathLocation]\door\MTFClose
-										n\Path[n\PathLocation]\door\timerstate = 70.0*5.0
-									EndIf
-								EndIf
+								;TODO: fix
+								;If (newDist<1.0 And n\Path[n\PathLocation]\door<>Null) Then
+								;	If (Not n\Path[n\PathLocation]\door\open)
+								;		PlayMTFSound(MTFSFX(5),n)
+								;	EndIf
+								;	n\Path[n\PathLocation]\door\open = True
+								;	If n\Path[n\PathLocation]\door\MTFClose
+								;		n\Path[n\PathLocation]\door\timerstate = 70.0*5.0
+								;	EndIf
+								;EndIf
 								
 								If (newDist<0.2) Or ((prevDist<newDist) And (prevDist<1.0)) Then
 									n\PathLocation=n\PathLocation+1

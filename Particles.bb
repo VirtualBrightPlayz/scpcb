@@ -65,6 +65,9 @@ Function UpdateParticles()
 			ScaleSprite p\obj, p\size, p\size
 		EndIf
 		
+		ShowEntity(p\obj)
+		EntityAlpha(p\obj,1.0)
+		
 		p\lifetime=p\lifetime-timing\tickDuration
 		If p\lifetime <= 0 Or p\size < 0.00001 Or p\A =< 0 Then
 			RemoveParticle(p)
@@ -184,5 +187,5 @@ Function CreateEmitter.Emitters(x#, y#, z#, emittertype%)
 		
 End Function
 ;~IDEal Editor Parameters:
-;~F#4#10#2E#4A#53#95
+;~F#4#10#4D#56
 ;~C#Blitz3D

@@ -25,15 +25,15 @@ Function UpdateNPCtype066(n.NPCs)
                 
                 If n\state2 < TimeInPosMilliSecs() Then
                     For w.waypoints = Each WayPoints
-                        If w\door = Null Then
-                            If Abs(EntityX(w\obj,True)-EntityX(n\collider))<4.0 Then
-                                If Abs(EntityZ(w\obj,True)-EntityZ(n\collider))<4.0 Then
-                                    PositionEntity n\collider, EntityX(w\obj,True), EntityY(w\obj,True)+0.3, EntityZ(w\obj,True)
-                                    ResetEntity n\collider
-                                    Exit
-                                EndIf
-                            EndIf
-                        EndIf
+                        ;If w\door = Null Then ;TODO: fix?
+						If Abs(EntityX(w\obj,True)-EntityX(n\Collider))<4.0 Then
+							If Abs(EntityZ(w\obj,True)-EntityZ(n\Collider))<4.0 Then
+								PositionEntity n\Collider, EntityX(w\obj,True), EntityY(w\obj,True)+0.3, EntityZ(w\obj,True)
+								ResetEntity n\Collider
+								Exit
+							EndIf
+						EndIf
+                        ;EndIf
                     Next
                     n\state2 = TimeInPosMilliSecs()+5000
                 EndIf
@@ -188,7 +188,7 @@ Function UpdateNPCtype066(n.NPCs)
     
     PositionEntity(n\obj, EntityX(n\collider), EntityY(n\collider) - 0.2, EntityZ(n\collider))
     
-    RotateEntity n\obj, EntityPitch(n\collider)-90, EntityYaw(n\collider), 0
+    RotateEntity n\obj, EntityPitch(n\Collider)-90, EntityYaw(n\Collider), 0
 End Function
 ;~IDEal Editor Parameters:
 ;~C#Blitz3D
