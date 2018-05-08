@@ -243,11 +243,8 @@ Function LoadSound_SM.Sound(fileName$)
 	Return snd
 End Function
 
-Function PlaySound2%(snd%)
-	Local chn% = PlaySound(snd)
-	AddChannel(chn)
-
-	Return chn
+Function PlaySound2(snd%)
+	AddChannel(PlaySound(snd))
 End Function
 
 Function PlaySound_SM(snd.Sound)
@@ -381,7 +378,7 @@ Function LoadEventSound(e.Events,file$,num%=0)
 End Function
 
 Function PauseSounds()
-	Local sc.SoundChannel, sc2.SecurityCams, e.Events, n.NPCs, em.Emitters, i%
+	Local sc.SoundChannel, sc2.SecurityCams, r.Rooms, e.Events, n.NPCs, em.Emitters, i%
 
 	For sc = Each SoundChannel
 		If (IsChannelPlaying(sc\internal)) Then
@@ -392,6 +389,12 @@ Function PauseSounds()
 	For sc2 = Each SecurityCams
 		If (IsChannelPlaying(sc2\soundCHN)) Then
 			PauseChannel(sc2\soundCHN)
+		EndIf
+	Next
+	
+	For r = Each Rooms
+		If (IsChannelPlaying(r\SoundCHN)) Then
+			PauseChannel(r\SoundCHN)
 		EndIf
 	Next
 
@@ -416,10 +419,14 @@ Function PauseSounds()
 			PauseChannel(em\soundCHN)
 		EndIf
 	Next
+	
+	If (IsChannelPlaying(mainPlayer\breathChn)) Then
+		PauseChannel(mainPlayer\breathChn)
+	EndIf
 End Function
 
 Function ResumeSounds()
-	Local sc.SoundChannel, sc2.SecurityCams, e.Events, n.NPCs, em.Emitters, i%
+	Local sc.SoundChannel, sc2.SecurityCams, r.Rooms, e.Events, n.NPCs, em.Emitters, i%
 
 	For sc = Each SoundChannel
 		If (IsChannelPlaying(sc\internal)) Then
@@ -430,6 +437,12 @@ Function ResumeSounds()
 	For sc2 = Each SecurityCams
 		If (IsChannelPlaying(sc2\soundCHN)) Then
 			ResumeChannel(sc2\soundCHN)
+		EndIf
+	Next
+	
+	For r = Each Rooms
+		If (IsChannelPlaying(r\SoundCHN)) Then
+			ResumeChannel(r\SoundCHN)
 		EndIf
 	Next
 
@@ -454,6 +467,10 @@ Function ResumeSounds()
 			ResumeChannel(em\soundCHN)
 		EndIf
 	Next
+	
+	If (IsChannelPlaying(mainPlayer\breathChn)) Then
+		ResumeChannel(mainPlayer\breathChn)
+	EndIf
 End Function
 
 Function GetMaterialStepSound(entity%)

@@ -213,7 +213,7 @@ Function UpdateEventExit1(e.Events)
 						
 						e\room\NPC[0]\state = 3
 						
-						e\soundChannels[0] = PlaySound2 (LoadTempSound("SFX\Ending\GateB\682Battle.ogg"))
+						e\soundChannels[0] = PlaySound(LoadTempSound("SFX\Ending\GateB\682Battle.ogg"))
 					EndIf								
 				Else
 					ShouldPlay = 6
@@ -261,7 +261,7 @@ Function UpdateEventExit1(e.Events)
 					ElseIf e\EventState > 35.0*70 And e\EventState < 36.5*70	
 						mainPlayer\camShake = 1.5		
 						If e\EventState-timing\tickDuration =< 35.0*70 Then
-							e\soundChannels[1] = PlaySound2(LoadTempSound("SFX\Ending\GateB\DetonatingAlphaWarheads.ogg"))
+							e\soundChannels[1] = PlaySound(LoadTempSound("SFX\Ending\GateB\DetonatingAlphaWarheads.ogg"))
 						EndIf									
 					ElseIf e\EventState > 39.5*70 And e\EventState < 39.8*70		
 						mainPlayer\camShake = 1.0
@@ -283,7 +283,7 @@ Function UpdateEventExit1(e.Events)
 				If e\EventState => 45.0*70 Then
 					If e\EventState < 75.0*70 Then
 						If (Not IsChannelPlaying(e\soundChannels[0])) Then
-							e\soundChannels[0] = PlaySound2(LoadTempSound("SFX\Ending\GateB\Siren.ogg"))
+							e\soundChannels[0] = PlaySound(LoadTempSound("SFX\Ending\GateB\Siren.ogg"))
 						EndIf
 					Else
 						If SelectedEnding = "" Then
@@ -301,7 +301,7 @@ Function UpdateEventExit1(e.Events)
 									SelectedEnding = "B2"
 								Else
 									LoadEventSound(e,"SFX\Ending\GateB\AlphaWarheadsFail.ogg")
-									e\soundChannels[0] = PlaySound2(e\sounds[0])
+									e\soundChannels[0] = PlaySound(e\sounds[0])
 									
 									For i = 0 To 1
 										n.NPCs = CreateNPC(NPCtypeMTF, EntityX(e\room\Objects[18],True)+(i*0.4),EntityY(e\room\Objects[18],True)+0.29,EntityZ(e\room\Objects[18],True)+(i*0.4))
@@ -310,10 +310,10 @@ Function UpdateEventExit1(e.Events)
 									n.NPCs = CreateNPC(NPCtypeMTF, EntityX(e\room\RoomDoors[2]\obj,True),EntityY(e\room\RoomDoors[2]\obj,True)+0.29,(EntityZ(e\room\RoomDoors[2]\obj,True)+EntityZ(e\room\RoomDoors[3]\obj,True))/2)
 									
 									For n.NPCs = Each NPCs
-										If n\NPCtype = NPCtypeMTF Then
-											n\LastSeen = (70*Rnd(30,35))
-											n\State = 3
-											n\State2 = 10
+										If n\npcType = NPCtypeMTF Then
+											n\lastSeen = (70*Rnd(30,35))
+											n\state = 3
+											n\state2 = 10
 											n\EnemyX = EntityX(mainPlayer\collider)
 											n\EnemyY = EntityY(mainPlayer\collider)
 											n\EnemyZ = EntityZ(mainPlayer\collider)
@@ -347,31 +347,31 @@ Function UpdateEventExit1(e.Events)
 								;Update the MTF Units everytime they cannot detect the player
 								If e\EventState3 = 0.0
 									For n.NPCs = Each NPCs
-										If n\NPCtype = NPCtypeMTF
-											If n\State = 5
-												n\State = 3
-												n\PathStatus = FindPath(n, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider),EntityZ(mainPlayer\collider))
-												n\PathTimer = 70*Rand(15,20)
-												n\LastSeen = 70*300
+										If n\npcType = NPCtypeMTF
+											If n\state = 5
+												n\state = 3
+												n\pathStatus = FindPath(n, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider),EntityZ(mainPlayer\collider))
+												n\pathTimer = 70*Rand(15,20)
+												n\lastSeen = 70*300
 											EndIf
-											If EntityDistance(n\Collider,mainPlayer\collider)<3.0
-												n\State = 5
-												n\PathStatus = 0
-												n\PathTimer = 0
-												n\CurrSpeed = 0
+											If EntityDistance(n\collider,mainPlayer\collider)<3.0
+												n\state = 5
+												n\pathStatus = 0
+												n\pathTimer = 0
+												n\currSpeed = 0
 											EndIf
 										EndIf
 									Next
 								EndIf
 								
 								For n.NPCs = Each NPCs
-									If n\NPCtype = NPCtypeMTF
-										If n\State = 5 And EntityDistance(n\Collider,mainPlayer\collider)<3.0
+									If n\npcType = NPCtypeMTF
+										If n\state = 5 And EntityDistance(n\collider,mainPlayer\collider)<3.0
 											If e\EventState3 = 0.0
 												PlaySound2 LoadTempSound("SFX\Ending\GateB\PlayerDetect.ogg")
 												e\EventState3 = e\EventState3 + timing\tickDuration
 												For n2.NPCs = Each NPCs
-													If n2\NPCtype = n\NPCtype
+													If n2\NPCtype = n\npcType
 														n2\State = 5
 														n2\PathStatus = 0
 														n2\PathTimer = 0

@@ -279,25 +279,25 @@ Function UpdateEventAlarm(e.Events)
 					
 					;If Ulgrin can see the player then start shooting at them.
 					If (CurrTrigger = "173scene_end") And EntityVisible(e\room\NPC[2]\Collider,mainPlayer\collider) And (Not mainPlayer\godMode) Then
-						e\room\NPC[2]\State = 1
-						e\room\NPC[2]\State3 = 1
-					ElseIf e\room\NPC[2]\State = 1 And (Not EntityVisible(e\room\NPC[2]\Collider, mainPlayer\collider))
-						e\room\NPC[2]\State = 0
-						e\room\NPC[2]\State3 = 0
+						e\room\NPC[2]\state = 1
+						e\room\NPC[2]\state3 = 1
+					ElseIf e\room\NPC[2]\state = 1 And (Not EntityVisible(e\room\NPC[2]\collider, mainPlayer\collider))
+						e\room\NPC[2]\state = 0
+						e\room\NPC[2]\state3 = 0
 					EndIf
 					
-					If e\room\NPC[2]\State = 1 Then e\room\RoomDoors[5]\open = True
+					If e\room\NPC[2]\state = 1 Then e\room\RoomDoors[5]\open = True
 				Else
 					CanSave = True
-					If e\room\NPC[2]\State <> 1
+					If e\room\NPC[2]\state <> 1
 						If EntityX(mainPlayer\collider)<(e\room\x+1384*RoomScale) Then e\EventState = Max(e\EventState,900)
 						
 						If e\room\RoomDoors[5]\openstate = 0 Then 
 							HideEntity e\room\NPC[1]\obj
-							HideEntity e\room\NPC[1]\Collider
+							HideEntity e\room\NPC[1]\collider
 							
 							HideEntity e\room\NPC[2]\obj
-							HideEntity e\room\NPC[2]\Collider
+							HideEntity e\room\NPC[2]\collider
 							e\EventState2=1
 						EndIf
 					EndIf
@@ -328,9 +328,9 @@ Function UpdateEventAlarm(e.Events)
 		
 		If (e\EventState < 2000) Then
 			If e\soundChannels[0] = 0 Then
-				e\soundChannels[0] = PlaySound2(AlarmSFX(0))
+				e\soundChannels[0] = PlaySound(AlarmSFX(0))
 			Else
-				If Not IsChannelPlaying(e\soundChannels[0]) Then e\soundChannels[0] = PlaySound2(AlarmSFX(0))
+				If Not IsChannelPlaying(e\soundChannels[0]) Then e\soundChannels[0] = PlaySound(AlarmSFX(0))
 			End If
 		EndIf
 		
@@ -344,7 +344,7 @@ Function UpdateEventAlarm(e.Events)
 				EndIf
 				
 				e\sounds[1] = LoadSound("SFX\Alarm\Alarm2_"+Int(e\EventState3)+".ogg")
-				e\soundChannels[1] = PlaySound2(e\sounds[1])
+				e\soundChannels[1] = PlaySound(e\sounds[1])
 				Else
 					If Int(e\EventState3) = 8 Then mainPlayer\camShake = 1.0
 			EndIf
@@ -378,5 +378,6 @@ Function UpdateEventAlarm(e.Events)
 	End If
 	;[End Block]
 End Function
+
 ;~IDEal Editor Parameters:
 ;~C#Blitz3D

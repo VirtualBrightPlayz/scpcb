@@ -276,17 +276,17 @@ Function MovePlayer()
 		mainPlayer\staminaEffect = CurveValue(1.0, mainPlayer\staminaEffect, 50)
 	EndIf
 	
-	If (mainPlayer\currRoom\RoomTemplate\Name <> "pocketdimension") Then 
+	If (mainPlayer\currRoom\RoomTemplate\name <> "pocketdimension") Then 
 		If KeyDown(keyBinds\sprint) Then
 			If (mainPlayer\stamina < 5) Then ;out of breath
-				If (Not IsChannelPlaying(mainPlayer\breathChn)) Then mainPlayer\breathChn = PlaySound2(GetIntArrayElem(mainPlayer\breathingSFX, IsPlayerWearingTempName(mainPlayer,"gasmask"), 0))
+				If (Not IsChannelPlaying(mainPlayer\breathChn)) Then mainPlayer\breathChn = PlaySound(GetIntArrayElem(mainPlayer\breathingSFX, IsPlayerWearingTempName(mainPlayer,"gasmask"), 0))
 			ElseIf (mainPlayer\stamina < 50) ;panting
 				If (mainPlayer\breathChn = 0) Then
-					mainPlayer\breathChn = PlaySound2(GetIntArrayElem(mainPlayer\breathingSFX, IsPlayerWearingTempName(mainPlayer,"gasmask"), Rand(1, 3)))
+					mainPlayer\breathChn = PlaySound(GetIntArrayElem(mainPlayer\breathingSFX, IsPlayerWearingTempName(mainPlayer,"gasmask"), Rand(1, 3)))
 					ChannelVolume(mainPlayer\breathChn, Min((70.0-mainPlayer\stamina)/70.0,1.0)*userOptions\soundVolume)
 				Else
 					If (Not IsChannelPlaying(mainPlayer\breathChn)) Then
-						mainPlayer\breathChn = PlaySound2(GetIntArrayElem(mainPlayer\breathingSFX, IsPlayerWearingTempName(mainPlayer,"gasmask"), Rand(1, 3)))
+						mainPlayer\breathChn = PlaySound(GetIntArrayElem(mainPlayer\breathingSFX, IsPlayerWearingTempName(mainPlayer,"gasmask"), Rand(1, 3)))
 						ChannelVolume(mainPlayer\breathChn, Min((70.0-mainPlayer\stamina)/70.0,1.0)*userOptions\soundVolume)		
 					EndIf
 				EndIf
@@ -349,7 +349,7 @@ Function MovePlayer()
 							tempchn% = PlaySound_SM(sndManager\footstep[Rand(0, 7)])
 						EndIf
 
-						ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\soundVolume
+						ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\SoundVolume
 					Else
 						mainPlayer\loudness = Max(2.5-(mainPlayer\crouching*0.6),mainPlayer\loudness)
 
@@ -359,23 +359,23 @@ Function MovePlayer()
 							tempchn% = PlaySound_SM(sndManager\footstepRun[Rand(0, 7)])
 						EndIf
 						
-						ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\soundVolume
+						ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\SoundVolume
 					End If
 				ElseIf mainPlayer\footstepOverride=1 Then
 					tempchn% = PlaySound_SM(sndManager\footstepPD[Rand(0, 2)])
-					ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.4))*userOptions\soundVolume
+					ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.4))*userOptions\SoundVolume
 				ElseIf mainPlayer\footstepOverride=2 Then
 					tempchn% = PlaySound_SM(sndManager\footstep8601[Rand(0, 2)])
-					ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.4))*userOptions\soundVolume
+					ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.4))*userOptions\SoundVolume
 				ElseIf mainPlayer\footstepOverride=3 Then
 					If Sprint = 1.0 Then
 						mainPlayer\loudness = Max(4.0,mainPlayer\loudness)
 						tempchn% = PlaySound_SM(sndManager\footstep[Rand(0, 7)])
-						ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\soundVolume
+						ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\SoundVolume
 					Else
 						mainPlayer\loudness = Max(2.5-(mainPlayer\crouching*0.6),mainPlayer\loudness)
 						tempchn% = PlaySound_SM(sndManager\footstepRun[Rand(0, 7)])
-						ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\soundVolume
+						ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\SoundVolume
 					End If
 				EndIf
 				
@@ -505,7 +505,7 @@ Function MovePlayer()
 			EntityPick(pvt,0.3)
 			de.decals = CreateDecal(Rand(15,16), PickedX(), PickedY()+0.005, PickedZ(), 90, Rand(360), 0)
 			de\size = Rnd(0.03,0.08)*Min(mainPlayer\injuries,3.0) : EntityAlpha(de\obj, 1.0) : ScaleSprite de\obj, de\size, de\size
-			tempchn% = PlaySound2 (DripSFX(Rand(0,2)))
+			tempchn% = PlaySound(DripSFX(Rand(0,2)))
 			ChannelVolume tempchn, Rnd(0.0,0.8)*userOptions\soundVolume
 			ChannelPitch tempchn, Rand(20000,30000)
 			
@@ -532,7 +532,7 @@ Function MovePlayer()
 	
 	
 	If mainPlayer\heartbeatIntensity > 0 Then
-		tempchn = PlaySound2(mainPlayer\heartbeat)
+		tempchn = PlaySound(mainPlayer\heartbeat)
 		ChannelVolume tempchn, Max(Min((mainPlayer\heartbeatIntensity-80.0)/60.0,1.0),0.0)*userOptions\soundVolume
 		
 		mainPlayer\heartbeatIntensity = mainPlayer\heartbeatIntensity - timing\tickDuration
@@ -1714,15 +1714,15 @@ Function UpdateInventory(player.Player)
 					
 					If player\selectedItem\state > 0 Then
 						;TODO: remove coffindistance
-						If player\currRoom\RoomTemplate\Name = "pocketdimension" Or CoffinDistance < 4.0 Then
+						If player\currRoom\RoomTemplate\name = "pocketdimension" Or CoffinDistance < 4.0 Then
 							ResumeChannel(RadioCHN(5))
-							If IsChannelPlaying(RadioCHN(5)) = False Then RadioCHN(5) = PlaySound2(RadioStatic)	
+							If IsChannelPlaying(RadioCHN(5)) = False Then RadioCHN(5) = PlaySound(RadioStatic)	
 						Else
 							Select Int(player\selectedItem\state2)
 								Case 0 ;randomkanava
 									ResumeChannel(RadioCHN(0))
 									If IsChannelPlaying(RadioCHN(0)) = False Then
-										RadioCHN(0) = PlaySound2(RadioStatic)
+										RadioCHN(0) = PlaySound(RadioStatic)
 									EndIf
 								Case 1 ;hälytyskanava
 									DebugLog RadioState(1) 
@@ -1732,11 +1732,11 @@ Function UpdateInventory(player.Player)
 									If IsChannelPlaying(RadioCHN(1)) = False Then
 										
 										If RadioState(1) => 5 Then
-											RadioCHN(1) = PlaySound2(RadioSFX(1,1))	
+											RadioCHN(1) = PlaySound(RadioSFX(1,1))	
 											RadioState(1) = 0
 										Else
 											RadioState(1)=RadioState(1)+1	
-											RadioCHN(1) = PlaySound2(RadioSFX(1,0))	
+											RadioCHN(1) = PlaySound(RadioSFX(1,0))	
 										EndIf
 										
 									EndIf
@@ -1748,40 +1748,40 @@ Function UpdateInventory(player.Player)
 										RadioState(2)=RadioState(2)+1
 										If RadioState(2) = 17 Then RadioState(2) = 1
 										If Floor(RadioState(2)/2)=Ceil(RadioState(2)/2) Then ;parillinen, soitetaan normiviesti
-											RadioCHN(2) = PlaySound2(RadioSFX(2,Int(RadioState(2)/2)))	
+											RadioCHN(2) = PlaySound(RadioSFX(2,Int(RadioState(2)/2)))	
 										Else ;pariton, soitetaan musiikkia
-											RadioCHN(2) = PlaySound2(RadioSFX(2,0))
+											RadioCHN(2) = PlaySound(RadioSFX(2,0))
 										EndIf
 									EndIf 
 								Case 3
 									ResumeChannel(RadioCHN(3))
 									;strtemp = "             EMERGENCY CHANNEL - RESERVED FOR COMMUNICATION IN THE EVENT OF A CONTAINMENT BREACH         "
-									If IsChannelPlaying(RadioCHN(3)) = False Then RadioCHN(3) = PlaySound2(RadioStatic)
+									If IsChannelPlaying(RadioCHN(3)) = False Then RadioCHN(3) = PlaySound(RadioStatic)
 									
 									If MTFtimer > 0 Then 
 										RadioState(3)=RadioState(3)+Max(Rand(-10,1),0)
 										Select RadioState(3)
 											Case 40
 												If Not RadioState3(0) Then
-													RadioCHN(3) = PlaySound2(LoadTempSound("SFX\Character\MTF\Random1.ogg"))
+													RadioCHN(3) = PlaySound(LoadTempSound("SFX\Character\MTF\Random1.ogg"))
 													RadioState(3) = RadioState(3)+1	
 													RadioState3(0) = True	
 												EndIf											
 											Case 400
 												If Not RadioState3(1) Then
-													RadioCHN(3) = PlaySound2(LoadTempSound("SFX\Character\MTF\Random2.ogg"))
+													RadioCHN(3) = PlaySound(LoadTempSound("SFX\Character\MTF\Random2.ogg"))
 													RadioState(3) = RadioState(3)+1	
 													RadioState3(1) = True	
 												EndIf	
 											Case 800
 												If Not RadioState3(2) Then
-													RadioCHN(3) = PlaySound2(LoadTempSound("SFX\Character\MTF\Random3.ogg"))
+													RadioCHN(3) = PlaySound(LoadTempSound("SFX\Character\MTF\Random3.ogg"))
 													RadioState(3) = RadioState(3)+1	
 													RadioState3(2) = True
 												EndIf													
 											Case 1200
 												If Not RadioState3(3) Then
-													RadioCHN(3) = PlaySound2(LoadTempSound("SFX\Character\MTF\Random4.ogg"))	
+													RadioCHN(3) = PlaySound(LoadTempSound("SFX\Character\MTF\Random4.ogg"))	
 													RadioState(3) = RadioState(3)+1	
 													RadioState3(3) = True
 												EndIf		
@@ -1789,12 +1789,12 @@ Function UpdateInventory(player.Player)
 									EndIf
 								Case 4
 									ResumeChannel(RadioCHN(6)) ;taustalle kohinaa
-									If IsChannelPlaying(RadioCHN(6)) = False Then RadioCHN(6) = PlaySound2(RadioStatic)									
+									If IsChannelPlaying(RadioCHN(6)) = False Then RadioCHN(6) = PlaySound(RadioStatic)									
 									
 									ResumeChannel(RadioCHN(4))
 									If IsChannelPlaying(RadioCHN(4)) = False Then 
 										If RemoteDoorOn = False And RadioState(8) = False Then
-											RadioCHN(4) = PlaySound2(LoadTempSound("SFX\radio\Chatter3.ogg"))	
+											RadioCHN(4) = PlaySound(LoadTempSound("SFX\radio\Chatter3.ogg"))	
 											RadioState(8) = True
 										Else
 											RadioState(4)=RadioState(4)+Max(Rand(-10,1),0)
@@ -1802,61 +1802,61 @@ Function UpdateInventory(player.Player)
 											Select RadioState(4)
 												Case 10
 													If Not RadioState4(0) Then
-														RadioCHN(4) = PlaySound2(LoadTempSound("SFX\radio\OhGod.ogg"))
+														RadioCHN(4) = PlaySound(LoadTempSound("SFX\radio\OhGod.ogg"))
 														RadioState(4) = RadioState(4)+1
 														RadioState4(0) = True
 													EndIf													
 												Case 100
 													If Not RadioState4(1) Then
-														RadioCHN(4) = PlaySound2(LoadTempSound("SFX\radio\Chatter2.ogg"))
+														RadioCHN(4) = PlaySound(LoadTempSound("SFX\radio\Chatter2.ogg"))
 														RadioState(4) = RadioState(4)+1
 														RadioState4(1) = True
 													EndIf		
 												Case 158
 													If MTFtimer = 0 And (Not RadioState4(2)) Then 
-														RadioCHN(4) = PlaySound2(LoadTempSound("SFX\radio\franklin1.ogg"))
+														RadioCHN(4) = PlaySound(LoadTempSound("SFX\radio\franklin1.ogg"))
 														RadioState(4) = RadioState(4)+1
 														RadioState(2) = True
 													EndIf
 												Case 200
 													If Not RadioState4(3) Then
-														RadioCHN(4) = PlaySound2(LoadTempSound("SFX\radio\Chatter4.ogg"))
+														RadioCHN(4) = PlaySound(LoadTempSound("SFX\radio\Chatter4.ogg"))
 														RadioState(4) = RadioState(4)+1
 														RadioState4(3) = True
 													EndIf		
 												Case 260
 													If Not RadioState4(4) Then
-														RadioCHN(4) = PlaySound2(LoadTempSound("SFX\SCP\035\RadioHelp1.ogg"))
+														RadioCHN(4) = PlaySound(LoadTempSound("SFX\SCP\035\RadioHelp1.ogg"))
 														RadioState(4) = RadioState(4)+1
 														RadioState4(4) = True
 													EndIf		
 												Case 300
 													If Not RadioState4(5) Then
-														RadioCHN(4) = PlaySound2(LoadTempSound("SFX\radio\Chatter1.ogg"))	
+														RadioCHN(4) = PlaySound(LoadTempSound("SFX\radio\Chatter1.ogg"))	
 														RadioState(4) = RadioState(4)+1	
 														RadioState4(5) = True
 													EndIf		
 												Case 350
 													If Not RadioState4(6) Then
-														RadioCHN(4) = PlaySound2(LoadTempSound("SFX\radio\franklin2.ogg"))
+														RadioCHN(4) = PlaySound(LoadTempSound("SFX\radio\franklin2.ogg"))
 														RadioState(4) = RadioState(4)+1
 														RadioState4(6) = True
 													EndIf		
 												Case 400
 													If Not RadioState4(7) Then
-														RadioCHN(4) = PlaySound2(LoadTempSound("SFX\SCP\035\RadioHelp2.ogg"))
+														RadioCHN(4) = PlaySound(LoadTempSound("SFX\SCP\035\RadioHelp2.ogg"))
 														RadioState(4) = RadioState(4)+1
 														RadioState4(7) = True
 													EndIf		
 												Case 450
 													If Not RadioState4(8) Then
-														RadioCHN(4) = PlaySound2(LoadTempSound("SFX\radio\franklin3.ogg"))	
+														RadioCHN(4) = PlaySound(LoadTempSound("SFX\radio\franklin3.ogg"))	
 														RadioState(4) = RadioState(4)+1		
 														RadioState4(8) = True
 													EndIf		
 												Case 600
 													If Not RadioState4(9) Then
-														RadioCHN(4) = PlaySound2(LoadTempSound("SFX\radio\franklin4.ogg"))	
+														RadioCHN(4) = PlaySound(LoadTempSound("SFX\radio\franklin4.ogg"))	
 														RadioState(4) = RadioState(4)+1	
 														RadioState4(9) = True
 													EndIf		
@@ -1867,7 +1867,7 @@ Function UpdateInventory(player.Player)
 									
 								Case 5
 									ResumeChannel(RadioCHN(5))
-									If IsChannelPlaying(RadioCHN(5)) = False Then RadioCHN(5) = PlaySound2(RadioStatic)
+									If IsChannelPlaying(RadioCHN(5)) = False Then RadioCHN(5) = PlaySound(RadioStatic)
 							End Select 
 							
 							x=x+66
@@ -1882,7 +1882,7 @@ Function UpdateInventory(player.Player)
 							
 							If player\selectedItem\itemtemplate\tempname = "veryfineradio" Then ;"KOODIKANAVA"
 								ResumeChannel(RadioCHN(0))
-								If IsChannelPlaying(RadioCHN(0)) = False Then RadioCHN(0) = PlaySound2(RadioStatic)
+								If IsChannelPlaying(RadioCHN(0)) = False Then RadioCHN(0) = PlaySound(RadioStatic)
 								
 								;radiostate(7)=kuinka mones piippaus menossa
 								;radiostate(8)=kuinka mones access coden numero menossa
@@ -2065,5 +2065,5 @@ Function Kill(player.Player)
 	EndIf
 End Function
 ;~IDEal Editor Parameters:
-;~F#6B#E3#F1#22E#30B#322#32A#33C
+;~F#6B#E3#22E#30B#322#32A#33C
 ;~C#Blitz3D

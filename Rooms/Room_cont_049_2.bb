@@ -376,9 +376,9 @@ Function UpdateEvent_cont_049_2(e.Events)
 				RemoveEvent(e)
 			Else
 				If e\soundChannels[0] = 0 Then
-					e\soundChannels[0] = PlaySound2 (e\sounds[0])
+					e\soundChannels[0] = PlaySound(e\sounds[0])
 				Else
-					If (Not IsChannelPlaying(e\soundChannels[0])) Then e\soundChannels[0] = PlaySound2(e\sounds[0])
+					If (Not IsChannelPlaying(e\soundChannels[0])) Then e\soundChannels[0] = PlaySound(e\sounds[0])
 				EndIf
 			EndIf
 		EndIf

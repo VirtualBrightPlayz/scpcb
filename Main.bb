@@ -1770,7 +1770,7 @@ Function UpdateInfect()
 							ResetEntity mainPlayer\collider
 							r\NPC[0] = CreateNPC(NPCtypeD, EntityX(r\Objects[6],True),EntityY(r\Objects[6],True)+0.2,EntityZ(r\Objects[6],True))
 							r\NPC[0]\sounds[0] = LoadSound("SFX\SCP\008\KillScientist1.ogg")
-							PlaySound2(r\NPC[0]\sounds[0])
+							r\NPC[0]\soundChannels[0] = PlaySound(r\NPC[0]\sounds[0])
 							tex = LoadTexture("GFX\npcs\scientist2.jpg")
 							EntityTexture r\NPC[0]\obj, tex
 							FreeTexture tex
@@ -1804,7 +1804,7 @@ Function UpdateInfect()
 				
 				If temp < 94.7 Then 
 					mainPlayer\currRoom\NPC[0]\sounds[0] = LoadSound("SFX\SCP\008\KillScientist2.ogg")
-					PlaySound2(mainPlayer\currRoom\NPC[0]\sounds[0])
+					mainPlayer\currRoom\NPC[0]\soundChannels[0] = PlaySound(mainPlayer\currRoom\NPC[0]\sounds[0])
 					
 					DeathMSG = "Subject D-9341 found ingesting Dr. [REDACTED] at Sector [REDACTED]. Subject was immediately terminated by Nine-Tailed Fox and sent for autopsy. "
 					DeathMSG = DeathMSG + "SCP-008 infection was confirmed, after which the body was incinerated."

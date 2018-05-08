@@ -178,7 +178,7 @@ Function UpdateEvent_tesla(e.Events)
 		EndIf
 	EndIf
 	
-	If mainPlayer\currRoom\RoomTemplate\Name <> "pocketdimension" And mainPlayer\currRoom\RoomTemplate\Name <> "room860" Then
+	If mainPlayer\currRoom\RoomTemplate\name <> "pocketdimension" And mainPlayer\currRoom\RoomTemplate\name <> "room860" Then
 		If e\EventState2 = 0 Then
 			If e\EventState3 <=0 Then 
 				temp = False
@@ -192,7 +192,7 @@ Function UpdateEvent_tesla(e.Events)
 									PlayMTFSound(n\sounds[0],n)
 									
 									LoadEventSound(e,"SFX\Character\MTF\Tesla1.ogg")
-									e\soundChannels[0] = PlaySound2 (e\sounds[0])
+									e\soundChannels[0] = PlaySound(e\sounds[0])
 									n\Idle = 70*10
 									e\EventState2 = 70*100
 								EndIf

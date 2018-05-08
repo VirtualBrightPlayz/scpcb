@@ -269,7 +269,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 					CameraClsColor mainPlayer\cam, 38, 55, 47
 					
 					If EntityX(e\room\Objects[20],True)<EntityX(e\room\Objects[8],True)-4000*RoomScale Then
-						e\soundChannels[1] = PlaySound2(e\sounds[1])
+						e\soundChannels[1] = PlaySound(e\sounds[1])
 						
 						PositionEntity e\room\Objects[20], EntityX(mainPlayer\collider,True)+4000*RoomScale, 12.0, EntityZ(mainPlayer\collider,True)
 					EndIf
@@ -660,6 +660,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 	EndIf
 	;[End Block]
 End Function
+
 
 
 ;~IDEal Editor Parameters:

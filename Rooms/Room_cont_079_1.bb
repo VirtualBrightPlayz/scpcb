@@ -63,11 +63,11 @@ Function UpdateEvent_cont_079_1(e.Events)
 		If e\EventState = 0 Then
 			;Music(4) = LoadSound("SFX\Music\079.ogg") ;TODO: fix
 			e\room\NPC[0]=CreateNPC(NPCtypeGuard, EntityX(e\room\Objects[2],True), EntityY(e\room\Objects[2],True)+0.5, EntityZ(e\room\Objects[2],True))
-			PointEntity e\room\NPC[0]\Collider, e\room\obj
-			RotateEntity e\room\NPC[0]\Collider, 0, EntityYaw(e\room\NPC[0]\Collider),0, True
+			PointEntity e\room\NPC[0]\collider, e\room\obj
+			RotateEntity e\room\NPC[0]\collider, 0, EntityYaw(e\room\NPC[0]\collider),0, True
 			;SetAnimTime e\room\NPC[0]\obj, 906
 			SetNPCFrame(e\room\NPC[0], 906)
-			e\room\NPC[0]\State = 8
+			e\room\NPC[0]\state = 8
 			
 			e\EventState = 1
 		EndIf
@@ -90,7 +90,7 @@ Function UpdateEvent_cont_079_1(e.Events)
 					e\EventState2 = 1
 					;e\sounds[0] = LoadSound("SFX\SCP\079\Speech.ogg")
 					LoadEventSound(e,"SFX\SCP\079\Speech.ogg")
-					e\soundChannels[0] = PlaySound2 (e\sounds[0])
+					e\soundChannels[0] = PlaySound(e\sounds[0])
 				EndIf							
 			ElseIf e\EventState = 3
 				If e\EventState < 3500 Then 
@@ -111,7 +111,7 @@ Function UpdateEvent_cont_079_1(e.Events)
 						e\EventState = 10001
 						;e\sounds[0] = LoadSound("SFX\SCP\079\Refuse.ogg")
 						LoadEventSound(e,"SFX\SCP\079\Refuse.ogg")
-						e\soundChannels[0] = PlaySound2 (e\sounds[0])
+						e\soundChannels[0] = PlaySound(e\sounds[0])
 						EntityTexture(e\room\Objects[1], OldAiPics(1))
 						ShowEntity (e\room\Objects[1])								
 					EndIf
@@ -127,7 +127,7 @@ Function UpdateEvent_cont_079_1(e.Events)
 	If e\EventState2 = 1 Then
 		If RemoteDoorOn Then 	
 			LoadEventSound(e,"SFX\SCP\079\GateB.ogg")
-			e\soundChannels[0] = PlaySound2 (e\sounds[0])						
+			e\soundChannels[0] = PlaySound(e\sounds[0])						
 			e\EventState2 = 2
 			
 			For e2.Events = Each Events

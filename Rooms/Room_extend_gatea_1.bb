@@ -35,10 +35,10 @@ Function FillRoom_extend_gatea_1(r.Rooms)
     RotateEntity d2\buttons[1], 0, 90, 0, True	
     
     For r2.Rooms = Each Rooms
-        If r2\RoomTemplate\Name = "exit1" Then
+        If r2\RoomTemplate\name = "exit1" Then
             r\Objects[1]=r2\Objects[1]
             r\Objects[2]=r2\Objects[2]	
-        ElseIf r2\RoomTemplate\Name = "gateaentrance"
+        ElseIf r2\RoomTemplate\name = "gateaentrance"
             ;ylempi hissi
             r\RoomDoors[1] = CreateDoor(0, r\x+1544.0*RoomScale,12000.0*RoomScale, r\z-64.0*RoomScale, 90, r, False)
             r\RoomDoors[1]\AutoClose = False : r\RoomDoors[1]\open = False
@@ -327,7 +327,7 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 						Curr106\CurrSpeed = CurveValue(0, Curr106\CurrSpeed, Max(5*dist,2.0))
 						If dist < 15.0 Then
 							If e\soundChannels[1] = 0 Then
-								e\soundChannels[1] = PlaySound2 (LoadTempSound("SFX\Ending\GateA\Franklin.ogg"))
+								e\soundChannels[1] = PlaySound(LoadTempSound("SFX\Ending\GateA\Franklin.ogg"))
 							EndIf
 							
 							If dist<0.4 Then
@@ -365,7 +365,7 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 							Else
 								If dist < 8.5 Then 
 									If e\EventState2=0;IsChannelPlaying(e\soundChannels[1]) = 0 Then
-										e\soundChannels[1] = PlaySound2 (LoadTempSound("SFX\Ending\GateA\HIDTurret.ogg"))
+										e\soundChannels[1] = PlaySound(LoadTempSound("SFX\Ending\GateA\HIDTurret.ogg"))
 										e\EventState2 = 1
 									ElseIf e\EventState2>0
 										e\EventState2=e\EventState2+timing\tickDuration
@@ -502,7 +502,7 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 						
 						If e\EventState3=>230.0 Then
 							If e\EventState3-timing\tickDuration<230.0 Then
-								e\soundChannels[0] = PlaySound2(LoadTempSound("SFX\Ending\GateA\CI.ogg"))
+								e\soundChannels[0] = PlaySound(LoadTempSound("SFX\Ending\GateA\CI.ogg"))
 							EndIf
 							
 							If IsChannelPlaying(e\soundChannels[0])=False Then; And SelectedEnding="" Then
@@ -538,46 +538,46 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 						e\EventState2 = 1
 						
 						For i = 5 To 8
-							e\room\NPC[i]\State = 3
+							e\room\NPC[i]\state = 3
 							
-							e\room\NPC[i]\PathStatus = FindPath(e\room\NPC[i], EntityX(e\room\obj)-1.0+2.0*(i Mod 2),EntityY(mainPlayer\collider)+0.2,EntityZ(e\room\obj)-2.0*(i Mod 2))
-							e\room\NPC[i]\PathTimer = 70*Rand(15,20)
-							e\room\NPC[i]\LastSeen = 70*300
+							e\room\NPC[i]\pathStatus = FindPath(e\room\NPC[i], EntityX(e\room\obj)-1.0+2.0*(i Mod 2),EntityY(mainPlayer\collider)+0.2,EntityZ(e\room\obj)-2.0*(i Mod 2))
+							e\room\NPC[i]\pathTimer = 70*Rand(15,20)
+							e\room\NPC[i]\lastSeen = 70*300
 						Next
 					Else
 						
 						For i = 5 To 8
-							If e\room\NPC[i]\State = 5
+							If e\room\NPC[i]\state = 5
 								e\room\NPC[i]\EnemyX = EntityX(mainPlayer\collider)
 								e\room\NPC[i]\EnemyY = EntityY(mainPlayer\collider)
 								e\room\NPC[i]\EnemyZ = EntityZ(mainPlayer\collider)
 							Else
-								If EntityDistance(e\room\NPC[i]\Collider,mainPlayer\collider)<6.0
-									e\room\NPC[i]\State = 5
-									e\room\NPC[i]\CurrSpeed = 0
+								If EntityDistance(e\room\NPC[i]\collider,mainPlayer\collider)<6.0
+									e\room\NPC[i]\state = 5
+									e\room\NPC[i]\currSpeed = 0
 								EndIf
 							EndIf
 						Next
 						
 						If e\EventState2=<1 Then
 							For i = 5 To 8
-								If e\room\NPC[i]\State = 5 Then
+								If e\room\NPC[i]\state = 5 Then
 									For temp = 5 To 8
-										e\room\NPC[temp]\State = 5
+										e\room\NPC[temp]\state = 5
 										e\room\NPC[temp]\EnemyX = EntityX(mainPlayer\collider)
 										e\room\NPC[temp]\EnemyY = EntityY(mainPlayer\collider)
 										e\room\NPC[temp]\EnemyZ = EntityZ(mainPlayer\collider)
-										e\room\NPC[temp]\PathTimer = 70*Rand(7,10)
+										e\room\NPC[temp]\pathTimer = 70*Rand(7,10)
 										e\room\NPC[temp]\Reload = 2000
 										mainPlayer\disableControls = True
 									Next
 									
 									If e\EventState2=1 Then
-										e\soundChannels[0] = PlaySound2 (LoadTempSound("SFX\Ending\GateA\STOPRIGHTTHERE.ogg"))
+										e\soundChannels[0] = PlaySound(LoadTempSound("SFX\Ending\GateA\STOPRIGHTTHERE.ogg"))
 										e\EventState2=2			
 									EndIf
 								Else
-									e\room\NPC[i]\LastSeen = 70*300
+									e\room\NPC[i]\lastSeen = 70*300
 									e\room\NPC[i]\Reload = 2000
 									e\room\NPC[i]\State3 = 70*145											
 								EndIf

@@ -142,19 +142,19 @@ Function UpdateEvent_cont_1123_2(e.Events)
 		ElseIf e\EventState = 2
 			e\EventState2 = e\EventState2 + timing\tickDuration
 			
-			PointEntity e\room\NPC[0]\Collider, mainPlayer\collider
+			PointEntity e\room\NPC[0]\collider, mainPlayer\collider
 			mainPlayer\blurTimer = Max(mainPlayer\blurTimer, 100)
 			
 			If e\EventState2>200 And e\EventState2-timing\tickDuration=<200 Then 							
 				;e\sounds[0] = LoadSound("SFX\Music\1123.ogg");TODO: fix
-				e\soundChannels[0] = PlaySound2(e\sounds[0])
+				e\soundChannels[0] = PlaySound(e\sounds[0])
 			EndIf
 			
 			
 			If e\EventState2 > 1000 Then
 				If e\sounds[1]=0 Then
 					e\sounds[1] = LoadSound("SFX\Door\1123DoorOpen.ogg")
-					e\soundChannels[1] = PlaySound2(e\sounds[1])
+					e\soundChannels[1] = PlaySound(e\sounds[1])
 				EndIf
 				RotateEntity e\room\Objects[11], 0, CurveAngle(10, EntityYaw(e\room\Objects[11],0), 40), 0
 				
@@ -178,10 +178,10 @@ Function UpdateEvent_cont_1123_2(e.Events)
 		ElseIf e\EventState=3
 			If e\room\RoomDoors[0]\openstate>160 Then
 				If e\sounds[0]=0 Then e\sounds[0] = LoadSound("SFX\Music\1123.ogg")
-				e\soundChannels[0] = PlaySound2(e\sounds[0])
+				e\soundChannels[0] = PlaySound(e\sounds[0])
 				
-				PositionEntity e\room\NPC[0]\Collider, EntityX(e\room\Objects[7],True),EntityY(e\room\Objects[7],True),EntityZ(e\room\Objects[7],True)
-				ResetEntity e\room\NPC[0]\Collider
+				PositionEntity e\room\NPC[0]\collider, EntityX(e\room\Objects[7],True),EntityY(e\room\Objects[7],True),EntityZ(e\room\Objects[7],True)
+				ResetEntity e\room\NPC[0]\collider
 				
 				e\EventState=4
 			EndIf
