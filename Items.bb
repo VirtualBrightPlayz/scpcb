@@ -30,6 +30,26 @@ Type ItemTemplates
 End Type 
 
 Function CreateItemTemplate.ItemTemplates(name$, tempname$, objpath$, invimgpath$, invSlot%, imgpath$, scale#, texturepath$ = "",invimgpath2$="",Anim%=0, texflags%=9)
+	Local fileName$ = "Data/items.ini"
+	PutINIValue(fileName, tempname, "invname", name)
+	PutINIValue(fileName, tempname, "objpath", objpath)
+	PutINIValue(fileName, tempname, "scale", scale)
+	If (texturepath <> "") Then PutINIValue(fileName, tempname, "texturepath", texturepath)
+	If (animated) Then PutINIValue(fileName, tempname, "animated", Anim)
+	If (texflags <> 9) Then PutINIValue(fileName, tempname, "textureflags", texflags)
+	PutINIValue(fileName, tempname, "invimgpath", invimgpath)
+	If (invimgpath2 <> "") Then PutINIValue(fileName, tempname, "invimgpath2", invimgpath2)
+	If (imgpath <> "") Then PutINIValue(fileName, tempname, "imgpath", imgpath)
+
+	Local slo$
+	Select invSlot
+		Case WORNITEM_SLOT_BODY
+			slo = "body"
+		Case WORNITEM_SLOT_HEAD
+			slo = "head"
+	End Select
+	PutINIValue(fileName, tempname, "slot", slo)
+
 	Local it.ItemTemplates = New ItemTemplates, n
 	
 	
