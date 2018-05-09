@@ -48,7 +48,7 @@ Function CreateItemTemplate.ItemTemplates(name$, tempname$, objpath$, invimgpath
 		Case WORNITEM_SLOT_HEAD
 			slo = "head"
 	End Select
-	PutINIValue(fileName, tempname, "slot", slo)
+	If (slo <> "") Then PutINIValue(fileName, tempname, "slot", slo)
 
 	Local it.ItemTemplates = New ItemTemplates, n
 	
@@ -748,5 +748,4 @@ Function DropItem(item.Items,playDropSound%=True)
 	;End Select	
 End Function
 ;~IDEal Editor Parameters:
-;~F#75
 ;~C#Blitz3D
