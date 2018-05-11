@@ -37,9 +37,9 @@ End Type
 
 Const ARRAYLIST_INITIAL_CAPACITY% = 8
 
-Function CreateIntArrayList.IntArrayList()
+Function CreateIntArrayList.IntArrayList(initialCapacity% = ARRAYLIST_INITIAL_CAPACITY)
 	Local arrayList.IntArrayList = New IntArrayList
-	arrayList\bank = CreateBank(INT_SIZE * ARRAYLIST_INITIAL_CAPACITY)
+	arrayList\bank = CreateBank(INT_SIZE * initialCapacity)
 	arrayList\size = 0
 	arrayList\capacity = ARRAYLIST_INITIAL_CAPACITY
 	Return arrayList

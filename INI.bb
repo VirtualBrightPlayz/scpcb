@@ -175,21 +175,21 @@ End Function
 
 
 
-Function PutINIValue%(file$, INI_sSection$, INI_sKey$, INI_sValue$)
+Function PutINIValue%(INI_sAppName$, INI_sSection$, INI_sKey$, INI_sValue$)
 	
-	; Returns: True (Success) Or False (Failed)
+; Returns: True (Success) or False (Failed)
 	
 	INI_sSection = "[" + Trim$(INI_sSection) + "]"
 	Local INI_sUpperSection$ = Upper$(INI_sSection)
 	INI_sKey = Trim$(INI_sKey)
 	INI_sValue = Trim$(INI_sValue)
-	Local INI_sFilename$ = file$
+	Local INI_sFilename$ = CurrentDir$() + "\"  + INI_sAppName
 	
-	; Retrieve the INI Data (If it exists)
+; Retrieve the INI data (if it exists)
 	
-	Local INI_sContents$ = INI_FileToString(INI_sFilename)
+	Local INI_sContents$= INI_FileToString(INI_sFilename)
 	
-		; (Re)Create the INI file updating/adding the SECTION, KEY And VALUE
+; (Re)Create the INI file updating/adding the SECTION, KEY and VALUE
 	
 	Local INI_bWrittenKey% = False
 	Local INI_bSectionFound% = False
@@ -199,17 +199,17 @@ Function PutINIValue%(file$, INI_sSection$, INI_sKey$, INI_sValue$)
 	If INI_lFileHandle = 0 Then Return False ; Create file failed!
 	
 	Local INI_lOldPos% = 1
-	Local INI_lPos% = Instr(INI_sContents, Chr$(0))
+	Local ZINI_lPos% = Instr(INI_sContents, Chr$(0))
 	
 	While (INI_lPos <> 0)
 		
-		Local INI_sTemp$ = Mid$(INI_sContents, INI_lOldPos, (INI_lPos - INI_lOldPos))
+		INI_sTemp$ =Trim$(Mid$(INI_sContents, INI_lOldPos, (INI_lPos - INI_lOldPos)))
 		
 		If (INI_sTemp <> "") Then
 			
 			If Left$(INI_sTemp, 1) = "[" And Right$(INI_sTemp, 1) = "]" Then
 				
-					; Process SECTION
+				; Process SECTION
 				
 				If (INI_sCurrentSection = INI_sUpperSection) And (INI_bWrittenKey = False) Then
 					INI_bWrittenKey = INI_CreateKey(INI_lFileHandle, INI_sKey, INI_sValue)
@@ -218,33 +218,31 @@ Function PutINIValue%(file$, INI_sSection$, INI_sKey$, INI_sValue$)
 				If (INI_sCurrentSection = INI_sUpperSection) Then INI_bSectionFound = True
 				
 			Else
-				If (Left(INI_sTemp, 1) = ":") Or (Left(INI_sTemp, 1) = ";") Then
-					WriteLine INI_lFileHandle, INI_sTemp
-				Else
-						; KEY=VALUE				
-					Local lEqualsPos% = Instr(INI_sTemp, "=")
-					If (lEqualsPos <> 0) Then
-						If (INI_sCurrentSection = INI_sUpperSection) And (Upper$(Trim$(Left$(INI_sTemp, (lEqualsPos - 1)))) = Upper$(INI_sKey)) Then
-							If (INI_sValue <> "") Then INI_CreateKey INI_lFileHandle, INI_sKey, INI_sValue
-							INI_bWrittenKey = True
-						Else
-							WriteLine INI_lFileHandle, INI_sTemp
-						End If
+				
+				; KEY=VALUE
+				
+				lEqualsPos% = Instr(INI_sTemp, "=")
+				If (lEqualsPos <> 0) Then
+					If (INI_sCurrentSection = INI_sUpperSection) And (Upper$(Trim$(Left$(INI_sTemp, (lEqualsPos - 1)))) = Upper$(INI_sKey)) Then
+						If (INI_sValue <> "") Then INI_CreateKey INI_lFileHandle, INI_sKey, INI_sValue
+						INI_bWrittenKey = True
+					Else
+						WriteLine INI_lFileHandle, INI_sTemp
 					End If
-				EndIf
+				End If
 				
 			End If
 			
 		End If
 		
-			; Move through the INI file...
+		; Move through the INI file...
 		
 		INI_lOldPos = INI_lPos + 1
 		INI_lPos% = Instr(INI_sContents, Chr$(0), INI_lOldPos)
 		
 	Wend
 	
-		; KEY wasn;t found in the INI file - Append a New SECTION If required And create our KEY=VALUE Line
+	; KEY wasn't found in the INI file - Append a new SECTION if required and create our KEY=VALUE line
 	
 	If (INI_bWrittenKey = False) Then
 		If (INI_bSectionFound = False) Then INI_CreateSection INI_lFileHandle, INI_sSection

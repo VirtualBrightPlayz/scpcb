@@ -747,5 +747,51 @@ Function DropItem(item.Items,playDropSound%=True)
 	;		Wearing1499 = False
 	;End Select	
 End Function
+
+Const RADIO_CHANNEL_COUNT% = 5
+Type Radio
+	Field currChn%
+
+	;How long each channel has been played for.
+	Field airTime#[RADIO_CHANNEL_COUNT]
+
+	Field channels%[RADIO_CHANNEL_COUNT]
+
+	;Sounds
+	Field sndStatic%
+End Type
+Global radio.Radio = Null
+
+Function ChangeRadioChannel(newChn%)
+	If (IsChannelPlaying(radio\channels[radio\currChn])) Then
+		PauseChannel(radio\channels[radio\currChn])
+	EndIf
+
+	If (Not IsChannelPlaying(radio\channels[newChn])) Then
+		radio\channels[newChn] = PlaySound(sndStatic)
+	Else
+		ResumeChannel(radio\channels[newChn])
+	EndIf
+
+	radio\currChn = newChn
+End Function
+
+
+Function UpdateRadio(i.Items)
+	Select radio\currChn
+		Case 0 ;-nothing
+			;TODO: something?
+		Case 1 ;-alarms and alert messages
+
+		Case 2 ;-scp on-site radio
+
+		Case 3 ;-MTF broadcasts
+
+		Case 4 ;-idfk
+	End Select
+
+	radio\airTime[radio\currChn] = radio\airTime[radio\currChn] + timing\tickDuration
+End Function
+
 ;~IDEal Editor Parameters:
 ;~C#Blitz3D
