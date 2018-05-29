@@ -59,7 +59,7 @@ Include "Rooms/Room_srvr_096_2.bb"
 Include "Rooms/Room_srvr_farm_3.bb"
 Include "Rooms/Room_srvr_lshape_3.bb"
 Include "Rooms/Room_srvr_pc_2.bb"
-Include "Rooms/Room_strg_939_2.bb"
+Include "Rooms/Room_strg_939_3.bb"
 Include "Rooms/Room_strg_elec_2c.bb"
 Include "Rooms/Room_test_682_2.bb"
 Include "Rooms/Room_test_860_2.bb"
@@ -630,8 +630,8 @@ Function FillRoom(r.Rooms)
 			FillRoom_cont_513_3(r)
 		Case "cont_966_3"
 			FillRoom_cont_966_3(r)
-		Case "strg_939_2"
-			FillRoom_strg_939_2(r)
+		Case "strg_939_3"
+			FillRoom_strg_939_3(r)
 		Case "cont_049_2"
 			FillRoom_cont_049_2(r)
 		Case "hll_fan_2"
@@ -3106,5 +3106,5 @@ Function FindAndDeleteFakeMonitor(r.Rooms,x#,y#,z#,Amount%)
 	
 End Function
 ;~IDEal Editor Parameters:
-;~F#4F#57#71#80#87#8E#9F#A7#AF#B9#C9#DA#1A2#1DD#1E5#1FA#205#20F#244#310
+;~F#4F#57#71#80#87#8E#9F#A7#AF#B9#C9#DA#1A2#1DD#1E5#1FA#205#20F#310
 ;~C#Blitz3D

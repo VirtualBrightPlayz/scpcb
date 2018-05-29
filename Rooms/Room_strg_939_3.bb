@@ -1,4 +1,4 @@
-Function FillRoom_strg_939_2(r.Rooms)
+Function FillRoom_strg_939_3(r.Rooms)
     Local d.Doors, d2.Doors, sc.SecurityCams, de.Decals, r2.Rooms, sc2.SecurityCams
 	Local it.Items, i%
 	Local xtemp%, ytemp%, ztemp%
@@ -173,7 +173,7 @@ Function FillRoom_strg_939_2(r.Rooms)
 End Function
 
 
-Function UpdateEvent_strg_939_2(e.Events)
+Function UpdateEvent_strg_939_3(e.Events)
 	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
 
 	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
@@ -297,3 +297,6 @@ Function UpdateEvent_strg_939_2(e.Events)
 	EndIf 
 	;[End Block]
 End Function
+
+;~IDEal Editor Parameters:
+;~C#Blitz3D

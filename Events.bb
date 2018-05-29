@@ -116,7 +116,7 @@ Function InitEvents()
 	CreateEvent("evt_ele_guard", "hll_ele_2", 0)
 	CreateEvent("evt_ele_gonzales", "hll_ele_2", Rand(1,2))
 	
-	CreateEvent("evt_strg_939", "strg_939_2", 0, 0)
+	CreateEvent("evt_strg_939", "strg_939_3", 0, 0)
 	
 	CreateEvent("evt_tnnl_smoke", "tnnl_elec_2", 0, 0.2)
 	CreateEvent("evt_tnnl_blackout", "tnnl_elec_2", Rand(0,2), 0)
@@ -290,7 +290,7 @@ Function UpdateEvents()
 			Case "evt_ele_gonzales"
 				UpdateEventRoom2elevator2(e)
 			Case "evt_strg_939"
-				UpdateEvent_strg_939_2(e)
+				UpdateEvent_strg_939_3(e)
 			Case "evt_tnnl_smoke"
 				UpdateEventTunnel2smoke(e)
 			Case "evt_tnnl_blackout"
@@ -427,4 +427,5 @@ Function UpdateEvents()
 End Function
 
 ;~IDEal Editor Parameters:
+;~F#2#12#44
 ;~C#Blitz3D
