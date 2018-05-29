@@ -3,6 +3,10 @@ Type Sound
 	Field file$
 End Type
 
+Const STEPSOUND_DEFAULT% = 0
+Const STEPSOUND_METAL% = 1
+;TODO: add more STEPSOUND constants
+
 Type SoundManager
 	Field chnList.IntArrayList
 
