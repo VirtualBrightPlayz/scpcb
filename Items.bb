@@ -762,13 +762,19 @@ Type Radio
 End Type
 Global radio.Radio = Null
 
+Function CreateRadio.Radio()
+	Local rad.Radio = New Radio
+	
+	Return rad
+End Function
+
 Function ChangeRadioChannel(newChn%)
 	If (IsChannelPlaying(radio\channels[radio\currChn])) Then
 		PauseChannel(radio\channels[radio\currChn])
 	EndIf
 
 	If (Not IsChannelPlaying(radio\channels[newChn])) Then
-		radio\channels[newChn] = PlaySound(sndStatic)
+		radio\channels[newChn] = PlaySound(radio\sndStatic)
 	Else
 		ResumeChannel(radio\channels[newChn])
 	EndIf
