@@ -38,7 +38,7 @@ Function FillRoom_cont_173_1(r.Rooms)
     d.Doors = CreateDoor(r\zone, r\x, 0, r\z + 1184.0 * RoomScale, 0, r, False)
     d\locked = True
     
-    r\Objects[0] = LoadMesh("GFX\map\IntroDesk.b3d")
+    r\Objects[0] = LoadMesh("GFX/map/IntroDesk.b3d")
     ScaleEntity r\Objects[0], RoomScale, RoomScale ,RoomScale
     PositionEntity r\Objects[0], r\x + 272.0 * RoomScale, 0, r\z + 400.0 * RoomScale
     EntityParent r\Objects[0], r\obj
@@ -46,7 +46,7 @@ Function FillRoom_cont_173_1(r.Rooms)
     de.Decals = CreateDecal(0, r\x + 272.0 * RoomScale, 0.005, r\z + 262.0 * RoomScale, 90, Rand(360), 0)
     EntityParent(de\obj, r\obj)
     
-    r\Objects[1] = LoadMesh("GFX\map\IntroDrawer.b3d")
+    r\Objects[1] = LoadMesh("GFX/map/IntroDrawer.b3d")
     ScaleEntity r\Objects[1], RoomScale, RoomScale ,RoomScale
     PositionEntity r\Objects[1], r\x + 448.0 * RoomScale, 0, r\z + 192.0 * RoomScale
     EntityParent r\Objects[1], r\obj
@@ -138,8 +138,8 @@ Function UpdateEventAlarm(e.Events)
 			
 			If e\room\NPC[1] = Null Then
 				e\room\NPC[1] = CreateNPC(NPCtypeD, 0,0,0)
-				tex = LoadTexture("GFX\npcs\scientist2.jpg")
-				e\room\NPC[1]\texture = "GFX\npcs\scientist2.jpg"
+				tex = LoadTexture("GFX/npcs/scientist2.jpg")
+				e\room\NPC[1]\texture = "GFX/npcs/scientist2.jpg"
 				EntityTexture e\room\NPC[1]\obj, tex
 				FreeTexture tex
 			EndIf
@@ -172,8 +172,8 @@ Function UpdateEventAlarm(e.Events)
 				;PointEntity(e\room\NPC[5]\Collider, e\room\Objects[7])
 				SetNPCFrame(e\room\NPC[5], 19) : e\room\NPC[5]\State = 3
 				RotateEntity e\room\NPC[5]\Collider,0,270,0
-				tex = LoadTexture("GFX\npcs\classd2.jpg")
-				e\room\NPC[5]\texture = "GFX\npcs\classd2.jpg"
+				tex = LoadTexture("GFX/npcs/classd2.jpg")
+				e\room\NPC[5]\texture = "GFX/npcs/classd2.jpg"
 				EntityTexture e\room\NPC[5]\obj, tex
 				FreeTexture tex
 				MoveEntity e\room\NPC[5]\Collider,0.25,0,3.0
@@ -211,7 +211,7 @@ Function UpdateEventAlarm(e.Events)
 				CanSave = False
 				If e\EventState > 900 And e\room\RoomDoors[5]\open Then
 					If e\EventState - timing\tickDuration <= 900 Then 
-						e\room\NPC[1]\soundChannels[0] = LoadSound("SFX\Room\Intro\WhatThe.ogg")
+						e\room\NPC[1]\soundChannels[0] = LoadSound("SFX/Room/Intro/WhatThe.ogg")
 						e\room\NPC[1]\soundChannels[0] = PlayRangedSound(e\room\NPC[1]\soundChannels[0], mainPlayer\cam, e\room\NPC[1]\Collider)
 					EndIf
 					e\room\NPC[1]\State = 3
@@ -223,27 +223,27 @@ Function UpdateEventAlarm(e.Events)
 					If e\EventState > 900+2.5*70 Then
 						If e\room\NPC[2]\State <> 1
 							e\room\NPC[2]\CurrSpeed = CurveValue(-0.012, e\room\NPC[2]\CurrSpeed, 5.0)
-							AnimateNPC(e\room\NPC[2], 895, 843, e\room\NPC[2]\CurrSpeed*50)
-							MoveEntity e\room\NPC[2]\Collider, 0,0,e\room\NPC[2]\CurrSpeed*timing\tickDuration
-							e\room\NPC[2]\State = 8
+							AnimateNPC(e\room\NPC[2], 895, 843, e\room\NPC[2]\currSpeed*50)
+							MoveEntity e\room\NPC[2]\collider, 0,0,e\room\NPC[2]\currSpeed*timing\tickDuration
+							e\room\NPC[2]\state = 8
 							
-							If EntityZ(e\room\NPC[2]\Collider) < e\room\z-512*RoomScale Then
-								PointEntity(e\room\NPC[2]\obj, e\room\NPC[1]\Collider)
-								RotateEntity e\room\NPC[2]\Collider, 0, CurveAngle(EntityYaw(e\room\NPC[2]\obj)-180,EntityYaw(e\room\NPC[2]\Collider),15.0), 0
+							If EntityZ(e\room\NPC[2]\collider) < e\room\z-512*RoomScale Then
+								PointEntity(e\room\NPC[2]\obj, e\room\NPC[1]\collider)
+								RotateEntity e\room\NPC[2]\collider, 0, CurveAngle(EntityYaw(e\room\NPC[2]\obj)-180,EntityYaw(e\room\NPC[2]\collider),15.0), 0
 							Else
-								RotateEntity e\room\NPC[2]\Collider, 0, 0, 0
+								RotateEntity e\room\NPC[2]\collider, 0, 0, 0
 							EndIf
 						EndIf
 					EndIf
 					
 					If e\EventState < 900+4*70 Then
-						PositionEntity Curr173\Collider, e\room\x+32*RoomScale, 0.31, e\room\z+1072*RoomScale, True
-						RotateEntity Curr173\Collider,0,190,0
+						PositionEntity Curr173\collider, e\room\x+32*RoomScale, 0.31, e\room\z+1072*RoomScale, True
+						RotateEntity Curr173\collider,0,190,0
 						
 						If e\EventState > 900+70 And e\EventState < 900+2.5*70 Then
 							AnimateNPC(e\room\NPC[2], 1539, 1553, 0.2, False)
-							PointEntity(e\room\NPC[2]\obj, Curr173\Collider)
-							RotateEntity e\room\NPC[2]\Collider, 0, CurveAngle(EntityYaw(e\room\NPC[2]\obj),EntityYaw(e\room\NPC[2]\Collider),15.0), 0
+							PointEntity(e\room\NPC[2]\obj, Curr173\collider)
+							RotateEntity e\room\NPC[2]\collider, 0, CurveAngle(EntityYaw(e\room\NPC[2]\obj),EntityYaw(e\room\NPC[2]\collider),15.0), 0
 						EndIf
 
 					Else
@@ -251,26 +251,26 @@ Function UpdateEventAlarm(e.Events)
 							PlaySound2(IntroSFX(11)); : LightBlink = 3.0
 							
 							;Stonedrag.
-							PlayRangedSound (Curr173\sounds[0], mainPlayer\cam, Curr173\Collider)
+							PlayRangedSound (Curr173\sounds[0], mainPlayer\cam, Curr173\collider)
 
-							PointEntity Curr173\Collider, e\room\NPC[2]\Collider
+							PointEntity Curr173\collider, e\room\NPC[2]\collider
 							If EntityY(mainPlayer\collider)<320*RoomScale Then mainPlayer\blinkTimer = -10
 						EndIf
 						
-						PositionEntity Curr173\Collider, e\room\x-96*RoomScale, 0.31, e\room\z+592*RoomScale, True
+						PositionEntity Curr173\collider, e\room\x-96*RoomScale, 0.31, e\room\z+592*RoomScale, True
 						
-						If e\room\NPC[2]\State <> 1 And (Not mainPlayer\dead) Then
-							If EntityZ(e\room\NPC[2]\Collider) < e\room\z-1150*RoomScale Then
+						If e\room\NPC[2]\state <> 1 And (Not mainPlayer\dead) Then
+							If EntityZ(e\room\NPC[2]\collider) < e\room\z-1150*RoomScale Then
 								e\room\RoomDoors[5]\open = False
 								;LightBlink = 3.0
 								PlaySound2(IntroSFX(11))
 								mainPlayer\blinkTimer = -10
 
 								;Stonedrag.
-								PlayRangedSound (Curr173\sounds[0], mainPlayer\cam, Curr173\Collider)
+								PlayRangedSound (Curr173\sounds[0], mainPlayer\cam, Curr173\collider)
 								
-								PositionEntity Curr173\Collider, 0,0,0
-								ResetEntity Curr173\Collider
+								PositionEntity Curr173\collider, 0,0,0
+								ResetEntity Curr173\collider
 								Msg = "Hold "+KeyName(keyBinds\sprint)+" to run."
 								MsgTimer = 70*8
 							EndIf
@@ -343,7 +343,7 @@ Function UpdateEventAlarm(e.Events)
 					e\sounds[1] = 0
 				EndIf
 				
-				e\sounds[1] = LoadSound("SFX\Alarm\Alarm2_"+Int(e\EventState3)+".ogg")
+				e\sounds[1] = LoadSound("SFX/Alarm/Alarm2_"+Int(e\EventState3)+".ogg")
 				e\soundChannels[1] = PlaySound(e\sounds[1])
 				Else
 					If Int(e\EventState3) = 8 Then mainPlayer\camShake = 1.0
@@ -353,11 +353,11 @@ Function UpdateEventAlarm(e.Events)
 		If ((e\EventState Mod 600 > 300) And ((e\EventState+timing\tickDuration) Mod 600 < 300)) Then
 			i = Floor((e\EventState-5000)/600)+1
 			
-			If i = 0 Then PlaySound2(LoadTempSound("SFX\Room\Intro\PA\scripted\scripted6.ogg"))
+			If i = 0 Then PlaySound2(LoadTempSound("SFX/Room/Intro/PA/scripted/scripted6.ogg"))
 			
 			If (i>0 And i<24) Then
 				If Not CommotionState(i) Then ;Prevents the same commotion file from playing more then once.
-					PlaySound2(LoadTempSound("SFX\Room\Intro\Commotion\Commotion"+i+".ogg"))
+					PlaySound2(LoadTempSound("SFX/Room/Intro/Commotion/Commotion"+i+".ogg"))
 					CommotionState(i) = True
 				EndIf
 			EndIf

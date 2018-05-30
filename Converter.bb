@@ -439,7 +439,7 @@ Function PutINIValue%(INI_sAppName$, INI_sSection$, INI_sKey$, INI_sValue$)
 	INI_sUpperSection$ = Upper$(INI_sSection)
 	INI_sKey = Trim$(INI_sKey)
 	INI_sValue = Trim$(INI_sValue)
-	INI_sFilename$ = CurrentDir$() + "\"  + INI_sAppName
+	INI_sFilename$ = CurrentDir$() + "/"  + INI_sAppName
 	
 ; Retrieve the INI data (if it exists)
 	
@@ -580,11 +580,11 @@ Local ic.INIConvert
 
 If state=1 Then ;convert B3D to Rmesh
 	
-	If FileSize("Data\rooms_b3d.ini")=0 Then
-		CopyFile "Data\rooms.ini","Data\rooms_b3d.ini"
+	If FileSize("Data/rooms_b3d.ini")=0 Then
+		CopyFile "Data/rooms.ini","Data/rooms_b3d.ini"
 	EndIf
 	
-	f%=ReadFile("Data\rooms.ini")
+	f%=ReadFile("Data/rooms.ini")
 	
 	While Not Eof(f)
 		TemporaryString = Trim(ReadLine(f))
@@ -592,7 +592,7 @@ If state=1 Then ;convert B3D to Rmesh
 			TemporaryString = Mid(TemporaryString, 2, Len(TemporaryString) - 2)
 			
 			If TemporaryString <> "room ambience" Then
-				Stri=GetINIString("Data\rooms.ini",TemporaryString,"mesh path")
+				Stri=GetINIString("Data/rooms.ini",TemporaryString,"mesh path")
 				
 				mesh=LoadAnimMesh(Stri)
 				SaveRoomMesh(mesh,Replace(Stri,".b3d",".rmesh"))
@@ -602,12 +602,12 @@ If state=1 Then ;convert B3D to Rmesh
 				Flip
 				
 				ic.INIConvert=New INIConvert
-				ic\file="Data\rooms.ini"
+				ic\file="Data/rooms.ini"
 				ic\section=TemporaryString
 				ic\key="mesh path"
 				ic\value=Replace(Stri,".b3d",".rmesh")
 				
-				;PutINIValue("Data\rooms.ini",TemporaryString,"mesh path",Replace(Stri,".b3d",".rmesh"))
+				;PutINIValue("Data/rooms.ini",TemporaryString,"mesh path",Replace(Stri,".b3d",".rmesh"))
 			EndIf
 		EndIf
 	Wend
@@ -624,7 +624,7 @@ If state=1 Then ;convert B3D to Rmesh
 	CloseFile f
 	
 Else If state=2
-	f%=ReadFile("Data\rooms.ini")
+	f%=ReadFile("Data/rooms.ini")
 	
 	While Not Eof(f)
 		TemporaryString = Trim(ReadLine(f))
@@ -632,15 +632,15 @@ Else If state=2
 			TemporaryString = Mid(TemporaryString, 2, Len(TemporaryString) - 2)
 			
 			If TemporaryString <> "room ambience" Then
-				Stri=GetINIString("Data\rooms.ini",TemporaryString,"mesh path")
+				Stri=GetINIString("Data/rooms.ini",TemporaryString,"mesh path")
 				
 				ic.INIConvert=New INIConvert
-				ic\file="Data\rooms.ini"
+				ic\file="Data/rooms.ini"
 				ic\section=TemporaryString
 				ic\key="mesh path"
 				ic\value=Replace(Stri,".rmesh",".b3d")
 				
-				;PutINIValue("Data\rooms.ini",TemporaryString,"mesh path",Replace(Stri,".rmesh",".b3d"))
+				;PutINIValue("Data/rooms.ini",TemporaryString,"mesh path",Replace(Stri,".rmesh",".b3d"))
 			EndIf
 		EndIf
 	Wend

@@ -16,12 +16,12 @@ Function InitializeNPCtype966(n.NPCs)
     Next
     
     If n\obj = 0 Then 
-        n\obj = LoadAnimMesh("GFX\npcs\scp-966.b3d")
+        n\obj = LoadAnimMesh("GFX/npcs/scp-966.b3d")
     EndIf
     
     EntityFX n\obj,1
     
-    temp# = GetINIFloat("DATA\NPCs.ini", "SCP-966", "scale")/40.0
+    temp# = GetINIFloat("DATA/NPCs.ini", "SCP-966", "scale")/40.0
     ScaleEntity n\obj, temp, temp, temp		
     
     ;EntityColor n\obj,Rnd(0,50),0,Rnd(50,100)
@@ -141,7 +141,7 @@ Function UpdateNPCtype966(n.NPCs)
                 EndIf
                 
                 If n\Frame>1029.0 And prevFrame<=1029.0 Or n\Frame>1203.0 And prevFrame<=1203.0 Then
-                    PlayRangedSound(LoadTempSound("SFX\SCP\966\Echo"+Rand(1,3)+".ogg"), mainPlayer\cam, n\Collider)
+                    PlayRangedSound(LoadTempSound("SFX/SCP/966/Echo"+Rand(1,3)+".ogg"), mainPlayer\cam, n\Collider)
                 EndIf
                 
                 angle = VectorYaw(EntityX(mainPlayer\collider)-EntityX(n\Collider),0,EntityZ(mainPlayer\collider)-EntityZ(n\Collider))
@@ -186,7 +186,7 @@ Function UpdateNPCtype966(n.NPCs)
                 EndIf
                 
                 If n\Frame>1393.0 And prevFrame<=1393.0 Or n\Frame>1589.0 And prevFrame<=1589.0 Or n\Frame>2000.0 And prevFrame<=2000.0 Then
-                    PlayRangedSound(LoadTempSound("SFX\SCP\966\Idle"+Rand(1,3)+".ogg"), mainPlayer\cam, n\Collider)
+                    PlayRangedSound(LoadTempSound("SFX/SCP/966/Idle"+Rand(1,3)+".ogg"), mainPlayer\cam, n\Collider)
                 EndIf
                 
                 angle = VectorYaw(EntityX(mainPlayer\collider)-EntityX(n\Collider),0,EntityZ(mainPlayer\collider)-EntityZ(n\Collider))
@@ -268,7 +268,7 @@ Function UpdateNPCtype966(n.NPCs)
                 EndIf
             Case 10 ;attack
                 If n\LastSeen=0
-                    PlayRangedSound(LoadTempSound("SFX\SCP\966\Echo"+Rand(1,3)+".ogg"), mainPlayer\cam, n\Collider)
+                    PlayRangedSound(LoadTempSound("SFX/SCP/966/Echo"+Rand(1,3)+".ogg"), mainPlayer\cam, n\Collider)
                     n\LastSeen = 1
                 EndIf
                 
@@ -300,7 +300,7 @@ Function UpdateNPCtype966(n.NPCs)
                 
                 If dist<1.0 Then
                     If n\Frame>2173.0 And prevFrame<=2173.0 Or n\Frame>2203.0 And prevFrame<=2203.0 Or n\Frame>2227.0 And prevFrame<=2227.0 Then
-                        PlayRangedSound(LoadTempSound("SFX\General\Slash"+Rand(1,2)+".ogg"), mainPlayer\cam, n\Collider)
+                        PlayRangedSound(LoadTempSound("SFX/General/Slash"+Rand(1,2)+".ogg"), mainPlayer\cam, n\Collider)
                         mainPlayer\injuries = mainPlayer\injuries + Rnd(0.5,1.0)								
                     EndIf	
                 EndIf

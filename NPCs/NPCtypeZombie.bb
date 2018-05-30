@@ -12,19 +12,19 @@ Function InitializeNPCtypeZombie(n.NPCs)
     Next
     
     If n\obj = 0 Then 
-        n\obj = LoadAnimMesh("GFX\npcs\zombie1.b3d")
+        n\obj = LoadAnimMesh("GFX/npcs/zombie1.b3d")
         
-        temp# = (GetINIFloat("DATA\NPCs.ini", "SCP-049-2", "scale") / 2.5)
+        temp# = (GetINIFloat("DATA/NPCs.ini", "SCP-049-2", "scale") / 2.5)
         ScaleEntity n\obj, temp, temp, temp
         
         MeshCullBox (n\obj, -MeshWidth(n\obj), -MeshHeight(n\obj), -MeshDepth(n\obj), MeshWidth(n\obj)*2, MeshHeight(n\obj)*2, MeshDepth(n\obj)*2)
     EndIf
     
-    n\speed = (GetINIFloat("DATA\NPCs.ini", "SCP-049-2", "speed") / 100.0)
+    n\speed = (GetINIFloat("DATA/NPCs.ini", "SCP-049-2", "speed") / 100.0)
     
     SetAnimTime(n\obj, 107)
     
-    n\sounds[0] = LoadSound("SFX\SCP\049\0492Breath.ogg")
+    n\sounds[0] = LoadSound("SFX/SCP/049/0492Breath.ogg")
     
     n\HP = 100
 End Function

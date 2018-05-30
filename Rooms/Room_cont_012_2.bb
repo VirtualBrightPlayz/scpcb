@@ -32,7 +32,7 @@ Function FillRoom_cont_012_2(r.Rooms)
     EntityPickMode r\Objects[1], 1, False
     EntityRadius r\Objects[1], 0.1
     
-    r\Objects[2] = LoadMesh("GFX\map\room012_2.b3d")
+    r\Objects[2] = LoadMesh("GFX/map/room012_2.b3d")
     ScaleEntity r\Objects[2], RoomScale, RoomScale, RoomScale
     PositionEntity(r\Objects[2], r\x - 360 * RoomScale, - 130 * RoomScale, r\z + 456.0 * RoomScale, 0)
     EntityParent(r\Objects[2], r\obj)
@@ -45,8 +45,8 @@ Function FillRoom_cont_012_2(r.Rooms)
     EntityParent(r\Objects[3], r\obj)
     HideEntity r\Objects[3]
     
-    r\Objects[4] = LoadMesh("GFX\map\room012_3.b3d")
-    tex=LoadTexture("GFX\map\Textures\scp-012_0.jpg")
+    r\Objects[4] = LoadMesh("GFX/map/room012_3.b3d")
+    tex=LoadTexture("GFX/map/Textures/scp-012_0.jpg")
     EntityTexture r\Objects[4],tex, 0,1
     ScaleEntity r\Objects[4], RoomScale, RoomScale, RoomScale
     PositionEntity(r\Objects[4], r\x - 360 * RoomScale, - 130 * RoomScale, r\z + 456.0 * RoomScale, 0)
@@ -90,11 +90,11 @@ Function UpdateEvent_cont_012_2(e.Events)
 			EndIf
 		Else
 			
-			If (e\sounds[0] = 0) Then LoadEventSound(e,"SFX\Music\012Golgotha.ogg")
+			If (e\sounds[0] = 0) Then LoadEventSound(e,"SFX/Music/012Golgotha.ogg")
 			e\soundChannels[0] = LoopRangedSound(e\sounds[0], e\soundChannels[0], mainPlayer\cam, e\room\Objects[3], 5.0)
 			
 			; TODO: Move to musicmanager.
-			;If (e\sounds[1] = 0) Then LoadEventSound(e, "SFX\Music\012.ogg", 1)
+			;If (e\sounds[1] = 0) Then LoadEventSound(e, "SFX/Music/012.ogg", 1)
 			
 			If e\EventState<90 Then e\EventState=CurveValue(90,e\EventState,500)
 			PositionEntity e\room\Objects[2], EntityX(e\room\Objects[2],True),(-130-448*Sin(e\EventState))*RoomScale,EntityZ(e\room\Objects[2],True),True
@@ -162,42 +162,42 @@ Function UpdateEvent_cont_012_2(e.Events)
 					If dist < 0.6 Then
 						e\EventState3=Min(e\EventState3+timing\tickDuration,86*70)
 						If e\EventState3>70 And e\EventState3-timing\tickDuration=<70 Then
-							PlaySound2 LoadTempSound("SFX\SCP\012\Speech1.ogg")
+							PlaySound2 LoadTempSound("SFX/SCP/012/Speech1.ogg")
 						ElseIf e\EventState3>13*70 And e\EventState3-timing\tickDuration=<13*70
 							Msg="You start pushing your nails into your wrist, drawing blood."
 							MsgTimer = 7*70
 							mainPlayer\injuries=mainPlayer\injuries+0.5
-							PlaySound2 LoadTempSound("SFX\SCP\012\Speech2.ogg")
+							PlaySound2 LoadTempSound("SFX/SCP/012/Speech2.ogg")
 						ElseIf e\EventState3>31*70 And e\EventState3-timing\tickDuration=<31*70
-							tex = LoadTexture("GFX\map\Textures\scp-012_1.jpg")
+							tex = LoadTexture("GFX/map/Textures/scp-012_1.jpg")
 							EntityTexture (e\room\Objects[4], tex,0,1)
 							FreeTexture tex
 							
 							Msg="You tear open your left wrist and start writing on the composition with your blood."
 							MsgTimer = 7*70
 							mainPlayer\injuries=Max(mainPlayer\injuries,1.5)
-							PlaySound2 LoadTempSound("SFX\SCP\012\Speech"+Rand(3,4)+".ogg")
+							PlaySound2 LoadTempSound("SFX/SCP/012/Speech"+Rand(3,4)+".ogg")
 						ElseIf e\EventState3>49*70 And e\EventState3-timing\tickDuration=<49*70
 							Msg="You push your fingers deeper into the wound."
 							MsgTimer = 8*70
 							mainPlayer\injuries=mainPlayer\injuries+0.3
-							PlaySound2 LoadTempSound("SFX\SCP\012\Speech5.ogg")
+							PlaySound2 LoadTempSound("SFX/SCP/012/Speech5.ogg")
 						ElseIf e\EventState3>63*70 And e\EventState3-timing\tickDuration=<63*70
-							tex = LoadTexture("GFX\map\Textures\scp-012_2.jpg")
+							tex = LoadTexture("GFX/map/Textures/scp-012_2.jpg")
 							EntityTexture (e\room\Objects[4], tex,0,1)	
 							FreeTexture tex
 							
 							mainPlayer\injuries=mainPlayer\injuries+0.5
-							PlaySound2 LoadTempSound("SFX\SCP\012\Speech6.ogg")
+							PlaySound2 LoadTempSound("SFX/SCP/012/Speech6.ogg")
 						ElseIf e\EventState3>74*70 And e\EventState3-timing\tickDuration=<74*70
-							tex = LoadTexture("GFX\map\Textures\scp-012_3.jpg")
+							tex = LoadTexture("GFX/map/Textures/scp-012_3.jpg")
 							EntityTexture (e\room\Objects[4], tex,0,1)
 							FreeTexture tex
 							
 							Msg="You rip the wound wide open. Grabbing scoops of blood pouring out."
 							MsgTimer = 7*70
 							mainPlayer\injuries=mainPlayer\injuries+0.8
-							PlaySound2 LoadTempSound("SFX\SCP\012\Speech7.ogg")
+							PlaySound2 LoadTempSound("SFX/SCP/012/Speech7.ogg")
 							mainPlayer\crouching = True
 							
 							de.Decals = CreateDecal(17,  EntityX(mainPlayer\collider), -768*RoomScale+0.01, EntityZ(mainPlayer\collider),90,Rnd(360),0)

@@ -34,8 +34,8 @@ Function UpdateEventEndroom106(e.Events)
 					
 					e\room\NPC[0]=CreateNPC(NPCtypeD, EntityX(e\room\RoomDoors[0]\obj,True), 0.5, EntityZ(e\room\RoomDoors[0]\obj,True))
 					
-					tex = LoadTexture("GFX\npcs\janitor.jpg")
-					e\room\NPC[0]\texture = "GFX\npcs\janitor.jpg"
+					tex = LoadTexture("GFX/npcs/janitor.jpg")
+					e\room\NPC[0]\texture = "GFX/npcs/janitor.jpg"
 					EntityTexture e\room\NPC[0]\obj, tex
 					FreeTexture tex
 					
@@ -44,7 +44,7 @@ Function UpdateEventEndroom106(e.Events)
 					MoveEntity e\room\NPC[0]\Collider, 0,0,0.5 
 					
 					e\room\RoomDoors[0]\open = False
-					PlayRangedSound(LoadTempSound("SFX\Door\EndroomDoor.ogg"), mainPlayer\cam, e\room\obj, 15)
+					PlayRangedSound(LoadTempSound("SFX/Door/EndroomDoor.ogg"), mainPlayer\cam, e\room\obj, 15)
 					
 					e\EventState = 1							
 				EndIf
@@ -57,12 +57,12 @@ Function UpdateEventEndroom106(e.Events)
 				e\room\NPC[0]\State = 1
 				e\EventState = 2
 				
-				e\sounds[0] = LoadSound("SFX\Character\Janitor\106Abduct.ogg")
+				e\sounds[0] = LoadSound("SFX/Character/Janitor/106Abduct.ogg")
 				PlaySound2(e\sounds[0])		
 				
 				If e\soundChannels[0]<>0 Then StopChannel e\soundChannels[0]
 			ElseIf e\room\dist < 8
-				If e\sounds[0] = 0 Then e\sounds[0] = LoadSound("SFX\Character\Janitor\Idle.ogg")
+				If e\sounds[0] = 0 Then e\sounds[0] = LoadSound("SFX/Character/Janitor/Idle.ogg")
 				e\soundChannels[0] = LoopRangedSound(e\sounds[0], e\soundChannels[0], mainPlayer\cam, e\room\NPC[0]\obj, 15.0)
 			EndIf
 		ElseIf e\EventState = 2

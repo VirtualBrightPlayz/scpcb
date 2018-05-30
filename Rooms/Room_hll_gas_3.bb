@@ -40,16 +40,16 @@ Function UpdateEventRoom3pitduck(e.Events)
 	;[Block]
 	If mainPlayer\currRoom = e\room Then
 		If e\room\Objects[2] = 0 Then
-			e\room\Objects[2] =	LoadMesh("GFX\npcs\duck_low_res.b3d")
+			e\room\Objects[2] =	LoadMesh("GFX/npcs/duck_low_res.b3d")
 			ScaleEntity(e\room\Objects[2], 0.07, 0.07, 0.07)
-			tex = LoadTexture("GFX\npcs\duck1.png")
+			tex = LoadTexture("GFX/npcs/duck1.png")
 			EntityTexture e\room\Objects[2], tex
 			FreeTexture tex
 			PositionEntity (e\room\Objects[2], EntityX(e\room\Objects[0],True), EntityY(e\room\Objects[0],True), EntityZ(e\room\Objects[0],True))
 			PointEntity e\room\Objects[2], e\room\obj
 			RotateEntity(e\room\Objects[2], 0, EntityYaw(e\room\Objects[2],True),0, True)
 			
-			LoadEventSound(e,"SFX\SCP\Joke\Saxophone.ogg")
+			LoadEventSound(e,"SFX/SCP/Joke/Saxophone.ogg")
 		Else
 			If EntityInView(e\room\Objects[2],mainPlayer\cam)=False Then
 				e\EventState = e\EventState + timing\tickDuration
@@ -83,11 +83,11 @@ Function UpdateEventRoom3pit1048(e.Events)
 	;[Block]
 	If mainPlayer\currRoom = e\room Then
 		If e\room\Objects[2] = 0 Then
-			e\room\Objects[2] =	LoadAnimMesh("GFX\npcs\scp-1048pp.b3d")
+			e\room\Objects[2] =	LoadAnimMesh("GFX/npcs/scp-1048pp.b3d")
 			ScaleEntity e\room\Objects[2], 0.05,0.05,0.05
 			SetAnimTime(e\room\Objects[2], 414)
 			
-			Local imgPath$ = "GFX\items\1048\1048_"+Rand(1,20)+".jpg"
+			Local imgPath$ = "GFX/items/1048/1048_"+Rand(1,20)+".jpg"
 			
 			Local itt.ItemTemplates
 			For itt.ItemTemplates = Each ItemTemplates
@@ -123,7 +123,7 @@ Function UpdateEventRoom3pit1048(e.Events)
 			
 			PositionEntity (e\room\Objects[2], EntityX(e\room\Objects[0],True), EntityY(e\room\Objects[0],True), EntityZ(e\room\Objects[0],True))
 			
-			;e\sounds[0] = LoadSound("SFX\SCP\Joke\Saxophone.ogg")
+			;e\sounds[0] = LoadSound("SFX/SCP/Joke/Saxophone.ogg")
 		Else
 			PointEntity e\room\Objects[2], mainPlayer\collider
 			RotateEntity(e\room\Objects[2], -90, EntityYaw(e\room\Objects[2],True),0, True)

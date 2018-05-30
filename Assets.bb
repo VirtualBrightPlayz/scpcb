@@ -3,14 +3,14 @@ Const ASSET_TEXTURE% = 1
 Const ASSET_ENTITY%  = 2
 
 Type AssetWrap
-	Field flag%
+	Field asType%
 	Field grabCount%
 	Field file$
 	Field intVal%
 End Type
 
 Function FreeAss(as.AssetWrap)
-	Select as\flag
+	Select as\asType
 		Case ASSET_TEXTURE
 			FreeTexture(as\intVal)
 		Case ASSET_ENTITY
@@ -20,6 +20,9 @@ Function FreeAss(as.AssetWrap)
 	Delete as
 End Function
 
+Const HAND_ICON_TOUCH% = 0
+Const HAND_ICON_GRAB% = 1
+
 Type UIAssets
 	;Misc. Interface
 	Field back%
@@ -27,11 +30,23 @@ Type UIAssets
 	Field tileWhite%
 	Field tileBlack%
 	Field scp173%
+	
+	Field pauseMenuBG%
+	
+	Field cursorIMG%
 	Field arrow%[4]
+	
 	Field font%[4]
-	Field ConsoleFont%
+	Field consoleFont%
 	
 	;HUD
+	Field sprintIcon%
+	Field blinkIcon%
+	Field crouchIcon%
+	Field handIcon%[2]
+	Field blinkBar%
+	Field staminaBar%
+	Field keypadHUD%
 	
 End Type
 
@@ -39,20 +54,26 @@ Global uiAssets.UIAssets
 Function InitializeUIAssets()
 	uiAssets = New UIAssets
 	
-	uiAssets\back = LoadImage("GFX\menu\back.jpg")
-	uiAssets\scpText = LoadImage("GFX\menu\scptext.jpg")
-	uiAssets\scp173 = LoadImage("GFX\menu\173back.jpg")
-	uiAssets\tileWhite = LoadImage("GFX\menu\menuwhite.jpg")
-	uiAssets\tileBlack = LoadImage("GFX\menu\menublack.jpg")
+	uiAssets\back = LoadImage("GFX/menu/back.jpg")
+	uiAssets\scpText = LoadImage("GFX/menu/scptext.jpg")
+	uiAssets\scp173 = LoadImage("GFX/menu/173back.jpg")
+	uiAssets\tileWhite = LoadImage("GFX/menu/menuwhite.jpg")
+	uiAssets\tileBlack = LoadImage("GFX/menu/menublack.jpg")
 	MaskImage uiAssets\tileBlack, 255,255,0
 	
 	ResizeImage(uiAssets\back, ImageWidth(uiAssets\back) * MenuScale, ImageHeight(uiAssets\back) * MenuScale)
 	ResizeImage(uiAssets\scpText, ImageWidth(uiAssets\scpText) * MenuScale, ImageHeight(uiAssets\scpText) * MenuScale)
 	ResizeImage(uiAssets\scp173, ImageWidth(uiAssets\scp173) * MenuScale, ImageHeight(uiAssets\scp173) * MenuScale)
 	
+	uiAssets\pauseMenuBG = LoadImage("GFX/menu/pausemenu.jpg")
+	MaskImage uiAssets\pauseMenuBG, 255,255,0
+	ScaleImage(uiAssets\pauseMenuBG, MenuScale, MenuScale)
+	
+	uiAssets\cursorIMG = LoadImage("GFX/cursor.png")
+	
 	Local i%
 	For i = 0 To 3
-		uiAssets\arrow[i] = LoadImage("GFX\menu\arrow.png")
+		uiAssets\arrow[i] = LoadImage("GFX/menu/arrow.png")
 		RotateImage(uiAssets\arrow[i], 90 * i)
 		HandleImage(uiAssets\arrow[i], 0, 0)
 	Next
@@ -61,11 +82,21 @@ Function InitializeUIAssets()
 	;don't match their "internal name" (i.e. their display name in applications
 	;like Word and such). As a workaround, I moved the files and renamed them so they
 	;can load without FastText.
-	uiAssets\font[0] = LoadFont("GFX\font\cour\Courier New.ttf", Int(18 * MenuScale), 0,0,0)
-	uiAssets\font[1] = LoadFont("GFX\font\courbd\Courier New.ttf", Int(58 * MenuScale), 0,0,0)
-	uiAssets\font[2] = LoadFont("GFX\font\DS-DIGI\DS-Digital.ttf", Int(22 * MenuScale), 0,0,0)
-	uiAssets\font[3] = LoadFont("GFX\font\DS-DIGI\DS-Digital.ttf", Int(60 * MenuScale), 0,0,0)
+	uiAssets\font[0] = LoadFont("GFX/font/cour/Courier New.ttf", Int(18 * MenuScale), 0,0,0)
+	uiAssets\font[1] = LoadFont("GFX/font/courbd/Courier New.ttf", Int(58 * MenuScale), 0,0,0)
+	uiAssets\font[2] = LoadFont("GFX/font/DS-DIGI/DS-Digital.ttf", Int(22 * MenuScale), 0,0,0)
+	uiAssets\font[3] = LoadFont("GFX/font/DS-DIGI/DS-Digital.ttf", Int(60 * MenuScale), 0,0,0)
 	uiAssets\ConsoleFont% = LoadFont("Blitz", Int(20 * MenuScale), 0,0,0)
+	
+	uiAssets\sprintIcon = LoadImage("GFX/sprinticon.png")
+	uiAssets\blinkIcon% = LoadImage("GFX/blinkicon.png")
+	uiAssets\crouchIcon% = LoadImage("GFX/sneakicon.png")
+	uiAssets\handIcon[HAND_ICON_TOUCH] = LoadImage("GFX/handsymbol.png")
+	uiAssets\handIcon[HAND_ICON_GRAB] = LoadImage("GFX/handsymbol2.png")
+	uiAssets\blinkBar = LoadImage("GFX/blinkmeter.jpg")
+	uiAssets\staminaBar = LoadImage("GFX/staminameter.jpg")
+	uiAssets\keypadHUD = LoadImage("GFX/keypadhud.jpg")
+	MaskImage(uiAssets\keypadHUD, 255,0,255)
 End Function
 
 Function ReleaseUIAssets()
@@ -74,6 +105,10 @@ Function ReleaseUIAssets()
 	FreeImage(uiAssets\scp173)
 	FreeImage(uiAssets\tileWhite)
 	FreeImage(uiAssets\tileBlack)
+	
+	FreeImage(uiAssets\pauseMenuBG)
+	
+	FreeImage(uiAssets\cursorIMG)
 	
 	Local i%
 	For i = 0 To 3
@@ -84,6 +119,16 @@ Function ReleaseUIAssets()
 		FreeFont(uiAssets\font[i])
 	Next
 	FreeFont(uiAssets\ConsoleFont)
+	
+	FreeImage(uiAssets\sprintIcon)
+	FreeImage(uiAssets\blinkIcon)
+	FreeImage(uiAssets\crouchIcon)
+	For i = 0 To 1
+		FreeImage(uiAssets\handIcon[i])
+	Next
+	FreeImage(uiAssets\blinkBar)
+	FreeImage(uiAssets\staminaBar)
+	FreeImage(uiAssets\keypadHUD)
 	
 	Delete uiAssets
 End Function
@@ -131,16 +176,16 @@ Function LoadEntities()
 	;Listener = CreateListener(mainPlayer\cam)
 	
 	DrawLoading(5)
-	TeslaTexture = LoadTexture("GFX\map\Textures\tesla.jpg", 1+2)
+	TeslaTexture = LoadTexture("GFX/map/tesla.jpg", 1+2)
 	
-	LiquidObj = LoadMesh("GFX\items\cupliquid.x") ;optimized the cups dispensed by 294
+	LiquidObj = LoadMesh("GFX/items/cupliquid.x") ;optimized the cups dispensed by 294
 	HideEntity LiquidObj
 	
-	MTFObj = LoadAnimMesh("GFX\npcs\MTF2.b3d") ;optimized MTFs
-	;GuardTex = LoadTexture("GFX\npcs\body.jpg") ;optimized the guards even more
+	MTFObj = LoadAnimMesh("GFX/npcs/MTF2.b3d") ;optimized MTFs
+	;GuardTex = LoadTexture("GFX/npcs/body.jpg") ;optimized the guards even more
 	
 	;If BumpEnabled Then
-	;	bump1 = LoadTexture("GFX\npcs\mtf_newnormal01.png")
+	;	bump1 = LoadTexture("GFX/npcs/mtf_newnormal01.png")
 	;	;TextureBlend bump1, FE_BUMP ;USE DOT3
 	;		
 	;	For i = 2 To CountSurfaces(MTFObj)
@@ -163,47 +208,47 @@ Function LoadEntities()
 	
 	
 	
-	ClassDObj = LoadAnimMesh("GFX\npcs\classd.b3d") ;optimized Class-D's and scientists/researchers
+	ClassDObj = LoadAnimMesh("GFX/npcs/classd.b3d") ;optimized Class-D's and scientists/researchers
 	
 	HideEntity MTFObj
 	HideEntity ClassDObj
 	
-	LightSpriteTex(0) = LoadTexture("GFX\light1.jpg", 1)
-	LightSpriteTex(1) = LoadTexture("GFX\light2.jpg", 1)
-	LightSpriteTex(2) = LoadTexture("GFX\lightsprite.jpg",1)
+	LightSpriteTex(0) = LoadTexture("GFX/light1.jpg", 1)
+	LightSpriteTex(1) = LoadTexture("GFX/light2.jpg", 1)
+	LightSpriteTex(2) = LoadTexture("GFX/lightsprite.jpg",1)
 	
 	DrawLoading(10)
 	
-	DoorOBJ = LoadMesh("GFX\map\door01.x")
+	DoorOBJ = LoadMesh("GFX/map/door01.x")
 	HideEntity DoorOBJ
-	DoorFrameOBJ = LoadMesh("GFX\map\doorframe.x")
+	DoorFrameOBJ = LoadMesh("GFX/map/doorframe.x")
 	HideEntity DoorFrameOBJ
 	
-	HeavyDoorObj(0) = LoadMesh("GFX\map\heavydoor1.x")
+	HeavyDoorObj(0) = LoadMesh("GFX/map/heavydoor1.x")
 	HideEntity HeavyDoorObj(0)
-	HeavyDoorObj(1) = LoadMesh("GFX\map\heavydoor2.x")
+	HeavyDoorObj(1) = LoadMesh("GFX/map/heavydoor2.x")
 	HideEntity HeavyDoorObj(1)
 	
-	DoorColl = LoadMesh("GFX\map\doorcoll.x")
+	DoorColl = LoadMesh("GFX/map/doorcoll.x")
 	HideEntity DoorColl
 	
-	ButtonOBJ = LoadMesh("GFX\map\Button.x")
+	ButtonOBJ = LoadMesh("GFX/map/Button.x")
 	HideEntity ButtonOBJ
-	ButtonKeyOBJ = LoadMesh("GFX\map\ButtonKeycard.x")
+	ButtonKeyOBJ = LoadMesh("GFX/map/ButtonKeycard.x")
 	HideEntity ButtonKeyOBJ
-	ButtonCodeOBJ = LoadMesh("GFX\map\ButtonCode.x")
+	ButtonCodeOBJ = LoadMesh("GFX/map/ButtonCode.x")
 	HideEntity ButtonCodeOBJ	
-	ButtonScannerOBJ = LoadMesh("GFX\map\ButtonScanner.x")
+	ButtonScannerOBJ = LoadMesh("GFX/map/ButtonScanner.x")
 	HideEntity ButtonScannerOBJ	
 	
-	BigDoorOBJ(0) = LoadMesh("GFX\map\ContDoorLeft.x")
+	BigDoorOBJ(0) = LoadMesh("GFX/map/ContDoorLeft.x")
 	HideEntity BigDoorOBJ(0)
-	BigDoorOBJ(1) = LoadMesh("GFX\map\ContDoorRight.x")
+	BigDoorOBJ(1) = LoadMesh("GFX/map/ContDoorRight.x")
 	HideEntity BigDoorOBJ(1)
 	
-	LeverBaseOBJ = LoadMesh("GFX\map\leverbase.x")
+	LeverBaseOBJ = LoadMesh("GFX/map/leverbase.x")
 	HideEntity LeverBaseOBJ
-	LeverOBJ = LoadMesh("GFX\map\leverhandle.x")
+	LeverOBJ = LoadMesh("GFX/map/leverhandle.x")
 	HideEntity LeverOBJ
 	
 	;For i = 0 To 1
@@ -211,9 +256,9 @@ Function LoadEntities()
 	;	;If BumpEnabled And 0 Then
 	;	If BumpEnabled
 	;		
-	;		Local bumptex = LoadTexture("GFX\map\containmentdoorsbump.jpg")
+	;		Local bumptex = LoadTexture("GFX/map/containmentdoorsbump.jpg")
 	;		;TextureBlend bumptex, FE_BUMP
-	;		Local tex = LoadTexture("GFX\map\containment_doors.jpg")	
+	;		Local tex = LoadTexture("GFX/map/containment_doors.jpg")	
 	;		EntityTexture BigDoorOBJ(i), bumptex, 0, 0
 	;		EntityTexture BigDoorOBJ(i), tex, 0, 1
 	;		
@@ -227,49 +272,49 @@ Function LoadEntities()
 	DrawLoading(15)
 	
 	For i = 0 To 5
-		GorePics(i) = LoadTexture("GFX\895pics\pic" + (i + 1) + ".jpg")
+		GorePics(i) = LoadTexture("GFX/895pics/pic" + (i + 1) + ".jpg")
 	Next
 	
-	OldAiPics(0) = LoadTexture("GFX\AIface.jpg")
-	OldAiPics(1) = LoadTexture("GFX\AIface2.jpg")	
+	OldAiPics(0) = LoadTexture("GFX/AIface.jpg")
+	OldAiPics(1) = LoadTexture("GFX/AIface2.jpg")	
 	
 	DrawLoading(20)
 	
 	For i = 0 To 6
-		DecalTextures(i) = LoadTexture("GFX\decal" + (i + 1) + ".png", 1 + 2)
+		DecalTextures(i) = LoadTexture("GFX/decal" + (i + 1) + ".png", 1 + 2)
 	Next
-	DecalTextures(7) = LoadTexture("GFX\items\INVpaperstrips.jpg", 1 + 2)
+	DecalTextures(7) = LoadTexture("GFX/items/INVpaperstrips.jpg", 1 + 2)
 	For i = 8 To 12
-		DecalTextures(i) = LoadTexture("GFX\decalpd"+(i-7)+".jpg", 1 + 2)	
+		DecalTextures(i) = LoadTexture("GFX/decalpd"+(i-7)+".jpg", 1 + 2)	
 	Next
 	For i = 13 To 14
-		DecalTextures(i) = LoadTexture("GFX\bullethole"+(i-12)+".jpg", 1 + 2)	
+		DecalTextures(i) = LoadTexture("GFX/bullethole"+(i-12)+".jpg", 1 + 2)	
 	Next	
 	For i = 15 To 16
-		DecalTextures(i) = LoadTexture("GFX\blooddrop"+(i-14)+".png", 1 + 2)	
+		DecalTextures(i) = LoadTexture("GFX/blooddrop"+(i-14)+".png", 1 + 2)	
 	Next
-	DecalTextures(17) = LoadTexture("GFX\decal8.png", 1 + 2)	
-	DecalTextures(18) = LoadTexture("GFX\decalpd6.dc", 1 + 2)	
-	DecalTextures(19) = LoadTexture("GFX\decal19.png", 1 + 2)
+	DecalTextures(17) = LoadTexture("GFX/decal8.png", 1 + 2)	
+	DecalTextures(18) = LoadTexture("GFX/decalpd6.dc", 1 + 2)	
+	DecalTextures(19) = LoadTexture("GFX/decal19.png", 1 + 2)
 	
 	DrawLoading(25)
 	
-	Monitor = LoadMesh("GFX\map\monitor.b3d")
+	Monitor = LoadMesh("GFX/map/monitor.b3d")
 	HideEntity Monitor
-	MonitorTexture = LoadTexture("GFX\monitortexture.jpg")
+	MonitorTexture = LoadTexture("GFX/monitortexture.jpg")
 	
-	CamBaseOBJ = LoadMesh("GFX\map\cambase.x")
+	CamBaseOBJ = LoadMesh("GFX/map/cambase.x")
 	HideEntity(CamBaseOBJ)
-	CamOBJ = LoadMesh("GFX\map\CamHead.b3d")
+	CamOBJ = LoadMesh("GFX/map/CamHead.b3d")
 	HideEntity(CamOBJ)
 	
-	Monitor2 = LoadMesh("GFX\map\monitor_checkpoint.b3d")
+	Monitor2 = LoadMesh("GFX/map/monitor_checkpoint.b3d")
 	HideEntity Monitor2
-	Monitor3 = LoadMesh("GFX\map\monitor_checkpoint.b3d")
+	Monitor3 = LoadMesh("GFX/map/monitor_checkpoint.b3d")
 	HideEntity Monitor3
-	MonitorTexture2 = LoadTexture("GFX\map\LockdownScreen2.jpg")
-	MonitorTexture3 = LoadTexture("GFX\map\LockdownScreen.jpg")
-	MonitorTexture4 = LoadTexture("GFX\map\LockdownScreen3.jpg")
+	MonitorTexture2 = LoadTexture("GFX/map/LockdownScreen2.jpg")
+	MonitorTexture3 = LoadTexture("GFX/map/LockdownScreen.jpg")
+	MonitorTexture4 = LoadTexture("GFX/map/LockdownScreen3.jpg")
 	MonitorTextureOff = CreateTexture(1,1)
 	SetBuffer TextureBuffer(MonitorTextureOff)
 	ClsColor 0,0,0
@@ -311,22 +356,22 @@ Function LoadEntities()
 	
 	InitItemTemplates()
 	
-	ParticleTextures(0) = LoadTexture("GFX\smoke.png", 1 + 2)
-	ParticleTextures(1) = LoadTexture("GFX\flash.jpg", 1 + 2)
-	ParticleTextures(2) = LoadTexture("GFX\dust.jpg", 1 + 2)
-	ParticleTextures(3) = LoadTexture("GFX\npcs\hg.pt", 1 + 2)
-	ParticleTextures(4) = LoadTexture("GFX\map\sun.jpg", 1 + 2)
-	ParticleTextures(5) = LoadTexture("GFX\bloodsprite.png", 1 + 2)
-	ParticleTextures(6) = LoadTexture("GFX\smoke2.png", 1 + 2)
-	ParticleTextures(7) = LoadTexture("GFX\spark.jpg", 1 + 2)
+	ParticleTextures(0) = LoadTexture("GFX/smoke.png", 1 + 2)
+	ParticleTextures(1) = LoadTexture("GFX/flash.jpg", 1 + 2)
+	ParticleTextures(2) = LoadTexture("GFX/dust.jpg", 1 + 2)
+	ParticleTextures(3) = LoadTexture("GFX/npcs/hg.pt", 1 + 2)
+	ParticleTextures(4) = LoadTexture("GFX/map/sun.jpg", 1 + 2)
+	ParticleTextures(5) = LoadTexture("GFX/bloodsprite.png", 1 + 2)
+	ParticleTextures(6) = LoadTexture("GFX/smoke2.png", 1 + 2)
+	ParticleTextures(7) = LoadTexture("GFX/spark.jpg", 1 + 2)
 	
-	LoadMaterials("DATA\materials.ini")
+	LoadMaterials("DATA/materials.ini")
 	
 	;TextureLodBias TextureFloat#
 	
 	DrawLoading(30)
 	
-	LoadRoomTemplates("Data\rooms.ini")
+	LoadRoomTemplates("Data/rooms.ini")
 	
 	;LoadRoomMeshes()
 	
@@ -352,7 +397,7 @@ Function InitNewGame()
 	If SelectedMap = "" Then
 		CreateMap()
 	Else
-		LoadMap("Map Creator\Maps\"+SelectedMap)
+		LoadMap("Map Creator/Maps/"+SelectedMap)
 	EndIf
 	InitWayPoints()
 	
@@ -564,17 +609,17 @@ Function InitLoadGame()
 				;[Block]
 				DrawLoading(91)
 				e\room\Objects[0] = CreatePlane()
-				Local planetex% = LoadTexture("GFX\map\Rooms\dimension1499\grit3.jpg")
+				Local planetex% = LoadTexture("GFX/map/dimension1499/grit3.jpg")
 				EntityTexture e\room\Objects[0],planetex%
 				FreeTexture planetex%
 				PositionEntity e\room\Objects[0],0,EntityY(e\room\obj),0
 				EntityType e\room\Objects[0],HIT_MAP
 				;EntityParent e\room\Objects[0],e\room\obj
 				DrawLoading(92)
-				NTF_1499Sky = sky_CreateSky("GFX\map\sky\1499sky")
+				NTF_1499Sky = sky_CreateSky("GFX/map/sky/1499sky")
 				DrawLoading(93)
 				For i = 1 To 15
-					e\room\Objects[i] = LoadMesh("GFX\map\Rooms\dimension1499\1499object"+i+".b3d")
+					e\room\Objects[i] = LoadMesh("GFX/map/dimension1499/1499object"+i+".b3d")
 					HideEntity e\room\Objects[i]
 				Next
 				DrawLoading(96)
@@ -586,7 +631,7 @@ Function InitLoadGame()
 				For i = -2 To 2 Step 2
 					ch = CreateChunk(-1,x#*(i*2.5),EntityY(e\room\obj),z#)
 				Next
-				;If Music(18)=0 Then Music(18) = LoadSound("SFX\Music\1499.ogg") ;TODO: fix
+				;If Music(18)=0 Then Music(18) = LoadSound("SFX/Music/1499.ogg") ;TODO: fix
 				DrawLoading(98)
 				UpdateChunks(e\room,15,False)
 				;MoveEntity mainPlayer\collider,0,10,0

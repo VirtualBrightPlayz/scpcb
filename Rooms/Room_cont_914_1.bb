@@ -14,8 +14,8 @@ Function FillRoom_cont_914_1(r.Rooms)
     PositionEntity (r\RoomDoors[2]\buttons[0], r\x - 496.0 * RoomScale, 0.7, r\z - 272.0 * RoomScale, True)
     TurnEntity(r\RoomDoors[2]\buttons[0], 0, 90, 0)
     
-    r\Objects[0] = LoadMesh("GFX\map\914key.x")
-    r\Objects[1] = LoadMesh("GFX\map\914knob.x")
+    r\Objects[0] = LoadMesh("GFX/map/914key.x")
+    r\Objects[1] = LoadMesh("GFX/map/914knob.x")
     
     For  i% = 0 To 1
         ScaleEntity(r\Objects[i], RoomScale, RoomScale, RoomScale)
@@ -91,7 +91,7 @@ Function Use914(item.Items, setting$, x#, y#, z#)
 				Case "very fine"
 					n.NPCs = CreateNPC(NPCtype1499,x,y,z)
 					n\state = 1
-					n\sounds[0] = LoadSound("SFX\SCP\1499\Triggered.ogg")
+					n\sounds[0] = LoadSound("SFX/SCP/1499/Triggered.ogg")
 					n\soundChannels[0] = PlayRangedSound(n\sounds[0], mainPlayer\cam, n\collider,20.0)
 					n\state3 = 1
 					RemoveItem(item)
@@ -395,7 +395,7 @@ Function Use914(item.Items, setting$, x#, y#, z#)
 		Case "SCP-513"
 			Select setting
 				Case "rough", "coarse"
-					PlaySound2 LoadTempSound("SFX\SCP\513\914Refine.ogg")
+					PlaySound2 LoadTempSound("SFX/SCP/513/914Refine.ogg")
 					For n.npcs = Each NPCs
 						If n\npctype = NPCtype5131 Then RemoveNPC(n)
 					Next
@@ -547,9 +547,9 @@ Function UpdateEvent_cont_914_1(e.Events)
 	;[Block]
 	If mainPlayer\currRoom = e\room Then
 		If (Not e\loaded) Then
-			e\sounds[0] = LoadSound("SFX\SCP\914\Refining.ogg")
-			e\sounds[1] = LoadSound("SFX\SCP\914\PlayerUse.ogg")
-			e\sounds[2] = LoadSound("SFX\SCP\914\PlayerDeath.ogg")
+			e\sounds[0] = LoadSound("SFX/SCP/914/Refining.ogg")
+			e\sounds[1] = LoadSound("SFX/SCP/914/PlayerUse.ogg")
+			e\sounds[2] = LoadSound("SFX/SCP/914/PlayerDeath.ogg")
 
 			e\loaded = True
 		EndIf

@@ -27,7 +27,7 @@ Function UpdateEventTunnel2smoke(e.Events)
 	;[Block]
 	If mainPlayer\currRoom = e\room Then
 		If e\room\dist < 3.5 Then
-			PlayRangedSound(LoadTempSound("SFX\SCP\914\PlayerUse.ogg"), mainPlayer\cam, e\room\obj) 
+			PlayRangedSound(LoadTempSound("SFX/SCP/914/PlayerUse.ogg"), mainPlayer\cam, e\room\obj) 
 			For i = 0 To 1
 				em.Emitters = CreateEmitter(EntityX(e\room\Objects[i],True),EntityY(e\room\Objects[i],True), EntityZ(e\room\Objects[i],True),0)
 				TurnEntity(em\Obj, 90, 0, 0, True)
@@ -85,11 +85,11 @@ Function UpdateEvent_tnnl_elec_2(e.Events)
 				If e\EventState > 30 Then 
 					;LightBlink = 1.0 
 					If e\EventState-timing\tickDuration =< 30 Then 
-						PlaySound2 LoadTempSound("SFX\ambient\general\ambient3.ogg")
+						PlaySound2 LoadTempSound("SFX/ambient/general/ambient3.ogg")
 					EndIf
 				EndIf
 				If e\EventState-timing\tickDuration =< 100 And e\EventState > 100 Then
-					PlaySound2 LoadTempSound("SFX\ambient\general\ambient6.ogg")
+					PlaySound2 LoadTempSound("SFX/ambient/general/ambient6.ogg")
 					PositionEntity(Curr173\Collider, EntityX(e\room\obj), 0.6, EntityZ(e\room\obj))
 					ResetEntity(Curr173\Collider)					
 					Curr173\Idle = True		

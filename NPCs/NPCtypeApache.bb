@@ -16,15 +16,15 @@ Function InitializeNPCtypeApache(n.NPCs)
     Next
 	
 	If (n\obj = 0) Then
-		n\obj = LoadAnimMesh("GFX\apache.b3d")
-		n\obj2 = LoadAnimMesh("GFX\apacherotor.b3d")
-		n\obj3 = LoadAnimMesh("GFX\apacherotor2.b3d")
+		n\obj = LoadAnimMesh("GFX/apache.b3d")
+		n\obj2 = LoadAnimMesh("GFX/apacherotor.b3d")
+		n\obj3 = LoadAnimMesh("GFX/apacherotor2.b3d")
 	EndIf
 	
     EntityParent(n\obj2, n\obj)
 	EntityParent(n\obj3, n\obj)
 	
-	n\sounds[0] = LoadSound("SFX\Character\Apache\Propeller.ogg")
+	n\sounds[0] = LoadSound("SFX/Character/Apache/Propeller.ogg")
     
 	Local i%
     For i = -1 To 1 Step 2
@@ -186,7 +186,7 @@ Function UpdateNPCtypeApache(n.NPCs)
                 
                 If EntityDistance(n\obj, target) <0.3 Then
                     If TempSound2 <> 0 Then FreeSound TempSound2 : TempSound2 = 0
-                    TempSound2 = LoadSound("SFX\Character\Apache\Crash"+Rand(1,2)+".ogg")
+                    TempSound2 = LoadSound("SFX/Character/Apache/Crash"+Rand(1,2)+".ogg")
                     mainPlayer\camShake = Max(mainPlayer\camShake, 3.0)
                     PlaySound2 TempSound2
                     n\state = 5

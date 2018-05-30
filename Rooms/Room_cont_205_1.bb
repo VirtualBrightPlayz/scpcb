@@ -60,10 +60,10 @@ Function UpdateEvent_cont_205_1(e.Events)
 		If e\EventState=0 Or e\room\Objects[0]=0 Then
 			If (Not e\loaded) Then
 				
-				e\room\Objects[3] = LoadAnimMesh("GFX\npcs\205_demon1.b3d")
-				e\room\Objects[4] = LoadAnimMesh("GFX\npcs\205_demon2.b3d")
-				e\room\Objects[5] = LoadAnimMesh("GFX\npcs\205_demon3.b3d")
-				e\room\Objects[6] = LoadAnimMesh("GFX\npcs\205_woman.b3d")
+				e\room\Objects[3] = LoadAnimMesh("GFX/npcs/205_demon1.b3d")
+				e\room\Objects[4] = LoadAnimMesh("GFX/npcs/205_demon2.b3d")
+				e\room\Objects[5] = LoadAnimMesh("GFX/npcs/205_demon3.b3d")
+				e\room\Objects[6] = LoadAnimMesh("GFX/npcs/205_woman.b3d")
 				
 				For i = 3 To 6
 				;EntityColor e\room\Objects[i], 30,30,30
@@ -89,7 +89,7 @@ Function UpdateEvent_cont_205_1(e.Events)
 			
 			If (e\EventState<65) Then
 				If (Distance(EntityX(mainPlayer\collider), EntityZ(mainPlayer\collider), EntityX(e\room\Objects[0],True), EntityZ(e\room\Objects[0],True))<2.0) Then
-					PlaySound2(LoadTempSound("SFX\SCP\205\Enter.ogg"))
+					PlaySound2(LoadTempSound("SFX/SCP/205/Enter.ogg"))
 					
 					e\EventState = Max(e\EventState, 65)
 					
@@ -129,7 +129,7 @@ Function UpdateEvent_cont_205_1(e.Events)
 					Animate2(e\room\Objects[6], AnimTime(e\room\Objects[6]), 228, 376, 0.2)
 					If e\EventState2 > 40*70 Then 
 						e\EventState = e\EventState+1
-						PlayRangedSound(LoadTempSound("SFX\SCP\205\Horror.ogg"), mainPlayer\cam, e\room\Objects[6], 10, 0.3)
+						PlayRangedSound(LoadTempSound("SFX/SCP/205/Horror.ogg"), mainPlayer\cam, e\room\Objects[6], 10, 0.3)
 					EndIf	
 				Case 7
 					;first demon appears
@@ -139,7 +139,7 @@ Function UpdateEvent_cont_205_1(e.Events)
 					;TurnEntity(e\room\Objects[6], 0.0, DeltaYaw(e\room\Objects[6], e\room\Objects[5])*0.01, 0.0, True)
 					If e\EventState2 > 60*70 Then 
 						e\EventState = e\EventState+1
-						PlayRangedSound(LoadTempSound("SFX\SCP\205\Horror.ogg"), mainPlayer\cam, e\room\Objects[6], 10, 0.5)
+						PlayRangedSound(LoadTempSound("SFX/SCP/205/Horror.ogg"), mainPlayer\cam, e\room\Objects[6], 10, 0.5)
 					EndIf
 				Case 9
 					;second demon appears
@@ -152,7 +152,7 @@ Function UpdateEvent_cont_205_1(e.Events)
 					
 					If e\EventState2 > 80*70 Then 
 						e\EventState = e\EventState+1
-						PlaySound2(LoadTempSound("SFX\SCP\205\Horror.ogg"))
+						PlaySound2(LoadTempSound("SFX/SCP/205/Horror.ogg"))
 					EndIf
 				Case 11
 					;third demon

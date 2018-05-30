@@ -20,7 +20,7 @@ Function FillRoom_off_lower_2(r.Rooms)
     it = CreateItem("S-NAV 300 Navigator", "nav", r\x - 336.0 * RoomScale, r\y - 48.0 * RoomScale, r\z - 480.0 * RoomScale)
     it\state = 28 : EntityParent(it\collider, r\obj)		
     
-    r\Objects[0] = LoadMesh("GFX\npcs\duck_low_res.b3d")
+    r\Objects[0] = LoadMesh("GFX/npcs/duck_low_res.b3d")
     ScaleEntity(r\Objects[0], 0.07, 0.07, 0.07)
     
     EntityParent(r\Objects[0], r\obj)

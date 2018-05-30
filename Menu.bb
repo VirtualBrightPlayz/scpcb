@@ -64,7 +64,7 @@ Global MainMenuTab%
 
 Global SelectedInputBox%
 
-Global SavePath$ = "Saves\"
+Global SavePath$ = "Saves/"
 Global SaveMSG$
 
 ;nykyisen tallennuksen nimi ja samalla missä kansiossa tallennustiedosto sijaitsee saves-kansiossa
@@ -294,7 +294,7 @@ Function UpdateMainMenu()
 						If SaveMSG = "" Then
 							If UpdateUIButton(x + 280 * MenuScale, y + 20 * MenuScale, 100 * MenuScale, 30 * MenuScale, "Load") Then
 								LoadEntities()
-								LoadGame(SavePath + SaveGames(i - 1) + "\")
+								LoadGame(SavePath + SaveGames(i - 1) + "/")
 								CurrSave = SaveGames(i - 1)
 								InitLoadGame()
 								CurrGameState = GAMESTATE_PLAYING
@@ -315,7 +315,7 @@ Function UpdateMainMenu()
 						x = userOptions\screenWidth / 2
 						y = userOptions\screenHeight / 2
 						If UpdateUIButton(x + 250 * MenuScale, y + 150 * MenuScale, 100 * MenuScale, 30 * MenuScale, "Yes") Then
-							DeleteFile(CurrentDir() + SavePath + SaveMSG + "\save.txt")
+							DeleteFile(CurrentDir() + SavePath + SaveMSG + "/save.txt")
 							DeleteDir(CurrentDir() + SavePath + SaveMSG)
 							SaveMSG = ""
 							LoadSaveGames()
@@ -1012,7 +1012,7 @@ Function DrawMainMenu()
 	
 	;DrawTiledImageRect(MenuBack, 985 * MenuScale, 860 * MenuScale, 200 * MenuScale, 20 * MenuScale, 1200 * MenuScale, 866 * MenuScale, 300, 20 * MenuScale)
 	
-	If userOptions\fullscreen Then DrawImage CursorIMG, MouseX(),MouseY()
+	If userOptions\fullscreen Then DrawImage uiAssets\cursorIMG, MouseX(),MouseY()
 	
 	SetFont uiAssets\font[0]
 End Function
@@ -1107,7 +1107,7 @@ Function DrawLoading(percent%, shortloading=False)
 		Local ls.LoadingScreens
 		For ls = Each LoadingScreens
 			If ls\ID = temp Then
-				If ls\img=0 Then ls\img = LoadImage("Loadingscreens\"+ls\imgpath)
+				If ls\img=0 Then ls\img = LoadImage("Loadingscreens/"+ls\imgpath)
 				SelectedLoadingScreen = ls 
 				Exit
 			EndIf
@@ -1163,7 +1163,7 @@ Function DrawLoading(percent%, shortloading=False)
 		
 		Rect(x, y, width+4, height, False)
 		For  i% = 1 To Int((width - 2) * (percent / 100.0) / 10)
-			DrawImage(BlinkMeterIMG, x + 3 + 10 * (i - 1), y + 3)
+			DrawImage(uiAssets\blinkBar, x + 3 + 10 * (i - 1), y + 3)
 		Next
 		
 		If SelectedLoadingScreen\title = "CWM" Then
@@ -1171,9 +1171,9 @@ Function DrawLoading(percent%, shortloading=False)
 			If Not shortloading Then 
 				If firstloop Then 
 					If percent = 0 Then
-						PlaySound2 LoadTempSound("SFX\SCP\990\cwm1.cwm")
+						PlaySound2 LoadTempSound("SFX/SCP/990/cwm1.cwm")
 					ElseIf percent = 100
-						PlaySound2 LoadTempSound("SFX\SCP\990\cwm2.cwm")
+						PlaySound2 LoadTempSound("SFX/SCP/990/cwm2.cwm")
 					EndIf
 				EndIf
 			EndIf
@@ -1473,7 +1473,7 @@ Function DrawSlideBar(x%, y%, width%, value#)
 	Color 255,255,255
 	Rect(x, y, width + 14, 20,False)
 	
-	DrawImage(BlinkMeterIMG, x + width * value / 100.0 +3, y+3)
+	DrawImage(uiAssets\blinkBar, x + width * value / 100.0 +3, y+3)
 	
 	Color 170,170,170 
 	Text (x - 50 * MenuScale, y + 4*MenuScale, "LOW")					

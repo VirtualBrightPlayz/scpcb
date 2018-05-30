@@ -43,13 +43,13 @@ Function FillRoom_cont_1123_2(r.Rooms)
     r\Objects[7] = CreatePivot(r\obj)
     PositionEntity(r\Objects[7], r\x - 640.0 * RoomScale, r\y + 620.0 * RoomScale, r\z - 864.0 * RoomScale, True)	
     
-    r\Objects[8] = LoadMesh("GFX\map\forest\door_frame.b3d")
+    r\Objects[8] = LoadMesh("GFX/map/forest/door_frame.b3d")
     PositionEntity r\Objects[8], r\x - 272.0 * RoomScale, 512.0 * RoomScale, r\z + 288.0 * RoomScale,True
     RotateEntity r\Objects[8],0,90,0,True
     ScaleEntity r\Objects[8],45.0*RoomScale,45.0*RoomScale,80.0*RoomScale,True
     EntityParent r\Objects[8],r\obj
     
-    r\Objects[9] =  LoadMesh("GFX\map\forest\door.b3d")
+    r\Objects[9] =  LoadMesh("GFX/map/forest/door.b3d")
     PositionEntity r\Objects[9],r\x - 272.0 * RoomScale, 512.0 * RoomScale, r\z + (288.0-70) * RoomScale,True
     RotateEntity r\Objects[9],0,10,0,True
     EntityType r\Objects[9], HIT_MAP
@@ -82,7 +82,7 @@ Function FillRoom_cont_1123_2(r.Rooms)
     ScaleEntity r\Objects[13],46.0*RoomScale,45.0*RoomScale,46.0*RoomScale,True
     EntityParent r\Objects[13],r\obj	
     
-    ;r\Objects[14] = LoadMesh("GFX\map\1123_hb.b3d",r\obj)
+    ;r\Objects[14] = LoadMesh("GFX/map/1123_hb.b3d",r\obj)
     ;EntityPickMode r\Objects[14],2
     ;EntityType r\Objects[14],HIT_MAP
     ;EntityAlpha r\Objects[14],0.0
@@ -118,7 +118,7 @@ Function UpdateEvent_cont_1123_2(e.Events)
 			e\room\NPC[0] = CreateNPC(NPCtypeD, EntityX(e\room\Objects[6],True),EntityY(e\room\Objects[6],True),EntityZ(e\room\Objects[6],True))
 			;e\room\NPC[1] = CreateNPC(NPCtypeD, EntityX(e\room\Objects[7],True),EntityY(e\room\Objects[7],True),EntityZ(e\room\Objects[7],True))
 			
-			nazi = LoadAnimMesh("GFX\npcs\naziofficer.b3d")
+			nazi = LoadAnimMesh("GFX/npcs/naziofficer.b3d")
 			scale# = 0.5 / MeshWidth(nazi)
 			
 			FreeEntity e\room\NPC[0]\obj
@@ -146,22 +146,22 @@ Function UpdateEvent_cont_1123_2(e.Events)
 			mainPlayer\blurTimer = Max(mainPlayer\blurTimer, 100)
 			
 			If e\EventState2>200 And e\EventState2-timing\tickDuration=<200 Then 							
-				;e\sounds[0] = LoadSound("SFX\Music\1123.ogg");TODO: fix
+				;e\sounds[0] = LoadSound("SFX/Music/1123.ogg");TODO: fix
 				e\soundChannels[0] = PlaySound(e\sounds[0])
 			EndIf
 			
 			
 			If e\EventState2 > 1000 Then
 				If e\sounds[1]=0 Then
-					e\sounds[1] = LoadSound("SFX\Door\1123DoorOpen.ogg")
+					e\sounds[1] = LoadSound("SFX/Door/1123DoorOpen.ogg")
 					e\soundChannels[1] = PlaySound(e\sounds[1])
 				EndIf
 				RotateEntity e\room\Objects[11], 0, CurveAngle(10, EntityYaw(e\room\Objects[11],0), 40), 0
 				
 				If e\EventState2=>1040 And e\EventState2-timing\tickDuration<1040 Then 
-					PlayRangedSound(LoadTempSound("SFX\SCP\1123\Officer1.ogg"), mainPlayer\cam, e\room\NPC[0]\obj)
+					PlayRangedSound(LoadTempSound("SFX/SCP/1123/Officer1.ogg"), mainPlayer\cam, e\room\NPC[0]\obj)
 				ElseIf e\EventState2=>1400 And e\EventState2-timing\tickDuration<1400 Then 
-					PlayRangedSound(LoadTempSound("SFX\SCP\1123\Officer2.ogg"), mainPlayer\cam, e\room\NPC[0]\obj)
+					PlayRangedSound(LoadTempSound("SFX/SCP/1123/Officer2.ogg"), mainPlayer\cam, e\room\NPC[0]\obj)
 				EndIf
 				
 				;Animate2(e\room\Objects[4], AnimTime(e\room\Objects[4]), 0, 8, 0.1, False)
@@ -177,7 +177,7 @@ Function UpdateEvent_cont_1123_2(e.Events)
 			EndIf
 		ElseIf e\EventState=3
 			If e\room\RoomDoors[0]\openstate>160 Then
-				If e\sounds[0]=0 Then e\sounds[0] = LoadSound("SFX\Music\1123.ogg")
+				If e\sounds[0]=0 Then e\sounds[0] = LoadSound("SFX/Music/1123.ogg")
 				e\soundChannels[0] = PlaySound(e\sounds[0])
 				
 				PositionEntity e\room\NPC[0]\collider, EntityX(e\room\Objects[7],True),EntityY(e\room\Objects[7],True),EntityZ(e\room\Objects[7],True)
@@ -201,7 +201,7 @@ Function UpdateEvent_cont_1123_2(e.Events)
 					DrawHandIcon = True
 					If MouseHit1 Then
 						RotateEntity e\room\Objects[13], 0, 1, 0, False
-						PlaySound2(LoadTempSound("SFX\SCP\1123\Horror.ogg"))
+						PlaySound2(LoadTempSound("SFX/SCP/1123/Horror.ogg"))
 					EndIf
 				EndIf							
 			Else
@@ -220,7 +220,7 @@ Function UpdateEvent_cont_1123_2(e.Events)
 						mainPlayer\blurTimer = 500	
 						mainPlayer\injuries = 1.5
 						mainPlayer\bloodloss = 70
-					;PlaySound2(LoadTempSound("SFX\Door\WoodenDoorClose.ogg"))							
+					;PlaySound2(LoadTempSound("SFX/Door/WoodenDoorClose.ogg"))							
 					EndIf								
 				EndIf
 				
@@ -255,7 +255,7 @@ Function UpdateEvent_cont_1123_2(e.Events)
 				de.Decals = CreateDecal(3, EntityX(mainPlayer\collider), 512*RoomScale + 0.0005, EntityZ(mainPlayer\collider),90,Rnd(360),0)
 				de\size = 0.5 : ScaleSprite de\obj, de\size, de\size
 				
-				e\room\NPC[0]\sounds[0] = LoadSound("SFX\SCP\1123\Officer3.ogg")
+				e\room\NPC[0]\sounds[0] = LoadSound("SFX/SCP/1123/Officer3.ogg")
 				
 				e\EventState = 6
 			EndIf
@@ -265,7 +265,7 @@ Function UpdateEvent_cont_1123_2(e.Events)
 			If e\room\NPC[0]\sounds[0]<>0 Then 
 				If e\room\NPC[0]\soundChannels[0]<>0 Then
 					If (Not IsChannelPlaying(e\room\NPC[0]\soundChannels[0])) Then 
-						PlaySound2(LoadTempSound("SFX\SCP\1123\Gunshot.ogg"))
+						PlaySound2(LoadTempSound("SFX/SCP/1123/Gunshot.ogg"))
 						e\EventState = 7
 						FreeSound e\room\NPC[0]\sounds[0] : e\room\NPC[0]\sounds[0]=0	
 					EndIf

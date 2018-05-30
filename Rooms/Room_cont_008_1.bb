@@ -10,14 +10,14 @@ Function FillRoom_cont_008_1(r.Rooms)
     PositionEntity(r\Objects[0], r\x + 292.0 * RoomScale, 130.0*RoomScale, r\z + 516.0 * RoomScale, True)
     
     ;the lid of the container
-    r\Objects[1] = LoadMesh("GFX\map\008_2.b3d")
+    r\Objects[1] = LoadMesh("GFX/map/008_2.b3d")
     ScaleEntity r\Objects[1], RoomScale, RoomScale, RoomScale
     PositionEntity(r\Objects[1], r\x + 292 * RoomScale, 151 * RoomScale, r\z + 576.0 * RoomScale, 0)
     EntityParent(r\Objects[1], r\obj)
     
     RotateEntity(r\Objects[1],89,0,0,True)
     
-    Glasstex = LoadTexture("GFX\map\Textures\glass.png",1+2)
+    Glasstex = LoadTexture("GFX/map/Textures/glass.png",1+2)
     r\Objects[2] = CreateSprite()
     EntityTexture(r\Objects[2],Glasstex)
     SpriteViewMode(r\Objects[2],2)
@@ -137,7 +137,7 @@ Function UpdateEvent_cont_008_1(e.Events)
 								MsgTimer = 70*8
 							EndIf
 							
-							PlayRangedSound(LoadTempSound("SFX\General\GlassBreak.ogg"), mainPlayer\cam, e\room\Objects[0]) 
+							PlayRangedSound(LoadTempSound("SFX/General/GlassBreak.ogg"), mainPlayer\cam, e\room\Objects[0]) 
 							
 							e\EventState2=1
 						EndIf

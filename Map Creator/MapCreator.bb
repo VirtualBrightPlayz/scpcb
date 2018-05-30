@@ -4,9 +4,9 @@ SetBuffer BackBuffer()
 
 AppTitle "SCP-CB Map Creator - Select Resolution"
 
-Global ResolutionSelect% = GetINIInt("..\options.INI","map creator","resolution select")
-Global ResWidth2% = GetINIInt("..\options.INI","map creator","width")
-Global ResHeight2% = GetINIInt("..\options.INI","map creator","height")
+Global ResolutionSelect% = GetINIInt("../options.INI","map creator","resolution select")
+Global ResWidth2% = GetINIInt("../options.INI","map creator","width")
+Global ResHeight2% = GetINIInt("../options.INI","map creator","height")
 Global ResWidth% = 150
 Global ResHeight% = 100
 Global ResolutionSelect2% = ResolutionSelect%
@@ -62,7 +62,7 @@ EndIf
 
 ChangeDir ".."
 
-Global ButtonSFX% = LoadSound("SFX\Interact\Button.ogg")
+Global ButtonSFX% = LoadSound("SFX/Interact/Button.ogg")
 
 ChangeDir "Map Creator"
 
@@ -99,9 +99,9 @@ Repeat
 	If Button(0,240-height2,width2,height2,"QUIT") Then End
 	
 	If Button(480-width2,240-height2,width2,height2,"START") Then
-		PutINIValue("..\options.INI","map creator","width",ResWidth2%)
-		PutINIValue("..\options.INI","map creator","height",ResHeight2%)
-		PutINIValue("..\options.INI","map creator","resolution select",ResolutionSelect2%)
+		PutINIValue("../options.INI","map creator","width",ResWidth2%)
+		PutINIValue("../options.INI","map creator","height",ResHeight2%)
+		PutINIValue("../options.INI","map creator","resolution select",ResolutionSelect2%)
 		ResolutionSelect% = False
 	EndIf
 	
@@ -364,7 +364,7 @@ End Function
 
 ChangeDir ".."
 
-Global Font1 = LoadFont("GFX\cour.ttf", 16*ResFactor)
+Global Font1 = LoadFont("GFX/cour.ttf", 16*ResFactor)
 
 ChangeDir "Map Creator"
 SetFont Font1
@@ -407,7 +407,7 @@ Global CurrMap$, SavePath$, Saved%
 
 LoadSavedMaps()
 
-Global FileLocation$ = "..\Data\rooms.ini"
+Global FileLocation$ = "../Data/rooms.ini"
 
 LoadRoomTemplates(FileLocation)
 Global SelectedRoomTemplate.RoomTemplates
@@ -415,7 +415,7 @@ Global SelectedX%, SelectedY%, RotateRoom%
 
 InitEvents()
 
-Global MapWidth% = GetINIInt("..\options.ini", "options", "map size"), MapHeight% = GetINIInt("..\options.ini", "options", "map size")
+Global MapWidth% = GetINIInt("../options.ini", "options", "map size"), MapHeight% = GetINIInt("../options.ini", "options", "map size")
 Dim Map.RoomTemplates(MapWidth, MapHeight)
 Dim MapAngle%(MapWidth, MapHeight)
 Dim MapEvent$(MapWidth, MapHeight)
@@ -525,9 +525,9 @@ Repeat
 	
 	If CurrMap <> "" Then 
 		If Button (x+width/2-75, y+height-30, 150, 20, "Delete map", False) Then
-			DebugLog CurrentDir()+"Maps\"+SavePath+".cbmap"
-			If FileType(CurrentDir()+"Maps\"+SavePath+".cbmap")=1 Then 
-				DeleteFile(CurrentDir()+"Maps\"+SavePath+".cbmap")
+			DebugLog CurrentDir()+"Maps/"+SavePath+".cbmap"
+			If FileType(CurrentDir()+"Maps/"+SavePath+".cbmap")=1 Then 
+				DeleteFile(CurrentDir()+"Maps/"+SavePath+".cbmap")
 				SavePath = ""
 				CurrMap = ""
 				EraseMap()
@@ -731,7 +731,7 @@ Repeat
 						PlaySound2 ButtonSFX
 						SavePath = SavedMaps(i)
 						CurrMap = SavePath
-						LoadMap("Maps\"+SavedMaps(i))
+						LoadMap("Maps/"+SavedMaps(i))
 					EndIf
 				EndIf
 			EndIf			
@@ -745,14 +745,14 @@ Repeat
 	height = 25
 	
 	If Button(x,y,width,height, "Save", (CurrMap="")) Then
-		SaveMap("Maps\"+CurrMap)
+		SaveMap("Maps/"+CurrMap)
 	EndIf	
 	
 	y = y + 40
 	
 	If Button(x,y,width,height, "Save as "+SavePath+"", (SavePath="")) Then
 		If CurrMap = "" Then CurrMap = SavePath
-		SaveMap("Maps\"+SavePath)
+		SaveMap("Maps/"+SavePath)
 		LoadSavedMaps()
 	EndIf
 	
@@ -1029,13 +1029,13 @@ Function LoadSavedMaps()
 		SavedMaps(i)=""
 	Next
 	
-	myDir=ReadDir(CurrentDir()+"\Maps") 
+	myDir=ReadDir(CurrentDir()+"/Maps") 
 	i = 0
 	Repeat 
 		file$=NextFile$(myDir)
 		DebugLog file
 		If file$="" Then Exit 
-		If FileType("Maps\"+file$) = 1 Then 
+		If FileType("Maps/"+file$) = 1 Then 
 			If file <> "." And file <> ".." Then 
 				SavedMaps(i) = Left(file,Max(Len(file)-6,1))
 				i=i+1
@@ -1139,7 +1139,7 @@ Function PutINIValue%(INI_sAppName$, INI_sSection$, INI_sKey$, INI_sValue$)
 	INI_sUpperSection$ = Upper$(INI_sSection)
 	INI_sKey = Trim$(INI_sKey)
 	INI_sValue = Trim$(INI_sValue)
-	INI_sFilename$ = CurrentDir$() + "\"  + INI_sAppName
+	INI_sFilename$ = CurrentDir$() + "/"  + INI_sAppName
 	
 ; Retrieve the INI data (if it exists)
 	

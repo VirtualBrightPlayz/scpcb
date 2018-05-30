@@ -96,7 +96,7 @@ Function UpdateEvent_srvr_096_2(e.Events)
 			Curr096\State=2
 			Curr096\State2=70*10
 			
-			LoadEventSound(e,"SFX\Character\Guard\096ServerRoom1.ogg")
+			LoadEventSound(e,"SFX/Character/Guard/096ServerRoom1.ogg")
 			e\soundChannels[0] = PlaySound(e\sounds[0])
 			
 			e\room\NPC[0]=CreateNPC(NPCtypeGuard, EntityX(e\room\Objects[7],True),EntityY(e\room\Objects[7],True),EntityZ(e\room\Objects[7],True))
@@ -170,7 +170,7 @@ Function UpdateEvent_srvr_096_2(e.Events)
 			Curr096\Target = e\room\NPC[0]
 			If AnimTime(Curr096\obj)>25 And AnimTime(Curr096\obj)<150 Then
 				FreeSound e\sounds[0] : e\sounds[0] = 0
-				e\sounds[0]=LoadSound("SFX\Character\Guard\096ServerRoom2.ogg")
+				e\sounds[0]=LoadSound("SFX/Character/Guard/096ServerRoom2.ogg")
 				e\soundChannels[0]=PlaySound(e\sounds[0])
 				
 				Curr096\CurrSpeed = 0
@@ -245,7 +245,7 @@ Function UpdateEvent_srvr_096_2(e.Events)
 			
 			;generator on
 			If z Then
-				If e\sounds[1]=0 Then LoadEventSound(e,"SFX\General\GeneratorOn.ogg",1)
+				If e\sounds[1]=0 Then LoadEventSound(e,"SFX/General/GeneratorOn.ogg",1)
 				e\EventState3 = Min(1.0, e\EventState3+timing\tickDuration/450)
 			Else
 				e\EventState3 = Min(0.0, e\EventState3-timing\tickDuration/450)

@@ -399,7 +399,7 @@ Function UpdateEvents()
 		
 		If ExplosionTimer < 140.0 Then
 			If ExplosionTimer-timing\tickDuration < 5.0 Then
-				PlaySound2(LoadTempSound("SFX\Ending\GateB\Nuke1.ogg"))
+				PlaySound2(LoadTempSound("SFX/Ending/GateB/Nuke1.ogg"))
 				mainPlayer\camShake = 10.0
 				ExplosionTimer = 5.0
 			EndIf
@@ -409,7 +409,7 @@ Function UpdateEvents()
 			mainPlayer\camShake = Min((ExplosionTimer/20.0),20.0)
 			If ExplosionTimer-timing\tickDuration < 140.0 Then
 				mainPlayer\blinkTimer = 1.0
-				PlaySound2(LoadTempSound("SFX\Ending\GateB\Nuke2.ogg"))
+				PlaySound2(LoadTempSound("SFX/Ending/GateB/Nuke2.ogg"))
 				For i = 0 To 40
 					p.Particles = CreateParticle(EntityX(mainPlayer\collider)+Rnd(-0.5,0.5),EntityY(mainPlayer\collider)-Rnd(0.2,1.5),EntityZ(mainPlayer\collider)+Rnd(-0.5,0.5),0, Rnd(0.2,0.6), 0.0, 350)	
 					RotateEntity p\pvt,-90,0,0,True

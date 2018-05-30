@@ -13,40 +13,40 @@ Function InitializeNPCtype173(n.NPCs)
 	;TODO: Remove this?
 	n\gravity = True
 	
-	n\obj = LoadMesh("GFX\npcs\173_2.b3d")
+	n\obj = LoadMesh("GFX/npcs/173_2.b3d")
 	
 	;On Halloween set jack-o-latern texture.
 	If (Left(CurrentDate(), 6) = "31 Oct") Then
 		HalloweenTex = True
-		Local texFestive% = LoadTexture("GFX\npcs\173h.pt", 1)
+		Local texFestive% = LoadTexture("GFX/npcs/173h.pt", 1)
 		EntityTexture(n\obj, texFestive, 0, 0)
 		FreeTexture(texFestive)
 	EndIf
 	
-	Local temp# = (GetINIFloat("DATA\NPCs.ini", "SCP-173", "scale") / MeshDepth(n\obj))			
+	Local temp# = (GetINIFloat("DATA/NPCs.ini", "SCP-173", "scale") / MeshDepth(n\obj))			
 	ScaleEntity(n\obj, temp, temp, temp)
 	
-	n\speed = (GetINIFloat("DATA\NPCs.ini", "SCP-173", "speed") / 100.0)
+	n\speed = (GetINIFloat("DATA/NPCs.ini", "SCP-173", "speed") / 100.0)
 	
-	n\obj2 = LoadMesh("GFX\173box.b3d")
+	n\obj2 = LoadMesh("GFX/173box.b3d")
 	ScaleEntity(n\obj2, RoomScale, RoomScale, RoomScale)
 	HideEntity(n\obj2)
 
-	n\sounds[0] = LoadSound("SFX\SCP\173\StoneDrag.ogg")
+	n\sounds[0] = LoadSound("SFX/SCP/173/StoneDrag.ogg")
 
-	n\sounds[1] = LoadSound("SFX\SCP\173\Spotted1.ogg")
-	n\sounds[2] = LoadSound("SFX\SCP\173\Spotted2.ogg")
-	n\sounds[3] = LoadSound("SFX\SCP\173\Spotted3.ogg")
+	n\sounds[1] = LoadSound("SFX/SCP/173/Spotted1.ogg")
+	n\sounds[2] = LoadSound("SFX/SCP/173/Spotted2.ogg")
+	n\sounds[3] = LoadSound("SFX/SCP/173/Spotted3.ogg")
 
-	n\sounds[4] = LoadSound("SFX\SCP\173\BigReveal1.ogg")
-	n\sounds[5] = LoadSound("SFX\SCP\173\BigReveal2.ogg")
-	n\sounds[6] = LoadSound("SFX\SCP\173\BigReveal3.ogg")
-	n\sounds[7] = LoadSound("SFX\SCP\173\BigReveal4.ogg")
-	n\sounds[8] = LoadSound("SFX\SCP\173\BigReveal5.ogg")
+	n\sounds[4] = LoadSound("SFX/SCP/173/BigReveal1.ogg")
+	n\sounds[5] = LoadSound("SFX/SCP/173/BigReveal2.ogg")
+	n\sounds[6] = LoadSound("SFX/SCP/173/BigReveal3.ogg")
+	n\sounds[7] = LoadSound("SFX/SCP/173/BigReveal4.ogg")
+	n\sounds[8] = LoadSound("SFX/SCP/173/BigReveal5.ogg")
 
-	n\sounds[9] = LoadSound("SFX\SCP\173\NeckSnap1.ogg")
-	n\sounds[10] = LoadSound("SFX\SCP\173\NeckSnap2.ogg")
-	n\sounds[11] = LoadSound("SFX\SCP\173\NeckSnap3.ogg")
+	n\sounds[9] = LoadSound("SFX/SCP/173/NeckSnap1.ogg")
+	n\sounds[10] = LoadSound("SFX/SCP/173/NeckSnap2.ogg")
+	n\sounds[11] = LoadSound("SFX/SCP/173/NeckSnap3.ogg")
 
 	n\state = STATE173_ATTACK
 End Function
@@ -115,7 +115,7 @@ Function UpdateNPCtype173(n.NPCs)
 				;more than 6 room lengths away from the player -> teleport to a room closer to the player
 				If dist > 50 Then
 					If Rand(70)=1 Then
-						If mainPlayer\currRoom\RoomTemplate\Name <> "exit1" And mainPlayer\currRoom\RoomTemplate\Name <> "gatea" And mainPlayer\currRoom\RoomTemplate\Name <> "pocketdimension" Then
+						If mainPlayer\currRoom\RoomTemplate\name <> "exit1" And mainPlayer\currRoom\RoomTemplate\name <> "gatea" And mainPlayer\currRoom\RoomTemplate\Name <> "pocketdimension" Then
 							For w.waypoints = Each WayPoints
 								If Rand(5)=1 Then ;w\door=Null And (TODO: fix?)
 									x = Abs(EntityX(mainPlayer\collider) - EntityX(w\obj, True))
@@ -148,7 +148,7 @@ Function UpdateNPCtype173(n.NPCs)
 											If Abs(EntityZ(n\collider) - EntityZ(d\buttons[i])) < 0.5 Then
 												If (d\openstate >= 180 Or d\openstate <= 0) Then
 													If DeltaYaw(n\collider, d\buttons[i]) < 60 And DeltaYaw(d\buttons[i], n\collider) < 60 Then 
-														PlaySound2(LoadTempSound("SFX\Door\DoorOpen173.ogg"))
+														PlaySound2(LoadTempSound("SFX/Door/DoorOpen173.ogg"))
 														UseDoor(d,False)
 													EndIf
 												EndIf

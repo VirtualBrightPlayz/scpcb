@@ -1410,7 +1410,7 @@ Function UpdateScreens()
 					DrawHandIcon=True
 					If MouseUp1 Then 
 						SelectedScreen=s
-						s\img = LoadImage("GFX\screens\"+s\imgpath)
+						s\img = LoadImage("GFX/screens/"+s\imgpath)
 						s\img = ResizeImage2(s\img, ImageWidth(s\img) * MenuScale, ImageHeight(s\img) * MenuScale)
 						MaskImage s\img, 255,0,255
 						PlaySound_SM(sndManager\button)
@@ -1748,10 +1748,10 @@ Function UpdateSecurityCams()
 							EntityTexture(sc\ScrOverlay, MonitorTexture)
 						Else
 							If sc\soundCHN = 0 Then
-								sc\soundCHN = PlaySound(LoadTempSound("SFX\SCP\079\Broadcast"+Rand(1,3)+".ogg"))
+								sc\soundCHN = PlaySound(LoadTempSound("SFX/SCP/079/Broadcast"+Rand(1,3)+".ogg"))
 								If sc\CoffinEffect=2 Then sc\CoffinEffect=3 : sc\PlayerState = 0
 							ElseIf (Not IsChannelPlaying(sc\soundCHN))
-								sc\soundCHN = PlaySound(LoadTempSound("SFX\SCP\079\Broadcast"+Rand(1,3)+".ogg"))
+								sc\soundCHN = PlaySound(LoadTempSound("SFX/SCP/079/Broadcast"+Rand(1,3)+".ogg"))
 								If sc\CoffinEffect=2 Then sc\CoffinEffect=3 : sc\PlayerState = 0
 							EndIf
 							EntityTexture(sc\ScrOverlay, OldAiPics(0))
@@ -2874,7 +2874,7 @@ Type ChunkPart
 End Type
 
 Function CreateChunkParts(r.Rooms)
-	Local File$ = "Data\1499chunks.INI"
+	Local File$ = "Data/1499chunks.INI"
 	Local ChunkAmount% = GetINIInt(File$,"general","count")
 	Local i%,StrTemp$,j%
 	Local chp.ChunkPart,chp2.ChunkPart
@@ -3030,7 +3030,7 @@ Function UpdateChunks(r.Rooms,ChunkPartAmount%,spawnNPCs%=True)
 		Next
 		If (Not temp2%)
 			;ch2 = CreateChunk(r\Objects[Rand(1,ChunkPartAmount%)],x#,y#,z#)
-			ChunkPartAmount2 = GetINIInt("Data\1499chunks.INI","general","count")
+			ChunkPartAmount2 = GetINIInt("Data/1499chunks.INI","general","count")
 			ch2 = CreateChunk(Rand(0,ChunkPartAmount2),x#,y#,z#,spawnNPCs%)
 		EndIf
 		If x# < (ChunkHideDistance+(CurrChunkX#))
@@ -3112,5 +3112,5 @@ Function FindAndDeleteFakeMonitor(r.Rooms,x#,y#,z#,Amount%)
 	
 End Function
 ;~IDEal Editor Parameters:
-;~F#4F#76#9E#A6#BE#CE#DF#1A7#1E2#1EA#1FF#20A#214#315#8B4
+;~F#4F#76#9E#A6#BE#CE#DF#1A7#1E2#1EA#1FF#20A#214#315
 ;~C#Blitz3D

@@ -3,12 +3,12 @@ Function InitializeNPCtype096(n.NPCs)
     n\collider = CreatePivot()
     EntityRadius n\collider, 0.3
     EntityType n\collider, HIT_PLAYER
-    n\obj = LoadAnimMesh("GFX\npcs\scp096.b3d")
-	n\sounds[2] = LoadSound("SFX\Door\DoorOpenFast.ogg")
+    n\obj = LoadAnimMesh("GFX/npcs/scp096.b3d")
+	n\sounds[2] = LoadSound("SFX/Door/DoorOpenFast.ogg")
     
-    n\speed = (GetINIFloat("DATA\NPCs.ini", "SCP-096", "speed") / 100.0)
+    n\speed = (GetINIFloat("DATA/NPCs.ini", "SCP-096", "speed") / 100.0)
     
-    Local temp# = (GetINIFloat("DATA\NPCs.ini", "SCP-096", "scale") / 3.0)
+    Local temp# = (GetINIFloat("DATA/NPCs.ini", "SCP-096", "scale") / 3.0)
     ScaleEntity n\obj, temp, temp, temp	
     
     MeshCullBox (n\obj, -MeshWidth(n\obj)*2, -MeshHeight(n\obj)*2, -MeshDepth(n\obj)*2, MeshWidth(n\obj)*2, MeshHeight(n\obj)*4, MeshDepth(n\obj)*4)
@@ -21,7 +21,7 @@ Function UpdateNPCtype096(n.NPCs)
         Case 0
             If (n\playerDistance < 8.0) Then
                 If n\sounds[0] = 0 Then
-                    n\sounds[0] = LoadSound("SFX\Music\096.ogg")
+                    n\sounds[0] = LoadSound("SFX/Music/096.ogg")
                 Else
                     n\soundChannels[0] = LoopRangedSound(n\sounds[0], n\soundChannels[0], mainPlayer\cam, n\collider, 8.0, 1.0)
                 EndIf
@@ -39,7 +39,7 @@ Function UpdateNPCtype096(n.NPCs)
                             If ProjectedY()>0 And ProjectedY()<userOptions\screenHeight Then
                                 If EntityVisible(mainPlayer\collider, n\collider) Then
                                     If (mainPlayer\blinkTimer < - 16 Or mainPlayer\blinkTimer > - 6)
-                                        PlaySound2 LoadTempSound("SFX\SCP\096\Triggered.ogg")
+                                        PlaySound2 LoadTempSound("SFX/SCP/096/Triggered.ogg")
                                         
                                         mainPlayer\camZoom = 10
                                         
@@ -63,13 +63,13 @@ Function UpdateNPCtype096(n.NPCs)
             
             If n\target = Null Then 
                 If n\sounds[0] = 0 Then
-                    n\sounds[0] = LoadSound("SFX\SCP\096\Scream.ogg")
+                    n\sounds[0] = LoadSound("SFX/SCP/096/Scream.ogg")
                 Else
                     n\soundChannels[0] = LoopRangedSound(n\sounds[0], n\soundChannels[0], mainPlayer\cam, n\collider, 7.5, 1.0)
                 EndIf
                 
                 If n\sounds[1] = 0 Then
-                    n\sounds[1] = LoadSound("SFX\Music\096Chase.ogg")
+                    n\sounds[1] = LoadSound("SFX/Music/096Chase.ogg")
                 Else
                     If n\soundChannels[1] = 0 Then
                         n\soundChannels[1] = PlaySound(n\sounds[1])
@@ -229,7 +229,7 @@ Function UpdateNPCtype096(n.NPCs)
             
         Case 1,2,3
             If n\sounds[0] = 0 Then
-                n\sounds[0] = LoadSound("SFX\Music\096Angered.ogg")
+                n\sounds[0] = LoadSound("SFX/Music/096Angered.ogg")
             Else
                 n\soundChannels[0] = LoopRangedSound(n\sounds[0], n\soundChannels[0], mainPlayer\cam, n\Collider, 10.0, 1.0)
             EndIf
@@ -273,7 +273,7 @@ Function UpdateNPCtype096(n.NPCs)
             If dist < 16.0 Then 
             
                 If n\sounds[0] = 0 Then
-                    n\sounds[0] = LoadSound("SFX\Music\096.ogg")
+                    n\sounds[0] = LoadSound("SFX/Music/096.ogg")
                 Else
                     n\soundChannels[0] = LoopRangedSound(n\sounds[0], n\soundChannels[0], mainPlayer\cam, n\Collider, 14.0, 1.0)
                 EndIf
@@ -336,7 +336,7 @@ Function UpdateNPCtype096(n.NPCs)
                             If ProjectedY()>0 And ProjectedY()<userOptions\screenHeight Then
                                 If EntityVisible(mainPlayer\collider, n\Collider) Then
                                     If (mainPlayer\blinkTimer < - 16 Or mainPlayer\blinkTimer > - 6)
-                                        PlaySound2 LoadTempSound("SFX\SCP\096\Triggered.ogg")
+                                        PlaySound2 LoadTempSound("SFX/SCP/096/Triggered.ogg")
                                         
                                         mainPlayer\camZoom = 10
                                         

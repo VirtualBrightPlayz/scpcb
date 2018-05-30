@@ -11,13 +11,13 @@ Function InitializeNPCtypeTentacle(n.NPCs)
     Next
     
     If n\obj = 0 Then 
-        n\obj = LoadAnimMesh("GFX\NPCs\035tentacle.b3d")
+        n\obj = LoadAnimMesh("GFX/NPCs/035tentacle.b3d")
         ScaleEntity n\obj, 0.065,0.065,0.065
     EndIf
 	
-	n\sounds[0] = LoadSound("SFX\Room\035Chamber\TentacleSpawn.ogg")
-	n\sounds[1] = LoadSound("SFX\Room\035Chamber\TentacleAttack1.ogg")
-	n\sounds[2] = LoadSound("SFX\Room\035Chamber\TentacleAttack2.ogg")
+	n\sounds[0] = LoadSound("SFX/Room/035Chamber/TentacleSpawn.ogg")
+	n\sounds[1] = LoadSound("SFX/Room/035Chamber/TentacleAttack1.ogg")
+	n\sounds[2] = LoadSound("SFX/Room/035Chamber/TentacleAttack2.ogg")
     
     SetAnimTime n\obj, 283
 End Function
@@ -79,7 +79,7 @@ Function UpdateNPCtypeTentacle(n.NPCs)
                             If Abs(DeltaYaw(n\collider, mainPlayer\collider))<20 Then 
                                 If IsPlayerWearingTempName(mainPlayer,"hazmatsuit") Then
                                     mainPlayer\injuries = mainPlayer\injuries+Rnd(0.5)
-                                    PlaySound2(LoadTempSound("SFX\General\BodyFall.ogg"))
+                                    PlaySound2(LoadTempSound("SFX/General/BodyFall.ogg"))
                                 Else
                                     mainPlayer\blurTimer = 100
                                     mainPlayer\injuries = mainPlayer\injuries+Rnd(1.0,1.5)

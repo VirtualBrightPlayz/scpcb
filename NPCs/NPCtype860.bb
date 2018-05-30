@@ -4,11 +4,11 @@ Function InitializeNPCtype860(n.NPCs)
     n\Collider = CreatePivot()
     EntityRadius n\Collider, 0.25
     EntityType n\Collider, HIT_PLAYER
-    n\obj = LoadAnimMesh("GFX\npcs\forestmonster.b3d")
+    n\obj = LoadAnimMesh("GFX/npcs/forestmonster.b3d")
     
     EntityFX(n\obj, 1)
     
-    tex = LoadTexture("GFX\npcs\860_eyes.png",1+2)
+    tex = LoadTexture("GFX/npcs/860_eyes.png",1+2)
     
     n\obj2 = CreateSprite()
     ScaleSprite(n\obj2, 0.1, 0.1)
@@ -19,9 +19,9 @@ Function InitializeNPCtype860(n.NPCs)
     EntityBlend(n\obj2, BLEND_ADD)
     SpriteViewMode(n\obj2, 2)
     
-    n\Speed = (GetINIFloat("DATA\NPCs.ini", "forestmonster", "speed") / 100.0)
+    n\Speed = (GetINIFloat("DATA/NPCs.ini", "forestmonster", "speed") / 100.0)
     
-    temp# = (GetINIFloat("DATA\NPCs.ini", "forestmonster", "scale") / 20.0)
+    temp# = (GetINIFloat("DATA/NPCs.ini", "forestmonster", "scale") / 20.0)
     ScaleEntity n\obj, temp, temp, temp	
     
     MeshCullBox (n\obj, -MeshWidth(n\obj)*2, -MeshHeight(n\obj)*2, -MeshDepth(n\obj)*2, MeshWidth(n\obj)*2, MeshHeight(n\obj)*4, MeshDepth(n\obj)*4)
@@ -104,7 +104,7 @@ Function UpdateNPCtype860(n.NPCs)
                         If EntityInView(n\Collider, mainPlayer\cam) Then 
                             n\State2 = 1
                             If Rand(8)=1 Then
-                                PlayRangedSound(LoadTempSound("SFX\SCP\860\Cancer"+Rand(0,2)+".ogg"), mainPlayer\cam, n\Collider, 20.0)
+                                PlayRangedSound(LoadTempSound("SFX/SCP/860/Cancer"+Rand(0,2)+".ogg"), mainPlayer\cam, n\Collider, 20.0)
                             EndIf										
                         EndIf
                     Else
@@ -191,9 +191,9 @@ Function UpdateNPCtype860(n.NPCs)
                     If n\State2 = 0 Then
                         If dist<8.0 Then
                             If EntityInView(n\Collider,mainPlayer\cam) Then
-                                PlaySound2 LoadTempSound("SFX\SCP\860\Chase"+Rand(1,2)+".ogg")
+                                PlaySound2 LoadTempSound("SFX/SCP/860/Chase"+Rand(1,2)+".ogg")
                                 
-                                PlayRangedSound(LoadTempSound("SFX\SCP\860\Cancer"+Rand(0,2)+".ogg"), mainPlayer\cam, n\Collider)	
+                                PlayRangedSound(LoadTempSound("SFX/SCP/860/Cancer"+Rand(0,2)+".ogg"), mainPlayer\cam, n\Collider)	
                                 n\State2 = 1
                             EndIf										
                         EndIf
@@ -207,7 +207,7 @@ Function UpdateNPCtype860(n.NPCs)
                                 If IsChannelPlaying (n\soundChannels[0]) Then temp = False
                             EndIf
                             If temp Then
-                                n\soundChannels[0] = PlayRangedSound(LoadTempSound("SFX\SCP\860\Cancer"+Rand(0,2)+".ogg"), mainPlayer\cam, n\Collider)
+                                n\soundChannels[0] = PlayRangedSound(LoadTempSound("SFX/SCP/860/Cancer"+Rand(0,2)+".ogg"), mainPlayer\cam, n\Collider)
                             EndIf
                         EndIf
                     Else
@@ -215,7 +215,7 @@ Function UpdateNPCtype860(n.NPCs)
                     EndIf
                     
                     If dist<4.5 Or n\State3 > Rnd(200,250) Then
-                        n\soundChannels[0] = PlayRangedSound(LoadTempSound("SFX\SCP\860\Cancer"+Rand(3,5)+".ogg"), mainPlayer\cam, n\Collider)
+                        n\soundChannels[0] = PlayRangedSound(LoadTempSound("SFX/SCP/860/Cancer"+Rand(3,5)+".ogg"), mainPlayer\cam, n\Collider)
                         n\State = 3
                     EndIf
                     
@@ -241,8 +241,8 @@ Function UpdateNPCtype860(n.NPCs)
                 
                 RotateEntity n\Collider, 0, angle-90, 0, True
                 
-                If n\sounds[0] = 0 Then n\sounds[0] = LoadSound("SFX\General\Slash1.ogg")
-                If n\sounds[1] = 0 Then n\sounds[1] = LoadSound("SFX\General\Slash2.ogg")
+                If n\sounds[0] = 0 Then n\sounds[0] = LoadSound("SFX/General/Slash1.ogg")
+                If n\sounds[1] = 0 Then n\sounds[1] = LoadSound("SFX/General/Slash2.ogg")
                 
                 If dist>1.1 And (Not mainPlayer\dead) Then 
                     n\CurrSpeed = CurveValue(n\Speed*0.8, n\CurrSpeed, 10.0)

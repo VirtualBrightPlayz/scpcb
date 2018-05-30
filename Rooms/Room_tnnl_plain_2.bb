@@ -80,7 +80,7 @@ Function UpdateEvent682roar(e.Events)
 		e\EventState = e\EventState-timing\tickDuration
 		
 		If e\EventState < 17*70 Then
-			If	e\EventState+timing\tickDuration => 17*70 Then LoadEventSound(e,"SFX\SCP\682\Roar.ogg") : e\soundChannels[0] = PlaySound(e\sounds[0]) ;e\sounds[0] = LoadSound("SFX\SCP\682\Roar.ogg")
+			If	e\EventState+timing\tickDuration => 17*70 Then LoadEventSound(e,"SFX/SCP/682/Roar.ogg") : e\soundChannels[0] = PlaySound(e\sounds[0]) ;e\sounds[0] = LoadSound("SFX/SCP/682/Roar.ogg")
 			If e\EventState > 17*70 - 3*70 Then mainPlayer\camShake = 0.5
 			If e\EventState < 17*70 - 7.5*70 And e\EventState > 17*70 - 11*70 Then mainPlayer\camShake = 2.0				
 			If e\EventState < 70 Then 

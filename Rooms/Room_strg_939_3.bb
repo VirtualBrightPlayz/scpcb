@@ -60,7 +60,7 @@ Function FillRoom_strg_939_3(r.Rooms)
     r\Objects[16] = CreatePivot(r\obj)
     PositionEntity(r\Objects[16], r\x - 432.0 * RoomScale, -5550.0 * RoomScale, r\z + 2976.0 * RoomScale, True)
     
-    ;r\Objects[20] = LoadMesh("GFX\map\room3storage_hb.b3d",r\obj)
+    ;r\Objects[20] = LoadMesh("GFX/map/room3storage_hb.b3d",r\obj)
     ;EntityPickMode r\Objects[20],2
     ;EntityType r\Objects[20],HIT_MAP
     ;EntityAlpha r\Objects[20],0.0
@@ -192,7 +192,7 @@ Function UpdateEvent_strg_939_3(e.Events)
 		
 		If EntityY(mainPlayer\collider)<-4600*RoomScale Then
 			
-			;If Music(7)=0 Then Music(7) = LoadSound("SFX\Music\Room3Storage.ogg") ;TODO: fix 
+			;If Music(7)=0 Then Music(7) = LoadSound("SFX/Music/Room3Storage.ogg") ;TODO: fix 
 			ShouldPlay = 7
 			
 			;If e\room\NPC[0]=Null Then
@@ -248,13 +248,13 @@ Function UpdateEvent_strg_939_3(e.Events)
 					If UpdateLever(e\room\Levers[0])
 						e\room\RoomDoors[4]\open = True
 						If e\sounds[1] <> 0 Then FreeSound e\sounds[1] : e\sounds[1]=0
-						e\sounds[1] = LoadSound("SFX\Door\Door2Open1_dist.ogg")
+						e\sounds[1] = LoadSound("SFX/Door/Door2Open1_dist.ogg")
 						e\soundChannels[1] = PlayRangedSound(e\sounds[1],mainPlayer\cam,e\room\RoomDoors[4]\obj,400)
 					EndIf
 					If UpdateLever(e\room\Levers[1])
 						e\room\RoomDoors[4]\open = True
 						If e\sounds[1] <> 0 Then FreeSound e\sounds[1] : e\sounds[1]=0
-						e\sounds[1] = LoadSound("SFX\Door\Door2Open1_dist.ogg")
+						e\sounds[1] = LoadSound("SFX/Door/Door2Open1_dist.ogg")
 						e\soundChannels[1] = PlayRangedSound(e\sounds[1],mainPlayer\cam,e\room\RoomDoors[4]\obj,400)
 					EndIf
 				EndIf
@@ -280,7 +280,7 @@ Function UpdateEvent_strg_939_3(e.Events)
 				
 				If EntityY(mainPlayer\collider)<-6400*RoomScale And mainPlayer\dead = False Then
 					DeathMSG=""
-					PlaySound2 LoadTempSound("SFX\Room\PocketDimension\Impact.ogg")
+					PlaySound2 LoadTempSound("SFX/Room/PocketDimension/Impact.ogg")
 					mainPlayer\dead = True
 				EndIf
 			EndIf

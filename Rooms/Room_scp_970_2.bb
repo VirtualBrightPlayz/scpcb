@@ -181,8 +181,8 @@ Function UpdateEvent_scp_970_2(e.Events)
 				Case 25
 					e\room\NPC[0]=CreateNPC(NPCtypeD, EntityX(e\room\obj)+Cos(e\room\angle-90)*760*RoomScale, 0.35, EntityZ(e\room\obj)+Sin(e\room\angle-90)*760*RoomScale)
 					RotateEntity e\room\NPC[0]\Collider, 0, e\room\angle-200, 0, True
-					tex=LoadTexture("GFX\NPCs\corpse.jpg")
-					e\room\NPC[0]\texture = "GFX\NPCs\corpse.jpg"
+					tex=LoadTexture("GFX/NPCs/corpse.jpg")
+					e\room\NPC[0]\texture = "GFX/NPCs/corpse.jpg"
 					EntityTexture e\room\NPC[0]\obj, tex
 					FreeTexture tex
 					SetAnimTime(e\room\NPC[0]\obj,80)
@@ -199,7 +199,7 @@ Function UpdateEvent_scp_970_2(e.Events)
 						de\Size = 0.05 : de\SizeChange = 0.0005 : EntityAlpha(de\obj, 0.8) : UpdateDecals
 					Next
 				Case 40
-					PlaySound2(LoadTempSound("SFX\radio\franklin4.ogg"))
+					PlaySound2(LoadTempSound("SFX/radio/franklin4.ogg"))
 				Case 50
 					e\room\NPC[1]=CreateNPC(NPCtypeGuard, EntityX(e\room\obj)+Cos(e\room\angle+90)*600*RoomScale, 0.35, EntityZ(e\room\obj)+Sin(e\room\angle+90)*600*RoomScale)
 					e\room\NPC[1]\State=7
@@ -210,7 +210,7 @@ Function UpdateEvent_scp_970_2(e.Events)
 					EndIf
 				Case 60
 					If (Not HalloweenTex) Then
-						Local tex970 = LoadTexture("GFX\npcs\173h.pt", 1)
+						Local tex970 = LoadTexture("GFX/npcs/173h.pt", 1)
 						EntityTexture Curr173\obj, tex970, 0, 0
 						FreeTexture tex970
 					EndIf
@@ -277,7 +277,7 @@ Function UpdateEvent_scp_970_2(e.Events)
 		If Abs(EntityX(mainPlayer\collider)-e\room\x)<8.0 Then
 			If Abs(EntityZ(mainPlayer\collider)-e\room\z)<8.0 Then
 				If e\sounds[0] = 0 Then
-					e\sounds[0] = LoadSound("SFX\SCP\970\Corpse.ogg")
+					e\sounds[0] = LoadSound("SFX/SCP/970/Corpse.ogg")
 				EndIf
 				e\soundChannels[0] = LoopRangedSound(e\sounds[0], e\soundChannels[0], mainPlayer\cam, e\room\NPC[0]\obj);
 				If e\EventState < 30 Then
@@ -299,3 +299,6 @@ Function UpdateEvent_scp_970_2(e.Events)
 	
 	;[End Block]
 End Function
+
+;~IDEal Editor Parameters:
+;~C#Blitz3D

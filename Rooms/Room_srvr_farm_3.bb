@@ -26,9 +26,9 @@ Function FillRoom_srvr_farm_3(r.Rooms)
     r\Objects[2] = CreatePivot(r\obj)
     PositionEntity(r\Objects[2], r\x + 736.0 * RoomScale, -512.0 * RoomScale, r\z + 272.0 * RoomScale, True)
     
-    r\Objects[3] = LoadMesh("GFX\npcs\duck_low_res.b3d")
+    r\Objects[3] = LoadMesh("GFX/npcs/duck_low_res.b3d")
     ScaleEntity(r\Objects[3], 0.07, 0.07, 0.07)
-    tex = LoadTexture("GFX\npcs\duck2.png")
+    tex = LoadTexture("GFX/npcs/duck2.png")
     EntityTexture r\Objects[3], tex
     PositionEntity (r\Objects[3], r\x + 928.0 * RoomScale, -640*RoomScale, r\z + 704.0 * RoomScale)
     
