@@ -131,7 +131,7 @@ Function LoadEntities()
 	;Listener = CreateListener(mainPlayer\cam)
 	
 	DrawLoading(5)
-	TeslaTexture = LoadTexture("GFX\map\tesla.jpg", 1+2)
+	TeslaTexture = LoadTexture("GFX\map\Textures\tesla.jpg", 1+2)
 	
 	LiquidObj = LoadMesh("GFX\items\cupliquid.x") ;optimized the cups dispensed by 294
 	HideEntity LiquidObj
@@ -564,7 +564,7 @@ Function InitLoadGame()
 				;[Block]
 				DrawLoading(91)
 				e\room\Objects[0] = CreatePlane()
-				Local planetex% = LoadTexture("GFX\map\dimension1499\grit3.jpg")
+				Local planetex% = LoadTexture("GFX\map\Rooms\dimension1499\grit3.jpg")
 				EntityTexture e\room\Objects[0],planetex%
 				FreeTexture planetex%
 				PositionEntity e\room\Objects[0],0,EntityY(e\room\obj),0
@@ -574,7 +574,7 @@ Function InitLoadGame()
 				NTF_1499Sky = sky_CreateSky("GFX\map\sky\1499sky")
 				DrawLoading(93)
 				For i = 1 To 15
-					e\room\Objects[i] = LoadMesh("GFX\map\dimension1499\1499object"+i+".b3d")
+					e\room\Objects[i] = LoadMesh("GFX\map\Rooms\dimension1499\1499object"+i+".b3d")
 					HideEntity e\room\Objects[i]
 				Next
 				DrawLoading(96)

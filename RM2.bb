@@ -148,7 +148,7 @@ Function LoadRM2(rt.RoomTemplates)
 						texture = LoadRMeshTexture(filepath,texName,loadFlags)
 						TextureBlend(texture,blendFlags)
 						TextureCoords(texture,uvSet)
-						AddTextureToCache(texture)
+						AddTextureToCache(texName,texture)
 					EndIf
 					PushIntArrayListElem(usedTextures,Handle(GetCache(texName)))
 				Next
@@ -385,7 +385,7 @@ Function LoadRM2(rt.RoomTemplates)
 				yScale = ReadFloat(file)
 				zScale = ReadFloat(file)
 				
-				prop = LoadProp("GFX/map/Props/"+propName,x,y,z,pitch,yaw,roll,xScale,yScale,zScale)
+				prop = LoadProp(propName,x,y,z,pitch,yaw,roll,xScale,yScale,zScale)
 				
 				If props=Null Then props=CreateIntArrayList()
 				PushIntArrayListElem(props,Handle(prop))

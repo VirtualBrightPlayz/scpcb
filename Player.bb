@@ -353,7 +353,7 @@ Function MovePlayer()
 					If Sprint = 1.0 Then
 						mainPlayer\loudness = Max(4.0,mainPlayer\loudness)
 
-						If (temp = 1) Then
+						If (temp = STEPSOUND_METAL) Then
 							tempchn% = PlaySound_SM(sndManager\footstepMetal[Rand(0, 7)])
 						Else
 							tempchn% = PlaySound_SM(sndManager\footstep[Rand(0, 7)])

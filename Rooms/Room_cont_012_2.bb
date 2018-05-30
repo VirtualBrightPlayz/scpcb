@@ -46,7 +46,7 @@ Function FillRoom_cont_012_2(r.Rooms)
     HideEntity r\Objects[3]
     
     r\Objects[4] = LoadMesh("GFX\map\room012_3.b3d")
-    tex=LoadTexture("GFX\map\scp-012_0.jpg")
+    tex=LoadTexture("GFX\map\Textures\scp-012_0.jpg")
     EntityTexture r\Objects[4],tex, 0,1
     ScaleEntity r\Objects[4], RoomScale, RoomScale, RoomScale
     PositionEntity(r\Objects[4], r\x - 360 * RoomScale, - 130 * RoomScale, r\z + 456.0 * RoomScale, 0)
@@ -169,7 +169,7 @@ Function UpdateEvent_cont_012_2(e.Events)
 							mainPlayer\injuries=mainPlayer\injuries+0.5
 							PlaySound2 LoadTempSound("SFX\SCP\012\Speech2.ogg")
 						ElseIf e\EventState3>31*70 And e\EventState3-timing\tickDuration=<31*70
-							tex = LoadTexture("GFX\map\scp-012_1.jpg")
+							tex = LoadTexture("GFX\map\Textures\scp-012_1.jpg")
 							EntityTexture (e\room\Objects[4], tex,0,1)
 							FreeTexture tex
 							
@@ -183,14 +183,14 @@ Function UpdateEvent_cont_012_2(e.Events)
 							mainPlayer\injuries=mainPlayer\injuries+0.3
 							PlaySound2 LoadTempSound("SFX\SCP\012\Speech5.ogg")
 						ElseIf e\EventState3>63*70 And e\EventState3-timing\tickDuration=<63*70
-							tex = LoadTexture("GFX\map\scp-012_2.jpg")
+							tex = LoadTexture("GFX\map\Textures\scp-012_2.jpg")
 							EntityTexture (e\room\Objects[4], tex,0,1)	
 							FreeTexture tex
 							
 							mainPlayer\injuries=mainPlayer\injuries+0.5
 							PlaySound2 LoadTempSound("SFX\SCP\012\Speech6.ogg")
 						ElseIf e\EventState3>74*70 And e\EventState3-timing\tickDuration=<74*70
-							tex = LoadTexture("GFX\map\scp-012_3.jpg")
+							tex = LoadTexture("GFX\map\Textures\scp-012_3.jpg")
 							EntityTexture (e\room\Objects[4], tex,0,1)
 							FreeTexture tex
 							

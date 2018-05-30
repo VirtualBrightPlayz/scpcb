@@ -92,6 +92,8 @@ Function LoadMaterials(file$)
 	
 	Local f = OpenFile(file)
 	
+	Local stepSound$ = ""
+	
 	While Not Eof(f)
 		TemporaryString = Trim(ReadLine(f))
 		If Left(TemporaryString,1) = "[" Then
@@ -101,7 +103,10 @@ Function LoadMaterials(file$)
 			
 			mat\name = Lower(TemporaryString)
 			
-			mat\StepSound = GetINIInt(file, TemporaryString, "stepsound")
+			mat\Diff = 0
+			
+			stepSound = GetINIString(file, TemporaryString, "stepsound")
+			If Lower(stepSound)="metal" mat\StepSound = STEPSOUND_METAL
 		EndIf
 	Wend
 	
@@ -128,30 +133,24 @@ End Function
 
 Function GetTextureFromCache%(name$)
 	For tc.Materials=Each Materials
-		If tc\name = name Then Return tc\Diff
+		If Lower(tc\name) = Lower(name) Then Return tc\Diff
 	Next
 	Return 0
 End Function
 
 Function GetCache.Materials(name$)
 	For tc.Materials=Each Materials
-		If tc\name = name Then Return tc
+		If Lower(tc\name) = Lower(name) Then Return tc
 	Next
 	Return Null
 End Function
 
-Function AddTextureToCache(texture%)
-	Local tc.Materials=GetCache(StripPath(TextureName(texture)))
+Function AddTextureToCache(name$,texture%)
+	Local tc.Materials=GetCache(name)
 	If tc.Materials=Null Then
 		tc.Materials=New Materials
-		tc\name=StripPath(TextureName(texture))
-		;Local temp$=GetINIString("Data\materials.ini",tc\name,"bump")
-		;If temp<>"" Then
-		;	tc\Bump=LoadTexture(temp)
-		;	TextureBlend tc\Bump,FE_BUMP
-		;Else
-		;	tc\Bump=0
-		;EndIf
+		tc\name=Lower(name)
+		
 		tc\Diff=0
 	EndIf
 	If tc\Diff=0 Then tc\Diff=texture
@@ -174,11 +173,17 @@ Function FreeTextureCache()
 End Function
 
 Function LoadRMeshTexture%(roompath$,name$,flags%)
-	If FileType(roompath+name)=1 Then
-		Return LoadTexture(roompath+name,flags)
+	Local texture% = 0
+	If texture=0 Then texture = LoadTexture(roompath+name+".jpg",flags)
+	If texture=0 Then texture = LoadTexture(roompath+name+".png",flags)
+	If texture=0 Then texture = LoadTexture("GFX/map/Textures/"+name+".jpg",flags)
+	If texture=0 Then texture = LoadTexture("GFX/map/Textures/"+name+".png",flags)
+	If texture<>0 Then
+		DebugLog TextureName(texture)
 	Else
-		Return LoadTexture("GFX/map/"+name,flags) ;TODO: don't hardcode?
+		RuntimeError name
 	EndIf
+	Return texture
 End Function
 
 ;-----------;;;;
@@ -2211,7 +2216,8 @@ Function LoadProp.Props(file$,x#,y#,z#,pitch#,yaw#,roll#,xScale#,yScale#,zScale#
 		EndIf
 	Next
 	
-	If p\obj=0 Then p\obj = LoadMesh(file)
+	If p\obj=0 Then p\obj = LoadMesh("GFX/map/Props/"+file+".b3d")
+	If p\obj=0 Then RuntimeError file
 	HideEntity(p\obj)
 	Return p
 End Function
@@ -3106,5 +3112,5 @@ Function FindAndDeleteFakeMonitor(r.Rooms,x#,y#,z#,Amount%)
 	
 End Function
 ;~IDEal Editor Parameters:
-;~F#4F#57#71#80#87#8E#9F#A7#AF#B9#C9#DA#1A2#1DD#1E5#1FA#205#20F#310
+;~F#4F#76#9E#A6#BE#CE#DF#1A7#1E2#1EA#1FF#20A#214#315#8B4
 ;~C#Blitz3D

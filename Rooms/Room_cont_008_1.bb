@@ -17,7 +17,7 @@ Function FillRoom_cont_008_1(r.Rooms)
     
     RotateEntity(r\Objects[1],89,0,0,True)
     
-    Glasstex = LoadTexture("GFX\map\glass.png",1+2)
+    Glasstex = LoadTexture("GFX\map\Textures\glass.png",1+2)
     r\Objects[2] = CreateSprite()
     EntityTexture(r\Objects[2],Glasstex)
     SpriteViewMode(r\Objects[2],2)
