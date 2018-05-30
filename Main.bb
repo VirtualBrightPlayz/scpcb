@@ -109,8 +109,8 @@ Const VERSION$ = "1.CBN"
 Global Depth.MarkedForRemoval
 
 ;TODO: Move somewhere more relevant.
-Global WireframeState
-Global HalloweenTex
+Global WireframeState%
+Global HalloweenTex%
 
 Global RealGraphicWidth.MarkedForRemoval
 Global RealGraphicHeight.MarkedForRemoval
@@ -189,7 +189,8 @@ Global MouseHit1%, MouseDown1%, MouseHit2%, DoubleClick%, LastMouseHit1%, MouseU
 ;TODO: Make this not global.
 Global CoffinDistance#
 
-Global ExplosionTimer#, ExplosionSFX% ;gate b explosion?
+;TODO: Move somewhere?
+Global ExplosionTimer#, ExplosionSFX.MarkedForRemoval
 
 Global LightsOn% = True ;secondary lighting on
 
@@ -341,7 +342,7 @@ Global Monitor%, MonitorTexture%
 Global CamBaseOBJ%, CamOBJ%
 
 Global LiquidObj%,MTFObj%,ClassDObj%
-Global ApacheObj%,ApacheRotorObj%
+Global ApacheObj.MarkedForRemoval,ApacheRotorObj.MarkedForRemoval
 
 Global UnableToMove.MarkedForRemoval
 
@@ -368,7 +369,6 @@ Function Main%()
 End Function
 
 ;TODO: Shuffle the initialization of stuff around in between DrawLoading() calls.
-;also don't initialize all of the sounds here, that's just ridiculous
 Function InitializeMainGame()
 	CurrGameState = GAMESTATE_MAINMENU
 	CurrGameSubstate = GAMESUBSTATE_MAINMENU_MAIN
@@ -2184,5 +2184,5 @@ Function CheckTriggers$()
 End Function
 
 ;~IDEal Editor Parameters:
-;~F#5#75#8C#97#9B#A3
+;~F#5
 ;~C#Blitz3D

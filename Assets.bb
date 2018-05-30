@@ -2,12 +2,98 @@ Const ASSSET_NON%    = 0
 Const ASSET_TEXTURE% = 1
 Const ASSET_ENTITY%  = 2
 
-Type AssWrap
-	Field fleg%
-	Field grabEmByThePussy%
+Type AssetWrap
+	Field flag%
+	Field grabCount%
 	Field file$
-	Field internalValue%
+	Field intVal%
 End Type
+
+Function FreeAss(as.AssetWrap)
+	Select as\flag
+		Case ASSET_TEXTURE
+			FreeTexture(as\intVal)
+		Case ASSET_ENTITY
+			FreeEntity(as\intVal)
+	End Select
+	
+	Delete as
+End Function
+
+Type UIAssets
+	;Misc. Interface
+	Field back%
+	Field scpText%
+	Field tileWhite%
+	Field tileBlack%
+	Field scp173%
+	Field arrow%[4]
+	Field font%[4]
+	Field ConsoleFont%
+	
+	;HUD
+	
+End Type
+
+Global uiAssets.UIAssets
+Function InitializeUIAssets()
+	uiAssets = New UIAssets
+	
+	uiAssets\back = LoadImage("GFX\menu\back.jpg")
+	uiAssets\scpText = LoadImage("GFX\menu\scptext.jpg")
+	uiAssets\scp173 = LoadImage("GFX\menu\173back.jpg")
+	uiAssets\tileWhite = LoadImage("GFX\menu\menuwhite.jpg")
+	uiAssets\tileBlack = LoadImage("GFX\menu\menublack.jpg")
+	MaskImage uiAssets\tileBlack, 255,255,0
+	
+	ResizeImage(uiAssets\back, ImageWidth(uiAssets\back) * MenuScale, ImageHeight(uiAssets\back) * MenuScale)
+	ResizeImage(uiAssets\scpText, ImageWidth(uiAssets\scpText) * MenuScale, ImageHeight(uiAssets\scpText) * MenuScale)
+	ResizeImage(uiAssets\scp173, ImageWidth(uiAssets\scp173) * MenuScale, ImageHeight(uiAssets\scp173) * MenuScale)
+	
+	Local i%
+	For i = 0 To 3
+		uiAssets\arrow[i] = LoadImage("GFX\menu\arrow.png")
+		RotateImage(uiAssets\arrow[i], 90 * i)
+		HandleImage(uiAssets\arrow[i], 0, 0)
+	Next
+	
+	;For some reason, Blitz3D doesn't load fonts that have filenames that
+	;don't match their "internal name" (i.e. their display name in applications
+	;like Word and such). As a workaround, I moved the files and renamed them so they
+	;can load without FastText.
+	uiAssets\font[0] = LoadFont("GFX\font\cour\Courier New.ttf", Int(18 * MenuScale), 0,0,0)
+	uiAssets\font[1] = LoadFont("GFX\font\courbd\Courier New.ttf", Int(58 * MenuScale), 0,0,0)
+	uiAssets\font[2] = LoadFont("GFX\font\DS-DIGI\DS-Digital.ttf", Int(22 * MenuScale), 0,0,0)
+	uiAssets\font[3] = LoadFont("GFX\font\DS-DIGI\DS-Digital.ttf", Int(60 * MenuScale), 0,0,0)
+	uiAssets\ConsoleFont% = LoadFont("Blitz", Int(20 * MenuScale), 0,0,0)
+End Function
+
+Function ReleaseUIAssets()
+	FreeImage(uiAssets\back)
+	FreeImage(uiAssets\scpText)
+	FreeImage(uiAssets\scp173)
+	FreeImage(uiAssets\tileWhite)
+	FreeImage(uiAssets\tileBlack)
+	
+	Local i%
+	For i = 0 To 3
+		FreeImage(uiAssets\arrow[i])
+	Next
+	
+	For i = 0 To 3
+		FreeFont(uiAssets\font[i])
+	Next
+	FreeFont(uiAssets\ConsoleFont)
+	
+	Delete uiAssets
+End Function
+
+;Top 10 CB assets that have SWORN.
+Type CommonAssets
+	
+End Type
+
+Global comAssets.CommonAssets
 
 Function LoadEntities()
 	DrawLoading(0)
@@ -78,13 +164,9 @@ Function LoadEntities()
 	
 	
 	ClassDObj = LoadAnimMesh("GFX\npcs\classd.b3d") ;optimized Class-D's and scientists/researchers
-	ApacheObj = LoadAnimMesh("GFX\apache.b3d") ;optimized Apaches (helicopters)
-	ApacheRotorObj = LoadAnimMesh("GFX\apacherotor.b3d") ;optimized the Apaches even more
 	
 	HideEntity MTFObj
 	HideEntity ClassDObj
-	HideEntity ApacheObj
-	HideEntity ApacheRotorObj
 	
 	LightSpriteTex(0) = LoadTexture("GFX\light1.jpg", 1)
 	LightSpriteTex(1) = LoadTexture("GFX\light2.jpg", 1)

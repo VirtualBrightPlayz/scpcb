@@ -4,20 +4,35 @@ Function InitializeNPCtypeApache(n.NPCs)
     n\maxGravity = 0.0
     n\collider = CreatePivot()
     EntityRadius n\collider, 0.2
-    n\obj = CopyEntity(ApacheObj);LoadAnimMesh("GFX\apache.b3d")
     
-    n\obj2 = CopyEntity(ApacheRotorObj);LoadAnimMesh("GFX\apacherotor.b3d",n\obj)
-    EntityParent n\obj2,n\obj
+	Local n2.NPCs
+	For n2 = Each NPCs
+        If (n\npcType = n2\npcType) And (n <> n2) Then
+            n\obj = CopyEntity(n2\obj)
+			n\obj2 = CopyEntity(n2\obj2)
+			n\obj3 = CopyEntity(n2\obj3)
+            Exit
+        EndIf
+    Next
+	
+	If (n\obj = 0) Then
+		n\obj = LoadAnimMesh("GFX\apache.b3d")
+		n\obj2 = LoadAnimMesh("GFX\apacherotor.b3d")
+		n\obj3 = LoadAnimMesh("GFX\apacherotor2.b3d")
+	EndIf
+	
+    EntityParent(n\obj2, n\obj)
+	EntityParent(n\obj3, n\obj)
 	
 	n\sounds[0] = LoadSound("SFX\Character\Apache\Propeller.ogg")
     
+	Local i%
     For i = -1 To 1 Step 2
         Local rotor2 = CopyEntity(n\obj2,n\obj2)
         RotateEntity rotor2,0,4.0*i,0
         EntityAlpha rotor2, 0.5
     Next
     
-    n\obj3 = LoadAnimMesh("GFX\apacherotor2.b3d",n\obj)
     PositionEntity n\obj3, 0.0, 2.15, -5.48
     
     EntityType n\collider, HIT_APACHE
@@ -38,14 +53,14 @@ Function InitializeNPCtypeApache(n.NPCs)
         EntityFX lightsprite, 1+8
     Next
     
-    temp# = 0.6
+    Local temp# = 0.6
     ScaleEntity n\obj, temp, temp, temp
 End Function
 
 Function UpdateNPCtypeApache(n.NPCs)
     Local dist# = EntityDistance(mainPlayer\collider, n\collider)
     If dist<60.0 Then 
-        If mainPlayer\currRoom\RoomTemplate\Name = "exit1" Then 
+        If mainPlayer\currRoom\RoomTemplate\name = "exit1" Then 
             dist2 = Max(Min(EntityDistance(n\collider, mainPlayer\currRoom\Objects[3])/(8000.0*RoomScale),1.0),0.0)
         Else 
             dist2 = 1.0
