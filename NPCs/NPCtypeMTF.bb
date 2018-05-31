@@ -7,24 +7,24 @@ Function InitializeNPCtypeMTF(n.NPCs)
     ;EntityRadius mainPlayer\collider, 0.15, 0.30
     EntityType n\collider, HIT_PLAYER
     ;EntityPickMode n\Collider, 1
-    n\obj = CopyEntity(MTFObj) ;LoadAnimMesh("GFX\npcs\mtf.b3d")
+    n\obj = CopyEntity(MTFObj) ;LoadAnimMesh("GFX/npcs/mtf.b3d")
     
-    n\speed = (GetINIFloat("DATA\NPCs.ini", "MTF", "speed") / 100.0)
+    n\speed = (GetINIFloat("DATA/NPCs.ini", "MTF", "speed") / 100.0)
     
-    temp# = (GetINIFloat("DATA\NPCs.ini", "MTF", "scale") / 2.5)
+    temp# = (GetINIFloat("DATA/NPCs.ini", "MTF", "scale") / 2.5)
     
     ScaleEntity n\obj, temp, temp, temp
     
     MeshCullBox (n\obj, -MeshWidth(MTFObj), -MeshHeight(MTFObj), -MeshDepth(MTFObj), MeshWidth(MTFObj)*2, MeshHeight(MTFObj)*2, MeshDepth(MTFObj)*2) 
     
     If MTFSFX(0)=0 Then
-        MTFSFX(0)=LoadSound("SFX\Character\MTF\ClassD1.ogg")
-        MTFSFX(1)=LoadSound("SFX\Character\MTF\ClassD2.ogg")
-        MTFSFX(2)=LoadSound("SFX\Character\MTF\ClassD3.ogg")			
-        MTFSFX(3)=LoadSound("SFX\Character\MTF\ClassD4.ogg")
-        ;MTFSFX(4)=LoadSound("SFX\Character\MTF\Tesla0.ogg")
-        MTFSFX(5)=LoadSound("SFX\Character\MTF\Beep.ogg")
-        MTFSFX(6)=LoadSound("SFX\Character\MTF\Breath.ogg")
+        MTFSFX(0)=LoadSound("SFX/Character/MTF/ClassD1.ogg")
+        MTFSFX(1)=LoadSound("SFX/Character/MTF/ClassD2.ogg")
+        MTFSFX(2)=LoadSound("SFX/Character/MTF/ClassD3.ogg")			
+        MTFSFX(3)=LoadSound("SFX/Character/MTF/ClassD4.ogg")
+        ;MTFSFX(4)=LoadSound("SFX/Character/MTF/Tesla0.ogg")
+        MTFSFX(5)=LoadSound("SFX/Character/MTF/Beep.ogg")
+        MTFSFX(6)=LoadSound("SFX/Character/MTF/Breath.ogg")
     EndIf
     If MTFrooms[6]=Null Then 
         For r.Rooms = Each Rooms
@@ -69,7 +69,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 		;only play the "blinking" sound clip if searching/containing 173
 		If n\State = 2
 			If OtherNPCSeesMeNPC(Curr173,n)
-				PlayMTFSound(LoadTempSound("SFX\Character\MTF\173\BLINKING.ogg"),n)
+				PlayMTFSound(LoadTempSound("SFX/Character/MTF/173/BLINKING.ogg"),n)
 			EndIf
 		EndIf
 		n\BlinkTimer = 70.0*Rnd(10.0,15.0)
@@ -152,7 +152,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 											Curr173\target = Null
 											Curr173\IsDead = True
 											If n\sounds[0] <> 0 Then FreeSound n\sounds[0] : n\sounds[0] = 0
-											n\sounds[0] = LoadSound("SFX\Character\MTF\173\Cont"+Rand(1,4)+".ogg")
+											n\sounds[0] = LoadSound("SFX/Character/MTF/173/Cont"+Rand(1,4)+".ogg")
 											PlayMTFSound(n\sounds[0], n)
 											DebugLog "173 contained"
 											Exit
@@ -302,13 +302,13 @@ Function UpdateNPCtypeMTF(n.NPCs)
 					If n\LastSeen > 0 And n\LastSeen < 70*15 Then
 						If temp < 2
 							If n\sounds[0] <> 0 Then FreeSound n\sounds[0] : n\sounds[0] = 0
-							n\sounds[0] = LoadSound("SFX\Character\MTF\ThereHeIs"+Rand(1,6)+".ogg")
+							n\sounds[0] = LoadSound("SFX/Character/MTF/ThereHeIs"+Rand(1,6)+".ogg")
 							PlayMTFSound(n\sounds[0], n)
 						EndIf
 					Else
 						If temp = True
 							If n\sounds[0] <> 0 Then FreeSound n\sounds[0] : n\sounds[0] = 0
-							n\sounds[0] = LoadSound("SFX\Character\MTF\Stop"+Rand(1,6)+".ogg")
+							n\sounds[0] = LoadSound("SFX/Character/MTF/Stop"+Rand(1,6)+".ogg")
 							PlayMTFSound(n\sounds[0], n)
 						ElseIf temp = 2
 							;If n\sounds[0] <> 0 Then FreeSound n\sounds[0] : n\sounds[0] = 0
@@ -351,7 +351,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 							n\PathStatus=0
 							DebugLog "173 spotted :"+n\State2
 							If n\sounds[0] <> 0 Then FreeSound n\sounds[0] : n\sounds[0] = 0
-							n\sounds[0] = LoadSound("SFX\Character\MTF\173\Spotted"+Rand(1,2)+".ogg")
+							n\sounds[0] = LoadSound("SFX/Character/MTF/173/Spotted"+Rand(1,2)+".ogg")
 							PlayMTFSound(n\sounds[0], n)
 						EndIf
 					EndIf
@@ -372,7 +372,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 							DebugLog "106 spotted :"+n\State2
 							;If n\MTFLeader=Null
 								If n\sounds[0] <> 0 Then FreeSound n\sounds[0] : n\sounds[0] = 0
-								n\sounds[0] = LoadSound("SFX\Character\MTF\106\Spotted"+Rand(1,3)+".ogg")
+								n\sounds[0] = LoadSound("SFX/Character/MTF/106/Spotted"+Rand(1,3)+".ogg")
 								PlayMTFSound(n\sounds[0], n)
 							;EndIf
 						EndIf
@@ -393,7 +393,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 							DebugLog "096 spotted :"+n\State2
 							;If n\MTFLeader=Null
 								If n\sounds[0] <> 0 Then FreeSound n\sounds[0] : n\sounds[0] = 0
-								n\sounds[0] = LoadSound("SFX\Character\MTF\096\Spotted"+Rand(1,2)+".ogg")
+								n\sounds[0] = LoadSound("SFX/Character/MTF/096/Spotted"+Rand(1,2)+".ogg")
 								PlayMTFSound(n\sounds[0], n)
 							;EndIf
 						EndIf
@@ -416,7 +416,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 								DebugLog "049 spotted :"+n\State2
 								;If n\MTFLeader=Null
 								;	If n\sounds[0] <> 0 Then FreeSound n\sounds[0] : n\sounds[0] = 0
-								;	n\sounds[0] = LoadSound("SFX\Character\MTF\"
+								;	n\sounds[0] = LoadSound("SFX/Character/MTF/"
 								;	PlayMTFSound(n\sounds[0], n)
 								;EndIf
 								Exit
@@ -437,7 +437,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 								n\Reload = 70*5
 								DebugLog "049-2 spotted :"+n\state2
 								If n\sounds[0] <> 0 Then FreeSound n\sounds[0] : n\sounds[0] = 0
-								n\sounds[0] = LoadSound("SFX\Character\MTF\049\Player0492_1.ogg")
+								n\sounds[0] = LoadSound("SFX/Character/MTF/049/Player0492_1.ogg")
 								PlayMTFSound(n\sounds[0], n)
 								Exit
 							EndIf
@@ -483,7 +483,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 									;player killed -> "target terminated"
 									If (Not prev) And mainPlayer\dead Then
 										DeathMSG="Subject D-9341. Terminated by Nine-Tailed Fox."
-										PlayMTFSound(LoadTempSound("SFX\Character\MTF\Targetterminated"+Rand(1,4)+".ogg"),n)
+										PlayMTFSound(LoadTempSound("SFX/Character/MTF/Targetterminated"+Rand(1,4)+".ogg"),n)
 									EndIf
 								EndIf	
 							EndIf
@@ -649,7 +649,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 					
 					If n\MTFLeader=Null And n\LastSeen<70*30 And n\LastSeen+timing\tickDuration=>70*30 Then
 						If Rand(2)=1 Then 
-							PlayMTFSound(LoadTempSound("SFX\Character\MTF\Searching"+Rand(1,6)+".ogg"),n)
+							PlayMTFSound(LoadTempSound("SFX/Character/MTF/Searching"+Rand(1,6)+".ogg"),n)
 						EndIf
 					EndIf
 					
@@ -661,7 +661,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
                 If n\State2<=0.0 And n\State2+timing\tickDuration >0.0 Then
 					If n\MTFLeader = Null Then
 						DebugLog "targetlost: "+n\State2
-						PlayMTFSound(LoadTempSound("SFX\Character\MTF\Targetlost"+Rand(1,3)+".ogg"),n)
+						PlayMTFSound(LoadTempSound("SFX/Character/MTF/Targetlost"+Rand(1,3)+".ogg"),n)
 					EndIf
 					n\State = 0
                 EndIf
@@ -678,7 +678,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 							n\State2 = 70.0*15.0 ;give up after 15 seconds
 							DebugLog "173 spotted :"+n\State2
 							If n\sounds[0] <> 0 Then FreeSound n\sounds[0] : n\sounds[0] = 0
-							n\sounds[0] = LoadSound("SFX\Character\MTF\173\Spotted3.ogg")
+							n\sounds[0] = LoadSound("SFX/Character/MTF/173/Spotted3.ogg")
 							PlayMTFSound(n\sounds[0], n)
 							n\State3 = 0.0
 							n\PathTimer=0.0
@@ -702,7 +702,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 							DebugLog "106 spotted :"+n\State2
 							If n\MTFLeader=Null
 								If n\sounds[0] <> 0 Then FreeSound n\sounds[0] : n\sounds[0] = 0
-								n\sounds[0] = LoadSound("SFX\Character\MTF\106\Spotted4.ogg")
+								n\sounds[0] = LoadSound("SFX/Character/MTF/106/Spotted4.ogg")
 								PlayMTFSound(n\sounds[0], n)
 							EndIf
 						EndIf
@@ -723,7 +723,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 							DebugLog "096 spotted :"+n\State2
 							If n\MTFLeader=Null
 								If n\sounds[0] <> 0 Then FreeSound n\sounds[0] : n\sounds[0] = 0
-								n\sounds[0] = LoadSound("SFX\Character\MTF\096\Spotted"+Rand(1,2)+".ogg")
+								n\sounds[0] = LoadSound("SFX/Character/MTF/096/Spotted"+Rand(1,2)+".ogg")
 								PlayMTFSound(n\sounds[0], n)
 							EndIf
 						EndIf
@@ -746,7 +746,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 								DebugLog "049 spotted :"+n\State2
 								;If n\MTFLeader=Null
 								;	If n\sounds[0] <> 0 Then FreeSound n\sounds[0] : n\sounds[0] = 0
-								;	n\sounds[0] = LoadSound("SFX\Character\MTF\"
+								;	n\sounds[0] = LoadSound("SFX/Character/MTF/"
 								;	PlayMTFSound(n\sounds[0], n)
 								;EndIf
 								Exit
@@ -768,7 +768,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 								DebugLog "049-2 spotted :"+n\State2
 								;If n\MTFLeader=Null
 									If n\sounds[0] <> 0 Then FreeSound n\sounds[0] : n\sounds[0] = 0
-									n\sounds[0] = LoadSound("SFX\Character\MTF\049\Player0492_1.ogg")
+									n\sounds[0] = LoadSound("SFX/Character/MTF/049/Player0492_1.ogg")
 									PlayMTFSound(n\sounds[0], n)
 								;EndIf
 								Exit
@@ -810,7 +810,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 									Curr173\Idle = 2
 									If n\MTFLeader = Null Then Curr173\Target = n
 									If n\sounds[0] <> 0 Then FreeSound n\sounds[0] : n\sounds[0] = 0
-									n\sounds[0] = LoadSound("SFX\Character\MTF\173\Box"+Rand(1,3)+".ogg")
+									n\sounds[0] = LoadSound("SFX/Character/MTF/173/Box"+Rand(1,3)+".ogg")
 									PlayMTFSound(n\sounds[0], n)
 								EndIf
 							EndIf
@@ -1216,7 +1216,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 							
 							;If prev => 0 And KillTimer < 0 Then
 								;DeathMSG="Subject D-9341. Terminated by Nine-Tailed Fox."
-								;If n\MTFLeader = Null Then PlayMTFSound(LoadTempSound("SFX\Character\MTF\049\Player0492_2.ogg"),n)
+								;If n\MTFLeader = Null Then PlayMTFSound(LoadTempSound("SFX/Character/MTF/049/Player0492_2.ogg"),n)
 							;EndIf
 						EndIf	
 					EndIf
@@ -1425,7 +1425,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 							Else
 								If (Not n\Target\IsDead)
 									If n\sounds[0] <> 0 Then FreeSound n\sounds[0] : n\sounds[0] = 0
-									n\sounds[0] = LoadSound("SFX\Character\MTF\049\Player0492_2.ogg")
+									n\sounds[0] = LoadSound("SFX/Character/MTF/049/Player0492_2.ogg")
 									PlayMTFSound(n\sounds[0], n)
 								EndIf
 								SetNPCFrame(n\Target,133)
@@ -1567,9 +1567,9 @@ Function UpdateMTF%()
 			
 			If entrance <> Null Then 
 				If Abs(EntityZ(entrance\obj)-EntityZ(mainPlayer\collider))<30.0 Then
-					;If mainPlayer\currRoom\RoomTemplate\Name<>"room860" And mainPlayer\currRoom\RoomTemplate\Name<>"pocketdimension" Then
+					;If mainPlayer\currRoom\RoomTemplate\Name<>"room860" And mainPlayer/currRoom/RoomTemplate/Name<>"pocketdimension" Then
 					If PlayerInReachableRoom()
-						PlaySound2 LoadTempSound("SFX\Character\MTF\Announc.ogg")
+						PlaySound2 LoadTempSound("SFX/Character/MTF/Announc.ogg")
 					EndIf
 					
 					MTFtimer = 1

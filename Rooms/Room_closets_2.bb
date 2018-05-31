@@ -67,26 +67,26 @@ Function UpdateEvent_closets_2(e.Events)
 			If e\room\NPC[0]=Null Then
 				e\room\NPC[0] = CreateNPC(NPCtypeD, EntityX(e\room\Objects[0],True),EntityY(e\room\Objects[0],True),EntityZ(e\room\Objects[0],True))
 			EndIf
-			e\room\NPC[0]\texture = "GFX\npcs\janitor.jpg"
+			e\room\NPC[0]\texture = "GFX/npcs/janitor.jpg"
 			Local tex% = LoadTexture(e\room\NPC[0]\texture)
 			
 			EntityTexture e\room\NPC[0]\obj, tex
 			FreeTexture tex
 			
-			e\room\NPC[0]\sounds[0] = LoadSound("SFX\Room\Storeroom\Escape1.ogg")
+			e\room\NPC[0]\sounds[0] = LoadSound("SFX/Room/Storeroom/Escape1.ogg")
 			
 			e\room\NPC[0]\soundChannels[0] = PlayRangedSound(e\room\NPC[0]\sounds[0], mainPlayer\cam, e\room\NPC[0]\collider, 12)
 			
 			If e\room\NPC[1]=Null Then
 				e\room\NPC[1] = CreateNPC(NPCtypeD, EntityX(e\room\Objects[1],True),EntityY(e\room\Objects[1],True),EntityZ(e\room\Objects[1],True))
 			EndIf
-			e\room\NPC[1]\texture = "GFX\npcs\scientist.jpg"
+			e\room\NPC[1]\texture = "GFX/npcs/scientist.jpg"
 			tex = LoadTexture(e\room\NPC[1]\texture)
 			EntityTexture e\room\NPC[1]\obj, tex
 			
 			FreeTexture tex
 			
-			e\room\NPC[1]\sounds[0] = LoadSound("SFX\Room\Storeroom\Escape2.ogg")
+			e\room\NPC[1]\sounds[0] = LoadSound("SFX/Room/Storeroom/Escape2.ogg")
 			
 			PointEntity e\room\NPC[0]\collider, e\room\NPC[1]\collider
 			PointEntity e\room\NPC[1]\collider, e\room\NPC[0]\collider

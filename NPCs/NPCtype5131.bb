@@ -2,7 +2,7 @@ Function InitializeNPCtype5131(n.NPCs)
     n\NVName = "SCP-513-1"
     n\Collider = CreatePivot()
     EntityRadius n\Collider, 0.2
-    n\obj = LoadAnimMesh("GFX\npcs\bll.b3d")
+    n\obj = LoadAnimMesh("GFX/npcs/bll.b3d")
     
     n\obj2 = CopyEntity (n\obj)
     EntityAlpha n\obj2, 0.6
@@ -78,7 +78,7 @@ Function UpdateNPCtype5131(n.NPCs)
                         If EntityInView(n\Collider,mainPlayer\cam) Then
                             If EntityVisible(mainPlayer\collider, n\Collider) Then
                                 n\LastSeen = 1
-                                PlaySound2 LoadTempSound("SFX\SCP\513\Bell"+Rand(2,3)+".ogg")
+                                PlaySound2 LoadTempSound("SFX/SCP/513/Bell"+Rand(2,3)+".ogg")
                             EndIf
                         EndIf
                     EndIf								
@@ -126,7 +126,7 @@ Function UpdateNPCtype5131(n.NPCs)
                                         If EntityInView(n\Collider,mainPlayer\cam) Then
                                             If EntityVisible(mainPlayer\collider, n\Collider) Then
                                                 n\LastSeen = 1
-                                                PlaySound2 LoadTempSound("SFX\SCP\513\Bell"+Rand(2,3)+".ogg")
+                                                PlaySound2 LoadTempSound("SFX/SCP/513/Bell"+Rand(2,3)+".ogg")
                                             EndIf
                                         EndIf
                                     EndIf

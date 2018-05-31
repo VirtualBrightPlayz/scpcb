@@ -5,15 +5,15 @@ Function FillRoom_pocketdimension(r.Rooms)
     
     Local t1;, Bump
 
-    Local hallway = LoadMesh("GFX\map\pocketdimension2.b3d") ;the tunnels in the first room
-    r\Objects[8]=LoadMesh("GFX\map\pocketdimension3.b3d")	;the room with the throne, moving pillars etc 
-    r\Objects[9]=LoadMesh("GFX\map\pocketdimension4.b3d") ;the flying pillar
+    Local hallway = LoadMesh("GFX/map/pocketdimension2.b3d") ;the tunnels in the first room
+    r\Objects[8]=LoadMesh("GFX/map/pocketdimension3.b3d")	;the room with the throne, moving pillars etc 
+    r\Objects[9]=LoadMesh("GFX/map/pocketdimension4.b3d") ;the flying pillar
     r\Objects[10]=CopyEntity(r\Objects[9])
     
-    r\Objects[11]=LoadMesh("GFX\map\pocketdimension5.b3d") ;the pillar room
+    r\Objects[11]=LoadMesh("GFX/map/pocketdimension5.b3d") ;the pillar room
     
     
-    terrain = LoadMesh("GFX\map\pocketdimensionterrain.b3d")
+    terrain = LoadMesh("GFX/map/pocketdimensionterrain.b3d")
     ScaleEntity terrain,RoomScale,RoomScale,RoomScale,True
     ;RotateEntity terrain,0,e\room\angle,0,True
     PositionEntity terrain, 0, 2944, 0, True
@@ -134,7 +134,7 @@ Function FillRoom_pocketdimension(r.Rooms)
         
     Next
     
-    Local OldManEyes% = LoadTexture("GFX\npcs\oldmaneyes.jpg")
+    Local OldManEyes% = LoadTexture("GFX/npcs/oldmaneyes.jpg")
     r\Objects[17] = CreateSprite()
     ScaleSprite(r\Objects[17], 0.03, 0.03)
     EntityTexture(r\Objects[17], OldManEyes)
@@ -142,8 +142,8 @@ Function FillRoom_pocketdimension(r.Rooms)
     EntityFX(r\Objects[17], 1 + 8)
     SpriteViewMode(r\Objects[17], 2)
     
-    r\Objects[18] = LoadTexture("GFX\npcs\pdplane.png", 1+2)
-    r\Objects[19] = LoadTexture("GFX\npcs\pdplaneeye.png", 1+2)		
+    r\Objects[18] = LoadTexture("GFX/npcs/pdplane.png", 1+2)
+    r\Objects[19] = LoadTexture("GFX/npcs/pdplaneeye.png", 1+2)		
     
     r\Objects[20] = CreateSprite()
     ScaleSprite(r\Objects[20], 8.0, 8.0)
@@ -189,8 +189,8 @@ Function UpdateEvent_pocketdimension(e.Events)
 		
 		If (EntityY(mainPlayer\collider)<2000*RoomScale Or EntityY(mainPlayer\collider)>2608*RoomScale) Then mainPlayer\footstepOverride = 1
 		
-		If e\sounds[0] = 0 Then LoadEventSound(e,"SFX\Room\PocketDimension\Rumble.ogg")
-		If e\sounds[1] = 0 Then e\sounds[1] = LoadEventSound(e,"SFX\Room\PocketDimension\PrisonVoices.ogg",1)
+		If e\sounds[0] = 0 Then LoadEventSound(e,"SFX/Room/PocketDimension/Rumble.ogg")
+		If e\sounds[1] = 0 Then e\sounds[1] = LoadEventSound(e,"SFX/Room/PocketDimension/PrisonVoices.ogg",1)
 		
 		If e\EventState = 0 Then
 			CameraFogColor mainPlayer\cam, 0,0,0
@@ -198,7 +198,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 			e\EventState = 0.1
 		EndIf
 		
-		;If Music(3)=0 Then Music(3) = LoadSound("SFX\Music\PD.ogg") ;TODO: fix	
+		;If Music(3)=0 Then Music(3) = LoadSound("SFX/Music/PD.ogg") ;TODO: fix	
 		If EntityY(mainPlayer\collider)<2000*RoomScale Or e\EventState3=0 Or EntityY(mainPlayer\collider)>2608*RoomScale Then 
 			ShouldPlay = 3
 		Else 
@@ -253,7 +253,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 			
 			If e\EventState3 = 1 Or e\EventState3 = 2 Then ;the "trick room"
 				If e\EventState3 = 1 And (e\room\RoomDoors[0]\openstate>150 Or e\room\RoomDoors[1]\openstate>150) Then
-					PlaySound2 LoadTempSound("SFX\Horror\Horror16.ogg")
+					PlaySound2 LoadTempSound("SFX/Horror/Horror16.ogg")
 					mainPlayer\blurTimer = 800
 					e\EventState3=2
 				EndIf
@@ -263,7 +263,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 				;the trenches
 				If EntityY(mainPlayer\collider)>6.0 Then
 					ShouldPlay = 15
-					;If Music(15)=0 Then Music(15) = LoadSound("SFX\Music\PDTrench.ogg") ;TODO: fix
+					;If Music(15)=0 Then Music(15) = LoadSound("SFX/Music/PDTrench.ogg") ;TODO: fix
 					
 					CameraFogColor mainPlayer\cam, 38, 55, 47
 					CameraClsColor mainPlayer\cam, 38, 55, 47
@@ -333,8 +333,8 @@ Function UpdateEvent_pocketdimension(e.Events)
 					
 					;check if player is at the sinkhole (the exit from the trench room)
 					If EntityY(mainPlayer\collider)<8.5 Then
-						LoadEventSound(e,"SFX\Room\PocketDimension\Rumble.ogg")
-						LoadEventSound(e,"SFX\Room\PocketDimension\PrisonVoices.ogg",1)
+						LoadEventSound(e,"SFX/Room/PocketDimension/Rumble.ogg")
+						LoadEventSound(e,"SFX/Room/PocketDimension/PrisonVoices.ogg",1)
 						
 						;move to the "exit room"
 						mainPlayer\blurTimer = 1500
@@ -367,7 +367,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 									DeathMSG = "In addition to the decomposed appearance typical of SCP-106's victims, the body exhibits injuries that have not been observed before: "
 									DeathMSG = DeathMSG + "massive skull fracture, three broken ribs, fractured shoulder and multiple heavy lacerations."
 									
-									PlaySound2 LoadTempSound("SFX\Room\PocketDimension\Impact.ogg")
+									PlaySound2 LoadTempSound("SFX/Room/PocketDimension/Impact.ogg")
 									Kill(mainPlayer)
 								EndIf
 							EndIf
@@ -394,7 +394,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 						
 						If mainPlayer\injuries > 1.0 Then
 							If mainPlayer\injuries - (timing\tickDuration/4000)=< 1.0 Then
-								PlaySound2 LoadTempSound("SFX\Room\PocketDimension\Kneel.ogg")
+								PlaySound2 LoadTempSound("SFX/Room/PocketDimension/Kneel.ogg")
 							EndIf
 						EndIf
 						
@@ -421,8 +421,8 @@ Function UpdateEvent_pocketdimension(e.Events)
 							ResetEntity mainPlayer\collider
 							mainPlayer\crouching = False
 							
-							LoadEventSound(e,"SFX\Room\PocketDimension\Explosion.ogg")
-							LoadEventSound(e,"SFX\Room\PocketDimension\TrenchPlane.ogg",1)
+							LoadEventSound(e,"SFX/Room/PocketDimension/Explosion.ogg")
+							LoadEventSound(e,"SFX/Room/PocketDimension/TrenchPlane.ogg",1)
 							PositionEntity e\room\Objects[20], EntityX(e\room\Objects[8],True)-1000,0,0,True
 							
 						EndIf
@@ -446,7 +446,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 										mainPlayer\blinkTimer = -10
 										;LightBlink = 5
 										
-										PlaySound2(LoadTempSound("SFX\Room\PocketDimension\Exit.ogg"))
+										PlaySound2(LoadTempSound("SFX/Room/PocketDimension/Exit.ogg"))
 										
 										de.Decals = CreateDecal(0, EntityX(r\obj), 381*RoomScale, EntityZ(r\obj), 270, Rand(360), 0)
 										

@@ -12,7 +12,7 @@ Function FillRoom_hll_fan_2(r.Rooms)
             EndIf
         EndIf
     Next
-    If r\Objects[0]=0 Then r\Objects[0] = LoadMesh("GFX\map\fan.b3d")
+    If r\Objects[0]=0 Then r\Objects[0] = LoadMesh("GFX/map/fan.b3d")
     ScaleEntity r\Objects[0], RoomScale, RoomScale, RoomScale
     PositionEntity(r\Objects[0], r\x - 248 * RoomScale, 528 * RoomScale, r\z, 0)
     EntityParent(r\Objects[0], r\obj)
@@ -51,9 +51,9 @@ Function UpdateEventRoom2fan(e.Events)
 				e\EventState3 = e\EventState2*5
 			Else
 				If temp = 0 And e\EventState2 = 1.0 Then ;turn on the fan
-					PlayRangedSound (LoadTempSound("SFX\ambient\Room ambience\FanOn.ogg"), mainPlayer\cam, e\room\Objects[0], 8.0)
+					PlayRangedSound (LoadTempSound("SFX/ambient/Room ambience/FanOn.ogg"), mainPlayer\cam, e\room\Objects[0], 8.0)
 				ElseIf temp = 1 And e\EventState2 = 0.0 ;turn off the fan
-					PlayRangedSound (LoadTempSound("SFX\ambient\Room ambience\FanOff.ogg"), mainPlayer\cam, e\room\Objects[0], 8.0)
+					PlayRangedSound (LoadTempSound("SFX/ambient/Room ambience/FanOff.ogg"), mainPlayer\cam, e\room\Objects[0], 8.0)
 				EndIf
 			EndIf
 		Else

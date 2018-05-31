@@ -188,10 +188,10 @@ Function UpdateEvent_tesla(e.Events)
 							If Abs(EntityZ(n\collider)-EntityZ(e\room\obj,True))<4.0 Then
 								temp = True
 								If e\EventState2 = 0 Then
-									n\sounds[0] = LoadSound("SFX\Character\MTF\Tesla0.ogg")
+									n\sounds[0] = LoadSound("SFX/Character/MTF/Tesla0.ogg")
 									PlayMTFSound(n\sounds[0],n)
 									
-									LoadEventSound(e,"SFX\Character\MTF\Tesla1.ogg")
+									LoadEventSound(e,"SFX/Character/MTF/Tesla1.ogg")
 									e\soundChannels[0] = PlaySound(e\sounds[0])
 									n\Idle = 70*10
 									e\EventState2 = 70*100

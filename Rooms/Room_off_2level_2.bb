@@ -62,7 +62,7 @@ Function UpdateEvent_off_2level_2(e.Events)
 		If e\EventState > 700 Then
 			If EntityDistance(e\room\RoomDoors[0]\obj, mainPlayer\collider)>0.5 Then 
 				If EntityInView(e\room\RoomDoors[0]\obj, mainPlayer\cam)=False Then
-					DebugLog "%@@= \ {2E6C2=FD gi`h]c"
+					DebugLog "%@@= / {2E6C2=FD gi`h]c"
 					e\room\RoomDoors[0]\open = False
 					RemoveEvent(e)
 				EndIf

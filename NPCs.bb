@@ -661,7 +661,7 @@ Function MoveToPocketDimension()
 			UpdateDoors()
 			UpdateRooms()
 			ShowEntity mainPlayer\collider
-			PlaySound2(LoadTempSound("SFX\SCP\914\PlayerUse.ogg"))
+			PlaySound2(LoadTempSound("SFX/SCP/914/PlayerUse.ogg"))
 			;PlaySound2(OldManSFX(5)) ;TODO: fix
 			PositionEntity(mainPlayer\collider, EntityX(r\obj),0.8,EntityZ(r\obj))
 			mainPlayer\dropSpeed = 0
@@ -936,7 +936,7 @@ Function GetNPCManipulationValue$(NPC$,bone$,section$,valuetype%=0)
 	;2 - Float
 	;3 - Boolean
 	
-	Local value$ = GetINIString("Data\NPCBones.ini",NPC$,bone$+"_"+section$)
+	Local value$ = GetINIString("Data/NPCBones.ini",NPC$,bone$+"_"+section$)
 	Select valuetype%
 		Case 0
 			Return value$

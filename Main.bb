@@ -37,19 +37,19 @@ Dim AmbientSFX.MarkedForRemoval(6, 15)
 ;TODO: Move to NPCData106.
 Dim OldManSFX.MarkedForRemoval(6)
 ;For i = 0 To 2
-;	OldManSFX(i) = LoadSound("SFX\SCP\106\Corrosion" + (i + 1) + ".ogg")
+;	OldManSFX(i) = LoadSound("SFX/SCP/106/Corrosion" + (i + 1) + ".ogg")
 ;Next
-;OldManSFX(3) = LoadSound("SFX\SCP\106\Laugh.ogg")
-;OldManSFX(4) = LoadSound("SFX\SCP\106\Breathing.ogg")
-;OldManSFX(5) = LoadSound("SFX\Room\PocketDimension\Enter.ogg")
+;OldManSFX(3) = LoadSound("SFX/SCP/106/Laugh.ogg")
+;OldManSFX(4) = LoadSound("SFX/SCP/106/Breathing.ogg")
+;OldManSFX(5) = LoadSound("SFX/Room/PocketDimension/Enter.ogg")
 
 ;TODO: Most of these sounds are NPC-specific anyway. Divide this up.
 Dim HorrorSFX.MarkedForRemoval(20)
 ;For i = 0 To 10
-;	HorrorSFX(i) = LoadSound("SFX\Horror\Horror" + i + ".ogg")
+;	HorrorSFX(i) = LoadSound("SFX/Horror/Horror" + i + ".ogg")
 ;Next
 ;For i = 14 To 15
-;	HorrorSFX(i) = LoadSound("SFX\Horror\Horror" + i + ".ogg")
+;	HorrorSFX(i) = LoadSound("SFX/Horror/Horror" + i + ".ogg")
 ;Next
 
 ;TODO: Audio.bb
@@ -63,7 +63,7 @@ Dim CommotionState%(23)
 ;TODO: Move to NPCData173.
 Dim NeckSnapSFX.MarkedForRemoval(3)
 ;For i = 0 To 2
-;	NeckSnapSFX(i) =  LoadSound("SFX\SCP\173\NeckSnap"+(i+1)+".ogg")
+;	NeckSnapSFX(i) =  LoadSound("SFX/SCP/173/NeckSnap"+(i+1)+".ogg")
 ;Next
 
 ;TODO: Player struct.
@@ -109,8 +109,8 @@ Const VERSION$ = "1.CBN"
 Global Depth.MarkedForRemoval
 
 ;TODO: Move somewhere more relevant.
-Global WireframeState
-Global HalloweenTex
+Global WireframeState%
+Global HalloweenTex%
 
 Global RealGraphicWidth.MarkedForRemoval
 Global RealGraphicHeight.MarkedForRemoval
@@ -176,20 +176,21 @@ Global GameSaved%
 Global CanSave%
 
 ;TODO: Assets.bb
-Global CursorIMG%
+Global CursorIMG.MarkedForRemoval
 
 ;TODO: Assets.bb
 Global SelectedLoadingScreen.LoadingScreens, LoadingScreenAmount%, LoadingScreenText%
 Global LoadingBack%
 
-Global BlinkMeterIMG%
+Global BlinkMeterIMG.MarkedForRemoval
 
 Global MouseHit1%, MouseDown1%, MouseHit2%, DoubleClick%, LastMouseHit1%, MouseUp1%
 
 ;TODO: Make this not global.
 Global CoffinDistance#
 
-Global ExplosionTimer#, ExplosionSFX% ;gate b explosion?
+;TODO: Move somewhere?
+Global ExplosionTimer#, ExplosionSFX.MarkedForRemoval
 
 Global LightsOn% = True ;secondary lighting on
 
@@ -309,18 +310,18 @@ Global room2gw_x#
 Global room2gw_z#
 
 ;TODO: Assets.bb
-Global PauseMenuIMG%
+Global PauseMenuIMG.MarkedForRemoval
 
 ;TODO: Assets.bb
-Global SprintIcon%
-Global BlinkIcon%
-Global CrouchIcon%
-Global HandIcon%
-Global HandIcon2%
+Global SprintIcon.MarkedForRemoval
+Global BlinkIcon.MarkedForRemoval
+Global CrouchIcon.MarkedForRemoval
+Global HandIcon.MarkedForRemoval
+Global HandIcon2.MarkedForRemoval
 
-Global StaminaMeterIMG%
+Global StaminaMeterIMG.MarkedForRemoval
 
-Global KeypadHUD
+Global KeypadHUD.MarkedForRemoval
 
 ;TODO: cleanup
 Global Panel294
@@ -341,7 +342,7 @@ Global Monitor%, MonitorTexture%
 Global CamBaseOBJ%, CamOBJ%
 
 Global LiquidObj%,MTFObj%,ClassDObj%
-Global ApacheObj%,ApacheRotorObj%
+Global ApacheObj.MarkedForRemoval,ApacheRotorObj.MarkedForRemoval
 
 Global UnableToMove.MarkedForRemoval
 
@@ -368,7 +369,6 @@ Function Main%()
 End Function
 
 ;TODO: Shuffle the initialization of stuff around in between DrawLoading() calls.
-;also don't initialize all of the sounds here, that's just ridiculous
 Function InitializeMainGame()
 	CurrGameState = GAMESTATE_MAINMENU
 	CurrGameSubstate = GAMESUBSTATE_MAINMENU_MAIN
@@ -386,10 +386,8 @@ Function InitializeMainGame()
 	
 	CanSave = True
 	
-	CursorIMG = LoadImage("GFX\cursor.png")
-	
-	LoadingBack = LoadImage("Loadingscreens\loadingback.jpg")
-	InitLoadingScreens("Loadingscreens\loadingscreens.ini")
+	LoadingBack = LoadImage("Loadingscreens/loadingback.jpg")
+	InitLoadingScreens("Loadingscreens/loadingscreens.ini")
 	
 	InitializeUIAssets()
 
@@ -397,9 +395,6 @@ Function InitializeMainGame()
 	SetNextMusicTrack(MUS_EZ, False)
 	
 	SetFont uiAssets\font[1]
-	
-	;TODO: Assets.bb
-	BlinkMeterIMG% = LoadImage("GFX\blinkmeter.jpg")
 	
 	DrawLoading(0, True)
 	
@@ -417,45 +412,45 @@ Function InitializeMainGame()
 	
 	DrawLoading(20, True)
 	
-	RadioSFX(1,0) = LoadSound("SFX\Radio\RadioAlarm.ogg")
-	RadioSFX(1,1) = LoadSound("SFX\Radio\RadioAlarm2.ogg")
+	RadioSFX(1,0) = LoadSound("SFX/Radio/RadioAlarm.ogg")
+	RadioSFX(1,1) = LoadSound("SFX/Radio/RadioAlarm2.ogg")
 	For i = 0 To 8
-		RadioSFX(2,i) = LoadSound("SFX\Radio\scpradio"+i+".ogg")
+		RadioSFX(2,i) = LoadSound("SFX/Radio/scpradio"+i+".ogg")
 	Next
-	RadioSquelch = LoadSound("SFX\Radio\squelch.ogg")
-	RadioStatic = LoadSound("SFX\Radio\static.ogg")
-	RadioBuzz = LoadSound("SFX\Radio\buzz.ogg")
+	RadioSquelch = LoadSound("SFX/Radio/squelch.ogg")
+	RadioStatic = LoadSound("SFX/Radio/static.ogg")
+	RadioBuzz = LoadSound("SFX/Radio/buzz.ogg")
 	
 	DrawLoading(25, True)
 	;TODO: Audio.bb
 	For i = 7 To 9
-		IntroSFX(i) = LoadSound("SFX\Room\Intro\Bang" + (i - 6) + ".ogg")
+		IntroSFX(i) = LoadSound("SFX/Room/Intro/Bang" + (i - 6) + ".ogg")
 	Next
 	For i = 10 To 12
-		IntroSFX(i) = LoadSound("SFX\Room\Intro\Light" + (i - 9) + ".ogg")
+		IntroSFX(i) = LoadSound("SFX/Room/Intro/Light" + (i - 9) + ".ogg")
 	Next
-	;IntroSFX(13) = LoadSound("SFX\intro\shoot1.ogg")
-	;IntroSFX(14) = LoadSound("SFX\intro\shoot2.ogg")
-	IntroSFX(15) = LoadSound("SFX\Room\Intro\173Vent.ogg")
+	;IntroSFX(13) = LoadSound("SFX/intro/shoot1.ogg")
+	;IntroSFX(14) = LoadSound("SFX/intro/shoot2.ogg")
+	IntroSFX(15) = LoadSound("SFX/Room/Intro/173Vent.ogg")
 	
 	;TODO: Audio.bb
-	AlarmSFX(0) = LoadSound("SFX\Alarm\Alarm.ogg")
-	;AlarmSFX(1) = LoadSound("SFX\Alarm\Alarm2.ogg")
-	AlarmSFX(2) = LoadSound("SFX\Alarm\Alarm3.ogg")
+	AlarmSFX(0) = LoadSound("SFX/Alarm/Alarm.ogg")
+	;AlarmSFX(1) = LoadSound("SFX/Alarm/Alarm2.ogg")
+	AlarmSFX(2) = LoadSound("SFX/Alarm/Alarm3.ogg")
 	
 	For i = 0 To 8
-		DamageSFX(i) = LoadSound("SFX\Character\D9341\Damage"+(i+1)+".ogg")
+		DamageSFX(i) = LoadSound("SFX/Character/D9341/Damage"+(i+1)+".ogg")
 	Next
 	
 	;TODO: Player struct.
 	For i = 0 To 2
-		CoughSFX(i) = LoadSound("SFX\Character\D9341\Cough" + (i + 1) + ".ogg")
+		CoughSFX(i) = LoadSound("SFX/Character/D9341/Cough" + (i + 1) + ".ogg")
 	Next
 	
 	DrawLoading(30, True)
 	
 	;TODO: Assets.bb
-	NVGImages = LoadAnimImage("GFX\battery.png",64,64,0,2)
+	NVGImages = LoadAnimImage("GFX/battery.png",64,64,0,2)
 	MaskImage NVGImages,255,0,255
 	
 	;TODO: Die.
@@ -472,25 +467,8 @@ Function InitializeMainGame()
 	MonitorTimer# = 0.0
 	MonitorTimer2# = 0.0
 	
-	;TODO: Assets.bb
-	PauseMenuIMG% = LoadImage("GFX\menu\pausemenu.jpg")
-	MaskImage PauseMenuIMG, 255,255,0
-	ScaleImage PauseMenuIMG,MenuScale,MenuScale
-	
-	;TODO: Assets.bb
-	SprintIcon% = LoadImage("GFX\sprinticon.png")
-	BlinkIcon% = LoadImage("GFX\blinkicon.png")
-	CrouchIcon% = LoadImage("GFX\sneakicon.png")
-	HandIcon% = LoadImage("GFX\handsymbol.png")
-	HandIcon2% = LoadImage("GFX\handsymbol2.png")
-	
-	StaminaMeterIMG% = LoadImage("GFX\staminameter.jpg")
-	
-	KeypadHUD =  LoadImage("GFX\keypadhud.jpg")
-	MaskImage(KeypadHUD, 255,0,255)
-	
 	;TODO: cleanup
-	Panel294 = LoadImage("GFX\294panel.jpg")
+	Panel294 = LoadImage("GFX/294panel.jpg")
 	MaskImage(Panel294, 255,0,255)
 	
 	DrawLoading(40,True)
@@ -618,13 +596,13 @@ Function UpdateGame()
 					
 					;Select PlayerZone
 					;	Case 0,1,2
-					;		If AmbientSFX(PlayerZone,CurrAmbientSFX)=0 Then AmbientSFX(PlayerZone,CurrAmbientSFX)=LoadSound("SFX\Ambient\Zone"+(PlayerZone+1)+"\ambient"+(CurrAmbientSFX+1)+".ogg")
+					;		If AmbientSFX(PlayerZone,CurrAmbientSFX)=0 Then AmbientSFX(PlayerZone,CurrAmbientSFX)=LoadSound("SFX/Ambient/Zone"+(PlayerZone+1)+"/ambient"+(CurrAmbientSFX+1)+".ogg")
 					;	Case 3
-					;		If AmbientSFX(PlayerZone,CurrAmbientSFX)=0 Then AmbientSFX(PlayerZone,CurrAmbientSFX)=LoadSound("SFX\Ambient\General\ambient"+(CurrAmbientSFX+1)+".ogg")
+					;		If AmbientSFX(PlayerZone,CurrAmbientSFX)=0 Then AmbientSFX(PlayerZone,CurrAmbientSFX)=LoadSound("SFX/Ambient/General/ambient"+(CurrAmbientSFX+1)+".ogg")
 					;	Case 4
-					;		If AmbientSFX(PlayerZone,CurrAmbientSFX)=0 Then AmbientSFX(PlayerZone,CurrAmbientSFX)=LoadSound("SFX\Ambient\Pre-breach\ambient"+(CurrAmbientSFX+1)+".ogg")
+					;		If AmbientSFX(PlayerZone,CurrAmbientSFX)=0 Then AmbientSFX(PlayerZone,CurrAmbientSFX)=LoadSound("SFX/Ambient/Pre-breach/ambient"+(CurrAmbientSFX+1)+".ogg")
 					;	Case 5
-					;		If AmbientSFX(PlayerZone,CurrAmbientSFX)=0 Then AmbientSFX(PlayerZone,CurrAmbientSFX)=LoadSound("SFX\Ambient\Forest\ambient"+(CurrAmbientSFX+1)+".ogg")
+					;		If AmbientSFX(PlayerZone,CurrAmbientSFX)=0 Then AmbientSFX(PlayerZone,CurrAmbientSFX)=LoadSound("SFX/Ambient/Forest/ambient"+(CurrAmbientSFX+1)+".ogg")
 					;End Select
 					
 					;AmbientSFXCHN = PlayRangedSound(AmbientSFX(PlayerZone,CurrAmbientSFX), mainPlayer\cam, SoundEmitter)
@@ -634,7 +612,7 @@ Function UpdateGame()
 					Local RN$ = mainPlayer\currRoom\RoomTemplate\name$
 					If RN$ <> "room860" And RN$ <> "room1123" And RN$ <> "173" And RN$ <> "dimension1499" Then
 						;If timing\tickDuration > 0 Then LightBlink = Rnd(1.0,2.0)
-						PlaySound2  LoadTempSound("SFX\SCP\079\Broadcast"+Rand(1,7)+".ogg")
+						PlaySound2  LoadTempSound("SFX/SCP/079/Broadcast"+Rand(1,7)+".ogg")
 					EndIf 
 				EndIf
 			EndIf
@@ -816,7 +794,7 @@ Function UpdateGame()
 						Msg = "You cannot save at this moment."
 						MsgTimer = 70 * 4
 					Else
-						SaveGame(SavePath + CurrSave + "\")
+						SaveGame(SavePath + CurrSave + "/")
 					EndIf
 				ElseIf SelectedDifficulty\saveType = SAVEONSCREENS
 					If SelectedScreen=Null And SelectedMonitor=Null Then
@@ -831,7 +809,7 @@ Function UpdateGame()
 							Msg = "You cannot save at this moment."
 							MsgTimer = 70 * 4
 						Else
-							SaveGame(SavePath + CurrSave + "\")
+							SaveGame(SavePath + CurrSave + "/")
 						EndIf
 					EndIf
 				Else
@@ -874,7 +852,7 @@ Function UpdateGame()
 				Local temp% = False ;TODO: change this variable's name because it's dumb as hell
 				If CurrGameState<>GAMESTATE_INVENTORY Then
 					If mainPlayer\selectedItem <> Null
-						If mainPlayer\selectedItem\itemtemplate\tempname = "paper" Or mainPlayer\selectedItem\itemtemplate\tempname = "oldpaper"
+						If mainPlayer\selectedItem\itemtemplate\tempname = "paper" Or mainPlayer\SelectedItem\itemtemplate\tempname = "oldpaper"
 							temp% = True
 						EndIf
 					EndIf
@@ -988,14 +966,14 @@ End Function
 ;		EndIf
 ;		
 ;		If EndingTimer <-400 Then 
-;			If Music(5)=0 Then Music(5) = LoadSound("SFX\Music\Intro.ogg")
+;			If Music(5)=0 Then Music(5) = LoadSound("SFX/Music/Intro.ogg")
 ;			ShouldPlay = 5
 ;		EndIf
 ;		
 ;		If EndingScreen = 0 Then 
-;			EndingScreen = LoadImage("GFX\endingscreen.pt")
+;			EndingScreen = LoadImage("GFX/endingscreen.pt")
 ;			
-;			temp = LoadSound ("SFX\Music\Ending.ogg")
+;			temp = LoadSound ("SFX/Music/Ending.ogg")
 ;			PlaySound2 temp
 ;			
 ;			PlaySound2 LightSFX
@@ -1016,9 +994,9 @@ End Function
 ;			If EndingTimer+timing\tickDuration2 > -450 And EndingTimer <= -450 Then
 ;				Select Lower(SelectedEnding)
 ;					Case "a1", "a2"
-;						PlaySound2 LoadTempSound("SFX\Ending\GateA\Ending"+SelectedEnding+".ogg")
+;						PlaySound2 LoadTempSound("SFX/Ending/GateA/Ending"+SelectedEnding+".ogg")
 ;					Case "b1", "b2", "b3"
-;						PlaySound2 LoadTempSound("SFX\Ending\GateB\Ending"+SelectedEnding+".ogg")
+;						PlaySound2 LoadTempSound("SFX/Ending/GateB/Ending"+SelectedEnding+".ogg")
 ;				End Select
 ;			EndIf			
 ;			
@@ -1074,7 +1052,7 @@ End Function
 ;					
 ;					If DrawButton(x-145*MenuScale,y-100*MenuScale,390*MenuScale,60*MenuScale,"MAIN MENU", True) Then
 ;						NullGame()
-;						Music(21) = LoadSound("SFX\Ending\MenuBreath.ogg")
+;						Music(21) = LoadSound("SFX/Ending/MenuBreath.ogg")
 ;						ShouldPlay = 21
 ;						MenuOpen = False
 ;						MainMenuOpen = True
@@ -1145,8 +1123,8 @@ Function UpdateGUI()
 			CameraProject(mainPlayer\cam, EntityX(mainPlayer\closestButton,True),EntityY(mainPlayer\closestButton,True)-MeshHeight(ButtonOBJ)*0.015,EntityZ(mainPlayer\closestButton,True))
 			scale# = (ProjectedY()-projy)/462.0
 			
-			x = userOptions\screenWidth/2-ImageWidth(KeypadHUD)*scale/2
-			y = userOptions\screenHeight/2-ImageHeight(KeypadHUD)*scale/2		
+			x = userOptions\screenWidth/2-ImageWidth(uiAssets\keypadHUD)*scale/2
+			y = userOptions\screenHeight/2-ImageHeight(uiAssets\keypadHUD)*scale/2		
 			
 			SetFont uiAssets\font[2]
 			If KeypadMSG <> "" Then 
@@ -1267,7 +1245,7 @@ Function DrawGUI()
 				If mainPlayer\blinkTimer < -3 And mainPlayer\blinkTimer > -11 Then
 					If e\img = 0 Then
 						If mainPlayer\blinkTimer > -5 And Rand(30)=1 Then
-							If e\img = 0 Then e\img = LoadImage("GFX\npcs\106face.jpg")
+							If e\img = 0 Then e\img = LoadImage("GFX/npcs/106face.jpg")
 						EndIf
 					Else
 						DrawImage e\img, userOptions\screenWidth/2-Rand(390,310), userOptions\screenHeight/2-Rand(290,310)
@@ -1289,7 +1267,7 @@ Function DrawGUI()
 		If pitchvalue > 90 And pitchvalue <= 180 Then pitchvalue = 90
 		If pitchvalue > 180 And pitchvalue < 270 Then pitchvalue = 270
 		
-		DrawImage(HandIcon, userOptions\screenWidth / 2 + Sin(yawvalue) * (userOptions\screenWidth / 3) - 32, userOptions\screenHeight / 2 - Sin(pitchvalue) * (userOptions\screenHeight / 3) - 32)
+		DrawImage(uiAssets\handIcon[HAND_ICON_TOUCH], userOptions\screenWidth / 2 + Sin(yawvalue) * (userOptions\screenWidth / 3) - 32, userOptions\screenHeight / 2 - Sin(pitchvalue) * (userOptions\screenHeight / 3) - 32)
 	EndIf
 	
 	If mainPlayer\closestItem <> Null Then
@@ -1300,10 +1278,10 @@ Function DrawGUI()
 		If pitchvalue > 90 And pitchvalue <= 180 Then pitchvalue = 90
 		If pitchvalue > 180 And pitchvalue < 270 Then pitchvalue = 270
 		
-		DrawImage(HandIcon2, userOptions\screenWidth / 2 + Sin(yawvalue) * (userOptions\screenWidth / 3) - 32, userOptions\screenHeight / 2 - Sin(pitchvalue) * (userOptions\screenHeight / 3) - 32)
+		DrawImage(uiAssets\handIcon[HAND_ICON_GRAB], userOptions\screenWidth / 2 + Sin(yawvalue) * (userOptions\screenWidth / 3) - 32, userOptions\screenHeight / 2 - Sin(pitchvalue) * (userOptions\screenHeight / 3) - 32)
 	EndIf
 	
-	If DrawHandIcon Then DrawImage(HandIcon, userOptions\screenWidth / 2 - 32, userOptions\screenHeight / 2 - 32)
+	If DrawHandIcon Then DrawImage(uiAssets\handIcon[HAND_ICON_TOUCH], userOptions\screenWidth / 2 - 32, userOptions\screenHeight / 2 - 32)
 	For i = 0 To 3
 		If DrawArrowIcon(i) Then
 			x = userOptions\screenWidth / 2 - 32
@@ -1318,7 +1296,7 @@ Function DrawGUI()
 				Case 3
 					x = x - 5 - 64
 			End Select
-			DrawImage(HandIcon, x, y)
+			DrawImage(uiAssets\handIcon[HAND_ICON_TOUCH], x, y)
 			Color 0, 0, 0
 			Rect(x + 4, y + 4, 64 - 8, 64 - 8)
 			DrawImage(uiAssets\arrow[i], x + 21, y + 21)
@@ -1337,7 +1315,7 @@ Function DrawGUI()
 		Color 255, 255, 255	
 		Rect (x, y, width, height, False)
 		For i = 1 To Int(((width - 2) * (mainPlayer\blinkTimer / (mainPlayer\blinkFreq))) / 10)
-			DrawImage(BlinkMeterIMG, x + 3 + 10 * (i - 1), y + 3)
+			DrawImage(uiAssets\blinkBar, x + 3 + 10 * (i - 1), y + 3)
 		Next	
 		Color 0, 0, 0
 		Rect(x - 50, y, 30, 30)
@@ -1351,13 +1329,13 @@ Function DrawGUI()
 		Color 255, 255, 255
 		Rect(x - 50 - 1, y - 1, 30 + 2, 30 + 2, False)
 		
-		DrawImage BlinkIcon, x - 50, y
+		DrawImage uiAssets\blinkIcon, x - 50, y
 		
 		y = userOptions\screenHeight - 55
 		Color 255, 255, 255
 		Rect (x, y, width, height, False)
 		For i = 1 To Int(((width - 2) * (mainPlayer\stamina / 100.0)) / 10)
-			DrawImage(StaminaMeterIMG, x + 3 + 10 * (i - 1), y + 3)
+			DrawImage(uiAssets\staminaBar, x + 3 + 10 * (i - 1), y + 3)
 		Next	
 		
 		Color 0, 0, 0
@@ -1366,21 +1344,21 @@ Function DrawGUI()
 		Color 255, 255, 255
 		Rect(x - 50 - 1, y - 1, 30 + 2, 30 + 2, False)
 		If mainPlayer\crouching Then
-			DrawImage CrouchIcon, x - 50, y
+			DrawImage uiAssets\crouchIcon, x - 50, y
 		Else
-			DrawImage SprintIcon, x - 50, y
+			DrawImage uiAssets\sprintIcon, x - 50, y
 		EndIf
 		
 		If DebugHUD Then
 			Color 255, 255, 255
-			SetFont uiAssets\consoleFont
+			SetFont uiAssets\ConsoleFont
 			
 			;Text x + 250, 50, "Zone: " + (EntityZ(mainPlayer\collider)/8.0)
 			Text x - 50, 50, "Player Position: (" + f2s(EntityX(mainPlayer\collider), 3) + ", " + f2s(EntityY(mainPlayer\collider), 3) + ", " + f2s(EntityZ(mainPlayer\collider), 3) + "), speed: "+f2s(mainPlayer\dropSpeed, 3)
 			Text x - 50, 70, "Camera Position: (" + f2s(EntityX(mainPlayer\cam), 3)+ ", " + f2s(EntityY(mainPlayer\cam), 3) +", " + f2s(EntityZ(mainPlayer\cam), 3) + ")"
 			Text x - 50, 100, "Player Rotation: (" + f2s(EntityPitch(mainPlayer\collider), 3) + ", " + f2s(EntityYaw(mainPlayer\collider), 3) + ", " + f2s(EntityRoll(mainPlayer\collider), 3) + ")"
 			Text x - 50, 120, "Camera Rotation: (" + f2s(EntityPitch(mainPlayer\cam), 3)+ ", " + f2s(EntityYaw(mainPlayer\cam), 3) +", " + f2s(EntityRoll(mainPlayer\cam), 3) + ")"
-			Text x - 50, 150, "Room: " + mainPlayer\currRoom\RoomTemplate\Name
+			Text x - 50, 150, "Room: " + mainPlayer\currRoom\RoomTemplate\name
 			For ev.Events = Each Events
 				If ev\room = mainPlayer\currRoom Then
 					Text x - 50, 170, "Room event: " + ev\EventName   
@@ -1396,13 +1374,13 @@ Function DrawGUI()
 			Text x - 50, 320, "Blink timer: " + f2s(mainPlayer\blinkTimer, 3)
 			Text x - 50, 340, "Injuries: " + mainPlayer\injuries
 			Text x - 50, 360, "Bloodloss: " + mainPlayer\bloodloss
-			Text x - 50, 390, "SCP - 173 Position (collider): (" + f2s(EntityX(Curr173\Collider), 3) + ", " + f2s(EntityY(Curr173\Collider), 3) + ", " + f2s(EntityZ(Curr173\Collider), 3) + ")"
+			Text x - 50, 390, "SCP - 173 Position (collider): (" + f2s(EntityX(Curr173\collider), 3) + ", " + f2s(EntityY(Curr173\collider), 3) + ", " + f2s(EntityZ(Curr173\collider), 3) + ")"
 			Text x - 50, 410, "SCP - 173 Position (obj): (" + f2s(EntityX(Curr173\obj), 3) + ", " + f2s(EntityY(Curr173\obj), 3) + ", " + f2s(EntityZ(Curr173\obj), 3) + ")"
 			;Text x - 50, 410, "SCP - 173 Idle: " + Curr173\Idle
-			Text x - 50, 430, "SCP - 173 State: " + Curr173\State
+			Text x - 50, 430, "SCP - 173 State: " + Curr173\state
 			Text x - 50, 450, "SCP - 106 Position: (" + f2s(EntityX(Curr106\obj), 3) + ", " + f2s(EntityY(Curr106\obj), 3) + ", " + f2s(EntityZ(Curr106\obj), 3) + ")"
 			Text x - 50, 470, "SCP - 106 Idle: " + Curr106\Idle
-			Text x - 50, 490, "SCP - 106 State: " + Curr106\State
+			Text x - 50, 490, "SCP - 106 State: " + Curr106\state
 			offset% = 0
 			For npc.NPCs = Each NPCs
 				If npc\NPCtype = NPCtype096 Then
@@ -1447,8 +1425,8 @@ Function DrawGUI()
 			CameraProject(mainPlayer\cam, EntityX(mainPlayer\closestButton,True),EntityY(mainPlayer\closestButton,True)-MeshHeight(ButtonOBJ)*0.015,EntityZ(mainPlayer\closestButton,True))
 			scale# = (ProjectedY()-projy)/462.0
 			
-			x = userOptions\screenWidth/2-ImageWidth(KeypadHUD)*scale/2
-			y = userOptions\screenHeight/2-ImageHeight(KeypadHUD)*scale/2		
+			x = userOptions\screenWidth/2-ImageWidth(uiAssets\keypadHUD)*scale/2
+			y = userOptions\screenHeight/2-ImageHeight(uiAssets\keypadHUD)*scale/2		
 			
 			SetFont uiAssets\font[2]
 			If KeypadMSG = "" Then
@@ -1457,7 +1435,7 @@ Function DrawGUI()
 				Text userOptions\screenWidth/2, y+124*scale, KeypadInput,True,True	
 			EndIf
 			
-			If userOptions\fullscreen Then DrawImage CursorIMG, MouseX(),MouseY()
+			If userOptions\fullscreen Then DrawImage uiAssets\cursorIMG, MouseX(),MouseY()
 		EndIf
 	EndIf
 	
@@ -1469,12 +1447,12 @@ Function DrawPauseMenu()
 	Local x%, y%, width%, height%
 	
 	If CurrGameState = GAMESTATE_PAUSED Then
-		width = ImageWidth(PauseMenuIMG)
-		height = ImageHeight(PauseMenuIMG)
+		width = ImageWidth(uiAssets\pauseMenuBG)
+		height = ImageHeight(uiAssets\pauseMenuBG)
 		x = userOptions\screenWidth / 2 - width / 2
 		y = userOptions\screenHeight / 2 - height / 2
 		
-		DrawImage PauseMenuIMG, x, y
+		DrawImage uiAssets\pauseMenuBG, x, y
 		
 		Color(255, 255, 255)
 		
@@ -1532,7 +1510,7 @@ Function DrawPauseMenu()
 		If mainPlayer\dead Then RowText(DeathMSG$, x, y + 80*MenuScale, 390*MenuScale, 600*MenuScale)
 		;EndIf
 		
-		If userOptions\fullscreen Then DrawImage CursorIMG, MouseX(),MouseY()
+		If userOptions\fullscreen Then DrawImage uiAssets\cursorIMG, MouseX(),MouseY()
 	EndIf
 	
 	SetFont uiAssets\font[0]
@@ -1543,8 +1521,8 @@ Function UpdatePauseMenu()
 	Local x%, y%, width%, height%
 	
 	If CurrGameState = GAMESTATE_PAUSED Then
-		width = ImageWidth(PauseMenuIMG)
-		height = ImageHeight(PauseMenuIMG)
+		width = ImageWidth(uiAssets\pauseMenuBG)
+		height = ImageHeight(uiAssets\pauseMenuBG)
 		x = userOptions\screenWidth / 2 - width / 2
 		y = userOptions\screenHeight / 2 - height / 2
 		
@@ -1574,7 +1552,7 @@ Function UpdatePauseMenu()
 						DrawLoading(0)
 						
 						CurrGameState = GAMESTATE_PLAYING
-						LoadGame(SavePath + CurrSave + "\",True)
+						LoadGame(SavePath + CurrSave + "/",True)
 						
 						MoveMouse viewport_center_x,viewport_center_y
 						SetFont uiAssets\font[0]
@@ -1622,7 +1600,7 @@ Function UpdatePauseMenu()
 					DrawLoading(0)
 					
 					CurrGameState = GAMESTATE_PLAYING
-					LoadGame(SavePath + CurrSave + "\",True)
+					LoadGame(SavePath + CurrSave + "/",True)
 					
 					MoveMouse viewport_center_x,viewport_center_y
 					SetFont uiAssets\font[0]
@@ -1737,7 +1715,7 @@ Function UpdateInfect()
 			
 			For i = 0 To 6
 				If mainPlayer\infect008>i*15+10 And temp =< i*15+10 Then
-					PlaySound2 LoadTempSound("SFX\SCP\008\Voices"+i+".ogg")
+					PlaySound2 LoadTempSound("SFX/SCP/008/Voices"+i+".ogg")
 				EndIf
 			Next
 			
@@ -1761,9 +1739,9 @@ Function UpdateInfect()
 							PositionEntity mainPlayer\collider, EntityX(r\Objects[7],True),EntityY(r\Objects[7],True),EntityZ(r\Objects[7],True),True
 							ResetEntity mainPlayer\collider
 							r\NPC[0] = CreateNPC(NPCtypeD, EntityX(r\Objects[6],True),EntityY(r\Objects[6],True)+0.2,EntityZ(r\Objects[6],True))
-							r\NPC[0]\sounds[0] = LoadSound("SFX\SCP\008\KillScientist1.ogg")
+							r\NPC[0]\sounds[0] = LoadSound("SFX/SCP/008/KillScientist1.ogg")
 							r\NPC[0]\soundChannels[0] = PlaySound(r\NPC[0]\sounds[0])
-							tex = LoadTexture("GFX\npcs\scientist2.jpg")
+							tex = LoadTexture("GFX/npcs/scientist2.jpg")
 							EntityTexture r\NPC[0]\obj, tex
 							FreeTexture tex
 							r\NPC[0]\state=6
@@ -1795,7 +1773,7 @@ Function UpdateInfect()
 				mainPlayer\blurTimer = 950
 				
 				If temp < 94.7 Then 
-					mainPlayer\currRoom\NPC[0]\sounds[0] = LoadSound("SFX\SCP\008\KillScientist2.ogg")
+					mainPlayer\currRoom\NPC[0]\sounds[0] = LoadSound("SFX/SCP/008/KillScientist2.ogg")
 					mainPlayer\currRoom\NPC[0]\soundChannels[0] = PlaySound(mainPlayer\currRoom\NPC[0]\sounds[0])
 					
 					DeathMSG = "Subject D-9341 found ingesting Dr. [REDACTED] at Sector [REDACTED]. Subject was immediately terminated by Nine-Tailed Fox and sent for autopsy. "
@@ -1948,7 +1926,7 @@ Function UpdateNVG()
 	Local wornItem.Items = mainPlayer\wornItems[WORNITEM_SLOT_HEAD]
 	
 	If wornItem<>Null Then
-		If wornItem\itemTemplate\tempname <> "nvgoggles" And wornItem\itemTemplate\tempname <> "supernv" Then
+		If wornItem\itemtemplate\tempname <> "nvgoggles" And wornItem\itemtemplate\tempname <> "supernv" Then
 			wornItem = Null
 		EndIf
 	EndIf
@@ -1968,7 +1946,7 @@ Function RenderWorld2()
 	;ElseIf WearingNightVision=3
 	;	AmbientLight 255,255,255
 	;ElseIf mainPlayer\currRoom<>Null
-	;	If (mainPlayer\currRoom\RoomTemplate\Name<>"173") And (mainPlayer\currRoom\RoomTemplate\Name<>"exit1") And (mainPlayer\currRoom\RoomTemplate\Name<>"gatea") Then
+	;	If (mainPlayer\currRoom\RoomTemplate\Name<>"173") And (mainPlayer/currRoom\RoomTemplate\Name<>"exit1") And (mainPlayer/currRoom\RoomTemplate/Name<>"gatea") Then
 	;		AmbientLight Brightness, Brightness, Brightness
 	;	EndIf
 	;EndIf
@@ -1982,7 +1960,7 @@ Function RenderWorld2()
 	Local wornItem.Items = mainPlayer\wornItems[WORNITEM_SLOT_HEAD]
 	
     If wornItem<>Null Then
-		If wornItem\itemTemplate\tempname <> "nvgoggles" And wornItem\itemTemplate\tempname <> "supernv" Then
+		If wornItem\itemtemplate\tempname <> "nvgoggles" And wornItem\itemtemplate\tempname <> "supernv" Then
 			wornItem = Null
 		EndIf
 	EndIf
@@ -2184,5 +2162,5 @@ Function CheckTriggers$()
 End Function
 
 ;~IDEal Editor Parameters:
-;~F#5#75#8C#97#9B#A3
+;~F#5
 ;~C#Blitz3D

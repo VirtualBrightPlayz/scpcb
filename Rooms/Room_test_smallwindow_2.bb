@@ -13,7 +13,7 @@ Function FillRoom_test_smallwindow_2(r.Rooms)
     PositionEntity(r\Objects[1], r\x - 632.0 * RoomScale, 0.5, r\z - 16.0 * RoomScale)
     EntityParent(r\Objects[1], r\obj)
     
-    Local Glasstex = LoadTexture("GFX\map\Textures\glass.png",1+2)
+    Local Glasstex = LoadTexture("GFX/map/Textures/glass.png",1+2)
     r\Objects[2] = CreateSprite()
     EntityTexture(r\Objects[2],Glasstex)
     SpriteViewMode(r\Objects[2],2)
@@ -81,7 +81,7 @@ Function UpdateEventTestroom173(e.Events)
 							;left and 173 moved to some other room?) -> disable the event
 							RemoveEvent(e)
 						Else
-							PlayRangedSound(LoadTempSound("SFX\General\GlassBreak.ogg"), mainPlayer\cam, Curr173\obj) 
+							PlayRangedSound(LoadTempSound("SFX/General/GlassBreak.ogg"), mainPlayer\cam, Curr173\obj) 
 							FreeEntity(e\room\Objects[2])
 							PositionEntity(Curr173\Collider, EntityX(e\room\Objects[1], True), 0.5, EntityZ(e\room\Objects[1], True))
 							ResetEntity(Curr173\Collider)

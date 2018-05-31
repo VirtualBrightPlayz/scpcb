@@ -13,16 +13,16 @@ Function InitializeNPCtype106(n.NPCs)
     n\collider = CreatePivot()
     EntityRadius(n\collider, 0.2)
     EntityType(n\collider, HIT_PLAYER)
-    n\obj = LoadAnimMesh("GFX\npcs\106_2.b3d")
+    n\obj = LoadAnimMesh("GFX/npcs/106_2.b3d")
 
     n\gravity = False
 
-    Local temp# = (GetINIFloat("DATA\NPCs.ini", "SCP-106", "scale") / 2.2)		
+    Local temp# = (GetINIFloat("DATA/NPCs.ini", "SCP-106", "scale") / 2.2)		
     ScaleEntity(n\obj, temp, temp, temp)
 
-    Local oldManEyes% = LoadTexture("GFX\npcs\oldmaneyes.jpg")
+    Local oldManEyes% = LoadTexture("GFX/npcs/oldmaneyes.jpg")
 
-    n\speed = (GetINIFloat("DATA\NPCs.ini", "SCP-106", "speed") / 100.0)
+    n\speed = (GetINIFloat("DATA/NPCs.ini", "SCP-106", "speed") / 100.0)
 
     n\obj2 = CreateSprite()
     ScaleSprite(n\obj2, 0.03, 0.03)
@@ -33,14 +33,14 @@ Function InitializeNPCtype106(n.NPCs)
 
     FreeTexture(oldManEyes)
 
-    n\sounds[0] = LoadSound("SFX\SCP\106\Spawn.ogg")
-    n\sounds[1] = LoadSound("SFX\SCP\106\Breathing.ogg")
-    n\sounds[2] = LoadSound("SFX\SCP\106\Seen.ogg")
-    n\sounds[3] = LoadSound("SFX\SCP\106\Corrosion1.ogg")
-    n\sounds[4] = LoadSound("SFX\SCP\106\Corrosion2.ogg")
-    n\sounds[5] = LoadSound("SFX\SCP\106\Corrosion3.ogg")
-    n\sounds[6] = LoadSound("SFX\SCP\106\Laugh.ogg")
-    n\sounds[7] = LoadSound("SFX\SCP\106\Catch.ogg")
+    n\sounds[0] = LoadSound("SFX/SCP/106/Spawn.ogg")
+    n\sounds[1] = LoadSound("SFX/SCP/106/Breathing.ogg")
+    n\sounds[2] = LoadSound("SFX/SCP/106/Seen.ogg")
+    n\sounds[3] = LoadSound("SFX/SCP/106/Corrosion1.ogg")
+    n\sounds[4] = LoadSound("SFX/SCP/106/Corrosion2.ogg")
+    n\sounds[5] = LoadSound("SFX/SCP/106/Corrosion3.ogg")
+    n\sounds[6] = LoadSound("SFX/SCP/106/Laugh.ogg")
+    n\sounds[7] = LoadSound("SFX/SCP/106/Catch.ogg")
 
     n\timer = Rand(22000, 27000)
 End Function

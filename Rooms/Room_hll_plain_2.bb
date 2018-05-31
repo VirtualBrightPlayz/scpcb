@@ -15,7 +15,7 @@ Function UpdateEventRoom2trick(e.Events)
 			If EntityDistance(mainPlayer\collider, Curr173\obj)<6.0 Or EntityDistance(mainPlayer\collider, Curr106\obj)<6.0 Then
 				RemoveEvent(e)
 			Else
-				DebugLog "%@@= \ {2E6C2=FD gi`h]c"
+				DebugLog "%@@= / {2E6C2=FD gi`h]c"
 				
 				pvt = CreatePivot()
 				PositionEntity pvt, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider),EntityZ(mainPlayer\collider)

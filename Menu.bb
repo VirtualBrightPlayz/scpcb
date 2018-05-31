@@ -44,19 +44,6 @@ Global MenuScale#
 ;TODO: Assets.bb
 Dim DrawArrowIcon%(4)
 
-Type UIAssets
-	Field back%
-	Field scpText%
-	Field tileWhite%
-	Field tileBlack%
-	Field scp173%
-	Field arrow%[4]
-	Field font%[4]
-	Field consoleFont%
-End Type
-
-Global uiAssets.UIAssets
-
 Global QuickLoadIcon.MarkedForRemoval
 
 Global MenuBack.MarkedForRemoval
@@ -77,7 +64,7 @@ Global MainMenuTab%
 
 Global SelectedInputBox%
 
-Global SavePath$ = "Saves\"
+Global SavePath$ = "Saves/"
 Global SaveMSG$
 
 ;nykyisen tallennuksen nimi ja samalla missä kansiossa tallennustiedosto sijaitsee saves-kansiossa
@@ -91,55 +78,6 @@ Dim SaveGameDate$(SaveGameAmount + 1)
 Const MAXSAVEDMAPS = 20
 Dim SavedMaps$(MAXSAVEDMAPS)
 Global SelectedMap$
-
-Function InitializeUIAssets()
-	uiAssets = New UIAssets
-	
-	uiAssets\back = LoadImage("GFX\menu\back.jpg")
-	uiAssets\scpText = LoadImage("GFX\menu\scptext.jpg")
-	uiAssets\scp173 = LoadImage("GFX\menu\173back.jpg")
-	uiAssets\tileWhite = LoadImage("GFX\menu\menuwhite.jpg")
-	uiAssets\tileBlack = LoadImage("GFX\menu\menublack.jpg")
-	MaskImage uiAssets\tileBlack, 255,255,0
-	
-	ResizeImage(uiAssets\back, ImageWidth(uiAssets\back) * MenuScale, ImageHeight(uiAssets\back) * MenuScale)
-	ResizeImage(uiAssets\scpText, ImageWidth(uiAssets\scpText) * MenuScale, ImageHeight(uiAssets\scpText) * MenuScale)
-	ResizeImage(uiAssets\scp173, ImageWidth(uiAssets\scp173) * MenuScale, ImageHeight(uiAssets\scp173) * MenuScale)
-	
-	For i = 0 To 3
-		uiAssets\arrow[i] = LoadImage("GFX\menu\arrow.png")
-		RotateImage(uiAssets\arrow[i], 90 * i)
-		HandleImage(uiAssets\arrow[i], 0, 0)
-	Next
-	
-	;For some reason, Blitz3D doesn't load fonts that have filenames that
-	;don't match their "internal name" (i.e. their display name in applications
-	;like Word and such). As a workaround, I moved the files and renamed them so they
-	;can load without FastText.
-	uiAssets\font[0] = LoadFont("GFX\font\cour\Courier New.ttf", Int(18 * MenuScale), 0,0,0)
-	uiAssets\font[1] = LoadFont("GFX\font\courbd\Courier New.ttf", Int(58 * MenuScale), 0,0,0)
-	uiAssets\font[2] = LoadFont("GFX\font\DS-DIGI\DS-Digital.ttf", Int(22 * MenuScale), 0,0,0)
-	uiAssets\font[3] = LoadFont("GFX\font\DS-DIGI\DS-Digital.ttf", Int(60 * MenuScale), 0,0,0)
-	uiAssets\consoleFont% = LoadFont("Blitz", Int(20 * MenuScale), 0,0,0)
-End Function
-
-Function ReleaseUIAssets()
-	FreeImage(uiAssets\back)
-	FreeImage(uiAssets\scpText)
-	FreeImage(uiAssets\scp173)
-	FreeImage(uiAssets\tileWhite)
-	FreeImage(uiAssets\tileBlack)
-	
-	For i = 0 To 3
-		FreeImage(uiAssets\arrow[i])
-	Next
-	
-	For i = 0 To 3
-		FreeFont(uiAssets\font[i])
-	Next
-	
-	Delete uiAssets
-End Function
 
 Function UpdateMainMenu()
 	Local x%, y%, width%, height%, temp.MarkedForRemoval
@@ -356,7 +294,7 @@ Function UpdateMainMenu()
 						If SaveMSG = "" Then
 							If UpdateUIButton(x + 280 * MenuScale, y + 20 * MenuScale, 100 * MenuScale, 30 * MenuScale, "Load") Then
 								LoadEntities()
-								LoadGame(SavePath + SaveGames(i - 1) + "\")
+								LoadGame(SavePath + SaveGames(i - 1) + "/")
 								CurrSave = SaveGames(i - 1)
 								InitLoadGame()
 								CurrGameState = GAMESTATE_PLAYING
@@ -377,7 +315,7 @@ Function UpdateMainMenu()
 						x = userOptions\screenWidth / 2
 						y = userOptions\screenHeight / 2
 						If UpdateUIButton(x + 250 * MenuScale, y + 150 * MenuScale, 100 * MenuScale, 30 * MenuScale, "Yes") Then
-							DeleteFile(CurrentDir() + SavePath + SaveMSG + "\save.txt")
+							DeleteFile(CurrentDir() + SavePath + SaveMSG + "/save.txt")
 							DeleteDir(CurrentDir() + SavePath + SaveMSG)
 							SaveMSG = ""
 							LoadSaveGames()
@@ -1074,7 +1012,7 @@ Function DrawMainMenu()
 	
 	;DrawTiledImageRect(MenuBack, 985 * MenuScale, 860 * MenuScale, 200 * MenuScale, 20 * MenuScale, 1200 * MenuScale, 866 * MenuScale, 300, 20 * MenuScale)
 	
-	If userOptions\fullscreen Then DrawImage CursorIMG, MouseX(),MouseY()
+	If userOptions\fullscreen Then DrawImage uiAssets\cursorIMG, MouseX(),MouseY()
 	
 	SetFont uiAssets\font[0]
 End Function
@@ -1169,7 +1107,7 @@ Function DrawLoading(percent%, shortloading=False)
 		Local ls.LoadingScreens
 		For ls = Each LoadingScreens
 			If ls\ID = temp Then
-				If ls\img=0 Then ls\img = LoadImage("Loadingscreens\"+ls\imgpath)
+				If ls\img=0 Then ls\img = LoadImage("Loadingscreens/"+ls\imgpath)
 				SelectedLoadingScreen = ls 
 				Exit
 			EndIf
@@ -1225,7 +1163,7 @@ Function DrawLoading(percent%, shortloading=False)
 		
 		Rect(x, y, width+4, height, False)
 		For  i% = 1 To Int((width - 2) * (percent / 100.0) / 10)
-			DrawImage(BlinkMeterIMG, x + 3 + 10 * (i - 1), y + 3)
+			DrawImage(uiAssets\blinkBar, x + 3 + 10 * (i - 1), y + 3)
 		Next
 		
 		If SelectedLoadingScreen\title = "CWM" Then
@@ -1233,9 +1171,9 @@ Function DrawLoading(percent%, shortloading=False)
 			If Not shortloading Then 
 				If firstloop Then 
 					If percent = 0 Then
-						PlaySound2 LoadTempSound("SFX\SCP\990\cwm1.cwm")
+						PlaySound2 LoadTempSound("SFX/SCP/990/cwm1.cwm")
 					ElseIf percent = 100
-						PlaySound2 LoadTempSound("SFX\SCP\990\cwm2.cwm")
+						PlaySound2 LoadTempSound("SFX/SCP/990/cwm2.cwm")
 					EndIf
 				EndIf
 			EndIf
@@ -1535,7 +1473,7 @@ Function DrawSlideBar(x%, y%, width%, value#)
 	Color 255,255,255
 	Rect(x, y, width + 14, 20,False)
 	
-	DrawImage(BlinkMeterIMG, x + width * value / 100.0 +3, y+3)
+	DrawImage(uiAssets\blinkBar, x + width * value / 100.0 +3, y+3)
 	
 	Color 170,170,170 
 	Text (x - 50 * MenuScale, y + 4*MenuScale, "LOW")					
@@ -1640,5 +1578,4 @@ Global QuickLoadPercent_DisplayTimer.MarkedForRemoval
 
 
 ;~IDEal Editor Parameters:
-;~F#93#43D#44F#459#48C#55B#570#579#589#5A0#5A7#5B6#5C3#5E1#5ED#5F7#605#635#652
 ;~C#Blitz3D

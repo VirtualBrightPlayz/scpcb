@@ -35,7 +35,7 @@ Function CreateLauncher.Launcher()
 	
 	MenuScale = 1
 	
-	launch\background = LoadImage("GFX\menu\launcher.jpg")
+	launch\background = LoadImage("GFX/menu/launcher.jpg")
 	
     InitializeUIAssets()
 	

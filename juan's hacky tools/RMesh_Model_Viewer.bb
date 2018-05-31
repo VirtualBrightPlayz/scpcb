@@ -477,7 +477,7 @@ Function AddTextureToCache(texture%)
 	If tc.Materials=Null Then
 		tc.Materials=New Materials
 		tc\name=StripPath(TextureName(texture))
-		;Local temp$=GetINIString("Data\materials.ini",tc\name,"bump")
+		;Local temp$=GetINIString("Data/materials.ini",tc\name,"bump")
 		;If temp<>"" Then
 		;	tc\Bump=LoadTexture_Strict(temp)
 		;	TextureBlend tc\Bump,FE_BUMP

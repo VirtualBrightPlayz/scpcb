@@ -19,7 +19,7 @@ Function UpdateEvent106sinkhole(e.Events)
 		e\EventState=1
 	ElseIf mainPlayer\currRoom = e\room
 		If e\sounds[0]=0 Then
-			e\sounds[0]=LoadSound("SFX\Room\Sinkhole.ogg")
+			e\sounds[0]=LoadSound("SFX/Room/Sinkhole.ogg")
 		Else
 			e\soundChannels[0] = LoopRangedSound(e\sounds[0], e\soundChannels[0], mainPlayer\cam, e\room\obj, 4.5, 1.5)
 		EndIf
@@ -31,7 +31,7 @@ Function UpdateEvent106sinkhole(e.Events)
 			
 			If dist<0.5 Then
 				If e\EventState2 = 0 Then
-					PlaySound2(LoadTempSound("SFX\Room\SinkholeFall.ogg"))
+					PlaySound2(LoadTempSound("SFX/Room/SinkholeFall.ogg"))
 				EndIf
 				
 				mainPlayer\moveSpeed = CurveValue(0.0, mainPlayer\moveSpeed, Max(dist*50,1.0))

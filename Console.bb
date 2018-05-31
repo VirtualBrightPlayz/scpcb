@@ -93,7 +93,7 @@ Function DrawConsole()
 		
 		DrawInputBox(x, y + height, width, 30*MenuScale, ConsoleInput, 2)
 		
-		If userOptions\fullscreen Then DrawImage CursorIMG, MouseX(),MouseY()
+		If userOptions\fullscreen Then DrawImage uiAssets\cursorIMG, MouseX(),MouseY()
 	EndIf
 End Function
 
@@ -640,12 +640,12 @@ Function UpdateConsole()
 				Case "halloween"
 					HalloweenTex = Not HalloweenTex
 					If HalloweenTex Then
-						Local tex = LoadTexture("GFX\npcs\173h.pt", 1)
+						Local tex = LoadTexture("GFX/npcs/173h.pt", 1)
 						EntityTexture Curr173\obj, tex, 0, 0
 						FreeTexture tex
 						CreateConsoleMsg("173 JACK-O-LANTERN ON")
 					Else
-						Local tex2 = LoadTexture("GFX\npcs\173texture.png", 1)
+						Local tex2 = LoadTexture("GFX/npcs/173texture.png", 1)
 						EntityTexture Curr173\obj, tex2, 0, 0
 						FreeTexture tex2
 						CreateConsoleMsg("173 JACK-O-LANTERN OFF")
@@ -668,7 +668,7 @@ Function UpdateConsole()
 						EndIf
 						EntityType (it\collider, HIT_ITEM)
 					Next
-					PlaySound2 LoadTempSound("SFX\Music\420J.ogg")
+					PlaySound2 LoadTempSound("SFX/Music/420J.ogg")
 
 				Case "godmode"
 					StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))

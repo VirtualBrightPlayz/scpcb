@@ -42,7 +42,7 @@ Function UpdateEventToiletguard(e.Events)
 		
 		e\EventState = 2	
 	Else
-		If e\sounds[0] = 0 Then e\sounds[0] = LoadSound("SFX\Character\Guard\SuicideGuard1.ogg")
+		If e\sounds[0] = 0 Then e\sounds[0] = LoadSound("SFX/Character/Guard/SuicideGuard1.ogg")
 		If e\room\dist < 15.0 And e\room\dist >= 4.0 Then 
 			e\soundChannels[0] = LoopRangedSound(e\sounds[0], e\soundChannels[0], mainPlayer\cam, e\room\NPC[0]\Collider, 15.0)
 			
@@ -55,11 +55,11 @@ Function UpdateEventToiletguard(e.Events)
 			
 			;FreeSound e\sounds[0]
 			;StopChannel e\soundChannels[0]
-			;LoadEventSound(e,"SFX\Character\Guard\SuicideGuard2.ogg",1)
+			;LoadEventSound(e,"SFX/Character/Guard/SuicideGuard2.ogg",1)
 			If e\soundChannels[1] = 0
 				StopChannel(e\soundChannels[0])
 				FreeSound(e\sounds[0])
-				e\room\NPC[0]\sounds[0] = LoadSound("SFX\Character\Guard\SuicideGuard2.ogg")
+				e\room\NPC[0]\sounds[0] = LoadSound("SFX/Character/Guard/SuicideGuard2.ogg")
 				e\soundChannels[1] = PlayRangedSound(e\room\NPC[0]\sounds[0], mainPlayer\cam, e\room\NPC[0]\Collider, 15.0)
 			EndIf
 			UpdateRangedSoundOrigin(e\soundChannels[1],mainPlayer\cam,e\room\NPC[0]\Collider,15.0)
@@ -87,7 +87,7 @@ Function UpdateEventButtghost(e.Events)
 	If mainPlayer\currRoom = e\room Then
 		If EntityDistance(mainPlayer\collider, e\room\Objects[0]) < 1.8 Then
 			If e\EventState = 0
-				e\soundChannels[0] = PlayRangedSound(LoadTempSound("SFX\SCP\Joke\789J.ogg"), mainPlayer\cam,e\room\Objects[0])
+				e\soundChannels[0] = PlayRangedSound(LoadTempSound("SFX/SCP/Joke/789J.ogg"), mainPlayer\cam,e\room\Objects[0])
 				e\EventState = 1
 			Else
 				If (Not IsChannelPlaying(e\soundChannels[0]))

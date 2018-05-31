@@ -60,7 +60,7 @@ Function UpdateEventCheckpoint(e.Events)
 	;[Block]
 	If mainPlayer\currRoom = e\room Then
 		;If e\room\RoomDoors[0]\open <> e\EventState Then
-		;	If e\sounds[0] = 0 Then LoadEventSound(e,"SFX\Door\DoorCheckpoint.Ogg")
+		;	If e\sounds[0] = 0 Then LoadEventSound(e,"SFX/Door/DoorCheckpoint.Ogg")
 		;	PlaySound2 e\sounds[0]
 		;EndIf
 		
@@ -69,9 +69,9 @@ Function UpdateEventCheckpoint(e.Events)
 		;If e\EventState2 = 0 Then
 		;	If EntityZ(mainPlayer\collider) < e\room\z Then
 		;		If PlayerZone = 1 Then
-		;			PlaySound2(LoadTempSound("SFX\Ambient\ToZone2.ogg"))
+		;			PlaySound2(LoadTempSound("SFX/Ambient/ToZone2.ogg"))
 		;		Else
-		;			PlaySound2(LoadTempSound("SFX\Ambient\ToZone3.ogg"))
+		;			PlaySound2(LoadTempSound("SFX/Ambient/ToZone3.ogg"))
 		;		EndIf
 		;		e\EventState2 = 1
 		;	EndIf
@@ -79,7 +79,7 @@ Function UpdateEventCheckpoint(e.Events)
 		
 		If e\EventState3=0 Then
 			If Rand(2)=1 Then
-				e\room\Objects[1]=LoadAnimMesh("GFX\npcs\scp-1048.b3d")
+				e\room\Objects[1]=LoadAnimMesh("GFX/npcs/scp-1048.b3d")
 				ScaleEntity e\room\Objects[1], 0.05,0.05,0.05
 				PositionEntity(e\room\Objects[1],EntityX(e\room\Objects[0],True),EntityY(e\room\Objects[0],True),EntityZ(e\room\Objects[0],True))
 				SetAnimTime e\room\Objects[1],267	
@@ -150,7 +150,7 @@ Function UpdateEventCheckpoint(e.Events)
 	EndIf
 	
 	If e\room\RoomDoors[0]\open <> e\EventState Then
-		If e\sounds[0] = 0 Then LoadEventSound(e,"SFX\Door\DoorCheckpoint.ogg")
+		If e\sounds[0] = 0 Then LoadEventSound(e,"SFX/Door/DoorCheckpoint.ogg")
 		;TODO: wtf is this bullshit
 		e\soundChannels[0] = PlayRangedSound(e\sounds[0], mainPlayer\cam, e\room\RoomDoors[0]\obj)
 		e\soundChannels[1] = PlayRangedSound(e\sounds[0], mainPlayer\cam, e\room\RoomDoors[1]\obj)

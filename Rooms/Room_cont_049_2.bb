@@ -101,7 +101,7 @@ Function FillRoom_cont_049_2(r.Rooms)
     it = CreateItem("First Aid Kit", "firstaid", r\x +385.0 * RoomScale, r\y - 3412.0 * RoomScale, r\z + 271.0 * RoomScale)
     EntityParent(it\collider, r\obj)
     
-    ;r\Objects[10] = LoadMesh("GFX\map\room049_hb.b3d",r\obj)
+    ;r\Objects[10] = LoadMesh("GFX/map/room049_hb.b3d",r\obj)
     ;EntityPickMode r\Objects[10],2
     ;EntityType r\Objects[10],HIT_MAP
     ;EntityAlpha r\Objects[10],0.0
@@ -178,7 +178,7 @@ Function UpdateEvent_cont_049_2(e.Events)
 						e\EventState2 = UpdateElevators(e\EventState2, e\room\RoomDoors[0], e\room\RoomDoors[1],e\room\Objects[0],e\room\Objects[1], e)
 						e\EventState3 = UpdateElevators(e\EventState3, e\room\RoomDoors[2], e\room\RoomDoors[3],e\room\Objects[2],e\room\Objects[3], e)
 						
-						If e\sounds[1]=0 Then LoadEventSound(e,"SFX\General\GeneratorOn.ogg",1)
+						If e\sounds[1]=0 Then LoadEventSound(e,"SFX/General/GeneratorOn.ogg",1)
 						e\soundChannels[1]=LoopRangedSound(e\sounds[1], e\soundChannels[1], mainPlayer\cam, e\room\Objects[8], 6.0, e\EventState3)
 						
 						If e\room\NPC[0]\Idle > 0
@@ -197,7 +197,7 @@ Function UpdateEvent_cont_049_2(e.Events)
 								e\room\RoomDoors[i-1]\open = False
 								e\room\RoomDoors[i]\open = True
 								e\room\NPC[0]\pathStatus = FindPath(e\room\NPC[0],EntityX(mainPlayer\collider),EntityY(mainPlayer\collider),EntityZ(mainPlayer\collider))
-								PlayRangedSound(LoadTempSound("SFX\SCP\049\Greeting"+Rand(1,2)+".ogg"),mainPlayer\cam, e\room\NPC[0]\collider)
+								PlayRangedSound(LoadTempSound("SFX/SCP/049/Greeting"+Rand(1,2)+".ogg"),mainPlayer\cam, e\room\NPC[0]\collider)
 								e\room\NPC[0]\Idle = 0
 								;EndIf
 							EndIf
@@ -244,11 +244,11 @@ Function UpdateEvent_cont_049_2(e.Events)
 						;				SetNPCFrame(n, 155)
 						;			EndIf
 						;		Next
-						;		;PlayRangedSound(LoadTempSound("SFX\SCP\049\Greeting"+Rand(1,2)+".ogg"),mainPlayer\cam, e\room\NPC[0]\Collider)
+						;		;PlayRangedSound(LoadTempSound("SFX/SCP/049/Greeting"+Rand(1,2)+".ogg"),mainPlayer\cam, e\room\NPC[0]\Collider)
 						;	ElseIf e\EventState > 70*214 And e\EventState-timing\tickDuration =< 70*214
-						;		;PlayRangedSound(LoadTempSound("SFX\SCP\049\Spotted"+Rand(1,2)+".ogg"),mainPlayer\cam, e\room\NPC[0]\Collider)
+						;		;PlayRangedSound(LoadTempSound("SFX/SCP/049/Spotted"+Rand(1,2)+".ogg"),mainPlayer\cam, e\room\NPC[0]\Collider)
 						;	ElseIf e\EventState > 70*227 And e\EventState-timing\tickDuration =< 70*227
-						;		;PlayRangedSound(LoadTempSound("SFX\SCP\049\Detected"+Rand(1,3)+".ogg"),mainPlayer\cam, e\room\NPC[0]\Collider)
+						;		;PlayRangedSound(LoadTempSound("SFX/SCP/049/Detected"+Rand(1,3)+".ogg"),mainPlayer\cam, e\room\NPC[0]\Collider)
 						;		e\EventState=70*241
 						;	EndIf
 						;EndIf
@@ -330,9 +330,9 @@ Function UpdateEvent_cont_049_2(e.Events)
 					MoveEntity e\room\NPC[1]\collider,0,0,0.1
 					PointEntity mainPlayer\collider, e\room\NPC[1]\collider
 					
-					PlaySound2 LoadTempSound("SFX\Character\MTF\049\Player0492_1.ogg")
+					PlaySound2 LoadTempSound("SFX/Character/MTF/049/Player0492_1.ogg")
 					
-					LoadEventSound(e,"SFX\SCP\049\0492Breath.ogg")
+					LoadEventSound(e,"SFX/SCP/049/0492Breath.ogg")
 					
 					IsZombie = True
 				EndIf
@@ -372,7 +372,7 @@ Function UpdateEvent_cont_049_2(e.Events)
 			
 			If mainPlayer\dead = True Then
 				If IsChannelPlaying(e\room\NPC[1]\soundChannels[0]) Then StopChannel(e\room\NPC[1]\soundChannels[0])
-				PlaySound2 LoadTempSound("SFX\Character\MTF\049\Player0492_2.ogg")
+				PlaySound2 LoadTempSound("SFX/Character/MTF/049/Player0492_2.ogg")
 				RemoveEvent(e)
 			Else
 				If e\soundChannels[0] = 0 Then

@@ -37,7 +37,7 @@ Function UpdateEventRoom2elevator2(e.Events)
 			de\size = 0.5
 		
 		e\room\NPC[0]=CreateNPC(NPCtypeD, EntityX(e\room\Objects[0],True), 0.5, EntityZ(e\room\Objects[0],True))
-		e\room\NPC[0]\texture = "GFX\NPCs\gonzales.jpg"
+		e\room\NPC[0]\texture = "GFX/NPCs/gonzales.jpg"
 		tex = LoadTexture(e\room\NPC[0]\texture)
 		EntityTexture(e\room\NPC[0]\obj, tex)
 		FreeTexture tex
@@ -89,7 +89,7 @@ Function UpdateEvent_hll_ele_2(e.Events)
 				e\room\RoomDoors[0]\open = False
 				;PlayRangedSound(CloseDoorSFX(0, 0), mainPlayer\cam, e\room\RoomDoors[0]\obj, 8.0)			
 				
-				PlaySound2 (LoadTempSound("SFX\Room\Room2ElevatorDeath.ogg"))
+				PlaySound2 (LoadTempSound("SFX/Room/Room2ElevatorDeath.ogg"))
 				
 				e\EventState = 2.05
 			EndIf

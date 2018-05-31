@@ -35,7 +35,7 @@ Function FillRoom_lck_air_2(r.Rooms)
             EndIf
         EndIf
     Next
-    If r\Objects[3]=0 Then r\Objects[3] = LoadMesh("GFX\map\room2gw_pipes.b3d",r\obj)
+    If r\Objects[3]=0 Then r\Objects[3] = LoadMesh("GFX/map/room2gw_pipes.b3d",r\obj)
     EntityPickMode r\Objects[3],2
     
     If r\RoomTemplate\Name = "lck_air_2"
@@ -98,13 +98,13 @@ Function UpdateEventRoom_gw(e.Events)
 				e\EventState = 1.0
 				If brokendoor
 					If e\sounds[1] <> 0 Then FreeSound(e\sounds[1]) : e\sounds[1] = 0
-					e\sounds[1] = LoadSound("SFX\Door\DoorSparks.ogg")
+					e\sounds[1] = LoadSound("SFX/Door/DoorSparks.ogg")
 					e\soundChannels[1] = PlayRangedSound(e\sounds[1],mainPlayer\cam,e\room\Objects[1],5)
 				EndIf
 				StopChannel e\soundChannels[0]
 				e\soundChannels[0] = 0
 				If e\sounds[0] <> 0 Then FreeSound(e\sounds[0]) : e\sounds[0] = 0
-				e\sounds[0] = LoadSound("SFX\Door\Airlock.ogg")
+				e\sounds[0] = LoadSound("SFX/Door/Airlock.ogg")
 				e\room\RoomDoors[0]\locked = False
 				e\room\RoomDoors[1]\locked = False
 				UseDoor(e\room\RoomDoors[0])

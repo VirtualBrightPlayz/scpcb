@@ -31,7 +31,7 @@ Function Draw294()
 	y = userOptions\screenHeight/2 - (ImageHeight(Panel294)/2)
 	
 	DrawImage Panel294, x, y
-	If userOptions\fullscreen Then DrawImage CursorIMG, MouseX(),MouseY()
+	If userOptions\fullscreen Then DrawImage uiAssets\cursorIMG, MouseX(),MouseY()
 	
 	Text x+907, y+185, Input294, True,True
 End Function
@@ -148,22 +148,22 @@ Function Update294()
 					Input294 = Right(Input294, Len(Input294)-9)
 				EndIf
 				
-				Local loc% = GetINISectionLocation("DATA\SCP-294.ini", Input294)
+				Local loc% = GetINISectionLocation("DATA/SCP-294.ini", Input294)
 				
 				If loc > 0 Then
-					strtemp$ = GetINIString2("DATA\SCP-294.ini", loc, "dispensesound")
+					strtemp$ = GetINIString2("DATA/SCP-294.ini", loc, "dispensesound")
 					If strtemp = "" Then
-						mainPlayer\currRoom\SoundCHN = PlaySound(LoadTempSound("SFX\SCP\294\dispense1.ogg"))
+						mainPlayer\currRoom\SoundCHN = PlaySound(LoadTempSound("SFX/SCP/294/dispense1.ogg"))
 					Else
 						mainPlayer\currRoom\SoundCHN = PlaySound(LoadTempSound(strtemp))
 					EndIf
 					
-					If GetINIInt2("DATA\SCP-294.ini", loc, "explosion")=True Then 
+					If GetINIInt2("DATA/SCP-294.ini", loc, "explosion")=True Then 
 						ExplosionTimer = 135
-						DeathMSG = GetINIString2("DATA\SCP-294.ini", loc, "deathmessage")
+						DeathMSG = GetINIString2("DATA/SCP-294.ini", loc, "deathmessage")
 					EndIf
 					
-					strtemp$ = GetINIString2("DATA\SCP-294.ini", loc, "color")
+					strtemp$ = GetINIString2("DATA/SCP-294.ini", loc, "color")
 					
 					sep1 = Instr(strtemp, ",", 1)
 					sep2 = Instr(strtemp, ",", sep1+1)
@@ -171,8 +171,8 @@ Function Update294()
 					g% = Trim(Mid(strtemp, sep1+1, sep2-sep1-1))
 					b% = Trim(Right(strtemp, Len(strtemp)-sep2))
 					
-					alpha# = Float(GetINIString2("DATA\SCP-294.ini", loc, "alpha"))
-					glow = GetINIInt2("DATA\SCP-294.ini", loc, "glow")
+					alpha# = Float(GetINIString2("DATA/SCP-294.ini", loc, "alpha"))
+					glow = GetINIInt2("DATA/SCP-294.ini", loc, "glow")
 					If alpha = 0 Then alpha = 1.0
 					If glow Then alpha = -alpha
 					
@@ -182,7 +182,7 @@ Function Update294()
 				Else
 					;out of range
 					Input294 = "OUT OF RANGE"
-					mainPlayer\currRoom\SoundCHN = PlaySound(LoadTempSound("SFX\SCP\294\outofrange.ogg"))
+					mainPlayer\currRoom\SoundCHN = PlaySound(LoadTempSound("SFX/SCP/294/outofrange.ogg"))
 				EndIf
 				
 			EndIf

@@ -68,7 +68,7 @@ Function CreateSoundManager.SoundManager()
 	Local sndMan.SoundManager = New SoundManager
 
 	sndMan\chnList = CreateIntArrayList()
-	sndMan\button = LoadSound_SM("SFX\Interact\Button.ogg")
+	sndMan\button = LoadSound_SM("SFX/Interact/Button.ogg")
 
 	Return sndMan
 End Function
@@ -76,61 +76,61 @@ End Function
 Function LoadInGameSounds(sndMan.SoundManager)
 	Local i%
 	
-	sndMan\buttonErr = InitializeSound_SM("SFX\Interact\Button2.ogg")
+	sndMan\buttonErr = InitializeSound_SM("SFX/Interact/Button2.ogg")
 	
 	For i = 0 To 7
-		sndMan\footstep[i] = LoadSound_SM("SFX\Step\Step" + (i + 1) + ".ogg")
-		sndMan\footstepRun[i] = LoadSound_SM("SFX\Step\Run" + (i + 1) + ".ogg")
-		sndMan\footstepMetal[i] = LoadSound_SM("SFX\Step\StepMetal" + (i + 1) + ".ogg")
-		sndMan\footstepMetalRun[i] = LoadSound_SM("SFX\Step\RunMetal" + (i + 1) + ".ogg")
+		sndMan\footstep[i] = LoadSound_SM("SFX/Step/Step" + (i + 1) + ".ogg")
+		sndMan\footstepRun[i] = LoadSound_SM("SFX/Step/Run" + (i + 1) + ".ogg")
+		sndMan\footstepMetal[i] = LoadSound_SM("SFX/Step/StepMetal" + (i + 1) + ".ogg")
+		sndMan\footstepMetalRun[i] = LoadSound_SM("SFX/Step/RunMetal" + (i + 1) + ".ogg")
 	Next
 
 	For i = 0 To 2
-		sndMan\footstepPD[i] = InitializeSound_SM("SFX\Step\StepPD" + (i + 1) + ".ogg")
-		sndMan\footstep8601[i] = InitializeSound_SM("SFX\Step\StepForest" + (i + 1) + ".ogg")
+		sndMan\footstepPD[i] = InitializeSound_SM("SFX/Step/StepPD" + (i + 1) + ".ogg")
+		sndMan\footstep8601[i] = InitializeSound_SM("SFX/Step/StepForest" + (i + 1) + ".ogg")
 	Next
 
 	For i = 0 To 2
-		sndMan\openDoor[i] = LoadSound_SM("SFX\Door\DoorOpen" + (i + 1) + ".ogg")
-		sndMan\closeDoor[i] = LoadSound_SM("SFX\Door\DoorClose" + (i + 1) + ".ogg")
-		sndMan\openHCZDoor[i] = LoadSound_SM("SFX\Door\Door2Open" + (i + 1) + ".ogg")
-		sndMan\closeHCZDoor[i] = LoadSound_SM("SFX\Door\Door2Close" + (i + 1) + ".ogg")
+		sndMan\openDoor[i] = LoadSound_SM("SFX/Door/DoorOpen" + (i + 1) + ".ogg")
+		sndMan\closeDoor[i] = LoadSound_SM("SFX/Door/DoorClose" + (i + 1) + ".ogg")
+		sndMan\openHCZDoor[i] = LoadSound_SM("SFX/Door/Door2Open" + (i + 1) + ".ogg")
+		sndMan\closeHCZDoor[i] = LoadSound_SM("SFX/Door/Door2Close" + (i + 1) + ".ogg")
 	Next
 
 	For i = 0 To 1
-		sndMan\openBigDoor[i] = LoadSound_SM("SFX\Door\BigDoorOpen" + (i + 1) + ".ogg")
-		sndMan\closeBigDoor[i] = LoadSound_SM("SFX\Door\BigDoorClose" + (i + 1) + ".ogg")
+		sndMan\openBigDoor[i] = LoadSound_SM("SFX/Door/BigDoorOpen" + (i + 1) + ".ogg")
+		sndMan\closeBigDoor[i] = LoadSound_SM("SFX/Door/BigDoorClose" + (i + 1) + ".ogg")
 	Next
 	
-	sndMan\keycardUse = InitializeSound_SM("SFX\Interact\KeyCardUse1.ogg")
-	sndMan\keycardErr = InitializeSound_SM("SFX\Interact\KeyCardUse2.ogg")
-	sndMan\scannerUse = InitializeSound_SM("SFX\Interact\ScannerUse1.ogg")
-	sndMan\scannerErr = InitializeSound_SM("SFX\Interact\ScannerUse2.ogg")
+	sndMan\keycardUse = InitializeSound_SM("SFX/Interact/KeyCardUse1.ogg")
+	sndMan\keycardErr = InitializeSound_SM("SFX/Interact/KeyCardUse2.ogg")
+	sndMan\scannerUse = InitializeSound_SM("SFX/Interact/ScannerUse1.ogg")
+	sndMan\scannerErr = InitializeSound_SM("SFX/Interact/ScannerUse2.ogg")
 	
 	For i = 0 To 3
-		sndMan\itemPick[i] = LoadSound_SM("SFX\Interact\PickItem" + i + ".ogg")
+		sndMan\itemPick[i] = LoadSound_SM("SFX/Interact/PickItem" + i + ".ogg")
 	Next
 	
-	sndMan\elevatorBeep = InitializeSound_SM("SFX\General\Elevator\Beep.ogg")
-	sndMan\elevatorMove = InitializeSound_SM("SFX\General\Elevator\Moving.ogg")
+	sndMan\elevatorBeep = InitializeSound_SM("SFX/General/Elevator/Beep.ogg")
+	sndMan\elevatorMove = InitializeSound_SM("SFX/General/Elevator/Moving.ogg")
 	
-	sndMan\teslaIdle = InitializeSound_SM("SFX\Room\Tesla\Idle.ogg")
-	sndMan\teslaActive = InitializeSound_SM("SFX\Room\Tesla\WindUp.ogg")
-	sndMan\teslaPowerUp = InitializeSound_SM("SFX\Room\Tesla\PowerUp.ogg")
-	sndMan\teslaShock = InitializeSound_SM("SFX\Room\Tesla\Shock.ogg")
+	sndMan\teslaIdle = InitializeSound_SM("SFX/Room/Tesla/Idle.ogg")
+	sndMan\teslaActive = InitializeSound_SM("SFX/Room/Tesla/WindUp.ogg")
+	sndMan\teslaPowerUp = InitializeSound_SM("SFX/Room/Tesla/PowerUp.ogg")
+	sndMan\teslaShock = InitializeSound_SM("SFX/Room/Tesla/Shock.ogg")
 	
-	sndMan\gunshot[0] = InitializeSound_SM("SFX\General\Gunshot.ogg")
-	sndMan\gunshot[1] = InitializeSound_SM("SFX\General\Gunshot2.ogg")
-	sndMan\bulletHit = InitializeSound_SM("SFX\General\BulletHit.ogg")
-	sndMan\bulletMiss = InitializeSound_SM("SFX\General\BulletMiss.ogg")
+	sndMan\gunshot[0] = InitializeSound_SM("SFX/General/Gunshot.ogg")
+	sndMan\gunshot[1] = InitializeSound_SM("SFX/General/Gunshot2.ogg")
+	sndMan\bulletHit = InitializeSound_SM("SFX/General/BulletHit.ogg")
+	sndMan\bulletMiss = InitializeSound_SM("SFX/General/BulletMiss.ogg")
 	
-	sndMan\caution = InitializeSound_SM("SFX\Room\LockroomSiren.ogg")
-	sndMan\hiss = InitializeSound_SM("SFX\General\Hiss.ogg")
-	sndMan\lightSwitch = InitializeSound_SM("SFX\General\LightSwitch.ogg")
-	sndMan\lever = InitializeSound_SM("SFX\Interact\LeverFlip.ogg")
-	sndMan\burst = InitializeSound_SM("SFX\Room\TunnelBurst.ogg")
-	sndMan\camera = InitializeSound_SM("SFX\General\Camera.ogg")
-	sndMan\heartbeat = InitializeSound_SM("SFX\Character\D9341\Heartbeat.ogg")
+	sndMan\caution = InitializeSound_SM("SFX/Room/LockroomSiren.ogg")
+	sndMan\hiss = InitializeSound_SM("SFX/General/Hiss.ogg")
+	sndMan\lightSwitch = InitializeSound_SM("SFX/General/LightSwitch.ogg")
+	sndMan\lever = InitializeSound_SM("SFX/Interact/LeverFlip.ogg")
+	sndMan\burst = InitializeSound_SM("SFX/Room/TunnelBurst.ogg")
+	sndMan\camera = InitializeSound_SM("SFX/General/Camera.ogg")
+	sndMan\heartbeat = InitializeSound_SM("SFX/Character/D9341/Heartbeat.ogg")
 End Function
 
 Function DeloadInGameSounds(sndMan.SoundManager)
@@ -538,27 +538,27 @@ End Function
 
 
 ;;; Music
-Const MUS_MENU$    = "SFX\Music\Menu.ogg"
-Const MUS_INTRO$   = "SFX\Music\Intro.ogg"
-Const MUS_LCZ$     = "SFX\Music\The Dread.ogg"
-Const MUS_EZ$      = "SFX\Music\EntranceZone.ogg"
-Const MUS_HCZ$     = "SFX\Music\HeavyContainment.ogg"
-Const MUS_049$     = "SFX\Music\Room049.ogg"
-Const MUS_079$     = "SFX\Music\079.ogg"
-Const MUS_106$     = "SFX\Music\106.ogg"
-Const MUS_205$     = "SFX\Music\205.ogg"
-Const MUS_939$     = "SFX\Music\Room939.ogg"
-Const MUS_8601$    = "SFX\Music\8601.ogg"
-Const MUS_8602$    = "SFX\Music\8601Cancer.ogg"
-Const MUS_14991$   = "SFX\Music\1499.ogg"
-Const MUS_14992$   = "SFX\Music\1499Danger.ogg"
-Const MUS_PD$      = "SFX\Music\PD.ogg"
-Const MUS_TRENCH$  = "SFX\Music\PDTrench.ogg"
-Const MUS_GATEA$   = "SFX\Music\GateA.ogg"
-Const MUS_GATEB1$  = "SFX\Music\GateB1.ogg"
-Const MUS_GATEB2$  = "SFX\Music\GateB2.ogg"
-Const MUS_END$     = "SFX\Music\Ending.ogg"
-Const MUS_BREATH$  = "SFX\Music\Breath.ogg"
+Const MUS_MENU$    = "SFX/Music/Menu.ogg"
+Const MUS_INTRO$   = "SFX/Music/Intro.ogg"
+Const MUS_LCZ$     = "SFX/Music/The Dread.ogg"
+Const MUS_EZ$      = "SFX/Music/EntranceZone.ogg"
+Const MUS_HCZ$     = "SFX/Music/HeavyContainment.ogg"
+Const MUS_049$     = "SFX/Music/Room049.ogg"
+Const MUS_079$     = "SFX/Music/079.ogg"
+Const MUS_106$     = "SFX/Music/106.ogg"
+Const MUS_205$     = "SFX/Music/205.ogg"
+Const MUS_939$     = "SFX/Music/Room939.ogg"
+Const MUS_8601$    = "SFX/Music/8601.ogg"
+Const MUS_8602$    = "SFX/Music/8601Cancer.ogg"
+Const MUS_14991$   = "SFX/Music/1499.ogg"
+Const MUS_14992$   = "SFX/Music/1499Danger.ogg"
+Const MUS_PD$      = "SFX/Music/PD.ogg"
+Const MUS_TRENCH$  = "SFX/Music/PDTrench.ogg"
+Const MUS_GATEA$   = "SFX/Music/GateA.ogg"
+Const MUS_GATEB1$  = "SFX/Music/GateB1.ogg"
+Const MUS_GATEB2$  = "SFX/Music/GateB2.ogg"
+Const MUS_END$     = "SFX/Music/Ending.ogg"
+Const MUS_BREATH$  = "SFX/Music/Breath.ogg"
 
 Type MusicManager
 	Field currMusic%

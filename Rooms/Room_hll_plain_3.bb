@@ -29,8 +29,8 @@ Function UpdateEvent106victim(e.Events)
 				If e\room\NPC[0]=Null Then
 					e\room\NPC[0]=CreateNPC(NPCtypeD, EntityX(e\room\obj), 900.0*RoomScale, EntityZ(e\room\obj))
 					RotateEntity e\room\NPC[0]\Collider, 0, Rnd(360), 0, True
-					tex=LoadTexture("GFX\NPCs\106victim.jpg")
-					e\room\NPC[0]\texture = "GFX\NPCs\106victim.jpg"
+					tex=LoadTexture("GFX/NPCs/106victim.jpg")
+					e\room\NPC[0]\texture = "GFX/NPCs/106victim.jpg"
 					EntityTexture e\room\NPC[0]\obj, tex
 					FreeTexture tex
 					e\room\NPC[0]\State=6
@@ -54,8 +54,8 @@ Function UpdateEvent106victim(e.Events)
 					e\EventState=e\EventState+timing\tickDuration
 					AnimateNPC(e\room\NPC[0], 11, 19, 0.25, False)
 					If e\sounds[0]=0 Then 
-						;e\sounds[0] = LoadSound("SFX\General\BodyFall.ogg")
-						LoadEventSound(e,"SFX\General\BodyFall.ogg")
+						;e\sounds[0] = LoadSound("SFX/General/BodyFall.ogg")
+						LoadEventSound(e,"SFX/General/BodyFall.ogg")
 						PlaySound2 e\sounds[0]
 						
 						de.Decals = CreateDecal(0, EntityX(e\room\obj), 0.001, EntityZ(e\room\obj), 90, Rand(360), 0)

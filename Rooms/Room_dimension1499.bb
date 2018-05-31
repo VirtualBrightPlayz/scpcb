@@ -24,7 +24,7 @@ Function UpdateEvent_dimension1499(e.Events)
 ;					e\EventStr = "load0"
 ;				ElseIf e\EventStr = "load0"
 ;					e\room\Objects[0] = CreatePlane()
-;					Local planetex% = LoadTexture("GFX\map\Rooms\dimension1499\grit3.jpg")
+;					Local planetex% = LoadTexture("GFX/map/Rooms/dimension1499/grit3.jpg")
 ;					EntityTexture e\room\Objects[0],planetex%
 ;					FreeTexture planetex%
 ;					PositionEntity e\room\Objects[0],0,EntityY(e\room\obj),0
@@ -32,11 +32,11 @@ Function UpdateEvent_dimension1499(e.Events)
 ;					;EntityParent e\room\Objects[0],e\room\obj
 ;					e\EventStr = "load1"
 ;				ElseIf e\EventStr = "load1"
-;					NTF_1499Sky = sky_CreateSky("GFX\map\sky\1499sky")
+;					NTF_1499Sky = sky_CreateSky("GFX/map/sky/1499sky")
 ;					e\EventStr = 1
 ;				Else
 ;					If Int(e\EventStr)<16
-;						e\room\Objects[Int(e\EventStr)] = LoadMesh("GFX\map\Rooms\dimension1499\1499object"+(Int(e\EventStr))+".b3d")
+;						e\room\Objects[Int(e\EventStr)] = LoadMesh("GFX/map/Rooms/dimension1499/1499object"+(Int(e/EventStr))+".b3d")
 ;						HideEntity e\room\Objects[Int(e\EventStr)]
 ;						e\EventStr = Int(e\EventStr)+1
 ;					ElseIf Int(e\EventStr)=16
@@ -49,7 +49,7 @@ Function UpdateEvent_dimension1499(e.Events)
 ;						For i = -2 To 2 Step 2
 ;							ch = CreateChunk(-1,x#*(i*2.5),EntityY(e\room\obj),z#)
 ;						Next
-;						;If Music(18)=0 Then Music(18) = LoadSound("SFX\Music\1499.ogg")
+;						;If Music(18)=0 Then Music(18) = LoadSound("SFX/Music/1499.ogg")
 ;						e\EventState = 2.0
 ;						e\EventStr = 18
 ;					EndIf
@@ -130,7 +130,7 @@ Function UpdateLeave1499()
 					EndIf
 				Next
 				mainPlayer\currRoom = r
-				PlaySound2(LoadTempSound(LoadSound("SFX\SCP\1499\Exit.ogg")))
+				PlaySound2(LoadTempSound(LoadSound("SFX/SCP/1499/Exit.ogg")))
 				NTF_1499PrevX# = 0.0
 				NTF_1499PrevY# = 0.0
 				NTF_1499PrevZ# = 0.0
