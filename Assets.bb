@@ -11,7 +11,7 @@ Type AssetWrap
 End Type
 
 Function CreateAsset.AssetWrap(filePath$, asType%)
-	as.AssetWrap = New AssetWrap
+	Local as.AssetWrap = New AssetWrap
 	as\asType = asType
 	as\file = filePath
 
@@ -142,7 +142,7 @@ Function InitializeUIAssets()
 	uiAssets\font[1] = LoadFont("GFX/font/courbd/Courier New.ttf", Int(58 * MenuScale), 0,0,0)
 	uiAssets\font[2] = LoadFont("GFX/font/DS-DIGI/DS-Digital.ttf", Int(22 * MenuScale), 0,0,0)
 	uiAssets\font[3] = LoadFont("GFX/font/DS-DIGI/DS-Digital.ttf", Int(60 * MenuScale), 0,0,0)
-	uiAssets\ConsoleFont% = LoadFont("Blitz", Int(20 * MenuScale), 0,0,0)
+	uiAssets\consoleFont% = LoadFont("Blitz", Int(20 * MenuScale), 0,0,0)
 	
 	uiAssets\sprintIcon = LoadImage("GFX/sprinticon.png")
 	uiAssets\blinkIcon% = LoadImage("GFX/blinkicon.png")
@@ -174,7 +174,7 @@ Function ReleaseUIAssets()
 	For i = 0 To 3
 		FreeFont(uiAssets\font[i])
 	Next
-	FreeFont(uiAssets\ConsoleFont)
+	FreeFont(uiAssets\consoleFont)
 	
 	FreeImage(uiAssets\sprintIcon)
 	FreeImage(uiAssets\blinkIcon)
@@ -188,13 +188,6 @@ Function ReleaseUIAssets()
 	
 	Delete uiAssets
 End Function
-
-;Top 10 CB assets that have SWORN.
-Type CommonAssets
-	
-End Type
-
-Global comAssets.CommonAssets
 
 Function LoadEntities()
 	DrawLoading(0)
