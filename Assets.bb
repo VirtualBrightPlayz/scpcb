@@ -1,6 +1,7 @@
 Const ASSSET_NON%    = 0
 Const ASSET_TEXTURE% = 1
-Const ASSET_ENTITY%  = 2
+Const ASSET_MESH%    = 2
+Const ASSET_IMAGE%   = 3
 
 Type AssetWrap
 	Field asType%
@@ -9,15 +10,70 @@ Type AssetWrap
 	Field intVal%
 End Type
 
-Function FreeAss(as.AssetWrap)
+Function CreateAsset.AssetWrap(filePath$, asType%)
+	as.AssetWrap = New AssetWrap
+	as\asType = asType
+	as\file = filePath
+
+	Select as\asType
+		Case ASSET_TEXTURE
+			as\intVal = LoadTexture(as\file)
+		Case ASSET_IMAGE
+			as\intVal = LoadImage(as\file)
+		Case ASSET_MESH
+			as\intVal = LoadMesh(as\file)
+	End Select
+End Function
+
+Function FreeAsset(as.AssetWrap)
 	Select as\asType
 		Case ASSET_TEXTURE
 			FreeTexture(as\intVal)
-		Case ASSET_ENTITY
+		Case ASSET_IMAGE
+			FreeImage(as\intVal)
+		Case ASSET_MESH
 			FreeEntity(as\intVal)
 	End Select
 	
 	Delete as
+End Function
+
+Function GrabAsset%(filePath$, asType%)
+	Local as.AssetWrap
+	For as = Each AssetWrap
+		If (filePath = as\file) Then
+			as\grabCount = as\grabCount + 1
+			Return as\intVal
+		EndIf
+	Next
+
+	;Asset doesn't exist, create it.
+	as = CreateAsset(filePath, asType)
+	as\grabCount = 1
+
+	Return as\intVal
+End Function
+
+Function DropAsset(filePath$)
+	Local as.AssetWrap
+	For as = Each AssetWrap
+		If (filePath = as\file) Then
+			as\grabCount = as\grabCount - 1
+			Return
+		EndIf
+	Next
+
+	;TODO: Maybe not make this crash the game later?
+	RuntimeError("Attempted to drop non-existant asset: " + filePath)
+End Function
+
+Function UpdateAssets()
+	Local as.AssetWrap
+	For as = Each AssetWrap
+		If (as\grabCount < 1) Then
+			FreeAsset(as)
+		EndIf
+	Next
 End Function
 
 Const HAND_ICON_TOUCH% = 0

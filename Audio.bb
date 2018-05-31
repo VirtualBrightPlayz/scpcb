@@ -8,8 +8,7 @@ Const STEPSOUND_METAL% = 1
 ;TODO: add more STEPSOUND constants
 
 Type SoundManager
-	Field chnList.IntArrayList
-
+	; Buttons
 	Field button.Sound
 	Field buttonErr.Sound
 	
@@ -66,8 +65,6 @@ Global sndManager.SoundManager
 
 Function CreateSoundManager.SoundManager()
 	Local sndMan.SoundManager = New SoundManager
-
-	sndMan\chnList = CreateIntArrayList()
 	sndMan\button = LoadSound_SM("SFX/Interact/Button.ogg")
 
 	Return sndMan
@@ -200,18 +197,6 @@ Type SoundChannel
 	Field volume#
 End Type
 
-; Add a channel to the list.
-Function AddChannel(ref%)
-	If (ref = 0) Then
-		Return
-	EndIf
-
-	Local chn.SoundChannel = New SoundChannel
-	chn\internal = ref
-
-	PushIntArrayListElem(sndManager\chnList, Handle(chn))
-End Function
-
 Function AddPositionalChannel(ref%, cam%, ent%, range# = 10, vol# = 1.0)
 	If (ref = 0) Then
 		Return
@@ -224,19 +209,14 @@ Function AddPositionalChannel(ref%, cam%, ent%, range# = 10, vol# = 1.0)
 	PositionEntity(chn\point, EntityX(ent), EntityY(ent), EntityZ(ent))
 	chn\range = range
 	chn\volume = vol
-
-	PushIntArrayListElem(sndManager\chnList, Handle(chn))
 End Function
 
 Function UpdateChannelList()
-	Local i%
-	For i = 0 To sndManager\chnList\size-1
-		Local chn.SoundChannel =  Object.SoundChannel(GetIntArrayListElem(sndManager\chnList, i))
+	Local chn.SoundChannel
+	For chn = Each SoundChannel
 		If (Not IsChannelPlaying(chn\internal)) Then
-			EraseIntArrayListElem(sndManager\chnList, i)
 			FreeEntity(chn\point)
 			Delete chn
-			i = i - 1
 		ElseIf (chn\camera <> 0) Then
 			UpdateRangedSoundOrigin_SM(chn)
 		EndIf
@@ -259,9 +239,13 @@ Function LoadSound_SM.Sound(fileName$)
 	Return snd
 End Function
 
+; Used for sounds that aren't tied to a channel somewhere else in the code.
 Function PlaySound2%(snd%)
 	Local chn% = PlaySound(snd)
-	AddChannel(chn)
+
+	Local sc.SoundChannel = New SoundChannel
+	sc\internal = chn
+	
 	Return chn
 End Function
 
@@ -313,6 +297,7 @@ Function PlayRangedSound%(soundHandle%, cam%, entity%, range# = 10, volume# = 1.
 End Function
 
 Function PlayRangedSound_SM%(snd.Sound, cam%, entity%, range# = 10, volume# = 1.0)
+	;If the sound hasn't been loaded yet then do that.
 	If (snd\internal = 0) Then
 		snd\internal = LoadSound(snd\file)
 	EndIf
@@ -332,9 +317,11 @@ Function LoopRangedSound%(soundHandle%, chn%, cam%, entity%, range# = 10, volume
 End Function
 
 Function LoopRangedSound_SM%(snd.Sound, chn%, cam%, entity%, range# = 10, volume# = 1.0)
+	;If the sound hasn't been loaded yet then do that.
 	If (snd\internal = 0) Then
 		snd\internal = LoadSound(snd\file)
 	EndIf
+
 	Return LoopRangedSound(snd\internal, chn, cam, entity, range, volume)
 End Function
 
@@ -384,29 +371,28 @@ Function LoadTempSound%(file$)
 	Return TempSound
 End Function
 
-Function LoadEventSound(e.Events,file$,num%=0)
-	Local i%
-	For i = 0 To EVENT_CHANNEL_COUNT-1
-		If (num = i) Then
-			If (e\sounds[i]<>0) Then FreeSound(e\sounds[i]) : e\sounds[i]=0
-			e\sounds[i] = LoadSound(file)
-			Return e\sounds[i]
-		EndIf
-	Next
+Function LoadEventSound%(e.Events, file$, i%=0)
+	If (e\sounds[i] <> 0) Then
+		FreeSound(e\sounds[i])
+		e\sounds[i] = 0
+	EndIf
+	e\sounds[i] = LoadSound(file)
+
+	Return e\sounds[i]
 End Function
 
 Function PauseSounds()
-	Local sc.SoundChannel, sc2.SecurityCams, r.Rooms, e.Events, n.NPCs, em.Emitters, i%
+	Local chn.SoundChannel, sc.SecurityCams, r.Rooms, e.Events, n.NPCs, em.Emitters, i%
 
-	For sc = Each SoundChannel
-		If (IsChannelPlaying(sc\internal)) Then
-			PauseChannel(sc\internal)
+	For chn = Each SoundChannel
+		If (IsChannelPlaying(chn\internal)) Then
+			PauseChannel(chn\internal)
 		EndIf
 	Next
 	
-	For sc2 = Each SecurityCams
-		If (IsChannelPlaying(sc2\soundCHN)) Then
-			PauseChannel(sc2\soundCHN)
+	For sc = Each SecurityCams
+		If (IsChannelPlaying(sc\soundCHN)) Then
+			PauseChannel(sc\soundCHN)
 		EndIf
 	Next
 	
@@ -444,17 +430,17 @@ Function PauseSounds()
 End Function
 
 Function ResumeSounds()
-	Local sc.SoundChannel, sc2.SecurityCams, r.Rooms, e.Events, n.NPCs, em.Emitters, i%
+	Local chn.SoundChannel, sc.SecurityCams, r.Rooms, e.Events, n.NPCs, em.Emitters, i%
 
-	For sc = Each SoundChannel
-		If (IsChannelPlaying(sc\internal)) Then
-			ResumeChannel(sc\internal)
+	For chn = Each SoundChannel
+		If (IsChannelPlaying(chn\internal)) Then
+			ResumeChannel(chn\internal)
 		EndIf
 	Next
 	
-	For sc2 = Each SecurityCams
-		If (IsChannelPlaying(sc2\soundCHN)) Then
-			ResumeChannel(sc2\soundCHN)
+	For sc = Each SecurityCams
+		If (IsChannelPlaying(sc\soundCHN)) Then
+			ResumeChannel(sc\soundCHN)
 		EndIf
 	Next
 	
@@ -538,34 +524,36 @@ End Function
 
 
 ;;; Music
-Const MUS_MENU$    = "SFX/Music/Menu.ogg"
-Const MUS_INTRO$   = "SFX/Music/Intro.ogg"
-Const MUS_LCZ$     = "SFX/Music/The Dread.ogg"
-Const MUS_EZ$      = "SFX/Music/EntranceZone.ogg"
-Const MUS_HCZ$     = "SFX/Music/HeavyContainment.ogg"
-Const MUS_049$     = "SFX/Music/Room049.ogg"
-Const MUS_079$     = "SFX/Music/079.ogg"
-Const MUS_106$     = "SFX/Music/106.ogg"
-Const MUS_205$     = "SFX/Music/205.ogg"
-Const MUS_939$     = "SFX/Music/Room939.ogg"
-Const MUS_8601$    = "SFX/Music/8601.ogg"
-Const MUS_8602$    = "SFX/Music/8601Cancer.ogg"
-Const MUS_14991$   = "SFX/Music/1499.ogg"
-Const MUS_14992$   = "SFX/Music/1499Danger.ogg"
-Const MUS_PD$      = "SFX/Music/PD.ogg"
-Const MUS_TRENCH$  = "SFX/Music/PDTrench.ogg"
-Const MUS_GATEA$   = "SFX/Music/GateA.ogg"
-Const MUS_GATEB1$  = "SFX/Music/GateB1.ogg"
-Const MUS_GATEB2$  = "SFX/Music/GateB2.ogg"
-Const MUS_END$     = "SFX/Music/Ending.ogg"
-Const MUS_BREATH$  = "SFX/Music/Breath.ogg"
+Const MUS_DIR$     = "SFX/Music/"
+
+Const MUS_MENU$    = MUSIC_DIR + "Menu.ogg"
+Const MUS_INTRO$   = MUSIC_DIR + "Intro.ogg"
+Const MUS_LCZ$     = MUSIC_DIR + "The Dread.ogg"
+Const MUS_EZ$      = MUSIC_DIR + "EntranceZone.ogg"
+Const MUS_HCZ$     = MUSIC_DIR + "HeavyContainment.ogg"
+Const MUS_049$     = MUSIC_DIR + "Room049.ogg"
+Const MUS_079$     = MUSIC_DIR + "079.ogg"
+Const MUS_106$     = MUSIC_DIR + "106.ogg"
+Const MUS_205$     = MUSIC_DIR + "205.ogg"
+Const MUS_939$     = MUSIC_DIR + "Room939.ogg"
+Const MUS_8601$    = MUSIC_DIR + "8601.ogg"
+Const MUS_8602$    = MUSIC_DIR + "8601Cancer.ogg"
+Const MUS_14991$   = MUSIC_DIR + "1499.ogg"
+Const MUS_14992$   = MUSIC_DIR + "1499Danger.ogg"
+Const MUS_PD$      = MUSIC_DIR + "PD.ogg"
+Const MUS_TRENCH$  = MUSIC_DIR + "PDTrench.ogg"
+Const MUS_GATEA$   = MUSIC_DIR + "GateA.ogg"
+Const MUS_GATEB1$  = MUSIC_DIR + "GateB1.ogg"
+Const MUS_GATEB2$  = MUSIC_DIR + "GateB2.ogg"
+Const MUS_END$     = MUSIC_DIR + "Ending.ogg"
+Const MUS_BREATH$  = MUSIC_DIR + "Breath.ogg"
 
 Type MusicManager
 	Field currMusic%
 	Field channel%
 
-	; Whether the music playing should be relevant to the current zone/menu
-	; the player is in.
+	; When set to true the music manager just plays whichever track
+	; is appropriate to the current zone/menu.
 	Field useDefault%
 
 	Field nowPlaying$
@@ -646,7 +634,6 @@ Function UpdateMusic()
 		musicManager\currMusicVolume = userOptions\musicVolume
 	EndIf
 
-	;If nothing is playing then figure out what the next track is.
 	If (Not IsChannelPlaying(musicManager\channel)) Then
 		musicManager\channel = PlaySound(musicManager\currMusic)
 	EndIf
