@@ -1,9 +1,8 @@
 Const ASSSET_NON%       = 0
 Const ASSET_TEXTURE%    = 1
 Const ASSET_IMAGE%      = 2
-Const ASSET_ANIM_IMAGE% = 3
-Const ASSET_MESH%       = 4
-Const ASSET_ANIM_MESH%  = 5
+Const ASSET_MESH%       = 3
+Const ASSET_ANIM_MESH%  = 4
 
 Const ASSET_DECAY_TIMER% = 10 * 70
 
