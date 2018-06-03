@@ -1,27 +1,34 @@
-Const ASSSET_NON%    = 0
-Const ASSET_TEXTURE% = 1
-Const ASSET_MESH%    = 2
-Const ASSET_IMAGE%   = 3
+Const ASSSET_NON%       = 0
+Const ASSET_TEXTURE%    = 1
+Const ASSET_IMAGE%      = 2
+Const ASSET_MESH%       = 3
+Const ASSET_ANIM_MESH%  = 4
+
+Const ASSET_DECAY_TIMER% = 10 * 70
 
 Type AssetWrap
 	Field asType%
 	Field grabCount%
 	Field file$
+	Field decayTimer#
 	Field intVal%
 End Type
 
-Function CreateAsset.AssetWrap(filePath$, asType%)
+Function CreateAsset.AssetWrap(filePath$, asType%, flag%=1)
 	Local as.AssetWrap = New AssetWrap
 	as\asType = asType
 	as\file = filePath
+	as\decayTimer = ASSET_DECAY_TIMER
 
 	Select as\asType
 		Case ASSET_TEXTURE
-			as\intVal = LoadTexture(as\file)
+			as\intVal = LoadTexture(as\file, flag)
 		Case ASSET_IMAGE
 			as\intVal = LoadImage(as\file)
 		Case ASSET_MESH
 			as\intVal = LoadMesh(as\file)
+		Case ASSET_ANIM_MESH
+			as\intVal = LoadAnimMesh(as\file)
 	End Select
 End Function
 
@@ -38,20 +45,33 @@ Function FreeAsset(as.AssetWrap)
 	Delete as
 End Function
 
-Function GrabAsset%(filePath$, asType%)
+Function GrabAsset%(filePath$, asType%, flag%=1))
 	Local as.AssetWrap
 	For as = Each AssetWrap
 		If (filePath = as\file) Then
+			as\decayTimer = ASSET_DECAY_TIMER
 			as\grabCount = as\grabCount + 1
 			Return as\intVal
 		EndIf
 	Next
 
 	;Asset doesn't exist, create it.
-	as = CreateAsset(filePath, asType)
+	as = CreateAsset(filePath, asType, flag)
 	as\grabCount = 1
 
 	Return as\intVal
+End Function
+
+Function GrabTexture%(filePath$, flag%=1)
+	Return GrabAsset(filePath, ASSET_TEXTURE, flag)
+End Function
+
+Function GrabImage%(filePath$)
+	Return GrabAsset(filePath, ASSET_IMAGE)
+End Function
+
+Function GrabMesh%(filePath$)
+	Return GrabAsset(filePath, ASSET_MESH)
 End Function
 
 Function DropAsset(filePath$)
@@ -71,7 +91,10 @@ Function UpdateAssets()
 	Local as.AssetWrap
 	For as = Each AssetWrap
 		If (as\grabCount < 1) Then
-			FreeAsset(as)
+			as\decayTimer = as\decayTimer - timing\tickDuration
+			If (as\decayTimer < 0) Then
+				FreeAsset(as)
+			EndIf
 		EndIf
 	Next
 End Function
