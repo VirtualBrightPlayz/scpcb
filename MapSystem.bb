@@ -181,7 +181,7 @@ Function LoadRMeshTexture%(roompath$,name$,flags%)
 	If texture<>0 Then
 		DebugLog TextureName(texture)
 	Else
-		RuntimeError name
+		texture = LoadTexture("GFX/map/Textures/dirtymetal.jpg",flags);RuntimeError name
 	EndIf
 	Return texture
 End Function

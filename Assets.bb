@@ -45,7 +45,7 @@ Function FreeAsset(as.AssetWrap)
 	Delete as
 End Function
 
-Function GrabAsset%(filePath$, asType%, flag%=1))
+Function GrabAsset%(filePath$, asType%, flag%=1)
 	Local as.AssetWrap
 	For as = Each AssetWrap
 		If (filePath = as\file) Then
