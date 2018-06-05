@@ -1,4 +1,4 @@
-Const ASSSET_NON%       = 0
+Const ASSET_NONE%       = 0
 Const ASSET_TEXTURE%    = 1
 Const ASSET_IMAGE%      = 2
 Const ASSET_MESH%       = 3
