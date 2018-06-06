@@ -1,0 +1,8 @@
+Item Names:
+all of them basically renamed, also:
+-paperstrips is never used
+-vest uses a texture from the NPCs folder, consider moving it to items instead
+-the world model for paper-based objects should just be the paper itself
+-doc914 was never used so I removed it
+-why the fuck was there a doc109
+-need to figure out what all the loose metal textures are for

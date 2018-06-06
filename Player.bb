@@ -204,6 +204,13 @@ Function CreatePlayer.Player()
 	MoveEntity(player\overlays[OVERLAY_WHITE], 0, 0, 1.0)
 	HideEntity player\overlays[OVERLAY_WHITE]
 	
+	FreeTexture(gasMaskTexture)
+	FreeTexture(infectTexture)
+	FreeTexture(nvTexture)
+	FreeTexture(fogTexture)
+	FreeTexture(darkTexture)
+	FreeTexture(lightTexture)
+	
 	player\collider = CreatePivot()
 	EntityRadius player\collider, 0.15, 0.30
 	EntityPickMode(player\collider, 1)
@@ -226,7 +233,6 @@ Function CreatePlayer.Player()
 	Next
 	player\heartbeat = LoadSound("SFX/Character/D9341/Heartbeat.ogg")
 	
-	
 	Return player
 End Function
 
@@ -235,6 +241,10 @@ Function DeletePlayer(player.Player)
 	DeleteInventory(player\inventory)
 
 	Local i%
+	For i = 0 to OVERLAY_COUNT-1
+		FreeEntity(player\overlays[i])
+	Next
+
 	For i = 0 To 4
 		FreeSound(GetIntArrayElem(player\breathingSFX, 0, i))
 		FreeSound(GetIntArrayElem(player\breathingSFX, 1, i))
