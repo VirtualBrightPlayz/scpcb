@@ -1,4 +1,4 @@
-Const ASSSET_NON%       = 0
+Const ASSET_NONE%       = 0
 Const ASSET_TEXTURE%    = 1
 Const ASSET_IMAGE%      = 2
 Const ASSET_MESH%       = 3
@@ -45,7 +45,7 @@ Function FreeAsset(as.AssetWrap)
 	Delete as
 End Function
 
-Function GrabAsset%(filePath$, asType%, flag%=1))
+Function GrabAsset%(filePath$, asType%, flag%=1)
 	Local as.AssetWrap
 	For as = Each AssetWrap
 		If (filePath = as\file) Then

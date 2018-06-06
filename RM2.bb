@@ -237,9 +237,6 @@ Function LoadRM2(rt.RoomTemplates)
 				
 				;vertices
 				count = ReadShort(file)
-				If Instr(fullFilename,"_sl_")>0 Then
-					DebugLog "HYPE "+count
-				EndIf
 				
 				For i%=0 To count-1
 					x = ReadFloat(file) : y = ReadFloat(file) : z = ReadFloat(file)
@@ -250,9 +247,6 @@ Function LoadRM2(rt.RoomTemplates)
 				
 				;triangles
 				count = ReadShort(file)
-				If Instr(fullFilename,"_sl_")>0 Then
-					DebugLog "HYPE "+count
-				EndIf
 				
 				For i%=0 To count-1
 					vert1 = ReadShort(file)
@@ -299,7 +293,8 @@ Function LoadRM2(rt.RoomTemplates)
 				;you may now access
 				;         ^
 				;        /|\
-				;       / | \				;      <--+-->
+				;       / | \
+				;      <--+-->
 				;       \ | /
 				;        \|/
 				;         v
