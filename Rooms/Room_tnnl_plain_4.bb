@@ -18,7 +18,6 @@ Function UpdateEvent_tnnl_plain_4(e.Events)
 		tex = LoadTexture(e\room\NPC[0]\texture)
 		EntityTexture(e\room\NPC[0]\obj, tex)
 		FreeTexture tex
-		;EntityTexture e\room\NPC[0]\obj,NTF_BodyTextures(0)
 		
 		RotateEntity e\room\NPC[0]\Collider, 0, EntityYaw(e\room\obj)-(Rand(20,60)),0, True	
 		

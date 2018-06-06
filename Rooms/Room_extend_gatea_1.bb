@@ -440,7 +440,7 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 						
 						If Abs(EntityY(mainPlayer\collider)-EntityY(e\room\Objects[11],True))<1.0 Then
 							If Distance(EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider),EntityX(e\room\Objects[11],True),EntityZ(e\room\Objects[11],True)) < 7.0 Then
-								e\room\Objects[12] = LoadMesh("GFX/npcs/s2.b3d")
+								e\room\Objects[12] = LoadMesh("GFX/npcs/CI/CI.b3d")
 								EntityColor e\room\Objects[12], 0,0,0
 								ScaleMesh (e\room\Objects[12], 0.32/21.3, 0.32/21.3, 0.32/21.3)
 								PositionEntity e\room\Objects[12], EntityX(e\room\Objects[11],True), EntityY(e\room\Objects[11],True), EntityZ(e\room\Objects[11],True)

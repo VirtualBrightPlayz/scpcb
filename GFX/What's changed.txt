@@ -6,3 +6,5 @@ all of them basically renamed, also:
 -doc914 was never used so I removed it
 -why the fuck was there a doc109
 -need to figure out what all the loose metal textures are for
+
+npcs/hg.pt -> General/hg.jpg
