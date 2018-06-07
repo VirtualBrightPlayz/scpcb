@@ -1,12 +1,24 @@
+# Contianment Breach
+Saves/*
+error_log_*
+
+# Blitz3D
 *FastExt.bb
 *FastText_Unicode.bb
 *FastImage.bb
-*.DS_Store
-*.ipf
-*.iws
 MapSystem.bb.rej
 UpdateEvents.bb.rej
 *.bb_bak*
-Saves/*
-error_log_*
+
+#Ideal
+*.ipf
+*.iws
+
+# Visual Studio Code
 .vscode
+
+# Windows
+Thumbs.db
+
+# macOS
+*.DS_Store
