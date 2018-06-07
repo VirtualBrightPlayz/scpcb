@@ -708,9 +708,9 @@ Function UpdateGame()
 	
 					mainPlayer\blinkTimer = mainPlayer\blinkTimer - timing\tickDuration
 				Else
-					mainPlayer\blinkTimer = mainPlayer\blinkTimer - timing\tickDuration * 0.6
+					mainPlayer\blinkTimer = mainPlayer\blinkTimer - timing\tickDuration * 0.6 * mainPlayer\blinkEffect
 					;TODO: fix
-					;If EyeIrritation > 0 Then mainPlayer\blinkTimer=BlinkTimer-Min(EyeIrritation / 100.0 + 1.0, 4.0) * timing\tickDuration * BlinkEffect
+					;If EyeIrritation > 0 Then mainPlayer\blinkTimer=BlinkTimer-Min(EyeIrritation / 100.0 + 1.0, 4.0) * timing\tickDuration
 					
 					darkA = Max(darkA, 0.0)
 				End If
@@ -718,12 +718,10 @@ Function UpdateGame()
 				;TODO: fix
 				;EyeIrritation = Max(0, EyeIrritation - timing\tickDuration)
 				
-				If mainPlayer\blinkEffect > 0 Then
+				If mainPlayer\blinkEffectTimer > 0 Then
 					mainPlayer\blinkEffect = mainPlayer\blinkEffect - (timing\tickDuration/70)
-				;TODO: wtf does this do	
-				;Else
-				;	If BlinkEffect <> 1.0 Then BlinkEffect = 1.0
-				;	BlinkEffect = CurveValue(1.0,BlinkEffect,500)
+				Else
+					mainPlayer\blinkEffect = 1.0
 				EndIf
 				
 				;TODO: reimplement
