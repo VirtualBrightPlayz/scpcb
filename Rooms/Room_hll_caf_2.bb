@@ -23,14 +23,15 @@ Function FillRoom_hll_caf_2(r.Rooms)
 End Function
 
 Function Draw294()
+	;TODO: FIX
 	Local x#,y#, xtemp%,ytemp%, strtemp$, temp%
 	
 	ShowPointer()
 	
-	x = userOptions\screenWidth/2 - (ImageWidth(Panel294)/2)
-	y = userOptions\screenHeight/2 - (ImageHeight(Panel294)/2)
-	
-	DrawImage Panel294, x, y
+;	x = userOptions\screenWidth/2 - (ImageWidth(Panel294)/2)
+;	y = userOptions\screenHeight/2 - (ImageHeight(Panel294)/2)
+;	
+;	DrawImage Panel294, x, y
 	If userOptions\fullscreen Then DrawImage uiAssets\cursorIMG, MouseX(),MouseY()
 	
 	Text x+907, y+185, Input294, True,True
@@ -39,8 +40,8 @@ End Function
 Function Update294()
 	Local x#,y#, xtemp%,ytemp%, strtemp$, temp%
 	
-	x = userOptions\screenWidth/2 - (ImageWidth(Panel294)/2)
-	y = userOptions\screenHeight/2 - (ImageHeight(Panel294)/2)
+	;x = userOptions\screenWidth/2 - (ImageWidth(Panel294)/2)
+	;y = userOptions\screenHeight/2 - (ImageHeight(Panel294)/2)
 	
 	temp = True
 	If mainPlayer\currRoom\SoundCHN<>0 Then temp = False

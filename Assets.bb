@@ -167,14 +167,14 @@ Function InitializeUIAssets()
 	uiAssets\font[3] = LoadFont("GFX/font/DS-DIGI/DS-Digital.ttf", Int(60 * MenuScale), 0,0,0)
 	uiAssets\consoleFont% = LoadFont("Blitz", Int(20 * MenuScale), 0,0,0)
 	
-	uiAssets\sprintIcon = LoadImage("GFX/sprinticon.png")
-	uiAssets\blinkIcon% = LoadImage("GFX/blinkicon.png")
-	uiAssets\crouchIcon% = LoadImage("GFX/sneakicon.png")
-	uiAssets\handIcon[HAND_ICON_TOUCH] = LoadImage("GFX/handsymbol.png")
-	uiAssets\handIcon[HAND_ICON_GRAB] = LoadImage("GFX/handsymbol2.png")
-	uiAssets\blinkBar = LoadImage("GFX/blinkmeter.jpg")
-	uiAssets\staminaBar = LoadImage("GFX/staminameter.jpg")
-	uiAssets\keypadHUD = LoadImage("GFX/keypadhud.jpg")
+	uiAssets\sprintIcon = LoadImage("GFX/HUD/sprinticon.png")
+	uiAssets\blinkIcon% = LoadImage("GFX/HUD/blinkicon.png")
+	uiAssets\crouchIcon% = LoadImage("GFX/HUD/sneakicon.png")
+	uiAssets\handIcon[HAND_ICON_TOUCH] = LoadImage("GFX/HUD/handsymbol.png")
+	uiAssets\handIcon[HAND_ICON_GRAB] = LoadImage("GFX/HUD/handsymbol2.png")
+	uiAssets\blinkBar = LoadImage("GFX/HUD/blinkmeter.jpg")
+	uiAssets\staminaBar = LoadImage("GFX/HUD/staminameter.jpg")
+	uiAssets\keypadHUD = LoadImage("GFX/HUD/keypadhud.jpg")
 	MaskImage(uiAssets\keypadHUD, 255,0,255)
 End Function
 
@@ -821,4 +821,5 @@ Function NullGame()
 	
 End Function
 ;~IDEal Editor Parameters:
+;~F#10#22#2F#40#44#48#4C#59#68
 ;~C#Blitz3D
