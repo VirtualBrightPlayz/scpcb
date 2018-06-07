@@ -74,7 +74,9 @@ Type Player
 	Field disableControls%
 	
 	Field blinkEffect#
+	Field blinkEffectTimer#
 	Field staminaEffect#
+	Field staminaEffectTimer#
 	
 	Field lightFlash#
 	Field blurTimer#
@@ -287,11 +289,10 @@ Function MovePlayer()
 	
 	mainPlayer\stamina = Min(mainPlayer\stamina + 0.15 * timing\tickDuration, 100.0)
 	
-	If mainPlayer\staminaEffect > 1 Then
+	If mainPlayer\staminaEffectTimer > 0 Then
 		mainPlayer\staminaEffect = mainPlayer\staminaEffect - (timing\tickDuration/70)
 	Else
-		If mainPlayer\staminaEffect <> 1.0 Then mainPlayer\staminaEffect = 1.0
-		mainPlayer\staminaEffect = CurveValue(1.0, mainPlayer\staminaEffect, 50)
+		mainPlayer\staminaEffect = 1.0
 	EndIf
 	
 	If mainPlayer\currRoom<>Null Then
@@ -1623,7 +1624,7 @@ Function UpdateInventory(player.Player)
 											Msg = "You feel nauseated."
 										Case 4
 											player\blinkEffect = 0.6
-											;BlinkEffectTimer = 70*Rand(20,30)
+											player\blinkEffectTimer = Rand(20,30)
 										Case 5
 											player\bloodloss = 0
 											player\injuries = 0
@@ -1642,12 +1643,12 @@ Function UpdateInventory(player.Player)
 					EndIf
 				Case "eyedrops"
 					player\blinkEffect = 0.6
-					;BlinkEffectTimer = 70*Rand(20,30)
+					player\blinkEffectTimer = Rand(20,30)
 					player\blurTimer = 200
 					RemoveItem(player\selectedItem)
 				Case "fineeyedrops"
 					player\blinkEffect = 0.4
-					;BlinkEffectTimer = 70*Rand(30,40)
+					player\blinkEffectTimer = Rand(30,40)
 					player\bloodloss = Max(player\bloodloss-1.0, 0)
 					player\blurTimer = 200
 					RemoveItem(player\selectedItem)
@@ -1681,9 +1682,9 @@ Function UpdateInventory(player.Player)
 					strtemp = GetINIString2(iniStr, loc, "message")
 					If strtemp <> "" Then Msg = strtemp : MsgTimer = 70*6
 					
-					If GetINIInt2(iniStr, loc, "lethal") Then 
+					If GetINIInt2(iniStr, loc, "lethal") Or GetINIInt2(iniStr, loc, "deathtimer") Then 
 						DeathMSG = GetINIString2(iniStr, loc, "deathmessage")
-						Kill(player)
+						If GetINIInt2(iniStr, loc, "lethal") Then Kill(player)
 					EndIf
 					player\blurTimer = GetINIInt2(iniStr, loc, "blur")*70;*temp
 					player\injuries = Max(player\injuries + GetINIInt2(iniStr, loc, "damage"),0);*temp
@@ -1692,16 +1693,15 @@ Function UpdateInventory(player.Player)
 					If strtemp<>"" Then
 						PlaySound2 LoadTempSound(strtemp)
 					EndIf
-					;If GetINIInt2(iniStr, loc, "stomachache") Then ;TODO: fix
 					
 					;TODO: fix
 					;DeathTimer=GetINIInt2(iniStr, loc, "deathtimer")*70
 					
-					;BlinkEffect = (BlinkEffect + Float(GetINIString2(iniStr, loc, "blinkeffect", 1.0))*x2)/2.0
-					;BlinkEffectTimer = (BlinkEffectTimer + Float(GetINIString2(iniStr, loc, "blinkeffecttimer", 1.0))*x2)/2.0
+					player\blinkEffect = Float(GetINIString2(iniStr, loc, "blink effect", 1.0))*x2
+					player\blinkEffectTimer = Float(GetINIString2(iniStr, loc, "blink effect timer", 1.0))*x2
 					
-					;StaminaEffect = (StaminaEffect + Float(GetINIString2(iniStr, loc, "stamina effect", 1.0))*x2)/2.0
-					;StaminaEffectTimer = (StaminaEffectTimer + Float(GetINIString2(iniStr, loc, "staminaeffecttimer", 1.0))*x2)/2.0
+					player\staminaEffect = Float(GetINIString2(iniStr, loc, "stamina effect", 1.0))*x2
+					player\staminaEffectTimer = Float(GetINIString2(iniStr, loc, "stamina effect timer", 1.0))*x2
 					
 					strtemp = GetINIString2(iniStr, loc, "refusemessage")
 					If strtemp <> "" Then
