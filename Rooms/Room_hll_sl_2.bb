@@ -620,9 +620,9 @@ Function UpdateEvent_hll_sl_2(e.Events)
 	If mainPlayer\currRoom = e\room
 		e\EventState3 = UpdateLever(e\room\Levers[0])
 		If e\EventState3 = 1 Then
-			UpdateCheckpointMonitors(0)
+			;UpdateCheckpointMonitors(0)
 		Else
-			TurnCheckpointMonitorsOff(0)
+			;TurnCheckpointMonitorsOff(0)
 		EndIf
 	EndIf
 	

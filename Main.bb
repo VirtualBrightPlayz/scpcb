@@ -640,7 +640,7 @@ Function UpdateGame()
 				UpdateItems()
 				UpdateParticles()
 				UpdateScreens()
-				TimeCheckpointMonitors()
+				;TimeCheckpointMonitors()
 				UpdateLeave1499()
 			EndIf
 			
@@ -813,7 +813,7 @@ Function UpdateGame()
 				EndIf
 			Else If SelectedDifficulty\saveType = SAVEONSCREENS And (SelectedScreen<>Null Or SelectedMonitor<>Null)
 				If (Msg<>"Game progress saved." And Msg<>"You cannot save in this location."And Msg<>"You cannot save at this moment.") Or MsgTimer<=0 Then
-					Msg = "Press "+KeyName(keyBinds\save)+" to save."
+					Msg = "Press "+KeyName[keyBinds\save]+" to save."
 					MsgTimer = 70*4
 				EndIf
 				
