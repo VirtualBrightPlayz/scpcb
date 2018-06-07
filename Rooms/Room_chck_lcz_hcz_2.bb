@@ -28,17 +28,17 @@ Function FillRoom_chck_lcz_hcz_2(r.Rooms)
     TurnEntity(sc\CameraObj, 20, 0, 0)
     sc\ID = 5
     
-    r\Objects[2] = CopyEntity(Monitor2,r\obj)
-    ScaleEntity(r\Objects[2], 2.0, 2.0, 2.0)
-    PositionEntity (r\Objects[2], r\x - 152.0*RoomScale, 384.0*RoomScale, r\z+124.0*RoomScale, True)
-    RotateEntity (r\Objects[2],0,180,0)
-    EntityFX r\Objects[2],1
+    ;r\Objects[2] = CopyEntity(Monitor2,r\obj)
+    ;ScaleEntity(r\Objects[2], 2.0, 2.0, 2.0)
+    ;PositionEntity (r\Objects[2], r\x - 152.0*RoomScale, 384.0*RoomScale, r\z+124.0*RoomScale, True)
+    ;RotateEntity (r\Objects[2],0,180,0)
+    ;EntityFX r\Objects[2],1
     
-    r\Objects[3] = CopyEntity(Monitor2,r\obj)
-    ScaleEntity(r\Objects[3], 2.0, 2.0, 2.0)
-    PositionEntity (r\Objects[3], r\x - 152.0*RoomScale, 384.0*RoomScale, r\z-380.0*RoomScale, True)
-    RotateEntity (r\Objects[3],0,0,0)
-    EntityFX r\Objects[3],1
+    ;r\Objects[3] = CopyEntity(Monitor2,r\obj)
+    ;ScaleEntity(r\Objects[3], 2.0, 2.0, 2.0)
+    ;PositionEntity (r\Objects[3], r\x - 152.0*RoomScale, 384.0*RoomScale, r\z-380.0*RoomScale, True)
+    ;RotateEntity (r\Objects[3],0,0,0)
+    ;EntityFX r\Objects[3],1
     
     ;If MapTemp(Floor(r\x / 8.0),Floor(r\z /8.0)-1)=0 Then
     ;    CreateDoor(r\zone, r\x, 0, r\z  - 4.0, 0, r, 0, False, 0, "GEAR")

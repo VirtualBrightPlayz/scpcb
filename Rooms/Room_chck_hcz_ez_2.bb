@@ -19,17 +19,17 @@ Function FillRoom_chck_hcz_ez_2(r.Rooms)
     r\Objects[0] = CreatePivot(r\obj)
     PositionEntity (r\Objects[0], r\x - 720.0*RoomScale, 120.0*RoomScale, r\z+464.0*RoomScale, True)
     
-    r\Objects[2] = CopyEntity(Monitor3,r\obj)
-    ScaleEntity(r\Objects[2], 2.0, 2.0, 2.0)
-    PositionEntity (r\Objects[2], r\x + 152.0*RoomScale, 384.0*RoomScale, r\z+380.0*RoomScale, True)
-    RotateEntity (r\Objects[2],0,180,0)
-    EntityFX r\Objects[2],1
+    ;r\Objects[2] = CopyEntity(Monitor3,r\obj)
+    ;ScaleEntity(r\Objects[2], 2.0, 2.0, 2.0)
+    ;PositionEntity (r\Objects[2], r\x + 152.0*RoomScale, 384.0*RoomScale, r\z+380.0*RoomScale, True)
+    ;RotateEntity (r\Objects[2],0,180,0)
+    ;EntityFX r\Objects[2],1
     
-    r\Objects[3] = CopyEntity(Monitor3,r\obj)
-    ScaleEntity(r\Objects[3], 2.0, 2.0, 2.0)
-    PositionEntity (r\Objects[3], r\x + 152.0*RoomScale, 384.0*RoomScale, r\z-124.0*RoomScale, True)
-    RotateEntity (r\Objects[3],0,0,0)
-    EntityFX r\Objects[3],1
+    ;r\Objects[3] = CopyEntity(Monitor3,r\obj)
+    ;ScaleEntity(r\Objects[3], 2.0, 2.0, 2.0)
+    ;PositionEntity (r\Objects[3], r\x + 152.0*RoomScale, 384.0*RoomScale, r\z-124.0*RoomScale, True)
+    ;RotateEntity (r\Objects[3],0,0,0)
+    ;EntityFX r\Objects[3],1
     
     r\RoomDoors[0]\timer = 70 * 5
     r\RoomDoors[1]\timer = 70 * 5

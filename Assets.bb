@@ -323,24 +323,6 @@ Function LoadEntities()
 	LeverOBJ = LoadMesh("GFX/map/leverhandle.x")
 	HideEntity LeverOBJ
 	
-	;For i = 0 To 1
-	;	HideEntity BigDoorOBJ(i)
-	;	;If BumpEnabled And 0 Then
-	;	If BumpEnabled
-	;		
-	;		Local bumptex = LoadTexture("GFX/map/containmentdoorsbump.jpg")
-	;		;TextureBlend bumptex, FE_BUMP
-	;		Local tex = LoadTexture("GFX/map/containment_doors.jpg")	
-	;		EntityTexture BigDoorOBJ(i), bumptex, 0, 0
-	;		EntityTexture BigDoorOBJ(i), tex, 0, 1
-	;		
-	;		;FreeEntity tex
-	;		;FreeEntity bumptex
-	;		FreeTexture tex
-	;		FreeTexture bumptex
-	;	EndIf
-	;Next
-	
 	DrawLoading(15)
 	
 	For i = 0 To 5
@@ -379,52 +361,6 @@ Function LoadEntities()
 	HideEntity(CamBaseOBJ)
 	CamOBJ = LoadMesh("GFX/map/CamHead.b3d")
 	HideEntity(CamOBJ)
-	
-	Monitor2 = LoadMesh("GFX/map/monitor_checkpoint.b3d")
-	HideEntity Monitor2
-	Monitor3 = LoadMesh("GFX/map/monitor_checkpoint.b3d")
-	HideEntity Monitor3
-	MonitorTexture2 = LoadTexture("GFX/map/LockdownScreen2.jpg")
-	MonitorTexture3 = LoadTexture("GFX/map/LockdownScreen.jpg")
-	MonitorTexture4 = LoadTexture("GFX/map/LockdownScreen3.jpg")
-	MonitorTextureOff = CreateTexture(1,1)
-	SetBuffer TextureBuffer(MonitorTextureOff)
-	ClsColor 0,0,0
-	Cls
-	SetBuffer BackBuffer()
-	
-	For i = 2 To CountSurfaces(Monitor2)
-		sf = GetSurface(Monitor2,i)
-		b = GetSurfaceBrush(sf)
-		If b<>0 Then
-			t1 = GetBrushTexture(b,0)
-			If t1<>0 Then
-				name$ = StripPath(TextureName(t1))
-				If Lower(name) <> "monitortexture.jpg"
-					BrushTexture b, MonitorTextureOff, 0, 0
-					PaintSurface sf,b
-				EndIf
-				If name<>"" Then FreeTexture t1
-			EndIf
-			FreeBrush b
-		EndIf
-	Next
-	For i = 2 To CountSurfaces(Monitor3)
-		sf = GetSurface(Monitor3,i)
-		b = GetSurfaceBrush(sf)
-		If b<>0 Then
-			t1 = GetBrushTexture(b,0)
-			If t1<>0 Then
-				name$ = StripPath(TextureName(t1))
-				If Lower(name) <> "monitortexture.jpg"
-					BrushTexture b, MonitorTextureOff, 0, 0
-					PaintSurface sf,b
-				EndIf
-				If name<>"" Then FreeTexture t1
-			EndIf
-			FreeBrush b
-		EndIf
-	Next
 	
 	InitItemTemplates()
 	

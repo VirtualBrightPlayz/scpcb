@@ -250,7 +250,7 @@ Global ElevatorBeepSFX.MarkedForRemoval
 Global ElevatorMoveSFX.MarkedForRemoval
 
 ;TODO: More Audio.bb
-Global AmbientSFXCHN.MarkedForRemoval, CurrAmbientSFX%
+Global AmbientSFXCHN.MarkedForRemoval, CurrAmbientSFX.MarkedForRemoval
 
 Global HeartBeatSFX.MarkedForRemoval
 
@@ -265,8 +265,8 @@ Global NTF_1499EnterSFX.MarkedForRemoval
 Global NTF_1499LeaveSFX.MarkedForRemoval
 
 ;TODO: Not be globals.
-Global Monitor2, Monitor3, MonitorTexture2, MonitorTexture3, MonitorTexture4, MonitorTextureOff
-Global MonitorTimer#, MonitorTimer2#
+Global Monitor2.MarkedForRemoval, Monitor3.MarkedForRemoval, MonitorTexture2.MarkedForRemoval, MonitorTexture3.MarkedForRemoval, MonitorTexture4.MarkedForRemoval, MonitorTextureOff.MarkedForRemoval
+Global MonitorTimer.MarkedForRemoval, MonitorTimer2.MarkedForRemoval
 Global UpdateCheckpoint1.MarkedForRemoval, UpdateCheckpoint2.MarkedForRemoval
 
 ;TODO: die
@@ -463,9 +463,6 @@ Function InitializeMainGame()
 	room2gw_brokendoor% = False
 	room2gw_x# = 0.0
 	room2gw_z# = 0.0
-	
-	MonitorTimer# = 0.0
-	MonitorTimer2# = 0.0
 	
 	;TODO: cleanup
 	Panel294 = LoadImage("GFX/294panel.jpg")
