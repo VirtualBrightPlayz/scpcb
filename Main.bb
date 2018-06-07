@@ -1633,7 +1633,7 @@ Function UpdatePauseMenu()
 				RuntimeError "REIMPLEMENT"
 				NullGame()
 				CurrGameState = GAMESTATE_MAINMENU
-				MainMenuTab = 0
+				CurrGameSubstate = GAMESUBSTATE_MAINMENU_MAIN
 				CurrSave = ""
 				FlushKeys()
 			EndIf
