@@ -460,21 +460,21 @@ Function CreateItem.Items(name$, tempname$, x#, y#, z#, r%=0,g%=0,b%=0,a#=1.0,in
 		i\b=b
 		i\a=a
 		
-		Local liquid = CopyEntity(LiquidObj)
-		ScaleEntity liquid, i\itemtemplate\scale,i\itemtemplate\scale,i\itemtemplate\scale,True
-		PositionEntity liquid, EntityX(i\collider,True),EntityY(i\collider,True),EntityZ(i\collider,True)
-		EntityParent liquid, i\model
-		EntityColor liquid, r,g,b
+		;TODO: re-implement.
+		;Local liquid = CopyEntity(LiquidObj)
+		;ScaleEntity liquid, i\itemtemplate\scale,i\itemtemplate\scale,i\itemtemplate\scale,True
+		;PositionEntity liquid, EntityX(i\collider,True),EntityY(i\collider,True),EntityZ(i\collider,True)
+		;EntityParent liquid, i\model
+		;EntityColor liquid, r,g,b
 		
-		If a < 0 Then 
-			EntityFX liquid, 1
-			EntityAlpha liquid, Abs(a)
-		Else
-			EntityAlpha liquid, Abs(a)
-		EndIf
+		;If a < 0 Then 
+		;	EntityFX liquid, 1
+		;	EntityAlpha liquid, Abs(a)
+		;Else
+		;	EntityAlpha liquid, Abs(a)
+		;EndIf
 		
-		
-		EntityShininess liquid, 1.0
+		;EntityShininess liquid, 1.0
 	EndIf
 	
 	i\invimg = i\itemtemplate\invimg

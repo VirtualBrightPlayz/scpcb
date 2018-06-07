@@ -74,17 +74,17 @@ Function GrabMesh%(filePath$)
 	Return GrabAsset(filePath, ASSET_MESH)
 End Function
 
-Function DropAsset(filePath$)
+Function DropAsset(obj%)
 	Local as.AssetWrap
 	For as = Each AssetWrap
-		If (filePath = as\file) Then
+		If (obj = as\intVal) Then
 			as\grabCount = as\grabCount - 1
 			Return
 		EndIf
 	Next
 
 	;TODO: Maybe not make this crash the game later?
-	RuntimeError("Attempted to drop non-existant asset: " + filePath)
+	RuntimeError("Attempted to drop non-existant asset.")
 End Function
 
 Function UpdateAssets()
@@ -250,35 +250,8 @@ Function LoadEntities()
 	DrawLoading(5)
 	TeslaTexture = LoadTexture("GFX/map/Textures/tesla.jpg", 1+2)
 	
-	LiquidObj = LoadMesh("GFX/items/cupliquid.x") ;optimized the cups dispensed by 294
-	HideEntity LiquidObj
-	
 	MTFObj = LoadAnimMesh("GFX/npcs/MTF2.b3d") ;optimized MTFs
 	;GuardTex = LoadTexture("GFX/npcs/body.jpg") ;optimized the guards even more
-	
-	;If BumpEnabled Then
-	;	bump1 = LoadTexture("GFX/npcs/mtf_newnormal01.png")
-	;	;TextureBlend bump1, FE_BUMP ;USE DOT3
-	;		
-	;	For i = 2 To CountSurfaces(MTFObj)
-	;		sf = GetSurface(MTFObj,i)
-	;		b = GetSurfaceBrush( sf )
-	;		t1 = GetBrushTexture(b,0)
-	;		
-	;		Select Lower(StripPath(TextureName(t1)))
-	;			Case "MTF_newdiffuse02.png"
-	;				
-	;				BrushTexture b, bump1, 0, 0
-	;				BrushTexture b, t1, 0, 1
-	;				PaintSurface sf,b
-	;		End Select
-	;		FreeBrush b
-	;		FreeTexture t1
-	;	Next
-	;	FreeTexture bump1	
-	;EndIf
-	
-	
 	
 	ClassDObj = LoadAnimMesh("GFX/npcs/classd.b3d") ;optimized Class-D's and scientists/researchers
 	
@@ -291,21 +264,11 @@ Function LoadEntities()
 	
 	DrawLoading(10)
 	
-	DoorOBJ = LoadMesh("GFX/map/door01.x")
-	HideEntity DoorOBJ
-	DoorFrameOBJ = LoadMesh("GFX/map/doorframe.x")
-	HideEntity DoorFrameOBJ
-	
 	HeavyDoorObj(0) = LoadMesh("GFX/map/heavydoor1.x")
 	HideEntity HeavyDoorObj(0)
 	HeavyDoorObj(1) = LoadMesh("GFX/map/heavydoor2.x")
 	HideEntity HeavyDoorObj(1)
 	
-	DoorColl = LoadMesh("GFX/map/doorcoll.x")
-	HideEntity DoorColl
-	
-	ButtonOBJ = LoadMesh("GFX/map/Button.x")
-	HideEntity ButtonOBJ
 	ButtonKeyOBJ = LoadMesh("GFX/map/ButtonKeycard.x")
 	HideEntity ButtonKeyOBJ
 	ButtonCodeOBJ = LoadMesh("GFX/map/ButtonCode.x")

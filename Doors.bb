@@ -36,6 +36,12 @@ Dim HeavyDoorObj(2)
 Function CreateDoor.Doors(lvl, x#, y#, z#, angle#, room.Rooms, dopen% = False,  big% = False, keycard% = False, code$="")
 	Local d.Doors, parent, i%
 	If room <> Null Then parent = room\obj
+
+	;Some dirs.
+	Local doorObj%      = GrabMesh("GFX/Map/Meshes/door.b3d")
+	Local doorFrameObj% = GrabMesh("GFX/Map/Meshes/doorframe.b3d")
+	Local doorColl%     = GrabMesh("GFX/Map/Meshes/doorcoll.b3d")
+	Local buttonObj%    = GrabMesh("GFX/Map/Meshes/button.b3d")
 	
 	d.Doors = New Doors
 	If big=1 Then
@@ -44,7 +50,7 @@ Function CreateDoor.Doors(lvl, x#, y#, z#, angle#, room.Rooms, dopen% = False,  
 		d\obj2 = CopyEntity(BigDoorOBJ(1))
 		ScaleEntity(d\obj2, 55 * RoomScale, 55 * RoomScale, 55 * RoomScale)
 		
-		d\frameobj = CopyEntity(DoorColl)	;CopyMesh				
+		d\frameobj = CopyEntity(doorColl)				
 		ScaleEntity(d\frameobj, RoomScale, RoomScale, RoomScale)
 		EntityType d\frameobj, HIT_MAP
 		EntityAlpha d\frameobj, 0.0
@@ -54,13 +60,13 @@ Function CreateDoor.Doors(lvl, x#, y#, z#, angle#, room.Rooms, dopen% = False,  
 		d\obj2 = CopyEntity(HeavyDoorObj(1))
 		ScaleEntity(d\obj2, RoomScale, RoomScale, RoomScale)
 		
-		d\frameobj = CopyEntity(DoorFrameOBJ)
+		d\frameobj = CopyEntity(doorFrameObj)
 	Else
-		d\obj = CopyEntity(DoorOBJ)
+		d\obj = CopyEntity(doorObj)
 		ScaleEntity(d\obj, (204.0 * RoomScale) / MeshWidth(d\obj), 312.0 * RoomScale / MeshHeight(d\obj), 16.0 * RoomScale / MeshDepth(d\obj))
 		
-		d\frameobj = CopyEntity(DoorFrameOBJ)
-		d\obj2 = CopyEntity(DoorOBJ)
+		d\frameobj = CopyEntity(doorFrameObj)
+		d\obj2 = CopyEntity(doorObj)
 		
 		ScaleEntity(d\obj2, (204.0 * RoomScale) / MeshWidth(d\obj), 312.0 * RoomScale / MeshHeight(d\obj), 16.0 * RoomScale / MeshDepth(d\obj))
 		;entityType d\obj2, HIT_MAP
@@ -91,7 +97,7 @@ Function CreateDoor.Doors(lvl, x#, y#, z#, angle#, room.Rooms, dopen% = False,  
 			ElseIf keycard<0
 				d\buttons[i]= CopyEntity(ButtonScannerOBJ)	
 			Else
-				d\buttons[i] = CopyEntity(ButtonOBJ)
+				d\buttons[i] = CopyEntity(buttonObj)
 			End If
 		EndIf
 		
@@ -148,20 +154,27 @@ Function CreateDoor.Doors(lvl, x#, y#, z#, angle#, room.Rooms, dopen% = False,  
 	d\room=room
 	
 	d\MTFClose = True
+
+	DropAsset(doorObj)     ;Bust his nut.
+	DropAsset(doorFrameObj);Bust his nut!!!
+	DropAsset(doorColl)    ;BUST HIS NUT!!!
+	DropAsset(buttonObj)   ;B U S T  H I S  N U T  ! ! !
 	
 	Return d
 	
 End Function
 
 Function CreateButton(x#,y#,z#, pitch#,yaw#,roll#=0)
-	Local obj = CopyEntity(ButtonOBJ)	
+	Local buttonObj% = GrabMesh("GFX/Map/Meshes/button.b3d")
+	Local obj% = CopyMesh(buttonObj)
+	DropAsset(buttonObj)
 	
 	ScaleEntity(obj, 0.03, 0.03, 0.03)
 	
 	PositionEntity obj, x,y,z
 	RotateEntity obj, pitch,yaw,roll
 	
-	EntityPickMode(obj, 2)	
+	EntityPickMode(obj, 2)
 	
 	Return obj
 End Function

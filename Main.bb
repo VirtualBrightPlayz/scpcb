@@ -324,25 +324,25 @@ Global StaminaMeterIMG.MarkedForRemoval
 Global KeypadHUD.MarkedForRemoval
 
 ;TODO: cleanup
-Global Panel294
+Global Panel294.MarkedForRemoval
 Global Using294.MarkedForRemoval
 Global Input294$
 
 ;TODO: Assets.bb
 Global TeslaTexture%
 
-Global DoorOBJ%, DoorFrameOBJ%
+Global DoorOBJ.MarkedForRemoval, DoorFrameOBJ.MarkedForRemoval
 
 Global LeverOBJ%, LeverBaseOBJ%
 
-Global DoorColl%
-Global ButtonOBJ%, ButtonKeyOBJ%, ButtonCodeOBJ%, ButtonScannerOBJ%
+Global DoorColl.MarkedForRemoval
+Global ButtonOBJ.MarkedForRemoval, ButtonKeyOBJ%, ButtonCodeOBJ%, ButtonScannerOBJ%
 
 Global Monitor%, MonitorTexture%
 Global CamBaseOBJ%, CamOBJ%
 
-Global LiquidObj%,MTFObj%,ClassDObj%
-Global ApacheObj.MarkedForRemoval,ApacheRotorObj.MarkedForRemoval
+Global LiquidObj.MarkedForRemoval, MTFObj%, ClassDObj%
+Global ApacheObj.MarkedForRemoval, ApacheRotorObj.MarkedForRemoval
 
 Global UnableToMove.MarkedForRemoval
 
@@ -1105,6 +1105,7 @@ Function UpdateGUI()
 		mainPlayer\selectedItem = Null
 		
 		If shouldDrawHUD Then
+			Local buttonObj% = GrabMesh("GFX/Map/Meshes/Button.b3d")
 			pvt = CreatePivot()
 			PositionEntity pvt, EntityX(mainPlayer\closestButton,True),EntityY(mainPlayer\closestButton,True),EntityZ(mainPlayer\closestButton,True)
 			RotateEntity pvt, 0, EntityYaw(mainPlayer\closestButton,True)-180,0
@@ -1113,13 +1114,15 @@ Function UpdateGUI()
 			PointEntity mainPlayer\head, mainPlayer\closestButton
 			FreeEntity pvt
 			
-			CameraProject(mainPlayer\cam, EntityX(mainPlayer\closestButton,True),EntityY(mainPlayer\closestButton,True)+MeshHeight(ButtonOBJ)*0.015,EntityZ(mainPlayer\closestButton,True))
+			CameraProject(mainPlayer\cam, EntityX(mainPlayer\closestButton,True),EntityY(mainPlayer\closestButton,True)+MeshHeight(buttonObj)*0.015,EntityZ(mainPlayer\closestButton,True))
 			projY# = ProjectedY()
-			CameraProject(mainPlayer\cam, EntityX(mainPlayer\closestButton,True),EntityY(mainPlayer\closestButton,True)-MeshHeight(ButtonOBJ)*0.015,EntityZ(mainPlayer\closestButton,True))
+			CameraProject(mainPlayer\cam, EntityX(mainPlayer\closestButton,True),EntityY(mainPlayer\closestButton,True)-MeshHeight(buttonObj)*0.015,EntityZ(mainPlayer\closestButton,True))
 			scale# = (ProjectedY()-projy)/462.0
 			
 			x = userOptions\screenWidth/2-ImageWidth(uiAssets\keypadHUD)*scale/2
-			y = userOptions\screenHeight/2-ImageHeight(uiAssets\keypadHUD)*scale/2		
+			y = userOptions\screenHeight/2-ImageHeight(uiAssets\keypadHUD)*scale/2
+
+			DropAsset(buttonObj)
 			
 			SetFont uiAssets\font[2]
 			If KeypadMSG <> "" Then 
@@ -1407,6 +1410,7 @@ Function DrawGUI()
 		mainPlayer\selectedItem = Null
 		
 		If shouldDrawHUD Then
+			Local buttonObj% = GrabMesh("GFX/Map/Meshes/Button.b3d")
 			pvt = CreatePivot()
 			PositionEntity pvt, EntityX(mainPlayer\closestButton,True),EntityY(mainPlayer\closestButton,True),EntityZ(mainPlayer\closestButton,True)
 			RotateEntity pvt, 0, EntityYaw(mainPlayer\closestButton,True)-180,0
@@ -1415,13 +1419,15 @@ Function DrawGUI()
 			PointEntity mainPlayer\head, mainPlayer\closestButton
 			FreeEntity pvt
 			
-			CameraProject(mainPlayer\cam, EntityX(mainPlayer\closestButton,True),EntityY(mainPlayer\closestButton,True)+MeshHeight(ButtonOBJ)*0.015,EntityZ(mainPlayer\closestButton,True))
+			CameraProject(mainPlayer\cam, EntityX(mainPlayer\closestButton,True),EntityY(mainPlayer\closestButton,True)+MeshHeight(buttonObj)*0.015,EntityZ(mainPlayer\closestButton,True))
 			projY# = ProjectedY()
-			CameraProject(mainPlayer\cam, EntityX(mainPlayer\closestButton,True),EntityY(mainPlayer\closestButton,True)-MeshHeight(ButtonOBJ)*0.015,EntityZ(mainPlayer\closestButton,True))
+			CameraProject(mainPlayer\cam, EntityX(mainPlayer\closestButton,True),EntityY(mainPlayer\closestButton,True)-MeshHeight(buttonObj)*0.015,EntityZ(mainPlayer\closestButton,True))
 			scale# = (ProjectedY()-projy)/462.0
 			
 			x = userOptions\screenWidth/2-ImageWidth(uiAssets\keypadHUD)*scale/2
-			y = userOptions\screenHeight/2-ImageHeight(uiAssets\keypadHUD)*scale/2		
+			y = userOptions\screenHeight/2-ImageHeight(uiAssets\keypadHUD)*scale/2
+
+			DropAsset(buttonObj)
 			
 			SetFont uiAssets\font[2]
 			If KeypadMSG = "" Then
