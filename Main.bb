@@ -278,7 +278,7 @@ Global PrevInjuries#,PrevBloodloss#
 Global NoTarget%
 
 ;TODO: Assets.bb
-Global NVGImages
+Global NVGImages.MarkedForRemoval
 
 Global AmbientLightRoomTex%, AmbientLightRoomVal%
 
@@ -450,8 +450,8 @@ Function InitializeMainGame()
 	DrawLoading(30, True)
 	
 	;TODO: Assets.bb
-	NVGImages = LoadAnimImage("GFX/battery.png",64,64,0,2)
-	MaskImage NVGImages,255,0,255
+	;NVGImages = LoadAnimImage("GFX/battery.png",64,64,0,2)
+	;MaskImage NVGImages,255,0,255
 	
 	;TODO: Die.
 	InFacility% = True
@@ -465,8 +465,8 @@ Function InitializeMainGame()
 	room2gw_z# = 0.0
 	
 	;TODO: cleanup
-	Panel294 = LoadImage("GFX/294panel.jpg")
-	MaskImage(Panel294, 255,0,255)
+	;Panel294 = LoadImage("GFX/294panel.jpg")
+	;MaskImage(Panel294, 255,0,255)
 	
 	DrawLoading(40,True)
 	
@@ -1591,8 +1591,12 @@ Function UpdatePauseMenu()
 			;If UpdateUIButton(x, y, 390*MenuScale, 60*MenuScale, "Options") Then OptionsMenu = 1 ;TODO: fix
 			y = y + 75*MenuScale
 			If UpdateUIButton(x, y, 390*MenuScale, 60*MenuScale, "Quit") Then
-				RuntimeError "REIMPLEMENT"
-				;QuitMSG = 1
+				;TODO: ask for saving
+				NullGame()
+				CurrGameState = GAMESTATE_MAINMENU
+				CurrGameSubstate = GAMESUBSTATE_MAINMENU_MAIN
+				CurrSave = ""
+				FlushKeys()
 			EndIf
 		Else
 			y = y+104*MenuScale
@@ -1634,10 +1638,9 @@ Function UpdatePauseMenu()
 				EndIf
 			EndIf
 			If UpdateUIButton(x, y + 80*MenuScale, 390*MenuScale, 60*MenuScale, "Quit to Menu") Then
-				RuntimeError "REIMPLEMENT"
 				NullGame()
 				CurrGameState = GAMESTATE_MAINMENU
-				MainMenuTab = 0
+				CurrGameSubstate = GAMESUBSTATE_MAINMENU_MAIN
 				CurrSave = ""
 				FlushKeys()
 			EndIf
@@ -2066,7 +2069,7 @@ Function RenderWorld2()
 			For l=0 To Floor((power%+50)*0.01)
 				Rect 45,userOptions\screenHeight*0.5-(l*20),54,10,True
 			Next
-			DrawImage NVGImages,40,userOptions\screenHeight*0.5+30,1
+			;DrawImage NVGImages,40,userOptions\screenHeight*0.5+30,1
 			
 			Color 255,255,255
 		ElseIf IsPlayerWearingTempName(mainPlayer,"nvgoggles") And hasBattery<>0 Then
@@ -2078,7 +2081,7 @@ Function RenderWorld2()
 			For l=0 To Floor((power%+50)*0.01)
 				Rect 45,userOptions\screenHeight*0.5-(l*20),54,10,True
 			Next
-			DrawImage NVGImages,40,userOptions\screenHeight*0.5+30,0
+			;DrawImage NVGImages,40,userOptions\screenHeight*0.5+30,0
 		EndIf
 	EndIf
 	
