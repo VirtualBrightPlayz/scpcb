@@ -5,7 +5,7 @@ Function InitializeKeyName()
 	KeyName[1]="Esc"
 	Local i%
 	For i = 2 To 10
-		KeyName(i)=i-1
+		KeyName[i]=i-1
 	Next
 	KeyName[11]="0"
 	KeyName[12]="-"
@@ -69,3 +69,6 @@ Function InitializeKeyName()
 	KeyName[205]="Right"
 	KeyName[208]="Down"
 End Function
+
+;~IDEal Editor Parameters:
+;~C#Blitz3D

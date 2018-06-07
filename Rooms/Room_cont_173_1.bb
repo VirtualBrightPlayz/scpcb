@@ -119,7 +119,7 @@ Function UpdateEventAlarm(e.Events)
 			;CameraFogRange(mainPlayer\cam, mainPlayer\camFogNear, mainPlayer\camFogFar)
 			CameraFogMode(mainPlayer\cam, 1)
 			If SelectedDifficulty\saveType = SAVEANYWHERE Then
-				Msg = "Press "+KeyName(keyBinds\save)+" to save."
+				Msg = "Press "+KeyName[keyBinds\save]+" to save."
 				MsgTimer = 70*4
 			ElseIf SelectedDifficulty\saveType = SAVEONSCREENS Then
 				Msg = "Saving is only permitted on clickable monitors scattered throughout the facility."
@@ -271,7 +271,7 @@ Function UpdateEventAlarm(e.Events)
 								
 								PositionEntity Curr173\collider, 0,0,0
 								ResetEntity Curr173\collider
-								Msg = "Hold "+KeyName(keyBinds\sprint)+" to run."
+								Msg = "Hold "+KeyName[keyBinds\sprint]+" to run."
 								MsgTimer = 70*8
 							EndIf
 						EndIf

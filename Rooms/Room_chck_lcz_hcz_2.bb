@@ -116,13 +116,13 @@ Function UpdateEventCheckpoint(e.Events)
 			If e2\EventName = "008"
 				If e2\EventState = 2
 					If e\room\RoomDoors[0]\locked
-						TurnCheckpointMonitorsOff(1)
+						;TurnCheckpointMonitorsOff(1)
 						e\room\RoomDoors[0]\locked = False
 						e\room\RoomDoors[1]\locked = False
 					EndIf
 				Else
 					If e\room\dist < 12
-						UpdateCheckpointMonitors(1)
+						;UpdateCheckpointMonitors(1)
 						e\room\RoomDoors[0]\locked = True
 						e\room\RoomDoors[1]\locked = True
 					EndIf
@@ -134,13 +134,13 @@ Function UpdateEventCheckpoint(e.Events)
 			If e2\EventName = "room2sl"
 				If e2\EventState3 = 0
 					If e\room\dist < 12
-						TurnCheckpointMonitorsOff(0)
+						;TurnCheckpointMonitorsOff(0)
 						e\room\RoomDoors[0]\locked = False
 						e\room\RoomDoors[1]\locked = False
 					EndIf
 				Else
 					If e\room\dist < 12
-						UpdateCheckpointMonitors(0)
+						;UpdateCheckpointMonitors(0)
 						e\room\RoomDoors[0]\locked = True
 						e\room\RoomDoors[1]\locked = True
 					EndIf
