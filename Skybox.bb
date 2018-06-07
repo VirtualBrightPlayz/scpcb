@@ -4,12 +4,15 @@ Function sky_CreateSky(filename$,parent%=0)
 
 	Restore sky_SkyboxData
 	sky = CreateMesh(parent)
+	Local face%
 	For face = 1 To 6
 		Read direction$
 		Local fname$ = filename$ + direction$ + ".jpg"
 		If FileType(fname$)=1
-			Local b = LoadBrush(fname$,%110001)
-			s = CreateSurface(sky,b)
+			Local b% = LoadBrush(fname$,%110001)
+			Local s% = CreateSurface(sky,b)
+			
+			Local vert%
 			For vert = 1 To 4
 				Read x,y,z,u,v
 				AddVertex s,x,y,z,u,v
@@ -69,3 +72,5 @@ Data -1,-1,-1,1,0
 Data +1,-1,-1,1,1
 Data +1,-1,+1,0,1
 Data -1,-1,+1,0,0
+;~IDEal Editor Parameters:
+;~C#Blitz3D
