@@ -72,6 +72,7 @@ Const MAXSAVEDMAPS = 20
 Dim SavedMaps$(MAXSAVEDMAPS)
 Global SelectedMap$
 
+Include "Menus/Launcher.bb"
 Include "Menus/MainMenu.bb"
 
 Function DrawTiledImageRect(img%, srcX%, srcY%, srcwidth#, srcheight#, x%, y%, width%, height%)
