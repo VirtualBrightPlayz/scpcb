@@ -43,7 +43,7 @@ End Type
 
 Function CreateLever.Lever()
     Local leverObj% = GrabMesh("GFX/Map/Meshes/leverhandle.b3d")
-    Local leverBaseObj = GrabMesh("GFX/Map/Meshes/leverbase.b3d")
+    Local leverBaseObj% = GrabMesh("GFX/Map/Meshes/leverbase.b3d")
 
     Local lever.Lever = New Lever
     lever\obj = CopyEntity(leverObj)
