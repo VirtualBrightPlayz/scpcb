@@ -29,10 +29,7 @@ Function FillRoom_cont_035_1(r.Rooms)
     d\LinkedDoor = d2 : d2\LinkedDoor = d
     
     For i = 0 To 1
-        r\Objects[i*2] = CopyEntity(LeverBaseOBJ)
-        r\Objects[i*2+1] = CopyEntity(LeverOBJ)
-        
-        r\Levers[i] = r\Objects[i*2+1]
+        r\Levers[i] = CreateLever()
         
         For n% = 0 To 1
             ScaleEntity(r\Objects[i*2+n], 0.04, 0.04, 0.04)
@@ -41,11 +38,11 @@ Function FillRoom_cont_035_1(r.Rooms)
             EntityParent(r\Objects[i*2+n], r\obj)
         Next
         
-        RotateEntity(r\Objects[i*2], 0, -90-180, 0)
-        RotateEntity(r\Objects[i*2+1], -80, -90, 0)
+        RotateEntity(r\Levers[i]\baseObj, 0, -90-180, 0)
+        RotateEntity(r\Levers[i]\obj, -80, -90, 0)
         
-        EntityPickMode r\Objects[i*2+1], 1, False
-        EntityRadius r\Objects[i*2+1], 0.1				
+        EntityPickMode r\Levers[i]\obj, 1, False
+        EntityRadius r\Levers[i]\obj, 0.1				
     Next
     
     ;the control room
@@ -162,9 +159,13 @@ Function UpdateEvent_cont_035_1(e.Events)
 				If e\room\RoomDoors[3]\open Then e\EventState2 = Max(e\EventState2, 1)
 				
 				;the door is closed
-				If UpdateLever(e\room\Levers[0],(e\EventState2=20)) = 0 Then
+				If (e\EventState2 = 20) Then
+					e\room\Levers[0]\succ = True
+				EndIf
+
+				If (Not e\room\Levers[0]\succ) Then
 					;the gas valves are open
-					temp = UpdateLever(e\room\Levers[1],False)
+					temp = e\room\Levers[1]\succ
 					If temp Or (e\EventState3>25*70 And e\EventState3<50*70) Then 
 						If temp Then 
 							PositionEntity(e\room\Objects[5], EntityX(e\room\Objects[5],True), 424.0*RoomScale, EntityZ(e\room\Objects[5],True),True)
@@ -425,7 +426,7 @@ Function UpdateEvent_cont_035_1(e.Events)
 			
 		Else ;eventstate < 0 (SCP-035 has left)
 			
-			If UpdateLever(e\room\Levers[1],False) Then 
+			If (e\room\Levers[1]\succ) Then 
 				PositionEntity(e\room\Objects[5], EntityX(e\room\Objects[5],True), 424.0*RoomScale, EntityZ(e\room\Objects[5],True),True)
 				PositionEntity(e\room\Objects[6], EntityX(e\room\Objects[6],True), 424.0*RoomScale, EntityZ(e\room\Objects[6],True),True)
 			Else
@@ -433,7 +434,7 @@ Function UpdateEvent_cont_035_1(e.Events)
 				PositionEntity(e\room\Objects[6], EntityX(e\room\Objects[6],True), 10, EntityZ(e\room\Objects[6],True),True)
 			EndIf
 			
-			;If UpdateLever(e\room\Levers[0]) Then
+			;If (e\room\Levers[0]\succ) Then
 			;	If e\room\RoomDoors[0]\open = True Then UseDoor(e\room\RoomDoors[1])
 			;Else
 			;	If e\room\RoomDoors[0]\open = False Then UseDoor(e\room\RoomDoors[1])

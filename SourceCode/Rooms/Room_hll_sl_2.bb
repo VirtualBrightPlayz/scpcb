@@ -78,11 +78,8 @@ Function FillRoom_hll_sl_2(r.Rooms)
     sc\SpecialCam = True
     
     ;-49.0 689.0 912.0
-    ;Objects [18],[19]
-    r\Objects[9 * 2] = CopyEntity(LeverBaseOBJ)
-    r\Objects[9 * 2 + 1] = CopyEntity(LeverOBJ)
     
-    r\Levers[0] = r\Objects[9 * 2 + 1]
+    r\Levers[0] = CreateLever()
     
     For  i% = 0 To 1
         ScaleEntity(r\Objects[9 * 2 + i], 0.04, 0.04, 0.04)
@@ -90,11 +87,11 @@ Function FillRoom_hll_sl_2(r.Rooms)
         
         EntityParent(r\Objects[9 * 2 + i], r\obj)
     Next
-    RotateEntity(r\Objects[9 * 2], 0, 0, 0)
-    RotateEntity(r\Objects[9 * 2 + 1], 10, 0 - 180, 0)
+    RotateEntity(r\Levers[0]\baseObj, 0, 0, 0)
+    RotateEntity(r\Levers[0]\obj, 10, 0 - 180, 0)
         
-    EntityPickMode r\Objects[9 * 2 + 1], 1, False
-    EntityRadius r\Objects[9 * 2 + 1], 0.1
+    EntityPickMode r\Levers[0]\obj, 1, False
+    EntityRadius r\Levers[0]\obj, 0.1
     
     ;Camera in the room itself
     sc.SecurityCams = CreateSecurityCam(r\x-159.0*RoomScale, r\y+384.0*RoomScale, r\z-929.0*RoomScale, r, True)
@@ -107,9 +104,6 @@ Function FillRoom_hll_sl_2(r.Rooms)
     PositionEntity(sc\ScrObj, r\x-231.489*RoomScale, r\y+760.0*RoomScale, r\z+255.744*RoomScale)
     TurnEntity(sc\ScrObj, 0, 90, 0)
     EntityParent(sc\ScrObj, r\obj)
-    
-    r\Objects[20] = CopyEntity(LeverBaseOBJ)
-    r\Objects[21] = CopyEntity(LeverOBJ)
     
     For  i% = 0 To 1
         ScaleEntity(r\Objects[20 + i], 0.04, 0.04, 0.04)
@@ -618,7 +612,7 @@ Function UpdateEvent_hll_sl_2(e.Events)
 	
 	;Lever for checkpoint locking (might have a function in the future for the case if the checkpoint needs to be locked again)
 	If mainPlayer\currRoom = e\room
-		e\EventState3 = UpdateLever(e\room\Levers[0])
+		e\EventState3 = e\room\Levers[0]\succ
 		If e\EventState3 = 1 Then
 			;UpdateCheckpointMonitors(0)
 		Else

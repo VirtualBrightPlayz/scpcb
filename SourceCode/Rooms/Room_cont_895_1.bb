@@ -21,11 +21,8 @@ Function FillRoom_cont_895_1(r.Rooms)
     PositionEntity(sc\ScrObj, r\x - 800 * RoomScale, 288.0 * RoomScale, r\z - 340.0 * RoomScale)
     EntityParent(sc\ScrObj, r\obj)
     TurnEntity(sc\ScrObj, 0, 180, 0)
-    
-    r\Objects[2] = CopyEntity(LeverBaseOBJ)
-    r\Objects[3] = CopyEntity(LeverOBJ)
         
-    r\Levers[0] = r\Objects[3]
+    r\Levers[0] = CreateLever()
         
     For i% = 0 To 1
         ScaleEntity(r\Objects[2 + i], 0.04, 0.04, 0.04)
@@ -33,11 +30,11 @@ Function FillRoom_cont_895_1(r.Rooms)
             
         EntityParent(r\Objects[2 + i], r\obj)
     Next
-    RotateEntity(r\Objects[2], 0, 180, 0)
-    RotateEntity(r\Objects[3], 10, 0, 0)
+    RotateEntity(r\Levers[0]\baseObj, 0, 180, 0)
+    RotateEntity(r\Levers[0]\obj, 10, 0, 0)
     
-    EntityPickMode r\Objects[3], 1, False
-    EntityRadius r\Objects[3], 0.1
+    EntityPickMode r\Levers[0]\obj, 1, False
+    EntityRadius r\Levers[0]\obj, 0.1
     
     r\Objects[0] = CreatePivot()
     PositionEntity(r\Objects[0], r\x, -1320.0 * RoomScale, r\z + 2304.0 * RoomScale)
@@ -91,7 +88,7 @@ Function UpdateEventCoffin(e.Events)
 	If e\EventState < TimeInPosMilliSecs() Then
 		;SCP-079 starts broadcasting 895 camera feed on monitors after leaving the first zone
 		;TODO: rewrite this to adjust for separate zone loading
-		If EntityPitch(e\room\Levers[0],True) > 0 Then ;camera feed on
+		If EntityPitch(e\room\Levers[0]\obj, True) > 0 Then ;camera feed on
 			For sc.SecurityCams = Each SecurityCams
 				If (Not sc\SpecialCam)
 					If sc\CoffinEffect=0 And sc\room\RoomTemplate\Name<>"room106" And sc\room\RoomTemplate\Name<>"room205" Then sc\CoffinEffect = 2
@@ -139,8 +136,8 @@ Function UpdateEventCoffin(e.Events)
 					EndIf
 				EndIf
 			Next
-			;If EntityVisible(mainPlayer\cam,e\room\Objects[2]) Then
-				;If EntityInView(e\room\Objects[2], mainPlayer\cam) Then
+			;If EntityVisible(mainPlayer\cam,e\room\Levers[0]\baseObj) Then
+				;If EntityInView(e\room\Levers[0]\baseObj, mainPlayer\cam) Then
 			;If EntityVisible(mainPlayer\cam,e\room\Objects[1])
 				If (CoffinDistance < 4.0) And (hasBatteryFor895) Then
 					
@@ -192,7 +189,7 @@ Function UpdateEventCoffin(e.Events)
 		
 		ShouldPlay = 66
 		
-		If UpdateLever(e\room\Levers[0]) Then
+		If (e\room\Levers[0]\succ) Then
 			For sc.SecurityCams = Each SecurityCams
 				If (Not sc\SpecialCam)
 					If sc\CoffinEffect=0 And sc\room\RoomTemplate\Name<>"room106" Then sc\CoffinEffect = 2

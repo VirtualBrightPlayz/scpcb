@@ -164,21 +164,6 @@ Function CreateDoor.Doors(lvl, x#, y#, z#, angle#, room.Rooms, dopen% = False,  
 	
 End Function
 
-Function CreateButton(x#,y#,z#, pitch#,yaw#,roll#=0)
-	Local buttonObj% = GrabMesh("GFX/Map/Meshes/button.b3d")
-	Local obj% = CopyMesh(buttonObj)
-	DropAsset(buttonObj)
-	
-	ScaleEntity(obj, 0.03, 0.03, 0.03)
-	
-	PositionEntity obj, x,y,z
-	RotateEntity obj, pitch,yaw,roll
-	
-	EntityPickMode(obj, 2)
-	
-	Return obj
-End Function
-
 Function UpdateDoors()
 	
 	Local i%, d.Doors, x#, z#, dist#
@@ -534,5 +519,4 @@ Function RemoveDoor(d.Doors)
 End Function
 
 ;~IDEal Editor Parameters:
-;~F#9D#AA#172#201
 ;~C#Blitz3D

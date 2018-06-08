@@ -123,28 +123,29 @@ Function FillRoom_strg_939_3(r.Rooms)
     
     ;Objects [20],[21],[22],[23]
     For n% = 10 To 11
-        r\Objects[n * 2] = CopyEntity(LeverBaseOBJ)
-        r\Objects[n * 2 + 1] = CopyEntity(LeverOBJ)
+        r\Levers[n-10] = CreateLever()
         
-        r\Levers[n-10] = r\Objects[n * 2 + 1]
+        ScaleEntity(r\Levers[n-10]\obj, 0.04, 0.04, 0.04)
+        ScaleEntity(r\Levers[n-10]\baseObj, 0.04, 0.04, 0.04)
+
+        If n = 10
+            ;r\z+6578
+            PositionEntity r\Levers[n-10]\obj,r\x+3101*RoomScale,r\y-5461*RoomScale,r\z+6568*RoomScale,True
+            PositionEntity r\Levers[n-10]\baseObj,r\x+3101*RoomScale,r\y-5461*RoomScale,r\z+6568*RoomScale,True
+        Else
+            ;r\z+3174
+            PositionEntity r\Levers[n-10]\obj,r\x+1209*RoomScale,r\y-5461*RoomScale,r\z+3164*RoomScale,True
+            PositionEntity r\Levers[n-10]\baseObj,r\x+1209*RoomScale,r\y-5461*RoomScale,r\z+3164*RoomScale,True
+        EndIf
         
-        For  i% = 0 To 1
-            ScaleEntity(r\Objects[n * 2 + i], 0.04, 0.04, 0.04)
-            If n% = 10
-                ;r\z+6578
-                PositionEntity r\Objects[n * 2 + i],r\x+3101*RoomScale,r\y-5461*RoomScale,r\z+6568*RoomScale,True
-            Else
-                ;r\z+3174
-                PositionEntity r\Objects[n * 2 + i],r\x+1209*RoomScale,r\y-5461*RoomScale,r\z+3164*RoomScale,True
-            EndIf
-            
-            EntityParent(r\Objects[n * 2 + i], r\obj)
-        Next
-        RotateEntity(r\Objects[n * 2], 0, 0, 0)
-        RotateEntity(r\Objects[n * 2 + 1], -10, 0 - 180, 0)
+        EntityParent(r\Levers[n-10]\obj, r\obj)
+        EntityParent(r\Levers[n-10]\baseObj, r\obj)
+
+        RotateEntity(r\Levers[n-10]\baseObj, 0, 0, 0)
+        RotateEntity(r\Levers[n-10]\obj, -10, 0 - 180, 0)
         
-        EntityPickMode r\Objects[n * 2 + 1], 1, False
-        EntityRadius r\Objects[n * 2 + 1], 0.1
+        EntityPickMode r\Levers[n-10]\obj, 1, False
+        EntityRadius r\Levers[n-10]\obj, 0.1
     Next
     
     r\RoomDoors[4] = CreateDoor(r\zone,r\x+56*RoomScale,r\y-5632*RoomScale,r\z+6344*RoomScale,90,r,False,2)
@@ -244,23 +245,21 @@ Function UpdateEvent_strg_939_3(e.Events)
 					e\EventState = 1
 				EndIf
 				
-				If e\room\RoomDoors[4]\open = False
-					If UpdateLever(e\room\Levers[0])
+				If (e\room\RoomDoors[4]\open = False) Then
+					If (e\room\Levers[0]\succ Or e\room\Levers[1]\succ) Then
 						e\room\RoomDoors[4]\open = True
-						If e\sounds[1] <> 0 Then FreeSound e\sounds[1] : e\sounds[1]=0
+						If (e\sounds[1] <> 0) Then
+                            FreeSound e\sounds[1]
+                            e\sounds[1] = 0
+                        EndIf
+
 						e\sounds[1] = LoadSound("SFX/Door/Door2Open1_dist.ogg")
 						e\soundChannels[1] = PlayRangedSound(e\sounds[1],mainPlayer\cam,e\room\RoomDoors[4]\obj,400)
-					EndIf
-					If UpdateLever(e\room\Levers[1])
-						e\room\RoomDoors[4]\open = True
-						If e\sounds[1] <> 0 Then FreeSound e\sounds[1] : e\sounds[1]=0
-						e\sounds[1] = LoadSound("SFX/Door/Door2Open1_dist.ogg")
-						e\soundChannels[1] = PlayRangedSound(e\sounds[1],mainPlayer\cam,e\room\RoomDoors[4]\obj,400)
+
+                        e\room\Levers[0]\locked = True
+                        e\room\Levers[1]\locked = True
 					EndIf
 				EndIf
-				
-				UpdateLever(e\room\Levers[0],e\room\RoomDoors[4]\open)
-				UpdateLever(e\room\Levers[1],e\room\RoomDoors[4]\open)
 				
 				e\room\NPC[0]\IgnorePlayer = False
 				e\room\NPC[2]\IgnorePlayer = False

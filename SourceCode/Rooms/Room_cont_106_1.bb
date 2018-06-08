@@ -62,10 +62,7 @@ Function FillRoom_cont_106_1(r.Rooms)
     EntityParent(r\Objects[6], r\obj)
     
     For n = 0 To 2 Step 2
-        r\Objects[n] = CopyEntity(LeverBaseOBJ)
-        r\Objects[n+1] = CopyEntity(LeverOBJ)
-        
-        r\Levers[n/2] = r\Objects[n+1]
+        r\Levers[n/2] = CreateLever()
         
         For i% = 0 To 1
             ScaleEntity(r\Objects[n+i], 0.04, 0.04, 0.04)
@@ -176,7 +173,11 @@ Function UpdateEvent_cont_106_1(e.Events)
 		
 		temp = e\EventState2
 		
-		Local leverstate = UpdateLever(e\room\Objects[1],((EntityY(e\room\Objects[6],True)<-990*RoomScale) And (EntityY(e\room\Objects[6],True)>-1275.0*RoomScale)))
+		If ((EntityY(e\room\Objects[6],True)<-990*RoomScale) And (EntityY(e\room\Objects[6],True)>-1275.0*RoomScale)) Then
+			e\room\Levers[0]\locked = True
+		EndIf
+
+		Local leverstate = e\room\Levers[0]\succ
 		If mainPlayer\grabbedEntity = e\room\Objects[1] And DrawHandIcon = True Then e\EventState2 = leverstate
 		
 		If e\EventState2 <> temp Then 
@@ -188,7 +189,7 @@ Function UpdateEvent_cont_106_1(e.Events)
 		EndIf
 		
 		If ((e\EventState3>3200) Or (e\EventState3<2500)) Or (e\EventState<>1) Then
-			SoundTransmission% = UpdateLever(e\room\Objects[3])
+			SoundTransmission% = e\room\Levers[1]\succ
 		EndIf
 		If (Not SoundTransmission) Then
 			If IsChannelPlaying(e\soundChannels[1]) Then StopChannel e\soundChannels[1]

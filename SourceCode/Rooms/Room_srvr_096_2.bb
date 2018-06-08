@@ -19,36 +19,37 @@ Function FillRoom_srvr_096_2(r.Rooms)
     FreeEntity(r\RoomDoors[2]\buttons[1]) : r\RoomDoors[2]\buttons[1]=0
     
     For n% = 0 To 2
-        r\Objects[n * 2] = CopyEntity(LeverBaseOBJ)
-        r\Objects[n * 2 + 1] = CopyEntity(LeverOBJ)
+        r\Levers[n] = CreateLever()
         
-        r\Levers[n] = r\Objects[n * 2 + 1]
-        
-        For i% = 0 To 1
-            ScaleEntity(r\Objects[n * 2 + i], 0.03, 0.03, 0.03)
-            
-            Select n
-                Case 0 ;power switch
-                    PositionEntity (r\Objects[n * 2 + i], r\x - 1260.0 * RoomScale, r\y + 234.0 * RoomScale, r\z + 750 * RoomScale, True)	
-                Case 1 ;generator fuel pump
-                    PositionEntity (r\Objects[n * 2 + i], r\x - 920.0 * RoomScale, r\y + 164.0 * RoomScale, r\z + 898 * RoomScale, True)
-                Case 2 ;generator on/off
-                    PositionEntity (r\Objects[n * 2 + i], r\x - 837.0 * RoomScale, r\y + 152.0 * RoomScale, r\z + 886 * RoomScale, True)
-            End Select
-            
-            EntityParent(r\Objects[n * 2 + i], r\obj)
-        Next
+		ScaleEntity(r\Levers[n]\obj, 0.03, 0.03, 0.03)
+		ScaleEntity(r\Levers[n]\baseObj, 0.03, 0.03, 0.03)
+		
+		Select n
+			Case 0 ;power switch
+				PositionEntity (r\Levers[n]\obj, r\x - 1260.0 * RoomScale, r\y + 234.0 * RoomScale, r\z + 750 * RoomScale, True)
+				PositionEntity (r\Levers[n]\baseObj, r\x - 1260.0 * RoomScale, r\y + 234.0 * RoomScale, r\z + 750 * RoomScale, True)	
+			Case 1 ;generator fuel pump
+				PositionEntity (r\Levers[n]\obj, r\x - 920.0 * RoomScale, r\y + 164.0 * RoomScale, r\z + 898 * RoomScale, True)
+				PositionEntity (r\Levers[n]\baseObj, r\x - 920.0 * RoomScale, r\y + 164.0 * RoomScale, r\z + 898 * RoomScale, True)
+			Case 2 ;generator on/off
+				PositionEntity (r\Levers[n]\obj, r\x - 837.0 * RoomScale, r\y + 152.0 * RoomScale, r\z + 886 * RoomScale, True)
+				PositionEntity (r\Levers[n]\baseObj, r\x - 837.0 * RoomScale, r\y + 152.0 * RoomScale, r\z + 886 * RoomScale, True)
+		End Select
+		
+		EntityParent(r\Levers[n]\obj, r\obj)
+		EntityParent(r\Levers[n]\baseObj, r\obj)
+
         ;RotateEntity(r\Objects[n * 2], 0, -90, 0)
-        RotateEntity(r\Objects[n*2+1], 81, -180, 0)
+        RotateEntity(r\Levers[n]\obj, 81, -180, 0)
         
-        ;EntityPickMode(r\Objects[n * 2 + 1], 2)
-        EntityPickMode r\Objects[n * 2 + 1], 1, False
-        EntityRadius r\Objects[n * 2 + 1], 0.1
-        ;makecollbox(r\Objects[n * 2 + 1])
+        ;EntityPickMode(r\Levers[n]\obj, 2)
+        EntityPickMode r\Levers[n]\obj, 1, False
+        EntityRadius r\Levers[n]\obj, 0.1
+        ;makecollbox(r\Levers[n]\obj)
     Next
     
-    RotateEntity(r\Objects[2+1], -81, -180, 0)
-    RotateEntity(r\Objects[4+1], -81, -180, 0)
+    RotateEntity(r\Levers[1]\obj, -81, -180, 0)
+    RotateEntity(r\Levers[2]\obj, -81, -180, 0)
     
     ;096 spawnpoint
     r\Objects[6]=CreatePivot(r\obj)
@@ -235,9 +236,9 @@ Function UpdateEvent_srvr_096_2(e.Events)
 		EndIf
 		
 	ElseIf mainPlayer\currRoom = e\room
-		temp = UpdateLever(e\room\Objects[1]) ;power switch
-		x = UpdateLever(e\room\Objects[3]) ;fuel pump
-		z = UpdateLever(e\room\Objects[5]) ;generator
+		temp = e\room\Levers[0]\succ ;power switch
+		x = e\room\Levers[1]\succ ;fuel pump
+		z = e\room\Levers[2]\succ ;generator
 		
 		;fuel pump on
 		If x Then
@@ -255,8 +256,8 @@ Function UpdateEvent_srvr_096_2(e.Events)
 			e\EventState3 = Max(0, e\EventState3-timing\tickDuration/450)
 		EndIf
 		
-		If e\EventState2>0 Then e\soundChannels[0]=LoopRangedSound(RoomAmbience[8], e\soundChannels[0], mainPlayer\cam, e\room\Objects[3], 5.0, e\EventState2*0.8)
-		If e\EventState3>0 Then e\soundChannels[1]=LoopRangedSound(e\sounds[1], e\soundChannels[1], mainPlayer\cam, e\room\Objects[5], 6.0, e\EventState3)
+		If e\EventState2>0 Then e\soundChannels[0]=LoopRangedSound(RoomAmbience[8], e\soundChannels[0], mainPlayer\cam, e\room\Levers[1]\obj, 5.0, e\EventState2*0.8)
+		If e\EventState3>0 Then e\soundChannels[1]=LoopRangedSound(e\sounds[1], e\soundChannels[1], mainPlayer\cam, e\room\Levers[2]\obj, 6.0, e\EventState3)
 		
 		If temp=0 And x And z Then
 			e\room\RoomDoors[0]\locked = False

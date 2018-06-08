@@ -15,10 +15,7 @@ Function FillRoom_cont_012_2(r.Rooms)
     PositionEntity(r\RoomDoors[0]\buttons[0], r\x + 176.0 * RoomScale, -512.0*RoomScale, r\z - 364.0 * RoomScale, True)
     FreeEntity r\RoomDoors[0]\buttons[1] : r\RoomDoors[0]\buttons[1]=0
     
-    r\Objects[0] = CopyEntity(LeverBaseOBJ)
-    r\Objects[1] = CopyEntity(LeverOBJ)
-    
-    r\Levers[0] = r\Objects[1]
+    r\Levers[0] = CreateLever()
     
     For i% = 0 To 1
         ScaleEntity(r\Objects[i], 0.04, 0.04, 0.04)
@@ -26,11 +23,11 @@ Function FillRoom_cont_012_2(r.Rooms)
         
         EntityParent(r\Objects[i], r\obj)
     Next
-    ;RotateEntity(r\Objects[0], 0, 0, 0)
-    RotateEntity(r\Objects[1], 10, -180, 0)
+    ;RotateEntity(r\Levers[0]\baseObj, 0, 0, 0)
+    RotateEntity(r\Levers[0]\obj, 10, -180, 0)
     
-    EntityPickMode r\Objects[1], 1, False
-    EntityRadius r\Objects[1], 0.1
+    EntityPickMode r\Levers[0]\obj, 1, False
+    EntityRadius r\Levers[0]\obj, 0.1
     
     r\Objects[2] = LoadMesh("GFX/map/room012_2.b3d")
     ScaleEntity r\Objects[2], RoomScale, RoomScale, RoomScale
@@ -101,7 +98,7 @@ Function UpdateEvent_cont_012_2(e.Events)
 			
 			If e\EventState2 > 0 And e\EventState2 < 200 Then
 				e\EventState2 = e\EventState2 + timing\tickDuration
-				RotateEntity(e\room\Objects[1], CurveValue(85, EntityPitch(e\room\Objects[1]), 5), EntityYaw(e\room\Objects[1]), 0)
+				RotateEntity(e\room\Levers[i]\obj, CurveValue(85, EntityPitch(e\room\Levers[i]\obj), 5), EntityYaw(e\room\Levers[i]\obj), 0)
 			Else
 				e\EventState2 = e\EventState2 + timing\tickDuration
 				If e\EventState2<250 Then

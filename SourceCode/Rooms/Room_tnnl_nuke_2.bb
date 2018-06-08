@@ -32,23 +32,23 @@ Function FillRoom_tnnl_nuke_2(r.Rooms)
     EntityParent(r\Objects[5], r\obj)
     
     For n% = 0 To 1
-        r\Objects[n * 2] = CopyEntity(LeverBaseOBJ)
-        r\Objects[n * 2 + 1] = CopyEntity(LeverOBJ)
-        r\Levers[n] = r\Objects[n * 2 + 1]
+        r\Levers[n] = CreateLever()
         
-        For i% = 0 To 1
-            ScaleEntity(r\Objects[n * 2 + i], 0.04, 0.04, 0.04)
-            PositionEntity (r\Objects[n * 2 + i], r\x - 975.0 * RoomScale, r\y + 1712.0 * RoomScale, r\z - (502.0-132.0*n) * RoomScale, True)
-            
-            EntityParent(r\Objects[n * 2 + i], r\obj)
-        Next
-        RotateEntity(r\Objects[n * 2], 0, -90-180, 0)
-        RotateEntity(r\Objects[n * 2 + 1], 10, -90 - 180-180, 0)
+        ScaleEntity(r\Levers[n]\obj, 0.04, 0.04, 0.04)
+        ScaleEntity(r\Levers[n]\baseObj, 0.04, 0.04, 0.04)
+        PositionEntity (r\Levers[n]\obj, r\x - 975.0 * RoomScale, r\y + 1712.0 * RoomScale, r\z - (502.0-132.0*n) * RoomScale, True)
+        PositionEntity (r\Levers[n]\baseObj, r\x - 975.0 * RoomScale, r\y + 1712.0 * RoomScale, r\z - (502.0-132.0*n) * RoomScale, True)
         
-        ;EntityPickMode(r\Objects[n * 2 + 1], 2)
-        EntityPickMode r\Objects[n * 2 + 1], 1, False
-        EntityRadius r\Objects[n * 2 + 1], 0.1
-        ;makecollbox(r\Objects[n * 2 + 1])
+        EntityParent(r\Levers[n]\obj, r\obj)
+        EntityParent(r\Levers[n]\baseObj, r\obj)
+
+        RotateEntity(r\Levers[n]\baseObj, 0, -90-180, 0)
+        RotateEntity(r\Levers[n]\obj, 10, -90 - 180-180, 0)
+        
+        ;EntityPickMode(r\Levers[n]\obj, 2)
+        EntityPickMode r\Levers[n]\obj, 1, False
+        EntityRadius r\Levers[n]\obj, 0.1
+        ;makecollbox(r\Levers[n]\obj)
     Next
     
     it = CreateItem("Nuclear Device Document", "paper", r\x - 768.0 * RoomScale, r\y + 1684.0 * RoomScale, r\z - 768.0 * RoomScale)
@@ -83,9 +83,11 @@ Function UpdateEvent_tnnl_nuke_2(e.Events)
 	If mainPlayer\currRoom = e\room Then
 		e\EventState2 = UpdateElevators(e\EventState2, e\room\RoomDoors[0], e\room\RoomDoors[1], e\room\Objects[4], e\room\Objects[5], e)
 		
-		e\EventState = UpdateLever(e\room\Objects[1])
-		UpdateLever(e\room\Objects[3])
+		e\EventState = e\room\Levers[0]\succ
 	EndIf
 	;[End Block]
 End Function
 
+
+;~IDEal Editor Parameters:
+;~C#Blitz3D

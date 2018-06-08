@@ -30,31 +30,29 @@ Function FillRoom_cont_049_2(r.Rooms)
     
 	Local n%
     For n% = 0 To 1
-        r\Objects[n * 2 + 6] = CopyEntity(LeverBaseOBJ)
-        r\Objects[n * 2 + 7] = CopyEntity(LeverOBJ)
-        
-        r\Levers[n] = r\Objects[n * 2 + 7]
-        
-        For i% = 0 To 1
-            ScaleEntity(r\Objects[n * 2 + 6 + i], 0.03, 0.03, 0.03)
-            
-            Select n
-                Case 0 ;power feed
-                    PositionEntity (r\Objects[n * 2 + 6 + i], r\x - 328.0 * RoomScale, r\y - 3374.0 * RoomScale, r\z + 916 * RoomScale, True)
-                    
-                Case 1 ;generator
-                    PositionEntity (r\Objects[n * 2 + 6 + i], r\x - 370.0 * RoomScale, r\y - 3400.0 * RoomScale, r\z - 799 * RoomScale, True)
-                    
-            End Select
-            
-            EntityParent(r\Objects[n * 2 + 6 + i], r\obj)
-        Next
+        r\Levers[n] = CreateLever()
+
+		ScaleEntity(r\Levers[n]\obj, 0.03, 0.03, 0.03)
+		ScaleEntity(r\Levers[n]\baseObj, 0.03, 0.03, 0.03)
+		
+		Select n
+			Case 0 ;power feed
+				PositionEntity (r\Levers[n]\obj, r\x - 328.0 * RoomScale, r\y - 3374.0 * RoomScale, r\z + 916 * RoomScale, True)
+				PositionEntity (r\Levers[n]\baseObj, r\x - 328.0 * RoomScale, r\y - 3374.0 * RoomScale, r\z + 916 * RoomScale, True)
+				
+			Case 1 ;generator
+				PositionEntity (r\Levers[n]\obj, r\x - 370.0 * RoomScale, r\y - 3400.0 * RoomScale, r\z - 799 * RoomScale, True)
+				PositionEntity (r\Levers[n]\baseObj, r\x - 370.0 * RoomScale, r\y - 3400.0 * RoomScale, r\z - 799 * RoomScale, True)
+		End Select
+		
+		EntityParent(r\Levers[n]\obj, r\obj)
+		EntityParent(r\Levers[n]\baseObj, r\obj)
         
         RotateEntity(r\Objects[n*2+6], 0, -180*n, 0)
-        RotateEntity(r\Objects[n*2+7], 81-92*n, -180*(Not n), 0)
+        RotateEntity(r\Levers[n]\obj, 81-92*n, -180*(Not n), 0)
         
-        EntityPickMode r\Objects[n * 2 + 7], 1, False
-        EntityRadius r\Objects[n * 2 + 7], 0.1
+        EntityPickMode r\Levers[n]\obj, 1, False
+        EntityRadius r\Levers[n]\obj, 0.1
     Next
     
     
@@ -162,8 +160,8 @@ Function UpdateEvent_cont_049_2(e.Events)
 				EndIf
 			ElseIf e\EventState > 0
 				
-				temp = Not UpdateLever(e\room\Objects[7]) ;power feed
-				x = UpdateLever(e\room\Objects[9]) ;generator
+				temp = (Not e\room\Levers[0]\succ) ;power feed
+				x = e\room\Levers[1]\succ ;generator
 				
 				e\room\RoomDoors[1]\locked = True
 				e\room\RoomDoors[3]\locked = True
@@ -179,7 +177,7 @@ Function UpdateEvent_cont_049_2(e.Events)
 						e\EventState3 = UpdateElevators(e\EventState3, e\room\RoomDoors[2], e\room\RoomDoors[3],e\room\Objects[2],e\room\Objects[3], e)
 						
 						If e\sounds[1]=0 Then LoadEventSound(e,"SFX/General/GeneratorOn.ogg",1)
-						e\soundChannels[1]=LoopRangedSound(e\sounds[1], e\soundChannels[1], mainPlayer\cam, e\room\Objects[8], 6.0, e\EventState3)
+						e\soundChannels[1]=LoopRangedSound(e\sounds[1], e\soundChannels[1], mainPlayer\cam, e\room\Levers[1]\baseObj, 6.0, e\EventState3)
 						
 						If e\room\NPC[0]\Idle > 0
 							i = 0

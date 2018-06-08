@@ -281,11 +281,6 @@ Function LoadEntities()
 	BigDoorOBJ(1) = LoadMesh("GFX/map/ContDoorRight.x")
 	HideEntity BigDoorOBJ(1)
 	
-	LeverBaseOBJ = LoadMesh("GFX/map/leverbase.x")
-	HideEntity LeverBaseOBJ
-	LeverOBJ = LoadMesh("GFX/map/leverhandle.x")
-	HideEntity LeverOBJ
-	
 	DrawLoading(15)
 	
 	For i = 0 To 5

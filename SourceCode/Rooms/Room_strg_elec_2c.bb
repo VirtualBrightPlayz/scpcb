@@ -12,22 +12,21 @@ Function FillRoom_strg_elec_2c(r.Rooms)
     EntityParent(it\collider, r\obj)
     
     For n% = 0 To 2
-        r\Objects[n * 2] = CopyEntity(LeverBaseOBJ)
-        r\Objects[n * 2 + 1] = CopyEntity(LeverOBJ)
+        r\Levers[n] = CreateLever()
         
-        r\Levers[n] = r\Objects[n * 2 + 1]
+		ScaleEntity(r\Levers[n]\obj, 0.04, 0.04, 0.04)
+		ScaleEntity(r\Levers[n]\baseObj, 0.04, 0.04, 0.04)
+		PositionEntity (r\Levers[n]\obj, r\x - 240.0 * RoomScale, r\y + 1104.0 * RoomScale, r\z + (632.0 - 64.0 * n) * RoomScale, True)
+		PositionEntity (r\Levers[n]\baseObj, r\x - 240.0 * RoomScale, r\y + 1104.0 * RoomScale, r\z + (632.0 - 64.0 * n) * RoomScale, True)
+		
+		EntityParent(r\Levers[n]\obj, r\obj)
+		EntityParent(r\Levers[n]\baseObj, r\obj)
+			
+        RotateEntity(r\Levers[n]\baseObj, 0, -90, 0)
+        RotateEntity(r\Levers[n]\obj, 10, -90 - 180, 0)
         
-        For  i% = 0 To 1
-            ScaleEntity(r\Objects[n * 2 + i], 0.04, 0.04, 0.04)
-            PositionEntity (r\Objects[n * 2 + i], r\x - 240.0 * RoomScale, r\y + 1104.0 * RoomScale, r\z + (632.0 - 64.0 * n) * RoomScale, True)
-            
-            EntityParent(r\Objects[n * 2 + i], r\obj)
-        Next
-        RotateEntity(r\Objects[n * 2], 0, -90, 0)
-        RotateEntity(r\Objects[n * 2 + 1], 10, -90 - 180, 0)
-        
-        EntityPickMode r\Objects[n * 2 + 1], 1, False
-        EntityRadius r\Objects[n * 2 + 1], 0.1
+        EntityPickMode r\Levers[n]\obj, 1, False
+        EntityRadius r\Levers[n]\obj, 0.1
     Next
     
     sc.SecurityCams = CreateSecurityCam(r\x-265.0*RoomScale, r\y+1280.0*RoomScale, r\z+105.0*RoomScale, r)
@@ -122,7 +121,7 @@ Function UpdateEvent_strg_elec_2c(e.Events)
 		
 		If e\EventState > 0 And e\EventState < 200 Then
 			e\EventState = e\EventState + timing\tickDuration
-			RotateEntity(e\room\Objects[3], CurveValue(-85, EntityPitch(e\room\Objects[3]), 5), EntityYaw(e\room\Objects[3]), 0)
+			RotateEntity(e\room\Levers[1]\obj, CurveValue(-85, EntityPitch(e\room\Objects[3]), 5), EntityYaw(e\room\Objects[3]), 0)
 		EndIf 
 		
 	EndIf

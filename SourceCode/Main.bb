@@ -91,6 +91,7 @@ Include "SourceCode/Dreamfilter.bb"
 Include "SourceCode/Items.bb"
 Include "SourceCode/Particles.bb"
 Include "SourceCode/Doors.bb"
+Include "SourceCode/Objects.bb"
 Include "SourceCode/MapSystem.bb"
 Include "SourceCode/NPCs.bb"
 Include "SourceCode/Player.bb"
@@ -330,7 +331,7 @@ Global TeslaTexture%
 
 Global DoorOBJ.MarkedForRemoval, DoorFrameOBJ.MarkedForRemoval
 
-Global LeverOBJ%, LeverBaseOBJ%
+Global LeverOBJ.MarkedForRemoval, LeverBaseOBJ.MarkedForRemoval
 
 Global DoorColl.MarkedForRemoval
 Global ButtonOBJ.MarkedForRemoval, ButtonKeyOBJ%, ButtonCodeOBJ%, ButtonScannerOBJ%
@@ -630,6 +631,7 @@ Function UpdateGame()
 				MovePlayer()
 				InFacility = CheckForPlayerInFacility()
 				UpdateDoors()
+				UpdateLevers()
 				UpdateEvents()
 				UpdateDecals()
 				UpdateMTF()
