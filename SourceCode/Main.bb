@@ -1,4 +1,4 @@
-Include "MarkedForRemoval.bb"
+Include "SourceCode/MarkedForRemoval.bb"
 
 ;TODO: kill all the dims
 ;I have to place them up here because the includes depend
@@ -80,28 +80,26 @@ Dim LightSpriteTex%(5)
 Dim DecalTextures%(20)
 ;[End Block]
 
-Include "KeyName.bb"
-Include "Options.bb"
-Include "FastResize.bb"
-Include "Array.bb"
-Include "Difficulty.bb"
-Include "Menus/Menu.bb"
-Include "Console.bb"
-Include "Dreamfilter.bb"
-Include "Items.bb"
-Include "Particles.bb"
-Include "Doors.bb"
-Include "MapSystem.bb"
-Include "NPCs.bb"
-Include "Player.bb"
-Include "Events.bb"
-Include "Assets.bb"
-Include "Save.bb"
-Include "Audio.bb"
-Include "MathUtils.bb"
-Include "INI.bb"
-
-Main() ;TODO: remove once we move to C++
+Include "SourceCode/KeyName.bb"
+Include "SourceCode/Options.bb"
+Include "SourceCode/FastResize.bb"
+Include "SourceCode/Array.bb"
+Include "SourceCode/Difficulty.bb"
+Include "SourceCode/Menus/Menu.bb"
+Include "SourceCode/Console.bb"
+Include "SourceCode/Dreamfilter.bb"
+Include "SourceCode/Items.bb"
+Include "SourceCode/Particles.bb"
+Include "SourceCode/Doors.bb"
+Include "SourceCode/MapSystem.bb"
+Include "SourceCode/NPCs.bb"
+Include "SourceCode/Player.bb"
+Include "SourceCode/Events.bb"
+Include "SourceCode/Assets.bb"
+Include "SourceCode/Save.bb"
+Include "SourceCode/Audio.bb"
+Include "SourceCode/MathUtils.bb"
+Include "SourceCode/INI.bb"
 
 Const VERSION$ = "1.CBN"
 
