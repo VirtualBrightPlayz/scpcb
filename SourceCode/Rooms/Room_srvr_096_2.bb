@@ -19,7 +19,7 @@ Function FillRoom_srvr_096_2(r.Rooms)
     FreeEntity(r\RoomDoors[2]\buttons[1]) : r\RoomDoors[2]\buttons[1]=0
     
     For n% = 0 To 2
-        r\Levers[n] = CreateLever()
+		r\Levers[n] = CreateLever()
         
 		ScaleEntity(r\Levers[n]\obj, 0.03, 0.03, 0.03)
 		ScaleEntity(r\Levers[n]\baseObj, 0.03, 0.03, 0.03)

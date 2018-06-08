@@ -98,7 +98,7 @@ Function UpdateEvent_cont_012_2(e.Events)
 			
 			If e\EventState2 > 0 And e\EventState2 < 200 Then
 				e\EventState2 = e\EventState2 + timing\tickDuration
-				RotateEntity(e\room\Levers[i]\obj, CurveValue(85, EntityPitch(e\room\Levers[i]\obj), 5), EntityYaw(e\room\Levers[i]\obj), 0)
+				RotateEntity(e\room\Levers[0]\obj, CurveValue(85, EntityPitch(e\room\Levers[0]\obj), 5), EntityYaw(e\room\Levers[0]\obj), 0)
 			Else
 				e\EventState2 = e\EventState2 + timing\tickDuration
 				If e\EventState2<250 Then

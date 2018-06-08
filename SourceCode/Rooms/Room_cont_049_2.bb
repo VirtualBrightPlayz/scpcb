@@ -30,7 +30,7 @@ Function FillRoom_cont_049_2(r.Rooms)
     
 	Local n%
     For n% = 0 To 1
-        r\Levers[n] = CreateLever()
+		r\Levers[n] = CreateLever()
 
 		ScaleEntity(r\Levers[n]\obj, 0.03, 0.03, 0.03)
 		ScaleEntity(r\Levers[n]\baseObj, 0.03, 0.03, 0.03)
