@@ -250,64 +250,65 @@ Function LoadEntities()
 	DrawLoading(5)
 	TeslaTexture = LoadTexture("GFX/map/Textures/tesla.jpg", 1+2)
 	
-	MTFObj = LoadAnimMesh("GFX/npcs/MTF2.b3d") ;optimized MTFs
+	MTFObj = LoadAnimMesh("GFX/NPCs/MTF/mtf.b3d") ;optimized MTFs
 	;GuardTex = LoadTexture("GFX/npcs/body.jpg") ;optimized the guards even more
 	
-	ClassDObj = LoadAnimMesh("GFX/npcs/classd.b3d") ;optimized Class-D's and scientists/researchers
+	ClassDObj = LoadAnimMesh("GFX/NPCs/classd/classd.b3d") ;optimized Class-D's and scientists/researchers
 	
 	HideEntity MTFObj
 	HideEntity ClassDObj
 	
-	LightSpriteTex(0) = LoadTexture("GFX/light1.jpg", 1)
-	LightSpriteTex(1) = LoadTexture("GFX/light2.jpg", 1)
-	LightSpriteTex(2) = LoadTexture("GFX/lightsprite.jpg",1)
+	LightSpriteTex(0) = LoadTexture("GFX/Sprites/light1.jpg", 1)
+	LightSpriteTex(1) = LoadTexture("GFX/Sprites/light2.jpg", 1)
+	LightSpriteTex(2) = LoadTexture("GFX/Sprites/lightsprite.jpg",1)
 	
 	DrawLoading(10)
 	
-	HeavyDoorObj(0) = LoadMesh("GFX/map/heavydoor1.x")
+	HeavyDoorObj(0) = LoadMesh("GFX/Map/Meshes/heavydoor1.b3d")
 	HideEntity HeavyDoorObj(0)
-	HeavyDoorObj(1) = LoadMesh("GFX/map/heavydoor2.x")
+	HeavyDoorObj(1) = LoadMesh("GFX/Map/Meshes/heavydoor2.b3d")
 	HideEntity HeavyDoorObj(1)
 	
-	ButtonKeyOBJ = LoadMesh("GFX/map/ButtonKeycard.x")
+	ButtonKeyOBJ = LoadMesh("GFX/Map/Meshes/ButtonKeycard.b3d")
 	HideEntity ButtonKeyOBJ
-	ButtonCodeOBJ = LoadMesh("GFX/map/ButtonCode.x")
+	ButtonCodeOBJ = LoadMesh("GFX/Map/Meshes/ButtonCode.b3d")
 	HideEntity ButtonCodeOBJ	
-	ButtonScannerOBJ = LoadMesh("GFX/map/ButtonScanner.x")
+	ButtonScannerOBJ = LoadMesh("GFX/Map/Meshes/ButtonScanner.b3d")
 	HideEntity ButtonScannerOBJ	
 	
-	BigDoorOBJ(0) = LoadMesh("GFX/map/ContDoorLeft.x")
+	BigDoorOBJ(0) = LoadMesh("GFX/Map/Meshes/ContDoorLeft.b3d")
 	HideEntity BigDoorOBJ(0)
-	BigDoorOBJ(1) = LoadMesh("GFX/map/ContDoorRight.x")
+	BigDoorOBJ(1) = LoadMesh("GFX/Map/Meshes/ContDoorRight.b3d")
 	HideEntity BigDoorOBJ(1)
 	
 	DrawLoading(15)
 	
 	For i = 0 To 5
-		GorePics(i) = LoadTexture("GFX/895pics/pic" + (i + 1) + ".jpg")
+		GorePics(i) = LoadTexture("GFX/895pics/pic" + Str(i + 1) + ".jpg")
 	Next
 	
-	OldAiPics(0) = LoadTexture("GFX/AIface.jpg")
-	OldAiPics(1) = LoadTexture("GFX/AIface2.jpg")	
+	OldAiPics(0) = LoadTexture("GFX/079pics/AIface.jpg")
+	OldAiPics(1) = LoadTexture("GFX/079pics/AIface2.jpg")	
 	
 	DrawLoading(20)
 	
+	;TODO: replace DecalTextures with a 2D array?
 	For i = 0 To 6
-		DecalTextures(i) = LoadTexture("GFX/decal" + (i + 1) + ".png", 1 + 2)
+		DecalTextures(i) = LoadTexture("GFX/Decals/decal" + Str(i + 1) + ".png", 1 + 2)
 	Next
-	DecalTextures(7) = LoadTexture("GFX/items/INVpaperstrips.jpg", 1 + 2)
+	;DecalTextures(7) = LoadTexture("GFX/items/INVpaperstrips.jpg", 1 + 2)
 	For i = 8 To 12
-		DecalTextures(i) = LoadTexture("GFX/decalpd"+(i-7)+".jpg", 1 + 2)	
+		DecalTextures(i) = LoadTexture("GFX/Decals/decalpd"+(i-7)+".jpg", 1 + 2)	
 	Next
 	For i = 13 To 14
-		DecalTextures(i) = LoadTexture("GFX/bullethole"+(i-12)+".jpg", 1 + 2)	
+		DecalTextures(i) = LoadTexture("GFX/Decals/bullethole"+Str(i-12)+".jpg", 1 + 2)	
 	Next	
 	For i = 15 To 16
-		DecalTextures(i) = LoadTexture("GFX/blooddrop"+(i-14)+".png", 1 + 2)	
+		DecalTextures(i) = LoadTexture("GFX/Decals/blooddrop"+Str(i-14)+".png", 1 + 2)	
 	Next
-	DecalTextures(17) = LoadTexture("GFX/decal8.png", 1 + 2)	
-	DecalTextures(18) = LoadTexture("GFX/decalpd6.dc", 1 + 2)	
-	DecalTextures(19) = LoadTexture("GFX/decal19.png", 1 + 2)
+	DecalTextures(17) = LoadTexture("GFX/Decals/decal8.png", 1 + 2)	
+	DecalTextures(18) = LoadTexture("GFX/Decals/decalpd6.jpg", 1 + 2)	
+	DecalTextures(19) = LoadTexture("GFX/Decals/decal19.png", 1 + 2)
 	
 	DrawLoading(25)
 	
@@ -322,16 +323,16 @@ Function LoadEntities()
 	
 	InitItemTemplates()
 	
-	ParticleTextures(0) = LoadTexture("GFX/smoke.png", 1 + 2)
-	ParticleTextures(1) = LoadTexture("GFX/flash.jpg", 1 + 2)
-	ParticleTextures(2) = LoadTexture("GFX/dust.jpg", 1 + 2)
-	ParticleTextures(3) = LoadTexture("GFX/npcs/hg.pt", 1 + 2)
-	ParticleTextures(4) = LoadTexture("GFX/map/sun.jpg", 1 + 2)
-	ParticleTextures(5) = LoadTexture("GFX/bloodsprite.png", 1 + 2)
-	ParticleTextures(6) = LoadTexture("GFX/smoke2.png", 1 + 2)
-	ParticleTextures(7) = LoadTexture("GFX/spark.jpg", 1 + 2)
+	ParticleTextures(0) = LoadTexture("GFX/Sprites/smoke.png", 1 + 2)
+	ParticleTextures(1) = LoadTexture("GFX/Sprites/flash.jpg", 1 + 2)
+	ParticleTextures(2) = LoadTexture("GFX/Sprites/dust.jpg", 1 + 2)
+	ParticleTextures(3) = LoadTexture("GFX/General/hg.jpg", 1 + 2)
+	ParticleTextures(4) = LoadTexture("GFX/Map/Textures/sun.jpg", 1 + 2)
+	ParticleTextures(5) = LoadTexture("GFX/Decals/bloodsprite.png", 1 + 2)
+	ParticleTextures(6) = LoadTexture("GFX/Sprites/smoke2.png", 1 + 2)
+	ParticleTextures(7) = LoadTexture("GFX/Sprites/spark.jpg", 1 + 2)
 	
-	LoadMaterials("DATA/materials.ini")
+	LoadMaterials("Data/materials.ini")
 	
 	;TextureLodBias TextureFloat#
 	
@@ -779,5 +780,5 @@ Function NullGame()
 	
 End Function
 ;~IDEal Editor Parameters:
-;~F#10#22#2F#40#44#48#4C#59#68
+;~F#10#22#2F#40#44#48#4C#59#68#84#B4#15A
 ;~C#Blitz3D
