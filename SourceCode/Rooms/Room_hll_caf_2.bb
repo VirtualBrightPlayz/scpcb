@@ -25,8 +25,6 @@ End Function
 Function Draw294()
 	Local x#,y#, xtemp%,ytemp%, strtemp$, temp%
 	
-	ShowPointer2()
-	
 	Local panel294% = GrabImage("GFX/HUD/294panel.jpg")
 	x = userOptions\screenWidth/2 - (ImageWidth(Panel294)/2)
 	y = userOptions\screenHeight/2 - (ImageHeight(Panel294)/2)
@@ -36,6 +34,8 @@ Function Draw294()
 	DropAsset(panel294)
 	
 	Text x+907, y+185, Input294, True,True
+	
+	ShowPointer2()
 End Function
 
 Function Update294()
