@@ -93,7 +93,7 @@ Function DrawConsole()
 		
 		DrawInputBox(x, y + height, width, 30*MenuScale, ConsoleInput, 2)
 		
-		If userOptions\fullscreen Then DrawImage uiAssets\cursorIMG, MouseX(),MouseY()
+		ShowPointer2()
 	EndIf
 End Function
 

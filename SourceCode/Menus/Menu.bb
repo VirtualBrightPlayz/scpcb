@@ -631,6 +631,13 @@ Function DrawTooltip(message$)
 	Text(MouseX()+(20*MenuScale)+(width/2),MouseY()+(12*MenuScale), message$, True, True)
 End Function
 
+Function ShowPointer2()
+	ShowPointer()
+	If (userOptions\fullscreen) Then
+		DrawImage(uiAssets\cursorIMG, MouseX(), MouseY())
+	EndIf
+End Function
+
 Global QuickLoadPercent.MarkedForRemoval
 Global QuickLoadPercent_DisplayTimer.MarkedForRemoval
 

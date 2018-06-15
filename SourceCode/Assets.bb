@@ -38,7 +38,7 @@ Function FreeAsset(as.AssetWrap)
 			FreeTexture(as\intVal)
 		Case ASSET_IMAGE
 			FreeImage(as\intVal)
-		Case ASSET_MESH
+		Case ASSET_MESH, ASSET_ANIM_MESH
 			FreeEntity(as\intVal)
 	End Select
 	

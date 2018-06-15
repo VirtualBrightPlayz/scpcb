@@ -462,10 +462,6 @@ Function InitializeMainGame()
 	room2gw_x# = 0.0
 	room2gw_z# = 0.0
 	
-	;TODO: cleanup
-	;Panel294 = LoadImage("GFX/294panel.jpg")
-	;MaskImage(Panel294, 255,0,255)
-	
 	DrawLoading(40,True)
 	
 	;TODO: remove/replace with functions
@@ -933,8 +929,6 @@ End Function
 ;[Block] ;TODO: FIX
 ;Function DrawEnding()
 ;	
-;	ShowPointer()
-;	
 ;	timing\tickDuration = 0
 ;	EndingTimer=EndingTimer-timing\tickDuration2
 ;	
@@ -1062,8 +1056,8 @@ End Function
 ;		
 ;	EndIf
 ;	
-;	If userOptions\fullscreen Then DrawImage CursorIMG, MouseX(),MouseY()
-;	
+;	ShowPointer2()
+;
 ;	SetFont uiAssets\font[0]
 ;End Function
 ;[End Block]
@@ -1089,7 +1083,9 @@ Function UpdateGUI()
 		EndIf
 	EndIf
 	
-	If CurrGameState=GAMESTATE_SCP294 Then Update294()
+	If (CurrGameState = GAMESTATE_SCP294) Then
+		Update294()
+	EndIf
 	
 	If SelectedScreen <> Null Then
 		If MouseUp1 Or MouseHit2 Then
@@ -1230,12 +1226,6 @@ Function DrawGUI()
 	
 	Local e.Events, it.Items
 	
-	If IsPaused() Then
-		ShowPointer()
-	Else
-		HidePointer()
-	EndIf 	
-	
 	If mainPlayer\currRoom\RoomTemplate\name = "pocketdimension" Then
 		For e.Events = Each Events
 			If e\room = mainPlayer\currRoom And e\EventState > 600 Then
@@ -1301,7 +1291,9 @@ Function DrawGUI()
 		End If
 	Next
 	
-	If CurrGameState=GAMESTATE_SCP294 Then Draw294()
+	If (CurrGameState = GAMESTATE_SCP294) Then
+		Draw294()
+	EndIf
 	
 	If userOptions\hudEnabled Then 
 		
@@ -1435,7 +1427,7 @@ Function DrawGUI()
 				Text userOptions\screenWidth/2, y+124*scale, KeypadInput,True,True	
 			EndIf
 			
-			If userOptions\fullscreen Then DrawImage uiAssets\cursorIMG, MouseX(),MouseY()
+			ShowPointer2()
 		EndIf
 	EndIf
 	
@@ -1509,8 +1501,8 @@ Function DrawPauseMenu()
 		SetFont uiAssets\font[0]
 		If mainPlayer\dead Then RowText(DeathMSG$, x, y + 80*MenuScale, 390*MenuScale, 600*MenuScale)
 		;EndIf
-		
-		If userOptions\fullscreen Then DrawImage uiAssets\cursorIMG, MouseX(),MouseY()
+
+		ShowPointer2()
 	EndIf
 	
 	SetFont uiAssets\font[0]

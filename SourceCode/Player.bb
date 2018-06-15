@@ -857,6 +857,8 @@ Function DrawInventory(player.Player)
 	Local strtemp$
 	
 	If CurrGameState=GAMESTATE_INVENTORY Then
+		ShowPointer2()
+
 		width% = 70
 		height% = 70
 		spacing% = 35
@@ -924,8 +926,6 @@ Function DrawInventory(player.Player)
 				EndIf
 			End If
 		End If
-		
-		If userOptions\fullscreen Then DrawImage uiAssets\cursorIMG, MouseX(),MouseY()
 	Else
 		If player\selectedItem <> Null Then
 			Select player\selectedItem\itemtemplate\tempname
@@ -1262,6 +1262,8 @@ Function UpdateInventory(player.Player)
 	
 	Local strtemp$
 	If CurrGameState=GAMESTATE_INVENTORY Then
+		ShowPointer2()
+		
 		If (player\currRoom\RoomTemplate\name = "gatea") Then
 			HideEntity player\overlays[OVERLAY_FOG]
 			CameraFogRange player\cam, 5,30
@@ -1472,8 +1474,6 @@ Function UpdateInventory(player.Player)
 				player\selectedItem = Null
 			End If
 		End If
-		
-		If userOptions\fullscreen Then DrawImage uiAssets\cursorIMG, MouseX(),MouseY()
 		
 		If CurrGameState = GAMESTATE_PLAYING Then 
 			ResumeSounds() 
