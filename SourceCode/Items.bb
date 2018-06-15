@@ -503,7 +503,7 @@ Function RemoveItem(i.Items)
 	Local n
 	FreeEntity(i\model) : FreeEntity(i\collider) : i\collider = 0
 	
-	If i\itemtemplate\img <> 0
+	If i\itemtemplate\img <> 0 Then
 		FreeImage i\itemtemplate\img
 		i\itemtemplate\img = 0
 	EndIf

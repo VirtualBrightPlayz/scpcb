@@ -199,7 +199,7 @@ Function DrawLoading(percent%, shortloading=False)
 		
 		If SelectedLoadingScreen\alignx = 0 Then
 			x = userOptions\screenWidth/2 - ImageWidth(SelectedLoadingScreen\img)/2 
-		ElseIf  SelectedLoadingScreen\alignx = 1
+		ElseIf  SelectedLoadingScreen\alignx = 1 Then
 			x = userOptions\screenWidth - ImageWidth(SelectedLoadingScreen\img)
 		Else
 			x = 0
@@ -207,7 +207,7 @@ Function DrawLoading(percent%, shortloading=False)
 		
 		If SelectedLoadingScreen\aligny = 0 Then
 			y = userOptions\screenHeight/2 - ImageHeight(SelectedLoadingScreen\img)/2 
-		ElseIf  SelectedLoadingScreen\aligny = 1
+		ElseIf  SelectedLoadingScreen\aligny = 1 Then
 			y = userOptions\screenHeight - ImageHeight(SelectedLoadingScreen\img)
 		Else
 			y = 0
@@ -230,7 +230,7 @@ Function DrawLoading(percent%, shortloading=False)
 				If firstloop Then 
 					If percent = 0 Then
 						PlaySound2 LoadTempSound("SFX/SCP/990/cwm1.cwm")
-					ElseIf percent = 100
+					ElseIf percent = 100 Then
 						PlaySound2 LoadTempSound("SFX/SCP/990/cwm2.cwm")
 					EndIf
 				EndIf
@@ -379,7 +379,7 @@ Function rInput$(aString$)
 	
 	If value = 13 Or value = 0 Then
 		Return aString$
-	ElseIf value > 0 And value < 7 Or value > 26 And value < 32 Or value = 9
+	ElseIf value > 0 And value < 7 Or value > 26 And value < 32 Or value = 9 Then
 		Return aString$
 	Else
 		aString$ = aString$ + Chr(value)

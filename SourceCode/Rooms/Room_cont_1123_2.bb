@@ -139,7 +139,7 @@ Function UpdateEvent_cont_1123_2(e.Events)
 			mainPlayer\injuries = 1.0
 			e\EventState = 2
 			
-		ElseIf e\EventState = 2
+		ElseIf e\EventState = 2 Then
 			e\EventState2 = e\EventState2 + timing\tickDuration
 			
 			PointEntity e\room\NPC[0]\collider, mainPlayer\collider
@@ -175,7 +175,7 @@ Function UpdateEvent_cont_1123_2(e.Events)
 				EndIf
 				
 			EndIf
-		ElseIf e\EventState=3
+		ElseIf e\EventState=3 Then
 			If e\room\RoomDoors[0]\openstate>160 Then
 				If e\sounds[0]=0 Then e\sounds[0] = LoadSound("SFX/Music/1123.ogg")
 				e\soundChannels[0] = PlaySound(e\sounds[0])
@@ -185,7 +185,7 @@ Function UpdateEvent_cont_1123_2(e.Events)
 				
 				e\EventState=4
 			EndIf
-		ElseIf e\EventState=4
+		ElseIf e\EventState=4 Then
 			
 			;PointEntity e\room\NPC[1]\Collider, mainPlayer\collider
 			
@@ -229,7 +229,7 @@ Function UpdateEvent_cont_1123_2(e.Events)
 			;RemoveNPC(e\room\NPC[0])
 			;RemoveNPC(e\room\NPC[1])
 			;RemoveEvent(e)
-		ElseIf e\EventState = 5
+		ElseIf e\EventState = 5 Then
 			e\EventState2 = e\EventState2 + timing\tickDuration
 			If e\EventState2 > 500 Then 
 				RotateEntity e\room\Objects[9],0,90,0,False
@@ -259,7 +259,7 @@ Function UpdateEvent_cont_1123_2(e.Events)
 				
 				e\EventState = 6
 			EndIf
-		ElseIf e\EventState = 6
+		ElseIf e\EventState = 6 Then
 			PointEntity e\room\NPC[0]\Collider, mainPlayer\collider
 			
 			If e\room\NPC[0]\sounds[0]<>0 Then 
@@ -273,7 +273,7 @@ Function UpdateEvent_cont_1123_2(e.Events)
 				
 				If e\room\NPC[0]\sounds[0]<>0 Then e\room\NPC[0]\soundChannels[0] = LoopRangedSound(e\room\NPC[0]\sounds[0], e\room\NPC[0]\soundChannels[0], mainPlayer\cam, e\room\NPC[0]\Collider, 7.0)
 			EndIf
-		ElseIf e\EventState=7
+		ElseIf e\EventState=7 Then
 			PositionEntity mainPlayer\collider, EntityX(e\room\obj,True),0.3,EntityZ(e\room\obj,True),True
 			ResetEntity mainPlayer\collider
 			ShowEntity mainPlayer\overlays[OVERLAY_WHITE]
@@ -288,7 +288,7 @@ Function UpdateEvent_cont_1123_2(e.Events)
 			
 			For i = 0 To mainPlayer\inventory\size-1
 				If mainPlayer\inventory\items[i] <> Null Then
-					If mainPlayer\inventory\items[i]\itemtemplate\name = "Leaflet"
+					If mainPlayer\inventory\items[i]\itemtemplate\name = "Leaflet" Then
 						mainPlayer\inventory\items[i] = Null
 						RemoveItem(mainPlayer\inventory\items[i])
 						Exit

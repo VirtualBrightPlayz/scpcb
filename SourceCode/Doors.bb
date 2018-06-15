@@ -54,7 +54,7 @@ Function CreateDoor.Doors(lvl, x#, y#, z#, angle#, room.Rooms, dopen% = False,  
 		ScaleEntity(d\frameobj, RoomScale, RoomScale, RoomScale)
 		EntityType d\frameobj, HIT_MAP
 		EntityAlpha d\frameobj, 0.0
-	ElseIf big=2
+	ElseIf big=2 Then
 		d\obj = CopyEntity(HeavyDoorObj(0))
 		ScaleEntity(d\obj, RoomScale, RoomScale, RoomScale)
 		d\obj2 = CopyEntity(HeavyDoorObj(1))
@@ -94,7 +94,7 @@ Function CreateDoor.Doors(lvl, x#, y#, z#, angle#, room.Rooms, dopen% = False,  
 		Else
 			If keycard>0 Then
 				d\buttons[i]= CopyEntity(ButtonKeyOBJ)
-			ElseIf keycard<0
+			ElseIf keycard<0 Then
 				d\buttons[i]= CopyEntity(ButtonScannerOBJ)	
 			Else
 				d\buttons[i] = CopyEntity(buttonObj)
@@ -189,8 +189,8 @@ Function UpdateDoors()
 			EndIf
 			
 			;TODO: this is cancer
-			If mainPlayer\currRoom\RoomTemplate\Name$ = "room2sl"
-				If ValidRoom2slCamRoom(d\room)
+			If mainPlayer\currRoom\RoomTemplate\Name$ = "room2sl" Then
+				If ValidRoom2slCamRoom(d\room) Then
 					If d\obj <> 0 Then ShowEntity d\obj
 					If d\frameobj <> 0 Then ShowEntity d\frameobj
 					If d\obj2 <> 0 Then ShowEntity d\obj2
@@ -305,7 +305,7 @@ Function UpdateDoors()
 							d\openstate = Max(0, d\openstate - timing\tickDuration*0.8)
 							MoveEntity(d\obj, Sin(d\openstate) * -timing\tickDuration / 180.0, 0, 0)
 							If d\obj2 <> 0 Then MoveEntity(d\obj2, Sin(d\openstate) * timing\tickDuration / 180.0, 0, 0)
-							If d\openstate < 15 And d\openstate+timing\tickDuration => 15
+							If d\openstate < 15 And d\openstate+timing\tickDuration => 15 Then
 								For i = 0 To Rand(75,99)
 									Local pvt% = CreatePivot()
 									PositionEntity(pvt, EntityX(d\frameobj,True)+Rnd(-0.2,0.2), EntityY(d\frameobj,True)+Rnd(0.0,1.2), EntityZ(d\frameobj,True)+Rnd(-0.2,0.2))
@@ -395,7 +395,7 @@ Function UseDoor(d.Doors, showmsg%=True)
 					MsgTimer = 70 * 5
 				EndIf
 				Return				
-			ElseIf temp >= d\KeyCard 
+			ElseIf temp >= d\KeyCard Then
 				mainPlayer\selectedItem = Null
 				If showmsg = True Then
 					If d\locked Then
@@ -423,7 +423,7 @@ Function UseDoor(d.Doors, showmsg%=True)
 				Return
 			End If
 		EndIf	
-	ElseIf d\KeyCard < 0
+	ElseIf d\KeyCard < 0 Then
 		;I can't find any way to produce short circuited boolean expressions so work around this by using a temporary variable - risingstar64
 		If mainPlayer\selectedItem <> Null Then
 			temp = (mainPlayer\selectedItem\itemtemplate\tempname = "hand" And d\KeyCard=-1) Or (mainPlayer\selectedItem\itemtemplate\tempname = "hand2" And d\KeyCard=-2)
@@ -451,8 +451,8 @@ Function UseDoor(d.Doors, showmsg%=True)
 					If d\IsElevatorDoor = 1 Then
 						Msg = "You called the elevator."
 						MsgTimer = 70 * 5
-					ElseIf (Msg<>"You called the elevator.")
-						If (Msg="You already called the elevator.") Or (MsgTimer<70*3)	
+					ElseIf (Msg<>"You called the elevator.") Then
+						If (Msg="You already called the elevator.") Or (MsgTimer<70*3) Then
 							Select Rand(10)
 								Case 1
 									Msg = "Stop spamming the button."

@@ -77,7 +77,7 @@ Function FillRoom_cont_049_2(r.Rooms)
     PositionEntity(r\RoomDoors[3]\buttons[1], r\x + 2312.0 * RoomScale, EntityY(r\RoomDoors[3]\buttons[1],True), r\z + 472.0 * RoomScale, True)	
     
     For i = 0 To 3
-        If (i Mod 2) = 1
+        If (i Mod 2) = 1 Then
             AssignElevatorObj(r\Objects[i],r\RoomDoors[i],2)
         Else
             AssignElevatorObj(r\Objects[i],r\RoomDoors[i],True)
@@ -137,7 +137,7 @@ Function UpdateEvent_cont_049_2(e.Events)
 					TurnEntity n\collider, 0, 20, 0
 					
 					For n.NPCs = Each NPCs
-						If n\npcType = NPCtype049
+						If n\npcType = NPCtype049 Then
 							e\room\NPC[0]=n
 							e\room\NPC[0]\state = 2
 							e\room\NPC[0]\Idle = 1
@@ -146,7 +146,7 @@ Function UpdateEvent_cont_049_2(e.Events)
 							Exit
 						EndIf
 					Next
-					If e\room\NPC[0]=Null
+					If e\room\NPC[0]=Null Then
 						n.NPCs = CreateNPC(NPCtype049, EntityX(e\room\Objects[4],True), EntityY(e\room\Objects[4],True)+3, EntityZ(e\room\Objects[4],True))
 						PointEntity n\collider, e\room\obj
 						n\state = 2
@@ -158,7 +158,7 @@ Function UpdateEvent_cont_049_2(e.Events)
 					e\loaded = True
 					e\EventState=1
 				EndIf
-			ElseIf e\EventState > 0
+			ElseIf e\EventState > 0 Then
 				
 				temp = (Not e\room\Levers[0]\succ) ;power feed
 				x = e\room\Levers[1]\succ ;generator
@@ -179,14 +179,14 @@ Function UpdateEvent_cont_049_2(e.Events)
 						If e\sounds[1]=0 Then LoadEventSound(e,"SFX/General/GeneratorOn.ogg",1)
 						e\soundChannels[1]=LoopRangedSound(e\sounds[1], e\soundChannels[1], mainPlayer\cam, e\room\Levers[1]\baseObj, 6.0, e\EventState3)
 						
-						If e\room\NPC[0]\Idle > 0
+						If e\room\NPC[0]\Idle > 0 Then
 							i = 0
-							If EntityDistance(mainPlayer\collider,e\room\RoomDoors[1]\frameobj)<3.0
+							If EntityDistance(mainPlayer\collider,e\room\RoomDoors[1]\frameobj)<3.0 Then
 								i = 1
-							ElseIf EntityDistance(mainPlayer\collider,e\room\RoomDoors[3]\frameobj)<3.0
+							ElseIf EntityDistance(mainPlayer\collider,e\room\RoomDoors[3]\frameobj)<3.0 Then
 								i = 3
 							EndIf
-							If i > 0
+							If i > 0 Then
 								;If EntityVisible(mainPlayer\collider,e\room\RoomDoors[i]\frameobj)
 								PositionEntity e\room\NPC[0]\collider,EntityX(e\room\Objects[i],True),EntityY(e\room\Objects[i],True),EntityZ(e\room\Objects[i],True)
 								ResetEntity e\room\NPC[0]\collider
@@ -226,7 +226,7 @@ Function UpdateEvent_cont_049_2(e.Events)
 						
 						e\EventState= 70*190
 					EndIf
-				ElseIf e\EventState < 70*240
+				ElseIf e\EventState < 70*240 Then
 					
 					;If e\room\NPC[0]=Null Then
 					;	For n.NPCs = Each NPCs
@@ -275,7 +275,7 @@ Function UpdateEvent_cont_049_2(e.Events)
 				PositionEntity(mainPlayer\head, EntityX(mainPlayer\cam, True), EntityY(mainPlayer\cam, True), EntityZ(mainPlayer\cam, True), True)
 				ResetEntity (mainPlayer\head)
 				RotateEntity(mainPlayer\head, 0, EntityYaw(mainPlayer\cam) + Rand(-45, 45), 0)
-			ElseIf mainPlayer\fallTimer < -230
+			ElseIf mainPlayer\fallTimer < -230 Then
 				mainPlayer\fallTimer = -231
 				mainPlayer\blinkTimer = 0
 				e\EventState = e\EventState-timing\tickDuration
@@ -343,15 +343,15 @@ Function UpdateEvent_cont_049_2(e.Events)
 			
 			;Msg = ""
 			
-			If e\room\NPC[2]\state = 7
-				If e\room\NPC[2]\state3 < 70*1.75
+			If e\room\NPC[2]\state = 7 Then
+				If e\room\NPC[2]\state3 < 70*1.75 Then
 					e\room\NPC[2]\state3 = e\room\NPC[2]\state3 + timing\tickDuration
 				Else
 					e\room\NPC[2]\state = 6
 					e\room\NPC[2]\Reload = e\room\NPC[1]\Reload+Rnd(5,10)
 				EndIf
-			ElseIf e\room\NPC[2]\state = 6 And e\room\NPC[2]\Reload > 70*4
-				If e\room\NPC[2]\state3 > -(70*4)
+			ElseIf e\room\NPC[2]\state = 6 And e\room\NPC[2]\Reload > 70*4 Then
+				If e\room\NPC[2]\state3 > -(70*4) Then
 					e\room\NPC[2]\state3 = e\room\NPC[2]\state3 - timing\tickDuration
 				Else
 					e\room\NPC[2]\state3 = 0.0

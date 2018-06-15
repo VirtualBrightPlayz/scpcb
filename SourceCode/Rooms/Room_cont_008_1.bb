@@ -108,7 +108,7 @@ Function UpdateEvent_cont_008_1(e.Events)
 				ResetEntity Curr173\collider
 				
 				e\EventState = 1
-			ElseIf e\EventState = 1
+			ElseIf e\EventState = 1 Then
 				e\soundChannels[0] = LoopRangedSound(AlarmSFX(0), e\soundChannels[0], mainPlayer\cam, e\room\Objects[0], 5.0)
 				
 				If (TimeInPosMilliSecs() Mod 1000)<500 Then

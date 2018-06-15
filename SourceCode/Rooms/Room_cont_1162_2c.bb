@@ -46,7 +46,7 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 	;- 2.0 = the player doesn't has any items in the Inventory, giving him heavily injuries and giving him a random item
 	;- 3.0 = player got a memorial item (to explain a bit D-9341's background)
 	;- 3.1 = player got a memorial item + injuries (because he didn't had any item in his inventory before)
-	If mainPlayer\currRoom = e\room
+	If mainPlayer\currRoom = e\room Then
 		
 		mainPlayer\grabbedEntity = 0
 		
@@ -57,21 +57,21 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 		PositionEntity pp,976,128,-640,False
 		
 		For it.Items = Each Items
-			If (Not it\Picked)
-				If EntityDistance(it\collider,e\room\Objects[0])<0.75
+			If (Not it\Picked) Then
+				If EntityDistance(it\collider,e\room\Objects[0])<0.75 Then
 					Pick1162% = False
 				EndIf
 			EndIf
 		Next
 		
-		If EntityDistance(e\room\Objects[0],mainPlayer\collider)<0.75 And Pick1162%
+		If EntityDistance(e\room\Objects[0],mainPlayer\collider)<0.75 And Pick1162% Then
 			DrawHandIcon = True
 			If MouseHit1 Then mainPlayer\grabbedEntity = e\room\Objects[0]
 		EndIf
 		
-		If mainPlayer\grabbedEntity <> 0
+		If mainPlayer\grabbedEntity <> 0 Then
 			e\EventState2 = Rand(0,mainPlayer\inventory\size-1)
-			If mainPlayer\inventory\items[e\EventState2]<>Null
+			If mainPlayer\inventory\items[e\EventState2]<>Null Then
 				;randomly picked item slot has an item in it, using this slot
 				e\EventState3 = 1.0
 				DebugLog "pick1"
@@ -119,7 +119,7 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 							EndIf
 						Next
 						
-						If ((Not itemExists) And (Not isSlotEmpty)) Exit
+						If ((Not itemExists) And (Not isSlotEmpty)) Then Exit
 					Else
 						If isSlotEmpty Then
 							e\EventState3 = 2.0
@@ -134,14 +134,14 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 		
 		
 		;trade successful
-		If e\EventState3 = 1.0
+		If e\EventState3 = 1.0 Then
 			Local shouldCreateItem% = False
 			
 			For itt.ItemTemplates = Each ItemTemplates
 				If (IsItemGoodFor1162(itt)) Then
 					Select mainPlayer\inventory\items[e\EventState2]\itemtemplate\tempname
 						Case "key"
-							If itt\tempname = "key1" Or itt\tempname = "key2" And Rand(2)=1
+							If itt\tempname = "key1" Or itt\tempname = "key2" And Rand(2)=1 Then
 								shouldCreateItem = True
 								DebugLog "lostkey"
 							EndIf
@@ -151,22 +151,22 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 								DebugLog "paper"
 							EndIf
 						Case "gasmask","gasmask3","supergasmask","hazmatsuit","hazmatsuit2","hazmatsuit3"
-							If itt\tempname = "gasmask" Or itt\tempname = "gasmask3" Or itt\tempname = "supergasmask" Or itt\tempname = "hazmatsuit" Or itt\tempname = "hazmatsuit2" Or itt\tempname = "hazmatsuit3" And Rand(2)=1
+							If itt\tempname = "gasmask" Or itt\tempname = "gasmask3" Or itt\tempname = "supergasmask" Or itt\tempname = "hazmatsuit" Or itt\tempname = "hazmatsuit2" Or itt\tempname = "hazmatsuit3" And Rand(2)=1 Then
 								shouldCreateItem = True
 								DebugLog "gasmask hazmat"
 							EndIf
 						Case "key1","key2","key3"
-							If itt\tempname = "key1" Or itt\tempname = "key2" Or itt\tempname = "key3" Or itt\tempname = "misc" And Rand(6)=1
+							If itt\tempname = "key1" Or itt\tempname = "key2" Or itt\tempname = "key3" Or itt\tempname = "misc" And Rand(6)=1 Then
 								shouldCreateItem = True
 								DebugLog "key"
 							EndIf
 						Case "vest","finevest"
-							If itt\tempname = "vest" Or itt\tempname = "finevest" And Rand(1)=1
+							If itt\tempname = "vest" Or itt\tempname = "finevest" And Rand(1)=1 Then
 								shouldCreateItem = True
 								DebugLog "vest"
 							EndIf
 						Default
-							If itt\tempname = "misc" And Rand(6)=1
+							If itt\tempname = "misc" And Rand(6)=1 Then
 								shouldCreateItem = True
 								DebugLog "default"
 							EndIf
@@ -185,7 +185,7 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 				EndIf
 			Next
 		;trade not sucessful (player got in return to injuries a new item)
-		ElseIf e\EventState3 = 2.0
+		ElseIf e\EventState3 = 2.0 Then
 			mainPlayer\injuries = mainPlayer\injuries + 5.0
 			pvt = CreatePivot()
 			PositionEntity pvt, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)-0.05,EntityZ(mainPlayer\collider)
@@ -195,12 +195,12 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 			de\size = 0.75 : ScaleSprite de\obj, de\size, de\size
 			FreeEntity pvt
 			For itt.ItemTemplates = Each ItemTemplates
-				If IsItemGoodFor1162(itt) And Rand(6)=1
+				If IsItemGoodFor1162(itt) And Rand(6)=1 Then
 					it = CreateItem(itt\name, itt\tempname, EntityX(pp,True),EntityY(pp,True),EntityZ(pp,True))
 					EntityType(it\collider, HIT_ITEM)
 					MouseHit1 = False
 					e\EventState3 = 0.0
-					If mainPlayer\injuries > 15
+					If mainPlayer\injuries > 15 Then
 						DeathMSG = "A dead Class D subject was discovered within the containment chamber of SCP-1162."
 						DeathMSG = DeathMSG + " An autopsy revealed that his right lung was missing, which suggests"
 						DeathMSG = DeathMSG + " interaction with SCP-1162."
@@ -217,8 +217,8 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 				EndIf
 			Next
 		;trade with nostalgia item
-		ElseIf e\EventState3 >= 3.0
-			If e\EventState3 < 3.1
+		ElseIf e\EventState3 >= 3.0 Then
+			If e\EventState3 < 3.1 Then
 				PlaySound2 LoadTempSound("SFX/SCP/1162/Exchange"+Rand(0,4)+".ogg")
 				RemoveItem(mainPlayer\inventory\items[e\EventState2])
 			Else
@@ -230,7 +230,7 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 				de.decals = CreateDecal(3, PickedX(), PickedY()+0.005, PickedZ(), 90, Rand(360), 0)
 				de\size = 0.75 : ScaleSprite de\obj, de\size, de\size
 				FreeEntity pvt
-				If mainPlayer\injuries > 15
+				If mainPlayer\injuries > 15 Then
 					DeathMSG = "A dead Class D subject was discovered within the containment chamber of SCP-1162."
 					DeathMSG = DeathMSG + " An autopsy revealed that his right lung was missing, which suggests"
 					DeathMSG = DeathMSG + " interaction with SCP-1162."
