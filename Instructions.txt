@@ -1,17 +1,16 @@
 How to set up the source code:
 
-The source code of the game is available on GitHub: https://github.com/Regalis11/scpcb
-
-After you have installed Blitz3D v1.108c, you need to replace the directory "\Blitz3D\Bin\" with the bin folder
-inside the "mavless_bin.zip" file from the repository. Once you have replaced that, copy all of the .decls and .dll files from
-the repo into "\Blitz3D\userlibs\" and you should be ready to edit and compile the source.
+- Install Blitz3d v1.108: https://blitzresearch.itch.io/blitz3d
+- Install IDEal (optional, but recommended): http://web.archive.org/web/20130827150202if_/http://fungamesfactory.com/download.php?get=IDEalSetup_0.8.94.exe
+- If applicable, delete all userlibs
+- Run "EntryPoint.bb"
 
 ----------------------------------------------------------------------------------------
 
-How to add new rooms:
+How to add new rooms (TODO: update):
 
 - first you need to add the information of the room in Data\rooms.ini
-	- "mesh path" is the path of the room model
+	- "meshpath" is the path of the room model
 	- shape determines the layout of the room:
 		- 1 = a "dead end room" with only one door leading to it
 		- 2 = a room with two doors opposite to each other (a hallway)
@@ -28,7 +27,7 @@ see the "FillRoom"-function the "MapSystem.bb"-file
 
 ----------------------------------------------------------------------------------------
 
-How to add new events:
+How to add new events (TODO: update after cleaning up events system):
 
 - Events are placed into rooms in the "InitEvents"-function in the "Main.bb"-file.
 - You can add a new event using the "CreateEvent"-function. The function has the following

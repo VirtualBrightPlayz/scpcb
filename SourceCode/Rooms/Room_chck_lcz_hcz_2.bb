@@ -86,21 +86,21 @@ Function UpdateEventCheckpoint(e.Events)
 			EndIf
 			
 			e\EventState3 = 1
-		ElseIf e\room\Objects[1]<>0
+		ElseIf e\room\Objects[1]<>0 Then
 			If e\EventState3 = 1 Then
 				PointEntity e\room\Objects[1], mainPlayer\collider
 				RotateEntity e\room\Objects[1], -90, EntityYaw(e\room\Objects[1]),0
 				angle = WrapAngle(DeltaYaw(mainPlayer\collider, e\room\Objects[1]))
 				If angle<40 Or angle > 320 Then e\EventState3=2
-			ElseIf e\EventState3 = 2
+			ElseIf e\EventState3 = 2 Then
 				PointEntity e\room\Objects[1], mainPlayer\collider
 				RotateEntity e\room\Objects[1], -90, EntityYaw(e\room\Objects[1]),0
 				Animate2(e\room\Objects[1],AnimTime(e\room\Objects[1]),267,283,0.3,False)
 				If AnimTime(e\room\Objects[1])=283 Then e\EventState3=3
-			ElseIf e\EventState3 = 3
+			ElseIf e\EventState3 = 3 Then
 				Animate2(e\room\Objects[1],AnimTime(e\room\Objects[1]),283,267,-0.2,False)
 				If AnimTime( e\room\Objects[1])=267 Then e\EventState3=4
-			ElseIf e\EventState3 = 4
+			ElseIf e\EventState3 = 4 Then
 				angle = WrapAngle(DeltaYaw(mainPlayer\collider, e\room\Objects[1]))
 				If angle>90 And angle < 270 Then 
 					FreeEntity(e\room\Objects[1])
@@ -111,17 +111,17 @@ Function UpdateEventCheckpoint(e.Events)
 		EndIf
 	EndIf
 	
-	If e\room\RoomTemplate\Name = "checkpoint2"
+	If e\room\RoomTemplate\Name = "checkpoint2" Then
 		For e2.Events = Each Events
-			If e2\EventName = "008"
-				If e2\EventState = 2
-					If e\room\RoomDoors[0]\locked
+			If e2\EventName = "008" Then
+				If e2\EventState = 2 Then
+					If e\room\RoomDoors[0]\locked Then
 						;TurnCheckpointMonitorsOff(1)
 						e\room\RoomDoors[0]\locked = False
 						e\room\RoomDoors[1]\locked = False
 					EndIf
 				Else
-					If e\room\dist < 12
+					If e\room\dist < 12 Then
 						;UpdateCheckpointMonitors(1)
 						e\room\RoomDoors[0]\locked = True
 						e\room\RoomDoors[1]\locked = True
@@ -131,15 +131,15 @@ Function UpdateEventCheckpoint(e.Events)
 		Next
 	Else
 		For e2.Events = Each Events
-			If e2\EventName = "room2sl"
-				If e2\EventState3 = 0
-					If e\room\dist < 12
+			If e2\EventName = "room2sl" Then
+				If e2\EventState3 = 0 Then
+					If e\room\dist < 12 Then
 						;TurnCheckpointMonitorsOff(0)
 						e\room\RoomDoors[0]\locked = False
 						e\room\RoomDoors[1]\locked = False
 					EndIf
 				Else
-					If e\room\dist < 12
+					If e\room\dist < 12 Then
 						;UpdateCheckpointMonitors(0)
 						e\room\RoomDoors[0]\locked = True
 						e\room\RoomDoors[1]\locked = True
@@ -158,10 +158,10 @@ Function UpdateEventCheckpoint(e.Events)
 	
 	e\EventState = e\room\RoomDoors[0]\open
 	
-	If IsChannelPlaying(e\soundChannels[0])
+	If IsChannelPlaying(e\soundChannels[0]) Then
 		UpdateRangedSoundOrigin(e\soundChannels[0], mainPlayer\cam, e\room\RoomDoors[0]\obj)
 	EndIf
-	If IsChannelPlaying(e\soundChannels[1])
+	If IsChannelPlaying(e\soundChannels[1]) Then
 		UpdateRangedSoundOrigin(e\soundChannels[1], mainPlayer\cam, e\room\RoomDoors[1]\obj)
 	EndIf
 	;[End Block]

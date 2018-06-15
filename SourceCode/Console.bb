@@ -876,8 +876,8 @@ Function UpdateConsole()
 
 				Case "tp_to_mtf"
 					For n.NPCs = Each NPCs
-						If n\NPCtype = NPCtypeMTF
-							If n\MTFLeader = Null
+						If n\NPCtype = NPCtypeMTF Then
+							If n\MTFLeader = Null Then
 								PositionEntity mainPlayer\collider,EntityX(n\Collider),EntityY(n\Collider)+5,EntityZ(n\Collider)
 								ResetEntity mainPlayer\collider
 								Exit

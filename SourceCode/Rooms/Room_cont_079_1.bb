@@ -81,10 +81,10 @@ Function UpdateEvent_cont_079_1(e.Events)
 					PlaySound2 (LoadTempSound("SFX/Door/DoorError.ogg"))
 				EndIf							
 			EndIf
-		ElseIf e\EventState < 10000
+		ElseIf e\EventState < 10000 Then
 			If e\EventState = 1 Then 
 				e\EventState = 2
-			ElseIf e\EventState = 2
+			ElseIf e\EventState = 2 Then
 				If EntityDistance(e\room\Objects[0], mainPlayer\collider)<3.0 Then
 					e\EventState = 3
 					e\EventState2 = 1
@@ -92,13 +92,13 @@ Function UpdateEvent_cont_079_1(e.Events)
 					LoadEventSound(e,"SFX/SCP/079/Speech.ogg")
 					e\soundChannels[0] = PlaySound(e\sounds[0])
 				EndIf							
-			ElseIf e\EventState = 3
+			ElseIf e\EventState = 3 Then
 				If e\EventState < 3500 Then 
 					If IsChannelPlaying(e\soundChannels[0]) Then 
 						If Rand(3) = 1 Then
 							EntityTexture(e\room\Objects[1], OldAiPics(0))
 							ShowEntity (e\room\Objects[1])
-						ElseIf Rand(10) = 1 
+						ElseIf Rand(10) = 1 Then 
 							HideEntity (e\room\Objects[1])							
 						End If							
 					Else

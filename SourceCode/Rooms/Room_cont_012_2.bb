@@ -127,7 +127,7 @@ Function UpdateEvent_cont_012_2(e.Events)
 						angle = WrapAngle(EntityYaw(pvt)-EntityYaw(mainPlayer\collider))
 						If angle<40.0 Then
 							mainPlayer\forceMove = (40.0-angle)*0.008
-						ElseIf angle > 310.0
+						ElseIf angle > 310.0 Then
 							mainPlayer\forceMove = (40.0-Abs(360.0-angle))*0.008
 						EndIf
 						
@@ -160,12 +160,12 @@ Function UpdateEvent_cont_012_2(e.Events)
 						e\EventState3=Min(e\EventState3+timing\tickDuration,86*70)
 						If e\EventState3>70 And e\EventState3-timing\tickDuration=<70 Then
 							PlaySound2 LoadTempSound("SFX/SCP/012/Speech1.ogg")
-						ElseIf e\EventState3>13*70 And e\EventState3-timing\tickDuration=<13*70
+						ElseIf e\EventState3>13*70 And e\EventState3-timing\tickDuration=<13*70 Then
 							Msg="You start pushing your nails into your wrist, drawing blood."
 							MsgTimer = 7*70
 							mainPlayer\injuries=mainPlayer\injuries+0.5
 							PlaySound2 LoadTempSound("SFX/SCP/012/Speech2.ogg")
-						ElseIf e\EventState3>31*70 And e\EventState3-timing\tickDuration=<31*70
+						ElseIf e\EventState3>31*70 And e\EventState3-timing\tickDuration=<31*70 Then
 							tex = LoadTexture("GFX/map/Textures/scp-012_1.jpg")
 							EntityTexture (e\room\Objects[4], tex,0,1)
 							FreeTexture tex
@@ -174,19 +174,19 @@ Function UpdateEvent_cont_012_2(e.Events)
 							MsgTimer = 7*70
 							mainPlayer\injuries=Max(mainPlayer\injuries,1.5)
 							PlaySound2 LoadTempSound("SFX/SCP/012/Speech"+Rand(3,4)+".ogg")
-						ElseIf e\EventState3>49*70 And e\EventState3-timing\tickDuration=<49*70
+						ElseIf e\EventState3>49*70 And e\EventState3-timing\tickDuration=<49*70 Then
 							Msg="You push your fingers deeper into the wound."
 							MsgTimer = 8*70
 							mainPlayer\injuries=mainPlayer\injuries+0.3
 							PlaySound2 LoadTempSound("SFX/SCP/012/Speech5.ogg")
-						ElseIf e\EventState3>63*70 And e\EventState3-timing\tickDuration=<63*70
+						ElseIf e\EventState3>63*70 And e\EventState3-timing\tickDuration=<63*70 Then
 							tex = LoadTexture("GFX/map/Textures/scp-012_2.jpg")
 							EntityTexture (e\room\Objects[4], tex,0,1)	
 							FreeTexture tex
 							
 							mainPlayer\injuries=mainPlayer\injuries+0.5
 							PlaySound2 LoadTempSound("SFX/SCP/012/Speech6.ogg")
-						ElseIf e\EventState3>74*70 And e\EventState3-timing\tickDuration=<74*70
+						ElseIf e\EventState3>74*70 And e\EventState3-timing\tickDuration=<74*70 Then
 							tex = LoadTexture("GFX/map/Textures/scp-012_3.jpg")
 							EntityTexture (e\room\Objects[4], tex,0,1)
 							FreeTexture tex
@@ -199,7 +199,7 @@ Function UpdateEvent_cont_012_2(e.Events)
 							
 							de.Decals = CreateDecal(17,  EntityX(mainPlayer\collider), -768*RoomScale+0.01, EntityZ(mainPlayer\collider),90,Rnd(360),0)
 							de\Size = 0.1 : de\maxsize = 0.45 : de\sizechange = 0.0002 : UpdateDecals()
-						ElseIf e\EventState3>85*70 And e\EventState3-timing\tickDuration=<85*70	
+						ElseIf e\EventState3>85*70 And e\EventState3-timing\tickDuration=<85*70	Then
 							DeathMSG = "Subject D-9341 found in a pool of blood next to SCP-012. Subject seems to have ripped open his wrists and written three extra "
 							DeathMSG = DeathMSG + "lines to the composition before dying of blood loss."
 							Kill(mainPlayer)
@@ -211,7 +211,7 @@ Function UpdateEvent_cont_012_2(e.Events)
 						angle = WrapAngle(EntityYaw(pvt)-EntityYaw(mainPlayer\collider))
 						If angle<40.0 Then
 							mainPlayer\forceMove = (40.0-angle)*0.02
-						ElseIf angle > 310.0
+						ElseIf angle > 310.0 Then
 							mainPlayer\forceMove = (40.0-Abs(360.0-angle))*0.02
 						EndIf
 					EndIf								

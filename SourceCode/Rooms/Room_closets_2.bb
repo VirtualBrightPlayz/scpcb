@@ -101,7 +101,7 @@ Function UpdateEvent_closets_2(e.Events)
 			
 			e\room\NPC[0]\state=1
 			If e\EventState > 70*3.2 And e\EventState-timing\tickDuration =< 70*3.2 Then PlayRangedSound(IntroSFX(15),mainPlayer\cam,e\room\obj,15.0)
-		ElseIf e\EventState < 70*6.5
+		ElseIf e\EventState < 70*6.5 Then
 			If e\EventState-timing\tickDuration < 70*3.5 Then
 				e\room\NPC[0]\state=0
 				e\room\NPC[1]\soundChannels[0] = PlayRangedSound(e\room\NPC[1]\sounds[0], mainPlayer\cam, e\room\NPC[1]\collider,12.0)

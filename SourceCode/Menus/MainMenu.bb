@@ -160,7 +160,7 @@ Function UpdateMainMenu()
 					;Other factor's difficulty
 					If MouseHit1 Then
 						If MouseOn(x + 155 * MenuScale, y+251*MenuScale, ImageWidth(uiAssets\arrow[1]), ImageHeight(uiAssets\arrow[1])) Then
-							If SelectedDifficulty\otherFactors < HARD
+							If SelectedDifficulty\otherFactors < HARD Then
 								SelectedDifficulty\otherFactors = SelectedDifficulty\otherFactors + 1
 							Else
 								SelectedDifficulty\otherFactors = EASY
@@ -244,7 +244,7 @@ Function UpdateMainMenu()
 						
 					Next
 					
-					If SaveMSG <> ""
+					If SaveMSG <> "" Then
 						x = userOptions\screenWidth / 2
 						y = userOptions\screenHeight / 2
 						If UpdateUIButton(x + 250 * MenuScale, y + 150 * MenuScale, 100 * MenuScale, 30 * MenuScale, "Yes") Then

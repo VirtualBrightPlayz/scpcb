@@ -121,14 +121,14 @@ Function CreatePlayer.Player()
 	;TODO: Change tint based on zone?
 	CameraFogColor(player\cam, 0, 0, 0)
 	
-	Local fogTexture% = LoadTexture("GFX/fog.jpg", 1)
+	Local fogTexture% = LoadTexture("GFX/Overlays/fog.jpg", 1)
 	;FogNVTexture = LoadTexture("GFX/fogNV.jpg", 1)
 	
 	Local scaleWidth# = userOptions\screenWidth / 1024.0
 	Local scaleHeight# = MenuScale * 0.8
 	
 	;TODO: take ownership of ark_blur_cam
-	Local gasMaskTexture = LoadTexture("GFX/GasmaskOverlay.jpg", 1)
+	Local gasMaskTexture = LoadTexture("GFX/Overlays/GasmaskOverlay.jpg", 1)
 	player\overlays[OVERLAY_GASMASK] = CreateSprite(ark_blur_cam)
 	ScaleSprite(player\overlays[OVERLAY_GASMASK], Max(scaleWidth, 1.0), Max(scaleHeight, 0.8))
 	EntityTexture(player\overlays[OVERLAY_GASMASK], gasMaskTexture)
@@ -138,7 +138,7 @@ Function CreatePlayer.Player()
 	MoveEntity(player\overlays[OVERLAY_GASMASK], 0, 0, 1.0)
 	HideEntity(player\overlays[OVERLAY_GASMASK])
 	
-	Local infectTexture = LoadTexture("GFX/InfectOverlay.jpg", 1)
+	Local infectTexture = LoadTexture("GFX/Overlays/InfectOverlay.jpg", 1)
 	player\overlays[OVERLAY_008] = CreateSprite(ark_blur_cam)
 	ScaleSprite(player\overlays[OVERLAY_008], Max(scaleWidth, 1.0), Max(scaleHeight, 0.8))
 	EntityTexture(player\overlays[OVERLAY_008], infectTexture)
@@ -149,7 +149,7 @@ Function CreatePlayer.Player()
 	;EntityAlpha (InfectOverlay, 255.0)
 	HideEntity(player\overlays[OVERLAY_008])
 	
-	Local nvTexture = LoadTexture("GFX/NightVisionOverlay.jpg", 1)
+	Local nvTexture = LoadTexture("GFX/Overlays/NightVisionOverlay.jpg", 1)
 	player\overlays[OVERLAY_NIGHTVISION] = CreateSprite(ark_blur_cam)
 	ScaleSprite(player\overlays[OVERLAY_NIGHTVISION], Max(scaleWidth, 1.0), Max(scaleHeight, 0.8))
 	EntityTexture(player\overlays[OVERLAY_NIGHTVISION], nvTexture)
@@ -243,7 +243,7 @@ Function DeletePlayer(player.Player)
 	DeleteInventory(player\inventory)
 
 	Local i%
-	For i = 0 to OVERLAY_COUNT-1
+	For i = 0 To OVERLAY_COUNT-1
 		FreeEntity(player\overlays[i])
 	Next
 
@@ -303,11 +303,11 @@ Function MovePlayer()
 				ElseIf (mainPlayer\stamina < 50) ;panting
 					If (mainPlayer\breathChn = 0) Then
 						mainPlayer\breathChn = PlaySound(GetIntArrayElem(mainPlayer\breathingSFX, IsPlayerWearingTempName(mainPlayer,"gasmask"), Rand(1, 3)))
-						ChannelVolume(mainPlayer\breathChn, Min((70.0-mainPlayer\stamina)/70.0,1.0)*userOptions\soundVolume)
+						ChannelVolume(mainPlayer\breathChn, Min((70.0-mainPlayer\stamina)/70.0,1.0)*userOptions\SoundVolume)
 					Else
 						If (Not IsChannelPlaying(mainPlayer\breathChn)) Then
 							mainPlayer\breathChn = PlaySound(GetIntArrayElem(mainPlayer\breathingSFX, IsPlayerWearingTempName(mainPlayer,"gasmask"), Rand(1, 3)))
-							ChannelVolume(mainPlayer\breathChn, Min((70.0-mainPlayer\stamina)/70.0,1.0)*userOptions\soundVolume)		
+							ChannelVolume(mainPlayer\breathChn, Min((70.0-mainPlayer\stamina)/70.0,1.0)*userOptions\SoundVolume)		
 						EndIf
 					EndIf
 				EndIf
@@ -2085,5 +2085,4 @@ Function Kill(player.Player)
 	EndIf
 End Function
 ;~IDEal Editor Parameters:
-;~F#32C
 ;~C#Blitz3D

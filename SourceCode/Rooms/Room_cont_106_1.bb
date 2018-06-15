@@ -218,7 +218,7 @@ Function UpdateEvent_cont_106_1(e.Events)
 					e\soundChannels[1] = PlaySound(e\sounds[4])
 				EndIf
 			EndIf
-		ElseIf e\EventState = 1 ;bone broken
+		ElseIf e\EventState = 1 Then ;nut BUSTED
 			If SoundTransmission And e\EventState3 < 2000 Then 
 				If e\soundChannels[1] = 0 Then 
 					LoadEventSound(e,"SFX/Character/LureSubject/Sniffling.ogg",1)
