@@ -1,4 +1,4 @@
-Global BurntNote%
+Global BurntNote.MarkedForRemoval
 
 ;TODO: remove, use Inventory type instead
 Global MaxItemAmount.MarkedForRemoval
@@ -8,25 +8,40 @@ Global InvSelect.MarkedForRemoval, SelectedItem.MarkedForRemoval
 
 Global ClosestItem.MarkedForRemoval
 
+Const ITEMPICK_SOUND_PAPER  = 0
+Const ITEMPICK_SOUND_MEDIUM = 1
+Const ITEMPICK_SOUND_LARGE  = 2
+Const ITEMPICK_SOUND_SMALL  = 3
+
 Type ItemTemplates
-	Field name$
-	Field tempname$
+	Field tempName$
+	Field invName$
 	
-	Field sound%
-	
-	Field found%
-	
-	Field obj%, objpath$, parentobjpath$
-	Field invimg%,invimg2%,invimgpath$
-	Field imgpath$, img%
-	
+	Field obj%
+	Field objPath$
 	Field isAnim%
+
+	Field invImage%[2]
+	Field invImagePath[2]
+
+	Field tex%
+	Field texPath$
+
+	Field bodySlot%
 	
 	Field scale#
-	;Field bumptex%
-	Field tex%, texpath$
 
+	;TODO: Remove.
 	Field invSlot%
+
+	Field name$
+	Field sound%
+
+	Field invimg%,invimg2%,invimgpath$
+
+	Field found%
+
+	Field imgpath$, img% ;Doing something with this that's (hopefully) a little smarter.
 End Type 
 
 Function CreateItemTemplate.ItemTemplates(name$, tempname$, objpath$, invimgpath$, invSlot%, imgpath$, scale#, texturepath$ = "",invimgpath2$="",Anim%=0, texflags%=9)
@@ -50,12 +65,12 @@ Function CreateItemTemplate.ItemTemplates(name$, tempname$, objpath$, invimgpath
 	;End Select
 	;If (slo <> "") Then PutINIValue(fileName, tempname, "slot", slo)
 
-	Local it.ItemTemplates = New ItemTemplates, n
+	Local it.ItemTemplates = New ItemTemplates
 	
 	
 	;if another item shares the same object, copy it
 	For it2.itemtemplates = Each ItemTemplates
-		If it2\objpath = objpath And it2\obj <> 0 Then it\obj = CopyEntity(it2\obj) : it\parentobjpath=it2\objpath : Exit
+		If it2\objpath = objpath And it2\obj <> 0 Then it\obj = CopyEntity(it2\obj) : Exit
 	Next
 	
 	If it\obj = 0 Then; it\obj = LoadMesh(objpath)

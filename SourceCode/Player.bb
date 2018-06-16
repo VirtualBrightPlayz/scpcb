@@ -1262,8 +1262,6 @@ Function UpdateInventory(player.Player)
 	
 	Local strtemp$
 	If CurrGameState=GAMESTATE_INVENTORY Then
-		ShowPointer2()
-		
 		If (player\currRoom\RoomTemplate\name = "gatea") Then
 			HideEntity player\overlays[OVERLAY_FOG]
 			CameraFogRange player\cam, 5,30
@@ -1350,7 +1348,7 @@ Function UpdateInventory(player.Player)
 						player\selectedItem = Null
 					ElseIf player\openInventory\items[MouseSlot] <> player\selectedItem Then
 						Select player\selectedItem\itemtemplate\tempname
-							Case "paper","key1","key2","key3","key4","key5","misc","oldpaper","badge","ticket" ;BoH stuff
+							Case "paper","key1","key2","key3","key4","key5","misc","oldpaper","badge","ticket"
 								If player\openInventory\items[MouseSlot]\itemtemplate\tempname = "clipboard" Then
 									;Add an item to clipboard
 									Local added.Items = Null
