@@ -2040,7 +2040,7 @@ Function UpdateInventory(player.Player)
 End Function
 
 Function IsPlayerWearingTempName(player.Player,templateName$)
-	Local it.ItemTemplates = FindItemTemplate("",templateName)
+	Local it.ItemTemplates = FindItemTemplate(templateName)
 	If it=Null Then Return False
 	Local slot% = it\invSlot
 	If slot=WORNITEM_SLOT_NONE Then Return False
