@@ -176,10 +176,6 @@ Global CanSave%
 ;TODO: Assets.bb
 Global CursorIMG.MarkedForRemoval
 
-;TODO: Assets.bb
-Global SelectedLoadingScreen.LoadingScreens, LoadingScreenAmount%, LoadingScreenText%
-Global LoadingBack%
-
 Global BlinkMeterIMG.MarkedForRemoval
 
 Global MouseHit1%, MouseDown1%, MouseHit2%, DoubleClick%, LastMouseHit1%, MouseUp1%
@@ -334,12 +330,12 @@ Global DoorOBJ.MarkedForRemoval, DoorFrameOBJ.MarkedForRemoval
 Global LeverOBJ.MarkedForRemoval, LeverBaseOBJ.MarkedForRemoval
 
 Global DoorColl.MarkedForRemoval
-Global ButtonOBJ.MarkedForRemoval, ButtonKeyOBJ%, ButtonCodeOBJ%, ButtonScannerOBJ%
+Global ButtonOBJ.MarkedForRemoval, ButtonKeyOBJ.MarkedForRemoval, ButtonCodeOBJ.MarkedForRemoval, ButtonScannerOBJ.MarkedForRemoval
 
 Global Monitor%, MonitorTexture%
 Global CamBaseOBJ%, CamOBJ%
 
-Global LiquidObj.MarkedForRemoval, MTFObj%, ClassDObj%
+Global LiquidObj.MarkedForRemoval, MTFObj.MarkedForRemoval, ClassDObj.MarkedForRemoval
 Global ApacheObj.MarkedForRemoval, ApacheRotorObj.MarkedForRemoval
 
 Global UnableToMove.MarkedForRemoval

@@ -7,7 +7,18 @@ Function InitializeNPCtypeMTF(n.NPCs)
     ;EntityRadius mainPlayer\collider, 0.15, 0.30
     EntityType n\collider, HIT_PLAYER
     ;EntityPickMode n\Collider, 1
-    n\obj = CopyEntity(MTFObj) ;LoadAnimMesh("GFX/npcs/mtf.b3d")
+
+	Local n2.NPCs
+	For n2 = Each NPCs
+		If (n2\npcType = n\npcType And n2\obj <> 0) Then
+			n\obj = CopyEntity(n2\obj)
+			Exit
+		EndIf
+	Next
+    
+	If (n\obj = 0) Then
+		n\obj = LoadAnimMesh("GFX/NPCs/MTF/mtf.b3d")
+	EndIf
     
     n\speed = (GetINIFloat("DATA/NPCs.ini", "MTF", "speed") / 100.0)
     
@@ -15,7 +26,7 @@ Function InitializeNPCtypeMTF(n.NPCs)
     
     ScaleEntity n\obj, temp, temp, temp
     
-    MeshCullBox (n\obj, -MeshWidth(MTFObj), -MeshHeight(MTFObj), -MeshDepth(MTFObj), MeshWidth(MTFObj)*2, MeshHeight(MTFObj)*2, MeshDepth(MTFObj)*2) 
+    MeshCullBox (n\obj, -MeshWidth(n\obj), -MeshHeight(n\obj), -MeshDepth(n\obj), MeshWidth(n\obj)*2, MeshHeight(n\obj)*2, MeshDepth(n\obj)*2) 
     
     If MTFSFX(0)=0 Then
         MTFSFX(0)=LoadSound("SFX/Character/MTF/ClassD1.ogg")
