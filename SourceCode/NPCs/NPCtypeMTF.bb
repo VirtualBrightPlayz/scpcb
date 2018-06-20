@@ -522,11 +522,11 @@ Function UpdateNPCtypeMTF(n.NPCs)
 							EndIf
 						Next
 						
-						If n\PrevState = 1
+						If n\PrevState = 1 Then
 							SetNPCFrame(n,423)
 							n\PrevState = 2
-						ElseIf n\PrevState=2
-							If n\Frame>200
+						ElseIf n\PrevState=2 Then
+							If n\Frame>200 Then
 								n\CurrSpeed = CurveValue(0, n\CurrSpeed, 20.0)
 								AnimateNPC(n, 423, 463, 0.4, False)
 								If n\Frame>462.9 Then n\Frame = 78
@@ -698,7 +698,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 					EndIf
 				EndIf
 				
-				If Curr106\State <= 0
+				If Curr106\State <= 0 Then
 					If OtherNPCSeesMeNPC(Curr106,n) Or EntityDistance(n\Collider,Curr106\Collider)<3.0 Then
 						If EntityVisible(n\Collider,Curr106\Collider) Then
 							n\State = 4
@@ -711,7 +711,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 							n\PathStatus = 0
 							n\Target = Curr106
 							DebugLog "106 spotted :"+n\State2
-							If n\MTFLeader=Null
+							If n\MTFLeader=Null Then
 								If n\sounds[0] <> 0 Then FreeSound n\sounds[0] : n\sounds[0] = 0
 								n\sounds[0] = LoadSound("SFX/Character/MTF/106/Spotted4.ogg")
 								PlayMTFSound(n\sounds[0], n)
@@ -720,7 +720,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 					EndIf
 				EndIf
 				
-				If Curr096 <> Null
+				If Curr096 <> Null Then
 					If OtherNPCSeesMeNPC(Curr096,n) Then
 						If EntityVisible(n\Collider,Curr096\Collider) Then
 							n\State = 8
@@ -732,7 +732,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 							n\PathTimer = 0.0
 							n\PathStatus = 0
 							DebugLog "096 spotted :"+n\State2
-							If n\MTFLeader=Null
+							If n\MTFLeader=Null Then
 								If n\sounds[0] <> 0 Then FreeSound n\sounds[0] : n\sounds[0] = 0
 								n\sounds[0] = LoadSound("SFX/Character/MTF/096/Spotted"+Rand(1,2)+".ogg")
 								PlayMTFSound(n\sounds[0], n)
@@ -742,9 +742,9 @@ Function UpdateNPCtypeMTF(n.NPCs)
 				EndIf
 				
 				For n2.NPCs = Each NPCs
-					If n2\NPCtype = NPCtype049
+					If n2\NPCtype = NPCtype049 Then
 						If OtherNPCSeesMeNPC(n2,n) Then
-							If EntityVisible(n\Collider,n2\Collider)
+							If EntityVisible(n\Collider,n2\Collider) Then
 								n\State = 4
 								n\EnemyX = EntityX(n2\Collider,True)
 								n\EnemyY = EntityY(n2\Collider,True)
@@ -763,9 +763,9 @@ Function UpdateNPCtypeMTF(n.NPCs)
 								Exit
 							EndIf
 						EndIf
-					ElseIf n2\NPCtype = NPCtypeZombie And n2\IsDead = False
+					ElseIf n2\NPCtype = NPCtypeZombie And n2\IsDead = False Then
 						If OtherNPCSeesMeNPC(n2,n) Then
-							If EntityVisible(n\Collider,n2\Collider)
+							If EntityVisible(n\Collider,n2\Collider) Then
 								n\State = 9
 								n\EnemyX = EntityX(n2\Collider,True)
 								n\EnemyY = EntityY(n2\Collider,True)
@@ -930,7 +930,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 				If n\PathStatus = 2 Then
 					n\State = 5
 					n\CurrSpeed = 0
-				ElseIf n\PathStatus = 1
+				ElseIf n\PathStatus = 1 Then
 					If n\Path[n\PathLocation]=Null Then 
 						If n\PathLocation > 19 Then 
 							n\PathLocation = 0
@@ -970,7 +970,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 								MoveEntity n\Collider, 0, 0, n\CurrSpeed * timing\tickDuration
 								
 								;If dist2 < (0.25+((n\Path[Min(n\PathLocation+1,19)]=Null)*0.3 * (n\ID Mod 3))) Then
-								If EntityDistance(n\Collider,n\Path[n\PathLocation]\obj)<0.5
+								If EntityDistance(n\Collider,n\Path[n\PathLocation]\obj)<0.5 Then
 									n\PathLocation = n\PathLocation + 1
 								EndIf
 							EndIf
@@ -1022,22 +1022,22 @@ Function UpdateNPCtypeMTF(n.NPCs)
 				;[Block]
 				n\Speed = 0.03
                 n\State2=n\State2-timing\tickDuration
-				If n\State2 > 0.0
-					If OtherNPCSeesMeNPC(n\Target,n)
+				If n\State2 > 0.0 Then
+					If OtherNPCSeesMeNPC(n\Target,n) Then
 						n\State2 = 70*15
 					EndIf
 					
-					If EntityDistance(n\Target\Collider,n\Collider)>HideDistance
-						If n\State2 > 70
+					If EntityDistance(n\Target\Collider,n\Collider)>HideDistance Then
+						If n\State2 > 70 Then
 							n\State2 = 70
 						EndIf
 					EndIf
 					
-					If EntityDistance(n\Target\Collider,n\Collider)<3.0 And n\State3 >= 0.0
+					If EntityDistance(n\Target\Collider,n\Collider)<3.0 And n\State3 >= 0.0 Then
 						n\State3 = 70*5
 					EndIf
 					
-					If n\State3 > 0.0
+					If n\State3 > 0.0 Then
 						n\PathStatus = 0
 						n\PathLocation = 0
 						n\Speed = 0.02
@@ -1061,7 +1061,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 						EndIf
 						ShowEntity n\Collider
 						TurnEntity n\Collider,0,180,0
-					ElseIf n\State3 < 0.0
+					ElseIf n\State3 < 0.0 Then
 						n\State3 = Min(n\State3+timing\tickDuration,0)
 					EndIf
 					
@@ -1071,7 +1071,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 						Else
 							For r = Each Rooms
 								If ((Abs(r\x-EntityX(n\Collider,True))>12.0) Or (Abs(r\z-EntityZ(n\Collider,True))>12.0)) And (Rand(1,Max(4-Int(Abs(r\z-EntityZ(n\Collider,True)/8.0)),2))=1) Then
-									If EntityDistance(r\obj,n\Target\Collider)>6.0
+									If EntityDistance(r\obj,n\Target\Collider)>6.0 Then
 										x = r\x
 										y = 0.1
 										z = r\z
@@ -1209,7 +1209,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 					If EntityVisible(n\collider, mainPlayer\collider) Then
 						;angle# = WrapAngle(angle - EntityYaw(n\Collider))
 						;If angle < 5 Or angle > 355 Then
-						If (Abs(DeltaYaw(n\collider,mainPlayer\collider))<50.0)
+						If (Abs(DeltaYaw(n\collider,mainPlayer\collider))<50.0) Then
 							;prev% = KillTimer
 							
 							PlayRangedSound_SM(sndManager\gunshot[0], mainPlayer\cam, n\collider, 15)
@@ -1241,7 +1241,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 				RotateEntity n\collider,0,CurveAngle(n\state2,EntityYaw(n\collider),20),0
 				n\angle = EntityYaw(n\collider)
 				
-				If n\Reload =< 0 
+				If n\Reload =< 0 Then
 					;LightVolume = TempLightVolume*1.2
 					PlayRangedSound_SM(sndManager\gunshot[0], mainPlayer\cam, n\collider, 20)
 					
@@ -1384,7 +1384,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 					EndIf
                 EndIf
 				
-				If (Not EntityVisible(n\collider,Curr096\collider)) Or EntityDistance(n\collider,Curr096\collider)>6.0
+				If (Not EntityVisible(n\collider,Curr096\collider)) Or EntityDistance(n\collider,Curr096\collider)>6.0 Then
 					n\state = 0
 				EndIf
 				;[End Block]
@@ -1395,11 +1395,11 @@ Function UpdateNPCtypeMTF(n.NPCs)
 					RotateEntity n\collider,0,CurveAngle(EntityYaw(n\obj),EntityYaw(n\collider),20.0),0
 					n\angle = EntityYaw(n\collider)
 					
-					If EntityDistance(n\target\collider,n\collider)<1.3
+					If EntityDistance(n\target\collider,n\collider)<1.3 Then
 						n\state3 = 70*2
 					EndIf
 					
-					If n\state3 > 0.0
+					If n\state3 > 0.0 Then
 						n\pathStatus = 0
 						n\pathLocation = 0
 						n\speed = 0.02
@@ -1417,7 +1417,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 					If n\Reload =< 0 And n\target\IsDead = False Then
 						;angle# = WrapAngle(angle - EntityYaw(n\Collider))
 						;If angle < 5 Or angle > 355 Then
-						If (Abs(DeltaYaw(n\collider,n\target\collider))<50.0)
+						If (Abs(DeltaYaw(n\collider,n\target\collider))<50.0) Then
 							;prev% = KillTimer
 							
 							PlayRangedSound_SM(sndManager\gunshot[0], mainPlayer\cam, n\collider, 15)
@@ -1431,10 +1431,10 @@ Function UpdateNPCtypeMTF(n.NPCs)
 							p.Particles = CreateParticle(EntityX(pvt), EntityY(pvt), EntityZ(pvt), 1, Rnd(0.08,0.1), 0.0, 5)
 							TurnEntity p\obj, 0,0,Rnd(360)
 							p\Achange = -0.15
-							If n\Target\HP > 0
+							If n\Target\HP > 0 Then
 								n\Target\HP = Max(n\Target\HP-Rand(5,10),0)
 							Else
-								If (Not n\Target\IsDead)
+								If (Not n\Target\IsDead) Then
 									If n\sounds[0] <> 0 Then FreeSound n\sounds[0] : n\sounds[0] = 0
 									n\sounds[0] = LoadSound("SFX/Character/MTF/049/Player0492_2.ogg")
 									PlayMTFSound(n\sounds[0], n)
@@ -1516,16 +1516,16 @@ Function UpdateNPCtypeMTF(n.NPCs)
 		End Select
 		
 		If n\CurrSpeed > 0.01 Then
-			If prevFrame > 500 And n\Frame<495
+			If prevFrame > 500 And n\Frame<495 Then
 				PlayRangedSound(sndManager\footstepMetal[Rand(0,7)]\internal, mainPlayer\cam, n\Collider, 8.0, Rnd(0.5,0.7))
-			ElseIf prevFrame < 505 And n\Frame=>505
+			ElseIf prevFrame < 505 And n\Frame=>505 Then
 				PlayRangedSound(sndManager\footstepMetal[Rand(0,7)]\internal, mainPlayer\cam, n\Collider, 8.0, Rnd(0.5,0.7))
 			EndIf
 		EndIf
 		
 		If NoTarget And n\State = 1 Then n\State = 0
 		
-		If n\State <> 3 And n\State <> 5 And n\State <> 6 And n\State <> 7
+		If n\State <> 3 And n\State <> 5 And n\State <> 6 And n\State <> 7 Then
 			If n\MTFLeader<>Null Then
 				If EntityDistance(n\Collider,n\MTFLeader\Collider)<0.7 Then
 					PointEntity n\Collider,n\MTFLeader\Collider
@@ -1548,7 +1548,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 		EndIf
 		
 		;teleport back to the facility if fell through the floor
-		If n\State <> 6 And n\State <> 7
+		If n\State <> 6 And n\State <> 7 Then
 			If (EntityY(n\Collider) < -10.0) Then
 				TeleportCloser(n)
 			EndIf
@@ -1579,7 +1579,7 @@ Function UpdateMTF%()
 			If entrance <> Null Then 
 				If Abs(EntityZ(entrance\obj)-EntityZ(mainPlayer\collider))<30.0 Then
 					;If mainPlayer\currRoom\RoomTemplate\Name<>"room860" And mainPlayer/currRoom/RoomTemplate/Name<>"pocketdimension" Then
-					If PlayerInReachableRoom()
+					If PlayerInReachableRoom() Then
 						PlaySound2 LoadTempSound("SFX/Character/MTF/Announc.ogg")
 					EndIf
 					

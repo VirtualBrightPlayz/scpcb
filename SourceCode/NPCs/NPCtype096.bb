@@ -31,14 +31,14 @@ Function UpdateNPCtype096(n.NPCs)
                 
                 angle = WrapAngle(DeltaYaw(n\collider, mainPlayer\collider));-EntityYaw(n\Collider,True))
                 
-                If (Not NoTarget)
+                If (Not NoTarget) Then
                     If angle<90 Or angle>270 Then
                         CameraProject mainPlayer\cam,EntityX(n\collider), EntityY(n\collider)+0.25, EntityZ(n\collider)
                         
                         If ProjectedX()>0 And ProjectedX()<userOptions\screenWidth Then
                             If ProjectedY()>0 And ProjectedY()<userOptions\screenHeight Then
                                 If EntityVisible(mainPlayer\collider, n\collider) Then
-                                    If (mainPlayer\blinkTimer < - 16 Or mainPlayer\blinkTimer > - 6)
+                                    If (mainPlayer\blinkTimer < - 16 Or mainPlayer\blinkTimer > - 6) Then
                                         PlaySound2 LoadTempSound("SFX/SCP/096/Triggered.ogg")
                                         
                                         mainPlayer\camZoom = 10
@@ -75,7 +75,7 @@ Function UpdateNPCtype096(n.NPCs)
                         n\soundChannels[1] = PlaySound(n\sounds[1])
                     Else
                         If (Not IsChannelPlaying(n\soundChannels[1])) Then n\soundChannels[1] = PlaySound(n\sounds[1])
-                        ChannelVolume(n\soundChannels[1], Min(Max(8.0-n\playerDistance,0.6),1.0)*userOptions\soundVolume)
+                        ChannelVolume(n\soundChannels[1], Min(Max(8.0-n\playerDistance,0.6),1.0)*userOptions\SoundVolume)
                     EndIf
                 EndIf
             EndIf
@@ -249,12 +249,12 @@ Function UpdateNPCtype096(n.NPCs)
                     ;Animate2(n\obj, AnimTime(n\obj),307,424, 0.3, False)
                     ;If AnimTime(n\obj)=424 Then n\State = 2 : SetAnimTime(n\obj, 892)								
                 EndIf
-            ElseIf n\State=2
+            ElseIf n\State=2 Then
                 AnimateNPC(n, 833, 972, 0.3, False)
                 
                 ;Animate2(n\obj, AnimTime(n\obj),833,972, 0.3, False)
                 If n\Frame=>972 Then n\State = 3 : n\State2=0
-            ElseIf n\State=3
+            ElseIf n\State=3 Then
                 n\State2 = n\State2+timing\tickDuration
                 If n\State2 > 70*18 Then 
                     AnimateNPC(n, 973, 1001, 0.5, False)
@@ -328,14 +328,14 @@ Function UpdateNPCtype096(n.NPCs)
                 EndIf
                 
                 angle = WrapAngle(DeltaYaw(n\Collider, mainPlayer\cam));-EntityYaw(n\Collider))
-                If (Not NoTarget)
+                If (Not NoTarget) Then
                     If angle<55 Or angle>360-55 Then
                         CameraProject mainPlayer\cam,EntityX(n\Collider), EntityY(mainPlayer\collider)+5.8*0.2-0.25, EntityZ(n\Collider)
                         
                         If ProjectedX()>0 And ProjectedX()<userOptions\screenWidth Then
                             If ProjectedY()>0 And ProjectedY()<userOptions\screenHeight Then
                                 If EntityVisible(mainPlayer\collider, n\Collider) Then
-                                    If (mainPlayer\blinkTimer < - 16 Or mainPlayer\blinkTimer > - 6)
+                                    If (mainPlayer\blinkTimer < - 16 Or mainPlayer\blinkTimer > - 6) Then
                                         PlaySound2 LoadTempSound("SFX/SCP/096/Triggered.ogg")
                                         
                                         mainPlayer\camZoom = 10

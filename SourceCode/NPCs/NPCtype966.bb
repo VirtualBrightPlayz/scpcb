@@ -96,11 +96,11 @@ Function UpdateNPCtype966(n.NPCs)
         
         If mainPlayer\stamina<10 Then 
             n\State3=n\State3+timing\tickDuration
-        Else If n\State3 < 900.0
+        Else If n\State3 < 900.0 Then
             n\State3=Max(n\State3-timing\tickDuration*0.2,0.0)
         EndIf
         
-        If n\State <> 10
+        If n\State <> 10 Then
             n\LastSeen = 0
         EndIf
         
@@ -211,7 +211,7 @@ Function UpdateNPCtype966(n.NPCs)
                                 n\CurrSpeed = 0
                                 SetNPCFrame(n,201)
                             ;SetAnimTime n\obj,15
-                            ElseIf n\PathStatus = 1
+                            ElseIf n\PathStatus = 1 Then
                                 If n\Path[n\PathLocation]=Null Then 
                                     If n\PathLocation > 19 Then 
                                         n\PathLocation = 0 : n\PathStatus = 0
@@ -233,7 +233,7 @@ Function UpdateNPCtype966(n.NPCs)
                                     EndIf
                                     
                                 EndIf
-                            ElseIf n\PathStatus = 0
+                            ElseIf n\PathStatus = 0 Then
                                 n\CurrSpeed = CurveValue(0,n\CurrSpeed,10.0)
                             EndIf
                         Else
@@ -267,7 +267,7 @@ Function UpdateNPCtype966(n.NPCs)
                     MoveEntity n\Collider,0,0,n\CurrSpeed
                 EndIf
             Case 10 ;attack
-                If n\LastSeen=0
+                If n\LastSeen=0 Then
                     PlayRangedSound(LoadTempSound("SFX/SCP/966/Echo"+Rand(1,3)+".ogg"), mainPlayer\cam, n\Collider)
                     n\LastSeen = 1
                 EndIf
@@ -289,10 +289,10 @@ Function UpdateNPCtype966(n.NPCs)
                     If n\Frame <= 2191 Then
                         AnimateNPC(n, 2160, 2191, 0.3, False)
                         If n\Frame > 2190 Then n\State = 8
-                    ElseIf n\Frame <= 2220
+                    ElseIf n\Frame <= 2220 Then
                         AnimateNPC(n, 2192, 2220, 0.3, False)
                         If n\Frame > 2219 Then n\State = 8
-                    ElseIf n\Frame <= 2260
+                    ElseIf n\Frame <= 2260 Then
                         AnimateNPC(n, 2221, 2260, 0.3, False)
                         If n\Frame > 2259 Then n\State = 8
                     EndIf

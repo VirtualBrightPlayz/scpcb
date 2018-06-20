@@ -545,8 +545,8 @@ Function InitLoadGame()
 	
 	For e.Events = Each Events
 		;Loading the necessary stuff for dimension1499, but this will only be done if the player is in this dimension already
-		If e\EventName = "dimension1499"
-			If e\EventState = 2
+		If e\EventName = "dimension1499" Then
+			If e\EventState = 2 Then
 				;[Block]
 				DrawLoading(91)
 				e\room\Objects[0] = CreatePlane()
@@ -754,5 +754,5 @@ Function NullGame()
 	
 End Function
 ;~IDEal Editor Parameters:
-;~F#10#22#2F#40#44#48#4C#59#68#84#B4#15A
+;~F#10#22#2F#40#44#48#4C#59#68#84#B4
 ;~C#Blitz3D

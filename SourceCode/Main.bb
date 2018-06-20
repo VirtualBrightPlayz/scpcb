@@ -678,7 +678,7 @@ Function UpdateGame()
 				If mainPlayer\blinkTimer < 0 Then
 					If mainPlayer\blinkTimer > - 5 Then
 						darkA = Max(darkA, Sin(Abs(mainPlayer\blinkTimer * 18.0)))
-					ElseIf mainPlayer\blinkTimer > - 15
+					ElseIf mainPlayer\blinkTimer > - 15 Then
 						darkA = 1.0
 					Else
 						darkA = Max(darkA, Abs(Sin(mainPlayer\blinkTimer * 18.0)))
@@ -773,25 +773,25 @@ Function UpdateGame()
 			If KeyHit(keyBinds\save) Then
 				If SelectedDifficulty\saveType = SAVEANYWHERE Then
 					RN$ = mainPlayer\currRoom\RoomTemplate\name$
-					If RN$ = "173" Or RN$ = "exit1" Or RN$ = "gatea"
+					If RN$ = "173" Or RN$ = "exit1" Or RN$ = "gatea" Then
 						Msg = "You cannot save in this location."
 						MsgTimer = 70 * 4
-					ElseIf (Not CanSave)
+					ElseIf (Not CanSave) Then
 						Msg = "You cannot save at this moment."
 						MsgTimer = 70 * 4
 					Else
 						SaveGame(SavePath + CurrSave + "/")
 					EndIf
-				ElseIf SelectedDifficulty\saveType = SAVEONSCREENS
+				ElseIf SelectedDifficulty\saveType = SAVEONSCREENS Then
 					If SelectedScreen=Null And SelectedMonitor=Null Then
 						Msg = "Saving is only permitted on clickable monitors scattered throughout the facility."
 						MsgTimer = 70 * 4						
 					Else
 						RN$ = mainPlayer\currRoom\RoomTemplate\name$
-						If RN$ = "173" Or RN$ = "exit1" Or RN$ = "gatea"
+						If RN$ = "173" Or RN$ = "exit1" Or RN$ = "gatea" Then
 							Msg = "You cannot save in this location."
 							MsgTimer = 70 * 4
-						ElseIf (Not CanSave)
+						ElseIf (Not CanSave) Then
 							Msg = "You cannot save at this moment."
 							MsgTimer = 70 * 4
 						Else
@@ -802,7 +802,7 @@ Function UpdateGame()
 					Msg = "Quick saving is disabled."
 					MsgTimer = 70 * 4
 				EndIf
-			Else If SelectedDifficulty\saveType = SAVEONSCREENS And (SelectedScreen<>Null Or SelectedMonitor<>Null)
+			Else If SelectedDifficulty\saveType = SAVEONSCREENS And (SelectedScreen<>Null Or SelectedMonitor<>Null) Then
 				If (Msg<>"Game progress saved." And Msg<>"You cannot save in this location."And Msg<>"You cannot save at this moment.") Or MsgTimer<=0 Then
 					Msg = "Press "+KeyName[keyBinds\save]+" to save."
 					MsgTimer = 70*4
@@ -837,8 +837,8 @@ Function UpdateGame()
 			If MsgTimer > 0 Then
 				Local temp% = False ;TODO: change this variable's name because it's dumb as hell
 				If CurrGameState<>GAMESTATE_INVENTORY Then
-					If mainPlayer\selectedItem <> Null
-						If mainPlayer\selectedItem\itemtemplate\tempname = "paper" Or mainPlayer\SelectedItem\itemtemplate\tempname = "oldpaper"
+					If mainPlayer\selectedItem <> Null Then
+						If mainPlayer\selectedItem\itemtemplate\tempname = "paper" Or mainPlayer\SelectedItem\itemtemplate\tempname = "oldpaper" Then
 							temp% = True
 						EndIf
 					EndIf
@@ -1713,16 +1713,16 @@ Function UpdateInfect()
 			If mainPlayer\infect008 > 20 And temp =< 20.0 Then
 				Msg = "You feel kinda feverish."
 				MsgTimer = 70*6
-			ElseIf mainPlayer\infect008 > 40 And temp =< 40.0
+			ElseIf mainPlayer\infect008 > 40 And temp =< 40.0 Then
 				Msg = "You feel nauseated."
 				MsgTimer = 70*6
-			ElseIf mainPlayer\infect008 > 60 And temp =< 60.0
+			ElseIf mainPlayer\infect008 > 60 And temp =< 60.0 Then
 				Msg = "The nausea's getting worse."
 				MsgTimer = 70*6
-			ElseIf mainPlayer\infect008 > 80 And temp =< 80.0
+			ElseIf mainPlayer\infect008 > 80 And temp =< 80.0 Then
 				Msg = "You feel very faint."
 				MsgTimer = 70*6
-			ElseIf mainPlayer\infect008 =>91.5
+			ElseIf mainPlayer\infect008 =>91.5 Then
 				mainPlayer\blinkTimer = Max(Min(-10*(mainPlayer\infect008-91.5),mainPlayer\blinkTimer),-10)
 				If mainPlayer\infect008 >= 92.7 And temp < 92.7 Then
 					For r.Rooms = Each Rooms
@@ -1758,7 +1758,7 @@ Function UpdateInfect()
 				mainPlayer\bloodloss = 0
 				
 				Animate2(mainPlayer\currRoom\NPC[0]\obj, AnimTime(mainPlayer\currRoom\NPC[0]\obj), 357, 381, 0.3)
-			ElseIf mainPlayer\infect008 < 98.5
+			ElseIf mainPlayer\infect008 < 98.5 Then
 				
 				EntityAlpha mainPlayer\overlays[OVERLAY_008], 0.5 * (Sin(TimeInPosMilliSecs()/5.0)+2.0)
 				mainPlayer\blurTimer = 950
@@ -1774,7 +1774,7 @@ Function UpdateInfect()
 					de.Decals = CreateDecal(3, EntityX(mainPlayer\currRoom\NPC[0]\Collider), 544*RoomScale + 0.01, EntityZ(mainPlayer\currRoom\NPC[0]\Collider),90,Rnd(360),0)
 					de\Size = 0.8
 					ScaleSprite(de\obj, de\Size,de\Size)
-				ElseIf mainPlayer\overlays[OVERLAY_008] > 96
+				ElseIf mainPlayer\overlays[OVERLAY_008] > 96 Then
 					mainPlayer\blinkTimer = Max(Min(-10*(mainPlayer\infect008-96),mainPlayer\blinkTimer),-10)
 				Else
 					;TODO: wtf??????
@@ -1982,7 +1982,7 @@ Function RenderWorld2()
 	;	ShowEntity NVBlink%
 	;EndIf
 	
-	If mainPlayer\blinkTimer < - 16 Or mainPlayer\blinkTimer > - 6
+	If mainPlayer\blinkTimer < - 16 Or mainPlayer\blinkTimer > - 6 Then
 		If IsPlayerWearingTempName(mainPlayer,"supernv") And hasBattery<>0 Then ;show a HUD
 			;NVTimer=NVTimer-timing\tickDuration
 			
@@ -2078,7 +2078,7 @@ Function RenderWorld2()
 	RenderWorld()
 	CameraProjMode ark_blur_cam,0
 	
-	If mainPlayer\blinkTimer < - 16 Or mainPlayer\blinkTimer > - 6
+	If mainPlayer\blinkTimer < - 16 Or mainPlayer\blinkTimer > - 6 Then
 		If (wornItem<>Null) And (hasBattery=1) And ((TimeInPosMilliSecs() Mod 800) < 400) Then
 			Color 255,0,0
 			SetFont uiAssets\font[2]
@@ -2094,13 +2094,13 @@ Function CheckForPlayerInFacility()
 	;True (=1): NPC is in facility
 	;2: NPC is in tunnels (maintenance tunnels/049 tunnels/939 storage room, etc...)
 	
-	If EntityY(mainPlayer\collider)>100.0
+	If EntityY(mainPlayer\collider)>100.0 Then
 		Return False
 	EndIf
-	If EntityY(mainPlayer\collider)< -10.0
+	If EntityY(mainPlayer\collider)< -10.0 Then
 		Return 2
 	EndIf
-	If EntityY(mainPlayer\collider)> 7.0 And EntityY(mainPlayer\collider)<=100.0
+	If EntityY(mainPlayer\collider)> 7.0 And EntityY(mainPlayer\collider)<=100.0 Then
 		Return 2
 	EndIf
 	
@@ -2127,7 +2127,7 @@ Function CheckTriggers$()
 	Local i%,sx#,sy#,sz#
 	Local inside% = -1
 	
-	If mainPlayer\currRoom\TriggerboxAmount = 0
+	If mainPlayer\currRoom\TriggerboxAmount = 0 Then
 		Return ""
 	Else
 		For i = 0 To mainPlayer\currRoom\TriggerboxAmount-1
@@ -2137,9 +2137,9 @@ Function CheckTriggers$()
 			sz# = EntityScaleZ(mainPlayer\currRoom\Triggerbox[i], 1)
 			GetMeshExtents(mainPlayer\currRoom\Triggerbox[i])
 			EntityAlpha mainPlayer\currRoom\Triggerbox[i],0.0
-			If EntityX(mainPlayer\collider)>((sx#*Mesh_MinX)+mainPlayer\currRoom\x) And EntityX(mainPlayer\collider)<((sx#*Mesh_MaxX)+mainPlayer\currRoom\x)
-				If EntityY(mainPlayer\collider)>((sy#*Mesh_MinY)+mainPlayer\currRoom\y) And EntityY(mainPlayer\collider)<((sy#*Mesh_MaxY)+mainPlayer\currRoom\y)
-					If EntityZ(mainPlayer\collider)>((sz#*Mesh_MinZ)+mainPlayer\currRoom\z) And EntityZ(mainPlayer\collider)<((sz#*Mesh_MaxZ)+mainPlayer\currRoom\z)
+			If EntityX(mainPlayer\collider)>((sx#*Mesh_MinX)+mainPlayer\currRoom\x) And EntityX(mainPlayer\collider)<((sx#*Mesh_MaxX)+mainPlayer\currRoom\x) Then
+				If EntityY(mainPlayer\collider)>((sy#*Mesh_MinY)+mainPlayer\currRoom\y) And EntityY(mainPlayer\collider)<((sy#*Mesh_MaxY)+mainPlayer\currRoom\y) Then
+					If EntityZ(mainPlayer\collider)>((sz#*Mesh_MinZ)+mainPlayer\currRoom\z) And EntityZ(mainPlayer\collider)<((sz#*Mesh_MaxZ)+mainPlayer\currRoom\z) Then
 						inside% = i%
 						Exit
 					EndIf

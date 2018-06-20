@@ -37,7 +37,7 @@ Function UpdateNPCtype066(n.NPCs)
                     Next
                     n\state2 = TimeInPosMilliSecs()+5000
                 EndIf
-            ElseIf dist < 8.0
+            ElseIf dist < 8.0 Then
                 n\lastDist = Rnd(1.0, 2.5)
                 n\state = 1
             EndIf
@@ -182,7 +182,7 @@ Function UpdateNPCtype066(n.NPCs)
         ;HeartBeatVolume = Max(HeartBeatVolume,Min(n\State3/1000,1.0))
     EndIf
     
-    If IsChannelPlaying(n\soundChannels[1])
+    If IsChannelPlaying(n\soundChannels[1]) Then
         mainPlayer\blurTimer = Max((5.0-dist)*300,0)
     EndIf
     

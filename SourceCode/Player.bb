@@ -300,7 +300,7 @@ Function MovePlayer()
 			If KeyDown(keyBinds\sprint) Then
 				If (mainPlayer\stamina < 5) Then ;out of breath
 					If (Not IsChannelPlaying(mainPlayer\breathChn)) Then mainPlayer\breathChn = PlaySound(GetIntArrayElem(mainPlayer\breathingSFX, IsPlayerWearingTempName(mainPlayer,"gasmask"), 0))
-				ElseIf (mainPlayer\stamina < 50) ;panting
+				ElseIf (mainPlayer\stamina < 50) Then ;panting
 					If (mainPlayer\breathChn = 0) Then
 						mainPlayer\breathChn = PlaySound(GetIntArrayElem(mainPlayer\breathingSFX, IsPlayerWearingTempName(mainPlayer,"gasmask"), Rand(1, 3)))
 						ChannelVolume(mainPlayer\breathChn, Min((70.0-mainPlayer\stamina)/70.0,1.0)*userOptions\SoundVolume)
@@ -349,7 +349,7 @@ Function MovePlayer()
 			If mainPlayer\forceMove>0 Then Speed=Speed*mainPlayer\forceMove
 			
 			If mainPlayer\selectedItem<>Null Then
-				If mainPlayer\selectedItem\itemtemplate\tempname = "firstaid" Or mainPlayer\SelectedItem\itemtemplate\tempname = "finefirstaid" Or mainPlayer\selectedItem\itemtemplate\tempname = "firstaid2" Then 
+				If mainPlayer\selectedItem\itemtemplate\tempname = "firstaid" Or mainPlayer\selectedItem\itemtemplate\tempname = "finefirstaid" Or mainPlayer\selectedItem\itemtemplate\tempname = "firstaid2" Then 
 					Sprint = 0
 				EndIf
 			EndIf
@@ -405,7 +405,7 @@ Function MovePlayer()
 	Else ;noclip on
 		If (KeyDown(keyBinds\sprint)) Then 
 			Sprint = 2.5
-		ElseIf KeyDown(keyBinds\crouch)
+		ElseIf KeyDown(keyBinds\crouch) Then
 			Sprint = 0.5
 		EndIf
 	EndIf
@@ -486,9 +486,9 @@ Function MovePlayer()
 					Else
 						PlaySound_SM(sndManager\footstep[Rand(0, 7)])
 					EndIf
-				ElseIf mainPlayer\footstepOverride=1
+				ElseIf mainPlayer\footstepOverride=1 Then
 					PlaySound_SM(sndManager\footstepPD[Rand(0, 2)])
-				ElseIf mainPlayer\footstepOverride=2
+				ElseIf mainPlayer\footstepOverride=2 Then
 					PlaySound_SM(sndManager\footstep8601[Rand(0, 2)])
 				Else
 					PlaySound_SM(sndManager\footstep[Rand(0, 7)])
@@ -539,9 +539,9 @@ Function MovePlayer()
 		If mainPlayer\bloodloss => 100 Then 
 			Kill(mainPlayer)
 			mainPlayer\heartbeatIntensity = 0.0
-		ElseIf mainPlayer\bloodloss > 80.0
+		ElseIf mainPlayer\bloodloss > 80.0 Then
 			mainPlayer\heartbeatIntensity = Max(150-(mainPlayer\bloodloss-80)*5,mainPlayer\heartbeatIntensity)
-		ElseIf mainPlayer\bloodloss > 35.0
+		ElseIf mainPlayer\bloodloss > 35.0 Then
 			mainPlayer\heartbeatIntensity = Max(70+mainPlayer\bloodloss,mainPlayer\heartbeatIntensity)
 		EndIf
 	EndIf
@@ -711,7 +711,7 @@ Function MouseLook()
 	End If
 	
 	; -- Limit the mouse;s movement. Using this method produces smoother mouselook movement than centering the mouse Each loop.
-	If (MouseX() > mouse_right_limit) Or (MouseX() < mouse_left_limit) Or (MouseY() > mouse_bottom_limit) Or (MouseY() < mouse_top_limit)
+	If (MouseX() > mouse_right_limit) Or (MouseX() < mouse_left_limit) Or (MouseY() > mouse_bottom_limit) Or (MouseY() < mouse_top_limit) Then
 		MoveMouse viewport_center_x, viewport_center_y
 	EndIf
 	
@@ -720,7 +720,7 @@ Function MouseLook()
 		If wearing1499 = 2 Then mainPlayer\stamina = Min(100, mainPlayer\stamina + (100.0-mainPlayer\stamina)*0.01*timing\tickDuration)
 		If wearingHazmat = 2 Then 
 			mainPlayer\stamina = Min(100, mainPlayer\stamina + (100.0-mainPlayer\stamina)*0.01*timing\tickDuration)
-		ElseIf wearingHazmat=1
+		ElseIf wearingHazmat=1 Then
 			mainPlayer\stamina = Min(60, mainPlayer\stamina)
 		EndIf
 		
@@ -775,7 +775,7 @@ Function EquipItem(player.Player,item.Items,toggle%)
 						NTF_1499PrevY# = EntityY(player\collider)
 						NTF_1499PrevZ# = EntityZ(player\collider)
 						
-						If NTF_1499X# = 0.0 And NTF_1499Y# = 0.0 And NTF_1499Z# = 0.0
+						If NTF_1499X# = 0.0 And NTF_1499Y# = 0.0 And NTF_1499Z# = 0.0 Then
 							PositionEntity (player\collider, r\x+676.0*RoomScale, r\y+314.0*RoomScale, r\z-2080.0*RoomScale)
 						Else
 							PositionEntity (player\collider, NTF_1499X#, NTF_1499Y#+0.05, NTF_1499Z#)
@@ -921,7 +921,7 @@ Function DrawInventory(player.Player)
 			If MouseDown1 Then
 				If MouseSlot = 66 Then
 					DrawImage(player\selectedItem\invimg, MouseX() - ImageWidth(player\selectedItem\itemtemplate\invimg) / 2, MouseY() - ImageHeight(player\selectedItem\itemtemplate\invimg) / 2)
-				ElseIf player\selectedItem <> player\openInventory\items[MouseSlot]
+				ElseIf player\selectedItem <> player\openInventory\items[MouseSlot] Then
 					DrawImage(player\selectedItem\invimg, MouseX() - ImageWidth(player\selectedItem\itemtemplate\invimg) / 2, MouseY() - ImageHeight(player\selectedItem\itemtemplate\invimg) / 2)
 				EndIf
 			End If
@@ -1086,7 +1086,7 @@ Function DrawInventory(player.Player)
 								Color (30,30,30)
 							EndIf
 							If (TimeInPosMilliSecs() Mod 1000) > 300 Then
-								If player\selectedItem\itemtemplate\name <> "S-NAV 310 Navigator" And player\SelectedItem\itemtemplate\name <> "S-NAV Navigator Ultimate" Then
+								If player\selectedItem\itemtemplate\name <> "S-NAV 310 Navigator" And player\selectedItem\itemtemplate\name <> "S-NAV Navigator Ultimate" Then
 									Text(x, y + height / 2 - 40, "COULD NOT CONNECT", True)
 									Text(x, y + height / 2 - 20, "TO MAP DATABASE", True)
 								EndIf
@@ -1130,7 +1130,7 @@ Function DrawInventory(player.Player)
 								EndIf
 								Local np.NPCs
 								For np = Each NPCs
-									If np\npcType = NPCtype049
+									If np\npcType = NPCtype049 Then
 										dist# = EntityDistance(player\cam, np\obj)
 										If dist < 8.0 * 4 Then
 											Color 100, 0, 0
@@ -1234,7 +1234,7 @@ Function DrawInventory(player.Player)
 					
 					DrawImage(player\selectedItem\itemtemplate\img, userOptions\screenWidth / 2 - ImageWidth(player\selectedItem\itemtemplate\img) / 2, userOptions\screenHeight / 2 - ImageHeight(player\selectedItem\itemtemplate\img) / 2)
 					
-					If player\selectedItem\state = 0
+					If player\selectedItem\state = 0 Then
 						Select player\selectedItem\itemtemplate\name
 							Case "Disciplinary Hearing DH-S-4137-17092"
 								player\blurTimer = 1000
@@ -1268,7 +1268,7 @@ Function UpdateInventory(player.Player)
 			CameraFogColor (player\cam,200,200,200)
 			CameraClsColor (player\cam,200,200,200)					
 			CameraRange(player\cam, 0.05, 30)
-		ElseIf (player\currRoom\RoomTemplate\name = "exit1") And (EntityY(player\collider)>1040.0*RoomScale)
+		ElseIf (player\currRoom\RoomTemplate\name = "exit1") And (EntityY(player\collider)>1040.0*RoomScale) Then
 			HideEntity player\overlays[OVERLAY_FOG]
 			CameraFogRange player\cam, 5,45
 			CameraFogColor (player\cam,200,200,200)
@@ -1354,7 +1354,7 @@ Function UpdateInventory(player.Player)
 									Local added.Items = Null
 									If player\selectedItem\itemtemplate\tempname<>"misc" Or (player\selectedItem\itemtemplate\name="Playing Card" Or player\selectedItem\itemtemplate\name="Mastercard") Then
 										For c% = 0 To player\openInventory\items[MouseSlot]\inventory\size-1
-											If (player\openInventory\items[MouseSlot]\inventory\items[c] = Null)
+											If (player\openInventory\items[MouseSlot]\inventory\items[c] = Null) Then
 												If player\selectedItem <> Null Then
 													player\openInventory\items[MouseSlot]\inventory\items[c] = player\selectedItem
 													player\openInventory\items[MouseSlot]\state = 1.0
@@ -1377,7 +1377,7 @@ Function UpdateInventory(player.Player)
 										Else
 											If added\itemtemplate\tempname = "paper" Or added\itemtemplate\tempname = "oldpaper" Then
 												Msg = "This document was added to the clipboard."
-											ElseIf added\itemtemplate\tempname = "badge"
+											ElseIf added\itemtemplate\tempname = "badge" Then
 												Msg = added\itemtemplate\name + " was added to the clipboard."
 											Else
 												Msg = "The " + added\itemtemplate\name + " was added to the clipboard."
@@ -1580,7 +1580,7 @@ Function UpdateInventory(player.Player)
 								player\injuries = Max(0, player\injuries - 2.0)
 								If player\injuries = 0 Then
 									Msg = "You bandaged the wounds and took a painkiller. You feel fine."
-								ElseIf player\injuries > 1.0
+								ElseIf player\injuries > 1.0 Then
 									Msg = "You bandaged the wounds and took a painkiller, but you were not able to stop the bleeding."
 								Else
 									Msg = "You bandaged the wounds and took a painkiller, but you still feel sore."
@@ -1592,7 +1592,7 @@ Function UpdateInventory(player.Player)
 								If player\injuries => 2.5 Then
 									Msg = "The wounds were way too severe to staunch the bleeding completely."
 									player\injuries = Max(2.5, player\injuries-Rnd(0.3,0.7))
-								ElseIf player\injuries > 1.0
+								ElseIf player\injuries > 1.0 Then
 									player\injuries = Max(0.5, player\injuries-Rnd(0.5,1.0))
 									If player\injuries > 1.0 Then
 										Msg = "You bandaged the wounds but were unable to staunch the bleeding completely."
@@ -1664,7 +1664,7 @@ Function UpdateInventory(player.Player)
 					player\selectedItem\name = Trim(Lower(player\selectedItem\name))
 					If Left(player\selectedItem\name, Min(6,Len(player\selectedItem\name))) = "cup of" Then
 						player\selectedItem\name = Right(player\selectedItem\name, Len(player\selectedItem\name)-7)
-					ElseIf Left(player\selectedItem\name, Min(8,Len(player\selectedItem\name))) = "a cup of" 
+					ElseIf Left(player\selectedItem\name, Min(8,Len(player\selectedItem\name))) = "a cup of" Then
 						player\selectedItem\name = Right(player\selectedItem\name, Len(player\selectedItem\name)-9)
 					EndIf
 					
@@ -1973,7 +1973,7 @@ Function UpdateInventory(player.Player)
 				Case "navigator", "nav"
 					If player\selectedItem\state <= 100 Then player\selectedItem\state = Max(0, player\selectedItem\state - timing\tickDuration * 0.005)
 				Case "coin"
-					If player\selectedItem\state = 0
+					If player\selectedItem\state = 0 Then
 						PlaySound2 LoadTempSound("SFX/SCP/1162/NostalgiaCancer"+Rand(1,10)+".ogg")
 					EndIf
 					
@@ -1999,21 +1999,21 @@ Function UpdateInventory(player.Player)
 			End Select
 			
 			If player\selectedItem <> Null Then
-				If player\selectedItem\itemtemplate\img <> 0
+				If player\selectedItem\itemtemplate\img <> 0 Then
 					Local IN$ = player\selectedItem\itemtemplate\tempname
 					If IN$ = "paper" Or IN$ = "badge" Or IN$ = "oldpaper" Or IN$ = "ticket" Then
 						For a_it.Items = Each Items
-							If a_it <> player\selectedItem
+							If a_it <> player\selectedItem Then
 								Local IN2$ = a_it\itemtemplate\tempname
 								If IN2$ = "paper" Or IN2$ = "badge" Or IN2$ = "oldpaper" Or IN2$ = "ticket" Then
-									If a_it\itemtemplate\img<>0
-										If a_it\itemtemplate\img <> player\selectedItem\itemtemplate\img
+									If a_it\itemtemplate\img<>0 Then
+										If a_it\itemtemplate\img <> player\selectedItem\itemtemplate\img Then
 											FreeImage(a_it\itemtemplate\img)
 											a_it\itemtemplate\img = 0
-										EndIf
-									EndIf
-								EndIf
-							EndIf
+										EndIf ;O
+									EndIf     ;O
+								EndIf         ;F
+							EndIf             ;TODO: o
 						Next
 					EndIf
 				EndIf			

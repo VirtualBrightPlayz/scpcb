@@ -114,7 +114,7 @@ Function UpdateNPCtype860(n.NPCs)
                             
                             ;Animate2(n\obj, AnimTime(n\obj), 2, 199, 0.5,False)
                             ;If AnimTime(n\obj)=199 Then SetAnimTime(n\obj,298) : PlayRangedSound(sndManager\footstep8601[Rand(0, 2)]\internal, mainPlayer\cam, n\Collider, 15.0)
-                        ElseIf n\Frame <= 297
+                        ElseIf n\Frame <= 297 Then
                             PointEntity n\Collider,mainPlayer\collider
                             
                             AnimateNPC(n, 200, 297, 0.5, False)

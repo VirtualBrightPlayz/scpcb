@@ -6,7 +6,7 @@ Function InitializeNPCtype939(n.NPCs)
     ;n\NVName = "SCP-939-"+i
     Local amount939% = 0
     For n2.NPCs = Each NPCs
-        If (n\npcType = n2\NPCtype) And (n<>n2)
+        If (n\npcType = n2\NPCtype) And (n<>n2) Then
             amount939% = amount939% + 1
         EndIf
     Next
@@ -36,7 +36,7 @@ Function InitializeNPCtype939(n.NPCs)
 End Function
 
 Function UpdateNPCtype939(n.NPCs)
-    If mainPlayer\currRoom\RoomTemplate\name <> "room3storage"
+    If mainPlayer\currRoom\RoomTemplate\name <> "room3storage" Then
         n\state = 66
     EndIf
     
@@ -88,7 +88,7 @@ Function UpdateNPCtype939(n.NPCs)
                     PlayRangedSound(sndManager\footstepMetal[Rand(0,7)]\internal, mainPlayer\cam, n\collider, 12.0)
                     If Rand(10)=1 Then
                         temp = False
-                        If (Not IsChannelPlaying(n\soundChannels[0]))
+                        If (Not IsChannelPlaying(n\soundChannels[0])) Then
                             temp = True
                         EndIf
                         If temp Then
@@ -130,7 +130,7 @@ Function UpdateNPCtype939(n.NPCs)
                         
                         If prevFrame < 24 And n\frame>=24 Then
                             temp = True
-                        ElseIf prevFrame < 57 And n\frame>=57
+                        ElseIf prevFrame < 57 And n\frame>=57 Then
                             temp = True
                         EndIf
                         
