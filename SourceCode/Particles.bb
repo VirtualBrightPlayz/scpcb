@@ -1,5 +1,3 @@
-
-
 Dim ParticleTextures%(10)
 
 Type Particles

@@ -176,6 +176,10 @@ Function FindItemTemplate.ItemTemplates(ntempname$)
 	Return candidate
 End Function
 
+Function IniHackTool()
+
+End Function
+
 Function LoadItemTemplates(file$)
 	Local f% = OpenFile(file)
 	Local it.ItemTemplates
@@ -428,12 +432,12 @@ End Function
 
 Global LastItemID%
 
-Function CreateItem.Items(name$, tempname$, x#, y#, z#, r%=0,g%=0,b%=0,a#=1.0,invSlots%=0)
+Function CreateItem.Items(name$, tempname$, x#, y#, z#, r#, g#, b#, a# = 1.0, invSlots%=0)
 	Local i.Items = New Items
 	Local it.ItemTemplates
 	
 	name = Lower(name)
-	tempname = Lower (tempname)
+	tempname = Lower(tempname)
 	
 	For it.ItemTemplates = Each ItemTemplates
 		If Lower(it\name) = name Then
@@ -460,11 +464,11 @@ Function CreateItem.Items(name$, tempname$, x#, y#, z#, r%=0,g%=0,b%=0,a#=1.0,in
 	i\dist = EntityDistance(mainPlayer\collider, i\collider)
 	i\dropSpeed = 0.0
 	
-	If tempname = "cup" Then
-		i\r=r
-		i\g=g
-		i\b=b
-		i\a=a
+	;If tempname = "cup" Then
+	;	i\r=r
+	;	i\g=g
+	;	i\b=b
+	;	i\a=a
 		
 		;TODO: re-implement.
 		;Local liquid = CopyEntity(LiquidObj)
@@ -481,9 +485,10 @@ Function CreateItem.Items(name$, tempname$, x#, y#, z#, r%=0,g%=0,b%=0,a#=1.0,in
 		;EndIf
 		
 		;EntityShininess liquid, 1.0
-	EndIf
+	;EndIf
 	
 	i\invimg = i\itemtemplate\invimg
+
 	If (tempname="clipboard") And (invSlots=0) Then
 		invSlots = 20
 		SetAnimTime i\model,17.0

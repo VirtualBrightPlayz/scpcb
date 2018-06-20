@@ -282,8 +282,7 @@ Function LoadEntities()
 		DecalTextures(i) = LoadTexture("GFX/Decals/blooddrop"+Str(i-14)+".png", 1 + 2)	
 	Next
 	DecalTextures(17) = LoadTexture("GFX/Decals/decal8.png", 1 + 2)	
-	DecalTextures(18) = LoadTexture("GFX/Decals/decalpd6.jpg", 1 + 2)	
-	DecalTextures(19) = LoadTexture("GFX/Decals/decal19.png", 1 + 2)
+	DecalTextures(18) = LoadTexture("GFX/Decals/decalpd6.jpg", 1 + 2)
 	
 	DrawLoading(25)
 	
