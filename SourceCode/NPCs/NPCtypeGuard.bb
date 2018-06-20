@@ -64,7 +64,7 @@ Function UpdateNPCtypeGuard(n.NPCs)
             If n\currSpeed > 0.01 Then
                 If (prevFrame > 1638 And n\frame < 1620) Then
                     PlayRangedSound(sndManager\footstepMetal[Rand(0,7)]\internal, mainPlayer\cam, n\collider, 8.0, Rnd(0.5, 0.7))						
-                ElseIf prevFrame < 1627 And n\frame=>1627
+                ElseIf prevFrame < 1627 And n\frame=>1627 Then
                     PlayRangedSound(sndManager\footstepMetal[Rand(0,7)]\internal, mainPlayer\cam, n\collider, 8.0, Rnd(0.5, 0.7))						
                 EndIf
             EndIf

@@ -65,7 +65,7 @@ Function UpdateNPCtype106(n.NPCs)
                 MoveEntity(n\collider, 0, ((EntityY(mainPlayer\collider) - 30) - EntityY(n\collider)) / 200.0, 0)
                 n\frame = 110
             ;Otherwise begin spawning 106.
-            ElseIf n\timer >= -10
+            ElseIf n\timer >= -10 Then
                 If EntityY(n\collider) < EntityY(mainPlayer\collider) - 20.0 - 0.55 Then
                     If Not mainPlayer\currRoom\RoomTemplate\DisableDecals Then
                         de.Decals = CreateDecal(0, EntityX(mainPlayer\collider), 0.01, EntityZ(mainPlayer\collider), 90, Rand(360), 0)
@@ -142,7 +142,7 @@ Function UpdateNPCtype106(n.NPCs)
                     PlayRangedSound(sndManager\footstepPD[Rand(0, 2)]\internal, mainPlayer\cam, n\Collider, 6.0, Rnd(0.8,1.0))
                 EndIf
 
-                If (dist > 25.0 Or Visible Or n\pathStatus = 2) Then
+                If (dist > 25.0 Or visible Or n\pathStatus = 2) Then
                     
                     PointEntity(n\obj, mainPlayer\collider)
                     RotateEntity(n\collider, 0, CurveAngle(EntityYaw(n\obj), EntityYaw(n\collider), 10.0), 0)
@@ -163,7 +163,7 @@ Function UpdateNPCtype106(n.NPCs)
                         
                         If n\PathStatus = 2 Then
                             n\CurrSpeed = 0
-                        ElseIf n\PathStatus = 1
+                        ElseIf n\PathStatus = 1 Then
                             If n\Path[n\PathLocation]=Null Then 
                                 If n\PathLocation > 19 Then 
                                     n\PathLocation = 0 : n\PathStatus = 0
@@ -181,7 +181,7 @@ Function UpdateNPCtype106(n.NPCs)
                                 
                                 If dist2 < 0.2 Then n\PathLocation = n\PathLocation + 1
                             EndIf
-                        ElseIf n\PathStatus = 0
+                        ElseIf n\PathStatus = 0 Then
                             If n\State3=0 Then AnimateNPC(n, 334, 494, 0.3)
                         EndIf
                     EndIf

@@ -45,7 +45,7 @@ Function UpdateEventRoom2pipes106(e.Events)
 				PointEntity(Curr106\Collider, e\room\Objects[1])
 				MoveEntity(Curr106\Collider, 0, 0, EntityDistance(e\room\Objects[0], e\room\Objects[1])*0.5 * (e\EventState / 50.0))
 				AnimateNPC(Curr106, 284, 333, 0.02*35)
-			ElseIf e\EventState < 200
+			ElseIf e\EventState < 200 Then
 				Curr106\Idle = True
 				AnimateNPC(Curr106, 334, 494, 0.2)
 				
@@ -64,7 +64,7 @@ Function UpdateEventRoom2pipes106(e.Events)
 					EndIf
 					FreeEntity pvt
 				EndIf
-			ElseIf e\EventState < 250
+			ElseIf e\EventState < 250 Then
 				Curr106\Idle = True
 				PositionEntity(Curr106\Collider, EntityX(e\room\Objects[0], True), EntityY(mainPlayer\collider) - 0.15, EntityZ(e\room\Objects[0], True))
 				PointEntity(Curr106\Collider, e\room\Objects[1])
@@ -101,3 +101,6 @@ Function UpdateEventRoom2pipes106(e.Events)
 	EndIf
 	;[End Block]
 End Function
+
+;~IDEal Editor Parameters:
+;~C#Blitz3D

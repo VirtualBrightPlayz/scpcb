@@ -119,7 +119,7 @@ Function UpdateEvent_tesla(e.Events)
 					HideEntity e\room\Objects[4]
 				EndIf
 			Else
-				If e\room\dist < 2
+				If e\room\dist < 2 Then
 					If e\EventState-timing\tickDuration =< 40 Then PlaySound_SM(sndManager\teslaShock)	
 				Else
 					If e\EventState-timing\tickDuration =< 40 Then PlayRangedSound_SM(sndManager\teslaShock,mainPlayer\cam,e\room\Objects[2])

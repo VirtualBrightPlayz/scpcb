@@ -90,14 +90,14 @@ Function UpdateEventCoffin(e.Events)
 		;TODO: rewrite this to adjust for separate zone loading
 		If EntityPitch(e\room\Levers[0]\obj, True) > 0 Then ;camera feed on
 			For sc.SecurityCams = Each SecurityCams
-				If (Not sc\SpecialCam)
+				If (Not sc\SpecialCam) Then
 					If sc\CoffinEffect=0 And sc\room\RoomTemplate\Name<>"room106" And sc\room\RoomTemplate\Name<>"room205" Then sc\CoffinEffect = 2
 					If sc\room = e\room Then sc\Screen = True
 				EndIf
 			Next
 		Else ;camera feed off
 			For sc.SecurityCams = Each SecurityCams
-				If (Not sc\SpecialCam)
+				If (Not sc\SpecialCam) Then
 					If sc\CoffinEffect<>1 Then sc\CoffinEffect = 0
 					If sc\room = e\room Then sc\Screen = False
 				EndIf
@@ -191,7 +191,7 @@ Function UpdateEventCoffin(e.Events)
 		
 		If (e\room\Levers[0]\succ) Then
 			For sc.SecurityCams = Each SecurityCams
-				If (Not sc\SpecialCam)
+				If (Not sc\SpecialCam) Then
 					If sc\CoffinEffect=0 And sc\room\RoomTemplate\Name<>"room106" Then sc\CoffinEffect = 2
 					If sc\CoffinEffect = 1 Then EntityBlend(sc\ScrOverlay, 3)
 					If sc\room = e\room Then sc\Screen = True
@@ -199,7 +199,7 @@ Function UpdateEventCoffin(e.Events)
 			Next
 		Else
 			For sc.SecurityCams = Each SecurityCams
-				If (Not sc\SpecialCam)
+				If (Not sc\SpecialCam) Then
 					If sc\CoffinEffect <> 1 Then sc\CoffinEffect = 0
 					If sc\CoffinEffect = 1 Then EntityBlend(sc\ScrOverlay, 0)
 					If sc\room = e\room Then sc\Screen = False

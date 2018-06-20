@@ -6,7 +6,7 @@ Function FillRoom_hll_dirty_3(r.Rooms)
     Local t1;, Bump
     
     For r2.Rooms = Each Rooms
-        If r2\RoomTemplate\Name = r\RoomTemplate\Name And r2 <> r
+        If r2\RoomTemplate\Name = r\RoomTemplate\Name And r2 <> r Then
             r\Objects[0] = CopyEntity(r2\Objects[0],r\obj)
             Exit
         EndIf
@@ -16,3 +16,6 @@ Function FillRoom_hll_dirty_3(r.Rooms)
     ;EntityType r\Objects[0],HIT_MAP
     ;EntityAlpha r\Objects[0],0.0
 End Function
+
+;~IDEal Editor Parameters:
+;~C#Blitz3D

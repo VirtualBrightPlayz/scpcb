@@ -32,7 +32,7 @@ Function UpdateEventToiletguard(e.Events)
 	;[Block]
 	If e\EventState = 0 Then
 		If e\room\dist < 8.0  And e\room\dist > 0 Then e\EventState = 1
-	ElseIf e\EventState = 1
+	ElseIf e\EventState = 1 Then
 		e\room\NPC[0]=CreateNPC(NPCtypeGuard, EntityX(e\room\Objects[1],True), EntityY(e\room\Objects[1],True)+0.5, EntityZ(e\room\Objects[1],True))
 		PointEntity e\room\NPC[0]\Collider, e\room\obj
 		RotateEntity e\room\NPC[0]\Collider, 0, EntityYaw(e\room\NPC[0]\Collider)-20,0, True
@@ -56,7 +56,7 @@ Function UpdateEventToiletguard(e.Events)
 			;FreeSound e\sounds[0]
 			;StopChannel e\soundChannels[0]
 			;LoadEventSound(e,"SFX/Character/Guard/SuicideGuard2.ogg",1)
-			If e\soundChannels[1] = 0
+			If e\soundChannels[1] = 0 Then
 				StopChannel(e\soundChannels[0])
 				FreeSound(e\sounds[0])
 				e\room\NPC[0]\sounds[0] = LoadSound("SFX/Character/Guard/SuicideGuard2.ogg")
@@ -86,11 +86,11 @@ Function UpdateEventButtghost(e.Events)
 	;[Block]
 	If mainPlayer\currRoom = e\room Then
 		If EntityDistance(mainPlayer\collider, e\room\Objects[0]) < 1.8 Then
-			If e\EventState = 0
+			If e\EventState = 0 Then
 				e\soundChannels[0] = PlayRangedSound(LoadTempSound("SFX/SCP/Joke/789J.ogg"), mainPlayer\cam,e\room\Objects[0])
 				e\EventState = 1
 			Else
-				If (Not IsChannelPlaying(e\soundChannels[0]))
+				If (Not IsChannelPlaying(e\soundChannels[0])) Then
 					RemoveEvent(e)
 				EndIf
 			EndIf

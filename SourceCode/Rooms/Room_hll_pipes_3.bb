@@ -17,7 +17,7 @@ Function UpdateEvent106sinkhole(e.Events)
 		de\Size = 2.5 : ScaleSprite(de\obj, de\Size, de\Size);
 		
 		e\EventState=1
-	ElseIf mainPlayer\currRoom = e\room
+	ElseIf mainPlayer\currRoom = e\room Then
 		If e\sounds[0]=0 Then
 			e\sounds[0]=LoadSound("SFX/Room/Sinkhole.ogg")
 		Else
@@ -61,3 +61,6 @@ Function UpdateEvent106sinkhole(e.Events)
 	
 End Function
 
+
+;~IDEal Editor Parameters:
+;~C#Blitz3D

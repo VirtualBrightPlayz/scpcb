@@ -36,7 +36,7 @@ Function UpdateEvent_exit_gatea_1(e.Events)
 	If mainPlayer\currRoom = e\room Then 
 		If RemoteDoorOn=False Then
 			e\room\RoomDoors[1]\locked=True
-		ElseIf RemoteDoorOn And e\EventState3=0
+		ElseIf RemoteDoorOn And e\EventState3=0 Then
 			e\room\RoomDoors[1]\locked=False
 			If e\room\RoomDoors[1]\open Then 
 				If e\room\RoomDoors[1]\openstate > 50 Or EntityDistance(mainPlayer\collider, e\room\RoomDoors[1]\frameobj)<0.5 Then
@@ -71,3 +71,6 @@ Function UpdateEvent_exit_gatea_1(e.Events)
 	EndIf
 	;[End Block]
 End Function
+
+;~IDEal Editor Parameters:
+;~C#Blitz3D

@@ -35,20 +35,20 @@ Function UpdateEvent_cont_500_1499_2(e.Events)
 
 	;[Block]
 	;If mainPlayer\currRoom = e\room
-	If e\room\dist < 15
+	If e\room\dist < 15 Then
 		If Contained106 Then e\EventState = 2.0
 		If Curr106\State < 0 Then e\EventState = 2.0
 		
-		If e\EventState < 2.0
-			If e\EventState = 0.0
+		If e\EventState < 2.0 Then
+			If e\EventState = 0.0 Then
 				LoadEventSound(e,"SFX/Character/Scientist/EmilyScream.ogg")
 				e\soundChannels[0] = PlayRangedSound(e\sounds[0], mainPlayer\cam, e\room\Objects[0], 100, 1.0)
 				de.Decals = CreateDecal(0, EntityX(e\room\Objects[0],True), e\room\y+2.0*RoomScale, EntityZ(e\room\Objects[0],True), 90, Rand(360), 0)
 				de\Size = 0.5 : EntityAlpha(de\obj, 0.8)
 				EntityFX de\obj,1
 				e\EventState = 1.0
-			ElseIf e\EventState = 1.0
-				If (Not IsChannelPlaying(e\soundChannels[0]))
+			ElseIf e\EventState = 1.0 Then
+				If (Not IsChannelPlaying(e\soundChannels[0])) Then
 					e\EventState = 2.0
 					e\room\RoomDoors[0]\locked = False
 				Else
@@ -67,3 +67,6 @@ Function UpdateEvent_cont_500_1499_2(e.Events)
 	;[End Block]
 End Function
 
+
+;~IDEal Editor Parameters:
+;~C#Blitz3D

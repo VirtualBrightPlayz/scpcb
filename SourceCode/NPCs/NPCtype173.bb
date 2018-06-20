@@ -133,7 +133,7 @@ Function UpdateNPCtype173(n.NPCs)
 							Next
 						EndIf
 					EndIf
-				ElseIf dist > HideDistance*0.8 ;3-6 rooms away from the player -> move randomly from waypoint to another
+				ElseIf dist > HideDistance*0.8 Then ;3-6 rooms away from the player -> move randomly from waypoint to another
 					If Rand(70)=1 Then TeleportCloser(n)
 				Else ;less than 3 rooms away -> actively move towards the player
 					
@@ -160,7 +160,7 @@ Function UpdateNPCtype173(n.NPCs)
 						Next
 					EndIf
 					
-					If NoTarget
+					If NoTarget Then
 						playerVisible = False
 						n\targetX = 0
 						n\targetY = 0
@@ -250,12 +250,12 @@ Function UpdateNPCtype173(n.NPCs)
 		Case STATE173_BEING_CONTAINED
 			If (n\Target <> Null) Then
 				Local tmp = False
-				If dist > HideDistance*0.7
-					If EntityVisible(n\obj,mainPlayer\collider)=False
+				If dist > HideDistance*0.7 Then
+					If EntityVisible(n\obj,mainPlayer\collider)=False Then
 						tmp = True
 					EndIf
 				EndIf
-				If (Not tmp)
+				If (Not tmp) Then
 					PointEntity n\obj, n\Target\collider
 					RotateEntity n\collider, 0, CurveAngle(EntityYaw(n\obj),EntityYaw(n\collider),10.0), 0, True								
 					dist = EntityDistance(n\collider, n\Target\collider)

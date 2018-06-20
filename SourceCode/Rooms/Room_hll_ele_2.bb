@@ -84,7 +84,7 @@ Function UpdateEvent_hll_ele_2(e.Events)
 				e\room\NPC[0]\EnemyY = EntityY(e\room\Objects[1],True)
 				e\room\NPC[0]\EnemyZ = EntityZ(e\room\Objects[1],True)
 			EndIf
-		ElseIf e\EventState = 2
+		ElseIf e\EventState = 2 Then
 			If EntityDistance(e\room\NPC[0]\Collider,e\room\Objects[1])<2.0 Then
 				e\room\RoomDoors[0]\open = False
 				;PlayRangedSound(CloseDoorSFX(0, 0), mainPlayer\cam, e\room\RoomDoors[0]\obj, 8.0)			
@@ -93,15 +93,15 @@ Function UpdateEvent_hll_ele_2(e.Events)
 				
 				e\EventState = 2.05
 			EndIf
-		ElseIf e\EventState < 13*70
+		ElseIf e\EventState < 13*70 Then
 			e\EventState = e\EventState+timing\tickDuration
 			;6.7 - 7.4
 			;8.6 - 10
 			If e\EventState > 6.7*70 And e\EventState < 7.4*70 Then
 				mainPlayer\camShake = 7.4-(e\EventState/70.0)
-			ElseIf e\EventState > 8.6*70 And e\EventState < 10.6*70 
+			ElseIf e\EventState > 8.6*70 And e\EventState < 10.6*70 Then
 				mainPlayer\camShake = 10.6-(e\EventState/70.0)
-			ElseIf e\EventState > 12.6*70
+			ElseIf e\EventState > 12.6*70 Then
 				mainPlayer\camShake = 0
 				If e\EventState-timing\tickDuration < 12.6*70 And e\room\NPC[0]<>Null Then
 					RemoveNPC(e\room\NPC[0])
@@ -123,3 +123,6 @@ Function UpdateEvent_hll_ele_2(e.Events)
 	EndIf
 	;[End Block]
 End Function
+
+;~IDEal Editor Parameters:
+;~C#Blitz3D

@@ -5,7 +5,7 @@ Function FillRoom_lck_air_2(r.Rooms)
     
     Local t1;, Bump
 
-    If r\RoomTemplate\Name = "room2gw_b"
+    If r\RoomTemplate\Name = "room2gw_b" Then
         r\Objects[2] = CreatePivot(r\obj)
         PositionEntity (r\Objects[2], r\x - 156.825*RoomScale, -37.3458*RoomScale, r\z+121.364*RoomScale, True)
         
@@ -38,22 +38,22 @@ Function FillRoom_lck_air_2(r.Rooms)
     If r\Objects[3]=0 Then r\Objects[3] = LoadMesh("GFX/map/room2gw_pipes.b3d",r\obj)
     EntityPickMode r\Objects[3],2
     
-    If r\RoomTemplate\Name = "lck_air_2"
+    If r\RoomTemplate\Name = "lck_air_2" Then
         r\Objects[0] = CreatePivot()
         ;PositionEntity r\Objects[0],r\x-48.0*RoomScale,128.0*RoomScale,r\z+320.0*RoomScale
         PositionEntity r\Objects[0],r\x+344.0*RoomScale,128.0*RoomScale,r\z
         EntityParent r\Objects[0],r\obj
         
         Local bd_temp% = False
-        If room2gw_brokendoor
-            If room2gw_x = r\x
-                If room2gw_z = r\z
+        If room2gw_brokendoor Then
+            If room2gw_x = r\x Then
+                If room2gw_z = r\z Then
                     bd_temp% = True
                 EndIf
             EndIf
         EndIf
         
-        If (room2gw_brokendoor = 0 And Rand(1,2)=1) Or bd_temp%
+        If (room2gw_brokendoor = 0 And Rand(1,2)=1) Or bd_temp% Then
             r\Objects[1] = LoadMesh("GFX/Map/Meshes/door.b3d") ;TODO: Not this.
             ScaleEntity(r\Objects[1], (204.0 * RoomScale) / MeshWidth(r\Objects[1]), 312.0 * RoomScale / MeshHeight(r\Objects[1]), 16.0 * RoomScale / MeshDepth(r\Objects[1]))
             EntityType r\Objects[1], HIT_MAP
@@ -92,11 +92,11 @@ Function UpdateEventRoom_gw(e.Events)
 	Local brokendoor% = False
 	If e\room\Objects[1]<>0 Then brokendoor% = True
 	
-	If mainPlayer\currRoom = e\room
-		If e\EventState = 0.0
-			If EntityDistance(e\room\Objects[0],mainPlayer\collider)<1.4 And e\EventState3 = 0.0
+	If mainPlayer\currRoom = e\room Then
+		If e\EventState = 0.0 Then
+			If EntityDistance(e\room\Objects[0],mainPlayer\collider)<1.4 And e\EventState3 = 0.0 Then
 				e\EventState = 1.0
-				If brokendoor
+				If brokendoor Then
 					If e\sounds[1] <> 0 Then FreeSound(e\sounds[1]) : e\sounds[1] = 0
 					e\sounds[1] = LoadSound("SFX/Door/DoorSparks.ogg")
 					e\soundChannels[1] = PlayRangedSound(e\sounds[1],mainPlayer\cam,e\room\Objects[1],5)
@@ -109,17 +109,17 @@ Function UpdateEventRoom_gw(e.Events)
 				e\room\RoomDoors[1]\locked = False
 				UseDoor(e\room\RoomDoors[0])
 				UseDoor(e\room\RoomDoors[1])
-			ElseIf EntityDistance(e\room\Objects[0],mainPlayer\collider)>2.4
+			ElseIf EntityDistance(e\room\Objects[0],mainPlayer\collider)>2.4 Then
 				e\EventState3 = 0.0
 			EndIf
 		Else
-			If e\EventState2 < 70*7
+			If e\EventState2 < 70*7 Then
 				e\EventState2 = e\EventState2 + timing\tickDuration
 				e\room\RoomDoors[0]\open = False
 				e\room\RoomDoors[1]\open = False
-				If e\EventState2 < 70*1
+				If e\EventState2 < 70*1 Then
 					
-					If brokendoor
+					If brokendoor Then
 						pvt% = CreatePivot()
 						Local d_ent% = e\room\Objects[1]
 						PositionEntity(pvt, EntityX(d_ent%,True), EntityY(d_ent%,True)+Rnd(0.0,0.05), EntityZ(d_ent%,True))
@@ -143,17 +143,17 @@ Function UpdateEventRoom_gw(e.Events)
 						FreeEntity pvt
 					EndIf
 						
-				ElseIf e\EventState2 > 70*3 And e\EventState < 70*5.5
+				ElseIf e\EventState2 > 70*3 And e\EventState < 70*5.5 Then
 					pvt% = CreatePivot(e\room\obj)								
 					For i = 0 To 1
-						If e\room\RoomTemplate\Name$ = "lck_ez_3"
-							If i = 0
+						If e\room\RoomTemplate\Name$ = "lck_ez_3" Then
+							If i = 0 Then
 								PositionEntity pvt%,-288.0*RoomScale,416.0*RoomScale,320.0*RoomScale,False
 							Else
 								PositionEntity pvt%,192.0*RoomScale,416.0*RoomScale,320.0*RoomScale,False
 							EndIf
 						Else
-							If i = 0
+							If i = 0 Then
 								PositionEntity pvt%,312.0*RoomScale,416.0*RoomScale,-128.0*RoomScale,False
 							Else
 								PositionEntity pvt%,312.0*RoomScale,416.0*RoomScale,224.0*RoomScale,False
@@ -174,7 +174,7 @@ Function UpdateEventRoom_gw(e.Events)
 				e\EventState = 0.0
 				e\EventState2 = 0.0
 				e\EventState3 = 1.0
-				If e\room\RoomDoors[0]\open = False
+				If e\room\RoomDoors[0]\open = False Then
 					e\room\RoomDoors[0]\locked = False
 					e\room\RoomDoors[1]\locked = False
 					UseDoor(e\room\RoomDoors[0])
@@ -183,12 +183,12 @@ Function UpdateEventRoom_gw(e.Events)
 			EndIf
 		EndIf
 		
-		If brokendoor
-			If IsChannelPlaying(e\soundChannels[1])
+		If brokendoor Then
+			If IsChannelPlaying(e\soundChannels[1]) Then
 				UpdateRangedSoundOrigin(e\soundChannels[1],mainPlayer\cam,e\room\Objects[1],5)
 			EndIf
 		EndIf
-		If IsChannelPlaying(e\soundChannels[0])
+		If IsChannelPlaying(e\soundChannels[0]) Then
 			UpdateRangedSoundOrigin(e\soundChannels[0],mainPlayer\cam,e\room\Objects[0],5)
 		EndIf
 	Else
@@ -211,7 +211,7 @@ Function UpdateEventRoom2gw_b(e.Events)
 	Local angle#
 
 	;[Block]
-	If e\room\dist < 8
+	If e\room\dist < 8 THen
 		If e\EventState = 0 Then
 			e\room\NPC[0]=CreateNPC(NPCtypeGuard, EntityX(e\room\Objects[2],True), EntityY(e\room\Objects[2],True)+0.5, EntityZ(e\room\Objects[2],True))
 			PointEntity e\room\NPC[0]\Collider, e\room\obj

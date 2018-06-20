@@ -223,7 +223,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 					Curr106\State = -0.1
 					e\EventState = 601
 				EndIf
-			ElseIf Curr106\State > 0 ;106 circles around the starting room
+			ElseIf Curr106\State > 0 Then ;106 circles around the starting room
 				angle = (e\EventState/10 Mod 360)
 				PositionEntity(Curr106\Collider, EntityX(e\room\obj), 0.2+0.35+Sin(e\EventState/14.0+i*20.0)*0.4, EntityX(e\room\obj))
 				RotateEntity(Curr106\Collider, 0,angle,0)
@@ -306,13 +306,13 @@ Function UpdateEvent_pocketdimension(e.Events)
 					
 					dist = EntityDistance(mainPlayer\collider, e\room\Objects[20])
 					
-					If e\soundChannels[1]<>0 And IsChannelPlaying(e\soundChannels[1])
+					If e\soundChannels[1]<>0 And IsChannelPlaying(e\soundChannels[1]) Then
 						e\soundChannels[1] = LoopRangedSound(e\sounds[1], e\soundChannels[1], mainPlayer\cam, mainPlayer\cam, 10.0, 0.3+(Not safe)*0.6)
 					EndIf	
 					
 					If safe Then
 						EntityTexture e\room\Objects[20], e\room\Objects[18]
-					ElseIf dist < 8.0
+					ElseIf dist < 8.0 Then
 						e\soundChannels[0] = LoopRangedSound(e\sounds[0], e\soundChannels[0], mainPlayer\cam, e\room\Objects[20], 8.0)
 						EntityTexture e\room\Objects[20], e\room\Objects[19]
 						mainPlayer\injuries=mainPlayer\injuries+(8.0-dist)*timing\tickDuration*0.001
@@ -351,7 +351,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 					
 					For i = 9 To 10
 						dist = Distance(EntityX(mainPlayer\collider), EntityZ(mainPlayer\collider),EntityX(e\room\Objects[i],True),EntityZ(e\room\Objects[i],True))
-						If dist<6.0 Then 
+						If dist<6.0 Then
 							If dist<100.0*RoomScale Then
 								pvt=CreatePivot()
 								PositionEntity pvt, EntityX(e\room\Objects[i],True),EntityY(mainPlayer\collider),EntityZ(e\room\Objects[i],True)
@@ -426,9 +426,9 @@ Function UpdateEvent_pocketdimension(e.Events)
 							PositionEntity e\room\Objects[20], EntityX(e\room\Objects[8],True)-1000,0,0,True
 							
 						EndIf
-					ElseIf EntityY(mainPlayer\collider)<-180*RoomScale ;the "exit room"
+					ElseIf EntityY(mainPlayer\collider)<-180*RoomScale Then ;the "exit room"
 						temp = Distance(EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider),EntityX(e\room\Objects[8],True)+1024*RoomScale,EntityZ(e\room\Objects[8],True))
-						If temp<640*RoomScale
+						If temp<640*RoomScale Then
 							mainPlayer\blurTimer = (640*RoomScale-temp)*3000
 							
 							;TODO: fix
@@ -461,8 +461,6 @@ Function UpdateEvent_pocketdimension(e.Events)
 					EndIf
 				EndIf	
 			EndIf
-			
-			
 			
 			If EntityY(mainPlayer\collider) < -1600*RoomScale Then
 				If EntityDistance(mainPlayer\collider, e\room\Objects[8]) > 4750*RoomScale Then
@@ -507,7 +505,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 			UpdateDoors()
 			UpdateRooms()
 			
-		ElseIf e\EventState2 = 0
+		ElseIf e\EventState2 = 0 Then
 			dist# = EntityDistance(mainPlayer\collider, e\room\obj)	
 			
 			If dist > 1700*RoomScale Then
@@ -588,7 +586,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 			CameraFogColor mainPlayer\cam, 38*0.5, 55*0.5, 47*0.5
 			CameraClsColor mainPlayer\cam, 38*0.5, 55*0.5, 47*0.5
 			
-			If Rand(800)=1 Then 
+			If Rand(800)=1 Then
 				angle = EntityYaw(mainPlayer\cam,True)+Rnd(150,210)
 				p.Particles = CreateParticle(EntityX(mainPlayer\collider)+Cos(angle)*7.5, 0.0, EntityZ(mainPlayer\collider)+Sin(angle)*7.5, 3, 4.0, 0.0, 2500)
 				EntityBlend(p\obj, 2)

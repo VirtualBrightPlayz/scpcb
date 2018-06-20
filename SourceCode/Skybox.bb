@@ -8,7 +8,7 @@ Function sky_CreateSky(filename$,parent%=0)
 	For face = 1 To 6
 		Read direction$
 		Local fname$ = filename$ + direction$ + ".jpg"
-		If FileType(fname$)=1
+		If FileType(fname$)=1 Then
 			Local b% = LoadBrush(fname$,%110001)
 			Local s% = CreateSurface(sky,b)
 			

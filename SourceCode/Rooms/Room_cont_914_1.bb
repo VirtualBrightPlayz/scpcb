@@ -169,7 +169,7 @@ Function Use914(item.Items, setting$, x#, y#, z#)
 							If Distance(EntityX(it\collider,True), EntityZ(it\collider,True), EntityX(item\collider, True), EntityZ(item\collider, True)) < (180.0 * RoomScale) Then
 								it2 = it
 								Exit
-							ElseIf Distance(EntityX(it\collider,True), EntityZ(it\collider,True), x,z) < (180.0 * RoomScale)
+							ElseIf Distance(EntityX(it\collider,True), EntityZ(it\collider,True), x,z) < (180.0 * RoomScale) Then
 								it2 = it
 								Exit
 							End If
@@ -209,7 +209,7 @@ Function Use914(item.Items, setting$, x#, y#, z#)
 					d.Decals = CreateDecal(3, x, 8 * RoomScale + 0.005, z, 90, Rand(360), 0)
 					d\Size = 0.12 : ScaleSprite(d\obj, d\Size, d\Size)
 				Case "1:1", "fine", "very fine"
-					If (item\itemtemplate\name = "Severed Hand")
+					If (item\itemtemplate\name = "Severed Hand") Then
 						it2 = CreateItem("Black Severed Hand", "hand2", x, y, z)
 					Else
 						it2 = CreateItem("Severed Hand", "hand", x, y, z)
@@ -558,7 +558,7 @@ Function UpdateEvent_cont_914_1(e.Events)
 		If PickedEntity() = e\room\Objects[0] Then
 			DrawHandIcon = True
 			If MouseHit1 Then mainPlayer\grabbedEntity = e\room\Objects[0]
-		ElseIf PickedEntity() = e\room\Objects[1]
+		ElseIf PickedEntity() = e\room\Objects[1] Then
 			DrawHandIcon = True
 			If MouseHit1 Then mainPlayer\grabbedEntity = e\room\Objects[1]
 		EndIf
@@ -576,7 +576,7 @@ Function UpdateEvent_cont_914_1(e.Events)
 						
 						If angle < 90 Then
 							RotateEntity(mainPlayer\grabbedEntity, 0, 0, 361.0)
-						ElseIf angle < 180
+						ElseIf angle < 180 Then
 							RotateEntity(mainPlayer\grabbedEntity, 0, 0, 180)
 						EndIf
 						
@@ -594,7 +594,7 @@ Function UpdateEvent_cont_914_1(e.Events)
 							Next
 						EndIf
 					End If
-				ElseIf mainPlayer\grabbedEntity = e\room\Objects[1]
+				ElseIf mainPlayer\grabbedEntity = e\room\Objects[1] Then
 					If e\EventState = 0 Then
 						DrawHandIcon = True
 						TurnEntity(mainPlayer\grabbedEntity, 0, 0, -mouse_x_speed_1 * 2.5)
@@ -606,7 +606,7 @@ Function UpdateEvent_cont_914_1(e.Events)
 						If angle > 90 Then
 							If angle < 180 Then
 								RotateEntity(mainPlayer\grabbedEntity, 0, 0, 90.0)
-							ElseIf angle < 270
+							ElseIf angle < 270 Then
 								RotateEntity(mainPlayer\grabbedEntity, 0, 0, 270)
 							EndIf
 						EndIf
@@ -625,22 +625,22 @@ Function UpdateEvent_cont_914_1(e.Events)
 			If angle < 22.5 Then
 				angle = 0
 				setting = "1:1"
-			ElseIf angle < 67.5
+			ElseIf angle < 67.5 Then
 				angle = 40
 				setting = "coarse"
-			ElseIf angle < 180
+			ElseIf angle < 180 Then
 				angle = 90
 				setting = "rough"
-			ElseIf angle > 337.5
+			ElseIf angle > 337.5 Then
 				angle = 359 - 360
 				setting = "1:1"
-			ElseIf angle > 292.5
+			ElseIf angle > 292.5 Then
 				angle = 320 - 360
 				setting = "fine"
 			Else
 				angle = 270 - 360
 				setting = "very fine"
-			End If
+			EndIf
 			RotateEntity(e\room\Objects[1], 0, 0, CurveValue(angle, EntityRoll(e\room\Objects[1]), 20))
 		EndIf
 		
@@ -648,15 +648,14 @@ Function UpdateEvent_cont_914_1(e.Events)
 			If mainPlayer\grabbedEntity = e\room\Objects[i] Then
 				If Not EntityInView(e\room\Objects[i], mainPlayer\cam) Then
 					mainPlayer\grabbedEntity = 0
-				ElseIf EntityDistance(e\room\Objects[i], mainPlayer\cam) > 1.0
+				ElseIf EntityDistance(e\room\Objects[i], mainPlayer\cam) > 1.0 Then
 					mainPlayer\grabbedEntity = 0
-				End If
-			End If
+				EndIf
+			EndIf
 		Next
 		
 		If e\EventState > 0 Then
 			e\EventState = e\EventState + timing\tickDuration
-			
 			
 			e\room\RoomDoors[1]\open = False
 			If e\EventState > 70 * 2 Then
@@ -728,9 +727,8 @@ Function UpdateEvent_cont_914_1(e.Events)
 				e\room\RoomDoors[1]\open = True
 				RotateEntity(e\room\Objects[0], 0, 0, 0)
 				e\EventState = 0
-			End If
-		End If
-		
+			EndIf
+		EndIf
 	EndIf
 	;[End Block]
 End Function

@@ -79,7 +79,7 @@ Function UpdateEvent_tnnl_elec_2(e.Events)
 					;LightBlink = Rnd(0.0,1.0)*(e\EventState/200)
 					e\EventState = 1
 				End If
-			ElseIf e\EventState < 200
+			ElseIf e\EventState < 200 Then
 				
 				mainPlayer\blinkTimer = -10
 				If e\EventState > 30 Then 

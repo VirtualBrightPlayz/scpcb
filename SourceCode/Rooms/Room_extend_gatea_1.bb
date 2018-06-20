@@ -38,7 +38,7 @@ Function FillRoom_extend_gatea_1(r.Rooms)
         If r2\RoomTemplate\name = "exit1" Then
             r\Objects[1]=r2\Objects[1]
             r\Objects[2]=r2\Objects[2]	
-        ElseIf r2\RoomTemplate\name = "gateaentrance"
+        ElseIf r2\RoomTemplate\name = "gateaentrance" Then
             ;ylempi hissi
             r\RoomDoors[1] = CreateDoor(0, r\x+1544.0*RoomScale,12000.0*RoomScale, r\z-64.0*RoomScale, 90, r, False)
             r\RoomDoors[1]\AutoClose = False : r\RoomDoors[1]\open = False
@@ -254,7 +254,7 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 			
 			If e\EventState=>350 Then
 				If Contained106=False Then
-					If e\EventState-timing\tickDuration < 350
+					If e\EventState-timing\tickDuration < 350 Then
 						Curr106\State = -0.1
 						;Curr106\Idle = True
 						SetNPCFrame(Curr106, 110.0)
@@ -265,7 +265,7 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 						;TODO: fix audio
 						;PlaySound2 (HorrorSFX(5))
 						;PlaySound2 DecaySFX(0)
-					ElseIf Curr106\State < 0
+					ElseIf Curr106\State < 0 Then
 						HideEntity Curr106\obj2
 						Curr106\PathTimer = 70*100
 						
@@ -364,10 +364,10 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 								EndIf
 							Else
 								If dist < 8.5 Then 
-									If e\EventState2=0;IsChannelPlaying(e\soundChannels[1]) = 0 Then
+									If e\EventState2=0 Then ;IsChannelPlaying(e\soundChannels[1]) = 0 Then
 										e\soundChannels[1] = PlaySound(LoadTempSound("SFX/Ending/GateA/HIDTurret.ogg"))
 										e\EventState2 = 1
-									ElseIf e\EventState2>0
+									ElseIf e\EventState2>0 Then
 										e\EventState2=e\EventState2+timing\tickDuration
 										If e\EventState2=> 7.5*70 Then
 											If e\EventState2-timing\tickDuration < 7.5*70 Then
@@ -382,7 +382,7 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 												p\speed = 0.0
 												p\A = 1.0
 												EntityParent p\pvt, e\room\Objects[10], True
-											ElseIf e\EventState2 < 14.3*70
+											ElseIf e\EventState2 < 14.3*70 Then
 												mainPlayer\camShake = 0.5
 												mainPlayer\lightFlash = 0.3+EntityInView(e\room\Objects[10],mainPlayer\cam)*0.5
 											EndIf
@@ -432,7 +432,7 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 								e\EventState3 = 1.0
 							EndIf
 						EndIf
-					ElseIf e\EventState3 = 1.0
+					ElseIf e\EventState3 = 1.0 Then
 						
 						For i = 5 To 8
 							If EntityDistance(e\room\NPC[i]\Collider,mainPlayer\collider)> 4.0 Then e\room\NPC[i]\State = 3
@@ -547,12 +547,12 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 					Else
 						
 						For i = 5 To 8
-							If e\room\NPC[i]\state = 5
+							If e\room\NPC[i]\state = 5 Then
 								e\room\NPC[i]\EnemyX = EntityX(mainPlayer\collider)
 								e\room\NPC[i]\EnemyY = EntityY(mainPlayer\collider)
 								e\room\NPC[i]\EnemyZ = EntityZ(mainPlayer\collider)
 							Else
-								If EntityDistance(e\room\NPC[i]\collider,mainPlayer\collider)<6.0
+								If EntityDistance(e\room\NPC[i]\collider,mainPlayer\collider)<6.0 Then
 									e\room\NPC[i]\state = 5
 									e\room\NPC[i]\currSpeed = 0
 								EndIf

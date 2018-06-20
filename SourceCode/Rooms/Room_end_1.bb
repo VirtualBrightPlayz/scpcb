@@ -49,7 +49,7 @@ Function UpdateEventEndroom106(e.Events)
 					e\EventState = 1							
 				EndIf
 			EndIf
-		ElseIf e\EventState = 1
+		ElseIf e\EventState = 1 Then
 			If mainPlayer\currRoom = e\room Then
 				;PlaySound2(CloseDoorSFX(1,0))
 				;PlaySound2(DecaySFX(0))
@@ -61,11 +61,11 @@ Function UpdateEventEndroom106(e.Events)
 				PlaySound2(e\sounds[0])		
 				
 				If e\soundChannels[0]<>0 Then StopChannel e\soundChannels[0]
-			ElseIf e\room\dist < 8
+			ElseIf e\room\dist < 8 Then
 				If e\sounds[0] = 0 Then e\sounds[0] = LoadSound("SFX/Character/Janitor/Idle.ogg")
 				e\soundChannels[0] = LoopRangedSound(e\sounds[0], e\soundChannels[0], mainPlayer\cam, e\room\NPC[0]\obj, 15.0)
 			EndIf
-		ElseIf e\EventState = 2
+		ElseIf e\EventState = 2 Then
 			dist = EntityDistance(e\room\NPC[0]\Collider, e\room\obj)
 			If dist<1.5 Then
 				de.Decals = CreateDecal(0, EntityX(e\room\obj), 0.01, EntityZ(e\room\obj), 90, Rand(360), 0)
@@ -120,3 +120,6 @@ Function UpdateEventEndroom106(e.Events)
 	;[End Block]
 End Function
 
+
+;~IDEal Editor Parameters:
+;~C#Blitz3D

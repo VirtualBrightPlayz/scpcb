@@ -15,10 +15,10 @@ Function UpdateEventTunnel106(e.Events)
 	If e\EventState = 0 Then
 		If e\room\dist < 5.0 And e\room\dist > 0 Then
 			If Curr106\State >= 0 Then e\EventState = 1	
-		ElseIf Contained106
+		ElseIf Contained106 Then
 			RemoveEvent(e)
 		EndIf
-	ElseIf e\EventState = 1
+	ElseIf e\EventState = 1 Then
 		
 		If e\room\dist < 3.0 Or Rand(7000)=1 Then
 			e\EventState = 2
@@ -27,7 +27,7 @@ Function UpdateEventTunnel106(e.Events)
 			EntityAlpha(d\obj, Rnd(0.7, 0.85))
 			
 			;PlaySound2 HorrorSFX(10)
-		ElseIf e\room\dist > 8.0
+		ElseIf e\room\dist > 8.0 Then
 			If Rand(5) = 1 Then
 				Curr106\Idle = False
 				RemoveEvent(e)
@@ -76,11 +76,11 @@ Function UpdateEvent682roar(e.Events)
 	;[Block]
 	If e\EventState = 0 Then
 		If mainPlayer\currRoom = e\room Then e\EventState = 70 * Rand(300,1000)
-	ElseIf mainPlayer\currRoom\RoomTemplate\Name <> "pocketdimension" And mainPlayer\currRoom\RoomTemplate\Name <> "room860" And mainPlayer\currRoom\RoomTemplate\Name <> "room1123" And mainPlayer\currRoom\RoomTemplate\Name <> "dimension1499" 
+	ElseIf mainPlayer\currRoom\RoomTemplate\Name <> "pocketdimension" And mainPlayer\currRoom\RoomTemplate\Name <> "room860" And mainPlayer\currRoom\RoomTemplate\Name <> "room1123" And mainPlayer\currRoom\RoomTemplate\Name <> "dimension1499" Then
 		e\EventState = e\EventState-timing\tickDuration
 		
 		If e\EventState < 17*70 Then
-			If	e\EventState+timing\tickDuration => 17*70 Then LoadEventSound(e,"SFX/SCP/682/Roar.ogg") : e\soundChannels[0] = PlaySound(e\sounds[0]) ;e\sounds[0] = LoadSound("SFX/SCP/682/Roar.ogg")
+			If e\EventState+timing\tickDuration => 17*70 Then LoadEventSound(e,"SFX/SCP/682/Roar.ogg") : e\soundChannels[0] = PlaySound(e\sounds[0]) ;e\sounds[0] = LoadSound("SFX/SCP/682/Roar.ogg")
 			If e\EventState > 17*70 - 3*70 Then mainPlayer\camShake = 0.5
 			If e\EventState < 17*70 - 7.5*70 And e\EventState > 17*70 - 11*70 Then mainPlayer\camShake = 2.0				
 			If e\EventState < 70 Then 

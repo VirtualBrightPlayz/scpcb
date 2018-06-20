@@ -155,7 +155,7 @@ Function UpdateEventAlarm(e.Events)
 			e\room\NPC[2]\State = 7
 			PointEntity e\room\NPC[2]\Collider,e\room\NPC[1]\Collider
 			
-			If e\room\NPC[0]=Null
+			If e\room\NPC[0]=Null Then
 				e\room\NPC[3] = CreateNPC(NPCtypeGuard, EntityX(e\room\Objects[2], True), EntityY(e\room\Objects[2], True), EntityZ(e\room\Objects[2], True))
 				;e\room\NPC[3]\Angle = 180
 				RotateEntity e\room\NPC[3]\Collider,0,90,0
@@ -199,7 +199,7 @@ Function UpdateEventAlarm(e.Events)
 		
 		If (CurrTrigger = "173scene_timer") Then
 			e\EventState = e\EventState+timing\tickDuration
-		Else If (CurrTrigger = "173scene_activated")
+		Else If (CurrTrigger = "173scene_activated") Then
 			e\EventState = Max(e\EventState, 500)
 		EndIf
 		
@@ -221,7 +221,7 @@ Function UpdateEventAlarm(e.Events)
 					
 					
 					If e\EventState > 900+2.5*70 Then
-						If e\room\NPC[2]\State <> 1
+						If e\room\NPC[2]\State <> 1 Then
 							e\room\NPC[2]\CurrSpeed = CurveValue(-0.012, e\room\NPC[2]\CurrSpeed, 5.0)
 							AnimateNPC(e\room\NPC[2], 895, 843, e\room\NPC[2]\currSpeed*50)
 							MoveEntity e\room\NPC[2]\collider, 0,0,e\room\NPC[2]\currSpeed*timing\tickDuration
@@ -281,7 +281,7 @@ Function UpdateEventAlarm(e.Events)
 					If (CurrTrigger = "173scene_end") And EntityVisible(e\room\NPC[2]\Collider,mainPlayer\collider) And (Not mainPlayer\godMode) Then
 						e\room\NPC[2]\state = 1
 						e\room\NPC[2]\state3 = 1
-					ElseIf e\room\NPC[2]\state = 1 And (Not EntityVisible(e\room\NPC[2]\collider, mainPlayer\collider))
+					ElseIf e\room\NPC[2]\state = 1 And (Not EntityVisible(e\room\NPC[2]\collider, mainPlayer\collider)) Then
 						e\room\NPC[2]\state = 0
 						e\room\NPC[2]\state3 = 0
 					EndIf
@@ -289,7 +289,7 @@ Function UpdateEventAlarm(e.Events)
 					If e\room\NPC[2]\state = 1 Then e\room\RoomDoors[5]\open = True
 				Else
 					CanSave = True
-					If e\room\NPC[2]\state <> 1
+					If e\room\NPC[2]\state <> 1 Then
 						If EntityX(mainPlayer\collider)<(e\room\x+1384*RoomScale) Then e\EventState = Max(e\EventState,900)
 						
 						If e\room\RoomDoors[5]\openstate = 0 Then 

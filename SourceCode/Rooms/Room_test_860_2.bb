@@ -103,16 +103,16 @@ Function UpdateEvent_test_860_2(e.Events)
 			If EntityY(mainPlayer\collider)<=28.5 Then 
 				Kill(mainPlayer) 
 				mainPlayer\blinkTimer=-2
-			ElseIf EntityY(mainPlayer\collider)>EntityY(fr\Forest_Pivot,True)+0.5
+			ElseIf EntityY(mainPlayer\collider)>EntityY(fr\Forest_Pivot,True)+0.5 Then
 				MoveEntity(mainPlayer\collider, 0, ((EntityY(fr\Forest_Pivot,True)+0.5) - EntityY(mainPlayer\collider))*timing\tickDuration, 0)
 			EndIf
 			
-			If e\room\NPC[0]<>Null
+			If e\room\NPC[0]<>Null Then
 				If e\room\NPC[0]\state = 0 Or EntityDistance(mainPlayer\collider, e\room\NPC[0]\collider)>12.0 Then
 					e\EventState3 = e\EventState3 + (1+mainPlayer\moveSpeed)* timing\tickDuration
 					If (e\EventState3 Mod 500) < 10.0 And ((e\EventState3-timing\tickDuration) Mod 500) > 490.0 Then
 						;If e\EventState3 > 3500 And Rnd(10000)<e\EventState3 Then
-						If e\EventState3 > 3000-(500*SelectedDifficulty\aggressiveNPCs) And Rnd(10000+(500*SelectedDifficulty\aggressiveNPCs)) < e\EventState3
+						If e\EventState3 > 3000-(500*SelectedDifficulty\aggressiveNPCs) And Rnd(10000+(500*SelectedDifficulty\aggressiveNPCs)) < e\EventState3 Then
 							e\room\NPC[0]\state=2
 							PositionEntity e\room\NPC[0]\collider, 0,-110,0
 							;e\EventState3=e\EventState3-Rnd(2000,3000)
@@ -171,7 +171,7 @@ Function UpdateEvent_test_860_2(e.Events)
 				EndIf
 			Next
 			
-			If e\room\NPC[0]<>Null
+			If e\room\NPC[0]<>Null Then
 				x = Max(1.0-(e\room\NPC[0]\State3/300.0),0.1)
 			Else
 				x = 2.0
@@ -202,7 +202,7 @@ Function UpdateEvent_test_860_2(e.Events)
 							Msg = "The door will not budge."
 							MsgTimer = 5*70
 						EndIf
-					ElseIf mainPlayer\selectedItem\itemtemplate\tempname="scp860" 
+					ElseIf mainPlayer\selectedItem\itemtemplate\tempname="scp860" Then
 						If MouseHit1 Then
 							PlaySound2(LoadTempSound("SFX/Door/WoodenDoorOpen.ogg"))
 							ShowEntity fr.Forest\Forest_Pivot
@@ -475,7 +475,7 @@ Function GenForestGrid(fr.Forest)
 		For j=0 To gridsize-1
 			If fr\grid[(i*gridsize)+j]=-1 Then
 				fr\grid[(i*gridsize)+j]=1
-			ElseIf fr\grid[(i*gridsize)+j]=-2
+			ElseIf fr\grid[(i*gridsize)+j]=-2 Then
 				fr\grid[(i*gridsize)+j]=1
 			;ElseIf fr\grid[(i*gridsize)+j]=0
 				
@@ -578,9 +578,9 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Rooms)
 						
 						If fr\grid[((ty+1)*gridsize)+tx]>0 Then
 							angle = 180
-						ElseIf fr\grid[(ty*gridsize)+tx-1]>0
+						ElseIf fr\grid[(ty*gridsize)+tx-1]>0 Then
 							angle = 270
-						ElseIf fr\grid[(ty*gridsize)+tx+1]>0
+						ElseIf fr\grid[(ty*gridsize)+tx+1]>0 Then
 							angle = 90
 						End If
 						
@@ -589,7 +589,7 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Rooms)
 						If fr\grid[((ty-1)*gridsize)+tx]>0 And fr\grid[((ty+1)*gridsize)+tx]>0 Then
 							tile_entity = CopyEntity(fr\TileMesh[ROOM2])
 							tile_type = ROOM2
-						ElseIf fr\grid[(ty*gridsize)+tx+1]>0 And fr\grid[(ty*gridsize)+tx-1]>0
+						ElseIf fr\grid[(ty*gridsize)+tx+1]>0 And fr\grid[(ty*gridsize)+tx-1]>0 Then
 							tile_entity = CopyEntity(fr\TileMesh[ROOM2])
 							angle = 90
 							tile_type = ROOM2
@@ -597,9 +597,9 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Rooms)
 							tile_entity = CopyEntity(fr\TileMesh[ROOM2C])
 							If fr\grid[(ty*gridsize)+tx-1]>0 And fr\grid[((ty+1)*gridsize)+tx]>0 Then
 								angle = 180
-							ElseIf fr\grid[(ty*gridsize)+tx+1]>0 And fr\grid[((ty-1)*gridsize)+tx]>0
+							ElseIf fr\grid[(ty*gridsize)+tx+1]>0 And fr\grid[((ty-1)*gridsize)+tx]>0 Then
 								
-							ElseIf fr\grid[(ty*gridsize)+tx-1]>0 And fr\grid[((ty-1)*gridsize)+tx]>0
+							ElseIf fr\grid[(ty*gridsize)+tx-1]>0 And fr\grid[((ty-1)*gridsize)+tx]>0 Then
 								angle = 270
 							Else
 								angle = 90
@@ -611,9 +611,9 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Rooms)
 						
 						If fr\grid[((ty-1)*gridsize)+tx]=0 Then
 							angle = 180
-						ElseIf fr\grid[(ty*gridsize)+tx-1]=0
+						ElseIf fr\grid[(ty*gridsize)+tx-1]=0 Then
 							angle = 90
-						ElseIf fr\grid[(ty*gridsize)+tx+1]=0
+						ElseIf fr\grid[(ty*gridsize)+tx+1]=0 Then
 							angle = 270
 						End If
 						

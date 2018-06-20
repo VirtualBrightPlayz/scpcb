@@ -104,8 +104,8 @@ Function UpdateEvent_srvr_096_2(e.Events)
 			
 			e\EventState=1
 		EndIf
-	ElseIf e\EventState < 70*45
-		If	Rand(200)<5 And mainPlayer\currRoom = e\room Then 
+	ElseIf e\EventState < 70*45 Then
+		If Rand(200)<5 And mainPlayer\currRoom = e\room Then 
 			;LightBlink = Rnd(1.0,2.0)
 			If Rand(5)=1 Then PlayRangedSound(IntroSFX(Rand(10,12)), mainPlayer\cam, e\room\obj, 8.0, Rnd(0.1,0.3))
 		EndIf
@@ -235,7 +235,7 @@ Function UpdateEvent_srvr_096_2(e.Events)
 			
 		EndIf
 		
-	ElseIf mainPlayer\currRoom = e\room
+	ElseIf mainPlayer\currRoom = e\room Then
 		temp = e\room\Levers[0]\succ ;power switch
 		x = e\room\Levers[1]\succ ;fuel pump
 		z = e\room\Levers[2]\succ ;generator

@@ -128,7 +128,7 @@ Function FillRoom_strg_939_3(r.Rooms)
         ScaleEntity(r\Levers[n-10]\obj, 0.04, 0.04, 0.04)
         ScaleEntity(r\Levers[n-10]\baseObj, 0.04, 0.04, 0.04)
 
-        If n = 10
+        If n = 10 Then
             ;r\z+6578
             PositionEntity r\Levers[n-10]\obj,r\x+3101*RoomScale,r\y-5461*RoomScale,r\z+6568*RoomScale,True
             PositionEntity r\Levers[n-10]\baseObj,r\x+3101*RoomScale,r\y-5461*RoomScale,r\z+6568*RoomScale,True
@@ -208,16 +208,16 @@ Function UpdateEvent_strg_939_3(e.Events)
 				
 				;DrawLoading(100, True)
 			;EndIf
-			If e\room\NPC[2]=Null Or e\EventState = 3
-				If e\EventState = 0
+			If e\room\NPC[2]=Null Or e\EventState = 3 Then
+				If e\EventState = 0 Then
 					e\EventState = 1
-				ElseIf e\EventState = 1
+				ElseIf e\EventState = 1 Then
 					e\room\NPC[0]=CreateNPC(NPCtype939, 0,0,0)
 					e\EventState = 2
-				ElseIf e\EventState = 2
+				ElseIf e\EventState = 2 Then
 					e\room\NPC[1]=CreateNPC(NPCtype939, 0,0,0)
 					e\EventState = 3
-				ElseIf e\EventState = 3
+				ElseIf e\EventState = 3 Then
 					e\room\NPC[2]=CreateNPC(NPCtype939, 0,0,0)
 					e\EventState = 0
 				EndIf
@@ -273,7 +273,7 @@ Function UpdateEvent_strg_939_3(e.Events)
 						e\room\NPC[2]\IgnorePlayer = True
 				End Select
 				
-				If IsChannelPlaying(e\soundChannels[1])
+				If IsChannelPlaying(e\soundChannels[1]) Then
 					UpdateRangedSoundOrigin(e\soundChannels[1],mainPlayer\cam,e\room\RoomDoors[4]\obj,400)
 				EndIf
 				

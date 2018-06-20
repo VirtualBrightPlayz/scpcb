@@ -52,7 +52,7 @@ Function UpdateEventRoom2fan(e.Events)
 			Else
 				If temp = 0 And e\EventState2 = 1.0 Then ;turn on the fan
 					PlayRangedSound (LoadTempSound("SFX/ambient/Room ambience/FanOn.ogg"), mainPlayer\cam, e\room\Objects[0], 8.0)
-				ElseIf temp = 1 And e\EventState2 = 0.0 ;turn off the fan
+				ElseIf temp = 1 And e\EventState2 = 0.0 Then ;turn off the fan
 					PlayRangedSound (LoadTempSound("SFX/ambient/Room ambience/FanOff.ogg"), mainPlayer\cam, e\room\Objects[0], 8.0)
 				EndIf
 			EndIf
@@ -63,3 +63,6 @@ Function UpdateEventRoom2fan(e.Events)
 	;[End Block]
 End Function
 
+
+;~IDEal Editor Parameters:
+;~C#Blitz3D

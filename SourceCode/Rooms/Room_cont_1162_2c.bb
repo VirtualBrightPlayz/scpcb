@@ -284,7 +284,7 @@ Function IsItemGoodFor1162(itt.ItemTemplates)
 		Default
 			If itt\tempname <> "paper" Then
 				Return False
-			Else If Instr(itt\name, "Leaflet")
+			ElseIf Instr(itt\name, "Leaflet") Then
 				Return False
 			Else
 				;if the item is a paper, only allow spawning it if the name contains the word "note" or "log"

@@ -106,7 +106,7 @@ Function LoadMaterials(file$)
 			mat\Diff = 0
 			
 			stepSound = GetINIString(file, TemporaryString, "stepsound")
-			If Lower(stepSound)="metal" mat\StepSound = STEPSOUND_METAL
+			If Lower(stepSound)="metal" Then mat\StepSound = STEPSOUND_METAL
 		EndIf
 	Wend
 	
@@ -118,7 +118,7 @@ Include "SourceCode/Materials.bb"
 
 Function StripPath$(file$) 
 	Local name$=""
-	If Len(file$)>0 
+	If Len(file$)>0 Then
 		For i=Len(file$) To 1 Step -1 
 			
 			mi$=Mid$(file$,i,1) 
@@ -141,7 +141,7 @@ Function Piece$(s$,entry,char$=" ")
 		s=Right(s,Len(s)-p)
 	Next
 	p=Instr(s,char)
-	If p<1
+	If p<1 Then
 		a$=s
 	Else
 		a=Left(s,p-1)
@@ -850,7 +850,7 @@ Function UpdateRooms()
 				z = Abs(EntityZ(mainPlayer\collider,True)-EntityZ(mainPlayer\currRoom\AdjDoor[i]\frameobj,True))
 				If mainPlayer\currRoom\AdjDoor[i]\openstate = 0 Then
 					SetRoomVisibility(mainPlayer\currRoom\Adjacent[i],False)
-				ElseIf (Not EntityInView(mainPlayer\currRoom\AdjDoor[i]\frameobj,mainPlayer\cam))
+				ElseIf (Not EntityInView(mainPlayer\currRoom\AdjDoor[i]\frameobj,mainPlayer\cam)) Then
 					SetRoomVisibility(mainPlayer\currRoom\Adjacent[i],False)
 				Else
 					SetRoomVisibility(mainPlayer\currRoom\Adjacent[i],True)
@@ -1456,26 +1456,26 @@ Function UpdateSecurityCams()
 		If sc\room = Null And (Not sc\SpecialCam) Then
 			HideEntity sc\Cam
 		Else
-			If (Not sc\SpecialCam)
+			If (Not sc\SpecialCam) Then
 				If sc\room\dist < 6.0 Or mainPlayer\currRoom=sc\room Then 
 					close = True
-				ElseIf sc\IsRoom2slCam
+				ElseIf sc\IsRoom2slCam Then
 					close = True
-				ElseIf sc\Cam<>0
+				ElseIf sc\Cam<>0 Then
 					HideEntity sc\Cam
 				EndIf
 			EndIf
 			
 			If sc\IsRoom2slCam Then sc\CoffinEffect = 0
-			If sc\room <> Null
+			If sc\room <> Null Then
 				If sc\room\RoomTemplate\name$ = "hll_sl_2" Then sc\CoffinEffect = 0
 			EndIf
 			If sc\SpecialCam Then sc\CoffinEffect = 0
 			
 			If close Or sc=CoffinCam Or sc\IsRoom2slCam Then 
 				If sc\FollowPlayer Then
-					If sc<>CoffinCam
-						If EntityVisible(sc\CameraObj,mainPlayer\cam)
+					If sc<>CoffinCam Then
+						If EntityVisible(sc\CameraObj,mainPlayer\cam) Then
 							PlayerDetected = True
 						EndIf
 					EndIf
@@ -1510,9 +1510,9 @@ Function UpdateSecurityCams()
 						MoveEntity(sc\Cam, 0, 0, 0.1)
 					EndIf
 					
-					If sc<>CoffinCam
-						If (Abs(DeltaYaw(sc\CameraObj,mainPlayer\cam))<60.0)
-							If EntityVisible(sc\CameraObj,mainPlayer\cam)
+					If sc<>CoffinCam Then
+						If (Abs(DeltaYaw(sc\CameraObj,mainPlayer\cam))<60.0) Then
+							If EntityVisible(sc\CameraObj,mainPlayer\cam) Then
 								PlayerDetected = True
 							EndIf
 						EndIf
@@ -1528,7 +1528,7 @@ Function UpdateSecurityCams()
 						If SelectedDifficulty\saveType = SAVEONSCREENS And EntityDistance(mainPlayer\cam, sc\ScrObj)<1.0 Then
 							DrawHandIcon = True
 							If MouseHit1 Then SelectedMonitor = sc
-						Else If SelectedMonitor = sc
+						ElseIf SelectedMonitor = sc Then
 							SelectedMonitor = Null
 						EndIf
 					Else
@@ -1552,8 +1552,8 @@ Function UpdateSecurityCams()
 									EndIf
 								End If
 								
-								If (Not sc\IsRoom2slCam)
-									If (Not sc\SpecialCam)
+								If (Not sc\IsRoom2slCam) Then
+									If (Not sc\SpecialCam) Then
 										If CoffinCam = Null Or Rand(5)=5 Or sc\CoffinEffect <> 3 Then
 											HideEntity(mainPlayer\cam)
 											ShowEntity(sc\Cam)
@@ -1648,7 +1648,7 @@ Function UpdateSecurityCams()
 										If sc\CoffinEffect=3 And Rand(200)=1 Then sc\CoffinEffect=2 : sc\PlayerState = Rand(10000, 20000)
 									End If	
 									mainPlayer\blurTimer = 1000
-								ElseIf mainPlayer\sanity895 < - 500
+								ElseIf mainPlayer\sanity895 < - 500 Then
 									If Rand(7) = 1 Then EntityTexture(sc\ScrOverlay, MonitorTexture)
 									If Rand(50) = 1 Then
 										EntityTexture(sc\ScrOverlay, GorePics(Rand(0, 5)))
@@ -1678,7 +1678,7 @@ Function UpdateSecurityCams()
 							If sc\soundCHN = 0 Then
 								sc\soundCHN = PlaySound(LoadTempSound("SFX/SCP/079/Broadcast"+Rand(1,3)+".ogg"))
 								If sc\CoffinEffect=2 Then sc\CoffinEffect=3 : sc\PlayerState = 0
-							ElseIf (Not IsChannelPlaying(sc\soundCHN))
+							ElseIf (Not IsChannelPlaying(sc\soundCHN)) Then
 								sc\soundCHN = PlaySound(LoadTempSound("SFX/SCP/079/Broadcast"+Rand(1,3)+".ogg"))
 								If sc\CoffinEffect=2 Then sc\CoffinEffect=3 : sc\PlayerState = 0
 							EndIf
@@ -2285,220 +2285,15 @@ Function AmbientLightRooms(value%=0)
 	SetBuffer oldbuffer
 End Function
 
-;TODO: clean up
-Type ChunkPart
-	Field Amount%
-	Field obj%[128]
-	Field RandomYaw#[128]
-	Field ID
-End Type
-
-Function CreateChunkParts(r.Rooms)
-	Local File$ = "Data/1499chunks.INI"
-	Local ChunkAmount% = GetINIInt(File$,"general","count")
-	Local i%,StrTemp$,j%
-	Local chp.ChunkPart,chp2.ChunkPart
-	Local obj%
-	
-	SeedRnd SeedStringToInt(RandomSeed)
-	
-	For i = 0 To ChunkAmount%
-		Local loc% = GetINISectionLocation(File$,"chunk"+i)
-		If loc > 0 Then
-			StrTemp$ = GetINIString2(File,loc%,"count")
-			chp = New ChunkPart
-			chp\Amount% = Int(StrTemp$)
-			DebugLog "------------------"
-			For j = 0 To Int(StrTemp$)
-				Local objID% = GetINIString2(File$,loc%,"obj"+j)
-				Local x$ = GetINIString2(File$,loc%,"obj"+j+"-x")
-				Local z$ = GetINIString2(File$,loc%,"obj"+j+"-z")
-				Local yaw$ = GetINIString2(File$,loc%,"obj"+j+"-yaw")
-				DebugLog "1499 chunk X/Z/Yaw: "+x$+"|"+z$+"|"+yaw$
-				chp\obj%[j] = CopyEntity(r\Objects[objID%])
-				If Lower(yaw$) = "random"
-					chp\RandomYaw#[j] = Rnd(360)
-					RotateEntity chp\obj[j],0,chp\RandomYaw[j],0
-				Else
-					RotateEntity chp\obj[j],0,Float(yaw),0
-				EndIf
-				PositionEntity chp\obj[j],Float(x),0,Float(z)
-				ScaleEntity chp\obj[j],RoomScale,RoomScale,RoomScale
-				EntityType chp\obj[j],HIT_MAP
-				EntityPickMode chp\obj[j],2
-				;EntityParent chp\obj[j],r\obj
-			Next
-			chp2 = Before(chp)
-			If chp2 <> Null
-				chp\ID = chp2\ID+1
-			EndIf
-			DebugLog "<<<<<<<<<<<<<<<<"
-			DebugLog "Generated 1499 chunk "+chp\ID+" sucessfully"
-		EndIf
-	Next
-	
-	SeedRnd MilliSecs()
-	
-End Function
-
-Type Chunk
-	Field obj%[128]
-	Field x#,z#,y#
-	Field Amount%
-	;Field debugobj%
-End Type
-
-Function CreateChunk.Chunk(obj%,x#,y#,z#,spawnNPCs%=True)
-	Local ch.Chunk = New Chunk
-	Local chp.ChunkPart,i,n.NPCs
-	
-	;If obj%<>0
-	;	ch\obj% = CopyEntity(obj%)
-	;	PositionEntity ch\obj%,x,y,z
-	;	ScaleEntity ch\obj%,RoomScale,RoomScale,RoomScale
-	;	EntityType ch\obj%,HIT_MAP
-	;EndIf
-	
-	;ch\debugobj% = CreateCube()
-	;ScaleEntity ch\debugobj%,20,20,20
-	;PositionEntity ch\debugobj%,x#,y#+20,z#
-	;EntityColor ch\debugobj%,Rand(0,255),Rand(0,255),Rand(0,255)
-	;EntityFX ch\debugobj%,1+FE_WIRE
-	
-	If obj% > -1
-		For chp = Each ChunkPart
-			If chp\ID = obj%
-				ch\Amount% = chp\Amount%
-				For i = 0 To chp\Amount
-					ch\obj[i] = CopyEntity(chp\obj[i])
-					PositionEntity ch\obj[i],x#,y#,z#
-					;ScaleEntity ch\obj[i],RoomScale,RoomScale,RoomScale
-					MoveEntity ch\obj[i],EntityX(chp\obj[i]),0,EntityZ(chp\obj[i])
-				Next
-				Exit
-			EndIf
-		Next
-		If spawnNPCs%
-		For i = 0 To Rand(5,10)
-			n.NPCs = CreateNPC(NPCtype1499,x+Rnd(-60.0,60.0),y+0.5,z+Rnd(-60.0,60.0))
-			If Rand(2)=1 Then n\State2 = 500*3
-			n\Angle = Rnd(360)
-		Next
-	EndIf
-	EndIf
-	
-	ch\x = x
-	ch\z = z
-	ch\y = y
-	
-	Return ch
-End Function
-
-Function UpdateChunks(r.Rooms,ChunkPartAmount%,spawnNPCs%=True)
-	Local ch.Chunk, ch2.Chunk, chp.ChunkPart, ChunkPartAmount2%
-	Local ChunkHideDistance% = 120
-	Local temp% = False, temp2% = False
-	Local x#,z#,i%,y#,CurrChunkX#,CurrChunkZ#
-	Local obj%
-	
-	For ch = Each Chunk
-		;If Distance(EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider),ch\x,ch\z)<ChunkHideDistance
-		;	;If ch\obj <> 0 Then ShowEntity ch\obj
-		;	If ch\obj[0]<>0
-		;		For i = 0 To ch\Amount
-		;			ShowEntity ch\obj[i]
-		;		Next
-		;	EndIf
-		;Else
-		;	;If ch\obj <> 0 Then HideEntity ch\obj
-		;	If ch\obj[0]<>0
-		;		For i = 0 To ch\Amount
-		;			HideEntity ch\obj[i]
-		;		Next
-		;	EndIf
-		;EndIf
-		If ch\obj[0]<>0
-			For i = 0 To ch\Amount
-				ShowEntity ch\obj[i]
-			Next
-		EndIf
-		y# = ch\y
-		If Abs(EntityX(mainPlayer\collider)-ch\x)<20
-			If Abs(EntityZ(mainPlayer\collider)-ch\z)<20
-				CurrChunkX# = ch\x
-				CurrChunkZ# = ch\z
-			EndIf
-		EndIf
-	Next
-	
-	;CurrChunkX# = Int(EntityX(mainPlayer\collider)/40)*40
-	;CurrChunkZ# = Int(EntityZ(mainPlayer\collider)/40)*40
-	
-	x# = -(ChunkHideDistance+(CurrChunkX#))
-	z# = -(ChunkHideDistance+(CurrChunkZ#))
-	
-	Local StrTemp$ = ""
-	SeedRnd SeedStringToInt(RandomSeed)
-	
-	Repeat
-		temp2% = False
-		For ch = Each Chunk
-			If (ch\x=x#) And (ch\z=z#)
-				temp2% = True
-				Exit
-			EndIf
-		Next
-		If (Not temp2%)
-			;ch2 = CreateChunk(r\Objects[Rand(1,ChunkPartAmount%)],x#,y#,z#)
-			ChunkPartAmount2 = GetINIInt("Data/1499chunks.INI","general","count")
-			ch2 = CreateChunk(Rand(0,ChunkPartAmount2),x#,y#,z#,spawnNPCs%)
-		EndIf
-		If x# < (ChunkHideDistance+(CurrChunkX#))
-			x# = x# + 40
-		Else
-			If z# < (ChunkHideDistance+(CurrChunkZ#))
-				x# = -(ChunkHideDistance+(CurrChunkX#))
-				z# = z# + 40
-			Else
-				Exit
-			EndIf
-		EndIf
-	Forever
-	
-	SeedRnd MilliSecs()
-	
-End Function
-
-Function HideChunks()
-	Local ch.Chunk,i
-	
-	For ch = Each Chunk
-		;If ch\obj <> 0 Then HideEntity ch\obj
-		If ch\obj[0]<>0
-			For i = 0 To ch\Amount
-				HideEntity ch\obj[i]
-			Next
-		EndIf
-	Next
-	
-End Function
-
-Function DeleteChunks()
-	
-	Delete Each Chunk
-	Delete Each ChunkPart
-	
-End Function
-
 ;TODO: Probably remove.
 Function FindAndDeleteFakeMonitor(r.Rooms,x#,y#,z#,Amount%)
 	Local i%
 	
 	For i = 0 To Amount%
-		If r\Objects[i]<>0
-			If EntityX(r\Objects[i],True) = x#
-				If EntityY(r\Objects[i],True) = y#
-					If EntityZ(r\Objects[i],True) = z#
+		If r\Objects[i]<>0 Then
+			If EntityX(r\Objects[i],True) = x# Then
+				If EntityY(r\Objects[i],True) = y# Then
+					If EntityZ(r\Objects[i],True) = z# Then
 						FreeEntity r\Objects[i]
 						r\Objects[i]=0
 						DebugLog "Deleted Fake Monitor: "+i
@@ -2511,5 +2306,5 @@ Function FindAndDeleteFakeMonitor(r.Rooms,x#,y#,z#,Amount%)
 	
 End Function
 ;~IDEal Editor Parameters:
-;~F#4F#76#86#97#15F#19A#1A2#1B7#1C2#1CC#2CD
+;~F#4F#97#15F#19A#1A2#1B7#1C2#1CC#2CD
 ;~C#Blitz3D

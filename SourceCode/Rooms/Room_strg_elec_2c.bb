@@ -100,7 +100,7 @@ Function UpdateEvent_strg_elec_2c(e.Events)
 				Else
 					RemoteDoorOn = True
 				EndIf
-			ElseIf EntityPitch(e\room\Objects[i]) < -83
+			ElseIf EntityPitch(e\room\Objects[i]) < -83 Then
 				
 				If prevpitch => -83 Then PlayRangedSound_SM(sndManager\lever, mainPlayer\cam, e\room\Objects[i])
 				If i = 3 Then 
