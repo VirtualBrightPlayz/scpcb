@@ -28,15 +28,6 @@ Function UpdateNPCtype1499(n.NPCs)
     
     prevFrame# = n\frame
     
-<<<<<<< HEAD
-    If (Not n\Idle) And EntityDistance(n\collider,mainPlayer\collider)<HideDistance*2
-        If n\state = 0 Or n\state = 2
-            For n2.NPCs = Each NPCs
-                If n2\NPCtype = n\npcType And n2 <> n
-                    If n2\State <> 0 And n2\State <> 2
-                        n\state = 1
-                        n\state2 = 0
-=======
     If (Not n\Idle) And EntityDistance(n\Collider,mainPlayer\collider)<HideDistance*2 Then
         If n\State = 0 Or n\State = 2 Then
             For n2.NPCs = Each NPCs
@@ -44,7 +35,6 @@ Function UpdateNPCtype1499(n.NPCs)
                     If n2\State <> 0 And n2\State <> 2 Then
                         n\State = 1
                         n\State2 = 0
->>>>>>> 8df8871f1039ef6148399ed204704ea202a94521
                         Exit
                     EndIf
                 EndIf
@@ -53,26 +43,15 @@ Function UpdateNPCtype1499(n.NPCs)
         
         Select n\state
             Case 0
-<<<<<<< HEAD
-                If n\currSpeed = 0.0
-                    If n\state2 < 500.0*Rnd(1,3)
-                        n\currSpeed = 0.0
-                        n\state2 = n\state2 + timing\tickDuration
-=======
                 If n\CurrSpeed = 0.0 Then
                     If n\State2 < 500.0*Rnd(1,3) Then
                         n\CurrSpeed = 0.0
                         n\State2 = n\State2 + timing\tickDuration
->>>>>>> 8df8871f1039ef6148399ed204704ea202a94521
                     Else
                         If n\currSpeed = 0.0 Then n\currSpeed = n\currSpeed + 0.0001
                     EndIf
                 Else
-<<<<<<< HEAD
-                    If n\state2 < 10000.0*Rnd(1,3)
-=======
                     If n\State2 < 10000.0*Rnd(1,3) Then
->>>>>>> 8df8871f1039ef6148399ed204704ea202a94521
                         n\CurrSpeed = CurveValue(n\Speed,n\CurrSpeed,10.0)
                         n\State2 = n\State2 + timing\tickDuration
                     Else
