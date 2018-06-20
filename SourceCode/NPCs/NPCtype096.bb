@@ -3,7 +3,7 @@ Function InitializeNPCtype096(n.NPCs)
     n\collider = CreatePivot()
     EntityRadius n\collider, 0.3
     EntityType n\collider, HIT_PLAYER
-    n\obj = LoadAnimMesh("GFX/npcs/scp096.b3d")
+    n\obj = LoadAnimMesh("GFX/NPCs/scp096/scp096.b3d")
 	n\sounds[2] = LoadSound("SFX/Door/DoorOpenFast.ogg")
     
     n\speed = (GetINIFloat("DATA/NPCs.ini", "SCP-096", "speed") / 100.0)
@@ -75,7 +75,7 @@ Function UpdateNPCtype096(n.NPCs)
                         n\soundChannels[1] = PlaySound(n\sounds[1])
                     Else
                         If (Not IsChannelPlaying(n\soundChannels[1])) Then n\soundChannels[1] = PlaySound(n\sounds[1])
-                        ChannelVolume(n\soundChannels[1], Min(Max(8.0-n\playerDistance,0.6),1.0)*userOptions\soundVolume)
+                        ChannelVolume(n\soundChannels[1], Min(Max(8.0-n\playerDistance,0.6),1.0)*userOptions\SoundVolume)
                     EndIf
                 EndIf
             EndIf

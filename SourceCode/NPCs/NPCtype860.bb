@@ -1,14 +1,14 @@
 Function InitializeNPCtype860(n.NPCs)
-    n\NVName = "Unidentified"
+    n\nvName = "Unidentified"
     
-    n\Collider = CreatePivot()
-    EntityRadius n\Collider, 0.25
-    EntityType n\Collider, HIT_PLAYER
-    n\obj = LoadAnimMesh("GFX/npcs/forestmonster.b3d")
+    n\collider = CreatePivot()
+    EntityRadius n\collider, 0.25
+    EntityType n\collider, HIT_PLAYER
+    n\obj = LoadAnimMesh("GFX/NPCs/scp860/forestmonster.b3d")
     
     EntityFX(n\obj, 1)
     
-    tex = LoadTexture("GFX/npcs/860_eyes.png",1+2)
+    tex = LoadTexture("GFX/NPCs/scp860/860_eyes.png",1+2)
     
     n\obj2 = CreateSprite()
     ScaleSprite(n\obj2, 0.1, 0.1)
@@ -19,7 +19,7 @@ Function InitializeNPCtype860(n.NPCs)
     EntityBlend(n\obj2, BLEND_ADD)
     SpriteViewMode(n\obj2, 2)
     
-    n\Speed = (GetINIFloat("DATA/NPCs.ini", "forestmonster", "speed") / 100.0)
+    n\speed = (GetINIFloat("DATA/NPCs.ini", "forestmonster", "speed") / 100.0)
     
     temp# = (GetINIFloat("DATA/NPCs.ini", "forestmonster", "scale") / 20.0)
     ScaleEntity n\obj, temp, temp, temp	
@@ -28,24 +28,24 @@ Function InitializeNPCtype860(n.NPCs)
 End Function
 
 Function UpdateNPCtype860(n.NPCs)
-    If mainPlayer\currRoom\RoomTemplate\Name = "room860" Then
+    If mainPlayer\currRoom\RoomTemplate\name = "room860" Then
         Local fr.Forest=mainPlayer\currRoom\fr;Object.Forest(e\room\Objects[1])
         
-        dist = EntityDistance(mainPlayer\collider,n\Collider)
+        dist = EntityDistance(mainPlayer\collider,n\collider)
         
-        Select n\State
+        Select n\state
             Case 0 ;idle (hidden)
                 
-                HideEntity n\Collider
+                HideEntity n\collider
                 HideEntity n\obj
                 HideEntity n\obj2
                 
-                n\State2 = 0
-                PositionEntity(n\Collider, 0, -100, 0)
+                n\state2 = 0
+                PositionEntity(n\collider, 0, -100, 0)
             Case 1 ;appears briefly behind the trees
-                n\DropSpeed = 0
+                n\dropSpeed = 0
                 
-                If EntityY(n\Collider)<= -100 Then
+                If EntityY(n\collider)<= -100 Then
                     TFormPoint(EntityX(mainPlayer\collider),EntityY(mainPlayer\collider),EntityZ(mainPlayer\collider),0,mainPlayer\currRoom\obj)
                     
                     x = Floor((TFormedX()*RoomScale+6.0)/12.0)

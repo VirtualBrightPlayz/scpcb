@@ -138,8 +138,8 @@ Function UpdateEventAlarm(e.Events)
 			
 			If e\room\NPC[1] = Null Then
 				e\room\NPC[1] = CreateNPC(NPCtypeD, 0,0,0)
-				tex = LoadTexture("GFX/npcs/scientist2.jpg")
-				e\room\NPC[1]\texture = "GFX/npcs/scientist2.jpg"
+				tex = LoadTexture("GFX/NPCs/classd/scientist2.jpg")
+				e\room\NPC[1]\texture = "GFX/NPCs/classd/scientist2.jpg"
 				EntityTexture e\room\NPC[1]\obj, tex
 				FreeTexture tex
 			EndIf
@@ -172,8 +172,8 @@ Function UpdateEventAlarm(e.Events)
 				;PointEntity(e\room\NPC[5]\Collider, e\room\Objects[7])
 				SetNPCFrame(e\room\NPC[5], 19) : e\room\NPC[5]\State = 3
 				RotateEntity e\room\NPC[5]\Collider,0,270,0
-				tex = LoadTexture("GFX/npcs/classd2.jpg")
-				e\room\NPC[5]\texture = "GFX/npcs/classd2.jpg"
+				tex = LoadTexture("GFX/NPCs/classd/classd2.jpg")
+				e\room\NPC[5]\texture = "GFX/NPCs/classd/classd2.jpg"
 				EntityTexture e\room\NPC[5]\obj, tex
 				FreeTexture tex
 				MoveEntity e\room\NPC[5]\Collider,0.25,0,3.0

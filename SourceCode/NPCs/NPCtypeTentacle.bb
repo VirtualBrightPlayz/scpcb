@@ -11,7 +11,7 @@ Function InitializeNPCtypeTentacle(n.NPCs)
     Next
     
     If n\obj = 0 Then 
-        n\obj = LoadAnimMesh("GFX/NPCs/035tentacle.b3d")
+        n\obj = LoadAnimMesh("GFX/NPCs/tentacle/tentacle.b3d")
         ScaleEntity n\obj, 0.065,0.065,0.065
     EndIf
 	

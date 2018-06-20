@@ -12,7 +12,7 @@ Function InitializeNPCtypeZombie(n.NPCs)
     Next
     
     If n\obj = 0 Then 
-        n\obj = LoadAnimMesh("GFX/npcs/zombie1.b3d")
+        n\obj = LoadAnimMesh("GFX/NPCs/zombie/zombie.b3d")
         
         temp# = (GetINIFloat("DATA/NPCs.ini", "SCP-049-2", "scale") / 2.5)
         ScaleEntity n\obj, temp, temp, temp

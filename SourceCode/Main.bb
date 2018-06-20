@@ -624,6 +624,7 @@ Function UpdateGame()
 				InFacility = CheckForPlayerInFacility()
 				UpdateDoors()
 				UpdateLevers()
+				UpdateAssets()
 				UpdateEvents()
 				UpdateDecals()
 				UpdateMTF()
@@ -1732,7 +1733,7 @@ Function UpdateInfect()
 							r\NPC[0] = CreateNPC(NPCtypeD, EntityX(r\Objects[6],True),EntityY(r\Objects[6],True)+0.2,EntityZ(r\Objects[6],True))
 							r\NPC[0]\sounds[0] = LoadSound("SFX/SCP/008/KillScientist1.ogg")
 							r\NPC[0]\soundChannels[0] = PlaySound(r\NPC[0]\sounds[0])
-							tex = LoadTexture("GFX/npcs/scientist2.jpg")
+							tex = LoadTexture("GFX/NPCs/classd/scientist2.jpg")
 							EntityTexture r\NPC[0]\obj, tex
 							FreeTexture tex
 							r\NPC[0]\state=6

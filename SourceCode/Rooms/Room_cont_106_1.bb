@@ -61,26 +61,29 @@ Function FillRoom_cont_106_1(r.Rooms)
     
     EntityParent(r\Objects[6], r\obj)
     
-    For n = 0 To 2 Step 2
-        r\Levers[n/2] = CreateLever()
+	Local n%
+    For n = 0 To 1
+        r\Levers[n] = CreateLever()
         
-        For i% = 0 To 1
-            ScaleEntity(r\Objects[n+i], 0.04, 0.04, 0.04)
-            PositionEntity (r\Objects[n+i], r\x - (555.0 - 81.0 * (n/2)) * RoomScale, r\y - 576.0 * RoomScale, r\z + 3040.0 * RoomScale, True)
-            
-            EntityParent(r\Objects[n+i], r\obj)
-        Next
-        RotateEntity(r\Objects[n], 0, 0, 0)
-        RotateEntity(r\Objects[n+1], 10, -180, 0)
+		ScaleEntity(r\Levers[n]\baseObj, 0.04, 0.04, 0.04)
+		ScaleEntity(r\Levers[n]\obj, 0.04, 0.04, 0.04)
+		PositionEntity (r\Levers[n]\baseObj, r\x - (555.0 - 81.0 * (n)) * RoomScale, r\y - 576.0 * RoomScale, r\z + 3040.0 * RoomScale, True)
+		PositionEntity (r\Levers[n]\obj, r\x - (555.0 - 81.0 * (n)) * RoomScale, r\y - 576.0 * RoomScale, r\z + 3040.0 * RoomScale, True)
+		
+		EntityParent(r\Levers[n]\baseObj, r\obj)
+		EntityParent(r\Levers[n]\obj, r\obj)
+			
+        RotateEntity(r\Levers[n]\baseObj, 0, 0, 0)
+        RotateEntity(r\Levers[n]\obj, 10, -180, 0)
         
         ;EntityPickMode(r\Objects[n * 2 + 1], 2)
-        EntityPickMode r\Objects[n+1], 1, False
-        EntityRadius r\Objects[n+1], 0.1
+        EntityPickMode r\Levers[n]\obj, 1, False
+        EntityRadius r\Levers[n]\obj, 0.1
         ;makecollbox(r\Objects[n * 2 + 1])
     Next
     
-    RotateEntity(r\Objects[1], 81,-180,0)
-    RotateEntity(r\Objects[3], -81,-180,0)			
+    RotateEntity(r\Levers[0]\obj, 81,-180,0)
+    RotateEntity(r\Levers[1]\obj, -81,-180,0)			
     
     r\Objects[4] = CreateButton(r\x - 146.0*RoomScale, r\y - 576.0 * RoomScale, r\z + 3045.0 * RoomScale, 0,0,0)
     EntityParent (r\Objects[4],r\obj)

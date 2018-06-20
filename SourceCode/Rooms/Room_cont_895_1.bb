@@ -23,13 +23,15 @@ Function FillRoom_cont_895_1(r.Rooms)
     TurnEntity(sc\ScrObj, 0, 180, 0)
         
     r\Levers[0] = CreateLever()
-        
-    For i% = 0 To 1
-        ScaleEntity(r\Objects[2 + i], 0.04, 0.04, 0.04)
-        PositionEntity (r\Objects[2 + i], r\x - 800.0 * RoomScale, r\y + 180.0 * RoomScale, r\z - 336 * RoomScale, True)
-            
-        EntityParent(r\Objects[2 + i], r\obj)
-    Next
+
+	ScaleEntity(r\Levers[0]\baseObj, 0.04, 0.04, 0.04)
+	ScaleEntity(r\Levers[0]\obj, 0.04, 0.04, 0.04)
+	PositionEntity (r\Levers[0]\baseObj, r\x - 800.0 * RoomScale, r\y + 180.0 * RoomScale, r\z - 336 * RoomScale, True)
+	PositionEntity (r\Levers[0]\obj, r\x - 800.0 * RoomScale, r\y + 180.0 * RoomScale, r\z - 336 * RoomScale, True)
+	
+	EntityParent(r\Levers[0]\baseObj, r\obj)
+	EntityParent(r\Levers[0]\obj, r\obj)
+		
     RotateEntity(r\Levers[0]\baseObj, 0, 180, 0)
     RotateEntity(r\Levers[0]\obj, 10, 0, 0)
     

@@ -67,7 +67,7 @@ Function UpdateEvent_closets_2(e.Events)
 			If e\room\NPC[0]=Null Then
 				e\room\NPC[0] = CreateNPC(NPCtypeD, EntityX(e\room\Objects[0],True),EntityY(e\room\Objects[0],True),EntityZ(e\room\Objects[0],True))
 			EndIf
-			e\room\NPC[0]\texture = "GFX/npcs/janitor.jpg"
+			e\room\NPC[0]\texture = "GFX/NPCs/classd/janitor.jpg"
 			Local tex% = LoadTexture(e\room\NPC[0]\texture)
 			
 			EntityTexture e\room\NPC[0]\obj, tex
@@ -80,7 +80,7 @@ Function UpdateEvent_closets_2(e.Events)
 			If e\room\NPC[1]=Null Then
 				e\room\NPC[1] = CreateNPC(NPCtypeD, EntityX(e\room\Objects[1],True),EntityY(e\room\Objects[1],True),EntityZ(e\room\Objects[1],True))
 			EndIf
-			e\room\NPC[1]\texture = "GFX/npcs/scientist.jpg"
+			e\room\NPC[1]\texture = "GFX/NPCs/classd/scientist.jpg"
 			tex = LoadTexture(e\room\NPC[1]\texture)
 			EntityTexture e\room\NPC[1]\obj, tex
 			

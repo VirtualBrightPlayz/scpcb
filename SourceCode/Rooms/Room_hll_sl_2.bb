@@ -82,12 +82,14 @@ Function FillRoom_hll_sl_2(r.Rooms)
     
     r\Levers[0] = CreateLever()
     
-    For  i% = 0 To 1
-        ScaleEntity(r\Objects[9 * 2 + i], 0.04, 0.04, 0.04)
-        PositionEntity r\Objects[9 * 2 + i],r\x-49*RoomScale,r\y+689*RoomScale,r\z+912*RoomScale,True
-        
-        EntityParent(r\Objects[9 * 2 + i], r\obj)
-    Next
+	ScaleEntity(r\Levers[0]\baseObj, 0.04, 0.04, 0.04)
+	ScaleEntity(r\Levers[0]\obj, 0.04, 0.04, 0.04)
+	PositionEntity r\Levers[0]\baseObj,r\x-49*RoomScale,r\y+689*RoomScale,r\z+912*RoomScale,True
+	PositionEntity r\Levers[0]\obj,r\x-49*RoomScale,r\y+689*RoomScale,r\z+912*RoomScale,True
+	
+	EntityParent(r\Levers[0]\baseObj, r\obj)
+	EntityParent(r\Levers[0]\obj, r\obj)
+
     RotateEntity(r\Levers[0]\baseObj, 0, 0, 0)
     RotateEntity(r\Levers[0]\obj, 10, 0 - 180, 0)
         
@@ -105,16 +107,28 @@ Function FillRoom_hll_sl_2(r.Rooms)
     PositionEntity(sc\ScrObj, r\x-231.489*RoomScale, r\y+760.0*RoomScale, r\z+255.744*RoomScale)
     TurnEntity(sc\ScrObj, 0, 90, 0)
     EntityParent(sc\ScrObj, r\obj)
+
+	r\Levers[1] = CreateLever()
     
-    For  i% = 0 To 1
-        ScaleEntity(r\Objects[20 + i], 0.04, 0.04, 0.04)
-        PositionEntity r\Objects[20],r\x+82.0*RoomScale, r\y+689.0*RoomScale, r\z+912.0*RoomScale,True
-        PositionEntity r\Objects[21],r\x+90.9775*RoomScale, r\y+604.347*RoomScale, r\z+890.584*RoomScale,True
-        
-        EntityParent(r\Objects[20 + i], r\obj)
-    Next
-    
-    RotateEntity r\Objects[21],8.6,-150.0,-5.0
+	ScaleEntity(r\Levers[1]\baseObj, 0.04, 0.04, 0.04)
+	ScaleEntity(r\Levers[1]\obj, 0.04, 0.04, 0.04)
+
+	PositionEntity r\Levers[1]\baseObj,r\x+82.0*RoomScale, r\y+689.0*RoomScale, r\z+912.0*RoomScale,True
+	PositionEntity r\Levers[1]\obj,r\x+90.9775*RoomScale, r\y+604.347*RoomScale, r\z+890.584*RoomScale,True
+
+	EntityParent(r\Levers[1]\baseObj, r\obj)
+	EntityParent(r\Levers[1]\obj, r\obj)
+
+    RotateEntity r\Levers[1]\obj,8.6,-150.0,-5.0
+
+	;lmfao
+	;For  i% = 0 To 1
+	;	ScaleEntity(r\Objects[20 + i], 0.04, 0.04, 0.04)
+	;	PositionEntity r\Objects[20],r\x+82.0*RoomScale, r\y+689.0*RoomScale, r\z+912.0*RoomScale,True
+	;	PositionEntity r\Objects[21],r\x+90.9775*RoomScale, r\y+604.347*RoomScale, r\z+890.584*RoomScale,True
+		
+	;	EntityParent(r\Objects[20 + i], r\obj)
+	;Next
     
     ;For tw.TempWayPoints = Each TempWayPoints
     ;	If tw\roomtemplate = r\RoomTemplate

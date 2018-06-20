@@ -12,7 +12,7 @@ Function InitializeNPCtypeGuard(n.NPCs)
     EntityRadius(n\collider, 0.2)
     EntityType(n\collider, HIT_PLAYER)
 
-    LoadOrCopyMesh(n, "GFX/npcs/guard.b3d")
+    LoadOrCopyMesh(n, "GFX/NPCs/guard/guard.b3d")
     
     n\speed = (GetINIFloat("DATA/NPCs.ini", "Guard", "speed") / 100.0)
 

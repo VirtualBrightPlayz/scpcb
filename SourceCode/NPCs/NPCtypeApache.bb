@@ -16,9 +16,9 @@ Function InitializeNPCtypeApache(n.NPCs)
     Next
 	
 	If (n\obj = 0) Then
-		n\obj = LoadAnimMesh("GFX/apache.b3d")
-		n\obj2 = LoadAnimMesh("GFX/apacherotor.b3d")
-		n\obj3 = LoadAnimMesh("GFX/apacherotor2.b3d")
+		n\obj = LoadAnimMesh("GFX/NPCs/apache/apache.b3d")
+		n\obj2 = LoadAnimMesh("GFX/NPCs/apache/apacherotor.b3d")
+		n\obj3 = LoadAnimMesh("GFX/NPCs/apache/apacherotor2.b3d")
 	EndIf
 	
     EntityParent(n\obj2, n\obj)

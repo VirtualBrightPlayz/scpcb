@@ -30,6 +30,9 @@ Function CreateAsset.AssetWrap(filePath$, asType%, flag%=1)
 		Case ASSET_ANIM_MESH
 			as\intVal = LoadAnimMesh(as\file)
 	End Select
+	
+	DebugLog("CREATED ASSET: " + filePath)
+	Return as
 End Function
 
 Function FreeAsset(as.AssetWrap)
@@ -42,7 +45,9 @@ Function FreeAsset(as.AssetWrap)
 			FreeEntity(as\intVal)
 	End Select
 	
+	Local strng$ = as\file
 	Delete as
+	DebugLog("ASSET Removed: " + strng)
 End Function
 
 Function GrabAsset%(filePath$, asType%, flag%=1)
@@ -51,6 +56,7 @@ Function GrabAsset%(filePath$, asType%, flag%=1)
 		If (filePath = as\file) Then
 			as\decayTimer = ASSET_DECAY_TIMER
 			as\grabCount = as\grabCount + 1
+			DebugLog("GRABBED ASSET: " + filePath + ", " + as\grabCount)
 			Return as\intVal
 		EndIf
 	Next
@@ -58,6 +64,7 @@ Function GrabAsset%(filePath$, asType%, flag%=1)
 	;Asset doesn't exist, create it.
 	as = CreateAsset(filePath, asType, flag)
 	as\grabCount = 1
+	DebugLog("GRABBED ASSET: " + filePath + ", " + as\grabCount)
 
 	Return as\intVal
 End Function
@@ -79,6 +86,7 @@ Function DropAsset(obj%)
 	For as = Each AssetWrap
 		If (obj = as\intVal) Then
 			as\grabCount = as\grabCount - 1
+			DebugLog("DROPPED ASSET: " + as\file + ", " + as\grabCount)
 			Return
 		EndIf
 	Next
@@ -92,6 +100,7 @@ Function UpdateAssets()
 	For as = Each AssetWrap
 		If (as\grabCount < 1) Then
 			as\decayTimer = as\decayTimer - timing\tickDuration
+			DebugLog("ASSET DECAYING: " + as\file + ", " + as\decayTimer)
 			If (as\decayTimer < 0) Then
 				FreeAsset(as)
 			EndIf
@@ -288,7 +297,7 @@ Function LoadEntities()
 	
 	Monitor = LoadMesh("GFX/map/monitor.b3d")
 	HideEntity Monitor
-	MonitorTexture = LoadTexture("GFX/monitortexture.jpg")
+	MonitorTexture = LoadTexture("GFX/General/monitortexture.jpg")
 	
 	CamBaseOBJ = LoadMesh("GFX/map/cambase.x")
 	HideEntity(CamBaseOBJ)
@@ -754,5 +763,5 @@ Function NullGame()
 	
 End Function
 ;~IDEal Editor Parameters:
-;~F#10#22#2F#40#44#48#4C#59#68#84#B4#15A
+;~F#47#4B#4F#61#71#8D#BD
 ;~C#Blitz3D

@@ -9,7 +9,7 @@ Function InitializeNPCtype049(n.NPCs)
     EntityRadius(n\collider, 0.2)
     EntityType(n\collider, HIT_PLAYER)
 	
-    n\obj = LoadAnimMesh("GFX/npcs/scp-049.b3d")
+    n\obj = LoadAnimMesh("GFX/NPCs/scp049/scp-049.b3d")
     
     n\speed = GetINIFloat("DATA/NPCs.ini", "SCP-049", "speed") / 100.0
     

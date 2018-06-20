@@ -13,12 +13,12 @@ Function InitializeNPCtype173(n.NPCs)
 	;TODO: Remove this?
 	n\gravity = True
 	
-	n\obj = LoadMesh("GFX/npcs/173_2.b3d")
+	n\obj = LoadMesh("GFX/NPCs/scp173/173.b3d")
 	
 	;On Halloween set jack-o-latern texture.
 	If (Left(CurrentDate(), 6) = "31 Oct") Then
 		HalloweenTex = True
-		Local texFestive% = LoadTexture("GFX/npcs/173h.pt", 1)
+		Local texFestive% = LoadTexture("GFX/NPCs/scp173/173h.png", 1)
 		EntityTexture(n\obj, texFestive, 0, 0)
 		FreeTexture(texFestive)
 	EndIf
@@ -28,7 +28,7 @@ Function InitializeNPCtype173(n.NPCs)
 	
 	n\speed = (GetINIFloat("DATA/NPCs.ini", "SCP-173", "speed") / 100.0)
 	
-	n\obj2 = LoadMesh("GFX/173box.b3d")
+	n\obj2 = LoadMesh("GFX/NPCs/scp173/173box.b3d")
 	ScaleEntity(n\obj2, RoomScale, RoomScale, RoomScale)
 	HideEntity(n\obj2)
 

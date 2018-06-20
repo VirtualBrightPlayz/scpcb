@@ -4,7 +4,7 @@ Function InitializeNPCtype066(n.NPCs)
     EntityRadius n\collider, 0.2
     EntityType n\collider, HIT_PLAYER
     
-    n\obj = LoadAnimMesh("GFX/NPCs/scp-066.b3d")
+    n\obj = LoadAnimMesh("GFX/NPCs/scp066/scp-066.b3d")
     temp# = GetINIFloat("DATA/NPCs.ini", "SCP-066", "scale")/2.5
     ScaleEntity n\obj, temp, temp, temp		
     
@@ -26,10 +26,10 @@ Function UpdateNPCtype066(n.NPCs)
                 If n\state2 < TimeInPosMilliSecs() Then
                     For w.waypoints = Each WayPoints
                         ;If w\door = Null Then ;TODO: fix?
-						If Abs(EntityX(w\obj,True)-EntityX(n\Collider))<4.0 Then
-							If Abs(EntityZ(w\obj,True)-EntityZ(n\Collider))<4.0 Then
-								PositionEntity n\Collider, EntityX(w\obj,True), EntityY(w\obj,True)+0.3, EntityZ(w\obj,True)
-								ResetEntity n\Collider
+						If Abs(EntityX(w\obj,True)-EntityX(n\collider))<4.0 Then
+							If Abs(EntityZ(w\obj,True)-EntityZ(n\collider))<4.0 Then
+								PositionEntity n\collider, EntityX(w\obj,True), EntityY(w\obj,True)+0.3, EntityZ(w\obj,True)
+								ResetEntity n\collider
 								Exit
 							EndIf
 						EndIf

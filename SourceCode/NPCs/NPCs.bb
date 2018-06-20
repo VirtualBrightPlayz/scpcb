@@ -3,7 +3,6 @@ Include "SourceCode/NPCs/NPCtype106.bb"
 Include "SourceCode/NPCs/NPCtypeGuard.bb"
 Include "SourceCode/NPCs/NPCtypeMTF.bb"
 Include "SourceCode/NPCs/NPCtypeD.bb"
-Include "SourceCode/NPCs/NPCtype5131.bb"
 Include "SourceCode/NPCs/NPCtype096.bb"
 Include "SourceCode/NPCs/NPCtype049.bb"
 Include "SourceCode/NPCs/NPCtypeZombie.bb"
@@ -13,7 +12,6 @@ Include "SourceCode/NPCs/NPCtype860.bb"
 Include "SourceCode/NPCs/NPCtype939.bb"
 Include "SourceCode/NPCs/NPCtype066.bb"
 Include "SourceCode/NPCs/NPCtype966.bb"
-Include "SourceCode/NPCs/NPCtype1048a.bb"
 Include "SourceCode/NPCs/NPCtype1499.bb"
 
 ;TODO: replace with functions that return the first instance of each NPC
@@ -38,7 +36,6 @@ Const NPCtypeZombie%    = 15 ;TODO: Remove.
 Const NPCtypeTentacle%  = 16
 Const NPCtype1499%      = 17
 Const NPCtypePdPlane%   = 18 ;TODO: Remove, don't think this is ever used even.
-Const NPCtype1048a%     = 19 ;TODO: Remove.
 
 Const NPC_SOUND_COUNT% = 12
 Const NPC_CHANNEL_COUNT% = 3
@@ -175,8 +172,6 @@ Function CreateNPC.NPCs(NPCtype%, x#, y#, z#)
 			InitializeNPCtypeMTF(n)
 		Case NPCtypeD
 			InitializeNPCtypeD(n)
-		Case NPCtype5131
-			InitializeNPCtype5131(n)
 		Case NPCtype096
 			InitializeNPCtype096(n)
 		Case NPCtype049
@@ -195,8 +190,6 @@ Function CreateNPC.NPCs(NPCtype%, x#, y#, z#)
 			InitializeNPCtype066(n)
 		Case NPCtype966
 			InitializeNPCtype966(n)
-		Case NPCtype1048a
-			InitializeNPCtype1048a(n)
 		Case NPCtype1499
 			InitializeNPCtype1499(n)
 	End Select
@@ -308,8 +301,6 @@ Function UpdateNPCs()
 				UpdateNPCtypeMTF(n)
 			Case NPCtypeD
 				UpdateNPCtypeD(n)
-			Case NPCtype5131
-				UpdateNPCtype5131(n)
 			Case NPCtypeApache
 				UpdateNPCtypeApache(n)
 			Case NPCtypeTentacle
@@ -322,8 +313,6 @@ Function UpdateNPCs()
 				UpdateNPCtype066(n)
 			Case NPCtype966
 				UpdateNPCtype966(n)
-			Case NPCtype1048a
-				UpdateNPCtype1048a(n)
 			Case NPCtype1499
 				UpdateNPCtype1499(n)
 		End Select

@@ -17,12 +17,14 @@ Function FillRoom_cont_012_2(r.Rooms)
     
     r\Levers[0] = CreateLever()
     
-    For i% = 0 To 1
-        ScaleEntity(r\Objects[i], 0.04, 0.04, 0.04)
-        PositionEntity (r\Objects[i], r\x + 240.0 * RoomScale, r\y - 512.0 * RoomScale, r\z - 364 * RoomScale, True)
-        
-        EntityParent(r\Objects[i], r\obj)
-    Next
+	ScaleEntity(r\Levers[0]\baseObj, 0.04, 0.04, 0.04)
+	ScaleEntity(r\Levers[0]\obj, 0.04, 0.04, 0.04)
+	PositionEntity (r\Levers[0]\baseObj, r\x + 240.0 * RoomScale, r\y - 512.0 * RoomScale, r\z - 364 * RoomScale, True)
+	PositionEntity (r\Levers[0]\obj, r\x + 240.0 * RoomScale, r\y - 512.0 * RoomScale, r\z - 364 * RoomScale, True)
+	
+	EntityParent(r\Levers[0]\baseObj, r\obj)
+	EntityParent(r\Levers[0]\obj, r\obj)
+		
     ;RotateEntity(r\Levers[0]\baseObj, 0, 0, 0)
     RotateEntity(r\Levers[0]\obj, 10, -180, 0)
     

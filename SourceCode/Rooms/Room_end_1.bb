@@ -34,8 +34,8 @@ Function UpdateEventEndroom106(e.Events)
 					
 					e\room\NPC[0]=CreateNPC(NPCtypeD, EntityX(e\room\RoomDoors[0]\obj,True), 0.5, EntityZ(e\room\RoomDoors[0]\obj,True))
 					
-					tex = LoadTexture("GFX/npcs/janitor.jpg")
-					e\room\NPC[0]\texture = "GFX/npcs/janitor.jpg"
+					tex = LoadTexture("GFX/NPCs/classd/janitor.jpg")
+					e\room\NPC[0]\texture = "GFX/NPCs/classd/janitor.jpg"
 					EntityTexture e\room\NPC[0]\obj, tex
 					FreeTexture tex
 					

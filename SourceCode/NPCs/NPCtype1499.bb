@@ -1,20 +1,20 @@
 Function InitializeNPCtype1499(n.NPCs)
-    n\NVName = "Unidentified"
-    n\Collider = CreatePivot()
-    EntityRadius n\Collider, 0.2
-    EntityType n\Collider, HIT_PLAYER
+    n\nvName = "Unidentified"
+    n\collider = CreatePivot()
+    EntityRadius n\collider, 0.2
+    EntityType n\collider, HIT_PLAYER
     For n2.NPCs = Each NPCs
-        If (n\NPCtype = n2\NPCtype) And (n<>n2) Then
+        If (n\npcType = n2\NPCtype) And (n<>n2) Then
             n\obj = CopyEntity (n2\obj)
             Exit
         EndIf
     Next
     
     If n\obj = 0 Then 
-        n\obj = LoadAnimMesh("GFX/npcs/1499-1.b3d")
+        n\obj = LoadAnimMesh("GFX/NPCs/scp1499/scp1499.b3d")
     EndIf
     
-    n\Speed = (GetINIFloat("DATA/NPCs.ini", "SCP-1499-1", "speed") / 100.0) * Rnd(0.9,1.1)
+    n\speed = (GetINIFloat("DATA/NPCs.ini", "SCP-1499-1", "speed") / 100.0) * Rnd(0.9,1.1)
     temp# = (GetINIFloat("DATA/NPCs.ini", "SCP-1499-1", "scale") / 6.0) * Rnd(0.8,1.0)
     
     ScaleEntity n\obj, temp, temp, temp
@@ -26,32 +26,32 @@ Function UpdateNPCtype1499(n.NPCs)
     ;n\State: Current State of the NPC
     ;n\State2: A second state variable (dependend on the current NPC's n\State)
     
-    prevFrame# = n\Frame
+    prevFrame# = n\frame
     
-    If (Not n\Idle) And EntityDistance(n\Collider,mainPlayer\collider)<HideDistance*2
-        If n\State = 0 Or n\State = 2
+    If (Not n\Idle) And EntityDistance(n\collider,mainPlayer\collider)<HideDistance*2
+        If n\state = 0 Or n\state = 2
             For n2.NPCs = Each NPCs
-                If n2\NPCtype = n\NPCtype And n2 <> n
+                If n2\NPCtype = n\npcType And n2 <> n
                     If n2\State <> 0 And n2\State <> 2
-                        n\State = 1
-                        n\State2 = 0
+                        n\state = 1
+                        n\state2 = 0
                         Exit
                     EndIf
                 EndIf
             Next
         EndIf
         
-        Select n\State
+        Select n\state
             Case 0
-                If n\CurrSpeed = 0.0
-                    If n\State2 < 500.0*Rnd(1,3)
-                        n\CurrSpeed = 0.0
-                        n\State2 = n\State2 + timing\tickDuration
+                If n\currSpeed = 0.0
+                    If n\state2 < 500.0*Rnd(1,3)
+                        n\currSpeed = 0.0
+                        n\state2 = n\state2 + timing\tickDuration
                     Else
-                        If n\CurrSpeed = 0.0 Then n\CurrSpeed = n\CurrSpeed + 0.0001
+                        If n\currSpeed = 0.0 Then n\currSpeed = n\currSpeed + 0.0001
                     EndIf
                 Else
-                    If n\State2 < 10000.0*Rnd(1,3)
+                    If n\state2 < 10000.0*Rnd(1,3)
                         n\CurrSpeed = CurveValue(n\Speed,n\CurrSpeed,10.0)
                         n\State2 = n\State2 + timing\tickDuration
                     Else
@@ -247,3 +247,6 @@ Function UpdateNPCtype1499(n.NPCs)
         HideEntity n\obj
     EndIf
 End Function
+
+;~IDEal Editor Parameters:
+;~C#Blitz3D

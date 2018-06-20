@@ -13,14 +13,14 @@ Function InitializeNPCtype106(n.NPCs)
     n\collider = CreatePivot()
     EntityRadius(n\collider, 0.2)
     EntityType(n\collider, HIT_PLAYER)
-    n\obj = LoadAnimMesh("GFX/npcs/106_2.b3d")
+    n\obj = LoadAnimMesh("GFX/NPCs/scp106/106.b3d")
 
     n\gravity = False
 
     Local temp# = (GetINIFloat("DATA/NPCs.ini", "SCP-106", "scale") / 2.2)		
     ScaleEntity(n\obj, temp, temp, temp)
 
-    Local oldManEyes% = LoadTexture("GFX/npcs/oldmaneyes.jpg")
+    Local oldManEyes% = LoadTexture("GFX/NPCs/scp106/oldmaneyes.jpg")
 
     n\speed = (GetINIFloat("DATA/NPCs.ini", "SCP-106", "speed") / 100.0)
 
@@ -53,7 +53,7 @@ Function UpdateNPCtype106(n.NPCs)
 
     Select n\state
         Case STATE106_RISE
-            If (mainPlayer\currRoom\RoomTemplate\Name$ = "dimension1499") Then
+            If (mainPlayer\currRoom\RoomTemplate\name$ = "dimension1499") Then
                 Return
             EndIf
 

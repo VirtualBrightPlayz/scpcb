@@ -163,7 +163,7 @@ Function CreateItemTemplate(file$, section$)
 	HideEntity it\obj
 End Function
 
-Function FindItemTemplate.ItemTemplates(ntempname$)
+Function FindItemTemplate.ItemTemplates(tempname$)
 	Local it.ItemTemplates = Null
 	Local candidate.ItemTemplates = Null
 	For it = Each ItemTemplates
@@ -456,7 +456,9 @@ Function CreateItem.Items(name$, tempname$, x#, y#, z#, r# = 1.0, g# = 1.0, b# =
 	
 	i\WontColl = False
 	
-	If i\itemtemplate = Null Then RuntimeError("Item template not found ("+name+", "+tempname+")")
+	;If i\itemtemplate = Null Then RuntimeError("Item template not found ("+name+", "+tempname+")")
+	i\model = CreateMesh()
+	i\collider = CreatePivot()
 	
 	ResetEntity i\collider		
 	PositionEntity(i\collider, x, y, z, True)
@@ -487,13 +489,13 @@ Function CreateItem.Items(name$, tempname$, x#, y#, z#, r# = 1.0, g# = 1.0, b# =
 		;EntityShininess liquid, 1.0
 	;EndIf
 	
-	i\invimg = i\itemtemplate\invimg
+	i\invimg = CreateImage(64, 64) ;i\invimg = i\itemtemplate\invimg
 
-	If (tempname="clipboard") And (invSlots=0) Then
-		invSlots = 20
-		SetAnimTime i\model,17.0
-		i\invimg = i\itemtemplate\invimg2
-	EndIf
+;	If (tempname="clipboard") And (invSlots=0) Then
+;		invSlots = 20
+;		SetAnimTime i\model,17.0
+;		i\invimg = i\itemtemplate\invimg2
+;	EndIf
 	
 	i\inventory = Null
 	If invSlots>0 Then
