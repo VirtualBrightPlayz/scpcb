@@ -34,7 +34,7 @@ Function UpdateNPCtypeZombie(n.NPCs)
         
         prevFrame# = n\frame
         
-        If (Not n\IsDead)
+        If (Not n\IsDead) Then
             Select n\state
                 Case 0
                     AnimateNPC(n, 719, 777, 0.2, False)

@@ -34,7 +34,7 @@ Function UpdateNPCtypeD(n.NPCs)
             n\CurrSpeed = CurveValue(0.0, n\CurrSpeed, 5.0)
             Animate2(n\obj, AnimTime(n\obj), 210, 235, 0.1)
         Case 1 ;walking
-            If n\State2 = 1.0
+            If n\State2 = 1.0 Then
                 n\CurrSpeed = CurveValue(n\Speed*0.7, n\CurrSpeed, 20.0)
             Else
                 n\CurrSpeed = CurveValue(0.015, n\CurrSpeed, 5.0)

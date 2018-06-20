@@ -490,7 +490,7 @@ Function GetMaterialStepSound(entity%)
 
             If texture <> 0 Then
                 name = StripPath(TextureName(texture))
-                If (name <> "") FreeTexture(texture)
+                If (name <> "") Then FreeTexture(texture)
                 For mat.Materials = Each Materials
                     If mat\name = name Then
                         If mat\StepSound > 0 Then
@@ -504,7 +504,7 @@ Function GetMaterialStepSound(entity%)
             texture = GetBrushTexture(brush,1)
             If texture <> 0 Then
                 name = StripPath(TextureName(texture))
-                If (name <> "") FreeTexture(texture)
+                If (name <> "") Then FreeTexture(texture)
                 FreeBrush(brush)
                 For mat.Materials = Each Materials
                     If mat\name = name Then

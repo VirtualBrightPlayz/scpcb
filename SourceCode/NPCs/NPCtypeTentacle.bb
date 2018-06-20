@@ -100,7 +100,7 @@ Function UpdateNPCtypeTentacle(n.NPCs)
                         
                         n\Frame = 6
                         ;SetAnimTime(n\obj, 6)
-                    ElseIf n\Frame=32
+                    ElseIf n\Frame=32 Then
                         n\State = 1
                         n\Frame = 173
                         ;SetAnimTime(n\obj, 173)

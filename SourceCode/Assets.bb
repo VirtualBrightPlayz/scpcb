@@ -554,8 +554,8 @@ Function InitLoadGame()
 	
 	For e.Events = Each Events
 		;Loading the necessary stuff for dimension1499, but this will only be done if the player is in this dimension already
-		If e\EventName = "dimension1499"
-			If e\EventState = 2
+		If e\EventName = "dimension1499" Then
+			If e\EventState = 2 Then
 				;[Block]
 				DrawLoading(91)
 				e\room\Objects[0] = CreatePlane()

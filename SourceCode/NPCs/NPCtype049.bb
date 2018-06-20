@@ -49,7 +49,7 @@ Function UpdateNPCtype049(n.NPCs)
 		Case STATE049_ATTACK
 			;[Block]
 			;Playing a sound after detecting the player
-			If (n\prevState = STATE049_ROAMING And (Not IsChannelPlaying(n\soundChannels[0])))
+			If (n\prevState = STATE049_ROAMING And (Not IsChannelPlaying(n\soundChannels[0]))) Then
 				n\soundChannels[0] = LoopRangedSound(n\sounds[Rand(1,2)], n\soundChannels[0], mainPlayer\cam, n\obj)
 			EndIf
 			
@@ -66,7 +66,7 @@ Function UpdateNPCtype049(n.NPCs)
 				mainPlayer\blurTimer = 500.0
 				
 				If (Not mainPlayer\godMode) Then
-					If (mainPlayer\currRoom\RoomTemplate\Name$ = "room049")
+					If (mainPlayer\currRoom\RoomTemplate\Name$ = "room049") Then
 						DeathMSG = "Three (3) active instances of SCP-049-2 discovered in the tunnel outside SCP-049's containment chamber. Terminated by Nine-Tailed Fox."
 						Local e.Events
 						For e.Events = Each Events
@@ -119,7 +119,7 @@ Function UpdateNPCtype049(n.NPCs)
 					Else
 						;closes doors behind him
 						If n\pathLocation>0 Then
-							If n\path[n\pathLocation-1] <> Null
+							If n\path[n\pathLocation-1] <> Null Then
 								;TODO: fix
 								;If n\path[n\pathLocation-1]\door <> Null Then
 								;	If (Not n\path[n\pathLocation-1]\door\IsElevatorDoor)
@@ -151,9 +151,9 @@ Function UpdateNPCtype049(n.NPCs)
 							;		EndIf
 							;	EndIf
 							;EndIf
-							If dist2#<0.2 And temp
+							If dist2#<0.2 And temp Then
 								n\pathLocation = n\pathLocation + 1
-							ElseIf dist2#<0.5 And (Not temp)
+							ElseIf dist2#<0.5 And (Not temp) Then
 								;Breaking up the path because the door cannot be operated by SCP-049
 								n\pathStatus = 0
 								n\pathTimer# = 0.0
@@ -163,7 +163,7 @@ Function UpdateNPCtype049(n.NPCs)
 						AnimateNPC(n, Max(Min(AnimTime(n\obj),358.0),346), 393.0, n\currSpeed*38)
 						
 						;Playing a sound if he hears the player
-						If (n\soundTimer < 0 And (Not IsChannelPlaying(n\soundChannels[0])))
+						If (n\soundTimer < 0 And (Not IsChannelPlaying(n\soundChannels[0]))) Then
 							n\soundTimer = Rand(10, 20) * 70
 							
 							If Rand(8)=3 Then
@@ -173,29 +173,29 @@ Function UpdateNPCtype049(n.NPCs)
 							EndIf
 						EndIf
 						
-						If (n\timer > 70*7) ;Updating the path every 7 seconds
+						If (n\timer > 70*7) Then ;Updating the path every 7 seconds
 							n\pathStatus = FindPath(n, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider))
 							n\timer = 0.0
 						EndIf
 					EndIf
 					
-					If n\CurrElevator <> Null
+					If n\CurrElevator <> Null Then
 						dist2# = EntityDistance(n\collider,n\CurrElevator\door\frameobj)
-						If dist2# < 0.7
+						If dist2# < 0.7 Then
 							n\pathStatus = 0
 							n\pathLocation = 0
 							n\pathTimer# = 0.0
 						EndIf
 					EndIf
 				Else ;No Path to the player found - stands still and tries to find a path
-					If n\CurrElevator = Null
-						If n\pathStatus = 2 ;Updating path faster
+					If n\CurrElevator = Null Then
+						If n\pathStatus = 2 Then ;Updating path faster
 							n\pathTimer# = n\pathTimer# + 2*timing\tickDuration
 						Else
 							n\pathTimer# = n\pathTimer# + timing\tickDuration
 						EndIf
-						If n\pathTimer# > 70*5-(2*SelectedDifficulty\aggressiveNPCs)
-							If n\InFacility = InFacility
+						If n\pathTimer# > 70*5-(2*SelectedDifficulty\aggressiveNPCs) Then
+							If n\InFacility = InFacility Then
 								n\pathStatus = FindPath(n, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider))
 							Else
 								FindNextElevator(n)
@@ -209,7 +209,7 @@ Function UpdateNPCtype049(n.NPCs)
 						n\currSpeed = n\speed
 						GoToElevator(n)
 						
-						If n\currSpeed > 0.0
+						If n\currSpeed > 0.0 Then
 							MoveEntity n\collider,0,0,n\currSpeed*timing\tickDuration
 							AnimateNPC(n, Max(Min(AnimTime(n\obj),358.0),346), 393.0, n\currSpeed*38)
 						Else
@@ -218,7 +218,7 @@ Function UpdateNPCtype049(n.NPCs)
 					EndIf
 				EndIf
 			Else ;Player hasn't been detected, just being idle
-				If n\pathStatus = 1
+				If n\pathStatus = 1 Then
 					If n\path[n\pathLocation]=Null Then
 						If n\pathLocation > 19 Then
 							n\pathLocation = 0 : n\pathStatus = 0
@@ -228,7 +228,7 @@ Function UpdateNPCtype049(n.NPCs)
 					Else
 						;closes doors behind him
 						If n\pathLocation>0 Then
-							If n\path[n\pathLocation-1] <> Null
+							If n\path[n\pathLocation-1] <> Null Then
 								;TODO: ffs
 								;If n\path[n\pathLocation-1]\door <> Null Then
 								;	If (Not n\path[n\pathLocation-1]\door\IsElevatorDoor)
@@ -260,9 +260,9 @@ Function UpdateNPCtype049(n.NPCs)
 							;		EndIf
 							;	EndIf
 							;EndIf
-							If dist2#<0.2 And temp
+							If dist2#<0.2 And temp Then
 								n\pathLocation = n\pathLocation + 1
-							ElseIf dist2#<0.5 And (Not temp)
+							ElseIf dist2#<0.5 And (Not temp) Then
 								;Breaking up the path because the door cannot be operated by SCP-049
 								n\pathStatus = 0
 								n\pathTimer# = 0.0
@@ -273,8 +273,8 @@ Function UpdateNPCtype049(n.NPCs)
 						
 						n\timer = n\timer + timing\tickDuration
 						
-						If n\InFacility = True
-							If n\state3 > 70*14 ;Breaking the path after 14 seconds
+						If n\InFacility = True Then
+							If n\state3 > 70*14 Then ;Breaking the path after 14 seconds
 								n\pathStatus = 0
 								n\pathLocation = 0
 								n\pathTimer# = 0.0
@@ -283,25 +283,25 @@ Function UpdateNPCtype049(n.NPCs)
 						EndIf
 					EndIf
 					
-					If n\CurrElevator <> Null
+					If n\CurrElevator <> Null Then
 						dist2# = EntityDistance(n\collider,n\CurrElevator\door\frameobj)
-						If dist2# < 0.7
+						If dist2# < 0.7 Then
 							n\pathStatus = 0
 							n\pathLocation = 0
 							n\pathTimer# = 0.0
 						EndIf
 					EndIf
 				Else
-					If n\CurrElevator = Null
+					If n\CurrElevator = Null Then
 						n\currSpeed = 0
 						AnimateNPC(n, 269, 345, 0.2)
-						If n\pathTimer# < 300+Rand(100,300)
+						If n\pathTimer# < 300+Rand(100,300) Then
 							n\pathTimer# = n\pathTimer# + timing\tickDuration
 						Else
-							If n\InFacility = True
-								If Rand(2)=1
+							If n\InFacility = True Then
+								If Rand(2)=1 Then
 									For r.Rooms = Each Rooms
-										If EntityDistance(r\obj,n\collider)<12.0 And EntityDistance(r\obj,n\collider)>4.0
+										If EntityDistance(r\obj,n\collider)<12.0 And EntityDistance(r\obj,n\collider)>4.0 Then
 											n\pathStatus = FindPath(n,EntityX(r\obj),EntityY(r\obj),EntityZ(r\obj))
 											Exit
 										EndIf
@@ -317,7 +317,7 @@ Function UpdateNPCtype049(n.NPCs)
 						n\currSpeed = n\speed
 						GoToElevator(n)
 						
-						If n\currSpeed > 0.0
+						If n\currSpeed > 0.0 Then
 							MoveEntity(n\collider, 0, 0, n\currSpeed*timing\tickDuration)
 							AnimateNPC(n, Max(Min(AnimTime(n\obj),358.0),346), 393.0, n\currSpeed*38)
 						Else

@@ -28,6 +28,7 @@ Function UpdateNPCtype1499(n.NPCs)
     
     prevFrame# = n\frame
     
+<<<<<<< HEAD
     If (Not n\Idle) And EntityDistance(n\collider,mainPlayer\collider)<HideDistance*2
         If n\state = 0 Or n\state = 2
             For n2.NPCs = Each NPCs
@@ -35,6 +36,15 @@ Function UpdateNPCtype1499(n.NPCs)
                     If n2\State <> 0 And n2\State <> 2
                         n\state = 1
                         n\state2 = 0
+=======
+    If (Not n\Idle) And EntityDistance(n\Collider,mainPlayer\collider)<HideDistance*2 Then
+        If n\State = 0 Or n\State = 2 Then
+            For n2.NPCs = Each NPCs
+                If n2\NPCtype = n\NPCtype And n2 <> n Then
+                    If n2\State <> 0 And n2\State <> 2 Then
+                        n\State = 1
+                        n\State2 = 0
+>>>>>>> 8df8871f1039ef6148399ed204704ea202a94521
                         Exit
                     EndIf
                 EndIf
@@ -43,15 +53,26 @@ Function UpdateNPCtype1499(n.NPCs)
         
         Select n\state
             Case 0
+<<<<<<< HEAD
                 If n\currSpeed = 0.0
                     If n\state2 < 500.0*Rnd(1,3)
                         n\currSpeed = 0.0
                         n\state2 = n\state2 + timing\tickDuration
+=======
+                If n\CurrSpeed = 0.0 Then
+                    If n\State2 < 500.0*Rnd(1,3) Then
+                        n\CurrSpeed = 0.0
+                        n\State2 = n\State2 + timing\tickDuration
+>>>>>>> 8df8871f1039ef6148399ed204704ea202a94521
                     Else
                         If n\currSpeed = 0.0 Then n\currSpeed = n\currSpeed + 0.0001
                     EndIf
                 Else
+<<<<<<< HEAD
                     If n\state2 < 10000.0*Rnd(1,3)
+=======
+                    If n\State2 < 10000.0*Rnd(1,3) Then
+>>>>>>> 8df8871f1039ef6148399ed204704ea202a94521
                         n\CurrSpeed = CurveValue(n\Speed,n\CurrSpeed,10.0)
                         n\State2 = n\State2 + timing\tickDuration
                     Else
@@ -70,7 +91,7 @@ Function UpdateNPCtype1499(n.NPCs)
                     ShowEntity n\Collider
                 EndIf
                 
-                If n\CurrSpeed = 0.0
+                If n\CurrSpeed = 0.0 Then
                     AnimateNPC(n,296,317,0.2)
                 Else
                     If (n\ID Mod 2 = 0) Then
@@ -110,7 +131,7 @@ Function UpdateNPCtype1499(n.NPCs)
                                 
                                 For n2.NPCs = Each NPCs
                                     ;If n2\NPCtype = n\NPCtype And n2 <> n And (n\ID Mod 2 = 0) Then
-                                    If n2\NPCtype = n\NPCtype And n2 <> n
+                                    If n2\NPCtype = n\NPCtype And n2 <> n Then
                                         n2\State = 1
                                         n2\State2 = 0
                                     EndIf
@@ -126,7 +147,7 @@ Function UpdateNPCtype1499(n.NPCs)
             Case 1 ;attacking the player
                 If NoTarget Then n\State = 0
                 
-                If mainPlayer\currRoom\RoomTemplate\Name = "dimension1499"
+                If mainPlayer\currRoom\RoomTemplate\Name = "dimension1499" Then
                     ;If Music(19)=0 Then Music(19) = LoadSound("SFX/Music/1499Danger.ogg") ;TODO: fix
                     ShouldPlay = 19
                 EndIf
@@ -136,7 +157,7 @@ Function UpdateNPCtype1499(n.NPCs)
                 
                 dist = EntityDistance(n\Collider,mainPlayer\collider)
                 
-                If n\State2 = 0.0
+                If n\State2 = 0.0 Then
                     n\CurrSpeed = CurveValue(n\Speed*1.75,n\CurrSpeed,10.0)
                     
                     If (n\ID Mod 2 = 0) Then
@@ -146,11 +167,11 @@ Function UpdateNPCtype1499(n.NPCs)
                     EndIf
                 EndIf
                 
-                If dist < 0.75
-                    If (n\ID Mod 2 = 0) Or n\State3 = 1
+                If dist < 0.75 Then
+                    If (n\ID Mod 2 = 0) Or n\State3 = 1 Then
                         n\State2 = Rand(1,2)
                         n\State = 3
-                        If n\State2 = 1
+                        If n\State2 = 1 Then
                             SetNPCFrame(n,63)
                         Else
                             SetNPCFrame(n,168)
@@ -169,17 +190,17 @@ Function UpdateNPCtype1499(n.NPCs)
             Case 3 ;slashing at the player
                 n\CurrSpeed = CurveValue(0.0,n\CurrSpeed,5.0)
                 dist = EntityDistance(n\Collider,mainPlayer\collider)
-                If n\State2 = 1
+                If n\State2 = 1 Then
                     AnimateNPC(n,63,100,0.6,False)
-                    If prevFrame < 89 And n\Frame=>89
-                        If dist > 0.85 Or Abs(DeltaYaw(n\Collider,mainPlayer\collider))>60.0
+                    If prevFrame < 89 And n\Frame=>89 Then
+                        If dist > 0.85 Or Abs(DeltaYaw(n\Collider,mainPlayer\collider))>60.0 Then
                             ;Miss
                         Else
                             mainPlayer\injuries = mainPlayer\injuries + Rnd(0.75,1.5)
                             PlayRangedSound(LoadTempSound("SFX/General/Slash"+Rand(1,2)+".ogg"), mainPlayer\cam, n\Collider)
-                            If mainPlayer\injuries > 10.0
+                            If mainPlayer\injuries > 10.0 Then
                                 Kill(mainPlayer)
-                                If mainPlayer\currRoom\RoomTemplate\Name$ = "dimension1499"
+                                If mainPlayer\currRoom\RoomTemplate\Name$ = "dimension1499" Then
                                     DeathMSG = "All personnel situated within Evacuation Shelter LC-2 during the breach have been administered "
                                     DeathMSG = DeathMSG + "Class-B amnestics due to Incident 1499-E. The Class D subject involved in the event "
                                     DeathMSG = DeathMSG + "died shortly after being shot by Agent [REDACTED]."
@@ -190,21 +211,21 @@ Function UpdateNPCtype1499(n.NPCs)
                                 EndIf
                             EndIf
                         EndIf
-                    ElseIf n\Frame => 99
+                    ElseIf n\Frame => 99 Then
                         n\State2 = 0.0
                         n\State = 1
                     EndIf
                 Else
                     AnimateNPC(n,168,202,0.6,False)
-                    If prevFrame < 189 And n\Frame=>189
-                        If dist > 0.85 Or Abs(DeltaYaw(n\Collider,mainPlayer\collider))>60.0
+                    If prevFrame < 189 And n\Frame=>189 Then
+                        If dist > 0.85 Or Abs(DeltaYaw(n\Collider,mainPlayer\collider))>60.0 Then
                             ;Miss
                         Else
                             mainPlayer\injuries = mainPlayer\injuries + Rnd(0.75,1.5)
                             PlayRangedSound(LoadTempSound("SFX/General/Slash"+Rand(1,2)+".ogg"), mainPlayer\cam, n\Collider)
-                            If mainPlayer\injuries > 10.0
+                            If mainPlayer\injuries > 10.0 Then
                                 Kill(mainPlayer)
-                                If mainPlayer\currRoom\RoomTemplate\Name$ = "dimension1499"
+                                If mainPlayer\currRoom\RoomTemplate\Name$ = "dimension1499" Then
                                     DeathMSG = "All personnel situated within Evacuation Shelter LC-2 during the breach have been administered "
                                     DeathMSG = DeathMSG + "Class-B amnestics due to Incident 1499-E. The Class D subject involved in the event "
                                     DeathMSG = DeathMSG + "died shortly after being shot by Agent [REDACTED]."
@@ -215,7 +236,7 @@ Function UpdateNPCtype1499(n.NPCs)
                                 EndIf
                             EndIf
                         EndIf
-                    ElseIf n\Frame => 201
+                    ElseIf n\Frame => 201 Then
                         n\State2 = 0.0
                         n\State = 1
                     EndIf
@@ -228,7 +249,7 @@ Function UpdateNPCtype1499(n.NPCs)
                 PointEntity n\obj,mainPlayer\collider
                 RotateEntity n\Collider,0,CurveAngle(EntityYaw(n\obj),EntityYaw(n\Collider),20.0),0
                 
-                If dist > 0.85
+                If dist > 0.85 Then
                     n\State = 1
                 EndIf
         End Select
