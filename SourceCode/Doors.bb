@@ -30,24 +30,31 @@ Type Doors
 	Field NPCCalledElevator% = False
 End Type 
 
-Dim BigDoorOBJ(2)
-Dim HeavyDoorObj(2)
+Dim BigDoorOBJ.MarkedForRemoval(2) ;yo yeye alright
+Dim HeavyDoorObj.MarkedForRemoval(2)
 
 Function CreateDoor.Doors(lvl, x#, y#, z#, angle#, room.Rooms, dopen% = False,  big% = False, keycard% = False, code$="")
 	Local d.Doors, parent, i%
 	If room <> Null Then parent = room\obj
 
-	;Some dirs.
 	Local doorObj%      = GrabMesh("GFX/Map/Meshes/door.b3d")
 	Local doorFrameObj% = GrabMesh("GFX/Map/Meshes/doorframe.b3d")
 	Local doorColl%     = GrabMesh("GFX/Map/Meshes/doorcoll.b3d")
 	Local buttonObj%    = GrabMesh("GFX/Map/Meshes/button.b3d")
+
+	Local contDoorLeft% = GrabMesh("GFX/Map/Meshes/ContDoorLeft.b3d")
+	Local contDoorRight% = GrabMesh("GFX/Map/Meshes/ContDoorRight.b3d")
+
+	Local hczDoorObj%[2]
+	For i=0 to 1
+		hczDoorObj[i] = GrabMesh("GFX/Map/Meshes/heavydoor" + Str(i + 1) + ".b3d")
+	Next
 	
 	d.Doors = New Doors
 	If big=1 Then
-		d\obj = CopyEntity(BigDoorOBJ(0))
+		d\obj = CopyEntity(contDoorLeft)
 		ScaleEntity(d\obj, 55 * RoomScale, 55 * RoomScale, 55 * RoomScale)
-		d\obj2 = CopyEntity(BigDoorOBJ(1))
+		d\obj2 = CopyEntity(contDoorRight)
 		ScaleEntity(d\obj2, 55 * RoomScale, 55 * RoomScale, 55 * RoomScale)
 		
 		d\frameobj = CopyEntity(doorColl)				
@@ -55,9 +62,9 @@ Function CreateDoor.Doors(lvl, x#, y#, z#, angle#, room.Rooms, dopen% = False,  
 		EntityType d\frameobj, HIT_MAP
 		EntityAlpha d\frameobj, 0.0
 	ElseIf big=2 Then
-		d\obj = CopyEntity(HeavyDoorObj(0))
+		d\obj = CopyEntity(hczDoorObj[0])
 		ScaleEntity(d\obj, RoomScale, RoomScale, RoomScale)
-		d\obj2 = CopyEntity(HeavyDoorObj(1))
+		d\obj2 = CopyEntity(hczDoorObj[1])
 		ScaleEntity(d\obj2, RoomScale, RoomScale, RoomScale)
 		
 		d\frameobj = CopyEntity(doorFrameObj)
@@ -88,14 +95,20 @@ Function CreateDoor.Doors(lvl, x#, y#, z#, angle#, room.Rooms, dopen% = False,  
 	d\LevelDest = 66
 	
 	For i% = 0 To 1
-		If code <> "" Then 
-			d\buttons[i]= CopyEntity(ButtonCodeOBJ)
+		If code <> "" Then
+			Local buttonCodeObj% = GrabMesh("GFX/Map/Meshes/ButtonCode.b3d")
+			d\buttons[i] = CopyEntity(buttonCodeObj)
 			EntityFX(d\buttons[i], 1)
+			DropAsset(buttonCodeObj)
 		Else
 			If keycard>0 Then
-				d\buttons[i]= CopyEntity(ButtonKeyOBJ)
+				Local buttonKeyObj% = GrabMesh("GFX/Map/Meshes/ButtonKeycard.b3d")
+				d\buttons[i]= CopyEntity(buttonKeyObj)
+				DropAsset(buttonKeyObj)
 			ElseIf keycard<0 Then
-				d\buttons[i]= CopyEntity(ButtonScannerOBJ)	
+				Local buttonScannerObj% = GrabMesh("GFX/Map/Meshes/ButtonScanner.b3d")
+				d\buttons[i]= CopyEntity(buttonScannerObj)
+				DropAsset(buttonScannerObj)
 			Else
 				d\buttons[i] = CopyEntity(buttonObj)
 			End If
@@ -159,9 +172,15 @@ Function CreateDoor.Doors(lvl, x#, y#, z#, angle#, room.Rooms, dopen% = False,  
 	DropAsset(doorFrameObj);Bust his nut!!!
 	DropAsset(doorColl)    ;BUST HIS NUT!!!
 	DropAsset(buttonObj)   ;B U S T  H I S  N U T  ! ! !
+
+	DropAsset(contDoorLeft)
+	DropAsset(contDoorRight)
+
+	For i=0 To 1
+		DropAsset(hczDoorObj[i])
+	Next
 	
 	Return d
-	
 End Function
 
 Function UpdateDoors()

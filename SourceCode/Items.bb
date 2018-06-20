@@ -1,4 +1,4 @@
-Global BurntNote%
+Global BurntNote.MarkedForRemoval
 
 ;TODO: remove, use Inventory type instead
 Global MaxItemAmount.MarkedForRemoval
@@ -8,146 +8,176 @@ Global InvSelect.MarkedForRemoval, SelectedItem.MarkedForRemoval
 
 Global ClosestItem.MarkedForRemoval
 
+Const ITEMPICK_SOUND_PAPER  = 0
+Const ITEMPICK_SOUND_MEDIUM = 1
+Const ITEMPICK_SOUND_LARGE  = 2
+Const ITEMPICK_SOUND_SMALL  = 3
+
 Type ItemTemplates
-	Field name$
-	Field tempname$
+	Field tempName$
+	Field invName$
 	
+	Field obj%
+	Field objPath$
+
+	Field invImage%[2]
+	Field invImagePath$[2]
+
+	Field tex%
+	Field texPath$
+
 	Field sound%
-	
-	Field found%
-	
-	Field obj%, objpath$, parentobjpath$
-	Field invimg%,invimg2%,invimgpath$
-	Field imgpath$, img%
-	
-	Field isAnim%
+
+	Field bodySlot%
 	
 	Field scale#
-	;Field bumptex%
-	Field tex%, texpath$
 
+	;TODO: Remove.
 	Field invSlot%
+
+	Field name$
+
+	Field invimg%,invimg2%,invimgpath$
+
+	Field found%
+
+	Field imgpath$, img% ;Doing something with this that's (hopefully) a little smarter.
 End Type 
 
-Function CreateItemTemplate.ItemTemplates(name$, tempname$, objpath$, invimgpath$, invSlot%, imgpath$, scale#, texturepath$ = "",invimgpath2$="",Anim%=0, texflags%=9)
-	;Local fileName$ = "Data/items.ini"
-	;PutINIValue(fileName, tempname, "invname", name)
-	;PutINIValue(fileName, tempname, "objpath", objpath)
-	;PutINIValue(fileName, tempname, "scale", scale)
-	;If (texturepath <> "") Then PutINIValue(fileName, tempname, "texturepath", texturepath)
-	;If (animated) Then PutINIValue(fileName, tempname, "animated", Anim)
-	;If (texflags <> 9) Then PutINIValue(fileName, tempname, "textureflags", texflags)
-	;PutINIValue(fileName, tempname, "invimgpath", invimgpath)
-	;If (invimgpath2 <> "") Then PutINIValue(fileName, tempname, "invimgpath2", invimgpath2)
-	;If (imgpath <> "") Then PutINIValue(fileName, tempname, "imgpath", imgpath)
+Function CreateItemTemplate(file$, section$)
+	Local it.ItemTemplates = new ItemTemplates
 
-	;Local slo$
-	;Select invSlot
-	;	Case WORNITEM_SLOT_BODY
-	;		slo = "body"
-	;	Case WORNITEM_SLOT_HEAD
-	;		slo = "head"
-	;End Select
-	;If (slo <> "") Then PutINIValue(fileName, tempname, "slot", slo)
+	it\tempName = section
+	it\invName = GetINIString(file, section, "invname")
+	
+	;The model and inv image are in the specified directory.
+	Local dataPath$ = GetINIString(file, section, "datapath")
+	If (dataPath <> "") Then
+		If (FileType(dataPath) <> 2) Then RuntimeError("Item template directory not found ("+section+", "+dataPath+")")
 
-	Local it.ItemTemplates = New ItemTemplates, n
-	
-	
-	;if another item shares the same object, copy it
-	For it2.itemtemplates = Each ItemTemplates
-		If it2\objpath = objpath And it2\obj <> 0 Then it\obj = CopyEntity(it2\obj) : it\parentobjpath=it2\objpath : Exit
-	Next
-	
-	If it\obj = 0 Then; it\obj = LoadMesh(objpath)
-		If Anim<>0 Then
-			it\obj = LoadAnimMesh(objpath)
-			it\isAnim=True
-		Else
-			it\obj = LoadMesh(objpath)
-			it\isAnim=False
-		EndIf
-		it\objpath = objpath
+		it\objPath = dataPath + it\tempName + ".b3d"
+		it\invImagePath[0] = dataPath + "inv_" + it\tempName + ".jpg"
 	EndIf
-	it\objpath = objpath
+
+	;Otherwise the obj, tex and inv paths are specified in the INI.
+	Local objPath$ = GetINIString(file, section, "objpath")
+	If (objPath <> "") Then
+		it\objPath = objPath
+	EndIf
+
+	Local texPath$ = GetINIString(file, section, "texpath")
+	If (texPath <> "") Then
+		it\texPath = texPath
+	EndIf
+
+	Local invImgPath$ = GetINIString(file, section, "invimgpath")
+	If (invImgPath <> "") Then
+		it\invImgPath[0] = invImgPath
+	EndIf
+
+	Local invImgPath2$ = GetINIString(file, section, "invimgpath2")
+	If (invImgPath2 <> "") Then
+		it\invImgPath[1] = invImgPath2
+	EndIf
+
+	Local slot$ = Lower(GetINIString(file, section, "slot"))
+	Select slot
+		Case "head"
+			it\bodySlot = WORNITEM_SLOT_HEAD
+		Case "body"
+			it\bodySlot = WORNITEM_SLOT_BODY
+		Default
+			it\bodySlot = WORNITEM_SLOT_NONE
+	End Select
 	
-	Local texture%
+	Local sound$ = Lower(GetINIInt(file, section, "sound"))
+	Select sound
+		Case "medium"
+			it\pickSound = ITEMPICK_SOUND_MEDIUM
+		Case "large"
+			it\bodySlot = ITEMPICK_SOUND_LARGE
+		Case "small"
+			it\bodySlot = ITEMPICK_SOUND_SMALL
+		Default
+			it\bodySlot = ITEMPICK_SOUND_PAPER
+	End Select
 	
-	If texturepath <> "" Then
-		For it2.itemtemplates = Each ItemTemplates
-			If it2\texpath = texturepath And it2\tex<>0 Then
-				texture = it2\tex
-				Exit
-			EndIf
-		Next
-		If texture=0 Then texture=LoadTexture(texturepath,texflags%) : it\texpath = texturepath; : DebugLog texturepath
-		EntityTexture it\obj, texture
-		it\tex = texture
-	EndIf  
-	
-	it\scale = scale
-	ScaleEntity it\obj, scale, scale, scale, True
-	
-	;if another item shares the same object, copy it
-	For it2.itemtemplates = Each ItemTemplates
-		If it2\invimgpath = invimgpath And it2\invimg <> 0 Then
-			it\invimg = it2\invimg ;CopyImage()
-			If it2\invimg2<>0 Then
-				it\invimg2=it2\invimg2 ;CopyImage()
-			EndIf
+	;Start loading the assets needed.
+
+	;Does another item already use that model?
+	Local it2.ItemTemplates
+	For it2 = Each ItemTemplates
+		If (it2\objPath = it\objPath And it2\obj <> 0) Then
+			it\obj = CopyEntity(it2\obj)
 			Exit
 		EndIf
 	Next
-	If it\invimg=0 Then
-		it\invimg = LoadImage(invimgpath)
-		it\invimgpath = invimgpath
-		MaskImage(it\invimg, 255, 0, 255)
-	EndIf
-	
-	it\invSlot = invSlot
 
-	If (invimgpath2 <> "") Then
-		If it\invimg2=0 Then
-			it\invimg2 = LoadImage(invimgpath2)
-			MaskImage(it\invimg2,255,0,255)
+	;Otherwise load the model.
+	If (it\obj = 0) Then
+		If (GetINIInt(file, section, "animated") = 1) Then
+			it\obj = LoadAnimMesh(it\objPath)
+		Else
+			it\obj = LoadMesh(it\objPath)
 		EndIf
-	Else
-		it\invimg2 = 0
+	EndIf
+
+	If (it\texPath <> "") Then
+		For it2 = Each ItemTemplates
+			If (it2\texPath = it\texPath And it2\tex <> 0) Then
+				it\tex = it2\tex
+				Exit
+			EndIf
+		Next
+
+		If (it\tex = 0) Then
+			Local flags% = GetINIInt(file, section, "textureflags", 1+8)
+			it\tex = LoadTexture(it\texPath, flags)
+		EndIf
+
+		EntityTexture(it\obj, it\tex)
 	EndIf
 	
-	it\imgpath = imgpath
+	Local i%
+	For i=0 To 1
+		If (it\invImagePath[i] <> "") Then
+			For it2 = Each ItemTemplates
+				If (it2\invImagePath[i] = it\invImagePath And it2\invImage[i] <> 0) Then
+					it\invImage[i] = it2\invImage[i]
+					Exit
+				EndIf
+			Next
+
+			If (it\invImage[i] = 0) Then
+				it\invImage[i] = LoadImage(it\invImagePath[i])
+				MaskImage(it\invImage[i], 255, 0, 255)
+			EndIf
+		EndIf
+	Next
 	
-	;If imgpath<>"" Then
-	;	it\img=LoadImage(imgpath)
-	;	
-	;	;DebugLog imgpath
-	;	
-	;	If it\img<>0 Then ResizeImage(it\img, ImageWidth(it\img) * MenuScale, ImageHeight(it\img) * MenuScale)
-	;EndIf
-	
-	it\tempname = tempname
-	it\name = name
-	
-	it\sound = 1
+	;TODO: Item scale.
+	Local scale# = 1.0
+	it\scale = scale
+	ScaleEntity(it\obj, scale, scale, scale, True)
 
 	HideEntity it\obj
-	
-	Return it
-	
 End Function
 
-Function FindItemTemplate.ItemTemplates(name$,tempname$)
+Function FindItemTemplate.ItemTemplates(ntempname$)
 	Local it.ItemTemplates = Null
 	Local candidate.ItemTemplates = Null
 	For it = Each ItemTemplates
 		If it\tempname = tempname Then
-			If it\name = name Then
-				Return it
-			EndIf
 			candidate = it
+			Exit
 		EndIf
 	Next
 
 	Return candidate
+End Function
+
+Function IniHackTool()
+
 End Function
 
 Function LoadItemTemplates(file$)
@@ -160,29 +190,7 @@ Function LoadItemTemplates(file$)
 		If Left(section,1) = "[" Then
 			section = Mid(section, 2, Len(section) - 2)
 			
-			Local invName$     = GetINIString(file, section, "invname")
-			Local objPath$     = GetINIString(file, section, "objpath")
-			Local scale#       = GetINIFloat(file, section, "scale")
-			Local texturepath$ = GetINIString(file, section, "texturepath")
-			Local animated%    = GetINIInt(file, section, "animated")
-			Local flags%       = GetINIInt(file, section, "textureflags", 9)
-			Local invimgpath$  = GetINIString(file, section, "invimgpath")
-			Local invimgpath2$ = GetINIString(file, section, "invimgpath2")
-			Local imgpath$     = GetINIString(file, section, "imgpath")
-			
-			Local slot$        = GetINIString(file, section, "slot", "none")
-			Local slotFlag% = WORNITEM_SLOT_NONE
-			
-			Select slot
-				Case "head"
-					slotFlag% = WORNITEM_SLOT_HEAD
-				Case "body"
-					slotFlag% = WORNITEM_SLOT_BODY
-			End Select
-			Local picksound% = GetINIInt(file, section, "picksound")
-			
-			it = CreateItemTemplate(invName, section, objPath, invimgpath, slotFlag, imgpath, scale, texturepath, invimgpath2, animated, flags)
-			it\sound = picksound
+			CreateItemTemplate(file, section)
 		EndIf
 	Wend
 	
@@ -404,7 +412,8 @@ Function CreateInventory.Inventory(size%)
 End Function
 
 Function DeleteInventory(inv.Inventory)
-	For i%=0 To MAX_ITEM_COUNT-1
+	Local i%
+	For i=0 To MAX_ITEM_COUNT-1
 		If inv\items[i]<>Null Then RemoveItem(inv\items[i])
 	Next
 	Delete inv
@@ -412,7 +421,8 @@ End Function
 
 Function CountItemsInInventory%(inv.Inventory)
 	Local retVal% = 0
-	For i%=0 To inv\size-1
+	Local i%
+	For i=0 To inv\size-1
 		If inv\items[i]<>Null Then
 			retVal=retVal+1
 		EndIf
@@ -422,12 +432,12 @@ End Function
 
 Global LastItemID%
 
-Function CreateItem.Items(name$, tempname$, x#, y#, z#, r%=0,g%=0,b%=0,a#=1.0,invSlots%=0)
+Function CreateItem.Items(name$, tempname$, x#, y#, z#, r#, g#, b#, a# = 1.0, invSlots%=0)
 	Local i.Items = New Items
 	Local it.ItemTemplates
 	
 	name = Lower(name)
-	tempname = Lower (tempname)
+	tempname = Lower(tempname)
 	
 	For it.ItemTemplates = Each ItemTemplates
 		If Lower(it\name) = name Then
@@ -454,11 +464,11 @@ Function CreateItem.Items(name$, tempname$, x#, y#, z#, r%=0,g%=0,b%=0,a#=1.0,in
 	i\dist = EntityDistance(mainPlayer\collider, i\collider)
 	i\dropSpeed = 0.0
 	
-	If tempname = "cup" Then
-		i\r=r
-		i\g=g
-		i\b=b
-		i\a=a
+	;If tempname = "cup" Then
+	;	i\r=r
+	;	i\g=g
+	;	i\b=b
+	;	i\a=a
 		
 		;TODO: re-implement.
 		;Local liquid = CopyEntity(LiquidObj)
@@ -475,9 +485,10 @@ Function CreateItem.Items(name$, tempname$, x#, y#, z#, r%=0,g%=0,b%=0,a#=1.0,in
 		;EndIf
 		
 		;EntityShininess liquid, 1.0
-	EndIf
+	;EndIf
 	
 	i\invimg = i\itemtemplate\invimg
+
 	If (tempname="clipboard") And (invSlots=0) Then
 		invSlots = 20
 		SetAnimTime i\model,17.0

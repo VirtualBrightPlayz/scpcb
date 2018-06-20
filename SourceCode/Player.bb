@@ -857,6 +857,8 @@ Function DrawInventory(player.Player)
 	Local strtemp$
 	
 	If CurrGameState=GAMESTATE_INVENTORY Then
+		ShowPointer2()
+
 		width% = 70
 		height% = 70
 		spacing% = 35
@@ -924,8 +926,6 @@ Function DrawInventory(player.Player)
 				EndIf
 			End If
 		End If
-		
-		If userOptions\fullscreen Then DrawImage uiAssets\cursorIMG, MouseX(),MouseY()
 	Else
 		If player\selectedItem <> Null Then
 			Select player\selectedItem\itemtemplate\tempname
@@ -1348,7 +1348,7 @@ Function UpdateInventory(player.Player)
 						player\selectedItem = Null
 					ElseIf player\openInventory\items[MouseSlot] <> player\selectedItem Then
 						Select player\selectedItem\itemtemplate\tempname
-							Case "paper","key1","key2","key3","key4","key5","misc","oldpaper","badge","ticket" ;BoH stuff
+							Case "paper","key1","key2","key3","key4","key5","misc","oldpaper","badge","ticket"
 								If player\openInventory\items[MouseSlot]\itemtemplate\tempname = "clipboard" Then
 									;Add an item to clipboard
 									Local added.Items = Null
@@ -1472,8 +1472,6 @@ Function UpdateInventory(player.Player)
 				player\selectedItem = Null
 			End If
 		End If
-		
-		If userOptions\fullscreen Then DrawImage uiAssets\cursorIMG, MouseX(),MouseY()
 		
 		If CurrGameState = GAMESTATE_PLAYING Then 
 			ResumeSounds() 
@@ -2042,7 +2040,7 @@ Function UpdateInventory(player.Player)
 End Function
 
 Function IsPlayerWearingTempName(player.Player,templateName$)
-	Local it.ItemTemplates = FindItemTemplate("",templateName)
+	Local it.ItemTemplates = FindItemTemplate(templateName)
 	If it=Null Then Return False
 	Local slot% = it\invSlot
 	If slot=WORNITEM_SLOT_NONE Then Return False

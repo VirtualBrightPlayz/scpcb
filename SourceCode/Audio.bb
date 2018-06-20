@@ -95,8 +95,8 @@ Function LoadInGameSounds(sndMan.SoundManager)
 	Next
 
 	For i = 0 To 1
-		sndMan\openBigDoor[i] = LoadSound_SM("SFX/Door/BigDoorOpen" + (i + 1) + ".ogg")
-		sndMan\closeBigDoor[i] = LoadSound_SM("SFX/Door/BigDoorClose" + (i + 1) + ".ogg")
+		sndMan\openBigDoor[i] = InitializeSound_SM("SFX/Door/BigDoorOpen" + (i + 1) + ".ogg")
+		sndMan\closeBigDoor[i] = InitializeSound_SM("SFX/Door/BigDoorClose" + (i + 1) + ".ogg")
 	Next
 	
 	sndMan\keycardUse = InitializeSound_SM("SFX/Interact/KeyCardUse1.ogg")

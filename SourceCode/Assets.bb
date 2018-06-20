@@ -38,7 +38,7 @@ Function FreeAsset(as.AssetWrap)
 			FreeTexture(as\intVal)
 		Case ASSET_IMAGE
 			FreeImage(as\intVal)
-		Case ASSET_MESH
+		Case ASSET_MESH, ASSET_ANIM_MESH
 			FreeEntity(as\intVal)
 	End Select
 	
@@ -250,36 +250,11 @@ Function LoadEntities()
 	DrawLoading(5)
 	TeslaTexture = LoadTexture("GFX/map/Textures/tesla.jpg", 1+2)
 	
-	MTFObj = LoadAnimMesh("GFX/NPCs/MTF/mtf.b3d") ;optimized MTFs
-	;GuardTex = LoadTexture("GFX/npcs/body.jpg") ;optimized the guards even more
-	
-	ClassDObj = LoadAnimMesh("GFX/NPCs/classd/classd.b3d") ;optimized Class-D's and scientists/researchers
-	
-	HideEntity MTFObj
-	HideEntity ClassDObj
-	
 	LightSpriteTex(0) = LoadTexture("GFX/Sprites/light1.jpg", 1)
 	LightSpriteTex(1) = LoadTexture("GFX/Sprites/light2.jpg", 1)
 	LightSpriteTex(2) = LoadTexture("GFX/Sprites/lightsprite.jpg",1)
 	
 	DrawLoading(10)
-	
-	HeavyDoorObj(0) = LoadMesh("GFX/Map/Meshes/heavydoor1.b3d")
-	HideEntity HeavyDoorObj(0)
-	HeavyDoorObj(1) = LoadMesh("GFX/Map/Meshes/heavydoor2.b3d")
-	HideEntity HeavyDoorObj(1)
-	
-	ButtonKeyOBJ = LoadMesh("GFX/Map/Meshes/ButtonKeycard.b3d")
-	HideEntity ButtonKeyOBJ
-	ButtonCodeOBJ = LoadMesh("GFX/Map/Meshes/ButtonCode.b3d")
-	HideEntity ButtonCodeOBJ	
-	ButtonScannerOBJ = LoadMesh("GFX/Map/Meshes/ButtonScanner.b3d")
-	HideEntity ButtonScannerOBJ	
-	
-	BigDoorOBJ(0) = LoadMesh("GFX/Map/Meshes/ContDoorLeft.b3d")
-	HideEntity BigDoorOBJ(0)
-	BigDoorOBJ(1) = LoadMesh("GFX/Map/Meshes/ContDoorRight.b3d")
-	HideEntity BigDoorOBJ(1)
 	
 	DrawLoading(15)
 	
@@ -307,8 +282,7 @@ Function LoadEntities()
 		DecalTextures(i) = LoadTexture("GFX/Decals/blooddrop"+Str(i-14)+".png", 1 + 2)	
 	Next
 	DecalTextures(17) = LoadTexture("GFX/Decals/decal8.png", 1 + 2)	
-	DecalTextures(18) = LoadTexture("GFX/Decals/decalpd6.jpg", 1 + 2)	
-	DecalTextures(19) = LoadTexture("GFX/Decals/decal19.png", 1 + 2)
+	DecalTextures(18) = LoadTexture("GFX/Decals/decalpd6.jpg", 1 + 2)
 	
 	DrawLoading(25)
 	

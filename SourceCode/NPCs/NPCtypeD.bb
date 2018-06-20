@@ -3,15 +3,25 @@ Function InitializeNPCtypeD(n.NPCs)
     n\Collider = CreatePivot()
     EntityRadius n\Collider, 0.32
     EntityType n\Collider, HIT_PLAYER
+
+    Local n2.NPCs
+	For n2 = Each NPCs
+		If (n2\npcType = n\npcType And n2\obj <> 0) Then
+			n\obj = CopyEntity(n2\obj)
+			Exit
+		EndIf
+	Next
     
-    n\obj = CopyEntity(ClassDObj)
+	If (n\obj = 0) Then
+		n\obj = LoadAnimMesh("GFX/NPCs/classd/classd.b3d")
+	EndIf
     
     temp# = 0.5 / MeshWidth(n\obj)
     ScaleEntity n\obj, temp, temp, temp
     
     n\Speed = 2.0 / 100
     
-    MeshCullBox (n\obj, -MeshWidth(ClassDObj), -MeshHeight(ClassDObj), -MeshDepth(ClassDObj), MeshWidth(ClassDObj)*2, MeshHeight(ClassDObj)*2, MeshDepth(ClassDObj)*2)
+    MeshCullBox (n\obj, -MeshWidth(n\obj), -MeshHeight(n\obj), -MeshDepth(n\obj), MeshWidth(n\obj)*2, MeshHeight(n\obj)*2, MeshDepth(n\obj)*2)
 End Function
 
 Function UpdateNPCtypeD(n.NPCs)

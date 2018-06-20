@@ -462,8 +462,6 @@ Function DrawMainMenu()
 	Color 0,0,0
 	Rect 0,0,userOptions\screenWidth,userOptions\screenHeight,True
 	
-	ShowPointer()
-	
 	DrawImage(uiAssets\back, 0, 0)
 	
 	If (TimeInPosMilliSecs() Mod MenuBlinkTimer(0)) >= Rand(MenuBlinkDuration(0)) Then
@@ -945,8 +943,8 @@ Function DrawMainMenu()
 	
 	;DrawTiledImageRect(MenuBack, 985 * MenuScale, 860 * MenuScale, 200 * MenuScale, 20 * MenuScale, 1200 * MenuScale, 866 * MenuScale, 300, 20 * MenuScale)
 	
-	If userOptions\fullscreen Then DrawImage uiAssets\cursorIMG, MouseX(),MouseY()
-	
+	ShowPointer2()
+
 	SetFont uiAssets\font[0]
 End Function
 
