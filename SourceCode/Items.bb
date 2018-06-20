@@ -45,7 +45,7 @@ Type ItemTemplates
 End Type 
 
 Function CreateItemTemplate(file$, section$)
-	Local it.ItemTemplates = new ItemTemplates
+	Local it.ItemTemplates = New ItemTemplates
 
 	it\tempName = section
 	it\invName = GetINIString(file, section, "invname")
@@ -72,12 +72,12 @@ Function CreateItemTemplate(file$, section$)
 
 	Local invImgPath$ = GetINIString(file, section, "invimgpath")
 	If (invImgPath <> "") Then
-		it\invImgPath[0] = invImgPath
+		it\invImagePath[0] = invImgPath
 	EndIf
 
 	Local invImgPath2$ = GetINIString(file, section, "invimgpath2")
 	If (invImgPath2 <> "") Then
-		it\invImgPath[1] = invImgPath2
+		it\invImagePath[1] = invImgPath2
 	EndIf
 
 	Local slot$ = Lower(GetINIString(file, section, "slot"))
@@ -93,13 +93,13 @@ Function CreateItemTemplate(file$, section$)
 	Local sound$ = Lower(GetINIInt(file, section, "sound"))
 	Select sound
 		Case "medium"
-			it\pickSound = ITEMPICK_SOUND_MEDIUM
+			it\sound = ITEMPICK_SOUND_MEDIUM
 		Case "large"
-			it\bodySlot = ITEMPICK_SOUND_LARGE
+			it\sound = ITEMPICK_SOUND_LARGE
 		Case "small"
-			it\bodySlot = ITEMPICK_SOUND_SMALL
+			it\sound = ITEMPICK_SOUND_SMALL
 		Default
-			it\bodySlot = ITEMPICK_SOUND_PAPER
+			it\sound = ITEMPICK_SOUND_PAPER
 	End Select
 	
 	;Start loading the assets needed.
@@ -142,7 +142,7 @@ Function CreateItemTemplate(file$, section$)
 	For i=0 To 1
 		If (it\invImagePath[i] <> "") Then
 			For it2 = Each ItemTemplates
-				If (it2\invImagePath[i] = it\invImagePath And it2\invImage[i] <> 0) Then
+				If (it2\invImagePath[i] = it\invImagePath[i] And it2\invImage[i] <> 0) Then
 					it\invImage[i] = it2\invImage[i]
 					Exit
 				EndIf
@@ -167,7 +167,7 @@ Function FindItemTemplate.ItemTemplates(ntempname$)
 	Local it.ItemTemplates = Null
 	Local candidate.ItemTemplates = Null
 	For it = Each ItemTemplates
-		If it\tempname = tempname Then
+		If it\tempName = tempname Then
 			candidate = it
 			Exit
 		EndIf
@@ -347,7 +347,7 @@ Function InitItemTemplates()
 	;it = CreateItemTemplate("Document SCP-1162", "paper", "GFX\items\paper.x", "GFX\items\INVpaper.jpg", WORNITEM_SLOT_NONE, "GFX\items/doc1162.jpg", 0.003) : it\sound = 0
 	;CreateItemTemplate("Emily Ross' Badge", "badge", "GFX\items\badge.x", "GFX\items\INVbadge.jpg", WORNITEM_SLOT_NONE, "GFX\items\badge1.jpg", 0.0001, "GFX\items/badge1_tex.jpg")
 	;it = CreateItemTemplate("Lost Key", "key", "GFX\items\key.b3d", "GFX\items\INV1162_1.jpg", WORNITEM_SLOT_NONE, "", 0.001, "GFX\items/key2.png","",0,1+2+8) : it\sound = 3
-	it = CreateItemTemplate("Disciplinary Hearing DH-S-4137-17092", "oldpaper", "GFX\items\paper.x", "GFX\items\INVpaper.jpg", WORNITEM_SLOT_NONE, "GFX\items/dh.s", 0.003) : it\sound = 0
+	;it = CreateItemTemplate("Disciplinary Hearing DH-S-4137-17092", "oldpaper", "GFX\items\paper.x", "GFX\items\INVpaper.jpg", WORNITEM_SLOT_NONE, "GFX\items/dh.s", 0.003) : it\sound = 0
 	
 	;it = CreateItemTemplate("Coin", "coin", "GFX\items\key.b3d", "GFX\items\INVcoin.jpg", WORNITEM_SLOT_NONE, "", 0.0005, "GFX\items/coin.png","",0,1+2+8) : it\sound = 3
 	
@@ -359,7 +359,7 @@ Function InitItemTemplates()
 	
 	For it = Each ItemTemplates
 		If (it\tex<>0) Then
-			If (it\texpath<>"") Then
+			If (it\texPath<>"") Then
 				For it2=Each ItemTemplates
 					If (it2<>it) And (it2\tex=it\tex) Then
 						it2\tex = 0
@@ -432,7 +432,7 @@ End Function
 
 Global LastItemID%
 
-Function CreateItem.Items(name$, tempname$, x#, y#, z#, r#, g#, b#, a# = 1.0, invSlots%=0)
+Function CreateItem.Items(name$, tempname$, x#, y#, z#, r# = 1.0, g# = 1.0, b# = 1.0, a# = 1.0, invSlots%=0)
 	Local i.Items = New Items
 	Local it.ItemTemplates
 	
@@ -441,7 +441,7 @@ Function CreateItem.Items(name$, tempname$, x#, y#, z#, r#, g#, b#, a# = 1.0, in
 	
 	For it.ItemTemplates = Each ItemTemplates
 		If Lower(it\name) = name Then
-			If Lower(it\tempname) = tempname Then
+			If Lower(it\tempName) = tempname Then
 				i\itemtemplate = it
 				i\collider = CreatePivot()			
 				EntityRadius i\collider, 0.01
@@ -618,7 +618,7 @@ Function PickItem(item.Items)
 	If CountItemsInInventory(mainPlayer\inventory) < mainPlayer\inventory\size Then
 		For n% = 0 To mainPlayer\inventory\size - 1
 			If mainPlayer\inventory\items[n] = Null Then
-				Select item\itemtemplate\tempname
+				Select item\itemtemplate\tempName
 					Case "1123"
 						If mainPlayer\currRoom\RoomTemplate\name <> "room1123" Then
 							ShowEntity mainPlayer\overlays[OVERLAY_WHITE]
