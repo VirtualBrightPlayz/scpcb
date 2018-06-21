@@ -9,10 +9,12 @@ Function LoadGame(file$,quick%=False)
 End Function
 
 Function LoadSaveGames()
+	Local file$
+	
 	SaveGameAmount = 0
 	If FileType(SavePath)=1 Then RuntimeError "Can't create dir "+Chr(34)+SavePath+Chr(34)
 	If FileType(SavePath)=0 Then CreateDir(SavePath)
-	myDir=ReadDir(SavePath) 
+	Local myDir% = ReadDir(SavePath) 
 	Repeat 
 		file$=NextFile$(myDir) 
 		If file$="" Then Exit 
@@ -29,7 +31,7 @@ Function LoadSaveGames()
 	Dim SaveGames$(SaveGameAmount+1) 
 	
 	myDir=ReadDir(SavePath) 
-	i = 0
+	Local i% = 0
 	Repeat 
 		file$=NextFile$(myDir) 
 		If file$="" Then Exit 

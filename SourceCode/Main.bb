@@ -408,6 +408,8 @@ Function InitializeMainGame()
 	
 	RadioSFX(1,0) = LoadSound("SFX/Radio/RadioAlarm.ogg")
 	RadioSFX(1,1) = LoadSound("SFX/Radio/RadioAlarm2.ogg")
+	
+	Local i%
 	For i = 0 To 8
 		RadioSFX(2,i) = LoadSound("SFX/Radio/scpradio"+i+".ogg")
 	Next
@@ -545,7 +547,7 @@ Function UpdateGame()
 		Else
 			If (Not MouseDown1) And (Not MouseHit1) Then mainPlayer\grabbedEntity = 0
 			
-			ShouldPlay = 0 ;TODO: FIX ;Min(PlayerZone,2)
+			;ShouldPlay = 0 ;TODO: FIX ;Min(PlayerZone,2)
 			
 			DrawHandIcon = False
 			
@@ -1098,7 +1100,7 @@ Function UpdateGUI()
 		
 		If shouldDrawHUD Then
 			Local buttonObj% = GrabMesh("GFX/Map/Meshes/Button.b3d")
-			pvt = CreatePivot()
+			Local pvt% = CreatePivot()
 			PositionEntity pvt, EntityX(mainPlayer\closestButton,True),EntityY(mainPlayer\closestButton,True),EntityZ(mainPlayer\closestButton,True)
 			RotateEntity pvt, 0, EntityYaw(mainPlayer\closestButton,True)-180,0
 			MoveEntity pvt, 0,0,0.22
@@ -1107,9 +1109,9 @@ Function UpdateGUI()
 			FreeEntity pvt
 			
 			CameraProject(mainPlayer\cam, EntityX(mainPlayer\closestButton,True),EntityY(mainPlayer\closestButton,True)+MeshHeight(buttonObj)*0.015,EntityZ(mainPlayer\closestButton,True))
-			projY# = ProjectedY()
+			Local projY# = ProjectedY()
 			CameraProject(mainPlayer\cam, EntityX(mainPlayer\closestButton,True),EntityY(mainPlayer\closestButton,True)-MeshHeight(buttonObj)*0.015,EntityZ(mainPlayer\closestButton,True))
-			scale# = (ProjectedY()-projy)/462.0
+			Local scale# = (ProjectedY()-projY)/462.0
 			
 			x = userOptions\screenWidth/2-ImageWidth(uiAssets\keypadHUD)*scale/2
 			y = userOptions\screenHeight/2-ImageHeight(uiAssets\keypadHUD)*scale/2
@@ -1223,25 +1225,26 @@ Function DrawGUI()
 	
 	Local e.Events, it.Items
 	
-	If mainPlayer\currRoom\roomTemplate\name = "pocketdimension" Then
-		For e.Events = Each Events
-			If e\room = mainPlayer\currRoom And e\eventState > 600 Then
-				If mainPlayer\blinkTimer < -3 And mainPlayer\blinkTimer > -11 Then
-					If e\img = 0 Then
-						If mainPlayer\blinkTimer > -5 And Rand(30)=1 Then
-							If e\img = 0 Then e\img = LoadImage("GFX/npcs/106face.jpg")
-						EndIf
-					Else
-						DrawImage e\img, userOptions\screenWidth/2-Rand(390,310), userOptions\screenHeight/2-Rand(290,310)
-					EndIf
-				Else
-					If e\img <> 0 Then FreeImage e\img : e\img = 0
-				EndIf
-				
-				Exit
-			EndIf
-		Next
-	EndIf
+	;TODO: Re-implement.
+;	If mainPlayer\currRoom\roomTemplate\name = "pocketdimension" Then
+;		For e.Events = Each Events
+;			If e\room = mainPlayer\currRoom And e\eventState > 600 Then
+;				If mainPlayer\blinkTimer < -3 And mainPlayer\blinkTimer > -11 Then
+;					If e\img = 0 Then
+;						If mainPlayer\blinkTimer > -5 And Rand(30)=1 Then
+;							If e\img = 0 Then e\img = LoadImage("GFX/npcs/106face.jpg")
+;						EndIf
+;					Else
+;						DrawImage e\img, userOptions\screenWidth/2-Rand(390,310), userOptions\screenHeight/2-Rand(290,310)
+;					EndIf
+;				Else
+;					If e\img <> 0 Then FreeImage e\img : e\img = 0
+;				EndIf
+;				
+;				Exit
+;			EndIf
+;		Next
+;	EndIf
 	
 	If mainPlayer\closestButton <> 0 And mainPlayer\selectedDoor = Null And CurrGameState=GAMESTATE_PLAYING Then
 		yawvalue# = WrapAngle(-DeltaYaw(mainPlayer\cam,mainPlayer\closestButton))
@@ -1345,6 +1348,8 @@ Function DrawGUI()
 			Text x - 50, 100, "Player Rotation: (" + f2s(EntityPitch(mainPlayer\collider), 3) + ", " + f2s(EntityYaw(mainPlayer\collider), 3) + ", " + f2s(EntityRoll(mainPlayer\collider), 3) + ")"
 			Text x - 50, 120, "Camera Rotation: (" + f2s(EntityPitch(mainPlayer\cam), 3)+ ", " + f2s(EntityYaw(mainPlayer\cam), 3) +", " + f2s(EntityRoll(mainPlayer\cam), 3) + ")"
 			Text x - 50, 150, "Room: " + mainPlayer\currRoom\roomTemplate\name
+			
+			Local ev.Events
 			For ev.Events = Each Events
 				If ev\room = mainPlayer\currRoom Then
 					Text x - 50, 170, "Room event: " + ev\name   
@@ -1367,18 +1372,19 @@ Function DrawGUI()
 			Text x - 50, 450, "SCP - 106 Position: (" + f2s(EntityX(Curr106\obj), 3) + ", " + f2s(EntityY(Curr106\obj), 3) + ", " + f2s(EntityZ(Curr106\obj), 3) + ")"
 			Text x - 50, 470, "SCP - 106 Idle: " + Curr106\idle
 			Text x - 50, 490, "SCP - 106 State: " + Curr106\state
-			offset% = 0
+			Local offset% = 0
+			Local npc.NPCs
 			For npc.NPCs = Each NPCs
-				If npc\npctype = NPCtype096 Then
+				If npc\npcType = NPCtype096 Then
 					Text x - 50, 510, "SCP - 096 Position: (" + f2s(EntityX(npc\obj), 3) + ", " + f2s(EntityY(npc\obj), 3) + ", " + f2s(EntityZ(npc\obj), 3) + ")"
 					Text x - 50, 530, "SCP - 096 Idle: " + npc\idle
 					Text x - 50, 550, "SCP - 096 State: " + npc\state
-					Text x - 50, 570, "SCP - 096 Speed: " + f2s(npc\currspeed, 5)
+					Text x - 50, 570, "SCP - 096 Speed: " + f2s(npc\currSpeed, 5)
 				EndIf
-				If npc\npctype = NPCtypeMTF Then
+				If npc\npcType = NPCtypeMTF Then
 					Text x - 50, 600 + 60 * offset, "MTF " + offset + " Position: (" + f2s(EntityX(npc\obj), 3) + ", " + f2s(EntityY(npc\obj), 3) + ", " + f2s(EntityZ(npc\obj), 3) + ")"
 					Text x - 50, 640 + 60 * offset, "MTF " + offset + " State: " + npc\state
-					Text x - 50, 620 + 60 * offset, "MTF " + offset + " LastSeen: " + npc\lastseen					
+					Text x - 50, 620 + 60 * offset, "MTF " + offset + " LastSeen: " + npc\lastSeen					
 					offset = offset + 1
 				EndIf
 			Next
@@ -1399,7 +1405,7 @@ Function DrawGUI()
 		
 		If shouldDrawHUD Then
 			Local buttonObj% = GrabMesh("GFX/Map/Meshes/Button.b3d")
-			pvt = CreatePivot()
+			Local pvt% = CreatePivot()
 			PositionEntity pvt, EntityX(mainPlayer\closestButton,True),EntityY(mainPlayer\closestButton,True),EntityZ(mainPlayer\closestButton,True)
 			RotateEntity pvt, 0, EntityYaw(mainPlayer\closestButton,True)-180,0
 			MoveEntity pvt, 0,0,0.22
@@ -1408,9 +1414,9 @@ Function DrawGUI()
 			FreeEntity pvt
 			
 			CameraProject(mainPlayer\cam, EntityX(mainPlayer\closestButton,True),EntityY(mainPlayer\closestButton,True)+MeshHeight(buttonObj)*0.015,EntityZ(mainPlayer\closestButton,True))
-			projY# = ProjectedY()
+			Local projY# = ProjectedY()
 			CameraProject(mainPlayer\cam, EntityX(mainPlayer\closestButton,True),EntityY(mainPlayer\closestButton,True)-MeshHeight(buttonObj)*0.015,EntityZ(mainPlayer\closestButton,True))
-			scale# = (ProjectedY()-projy)/462.0
+			Local scale# = (ProjectedY()-projY)/462.0
 			
 			x = userOptions\screenWidth/2-ImageWidth(uiAssets\keypadHUD)*scale/2
 			y = userOptions\screenHeight/2-ImageHeight(uiAssets\keypadHUD)*scale/2
@@ -1507,7 +1513,8 @@ Function DrawPauseMenu()
 End Function
 
 Function UpdatePauseMenu()
-	Local x%, y%, width%, height%
+	Local x%, y%, z%, width%, height%
+	Local r.Rooms
 	
 	If CurrGameState = GAMESTATE_PAUSED Then
 		width = ImageWidth(uiAssets\pauseMenuBG)
@@ -1665,7 +1672,7 @@ Function Animate2#(entity%, curr#, start%, quit%, speed#, loop=True)
 		EndIf
 	Else
 		If start < quit Then
-			temp% = start
+			Local temp% = start
 			start = quit
 			quit = temp
 		EndIf
@@ -1689,7 +1696,7 @@ Function Animate2#(entity%, curr#, start%, quit%, speed#, loop=True)
 End Function 
 
 Function UpdateInfect()
-	Local temp#, i%, r.Rooms
+	Local temp#, i%, r.Rooms, tex%, de.Decals
 	
 	If mainPlayer\infect008>0 Then
 		ShowEntity mainPlayer\overlays[OVERLAY_008]
@@ -1792,7 +1799,7 @@ Function UpdateInfect()
 				EndIf
 				
 				If Rand(50)=1 Then
-					p.Particles = CreateParticle(EntityX(mainPlayer\currRoom\npc[0]\collider),EntityY(mainPlayer\currRoom\npc[0]\collider),EntityZ(mainPlayer\currRoom\npc[0]\collider), 5, Rnd(0.05,0.1), 0.15, 200)
+					Local p.Particles = CreateParticle(EntityX(mainPlayer\currRoom\npc[0]\collider),EntityY(mainPlayer\currRoom\npc[0]\collider),EntityZ(mainPlayer\currRoom\npc[0]\collider), 5, Rnd(0.05,0.1), 0.15, 200)
 					p\speed = 0.01
 					p\sizeChange = 0.01
 					p\a = 0.5
@@ -1929,6 +1936,8 @@ Function UpdateNVG()
 End Function
 
 Function RenderWorld2()
+	Local k%, l%
+	
 	CameraProjMode ark_blur_cam,0
 	CameraProjMode mainPlayer\cam,1
 	
@@ -1959,7 +1968,7 @@ Function RenderWorld2()
 	
 	If wornItem<>Null Then
 		Local decayMultiplier# = 1.0
-		If wornItem\itemTemplate\name = "supernv" Then decayMultiplier = 2.0
+		If wornItem\itemtemplate\name = "supernv" Then decayMultiplier = 2.0
 		
 		power = Int(wornItem\state)
 		If wornItem\state <= 0.0 Then ;this nvg can't be used
@@ -1988,6 +1997,7 @@ Function RenderWorld2()
 			;NVTimer=NVTimer-timing\tickDuration
 			
 			;If NVTimer<=0.0 Then
+			Local np.NPCs
 			For np.NPCs = Each NPCs
 				np\nvX = EntityX(np\collider,True)
 				np\nvY = EntityY(np\collider,True)
@@ -2009,7 +2019,8 @@ Function RenderWorld2()
 			;Text userOptions\screenWidth/2,60*MenuScale,Max(f2s(NVTimer/60.0,1),0.0),True,False
 			Text userOptions\screenWidth/2,100*MenuScale,"SECONDS",True,False
 			
-			temp% = CreatePivot() : temp2% = CreatePivot()
+			Local temp% = CreatePivot()
+			Local temp2% = CreatePivot()
 			PositionEntity temp, EntityX(mainPlayer\collider), EntityY(mainPlayer\collider), EntityZ(mainPlayer\collider)
 			
 			Color 255,255,255;*(NVTimer/600.0)
@@ -2017,11 +2028,11 @@ Function RenderWorld2()
 			For np.NPCs = Each NPCs
 				If np\nvName<>"" Then ;don't waste your time if the string is empty
 					PositionEntity temp2,np\nvX,np\nvY,np\nvZ
-					dist# = EntityDistance(temp2,mainPlayer\collider)
+					Local dist# = EntityDistance(temp2,mainPlayer\collider)
 					If dist<23.5 Then ;don't draw text if the NPC is too far away
 						PointEntity temp, temp2
-						yawvalue# = WrapAngle(EntityYaw(mainPlayer\cam) - EntityYaw(temp))
-						xvalue# = 0.0
+						Local yawvalue# = WrapAngle(EntityYaw(mainPlayer\cam) - EntityYaw(temp))
+						Local xvalue# = 0.0
 						If yawvalue > 90 And yawvalue <= 180 Then
 							xvalue# = Sin(90)/90*yawvalue
 						ElseIf yawvalue > 180 And yawvalue < 270 Then
@@ -2029,8 +2040,9 @@ Function RenderWorld2()
 						Else
 							xvalue = Sin(yawvalue)
 						EndIf
-						pitchvalue# = WrapAngle(EntityPitch(mainPlayer\cam) - EntityPitch(temp))
-						yvalue# = 0.0
+						
+						Local pitchvalue# = WrapAngle(EntityPitch(mainPlayer\cam) - EntityPitch(temp))
+						Local yvalue# = 0.0
 						If pitchvalue > 90 And pitchvalue <= 180 Then
 							yvalue# = Sin(90)/90*pitchvalue
 						ElseIf pitchvalue > 180 And pitchvalue < 270 Then

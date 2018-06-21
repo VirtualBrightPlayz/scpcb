@@ -232,10 +232,13 @@ End Function
 Function SeedStringToInt%(seed$)
 	Local char%
 	Local retVal% = 0
+	
+	Local i%
 	For i% = 1 To Len(seed)
 		char = Asc(Mid(seed,i,1))
 		retVal = (retVal Shl 1) + char
 	Next
+	
 	If retVal=0 Then retVal = 1
 	Return Abs(retVal)
 End Function

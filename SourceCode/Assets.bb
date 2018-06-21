@@ -530,6 +530,7 @@ Function InitLoadGame()
 	mainPlayer\blinkTimer = mainPlayer\blinkFreq
 	mainPlayer\stamina = 100
 	
+	Local i%, x#, z#
 	For rt.RoomTemplates = Each RoomTemplates
 		If rt\collisionObjs<>Null Then
 			For i% = 0 To rt\collisionObjs\size-1
@@ -682,6 +683,7 @@ Function NullGame()
 	Next
 	DeleteIntArray(MapRooms)
 	
+	Local rt.RoomTemplates
 	For rt.RoomTemplates = Each RoomTemplates
 		Delete rt
 	Next
@@ -694,15 +696,18 @@ Function NullGame()
 		Delete it
 	Next
 	
+	Local pr.Props
 	For pr.Props = Each Props
 		Delete pr
 	Next
 	
-	For de.decals = Each Decals
+	Local de.Decals
+	For de.Decals = Each Decals
 		Delete de
 	Next
 	
-	For n.NPCS = Each NPCs
+	Local n.NPCs
+	For n.NPCs = Each NPCs
 		Delete n
 	Next
 	Curr173 = Null
@@ -719,15 +724,18 @@ Function NullGame()
 		Delete e
 	Next
 	
-	For sc.securitycams = Each SecurityCams
+	Local sc.SecurityCams
+	For sc.SecurityCams = Each SecurityCams
 		Delete sc
 	Next
 	
-	For em.emitters = Each Emitters
+	Local em.Emitters
+	For em.Emitters = Each Emitters
 		Delete em
 	Next	
 	
-	For p.particles = Each Particles
+	Local p.Particles
+	For p.Particles = Each Particles
 		Delete p
 	Next
 	

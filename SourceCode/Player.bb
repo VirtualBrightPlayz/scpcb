@@ -856,6 +856,8 @@ Function DrawInventory(player.Player)
 	
 	Local strtemp$
 	
+	Local width%, height%, itemsPerRow%, x%, y%, i%, yawvalue#, x1#, x2#, x3#, y1#, y2#, y3#, xtemp%, ytemp%
+	
 	If CurrGameState=GAMESTATE_INVENTORY Then
 		ShowPointer2()
 
@@ -868,6 +870,7 @@ Function DrawInventory(player.Player)
 		x = userOptions\screenWidth / 2 - (width * itemsPerRow + spacing * (itemsPerRow - 1)) / 2
 		y = userOptions\screenHeight / 2 - height * (player\openInventory\size/itemsPerRow) + height / 2
 		
+		Local n%
 		For  n% = 0 To player\openInventory\size - 1
 			isMouseOn% = False
 			If MouseX() > x And MouseX() < x + width Then
@@ -1258,7 +1261,9 @@ Function UpdateInventory(player.Player)
 	
 	Local spacing%
 	
-	Local isMouseOn%
+	Local np.NPCs, e.Events, it.Items
+	
+	Local width%, height%, itemsPerRow%, x%, y%, n%, isMouseOn%, z%, c%, ri%, temp%, i%, x2%
 	
 	Local strtemp$
 	If CurrGameState=GAMESTATE_INVENTORY Then
@@ -1510,7 +1515,7 @@ Function UpdateInventory(player.Player)
 					
 					temp = True
 					For np.NPCs = Each NPCs
-						If np\npctype = NPCtype5131 Then
+						If np\npcType = NPCtype5131 Then
 							temp = False
 							Exit
 						EndIf
@@ -2002,14 +2007,14 @@ Function UpdateInventory(player.Player)
 				If player\selectedItem\itemtemplate\img <> 0 Then
 					Local IN$ = player\selectedItem\itemtemplate\name
 					If IN$ = "paper" Or IN$ = "badge" Or IN$ = "oldpaper" Or IN$ = "ticket" Then
-						For a_it.Items = Each Items
-							If a_it <> player\selectedItem Then
-								Local IN2$ = a_it\itemtemplate\name
+						For it.Items = Each Items
+							If it <> player\selectedItem Then
+								Local IN2$ = it\itemtemplate\name
 								If IN2$ = "paper" Or IN2$ = "badge" Or IN2$ = "oldpaper" Or IN2$ = "ticket" Then
-									If a_it\itemtemplate\img<>0 Then
-										If a_it\itemtemplate\img <> player\selectedItem\itemtemplate\img Then
-											FreeImage(a_it\itemtemplate\img)
-											a_it\itemtemplate\img = 0
+									If it\itemtemplate\img<>0 Then
+										If it\itemtemplate\img <> player\selectedItem\itemtemplate\img Then
+											FreeImage(it\itemtemplate\img)
+											it\itemtemplate\img = 0
 										EndIf ;O
 									EndIf     ;O
 								EndIf         ;F

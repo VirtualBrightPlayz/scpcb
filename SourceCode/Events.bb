@@ -84,7 +84,7 @@ Function RemoveEvent(e.Events)
 		EndIf
 	Next
 	
-	If (e\img<>0) Then FreeImage e\img
+	;If (e\img<>0) Then FreeImage e\img
 	
 	Delete e
 End Function
