@@ -41,23 +41,23 @@ Function UpdateEventRoom2pipes106(e.Events)
 			;200-250 = leave
 			If e\EventState < 50 Then
 				Curr106\Idle = True
-				PositionEntity(Curr106\Collider, EntityX(e\room\Objects[0], True), EntityY(mainPlayer\collider) - 0.15, EntityZ(e\room\Objects[0], True))
-				PointEntity(Curr106\Collider, e\room\Objects[1])
-				MoveEntity(Curr106\Collider, 0, 0, EntityDistance(e\room\Objects[0], e\room\Objects[1])*0.5 * (e\EventState / 50.0))
+				PositionEntity(Curr106\collider, EntityX(e\room\Objects[0], True), EntityY(mainPlayer\collider) - 0.15, EntityZ(e\room\Objects[0], True))
+				PointEntity(Curr106\collider, e\room\Objects[1])
+				MoveEntity(Curr106\collider, 0, 0, EntityDistance(e\room\Objects[0], e\room\Objects[1])*0.5 * (e\EventState / 50.0))
 				AnimateNPC(Curr106, 284, 333, 0.02*35)
 			ElseIf e\EventState < 200 Then
 				Curr106\Idle = True
 				AnimateNPC(Curr106, 334, 494, 0.2)
 				
-				PositionEntity(Curr106\Collider, (EntityX(e\room\Objects[0], True)+EntityX(e\room\Objects[1], True))/2, EntityY(mainPlayer\collider) - 0.15, (EntityZ(e\room\Objects[0], True)+EntityZ(e\room\Objects[1], True))/2)
-				;MoveEntity(Curr106\Collider, 0, 0, EntityDistance(e\room\Objects[0], e\room\Objects[1])*0.5)
-				RotateEntity(Curr106\Collider,0, CurveValue(e\EventState,EntityYaw(Curr106\Collider),30.0),0,True)
-				If EntityDistance(Curr106\Collider, mainPlayer\collider)<4.0 Then
+				PositionEntity(Curr106\collider, (EntityX(e\room\Objects[0], True)+EntityX(e\room\Objects[1], True))/2, EntityY(mainPlayer\collider) - 0.15, (EntityZ(e\room\Objects[0], True)+EntityZ(e\room\Objects[1], True))/2)
+				;MoveEntity(Curr106\collider, 0, 0, EntityDistance(e\room\Objects[0], e\room\Objects[1])*0.5)
+				RotateEntity(Curr106\collider,0, CurveValue(e\EventState,EntityYaw(Curr106\collider),30.0),0,True)
+				If EntityDistance(Curr106\collider, mainPlayer\collider)<4.0 Then
 					pvt = CreatePivot()
-					PositionEntity(pvt, EntityX(Curr106\Collider),EntityY(Curr106\Collider),EntityZ(Curr106\Collider))
+					PositionEntity(pvt, EntityX(Curr106\collider),EntityY(Curr106\collider),EntityZ(Curr106\collider))
 					PointEntity pvt, mainPlayer\collider
-					If WrapAngle(EntityYaw(pvt)-EntityYaw(Curr106\Collider))<80 Then
-						Curr106\State = -11
+					If WrapAngle(EntityYaw(pvt)-EntityYaw(Curr106\collider))<80 Then
+						Curr106\state = -11
 						Curr106\Idle = False
 						;PlaySound2(HorrorSFX(10)) ;TODO: fix
 						e\EventState = 260
@@ -66,18 +66,18 @@ Function UpdateEventRoom2pipes106(e.Events)
 				EndIf
 			ElseIf e\EventState < 250 Then
 				Curr106\Idle = True
-				PositionEntity(Curr106\Collider, EntityX(e\room\Objects[0], True), EntityY(mainPlayer\collider) - 0.15, EntityZ(e\room\Objects[0], True))
-				PointEntity(Curr106\Collider, e\room\Objects[1])
+				PositionEntity(Curr106\collider, EntityX(e\room\Objects[0], True), EntityY(mainPlayer\collider) - 0.15, EntityZ(e\room\Objects[0], True))
+				PointEntity(Curr106\collider, e\room\Objects[1])
 				;200-250     (- 150)      50-100
-				MoveEntity(Curr106\Collider, 0, 0, EntityDistance(e\room\Objects[0], e\room\Objects[1]) * ((e\EventState-150.0) / 100.0))
+				MoveEntity(Curr106\collider, 0, 0, EntityDistance(e\room\Objects[0], e\room\Objects[1]) * ((e\EventState-150.0) / 100.0))
 				AnimateNPC(Curr106, 284, 333, 0.02*35)
 			EndIf
-			ResetEntity(Curr106\Collider)
+			ResetEntity(Curr106\collider)
 			
-			PositionEntity(Curr106\obj, EntityX(Curr106\Collider), EntityY(Curr106\Collider) - 0.15, EntityZ(Curr106\Collider))
-			RotateEntity Curr106\obj, 0, EntityYaw(Curr106\Collider), 0
+			PositionEntity(Curr106\obj, EntityX(Curr106\collider), EntityY(Curr106\collider) - 0.15, EntityZ(Curr106\collider))
+			RotateEntity Curr106\obj, 0, EntityYaw(Curr106\collider), 0
 			
-			;PositionEntity(Curr106\Collider, EntityX(Curr106\Collider), EntityY(mainPlayer\collider) - 0.20, EntityZ(Curr106\Collider))
+			;PositionEntity(Curr106\collider, EntityX(Curr106\collider), EntityY(mainPlayer\collider) - 0.20, EntityZ(Curr106\collider))
 			
 			If (e\EventState / 250.0) > 0.3 And ((e\EventState - timing\tickDuration*0.7) / 250.0) <= 0.3 Then
 				;e\soundChannels[0] = PlaySound2(HorrorSFX(6))
@@ -97,7 +97,7 @@ Function UpdateEventRoom2pipes106(e.Events)
 			
 			If e\EventState > 250 Then Curr106\Idle = False :RemoveEvent(e)
 			
-		End If
+		EndIf
 	EndIf
 	;[End Block]
 End Function

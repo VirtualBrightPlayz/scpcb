@@ -72,7 +72,8 @@ Function UpdateEvent_cont_079_1(e.Events)
 			e\EventState = 1
 		EndIf
 		
-		ShouldPlay = 4
+		;TODO
+		;ShouldPlay = 4
 		If RemoteDoorOn Then 
 			If e\room\RoomDoors[0]\open Then 
 				If e\room\RoomDoors[0]\openstate > 50 Or EntityDistance(mainPlayer\collider, e\room\RoomDoors[0]\frameobj)<0.5 Then
@@ -100,7 +101,7 @@ Function UpdateEvent_cont_079_1(e.Events)
 							ShowEntity (e\room\Objects[1])
 						ElseIf Rand(10) = 1 Then 
 							HideEntity (e\room\Objects[1])							
-						End If							
+						EndIf							
 					Else
 						If e\sounds[0] <> 0 Then FreeSound e\sounds[0] : e\sounds[0] = 0
 						EntityTexture(e\room\Objects[1], OldAiPics(1))

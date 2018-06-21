@@ -25,8 +25,8 @@ Function UpdateButton(obj)
 				mainPlayer\closestButton = obj
 			Else
 				If dist < EntityDistance(mainPlayer\collider, mainPlayer\closestButton) Then mainPlayer\closestButton = obj
-			End If							
-		End If
+			EndIf							
+		EndIf
 		
 		FreeEntity temp
 	EndIf
@@ -70,7 +70,7 @@ Function UpdateLevers()
 					If (PickedEntity() = lever\obj) Then
 						DrawHandIcon = True
 						If MouseHit1 Then mainPlayer\grabbedEntity = lever\obj
-					End If
+					EndIf
 					
 					Local prevpitch# = EntityPitch(lever\obj)
 					
@@ -103,7 +103,7 @@ Function UpdateLevers()
 					RotateEntity(lever\obj, CurveValue(-80, EntityPitch(lever\obj), 10), EntityYaw(lever\obj), 0)
 				EndIf
 				mainPlayer\grabbedEntity = 0
-			End If
+			EndIf
 			
 		EndIf
 	
@@ -362,9 +362,9 @@ Function UpdateElevators2#(State#, door1.Doors, door2.Doors, room1, room2, event
 				
 				If inside Then
 					
-					dist# = Distance(EntityX(mainPlayer\collider,True),EntityZ(mainPlayer\collider,True),EntityX(room1,True),EntityZ(room1,True))
+					Local dist# = Distance(EntityX(mainPlayer\collider,True),EntityZ(mainPlayer\collider,True),EntityX(room1,True),EntityZ(room1,True))
 					
-					dir# = GetAngle(EntityX(mainPlayer\collider,True),EntityZ(mainPlayer\collider,True),EntityX(room1,True),EntityZ(room1,True))
+					Local dir# = GetAngle(EntityX(mainPlayer\collider,True),EntityZ(mainPlayer\collider,True),EntityX(room1,True),EntityZ(room1,True))
 					dir=dir+EntityYaw(room2,True)-EntityYaw(room1,True);EntityYaw(room2,True)+angleDist(dir,EntityYaw(room1,True))
 					;dir=dir-90.0
 					
@@ -454,7 +454,7 @@ End Function
 
 Type ElevatorObj
 	Field obj%
-	Field InFacility%
+	Field inFacility%
 	Field door.Doors
 End Type
 

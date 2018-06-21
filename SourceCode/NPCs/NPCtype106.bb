@@ -77,7 +77,7 @@ Function UpdateNPCtype106(n.NPCs)
                     SetAnimTime n\obj, 110
                     
                     PlaySound2(n\sounds[0])
-                End If
+                EndIf
                 
                 ;Corrosion.
                 If Rand(500) = 1 Then PlayRangedSound(n\sounds[Rand(3, 5)], mainPlayer\cam, n\collider)
@@ -88,9 +88,9 @@ Function UpdateNPCtype106(n.NPCs)
                 If n\timer >= - 10 Then
                     ShouldPlay = 66
                     If (n\frame < 259) Then
-                        PositionEntity n\Collider, EntityX(n\Collider), n\PrevY-0.15, EntityZ(n\Collider)
+                        PositionEntity n\collider, EntityX(n\collider), n\PrevY-0.15, EntityZ(n\collider)
                         PointEntity n\obj, mainPlayer\collider
-                        RotateEntity (n\Collider, 0, CurveValue(EntityYaw(n\obj),EntityYaw(n\Collider),100.0), 0, True)
+                        RotateEntity (n\collider, 0, CurveValue(EntityYaw(n\obj),EntityYaw(n\collider),100.0), 0, True)
                         
                         AnimateNPC(n, 110, 259, 0.15, False)
                     EndIf
@@ -139,7 +139,7 @@ Function UpdateNPCtype106(n.NPCs)
                 
                 ;Footstep sounds.
                 If (prevFrame =< 286 And n\frame > 286) Or (prevFrame=<311 And n\frame > 311.0) Then
-                    PlayRangedSound(sndManager\footstepPD[Rand(0, 2)]\internal, mainPlayer\cam, n\Collider, 6.0, Rnd(0.8,1.0))
+                    PlayRangedSound(sndManager\footstepPD[Rand(0, 2)]\internal, mainPlayer\cam, n\collider, 6.0, Rnd(0.8,1.0))
                 EndIf
 
                 If (dist > 25.0 Or visible Or n\pathStatus = 2) Then
@@ -171,18 +171,18 @@ Function UpdateNPCtype106(n.NPCs)
                                     n\PathLocation = n\PathLocation + 1
                                 EndIf
                             Else
-                                TranslateEntity n\Collider, 0, ((EntityY(n\Path[n\PathLocation]\obj,True) - 0.11) - EntityY(n\Collider)) / 50.0, 0
+                                TranslateEntity n\collider, 0, ((EntityY(n\Path[n\PathLocation]\obj,True) - 0.11) - EntityY(n\collider)) / 50.0, 0
                                 
                                 PointEntity n\obj, n\Path[n\PathLocation]\obj
                                 
-                                dist2# = EntityDistance(n\Collider,n\Path[n\PathLocation]\obj)
+                                dist2# = EntityDistance(n\collider,n\Path[n\PathLocation]\obj)
                                 
-                                RotateEntity(n\Collider, 0, CurveAngle(EntityYaw(n\obj), EntityYaw(n\Collider), Min(20.0,dist2*10.0)), 0)
+                                RotateEntity(n\collider, 0, CurveAngle(EntityYaw(n\obj), EntityYaw(n\collider), Min(20.0,dist2*10.0)), 0)
                                 
                                 If dist2 < 0.2 Then n\PathLocation = n\PathLocation + 1
                             EndIf
                         ElseIf n\PathStatus = 0 Then
-                            If n\State3=0 Then AnimateNPC(n, 334, 494, 0.3)
+                            If n\state3=0 Then AnimateNPC(n, 334, 494, 0.3)
                         EndIf
                     EndIf
                 EndIf

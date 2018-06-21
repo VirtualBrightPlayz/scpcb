@@ -348,7 +348,7 @@ Function USV$(in$,which%=1,sep$=",")
 
 			which = n
 
-		End If
+		EndIf
 
 		ValueRet$ = Mid$(in$,offset+1,nextoffset-offset-1)
 
@@ -356,7 +356,7 @@ Function USV$(in$,which%=1,sep$=",")
 
 			Return ValueRet	
 
-		End If
+		EndIf
 
 		offset = nextoffset
 

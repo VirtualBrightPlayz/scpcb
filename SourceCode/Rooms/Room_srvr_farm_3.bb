@@ -52,8 +52,8 @@ Function UpdateEvent_srvr_farm_3(e.Events)
 		If e\EventState3=0 And Curr173\Idle = 0 Then
 			If mainPlayer\blinkTimer < -10 Then 
 				temp = Rand(0,2)
-				PositionEntity Curr173\Collider, EntityX(e\room\Objects[temp],True),EntityY(e\room\Objects[temp],True),EntityZ(e\room\Objects[temp],True)
-				ResetEntity Curr173\Collider
+				PositionEntity Curr173\collider, EntityX(e\room\Objects[temp],True),EntityY(e\room\Objects[temp],True),EntityZ(e\room\Objects[temp],True)
+				ResetEntity Curr173\collider
 				e\EventState3=1
 			EndIf
 		EndIf

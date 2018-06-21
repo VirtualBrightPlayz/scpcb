@@ -391,7 +391,7 @@ Type Items
 	Field Picked%,Dropped%
 	
 	Field invimg%
-	Field WontColl% = False
+	Field wontColl% = False
 	Field xspeed#,zspeed#
 	Field ID%
 	
@@ -526,7 +526,7 @@ End Function
 
 
 Function UpdateItems()
-	Local n, i.Items
+	Local n, i.Items, i2.Items
 	Local xtemp#, ytemp#, ztemp#
 	Local temp%, np.NPCs
 	
@@ -555,9 +555,9 @@ Function UpdateItems()
 				If i\dist < 1.2 Then
 					If mainPlayer\closestItem = Null Then
 						If EntityInView(i\model, mainPlayer\cam) Then mainPlayer\closestItem = i
-					Else If mainPlayer\closestItem = i Or i\dist < EntityDistance(mainPlayer\collider, mainPlayer\closestItem\collider) Then 
+					ElseIf mainPlayer\closestItem = i Or i\dist < EntityDistance(mainPlayer\collider, mainPlayer\closestItem\collider) Then 
 						If EntityInView(i\model, mainPlayer\cam) Then mainPlayer\closestItem = i
-					End If
+					EndIf
 				EndIf					
 				
 				If EntityCollided(i\collider, HIT_MAP) Then
@@ -578,7 +578,7 @@ Function UpdateItems()
 							ytemp# = (EntityY(i2\collider,True)-EntityY(i\collider,True))
 							ztemp# = (EntityZ(i2\collider,True)-EntityZ(i\collider,True))
 							
-							ed# = (xtemp*xtemp+ztemp*ztemp)
+							Local ed# = (xtemp*xtemp+ztemp*ztemp)
 							If ed<0.07 And Abs(ytemp)<0.25 Then
 								;items are too close together, push away
 								
@@ -610,12 +610,14 @@ Function UpdateItems()
 		;DrawHandIcon = True
 		
 		If MouseHit1 Then PickItem(mainPlayer\closestItem)
-	End If
+	EndIf
 	
 End Function
 
 Function PickItem(item.Items)
 	Local n% = 0
+	Local e.Events
+	Local z%
 	
 	If CountItemsInInventory(mainPlayer\inventory) < mainPlayer\inventory\size Then
 		For n% = 0 To mainPlayer\inventory\size - 1
@@ -634,13 +636,13 @@ Function PickItem(item.Items)
 							Return
 						EndIf
 						For e.Events = Each Events
-							If e\eventname = "room1123" Then 
-								If e\eventstate = 0 Then
+							If e\EventName = "room1123" Then 
+								If e\EventState = 0 Then
 									ShowEntity mainPlayer\overlays[OVERLAY_WHITE]
 									mainPlayer\lightFlash = 3.0
 									PlaySound2(LoadTempSound("SFX/SCP/1123/Touch.ogg"))											
 								EndIf
-								e\eventstate = Max(1, e\eventstate)
+								e\EventState = Max(1, e\EventState)
 								Exit
 							EndIf
 						Next
@@ -664,7 +666,7 @@ Function PickItem(item.Items)
 						
 						For z% = 0 To mainPlayer\inventory\size - 1
 							If mainPlayer\inventory\items[z] <> Null Then
-								If mainPlayer\inventory\items[z]\itemtemplate\tempname="hazmatsuit" Or mainPlayer\inventory\items[z]\itemtemplate\tempname="hazmatsuit2" Or mainPlayer\inventory\items[z]\itemtemplate\tempname="hazmatsuit3" Then
+								If mainPlayer\inventory\items[z]\itemtemplate\tempName="hazmatsuit" Or mainPlayer\inventory\items[z]\itemtemplate\tempName="hazmatsuit2" Or mainPlayer\inventory\items[z]\itemtemplate\tempName="hazmatsuit3" Then
 									DropItem(mainPlayer\inventory\items[z])
 								EndIf
 							EndIf
@@ -690,6 +692,7 @@ Function PickItem(item.Items)
 End Function
 
 Function DropItem(item.Items,playDropSound%=True)
+	Local player.Player
 	For player.Player = Each Player
 		DeEquipItem(player,item)
 	Next
@@ -728,12 +731,14 @@ Function DropItem(item.Items,playDropSound%=True)
 	;Next
 	
 	item\Picked = False
+	Local inv.Inventory
 	For inv.Inventory = Each Inventory
+		Local j%
 		For j%=0 To inv\size-1
 			If inv\items[j]=item Then inv\items[j]=Null
 		Next
 	Next
-	;Select item\itemtemplate\tempname
+	;Select item\itemtemplate\tempName
 	;	Case "gasmask", "supergasmask", "gasmask3"
 	;		WearingGasMask = False
 	;	Case "hazmatsuit",  "hazmatsuit2", "hazmatsuit3"

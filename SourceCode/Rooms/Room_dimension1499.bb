@@ -59,13 +59,13 @@ Function UpdateEvent_dimension1499(e.Events)
 ;			EndIf
 			;[End Block]
 			For n.NPCs = Each NPCs
-				If n\NPCtype = NPCtype1499 Then
+				If n\npcType = NPCtype1499 Then
 					n\Idle = False
-					n\State = 0
-					;If Rand(2)=1 Then n\State2 = 500*3
+					n\state = 0
+					;If Rand(2)=1 Then n\state2 = 500*3
 					n\Angle = Rnd(360)
-					PositionEntity n\Collider,EntityX(n\Collider)+Rnd(-60.0,60.0),EntityY(n\Collider)+0.05,EntityZ(n\Collider)+Rnd(-60.0,60.0)
-					ResetEntity n\Collider
+					PositionEntity n\collider,EntityX(n\collider)+Rnd(-60.0,60.0),EntityY(n\collider)+0.05,EntityZ(n\collider)+Rnd(-60.0,60.0)
+					ResetEntity n\collider
 				EndIf
 			Next
 		EndIf
@@ -93,7 +93,7 @@ Function UpdateEvent_dimension1499(e.Events)
 			HideEntity NTF_1499Sky
 			HideChunks()
 			For n.NPCs = Each NPCs
-				If n\NPCtype = NPCtype1499 Then
+				If n\npcType = NPCtype1499 Then
 					;RemoveNPC(n)
 					n\Idle = True
 				EndIf
@@ -122,7 +122,7 @@ Function UpdateLeave1499()
 				UpdateRooms()
 				For it.Items = Each Items
 					it\disttimer = 0
-					If it\itemtemplate\tempname = "scp1499" Or it\itemtemplate\tempname = "super1499" Then
+					If it\itemtemplate\tempName = "scp1499" Or it\itemtemplate\tempName = "super1499" Then
 						If EntityY(it\collider) >= EntityY(mainPlayer\currRoom\obj)-5 Then
 							PositionEntity it\collider,NTF_1499PrevX#,NTF_1499PrevY#+(EntityY(it\collider)-EntityY(mainPlayer\currRoom\obj)),NTF_1499PrevZ#
 							ResetEntity it\collider
@@ -239,7 +239,7 @@ Function CreateChunk.Chunk(obj%,x#,y#,z#,spawnNPCs%=True)
 		If spawnNPCs% Then
 			For i = 0 To Rand(5,10)
 				n.NPCs = CreateNPC(NPCtype1499,x+Rnd(-60.0,60.0),y+0.5,z+Rnd(-60.0,60.0))
-				If Rand(2)=1 Then n\State2 = 500*3
+				If Rand(2)=1 Then n\state2 = 500*3
 				n\Angle = Rnd(360)
 			Next
 		EndIf

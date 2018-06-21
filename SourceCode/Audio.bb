@@ -380,7 +380,7 @@ Function LoadEventSound%(e.Events, file$, i%=0)
 
 	Return e\sounds[i]
 End Function
-
+; TODO: Rooms
 Function PauseSounds()
 	Local chn.SoundChannel, sc.SecurityCams, r.Rooms, e.Events, n.NPCs, em.Emitters, i%
 

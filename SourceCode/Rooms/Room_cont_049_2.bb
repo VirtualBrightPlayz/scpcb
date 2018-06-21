@@ -210,10 +210,10 @@ Function UpdateEvent_cont_049_2(e.Events)
 						
 						;If e\room\NPC[0]=Null Then
 						;	For n.NPCs = Each NPCs
-						;		If n\NPCtype=NPCtype049 Then e\room\NPC[0]=n : Exit
+						;		If n\npcType=NPCtype049 Then e\room\NPC[0]=n : Exit
 						;	Next
 						;EndIf
-						;e\room\NPC[0]\State = 1
+						;e\room\NPC[0]\state = 1
 						
 						e\room\RoomDoors[4]\open = True
 						PlaySound_SM(sndManager\teslaPowerUp)
@@ -230,23 +230,23 @@ Function UpdateEvent_cont_049_2(e.Events)
 					
 					;If e\room\NPC[0]=Null Then
 					;	For n.NPCs = Each NPCs
-					;		If n\NPCtype=NPCtype049 Then e\room\NPC[0]=n : Exit
+					;		If n\npcType=NPCtype049 Then e\room\NPC[0]=n : Exit
 					;	Next
 					;Else
-						;If EntityDistance(e\room\NPC[0]\Collider,mainPlayer\collider)<4.0 Then
+						;If EntityDistance(e\room\NPC[0]\collider,mainPlayer\collider)<4.0 Then
 						;	e\EventState=e\EventState+timing\tickDuration
 						;	If e\EventState > 70*195 And e\EventState-timing\tickDuration =< 70*195 Then
 						;		For n.NPCs = Each NPCs ;awake the zombies
-						;			If n\NPCtype = NPCtypeZombie And n\State = 0 Then
-						;				n\State = 1
+						;			If n\npcType = NPCtypeZombie And n\state = 0 Then
+						;				n\state = 1
 						;				SetNPCFrame(n, 155)
 						;			EndIf
 						;		Next
-						;		;PlayRangedSound(LoadTempSound("SFX/SCP/049/Greeting"+Rand(1,2)+".ogg"),mainPlayer\cam, e\room\NPC[0]\Collider)
+						;		;PlayRangedSound(LoadTempSound("SFX/SCP/049/Greeting"+Rand(1,2)+".ogg"),mainPlayer\cam, e\room\NPC[0]\collider)
 						;	ElseIf e\EventState > 70*214 And e\EventState-timing\tickDuration =< 70*214
-						;		;PlayRangedSound(LoadTempSound("SFX/SCP/049/Spotted"+Rand(1,2)+".ogg"),mainPlayer\cam, e\room\NPC[0]\Collider)
+						;		;PlayRangedSound(LoadTempSound("SFX/SCP/049/Spotted"+Rand(1,2)+".ogg"),mainPlayer\cam, e\room\NPC[0]\collider)
 						;	ElseIf e\EventState > 70*227 And e\EventState-timing\tickDuration =< 70*227
-						;		;PlayRangedSound(LoadTempSound("SFX/SCP/049/Detected"+Rand(1,3)+".ogg"),mainPlayer\cam, e\room\NPC[0]\Collider)
+						;		;PlayRangedSound(LoadTempSound("SFX/SCP/049/Detected"+Rand(1,3)+".ogg"),mainPlayer\cam, e\room\NPC[0]\collider)
 						;		e\EventState=70*241
 						;	EndIf
 						;EndIf
@@ -304,20 +304,20 @@ Function UpdateEvent_cont_049_2(e.Events)
 					Next
 					
 					n.NPCs = CreateNPC(NPCtypeMTF, EntityX(e\room\Objects[5],True), EntityY(e\room\Objects[5],True)+0.2, EntityZ(e\room\Objects[5],True))
-					n\State = 6
+					n\state = 6
 					n\Reload = 6*70
-					PointEntity n\Collider,mainPlayer\collider
+					PointEntity n\collider,mainPlayer\collider
 					e\room\NPC[1] = n
 					
 					n.NPCs = CreateNPC(NPCtypeMTF, EntityX(e\room\Objects[5],True), EntityY(e\room\Objects[5],True)+0.2, EntityZ(e\room\Objects[5],True))
-					n\State = 6
+					n\state = 6
 					n\Reload = (6*70)+Rnd(15,30)
-					RotateEntity n\Collider,0,EntityYaw(e\room\NPC[1]\Collider),0
-					MoveEntity n\Collider,0.5,0,0
-					PointEntity n\Collider,mainPlayer\collider
+					RotateEntity n\collider,0,EntityYaw(e\room\NPC[1]\collider),0
+					MoveEntity n\collider,0.5,0,0
+					PointEntity n\collider,mainPlayer\collider
 					
 					n.NPCs = CreateNPC(NPCtypeMTF, EntityX(e\room\Objects[5],True), EntityY(e\room\Objects[5],True)+0.2, EntityZ(e\room\Objects[5],True))
-					n\State = 6
+					n\state = 6
 					;n\Reload = 70*4.75
 					n\Reload = 10000
 					RotateEntity n\collider,0,EntityYaw(e\room\NPC[1]\collider),0

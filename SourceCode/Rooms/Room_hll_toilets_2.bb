@@ -34,17 +34,17 @@ Function UpdateEventToiletguard(e.Events)
 		If e\room\dist < 8.0  And e\room\dist > 0 Then e\EventState = 1
 	ElseIf e\EventState = 1 Then
 		e\room\NPC[0]=CreateNPC(NPCtypeGuard, EntityX(e\room\Objects[1],True), EntityY(e\room\Objects[1],True)+0.5, EntityZ(e\room\Objects[1],True))
-		PointEntity e\room\NPC[0]\Collider, e\room\obj
-		RotateEntity e\room\NPC[0]\Collider, 0, EntityYaw(e\room\NPC[0]\Collider)-20,0, True
+		PointEntity e\room\NPC[0]\collider, e\room\obj
+		RotateEntity e\room\NPC[0]\collider, 0, EntityYaw(e\room\NPC[0]\collider)-20,0, True
 		
 		SetNPCFrame (e\room\NPC[0], 906)
-		e\room\NPC[0]\State = 8
+		e\room\NPC[0]\state = 8
 		
 		e\EventState = 2	
 	Else
 		If e\sounds[0] = 0 Then e\sounds[0] = LoadSound("SFX/Character/Guard/SuicideGuard1.ogg")
 		If e\room\dist < 15.0 And e\room\dist >= 4.0 Then 
-			e\soundChannels[0] = LoopRangedSound(e\sounds[0], e\soundChannels[0], mainPlayer\cam, e\room\NPC[0]\Collider, 15.0)
+			e\soundChannels[0] = LoopRangedSound(e\sounds[0], e\soundChannels[0], mainPlayer\cam, e\room\NPC[0]\collider, 15.0)
 			
 		ElseIf e\room\dist<4.0 And mainPlayer\loudness > 1.0 Then
 			de.Decals = CreateDecal(3,  EntityX(e\room\Objects[2],True), 0.01, EntityZ(e\room\Objects[2],True),90,Rnd(360),0)
@@ -60,9 +60,9 @@ Function UpdateEventToiletguard(e.Events)
 				StopChannel(e\soundChannels[0])
 				FreeSound(e\sounds[0])
 				e\room\NPC[0]\sounds[0] = LoadSound("SFX/Character/Guard/SuicideGuard2.ogg")
-				e\soundChannels[1] = PlayRangedSound(e\room\NPC[0]\sounds[0], mainPlayer\cam, e\room\NPC[0]\Collider, 15.0)
+				e\soundChannels[1] = PlayRangedSound(e\room\NPC[0]\sounds[0], mainPlayer\cam, e\room\NPC[0]\collider, 15.0)
 			EndIf
-			UpdateRangedSoundOrigin(e\soundChannels[1],mainPlayer\cam,e\room\NPC[0]\Collider,15.0)
+			UpdateRangedSoundOrigin(e\soundChannels[1],mainPlayer\cam,e\room\NPC[0]\collider,15.0)
 			If (Not IsChannelPlaying(e\soundChannels[1])) Then RemoveEvent(e)
 		EndIf
 	EndIf

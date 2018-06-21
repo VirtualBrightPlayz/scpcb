@@ -42,10 +42,10 @@ Function UpdateEventRoom2elevator2(e.Events)
 		EntityTexture(e\room\NPC[0]\obj, tex)
 		FreeTexture tex
 		
-		RotateEntity e\room\NPC[0]\Collider, 0, EntityYaw(e\room\obj)-80,0, True	
+		RotateEntity e\room\NPC[0]\collider, 0, EntityYaw(e\room\obj)-80,0, True	
 		
 		SetNPCFrame e\room\NPC[0], 19
-		e\room\NPC[0]\State=8
+		e\room\NPC[0]\state=8
 		
 		RemoveEvent(e)
 	EndIf
@@ -69,8 +69,8 @@ Function UpdateEvent_hll_ele_2(e.Events)
 	If e\EventState = 0 Then
 		If e\room\dist < 8.0 And e\room\dist > 0 Then
 			e\room\NPC[0]=CreateNPC(NPCtypeGuard, EntityX(e\room\obj,True), 0.5, EntityZ(e\room\obj,True))
-			PointEntity e\room\NPC[0]\Collider, mainPlayer\collider
-			RotateEntity e\room\NPC[0]\Collider, 0, EntityYaw(e\room\NPC[0]\Collider),0, True	
+			PointEntity e\room\NPC[0]\collider, mainPlayer\collider
+			RotateEntity e\room\NPC[0]\collider, 0, EntityYaw(e\room\NPC[0]\collider),0, True	
 			
 			e\EventState = 1
 		EndIf
@@ -79,13 +79,13 @@ Function UpdateEvent_hll_ele_2(e.Events)
 			If e\room\dist<5.0 Or Rand(700)=1 Then 
 				e\EventState = 2
 				
-				e\room\NPC[0]\State = 5
+				e\room\NPC[0]\state = 5
 				e\room\NPC[0]\EnemyX = EntityX(e\room\Objects[1],True)
 				e\room\NPC[0]\EnemyY = EntityY(e\room\Objects[1],True)
 				e\room\NPC[0]\EnemyZ = EntityZ(e\room\Objects[1],True)
 			EndIf
 		ElseIf e\EventState = 2 Then
-			If EntityDistance(e\room\NPC[0]\Collider,e\room\Objects[1])<2.0 Then
+			If EntityDistance(e\room\NPC[0]\collider,e\room\Objects[1])<2.0 Then
 				e\room\RoomDoors[0]\open = False
 				;PlayRangedSound(CloseDoorSFX(0, 0), mainPlayer\cam, e\room\RoomDoors[0]\obj, 8.0)			
 				

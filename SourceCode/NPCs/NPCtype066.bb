@@ -90,8 +90,8 @@ Function UpdateNPCtype066(n.NPCs)
                             Case 3
                                 For d.Doors = Each Doors
                                     If d\locked = False And d\KeyCard = 0 And d\Code = "" Then
-                                        If Abs(EntityX(d\frameobj)-EntityX(n\Collider))<16.0 Then
-                                            If Abs(EntityZ(d\frameobj)-EntityZ(n\Collider))<16.0 Then
+                                        If Abs(EntityX(d\frameobj)-EntityX(n\collider))<16.0 Then
+                                            If Abs(EntityZ(d\frameobj)-EntityZ(n\collider))<16.0 Then
                                                 UseDoor(d, False)
                                             EndIf
                                         EndIf
@@ -100,10 +100,10 @@ Function UpdateNPCtype066(n.NPCs)
                             Case 4
                                 If mainPlayer\currRoom\RoomTemplate\DisableDecals = False Then
                                     mainPlayer\camShake = 5.0
-                                    de.Decals = CreateDecal(1, EntityX(n\Collider), 0.01, EntityZ(n\Collider), 90, Rand(360), 0)
+                                    de.Decals = CreateDecal(1, EntityX(n\collider), 0.01, EntityZ(n\collider), 90, Rand(360), 0)
                                     de\Size = 0.3 : UpdateDecals
                                     PlaySound2(LoadTempSound("SFX/General/BodyFall.ogg"))
-                                    If Distance(EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider),EntityX(n\Collider),EntityZ(n\Collider))<0.8 Then
+                                    If Distance(EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider),EntityX(n\collider),EntityZ(n\collider))<0.8 Then
                                         mainPlayer\injuries = mainPlayer\injuries + Rnd(0.3,0.5)
                                     EndIf
                                 EndIf
@@ -118,7 +118,7 @@ Function UpdateNPCtype066(n.NPCs)
                 Else
                     n\currSpeed = CurveValue(n\speed*1.5, n\currSpeed, 10.0)
                     PointEntity n\obj,mainPlayer\collider
-                    ;angle = CurveAngle(EntityYaw(n\obj), EntityYaw(n\Collider), 10);1.0/Max(n\CurrSpeed,0.0001))
+                    ;angle = CurveAngle(EntityYaw(n\obj), EntityYaw(n\collider), 10);1.0/Max(n\CurrSpeed,0.0001))
                     RotateEntity n\collider, 0, CurveAngle(EntityYaw(n\obj)-180, EntityYaw(n\collider), 10), 0
                     
                     AnimateNPC(n, 647, 683, n\currSpeed*25, False)
@@ -169,7 +169,7 @@ Function UpdateNPCtype066(n.NPCs)
     
     ;If n\soundChannels[1]<>0 Then
     ;	If IsChannelPlaying(n\soundChannels[1]) Then
-    ;		n\soundChannels[1] = LoopRangedSound(n\sounds[1], n\soundChannels[1], mainPlayer\cam, n\Collider, 20)
+    ;		n\soundChannels[1] = LoopRangedSound(n\sounds[1], n\soundChannels[1], mainPlayer\cam, n\collider, 20)
     ;		mainPlayer\blurTimer = Max((5.0-dist)*300,0)
     ;	EndIf
     ;EndIf
@@ -177,9 +177,9 @@ Function UpdateNPCtype066(n.NPCs)
     
     If n\state3 > 0 Then
         n\state3 = n\state3-timing\tickDuration
-        ;LightVolume = TempLightVolume-TempLightVolume*Min(Max(n\State3/500,0.01),0.6)
+        ;LightVolume = TempLightVolume-TempLightVolume*Min(Max(n\state3/500,0.01),0.6)
         mainPlayer\heartbeatIntensity = Max(mainPlayer\heartbeatIntensity, 130)
-        ;HeartBeatVolume = Max(HeartBeatVolume,Min(n\State3/1000,1.0))
+        ;HeartBeatVolume = Max(HeartBeatVolume,Min(n\state3/1000,1.0))
     EndIf
     
     If IsChannelPlaying(n\soundChannels[1]) Then
@@ -188,7 +188,7 @@ Function UpdateNPCtype066(n.NPCs)
     
     PositionEntity(n\obj, EntityX(n\collider), EntityY(n\collider) - 0.2, EntityZ(n\collider))
     
-    RotateEntity n\obj, EntityPitch(n\Collider)-90, EntityYaw(n\Collider), 0
+    RotateEntity n\obj, EntityPitch(n\collider)-90, EntityYaw(n\collider), 0
 End Function
 ;~IDEal Editor Parameters:
 ;~C#Blitz3D

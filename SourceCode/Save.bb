@@ -22,7 +22,7 @@ Function LoadSaveGames()
 					SaveGameAmount=SaveGameAmount+1
 				EndIf
 			EndIf
-		End If 
+		EndIf 
 	Forever 
 	CloseDir myDir 
 	
@@ -40,7 +40,7 @@ Function LoadSaveGames()
 					i=i+1
 				EndIf
 			EndIf
-		End If 
+		EndIf 
 	Forever 
 	CloseDir myDir 
 	
@@ -80,7 +80,7 @@ Function LoadSavedMaps()
 			EndIf
 			
 			If i > MAXSAVEDMAPS Then Exit
-		End If 
+		EndIf 
 	Forever 
 	CloseDir Dir 
 End Function

@@ -420,7 +420,7 @@ Function UpdateEvent_hll_sl_2(e.Events)
 			EndIf
 		ElseIf e\EventState2 = 0 Then
 			If e\room\NPC[0] <> Null Then
-				;PositionEntity e\room\NPC[0]\Collider,EntityX(e\room\NPC[0]\Collider),EntityY(e\room\Objects[7],True),EntityZ(e\room\NPC[0]\Collider)
+				;PositionEntity e\room\NPC[0]\collider,EntityX(e\room\NPC[0]\collider),EntityY(e\room\Objects[7],True),EntityZ(e\room\NPC[0]\collider)
 				Local AdjDist1# = 0.0
 				Local AdjDist2# = 0.0
 				Local Adj1% = -1

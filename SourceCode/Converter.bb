@@ -112,7 +112,7 @@ Function isAlpha%(tex%) ;detect transparency in textures
 		UnlockBuffer(TextureBuffer(tex))
 		;DebugLog temp1s + " is opaque."
 		Return 1 ;texture is opaque
-	Else If Instr(temp1s,"_lm")<>0 Then ;texture is a lightmap
+	ElseIf Instr(temp1s,"_lm")<>0 Then ;texture is a lightmap
 		;DebugLog temp1s + " is a lightmap."
 		Return 2
 	EndIf
@@ -469,7 +469,7 @@ Function PutINIValue%(INI_sAppName$, INI_sSection$, INI_sKey$, INI_sValue$)
 				
 				If (INI_sCurrentSection = INI_sUpperSection) And (INI_bWrittenKey = False) Then
 					INI_bWrittenKey = INI_CreateKey(INI_lFileHandle, INI_sKey, INI_sValue)
-				End If
+				EndIf
 				INI_sCurrentSection = Upper$(INI_CreateSection(INI_lFileHandle, INI_sTemp))
 				If (INI_sCurrentSection = INI_sUpperSection) Then INI_bSectionFound = True
 				
@@ -484,12 +484,12 @@ Function PutINIValue%(INI_sAppName$, INI_sSection$, INI_sKey$, INI_sValue$)
 						INI_bWrittenKey = True
 					Else
 						WriteLine INI_lFileHandle, INI_sTemp
-					End If
-				End If
+					EndIf
+				EndIf
 				
-			End If
+			EndIf
 			
-		End If
+		EndIf
 		
 		; Move through the INI file...
 		
@@ -503,7 +503,7 @@ Function PutINIValue%(INI_sAppName$, INI_sSection$, INI_sKey$, INI_sValue$)
 	If (INI_bWrittenKey = False) Then
 		If (INI_bSectionFound = False) Then INI_CreateSection INI_lFileHandle, INI_sSection
 		INI_CreateKey INI_lFileHandle, INI_sKey, INI_sValue
-	End If
+	EndIf
 	
 	CloseFile INI_lFileHandle
 	
@@ -521,7 +521,7 @@ Function INI_FileToString$(INI_sFilename$)
 			INI_sString = INI_sString + ReadLine$(INI_lFileHandle) + Chr$(0)
 		Wend
 		CloseFile INI_lFileHandle
-	End If
+	EndIf
 	Return INI_sString
 	
 End Function
@@ -623,7 +623,7 @@ If state=1 Then ;convert B3D to Rmesh
 	
 	CloseFile f
 	
-Else If state=2
+ElseIf state=2
 	f%=ReadFile("Data/rooms.ini")
 	
 	While Not Eof(f)

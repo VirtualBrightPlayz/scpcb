@@ -129,7 +129,8 @@ Function DrawLoading(percent%, shortloading=False)
 		y% = userOptions\screenHeight / 2 + 30 - 100
 		
 		Rect(x, y, width+4, height, False)
-		For  i% = 1 To Int((width - 2) * (percent / 100.0) / 10)
+		Local i%
+		For  i = 1 To Int((width - 2) * (percent / 100.0) / 10)
 			DrawImage(uiAssets\blinkBar, x + 3 + 10 * (i - 1), y + 3)
 		Next
 		
@@ -146,10 +147,10 @@ Function DrawLoading(percent%, shortloading=False)
 			EndIf
 			
 			SetFont uiAssets\font[1]
-			strtemp$ = ""
+			Local strtemp$ = ""
 			temp = Rand(2,9)
 			For i = 0 To temp
-				strtemp$ = STRTEMP + Chr(Rand(48,122))
+				strtemp = strtemp + Chr(Rand(48,122))
 			Next
 			Text(userOptions\screenWidth / 2, userOptions\screenHeight / 2 + 80, strtemp, True, True)
 			
@@ -274,3 +275,5 @@ Function DrawLoading(percent%, shortloading=False)
 		RestoreDefaultMusic()
 	EndIf
 End Function
+;~IDEal Editor Parameters:
+;~C#Blitz3D

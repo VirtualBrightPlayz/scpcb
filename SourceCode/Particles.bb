@@ -4,10 +4,10 @@ Type Particles
 	Field obj%, pvt%
 	Field image%
 	
-	Field R#, G#, B#, A#, size#
+	Field r#, g#, b#, a#, size#
 	Field speed#, yspeed#, gravity#
-	Field Rchange#, Gchange#, Bchange#, Achange#
-	Field SizeChange#
+	Field rChange#, gChange#, bChange#, aChange#
+	Field sizeChange#
 	
 	Field lifetime#
 End Type 
@@ -36,7 +36,7 @@ Function CreateParticle.Particles(x#, y#, z#, image%, size#, gravity# = 1.0, lif
 	
 	p\image = image
 	p\gravity = gravity * 0.004
-	p\R = 255 : p\G = 255 : p\B = 255 : p\A = 1.0
+	p\r = 255 : p\g = 255 : p\b = 255 : p\a = 1.0
 	p\size = size
 	ScaleSprite(p\obj, p\size, p\size)
 	Return p
@@ -53,13 +53,13 @@ Function UpdateParticles()
 		
 		;TurnEntity(p\obj, 0, 0, timing\tickDuration)
 		
-		If p\Achange <> 0 Then
-			p\A=Min(Max(p\A+p\Achange * timing\tickDuration,0.0),1.0)
-			EntityAlpha(p\obj, p\A)		
+		If p\aChange <> 0 Then
+			p\a=Min(Max(p\a+p\aChange * timing\tickDuration,0.0),1.0)
+			EntityAlpha(p\obj, p\a)		
 		EndIf
 		
-		If p\SizeChange <> 0 Then 
-			p\size= p\size+p\SizeChange * timing\tickDuration
+		If p\sizeChange <> 0 Then 
+			p\size= p\size+p\sizeChange * timing\tickDuration
 			ScaleSprite p\obj, p\size, p\size
 		EndIf
 		
@@ -67,9 +67,9 @@ Function UpdateParticles()
 		EntityAlpha(p\obj,1.0)
 		
 		p\lifetime=p\lifetime-timing\tickDuration
-		If p\lifetime <= 0 Or p\size < 0.00001 Or p\A =< 0 Then
+		If p\lifetime <= 0 Or p\size < 0.00001 Or p\a =< 0 Then
 			RemoveParticle(p)
-		End If
+		EndIf
 	Next
 End Function
 	
@@ -83,51 +83,52 @@ Global InSmoke%
 Global HissSFX.MarkedForRemoval
 
 Type Emitters
-	Field Obj%
+	Field obj%
 	
-	Field Size#
-	Field MinImage%, MaxImage%
-	Field Gravity#
-	Field LifeTime%
+	Field size#
+	Field minImage%, maxImage%
+	Field gravity#
+	Field lifeTime%
 	
-	Field Disable%
+	Field disable%
 	
-	Field Room.Rooms
+	Field room.Rooms
 	
 	Field soundCHN%
 	
-	Field Speed#, RandAngle#
-	Field SizeChange#, Achange#
+	Field speed#, randAngle#
+	Field sizeChange#, aChange#
 End Type 
 
 Function UpdateEmitters()
 	InSmoke = False
-	For e.emitters = Each Emitters
-		If timing\tickDuration > 0 And (mainPlayer\currRoom = e\room Or e\room\dist < 8) Then
+	Local e.Emitters
+	For e.Emitters = Each Emitters
+		If timing\tickDuration > 0 And (mainPlayer\currRoom = e\Room Or e\Room\dist < 8) Then
 			;If EntityDistance(mainPlayer\cam, e\Obj) < 6.0 Then
-				Local p.Particles = CreateParticle(EntityX(e\obj, True), EntityY(e\obj, True), EntityZ(e\obj, True), Rand(e\minimage, e\maximage), e\size, e\gravity, e\lifetime)
-				p\speed = e\speed
-				RotateEntity(p\pvt, EntityPitch(e\Obj, True), EntityYaw(e\Obj, True), EntityRoll(e\Obj, True), True)
+				Local p.Particles = CreateParticle(EntityX(e\obj, True), EntityY(e\obj, True), EntityZ(e\obj, True), Rand(e\minImage, e\maxImage), e\size, e\Gravity, e\LifeTime)
+				p\speed = e\Speed
+				RotateEntity(p\pvt, EntityPitch(e\obj, True), EntityYaw(e\obj, True), EntityRoll(e\obj, True), True)
 				TurnEntity(p\pvt, Rnd(-e\RandAngle, e\RandAngle), Rnd(-e\RandAngle, e\RandAngle), 0)
 				
 				TurnEntity p\obj, 0,0,Rnd(360)
 				
-				p\SizeChange = e\SizeChange
+				p\sizeChange = e\SizeChange
 				
-				p\Achange = e\achange
+				p\aChange = e\Achange
 				
 				e\soundCHN = LoopRangedSound_SM(sndManager\hiss, e\soundCHN, mainPlayer\cam, e\Obj)
 				
 				If InSmoke = False Then
 					If IsPlayerWearingTempName(mainPlayer,"gasmask") And IsPlayerWearingTempName(mainPlayer,"hazmatsuit") Then
-						Local dist# = Distance(EntityX(mainPlayer\cam, True), EntityZ(mainPlayer\cam, True), EntityX(e\obj, True), EntityZ(e\obj, True))
+						Local dist# = Distance(EntityX(mainPlayer\cam, True), EntityZ(mainPlayer\cam, True), EntityX(e\Obj, True), EntityZ(e\Obj, True))
 						If dist < 0.8 Then
-							If Abs(EntityY(mainPlayer\cam, True)-EntityY(e\obj,True))<5.0 Then InSmoke = True
+							If Abs(EntityY(mainPlayer\cam, True)-EntityY(e\Obj,True))<5.0 Then InSmoke = True
 						EndIf
 					EndIf					
 				EndIf
 			;EndIf
-		End If
+		EndIf
 	Next
 	
 	If InSmoke Then
@@ -175,6 +176,7 @@ Function CreateEmitter.Emitters(x#, y#, z#, emittertype%)
 			e\MinImage = 6 : e\MaxImage = 6
 	End Select
 	
+	Local r.Rooms
 	For r.Rooms = Each Rooms
 		If Abs(EntityX(e\Obj) - EntityX(r\obj)) < 4.0 And Abs(EntityZ(e\Obj) - EntityZ(r\obj)) < 4.0 Then
 			e\Room = r
@@ -185,5 +187,4 @@ Function CreateEmitter.Emitters(x#, y#, z#, emittertype%)
 		
 End Function
 ;~IDEal Editor Parameters:
-;~F#4#10#4D#56
 ;~C#Blitz3D

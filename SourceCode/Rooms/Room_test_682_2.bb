@@ -82,7 +82,7 @@ Function UpdateEvent_test_682_2(e.Events)
 			EndIf
 			If e\EventState = -2 Then RemoveEvent(e)
 		EndIf
-	End If
+	EndIf
 	;[End Block]
 End Function
 

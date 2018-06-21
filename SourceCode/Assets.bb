@@ -6,6 +6,8 @@ Const ASSET_ANIM_MESH%  = 4
 
 Const ASSET_DECAY_TIMER% = 10 * 70
 
+Const BLEND_ADD% = 3
+
 Type AssetWrap
 	Field asType%
 	Field grabCount%
@@ -763,5 +765,5 @@ Function NullGame()
 	
 End Function
 ;~IDEal Editor Parameters:
-;~F#47#4B#4F#61#71#8D#BD
+;~F#49#4D#51#63#73#8F#BF
 ;~C#Blitz3D

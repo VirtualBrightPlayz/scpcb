@@ -24,10 +24,10 @@ Function UpdateEvent_tnnl_plain_3(e.Events)
 	;[Block]
 	If e\EventState = 0 Then
 		e\room\NPC[0]=CreateNPC(NPCtypeGuard, EntityX(e\room\Objects[0],True), EntityY(e\room\Objects[0],True)+0.5, EntityZ(e\room\Objects[0],True))
-		PointEntity e\room\NPC[0]\Collider, e\room\obj
-		RotateEntity e\room\NPC[0]\Collider, 0, EntityYaw(e\room\NPC[0]\Collider)+Rnd(-20,20),0, True
+		PointEntity e\room\NPC[0]\collider, e\room\obj
+		RotateEntity e\room\NPC[0]\collider, 0, EntityYaw(e\room\NPC[0]\collider)+Rnd(-20,20),0, True
 		SetNPCFrame (e\room\NPC[0], 906)
-		e\room\NPC[0]\State = 8
+		e\room\NPC[0]\state = 8
 		
 		e\EventState = 1
 		RemoveEvent(e)

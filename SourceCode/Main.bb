@@ -646,7 +646,7 @@ Function UpdateGame()
 			;If mainPlayer\blurTimer > 0.0 Then
 			;	mainPlayer\blurTimer = Max(Min(0.95, mainPlayer\blurTimer / 1000.0), mainPlayer\blurTimer)
 			;	mainPlayer\blurTimer = Max(mainPlayer\blurTimer - timing\tickDuration, 0.0)
-			;End If
+			;EndIf
 			
 			;[Block]
 			
@@ -661,7 +661,7 @@ Function UpdateGame()
 							mainPlayer\heartbeatIntensity = Max(70 + Abs(mainPlayer\sanity895+200)/6.0,mainPlayer\heartbeatIntensity)
 						EndIf
 					EndIf
-				End If
+				EndIf
 				
 				;TODO: fix
 	;			If EyeStuck > 0 Then 
@@ -705,7 +705,7 @@ Function UpdateGame()
 					;If EyeIrritation > 0 Then mainPlayer\blinkTimer=BlinkTimer-Min(EyeIrritation / 100.0 + 1.0, 4.0) * timing\tickDuration
 					
 					darkA = Max(darkA, 0.0)
-				End If
+				EndIf
 				
 				;TODO: fix
 				;EyeIrritation = Max(0, EyeIrritation - timing\tickDuration)
@@ -751,8 +751,8 @@ Function UpdateGame()
 				EndIf
 				
 				If mainPlayer\selectedItem <> Null Then
-					If mainPlayer\selectedItem\itemtemplate\tempname = "navigator" Or mainPlayer\selectedItem\itemtemplate\tempname = "nav" Then darkA = Max(darkA, 0.5)
-				End If
+					If mainPlayer\selectedItem\itemtemplate\tempName = "navigator" Or mainPlayer\selectedItem\itemtemplate\tempName = "nav" Then darkA = Max(darkA, 0.5)
+				EndIf
 				If SelectedScreen <> Null Then darkA = Max(darkA, 0.5)
 				
 				EntityAlpha(mainPlayer\overlays[OVERLAY_BLACK], darkA)	
@@ -765,7 +765,7 @@ Function UpdateGame()
 			Else
 				HideEntity mainPlayer\overlays[OVERLAY_WHITE]
 				;EntityAlpha(Light, mainPlayer\lightFlash)
-			End If
+			EndIf
 			
 			EntityColor mainPlayer\overlays[OVERLAY_WHITE],255,255,255
 			
@@ -803,7 +803,7 @@ Function UpdateGame()
 					Msg = "Quick saving is disabled."
 					MsgTimer = 70 * 4
 				EndIf
-			Else If SelectedDifficulty\saveType = SAVEONSCREENS And (SelectedScreen<>Null Or SelectedMonitor<>Null) Then
+			ElseIf SelectedDifficulty\saveType = SAVEONSCREENS And (SelectedScreen<>Null Or SelectedMonitor<>Null) Then
 				If (Msg<>"Game progress saved." And Msg<>"You cannot save in this location."And Msg<>"You cannot save at this moment.") Or MsgTimer<=0 Then
 					Msg = "Press "+KeyName[keyBinds\save]+" to save."
 					MsgTimer = 70*4
@@ -839,7 +839,7 @@ Function UpdateGame()
 				Local temp% = False ;TODO: change this variable's name because it's dumb as hell
 				If CurrGameState<>GAMESTATE_INVENTORY Then
 					If mainPlayer\selectedItem <> Null Then
-						If mainPlayer\selectedItem\itemtemplate\tempname = "paper" Or mainPlayer\SelectedItem\itemtemplate\tempname = "oldpaper" Then
+						If mainPlayer\selectedItem\itemtemplate\tempName = "paper" Or mainPlayer\SelectedItem\itemtemplate\tempName = "oldpaper" Then
 							temp% = True
 						EndIf
 					EndIf
@@ -857,8 +857,8 @@ Function UpdateGame()
 					Text((userOptions\screenWidth / 2), (userOptions\screenHeight * 0.94), Msg, True, False);, Min(MsgTimer / 2, 255)/255.0)
 				EndIf
 				MsgTimer=MsgTimer-timing\tickDuration 
-			End If
-		End If
+			EndIf
+		EndIf
 	Wend
 	
 	If CurrGameState=GAMESTATE_LAUNCHER Then
@@ -1014,7 +1014,7 @@ End Function
 ;					
 ;					Local docamount=0, docsfound=0
 ;					For itt.ItemTemplates = Each ItemTemplates
-;						If itt\tempname = "paper" Then
+;						If itt\tempName = "paper" Then
 ;							docamount=docamount+1
 ;							docsfound=docsfound+itt\found
 ;						EndIf
@@ -1285,7 +1285,7 @@ Function DrawGUI()
 			Rect(x + 4, y + 4, 64 - 8, 64 - 8)
 			DrawImage(uiAssets\arrow[i], x + 21, y + 21)
 			DrawArrowIcon(i) = False
-		End If
+		EndIf
 	Next
 	
 	If (CurrGameState = GAMESTATE_SCP294) Then
@@ -1310,7 +1310,7 @@ Function DrawGUI()
 		;If EyeIrritation > 0 Then
 		;	Color 200, 0, 0
 		;	Rect(x - 50 - 3, y - 3, 30 + 6, 30 + 6)
-		;End If
+		;EndIf
 		
 		Color 255, 255, 255
 		Rect(x - 50 - 1, y - 1, 30 + 2, 30 + 2, False)
@@ -1372,12 +1372,12 @@ Function DrawGUI()
 				If npc\NPCtype = NPCtype096 Then
 					Text x - 50, 510, "SCP - 096 Position: (" + f2s(EntityX(npc\obj), 3) + ", " + f2s(EntityY(npc\obj), 3) + ", " + f2s(EntityZ(npc\obj), 3) + ")"
 					Text x - 50, 530, "SCP - 096 Idle: " + npc\Idle
-					Text x - 50, 550, "SCP - 096 State: " + npc\State
+					Text x - 50, 550, "SCP - 096 State: " + npc\state
 					Text x - 50, 570, "SCP - 096 Speed: " + f2s(npc\currspeed, 5)
 				EndIf
 				If npc\NPCtype = NPCtypeMTF Then
 					Text x - 50, 600 + 60 * offset, "MTF " + offset + " Position: (" + f2s(EntityX(npc\obj), 3) + ", " + f2s(EntityY(npc\obj), 3) + ", " + f2s(EntityZ(npc\obj), 3) + ")"
-					Text x - 50, 640 + 60 * offset, "MTF " + offset + " State: " + npc\State
+					Text x - 50, 640 + 60 * offset, "MTF " + offset + " State: " + npc\state
 					Text x - 50, 620 + 60 * offset, "MTF " + offset + " LastSeen: " + npc\lastseen					
 					offset = offset + 1
 				EndIf
@@ -1450,7 +1450,7 @@ Function DrawPauseMenu()
 		
 		If mainPlayer\dead Then
 			titleText = "YOU DIED"
-		End If
+		EndIf
 		SetFont uiAssets\font[1]
 		Text(x, y-(122-45)*MenuScale, titleText,False,True)
 		
@@ -1563,7 +1563,7 @@ Function UpdatePauseMenu()
 									If Abs(EntityY(mainPlayer\collider) - EntityY(r\obj)) < 1.5 Then mainPlayer\currRoom = r
 									;MapFound(Floor(EntityX(r\obj) / 8.0), Floor(EntityZ(r\obj) / 8.0)) = 1
 								EndIf
-							End If
+							EndIf
 						Next
 						
 						DrawLoading(100)
@@ -1615,7 +1615,7 @@ Function UpdatePauseMenu()
 								If Abs(EntityY(mainPlayer\collider) - EntityY(r\obj)) < 1.5 Then mainPlayer\currRoom = r
 								;MapFound(Floor(EntityX(r\obj) / 8.0), Floor(EntityZ(r\obj) / 8.0)) = 1
 							EndIf
-						End If
+						EndIf
 					Next
 					
 					DrawLoading(100)
@@ -1772,7 +1772,7 @@ Function UpdateInfect()
 					DeathMSG = DeathMSG + "SCP-008 infection was confirmed, after which the body was incinerated."
 					
 					Kill(mainPlayer)
-					de.Decals = CreateDecal(3, EntityX(mainPlayer\currRoom\NPC[0]\Collider), 544*RoomScale + 0.01, EntityZ(mainPlayer\currRoom\NPC[0]\Collider),90,Rnd(360),0)
+					de.Decals = CreateDecal(3, EntityX(mainPlayer\currRoom\NPC[0]\collider), 544*RoomScale + 0.01, EntityZ(mainPlayer\currRoom\NPC[0]\collider),90,Rnd(360),0)
 					de\Size = 0.8
 					ScaleSprite(de\obj, de\Size,de\Size)
 				ElseIf mainPlayer\overlays[OVERLAY_008] > 96 Then
@@ -1783,16 +1783,16 @@ Function UpdateInfect()
 				EndIf
 				
 				;TODO: this could break
-				If mainPlayer\currRoom\NPC[0]\State2=0 Then
+				If mainPlayer\currRoom\NPC[0]\state2=0 Then
 					Animate2(mainPlayer\currRoom\NPC[0]\obj, AnimTime(mainPlayer\currRoom\NPC[0]\obj), 13, 19, 0.3,False)
-					If AnimTime(mainPlayer\currRoom\NPC[0]\obj) => 19 Then mainPlayer\currRoom\NPC[0]\State2=1
+					If AnimTime(mainPlayer\currRoom\NPC[0]\obj) => 19 Then mainPlayer\currRoom\NPC[0]\state2=1
 				Else
 					Animate2(mainPlayer\currRoom\NPC[0]\obj, AnimTime(mainPlayer\currRoom\NPC[0]\obj), 19, 13, -0.3)
-					If AnimTime(mainPlayer\currRoom\NPC[0]\obj) =< 13 Then mainPlayer\currRoom\NPC[0]\State2=0
+					If AnimTime(mainPlayer\currRoom\NPC[0]\obj) =< 13 Then mainPlayer\currRoom\NPC[0]\state2=0
 				EndIf
 				
 				If Rand(50)=1 Then
-					p.Particles = CreateParticle(EntityX(mainPlayer\currRoom\NPC[0]\Collider),EntityY(mainPlayer\currRoom\NPC[0]\Collider),EntityZ(mainPlayer\currRoom\NPC[0]\Collider), 5, Rnd(0.05,0.1), 0.15, 200)
+					p.Particles = CreateParticle(EntityX(mainPlayer\currRoom\NPC[0]\collider),EntityY(mainPlayer\currRoom\NPC[0]\collider),EntityZ(mainPlayer\currRoom\NPC[0]\collider), 5, Rnd(0.05,0.1), 0.15, 200)
 					p\speed = 0.01
 					p\SizeChange = 0.01
 					p\A = 0.5
@@ -1800,7 +1800,7 @@ Function UpdateInfect()
 					RotateEntity p\pvt, Rnd(360),Rnd(360),0
 				EndIf
 				
-				PositionEntity mainPlayer\head, EntityX(mainPlayer\currRoom\NPC[0]\Collider,True), EntityY(mainPlayer\currRoom\NPC[0]\Collider,True)+0.65,EntityZ(mainPlayer\currRoom\NPC[0]\Collider,True),True
+				PositionEntity mainPlayer\head, EntityX(mainPlayer\currRoom\NPC[0]\collider,True), EntityY(mainPlayer\currRoom\NPC[0]\collider,True)+0.65,EntityZ(mainPlayer\currRoom\NPC[0]\collider,True),True
 				RotateEntity mainPlayer\head, (1.0+Sin(TimeInPosMilliSecs()/5.0))*15, mainPlayer\currRoom\angle-180, 0, True
 				MoveEntity mainPlayer\head, 0,0,0.4
 				TurnEntity mainPlayer\head, 80+(Sin(TimeInPosMilliSecs()/5.0))*30,(Sin(TimeInPosMilliSecs()/5.0))*40,0
@@ -1817,12 +1817,12 @@ End Function
 ;TODO: Move to their own file?
 Type Decals
 	Field obj%
-	Field SizeChange#, Size#, MaxSize#
-	Field AlphaChange#, Alpha#
+	Field sizeChange#, size#, maxSize#
+	Field alphaChange#, alpha#
 	Field blendmode%
 	Field fx%
-	Field ID%
-	Field Timer#
+	Field id%
+	Field timer#
 	
 	Field lifetime#
 	
@@ -1880,7 +1880,7 @@ Function UpdateDecals()
 						d\Timer = Rand(50, 100)
 					Else
 						d\Timer= d\Timer-timing\tickDuration
-					End If
+					EndIf
 				;Case 6
 				;	EntityBlend d\obj, 2
 			End Select
@@ -1889,12 +1889,12 @@ Function UpdateDecals()
 				d\SizeChange = 0
 				d\Size = d\MaxSize
 			EndIf
-		End If
+		EndIf
 		
 		If d\AlphaChange <> 0 Then
 			d\Alpha = Min(d\Alpha + timing\tickDuration * d\AlphaChange, 1.0)
 			EntityAlpha(d\obj, d\Alpha)
-		End If
+		EndIf
 		
 		If d\lifetime > 0 Then
 			d\lifetime=Max(d\lifetime-timing\tickDuration,5)
@@ -1903,7 +1903,7 @@ Function UpdateDecals()
 		If d\Size <= 0 Or d\Alpha <= 0 Or d\lifetime=5.0  Then
 			FreeEntity(d\obj)
 			Delete d
-		End If
+		EndIf
 	Next
 End Function
 
@@ -1918,7 +1918,7 @@ Function UpdateNVG()
 	Local wornItem.Items = mainPlayer\wornItems[WORNITEM_SLOT_HEAD]
 	
 	If wornItem<>Null Then
-		If wornItem\itemtemplate\tempname <> "nvgoggles" And wornItem\itemtemplate\tempname <> "supernv" Then
+		If wornItem\itemtemplate\tempName <> "nvgoggles" And wornItem\itemtemplate\tempName <> "supernv" Then
 			wornItem = Null
 		EndIf
 	EndIf
@@ -1952,14 +1952,14 @@ Function RenderWorld2()
 	Local wornItem.Items = mainPlayer\wornItems[WORNITEM_SLOT_HEAD]
 	
     If wornItem<>Null Then
-		If wornItem\itemtemplate\tempname <> "nvgoggles" And wornItem\itemtemplate\tempname <> "supernv" Then
+		If wornItem\itemtemplate\tempName <> "nvgoggles" And wornItem\itemtemplate\tempName <> "supernv" Then
 			wornItem = Null
 		EndIf
 	EndIf
 	
 	If wornItem<>Null Then
 		Local decayMultiplier# = 1.0
-		If wornItem\itemTemplate\tempname = "supernv" Then decayMultiplier = 2.0
+		If wornItem\itemTemplate\tempName = "supernv" Then decayMultiplier = 2.0
 		
 		power = Int(wornItem\state)
 		If wornItem\state <= 0.0 Then ;this nvg can't be used
@@ -1989,9 +1989,9 @@ Function RenderWorld2()
 			
 			;If NVTimer<=0.0 Then
 			For np.NPCs = Each NPCs
-				np\NVX = EntityX(np\Collider,True)
-				np\NVY = EntityY(np\Collider,True)
-				np\NVZ = EntityZ(np\Collider,True)
+				np\NVX = EntityX(np\collider,True)
+				np\NVY = EntityY(np\collider,True)
+				np\NVZ = EntityZ(np\collider,True)
 			Next
 			;IsNVGBlinking% = True
 			;	ShowEntity NVBlink%
@@ -2024,7 +2024,7 @@ Function RenderWorld2()
 						xvalue# = 0.0
 						If yawvalue > 90 And yawvalue <= 180 Then
 							xvalue# = Sin(90)/90*yawvalue
-						Else If yawvalue > 180 And yawvalue < 270 Then
+						ElseIf yawvalue > 180 And yawvalue < 270 Then
 							xvalue# = Sin(270)/yawvalue*270
 						Else
 							xvalue = Sin(yawvalue)
@@ -2033,7 +2033,7 @@ Function RenderWorld2()
 						yvalue# = 0.0
 						If pitchvalue > 90 And pitchvalue <= 180 Then
 							yvalue# = Sin(90)/90*pitchvalue
-						Else If pitchvalue > 180 And pitchvalue < 270 Then
+						ElseIf pitchvalue > 180 And pitchvalue < 270 Then
 							yvalue# = Sin(270)/pitchvalue*270
 						Else
 							yvalue# = Sin(pitchvalue)

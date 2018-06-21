@@ -116,9 +116,9 @@ Function UpdateEventCoffin(e.Events)
 				de.Decals = CreateDecal(0, EntityX(e\room\Objects[1],True), -1531.0*RoomScale, EntityZ(e\room\Objects[1],True), 90, Rand(360), 0)
 				de\Size = 0.05 : de\SizeChange = 0.001 : EntityAlpha(de\obj, 0.8) : UpdateDecals()
 				
-				If Curr106\State > 0 Then
-					PositionEntity Curr106\Collider, EntityX(e\room\Objects[1],True), -10240*RoomScale, EntityZ(e\room\Objects[1],True)
-					Curr106\State = -0.1
+				If Curr106\state > 0 Then
+					PositionEntity Curr106\collider, EntityX(e\room\Objects[1],True), -10240*RoomScale, EntityZ(e\room\Objects[1],True)
+					Curr106\state = -0.1
 					ShowEntity Curr106\obj
 					e\EventState2 = 1
 				EndIf
@@ -130,7 +130,7 @@ Function UpdateEventCoffin(e.Events)
 			Local hasBatteryFor895% = 0
 			For i% = 0 To mainPlayer\inventory\size - 1
 				If (mainPlayer\inventory\items[i] <> Null) Then
-					If (mainPlayer\inventory\items[i]\itemtemplate\tempname = "nvgoggles" Or mainPlayer\inventory\items[i]\itemtemplate\tempname = "supernv") And IsPlayerWearingItem(mainPlayer,mainPlayer\inventory\items[i]) Then
+					If (mainPlayer\inventory\items[i]\itemtemplate\tempName = "nvgoggles" Or mainPlayer\inventory\items[i]\itemtemplate\tempName = "supernv") And IsPlayerWearingItem(mainPlayer,mainPlayer\inventory\items[i]) Then
 						If mainPlayer\inventory\items[i]\state > 0.0 Then
 							hasBatteryFor895 = 1
 							Exit

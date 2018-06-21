@@ -147,7 +147,7 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 			
 			For i = 2 To 4
 				e\room\NPC[i] = CreateNPC(NPCtypeApache, e\room\x, 100.0, e\room\z)
-				e\room\NPC[i]\State = (Not Contained106)
+				e\room\NPC[i]\state = (Not Contained106)
 			Next
 			
 			;Music(5) = LoadSound("SFX/Music/GateA.ogg") ;TODO: fix
@@ -163,34 +163,34 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 			DrawLoading(60)
 			
 			For n.NPCs = Each NPCs
-				If n\NPCtype = NPCtypeMTF Then Delete n
+				If n\npcType = NPCtypeMTF Then Delete n
 			Next
 			
 			For i = 0 To 1
 				e\room\NPC[i] = CreateNPC(NPCtypeGuard, EntityX(e\room\Objects[i+5],True),EntityY(e\room\Objects[i+5],True),EntityZ(e\room\Objects[i+5],True))
-				e\room\NPC[i]\State = 0
-				PointEntity e\room\NPC[i]\Collider, e\room\Objects[3]
+				e\room\NPC[i]\state = 0
+				PointEntity e\room\NPC[i]\collider, e\room\Objects[3]
 			Next
 			
 			For i = 7 To 8
 				e\room\NPC[i] = CreateNPC(NPCtypeMTF, EntityX(e\room\Objects[i],True)+0.8,EntityY(e\room\Objects[i],True),EntityZ(e\room\Objects[i],True)+0.8)
-				e\room\NPC[i]\State = 5
+				e\room\NPC[i]\state = 5
 				e\room\NPC[i]\PrevState = 1
-				PointEntity e\room\NPC[i]\Collider, e\room\Objects[3]
+				PointEntity e\room\NPC[i]\collider, e\room\Objects[3]
 			Next	
 			
 			For i = 5 To 6
 				e\room\NPC[i] = CreateNPC(NPCtypeMTF, EntityX(e\room\Objects[i+2],True),EntityY(e\room\Objects[i+2],True),EntityZ(e\room\Objects[i+2],True))
-				e\room\NPC[i]\State = 5
+				e\room\NPC[i]\state = 5
 				e\room\NPC[i]\PrevState = 1
-				PointEntity e\room\NPC[i]\Collider, e\room\Objects[3]
+				PointEntity e\room\NPC[i]\collider, e\room\Objects[3]
 			Next		
 			
 			If Contained106 Then
 				e\room\RoomDoors[2]\locked = True
 				
-				PositionEntity e\room\NPC[5]\Collider, EntityX(e\room\Objects[15],True)+(i-6)*0.2,EntityY(e\room\Objects[15],True),EntityZ(e\room\Objects[15],True)+(i-6)*0.2, True
-				ResetEntity e\room\NPC[5]\Collider
+				PositionEntity e\room\NPC[5]\collider, EntityX(e\room\Objects[15],True)+(i-6)*0.2,EntityY(e\room\Objects[15],True),EntityZ(e\room\Objects[15],True)+(i-6)*0.2, True
+				ResetEntity e\room\NPC[5]\collider
 				
 			EndIf
 			
@@ -212,10 +212,10 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 			
 			For temp = 0 To 20
 				For i = 0 To 1
-					TranslateEntity e\room\NPC[i]\Collider, 0, -0.04, 0
+					TranslateEntity e\room\NPC[i]\collider, 0, -0.04, 0
 				Next							
 				For i = 5 To 8
-					TranslateEntity e\room\NPC[i]\Collider, 0, -0.04, 0
+					TranslateEntity e\room\NPC[i]\collider, 0, -0.04, 0
 				Next
 			Next
 			
@@ -243,9 +243,9 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 			
 			For i = 2 To 4
 				If e\room\NPC[i]<>Null Then 
-					If e\room\NPC[i]\State < 2 Then 
-						PositionEntity(e\room\NPC[i]\Collider, EntityX(e\room\Objects[3],True)+Cos(e\EventState/10+(120*i))*6000.0*RoomScale,15000*RoomScale,EntityZ(e\room\Objects[3],True)+Sin(e\EventState/10+(120*i))*6000.0*RoomScale)
-						RotateEntity e\room\NPC[i]\Collider,7.0,(e\EventState/10+(120*i)),20.0
+					If e\room\NPC[i]\state < 2 Then 
+						PositionEntity(e\room\NPC[i]\collider, EntityX(e\room\Objects[3],True)+Cos(e\EventState/10+(120*i))*6000.0*RoomScale,15000*RoomScale,EntityZ(e\room\Objects[3],True)+Sin(e\EventState/10+(120*i))*6000.0*RoomScale)
+						RotateEntity e\room\NPC[i]\collider,7.0,(e\EventState/10+(120*i)),20.0
 					EndIf
 				EndIf
 			Next
@@ -255,35 +255,35 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 			If e\EventState=>350 Then
 				If Contained106=False Then
 					If e\EventState-timing\tickDuration < 350 Then
-						Curr106\State = -0.1
+						Curr106\state = -0.1
 						;Curr106\Idle = True
 						SetNPCFrame(Curr106, 110.0)
-						PositionEntity (Curr106\Collider, EntityX(e\room\Objects[3],True),EntityY(mainPlayer\collider)-50.0,EntityZ(e\room\Objects[3],True),True)
+						PositionEntity (Curr106\collider, EntityX(e\room\Objects[3],True),EntityY(mainPlayer\collider)-50.0,EntityZ(e\room\Objects[3],True),True)
 						PositionEntity (Curr106\obj, EntityX(e\room\Objects[3],True),EntityY(mainPlayer\collider)-50.0,EntityZ(e\room\Objects[3],True),True)
 						de.Decals = CreateDecal(0, EntityX(e\room\Objects[3],True),EntityY(e\room\Objects[3],True)+0.01,EntityZ(e\room\Objects[3],True), 90, Rand(360), 0)
 						de\Size = 0.05 : de\SizeChange = 0.001 : EntityAlpha(de\obj, 0.8) : UpdateDecals() 
 						;TODO: fix audio
 						;PlaySound2 (HorrorSFX(5))
 						;PlaySound2 DecaySFX(0)
-					ElseIf Curr106\State < 0 Then
+					ElseIf Curr106\state < 0 Then
 						HideEntity Curr106\obj2
 						Curr106\PathTimer = 70*100
 						
-						If Curr106\State3 = 0 Then
+						If Curr106\state3 = 0 Then
 							If Curr106\PathStatus <> 1 Then
-								PositionEntity Curr106\Collider,EntityX(e\room\Objects[3],True),EntityY(Curr106\Collider),EntityZ(e\room\Objects[3],True),True
-								If Curr106\State =< -10 Then
-									dist# = EntityY(Curr106\Collider)
-									PositionEntity Curr106\Collider,EntityX(Curr106\Collider),EntityY(e\room\Objects[3],True),EntityZ(Curr106\Collider),True
+								PositionEntity Curr106\collider,EntityX(e\room\Objects[3],True),EntityY(Curr106\collider),EntityZ(e\room\Objects[3],True),True
+								If Curr106\state =< -10 Then
+									dist# = EntityY(Curr106\collider)
+									PositionEntity Curr106\collider,EntityX(Curr106\collider),EntityY(e\room\Objects[3],True),EntityZ(Curr106\collider),True
 									;Curr106\PathStatus = FindPath(Curr106, EntityX(e\room\Objects[4],True),EntityY(e\room\Objects[4],True),EntityZ(e\room\Objects[4],True))
-									Curr106\PathStatus = FindPath(Curr106,EntityX(e\room\NPC[5]\Collider,True),EntityY(e\room\NPC[5]\Collider,True),EntityZ(e\room\NPC[5]\Collider,True))
+									Curr106\PathStatus = FindPath(Curr106,EntityX(e\room\NPC[5]\collider,True),EntityY(e\room\NPC[5]\collider,True),EntityZ(e\room\NPC[5]\collider,True))
 									Curr106\PathTimer = 70*200
-									PositionEntity Curr106\Collider,EntityX(Curr106\Collider),dist,EntityZ(Curr106\Collider),True
-									ResetEntity Curr106\Collider
+									PositionEntity Curr106\collider,EntityX(Curr106\collider),dist,EntityZ(Curr106\collider),True
+									ResetEntity Curr106\collider
 									Curr106\PathLocation = 1
 									;Curr106\Idle = False
 								;Else	
-									;PositionEntity (Curr106\Collider, EntityX(e\room\Objects[3],True),EntityY(e\room\Objects[3],True),EntityZ(e\room\Objects[3],True),True)
+									;PositionEntity (Curr106\collider, EntityX(e\room\Objects[3],True),EntityY(e\room\Objects[3],True),EntityZ(e\room\Objects[3],True),True)
 									;Curr106\Idle = True
 									;Animate2(Curr106\obj, AnimTime(Curr106\obj), 110, 259, 0.15, False)
 									;If AnimTime(Curr106\obj)=>259 Then Curr106\Idle = False													
@@ -292,14 +292,14 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 							Else
 								Curr106\PathTimer = 70*200
 								For i = 2 To 4 ;helicopters start attacking 106
-									e\room\NPC[i]\State = 3 
+									e\room\NPC[i]\state = 3 
 									e\room\NPC[i]\EnemyX = EntityX(Curr106\obj,True)
 									e\room\NPC[i]\EnemyY = EntityY(Curr106\obj,True)+5.0
 									e\room\NPC[i]\EnemyZ = EntityZ(Curr106\obj,True)
 								Next
 								
 								For i = 5 To 8
-									e\room\NPC[i]\State = 5
+									e\room\NPC[i]\state = 5
 									e\room\NPC[i]\EnemyX = EntityX(Curr106\obj,True)
 									e\room\NPC[i]\EnemyY = EntityY(Curr106\obj,True)+0.4
 									e\room\NPC[i]\EnemyZ = EntityZ(Curr106\obj,True)											
@@ -307,7 +307,7 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 								
 								pvt=CreatePivot()
 								PositionEntity pvt, EntityX(e\room\Objects[10],True),EntityY(e\room\Objects[10],True),EntityZ(e\room\Objects[10],True)
-								PointEntity pvt, Curr106\Collider
+								PointEntity pvt, Curr106\collider
 								RotateEntity(e\room\Objects[9],0,CurveAngle(EntityYaw(pvt),EntityYaw(e\room\Objects[9],True),150.0),0,True)
 								RotateEntity(e\room\Objects[10],CurveAngle(EntityPitch(pvt),EntityPitch(e\room\Objects[10],True),200.0),EntityYaw(e\room\Objects[9],True),0, True)
 								
@@ -315,14 +315,14 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 								
 								If timing\tickDuration > 0 Then ;decals under 106
 									If ((e\EventState-timing\tickDuration) Mod 100.0)=<50.0 And (e\EventState Mod 100.0)>50.0 Then
-										de.Decals = CreateDecal(0, EntityX(Curr106\Collider,True),EntityY(e\room\Objects[3],True)+0.01,EntityZ(Curr106\Collider,True), 90, Rand(360), 0)
+										de.Decals = CreateDecal(0, EntityX(Curr106\collider,True),EntityY(e\room\Objects[3],True)+0.01,EntityZ(Curr106\collider,True), 90, Rand(360), 0)
 										de\Size = 0.2 : de\SizeChange = 0.004 : de\timer = 90000 : EntityAlpha(de\obj, 0.8) : UpdateDecals() 											
 									EndIf
 								EndIf
 							EndIf
 						EndIf
 						
-						dist# = Distance(EntityX(Curr106\Collider),EntityZ(Curr106\Collider),EntityX(e\room\Objects[4],True),EntityZ(e\room\Objects[4],True))
+						dist# = Distance(EntityX(Curr106\collider),EntityZ(Curr106\collider),EntityX(e\room\Objects[4],True),EntityZ(e\room\Objects[4],True))
 						
 						Curr106\CurrSpeed = CurveValue(0, Curr106\CurrSpeed, Max(5*dist,2.0))
 						If dist < 15.0 Then
@@ -333,32 +333,32 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 							If dist<0.4 Then
 								Curr106\PathStatus = 0
 								Curr106\PathTimer = 70*200
-								If Curr106\State3=0 Then 
+								If Curr106\state3=0 Then 
 									SetNPCFrame(Curr106, 259.0)
 									If e\sounds[0] <> 0 Then FreeSound e\sounds[0] : e\sounds[0] = 0
 									LoadEventSound(e,"SFX/Ending/GateA/106Retreat.ogg")
-									e\soundChannels[0] = PlayRangedSound(e\sounds[0], mainPlayer\cam, Curr106\Collider, 35.0)
+									e\soundChannels[0] = PlayRangedSound(e\sounds[0], mainPlayer\cam, Curr106\collider, 35.0)
 								EndIf
 								
 								If timing\tickDuration > 0 Then ;106:n alle ilmestyy decaleita
 									If ((e\EventState-timing\tickDuration) Mod 160.0)=<50.0 And (e\EventState Mod 160.0)>50.0 Then
-										de.Decals = CreateDecal(0, EntityX(Curr106\Collider,True),EntityY(e\room\Objects[3],True)+0.01,EntityZ(Curr106\Collider,True), 90, Rand(360), 0)
+										de.Decals = CreateDecal(0, EntityX(Curr106\collider,True),EntityY(e\room\Objects[3],True)+0.01,EntityZ(Curr106\collider,True), 90, Rand(360), 0)
 										de\Size = 0.05 : de\SizeChange = 0.004 : de\timer = 90000 : EntityAlpha(de\obj, 0.8) : UpdateDecals() 											
 									EndIf
 								EndIf
 								
 								AnimateNPC(Curr106, 259, 110, -0.1, False)
 								
-								Curr106\State3 = Curr106\State3+timing\tickDuration
-								PositionEntity(Curr106\Collider, EntityX(Curr106\Collider,True),CurveValue(EntityY(e\room\Objects[3],True)-(Curr106\State3/4500.0),EntityY(Curr106\Collider,True),100.0),EntityZ(Curr106\Collider,True))
-								If Curr106\State3>700.0 Then
-									Curr106\State = 100000
+								Curr106\state3 = Curr106\state3+timing\tickDuration
+								PositionEntity(Curr106\collider, EntityX(Curr106\collider,True),CurveValue(EntityY(e\room\Objects[3],True)-(Curr106\state3/4500.0),EntityY(Curr106\collider,True),100.0),EntityZ(Curr106\collider,True))
+								If Curr106\state3>700.0 Then
+									Curr106\state = 100000
 									e\EventState2 = 0
 									For i = 5 To 8
-										e\room\NPC[i]\State = 1
+										e\room\NPC[i]\state = 1
 									Next
 									For i = 2 To 4 ;helicopters attack the player
-										e\room\NPC[i]\State = 2
+										e\room\NPC[i]\state = 2
 									Next
 									HideEntity Curr106\obj
 								EndIf
@@ -374,7 +374,7 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 												p.Particles = CreateParticle(EntityX(Curr106\obj,True),EntityY(Curr106\obj,True)+0.4, EntityZ(Curr106\obj,True), 4, 7.0, 0, (6.7*70))
 												p\speed = 0.0
 												p\A = 1.0
-												EntityParent p\pvt, Curr106\Collider, True
+												EntityParent p\pvt, Curr106\collider, True
 												
 												p.Particles = CreateParticle(EntityX(e\room\Objects[10],True),EntityY(e\room\Objects[10],True),EntityZ(e\room\Objects[10],True), 4, 2.0, 0, (6.7*70))
 												RotateEntity p\pvt, EntityPitch(e\room\Objects[10],True),EntityYaw(e\room\Objects[10],True),0,True
@@ -406,21 +406,21 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 					If e\EventState3 = 0.0 Then 
 						If Abs(EntityY(mainPlayer\collider)-EntityY(e\room\Objects[11],True))<1.0 Then
 							If Distance(EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider),EntityX(e\room\Objects[11],True),EntityZ(e\room\Objects[11],True)) < 12.0 Then
-								Curr106\State = 100000
+								Curr106\state = 100000
 								HideEntity Curr106\obj
 								
 								;MTF spawns at the tunnel entrance
 								For i = 5 To 8
-									e\room\NPC[i]\State = 3
-									PositionEntity e\room\NPC[i]\Collider, EntityX(e\room\Objects[15],True)+(i-6)*0.3,EntityY(e\room\Objects[15],True),EntityZ(e\room\Objects[15],True)+(i-6)*0.3, True
-									ResetEntity e\room\NPC[i]\Collider
+									e\room\NPC[i]\state = 3
+									PositionEntity e\room\NPC[i]\collider, EntityX(e\room\Objects[15],True)+(i-6)*0.3,EntityY(e\room\Objects[15],True),EntityZ(e\room\Objects[15],True)+(i-6)*0.3, True
+									ResetEntity e\room\NPC[i]\collider
 									
 									e\room\NPC[i]\PathStatus = FindPath(e\room\NPC[i], EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider))
 									e\room\NPC[i]\PathTimer = 70*2
 									e\room\NPC[i]\LastSeen = 70*100
 								Next
 								e\room\NPC[5]\sounds[0] = LoadSound("SFX/Character/MTF/ThereHeIs1.ogg")
-								PlayRangedSound(e\room\NPC[5]\sounds[0], mainPlayer\cam, e\room\NPC[5]\Collider, 25.0)
+								PlayRangedSound(e\room\NPC[5]\sounds[0], mainPlayer\cam, e\room\NPC[5]\collider, 25.0)
 								
 								e\room\RoomDoors[2]\open = True
 								
@@ -435,7 +435,7 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 					ElseIf e\EventState3 = 1.0 Then
 						
 						For i = 5 To 8
-							If EntityDistance(e\room\NPC[i]\Collider,mainPlayer\collider)> 4.0 Then e\room\NPC[i]\State = 3
+							If EntityDistance(e\room\NPC[i]\collider,mainPlayer\collider)> 4.0 Then e\room\NPC[i]\state = 3
 						Next
 						
 						If Abs(EntityY(mainPlayer\collider)-EntityY(e\room\Objects[11],True))<1.0 Then
@@ -495,8 +495,8 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 							TurnEntity e\room\Objects[14], 0, Sin(e\EventState3-50)*0.85, 0, True
 							
 							For i = 5 To 8
-								PositionEntity (e\room\NPC[i]\Collider, CurveValue(EntityX(e\room\RoomDoors[2]\frameobj,True), EntityX(e\room\NPC[i]\Collider,True),50.0),EntityY(e\room\NPC[i]\Collider,True),CurveValue(EntityZ(e\room\RoomDoors[2]\frameobj,True), EntityZ(e\room\NPC[i]\Collider,True),50.0),True)
-								ResetEntity e\room\NPC[i]\Collider
+								PositionEntity (e\room\NPC[i]\collider, CurveValue(EntityX(e\room\RoomDoors[2]\frameobj,True), EntityX(e\room\NPC[i]\collider,True),50.0),EntityY(e\room\NPC[i]\collider,True),CurveValue(EntityZ(e\room\RoomDoors[2]\frameobj,True), EntityZ(e\room\NPC[i]\collider,True),50.0),True)
+								ResetEntity e\room\NPC[i]\collider
 							Next
 						EndIf
 						
@@ -533,8 +533,8 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 				Else ;contained106 = true
 					
 					If e\EventState2 = 0 Then
-						;PositionEntity (e\room\NPC[5]\Collider, EntityX(e\room\obj,True)-3408*RoomScale, EntityY(e\room\obj,True)-796*RoomScale, EntityZ(e\room\obj,True)+4976, True)
-						;ResetEntity e\room\NPC[5]\Collider
+						;PositionEntity (e\room\NPC[5]\collider, EntityX(e\room\obj,True)-3408*RoomScale, EntityY(e\room\obj,True)-796*RoomScale, EntityZ(e\room\obj,True)+4976, True)
+						;ResetEntity e\room\NPC[5]\collider
 						e\EventState2 = 1
 						
 						For i = 5 To 8
@@ -579,7 +579,7 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 								Else
 									e\room\NPC[i]\lastSeen = 70*300
 									e\room\NPC[i]\Reload = 2000
-									e\room\NPC[i]\State3 = 70*145											
+									e\room\NPC[i]\state3 = 70*145											
 								EndIf
 							Next										
 						Else

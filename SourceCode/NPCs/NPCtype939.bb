@@ -1,7 +1,7 @@
 Function InitializeNPCtype939(n.NPCs)
     ;i = 53
     ;For n2.NPCs = Each NPCs
-    ;	If (n\NPCtype = n2\NPCtype) And (n<>n2) Then i=i+36
+    ;	If (n\npcType = n2\NPCtype) And (n<>n2) Then i=i+36
     ;Next
     ;n\NVName = "SCP-939-"+i
     Local amount939% = 0
@@ -63,7 +63,7 @@ Function UpdateNPCtype939(n.NPCs)
                     If n\frame=>296 Then n\state = 2
                     
                     ;Animate2(n\obj,AnimTime(n\obj),175,297,0.22,False)
-                    ;If AnimTime(n\obj)=297 Then n\State = 2
+                    ;If AnimTime(n\obj)=297 Then n\state = 2
                 EndIf
                 
                 n\lastSeen = 0
@@ -149,7 +149,7 @@ Function UpdateNPCtype939(n.NPCs)
                             DeathMSG=Chr(34)+"All four (4) escaped SCP-939 specimens have been captured and recontained successfully. "
                             DeathMSG=DeathMSG+"Three (3) of them made quite a mess at Storage Area 6. A cleaning team has been dispatched."+Chr(34)
                             Kill(mainPlayer)
-                            If (Not mainPlayer\godMode) Then n\State = 5
+                            If (Not mainPlayer\godMode) Then n\state = 5
                         EndIf								
                     Else
                         If n\LastSeen = 10*7 Then 
@@ -224,7 +224,7 @@ Function UpdateNPCtype939(n.NPCs)
                     ;SetAnimTime(n\obj, 175)	
                 EndIf
                 
-                n\State = 1
+                n\state = 1
                 
             EndIf
             
@@ -232,10 +232,10 @@ Function UpdateNPCtype939(n.NPCs)
             
         EndIf				
         
-        RotateEntity n\Collider, 0, EntityYaw(n\Collider), 0, True	
+        RotateEntity n\collider, 0, EntityYaw(n\collider), 0, True	
         
-        PositionEntity(n\obj, EntityX(n\Collider), EntityY(n\Collider)-0.28, EntityZ(n\Collider))
-        RotateEntity n\obj, EntityPitch(n\Collider)-90, EntityYaw(n\Collider), EntityRoll(n\Collider), True					
+        PositionEntity(n\obj, EntityX(n\collider), EntityY(n\collider)-0.28, EntityZ(n\collider))
+        RotateEntity n\obj, EntityPitch(n\collider)-90, EntityYaw(n\collider), EntityRoll(n\collider), True					
     EndIf
 End Function    
 ;~IDEal Editor Parameters:

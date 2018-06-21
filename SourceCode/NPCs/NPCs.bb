@@ -47,7 +47,7 @@ Type NPCs
 	Field collider%
 
 	Field npcType%
-	Field ID%
+	Field id%
 
 	Field polyData%
 
@@ -76,10 +76,10 @@ Type NPCs
 	Field texture$
 	
 	;TODO: Deprecate in favor of state.
-	Field Idle#
+	Field idle#
 	
 	;TODO: Deprecate in favor of timer.
-	Field Reload#
+	Field reload#
 
 	Field timer#
 	
@@ -93,9 +93,9 @@ Type NPCs
 	Field target.NPCs, targetID%
 
 	;TODO: Deprecate in favor of target.
-	Field EnemyX#
-	Field EnemyY#
-	Field EnemyZ#
+	Field enemyX#
+	Field enemyY#
+	Field enemyZ#
 	
 	Field targetX#
 	Field targetY#
@@ -123,18 +123,18 @@ Type NPCs
 	Field terminalVelocity# = 0.2
 	
 	;TODO: Move this to DataMTF
-	Field MTFVariant%
-	Field MTFLeader.NPCs
-	Field IsDead%
-	Field BlinkTimer# = 1.0
-	Field IgnorePlayer%
+	Field mtfVariant%
+	Field mtfLeader.NPCs
+	Field isDead%
+	Field blinkTimer# = 1.0
+	Field ignorePlayer%
 	
 	;TODO: Deprecate.
-	Field NPCNameInSection$
-	Field ManipulateBone%
-	Field BoneToManipulate$
-	Field BoneToManipulate2$
-	Field ManipulationType%
+	Field npcNameInSection$
+	Field manipulateBone%
+	Field boneToManipulate$
+	Field boneToManipulate2$
+	Field manipulationType%
 
 	Field boneX#
 	Field boneY#
@@ -145,12 +145,12 @@ Type NPCs
 	Field boneRoll#
 
 	;TODO: Burn this stuff in hell.
-	Field InFacility% = True
-	Field CanUseElevator% = False
-	Field CurrElevator.ElevatorObj
-	Field HP%
-	Field Model$
-	Field ModelScaleX#,ModelScaleY#,ModelScaleZ#
+	Field inFacility% = True
+	Field canUseElevator% = False
+	Field currElevator.ElevatorObj
+	Field hp%
+	Field model$
+	Field modelScaleX#,modelScaleY#,modelScaleZ#
 End Type
 
 Function CreateNPC.NPCs(NPCtype%, x#, y#, z#)
@@ -631,7 +631,7 @@ Function PlayMTFSound(sound%, n.NPCs)
 	
 	If mainPlayer\selectedItem <> Null Then
 		If mainPlayer\selectedItem\state2 = 3 And mainPlayer\selectedItem\state > 0 Then 
-			Select mainPlayer\selectedItem\itemtemplate\tempname 
+			Select mainPlayer\selectedItem\itemtemplate\tempName 
 				Case "radio","fineradio","18vradio"
 					If RadioCHN(3)<> 0 Then StopChannel RadioCHN(3)
 					RadioCHN(3) = PlaySound(sound)
@@ -1160,7 +1160,7 @@ Function AnimateNPC(n.NPCs, start#, quit#, speed#, loop=True)
 			
 			If newTime < quit Then 
 				newTime = start
-			Else If newTime > start Then
+			ElseIf newTime > start Then
 				newTime = quit
 			EndIf
 		Else

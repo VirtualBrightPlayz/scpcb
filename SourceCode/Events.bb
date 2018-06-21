@@ -1,10 +1,10 @@
 Const EVENT_SOUND_COUNT = 5
 Const EVENT_CHANNEL_COUNT = 2
 Type Events
-	Field EventName$
+	Field eventName$
 	Field room.Rooms
 	
-	Field EventState#, EventState2#, EventState3#
+	Field eventState#, eventState2#, eventState3#
 	Field loaded%
 	
 	Field img%
@@ -43,7 +43,7 @@ Function CreateEvent.Events(eventname$, roomname$, id%, prob# = 0.0)
 					e\EventName = eventname					
 					e\room = r
 					Return e
-				End If
+				EndIf
 			EndIf
 		Next
 	Else
@@ -58,7 +58,7 @@ Function CreateEvent.Events(eventname$, roomname$, id%, prob# = 0.0)
 					e.Events = New Events
 					e\EventName = eventname					
 					e\room = r
-				End If
+				EndIf
 			EndIf
 		Next		
 	EndIf

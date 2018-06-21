@@ -134,7 +134,7 @@ Function UpdateEventAlarm(e.Events)
 				MoveEntity(e\room\RoomDoors[1]\obj2, -Sin(e\room\RoomDoors[1]\openstate) / 180.0, 0, 0)
 			Wend
 			
-			If e\room\NPC[0] <> Null Then SetNPCFrame(e\room\NPC[0], 74) : e\room\NPC[0]\State = 8
+			If e\room\NPC[0] <> Null Then SetNPCFrame(e\room\NPC[0], 74) : e\room\NPC[0]\state = 8
 			
 			If e\room\NPC[1] = Null Then
 				e\room\NPC[1] = CreateNPC(NPCtypeD, 0,0,0)
@@ -143,49 +143,49 @@ Function UpdateEventAlarm(e.Events)
 				EntityTexture e\room\NPC[1]\obj, tex
 				FreeTexture tex
 			EndIf
-			PositionEntity e\room\NPC[1]\Collider, e\room\x, 0.5, e\room\z-1.0, True
-			ResetEntity e\room\NPC[1]\Collider
+			PositionEntity e\room\NPC[1]\collider, e\room\x, 0.5, e\room\z-1.0, True
+			ResetEntity e\room\NPC[1]\collider
 			SetNPCFrame(e\room\NPC[1], 210)
 			
 			If e\room\NPC[2] = Null Then
 				e\room\NPC[2] = CreateNPC(NPCtypeGuard, 0,0,0)
 			EndIf
-			PositionEntity e\room\NPC[2]\Collider, e\room\x-240*RoomScale, 0.5, e\room\z+528*RoomScale, True
-			ResetEntity e\room\NPC[2]\Collider
-			e\room\NPC[2]\State = 7
-			PointEntity e\room\NPC[2]\Collider,e\room\NPC[1]\Collider
+			PositionEntity e\room\NPC[2]\collider, e\room\x-240*RoomScale, 0.5, e\room\z+528*RoomScale, True
+			ResetEntity e\room\NPC[2]\collider
+			e\room\NPC[2]\state = 7
+			PointEntity e\room\NPC[2]\collider,e\room\NPC[1]\collider
 			
 			If e\room\NPC[0]=Null Then
 				e\room\NPC[3] = CreateNPC(NPCtypeGuard, EntityX(e\room\Objects[2], True), EntityY(e\room\Objects[2], True), EntityZ(e\room\Objects[2], True))
 				;e\room\NPC[3]\Angle = 180
-				RotateEntity e\room\NPC[3]\Collider,0,90,0
-				SetNPCFrame(e\room\NPC[3], 151) : e\room\NPC[3]\State = 8
-				MoveEntity e\room\NPC[3]\Collider,1,0,0
+				RotateEntity e\room\NPC[3]\collider,0,90,0
+				SetNPCFrame(e\room\NPC[3], 151) : e\room\NPC[3]\state = 8
+				MoveEntity e\room\NPC[3]\collider,1,0,0
 				
 				e\room\NPC[4] = CreateNPC(NPCtypeD, EntityX(e\room\Objects[3], True), 0.5, EntityZ(e\room\Objects[3], True))
-				;PointEntity(e\room\NPC[4]\Collider, e\room\Objects[7])
-				SetNPCFrame(e\room\NPC[4], 19) : e\room\NPC[4]\State = 3
-				RotateEntity e\room\NPC[4]\Collider,0,270,0
-				MoveEntity e\room\NPC[4]\Collider,0,0,2.65
+				;PointEntity(e\room\NPC[4]\collider, e\room\Objects[7])
+				SetNPCFrame(e\room\NPC[4], 19) : e\room\NPC[4]\state = 3
+				RotateEntity e\room\NPC[4]\collider,0,270,0
+				MoveEntity e\room\NPC[4]\collider,0,0,2.65
 				
 				e\room\NPC[5] = CreateNPC(NPCtypeD, EntityX(e\room\Objects[4], True), 0.5, EntityZ(e\room\Objects[4], True))
-				;PointEntity(e\room\NPC[5]\Collider, e\room\Objects[7])
-				SetNPCFrame(e\room\NPC[5], 19) : e\room\NPC[5]\State = 3
-				RotateEntity e\room\NPC[5]\Collider,0,270,0
+				;PointEntity(e\room\NPC[5]\collider, e\room\Objects[7])
+				SetNPCFrame(e\room\NPC[5], 19) : e\room\NPC[5]\state = 3
+				RotateEntity e\room\NPC[5]\collider,0,270,0
 				tex = LoadTexture("GFX/NPCs/classd/classd2.jpg")
 				e\room\NPC[5]\texture = "GFX/NPCs/classd/classd2.jpg"
 				EntityTexture e\room\NPC[5]\obj, tex
 				FreeTexture tex
-				MoveEntity e\room\NPC[5]\Collider,0.25,0,3.0
-				RotateEntity e\room\NPC[5]\Collider,0,0,0
+				MoveEntity e\room\NPC[5]\collider,0.25,0,3.0
+				RotateEntity e\room\NPC[5]\collider,0,0,0
 				
 				x# = EntityX(e\room\obj, True)+3712*RoomScale
 				y# = 384.0*RoomScale
 				z# = EntityZ(e\room\obj, True)+1312*RoomScale
 				
 				For i = 3 To 5
-					PositionEntity(e\room\NPC[i]\Collider, x + (EntityX(e\room\NPC[i]\Collider) - EntityX(e\room\obj)), y+EntityY(e\room\NPC[i]\Collider)+0.4, z + (EntityZ(e\room\NPC[i]\Collider) - EntityZ(e\room\obj)))
-					ResetEntity(e\room\NPC[i]\Collider)
+					PositionEntity(e\room\NPC[i]\collider, x + (EntityX(e\room\NPC[i]\collider) - EntityX(e\room\obj)), y+EntityY(e\room\NPC[i]\collider)+0.4, z + (EntityZ(e\room\NPC[i]\collider) - EntityZ(e\room\obj)))
+					ResetEntity(e\room\NPC[i]\collider)
 				Next
 			EndIf
 			
@@ -199,7 +199,7 @@ Function UpdateEventAlarm(e.Events)
 		
 		If (CurrTrigger = "173scene_timer") Then
 			e\EventState = e\EventState+timing\tickDuration
-		Else If (CurrTrigger = "173scene_activated") Then
+		ElseIf (CurrTrigger = "173scene_activated") Then
 			e\EventState = Max(e\EventState, 500)
 		EndIf
 		
@@ -212,16 +212,16 @@ Function UpdateEventAlarm(e.Events)
 				If e\EventState > 900 And e\room\RoomDoors[5]\open Then
 					If e\EventState - timing\tickDuration <= 900 Then 
 						e\room\NPC[1]\soundChannels[0] = LoadSound("SFX/Room/Intro/WhatThe.ogg")
-						e\room\NPC[1]\soundChannels[0] = PlayRangedSound(e\room\NPC[1]\soundChannels[0], mainPlayer\cam, e\room\NPC[1]\Collider)
+						e\room\NPC[1]\soundChannels[0] = PlayRangedSound(e\room\NPC[1]\soundChannels[0], mainPlayer\cam, e\room\NPC[1]\collider)
 					EndIf
-					e\room\NPC[1]\State = 3
+					e\room\NPC[1]\state = 3
 					e\room\NPC[1]\CurrSpeed = CurveValue(-0.008, e\room\NPC[1]\CurrSpeed, 5.0)
 					AnimateNPC(e\room\NPC[1], 260, 236, e\room\NPC[1]\CurrSpeed * 18)
-					RotateEntity e\room\NPC[1]\Collider, 0, 0, 0
+					RotateEntity e\room\NPC[1]\collider, 0, 0, 0
 					
 					
 					If e\EventState > 900+2.5*70 Then
-						If e\room\NPC[2]\State <> 1 Then
+						If e\room\NPC[2]\state <> 1 Then
 							e\room\NPC[2]\CurrSpeed = CurveValue(-0.012, e\room\NPC[2]\CurrSpeed, 5.0)
 							AnimateNPC(e\room\NPC[2], 895, 843, e\room\NPC[2]\currSpeed*50)
 							MoveEntity e\room\NPC[2]\collider, 0,0,e\room\NPC[2]\currSpeed*timing\tickDuration
@@ -278,7 +278,7 @@ Function UpdateEventAlarm(e.Events)
 					EndIf
 					
 					;If Ulgrin can see the player then start shooting at them.
-					If (CurrTrigger = "173scene_end") And EntityVisible(e\room\NPC[2]\Collider,mainPlayer\collider) And (Not mainPlayer\godMode) Then
+					If (CurrTrigger = "173scene_end") And EntityVisible(e\room\NPC[2]\collider,mainPlayer\collider) And (Not mainPlayer\godMode) Then
 						e\room\NPC[2]\state = 1
 						e\room\NPC[2]\state3 = 1
 					ElseIf e\room\NPC[2]\state = 1 And (Not EntityVisible(e\room\NPC[2]\collider, mainPlayer\collider)) Then
@@ -331,7 +331,7 @@ Function UpdateEventAlarm(e.Events)
 				e\soundChannels[0] = PlaySound(AlarmSFX(0))
 			Else
 				If Not IsChannelPlaying(e\soundChannels[0]) Then e\soundChannels[0] = PlaySound(AlarmSFX(0))
-			End If
+			EndIf
 		EndIf
 		
 		If (e\EventState3<10) Then
@@ -375,7 +375,7 @@ Function UpdateEventAlarm(e.Events)
 				RemoveEvent(e)							
 			EndIf
 		EndIf					
-	End If
+	EndIf
 	;[End Block]
 End Function
 

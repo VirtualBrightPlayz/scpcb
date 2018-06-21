@@ -79,10 +79,10 @@ Include "SourceCode/Skybox.bb"
 
 Type Materials
 	Field name$
-	Field Diff
+	Field diff
 	;Field Bump
 	
-	Field StepSound%
+	Field stepSound%
 End Type
 
 Function LoadMaterials(file$)
@@ -119,9 +119,10 @@ Include "SourceCode/Materials.bb"
 Function StripPath$(file$) 
 	Local name$=""
 	If Len(file$)>0 Then
+		Local i%
 		For i=Len(file$) To 1 Step -1 
 			
-			mi$=Mid$(file$,i,1) 
+			Local mi$ = Mid$(file$,i,1) 
 			If mi$="\" Or mi$="/" Then Return name$
 			
 			name$=mi$+name$ 
@@ -133,12 +134,15 @@ Function StripPath$(file$)
 End Function
 
 Function Piece$(s$,entry,char$=" ")
+	Local a$
+	
 	While Instr(s,char+char)
 		s=Replace(s,char+char,char)
 	Wend
+	Local n%
 	For n=1 To entry-1
-		p=Instr(s,char)
-		s=Right(s,Len(s)-p)
+		Local p% = Instr(s,char)
+		s=Right(s,Len(s) - p)
 	Next
 	p=Instr(s,char)
 	If p<1 Then
@@ -146,15 +150,17 @@ Function Piece$(s$,entry,char$=" ")
 	Else
 		a=Left(s,p-1)
 	EndIf
+	
 	Return a
 End Function
 
 Function KeyValue$(entity,key$,defaultvalue$="")
-	properties$=EntityName(entity)
+	Local test$, testkey$, value$
+	Local properties$ = EntityName(entity)
 	properties$=Replace(properties$,Chr(13),"")
 	key$=Lower(key)
 	Repeat
-		p=Instr(properties,Chr(10))
+		Local p% = Instr(properties,Chr(10))
 		If p Then test$=(Left(properties,p-1)) Else test=properties
 		testkey$=Piece(test,1,"=")
 		testkey=Trim(testkey)
@@ -196,20 +202,20 @@ Type RoomTemplates
 	Field zones%
 	
 	;TODO: cleanup?
-	Field TempSoundEmitter%[MaxRoomEmitters]
-	Field TempSoundEmitterX#[MaxRoomEmitters],TempSoundEmitterY#[MaxRoomEmitters],TempSoundEmitterZ#[MaxRoomEmitters]
-	Field TempSoundEmitterRange#[MaxRoomEmitters]
+	Field tempSoundEmitter%[MaxRoomEmitters]
+	Field tempSoundEmitterX#[MaxRoomEmitters],tempSoundEmitterY#[MaxRoomEmitters],tempSoundEmitterZ#[MaxRoomEmitters]
+	Field tempSoundEmitterRange#[MaxRoomEmitters]
 	
-	Field Commonness#
-	Field MinAmount%, MaxAmount%
+	Field commonness#
+	Field minAmount%, MaxAmount%
 	Field xRangeStart#, xRangeEnd#
 	Field yRangeStart#, yrangeEnd#
-	Field DisableDecals%
+	Field disableDecals%
 	
 	;TODO: remove
-	Field TempTriggerboxAmount
-	Field TempTriggerbox[128]
-	Field TempTriggerboxName$[128]
+	Field tempTriggerboxAmount
+	Field tempTriggerbox[128]
+	Field tempTriggerboxName$[128]
 End Type 	
 
 Function CreateRoomTemplate.RoomTemplates(meshpath$)
@@ -366,53 +372,53 @@ Type Rooms
 	
 	Field dist#
 	
-	Field SoundCHN%
+	Field soundCHN%
 	
 	Field fr.Forest
 	
 	;TODO: use arraylists for all this stuff?
-	Field SoundEmitter%[MaxRoomEmitters]
-	Field SoundEmitterObj%[MaxRoomEmitters]
-	Field SoundEmitterRange#[MaxRoomEmitters]
-	Field SoundEmitterCHN%[MaxRoomEmitters]
+	Field soundEmitter%[MaxRoomEmitters]
+	Field soundEmitterObj%[MaxRoomEmitters]
+	Field soundEmitterRange#[MaxRoomEmitters]
+	Field soundEmitterCHN%[MaxRoomEmitters]
 	
-	Field Lights%[MaxRoomLights]
-	Field LightIntensity#[MaxRoomLights]
+	Field lights%[MaxRoomLights]
+	Field lightIntensity#[MaxRoomLights]
 	
-	Field LightSprites%[MaxRoomLights]	
+	Field lightSprites%[MaxRoomLights]	
 	
-	Field Objects%[MaxRoomObjects]
-	Field Levers.Lever[11]
-	Field RoomDoors.Doors[7]
-	Field NPC.NPCs[12]
+	Field objects%[MaxRoomObjects]
+	Field levers.Lever[11]
+	Field roomDoors.Doors[7]
+	Field npc.NPCs[12]
 	Field grid.Grids
 	
-	Field Adjacent.Rooms[4]
-	Field AdjDoor.Doors[4]
+	Field adjacent.Rooms[4]
+	Field adjDoor.Doors[4]
 	
-	Field NonFreeAble%[10]
-	Field Textures%[10]
+	Field nonFreeAble%[10]
+	Field textures%[10]
 	
-	Field MaxLights% = 0
-	Field LightSpriteHidden%[MaxRoomLights]
-	Field LightSpritesPivot%[MaxRoomLights]
-	Field LightSprites2%[MaxRoomLights]
-	Field LightHidden%[MaxRoomLights]
-	Field LightFlicker%[MaxRoomLights]
-	Field AlarmRotor%[1]
-	Field AlarmRotorLight%[1]
-	Field TriggerboxAmount
-	Field Triggerbox[128]
-	Field TriggerboxName$[128]
-	Field MaxWayPointY#
+	Field maxLights% = 0
+	Field lightSpriteHidden%[MaxRoomLights]
+	Field lightSpritesPivot%[MaxRoomLights]
+	Field lightSprites2%[MaxRoomLights]
+	Field lightHidden%[MaxRoomLights]
+	Field lightFlicker%[MaxRoomLights]
+	Field alarmRotor%[1]
+	Field alarmRotorLight%[1]
+	Field triggerboxAmount
+	Field triggerbox[128]
+	Field triggerboxName$[128]
+	Field maxWayPointY#
 End Type 
 
 Const gridsz%=20
 Type Grids
 	Field grid%[gridsz*gridsz]
 	Field angles%[gridsz*gridsz]
-	Field Meshes%[7]
-	Field Entities%[gridsz*gridsz]
+	Field meshes%[7]
+	Field entities%[gridsz*gridsz]
 	Field waypoints.WayPoints[gridsz*gridsz]
 End Type
 
@@ -990,7 +996,7 @@ Type WayPoints
 	Field connected.WayPoints[16]
 	Field dist#[16]
 	
-	Field Fcost#, Gcost#, Hcost#
+	Field fCost#, gCost#, hCost#
 	
 	Field parent.WayPoints
 End Type
@@ -1281,7 +1287,7 @@ Function CreateLine(x1#,y1#,z1#, x2#,y2#,z2#, mesh=0)
 	Else
 		surf = GetSurface(mesh,1)
 		verts = CountVertices(surf)-1
-	End If
+	EndIf
 	
 	AddVertex surf,(x1#+x2#)/2,(y1#+y2#)/2,(z1#+z2#)/2,0,0 
 	; you could skip creating the above vertex and change the line below to
@@ -1301,7 +1307,7 @@ Global SelectedScreen.Screens
 Type Screens
 	Field obj%
 	Field imgpath$
-	Field img
+	Field img%
 	Field room.Rooms
 End Type
 
@@ -1358,34 +1364,34 @@ Dim GorePics%(10)
 Global SelectedMonitor.SecurityCams
 Global CoffinCam.SecurityCams
 Type SecurityCams
-	Field obj%, MonitorObj%
+	Field obj%, monitorObj%
 	
-	Field BaseObj%, CameraObj%
+	Field baseObj%, cameraObj%
 	
-	Field ScrObj%, ScrWidth#, ScrHeight#
-	Field Screen%, Cam%, ScrTexture%, ScrOverlay%
-	Field angle#, turn#, CurrAngle#
-	Field State#, PlayerState%
+	Field scrObj%, scrWidth#, scrHeight#
+	Field screen%, cam%, scrTexture%, scrOverlay%
+	Field angle#, turn#, currAngle#
+	Field state#, playerState%
 	
 	Field soundCHN%
 	
-	Field InSight%
+	Field inSight%
 	
-	Field RenderInterval#
+	Field renderInterval#
 	
 	Field room.Rooms
 	
-	Field FollowPlayer%
-	Field CoffinEffect%
+	Field followPlayer%
+	Field coffinEffect%
 	
-	Field AllowSaving%
+	Field allowSaving%
 	
-	Field MinAngle#, MaxAngle#, dir%
+	Field minAngle#, maxAngle#, dir%
 	
-	Field IsRoom2slCam% = False
-	Field Room2slTexs%[2]
-	Field SpecialCam% = False
-	Field ID% = -1
+	Field isRoom2slCam% = False
+	Field room2slTexs%[2]
+	Field specialCam% = False
+	Field id% = -1
 End Type
 
 Global ScreenTexs%[2]
@@ -1432,7 +1438,7 @@ Function CreateSecurityCam.SecurityCams(x#, y#, z#, r.Rooms, screen% = False)
 		CameraRange sc\Cam, 0.05, 6.0
 		CameraZoom(sc\Cam, 0.8)
 		HideEntity(sc\Cam)	
-	End If
+	EndIf
 	
 	PositionEntity(sc\obj, x, y, z)
 	
@@ -1497,8 +1503,8 @@ Function UpdateSecurityCams()
 						Else
 							sc\CurrAngle=sc\CurrAngle-0.2 * timing\tickDuration
 							If sc\CurrAngle < (-sc\turn * 1.3) Then sc\dir = 0
-						End If
-					End If
+						EndIf
+					EndIf
 					RotateEntity(sc\obj, 0, sc\room\angle + sc\angle + Max(Min(sc\CurrAngle, sc\turn), -sc\turn), 0)
 					
 					PositionEntity(sc\CameraObj, EntityX(sc\obj, True), EntityY(sc\obj, True) - 0.083, EntityZ(sc\obj, True))
@@ -1522,7 +1528,7 @@ Function UpdateSecurityCams()
 			
 			If close = True Or sc\IsRoom2slCam Or sc\SpecialCam Then
 				If sc\Screen Then 
-					sc\State = sc\State+timing\tickDuration
+					sc\state = sc\state+timing\tickDuration
 					
 					If sc\InSight And sc\AllowSaving Then 
 						If SelectedDifficulty\saveType = SAVEONSCREENS And EntityDistance(mainPlayer\cam, sc\ScrObj)<1.0 Then
@@ -1535,7 +1541,7 @@ Function UpdateSecurityCams()
 						SelectedMonitor = Null
 					EndIf
 					
-					If sc\State >= sc\RenderInterval Then
+					If sc\state >= sc\RenderInterval Then
 						sc\InSight = False
 						If mainPlayer\blinkTimer > - 5 And EntityInView(sc\ScrObj, mainPlayer\cam) Then
 							If EntityVisible(mainPlayer\cam,sc\ScrObj) Then
@@ -1550,7 +1556,7 @@ Function UpdateSecurityCams()
 										
 										Kill(mainPlayer)				
 									EndIf
-								End If
+								EndIf
 								
 								If (Not sc\IsRoom2slCam) Then
 									If (Not sc\SpecialCam) Then
@@ -1611,8 +1617,8 @@ Function UpdateSecurityCams()
 								
 							EndIf
 						EndIf
-						sc\State = 0
-					End If
+						sc\state = 0
+					EndIf
 					
 					If SelectedMonitor = sc Or sc\CoffinEffect=1 Or sc\CoffinEffect=3 Then
 						If sc\InSight Then
@@ -1644,9 +1650,9 @@ Function UpdateSecurityCams()
 											;sc\soundCHN = PlaySound(HorrorSFX(4)) ;TODO: fix
 										Else
 											;If Not IsChannelPlaying(sc\soundCHN) Then sc\soundCHN = PlaySound(HorrorSFX(4)) ;TODO: fix
-										End If
+										EndIf
 										If sc\CoffinEffect=3 And Rand(200)=1 Then sc\CoffinEffect=2 : sc\PlayerState = Rand(10000, 20000)
-									End If	
+									EndIf	
 									mainPlayer\blurTimer = 1000
 								ElseIf mainPlayer\sanity895 < - 500 Then
 									If Rand(7) = 1 Then EntityTexture(sc\ScrOverlay, MonitorTexture)
@@ -1655,7 +1661,7 @@ Function UpdateSecurityCams()
 										;If sc\PlayerState = 0 Then PlaySound(HorrorSFX(0)) ;TODO: fix
 										sc\PlayerState = Max(sc\PlayerState, 1)
 										If sc\CoffinEffect=3 And Rand(100)=1 Then sc\CoffinEffect=2 : sc\PlayerState = Rand(10000, 20000)
-									End If
+									EndIf
 								Else
 									EntityTexture(sc\ScrOverlay, MonitorTexture)
 								EndIf
@@ -1670,7 +1676,7 @@ Function UpdateSecurityCams()
 						
 						If Rand(500) = 1 Then
 							EntityTexture(sc\ScrOverlay, OldAiPics(0))
-						End If
+						EndIf
 						
 						If (TimeInPosMilliSecs() Mod sc\PlayerState) >= Rand(600) Then
 							EntityTexture(sc\ScrOverlay, MonitorTexture)
@@ -2306,5 +2312,5 @@ Function FindAndDeleteFakeMonitor(r.Rooms,x#,y#,z#,Amount%)
 	
 End Function
 ;~IDEal Editor Parameters:
-;~F#4F#97#15F#19A#1A2#1B7#1C2#1CC#2CD
+;~F#4F#165#1A0#1A8#1BD#1C8#1D2#2D3
 ;~C#Blitz3D

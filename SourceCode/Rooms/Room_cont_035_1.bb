@@ -54,7 +54,7 @@ Function FillRoom_cont_035_1(r.Rooms)
     PositionEntity(r\Objects[4], r\x - 576 * RoomScale, 0.5, r\z + 640.0 * RoomScale, True)
     
     For i = 0 To 1
-        em.Emitters = CreateEmitter(r\x - 272.0 * RoomScale, 10, r\z + (624.0-i*512) * RoomScale, 0)
+        Local em.Emitters = CreateEmitter(r\x - 272.0 * RoomScale, 10, r\z + (624.0-i*512) * RoomScale, 0)
         TurnEntity(em\Obj, 90, 0, 0, True)
         EntityParent(em\Obj, r\obj)
         em\RandAngle = 15

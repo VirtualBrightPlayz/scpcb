@@ -89,13 +89,13 @@ Function UpdateEvent_srvr_096_2(e.Events)
 			If Curr096=Null Then
 				Curr096 = CreateNPC(NPCtype096, EntityX(e\room\Objects[6],True),EntityY(e\room\Objects[6],True)+0.1,EntityZ(e\room\Objects[6],True))
 			Else
-				PositionEntity Curr096\Collider, EntityX(e\room\Objects[6],True),EntityY(e\room\Objects[6],True)+0.1,EntityZ(e\room\Objects[6],True),True
+				PositionEntity Curr096\collider, EntityX(e\room\Objects[6],True),EntityY(e\room\Objects[6],True)+0.1,EntityZ(e\room\Objects[6],True),True
 			EndIf
 			
-			RotateEntity Curr096\Collider, 0, e\room\angle, 0, True
-			ResetEntity Curr096\Collider
-			Curr096\State=2
-			Curr096\State2=70*10
+			RotateEntity Curr096\collider, 0, e\room\angle, 0, True
+			ResetEntity Curr096\collider
+			Curr096\state=2
+			Curr096\state2=70*10
 			
 			LoadEventSound(e,"SFX/Character/Guard/096ServerRoom1.ogg")
 			e\soundChannels[0] = PlaySound(e\sounds[0])
@@ -116,25 +116,25 @@ Function UpdateEvent_srvr_096_2(e.Events)
 			If e\EventState < 70*13 Then
 				
 				If e\EventState > 70*8 Then
-					Curr096\State=Min(Max(2,Curr096\State),3)
-					Curr096\State2=70*10
+					Curr096\state=Min(Max(2,Curr096\state),3)
+					Curr096\state2=70*10
 				Else
-					Curr096\State = 5
-					PointEntity Curr096\Collider, e\room\Objects[9]
-					RotateEntity Curr096\Collider, 0, EntityYaw(Curr096\Collider,True),0,True								
-					If EntityDistance(Curr096\Collider, e\room\Objects[8])<2.4 Then
-						Curr096\State2 = 0
+					Curr096\state = 5
+					PointEntity Curr096\collider, e\room\Objects[9]
+					RotateEntity Curr096\collider, 0, EntityYaw(Curr096\collider,True),0,True								
+					If EntityDistance(Curr096\collider, e\room\Objects[8])<2.4 Then
+						Curr096\state2 = 0
 					Else
-						Curr096\State2 = 1001
+						Curr096\state2 = 1001
 					EndIf	
 				EndIf
 				
-				e\room\NPC[0]\State=8
+				e\room\NPC[0]\state=8
 				SetAnimTime e\room\NPC[0]\obj, 115
-				PointEntity e\room\NPC[0]\Collider, Curr096\Collider								
+				PointEntity e\room\NPC[0]\collider, Curr096\collider								
 			ElseIf e\EventState-timing\tickDuration =< 70*15 Then ;walk to the doorway
 				If e\EventState > 70*15 Then
-					e\room\NPC[0]\State=3
+					e\room\NPC[0]\state=3
 					e\room\NPC[0]\PathStatus = FindPath(e\room\NPC[0], EntityX(e\room\Objects[8],True),0.5,EntityZ(e\room\Objects[8],True))
 					e\room\NPC[0]\PathTimer=300
 				EndIf
@@ -142,26 +142,26 @@ Function UpdateEvent_srvr_096_2(e.Events)
 				If e\room\NPC[0]\PathStatus=0 Then  
 					e\room\RoomDoors[2]\open = False
 					
-					e\room\NPC[0]\State=7
+					e\room\NPC[0]\state=7
 					;SetAnimTime e\room\NPC[0]\obj, 115
-					PointEntity e\room\NPC[0]\obj, Curr096\Collider
-					RotateEntity (e\room\NPC[0]\Collider, 0, CurveAngle(EntityYaw(e\room\NPC[0]\obj),EntityYaw(e\room\NPC[0]\Collider),30),0)
+					PointEntity e\room\NPC[0]\obj, Curr096\collider
+					RotateEntity (e\room\NPC[0]\collider, 0, CurveAngle(EntityYaw(e\room\NPC[0]\obj),EntityYaw(e\room\NPC[0]\collider),30),0)
 					
 				EndIf
 			Else ;start walking away
 				
-				If Curr096\State = 4 Then ;shoot at 096 when it starts attacking
+				If Curr096\state = 4 Then ;shoot at 096 when it starts attacking
 					Curr096\LastSeen=1
 					
-					e\room\NPC[0]\State = 2
-					PointEntity e\room\NPC[0]\obj, Curr096\Collider
-					RotateEntity (e\room\NPC[0]\Collider, 0, CurveAngle(EntityYaw(e\room\NPC[0]\obj),EntityYaw(e\room\NPC[0]\Collider),30),0)
+					e\room\NPC[0]\state = 2
+					PointEntity e\room\NPC[0]\obj, Curr096\collider
+					RotateEntity (e\room\NPC[0]\collider, 0, CurveAngle(EntityYaw(e\room\NPC[0]\obj),EntityYaw(e\room\NPC[0]\collider),30),0)
 					;If mainPlayer\currRoom = e\room Then LightBlink = (e\room\NPC[0]\Reload)+Rnd(0.5,2.0)
 					Curr096\Target = e\room\NPC[0]
 				Else
-					If e\EventState>70*22 Then Curr096\State = 4
-					If e\room\NPC[0]\State=7 Then
-						e\room\NPC[0]\State=3
+					If e\EventState>70*22 Then Curr096\state = 4
+					If e\room\NPC[0]\state=7 Then
+						e\room\NPC[0]\state=3
 						e\room\NPC[0]\PathStatus = FindPath(e\room\NPC[0], EntityX(e\room\obj,True),0.4,EntityZ(e\room\obj,True))
 						e\room\NPC[0]\PathTimer=300
 					EndIf
@@ -188,13 +188,13 @@ Function UpdateEvent_srvr_096_2(e.Events)
 						de.Decals = CreateDecal(Rand(2,3), e\room\x+(140.0*(i-3))*RoomScale, 1.0, e\room\z-Rnd(197,199)*Sin(e\room\angle)*RoomScale-Rnd(0.001,0.003),0,e\room\angle-90,Rnd(360))
 						de\size = Rnd(0.8,0.85) : de\sizechange = 0.001
 					EndIf
-					de.Decals = CreateDecal(Rand(2,3), EntityX(e\room\NPC[0]\Collider)+Rnd(-2,2),Rnd(0.001,0.003),EntityZ(e\room\NPC[0]\Collider)+Rnd(-2,2),90,Rnd(360),0)
+					de.Decals = CreateDecal(Rand(2,3), EntityX(e\room\NPC[0]\collider)+Rnd(-2,2),Rnd(0.001,0.003),EntityZ(e\room\NPC[0]\collider)+Rnd(-2,2),90,Rnd(360),0)
 					
 				Next
 				de\Size = Rnd(0.5,0.7)
 				ScaleSprite(de\obj, de\Size,de\Size)
 				
-				Curr096\State=5
+				Curr096\state=5
 				
 				RemoveNPC(e\room\NPC[0])
 				e\room\NPC[0]=Null

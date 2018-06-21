@@ -48,7 +48,7 @@ Function UpdateEventTunnel2smoke(e.Events)
 				
 			Next
 			RemoveEvent(e)
-		End If					
+		EndIf					
 	EndIf
 	
 	;[End Block]
@@ -78,7 +78,7 @@ Function UpdateEvent_tnnl_elec_2(e.Events)
 					
 					;LightBlink = Rnd(0.0,1.0)*(e\EventState/200)
 					e\EventState = 1
-				End If
+				EndIf
 			ElseIf e\EventState < 200 Then
 				
 				mainPlayer\blinkTimer = -10
@@ -90,8 +90,8 @@ Function UpdateEvent_tnnl_elec_2(e.Events)
 				EndIf
 				If e\EventState-timing\tickDuration =< 100 And e\EventState > 100 Then
 					PlaySound2 LoadTempSound("SFX/ambient/general/ambient6.ogg")
-					PositionEntity(Curr173\Collider, EntityX(e\room\obj), 0.6, EntityZ(e\room\obj))
-					ResetEntity(Curr173\Collider)					
+					PositionEntity(Curr173\collider, EntityX(e\room\obj), 0.6, EntityZ(e\room\obj))
+					ResetEntity(Curr173\collider)					
 					Curr173\Idle = True		
 				EndIf
 				;LightBlink = 1.0
@@ -101,7 +101,7 @@ Function UpdateEvent_tnnl_elec_2(e.Events)
 				
 				Curr173\Idle = False
 				RemoveEvent(e)
-			End If	
+			EndIf	
 		EndIf
 	EndIf					
 	;[End Block]

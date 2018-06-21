@@ -218,25 +218,25 @@ Function UpdateEvent_pocketdimension(e.Events)
 			e\room\RoomDoors[1]\open = False
 			
 			If e\EventState > 65*70 Then
-				If Rand(800)=1 And Curr106\State =>0 Then	
+				If Rand(800)=1 And Curr106\state =>0 Then	
 					;PlaySound2 HorrorSFX(8)
-					Curr106\State = -0.1
+					Curr106\state = -0.1
 					e\EventState = 601
 				EndIf
-			ElseIf Curr106\State > 0 Then ;106 circles around the starting room
+			ElseIf Curr106\state > 0 Then ;106 circles around the starting room
 				angle = (e\EventState/10 Mod 360)
-				PositionEntity(Curr106\Collider, EntityX(e\room\obj), 0.2+0.35+Sin(e\EventState/14.0+i*20.0)*0.4, EntityX(e\room\obj))
-				RotateEntity(Curr106\Collider, 0,angle,0)
-				MoveEntity(Curr106\Collider,0,0,6.0-Sin(e\EventState/10.0))
+				PositionEntity(Curr106\collider, EntityX(e\room\obj), 0.2+0.35+Sin(e\EventState/14.0+i*20.0)*0.4, EntityX(e\room\obj))
+				RotateEntity(Curr106\collider, 0,angle,0)
+				MoveEntity(Curr106\collider,0,0,6.0-Sin(e\EventState/10.0))
 				AnimateNPC(Curr106, 55, 104, 0.5)
-				RotateEntity(Curr106\Collider, 0,angle+90,0)
+				RotateEntity(Curr106\collider, 0,angle+90,0)
 				Curr106\Idle = True
 			EndIf
 		EndIf 
 		
-		If EntityDistance(mainPlayer\collider, Curr106\Collider) < 0.3 Then ;106 attacks if close enough to player
+		If EntityDistance(mainPlayer\collider, Curr106\collider) < 0.3 Then ;106 attacks if close enough to player
 			Curr106\Idle = False
-			Curr106\State = -11
+			Curr106\state = -11
 		EndIf
 		
 		If e\EventState2 = 1 Then ;in the second room
@@ -478,7 +478,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 							;FreeSound Music(3) : Music(3)=0 ;TODO: fix
 							PositionEntity(mainPlayer\collider, EntityX(r\obj,True), 0.4, EntityX(r\obj,True))
 							
-							Curr106\State = 10000
+							Curr106\state = 10000
 							Curr106\Idle = False
 							Exit
 						EndIf
@@ -600,11 +600,11 @@ Function UpdateEvent_pocketdimension(e.Events)
 			
 			If e\EventState2 > 12 Then 
 				Curr106\Idle = True
-				PositionEntity(Curr106\Collider, EntityX(e\room\Objects[e\EventState2],True),0.27, EntityZ(e\room\Objects[e\EventState2],True))
+				PositionEntity(Curr106\collider, EntityX(e\room\Objects[e\EventState2],True),0.27, EntityZ(e\room\Objects[e\EventState2],True))
 				
-				PointEntity(Curr106\Collider, mainPlayer\cam)
-				TurnEntity(Curr106\Collider, 0, Sin(TimeInPosMilliSecs() / 20) * 6.0, 0, True)
-				MoveEntity(Curr106\Collider, 0, 0, Sin(TimeInPosMilliSecs() / 15) * 0.06)
+				PointEntity(Curr106\collider, mainPlayer\cam)
+				TurnEntity(Curr106\collider, 0, Sin(TimeInPosMilliSecs() / 20) * 6.0, 0, True)
+				MoveEntity(Curr106\collider, 0, 0, Sin(TimeInPosMilliSecs() / 15) * 0.06)
 				
 				If Rand(750)=1 And e\EventState2 > 12 Then
 					mainPlayer\blinkTimer = -10
@@ -614,13 +614,13 @@ Function UpdateEvent_pocketdimension(e.Events)
 				
 				If e\EventState2 = 12 Then
 					mainPlayer\camShake = 1.0
-					PositionEntity(Curr106\Collider, EntityX(e\room\Objects[e\EventState2],True),-1.0, EntityZ(e\room\Objects[e\EventState2],True))
-					Curr106\State = -11
-					ResetEntity Curr106\Collider
+					PositionEntity(Curr106\collider, EntityX(e\room\Objects[e\EventState2],True),-1.0, EntityZ(e\room\Objects[e\EventState2],True))
+					Curr106\state = -11
+					ResetEntity Curr106\collider
 				EndIf
 				
 			Else 
-				Curr106\State = -11
+				Curr106\state = -11
 				Curr106\Idle = False
 			EndIf
 			

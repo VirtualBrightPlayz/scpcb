@@ -42,8 +42,8 @@ Function UpdateEventRoom2doors173(e.Events)
 		If e\EventState = 0 And Curr173\Idle = 0 Then
 			If (Not EntityInView(Curr173\obj, mainPlayer\cam)) Then
 				e\EventState = 1
-				PositionEntity(Curr173\Collider, EntityX(e\room\Objects[0], True), 0.5, EntityZ(e\room\Objects[0], True))
-				ResetEntity(Curr173\Collider)
+				PositionEntity(Curr173\collider, EntityX(e\room\Objects[0], True), 0.5, EntityZ(e\room\Objects[0], True))
+				ResetEntity(Curr173\collider)
 				RemoveEvent(e)
 			EndIf
 		EndIf

@@ -61,8 +61,8 @@ Function UpdateEventTestroom173(e.Events)
 		If Curr173\Idle = 0 Then 
 			If e\EventState = 0 Then
 				If e\room\RoomDoors[0]\open = True Then
-					PositionEntity(Curr173\Collider, EntityX(e\room\Objects[0], True), 0.5, EntityZ(e\room\Objects[0], True))
-					ResetEntity(Curr173\Collider)
+					PositionEntity(Curr173\collider, EntityX(e\room\Objects[0], True), 0.5, EntityZ(e\room\Objects[0], True))
+					ResetEntity(Curr173\collider)
 					e\EventState = 1
 				EndIf
 			Else
@@ -76,22 +76,22 @@ Function UpdateEventTestroom173(e.Events)
 				ElseIf dist > 1.4 Then
 					;if the player moves a bit further and blinks, 173 attacks
 					If e\EventState > 70*12 And mainPlayer\blinkTimer =< -10 Then
-						If (EntityDistance(Curr173\Collider, e\room\Objects[0]) > 5.0) Then
+						If (EntityDistance(Curr173\collider, e\room\Objects[0]) > 5.0) Then
 							;if 173 is far away from the room (perhaps because the player 
 							;left and 173 moved to some other room?) -> disable the event
 							RemoveEvent(e)
 						Else
 							PlayRangedSound(LoadTempSound("SFX/General/GlassBreak.ogg"), mainPlayer\cam, Curr173\obj) 
 							FreeEntity(e\room\Objects[2])
-							PositionEntity(Curr173\Collider, EntityX(e\room\Objects[1], True), 0.5, EntityZ(e\room\Objects[1], True))
-							ResetEntity(Curr173\Collider)
+							PositionEntity(Curr173\collider, EntityX(e\room\Objects[1], True), 0.5, EntityZ(e\room\Objects[1], True))
+							ResetEntity(Curr173\collider)
 							RemoveEvent(e)
 						EndIf
 					EndIf	
 				EndIf
-			End If
+			EndIf
 		EndIf
-	End If	
+	EndIf	
 	;[End Block]
 End Function
 

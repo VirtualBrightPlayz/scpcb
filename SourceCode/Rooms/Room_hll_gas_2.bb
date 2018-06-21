@@ -49,12 +49,12 @@ Function UpdateEvent_hll_gas_2(e.Events)
 	;[Block]
 	If Curr173\Idle = 0 Then 
 		If e\room\dist < 8.0  And e\room\dist > 0 Then			
-			If (Not EntityVisible(Curr173\Collider, mainPlayer\cam)) And (Not EntityVisible(e\room\Objects[6], mainPlayer\cam)) Then 
-				PositionEntity(Curr173\Collider, EntityX(e\room\Objects[6], True), 0.5, EntityZ(e\room\Objects[6], True))
-				ResetEntity(Curr173\Collider)
+			If (Not EntityVisible(Curr173\collider, mainPlayer\cam)) And (Not EntityVisible(e\room\Objects[6], mainPlayer\cam)) Then 
+				PositionEntity(Curr173\collider, EntityX(e\room\Objects[6], True), 0.5, EntityZ(e\room\Objects[6], True))
+				ResetEntity(Curr173\collider)
 				RemoveEvent(e)
 			EndIf
-		End If
+		EndIf
 	EndIf
 	;[End Block]
 End Function

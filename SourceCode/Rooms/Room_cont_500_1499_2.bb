@@ -37,7 +37,7 @@ Function UpdateEvent_cont_500_1499_2(e.Events)
 	;If mainPlayer\currRoom = e\room
 	If e\room\dist < 15 Then
 		If Contained106 Then e\EventState = 2.0
-		If Curr106\State < 0 Then e\EventState = 2.0
+		If Curr106\state < 0 Then e\EventState = 2.0
 		
 		If e\EventState < 2.0 Then
 			If e\EventState = 0.0 Then

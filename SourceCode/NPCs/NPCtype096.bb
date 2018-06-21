@@ -29,7 +29,7 @@ Function UpdateNPCtype096(n.NPCs)
                 AnimateNPC(n, 1085,1412, 0.1) ;sitting
                 ;Animate2(n\obj, AnimTime(n\obj),1085,1412, 0.1) ;sitting
                 
-                angle = WrapAngle(DeltaYaw(n\collider, mainPlayer\collider));-EntityYaw(n\Collider,True))
+                angle = WrapAngle(DeltaYaw(n\collider, mainPlayer\collider));-EntityYaw(n\collider,True))
                 
                 If (Not NoTarget) Then
                     If angle<90 Or angle>270 Then
@@ -231,10 +231,10 @@ Function UpdateNPCtype096(n.NPCs)
             If n\sounds[0] = 0 Then
                 n\sounds[0] = LoadSound("SFX/Music/096Angered.ogg")
             Else
-                n\soundChannels[0] = LoopRangedSound(n\sounds[0], n\soundChannels[0], mainPlayer\cam, n\Collider, 10.0, 1.0)
+                n\soundChannels[0] = LoopRangedSound(n\sounds[0], n\soundChannels[0], mainPlayer\cam, n\collider, 10.0, 1.0)
             EndIf
             
-            If n\State=1 Then ; get up
+            If n\state=1 Then ; get up
                 If n\Frame>1085 Then
                     
                     AnimateNPC(n, 1085, 1412, 0.3,False)
@@ -244,23 +244,23 @@ Function UpdateNPCtype096(n.NPCs)
                     ;If AnimTime(n\obj)=1412 Then SetAnimTime(n\obj, 307)
                 Else
                     AnimateNPC(n, 307, 424, 0.3, False)
-                    If n\Frame > 423.9 Then n\State = 2 : n\Frame = 892							
+                    If n\Frame > 423.9 Then n\state = 2 : n\Frame = 892							
                     
                     ;Animate2(n\obj, AnimTime(n\obj),307,424, 0.3, False)
-                    ;If AnimTime(n\obj)=424 Then n\State = 2 : SetAnimTime(n\obj, 892)								
+                    ;If AnimTime(n\obj)=424 Then n\state = 2 : SetAnimTime(n\obj, 892)								
                 EndIf
-            ElseIf n\State=2 Then
+            ElseIf n\state=2 Then
                 AnimateNPC(n, 833, 972, 0.3, False)
                 
                 ;Animate2(n\obj, AnimTime(n\obj),833,972, 0.3, False)
-                If n\Frame=>972 Then n\State = 3 : n\State2=0
-            ElseIf n\State=3 Then
-                n\State2 = n\State2+timing\tickDuration
-                If n\State2 > 70*18 Then 
+                If n\Frame=>972 Then n\state = 3 : n\state2=0
+            ElseIf n\state=3 Then
+                n\state2 = n\state2+timing\tickDuration
+                If n\state2 > 70*18 Then 
                     AnimateNPC(n, 973, 1001, 0.5, False)
                     ;Animate2(n\obj, AnimTime(n\obj),973,1001, 0.5, False)
                     If n\Frame>1000.9 Then 
-                        n\State = 4
+                        n\state = 4
                         StopChannel n\soundChannels[0]
                         FreeSound n\sounds[0] : n\sounds[0] = 0
                     EndIf
@@ -275,12 +275,12 @@ Function UpdateNPCtype096(n.NPCs)
                 If n\sounds[0] = 0 Then
                     n\sounds[0] = LoadSound("SFX/Music/096.ogg")
                 Else
-                    n\soundChannels[0] = LoopRangedSound(n\sounds[0], n\soundChannels[0], mainPlayer\cam, n\Collider, 14.0, 1.0)
+                    n\soundChannels[0] = LoopRangedSound(n\sounds[0], n\soundChannels[0], mainPlayer\cam, n\collider, 14.0, 1.0)
                 EndIf
                 
-                n\State2=n\State2+timing\tickDuration
-                If n\State2>1000 Then ;walking around
-                    If n\State2>1600 Then n\State2=Rand(0,500) : n\Frame = 1652 ;: SetAnimTime(n\obj, 1652)
+                n\state2=n\state2+timing\tickDuration
+                If n\state2>1000 Then ;walking around
+                    If n\state2>1600 Then n\state2=Rand(0,500) : n\Frame = 1652 ;: SetAnimTime(n\obj, 1652)
                     
                     If n\Frame<1652 Then ;idle to walk
                         n\CurrSpeed = CurveValue(n\Speed*0.1,n\CurrSpeed,5.0)
@@ -292,27 +292,27 @@ Function UpdateNPCtype096(n.NPCs)
                         ;Animate2(n\obj, AnimTime(n\obj),1653,1724, n\CurrSpeed*45) ;walk
                     EndIf
                     
-                    If TimeInPosMilliSecs() > n\State3 Then
+                    If TimeInPosMilliSecs() > n\state3 Then
                         n\LastSeen=0
-                        If EntityVisible(mainPlayer\collider, n\Collider) Then 
+                        If EntityVisible(mainPlayer\collider, n\collider) Then 
                             n\LastSeen=1
                         Else
-                            HideEntity n\Collider
-                            EntityPick(n\Collider, 1.5)
+                            HideEntity n\collider
+                            EntityPick(n\collider, 1.5)
                             If PickedEntity() <> 0 Then
-                                n\Angle = EntityYaw(n\Collider)+Rnd(80,110)
+                                n\Angle = EntityYaw(n\collider)+Rnd(80,110)
                             EndIf
-                            ShowEntity n\Collider
+                            ShowEntity n\collider
                         EndIf
-                        n\State3=TimeInPosMilliSecs()+3000
+                        n\state3=TimeInPosMilliSecs()+3000
                     EndIf
                     
                     If n\LastSeen Then 
                         PointEntity n\obj, mainPlayer\collider
-                        RotateEntity n\Collider, 0, CurveAngle(EntityYaw(n\obj),EntityYaw(n\Collider),130.0),0
-                        If dist < 1.5 Then n\State2=0
+                        RotateEntity n\collider, 0, CurveAngle(EntityYaw(n\obj),EntityYaw(n\collider),130.0),0
+                        If dist < 1.5 Then n\state2=0
                     Else
-                        RotateEntity n\Collider, 0, CurveAngle(n\Angle,EntityYaw(n\Collider),50.0),0
+                        RotateEntity n\collider, 0, CurveAngle(n\Angle,EntityYaw(n\collider),50.0),0
                     EndIf
                 Else
                     If n\Frame>1638 Then ;walk to idle
@@ -327,14 +327,14 @@ Function UpdateNPCtype096(n.NPCs)
                     EndIf
                 EndIf
                 
-                angle = WrapAngle(DeltaYaw(n\Collider, mainPlayer\cam));-EntityYaw(n\Collider))
+                angle = WrapAngle(DeltaYaw(n\collider, mainPlayer\cam));-EntityYaw(n\collider))
                 If (Not NoTarget) Then
                     If angle<55 Or angle>360-55 Then
-                        CameraProject mainPlayer\cam,EntityX(n\Collider), EntityY(mainPlayer\collider)+5.8*0.2-0.25, EntityZ(n\Collider)
+                        CameraProject mainPlayer\cam,EntityX(n\collider), EntityY(mainPlayer\collider)+5.8*0.2-0.25, EntityZ(n\collider)
                         
                         If ProjectedX()>0 And ProjectedX()<userOptions\screenWidth Then
                             If ProjectedY()>0 And ProjectedY()<userOptions\screenHeight Then
-                                If EntityVisible(mainPlayer\collider, n\Collider) Then
+                                If EntityVisible(mainPlayer\collider, n\collider) Then
                                     If (mainPlayer\blinkTimer < - 16 Or mainPlayer\blinkTimer > - 6) Then
                                         PlaySound2 LoadTempSound("SFX/SCP/096/Triggered.ogg")
                                         
@@ -345,7 +345,7 @@ Function UpdateNPCtype096(n.NPCs)
                                         StopChannel n\soundChannels[0]
                                         FreeSound n\sounds[0]
                                         n\sounds[0] = 0
-                                        n\State = 2
+                                        n\state = 2
                                     EndIf
                                 EndIf									
                             EndIf
@@ -354,14 +354,14 @@ Function UpdateNPCtype096(n.NPCs)
                     EndIf
                 EndIf
                 
-                MoveEntity n\Collider, 0,0,n\CurrSpeed
+                MoveEntity n\collider, 0,0,n\CurrSpeed
             EndIf
     End Select
     
-    ;ResetEntity(n\Collider)
-    PositionEntity(n\obj, EntityX(n\Collider), EntityY(n\Collider)-0.07, EntityZ(n\Collider))
+    ;ResetEntity(n\collider)
+    PositionEntity(n\obj, EntityX(n\collider), EntityY(n\collider)-0.07, EntityZ(n\collider))
     
-    RotateEntity n\obj, EntityPitch(n\Collider), EntityYaw(n\Collider), 0
+    RotateEntity n\obj, EntityPitch(n\collider), EntityYaw(n\collider), 0
 End Function
 ;~IDEal Editor Parameters:
 ;~C#Blitz3D

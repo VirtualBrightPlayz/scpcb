@@ -121,19 +121,19 @@ Function UpdateEvent_closets_2(e.Events)
 			mainPlayer\blinkTimer = Max((70*6.5-e\EventState)/5.0 - Rnd(0.0,2.0),-10)
 			If mainPlayer\blinkTimer =-10 Then
 				;TODO: fix
-				;If e\EventState > 70*7.5 And e\EventState-timing\tickDuration =< 70*7.5 Then PlayRangedSound(NeckSnapSFX(0),mainPlayer\cam,e\room\NPC[0]\Collider,8.0)
-				;If e\EventState > 70*8.0 And e\EventState-timing\tickDuration =< 70*8.0 Then PlayRangedSound(NeckSnapSFX(1),mainPlayer\cam,e\room\NPC[1]\Collider,8.0)
+				;If e\EventState > 70*7.5 And e\EventState-timing\tickDuration =< 70*7.5 Then PlayRangedSound(NeckSnapSFX(0),mainPlayer\cam,e\room\NPC[0]\collider,8.0)
+				;If e\EventState > 70*8.0 And e\EventState-timing\tickDuration =< 70*8.0 Then PlayRangedSound(NeckSnapSFX(1),mainPlayer\cam,e\room\NPC[1]\collider,8.0)
 				SetNPCFrame e\room\NPC[0], 60
-				e\room\NPC[0]\State=8
+				e\room\NPC[0]\state=8
 				
 				SetNPCFrame e\room\NPC[1], 19
-				e\room\NPC[1]\State = 6
+				e\room\NPC[1]\state = 6
 			EndIf
 			
 			If e\EventState > 70*8.5 Then
-				PositionEntity Curr173\Collider, (EntityX(e\room\Objects[0],True)+EntityX(e\room\Objects[1],True))/2,EntityY(e\room\Objects[0],True),(EntityZ(e\room\Objects[0],True)+EntityZ(e\room\Objects[1],True))/2
-				PointEntity Curr173\Collider, mainPlayer\collider
-				ResetEntity Curr173\Collider
+				PositionEntity Curr173\collider, (EntityX(e\room\Objects[0],True)+EntityX(e\room\Objects[1],True))/2,EntityY(e\room\Objects[0],True),(EntityZ(e\room\Objects[0],True)+EntityZ(e\room\Objects[1],True))/2
+				PointEntity Curr173\collider, mainPlayer\collider
+				ResetEntity Curr173\collider
 				RemoveEvent(e)
 			EndIf
 		EndIf

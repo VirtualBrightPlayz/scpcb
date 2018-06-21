@@ -109,7 +109,7 @@ Function UpdateEvent_cont_1123_2(e.Events)
 			;	e\soundChannels[0] = 
 			;Else
 			;	If Not IsChannelPlaying(e\soundChannels[0]) Then e\soundChannels[0] = PlaySound2(moddedambience)
-			;End If
+			;EndIf
 			
 			;Saving injuries and bloodloss, so that the player won't be healed automatically
 			PrevInjuries = mainPlayer\injuries
@@ -118,8 +118,8 @@ Function UpdateEvent_cont_1123_2(e.Events)
 			e\room\NPC[0] = CreateNPC(NPCtypeD, EntityX(e\room\Objects[6],True),EntityY(e\room\Objects[6],True),EntityZ(e\room\Objects[6],True))
 			;e\room\NPC[1] = CreateNPC(NPCtypeD, EntityX(e\room\Objects[7],True),EntityY(e\room\Objects[7],True),EntityZ(e\room\Objects[7],True))
 			
-			nazi = LoadAnimMesh("GFX/npcs/naziofficer.b3d")
-			scale# = 0.5 / MeshWidth(nazi)
+			Local nazi% = LoadAnimMesh("GFX/npcs/naziofficer.b3d")
+			Local scale# = 0.5 / MeshWidth(nazi)
 			
 			FreeEntity e\room\NPC[0]\obj
 			e\room\NPC[0]\obj = CopyEntity(nazi)
@@ -187,7 +187,7 @@ Function UpdateEvent_cont_1123_2(e.Events)
 			EndIf
 		ElseIf e\EventState=4 Then
 			
-			;PointEntity e\room\NPC[1]\Collider, mainPlayer\collider
+			;PointEntity e\room\NPC[1]\collider, mainPlayer\collider
 			
 			TFormPoint EntityX(mainPlayer\collider),EntityY(mainPlayer\collider),EntityZ(mainPlayer\collider),0,e\room\obj
 			
@@ -208,10 +208,10 @@ Function UpdateEvent_cont_1123_2(e.Events)
 				DebugLog "bbbbbbb"
 				RotateEntity e\room\Objects[13], 0, CurveAngle(90, EntityYaw(e\room\Objects[13], False), 40), 0
 				If EntityYaw(e\room\Objects[13], False)>30 Then
-					e\room\NPC[0]\State = 3
-					PointEntity e\room\NPC[0]\Collider, mainPlayer\collider
+					e\room\NPC[0]\state = 3
+					PointEntity e\room\NPC[0]\collider, mainPlayer\collider
 					AnimateNPC(e\room\NPC[0], 570, 596, 0.5, False)
-					If e\room\NPC[0]\Frame => 596 Then
+					If e\room\NPC[0]\frame => 596 Then
 						e\EventState = 5
 						e\EventState2 = 0
 						PositionEntity mainPlayer\collider, EntityX(e\room\obj,True),0.3,EntityZ(e\room\obj,True),True
@@ -244,15 +244,15 @@ Function UpdateEvent_cont_1123_2(e.Events)
 				x = (EntityX(mainPlayer\collider, True)+EntityX(e\room\Objects[12], True))/2
 				z = (EntityZ(mainPlayer\collider, True)+EntityZ(e\room\Objects[12], True))/2
 				
-				PositionEntity e\room\NPC[0]\Collider, x,y+0.2,z
-				ResetEntity e\room\NPC[0]\Collider
+				PositionEntity e\room\NPC[0]\collider, x,y+0.2,z
+				ResetEntity e\room\NPC[0]\collider
 				
 				mainPlayer\injuries = 1.5
 				mainPlayer\bloodloss = 70
 				
 				mainPlayer\blinkTimer = -10
 				
-				de.Decals = CreateDecal(3, EntityX(mainPlayer\collider), 512*RoomScale + 0.0005, EntityZ(mainPlayer\collider),90,Rnd(360),0)
+				Local de.Decals = CreateDecal(3, EntityX(mainPlayer\collider), 512*RoomScale + 0.0005, EntityZ(mainPlayer\collider),90,Rnd(360),0)
 				de\size = 0.5 : ScaleSprite de\obj, de\size, de\size
 				
 				e\room\NPC[0]\sounds[0] = LoadSound("SFX/SCP/1123/Officer3.ogg")
@@ -260,7 +260,7 @@ Function UpdateEvent_cont_1123_2(e.Events)
 				e\EventState = 6
 			EndIf
 		ElseIf e\EventState = 6 Then
-			PointEntity e\room\NPC[0]\Collider, mainPlayer\collider
+			PointEntity e\room\NPC[0]\collider, mainPlayer\collider
 			
 			If e\room\NPC[0]\sounds[0]<>0 Then 
 				If e\room\NPC[0]\soundChannels[0]<>0 Then
@@ -271,7 +271,7 @@ Function UpdateEvent_cont_1123_2(e.Events)
 					EndIf
 				EndIf
 				
-				If e\room\NPC[0]\sounds[0]<>0 Then e\room\NPC[0]\soundChannels[0] = LoopRangedSound(e\room\NPC[0]\sounds[0], e\room\NPC[0]\soundChannels[0], mainPlayer\cam, e\room\NPC[0]\Collider, 7.0)
+				If e\room\NPC[0]\sounds[0]<>0 Then e\room\NPC[0]\soundChannels[0] = LoopRangedSound(e\room\NPC[0]\sounds[0], e\room\NPC[0]\soundChannels[0], mainPlayer\cam, e\room\NPC[0]\collider, 7.0)
 			EndIf
 		ElseIf e\EventState=7 Then
 			PositionEntity mainPlayer\collider, EntityX(e\room\obj,True),0.3,EntityZ(e\room\obj,True),True
@@ -298,7 +298,7 @@ Function UpdateEvent_cont_1123_2(e.Events)
 			
 			RemoveNPC(e\room\NPC[0])
 			RemoveEvent(e)						
-		End If
+		EndIf
 	EndIf
 	;[End Block]
 	

@@ -248,14 +248,14 @@ Function UpdateEvent_cont_106_1(e.Events)
 				PositionEntity(Curr106\collider, EntityX(e\room\Objects[5], True), (700.0 + 108.0*(Min(e\EventState3-2500.0,800)/320.0))*RoomScale , EntityZ(e\room\Objects[5], True))
 				HideEntity Curr106\obj2
 				
-				;PointEntity(Curr106\Collider, mainPlayer\cam)
+				;PointEntity(Curr106\collider, mainPlayer\cam)
 				RotateEntity(Curr106\collider,0, EntityYaw(e\room\Objects[5],True)+180.0, 0, True)
 				Curr106\state = -11
 				AnimateNPC(Curr106, 206, 250, 0.1)
 				Curr106\Idle = True	
 				
 				If e\EventState3-timing\tickDuration < 2500 Then 
-					d.Decals = CreateDecal(0, EntityX(e\room\Objects[5], True), 936.0*RoomScale, EntityZ(e\room\Objects[5], True), 90, 0, Rnd(360)) 
+					Local d.Decals = CreateDecal(0, EntityX(e\room\Objects[5], True), 936.0*RoomScale, EntityZ(e\room\Objects[5], True), 90, 0, Rnd(360)) 
 					d\Timer = 90000
 					d\Alpha = 0.01 : d\AlphaChange = 0.005
 					d\Size = 0.1 : d\SizeChange = 0.003	

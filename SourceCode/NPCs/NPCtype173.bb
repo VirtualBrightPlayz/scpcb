@@ -224,7 +224,7 @@ Function UpdateNPCtype173(n.NPCs)
 				EndIf ; less than 2 rooms away from the player
 				
 				;TODO: Why random Y?
-				;PositionEntity(n\Collider, EntityX(n\Collider), Min(EntityY(n\Collider),0.35), EntityZ(n\Collider))
+				;PositionEntity(n\collider, EntityX(n\collider), Min(EntityY(n\collider),0.35), EntityZ(n\collider))
 			EndIf
 		Case STATE173_MOVE_TO_TARGET
 			;If 173 was given a target then use its position.
@@ -263,10 +263,10 @@ Function UpdateNPCtype173(n.NPCs)
 				Else
 					PositionEntity n\collider,EntityX(n\Target\collider),EntityY(n\Target\collider)+0.3,EntityZ(n\Target\collider)
 					ResetEntity n\collider
-					;PointEntity n\Collider, n\Target\Collider
-					;RotateEntity n\Collider, 0, CurveAngle(EntityYaw(n\obj),EntityYaw(n\Collider),10.0), 0, True
-					;dist = EntityDistance(n\Collider, n\Target\Collider)
-					;MoveEntity n\Collider, 0, 0, dist-0.6
+					;PointEntity n\collider, n\Target\collider
+					;RotateEntity n\collider, 0, CurveAngle(EntityYaw(n\obj),EntityYaw(n\collider),10.0), 0, True
+					;dist = EntityDistance(n\collider, n\Target\collider)
+					;MoveEntity n\collider, 0, 0, dist-0.6
 				EndIf
 			EndIf
 			

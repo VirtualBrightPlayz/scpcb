@@ -66,7 +66,7 @@ Function UpdateEvent_off_l_conf_2(e.Events)
 				mainPlayer\heartbeatIntensity = CurveValue(120, mainPlayer\heartbeatIntensity, 150) 
 				;TODO: fix
 				;e\soundChannels[0] = LoopRangedSound(OldManSFX(4), e\soundChannels[0], mainPlayer\cam, e\room\obj, 5.0, 0.3)
-				Curr106\State=Curr106\State-timing\tickDuration*3
+				Curr106\state=Curr106\state-timing\tickDuration*3
 			EndIf
 			
 		EndIf

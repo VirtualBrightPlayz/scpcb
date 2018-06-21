@@ -45,7 +45,7 @@ Function FillRoom_cont_012_2(r.Rooms)
     HideEntity r\Objects[3]
     
     r\Objects[4] = LoadMesh("GFX/map/room012_3.b3d")
-    tex=LoadTexture("GFX/map/Textures/scp-012_0.jpg")
+    Local tex% = LoadTexture("GFX/map/Textures/scp-012_0.jpg")
     EntityTexture r\Objects[4],tex, 0,1
     ScaleEntity r\Objects[4], RoomScale, RoomScale, RoomScale
     PositionEntity(r\Objects[4], r\x - 360 * RoomScale, - 130 * RoomScale, r\z + 456.0 * RoomScale, 0)
@@ -168,7 +168,7 @@ Function UpdateEvent_cont_012_2(e.Events)
 							mainPlayer\injuries=mainPlayer\injuries+0.5
 							PlaySound2 LoadTempSound("SFX/SCP/012/Speech2.ogg")
 						ElseIf e\EventState3>31*70 And e\EventState3-timing\tickDuration=<31*70 Then
-							tex = LoadTexture("GFX/map/Textures/scp-012_1.jpg")
+							Local tex% = LoadTexture("GFX/map/Textures/scp-012_1.jpg")
 							EntityTexture (e\room\Objects[4], tex,0,1)
 							FreeTexture tex
 							
@@ -199,8 +199,8 @@ Function UpdateEvent_cont_012_2(e.Events)
 							PlaySound2 LoadTempSound("SFX/SCP/012/Speech7.ogg")
 							mainPlayer\crouching = True
 							
-							de.Decals = CreateDecal(17,  EntityX(mainPlayer\collider), -768*RoomScale+0.01, EntityZ(mainPlayer\collider),90,Rnd(360),0)
-							de\Size = 0.1 : de\maxsize = 0.45 : de\sizechange = 0.0002 : UpdateDecals()
+							Local de.Decals = CreateDecal(17,  EntityX(mainPlayer\collider), -768*RoomScale+0.01, EntityZ(mainPlayer\collider),90,Rnd(360),0)
+							de\Size = 0.1 : de\MaxSize = 0.45 : de\SizeChange = 0.0002 : UpdateDecals()
 						ElseIf e\EventState3>85*70 And e\EventState3-timing\tickDuration=<85*70	Then
 							DeathMSG = "Subject D-9341 found in a pool of blood next to SCP-012. Subject seems to have ripped open his wrists and written three extra "
 							DeathMSG = DeathMSG + "lines to the composition before dying of blood loss."

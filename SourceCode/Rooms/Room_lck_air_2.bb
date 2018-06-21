@@ -146,7 +146,7 @@ Function UpdateEventRoom_gw(e.Events)
 				ElseIf e\EventState2 > 70*3 And e\EventState < 70*5.5 Then
 					pvt% = CreatePivot(e\room\obj)								
 					For i = 0 To 1
-						If e\room\RoomTemplate\Name$ = "lck_ez_3" Then
+						If e\room\RoomTemplate\name$ = "lck_ez_3" Then
 							If i = 0 Then
 								PositionEntity pvt%,-288.0*RoomScale,416.0*RoomScale,320.0*RoomScale,False
 							Else
@@ -211,13 +211,13 @@ Function UpdateEventRoom2gw_b(e.Events)
 	Local angle#
 
 	;[Block]
-	If e\room\dist < 8 THen
+	If e\room\dist < 8 Then
 		If e\EventState = 0 Then
 			e\room\NPC[0]=CreateNPC(NPCtypeGuard, EntityX(e\room\Objects[2],True), EntityY(e\room\Objects[2],True)+0.5, EntityZ(e\room\Objects[2],True))
-			PointEntity e\room\NPC[0]\Collider, e\room\obj
-			RotateEntity e\room\NPC[0]\Collider, 0, EntityYaw(e\room\NPC[0]\Collider),0, True
+			PointEntity e\room\NPC[0]\collider, e\room\obj
+			RotateEntity e\room\NPC[0]\collider, 0, EntityYaw(e\room\NPC[0]\collider),0, True
 			SetNPCFrame(e\room\NPC[0], 906)
-			e\room\NPC[0]\State = 8
+			e\room\NPC[0]\state = 8
 			
 			e\EventState = 1
 		EndIf

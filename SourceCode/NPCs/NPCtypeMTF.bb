@@ -6,7 +6,7 @@ Function InitializeNPCtypeMTF(n.NPCs)
     EntityRadius n\collider, 0.2
     ;EntityRadius mainPlayer\collider, 0.15, 0.30
     EntityType n\collider, HIT_PLAYER
-    ;EntityPickMode n\Collider, 1
+    ;EntityPickMode n\collider, 1
 
 	Local n2.NPCs
 	For n2 = Each NPCs
@@ -78,7 +78,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 	n\BlinkTimer = n\BlinkTimer - timing\tickDuration
 	If n\BlinkTimer<=-5.0 Then 
 		;only play the "blinking" sound clip if searching/containing 173
-		If n\State = 2 Then
+		If n\state = 2 Then
 			If OtherNPCSeesMeNPC(Curr173,n) Then
 				PlayMTFSound(LoadTempSound("SFX/Character/MTF/173/BLINKING.ogg"),n)
 			EndIf
@@ -96,20 +96,20 @@ Function UpdateNPCtypeMTF(n.NPCs)
 	n\ManipulationType = 0
 	n\NPCNameInSection = "MTF"
 	
-	If Int(n\State) <> 1 Then n\PrevState = 0
+	If Int(n\state) <> 1 Then n\PrevState = 0
 	
 	If n\Idle>0.0 Then
 		FinishWalking(n,488,522,0.015*26)
 		n\Idle=n\Idle-timing\tickDuration
 		If n\Idle<=0.0 Then n\Idle = 0.0
 	Else
-		Select Int(n\State) ;what is this MTF doing
+		Select Int(n\state) ;what is this MTF doing
 			Case 0 ;wandering around
                 ;[Block]
                 n\Speed = 0.015
                 If n\PathTimer<=0.0 Then ;update path
 					If n\MTFLeader<>Null Then ;i'll follow the leader
-						n\PathStatus = FindPath(n,EntityX(n\MTFLeader\Collider,True),EntityY(n\MTFLeader\Collider,True)+0.1,EntityZ(n\MTFLeader\Collider,True)) ;whatever you say boss
+						n\PathStatus = FindPath(n,EntityX(n\MTFLeader\collider,True),EntityY(n\MTFLeader\collider,True)+0.1,EntityZ(n\MTFLeader\collider,True)) ;whatever you say boss
 					Else ;i am the leader
 						If Curr173\Idle<>2 Then
 							For r = Each Rooms
@@ -171,9 +171,9 @@ Function UpdateNPCtypeMTF(n.NPCs)
 									EndIf
 								Next
 							Else
-								x = EntityX(Curr173\Collider)
+								x = EntityX(Curr173\collider)
 								y = 0.1
-								z = EntityZ(Curr173\Collider)
+								z = EntityZ(Curr173\collider)
 								DebugLog "Going back to 173's cage"
 							EndIf
 						EndIf
@@ -187,7 +187,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 						If n\PathLocation<19 Then
 							If (n\Path[n\PathLocation]<>Null) And (n\Path[n\PathLocation+1]<>Null) Then
 								;If (n\Path[n\PathLocation]\door=Null) Then ;TODO: fix?
-								If Abs(DeltaYaw(n\Collider,n\Path[n\PathLocation]\obj))>Abs(DeltaYaw(n\Collider,n\Path[n\PathLocation+1]\obj)) Then
+								If Abs(DeltaYaw(n\collider,n\Path[n\PathLocation]\obj))>Abs(DeltaYaw(n\collider,n\Path[n\PathLocation+1]\obj)) Then
 									n\PathLocation=n\PathLocation+1
 								EndIf
 								;EndIf
@@ -199,20 +199,20 @@ Function UpdateNPCtypeMTF(n.NPCs)
 					n\PathTimer=n\PathTimer-timing\tickDuration
 					n\CurrSpeed = 0.0
 					If Rand(1,35)=1 Then
-						RotateEntity n\Collider,0.0,Rnd(360.0),0.0,True
+						RotateEntity n\collider,0.0,Rnd(360.0),0.0,True
 					EndIf
 					FinishWalking(n,488,522,n\Speed*26)
-					n\Angle = CurveAngle(EntityYaw(n\Collider,True),n\Angle,20.0)
+					n\Angle = CurveAngle(EntityYaw(n\collider,True),n\Angle,20.0)
 					RotateEntity n\obj,-90.0,n\Angle,0.0,True
                 Else
 					If n\PathStatus=2 Then
 						n\PathTimer=n\PathTimer-(timing\tickDuration*2.0) ;timer goes down fast
 						n\CurrSpeed = 0.0
 						If Rand(1,35)=1 Then
-							RotateEntity n\Collider,0.0,Rnd(360.0),0.0,True
+							RotateEntity n\collider,0.0,Rnd(360.0),0.0,True
 						EndIf
 						FinishWalking(n,488,522,n\Speed*26)
-						n\Angle = CurveAngle(EntityYaw(n\Collider,True),n\Angle,20.0)
+						n\Angle = CurveAngle(EntityYaw(n\collider,True),n\Angle,20.0)
 						RotateEntity n\obj,-90.0,n\Angle,0.0,True
 					ElseIf n\PathStatus=1 Then
 						If n\Path[n\PathLocation]=Null Then
@@ -222,24 +222,24 @@ Function UpdateNPCtypeMTF(n.NPCs)
 								n\PathLocation = n\PathLocation + 1
 							EndIf
 						Else
-							prevDist# = EntityDistance(n\Collider,n\Path[n\PathLocation]\obj)
+							prevDist# = EntityDistance(n\collider,n\Path[n\PathLocation]\obj)
 							
-							PointEntity n\Collider,n\Path[n\PathLocation]\obj
-							RotateEntity n\Collider,0.0,EntityYaw(n\Collider,True),0.0,True
+							PointEntity n\collider,n\Path[n\PathLocation]\obj
+							RotateEntity n\collider,0.0,EntityYaw(n\collider,True),0.0,True
 							
 							RotateToDirection(n)
 							
-							n\Angle = CurveAngle(EntityYaw(n\Collider,True),n\Angle,20.0)
+							n\Angle = CurveAngle(EntityYaw(n\collider,True),n\Angle,20.0)
 							
 							RotateEntity n\obj,-90.0,n\Angle,0.0,True
 							
 							n\CurrSpeed = CurveValue(n\Speed,n\CurrSpeed,20.0)
-							;MoveEntity n\Collider, 0, 0, n\CurrSpeed * timing\tickDuration
+							;MoveEntity n\collider, 0, 0, n\CurrSpeed * timing\tickDuration
 							
-							TranslateEntity n\Collider, Cos(EntityYaw(n\Collider,True)+90.0)*n\CurrSpeed * timing\tickDuration, 0, Sin(EntityYaw(n\Collider,True)+90.0)*n\CurrSpeed * timing\tickDuration, True
+							TranslateEntity n\collider, Cos(EntityYaw(n\collider,True)+90.0)*n\CurrSpeed * timing\tickDuration, 0, Sin(EntityYaw(n\collider,True)+90.0)*n\CurrSpeed * timing\tickDuration, True
 							AnimateNPC(n,488, 522, n\CurrSpeed*26)
 							
-							newDist# = EntityDistance(n\Collider,n\Path[n\PathLocation]\obj)
+							newDist# = EntityDistance(n\collider,n\Path[n\PathLocation]\obj)
 							
 							;TODO: fix
 							;If (newDist<1.0 And n\Path[n\PathLocation]\door<>Null) Then
@@ -262,16 +262,16 @@ Function UpdateNPCtypeMTF(n.NPCs)
 						pvt = CreatePivot()
 						PositionEntity pvt,n\PathX#,0.5,n\PathZ#
 						
-						PointEntity n\Collider,pvt
-						RotateEntity n\Collider,0.0,EntityYaw(n\Collider,True),0.0,True
-						n\Angle = CurveAngle(EntityYaw(n\Collider,True),n\Angle,20.0)
+						PointEntity n\collider,pvt
+						RotateEntity n\collider,0.0,EntityYaw(n\collider,True),0.0,True
+						n\Angle = CurveAngle(EntityYaw(n\collider,True),n\Angle,20.0)
 						RotateEntity n\obj,-90.0,n\Angle,0.0,True
 						
 						n\CurrSpeed = CurveValue(n\Speed,n\CurrSpeed,20.0)
-						TranslateEntity n\Collider, Cos(EntityYaw(n\Collider,True)+90.0)*n\CurrSpeed * timing\tickDuration, 0, Sin(EntityYaw(n\Collider,True)+90.0)*n\CurrSpeed * timing\tickDuration, True
+						TranslateEntity n\collider, Cos(EntityYaw(n\collider,True)+90.0)*n\CurrSpeed * timing\tickDuration, 0, Sin(EntityYaw(n\collider,True)+90.0)*n\CurrSpeed * timing\tickDuration, True
 						AnimateNPC(n,488, 522, n\CurrSpeed*26)
 						
-						If Distance(EntityX(n\Collider),EntityZ(n\Collider),n\PathX#,n\PathZ#)<0.2 Then
+						If Distance(EntityX(n\collider),EntityZ(n\collider),n\PathX#,n\PathZ#)<0.2 Then
 							n\PathX# = 0.0
 							n\PathZ# = 0.0
 							n\PathTimer = 70.0 * Rnd(6.0,10.0)
@@ -282,25 +282,25 @@ Function UpdateNPCtypeMTF(n.NPCs)
 						n\PathTimer=n\PathTimer-(timing\tickDuration*2.0) ;timer goes down fast
 						If n\MTFLeader = Null Then
 							If Rand(1,35)=1 Then
-								RotateEntity n\Collider,0.0,Rnd(360.0),0.0,True
+								RotateEntity n\collider,0.0,Rnd(360.0),0.0,True
 							EndIf
 							FinishWalking(n,488,522,n\Speed*26)
 							n\CurrSpeed = 0.0
-						ElseIf EntityDistance(n\Collider,n\MTFLeader\Collider)>1.0 Then
-							PointEntity n\Collider,n\MTFLeader\Collider
-							RotateEntity n\Collider,0.0,EntityYaw(n\Collider,True),0.0,True
+						ElseIf EntityDistance(n\collider,n\MTFLeader\collider)>1.0 Then
+							PointEntity n\collider,n\MTFLeader\collider
+							RotateEntity n\collider,0.0,EntityYaw(n\collider,True),0.0,True
 							
 							n\CurrSpeed = CurveValue(n\Speed,n\CurrSpeed,20.0)
-							TranslateEntity n\Collider, Cos(EntityYaw(n\Collider,True)+90.0)*n\CurrSpeed * timing\tickDuration, 0, Sin(EntityYaw(n\Collider,True)+90.0)*n\CurrSpeed * timing\tickDuration, True
+							TranslateEntity n\collider, Cos(EntityYaw(n\collider,True)+90.0)*n\CurrSpeed * timing\tickDuration, 0, Sin(EntityYaw(n\collider,True)+90.0)*n\CurrSpeed * timing\tickDuration, True
 							AnimateNPC(n,488, 522, n\CurrSpeed*26)
 						Else
 							If Rand(1,35)=1 Then
-								RotateEntity n\Collider,0.0,Rnd(360.0),0.0,True
+								RotateEntity n\collider,0.0,Rnd(360.0),0.0,True
 							EndIf
 							FinishWalking(n,488,522,n\Speed*26)
 							n\CurrSpeed = 0.0
 						EndIf
-						n\Angle = CurveAngle(EntityYaw(n\Collider,True),n\Angle,20.0)
+						n\Angle = CurveAngle(EntityYaw(n\collider,True),n\Angle,20.0)
 						RotateEntity n\obj,-90.0,n\Angle,0.0,True
 					EndIf
                 EndIf
@@ -332,35 +332,35 @@ Function UpdateNPCtypeMTF(n.NPCs)
 					n\LastSeen = (70*Rnd(30,40))
 					n\LastDist = 1
 					
-					n\State = 1
+					n\state = 1
 					n\EnemyX = EntityX(mainPlayer\collider,True)
 					n\EnemyY = EntityY(mainPlayer\collider,True)
 					n\EnemyZ = EntityZ(mainPlayer\collider,True)
-					n\State2 = 70.0*(15.0*temp) ;give up after 15 seconds (30 seconds if detected by loud noise, over camera: 45)
-					DebugLog "player spotted :"+n\State2
+					n\state2 = 70.0*(15.0*temp) ;give up after 15 seconds (30 seconds if detected by loud noise, over camera: 45)
+					DebugLog "player spotted :"+n\state2
 					n\PathTimer=0.0
 					n\PathStatus=0
 					n\Reload = 200-(100*SelectedDifficulty\aggressiveNPCs)
 					
-					;If EntityDistance(n\Collider,mainPlayer\collider)>HideDistance*0.7
+					;If EntityDistance(n\collider,mainPlayer\collider)>HideDistance*0.7
 					;	TeleportMTFGroup(n)
 					;EndIf
                 EndIf
 				
 				;B3D doesn't do short-circuit evaluation, so this retarded nesting is an optimization
                 If Curr173\Idle<2 Then
-					Local SoundVol173# = Max(Min((Distance(EntityX(Curr173\Collider), EntityZ(Curr173\Collider), Curr173\PrevX, Curr173\PrevZ) * 2.5), 1.0), 0.0)
-					If OtherNPCSeesMeNPC(Curr173,n) Or (SoundVol173#>0.0 And EntityDistance(n\Collider,Curr173\Collider)<6.0) Then
-						If EntityVisible(n\Collider,Curr173\Collider) Or SoundVol173#>0.0 Then							
-							n\State = 2
-							n\EnemyX = EntityX(Curr173\Collider,True)
-							n\EnemyY = EntityY(Curr173\Collider,True)
-							n\EnemyZ = EntityZ(Curr173\Collider,True)
-							n\State2 = 70.0*15.0 ;give up after 15 seconds
-							n\State3 = 0.0
+					Local SoundVol173# = Max(Min((Distance(EntityX(Curr173\collider), EntityZ(Curr173\collider), Curr173\PrevX, Curr173\PrevZ) * 2.5), 1.0), 0.0)
+					If OtherNPCSeesMeNPC(Curr173,n) Or (SoundVol173#>0.0 And EntityDistance(n\collider,Curr173\collider)<6.0) Then
+						If EntityVisible(n\collider,Curr173\collider) Or SoundVol173#>0.0 Then							
+							n\state = 2
+							n\EnemyX = EntityX(Curr173\collider,True)
+							n\EnemyY = EntityY(Curr173\collider,True)
+							n\EnemyZ = EntityZ(Curr173\collider,True)
+							n\state2 = 70.0*15.0 ;give up after 15 seconds
+							n\state3 = 0.0
 							n\PathTimer=0.0
 							n\PathStatus=0
-							DebugLog "173 spotted :"+n\State2
+							DebugLog "173 spotted :"+n\state2
 							If n\sounds[0] <> 0 Then FreeSound n\sounds[0] : n\sounds[0] = 0
 							n\sounds[0] = LoadSound("SFX/Character/MTF/173/Spotted"+Rand(1,2)+".ogg")
 							PlayMTFSound(n\sounds[0], n)
@@ -368,19 +368,19 @@ Function UpdateNPCtypeMTF(n.NPCs)
 					EndIf
 				EndIf
 				
-				If Curr106\State <= 0 Then
-					If OtherNPCSeesMeNPC(Curr106,n) Or EntityDistance(n\Collider,Curr106\Collider)<3.0 Then
-						If EntityVisible(n\Collider,Curr106\Collider) Then
-							n\State = 4
-							n\EnemyX = EntityX(Curr106\Collider,True)
-							n\EnemyY = EntityY(Curr106\Collider,True)
-							n\EnemyZ = EntityZ(Curr106\Collider,True)
-							n\State2 = 70*15.0
-							n\State3 = 0.0
+				If Curr106\state <= 0 Then
+					If OtherNPCSeesMeNPC(Curr106,n) Or EntityDistance(n\collider,Curr106\collider)<3.0 Then
+						If EntityVisible(n\collider,Curr106\collider) Then
+							n\state = 4
+							n\EnemyX = EntityX(Curr106\collider,True)
+							n\EnemyY = EntityY(Curr106\collider,True)
+							n\EnemyZ = EntityZ(Curr106\collider,True)
+							n\state2 = 70*15.0
+							n\state3 = 0.0
 							n\PathTimer = 0.0
 							n\PathStatus = 0
 							n\Target = Curr106
-							DebugLog "106 spotted :"+n\State2
+							DebugLog "106 spotted :"+n\state2
 							;If n\MTFLeader=Null
 								If n\sounds[0] <> 0 Then FreeSound n\sounds[0] : n\sounds[0] = 0
 								n\sounds[0] = LoadSound("SFX/Character/MTF/106/Spotted"+Rand(1,3)+".ogg")
@@ -392,16 +392,16 @@ Function UpdateNPCtypeMTF(n.NPCs)
 				
 				If Curr096 <> Null Then
 					If OtherNPCSeesMeNPC(Curr096,n) Then
-						If EntityVisible(n\Collider,Curr096\Collider) Then
-							n\State = 8
-							n\EnemyX = EntityX(Curr096\Collider,True)
-							n\EnemyY = EntityY(Curr096\Collider,True)
-							n\EnemyZ = EntityZ(Curr096\Collider,True)
-							n\State2 = 70*15.0
-							n\State3 = 0.0
+						If EntityVisible(n\collider,Curr096\collider) Then
+							n\state = 8
+							n\EnemyX = EntityX(Curr096\collider,True)
+							n\EnemyY = EntityY(Curr096\collider,True)
+							n\EnemyZ = EntityZ(Curr096\collider,True)
+							n\state2 = 70*15.0
+							n\state3 = 0.0
 							n\PathTimer = 0.0
 							n\PathStatus = 0
-							DebugLog "096 spotted :"+n\State2
+							DebugLog "096 spotted :"+n\state2
 							;If n\MTFLeader=Null
 								If n\sounds[0] <> 0 Then FreeSound n\sounds[0] : n\sounds[0] = 0
 								n\sounds[0] = LoadSound("SFX/Character/MTF/096/Spotted"+Rand(1,2)+".ogg")
@@ -414,17 +414,17 @@ Function UpdateNPCtypeMTF(n.NPCs)
 				For n2.NPCs = Each NPCs
 					If n2\NPCtype = NPCtype049 Then
 						If OtherNPCSeesMeNPC(n2,n) Then
-							If EntityVisible(n\Collider,n2\Collider) Then
-								n\State = 4
-								n\EnemyX = EntityX(n2\Collider,True)
-								n\EnemyY = EntityY(n2\Collider,True)
-								n\EnemyZ = EntityZ(n2\Collider,True)
-								n\State2 = 70*15.0
-								n\State3 = 0.0
+							If EntityVisible(n\collider,n2\collider) Then
+								n\state = 4
+								n\EnemyX = EntityX(n2\collider,True)
+								n\EnemyY = EntityY(n2\collider,True)
+								n\EnemyZ = EntityZ(n2\collider,True)
+								n\state2 = 70*15.0
+								n\state3 = 0.0
 								n\PathTimer = 0.0
 								n\PathStatus = 0
 								n\Target = n2
-								DebugLog "049 spotted :"+n\State2
+								DebugLog "049 spotted :"+n\state2
 								;If n\MTFLeader=Null
 								;	If n\sounds[0] <> 0 Then FreeSound n\sounds[0] : n\sounds[0] = 0
 								;	n\sounds[0] = LoadSound("SFX/Character/MTF/"
@@ -502,17 +502,17 @@ Function UpdateNPCtypeMTF(n.NPCs)
 						
 						For n2.NPCs = Each NPCs
 							If n2\NPCtype = NPCtypeMTF And n2 <> n Then
-								If n2\State = 0 Then
-									If EntityDistance(n\Collider,n2\Collider)<6.0 Then
+								If n2\state = 0 Then
+									If EntityDistance(n\collider,n2\collider)<6.0 Then
 										n\PrevState = 1
 										n2\LastSeen = (70*Rnd(30,40))
 										n2\LastDist = 1
 										
-										n2\State = 1
+										n2\state = 1
 										n2\EnemyX = EntityX(mainPlayer\collider,True)
 										n2\EnemyY = EntityY(mainPlayer\collider,True)
 										n2\EnemyZ = EntityZ(mainPlayer\collider,True)
-										n2\State2 = n\State2
+										n2\state2 = n\state2
 										n2\PathTimer=0.0
 										n2\PathStatus=0
 										n2\Reload = 200-(100*SelectedDifficulty\aggressiveNPCs)
@@ -546,13 +546,13 @@ Function UpdateNPCtypeMTF(n.NPCs)
 						EndIf
 					Else
 						PositionEntity n\obj,n\EnemyX,n\EnemyY,n\EnemyZ,True
-						PointEntity n\Collider,n\obj
-						RotateEntity n\Collider,0.0,EntityYaw(n\Collider,True),0.0,True
-						n\Angle = CurveAngle(EntityYaw(n\Collider,True),n\Angle,20.0)
+						PointEntity n\collider,n\obj
+						RotateEntity n\collider,0.0,EntityYaw(n\collider,True),0.0,True
+						n\Angle = CurveAngle(EntityYaw(n\collider,True),n\Angle,20.0)
 						RotateEntity n\obj,-90.0,n\Angle,0.0,True
 						
 						n\CurrSpeed = CurveValue(n\Speed,n\CurrSpeed,20.0)
-						TranslateEntity n\Collider, Cos(EntityYaw(n\Collider,True)+90.0)*n\CurrSpeed * timing\tickDuration, 0, Sin(EntityYaw(n\Collider,True)+90.0)*n\CurrSpeed * timing\tickDuration, True
+						TranslateEntity n\collider, Cos(EntityYaw(n\collider,True)+90.0)*n\CurrSpeed * timing\tickDuration, 0, Sin(EntityYaw(n\collider,True)+90.0)*n\CurrSpeed * timing\tickDuration, True
 						AnimateNPC(n,488, 522, n\CurrSpeed*26)
 					EndIf
                 Else
@@ -567,20 +567,20 @@ Function UpdateNPCtypeMTF(n.NPCs)
 						n\PathTimer=n\PathTimer-timing\tickDuration
 						n\CurrSpeed = 0.0
 						If Rand(1,35)=1 Then
-							RotateEntity n\Collider,0.0,Rnd(360.0),0.0,True
+							RotateEntity n\collider,0.0,Rnd(360.0),0.0,True
 						EndIf
 						FinishWalking(n,488,522,n\Speed*26)
-						n\Angle = CurveAngle(EntityYaw(n\Collider,True),n\Angle,20.0)
+						n\Angle = CurveAngle(EntityYaw(n\collider,True),n\Angle,20.0)
 						RotateEntity n\obj,-90.0,n\Angle,0.0,True
 					Else
 						If n\PathStatus=2 Then
 							n\PathTimer=n\PathTimer-(timing\tickDuration*2.0) ;timer goes down fast
 							n\CurrSpeed = 0.0
 							If Rand(1,35)=1 Then
-								RotateEntity n\Collider,0.0,Rnd(360.0),0.0,True
+								RotateEntity n\collider,0.0,Rnd(360.0),0.0,True
 							EndIf
 							FinishWalking(n,488,522,n\Speed*26)
-							n\Angle = CurveAngle(EntityYaw(n\Collider,True),n\Angle,20.0)
+							n\Angle = CurveAngle(EntityYaw(n\collider,True),n\Angle,20.0)
 							RotateEntity n\obj,-90.0,n\Angle,0.0,True
 						ElseIf n\PathStatus=1 Then
 							If n\Path[n\PathLocation]=Null Then
@@ -590,19 +590,19 @@ Function UpdateNPCtypeMTF(n.NPCs)
 									n\PathLocation = n\PathLocation + 1
 								EndIf
 							Else
-								prevDist# = EntityDistance(n\Collider,n\Path[n\PathLocation]\obj)
+								prevDist# = EntityDistance(n\collider,n\Path[n\PathLocation]\obj)
 								
-								PointEntity n\Collider,n\Path[n\PathLocation]\obj
-								RotateEntity n\Collider,0.0,EntityYaw(n\Collider,True),0.0,True
-								n\Angle = CurveAngle(EntityYaw(n\Collider,True),n\Angle,20.0)
+								PointEntity n\collider,n\Path[n\PathLocation]\obj
+								RotateEntity n\collider,0.0,EntityYaw(n\collider,True),0.0,True
+								n\Angle = CurveAngle(EntityYaw(n\collider,True),n\Angle,20.0)
 								RotateEntity n\obj,-90.0,n\Angle,0.0,True
 								
 								n\CurrSpeed = CurveValue(n\Speed,n\CurrSpeed,20.0)
 								
-								TranslateEntity n\Collider, Cos(EntityYaw(n\Collider,True)+90.0)*n\CurrSpeed * timing\tickDuration, 0, Sin(EntityYaw(n\Collider,True)+90.0)*n\CurrSpeed * timing\tickDuration, True
+								TranslateEntity n\collider, Cos(EntityYaw(n\collider,True)+90.0)*n\CurrSpeed * timing\tickDuration, 0, Sin(EntityYaw(n\collider,True)+90.0)*n\CurrSpeed * timing\tickDuration, True
 								AnimateNPC(n,488, 522, n\CurrSpeed*26)
 								
-								newDist# = EntityDistance(n\Collider,n\Path[n\PathLocation]\obj)
+								newDist# = EntityDistance(n\collider,n\Path[n\PathLocation]\obj)
 								
 								;TODO: fix
 								;If (newDist<1.0 And n\Path[n\PathLocation]\door<>Null) Then
@@ -626,15 +626,15 @@ Function UpdateNPCtypeMTF(n.NPCs)
 							n\PathTimer=n\PathTimer-timing\tickDuration ;timer goes down slow
 						Else
 							PositionEntity n\obj,n\EnemyX,n\EnemyY,n\EnemyZ,True
-							If (Distance(EntityX(n\Collider,True),EntityZ(n\Collider,True),n\EnemyX,n\EnemyZ)<0.2) Or (Not EntityVisible(n\obj,n\Collider)) Then
+							If (Distance(EntityX(n\collider,True),EntityZ(n\collider,True),n\EnemyX,n\EnemyZ)<0.2) Or (Not EntityVisible(n\obj,n\collider)) Then
 								If Rand(1,35)=1 Then
-									RotateEntity n\Collider,0.0,Rnd(360.0),0.0,True
+									RotateEntity n\collider,0.0,Rnd(360.0),0.0,True
 								EndIf
 								FinishWalking(n,488,522,n\Speed*26)
 								If Rand(1,35)=1 Then
 									For wp.Waypoints = Each WayPoints
 										If (Rand(1,3)=1) Then
-											If (EntityDistance(wp\obj,n\Collider)<6.0) Then
+											If (EntityDistance(wp\obj,n\collider)<6.0) Then
 												n\EnemyX = EntityX(wp\obj,True)
 												n\EnemyY = EntityY(wp\obj,True)
 												n\EnemyZ = EntityZ(wp\obj,True)
@@ -646,13 +646,13 @@ Function UpdateNPCtypeMTF(n.NPCs)
 								EndIf
 								n\PathTimer=n\PathTimer-timing\tickDuration ;timer goes down slow
 							Else
-								PointEntity n\Collider,n\obj
-								RotateEntity n\Collider,0.0,EntityYaw(n\Collider,True),0.0,True
-								n\Angle = CurveAngle(EntityYaw(n\Collider,True),n\Angle,20.0)
+								PointEntity n\collider,n\obj
+								RotateEntity n\collider,0.0,EntityYaw(n\collider,True),0.0,True
+								n\Angle = CurveAngle(EntityYaw(n\collider,True),n\Angle,20.0)
 								RotateEntity n\obj,-90.0,n\Angle,0.0,True
 								
 								n\CurrSpeed = CurveValue(n\Speed,n\CurrSpeed,20.0)
-								TranslateEntity n\Collider, Cos(EntityYaw(n\Collider,True)+90.0)*n\CurrSpeed * timing\tickDuration, 0, Sin(EntityYaw(n\Collider,True)+90.0)*n\CurrSpeed * timing\tickDuration, True
+								TranslateEntity n\collider, Cos(EntityYaw(n\collider,True)+90.0)*n\CurrSpeed * timing\tickDuration, 0, Sin(EntityYaw(n\collider,True)+90.0)*n\CurrSpeed * timing\tickDuration, True
 								AnimateNPC(n,488, 522, n\CurrSpeed*26)
 							EndIf
 						EndIf
@@ -664,53 +664,53 @@ Function UpdateNPCtypeMTF(n.NPCs)
 						EndIf
 					EndIf
 					
-					;If EntityDistance(n\Collider,mainPlayer\collider)>HideDistance*0.7
+					;If EntityDistance(n\collider,mainPlayer\collider)>HideDistance*0.7
 					;	TeleportMTFGroup(n)
 					;EndIf
                 EndIf
                 
-                If n\State2<=0.0 And n\State2+timing\tickDuration >0.0 Then
+                If n\state2<=0.0 And n\state2+timing\tickDuration >0.0 Then
 					If n\MTFLeader = Null Then
-						DebugLog "targetlost: "+n\State2
+						DebugLog "targetlost: "+n\state2
 						PlayMTFSound(LoadTempSound("SFX/Character/MTF/Targetlost"+Rand(1,3)+".ogg"),n)
 					EndIf
-					n\State = 0
+					n\state = 0
                 EndIf
                 
 				;B3D doesn't do short-circuit evaluation, so this retarded nesting is an optimization
                 If Curr173\Idle<2 Then
-					SoundVol173# = Max(Min((Distance(EntityX(Curr173\Collider), EntityZ(Curr173\Collider), Curr173\PrevX, Curr173\PrevZ) * 2.5), 1.0), 0.0)
-					If OtherNPCSeesMeNPC(Curr173,n) Or (SoundVol173#>0.0 And EntityDistance(n\Collider,Curr173\Collider)<6.0) Then
-						If EntityVisible(n\Collider,Curr173\Collider) Or SoundVol173#>0.0 Then	
-							n\State = 2
-							n\EnemyX = EntityX(Curr173\Collider,True)
-							n\EnemyY = EntityY(Curr173\Collider,True)
-							n\EnemyZ = EntityZ(Curr173\Collider,True)
-							n\State2 = 70.0*15.0 ;give up after 15 seconds
-							DebugLog "173 spotted :"+n\State2
+					SoundVol173# = Max(Min((Distance(EntityX(Curr173\collider), EntityZ(Curr173\collider), Curr173\PrevX, Curr173\PrevZ) * 2.5), 1.0), 0.0)
+					If OtherNPCSeesMeNPC(Curr173,n) Or (SoundVol173#>0.0 And EntityDistance(n\collider,Curr173\collider)<6.0) Then
+						If EntityVisible(n\collider,Curr173\collider) Or SoundVol173#>0.0 Then	
+							n\state = 2
+							n\EnemyX = EntityX(Curr173\collider,True)
+							n\EnemyY = EntityY(Curr173\collider,True)
+							n\EnemyZ = EntityZ(Curr173\collider,True)
+							n\state2 = 70.0*15.0 ;give up after 15 seconds
+							DebugLog "173 spotted :"+n\state2
 							If n\sounds[0] <> 0 Then FreeSound n\sounds[0] : n\sounds[0] = 0
 							n\sounds[0] = LoadSound("SFX/Character/MTF/173/Spotted3.ogg")
 							PlayMTFSound(n\sounds[0], n)
-							n\State3 = 0.0
+							n\state3 = 0.0
 							n\PathTimer=0.0
 							n\PathStatus=0
 						EndIf
 					EndIf
 				EndIf
 				
-				If Curr106\State <= 0 Then
-					If OtherNPCSeesMeNPC(Curr106,n) Or EntityDistance(n\Collider,Curr106\Collider)<3.0 Then
-						If EntityVisible(n\Collider,Curr106\Collider) Then
-							n\State = 4
-							n\EnemyX = EntityX(Curr106\Collider,True)
-							n\EnemyY = EntityY(Curr106\Collider,True)
-							n\EnemyZ = EntityZ(Curr106\Collider,True)
-							n\State2 = 70*15.0
-							n\State3 = 0.0
+				If Curr106\state <= 0 Then
+					If OtherNPCSeesMeNPC(Curr106,n) Or EntityDistance(n\collider,Curr106\collider)<3.0 Then
+						If EntityVisible(n\collider,Curr106\collider) Then
+							n\state = 4
+							n\EnemyX = EntityX(Curr106\collider,True)
+							n\EnemyY = EntityY(Curr106\collider,True)
+							n\EnemyZ = EntityZ(Curr106\collider,True)
+							n\state2 = 70*15.0
+							n\state3 = 0.0
 							n\PathTimer = 0.0
 							n\PathStatus = 0
 							n\Target = Curr106
-							DebugLog "106 spotted :"+n\State2
+							DebugLog "106 spotted :"+n\state2
 							If n\MTFLeader=Null Then
 								If n\sounds[0] <> 0 Then FreeSound n\sounds[0] : n\sounds[0] = 0
 								n\sounds[0] = LoadSound("SFX/Character/MTF/106/Spotted4.ogg")
@@ -722,16 +722,16 @@ Function UpdateNPCtypeMTF(n.NPCs)
 				
 				If Curr096 <> Null Then
 					If OtherNPCSeesMeNPC(Curr096,n) Then
-						If EntityVisible(n\Collider,Curr096\Collider) Then
-							n\State = 8
-							n\EnemyX = EntityX(Curr096\Collider,True)
-							n\EnemyY = EntityY(Curr096\Collider,True)
-							n\EnemyZ = EntityZ(Curr096\Collider,True)
-							n\State2 = 70*15.0
-							n\State3 = 0.0
+						If EntityVisible(n\collider,Curr096\collider) Then
+							n\state = 8
+							n\EnemyX = EntityX(Curr096\collider,True)
+							n\EnemyY = EntityY(Curr096\collider,True)
+							n\EnemyZ = EntityZ(Curr096\collider,True)
+							n\state2 = 70*15.0
+							n\state3 = 0.0
 							n\PathTimer = 0.0
 							n\PathStatus = 0
-							DebugLog "096 spotted :"+n\State2
+							DebugLog "096 spotted :"+n\state2
 							If n\MTFLeader=Null Then
 								If n\sounds[0] <> 0 Then FreeSound n\sounds[0] : n\sounds[0] = 0
 								n\sounds[0] = LoadSound("SFX/Character/MTF/096/Spotted"+Rand(1,2)+".ogg")
@@ -744,17 +744,17 @@ Function UpdateNPCtypeMTF(n.NPCs)
 				For n2.NPCs = Each NPCs
 					If n2\NPCtype = NPCtype049 Then
 						If OtherNPCSeesMeNPC(n2,n) Then
-							If EntityVisible(n\Collider,n2\Collider) Then
-								n\State = 4
-								n\EnemyX = EntityX(n2\Collider,True)
-								n\EnemyY = EntityY(n2\Collider,True)
-								n\EnemyZ = EntityZ(n2\Collider,True)
-								n\State2 = 70*15.0
-								n\State3 = 0.0
+							If EntityVisible(n\collider,n2\collider) Then
+								n\state = 4
+								n\EnemyX = EntityX(n2\collider,True)
+								n\EnemyY = EntityY(n2\collider,True)
+								n\EnemyZ = EntityZ(n2\collider,True)
+								n\state2 = 70*15.0
+								n\state3 = 0.0
 								n\PathTimer = 0.0
 								n\PathStatus = 0
 								n\Target = n2
-								DebugLog "049 spotted :"+n\State2
+								DebugLog "049 spotted :"+n\state2
 								;If n\MTFLeader=Null
 								;	If n\sounds[0] <> 0 Then FreeSound n\sounds[0] : n\sounds[0] = 0
 								;	n\sounds[0] = LoadSound("SFX/Character/MTF/"
@@ -765,18 +765,18 @@ Function UpdateNPCtypeMTF(n.NPCs)
 						EndIf
 					ElseIf n2\NPCtype = NPCtypeZombie And n2\IsDead = False Then
 						If OtherNPCSeesMeNPC(n2,n) Then
-							If EntityVisible(n\Collider,n2\Collider) Then
-								n\State = 9
-								n\EnemyX = EntityX(n2\Collider,True)
-								n\EnemyY = EntityY(n2\Collider,True)
-								n\EnemyZ = EntityZ(n2\Collider,True)
-								n\State2 = 70*15.0
-								n\State3 = 0.0
+							If EntityVisible(n\collider,n2\collider) Then
+								n\state = 9
+								n\EnemyX = EntityX(n2\collider,True)
+								n\EnemyY = EntityY(n2\collider,True)
+								n\EnemyZ = EntityZ(n2\collider,True)
+								n\state2 = 70*15.0
+								n\state3 = 0.0
 								n\PathTimer = 0.0
 								n\PathStatus = 0
 								n\Target = n2
 								n\Reload = 70*5
-								DebugLog "049-2 spotted :"+n\State2
+								DebugLog "049-2 spotted :"+n\state2
 								;If n\MTFLeader=Null
 									If n\sounds[0] <> 0 Then FreeSound n\sounds[0] : n\sounds[0] = 0
 									n\sounds[0] = LoadSound("SFX/Character/MTF/049/Player0492_1.ogg")
@@ -788,36 +788,36 @@ Function UpdateNPCtypeMTF(n.NPCs)
 					EndIf
 				Next
 				
-                ;DebugLog Distance(EntityX(n\Collider,True),EntityZ(n\Collider,True),n\EnemyX,n\EnemyZ)
+                ;DebugLog Distance(EntityX(n\collider,True),EntityZ(n\collider,True),n\EnemyX,n\EnemyZ)
                 
                 ;[End Block]
 			Case 2 ;searching for/looking at 173
                 ;[Block]
                 If Curr173\Idle = 2 Then
-					n\State = 0
+					n\state = 0
                 Else
 					For n2.NPCs = Each NPCs
 						If n2<>n Then
 							If n2\NPCtype = NPCtypeMTF Then
-								n2\State = 2
+								n2\state = 2
 							EndIf
 						EndIf
 					Next
 					
-					Local curr173Dist# = Distance(EntityX(n\Collider,True),EntityZ(n\Collider,True),EntityX(Curr173\Collider,True),EntityZ(Curr173\Collider,True))
+					Local curr173Dist# = Distance(EntityX(n\collider,True),EntityZ(n\collider,True),EntityX(Curr173\collider,True),EntityZ(Curr173\collider,True))
 					
 					If curr173Dist<5.0 Then
 						If Curr173\Idle <> 2 Then Curr173\Idle = True
-						n\State2 = 70.0*15.0
+						n\state2 = 70.0*15.0
 						n\PathTimer = 0.0
 						Local tempDist# = 1.0
 						If n\MTFLeader<>Null Then tempDist = 2.0
 						If curr173Dist<tempDist Then
 							If n\MTFLeader = Null Then
-								n\State3=n\State3+timing\tickDuration
-								DebugLog "CONTAINING 173: "+n\State3
-								;If n\State3>=70.0*10.0 Then
-								If n\State3>=70.0*15.0 Then
+								n\state3=n\state3+timing\tickDuration
+								DebugLog "CONTAINING 173: "+n\state3
+								;If n\state3>=70.0*10.0 Then
+								If n\state3>=70.0*15.0 Then
 									Curr173\Idle = 2
 									If n\MTFLeader = Null Then Curr173\Target = n
 									If n\sounds[0] <> 0 Then FreeSound n\sounds[0] : n\sounds[0] = 0
@@ -825,46 +825,46 @@ Function UpdateNPCtypeMTF(n.NPCs)
 									PlayMTFSound(n\sounds[0], n)
 								EndIf
 							EndIf
-							PositionEntity n\obj,EntityX(Curr173\Collider,True),EntityY(Curr173\Collider,True),EntityZ(Curr173\Collider,True),True
-							PointEntity n\Collider,n\obj
-							RotateEntity n\Collider,0.0,EntityYaw(n\Collider,True),0.0,True
-							n\Angle = CurveAngle(EntityYaw(n\Collider,True),n\Angle,20.0)
+							PositionEntity n\obj,EntityX(Curr173\collider,True),EntityY(Curr173\collider,True),EntityZ(Curr173\collider,True),True
+							PointEntity n\collider,n\obj
+							RotateEntity n\collider,0.0,EntityYaw(n\collider,True),0.0,True
+							n\Angle = CurveAngle(EntityYaw(n\collider,True),n\Angle,20.0)
 							FinishWalking(n,488,522,n\Speed*26)
 							RotateEntity n\obj,-90.0,n\Angle,0.0,True
 						Else
-							PositionEntity n\obj,EntityX(Curr173\Collider,True),EntityY(Curr173\Collider,True),EntityZ(Curr173\Collider,True),True
-							PointEntity n\Collider,n\obj
-							RotateEntity n\Collider,0.0,EntityYaw(n\Collider,True),0.0,True
-							n\Angle = CurveAngle(EntityYaw(n\Collider,True),n\Angle,20.0)
+							PositionEntity n\obj,EntityX(Curr173\collider,True),EntityY(Curr173\collider,True),EntityZ(Curr173\collider,True),True
+							PointEntity n\collider,n\obj
+							RotateEntity n\collider,0.0,EntityYaw(n\collider,True),0.0,True
+							n\Angle = CurveAngle(EntityYaw(n\collider,True),n\Angle,20.0)
 							RotateEntity n\obj,-90.0,n\Angle,0.0,True
 							
 							n\CurrSpeed = CurveValue(n\Speed,n\CurrSpeed,20.0)
-							TranslateEntity n\Collider, Cos(EntityYaw(n\Collider,True)+90.0)*n\CurrSpeed * timing\tickDuration, 0, Sin(EntityYaw(n\Collider,True)+90.0)*n\CurrSpeed * timing\tickDuration, True
+							TranslateEntity n\collider, Cos(EntityYaw(n\collider,True)+90.0)*n\CurrSpeed * timing\tickDuration, 0, Sin(EntityYaw(n\collider,True)+90.0)*n\CurrSpeed * timing\tickDuration, True
 							AnimateNPC(n,488, 522, n\CurrSpeed*26)
 						EndIf
 					Else
 						If Curr173\Idle <> 2 Then Curr173\Idle = False
 						If n\PathTimer<=0.0 Then ;update path
-							n\PathStatus = FindPath(n,EntityX(Curr173\Collider,True),EntityY(Curr173\Collider,True)+0.1,EntityZ(Curr173\Collider,True))
+							n\PathStatus = FindPath(n,EntityX(Curr173\collider,True),EntityY(Curr173\collider,True)+0.1,EntityZ(Curr173\collider,True))
 							n\PathTimer = 70.0 * Rnd(6.0,10.0) ;search again after 6 seconds
 						ElseIf n\PathTimer<=70.0 * 2.5 Then
 							n\PathTimer=n\PathTimer-timing\tickDuration
 							n\CurrSpeed = 0.0
 							If Rand(1,35)=1 Then
-								RotateEntity n\Collider,0.0,Rnd(360.0),0.0,True
+								RotateEntity n\collider,0.0,Rnd(360.0),0.0,True
 							EndIf
 							FinishWalking(n,488,522,n\Speed*26)
-							n\Angle = CurveAngle(EntityYaw(n\Collider,True),n\Angle,20.0)
+							n\Angle = CurveAngle(EntityYaw(n\collider,True),n\Angle,20.0)
 							RotateEntity n\obj,-90.0,n\Angle,0.0,True
 						Else
 							If n\PathStatus=2 Then
 								n\PathTimer=n\PathTimer-(timing\tickDuration*2.0) ;timer goes down fast
 								n\CurrSpeed = 0.0
 								If Rand(1,35)=1 Then
-									RotateEntity n\Collider,0.0,Rnd(360.0),0.0,True
+									RotateEntity n\collider,0.0,Rnd(360.0),0.0,True
 								EndIf
 								FinishWalking(n,488,522,n\Speed*26)
-								n\Angle = CurveAngle(EntityYaw(n\Collider,True),n\Angle,20.0)
+								n\Angle = CurveAngle(EntityYaw(n\collider,True),n\Angle,20.0)
 								RotateEntity n\obj,-90.0,n\Angle,0.0,True
 							ElseIf n\PathStatus=1 Then
 								If n\Path[n\PathLocation]=Null Then
@@ -874,19 +874,19 @@ Function UpdateNPCtypeMTF(n.NPCs)
 										n\PathLocation = n\PathLocation + 1
 									EndIf
 								Else
-									prevDist# = EntityDistance(n\Collider,n\Path[n\PathLocation]\obj)
+									prevDist# = EntityDistance(n\collider,n\Path[n\PathLocation]\obj)
 									
-									PointEntity n\Collider,n\Path[n\PathLocation]\obj
-									RotateEntity n\Collider,0.0,EntityYaw(n\Collider,True),0.0,True
-									n\Angle = CurveAngle(EntityYaw(n\Collider,True),n\Angle,20.0)
+									PointEntity n\collider,n\Path[n\PathLocation]\obj
+									RotateEntity n\collider,0.0,EntityYaw(n\collider,True),0.0,True
+									n\Angle = CurveAngle(EntityYaw(n\collider,True),n\Angle,20.0)
 									RotateEntity n\obj,-90.0,n\Angle,0.0,True
 									
 									n\CurrSpeed = CurveValue(n\Speed,n\CurrSpeed,20.0)
 									
-									TranslateEntity n\Collider, Cos(EntityYaw(n\Collider,True)+90.0)*n\CurrSpeed * timing\tickDuration, 0, Sin(EntityYaw(n\Collider,True)+90.0)*n\CurrSpeed * timing\tickDuration, True
+									TranslateEntity n\collider, Cos(EntityYaw(n\collider,True)+90.0)*n\CurrSpeed * timing\tickDuration, 0, Sin(EntityYaw(n\collider,True)+90.0)*n\CurrSpeed * timing\tickDuration, True
 									AnimateNPC(n,488, 522, n\CurrSpeed*26)
 									
-									newDist# = EntityDistance(n\Collider,n\Path[n\PathLocation]\obj)
+									newDist# = EntityDistance(n\collider,n\Path[n\PathLocation]\obj)
 									
 									;TODO: fix
 									;If (newDist<1.0 And n\Path[n\PathLocation]\door<>Null) Then
@@ -912,10 +912,10 @@ Function UpdateNPCtypeMTF(n.NPCs)
 								n\PathTimer=n\PathTimer-(timing\tickDuration*2.0) ;timer goes down fast
 								n\CurrSpeed = 0.0
 								If Rand(1,35)=1 Then
-									RotateEntity n\Collider,0.0,Rnd(360.0),0.0,True
+									RotateEntity n\collider,0.0,Rnd(360.0),0.0,True
 								EndIf
 								FinishWalking(n,488,522,n\Speed*26)
-								n\Angle = CurveAngle(EntityYaw(n\Collider,True),n\Angle,20.0)
+								n\Angle = CurveAngle(EntityYaw(n\collider,True),n\Angle,20.0)
 								RotateEntity n\obj,-90.0,n\Angle,0.0,True
 							EndIf
 						EndIf
@@ -928,14 +928,14 @@ Function UpdateNPCtypeMTF(n.NPCs)
 				n\Angle = CurveValue(0,n\Angle,40.0)
 				
 				If n\PathStatus = 2 Then
-					n\State = 5
+					n\state = 5
 					n\CurrSpeed = 0
 				ElseIf n\PathStatus = 1 Then
 					If n\Path[n\PathLocation]=Null Then 
 						If n\PathLocation > 19 Then 
 							n\PathLocation = 0
 							n\PathStatus = 0
-							If n\LastSeen > 0 Then n\State = 5
+							If n\LastSeen > 0 Then n\state = 5
 						Else
 							n\PathLocation = n\PathLocation + 1
 						EndIf
@@ -950,12 +950,12 @@ Function UpdateNPCtypeMTF(n.NPCs)
 						;EndIf
 						
 						If dist < HideDistance*0.7 Then 
-							dist2# = EntityDistance(n\Collider,n\Path[n\PathLocation]\obj) 
+							dist2# = EntityDistance(n\collider,n\Path[n\PathLocation]\obj) 
 							
 							;If Rand(5)=1 Then 
 							;	For n2.NPCs = Each NPCs
-							;		If n2\NPCtype = n\NPCtype And n2<>n Then
-							;			If EntityDistance(n\Collider, n2\Collider)<2 Then
+							;		If n2\NPCtype = n\npcType And n2<>n Then
+							;			If EntityDistance(n\collider, n2\collider)<2 Then
 							;				n\Idle = 150
 							;			EndIf
 							;		EndIf
@@ -964,28 +964,28 @@ Function UpdateNPCtypeMTF(n.NPCs)
 							
 							PointEntity n\obj, n\Path[n\PathLocation]\obj
 							
-							RotateEntity n\Collider, 0, CurveAngle(EntityYaw(n\obj), EntityYaw(n\Collider), 10.0), 0
+							RotateEntity n\collider, 0, CurveAngle(EntityYaw(n\obj), EntityYaw(n\collider), 10.0), 0
 							If n\Idle = 0 Then
 								n\CurrSpeed = CurveValue(n\Speed*Max(Min(dist2,1.0),0.1), n\CurrSpeed, 20.0)
-								MoveEntity n\Collider, 0, 0, n\CurrSpeed * timing\tickDuration
+								MoveEntity n\collider, 0, 0, n\CurrSpeed * timing\tickDuration
 								
 								;If dist2 < (0.25+((n\Path[Min(n\PathLocation+1,19)]=Null)*0.3 * (n\ID Mod 3))) Then
-								If EntityDistance(n\Collider,n\Path[n\PathLocation]\obj)<0.5 Then
+								If EntityDistance(n\collider,n\Path[n\PathLocation]\obj)<0.5 Then
 									n\PathLocation = n\PathLocation + 1
 								EndIf
 							EndIf
 						Else
 							If Rand(20)=1 Then 
-								PositionEntity n\Collider, EntityX(n\Path[n\PathLocation]\obj,True),EntityY(n\Path[n\PathLocation]\obj,True)+0.25,EntityZ(n\Path[n\PathLocation]\obj,True),True
+								PositionEntity n\collider, EntityX(n\Path[n\PathLocation]\obj,True),EntityY(n\Path[n\PathLocation]\obj,True)+0.25,EntityZ(n\Path[n\PathLocation]\obj,True),True
 								n\PathLocation = n\PathLocation + 1
-								ResetEntity n\Collider
+								ResetEntity n\collider
 							EndIf
 						EndIf
 						
 					EndIf
 				Else
 					n\CurrSpeed = 0
-					n\State = 5
+					n\state = 5
 				EndIf
 				
 				
@@ -1016,62 +1016,62 @@ Function UpdateNPCtypeMTF(n.NPCs)
 					n\CurrSpeed = CurveValue(0, n\CurrSpeed, 20.0)
 				EndIf
 				
-				n\Angle = EntityYaw(n\Collider)
+				n\Angle = EntityYaw(n\collider)
 				;[End Block]
 			Case 4 ;SCP-106/049 detected
 				;[Block]
 				n\Speed = 0.03
-                n\State2=n\State2-timing\tickDuration
-				If n\State2 > 0.0 Then
+                n\state2=n\state2-timing\tickDuration
+				If n\state2 > 0.0 Then
 					If OtherNPCSeesMeNPC(n\Target,n) Then
-						n\State2 = 70*15
+						n\state2 = 70*15
 					EndIf
 					
-					If EntityDistance(n\Target\Collider,n\Collider)>HideDistance Then
-						If n\State2 > 70 Then
-							n\State2 = 70
+					If EntityDistance(n\Target\collider,n\collider)>HideDistance Then
+						If n\state2 > 70 Then
+							n\state2 = 70
 						EndIf
 					EndIf
 					
-					If EntityDistance(n\Target\Collider,n\Collider)<3.0 And n\State3 >= 0.0 Then
-						n\State3 = 70*5
+					If EntityDistance(n\Target\collider,n\collider)<3.0 And n\state3 >= 0.0 Then
+						n\state3 = 70*5
 					EndIf
 					
-					If n\State3 > 0.0 Then
+					If n\state3 > 0.0 Then
 						n\PathStatus = 0
 						n\PathLocation = 0
 						n\Speed = 0.02
-						PointEntity n\Collider,n\Target\Collider
-						RotateEntity n\Collider,0.0,EntityYaw(n\Collider,True),0.0,True
-						n\Angle = CurveAngle(EntityYaw(n\Collider,True),n\Angle,20.0)
+						PointEntity n\collider,n\Target\collider
+						RotateEntity n\collider,0.0,EntityYaw(n\collider,True),0.0,True
+						n\Angle = CurveAngle(EntityYaw(n\collider,True),n\Angle,20.0)
 						RotateEntity n\obj,-90.0,n\Angle,0.0,True
 						n\CurrSpeed = CurveValue(-n\Speed,n\CurrSpeed,20.0)
-						TranslateEntity n\Collider, Cos(EntityYaw(n\Collider,True)+90.0)*n\CurrSpeed * timing\tickDuration, 0, Sin(EntityYaw(n\Collider,True)+90.0)*n\CurrSpeed * timing\tickDuration, True
+						TranslateEntity n\collider, Cos(EntityYaw(n\collider,True)+90.0)*n\CurrSpeed * timing\tickDuration, 0, Sin(EntityYaw(n\collider,True)+90.0)*n\CurrSpeed * timing\tickDuration, True
 						AnimateNPC(n,522, 488, n\CurrSpeed*26)
 						
 						n\PathTimer = 1.0
 						
-						n\State3=Max(n\State3-timing\tickDuration,0)
+						n\state3=Max(n\state3-timing\tickDuration,0)
 						
-						HideEntity n\Collider
-						TurnEntity n\Collider,0,180,0
-						EntityPick(n\Collider, 1.0)
+						HideEntity n\collider
+						TurnEntity n\collider,0,180,0
+						EntityPick(n\collider, 1.0)
 						If PickedEntity() <> 0 Then
-							n\State3 = -70*2
+							n\state3 = -70*2
 						EndIf
-						ShowEntity n\Collider
-						TurnEntity n\Collider,0,180,0
-					ElseIf n\State3 < 0.0 Then
-						n\State3 = Min(n\State3+timing\tickDuration,0)
+						ShowEntity n\collider
+						TurnEntity n\collider,0,180,0
+					ElseIf n\state3 < 0.0 Then
+						n\state3 = Min(n\state3+timing\tickDuration,0)
 					EndIf
 					
 					If n\PathTimer<=0.0 Then
 						If n\MTFLeader<>Null Then
-							n\PathStatus = FindPath(n,EntityX(n\MTFLeader\Collider,True),EntityY(n\MTFLeader\Collider,True)+0.1,EntityZ(n\MTFLeader\Collider,True))
+							n\PathStatus = FindPath(n,EntityX(n\MTFLeader\collider,True),EntityY(n\MTFLeader\collider,True)+0.1,EntityZ(n\MTFLeader\collider,True))
 						Else
 							For r = Each Rooms
-								If ((Abs(r\x-EntityX(n\Collider,True))>12.0) Or (Abs(r\z-EntityZ(n\Collider,True))>12.0)) And (Rand(1,Max(4-Int(Abs(r\z-EntityZ(n\Collider,True)/8.0)),2))=1) Then
-									If EntityDistance(r\obj,n\Target\Collider)>6.0 Then
+								If ((Abs(r\x-EntityX(n\collider,True))>12.0) Or (Abs(r\z-EntityZ(n\collider,True))>12.0)) And (Rand(1,Max(4-Int(Abs(r\z-EntityZ(n\collider,True)/8.0)),2))=1) Then
+									If EntityDistance(r\obj,n\Target\collider)>6.0 Then
 										x = r\x
 										y = 0.1
 										z = r\z
@@ -1090,7 +1090,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 							If n\PathLocation<19 Then
 								If (n\Path[n\PathLocation]<>Null) And (n\Path[n\PathLocation+1]<>Null) Then
 									;If (n\Path[n\PathLocation]\door=Null) Then ;TODO: fix?
-									If Abs(DeltaYaw(n\Collider,n\Path[n\PathLocation]\obj))>Abs(DeltaYaw(n\Collider,n\Path[n\PathLocation+1]\obj)) Then
+									If Abs(DeltaYaw(n\collider,n\Path[n\PathLocation]\obj))>Abs(DeltaYaw(n\collider,n\Path[n\PathLocation+1]\obj)) Then
 										n\PathLocation=n\PathLocation+1
 									EndIf
 									;EndIf
@@ -1107,18 +1107,18 @@ Function UpdateNPCtypeMTF(n.NPCs)
 									n\PathLocation = n\PathLocation + 1
 								EndIf
 							Else
-								prevDist# = EntityDistance(n\Collider,n\Path[n\PathLocation]\obj)
+								prevDist# = EntityDistance(n\collider,n\Path[n\PathLocation]\obj)
 								
-								PointEntity n\Collider,n\Path[n\PathLocation]\obj
-								RotateEntity n\Collider,0.0,EntityYaw(n\Collider,True),0.0,True
-								n\Angle = CurveAngle(EntityYaw(n\Collider,True),n\Angle,20.0)
+								PointEntity n\collider,n\Path[n\PathLocation]\obj
+								RotateEntity n\collider,0.0,EntityYaw(n\collider,True),0.0,True
+								n\Angle = CurveAngle(EntityYaw(n\collider,True),n\Angle,20.0)
 								RotateEntity n\obj,-90.0,n\Angle,0.0,True
 								
 								n\CurrSpeed = CurveValue(n\Speed,n\CurrSpeed,20.0)
-								TranslateEntity n\Collider, Cos(EntityYaw(n\Collider,True)+90.0)*n\CurrSpeed * timing\tickDuration, 0, Sin(EntityYaw(n\Collider,True)+90.0)*n\CurrSpeed * timing\tickDuration, True
+								TranslateEntity n\collider, Cos(EntityYaw(n\collider,True)+90.0)*n\CurrSpeed * timing\tickDuration, 0, Sin(EntityYaw(n\collider,True)+90.0)*n\CurrSpeed * timing\tickDuration, True
 								AnimateNPC(n,488, 522, n\CurrSpeed*26) ;Placeholder (until running animation has been implemented)
 								
-								newDist# = EntityDistance(n\Collider,n\Path[n\PathLocation]\obj)
+								newDist# = EntityDistance(n\collider,n\Path[n\PathLocation]\obj)
 								
 								;TODO: fix and remove duplicates maybe???
 								;If (newDist<2.0 And n\Path[n\PathLocation]\door<>Null) Then
@@ -1144,7 +1144,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 						EndIf
 					EndIf
 				Else
-					n\State = 0
+					n\state = 0
 				EndIf
 				;[End Block]
 			Case 5 ;looking at some other target than the player
@@ -1156,13 +1156,13 @@ Function UpdateNPCtypeMTF(n.NPCs)
 					AnimateNPC(n, 346, 351, 0.2, False)
 				EndIf
 				
-				If Abs(EntityX(target)-EntityX(n\Collider)) < 55.0 And Abs(EntityZ(target)-EntityZ(n\Collider)) < 55.0 And Abs(EntityY(target)-EntityY(n\Collider))< 20.0 Then
+				If Abs(EntityX(target)-EntityX(n\collider)) < 55.0 And Abs(EntityZ(target)-EntityZ(n\collider)) < 55.0 And Abs(EntityY(target)-EntityY(n\collider))< 20.0 Then
 					
 					PointEntity n\obj, target
-					RotateEntity n\Collider, 0, CurveAngle(EntityYaw(n\obj),EntityYaw(n\Collider),30.0), 0, True
+					RotateEntity n\collider, 0, CurveAngle(EntityYaw(n\obj),EntityYaw(n\collider),30.0), 0, True
 					
 					If n\PathTimer = 0 Then
-						n\PathStatus = EntityVisible(n\Collider,target)
+						n\PathStatus = EntityVisible(n\collider,target)
 						n\pathTimer = Rand(100,200)
 					Else
 						n\pathTimer = Min(n\pathTimer-timing\tickDuration,0.0)
@@ -1175,11 +1175,11 @@ Function UpdateNPCtypeMTF(n.NPCs)
 						;	pvt = CreatePivot()
 						;	
 						;	PositionEntity pvt, EntityX(n\obj),EntityY(n\obj), EntityZ(n\obj)
-						;	RotateEntity pvt, EntityPitch(n\Collider), EntityYaw(n\Collider),0
+						;	RotateEntity pvt, EntityPitch(n\collider), EntityYaw(n\collider),0
 						;	MoveEntity (pvt,0.8*0.079, 10.75*0.079, 6.9*0.079)
 						;	
-						;	If WrapAngle(EntityYaw(pvt)-EntityYaw(n\Collider))<5 Then
-						;		PlayRangedSound(GunshotSFX, mainPlayer\cam, n\Collider, 20)
+						;	If WrapAngle(EntityYaw(pvt)-EntityYaw(n\collider))<5 Then
+						;		PlayRangedSound(GunshotSFX, mainPlayer\cam, n\collider, 20)
 						;		p.Particles = CreateParticle(EntityX(n\obj, True), EntityY(n\obj, True), EntityZ(n\obj, True), 1, 0.2, 0.0, 5)
 						;		PositionEntity(p\pvt, EntityX(pvt), EntityY(pvt), EntityZ(pvt))
 						;		
@@ -1207,7 +1207,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 				
 				If n\Reload =< 0 And (Not mainPlayer\dead) Then
 					If EntityVisible(n\collider, mainPlayer\collider) Then
-						;angle# = WrapAngle(angle - EntityYaw(n\Collider))
+						;angle# = WrapAngle(angle - EntityYaw(n\collider))
 						;If angle < 5 Or angle > 355 Then
 						If (Abs(DeltaYaw(n\collider,mainPlayer\collider))<50.0) Then
 							;prev% = KillTimer
@@ -1257,7 +1257,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 					
 					FreeEntity(pvt)
 					n\Reload = 7
-				End If
+				EndIf
 				;[End Block]
 			Case 8 ;SCP-096 spotted
 				;[Block]
@@ -1267,10 +1267,10 @@ Function UpdateNPCtypeMTF(n.NPCs)
 				n\ManipulationType = 2
                 If n\PathTimer<=0.0 Then ;update path
 					If n\MTFLeader<>Null Then ;i'll follow the leader
-						n\PathStatus = FindPath(n,EntityX(n\MTFLeader\Collider,True),EntityY(n\MTFLeader\Collider,True)+0.1,EntityZ(n\MTFLeader\Collider,True)) ;whatever you say boss
+						n\PathStatus = FindPath(n,EntityX(n\MTFLeader\collider,True),EntityY(n\MTFLeader\collider,True)+0.1,EntityZ(n\MTFLeader\collider,True)) ;whatever you say boss
 					Else ;i am the leader
 						For r = Each Rooms
-							If ((Abs(r\x-EntityX(n\Collider,True))>12.0) Or (Abs(r\z-EntityZ(n\Collider,True))>12.0)) And (Rand(1,Max(4-Int(Abs(r\z-EntityZ(n\Collider,True)/8.0)),2))=1) Then
+							If ((Abs(r\x-EntityX(n\collider,True))>12.0) Or (Abs(r\z-EntityZ(n\collider,True))>12.0)) And (Rand(1,Max(4-Int(Abs(r\z-EntityZ(n\collider,True)/8.0)),2))=1) Then
 								x = r\x
 								y = 0.1
 								z = r\z
@@ -1288,7 +1288,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 						If n\PathLocation<19 Then
 							If (n\Path[n\PathLocation]<>Null) And (n\Path[n\PathLocation+1]<>Null) Then
 								;If (n\Path[n\PathLocation]\door=Null) Then ;TODO: fix?
-								If Abs(DeltaYaw(n\Collider,n\Path[n\PathLocation]\obj))>Abs(DeltaYaw(n\Collider,n\Path[n\PathLocation+1]\obj)) Then
+								If Abs(DeltaYaw(n\collider,n\Path[n\PathLocation]\obj))>Abs(DeltaYaw(n\collider,n\Path[n\PathLocation+1]\obj)) Then
 									n\PathLocation=n\PathLocation+1
 								EndIf
 								;EndIf
@@ -1300,20 +1300,20 @@ Function UpdateNPCtypeMTF(n.NPCs)
 					n\PathTimer=n\PathTimer-timing\tickDuration
 					n\CurrSpeed = 0.0
 					;If Rand(1,35)=1 Then
-					;	RotateEntity n\Collider,0.0,Rnd(360.0),0.0,True
+					;	RotateEntity n\collider,0.0,Rnd(360.0),0.0,True
 					;EndIf
 					FinishWalking(n,488,522,n\Speed*26)
-					n\Angle = CurveAngle(EntityYaw(n\Collider,True),n\Angle,20.0)
+					n\Angle = CurveAngle(EntityYaw(n\collider,True),n\Angle,20.0)
 					RotateEntity n\obj,-90.0,n\Angle,0.0,True
                 Else
 					If n\PathStatus=2 Then
 						n\PathTimer=n\PathTimer-(timing\tickDuration*2.0) ;timer goes down fast
 						n\CurrSpeed = 0.0
 						;If Rand(1,35)=1 Then
-						;	RotateEntity n\Collider,0.0,Rnd(360.0),0.0,True
+						;	RotateEntity n\collider,0.0,Rnd(360.0),0.0,True
 						;EndIf
 						FinishWalking(n,488,522,n\Speed*26)
-						n\Angle = CurveAngle(EntityYaw(n\Collider,True),n\Angle,20.0)
+						n\Angle = CurveAngle(EntityYaw(n\collider,True),n\Angle,20.0)
 						RotateEntity n\obj,-90.0,n\Angle,0.0,True
 					ElseIf n\PathStatus=1 Then
 						If n\Path[n\PathLocation]=Null Then
@@ -1323,19 +1323,19 @@ Function UpdateNPCtypeMTF(n.NPCs)
 								n\PathLocation = n\PathLocation + 1
 							EndIf
 						Else
-							prevDist# = EntityDistance(n\Collider,n\Path[n\PathLocation]\obj)
+							prevDist# = EntityDistance(n\collider,n\Path[n\PathLocation]\obj)
 							
-							PointEntity n\Collider,n\Path[n\PathLocation]\obj
-							RotateEntity n\Collider,0.0,EntityYaw(n\Collider,True),0.0,True
-							n\Angle = CurveAngle(EntityYaw(n\Collider,True),n\Angle,20.0)
+							PointEntity n\collider,n\Path[n\PathLocation]\obj
+							RotateEntity n\collider,0.0,EntityYaw(n\collider,True),0.0,True
+							n\Angle = CurveAngle(EntityYaw(n\collider,True),n\Angle,20.0)
 							RotateEntity n\obj,-90.0,n\Angle,0.0,True
 							
 							n\CurrSpeed = CurveValue(n\Speed,n\CurrSpeed,20.0)
-							;MoveEntity n\Collider, 0, 0, n\CurrSpeed * timing\tickDuration
-							TranslateEntity n\Collider, Cos(EntityYaw(n\Collider,True)+90.0)*n\CurrSpeed * timing\tickDuration, 0, Sin(EntityYaw(n\Collider,True)+90.0)*n\CurrSpeed * timing\tickDuration, True
+							;MoveEntity n\collider, 0, 0, n\CurrSpeed * timing\tickDuration
+							TranslateEntity n\collider, Cos(EntityYaw(n\collider,True)+90.0)*n\CurrSpeed * timing\tickDuration, 0, Sin(EntityYaw(n\collider,True)+90.0)*n\CurrSpeed * timing\tickDuration, True
 							AnimateNPC(n,488, 522, n\CurrSpeed*26)
 							
-							newDist# = EntityDistance(n\Collider,n\Path[n\PathLocation]\obj)
+							newDist# = EntityDistance(n\collider,n\Path[n\PathLocation]\obj)
 							
 							;TODO: fix AND REMOVE DUPLICATES OMG
 							;If (newDist<1.0 And n\Path[n\PathLocation]\door<>Null) Then
@@ -1361,20 +1361,20 @@ Function UpdateNPCtypeMTF(n.NPCs)
 						n\PathTimer=n\PathTimer-(timing\tickDuration*2.0) ;timer goes down fast
 						If n\MTFLeader = Null Then
 							;If Rand(1,35)=1 Then
-							;	RotateEntity n\Collider,0.0,Rnd(360.0),0.0,True
+							;	RotateEntity n\collider,0.0,Rnd(360.0),0.0,True
 							;EndIf
 							FinishWalking(n,488,522,n\Speed*26)
 							n\CurrSpeed = 0.0
-						ElseIf EntityDistance(n\Collider,n\MTFLeader\Collider)>1.0 Then
-							PointEntity n\Collider,n\MTFLeader\Collider
-							RotateEntity n\Collider,0.0,EntityYaw(n\Collider,True),0.0,True
+						ElseIf EntityDistance(n\collider,n\MTFLeader\collider)>1.0 Then
+							PointEntity n\collider,n\MTFLeader\collider
+							RotateEntity n\collider,0.0,EntityYaw(n\collider,True),0.0,True
 							
 							n\CurrSpeed = CurveValue(n\Speed,n\CurrSpeed,20.0)
-							TranslateEntity n\Collider, Cos(EntityYaw(n\Collider,True)+90.0)*n\CurrSpeed * timing\tickDuration, 0, Sin(EntityYaw(n\Collider,True)+90.0)*n\CurrSpeed * timing\tickDuration, True
+							TranslateEntity n\collider, Cos(EntityYaw(n\collider,True)+90.0)*n\CurrSpeed * timing\tickDuration, 0, Sin(EntityYaw(n\collider,True)+90.0)*n\CurrSpeed * timing\tickDuration, True
 							AnimateNPC(n,488, 522, n\currSpeed*26)
 						Else
 							;If Rand(1,35)=1 Then
-							;	RotateEntity n\Collider,0.0,Rnd(360.0),0.0,True
+							;	RotateEntity n\collider,0.0,Rnd(360.0),0.0,True
 							;EndIf
 							FinishWalking(n,488,522,n\speed*26)
 							n\currSpeed = 0.0
@@ -1415,7 +1415,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 						AnimateNPC(n, 346, 351, 0.2, False)
 					EndIf
 					If n\Reload =< 0 And n\target\IsDead = False Then
-						;angle# = WrapAngle(angle - EntityYaw(n\Collider))
+						;angle# = WrapAngle(angle - EntityYaw(n\collider))
 						;If angle < 5 Or angle > 355 Then
 						If (Abs(DeltaYaw(n\collider,n\target\collider))<50.0) Then
 							;prev% = KillTimer
@@ -1441,7 +1441,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 								EndIf
 								SetNPCFrame(n\Target,133)
 								n\Target\IsDead = True
-								n\State = 0
+								n\state = 0
 							EndIf
 							n\Reload = 7
 							
@@ -1451,7 +1451,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 					n\PathStatus = 0
 				Else
 					If n\PathTimer<=0.0 Then
-						n\PathStatus = FindPath(n,EntityX(n\Target\Collider),EntityY(n\Target\Collider),EntityZ(n\Target\Collider))
+						n\PathStatus = FindPath(n,EntityX(n\Target\collider),EntityY(n\Target\collider),EntityZ(n\Target\collider))
 						If n\PathStatus = 1 Then
 							While n\Path[n\PathLocation]=Null
 								If n\PathLocation>19 Then Exit
@@ -1460,7 +1460,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 							If n\PathLocation<19 Then
 								If (n\Path[n\PathLocation]<>Null) And (n\Path[n\PathLocation+1]<>Null) Then
 									;If (n\Path[n\PathLocation]\door=Null) Then ;TODO: fix
-									If Abs(DeltaYaw(n\Collider,n\Path[n\PathLocation]\obj))>Abs(DeltaYaw(n\Collider,n\Path[n\PathLocation+1]\obj)) Then
+									If Abs(DeltaYaw(n\collider,n\Path[n\PathLocation]\obj))>Abs(DeltaYaw(n\collider,n\Path[n\PathLocation+1]\obj)) Then
 										n\PathLocation=n\PathLocation+1
 									EndIf
 									;EndIf
@@ -1477,18 +1477,18 @@ Function UpdateNPCtypeMTF(n.NPCs)
 									n\PathLocation = n\PathLocation + 1
 								EndIf
 							Else
-								prevDist# = EntityDistance(n\Collider,n\Path[n\PathLocation]\obj)
+								prevDist# = EntityDistance(n\collider,n\Path[n\PathLocation]\obj)
 								
-								PointEntity n\Collider,n\Path[n\PathLocation]\obj
-								RotateEntity n\Collider,0.0,EntityYaw(n\Collider,True),0.0,True
-								n\Angle = CurveAngle(EntityYaw(n\Collider,True),n\Angle,20.0)
+								PointEntity n\collider,n\Path[n\PathLocation]\obj
+								RotateEntity n\collider,0.0,EntityYaw(n\collider,True),0.0,True
+								n\Angle = CurveAngle(EntityYaw(n\collider,True),n\Angle,20.0)
 								RotateEntity n\obj,-90.0,n\Angle,0.0,True
 								
 								n\CurrSpeed = CurveValue(n\Speed,n\CurrSpeed,20.0)
-								TranslateEntity n\Collider, Cos(EntityYaw(n\Collider,True)+90.0)*n\CurrSpeed * timing\tickDuration, 0, Sin(EntityYaw(n\Collider,True)+90.0)*n\CurrSpeed * timing\tickDuration, True
+								TranslateEntity n\collider, Cos(EntityYaw(n\collider,True)+90.0)*n\CurrSpeed * timing\tickDuration, 0, Sin(EntityYaw(n\collider,True)+90.0)*n\CurrSpeed * timing\tickDuration, True
 								AnimateNPC(n,488, 522, n\CurrSpeed*26)
 								
-								newDist# = EntityDistance(n\Collider,n\Path[n\PathLocation]\obj)
+								newDist# = EntityDistance(n\collider,n\Path[n\PathLocation]\obj)
 								
 								;TODO: fix
 								;If (newDist<1.0 And n\Path[n\PathLocation]\door<>Null) Then
@@ -1517,29 +1517,29 @@ Function UpdateNPCtypeMTF(n.NPCs)
 		
 		If n\CurrSpeed > 0.01 Then
 			If prevFrame > 500 And n\Frame<495 Then
-				PlayRangedSound(sndManager\footstepMetal[Rand(0,7)]\internal, mainPlayer\cam, n\Collider, 8.0, Rnd(0.5,0.7))
+				PlayRangedSound(sndManager\footstepMetal[Rand(0,7)]\internal, mainPlayer\cam, n\collider, 8.0, Rnd(0.5,0.7))
 			ElseIf prevFrame < 505 And n\Frame=>505 Then
-				PlayRangedSound(sndManager\footstepMetal[Rand(0,7)]\internal, mainPlayer\cam, n\Collider, 8.0, Rnd(0.5,0.7))
+				PlayRangedSound(sndManager\footstepMetal[Rand(0,7)]\internal, mainPlayer\cam, n\collider, 8.0, Rnd(0.5,0.7))
 			EndIf
 		EndIf
 		
-		If NoTarget And n\State = 1 Then n\State = 0
+		If NoTarget And n\state = 1 Then n\state = 0
 		
-		If n\State <> 3 And n\State <> 5 And n\State <> 6 And n\State <> 7 Then
+		If n\state <> 3 And n\state <> 5 And n\state <> 6 And n\state <> 7 Then
 			If n\MTFLeader<>Null Then
-				If EntityDistance(n\Collider,n\MTFLeader\Collider)<0.7 Then
-					PointEntity n\Collider,n\MTFLeader\Collider
-					RotateEntity n\Collider,0.0,EntityYaw(n\Collider,True),0.0,True
-					n\Angle = CurveAngle(EntityYaw(n\Collider,True),n\Angle,20.0)
+				If EntityDistance(n\collider,n\MTFLeader\collider)<0.7 Then
+					PointEntity n\collider,n\MTFLeader\collider
+					RotateEntity n\collider,0.0,EntityYaw(n\collider,True),0.0,True
+					n\Angle = CurveAngle(EntityYaw(n\collider,True),n\Angle,20.0)
 					
-					TranslateEntity n\Collider, Cos(EntityYaw(n\Collider,True)-45)* 0.01 * timing\tickDuration, 0, Sin(EntityYaw(n\Collider,True)-45)* 0.01 * timing\tickDuration, True
+					TranslateEntity n\collider, Cos(EntityYaw(n\collider,True)-45)* 0.01 * timing\tickDuration, 0, Sin(EntityYaw(n\collider,True)-45)* 0.01 * timing\tickDuration, True
 				EndIf
 			Else
 				For n2.NPCs = Each NPCs
 					If n2<>n And n2\IsDead=False Then
-						If Abs(DeltaYaw(n\Collider,n2\Collider))<80.0 Then
-							If EntityDistance(n\Collider,n2\Collider)<0.7 Then							
-								TranslateEntity n2\Collider, Cos(EntityYaw(n\Collider,True)+90)* 0.01 * timing\tickDuration, 0, Sin(EntityYaw(n\Collider,True)+90)* 0.01 * timing\tickDuration, True
+						If Abs(DeltaYaw(n\collider,n2\collider))<80.0 Then
+							If EntityDistance(n\collider,n2\collider)<0.7 Then							
+								TranslateEntity n2\collider, Cos(EntityYaw(n\collider,True)+90)* 0.01 * timing\tickDuration, 0, Sin(EntityYaw(n\collider,True)+90)* 0.01 * timing\tickDuration, True
 							EndIf
 						EndIf
 					EndIf
@@ -1548,15 +1548,15 @@ Function UpdateNPCtypeMTF(n.NPCs)
 		EndIf
 		
 		;teleport back to the facility if fell through the floor
-		If n\State <> 6 And n\State <> 7 Then
-			If (EntityY(n\Collider) < -10.0) Then
+		If n\state <> 6 And n\state <> 7 Then
+			If (EntityY(n\collider) < -10.0) Then
 				TeleportCloser(n)
 			EndIf
 		EndIf
 		
 		RotateEntity n\obj,-90.0,n\Angle,0.0,True
 		
-		PositionEntity n\obj,EntityX(n\Collider,True),EntityY(n\Collider,True)-0.15,EntityZ(n\Collider,True),True
+		PositionEntity n\obj,EntityX(n\collider,True),EntityY(n\collider,True)-0.15,EntityZ(n\collider,True),True
 		
 	EndIf
 End Function

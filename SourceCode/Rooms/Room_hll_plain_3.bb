@@ -28,28 +28,28 @@ Function UpdateEvent106victim(e.Events)
 			If e\EventState>200 Then
 				If e\room\NPC[0]=Null Then
 					e\room\NPC[0]=CreateNPC(NPCtypeD, EntityX(e\room\obj), 900.0*RoomScale, EntityZ(e\room\obj))
-					RotateEntity e\room\NPC[0]\Collider, 0, Rnd(360), 0, True
+					RotateEntity e\room\NPC[0]\collider, 0, Rnd(360), 0, True
 					tex=LoadTexture("GFX/NPCs/106victim.jpg")
 					e\room\NPC[0]\texture = "GFX/NPCs/106victim.jpg"
 					EntityTexture e\room\NPC[0]\obj, tex
 					FreeTexture tex
-					e\room\NPC[0]\State=6
+					e\room\NPC[0]\state=6
 					
 					;PlaySound2 HorrorSFX(0)
 					;TODO: fix
-					;PlayRangedSound(DecaySFX(2), mainPlayer\cam, e\room\NPC[0]\Collider, 15.0)
+					;PlayRangedSound(DecaySFX(2), mainPlayer\cam, e\room\NPC[0]\collider, 15.0)
 				EndIf
 				
-				EntityType e\room\NPC[0]\Collider,HIT_PLAYER
-				If EntityY(e\room\NPC[0]\Collider)>0.35 Then
+				EntityType e\room\NPC[0]\collider,HIT_PLAYER
+				If EntityY(e\room\NPC[0]\collider)>0.35 Then
 					AnimateNPC(e\room\NPC[0], 1, 10, 0.12, False)
-					dist# = EntityDistance(mainPlayer\collider,e\room\NPC[0]\Collider)
+					dist# = EntityDistance(mainPlayer\collider,e\room\NPC[0]\collider)
 					If dist<0.8 Then ;get the player out of the way
-						fdir# = GetAngle(EntityX(mainPlayer\collider,True),EntityZ(mainPlayer\collider,True),EntityX(e\room\NPC[0]\Collider,True),EntityZ(e\room\NPC[0]\Collider,True))
+						fdir# = GetAngle(EntityX(mainPlayer\collider,True),EntityZ(mainPlayer\collider,True),EntityX(e\room\NPC[0]\collider,True),EntityZ(e\room\NPC[0]\collider,True))
 						TranslateEntity mainPlayer\collider,Cos(-fdir+90)*(dist-0.8)*(dist-0.8),0,Sin(-fdir+90)*(dist-0.8)*(dist-0.8)
 					EndIf
 					
-					If EntityY(e\room\NPC[0]\Collider)>0.6 Then EntityType e\room\NPC[0]\Collider,0
+					If EntityY(e\room\NPC[0]\collider)>0.6 Then EntityType e\room\NPC[0]\collider,0
 				Else
 					e\EventState=e\EventState+timing\tickDuration
 					AnimateNPC(e\room\NPC[0], 11, 19, 0.25, False)

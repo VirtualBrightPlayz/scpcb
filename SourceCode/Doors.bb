@@ -7,27 +7,27 @@ Type Doors
 	Field locked%, open%, angle%, openstate#, fastopen%
 	Field dir%
 	Field timer%, timerstate#
-	Field KeyCard%
+	Field keyCard%
 	Field room.Rooms
 	
 	Field dist#
 	
 	Field Code$
 	
-	Field ID%
+	Field id%
 	
-	Field Level%
-	Field LevelDest%
+	Field level%
+	Field levelDest%
 	
-	Field AutoClose%
+	Field autoClose%
 	
-	Field LinkedDoor.Doors
+	Field linkedDoor.Doors
 	
-	Field IsElevatorDoor% = False
+	Field isElevatorDoor% = False
 	
-	Field MTFClose% = True
+	Field mtfClose% = True
 	;TODO: Not needed?
-	Field NPCCalledElevator% = False
+	Field npcCalledElevator% = False
 End Type 
 
 Dim BigDoorOBJ.MarkedForRemoval(2) ;yo yeye alright
@@ -46,7 +46,7 @@ Function CreateDoor.Doors(lvl, x#, y#, z#, angle#, room.Rooms, dopen% = False,  
 	Local contDoorRight% = GrabMesh("GFX/Map/Meshes/ContDoorRight.b3d")
 
 	Local hczDoorObj%[2]
-	For i=0 to 1
+	For i=0 To 1
 		hczDoorObj[i] = GrabMesh("GFX/Map/Meshes/heavydoor" + Str(i + 1) + ".b3d")
 	Next
 	
@@ -77,7 +77,7 @@ Function CreateDoor.Doors(lvl, x#, y#, z#, angle#, room.Rooms, dopen% = False,  
 		
 		ScaleEntity(d\obj2, (204.0 * RoomScale) / MeshWidth(d\obj), 312.0 * RoomScale / MeshHeight(d\obj), 16.0 * RoomScale / MeshDepth(d\obj))
 		;entityType d\obj2, HIT_MAP
-	End If
+	EndIf
 	
 	;scaleentity(d\obj, 0.1, 0.1, 0.1)
 	PositionEntity d\frameobj, x, y, z	
@@ -111,7 +111,7 @@ Function CreateDoor.Doors(lvl, x#, y#, z#, angle#, room.Rooms, dopen% = False,  
 				DropAsset(buttonScannerObj)
 			Else
 				d\buttons[i] = CopyEntity(buttonObj)
-			End If
+			EndIf
 		EndIf
 		
 		ScaleEntity(d\buttons[i], 0.03, 0.03, 0.03)
@@ -126,7 +126,7 @@ Function CreateDoor.Doors(lvl, x#, y#, z#, angle#, room.Rooms, dopen% = False,  
 		PositionEntity d\buttons[0], x + 0.6, y + 0.7, z - 0.1
 		PositionEntity d\buttons[1], x - 0.6, y + 0.7, z + 0.1
 		RotateEntity d\buttons[1], 0, 180, 0		
-	End If
+	EndIf
 	EntityParent(d\buttons[0], d\frameobj)
 	EntityParent(d\buttons[1], d\frameobj)
 	EntityPickMode(d\buttons[0], 2)
@@ -158,7 +158,7 @@ Function CreateDoor.Doors(lvl, x#, y#, z#, angle#, room.Rooms, dopen% = False,  
 	If d\obj2 <> 0 Then
 		EntityPickMode(d\obj2, 3)
 		MakeCollBox(d\obj2)
-	End If
+	EndIf
 	
 	EntityPickMode d\frameobj,2
 	
@@ -208,7 +208,7 @@ Function UpdateDoors()
 			EndIf
 			
 			;TODO: this is cancer
-			If mainPlayer\currRoom\RoomTemplate\Name$ = "room2sl" Then
+			If mainPlayer\currRoom\RoomTemplate\name$ = "room2sl" Then
 				If ValidRoom2slCamRoom(d\room) Then
 					If d\obj <> 0 Then ShowEntity d\obj
 					If d\frameobj <> 0 Then ShowEntity d\frameobj
@@ -248,8 +248,8 @@ Function UpdateDoors()
 											mainPlayer\closestDoor = d
 										Else
 											If dist < EntityDistance(mainPlayer\collider, mainPlayer\closestButton) Then mainPlayer\closestButton = d\buttons[i] : mainPlayer\closestDoor = d
-										End If							
-									End If
+										EndIf							
+									EndIf
 									
 									FreeEntity temp
 									
@@ -311,8 +311,8 @@ Function UpdateDoors()
 							End Select
 							d\AutoClose = False
 						EndIf
-					End If				
-				End If
+					EndIf				
+				EndIf
 			Else
 				If d\openstate > 0 Then
 					Select d\dir
@@ -375,8 +375,8 @@ Function UpdateDoors()
 						MoveEntity(d\obj, 0, 0, 8.0 * RoomScale)
 						MoveEntity(d\obj2, 0, 0, 8.0 * RoomScale)
 					EndIf	
-				End If
-			End If
+				EndIf
+			EndIf
 			
 		EndIf
 		
@@ -393,7 +393,7 @@ Function UseDoor(d.Doors, showmsg%=True)
 			EndIf
 			Return
 		Else
-			Select mainPlayer\selectedItem\itemtemplate\tempname
+			Select mainPlayer\selectedItem\itemtemplate\tempName
 				Case "key1"
 					temp = 1
 				Case "key2"
@@ -440,12 +440,12 @@ Function UseDoor(d.Doors, showmsg%=True)
 					MsgTimer = 70 * 5							
 				EndIf
 				Return
-			End If
+			EndIf
 		EndIf	
 	ElseIf d\KeyCard < 0 Then
 		;I can't find any way to produce short circuited boolean expressions so work around this by using a temporary variable - risingstar64
 		If mainPlayer\selectedItem <> Null Then
-			temp = (mainPlayer\selectedItem\itemtemplate\tempname = "hand" And d\KeyCard=-1) Or (mainPlayer\selectedItem\itemtemplate\tempname = "hand2" And d\KeyCard=-2)
+			temp = (mainPlayer\selectedItem\itemtemplate\tempName = "hand" And d\KeyCard=-1) Or (mainPlayer\selectedItem\itemtemplate\tempName = "hand2" And d\KeyCard=-2)
 		EndIf
 		If temp <> 0 Then
 			PlaySound_SM(sndManager\scannerUse)
@@ -521,7 +521,7 @@ Function UseDoor(d.Doors, showmsg%=True)
 			Default
 				PlayRangedSound_SM(sndManager\closeDoor[Rand(0, 2)], mainPlayer\cam, d\obj)
 		End Select
-	End If
+	EndIf
 End Function
 
 Function RemoveDoor(d.Doors)

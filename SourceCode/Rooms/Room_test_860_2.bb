@@ -128,8 +128,8 @@ Function UpdateEvent_test_860_2(e.Events)
 			EndIf
 			
 			;If KeyHit(25) Then
-			;	e\room\NPC[0]\State=2
-			;	PositionEntity e\room\NPC[0]\Collider, 0,-110,0
+			;	e\room\NPC[0]\state=2
+			;	PositionEntity e\room\NPC[0]\collider, 0,-110,0
 			;	e\EventState3=e\EventState3-Rnd(2000,3000)
 			;EndIf
 			
@@ -172,7 +172,7 @@ Function UpdateEvent_test_860_2(e.Events)
 			Next
 			
 			If e\room\NPC[0]<>Null Then
-				x = Max(1.0-(e\room\NPC[0]\State3/300.0),0.1)
+				x = Max(1.0-(e\room\NPC[0]\state3/300.0),0.1)
 			Else
 				x = 2.0
 			EndIf
@@ -202,7 +202,7 @@ Function UpdateEvent_test_860_2(e.Events)
 							Msg = "The door will not budge."
 							MsgTimer = 5*70
 						EndIf
-					ElseIf mainPlayer\selectedItem\itemtemplate\tempname="scp860" Then
+					ElseIf mainPlayer\selectedItem\itemtemplate\tempName="scp860" Then
 						If MouseHit1 Then
 							PlaySound2(LoadTempSound("SFX/Door/WoodenDoorOpen.ogg"))
 							ShowEntity fr.Forest\Forest_Pivot
@@ -582,7 +582,7 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Rooms)
 							angle = 270
 						ElseIf fr\grid[(ty*gridsize)+tx+1]>0 Then
 							angle = 90
-						End If
+						EndIf
 						
 						tile_type = ROOM1
 					Case 2
@@ -615,7 +615,7 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Rooms)
 							angle = 90
 						ElseIf fr\grid[(ty*gridsize)+tx+1]=0 Then
 							angle = 270
-						End If
+						EndIf
 						
 						tile_type = ROOM3
 					Case 4

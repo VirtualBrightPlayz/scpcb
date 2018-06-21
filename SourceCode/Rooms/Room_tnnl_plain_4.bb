@@ -19,10 +19,10 @@ Function UpdateEvent_tnnl_plain_4(e.Events)
 		EntityTexture(e\room\NPC[0]\obj, tex)
 		FreeTexture tex
 		
-		RotateEntity e\room\NPC[0]\Collider, 0, EntityYaw(e\room\obj)-(Rand(20,60)),0, True	
+		RotateEntity e\room\NPC[0]\collider, 0, EntityYaw(e\room\obj)-(Rand(20,60)),0, True	
 		
 		SetNPCFrame e\room\NPC[0], 19
-		e\room\NPC[0]\State=8
+		e\room\NPC[0]\state=8
 		
 		;Delete e
 		RemoveEvent(e)

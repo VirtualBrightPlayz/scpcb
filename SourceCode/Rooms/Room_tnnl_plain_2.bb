@@ -14,7 +14,7 @@ Function UpdateEventTunnel106(e.Events)
 	;[Block]
 	If e\EventState = 0 Then
 		If e\room\dist < 5.0 And e\room\dist > 0 Then
-			If Curr106\State >= 0 Then e\EventState = 1	
+			If Curr106\state >= 0 Then e\EventState = 1	
 		ElseIf Contained106 Then
 			RemoveEvent(e)
 		EndIf
@@ -33,24 +33,24 @@ Function UpdateEventTunnel106(e.Events)
 				RemoveEvent(e)
 			Else
 				Curr106\Idle = False
-				Curr106\State = -10000
+				Curr106\state = -10000
 				RemoveEvent(e)
-			End If
+			EndIf
 		EndIf
 	Else
 		e\EventState = e\EventState+timing\tickDuration
 		
-		PositionEntity(Curr106\Collider, EntityX(e\room\obj, True) - Sin(TimeInPosMilliSecs() / 150.0) / 4.0, EntityY(mainPlayer\collider) + 1.0 - Min(Sin(e\EventState)*1.5,1.1), EntityZ(e\room\obj, True) - Sin(TimeInPosMilliSecs() / 190.0) / 4.0)
+		PositionEntity(Curr106\collider, EntityX(e\room\obj, True) - Sin(TimeInPosMilliSecs() / 150.0) / 4.0, EntityY(mainPlayer\collider) + 1.0 - Min(Sin(e\EventState)*1.5,1.1), EntityZ(e\room\obj, True) - Sin(TimeInPosMilliSecs() / 190.0) / 4.0)
 		
-		;TranslateEntity(Curr106\Collider, 0, -Max((3.0-dist),0), 0, True)
-		PointEntity(Curr106\Collider, mainPlayer\cam)
-		Curr106\State = -11
+		;TranslateEntity(Curr106\collider, 0, -Max((3.0-dist),0), 0, True)
+		PointEntity(Curr106\collider, mainPlayer\cam)
+		Curr106\state = -11
 		AnimateNPC(Curr106, 55, 104, 0.1)
 		Curr106\Idle = True
 		
 		If e\EventState > 180 Then
 			Curr106\Idle = False
-			PositionEntity(Curr106\Collider, EntityX(Curr106\Collider), -3.0, EntityZ(Curr106\Collider), True)
+			PositionEntity(Curr106\collider, EntityX(Curr106\collider), -3.0, EntityZ(Curr106\collider), True)
 			
 			RemoveEvent(e)
 		EndIf

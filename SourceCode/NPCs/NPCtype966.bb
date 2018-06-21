@@ -81,30 +81,30 @@ Function UpdateNPCtype966(n.NPCs)
             ShowEntity n\obj
         EndIf
         
-        If n\State3>5*70 Then
-        ;n\State = 1
-            If n\State3<1000.0 Then
+        If n\state3>5*70 Then
+        ;n\state = 1
+            If n\state3<1000.0 Then
                 For n2.NPCs = Each NPCs	
-                    If n2\NPCtype = n\NPCtype Then n2\State3=1000.0 
+                    If n2\NPCtype = n\npcType Then n2\state3=1000.0 
                 Next
             EndIf
             
-            n\State = Max(n\State,8)
-            n\State3 = 1000.0					
+            n\state = Max(n\state,8)
+            n\state3 = 1000.0					
             
         EndIf
         
         If mainPlayer\stamina<10 Then 
-            n\State3=n\State3+timing\tickDuration
-        Else If n\State3 < 900.0 Then
-            n\State3=Max(n\State3-timing\tickDuration*0.2,0.0)
+            n\state3=n\state3+timing\tickDuration
+        ElseIf n\state3 < 900.0 Then
+            n\state3=Max(n\state3-timing\tickDuration*0.2,0.0)
         EndIf
         
-        If n\State <> 10 Then
+        If n\state <> 10 Then
             n\LastSeen = 0
         EndIf
         
-        Select n\State
+        Select n\state
             Case 0 ;idle, standing
                 If n\Frame>2300.0 Then
                     AnimateNPC(n, 2391, 2416, 1.0, False)	
@@ -115,39 +115,39 @@ Function UpdateNPCtype966(n.NPCs)
                 ;echo/stare/walk around periodically
                     If n\Frame>1014.0 Then 
                         If Rand(3)=1 And dist<4 Then
-                            n\State = Rand(1,4)
+                            n\state = Rand(1,4)
                         Else
-                            n\State = Rand(5,6)								
+                            n\state = Rand(5,6)								
                         EndIf
                     EndIf
                     
                 ;echo if player gets close
                     If dist<2.0 Then 
-                        n\State=Rand(1,4)
+                        n\state=Rand(1,4)
                     EndIf 							
                 EndIf
                 
                 n\CurrSpeed = CurveValue(0.0, n\CurrSpeed, 10.0)
                 
-                MoveEntity n\Collider,0,0,n\CurrSpeed
+                MoveEntity n\collider,0,0,n\CurrSpeed
                 
             Case 1,2 ;echo
-                If n\State=1 Then
+                If n\state=1 Then
                     AnimateNPC(n, 1015, 1180, 1.0, False)
-                    If n\Frame > 1179.0 Then n\State = 0
+                    If n\Frame > 1179.0 Then n\state = 0
                 Else
                     AnimateNPC(n, 1180, 1379, 1.0, False)
-                    If n\Frame > 1378.0 Then n\State = 0
+                    If n\Frame > 1378.0 Then n\state = 0
                 EndIf
                 
                 If n\Frame>1029.0 And prevFrame<=1029.0 Or n\Frame>1203.0 And prevFrame<=1203.0 Then
-                    PlayRangedSound(LoadTempSound("SFX/SCP/966/Echo"+Rand(1,3)+".ogg"), mainPlayer\cam, n\Collider)
+                    PlayRangedSound(LoadTempSound("SFX/SCP/966/Echo"+Rand(1,3)+".ogg"), mainPlayer\cam, n\collider)
                 EndIf
                 
-                angle = VectorYaw(EntityX(mainPlayer\collider)-EntityX(n\Collider),0,EntityZ(mainPlayer\collider)-EntityZ(n\Collider))
-                RotateEntity n\Collider,0.0,CurveAngle(angle,EntityYaw(n\Collider),20.0),0.0
+                angle = VectorYaw(EntityX(mainPlayer\collider)-EntityX(n\collider),0,EntityZ(mainPlayer\collider)-EntityZ(n\collider))
+                RotateEntity n\collider,0.0,CurveAngle(angle,EntityYaw(n\collider),20.0),0.0
                 
-                If n\State3<900 Then
+                If n\state3<900 Then
                     mainPlayer\blurTimer = ((Sin(TimeInPosMilliSecs()/50)+1.0)*200)/dist
                     
                     If dist<16 Then
@@ -175,22 +175,22 @@ Function UpdateNPCtype966(n.NPCs)
                 EndIf
                 
             Case 3,4 ;stare at player
-                If n\State=3 Then
+                If n\state=3 Then
                     AnimateNPC(n, 1379.0, 1692.0, 1.0, False)
                     
-                    If n\Frame>1691.0 Then n\State = 0
+                    If n\Frame>1691.0 Then n\state = 0
                 Else
                     AnimateNPC(n, 1692.0, 2156.0, 1.0, False)
                     
-                    If n\Frame>2155.0 Then n\State = 0
+                    If n\Frame>2155.0 Then n\state = 0
                 EndIf
                 
                 If n\Frame>1393.0 And prevFrame<=1393.0 Or n\Frame>1589.0 And prevFrame<=1589.0 Or n\Frame>2000.0 And prevFrame<=2000.0 Then
-                    PlayRangedSound(LoadTempSound("SFX/SCP/966/Idle"+Rand(1,3)+".ogg"), mainPlayer\cam, n\Collider)
+                    PlayRangedSound(LoadTempSound("SFX/SCP/966/Idle"+Rand(1,3)+".ogg"), mainPlayer\cam, n\collider)
                 EndIf
                 
-                angle = VectorYaw(EntityX(mainPlayer\collider)-EntityX(n\Collider),0,EntityZ(mainPlayer\collider)-EntityZ(n\Collider))
-                RotateEntity n\Collider,0.0,CurveAngle(angle,EntityYaw(n\Collider),20.0),0.0
+                angle = VectorYaw(EntityX(mainPlayer\collider)-EntityX(n\collider),0,EntityZ(mainPlayer\collider)-EntityZ(n\collider))
+                RotateEntity n\collider,0.0,CurveAngle(angle,EntityYaw(n\collider),20.0),0.0
             Case 5,6,8 ;walking or chasing
                 If n\Frame<2343.0 Then ;start walking
                     AnimateNPC(n, 2319, 2343, 0.5, False)
@@ -198,7 +198,7 @@ Function UpdateNPCtype966(n.NPCs)
                     AnimateNPC(n, 2343, 2391, n\CurrSpeed*25.0)
                     
                 ;chasing the player
-                    If n\State = 8 And dist<32 Then
+                    If n\state = 8 And dist<32 Then
                         If n\PathTimer <= 0 Then
                             n\PathStatus = FindPath (n, EntityX(mainPlayer\collider,True), EntityY(mainPlayer\collider,True), EntityZ(mainPlayer\collider,True))
                             n\PathTimer = 40*10
@@ -206,7 +206,7 @@ Function UpdateNPCtype966(n.NPCs)
                         EndIf
                         n\PathTimer = Max(n\PathTimer-timing\tickDuration,0)
                         
-                        If (Not EntityVisible(n\Collider,mainPlayer\collider)) Then
+                        If (Not EntityVisible(n\collider,mainPlayer\collider)) Then
                             If n\PathStatus = 2 Then
                                 n\CurrSpeed = 0
                                 SetNPCFrame(n,201)
@@ -219,10 +219,10 @@ Function UpdateNPCtype966(n.NPCs)
                                         n\PathLocation = n\PathLocation + 1
                                     EndIf
                                 Else
-                                    n\Angle = VectorYaw(EntityX(n\Path[n\PathLocation]\obj,True)-EntityX(n\Collider),0,EntityZ(n\Path[n\PathLocation]\obj,True)-EntityZ(n\Collider))
-                    ;RotateEntity n\Collider,0.0,CurveAngle(angle,EntityYaw(n\Collider),10.0),0.0
+                                    n\Angle = VectorYaw(EntityX(n\Path[n\PathLocation]\obj,True)-EntityX(n\collider),0,EntityZ(n\Path[n\PathLocation]\obj,True)-EntityZ(n\collider))
+                    ;RotateEntity n\collider,0.0,CurveAngle(angle,EntityYaw(n\collider),10.0),0.0
                                     
-                                    dist2 = EntityDistance(n\Collider,n\Path[n\PathLocation]\obj)
+                                    dist2 = EntityDistance(n\collider,n\Path[n\PathLocation]\obj)
                                     
                                     If dist2 < 0.8 Then 
                                         ;TODO: fix
@@ -237,38 +237,38 @@ Function UpdateNPCtype966(n.NPCs)
                                 n\CurrSpeed = CurveValue(0,n\CurrSpeed,10.0)
                             EndIf
                         Else
-                            n\Angle = VectorYaw(EntityX(mainPlayer\collider)-EntityX(n\Collider),0,EntityZ(mainPlayer\collider)-EntityZ(n\Collider))
+                            n\Angle = VectorYaw(EntityX(mainPlayer\collider)-EntityX(n\collider),0,EntityZ(mainPlayer\collider)-EntityZ(n\collider))
                             
-                            If dist<1.0 Then n\State=10
+                            If dist<1.0 Then n\state=10
                             
                         EndIf
                         
                         n\CurrSpeed = CurveValue(n\Speed,n\CurrSpeed,10.0)
                     Else
-                        If TimeInPosMilliSecs() > n\State2 And dist<16.0 Then
-                            HideEntity n\Collider
-                            EntityPick(n\Collider, 1.5)
+                        If TimeInPosMilliSecs() > n\state2 And dist<16.0 Then
+                            HideEntity n\collider
+                            EntityPick(n\collider, 1.5)
                             If PickedEntity() <> 0 Then
-                                n\Angle = EntityYaw(n\Collider)+Rnd(80,110)
+                                n\Angle = EntityYaw(n\collider)+Rnd(80,110)
                             EndIf
-                            ShowEntity n\Collider
+                            ShowEntity n\collider
                             
-                            n\State2=TimeInPosMilliSecs()+1000
+                            n\state2=TimeInPosMilliSecs()+1000
                             
-                            If Rand(5)=1 Then n\State=0
+                            If Rand(5)=1 Then n\state=0
                         EndIf	
                         
                         n\CurrSpeed = CurveValue(n\Speed*0.5, n\CurrSpeed, 20.0)
                         
                     EndIf
                     
-                    RotateEntity n\Collider, 0, CurveAngle(n\Angle,EntityYaw(n\Collider),30.0),0
+                    RotateEntity n\collider, 0, CurveAngle(n\Angle,EntityYaw(n\collider),30.0),0
                     
-                    MoveEntity n\Collider,0,0,n\CurrSpeed
+                    MoveEntity n\collider,0,0,n\CurrSpeed
                 EndIf
             Case 10 ;attack
                 If n\LastSeen=0 Then
-                    PlayRangedSound(LoadTempSound("SFX/SCP/966/Echo"+Rand(1,3)+".ogg"), mainPlayer\cam, n\Collider)
+                    PlayRangedSound(LoadTempSound("SFX/SCP/966/Echo"+Rand(1,3)+".ogg"), mainPlayer\cam, n\collider)
                     n\LastSeen = 1
                 EndIf
                 
@@ -288,25 +288,25 @@ Function UpdateNPCtype966(n.NPCs)
                 Else
                     If n\Frame <= 2191 Then
                         AnimateNPC(n, 2160, 2191, 0.3, False)
-                        If n\Frame > 2190 Then n\State = 8
+                        If n\Frame > 2190 Then n\state = 8
                     ElseIf n\Frame <= 2220 Then
                         AnimateNPC(n, 2192, 2220, 0.3, False)
-                        If n\Frame > 2219 Then n\State = 8
+                        If n\Frame > 2219 Then n\state = 8
                     ElseIf n\Frame <= 2260 Then
                         AnimateNPC(n, 2221, 2260, 0.3, False)
-                        If n\Frame > 2259 Then n\State = 8
+                        If n\Frame > 2259 Then n\state = 8
                     EndIf
                 EndIf
                 
                 If dist<1.0 Then
                     If n\Frame>2173.0 And prevFrame<=2173.0 Or n\Frame>2203.0 And prevFrame<=2203.0 Or n\Frame>2227.0 And prevFrame<=2227.0 Then
-                        PlayRangedSound(LoadTempSound("SFX/General/Slash"+Rand(1,2)+".ogg"), mainPlayer\cam, n\Collider)
+                        PlayRangedSound(LoadTempSound("SFX/General/Slash"+Rand(1,2)+".ogg"), mainPlayer\cam, n\collider)
                         mainPlayer\injuries = mainPlayer\injuries + Rnd(0.5,1.0)								
                     EndIf	
                 EndIf
                 
-                n\Angle = VectorYaw(EntityX(mainPlayer\collider)-EntityX(n\Collider),0,EntityZ(mainPlayer\collider)-EntityZ(n\Collider))
-                RotateEntity n\Collider, 0, CurveAngle(n\Angle,EntityYaw(n\Collider),30.0),0
+                n\Angle = VectorYaw(EntityX(mainPlayer\collider)-EntityX(n\collider),0,EntityZ(mainPlayer\collider)-EntityZ(n\collider))
+                RotateEntity n\collider, 0, CurveAngle(n\Angle,EntityYaw(n\collider),30.0),0
                 
         End Select
     Else

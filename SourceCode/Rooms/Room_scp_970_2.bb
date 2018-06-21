@@ -55,7 +55,7 @@ Function UpdateEvent_scp_970_2(e.Events)
 				e\room\RoomDoors[4]\locked = True
 			Else
 				For n.NPCs = Each NPCs
-					If n\NPCtype = NPCtypeMTF Then 
+					If n\npcType = NPCtypeMTF Then 
 						If EntityDistance(mainPlayer\collider, Curr173\obj)<8.0 Then 
 							e\room\RoomDoors[1]\locked = True
 							e\room\RoomDoors[4]\locked = True
@@ -160,11 +160,11 @@ Function UpdateEvent_scp_970_2(e.Events)
 				Case 14
 					For i = 0 To mainPlayer\inventory\size-1
 						If mainPlayer\inventory\items[i]<> Null Then
-							If mainPlayer\inventory\items[i]\itemtemplate\tempname = "paper" Then
+							If mainPlayer\inventory\items[i]\itemtemplate\tempName = "paper" Then
 								RemoveItem(mainPlayer\inventory\items[i])
 								For itt.ItemTemplates = Each ItemTemplates
-									If itt\tempname = "paper" And Rand(6)=1 Then
-										mainPlayer\inventory\items[i] = CreateItem(itt\name, itt\tempname, 1,1,1)
+									If itt\tempName = "paper" And Rand(6)=1 Then
+										mainPlayer\inventory\items[i] = CreateItem(itt\name, itt\tempName, 1,1,1)
 										HideEntity mainPlayer\inventory\items[i]\collider
 										mainPlayer\inventory\items[i]\Picked = True
 										Exit
@@ -180,13 +180,13 @@ Function UpdateEvent_scp_970_2(e.Events)
 					EntityType(it\collider, HIT_ITEM)
 				Case 25
 					e\room\NPC[0]=CreateNPC(NPCtypeD, EntityX(e\room\obj)+Cos(e\room\angle-90)*760*RoomScale, 0.35, EntityZ(e\room\obj)+Sin(e\room\angle-90)*760*RoomScale)
-					RotateEntity e\room\NPC[0]\Collider, 0, e\room\angle-200, 0, True
+					RotateEntity e\room\NPC[0]\collider, 0, e\room\angle-200, 0, True
 					tex=LoadTexture("GFX/NPCs/corpse.jpg")
 					e\room\NPC[0]\texture = "GFX/NPCs/corpse.jpg"
 					EntityTexture e\room\NPC[0]\obj, tex
 					FreeTexture tex
 					SetAnimTime(e\room\NPC[0]\obj,80)
-					e\room\NPC[0]\State=10
+					e\room\NPC[0]\state=10
 				Case 30
 					i = Rand(0,mainPlayer\inventory\size)
 					If mainPlayer\inventory\items[i]<>Null Then RemoveItem(mainPlayer\inventory\items[i])
@@ -202,7 +202,7 @@ Function UpdateEvent_scp_970_2(e.Events)
 					PlaySound2(LoadTempSound("SFX/radio/franklin4.ogg"))
 				Case 50
 					e\room\NPC[1]=CreateNPC(NPCtypeGuard, EntityX(e\room\obj)+Cos(e\room\angle+90)*600*RoomScale, 0.35, EntityZ(e\room\obj)+Sin(e\room\angle+90)*600*RoomScale)
-					e\room\NPC[1]\State=7
+					e\room\NPC[1]\state=7
 				Case 52
 					If e\room\NPC[1] <> Null Then
 						RemoveNPC(e\room\NPC[1])
@@ -223,7 +223,7 @@ Function UpdateEvent_scp_970_2(e.Events)
 			;EndIf
 		Else
 			If e\room\NPC[0] <> Null Then
-				If EntityDistance(mainPlayer\collider, e\room\NPC[0]\Collider)<3.0 Then
+				If EntityDistance(mainPlayer\collider, e\room\NPC[0]\collider)<3.0 Then
 					If EntityInView(e\room\NPC[0]\obj, mainPlayer\cam) Then
 						mainPlayer\camZoom = (Sin(Float(TimeInPosMilliSecs())/20.0)+1.0)*15.0
 						;HeartBeatVolume = Max(CurveValue(0.3, HeartBeatVolume, 2.0), HeartBeatVolume)
@@ -234,7 +234,7 @@ Function UpdateEvent_scp_970_2(e.Events)
 			
 			If e\room\NPC[1] <> Null Then
 				PointEntity e\room\NPC[1]\obj, mainPlayer\collider
-				RotateEntity e\room\NPC[1]\Collider, 0, CurveAngle(EntityYaw(e\room\NPC[1]\obj),EntityYaw(e\room\NPC[1]\Collider),35),0
+				RotateEntity e\room\NPC[1]\collider, 0, CurveAngle(EntityYaw(e\room\NPC[1]\obj),EntityYaw(e\room\NPC[1]\collider),35),0
 			EndIf
 			
 			;If Abs(TFormedX())<264 Then 
@@ -248,7 +248,7 @@ Function UpdateEvent_scp_970_2(e.Events)
 					If it\Dropped=1 Then
 						For i = - 1 To 1 Step 2
 							TFormPoint x+1024*i,y,z,e\room\obj,0
-							it2.items = CreateItem(it\name, it\itemtemplate\tempname, TFormedX(), EntityY(it\collider), TFormedZ())
+							it2.items = CreateItem(it\name, it\itemtemplate\tempName, TFormedX(), EntityY(it\collider), TFormedZ())
 							RotateEntity(it2\collider, EntityPitch(it\collider),EntityYaw(it\collider),0)
 							EntityType(it2\collider, HIT_ITEM)
 						Next
@@ -286,10 +286,10 @@ Function UpdateEvent_scp_970_2(e.Events)
 					AnimateNPC(e\room\NPC[0], 80, 61, -0.02, False)
 					
 					e\room\NPC[0]\DropSpeed = 0
-					y = CurveValue(1.5+Sin(Float(TimeInPosMilliSecs())/20.0)*0.1,EntityY(e\room\NPC[0]\Collider),50.0)
+					y = CurveValue(1.5+Sin(Float(TimeInPosMilliSecs())/20.0)*0.1,EntityY(e\room\NPC[0]\collider),50.0)
 					
-					PositionEntity e\room\NPC[0]\Collider,EntityX(e\room\NPC[0]\Collider),y,EntityZ(e\room\NPC[0]\Collider)
-					TurnEntity e\room\NPC[0]\Collider,0,0.1*timing\tickDuration,0
+					PositionEntity e\room\NPC[0]\collider,EntityX(e\room\NPC[0]\collider),y,EntityZ(e\room\NPC[0]\collider)
+					TurnEntity e\room\NPC[0]\collider,0,0.1*timing\tickDuration,0
 				EndIf 								
 			EndIf
 			

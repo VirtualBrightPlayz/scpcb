@@ -217,7 +217,7 @@ Function PutINIValue%(file$, INI_sSection$, INI_sKey$, INI_sValue$)
 				
 				If (INI_sCurrentSection = INI_sUpperSection) And (INI_bWrittenKey = False) Then
 					INI_bWrittenKey = INI_CreateKey(INI_lFileHandle, INI_sKey, INI_sValue)
-				End If
+				EndIf
 				INI_sCurrentSection = Upper$(INI_CreateSection(INI_lFileHandle, INI_sTemp))
 				If (INI_sCurrentSection = INI_sUpperSection) Then INI_bSectionFound = True
 				
@@ -233,13 +233,13 @@ Function PutINIValue%(file$, INI_sSection$, INI_sKey$, INI_sValue$)
 							INI_bWrittenKey = True
 						Else
 							WriteLine INI_lFileHandle, INI_sTemp
-						End If
-					End If
+						EndIf
+					EndIf
 				EndIf
 				
-			End If
+			EndIf
 			
-		End If
+		EndIf
 		
 			; Move through the INI file...
 		
@@ -253,7 +253,7 @@ Function PutINIValue%(file$, INI_sSection$, INI_sKey$, INI_sValue$)
 	If (INI_bWrittenKey = False) Then
 		If (INI_bSectionFound = False) Then INI_CreateSection INI_lFileHandle, INI_sSection
 		INI_CreateKey INI_lFileHandle, INI_sKey, INI_sValue
-	End If
+	EndIf
 	
 	CloseFile INI_lFileHandle
 	
@@ -270,7 +270,7 @@ Function INI_FileToString$(INI_sFilename$)
 			INI_sString = INI_sString + ReadLine$(INI_lFileHandle) + Chr$(0)
 		Wend
 		CloseFile INI_lFileHandle
-	End If
+	EndIf
 	Return INI_sString
 	
 End Function

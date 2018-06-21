@@ -224,22 +224,22 @@ Function UpdateEvent_strg_939_3(e.Events)
 			Else
 				If e\EventState = 0 Then
 					;Instance 1
-					PositionEntity(e\room\NPC[0]\Collider, EntityX(e\room\Objects[4],True),EntityY(e\room\Objects[4],True)+0.2,EntityZ(e\room\Objects[4],True))
-					ResetEntity e\room\NPC[0]\Collider
-					e\room\NPC[0]\State = 2
-					e\room\NPC[0]\State2 = 5
+					PositionEntity(e\room\NPC[0]\collider, EntityX(e\room\Objects[4],True),EntityY(e\room\Objects[4],True)+0.2,EntityZ(e\room\Objects[4],True))
+					ResetEntity e\room\NPC[0]\collider
+					e\room\NPC[0]\state = 2
+					e\room\NPC[0]\state2 = 5
 					e\room\NPC[0]\PrevState = 7
 					;Instance 2
-					PositionEntity(e\room\NPC[1]\Collider, EntityX(e\room\Objects[9],True),EntityY(e\room\Objects[9],True)+0.2,EntityZ(e\room\Objects[9],True))
-					ResetEntity e\room\NPC[1]\Collider
-					e\room\NPC[1]\State = 2
-					e\room\NPC[1]\State2 = 10
+					PositionEntity(e\room\NPC[1]\collider, EntityX(e\room\Objects[9],True),EntityY(e\room\Objects[9],True)+0.2,EntityZ(e\room\Objects[9],True))
+					ResetEntity e\room\NPC[1]\collider
+					e\room\NPC[1]\state = 2
+					e\room\NPC[1]\state2 = 10
 					e\room\NPC[1]\PrevState = 12
 					;Instance 3
-					PositionEntity(e\room\NPC[2]\Collider, EntityX(e\room\Objects[13],True),EntityY(e\room\Objects[13],True)+0.2,EntityZ(e\room\Objects[13],True))
-					ResetEntity e\room\NPC[2]\Collider
-					e\room\NPC[2]\State = 2
-					e\room\NPC[2]\State2 = 14
+					PositionEntity(e\room\NPC[2]\collider, EntityX(e\room\Objects[13],True),EntityY(e\room\Objects[13],True)+0.2,EntityZ(e\room\Objects[13],True))
+					ResetEntity e\room\NPC[2]\collider
+					e\room\NPC[2]\state = 2
+					e\room\NPC[2]\state2 = 14
 					e\room\NPC[2]\PrevState = 16
 					;Other
 					e\EventState = 1
@@ -285,14 +285,14 @@ Function UpdateEvent_strg_939_3(e.Events)
 			EndIf
 		Else
 			e\EventState = 0
-			If e\room\NPC[0]<>Null Then e\room\NPC[0]\State = 66
-			If e\room\NPC[1]<>Null Then e\room\NPC[1]\State = 66
-			If e\room\NPC[2]<>Null Then e\room\NPC[2]\State = 66
+			If e\room\NPC[0]<>Null Then e\room\NPC[0]\state = 66
+			If e\room\NPC[1]<>Null Then e\room\NPC[1]\state = 66
+			If e\room\NPC[2]<>Null Then e\room\NPC[2]\state = 66
 		EndIf
 	Else
-		If e\room\NPC[0]<>Null Then e\room\NPC[0]\State = 66
-		If e\room\NPC[1]<>Null Then e\room\NPC[1]\State = 66
-		If e\room\NPC[2]<>Null Then e\room\NPC[2]\State = 66
+		If e\room\NPC[0]<>Null Then e\room\NPC[0]\state = 66
+		If e\room\NPC[1]<>Null Then e\room\NPC[1]\state = 66
+		If e\room\NPC[2]<>Null Then e\room\NPC[2]\state = 66
 	EndIf 
 	;[End Block]
 End Function

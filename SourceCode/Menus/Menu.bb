@@ -110,7 +110,7 @@ Function rInput$(aString$)
 	Else
 		aString$ = aString$ + Chr(value)
 		Return aString$
-	End If
+	EndIf
 End Function
 
 
@@ -119,8 +119,8 @@ Function MouseOn%(x%, y%, width%, height%)
 	If MouseX() > x And MouseX() < x + width Then
 		If MouseY() > y And MouseY() < y + height Then
 			Return True
-		End If
-	End If
+		EndIf
+	EndIf
 	Return False
 End Function
 
@@ -211,7 +211,7 @@ Function DrawUITick(x%, y%, selected%, locked% = False)
 		Color(50, 50, 50)
 	Else
 		Color(0, 0, 0)		
-	End If
+	EndIf
 	
 	Rect(x + 2, y + 2, width - 4, height - 4)
 	
@@ -329,7 +329,7 @@ Function LimitText%(txt$, x%, y%, width%, usingAA%=True)
 			LetterWidth = TextLength / Len(txt)
 			
 			Text(x, y, Left(txt, Max(Len(txt) - UnFitting / LetterWidth - 4, 1)) + "...")
-		End If
+		EndIf
 	Else
 		If txt = "" Or width = 0 Then Return 0
 		TextLength = StringWidth(txt)
@@ -340,7 +340,7 @@ Function LimitText%(txt$, x%, y%, width%, usingAA%=True)
 			LetterWidth = TextLength / Len(txt)
 			
 			Text(x, y, Left(txt, Max(Len(txt) - UnFitting / LetterWidth - 4, 1)) + "...")
-		End If
+		EndIf
 	EndIf
 End Function
 

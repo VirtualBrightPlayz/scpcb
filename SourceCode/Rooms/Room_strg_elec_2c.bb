@@ -65,7 +65,7 @@ Function UpdateEvent_strg_elec_2c(e.Events)
 						PlaySound_SM(sndManager\lever)
 					EndIf
 				EndIf 
-			End If
+			EndIf
 			
 			Local prevpitch# = EntityPitch(e\room\Objects[i])
 			
@@ -88,7 +88,7 @@ Function UpdateEvent_strg_elec_2c(e.Events)
 					RotateEntity(e\room\Objects[i], CurveValue(-85, EntityPitch(e\room\Objects[i]), 10), EntityYaw(e\room\Objects[i]), 0)
 				EndIf
 				mainPlayer\grabbedEntity = 0
-			End If
+			EndIf
 			
 			If EntityPitch(e\room\Objects[i]) > 83 Then
 				If prevpitch =< 83 Then PlayRangedSound_SM(sndManager\lever, mainPlayer\cam, e\room\Objects[i])

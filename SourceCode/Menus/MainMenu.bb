@@ -13,9 +13,11 @@ Const MAINMENU_BUTTON_COUNT% = 4
 
 Function UpdateMainMenu()
 	Local x%, y%, width%, height%, temp.MarkedForRemoval
+	Local n%
 	
 	Local mouseHitButton%
 	If CurrGameSubstate = GAMESUBSTATE_MAINMENU_MAIN Then
+		Local i%
 		For i% = 0 To MAINMENU_BUTTON_COUNT-1
 			mouseHitButton = False
 			x = 159 * MenuScale
@@ -471,7 +473,7 @@ Function DrawMainMenu()
 	If Rand(300) = 1 Then
 		MenuBlinkTimer(0) = Rand(4000, 8000)
 		MenuBlinkDuration(0) = Rand(200, 500)
-	End If
+	EndIf
 	
 	SetFont uiAssets\font[0]
 	
@@ -527,6 +529,7 @@ Function DrawMainMenu()
 	EndIf
 	
 	If CurrGameSubstate = GAMESUBSTATE_MAINMENU_MAIN Then
+		Local i%
 		For i% = 0 To MAINMENU_BUTTON_COUNT-1
 			x = 159 * MenuScale
 			y = (286 + 100 * i) * MenuScale

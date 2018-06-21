@@ -172,12 +172,12 @@ Function Use914(item.Items, setting$, x#, y#, z#)
 							ElseIf Distance(EntityX(it\collider,True), EntityZ(it\collider,True), x,z) < (180.0 * RoomScale) Then
 								it2 = it
 								Exit
-							End If
-						End If
+							EndIf
+						EndIf
 					Next
 					
 					If it2<>Null Then
-						Select it2\itemtemplate\tempname
+						Select it2\itemtemplate\tempName
 							Case "gasmask", "supergasmask"
 								RemoveItem (it2)
 								RemoveItem (item)
@@ -465,7 +465,7 @@ Function Use914(item.Items, setting$, x#, y#, z#)
 			RemoveItem(item)
 		Default
 			
-			Select item\itemtemplate\tempname
+			Select item\itemtemplate\tempName
 				Case "cup"
 					Select setting
 						Case "rough", "coarse"
@@ -589,11 +589,11 @@ Function UpdateEvent_cont_914_1(e.Events)
 											e\soundChannels[0] = PlayRangedSound(e\sounds[0], mainPlayer\cam, e\room\Objects[1])
 											Exit
 										EndIf
-									End If
-								End If
+									EndIf
+								EndIf
 							Next
 						EndIf
-					End If
+					EndIf
 				ElseIf mainPlayer\grabbedEntity = e\room\Objects[1] Then
 					If e\EventState = 0 Then
 						DrawHandIcon = True
@@ -611,12 +611,12 @@ Function UpdateEvent_cont_914_1(e.Events)
 							EndIf
 						EndIf
 						
-					End If
-				End If
-			End If
+					EndIf
+				EndIf
+			EndIf
 		Else
 			mainPlayer\grabbedEntity = 0
-		End If
+		EndIf
 		
 		Local setting$ = ""
 		
@@ -687,7 +687,7 @@ Function UpdateEvent_cont_914_1(e.Events)
 							mainPlayer\blinkTimer = -10
 							If e\EventState - timing\tickDuration < 70 * 3 Then PlaySound2(LoadSound(e\sounds[1]))
 					End Select
-				End If
+				EndIf
 			EndIf
 			
 			If e\EventState > (6 * 70) Then	
@@ -702,8 +702,8 @@ Function UpdateEvent_cont_914_1(e.Events)
 						If Distance(EntityX(it\collider), EntityZ(it\collider), EntityX(e\room\Objects[2], True), EntityZ(e\room\Objects[2], True)) < (180.0 * RoomScale) Then
 							Use914(it, setting, EntityX(e\room\Objects[3], True), EntityY(e\room\Objects[3], True), EntityZ(e\room\Objects[3], True))
 							
-						End If
-					End If
+						EndIf
+					EndIf
 				Next
 				
 				If Distance(EntityX(mainPlayer\collider), EntityZ(mainPlayer\collider), EntityX(e\room\Objects[2], True), EntityZ(e\room\Objects[2], True)) < (160.0 * RoomScale) Then

@@ -111,7 +111,7 @@ Function UpdateEventCheckpoint(e.Events)
 		EndIf
 	EndIf
 	
-	If e\room\RoomTemplate\Name = "checkpoint2" Then
+	If e\room\RoomTemplate\name = "checkpoint2" Then
 		For e2.Events = Each Events
 			If e2\EventName = "008" Then
 				If e2\EventState = 2 Then

@@ -44,7 +44,8 @@ Function DrawConsole()
 		
 		Local consoleHeight% = 0
 		Local scrollbarHeight% = 0
-		For cm.ConsoleMsg = Each ConsoleMsg
+		Local cm.ConsoleMsg
+		For cm = Each ConsoleMsg
 			consoleHeight = consoleHeight + 15*MenuScale
 		Next
 		scrollbarHeight = (Float(height)/Float(consoleHeight))*height
@@ -52,13 +53,13 @@ Function DrawConsole()
 		If consoleHeight<height Then consoleHeight = height
 		
 		Color 50,50,50
-		inBar% = MouseOn(x+width-26*MenuScale,y,26*MenuScale,height)
+		Local inBar% = MouseOn(x+width-26*MenuScale,y,26*MenuScale,height)
 		If inBar Then Color 70,70,70
 		Rect x+width-26*MenuScale,y,26*MenuScale,height,True
 		
 		
 		Color 120,120,120
-		inBox% = MouseOn(x+width-23*MenuScale,y+height-scrollbarHeight+(ConsoleScroll*scrollbarHeight/height),20*MenuScale,scrollbarHeight)
+		Local inBox% = MouseOn(x+width-23*MenuScale,y+height-scrollbarHeight+(ConsoleScroll*scrollbarHeight/height),20*MenuScale,scrollbarHeight)
 		If inBox Then Color 200,200,200
 		If ConsoleScrollDragging Then Color 255,255,255
 		Rect x+width-23*MenuScale,y+height-scrollbarHeight+(ConsoleScroll*scrollbarHeight/height),20*MenuScale,scrollbarHeight,True
@@ -100,11 +101,19 @@ End Function
 Function UpdateConsole()
 	If CurrGameState=GAMESTATE_CONSOLE Then
 		Local cm.ConsoleMsg
+		Local itt.ItemTemplates
+		Local c%
+		Local sf%
+		Local b%
+		Local t%
+		Local texname$
+		Local n.NPCs
+		Local args$
 		
 		ConsoleR = 255 : ConsoleG = 255 : ConsoleB = 255
 	
 		Local x% = 0, y% = userOptions\screenHeight-300*MenuScale, width% = userOptions\screenWidth, height% = 300*MenuScale-30*MenuScale
-		Local StrTemp$, temp%,  i%
+		Local StrTemp$, StrTemp2$, StrTemp3$, temp%,  i%
 		Local ev.Events, r.Rooms, it.Items
 		
 		Local consoleHeight% = 0
@@ -116,9 +125,9 @@ Function UpdateConsole()
 		If scrollbarHeight>height Then scrollbarHeight = height
 		If consoleHeight<height Then consoleHeight = height
 		
-		inBar% = MouseOn(x+width-26*MenuScale,y,26*MenuScale,height)
+		Local inBar% = MouseOn(x+width-26*MenuScale,y,26*MenuScale,height)
 		
-		inBox% = MouseOn(x+width-23*MenuScale,y+height-scrollbarHeight+(ConsoleScroll*scrollbarHeight/height),20*MenuScale,scrollbarHeight)
+		Local inBox% = MouseOn(x+width-23*MenuScale,y+height-scrollbarHeight+(ConsoleScroll*scrollbarHeight/height),20*MenuScale,scrollbarHeight)
 		
 		If Not MouseDown(1) Then
 			ConsoleScrollDragging=False
@@ -139,7 +148,7 @@ Function UpdateConsole()
 			EndIf
 		EndIf
 		
-		mouseScroll = MouseZSpeed()
+		Local mouseScroll% = MouseZSpeed()
 		If mouseScroll=1 Then
 			ConsoleScroll = ConsoleScroll - 15*MenuScale
 		ElseIf mouseScroll=-1 Then
@@ -252,7 +261,7 @@ Function UpdateConsole()
 				StrTemp$ = Lower(Left(ConsoleInput, Instr(ConsoleInput, " ") - 1))
 			Else
 				StrTemp$ = Lower(ConsoleInput)
-			End If
+			EndIf
 			
 			;TODO: Overhaul this. Move all of the argument stuff to dedicated functions to this is actually readable/maintainable.
 			Select Lower(StrTemp)
@@ -439,7 +448,7 @@ Function UpdateConsole()
 					CreateConsoleMsg("    - collider: "+EntityPitch(mainPlayer\collider)+", "+EntityYaw(mainPlayer\collider)+", "+EntityRoll(mainPlayer\collider))
 					CreateConsoleMsg("    - camera: "+EntityPitch(mainPlayer\cam)+", "+EntityYaw(mainPlayer\cam)+", "+EntityRoll(mainPlayer\cam))
 					
-					CreateConsoleMsg("Room: "+mainPlayer\currRoom\RoomTemplate\Name)
+					CreateConsoleMsg("Room: "+mainPlayer\currRoom\RoomTemplate\name)
 					For ev.Events = Each Events
 						If ev\room = mainPlayer\currRoom Then
 							CreateConsoleMsg("Room event: "+ev\EventName)	
@@ -522,7 +531,7 @@ Function UpdateConsole()
 					End Select
 					
 					For r.Rooms = Each Rooms
-						If r\RoomTemplate\Name = StrTemp Then
+						If r\RoomTemplate\name = StrTemp Then
 							;PositionEntity (mainPlayer\collider, EntityX(r\obj), 0.7, EntityZ(r\obj))
 							PositionEntity (mainPlayer\collider, r\x, r\y+0.7, r\z)
 							ResetEntity(mainPlayer\collider)
@@ -536,25 +545,26 @@ Function UpdateConsole()
 						EndIf
 					Next
 					
-					If mainPlayer\currRoom\RoomTemplate\Name <> StrTemp Then CreateConsoleMsg("Room not found.",255,150,0)
+					If mainPlayer\currRoom\RoomTemplate\name <> StrTemp Then CreateConsoleMsg("Room not found.",255,150,0)
 					
 				Case "spawnitem"
 					StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
-					temp = False 
-					For itt.Itemtemplates = Each ItemTemplates
+					temp = False
+					
+					For itt = Each ItemTemplates
 						If (Lower(itt\name) = StrTemp) Then
 							temp = True
 							CreateConsoleMsg(itt\name + " spawned.")
-							it.Items = CreateItem(itt\name, itt\tempname, EntityX(mainPlayer\collider), EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider))
+							it.Items = CreateItem(itt\name, itt\tempName, EntityX(mainPlayer\collider), EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider))
 							EntityType(it\collider, HIT_ITEM)
 							Exit
-						Else If (Lower(itt\tempname) = StrTemp) Then
+						ElseIf (Lower(itt\tempName) = StrTemp) Then
 							temp = True
 							CreateConsoleMsg(itt\name + " spawned.")
-							it.Items = CreateItem(itt\name, itt\tempname, EntityX(mainPlayer\collider), EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider))
+							it.Items = CreateItem(itt\name, itt\tempName, EntityX(mainPlayer\collider), EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider))
 							EntityType(it\collider, HIT_ITEM)
 							Exit
-						End If
+						EndIf
 					Next
 					
 					If temp = False Then CreateConsoleMsg("Item not found.",255,150,0)
@@ -609,9 +619,9 @@ Function UpdateConsole()
 					PositionEntity Curr106\collider, EntityX(mainPlayer\collider), EntityY(Curr106\collider), EntityZ(mainPlayer\collider)
 
 				Case "reset096"
-					For n.NPCs = Each NPCs
-						If n\NPCtype = NPCtype096 Then
-							n\State = 0
+					For n = Each NPCs
+						If n\npcType = NPCtype096 Then
+							n\state = 0
 							Exit
 						EndIf
 					Next
@@ -739,11 +749,11 @@ Function UpdateConsole()
 					
 				Case "096state"
 					For n.NPCs = Each NPCs
-						If n\NPCtype = NPCtype096 Then
+						If n\npcType = NPCtype096 Then
 							CreateConsoleMsg("SCP-096")
 							CreateConsoleMsg("Position: " + EntityX(n\obj) + ", " + EntityY(n\obj) + ", " + EntityZ(n\obj))
 							CreateConsoleMsg("Idle: " + n\Idle)
-							CreateConsoleMsg("State: " + n\State)
+							CreateConsoleMsg("State: " + n\state)
 							Exit
 						EndIf
 					Next
@@ -812,9 +822,9 @@ Function UpdateConsole()
 					Console_SpawnNPC(StrTemp$,Int(StrTemp2$))
 
 				Case "toggle_warhead_lever"
-					For e.Events = Each Events
-						If e\EventName = "room2nuke" Then
-							e\EventState = (Not e\EventState)
+					For ev.Events = Each Events
+						If ev\EventName = "room2nuke" Then
+							ev\EventState = (Not ev\EventState)
 							Exit
 						EndIf
 					Next
@@ -824,31 +834,31 @@ Function UpdateConsole()
 					
 					Select StrTemp
 						Case "a"
-							For e.Events = Each Events
-								If e\EventName = "gateaentrance" Then
-									e\EventState3 = 1
-									e\room\RoomDoors[1]\open = True
+							For ev.Events = Each Events
+								If ev\EventName = "gateaentrance" Then
+									ev\EventState3 = 1
+									ev\room\RoomDoors[1]\open = True
 									Exit
 								EndIf
 							Next
 							CreateConsoleMsg("Gate A is now unlocked.")	
 						Case "b"
-							For e.Events = Each Events
-								If e\EventName = "exit1" Then
-									e\EventState3 = 1
-									e\room\RoomDoors[4]\open = True
+							For ev.Events = Each Events
+								If ev\EventName = "exit1" Then
+									ev\EventState3 = 1
+									ev\room\RoomDoors[4]\open = True
 									Exit
 								EndIf
 							Next	
 							CreateConsoleMsg("Gate B is now unlocked.")	
 						Default
-							For e.Events = Each Events
-								If e\EventName = "gateaentrance" Then
-									e\EventState3 = 1
-									e\room\RoomDoors[1]\open = True
-								ElseIf e\EventName = "exit1" Then
-									e\EventState3 = 1
-									e\room\RoomDoors[4]\open = True
+							For ev.Events = Each Events
+								If ev\EventName = "gateaentrance" Then
+									ev\EventState3 = 1
+									ev\room\RoomDoors[1]\open = True
+								ElseIf ev\EventName = "exit1" Then
+									ev\EventState3 = 1
+									ev\room\RoomDoors[4]\open = True
 								EndIf
 							Next
 							CreateConsoleMsg("Gate A and B are now unlocked.")	
@@ -876,9 +886,9 @@ Function UpdateConsole()
 
 				Case "tp_to_mtf"
 					For n.NPCs = Each NPCs
-						If n\NPCtype = NPCtypeMTF Then
+						If n\npcType = NPCtypeMTF Then
 							If n\MTFLeader = Null Then
-								PositionEntity mainPlayer\collider,EntityX(n\Collider),EntityY(n\Collider)+5,EntityZ(n\Collider)
+								PositionEntity mainPlayer\collider,EntityX(n\collider),EntityY(n\collider)+5,EntityZ(n\collider)
 								ResetEntity mainPlayer\collider
 								Exit
 							EndIf
@@ -927,8 +937,8 @@ Function UpdateConsole()
 					EntityType(it\collider, HIT_ITEM)
 					it\state = 101
 				Case "teleport173"
-					PositionEntity Curr173\Collider,EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider)
-					ResetEntity Curr173\Collider
+					PositionEntity Curr173\collider,EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider)
+					ResetEntity Curr173\collider
 				Case Chr($6A)+Chr($6F)+Chr($72)+Chr($67)+Chr($65) ;TODO
 					RuntimeError("Implement")
 				Default
