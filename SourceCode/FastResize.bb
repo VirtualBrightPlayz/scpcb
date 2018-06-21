@@ -5,10 +5,10 @@ Global fresize_image%, fresize_texture%, fresize_texture2%
 Global fresize_cam%
 
 Function ResizeImage2(image%,width%,height%)
-    img% = CreateImage(width,height)
+    Local img% = CreateImage(width,height)
 	
-	oldWidth% = ImageWidth(image)
-	oldHeight% = ImageHeight(image)
+	Local oldWidth% = ImageWidth(image)
+	Local oldHeight% = ImageHeight(image)
 	CopyRect 0,0,oldWidth,oldHeight,1024-oldWidth/2,1024-oldHeight/2,ImageBuffer(image),TextureBuffer(fresize_texture)
 	SetBuffer BackBuffer()
 	ScaleRender(0,0,2048.0 / Float(userOptions\screenWidth) * Float(width) / Float(oldWidth), 2048.0 / Float(userOptions\screenWidth) * Float(height) / Float(oldHeight))

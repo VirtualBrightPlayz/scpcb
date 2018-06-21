@@ -35,6 +35,9 @@ Function CreateConsoleMsg(txt$,r%=-1,g%=-1,b%=-1,isCommand%=False)
 End Function
 
 Function DrawConsole()
+	Local cm.ConsoleMsg
+	Local inBar%
+	Local inBox%
 	If CurrGameState=GAMESTATE_CONSOLE Then
 		SetFont uiAssets\consoleFont
 		
@@ -98,17 +101,28 @@ Function DrawConsole()
 End Function
 
 Function UpdateConsole()
+	Local inBar%,inBox%
+	Local mouseScroll%
+	Local x%,y%,c%
+	Local sf%,b%,t%,texname$
+	Local StrTemp$, temp%,  i%
+	Local ev.Events, r.Rooms, it.Items
+	Local consoleHeight%
+	Local scrollbarHeight%
+	Local width%,height%
+	Local itt.ItemTemplates
 	If CurrGameState=GAMESTATE_CONSOLE Then
 		Local cm.ConsoleMsg
 		
 		ConsoleR = 255 : ConsoleG = 255 : ConsoleB = 255
 	
-		Local x% = 0, y% = userOptions\screenHeight-300*MenuScale, width% = userOptions\screenWidth, height% = 300*MenuScale-30*MenuScale
-		Local StrTemp$, temp%,  i%
-		Local ev.Events, r.Rooms, it.Items
+		x% = 0
+		y% = userOptions\screenHeight-300*MenuScale
+		width% = userOptions\screenWidth
+		height% = 300*MenuScale-30*MenuScale
 		
-		Local consoleHeight% = 0
-		Local scrollbarHeight% = 0
+		consoleHeight% = 0
+		scrollbarHeight% = 0
 		For cm.ConsoleMsg = Each ConsoleMsg
 			consoleHeight = consoleHeight + 15*MenuScale
 		Next
@@ -252,7 +266,7 @@ Function UpdateConsole()
 				StrTemp$ = Lower(Left(ConsoleInput, Instr(ConsoleInput, " ") - 1))
 			Else
 				StrTemp$ = Lower(ConsoleInput)
-			End If
+			EndIf
 			
 			;TODO: Overhaul this. Move all of the argument stuff to dedicated functions to this is actually readable/maintainable.
 			Select Lower(StrTemp)
@@ -439,13 +453,13 @@ Function UpdateConsole()
 					CreateConsoleMsg("    - collider: "+EntityPitch(mainPlayer\collider)+", "+EntityYaw(mainPlayer\collider)+", "+EntityRoll(mainPlayer\collider))
 					CreateConsoleMsg("    - camera: "+EntityPitch(mainPlayer\cam)+", "+EntityYaw(mainPlayer\cam)+", "+EntityRoll(mainPlayer\cam))
 					
-					CreateConsoleMsg("Room: "+mainPlayer\currRoom\RoomTemplate\Name)
+					CreateConsoleMsg("Room: "+mainPlayer\currRoom\RoomTemplate\name)
 					For ev.Events = Each Events
 						If ev\room = mainPlayer\currRoom Then
-							CreateConsoleMsg("Room event: "+ev\EventName)	
-							CreateConsoleMsg("-    state: "+ev\EventState)
-							CreateConsoleMsg("-    state2: "+ev\EventState2)	
-							CreateConsoleMsg("-    state3: "+ev\EventState3)
+							CreateConsoleMsg("Room event: "+ev\name)	
+							CreateConsoleMsg("-    state: "+ev\intState[0])
+							CreateConsoleMsg("-    state2: "+ev\intState[1])	
+							CreateConsoleMsg("-    state3: "+ev\intState[2])
 							Exit
 						EndIf
 					Next
@@ -522,7 +536,7 @@ Function UpdateConsole()
 					End Select
 					
 					For r.Rooms = Each Rooms
-						If r\RoomTemplate\Name = StrTemp Then
+						If r\RoomTemplate\name = StrTemp Then
 							;PositionEntity (mainPlayer\collider, EntityX(r\obj), 0.7, EntityZ(r\obj))
 							PositionEntity (mainPlayer\collider, r\x, r\y+0.7, r\z)
 							ResetEntity(mainPlayer\collider)
@@ -536,25 +550,25 @@ Function UpdateConsole()
 						EndIf
 					Next
 					
-					If mainPlayer\currRoom\RoomTemplate\Name <> StrTemp Then CreateConsoleMsg("Room not found.",255,150,0)
+					If mainPlayer\currRoom\RoomTemplate\name <> StrTemp Then CreateConsoleMsg("Room not found.",255,150,0)
 					
 				Case "spawnitem"
 					StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 					temp = False 
-					For itt.Itemtemplates = Each ItemTemplates
+					For itt.ItemTemplates = Each ItemTemplates
 						If (Lower(itt\name) = StrTemp) Then
 							temp = True
 							CreateConsoleMsg(itt\name + " spawned.")
-							it.Items = CreateItem(itt\name, itt\tempname, EntityX(mainPlayer\collider), EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider))
+							it.Items = CreateItem(itt\name, itt\tempName, EntityX(mainPlayer\collider), EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider))
 							EntityType(it\collider, HIT_ITEM)
 							Exit
-						Else If (Lower(itt\tempname) = StrTemp) Then
+						Else If (Lower(itt\tempName) = StrTemp) Then
 							temp = True
 							CreateConsoleMsg(itt\name + " spawned.")
 							it.Items = CreateItem(itt\name, itt\tempname, EntityX(mainPlayer\collider), EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider))
 							EntityType(it\collider, HIT_ITEM)
 							Exit
-						End If
+						EndIf
 					Next
 					
 					If temp = False Then CreateConsoleMsg("Item not found.",255,150,0)
@@ -966,4 +980,5 @@ CreateConsoleMsg("  - spawn [npc type]")
 
 ;---------------------------------------------------------------------------------------------------
 ;~IDEal Editor Parameters:
+;~F#24
 ;~C#Blitz3D

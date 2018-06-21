@@ -211,7 +211,7 @@ Function UpdateEventRoom2gw_b(e.Events)
 	Local angle#
 
 	;[Block]
-	If e\room\dist < 8 THen
+	If e\room\dist < 8 Then
 		If e\EventState = 0 Then
 			e\room\NPC[0]=CreateNPC(NPCtypeGuard, EntityX(e\room\Objects[2],True), EntityY(e\room\Objects[2],True)+0.5, EntityZ(e\room\Objects[2],True))
 			PointEntity e\room\NPC[0]\Collider, e\room\obj

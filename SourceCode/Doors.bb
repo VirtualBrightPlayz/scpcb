@@ -46,7 +46,7 @@ Function CreateDoor.Doors(lvl, x#, y#, z#, angle#, room.Rooms, dopen% = False,  
 	Local contDoorRight% = GrabMesh("GFX/Map/Meshes/ContDoorRight.b3d")
 
 	Local hczDoorObj%[2]
-	For i=0 to 1
+	For i=0 To 1
 		hczDoorObj[i] = GrabMesh("GFX/Map/Meshes/heavydoor" + Str(i + 1) + ".b3d")
 	Next
 	

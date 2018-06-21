@@ -64,8 +64,9 @@ End Function
 
 
 Function DrawLoading(percent%, shortloading=False)
-	
 	Local x%, y%
+	Local i%
+	Local strtemp$
 	
 	If percent = 0 Then
 		LoadingScreenText=0
@@ -149,7 +150,7 @@ Function DrawLoading(percent%, shortloading=False)
 			strtemp$ = ""
 			temp = Rand(2,9)
 			For i = 0 To temp
-				strtemp$ = STRTEMP + Chr(Rand(48,122))
+				strtemp$ = strtemp + Chr(Rand(48,122))
 			Next
 			Text(userOptions\screenWidth / 2, userOptions\screenHeight / 2 + 80, strtemp, True, True)
 			
@@ -274,3 +275,5 @@ Function DrawLoading(percent%, shortloading=False)
 		RestoreDefaultMusic()
 	EndIf
 End Function
+;~IDEal Editor Parameters:
+;~C#Blitz3D

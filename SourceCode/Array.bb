@@ -71,6 +71,7 @@ Function PopIntArrayListElem(arrayList.IntArrayList)
 End Function
 
 Function EraseIntArrayListElem(arrayList.IntArrayList,pos%)
+	Local i%
 	Local val%
 	If pos>=arrayList\size Then Return
 	For i% = pos To arrayList\size-2
