@@ -51,7 +51,7 @@ Function UpdateNPCtype860(n.NPCs)
                     x = Floor((TFormedX()*RoomScale+6.0)/12.0)
                     z = Floor((TFormedZ()*RoomScale+6.0)/12.0)
                     
-                    TFormPoint(x/RoomScale*12.0,0,z/RoomScale*12.0,fr\Forest_Pivot,0)
+                    TFormPoint(x/RoomScale*12.0,0,z/RoomScale*12.0,fr\forest_Pivot,0)
                     
                     For x2 = Max(x-1,0) To Min(x+1,gridsize) Step 2
                         For z2 = Max(z-1,0) To Min(z+1,gridsize) Step 2
@@ -59,7 +59,7 @@ Function UpdateNPCtype860(n.NPCs)
                                 
                                 TFormPoint((x*12 + (x2-x)*6)/RoomScale,0,(z*12 + (z2-z)*6)/RoomScale,mainPlayer\currRoom\obj,0)
                                 
-                                PositionEntity n\collider, TFormedX(), EntityY(fr\Forest_Pivot,True)+2.3, TFormedZ()
+                                PositionEntity n\collider, TFormedX(), EntityY(fr\forest_Pivot,True)+2.3, TFormedZ()
                                 
                                 If EntityInView(n\collider, mainPlayer\cam) Then
                                     PositionEntity n\collider, 0, -110, 0
@@ -78,16 +78,16 @@ Function UpdateNPCtype860(n.NPCs)
                         Select Rand(3)
                             Case 1
                                 PointEntity n\collider,mainPlayer\collider
-                                n\Frame = 2
+                                n\frame = 2
                                 ;SetAnimTime(n\obj, 2)
                             Case 2
                                 PointEntity n\collider,mainPlayer\collider
-                                n\Frame = 201
+                                n\frame = 201
                                 ;SetAnimTime(n\obj, 201)
                             Case 3
                                 PointEntity n\collider,mainPlayer\collider
                                 TurnEntity n\collider, 0, 90, 0
-                                n\Frame = 299
+                                n\frame = 299
                                 ;SetAnimTime(n\obj, 299)
                         End Select
                         
@@ -98,7 +98,7 @@ Function UpdateNPCtype860(n.NPCs)
                     ShowEntity n\obj
                     ShowEntity n\collider
                     
-                    PositionEntity n\collider, EntityX(n\collider), EntityY(fr\Forest_Pivot,True)+2.3, EntityZ(n\collider)
+                    PositionEntity n\collider, EntityX(n\collider), EntityY(fr\forest_Pivot,True)+2.3, EntityZ(n\collider)
                     
                     If n\state2 = 0 Then ;don't start moving until the player is looking
                         If EntityInView(n\collider, mainPlayer\cam) Then 
@@ -108,17 +108,17 @@ Function UpdateNPCtype860(n.NPCs)
                             EndIf										
                         EndIf
                     Else
-                        If n\Frame<=199 Then
+                        If n\frame<=199 Then
                             AnimateNPC(n, 2, 199, 0.5,False)
-                            If n\Frame=199 Then n\Frame = 298 : ;PlayRangedSound(sndManager\footstep8601[Rand(0, 2)]\internal, mainPlayer\cam, n\collider, 15.0)
+                            If n\frame=199 Then n\frame = 298 : ;PlayRangedSound(sndManager\footstep8601[Rand(0, 2)]\internal, mainPlayer\cam, n\collider, 15.0)
                             
                             ;Animate2(n\obj, AnimTime(n\obj), 2, 199, 0.5,False)
                             ;If AnimTime(n\obj)=199 Then SetAnimTime(n\obj,298) : PlayRangedSound(sndManager\footstep8601[Rand(0, 2)]\internal, mainPlayer\cam, n\collider, 15.0)
-                        ElseIf n\Frame <= 297 Then
+                        ElseIf n\frame <= 297 Then
                             PointEntity n\collider,mainPlayer\collider
                             
                             AnimateNPC(n, 200, 297, 0.5, False)
-                            If n\Frame=297 Then n\Frame=298 : PlayRangedSound(sndManager\footstep8601[Rand(0, 2)]\internal, mainPlayer\cam, n\collider, 15.0)
+                            If n\frame=297 Then n\frame=298 : PlayRangedSound(sndManager\footstep8601[Rand(0, 2)]\internal, mainPlayer\cam, n\collider, 15.0)
                             
                             ;Animate2(n\obj, AnimTime(n\obj), 200, 297, 0.5,False)
                             ;If AnimTime(n\obj)=297 Then SetAnimTime(n\obj,298) : PlayRangedSound(sndManager\footstep8601[Rand(0, 2)]\internal, mainPlayer\cam, n\collider, 15.0)
@@ -127,12 +127,12 @@ Function UpdateNPCtype860(n.NPCs)
                             
                             RotateEntity n\collider, 0, angle-90, 0, True
                             
-                            AnimateNPC(n, 298, 316, n\CurrSpeed*10)
+                            AnimateNPC(n, 298, 316, n\currSpeed*10)
                             
-                            ;Animate2(n\obj, AnimTime(n\obj), 298, 316, n\CurrSpeed*10)
+                            ;Animate2(n\obj, AnimTime(n\obj), 298, 316, n\currSpeed*10)
                             
-                            n\CurrSpeed = CurveValue(n\Speed, n\CurrSpeed, 10.0)
-                            MoveEntity n\collider, 0,0,n\CurrSpeed*timing\tickDuration
+                            n\currSpeed = CurveValue(n\Speed, n\currSpeed, 10.0)
+                            MoveEntity n\collider, 0,0,n\currSpeed*timing\tickDuration
                             
                             If dist>15.0 Then
                                 PositionEntity n\collider, 0,-110,0
@@ -149,7 +149,7 @@ Function UpdateNPCtype860(n.NPCs)
                 ShowEntity n\obj
                 ShowEntity n\collider
                 
-                prevFrame = n\Frame
+                prevFrame = n\frame
                 
                 If EntityY(n\collider)<= -100 Then
                     TFormPoint(EntityX(mainPlayer\collider),EntityY(mainPlayer\collider),EntityZ(mainPlayer\collider),0,mainPlayer\currRoom\obj)
@@ -162,9 +162,9 @@ Function UpdateNPCtype860(n.NPCs)
                                 
                                 TFormPoint((x2*12)/RoomScale,0,(z2*12)/RoomScale,mainPlayer\currRoom\obj,0)
                                 
-                                ;PositionEntity n\collider, TFormedX(), EntityY(fr\Forest_Pivot,True)+0.5, TFormedZ()
-                                PositionEntity n\collider, TFormedX(), EntityY(fr\Forest_Pivot,True)+1.0, TFormedZ()
-                                DebugLog EntityY(fr\Forest_Pivot,True)
+                                ;PositionEntity n\collider, TFormedX(), EntityY(fr\forest_Pivot,True)+0.5, TFormedZ()
+                                PositionEntity n\collider, TFormedX(), EntityY(fr\forest_Pivot,True)+1.0, TFormedZ()
+                                DebugLog EntityY(fr\forest_Pivot,True)
                                 
                                 If EntityInView(n\collider, mainPlayer\cam) Then
                                     mainPlayer\blinkTimer=-10
@@ -181,12 +181,12 @@ Function UpdateNPCtype860(n.NPCs)
                     
                     RotateEntity n\collider, 0, angle-90, 0, True
                     
-                    n\CurrSpeed = CurveValue(n\Speed*0.3, n\CurrSpeed, 50.0)
-                    MoveEntity n\collider, 0,0,n\CurrSpeed*timing\tickDuration
+                    n\currSpeed = CurveValue(n\Speed*0.3, n\currSpeed, 50.0)
+                    MoveEntity n\collider, 0,0,n\currSpeed*timing\tickDuration
                     
-                    AnimateNPC(n, 494, 569, n\CurrSpeed*25)
+                    AnimateNPC(n, 494, 569, n\currSpeed*25)
                     
-                    ;Animate2(n\obj, AnimTime(n\obj), 494, 569, n\CurrSpeed*25)
+                    ;Animate2(n\obj, AnimTime(n\obj), 494, 569, n\currSpeed*25)
                     
                     If n\state2 = 0 Then
                         If dist<8.0 Then
@@ -227,7 +227,7 @@ Function UpdateNPCtype860(n.NPCs)
                 EndIf
                 
                 ;535, 568
-                If (prevFrame < 533 And n\Frame=>533) Or (prevFrame > 568 And n\Frame<2) Then
+                If (prevFrame < 533 And n\frame=>533) Or (prevFrame > 568 And n\frame<2) Then
                     PlayRangedSound(sndManager\footstep8601[Rand(0, 2)]\internal, mainPlayer\cam, n\collider, 15.0, 0.6)
                 EndIf
                 
@@ -235,7 +235,7 @@ Function UpdateNPCtype860(n.NPCs)
                 ShowEntity n\obj
                 ShowEntity n\collider
                 
-                prevFrame = n\Frame
+                prevFrame = n\frame
                 
                 angle = CurveAngle(Find860Angle(n, fr),EntityYaw(n\collider)+90,40.0)
                 
@@ -245,12 +245,12 @@ Function UpdateNPCtype860(n.NPCs)
                 If n\sounds[1] = 0 Then n\sounds[1] = LoadSound("SFX/General/Slash2.ogg")
                 
                 If dist>1.1 And (Not mainPlayer\dead) Then 
-                    n\CurrSpeed = CurveValue(n\Speed*0.8, n\CurrSpeed, 10.0)
+                    n\currSpeed = CurveValue(n\Speed*0.8, n\currSpeed, 10.0)
                     
-                    AnimateNPC(n, 298, 316, n\CurrSpeed*10)
-                    ;Animate2(n\obj, AnimTime(n\obj), 298, 316, n\CurrSpeed*10)
+                    AnimateNPC(n, 298, 316, n\currSpeed*10)
+                    ;Animate2(n\obj, AnimTime(n\obj), 298, 316, n\currSpeed*10)
                     
-                    If (prevFrame < 307 And n\Frame=>307) Then
+                    If (prevFrame < 307 And n\frame=>307) Then
                         PlayRangedSound(sndManager\footstep8601[Rand(0, 2)]\internal, mainPlayer\cam, n\collider, 10.0)
                     EndIf
                 Else
@@ -258,21 +258,21 @@ Function UpdateNPCtype860(n.NPCs)
                     
                     DeathMSG = ""
                     
-                    n\CurrSpeed = CurveValue(0.0, n\CurrSpeed, 5.0)
+                    n\currSpeed = CurveValue(0.0, n\currSpeed, 5.0)
                     
                     AnimateNPC(n, 451,493, 0.5, False)
                     
                     ;Animate2(n\obj, AnimTime(n\obj), 451,493, 0.5, False)
-                    If (prevFrame < 461 And n\Frame=>461) Then 
+                    If (prevFrame < 461 And n\frame=>461) Then 
                         If (Not mainPlayer\dead) Then Kill(mainPlayer)
                         PlaySound2(n\sounds[0])
                     EndIf
-                    If (prevFrame < 476 And n\Frame=>476) Then PlaySound2(n\sounds[1])
-                    If (prevFrame < 486 And n\Frame=>486) Then PlaySound2(n\sounds[1])
+                    If (prevFrame < 476 And n\frame=>476) Then PlaySound2(n\sounds[1])
+                    If (prevFrame < 486 And n\frame=>486) Then PlaySound2(n\sounds[1])
                     
                 EndIf
                 
-                MoveEntity n\collider, 0,0,n\CurrSpeed*timing\tickDuration
+                MoveEntity n\collider, 0,0,n\currSpeed*timing\tickDuration
         End Select
         
         If n\state <> 0 Then

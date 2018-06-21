@@ -570,7 +570,7 @@ Function UpdateGame()
 ;					If mainPlayer\currRoom\RoomTemplate\Name = "room860"
 ;						For e.Events = Each Events
 ;							If e\name = "room860"
-;								If e\EventState = 1.0 Then
+;								If e\eventState = 1.0 Then
 ;									PositionEntity (SoundEmitter, EntityX(mainPlayer\cam) + Rnd(-1.0, 1.0), 30.0, EntityZ(mainPlayer\cam) + Rnd(-1.0, 1.0))
 ;								EndIf
 ;								
@@ -1070,7 +1070,7 @@ Function UpdateGUI()
 		If MouseUp1 Then
 			MouseUp1 = False
 			If mainPlayer\closestDoor <> Null Then 
-				If mainPlayer\closestDoor\Code <> "" Then
+				If mainPlayer\closestDoor\code <> "" Then
 					mainPlayer\selectedDoor = mainPlayer\closestDoor
 				ElseIf Not mainPlayer\disableControls Then
 					PlayRangedSound_SM(sndManager\button, mainPlayer\cam, mainPlayer\closestButton)
@@ -1149,7 +1149,7 @@ Function UpdateGUI()
 								Case 5,6,7
 									KeypadInput=KeypadInput + ((n+1)+(i*4)-1)
 								Case 8 ;enter
-									If KeypadInput = mainPlayer\selectedDoor\Code Then
+									If KeypadInput = mainPlayer\selectedDoor\code Then
 										PlaySound_SM(sndManager\scannerUse)								
 										
 										mainPlayer\selectedDoor\locked = 0
@@ -1225,7 +1225,7 @@ Function DrawGUI()
 	
 	If mainPlayer\currRoom\RoomTemplate\name = "pocketdimension" Then
 		For e.Events = Each Events
-			If e\room = mainPlayer\currRoom And e\EventState > 600 Then
+			If e\room = mainPlayer\currRoom And e\eventState > 600 Then
 				If mainPlayer\blinkTimer < -3 And mainPlayer\blinkTimer > -11 Then
 					If e\img = 0 Then
 						If mainPlayer\blinkTimer > -5 And Rand(30)=1 Then
@@ -1337,7 +1337,7 @@ Function DrawGUI()
 		
 		If DebugHUD Then
 			Color 255, 255, 255
-			SetFont uiAssets\ConsoleFont
+			SetFont uiAssets\consoleFont
 			
 			;Text x + 250, 50, "Zone: " + (EntityZ(mainPlayer\collider)/8.0)
 			Text x - 50, 50, "Player Position: (" + f2s(EntityX(mainPlayer\collider), 3) + ", " + f2s(EntityY(mainPlayer\collider), 3) + ", " + f2s(EntityZ(mainPlayer\collider), 3) + "), speed: "+f2s(mainPlayer\dropSpeed, 3)
@@ -1348,9 +1348,9 @@ Function DrawGUI()
 			For ev.Events = Each Events
 				If ev\room = mainPlayer\currRoom Then
 					Text x - 50, 170, "Room event: " + ev\name   
-					Text x - 50, 190, "state: " + ev\EventState
-					Text x - 50, 210, "state2: " + ev\EventState2   
-					Text x - 50, 230, "state3: " + ev\EventState3
+					Text x - 50, 190, "state: " + ev\eventState
+					Text x - 50, 210, "state2: " + ev\eventState2   
+					Text x - 50, 230, "state3: " + ev\eventState3
 					Exit
 				EndIf
 			Next
@@ -1795,8 +1795,8 @@ Function UpdateInfect()
 					p.Particles = CreateParticle(EntityX(mainPlayer\currRoom\NPC[0]\collider),EntityY(mainPlayer\currRoom\NPC[0]\collider),EntityZ(mainPlayer\currRoom\NPC[0]\collider), 5, Rnd(0.05,0.1), 0.15, 200)
 					p\speed = 0.01
 					p\SizeChange = 0.01
-					p\A = 0.5
-					p\Achange = -0.01
+					p\a = 0.5
+					p\achange = -0.01
 					RotateEntity p\pvt, Rnd(360),Rnd(360),0
 				EndIf
 				
@@ -1842,7 +1842,7 @@ Function CreateDecal.Decals(id%, x#, y#, z#, pitch#, yaw#, roll#)
 	
 	d\MaxSize = 1.0
 	
-	d\Alpha = 1.0
+	d\alpha = 1.0
 	d\Size = 1.0
 	d\obj = CreateSprite()
 	d\blendmode = 1
@@ -1891,16 +1891,16 @@ Function UpdateDecals()
 			EndIf
 		EndIf
 		
-		If d\AlphaChange <> 0 Then
-			d\Alpha = Min(d\Alpha + timing\tickDuration * d\AlphaChange, 1.0)
-			EntityAlpha(d\obj, d\Alpha)
+		If d\alphaChange <> 0 Then
+			d\alpha = Min(d\alpha + timing\tickDuration * d\alphaChange, 1.0)
+			EntityAlpha(d\obj, d\alpha)
 		EndIf
 		
 		If d\lifetime > 0 Then
 			d\lifetime=Max(d\lifetime-timing\tickDuration,5)
 		EndIf
 		
-		If d\Size <= 0 Or d\Alpha <= 0 Or d\lifetime=5.0  Then
+		If d\Size <= 0 Or d\alpha <= 0 Or d\lifetime=5.0  Then
 			FreeEntity(d\obj)
 			Delete d
 		EndIf

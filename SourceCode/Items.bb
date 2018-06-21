@@ -442,7 +442,7 @@ Function UpdateItems()
 	
 	mainPlayer\closestItem = Null
 	For i.Items = Each Items
-		i\Dropped = 0
+		i\dropped = 0
 		
 		If (Not i\Picked) Then
 			If i\disttimer < TimeInPosMilliSecs() Then
@@ -583,7 +583,7 @@ Function PickItem(item.Items)
 				
 				If item\itemtemplate\sound <> 66 Then PlaySound_SM(sndManager\itemPick[item\itemtemplate\sound])
 				item\Picked = True
-				item\Dropped = -1
+				item\dropped = -1
 				
 				item\itemtemplate\found=True
 				
@@ -606,7 +606,7 @@ Function DropItem(item.Items,playDropSound%=True)
 	
 	If playDropSound And (item\itemtemplate\sound <> 66) Then PlaySound_SM(sndManager\itemPick[item\itemtemplate\sound])
 	
-	item\Dropped = 1
+	item\dropped = 1
 	
 	ShowEntity(item\collider)
 	PositionEntity(item\collider, EntityX(mainPlayer\cam), EntityY(mainPlayer\cam), EntityZ(mainPlayer\cam))

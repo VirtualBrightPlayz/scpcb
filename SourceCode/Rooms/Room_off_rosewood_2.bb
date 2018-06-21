@@ -6,7 +6,7 @@ Function FillRoom_off_rosewood_2(r.Rooms)
 	Local t1;, Bump
     
     d = CreateDoor(r\zone, r\x + 1440.0 * RoomScale, 224.0 * RoomScale, r\z + 32.0 * RoomScale, 90, r, False, False, 4)
-    d\AutoClose = False : d\open = False
+    d\autoClose = False : d\open = False
     
     it = CreateItem("Some SCP-420-J", "420", r\x + 1776.0 * RoomScale, r\y + 400.0 * RoomScale, r\z + 427.0 * RoomScale)
     EntityParent(it\collider, r\obj)

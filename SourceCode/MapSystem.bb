@@ -103,7 +103,7 @@ Function LoadMaterials(file$)
 			
 			mat\name = Lower(TemporaryString)
 			
-			mat\Diff = 0
+			mat\diff = 0
 			
 			stepSound = GetINIString(file, TemporaryString, "stepsound")
 			If Lower(stepSound)="metal" Then mat\StepSound = STEPSOUND_METAL
@@ -278,7 +278,7 @@ Function LoadRoomTemplates(file$)
 			EndIf
 			
 			If rt\shape<>ROOM0 Then
-				rt\Commonness = Max(Min(GetINIFloat(file, TemporaryString, "commonness"), 100), 0)
+				rt\commonness = Max(Min(GetINIFloat(file, TemporaryString, "commonness"), 100), 0)
 				
 				AmountRange = GetINIString(file, TemporaryString, "amount", "")
 				If AmountRange="" Then
@@ -293,7 +293,7 @@ Function LoadRoomTemplates(file$)
 				EndIf
 				
 				rt\large = GetINIInt(file, TemporaryString, "large")
-				rt\DisableDecals = GetINIInt(file, TemporaryString, "disabledecals")
+				rt\disableDecals = GetINIInt(file, TemporaryString, "disabledecals")
 				
 				xRange = GetINIString(file, TemporaryString, "xrange")
 				yRange = GetINIString(file, TemporaryString, "yrange")
@@ -314,7 +314,7 @@ Function LoadRoomTemplates(file$)
 				rt\MinAmount = 0
 				rt\MaxAmount = 0
 				rt\zones = 0
-				rt\Commonness = 0
+				rt\commonness = 0
 			EndIf
 			
 		EndIf
@@ -427,16 +427,16 @@ Function UpdateGrid(grid.Grids)
 	Local tx%,ty%
 	For tx% = 0 To gridsz-1
 		For ty% = 0 To gridsz-1
-			If grid\Entities[tx+(ty*gridsz)]<>0 Then
-				If Abs(EntityY(mainPlayer\collider,True)-EntityY(grid\Entities[tx+(ty*gridsz)],True))>4.0 Then Exit
-				If Abs(EntityX(mainPlayer\collider,True)-EntityX(grid\Entities[tx+(ty*gridsz)],True))<HideDistance Then
-					If Abs(EntityZ(mainPlayer\collider,True)-EntityZ(grid\Entities[tx+(ty*gridsz)],True))<HideDistance Then
-						ShowEntity grid\Entities[tx+(ty*gridsz)]
+			If grid\entities[tx+(ty*gridsz)]<>0 Then
+				If Abs(EntityY(mainPlayer\collider,True)-EntityY(grid\entities[tx+(ty*gridsz)],True))>4.0 Then Exit
+				If Abs(EntityX(mainPlayer\collider,True)-EntityX(grid\entities[tx+(ty*gridsz)],True))<HideDistance Then
+					If Abs(EntityZ(mainPlayer\collider,True)-EntityZ(grid\entities[tx+(ty*gridsz)],True))<HideDistance Then
+						ShowEntity grid\entities[tx+(ty*gridsz)]
 					Else
-						HideEntity grid\Entities[tx+(ty*gridsz)]
+						HideEntity grid\entities[tx+(ty*gridsz)]
 					EndIf
 				Else
-					HideEntity grid\Entities[tx+(ty*gridsz)]
+					HideEntity grid\entities[tx+(ty*gridsz)]
 				EndIf
 			EndIf
 		Next
@@ -756,13 +756,13 @@ Function UpdateRooms()
 			
 			If foundPlayerRoom = False Then ;it's likely that an adjacent room is the new player room, check for that
 				For i=0 To 3
-					If mainPlayer\currRoom\Adjacent[i]<>Null Then
-						x = Abs(mainPlayer\currRoom\Adjacent[i]\x-EntityX(mainPlayer\collider,True))
+					If mainPlayer\currRoom\adjacent[i]<>Null Then
+						x = Abs(mainPlayer\currRoom\adjacent[i]\x-EntityX(mainPlayer\collider,True))
 						If x < 4.0 Then
-							z = Abs(mainPlayer\currRoom\Adjacent[i]\z-EntityZ(mainPlayer\collider,True))
+							z = Abs(mainPlayer\currRoom\adjacent[i]\z-EntityZ(mainPlayer\collider,True))
 							If z < 4.0 Then
 								foundPlayerRoom = True
-								mainPlayer\currRoom = mainPlayer\currRoom\Adjacent[i]
+								mainPlayer\currRoom = mainPlayer\currRoom\adjacent[i]
 								Exit
 							EndIf
 						EndIf
@@ -821,7 +821,7 @@ Function UpdateRooms()
 		EndIf
 		If hide Then
 			For i=0 To 3
-				If (IsRoomAdjacent(mainPlayer\currRoom\Adjacent[i],r)) Then hide=False : Exit
+				If (IsRoomAdjacent(mainPlayer\currRoom\adjacent[i],r)) Then hide=False : Exit
 			Next
 		EndIf
 		
@@ -851,20 +851,20 @@ Function UpdateRooms()
 	If mainPlayer\currRoom<>Null Then
 		SetRoomVisibility(mainPlayer\currRoom,True)
 		For i=0 To 3
-			If mainPlayer\currRoom\Adjacent[i]<>Null Then
-				x = Abs(EntityX(mainPlayer\collider,True)-EntityX(mainPlayer\currRoom\AdjDoor[i]\frameobj,True))
-				z = Abs(EntityZ(mainPlayer\collider,True)-EntityZ(mainPlayer\currRoom\AdjDoor[i]\frameobj,True))
-				If mainPlayer\currRoom\AdjDoor[i]\openstate = 0 Then
-					SetRoomVisibility(mainPlayer\currRoom\Adjacent[i],False)
-				ElseIf (Not EntityInView(mainPlayer\currRoom\AdjDoor[i]\frameobj,mainPlayer\cam)) Then
-					SetRoomVisibility(mainPlayer\currRoom\Adjacent[i],False)
+			If mainPlayer\currRoom\adjacent[i]<>Null Then
+				x = Abs(EntityX(mainPlayer\collider,True)-EntityX(mainPlayer\currRoom\adjDoor[i]\frameobj,True))
+				z = Abs(EntityZ(mainPlayer\collider,True)-EntityZ(mainPlayer\currRoom\adjDoor[i]\frameobj,True))
+				If mainPlayer\currRoom\adjDoor[i]\openstate = 0 Then
+					SetRoomVisibility(mainPlayer\currRoom\adjacent[i],False)
+				ElseIf (Not EntityInView(mainPlayer\currRoom\adjDoor[i]\frameobj,mainPlayer\cam)) Then
+					SetRoomVisibility(mainPlayer\currRoom\adjacent[i],False)
 				Else
-					SetRoomVisibility(mainPlayer\currRoom\Adjacent[i],True)
+					SetRoomVisibility(mainPlayer\currRoom\adjacent[i],True)
 				EndIf
 				
 				For j=0 To 3
-					If (mainPlayer\currRoom\Adjacent[i]\Adjacent[j]<>Null) Then
-						If (mainPlayer\currRoom\Adjacent[i]\Adjacent[j]<>mainPlayer\currRoom) Then SetRoomVisibility(mainPlayer\currRoom\Adjacent[i]\Adjacent[j],False)
+					If (mainPlayer\currRoom\adjacent[i]\adjacent[j]<>Null) Then
+						If (mainPlayer\currRoom\adjacent[i]\adjacent[j]<>mainPlayer\currRoom) Then SetRoomVisibility(mainPlayer\currRoom\adjacent[i]\adjacent[j],False)
 					EndIf
 				Next
 			EndIf
@@ -877,7 +877,7 @@ Function IsRoomAdjacent(this.Rooms,that.Rooms)
 	If this=Null Then Return False
 	If this=that Then Return True
 	For i=0 To 3
-		If that=this\Adjacent[i] Then Return True
+		If that=this\adjacent[i] Then Return True
 	Next
 	Return False
 End Function
@@ -1071,8 +1071,8 @@ Function FindPath(n.NPCs, x#, y#, z#)
 	
 	For w.WayPoints = Each WayPoints
 		w\state = 0
-		w\Fcost = 0
-		w\Gcost = 0
+		w\fcost = 0
+		w\gcost = 0
 		w\Hcost = 0
 	Next
 	
@@ -1160,8 +1160,8 @@ Function FindPath(n.NPCs, x#, y#, z#)
 		For w.WayPoints = Each WayPoints
 			If w\state = 1 Then
                 temp = True
-                If (w\Fcost) < dist Then
-					dist = w\Fcost
+                If (w\fcost) < dist Then
+					dist = w\fcost
 					smallest = w
                 EndIf
 			EndIf
@@ -1177,25 +1177,25 @@ Function FindPath(n.NPCs, x#, y#, z#)
 					If w\connected[i]\state < 2 Then
 						
 						If w\connected[i]\state=1 Then ;open list
-							Local gtemp# = w\Gcost+w\dist[i]
+							Local gtemp# = w\gcost+w\dist[i]
 							;TODO: fix?
 							;If n\npcType = NPCtypeMTF Then
 							;	If w\connected[i]\door = Null Then gtemp = gtemp + 0.5
 							;EndIf
-							If gtemp < w\connected[i]\Gcost Then ;parempi reitti -> overwrite
-								w\connected[i]\Gcost = gtemp
-								w\connected[i]\Fcost = w\connected[i]\Gcost + w\connected[i]\Hcost
+							If gtemp < w\connected[i]\gcost Then ;parempi reitti -> overwrite
+								w\connected[i]\gcost = gtemp
+								w\connected[i]\fcost = w\connected[i]\gcost + w\connected[i]\Hcost
 								w\connected[i]\parent = w
 							EndIf
 						Else
 							w\connected[i]\Hcost# = Abs(EntityX(w\connected[i]\obj,True)-EntityX(EndPoint\obj,True))+Abs(EntityZ(w\connected[i]\obj,True)-EntityZ(EndPoint\obj,True))
-							gtemp# = w\Gcost+w\dist[i]
+							gtemp# = w\gcost+w\dist[i]
 							;TODO: fix?
 							;If n\npcType = NPCtypeMTF Then
 							;	If w\connected[i]\door = Null Then gtemp = gtemp + 0.5
 							;EndIf
-							w\connected[i]\Gcost = gtemp
-							w\connected[i]\Fcost = w\Gcost+w\Hcost
+							w\connected[i]\gcost = gtemp
+							w\connected[i]\fcost = w\gcost+w\Hcost
 							w\connected[i]\parent = w
 							w\connected[i]\state=1
 						EndIf            
@@ -1401,14 +1401,14 @@ Function CreateSecurityCam.SecurityCams(x#, y#, z#, r.Rooms, screen% = False)
 	
 	sc\obj = CopyEntity(CamBaseOBJ)
 	ScaleEntity(sc\obj, 0.0015, 0.0015, 0.0015)
-	sc\CameraObj = CopyEntity(CamOBJ)
-	ScaleEntity(sc\CameraObj, 0.01, 0.01, 0.01)
+	sc\cameraObj = CopyEntity(CamOBJ)
+	ScaleEntity(sc\cameraObj, 0.01, 0.01, 0.01)
 	
 	sc\room = r
 	
 	sc\Screen = screen
 	If screen Then
-		sc\AllowSaving = True
+		sc\allowSaving = True
 		
 		sc\RenderInterval = 12
 		
@@ -1433,11 +1433,11 @@ Function CreateSecurityCam.SecurityCams(x#, y#, z#, r.Rooms, screen% = False)
 		
 		ScaleEntity(sc\MonitorObj, scale, scale, scale)
 		
-		sc\Cam = CreateCamera()
-		CameraViewport(sc\Cam, 0, 0, 512, 512)
-		CameraRange sc\Cam, 0.05, 6.0
-		CameraZoom(sc\Cam, 0.8)
-		HideEntity(sc\Cam)	
+		sc\cam = CreateCamera()
+		CameraViewport(sc\cam, 0, 0, 512, 512)
+		CameraRange sc\cam, 0.05, 6.0
+		CameraZoom(sc\cam, 0.8)
+		HideEntity(sc\cam)	
 	EndIf
 	
 	PositionEntity(sc\obj, x, y, z)
@@ -1460,65 +1460,65 @@ Function UpdateSecurityCams()
 	For sc.SecurityCams = Each SecurityCams
 		Local close = False
 		If sc\room = Null And (Not sc\SpecialCam) Then
-			HideEntity sc\Cam
+			HideEntity sc\cam
 		Else
 			If (Not sc\SpecialCam) Then
 				If sc\room\dist < 6.0 Or mainPlayer\currRoom=sc\room Then 
 					close = True
 				ElseIf sc\IsRoom2slCam Then
 					close = True
-				ElseIf sc\Cam<>0 Then
-					HideEntity sc\Cam
+				ElseIf sc\cam<>0 Then
+					HideEntity sc\cam
 				EndIf
 			EndIf
 			
-			If sc\IsRoom2slCam Then sc\CoffinEffect = 0
+			If sc\IsRoom2slCam Then sc\coffinEffect = 0
 			If sc\room <> Null Then
-				If sc\room\RoomTemplate\name$ = "hll_sl_2" Then sc\CoffinEffect = 0
+				If sc\room\RoomTemplate\name$ = "hll_sl_2" Then sc\coffinEffect = 0
 			EndIf
-			If sc\SpecialCam Then sc\CoffinEffect = 0
+			If sc\SpecialCam Then sc\coffinEffect = 0
 			
 			If close Or sc=CoffinCam Or sc\IsRoom2slCam Then 
-				If sc\FollowPlayer Then
+				If sc\followPlayer Then
 					If sc<>CoffinCam Then
-						If EntityVisible(sc\CameraObj,mainPlayer\cam) Then
+						If EntityVisible(sc\cameraObj,mainPlayer\cam) Then
 							PlayerDetected = True
 						EndIf
 					EndIf
-					PointEntity(sc\CameraObj, mainPlayer\cam)
-					Local temp# = EntityPitch(sc\CameraObj)
-					RotateEntity(sc\obj, 0, CurveAngle(EntityYaw(sc\CameraObj), EntityYaw(sc\obj), 75.0), 0)
+					PointEntity(sc\cameraObj, mainPlayer\cam)
+					Local temp# = EntityPitch(sc\cameraObj)
+					RotateEntity(sc\obj, 0, CurveAngle(EntityYaw(sc\cameraObj), EntityYaw(sc\obj), 75.0), 0)
 					
 					If temp < 40.0 Then temp = 40
 					If temp > 70.0 Then temp = 70
-					RotateEntity(sc\CameraObj, CurveAngle(temp, EntityPitch(sc\CameraObj), 75.0), EntityYaw(sc\obj), 0)
+					RotateEntity(sc\cameraObj, CurveAngle(temp, EntityPitch(sc\cameraObj), 75.0), EntityYaw(sc\obj), 0)
 					
-					PositionEntity(sc\CameraObj, EntityX(sc\obj, True), EntityY(sc\obj, True) - 0.083, EntityZ(sc\obj, True))
-					RotateEntity(sc\CameraObj, EntityPitch(sc\CameraObj), EntityYaw(sc\obj), 0)
+					PositionEntity(sc\cameraObj, EntityX(sc\obj, True), EntityY(sc\obj, True) - 0.083, EntityZ(sc\obj, True))
+					RotateEntity(sc\cameraObj, EntityPitch(sc\cameraObj), EntityYaw(sc\obj), 0)
 				Else
 					If sc\turn > 0 Then
 						If sc\dir = 0 Then
-							sc\CurrAngle=sc\CurrAngle+0.2 * timing\tickDuration
-							If sc\CurrAngle > (sc\turn * 1.3) Then sc\dir = 1
+							sc\currAngle=sc\currAngle+0.2 * timing\tickDuration
+							If sc\currAngle > (sc\turn * 1.3) Then sc\dir = 1
 						Else
-							sc\CurrAngle=sc\CurrAngle-0.2 * timing\tickDuration
-							If sc\CurrAngle < (-sc\turn * 1.3) Then sc\dir = 0
+							sc\currAngle=sc\currAngle-0.2 * timing\tickDuration
+							If sc\currAngle < (-sc\turn * 1.3) Then sc\dir = 0
 						EndIf
 					EndIf
-					RotateEntity(sc\obj, 0, sc\room\angle + sc\angle + Max(Min(sc\CurrAngle, sc\turn), -sc\turn), 0)
+					RotateEntity(sc\obj, 0, sc\room\angle + sc\angle + Max(Min(sc\currAngle, sc\turn), -sc\turn), 0)
 					
-					PositionEntity(sc\CameraObj, EntityX(sc\obj, True), EntityY(sc\obj, True) - 0.083, EntityZ(sc\obj, True))
-					RotateEntity(sc\CameraObj, EntityPitch(sc\CameraObj), EntityYaw(sc\obj), 0)
+					PositionEntity(sc\cameraObj, EntityX(sc\obj, True), EntityY(sc\obj, True) - 0.083, EntityZ(sc\obj, True))
+					RotateEntity(sc\cameraObj, EntityPitch(sc\cameraObj), EntityYaw(sc\obj), 0)
 					
-					If sc\Cam<>0 Then 
-						PositionEntity(sc\Cam, EntityX(sc\CameraObj, True), EntityY(sc\CameraObj, True), EntityZ(sc\CameraObj, True))
-						RotateEntity(sc\Cam, EntityPitch(sc\CameraObj), EntityYaw(sc\CameraObj), 0)
-						MoveEntity(sc\Cam, 0, 0, 0.1)
+					If sc\cam<>0 Then 
+						PositionEntity(sc\cam, EntityX(sc\cameraObj, True), EntityY(sc\cameraObj, True), EntityZ(sc\cameraObj, True))
+						RotateEntity(sc\cam, EntityPitch(sc\cameraObj), EntityYaw(sc\cameraObj), 0)
+						MoveEntity(sc\cam, 0, 0, 0.1)
 					EndIf
 					
 					If sc<>CoffinCam Then
-						If (Abs(DeltaYaw(sc\CameraObj,mainPlayer\cam))<60.0) Then
-							If EntityVisible(sc\CameraObj,mainPlayer\cam) Then
+						If (Abs(DeltaYaw(sc\cameraObj,mainPlayer\cam))<60.0) Then
+							If EntityVisible(sc\cameraObj,mainPlayer\cam) Then
 								PlayerDetected = True
 							EndIf
 						EndIf
@@ -1530,7 +1530,7 @@ Function UpdateSecurityCams()
 				If sc\Screen Then 
 					sc\state = sc\state+timing\tickDuration
 					
-					If sc\InSight And sc\AllowSaving Then 
+					If sc\InSight And sc\allowSaving Then 
 						If SelectedDifficulty\saveType = SAVEONSCREENS And EntityDistance(mainPlayer\cam, sc\ScrObj)<1.0 Then
 							DrawHandIcon = True
 							If MouseHit1 Then SelectedMonitor = sc
@@ -1547,7 +1547,7 @@ Function UpdateSecurityCams()
 							If EntityVisible(mainPlayer\cam,sc\ScrObj) Then
 								sc\InSight = True
 								
-								If sc\CoffinEffect=1 Or sc\CoffinEffect=3 Then
+								If sc\coffinEffect=1 Or sc\coffinEffect=3 Then
 									If mainPlayer\blinkTimer > - 5 Then mainPlayer\sanity895=mainPlayer\sanity895-(timing\tickDuration * 16)
 									
 									If mainPlayer\sanity895 < (-1000) Then 
@@ -1560,22 +1560,22 @@ Function UpdateSecurityCams()
 								
 								If (Not sc\IsRoom2slCam) Then
 									If (Not sc\SpecialCam) Then
-										If CoffinCam = Null Or Rand(5)=5 Or sc\CoffinEffect <> 3 Then
+										If CoffinCam = Null Or Rand(5)=5 Or sc\coffinEffect <> 3 Then
 											HideEntity(mainPlayer\cam)
-											ShowEntity(sc\Cam)
+											ShowEntity(sc\cam)
 											Cls
 											
 											SetBuffer BackBuffer()
 											RenderWorld
 											CopyRect 0,0,512,512,0,0,BackBuffer(),TextureBuffer(ScreenTexs[sc\ScrTexture])
 											
-											HideEntity(sc\Cam)
+											HideEntity(sc\cam)
 											ShowEntity(mainPlayer\cam)										
 										Else
 											HideEntity(mainPlayer\cam)
 											ShowEntity (CoffinCam\room\obj)
 											SetRoomVisibility(CoffinCam\room,True)
-											ShowEntity(CoffinCam\Cam)
+											ShowEntity(CoffinCam\cam)
 											Cls
 											
 											SetBuffer BackBuffer()
@@ -1583,17 +1583,17 @@ Function UpdateSecurityCams()
 											CopyRect 0,0,512,512,0,0,BackBuffer(),TextureBuffer(ScreenTexs[sc\ScrTexture])
 											
 											HideEntity (CoffinCam\room\obj)
-											HideEntity(CoffinCam\Cam)
+											HideEntity(CoffinCam\cam)
 											ShowEntity(mainPlayer\cam)										
 										EndIf
 									Else
 										HideEntity(mainPlayer\cam)
-										ShowEntity(sc\Cam)
+										ShowEntity(sc\cam)
 										Cls
 										
 										RenderWorld
 										
-										HideEntity(sc\Cam)
+										HideEntity(sc\cam)
 										ShowEntity(mainPlayer\cam)	
 										
 										CopyRect(0,0,512,512,0,0,BackBuffer(),TextureBuffer(sc\Room2slTexs[sc\ScrTexture]))
@@ -1603,13 +1603,13 @@ Function UpdateSecurityCams()
 									HideEntity(mainPlayer\cam)
 									ShowEntity (sc\room\obj)
 									SetRoomVisibility(sc\room,True)
-									ShowEntity(sc\Cam)
+									ShowEntity(sc\cam)
 									Cls
 									
 									RenderWorld
 									
 									HideEntity (sc\room\obj)
-									HideEntity(sc\Cam)
+									HideEntity(sc\cam)
 									ShowEntity(mainPlayer\cam)	
 									
 									CopyRect(0, 0, userOptions\screenWidth, userOptions\screenHeight, 0, 0, BackBuffer(), TextureBuffer(sc\Room2slTexs[sc\ScrTexture]))
@@ -1620,7 +1620,7 @@ Function UpdateSecurityCams()
 						sc\state = 0
 					EndIf
 					
-					If SelectedMonitor = sc Or sc\CoffinEffect=1 Or sc\CoffinEffect=3 Then
+					If SelectedMonitor = sc Or sc\coffinEffect=1 Or sc\coffinEffect=3 Then
 						If sc\InSight Then
 						;If (Not NoClip) Then 
 							Local pvt% = CreatePivot()
@@ -1639,7 +1639,7 @@ Function UpdateSecurityCams()
 							
 							FreeEntity pvt
 						;EndIf
-							If sc\CoffinEffect=1 Or sc\CoffinEffect=3 Then
+							If sc\coffinEffect=1 Or sc\coffinEffect=3 Then
 								If mainPlayer\sanity895 < - 800 Then
 									If Rand(3) = 1 Then EntityTexture(sc\ScrOverlay, MonitorTexture)
 									If Rand(6) < 5 Then
@@ -1651,7 +1651,7 @@ Function UpdateSecurityCams()
 										Else
 											;If Not IsChannelPlaying(sc\soundCHN) Then sc\soundCHN = PlaySound(HorrorSFX(4)) ;TODO: fix
 										EndIf
-										If sc\CoffinEffect=3 And Rand(200)=1 Then sc\CoffinEffect=2 : sc\PlayerState = Rand(10000, 20000)
+										If sc\coffinEffect=3 And Rand(200)=1 Then sc\coffinEffect=2 : sc\PlayerState = Rand(10000, 20000)
 									EndIf	
 									mainPlayer\blurTimer = 1000
 								ElseIf mainPlayer\sanity895 < - 500 Then
@@ -1660,7 +1660,7 @@ Function UpdateSecurityCams()
 										EntityTexture(sc\ScrOverlay, GorePics(Rand(0, 5)))
 										;If sc\PlayerState = 0 Then PlaySound(HorrorSFX(0)) ;TODO: fix
 										sc\PlayerState = Max(sc\PlayerState, 1)
-										If sc\CoffinEffect=3 And Rand(100)=1 Then sc\CoffinEffect=2 : sc\PlayerState = Rand(10000, 20000)
+										If sc\coffinEffect=3 And Rand(100)=1 Then sc\coffinEffect=2 : sc\PlayerState = Rand(10000, 20000)
 									EndIf
 								Else
 									EntityTexture(sc\ScrOverlay, MonitorTexture)
@@ -1669,7 +1669,7 @@ Function UpdateSecurityCams()
 						EndIf
 					EndIf 
 					
-					If sc\InSight And sc\CoffinEffect=0 Or sc\CoffinEffect=2 Then
+					If sc\InSight And sc\coffinEffect=0 Or sc\coffinEffect=2 Then
 						If sc\PlayerState = 0 Then
 							sc\PlayerState = Rand(60000, 65000)
 						EndIf
@@ -1683,10 +1683,10 @@ Function UpdateSecurityCams()
 						Else
 							If sc\soundCHN = 0 Then
 								sc\soundCHN = PlaySound(LoadTempSound("SFX/SCP/079/Broadcast"+Rand(1,3)+".ogg"))
-								If sc\CoffinEffect=2 Then sc\CoffinEffect=3 : sc\PlayerState = 0
+								If sc\coffinEffect=2 Then sc\coffinEffect=3 : sc\PlayerState = 0
 							ElseIf (Not IsChannelPlaying(sc\soundCHN)) Then
 								sc\soundCHN = PlaySound(LoadTempSound("SFX/SCP/079/Broadcast"+Rand(1,3)+".ogg"))
-								If sc\CoffinEffect=2 Then sc\CoffinEffect=3 : sc\PlayerState = 0
+								If sc\coffinEffect=2 Then sc\coffinEffect=3 : sc\PlayerState = 0
 							EndIf
 							EntityTexture(sc\ScrOverlay, OldAiPics(0))
 						EndIf
@@ -1695,7 +1695,7 @@ Function UpdateSecurityCams()
 					
 				EndIf ;if screen=true
 				
-				If (Not sc\InSight) Then sc\soundCHN = LoopRangedSound_SM(sndManager\camera, sc\soundCHN, mainPlayer\cam, sc\CameraObj, 4.0)
+				If (Not sc\InSight) Then sc\soundCHN = LoopRangedSound_SM(sndManager\camera, sc\soundCHN, mainPlayer\cam, sc\cameraObj, 4.0)
 			Else
 				If SelectedMonitor=sc Then SelectedMonitor=Null
 			EndIf
@@ -1935,7 +1935,7 @@ Function CreateMap()
 	For rt.RoomTemplates = Each RoomTemplates
 		If ((rt\zones And zone)<>0) And (rt\MaxAmount<0) And (rt\Shape<>ROOM0) Then
 			randomTemplateCount=randomTemplateCount+1
-			totalCommonness[rt\Shape]=totalCommonness[rt\Shape]+rt\Commonness
+			totalCommonness[rt\Shape]=totalCommonness[rt\Shape]+rt\commonness
 		EndIf
 	Next
 	Local randomTemplates.IntArray = CreateIntArray(randomTemplateCount,1)
@@ -1972,7 +1972,7 @@ Function CreateMap()
 				For i% = 0 To randomTemplateCount-1
 					tempTemplate = Object.RoomTemplates(GetIntArrayElem(randomTemplates,i,0))
 					If tempTemplate\shape = currType Then
-						commonnessAccumulator=commonnessAccumulator+tempTemplate\Commonness
+						commonnessAccumulator=commonnessAccumulator+tempTemplate\commonness
 						If commonnessAccumulator>=targetCommonness Then
 							r = CreateRoom(tempTemplate,x*8.0,0.0,y*8.0)
 							r\angle = DetermineRotation(layout,x,y)
@@ -2018,10 +2018,10 @@ Function CreateMap()
 					End Select
 					
 					If (x+tempX>=0) And (x+tempX<mapDim) And (y+tempY>=0) And (y+tempY<mapDim) Then
-						r\Adjacent[i] = Object.Rooms(GetIntArrayElem(MapRooms,x+tempX,y+tempY))
-						If r\Adjacent[i]<>Null Then
-							If (r\Adjacent[i]\AdjDoor[(i+2) Mod 4]=Null) Then
-								r\AdjDoor[i] = CreateDoor(zone,r\x+4.0*tempX,0.0,r\z+4.0*tempY,90.0*((i+1) Mod 2),Null)
+						r\adjacent[i] = Object.Rooms(GetIntArrayElem(MapRooms,x+tempX,y+tempY))
+						If r\adjacent[i]<>Null Then
+							If (r\adjacent[i]\adjDoor[(i+2) Mod 4]=Null) Then
+								r\adjDoor[i] = CreateDoor(zone,r\x+4.0*tempX,0.0,r\z+4.0*tempY,90.0*((i+1) Mod 2),Null)
 								newWaypoint = CreateWaypoint(r\x+4.0*tempX,50.0*RoomScale,r\z+4.0*tempY,r)
 								
 								DebugLog "step1"
@@ -2036,7 +2036,7 @@ Function CreateMap()
 											EndIf
 										EndIf
 										
-										If tempWaypoint\room = r\Adjacent[i] Then
+										If tempWaypoint\room = r\adjacent[i] Then
 											If roomBWaypoint = Null Then
 												roomBWaypoint = tempWaypoint
 											ElseIf EntityDistance(roomBWaypoint\obj,newWaypoint\obj)>EntityDistance(tempWaypoint\obj,newWaypoint\obj) Then
@@ -2073,7 +2073,7 @@ Function CreateMap()
 								
 								DebugLog "step3"
 							Else
-								r\AdjDoor[i] = r\Adjacent[i]\AdjDoor[(i+2) Mod 4]
+								r\adjDoor[i] = r\adjacent[i]\adjDoor[(i+2) Mod 4]
 							EndIf
 						EndIf
 					EndIf

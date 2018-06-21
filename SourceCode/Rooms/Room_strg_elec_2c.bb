@@ -6,7 +6,7 @@ Function FillRoom_strg_elec_2c(r.Rooms)
     Local t1;, Bump
 
     d = CreateDoor(r\zone, r\x + 64.0 * RoomScale, 0.0, r\z + 368.0 * RoomScale, 180, r, False, False, 2)
-    d\AutoClose = False : d\open = False
+    d\autoClose = False : d\open = False
     
     it = CreateItem("Note from Daniel", "paper", r\x-400.0*RoomScale,1040.0*RoomScale,r\z+115.0*RoomScale)
     EntityParent(it\collider, r\obj)
@@ -32,7 +32,7 @@ Function FillRoom_strg_elec_2c(r.Rooms)
     sc.SecurityCams = CreateSecurityCam(r\x-265.0*RoomScale, r\y+1280.0*RoomScale, r\z+105.0*RoomScale, r)
     sc\angle = 45
     sc\turn = 45
-    TurnEntity(sc\CameraObj, 20, 0, 0)
+    TurnEntity(sc\cameraObj, 20, 0, 0)
     sc\ID = 10
 End Function
 
@@ -58,9 +58,9 @@ Function UpdateEvent_strg_elec_2c(e.Events)
 				DrawHandIcon = True
 				If MouseHit1 Then mainPlayer\grabbedEntity = e\room\Objects[i]
 				
-				If e\EventState = 0 Then 
+				If e\eventState = 0 Then 
 					If i = 3 Then 
-						e\EventState = Max(e\EventState,1)
+						e\eventState = Max(e\eventState,1)
 						;PlaySound2 HorrorSFX(7)
 						PlaySound_SM(sndManager\lever)
 					EndIf
@@ -119,8 +119,8 @@ Function UpdateEvent_strg_elec_2c(e.Events)
 			EndIf
 		Next
 		
-		If e\EventState > 0 And e\EventState < 200 Then
-			e\EventState = e\EventState + timing\tickDuration
+		If e\eventState > 0 And e\eventState < 200 Then
+			e\eventState = e\eventState + timing\tickDuration
 			RotateEntity(e\room\Levers[1]\obj, CurveValue(-85, EntityPitch(e\room\Objects[3]), 5), EntityYaw(e\room\Objects[3]), 0)
 		EndIf 
 		

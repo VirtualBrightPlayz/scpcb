@@ -37,16 +37,16 @@ Function FillRoom_closets_2(r.Rooms)
     PositionEntity r\Objects[1], r\x-1232*RoomScale, -256*RoomScale, r\z-160*RoomScale, True
     
     d.Doors = CreateDoor(0, r\x - 240.0 * RoomScale, 0.0, r\z, 90, r, False)
-    d\open = False : d\AutoClose = False 
+    d\open = False : d\autoClose = False 
     MoveEntity(d\buttons[0], 0.0, 0.0, 22.0 * RoomScale)
     MoveEntity(d\buttons[1], 0.0, 0.0, 22.0 * RoomScale)
     
     sc.SecurityCams = CreateSecurityCam(r\x, r\y + 704*RoomScale, r\z + 863*RoomScale, r)
     sc\angle = 180
     sc\turn = 45
-    TurnEntity(sc\CameraObj, 20, 0, 0)
+    TurnEntity(sc\cameraObj, 20, 0, 0)
     sc\ID = 0
-    ;sc\FollowPlayer = True
+    ;sc\followPlayer = True
 End Function
 
 
@@ -62,7 +62,7 @@ Function UpdateEvent_closets_2(e.Events)
 	Local angle#
 
 	;[Block]
-	If e\EventState = 0 Then
+	If e\eventState = 0 Then
 		If (Not e\loaded) Then
 			If e\room\NPC[0]=Null Then
 				e\room\NPC[0] = CreateNPC(NPCtypeD, EntityX(e\room\Objects[0],True),EntityY(e\room\Objects[0],True),EntityZ(e\room\Objects[0],True))
@@ -92,37 +92,37 @@ Function UpdateEvent_closets_2(e.Events)
 			PointEntity e\room\NPC[1]\collider, e\room\NPC[0]\collider
 			
 			e\loaded = True
-			e\EventState=1
+			e\eventState=1
 		EndIf
 	Else
-		e\EventState=e\EventState+timing\tickDuration
-		If e\EventState < 70*3.5 Then
+		e\eventState=e\eventState+timing\tickDuration
+		If e\eventState < 70*3.5 Then
 			RotateEntity(e\room\NPC[1]\collider,0,CurveAngle(e\room\angle+90,EntityYaw(e\room\NPC[1]\collider),100.0),0,True)
 			
 			e\room\NPC[0]\state=1
-			If e\EventState > 70*3.2 And e\EventState-timing\tickDuration =< 70*3.2 Then PlayRangedSound(IntroSFX(15),mainPlayer\cam,e\room\obj,15.0)
-		ElseIf e\EventState < 70*6.5 Then
-			If e\EventState-timing\tickDuration < 70*3.5 Then
+			If e\eventState > 70*3.2 And e\eventState-timing\tickDuration =< 70*3.2 Then PlayRangedSound(IntroSFX(15),mainPlayer\cam,e\room\obj,15.0)
+		ElseIf e\eventState < 70*6.5 Then
+			If e\eventState-timing\tickDuration < 70*3.5 Then
 				e\room\NPC[0]\state=0
 				e\room\NPC[1]\soundChannels[0] = PlayRangedSound(e\room\NPC[1]\sounds[0], mainPlayer\cam, e\room\NPC[1]\collider,12.0)
 			EndIf
 			
-			If e\EventState > 70*4.5 Then
+			If e\eventState > 70*4.5 Then
 				PointEntity e\room\NPC[0]\obj, e\room\obj
 				RotateEntity(e\room\NPC[0]\collider,0,CurveAngle(EntityYaw(e\room\NPC[0]\obj),EntityYaw(e\room\NPC[0]\collider),30.0),0,True)
 			EndIf
 			PointEntity e\room\NPC[1]\obj, e\room\obj
-			TurnEntity e\room\NPC[1]\obj, 0, Sin(e\EventState)*25, 0
+			TurnEntity e\room\NPC[1]\obj, 0, Sin(e\eventState)*25, 0
 			RotateEntity(e\room\NPC[1]\collider,0,CurveAngle(EntityYaw(e\room\NPC[1]\obj),EntityYaw(e\room\NPC[1]\collider),30.0),0,True)
 		Else
-			If e\EventState-timing\tickDuration < 70*6.5 Then
+			If e\eventState-timing\tickDuration < 70*6.5 Then
 				PlaySound_SM(sndManager\lightSwitch)
 			EndIf
-			mainPlayer\blinkTimer = Max((70*6.5-e\EventState)/5.0 - Rnd(0.0,2.0),-10)
+			mainPlayer\blinkTimer = Max((70*6.5-e\eventState)/5.0 - Rnd(0.0,2.0),-10)
 			If mainPlayer\blinkTimer =-10 Then
 				;TODO: fix
-				;If e\EventState > 70*7.5 And e\EventState-timing\tickDuration =< 70*7.5 Then PlayRangedSound(NeckSnapSFX(0),mainPlayer\cam,e\room\NPC[0]\collider,8.0)
-				;If e\EventState > 70*8.0 And e\EventState-timing\tickDuration =< 70*8.0 Then PlayRangedSound(NeckSnapSFX(1),mainPlayer\cam,e\room\NPC[1]\collider,8.0)
+				;If e\eventState > 70*7.5 And e\eventState-timing\tickDuration =< 70*7.5 Then PlayRangedSound(NeckSnapSFX(0),mainPlayer\cam,e\room\NPC[0]\collider,8.0)
+				;If e\eventState > 70*8.0 And e\eventState-timing\tickDuration =< 70*8.0 Then PlayRangedSound(NeckSnapSFX(1),mainPlayer\cam,e\room\NPC[1]\collider,8.0)
 				SetNPCFrame e\room\NPC[0], 60
 				e\room\NPC[0]\state=8
 				
@@ -130,7 +130,7 @@ Function UpdateEvent_closets_2(e.Events)
 				e\room\NPC[1]\state = 6
 			EndIf
 			
-			If e\EventState > 70*8.5 Then
+			If e\eventState > 70*8.5 Then
 				PositionEntity Curr173\collider, (EntityX(e\room\Objects[0],True)+EntityX(e\room\Objects[1],True))/2,EntityY(e\room\Objects[0],True),(EntityZ(e\room\Objects[0],True)+EntityZ(e\room\Objects[1],True))/2
 				PointEntity Curr173\collider, mainPlayer\collider
 				ResetEntity Curr173\collider

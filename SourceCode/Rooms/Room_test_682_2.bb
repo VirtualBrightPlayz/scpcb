@@ -18,7 +18,7 @@
     EntityParent(r\Objects[6], r\obj)
     
     sc.SecurityCams = CreateSecurityCam(r\x + 744.0 * RoomScale, r\y - 856.0 * RoomScale, r\z + 236.0 * RoomScale, r)
-    sc\FollowPlayer = True
+    sc\followPlayer = True
     
     CreateDoor(0, r\x + 720.0 * RoomScale, 0, r\z, 0, r, False, 2, -1)
     
@@ -43,7 +43,7 @@ Function UpdateEvent_test_682_2(e.Events)
 	;[Block]
 	If e <> Null Then
 		If mainPlayer\currRoom = e\room Then
-			If e\EventState = 0 Then
+			If e\eventState = 0 Then
 				e\room\Objects[7]=LoadAnimMesh("GFX/npcs/scp-1048.b3d")
 				ScaleEntity e\room\Objects[7], 0.05,0.05,0.05
 				
@@ -54,9 +54,9 @@ Function UpdateEvent_test_682_2(e.Events)
 				
 				RotateEntity e\room\Objects[7],-90,e\room\angle-90,0
 				SetAnimTime e\room\Objects[7],297
-				e\EventState = 1
+				e\eventState = 1
 			EndIf
-			If EntityDistance(mainPlayer\collider, e\room\Objects[6]) < 2.5 And e\EventState > 0 Then
+			If EntityDistance(mainPlayer\collider, e\room\Objects[6]) < 2.5 And e\eventState > 0 Then
 				PlaySound2(LoadTempSound("SFX/SCP/079/TestroomWarning.ogg"))
 				For i = 0 To 5
 					em.Emitters = CreateEmitter(EntityX(e\room\Objects[i], True), EntityY(e\room\Objects[i], True), EntityZ(e\room\Objects[i], True), 0)
@@ -67,7 +67,7 @@ Function UpdateEvent_test_682_2(e.Events)
 					em\SizeChange = 0.0025									
 				Next
 				;Delete e
-				e\EventState = e\EventState * -1
+				e\eventState = e\eventState * -1
 			EndIf
 			If e\room\Objects[7]<>0 Then
 				Animate2(e\room\Objects[7],AnimTime(e\room\Objects[7]),284,308,0.3)
@@ -77,10 +77,10 @@ Function UpdateEvent_test_682_2(e.Events)
 				If Abs(TFormedX())>725 Then
 					FreeEntity(e\room\Objects[7])
 					e\room\Objects[7]=0
-					e\EventState = e\EventState *2
+					e\eventState = e\eventState *2
 				EndIf
 			EndIf
-			If e\EventState = -2 Then RemoveEvent(e)
+			If e\eventState = -2 Then RemoveEvent(e)
 		EndIf
 	EndIf
 	;[End Block]

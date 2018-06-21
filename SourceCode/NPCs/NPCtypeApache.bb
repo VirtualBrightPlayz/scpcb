@@ -96,7 +96,7 @@ Function UpdateNPCtypeApache(n.NPCs)
                 target = mainPlayer\collider
             ElseIf n\state = 3 Then
                 target=CreatePivot()
-                PositionEntity target, n\EnemyX, n\EnemyY, n\EnemyZ, True
+                PositionEntity target, n\enemyX, n\enemyY, n\enemyZ, True
             EndIf
             
             If NoTarget And n\state = 2 Then n\state = 1
@@ -178,7 +178,7 @@ Function UpdateNPCtypeApache(n.NPCs)
                 n\state2=n\state2+timing\tickDuration*0.3
                 
                 target=CreatePivot()
-                PositionEntity target, n\EnemyX, n\EnemyY, n\EnemyZ, True
+                PositionEntity target, n\enemyX, n\enemyY, n\enemyZ, True
                 
                 PointEntity n\obj, target
                 MoveEntity n\obj, 0,0,timing\tickDuration*0.001*n\state2

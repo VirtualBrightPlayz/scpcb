@@ -14,8 +14,8 @@ Function FillRoom_cont_966_3(r.Rooms)
     sc.SecurityCams = CreateSecurityCam(r\x-312.0 * RoomScale, r\y + 414*RoomScale, r\z + 656*RoomScale, r)
     sc\angle = 225
     sc\turn = 45
-    TurnEntity(sc\CameraObj, 20, 0, 0)
-    ;sc\FollowPlayer = True
+    TurnEntity(sc\cameraObj, 20, 0, 0)
+    ;sc\followPlayer = True
     sc\ID = 9
     
     r\Objects[0] = CreatePivot(r\obj)

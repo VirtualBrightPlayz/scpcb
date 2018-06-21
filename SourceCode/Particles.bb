@@ -11,7 +11,7 @@ Type Particles
 	
 	Field lifetime#
 End Type 
-	
+
 Function CreateParticle.Particles(x#, y#, z#, image%, size#, gravity# = 1.0, lifetime% = 200)
 	Local p.Particles = New Particles
 	p\lifetime = lifetime
@@ -41,7 +41,7 @@ Function CreateParticle.Particles(x#, y#, z#, image%, size#, gravity# = 1.0, lif
 	ScaleSprite(p\obj, p\size, p\size)
 	Return p
 End Function
-	
+
 Function UpdateParticles()
 	Local p.Particles
 	For p.Particles = Each Particles
@@ -72,7 +72,7 @@ Function UpdateParticles()
 		EndIf
 	Next
 End Function
-	
+
 Function RemoveParticle(p.Particles)
 	FreeEntity(p\obj)
 	FreeEntity(p\pvt)	
@@ -104,29 +104,29 @@ Function UpdateEmitters()
 	InSmoke = False
 	Local e.Emitters
 	For e.Emitters = Each Emitters
-		If timing\tickDuration > 0 And (mainPlayer\currRoom = e\Room Or e\Room\dist < 8) Then
+		If timing\tickDuration > 0 And (mainPlayer\currRoom = e\room Or e\room\dist < 8) Then
 			;If EntityDistance(mainPlayer\cam, e\Obj) < 6.0 Then
-				Local p.Particles = CreateParticle(EntityX(e\obj, True), EntityY(e\obj, True), EntityZ(e\obj, True), Rand(e\minImage, e\maxImage), e\size, e\Gravity, e\LifeTime)
-				p\speed = e\Speed
-				RotateEntity(p\pvt, EntityPitch(e\obj, True), EntityYaw(e\obj, True), EntityRoll(e\obj, True), True)
-				TurnEntity(p\pvt, Rnd(-e\RandAngle, e\RandAngle), Rnd(-e\RandAngle, e\RandAngle), 0)
-				
-				TurnEntity p\obj, 0,0,Rnd(360)
-				
-				p\sizeChange = e\SizeChange
-				
-				p\aChange = e\Achange
-				
-				e\soundCHN = LoopRangedSound_SM(sndManager\hiss, e\soundCHN, mainPlayer\cam, e\Obj)
-				
-				If InSmoke = False Then
-					If IsPlayerWearingTempName(mainPlayer,"gasmask") And IsPlayerWearingTempName(mainPlayer,"hazmatsuit") Then
-						Local dist# = Distance(EntityX(mainPlayer\cam, True), EntityZ(mainPlayer\cam, True), EntityX(e\Obj, True), EntityZ(e\Obj, True))
-						If dist < 0.8 Then
-							If Abs(EntityY(mainPlayer\cam, True)-EntityY(e\Obj,True))<5.0 Then InSmoke = True
-						EndIf
-					EndIf					
-				EndIf
+			Local p.Particles = CreateParticle(EntityX(e\obj, True), EntityY(e\obj, True), EntityZ(e\obj, True), Rand(e\minImage, e\maxImage), e\size, e\gravity, e\lifeTime)
+			p\speed = e\speed
+			RotateEntity(p\pvt, EntityPitch(e\obj, True), EntityYaw(e\obj, True), EntityRoll(e\obj, True), True)
+			TurnEntity(p\pvt, Rnd(-e\randAngle, e\randAngle), Rnd(-e\randAngle, e\randAngle), 0)
+			
+			TurnEntity p\obj, 0,0,Rnd(360)
+			
+			p\sizeChange = e\sizeChange
+			
+			p\aChange = e\aChange
+			
+			e\soundCHN = LoopRangedSound_SM(sndManager\hiss, e\soundCHN, mainPlayer\cam, e\obj)
+			
+			If InSmoke = False Then
+				If IsPlayerWearingTempName(mainPlayer,"gasmask") And IsPlayerWearingTempName(mainPlayer,"hazmatsuit") Then
+					Local dist# = Distance(EntityX(mainPlayer\cam, True), EntityZ(mainPlayer\cam, True), EntityX(e\obj, True), EntityZ(e\obj, True))
+					If dist < 0.8 Then
+						If Abs(EntityY(mainPlayer\cam, True)-EntityY(e\obj,True))<5.0 Then InSmoke = True
+					EndIf
+				EndIf					
+			EndIf
 			;EndIf
 		EndIf
 	Next
@@ -148,43 +148,43 @@ Function UpdateEmitters()
 	EndIf	
 End Function 
 
-	
+
 Function CreateEmitter.Emitters(x#, y#, z#, emittertype%) 
 	Local e.Emitters = New Emitters
-		
-	e\Obj = CreatePivot()
-	PositionEntity(e\Obj, x, y, z, True)
-		
+	
+	e\obj = CreatePivot()
+	PositionEntity(e\obj, x, y, z, True)
+	
 	Select emittertype
 		Case 0 ;savu
-			e\Size = 0.03
-			e\Gravity = -0.2
-			e\LifeTime = 200
-			e\SizeChange = 0.005
-			e\Speed = 0.004
-			e\RandAngle = 20
-			e\Achange = -0.008
+			e\size = 0.03
+			e\gravity = -0.2
+			e\lifeTime = 200
+			e\sizeChange = 0.005
+			e\speed = 0.004
+			e\randAngle = 20
+			e\aChange = -0.008
 		Case 1
-			e\Size = 0.03
-			e\Gravity = -0.2
-			e\LifeTime = 200
-			e\SizeChange = 0.008
-			e\Speed = 0.004
-			e\RandAngle = 40
-			e\Achange = -0.01
+			e\size = 0.03
+			e\gravity = -0.2
+			e\lifeTime = 200
+			e\sizeChange = 0.008
+			e\speed = 0.004
+			e\randAngle = 40
+			e\aChange = -0.01
 			
-			e\MinImage = 6 : e\MaxImage = 6
+			e\minImage = 6 : e\maxImage = 6
 	End Select
 	
 	Local r.Rooms
 	For r.Rooms = Each Rooms
-		If Abs(EntityX(e\Obj) - EntityX(r\obj)) < 4.0 And Abs(EntityZ(e\Obj) - EntityZ(r\obj)) < 4.0 Then
-			e\Room = r
+		If Abs(EntityX(e\obj) - EntityX(r\obj)) < 4.0 And Abs(EntityZ(e\obj) - EntityZ(r\obj)) < 4.0 Then
+			e\room = r
 		EndIf
 	Next
 	
 	Return e
-		
+	
 End Function
 ;~IDEal Editor Parameters:
 ;~C#Blitz3D

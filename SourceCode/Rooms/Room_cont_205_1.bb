@@ -6,12 +6,12 @@ Function FillRoom_cont_205_1(r.Rooms)
     Local t1;, Bump
     
     d.Doors = CreateDoor(r\zone, r\x + 128.0 * RoomScale, 0, r\z + 640.0 *RoomScale, 90, r, True, False, 3)
-    d\AutoClose = False : d\open = False
+    d\autoClose = False : d\open = False
     ;PositionEntity(d\buttons[0], r\x + 320.0 * RoomScale, EntityY(d\buttons[0],True), EntityZ(d\buttons[0],True), True)
     ;PositionEntity(d\buttons[1], r\x + 224.0 * RoomScale, EntityY(d\buttons[1],True), EntityZ(d\buttons[1],True), True)
     
     r\RoomDoors[0] = CreateDoor(r\zone, r\x - 1392.0 * RoomScale, -128.0 * RoomScale, r\z - 384*RoomScale, 0, r, True, False, 3)
-    r\RoomDoors[0]\AutoClose = False : r\RoomDoors[0]\open = False
+    r\RoomDoors[0]\autoClose = False : r\RoomDoors[0]\open = False
     FreeEntity(r\RoomDoors[0]\buttons[0]) : r\RoomDoors[0]\buttons[0]=0
     FreeEntity(r\RoomDoors[0]\buttons[1]) : r\RoomDoors[0]\buttons[1]=0
     
@@ -19,7 +19,7 @@ Function FillRoom_cont_205_1(r.Rooms)
     sc\angle = 90 : sc\turn = 0
     EntityParent(sc\obj, r\obj)
     
-    sc\AllowSaving = False
+    sc\allowSaving = False
     sc\RenderInterval = 0
     
     EntityParent(sc\ScrObj, 0)
@@ -30,7 +30,7 @@ Function FillRoom_cont_205_1(r.Rooms)
     EntityParent(sc\ScrObj, r\obj)
     ;EntityBlend(sc\ScrObj, 2)
     
-    CameraZoom (sc\Cam, 1.5)
+    CameraZoom (sc\cam, 1.5)
     
     HideEntity sc\ScrOverlay
     HideEntity sc\MonitorObj
@@ -57,7 +57,7 @@ Function UpdateEvent_cont_205_1(e.Events)
 	;[Block]
 	If mainPlayer\currRoom = e\room Then
 		e\overwriteMusic = True
-		If e\EventState=0 Or e\room\Objects[0]=0 Then
+		If e\eventState=0 Or e\room\Objects[0]=0 Then
 			If (Not e\loaded) Then
 				
 				e\room\Objects[3] = LoadAnimMesh("GFX/npcs/205_demon1.b3d")
@@ -82,16 +82,16 @@ Function UpdateEvent_cont_205_1(e.Events)
 				
 				e\musicTrack = MUS_205
 				e\loaded = True
-				e\EventState = 1
+				e\eventState = 1
 			EndIf
 			
 		Else
 			
-			If (e\EventState<65) Then
+			If (e\eventState<65) Then
 				If (Distance(EntityX(mainPlayer\collider), EntityZ(mainPlayer\collider), EntityX(e\room\Objects[0],True), EntityZ(e\room\Objects[0],True))<2.0) Then
 					PlaySound2(LoadTempSound("SFX/SCP/205/Enter.ogg"))
 					
-					e\EventState = Max(e\EventState, 65)
+					e\eventState = Max(e\eventState, 65)
 					
 					ShowEntity(e\room\Objects[3])
 					ShowEntity(e\room\Objects[4])
@@ -105,30 +105,30 @@ Function UpdateEvent_cont_205_1(e.Events)
 					e\room\RoomDoors[0]\open = False
 				EndIf
 				
-				If e\EventState>7 Then
+				If e\eventState>7 Then
 					If (Rand(0,300)=1) Then
 						e\room\RoomDoors[0]\open = Not e\room\RoomDoors[0]\open
 					EndIf
 				EndIf 
 				
-				e\EventState2 = e\EventState2 + timing\tickDuration							
+				e\eventState2 = e\eventState2 + timing\tickDuration							
 			EndIf
 			
 			
-			Select e\EventState
+			Select e\eventState
 				Case 1
 					;sitting
 					Animate2(e\room\Objects[6], AnimTime(e\room\Objects[6]), 526, 530, 0.2)
-					If e\EventState2 > 20*70 Then e\EventState = e\EventState+1
+					If e\eventState2 > 20*70 Then e\eventState = e\eventState+1
 				Case 3
 					;laying down
 					Animate2(e\room\Objects[6], AnimTime(e\room\Objects[6]), 377, 525, 0.2)
-					If e\EventState2 > 30*70 Then e\EventState = e\EventState+1
+					If e\eventState2 > 30*70 Then e\eventState = e\eventState+1
 				Case 5
 					;standing
 					Animate2(e\room\Objects[6], AnimTime(e\room\Objects[6]), 228, 376, 0.2)
-					If e\EventState2 > 40*70 Then 
-						e\EventState = e\EventState+1
+					If e\eventState2 > 40*70 Then 
+						e\eventState = e\eventState+1
 						PlayRangedSound(LoadTempSound("SFX/SCP/205/Horror.ogg"), mainPlayer\cam, e\room\Objects[6], 10, 0.3)
 					EndIf	
 				Case 7
@@ -137,8 +137,8 @@ Function UpdateEvent_cont_205_1(e.Events)
 					;le sexy demon pose
 					Animate2(e\room\Objects[5], AnimTime(e\room\Objects[5]), 500, 648, 0.2)
 					;TurnEntity(e\room\Objects[6], 0.0, DeltaYaw(e\room\Objects[6], e\room\Objects[5])*0.01, 0.0, True)
-					If e\EventState2 > 60*70 Then 
-						e\EventState = e\EventState+1
+					If e\eventState2 > 60*70 Then 
+						e\eventState = e\eventState+1
 						PlayRangedSound(LoadTempSound("SFX/SCP/205/Horror.ogg"), mainPlayer\cam, e\room\Objects[6], 10, 0.5)
 					EndIf
 				Case 9
@@ -150,8 +150,8 @@ Function UpdateEvent_cont_205_1(e.Events)
 					
 					;TurnEntity(e\room\Objects[6], 0.0, DeltaYaw(e\room\Objects[6], e\room\Objects[4])*0.01, 0.0, True)
 					
-					If e\EventState2 > 80*70 Then 
-						e\EventState = e\EventState+1
+					If e\eventState2 > 80*70 Then 
+						e\eventState = e\eventState+1
 						PlaySound2(LoadTempSound("SFX/SCP/205/Horror.ogg"))
 					EndIf
 				Case 11
@@ -164,7 +164,7 @@ Function UpdateEvent_cont_205_1(e.Events)
 					
 					;TurnEntity(e\room\Objects[6], 0.0, DeltaYaw(e\room\Objects[5], e\room\Objects[4])*0.01, 0.0, True)
 					
-					If e\EventState2 > 85*70 Then e\EventState = e\EventState+1
+					If e\eventState2 > 85*70 Then e\eventState = e\eventState+1
 				Case 13
 					If (AnimTime(e\room\Objects[6])<>227) Then SetAnimTime(e\room\Objects[6], 227)
 						
@@ -181,9 +181,9 @@ Function UpdateEvent_cont_205_1(e.Events)
 						;MoveEntity(e\room\Objects[4], 0,-timing\tickDuration*0.001,0)
 						;MoveEntity(e\room\Objects[5], 0,-timing\tickDuration*0.001,0)
 						If AnimTime(e\room\Objects[3])>533 Then 
-							e\EventState = 67
-							e\EventState2 = 0										
-							e\EventState3 = 0
+							e\eventState = 67
+							e\eventState2 = 0										
+							e\eventState3 = 0
 							HideEntity e\room\Objects[1]
 						EndIf
 					EndIf
@@ -198,15 +198,15 @@ Function UpdateEvent_cont_205_1(e.Events)
 						PlaySound2 DamageSFX(Rand(2,3))
 						mainPlayer\camShake = 0.5
 						
-						e\EventState2 = Rnd(-0.1, 0.1)
-						e\EventState3 = Rnd(-0.1, 0.1)
+						e\eventState2 = Rnd(-0.1, 0.1)
+						e\eventState3 = Rnd(-0.1, 0.1)
 						
 						If (mainPlayer\injuries>5.0) Then Kill(mainPlayer)
 					EndIf
 					
-					TranslateEntity(mainPlayer\collider, e\EventState2,0,e\EventState3)
-					e\EventState2 = CurveValue(e\EventState2, 0, 10.0)								
-					e\EventState3 = CurveValue(e\EventState3, 0, 10.0)
+					TranslateEntity(mainPlayer\collider, e\eventState2,0,e\eventState3)
+					e\eventState2 = CurveValue(e\eventState2, 0, 10.0)								
+					e\eventState3 = CurveValue(e\eventState3, 0, 10.0)
 				Default
 					If (Rand(3)=1) Then
 						HideEntity e\room\Objects[1]
@@ -214,16 +214,16 @@ Function UpdateEvent_cont_205_1(e.Events)
 						ShowEntity e\room\Objects[1]
 					EndIf
 					
-					e\EventState3 = e\EventState3 + timing\tickDuration
-					If (e\EventState3>50) Then
+					e\eventState3 = e\eventState3 + timing\tickDuration
+					If (e\eventState3>50) Then
 						ShowEntity e\room\Objects[1]
-						e\EventState = e\EventState+1
-						e\EventState3=0
+						e\eventState = e\eventState+1
+						e\eventState3=0
 					EndIf
 			End Select
 		EndIf
 	Else
-		e\EventState = 0
+		e\eventState = 0
 		e\overwriteMusic = False
 	EndIf
 	;[End block]

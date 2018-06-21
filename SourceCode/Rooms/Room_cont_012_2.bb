@@ -11,7 +11,7 @@ Function FillRoom_cont_012_2(r.Rooms)
     TurnEntity d\buttons[1],0,0,0,True
     
     r\RoomDoors[0] = CreateDoor(r\zone, r\x -512.0 * RoomScale, -768.0*RoomScale, r\z -336.0 * RoomScale, 0, r, False, False)
-    r\RoomDoors[0]\AutoClose = False : r\RoomDoors[0]\open = False : r\RoomDoors[0]\locked = True
+    r\RoomDoors[0]\autoClose = False : r\RoomDoors[0]\open = False : r\RoomDoors[0]\locked = True
     PositionEntity(r\RoomDoors[0]\buttons[0], r\x + 176.0 * RoomScale, -512.0*RoomScale, r\z - 364.0 * RoomScale, True)
     FreeEntity r\RoomDoors[0]\buttons[1] : r\RoomDoors[0]\buttons[1]=0
     
@@ -78,11 +78,11 @@ Function UpdateEvent_cont_012_2(e.Events)
 	;[Block]
 	If mainPlayer\currRoom = e\room Then
 		
-		If e\EventState=0 Then
+		If e\eventState=0 Then
 			If EntityDistance(mainPlayer\collider, e\room\RoomDoors[0]\obj)<2.5 And RemoteDoorOn Then
 				;PlaySound2 HorrorSFX(7)
 				PlayRangedSound_SM(sndManager\lever,mainPlayer\cam,e\room\RoomDoors[0]\obj) 
-				e\EventState=1
+				e\eventState=1
 				e\room\RoomDoors[0]\locked = False
 				UseDoor(e\room\RoomDoors[0],False)
 				e\room\RoomDoors[0]\locked = True
@@ -95,19 +95,19 @@ Function UpdateEvent_cont_012_2(e.Events)
 			; TODO: Move to musicmanager.
 			;If (e\sounds[1] = 0) Then LoadEventSound(e, "SFX/Music/012.ogg", 1)
 			
-			If e\EventState<90 Then e\EventState=CurveValue(90,e\EventState,500)
-			PositionEntity e\room\Objects[2], EntityX(e\room\Objects[2],True),(-130-448*Sin(e\EventState))*RoomScale,EntityZ(e\room\Objects[2],True),True
+			If e\eventState<90 Then e\eventState=CurveValue(90,e\eventState,500)
+			PositionEntity e\room\Objects[2], EntityX(e\room\Objects[2],True),(-130-448*Sin(e\eventState))*RoomScale,EntityZ(e\room\Objects[2],True),True
 			
-			If e\EventState2 > 0 And e\EventState2 < 200 Then
-				e\EventState2 = e\EventState2 + timing\tickDuration
+			If e\eventState2 > 0 And e\eventState2 < 200 Then
+				e\eventState2 = e\eventState2 + timing\tickDuration
 				RotateEntity(e\room\Levers[0]\obj, CurveValue(85, EntityPitch(e\room\Levers[0]\obj), 5), EntityYaw(e\room\Levers[0]\obj), 0)
 			Else
-				e\EventState2 = e\EventState2 + timing\tickDuration
-				If e\EventState2<250 Then
+				e\eventState2 = e\eventState2 + timing\tickDuration
+				If e\eventState2<250 Then
 					ShowEntity e\room\Objects[3] 
 				Else
 					HideEntity e\room\Objects[3] 
-					If e\EventState2>300 Then e\EventState2=200
+					If e\eventState2>300 Then e\eventState2=200
 				EndIf
 			EndIf
 			
@@ -136,22 +136,22 @@ Function UpdateEvent_cont_012_2(e.Events)
 						FreeEntity pvt										
 					EndIf
 				Else
-					e\soundChannels[1] = LoopRangedSound(e\sounds[1], e\soundChannels[1], mainPlayer\cam, e\room\Objects[3], 10, e\EventState3/(86.0*70.0))
+					e\soundChannels[1] = LoopRangedSound(e\sounds[1], e\soundChannels[1], mainPlayer\cam, e\room\Objects[3], 10, e\eventState3/(86.0*70.0))
 					
 					pvt% = CreatePivot()
 					PositionEntity pvt, EntityX(mainPlayer\cam), EntityY(e\room\Objects[2],True)-0.05, EntityZ(mainPlayer\cam)
 					PointEntity(pvt, e\room\Objects[2])
-					RotateEntity(mainPlayer\collider, EntityPitch(mainPlayer\collider), CurveAngle(EntityYaw(pvt), EntityYaw(mainPlayer\collider), 80-(e\EventState3/200.0)), 0)
+					RotateEntity(mainPlayer\collider, EntityPitch(mainPlayer\collider), CurveAngle(EntityYaw(pvt), EntityYaw(mainPlayer\collider), 80-(e\eventState3/200.0)), 0)
 					
 					TurnEntity(pvt, 90, 0, 0)
-					mainPlayer\headPitch = CurveAngle(EntityPitch(pvt)+25, mainPlayer\headPitch + 90.0, 80-(e\EventState3/200.0))
+					mainPlayer\headPitch = CurveAngle(EntityPitch(pvt)+25, mainPlayer\headPitch + 90.0, 80-(e\eventState3/200.0))
 					mainPlayer\headPitch=mainPlayer\headPitch-90
 					
 					dist = Distance(EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider),EntityX(e\room\Objects[2],True),EntityZ(e\room\Objects[2],True))
 					
 					mainPlayer\heartbeatIntensity = 150
 					;HeartBeatVolume = Max(3.0-dist,0.0)/3.0
-					mainPlayer\blurTimer = Max((2.0-dist)*(e\EventState3/800.0)*(Sin(Float(TimeInPosMilliSecs()) / 20.0 + 1.0)),mainPlayer\blurTimer)
+					mainPlayer\blurTimer = Max((2.0-dist)*(e\eventState3/800.0)*(Sin(Float(TimeInPosMilliSecs()) / 20.0 + 1.0)),mainPlayer\blurTimer)
 					mainPlayer\camZoom = Max(mainPlayer\camZoom, (Sin(Float(TimeInPosMilliSecs()) / 20.0)+1.0)*8.0*Max((3.0-dist),0.0))
 					
 					If mainPlayer\breathChn <> 0 Then
@@ -159,15 +159,15 @@ Function UpdateEvent_cont_012_2(e.Events)
 					EndIf
 					
 					If dist < 0.6 Then
-						e\EventState3=Min(e\EventState3+timing\tickDuration,86*70)
-						If e\EventState3>70 And e\EventState3-timing\tickDuration=<70 Then
+						e\eventState3=Min(e\eventState3+timing\tickDuration,86*70)
+						If e\eventState3>70 And e\eventState3-timing\tickDuration=<70 Then
 							PlaySound2 LoadTempSound("SFX/SCP/012/Speech1.ogg")
-						ElseIf e\EventState3>13*70 And e\EventState3-timing\tickDuration=<13*70 Then
+						ElseIf e\eventState3>13*70 And e\eventState3-timing\tickDuration=<13*70 Then
 							Msg="You start pushing your nails into your wrist, drawing blood."
 							MsgTimer = 7*70
 							mainPlayer\injuries=mainPlayer\injuries+0.5
 							PlaySound2 LoadTempSound("SFX/SCP/012/Speech2.ogg")
-						ElseIf e\EventState3>31*70 And e\EventState3-timing\tickDuration=<31*70 Then
+						ElseIf e\eventState3>31*70 And e\eventState3-timing\tickDuration=<31*70 Then
 							Local tex% = LoadTexture("GFX/map/Textures/scp-012_1.jpg")
 							EntityTexture (e\room\Objects[4], tex,0,1)
 							FreeTexture tex
@@ -176,19 +176,19 @@ Function UpdateEvent_cont_012_2(e.Events)
 							MsgTimer = 7*70
 							mainPlayer\injuries=Max(mainPlayer\injuries,1.5)
 							PlaySound2 LoadTempSound("SFX/SCP/012/Speech"+Rand(3,4)+".ogg")
-						ElseIf e\EventState3>49*70 And e\EventState3-timing\tickDuration=<49*70 Then
+						ElseIf e\eventState3>49*70 And e\eventState3-timing\tickDuration=<49*70 Then
 							Msg="You push your fingers deeper into the wound."
 							MsgTimer = 8*70
 							mainPlayer\injuries=mainPlayer\injuries+0.3
 							PlaySound2 LoadTempSound("SFX/SCP/012/Speech5.ogg")
-						ElseIf e\EventState3>63*70 And e\EventState3-timing\tickDuration=<63*70 Then
+						ElseIf e\eventState3>63*70 And e\eventState3-timing\tickDuration=<63*70 Then
 							tex = LoadTexture("GFX/map/Textures/scp-012_2.jpg")
 							EntityTexture (e\room\Objects[4], tex,0,1)	
 							FreeTexture tex
 							
 							mainPlayer\injuries=mainPlayer\injuries+0.5
 							PlaySound2 LoadTempSound("SFX/SCP/012/Speech6.ogg")
-						ElseIf e\EventState3>74*70 And e\EventState3-timing\tickDuration=<74*70 Then
+						ElseIf e\eventState3>74*70 And e\eventState3-timing\tickDuration=<74*70 Then
 							tex = LoadTexture("GFX/map/Textures/scp-012_3.jpg")
 							EntityTexture (e\room\Objects[4], tex,0,1)
 							FreeTexture tex
@@ -201,13 +201,13 @@ Function UpdateEvent_cont_012_2(e.Events)
 							
 							Local de.Decals = CreateDecal(17,  EntityX(mainPlayer\collider), -768*RoomScale+0.01, EntityZ(mainPlayer\collider),90,Rnd(360),0)
 							de\Size = 0.1 : de\MaxSize = 0.45 : de\SizeChange = 0.0002 : UpdateDecals()
-						ElseIf e\EventState3>85*70 And e\EventState3-timing\tickDuration=<85*70	Then
+						ElseIf e\eventState3>85*70 And e\eventState3-timing\tickDuration=<85*70	Then
 							DeathMSG = "Subject D-9341 found in a pool of blood next to SCP-012. Subject seems to have ripped open his wrists and written three extra "
 							DeathMSG = DeathMSG + "lines to the composition before dying of blood loss."
 							Kill(mainPlayer)
 						EndIf
 						
-						RotateEntity(mainPlayer\collider, EntityPitch(mainPlayer\collider), CurveAngle(EntityYaw(mainPlayer\collider)+Sin(e\EventState3*(e\EventState3/2000))*(e\EventState3/300), EntityYaw(mainPlayer\collider), 80), 0)
+						RotateEntity(mainPlayer\collider, EntityPitch(mainPlayer\collider), CurveAngle(EntityYaw(mainPlayer\collider)+Sin(e\eventState3*(e\eventState3/2000))*(e\eventState3/300), EntityYaw(mainPlayer\collider), 80), 0)
 						
 					Else
 						angle = WrapAngle(EntityYaw(pvt)-EntityYaw(mainPlayer\collider))

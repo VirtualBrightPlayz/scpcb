@@ -9,12 +9,12 @@ Function FillRoom_srvr_096_2(r.Rooms)
     d\locked = True
     
     r\RoomDoors[0] = CreateDoor(r\zone, r\x - 208.0 * RoomScale, 0.0, r\z - 736.0 * RoomScale, 90, r, True, False)
-    r\RoomDoors[0]\AutoClose=False
+    r\RoomDoors[0]\autoClose=False
     r\RoomDoors[1] = CreateDoor(r\zone, r\x - 208.0 * RoomScale, 0.0, r\z + 736.0 * RoomScale, 90, r, True, False)
-    r\RoomDoors[1]\AutoClose=False
+    r\RoomDoors[1]\autoClose=False
     
     r\RoomDoors[2] = CreateDoor(r\zone, r\x - 672.0 * RoomScale, 0.0, r\z - 1024.0 * RoomScale, 0, r, False, False, False, "GEAR")
-    r\RoomDoors[2]\AutoClose=False
+    r\RoomDoors[2]\autoClose=False
     FreeEntity(r\RoomDoors[2]\buttons[0]) : r\RoomDoors[2]\buttons[0]=0
     FreeEntity(r\RoomDoors[2]\buttons[1]) : r\RoomDoors[2]\buttons[1]=0
     
@@ -78,7 +78,7 @@ Function UpdateEvent_srvr_096_2(e.Events)
 	Local angle#
 
 	;[Block]
-	If e\EventState=0 Then
+	If e\eventState=0 Then
 		If mainPlayer\currRoom = e\room Then
 		 ;close the doors when the player enters the room
 			UseDoor(e\room\RoomDoors[0],False)
@@ -102,20 +102,20 @@ Function UpdateEvent_srvr_096_2(e.Events)
 			
 			e\room\NPC[0]=CreateNPC(NPCtypeGuard, EntityX(e\room\Objects[7],True),EntityY(e\room\Objects[7],True),EntityZ(e\room\Objects[7],True))
 			
-			e\EventState=1
+			e\eventState=1
 		EndIf
-	ElseIf e\EventState < 70*45 Then
+	ElseIf e\eventState < 70*45 Then
 		If Rand(200)<5 And mainPlayer\currRoom = e\room Then 
 			;LightBlink = Rnd(1.0,2.0)
 			If Rand(5)=1 Then PlayRangedSound(IntroSFX(Rand(10,12)), mainPlayer\cam, e\room\obj, 8.0, Rnd(0.1,0.3))
 		EndIf
 		
-		e\EventState=Min(e\EventState+timing\tickDuration,70*43)
+		e\eventState=Min(e\eventState+timing\tickDuration,70*43)
 		
 		If e\room\NPC[0]<>Null Then
-			If e\EventState < 70*13 Then
+			If e\eventState < 70*13 Then
 				
-				If e\EventState > 70*8 Then
+				If e\eventState > 70*8 Then
 					Curr096\state=Min(Max(2,Curr096\state),3)
 					Curr096\state2=70*10
 				Else
@@ -132,13 +132,13 @@ Function UpdateEvent_srvr_096_2(e.Events)
 				e\room\NPC[0]\state=8
 				SetAnimTime e\room\NPC[0]\obj, 115
 				PointEntity e\room\NPC[0]\collider, Curr096\collider								
-			ElseIf e\EventState-timing\tickDuration =< 70*15 Then ;walk to the doorway
-				If e\EventState > 70*15 Then
+			ElseIf e\eventState-timing\tickDuration =< 70*15 Then ;walk to the doorway
+				If e\eventState > 70*15 Then
 					e\room\NPC[0]\state=3
 					e\room\NPC[0]\PathStatus = FindPath(e\room\NPC[0], EntityX(e\room\Objects[8],True),0.5,EntityZ(e\room\Objects[8],True))
 					e\room\NPC[0]\PathTimer=300
 				EndIf
-			ElseIf e\EventState<70*20 Then
+			ElseIf e\eventState<70*20 Then
 				If e\room\NPC[0]\PathStatus=0 Then  
 					e\room\RoomDoors[2]\open = False
 					
@@ -159,7 +159,7 @@ Function UpdateEvent_srvr_096_2(e.Events)
 					;If mainPlayer\currRoom = e\room Then LightBlink = (e\room\NPC[0]\Reload)+Rnd(0.5,2.0)
 					Curr096\Target = e\room\NPC[0]
 				Else
-					If e\EventState>70*22 Then Curr096\state = 4
+					If e\eventState>70*22 Then Curr096\state = 4
 					If e\room\NPC[0]\state=7 Then
 						e\room\NPC[0]\state=3
 						e\room\NPC[0]\PathStatus = FindPath(e\room\NPC[0], EntityX(e\room\obj,True),0.4,EntityZ(e\room\obj,True))
@@ -174,7 +174,7 @@ Function UpdateEvent_srvr_096_2(e.Events)
 				e\sounds[0]=LoadSound("SFX/Character/Guard/096ServerRoom2.ogg")
 				e\soundChannels[0]=PlaySound(e\sounds[0])
 				
-				Curr096\CurrSpeed = 0
+				Curr096\currSpeed = 0
 				
 				For i = 0 To 6
 					If e\room\angle = 0 Or e\room\angle = 180 Then
@@ -202,7 +202,7 @@ Function UpdateEvent_srvr_096_2(e.Events)
 			EndIf
 		Else
 			
-			If e\EventState >= 70*40 And e\EventState-timing\tickDuration < 70*40 Then ;open them again to let the player in
+			If e\eventState >= 70*40 And e\eventState-timing\tickDuration < 70*40 Then ;open them again to let the player in
 				e\room\RoomDoors[0]\locked=False
 				e\room\RoomDoors[1]\locked=False
 				UseDoor(e\room\RoomDoors[0],False)
@@ -222,12 +222,12 @@ Function UpdateEvent_srvr_096_2(e.Events)
 				
 				If (e\room\angle = 0 Or e\room\angle = 180) Then ;lock the player inside
 					If Abs(EntityX(mainPlayer\collider)-EntityX(e\room\obj,True))> 1.3 Then 
-						e\EventState = 70*50
+						e\eventState = 70*50
 						e\sounds[0]=0
 					EndIf
 				Else
 					If Abs(EntityZ(mainPlayer\collider)-EntityZ(e\room\obj,True))> 1.3 Then 
-						e\EventState = 70*50
+						e\eventState = 70*50
 						e\sounds[0]=0
 					EndIf
 				EndIf	
@@ -242,22 +242,22 @@ Function UpdateEvent_srvr_096_2(e.Events)
 		
 		;fuel pump on
 		If x Then
-			e\EventState2 = Min(1.0, e\EventState2+timing\tickDuration/350)
+			e\eventState2 = Min(1.0, e\eventState2+timing\tickDuration/350)
 			
 			;generator on
 			If z Then
 				If e\sounds[1]=0 Then LoadEventSound(e,"SFX/General/GeneratorOn.ogg",1)
-				e\EventState3 = Min(1.0, e\EventState3+timing\tickDuration/450)
+				e\eventState3 = Min(1.0, e\eventState3+timing\tickDuration/450)
 			Else
-				e\EventState3 = Min(0.0, e\EventState3-timing\tickDuration/450)
+				e\eventState3 = Min(0.0, e\eventState3-timing\tickDuration/450)
 			EndIf
 		Else
-			e\EventState2 = Max(0, e\EventState2-timing\tickDuration/350)
-			e\EventState3 = Max(0, e\EventState3-timing\tickDuration/450)
+			e\eventState2 = Max(0, e\eventState2-timing\tickDuration/350)
+			e\eventState3 = Max(0, e\eventState3-timing\tickDuration/450)
 		EndIf
 		
-		If e\EventState2>0 Then e\soundChannels[0]=LoopRangedSound(RoomAmbience[8], e\soundChannels[0], mainPlayer\cam, e\room\Levers[1]\obj, 5.0, e\EventState2*0.8)
-		If e\EventState3>0 Then e\soundChannels[1]=LoopRangedSound(e\sounds[1], e\soundChannels[1], mainPlayer\cam, e\room\Levers[2]\obj, 6.0, e\EventState3)
+		If e\eventState2>0 Then e\soundChannels[0]=LoopRangedSound(RoomAmbience[8], e\soundChannels[0], mainPlayer\cam, e\room\Levers[1]\obj, 5.0, e\eventState2*0.8)
+		If e\eventState3>0 Then e\soundChannels[1]=LoopRangedSound(e\sounds[1], e\soundChannels[1], mainPlayer\cam, e\room\Levers[2]\obj, 6.0, e\eventState3)
 		
 		If temp=0 And x And z Then
 			e\room\RoomDoors[0]\locked = False

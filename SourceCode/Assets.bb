@@ -388,7 +388,7 @@ Function InitNewGame()
 			If r\Lights[i]<>0 Then EntityParent(r\Lights[i],0)
 		Next
 		
-		If (Not r\RoomTemplate\DisableDecals) Then
+		If (Not r\RoomTemplate\disableDecals) Then
 			If Rand(4) = 1 Then
 				de.Decals = CreateDecal(Rand(2, 3), EntityX(r\obj)+Rnd(- 2,2), 0.003, EntityZ(r\obj)+Rnd(-2,2), 90, Rand(360), 0)
 				de\Size = Rnd(0.1, 0.4) : ScaleSprite(de\obj, de\Size, de\Size)
@@ -451,15 +451,15 @@ Function InitNewGame()
 	;TODO: fix
 ;	For e.Events = Each Events
 ;		If e\name = "room2nuke"
-;			e\EventState = 1
+;			e\eventState = 1
 ;			DebugLog "room2nuke"
 ;		EndIf
 ;		If e\name = "room106"
-;			e\EventState2 = 1
+;			e\eventState2 = 1
 ;			DebugLog "room106"
 ;		EndIf	
 ;		If e\name = "room2sl"
-;			e\EventState3 = 1
+;			e\eventState3 = 1
 ;			DebugLog "room2sl"
 ;		EndIf
 ;	Next
@@ -557,7 +557,7 @@ Function InitLoadGame()
 	For e.Events = Each Events
 		;Loading the necessary stuff for dimension1499, but this will only be done if the player is in this dimension already
 		If e\name = "dimension1499" Then
-			If e\EventState = 2 Then
+			If e\eventState = 2 Then
 				;[Block]
 				DrawLoading(91)
 				e\room\Objects[0] = CreatePlane()

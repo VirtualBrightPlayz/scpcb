@@ -31,21 +31,21 @@ Function UpdateNPCtypeD(n.NPCs)
     
     Select n\state
         Case 0 ;idle
-            n\CurrSpeed = CurveValue(0.0, n\CurrSpeed, 5.0)
+            n\currSpeed = CurveValue(0.0, n\currSpeed, 5.0)
             Animate2(n\obj, AnimTime(n\obj), 210, 235, 0.1)
         Case 1 ;walking
             If n\state2 = 1.0 Then
-                n\CurrSpeed = CurveValue(n\Speed*0.7, n\CurrSpeed, 20.0)
+                n\currSpeed = CurveValue(n\Speed*0.7, n\currSpeed, 20.0)
             Else
-                n\CurrSpeed = CurveValue(0.015, n\CurrSpeed, 5.0)
+                n\currSpeed = CurveValue(0.015, n\currSpeed, 5.0)
             EndIf
-            Animate2(n\obj, AnimTime(n\obj), 236, 260, n\CurrSpeed * 18)
+            Animate2(n\obj, AnimTime(n\obj), 236, 260, n\currSpeed * 18)
         Case 2 ;running
-            n\CurrSpeed = CurveValue(0.03, n\CurrSpeed, 5.0)
-            Animate2(n\obj, AnimTime(n\obj), 301, 319, n\CurrSpeed * 18)
+            n\currSpeed = CurveValue(0.03, n\currSpeed, 5.0)
+            Animate2(n\obj, AnimTime(n\obj), 301, 319, n\currSpeed * 18)
     End Select
     
-    MoveEntity(n\collider, 0, 0, n\CurrSpeed * timing\tickDuration)
+    MoveEntity(n\collider, 0, 0, n\currSpeed * timing\tickDuration)
     
     PositionEntity(n\obj, EntityX(n\collider), EntityY(n\collider) - 0.32, EntityZ(n\collider))
     

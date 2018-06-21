@@ -6,11 +6,11 @@ Function FillRoom_cont_914_1(r.Rooms)
     Local t1;, Bump
 
     ;d = CreateDoor(r\zone, r\x, 0, r\z - 368.0 * RoomScale, 0, r, False, True, 2)
-    ;d\dir = 1 : d\AutoClose = False : d\open = False
+    ;d\dir = 1 : d\autoClose = False : d\open = False
     ;PositionEntity (d\buttons[0], r\x - 496.0 * RoomScale, 0.7, r\z - 272.0 * RoomScale, True)
     ;TurnEntity(d\buttons[0], 0, 90, 0)
     r\RoomDoors[2] = CreateDoor(r\zone,r\x,0,r\z-368.0*RoomScale,0,r,False,True,2)
-    r\RoomDoors[2]\dir=1 : r\RoomDoors[2]\AutoClose=False : r\RoomDoors[2]\open=False
+    r\RoomDoors[2]\dir=1 : r\RoomDoors[2]\autoClose=False : r\RoomDoors[2]\open=False
     PositionEntity (r\RoomDoors[2]\buttons[0], r\x - 496.0 * RoomScale, 0.7, r\z - 272.0 * RoomScale, True)
     TurnEntity(r\RoomDoors[2]\buttons[0], 0, 90, 0)
     
@@ -31,13 +31,13 @@ Function FillRoom_cont_914_1(r.Rooms)
     FreeEntity (d\obj2) : d\obj2 = 0
     FreeEntity (d\buttons[0]) : d\buttons[0] = 0
     FreeEntity (d\buttons[1]) : d\buttons[1] = 0
-    r\RoomDoors[0] = d: d\AutoClose = False
+    r\RoomDoors[0] = d: d\autoClose = False
     
     d = CreateDoor(r\zone, r\x + 816.0 * RoomScale, 0.0, r\z + 528.0 * RoomScale, 180, r, True)
     FreeEntity (d\obj2) : d\obj2 = 0	
     FreeEntity (d\buttons[0]) : d\buttons[0] = 0
     FreeEntity (d\buttons[1]) : d\buttons[1] = 0
-    r\RoomDoors[1] = d : d\AutoClose = False
+    r\RoomDoors[1] = d : d\autoClose = False
     
     r\Objects[2] = CreatePivot()
     r\Objects[3] = CreatePivot()
@@ -566,7 +566,7 @@ Function UpdateEvent_cont_914_1(e.Events)
 		If MouseDown1 Or MouseHit1 Then
 			If mainPlayer\grabbedEntity <> 0 Then ;avain
 				If mainPlayer\grabbedEntity = e\room\Objects[0] Then
-					If e\EventState = 0 Then
+					If e\eventState = 0 Then
 						DrawHandIcon = True
 						TurnEntity(mainPlayer\grabbedEntity, 0, 0, -mouse_x_speed_1 * 2.5)
 						
@@ -585,7 +585,7 @@ Function UpdateEvent_cont_914_1(e.Events)
 								If it\collider <> 0 And it\Picked = False Then
 									If Abs(EntityX(it\collider) - (e\room\x - 712.0 * RoomScale)) < 200.0 Then
 										If Abs(EntityY(it\collider) - (e\room\y + 648.0 * RoomScale)) < 104.0 Then
-											e\EventState = 1
+											e\eventState = 1
 											e\soundChannels[0] = PlayRangedSound(e\sounds[0], mainPlayer\cam, e\room\Objects[1])
 											Exit
 										EndIf
@@ -595,7 +595,7 @@ Function UpdateEvent_cont_914_1(e.Events)
 						EndIf
 					EndIf
 				ElseIf mainPlayer\grabbedEntity = e\room\Objects[1] Then
-					If e\EventState = 0 Then
+					If e\eventState = 0 Then
 						DrawHandIcon = True
 						TurnEntity(mainPlayer\grabbedEntity, 0, 0, -mouse_x_speed_1 * 2.5)
 						
@@ -654,21 +654,21 @@ Function UpdateEvent_cont_914_1(e.Events)
 			EndIf
 		Next
 		
-		If e\EventState > 0 Then
-			e\EventState = e\EventState + timing\tickDuration
+		If e\eventState > 0 Then
+			e\eventState = e\eventState + timing\tickDuration
 			
 			e\room\RoomDoors[1]\open = False
-			If e\EventState > 70 * 2 Then
+			If e\eventState > 70 * 2 Then
 				e\room\RoomDoors[0]\open = False
 			EndIf
 			
 			If Distance(EntityX(mainPlayer\collider), EntityZ(mainPlayer\collider), EntityX(e\room\Objects[2], True), EntityZ(e\room\Objects[2], True)) < (170.0 * RoomScale) Then
 				
 				If setting = "rough" Or setting = "coarse" Then
-					If e\EventState > 70 * 2.6 And e\EventState - timing\tickDuration < 70 * 2.6 Then PlaySound2(e\sounds[2])
+					If e\eventState > 70 * 2.6 And e\eventState - timing\tickDuration < 70 * 2.6 Then PlaySound2(e\sounds[2])
 				EndIf
 				
-				If e\EventState > 70 * 3 Then
+				If e\eventState > 70 * 3 Then
 					Select setting
 						Case "rough"
 							Kill(mainPlayer)
@@ -679,24 +679,24 @@ Function UpdateEvent_cont_914_1(e.Events)
 							DeathMSG = DeathMSG + "ended up inside the intake booth and who or what wound the key."+Chr(34)
 						Case "coarse"
 							mainPlayer\blinkTimer = -10
-							If e\EventState - timing\tickDuration < 70 * 3 Then PlaySound2(LoadSound(e\sounds[1]))
+							If e\eventState - timing\tickDuration < 70 * 3 Then PlaySound2(LoadSound(e\sounds[1]))
 						Case "1:1"
 							mainPlayer\blinkTimer = -10
-							If e\EventState - timing\tickDuration < 70 * 3 Then PlaySound2(LoadSound(e\sounds[1]))
+							If e\eventState - timing\tickDuration < 70 * 3 Then PlaySound2(LoadSound(e\sounds[1]))
 						Case "fine", "very fine"
 							mainPlayer\blinkTimer = -10
-							If e\EventState - timing\tickDuration < 70 * 3 Then PlaySound2(LoadSound(e\sounds[1]))
+							If e\eventState - timing\tickDuration < 70 * 3 Then PlaySound2(LoadSound(e\sounds[1]))
 					End Select
 				EndIf
 			EndIf
 			
-			If e\EventState > (6 * 70) Then	
+			If e\eventState > (6 * 70) Then	
 				RotateEntity(e\room\Objects[0], EntityPitch(e\room\Objects[0]), EntityYaw(e\room\Objects[0]), CurveAngle(0, EntityRoll(e\room\Objects[0]),10.0))
 			Else
 				RotateEntity(e\room\Objects[0], EntityPitch(e\room\Objects[0]), EntityYaw(e\room\Objects[0]), 180)
 			EndIf
 			
-			If e\EventState > (12 * 70) Then							
+			If e\eventState > (12 * 70) Then							
 				For it.Items = Each Items
 					If it\collider <> 0 And it\Picked = False Then
 						If Distance(EntityX(it\collider), EntityZ(it\collider), EntityX(e\room\Objects[2], True), EntityZ(e\room\Objects[2], True)) < (180.0 * RoomScale) Then
@@ -726,7 +726,7 @@ Function UpdateEvent_cont_914_1(e.Events)
 				e\room\RoomDoors[0]\open = True
 				e\room\RoomDoors[1]\open = True
 				RotateEntity(e\room\Objects[0], 0, 0, 0)
-				e\EventState = 0
+				e\eventState = 0
 			EndIf
 		EndIf
 	EndIf

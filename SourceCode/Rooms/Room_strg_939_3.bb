@@ -67,17 +67,17 @@ Function FillRoom_strg_939_3(r.Rooms)
     
     ;Doors
     r\RoomDoors[0] = CreateDoor(r\zone, r\x, 0.0, r\z + 448.0 * RoomScale, 0, r, True)
-    r\RoomDoors[0]\AutoClose = False : r\RoomDoors[0]\open = True
+    r\RoomDoors[0]\autoClose = False : r\RoomDoors[0]\open = True
     PositionEntity(r\RoomDoors[0]\buttons[1], r\x - 160.0 * RoomScale, 0.7, r\z + 480.0 * RoomScale, True)
     PositionEntity(r\RoomDoors[0]\buttons[0], r\x + 160.0 * RoomScale, 0.7, r\z + 416.0 * RoomScale, True)	
     
     r\RoomDoors[1] = CreateDoor(r\zone, r\x + 5840.0 * RoomScale,  -5632.0 * RoomScale, r\z + 1048.0 * RoomScale, 0, r, False)
-    r\RoomDoors[1]\AutoClose = False : r\RoomDoors[1]\open = False
+    r\RoomDoors[1]\autoClose = False : r\RoomDoors[1]\open = False
     PositionEntity(r\RoomDoors[1]\buttons[0], r\x + 6000.0 * RoomScale, EntityY(r\RoomDoors[1]\buttons[0],True), r\z + 1008.0 * RoomScale, True)					
     PositionEntity(r\RoomDoors[1]\buttons[1], r\x + 5680.0 * RoomScale, EntityY(r\RoomDoors[1]\buttons[1],True), r\z + 1088.0 * RoomScale, True)
     
     r\RoomDoors[2] = CreateDoor(r\zone, r\x + 608.0 * RoomScale, 0.0, r\z - 312.0 * RoomScale, 0, r, True)
-    r\RoomDoors[2]\AutoClose = False : r\RoomDoors[2]\open = True
+    r\RoomDoors[2]\autoClose = False : r\RoomDoors[2]\open = True
     PositionEntity(r\RoomDoors[2]\buttons[1], r\x + 448.0 * RoomScale, 0.7, r\z - 272.0 * RoomScale, True)	
     PositionEntity(r\RoomDoors[2]\buttons[0], r\x + 768.0 * RoomScale, 0.7, r\z - 352.0 * RoomScale, True)
     
@@ -85,7 +85,7 @@ Function FillRoom_strg_939_3(r.Rooms)
     ;PositionEntity(r\RoomDoors[3]\buttons[0], r\x + 896.0 * RoomScale, EntityY(r\RoomDoors[3]\buttons[0],True), r\z + 1024.0 * RoomScale, True)
     ;PositionEntity(r\RoomDoors[3]\buttons[1], r\x + 544.0 * RoomScale, EntityY(r\RoomDoors[3]\buttons[1],True), r\z + 1104.0 * RoomScale, True)
     r\RoomDoors[3] = CreateDoor(r\zone, r\x - 456.0 * RoomScale,  -5632.0 * RoomScale, r\z - 824.0 * RoomScale, 0, r, False)
-    r\RoomDoors[3]\AutoClose = False : r\RoomDoors[3]\open = False
+    r\RoomDoors[3]\autoClose = False : r\RoomDoors[3]\open = False
     ;X=+176 | Z=-40
     PositionEntity r\RoomDoors[3]\buttons[0], r\x - 280.0*RoomScale, EntityY(r\RoomDoors[3]\buttons[0],True), r\z - 864.0 * RoomScale, True
     ;X=-176 | Z=+40
@@ -95,8 +95,8 @@ Function FillRoom_strg_939_3(r.Rooms)
     TurnEntity(em\Obj, 20, -100, 0, True)
     EntityParent(em\Obj, r\obj) : em\Room = r
     em\RandAngle = 15 : em\Speed = 0.03
-    em\SizeChange = 0.01 : em\Achange = -0.006
-    em\Gravity = -0.2 
+    em\SizeChange = 0.01 : em\achange = -0.006
+    em\gravity = -0.2 
     
     Select Rand(3)
         Case 1
@@ -149,25 +149,25 @@ Function FillRoom_strg_939_3(r.Rooms)
     Next
     
     r\RoomDoors[4] = CreateDoor(r\zone,r\x+56*RoomScale,r\y-5632*RoomScale,r\z+6344*RoomScale,90,r,False,2)
-    r\RoomDoors[4]\AutoClose = False : r\RoomDoors[4]\open = False
+    r\RoomDoors[4]\autoClose = False : r\RoomDoors[4]\open = False
     For i = 0 To 1
         FreeEntity r\RoomDoors[4]\buttons[i] : r\RoomDoors[4]\buttons[i] = 0
     Next
     
     d = CreateDoor(r\zone,r\x+1157.0*RoomScale,r\y-5632.0*RoomScale,r\z+660.0*RoomScale,0,r,False,2)
-    d\locked = True : d\open = False : d\AutoClose = False
+    d\locked = True : d\open = False : d\autoClose = False
     For i = 0 To 1
         FreeEntity d\buttons[i] : d\buttons[i]=0
     Next
     
     d = CreateDoor(r\zone,r\x+234.0*RoomScale,r\y-5632.0*RoomScale,r\z+5239.0*RoomScale,90,r,False,2)
-    d\locked = True : d\open = False : d\AutoClose = False
+    d\locked = True : d\open = False : d\autoClose = False
     For i = 0 To 1
         FreeEntity d\buttons[i] : d\buttons[i]=0
     Next
     
     d = CreateDoor(r\zone,r\x+3446.0*RoomScale,r\y-5632.0*RoomScale,r\z+6369.0*RoomScale,90,r,False,2)
-    d\locked = True : d\open = False : d\AutoClose = False
+    d\locked = True : d\open = False : d\autoClose = False
     For i = 0 To 1
         FreeEntity d\buttons[i] : d\buttons[i]=0
     Next
@@ -187,9 +187,9 @@ Function UpdateEvent_strg_939_3(e.Events)
 
 	;[Block]
 	If mainPlayer\currRoom = e\room Then
-		e\EventState2 = UpdateElevators2(e\EventState2, e\room\RoomDoors[0], e\room\RoomDoors[1],e\room\Objects[0],e\room\Objects[1], e)
+		e\eventState2 = UpdateElevators2(e\eventState2, e\room\RoomDoors[0], e\room\RoomDoors[1],e\room\Objects[0],e\room\Objects[1], e)
 		
-		e\EventState3 = UpdateElevators2(e\EventState3, e\room\RoomDoors[2], e\room\RoomDoors[3],e\room\Objects[2],e\room\Objects[3], e)
+		e\eventState3 = UpdateElevators2(e\eventState3, e\room\RoomDoors[2], e\room\RoomDoors[3],e\room\Objects[2],e\room\Objects[3], e)
 		
 		If EntityY(mainPlayer\collider)<-4600*RoomScale Then
 			
@@ -208,21 +208,21 @@ Function UpdateEvent_strg_939_3(e.Events)
 				
 				;DrawLoading(100, True)
 			;EndIf
-			If e\room\NPC[2]=Null Or e\EventState = 3 Then
-				If e\EventState = 0 Then
-					e\EventState = 1
-				ElseIf e\EventState = 1 Then
+			If e\room\NPC[2]=Null Or e\eventState = 3 Then
+				If e\eventState = 0 Then
+					e\eventState = 1
+				ElseIf e\eventState = 1 Then
 					e\room\NPC[0]=CreateNPC(NPCtype939, 0,0,0)
-					e\EventState = 2
-				ElseIf e\EventState = 2 Then
+					e\eventState = 2
+				ElseIf e\eventState = 2 Then
 					e\room\NPC[1]=CreateNPC(NPCtype939, 0,0,0)
-					e\EventState = 3
-				ElseIf e\EventState = 3 Then
+					e\eventState = 3
+				ElseIf e\eventState = 3 Then
 					e\room\NPC[2]=CreateNPC(NPCtype939, 0,0,0)
-					e\EventState = 0
+					e\eventState = 0
 				EndIf
 			Else
-				If e\EventState = 0 Then
+				If e\eventState = 0 Then
 					;Instance 1
 					PositionEntity(e\room\NPC[0]\collider, EntityX(e\room\Objects[4],True),EntityY(e\room\Objects[4],True)+0.2,EntityZ(e\room\Objects[4],True))
 					ResetEntity e\room\NPC[0]\collider
@@ -242,7 +242,7 @@ Function UpdateEvent_strg_939_3(e.Events)
 					e\room\NPC[2]\state2 = 14
 					e\room\NPC[2]\PrevState = 16
 					;Other
-					e\EventState = 1
+					e\eventState = 1
 				EndIf
 				
 				If (e\room\RoomDoors[4]\open = False) Then
@@ -284,7 +284,7 @@ Function UpdateEvent_strg_939_3(e.Events)
 				EndIf
 			EndIf
 		Else
-			e\EventState = 0
+			e\eventState = 0
 			If e\room\NPC[0]<>Null Then e\room\NPC[0]\state = 66
 			If e\room\NPC[1]<>Null Then e\room\NPC[1]\state = 66
 			If e\room\NPC[2]<>Null Then e\room\NPC[2]\state = 66

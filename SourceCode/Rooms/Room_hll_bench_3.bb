@@ -8,7 +8,7 @@ Function FillRoom_hll_bench_3(r.Rooms)
     sc.SecurityCams = CreateSecurityCam(r\x-320.0*RoomScale, r\y+384.0*RoomScale, r\z+512.25*RoomScale, r)
     sc\angle = 225
     sc\turn = 45
-    TurnEntity(sc\CameraObj, 20, 0, 0)
-    ;sc\FollowPlayer = True
+    TurnEntity(sc\cameraObj, 20, 0, 0)
+    ;sc\followPlayer = True
     sc\ID = 2
 End Function

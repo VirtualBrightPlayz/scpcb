@@ -16,7 +16,7 @@ Function FillRoom_cont_1162_2c(r.Rooms)
     sc.SecurityCams = CreateSecurityCam(r\x-192.0*RoomScale, r\y+704.0*RoomScale, r\z+192.0*RoomScale, r)
     sc\angle = 225
     sc\turn = 45
-    TurnEntity(sc\CameraObj, 20, 0, 0)
+    TurnEntity(sc\cameraObj, 20, 0, 0)
     sc\ID = 8
 End Function
 
@@ -32,15 +32,15 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 	Local angle#
 
 	;[Block]
-	;e\EventState = A variable to determine the "nostalgia" items
+	;e\eventState = A variable to determine the "nostalgia" items
 	;- 0.0 = No nostalgia item
 	;- 1.0 = Lost key
 	;- 2.0 = Disciplinary Hearing DH-S-4137-17092
 	;- 3.0 = Coin
 	;- 4.0 = Movie Ticket
 	;- 5.0 = Old Badge
-	;e\EventState2 = Defining which slot from the Inventory should be picked
-	;e\EventState3 = A check for if a item should be removed
+	;e\eventState2 = Defining which slot from the Inventory should be picked
+	;e\eventState3 = A check for if a item should be removed
 	;- 0.0 = no item "trade" will happen
 	;- 1.0 = item "trade" will happen
 	;- 2.0 = the player doesn't has any items in the Inventory, giving him heavily injuries and giving him a random item
@@ -50,7 +50,7 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 		
 		mainPlayer\grabbedEntity = 0
 		
-		e\EventState = 0
+		e\eventState = 0
 		
 		Local Pick1162% = True
 		Local pp% = CreatePivot(e\room\obj)
@@ -70,33 +70,33 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 		EndIf
 		
 		If mainPlayer\grabbedEntity <> 0 Then
-			e\EventState2 = Rand(0,mainPlayer\inventory\size-1)
-			If mainPlayer\inventory\items[e\EventState2]<>Null Then
+			e\eventState2 = Rand(0,mainPlayer\inventory\size-1)
+			If mainPlayer\inventory\items[e\eventState2]<>Null Then
 				;randomly picked item slot has an item in it, using this slot
-				e\EventState3 = 1.0
+				e\eventState3 = 1.0
 				DebugLog "pick1"
 			Else
 				;randomly picked item slot is empty, getting the first available slot
 				For i = 0 To mainPlayer\inventory\size-1
-					Local isSlotEmpty% = (mainPlayer\inventory\items[(i+e\EventState2) Mod mainPlayer\inventory\size] = Null)
+					Local isSlotEmpty% = (mainPlayer\inventory\items[(i+e\eventState2) Mod mainPlayer\inventory\size] = Null)
 					
 					If (Not isSlotEmpty) Then
 						;successful
-						e\EventState2 = (i+e\EventState2) Mod mainPlayer\inventory\size
+						e\eventState2 = (i+e\eventState2) Mod mainPlayer\inventory\size
 					EndIf
 					
 					If Rand(8)=1 Then
 						If isSlotEmpty Then
-							e\EventState3 = 3.1
+							e\eventState3 = 3.1
 						Else
-							e\EventState3 = 3.0
+							e\eventState3 = 3.0
 						EndIf
 						
-						e\EventState = Rand(1,5)
+						e\eventState = Rand(1,5)
 						
 						;Checking if the selected nostalgia item already exists or not
 						Local itemName$ = ""
-						Select (e\EventState)
+						Select (e\eventState)
 							Case 1
 								itemName = "Lost Key"
 							Case 2
@@ -113,8 +113,8 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 						For it.Items = Each Items
 							If (it\name = itemName) Then
 								itemExists = True
-								e\EventState3 = 1.0
-								e\EventState = 0.0
+								e\eventState3 = 1.0
+								e\eventState = 0.0
 								Exit
 							EndIf
 						Next
@@ -122,9 +122,9 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 						If ((Not itemExists) And (Not isSlotEmpty)) Then Exit
 					Else
 						If isSlotEmpty Then
-							e\EventState3 = 2.0
+							e\eventState3 = 2.0
 						Else
-							e\EventState3 = 1.0
+							e\eventState3 = 1.0
 							Exit
 						EndIf
 					EndIf
@@ -134,12 +134,12 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 		
 		
 		;trade successful
-		If e\EventState3 = 1.0 Then
+		If e\eventState3 = 1.0 Then
 			Local shouldCreateItem% = False
 			
 			For itt.ItemTemplates = Each ItemTemplates
 				If (IsItemGoodFor1162(itt)) Then
-					Select mainPlayer\inventory\items[e\EventState2]\itemtemplate\tempName
+					Select mainPlayer\inventory\items[e\eventState2]\itemtemplate\tempName
 						Case "key"
 							If itt\tempName = "key1" Or itt\tempName = "key2" And Rand(2)=1 Then
 								shouldCreateItem = True
@@ -174,18 +174,18 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 				EndIf
 				
 				If (shouldCreateItem) Then
-					RemoveItem(mainPlayer\inventory\items[e\EventState2])
+					RemoveItem(mainPlayer\inventory\items[e\eventState2])
 					it=CreateItem(itt\name,itt\tempName,EntityX(pp,True),EntityY(pp,True),EntityZ(pp,True))
 					EntityType(it\collider, HIT_ITEM)
 					PlaySound2 LoadTempSound("SFX/SCP/1162/Exchange"+Rand(0,4)+".ogg")
-					e\EventState3 = 0.0
+					e\eventState3 = 0.0
 					
 					MouseHit1 = False
 					Exit
 				EndIf
 			Next
 		;trade not sucessful (player got in return to injuries a new item)
-		ElseIf e\EventState3 = 2.0 Then
+		ElseIf e\eventState3 = 2.0 Then
 			mainPlayer\injuries = mainPlayer\injuries + 5.0
 			pvt = CreatePivot()
 			PositionEntity pvt, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)-0.05,EntityZ(mainPlayer\collider)
@@ -199,7 +199,7 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 					it = CreateItem(itt\name, itt\tempName, EntityX(pp,True),EntityY(pp,True),EntityZ(pp,True))
 					EntityType(it\collider, HIT_ITEM)
 					MouseHit1 = False
-					e\EventState3 = 0.0
+					e\eventState3 = 0.0
 					If mainPlayer\injuries > 15 Then
 						DeathMSG = "A dead Class D subject was discovered within the containment chamber of SCP-1162."
 						DeathMSG = DeathMSG + " An autopsy revealed that his right lung was missing, which suggests"
@@ -217,10 +217,10 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 				EndIf
 			Next
 		;trade with nostalgia item
-		ElseIf e\EventState3 >= 3.0 Then
-			If e\EventState3 < 3.1 Then
+		ElseIf e\eventState3 >= 3.0 Then
+			If e\eventState3 < 3.1 Then
 				PlaySound2 LoadTempSound("SFX/SCP/1162/Exchange"+Rand(0,4)+".ogg")
-				RemoveItem(mainPlayer\inventory\items[e\EventState2])
+				RemoveItem(mainPlayer\inventory\items[e\eventState2])
 			Else
 				mainPlayer\injuries = mainPlayer\injuries + 5.0
 				pvt = CreatePivot()
@@ -243,9 +243,9 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 					Msg = "You notice something moving in your pockets and a sudden pain in your chest."
 					MsgTimer = 70*5
 				EndIf
-				e\EventState2 = 0.0
+				e\eventState2 = 0.0
 			EndIf
-			Select e\EventState
+			Select e\eventState
 				Case 1
 					it = CreateItem("Lost Key","key",EntityX(pp,True),EntityY(pp,True),EntityZ(pp,True))
 				Case 2
@@ -259,7 +259,7 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 			End Select
 			EntityType(it\collider, HIT_ITEM)
 			MouseHit1 = False
-			e\EventState3 = 0.0
+			e\eventState3 = 0.0
 		EndIf
 		FreeEntity pp
 	EndIf

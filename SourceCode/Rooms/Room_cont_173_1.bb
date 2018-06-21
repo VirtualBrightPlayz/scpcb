@@ -7,29 +7,29 @@ Function FillRoom_cont_173_1(r.Rooms)
     
     ;the containment doors
     r\RoomDoors[1] = CreateDoor(r\zone, r\x + 4000.0 * RoomScale, 384.0*RoomScale, r\z + 1696.0 * RoomScale, 90, r, True, True)
-    r\RoomDoors[1]\locked = False : r\RoomDoors[1]\AutoClose = False
+    r\RoomDoors[1]\locked = False : r\RoomDoors[1]\autoClose = False
     r\RoomDoors[1]\dir = 1 : r\RoomDoors[1]\open = True 
     FreeEntity(r\RoomDoors[1]\buttons[0]) : r\RoomDoors[1]\buttons[0] = 0
     FreeEntity(r\RoomDoors[1]\buttons[1]) : r\RoomDoors[1]\buttons[1] = 0
     r\RoomDoors[1]\MTFClose = False
     
     r\RoomDoors[2] = CreateDoor(r\zone, r\x + 2704.0 * RoomScale, 384.0*RoomScale, r\z + 624.0 * RoomScale, 90, r, False)
-    r\RoomDoors[2]\AutoClose = False : r\RoomDoors[2]\open = False
+    r\RoomDoors[2]\autoClose = False : r\RoomDoors[2]\open = False
     FreeEntity(r\RoomDoors[2]\buttons[0]) : r\RoomDoors[2]\buttons[0] = 0
     FreeEntity(r\RoomDoors[2]\buttons[1]) : r\RoomDoors[2]\buttons[1] = 0
     r\RoomDoors[2]\MTFClose = False
     
     d.Doors = CreateDoor(r\zone, r\x + 1392.0 * RoomScale, 384.0*RoomScale, r\z + 64.0 * RoomScale, 90, r, True)
-    d\AutoClose = False
+    d\autoClose = False
     FreeEntity(d\buttons[0]) : d\buttons[0]=0
     FreeEntity(d\buttons[1]) : d\buttons[1]=0
     d\MTFClose = False
     
     d.Doors = CreateDoor(r\zone, r\x - 640.0 * RoomScale, 384.0*RoomScale, r\z + 64.0 * RoomScale, 90, r, False)
-    d\locked = True : d\AutoClose = False
+    d\locked = True : d\autoClose = False
     
     d.Doors = CreateDoor(r\zone, r\x + 1280.0 * RoomScale, 384.0*RoomScale, r\z + 312.0 * RoomScale, 180, r, True)
-    d\locked = True : d\AutoClose = False
+    d\locked = True : d\autoClose = False
     PositionEntity(d\buttons[0], r\x + 1120.0 * RoomScale, EntityY(d\buttons[0],True), r\z + 328.0 * RoomScale, True)
     PositionEntity(d\buttons[1], r\x + 1120.0 * RoomScale, EntityY(d\buttons[1],True), r\z + 296.0 * RoomScale, True)
     FreeEntity(d\obj2) : d\obj2=0
@@ -58,7 +58,7 @@ Function FillRoom_cont_173_1(r.Rooms)
     sc\angle = 270
     sc\turn = 45
     sc\room = r
-    TurnEntity(sc\CameraObj, 20, 0, 0)
+    TurnEntity(sc\cameraObj, 20, 0, 0)
     EntityParent(sc\obj, r\obj)
     
     PositionEntity(sc\ScrObj, r\x + 1456 * RoomScale, 608 * RoomScale, r\z +352.0 * RoomScale)
@@ -101,14 +101,14 @@ Function UpdateEventAlarm(e.Events)
 	
 	If e\room\RoomDoors[5]=Null Then
 		For i=0 To 3
-			If e\room\AdjDoor[i]<>Null Then
-				e\room\RoomDoors[5] = e\room\AdjDoor[i]
+			If e\room\adjDoor[i]<>Null Then
+				e\room\RoomDoors[5] = e\room\adjDoor[i]
 				e\room\RoomDoors[5]\open = True
 				Exit
 			EndIf
 		Next
 	EndIf
-	If e\EventState = 0 Then
+	If e\eventState = 0 Then
 		If mainPlayer\currRoom = e\room Then
 			
 			e\room\RoomDoors[2]\open=True
@@ -157,7 +157,7 @@ Function UpdateEventAlarm(e.Events)
 			
 			If e\room\NPC[0]=Null Then
 				e\room\NPC[3] = CreateNPC(NPCtypeGuard, EntityX(e\room\Objects[2], True), EntityY(e\room\Objects[2], True), EntityZ(e\room\Objects[2], True))
-				;e\room\NPC[3]\Angle = 180
+				;e\room\NPC[3]\angle = 180
 				RotateEntity e\room\NPC[3]\collider,0,90,0
 				SetNPCFrame(e\room\NPC[3], 151) : e\room\NPC[3]\state = 8
 				MoveEntity e\room\NPC[3]\collider,1,0,0
@@ -189,7 +189,7 @@ Function UpdateEventAlarm(e.Events)
 				Next
 			EndIf
 			
-			e\EventState = 1
+			e\eventState = 1
 		EndIf
 	Else
 		
@@ -198,31 +198,31 @@ Function UpdateEventAlarm(e.Events)
 		CurrTrigger = CheckTriggers()
 		
 		If (CurrTrigger = "173scene_timer") Then
-			e\EventState = e\EventState+timing\tickDuration
+			e\eventState = e\eventState+timing\tickDuration
 		ElseIf (CurrTrigger = "173scene_activated") Then
-			e\EventState = Max(e\EventState, 500)
+			e\eventState = Max(e\eventState, 500)
 		EndIf
 		
 		
-		If e\EventState >= 500 Then
-			e\EventState = e\EventState+timing\tickDuration
+		If e\eventState >= 500 Then
+			e\eventState = e\eventState+timing\tickDuration
 			
-			If e\EventState2 = 0 Then
+			If e\eventState2 = 0 Then
 				CanSave = False
-				If e\EventState > 900 And e\room\RoomDoors[5]\open Then
-					If e\EventState - timing\tickDuration <= 900 Then 
+				If e\eventState > 900 And e\room\RoomDoors[5]\open Then
+					If e\eventState - timing\tickDuration <= 900 Then 
 						e\room\NPC[1]\soundChannels[0] = LoadSound("SFX/Room/Intro/WhatThe.ogg")
 						e\room\NPC[1]\soundChannels[0] = PlayRangedSound(e\room\NPC[1]\soundChannels[0], mainPlayer\cam, e\room\NPC[1]\collider)
 					EndIf
 					e\room\NPC[1]\state = 3
-					e\room\NPC[1]\CurrSpeed = CurveValue(-0.008, e\room\NPC[1]\CurrSpeed, 5.0)
-					AnimateNPC(e\room\NPC[1], 260, 236, e\room\NPC[1]\CurrSpeed * 18)
+					e\room\NPC[1]\currSpeed = CurveValue(-0.008, e\room\NPC[1]\currSpeed, 5.0)
+					AnimateNPC(e\room\NPC[1], 260, 236, e\room\NPC[1]\currSpeed * 18)
 					RotateEntity e\room\NPC[1]\collider, 0, 0, 0
 					
 					
-					If e\EventState > 900+2.5*70 Then
+					If e\eventState > 900+2.5*70 Then
 						If e\room\NPC[2]\state <> 1 Then
-							e\room\NPC[2]\CurrSpeed = CurveValue(-0.012, e\room\NPC[2]\CurrSpeed, 5.0)
+							e\room\NPC[2]\currSpeed = CurveValue(-0.012, e\room\NPC[2]\currSpeed, 5.0)
 							AnimateNPC(e\room\NPC[2], 895, 843, e\room\NPC[2]\currSpeed*50)
 							MoveEntity e\room\NPC[2]\collider, 0,0,e\room\NPC[2]\currSpeed*timing\tickDuration
 							e\room\NPC[2]\state = 8
@@ -236,18 +236,18 @@ Function UpdateEventAlarm(e.Events)
 						EndIf
 					EndIf
 					
-					If e\EventState < 900+4*70 Then
+					If e\eventState < 900+4*70 Then
 						PositionEntity Curr173\collider, e\room\x+32*RoomScale, 0.31, e\room\z+1072*RoomScale, True
 						RotateEntity Curr173\collider,0,190,0
 						
-						If e\EventState > 900+70 And e\EventState < 900+2.5*70 Then
+						If e\eventState > 900+70 And e\eventState < 900+2.5*70 Then
 							AnimateNPC(e\room\NPC[2], 1539, 1553, 0.2, False)
 							PointEntity(e\room\NPC[2]\obj, Curr173\collider)
 							RotateEntity e\room\NPC[2]\collider, 0, CurveAngle(EntityYaw(e\room\NPC[2]\obj),EntityYaw(e\room\NPC[2]\collider),15.0), 0
 						EndIf
 
 					Else
-						If e\EventState-timing\tickDuration < 900+4*70 Then 
+						If e\eventState-timing\tickDuration < 900+4*70 Then 
 							PlaySound2(IntroSFX(11)); : LightBlink = 3.0
 							
 							;Stonedrag.
@@ -290,7 +290,7 @@ Function UpdateEventAlarm(e.Events)
 				Else
 					CanSave = True
 					If e\room\NPC[2]\state <> 1 Then
-						If EntityX(mainPlayer\collider)<(e\room\x+1384*RoomScale) Then e\EventState = Max(e\EventState,900)
+						If EntityX(mainPlayer\collider)<(e\room\x+1384*RoomScale) Then e\eventState = Max(e\eventState,900)
 						
 						If e\room\RoomDoors[5]\openstate = 0 Then 
 							HideEntity e\room\NPC[1]\obj
@@ -298,35 +298,35 @@ Function UpdateEventAlarm(e.Events)
 							
 							HideEntity e\room\NPC[2]\obj
 							HideEntity e\room\NPC[2]\collider
-							e\EventState2=1
+							e\eventState2=1
 						EndIf
 					EndIf
 				EndIf
 			EndIf
 			
 			
-		;	If e\EventState > 900+3*70 And e\EventState < 900+4*70 Then 
+		;	If e\eventState > 900+3*70 And e\eventState < 900+4*70 Then 
 		;		mainPlayer\camShake = 0.2
-		;	ElseIf e\EventState > 900+32.3*70 And e\EventState < 900+34*70
+		;	ElseIf e\eventState > 900+32.3*70 And e\eventState < 900+34*70
 		;		mainPlayer\camShake = 0.4
-		;	ElseIf e\EventState > 900+51*70 And e\EventState < 900+53.5*70
+		;	ElseIf e\eventState > 900+51*70 And e\eventState < 900+53.5*70
 		;		mainPlayer\camShake = 1.0
-		;	ElseIf e\EventState > 900+57.5*70 And e\EventState < 900+58.5*70
+		;	ElseIf e\eventState > 900+57.5*70 And e\eventState < 900+58.5*70
 		;		mainPlayer\camShake = 0.4
 		;	EndIf
 			
-			PositionEntity e\room\Objects[0], EntityX(e\room\Objects[0],True), -Max(e\EventState-1300,0)/4500, EntityZ(e\room\Objects[0],True), True
-			RotateEntity e\room\Objects[0], -Max(e\EventState-1320,0)/130, 0, -Max(e\EventState-1300,0)/40, True
+			PositionEntity e\room\Objects[0], EntityX(e\room\Objects[0],True), -Max(e\eventState-1300,0)/4500, EntityZ(e\room\Objects[0],True), True
+			RotateEntity e\room\Objects[0], -Max(e\eventState-1320,0)/130, 0, -Max(e\eventState-1300,0)/40, True
 			
-			PositionEntity e\room\Objects[1], EntityX(e\room\Objects[1],True), -Max(e\EventState-1800,0)/5000, EntityZ(e\room\Objects[1],True), True
-			RotateEntity e\room\Objects[1], -Max(e\EventState-2040,0)/135, 0, -Max(e\EventState-2040,0)/43, True
+			PositionEntity e\room\Objects[1], EntityX(e\room\Objects[1],True), -Max(e\eventState-1800,0)/5000, EntityZ(e\room\Objects[1],True), True
+			RotateEntity e\room\Objects[1], -Max(e\eventState-2040,0)/135, 0, -Max(e\eventState-2040,0)/43, True
 			
 			If EntityDistance(e\room\Objects[0],mainPlayer\collider)<2.5 Then
 				;If Rand(300)=2 Then PlayRangedSound(DecaySFX(Rand(1,3)),mainPlayer\cam,e\room\Objects[0], 3.0)
 			EndIf
 		EndIf
 		
-		If (e\EventState < 2000) Then
+		If (e\eventState < 2000) Then
 			If e\soundChannels[0] = 0 Then
 				e\soundChannels[0] = PlaySound(AlarmSFX(0))
 			Else
@@ -334,24 +334,24 @@ Function UpdateEventAlarm(e.Events)
 			EndIf
 		EndIf
 		
-		If (e\EventState3<10) Then
+		If (e\eventState3<10) Then
 			If (Not IsChannelPlaying(e\soundChannels[1])) Then
-				e\EventState3 = e\EventState3+1
+				e\eventState3 = e\eventState3+1
 				
 				If (e\sounds[1] <> 0) Then
 					FreeSound(e\sounds[1])
 					e\sounds[1] = 0
 				EndIf
 				
-				e\sounds[1] = LoadSound("SFX/Alarm/Alarm2_"+Int(e\EventState3)+".ogg")
+				e\sounds[1] = LoadSound("SFX/Alarm/Alarm2_"+Int(e\eventState3)+".ogg")
 				e\soundChannels[1] = PlaySound(e\sounds[1])
 				Else
-					If Int(e\EventState3) = 8 Then mainPlayer\camShake = 1.0
+					If Int(e\eventState3) = 8 Then mainPlayer\camShake = 1.0
 			EndIf
 		EndIf
 		
-		If ((e\EventState Mod 600 > 300) And ((e\EventState+timing\tickDuration) Mod 600 < 300)) Then
-			i = Floor((e\EventState-5000)/600)+1
+		If ((e\eventState Mod 600 > 300) And ((e\eventState+timing\tickDuration) Mod 600 < 300)) Then
+			i = Floor((e\eventState-5000)/600)+1
 			
 			If i = 0 Then PlaySound2(LoadTempSound("SFX/Room/Intro/PA/scripted/scripted6.ogg"))
 			

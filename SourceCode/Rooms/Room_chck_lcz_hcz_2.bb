@@ -25,7 +25,7 @@ Function FillRoom_chck_lcz_hcz_2(r.Rooms)
     sc.SecurityCams = CreateSecurityCam(r\x+192.0*RoomScale, r\y+704.0*RoomScale, r\z-960.0*RoomScale, r)
     sc\angle = 45
     sc\turn = 0
-    TurnEntity(sc\CameraObj, 20, 0, 0)
+    TurnEntity(sc\cameraObj, 20, 0, 0)
     sc\ID = 5
     
     ;r\Objects[2] = CopyEntity(Monitor2,r\obj)
@@ -59,25 +59,25 @@ Function UpdateEventCheckpoint(e.Events)
 
 	;[Block]
 	If mainPlayer\currRoom = e\room Then
-		;If e\room\RoomDoors[0]\open <> e\EventState Then
+		;If e\room\RoomDoors[0]\open <> e\eventState Then
 		;	If e\sounds[0] = 0 Then LoadEventSound(e,"SFX/Door/DoorCheckpoint.Ogg")
 		;	PlaySound2 e\sounds[0]
 		;EndIf
 		
 		;play a sound clip when the player passes through the gate
 		;TODO: kill
-		;If e\EventState2 = 0 Then
+		;If e\eventState2 = 0 Then
 		;	If EntityZ(mainPlayer\collider) < e\room\z Then
 		;		If PlayerZone = 1 Then
 		;			PlaySound2(LoadTempSound("SFX/Ambient/ToZone2.ogg"))
 		;		Else
 		;			PlaySound2(LoadTempSound("SFX/Ambient/ToZone3.ogg"))
 		;		EndIf
-		;		e\EventState2 = 1
+		;		e\eventState2 = 1
 		;	EndIf
 		;EndIf
 		
-		If e\EventState3=0 Then
+		If e\eventState3=0 Then
 			If Rand(2)=1 Then
 				e\room\Objects[1]=LoadAnimMesh("GFX/npcs/scp-1048.b3d")
 				ScaleEntity e\room\Objects[1], 0.05,0.05,0.05
@@ -85,27 +85,27 @@ Function UpdateEventCheckpoint(e.Events)
 				SetAnimTime e\room\Objects[1],267	
 			EndIf
 			
-			e\EventState3 = 1
+			e\eventState3 = 1
 		ElseIf e\room\Objects[1]<>0 Then
-			If e\EventState3 = 1 Then
+			If e\eventState3 = 1 Then
 				PointEntity e\room\Objects[1], mainPlayer\collider
 				RotateEntity e\room\Objects[1], -90, EntityYaw(e\room\Objects[1]),0
 				angle = WrapAngle(DeltaYaw(mainPlayer\collider, e\room\Objects[1]))
-				If angle<40 Or angle > 320 Then e\EventState3=2
-			ElseIf e\EventState3 = 2 Then
+				If angle<40 Or angle > 320 Then e\eventState3=2
+			ElseIf e\eventState3 = 2 Then
 				PointEntity e\room\Objects[1], mainPlayer\collider
 				RotateEntity e\room\Objects[1], -90, EntityYaw(e\room\Objects[1]),0
 				Animate2(e\room\Objects[1],AnimTime(e\room\Objects[1]),267,283,0.3,False)
-				If AnimTime(e\room\Objects[1])=283 Then e\EventState3=3
-			ElseIf e\EventState3 = 3 Then
+				If AnimTime(e\room\Objects[1])=283 Then e\eventState3=3
+			ElseIf e\eventState3 = 3 Then
 				Animate2(e\room\Objects[1],AnimTime(e\room\Objects[1]),283,267,-0.2,False)
-				If AnimTime( e\room\Objects[1])=267 Then e\EventState3=4
-			ElseIf e\EventState3 = 4 Then
+				If AnimTime( e\room\Objects[1])=267 Then e\eventState3=4
+			ElseIf e\eventState3 = 4 Then
 				angle = WrapAngle(DeltaYaw(mainPlayer\collider, e\room\Objects[1]))
 				If angle>90 And angle < 270 Then 
 					FreeEntity(e\room\Objects[1])
 					e\room\Objects[1]=0
-					e\EventState3=5
+					e\eventState3=5
 				EndIf
 			EndIf
 		EndIf
@@ -114,7 +114,7 @@ Function UpdateEventCheckpoint(e.Events)
 	If e\room\RoomTemplate\name = "checkpoint2" Then
 		For e2.Events = Each Events
 			If e2\name = "008" Then
-				If e2\EventState = 2 Then
+				If e2\eventState = 2 Then
 					If e\room\RoomDoors[0]\locked Then
 						;TurnCheckpointMonitorsOff(1)
 						e\room\RoomDoors[0]\locked = False
@@ -132,7 +132,7 @@ Function UpdateEventCheckpoint(e.Events)
 	Else
 		For e2.Events = Each Events
 			If e2\name = "room2sl" Then
-				If e2\EventState3 = 0 Then
+				If e2\eventState3 = 0 Then
 					If e\room\dist < 12 Then
 						;TurnCheckpointMonitorsOff(0)
 						e\room\RoomDoors[0]\locked = False
@@ -149,14 +149,14 @@ Function UpdateEventCheckpoint(e.Events)
 		Next
 	EndIf
 	
-	If e\room\RoomDoors[0]\open <> e\EventState Then
+	If e\room\RoomDoors[0]\open <> e\eventState Then
 		If e\sounds[0] = 0 Then LoadEventSound(e,"SFX/Door/DoorCheckpoint.ogg")
 		;TODO: wtf is this bullshit
 		e\soundChannels[0] = PlayRangedSound(e\sounds[0], mainPlayer\cam, e\room\RoomDoors[0]\obj)
 		e\soundChannels[1] = PlayRangedSound(e\sounds[0], mainPlayer\cam, e\room\RoomDoors[1]\obj)
 	EndIf
 	
-	e\EventState = e\room\RoomDoors[0]\open
+	e\eventState = e\room\RoomDoors[0]\open
 	
 	If IsChannelPlaying(e\soundChannels[0]) Then
 		UpdateRangedSoundOrigin(e\soundChannels[0], mainPlayer\cam, e\room\RoomDoors[0]\obj)

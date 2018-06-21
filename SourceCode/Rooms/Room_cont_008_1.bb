@@ -45,14 +45,14 @@ Function FillRoom_cont_008_1(r.Rooms)
     HideEntity r\Objects[5]
     
     d = CreateDoor(r\zone, r\x + 296.0 * RoomScale, 0, r\z - 672.0 * RoomScale, 180, r, True, 0, 4)
-    d\AutoClose = False
+    d\autoClose = False
     PositionEntity (d\buttons[1], r\x + 164.0 * RoomScale, EntityY(d\buttons[1],True), EntityZ(d\buttons[1],True), True)
     FreeEntity d\buttons[0] : d\buttons[0]=0
     FreeEntity d\obj2 : d\obj2=0
     r\RoomDoors[0] = d
     
     d2 = CreateDoor(r\zone, r\x + 296.0 * RoomScale, 0, r\z - 144.0 * RoomScale, 0, r, False)
-    d2\AutoClose = False
+    d2\autoClose = False
     PositionEntity (d2\buttons[0], r\x + 432.0 * RoomScale, EntityY(d2\buttons[0],True), r\z - 480.0 * RoomScale, True)
     RotateEntity(d2\buttons[0], 0, -90, 0, True)			
     PositionEntity (d2\buttons[1], r\x + 164.0 * RoomScale, EntityY(d2\buttons[0],True), r\z - 128.0 * RoomScale, True)
@@ -63,7 +63,7 @@ Function FillRoom_cont_008_1(r.Rooms)
     d2\LinkedDoor = d
     
     d = CreateDoor(r\zone, r\x - 384.0 * RoomScale, 0, r\z - 672.0 * RoomScale, 0, r, False, 0, 4)
-    d\AutoClose = False : d\locked = True : r\RoomDoors[2]=d
+    d\autoClose = False : d\locked = True : r\RoomDoors[2]=d
     
     
     it = CreateItem("Hazmat Suit", "hazmatsuit", r\x - 76.0 * RoomScale, 0.5, r\z - 396.0 * RoomScale)
@@ -82,7 +82,7 @@ Function FillRoom_cont_008_1(r.Rooms)
     sc.SecurityCams = CreateSecurityCam(r\x+578.956*RoomScale, r\y+444.956*RoomScale, r\z+772.0*RoomScale, r)
     sc\angle = 135
     sc\turn = 45
-    TurnEntity(sc\CameraObj, 20, 0, 0)
+    TurnEntity(sc\cameraObj, 20, 0, 0)
     sc\ID = 7
 End Function
 
@@ -102,13 +102,13 @@ Function UpdateEvent_cont_008_1(e.Events)
 	If mainPlayer\currRoom = e\room Then
 		If Curr173\Idle<2 Then
 			;container open
-			If e\EventState = 0 Then
+			If e\eventState = 0 Then
 				
 				PositionEntity Curr173\collider, EntityX(e\room\Objects[3],True),0.5,EntityZ(e\room\Objects[3],True),True
 				ResetEntity Curr173\collider
 				
-				e\EventState = 1
-			ElseIf e\EventState = 1 Then
+				e\eventState = 1
+			ElseIf e\eventState = 1 Then
 				e\soundChannels[0] = LoopRangedSound(AlarmSFX(0), e\soundChannels[0], mainPlayer\cam, e\room\Objects[0], 5.0)
 				
 				If (TimeInPosMilliSecs() Mod 1000)<500 Then
@@ -122,7 +122,7 @@ Function UpdateEvent_cont_008_1(e.Events)
 					e\room\RoomDoors[0]\locked = True
 					e\room\RoomDoors[1]\locked = True
 					
-					If e\EventState2=0 Then
+					If e\eventState2=0 Then
 						ShowEntity e\room\Objects[2]
 						If mainPlayer\blinkTimer<-10 And Curr173\Idle = 0 Then
 							PositionEntity Curr173\collider, EntityX(e\room\Objects[4],True),0.5,EntityZ(e\room\Objects[4],True),True
@@ -139,7 +139,7 @@ Function UpdateEvent_cont_008_1(e.Events)
 							
 							PlayRangedSound(LoadTempSound("SFX/General/GlassBreak.ogg"), mainPlayer\cam, e\room\Objects[0]) 
 							
-							e\EventState2=1
+							e\eventState2=1
 						EndIf
 					EndIf
 					
@@ -155,7 +155,7 @@ Function UpdateEvent_cont_008_1(e.Events)
 				EndIf
 				
 				If EntityPitch(e\room\Objects[1],True)<40 Then 
-					e\EventState = 2
+					e\eventState = 2
 					PlaySound_SM(sndManager\lever)
 				Else
 					p.Particles = CreateParticle(EntityX(e\room\Objects[0],True),EntityY(e\room\Objects[0],True),EntityZ(e\room\Objects[0],True), 6, 0.02, -0.12)
@@ -163,7 +163,7 @@ Function UpdateEvent_cont_008_1(e.Events)
 					TurnEntity(p\pvt, Rnd(-26,26), Rnd(-26,26), Rnd(360))
 					
 					p\SizeChange = 0.012
-					p\Achange = -0.015
+					p\achange = -0.015
 				EndIf		
 			Else
 				HideEntity e\room\Objects[5]

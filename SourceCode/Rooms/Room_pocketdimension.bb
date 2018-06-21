@@ -46,11 +46,11 @@ Function FillRoom_pocketdimension(r.Rooms)
         ;		texname$ =  StripPath(TextureName(t))
         ;		mat.Materials=GetCache(texname)
         ;		If mat<>Null Then
-        ;			If mat\Bump<>0 Then
+        ;			If mat\bump<>0 Then
         ;				t1 = GetBrushTexture(b,0)
         ;				
         ;				BrushTexture b, t1, 0, 0	
-        ;				BrushTexture b, mat\Bump, 0, 1
+        ;				BrushTexture b, mat\bump, 0, 1
         ;				BrushTexture b, t, 0, 2					
         ;				
         ;				PaintSurface sf,b
@@ -192,42 +192,42 @@ Function UpdateEvent_pocketdimension(e.Events)
 		If e\sounds[0] = 0 Then LoadEventSound(e,"SFX/Room/PocketDimension/Rumble.ogg")
 		If e\sounds[1] = 0 Then e\sounds[1] = LoadEventSound(e,"SFX/Room/PocketDimension/PrisonVoices.ogg",1)
 		
-		If e\EventState = 0 Then
+		If e\eventState = 0 Then
 			CameraFogColor mainPlayer\cam, 0,0,0
 			CameraClsColor mainPlayer\cam, 0,0,0
-			e\EventState = 0.1
+			e\eventState = 0.1
 		EndIf
 		
 		;If Music(3)=0 Then Music(3) = LoadSound("SFX/Music/PD.ogg") ;TODO: fix	
-		If EntityY(mainPlayer\collider)<2000*RoomScale Or e\EventState3=0 Or EntityY(mainPlayer\collider)>2608*RoomScale Then 
+		If EntityY(mainPlayer\collider)<2000*RoomScale Or e\eventState3=0 Or EntityY(mainPlayer\collider)>2608*RoomScale Then 
 			ShouldPlay = 3
 		Else 
 			ShouldPlay = 0
 		EndIf
 		
-		ScaleEntity(e\room\obj,RoomScale, RoomScale*(1.0 + Sin(e\EventState/14.0)*0.2), RoomScale)
+		ScaleEntity(e\room\obj,RoomScale, RoomScale*(1.0 + Sin(e\eventState/14.0)*0.2), RoomScale)
 		For i = 0 To 7
-			ScaleEntity(e\room\Objects[i],RoomScale*(1.0 + Abs(Sin(e\EventState/21.0+i*45.0)*0.1)),RoomScale*(1.0 + Sin(e\EventState/14.0+i*20.0)*0.1), RoomScale,True)
+			ScaleEntity(e\room\Objects[i],RoomScale*(1.0 + Abs(Sin(e\eventState/21.0+i*45.0)*0.1)),RoomScale*(1.0 + Sin(e\eventState/14.0+i*20.0)*0.1), RoomScale,True)
 		Next
-		ScaleEntity(e\room\Objects[9],RoomScale*(1.5 + Abs(Sin(e\EventState/21.0+i*45.0)*0.1)),RoomScale*(1.0 + Sin(e\EventState/14.0+i*20.0)*0.1), RoomScale,True)
+		ScaleEntity(e\room\Objects[9],RoomScale*(1.5 + Abs(Sin(e\eventState/21.0+i*45.0)*0.1)),RoomScale*(1.0 + Sin(e\eventState/14.0+i*20.0)*0.1), RoomScale,True)
 		
-		e\EventState = e\EventState + timing\tickDuration
+		e\eventState = e\eventState + timing\tickDuration
 		
-		If e\EventState2 = 0 Then 
+		If e\eventState2 = 0 Then 
 			e\room\RoomDoors[0]\open = False
 			e\room\RoomDoors[1]\open = False
 			
-			If e\EventState > 65*70 Then
+			If e\eventState > 65*70 Then
 				If Rand(800)=1 And Curr106\state =>0 Then	
 					;PlaySound2 HorrorSFX(8)
 					Curr106\state = -0.1
-					e\EventState = 601
+					e\eventState = 601
 				EndIf
 			ElseIf Curr106\state > 0 Then ;106 circles around the starting room
-				angle = (e\EventState/10 Mod 360)
-				PositionEntity(Curr106\collider, EntityX(e\room\obj), 0.2+0.35+Sin(e\EventState/14.0+i*20.0)*0.4, EntityX(e\room\obj))
+				angle = (e\eventState/10 Mod 360)
+				PositionEntity(Curr106\collider, EntityX(e\room\obj), 0.2+0.35+Sin(e\eventState/14.0+i*20.0)*0.4, EntityX(e\room\obj))
 				RotateEntity(Curr106\collider, 0,angle,0)
-				MoveEntity(Curr106\collider,0,0,6.0-Sin(e\EventState/10.0))
+				MoveEntity(Curr106\collider,0,0,6.0-Sin(e\eventState/10.0))
 				AnimateNPC(Curr106, 55, 104, 0.5)
 				RotateEntity(Curr106\collider, 0,angle+90,0)
 				Curr106\Idle = True
@@ -239,26 +239,26 @@ Function UpdateEvent_pocketdimension(e.Events)
 			Curr106\state = -11
 		EndIf
 		
-		If e\EventState2 = 1 Then ;in the second room
+		If e\eventState2 = 1 Then ;in the second room
 			
 			PositionEntity(e\room\Objects[9], EntityX(e\room\Objects[8],True)+3384*RoomScale, 0.0, EntityZ(e\room\Objects[8],True))
 			
-			TranslateEntity e\room\Objects[9], Cos(e\EventState*0.8)*5, 0, Sin(e\EventState*1.6)*4, True
-			RotateEntity e\room\Objects[9],0,e\EventState * 2,0
+			TranslateEntity e\room\Objects[9], Cos(e\eventState*0.8)*5, 0, Sin(e\eventState*1.6)*4, True
+			RotateEntity e\room\Objects[9],0,e\eventState * 2,0
 			
 			PositionEntity(e\room\Objects[10], EntityX(e\room\Objects[8],True), 0.0, EntityZ(e\room\Objects[8],True)+3384*RoomScale)
 			
-			TranslateEntity e\room\Objects[10], Sin(e\EventState*1.6)*4, 0, Cos(e\EventState*0.8)*5, True
-			RotateEntity e\room\Objects[10],0,e\EventState * 2,0
+			TranslateEntity e\room\Objects[10], Sin(e\eventState*1.6)*4, 0, Cos(e\eventState*0.8)*5, True
+			RotateEntity e\room\Objects[10],0,e\eventState * 2,0
 			
-			If e\EventState3 = 1 Or e\EventState3 = 2 Then ;the "trick room"
-				If e\EventState3 = 1 And (e\room\RoomDoors[0]\openstate>150 Or e\room\RoomDoors[1]\openstate>150) Then
+			If e\eventState3 = 1 Or e\eventState3 = 2 Then ;the "trick room"
+				If e\eventState3 = 1 And (e\room\RoomDoors[0]\openstate>150 Or e\room\RoomDoors[1]\openstate>150) Then
 					PlaySound2 LoadTempSound("SFX/Horror/Horror16.ogg")
 					mainPlayer\blurTimer = 800
-					e\EventState3=2
+					e\eventState3=2
 				EndIf
 				
-				If EntityY(mainPlayer\collider)<5.0 Then e\EventState3 = 0
+				If EntityY(mainPlayer\collider)<5.0 Then e\eventState3 = 0
 			Else
 				;the trenches
 				If EntityY(mainPlayer\collider)>6.0 Then
@@ -338,7 +338,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 						
 						;move to the "exit room"
 						mainPlayer\blurTimer = 1500
-						e\EventState2=1
+						e\eventState2=1
 						mainPlayer\blinkTimer = -10
 						
 						PositionEntity(mainPlayer\collider, EntityX(e\room\Objects[8],True)-400*RoomScale, -304*RoomScale, EntityZ(e\room\Objects[8],True))
@@ -347,7 +347,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 					EndIf
 					
 				Else
-					e\EventState3 = 0
+					e\eventState3 = 0
 					
 					For i = 9 To 10
 						dist = Distance(EntityX(mainPlayer\collider), EntityZ(mainPlayer\collider),EntityX(e\room\Objects[i],True),EntityZ(e\room\Objects[i],True))
@@ -439,8 +439,8 @@ Function UpdateEvent_pocketdimension(e.Events)
 								
 								For r.Rooms = Each Rooms
 									If r\RoomTemplate\Name = "room2_3" Then
-										e\EventState = 0
-										e\EventState2 = 0
+										e\eventState = 0
+										e\eventState2 = 0
 										;FreeSound Music(3) : Music(3)=0 ;TODO: fix
 										
 										mainPlayer\blinkTimer = -10
@@ -473,8 +473,8 @@ Function UpdateEvent_pocketdimension(e.Events)
 					PositionEntity(mainPlayer\collider, EntityX(e\room\obj,True), 0.4, EntityX(e\room\obj,True))
 					For r.Rooms = Each Rooms
 						If r\RoomTemplate\Name = "room106" Then
-							e\EventState = 0
-							e\EventState2 = 0
+							e\eventState = 0
+							e\eventState2 = 0
 							;FreeSound Music(3) : Music(3)=0 ;TODO: fix
 							PositionEntity(mainPlayer\collider, EntityX(r\obj,True), 0.4, EntityX(r\obj,True))
 							
@@ -485,7 +485,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 					Next
 					ResetEntity mainPlayer\collider
 					
-					e\EventState2 = 0
+					e\eventState2 = 0
 					UpdateDoorsTimer = 0
 					UpdateDoors()
 					UpdateRooms()
@@ -505,7 +505,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 			UpdateDoors()
 			UpdateRooms()
 			
-		ElseIf e\EventState2 = 0 Then
+		ElseIf e\eventState2 = 0 Then
 			dist# = EntityDistance(mainPlayer\collider, e\room\obj)	
 			
 			If dist > 1700*RoomScale Then
@@ -530,7 +530,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 						
 						FreeEntity pvt
 					Case 5,6,7,8,9,10 
-						e\EventState2=1
+						e\eventState2=1
 						mainPlayer\blinkTimer = -10
 						;TODO: fix
 						;PlaySound2(OldManSFX(3))
@@ -542,7 +542,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 						PositionEntity mainPlayer\collider,EntityX(e\room\obj), 0.5, EntityZ(e\room\obj)
 					Case 13,14,15 ;"exit room"
 						mainPlayer\blurTimer = 1500
-						e\EventState2=1
+						e\eventState2=1
 						mainPlayer\blinkTimer = -10
 						
 						PositionEntity(mainPlayer\collider, EntityX(e\room\Objects[8],True)-400*RoomScale, -304*RoomScale, EntityZ(e\room\Objects[8],True))
@@ -551,8 +551,8 @@ Function UpdateEvent_pocketdimension(e.Events)
 						mainPlayer\blurTimer = 1500
 						For r.Rooms = Each Rooms
 							If r\RoomTemplate\Name = "tunnel" Then
-								e\EventState = 0
-								e\EventState2 = 0
+								e\eventState = 0
+								e\eventState2 = 0
 								;FreeSound Music(3) : Music(3)=0 ;TODO: fix
 								PositionEntity(mainPlayer\collider, EntityX(r\obj), 0.4, EntityZ(r\obj))
 								ResetEntity mainPlayer\collider
@@ -564,11 +564,11 @@ Function UpdateEvent_pocketdimension(e.Events)
 						mainPlayer\blinkTimer = -10
 						PositionEntity(mainPlayer\collider, EntityX(e\room\Objects[12],True), 0.6, EntityZ(e\room\Objects[12],True))
 						ResetEntity mainPlayer\collider
-						e\EventState2 = 15
+						e\eventState2 = 15
 					Case 23,24,25
 						mainPlayer\blurTimer = 1500
-						e\EventState2=1
-						e\EventState3=1
+						e\eventState2=1
+						e\eventState3=1
 						mainPlayer\blinkTimer = -10
 						
 						;TODO: fix
@@ -598,23 +598,23 @@ Function UpdateEvent_pocketdimension(e.Events)
 				TurnEntity(p\pvt, Rand(10,20), 0, 0, True)
 			EndIf
 			
-			If e\EventState2 > 12 Then 
+			If e\eventState2 > 12 Then 
 				Curr106\Idle = True
-				PositionEntity(Curr106\collider, EntityX(e\room\Objects[e\EventState2],True),0.27, EntityZ(e\room\Objects[e\EventState2],True))
+				PositionEntity(Curr106\collider, EntityX(e\room\Objects[e\eventState2],True),0.27, EntityZ(e\room\Objects[e\eventState2],True))
 				
 				PointEntity(Curr106\collider, mainPlayer\cam)
 				TurnEntity(Curr106\collider, 0, Sin(TimeInPosMilliSecs() / 20) * 6.0, 0, True)
 				MoveEntity(Curr106\collider, 0, 0, Sin(TimeInPosMilliSecs() / 15) * 0.06)
 				
-				If Rand(750)=1 And e\EventState2 > 12 Then
+				If Rand(750)=1 And e\eventState2 > 12 Then
 					mainPlayer\blinkTimer = -10
-					e\EventState2 = e\EventState2-1
+					e\eventState2 = e\eventState2-1
 					;PlaySound2 HorrorSFX(8)
 				EndIf
 				
-				If e\EventState2 = 12 Then
+				If e\eventState2 = 12 Then
 					mainPlayer\camShake = 1.0
-					PositionEntity(Curr106\collider, EntityX(e\room\Objects[e\EventState2],True),-1.0, EntityZ(e\room\Objects[e\EventState2],True))
+					PositionEntity(Curr106\collider, EntityX(e\room\Objects[e\eventState2],True),-1.0, EntityZ(e\room\Objects[e\eventState2],True))
 					Curr106\state = -11
 					ResetEntity Curr106\collider
 				EndIf
@@ -635,7 +635,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 					mainPlayer\blurTimer = 500
 					PositionEntity(mainPlayer\collider, EntityX(e\room\obj), 0.5, EntityZ(e\room\obj))
 					ResetEntity mainPlayer\collider
-					e\EventState2 = 0
+					e\eventState2 = 0
 					UpdateDoorsTimer = 0
 					UpdateDoors()
 					UpdateRooms()
@@ -652,9 +652,9 @@ Function UpdateEvent_pocketdimension(e.Events)
 		HideEntity e\room\obj
 		
 		CameraClsColor mainPlayer\cam, 0,0,0
-		e\EventState = 0
-		e\EventState2 = 0
-		e\EventState3 = 0
+		e\eventState = 0
+		e\eventState2 = 0
+		e\eventState3 = 0
 	EndIf
 	;[End Block]
 End Function

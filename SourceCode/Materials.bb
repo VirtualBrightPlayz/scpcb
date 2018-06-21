@@ -15,7 +15,7 @@ End Function
 
 Function GetTextureFromCache%(name$)
 	For tc.Materials=Each Materials
-		If Lower(tc\name) = Lower(name) Then Return tc\Diff
+		If Lower(tc\name) = Lower(name) Then Return tc\diff
 	Next
 	Return 0
 End Function
@@ -33,24 +33,24 @@ Function AddTextureToCache(name$,texture%)
 		tc.Materials=New Materials
 		tc\name=Lower(name)
 		
-		tc\Diff=0
+		tc\diff=0
 	EndIf
-	If tc\Diff=0 Then tc\Diff=texture
+	If tc\diff=0 Then tc\diff=texture
 End Function
 
 Function ClearTextureCache()
 	For tc.Materials=Each Materials
-		If tc\Diff<>0 Then FreeTexture tc\Diff
-		;If tc\Bump<>0 Then FreeTexture tc\Bump
+		If tc\diff<>0 Then FreeTexture tc\diff
+		;If tc\bump<>0 Then FreeTexture tc\bump
 		Delete tc
 	Next
 End Function
 
 Function FreeTextureCache()
 	For tc.Materials=Each Materials
-		If tc\Diff<>0 Then FreeTexture tc\Diff
-		;If tc\Bump<>0 Then FreeTexture tc\Bump
-		tc\Diff = 0; : tc\Bump = 0
+		If tc\diff<>0 Then FreeTexture tc\diff
+		;If tc\bump<>0 Then FreeTexture tc\bump
+		tc\diff = 0; : tc\bump = 0
 	Next
 End Function
 

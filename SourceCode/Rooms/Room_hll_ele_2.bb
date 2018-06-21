@@ -14,7 +14,7 @@ Function FillRoom_hll_ele_2(r.Rooms)
     r\RoomDoors[0] = CreateDoor(r\zone, r\x + 448.0 * RoomScale, 0.0, r\z, 90, r)
     PositionEntity(r\RoomDoors[0]\buttons[1], r\x + 416.0 * RoomScale, EntityY(r\RoomDoors[0]\buttons[1],True), r\z - 208.0 * RoomScale,True)
     PositionEntity(r\RoomDoors[0]\buttons[0], r\x + 480.0 * RoomScale, EntityY(r\RoomDoors[0]\buttons[0],True), r\z + 184.0 * RoomScale,True)
-    r\RoomDoors[0]\AutoClose = False : r\RoomDoors[0]\open = True : r\RoomDoors[0]\locked = True
+    r\RoomDoors[0]\autoClose = False : r\RoomDoors[0]\open = True : r\RoomDoors[0]\locked = True
 End Function
 
 Function UpdateEventRoom2elevator2(e.Events)
@@ -66,44 +66,44 @@ Function UpdateEvent_hll_ele_2(e.Events)
 	Local angle#
 
 	;[Block]
-	If e\EventState = 0 Then
+	If e\eventState = 0 Then
 		If e\room\dist < 8.0 And e\room\dist > 0 Then
 			e\room\NPC[0]=CreateNPC(NPCtypeGuard, EntityX(e\room\obj,True), 0.5, EntityZ(e\room\obj,True))
 			PointEntity e\room\NPC[0]\collider, mainPlayer\collider
 			RotateEntity e\room\NPC[0]\collider, 0, EntityYaw(e\room\NPC[0]\collider),0, True	
 			
-			e\EventState = 1
+			e\eventState = 1
 		EndIf
 	Else
-		If e\EventState = 1 Then
+		If e\eventState = 1 Then
 			If e\room\dist<5.0 Or Rand(700)=1 Then 
-				e\EventState = 2
+				e\eventState = 2
 				
 				e\room\NPC[0]\state = 5
-				e\room\NPC[0]\EnemyX = EntityX(e\room\Objects[1],True)
-				e\room\NPC[0]\EnemyY = EntityY(e\room\Objects[1],True)
-				e\room\NPC[0]\EnemyZ = EntityZ(e\room\Objects[1],True)
+				e\room\NPC[0]\enemyX = EntityX(e\room\Objects[1],True)
+				e\room\NPC[0]\enemyY = EntityY(e\room\Objects[1],True)
+				e\room\NPC[0]\enemyZ = EntityZ(e\room\Objects[1],True)
 			EndIf
-		ElseIf e\EventState = 2 Then
+		ElseIf e\eventState = 2 Then
 			If EntityDistance(e\room\NPC[0]\collider,e\room\Objects[1])<2.0 Then
 				e\room\RoomDoors[0]\open = False
 				;PlayRangedSound(CloseDoorSFX(0, 0), mainPlayer\cam, e\room\RoomDoors[0]\obj, 8.0)			
 				
 				PlaySound2 (LoadTempSound("SFX/Room/Room2ElevatorDeath.ogg"))
 				
-				e\EventState = 2.05
+				e\eventState = 2.05
 			EndIf
-		ElseIf e\EventState < 13*70 Then
-			e\EventState = e\EventState+timing\tickDuration
+		ElseIf e\eventState < 13*70 Then
+			e\eventState = e\eventState+timing\tickDuration
 			;6.7 - 7.4
 			;8.6 - 10
-			If e\EventState > 6.7*70 And e\EventState < 7.4*70 Then
-				mainPlayer\camShake = 7.4-(e\EventState/70.0)
-			ElseIf e\EventState > 8.6*70 And e\EventState < 10.6*70 Then
-				mainPlayer\camShake = 10.6-(e\EventState/70.0)
-			ElseIf e\EventState > 12.6*70 Then
+			If e\eventState > 6.7*70 And e\eventState < 7.4*70 Then
+				mainPlayer\camShake = 7.4-(e\eventState/70.0)
+			ElseIf e\eventState > 8.6*70 And e\eventState < 10.6*70 Then
+				mainPlayer\camShake = 10.6-(e\eventState/70.0)
+			ElseIf e\eventState > 12.6*70 Then
 				mainPlayer\camShake = 0
-				If e\EventState-timing\tickDuration < 12.6*70 And e\room\NPC[0]<>Null Then
+				If e\eventState-timing\tickDuration < 12.6*70 And e\room\NPC[0]<>Null Then
 					RemoveNPC(e\room\NPC[0])
 					e\room\NPC[0]=Null
 					

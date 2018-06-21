@@ -21,7 +21,7 @@ Function FillRoom_lck_096_2c(r.Rooms)
     sc.SecurityCams = CreateSecurityCam(r\x + 512.0 * RoomScale, r\y + 384 * RoomScale, r\z + 384.0 * RoomScale, r, True)
     sc\angle = 45 + 90
     sc\turn = 45
-    TurnEntity(sc\CameraObj, 40, 0, 0)
+    TurnEntity(sc\cameraObj, 40, 0, 0)
     EntityParent(sc\obj, r\obj)
 
     PositionEntity(sc\ScrObj, r\x + 668 * RoomScale, 1.1, r\z - 96.0 * RoomScale)
@@ -32,7 +32,7 @@ Function FillRoom_lck_096_2c(r.Rooms)
     sc\angle = 45 + 90 + 180
     sc\turn = 45
 
-    TurnEntity(sc\CameraObj, 40, 0, 0)
+    TurnEntity(sc\cameraObj, 40, 0, 0)
     EntityParent(sc\obj, r\obj)				
 
     PositionEntity(sc\ScrObj, r\x + 96.0 * RoomScale, 1.1, r\z - 668.0 * RoomScale)

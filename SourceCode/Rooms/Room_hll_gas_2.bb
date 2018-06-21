@@ -12,7 +12,7 @@ Function FillRoom_hll_gas_2(r.Rooms)
             em\RandAngle = 30
             em\Speed = 0.0045
             em\SizeChange = 0.007
-            em\Achange = -0.016
+            em\achange = -0.016
             r\Objects[i] = em\Obj
             If i < 3 Then 
                 TurnEntity(em\Obj, 0, -90, 0, True) 

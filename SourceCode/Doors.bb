@@ -36,15 +36,15 @@ Dim HeavyDoorObj.MarkedForRemoval(2)
 Function CreateDoor.Doors(lvl, x#, y#, z#, angle#, room.Rooms, dopen% = False,  big% = False, keycard% = False, code$="")
 	Local d.Doors, parent, i%
 	If room <> Null Then parent = room\obj
-
+	
 	Local doorObj%      = GrabMesh("GFX/Map/Meshes/door.b3d")
 	Local doorFrameObj% = GrabMesh("GFX/Map/Meshes/doorframe.b3d")
 	Local doorColl%     = GrabMesh("GFX/Map/Meshes/doorcoll.b3d")
 	Local buttonObj%    = GrabMesh("GFX/Map/Meshes/button.b3d")
-
+	
 	Local contDoorLeft% = GrabMesh("GFX/Map/Meshes/ContDoorLeft.b3d")
 	Local contDoorRight% = GrabMesh("GFX/Map/Meshes/ContDoorRight.b3d")
-
+	
 	Local hczDoorObj%[2]
 	For i=0 To 1
 		hczDoorObj[i] = GrabMesh("GFX/Map/Meshes/heavydoor" + Str(i + 1) + ".b3d")
@@ -85,14 +85,14 @@ Function CreateDoor.Doors(lvl, x#, y#, z#, angle#, room.Rooms, dopen% = False,  
 	EntityType d\obj, HIT_MAP
 	EntityType d\obj2, HIT_MAP
 	
-	d\ID = DoorTempID
+	d\id = DoorTempID
 	DoorTempID=DoorTempID+1
 	
-	d\KeyCard = keycard
-	d\Code = code
+	d\keyCard = keycard
+	d\code = code
 	
-	d\Level = lvl
-	d\LevelDest = 66
+	d\level = lvl
+	d\levelDest = 66
 	
 	For i% = 0 To 1
 		If code <> "" Then
@@ -162,20 +162,20 @@ Function CreateDoor.Doors(lvl, x#, y#, z#, angle#, room.Rooms, dopen% = False,  
 	
 	EntityPickMode d\frameobj,2
 	
-	If d\open And big = False And Rand(8) = 1 Then d\AutoClose = True
+	If d\open And big = False And Rand(8) = 1 Then d\autoClose = True
 	d\dir=big
 	d\room=room
 	
-	d\MTFClose = True
-
+	d\mtfClose = True
+	
 	DropAsset(doorObj)     ;Bust his nut.
 	DropAsset(doorFrameObj);Bust his nut!!!
 	DropAsset(doorColl)    ;BUST HIS NUT!!!
 	DropAsset(buttonObj)   ;B U S T  H I S  N U T  ! ! !
-
+	
 	DropAsset(contDoorLeft)
 	DropAsset(contDoorRight)
-
+	
 	For i=0 To 1
 		DropAsset(hczDoorObj[i])
 	Next
@@ -284,7 +284,7 @@ Function UpdateDoors()
 					If d\timerstate > 0 Then
 						d\timerstate = Max(0, d\timerstate - timing\tickDuration)
 						If d\timerstate + timing\tickDuration > 110 And d\timerstate <= 110 Then PlayRangedSound_SM(sndManager\caution, mainPlayer\cam, d\obj)
-
+						
 						If d\timerstate = 0 Then
 							d\open = (Not d\open)
 							Select (d\dir)
@@ -297,7 +297,7 @@ Function UpdateDoors()
 							End Select
 						EndIf
 					EndIf
-					If d\AutoClose And RemoteDoorOn = True Then
+					If d\autoClose And RemoteDoorOn = True Then
 						If EntityDistance(mainPlayer\cam, d\obj) < 2.1 Then
 							;PlaySound2 HorrorSFX(7) ;TODO: fix
 							d\open = False
@@ -309,7 +309,7 @@ Function UpdateDoors()
 								Default
 									PlayRangedSound_SM(sndManager\closeDoor[Rand(0, 2)], mainPlayer\cam, d\obj)
 							End Select
-							d\AutoClose = False
+							d\autoClose = False
 						EndIf
 					EndIf				
 				EndIf
@@ -334,11 +334,11 @@ Function UpdateDoors()
 									p\speed = 0.005
 									RotateEntity(p\pvt, Rnd(-20, 20), Rnd(360), 0)
 									
-									p\SizeChange = -0.00001
+									p\sizeChange = -0.00001
 									p\size = 0.01
 									ScaleSprite p\obj,p\size,p\size
 									
-									p\Achange = -0.01
+									p\aChange = -0.01
 									
 									EntityOrder p\obj,-1
 									
@@ -385,7 +385,7 @@ End Function
 
 Function UseDoor(d.Doors, showmsg%=True)
 	Local temp% = 0
-	If d\KeyCard > 0 Then
+	If d\keyCard > 0 Then
 		If mainPlayer\selectedItem = Null Then
 			If showmsg = True Then 
 				Msg = "A keycard is required to operate this door."
@@ -414,7 +414,7 @@ Function UseDoor(d.Doors, showmsg%=True)
 					MsgTimer = 70 * 5
 				EndIf
 				Return				
-			ElseIf temp >= d\KeyCard Then
+			ElseIf temp >= d\keyCard Then
 				mainPlayer\selectedItem = Null
 				If showmsg = True Then
 					If d\locked Then
@@ -499,10 +499,10 @@ Function UseDoor(d.Doors, showmsg%=True)
 	EndIf
 	
 	d\open = (Not d\open)
-	If d\LinkedDoor <> Null Then d\LinkedDoor\open = (Not d\LinkedDoor\open)
+	If d\linkedDoor <> Null Then d\linkedDoor\open = (Not d\linkedDoor\open)
 	
 	If d\open Then
-		If d\LinkedDoor <> Null Then d\LinkedDoor\timerstate = d\LinkedDoor\timer
+		If d\linkedDoor <> Null Then d\linkedDoor\timerstate = d\linkedDoor\timer
 		d\timerstate = d\timer
 		Select (d\dir)
 			Case 1
@@ -536,6 +536,5 @@ Function RemoveDoor(d.Doors)
 	
 	Delete d
 End Function
-
 ;~IDEal Editor Parameters:
 ;~C#Blitz3D

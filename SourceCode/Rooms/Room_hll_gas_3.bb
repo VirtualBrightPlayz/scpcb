@@ -10,7 +10,7 @@ Function FillRoom_hll_gas_3(r.Rooms)
     EntityParent(em\Obj, r\obj)
     em\RandAngle = 55
     em\Speed = 0.0005
-    em\Achange = -0.015
+    em\achange = -0.015
     em\SizeChange = 0.007
     
     em.Emitters = CreateEmitter(r\x - 512.0 * RoomScale, -76 * RoomScale, r\z - 688 * RoomScale, 0)
@@ -18,7 +18,7 @@ Function FillRoom_hll_gas_3(r.Rooms)
     EntityParent(em\Obj, r\obj)
     em\RandAngle = 55
     em\Speed = 0.0005
-    em\Achange = -0.015
+    em\achange = -0.015
     em\SizeChange = 0.007
     
     r\Objects[0]= CreatePivot(r\obj)
@@ -52,9 +52,9 @@ Function UpdateEventRoom3pitduck(e.Events)
 			LoadEventSound(e,"SFX/SCP/Joke/Saxophone.ogg")
 		Else
 			If EntityInView(e\room\Objects[2],mainPlayer\cam)=False Then
-				e\EventState = e\EventState + timing\tickDuration
-				If Rand(200)=1 And e\EventState > 300 Then
-					e\EventState = 0
+				e\eventState = e\eventState + timing\tickDuration
+				If Rand(200)=1 And e\eventState > 300 Then
+					e\eventState = 0
 					e\soundChannels[0] = PlayRangedSound(e\sounds[0], mainPlayer\cam, e\room\Objects[2],6.0)
 				EndIf
 			Else
@@ -128,16 +128,16 @@ Function UpdateEventRoom3pit1048(e.Events)
 			PointEntity e\room\Objects[2], mainPlayer\collider
 			RotateEntity(e\room\Objects[2], -90, EntityYaw(e\room\Objects[2],True),0, True)
 			
-			If e\EventState=0 Then
+			If e\eventState=0 Then
 				If (EntityDistance(mainPlayer\collider, e\room\Objects[2])<3.0) Then
 					If EntityInView(e\room\Objects[2],mainPlayer\cam) Then 
-						e\EventState = 1
+						e\eventState = 1
 					EndIf
 				EndIf
-			ElseIf e\EventState=1 Then
+			ElseIf e\eventState=1 Then
 				Animate2(e\room\Objects[2], AnimTime(e\room\Objects[2]), 414, 543, 0.5, False)
-				If AnimTime(e\room\Objects[2])=543 Then e\EventState=2
-			ElseIf e\EventState = 2 Then
+				If AnimTime(e\room\Objects[2])=543 Then e\eventState=2
+			ElseIf e\eventState = 2 Then
 				Animate2(e\room\Objects[2], AnimTime(e\room\Objects[2]), 543, 692, 1.0)	
 				If (EntityDistance(mainPlayer\collider, e\room\Objects[2])<1.5) Then
 					DrawHandIcon = True
@@ -151,7 +151,7 @@ Function UpdateEventRoom3pit1048(e.Events)
 						
 						FreeEntity(e\room\Objects[2])
 						
-						e\EventState = 3
+						e\eventState = 3
 						RemoveEvent(e)
 					EndIf
 				EndIf

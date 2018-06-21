@@ -50,12 +50,12 @@ Function UpdateNPCtype939(n.NPCs)
             Case 1
                 
                 If n\frame=>644 And n\frame<683 Then ;finish the walking animation
-                    ;n\CurrSpeed = CurveValue(n\Speed*0.2, n\CurrSpeed, 10.0)
+                    ;n\currSpeed = CurveValue(n\Speed*0.2, n\currSpeed, 10.0)
                     n\currSpeed = CurveValue(n\speed*0.05, n\currSpeed, 10.0)
                     AnimateNPC(n, 644,683,28*n\currSpeed*4,False)
                     If n\frame=>682 Then n\frame =175
                     
-                    ;Animate2(n\obj,AnimTime(n\obj),644,683,28*n\CurrSpeed,False)
+                    ;Animate2(n\obj,AnimTime(n\obj),644,683,28*n\currSpeed,False)
                     ;If AnimTime(n\obj)=683 Then SetAnimTime(n\obj,175)
                 Else
                     n\currSpeed = CurveValue(0, n\currSpeed, 5.0)
@@ -82,7 +82,7 @@ Function UpdateNPCtype939(n.NPCs)
                 AnimateNPC(n, 644,683,28*n\currSpeed) ;walk
                 
                 ;prevFrame = AnimTime(n\obj)
-                ;Animate2(n\obj,AnimTime(n\obj),644,683,28*n\CurrSpeed) ;walk
+                ;Animate2(n\obj,AnimTime(n\obj),644,683,28*n\currSpeed) ;walk
                 
                 If (prevFrame<664 And n\frame=>664) Or (prevFrame>673 And n\frame<654) Then
                     PlayRangedSound(sndManager\footstepMetal[Rand(0,7)]\internal, mainPlayer\cam, n\collider, 12.0)
@@ -112,8 +112,8 @@ Function UpdateNPCtype939(n.NPCs)
                 If EntityVisible(mainPlayer\collider, n\collider) Then
                     If n\sounds[1] = 0 Then n\sounds[1] = LoadSound("SFX/General/Slash1.ogg")
                     
-                    n\EnemyX = EntityX(mainPlayer\collider)
-                    n\EnemyZ = EntityZ(mainPlayer\collider)
+                    n\enemyX = EntityX(mainPlayer\collider)
+                    n\enemyZ = EntityZ(mainPlayer\collider)
                     n\lastSeen = 10*7
                 EndIf
                 
@@ -135,7 +135,7 @@ Function UpdateNPCtype939(n.NPCs)
                         EndIf
                         
                         If temp Then
-                            If Distance(n\EnemyX, n\EnemyZ, EntityX(n\collider), EntityZ(n\collider))<1.5 Then
+                            If Distance(n\enemyX, n\enemyZ, EntityX(n\collider), EntityZ(n\collider))<1.5 Then
                                 PlaySound2(n\sounds[1])
                                 mainPlayer\injuries = mainPlayer\injuries + Rnd(1.5, 2.5)-IsPlayerWearingTempName(mainPlayer,"vest")*0.5
                                 mainPlayer\blurTimer = 500		
@@ -153,28 +153,28 @@ Function UpdateNPCtype939(n.NPCs)
                         EndIf								
                     Else
                         If n\LastSeen = 10*7 Then 
-                            n\CurrSpeed = CurveValue(n\Speed, n\CurrSpeed, 20.0)
+                            n\currSpeed = CurveValue(n\Speed, n\currSpeed, 20.0)
                             
                             AnimateNPC(n, 449,464,6*n\currSpeed) ;run
-                            ;Animate2(n\obj,AnimTime(n\obj),449,464,6*n\CurrSpeed) ;run
+                            ;Animate2(n\obj,AnimTime(n\obj),449,464,6*n\currSpeed) ;run
                             
                             If (prevFrame<452 And n\frame=>452) Or (prevFrame<459 And n\frame=>459) Then
                                 PlayRangedSound(sndManager\footstepMetalRun[Rand(0,7)]\internal, mainPlayer\cam, n\collider, 12.0)
                             EndIf										
                             
-                            If Distance(n\EnemyX, n\EnemyZ, EntityX(n\collider), EntityZ(n\collider))<1.1 Then ;player is visible
+                            If Distance(n\enemyX, n\enemyZ, EntityX(n\collider), EntityZ(n\collider))<1.1 Then ;player is visible
                                 n\frame = 18
                                 ;SetAnimTime(n\obj, 18.0)
                             EndIf
                         Else
                             n\currSpeed = CurveValue(0, n\currSpeed, 5.0)
                             AnimateNPC(n, 175,297,5*n\currSpeed,True)	
-                            ;Animate2(n\obj,AnimTime(n\obj),175,297,5*n\CurrSpeed,True)
+                            ;Animate2(n\obj,AnimTime(n\obj),175,297,5*n\currSpeed,True)
                         EndIf
                         
                     EndIf
                     
-                    angle = VectorYaw(n\EnemyX-EntityX(n\collider), 0.0, n\EnemyZ-EntityZ(n\collider))
+                    angle = VectorYaw(n\enemyX-EntityX(n\collider), 0.0, n\enemyZ-EntityZ(n\collider))
                     RotateEntity n\collider, 0, CurveAngle(angle,EntityYaw(n\collider),15.0), 0									
                     
                     MoveEntity n\collider, 0,0,n\currSpeed*timing\tickDuration							

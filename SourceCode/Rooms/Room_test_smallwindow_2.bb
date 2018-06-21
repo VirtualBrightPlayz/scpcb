@@ -26,15 +26,15 @@ Function FillRoom_test_smallwindow_2(r.Rooms)
     FreeTexture Glasstex
     
     ;d = CreateDoor(r\zone, r\x - 240.0 * RoomScale, 0.0, r\z + 640.0 * RoomScale, 90, r, False, False, 1)
-    ;d\AutoClose = False : d\open = False
+    ;d\autoClose = False : d\open = False
     r\RoomDoors[0] = CreateDoor(r\zone, r\x - 240.0 * RoomScale, 0.0, r\z + 640.0 * RoomScale, 90, r, False, False, 1)
-    r\RoomDoors[0]\AutoClose = False : r\RoomDoors[0]\open = False
+    r\RoomDoors[0]\autoClose = False : r\RoomDoors[0]\open = False
     
     d = CreateDoor(r\zone, r\x - 512.0 * RoomScale, 0.0, r\z + 384.0 * RoomScale, 0, r, False, False)
-    d\AutoClose = False : d\open = False					
+    d\autoClose = False : d\open = False					
     
     d = CreateDoor(r\zone, r\x - 816.0 * RoomScale, 0.0, r\z - 208.0 * RoomScale, 0, r, False, False)
-    d\AutoClose = False : d\open = False
+    d\autoClose = False : d\open = False
     FreeEntity(d\buttons[0]) : d\buttons[0]=0
     FreeEntity(d\buttons[1]) : d\buttons[1]=0
     
@@ -59,23 +59,23 @@ Function UpdateEventTestroom173(e.Events)
 	;[Block]
 	If mainPlayer\currRoom = e\room Then
 		If Curr173\Idle = 0 Then 
-			If e\EventState = 0 Then
+			If e\eventState = 0 Then
 				If e\room\RoomDoors[0]\open = True Then
 					PositionEntity(Curr173\collider, EntityX(e\room\Objects[0], True), 0.5, EntityZ(e\room\Objects[0], True))
 					ResetEntity(Curr173\collider)
-					e\EventState = 1
+					e\eventState = 1
 				EndIf
 			Else
 				ShowEntity (e\room\Objects[2])
 				;start a timer for 173 breaking through the window
-				e\EventState = e\EventState + 1
+				e\eventState = e\eventState + 1
 				dist# = EntityDistance(mainPlayer\collider, e\room\Objects[1])
 				If dist<1.0 Then
 					;if close, increase the timer so that 173 is ready to attack
-					e\EventState = Max(e\EventState, 70*12)
+					e\eventState = Max(e\eventState, 70*12)
 				ElseIf dist > 1.4 Then
 					;if the player moves a bit further and blinks, 173 attacks
-					If e\EventState > 70*12 And mainPlayer\blinkTimer =< -10 Then
+					If e\eventState > 70*12 And mainPlayer\blinkTimer =< -10 Then
 						If (EntityDistance(Curr173\collider, e\room\Objects[0]) > 5.0) Then
 							;if 173 is far away from the room (perhaps because the player 
 							;left and 173 moved to some other room?) -> disable the event

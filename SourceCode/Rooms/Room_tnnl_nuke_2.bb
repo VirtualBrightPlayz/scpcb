@@ -7,25 +7,25 @@ Function FillRoom_tnnl_nuke_2(r.Rooms)
     
     ;"tuulikaapin" ovi
     d = CreateDoor(r\zone, r\x + 576.0 * RoomScale, 0.0, r\z - 152.0 * RoomScale, 90, r, False, False, 5)
-    d\AutoClose = False : d\open = False
+    d\autoClose = False : d\open = False
     PositionEntity(d\buttons[0], r\x + 608.0 * RoomScale, EntityY(d\buttons[0],True), r\z - 284.0 * RoomScale,True)
     PositionEntity(d\buttons[1], r\x + 544.0 * RoomScale, EntityY(d\buttons[1],True), r\z - 284.0 * RoomScale,True)			
     
     d = CreateDoor(r\zone, r\x - 544.0 * RoomScale, 1504.0*RoomScale, r\z + 738.0 * RoomScale, 90, r, False, False, 5)
-    d\AutoClose = False : d\open = False			
+    d\autoClose = False : d\open = False			
     PositionEntity(d\buttons[0], EntityX(d\buttons[0],True), EntityY(d\buttons[0],True), r\z + 608.0 * RoomScale,True)
     PositionEntity(d\buttons[1], EntityX(d\buttons[1],True), EntityY(d\buttons[1],True), r\z + 608.0 * RoomScale,True)
     
     ;yl�kerran hissin ovi
     r\RoomDoors[0] = CreateDoor(r\zone, r\x + 1192.0 * RoomScale, 0.0, r\z, 90, r, True)
-    r\RoomDoors[0]\AutoClose = False : r\RoomDoors[0]\open = True
+    r\RoomDoors[0]\autoClose = False : r\RoomDoors[0]\open = True
     ;yl�kerran hissi
     r\Objects[4] = CreatePivot()
     PositionEntity(r\Objects[4], r\x + 1496.0 * RoomScale, 240.0 * RoomScale, r\z)
     EntityParent(r\Objects[4], r\obj)
     ;alakerran hissin ovi
     r\RoomDoors[1] = CreateDoor(r\zone, r\x + 680.0 * RoomScale, 1504.0 * RoomScale, r\z, 90, r, False)
-    r\RoomDoors[1]\AutoClose = False : r\RoomDoors[1]\open = False
+    r\RoomDoors[1]\autoClose = False : r\RoomDoors[1]\open = False
     ;alakerran hissi
     r\Objects[5] = CreatePivot()
     PositionEntity(r\Objects[5], r\x + 984.0 * RoomScale, 1744.0 * RoomScale, r\z)
@@ -63,7 +63,7 @@ Function FillRoom_tnnl_nuke_2(r.Rooms)
     sc.SecurityCams = CreateSecurityCam(r\x+624.0*RoomScale, r\y+1888.0*RoomScale, r\z-312.0*RoomScale, r)
     sc\angle = 90
     sc\turn = 45
-    TurnEntity(sc\CameraObj, 20, 0, 0)
+    TurnEntity(sc\cameraObj, 20, 0, 0)
     sc\ID = 6
 End Function
 
@@ -81,9 +81,9 @@ Function UpdateEvent_tnnl_nuke_2(e.Events)
 
 	;[Block]
 	If mainPlayer\currRoom = e\room Then
-		e\EventState2 = UpdateElevators(e\EventState2, e\room\RoomDoors[0], e\room\RoomDoors[1], e\room\Objects[4], e\room\Objects[5], e)
+		e\eventState2 = UpdateElevators(e\eventState2, e\room\RoomDoors[0], e\room\RoomDoors[1], e\room\Objects[4], e\room\Objects[5], e)
 		
-		e\EventState = e\room\Levers[0]\succ
+		e\eventState = e\room\Levers[0]\succ
 	EndIf
 	;[End Block]
 End Function

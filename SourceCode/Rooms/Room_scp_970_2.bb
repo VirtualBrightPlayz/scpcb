@@ -15,7 +15,7 @@ Function FillRoom_scp_970_2(r.Rooms)
     For i = 0 To 5
         MoveEntity r\RoomDoors[i]\buttons[0], 0,0,-8.0
         MoveEntity r\RoomDoors[i]\buttons[1], 0,0,-8.0
-        r\RoomDoors[i]\AutoClose = False : r\RoomDoors[i]\open = False				
+        r\RoomDoors[i]\autoClose = False : r\RoomDoors[i]\open = False				
     Next
     
     it = CreateItem("Document SCP-939", "paper", r\x + 352.0 * RoomScale, r\y + 176.0 * RoomScale, r\z + 256.0 * RoomScale)
@@ -46,7 +46,7 @@ Function UpdateEvent_scp_970_2(e.Events)
 
 	;[Block]
 	If mainPlayer\currRoom = e\room Then
-		If e\EventState2 <= 0 Then
+		If e\eventState2 <= 0 Then
 			e\room\RoomDoors[1]\locked = False
 			e\room\RoomDoors[4]\locked = False
 			
@@ -64,9 +64,9 @@ Function UpdateEvent_scp_970_2(e.Events)
 					EndIf
 				Next
 			EndIf
-			e\EventState2 = 70*5
+			e\eventState2 = 70*5
 		Else
-			e\EventState2 = e\EventState2 - timing\tickDuration
+			e\eventState2 = e\eventState2 - timing\tickDuration
 		EndIf
 		
 		;LightVolume = TempLightVolume*0.5
@@ -129,7 +129,7 @@ Function UpdateEvent_scp_970_2(e.Events)
 		
 		If temp = True Then 
 			
-			e\EventState=e\EventState+1;Rand(1,2)
+			e\eventState=e\eventState+1;Rand(1,2)
 			
 			For it.Items = Each Items
 				If EntityDistance(it\collider,mainPlayer\collider)<5.0 Then
@@ -149,7 +149,7 @@ Function UpdateEvent_scp_970_2(e.Events)
 				EndIf
 			Next
 			
-			Select e\EventState 
+			Select e\eventState 
 				Case 2
 					i = Rand(mainPlayer\inventory\size)
 					If mainPlayer\inventory\items[i]<>Null Then RemoveItem(mainPlayer\inventory\items[i])								
@@ -239,13 +239,13 @@ Function UpdateEvent_scp_970_2(e.Events)
 			
 			;If Abs(TFormedX())<264 Then 
 			For it.Items = Each Items
-				If (it\Dropped=1 And Abs(TFormedX())<264) Or it\Dropped=-1 Then
-					DebugLog "dropping/picking: "+it\Dropped+" - "+EntityX(it\collider)+", "+EntityY(it\collider)+", "+EntityZ(it\collider)
+				If (it\dropped=1 And Abs(TFormedX())<264) Or it\dropped=-1 Then
+					DebugLog "dropping/picking: "+it\dropped+" - "+EntityX(it\collider)+", "+EntityY(it\collider)+", "+EntityZ(it\collider)
 					
 					TFormPoint EntityX(it\collider),EntityY(it\collider),EntityZ(it\collider),0,e\room\obj
 					x = TFormedX() : y = TFormedY() : z = TFormedZ()
 					
-					If it\Dropped=1 Then
+					If it\dropped=1 Then
 						For i = - 1 To 1 Step 2
 							TFormPoint x+1024*i,y,z,e\room\obj,0
 							it2.items = CreateItem(it\name, it\itemtemplate\tempName, TFormedX(), EntityY(it\collider), TFormedZ())
@@ -273,19 +273,19 @@ Function UpdateEvent_scp_970_2(e.Events)
 	EndIf
 	
 	
-	If e\EventState > 26 Then
+	If e\eventState > 26 Then
 		If Abs(EntityX(mainPlayer\collider)-e\room\x)<8.0 Then
 			If Abs(EntityZ(mainPlayer\collider)-e\room\z)<8.0 Then
 				If e\sounds[0] = 0 Then
 					e\sounds[0] = LoadSound("SFX/SCP/970/Corpse.ogg")
 				EndIf
 				e\soundChannels[0] = LoopRangedSound(e\sounds[0], e\soundChannels[0], mainPlayer\cam, e\room\NPC[0]\obj);
-				If e\EventState < 30 Then
+				If e\eventState < 30 Then
 					;LightVolume = TempLightVolume*0.4
-				ElseIf e\EventState > 60 Then
+				ElseIf e\eventState > 60 Then
 					AnimateNPC(e\room\NPC[0], 80, 61, -0.02, False)
 					
-					e\room\NPC[0]\DropSpeed = 0
+					e\room\NPC[0]\dropSpeed = 0
 					y = CurveValue(1.5+Sin(Float(TimeInPosMilliSecs())/20.0)*0.1,EntityY(e\room\NPC[0]\collider),50.0)
 					
 					PositionEntity e\room\NPC[0]\collider,EntityX(e\room\NPC[0]\collider),y,EntityZ(e\room\NPC[0]\collider)

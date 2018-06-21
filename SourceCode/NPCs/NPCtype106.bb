@@ -67,7 +67,7 @@ Function UpdateNPCtype106(n.NPCs)
             ;Otherwise begin spawning 106.
             ElseIf n\timer >= -10 Then
                 If EntityY(n\collider) < EntityY(mainPlayer\collider) - 20.0 - 0.55 Then
-                    If Not mainPlayer\currRoom\RoomTemplate\DisableDecals Then
+                    If Not mainPlayer\currRoom\RoomTemplate\disableDecals Then
                         de.Decals = CreateDecal(0, EntityX(mainPlayer\collider), 0.01, EntityZ(mainPlayer\collider), 90, Rand(360), 0)
                         de\Size = 0.05 : de\SizeChange = 0.001 : EntityAlpha(de\obj, 0.8) : UpdateDecals
                     EndIf
@@ -135,7 +135,7 @@ Function UpdateNPCtype106(n.NPCs)
                 prevFrame# = n\frame
 
                 ;Walking animation.
-                AnimateNPC(n, 284, 333, n\CurrSpeed * 43)
+                AnimateNPC(n, 284, 333, n\currSpeed * 43)
                 
                 ;Footstep sounds.
                 If (prevFrame =< 286 And n\frame > 286) Or (prevFrame=<311 And n\frame > 311.0) Then
@@ -157,12 +157,12 @@ Function UpdateNPCtype106(n.NPCs)
                     If n\PathTimer <= 0 Then
                         n\PathStatus = FindPath (n, EntityX(mainPlayer\collider,True), EntityY(mainPlayer\collider,True), EntityZ(mainPlayer\collider,True))
                         n\PathTimer = 70*10
-                        n\CurrSpeed = 0
+                        n\currSpeed = 0
                     Else
                         n\PathTimer = Max(n\PathTimer-timing\tickDuration,0)
                         
                         If n\PathStatus = 2 Then
-                            n\CurrSpeed = 0
+                            n\currSpeed = 0
                         ElseIf n\PathStatus = 1 Then
                             If n\Path[n\PathLocation]=Null Then 
                                 If n\PathLocation > 19 Then 
@@ -200,7 +200,7 @@ Function UpdateNPCtype106(n.NPCs)
                     RotateEntity(n\collider, 0, CurveAngle(EntityYaw(n\obj), EntityYaw(n\collider), 10.0), 0)									
                     
                     ;TODO: Teleport to pocket dimension.
-                    If Ceil(n\Frame) = 110 And (Not mainPlayer\godMode) Then
+                    If Ceil(n\frame) = 110 And (Not mainPlayer\godMode) Then
                         PlaySound2(DamageSFX(1))
                         PlaySound2(n\sounds[7])
 

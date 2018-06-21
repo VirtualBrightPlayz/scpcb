@@ -173,7 +173,7 @@ Function UpdateElevators#(State#, door1.Doors, door2.Doors, room1, room2, event.
 			EndIf
 			
 			For n.NPCs = Each NPCs
-				If n\CanUseElevator Then
+				If n\canUseElevator Then
 					If Abs(EntityX(n\collider)-EntityX(room1,True))<280.0*RoomScale Then
 						If Abs(EntityZ(n\collider)-EntityZ(room1,True))<280.0*RoomScale Then
 							If Abs(EntityY(n\collider)-EntityY(room1,True))<280.0*RoomScale Then
@@ -220,7 +220,7 @@ Function UpdateElevators#(State#, door1.Doors, door2.Doors, room1, room2, event.
 						TurnEntity NPC_inside\collider,0,180,0
 						NPC_inside\Idle = False
 					EndIf
-					NPC_inside\CurrElevator = Null
+					NPC_inside\currElevator = Null
 				EndIf
 				
 				UseDoor(door2,False)
@@ -245,7 +245,7 @@ Function UpdateElevators#(State#, door1.Doors, door2.Doors, room1, room2, event.
 			EndIf	
 			
 			For n.NPCs = Each NPCs
-				If n\CanUseElevator Then
+				If n\canUseElevator Then
 					If Abs(EntityX(n\collider)-EntityX(room2,True))<280.0*RoomScale Then
 						If Abs(EntityZ(n\collider)-EntityZ(room2,True))<280.0*RoomScale Then
 							If Abs(EntityY(n\collider)-EntityY(room2,True))<280.0*RoomScale Then
@@ -293,7 +293,7 @@ Function UpdateElevators#(State#, door1.Doors, door2.Doors, room1, room2, event.
 						TurnEntity NPC_inside\collider,0,180,0
 						NPC_inside\Idle = False
 					EndIf
-					NPC_inside\CurrElevator = Null
+					NPC_inside\currElevator = Null
 				EndIf
 				
 				UseDoor(door1,False)

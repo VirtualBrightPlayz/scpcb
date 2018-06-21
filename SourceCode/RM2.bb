@@ -132,7 +132,7 @@ Function LoadRM2(rt.RoomTemplates)
 					mat = GetCache(texName)
 					If mat=Null Then
 						shouldLoadTexture=True
-					ElseIf mat\Diff=0 Then
+					ElseIf mat\diff=0 Then
 						shouldLoadTexture=True
 					EndIf
 					
@@ -171,7 +171,7 @@ Function LoadRM2(rt.RoomTemplates)
 					EndIf
 					If mat<>Null Then
 						If brush=0 Then brush = CreateBrush(255,255,255)
-						BrushTexture(brush,mat\Diff,0,i+(layerCount=2)) ;TODO: replace this hack once we can start using shaders
+						BrushTexture(brush,mat\diff,0,i+(layerCount=2)) ;TODO: replace this hack once we can start using shaders
 					EndIf
 				Next
 				

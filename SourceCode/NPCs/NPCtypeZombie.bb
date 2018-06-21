@@ -87,19 +87,19 @@ Function UpdateNPCtypeZombie(n.NPCs)
                         If dist < 0.7 Then 
                             n\state = 3
                             If Rand(2)=1 Then
-                                n\Frame = 2
+                                n\frame = 2
                                 ;SetAnimTime n\obj, 2
                             Else
-                                n\Frame = 66
+                                n\frame = 66
                                 ;SetAnimTime n\obj, 66
                             EndIf
                         Else
-                            n\CurrSpeed = CurveValue(n\Speed, n\CurrSpeed, 20.0)
-                            MoveEntity n\collider, 0, 0, n\CurrSpeed * timing\tickDuration
+                            n\currSpeed = CurveValue(n\Speed, n\currSpeed, 20.0)
+                            MoveEntity n\collider, 0, 0, n\currSpeed * timing\tickDuration
                             
-                            AnimateNPC(n, 936, 1017, n\CurrSpeed*60)
+                            AnimateNPC(n, 936, 1017, n\currSpeed*60)
                             
-                            ;Animate2(n\obj, AnimTime(n\obj), 936, 1017, n\CurrSpeed*60)
+                            ;Animate2(n\obj, AnimTime(n\obj), 936, 1017, n\currSpeed*60)
                             
                         EndIf
                         
@@ -116,18 +116,18 @@ Function UpdateNPCtypeZombie(n.NPCs)
                                 PointEntity n\obj, n\Path[n\PathLocation]\obj
                                 
                                 RotateEntity n\collider, 0, CurveAngle(EntityYaw(n\obj), EntityYaw(n\collider), 30.0), 0
-                                n\CurrSpeed = CurveValue(n\Speed, n\CurrSpeed, 20.0)
-                                MoveEntity n\collider, 0, 0, n\CurrSpeed * timing\tickDuration
+                                n\currSpeed = CurveValue(n\Speed, n\currSpeed, 20.0)
+                                MoveEntity n\collider, 0, 0, n\currSpeed * timing\tickDuration
                                 
-                                AnimateNPC(n, 936, 1017, n\CurrSpeed*60)
-                                ;Animate2(n\obj, AnimTime(n\obj), 936, 1017, n\CurrSpeed*60)
+                                AnimateNPC(n, 936, 1017, n\currSpeed*60)
+                                ;Animate2(n\obj, AnimTime(n\obj), 936, 1017, n\currSpeed*60)
                                 
                                 If EntityDistance(n\collider,n\Path[n\PathLocation]\obj) < 0.2 Then
                                     n\PathLocation = n\PathLocation + 1
                                 EndIf 
                             EndIf
                         Else ;no path to the player, stands still
-                            n\CurrSpeed = 0
+                            n\currSpeed = 0
                             AnimateNPC(n, 778, 926, 0.1)
                             ;Animate2(n\obj, AnimTime(n\obj), 778, 926, 0.1)
                             
@@ -140,25 +140,25 @@ Function UpdateNPCtypeZombie(n.NPCs)
                     EndIf					
                 Case 3
                     If NoTarget Then n\state = 2
-                    If n\Frame < 66 Then
+                    If n\frame < 66 Then
                         AnimateNPC(n, 2, 65, 0.7, False)
                         
                         ;Animate2(n\obj, AnimTime(n\obj), 2, 65, 0.7, False)
-                        If prevFrame < 23 And n\Frame=>23 Then 
+                        If prevFrame < 23 And n\frame=>23 Then 
                             PlaySound2 DamageSFX(Rand(5,8))
                             mainPlayer\injuries = mainPlayer\injuries+Rnd(0.4,1.0)
                             DeathMSG = "Subject D-9341. Cause of death: multiple lacerations and severe blunt force trauma caused by an instance of SCP-049-2."
-                        ElseIf n\Frame=65 Then
+                        ElseIf n\frame=65 Then
                             n\state = 2
                         EndIf							
                     Else
                         AnimateNPC(n, 66, 132, 0.7, False)
                         ;Animate2(n\obj, AnimTime(n\obj), 66, 132, 0.7, False)
-                        If prevFrame < 90 And n\Frame=>90 Then 
+                        If prevFrame < 90 And n\frame=>90 Then 
                             PlaySound2 DamageSFX(Rand(5,8))
                             mainPlayer\injuries = mainPlayer\injuries+Rnd(0.4,1.0)
                             DeathMSG = "Subject D-9341. Cause of death: multiple lacerations and severe blunt force trauma caused by an instance of SCP-049-2."
-                        ElseIf n\Frame=132 Then
+                        ElseIf n\frame=132 Then
                             n\state = 2
                         EndIf		
                     EndIf

@@ -89,7 +89,7 @@ Function UpdateNPCtype066(n.NPCs)
                                 n\state3 = Rand(700,1400)
                             Case 3
                                 For d.Doors = Each Doors
-                                    If d\locked = False And d\KeyCard = 0 And d\Code = "" Then
+                                    If d\locked = False And d\KeyCard = 0 And d\code = "" Then
                                         If Abs(EntityX(d\frameobj)-EntityX(n\collider))<16.0 Then
                                             If Abs(EntityZ(d\frameobj)-EntityZ(n\collider))<16.0 Then
                                                 UseDoor(d, False)
@@ -98,7 +98,7 @@ Function UpdateNPCtype066(n.NPCs)
                                     EndIf
                                 Next
                             Case 4
-                                If mainPlayer\currRoom\RoomTemplate\DisableDecals = False Then
+                                If mainPlayer\currRoom\RoomTemplate\disableDecals = False Then
                                     mainPlayer\camShake = 5.0
                                     de.Decals = CreateDecal(1, EntityX(n\collider), 0.01, EntityZ(n\collider), 90, Rand(360), 0)
                                     de\Size = 0.3 : UpdateDecals
@@ -118,11 +118,11 @@ Function UpdateNPCtype066(n.NPCs)
                 Else
                     n\currSpeed = CurveValue(n\speed*1.5, n\currSpeed, 10.0)
                     PointEntity n\obj,mainPlayer\collider
-                    ;angle = CurveAngle(EntityYaw(n\obj), EntityYaw(n\collider), 10);1.0/Max(n\CurrSpeed,0.0001))
+                    ;angle = CurveAngle(EntityYaw(n\obj), EntityYaw(n\collider), 10);1.0/Max(n\currSpeed,0.0001))
                     RotateEntity n\collider, 0, CurveAngle(EntityYaw(n\obj)-180, EntityYaw(n\collider), 10), 0
                     
                     AnimateNPC(n, 647, 683, n\currSpeed*25, False)
-                    ;Animate2(n\obj, AnimTime(n\obj), 647, 683, n\CurrSpeed*25, False)
+                    ;Animate2(n\obj, AnimTime(n\obj), 647, 683, n\currSpeed*25, False)
                     
                     MoveEntity n\collider, 0,0,-n\currSpeed*timing\tickDuration
                     
@@ -130,20 +130,20 @@ Function UpdateNPCtype066(n.NPCs)
             EndIf
         Case 3
             PointEntity n\obj,mainPlayer\collider
-            angle = CurveAngle(EntityYaw(n\obj)+n\angle-180, EntityYaw(n\collider), 10);1.0/Max(n\CurrSpeed,0.0001))
+            angle = CurveAngle(EntityYaw(n\obj)+n\angle-180, EntityYaw(n\collider), 10);1.0/Max(n\currSpeed,0.0001))
             RotateEntity n\collider, 0, angle, 0
             
             n\currSpeed = CurveValue(n\speed, n\currSpeed, 10.0)
             MoveEntity n\collider, 0,0,n\currSpeed*timing\tickDuration
             
-            ;Animate2(n\obj, AnimTime(n\obj), 684, 647, -n\CurrSpeed*25)
+            ;Animate2(n\obj, AnimTime(n\obj), 684, 647, -n\currSpeed*25)
             
             If Rand(100)=1 Then n\angle = Rnd(-20,20)
             
             n\state2 = n\state2 + timing\tickDuration
             If n\state2>250 Then 
                 AnimateNPC(n, 684, 647, -n\currSpeed*25, False)
-                ;Animate2(n\obj, AnimTime(n\obj), 684, 647, -n\CurrSpeed*25, False)
+                ;Animate2(n\obj, AnimTime(n\obj), 684, 647, -n\currSpeed*25, False)
                 If n\frame=647 Then 
                     n\state = 0
                     n\state2=0
@@ -151,7 +151,7 @@ Function UpdateNPCtype066(n.NPCs)
             Else
                 AnimateNPC(n, 684, 647, -n\currSpeed*25)
                 
-                ;Animate2(n\obj, AnimTime(n\obj), 684, 647, -n\CurrSpeed*25)
+                ;Animate2(n\obj, AnimTime(n\obj), 684, 647, -n\currSpeed*25)
             EndIf
             
     End Select

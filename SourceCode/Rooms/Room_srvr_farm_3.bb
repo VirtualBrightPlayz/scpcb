@@ -49,12 +49,12 @@ Function UpdateEvent_srvr_farm_3(e.Events)
 
 	;[Block]
 	If mainPlayer\currRoom = e\room Then
-		If e\EventState3=0 And Curr173\Idle = 0 Then
+		If e\eventState3=0 And Curr173\Idle = 0 Then
 			If mainPlayer\blinkTimer < -10 Then 
 				temp = Rand(0,2)
 				PositionEntity Curr173\collider, EntityX(e\room\Objects[temp],True),EntityY(e\room\Objects[temp],True),EntityZ(e\room\Objects[temp],True)
 				ResetEntity Curr173\collider
-				e\EventState3=1
+				e\eventState3=1
 			EndIf
 		EndIf
 		
@@ -63,17 +63,17 @@ Function UpdateEvent_srvr_farm_3(e.Events)
 				PointEntity e\room\Objects[3], mainPlayer\cam
 				RotateEntity(e\room\Objects[3], 0, EntityYaw(e\room\Objects[3],True),0, True)
 			EndIf
-			If e\EventState2 = 0 Then 
-				e\EventState = CurveValue(0, e\EventState, 15.0)
-				If Rand(800)=1 Then e\EventState2 = 1
+			If e\eventState2 = 0 Then 
+				e\eventState = CurveValue(0, e\eventState, 15.0)
+				If Rand(800)=1 Then e\eventState2 = 1
 			Else
-				e\EventState = e\EventState+(timing\tickDuration*0.5)
-				If e\EventState > 360 Then e\EventState = 0	
+				e\eventState = e\eventState+(timing\tickDuration*0.5)
+				If e\eventState > 360 Then e\eventState = 0	
 				
-				If Rand(1200)=1 Then e\EventState2 = 0
+				If Rand(1200)=1 Then e\eventState2 = 0
 			EndIf
 			
-			PositionEntity e\room\Objects[3], EntityX(e\room\Objects[3],True), (-608.0*RoomScale)+0.05+Sin(e\EventState+270)*0.05, EntityZ(e\room\Objects[3],True), True
+			PositionEntity e\room\Objects[3], EntityX(e\room\Objects[3],True), (-608.0*RoomScale)+0.05+Sin(e\eventState+270)*0.05, EntityZ(e\room\Objects[3],True), True
 		EndIf
 	EndIf
 	;[End Block]

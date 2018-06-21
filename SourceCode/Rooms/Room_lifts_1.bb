@@ -14,7 +14,7 @@ Function FillRoom_lifts_1(r.Rooms)
     sc\angle = 45
     sc\turn = 45
     sc\room = r
-    TurnEntity(sc\CameraObj, 20, 0, 0)
+    TurnEntity(sc\cameraObj, 20, 0, 0)
     EntityParent(sc\obj, r\obj)
     sc\ID = 3
 End Function

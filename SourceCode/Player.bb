@@ -1494,12 +1494,12 @@ Function UpdateInventory(player.Player)
 					EndIf
 					For e.Events = Each Events
 						If e\name = "room1123" Then 
-							If e\EventState = 0 Then
+							If e\eventState = 0 Then
 								ShowEntity player\overlays[OVERLAY_WHITE]
 								player\lightFlash = 3
 								PlaySound2(LoadTempSound("SFX/SCP/1123/Touch.ogg"))											
 							EndIf
-							e\EventState = Max(1, e\EventState)
+							e\eventState = Max(1, e\eventState)
 							Exit
 						EndIf
 					Next

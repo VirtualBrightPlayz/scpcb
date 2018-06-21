@@ -48,14 +48,14 @@ Function FillRoom_hll_sl_2(r.Rooms)
     
     ;Doors for room
     r\RoomDoors[0] = CreateDoor(r\zone,r\x+480.0*RoomScale,r\y,r\z-640.0*RoomScale,90,r,False,False,3)
-    r\RoomDoors[0]\AutoClose = False
+    r\RoomDoors[0]\autoClose = False
     PositionEntity r\RoomDoors[0]\buttons[0],r\x+576.0*RoomScale,EntityY(r\RoomDoors[0]\buttons[0],True),r\z-480*RoomScale,True
     RotateEntity r\RoomDoors[0]\buttons[0],0,270,0
     r\RoomDoors[1] = CreateDoor(r\zone,r\x+544.0*RoomScale,r\y+480.0*RoomScale,r\z+256.0*RoomScale,270,r,False,False,3)
-    r\RoomDoors[1]\AutoClose = False
+    r\RoomDoors[1]\autoClose = False
     FreeEntity r\RoomDoors[1]\obj2 : r\RoomDoors[1]\obj2 = 0
     d = CreateDoor(r\zone,r\x+1504.0*RoomScale,r\y+480.0*RoomScale,r\z+960.0*RoomScale,0,r)
-    d\AutoClose = False : d\locked = True
+    d\autoClose = False : d\locked = True
     
     ;PathPoint 1 for SCP-049
     r\Objects[7] = CreatePivot()
@@ -74,7 +74,7 @@ Function FillRoom_hll_sl_2(r.Rooms)
     r\Objects[17] = LoadMesh("GFX/map/room2sl_2.b3d",r\obj)
     sc.SecurityCams = CreateSecurityCam(r\x-160.0*RoomScale,r\y-22689.1*RoomScale,r\z-288.0*RoomScale,Null)
     sc\angle = 225
-    TurnEntity sc\CameraObj, 20, 0, 0
+    TurnEntity sc\cameraObj, 20, 0, 0
     EntityParent sc\obj,r\obj
     sc\SpecialCam = True
     
@@ -101,7 +101,7 @@ Function FillRoom_hll_sl_2(r.Rooms)
     sc\angle = 315
     ;sc\turn = 45
     sc\room = r
-    TurnEntity(sc\CameraObj, 20, 0, 0)
+    TurnEntity(sc\cameraObj, 20, 0, 0)
     EntityParent(sc\obj, r\obj)
     
     PositionEntity(sc\ScrObj, r\x-231.489*RoomScale, r\y+760.0*RoomScale, r\z+255.744*RoomScale)
@@ -166,15 +166,15 @@ Function UpdateEvent_hll_sl_2(e.Events)
 	Local angle#
 
 	;[Block]
-	;e\EventState: Determines if the player already entered the room or not (0 = No, 1 = Yes)
-	;e\EventState2: Variable used for the SCP-049 event
-	;e\EventState3: Checks if Lever is activated or not
+	;e\eventState: Determines if the player already entered the room or not (0 = No, 1 = Yes)
+	;e\eventState2: Variable used for the SCP-049 event
+	;e\eventState3: Checks if Lever is activated or not
 	
 	;mainPlayer\cam-Spawning Code + SCP-049-Spawning (it is a little messy!) ;TODO: reimplement
 	;[Block]
 	If mainPlayer\currRoom = e\room Then
 	EndIf
-	If e\EventState = 0 Then
+	If e\eventState = 0 Then
 		For r.Rooms = Each Rooms
 			If ValidRoom2slCamRoom(r) Then
 				For sc.SecurityCams = Each SecurityCams
@@ -195,7 +195,7 @@ Function UpdateEvent_hll_sl_2(e.Events)
 							If (Not e\loaded) Then
 								For i = 0 To 9
 									sc\Screen = True
-									sc\AllowSaving = False
+									sc\allowSaving = False
 									
 									sc\RenderInterval = 12
 									
@@ -220,11 +220,11 @@ Function UpdateEvent_hll_sl_2(e.Events)
 									
 									ScaleEntity(sc\MonitorObj, scale, scale, scale)
 									
-									sc\Cam = CreateCamera()
-									CameraViewport(sc\Cam, 0, 0, 512, 512)
-									CameraRange sc\Cam, 0.05, 6.0
-									CameraZoom(sc\Cam, 0.8)
-									HideEntity(sc\Cam)
+									sc\cam = CreateCamera()
+									CameraViewport(sc\cam, 0, 0, 512, 512)
+									CameraRange sc\cam, 0.05, 6.0
+									CameraZoom(sc\cam, 0.8)
+									HideEntity(sc\cam)
 									
 									sc\IsRoom2slCam = True
 									sc\Room2slTexs%[0] = CreateTexture(512, 512, 1+256)
@@ -323,7 +323,7 @@ Function UpdateEvent_hll_sl_2(e.Events)
 			For sc.SecurityCams = Each SecurityCams
 				If sc\SpecialCam Then
 					sc\Screen = True
-					sc\AllowSaving = False
+					sc\allowSaving = False
 					
 					sc\RenderInterval = 12
 					
@@ -347,11 +347,11 @@ Function UpdateEvent_hll_sl_2(e.Events)
 					
 					ScaleEntity(sc\MonitorObj, scale, scale, scale)
 					
-					sc\Cam = CreateCamera()
-					CameraViewport(sc\Cam, 0, 0, 512, 512)
-					CameraRange sc\Cam, 0.05, 6.0
-					CameraZoom(sc\Cam, 0.8)
-					HideEntity(sc\Cam)
+					sc\cam = CreateCamera()
+					CameraViewport(sc\cam, 0, 0, 512, 512)
+					CameraRange sc\cam, 0.05, 6.0
+					CameraZoom(sc\cam, 0.8)
+					HideEntity(sc\cam)
 					
 					sc\Room2slTexs%[0] = CreateTexture(512, 512, 1+256)
 					EntityTexture sc\ScrObj, sc\Room2slTexs%[0]
@@ -394,31 +394,31 @@ Function UpdateEvent_hll_sl_2(e.Events)
 			e\room\NPC[0]\prevState = 2
 			
 			e\loaded = True
-			e\EventState = 1
-			If e\EventState2 = 0 Then e\EventState2 = -(70*5)
+			e\eventState = 1
+			If e\eventState2 = 0 Then e\eventState2 = -(70*5)
 		EndIf
 	EndIf
 	;[End Block]
 	
 	;SCP-049
 	;[Block]
-	If e\EventState = 1 Then
-		If e\EventState2 < 0 Then
-			If e\EventState2 = -(70*5) Then
+	If e\eventState = 1 Then
+		If e\eventState2 < 0 Then
+			If e\eventState2 = -(70*5) Then
 				For sc.SecurityCams = Each SecurityCams
 					If sc\room = e\room Then
 						If EntityDistance(sc\ScrObj,mainPlayer\cam)<5.0 Then
 							If EntityVisible(sc\ScrObj,mainPlayer\cam) Then
-								e\EventState2 = Min(e\EventState2+timing\tickDuration,0)
+								e\eventState2 = Min(e\eventState2+timing\tickDuration,0)
 								Exit
 							EndIf
 						EndIf
 					EndIf
 				Next
 			Else
-				e\EventState2 = Min(e\EventState2+timing\tickDuration,0)
+				e\eventState2 = Min(e\eventState2+timing\tickDuration,0)
 			EndIf
-		ElseIf e\EventState2 = 0 Then
+		ElseIf e\eventState2 = 0 Then
 			If e\room\NPC[0] <> Null Then
 				;PositionEntity e\room\NPC[0]\collider,EntityX(e\room\NPC[0]\collider),EntityY(e\room\Objects[7],True),EntityZ(e\room\NPC[0]\collider)
 				Local AdjDist1# = 0.0
@@ -426,20 +426,20 @@ Function UpdateEvent_hll_sl_2(e.Events)
 				Local Adj1% = -1
 				Local Adj2% = -1
 				For i = 0 To 3
-					If e\room\AdjDoor[i]<>Null Then
+					If e\room\adjDoor[i]<>Null Then
 						If Adj1 = -1 Then
-							AdjDist1# = EntityDistance(e\room\Objects[7],e\room\AdjDoor[i]\frameobj)
+							AdjDist1# = EntityDistance(e\room\Objects[7],e\room\adjDoor[i]\frameobj)
 							Adj1 = i
 						Else
-							AdjDist2# = EntityDistance(e\room\Objects[7],e\room\AdjDoor[i]\frameobj)
+							AdjDist2# = EntityDistance(e\room\Objects[7],e\room\adjDoor[i]\frameobj)
 							Adj2 = i
 						EndIf
 					EndIf
 				Next
 				If AdjDist1# > AdjDist2# Then
-					PositionEntity e\room\NPC[0]\collider,EntityX(e\room\AdjDoor[Adj1]\frameobj),EntityY(e\room\Objects[7],True),EntityZ(e\room\AdjDoor[Adj1]\frameobj)
+					PositionEntity e\room\NPC[0]\collider,EntityX(e\room\adjDoor[Adj1]\frameobj),EntityY(e\room\Objects[7],True),EntityZ(e\room\adjDoor[Adj1]\frameobj)
 				Else
-					PositionEntity e\room\NPC[0]\collider,EntityX(e\room\AdjDoor[Adj2]\frameobj),EntityY(e\room\Objects[7],True),EntityZ(e\room\AdjDoor[Adj2]\frameobj)
+					PositionEntity e\room\NPC[0]\collider,EntityX(e\room\adjDoor[Adj2]\frameobj),EntityY(e\room\Objects[7],True),EntityZ(e\room\adjDoor[Adj2]\frameobj)
 				EndIf
 				PointEntity e\room\NPC[0]\collider,e\room\obj
 				MoveEntity e\room\NPC[0]\collider,0,0,-1
@@ -448,19 +448,19 @@ Function UpdateEvent_hll_sl_2(e.Events)
 				e\room\NPC[0]\pathZ = EntityZ(e\room\NPC[0]\collider)
 				e\room\NPC[0]\state = 5
 				DebugLog "aaaaaaaaa"
-				e\EventState2 = 1
+				e\eventState2 = 1
 			EndIf
-		ElseIf e\EventState2 = 1 Then
+		ElseIf e\eventState2 = 1 Then
 			If e\room\NPC[0]\pathStatus <> 1 Then
 				e\room\NPC[0]\pathStatus = FindPath(e\room\NPC[0],EntityX(e\room\Objects[15],True),EntityY(e\room\Objects[15],True),EntityZ(e\room\Objects[15],True))
 			Else
 				DebugLog "bbbbbbbbb"
-				e\EventState2 = 2
+				e\eventState2 = 2
 			EndIf
-		ElseIf e\EventState2 = 2 Then
+		ElseIf e\eventState2 = 2 Then
 			If e\room\NPC[0]\pathStatus <> 1 Then
 				e\room\NPC[0]\state3 = 1.0
-				e\EventState2 = 3
+				e\eventState2 = 3
 				e\room\NPC[0]\pathTimer# = 0.0
 				DebugLog "ccccccccc"
 			Else
@@ -489,17 +489,17 @@ Function UpdateEvent_hll_sl_2(e.Events)
 			EndIf
 			
 			If e\room\NPC[0]\state <> 5 Then
-				e\EventState2 = 7
+				e\eventState2 = 7
 				DebugLog "fffffffff"
 			EndIf
-		ElseIf e\EventState2 = 3 Then
+		ElseIf e\eventState2 = 3 Then
 			If e\room\NPC[0]\state <> 5 Then
-				e\EventState2 = 7
+				e\eventState2 = 7
 				DebugLog "fffffffff"
 			EndIf
 			
 			If MeNPCSeesPlayer(e\room\NPC[0],True)=2 Then
-				e\EventState2 = 4
+				e\eventState2 = 4
 				DebugLog "ddddddddd"
 			EndIf
 			
@@ -538,19 +538,19 @@ Function UpdateEvent_hll_sl_2(e.Events)
 							e\room\NPC[0]\prevState = 1
 							DebugLog "Path3"
 						Case 4
-							e\EventState2 = 5
+							e\eventState2 = 5
 					End Select
 					e\room\NPC[0]\pathTimer# = 0.0
 					e\room\NPC[0]\state3 = e\room\NPC[0]\state3 + 1
 				EndIf
 			EndIf
-		ElseIf e\EventState2 = 4 Then
+		ElseIf e\eventState2 = 4 Then
 			If e\room\NPC[0]\state <> 5 Then
-				e\EventState2 = 7
+				e\eventState2 = 7
 				e\room\NPC[0]\state3 = 5.0
 				DebugLog "fffffffff"
 			EndIf
-		ElseIf e\EventState2 = 5 Then
+		ElseIf e\eventState2 = 5 Then
 			;RemoveNPC(e\room\NPC[0])
 			DebugLog "ddddddddd"
 			e\room\NPC[0]\state = 2
@@ -559,15 +559,15 @@ Function UpdateEvent_hll_sl_2(e.Events)
 					If (EntityDistance(r\obj,e\room\NPC[0]\collider)<HideDistance*2 And EntityDistance(r\obj,e\room\NPC[0]\collider)>HideDistance) Then
 						e\room\NPC[0]\pathStatus = FindPath(e\room\NPC[0],EntityX(r\obj),EntityY(r\obj),EntityZ(r\obj))
 						e\room\NPC[0]\pathTimer = 0.0
-						If e\room\NPC[0]\pathStatus = 1 Then e\EventState2 = 6
+						If e\room\NPC[0]\pathStatus = 1 Then e\eventState2 = 6
 						Exit
 					EndIf
 				EndIf
 			Next
-		ElseIf e\EventState2 = 6 Then
+		ElseIf e\eventState2 = 6 Then
 			If MeNPCSeesPlayer(e\room\NPC[0],True) Or e\room\NPC[0]\state2 > 0 Or e\room\NPC[0]\lastSeen > 0 Then
 				DebugLog "fffffffff"
-				e\EventState2 = 7
+				e\eventState2 = 7
 			Else
 				;Still playing the Music for SCP-049 (in the real, SCP-049's State will be set to 2, causing it to stop playing the chasing track)
 				;If Music(20) = 0 Then Music(20) = LoadSound("SFX/Horror/Horror12.ogg") ;TODO: fix
@@ -577,18 +577,18 @@ Function UpdateEvent_hll_sl_2(e.Events)
 					PositionEntity e\room\NPC[0]\collider,0,500,0
 					ResetEntity e\room\NPC[0]\collider
 					DebugLog "eeeeeeeee"
-					e\EventState2 = 7
+					e\eventState2 = 7
 				EndIf
 			EndIf
-		;ElseIf e\EventState2 = 7
+		;ElseIf e\eventState2 = 7
 		;	e\room\RoomDoors[0]\locked = False
 		;	e\room\RoomDoors[1]\locked = False
-		;	e\EventState2 = 8
+		;	e\eventState2 = 8
 		EndIf
 		
 		If e\room\NPC[0]<>Null Then
-			If e\EventState2 < 7 Then
-				If e\EventState2 > 2 Then
+			If e\eventState2 < 7 Then
+				If e\eventState2 > 2 Then
 					If Abs(EntityY(e\room\RoomDoors[0]\frameobj)-EntityY(e\room\NPC[0]\collider))>1.0 Then
 						If Abs(EntityY(e\room\RoomDoors[0]\frameobj)-EntityY(mainPlayer\collider))<1.0 Then
 							If e\room\RoomDoors[0]\open Then
@@ -610,7 +610,7 @@ Function UpdateEvent_hll_sl_2(e.Events)
 					EndIf
 				EndIf
 				
-				If e\EventState2 > 0 Then CanSave% = False
+				If e\eventState2 > 0 Then CanSave% = False
 			Else
 				If e\room\RoomDoors[0]\open = False Then
 					e\room\RoomDoors[0]\fastopen = 0
@@ -627,8 +627,8 @@ Function UpdateEvent_hll_sl_2(e.Events)
 	
 	;Lever for checkpoint locking (might have a function in the future for the case if the checkpoint needs to be locked again)
 	If mainPlayer\currRoom = e\room Then
-		e\EventState3 = e\room\Levers[0]\succ
-		If e\EventState3 = 1 Then
+		e\eventState3 = e\room\Levers[0]\succ
+		If e\eventState3 = 1 Then
 			;UpdateCheckpointMonitors(0)
 		Else
 			;TurnCheckpointMonitorsOff(0)

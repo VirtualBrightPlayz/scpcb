@@ -25,7 +25,7 @@ Function FillRoom_intro(r.Rooms)
     Next
     
     r\RoomDoors[1] = CreateDoor(r\zone, EntityX(r\obj) + 288.0 * RoomScale, 0, EntityZ(r\obj) + 384.0 * RoomScale, 90, r, False, True)
-    r\RoomDoors[1]\AutoClose = False ;: r\RoomDoors[1]\locked = True
+    r\RoomDoors[1]\autoClose = False ;: r\RoomDoors[1]\locked = True
     r\RoomDoors[1]\dir = 1 : r\RoomDoors[1]\open = False
     
     FreeEntity(r\RoomDoors[1]\buttons[0]) : r\RoomDoors[1]\buttons[0] = 0
@@ -39,7 +39,7 @@ Function FillRoom_intro(r.Rooms)
         For ztemp% = 0 To 1
             de.Decals = CreateDecal(Rand(4, 6), r\x + 700.0 * RoomScale + xtemp * 700.0 * RoomScale + Rnd(-0.5, 0.5), Rnd(0.001, 0.0018), r\z + 600 * ztemp * RoomScale + Rnd(-0.5, 0.5), 90, Rnd(360), 0)
             de\Size = Rnd(0.5, 0.8)
-            de\Alpha = Rnd(0.8, 1.0)
+            de\alpha = Rnd(0.8, 1.0)
             ScaleSprite(de\obj, de\Size, de\Size)
         Next
     Next
@@ -48,26 +48,26 @@ Function FillRoom_intro(r.Rooms)
     ;AddLight(r, r\x-1056.0*RoomScale, r\y+608.0*RoomScale, r\z+416.0*RoomScale,2,2,200,200,200)
     
     r\RoomDoors[2] = CreateDoor(r\zone, r\x - 1008.0 * RoomScale, 0, r\z - 688.0 * RoomScale, 90, r, True)
-    r\RoomDoors[2]\AutoClose = False : r\RoomDoors[2]\open = False : r\RoomDoors[2]\locked = True
+    r\RoomDoors[2]\autoClose = False : r\RoomDoors[2]\open = False : r\RoomDoors[2]\locked = True
     FreeEntity(r\RoomDoors[2]\buttons[0]) : r\RoomDoors[2]\buttons[0] = 0
     FreeEntity(r\RoomDoors[2]\buttons[1]) : r\RoomDoors[2]\buttons[1] = 0
     
     r\RoomDoors[3] = CreateDoor(r\zone, r\x - 2320.0 * RoomScale, 0, r\z - 1248.0 * RoomScale, 90, r, True)
-    r\RoomDoors[3]\AutoClose = False : r\RoomDoors[3]\open = True : r\RoomDoors[3]\locked = True
+    r\RoomDoors[3]\autoClose = False : r\RoomDoors[3]\open = True : r\RoomDoors[3]\locked = True
     
     r\RoomDoors[4] = CreateDoor(r\zone, r\x - 4352.0 * RoomScale, 0, r\z - 1248.0 * RoomScale, 90, r, True)
-    r\RoomDoors[4]\AutoClose = False : r\RoomDoors[4]\open = True : r\RoomDoors[4]\locked = True	
+    r\RoomDoors[4]\autoClose = False : r\RoomDoors[4]\open = True : r\RoomDoors[4]\locked = True	
     
     ;the door in the office below the walkway
     r\RoomDoors[7] = CreateDoor(r\zone, r\x - 3712.0 * RoomScale, -385*RoomScale, r\z - 128.0 * RoomScale, 0, r, True)
-    r\RoomDoors[7]\AutoClose = False : r\RoomDoors[7]\open = True
+    r\RoomDoors[7]\autoClose = False : r\RoomDoors[7]\open = True
     
     d.Doors = CreateDoor(r\zone, r\x - 3712 * RoomScale, -385*RoomScale, r\z - 2336 * RoomScale, 0, r, False)
     d\locked = True
     
     ;the door from the concrete tunnel to the large hall
     d.Doors = CreateDoor(r\zone, r\x - 6864 * RoomScale, 0, r\z - 1248 * RoomScale, 90, r, True)
-    d\AutoClose = False
+    d\autoClose = False
     d\locked = True
     
     ;the locked door to the lower level of the hall
@@ -115,7 +115,7 @@ Function FillRoom_intro(r.Rooms)
     sc\angle = 270
     sc\turn = 45
     sc\room = r
-    TurnEntity(sc\CameraObj, 20, 0, 0)
+    TurnEntity(sc\cameraObj, 20, 0, 0)
     EntityParent(sc\obj, r\obj)
     
     PositionEntity(sc\ScrObj, r\x - 2256 * RoomScale, 224.0 * RoomScale, r\z - 928.0 * RoomScale)

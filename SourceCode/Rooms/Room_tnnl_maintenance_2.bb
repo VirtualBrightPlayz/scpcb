@@ -23,12 +23,12 @@ Function FillRoom_tnnl_maintenance_2(r.Rooms)
     EntityParent(r\Objects[4], r\obj)
 ;			
     r\RoomDoors[0] = CreateDoor(r\zone, r\x + 264.0 * RoomScale, 0.0, r\z + 656.0 * RoomScale, 90, r, True)
-    r\RoomDoors[0]\AutoClose = False : r\RoomDoors[0]\open = True
+    r\RoomDoors[0]\autoClose = False : r\RoomDoors[0]\open = True
     PositionEntity(r\RoomDoors[0]\buttons[1], r\x + 224.0 * RoomScale, 0.7, r\z + 480.0 * RoomScale, True)
     PositionEntity(r\RoomDoors[0]\buttons[0], r\x + 304.0 * RoomScale, 0.7, r\z + 832.0 * RoomScale, True)			
     
     r\RoomDoors[2] = CreateDoor(r\zone, r\x - 264.0 * RoomScale, 0.0, r\z - 656.0 * RoomScale, 90, r, True)
-    r\RoomDoors[2]\AutoClose = False : r\RoomDoors[2]\open = True
+    r\RoomDoors[2]\autoClose = False : r\RoomDoors[2]\open = True
     PositionEntity(r\RoomDoors[2]\buttons[0], r\x - 224.0 * RoomScale, 0.7, r\z - 480.0 * RoomScale, True)
     PositionEntity(r\RoomDoors[2]\buttons[1], r\x - 304.0 * RoomScale, 0.7, r\z - 832.0 * RoomScale, True)
 ;			

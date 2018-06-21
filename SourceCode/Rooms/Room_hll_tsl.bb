@@ -66,10 +66,10 @@ Function UpdateEvent_tesla(e.Events)
 
 	;[Block]
 	temp = True
-	If e\EventState2 > 70*3.5 And e\EventState2 < 70*90 Then temp = False
+	If e\eventState2 > 70*3.5 And e\eventState2 < 70*90 Then temp = False
 	
 	If temp And EntityY(mainPlayer\collider, True) > EntityY(e\room\obj,True) And EntityY(mainPlayer\collider, True) < 4.0 Then
-		If e\EventState = 0 Then
+		If e\eventState = 0 Then
 			If (TimeInPosMilliSecs() Mod 1500) < 800 Then
 				ShowEntity e\room\Objects[4]
 			Else
@@ -89,13 +89,13 @@ Function UpdateEvent_tesla(e.Events)
 						mainPlayer\loudness = Max(8.0,mainPlayer\loudness)
 						StopChannel(e\soundChannels[0])
 						e\soundChannels[0] = PlayRangedSound_SM(sndManager\teslaActive, mainPlayer\cam, e\room\Objects[3],4.0,0.5)
-						e\EventState = 1
+						e\eventState = 1
 						Exit
 					EndIf
 				EndIf
 			Next
 			
-			If Curr106\state < -10 And e\EventState = 0 Then 
+			If Curr106\state < -10 And e\eventState = 0 Then 
 				For i = 0 To 2
 					If Distance(EntityX(Curr106\collider),EntityZ(Curr106\collider),EntityX(e\room\Objects[i],True),EntityZ(e\room\Objects[i],True)) < 300.0*RoomScale Then
 						;play the activation sound
@@ -103,7 +103,7 @@ Function UpdateEvent_tesla(e.Events)
 							StopChannel(e\soundChannels[0])
 							e\soundChannels[0] = PlayRangedSound_SM(sndManager\teslaActive, mainPlayer\cam, e\room\Objects[3],4.0,0.5)
 							HideEntity e\room\Objects[4]
-							e\EventState = 1
+							e\eventState = 1
 							Curr106\state = 70 * 60 * Rand(10,13)
 							Exit
 						EndIf
@@ -111,8 +111,8 @@ Function UpdateEvent_tesla(e.Events)
 				Next
 			EndIf
 		Else
-			e\EventState = e\EventState+timing\tickDuration
-			If e\EventState =< 40 Then
+			e\eventState = e\eventState+timing\tickDuration
+			If e\eventState =< 40 Then
 				If (TimeInPosMilliSecs() Mod 100) < 50 Then
 					ShowEntity e\room\Objects[4]
 				Else
@@ -120,11 +120,11 @@ Function UpdateEvent_tesla(e.Events)
 				EndIf
 			Else
 				If e\room\dist < 2 Then
-					If e\EventState-timing\tickDuration =< 40 Then PlaySound_SM(sndManager\teslaShock)	
+					If e\eventState-timing\tickDuration =< 40 Then PlaySound_SM(sndManager\teslaShock)	
 				Else
-					If e\EventState-timing\tickDuration =< 40 Then PlayRangedSound_SM(sndManager\teslaShock,mainPlayer\cam,e\room\Objects[2])
+					If e\eventState-timing\tickDuration =< 40 Then PlayRangedSound_SM(sndManager\teslaShock,mainPlayer\cam,e\room\Objects[2])
 				EndIf
-				If e\EventState < 70 Then 
+				If e\eventState < 70 Then 
 					
 					If Not mainPlayer\dead Then 
 						For i = 0 To 2
@@ -166,47 +166,47 @@ Function UpdateEvent_tesla(e.Events)
 						ShowEntity e\room\Objects[3]								
 					EndIf
 				Else 
-					If e\EventState-timing\tickDuration < 70 Then 
+					If e\eventState-timing\tickDuration < 70 Then 
 						StopChannel(e\soundChannels[0])	
 						e\soundChannels[0] = PlayRangedSound_SM(sndManager\teslaPowerUp, mainPlayer\cam, e\room\Objects[3],4.0,0.5)
 					EndIf 
 					HideEntity e\room\Objects[3]
 					
-					If e\EventState > 150 Then e\EventState = 0
+					If e\eventState > 150 Then e\eventState = 0
 				EndIf
 			EndIf
 		EndIf
 	EndIf
 	
 	If mainPlayer\currRoom\RoomTemplate\name <> "pocketdimension" And mainPlayer\currRoom\RoomTemplate\name <> "room860" Then
-		If e\EventState2 = 0 Then
-			If e\EventState3 <=0 Then 
+		If e\eventState2 = 0 Then
+			If e\eventState3 <=0 Then 
 				temp = False
 				For n.NPCs = Each NPCs
 					If n\npcType = NPCtypeMTF Then
 						If Abs(EntityX(n\collider)-EntityX(e\room\obj,True))<4.0 Then
 							If Abs(EntityZ(n\collider)-EntityZ(e\room\obj,True))<4.0 Then
 								temp = True
-								If e\EventState2 = 0 Then
+								If e\eventState2 = 0 Then
 									n\sounds[0] = LoadSound("SFX/Character/MTF/Tesla0.ogg")
 									PlayMTFSound(n\sounds[0],n)
 									
 									LoadEventSound(e,"SFX/Character/MTF/Tesla1.ogg")
 									e\soundChannels[0] = PlaySound(e\sounds[0])
 									n\Idle = 70*10
-									e\EventState2 = 70*100
+									e\eventState2 = 70*100
 								EndIf
 							EndIf
 						EndIf
 					EndIf
 				Next
-				If temp = False Then e\EventState2=70*3.5
-				e\EventState3=e\EventState3+140
+				If temp = False Then e\eventState2=70*3.5
+				e\eventState3=e\eventState3+140
 			Else
-				e\EventState3=e\EventState3-timing\tickDuration
+				e\eventState3=e\eventState3-timing\tickDuration
 			EndIf
 		Else
-			e\EventState2 = Max(e\EventState2-timing\tickDuration,0)
+			e\eventState2 = Max(e\eventState2-timing\tickDuration,0)
 		EndIf					
 	EndIf
 	

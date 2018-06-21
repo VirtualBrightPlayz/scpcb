@@ -6,14 +6,14 @@ Function FillRoom_cont_895_1(r.Rooms)
     Local t1;, Bump
     
     d = CreateDoor(r\zone, r\x, 0, r\z - 448.0 * RoomScale, 0, r, False, True, 2)
-    d\AutoClose = False : d\open = False
+    d\autoClose = False : d\open = False
     PositionEntity(d\buttons[0], r\x - 384.0 * RoomScale, 0.7, r\z - 280.0 * RoomScale, True)
     
     sc.SecurityCams = CreateSecurityCam(r\x - 320.0 * RoomScale, r\y + 704 * RoomScale, r\z + 288.0 * RoomScale, r, True)
     sc\angle = 45 + 180
     sc\turn = 45
-    sc\CoffinEffect = True
-    TurnEntity(sc\CameraObj, 120, 0, 0)
+    sc\coffinEffect = True
+    TurnEntity(sc\cameraObj, 120, 0, 0)
     EntityParent(sc\obj, r\obj)
     
     CoffinCam = sc
@@ -87,32 +87,32 @@ Function UpdateEventCoffin(e.Events)
 
 	;[Block]
 	
-	If e\EventState < TimeInPosMilliSecs() Then
+	If e\eventState < TimeInPosMilliSecs() Then
 		;SCP-079 starts broadcasting 895 camera feed on monitors after leaving the first zone
 		;TODO: rewrite this to adjust for separate zone loading
 		If EntityPitch(e\room\Levers[0]\obj, True) > 0 Then ;camera feed on
 			For sc.SecurityCams = Each SecurityCams
 				If (Not sc\SpecialCam) Then
-					If sc\CoffinEffect=0 And sc\room\RoomTemplate\Name<>"room106" And sc\room\RoomTemplate\Name<>"room205" Then sc\CoffinEffect = 2
+					If sc\coffinEffect=0 And sc\room\RoomTemplate\Name<>"room106" And sc\room\RoomTemplate\Name<>"room205" Then sc\coffinEffect = 2
 					If sc\room = e\room Then sc\Screen = True
 				EndIf
 			Next
 		Else ;camera feed off
 			For sc.SecurityCams = Each SecurityCams
 				If (Not sc\SpecialCam) Then
-					If sc\CoffinEffect<>1 Then sc\CoffinEffect = 0
+					If sc\coffinEffect<>1 Then sc\coffinEffect = 0
 					If sc\room = e\room Then sc\Screen = False
 				EndIf
 			Next
 		EndIf
 		
-		e\EventState = TimeInPosMilliSecs()+3000
+		e\eventState = TimeInPosMilliSecs()+3000
 	EndIf
 	
 	If mainPlayer\currRoom = e\room Then
 		CoffinDistance = EntityDistance(mainPlayer\collider, e\room\Objects[1])
 		If CoffinDistance < 1.5 Then 
-			If (Not Contained106) And e\name="coffin106" And e\EventState2 = 0 Then
+			If (Not Contained106) And e\name="coffin106" And e\eventState2 = 0 Then
 				de.Decals = CreateDecal(0, EntityX(e\room\Objects[1],True), -1531.0*RoomScale, EntityZ(e\room\Objects[1],True), 90, Rand(360), 0)
 				de\Size = 0.05 : de\SizeChange = 0.001 : EntityAlpha(de\obj, 0.8) : UpdateDecals()
 				
@@ -120,7 +120,7 @@ Function UpdateEventCoffin(e.Events)
 					PositionEntity Curr106\collider, EntityX(e\room\Objects[1],True), -10240*RoomScale, EntityZ(e\room\Objects[1],True)
 					Curr106\state = -0.1
 					ShowEntity Curr106\obj
-					e\EventState2 = 1
+					e\eventState2 = 1
 				EndIf
 			EndIf
 		EndIf
@@ -148,7 +148,7 @@ Function UpdateEventCoffin(e.Events)
 					
 					tempF# = GetAngle(EntityX(mainPlayer\collider,True),EntityZ(mainPlayer\collider,True),EntityX(e\room\Objects[1],True),EntityZ(e\room\Objects[1],True))
 					tempF2# = EntityYaw(mainPlayer\collider)
-					tempF3# = angleDist(tempF+90+Sin(WrapAngle(e\EventState3/10)),tempF2)
+					tempF3# = angleDist(tempF+90+Sin(WrapAngle(e\eventState3/10)),tempF2)
 					
 					TurnEntity mainPlayer\collider, 0,tempF3/4,0,True
 					
@@ -158,10 +158,10 @@ Function UpdateEventCoffin(e.Events)
 					mainPlayer\headPitch=(mainPlayer\headPitch * 0.8)+(tempF2 * 0.2)
 					
 					;TODO: fix
-					;If (Rand(Int(Max(tempF*100.0,1.0)))=1) And (e\EventState3<0.0) Then
+					;If (Rand(Int(Max(tempF*100.0,1.0)))=1) And (e\eventState3<0.0) Then
 					;	EntityTexture(mainPlayer\overlays[OVERLAY_NIGHTVISION], GorePics(Rand(0, 5)))
 					;	;PlaySound2(HorrorSFX(1))
-					;	e\EventState3 = 10.0
+					;	e\eventState3 = 10.0
 					;	EntityColor(mainPlayer\overlays[OVERLAY_NIGHTVISION], 255,255,255)
 					;EndIf
 					If mainPlayer\sanity895 < (-1000) Then 
@@ -177,9 +177,9 @@ Function UpdateEventCoffin(e.Events)
 			;EndIf
 		EndIf
 		
-		If e\EventState3>0.0 Then e\EventState3=Max(e\EventState3-timing\tickDuration,0.0)
-		If e\EventState3=0.0 Then
-			e\EventState3=-1.0
+		If e\eventState3>0.0 Then e\eventState3=Max(e\eventState3-timing\tickDuration,0.0)
+		If e\eventState3=0.0 Then
+			e\eventState3=-1.0
 			;TODO: fix
 			;EntityTexture(mainPlayer\overlays[OVERLAY_NIGHTVISION], NVTexture)
 			If IsPlayerWearingTempName(mainPlayer,"nvgoggles") Then
@@ -194,16 +194,16 @@ Function UpdateEventCoffin(e.Events)
 		If (e\room\Levers[0]\succ) Then
 			For sc.SecurityCams = Each SecurityCams
 				If (Not sc\SpecialCam) Then
-					If sc\CoffinEffect=0 And sc\room\RoomTemplate\Name<>"room106" Then sc\CoffinEffect = 2
-					If sc\CoffinEffect = 1 Then EntityBlend(sc\ScrOverlay, 3)
+					If sc\coffinEffect=0 And sc\room\RoomTemplate\Name<>"room106" Then sc\coffinEffect = 2
+					If sc\coffinEffect = 1 Then EntityBlend(sc\ScrOverlay, 3)
 					If sc\room = e\room Then sc\Screen = True
 				EndIf
 			Next
 		Else
 			For sc.SecurityCams = Each SecurityCams
 				If (Not sc\SpecialCam) Then
-					If sc\CoffinEffect <> 1 Then sc\CoffinEffect = 0
-					If sc\CoffinEffect = 1 Then EntityBlend(sc\ScrOverlay, 0)
+					If sc\coffinEffect <> 1 Then sc\coffinEffect = 0
+					If sc\coffinEffect = 1 Then EntityBlend(sc\ScrOverlay, 0)
 					If sc\room = e\room Then sc\Screen = False
 				EndIf
 			Next

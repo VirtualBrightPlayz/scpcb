@@ -154,7 +154,7 @@ Function UpdateNPCtype096(n.NPCs)
                             ;Animate2(n\obj, AnimTime(n\obj),892,1058, n\Speed*5, False)	
                         Else
                             AnimateNPC(n, 1059, 1074, n\currSpeed*5)	
-                            ;Animate2(n\obj, AnimTime(n\obj),1059,1074, n\CurrSpeed*5)	
+                            ;Animate2(n\obj, AnimTime(n\obj),1059,1074, n\currSpeed*5)	
                         EndIf
                     EndIf
                     
@@ -183,7 +183,7 @@ Function UpdateNPCtype096(n.NPCs)
                                 ;Animate2(n\obj, AnimTime(n\obj),892,1058, n\Speed*8, False)
                             Else
                                 AnimateNPC(n, 1059,1084, n\currSpeed*8)	
-                                ;Animate2(n\obj, AnimTime(n\obj),1059,1084, n\CurrSpeed*8)	
+                                ;Animate2(n\obj, AnimTime(n\obj),1059,1084, n\currSpeed*8)	
                             EndIf
                             
                             dist2# = EntityDistance(n\collider,n\path[n\pathLocation]\obj)
@@ -235,16 +235,16 @@ Function UpdateNPCtype096(n.NPCs)
             EndIf
             
             If n\state=1 Then ; get up
-                If n\Frame>1085 Then
+                If n\frame>1085 Then
                     
                     AnimateNPC(n, 1085, 1412, 0.3,False)
-                    If n\Frame> 1411.9 Then n\Frame = 307
+                    If n\frame> 1411.9 Then n\frame = 307
                     
                     ;Animate2(n\obj, AnimTime(n\obj),1085,1412, 0.3,False)
                     ;If AnimTime(n\obj)=1412 Then SetAnimTime(n\obj, 307)
                 Else
                     AnimateNPC(n, 307, 424, 0.3, False)
-                    If n\Frame > 423.9 Then n\state = 2 : n\Frame = 892							
+                    If n\frame > 423.9 Then n\state = 2 : n\frame = 892							
                     
                     ;Animate2(n\obj, AnimTime(n\obj),307,424, 0.3, False)
                     ;If AnimTime(n\obj)=424 Then n\state = 2 : SetAnimTime(n\obj, 892)								
@@ -253,13 +253,13 @@ Function UpdateNPCtype096(n.NPCs)
                 AnimateNPC(n, 833, 972, 0.3, False)
                 
                 ;Animate2(n\obj, AnimTime(n\obj),833,972, 0.3, False)
-                If n\Frame=>972 Then n\state = 3 : n\state2=0
+                If n\frame=>972 Then n\state = 3 : n\state2=0
             ElseIf n\state=3 Then
                 n\state2 = n\state2+timing\tickDuration
                 If n\state2 > 70*18 Then 
                     AnimateNPC(n, 973, 1001, 0.5, False)
                     ;Animate2(n\obj, AnimTime(n\obj),973,1001, 0.5, False)
-                    If n\Frame>1000.9 Then 
+                    If n\frame>1000.9 Then 
                         n\state = 4
                         StopChannel n\soundChannels[0]
                         FreeSound n\sounds[0] : n\sounds[0] = 0
@@ -280,16 +280,16 @@ Function UpdateNPCtype096(n.NPCs)
                 
                 n\state2=n\state2+timing\tickDuration
                 If n\state2>1000 Then ;walking around
-                    If n\state2>1600 Then n\state2=Rand(0,500) : n\Frame = 1652 ;: SetAnimTime(n\obj, 1652)
+                    If n\state2>1600 Then n\state2=Rand(0,500) : n\frame = 1652 ;: SetAnimTime(n\obj, 1652)
                     
-                    If n\Frame<1652 Then ;idle to walk
-                        n\CurrSpeed = CurveValue(n\Speed*0.1,n\CurrSpeed,5.0)
-                        AnimateNPC(n, 1638,1652, n\CurrSpeed*45,False)
-                        ;Animate2(n\obj, AnimTime(n\obj),1638,1652, n\CurrSpeed*45,False)
+                    If n\frame<1652 Then ;idle to walk
+                        n\currSpeed = CurveValue(n\Speed*0.1,n\currSpeed,5.0)
+                        AnimateNPC(n, 1638,1652, n\currSpeed*45,False)
+                        ;Animate2(n\obj, AnimTime(n\obj),1638,1652, n\currSpeed*45,False)
                     Else
-                        n\CurrSpeed = CurveValue(n\Speed*0.1,n\CurrSpeed,5.0)
-                        AnimateNPC(n, 1653,1724, n\CurrSpeed*45) ;walk
-                        ;Animate2(n\obj, AnimTime(n\obj),1653,1724, n\CurrSpeed*45) ;walk
+                        n\currSpeed = CurveValue(n\Speed*0.1,n\currSpeed,5.0)
+                        AnimateNPC(n, 1653,1724, n\currSpeed*45) ;walk
+                        ;Animate2(n\obj, AnimTime(n\obj),1653,1724, n\currSpeed*45) ;walk
                     EndIf
                     
                     If TimeInPosMilliSecs() > n\state3 Then
@@ -300,7 +300,7 @@ Function UpdateNPCtype096(n.NPCs)
                             HideEntity n\collider
                             EntityPick(n\collider, 1.5)
                             If PickedEntity() <> 0 Then
-                                n\Angle = EntityYaw(n\collider)+Rnd(80,110)
+                                n\angle = EntityYaw(n\collider)+Rnd(80,110)
                             EndIf
                             ShowEntity n\collider
                         EndIf
@@ -312,16 +312,16 @@ Function UpdateNPCtype096(n.NPCs)
                         RotateEntity n\collider, 0, CurveAngle(EntityYaw(n\obj),EntityYaw(n\collider),130.0),0
                         If dist < 1.5 Then n\state2=0
                     Else
-                        RotateEntity n\collider, 0, CurveAngle(n\Angle,EntityYaw(n\collider),50.0),0
+                        RotateEntity n\collider, 0, CurveAngle(n\angle,EntityYaw(n\collider),50.0),0
                     EndIf
                 Else
-                    If n\Frame>1638 Then ;walk to idle
-                        n\CurrSpeed = CurveValue(n\Speed*0.05,n\CurrSpeed,8.0)	
-                        AnimateNPC(n, 1652, 1638, -n\CurrSpeed*45,False)
-                        ;Animate2(n\obj, AnimTime(n\obj),1652,1638, -n\CurrSpeed*45,False)
+                    If n\frame>1638 Then ;walk to idle
+                        n\currSpeed = CurveValue(n\Speed*0.05,n\currSpeed,8.0)	
+                        AnimateNPC(n, 1652, 1638, -n\currSpeed*45,False)
+                        ;Animate2(n\obj, AnimTime(n\obj),1652,1638, -n\currSpeed*45,False)
                         
                     Else ;idle
-                        n\CurrSpeed = CurveValue(0,n\CurrSpeed,4.0)	
+                        n\currSpeed = CurveValue(0,n\currSpeed,4.0)	
                         AnimateNPC(n, 585, 633, 0.2) ;idle
                         ;Animate2(n\obj, AnimTime(n\obj),585,633, 0.2) ;idle
                     EndIf
@@ -340,7 +340,7 @@ Function UpdateNPCtype096(n.NPCs)
                                         
                                         mainPlayer\camZoom = 10
                                         
-                                        n\Frame = 833
+                                        n\frame = 833
                                         ;SetAnimTime n\obj, 833
                                         StopChannel n\soundChannels[0]
                                         FreeSound n\sounds[0]
@@ -354,7 +354,7 @@ Function UpdateNPCtype096(n.NPCs)
                     EndIf
                 EndIf
                 
-                MoveEntity n\collider, 0,0,n\CurrSpeed
+                MoveEntity n\collider, 0,0,n\currSpeed
             EndIf
     End Select
     

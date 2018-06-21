@@ -43,40 +43,40 @@ Function UpdateNPCtype1499(n.NPCs)
         
         Select n\state
             Case 0
-                If n\CurrSpeed = 0.0 Then
+                If n\currSpeed = 0.0 Then
                     If n\state2 < 500.0*Rnd(1,3) Then
-                        n\CurrSpeed = 0.0
+                        n\currSpeed = 0.0
                         n\state2 = n\state2 + timing\tickDuration
                     Else
                         If n\currSpeed = 0.0 Then n\currSpeed = n\currSpeed + 0.0001
                     EndIf
                 Else
                     If n\state2 < 10000.0*Rnd(1,3) Then
-                        n\CurrSpeed = CurveValue(n\Speed,n\CurrSpeed,10.0)
+                        n\currSpeed = CurveValue(n\Speed,n\currSpeed,10.0)
                         n\state2 = n\state2 + timing\tickDuration
                     Else
-                        n\CurrSpeed = CurveValue(0.0,n\CurrSpeed,50.0)
+                        n\currSpeed = CurveValue(0.0,n\currSpeed,50.0)
                     EndIf
                     
-                    RotateEntity n\collider,0,CurveAngle(n\Angle,EntityYaw(n\collider),10.0),0
+                    RotateEntity n\collider,0,CurveAngle(n\angle,EntityYaw(n\collider),10.0),0
                     
-                    If Rand(200) = 1 Then n\Angle = n\Angle + Rnd(-45,45)
+                    If Rand(200) = 1 Then n\angle = n\angle + Rnd(-45,45)
                     
                     HideEntity n\collider
                     EntityPick(n\collider, 1.5)
                     If PickedEntity() <> 0 Then
-                        n\Angle = EntityYaw(n\collider)+Rnd(80,110)
+                        n\angle = EntityYaw(n\collider)+Rnd(80,110)
                     EndIf
                     ShowEntity n\collider
                 EndIf
                 
-                If n\CurrSpeed = 0.0 Then
+                If n\currSpeed = 0.0 Then
                     AnimateNPC(n,296,317,0.2)
                 Else
                     If (n\ID Mod 2 = 0) Then
-                        AnimateNPC(n,1,62,(n\CurrSpeed*28))
+                        AnimateNPC(n,1,62,(n\currSpeed*28))
                     Else
-                        AnimateNPC(n,100,167,(n\CurrSpeed*28))
+                        AnimateNPC(n,100,167,(n\currSpeed*28))
                     EndIf
                 EndIf
                 
@@ -119,7 +119,7 @@ Function UpdateNPCtype1499(n.NPCs)
                                 n\state2 = 0 ;otherwise keep idling
                             EndIf
                             
-                            n\Frame = 203
+                            n\frame = 203
                         EndIf
                     EndIf
                 EndIf
@@ -137,12 +137,12 @@ Function UpdateNPCtype1499(n.NPCs)
                 dist = EntityDistance(n\collider,mainPlayer\collider)
                 
                 If n\state2 = 0.0 Then
-                    n\CurrSpeed = CurveValue(n\Speed*1.75,n\CurrSpeed,10.0)
+                    n\currSpeed = CurveValue(n\Speed*1.75,n\currSpeed,10.0)
                     
                     If (n\ID Mod 2 = 0) Then
-                        AnimateNPC(n,1,62,(n\CurrSpeed*28))
+                        AnimateNPC(n,1,62,(n\currSpeed*28))
                     Else
-                        AnimateNPC(n,100,167,(n\CurrSpeed*28))
+                        AnimateNPC(n,100,167,(n\currSpeed*28))
                     EndIf
                 EndIf
                 
@@ -160,18 +160,18 @@ Function UpdateNPCtype1499(n.NPCs)
                     EndIf
                 EndIf
             Case 2 ;play the "screaming animation" and switch to n\state2 after it's finished
-                n\CurrSpeed = 0.0
+                n\currSpeed = 0.0
                 AnimateNPC(n,203,295,0.1,False)
                 
-                If n\Frame > 294.0 Then
+                If n\frame > 294.0 Then
                     n\state = n\state2
                 EndIf
             Case 3 ;slashing at the player
-                n\CurrSpeed = CurveValue(0.0,n\CurrSpeed,5.0)
+                n\currSpeed = CurveValue(0.0,n\currSpeed,5.0)
                 dist = EntityDistance(n\collider,mainPlayer\collider)
                 If n\state2 = 1 Then
                     AnimateNPC(n,63,100,0.6,False)
-                    If prevFrame < 89 And n\Frame=>89 Then
+                    If prevFrame < 89 And n\frame=>89 Then
                         If dist > 0.85 Or Abs(DeltaYaw(n\collider,mainPlayer\collider))>60.0 Then
                             ;Miss
                         Else
@@ -190,13 +190,13 @@ Function UpdateNPCtype1499(n.NPCs)
                                 EndIf
                             EndIf
                         EndIf
-                    ElseIf n\Frame => 99 Then
+                    ElseIf n\frame => 99 Then
                         n\state2 = 0.0
                         n\state = 1
                     EndIf
                 Else
                     AnimateNPC(n,168,202,0.6,False)
-                    If prevFrame < 189 And n\Frame=>189 Then
+                    If prevFrame < 189 And n\frame=>189 Then
                         If dist > 0.85 Or Abs(DeltaYaw(n\collider,mainPlayer\collider))>60.0 Then
                             ;Miss
                         Else
@@ -215,14 +215,14 @@ Function UpdateNPCtype1499(n.NPCs)
                                 EndIf
                             EndIf
                         EndIf
-                    ElseIf n\Frame => 201 Then
+                    ElseIf n\frame => 201 Then
                         n\state2 = 0.0
                         n\state = 1
                     EndIf
                 EndIf
             Case 4 ;standing in front of the player
                 dist = EntityDistance(n\collider,mainPlayer\collider)
-                n\CurrSpeed = CurveValue(0.0,n\CurrSpeed,5.0)
+                n\currSpeed = CurveValue(0.0,n\currSpeed,5.0)
                 AnimateNPC(n,296,317,0.2)
                 
                 PointEntity n\obj,mainPlayer\collider
@@ -237,7 +237,7 @@ Function UpdateNPCtype1499(n.NPCs)
             UpdateRangedSoundOrigin(n\soundChannels[0],mainPlayer\cam,n\collider,20.0)
         EndIf
         
-        MoveEntity n\collider,0,0,n\CurrSpeed*timing\tickDuration
+        MoveEntity n\collider,0,0,n\currSpeed*timing\tickDuration
         
         RotateEntity n\obj,0,EntityYaw(n\collider)-180,0
         PositionEntity n\obj,EntityX(n\collider),EntityY(n\collider)-0.2,EntityZ(n\collider)

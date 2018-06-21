@@ -141,7 +141,7 @@ Function UpdateNPCtype173(n.NPCs)
 					If Rand(20) = 1 Then
 						Local d.Doors
 						For d.Doors = Each Doors
-							If (Not d\locked) And d\open = False And d\Code = "" And d\KeyCard=0 Then
+							If (Not d\locked) And d\open = False And d\code = "" And d\KeyCard=0 Then
 								For i% = 0 To 1
 									If d\buttons[i] <> 0 Then
 										If Abs(EntityX(n\collider) - EntityX(d\buttons[i])) < 0.5 Then

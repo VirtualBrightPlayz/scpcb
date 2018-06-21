@@ -98,11 +98,11 @@ Function UpdateNPCtypeTentacle(n.NPCs)
                             EndIf
                         EndIf
                         
-                        n\Frame = 6
+                        n\frame = 6
                         ;SetAnimTime(n\obj, 6)
-                    ElseIf n\Frame=32 Then
+                    ElseIf n\frame=32 Then
                         n\state = 1
-                        n\Frame = 173
+                        n\frame = 173
                         ;SetAnimTime(n\obj, 173)
                     EndIf
                 EndIf
@@ -112,7 +112,7 @@ Function UpdateNPCtypeTentacle(n.NPCs)
         PositionEntity(n\obj, EntityX(n\collider), EntityY(n\collider), EntityZ(n\collider))
         RotateEntity n\obj, EntityPitch(n\collider)-90, EntityYaw(n\collider)-180, EntityRoll(n\collider), True
         
-        n\DropSpeed = 0
+        n\dropSpeed = 0
         
         ResetEntity n\collider
         

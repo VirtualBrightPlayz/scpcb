@@ -12,20 +12,20 @@ Function UpdateEvent106victim(e.Events)
 	;[Block]
 	If (Not Contained106) Then
 		If mainPlayer\currRoom = e\room Then
-			If e\EventState = 0 Then
+			If e\eventState = 0 Then
 				de.Decals = CreateDecal(0, EntityX(e\room\obj), 799.0*RoomScale, EntityZ(e\room\obj), -90, Rand(360), 0)
 				de\Size = 0.05 : de\SizeChange = 0.0015 : EntityAlpha(de\obj, 0.8) : UpdateDecals()			
 				;TODO: fix
 				;PlayRangedSound(DecaySFX(3), mainPlayer\cam, de\obj, 15.0)
-				e\EventState=1
+				e\eventState=1
 			EndIf
 		EndIf
 		
-		If e\EventState > 0 Then 
+		If e\eventState > 0 Then 
 			If e\room\NPC[0]=Null Then
-				e\EventState=e\EventState+timing\tickDuration
+				e\eventState=e\eventState+timing\tickDuration
 			EndIf
-			If e\EventState>200 Then
+			If e\eventState>200 Then
 				If e\room\NPC[0]=Null Then
 					e\room\NPC[0]=CreateNPC(NPCtypeD, EntityX(e\room\obj), 900.0*RoomScale, EntityZ(e\room\obj))
 					RotateEntity e\room\NPC[0]\collider, 0, Rnd(360), 0, True
@@ -51,7 +51,7 @@ Function UpdateEvent106victim(e.Events)
 					
 					If EntityY(e\room\NPC[0]\collider)>0.6 Then EntityType e\room\NPC[0]\collider,0
 				Else
-					e\EventState=e\EventState+timing\tickDuration
+					e\eventState=e\eventState+timing\tickDuration
 					AnimateNPC(e\room\NPC[0], 11, 19, 0.25, False)
 					If e\sounds[0]=0 Then 
 						;e\sounds[0] = LoadSound("SFX/General/BodyFall.ogg")
@@ -62,7 +62,7 @@ Function UpdateEvent106victim(e.Events)
 						de\Size = 0.4 : EntityAlpha(de\obj, 0.8) : UpdateDecals()			
 					EndIf
 					
-					If e\EventState>400 Then
+					If e\eventState>400 Then
 						If e\sounds[0]<>0 Then FreeSound e\sounds[0] : e\sounds[0]=0
 						RemoveEvent(e)
 					EndIf								

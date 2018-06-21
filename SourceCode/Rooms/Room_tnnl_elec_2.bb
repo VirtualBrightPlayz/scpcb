@@ -39,7 +39,7 @@ Function UpdateEventTunnel2smoke(e.Events)
 				;EntityParent(em\Obj, e\room\obj)
 				
 				For z = 0 To 10
-					p.Particles = CreateParticle(EntityX(em\Obj, True), 448*RoomScale, EntityZ(em\Obj, True), Rand(em\MinImage, em\MaxImage), em\Size, em\Gravity, em\LifeTime)
+					p.Particles = CreateParticle(EntityX(em\Obj, True), 448*RoomScale, EntityZ(em\Obj, True), Rand(em\MinImage, em\MaxImage), em\Size, em\gravity, em\LifeTime)
 					p\speed = em\Speed
 					RotateEntity(p\pvt, Rnd(360), Rnd(360), 0, True)
 					p\size = 0.05
@@ -72,30 +72,30 @@ Function UpdateEvent_tnnl_elec_2(e.Events)
 		If Curr173\Idle = 2 Then
 			RemoveEvent(e)
 		Else		
-			If e\EventState = 0 Then
+			If e\eventState = 0 Then
 				If Distance(EntityX(mainPlayer\collider), EntityZ(mainPlayer\collider), EntityX(e\room\obj), EntityZ(e\room\obj)) < 3.5 Then
 					PlaySound_SM(sndManager\lightSwitch)
 					
-					;LightBlink = Rnd(0.0,1.0)*(e\EventState/200)
-					e\EventState = 1
+					;LightBlink = Rnd(0.0,1.0)*(e\eventState/200)
+					e\eventState = 1
 				EndIf
-			ElseIf e\EventState < 200 Then
+			ElseIf e\eventState < 200 Then
 				
 				mainPlayer\blinkTimer = -10
-				If e\EventState > 30 Then 
+				If e\eventState > 30 Then 
 					;LightBlink = 1.0 
-					If e\EventState-timing\tickDuration =< 30 Then 
+					If e\eventState-timing\tickDuration =< 30 Then 
 						PlaySound2 LoadTempSound("SFX/ambient/general/ambient3.ogg")
 					EndIf
 				EndIf
-				If e\EventState-timing\tickDuration =< 100 And e\EventState > 100 Then
+				If e\eventState-timing\tickDuration =< 100 And e\eventState > 100 Then
 					PlaySound2 LoadTempSound("SFX/ambient/general/ambient6.ogg")
 					PositionEntity(Curr173\collider, EntityX(e\room\obj), 0.6, EntityZ(e\room\obj))
 					ResetEntity(Curr173\collider)					
 					Curr173\Idle = True		
 				EndIf
 				;LightBlink = 1.0
-				e\EventState = e\EventState + timing\tickDuration
+				e\eventState = e\eventState + timing\tickDuration
 			Else
 				mainPlayer\blinkTimer = mainPlayer\blinkFreq
 				

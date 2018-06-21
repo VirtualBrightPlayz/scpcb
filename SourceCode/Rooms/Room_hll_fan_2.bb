@@ -35,29 +35,29 @@ Function UpdateEventRoom2fan(e.Events)
 	;eventstate2 = fan on/off
 	;eventstate3 = the speed of the fan
 	If mainPlayer\currRoom = e\room Then
-		TurnEntity (e\room\Objects[0], e\EventState3*timing\tickDuration, 0, 0)
-		If e\EventState3 > 0.01 Then
-			e\room\SoundCHN = LoopRangedSound (RoomAmbience[9], e\room\SoundCHN, mainPlayer\cam, e\room\Objects[0], 5.0, (e\EventState3/4.0))
+		TurnEntity (e\room\Objects[0], e\eventState3*timing\tickDuration, 0, 0)
+		If e\eventState3 > 0.01 Then
+			e\room\SoundCHN = LoopRangedSound (RoomAmbience[9], e\room\SoundCHN, mainPlayer\cam, e\room\Objects[0], 5.0, (e\eventState3/4.0))
 		EndIf
-		e\EventState3 = CurveValue(e\EventState2*5, e\EventState3, 150.0)			
+		e\eventState3 = CurveValue(e\eventState2*5, e\eventState3, 150.0)			
 	EndIf
 	
 	If e\room\dist < 16.0 Then 
-		If e\EventState < 0 Then
-			e\EventState = Rand(15,30)*70
-			temp = e\EventState2
-			e\EventState2 = Rand(0,1)
+		If e\eventState < 0 Then
+			e\eventState = Rand(15,30)*70
+			temp = e\eventState2
+			e\eventState2 = Rand(0,1)
 			If mainPlayer\currRoom<>e\room Then
-				e\EventState3 = e\EventState2*5
+				e\eventState3 = e\eventState2*5
 			Else
-				If temp = 0 And e\EventState2 = 1.0 Then ;turn on the fan
+				If temp = 0 And e\eventState2 = 1.0 Then ;turn on the fan
 					PlayRangedSound (LoadTempSound("SFX/ambient/Room ambience/FanOn.ogg"), mainPlayer\cam, e\room\Objects[0], 8.0)
-				ElseIf temp = 1 And e\EventState2 = 0.0 Then ;turn off the fan
+				ElseIf temp = 1 And e\eventState2 = 0.0 Then ;turn off the fan
 					PlayRangedSound (LoadTempSound("SFX/ambient/Room ambience/FanOff.ogg"), mainPlayer\cam, e\room\Objects[0], 8.0)
 				EndIf
 			EndIf
 		Else
-			e\EventState = e\EventState-timing\tickDuration
+			e\eventState = e\eventState-timing\tickDuration
 		EndIf					
 	EndIf
 	;[End Block]
