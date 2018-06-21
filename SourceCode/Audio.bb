@@ -286,7 +286,7 @@ Function PlayRangedSound%(soundHandle%, cam%, entity%, range# = 10, volume# = 1.
 			Local panvalue# = Sin(-DeltaYaw(cam, entity))
 			soundChn = PlaySound(soundHandle)
 			
-			ChannelVolume(soundChn, volume * (1 - dist) * userOptions\soundVolume)
+			ChannelVolume(soundChn, volume * (1 - dist) * userOptions\sndVolume)
 			ChannelPan(soundChn, panvalue)
 		EndIf
 	EndIf
@@ -334,7 +334,7 @@ Function UpdateRangedSoundOrigin(chn%, cam%, entity%, range# = 10, volume# = 1.0
 		If (1 - dist > 0 And 1 - dist < 1) Then
 			Local panvalue# = Sin(-DeltaYaw(cam,entity))
 			
-			ChannelVolume(chn, volume * (1 - dist) * userOptions\soundVolume)
+			ChannelVolume(chn, volume * (1 - dist) * userOptions\sndVolume)
 			ChannelPan(chn, panvalue)
 		EndIf
 	Else
@@ -350,7 +350,7 @@ Function UpdateRangedSoundOrigin_SM(chn.SoundChannel)
 		If (1 - dist > 0 And 1 - dist < 1) Then
 			Local panvalue# = Sin(-DeltaYaw(chn\camera, chn\point))
 			
-			ChannelVolume(chn\internal, chn\volume * (1 - dist) * userOptions\soundVolume)
+			ChannelVolume(chn\internal, chn\volume * (1 - dist) * userOptions\sndVolume)
 			ChannelPan(chn\internal, panvalue)
 		EndIf
 	Else

@@ -470,7 +470,7 @@ Function CreateRoom.Rooms(rt.RoomTemplates, x#, y#, z#)
 	DebugLog "Placing "+rt\name
 	
 	; TODO: Does 'zone' exist?
-	r\zone = zone
+	r\zone = rt\zones
 	
 	r\x = x : r\y = y : r\z = z
 	
@@ -2332,5 +2332,5 @@ Function FindAndDeleteFakeMonitor(r.Rooms,x#,y#,z#,Amount%)
 	
 End Function
 ;~IDEal Editor Parameters:
-;~F#4F#165#1A0#1A8#1BD#1C8#1D2#2D3
+;~F#4F#165#1A0#1A8#1BD#1C8
 ;~C#Blitz3D

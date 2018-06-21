@@ -76,7 +76,7 @@ Function UpdateNPCtype096(n.NPCs)
                         n\soundChannels[1] = PlaySound(n\sounds[1])
                     Else
                         If (Not IsChannelPlaying(n\soundChannels[1])) Then n\soundChannels[1] = PlaySound(n\sounds[1])
-                        ChannelVolume(n\soundChannels[1], Min(Max(8.0-n\playerDistance,0.6),1.0)*userOptions\soundVolume)
+                        ChannelVolume(n\soundChannels[1], Min(Max(8.0-n\playerDistance,0.6),1.0)*userOptions\sndVolume)
                     EndIf
                 EndIf
             EndIf

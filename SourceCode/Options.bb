@@ -33,7 +33,7 @@ Type Options
 
     ;Audio
     Field musicVolume#
-    Field soundVolume#
+    Field sndVolume#
 
     ;HUD
     Field hudEnabled%
@@ -68,7 +68,7 @@ Function LoadOptionsINI()
     userOptions\vsync               = GetINIInt(OptionFile, optGra, "vsync")
 
     userOptions\musicVolume         = GetINIFloat(OptionFile, optAud, "music volume")
-    userOptions\soundVolume         = GetINIFloat(OptionFile, optAud, "sound volume")
+    userOptions\sndVolume         = GetINIFloat(OptionFile, optAud, "sound volume")
 
     userOptions\hudEnabled          = GetINIInt(OptionFile, optHud, "HUD enabled")
     userOptions\showFPS             = GetINIInt(OptionFile, optHud, "show FPS")
@@ -110,7 +110,7 @@ Function SaveOptionsINI()
     PutINIValue(OptionFile, optGra, "vsync", userOptions\vsync)
 
     PutINIValue(OptionFile, optAud, "music volume", userOptions\musicVolume)
-    PutINIValue(OptionFile, optAud, "sound volume", userOptions\soundVolume)
+    PutINIValue(OptionFile, optAud, "sound volume", userOptions\sndVolume)
     	
     PutINIValue(OptionFile, optHud, "HUD enabled", userOptions\hudEnabled)
     PutINIValue(OptionFile, optHud, "show FPS", userOptions\showFPS)
@@ -131,5 +131,5 @@ Function SaveOptionsINI()
     PutINIValue(OptionFile, "launcher", "launcher enabled", userOptions\launcher)
 End Function
 ;~IDEal Editor Parameters:
-;~F#2#11#30#5B
+;~F#2
 ;~C#Blitz3D

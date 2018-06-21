@@ -303,11 +303,11 @@ Function MovePlayer()
 				ElseIf (mainPlayer\stamina < 50) Then ;panting
 					If (mainPlayer\breathChn = 0) Then
 						mainPlayer\breathChn = PlaySound(GetIntArrayElem(mainPlayer\breathingSFX, IsPlayerWearingTempName(mainPlayer,"gasmask"), Rand(1, 3)))
-						ChannelVolume(mainPlayer\breathChn, Min((70.0-mainPlayer\stamina)/70.0,1.0)*userOptions\soundVolume)
+						ChannelVolume(mainPlayer\breathChn, Min((70.0-mainPlayer\stamina)/70.0,1.0)*userOptions\sndVolume)
 					Else
 						If (Not IsChannelPlaying(mainPlayer\breathChn)) Then
 							mainPlayer\breathChn = PlaySound(GetIntArrayElem(mainPlayer\breathingSFX, IsPlayerWearingTempName(mainPlayer,"gasmask"), Rand(1, 3)))
-							ChannelVolume(mainPlayer\breathChn, Min((70.0-mainPlayer\stamina)/70.0,1.0)*userOptions\soundVolume)		
+							ChannelVolume(mainPlayer\breathChn, Min((70.0-mainPlayer\stamina)/70.0,1.0)*userOptions\sndVolume)		
 						EndIf
 					EndIf
 				EndIf
@@ -370,7 +370,7 @@ Function MovePlayer()
 							tempchn% = PlaySound_SM(sndManager\footstep[Rand(0, 7)])
 						EndIf
 
-						ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\soundVolume
+						ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\sndVolume
 					Else
 						mainPlayer\loudness = Max(2.5-(mainPlayer\crouching*0.6),mainPlayer\loudness)
 
@@ -380,23 +380,23 @@ Function MovePlayer()
 							tempchn% = PlaySound_SM(sndManager\footstepRun[Rand(0, 7)])
 						EndIf
 						
-						ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\soundVolume
+						ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\sndVolume
 					EndIf
 				ElseIf mainPlayer\footstepOverride=1 Then
 					tempchn% = PlaySound_SM(sndManager\footstepPD[Rand(0, 2)])
-					ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.4))*userOptions\soundVolume
+					ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.4))*userOptions\sndVolume
 				ElseIf mainPlayer\footstepOverride=2 Then
 					tempchn% = PlaySound_SM(sndManager\footstep8601[Rand(0, 2)])
-					ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.4))*userOptions\soundVolume
+					ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.4))*userOptions\sndVolume
 				ElseIf mainPlayer\footstepOverride=3 Then
 					If Sprint = 1.0 Then
 						mainPlayer\loudness = Max(4.0,mainPlayer\loudness)
 						tempchn% = PlaySound_SM(sndManager\footstep[Rand(0, 7)])
-						ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\soundVolume
+						ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\sndVolume
 					Else
 						mainPlayer\loudness = Max(2.5-(mainPlayer\crouching*0.6),mainPlayer\loudness)
 						tempchn% = PlaySound_SM(sndManager\footstepRun[Rand(0, 7)])
-						ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\soundVolume
+						ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\sndVolume
 					EndIf
 				EndIf
 				
@@ -527,7 +527,7 @@ Function MovePlayer()
 			Local de.Decals = CreateDecal(Rand(15,16), PickedX(), PickedY()+0.005, PickedZ(), 90, Rand(360), 0)
 			de\size = Rnd(0.03,0.08)*Min(mainPlayer\injuries,3.0) : EntityAlpha(de\obj, 1.0) : ScaleSprite de\obj, de\size, de\size
 			tempchn% = PlaySound2(mainPlayer\bloodDrip[Rand(0,3)])
-			ChannelVolume tempchn, Rnd(0.0,0.8)*userOptions\soundVolume
+			ChannelVolume tempchn, Rnd(0.0,0.8)*userOptions\sndVolume
 			ChannelPitch tempchn, Rand(20000,30000)
 			
 			FreeEntity pvt
@@ -554,7 +554,7 @@ Function MovePlayer()
 	
 	If mainPlayer\heartbeatIntensity > 0 Then
 		tempchn = PlaySound2(mainPlayer\heartbeat)
-		ChannelVolume tempchn, Max(Min((mainPlayer\heartbeatIntensity-80.0)/60.0,1.0),0.0)*userOptions\soundVolume
+		ChannelVolume tempchn, Max(Min((mainPlayer\heartbeatIntensity-80.0)/60.0,1.0),0.0)*userOptions\sndVolume
 		
 		mainPlayer\heartbeatIntensity = mainPlayer\heartbeatIntensity - timing\tickDuration
 	EndIf
@@ -609,6 +609,8 @@ Function MouseLook()
 	;CameraZoomTemp = CurveValue(mainPlayer\camZoom,CameraZoomTemp, 5.0)
 	CameraZoom(mainPlayer\cam, Min(1.0+(mainPlayer\camZoom/400.0),1.1))
 	mainPlayer\camZoom = Max(mainPlayer\camZoom - timing\tickDuration, 0)
+	
+	Local Nan1# = NAN
 	
 	If mainPlayer\fallTimer >=0 Then
 		

@@ -1,22 +1,47 @@
 
 Function sky_CreateSky(filename$,parent%=0)
 	Local sky
-
-	Restore sky_SkyboxData
+	Local direction$
+	Local x#,y#,z#,u#,v#
+	Local b%,s%
+	Local vert%
+	
 	sky = CreateMesh(parent)
 	Local face%
 	For face = 1 To 6
-		Read direction$
+		Select face
+			Case 1
+				direction = "_back"
+			Case 2
+				direction = "_left"
+			Case 3
+				direction = "_front"
+			Case 4
+				direction = "_right"
+			Case 5
+				direction = "_up"
+			Case 6
+				direction = "_down"
+		End Select
 		Local fname$ = filename$ + direction$ + ".jpg"
 		If FileType(fname$)=1 Then
-			Local b% = LoadBrush(fname$,%110001)
-			Local s% = CreateSurface(sky,b)
+			b% = LoadBrush(fname$,%110001)
+			s% = CreateSurface(sky,b)
 			
-			Local vert%
-			For vert = 1 To 4
-				Read x,y,z,u,v
-				AddVertex s,x,y,z,u,v
-			Next
+			Select face
+				Case 1
+					
+				Case 2
+					
+				Case 3
+					
+				Case 4
+					
+				Case 5
+					
+				Case 6
+					
+			End Select
 			AddTriangle s,0,1,2
 			AddTriangle s,0,2,3
 			FreeBrush b

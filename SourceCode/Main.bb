@@ -1930,6 +1930,7 @@ Function UpdateNVG()
 		EndIf
 	EndIf
 	
+	Local decayMultiplier# = 0.0 ;TODO: idfk
     If wornItem<>Null Then
         wornItem\state = Max(-1.0,wornItem\state - (timing\tickDuration * (0.02 * decayMultiplier)))
     EndIf
@@ -1976,7 +1977,7 @@ Function RenderWorld2()
 			Msg = "The batteries in these night vision goggles died."
 			mainPlayer\blinkTimer = -1.0
 			MsgTimer = 350
-		ElseIf mainPlayer\inventory\items[i]\state <= 100.0 Then
+		ElseIf wornItem\state <= 100.0 Then
 			hasBattery = 1
 		EndIf
 		

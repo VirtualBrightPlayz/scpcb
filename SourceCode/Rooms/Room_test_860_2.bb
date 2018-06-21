@@ -319,6 +319,8 @@ Function turn_if_deviating%(max_deviation_distance_%,pathx%,center_%,dir%,retval
 	If retval=0 Then Return dir Else Return deviated
 End Function
 
+Global LastForestID% = 0
+
 Function GenForestGrid(fr.Forest)
 	fr\id=LastForestID+1
 	LastForestID=LastForestID+1
@@ -412,9 +414,9 @@ Function GenForestGrid(fr.Forest)
 		new_x=0
 		If chance(branch_chance) Then
 			branch_type=-1
-			If chance(cobble_chance) Then
-				branch_type=-2
-			EndIf
+			;If chance(cobble_chance) Then
+			;	branch_type=-2
+			;EndIf
 			;create a branch at this spot
 			;determine if on left or on right
 			branch_pos=2*Rand(0,1)
