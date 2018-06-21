@@ -50,6 +50,8 @@ Function UpdateNPCtype106(n.NPCs)
     Local dist2#
     Local visible%
     Local prevFrame#
+	
+	Local de.Decals
 
     Select n\state
         Case STATE106_RISE
@@ -86,7 +88,7 @@ Function UpdateNPCtype106(n.NPCs)
                 
                 ;Rising.
                 If n\timer >= - 10 Then
-                    ShouldPlay = 66
+                    ;ShouldPlay = 66 ;TODO
                     If (n\frame < 259) Then
                         PositionEntity n\collider, EntityX(n\collider), n\prevY-0.15, EntityZ(n\collider)
                         PointEntity n\obj, mainPlayer\collider

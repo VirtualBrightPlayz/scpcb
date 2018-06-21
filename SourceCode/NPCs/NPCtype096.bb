@@ -16,6 +16,7 @@ End Function
 
 Function UpdateNPCtype096(n.NPCs)
 	Local angle%, i%, pvt%, de.Decals
+	Local dist2#
 	
     Select n\state
         Case 0
@@ -270,7 +271,7 @@ Function UpdateNPCtype096(n.NPCs)
                 EndIf
             EndIf
         Case 5
-            If dist < 16.0 Then 
+            If n\playerDistance < 16.0 Then 
             
                 If n\sounds[0] = 0 Then
                     n\sounds[0] = LoadSound("SFX/Music/096.ogg")
@@ -310,7 +311,7 @@ Function UpdateNPCtype096(n.NPCs)
                     If n\lastSeen Then 
                         PointEntity n\obj, mainPlayer\collider
                         RotateEntity n\collider, 0, CurveAngle(EntityYaw(n\obj),EntityYaw(n\collider),130.0),0
-                        If dist < 1.5 Then n\state2=0
+                        If n\playerDistance < 1.5 Then n\state2=0
                     Else
                         RotateEntity n\collider, 0, CurveAngle(n\angle,EntityYaw(n\collider),50.0),0
                     EndIf

@@ -1,5 +1,5 @@
 Function InitializeNPCtypeD(n.NPCs)
-    n\nVName = "Human"
+    n\nvName = "Human"
     n\collider = CreatePivot()
     EntityRadius n\collider, 0.32
     EntityType n\collider, HIT_PLAYER
@@ -16,7 +16,7 @@ Function InitializeNPCtypeD(n.NPCs)
 		n\obj = LoadAnimMesh("GFX/NPCs/classd/classd.b3d")
 	EndIf
     
-    temp# = 0.5 / MeshWidth(n\obj)
+    Local temp# = 0.5 / MeshWidth(n\obj)
     ScaleEntity n\obj, temp, temp, temp
     
     n\speed = 2.0 / 100
@@ -27,7 +27,7 @@ End Function
 Function UpdateNPCtypeD(n.NPCs)
     RotateEntity(n\collider, 0, EntityYaw(n\collider), EntityRoll(n\collider), True)
     
-    prevFrame = AnimTime(n\obj)
+    Local prevFrame% = AnimTime(n\obj)
     
     Select n\state
         Case 0 ;idle

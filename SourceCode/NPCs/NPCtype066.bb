@@ -5,26 +5,27 @@ Function InitializeNPCtype066(n.NPCs)
     EntityType n\collider, HIT_PLAYER
     
     n\obj = LoadAnimMesh("GFX/NPCs/scp066/scp-066.b3d")
-    temp# = GetINIFloat("DATA/NPCs.ini", "SCP-066", "scale")/2.5
+    Local temp# = GetINIFloat("DATA/NPCs.ini", "SCP-066", "scale")/2.5
     ScaleEntity n\obj, temp, temp, temp		
     
     n\speed = (GetINIFloat("DATA/NPCs.ini", "SCP-066", "speed") / 100.0)
 End Function
 
 Function UpdateNPCtype066(n.NPCs)
-    dist = Distance(EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider),EntityX(n\collider),EntityZ(n\collider))
-    
+	Local w.WayPoints, de.Decals, d.Doors
+	Local angle#
+	
     Select n\state
         Case 0 
             ;idle: moves around randomly from waypoint to another if the player is far enough
             ;starts staring at the player when the player is close enough
             
-            If dist > 20.0 Then
+            If n\playerDistance > 20.0 Then
                 AnimateNPC(n, 451, 612, 0.2, True)
                 ;Animate2(n\obj, AnimTime(n\obj), 451, 612, 0.2, True)
                 
                 If n\state2 < TimeInPosMilliSecs() Then
-                    For w.waypoints = Each WayPoints
+                    For w.WayPoints = Each WayPoints
                         ;If w\door = Null Then ;TODO: fix?
 						If Abs(EntityX(w\obj,True)-EntityX(n\collider))<4.0 Then
 							If Abs(EntityZ(w\obj,True)-EntityZ(n\collider))<4.0 Then
@@ -37,7 +38,7 @@ Function UpdateNPCtype066(n.NPCs)
                     Next
                     n\state2 = TimeInPosMilliSecs()+5000
                 EndIf
-            ElseIf dist < 8.0 Then
+            ElseIf n\playerDistance < 8.0 Then
                 n\lastDist = Rnd(1.0, 2.5)
                 n\state = 1
             EndIf
@@ -55,11 +56,10 @@ Function UpdateNPCtype066(n.NPCs)
                 ;Animate2(n\obj, AnimTime(n\obj), 636, 646, 0.4, False)
                 ;If AnimTime(n\obj)=646 Then SetAnimTime (n\obj, 2)
             EndIf
-            dist = Distance(EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider),EntityX(n\collider),EntityZ(n\collider))
             
-            If Rand(700)=1 Then PlayRangedSound(LoadTempSound("SFX/SCP/066/Eric"+Rand(1,3)+".ogg"),mainPlayer\cam, n\collider, 8.0)
+			If Rand(700)=1 Then PlayRangedSound(LoadTempSound("SFX/SCP/066/Eric"+Rand(1,3)+".ogg"),mainPlayer\cam, n\collider, 8.0)
             
-            If dist < 1.0+n\lastDist Then n\state = Rand(2,3)
+            If n\playerDistance < 1.0+n\lastDist Then n\state = Rand(2,3)
         Case 2 ;roll towards the player and make a sound, and then escape	
             If n\frame < 647 Then 
                 angle = CurveAngle(0, (AnimTime(n\obj)-2.0)/1.2445, 5.0)
@@ -183,7 +183,7 @@ Function UpdateNPCtype066(n.NPCs)
     EndIf
     
     If IsChannelPlaying(n\soundChannels[1]) Then
-        mainPlayer\blurTimer = Max((5.0-dist)*300,0)
+        mainPlayer\blurTimer = Max((5.0-n\playerDistance)*300,0)
     EndIf
     
     PositionEntity(n\obj, EntityX(n\collider), EntityY(n\collider) - 0.2, EntityZ(n\collider))

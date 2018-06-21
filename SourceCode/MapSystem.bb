@@ -207,7 +207,7 @@ Type RoomTemplates
 	Field tempSoundEmitterRange#[MaxRoomEmitters]
 	
 	Field commonness#
-	Field minAmount%, MaxAmount%
+	Field minAmount%, maxAmount%
 	Field xRangeStart#, xRangeEnd#
 	Field yRangeStart#, yrangeEnd#
 	Field disableDecals%
@@ -491,6 +491,7 @@ Function CreateRoom.Rooms(rt.RoomTemplates, x#, y#, z#)
 		EntityParent(r\alphaMesh,r\obj)
 	EndIf
 	r\collisionObjs = CreateIntArray(rt\collisionObjs\size)
+	Local i%
 	For i% = 0 To rt\collisionObjs\size-1
 		tempObj = CopyEntity(GetIntArrayListElem(rt\collisionObjs,i)) : ScaleEntity(tempObj, RoomScale, RoomScale, RoomScale)
 		SetIntArrayElem(r\collisionObjs,tempObj,i)
@@ -655,9 +656,10 @@ Function FillRoom(r.Rooms)
 			FillRoom_lck_broke_2c(r)
 	End Select
 	
-	For lt.lighttemplates = Each LightTemplates
+	Local lt.LightTemplates
+	For lt = Each LightTemplates
 		If lt\roomtemplate = r\roomTemplate Then
-			newlt = AddLight(r, r\x+lt\x*RoomScale, r\y+lt\y*RoomScale, r\z+lt\z*RoomScale, lt\ltype, lt\range, lt\r, lt\g, lt\b)
+			Local newlt% = AddLight(r, r\x+lt\x*RoomScale, r\y+lt\y*RoomScale, r\z+lt\z*RoomScale, lt\ltype, lt\range, lt\r, lt\g, lt\b)
 			If newlt <> 0 Then 
 				If lt\ltype = 3 Then
 					LightConeAngles(newlt, lt\innerconeangle, lt\outerconeangle)
@@ -667,7 +669,8 @@ Function FillRoom(r.Rooms)
 		EndIf
 	Next
 	
-	For ts.tempscreens = Each TempScreens
+	Local ts.TempScreens
+	For ts.TempScreens = Each TempScreens
 		If ts\roomtemplate = r\roomTemplate Then
 			CreateScreen(r\x+ts\x*RoomScale, r\y+ts\y*RoomScale, r\z+ts\z*RoomScale, ts\imgpath, r)
 		EndIf
@@ -675,6 +678,7 @@ Function FillRoom(r.Rooms)
 	
 	Local waypoints.IntArrayList = CreateIntArrayList()
 	Local waypoint.WayPoints
+	Local tw.TempWayPoints
 	For tw.TempWayPoints = Each TempWayPoints
 		If tw\roomtemplate = r\roomTemplate Then
 			waypoint = CreateWaypoint(r\x+tw\x*RoomScale, r\y+tw\y*RoomScale, r\z+tw\z*RoomScale, r)
@@ -686,6 +690,7 @@ Function FillRoom(r.Rooms)
 	For tw.TempWayPoints = Each TempWayPoints
 		If tw\roomtemplate = r\roomTemplate Then
 			waypoint = Object.WayPoints(GetIntArrayListElem(waypoints,i))
+			Local j%
 			For j% = 0 To 15
 				If tw\connectedTo[j]=0 Then Exit
 				waypoint\connected[j] = Object.WayPoints(GetIntArrayListElem(waypoints,tw\connectedTo[j]-1))
@@ -876,6 +881,7 @@ End Function
 Function IsRoomAdjacent(this.Rooms,that.Rooms)
 	If this=Null Then Return False
 	If this=that Then Return True
+	Local i%
 	For i=0 To 3
 		If that=this\adjacent[i] Then Return True
 	Next
@@ -1028,6 +1034,7 @@ Function InitWayPoints(loadingstart=45)
 		EntityPickMode w\obj, 0, 0
 		EntityRadius w\obj, 0
 		
+		Local i%
 		For i = 0 To 4
 			If w\connected[i]<>Null Then 
 				Local tline = CreateLine(EntityX(w\obj,True),EntityY(w\obj,True),EntityZ(w\obj,True),EntityX(w\connected[i]\obj,True),EntityY(w\connected[i]\obj,True),EntityZ(w\connected[i]\obj,True))
@@ -1221,10 +1228,10 @@ Function FindPath(n.NPCs, x#, y#, z#)
 	
 	If EndPoint\state > 0 Then
 		
-		currpoint.waypoints = EndPoint
-		twentiethpoint.waypoints = EndPoint
+		Local currpoint.WayPoints = EndPoint
+		Local twentiethpoint.WayPoints = EndPoint
 		
-		length = 0
+		Local length% = 0
 		Repeat
 			length = length +1
 			currpoint = currpoint\parent
@@ -1233,7 +1240,7 @@ Function FindPath(n.NPCs, x#, y#, z#)
 			EndIf
 		Until currpoint = Null
 		
-		currpoint.waypoints = EndPoint
+		currpoint.WayPoints = EndPoint
 		While twentiethpoint<>Null
 			length=Min(length-1,19)
              ;DebugLog "LENGTH "+length
@@ -1731,6 +1738,8 @@ Function LoadProp.Props(file$,x#,y#,z#,pitch#,yaw#,roll#,xScale#,yScale#,zScale#
 	p\xScale = xScale
 	p\yScale = yScale
 	p\zScale = zScale
+	
+	Local p2.Props
 	For p2.Props = Each Props
 		If (p<>p2) And (p2\file = file) Then
 			p\obj = CopyEntity(p2\obj)
@@ -1758,6 +1767,7 @@ Function CreateMap()
 	MapRooms = CreateIntArray(mapDim,mapDim)
 	
 	;clear the grid
+	Local y%, x%
 	For y% = 0 To mapDim-1
 		For x% = 0 To mapDim-1
 			SetIntArrayElem(layout,0,x,y)
@@ -1792,6 +1802,8 @@ Function CreateMap()
 					If nonShiftStreak>5 Then shift = 1
 					If (x/rectWidth) Mod 2 Then shift = -shift
 					If shift<>0 Then
+						
+						Local i%
 						For i% = 0 To rectWidth-2
 							SetIntArrayElem(layout,0,x+i,y)
 							SetIntArrayElem(layout,ROOM2,x+i,y+shift)
@@ -1830,6 +1842,7 @@ Function CreateMap()
 	
 	;start off by placing rooms that ask to be placed a certain amount of times
 	Local prioritizedTemplateCount% = 0
+	Local rt.RoomTemplates
 	For rt.RoomTemplates = Each RoomTemplates
 		If ((rt\zones And zone)<>0) And (rt\maxAmount>0) And (rt\shape<>ROOM0) Then
 			prioritizedTemplateCount=prioritizedTemplateCount+1
@@ -1884,17 +1897,20 @@ Function CreateMap()
 	Local offsetX%
 	Local offsetY%
 	Local placed%
-	For k%=0 To prioritizedTemplateCount-1
-		rt.RoomTemplates = Object.RoomTemplates(GetIntArrayElem(prioritizedTemplates,k,0))
+	
+	Local K%
+	For K%=0 To prioritizedTemplateCount-1
+		rt.RoomTemplates = Object.RoomTemplates(GetIntArrayElem(prioritizedTemplates,K,0))
 		
 		placementCount = Rand(rt\minAmount,rt\maxAmount)
 		
 		DebugLog "trying to place "+placementCount+" "+rt\name
+		Local c%
 		For c% = 1 To placementCount
 			loopStartX = Int(Min(Floor(Float(mapDim)*rt\xRangeStart),mapDim-1))
 			loopStartY = Int(Min(Floor(Float(mapDim)*rt\yRangeStart),mapDim-1))
 			loopEndX = Int(Min(Floor(Float(mapDim)*rt\xRangeEnd),mapDim-1))
-			loopEndY = Int(Min(Floor(Float(mapDim)*rt\yRangeEnd),mapDim-1))
+			loopEndY = Int(Min(Floor(Float(mapDim)*rt\yrangeEnd),mapDim-1))
 			
 			loopX = loopEndX-loopStartX
 			loopY = loopEndY-loopStartY
@@ -1903,6 +1919,7 @@ Function CreateMap()
 			offsetY = Rand(0,loopY)
 			
 			placed = False
+			Local j%
 			For j% = 0 To loopY
 				For i% = 0 To loopX
 					x% = ((i+offsetX) Mod (loopX+1)) + loopStartX
@@ -2086,7 +2103,10 @@ End Function
 Function DetermineRoomTypes(layout.IntArray,mapDim%)
 	Local horNeighborCount% = 0
 	Local vertNeighborCount% = 0
+	
+	Local y%
 	For y% = 0 To mapDim-1
+		Local x%
 		For x% = 0 To mapDim-1
 			If GetIntArrayElem(layout,x,y)<>0 Then
 				horNeighborCount = 0
@@ -2240,8 +2260,8 @@ Function load_terrain(hmap,yscale#=0.7,t1%,t2%,mask%)
 			;you might get better results by downscaling the mask to the same size as the heightmap
 			Local maskX# = Min(lx*Float(TextureWidth(mask))/Float(ImageWidth(hmap)),TextureWidth(mask)-1)
 			Local maskY# = TextureHeight(mask)-Min(ly*Float(TextureHeight(mask))/Float(ImageHeight(hmap)),TextureHeight(mask)-1)
-			RGB1=ReadPixelFast(Min(lx,x-1),y-Min(ly,y-1),ImageBuffer(hmap))
-			r=(RGB1 And $FF0000)Shr 16 ;separate out the red
+			Local RGB1% = ReadPixelFast(Min(lx,x-1),y-Min(ly,y-1),ImageBuffer(hmap))
+			Local r% = (RGB1 And $FF0000)Shr 16 ;separate out the red
 			Local alpha#=(((ReadPixelFast(Max(maskX-5,5),Max(maskY-5,5),TextureBuffer(mask)) And $FF000000) Shr 24)/$FF)
 			alpha#=alpha+(((ReadPixelFast(Min(maskX+5,TextureWidth(mask)-5),Min(maskY+5,TextureHeight(mask)-5),TextureBuffer(mask)) And $FF000000) Shr 24)/$FF)
 			alpha#=alpha+(((ReadPixelFast(Max(maskX-5,5),Min(maskY+5,TextureHeight(mask)-5),TextureBuffer(mask)) And $FF000000) Shr 24)/$FF)

@@ -3,8 +3,9 @@ Function InitializeNPCtypeTentacle(n.NPCs)
     
     n\collider = CreatePivot()
     
+	Local n2.NPCs
     For n2.NPCs = Each NPCs
-        If n\npcType = n2\npctype And n<>n2 Then
+        If n\npcType = n2\npcType And n<>n2 Then
             n\obj = CopyEntity (n2\obj)
             Exit
         EndIf
@@ -23,9 +24,7 @@ Function InitializeNPCtypeTentacle(n.NPCs)
 End Function
 
 Function UpdateNPCtypeTentacle(n.NPCs)
-    dist = EntityDistance(n\collider,mainPlayer\collider)
-    
-    If dist < 8.0 Then 
+    If n\playerDistance < 8.0 Then 
         
         Select n\state 
             Case 0 ;spawn
@@ -42,7 +41,7 @@ Function UpdateNPCtypeTentacle(n.NPCs)
                     
                     If n\frame>388 Then n\state = 1
                 Else
-                    If dist < 2.5 Then 
+                    If n\playerDistance < 2.5 Then 
                         SetNPCFrame(n, 284)
                         PlaySound2(n\sounds[0])
                     EndIf
@@ -75,7 +74,7 @@ Function UpdateNPCtypeTentacle(n.NPCs)
                     ;Animate2(n\obj, AnimTime(n\obj), 2, 32, 0.3, False)
                     
                     If n\frame>=5 And n\frame<6 Then
-                        If dist < 1.8 Then
+                        If n\playerDistance < 1.8 Then
                             If Abs(DeltaYaw(n\collider, mainPlayer\collider))<20 Then 
                                 If IsPlayerWearingTempName(mainPlayer,"hazmatsuit") Then
                                     mainPlayer\injuries = mainPlayer\injuries+Rnd(0.5)

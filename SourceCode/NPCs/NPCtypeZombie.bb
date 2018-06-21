@@ -4,8 +4,9 @@ Function InitializeNPCtypeZombie(n.NPCs)
     EntityRadius n\collider, 0.2
     EntityType n\collider, HIT_PLAYER
     
+	Local n2.NPCs
     For n2.NPCs = Each NPCs
-        If n\npcType = n2\npctype And n<>n2 Then
+        If n\npcType = n2\npcType And n<>n2 Then
             n\obj = CopyEntity (n2\obj)
             Exit
         EndIf
@@ -14,7 +15,7 @@ Function InitializeNPCtypeZombie(n.NPCs)
     If n\obj = 0 Then 
         n\obj = LoadAnimMesh("GFX/NPCs/zombie/zombie.b3d")
         
-        temp# = (GetINIFloat("DATA/NPCs.ini", "SCP-049-2", "scale") / 2.5)
+        Local temp# = (GetINIFloat("DATA/NPCs.ini", "SCP-049-2", "scale") / 2.5)
         ScaleEntity n\obj, temp, temp, temp
         
         MeshCullBox (n\obj, -MeshWidth(n\obj), -MeshHeight(n\obj), -MeshDepth(n\obj), MeshWidth(n\obj)*2, MeshHeight(n\obj)*2, MeshDepth(n\obj)*2)
@@ -32,7 +33,7 @@ End Function
 Function UpdateNPCtypeZombie(n.NPCs)
     If Abs(EntityY(mainPlayer\collider)-EntityY(n\collider))<4.0 Then
         
-        prevFrame# = n\frame
+        Local prevFrame# = n\frame
         
         If (Not n\isDead) Then
             Select n\state
@@ -79,12 +80,10 @@ Function UpdateNPCtypeZombie(n.NPCs)
                         
                         n\pathStatus = 0
                         
-                        dist = EntityDistance(mainPlayer\collider, n\collider)
-                        
                         PointEntity n\obj, mainPlayer\collider
                         RotateEntity n\collider, 0, CurveAngle(EntityYaw(n\obj), EntityYaw(n\collider), 30.0), 0
                         
-                        If dist < 0.7 Then 
+                        If n\playerDistance < 0.7 Then 
                             n\state = 3
                             If Rand(2)=1 Then
                                 n\frame = 2

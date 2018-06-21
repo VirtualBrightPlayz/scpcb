@@ -1989,9 +1989,9 @@ Function RenderWorld2()
 			
 			;If NVTimer<=0.0 Then
 			For np.NPCs = Each NPCs
-				np\nVX = EntityX(np\collider,True)
-				np\nVY = EntityY(np\collider,True)
-				np\nVZ = EntityZ(np\collider,True)
+				np\nvX = EntityX(np\collider,True)
+				np\nvY = EntityY(np\collider,True)
+				np\nvZ = EntityZ(np\collider,True)
 			Next
 			;IsNVGBlinking% = True
 			;	ShowEntity NVBlink%
@@ -2015,8 +2015,8 @@ Function RenderWorld2()
 			Color 255,255,255;*(NVTimer/600.0)
 			
 			For np.NPCs = Each NPCs
-				If np\nVName<>"" Then ;don't waste your time if the string is empty
-					PositionEntity temp2,np\nVX,np\nVY,np\nVZ
+				If np\nvName<>"" Then ;don't waste your time if the string is empty
+					PositionEntity temp2,np\nvX,np\nvY,np\nvZ
 					dist# = EntityDistance(temp2,mainPlayer\collider)
 					If dist<23.5 Then ;don't draw text if the NPC is too far away
 						PointEntity temp, temp2
@@ -2040,7 +2040,7 @@ Function RenderWorld2()
 						EndIf
 						
 						;If (Not IsNVGBlinking%) Then
-						Text userOptions\screenWidth / 2 + xvalue * (userOptions\screenWidth / 2),userOptions\screenHeight / 2 - yvalue * (userOptions\screenHeight / 2),np\nVName,True,True
+						Text userOptions\screenWidth / 2 + xvalue * (userOptions\screenWidth / 2),userOptions\screenHeight / 2 - yvalue * (userOptions\screenHeight / 2),np\nvName,True,True
 						Text userOptions\screenWidth / 2 + xvalue * (userOptions\screenWidth / 2),userOptions\screenHeight / 2 - yvalue * (userOptions\screenHeight / 2) + 30.0 * MenuScale,f2s(dist,1)+" m",True,True
 						;EndIf
 					EndIf

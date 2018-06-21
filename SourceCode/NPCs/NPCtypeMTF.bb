@@ -22,11 +22,11 @@ Function InitializeNPCtypeMTF(n.NPCs)
     
     n\speed = (GetINIFloat("DATA/NPCs.ini", "MTF", "speed") / 100.0)
     
-    temp# = (GetINIFloat("DATA/NPCs.ini", "MTF", "scale") / 2.5)
+    Local temp# = (GetINIFloat("DATA/NPCs.ini", "MTF", "scale") / 2.5)
     
     ScaleEntity n\obj, temp, temp, temp
     
-    MeshCullBox (n\obj, -MeshWidth(n\obj), -MeshHeight(n\obj), -MeshDepth(n\obj), MeshWidth(n\obj)*2, MeshHeight(n\obj)*2, MeshDepth(n\obj)*2) 
+    MeshCullBox(n\obj, -MeshWidth(n\obj), -MeshHeight(n\obj), -MeshDepth(n\obj), MeshWidth(n\obj)*2, MeshHeight(n\obj)*2, MeshDepth(n\obj)*2) 
     
     If MTFSFX(0)=0 Then
         MTFSFX(0)=LoadSound("SFX/Character/MTF/ClassD1.ogg")
@@ -38,6 +38,7 @@ Function InitializeNPCtypeMTF(n.NPCs)
         MTFSFX(6)=LoadSound("SFX/Character/MTF/Breath.ogg")
     EndIf
     If MTFrooms[6]=Null Then 
+		Local r.Rooms
         For r.Rooms = Each Rooms
             Select Lower(r\roomTemplate\name)
                 Case "room106"
@@ -62,10 +63,10 @@ End Function
 Function UpdateNPCtypeMTF(n.NPCs)
 	Local x#,y#,z#
 	Local r.Rooms
-	Local prevDist#,newDist#
+	Local prevDist#,newDist#, prev%
 	Local n2.NPCs
 	
-	Local p.Particles, target, dist#, dist2#
+	Local p.Particles, target, dist#, dist2#, wp.WayPoints
 	
 	If n\isDead Then
 		n\blinkTimer = -1.0
@@ -412,7 +413,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 				EndIf
 				
 				For n2.NPCs = Each NPCs
-					If n2\npctype = NPCtype049 Then
+					If n2\npcType = NPCtype049 Then
 						If OtherNPCSeesMeNPC(n2,n) Then
 							If EntityVisible(n\collider,n2\collider) Then
 								n\state = 4
@@ -463,7 +464,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
                 If MeNPCSeesPlayer(n) = True Then
 					
 					;if close enough, start shooting at the player
-					If playerDist < 4.0 Then
+					If n\playerDistance < 4.0 Then
 						
 						Local angle# = VectorYaw(EntityX(mainPlayer\collider)-EntityX(n\collider),0,EntityZ(mainPlayer\collider)-EntityZ(n\collider))
 						
@@ -484,7 +485,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 									PositionEntity(pvt, EntityX(n\obj), EntityY(n\obj), EntityZ(n\obj))
 									MoveEntity (pvt,0.8*0.079, 10.75*0.079, 6.9*0.079)
 									
-									Shoot(EntityX(pvt),EntityY(pvt),EntityZ(pvt),5.0/playerDist, False)
+									Shoot(EntityX(pvt),EntityY(pvt),EntityZ(pvt),5.0/n\playerDistance, False)
 									n\reload = 7
 									
 									FreeEntity(pvt)
@@ -501,7 +502,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 						EndIf
 						
 						For n2.NPCs = Each NPCs
-							If n2\npctype = NPCtypeMTF And n2 <> n Then
+							If n2\npcType = NPCtypeMTF And n2 <> n Then
 								If n2\state = 0 Then
 									If EntityDistance(n\collider,n2\collider)<6.0 Then
 										n\prevState = 1
@@ -632,7 +633,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 								EndIf
 								FinishWalking(n,488,522,n\speed*26)
 								If Rand(1,35)=1 Then
-									For wp.Waypoints = Each WayPoints
+									For wp.WayPoints = Each WayPoints
 										If (Rand(1,3)=1) Then
 											If (EntityDistance(wp\obj,n\collider)<6.0) Then
 												n\enemyX = EntityX(wp\obj,True)
@@ -742,7 +743,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 				EndIf
 				
 				For n2.NPCs = Each NPCs
-					If n2\npctype = NPCtype049 Then
+					If n2\npcType = NPCtype049 Then
 						If OtherNPCSeesMeNPC(n2,n) Then
 							If EntityVisible(n\collider,n2\collider) Then
 								n\state = 4
@@ -763,7 +764,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 								Exit
 							EndIf
 						EndIf
-					ElseIf n2\npctype = NPCtypeZombie And n2\isDead = False Then
+					ElseIf n2\npcType = NPCtypeZombie And n2\isDead = False Then
 						If OtherNPCSeesMeNPC(n2,n) Then
 							If EntityVisible(n\collider,n2\collider) Then
 								n\state = 9
@@ -798,7 +799,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
                 Else
 					For n2.NPCs = Each NPCs
 						If n2<>n Then
-							If n2\npctype = NPCtypeMTF Then
+							If n2\npcType = NPCtypeMTF Then
 								n2\state = 2
 							EndIf
 						EndIf

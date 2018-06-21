@@ -29,6 +29,7 @@ End Function
 
 Function UpdateNPCtype049(n.NPCs)
     Local prevFrame# = n\frame
+	Local r.Rooms
 	
 	If (n\state <> STATE049_IDLE) Then
 		;Depending on whether 049 has detected the player, choose the state it's in.

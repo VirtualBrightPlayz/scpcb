@@ -3,8 +3,10 @@ Function InitializeNPCtype1499(n.NPCs)
     n\collider = CreatePivot()
     EntityRadius n\collider, 0.2
     EntityType n\collider, HIT_PLAYER
+	
+	Local n2.NPCs
     For n2.NPCs = Each NPCs
-        If (n\npcType = n2\npctype) And (n<>n2) Then
+        If (n\npcType = n2\npcType) And (n<>n2) Then
             n\obj = CopyEntity (n2\obj)
             Exit
         EndIf
@@ -15,7 +17,7 @@ Function InitializeNPCtype1499(n.NPCs)
     EndIf
     
     n\speed = (GetINIFloat("DATA/NPCs.ini", "SCP-1499-1", "speed") / 100.0) * Rnd(0.9,1.1)
-    temp# = (GetINIFloat("DATA/NPCs.ini", "SCP-1499-1", "scale") / 6.0) * Rnd(0.8,1.0)
+    Local temp# = (GetINIFloat("DATA/NPCs.ini", "SCP-1499-1", "scale") / 6.0) * Rnd(0.8,1.0)
     
     ScaleEntity n\obj, temp, temp, temp
     
@@ -26,12 +28,13 @@ Function UpdateNPCtype1499(n.NPCs)
     ;n\state: Current State of the NPC
     ;n\state2: A second state variable (dependend on the current NPC's n\state)
     
-    prevFrame# = n\frame
+	Local n2.NPCs
+    Local prevFrame% = n\frame
     
     If (Not n\idle) And EntityDistance(n\collider,mainPlayer\collider)<HideDistance*2 Then
         If n\state = 0 Or n\state = 2 Then
             For n2.NPCs = Each NPCs
-                If n2\npctype = n\npcType And n2 <> n Then
+                If n2\npcType = n\npcType And n2 <> n Then
                     If n2\state <> 0 And n2\state <> 2 Then
                         n\state = 1
                         n\state2 = 0
@@ -86,8 +89,7 @@ Function UpdateNPCtype1499(n.NPCs)
                     n\state2 = 0
                     
                     If Not IsChannelPlaying(n\soundChannels[0]) Then
-                        dist = EntityDistance(n\collider,mainPlayer\collider)
-                        If (dist < 20.0) Then
+                        If (n\playerDistance < 20.0) Then
                             If n\sounds[0] <> 0 Then FreeSound n\sounds[0] : n\sounds[0] = 0
                             n\sounds[0] = LoadSound("SFX/SCP/1499/Idle"+Rand(1,4)+".ogg")
                             n\soundChannels[0] = PlayRangedSound(n\sounds[0], mainPlayer\cam, n\collider, 20.0)
@@ -96,12 +98,11 @@ Function UpdateNPCtype1499(n.NPCs)
                 EndIf
                 
                 If (n\id Mod 2 = 0) And (Not NoTarget) Then
-                    dist = EntityDistance(n\collider,mainPlayer\collider)
-                    If dist < 10.0 Then
+                    If n\playerDistance < 10.0 Then
                         If EntityVisible(n\collider,mainPlayer\collider) Then
                             ;play the "screaming animation"
                             n\state = 2
-                            If dist < 5.0 Then
+                            If n\playerDistance < 5.0 Then
                                 If n\sounds[0] <> 0 Then FreeSound n\sounds[0] : n\sounds[0] = 0
                                 n\sounds[0] = LoadSound("SFX/SCP/1499/Triggered.ogg")
                                 n\soundChannels[0] = PlayRangedSound(n\sounds[0], mainPlayer\cam, n\collider,20.0)
@@ -110,7 +111,7 @@ Function UpdateNPCtype1499(n.NPCs)
                                 
                                 For n2.NPCs = Each NPCs
                                     ;If n2\npctype = n\npcType And n2 <> n And (n\id Mod 2 = 0) Then
-                                    If n2\npctype = n\npcType And n2 <> n Then
+                                    If n2\npcType = n\npcType And n2 <> n Then
                                         n2\state = 1
                                         n2\state2 = 0
                                     EndIf
@@ -128,13 +129,11 @@ Function UpdateNPCtype1499(n.NPCs)
                 
                 If mainPlayer\currRoom\roomTemplate\name = "dimension1499" Then
                     ;If Music(19)=0 Then Music(19) = LoadSound("SFX/Music/1499Danger.ogg") ;TODO: fix
-                    ShouldPlay = 19
+                    ;ShouldPlay = 19
                 EndIf
                 
                 PointEntity n\obj,mainPlayer\collider
                 RotateEntity n\collider,0,CurveAngle(EntityYaw(n\obj),EntityYaw(n\collider),20.0),0
-                
-                dist = EntityDistance(n\collider,mainPlayer\collider)
                 
                 If n\state2 = 0.0 Then
                     n\currSpeed = CurveValue(n\speed*1.75,n\currSpeed,10.0)
@@ -146,7 +145,7 @@ Function UpdateNPCtype1499(n.NPCs)
                     EndIf
                 EndIf
                 
-                If dist < 0.75 Then
+                If n\playerDistance < 0.75 Then
                     If (n\id Mod 2 = 0) Or n\state3 = 1 Then
                         n\state2 = Rand(1,2)
                         n\state = 3
@@ -168,11 +167,10 @@ Function UpdateNPCtype1499(n.NPCs)
                 EndIf
             Case 3 ;slashing at the player
                 n\currSpeed = CurveValue(0.0,n\currSpeed,5.0)
-                dist = EntityDistance(n\collider,mainPlayer\collider)
                 If n\state2 = 1 Then
                     AnimateNPC(n,63,100,0.6,False)
                     If prevFrame < 89 And n\frame=>89 Then
-                        If dist > 0.85 Or Abs(DeltaYaw(n\collider,mainPlayer\collider))>60.0 Then
+                        If n\playerDistance > 0.85 Or Abs(DeltaYaw(n\collider,mainPlayer\collider))>60.0 Then
                             ;Miss
                         Else
                             mainPlayer\injuries = mainPlayer\injuries + Rnd(0.75,1.5)
@@ -197,7 +195,7 @@ Function UpdateNPCtype1499(n.NPCs)
                 Else
                     AnimateNPC(n,168,202,0.6,False)
                     If prevFrame < 189 And n\frame=>189 Then
-                        If dist > 0.85 Or Abs(DeltaYaw(n\collider,mainPlayer\collider))>60.0 Then
+                        If n\playerDistance > 0.85 Or Abs(DeltaYaw(n\collider,mainPlayer\collider))>60.0 Then
                             ;Miss
                         Else
                             mainPlayer\injuries = mainPlayer\injuries + Rnd(0.75,1.5)
@@ -221,14 +219,13 @@ Function UpdateNPCtype1499(n.NPCs)
                     EndIf
                 EndIf
             Case 4 ;standing in front of the player
-                dist = EntityDistance(n\collider,mainPlayer\collider)
                 n\currSpeed = CurveValue(0.0,n\currSpeed,5.0)
                 AnimateNPC(n,296,317,0.2)
                 
                 PointEntity n\obj,mainPlayer\collider
                 RotateEntity n\collider,0,CurveAngle(EntityYaw(n\obj),EntityYaw(n\collider),20.0),0
                 
-                If dist > 0.85 Then
+                If n\playerDistance > 0.85 Then
                     n\state = 1
                 EndIf
         End Select

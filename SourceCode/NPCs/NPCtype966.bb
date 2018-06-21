@@ -1,7 +1,10 @@
 Function InitializeNPCtype966(n.NPCs)
-    i = 1
+    Local i% = 1
+	Local n2.NPCs
     For n2.NPCs = Each NPCs
-        If (n\npcType = n2\npctype) And (n<>n2) Then i=i+1
+        If (n\npcType = n2\npcType) And (n<>n2) Then
+			i= i + Rand(1,3)
+		EndIf
     Next
     n\nvName = "SCP-966-"+i
     
@@ -9,7 +12,7 @@ Function InitializeNPCtype966(n.NPCs)
     EntityRadius n\collider,0.2
     
     For n2.NPCs = Each NPCs
-        If (n\npcType = n2\npctype) And (n<>n2) Then
+        If (n\npcType = n2\npcType) And (n<>n2) Then
             n\obj = CopyEntity (n2\obj)
             Exit
         EndIf
@@ -21,7 +24,7 @@ Function InitializeNPCtype966(n.NPCs)
     
     EntityFX n\obj,1
     
-    temp# = GetINIFloat("DATA/NPCs.ini", "SCP-966", "scale")/40.0
+    Local temp# = GetINIFloat("DATA/NPCs.ini", "SCP-966", "scale")/40.0
     ScaleEntity n\obj, temp, temp, temp		
     
     ;EntityColor n\obj,Rnd(0,50),0,Rnd(50,100)
@@ -34,9 +37,10 @@ Function InitializeNPCtype966(n.NPCs)
 End Function
 
 Function UpdateNPCtype966(n.NPCs)
-    dist = EntityDistance(n\collider,mainPlayer\collider)
-    
-    If (dist<HideDistance) Then
+	Local prevFrame%, temp%, angle#, dist2#
+	Local n2.NPCs
+	
+    If (n\playerDistance<HideDistance) Then
         
     ;n\state = the "general" state (idle/wander/attack/echo etc)
     ;n\state2 = timer for doing raycasts
@@ -57,7 +61,7 @@ Function UpdateNPCtype966(n.NPCs)
         
         If (Not IsPlayerWearingTempName(mainPlayer,"nvgoggles")) Then
             HideEntity n\obj
-            If dist<1 And n\reload <= 0 And MsgTimer <= 0 Then
+            If n\playerDistance<1 And n\reload <= 0 And MsgTimer <= 0 Then
                 Select Rand(6)
                     Case 1
                         Msg="You feel something breathing right next to you."
@@ -85,7 +89,7 @@ Function UpdateNPCtype966(n.NPCs)
         ;n\state = 1
             If n\state3<1000.0 Then
                 For n2.NPCs = Each NPCs	
-                    If n2\npctype = n\npcType Then n2\state3=1000.0 
+                    If n2\npcType = n\npcType Then n2\state3=1000.0 
                 Next
             EndIf
             
@@ -114,7 +118,7 @@ Function UpdateNPCtype966(n.NPCs)
                     
                 ;echo/stare/walk around periodically
                     If n\frame>1014.0 Then 
-                        If Rand(3)=1 And dist<4 Then
+                        If Rand(3)=1 And n\playerDistance<4 Then
                             n\state = Rand(1,4)
                         Else
                             n\state = Rand(5,6)								
@@ -122,7 +126,7 @@ Function UpdateNPCtype966(n.NPCs)
                     EndIf
                     
                 ;echo if player gets close
-                    If dist<2.0 Then 
+                    If n\playerDistance<2.0 Then 
                         n\state=Rand(1,4)
                     EndIf 							
                 EndIf
@@ -148,9 +152,9 @@ Function UpdateNPCtype966(n.NPCs)
                 RotateEntity n\collider,0.0,CurveAngle(angle,EntityYaw(n\collider),20.0),0.0
                 
                 If n\state3<900 Then
-                    mainPlayer\blurTimer = ((Sin(TimeInPosMilliSecs()/50)+1.0)*200)/dist
+                    mainPlayer\blurTimer = ((Sin(TimeInPosMilliSecs()/50)+1.0)*200)/n\playerDistance
                     
-                    If dist<16 Then
+                    If n\playerDistance<16 Then
                         mainPlayer\blinkEffect = Max(mainPlayer\blinkEffect, 1.5)
                         ;BlinkEffectTimer = 1000
                         
@@ -198,7 +202,7 @@ Function UpdateNPCtype966(n.NPCs)
                     AnimateNPC(n, 2343, 2391, n\currSpeed*25.0)
                     
                 ;chasing the player
-                    If n\state = 8 And dist<32 Then
+                    If n\state = 8 And n\playerDistance<32 Then
                         If n\pathTimer <= 0 Then
                             n\pathStatus = FindPath (n, EntityX(mainPlayer\collider,True), EntityY(mainPlayer\collider,True), EntityZ(mainPlayer\collider,True))
                             n\pathTimer = 40*10
@@ -229,7 +233,7 @@ Function UpdateNPCtype966(n.NPCs)
 										;If n\path[n\pathLocation]\door<>Null Then
                                         ;    If (Not n\path[n\pathLocation]\door\open) Then UseDoor(n\path[n\pathLocation]\door,False)
                                         ;EndIf
-                                        If dist < 0.2 Then n\pathLocation = n\pathLocation + 1
+                                        If n\playerDistance < 0.2 Then n\pathLocation = n\pathLocation + 1
                                     EndIf
                                     
                                 EndIf
@@ -239,13 +243,13 @@ Function UpdateNPCtype966(n.NPCs)
                         Else
                             n\angle = VectorYaw(EntityX(mainPlayer\collider)-EntityX(n\collider),0,EntityZ(mainPlayer\collider)-EntityZ(n\collider))
                             
-                            If dist<1.0 Then n\state=10
+                            If n\playerDistance<1.0 Then n\state=10
                             
                         EndIf
                         
                         n\currSpeed = CurveValue(n\speed,n\currSpeed,10.0)
                     Else
-                        If TimeInPosMilliSecs() > n\state2 And dist<16.0 Then
+                        If TimeInPosMilliSecs() > n\state2 And n\playerDistance<16.0 Then
                             HideEntity n\collider
                             EntityPick(n\collider, 1.5)
                             If PickedEntity() <> 0 Then
@@ -298,7 +302,7 @@ Function UpdateNPCtype966(n.NPCs)
                     EndIf
                 EndIf
                 
-                If dist<1.0 Then
+                If n\playerDistance<1.0 Then
                     If n\frame>2173.0 And prevFrame<=2173.0 Or n\frame>2203.0 And prevFrame<=2203.0 Or n\frame>2227.0 And prevFrame<=2227.0 Then
                         PlayRangedSound(LoadTempSound("SFX/General/Slash"+Rand(1,2)+".ogg"), mainPlayer\cam, n\collider)
                         mainPlayer\injuries = mainPlayer\injuries + Rnd(0.5,1.0)								

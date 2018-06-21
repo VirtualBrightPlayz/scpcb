@@ -58,8 +58,9 @@ Function InitializeNPCtypeApache(n.NPCs)
 End Function
 
 Function UpdateNPCtypeApache(n.NPCs)
-    Local dist# = EntityDistance(mainPlayer\collider, n\collider)
-    If dist<60.0 Then 
+    Local dist2#, dist#, target%, pvt%
+	
+    If n\playerDistance<60.0 Then 
         If mainPlayer\currRoom\roomTemplate\name = "exit1" Then 
             dist2 = Max(Min(EntityDistance(n\collider, mainPlayer\currRoom\objects[3])/(8000.0*RoomScale),1.0),0.0)
         Else 
@@ -185,11 +186,12 @@ Function UpdateNPCtypeApache(n.NPCs)
                 PositionEntity(n\collider, EntityX(n\obj), EntityY(n\obj), EntityZ(n\obj))
                 
                 If EntityDistance(n\obj, target) <0.3 Then
-                    If TempSound2 <> 0 Then FreeSound TempSound2 : TempSound2 = 0
-                    TempSound2 = LoadSound("SFX/Character/Apache/Crash"+Rand(1,2)+".ogg")
-                    mainPlayer\camShake = Max(mainPlayer\camShake, 3.0)
-                    PlaySound2 TempSound2
-                    n\state = 5
+					;TODO:
+;                    If TempSound2 <> 0 Then FreeSound TempSound2 : TempSound2 = 0
+;                    TempSound2 = LoadSound("SFX/Character/Apache/Crash"+Rand(1,2)+".ogg")
+;                    mainPlayer\camShake = Max(mainPlayer\camShake, 3.0)
+;                    PlaySound2 TempSound2
+;                    n\state = 5
                 EndIf
                 
                 FreeEntity target

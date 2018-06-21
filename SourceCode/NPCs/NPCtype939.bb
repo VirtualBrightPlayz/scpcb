@@ -1,12 +1,16 @@
 Function InitializeNPCtype939(n.NPCs)
-    ;i = 53
-    ;For n2.NPCs = Each NPCs
-    ;	If (n\npcType = n2\npctype) And (n<>n2) Then i=i+36
-    ;Next
-    ;n\nVName = "SCP-939-"+i
-    Local amount939% = 0
+    Local i% = 53
+	Local n2.NPCs
     For n2.NPCs = Each NPCs
-        If (n\npcType = n2\npctype) And (n<>n2) Then
+		If (n\npcType = n2\npcType) And (n<>n2) Then
+			i = i + Rand(12, 36)
+		EndIf
+	Next
+    n\nvName = "SCP-939-"+i
+    Local amount939% = 0
+	
+    For n2.NPCs = Each NPCs
+        If (n\npcType = n2\npcType) And (n<>n2) Then
             amount939% = amount939% + 1
         EndIf
     Next
@@ -19,7 +23,7 @@ Function InitializeNPCtype939(n.NPCs)
     EntityRadius n\collider, 0.3
     EntityType n\collider, HIT_PLAYER
     For n2.NPCs = Each NPCs
-        If n\npcType = n2\npctype And n<>n2 Then
+        If n\npcType = n2\npcType And n<>n2 Then
             n\obj = CopyEntity (n2\obj)
             Exit
         EndIf
@@ -28,7 +32,7 @@ Function InitializeNPCtype939(n.NPCs)
     If n\obj = 0 Then 
         n\obj = LoadAnimMesh("GFX/NPCs/scp939/scp-939.b3d")
         
-        temp# = GetINIFloat("DATA/NPCs.ini", "SCP-939", "scale")/2.5
+        Local temp# = GetINIFloat("DATA/NPCs.ini", "SCP-939", "scale")/2.5
         ScaleEntity n\obj, temp, temp, temp		
     EndIf
     
@@ -36,6 +40,8 @@ Function InitializeNPCtype939(n.NPCs)
 End Function
 
 Function UpdateNPCtype939(n.NPCs)
+	Local dist#, prevFrame%, temp%, angle#
+	
     If mainPlayer\currRoom\roomTemplate\name <> "room3storage" Then
         n\state = 66
     EndIf

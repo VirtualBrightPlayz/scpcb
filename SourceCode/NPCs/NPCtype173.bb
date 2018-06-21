@@ -52,6 +52,9 @@ Function InitializeNPCtype173(n.NPCs)
 End Function
 
 Function UpdateNPCtype173(n.NPCs)
+	Local x%, z%, i%
+	Local w.WayPoints
+	
 	If (n\state = STATE173_IDLE Or n\state = STATE173_CONTAINED) Then
 		Return
 	EndIf
@@ -116,13 +119,13 @@ Function UpdateNPCtype173(n.NPCs)
 				If dist > 50 Then
 					If Rand(70)=1 Then
 						If mainPlayer\currRoom\roomTemplate\name <> "exit1" And mainPlayer\currRoom\roomTemplate\name <> "gatea" And mainPlayer\currRoom\roomTemplate\name <> "pocketdimension" Then
-							For w.waypoints = Each WayPoints
+							For w.WayPoints = Each WayPoints
 								If Rand(5)=1 Then ;w\door=Null And (TODO: fix?)
 									x = Abs(EntityX(mainPlayer\collider) - EntityX(w\obj, True))
 									If x < 25.0 And x > 15.0 Then
 										z = Abs(EntityZ(mainPlayer\collider)-EntityZ(w\obj,True))
 										If z < 25 And z > 15.0 Then
-											DebugLog "MOVING 173 TO " + w\room\roomtemplate\name
+											DebugLog "MOVING 173 TO " + w\room\roomTemplate\name
 											PositionEntity(n\collider, EntityX(w\obj,True), EntityY(w\obj,True)+0.25,EntityZ(w\obj,True))
 											ResetEntity(n\collider)
 											Exit

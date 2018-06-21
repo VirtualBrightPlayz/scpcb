@@ -8,7 +8,7 @@ Function InitializeNPCtype860(n.NPCs)
     
     EntityFX(n\obj, 1)
     
-    tex = LoadTexture("GFX/NPCs/scp860/860_eyes.png",1+2)
+    Local tex% = LoadTexture("GFX/NPCs/scp860/860_eyes.png",1+2)
     
     n\obj2 = CreateSprite()
     ScaleSprite(n\obj2, 0.1, 0.1)
@@ -21,17 +21,18 @@ Function InitializeNPCtype860(n.NPCs)
     
     n\speed = (GetINIFloat("DATA/NPCs.ini", "forestmonster", "speed") / 100.0)
     
-    temp# = (GetINIFloat("DATA/NPCs.ini", "forestmonster", "scale") / 20.0)
+    Local temp# = (GetINIFloat("DATA/NPCs.ini", "forestmonster", "scale") / 20.0)
     ScaleEntity n\obj, temp, temp, temp	
     
     MeshCullBox (n\obj, -MeshWidth(n\obj)*2, -MeshHeight(n\obj)*2, -MeshDepth(n\obj)*2, MeshWidth(n\obj)*2, MeshHeight(n\obj)*4, MeshDepth(n\obj)*4)
 End Function
 
 Function UpdateNPCtype860(n.NPCs)
+	Local x%, z%, x2%, z2%
+	Local prevFrame%, angle#, temp%
+	
     If mainPlayer\currRoom\roomTemplate\name = "room860" Then
         Local fr.Forest=mainPlayer\currRoom\fr;Object.Forest(e\room\objects[1])
-        
-        dist = EntityDistance(mainPlayer\collider,n\collider)
         
         Select n\state
             Case 0 ;idle (hidden)
@@ -123,7 +124,7 @@ Function UpdateNPCtype860(n.NPCs)
                             ;Animate2(n\obj, AnimTime(n\obj), 200, 297, 0.5,False)
                             ;If AnimTime(n\obj)=297 Then SetAnimTime(n\obj,298) : PlayRangedSound(sndManager\footstep8601[Rand(0, 2)]\internal, mainPlayer\cam, n\collider, 15.0)
                         Else
-                            angle = CurveAngle(GetAngle(EntityX(n\collider),EntityZ(n\collider),EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider)),EntityYaw(n\collider)+90,20.0)
+                            angle# = CurveAngle(GetAngle(EntityX(n\collider),EntityZ(n\collider),EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider)),EntityYaw(n\collider)+90,20.0)
                             
                             RotateEntity n\collider, 0, angle-90, 0, True
                             
@@ -134,7 +135,7 @@ Function UpdateNPCtype860(n.NPCs)
                             n\currSpeed = CurveValue(n\speed, n\currSpeed, 10.0)
                             MoveEntity n\collider, 0,0,n\currSpeed*timing\tickDuration
                             
-                            If dist>15.0 Then
+                            If n\playerDistance>15.0 Then
                                 PositionEntity n\collider, 0,-110,0
                                 n\state = 0
                                 n\state2 = 0
@@ -189,7 +190,7 @@ Function UpdateNPCtype860(n.NPCs)
                     ;Animate2(n\obj, AnimTime(n\obj), 494, 569, n\currSpeed*25)
                     
                     If n\state2 = 0 Then
-                        If dist<8.0 Then
+                        If n\playerDistance<8.0 Then
                             If EntityInView(n\collider,mainPlayer\cam) Then
                                 PlaySound2 LoadTempSound("SFX/SCP/860/Chase"+Rand(1,2)+".ogg")
                                 
@@ -214,12 +215,12 @@ Function UpdateNPCtype860(n.NPCs)
                         n\state3 = Max(n\state3 - timing\tickDuration,0)
                     EndIf
                     
-                    If dist<4.5 Or n\state3 > Rnd(200,250) Then
+                    If n\playerDistance<4.5 Or n\state3 > Rnd(200,250) Then
                         n\soundChannels[0] = PlayRangedSound(LoadTempSound("SFX/SCP/860/Cancer"+Rand(3,5)+".ogg"), mainPlayer\cam, n\collider)
                         n\state = 3
                     EndIf
                     
-                    If dist > 16.0 Then
+                    If n\playerDistance > 16.0 Then
                         n\state = 0
                         n\state2 = 0
                         PositionEntity n\collider, 0,-110,0
@@ -244,7 +245,7 @@ Function UpdateNPCtype860(n.NPCs)
                 If n\sounds[0] = 0 Then n\sounds[0] = LoadSound("SFX/General/Slash1.ogg")
                 If n\sounds[1] = 0 Then n\sounds[1] = LoadSound("SFX/General/Slash2.ogg")
                 
-                If dist>1.1 And (Not mainPlayer\dead) Then 
+                If n\playerDistance>1.1 And (Not mainPlayer\dead) Then 
                     n\currSpeed = CurveValue(n\speed*0.8, n\currSpeed, 10.0)
                     
                     AnimateNPC(n, 298, 316, n\currSpeed*10)
@@ -281,9 +282,9 @@ Function UpdateNPCtype860(n.NPCs)
             PositionEntity(n\obj, EntityX(n\collider), EntityY(n\collider)-0.1, EntityZ(n\collider))
             RotateEntity n\obj, EntityPitch(n\collider)-90, EntityYaw(n\collider), EntityRoll(n\collider), True
             
-            If dist > 8.0 Then
+            If n\playerDistance > 8.0 Then
                 ShowEntity n\obj2
-                EntityAlpha n\obj2, Min(dist-8.0,1.0)
+                EntityAlpha n\obj2, Min(n\playerDistance-8.0,1.0)
                 
                 PositionEntity(n\obj2, EntityX(n\obj), EntityY(n\obj) , EntityZ(n\obj))
                 RotateEntity(n\obj2, 0, EntityYaw(n\collider) - 180, 0)
@@ -291,7 +292,7 @@ Function UpdateNPCtype860(n.NPCs)
                 
                 ;render distance is set to 8.5 inside the forest,
                 ;so we need to cheat a bit to make the eyes visible if they're further than that
-                pvt = CreatePivot()
+                Local pvt% = CreatePivot()
                 PositionEntity pvt, EntityX(mainPlayer\cam),EntityY(mainPlayer\cam),EntityZ(mainPlayer\cam)
                 PointEntity pvt, n\obj2
                 MoveEntity pvt, 0,0,8.0

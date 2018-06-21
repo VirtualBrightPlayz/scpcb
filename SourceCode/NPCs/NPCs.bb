@@ -479,7 +479,7 @@ End Function
 
 Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False)
 	;muzzle flash
-	Local p.particles = CreateParticle(x,y,z, 1, Rnd(0.08,0.1), 0.0, 5)
+	Local p.Particles = CreateParticle(x,y,z, 1, Rnd(0.08,0.1), 0.0, 5)
 	TurnEntity p\obj, 0,0,Rnd(360)
 	p\aChange = -0.15
 	
@@ -769,10 +769,6 @@ Function Console_SpawnNPC(c_input$,state%=-9999)
 			n.NPCs = CreateNPC(NPCtype066, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider))
 		Case "pdplane"
 			n.NPCs = CreateNPC(NPCtypePdPlane, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider))
-		Case "1048-a","scp1048-a","scp-1048-a","scp1048a","scp-1048a"
-			n.NPCs = CreateNPC(NPCtype1048a, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider))
-		Case "scp-008-1","008-1","scp008-1"
-			n.NPCs = CreateNPC(NPCtype008, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider))
 		Case "scp-1499-1","scp1499-1","1499-1"
 			n.NPCs = CreateNPC(NPCtype1499, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider))
 		Default 
