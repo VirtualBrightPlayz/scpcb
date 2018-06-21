@@ -3,7 +3,7 @@ Function FillRoom_lck_096_2c(r.Rooms)
     Local d.Doors, d2.Doors, sc.SecurityCams, de.Decals, r2.Rooms, sc2.SecurityCams
 	Local it.Items, i%
 	Local xtemp%, ytemp%, ztemp%
-	
+
 	Local t1;, Bump
 
     For i = 0 To 5
@@ -33,7 +33,7 @@ Function FillRoom_lck_096_2c(r.Rooms)
     sc\turn = 45
 
     TurnEntity(sc\cameraObj, 40, 0, 0)
-    EntityParent(sc\obj, r\obj)				
+    EntityParent(sc\obj, r\obj)
 
     PositionEntity(sc\scrObj, r\x + 96.0 * RoomScale, 1.1, r\z - 668.0 * RoomScale)
     EntityParent(sc\scrObj, r\obj)

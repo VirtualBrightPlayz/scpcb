@@ -35,36 +35,36 @@ End Function
 
 Function LoadRM2(rt.RoomTemplates)
 	Local fullFilename$ = rt\objPath
-	
+
 	Local opaqueMesh% = CreateMesh()
 	Local alphaMesh% = 0
-	
+
 	Local usedTextures.IntArrayList = CreateIntArrayList()
-	
+
 	Local collisionObjs.IntArrayList = CreateIntArrayList()
 	Local props.IntArrayList = Null
-	
+
 	Local filename$ = StripPath(fullFilename)
 	Local filepath$ = StripFilename(fullFilename)
-	
+
 	Local file% = ReadFile(fullFilename)
-	
+
 	If file=0 Then
 		RuntimeError("Failed to read "+fullFilename)
 	EndIf
-	
+
 	Local header$ = ""
 	Local i%
 	For i% = 0 To 3
 		header=header+Chr(ReadByte(file))
 	Next
-	
+
 	If header<>RM2_HEADER Then
 		RuntimeError("Error while loading "+fullFilename+": expected "+RM2_HEADER+", found "+header)
 	EndIf
-	
+
 	Local partType%
-	
+
 	Local count%
 	Local texName$
 	Local flags%
@@ -73,7 +73,7 @@ Function LoadRM2(rt.RoomTemplates)
 	Local uvSet%
 	Local texture%
 	Local shouldLoadTexture%
-	
+
 	Local mesh%
 	Local clonedMesh%
 	Local brush%
@@ -93,30 +93,30 @@ Function LoadRM2(rt.RoomTemplates)
 	Local vert2%
 	Local vert3%
 	Local j%
-	
+
 	Local tempScreen.TempScreens
 	Local waypointTemp.TempWayPoints
-	
+
 	Local range#
 	Local intensity#
-	
+
 	Local pitch#
 	Local yaw#
 	Local roll#
-	
+
 	Local innerConeAngle#
 	Local outerConeAngle#
-	
+
 	Local lightTemplate.LightTemplates
-	
+
 	Local ambienceInd%
-	
+
 	Local propName$
 	Local xScale#
 	Local yScale#
 	Local zScale#
     Local prop.Props
-	
+
 	Local prevType%
 	While Not Eof(file)
 		prevType = partType
@@ -131,14 +131,14 @@ Function LoadRM2(rt.RoomTemplates)
 					loadFlags = flags Shr 4
 					blendFlags = flags And $0F
 					uvSet = ReadByte(file)
-					
+
 					mat = GetCache(texName)
 					If mat=Null Then
 						shouldLoadTexture=True
 					ElseIf mat\diff=0 Then
 						shouldLoadTexture=True
 					EndIf
-					
+
 					If shouldLoadTexture Then
 						If blendFlags=RM2_BLENDFLAG_NORMAL Then
 							blendFlags = 2
@@ -147,7 +147,7 @@ Function LoadRM2(rt.RoomTemplates)
 						ElseIf blendFlags=RM2_BLENDFLAG_LM Then
 							blendFlags = 3
 						EndIf
-						
+
 						texture = LoadRMeshTexture(filepath,texName,loadFlags)
 						TextureBlend(texture,blendFlags)
 						TextureCoords(texture,uvSet)
@@ -160,13 +160,13 @@ Function LoadRM2(rt.RoomTemplates)
 				;[Block]
 				mesh = CreateMesh()
 				brush = 0
-				
+
 				layerCount = 0
 				For i% = 0 To 1
 					textureIndex[i] = ReadByte(file)
 					If textureIndex[i]>0 Then layerCount=layerCount+1
 				Next
-				
+
 				For i% = 0 To 1
 					mat = Null
 					If textureIndex[i]>0 Then
@@ -177,24 +177,24 @@ Function LoadRM2(rt.RoomTemplates)
 						BrushTexture(brush,mat\diff,0,i+(layerCount=2)) ;TODO: replace this hack once we can start using shaders
 					EndIf
 				Next
-				
+
 				If brush<>0 And (layerCount=2) Then
 					BrushTexture brush,AmbientLightRoomTex,0,0
 				EndIf
-				
+
 				surf = CreateSurface(mesh)
 				If brush<>0 Then
 					PaintSurface surf,brush
 					FreeBrush brush
 				EndIf
-				
+
 				;vertices
 				count = ReadShort(file)
 				For i%=0 To count-1
 					x = ReadFloat(file) : y = ReadFloat(file) : z = ReadFloat(file)
-					
+
 					r = ReadByte(file) : g = ReadByte(file) : b = ReadByte(file)
-					
+
 					AddVertex(surf,x,y,z)
 					VertexColor(surf,i,r,g,b,1.0)
 					For j%=0 To 1
@@ -202,17 +202,17 @@ Function LoadRM2(rt.RoomTemplates)
 						VertexTexCoords(surf,i,u,v,0.0,j)
 					Next
 				Next
-				
+
 				;triangles
 				count = ReadShort(file)
 				For i%=0 To count-1
 					vert1 = ReadShort(file)
 					vert2 = ReadShort(file)
 					vert3 = ReadShort(file)
-					
+
 					AddTriangle(surf,vert1,vert2,vert3)
 				Next
-				
+
 				If partType=RM2_OPAQUE Then
 					AddMesh(mesh,opaqueMesh)
 				ElseIf partType=RM2_ALPHA Then
@@ -220,45 +220,45 @@ Function LoadRM2(rt.RoomTemplates)
 					AddMesh(mesh,alphaMesh)
 				EndIf
 				EntityPickMode(mesh,2,True)
-				
+
 				;double-sided collision bois
 				clonedMesh = CopyMesh(mesh)
 				FlipMesh(clonedMesh)
 				AddMesh(clonedMesh,mesh)
 				FreeEntity(clonedMesh)
-				
+
 				EntityAlpha(mesh,0.0)
-				
+
 				EntityType mesh,HIT_MAP
 				PushIntArrayListElem(collisionObjs,mesh) : HideEntity(mesh)
 				;[End Block]
 			Case RM2_INVISIBLE
 				;[Block]
 				mesh = CreateMesh()
-				
+
 				surf = CreateSurface(mesh)
-				
+
 				;vertices
 				count = ReadShort(file)
-				
+
 				For i%=0 To count-1
 					x = ReadFloat(file) : y = ReadFloat(file) : z = ReadFloat(file)
-					
+
 					AddVertex(surf,x,y,z)
 					VertexColor(surf,i,0,255,0)
 				Next
-				
+
 				;triangles
 				count = ReadShort(file)
-				
+
 				For i%=0 To count-1
 					vert1 = ReadShort(file)
 					vert2 = ReadShort(file)
 					vert3 = ReadShort(file)
-					
+
 					AddTriangle(surf,vert1,vert2,vert3)
 				Next
-				
+
 				EntityFX(mesh,1+2)
 				EntityAlpha(mesh,1.0)
 				EntityType mesh,HIT_MAP
@@ -267,7 +267,7 @@ Function LoadRM2(rt.RoomTemplates)
 				;[End Block]
 			Case RM2_SCREEN
 				;[Block]
-				tempScreen = New TempScreens	
+				tempScreen = New TempScreens
 				tempScreen\x = ReadFloat(file)
 				tempScreen\y = ReadFloat(file)
 				tempScreen\z = ReadFloat(file)
@@ -308,14 +308,14 @@ Function LoadRM2(rt.RoomTemplates)
 				x = ReadFloat(file)
 				y = ReadFloat(file)
 				z = ReadFloat(file)
-				
+
 				range = ReadFloat(file)
-				
+
 				r = ReadByte(file)
 				g = ReadByte(file)
 				b = ReadByte(file)
 				intensity = Float(ReadByte(file))/255.0
-				
+
 				AddTempLight(rt, x,y,z, LIGHTTYPE_POINT, range, r,g,b)
 				;[End Block]
 			Case RM2_SPOTLIGHT
@@ -323,22 +323,22 @@ Function LoadRM2(rt.RoomTemplates)
 				x = ReadFloat(file)
 				y = ReadFloat(file)
 				z = ReadFloat(file)
-				
+
 				range = ReadFloat(file)
-				
+
 				r = ReadByte(file)
 				g = ReadByte(file)
 				b = ReadByte(file)
 				intensity = Float(ReadByte(file))/255.0
-				
+
 				pitch = ReadFloat(file)
 				yaw = ReadFloat(file)
-				
+
 				innerConeAngle = ReadFloat(file)
 				outerConeAngle = ReadFloat(file)
-				
+
 				lightTemplate = AddTempLight(rt, x,y,z, LIGHTTYPE_SPOT, range, r*intensity,g*intensity,b*intensity)
-				
+
 				lightTemplate\pitch = pitch
 				lightTemplate\yaw = yaw
 				lightTemplate\innerconeangle = innerConeAngle
@@ -349,18 +349,18 @@ Function LoadRM2(rt.RoomTemplates)
 				x = ReadFloat(file)
 				y = ReadFloat(file)
 				z = ReadFloat(file)
-				
+
 				ambienceInd = ReadByte(file)
-				
+
 				range = ReadFloat(file)
-				
+
 				For j = 0 To MaxRoomEmitters-1
 					If rt\tempSoundEmitter[j]=0 Then
 						rt\tempSoundEmitterX[j]=x
 						rt\tempSoundEmitterY[j]=y
 						rt\tempSoundEmitterZ[j]=z
 						rt\tempSoundEmitter[j]=ambienceInd
-						
+
 						rt\tempSoundEmitterRange[j]=range
 						;temp1i=1
 						Exit
@@ -370,21 +370,21 @@ Function LoadRM2(rt.RoomTemplates)
 			Case RM2_PROP
 				;[Block]
 				propName = ReadByteString(file)
-				
+
 				x = ReadFloat(file)
 				y = ReadFloat(file)
 				z = ReadFloat(file)
-				
+
 				pitch = ReadFloat(file)
 				yaw = ReadFloat(file)
 				roll = ReadFloat(file)
-				
+
 				xScale = ReadFloat(file)
 				yScale = ReadFloat(file)
 				zScale = ReadFloat(file)
-				
+
 				prop = LoadProp(propName,x,y,z,pitch,yaw,roll,xScale,yScale,zScale)
-				
+
 				If props=Null Then props=CreateIntArrayList()
 				PushIntArrayListElem(props,Handle(prop))
 				;[End Block]
@@ -392,23 +392,23 @@ Function LoadRM2(rt.RoomTemplates)
 				RuntimeError "Error after reading type "+prevType
 		End Select
 	Wend
-	
+
 	DeleteIntArrayList(usedTextures)
-	
+
 	EntityFX(opaqueMesh,1+2)
 	If alphaMesh<>0 Then
 		EntityFX(alphaMesh,1+2+16)
 	EndIf
-	
+
 	rt\opaqueMesh = opaqueMesh : HideEntity(opaqueMesh)
 	If alphaMesh<>0 Then
 		rt\alphaMesh = alphaMesh : HideEntity(alphaMesh)
 	EndIf
 	rt\collisionObjs = collisionObjs
 	rt\props = props
-	
+
 	rt\loaded = True
-	
+
 	CloseFile(file)
 End Function
 

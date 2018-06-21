@@ -12,7 +12,7 @@ Type KeyBinds
     Field crouch%
 
     Field save%
-    Field console% 
+    Field console%
 End Type
 
 Type Options
@@ -111,10 +111,10 @@ Function SaveOptionsINI()
 
     PutINIValue(OptionFile, optAud, "music volume", userOptions\musicVolume)
     PutINIValue(OptionFile, optAud, "sound volume", userOptions\soundVolume)
-    	
+
     PutINIValue(OptionFile, optHud, "HUD enabled", userOptions\hudEnabled)
     PutINIValue(OptionFile, optHud, "show FPS", userOptions\showFPS)
-    
+
     PutINIValue(OptionFile, optBin, "Right key", keyBinds\rght)
     PutINIValue(OptionFile, optBin, "Left key", keyBinds\lft)
     PutINIValue(OptionFile, optBin, "Up key", keyBinds\up)

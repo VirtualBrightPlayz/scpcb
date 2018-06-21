@@ -126,7 +126,7 @@ Function VerifyResolution%()
 			EndIf
 		EndIf
 	Next
-	
+
 	userOptions\screenWidth = GfxModeWidth(selectedMode)
 	userOptions\screenHeight = GfxModeHeight(selectedMode)
 
@@ -140,10 +140,10 @@ Global ConsoleFont.MarkedForRemoval
 Type Timing
 	Field tickDuration# ;tick duration (1 = 1/70th of a second) TODO: change this value to be relative to a second
 	Field accumulator# ;accumulated steps
-	
+
 	Field prevTime%
 	Field currTime%
-	
+
 	Field fps#
 End Type
 Global timing.Timing
@@ -344,19 +344,19 @@ Function Main%()
 	keyBinds.KeyBinds = New KeyBinds
 	userOptions.Options = New Options
 	LoadOptionsINI()
-	
+
 	timing = New Timing
 	SetTickrate(60)
 
 	sndManager.SoundManager = CreateSoundManager()
-	
+
 	If userOptions\launcher Then
 		CurrGameState = GAMESTATE_LAUNCHER
 		launcher = CreateLauncher()
 	Else
 		InitializeMainGame()
 	EndIf
-	
+
 	Repeat
 		UpdateGame()
 	Forever
@@ -366,36 +366,36 @@ End Function
 Function InitializeMainGame()
 	CurrGameState = GAMESTATE_MAINMENU
 	CurrGameSubstate = GAMESUBSTATE_MAINMENU_MAIN
-	
+
 	Graphics3DExt(userOptions\screenWidth, userOptions\screenHeight, 0, (1 + (Not userOptions\fullscreen)))
 	AppTitle "SCP - Containment Breach v"+VERSION
-	
+
 	MenuScale = (userOptions\screenHeight / 1024.0)
-	
+
 	CurrFrameLimit = userOptions\framelimit
-	
+
 	SetBuffer(BackBuffer())
-	
+
 	SeedRnd MilliSecs()
-	
+
 	CanSave = True
-	
+
 	LoadingBack = LoadImage("Loadingscreens/loadingback.jpg")
 	InitLoadingScreens("Loadingscreens/loadingscreens.ini")
-	
+
 	InitializeUIAssets()
 
 	musicManager.MusicManager = CreateMusicManager()
 	SetNextMusicTrack(MUS_EZ, False)
-	
+
 	SetFont uiAssets\font[1]
-	
+
 	DrawLoading(0, True)
-	
+
 	Brightness% = 50
-	
+
 	DrawLoading(10, True)
-	
+
 	;TODO: doesn't need to be hardcoded
 	;0 = light containment, 1 = heavy containment, 2 = entrance
 	;AmbientSFXAmount(0)=8 : AmbientSFXAmount(1)=11 : AmbientSFXAmount(2)=12
@@ -403,12 +403,12 @@ Function InitializeMainGame()
 	;AmbientSFXAmount(3)=15 : AmbientSFXAmount(4)=5
 	;5 = forest
 	;AmbientSFXAmount(5)=10
-	
+
 	DrawLoading(20, True)
-	
+
 	RadioSFX(1,0) = LoadSound("SFX/Radio/RadioAlarm.ogg")
 	RadioSFX(1,1) = LoadSound("SFX/Radio/RadioAlarm2.ogg")
-	
+
 	Local i%
 	For i = 0 To 8
 		RadioSFX(2,i) = LoadSound("SFX/Radio/scpradio"+i+".ogg")
@@ -416,7 +416,7 @@ Function InitializeMainGame()
 	RadioSquelch = LoadSound("SFX/Radio/squelch.ogg")
 	RadioStatic = LoadSound("SFX/Radio/static.ogg")
 	RadioBuzz = LoadSound("SFX/Radio/buzz.ogg")
-	
+
 	DrawLoading(25, True)
 	;TODO: Audio.bb
 	For i = 7 To 9
@@ -428,68 +428,68 @@ Function InitializeMainGame()
 	;IntroSFX(13) = LoadSound("SFX/intro/shoot1.ogg")
 	;IntroSFX(14) = LoadSound("SFX/intro/shoot2.ogg")
 	IntroSFX(15) = LoadSound("SFX/Room/Intro/173Vent.ogg")
-	
+
 	;TODO: Audio.bb
 	AlarmSFX(0) = LoadSound("SFX/Alarm/Alarm.ogg")
 	;AlarmSFX(1) = LoadSound("SFX/Alarm/Alarm2.ogg")
 	AlarmSFX(2) = LoadSound("SFX/Alarm/Alarm3.ogg")
-	
+
 	For i = 0 To 8
 		DamageSFX(i) = LoadSound("SFX/Character/D9341/Damage"+(i+1)+".ogg")
 	Next
-	
+
 	;TODO: Player struct.
 	For i = 0 To 2
 		CoughSFX(i) = LoadSound("SFX/Character/D9341/Cough" + (i + 1) + ".ogg")
 	Next
-	
+
 	DrawLoading(30, True)
-	
+
 	;TODO: Assets.bb
 	;NVGImages = LoadAnimImage("GFX/battery.png",64,64,0,2)
 	;MaskImage NVGImages,255,0,255
-	
+
 	;TODO: Die.
 	InFacility% = True
-	
+
 	;TODO: Remove.
 	IsZombie% = False
-	
+
 	;TODO: This is fucking stupid.
 	room2gw_brokendoor% = False
 	room2gw_x# = 0.0
 	room2gw_z# = 0.0
-	
+
 	DrawLoading(40,True)
-	
+
 	;TODO: remove/replace with functions
 	SecondaryLightOn# = True
 	RemoteDoorOn = True
 	Contained106 = False
-	
+
 	DrawLoading(80,True)
-	
+
 	viewport_center_x% = userOptions\screenWidth / 2
 	viewport_center_y% = userOptions\screenHeight / 2
-	
+
 	mouse_left_limit% = 250
 	mouse_right_limit% = userOptions\screenWidth - 250
 	mouse_top_limit% = 150
 	mouse_bottom_limit% = userOptions\screenHeight - 150
-	
+
 	Collisions HIT_PLAYER, HIT_MAP, 2, 2
 	Collisions HIT_PLAYER, HIT_PLAYER, 1, 3
 	Collisions HIT_ITEM, HIT_MAP, 2, 2
 	Collisions HIT_APACHE, HIT_APACHE, 1, 2
 	Collisions HIT_DEAD, HIT_MAP, 2, 2
-	
+
 	DrawLoading(90, True)
-	
+
 	LoadSaveGames()
-	
+
 	FlushKeys()
 	FlushMouse()
-	
+
 	DrawLoading(100, True)
 End Function
 
@@ -502,87 +502,87 @@ Function UpdateGame()
 	elapsedMilliseconds = timing\currTime-timing\prevTime
 	AddToTimingAccumulator(elapsedMilliseconds)
 	timing\prevTime = timing\currTime
-	
+
 	;TODO: remove or replace
 	;If userOptions\framelimit > 0 Then
 	;    ;Framelimit
 	;	Local WaitingTime% = (1000.0 / userOptions\framelimit) - (MilliSecs() - LoopDelay)
 	;	Delay WaitingTime%
-	;	
+	;
 	;   LoopDelay = MilliSecs()
 	;EndIf
-	
+
 	;Counting the fps
 	Local instantFramerate# = 1000.0/Max(1,elapsedMilliseconds)
 	timing\fps = Max(0,timing\fps*0.99 + instantFramerate*0.01)
-	
+
 	;[Block]
 	While timing\accumulator>0.0
 		timing\accumulator = timing\accumulator-timing\tickDuration
 		If timing\accumulator<=0.0 Then CaptureWorld
-		
+
 		Cls
-		
+
 		DoubleClick = False
 		MouseHit1 = MouseHit(1)
 		If MouseHit1 Then
 			If TimeInPosMilliSecs() - LastMouseHit1 < 800 Then DoubleClick = True
 			LastMouseHit1 = TimeInPosMilliSecs()
 		EndIf
-		
+
 		Local prevmousedown1 = MouseDown1
 		MouseDown1 = MouseDown(1)
 		If prevmousedown1 = True And MouseDown1=False Then MouseUp1 = True Else MouseUp1 = False
-		
+
 		MouseHit2 = MouseHit(2)
 		;TODO: A better way?
 		If (CurrGameState <> GAMESTATE_LAUNCHER) Then
 			UpdateMusic()
 		EndIf
-		
+
 		If CurrGameState=GAMESTATE_LAUNCHER Then
 			UpdateLauncher()
 		ElseIf CurrGameState=GAMESTATE_MAINMENU Then
 			UpdateMainMenu()
 		Else
 			If (Not MouseDown1) And (Not MouseHit1) Then mainPlayer\grabbedEntity = 0
-			
+
 			;ShouldPlay = 0 ;TODO: FIX ;Min(PlayerZone,2)
-			
+
 			DrawHandIcon = False
-			
+
 			If timing\tickDuration > 0 Then UpdateSecurityCams()
-			
+
 			If KeyHit(keyBinds\inv) Then
 				ToggleInventory(mainPlayer)
 			EndIf
-			
-			If mainPlayer\currRoom\roomTemplate\name <> "pocketdimension" And mainPlayer\currRoom\roomTemplate\name <> "gatea" And mainPlayer\currRoom\roomTemplate\name <> "exit1" And (Not IsPaused()) Then 
-				
+
+			If mainPlayer\currRoom\roomTemplate\name <> "pocketdimension" And mainPlayer\currRoom\roomTemplate\name <> "gatea" And mainPlayer\currRoom\roomTemplate\name <> "exit1" And (Not IsPaused()) Then
+
 				If Rand(1500) = 1 Then
 					;TODO: reimplement
 ;					For i = 0 To 5
 ;						If AmbientSFX(i,CurrAmbientSFX) <> 0 Then
 ;							If IsChannelPlaying(AmbientSFXCHN) = 0 Then FreeSound AmbientSFX(i,CurrAmbientSFX) : AmbientSFX(i,CurrAmbientSFX) = 0
-;						EndIf			
+;						EndIf
 ;					Next
-;					
+;
 ;					PositionEntity (SoundEmitter, EntityX(mainPlayer\cam) + Rnd(-1.0, 1.0), 0.0, EntityZ(mainPlayer\cam) + Rnd(-1.0, 1.0))
-;					
+;
 ;					If mainPlayer\currRoom\roomTemplate\name = "room860"
 ;						For e.Events = Each Events
 ;							If e\name = "room860"
 ;								If e\eventState = 1.0 Then
 ;									PositionEntity (SoundEmitter, EntityX(mainPlayer\cam) + Rnd(-1.0, 1.0), 30.0, EntityZ(mainPlayer\cam) + Rnd(-1.0, 1.0))
 ;								EndIf
-;								
+;
 ;								Exit
 ;							EndIf
 ;						Next
 ;					EndIf
-					
+
 					;CurrAmbientSFX = Rand(0,AmbientSFXAmount(PlayerZone)-1) ;TODO: fix
-					
+
 					;Select PlayerZone
 					;	Case 0,1,2
 					;		If AmbientSFX(PlayerZone,CurrAmbientSFX)=0 Then AmbientSFX(PlayerZone,CurrAmbientSFX)=LoadSound("SFX/Ambient/Zone"+(PlayerZone+1)+"/ambient"+(CurrAmbientSFX+1)+".ogg")
@@ -593,32 +593,32 @@ Function UpdateGame()
 					;	Case 5
 					;		If AmbientSFX(PlayerZone,CurrAmbientSFX)=0 Then AmbientSFX(PlayerZone,CurrAmbientSFX)=LoadSound("SFX/Ambient/Forest/ambient"+(CurrAmbientSFX+1)+".ogg")
 					;End Select
-					
+
 					;AmbientSFXCHN = PlayRangedSound(AmbientSFX(PlayerZone,CurrAmbientSFX), mainPlayer\cam, SoundEmitter)
 				EndIf
-				
+
 				If Rand(50000) = 3 Then
 					Local RN$ = mainPlayer\currRoom\roomTemplate\name$
 					If RN$ <> "room860" And RN$ <> "room1123" And RN$ <> "173" And RN$ <> "dimension1499" Then
 						;If timing\tickDuration > 0 Then LightBlink = Rnd(1.0,2.0)
 						PlaySound2  LoadTempSound("SFX/SCP/079/Broadcast"+Rand(1,7)+".ogg")
-					EndIf 
+					EndIf
 				EndIf
 			EndIf
-			
+
 			;UpdateCheckpoint1 = False
 			;UpdateCheckpoint2 = False
-			
+
 			If Not IsPaused() Then
 				;LightVolume = CurveValue(TempLightVolume, LightVolume, 50.0)
 				;CameraFogRange(mainPlayer\cam, mainPlayer\camFogNear*LightVolume,mainPlayer\camFogFar*LightVolume)
 				;CameraFogColor(mainPlayer\cam, 0,0,0)
 				;CameraFogMode mainPlayer\cam,1
-				;CameraRange(mainPlayer\cam, 0.05, Min(mainPlayer\camFogFar*LightVolume*1.5,28))	
-				
-				AmbientLight Brightness, Brightness, Brightness	
+				;CameraRange(mainPlayer\cam, 0.05, Min(mainPlayer\camFogFar*LightVolume*1.5,28))
+
+				AmbientLight Brightness, Brightness, Brightness
 				mainPlayer\loudness = CurveValue(0.0, mainPlayer\loudness, 5.0)
-				
+
 				CanSave% = True
 				UpdateEmitters()
 				MouseLook()
@@ -637,47 +637,47 @@ Function UpdateGame()
 				;TimeCheckpointMonitors()
 				UpdateLeave1499()
 			EndIf
-			
+
 			;If InfiniteStamina Then mainPlayer\stamina = Min(100, mainPlayer\stamina + (100.0-mainPlayer\stamina)*0.01*timing\tickDuration)
-			
+
 			UpdateWorld()
 			ManipulateNPCBones()
 			UpdateNVG()
-			
+
 			mainPlayer\blurTimer = Min(CurveValue(0.0, mainPlayer\blurTimer, 20.0),1000.0)
 			;If mainPlayer\blurTimer > 0.0 Then
 			;	mainPlayer\blurTimer = Max(Min(0.95, mainPlayer\blurTimer / 1000.0), mainPlayer\blurTimer)
 			;	mainPlayer\blurTimer = Max(mainPlayer\blurTimer - timing\tickDuration, 0.0)
 			;EndIf
-			
+
 			;[Block]
-			
+
 			Local darkA# = 0.0
 			If Not IsPaused()  Then
 				If mainPlayer\sanity895 < 0 Then
 					mainPlayer\sanity895 = Min(mainPlayer\sanity895 + timing\tickDuration, 0.0)
-					If mainPlayer\sanity895 < (-200) Then 
+					If mainPlayer\sanity895 < (-200) Then
 						darkA = Max(Min((-mainPlayer\sanity895 - 200) / 700.0, 0.6), darkA)
-						If Not mainPlayer\dead Then 
+						If Not mainPlayer\dead Then
 							;HeartBeatVolume = Min(Abs(mainPlayer\sanity895+200)/500.0,1.0)
 							mainPlayer\heartbeatIntensity = Max(70 + Abs(mainPlayer\sanity895+200)/6.0,mainPlayer\heartbeatIntensity)
 						EndIf
 					EndIf
 				EndIf
-				
+
 				;TODO: fix
-	;			If EyeStuck > 0 Then 
+	;			If EyeStuck > 0 Then
 	;				mainPlayer\blinkTimer = mainPlayer\blinkFreq
 	;				EyeStuck = Max(EyeStuck-timing\tickDuration,0)
-	;				
+	;
 	;				If EyeStuck < 9000 Then mainPlayer\blurTimer = Max(mainPlayer\blurTimer, (9000-EyeStuck)*0.5)
 	;				If EyeStuck < 6000 Then darkA = Min(Max(darkA, (6000-EyeStuck)/5000.0),1.0)
-	;				If EyeStuck < 9000 And EyeStuck+timing\tickDuration =>9000 Then 
+	;				If EyeStuck < 9000 And EyeStuck+timing\tickDuration =>9000 Then
 	;					Msg = "The eyedrops are causing your eyes to tear up."
 	;					MsgTimer = 70*6
 	;				EndIf
 	;			EndIf
-				
+
 				If mainPlayer\blinkTimer < 0 Then
 					If mainPlayer\blinkTimer > - 5 Then
 						darkA = Max(darkA, Sin(Abs(mainPlayer\blinkTimer * 18.0)))
@@ -686,7 +686,7 @@ Function UpdateGame()
 					Else
 						darkA = Max(darkA, Abs(Sin(mainPlayer\blinkTimer * 18.0)))
 					EndIf
-					
+
 					If mainPlayer\blinkTimer <= - 20 Then
 						;Randomizes the frequency of blinking. Scales with difficulty.
 						Select SelectedDifficulty\otherFactors
@@ -696,36 +696,36 @@ Function UpdateGame()
 								mainPlayer\blinkFreq = Rnd(455,665)
 							Case HARD
 								mainPlayer\blinkFreq = Rnd(420,630)
-						End Select 
+						End Select
 						mainPlayer\blinkTimer = mainPlayer\blinkFreq
 					EndIf
-	
+
 					mainPlayer\blinkTimer = mainPlayer\blinkTimer - timing\tickDuration
 				Else
 					mainPlayer\blinkTimer = mainPlayer\blinkTimer - timing\tickDuration * 0.6 * mainPlayer\blinkEffect
 					;TODO: fix
 					;If EyeIrritation > 0 Then mainPlayer\blinkTimer=BlinkTimer-Min(EyeIrritation / 100.0 + 1.0, 4.0) * timing\tickDuration
-					
+
 					darkA = Max(darkA, 0.0)
 				EndIf
-				
+
 				;TODO: fix
 				;EyeIrritation = Max(0, EyeIrritation - timing\tickDuration)
-				
+
 				If mainPlayer\blinkEffectTimer > 0 Then
 					mainPlayer\blinkEffect = mainPlayer\blinkEffect - (timing\tickDuration/70)
 				Else
 					mainPlayer\blinkEffect = 1.0
 				EndIf
-				
+
 				;TODO: reimplement
 				;LightBlink = Max(LightBlink - (timing\tickDuration / 35.0), 0)
 				;If LightBlink > 0 Then darkA = Min(Max(darkA, LightBlink * Rnd(0.3, 0.8)), 1.0)
-				
+
 				If CurrGameState=GAMESTATE_SCP294 Then darkA=1.0
-				
+
 				If (Not IsPlayerWearingTempName(mainPlayer,"nvgoggles")) Then darkA = Max((1.0-SecondaryLightOn)*0.9, darkA)
-				
+
 				If mainPlayer\dead Then
 					CurrGameState = GAMESTATE_PLAYING
 					CurrGameSubstate = GAMESUBSTATE_PAUSED_DEAD
@@ -734,14 +734,14 @@ Function UpdateGame()
 					SelectedMonitor = Null
 					;mainPlayer\blurTimer = Abs(mainPlayer\fallTimer*5)
 					;mainPlayer\fallTimer=mainPlayer\fallTimer-(timing\tickDuration*0.8)
-					If mainPlayer\fallTimer < - 360 Then 
+					If mainPlayer\fallTimer < - 360 Then
 						CurrGameState = GAMESTATE_PAUSED
 						;TODO: fix
 						;If SelectedEnding <> "" Then EndingTimer = Min(mainPlayer\fallTimer,-0.1)
 					EndIf
 					darkA = Max(darkA, Min(Abs(mainPlayer\fallTimer / 400.0), 1.0))
 				EndIf
-				
+
 				If mainPlayer\fallTimer < 0 Then
 					CurrGameState = GAMESTATE_PLAYING
 					mainPlayer\selectedItem = Null
@@ -749,17 +749,17 @@ Function UpdateGame()
 					SelectedMonitor = Null
 					mainPlayer\blurTimer = Abs(mainPlayer\fallTimer*10)
 					mainPlayer\fallTimer=mainPlayer\fallTimer-timing\tickDuration
-					darkA = Max(darkA, Min(Abs(mainPlayer\fallTimer / 400.0), 1.0))				
+					darkA = Max(darkA, Min(Abs(mainPlayer\fallTimer / 400.0), 1.0))
 				EndIf
-				
+
 				If mainPlayer\selectedItem <> Null Then
 					If mainPlayer\selectedItem\itemtemplate\name = "navigator" Or mainPlayer\selectedItem\itemtemplate\name = "nav" Then darkA = Max(darkA, 0.5)
 				EndIf
 				If SelectedScreen <> Null Then darkA = Max(darkA, 0.5)
-				
-				EntityAlpha(mainPlayer\overlays[OVERLAY_BLACK], darkA)	
+
+				EntityAlpha(mainPlayer\overlays[OVERLAY_BLACK], darkA)
 			EndIf
-			
+
 			If mainPlayer\lightFlash > 0 Then
 				ShowEntity mainPlayer\overlays[OVERLAY_WHITE]
 				EntityAlpha(mainPlayer\overlays[OVERLAY_WHITE], Max(Min(mainPlayer\lightFlash + Rnd(-0.2, 0.2), 1.0), 0.0))
@@ -768,11 +768,11 @@ Function UpdateGame()
 				HideEntity mainPlayer\overlays[OVERLAY_WHITE]
 				;EntityAlpha(Light, mainPlayer\lightFlash)
 			EndIf
-			
+
 			EntityColor mainPlayer\overlays[OVERLAY_WHITE],255,255,255
-			
+
 			;[End block]
-			
+
 			If KeyHit(keyBinds\save) Then
 				If SelectedDifficulty\saveType = SAVEANYWHERE Then
 					RN$ = mainPlayer\currRoom\roomTemplate\name$
@@ -788,7 +788,7 @@ Function UpdateGame()
 				ElseIf SelectedDifficulty\saveType = SAVEONSCREENS Then
 					If SelectedScreen=Null And SelectedMonitor=Null Then
 						Msg = "Saving is only permitted on clickable monitors scattered throughout the facility."
-						MsgTimer = 70 * 4						
+						MsgTimer = 70 * 4
 					Else
 						RN$ = mainPlayer\currRoom\roomTemplate\name$
 						If RN$ = "173" Or RN$ = "exit1" Or RN$ = "gatea" Then
@@ -810,10 +810,10 @@ Function UpdateGame()
 					Msg = "Press "+KeyName[keyBinds\save]+" to save."
 					MsgTimer = 70*4
 				EndIf
-				
+
 				If MouseHit2 Then SelectedMonitor = Null
 			EndIf
-			
+
 			If KeyHit(keyBinds\console) Then
 				If CurrGameState=GAMESTATE_CONSOLE Then
 					ResumeSounds()
@@ -825,18 +825,18 @@ Function UpdateGame()
 				EndIf
 				FlushKeys()
 			EndIf
-			
+
 			UpdateGUI()
-			
+
 			;TODO: fix
 			;If EndingTimer < 0 Then
 			;	If SelectedEnding <> "" Then DrawEnding()
 			;Else
-			UpdatePauseMenu()		
+			UpdatePauseMenu()
 			;EndIf
-			
+
 			UpdateConsole()
-			
+
 			If MsgTimer > 0 Then
 				Local temp% = False ;TODO: change this variable's name because it's dumb as hell
 				If CurrGameState<>GAMESTATE_INVENTORY Then
@@ -846,7 +846,7 @@ Function UpdateGame()
 						EndIf
 					EndIf
 				EndIf
-				
+
 				If (Not temp%) Then
 					Color 0,0,0
 					Text((userOptions\screenWidth / 2)+1, (userOptions\screenHeight / 2) + 201, Msg, True, False);, Min(MsgTimer / 2, 255)/255.0)
@@ -858,24 +858,24 @@ Function UpdateGame()
 					Color 255,255,255;Min(MsgTimer / 2, 255), Min(MsgTimer / 2, 255), Min(MsgTimer / 2, 255)
 					Text((userOptions\screenWidth / 2), (userOptions\screenHeight * 0.94), Msg, True, False);, Min(MsgTimer / 2, 255)/255.0)
 				EndIf
-				MsgTimer=MsgTimer-timing\tickDuration 
+				MsgTimer=MsgTimer-timing\tickDuration
 			EndIf
 		EndIf
 	Wend
-	
+
 	If CurrGameState=GAMESTATE_LAUNCHER Then
 		If launcher<>Null Then DrawLauncher()
 	ElseIf CurrGameState=GAMESTATE_MAINMENU Then
 		DrawMainMenu()
 	Else
 		RenderWorld2()
-		
+
 		UpdateBlur(Sqr(mainPlayer\blurTimer/1400.0))
-		
+
 		DrawGUI()
 		DrawPauseMenu()
 		DrawConsole()
-		
+
 		Color 255, 255, 255
 		If userOptions\showFPS Then
 			SetFont uiAssets\consoleFont
@@ -883,7 +883,7 @@ Function UpdateGame()
 			SetFont uiAssets\font[0]
 		EndIf
 	EndIf
-	
+
 	;not by any means a perfect solution
 	;Not even proper gamma correction but it's a nice looking alternative that works in windowed mode
 	If userOptions\screenGamma>1.0 Then
@@ -916,7 +916,7 @@ Function UpdateGame()
 	EntityFX fresize_image,1
 	EntityBlend fresize_image,1
 	EntityAlpha fresize_image,1.0
-	
+
 	Flip userOptions\vsync<>0
 	;[End block]
 End Function
@@ -927,47 +927,47 @@ End Function
 
 ;[Block] ;TODO: FIX
 ;Function DrawEnding()
-;	
+;
 ;	timing\tickDuration = 0
 ;	EndingTimer=EndingTimer-timing\tickDuration2
-;	
-;		
+;
+;
 ;	Local x,y,width,height, temp
 ;	Local itt.ItemTemplates, r.Rooms
-;	
+;
 ;	Select Lower(SelectedEnding)
 ;		Case "b2", "a1"
 ;			ClsColor Max(255+(EndingTimer)*2.8,0), Max(255+(EndingTimer)*2.8,0), Max(255+(EndingTimer)*2.8,0)
 ;		Default
 ;			ClsColor 0,0,0
 ;	End Select
-;	
+;
 ;	ShouldPlay = 66
-;	
+;
 ;	Cls
-;	
+;
 ;	If EndingTimer<-200 Then
-;		
+;
 ;		If BreathCHN <> 0 Then
 ;			If IsChannelPlaying(BreathCHN) Then StopChannel BreathCHN : mainPlayer\stamina = 100
 ;		EndIf
-;		
-;		If EndingTimer <-400 Then 
+;
+;		If EndingTimer <-400 Then
 ;			If Music(5)=0 Then Music(5) = LoadSound("SFX/Music/Intro.ogg")
 ;			ShouldPlay = 5
 ;		EndIf
-;		
-;		If EndingScreen = 0 Then 
+;
+;		If EndingScreen = 0 Then
 ;			EndingScreen = LoadImage("GFX/endingscreen.pt")
-;			
+;
 ;			temp = LoadSound ("SFX/Music/Ending.ogg")
 ;			PlaySound2 temp
-;			
+;
 ;			PlaySound2 LightSFX
 ;		EndIf
-;		
-;		If EndingTimer > -700 Then 
-;			
+;
+;		If EndingTimer > -700 Then
+;
 ;			;-200 -> -700
 ;			;Max(50 - (Abs(KillTimer)-200),0)    =    0->50
 ;			If Rand(1,150)<Min((Abs(EndingTimer)-200),155) Then
@@ -977,7 +977,7 @@ End Function
 ;				Rect 100,100,userOptions\screenWidth-200,userOptions\screenHeight-200
 ;				Color 255,255,255
 ;			EndIf
-;			
+;
 ;			If EndingTimer+timing\tickDuration2 > -450 And EndingTimer <= -450 Then
 ;				Select Lower(SelectedEnding)
 ;					Case "a1", "a2"
@@ -985,21 +985,21 @@ End Function
 ;					Case "b1", "b2", "b3"
 ;						PlaySound2 LoadTempSound("SFX/Ending/GateB/Ending"+SelectedEnding+".ogg")
 ;				End Select
-;			EndIf			
-;			
+;			EndIf
+;
 ;		Else
-;			
+;
 ;			DrawImage EndingScreen, userOptions\screenWidth/2-400, userOptions\screenHeight/2-400
-;			
-;			If EndingTimer < -1000 Then 
-;				
+;
+;			If EndingTimer < -1000 Then
+;
 ;				width = ImageWidth(PauseMenuIMG)
 ;				height = ImageHeight(PauseMenuIMG)
 ;				x = userOptions\screenWidth / 2 - width / 2
 ;				y = userOptions\screenHeight / 2 - height / 2
-;				
+;
 ;				DrawImage PauseMenuIMG, x, y
-;				
+;
 ;				Color(255, 255, 255)
 ;				SetFont uiAssets\font[1]
 ;				Text(x + width / 2 + 40*MenuScale, y + 20*MenuScale, "THE END", True)
@@ -1007,13 +1007,13 @@ End Function
 
 ;					x = x+132*MenuScale
 ;					y = y+122*MenuScale
-;					
+;
 ;					Local roomamount = 0, roomsfound = 0
 ;					For r.Rooms = Each Rooms
 ;						roomamount = roomamount + 1
 ;						roomsfound = roomsfound + r\found
 ;					Next
-;					
+;
 ;					Local docamount=0, docsfound=0
 ;					For itt.ItemTemplates = Each ItemTemplates
 ;						If itt\name = "paper" Then
@@ -1021,22 +1021,22 @@ End Function
 ;							docsfound=docsfound+itt\found
 ;						EndIf
 ;					Next
-;					
+;
 ;					Local scpsEncountered=1
 ;					For i = 0 To 24
 ;						scpsEncountered = scpsEncountered
 ;					Next
-;					
+;
 ;					Text x, y, "SCPs encountered: " +scpsEncountered
 ;					Text x, y+40*MenuScale, "Rooms found: " + roomsfound+"/"+roomamount
 ;					Text x, y+60*MenuScale, "Documents discovered: " +docsfound+"/"+docamount
-;					Text x, y+80*MenuScale, "Items refined in SCP-914: " +RefinedItems			
-;					
+;					Text x, y+80*MenuScale, "Items refined in SCP-914: " +RefinedItems
+;
 ;					x = userOptions\screenWidth / 2 - width / 2
 ;					y = userOptions\screenHeight / 2 - height / 2
 ;					x = x+width/2
 ;					y = y+height-100*MenuScale
-;					
+;
 ;					If DrawButton(x-145*MenuScale,y-100*MenuScale,390*MenuScale,60*MenuScale,"MAIN MENU", True) Then
 ;						NullGame()
 ;						Music(21) = LoadSound("SFX/Ending/MenuBreath.ogg")
@@ -1046,15 +1046,15 @@ End Function
 ;						MainMenuTab = 0
 ;						CurrSave = ""
 ;						FlushKeys()
-;					EndIf					
+;					EndIf
 ;				Else
 ;					DrawMenu()
 ;				EndIf
-;			
+;
 ;		EndIf
-;		
+;
 ;	EndIf
-;	
+;
 ;	ShowPointer2()
 ;
 ;	SetFont uiAssets\font[0]
@@ -1067,25 +1067,25 @@ Function UpdateGUI()
 	Local temp%, x%, y%, z%, i%, yawvalue#, pitchvalue#
 	Local x2#,y2#,z2#
 	Local n%, xtemp, ytemp, strtemp$
-	
+
 	If mainPlayer\closestButton <> 0 And mainPlayer\selectedDoor = Null And CurrGameState=GAMESTATE_PLAYING Then
 		If MouseUp1 Then
 			MouseUp1 = False
-			If mainPlayer\closestDoor <> Null Then 
+			If mainPlayer\closestDoor <> Null Then
 				If mainPlayer\closestDoor\code <> "" Then
 					mainPlayer\selectedDoor = mainPlayer\closestDoor
 				ElseIf Not mainPlayer\disableControls Then
 					PlayRangedSound_SM(sndManager\button, mainPlayer\cam, mainPlayer\closestButton)
-					UseDoor(mainPlayer\closestDoor,True)			
+					UseDoor(mainPlayer\closestDoor,True)
 				EndIf
 			EndIf
 		EndIf
 	EndIf
-	
+
 	If (CurrGameState = GAMESTATE_SCP294) Then
 		Update294()
 	EndIf
-	
+
 	If SelectedScreen <> Null Then
 		If MouseUp1 Or MouseHit2 Then
 			FreeImage SelectedScreen\img : SelectedScreen\img = 0
@@ -1097,7 +1097,7 @@ Function UpdateGUI()
 	Local shouldDrawHUD%=True
 	If mainPlayer\selectedDoor <> Null Then
 		mainPlayer\selectedItem = Null
-		
+
 		If shouldDrawHUD Then
 			Local buttonObj% = GrabMesh("GFX/Map/Meshes/Button.b3d")
 			Local pvt% = CreatePivot()
@@ -1107,21 +1107,21 @@ Function UpdateGUI()
 			PositionEntity mainPlayer\head, EntityX(pvt),EntityY(pvt),EntityZ(pvt)
 			PointEntity mainPlayer\head, mainPlayer\closestButton
 			FreeEntity pvt
-			
+
 			CameraProject(mainPlayer\cam, EntityX(mainPlayer\closestButton,True),EntityY(mainPlayer\closestButton,True)+MeshHeight(buttonObj)*0.015,EntityZ(mainPlayer\closestButton,True))
 			Local projY# = ProjectedY()
 			CameraProject(mainPlayer\cam, EntityX(mainPlayer\closestButton,True),EntityY(mainPlayer\closestButton,True)-MeshHeight(buttonObj)*0.015,EntityZ(mainPlayer\closestButton,True))
 			Local scale# = (ProjectedY()-projY)/462.0
-			
+
 			x = userOptions\screenWidth/2-ImageWidth(uiAssets\keypadHUD)*scale/2
 			y = userOptions\screenHeight/2-ImageHeight(uiAssets\keypadHUD)*scale/2
 
 			DropAsset(buttonObj)
-			
+
 			SetFont uiAssets\font[2]
-			If KeypadMSG <> "" Then 
+			If KeypadMSG <> "" Then
 				KeypadTimer = KeypadTimer-timing\tickDuration
-				
+
 				If (KeypadTimer Mod 70) < 35 Then Text userOptions\screenWidth/2, y+124*scale, KeypadMSG, True,True
 				If KeypadTimer =<0 Then
 					KeypadMSG = ""
@@ -1129,20 +1129,20 @@ Function UpdateGUI()
 					MouseXSpeed() : MouseYSpeed() : MouseZSpeed() : mouse_x_speed_1#=0.0 : mouse_y_speed_1#=0.0
 				EndIf
 			EndIf
-			
+
 			x = x+44*scale
 			y = y+249*scale
-			
+
 			For n = 0 To 3
 				For i = 0 To 2
 					xtemp = x+Int(58.5*scale*n)
 					ytemp = y+(67*scale)*i
-					
+
 					temp = False
 					If MouseOn(xtemp,ytemp, 54*scale,65*scale) And KeypadMSG = "" Then
-						If MouseUp1 Then 
+						If MouseUp1 Then
 							PlaySound_SM(sndManager\button)
-							
+
 							Select (n+1)+(i*4)
 								Case 1,2,3
 									KeypadInput=KeypadInput + ((n+1)+(i*4))
@@ -1152,8 +1152,8 @@ Function UpdateGUI()
 									KeypadInput=KeypadInput + ((n+1)+(i*4)-1)
 								Case 8 ;enter
 									If KeypadInput = mainPlayer\selectedDoor\code Then
-										PlaySound_SM(sndManager\scannerUse)								
-										
+										PlaySound_SM(sndManager\scannerUse)
+
 										mainPlayer\selectedDoor\locked = 0
 										UseDoor(mainPlayer\selectedDoor,True)
 										mainPlayer\selectedDoor = Null
@@ -1162,24 +1162,24 @@ Function UpdateGUI()
 										PlaySound_SM(sndManager\scannerErr)
 										KeypadMSG = "ACCESS DENIED"
 										KeypadTimer = 210
-										KeypadInput = ""	
+										KeypadInput = ""
 									EndIf
 								Case 9,10,11
 									KeypadInput=KeypadInput + ((n+1)+(i*4)-2)
 								Case 12
 									KeypadInput = ""
-							End Select 
-							
+							End Select
+
 							If Len(KeypadInput)> 4 Then KeypadInput = Left(KeypadInput,4)
 						EndIf
-						
+
 					Else
 						temp = False
 					EndIf
-					
+
 				Next
 			Next
-			
+
 			If MouseHit2 Then
 				mainPlayer\selectedDoor = Null
 				MouseXSpeed() : MouseYSpeed() : MouseZSpeed() : mouse_x_speed_1#=0.0 : mouse_y_speed_1#=0.0
@@ -1192,8 +1192,8 @@ Function UpdateGUI()
 		KeypadTimer = 0
 		KeypadMSG= ""
 	EndIf
-	
-	If KeyHit(1) Then;TODO: fix ;And EndingTimer = 0 Then 
+
+	If KeyHit(1) Then;TODO: fix ;And EndingTimer = 0 Then
 		If IsPaused() Then
 			If CurrGameState=GAMESTATE_INVENTORY Then
 				ToggleInventory(mainPlayer)
@@ -1206,15 +1206,15 @@ Function UpdateGUI()
 			PauseSounds()
 			CurrGameState = GAMESTATE_PAUSED
 		EndIf
-		
+
 		;OptionsMenu = 0
 		;QuitMSG = 0
-		
+
 		mainPlayer\selectedDoor = Null
 		SelectedScreen = Null
 		SelectedMonitor = Null
 	EndIf
-	
+
 	UpdateInventory(mainPlayer)
 End Function
 
@@ -1222,9 +1222,9 @@ Function DrawGUI()
 	Local temp%, x%, y%, z%, i%, yawvalue#, pitchvalue#
 	Local x2#,y2#,z2#
 	Local n%, xtemp, ytemp, strtemp$
-	
+
 	Local e.Events, it.Items
-	
+
 	;TODO: Re-implement.
 ;	If mainPlayer\currRoom\roomTemplate\name = "pocketdimension" Then
 ;		For e.Events = Each Events
@@ -1240,12 +1240,12 @@ Function DrawGUI()
 ;				Else
 ;					If e\img <> 0 Then FreeImage e\img : e\img = 0
 ;				EndIf
-;				
+;
 ;				Exit
 ;			EndIf
 ;		Next
 ;	EndIf
-	
+
 	If mainPlayer\closestButton <> 0 And mainPlayer\selectedDoor = Null And CurrGameState=GAMESTATE_PLAYING Then
 		yawvalue# = WrapAngle(-DeltaYaw(mainPlayer\cam,mainPlayer\closestButton))
 		If yawvalue > 90 And yawvalue <= 180 Then yawvalue = 90
@@ -1253,10 +1253,10 @@ Function DrawGUI()
 		pitchvalue# = WrapAngle(-DeltaPitch(mainPlayer\cam,mainPlayer\closestButton))
 		If pitchvalue > 90 And pitchvalue <= 180 Then pitchvalue = 90
 		If pitchvalue > 180 And pitchvalue < 270 Then pitchvalue = 270
-		
+
 		DrawImage(uiAssets\handIcon[HAND_ICON_TOUCH], userOptions\screenWidth / 2 + Sin(yawvalue) * (userOptions\screenWidth / 3) - 32, userOptions\screenHeight / 2 - Sin(pitchvalue) * (userOptions\screenHeight / 3) - 32)
 	EndIf
-	
+
 	If mainPlayer\closestItem <> Null Then
 		yawvalue# = -DeltaYaw(mainPlayer\cam, mainPlayer\closestItem\collider)
 		If yawvalue > 90 And yawvalue <= 180 Then yawvalue = 90
@@ -1264,15 +1264,15 @@ Function DrawGUI()
 		pitchvalue# = -DeltaPitch(mainPlayer\cam, mainPlayer\closestItem\collider)
 		If pitchvalue > 90 And pitchvalue <= 180 Then pitchvalue = 90
 		If pitchvalue > 180 And pitchvalue < 270 Then pitchvalue = 270
-		
+
 		DrawImage(uiAssets\handIcon[HAND_ICON_GRAB], userOptions\screenWidth / 2 + Sin(yawvalue) * (userOptions\screenWidth / 3) - 32, userOptions\screenHeight / 2 - Sin(pitchvalue) * (userOptions\screenHeight / 3) - 32)
 	EndIf
-	
+
 	If DrawHandIcon Then DrawImage(uiAssets\handIcon[HAND_ICON_TOUCH], userOptions\screenWidth / 2 - 32, userOptions\screenHeight / 2 - 32)
 	For i = 0 To 3
 		If DrawArrowIcon(i) Then
 			x = userOptions\screenWidth / 2 - 32
-			y = userOptions\screenHeight / 2 - 32		
+			y = userOptions\screenHeight / 2 - 32
 			Select i
 				Case 0
 					y = y - 64 - 5
@@ -1290,46 +1290,46 @@ Function DrawGUI()
 			DrawArrowIcon(i) = False
 		EndIf
 	Next
-	
+
 	If (CurrGameState = GAMESTATE_SCP294) Then
 		Draw294()
 	EndIf
-	
-	If userOptions\hudEnabled Then 
-		
+
+	If userOptions\hudEnabled Then
+
 		Local width% = 204, height% = 20
 		x% = 80
 		y% = userOptions\screenHeight - 95
-		
-		Color 255, 255, 255	
+
+		Color 255, 255, 255
 		Rect (x, y, width, height, False)
 		For i = 1 To Int(((width - 2) * (mainPlayer\blinkTimer / (mainPlayer\blinkFreq))) / 10)
 			DrawImage(uiAssets\blinkBar, x + 3 + 10 * (i - 1), y + 3)
-		Next	
+		Next
 		Color 0, 0, 0
 		Rect(x - 50, y, 30, 30)
-		
+
 		;TODO: FIX
 		;If EyeIrritation > 0 Then
 		;	Color 200, 0, 0
 		;	Rect(x - 50 - 3, y - 3, 30 + 6, 30 + 6)
 		;EndIf
-		
+
 		Color 255, 255, 255
 		Rect(x - 50 - 1, y - 1, 30 + 2, 30 + 2, False)
-		
+
 		DrawImage uiAssets\blinkIcon, x - 50, y
-		
+
 		y = userOptions\screenHeight - 55
 		Color 255, 255, 255
 		Rect (x, y, width, height, False)
 		For i = 1 To Int(((width - 2) * (mainPlayer\stamina / 100.0)) / 10)
 			DrawImage(uiAssets\staminaBar, x + 3 + 10 * (i - 1), y + 3)
-		Next	
-		
+		Next
+
 		Color 0, 0, 0
 		Rect(x - 50, y, 30, 30)
-		
+
 		Color 255, 255, 255
 		Rect(x - 50 - 1, y - 1, 30 + 2, 30 + 2, False)
 		If mainPlayer\crouching Then
@@ -1337,31 +1337,31 @@ Function DrawGUI()
 		Else
 			DrawImage uiAssets\sprintIcon, x - 50, y
 		EndIf
-		
+
 		If DebugHUD Then
 			Color 255, 255, 255
 			SetFont uiAssets\consoleFont
-			
+
 			;Text x + 250, 50, "Zone: " + (EntityZ(mainPlayer\collider)/8.0)
 			Text x - 50, 50, "Player Position: (" + f2s(EntityX(mainPlayer\collider), 3) + ", " + f2s(EntityY(mainPlayer\collider), 3) + ", " + f2s(EntityZ(mainPlayer\collider), 3) + "), speed: "+f2s(mainPlayer\dropSpeed, 3)
 			Text x - 50, 70, "Camera Position: (" + f2s(EntityX(mainPlayer\cam), 3)+ ", " + f2s(EntityY(mainPlayer\cam), 3) +", " + f2s(EntityZ(mainPlayer\cam), 3) + ")"
 			Text x - 50, 100, "Player Rotation: (" + f2s(EntityPitch(mainPlayer\collider), 3) + ", " + f2s(EntityYaw(mainPlayer\collider), 3) + ", " + f2s(EntityRoll(mainPlayer\collider), 3) + ")"
 			Text x - 50, 120, "Camera Rotation: (" + f2s(EntityPitch(mainPlayer\cam), 3)+ ", " + f2s(EntityYaw(mainPlayer\cam), 3) +", " + f2s(EntityRoll(mainPlayer\cam), 3) + ")"
 			Text x - 50, 150, "Room: " + mainPlayer\currRoom\roomTemplate\name
-			
+
 			Local ev.Events
 			For ev.Events = Each Events
 				If ev\room = mainPlayer\currRoom Then
-					Text x - 50, 170, "Room event: " + ev\name   
+					Text x - 50, 170, "Room event: " + ev\name
 					Text x - 50, 190, "state: " + ev\eventState
-					Text x - 50, 210, "state2: " + ev\eventState2   
+					Text x - 50, 210, "state2: " + ev\eventState2
 					Text x - 50, 230, "state3: " + ev\eventState3
 					Exit
 				EndIf
 			Next
 			Text x - 50, 250, "Room coordinates: (" + Floor(EntityX(mainPlayer\currRoom\obj) / 8.0 + 0.5) + ", " + Floor(EntityZ(mainPlayer\currRoom\obj) / 8.0 + 0.5) + ")"
 			Text x - 50, 280, "Stamina: " + f2s(mainPlayer\stamina, 3)
-			Text x - 50, 300, "Dead: " + mainPlayer\dead               
+			Text x - 50, 300, "Dead: " + mainPlayer\dead
 			Text x - 50, 320, "Blink timer: " + f2s(mainPlayer\blinkTimer, 3)
 			Text x - 50, 340, "Injuries: " + mainPlayer\injuries
 			Text x - 50, 360, "Bloodloss: " + mainPlayer\bloodloss
@@ -1384,25 +1384,25 @@ Function DrawGUI()
 				If npc\npcType = NPCtypeMTF Then
 					Text x - 50, 600 + 60 * offset, "MTF " + offset + " Position: (" + f2s(EntityX(npc\obj), 3) + ", " + f2s(EntityY(npc\obj), 3) + ", " + f2s(EntityZ(npc\obj), 3) + ")"
 					Text x - 50, 640 + 60 * offset, "MTF " + offset + " State: " + npc\state
-					Text x - 50, 620 + 60 * offset, "MTF " + offset + " LastSeen: " + npc\lastSeen					
+					Text x - 50, 620 + 60 * offset, "MTF " + offset + " LastSeen: " + npc\lastSeen
 					offset = offset + 1
 				EndIf
 			Next
-			
+
 			SetFont uiAssets\font[0]
 		EndIf
-		
+
 	EndIf
-	
+
 	If SelectedScreen <> Null Then
 		DrawImage SelectedScreen\img, userOptions\screenWidth/2-ImageWidth(SelectedScreen\img)/2,userOptions\screenHeight/2-ImageHeight(SelectedScreen\img)/2
 	EndIf
-	
+
 	;TODO: cleanup
 	Local shouldDrawHUD%=True
 	If mainPlayer\selectedDoor <> Null Then
 		mainPlayer\selectedItem = Null
-		
+
 		If shouldDrawHUD Then
 			Local buttonObj% = GrabMesh("GFX/Map/Meshes/Button.b3d")
 			Local pvt% = CreatePivot()
@@ -1412,64 +1412,64 @@ Function DrawGUI()
 			PositionEntity mainPlayer\head, EntityX(pvt),EntityY(pvt),EntityZ(pvt)
 			PointEntity mainPlayer\head, mainPlayer\closestButton
 			FreeEntity pvt
-			
+
 			CameraProject(mainPlayer\cam, EntityX(mainPlayer\closestButton,True),EntityY(mainPlayer\closestButton,True)+MeshHeight(buttonObj)*0.015,EntityZ(mainPlayer\closestButton,True))
 			Local projY# = ProjectedY()
 			CameraProject(mainPlayer\cam, EntityX(mainPlayer\closestButton,True),EntityY(mainPlayer\closestButton,True)-MeshHeight(buttonObj)*0.015,EntityZ(mainPlayer\closestButton,True))
 			Local scale# = (ProjectedY()-projY)/462.0
-			
+
 			x = userOptions\screenWidth/2-ImageWidth(uiAssets\keypadHUD)*scale/2
 			y = userOptions\screenHeight/2-ImageHeight(uiAssets\keypadHUD)*scale/2
 
 			DropAsset(buttonObj)
-			
+
 			SetFont uiAssets\font[2]
 			If KeypadMSG = "" Then
-				Text userOptions\screenWidth/2, y+70*scale, "ACCESS CODE: ",True,True	
+				Text userOptions\screenWidth/2, y+70*scale, "ACCESS CODE: ",True,True
 				SetFont uiAssets\font[3]
-				Text userOptions\screenWidth/2, y+124*scale, KeypadInput,True,True	
+				Text userOptions\screenWidth/2, y+124*scale, KeypadInput,True,True
 			EndIf
-			
+
 			ShowPointer2()
 		EndIf
 	EndIf
-	
+
 	DrawInventory(mainPlayer)
 End Function
 
 Function DrawPauseMenu()
 	Local titleText$ = "PAUSED"
 	Local x%, y%, width%, height%
-	
+
 	If CurrGameState = GAMESTATE_PAUSED Then
 		width = ImageWidth(uiAssets\pauseMenuBG)
 		height = ImageHeight(uiAssets\pauseMenuBG)
 		x = userOptions\screenWidth / 2 - width / 2
 		y = userOptions\screenHeight / 2 - height / 2
-		
+
 		DrawImage uiAssets\pauseMenuBG, x, y
-		
+
 		Color(255, 255, 255)
-		
+
 		x = x+132*MenuScale
-		y = y+122*MenuScale	
-		
+		y = y+122*MenuScale
+
 		If mainPlayer\dead Then
 			titleText = "YOU DIED"
 		EndIf
 		SetFont uiAssets\font[1]
 		Text(x, y-(122-45)*MenuScale, titleText,False,True)
-		
+
 		SetFont uiAssets\font[0]
 		Text x, y, "Difficulty: "+SelectedDifficulty\name
 		Text x, y+20*MenuScale, "Save: "+CurrSave
 		Text x, y+40*MenuScale, "Map seed: "+RandomSeed
-		
+
 		y = y+10
-		
+
 		If Not mainPlayer\dead Then
 			y = y+72*MenuScale
-			
+
 			DrawUIButton(x, y, 390*MenuScale, 60*MenuScale, "Resume", True)
 			y = y + 75*MenuScale
 			If (Not SelectedDifficulty\permaDeath) Then
@@ -1483,10 +1483,10 @@ Function DrawPauseMenu()
 				EndIf
 				y = y + 75*MenuScale
 			EndIf
-			
+
 			DrawUIButton(x, y, 390*MenuScale, 60*MenuScale, "Options")
 			y = y + 75*MenuScale
-			
+
 			DrawUIButton(x, y, 390*MenuScale, 60*MenuScale, "Quit")
 		Else
 			y = y+104*MenuScale
@@ -1500,70 +1500,70 @@ Function DrawPauseMenu()
 			DrawUIButton(x, y + 80*MenuScale, 390*MenuScale, 60*MenuScale, "Quit to Menu")
 			y = y + 80*MenuScale
 		EndIf
-		
+
 		SetFont uiAssets\font[0]
 		If mainPlayer\dead Then RowText(DeathMSG$, x, y + 80*MenuScale, 390*MenuScale, 600*MenuScale)
 		;EndIf
 
 		ShowPointer2()
 	EndIf
-	
+
 	SetFont uiAssets\font[0]
-	
+
 End Function
 
 Function UpdatePauseMenu()
 	Local x%, y%, z%, width%, height%
 	Local r.Rooms
-	
+
 	If CurrGameState = GAMESTATE_PAUSED Then
 		width = ImageWidth(uiAssets\pauseMenuBG)
 		height = ImageHeight(uiAssets\pauseMenuBG)
 		x = userOptions\screenWidth / 2 - width / 2
 		y = userOptions\screenHeight / 2 - height / 2
-		
+
 		x = x+132*MenuScale
-		y = y+122*MenuScale	
-		
+		y = y+122*MenuScale
+
 		Local AchvXIMG% = (x + (22*MenuScale))
 		Local scale# = userOptions\screenHeight/768.0
 		Local SeparationConst% = 76*scale
 		Local imgsize% = 64
-		
+
 		y = y+10
-		
+
 		If Not mainPlayer\dead Then
 			y = y+72*MenuScale
-			
+
 			If UpdateUIButton(x, y, 390*MenuScale, 60*MenuScale, "Resume", True) Then
 				CurrGameState = GAMESTATE_PLAYING
 				ResumeSounds()
 				MouseXSpeed() : MouseYSpeed() : MouseZSpeed() : mouse_x_speed_1#=0.0 : mouse_y_speed_1#=0.0
 			EndIf
-			
+
 			y = y + 75*MenuScale
 			If (Not SelectedDifficulty\permaDeath) Then
 				If GameSaved Then
 					If UpdateUIButton(x, y, 390*MenuScale, 60*MenuScale, "Load Game") Then
 						DrawLoading(0)
-						
+
 						CurrGameState = GAMESTATE_PLAYING
 						LoadGame(SavePath + CurrSave + "/",True)
-						
+
 						MoveMouse viewport_center_x,viewport_center_y
 						SetFont uiAssets\font[0]
 						HidePointer ()
-						
+
 						FlushKeys()
 						FlushMouse()
 						mainPlayer\disableControls = False
-						
+
 						UpdateRooms()
-						
+
 						For r.Rooms = Each Rooms
 							x = Abs(EntityX(mainPlayer\collider) - EntityX(r\obj))
 							z = Abs(EntityZ(mainPlayer\collider) - EntityZ(r\obj))
-							
+
 							If x < 12.0 And z < 12.0 Then
 								;MapFound(Floor(EntityX(r\obj) / 8.0), Floor(EntityZ(r\obj) / 8.0)) = Max(MapFound(Floor(EntityX(r\obj) / 8.0), Floor(EntityZ(r\obj) / 8.0)), 1)
 								If x < 4.0 And z < 4.0 Then
@@ -1572,17 +1572,17 @@ Function UpdatePauseMenu()
 								EndIf
 							EndIf
 						Next
-						
+
 						DrawLoading(100)
-						
+
 						mainPlayer\dropSpeed=0
-						
+
 						UpdateWorld 0.0
 					EndIf
 				EndIf
 				y = y + 75*MenuScale
 			EndIf
-			
+
 			;If UpdateUIButton(x, y, 390*MenuScale, 60*MenuScale, "Options") Then OptionsMenu = 1 ;TODO: fix
 			y = y + 75*MenuScale
 			If UpdateUIButton(x, y, 390*MenuScale, 60*MenuScale, "Quit") Then
@@ -1598,24 +1598,24 @@ Function UpdatePauseMenu()
 			If GameSaved And (Not SelectedDifficulty\permaDeath) Then
 				If UpdateUIButton(x, y, 390*MenuScale, 60*MenuScale, "Load Game") Then
 					DrawLoading(0)
-					
+
 					CurrGameState = GAMESTATE_PLAYING
 					LoadGame(SavePath + CurrSave + "/",True)
-					
+
 					MoveMouse viewport_center_x,viewport_center_y
 					SetFont uiAssets\font[0]
 					HidePointer ()
-					
+
 					FlushKeys()
 					FlushMouse()
 					mainPlayer\disableControls = False
-					
+
 					UpdateRooms()
-					
+
 					For r.Rooms = Each Rooms
 						x = Abs(EntityX(mainPlayer\collider) - EntityX(r\obj))
 						z = Abs(EntityZ(mainPlayer\collider) - EntityZ(r\obj))
-						
+
 						If x < 12.0 And z < 12.0 Then
 							;MapFound(Floor(EntityX(r\obj) / 8.0), Floor(EntityZ(r\obj) / 8.0)) = Max(MapFound(Floor(EntityX(r\obj) / 8.0), Floor(EntityZ(r\obj) / 8.0)), 1)
 							If x < 4.0 And z < 4.0 Then
@@ -1624,11 +1624,11 @@ Function UpdatePauseMenu()
 							EndIf
 						EndIf
 					Next
-					
+
 					DrawLoading(100)
-					
+
 					mainPlayer\dropSpeed=0
-					
+
 					UpdateWorld 0.0
 				EndIf
 			EndIf
@@ -1642,9 +1642,9 @@ Function UpdatePauseMenu()
 			y = y + 80*MenuScale
 		EndIf
 	EndIf
-	
+
 	SetFont uiAssets\font[0]
-	
+
 End Function
 
 ;--------------------------------------- random -------------------------------------------------------
@@ -1654,14 +1654,14 @@ Function f2s$(n#, count%)
 End Function
 
 Function Animate2#(entity%, curr#, start%, quit%, speed#, loop=True)
-	
+
 	Local newTime#
-	
-	If speed > 0.0 Then 
+
+	If speed > 0.0 Then
 		newTime = Max(Min(curr + speed * timing\tickDuration,quit),start)
-		
+
 		If loop Then
-			If newTime => quit Then 
+			If newTime => quit Then
 				;SetAnimTime entity, start
 				newTime = start
 			Else
@@ -1676,48 +1676,48 @@ Function Animate2#(entity%, curr#, start%, quit%, speed#, loop=True)
 			start = quit
 			quit = temp
 		EndIf
-		
+
 		If loop Then
 			newTime = curr + speed * timing\tickDuration
-			
+
 			If newTime < quit Then newTime = start
 			If newTime > start Then newTime = quit
-			
+
 			;SetAnimTime entity, newTime
 		Else
 			;SetAnimTime (entity, Max(Min(curr + speed * timing\tickDuration,start),quit))
 			newTime = Max(Min(curr + speed * timing\tickDuration,start),quit)
 		EndIf
 	EndIf
-	
+
 	SetAnimTime entity, newTime
 	Return newTime
-	
-End Function 
+
+End Function
 
 Function UpdateInfect()
 	Local temp#, i%, r.Rooms, tex%, de.Decals
-	
+
 	If mainPlayer\infect008>0 Then
 		ShowEntity mainPlayer\overlays[OVERLAY_008]
-		
+
 		If mainPlayer\infect008 < 93.0 Then
 			temp=mainPlayer\infect008
 			mainPlayer\infect008 = Min(mainPlayer\infect008+timing\tickDuration*0.002,100)
-			
+
 			mainPlayer\blurTimer = Max(mainPlayer\infect008*3*(2.0-mainPlayer\crouchState),mainPlayer\blurTimer)
-			
+
 			;HeartBeatRate = Max(HeartBeatRate, 100)
 			mainPlayer\heartbeatIntensity = Max(100, mainPlayer\infect008/120.0)
-			
+
 			EntityAlpha mainPlayer\overlays[OVERLAY_008], Min(((mainPlayer\infect008*0.2)^2)/1000.0,0.5) * (Sin(TimeInPosMilliSecs()/8.0)+2.0)
-			
+
 			For i = 0 To 6
 				If mainPlayer\infect008>i*15+10 And temp =< i*15+10 Then
 					PlaySound2 LoadTempSound("SFX/SCP/008/Voices"+i+".ogg")
 				EndIf
 			Next
-			
+
 			If mainPlayer\infect008 > 20 And temp =< 20.0 Then
 				Msg = "You feel kinda feverish."
 				MsgTimer = 70*6
@@ -1753,31 +1753,31 @@ Function UpdateInfect()
 		Else
 			temp=mainPlayer\infect008
 			mainPlayer\infect008 = Min(mainPlayer\infect008+timing\tickDuration*0.004,100)
-			
+
 			If mainPlayer\infect008 < 94.7 Then
 				EntityAlpha mainPlayer\overlays[OVERLAY_008], 0.5 * (Sin(TimeInPosMilliSecs()/8.0)+2.0)
 				mainPlayer\blurTimer = 900
-				
+
 				If mainPlayer\infect008 > 94.5 Then mainPlayer\blinkTimer = Max(Min(-50*(mainPlayer\infect008-94.5),mainPlayer\blinkTimer),-10)
 				PointEntity mainPlayer\collider, mainPlayer\currRoom\npc[0]\collider
 				PointEntity mainPlayer\currRoom\npc[0]\collider, mainPlayer\collider
 				mainPlayer\forceMove = 0.4
 				mainPlayer\injuries = 2.5
 				mainPlayer\bloodloss = 0
-				
+
 				Animate2(mainPlayer\currRoom\npc[0]\obj, AnimTime(mainPlayer\currRoom\npc[0]\obj), 357, 381, 0.3)
 			ElseIf mainPlayer\infect008 < 98.5 Then
-				
+
 				EntityAlpha mainPlayer\overlays[OVERLAY_008], 0.5 * (Sin(TimeInPosMilliSecs()/5.0)+2.0)
 				mainPlayer\blurTimer = 950
-				
-				If temp < 94.7 Then 
+
+				If temp < 94.7 Then
 					mainPlayer\currRoom\npc[0]\sounds[0] = LoadSound("SFX/SCP/008/KillScientist2.ogg")
 					mainPlayer\currRoom\npc[0]\soundChannels[0] = PlaySound(mainPlayer\currRoom\npc[0]\sounds[0])
-					
+
 					DeathMSG = "Subject D-9341 found ingesting Dr. [REDACTED] at Sector [REDACTED]. Subject was immediately terminated by Nine-Tailed Fox and sent for autopsy. "
 					DeathMSG = DeathMSG + "SCP-008 infection was confirmed, after which the body was incinerated."
-					
+
 					Kill(mainPlayer)
 					de.Decals = CreateDecal(3, EntityX(mainPlayer\currRoom\npc[0]\collider), 544*RoomScale + 0.01, EntityZ(mainPlayer\currRoom\npc[0]\collider),90,Rnd(360),0)
 					de\size = 0.8
@@ -1788,7 +1788,7 @@ Function UpdateInfect()
 					;TODO: wtf??????
 					;KillTimer = Max(-350, KillTimer)
 				EndIf
-				
+
 				;TODO: this could break
 				If mainPlayer\currRoom\npc[0]\state2=0 Then
 					Animate2(mainPlayer\currRoom\npc[0]\obj, AnimTime(mainPlayer\currRoom\npc[0]\obj), 13, 19, 0.3,False)
@@ -1797,7 +1797,7 @@ Function UpdateInfect()
 					Animate2(mainPlayer\currRoom\npc[0]\obj, AnimTime(mainPlayer\currRoom\npc[0]\obj), 19, 13, -0.3)
 					If AnimTime(mainPlayer\currRoom\npc[0]\obj) =< 13 Then mainPlayer\currRoom\npc[0]\state2=0
 				EndIf
-				
+
 				If Rand(50)=1 Then
 					Local p.Particles = CreateParticle(EntityX(mainPlayer\currRoom\npc[0]\collider),EntityY(mainPlayer\currRoom\npc[0]\collider),EntityZ(mainPlayer\currRoom\npc[0]\collider), 5, Rnd(0.05,0.1), 0.15, 200)
 					p\speed = 0.01
@@ -1806,15 +1806,15 @@ Function UpdateInfect()
 					p\aChange = -0.01
 					RotateEntity p\pvt, Rnd(360),Rnd(360),0
 				EndIf
-				
+
 				PositionEntity mainPlayer\head, EntityX(mainPlayer\currRoom\npc[0]\collider,True), EntityY(mainPlayer\currRoom\npc[0]\collider,True)+0.65,EntityZ(mainPlayer\currRoom\npc[0]\collider,True),True
 				RotateEntity mainPlayer\head, (1.0+Sin(TimeInPosMilliSecs()/5.0))*15, mainPlayer\currRoom\angle-180, 0, True
 				MoveEntity mainPlayer\head, 0,0,0.4
 				TurnEntity mainPlayer\head, 80+(Sin(TimeInPosMilliSecs()/5.0))*30,(Sin(TimeInPosMilliSecs()/5.0))*40,0
 			EndIf
 		EndIf
-		
-		
+
+
 	Else
 		HideEntity mainPlayer\overlays[OVERLAY_008]
 	EndIf
@@ -1830,40 +1830,40 @@ Type Decals
 	Field fx%
 	Field id%
 	Field timer#
-	
+
 	Field lifetime#
-	
+
 	Field x#, y#, z#
 	Field pitch#, yaw#, roll#
 End Type
 
 Function CreateDecal.Decals(id%, x#, y#, z#, pitch#, yaw#, roll#)
 	Local d.Decals = New Decals
-	
+
 	d\x = x
 	d\y = y
 	d\z = z
 	d\pitch = pitch
 	d\yaw = yaw
 	d\roll = roll
-	
+
 	d\maxSize = 1.0
-	
+
 	d\alpha = 1.0
 	d\size = 1.0
 	d\obj = CreateSprite()
 	d\blendmode = 1
-	
+
 	EntityTexture(d\obj, DecalTextures(id))
 	EntityFX(d\obj, 0)
 	SpriteViewMode(d\obj, 2)
 	PositionEntity(d\obj, x, y, z)
 	RotateEntity(d\obj, pitch, yaw, roll)
-	
+
 	d\id = id
-	
+
 	If DecalTextures(id) = 0 Or d\obj = 0 Then Return Null
-	
+
 	Return d
 End Function
 
@@ -1873,7 +1873,7 @@ Function UpdateDecals()
 		If d\sizeChange <> 0 Then
 			d\size=d\size + d\sizeChange * timing\tickDuration
 			ScaleSprite(d\obj, d\size, d\size)
-			
+
 			Select d\id
 				Case 0
 					If d\timer <= 0 Then
@@ -1891,22 +1891,22 @@ Function UpdateDecals()
 				;Case 6
 				;	EntityBlend d\obj, 2
 			End Select
-			
+
 			If d\size >= d\maxSize Then
 				d\sizeChange = 0
 				d\size = d\maxSize
 			EndIf
 		EndIf
-		
+
 		If d\alphaChange <> 0 Then
 			d\alpha = Min(d\alpha + timing\tickDuration * d\alphaChange, 1.0)
 			EntityAlpha(d\obj, d\alpha)
 		EndIf
-		
+
 		If d\lifetime > 0 Then
 			d\lifetime=Max(d\lifetime-timing\tickDuration,5)
 		EndIf
-		
+
 		If d\size <= 0 Or d\alpha <= 0 Or d\lifetime=5.0  Then
 			FreeEntity(d\obj)
 			Delete d
@@ -1923,13 +1923,13 @@ End Function
 
 Function UpdateNVG()
 	Local wornItem.Items = mainPlayer\wornItems[WORNITEM_SLOT_HEAD]
-	
+
 	If wornItem<>Null Then
 		If wornItem\itemtemplate\name <> "nvgoggles" And wornItem\itemtemplate\name <> "supernv" Then
 			wornItem = Null
 		EndIf
 	EndIf
-	
+
     If wornItem<>Null Then
         wornItem\state = Max(-1.0,wornItem\state - (timing\tickDuration * (0.02 * decayMultiplier)))
     EndIf
@@ -1937,10 +1937,10 @@ End Function
 
 Function RenderWorld2()
 	Local k%, l%
-	
+
 	CameraProjMode ark_blur_cam,0
 	CameraProjMode mainPlayer\cam,1
-	
+
 	;TODO: fix
 	;If WearingNightVision>0 And WearingNightVision<3 Then
 	;	AmbientLight Min(Brightness*2,255), Min(Brightness*2,255), Min(Brightness*2,255)
@@ -1951,25 +1951,25 @@ Function RenderWorld2()
 	;		AmbientLight Brightness, Brightness, Brightness
 	;	EndIf
 	;EndIf
-	
+
 	;IsNVGBlinking% = False
 	;HideEntity NVBlink
-	
+
 	Local hasBattery% = 2
 	Local power% = 0
-	
+
 	Local wornItem.Items = mainPlayer\wornItems[WORNITEM_SLOT_HEAD]
-	
+
     If wornItem<>Null Then
 		If wornItem\itemtemplate\name <> "nvgoggles" And wornItem\itemtemplate\name <> "supernv" Then
 			wornItem = Null
 		EndIf
 	EndIf
-	
+
 	If wornItem<>Null Then
 		Local decayMultiplier# = 1.0
 		If wornItem\itemtemplate\name = "supernv" Then decayMultiplier = 2.0
-		
+
 		power = Int(wornItem\state)
 		If wornItem\state <= 0.0 Then ;this nvg can't be used
 			hasBattery = 0
@@ -1979,23 +1979,23 @@ Function RenderWorld2()
 		ElseIf mainPlayer\inventory\items[i]\state <= 100.0 Then
 			hasBattery = 1
 		EndIf
-		
+
 		If (hasBattery) Then
 			RenderWorld(Max(0.0,1.0+(timing\accumulator/timing\tickDuration)))
 		EndIf
 	Else
 		RenderWorld(Max(0.0,1.0+(timing\accumulator/timing\tickDuration)))
 	EndIf
-	
+
 	;If hasBattery=0 And WearingNightVision<>3
 	;	;IsNVGBlinking% = True
 	;	ShowEntity NVBlink%
 	;EndIf
-	
+
 	If mainPlayer\blinkTimer < - 16 Or mainPlayer\blinkTimer > - 6 Then
 		If IsPlayerWearingTempName(mainPlayer,"supernv") And hasBattery<>0 Then ;show a HUD
 			;NVTimer=NVTimer-timing\tickDuration
-			
+
 			;If NVTimer<=0.0 Then
 			Local np.NPCs
 			For np.NPCs = Each NPCs
@@ -2009,22 +2009,22 @@ Function RenderWorld2()
 			;		NVTimer = 600.0
 			;	EndIf
 			;EndIf
-			
+
 			Color 255,255,255
-			
+
 			SetFont uiAssets\font[2]
-			
+
 			Text userOptions\screenWidth/2,20*MenuScale,"REFRESHING DATA IN",True,False
-			
+
 			;Text userOptions\screenWidth/2,60*MenuScale,Max(f2s(NVTimer/60.0,1),0.0),True,False
 			Text userOptions\screenWidth/2,100*MenuScale,"SECONDS",True,False
-			
+
 			Local temp% = CreatePivot()
 			Local temp2% = CreatePivot()
 			PositionEntity temp, EntityX(mainPlayer\collider), EntityY(mainPlayer\collider), EntityZ(mainPlayer\collider)
-			
+
 			Color 255,255,255;*(NVTimer/600.0)
-			
+
 			For np.NPCs = Each NPCs
 				If np\nvName<>"" Then ;don't waste your time if the string is empty
 					PositionEntity temp2,np\nvX,np\nvY,np\nvZ
@@ -2040,7 +2040,7 @@ Function RenderWorld2()
 						Else
 							xvalue = Sin(yawvalue)
 						EndIf
-						
+
 						Local pitchvalue# = WrapAngle(EntityPitch(mainPlayer\cam) - EntityPitch(temp))
 						Local yvalue# = 0.0
 						If pitchvalue > 90 And pitchvalue <= 180 Then
@@ -2050,7 +2050,7 @@ Function RenderWorld2()
 						Else
 							yvalue# = Sin(pitchvalue)
 						EndIf
-						
+
 						;If (Not IsNVGBlinking%) Then
 						Text userOptions\screenWidth / 2 + xvalue * (userOptions\screenWidth / 2),userOptions\screenHeight / 2 - yvalue * (userOptions\screenHeight / 2),np\nvName,True,True
 						Text userOptions\screenWidth / 2 + xvalue * (userOptions\screenWidth / 2),userOptions\screenHeight / 2 - yvalue * (userOptions\screenHeight / 2) + 30.0 * MenuScale,f2s(dist,1)+" m",True,True
@@ -2058,9 +2058,9 @@ Function RenderWorld2()
 					EndIf
 				EndIf
 			Next
-			
+
 			FreeEntity (temp) : FreeEntity (temp2)
-			
+
 			Color 0,0,55
 			For k=0 To 10
 				Rect 45,userOptions\screenHeight*0.5-(k*20),54,10,True
@@ -2070,7 +2070,7 @@ Function RenderWorld2()
 				Rect 45,userOptions\screenHeight*0.5-(l*20),54,10,True
 			Next
 			;DrawImage NVGImages,40,userOptions\screenHeight*0.5+30,1
-			
+
 			Color 255,255,255
 		ElseIf IsPlayerWearingTempName(mainPlayer,"nvgoggles") And hasBattery<>0 Then
 			Color 0,55,0
@@ -2084,18 +2084,18 @@ Function RenderWorld2()
 			;DrawImage NVGImages,40,userOptions\screenHeight*0.5+30,0
 		EndIf
 	EndIf
-	
+
 	;render sprites
 	CameraProjMode ark_blur_cam,2
 	CameraProjMode mainPlayer\cam,0
 	RenderWorld()
 	CameraProjMode ark_blur_cam,0
-	
+
 	If mainPlayer\blinkTimer < - 16 Or mainPlayer\blinkTimer > - 6 Then
 		If (wornItem<>Null) And (hasBattery=1) And ((TimeInPosMilliSecs() Mod 800) < 400) Then
 			Color 255,0,0
 			SetFont uiAssets\font[2]
-			
+
 			Text userOptions\screenWidth/2,20*MenuScale,"WARNING: LOW BATTERY",True,False
 			Color 255,255,255
 		EndIf
@@ -2106,7 +2106,7 @@ Function CheckForPlayerInFacility()
 	;False (=0): NPC is not in facility (mostly meant for "dimension1499")
 	;True (=1): NPC is in facility
 	;2: NPC is in tunnels (maintenance tunnels/049 tunnels/939 storage room, etc...)
-	
+
 	If EntityY(mainPlayer\collider)>100.0 Then
 		Return False
 	EndIf
@@ -2116,13 +2116,13 @@ Function CheckForPlayerInFacility()
 	If EntityY(mainPlayer\collider)> 7.0 And EntityY(mainPlayer\collider)<=100.0 Then
 		Return 2
 	EndIf
-	
+
 	Return True
 End Function
 
 ;Function ControlSoundVolume()
 ;	Local snd.Sound,i
-;	
+;
 ;	For snd.Sound = Each Sound
 ;		For i=0 To 31
 ;			;If snd\channels[i]<>0 Then
@@ -2132,14 +2132,14 @@ End Function
 ;			;EndIf
 ;		Next
 ;	Next
-;	
+;
 ;End Function
 
 ;TODO: cleanup
 Function CheckTriggers$()
 	Local i%,sx#,sy#,sz#
 	Local inside% = -1
-	
+
 	If mainPlayer\currRoom\triggerboxAmount = 0 Then
 		Return ""
 	Else
@@ -2159,10 +2159,10 @@ Function CheckTriggers$()
 				EndIf
 			EndIf
 		Next
-		
+
 		If inside% > -1 Then Return mainPlayer\currRoom\triggerboxName[inside%]
 	EndIf
-	
+
 End Function
 
 ;~IDEal Editor Parameters:

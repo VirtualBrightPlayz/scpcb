@@ -2,12 +2,12 @@ Function FillRoom_off_lower_2(r.Rooms)
     Local d.Doors, d2.Doors, sc.SecurityCams, de.Decals, r2.Rooms, sc2.SecurityCams
     Local it.Items, i%
     Local xtemp%, ytemp%, ztemp%
-    
+
     Local t1;, Bump
-    
+
     it = CreateItem("Level 1 Key Card", "key1", r\x - 368.0 * RoomScale, r\y - 48.0 * RoomScale, r\z + 80.0 * RoomScale)
     EntityParent(it\collider, r\obj)
-    
+
     it = CreateItem("Document SCP-895", "paper", r\x - 800.0 * RoomScale, r\y - 48.0 * RoomScale, r\z + 368.0 * RoomScale)
     EntityParent(it\collider, r\obj)
     If Rand(2) = 1 Then
@@ -16,15 +16,15 @@ Function FillRoom_off_lower_2(r.Rooms)
         it = CreateItem("SCP-093 Recovered Materials", "paper", r\x - 800.0 * RoomScale, r\y - 48.0 * RoomScale, r\z - 464.0 * RoomScale)
     EndIf
     EntityParent(it\collider, r\obj)
-    
+
     it = CreateItem("S-NAV 300 Navigator", "nav", r\x - 336.0 * RoomScale, r\y - 48.0 * RoomScale, r\z - 480.0 * RoomScale)
-    it\state = 28 : EntityParent(it\collider, r\obj)		
-    
+    it\state = 28 : EntityParent(it\collider, r\obj)
+
     r\objects[0] = LoadMesh("GFX/npcs/duck_low_res.b3d")
     ScaleEntity(r\objects[0], 0.07, 0.07, 0.07)
-    
+
     EntityParent(r\objects[0], r\obj)
-    
+
     r\objects[1] = CreatePivot(r\obj)
     PositionEntity(r\objects[1], r\x-808.0 * RoomScale, -72.0 * RoomScale, r\z - 40.0 * RoomScale, True)
     r\objects[2] = CreatePivot(r\obj)
@@ -33,7 +33,7 @@ Function FillRoom_off_lower_2(r.Rooms)
     PositionEntity(r\objects[3], r\x-488.0 * RoomScale, 160.0 * RoomScale, r\z - 668.0 * RoomScale, True)
     r\objects[4] = CreatePivot(r\obj)
     PositionEntity(r\objects[4], r\x-572.0 * RoomScale, 350.0 * RoomScale, r\z - 4.0 * RoomScale, True)
-    
+
     Local temp% = Rand(1,4)
     PositionEntity(r\objects[0], EntityX(r\objects[temp],True),EntityY(r\objects[temp],True),EntityZ(r\objects[temp],True),True)
 End Function

@@ -2,11 +2,11 @@ Function FillRoom_hll_sl_2(r.Rooms)
     Local d.Doors, d2.Doors, sc.SecurityCams, de.Decals, r2.Rooms, sc2.SecurityCams
     Local it.Items, i%
     Local xtemp%, ytemp%, ztemp%
-    
+
     Local t1;, Bump
-    
+
     Local scale# = RoomScale * 4.5 * 0.4
-    
+
     ;Monitor Objects
     For i = 0 To 14
         If i <> 7 Then
@@ -45,7 +45,7 @@ Function FillRoom_hll_sl_2(r.Rooms)
         EntityParent r\objects[i],r\obj
         DebugLog i
     Next
-    
+
     ;Doors for room
     r\roomDoors[0] = CreateDoor(r\zone,r\x+480.0*RoomScale,r\y,r\z-640.0*RoomScale,90,r,False,False,3)
     r\roomDoors[0]\autoClose = False
@@ -56,12 +56,12 @@ Function FillRoom_hll_sl_2(r.Rooms)
     FreeEntity r\roomDoors[1]\obj2 : r\roomDoors[1]\obj2 = 0
     d = CreateDoor(r\zone,r\x+1504.0*RoomScale,r\y+480.0*RoomScale,r\z+960.0*RoomScale,0,r)
     d\autoClose = False : d\locked = True
-    
+
     ;PathPoint 1 for SCP-049
     r\objects[7] = CreatePivot()
     PositionEntity r\objects[7],r\x,r\y+100.0*RoomScale,r\z-800.0*RoomScale,True
     EntityParent r\objects[7],r\obj
-    
+
     ;PathPoints for SCP-049
     r\objects[15] = CreatePivot()
     PositionEntity r\objects[15],r\x+700.0*RoomScale,r\y+700.0*RoomScale,r\z+256.0*RoomScale,True
@@ -69,7 +69,7 @@ Function FillRoom_hll_sl_2(r.Rooms)
     r\objects[16] = CreatePivot()
     PositionEntity r\objects[16],r\x-100.0*RoomScale,r\y+700.0*RoomScale,r\z+256.0*RoomScale,True
     EntityParent r\objects[16],r\obj
-    
+
     ;Faked room409
     r\objects[17] = LoadMesh("GFX/map/room2sl_2.b3d",r\obj)
     sc.SecurityCams = CreateSecurityCam(r\x-160.0*RoomScale,r\y-22689.1*RoomScale,r\z-288.0*RoomScale,Null)
@@ -77,25 +77,25 @@ Function FillRoom_hll_sl_2(r.Rooms)
     TurnEntity sc\cameraObj, 20, 0, 0
     EntityParent sc\obj,r\obj
     sc\specialCam = True
-    
+
     ;-49.0 689.0 912.0
-    
+
     r\levers[0] = CreateLever()
-    
+
 	ScaleEntity(r\levers[0]\baseObj, 0.04, 0.04, 0.04)
 	ScaleEntity(r\levers[0]\obj, 0.04, 0.04, 0.04)
 	PositionEntity r\levers[0]\baseObj,r\x-49*RoomScale,r\y+689*RoomScale,r\z+912*RoomScale,True
 	PositionEntity r\levers[0]\obj,r\x-49*RoomScale,r\y+689*RoomScale,r\z+912*RoomScale,True
-	
+
 	EntityParent(r\levers[0]\baseObj, r\obj)
 	EntityParent(r\levers[0]\obj, r\obj)
 
     RotateEntity(r\levers[0]\baseObj, 0, 0, 0)
     RotateEntity(r\levers[0]\obj, 10, 0 - 180, 0)
-        
+
     EntityPickMode r\levers[0]\obj, 1, False
     EntityRadius r\levers[0]\obj, 0.1
-    
+
     ;Camera in the room itself
     sc.SecurityCams = CreateSecurityCam(r\x-159.0*RoomScale, r\y+384.0*RoomScale, r\z-929.0*RoomScale, r, True)
     sc\angle = 315
@@ -103,13 +103,13 @@ Function FillRoom_hll_sl_2(r.Rooms)
     sc\room = r
     TurnEntity(sc\cameraObj, 20, 0, 0)
     EntityParent(sc\obj, r\obj)
-    
+
     PositionEntity(sc\scrObj, r\x-231.489*RoomScale, r\y+760.0*RoomScale, r\z+255.744*RoomScale)
     TurnEntity(sc\scrObj, 0, 90, 0)
     EntityParent(sc\scrObj, r\obj)
 
 	r\levers[1] = CreateLever()
-    
+
 	ScaleEntity(r\levers[1]\baseObj, 0.04, 0.04, 0.04)
 	ScaleEntity(r\levers[1]\obj, 0.04, 0.04, 0.04)
 
@@ -126,10 +126,10 @@ Function FillRoom_hll_sl_2(r.Rooms)
 	;	ScaleEntity(r\objects[20 + i], 0.04, 0.04, 0.04)
 	;	PositionEntity r\objects[20],r\x+82.0*RoomScale, r\y+689.0*RoomScale, r\z+912.0*RoomScale,True
 	;	PositionEntity r\objects[21],r\x+90.9775*RoomScale, r\y+604.347*RoomScale, r\z+890.584*RoomScale,True
-		
+
 	;	EntityParent(r\objects[20 + i], r\obj)
 	;Next
-    
+
     ;For tw.TempWayPoints = Each TempWayPoints
     ;	If tw\roomtemplate = r\roomTemplate
     ;		If tw\y > 480.0*RoomScale
@@ -137,15 +137,15 @@ Function FillRoom_hll_sl_2(r.Rooms)
     ;		EndIf
     ;	EndIf
     ;Next
-    
+
     ;w.waypoints = CreateWaypoint(r\x, r\y + 64.0 * RoomScale, r\z - 640.0 * RoomScale, Null, r)
     ;w2.waypoints = CreateWaypoint(r\x + 1024.0*RoomScale, r\y + 320.0 * RoomScale, r\z - 640.0 * RoomScale, Null, r)
     ;w3.waypoints = CreateWaypoint(r\x + 1552.0*RoomScale, r\y + 540.0 * RoomScale, r\z - 636.0*RoomScale, Null, r)
     ;w3\connected[0] = w2 : w3\dist[0] = EntityDistance(w3\obj, w2\obj)
     ;w2\connected[1] = w3 : w2\dist[1] = w3\dist[0]
-    
+
     ;r\maxWayPointY# = 400.0*RoomScale
-    
+
     ;r\objects[22] = LoadMesh("GFX/map/room2sl_hb.b3d",r\obj)
 	;ScaleEntity r\objects[22],RoomScale,RoomScale,RoomScale
     ;EntityPickMode r\objects[22],2
@@ -169,7 +169,7 @@ Function UpdateEvent_hll_sl_2(e.Events)
 	;e\eventState: Determines if the player already entered the room or not (0 = No, 1 = Yes)
 	;e\eventState2: Variable used for the SCP-049 event
 	;e\eventState3: Checks if Lever is activated or not
-	
+
 	;mainPlayer\cam-Spawning Code + SCP-049-Spawning (it is a little messy!) ;TODO: reimplement
 	;[Block]
 	If mainPlayer\currRoom = e\room Then
@@ -196,40 +196,40 @@ Function UpdateEvent_hll_sl_2(e.Events)
 								For i = 0 To 9
 									sc\screen = True
 									sc\allowSaving = False
-									
+
 									sc\renderInterval = 12
-									
+
 									Local scale# = RoomScale * 4.5 * 0.4
-									
+
 									sc\scrObj = CreateSprite()
 									EntityFX sc\scrObj, 17
 									SpriteViewMode(sc\scrObj, 2)
 									sc\scrTexture = 0
 									;EntityTexture sc\scrObj, ScreenTexs[sc\scrTexture]
 									ScaleSprite(sc\scrObj, MeshWidth(Monitor) * scale * 0.95* 0.5, MeshHeight(Monitor) * scale * 0.95* 0.5)
-									
+
 									sc\scrOverlay = CreateSprite(sc\scrObj)
-									
+
 									ScaleSprite(sc\scrOverlay, MeshWidth(Monitor) * scale * 0.95 * 0.5, MeshHeight(Monitor) * scale * 0.95 * 0.5)
 									MoveEntity(sc\scrOverlay, 0, 0, -0.0005)
 									EntityTexture(sc\scrOverlay, MonitorTexture)
 									SpriteViewMode(sc\scrOverlay, 2)
 									EntityBlend(sc\scrOverlay , 3)
-									
+
 									sc\monitorObj = CopyEntity(Monitor, sc\scrObj)
-									
+
 									ScaleEntity(sc\monitorObj, scale, scale, scale)
-									
+
 									sc\cam = CreateCamera()
 									CameraViewport(sc\cam, 0, 0, 512, 512)
 									CameraRange sc\cam, 0.05, 6.0
 									CameraZoom(sc\cam, 0.8)
 									HideEntity(sc\cam)
-									
+
 									sc\isRoom2slCam = True
 									sc\room2slTexs%[0] = CreateTexture(512, 512, 1+256)
 									EntityTexture sc\scrObj, sc\room2slTexs%[0]
-									
+
 									pvt% = CreatePivot(e\room\obj)
 									Select r\roomTemplate\name$
 										Case "room2closets" ;ID=0 q
@@ -310,7 +310,7 @@ Function UpdateEvent_hll_sl_2(e.Events)
 											FindAndDeleteFakeMonitor(e\room,EntityX(pvt%,True),EntityY(pvt%,True),EntityZ(pvt%,True),14)
 											DebugLog "Created Monitor for "+Chr(34)+"room2ccont"+Chr(34)
 									End Select
-									
+
 									FreeEntity pvt%
 								Next
 							EndIf
@@ -324,52 +324,52 @@ Function UpdateEvent_hll_sl_2(e.Events)
 				If sc\specialCam Then
 					sc\screen = True
 					sc\allowSaving = False
-					
+
 					sc\renderInterval = 12
-					
+
 					scale# = RoomScale * 4.5 * 0.4
-					
+
 					sc\scrObj = CreateSprite()
 					EntityFX sc\scrObj, 17
 					SpriteViewMode(sc\scrObj, 2)
 					sc\scrTexture = 0
 					ScaleSprite(sc\scrObj, MeshWidth(Monitor) * scale * 0.95* 0.5, MeshHeight(Monitor) * scale * 0.95* 0.5)
-					
+
 					sc\scrOverlay = CreateSprite(sc\scrObj)
-					
+
 					ScaleSprite(sc\scrOverlay, MeshWidth(Monitor) * scale * 0.95 * 0.5, MeshHeight(Monitor) * scale * 0.95 * 0.5)
 					MoveEntity(sc\scrOverlay, 0, 0, -0.0005)
 					EntityTexture(sc\scrOverlay, MonitorTexture)
 					SpriteViewMode(sc\scrOverlay, 2)
 					EntityBlend(sc\scrOverlay , 3)
-					
+
 					sc\monitorObj = CopyEntity(Monitor, sc\scrObj)
-					
+
 					ScaleEntity(sc\monitorObj, scale, scale, scale)
-					
+
 					sc\cam = CreateCamera()
 					CameraViewport(sc\cam, 0, 0, 512, 512)
 					CameraRange sc\cam, 0.05, 6.0
 					CameraZoom(sc\cam, 0.8)
 					HideEntity(sc\cam)
-					
+
 					sc\room2slTexs%[0] = CreateTexture(512, 512, 1+256)
 					EntityTexture sc\scrObj, sc\room2slTexs%[0]
-					
+
 					pvt% = CreatePivot(e\room\obj)
-					
+
 					PositionEntity pvt%,-231.489,648.0,95.7443,False
 					PositionEntity(sc\scrObj,EntityX(pvt%,True),EntityY(pvt%,True),EntityZ(pvt%,True))
 					EntityParent(sc\scrObj, e\room\obj)
 					TurnEntity(sc\scrObj, 0, 90+e\room\angle, 0)
 					FindAndDeleteFakeMonitor(e\room,EntityX(pvt%,True),EntityY(pvt%,True),EntityZ(pvt%,True),14)
 					DebugLog "Created Monitor for "+Chr(34)+"room2sl"+Chr(34)+" (faked SCP-409 mainPlayer/cam)"
-					
+
 					FreeEntity pvt%
 					Exit
 				EndIf
 			Next
-			
+
 				;For SCP-049
 			If e\room\npc[0]=Null Then
 				For n.NPCs = Each NPCs
@@ -378,28 +378,28 @@ Function UpdateEvent_hll_sl_2(e.Events)
 						Exit
 					EndIf
 				Next
-				
+
 				If e\room\npc[0]=Null Then
 					e\room\npc[0] = CreateNPC(NPCtype049,EntityX(e\room\objects[7],True),EntityY(e\room\objects[7],True)+5,EntityZ(e\room\objects[7],True))
 				EndIf
 			EndIf
-			
+
 			PositionEntity e\room\npc[0]\collider,EntityX(e\room\objects[7],True),EntityY(e\room\objects[7],True)+5,EntityZ(e\room\objects[7],True)
 			ResetEntity e\room\npc[0]\collider
 			RotateEntity e\room\npc[0]\collider,0,e\room\angle+180,0
-			
+
 			DebugLog(EntityX(e\room\objects[7],True)+", "+EntityY(e\room\objects[7],True)+", "+EntityZ(e\room\objects[7],True))
-			
+
 			e\room\npc[0]\state = 0
 			e\room\npc[0]\prevState = 2
-			
+
 			e\loaded = True
 			e\eventState = 1
 			If e\eventState2 = 0 Then e\eventState2 = -(70*5)
 		EndIf
 	EndIf
 	;[End Block]
-	
+
 	;SCP-049
 	;[Block]
 	If e\eventState = 1 Then
@@ -487,7 +487,7 @@ Function UpdateEvent_hll_sl_2(e.Events)
 					e\room\npc[0]\dropSpeed = 0
 				EndIf
 			EndIf
-			
+
 			If e\room\npc[0]\state <> 5 Then
 				e\eventState2 = 7
 				DebugLog "fffffffff"
@@ -497,12 +497,12 @@ Function UpdateEvent_hll_sl_2(e.Events)
 				e\eventState2 = 7
 				DebugLog "fffffffff"
 			EndIf
-			
+
 			If MeNPCSeesPlayer(e\room\npc[0],True)=2 Then
 				e\eventState2 = 4
 				DebugLog "ddddddddd"
 			EndIf
-			
+
 			If e\room\npc[0]\pathStatus <> 1 Then
 				;If e\room\npc[0]\pathTimer# < 70*3
 				If e\room\npc[0]\pathTimer# = 0.0 Then
@@ -585,7 +585,7 @@ Function UpdateEvent_hll_sl_2(e.Events)
 		;	e\room\roomDoors[1]\locked = False
 		;	e\eventState2 = 8
 		EndIf
-		
+
 		If e\room\npc[0]<>Null Then
 			If e\eventState2 < 7 Then
 				If e\eventState2 > 2 Then
@@ -609,7 +609,7 @@ Function UpdateEvent_hll_sl_2(e.Events)
 						EndIf
 					EndIf
 				EndIf
-				
+
 				If e\eventState2 > 0 Then CanSave% = False
 			Else
 				If e\room\roomDoors[0]\open = False Then
@@ -624,7 +624,7 @@ Function UpdateEvent_hll_sl_2(e.Events)
 		EndIf
 	EndIf
 	;[End Block]
-	
+
 	;Lever for checkpoint locking (might have a function in the future for the case if the checkpoint needs to be locked again)
 	If mainPlayer\currRoom = e\room Then
 		e\eventState3 = e\room\levers[0]\succ
@@ -634,7 +634,7 @@ Function UpdateEvent_hll_sl_2(e.Events)
 			;TurnCheckpointMonitorsOff(0)
 		EndIf
 	EndIf
-	
+
 	;[End Block]
 End Function
 
@@ -643,9 +643,9 @@ Function ValidRoom2slCamRoom(r.Rooms)
 	If (r = Null) Then
 		Return False
 	EndIf
-	
+
 	Local RN$ = r\roomTemplate\name$
-	
+
 	If RN$ = "room2closets" Then Return True
 	If RN$ = "room1archive" Then Return True
 	If RN$ = "room3z3" Then Return True
@@ -657,9 +657,9 @@ Function ValidRoom2slCamRoom(r.Rooms)
 	If RN$ = "room1162" Then Return True
 	If RN$ = "room966" Then Return True
 	If RN$ = "room2ccont" Then Return True
-	
+
 	Return False
-	
+
 End Function
 
 

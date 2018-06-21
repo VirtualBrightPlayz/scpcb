@@ -5,7 +5,7 @@ Type Difficulty
 	Field aggressiveNPCs
 	Field saveType%
 	Field otherFactors%
-	
+
 	Field customizable%
 End Type
 

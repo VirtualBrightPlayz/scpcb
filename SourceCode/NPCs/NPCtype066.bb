@@ -3,27 +3,27 @@ Function InitializeNPCtype066(n.NPCs)
     n\collider = CreatePivot()
     EntityRadius n\collider, 0.2
     EntityType n\collider, HIT_PLAYER
-    
+
     n\obj = LoadAnimMesh("GFX/NPCs/scp066/scp-066.b3d")
     Local temp# = GetINIFloat("DATA/NPCs.ini", "SCP-066", "scale")/2.5
-    ScaleEntity n\obj, temp, temp, temp		
-    
+    ScaleEntity n\obj, temp, temp, temp
+
     n\speed = (GetINIFloat("DATA/NPCs.ini", "SCP-066", "speed") / 100.0)
 End Function
 
 Function UpdateNPCtype066(n.NPCs)
 	Local w.WayPoints, de.Decals, d.Doors
 	Local angle#
-	
+
     Select n\state
-        Case 0 
+        Case 0
             ;idle: moves around randomly from waypoint to another if the player is far enough
             ;starts staring at the player when the player is close enough
-            
+
             If n\playerDistance > 20.0 Then
                 AnimateNPC(n, 451, 612, 0.2, True)
                 ;Animate2(n\obj, AnimTime(n\obj), 451, 612, 0.2, True)
-                
+
                 If n\state2 < TimeInPosMilliSecs() Then
                     For w.WayPoints = Each WayPoints
                         ;If w\door = Null Then ;TODO: fix?
@@ -43,28 +43,28 @@ Function UpdateNPCtype066(n.NPCs)
                 n\state = 1
             EndIf
         Case 1 ;staring at the player
-            
+
             If n\frame<451 Then
                 angle = WrapAngle(CurveAngle(DeltaYaw(n\collider, mainPlayer\collider)-180, (AnimTime(n\obj)-2.0)/1.2445, 15.0))
                 ;0->360 = 2->450
                 SetNPCFrame(n,angle*1.2445+2.0)
-                
-                ;SetAnimTime(n\obj, angle*1.2445+2.0)							
+
+                ;SetAnimTime(n\obj, angle*1.2445+2.0)
             Else
                 AnimateNPC(n, 636, 646, 0.4, False)
                 If n\frame = 646 Then SetNPCFrame(n,2)
                 ;Animate2(n\obj, AnimTime(n\obj), 636, 646, 0.4, False)
                 ;If AnimTime(n\obj)=646 Then SetAnimTime (n\obj, 2)
             EndIf
-            
+
 			If Rand(700)=1 Then PlayRangedSound(LoadTempSound("SFX/SCP/066/Eric"+Rand(1,3)+".ogg"),mainPlayer\cam, n\collider, 8.0)
-            
+
             If n\playerDistance < 1.0+n\lastDist Then n\state = Rand(2,3)
-        Case 2 ;roll towards the player and make a sound, and then escape	
-            If n\frame < 647 Then 
+        Case 2 ;roll towards the player and make a sound, and then escape
+            If n\frame < 647 Then
                 angle = CurveAngle(0, (AnimTime(n\obj)-2.0)/1.2445, 5.0)
-                
-                If angle < 5 Or angle > 355 Then 
+
+                If angle < 5 Or angle > 355 Then
                     SetNPCFrame(n,647)
                 Else
                     SetNPCFrame(n,angle*1.2445+2.0)
@@ -72,14 +72,14 @@ Function UpdateNPCtype066(n.NPCs)
                 ;SetAnimTime(n\obj, angle*1.2445+2.0)
                 ;If angle < 5 Or angle > 355 Then SetAnimTime(n\obj, 647)
             Else
-                If n\frame=683 Then 
+                If n\frame=683 Then
                     If n\state2 = 0 Then
                         If Rand(2)=1 Then
                             PlayRangedSound(LoadTempSound("SFX/SCP/066/Eric"+Rand(1,3)+".ogg"),mainPlayer\cam, n\collider, 8.0)
                         Else
                             PlayRangedSound(LoadTempSound("SFX/SCP/066/Notes"+Rand(1,6)+".ogg"), mainPlayer\cam, n\collider, 8.0)
-                        EndIf									
-                        
+                        EndIf
+
                         Select Rand(1,6)
                             Case 1
                                 If n\sounds[1]=0 Then n\sounds[1]=LoadSound("SFX/SCP/066/Beethoven.ogg")
@@ -109,9 +109,9 @@ Function UpdateNPCtype066(n.NPCs)
                                 EndIf
                         End Select
                     EndIf
-                    
+
                     n\state2 = n\state2+timing\tickDuration
-                    If n\state2>70 Then 
+                    If n\state2>70 Then
                         n\state = 3
                         n\state2 = 0
                     EndIf
@@ -120,42 +120,42 @@ Function UpdateNPCtype066(n.NPCs)
                     PointEntity n\obj,mainPlayer\collider
                     ;angle = CurveAngle(EntityYaw(n\obj), EntityYaw(n\collider), 10);1.0/Max(n\currSpeed,0.0001))
                     RotateEntity n\collider, 0, CurveAngle(EntityYaw(n\obj)-180, EntityYaw(n\collider), 10), 0
-                    
+
                     AnimateNPC(n, 647, 683, n\currSpeed*25, False)
                     ;Animate2(n\obj, AnimTime(n\obj), 647, 683, n\currSpeed*25, False)
-                    
+
                     MoveEntity n\collider, 0,0,-n\currSpeed*timing\tickDuration
-                    
+
                 EndIf
             EndIf
         Case 3
             PointEntity n\obj,mainPlayer\collider
             angle = CurveAngle(EntityYaw(n\obj)+n\angle-180, EntityYaw(n\collider), 10);1.0/Max(n\currSpeed,0.0001))
             RotateEntity n\collider, 0, angle, 0
-            
+
             n\currSpeed = CurveValue(n\speed, n\currSpeed, 10.0)
             MoveEntity n\collider, 0,0,n\currSpeed*timing\tickDuration
-            
+
             ;Animate2(n\obj, AnimTime(n\obj), 684, 647, -n\currSpeed*25)
-            
+
             If Rand(100)=1 Then n\angle = Rnd(-20,20)
-            
+
             n\state2 = n\state2 + timing\tickDuration
-            If n\state2>250 Then 
+            If n\state2>250 Then
                 AnimateNPC(n, 684, 647, -n\currSpeed*25, False)
                 ;Animate2(n\obj, AnimTime(n\obj), 684, 647, -n\currSpeed*25, False)
-                If n\frame=647 Then 
+                If n\frame=647 Then
                     n\state = 0
                     n\state2=0
                 EndIf
             Else
                 AnimateNPC(n, 684, 647, -n\currSpeed*25)
-                
+
                 ;Animate2(n\obj, AnimTime(n\obj), 684, 647, -n\currSpeed*25)
             EndIf
-            
+
     End Select
-    
+
     If n\state > 1 Then
         If n\sounds[0] = 0 Then n\sounds[0] = LoadSound("SFX/SCP/066/Rolling.ogg")
         If n\soundChannels[0]<>0 Then
@@ -164,30 +164,30 @@ Function UpdateNPCtype066(n.NPCs)
             EndIf
         Else
             n\soundChannels[0] = PlayRangedSound(n\sounds[0], mainPlayer\cam, n\collider, 20)
-        EndIf					
+        EndIf
     EndIf
-    
+
     ;If n\soundChannels[1]<>0 Then
     ;	If IsChannelPlaying(n\soundChannels[1]) Then
     ;		n\soundChannels[1] = LoopRangedSound(n\sounds[1], n\soundChannels[1], mainPlayer\cam, n\collider, 20)
     ;		mainPlayer\blurTimer = Max((5.0-dist)*300,0)
     ;	EndIf
     ;EndIf
-    
-    
+
+
     If n\state3 > 0 Then
         n\state3 = n\state3-timing\tickDuration
         ;LightVolume = TempLightVolume-TempLightVolume*Min(Max(n\state3/500,0.01),0.6)
         mainPlayer\heartbeatIntensity = Max(mainPlayer\heartbeatIntensity, 130)
         ;HeartBeatVolume = Max(HeartBeatVolume,Min(n\state3/1000,1.0))
     EndIf
-    
+
     If IsChannelPlaying(n\soundChannels[1]) Then
         mainPlayer\blurTimer = Max((5.0-n\playerDistance)*300,0)
     EndIf
-    
+
     PositionEntity(n\obj, EntityX(n\collider), EntityY(n\collider) - 0.2, EntityZ(n\collider))
-    
+
     RotateEntity n\obj, EntityPitch(n\collider)-90, EntityYaw(n\collider), 0
 End Function
 ;~IDEal Editor Parameters:

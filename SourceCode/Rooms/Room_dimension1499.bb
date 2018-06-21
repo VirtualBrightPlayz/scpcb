@@ -74,19 +74,19 @@ Function UpdateEvent_dimension1499(e.Events)
 		CameraFogColor mainPlayer\cam,96,97,104
 		CameraClsColor mainPlayer\cam,96,97,104
 		CameraRange mainPlayer\cam,0.05,90
-		
+
 		For r.Rooms = Each Rooms
 			HideEntity r\obj
 		Next
 		ShowEntity e\room\obj
-		
+
 		UpdateChunks(e\room,15)
 		ShowEntity NTF_1499Sky
 		Update1499Sky()
 		;ShouldPlay = 18 ;TODO
 		If EntityY(mainPlayer\collider)<800.0 Then PositionEntity mainPlayer\collider,EntityX(mainPlayer\collider),800.1,EntityZ(mainPlayer\collider),True
 		ResetEntity mainPlayer\collider
-			
+
 		mainPlayer\footstepOverride=3
 	Else
 		If e\eventState = 2.0 Then
@@ -106,7 +106,7 @@ End Function
 
 Function UpdateLeave1499()
 	Local r.Rooms, it.Items
-	
+
 	If (Not (IsPlayerWearingTempName(mainPlayer,"scp1499") Or IsPlayerWearingTempName(mainPlayer,"super1499"))) And mainPlayer\currRoom\roomTemplate\name$ = "dimension1499" Then
 		For r.Rooms = Each Rooms
 			If r = NTF_1499PrevRoom Then
@@ -140,7 +140,7 @@ Function UpdateLeave1499()
 			EndIf
 		Next
 	EndIf
-	
+
 End Function
 
 ;TODO: clean up
@@ -164,9 +164,9 @@ Function CreateChunkParts(r.Rooms)
 	Local i%,StrTemp$,j%
 	Local chp.ChunkPart,chp2.ChunkPart
 	Local obj%
-	
+
 	SeedRnd SeedStringToInt(RandomSeed)
-	
+
 	For i = 0 To ChunkAmount%
 		Local loc% = GetINISectionLocation(File$,"chunk"+i)
 		If loc > 0 Then
@@ -201,28 +201,28 @@ Function CreateChunkParts(r.Rooms)
 			DebugLog "Generated 1499 chunk "+chp\id+" sucessfully"
 		EndIf
 	Next
-	
+
 	SeedRnd MilliSecs()
-	
+
 End Function
 
 Function CreateChunk.Chunk(obj%,x#,y#,z#,spawnNPCs%=True)
 	Local ch.Chunk = New Chunk
 	Local chp.ChunkPart,i,n.NPCs
-	
+
 	;If obj%<>0
 	;	ch\obj% = CopyEntity(obj%)
 	;	PositionEntity ch\obj%,x,y,z
 	;	ScaleEntity ch\obj%,RoomScale,RoomScale,RoomScale
 	;	EntityType ch\obj%,HIT_MAP
 	;EndIf
-	
+
 	;ch\debugobj% = CreateCube()
 	;ScaleEntity ch\debugobj%,20,20,20
 	;PositionEntity ch\debugobj%,x#,y#+20,z#
 	;EntityColor ch\debugobj%,Rand(0,255),Rand(0,255),Rand(0,255)
 	;EntityFX ch\debugobj%,1+FE_WIRE
-	
+
 	If obj% > -1 Then
 		For chp = Each ChunkPart
 			If chp\id = obj% Then
@@ -244,11 +244,11 @@ Function CreateChunk.Chunk(obj%,x#,y#,z#,spawnNPCs%=True)
 			Next
 		EndIf
 	EndIf
-	
+
 	ch\x = x
 	ch\z = z
 	ch\y = y
-	
+
 	Return ch
 End Function
 
@@ -258,7 +258,7 @@ Function UpdateChunks(r.Rooms,ChunkPartAmount%,spawnNPCs%=True)
 	Local temp% = False, temp2% = False
 	Local x#,z#,i%,y#,CurrChunkX#,CurrChunkZ#
 	Local obj%
-	
+
 	For ch = Each Chunk
 		;If Distance(EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider),ch\x,ch\z)<ChunkHideDistance
 		;	;If ch\obj <> 0 Then ShowEntity ch\obj
@@ -288,16 +288,16 @@ Function UpdateChunks(r.Rooms,ChunkPartAmount%,spawnNPCs%=True)
 			EndIf
 		EndIf
 	Next
-	
+
 	;CurrChunkX# = Int(EntityX(mainPlayer\collider)/40)*40
 	;CurrChunkZ# = Int(EntityZ(mainPlayer\collider)/40)*40
-	
+
 	x# = -(ChunkHideDistance+(CurrChunkX#))
 	z# = -(ChunkHideDistance+(CurrChunkZ#))
-	
+
 	Local StrTemp$ = ""
 	SeedRnd SeedStringToInt(RandomSeed)
-	
+
 	Repeat
 		temp2% = False
 		For ch = Each Chunk
@@ -322,14 +322,14 @@ Function UpdateChunks(r.Rooms,ChunkPartAmount%,spawnNPCs%=True)
 			EndIf
 		EndIf
 	Forever
-	
+
 	SeedRnd MilliSecs()
-	
+
 End Function
 
 Function HideChunks()
 	Local ch.Chunk,i
-	
+
 	For ch = Each Chunk
 		;If ch\obj <> 0 Then HideEntity ch\obj
 		If ch\obj[0]<>0 Then
@@ -338,14 +338,14 @@ Function HideChunks()
 			Next
 		EndIf
 	Next
-	
+
 End Function
 
 Function DeleteChunks()
-	
+
 	Delete Each Chunk
 	Delete Each ChunkPart
-	
+
 End Function
 
 ;~IDEal Editor Parameters:

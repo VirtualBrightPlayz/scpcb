@@ -59,60 +59,60 @@ Type NPCs
 
 	;TODO: Deprecate?
 	Field makingNoise%
-	
+
 	Field frame#
 	Field angle#
 
 	Field sounds%[NPC_SOUND_COUNT]
 	Field soundChannels%[NPC_CHANNEL_COUNT]
-	
+
 	Field playerDistance#
-	
+
 	;TODO: wtf why aren't we using this more instead of reload?
 	Field soundTimer#
-	
+
 	Field speed#, currSpeed#
-	
+
 	Field texture$
-	
+
 	;TODO: Deprecate in favor of state.
 	Field idle#
-	
+
 	;TODO: Deprecate in favor of timer.
 	Field reload#
 
 	Field timer#
-	
+
 	Field lastSeen%
 	Field lastDist#
-	
+
 	Field prevX#
 	Field prevY#
 	Field prevZ#
-	
+
 	Field target.NPCs, targetID%
 
 	;TODO: Deprecate in favor of target.
 	Field enemyX#
 	Field enemyY#
 	Field enemyZ#
-	
+
 	Field targetX#
 	Field targetY#
 	Field targetZ#
-	
+
 	Field path.WayPoints[20]
 	Field pathStatus%
 	Field pathTimer#
 	Field pathLocation%
 	Field pathX#
 	Field pathZ#
-	
+
 	Field nvX#
 	Field nvY#
 	Field nvZ#
 	Field nvName$
-	
+
 	Field dropSpeed#
 	Field gravity%
 	Field gravityMult# = 1.0
@@ -121,14 +121,14 @@ Type NPCs
 	Field maxGravity# = 0.2
 
 	Field terminalVelocity# = 0.2
-	
+
 	;TODO: Move this to DataMTF
 	Field mtfVariant%
 	Field mtfLeader.NPCs
 	Field isDead%
 	Field blinkTimer# = 1.0
 	Field ignorePlayer%
-	
+
 	;TODO: Deprecate.
 	Field npcNameInSection$
 	Field manipulateBone%
@@ -157,7 +157,7 @@ Function CreateNPC.NPCs(NPCtype%, x#, y#, z#)
 	Local n.NPCs = New NPCs, n2.NPCs
 	Local temp#, i%, diff1, bump1, spec1
 	Local sf, b, t1
-	
+
 	n\npcType = NPCtype
 	n\gravityMult = 1.0
 	n\maxGravity = 0.2
@@ -193,19 +193,19 @@ Function CreateNPC.NPCs(NPCtype%, x#, y#, z#)
 		Case NPCtype1499
 			InitializeNPCtype1499(n)
 	End Select
-	
+
 	PositionEntity(n\collider, x, y, z, True)
 	PositionEntity(n\obj, x, y, z, True)
-	
+
 	ResetEntity(n\collider)
-	
+
 	n\id = 0
 	n\id = FindFreeNPCID()
-	
+
 	DebugLog ("Created NPC "+n\nvName+" (ID: "+n\id+")")
-	
+
 	NPCSpeedChange(n)
-	
+
 	Return n
 End Function
 
@@ -221,7 +221,7 @@ Function LoadOrCopyMesh(n.NPCs, filePath$)
 			EndIf
 		EndIf
 	Next
-	
+
 	n\obj = LoadAnimMesh(filePath)
 End Function
 
@@ -229,61 +229,61 @@ Function RemoveNPC(n.NPCs)
 	If (n = Null) Then
 		Return
 	EndIf
-	
-	If n\obj2 <> 0 Then 
+
+	If n\obj2 <> 0 Then
 		FreeEntity n\obj2
 		n\obj2 = 0
 	EndIf
-	If n\obj3 <> 0 Then 
+	If n\obj3 <> 0 Then
 		FreeEntity n\obj3
 		n\obj3 = 0
 	EndIf
-	If n\obj4 <> 0 Then 
+	If n\obj4 <> 0 Then
 		FreeEntity n\obj4
 		n\obj4 = 0
 	EndIf
 
 	NPCStopAllChannels(n)
-	
+
 	Local i%
 	For i = 0 To NPC_SOUND_COUNT-1
 		If (n\sounds[i] <> 0) Then
 			FreeSound(n\sounds[i])
 		EndIf
 	Next
-	
+
 	FreeEntity(n\obj)
 	n\obj = 0
 	FreeEntity(n\collider)
-	n\collider = 0	
-	
+	n\collider = 0
+
 	Delete(n)
 End Function
 
 
 Function UpdateNPCs()
 	Local n.NPCs
-	
+
 	For n = Each NPCs
 		;A variable to determine if the NPC is in the facility or not
 		;TODO: remove because this is practically useless
 		n\inFacility = CheckForNPCInFacility(n)
-		
+
 		n\playerDistance = EntityDistance(mainPlayer\collider, n\collider)
-		
+
 		;If the npc was given a target then use its position.
 		If (n\target <> Null) Then
 			n\targetX = EntityX(n\target\collider)
 			n\targetY = EntityY(n\target\collider)
 			n\targetZ = EntityZ(n\target\collider)
 		EndIf
-		
+
 		;If the player is too far away then don't run the update code.
 		If (n\playerDistance >= HideDistance*2) Then
 			;TODO: Implement roaming code.
 			Return
 		EndIf
-		
+
 		Select n\npcType
 			Case NPCtype173
 				UpdateNPCtype173(n)
@@ -306,7 +306,7 @@ Function UpdateNPCs()
 			Case NPCtypeTentacle
 				UpdateNPCtypeTentacle(n)
 			Case NPCtype860
-				UpdateNPCtype860(n) 
+				UpdateNPCtype860(n)
 			Case NPCtype939
 				UpdateNPCtype939(n)
 			Case NPCtype066
@@ -316,11 +316,11 @@ Function UpdateNPCs()
 			Case NPCtype1499
 				UpdateNPCtype1499(n)
 		End Select
-		
+
 		If n\isDead Then
 			EntityType(n\collider, HIT_DEAD)
 		EndIf
-		
+
 		;Update sound locations.
 		Local i%
 		For i = 0 To 2
@@ -331,16 +331,16 @@ Function UpdateNPCs()
 
 		;TODO: Rework.
 		Local gravityDist# = Distance(EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider),EntityX(n\collider),EntityZ(n\collider))
-		
+
 		If gravityDist<HideDistance*0.7 Or n\npcType = NPCtype1499 Then
 			If n\inFacility = InFacility Then
 				TranslateEntity n\collider, 0, n\dropSpeed, 0
-				
+
 				Local CollidedFloor% = False
 				For i% = 1 To CountCollisions(n\collider)
 					If CollisionY(n\collider, i) < EntityY(n\collider) - 0.01 Then CollidedFloor = True : Exit
 				Next
-				
+
 				If CollidedFloor = True Then
 					n\dropSpeed# = 0
 				Else
@@ -353,7 +353,7 @@ Function UpdateNPCs()
 			n\dropSpeed = 0
 		EndIf
 	Next
-	
+
 End Function
 
 ;Stops all audio channels for a given NPC.
@@ -370,13 +370,13 @@ Function TeleportCloser(n.NPCs)
 	Local closestDist# = 0
 	Local closestWaypoint.WayPoints
 	Local w.WayPoints
-	
+
 	Local xtemp#, ztemp#
-	
+
 	For w.WayPoints = Each WayPoints
 		;If w\door = Null Then ;TODO: fix?
 		xtemp = Abs(EntityX(w\obj,True)-EntityX(n\collider,True))
-		If xtemp < 10.0 And xtemp > 1.0 Then 
+		If xtemp < 10.0 And xtemp > 1.0 Then
 			ztemp = Abs(EntityZ(w\obj,True)-EntityZ(n\collider,True))
 			If ztemp < 10.0 And ztemp > 1.0 Then
 				If (EntityDistance(mainPlayer\collider, w\obj)>8) Then
@@ -384,31 +384,31 @@ Function TeleportCloser(n.NPCs)
 						;teleports to the nearby waypoint that takes it closest to the player
 						Local newDist# = EntityDistance(mainPlayer\collider, w\obj)
 						If (newDist < closestDist Or closestWaypoint = Null) Then
-							closestDist = newDist	
+							closestDist = newDist
 							closestWaypoint = w
 						EndIf
-					Else 
+					Else
 						;just teleports to the first nearby waypoint it finds
 						closestWaypoint = w
 						Exit
-					EndIf						
+					EndIf
 				EndIf
 			EndIf
 		EndIf
 		;EndIf
 	Next
-	
+
 	If (closestWaypoint<>Null) Then
 		PositionEntity n\collider, EntityX(closestWaypoint\obj,True), EntityY(closestWaypoint\obj,True)+0.15, EntityZ(closestWaypoint\obj,True), True
 		ResetEntity n\collider
 	EndIf
-	
+
 End Function
 
 ;TODO: rename lol
 Function OtherNPCSeesMeNPC%(me.NPCs,other.NPCs)
 	If other\blinkTimer<=0.0 Then Return False
-	
+
 	If EntityDistance(other\collider,me\collider)<6.0 Then
 		If Abs(DeltaYaw(other\collider,me\collider))<60.0 Then
 			Return True
@@ -424,13 +424,13 @@ Function MeNPCSeesPlayer%(me.NPCs,disableSoundOnCrouch%=False)
 		;2: Player is detected by emitting a sound
 		;3: Player is detected by a camera (only for MTF Units!)
 		;4: Player is detected through glass
-	
+
 	If NoTarget Then Return False
-	
+
 	If (Not PlayerDetected) Or me\npcType <> NPCtypeMTF Then
 		If me\blinkTimer<=0.0 Then Return False
 		If EntityDistance(mainPlayer\collider,me\collider)>(8.0-mainPlayer\crouchState+mainPlayer\loudness) Then Return False
-		
+
 		;spots the player if he's either in view or making a loud sound
 		If mainPlayer\loudness>1.0 Then
 			If (Abs(DeltaYaw(me\collider,mainPlayer\collider))>60.0) And EntityVisible(me\collider,mainPlayer\collider) Then
@@ -449,22 +449,22 @@ Function MeNPCSeesPlayer%(me.NPCs,disableSoundOnCrouch%=False)
 	Else
 		If EntityDistance(mainPlayer\collider,me\collider)>(8.0-mainPlayer\crouchState+mainPlayer\loudness) Then Return 3
 		If EntityVisible(me\collider, mainPlayer\cam) Then Return True
-		
+
 		;spots the player if he's either in view or making a loud sound
 		If mainPlayer\loudness>1.0 Then Return 2
 		Return 3
 	EndIf
-	
+
 End Function
 
 ;TODO: Move to MTF file?
 Function TeleportMTFGroup(n.NPCs)
 	Local n2.NPCs
-	
+
 	If n\mtfLeader <> Null Then Return
-	
+
 	TeleportCloser(n)
-	
+
 	For n2 = Each NPCs
 		If n2\npcType = NPCtypeMTF Then
 			If n2\mtfLeader <> Null Then
@@ -472,9 +472,9 @@ Function TeleportMTFGroup(n.NPCs)
 			EndIf
 		EndIf
 	Next
-	
+
 	DebugLog "Teleported MTF Group (dist:"+EntityDistance(n\collider,mainPlayer\collider)+")"
-	
+
 End Function
 
 Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False)
@@ -482,20 +482,20 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 	Local p.Particles = CreateParticle(x,y,z, 1, Rnd(0.08,0.1), 0.0, 5)
 	TurnEntity p\obj, 0,0,Rnd(360)
 	p\aChange = -0.15
-	
+
 	;LightVolume = TempLightVolume*1.2
-	
-	If (Not mainPlayer\godMode) Then 
-		
+
+	If (Not mainPlayer\godMode) Then
+
 		If instaKill Then
 			Kill(mainPlayer)
 			PlaySound_SM(sndManager\bulletHit)
 			Return
 		EndIf
-		
+
 		If Rnd(1.0) =< hitProb Then
 			TurnEntity mainPlayer\cam, Rnd(-3,3), Rnd(-3,3), 0
-			
+
 			Local ShotMessageUpdate$
 			Local WearingVest% = False
 			WearingVest = WearingVest Or IsPlayerWearingTempName(mainPlayer,"vest")
@@ -522,7 +522,7 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 							mainPlayer\stamina = 0
 							ShotMessageUpdate = "A bullet struck your neck, making you gasp."
 							mainPlayer\injuries = mainPlayer\injuries + Rnd(1.2,1.6)
-					End Select	
+					End Select
 				Else
 					If Rand(10)=1 Then
 						mainPlayer\blurTimer = 500
@@ -534,7 +534,7 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 						mainPlayer\injuries = mainPlayer\injuries + Rnd(0.1,0.5)
 					EndIf
 				EndIf
-				
+
 				If mainPlayer\injuries >= 3 Then
 					If Rand(3) = 1 Then Kill(mainPlayer)
 				EndIf
@@ -553,18 +553,18 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 					Case 4
 						mainPlayer\blurTimer = 500
 						ShotMessageUpdate = "A bullet hit your right shoulder."
-						mainPlayer\injuries = mainPlayer\injuries + Rnd(0.8,1.2)	
+						mainPlayer\injuries = mainPlayer\injuries + Rnd(0.8,1.2)
 					Case 5
 						mainPlayer\blurTimer = 500
 						ShotMessageUpdate = "A bullet hit your left shoulder."
-						mainPlayer\injuries = mainPlayer\injuries + Rnd(0.8,1.2)	
+						mainPlayer\injuries = mainPlayer\injuries + Rnd(0.8,1.2)
 					Case 6
 						mainPlayer\blurTimer = 500
 						ShotMessageUpdate = "A bullet hit your right shoulder."
 						mainPlayer\injuries = mainPlayer\injuries + Rnd(2.5,4.0)
 				End Select
 			EndIf
-			
+
 			;Only updates the message if it's been more than two seconds.
 			If (MsgTimer < 64*4) Then
 				Msg = ShotMessageUpdate
@@ -572,7 +572,7 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 			EndIf
 
 			mainPlayer\injuries = Min(mainPlayer\injuries, 4.0)
-			
+
 			;Kill(mainPlayer)
 			PlaySound_SM(sndManager\bulletHit)
 		ElseIf particles Then
@@ -580,13 +580,13 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 			PositionEntity pvt, EntityX(mainPlayer\collider),(EntityY(mainPlayer\collider)+EntityY(mainPlayer\cam))/2,EntityZ(mainPlayer\collider)
 			PointEntity pvt, p\obj
 			TurnEntity pvt, 0, 180, 0
-			
+
 			EntityPick(pvt, 2.5)
-			
-			If PickedEntity() <> 0 Then 
+
+			If PickedEntity() <> 0 Then
 				PlayRangedSound_SM(sndManager\bulletMiss, mainPlayer\cam, pvt, 0.4, Rnd(0.8,1.0))
-				
-				If particles Then 
+
+				If particles Then
 					;dust/smoke particles
 					p.Particles = CreateParticle(PickedX(),PickedY(),PickedZ(), 0, 0.03, 0, 80)
 					p\speed = 0.001
@@ -594,16 +594,16 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 					p\a = 0.8
 					p\aChange = -0.01
 					RotateEntity p\pvt, EntityPitch(pvt)-180, EntityYaw(pvt),0
-					
+
 					Local i%
 					For i = 0 To Rand(2,3)
 						p.Particles = CreateParticle(PickedX(),PickedY(),PickedZ(), 0, 0.006, 0.003, 80)
 						p\speed = 0.02
 						p\a = 0.8
 						p\aChange = -0.01
-						RotateEntity p\pvt, EntityPitch(pvt)+Rnd(170,190), EntityYaw(pvt)+Rnd(-10,10),0	
+						RotateEntity p\pvt, EntityPitch(pvt)+Rnd(170,190), EntityYaw(pvt)+Rnd(-10,10),0
 					Next
-					
+
 					;bullet hole decal
 					Local de.Decals = CreateDecal(Rand(13,14), PickedX(),PickedY(),PickedZ(), 0,0,0)
 					AlignToVector de\obj,-PickedNX(),-PickedNY(),-PickedNZ(),3
@@ -613,37 +613,37 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 					EntityBlend de\obj, 2
 					de\size = Rnd(0.028,0.034)
 					ScaleSprite de\obj, de\size, de\size
-				EndIf				
+				EndIf
 			EndIf
 			FreeEntity(pvt)
-			
+
 		EndIf
-		
+
 	EndIf
-	
+
 End Function
 
 ;TODO: Move to MTF file?
 Function PlayMTFSound(sound%, n.NPCs)
 	If n <> Null Then
-		n\soundChannels[0] = PlayRangedSound(sound, mainPlayer\cam, n\collider, 8.0)	
+		n\soundChannels[0] = PlayRangedSound(sound, mainPlayer\cam, n\collider, 8.0)
 	EndIf
-	
+
 	If mainPlayer\selectedItem <> Null Then
-		If mainPlayer\selectedItem\state2 = 3 And mainPlayer\selectedItem\state > 0 Then 
-			Select mainPlayer\selectedItem\itemtemplate\name 
+		If mainPlayer\selectedItem\state2 = 3 And mainPlayer\selectedItem\state > 0 Then
+			Select mainPlayer\selectedItem\itemtemplate\name
 				Case "radio","fineradio","18vradio"
 					If RadioCHN(3)<> 0 Then StopChannel RadioCHN(3)
 					RadioCHN(3) = PlaySound(sound)
 			End Select
 		EndIf
-	EndIf 
+	EndIf
 End Function
 
 ;TODO: Does this even have anything to do with NPCs? Move to Player file whenever that's made?
 Function MoveToPocketDimension()
 	Local r.Rooms
-	
+
 	For r.Rooms = Each Rooms
 		If r\roomTemplate\name = "pocketdimension" Then
 			mainPlayer\fallTimer = 0
@@ -655,23 +655,23 @@ Function MoveToPocketDimension()
 			PositionEntity(mainPlayer\collider, EntityX(r\obj),0.8,EntityZ(r\obj))
 			mainPlayer\dropSpeed = 0
 			ResetEntity mainPlayer\collider
-			
+
 			mainPlayer\blinkTimer = -10
-			
+
 			mainPlayer\injuries = mainPlayer\injuries+0.5
-			
+
 			mainPlayer\currRoom = r
-			
+
 			Return
 		EndIf
-	Next		
+	Next
 End Function
 
 Function FindFreeNPCID%()
 	Local id% = 1
 	While (True)
 		Local taken% = False
-		
+
 		Local n2.NPCs
 		For n2.NPCs = Each NPCs
 			If n2\id = id Then
@@ -688,7 +688,7 @@ End Function
 
 Function ForceSetNPCID(n.NPCs, newID%)
 	n\id = newID
-	
+
 	Local n2.NPCs
 	For n2.NPCs = Each NPCs
 		If n2 <> n And n2\id = newID Then
@@ -702,37 +702,37 @@ Function Find860Angle(n.NPCs, fr.Forest)
 	TFormPoint(EntityX(mainPlayer\collider),EntityY(mainPlayer\collider),EntityZ(mainPlayer\collider),0,mainPlayer\currRoom\obj)
 	Local playerx = Floor((TFormedX()*RoomScale+6.0)/12.0)
 	Local playerz = Floor((TFormedZ()*RoomScale+6.0)/12.0)
-	
+
 	TFormPoint(EntityX(n\collider),EntityY(n\collider),EntityZ(n\collider),0,mainPlayer\currRoom\obj)
 	Local x# = (TFormedX()*RoomScale+6.0)/12.0
 	Local z# = (TFormedZ()*RoomScale+6.0)/12.0
-	
+
 	Local xt = Floor(x), zt = Floor(z)
-	
+
 	Local x2,z2
 	If xt<>playerx Or zt<>playerz Then ;the monster is not on the same tile as the player
 		For x2 = Max(xt-1,0) To Min(xt+1,gridsize-1)
 			For z2 = Max(zt-1,0) To Min(zt+1,gridsize-1)
 				If fr\grid[(z2*gridsize)+x2]>0 And (x2<>xt Or z2<>zt) And (x2=xt Or z2=zt) Then
-					
+
 					;tile (x2,z2) is closer to the player than the monsters current tile
 					If (Abs(playerx-x2)+Abs(playerz-z2))<(Abs(playerx-xt)+Abs(playerz-zt)) Then
 						Return GetAngle(x-0.5,z-0.5,x2,z2)+EntityYaw(mainPlayer\currRoom\obj)+180
 					EndIf
-					
+
 				EndIf
 			Next
 		Next
 	Else
 		Return GetAngle(EntityX(n\collider),EntityZ(n\collider),EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider))+180
-	EndIf		
+	EndIf
 End Function
 
 ;TODO: Reimplement the revamp of this function from post-1.3.2.
 Function Console_SpawnNPC(c_input$,state%=-9999)
 	Local n.NPCs
-	
-	Select c_input$ 
+
+	Select c_input$
 		Case "mtf"
 			n.NPCs = CreateNPC(NPCtypeMTF, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider))
 		Case "173","scp173","scp-173"
@@ -771,16 +771,16 @@ Function Console_SpawnNPC(c_input$,state%=-9999)
 			n.NPCs = CreateNPC(NPCtypePdPlane, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider))
 		Case "scp-1499-1","scp1499-1","1499-1"
 			n.NPCs = CreateNPC(NPCtype1499, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider))
-		Default 
+		Default
 			CreateConsoleMsg("NPC type not found.")
 	End Select
-	
+
 	If n <> Null Then
 		If state%<>-9999 Then
 			n\state = state%
 		EndIf
 	EndIf
-	
+
 End Function
 
 ;TODO: Restore pre-shitty bone system iteration of this function.
@@ -789,7 +789,7 @@ Function ManipulateNPCBones()
 	Local bonename$,bonename2$
 	Local pitchvalue#,yawvalue#,rollvalue#
 	Local pitchoffset#,yawoffset#,rolloffset#
-	
+
 	For n = Each NPCs
 		If n\manipulateBone Then
 			pitchvalue# = 0
@@ -910,7 +910,7 @@ Function ManipulateNPCBones()
 			FreeEntity pvt%
 		EndIf
 	Next
-	
+
 End Function
 
 ;TODO: Remove this, go back to being hardcoded.
@@ -920,7 +920,7 @@ Function GetNPCManipulationValue$(NPC$,bone$,section$,valuetype%=0)
 	;1 - Int
 	;2 - Float
 	;3 - Boolean
-	
+
 	Local value$ = GetINIString("Data/NPCBones.ini",NPC$,bone$+"_"+section$)
 	Select valuetype%
 		Case 0
@@ -936,7 +936,7 @@ Function GetNPCManipulationValue$(NPC$,bone$,section$,valuetype%=0)
 				Return False
 			EndIf
 	End Select
-	
+
 End Function
 
 ;TODO: A function that returns an int or a float depending on context, brilliant! Remove as part of restoration of previous bone system.
@@ -947,7 +947,7 @@ Function TransformNPCManipulationData(NPC$,bone$,section$)
 	;	- 2 means "realroll" value has detected
 	;If "section$" = "pitchoffset","yawoffset","rolloffset":
 	;	- simply return the offset degree value using a "return Float"
-	
+
 	Local value$ = GetNPCManipulationValue(NPC$,bone$,section$)
 	Select section$
 		Case "pitch","yaw","roll"
@@ -962,11 +962,11 @@ Function TransformNPCManipulationData(NPC$,bone$,section$)
 		Case "pitchoffset","yawoffset","rolloffset"
 			Return Float(value$)
 	End Select
-	
+
 End Function
 
 Function NPCSpeedChange(n.NPCs)
-	
+
 	Select n\npcType
 		Case NPCtype173,NPCtype106,NPCtype096,NPCtype049,NPCtype939,NPCtypeMTF
 			Select SelectedDifficulty\otherFactors
@@ -976,13 +976,13 @@ Function NPCSpeedChange(n.NPCs)
 					n\speed = n\speed * 1.2
 			End Select
 	End Select
-	
+
 End Function
 
 Function PlayerInReachableRoom()
 	Local RN$ = mainPlayer\currRoom\roomTemplate\name$
 	Local e.Events, temp
-	
+
 	;Player is in these rooms, returning false
 	If RN = "pocketdimension" Or RN = "gatea" Or RN = "dimension1499" Or RN = "173" Then
 		Return False
@@ -1004,7 +1004,7 @@ Function PlayerInReachableRoom()
 	EndIf
 	;Return true, this means player is in reachable room
 	Return True
-	
+
 End Function
 
 ;TODO: Remove in favor of doing checks as needed.
@@ -1012,7 +1012,7 @@ Function CheckForNPCInFacility(n.NPCs)
 	;False (=0): NPC is not in facility (mostly meant for "dimension1499")
 	;True (=1): NPC is in facility
 	;2: NPC is in tunnels (maintenance tunnels/049 tunnels/939 storage room, etc...)
-	
+
 	If EntityY(n\collider)>100.0 Then
 		Return False
 	EndIf
@@ -1022,14 +1022,14 @@ Function CheckForNPCInFacility(n.NPCs)
 	If EntityY(n\collider)> 7.0 And EntityY(n\collider)<=100.0 Then
 		Return 2
 	EndIf
-	
+
 	Return True
 End Function
 
 ;TODO: Remove?
 Function FindNextElevator(n.NPCs)
 	Local eo.ElevatorObj, eo2.ElevatorObj
-	
+
 	For eo = Each ElevatorObj
 		If eo\inFacility = n\inFacility Then
 			If Abs(EntityY(eo\obj,True)-EntityY(n\collider))<10.0 Then
@@ -1060,17 +1060,17 @@ Function FindNextElevator(n.NPCs)
 			EndIf
 		EndIf
 	Next
-	
+
 End Function
 
 ;TODO: Remove?
 Function GoToElevator(n.NPCs)
 	Local dist#,inside%
-	
+
 	If n\pathStatus <> 1 Then
 		PointEntity n\obj,n\currElevator\obj
 		RotateEntity n\collider,0,CurveAngle(EntityYaw(n\obj),EntityYaw(n\collider),20.0),0
-		
+
 		inside% = False
 		If Abs(EntityX(n\collider)-EntityX(n\currElevator\obj,True))<280.0*RoomScale Then
 			If Abs(EntityZ(n\collider)-EntityZ(n\currElevator\obj,True))<280.0*RoomScale Then
@@ -1079,7 +1079,7 @@ Function GoToElevator(n.NPCs)
 				EndIf
 			EndIf
 		EndIf
-		
+
 		dist# = EntityDistance(n\collider,n\currElevator\door\frameobj)
 		If n\currElevator\door\open Then
 			If (dist# > 0.4 And dist# < 0.7) And inside% Then
@@ -1096,12 +1096,12 @@ Function GoToElevator(n.NPCs)
 			EndIf
 		EndIf
 	EndIf
-	
+
 End Function
 
 Function FinishWalking(n.NPCs,startframe#,endframe#,speed#)
 	Local centerframe#
-	
+
 	If n<>Null Then
 		centerframe# = (endframe#-startframe#)/2
 		If n\frame >= centerframe# Then
@@ -1110,11 +1110,11 @@ Function FinishWalking(n.NPCs,startframe#,endframe#,speed#)
 			AnimateNPC(n,endframe#,startframe#,-speed#,False)
 		EndIf
 	EndIf
-	
+
 End Function
 
 Function RotateToDirection(n.NPCs)
-	
+
 	HideEntity n\collider
 	EntityPick(n\collider, 1.0)
 	If PickedEntity() <> 0 Then
@@ -1132,15 +1132,15 @@ Function RotateToDirection(n.NPCs)
 		EndIf
 	EndIf
 	ShowEntity n\collider
-	
+
 End Function
 
 Function AnimateNPC(n.NPCs, start#, quit#, speed#, loop=True)
 	Local newTime#
-	
-	If speed > 0.0 Then 
+
+	If speed > 0.0 Then
 		newTime = Max(Min(n\frame + speed * timing\tickDuration, quit), start)
-		
+
 		If loop And newTime => quit Then
 			newTime = start
 		EndIf
@@ -1150,11 +1150,11 @@ Function AnimateNPC(n.NPCs, start#, quit#, speed#, loop=True)
 			start = quit
 			quit = temp
 		EndIf
-		
+
 		If loop Then
 			newTime = n\frame + speed * timing\tickDuration
-			
-			If newTime < quit Then 
+
+			If newTime < quit Then
 				newTime = start
 			ElseIf newTime > start Then
 				newTime = quit
@@ -1164,14 +1164,14 @@ Function AnimateNPC(n.NPCs, start#, quit#, speed#, loop=True)
 		EndIf
 	EndIf
 	SetNPCFrame(n, newTime)
-	
+
 End Function
 
 Function SetNPCFrame(n.NPCs, frame#)
 	If (Abs(n\frame-frame)<0.001) Then Return
-	
+
 	SetAnimTime n\obj, frame
-	
+
 	n\frame = frame
 End Function
 ;~IDEal Editor Parameters:

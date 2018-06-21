@@ -11,7 +11,7 @@ Function sky_CreateSky(filename$,parent%=0)
 		If FileType(fname$)=1 Then
 			Local b% = LoadBrush(fname$,%110001)
 			Local s% = CreateSurface(sky,b)
-			
+
 			Local vert%
 			For vert = 1 To 4
 				Read x,y,z,u,v
