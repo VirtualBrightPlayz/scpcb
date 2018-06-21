@@ -6,7 +6,7 @@ Global fresize_cam%
 
 Function ResizeImage2(image%,width%,height%)
     Local img% = CreateImage(width,height)
-	
+
 	Local oldWidth% = ImageWidth(image)
 	Local oldHeight% = ImageHeight(image)
 	CopyRect 0,0,oldWidth,oldHeight,1024-oldWidth/2,1024-oldHeight/2,ImageBuffer(image),TextureBuffer(fresize_texture)
@@ -15,7 +15,7 @@ Function ResizeImage2(image%,width%,height%)
 	;might want to replace Float(userOptions\screenWidth) with Max(userOptions\screenWidth,userOptions\screenHeight) if portrait sizes cause issues
 	;everyone uses landscape so it's probably a non-issue
 	CopyRect userOptions\screenWidth/2-width/2,userOptions\screenHeight/2-height/2,width,height,0,0,BackBuffer(),ImageBuffer(img)
-	
+
     FreeImage image
     Return img
 End Function
@@ -42,12 +42,12 @@ Function InitFastResize()
 	CameraClsMode cam, 0, 0
 	CameraRange cam, 0.1, 1.5
 	MoveEntity cam, 0, 0, -10000
-	
+
 	fresize_cam = cam
-	
+
     ;ark_sw = GraphicsWidth()
     ;ark_sh = GraphicsHeight()
-	
+
     ;Create sprite
 	Local spr% = CreateMesh(cam)
 	Local sf% = CreateSurface(spr)
@@ -63,7 +63,7 @@ Function InitFastResize()
 	EntityOrder spr, -100001
 	EntityBlend spr, 1
 	fresize_image = spr
-	
+
     ;Create texture
 	fresize_texture = CreateTexture(2048, 2048, 1+256)
 	fresize_texture2 = CreateTexture(2048, 2048, 1+256)
@@ -75,7 +75,7 @@ Function InitFastResize()
 	;TextureAnisotropy(fresize_texture)
 	EntityTexture spr, fresize_texture,0,0
 	EntityTexture spr, fresize_texture2,0,1
-	
+
 	HideEntity fresize_cam
 End Function
 

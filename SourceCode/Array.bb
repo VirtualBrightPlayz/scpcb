@@ -1,6 +1,6 @@
 Type IntArray
 	Field bank%
-	
+
 	Field xDim%
 	Field yDim%
 	Field zDim%
@@ -30,7 +30,7 @@ End Function
 
 Type IntArrayList
 	Field bank%
-	
+
 	Field size%
 	Field capacity%
 End Type
@@ -58,7 +58,7 @@ Function PushIntArrayListElem(arrayList.IntArrayList,val%)
 		arrayList\capacity=arrayList\capacity*2
 		ResizeBank arrayList\bank,INT_SIZE*arrayList\capacity
 	EndIf
-	
+
 	SetIntArrayListElem(arrayList,val,arrayList\size)
 	arrayList\size=arrayList\size+1
 End Function
@@ -74,7 +74,7 @@ Function EraseIntArrayListElem(arrayList.IntArrayList,pos%)
 	Local i%
 	Local val%
 	If pos>=arrayList\size Then Return
-	
+
 	For i = pos To arrayList\size-2
 		val = PeekInt(arrayList\bank,(i+1)*INT_SIZE)
 		PokeInt(arrayList\bank,i*INT_SIZE,val)

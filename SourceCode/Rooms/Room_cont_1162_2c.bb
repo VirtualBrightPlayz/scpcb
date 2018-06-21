@@ -2,7 +2,7 @@ Function FillRoom_cont_1162_2c(r.Rooms)
     Local d.Doors, d2.Doors, sc.SecurityCams, de.Decals, r2.Rooms, sc2.SecurityCams
     Local it.Items, i%
     Local xtemp%, ytemp%, ztemp%
-    
+
     Local t1;, Bump
 
     d = CreateDoor(r\zone, r\x + 248.0*RoomScale, 0.0, r\z - 736.0*RoomScale, 90, r, False, False, 2)
@@ -12,7 +12,7 @@ Function FillRoom_cont_1162_2c(r.Rooms)
     EntityPickMode r\objects[0],1
     it = CreateItem("Document SCP-1162", "paper", r\x + 863.227 * RoomScale, r\y + 152.0 * RoomScale, r\z - 953.231 * RoomScale)
     EntityParent(it\collider, r\obj)
-    
+
     sc.SecurityCams = CreateSecurityCam(r\x-192.0*RoomScale, r\y+704.0*RoomScale, r\z+192.0*RoomScale, r)
     sc\angle = 225
     sc\turn = 45
@@ -47,15 +47,15 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 	;- 3.0 = player got a memorial item (to explain a bit D-9341's background)
 	;- 3.1 = player got a memorial item + injuries (because he didn't had any item in his inventory before)
 	If mainPlayer\currRoom = e\room Then
-		
+
 		mainPlayer\grabbedEntity = 0
-		
+
 		e\eventState = 0
-		
+
 		Local Pick1162% = True
 		Local pp% = CreatePivot(e\room\obj)
 		PositionEntity pp,976,128,-640,False
-		
+
 		For it.Items = Each Items
 			If (Not it\picked) Then
 				If EntityDistance(it\collider,e\room\objects[0])<0.75 Then
@@ -63,12 +63,12 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 				EndIf
 			EndIf
 		Next
-		
+
 		If EntityDistance(e\room\objects[0],mainPlayer\collider)<0.75 And Pick1162% Then
 			DrawHandIcon = True
 			If MouseHit1 Then mainPlayer\grabbedEntity = e\room\objects[0]
 		EndIf
-		
+
 		If mainPlayer\grabbedEntity <> 0 Then
 			e\eventState2 = Rand(0,mainPlayer\inventory\size-1)
 			If mainPlayer\inventory\items[e\eventState2]<>Null Then
@@ -79,21 +79,21 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 				;randomly picked item slot is empty, getting the first available slot
 				For i = 0 To mainPlayer\inventory\size-1
 					Local isSlotEmpty% = (mainPlayer\inventory\items[(i+e\eventState2) Mod mainPlayer\inventory\size] = Null)
-					
+
 					If (Not isSlotEmpty) Then
 						;successful
 						e\eventState2 = (i+e\eventState2) Mod mainPlayer\inventory\size
 					EndIf
-					
+
 					If Rand(8)=1 Then
 						If isSlotEmpty Then
 							e\eventState3 = 3.1
 						Else
 							e\eventState3 = 3.0
 						EndIf
-						
+
 						e\eventState = Rand(1,5)
-						
+
 						;Checking if the selected nostalgia item already exists or not
 						Local itemName$ = ""
 						Select (e\eventState)
@@ -108,7 +108,7 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 							Case 5
 								itemName = "Old Badge"
 						End Select
-						
+
 						Local itemExists% = False
 						For it.Items = Each Items
 							If (it\name = itemName) Then
@@ -118,7 +118,7 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 								Exit
 							EndIf
 						Next
-						
+
 						If ((Not itemExists) And (Not isSlotEmpty)) Then Exit
 					Else
 						If isSlotEmpty Then
@@ -131,12 +131,12 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 				Next
 			EndIf
 		EndIf
-		
-		
+
+
 		;trade successful
 		If e\eventState3 = 1.0 Then
 			Local shouldCreateItem% = False
-			
+
 			Local itt.ItemTemplates
 			For itt = Each ItemTemplates
 				If (IsItemGoodFor1162(itt)) Then
@@ -173,14 +173,14 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 							EndIf
 					End Select
 				EndIf
-				
+
 				If (shouldCreateItem) Then
 					RemoveItem(mainPlayer\inventory\items[e\eventState2])
 					it=CreateItem(itt\name,itt\name,EntityX(pp,True),EntityY(pp,True),EntityZ(pp,True))
 					EntityType(it\collider, HIT_ITEM)
 					PlaySound2 LoadTempSound("SFX/SCP/1162/Exchange"+Rand(0,4)+".ogg")
 					e\eventState3 = 0.0
-					
+
 					MouseHit1 = False
 					Exit
 				EndIf
@@ -270,7 +270,7 @@ End Function
 
 Function IsItemGoodFor1162(itt.ItemTemplates)
 	Local IN$ = itt\name$
-	
+
 	Select itt\name
 		Case "key1", "key2", "key3"
 			Return True

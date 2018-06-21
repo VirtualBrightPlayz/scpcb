@@ -5,17 +5,17 @@ Const STATE049_ROAMING%  = 2
 Function InitializeNPCtype049(n.NPCs)
     n\nvName = "SCP-049"
     n\collider = CreatePivot()
-	
+
     EntityRadius(n\collider, 0.2)
     EntityType(n\collider, HIT_PLAYER)
-	
+
     n\obj = LoadAnimMesh("GFX/NPCs/scp049/scp-049.b3d")
-    
+
     n\speed = GetINIFloat("DATA/NPCs.ini", "SCP-049", "speed") / 100.0
-    
+
     Local temp# = GetINIFloat("DATA/NPCs.ini", "SCP-049", "scale")
     ScaleEntity(n\obj, temp, temp, temp)
-    
+
     n\sounds[0] = LoadSound("SFX/SCP/049/Catch.ogg")
 	n\sounds[1] = LoadSound("SFX/SCP/049/Spotted1.ogg")
 	n\sounds[2] = LoadSound("SFX/SCP/049/Spotted2.ogg")
@@ -23,49 +23,49 @@ Function InitializeNPCtype049(n.NPCs)
 	n\sounds[4] = LoadSound("SFX/SCP/049/Detected2.ogg")
 	n\sounds[5] = LoadSound("SFX/SCP/049/Detected3.ogg")
 	n\sounds[6] = LoadSound("SFX/SCP/049/Detected4.ogg")
-    
+
     ;If HorrorSFX(13)=0 Then HorrorSFX(13)=LoadSound("SFX/Music/049Chase.ogg") ;TODO: implement
 End Function
 
 Function UpdateNPCtype049(n.NPCs)
     Local prevFrame# = n\frame
 	Local r.Rooms
-	
+
 	If (n\state <> STATE049_IDLE) Then
 		;Depending on whether 049 has detected the player, choose the state it's in.
 		Local npcDetectsPlayer% = MeNPCSeesPlayer(n)
-		
+
 		If (npcDetectsPlayer = 1) Then
 			n\state = STATE049_ATTACK
 		Else
 			n\state = STATE049_ROAMING
 		EndIf
 	EndIf
-    
+
 	Select n\state
 		Case STATE049_IDLE
 			;Idle animation.
 			AnimateNPC(n, 231, 344, 0.31, True)
-			
+
 		Case STATE049_ATTACK
 			;[Block]
 			;Playing a sound after detecting the player
 			If (n\prevState = STATE049_ROAMING And (Not IsChannelPlaying(n\soundChannels[0]))) Then
 				n\soundChannels[0] = LoopRangedSound(n\sounds[Rand(1,2)], n\soundChannels[0], mainPlayer\cam, n\obj)
 			EndIf
-			
+
 			n\pathStatus = 0
 			n\pathTimer# = 0.0
 			n\pathLocation = 0
-			
+
 			PointEntity(n\obj, mainPlayer\collider)
 			RotateEntity(n\collider, 0, CurveAngle(EntityYaw(n\obj), EntityYaw(n\collider), 10.0), 0)
-			
+
 			;Now I must only T O U C H...
 			If (n\playerDistance < 0.5) Then
 				mainPlayer\camZoom = 20.0
 				mainPlayer\blurTimer = 500.0
-				
+
 				If (Not mainPlayer\godMode) Then
 					If (mainPlayer\currRoom\roomTemplate\name$ = "room049") Then
 						DeathMSG = "Three (3) active instances of SCP-049-2 discovered in the tunnel outside SCP-049's containment chamber. Terminated by Nine-Tailed Fox."
@@ -77,16 +77,16 @@ Function UpdateNPCtype049(n.NPCs)
 						DeathMSG = "An active instance of SCP-049-2 was discovered in [REDACTED]. Terminated by Nine-Tailed Fox."
 						Kill(mainPlayer)
 					EndIf
-					
+
 					NPCStopAllChannels(n)
 					PlaySound2(n\sounds[0])
-					
+
 					n\state = STATE049_IDLE
 				EndIf
 			Else ; S T O P P ;chasing
 				n\currSpeed = CurveValue(n\speed, n\currSpeed, 20.0)
 				MoveEntity n\collider, 0, 0, n\currSpeed * timing\tickDuration
-				
+
 				If n\playerDistance < 3.0 Then ;extends arm
 					AnimateNPC(n, Max(Min(AnimTime(n\obj),428.0),387), 463.0, n\currSpeed*38)
 				Else
@@ -99,16 +99,16 @@ Function UpdateNPCtype049(n.NPCs)
 				EndIf
 			EndIf
 			;[End Block]
-			
+
 		Case STATE049_ROAMING
 			;[Block]
 			Local dist2#
-			
+
 			;Finding a path to the player
 			If (npcDetectsPlayer = 2) Then
 				n\lastSeen = 70*15
 			EndIf
-			
+
 			If n\lastSeen > 0 Then
 				If n\pathStatus = 1 Then ;Path to player found
 					If n\path[n\pathLocation]=Null Then
@@ -131,12 +131,12 @@ Function UpdateNPCtype049(n.NPCs)
 								;EndIf
 							EndIf
 						EndIf
-						
+
 						n\currSpeed = CurveValue(n\speed, n\currSpeed, 20.0)
 						PointEntity n\obj,n\path[n\pathLocation]\obj
 						RotateEntity n\collider,0,CurveAngle(EntityYaw(n\obj),EntityYaw(n\collider),10.0),0
 						MoveEntity n\collider,0,0,n\currSpeed*timing\tickDuration
-						
+
 						;opens doors in front of him
 						dist2# = EntityDistance(n\collider,n\path[n\pathLocation]\obj)
 						If (dist2 < 0.6) Then
@@ -160,26 +160,26 @@ Function UpdateNPCtype049(n.NPCs)
 								n\pathTimer# = 0.0
 							EndIf
 						EndIf
-						
+
 						AnimateNPC(n, Max(Min(AnimTime(n\obj),358.0),346), 393.0, n\currSpeed*38)
-						
+
 						;Playing a sound if he hears the player
 						If (n\soundTimer < 0 And (Not IsChannelPlaying(n\soundChannels[0]))) Then
 							n\soundTimer = Rand(10, 20) * 70
-							
+
 							If Rand(8)=3 Then
 								n\soundChannels[0] = LoopRangedSound(n\sounds[6], n\soundChannels[0], mainPlayer\cam, n\obj)
 							Else
 								n\soundChannels[0] = LoopRangedSound(n\sounds[Rand(3, 5)], n\soundChannels[0], mainPlayer\cam, n\obj)
 							EndIf
 						EndIf
-						
+
 						If (n\timer > 70*7) Then ;Updating the path every 7 seconds
 							n\pathStatus = FindPath(n, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider))
 							n\timer = 0.0
 						EndIf
 					EndIf
-					
+
 					If n\currElevator <> Null Then
 						dist2# = EntityDistance(n\collider,n\currElevator\door\frameobj)
 						If dist2# < 0.7 Then
@@ -209,7 +209,7 @@ Function UpdateNPCtype049(n.NPCs)
 						;n\currSpeed = CurveValue(n\speed, n\currSpeed, 20.0)
 						n\currSpeed = n\speed
 						GoToElevator(n)
-						
+
 						If n\currSpeed > 0.0 Then
 							MoveEntity n\collider,0,0,n\currSpeed*timing\tickDuration
 							AnimateNPC(n, Max(Min(AnimTime(n\obj),358.0),346), 393.0, n\currSpeed*38)
@@ -240,12 +240,12 @@ Function UpdateNPCtype049(n.NPCs)
 								;endIf
 							EndIf
 						EndIf
-						
+
 						n\currSpeed = CurveValue(n\speed, n\currSpeed, 20.0)
 						PointEntity n\obj,n\path[n\pathLocation]\obj
 						RotateEntity n\collider,0,CurveAngle(EntityYaw(n\obj),EntityYaw(n\collider),10.0),0
 						MoveEntity n\collider,0,0,n\currSpeed*timing\tickDuration
-						
+
 						;opens doors in front of him
 						dist2# = EntityDistance(n\collider,n\path[n\pathLocation]\obj)
 						If dist2 < 0.6 Then
@@ -269,11 +269,11 @@ Function UpdateNPCtype049(n.NPCs)
 								n\pathTimer# = 0.0
 							EndIf
 						EndIf
-						
+
 						AnimateNPC(n, Max(Min(AnimTime(n\obj),358.0),346), 393.0, n\currSpeed*38)
-						
+
 						n\timer = n\timer + timing\tickDuration
-						
+
 						If n\inFacility = True Then
 							If n\state3 > 70*14 Then ;Breaking the path after 14 seconds
 								n\pathStatus = 0
@@ -283,7 +283,7 @@ Function UpdateNPCtype049(n.NPCs)
 							EndIf
 						EndIf
 					EndIf
-					
+
 					If n\currElevator <> Null Then
 						dist2# = EntityDistance(n\collider,n\currElevator\door\frameobj)
 						If dist2# < 0.7 Then
@@ -317,7 +317,7 @@ Function UpdateNPCtype049(n.NPCs)
 						;n\currSpeed = CurveValue(n\speed, n\currSpeed, 20.0)
 						n\currSpeed = n\speed
 						GoToElevator(n)
-						
+
 						If n\currSpeed > 0.0 Then
 							MoveEntity(n\collider, 0, 0, n\currSpeed*timing\tickDuration)
 							AnimateNPC(n, Max(Min(AnimTime(n\obj),358.0),346), 393.0, n\currSpeed*38)
@@ -329,17 +329,17 @@ Function UpdateNPCtype049(n.NPCs)
 			EndIf
 			;[End Block]
 	End Select
-    
+
     PositionEntity(n\obj, EntityX(n\collider), EntityY(n\collider)-0.22, EntityZ(n\collider))
-    
+
     RotateEntity n\obj, 0, EntityYaw(n\collider), 0
-    
+
     n\lastSeen = Max(n\lastSeen-timing\tickDuration,0)
-	
+
 	If (n\soundTimer >= 0) Then
 		n\soundTimer = n\soundTimer - timing\tickDuration
 	EndIf
-	
+
 	n\prevState = n\state
 End Function
 ;~IDEal Editor Parameters:

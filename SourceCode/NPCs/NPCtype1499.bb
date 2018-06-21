@@ -3,7 +3,7 @@ Function InitializeNPCtype1499(n.NPCs)
     n\collider = CreatePivot()
     EntityRadius n\collider, 0.2
     EntityType n\collider, HIT_PLAYER
-	
+
 	Local n2.NPCs
     For n2.NPCs = Each NPCs
         If (n\npcType = n2\npcType) And (n<>n2) Then
@@ -11,26 +11,26 @@ Function InitializeNPCtype1499(n.NPCs)
             Exit
         EndIf
     Next
-    
-    If n\obj = 0 Then 
+
+    If n\obj = 0 Then
         n\obj = LoadAnimMesh("GFX/NPCs/scp1499/scp1499.b3d")
     EndIf
-    
+
     n\speed = (GetINIFloat("DATA/NPCs.ini", "SCP-1499-1", "speed") / 100.0) * Rnd(0.9,1.1)
     Local temp# = (GetINIFloat("DATA/NPCs.ini", "SCP-1499-1", "scale") / 6.0) * Rnd(0.8,1.0)
-    
+
     ScaleEntity n\obj, temp, temp, temp
-    
+
     EntityFX n\obj,1
 End Function
 
 Function UpdateNPCtype1499(n.NPCs)
     ;n\state: Current State of the NPC
     ;n\state2: A second state variable (dependend on the current NPC's n\state)
-    
+
 	Local n2.NPCs
     Local prevFrame% = n\frame
-    
+
     If (Not n\idle) And EntityDistance(n\collider,mainPlayer\collider)<HideDistance*2 Then
         If n\state = 0 Or n\state = 2 Then
             For n2.NPCs = Each NPCs
@@ -43,7 +43,7 @@ Function UpdateNPCtype1499(n.NPCs)
                 EndIf
             Next
         EndIf
-        
+
         Select n\state
             Case 0
                 If n\currSpeed = 0.0 Then
@@ -60,11 +60,11 @@ Function UpdateNPCtype1499(n.NPCs)
                     Else
                         n\currSpeed = CurveValue(0.0,n\currSpeed,50.0)
                     EndIf
-                    
+
                     RotateEntity n\collider,0,CurveAngle(n\angle,EntityYaw(n\collider),10.0),0
-                    
+
                     If Rand(200) = 1 Then n\angle = n\angle + Rnd(-45,45)
-                    
+
                     HideEntity n\collider
                     EntityPick(n\collider, 1.5)
                     If PickedEntity() <> 0 Then
@@ -72,7 +72,7 @@ Function UpdateNPCtype1499(n.NPCs)
                     EndIf
                     ShowEntity n\collider
                 EndIf
-                
+
                 If n\currSpeed = 0.0 Then
                     AnimateNPC(n,296,317,0.2)
                 Else
@@ -82,12 +82,12 @@ Function UpdateNPCtype1499(n.NPCs)
                         AnimateNPC(n,100,167,(n\currSpeed*28))
                     EndIf
                 EndIf
-                
+
                 ;randomly play the "screaming animation" and revert back to state 0
                 If (Rand(5000)=1) Then
                     n\state = 2
                     n\state2 = 0
-                    
+
                     If Not IsChannelPlaying(n\soundChannels[0]) Then
                         If (n\playerDistance < 20.0) Then
                             If n\sounds[0] <> 0 Then FreeSound n\sounds[0] : n\sounds[0] = 0
@@ -96,7 +96,7 @@ Function UpdateNPCtype1499(n.NPCs)
                         EndIf
                     EndIf
                 EndIf
-                
+
                 If (n\id Mod 2 = 0) And (Not NoTarget) Then
                     If n\playerDistance < 10.0 Then
                         If EntityVisible(n\collider,mainPlayer\collider) Then
@@ -106,9 +106,9 @@ Function UpdateNPCtype1499(n.NPCs)
                                 If n\sounds[0] <> 0 Then FreeSound n\sounds[0] : n\sounds[0] = 0
                                 n\sounds[0] = LoadSound("SFX/SCP/1499/Triggered.ogg")
                                 n\soundChannels[0] = PlayRangedSound(n\sounds[0], mainPlayer\cam, n\collider,20.0)
-                                
+
                                 n\state2 = 1 ;if player is too close, switch to attack after screaming
-                                
+
                                 For n2.NPCs = Each NPCs
                                     ;If n2\npctype = n\npcType And n2 <> n And (n\id Mod 2 = 0) Then
                                     If n2\npcType = n\npcType And n2 <> n Then
@@ -119,32 +119,32 @@ Function UpdateNPCtype1499(n.NPCs)
                             Else
                                 n\state2 = 0 ;otherwise keep idling
                             EndIf
-                            
+
                             n\frame = 203
                         EndIf
                     EndIf
                 EndIf
             Case 1 ;attacking the player
                 If NoTarget Then n\state = 0
-                
+
                 If mainPlayer\currRoom\roomTemplate\name = "dimension1499" Then
                     ;If Music(19)=0 Then Music(19) = LoadSound("SFX/Music/1499Danger.ogg") ;TODO: fix
                     ;ShouldPlay = 19
                 EndIf
-                
+
                 PointEntity n\obj,mainPlayer\collider
                 RotateEntity n\collider,0,CurveAngle(EntityYaw(n\obj),EntityYaw(n\collider),20.0),0
-                
+
                 If n\state2 = 0.0 Then
                     n\currSpeed = CurveValue(n\speed*1.75,n\currSpeed,10.0)
-                    
+
                     If (n\id Mod 2 = 0) Then
                         AnimateNPC(n,1,62,(n\currSpeed*28))
                     Else
                         AnimateNPC(n,100,167,(n\currSpeed*28))
                     EndIf
                 EndIf
-                
+
                 If n\playerDistance < 0.75 Then
                     If (n\id Mod 2 = 0) Or n\state3 = 1 Then
                         n\state2 = Rand(1,2)
@@ -161,7 +161,7 @@ Function UpdateNPCtype1499(n.NPCs)
             Case 2 ;play the "screaming animation" and switch to n\state2 after it's finished
                 n\currSpeed = 0.0
                 AnimateNPC(n,203,295,0.1,False)
-                
+
                 If n\frame > 294.0 Then
                     n\state = n\state2
                 EndIf
@@ -221,24 +221,24 @@ Function UpdateNPCtype1499(n.NPCs)
             Case 4 ;standing in front of the player
                 n\currSpeed = CurveValue(0.0,n\currSpeed,5.0)
                 AnimateNPC(n,296,317,0.2)
-                
+
                 PointEntity n\obj,mainPlayer\collider
                 RotateEntity n\collider,0,CurveAngle(EntityYaw(n\obj),EntityYaw(n\collider),20.0),0
-                
+
                 If n\playerDistance > 0.85 Then
                     n\state = 1
                 EndIf
         End Select
-        
+
         If n\soundChannels[0] <> 0 And IsChannelPlaying(n\soundChannels[0]) Then
             UpdateRangedSoundOrigin(n\soundChannels[0],mainPlayer\cam,n\collider,20.0)
         EndIf
-        
+
         MoveEntity n\collider,0,0,n\currSpeed*timing\tickDuration
-        
+
         RotateEntity n\obj,0,EntityYaw(n\collider)-180,0
         PositionEntity n\obj,EntityX(n\collider),EntityY(n\collider)-0.2,EntityZ(n\collider)
-        
+
         ShowEntity n\obj
     Else
         HideEntity n\obj

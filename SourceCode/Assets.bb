@@ -32,7 +32,7 @@ Function CreateAsset.AssetWrap(filePath$, asType%, flag%=1)
 		Case ASSET_ANIM_MESH
 			as\intVal = LoadAnimMesh(as\file)
 	End Select
-	
+
 	DebugLog("CREATED ASSET: " + filePath)
 	Return as
 End Function
@@ -46,7 +46,7 @@ Function FreeAsset(as.AssetWrap)
 		Case ASSET_MESH, ASSET_ANIM_MESH
 			FreeEntity(as\intVal)
 	End Select
-	
+
 	Local strng$ = as\file
 	Delete as
 	DebugLog("ASSET Removed: " + strng)
@@ -120,15 +120,15 @@ Type UIAssets
 	Field tileWhite%
 	Field tileBlack%
 	Field scp173%
-	
+
 	Field pauseMenuBG%
-	
+
 	Field cursorIMG%
 	Field arrow%[4]
-	
+
 	Field font%[4]
 	Field consoleFont%
-	
+
 	;HUD
 	Field sprintIcon%
 	Field blinkIcon%
@@ -137,37 +137,37 @@ Type UIAssets
 	Field blinkBar%
 	Field staminaBar%
 	Field keypadHUD%
-	
+
 End Type
 
 Global uiAssets.UIAssets
 Function InitializeUIAssets()
 	uiAssets = New UIAssets
-	
+
 	uiAssets\back = LoadImage("GFX/menu/back.jpg")
 	uiAssets\scpText = LoadImage("GFX/menu/scptext.jpg")
 	uiAssets\scp173 = LoadImage("GFX/menu/173back.jpg")
 	uiAssets\tileWhite = LoadImage("GFX/menu/menuwhite.jpg")
 	uiAssets\tileBlack = LoadImage("GFX/menu/menublack.jpg")
 	MaskImage uiAssets\tileBlack, 255,255,0
-	
+
 	ResizeImage(uiAssets\back, ImageWidth(uiAssets\back) * MenuScale, ImageHeight(uiAssets\back) * MenuScale)
 	ResizeImage(uiAssets\scpText, ImageWidth(uiAssets\scpText) * MenuScale, ImageHeight(uiAssets\scpText) * MenuScale)
 	ResizeImage(uiAssets\scp173, ImageWidth(uiAssets\scp173) * MenuScale, ImageHeight(uiAssets\scp173) * MenuScale)
-	
+
 	uiAssets\pauseMenuBG = LoadImage("GFX/menu/pausemenu.jpg")
 	MaskImage uiAssets\pauseMenuBG, 255,255,0
 	ScaleImage(uiAssets\pauseMenuBG, MenuScale, MenuScale)
-	
+
 	uiAssets\cursorIMG = LoadImage("GFX/cursor.png")
-	
+
 	Local i%
 	For i = 0 To 3
 		uiAssets\arrow[i] = LoadImage("GFX/menu/arrow.png")
 		RotateImage(uiAssets\arrow[i], 90 * i)
 		HandleImage(uiAssets\arrow[i], 0, 0)
 	Next
-	
+
 	;For some reason, Blitz3D doesn't load fonts that have filenames that
 	;don't match their "internal name" (i.e. their display name in applications
 	;like Word and such). As a workaround, I moved the files and renamed them so they
@@ -177,7 +177,7 @@ Function InitializeUIAssets()
 	uiAssets\font[2] = LoadFont("GFX/font/DS-DIGI/DS-Digital.ttf", Int(22 * MenuScale), 0,0,0)
 	uiAssets\font[3] = LoadFont("GFX/font/DS-DIGI/DS-Digital.ttf", Int(60 * MenuScale), 0,0,0)
 	uiAssets\consoleFont% = LoadFont("Blitz", Int(20 * MenuScale), 0,0,0)
-	
+
 	uiAssets\sprintIcon = LoadImage("GFX/HUD/sprinticon.png")
 	uiAssets\blinkIcon% = LoadImage("GFX/HUD/blinkicon.png")
 	uiAssets\crouchIcon% = LoadImage("GFX/HUD/sneakicon.png")
@@ -195,21 +195,21 @@ Function ReleaseUIAssets()
 	FreeImage(uiAssets\scp173)
 	FreeImage(uiAssets\tileWhite)
 	FreeImage(uiAssets\tileBlack)
-	
+
 	FreeImage(uiAssets\pauseMenuBG)
-	
+
 	FreeImage(uiAssets\cursorIMG)
-	
+
 	Local i%
 	For i = 0 To 3
 		FreeImage(uiAssets\arrow[i])
 	Next
-	
+
 	For i = 0 To 3
 		FreeFont(uiAssets\font[i])
 	Next
 	FreeFont(uiAssets\consoleFont)
-	
+
 	FreeImage(uiAssets\sprintIcon)
 	FreeImage(uiAssets\blinkIcon)
 	FreeImage(uiAssets\crouchIcon)
@@ -219,23 +219,23 @@ Function ReleaseUIAssets()
 	FreeImage(uiAssets\blinkBar)
 	FreeImage(uiAssets\staminaBar)
 	FreeImage(uiAssets\keypadHUD)
-	
+
 	Delete uiAssets
 End Function
 
 Function LoadEntities()
 	DrawLoading(0)
-	
+
 	Local i%
-	
+
 	;TODO: there may be a memory leak here,
 	;probably gonna have to rework the tempsound system
 	For i=0 To 9
 		TempSounds[i]=0
 	Next
-	
+
 	;TextureLodBias
-	
+
 	AmbientLightRoomTex% = CreateTexture(2,2,257)
 	TextureBlend AmbientLightRoomTex,5
 	SetBuffer(TextureBuffer(AmbientLightRoomTex))
@@ -243,71 +243,71 @@ Function LoadEntities()
 	Cls
 	SetBuffer BackBuffer()
 	AmbientLightRoomVal = 0
-	
+
 	SoundEmitter = CreatePivot()
-	
+
 	CreateBlurImage()
 	CameraProjMode ark_blur_cam,0
-	
+
 	mainPlayer = CreatePlayer()
-	
+
 	AmbientLight(Brightness, Brightness, Brightness)
-	
+
 	ScreenTexs[0] = CreateTexture(512, 512, 1+256)
 	ScreenTexs[1] = CreateTexture(512, 512, 1+256)
-	
+
 	;Listener = CreateListener(mainPlayer\cam)
-	
+
 	DrawLoading(5)
 	TeslaTexture = LoadTexture("GFX/map/Textures/tesla.jpg", 1+2)
-	
+
 	LightSpriteTex(0) = LoadTexture("GFX/Sprites/light1.jpg", 1)
 	LightSpriteTex(1) = LoadTexture("GFX/Sprites/light2.jpg", 1)
 	LightSpriteTex(2) = LoadTexture("GFX/Sprites/lightsprite.jpg",1)
-	
+
 	DrawLoading(10)
-	
+
 	DrawLoading(15)
-	
+
 	For i = 0 To 5
 		GorePics(i) = LoadTexture("GFX/895pics/pic" + Str(i + 1) + ".jpg")
 	Next
-	
+
 	OldAiPics(0) = LoadTexture("GFX/079pics/AIface.jpg")
-	OldAiPics(1) = LoadTexture("GFX/079pics/AIface2.jpg")	
-	
+	OldAiPics(1) = LoadTexture("GFX/079pics/AIface2.jpg")
+
 	DrawLoading(20)
-	
+
 	;TODO: replace DecalTextures with a 2D array?
 	For i = 0 To 6
 		DecalTextures(i) = LoadTexture("GFX/Decals/decal" + Str(i + 1) + ".png", 1 + 2)
 	Next
 	;DecalTextures(7) = LoadTexture("GFX/items/INVpaperstrips.jpg", 1 + 2)
 	For i = 8 To 12
-		DecalTextures(i) = LoadTexture("GFX/Decals/decalpd"+(i-7)+".jpg", 1 + 2)	
+		DecalTextures(i) = LoadTexture("GFX/Decals/decalpd"+(i-7)+".jpg", 1 + 2)
 	Next
 	For i = 13 To 14
-		DecalTextures(i) = LoadTexture("GFX/Decals/bullethole"+Str(i-12)+".jpg", 1 + 2)	
-	Next	
-	For i = 15 To 16
-		DecalTextures(i) = LoadTexture("GFX/Decals/blooddrop"+Str(i-14)+".png", 1 + 2)	
+		DecalTextures(i) = LoadTexture("GFX/Decals/bullethole"+Str(i-12)+".jpg", 1 + 2)
 	Next
-	DecalTextures(17) = LoadTexture("GFX/Decals/decal8.png", 1 + 2)	
+	For i = 15 To 16
+		DecalTextures(i) = LoadTexture("GFX/Decals/blooddrop"+Str(i-14)+".png", 1 + 2)
+	Next
+	DecalTextures(17) = LoadTexture("GFX/Decals/decal8.png", 1 + 2)
 	DecalTextures(18) = LoadTexture("GFX/Decals/decalpd6.jpg", 1 + 2)
-	
+
 	DrawLoading(25)
-	
+
 	Monitor = LoadMesh("GFX/map/monitor.b3d")
 	HideEntity Monitor
 	MonitorTexture = LoadTexture("GFX/General/monitortexture.jpg")
-	
+
 	CamBaseOBJ = LoadMesh("GFX/map/cambase.x")
 	HideEntity(CamBaseOBJ)
 	CamOBJ = LoadMesh("GFX/map/CamHead.b3d")
 	HideEntity(CamOBJ)
-	
+
 	InitItemTemplates()
-	
+
 	ParticleTextures(0) = LoadTexture("GFX/Sprites/smoke.png", 1 + 2)
 	ParticleTextures(1) = LoadTexture("GFX/Sprites/flash.jpg", 1 + 2)
 	ParticleTextures(2) = LoadTexture("GFX/Sprites/dust.jpg", 1 + 2)
@@ -316,93 +316,93 @@ Function LoadEntities()
 	ParticleTextures(5) = LoadTexture("GFX/Decals/bloodsprite.png", 1 + 2)
 	ParticleTextures(6) = LoadTexture("GFX/Sprites/smoke2.png", 1 + 2)
 	ParticleTextures(7) = LoadTexture("GFX/Sprites/spark.jpg", 1 + 2)
-	
+
 	LoadMaterials("Data/materials.ini")
-	
+
 	;TextureLodBias TextureFloat#
-	
+
 	DrawLoading(30)
-	
+
 	LoadRoomTemplates("Data/rooms.ini")
-	
+
 	;LoadRoomMeshes()
-	
+
 End Function
 
 Function InitNewGame()
 	Local i%, de.Decals, d.Doors, it.Items, r.Rooms, sc.SecurityCams, e.Events
-	
+
 	DrawLoading(45)
-	
+
 	LoadInGameSounds(sndManager)
-	
+
 	HideDistance# = 15.0
-	
+
 	mainPlayer\heartbeatIntensity = 70
 	;HeartBeatRate = 70
-	
+
 	AccessCode = 0
 	For i = 0 To 3
 		AccessCode = AccessCode + Rand(1,9)*(10^i)
-	Next	
-	
+	Next
+
 	If SelectedMap = "" Then
 		CreateMap()
 	Else
 		LoadMap("Map Creator/Maps/"+SelectedMap)
 	EndIf
 	InitWayPoints()
-	
+
 	DrawLoading(79)
-	
+
 	Curr173 = CreateNPC(NPCtype173, 0, -30.0, 0)
 	Curr106 = CreateNPC(NPCtype106, 0, -30.0, 0)
 	Curr106\state = 70 * 60 * Rand(12,17)
-	
+
 	For d.Doors = Each Doors
 		EntityParent(d\obj, 0)
 		If d\obj2 > 0 Then EntityParent(d\obj2, 0)
 		If d\frameobj > 0 Then EntityParent(d\frameobj, 0)
 		If d\buttons[0] > 0 Then EntityParent(d\buttons[0], 0)
 		If d\buttons[1] > 0 Then EntityParent(d\buttons[1], 0)
-		
+
 		If d\obj2 <> 0 And d\dir = 0 Then
 			MoveEntity(d\obj, 0, 0, 8.0 * RoomScale)
 			MoveEntity(d\obj2, 0, 0, 8.0 * RoomScale)
-		EndIf	
+		EndIf
 	Next
-	
+
 	For it.Items = Each Items
 		EntityType (it\collider, HIT_ITEM)
 		EntityParent(it\collider, 0)
 	Next
-	
+
 	DrawLoading(80)
 	For sc.SecurityCams= Each SecurityCams
 		sc\angle = EntityYaw(sc\obj) + sc\angle
 		EntityParent(sc\obj, 0)
-	Next	
-	
+	Next
+
 	For r.Rooms = Each Rooms
 		For i = 0 To MaxRoomLights
 			If r\lights[i]<>0 Then EntityParent(r\lights[i],0)
 		Next
-		
+
 		If (Not r\roomTemplate\disableDecals) Then
 			If Rand(4) = 1 Then
 				de.Decals = CreateDecal(Rand(2, 3), EntityX(r\obj)+Rnd(- 2,2), 0.003, EntityZ(r\obj)+Rnd(-2,2), 90, Rand(360), 0)
 				de\size = Rnd(0.1, 0.4) : ScaleSprite(de\obj, de\size, de\size)
 				EntityAlpha(de\obj, Rnd(0.85, 0.95))
 			EndIf
-			
+
 			If Rand(4) = 1 Then
 				de.Decals = CreateDecal(0, EntityX(r\obj)+Rnd(- 2,2), 0.003, EntityZ(r\obj)+Rnd(-2,2), 90, Rand(360), 0)
 				de\size = Rnd(0.5, 0.7) : EntityAlpha(de\obj, 0.7) : de\id = 1 : ScaleSprite(de\obj, de\size, de\size)
 				EntityAlpha(de\obj, Rnd(0.7, 0.85))
 			EndIf
 		EndIf
-		
-		If (r\roomTemplate\name = "cont_173_1" And (userOptions\introEnabled = False)) Then 
+
+		If (r\roomTemplate\name = "cont_173_1" And (userOptions\introEnabled = False)) Then
 			PositionEntity (mainPlayer\collider, EntityX(r\obj)+3584*RoomScale, 714*RoomScale, EntityZ(r\obj)+1024*RoomScale)
 			ResetEntity mainPlayer\collider
 			mainPlayer\currRoom = r
@@ -411,9 +411,9 @@ Function InitNewGame()
 			ResetEntity mainPlayer\collider
 			mainPlayer\currRoom = r
 		EndIf
-		
+
 	Next
-	
+
 	Local rt.RoomTemplates
 	For rt.RoomTemplates = Each RoomTemplates
 		If rt\collisionObjs<>Null Then
@@ -422,10 +422,10 @@ Function InitNewGame()
 			Next
 			DeleteIntArrayList(rt\collisionObjs) : rt\collisionObjs = Null
 		EndIf
-		
+
 		FreeEntity rt\opaqueMesh
 		If rt\alphaMesh<>0 Then FreeEntity rt\alphaMesh
-		
+
 		Local prop.Props
 		If rt\props<>Null Then
 			For i% = 0 To rt\props\size-1
@@ -436,18 +436,18 @@ Function InitNewGame()
 			DeleteIntArrayList(rt\props) : rt\props = Null
 		EndIf
 	Next
-	
+
 	Local tw.TempWayPoints
 	For tw.TempWayPoints = Each TempWayPoints
 		Delete tw
 	Next
-	
+
 	TurnEntity(mainPlayer\collider, 0, Rand(160, 200), 0)
-	
+
 	ResetEntity mainPlayer\collider
-	
+
 	If SelectedMap = "" Then InitEvents()
-	
+
 	;TODO: fix
 ;	For e.Events = Each Events
 ;		If e\name = "room2nuke"
@@ -457,23 +457,23 @@ Function InitNewGame()
 ;		If e\name = "room106"
 ;			e\eventState2 = 1
 ;			DebugLog "room106"
-;		EndIf	
+;		EndIf
 ;		If e\name = "room2sl"
 ;			e\eventState3 = 1
 ;			DebugLog "room2sl"
 ;		EndIf
 ;	Next
-	
+
 	MoveMouse viewport_center_x,viewport_center_y;320, 240
-	
+
 	SetFont uiAssets\font[0]
-	
+
 	HidePointer()
-	
+
 	mainPlayer\blinkTimer = -10
 	mainPlayer\blurTimer = 100
 	mainPlayer\stamina = 100
-	
+
 	For i% = 0 To 70
 		FlushKeys()
 		MovePlayer()
@@ -486,50 +486,50 @@ Function InitNewGame()
 			DrawLoading(80+Int(Float(i)*0.27))
 		EndIf
 	Next
-	
+
 	FreeTextureCache
 	DrawLoading(100)
-	
+
 	FlushKeys
 	FlushMouse
-	
+
 	mainPlayer\dropSpeed = 0
 End Function
 
 Function InitLoadGame()
 	Local d.Doors, sc.SecurityCams, rt.RoomTemplates, e.Events
-	
+
 	DrawLoading(80)
-	
+
 	For d.Doors = Each Doors
 		EntityParent(d\obj, 0)
 		If d\obj2 > 0 Then EntityParent(d\obj2, 0)
 		If d\frameobj > 0 Then EntityParent(d\frameobj, 0)
 		If d\buttons[0] > 0 Then EntityParent(d\buttons[0], 0)
 		If d\buttons[1] > 0 Then EntityParent(d\buttons[1], 0)
-		
+
 	Next
-	
+
 	For sc.SecurityCams = Each SecurityCams
 		sc\angle = EntityYaw(sc\obj) + sc\angle
 		EntityParent(sc\obj, 0)
 	Next
-	
+
 	ResetEntity mainPlayer\collider
-	
+
 	;InitEvents()
-	
+
 	DrawLoading(90)
-	
+
 	MoveMouse viewport_center_x,viewport_center_y
-	
+
 	SetFont uiAssets\font[0]
-	
+
 	HidePointer ()
-	
+
 	mainPlayer\blinkTimer = mainPlayer\blinkFreq
 	mainPlayer\stamina = 100
-	
+
 	Local i%, x#, z#
 	For rt.RoomTemplates = Each RoomTemplates
 		If rt\collisionObjs<>Null Then
@@ -538,10 +538,10 @@ Function InitLoadGame()
 			Next
 			DeleteIntArrayList(rt\collisionObjs) : rt\collisionObjs = Null
 		EndIf
-		
+
 		FreeEntity rt\opaqueMesh
 		If rt\alphaMesh<>0 Then FreeEntity rt\alphaMesh
-		
+
 		Local prop.Props
 		If rt\props<>Null Then
 			For i% = 0 To rt\props\size-1
@@ -552,9 +552,9 @@ Function InitLoadGame()
 			DeleteIntArrayList(rt\props) : rt\props = Null
 		EndIf
 	Next
-	
+
 	mainPlayer\dropSpeed = 0.0
-	
+
 	For e.Events = Each Events
 		;Loading the necessary stuff for dimension1499, but this will only be done if the player is in this dimension already
 		If e\name = "dimension1499" Then
@@ -589,17 +589,17 @@ Function InitLoadGame()
 				UpdateChunks(e\room,15,False)
 				;MoveEntity mainPlayer\collider,0,10,0
 				;ResetEntity mainPlayer\collider
-				
+
 				DebugLog "Loaded dimension1499 successful"
-				
+
 				Exit
 				;[End Block]
 			EndIf
 		EndIf
 	Next
-	
+
 	FreeTextureCache
-	
+
 	DrawLoading(100)
 End Function
 
@@ -607,105 +607,105 @@ Function NullGame()
 	Local i%, x%, y%, lvl
 	Local itt.ItemTemplates, s.Screens, lt.LightTemplates, d.Doors, m.Materials
 	Local wp.WayPoints, twp.TempWayPoints, r.Rooms, it.Items
-	
+
 	DeloadInGameSounds(sndManager)
-	
+
 	ClearTextureCache()
-	
+
 	DeletePlayer(mainPlayer) : mainPlayer = Null
-	
+
 	DeathMSG$=""
-	
+
 	SelectedMap = ""
-	
+
 	DoorTempID = 0
-	
+
 	GameSaved = 0
-	
+
 	HideDistance# = 15.0
-	
+
 	For itt.ItemTemplates = Each ItemTemplates
 		itt\found = False
 	Next
-	
+
 	Contained106 = False
 	Curr173\idle = False
-	
+
 	MTFtimer = 0
 	For i = 0 To 9
 		MTFrooms[i]=Null
 		MTFroomState[i]=0
 	Next
-	
+
 	For s.Screens = Each Screens
 		If s\img <> 0 Then FreeImage s\img : s\img = 0
 		Delete s
 	Next
 
 	;RefinedItems = 0 ;TODO: reimplement?
-	
+
 	ConsoleInput = ""
 	;ConsoleOpen = False
-	
+
 	;TODO: fix
 	;EyeIrritation = 0
 	;EyeStuck = 0
-	
+
 	Msg = ""
 	MsgTimer = 0
-	
+
 	For d.Doors = Each Doors
 		Delete d
 	Next
-	
+
 	;ClearWorld
-	
+
 	For lt.LightTemplates = Each LightTemplates
 		Delete lt
-	Next 
-	
+	Next
+
 	For m.Materials = Each Materials
 		Delete m
 	Next
-	
+
 	For wp.WayPoints = Each WayPoints
 		Delete wp
 	Next
-	
+
 	For twp.TempWayPoints = Each TempWayPoints
 		Delete twp
-	Next	
-	
+	Next
+
 	For r.Rooms = Each Rooms
 		DeleteIntArray(r\collisionObjs)
 		If r\props<>Null Then DeleteIntArray(r\props)
 		Delete r
 	Next
 	DeleteIntArray(MapRooms)
-	
+
 	Local rt.RoomTemplates
 	For rt.RoomTemplates = Each RoomTemplates
 		Delete rt
 	Next
-	
+
 	For itt.ItemTemplates = Each ItemTemplates
 		Delete itt
-	Next 
-	
+	Next
+
 	For it.Items = Each Items
 		Delete it
 	Next
-	
+
 	Local pr.Props
 	For pr.Props = Each Props
 		Delete pr
 	Next
-	
+
 	Local de.Decals
 	For de.Decals = Each Decals
 		Delete de
 	Next
-	
+
 	Local n.NPCs
 	For n.NPCs = Each NPCs
 		Delete n
@@ -716,33 +716,33 @@ Function NullGame()
 	For i = 0 To 6
 		MTFrooms[i]=Null
 	Next
-	
+
 	Local e.Events
 	For e.Events = Each Events
 		If e\sounds[0]<>0 Then FreeSound e\sounds[0]
 		If e\sounds[1]<>0 Then FreeSound e\sounds[1]
 		Delete e
 	Next
-	
+
 	Local sc.SecurityCams
 	For sc.SecurityCams = Each SecurityCams
 		Delete sc
 	Next
-	
+
 	Local em.Emitters
 	For em.Emitters = Each Emitters
 		Delete em
-	Next	
-	
+	Next
+
 	Local p.Particles
 	For p.Particles = Each Particles
 		Delete p
 	Next
-	
+
 	For i = 0 To 5
 		If IsChannelPlaying(RadioCHN(i)) Then StopChannel(RadioCHN(i))
 	Next
-	
+
 	NTF_1499PrevX# = 0.0
 	NTF_1499PrevY# = 0.0
 	NTF_1499PrevZ# = 0.0
@@ -751,26 +751,26 @@ Function NullGame()
 	NTF_1499Y# = 0.0
 	NTF_1499Z# = 0.0
 	DeleteChunks()
-	
+
 	DeleteElevatorObjects()
-	
+
 	NoTarget% = False
-	
+
 	;OptionsMenu% = -1
 	;QuitMSG% = -1
-	
+
 	IsZombie% = False
-	
+
 	;DeInitExt
-	
+
 	ClearWorld
 	ark_blur_cam = 0
 	InitFastResize()
-	
+
 	For i=0 To 9
 		If TempSounds[i]<>0 Then FreeSound(TempSounds[i]) : TempSounds[i]=0
 	Next
-	
+
 End Function
 ;~IDEal Editor Parameters:
 ;~F#49#4D#51#63#73#8F#BF

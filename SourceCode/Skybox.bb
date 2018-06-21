@@ -28,6 +28,7 @@ Function sky_CreateSky(filename$,parent%=0)
 			b% = LoadBrush(fname$,%110001)
 			s% = CreateSurface(sky,b)
 			
+			;TODO: finish and remove Data
 			Select face
 				Case 1
 					

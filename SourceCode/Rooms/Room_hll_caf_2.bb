@@ -2,29 +2,29 @@ Function FillRoom_hll_caf_2(r.Rooms)
     Local d.Doors, d2.Doors, sc.SecurityCams, de.Decals, r2.Rooms, sc2.SecurityCams
 	Local it.Items, i%
 	Local xtemp%, ytemp%, ztemp%
-	
+
 	Local t1;, Bump
-    
+
     ;scp-294
     r\objects[0] = CreatePivot(r\obj)
     PositionEntity(r\objects[0], r\x+1847.0*RoomScale, -240.0*RoomScale, r\z-321*RoomScale, True)
     ;"spawnpoint" for the cups
     r\objects[1] = CreatePivot(r\obj)
     PositionEntity(r\objects[1], r\x+1780.0*RoomScale, -248.0*RoomScale, r\z-276*RoomScale, True)
-    
+
     it = CreateItem("cup", "cup", r\x-508.0*RoomScale, -187*RoomScale, r\z+284.0*RoomScale, 240,175,70)
     EntityParent(it\collider, r\obj) : it\name = "Cup of Orange Juice"
-    
+
     it = CreateItem("cup", "cup", r\x+1412 * RoomScale, -187*RoomScale, r\z-716.0 * RoomScale, 87,62,45)
     EntityParent(it\collider, r\obj) : it\name = "Cup of Coffee"
-    
+
     it = CreateItem("Empty Cup", "emptycup", r\x-540*RoomScale, -187*RoomScale, r\z+124.0*RoomScale)
     EntityParent(it\collider, r\obj)
 End Function
 
 Function Draw294()
 	Local x#,y#, xtemp%,ytemp%, strtemp$, temp%
-	
+
 	Local panel294% = GrabImage("GFX/HUD/294panel.jpg")
 	x = userOptions\screenWidth/2 - (ImageWidth(panel294)/2)
 	y = userOptions\screenHeight/2 - (ImageHeight(panel294)/2)
@@ -32,38 +32,38 @@ Function Draw294()
 	MaskImage(panel294, 255, 0, 255)
 	DrawImage(panel294, x, y)
 	DropAsset(panel294)
-	
+
 	Text x+907, y+185, Input294, True,True
-	
+
 	ShowPointer2()
 End Function
 
 Function Update294()
 	Local x#,y#, xtemp%,ytemp%, strtemp$, temp%
-	
+
 	Local panel294% = GrabImage("GFX/HUD/294panel.jpg")
 	x = userOptions\screenWidth/2 - (ImageWidth(panel294)/2)
 	y = userOptions\screenHeight/2 - (ImageHeight(panel294)/2)
 	DropAsset(panel294)
-	
+
 	temp = True
 	If mainPlayer\currRoom\soundCHN<>0 Then temp = False
-	
+
 	If temp Then
 		If MouseHit1 Then
 			xtemp = Floor((MouseX()-x-228) / 35.5)
 			ytemp = Floor((MouseY()-y-342) / 36.5)
-			
+
 			If ytemp => 0 And ytemp < 5 Then
 				If xtemp => 0 And xtemp < 10 Then
 					PlaySound_SM(sndManager\button)
 				EndIf
 			EndIf
-			
+
 			strtemp = ""
-			
+
 			temp = False
-			
+
 			Select ytemp
 				Case 0
 					strtemp = (xtemp + 1) Mod 10
@@ -139,11 +139,11 @@ Function Update294()
 				Case 4
 					strtemp = " "
 			End Select
-			
+
 			Input294 = Input294 + strtemp
-			
+
 			Input294 = Left(Input294, Min(Len(Input294),15))
-			
+
 			If temp And Input294 <> "" Then ;dispense
 				Input294 = Trim(Lower(Input294))
 				If Left(Input294, Min(7,Len(Input294))) = "cup of " Then
@@ -151,9 +151,9 @@ Function Update294()
 				ElseIf Left(Input294, Min(9,Len(Input294))) = "a cup of "  Then
 					Input294 = Right(Input294, Len(Input294)-9)
 				EndIf
-				
+
 				Local loc% = GetINISectionLocation("DATA/SCP-294.ini", Input294)
-				
+
 				If loc > 0 Then
 					strtemp$ = GetINIString2("DATA/SCP-294.ini", loc, "dispensesound")
 					If strtemp = "" Then
@@ -161,25 +161,25 @@ Function Update294()
 					Else
 						mainPlayer\currRoom\soundCHN = PlaySound(LoadTempSound(strtemp))
 					EndIf
-					
-					If GetINIInt2("DATA/SCP-294.ini", loc, "explosion")=True Then 
+
+					If GetINIInt2("DATA/SCP-294.ini", loc, "explosion")=True Then
 						ExplosionTimer = 135
 						DeathMSG = GetINIString2("DATA/SCP-294.ini", loc, "deathmessage")
 					EndIf
-					
+
 					strtemp$ = GetINIString2("DATA/SCP-294.ini", loc, "color")
-					
+
 					Local sep1 = Instr(strtemp, ",", 1)
 					Local sep2 = Instr(strtemp, ",", sep1+1)
 					Local r% = Trim(Left(strtemp, sep1-1))
 					Local g% = Trim(Mid(strtemp, sep1+1, sep2-sep1-1))
 					Local b% = Trim(Right(strtemp, Len(strtemp)-sep2))
-					
+
 					Local alpha# = Float(GetINIString2("DATA/SCP-294.ini", loc, "alpha"))
 					Local glow = GetINIInt2("DATA/SCP-294.ini", loc, "glow")
 					If alpha = 0 Then alpha = 1.0
 					If glow Then alpha = -alpha
-					
+
 					Local it.Items = CreateItem("Cup", "cup", EntityX(mainPlayer\currRoom\objects[1],True),EntityY(mainPlayer\currRoom\objects[1],True),EntityZ(mainPlayer\currRoom\objects[1],True), r,g,b,alpha)
 					it\name = "Cup of "+Input294
 					EntityType (it\collider, HIT_ITEM)
@@ -188,20 +188,20 @@ Function Update294()
 					Input294 = "OUT OF RANGE"
 					mainPlayer\currRoom\soundCHN = PlaySound(LoadTempSound("SFX/SCP/294/outofrange.ogg"))
 				EndIf
-				
+
 			EndIf
-			
+
 		EndIf ;if mousehit1
-		
-		If MouseHit2 And CurrGameState=GAMESTATE_SCP294 Then 
+
+		If MouseHit2 And CurrGameState=GAMESTATE_SCP294 Then
 			HidePointer()
 			CurrGameState = GAMESTATE_PLAYING
 			Input294 = ""
 		EndIf
-		
+
 	Else ;playing a dispensing sound
 		If Input294 <> "OUT OF RANGE" Then Input294 = "DISPENSING..." : DebugLog "cringe"
-		
+
 		If Not IsChannelPlaying(mainPlayer\currRoom\soundCHN) Then
 			If Input294 <> "OUT OF RANGE" Then
 				HidePointer()
@@ -211,7 +211,7 @@ Function Update294()
 			mainPlayer\currRoom\soundCHN=0
 		EndIf
 	EndIf
-	
+
 End Function
 
 Function UpdateEvent_hll_caf_2(e.Events)
@@ -250,9 +250,9 @@ Function UpdateEvent_hll_caf_2(e.Events)
 					EndIf
 				EndIf
 			EndIf
-		EndIf		
+		EndIf
 	EndIf
-	
+
 	If e\eventState = 0 Then
 		CreateNPC(NPCtype066, EntityX(e\room\obj), 0.5, EntityZ(e\room\obj))
 		e\eventState = 1

@@ -2,11 +2,11 @@ Function FillRoom_tnnl_plain_3(r.Rooms)
     Local d.Doors, d2.Doors, sc.SecurityCams, de.Decals, r2.Rooms, sc2.SecurityCams
 	Local it.Items, i%
 	Local xtemp%, ytemp%, ztemp%
-	
+
 	Local t1;, Bump
 
     r\objects[0] = CreatePivot(r\obj)
-    PositionEntity (r\objects[0], r\x - 190.0*RoomScale, 4.0*RoomScale, r\z+190.0*RoomScale, True)    
+    PositionEntity (r\objects[0], r\x - 190.0*RoomScale, 4.0*RoomScale, r\z+190.0*RoomScale, True)
 End Function
 
 
@@ -28,7 +28,7 @@ Function UpdateEvent_tnnl_plain_3(e.Events)
 		RotateEntity e\room\npc[0]\collider, 0, EntityYaw(e\room\npc[0]\collider)+Rnd(-20,20),0, True
 		SetNPCFrame (e\room\npc[0], 906)
 		e\room\npc[0]\state = 8
-		
+
 		e\eventState = 1
 		RemoveEvent(e)
 	EndIf

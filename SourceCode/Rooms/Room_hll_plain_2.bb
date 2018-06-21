@@ -16,26 +16,26 @@ Function UpdateEventRoom2trick(e.Events)
 				RemoveEvent(e)
 			Else
 				DebugLog "%@@= / {2E6C2=FD gi`h]c"
-				
+
 				pvt = CreatePivot()
 				PositionEntity pvt, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider),EntityZ(mainPlayer\collider)
 				PointEntity pvt, e\room\obj
 				RotateEntity pvt, 0, EntityYaw(pvt),0,True
 				MoveEntity pvt, 0,0,EntityDistance(pvt,e\room\obj)*2
-				
+
 				;mainPlayer\camShake = 5.0
 				;mainPlayer\blurTimer = 100
-				
+
 				mainPlayer\blinkTimer = -10
-				
+
 				PositionEntity mainPlayer\collider, EntityX(pvt),EntityY(pvt)+0.05,EntityZ(pvt)
 				UpdateWorld()
 				;ResetEntity Collider
-				
+
 				TurnEntity mainPlayer\collider, 0,180,0
-				
+
 				FreeEntity pvt
-				RemoveEvent(e)							
+				RemoveEvent(e)
 			EndIf
 		EndIf
 	EndIf

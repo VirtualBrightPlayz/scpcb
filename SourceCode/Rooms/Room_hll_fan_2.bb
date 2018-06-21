@@ -2,7 +2,7 @@ Function FillRoom_hll_fan_2(r.Rooms)
     Local d.Doors, d2.Doors, sc.SecurityCams, de.Decals, r2.Rooms, sc2.SecurityCams
 	Local it.Items, i%
 	Local xtemp%, ytemp%, ztemp%
-	
+
 	Local t1;, Bump
     For r2.Rooms = Each Rooms
         If r2<>r Then
@@ -39,10 +39,10 @@ Function UpdateEventRoom2fan(e.Events)
 		If e\eventState3 > 0.01 Then
 			e\room\soundCHN = LoopRangedSound (RoomAmbience[9], e\room\soundCHN, mainPlayer\cam, e\room\objects[0], 5.0, (e\eventState3/4.0))
 		EndIf
-		e\eventState3 = CurveValue(e\eventState2*5, e\eventState3, 150.0)			
+		e\eventState3 = CurveValue(e\eventState2*5, e\eventState3, 150.0)
 	EndIf
-	
-	If e\room\dist < 16.0 Then 
+
+	If e\room\dist < 16.0 Then
 		If e\eventState < 0 Then
 			e\eventState = Rand(15,30)*70
 			temp = e\eventState2
@@ -58,7 +58,7 @@ Function UpdateEventRoom2fan(e.Events)
 			EndIf
 		Else
 			e\eventState = e\eventState-timing\tickDuration
-		EndIf					
+		EndIf
 	EndIf
 	;[End Block]
 End Function

@@ -10,7 +10,7 @@ Function StripFilename$(file$)
 			EndIf
 		Next
 	EndIf
-	
+
 	Return Left(file,lastSlash)
 End Function
 
@@ -35,7 +35,7 @@ Function AddTextureToCache(name$,texture%)
 	If tc.Materials=Null Then
 		tc.Materials=New Materials
 		tc\name=Lower(name)
-		
+
 		tc\diff=0
 	EndIf
 	If tc\diff=0 Then tc\diff=texture
