@@ -1,5 +1,6 @@
-Const EVENT_SOUND_COUNT = 5
-Const EVENT_CHANNEL_COUNT = 2
+Const EVENT_MAX_STATE_COUNT% = 5
+Const EVENT_SOUND_COUNT% = 5
+Const EVENT_CHANNEL_COUNT% = 2
 Type Events
 	Field eventName$
 	Field room.Rooms
@@ -7,7 +8,7 @@ Type Events
 	Field eventState#, eventState2#, eventState3#
 	Field loaded%
 	
-	Field img%
+	;Field img% ;???
 	
 	Field soundChannels[EVENT_CHANNEL_COUNT]
 	Field sounds[EVENT_SOUND_COUNT]
@@ -425,5 +426,5 @@ Function UpdateEvents()
 End Function
 
 ;~IDEal Editor Parameters:
-;~F#2#12#44
+;~F#15#47#5C#F3
 ;~C#Blitz3D
