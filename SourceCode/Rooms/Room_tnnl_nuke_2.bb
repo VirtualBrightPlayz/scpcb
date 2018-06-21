@@ -64,7 +64,7 @@ Function FillRoom_tnnl_nuke_2(r.Rooms)
     sc\angle = 90
     sc\turn = 45
     TurnEntity(sc\cameraObj, 20, 0, 0)
-    sc\iD = 6
+    sc\id = 6
 End Function
 
 

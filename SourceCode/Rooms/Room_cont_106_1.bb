@@ -118,7 +118,7 @@ Function FillRoom_cont_106_1(r.Rooms)
     sc\room = r
     TurnEntity(sc\cameraObj, 20, 0, 0)
     EntityParent(sc\obj, r\obj)
-    sc\iD = 4
+    sc\id = 4
 End Function
 
 

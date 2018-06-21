@@ -177,7 +177,7 @@ Function Use914(item.Items, setting$, x#, y#, z#)
 					Next
 					
 					If it2<>Null Then
-						Select it2\itemtemplate\tempName
+						Select it2\itemtemplate\name
 							Case "gasmask", "supergasmask"
 								RemoveItem (it2)
 								RemoveItem (item)
@@ -465,7 +465,7 @@ Function Use914(item.Items, setting$, x#, y#, z#)
 			RemoveItem(item)
 		Default
 			
-			Select item\itemtemplate\tempName
+			Select item\itemtemplate\name
 				Case "cup"
 					Select setting
 						Case "rough", "coarse"

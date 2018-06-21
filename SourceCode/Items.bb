@@ -14,7 +14,7 @@ Const ITEMPICK_SOUND_LARGE  = 2
 Const ITEMPICK_SOUND_SMALL  = 3
 
 Type ItemTemplates
-	Field tempName$
+	Field name$
 	Field invName$
 	
 	Field obj%
@@ -47,7 +47,7 @@ End Type
 Function CreateItemTemplate(file$, section$)
 	Local it.ItemTemplates = New ItemTemplates
 	
-	it\tempName = section
+	it\name = section
 	it\invName = GetINIString(file, section, "invname")
 	
 	;The model and inv image are in the specified directory.
@@ -55,8 +55,8 @@ Function CreateItemTemplate(file$, section$)
 	If (dataPath <> "") Then
 		If (FileType(dataPath) <> 2) Then RuntimeError("Item template directory not found ("+section+", "+dataPath+")")
 		
-		it\objPath = dataPath + it\tempName + ".b3d"
-		it\invImagePath[0] = dataPath + "inv_" + it\tempName + ".jpg"
+		it\objPath = dataPath + it\name + ".b3d"
+		it\invImagePath[0] = dataPath + "inv_" + it\name + ".jpg"
 	EndIf
 	
 	;Otherwise the obj, tex and inv paths are specified in the INI.
@@ -167,7 +167,7 @@ Function FindItemTemplate.ItemTemplates(tempname$)
 	Local it.ItemTemplates = Null
 	Local candidate.ItemTemplates = Null
 	For it = Each ItemTemplates
-		If it\tempName = tempname Then
+		If it\name = tempname Then
 			candidate = it
 			Exit
 		EndIf
@@ -348,7 +348,7 @@ Function CreateItem.Items(name$, tempname$, x#, y#, z#, r# = 1.0, g# = 1.0, b# =
 	
 	For it.ItemTemplates = Each ItemTemplates
 		If Lower(it\name) = name Then
-			If Lower(it\tempName) = tempname Then
+			If Lower(it\name) = tempname Then
 				i\itemtemplate = it
 				i\collider = CreatePivot()			
 				EntityRadius i\collider, 0.01
@@ -409,8 +409,8 @@ Function CreateItem.Items(name$, tempname$, x#, y#, z#, r# = 1.0, g# = 1.0, b# =
 		i\inventory = CreateInventory(invSlots)
 	EndIf
 	
-	i\iD=LastItemID+1
-	LastItemID=i\iD
+	i\id=LastItemID+1
+	LastItemID=i\id
 	
 	Return i
 End Function
@@ -529,7 +529,7 @@ Function PickItem(item.Items)
 	If CountItemsInInventory(mainPlayer\inventory) < mainPlayer\inventory\size Then
 		For n% = 0 To mainPlayer\inventory\size - 1
 			If mainPlayer\inventory\items[n] = Null Then
-				Select item\itemtemplate\tempName
+				Select item\itemtemplate\name
 					Case "1123"
 						If mainPlayer\currRoom\roomTemplate\name <> "room1123" Then
 							ShowEntity mainPlayer\overlays[OVERLAY_WHITE]
@@ -573,7 +573,7 @@ Function PickItem(item.Items)
 						
 						For z% = 0 To mainPlayer\inventory\size - 1
 							If mainPlayer\inventory\items[z] <> Null Then
-								If mainPlayer\inventory\items[z]\itemtemplate\tempName="hazmatsuit" Or mainPlayer\inventory\items[z]\itemtemplate\tempName="hazmatsuit2" Or mainPlayer\inventory\items[z]\itemtemplate\tempName="hazmatsuit3" Then
+								If mainPlayer\inventory\items[z]\itemtemplate\name="hazmatsuit" Or mainPlayer\inventory\items[z]\itemtemplate\name="hazmatsuit2" Or mainPlayer\inventory\items[z]\itemtemplate\name="hazmatsuit3" Then
 									DropItem(mainPlayer\inventory\items[z])
 								EndIf
 							EndIf
@@ -645,7 +645,7 @@ Function DropItem(item.Items,playDropSound%=True)
 			If inv\items[j]=item Then inv\items[j]=Null
 		Next
 	Next
-	;Select item\itemtemplate\tempName
+	;Select item\itemtemplate\name
 	;	Case "gasmask", "supergasmask", "gasmask3"
 	;		WearingGasMask = False
 	;	Case "hazmatsuit",  "hazmatsuit2", "hazmatsuit3"

@@ -26,7 +26,7 @@ Function FillRoom_chck_lcz_hcz_2(r.Rooms)
     sc\angle = 45
     sc\turn = 0
     TurnEntity(sc\cameraObj, 20, 0, 0)
-    sc\iD = 5
+    sc\id = 5
     
     ;r\objects[2] = CopyEntity(Monitor2,r\obj)
     ;ScaleEntity(r\objects[2], 2.0, 2.0, 2.0)

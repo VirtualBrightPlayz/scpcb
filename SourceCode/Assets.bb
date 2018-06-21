@@ -397,7 +397,7 @@ Function InitNewGame()
 			
 			If Rand(4) = 1 Then
 				de.Decals = CreateDecal(0, EntityX(r\obj)+Rnd(- 2,2), 0.003, EntityZ(r\obj)+Rnd(-2,2), 90, Rand(360), 0)
-				de\size = Rnd(0.5, 0.7) : EntityAlpha(de\obj, 0.7) : de\iD = 1 : ScaleSprite(de\obj, de\size, de\size)
+				de\size = Rnd(0.5, 0.7) : EntityAlpha(de\obj, 0.7) : de\id = 1 : ScaleSprite(de\obj, de\size, de\size)
 				EntityAlpha(de\obj, Rnd(0.7, 0.85))
 			EndIf
 		EndIf

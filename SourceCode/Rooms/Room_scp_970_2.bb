@@ -160,11 +160,11 @@ Function UpdateEvent_scp_970_2(e.Events)
 				Case 14
 					For i = 0 To mainPlayer\inventory\size-1
 						If mainPlayer\inventory\items[i]<> Null Then
-							If mainPlayer\inventory\items[i]\itemtemplate\tempName = "paper" Then
+							If mainPlayer\inventory\items[i]\itemtemplate\name = "paper" Then
 								RemoveItem(mainPlayer\inventory\items[i])
 								For itt.ItemTemplates = Each ItemTemplates
-									If itt\tempName = "paper" And Rand(6)=1 Then
-										mainPlayer\inventory\items[i] = CreateItem(itt\name, itt\tempName, 1,1,1)
+									If itt\name = "paper" And Rand(6)=1 Then
+										mainPlayer\inventory\items[i] = CreateItem(itt\name, itt\name, 1,1,1)
 										HideEntity mainPlayer\inventory\items[i]\collider
 										mainPlayer\inventory\items[i]\picked = True
 										Exit
@@ -248,7 +248,7 @@ Function UpdateEvent_scp_970_2(e.Events)
 					If it\dropped=1 Then
 						For i = - 1 To 1 Step 2
 							TFormPoint x+1024*i,y,z,e\room\obj,0
-							it2.items = CreateItem(it\name, it\itemtemplate\tempName, TFormedX(), EntityY(it\collider), TFormedZ())
+							it2.items = CreateItem(it\name, it\itemtemplate\name, TFormedX(), EntityY(it\collider), TFormedZ())
 							RotateEntity(it2\collider, EntityPitch(it\collider),EntityYaw(it\collider),0)
 							EntityType(it2\collider, HIT_ITEM)
 						Next

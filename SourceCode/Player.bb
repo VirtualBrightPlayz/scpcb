@@ -317,7 +317,7 @@ Function MovePlayer()
 	
 	For i%=0 To mainPlayer\inventory\size-1
 		If (mainPlayer\inventory\items[i]<>Null) Then
-			If (mainPlayer\inventory\items[i]\itemtemplate\tempName="finevest") Then mainPlayer\stamina = Min(mainPlayer\stamina,60.0)
+			If (mainPlayer\inventory\items[i]\itemtemplate\name="finevest") Then mainPlayer\stamina = Min(mainPlayer\stamina,60.0)
 		EndIf
 	Next
 	
@@ -349,7 +349,7 @@ Function MovePlayer()
 			If mainPlayer\forceMove>0 Then Speed=Speed*mainPlayer\forceMove
 			
 			If mainPlayer\selectedItem<>Null Then
-				If mainPlayer\selectedItem\itemtemplate\tempName = "firstaid" Or mainPlayer\selectedItem\itemtemplate\tempName = "finefirstaid" Or mainPlayer\selectedItem\itemtemplate\tempName = "firstaid2" Then 
+				If mainPlayer\selectedItem\itemtemplate\name = "firstaid" Or mainPlayer\selectedItem\itemtemplate\name = "finefirstaid" Or mainPlayer\selectedItem\itemtemplate\name = "firstaid2" Then 
 					Sprint = 0
 				EndIf
 			EndIf
@@ -759,7 +759,7 @@ Function EquipItem(player.Player,item.Items,toggle%)
 		player\wornItems[item\itemtemplate\invSlot] = item
 		
 		Local r.Rooms, it.Items
-		Select item\itemtemplate\tempName
+		Select item\itemtemplate\name
 			Case "vest"
 				Msg = "You put on the vest and feel slightly encumbered."
 				MsgTimer = 70 * 7
@@ -810,7 +810,7 @@ Function DeEquipItem(player.Player,item.Items)
 	player\wornItems[item\itemtemplate\invSlot] = Null
 	
 	;TODO: implement as needed
-	Select item\itemtemplate\tempName
+	Select item\itemtemplate\name
 		Case "vest","finevest"
 			Msg = "You removed the vest."
 			MsgTimer = 70 * 7
@@ -928,7 +928,7 @@ Function DrawInventory(player.Player)
 		EndIf
 	Else
 		If player\selectedItem <> Null Then
-			Select player\selectedItem\itemtemplate\tempName
+			Select player\selectedItem\itemtemplate\name
 				Case "key1", "key2", "key3", "key4", "key5", "scp860", "hand", "hand2"
 					DrawImage(player\selectedItem\itemtemplate\invimg, userOptions\screenWidth / 2 - ImageWidth(player\selectedItem\itemtemplate\invimg) / 2, userOptions\screenHeight / 2 - ImageHeight(player\selectedItem\itemtemplate\invimg) / 2)
 				Case "firstaid","finefirstaid","firstaid2"
@@ -1034,7 +1034,7 @@ Function DrawInventory(player.Player)
 							SetFont uiAssets\font[2]
 							Text(x+60, y, "CHN")						
 							
-							If player\selectedItem\itemtemplate\tempName = "veryfineradio" Then ;"KOODIKANAVA"
+							If player\selectedItem\itemtemplate\name = "veryfineradio" Then ;"KOODIKANAVA"
 								strtemp = ""
 								For i = 0 To Rand(5, 30)
 									strtemp = strtemp + Chr(Rand(1,100))
@@ -1347,12 +1347,12 @@ Function UpdateInventory(player.Player)
 						player\openInventory\items[MouseSlot] = player\selectedItem
 						player\selectedItem = Null
 					ElseIf player\openInventory\items[MouseSlot] <> player\selectedItem Then
-						Select player\selectedItem\itemtemplate\tempName
+						Select player\selectedItem\itemtemplate\name
 							Case "paper","key1","key2","key3","key4","key5","misc","oldpaper","badge","ticket"
-								If player\openInventory\items[MouseSlot]\itemtemplate\tempName = "clipboard" Then
+								If player\openInventory\items[MouseSlot]\itemtemplate\name = "clipboard" Then
 									;Add an item to clipboard
 									Local added.Items = Null
-									If player\selectedItem\itemtemplate\tempName<>"misc" Or (player\selectedItem\itemtemplate\name="Playing Card" Or player\selectedItem\itemtemplate\name="Mastercard") Then
+									If player\selectedItem\itemtemplate\name<>"misc" Or (player\selectedItem\itemtemplate\name="Playing Card" Or player\selectedItem\itemtemplate\name="Mastercard") Then
 										For c% = 0 To player\openInventory\items[MouseSlot]\inventory\size-1
 											If (player\openInventory\items[MouseSlot]\inventory\items[c] = Null) Then
 												If player\selectedItem <> Null Then
@@ -1375,9 +1375,9 @@ Function UpdateInventory(player.Player)
 										If player\selectedItem <> Null Then
 											Msg = "The paperclip is not strong enough to hold any more items."
 										Else
-											If added\itemtemplate\tempName = "paper" Or added\itemtemplate\tempName = "oldpaper" Then
+											If added\itemtemplate\name = "paper" Or added\itemtemplate\name = "oldpaper" Then
 												Msg = "This document was added to the clipboard."
-											ElseIf added\itemtemplate\tempName = "badge" Then
+											ElseIf added\itemtemplate\name = "badge" Then
 												Msg = added\itemtemplate\name + " was added to the clipboard."
 											Else
 												Msg = "The " + added\itemtemplate\name + " was added to the clipboard."
@@ -1405,7 +1405,7 @@ Function UpdateInventory(player.Player)
 										Msg = "There seems to be no place for batteries in this navigator."
 										MsgTimer = 70 * 5
 									Case "Radio Transceiver"
-										Select player\openInventory\items[MouseSlot]\itemtemplate\tempName 
+										Select player\openInventory\items[MouseSlot]\itemtemplate\name 
 											Case "fineradio", "veryfineradio"
 												Msg = "There seems to be no place for batteries in this radio."
 												MsgTimer = 70 * 5
@@ -1421,7 +1421,7 @@ Function UpdateInventory(player.Player)
 												MsgTimer = 70 * 5
 										End Select
 									Case "Night Vision Goggles"
-										Local nvname$ = player\openInventory\items[MouseSlot]\itemtemplate\tempName
+										Local nvname$ = player\openInventory\items[MouseSlot]\itemtemplate\name
 										If nvname$="nvgoggles" Or nvname$="supernv" Then
 											If player\selectedItem\itemtemplate\sound <> 66 Then PlaySound_SM(sndManager\itemPick[player\selectedItem\itemtemplate\sound])
 											RemoveItem (player\selectedItem)
@@ -1446,7 +1446,7 @@ Function UpdateInventory(player.Player)
 										Msg = "There seems to be no place for batteries in this navigator."
 										MsgTimer = 70 * 5
 									Case "Radio Transceiver"
-										Select player\openInventory\items[MouseSlot]\itemtemplate\tempName 
+										Select player\openInventory\items[MouseSlot]\itemtemplate\name 
 											Case "fineradio", "veryfineradio"
 												Msg = "There seems to be no place for batteries in this radio."
 												MsgTimer = 70 * 5		
@@ -1479,7 +1479,7 @@ Function UpdateInventory(player.Player)
 		EndIf
 	Else
 		If player\selectedItem <> Null Then
-			Select player\selectedItem\itemtemplate\tempName
+			Select player\selectedItem\itemtemplate\name
 				Case "1123"
 					If player\currRoom\roomTemplate\name <> "room1123" Then
 						ShowEntity player\overlays[OVERLAY_WHITE]
@@ -1575,7 +1575,7 @@ Function UpdateInventory(player.Player)
 						player\selectedItem\state = Min(player\selectedItem\state+(timing\tickDuration/5.0),100)			
 						
 						If player\selectedItem\state = 100 Then
-							If player\selectedItem\itemtemplate\tempName = "finefirstaid" Then
+							If player\selectedItem\itemtemplate\name = "finefirstaid" Then
 								player\bloodloss = 0
 								player\injuries = Max(0, player\injuries - 2.0)
 								If player\injuries = 0 Then
@@ -1609,7 +1609,7 @@ Function UpdateInventory(player.Player)
 									EndIf
 								EndIf
 								
-								If player\selectedItem\itemtemplate\tempName = "firstaid2" Then 
+								If player\selectedItem\itemtemplate\name = "firstaid2" Then 
 									Select Rand(6)
 										Case 1
 											player\superMan = 1.0
@@ -1898,7 +1898,7 @@ Function UpdateInventory(player.Player)
 								Next
 							EndIf	
 							
-							If player\selectedItem\itemtemplate\tempName = "veryfineradio" Then ;"KOODIKANAVA"
+							If player\selectedItem\itemtemplate\name = "veryfineradio" Then ;"KOODIKANAVA"
 								ResumeChannel(RadioCHN(0))
 								If IsChannelPlaying(RadioCHN(0)) = False Then RadioCHN(0) = PlaySound(RadioStatic)
 								
@@ -2000,11 +2000,11 @@ Function UpdateInventory(player.Player)
 			
 			If player\selectedItem <> Null Then
 				If player\selectedItem\itemtemplate\img <> 0 Then
-					Local IN$ = player\selectedItem\itemtemplate\tempName
+					Local IN$ = player\selectedItem\itemtemplate\name
 					If IN$ = "paper" Or IN$ = "badge" Or IN$ = "oldpaper" Or IN$ = "ticket" Then
 						For a_it.Items = Each Items
 							If a_it <> player\selectedItem Then
-								Local IN2$ = a_it\itemtemplate\tempName
+								Local IN2$ = a_it\itemtemplate\name
 								If IN2$ = "paper" Or IN2$ = "badge" Or IN2$ = "oldpaper" Or IN2$ = "ticket" Then
 									If a_it\itemtemplate\img<>0 Then
 										If a_it\itemtemplate\img <> player\selectedItem\itemtemplate\img Then
@@ -2045,7 +2045,7 @@ Function IsPlayerWearingTempName(player.Player,templateName$)
 	Local slot% = it\invSlot
 	If slot=WORNITEM_SLOT_NONE Then Return False
 	If player\wornItems[slot]=Null Then Return False
-	Return (player\wornItems[slot]\itemtemplate\tempName=templateName)
+	Return (player\wornItems[slot]\itemtemplate\name=templateName)
 End Function
 
 Function IsPlayerWearingItem(player.Player,item.Items)

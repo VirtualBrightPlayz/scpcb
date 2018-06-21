@@ -17,7 +17,7 @@ Function FillRoom_cont_1162_2c(r.Rooms)
     sc\angle = 225
     sc\turn = 45
     TurnEntity(sc\cameraObj, 20, 0, 0)
-    sc\iD = 8
+    sc\id = 8
 End Function
 
 Function UpdateEvent_cont_1162_2c(e.Events)
@@ -139,34 +139,34 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 			
 			For itt.ItemTemplates = Each ItemTemplates
 				If (IsItemGoodFor1162(itt)) Then
-					Select mainPlayer\inventory\items[e\eventState2]\itemtemplate\tempName
+					Select mainPlayer\inventory\items[e\eventState2]\itemtemplate\name
 						Case "key"
-							If itt\tempName = "key1" Or itt\tempName = "key2" And Rand(2)=1 Then
+							If itt\name = "key1" Or itt\name = "key2" And Rand(2)=1 Then
 								shouldCreateItem = True
 								DebugLog "lostkey"
 							EndIf
 						Case "paper","oldpaper"
-							If itt\tempName = "paper" And Rand(12)=1 Then
+							If itt\name = "paper" And Rand(12)=1 Then
 								shouldCreateItem = True
 								DebugLog "paper"
 							EndIf
 						Case "gasmask","gasmask3","supergasmask","hazmatsuit","hazmatsuit2","hazmatsuit3"
-							If itt\tempName = "gasmask" Or itt\tempName = "gasmask3" Or itt\tempName = "supergasmask" Or itt\tempName = "hazmatsuit" Or itt\tempName = "hazmatsuit2" Or itt\tempName = "hazmatsuit3" And Rand(2)=1 Then
+							If itt\name = "gasmask" Or itt\name = "gasmask3" Or itt\name = "supergasmask" Or itt\name = "hazmatsuit" Or itt\name = "hazmatsuit2" Or itt\name = "hazmatsuit3" And Rand(2)=1 Then
 								shouldCreateItem = True
 								DebugLog "gasmask hazmat"
 							EndIf
 						Case "key1","key2","key3"
-							If itt\tempName = "key1" Or itt\tempName = "key2" Or itt\tempName = "key3" Or itt\tempName = "misc" And Rand(6)=1 Then
+							If itt\name = "key1" Or itt\name = "key2" Or itt\name = "key3" Or itt\name = "misc" And Rand(6)=1 Then
 								shouldCreateItem = True
 								DebugLog "key"
 							EndIf
 						Case "vest","finevest"
-							If itt\tempName = "vest" Or itt\tempName = "finevest" And Rand(1)=1 Then
+							If itt\name = "vest" Or itt\name = "finevest" And Rand(1)=1 Then
 								shouldCreateItem = True
 								DebugLog "vest"
 							EndIf
 						Default
-							If itt\tempName = "misc" And Rand(6)=1 Then
+							If itt\name = "misc" And Rand(6)=1 Then
 								shouldCreateItem = True
 								DebugLog "default"
 							EndIf
@@ -175,7 +175,7 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 				
 				If (shouldCreateItem) Then
 					RemoveItem(mainPlayer\inventory\items[e\eventState2])
-					it=CreateItem(itt\name,itt\tempName,EntityX(pp,True),EntityY(pp,True),EntityZ(pp,True))
+					it=CreateItem(itt\name,itt\name,EntityX(pp,True),EntityY(pp,True),EntityZ(pp,True))
 					EntityType(it\collider, HIT_ITEM)
 					PlaySound2 LoadTempSound("SFX/SCP/1162/Exchange"+Rand(0,4)+".ogg")
 					e\eventState3 = 0.0
@@ -196,7 +196,7 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 			FreeEntity pvt
 			For itt.ItemTemplates = Each ItemTemplates
 				If IsItemGoodFor1162(itt) And Rand(6)=1 Then
-					it = CreateItem(itt\name, itt\tempName, EntityX(pp,True),EntityY(pp,True),EntityZ(pp,True))
+					it = CreateItem(itt\name, itt\name, EntityX(pp,True),EntityY(pp,True),EntityZ(pp,True))
 					EntityType(it\collider, HIT_ITEM)
 					MouseHit1 = False
 					e\eventState3 = 0.0
@@ -268,9 +268,9 @@ End Function
 
 
 Function IsItemGoodFor1162(itt.ItemTemplates)
-	Local IN$ = itt\tempName$
+	Local IN$ = itt\name$
 	
-	Select itt\tempName
+	Select itt\name
 		Case "key1", "key2", "key3"
 			Return True
 		Case "misc", "420", "cigarette"
@@ -282,7 +282,7 @@ Function IsItemGoodFor1162(itt.ItemTemplates)
 		Case "clipboard","eyedrops","nvgoggles"
 			Return True
 		Default
-			If itt\tempName <> "paper" Then
+			If itt\name <> "paper" Then
 				Return False
 			ElseIf Instr(itt\name, "Leaflet") Then
 				Return False

@@ -969,7 +969,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 								n\currSpeed = CurveValue(n\speed*Max(Min(dist2,1.0),0.1), n\currSpeed, 20.0)
 								MoveEntity n\collider, 0, 0, n\currSpeed * timing\tickDuration
 								
-								;If dist2 < (0.25+((n\path[Min(n\pathLocation+1,19)]=Null)*0.3 * (n\iD Mod 3))) Then
+								;If dist2 < (0.25+((n\path[Min(n\pathLocation+1,19)]=Null)*0.3 * (n\id Mod 3))) Then
 								If EntityDistance(n\collider,n\path[n\pathLocation]\obj)<0.5 Then
 									n\pathLocation = n\pathLocation + 1
 								EndIf

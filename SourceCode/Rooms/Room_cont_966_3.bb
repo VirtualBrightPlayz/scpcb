@@ -16,7 +16,7 @@ Function FillRoom_cont_966_3(r.Rooms)
     sc\turn = 45
     TurnEntity(sc\cameraObj, 20, 0, 0)
     ;sc\followPlayer = True
-    sc\iD = 9
+    sc\id = 9
     
     r\objects[0] = CreatePivot(r\obj)
     PositionEntity(r\objects[0], r\x, 0.5, r\z + 512.0 * RoomScale, True)

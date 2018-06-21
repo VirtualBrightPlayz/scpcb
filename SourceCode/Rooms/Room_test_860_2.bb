@@ -202,7 +202,7 @@ Function UpdateEvent_test_860_2(e.Events)
 							Msg = "The door will not budge."
 							MsgTimer = 5*70
 						EndIf
-					ElseIf mainPlayer\selectedItem\itemtemplate\tempName="scp860" Then
+					ElseIf mainPlayer\selectedItem\itemtemplate\name="scp860" Then
 						If MouseHit1 Then
 							PlaySound2(LoadTempSound("SFX/Door/WoodenDoorOpen.ogg"))
 							ShowEntity fr.Forest\forest_Pivot
@@ -320,7 +320,7 @@ Function turn_if_deviating%(max_deviation_distance_%,pathx%,center_%,dir%,retval
 End Function
 
 Function GenForestGrid(fr.Forest)
-	fr\iD=LastForestID+1
+	fr\id=LastForestID+1
 	LastForestID=LastForestID+1
 	
 	Local door1_pos%,door2_pos%

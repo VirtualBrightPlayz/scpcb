@@ -73,7 +73,7 @@ Function UpdateNPCtype1499(n.NPCs)
                 If n\currSpeed = 0.0 Then
                     AnimateNPC(n,296,317,0.2)
                 Else
-                    If (n\iD Mod 2 = 0) Then
+                    If (n\id Mod 2 = 0) Then
                         AnimateNPC(n,1,62,(n\currSpeed*28))
                     Else
                         AnimateNPC(n,100,167,(n\currSpeed*28))
@@ -95,7 +95,7 @@ Function UpdateNPCtype1499(n.NPCs)
                     EndIf
                 EndIf
                 
-                If (n\iD Mod 2 = 0) And (Not NoTarget) Then
+                If (n\id Mod 2 = 0) And (Not NoTarget) Then
                     dist = EntityDistance(n\collider,mainPlayer\collider)
                     If dist < 10.0 Then
                         If EntityVisible(n\collider,mainPlayer\collider) Then
@@ -109,7 +109,7 @@ Function UpdateNPCtype1499(n.NPCs)
                                 n\state2 = 1 ;if player is too close, switch to attack after screaming
                                 
                                 For n2.NPCs = Each NPCs
-                                    ;If n2\npctype = n\npcType And n2 <> n And (n\iD Mod 2 = 0) Then
+                                    ;If n2\npctype = n\npcType And n2 <> n And (n\id Mod 2 = 0) Then
                                     If n2\npctype = n\npcType And n2 <> n Then
                                         n2\state = 1
                                         n2\state2 = 0
@@ -139,7 +139,7 @@ Function UpdateNPCtype1499(n.NPCs)
                 If n\state2 = 0.0 Then
                     n\currSpeed = CurveValue(n\speed*1.75,n\currSpeed,10.0)
                     
-                    If (n\iD Mod 2 = 0) Then
+                    If (n\id Mod 2 = 0) Then
                         AnimateNPC(n,1,62,(n\currSpeed*28))
                     Else
                         AnimateNPC(n,100,167,(n\currSpeed*28))
@@ -147,7 +147,7 @@ Function UpdateNPCtype1499(n.NPCs)
                 EndIf
                 
                 If dist < 0.75 Then
-                    If (n\iD Mod 2 = 0) Or n\state3 = 1 Then
+                    If (n\id Mod 2 = 0) Or n\state3 = 1 Then
                         n\state2 = Rand(1,2)
                         n\state = 3
                         If n\state2 = 1 Then

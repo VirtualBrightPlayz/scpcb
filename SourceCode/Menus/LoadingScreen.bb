@@ -25,7 +25,7 @@ Function InitLoadingScreens(file$)
 			
 			ls.LoadingScreens = New LoadingScreens
 			LoadingScreenAmount=LoadingScreenAmount+1
-			ls\iD = LoadingScreenAmount
+			ls\id = LoadingScreenAmount
 			
 			ls\title = TemporaryString
 			ls\imgpath = GetINIString(file, TemporaryString, "image path")
@@ -74,7 +74,7 @@ Function DrawLoading(percent%, shortloading=False)
 		Local temp% = Rand(1,LoadingScreenAmount)
 		Local ls.LoadingScreens
 		For ls = Each LoadingScreens
-			If ls\iD = temp Then
+			If ls\id = temp Then
 				If ls\img=0 Then ls\img = LoadImage("Loadingscreens/"+ls\imgpath)
 				SelectedLoadingScreen = ls 
 				Exit

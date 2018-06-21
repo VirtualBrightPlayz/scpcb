@@ -83,7 +83,7 @@ Function FillRoom_cont_008_1(r.Rooms)
     sc\angle = 135
     sc\turn = 45
     TurnEntity(sc\cameraObj, 20, 0, 0)
-    sc\iD = 7
+    sc\id = 7
 End Function
 
 

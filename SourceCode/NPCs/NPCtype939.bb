@@ -93,7 +93,7 @@ Function UpdateNPCtype939(n.NPCs)
                         EndIf
                         If temp Then
                             If n\sounds[0] <> 0 Then FreeSound n\sounds[0] : n\sounds[0] = 0
-                            n\sounds[0] = LoadSound("SFX/SCP/939/"+(n\iD Mod 3)+"Lure"+Rand(1,10)+".ogg")
+                            n\sounds[0] = LoadSound("SFX/SCP/939/"+(n\id Mod 3)+"Lure"+Rand(1,10)+".ogg")
                             n\soundChannels[0] = PlayRangedSound(n\sounds[0], mainPlayer\cam, n\collider)
                         EndIf
                     EndIf
@@ -205,7 +205,7 @@ Function UpdateNPCtype939(n.NPCs)
             If mainPlayer\loudness*1.2>dist Or dist < 1.5 Then
                 If n\state3 = 0 Then
                     If n\sounds[0] <> 0 Then FreeSound n\sounds[0] : n\sounds[0] = 0
-                    n\sounds[0] = LoadSound("SFX/SCP/939/"+(n\iD Mod 3)+"Attack"+Rand(1,3)+".ogg")
+                    n\sounds[0] = LoadSound("SFX/SCP/939/"+(n\id Mod 3)+"Attack"+Rand(1,3)+".ogg")
                     n\soundChannels[0] = PlayRangedSound(n\sounds[0], mainPlayer\cam, n\collider)										
                     
                     PlaySound2(LoadTempSound("SFX/SCP/939/attack.ogg"))
@@ -216,7 +216,7 @@ Function UpdateNPCtype939(n.NPCs)
             ElseIf mainPlayer\loudness*1.6>dist Then
                 If n\state<>1 And n\reload <= 0 Then
                     If n\sounds[0] <> 0 Then FreeSound n\sounds[0] : n\sounds[0] = 0
-                    n\sounds[0] = LoadSound("SFX/SCP/939/"+(n\iD Mod 3)+"Alert"+Rand(1,3)+".ogg")
+                    n\sounds[0] = LoadSound("SFX/SCP/939/"+(n\id Mod 3)+"Alert"+Rand(1,3)+".ogg")
                     n\soundChannels[0] = PlayRangedSound(n\sounds[0], mainPlayer\cam, n\collider)	
                     
                     n\frame = 175

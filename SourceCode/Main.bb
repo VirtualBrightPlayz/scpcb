@@ -751,7 +751,7 @@ Function UpdateGame()
 				EndIf
 				
 				If mainPlayer\selectedItem <> Null Then
-					If mainPlayer\selectedItem\itemtemplate\tempName = "navigator" Or mainPlayer\selectedItem\itemtemplate\tempName = "nav" Then darkA = Max(darkA, 0.5)
+					If mainPlayer\selectedItem\itemtemplate\name = "navigator" Or mainPlayer\selectedItem\itemtemplate\name = "nav" Then darkA = Max(darkA, 0.5)
 				EndIf
 				If SelectedScreen <> Null Then darkA = Max(darkA, 0.5)
 				
@@ -839,7 +839,7 @@ Function UpdateGame()
 				Local temp% = False ;TODO: change this variable's name because it's dumb as hell
 				If CurrGameState<>GAMESTATE_INVENTORY Then
 					If mainPlayer\selectedItem <> Null Then
-						If mainPlayer\selectedItem\itemtemplate\tempName = "paper" Or mainPlayer\selectedItem\itemtemplate\tempName = "oldpaper" Then
+						If mainPlayer\selectedItem\itemtemplate\name = "paper" Or mainPlayer\selectedItem\itemtemplate\name = "oldpaper" Then
 							temp% = True
 						EndIf
 					EndIf
@@ -1014,7 +1014,7 @@ End Function
 ;					
 ;					Local docamount=0, docsfound=0
 ;					For itt.ItemTemplates = Each ItemTemplates
-;						If itt\tempName = "paper" Then
+;						If itt\name = "paper" Then
 ;							docamount=docamount+1
 ;							docsfound=docsfound+itt\found
 ;						EndIf
@@ -1853,7 +1853,7 @@ Function CreateDecal.Decals(id%, x#, y#, z#, pitch#, yaw#, roll#)
 	PositionEntity(d\obj, x, y, z)
 	RotateEntity(d\obj, pitch, yaw, roll)
 	
-	d\iD = id
+	d\id = id
 	
 	If DecalTextures(id) = 0 Or d\obj = 0 Then Return Null
 	
@@ -1867,7 +1867,7 @@ Function UpdateDecals()
 			d\size=d\size + d\sizeChange * timing\tickDuration
 			ScaleSprite(d\obj, d\size, d\size)
 			
-			Select d\iD
+			Select d\id
 				Case 0
 					If d\timer <= 0 Then
 						Local angle# = Rand(360)
@@ -1918,7 +1918,7 @@ Function UpdateNVG()
 	Local wornItem.Items = mainPlayer\wornItems[WORNITEM_SLOT_HEAD]
 	
 	If wornItem<>Null Then
-		If wornItem\itemtemplate\tempName <> "nvgoggles" And wornItem\itemtemplate\tempName <> "supernv" Then
+		If wornItem\itemtemplate\name <> "nvgoggles" And wornItem\itemtemplate\name <> "supernv" Then
 			wornItem = Null
 		EndIf
 	EndIf
@@ -1952,14 +1952,14 @@ Function RenderWorld2()
 	Local wornItem.Items = mainPlayer\wornItems[WORNITEM_SLOT_HEAD]
 	
     If wornItem<>Null Then
-		If wornItem\itemtemplate\tempName <> "nvgoggles" And wornItem\itemtemplate\tempName <> "supernv" Then
+		If wornItem\itemtemplate\name <> "nvgoggles" And wornItem\itemtemplate\name <> "supernv" Then
 			wornItem = Null
 		EndIf
 	EndIf
 	
 	If wornItem<>Null Then
 		Local decayMultiplier# = 1.0
-		If wornItem\itemTemplate\tempName = "supernv" Then decayMultiplier = 2.0
+		If wornItem\itemTemplate\name = "supernv" Then decayMultiplier = 2.0
 		
 		power = Int(wornItem\state)
 		If wornItem\state <= 0.0 Then ;this nvg can't be used

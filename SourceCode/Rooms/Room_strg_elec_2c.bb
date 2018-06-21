@@ -33,7 +33,7 @@ Function FillRoom_strg_elec_2c(r.Rooms)
     sc\angle = 45
     sc\turn = 45
     TurnEntity(sc\cameraObj, 20, 0, 0)
-    sc\iD = 10
+    sc\id = 10
 End Function
 
 

@@ -562,13 +562,13 @@ Function UpdateConsole()
 						If (Lower(itt\name) = StrTemp) Then
 							temp = True
 							CreateConsoleMsg(itt\name + " spawned.")
-							it.Items = CreateItem(itt\name, itt\tempName, EntityX(mainPlayer\collider), EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider))
+							it.Items = CreateItem(itt\name, itt\name, EntityX(mainPlayer\collider), EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider))
 							EntityType(it\collider, HIT_ITEM)
 							Exit
-						ElseIf (Lower(itt\tempName) = StrTemp) Then
+						ElseIf (Lower(itt\name) = StrTemp) Then
 							temp = True
 							CreateConsoleMsg(itt\name + " spawned.")
-							it.Items = CreateItem(itt\name, itt\tempName, EntityX(mainPlayer\collider), EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider))
+							it.Items = CreateItem(itt\name, itt\name, EntityX(mainPlayer\collider), EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider))
 							EntityType(it\collider, HIT_ITEM)
 							Exit
 						EndIf

@@ -1071,9 +1071,9 @@ Function FindPath(n.NPCs, x#, y#, z#)
 	
 	For w.WayPoints = Each WayPoints
 		w\state = 0
-		w\fcost = 0
-		w\gcost = 0
-		w\hcost = 0
+		w\fCost = 0
+		w\gCost = 0
+		w\hCost = 0
 	Next
 	
 	n\pathStatus = 0
@@ -1160,8 +1160,8 @@ Function FindPath(n.NPCs, x#, y#, z#)
 		For w.WayPoints = Each WayPoints
 			If w\state = 1 Then
                 temp = True
-                If (w\fcost) < dist Then
-					dist = w\fcost
+                If (w\fCost) < dist Then
+					dist = w\fCost
 					smallest = w
                 EndIf
 			EndIf
@@ -1177,25 +1177,25 @@ Function FindPath(n.NPCs, x#, y#, z#)
 					If w\connected[i]\state < 2 Then
 						
 						If w\connected[i]\state=1 Then ;open list
-							Local gtemp# = w\gcost+w\dist[i]
+							Local gtemp# = w\gCost+w\dist[i]
 							;TODO: fix?
 							;If n\npcType = NPCtypeMTF Then
 							;	If w\connected[i]\door = Null Then gtemp = gtemp + 0.5
 							;EndIf
-							If gtemp < w\connected[i]\gcost Then ;parempi reitti -> overwrite
-								w\connected[i]\gcost = gtemp
-								w\connected[i]\fcost = w\connected[i]\gcost + w\connected[i]\hcost
+							If gtemp < w\connected[i]\gCost Then ;parempi reitti -> overwrite
+								w\connected[i]\gCost = gtemp
+								w\connected[i]\fCost = w\connected[i]\gCost + w\connected[i]\hCost
 								w\connected[i]\parent = w
 							EndIf
 						Else
-							w\connected[i]\hcost# = Abs(EntityX(w\connected[i]\obj,True)-EntityX(EndPoint\obj,True))+Abs(EntityZ(w\connected[i]\obj,True)-EntityZ(EndPoint\obj,True))
-							gtemp# = w\gcost+w\dist[i]
+							w\connected[i]\hCost# = Abs(EntityX(w\connected[i]\obj,True)-EntityX(EndPoint\obj,True))+Abs(EntityZ(w\connected[i]\obj,True)-EntityZ(EndPoint\obj,True))
+							gtemp# = w\gCost+w\dist[i]
 							;TODO: fix?
 							;If n\npcType = NPCtypeMTF Then
 							;	If w\connected[i]\door = Null Then gtemp = gtemp + 0.5
 							;EndIf
-							w\connected[i]\gcost = gtemp
-							w\connected[i]\fcost = w\gcost+w\hcost
+							w\connected[i]\gCost = gtemp
+							w\connected[i]\fCost = w\gCost+w\hCost
 							w\connected[i]\parent = w
 							w\connected[i]\state=1
 						EndIf            

@@ -45,7 +45,7 @@ Function FillRoom_closets_2(r.Rooms)
     sc\angle = 180
     sc\turn = 45
     TurnEntity(sc\cameraObj, 20, 0, 0)
-    sc\iD = 0
+    sc\id = 0
     ;sc\followPlayer = True
 End Function
 

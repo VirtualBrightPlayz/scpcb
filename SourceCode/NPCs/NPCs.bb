@@ -199,10 +199,10 @@ Function CreateNPC.NPCs(NPCtype%, x#, y#, z#)
 	
 	ResetEntity(n\collider)
 	
-	n\iD = 0
-	n\iD = FindFreeNPCID()
+	n\id = 0
+	n\id = FindFreeNPCID()
 	
-	DebugLog ("Created NPC "+n\nvName+" (ID: "+n\iD+")")
+	DebugLog ("Created NPC "+n\nvName+" (ID: "+n\id+")")
 	
 	NPCSpeedChange(n)
 	
@@ -631,7 +631,7 @@ Function PlayMTFSound(sound%, n.NPCs)
 	
 	If mainPlayer\selectedItem <> Null Then
 		If mainPlayer\selectedItem\state2 = 3 And mainPlayer\selectedItem\state > 0 Then 
-			Select mainPlayer\selectedItem\itemtemplate\tempName 
+			Select mainPlayer\selectedItem\itemtemplate\name 
 				Case "radio","fineradio","18vradio"
 					If RadioCHN(3)<> 0 Then StopChannel RadioCHN(3)
 					RadioCHN(3) = PlaySound(sound)
@@ -674,7 +674,7 @@ Function FindFreeNPCID%()
 		
 		Local n2.NPCs
 		For n2.NPCs = Each NPCs
-			If n2\iD = id Then
+			If n2\id = id Then
 				taken = True
 				Exit
 			EndIf
@@ -687,12 +687,12 @@ Function FindFreeNPCID%()
 End Function
 
 Function ForceSetNPCID(n.NPCs, newID%)
-	n\iD = newID
+	n\id = newID
 	
 	Local n2.NPCs
 	For n2.NPCs = Each NPCs
-		If n2 <> n And n2\iD = newID Then
-			n2\iD = FindFreeNPCID()
+		If n2 <> n And n2\id = newID Then
+			n2\id = FindFreeNPCID()
 		EndIf
 	Next
 End Function

@@ -122,7 +122,7 @@ Function UpdateLeave1499()
 				UpdateRooms()
 				For it.Items = Each Items
 					it\disttimer = 0
-					If it\itemtemplate\tempName = "scp1499" Or it\itemtemplate\tempName = "super1499" Then
+					If it\itemtemplate\name = "scp1499" Or it\itemtemplate\name = "super1499" Then
 						If EntityY(it\collider) >= EntityY(mainPlayer\currRoom\obj)-5 Then
 							PositionEntity it\collider,NTF_1499PrevX#,NTF_1499PrevY#+(EntityY(it\collider)-EntityY(mainPlayer\currRoom\obj)),NTF_1499PrevZ#
 							ResetEntity it\collider
@@ -195,10 +195,10 @@ Function CreateChunkParts(r.Rooms)
 			Next
 			chp2 = Before(chp)
 			If chp2 <> Null Then
-				chp\iD = chp2\iD+1
+				chp\id = chp2\id+1
 			EndIf
 			DebugLog "<<<<<<<<<<<<<<<<"
-			DebugLog "Generated 1499 chunk "+chp\iD+" sucessfully"
+			DebugLog "Generated 1499 chunk "+chp\id+" sucessfully"
 		EndIf
 	Next
 	
@@ -225,7 +225,7 @@ Function CreateChunk.Chunk(obj%,x#,y#,z#,spawnNPCs%=True)
 	
 	If obj% > -1 Then
 		For chp = Each ChunkPart
-			If chp\iD = obj% Then
+			If chp\id = obj% Then
 				ch\amount% = chp\amount%
 				For i = 0 To chp\amount
 					ch\obj[i] = CopyEntity(chp\obj[i])

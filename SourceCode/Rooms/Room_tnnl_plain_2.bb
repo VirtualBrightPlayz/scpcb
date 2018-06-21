@@ -23,7 +23,7 @@ Function UpdateEventTunnel106(e.Events)
 		If e\room\dist < 3.0 Or Rand(7000)=1 Then
 			e\eventState = 2
 			d.Decals = CreateDecal(0, EntityX(e\room\obj), 445.0*RoomScale, EntityZ(e\room\obj), -90, Rand(360), 0)
-			d\size = Rnd(0.5, 0.7) : EntityAlpha(d\obj, 0.7) : d\iD = 1 : ScaleSprite(d\obj, d\size, d\size)
+			d\size = Rnd(0.5, 0.7) : EntityAlpha(d\obj, 0.7) : d\id = 1 : ScaleSprite(d\obj, d\size, d\size)
 			EntityAlpha(d\obj, Rnd(0.7, 0.85))
 			
 			;PlaySound2 HorrorSFX(10)
