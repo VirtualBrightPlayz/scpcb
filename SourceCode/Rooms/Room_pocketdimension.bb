@@ -13,7 +13,7 @@ Function FillRoom_pocketdimension(r.Rooms)
     r\objects[11]=LoadMesh("GFX/map/pocketdimension5.b3d") ;the pillar room
     
     
-    terrain = LoadMesh("GFX/map/pocketdimensionterrain.b3d")
+    Local terrain% = LoadMesh("GFX/map/pocketdimensionterrain.b3d")
     ScaleEntity terrain,RoomScale,RoomScale,RoomScale,True
     ;RotateEntity terrain,0,e\room\angle,0,True
     PositionEntity terrain, 0, 2944, 0, True
@@ -22,8 +22,9 @@ Function FillRoom_pocketdimension(r.Rooms)
     
     CreateItem("Burnt Note", "paper", EntityX(r\obj),0.5,EntityZ(r\obj)+3.5)
     
+	Local n%
     For n = 0 To -1;4
-        
+		Local entity%
         Select n
             Case 0
                 entity = hallway 					
@@ -97,7 +98,7 @@ Function FillRoom_pocketdimension(r.Rooms)
     For i = 1 To 8
         r\objects[i-1] = CopyEntity(hallway) ;CopyMesh
         ScaleEntity (r\objects[i-1],RoomScale,RoomScale,RoomScale)
-        angle# = (i-1) * (360.0/8.0)
+        Local angle# = (i-1) * (360.0/8.0)
         
         EntityType r\objects[i-1], HIT_MAP
         EntityPickMode r\objects[i-1], 3		

@@ -35,8 +35,6 @@ Type ItemTemplates
 	;TODO: Remove.
 	Field invSlot%
 	
-	Field name$
-	
 	Field invimg%,invimg2%,invimgpath$
 	
 	Field found%
@@ -283,7 +281,8 @@ End Function
 
 Type Items
 	Field name$
-	Field collider%,model%
+	Field collider%
+	Field model%
 	Field itemtemplate.ItemTemplates
 	Field dropSpeed#
 	
@@ -295,12 +294,14 @@ Type Items
 	
 	Field state#, state2#
 	
-	Field Picked%,Dropped%
+	Field picked%
+	Field dropped%
 	
 	Field invimg%
 	Field wontColl% = False
-	Field xspeed#,zspeed#
-	Field ID%
+	Field xspeed#
+	Field zspeed#
+	Field id%
 	
 	Field inventory.Inventory = Null
 End Type 

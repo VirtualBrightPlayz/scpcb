@@ -87,7 +87,7 @@ End Function
 
 
 Function UpdateEventAlarm(e.Events)
-	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
+	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%, tex%
 
 	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
 

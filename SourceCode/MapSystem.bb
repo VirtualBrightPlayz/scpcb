@@ -362,7 +362,7 @@ Type Rooms
 	
 	Field x#, y#, z#
 	Field angle%
-	Field RoomTemplate.RoomTemplates
+	Field roomTemplate.RoomTemplates
 	
 	Field obj% ;TODO: rename
 	Field opaqueMesh%

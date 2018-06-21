@@ -26,8 +26,8 @@ Function Draw294()
 	Local x#,y#, xtemp%,ytemp%, strtemp$, temp%
 	
 	Local panel294% = GrabImage("GFX/HUD/294panel.jpg")
-	x = userOptions\screenWidth/2 - (ImageWidth(Panel294)/2)
-	y = userOptions\screenHeight/2 - (ImageHeight(Panel294)/2)
+	x = userOptions\screenWidth/2 - (ImageWidth(panel294)/2)
+	y = userOptions\screenHeight/2 - (ImageHeight(panel294)/2)
 
 	MaskImage(panel294, 255, 0, 255)
 	DrawImage(panel294, x, y)
@@ -169,18 +169,18 @@ Function Update294()
 					
 					strtemp$ = GetINIString2("DATA/SCP-294.ini", loc, "color")
 					
-					sep1 = Instr(strtemp, ",", 1)
-					sep2 = Instr(strtemp, ",", sep1+1)
-					r% = Trim(Left(strtemp, sep1-1))
-					g% = Trim(Mid(strtemp, sep1+1, sep2-sep1-1))
-					b% = Trim(Right(strtemp, Len(strtemp)-sep2))
+					Local sep1 = Instr(strtemp, ",", 1)
+					Local sep2 = Instr(strtemp, ",", sep1+1)
+					Local r% = Trim(Left(strtemp, sep1-1))
+					Local g% = Trim(Mid(strtemp, sep1+1, sep2-sep1-1))
+					Local b% = Trim(Right(strtemp, Len(strtemp)-sep2))
 					
-					alpha# = Float(GetINIString2("DATA/SCP-294.ini", loc, "alpha"))
-					glow = GetINIInt2("DATA/SCP-294.ini", loc, "glow")
+					Local alpha# = Float(GetINIString2("DATA/SCP-294.ini", loc, "alpha"))
+					Local glow = GetINIInt2("DATA/SCP-294.ini", loc, "glow")
 					If alpha = 0 Then alpha = 1.0
 					If glow Then alpha = -alpha
 					
-					it.items = CreateItem("Cup", "cup", EntityX(mainPlayer\currRoom\objects[1],True),EntityY(mainPlayer\currRoom\objects[1],True),EntityZ(mainPlayer\currRoom\objects[1],True), r,g,b,alpha)
+					Local it.Items = CreateItem("Cup", "cup", EntityX(mainPlayer\currRoom\objects[1],True),EntityY(mainPlayer\currRoom\objects[1],True),EntityZ(mainPlayer\currRoom\objects[1],True), r,g,b,alpha)
 					it\name = "Cup of "+Input294
 					EntityType (it\collider, HIT_ITEM)
 				Else

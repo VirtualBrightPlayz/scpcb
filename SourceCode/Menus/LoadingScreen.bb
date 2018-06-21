@@ -5,7 +5,7 @@ Global LoadingBack%
 Type LoadingScreens
 	Field imgpath$
 	Field img%
-	Field ID%
+	Field id%
 	Field title$
 	Field alignx%, aligny%
 	Field disablebackground%

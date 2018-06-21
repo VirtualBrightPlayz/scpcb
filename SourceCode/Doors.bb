@@ -12,7 +12,7 @@ Type Doors
 	
 	Field dist#
 	
-	Field Code$
+	Field code$
 	
 	Field id%
 	

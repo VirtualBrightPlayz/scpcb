@@ -199,7 +199,7 @@ Function UpdateEvent_hll_sl_2(e.Events)
 									
 									sc\renderInterval = 12
 									
-									scale# = RoomScale * 4.5 * 0.4
+									Local scale# = RoomScale * 4.5 * 0.4
 									
 									sc\scrObj = CreateSprite()
 									EntityFX sc\scrObj, 17
@@ -474,12 +474,12 @@ Function UpdateEvent_hll_sl_2(e.Events)
 					EndIf
 					If (Not e\room\roomDoors[0]\open) Then
 						e\room\roomDoors[0]\open = True
-						sound=Rand(0, 2)
+						;sound=Rand(0, 2)
 						;PlayRangedSound(OpenDoorSFX(0,sound),mainPlayer\cam,e\room\roomDoors[0]\obj)
 					EndIf
 					If (Not e\room\roomDoors[1]\open) Then
 						e\room\roomDoors[1]\open = True
-						sound=Rand(0, 2)
+						;sound=Rand(0, 2)
 						;PlayRangedSound(OpenDoorSFX(0,sound),mainPlayer\cam,e\room\roomDoors[1]\obj)
 					EndIf
 				EndIf
@@ -570,8 +570,8 @@ Function UpdateEvent_hll_sl_2(e.Events)
 				e\eventState2 = 7
 			Else
 				;Still playing the Music for SCP-049 (in the real, SCP-049's State will be set to 2, causing it to stop playing the chasing track)
-				;If Music(20) = 0 Then Music(20) = LoadSound("SFX/Horror/Horror12.ogg") ;TODO: fix
-				ShouldPlay = 20
+				;If Music(20) = 0 Then Music(20) = LoadSound("SFX/Horror/Horror12.ogg") ;TODO: fix ;TODOTODO: None of this to begin with.
+				;ShouldPlay = 20
 				If e\room\npc[0]\pathStatus<>1 Then
 					e\room\npc[0]\idle = 70*60 ;(Making SCP-049 idle for one minute (twice as fast for aggressive NPCs = True))
 					PositionEntity e\room\npc[0]\collider,0,500,0
@@ -602,7 +602,7 @@ Function UpdateEvent_hll_sl_2(e.Events)
 						If e\room\roomDoors[0]\open = False Then
 							e\room\roomDoors[0]\fastopen = 0
 							e\room\roomDoors[0]\open = True
-							sound=Rand(0, 2)
+							;sound=Rand(0, 2)
 							;PlayRangedSound(OpenDoorSFX(0,sound),mainPlayer\cam,e\room\roomDoors[0]\obj)
 							PlaySound2 LoadTempSound("SFX/Door/DoorOpen079.ogg")
 							DebugLog "079 - OPEN DOOR AT HALLWAY IN ROOM2SL"
@@ -615,7 +615,7 @@ Function UpdateEvent_hll_sl_2(e.Events)
 				If e\room\roomDoors[0]\open = False Then
 					e\room\roomDoors[0]\fastopen = 0
 					e\room\roomDoors[0]\open = True
-					sound=Rand(0, 2)
+					;sound=Rand(0, 2)
 					;PlayRangedSound(OpenDoorSFX(0,sound),mainPlayer\cam,e\room\roomDoors[0]\obj)
 					PlaySound2 LoadTempSound("SFX/Door/DoorOpen079.ogg")
 					DebugLog "079 - OPEN DOOR AT HALLWAY IN ROOM2SL"

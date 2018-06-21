@@ -1,7 +1,7 @@
 Function UpdateEvent106victim(e.Events)
-	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
+	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%, tex%
 
-	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
+	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams, de.Decals
 
 	Local CurrTrigger$ = ""
 
@@ -45,7 +45,7 @@ Function UpdateEvent106victim(e.Events)
 					AnimateNPC(e\room\npc[0], 1, 10, 0.12, False)
 					dist# = EntityDistance(mainPlayer\collider,e\room\npc[0]\collider)
 					If dist<0.8 Then ;get the player out of the way
-						fdir# = GetAngle(EntityX(mainPlayer\collider,True),EntityZ(mainPlayer\collider,True),EntityX(e\room\npc[0]\collider,True),EntityZ(e\room\npc[0]\collider,True))
+						Local fdir# = GetAngle(EntityX(mainPlayer\collider,True),EntityZ(mainPlayer\collider,True),EntityX(e\room\npc[0]\collider,True),EntityZ(e\room\npc[0]\collider,True))
 						TranslateEntity mainPlayer\collider,Cos(-fdir+90)*(dist-0.8)*(dist-0.8),0,Sin(-fdir+90)*(dist-0.8)*(dist-0.8)
 					EndIf
 					
@@ -75,6 +75,7 @@ Function UpdateEvent106victim(e.Events)
 	
 	;[End Block]
 End Function
+
 
 
 ;~IDEal Editor Parameters:

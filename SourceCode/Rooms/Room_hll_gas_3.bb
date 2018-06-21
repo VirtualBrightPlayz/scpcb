@@ -1,5 +1,5 @@
 Function FillRoom_hll_gas_3(r.Rooms)
-    Local d.Doors, d2.Doors, sc.SecurityCams, de.Decals, r2.Rooms, sc2.SecurityCams
+    Local d.Doors, d2.Doors, sc.SecurityCams, de.Decals, r2.Rooms, sc2.SecurityCams, em.Emitters
 	Local it.Items, i%
 	Local xtemp%, ytemp%, ztemp%
 	
@@ -27,7 +27,7 @@ End Function
 
 
 Function UpdateEventRoom3pitduck(e.Events)
-	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
+	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%, tex%
 
 	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
 
@@ -70,7 +70,7 @@ End Function
 
 
 Function UpdateEventRoom3pit1048(e.Events)
-	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
+	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%, tex%
 
 	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
 
@@ -105,14 +105,15 @@ Function UpdateEventRoom3pit1048(e.Events)
 			Local brush% = LoadBrush(imgPath, 1)
 			
 			For i = 1 To CountSurfaces(e\room\objects[2])
-				sf% = GetSurface(e\room\objects[2],i)
-				b% = GetSurfaceBrush( sf )
-				t% = GetBrushTexture(b, 0)
-				texname$ = StripPath(TextureName(t))
+				Local sf% = GetSurface(e\room\objects[2],i)
+				Local b% = GetSurfaceBrush( sf )
+				Local t% = GetBrushTexture(b, 0)
+				Local texname$ = StripPath(TextureName(t))
 				DebugLog "texname: "+texname
 				If Lower(texname) = "1048_1.jpg" Then
 					PaintSurface sf, brush
 				EndIf
+				;TODO: I'm just todo-ing so Juan will see it later and explain it to me.
 				;MAV???
 				;If texname<>"" Then FreeTexture t
 				FreeBrush b

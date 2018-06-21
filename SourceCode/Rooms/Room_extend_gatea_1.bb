@@ -108,7 +108,7 @@ End Function
 Function UpdateEvent_extend_gatea_1(e.Events)
 	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
 
-	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
+	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams, de.Decals
 
 	Local CurrTrigger$ = ""
 
@@ -194,8 +194,8 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 				
 			EndIf
 			
-			xtemp#=EntityX(e\room\objects[9],True)
-			ztemp#=EntityZ(e\room\objects[9],True)
+			Local xtemp#=EntityX(e\room\objects[9],True)
+			Local ztemp#=EntityZ(e\room\objects[9],True)
 			FreeEntity e\room\objects[9]
 			
 			e\room\objects[9] = LoadMesh("GFX/map/lightgunbase.b3d")
@@ -226,8 +226,8 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 			
 			DrawLoading(100)
 		Else
-			
-			ShouldPlay = 5
+			;TODO
+			;ShouldPlay = 5
 			
 			e\eventState = e\eventState+timing\tickDuration
 			HideEntity mainPlayer\overlays[OVERLAY_FOG]
@@ -445,7 +445,8 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 								ScaleMesh (e\room\objects[12], 0.32/21.3, 0.32/21.3, 0.32/21.3)
 								PositionEntity e\room\objects[12], EntityX(e\room\objects[11],True), EntityY(e\room\objects[11],True), EntityZ(e\room\objects[11],True)
 								
-								obj = CopyEntity(e\room\objects[12])
+								; TODO: Isn't this a memory leak?
+								Local obj% = CopyEntity(e\room\objects[12])
 								PositionEntity obj, EntityX(e\room\obj,True)-3968*RoomScale, EntityY(e\room\objects[11],True), EntityZ(e\room\obj,True)-1920*RoomScale
 								
 								obj = CopyEntity(e\room\objects[12])
@@ -583,8 +584,8 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 								EndIf
 							Next										
 						Else
-							
-							ShouldPlay = 0
+							;TODO?
+							;ShouldPlay = 0
 							mainPlayer\moveSpeed = 0
 							If IsChannelPlaying(e\soundChannels[0])=False Then
 								PlaySound2 IntroSFX(9)

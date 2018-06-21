@@ -77,7 +77,7 @@ End Function
 Function UpdateEventCoffin(e.Events)
 	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
 
-	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
+	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams, de.Decals
 
 	Local CurrTrigger$ = ""
 
@@ -146,9 +146,9 @@ Function UpdateEventCoffin(e.Events)
 					mainPlayer\sanity895 = mainPlayer\sanity895-(timing\tickDuration*1.1);/WearingNightVision)
 					mainPlayer\blurTimer = Sin(TimeInPosMilliSecs()/10)*Abs(mainPlayer\sanity895)
 					
-					tempF# = GetAngle(EntityX(mainPlayer\collider,True),EntityZ(mainPlayer\collider,True),EntityX(e\room\objects[1],True),EntityZ(e\room\objects[1],True))
-					tempF2# = EntityYaw(mainPlayer\collider)
-					tempF3# = angleDist(tempF+90+Sin(WrapAngle(e\eventState3/10)),tempF2)
+					Local tempF# = GetAngle(EntityX(mainPlayer\collider,True),EntityZ(mainPlayer\collider,True),EntityX(e\room\objects[1],True),EntityZ(e\room\objects[1],True))
+					Local tempF2# = EntityYaw(mainPlayer\collider)
+					Local tempF3# = angleDist(tempF+90+Sin(WrapAngle(e\eventState3/10)),tempF2)
 					
 					TurnEntity mainPlayer\collider, 0,tempF3/4,0,True
 					
@@ -189,7 +189,8 @@ Function UpdateEventCoffin(e.Events)
 			EndIf
 		EndIf
 		
-		ShouldPlay = 66
+		;TODO
+		;ShouldPlay = 66
 		
 		If (e\room\levers[0]\succ) Then
 			For sc.SecurityCams = Each SecurityCams

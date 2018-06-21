@@ -23,7 +23,7 @@ End Function
 Function UpdateEvent_cont_1162_2c(e.Events)
 	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
 
-	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
+	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams, de.Decals
 
 	Local CurrTrigger$ = ""
 
@@ -137,7 +137,8 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 		If e\eventState3 = 1.0 Then
 			Local shouldCreateItem% = False
 			
-			For itt.ItemTemplates = Each ItemTemplates
+			Local itt.ItemTemplates
+			For itt = Each ItemTemplates
 				If (IsItemGoodFor1162(itt)) Then
 					Select mainPlayer\inventory\items[e\eventState2]\itemtemplate\name
 						Case "key"
@@ -191,7 +192,7 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 			PositionEntity pvt, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)-0.05,EntityZ(mainPlayer\collider)
 			TurnEntity pvt, 90, 0, 0
 			EntityPick(pvt,0.3)
-			de.decals = CreateDecal(3, PickedX(), PickedY()+0.005, PickedZ(), 90, Rand(360), 0)
+			de.Decals = CreateDecal(3, PickedX(), PickedY()+0.005, PickedZ(), 90, Rand(360), 0)
 			de\size = 0.75 : ScaleSprite de\obj, de\size, de\size
 			FreeEntity pvt
 			For itt.ItemTemplates = Each ItemTemplates
@@ -227,7 +228,7 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 				PositionEntity pvt, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)-0.05,EntityZ(mainPlayer\collider)
 				TurnEntity pvt, 90, 0, 0
 				EntityPick(pvt,0.3)
-				de.decals = CreateDecal(3, PickedX(), PickedY()+0.005, PickedZ(), 90, Rand(360), 0)
+				de.Decals = CreateDecal(3, PickedX(), PickedY()+0.005, PickedZ(), 90, Rand(360), 0)
 				de\size = 0.75 : ScaleSprite de\obj, de\size, de\size
 				FreeEntity pvt
 				If mainPlayer\injuries > 15 Then

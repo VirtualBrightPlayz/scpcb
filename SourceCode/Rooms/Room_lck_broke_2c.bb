@@ -26,7 +26,7 @@ Function FillRoom_lck_broke_2c(r.Rooms)
     d\linkedDoor = d2
     d2\linkedDoor = d
     
-    scale# = RoomScale * 4.5 * 0.4
+    Local scale# = RoomScale * 4.5 * 0.4
     
     r\objects[0] = CopyEntity(Monitor)
     ScaleEntity r\objects[0],scale#,scale#,scale#

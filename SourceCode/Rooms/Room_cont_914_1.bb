@@ -61,7 +61,7 @@ Function Use914(item.Items, setting$, x#, y#, z#)
 	
 	;RefinedItems = RefinedItems+1
 	
-	Local it2.Items, d.Decals, n.NPCs
+	Local it.Items, it2.Items, d.Decals, n.NPCs
 	Select item\itemtemplate\name
 		Case "Gas Mask", "Heavy Gas Mask"
 			Select setting
@@ -389,21 +389,6 @@ Function Use914(item.Items, setting$, x#, y#, z#)
 				Case "very fine"
 					it2 = CreateItem("Radio Transceiver", "veryfineradio", x, y, z)
 					it2\state = 101
-			End Select
-			
-			RemoveItem(item)
-		Case "SCP-513"
-			Select setting
-				Case "rough", "coarse"
-					PlaySound2 LoadTempSound("SFX/SCP/513/914Refine.ogg")
-					For n.npcs = Each NPCs
-						If n\npctype = NPCtype5131 Then RemoveNPC(n)
-					Next
-					d.Decals = CreateDecal(0, x, 8*RoomScale+0.010, z, 90, Rand(360), 0)
-					d\size = 0.2 : EntityAlpha(d\obj, 0.8) : ScaleSprite(d\obj, d\size, d\size)
-				Case "1:1", "fine", "very fine"
-					it2 = CreateItem("SCP-513", "scp513", x, y, z)
-					
 			End Select
 			
 			RemoveItem(item)

@@ -83,7 +83,7 @@ Function UpdateEvent_dimension1499(e.Events)
 		UpdateChunks(e\room,15)
 		ShowEntity NTF_1499Sky
 		Update1499Sky()
-		ShouldPlay = 18
+		;ShouldPlay = 18 ;TODO
 		If EntityY(mainPlayer\collider)<800.0 Then PositionEntity mainPlayer\collider,EntityX(mainPlayer\collider),800.1,EntityZ(mainPlayer\collider),True
 		ResetEntity mainPlayer\collider
 			
@@ -145,16 +145,16 @@ End Function
 
 ;TODO: clean up
 Type ChunkPart
-	Field Amount%
+	Field amount%
 	Field obj%[128]
-	Field RandomYaw#[128]
-	Field ID
+	Field randomYaw#[128]
+	Field id%
 End Type
 
 Type Chunk
 	Field obj%[128]
 	Field x#,z#,y#
-	Field Amount%
+	Field amount%
 	;Field debugobj%
 End Type
 

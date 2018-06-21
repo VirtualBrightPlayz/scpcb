@@ -34,7 +34,7 @@ Function FillRoom_off_lower_2(r.Rooms)
     r\objects[4] = CreatePivot(r\obj)
     PositionEntity(r\objects[4], r\x-572.0 * RoomScale, 350.0 * RoomScale, r\z - 4.0 * RoomScale, True)
     
-    temp = Rand(1,4)
+    Local temp% = Rand(1,4)
     PositionEntity(r\objects[0], EntityX(r\objects[temp],True),EntityY(r\objects[temp],True),EntityZ(r\objects[temp],True),True)
 End Function
 

@@ -1,5 +1,5 @@
 Function FillRoom_hll_gas_2(r.Rooms)
-    Local d.Doors, d2.Doors, sc.SecurityCams, de.Decals, r2.Rooms, sc2.SecurityCams
+    Local d.Doors, d2.Doors, sc.SecurityCams, de.Decals, r2.Rooms, sc2.SecurityCams, em.Emitters
 	Local it.Items, i%
 	Local xtemp%, ytemp%, ztemp%
 	
