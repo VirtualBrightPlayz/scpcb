@@ -47,7 +47,7 @@ Function DrawConsole()
 		
 		Local consoleHeight% = 0
 		Local scrollbarHeight% = 0
-		Local cm.ConsoleMsg
+		
 		For cm = Each ConsoleMsg
 			consoleHeight = consoleHeight + 15*MenuScale
 		Next
@@ -56,13 +56,13 @@ Function DrawConsole()
 		If consoleHeight<height Then consoleHeight = height
 		
 		Color 50,50,50
-		Local inBar% = MouseOn(x+width-26*MenuScale,y,26*MenuScale,height)
+		inBar% = MouseOn(x+width-26*MenuScale,y,26*MenuScale,height)
 		If inBar Then Color 70,70,70
 		Rect x+width-26*MenuScale,y,26*MenuScale,height,True
 		
 		
 		Color 120,120,120
-		Local inBox% = MouseOn(x+width-23*MenuScale,y+height-scrollbarHeight+(ConsoleScroll*scrollbarHeight/height),20*MenuScale,scrollbarHeight)
+		inBox% = MouseOn(x+width-23*MenuScale,y+height-scrollbarHeight+(ConsoleScroll*scrollbarHeight/height),20*MenuScale,scrollbarHeight)
 		If inBox Then Color 200,200,200
 		If ConsoleScrollDragging Then Color 255,255,255
 		Rect x+width-23*MenuScale,y+height-scrollbarHeight+(ConsoleScroll*scrollbarHeight/height),20*MenuScale,scrollbarHeight,True
@@ -106,7 +106,7 @@ Function UpdateConsole()
 	Local mouseScroll%
 	Local x%,y%,c%
 	Local sf%,b%,t%,texname$
-	Local StrTemp$, temp%,  i%
+	Local StrTemp$, StrTemp2$, StrTemp3$, temp%,  i%
 	Local ev.Events, r.Rooms, it.Items
 	Local consoleHeight%
 	Local scrollbarHeight%
@@ -114,17 +114,11 @@ Function UpdateConsole()
 	Local itt.ItemTemplates
 	If CurrGameState=GAMESTATE_CONSOLE Then
 		Local cm.ConsoleMsg
-		Local itt.ItemTemplates
-		Local c%
-		Local sf%
-		Local b%
-		Local t%
-		Local texname$
 		Local n.NPCs
 		Local args$
 		
 		ConsoleR = 255 : ConsoleG = 255 : ConsoleB = 255
-	
+		
 		x% = 0
 		y% = userOptions\screenHeight-300*MenuScale
 		width% = userOptions\screenWidth
@@ -139,9 +133,9 @@ Function UpdateConsole()
 		If scrollbarHeight>height Then scrollbarHeight = height
 		If consoleHeight<height Then consoleHeight = height
 		
-		Local inBar% = MouseOn(x+width-26*MenuScale,y,26*MenuScale,height)
+		inBar% = MouseOn(x+width-26*MenuScale,y,26*MenuScale,height)
 		
-		Local inBox% = MouseOn(x+width-23*MenuScale,y+height-scrollbarHeight+(ConsoleScroll*scrollbarHeight/height),20*MenuScale,scrollbarHeight)
+		inBox% = MouseOn(x+width-23*MenuScale,y+height-scrollbarHeight+(ConsoleScroll*scrollbarHeight/height),20*MenuScale,scrollbarHeight)
 		
 		If Not MouseDown(1) Then
 			ConsoleScrollDragging=False
@@ -162,7 +156,7 @@ Function UpdateConsole()
 			EndIf
 		EndIf
 		
-		Local mouseScroll% = MouseZSpeed()
+		mouseScroll% = MouseZSpeed()
 		If mouseScroll=1 Then
 			ConsoleScroll = ConsoleScroll - 15*MenuScale
 		ElseIf mouseScroll=-1 Then
@@ -198,7 +192,7 @@ Function UpdateConsole()
 						ConsoleReissue=First ConsoleMsg
 						reissuePos = 0
 					EndIf
-				
+					
 					If (ConsoleReissue\isCommand) Then
 						Exit
 					EndIf
@@ -241,7 +235,7 @@ Function UpdateConsole()
 						ConsoleReissue=Last ConsoleMsg
 						reissuePos=-consoleHeight+15*MenuScale
 					EndIf
-				
+					
 					If (ConsoleReissue\isCommand) Then
 						Exit
 					EndIf
@@ -466,9 +460,9 @@ Function UpdateConsole()
 					For ev.Events = Each Events
 						If ev\room = mainPlayer\currRoom Then
 							CreateConsoleMsg("Room event: "+ev\name)	
-							CreateConsoleMsg("-    state: "+ev\intState[0])
-							CreateConsoleMsg("-    state2: "+ev\intState[1])	
-							CreateConsoleMsg("-    state3: "+ev\intState[2])
+							CreateConsoleMsg("-    state: "+ev\eventState)
+							CreateConsoleMsg("-    state2: "+ev\eventState2)	
+							CreateConsoleMsg("-    state3: "+ev\eventState3)
 							Exit
 						EndIf
 					Next
@@ -480,7 +474,7 @@ Function UpdateConsole()
 					CreateConsoleMsg("Injuries: "+mainPlayer\injuries)
 					CreateConsoleMsg("Bloodloss: "+mainPlayer\bloodloss)
 					CreateConsoleMsg("******************************")
-
+					
 				Case "camerapick"
 					ConsoleR = 0 : ConsoleG = 255 : ConsoleB = 0
 					c = CameraPick(mainPlayer\cam, userOptions\screenWidth / 2, userOptions\screenHeight / 2)
@@ -501,37 +495,37 @@ Function UpdateConsole()
 						FreeTexture t
 						FreeBrush b							
 					EndIf
-
+					
 				Case "hidedistance"
 					HideDistance = Float(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 					CreateConsoleMsg("Hidedistance set to "+HideDistance)		
-
+					
 				Case "ending"
 					CurrGameState = GAMESTATE_ENDING
 					StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 					
 					Kill(mainPlayer)
-
+					
 				Case "noclipspeed"
 					RuntimeError "TODO: reimplement?"
 					;StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 					
 					;NoClipSpeed = Float(StrTemp)
-
+					
 				Case "injure"
 					StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 					
 					mainPlayer\injuries = Float(StrTemp)
-
+					
 				Case "infect"
 					StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 					
 					mainPlayer\infect008 = Float(StrTemp)
-
+					
 				Case "heal"
 					mainPlayer\injuries = 0
 					mainPlayer\bloodloss = 0
-
+					
 				Case "teleport"
 					StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 					
@@ -571,7 +565,7 @@ Function UpdateConsole()
 							it.Items = CreateItem(itt\name, itt\tempName, EntityX(mainPlayer\collider), EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider))
 							EntityType(it\collider, HIT_ITEM)
 							Exit
-						Else If (Lower(itt\tempName) = StrTemp) Then
+						ElseIf (Lower(itt\tempName) = StrTemp) Then
 							temp = True
 							CreateConsoleMsg(itt\name + " spawned.")
 							it.Items = CreateItem(itt\name, itt\tempName, EntityX(mainPlayer\collider), EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider))
@@ -581,7 +575,7 @@ Function UpdateConsole()
 					Next
 					
 					If temp = False Then CreateConsoleMsg("Item not found.",255,150,0)
-
+					
 				Case "wireframe"
 					StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 					
@@ -601,36 +595,36 @@ Function UpdateConsole()
 					EndIf
 					
 					WireFrame WireframeState
-
+					
 				Case "173speed"
 					StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 					Curr173\speed = Float(StrTemp)
 					CreateConsoleMsg("173's speed set to " + StrTemp)
-
+					
 				Case "106speed"
 					StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 					Curr106\speed = Float(StrTemp)
 					CreateConsoleMsg("106's speed set to " + StrTemp)
-
+					
 				Case "173state"
 					CreateConsoleMsg("SCP-173")
 					CreateConsoleMsg("Position: " + EntityX(Curr173\obj) + ", " + EntityY(Curr173\obj) + ", " + EntityZ(Curr173\obj))
-					CreateConsoleMsg("Idle: " + Curr173\Idle)
+					CreateConsoleMsg("Idle: " + Curr173\idle)
 					CreateConsoleMsg("State: " + Curr173\state)
-
+					
 				Case "106state"
 					CreateConsoleMsg("SCP-106")
 					CreateConsoleMsg("Position: " + EntityX(Curr106\obj) + ", " + EntityY(Curr106\obj) + ", " + EntityZ(Curr106\obj))
-					CreateConsoleMsg("Idle: " + Curr106\Idle)
+					CreateConsoleMsg("Idle: " + Curr106\idle)
 					CreateConsoleMsg("State: " + Curr106\state)
-
+					
 				Case "spawn513-1"
 					CreateNPC(NPCtype5131, 0,0,0)
-
+					
 				Case "spawn106"
 					Curr106\state = -1
 					PositionEntity Curr106\collider, EntityX(mainPlayer\collider), EntityY(Curr106\collider), EntityZ(mainPlayer\collider)
-
+					
 				Case "reset096"
 					For n = Each NPCs
 						If n\npcType = NPCtype096 Then
@@ -638,28 +632,28 @@ Function UpdateConsole()
 							Exit
 						EndIf
 					Next
-
+					
 				Case "disable173"
-					Curr173\Idle = 3 ;TODO: clean up
+					Curr173\idle = 3 ;TODO: clean up
 					HideEntity Curr173\obj
 					HideEntity Curr173\collider
-
+					
 				Case "enable173"
-					Curr173\Idle = False
+					Curr173\idle = False
 					ShowEntity Curr173\obj
 					ShowEntity Curr173\collider
-
+					
 				Case "disable106"
-					Curr106\Idle = True
+					Curr106\idle = True
 					Curr106\state = 200000
 					Contained106 = True
-
+					
 				Case "enable106"
-					Curr106\Idle = False
+					Curr106\idle = False
 					Contained106 = False
 					ShowEntity Curr106\collider
 					ShowEntity Curr106\obj
-
+					
 				Case "halloween"
 					HalloweenTex = Not HalloweenTex
 					If HalloweenTex Then
@@ -673,7 +667,7 @@ Function UpdateConsole()
 						FreeTexture tex2
 						CreateConsoleMsg("173 JACK-O-LANTERN OFF")
 					EndIf
-
+					
 				Case "sanic"
 					mainPlayer\superMan = Not mainPlayer\superMan
 					If mainPlayer\superMan = True Then
@@ -681,7 +675,7 @@ Function UpdateConsole()
 					Else
 						CreateConsoleMsg("WHOA SLOW DOWN")
 					EndIf
-
+					
 				Case "scp-420-j","420","weed"
 					For i = 1 To 20
 						If Rand(2)=1 Then
@@ -692,7 +686,7 @@ Function UpdateConsole()
 						EntityType (it\collider, HIT_ITEM)
 					Next
 					PlaySound2 LoadTempSound("SFX/Music/420J.ogg")
-
+					
 				Case "godmode"
 					StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 					
@@ -709,10 +703,10 @@ Function UpdateConsole()
 					Else
 						CreateConsoleMsg("GODMODE OFF")	
 					EndIf
-
+					
 				Case "revive","undead","resurrect"
 					mainPlayer\dead = False
-				
+					
 					mainPlayer\dropSpeed = -0.1
 					mainPlayer\camShake = 0
 					mainPlayer\moveSpeed = 0
@@ -747,7 +741,7 @@ Function UpdateConsole()
 								mainPlayer\disableControls = False
 							EndIf
 					End Select
-
+					
 					If mainPlayer\noclip Then
 						CreateConsoleMsg("NOCLIP ON")
 					Else
@@ -765,7 +759,7 @@ Function UpdateConsole()
 						If n\npcType = NPCtype096 Then
 							CreateConsoleMsg("SCP-096")
 							CreateConsoleMsg("Position: " + EntityX(n\obj) + ", " + EntityY(n\obj) + ", " + EntityZ(n\obj))
-							CreateConsoleMsg("Idle: " + n\Idle)
+							CreateConsoleMsg("Idle: " + n\idle)
 							CreateConsoleMsg("State: " + n\state)
 							Exit
 						EndIf
@@ -782,13 +776,13 @@ Function UpdateConsole()
 						Default
 							DebugHUD = Not DebugHUD
 					End Select
-
+					
 					If DebugHUD Then
 						CreateConsoleMsg("Debug Mode On")
 					Else
 						CreateConsoleMsg("Debug Mode Off")
 					EndIf
-
+					
 				Case "stopsound", "stfu"
 					RuntimeError "TODO: reimplement"
 					
@@ -803,11 +797,11 @@ Function UpdateConsole()
 					StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 					userOptions\screenGamma = Int(StrTemp)
 					CreateConsoleMsg("Gamma set to " + userOptions\screenGamma)
-
+					
 				Case "spawn"
 					StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 					Console_SpawnNPC(StrTemp$)
-
+					
 				Case "infinitestamina","infstam"
 					RuntimeError "TODO: reimplement?"
 					
@@ -821,23 +815,23 @@ Function UpdateConsole()
 					;	Default
 					;		InfiniteStamina% = Not InfiniteStamina%
 					;End Select
-
+					
 					;If InfiniteStamina
 					;	CreateConsoleMsg("INFINITE STAMINA ON")
 					;Else
 					;	CreateConsoleMsg("INFINITE STAMINA OFF")	
 					;EndIf
-
+					
 				Case "spawnnpcstate"
 					args$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 					StrTemp$ = Piece$(args$,1," ")
 					StrTemp2$ = Piece$(args$,2," ")
 					Console_SpawnNPC(StrTemp$,Int(StrTemp2$))
-
+					
 				Case "toggle_warhead_lever"
 					For ev.Events = Each Events
-						If ev\EventName = "room2nuke" Then
-							ev\EventState = (Not ev\EventState)
+						If ev\name = "room2nuke" Then
+							ev\eventState = (Not ev\eventState)
 							Exit
 						EndIf
 					Next
@@ -848,40 +842,40 @@ Function UpdateConsole()
 					Select StrTemp
 						Case "a"
 							For ev.Events = Each Events
-								If ev\EventName = "gateaentrance" Then
-									ev\EventState3 = 1
-									ev\room\RoomDoors[1]\open = True
+								If ev\name = "gateaentrance" Then
+									ev\eventState3 = 1
+									ev\room\roomDoors[1]\open = True
 									Exit
 								EndIf
 							Next
 							CreateConsoleMsg("Gate A is now unlocked.")	
 						Case "b"
 							For ev.Events = Each Events
-								If ev\EventName = "exit1" Then
-									ev\EventState3 = 1
-									ev\room\RoomDoors[4]\open = True
+								If ev\name = "exit1" Then
+									ev\eventState3 = 1
+									ev\room\roomDoors[4]\open = True
 									Exit
 								EndIf
 							Next	
 							CreateConsoleMsg("Gate B is now unlocked.")	
 						Default
 							For ev.Events = Each Events
-								If ev\EventName = "gateaentrance" Then
-									ev\EventState3 = 1
-									ev\room\RoomDoors[1]\open = True
-								ElseIf ev\EventName = "exit1" Then
-									ev\EventState3 = 1
-									ev\room\RoomDoors[4]\open = True
+								If ev\name = "gateaentrance" Then
+									ev\eventState3 = 1
+									ev\room\roomDoors[1]\open = True
+								ElseIf ev\name = "exit1" Then
+									ev\eventState3 = 1
+									ev\room\roomDoors[4]\open = True
 								EndIf
 							Next
 							CreateConsoleMsg("Gate A and B are now unlocked.")	
 					End Select
-
+					
 					RemoteDoorOn = True
-
+					
 				Case "kill","suicide"
 					Kill(mainPlayer)
-
+					
 					Select Rand(4)
 						Case 1
 							DeathMSG = "[REDACTED]"
@@ -896,18 +890,18 @@ Function UpdateConsole()
 							DeathMSG = DeathMSG + "The subject appears to have scribbled the letters "+Chr(34)+"kys"+Chr(34)+" in his own blood beside him. "
 							DeathMSG = DeathMSG + "No other signs of physical trauma or struggle can be observed. Body was sent for autopsy."
 					End Select
-
+					
 				Case "tp_to_mtf"
 					For n.NPCs = Each NPCs
 						If n\npcType = NPCtypeMTF Then
-							If n\MTFLeader = Null Then
+							If n\mtfLeader = Null Then
 								PositionEntity mainPlayer\collider,EntityX(n\collider),EntityY(n\collider)+5,EntityZ(n\collider)
 								ResetEntity mainPlayer\collider
 								Exit
 							EndIf
 						EndIf
 					Next
-
+					
 				Case "tele"
 					args$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 					StrTemp$ = Piece$(args$,1," ")
@@ -916,7 +910,7 @@ Function UpdateConsole()
 					PositionEntity mainPlayer\collider,StrTemp$,StrTemp2$,StrTemp3$
 					PositionEntity mainPlayer\cam,StrTemp$,StrTemp2$,StrTemp3$
 					CreateConsoleMsg("Teleported to coordinates (X|Y|Z): "+EntityX(mainPlayer\collider)+"|"+EntityY(mainPlayer\collider)+"|"+EntityZ(mainPlayer\collider))
-
+					
 				Case "notarget"
 					StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 					
@@ -928,13 +922,13 @@ Function UpdateConsole()
 						Default
 							NoTarget% = Not NoTarget%
 					End Select
-
+					
 					If NoTarget% = False Then
 						CreateConsoleMsg("NOTARGET OFF")
 					Else
 						CreateConsoleMsg("NOTARGET ON")	
 					EndIf
-
+					
 				Case "spawnradio"
 					it.Items = CreateItem("Radio Transceiver", "fineradio", EntityX(mainPlayer\collider), EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider))
 					EntityType(it\collider, HIT_ITEM)
@@ -989,5 +983,4 @@ CreateConsoleMsg("  - spawn [npc type]")
 
 ;---------------------------------------------------------------------------------------------------
 ;~IDEal Editor Parameters:
-;~F#24
 ;~C#Blitz3D

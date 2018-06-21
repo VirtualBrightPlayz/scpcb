@@ -113,7 +113,7 @@ Function UpdateEventCheckpoint(e.Events)
 	
 	If e\room\RoomTemplate\name = "checkpoint2" Then
 		For e2.Events = Each Events
-			If e2\EventName = "008" Then
+			If e2\name = "008" Then
 				If e2\EventState = 2 Then
 					If e\room\RoomDoors[0]\locked Then
 						;TurnCheckpointMonitorsOff(1)
@@ -131,7 +131,7 @@ Function UpdateEventCheckpoint(e.Events)
 		Next
 	Else
 		For e2.Events = Each Events
-			If e2\EventName = "room2sl" Then
+			If e2\name = "room2sl" Then
 				If e2\EventState3 = 0 Then
 					If e\room\dist < 12 Then
 						;TurnCheckpointMonitorsOff(0)

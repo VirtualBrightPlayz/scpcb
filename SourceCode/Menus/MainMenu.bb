@@ -530,7 +530,6 @@ Function DrawMainMenu()
 	EndIf
 	
 	If CurrGameSubstate = GAMESUBSTATE_MAINMENU_MAIN Then
-		Local i%
 		For i% = 0 To MAINMENU_BUTTON_COUNT-1
 			x = 159 * MenuScale
 			y = (286 + 100 * i) * MenuScale

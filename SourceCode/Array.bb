@@ -75,7 +75,6 @@ Function EraseIntArrayListElem(arrayList.IntArrayList,pos%)
 	Local val%
 	If pos>=arrayList\size Then Return
 	
-	Local i%
 	For i = pos To arrayList\size-2
 		val = PeekInt(arrayList\bank,(i+1)*INT_SIZE)
 		PokeInt(arrayList\bank,i*INT_SIZE,val)

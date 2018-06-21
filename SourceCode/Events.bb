@@ -2,10 +2,11 @@ Const EVENT_MAX_STATE_COUNT% = 5
 Const EVENT_SOUND_COUNT% = 5
 Const EVENT_CHANNEL_COUNT% = 2
 Type Events
-	Field eventName$
+	Field name$
 	Field room.Rooms
 	
 	Field eventState#, eventState2#, eventState3#
+	
 	Field loaded%
 	
 	;Field img% ;???
@@ -32,7 +33,7 @@ Function CreateEvent.Events(eventname$, roomname$, id%, prob# = 0.0)
 	
 	If prob = 0.0 Then
 		For r.Rooms = Each Rooms
-			If (roomname = "" Or roomname = r\RoomTemplate\Name) Then
+			If (roomname = "" Or roomname = r\RoomTemplate\name) Then
 				temp = False
 				For e2.Events = Each Events
 					If e2\room = r Then temp = True : Exit
@@ -41,7 +42,7 @@ Function CreateEvent.Events(eventname$, roomname$, id%, prob# = 0.0)
 				i=i+1
 				If i >= id And temp = False Then
 					e.Events = New Events
-					e\EventName = eventname					
+					e\name = eventname					
 					e\room = r
 					Return e
 				EndIf
@@ -49,7 +50,7 @@ Function CreateEvent.Events(eventname$, roomname$, id%, prob# = 0.0)
 		Next
 	Else
 		For r.Rooms = Each Rooms
-			If (roomname = "" Or roomname = r\RoomTemplate\Name) Then
+			If (roomname = "" Or roomname = r\RoomTemplate\name) Then
 				temp = False
 				For e2.Events = Each Events
 					If e2\room = r Then temp = True : Exit
@@ -57,7 +58,7 @@ Function CreateEvent.Events(eventname$, roomname$, id%, prob# = 0.0)
 				
 				If Rnd(0.0, 1.0) < prob And temp = False Then
 					e.Events = New Events
-					e\EventName = eventname					
+					e\name = eventname					
 					e\room = r
 				EndIf
 			EndIf
@@ -265,7 +266,7 @@ Function UpdateEvents()
 			EndIf
 		EndIf
 		
-		Select e\EventName
+		Select e\name
 			Case "evt_intro"
 				UpdateEvent173(e)
 			Case "evt_cont_173"
@@ -426,5 +427,4 @@ Function UpdateEvents()
 End Function
 
 ;~IDEal Editor Parameters:
-;~F#15#47#5C#F3
 ;~C#Blitz3D

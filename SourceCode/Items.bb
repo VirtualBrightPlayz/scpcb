@@ -19,34 +19,34 @@ Type ItemTemplates
 	
 	Field obj%
 	Field objPath$
-
+	
 	Field invImage%[2]
 	Field invImagePath$[2]
-
+	
 	Field tex%
 	Field texPath$
-
+	
 	Field sound%
-
+	
 	Field bodySlot%
 	
 	Field scale#
-
+	
 	;TODO: Remove.
 	Field invSlot%
-
+	
 	Field name$
-
+	
 	Field invimg%,invimg2%,invimgpath$
-
+	
 	Field found%
-
+	
 	Field imgpath$, img% ;Doing something with this that's (hopefully) a little smarter.
 End Type 
 
 Function CreateItemTemplate(file$, section$)
 	Local it.ItemTemplates = New ItemTemplates
-
+	
 	it\tempName = section
 	it\invName = GetINIString(file, section, "invname")
 	
@@ -54,32 +54,32 @@ Function CreateItemTemplate(file$, section$)
 	Local dataPath$ = GetINIString(file, section, "datapath")
 	If (dataPath <> "") Then
 		If (FileType(dataPath) <> 2) Then RuntimeError("Item template directory not found ("+section+", "+dataPath+")")
-
+		
 		it\objPath = dataPath + it\tempName + ".b3d"
 		it\invImagePath[0] = dataPath + "inv_" + it\tempName + ".jpg"
 	EndIf
-
+	
 	;Otherwise the obj, tex and inv paths are specified in the INI.
 	Local objPath$ = GetINIString(file, section, "objpath")
 	If (objPath <> "") Then
 		it\objPath = objPath
 	EndIf
-
+	
 	Local texPath$ = GetINIString(file, section, "texpath")
 	If (texPath <> "") Then
 		it\texPath = texPath
 	EndIf
-
+	
 	Local invImgPath$ = GetINIString(file, section, "invimgpath")
 	If (invImgPath <> "") Then
 		it\invImagePath[0] = invImgPath
 	EndIf
-
+	
 	Local invImgPath2$ = GetINIString(file, section, "invimgpath2")
 	If (invImgPath2 <> "") Then
 		it\invImagePath[1] = invImgPath2
 	EndIf
-
+	
 	Local slot$ = Lower(GetINIString(file, section, "slot"))
 	Select slot
 		Case "head"
@@ -103,7 +103,7 @@ Function CreateItemTemplate(file$, section$)
 	End Select
 	
 	;Start loading the assets needed.
-
+	
 	;Does another item already use that model?
 	Local it2.ItemTemplates
 	For it2 = Each ItemTemplates
@@ -112,7 +112,7 @@ Function CreateItemTemplate(file$, section$)
 			Exit
 		EndIf
 	Next
-
+	
 	;Otherwise load the model.
 	If (it\obj = 0) Then
 		If (GetINIInt(file, section, "animated") = 1) Then
@@ -121,7 +121,7 @@ Function CreateItemTemplate(file$, section$)
 			it\obj = LoadMesh(it\objPath)
 		EndIf
 	EndIf
-
+	
 	If (it\texPath <> "") Then
 		For it2 = Each ItemTemplates
 			If (it2\texPath = it\texPath And it2\tex <> 0) Then
@@ -129,12 +129,12 @@ Function CreateItemTemplate(file$, section$)
 				Exit
 			EndIf
 		Next
-
+		
 		If (it\tex = 0) Then
 			Local flags% = GetINIInt(file, section, "textureflags", 1+8)
 			it\tex = LoadTexture(it\texPath, flags)
 		EndIf
-
+		
 		EntityTexture(it\obj, it\tex)
 	EndIf
 	
@@ -147,7 +147,7 @@ Function CreateItemTemplate(file$, section$)
 					Exit
 				EndIf
 			Next
-
+			
 			If (it\invImage[i] = 0) Then
 				it\invImage[i] = LoadImage(it\invImagePath[i])
 				MaskImage(it\invImage[i], 255, 0, 255)
@@ -159,7 +159,7 @@ Function CreateItemTemplate(file$, section$)
 	Local scale# = 1.0
 	it\scale = scale
 	ScaleEntity(it\obj, scale, scale, scale, True)
-
+	
 	HideEntity it\obj
 End Function
 
@@ -172,7 +172,7 @@ Function FindItemTemplate.ItemTemplates(tempname$)
 			Exit
 		EndIf
 	Next
-
+	
 	Return candidate
 End Function
 
@@ -228,7 +228,7 @@ Function InitItemTemplates()
 	IniHackTool("Leaflet", "leaflet.jpg")
 	
 	IniHackTool("Journal Page", "journal.jpg")
-
+	
 	
 	IniHackTool("Log #1", "f4.jpg")
 	IniHackTool("Log #2", "f5.jpg")
@@ -236,17 +236,17 @@ Function InitItemTemplates()
 	
 	IniHackTool("Nuclear Device Document", "docWar.jpg")	
 	IniHackTool("Class D Orientation Leaflet", "docORI.jpg")	
-				
+	
 	
 	IniHackTool("Burnt Note", "docBurn.jpg")
-		
+	
 	
 	IniHackTool("Mobile Task Forces", "docMTF.jpg")
 	IniHackTool("Security Clearance Levels", "docSC.jpg")
 	IniHackTool("Object Classes", "docOBJC.jpg")
 	IniHackTool("Incident Report SCP-106-0204", "docIR106.jpg") 
 	
-
+	
 	IniHackTool("Disciplinary Hearing DH-S-4137-17092", "docDH.jpg")
 	
 	IniHackTool("Note", "radical_linguini.jpg") 
@@ -254,16 +254,16 @@ Function InitItemTemplates()
 	IniHackTool("Mysterious Note", "big_reveal.jpg")
 	IniHackTool("Note from Daniel", "docdan.jpg")
 	IniHackTool("Dr. Allok's Note", "106_treats.jpg")
-
+	
 	IniHackTool("Strange Note", "docStrange.jpg")
-
+	
 	IniHackTool("Dr. L's Note", "docL1.jpg")
 	IniHackTool("Dr L's Note", "docL2.jpg")
 	IniHackTool("Blood-stained Note", "docL3.jpg")
 	IniHackTool("Dr. L's Burnt Note", "docL4.jpg")
 	IniHackTool("Dr L's Burnt Note", "docL5.jpg")
 	IniHackTool("Scorched Note", "docL6.jpg")
-
+	
 	For it = Each ItemTemplates
 		If (it\tex<>0) Then
 			If (it\texPath<>"") Then
@@ -361,7 +361,7 @@ Function CreateItem.Items(name$, tempname$, x#, y#, z#, r# = 1.0, g# = 1.0, b# =
 		EndIf
 	Next 
 	
-	i\WontColl = False
+	i\wontColl = False
 	
 	;If i\itemtemplate = Null Then RuntimeError("Item template not found ("+name+", "+tempname+")")
 	i\model = CreateMesh()
@@ -378,26 +378,26 @@ Function CreateItem.Items(name$, tempname$, x#, y#, z#, r# = 1.0, g# = 1.0, b# =
 	;	i\g=g
 	;	i\b=b
 	;	i\a=a
-		
+	
 		;TODO: re-implement.
 		;Local liquid = CopyEntity(LiquidObj)
 		;ScaleEntity liquid, i\itemtemplate\scale,i\itemtemplate\scale,i\itemtemplate\scale,True
 		;PositionEntity liquid, EntityX(i\collider,True),EntityY(i\collider,True),EntityZ(i\collider,True)
 		;EntityParent liquid, i\model
 		;EntityColor liquid, r,g,b
-		
+	
 		;If a < 0 Then 
 		;	EntityFX liquid, 1
 		;	EntityAlpha liquid, Abs(a)
 		;Else
 		;	EntityAlpha liquid, Abs(a)
 		;EndIf
-		
+	
 		;EntityShininess liquid, 1.0
 	;EndIf
 	
 	i\invimg = CreateImage(64, 64) ;i\invimg = i\itemtemplate\invimg
-
+	
 ;	If (tempname="clipboard") And (invSlots=0) Then
 ;		invSlots = 20
 ;		SetAnimTime i\model,17.0
@@ -474,7 +474,7 @@ Function UpdateItems()
 				Else
 					i\dropSpeed = i\dropSpeed - 0.0004 * timing\tickDuration
 					TranslateEntity i\collider, i\xspeed*timing\tickDuration, i\dropSpeed * timing\tickDuration, i\zspeed*timing\tickDuration
-					If i\WontColl Then ResetEntity(i\collider)
+					If i\wontColl Then ResetEntity(i\collider)
 				EndIf
 				
 				If i\dist<HideDist*0.2 Then
@@ -543,13 +543,13 @@ Function PickItem(item.Items)
 							Return
 						EndIf
 						For e.Events = Each Events
-							If e\EventName = "room1123" Then 
-								If e\EventState = 0 Then
+							If e\name = "room1123" Then 
+								If e\eventState = 0 Then
 									ShowEntity mainPlayer\overlays[OVERLAY_WHITE]
 									mainPlayer\lightFlash = 3.0
 									PlaySound2(LoadTempSound("SFX/SCP/1123/Touch.ogg"))											
 								EndIf
-								e\EventState = Max(1, e\EventState)
+								e\eventState = Max(1, e\eventState)
 								Exit
 							EndIf
 						Next
@@ -603,7 +603,7 @@ Function DropItem(item.Items,playDropSound%=True)
 	For player.Player = Each Player
 		DeEquipItem(player,item)
 	Next
-		
+	
 	If playDropSound And (item\itemtemplate\sound <> 66) Then PlaySound_SM(sndManager\itemPick[item\itemtemplate\sound])
 	
 	item\Dropped = 1
@@ -666,12 +666,12 @@ End Function
 Const RADIO_CHANNEL_COUNT% = 5
 Type Radio
 	Field currChn%
-
+	
 	;How long each channel has been played for.
 	Field airTime#[RADIO_CHANNEL_COUNT]
-
+	
 	Field channels%[RADIO_CHANNEL_COUNT]
-
+	
 	;Sounds
 	Field sndStatic%
 End Type
@@ -687,13 +687,13 @@ Function ChangeRadioChannel(newChn%)
 	If (IsChannelPlaying(radio\channels[radio\currChn])) Then
 		PauseChannel(radio\channels[radio\currChn])
 	EndIf
-
+	
 	If (Not IsChannelPlaying(radio\channels[newChn])) Then
 		radio\channels[newChn] = PlaySound(radio\sndStatic)
 	Else
 		ResumeChannel(radio\channels[newChn])
 	EndIf
-
+	
 	radio\currChn = newChn
 End Function
 
@@ -703,14 +703,14 @@ Function UpdateRadio(i.Items)
 		Case 0 ;-nothing
 			;TODO: something?
 		Case 1 ;-alarms and alert messages
-
+			
 		Case 2 ;-scp on-site radio
-
+			
 		Case 3 ;-MTF broadcasts
-
+			
 		Case 4 ;-idfk
 	End Select
-
+	
 	radio\airTime[radio\currChn] = radio\airTime[radio\currChn] + timing\tickDuration
 End Function
 

@@ -132,7 +132,7 @@ Function UpdateEvent_cont_079_1(e.Events)
 			e\EventState2 = 2
 			
 			For e2.Events = Each Events
-				If e2\EventName="exit1" Or e2\EventName="gateaentrance" Then
+				If e2\name="exit1" Or e2\name="gateaentrance" Then
 					e2\EventState3 = 1
 				EndIf
 			Next

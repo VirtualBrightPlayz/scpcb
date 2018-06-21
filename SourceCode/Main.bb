@@ -569,7 +569,7 @@ Function UpdateGame()
 ;					
 ;					If mainPlayer\currRoom\RoomTemplate\Name = "room860"
 ;						For e.Events = Each Events
-;							If e\EventName = "room860"
+;							If e\name = "room860"
 ;								If e\EventState = 1.0 Then
 ;									PositionEntity (SoundEmitter, EntityX(mainPlayer\cam) + Rnd(-1.0, 1.0), 30.0, EntityZ(mainPlayer\cam) + Rnd(-1.0, 1.0))
 ;								EndIf
@@ -1347,7 +1347,7 @@ Function DrawGUI()
 			Text x - 50, 150, "Room: " + mainPlayer\currRoom\RoomTemplate\name
 			For ev.Events = Each Events
 				If ev\room = mainPlayer\currRoom Then
-					Text x - 50, 170, "Room event: " + ev\EventName   
+					Text x - 50, 170, "Room event: " + ev\name   
 					Text x - 50, 190, "state: " + ev\EventState
 					Text x - 50, 210, "state2: " + ev\EventState2   
 					Text x - 50, 230, "state3: " + ev\EventState3

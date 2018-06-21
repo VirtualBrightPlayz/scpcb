@@ -1493,7 +1493,7 @@ Function UpdateInventory(player.Player)
 						Return
 					EndIf
 					For e.Events = Each Events
-						If e\EventName = "room1123" Then 
+						If e\name = "room1123" Then 
 							If e\EventState = 0 Then
 								ShowEntity player\overlays[OVERLAY_WHITE]
 								player\lightFlash = 3

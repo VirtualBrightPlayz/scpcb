@@ -450,15 +450,15 @@ Function InitNewGame()
 	
 	;TODO: fix
 ;	For e.Events = Each Events
-;		If e\EventName = "room2nuke"
+;		If e\name = "room2nuke"
 ;			e\EventState = 1
 ;			DebugLog "room2nuke"
 ;		EndIf
-;		If e\EventName = "room106"
+;		If e\name = "room106"
 ;			e\EventState2 = 1
 ;			DebugLog "room106"
 ;		EndIf	
-;		If e\EventName = "room2sl"
+;		If e\name = "room2sl"
 ;			e\EventState3 = 1
 ;			DebugLog "room2sl"
 ;		EndIf
@@ -556,7 +556,7 @@ Function InitLoadGame()
 	
 	For e.Events = Each Events
 		;Loading the necessary stuff for dimension1499, but this will only be done if the player is in this dimension already
-		If e\EventName = "dimension1499" Then
+		If e\name = "dimension1499" Then
 			If e\EventState = 2 Then
 				;[Block]
 				DrawLoading(91)
