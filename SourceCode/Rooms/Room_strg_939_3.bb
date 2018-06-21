@@ -1,6 +1,6 @@
 Function FillRoom_strg_939_3(r.Rooms)
-    Local d.Doors, d2.Doors, sc.SecurityCams, de.Decals, r2.Rooms, sc2.SecurityCams
-	Local it.Items, i%
+    Local d.Doors, d2.Doors, sc.SecurityCams, de.Decals, r2.Rooms, sc2.SecurityCams, em.Emitters
+	Local it.Items, i%, x#, z#
 	Local xtemp%, ytemp%, ztemp%
 	
 	Local t1;, Bump
@@ -122,6 +122,7 @@ Function FillRoom_strg_939_3(r.Rooms)
     EntityParent de\obj, r\obj
     
     ;Objects [20],[21],[22],[23]
+	Local n%
     For n% = 10 To 11
         r\levers[n-10] = CreateLever()
         
@@ -194,7 +195,7 @@ Function UpdateEvent_strg_939_3(e.Events)
 		If EntityY(mainPlayer\collider)<-4600*RoomScale Then
 			
 			;If Music(7)=0 Then Music(7) = LoadSound("SFX/Music/Room3Storage.ogg") ;TODO: fix 
-			ShouldPlay = 7
+			;ShouldPlay = 7
 			
 			;If e\room\npc[0]=Null Then
 				;DrawLoading(0, True)

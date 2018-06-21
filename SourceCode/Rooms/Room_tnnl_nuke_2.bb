@@ -31,6 +31,7 @@ Function FillRoom_tnnl_nuke_2(r.Rooms)
     PositionEntity(r\objects[5], r\x + 984.0 * RoomScale, 1744.0 * RoomScale, r\z)
     EntityParent(r\objects[5], r\obj)
     
+	Local n%
     For n% = 0 To 1
         r\levers[n] = CreateLever()
         

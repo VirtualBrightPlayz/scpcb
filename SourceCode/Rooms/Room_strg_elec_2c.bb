@@ -11,6 +11,7 @@ Function FillRoom_strg_elec_2c(r.Rooms)
     it = CreateItem("Note from Daniel", "paper", r\x-400.0*RoomScale,1040.0*RoomScale,r\z+115.0*RoomScale)
     EntityParent(it\collider, r\obj)
     
+	Local n%
     For n% = 0 To 2
         r\levers[n] = CreateLever()
         

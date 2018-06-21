@@ -154,7 +154,7 @@ Function UpdateEvent_test_860_2(e.Events)
 								RotateEntity mainPlayer\collider, 0, EntityYaw(e\room\obj,True)+e\eventState2*180, 0
 								MoveEntity mainPlayer\collider, 0,0,1.5
 								
-								ResetEntity mainPLayer\collider
+								ResetEntity mainPlayer\collider
 								
 								UpdateDoorsTimer = 0
 								UpdateDoors()
@@ -222,7 +222,7 @@ Function UpdateEvent_test_860_2(e.Events)
 							pvt = CreatePivot()
 							PositionEntity pvt, EntityX(mainPlayer\cam),EntityY(mainPlayer\cam),EntityZ(mainPlayer\cam)
 							PointEntity pvt, e\room\obj
-							ang# = WrapAngle(EntityYaw(pvt)-EntityYaw(e\room\obj,True))
+							Local ang# = WrapAngle(EntityYaw(pvt)-EntityYaw(e\room\obj,True))
 							If ang > 90 And ang < 270 Then
 								;TurnEntity mainPlayer\collider,0,180+90,0,True
 								e\eventState2 = 1
@@ -274,17 +274,17 @@ Const return_chance% = 27
 Const center = 5 ;(gridsize-1) / 2
 
 Type Forest
-	Field TileMesh%[6]
-	Field DetailMesh%[6]
-	Field TileTexture%[10]
+	Field tileMesh%[6]
+	Field detailMesh%[6]
+	Field tileTexture%[10]
 	Field grid%[(gridsize*gridsize)+11]
-	Field TileEntities%[(gridsize*gridsize)+1]
-	Field Forest_Pivot%
+	Field tileEntities%[(gridsize*gridsize)+1]
+	Field forest_Pivot%
 	
-	Field Door%[2]
-	Field DetailEntities%[2]
+	Field door%[2]
+	Field detailEntities%[2]
 	
-	Field ID%
+	Field id%
 End Type
 
 Function move_forward%(dir%,pathx%,pathy%,retval%=0)
@@ -419,8 +419,8 @@ Function GenForestGrid(fr.Forest)
 			;determine if on left or on right
 			branch_pos=2*Rand(0,1)
 			;get leftmost or rightmost path in this row
-			leftmost=gridsize
-			rightmost=0
+			Local leftmost% = gridsize
+			Local rightmost% = 0
 			For i=0 To gridsize
 				If fr\grid[((gridsize-1-new_y)*gridsize)+i]=1 Then
 					If i<leftmost Then leftmost=i
@@ -452,7 +452,7 @@ Function GenForestGrid(fr.Forest)
 				EndIf
 				
 				;before creating a branch make sure there are no 1's above or below
-				n=((gridsize - 1 - temp_y + 1)*gridsize)+new_x
+				Local n% = ((gridsize - 1 - temp_y + 1)*gridsize)+new_x
 				If n < gridsize-1 Then 
 					If temp_y <> 0 And fr\grid[n]=1 Then Exit
 				EndIf
@@ -640,8 +640,9 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Rooms)
 					;place trees and other details
 					;only placed on spots where the value of the heightmap is above 100
 					SetBuffer ImageBuffer(hmap[tile_type])
-					width = ImageWidth(hmap[tile_type])
-					tempf4# = (tempf3/Float(width))
+					Local width = ImageWidth(hmap[tile_type])
+					Local tempf4# = (tempf3/Float(width))
+					Local lx%, ly%
 					For lx = 3 To width-2
 						For ly = 3 To width-2
 							GetColor lx,width-ly
@@ -654,7 +655,7 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Rooms)
 										tempf2=Rnd(0.25,0.4)
 										
 										For i = 0 To 3
-											d=CopyEntity(fr\detailMesh[4])
+											Local d% = CopyEntity(fr\detailMesh[4])
 											;ScaleEntity d,tempf2*1.1,tempf2,tempf2*1.1,True
 											RotateEntity d, 0, 90*i+Rnd(-20,20), 0
 											EntityParent(d,detail_entity)
@@ -732,7 +733,7 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Rooms)
 				EntityParent fr\door[i],fr\detailEntities[i]
 				;SetAnimTime fr\door[i], 0
 				
-				frame = CopyEntity(r\objects[2],fr\door[i])
+				Local frame% = CopyEntity(r\objects[2],fr\door[i])
 				PositionEntity frame,0,32.0*RoomScale,0,True
 				ScaleEntity frame,48*RoomScale,45*RoomScale,48*RoomScale,True
 				EntityParent frame,fr\detailEntities[i]
@@ -767,6 +768,7 @@ Function DestroyForest(fr.Forest)
 	If fr\detailEntities[1]<>0 Then FreeEntity fr\detailEntities[1] : fr\detailEntities[1] = 0
 	
 	If fr\forest_Pivot<>0 Then FreeEntity fr\forest_Pivot : fr\forest_Pivot=0
+	Local i%
 	For i%=0 To 3
 		If fr\tileMesh[i]<>0 Then FreeEntity fr\tileMesh[i] : fr\tileMesh[i]=0
 	Next

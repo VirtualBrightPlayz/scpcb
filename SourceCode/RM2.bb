@@ -26,6 +26,7 @@ Const RM2_BLENDFLAG_LM% = 2
 Function ReadByteString$(stream%)
 	Local retVal$ = ""
 	Local length% = ReadByte(stream)
+	Local i%
 	For i% = 1 To length
 		retVal=retVal+Chr(ReadByte(stream))
 	Next
@@ -53,6 +54,7 @@ Function LoadRM2(rt.RoomTemplates)
 	EndIf
 	
 	Local header$ = ""
+	Local i%
 	For i% = 0 To 3
 		header=header+Chr(ReadByte(file))
 	Next
@@ -90,9 +92,10 @@ Function LoadRM2(rt.RoomTemplates)
 	Local vert1%
 	Local vert2%
 	Local vert3%
+	Local j%
 	
 	Local tempScreen.TempScreens
-	Local waypointTemp.TempWaypoints
+	Local waypointTemp.TempWayPoints
 	
 	Local range#
 	Local intensity#
@@ -112,7 +115,7 @@ Function LoadRM2(rt.RoomTemplates)
 	Local xScale#
 	Local yScale#
 	Local zScale#
-	Local prop.props
+    Local prop.Props
 	
 	Local prevType%
 	While Not Eof(file)
@@ -273,7 +276,7 @@ Function LoadRM2(rt.RoomTemplates)
 				;[End Block]
 			Case RM2_WAYPOINT
 				;[Block]
-				waypointTemp = New TempWaypoints
+				waypointTemp = New TempWayPoints
 				waypointTemp\x = ReadFloat(file)
 				waypointTemp\y = ReadFloat(file)
 				waypointTemp\z = ReadFloat(file)
@@ -281,7 +284,7 @@ Function LoadRM2(rt.RoomTemplates)
 					waypointTemp\connectedTo[i] = ReadByte(file)
 					If waypointTemp\connectedTo[i]=0 Then Exit
 				Next
-				waypointTemp\roomTemplate = rt
+				waypointTemp\roomtemplate = rt
 				;did some waypoint-based lifeform just say... ICE
 ;				cuboid% = CreateCube()
 ;				ScaleMesh(cuboid,60.0,60.0,60.0)
@@ -338,8 +341,8 @@ Function LoadRM2(rt.RoomTemplates)
 				
 				lightTemplate\pitch = pitch
 				lightTemplate\yaw = yaw
-				lightTemplate\innerConeAngle = innerConeAngle
-				lightTemplate\innerConeAngle = outerConeAngle
+				lightTemplate\innerconeangle = innerConeAngle
+				lightTemplate\innerconeangle = outerConeAngle
 				;[End Block]
 			Case RM2_SOUNDEMITTER
 				;[Block]
@@ -359,7 +362,7 @@ Function LoadRM2(rt.RoomTemplates)
 						rt\tempSoundEmitter[j]=ambienceInd
 						
 						rt\tempSoundEmitterRange[j]=range
-						temp1i=1
+						;temp1i=1
 						Exit
 					EndIf
 				Next

@@ -18,6 +18,7 @@ Function FillRoom_srvr_096_2(r.Rooms)
     FreeEntity(r\roomDoors[2]\buttons[0]) : r\roomDoors[2]\buttons[0]=0
     FreeEntity(r\roomDoors[2]\buttons[1]) : r\roomDoors[2]\buttons[1]=0
     
+	Local n%
     For n% = 0 To 2
 		r\levers[n] = CreateLever()
         
@@ -69,7 +70,7 @@ End Function
 Function UpdateEvent_srvr_096_2(e.Events)
 	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
 
-	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
+	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams, de.Decals
 
 	Local CurrTrigger$ = ""
 
@@ -179,14 +180,14 @@ Function UpdateEvent_srvr_096_2(e.Events)
 				For i = 0 To 6
 					If e\room\angle = 0 Or e\room\angle = 180 Then
 						de.Decals = CreateDecal(Rand(2,3), e\room\x-Rnd(197,199)*Cos(e\room\angle)*RoomScale, 1.0, e\room\z+(140.0*(i-3))*RoomScale,0,e\room\angle+90,Rnd(360))
-						de\size = Rnd(0.8,0.85) : de\sizechange = 0.001
+						de\size = Rnd(0.8,0.85) : de\sizeChange = 0.001
 						de.Decals = CreateDecal(Rand(2,3), e\room\x-Rnd(197,199)*Cos(e\room\angle)*RoomScale, 1.0, e\room\z+(140.0*(i-3))*RoomScale,0,e\room\angle-90,Rnd(360))
-						de\size = Rnd(0.8,0.85) : de\sizechange = 0.001
+						de\size = Rnd(0.8,0.85) : de\sizeChange = 0.001
 					Else
 						de.Decals = CreateDecal(Rand(2,3), e\room\x+(140.0*(i-3))*RoomScale, 1.0, e\room\z-Rnd(197,199)*Sin(e\room\angle)*RoomScale-Rnd(0.001,0.003),0,e\room\angle+90,Rnd(360))
-						de\size = Rnd(0.8,0.85) : de\sizechange = 0.001
+						de\size = Rnd(0.8,0.85) : de\sizeChange = 0.001
 						de.Decals = CreateDecal(Rand(2,3), e\room\x+(140.0*(i-3))*RoomScale, 1.0, e\room\z-Rnd(197,199)*Sin(e\room\angle)*RoomScale-Rnd(0.001,0.003),0,e\room\angle-90,Rnd(360))
-						de\size = Rnd(0.8,0.85) : de\sizechange = 0.001
+						de\size = Rnd(0.8,0.85) : de\sizeChange = 0.001
 					EndIf
 					de.Decals = CreateDecal(Rand(2,3), EntityX(e\room\npc[0]\collider)+Rnd(-2,2),Rnd(0.001,0.003),EntityZ(e\room\npc[0]\collider)+Rnd(-2,2),90,Rnd(360),0)
 					

@@ -34,9 +34,9 @@ End Function
 
 
 Function UpdateEvent_scp_970_2(e.Events)
-	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
+	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%, tex%
 
-	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
+	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, it2.Items, itt.ItemTemplates, em.Emitters, sc.SecurityCams, sc2.SecurityCams, de.Decals
 
 	Local CurrTrigger$ = ""
 
@@ -248,12 +248,12 @@ Function UpdateEvent_scp_970_2(e.Events)
 					If it\dropped=1 Then
 						For i = - 1 To 1 Step 2
 							TFormPoint x+1024*i,y,z,e\room\obj,0
-							it2.items = CreateItem(it\name, it\itemtemplate\name, TFormedX(), EntityY(it\collider), TFormedZ())
+							it2.Items = CreateItem(it\name, it\itemtemplate\name, TFormedX(), EntityY(it\collider), TFormedZ())
 							RotateEntity(it2\collider, EntityPitch(it\collider),EntityYaw(it\collider),0)
 							EntityType(it2\collider, HIT_ITEM)
 						Next
 					Else
-						For it2.items = Each Items
+						For it2.Items = Each Items
 							If it2<>it And it2\dist < 15.0 Then
 								
 								TFormPoint EntityX(it2\collider),EntityY(it2\collider),EntityZ(it2\collider),0,e\room\obj

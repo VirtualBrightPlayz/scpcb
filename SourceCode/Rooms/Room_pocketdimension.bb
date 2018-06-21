@@ -23,7 +23,7 @@ Function FillRoom_pocketdimension(r.Rooms)
     CreateItem("Burnt Note", "paper", EntityX(r\obj),0.5,EntityZ(r\obj)+3.5)
     
 	Local n%
-    For n = 0 To -1;4
+    For n = 0 To -1;4 ;TODO: wut
 		Local entity%
         Select n
             Case 0
@@ -154,7 +154,7 @@ Function FillRoom_pocketdimension(r.Rooms)
     EntityFX(r\objects[20], 1 + 8)
     SpriteViewMode(r\objects[20], 2)
     
-    FreeTexture t
+    ;FreeTexture t
     FreeEntity hallway
 End Function
 
@@ -162,7 +162,7 @@ End Function
 Function UpdateEvent_pocketdimension(e.Events)
 	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
 
-	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
+	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams, de.Decals
 
 	Local CurrTrigger$ = ""
 
@@ -200,11 +200,11 @@ Function UpdateEvent_pocketdimension(e.Events)
 		EndIf
 		
 		;If Music(3)=0 Then Music(3) = LoadSound("SFX/Music/PD.ogg") ;TODO: fix	
-		If EntityY(mainPlayer\collider)<2000*RoomScale Or e\eventState3=0 Or EntityY(mainPlayer\collider)>2608*RoomScale Then 
-			ShouldPlay = 3
-		Else 
-			ShouldPlay = 0
-		EndIf
+		;If EntityY(mainPlayer\collider)<2000*RoomScale Or e\eventState3=0 Or EntityY(mainPlayer\collider)>2608*RoomScale Then 
+	;		ShouldPlay = 3
+	;	Else 
+	;		ShouldPlay = 0
+	;	EndIf
 		
 		ScaleEntity(e\room\obj,RoomScale, RoomScale*(1.0 + Sin(e\eventState/14.0)*0.2), RoomScale)
 		For i = 0 To 7
@@ -263,7 +263,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 			Else
 				;the trenches
 				If EntityY(mainPlayer\collider)>6.0 Then
-					ShouldPlay = 15
+					;ShouldPlay = 15
 					;If Music(15)=0 Then Music(15) = LoadSound("SFX/Music/PDTrench.ogg") ;TODO: fix
 					
 					CameraFogColor mainPlayer\cam, 38, 55, 47

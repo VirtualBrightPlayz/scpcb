@@ -28,7 +28,7 @@ Function FillRoom_srvr_farm_3(r.Rooms)
     
     r\objects[3] = LoadMesh("GFX/npcs/duck_low_res.b3d")
     ScaleEntity(r\objects[3], 0.07, 0.07, 0.07)
-    tex = LoadTexture("GFX/npcs/duck2.png")
+    Local tex% = LoadTexture("GFX/npcs/duck2.png")
     EntityTexture r\objects[3], tex
     PositionEntity (r\objects[3], r\x + 928.0 * RoomScale, -640*RoomScale, r\z + 704.0 * RoomScale)
     
