@@ -13,12 +13,8 @@ Const MAINMENU_BUTTON_COUNT% = 4
 
 Function UpdateMainMenu()
 	Local x%, y%, width%, height%, temp.MarkedForRemoval
-<<<<<<< HEAD
 	Local n%
 	
-=======
-	Local i%, n%
->>>>>>> fea0877f5c7a59cbb560cdef25b7115cd3f844bb
 	Local mouseHitButton%
 	If CurrGameSubstate = GAMESUBSTATE_MAINMENU_MAIN Then
 		Local i%
