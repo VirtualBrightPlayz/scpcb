@@ -16,11 +16,11 @@ Function FillRoom_lck_tshape_2(r.Rooms)
     PositionEntity (d2\buttons[1], r\x +160.0 * RoomScale, 0.7, r\z - 536.0 * RoomScale, True)
     ;RotateEntity(d2\buttons[1], 0, 90, 0, True)
     
-    r\Objects[0] = CreatePivot()
-    PositionEntity(r\Objects[0], r\x - 832.0 * RoomScale, 0.5, r\z)
-    EntityParent(r\Objects[0], r\obj)
+    r\objects[0] = CreatePivot()
+    PositionEntity(r\objects[0], r\x - 832.0 * RoomScale, 0.5, r\z)
+    EntityParent(r\objects[0], r\obj)
     
-    d2\LinkedDoor = d : d\LinkedDoor = d2
+    d2\linkedDoor = d : d\linkedDoor = d2
     
     d\open = False : d2\open = True
 End Function
@@ -39,10 +39,10 @@ Function UpdateEventRoom2doors173(e.Events)
 
 	;[Block]
 	If mainPlayer\currRoom = e\room Then
-		If e\eventState = 0 And Curr173\Idle = 0 Then
+		If e\eventState = 0 And Curr173\idle = 0 Then
 			If (Not EntityInView(Curr173\obj, mainPlayer\cam)) Then
 				e\eventState = 1
-				PositionEntity(Curr173\collider, EntityX(e\room\Objects[0], True), 0.5, EntityZ(e\room\Objects[0], True))
+				PositionEntity(Curr173\collider, EntityX(e\room\objects[0], True), 0.5, EntityZ(e\room\objects[0], True))
 				ResetEntity(Curr173\collider)
 				RemoveEvent(e)
 			EndIf

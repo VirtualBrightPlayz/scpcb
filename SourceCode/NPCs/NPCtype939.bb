@@ -1,12 +1,12 @@
 Function InitializeNPCtype939(n.NPCs)
     ;i = 53
     ;For n2.NPCs = Each NPCs
-    ;	If (n\npcType = n2\NPCtype) And (n<>n2) Then i=i+36
+    ;	If (n\npcType = n2\npctype) And (n<>n2) Then i=i+36
     ;Next
-    ;n\NVName = "SCP-939-"+i
+    ;n\nVName = "SCP-939-"+i
     Local amount939% = 0
     For n2.NPCs = Each NPCs
-        If (n\npcType = n2\NPCtype) And (n<>n2) Then
+        If (n\npcType = n2\npctype) And (n<>n2) Then
             amount939% = amount939% + 1
         EndIf
     Next
@@ -19,7 +19,7 @@ Function InitializeNPCtype939(n.NPCs)
     EntityRadius n\collider, 0.3
     EntityType n\collider, HIT_PLAYER
     For n2.NPCs = Each NPCs
-        If n\npcType = n2\NPCtype And n<>n2 Then
+        If n\npcType = n2\npctype And n<>n2 Then
             n\obj = CopyEntity (n2\obj)
             Exit
         EndIf
@@ -36,7 +36,7 @@ Function InitializeNPCtype939(n.NPCs)
 End Function
 
 Function UpdateNPCtype939(n.NPCs)
-    If mainPlayer\currRoom\RoomTemplate\name <> "room3storage" Then
+    If mainPlayer\currRoom\roomTemplate\name <> "room3storage" Then
         n\state = 66
     EndIf
     
@@ -50,7 +50,7 @@ Function UpdateNPCtype939(n.NPCs)
             Case 1
                 
                 If n\frame=>644 And n\frame<683 Then ;finish the walking animation
-                    ;n\currSpeed = CurveValue(n\Speed*0.2, n\currSpeed, 10.0)
+                    ;n\currSpeed = CurveValue(n\speed*0.2, n\currSpeed, 10.0)
                     n\currSpeed = CurveValue(n\speed*0.05, n\currSpeed, 10.0)
                     AnimateNPC(n, 644,683,28*n\currSpeed*4,False)
                     If n\frame=>682 Then n\frame =175
@@ -73,7 +73,7 @@ Function UpdateNPCtype939(n.NPCs)
             Case 2
                 n\state2 = Max(n\state2, (n\prevState-3))
                 
-                dist = EntityDistance(n\collider, mainPlayer\currRoom\Objects[n\state2])
+                dist = EntityDistance(n\collider, mainPlayer\currRoom\objects[n\state2])
                 
                 n\currSpeed = CurveValue(n\speed*0.3*Min(dist,1.0), n\currSpeed, 10.0)
                 MoveEntity n\collider, 0,0,n\currSpeed*timing\tickDuration 
@@ -93,13 +93,13 @@ Function UpdateNPCtype939(n.NPCs)
                         EndIf
                         If temp Then
                             If n\sounds[0] <> 0 Then FreeSound n\sounds[0] : n\sounds[0] = 0
-                            n\sounds[0] = LoadSound("SFX/SCP/939/"+(n\ID Mod 3)+"Lure"+Rand(1,10)+".ogg")
+                            n\sounds[0] = LoadSound("SFX/SCP/939/"+(n\iD Mod 3)+"Lure"+Rand(1,10)+".ogg")
                             n\soundChannels[0] = PlayRangedSound(n\sounds[0], mainPlayer\cam, n\collider)
                         EndIf
                     EndIf
                 EndIf
                 
-                PointEntity n\obj, mainPlayer\currRoom\Objects[n\state2]
+                PointEntity n\obj, mainPlayer\currRoom\objects[n\state2]
                 RotateEntity n\collider, 0, CurveAngle(EntityYaw(n\obj),EntityYaw(n\collider),20.0), 0
                 
                 If dist<0.4 Then
@@ -152,8 +152,8 @@ Function UpdateNPCtype939(n.NPCs)
                             If (Not mainPlayer\godMode) Then n\state = 5
                         EndIf								
                     Else
-                        If n\LastSeen = 10*7 Then 
-                            n\currSpeed = CurveValue(n\Speed, n\currSpeed, 20.0)
+                        If n\lastSeen = 10*7 Then 
+                            n\currSpeed = CurveValue(n\speed, n\currSpeed, 20.0)
                             
                             AnimateNPC(n, 449,464,6*n\currSpeed) ;run
                             ;Animate2(n\obj,AnimTime(n\obj),449,464,6*n\currSpeed) ;run
@@ -198,14 +198,14 @@ Function UpdateNPCtype939(n.NPCs)
                 
         End Select
         
-        If n\state < 3 And (Not NoTarget) And (Not n\IgnorePlayer) Then
+        If n\state < 3 And (Not NoTarget) And (Not n\ignorePlayer) Then
             dist = EntityDistance(n\collider, mainPlayer\collider)
             
             If dist < 4.0 Then dist = dist - EntityVisible(mainPlayer\collider, n\collider)
             If mainPlayer\loudness*1.2>dist Or dist < 1.5 Then
                 If n\state3 = 0 Then
                     If n\sounds[0] <> 0 Then FreeSound n\sounds[0] : n\sounds[0] = 0
-                    n\sounds[0] = LoadSound("SFX/SCP/939/"+(n\ID Mod 3)+"Attack"+Rand(1,3)+".ogg")
+                    n\sounds[0] = LoadSound("SFX/SCP/939/"+(n\iD Mod 3)+"Attack"+Rand(1,3)+".ogg")
                     n\soundChannels[0] = PlayRangedSound(n\sounds[0], mainPlayer\cam, n\collider)										
                     
                     PlaySound2(LoadTempSound("SFX/SCP/939/attack.ogg"))
@@ -214,13 +214,13 @@ Function UpdateNPCtype939(n.NPCs)
                 
                 n\state = 3
             ElseIf mainPlayer\loudness*1.6>dist Then
-                If n\state<>1 And n\Reload <= 0 Then
+                If n\state<>1 And n\reload <= 0 Then
                     If n\sounds[0] <> 0 Then FreeSound n\sounds[0] : n\sounds[0] = 0
-                    n\sounds[0] = LoadSound("SFX/SCP/939/"+(n\ID Mod 3)+"Alert"+Rand(1,3)+".ogg")
+                    n\sounds[0] = LoadSound("SFX/SCP/939/"+(n\iD Mod 3)+"Alert"+Rand(1,3)+".ogg")
                     n\soundChannels[0] = PlayRangedSound(n\sounds[0], mainPlayer\cam, n\collider)	
                     
                     n\frame = 175
-                    n\Reload = 70 * 3
+                    n\reload = 70 * 3
                     ;SetAnimTime(n\obj, 175)	
                 EndIf
                 
@@ -228,7 +228,7 @@ Function UpdateNPCtype939(n.NPCs)
                 
             EndIf
             
-            n\Reload = n\Reload - timing\tickDuration
+            n\reload = n\reload - timing\tickDuration
             
         EndIf				
         

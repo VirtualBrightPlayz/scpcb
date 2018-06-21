@@ -6,23 +6,23 @@ Function FillRoom_test_860_2(r.Rooms)
 	Local t1;, Bump	
 
     ;the wooden door
-    r\Objects[2] = LoadMesh("GFX/map/forest/door_frame.b3d")
-    PositionEntity r\Objects[2],r\x + 184.0 * RoomScale,0,r\z,True
-    ScaleEntity r\Objects[2],45.0*RoomScale,45.0*RoomScale,80.0*RoomScale,True
-    EntityParent r\Objects[2],r\obj
+    r\objects[2] = LoadMesh("GFX/map/forest/door_frame.b3d")
+    PositionEntity r\objects[2],r\x + 184.0 * RoomScale,0,r\z,True
+    ScaleEntity r\objects[2],45.0*RoomScale,45.0*RoomScale,80.0*RoomScale,True
+    EntityParent r\objects[2],r\obj
     
-    r\Objects[3] =  LoadMesh("GFX/map/forest/door.b3d")
-    PositionEntity r\Objects[3],r\x + 112.0 * RoomScale,0,r\z+0.05,True
-    EntityType r\Objects[3], HIT_MAP
+    r\objects[3] =  LoadMesh("GFX/map/forest/door.b3d")
+    PositionEntity r\objects[3],r\x + 112.0 * RoomScale,0,r\z+0.05,True
+    EntityType r\objects[3], HIT_MAP
     
-    ScaleEntity r\Objects[3],46.0*RoomScale,45.0*RoomScale,46.0*RoomScale,True
-    EntityParent r\Objects[3],r\obj
+    ScaleEntity r\objects[3],46.0*RoomScale,45.0*RoomScale,46.0*RoomScale,True
+    EntityParent r\objects[3],r\obj
     
-    r\Objects[4] = CopyEntity(r\Objects[3])
-    PositionEntity r\Objects[4],r\x + 256.0 * RoomScale,0,r\z-0.05,True
-    RotateEntity r\Objects[4], 0,180,0
-    ScaleEntity r\Objects[4],46.0*RoomScale,45.0*RoomScale,46.0*RoomScale,True
-    EntityParent r\Objects[4],r\obj
+    r\objects[4] = CopyEntity(r\objects[3])
+    PositionEntity r\objects[4],r\x + 256.0 * RoomScale,0,r\z-0.05,True
+    RotateEntity r\objects[4], 0,180,0
+    ScaleEntity r\objects[4],46.0*RoomScale,45.0*RoomScale,46.0*RoomScale,True
+    EntityParent r\objects[4],r\obj
     
     ;doors to observation booth
     d = CreateDoor(r\zone, r\x + 928.0 * RoomScale,0,r\z + 640.0 * RoomScale,0,r,False,False,False,"ABCD")
@@ -73,7 +73,7 @@ Function UpdateEvent_test_860_2(e.Events)
 			mainPlayer\footstepOverride = 2
 			e\overwriteMusic = True
 			
-			Curr106\Idle = True
+			Curr106\idle = True
 			
 			;ShowEntity fr\detailEntities[0]
 			;ShowEntity fr\detailEntities[1]
@@ -83,15 +83,15 @@ Function UpdateEvent_test_860_2(e.Events)
 			If (Not e\loaded) Then
 				e\musicTrack = MUS_8601
 				;If Music(12) = 0 Then Music(12) = LoadSound("SFX/Music/8601Cancer.ogg") ;TODO: fix
-				If e\room\NPC[0]=Null Then
-					e\room\NPC[0]=CreateNPC(NPCtype860, 0,0,0)
+				If e\room\npc[0]=Null Then
+					e\room\npc[0]=CreateNPC(NPCtype860, 0,0,0)
 				EndIf
 				
 				e\loaded = True
 			EndIf
 			
-			If e\room\NPC[0]<>Null Then
-				If e\room\NPC[0]\state2 = 1 And e\room\NPC[0]\state>1 Then ;the monster is chasing the player
+			If e\room\npc[0]<>Null Then
+				If e\room\npc[0]\state2 = 1 And e\room\npc[0]\state>1 Then ;the monster is chasing the player
 					e\overwriteMusic = False
 					SetNextMusicTrack(MUS_8602, False)
 				Else
@@ -107,20 +107,20 @@ Function UpdateEvent_test_860_2(e.Events)
 				MoveEntity(mainPlayer\collider, 0, ((EntityY(fr\forest_Pivot,True)+0.5) - EntityY(mainPlayer\collider))*timing\tickDuration, 0)
 			EndIf
 			
-			If e\room\NPC[0]<>Null Then
-				If e\room\NPC[0]\state = 0 Or EntityDistance(mainPlayer\collider, e\room\NPC[0]\collider)>12.0 Then
+			If e\room\npc[0]<>Null Then
+				If e\room\npc[0]\state = 0 Or EntityDistance(mainPlayer\collider, e\room\npc[0]\collider)>12.0 Then
 					e\eventState3 = e\eventState3 + (1+mainPlayer\moveSpeed)* timing\tickDuration
 					If (e\eventState3 Mod 500) < 10.0 And ((e\eventState3-timing\tickDuration) Mod 500) > 490.0 Then
 						;If e\eventState3 > 3500 And Rnd(10000)<e\eventState3 Then
 						If e\eventState3 > 3000-(500*SelectedDifficulty\aggressiveNPCs) And Rnd(10000+(500*SelectedDifficulty\aggressiveNPCs)) < e\eventState3 Then
-							e\room\NPC[0]\state=2
-							PositionEntity e\room\NPC[0]\collider, 0,-110,0
+							e\room\npc[0]\state=2
+							PositionEntity e\room\npc[0]\collider, 0,-110,0
 							;e\eventState3=e\eventState3-Rnd(2000,3000)
 							e\eventState3=e\eventState3-Rnd(1000,2000-(500*SelectedDifficulty\aggressiveNPCs))
 							DebugLog "attack"
 						Else
-							e\room\NPC[0]\state=1
-							PositionEntity e\room\NPC[0]\collider, 0,-110,0
+							e\room\npc[0]\state=1
+							PositionEntity e\room\npc[0]\collider, 0,-110,0
 							DebugLog "spawn"
 						EndIf
 					EndIf
@@ -128,8 +128,8 @@ Function UpdateEvent_test_860_2(e.Events)
 			EndIf
 			
 			;If KeyHit(25) Then
-			;	e\room\NPC[0]\state=2
-			;	PositionEntity e\room\NPC[0]\collider, 0,-110,0
+			;	e\room\npc[0]\state=2
+			;	PositionEntity e\room\npc[0]\collider, 0,-110,0
 			;	e\eventState3=e\eventState3-Rnd(2000,3000)
 			;EndIf
 			
@@ -143,13 +143,13 @@ Function UpdateEvent_test_860_2(e.Events)
 								
 								PlaySound2(LoadTempSound("SFX/Door/WoodenDoorOpen.ogg"))
 								
-								RotateEntity e\room\Objects[3], 0, 0, 0
-								RotateEntity e\room\Objects[4], 0, 180, 0
-								;SetAnimTime e\room\Objects[3], 0.0
-								;SetAnimTime e\room\Objects[4], 0.0
+								RotateEntity e\room\objects[3], 0, 0, 0
+								RotateEntity e\room\objects[4], 0, 180, 0
+								;SetAnimTime e\room\objects[3], 0.0
+								;SetAnimTime e\room\objects[4], 0.0
 								
-								;dp.DrawPortal=e\room\dp;Object.DrawPortal(e\room\Objects[0])
-								PositionEntity mainPlayer\collider, EntityX(e\room\Objects[2],True),0.5,EntityZ(e\room\Objects[2],True)
+								;dp.DrawPortal=e\room\dp;Object.DrawPortal(e\room\objects[0])
+								PositionEntity mainPlayer\collider, EntityX(e\room\objects[2],True),0.5,EntityZ(e\room\objects[2],True)
 								
 								RotateEntity mainPlayer\collider, 0, EntityYaw(e\room\obj,True)+e\eventState2*180, 0
 								MoveEntity mainPlayer\collider, 0,0,1.5
@@ -171,8 +171,8 @@ Function UpdateEvent_test_860_2(e.Events)
 				EndIf
 			Next
 			
-			If e\room\NPC[0]<>Null Then
-				x = Max(1.0-(e\room\NPC[0]\state3/300.0),0.1)
+			If e\room\npc[0]<>Null Then
+				x = Max(1.0-(e\room\npc[0]\state3/300.0),0.1)
 			Else
 				x = 2.0
 			EndIf
@@ -184,16 +184,16 @@ Function UpdateEvent_test_860_2(e.Events)
 			
 		Else
 			
-			If (Not Contained106) Then Curr106\Idle = False
+			If (Not Contained106) Then Curr106\idle = False
 			
-			;dp.DrawPortal=e\room\dp;Object.DrawPortal(e\room\Objects[0])
+			;dp.DrawPortal=e\room\dp;Object.DrawPortal(e\room\objects[0])
 			
 			;HideEntity fr\detailEntities[0]
 			;HideEntity fr\detailEntities[1]
 			
-			If EntityYaw(e\room\Objects[3])=0.0 Then
+			If EntityYaw(e\room\objects[3])=0.0 Then
 				HideEntity fr.Forest\forest_Pivot
-				If (Abs(Distance(EntityX(e\room\Objects[3],True),EntityZ(e\room\Objects[3],True),EntityX(mainPlayer\collider,True),EntityZ(mainPlayer\collider,True)))<1.0) Then
+				If (Abs(Distance(EntityX(e\room\objects[3],True),EntityZ(e\room\objects[3],True),EntityX(mainPlayer\collider,True),EntityZ(mainPlayer\collider,True)))<1.0) Then
 					DrawHandIcon = True
 					
 					If mainPlayer\selectedItem = Null Then
@@ -237,8 +237,8 @@ Function UpdateEvent_test_860_2(e.Events)
 							
 							
 							
-							;RotateEntity e\room\Objects[3], 0, 0.5, 0
-							;RotateEntity e\room\Objects[3], 0, 359.5, 0
+							;RotateEntity e\room\objects[3], 0, 0.5, 0
+							;RotateEntity e\room\objects[3], 0, 359.5, 0
 						EndIf
 					EndIf
 				EndIf
@@ -320,7 +320,7 @@ Function turn_if_deviating%(max_deviation_distance_%,pathx%,center_%,dir%,retval
 End Function
 
 Function GenForestGrid(fr.Forest)
-	fr\ID=LastForestID+1
+	fr\iD=LastForestID+1
 	LastForestID=LastForestID+1
 	
 	Local door1_pos%,door2_pos%
@@ -497,13 +497,13 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Rooms)
 	
 	If fr\forest_Pivot<>0 Then FreeEntity fr\forest_Pivot : fr\forest_Pivot=0
 	For i%=0 To 3
-		If fr\TileMesh[i]<>0 Then FreeEntity fr\TileMesh[i] : fr\TileMesh[i]=0
+		If fr\tileMesh[i]<>0 Then FreeEntity fr\tileMesh[i] : fr\tileMesh[i]=0
 	Next
 	For i%=0 To 4
 		If fr\detailMesh[i]<>0 Then FreeEntity fr\detailMesh[i] : fr\detailMesh[i]=0
 	Next
 	For i%=0 To 9
-		If fr\TileTexture[i]<>0 Then FreeEntity fr\TileTexture[i] : fr\TileTexture[i]=0
+		If fr\tileTexture[i]<>0 Then FreeEntity fr\tileTexture[i] : fr\tileTexture[i]=0
 	Next
 	
 	fr\forest_Pivot=CreatePivot()
@@ -535,7 +535,7 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Rooms)
 	For i = ROOM1 To ROOM4
 		;TextureBlend mask[i], FE_ALPHAMODULATE
 		
-		fr\TileMesh[i]=load_terrain(hmap[i],0.03,GroundTexture,PathTexture,mask[i])
+		fr\tileMesh[i]=load_terrain(hmap[i],0.03,GroundTexture,PathTexture,mask[i])
 	Next
 	
 	;detail meshes
@@ -549,13 +549,13 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Rooms)
 	fr\detailMesh[5]=LoadMesh("GFX/map/forest/wall.b3d")
 	
 	For i%=ROOM1 To ROOM4
-		HideEntity fr\TileMesh[i]
+		HideEntity fr\tileMesh[i]
 	Next
 	For i%=1 To 5
 		HideEntity fr\detailMesh[i]
 	Next
 	
-	tempf3=MeshWidth(fr\TileMesh[ROOM1])
+	tempf3=MeshWidth(fr\tileMesh[ROOM1])
 	tempf1=tile_size/tempf3
 	
 	For tx%=1 To gridsize-1
@@ -574,7 +574,7 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Rooms)
 				Local angle%=0
 				Select tile_type
 					Case 1
-						tile_entity = CopyEntity(fr\TileMesh[ROOM1])
+						tile_entity = CopyEntity(fr\tileMesh[ROOM1])
 						
 						If fr\grid[((ty+1)*gridsize)+tx]>0 Then
 							angle = 180
@@ -587,14 +587,14 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Rooms)
 						tile_type = ROOM1
 					Case 2
 						If fr\grid[((ty-1)*gridsize)+tx]>0 And fr\grid[((ty+1)*gridsize)+tx]>0 Then
-							tile_entity = CopyEntity(fr\TileMesh[ROOM2])
+							tile_entity = CopyEntity(fr\tileMesh[ROOM2])
 							tile_type = ROOM2
 						ElseIf fr\grid[(ty*gridsize)+tx+1]>0 And fr\grid[(ty*gridsize)+tx-1]>0 Then
-							tile_entity = CopyEntity(fr\TileMesh[ROOM2])
+							tile_entity = CopyEntity(fr\tileMesh[ROOM2])
 							angle = 90
 							tile_type = ROOM2
 						Else
-							tile_entity = CopyEntity(fr\TileMesh[ROOM2C])
+							tile_entity = CopyEntity(fr\tileMesh[ROOM2C])
 							If fr\grid[(ty*gridsize)+tx-1]>0 And fr\grid[((ty+1)*gridsize)+tx]>0 Then
 								angle = 180
 							ElseIf fr\grid[(ty*gridsize)+tx+1]>0 And fr\grid[((ty-1)*gridsize)+tx]>0 Then
@@ -607,7 +607,7 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Rooms)
 							tile_type = ROOM2C
 						EndIf
 					Case 3
-						tile_entity = CopyEntity(fr\TileMesh[ROOM3])
+						tile_entity = CopyEntity(fr\tileMesh[ROOM3])
 						
 						If fr\grid[((ty-1)*gridsize)+tx]=0 Then
 							angle = 180
@@ -619,7 +619,7 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Rooms)
 						
 						tile_type = ROOM3
 					Case 4
-						tile_entity = CopyEntity(fr\TileMesh[ROOM4])	
+						tile_entity = CopyEntity(fr\tileMesh[ROOM4])	
 						tile_type = ROOM4
 					Default 
 						DebugLog "tile_type: "+tile_type
@@ -707,7 +707,7 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Rooms)
 					
 					If it<>Null Then EntityParent it\collider,0
 					
-					fr\TileEntities[tx+(ty*gridsize)] = tile_entity
+					fr\tileEntities[tx+(ty*gridsize)] = tile_entity
 				Else
 					DebugLog "INVALID TILE @ ("+tx+", "+ty+ "): "+tile_type
 				EndIf
@@ -725,14 +725,14 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Rooms)
 				fr\detailEntities[i]=CopyEntity(fr\detailMesh[5])
 				ScaleEntity fr\detailEntities[i],RoomScale,RoomScale,RoomScale
 				
-				fr\door[i] = CopyEntity(r\Objects[3])
+				fr\door[i] = CopyEntity(r\objects[3])
 				PositionEntity fr\door[i],72*RoomScale,32.0*RoomScale,0,True
 				RotateEntity fr\door[i], 0,180,0
 				ScaleEntity fr\door[i],48*RoomScale,45*RoomScale,48*RoomScale,True
 				EntityParent fr\door[i],fr\detailEntities[i]
 				;SetAnimTime fr\door[i], 0
 				
-				frame = CopyEntity(r\Objects[2],fr\door[i])
+				frame = CopyEntity(r\objects[2],fr\door[i])
 				PositionEntity frame,0,32.0*RoomScale,0,True
 				ScaleEntity frame,48*RoomScale,45*RoomScale,48*RoomScale,True
 				EntityParent frame,fr\detailEntities[i]
@@ -754,9 +754,9 @@ Function DestroyForest(fr.Forest)
 	Local tx%,ty%
 	For tx% = 0 To gridsize-1
 		For ty% = 0 To gridsize-1
-			If fr\TileEntities[tx+(ty*gridsize)]<>0 Then
-				FreeEntity fr\TileEntities[tx+(ty*gridsize)]
-				fr\TileEntities[tx+(ty*gridsize)] = 0
+			If fr\tileEntities[tx+(ty*gridsize)]<>0 Then
+				FreeEntity fr\tileEntities[tx+(ty*gridsize)]
+				fr\tileEntities[tx+(ty*gridsize)] = 0
 				fr\grid[tx+(ty*gridsize)] = 0
 			EndIf
 		Next
@@ -768,13 +768,13 @@ Function DestroyForest(fr.Forest)
 	
 	If fr\forest_Pivot<>0 Then FreeEntity fr\forest_Pivot : fr\forest_Pivot=0
 	For i%=0 To 3
-		If fr\TileMesh[i]<>0 Then FreeEntity fr\TileMesh[i] : fr\TileMesh[i]=0
+		If fr\tileMesh[i]<>0 Then FreeEntity fr\tileMesh[i] : fr\tileMesh[i]=0
 	Next
 	For i%=0 To 4
 		If fr\detailMesh[i]<>0 Then FreeEntity fr\detailMesh[i] : fr\detailMesh[i]=0
 	Next
 	For i%=0 To 9
-		If fr\TileTexture[i]<>0 Then FreeEntity fr\TileTexture[i] : fr\TileTexture[i]=0
+		If fr\tileTexture[i]<>0 Then FreeEntity fr\tileTexture[i] : fr\tileTexture[i]=0
 	Next
 	
 	;Delete fr
@@ -787,15 +787,15 @@ Function UpdateForest(fr.Forest,ent%)
 	If Abs(EntityY(ent,True)-EntityY(fr\forest_Pivot,True))<12.0 Then
 		For tx% = 0 To gridsize-1
 			For ty% = 0 To gridsize-1
-				If fr\TileEntities[tx+(ty*gridsize)]<>0 Then
-					If Abs(EntityX(ent,True)-EntityX(fr\TileEntities[tx+(ty*gridsize)],True))<20.0 Then
-						If Abs(EntityZ(ent,True)-EntityZ(fr\TileEntities[tx+(ty*gridsize)],True))<20.0 Then
-							ShowEntity fr\TileEntities[tx+(ty*gridsize)]
+				If fr\tileEntities[tx+(ty*gridsize)]<>0 Then
+					If Abs(EntityX(ent,True)-EntityX(fr\tileEntities[tx+(ty*gridsize)],True))<20.0 Then
+						If Abs(EntityZ(ent,True)-EntityZ(fr\tileEntities[tx+(ty*gridsize)],True))<20.0 Then
+							ShowEntity fr\tileEntities[tx+(ty*gridsize)]
 						Else
-							HideEntity fr\TileEntities[tx+(ty*gridsize)]
+							HideEntity fr\tileEntities[tx+(ty*gridsize)]
 						EndIf
 					Else
-						HideEntity fr\TileEntities[tx+(ty*gridsize)]
+						HideEntity fr\tileEntities[tx+(ty*gridsize)]
 					EndIf
 				EndIf
 			Next

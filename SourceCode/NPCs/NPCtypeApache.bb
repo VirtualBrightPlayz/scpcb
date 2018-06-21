@@ -40,7 +40,7 @@ Function InitializeNPCtypeApache(n.NPCs)
     
     For i = -1 To 1 Step 2
         Local Light1 = CreateLight(2,n\obj)
-        ;room\LightDist[i] = range
+        ;room\lightDist[i] = range
         LightRange(Light1,2.0)
         LightColor(Light1,255,255,255)
         PositionEntity(Light1, 1.65*i, 1.17, -0.25)
@@ -60,8 +60,8 @@ End Function
 Function UpdateNPCtypeApache(n.NPCs)
     Local dist# = EntityDistance(mainPlayer\collider, n\collider)
     If dist<60.0 Then 
-        If mainPlayer\currRoom\RoomTemplate\name = "exit1" Then 
-            dist2 = Max(Min(EntityDistance(n\collider, mainPlayer\currRoom\Objects[3])/(8000.0*RoomScale),1.0),0.0)
+        If mainPlayer\currRoom\roomTemplate\name = "exit1" Then 
+            dist2 = Max(Min(EntityDistance(n\collider, mainPlayer\currRoom\objects[3])/(8000.0*RoomScale),1.0),0.0)
         Else 
             dist2 = 1.0
         EndIf
@@ -133,7 +133,7 @@ Function UpdateNPCtypeApache(n.NPCs)
                         If n\pathStatus = 1 Then ;player visible
                             RotateEntity n\collider, EntityPitch(n\collider), EntityYaw(n\collider), CurveAngle(0, EntityRoll(n\collider),40), True
                             
-                            If n\Reload =< 0 Then
+                            If n\reload =< 0 Then
                                 If dist<20.0 Then
                                     pvt = CreatePivot()
                                     
@@ -149,7 +149,7 @@ Function UpdateNPCtypeApache(n.NPCs)
                                         
                                         Shoot( EntityX(pvt),EntityY(pvt), EntityZ(pvt),((10/dist)*(1/dist))*(n\state=2),(n\state=2))
                                         
-                                        n\Reload = 5
+                                        n\reload = 5
                                     EndIf
                                     
                                     FreeEntity pvt
@@ -160,7 +160,7 @@ Function UpdateNPCtypeApache(n.NPCs)
                         EndIf
                         MoveEntity n\collider, -EntityRoll(n\collider)*0.002,0,0
                         
-                        n\Reload=n\Reload-timing\tickDuration
+                        n\reload=n\reload-timing\tickDuration
                         
                         
                     EndIf

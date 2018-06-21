@@ -286,7 +286,7 @@ Function PlayRangedSound%(soundHandle%, cam%, entity%, range# = 10, volume# = 1.
 			Local panvalue# = Sin(-DeltaYaw(cam, entity))
 			soundChn = PlaySound(soundHandle)
 			
-			ChannelVolume(soundChn, volume * (1 - dist) * userOptions\SoundVolume)
+			ChannelVolume(soundChn, volume * (1 - dist) * userOptions\soundVolume)
 			ChannelPan(soundChn, panvalue)
 		EndIf
 	EndIf
@@ -334,7 +334,7 @@ Function UpdateRangedSoundOrigin(chn%, cam%, entity%, range# = 10, volume# = 1.0
 		If (1 - dist > 0 And 1 - dist < 1) Then
 			Local panvalue# = Sin(-DeltaYaw(cam,entity))
 			
-			ChannelVolume(chn, volume * (1 - dist) * userOptions\SoundVolume)
+			ChannelVolume(chn, volume * (1 - dist) * userOptions\soundVolume)
 			ChannelPan(chn, panvalue)
 		EndIf
 	Else
@@ -350,7 +350,7 @@ Function UpdateRangedSoundOrigin_SM(chn.SoundChannel)
 		If (1 - dist > 0 And 1 - dist < 1) Then
 			Local panvalue# = Sin(-DeltaYaw(chn\camera, chn\point))
 			
-			ChannelVolume(chn\internal, chn\volume * (1 - dist) * userOptions\SoundVolume)
+			ChannelVolume(chn\internal, chn\volume * (1 - dist) * userOptions\soundVolume)
 			ChannelPan(chn\internal, panvalue)
 		EndIf
 	Else
@@ -397,8 +397,8 @@ Function PauseSounds()
 	Next
 	
 	For r = Each Rooms
-		If (IsChannelPlaying(r\SoundCHN)) Then
-			PauseChannel(r\SoundCHN)
+		If (IsChannelPlaying(r\soundCHN)) Then
+			PauseChannel(r\soundCHN)
 		EndIf
 	Next
 
@@ -445,8 +445,8 @@ Function ResumeSounds()
 	Next
 	
 	For r = Each Rooms
-		If (IsChannelPlaying(r\SoundCHN)) Then
-			ResumeChannel(r\SoundCHN)
+		If (IsChannelPlaying(r\soundCHN)) Then
+			ResumeChannel(r\soundCHN)
 		EndIf
 	Next
 
@@ -493,9 +493,9 @@ Function GetMaterialStepSound(entity%)
                 If (name <> "") Then FreeTexture(texture)
                 For mat.Materials = Each Materials
                     If mat\name = name Then
-                        If mat\StepSound > 0 Then
+                        If mat\stepSound > 0 Then
                             FreeBrush(brush)
-                            Return mat\StepSound
+                            Return mat\stepSound
                         EndIf
                         Exit
                     EndIf
@@ -508,8 +508,8 @@ Function GetMaterialStepSound(entity%)
                 FreeBrush(brush)
                 For mat.Materials = Each Materials
                     If mat\name = name Then
-                        If mat\StepSound > 0 Then
-                            Return mat\StepSound
+                        If mat\stepSound > 0 Then
+                            Return mat\stepSound
                         EndIf
                         Exit
                     EndIf

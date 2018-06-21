@@ -8,61 +8,61 @@ Function FillRoom_srvr_096_2(r.Rooms)
     d.Doors = CreateDoor(0, r\x,0,r\z, 0, r, False, 2, False)
     d\locked = True
     
-    r\RoomDoors[0] = CreateDoor(r\zone, r\x - 208.0 * RoomScale, 0.0, r\z - 736.0 * RoomScale, 90, r, True, False)
-    r\RoomDoors[0]\autoClose=False
-    r\RoomDoors[1] = CreateDoor(r\zone, r\x - 208.0 * RoomScale, 0.0, r\z + 736.0 * RoomScale, 90, r, True, False)
-    r\RoomDoors[1]\autoClose=False
+    r\roomDoors[0] = CreateDoor(r\zone, r\x - 208.0 * RoomScale, 0.0, r\z - 736.0 * RoomScale, 90, r, True, False)
+    r\roomDoors[0]\autoClose=False
+    r\roomDoors[1] = CreateDoor(r\zone, r\x - 208.0 * RoomScale, 0.0, r\z + 736.0 * RoomScale, 90, r, True, False)
+    r\roomDoors[1]\autoClose=False
     
-    r\RoomDoors[2] = CreateDoor(r\zone, r\x - 672.0 * RoomScale, 0.0, r\z - 1024.0 * RoomScale, 0, r, False, False, False, "GEAR")
-    r\RoomDoors[2]\autoClose=False
-    FreeEntity(r\RoomDoors[2]\buttons[0]) : r\RoomDoors[2]\buttons[0]=0
-    FreeEntity(r\RoomDoors[2]\buttons[1]) : r\RoomDoors[2]\buttons[1]=0
+    r\roomDoors[2] = CreateDoor(r\zone, r\x - 672.0 * RoomScale, 0.0, r\z - 1024.0 * RoomScale, 0, r, False, False, False, "GEAR")
+    r\roomDoors[2]\autoClose=False
+    FreeEntity(r\roomDoors[2]\buttons[0]) : r\roomDoors[2]\buttons[0]=0
+    FreeEntity(r\roomDoors[2]\buttons[1]) : r\roomDoors[2]\buttons[1]=0
     
     For n% = 0 To 2
-		r\Levers[n] = CreateLever()
+		r\levers[n] = CreateLever()
         
-		ScaleEntity(r\Levers[n]\obj, 0.03, 0.03, 0.03)
-		ScaleEntity(r\Levers[n]\baseObj, 0.03, 0.03, 0.03)
+		ScaleEntity(r\levers[n]\obj, 0.03, 0.03, 0.03)
+		ScaleEntity(r\levers[n]\baseObj, 0.03, 0.03, 0.03)
 		
 		Select n
 			Case 0 ;power switch
-				PositionEntity (r\Levers[n]\obj, r\x - 1260.0 * RoomScale, r\y + 234.0 * RoomScale, r\z + 750 * RoomScale, True)
-				PositionEntity (r\Levers[n]\baseObj, r\x - 1260.0 * RoomScale, r\y + 234.0 * RoomScale, r\z + 750 * RoomScale, True)	
+				PositionEntity (r\levers[n]\obj, r\x - 1260.0 * RoomScale, r\y + 234.0 * RoomScale, r\z + 750 * RoomScale, True)
+				PositionEntity (r\levers[n]\baseObj, r\x - 1260.0 * RoomScale, r\y + 234.0 * RoomScale, r\z + 750 * RoomScale, True)	
 			Case 1 ;generator fuel pump
-				PositionEntity (r\Levers[n]\obj, r\x - 920.0 * RoomScale, r\y + 164.0 * RoomScale, r\z + 898 * RoomScale, True)
-				PositionEntity (r\Levers[n]\baseObj, r\x - 920.0 * RoomScale, r\y + 164.0 * RoomScale, r\z + 898 * RoomScale, True)
+				PositionEntity (r\levers[n]\obj, r\x - 920.0 * RoomScale, r\y + 164.0 * RoomScale, r\z + 898 * RoomScale, True)
+				PositionEntity (r\levers[n]\baseObj, r\x - 920.0 * RoomScale, r\y + 164.0 * RoomScale, r\z + 898 * RoomScale, True)
 			Case 2 ;generator on/off
-				PositionEntity (r\Levers[n]\obj, r\x - 837.0 * RoomScale, r\y + 152.0 * RoomScale, r\z + 886 * RoomScale, True)
-				PositionEntity (r\Levers[n]\baseObj, r\x - 837.0 * RoomScale, r\y + 152.0 * RoomScale, r\z + 886 * RoomScale, True)
+				PositionEntity (r\levers[n]\obj, r\x - 837.0 * RoomScale, r\y + 152.0 * RoomScale, r\z + 886 * RoomScale, True)
+				PositionEntity (r\levers[n]\baseObj, r\x - 837.0 * RoomScale, r\y + 152.0 * RoomScale, r\z + 886 * RoomScale, True)
 		End Select
 		
-		EntityParent(r\Levers[n]\obj, r\obj)
-		EntityParent(r\Levers[n]\baseObj, r\obj)
+		EntityParent(r\levers[n]\obj, r\obj)
+		EntityParent(r\levers[n]\baseObj, r\obj)
 
-        ;RotateEntity(r\Objects[n * 2], 0, -90, 0)
-        RotateEntity(r\Levers[n]\obj, 81, -180, 0)
+        ;RotateEntity(r\objects[n * 2], 0, -90, 0)
+        RotateEntity(r\levers[n]\obj, 81, -180, 0)
         
-        ;EntityPickMode(r\Levers[n]\obj, 2)
-        EntityPickMode r\Levers[n]\obj, 1, False
-        EntityRadius r\Levers[n]\obj, 0.1
-        ;makecollbox(r\Levers[n]\obj)
+        ;EntityPickMode(r\levers[n]\obj, 2)
+        EntityPickMode r\levers[n]\obj, 1, False
+        EntityRadius r\levers[n]\obj, 0.1
+        ;makecollbox(r\levers[n]\obj)
     Next
     
-    RotateEntity(r\Levers[1]\obj, -81, -180, 0)
-    RotateEntity(r\Levers[2]\obj, -81, -180, 0)
+    RotateEntity(r\levers[1]\obj, -81, -180, 0)
+    RotateEntity(r\levers[2]\obj, -81, -180, 0)
     
     ;096 spawnpoint
-    r\Objects[6]=CreatePivot(r\obj)
-    PositionEntity(r\Objects[6], r\x - 848*RoomScale, 0.5, r\z-576*RoomScale, True)
+    r\objects[6]=CreatePivot(r\obj)
+    PositionEntity(r\objects[6], r\x - 848*RoomScale, 0.5, r\z-576*RoomScale, True)
     ;guard spawnpoint
-    r\Objects[7]=CreatePivot(r\obj)
-    PositionEntity(r\Objects[7], r\x - 1328.0 * RoomScale, 0.5, r\z + 528*RoomScale, True)
+    r\objects[7]=CreatePivot(r\obj)
+    PositionEntity(r\objects[7], r\x - 1328.0 * RoomScale, 0.5, r\z + 528*RoomScale, True)
     ;the point where the guard walks to
-    r\Objects[8]=CreatePivot(r\obj)
-    PositionEntity(r\Objects[8], r\x - 1376.0 * RoomScale, 0.5, r\z + 32*RoomScale, True)
+    r\objects[8]=CreatePivot(r\obj)
+    PositionEntity(r\objects[8], r\x - 1376.0 * RoomScale, 0.5, r\z + 32*RoomScale, True)
     
-    r\Objects[9]=CreatePivot(r\obj)
-    PositionEntity(r\Objects[9], r\x - 848*RoomScale, 0.5, r\z+576*RoomScale, True)
+    r\objects[9]=CreatePivot(r\obj)
+    PositionEntity(r\objects[9], r\x - 848*RoomScale, 0.5, r\z+576*RoomScale, True)
 End Function
 
 
@@ -81,15 +81,15 @@ Function UpdateEvent_srvr_096_2(e.Events)
 	If e\eventState=0 Then
 		If mainPlayer\currRoom = e\room Then
 		 ;close the doors when the player enters the room
-			UseDoor(e\room\RoomDoors[0],False)
-			e\room\RoomDoors[0]\locked = True
-			UseDoor(e\room\RoomDoors[1],False)
-			e\room\RoomDoors[1]\locked = True
+			UseDoor(e\room\roomDoors[0],False)
+			e\room\roomDoors[0]\locked = True
+			UseDoor(e\room\roomDoors[1],False)
+			e\room\roomDoors[1]\locked = True
 			
 			If Curr096=Null Then
-				Curr096 = CreateNPC(NPCtype096, EntityX(e\room\Objects[6],True),EntityY(e\room\Objects[6],True)+0.1,EntityZ(e\room\Objects[6],True))
+				Curr096 = CreateNPC(NPCtype096, EntityX(e\room\objects[6],True),EntityY(e\room\objects[6],True)+0.1,EntityZ(e\room\objects[6],True))
 			Else
-				PositionEntity Curr096\collider, EntityX(e\room\Objects[6],True),EntityY(e\room\Objects[6],True)+0.1,EntityZ(e\room\Objects[6],True),True
+				PositionEntity Curr096\collider, EntityX(e\room\objects[6],True),EntityY(e\room\objects[6],True)+0.1,EntityZ(e\room\objects[6],True),True
 			EndIf
 			
 			RotateEntity Curr096\collider, 0, e\room\angle, 0, True
@@ -100,7 +100,7 @@ Function UpdateEvent_srvr_096_2(e.Events)
 			LoadEventSound(e,"SFX/Character/Guard/096ServerRoom1.ogg")
 			e\soundChannels[0] = PlaySound(e\sounds[0])
 			
-			e\room\NPC[0]=CreateNPC(NPCtypeGuard, EntityX(e\room\Objects[7],True),EntityY(e\room\Objects[7],True),EntityZ(e\room\Objects[7],True))
+			e\room\npc[0]=CreateNPC(NPCtypeGuard, EntityX(e\room\objects[7],True),EntityY(e\room\objects[7],True),EntityZ(e\room\objects[7],True))
 			
 			e\eventState=1
 		EndIf
@@ -112,7 +112,7 @@ Function UpdateEvent_srvr_096_2(e.Events)
 		
 		e\eventState=Min(e\eventState+timing\tickDuration,70*43)
 		
-		If e\room\NPC[0]<>Null Then
+		If e\room\npc[0]<>Null Then
 			If e\eventState < 70*13 Then
 				
 				If e\eventState > 70*8 Then
@@ -120,55 +120,55 @@ Function UpdateEvent_srvr_096_2(e.Events)
 					Curr096\state2=70*10
 				Else
 					Curr096\state = 5
-					PointEntity Curr096\collider, e\room\Objects[9]
+					PointEntity Curr096\collider, e\room\objects[9]
 					RotateEntity Curr096\collider, 0, EntityYaw(Curr096\collider,True),0,True								
-					If EntityDistance(Curr096\collider, e\room\Objects[8])<2.4 Then
+					If EntityDistance(Curr096\collider, e\room\objects[8])<2.4 Then
 						Curr096\state2 = 0
 					Else
 						Curr096\state2 = 1001
 					EndIf	
 				EndIf
 				
-				e\room\NPC[0]\state=8
-				SetAnimTime e\room\NPC[0]\obj, 115
-				PointEntity e\room\NPC[0]\collider, Curr096\collider								
+				e\room\npc[0]\state=8
+				SetAnimTime e\room\npc[0]\obj, 115
+				PointEntity e\room\npc[0]\collider, Curr096\collider								
 			ElseIf e\eventState-timing\tickDuration =< 70*15 Then ;walk to the doorway
 				If e\eventState > 70*15 Then
-					e\room\NPC[0]\state=3
-					e\room\NPC[0]\PathStatus = FindPath(e\room\NPC[0], EntityX(e\room\Objects[8],True),0.5,EntityZ(e\room\Objects[8],True))
-					e\room\NPC[0]\PathTimer=300
+					e\room\npc[0]\state=3
+					e\room\npc[0]\pathStatus = FindPath(e\room\npc[0], EntityX(e\room\objects[8],True),0.5,EntityZ(e\room\objects[8],True))
+					e\room\npc[0]\pathTimer=300
 				EndIf
 			ElseIf e\eventState<70*20 Then
-				If e\room\NPC[0]\PathStatus=0 Then  
-					e\room\RoomDoors[2]\open = False
+				If e\room\npc[0]\pathStatus=0 Then  
+					e\room\roomDoors[2]\open = False
 					
-					e\room\NPC[0]\state=7
-					;SetAnimTime e\room\NPC[0]\obj, 115
-					PointEntity e\room\NPC[0]\obj, Curr096\collider
-					RotateEntity (e\room\NPC[0]\collider, 0, CurveAngle(EntityYaw(e\room\NPC[0]\obj),EntityYaw(e\room\NPC[0]\collider),30),0)
+					e\room\npc[0]\state=7
+					;SetAnimTime e\room\npc[0]\obj, 115
+					PointEntity e\room\npc[0]\obj, Curr096\collider
+					RotateEntity (e\room\npc[0]\collider, 0, CurveAngle(EntityYaw(e\room\npc[0]\obj),EntityYaw(e\room\npc[0]\collider),30),0)
 					
 				EndIf
 			Else ;start walking away
 				
 				If Curr096\state = 4 Then ;shoot at 096 when it starts attacking
-					Curr096\LastSeen=1
+					Curr096\lastSeen=1
 					
-					e\room\NPC[0]\state = 2
-					PointEntity e\room\NPC[0]\obj, Curr096\collider
-					RotateEntity (e\room\NPC[0]\collider, 0, CurveAngle(EntityYaw(e\room\NPC[0]\obj),EntityYaw(e\room\NPC[0]\collider),30),0)
-					;If mainPlayer\currRoom = e\room Then LightBlink = (e\room\NPC[0]\Reload)+Rnd(0.5,2.0)
-					Curr096\Target = e\room\NPC[0]
+					e\room\npc[0]\state = 2
+					PointEntity e\room\npc[0]\obj, Curr096\collider
+					RotateEntity (e\room\npc[0]\collider, 0, CurveAngle(EntityYaw(e\room\npc[0]\obj),EntityYaw(e\room\npc[0]\collider),30),0)
+					;If mainPlayer\currRoom = e\room Then LightBlink = (e\room\npc[0]\reload)+Rnd(0.5,2.0)
+					Curr096\target = e\room\npc[0]
 				Else
 					If e\eventState>70*22 Then Curr096\state = 4
-					If e\room\NPC[0]\state=7 Then
-						e\room\NPC[0]\state=3
-						e\room\NPC[0]\PathStatus = FindPath(e\room\NPC[0], EntityX(e\room\obj,True),0.4,EntityZ(e\room\obj,True))
-						e\room\NPC[0]\PathTimer=300
+					If e\room\npc[0]\state=7 Then
+						e\room\npc[0]\state=3
+						e\room\npc[0]\pathStatus = FindPath(e\room\npc[0], EntityX(e\room\obj,True),0.4,EntityZ(e\room\obj,True))
+						e\room\npc[0]\pathTimer=300
 					EndIf
 				EndIf
 			EndIf
 			
-			Curr096\Target = e\room\NPC[0]
+			Curr096\target = e\room\npc[0]
 			If AnimTime(Curr096\obj)>25 And AnimTime(Curr096\obj)<150 Then
 				FreeSound e\sounds[0] : e\sounds[0] = 0
 				e\sounds[0]=LoadSound("SFX/Character/Guard/096ServerRoom2.ogg")
@@ -188,28 +188,28 @@ Function UpdateEvent_srvr_096_2(e.Events)
 						de.Decals = CreateDecal(Rand(2,3), e\room\x+(140.0*(i-3))*RoomScale, 1.0, e\room\z-Rnd(197,199)*Sin(e\room\angle)*RoomScale-Rnd(0.001,0.003),0,e\room\angle-90,Rnd(360))
 						de\size = Rnd(0.8,0.85) : de\sizechange = 0.001
 					EndIf
-					de.Decals = CreateDecal(Rand(2,3), EntityX(e\room\NPC[0]\collider)+Rnd(-2,2),Rnd(0.001,0.003),EntityZ(e\room\NPC[0]\collider)+Rnd(-2,2),90,Rnd(360),0)
+					de.Decals = CreateDecal(Rand(2,3), EntityX(e\room\npc[0]\collider)+Rnd(-2,2),Rnd(0.001,0.003),EntityZ(e\room\npc[0]\collider)+Rnd(-2,2),90,Rnd(360),0)
 					
 				Next
-				de\Size = Rnd(0.5,0.7)
-				ScaleSprite(de\obj, de\Size,de\Size)
+				de\size = Rnd(0.5,0.7)
+				ScaleSprite(de\obj, de\size,de\size)
 				
 				Curr096\state=5
 				
-				RemoveNPC(e\room\NPC[0])
-				e\room\NPC[0]=Null
+				RemoveNPC(e\room\npc[0])
+				e\room\npc[0]=Null
 				
 			EndIf
 		Else
 			
 			If e\eventState >= 70*40 And e\eventState-timing\tickDuration < 70*40 Then ;open them again to let the player in
-				e\room\RoomDoors[0]\locked=False
-				e\room\RoomDoors[1]\locked=False
-				UseDoor(e\room\RoomDoors[0],False)
-				UseDoor(e\room\RoomDoors[1],False)
+				e\room\roomDoors[0]\locked=False
+				e\room\roomDoors[1]\locked=False
+				UseDoor(e\room\roomDoors[0],False)
+				UseDoor(e\room\roomDoors[1],False)
 				FreeSound e\sounds[0] : e\sounds[0] = 0
-				e\room\RoomDoors[0]\locked=True
-				e\room\RoomDoors[1]\locked=True
+				e\room\roomDoors[0]\locked=True
+				e\room\roomDoors[1]\locked=True
 			EndIf
 			
 			If mainPlayer\currRoom = e\room Then
@@ -236,9 +236,9 @@ Function UpdateEvent_srvr_096_2(e.Events)
 		EndIf
 		
 	ElseIf mainPlayer\currRoom = e\room Then
-		temp = e\room\Levers[0]\succ ;power switch
-		x = e\room\Levers[1]\succ ;fuel pump
-		z = e\room\Levers[2]\succ ;generator
+		temp = e\room\levers[0]\succ ;power switch
+		x = e\room\levers[1]\succ ;fuel pump
+		z = e\room\levers[2]\succ ;generator
 		
 		;fuel pump on
 		If x Then
@@ -256,25 +256,25 @@ Function UpdateEvent_srvr_096_2(e.Events)
 			e\eventState3 = Max(0, e\eventState3-timing\tickDuration/450)
 		EndIf
 		
-		If e\eventState2>0 Then e\soundChannels[0]=LoopRangedSound(RoomAmbience[8], e\soundChannels[0], mainPlayer\cam, e\room\Levers[1]\obj, 5.0, e\eventState2*0.8)
-		If e\eventState3>0 Then e\soundChannels[1]=LoopRangedSound(e\sounds[1], e\soundChannels[1], mainPlayer\cam, e\room\Levers[2]\obj, 6.0, e\eventState3)
+		If e\eventState2>0 Then e\soundChannels[0]=LoopRangedSound(RoomAmbience[8], e\soundChannels[0], mainPlayer\cam, e\room\levers[1]\obj, 5.0, e\eventState2*0.8)
+		If e\eventState3>0 Then e\soundChannels[1]=LoopRangedSound(e\sounds[1], e\soundChannels[1], mainPlayer\cam, e\room\levers[2]\obj, 6.0, e\eventState3)
 		
 		If temp=0 And x And z Then
-			e\room\RoomDoors[0]\locked = False
-			e\room\RoomDoors[1]\locked = False
+			e\room\roomDoors[0]\locked = False
+			e\room\roomDoors[1]\locked = False
 		Else
 			;If Rand(200)<5 Then LightBlink = Rnd(0.5,1.0)
 			
-			If e\room\RoomDoors[0]\open Then 
-				e\room\RoomDoors[0]\locked = False
-				UseDoor(e\room\RoomDoors[0],False) 
+			If e\room\roomDoors[0]\open Then 
+				e\room\roomDoors[0]\locked = False
+				UseDoor(e\room\roomDoors[0],False) 
 			EndIf
-			If e\room\RoomDoors[1]\open Then 
-				e\room\RoomDoors[1]\locked = False
-				UseDoor(e\room\RoomDoors[1],False)
+			If e\room\roomDoors[1]\open Then 
+				e\room\roomDoors[1]\locked = False
+				UseDoor(e\room\roomDoors[1],False)
 			EndIf
-			e\room\RoomDoors[0]\locked=True
-			e\room\RoomDoors[1]\locked=True							
+			e\room\roomDoors[0]\locked=True
+			e\room\roomDoors[1]\locked=True							
 		EndIf 
 	EndIf
 	

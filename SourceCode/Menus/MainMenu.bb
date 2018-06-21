@@ -315,7 +315,7 @@ Function UpdateMainMenu()
 ;					
 ;					y = y + 40*MenuScale
 ;					
-;					userOptions\SoundVolume = (UpdateSlideBar(x + 310*MenuScale, y-4*MenuScale, 150*MenuScale, userOptions\SoundVolume*100.0)/100.0)
+;					userOptions\soundVolume = (UpdateSlideBar(x + 310*MenuScale, y-4*MenuScale, 150*MenuScale, userOptions\soundVolume*100.0)/100.0)
 ;					;[End Block]
 ;				ElseIf MainMenuTab = 6 ;Controls
 ;					;[Block]
@@ -814,7 +814,7 @@ Function DrawMainMenu()
 ;					
 ;					y = y + 40*MenuScale
 ;					
-;					DrawSlideBar(x + 310*MenuScale, y-4*MenuScale, 150*MenuScale, userOptions\SoundVolume*100.0)
+;					DrawSlideBar(x + 310*MenuScale, y-4*MenuScale, 150*MenuScale, userOptions\soundVolume*100.0)
 ;					Color 255,255,255
 ;					Text(x + 20 * MenuScale, y, "Sound volume:")
 ;					;[End Block]

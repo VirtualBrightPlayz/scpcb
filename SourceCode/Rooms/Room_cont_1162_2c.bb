@@ -6,10 +6,10 @@ Function FillRoom_cont_1162_2c(r.Rooms)
     Local t1;, Bump
 
     d = CreateDoor(r\zone, r\x + 248.0*RoomScale, 0.0, r\z - 736.0*RoomScale, 90, r, False, False, 2)
-    r\Objects[0] = CreatePivot()
-    PositionEntity r\Objects[0],r\x+1012.0*RoomScale,r\y+128.0*RoomScale,r\z-640.0*RoomScale
-    EntityParent r\Objects[0],r\obj
-    EntityPickMode r\Objects[0],1
+    r\objects[0] = CreatePivot()
+    PositionEntity r\objects[0],r\x+1012.0*RoomScale,r\y+128.0*RoomScale,r\z-640.0*RoomScale
+    EntityParent r\objects[0],r\obj
+    EntityPickMode r\objects[0],1
     it = CreateItem("Document SCP-1162", "paper", r\x + 863.227 * RoomScale, r\y + 152.0 * RoomScale, r\z - 953.231 * RoomScale)
     EntityParent(it\collider, r\obj)
     
@@ -17,7 +17,7 @@ Function FillRoom_cont_1162_2c(r.Rooms)
     sc\angle = 225
     sc\turn = 45
     TurnEntity(sc\cameraObj, 20, 0, 0)
-    sc\ID = 8
+    sc\iD = 8
 End Function
 
 Function UpdateEvent_cont_1162_2c(e.Events)
@@ -57,16 +57,16 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 		PositionEntity pp,976,128,-640,False
 		
 		For it.Items = Each Items
-			If (Not it\Picked) Then
-				If EntityDistance(it\collider,e\room\Objects[0])<0.75 Then
+			If (Not it\picked) Then
+				If EntityDistance(it\collider,e\room\objects[0])<0.75 Then
 					Pick1162% = False
 				EndIf
 			EndIf
 		Next
 		
-		If EntityDistance(e\room\Objects[0],mainPlayer\collider)<0.75 And Pick1162% Then
+		If EntityDistance(e\room\objects[0],mainPlayer\collider)<0.75 And Pick1162% Then
 			DrawHandIcon = True
-			If MouseHit1 Then mainPlayer\grabbedEntity = e\room\Objects[0]
+			If MouseHit1 Then mainPlayer\grabbedEntity = e\room\objects[0]
 		EndIf
 		
 		If mainPlayer\grabbedEntity <> 0 Then

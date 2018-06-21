@@ -471,9 +471,9 @@ Function LoadRMesh(file$)
 	Next
 	WriteByte(rm2,count)
 	For tc.Materials = Each Materials
-		WriteByteString(rm2,tc\Name)
+		WriteByteString(rm2,tc\name)
 		If Instr(origFile,"1123")>0 Then
-			DebugLog tc\Name
+			DebugLog tc\name
 		EndIf
 		WriteByte(rm2,(tc\loadflags Shl 4) Or tc\blendflags)
 		WriteByte(rm2,tc\uvSet)
@@ -495,9 +495,9 @@ Function LoadRMesh(file$)
 					count% = 0
 					For tc.Materials = Each Materials
 						count=count+1
-						If tc\Name = StripPath(TextureName(tx)) Then
+						If tc\name = StripPath(TextureName(tx)) Then
 							found = True
-							;DebugLog j+" "+tc\Name+" "+count
+							;DebugLog j+" "+tc\name+" "+count
 							Exit
 						EndIf
 					Next
@@ -556,9 +556,9 @@ Function LoadRMesh(file$)
 					count% = 0
 					For tc.Materials = Each Materials
 						count=count+1
-						If tc\Name = StripPath(TextureName(tx)) Then
+						If tc\name = StripPath(TextureName(tx)) Then
 							found = True
-							;DebugLog j+" "+tc\Name+" "+count
+							;DebugLog j+" "+tc\name+" "+count
 							Exit
 						EndIf
 					Next

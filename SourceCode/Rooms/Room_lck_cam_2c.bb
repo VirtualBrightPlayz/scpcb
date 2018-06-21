@@ -23,50 +23,50 @@ Function FillRoom_lck_cam_2c(r.Rooms)
     
     FreeEntity(d2\buttons[1]) : d2\buttons[1] = 0
     
-    d\LinkedDoor = d2
-    d2\LinkedDoor = d
+    d\linkedDoor = d2
+    d2\linkedDoor = d
     
     sc.SecurityCams = CreateSecurityCam(r\x - 688.0 * RoomScale, r\y + 384 * RoomScale, r\z + 688.0 * RoomScale, r, True)
     sc\angle = 45 + 180
     sc\turn = 45
-    sc\ScrTexture = 1
-    EntityTexture sc\ScrObj, ScreenTexs[sc\ScrTexture]
+    sc\scrTexture = 1
+    EntityTexture sc\scrObj, ScreenTexs[sc\scrTexture]
     
     TurnEntity(sc\cameraObj, 40, 0, 0)
     EntityParent(sc\obj, r\obj)
     
-    PositionEntity(sc\ScrObj, r\x + 668 * RoomScale, 1.1, r\z - 96.0 * RoomScale)
-    TurnEntity(sc\ScrObj, 0, 90, 0)
-    EntityParent(sc\ScrObj, r\obj)
+    PositionEntity(sc\scrObj, r\x + 668 * RoomScale, 1.1, r\z - 96.0 * RoomScale)
+    TurnEntity(sc\scrObj, 0, 90, 0)
+    EntityParent(sc\scrObj, r\obj)
     
     sc.SecurityCams = CreateSecurityCam(r\x - 112.0 * RoomScale, r\y + 384 * RoomScale, r\z + 112.0 * RoomScale, r, True)
     sc\angle = 45
     sc\turn = 45
-    sc\ScrTexture = 1
-    EntityTexture sc\ScrObj, ScreenTexs[sc\ScrTexture]
+    sc\scrTexture = 1
+    EntityTexture sc\scrObj, ScreenTexs[sc\scrTexture]
     
     TurnEntity(sc\cameraObj, 40, 0, 0)
     EntityParent(sc\obj, r\obj)				
     
-    PositionEntity(sc\ScrObj, r\x + 96.0 * RoomScale, 1.1, r\z - 668.0 * RoomScale)
-    EntityParent(sc\ScrObj, r\obj)
+    PositionEntity(sc\scrObj, r\x + 96.0 * RoomScale, 1.1, r\z - 668.0 * RoomScale)
+    EntityParent(sc\scrObj, r\obj)
     
     Local em.Emitters = CreateEmitter(r\x - 175.0 * RoomScale, 370.0 * RoomScale, r\z + 656.0 * RoomScale, 0)
-    TurnEntity(em\Obj, 90, 0, 0, True)
-    EntityParent(em\Obj, r\obj)
-    em\RandAngle = 20
-    em\Speed = 0.05
-    em\SizeChange = 0.007
-    em\achange = -0.006
+    TurnEntity(em\obj, 90, 0, 0, True)
+    EntityParent(em\obj, r\obj)
+    em\randAngle = 20
+    em\speed = 0.05
+    em\sizeChange = 0.007
+    em\aChange = -0.006
     em\gravity = -0.24
     
     em.Emitters = CreateEmitter(r\x - 655.0 * RoomScale, 370.0 * RoomScale, r\z + 240.0 * RoomScale, 0)
-    TurnEntity(em\Obj, 90, 0, 0, True)
-    EntityParent(em\Obj, r\obj)
-    em\RandAngle = 20
-    em\Speed = 0.05
-    em\SizeChange = 0.007
-    em\achange = -0.006
+    TurnEntity(em\obj, 90, 0, 0, True)
+    EntityParent(em\obj, r\obj)
+    em\randAngle = 20
+    em\speed = 0.05
+    em\sizeChange = 0.007
+    em\aChange = -0.006
     em\gravity = -0.24
 End Function
 
@@ -83,7 +83,7 @@ Function UpdateEventLockroom173(e.Events)
 
 	;[Block]
 	If e\room\dist < 6.0  And e\room\dist > 0 Then
-		If Curr173\Idle = 2 Then
+		If Curr173\idle = 2 Then
 			RemoveEvent(e)
 		Else
 			If (Not EntityInView(Curr173\collider, mainPlayer\cam)) Or EntityDistance(Curr173\collider, mainPlayer\collider)>15.0 Then 

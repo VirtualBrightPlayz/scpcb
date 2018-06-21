@@ -10,5 +10,5 @@ Function FillRoom_hll_bench_3(r.Rooms)
     sc\turn = 45
     TurnEntity(sc\cameraObj, 20, 0, 0)
     ;sc\followPlayer = True
-    sc\ID = 2
+    sc\iD = 2
 End Function

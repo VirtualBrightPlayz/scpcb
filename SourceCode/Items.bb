@@ -409,8 +409,8 @@ Function CreateItem.Items(name$, tempname$, x#, y#, z#, r# = 1.0, g# = 1.0, b# =
 		i\inventory = CreateInventory(invSlots)
 	EndIf
 	
-	i\ID=LastItemID+1
-	LastItemID=i\ID
+	i\iD=LastItemID+1
+	LastItemID=i\iD
 	
 	Return i
 End Function
@@ -444,7 +444,7 @@ Function UpdateItems()
 	For i.Items = Each Items
 		i\dropped = 0
 		
-		If (Not i\Picked) Then
+		If (Not i\picked) Then
 			If i\disttimer < TimeInPosMilliSecs() Then
 				i\dist = EntityDistance(mainPlayer\collider, i\collider)
 				i\disttimer = TimeInPosMilliSecs() + Rand(600,800)
@@ -479,7 +479,7 @@ Function UpdateItems()
 				
 				If i\dist<HideDist*0.2 Then
 					For i2.Items = Each Items
-						If i<>i2 And (Not i2\Picked) And i2\dist<HideDist*0.2 Then
+						If i<>i2 And (Not i2\picked) And i2\dist<HideDist*0.2 Then
 							
 							xtemp# = (EntityX(i2\collider,True)-EntityX(i\collider,True))
 							ytemp# = (EntityY(i2\collider,True)-EntityY(i\collider,True))
@@ -531,7 +531,7 @@ Function PickItem(item.Items)
 			If mainPlayer\inventory\items[n] = Null Then
 				Select item\itemtemplate\tempName
 					Case "1123"
-						If mainPlayer\currRoom\RoomTemplate\name <> "room1123" Then
+						If mainPlayer\currRoom\roomTemplate\name <> "room1123" Then
 							ShowEntity mainPlayer\overlays[OVERLAY_WHITE]
 							mainPlayer\lightFlash = 7.0
 							PlaySound2(LoadTempSound("SFX/SCP/1123/Touch.ogg"))		
@@ -582,7 +582,7 @@ Function PickItem(item.Items)
 				End Select
 				
 				If item\itemtemplate\sound <> 66 Then PlaySound_SM(sndManager\itemPick[item\itemtemplate\sound])
-				item\Picked = True
+				item\picked = True
 				item\dropped = -1
 				
 				item\itemtemplate\found=True
@@ -618,7 +618,7 @@ Function DropItem(item.Items,playDropSound%=True)
 	
 	;move the item so that it doesn't overlap with other items
 	;For it.Items = Each Items
-	;	If it <> item And it\Picked = False Then
+	;	If it <> item And it\picked = False Then
 	;		x = Abs(EntityX(item\collider, True)-EntityX(it\collider, True))
 	;		;If x < 0.2 Then 
 	;		If x < 0.01 Then
@@ -637,7 +637,7 @@ Function DropItem(item.Items,playDropSound%=True)
 	;	EndIf
 	;Next
 	
-	item\Picked = False
+	item\picked = False
 	Local inv.Inventory
 	For inv.Inventory = Each Inventory
 		Local j%

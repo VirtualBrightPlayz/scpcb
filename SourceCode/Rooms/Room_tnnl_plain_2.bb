@@ -23,16 +23,16 @@ Function UpdateEventTunnel106(e.Events)
 		If e\room\dist < 3.0 Or Rand(7000)=1 Then
 			e\eventState = 2
 			d.Decals = CreateDecal(0, EntityX(e\room\obj), 445.0*RoomScale, EntityZ(e\room\obj), -90, Rand(360), 0)
-			d\Size = Rnd(0.5, 0.7) : EntityAlpha(d\obj, 0.7) : d\ID = 1 : ScaleSprite(d\obj, d\Size, d\Size)
+			d\size = Rnd(0.5, 0.7) : EntityAlpha(d\obj, 0.7) : d\iD = 1 : ScaleSprite(d\obj, d\size, d\size)
 			EntityAlpha(d\obj, Rnd(0.7, 0.85))
 			
 			;PlaySound2 HorrorSFX(10)
 		ElseIf e\room\dist > 8.0 Then
 			If Rand(5) = 1 Then
-				Curr106\Idle = False
+				Curr106\idle = False
 				RemoveEvent(e)
 			Else
-				Curr106\Idle = False
+				Curr106\idle = False
 				Curr106\state = -10000
 				RemoveEvent(e)
 			EndIf
@@ -46,10 +46,10 @@ Function UpdateEventTunnel106(e.Events)
 		PointEntity(Curr106\collider, mainPlayer\cam)
 		Curr106\state = -11
 		AnimateNPC(Curr106, 55, 104, 0.1)
-		Curr106\Idle = True
+		Curr106\idle = True
 		
 		If e\eventState > 180 Then
-			Curr106\Idle = False
+			Curr106\idle = False
 			PositionEntity(Curr106\collider, EntityX(Curr106\collider), -3.0, EntityZ(Curr106\collider), True)
 			
 			RemoveEvent(e)
@@ -76,7 +76,7 @@ Function UpdateEvent682roar(e.Events)
 	;[Block]
 	If e\eventState = 0 Then
 		If mainPlayer\currRoom = e\room Then e\eventState = 70 * Rand(300,1000)
-	ElseIf mainPlayer\currRoom\RoomTemplate\Name <> "pocketdimension" And mainPlayer\currRoom\RoomTemplate\Name <> "room860" And mainPlayer\currRoom\RoomTemplate\Name <> "room1123" And mainPlayer\currRoom\RoomTemplate\Name <> "dimension1499" Then
+	ElseIf mainPlayer\currRoom\roomTemplate\name <> "pocketdimension" And mainPlayer\currRoom\roomTemplate\name <> "room860" And mainPlayer\currRoom\roomTemplate\name <> "room1123" And mainPlayer\currRoom\roomTemplate\name <> "dimension1499" Then
 		e\eventState = e\eventState-timing\tickDuration
 		
 		If e\eventState < 17*70 Then

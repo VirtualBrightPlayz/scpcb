@@ -23,21 +23,21 @@ Function UpdateEvent_dimension1499(e.Events)
 ;				If e\eventStr = ""
 ;					e\eventStr = "load0"
 ;				ElseIf e\eventStr = "load0"
-;					e\room\Objects[0] = CreatePlane()
+;					e\room\objects[0] = CreatePlane()
 ;					Local planetex% = LoadTexture("GFX/map/Rooms/dimension1499/grit3.jpg")
-;					EntityTexture e\room\Objects[0],planetex%
+;					EntityTexture e\room\objects[0],planetex%
 ;					FreeTexture planetex%
-;					PositionEntity e\room\Objects[0],0,EntityY(e\room\obj),0
-;					EntityType e\room\Objects[0],HIT_MAP
-;					;EntityParent e\room\Objects[0],e\room\obj
+;					PositionEntity e\room\objects[0],0,EntityY(e\room\obj),0
+;					EntityType e\room\objects[0],HIT_MAP
+;					;EntityParent e\room\objects[0],e\room\obj
 ;					e\eventStr = "load1"
 ;				ElseIf e\eventStr = "load1"
 ;					NTF_1499Sky = sky_CreateSky("GFX/map/sky/1499sky")
 ;					e\eventStr = 1
 ;				Else
 ;					If Int(e\eventStr)<16
-;						e\room\Objects[Int(e\eventStr)] = LoadMesh("GFX/map/Rooms/dimension1499/1499object"+(Int(e/EventStr))+".b3d")
-;						HideEntity e\room\Objects[Int(e\eventStr)]
+;						e\room\objects[Int(e\eventStr)] = LoadMesh("GFX/map/Rooms/dimension1499/1499object"+(Int(e/EventStr))+".b3d")
+;						HideEntity e\room\objects[Int(e\eventStr)]
 ;						e\eventStr = Int(e\eventStr)+1
 ;					ElseIf Int(e\eventStr)=16
 ;						CreateChunkParts(e\room)
@@ -60,7 +60,7 @@ Function UpdateEvent_dimension1499(e.Events)
 			;[End Block]
 			For n.NPCs = Each NPCs
 				If n\npcType = NPCtype1499 Then
-					n\Idle = False
+					n\idle = False
 					n\state = 0
 					;If Rand(2)=1 Then n\state2 = 500*3
 					n\angle = Rnd(360)
@@ -69,7 +69,7 @@ Function UpdateEvent_dimension1499(e.Events)
 				EndIf
 			Next
 		EndIf
-		;PositionEntity e\room\Objects[0],0,800,0
+		;PositionEntity e\room\objects[0],0,800,0
 		CameraFogRange mainPlayer\cam,40,80
 		CameraFogColor mainPlayer\cam,96,97,104
 		CameraClsColor mainPlayer\cam,96,97,104
@@ -95,7 +95,7 @@ Function UpdateEvent_dimension1499(e.Events)
 			For n.NPCs = Each NPCs
 				If n\npcType = NPCtype1499 Then
 					;RemoveNPC(n)
-					n\Idle = True
+					n\idle = True
 				EndIf
 			Next
 			e\eventState = 1.0
@@ -107,7 +107,7 @@ End Function
 Function UpdateLeave1499()
 	Local r.Rooms, it.Items
 	
-	If (Not (IsPlayerWearingTempName(mainPlayer,"scp1499") Or IsPlayerWearingTempName(mainPlayer,"super1499"))) And mainPlayer\currRoom\RoomTemplate\Name$ = "dimension1499" Then
+	If (Not (IsPlayerWearingTempName(mainPlayer,"scp1499") Or IsPlayerWearingTempName(mainPlayer,"super1499"))) And mainPlayer\currRoom\roomTemplate\name$ = "dimension1499" Then
 		For r.Rooms = Each Rooms
 			If r = NTF_1499PrevRoom Then
 				mainPlayer\blinkTimer = -1
@@ -180,10 +180,10 @@ Function CreateChunkParts(r.Rooms)
 				Local z$ = GetINIString2(File$,loc%,"obj"+j+"-z")
 				Local yaw$ = GetINIString2(File$,loc%,"obj"+j+"-yaw")
 				DebugLog "1499 chunk X/Z/Yaw: "+x$+"|"+z$+"|"+yaw$
-				chp\obj%[j] = CopyEntity(r\Objects[objID%])
+				chp\obj%[j] = CopyEntity(r\objects[objID%])
 				If Lower(yaw$) = "random" Then
-					chp\RandomYaw#[j] = Rnd(360)
-					RotateEntity chp\obj[j],0,chp\RandomYaw[j],0
+					chp\randomYaw#[j] = Rnd(360)
+					RotateEntity chp\obj[j],0,chp\randomYaw[j],0
 				Else
 					RotateEntity chp\obj[j],0,Float(yaw),0
 				EndIf
@@ -195,10 +195,10 @@ Function CreateChunkParts(r.Rooms)
 			Next
 			chp2 = Before(chp)
 			If chp2 <> Null Then
-				chp\ID = chp2\ID+1
+				chp\iD = chp2\iD+1
 			EndIf
 			DebugLog "<<<<<<<<<<<<<<<<"
-			DebugLog "Generated 1499 chunk "+chp\ID+" sucessfully"
+			DebugLog "Generated 1499 chunk "+chp\iD+" sucessfully"
 		EndIf
 	Next
 	
@@ -225,7 +225,7 @@ Function CreateChunk.Chunk(obj%,x#,y#,z#,spawnNPCs%=True)
 	
 	If obj% > -1 Then
 		For chp = Each ChunkPart
-			If chp\ID = obj% Then
+			If chp\iD = obj% Then
 				ch\amount% = chp\amount%
 				For i = 0 To chp\amount
 					ch\obj[i] = CopyEntity(chp\obj[i])
@@ -307,7 +307,7 @@ Function UpdateChunks(r.Rooms,ChunkPartAmount%,spawnNPCs%=True)
 			EndIf
 		Next
 		If (Not temp2%) Then
-			;ch2 = CreateChunk(r\Objects[Rand(1,ChunkPartAmount%)],x#,y#,z#)
+			;ch2 = CreateChunk(r\objects[Rand(1,ChunkPartAmount%)],x#,y#,z#)
 			ChunkPartAmount2 = GetINIInt("Data/1499chunks.INI","general","count")
 			ch2 = CreateChunk(Rand(0,ChunkPartAmount2),x#,y#,z#,spawnNPCs%)
 		EndIf

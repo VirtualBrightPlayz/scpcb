@@ -6,16 +6,16 @@ Function FillRoom_hll_fan_2(r.Rooms)
 	Local t1;, Bump
     For r2.Rooms = Each Rooms
         If r2<>r Then
-            If r2\RoomTemplate\Name = "room2_2" Then
-                r\Objects[0] = CopyEntity(r2\Objects[0]) ;don't load the mesh again
+            If r2\roomTemplate\name = "room2_2" Then
+                r\objects[0] = CopyEntity(r2\objects[0]) ;don't load the mesh again
                 Exit
             EndIf
         EndIf
     Next
-    If r\Objects[0]=0 Then r\Objects[0] = LoadMesh("GFX/map/fan.b3d")
-    ScaleEntity r\Objects[0], RoomScale, RoomScale, RoomScale
-    PositionEntity(r\Objects[0], r\x - 248 * RoomScale, 528 * RoomScale, r\z, 0)
-    EntityParent(r\Objects[0], r\obj)
+    If r\objects[0]=0 Then r\objects[0] = LoadMesh("GFX/map/fan.b3d")
+    ScaleEntity r\objects[0], RoomScale, RoomScale, RoomScale
+    PositionEntity(r\objects[0], r\x - 248 * RoomScale, 528 * RoomScale, r\z, 0)
+    EntityParent(r\objects[0], r\obj)
 End Function
 
 
@@ -35,9 +35,9 @@ Function UpdateEventRoom2fan(e.Events)
 	;eventstate2 = fan on/off
 	;eventstate3 = the speed of the fan
 	If mainPlayer\currRoom = e\room Then
-		TurnEntity (e\room\Objects[0], e\eventState3*timing\tickDuration, 0, 0)
+		TurnEntity (e\room\objects[0], e\eventState3*timing\tickDuration, 0, 0)
 		If e\eventState3 > 0.01 Then
-			e\room\SoundCHN = LoopRangedSound (RoomAmbience[9], e\room\SoundCHN, mainPlayer\cam, e\room\Objects[0], 5.0, (e\eventState3/4.0))
+			e\room\soundCHN = LoopRangedSound (RoomAmbience[9], e\room\soundCHN, mainPlayer\cam, e\room\objects[0], 5.0, (e\eventState3/4.0))
 		EndIf
 		e\eventState3 = CurveValue(e\eventState2*5, e\eventState3, 150.0)			
 	EndIf
@@ -51,9 +51,9 @@ Function UpdateEventRoom2fan(e.Events)
 				e\eventState3 = e\eventState2*5
 			Else
 				If temp = 0 And e\eventState2 = 1.0 Then ;turn on the fan
-					PlayRangedSound (LoadTempSound("SFX/ambient/Room ambience/FanOn.ogg"), mainPlayer\cam, e\room\Objects[0], 8.0)
+					PlayRangedSound (LoadTempSound("SFX/ambient/Room ambience/FanOn.ogg"), mainPlayer\cam, e\room\objects[0], 8.0)
 				ElseIf temp = 1 And e\eventState2 = 0.0 Then ;turn off the fan
-					PlayRangedSound (LoadTempSound("SFX/ambient/Room ambience/FanOff.ogg"), mainPlayer\cam, e\room\Objects[0], 8.0)
+					PlayRangedSound (LoadTempSound("SFX/ambient/Room ambience/FanOff.ogg"), mainPlayer\cam, e\room\objects[0], 8.0)
 				EndIf
 			EndIf
 		Else

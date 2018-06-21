@@ -14,7 +14,7 @@ Function UpdateEvent106sinkhole(e.Events)
 	;[Block]
 	If e\eventState=0 Then
 		de.Decals = CreateDecal(0, EntityX(e\room\obj)+Rnd(-0.5,0.5), 0.01, EntityZ(e\room\obj)+Rnd(-0.5,0.5), 90, Rand(360), 0)
-		de\Size = 2.5 : ScaleSprite(de\obj, de\Size, de\Size);
+		de\size = 2.5 : ScaleSprite(de\obj, de\size, de\size);
 		
 		e\eventState=1
 	ElseIf mainPlayer\currRoom = e\room Then

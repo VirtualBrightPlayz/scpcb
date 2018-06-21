@@ -121,29 +121,29 @@ End Function
 Function UpdateElevators#(State#, door1.Doors, door2.Doors, room1, room2, event.Events)
 	Local x#, z#, n.NPCs, NPC_inside.NPCs
 	
-	door1\IsElevatorDoor = 1
-	door2\IsElevatorDoor = 1
+	door1\isElevatorDoor = 1
+	door2\isElevatorDoor = 1
 	If door1\open = True And door2\open = False Then 
 		State = -1
 		If (mainPlayer\closestButton = door2\buttons[0] Or mainPlayer\closestButton = door2\buttons[1]) And MouseHit1 Then
 			UseDoor(door1,False)
 		EndIf
-		If door2\NPCCalledElevator = True Then
+		If door2\npcCalledElevator = True Then
 			UseDoor(door1,False)
-			door2\NPCCalledElevator = 2
+			door2\npcCalledElevator = 2
 		EndIf
 	ElseIf door2\open = True And door1\open = False Then
 		State = 1
 		If (mainPlayer\closestButton = door1\buttons[0] Or mainPlayer\closestButton = door1\buttons[1]) And MouseHit1 Then
 			UseDoor(door2,False)
 		EndIf
-		If door1\NPCCalledElevator = True Then
+		If door1\npcCalledElevator = True Then
 			UseDoor(door2,False)
-			door1\NPCCalledElevator = 2
+			door1\npcCalledElevator = 2
 		EndIf
 	ElseIf Abs(door1\openstate-door2\openstate)<0.2 Then
-		door1\IsElevatorDoor = 2
-		door2\IsElevatorDoor = 2
+		door1\isElevatorDoor = 2
+		door2\isElevatorDoor = 2
 	EndIf
 	
 	Local inside = False
@@ -153,8 +153,8 @@ Function UpdateElevators#(State#, door1.Doors, door2.Doors, room1, room2, event.
 	If door1\open = False And door2\open = False Then
 		door1\locked = True 
 		door2\locked = True
-		door1\NPCCalledElevator = 2
-		door2\NPCCalledElevator = 2
+		door1\npcCalledElevator = 2
+		door2\npcCalledElevator = 2
 		If State < 0 Then ;ylh��lt� alas
 			State = State - timing\tickDuration
 			;pelaaja hissin sis�ll�
@@ -185,16 +185,16 @@ Function UpdateElevators#(State#, door1.Doors, door2.Doors, room1, room2, event.
 			Next
 			
 			If NPC_inside <> Null And (Not inside) Then
-				NPC_inside\Idle = True
+				NPC_inside\idle = True
 			ElseIf NPC_inside <> Null And inside Then
-				NPC_inside\Idle = False
+				NPC_inside\idle = False
 			EndIf
 			
 			If State < -400 Then
 				door1\locked = False
 				door2\locked = False
-				door1\NPCCalledElevator = False
-				door2\NPCCalledElevator = False
+				door1\npcCalledElevator = False
+				door2\npcCalledElevator = False
 				State = 0
 				
 				If inside Then
@@ -215,10 +215,10 @@ Function UpdateElevators#(State#, door1.Doors, door2.Doors, room1, room2, event.
 					ResetEntity NPC_inside\collider	
 					UpdateDoorsTimer = 0
 					NPC_inside\dropSpeed = 0
-					If NPC_inside\Idle Then
+					If NPC_inside\idle Then
 						TurnEntity NPC_inside\obj,0,180,0
 						TurnEntity NPC_inside\collider,0,180,0
-						NPC_inside\Idle = False
+						NPC_inside\idle = False
 					EndIf
 					NPC_inside\currElevator = Null
 				EndIf
@@ -257,16 +257,16 @@ Function UpdateElevators#(State#, door1.Doors, door2.Doors, room1, room2, event.
 			Next
 			
 			If NPC_inside <> Null And (Not inside) Then
-				NPC_inside\Idle = True
+				NPC_inside\idle = True
 			ElseIf NPC_inside <> Null And inside Then
-				NPC_inside\Idle = False
+				NPC_inside\idle = False
 			EndIf
 			
 			If State > 400 Then 
 				door1\locked = False
 				door2\locked = False
-				door1\NPCCalledElevator = False
-				door2\NPCCalledElevator = False
+				door1\npcCalledElevator = False
+				door2\npcCalledElevator = False
 				State = 0
 				
 				;pelaaja hissin sis�ll�, siirret��n
@@ -288,10 +288,10 @@ Function UpdateElevators#(State#, door1.Doors, door2.Doors, room1, room2, event.
 					ResetEntity NPC_inside\collider
 					UpdateDoorsTimer = 0
 					NPC_inside\dropSpeed = 0
-					If NPC_inside\Idle Then
+					If NPC_inside\idle Then
 						TurnEntity NPC_inside\obj,0,180,0
 						TurnEntity NPC_inside\collider,0,180,0
-						NPC_inside\Idle = False
+						NPC_inside\idle = False
 					EndIf
 					NPC_inside\currElevator = Null
 				EndIf
@@ -311,23 +311,23 @@ End Function
 Function UpdateElevators2#(State#, door1.Doors, door2.Doors, room1, room2, event.Events)
 	Local x#, z#
 	
-	door1\IsElevatorDoor = 1
-	door2\IsElevatorDoor = 1
+	door1\isElevatorDoor = 1
+	door2\isElevatorDoor = 1
 	If door1\open = True And door2\open = False Then 
 		State = -1
-		door2\IsElevatorDoor = 2
+		door2\isElevatorDoor = 2
 		If (mainPlayer\closestButton = door2\buttons[0] Or mainPlayer\closestButton = door2\buttons[1]) And MouseHit1 Then
 			UseDoor(door1,False)
 		EndIf
 	ElseIf door2\open = True And door1\open = False Then
 		State = 1
-		door1\IsElevatorDoor = 2
+		door1\isElevatorDoor = 2
 		If (mainPlayer\closestButton = door1\buttons[0] Or mainPlayer\closestButton = door1\buttons[1]) And MouseHit1 Then
 			UseDoor(door2,False)
 		EndIf
 	ElseIf Abs(door1\openstate-door2\openstate)<0.2 Then
-		door1\IsElevatorDoor = 2
-		door2\IsElevatorDoor = 2
+		door1\isElevatorDoor = 2
+		door2\isElevatorDoor = 2
 	EndIf
 	
 	Local inside = False
@@ -463,7 +463,7 @@ Function AssignElevatorObj.ElevatorObj(obj%,door.Doors,in_facility%)
 	
 	eo\obj% = obj%
 	eo\door = door
-	eo\InFacility% = in_facility%
+	eo\inFacility% = in_facility%
 	
 	Return eo
 End Function

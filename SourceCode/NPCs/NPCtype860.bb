@@ -28,8 +28,8 @@ Function InitializeNPCtype860(n.NPCs)
 End Function
 
 Function UpdateNPCtype860(n.NPCs)
-    If mainPlayer\currRoom\RoomTemplate\name = "room860" Then
-        Local fr.Forest=mainPlayer\currRoom\fr;Object.Forest(e\room\Objects[1])
+    If mainPlayer\currRoom\roomTemplate\name = "room860" Then
+        Local fr.Forest=mainPlayer\currRoom\fr;Object.Forest(e\room\objects[1])
         
         dist = EntityDistance(mainPlayer\collider,n\collider)
         
@@ -131,7 +131,7 @@ Function UpdateNPCtype860(n.NPCs)
                             
                             ;Animate2(n\obj, AnimTime(n\obj), 298, 316, n\currSpeed*10)
                             
-                            n\currSpeed = CurveValue(n\Speed, n\currSpeed, 10.0)
+                            n\currSpeed = CurveValue(n\speed, n\currSpeed, 10.0)
                             MoveEntity n\collider, 0,0,n\currSpeed*timing\tickDuration
                             
                             If dist>15.0 Then
@@ -181,7 +181,7 @@ Function UpdateNPCtype860(n.NPCs)
                     
                     RotateEntity n\collider, 0, angle-90, 0, True
                     
-                    n\currSpeed = CurveValue(n\Speed*0.3, n\currSpeed, 50.0)
+                    n\currSpeed = CurveValue(n\speed*0.3, n\currSpeed, 50.0)
                     MoveEntity n\collider, 0,0,n\currSpeed*timing\tickDuration
                     
                     AnimateNPC(n, 494, 569, n\currSpeed*25)
@@ -245,7 +245,7 @@ Function UpdateNPCtype860(n.NPCs)
                 If n\sounds[1] = 0 Then n\sounds[1] = LoadSound("SFX/General/Slash2.ogg")
                 
                 If dist>1.1 And (Not mainPlayer\dead) Then 
-                    n\currSpeed = CurveValue(n\Speed*0.8, n\currSpeed, 10.0)
+                    n\currSpeed = CurveValue(n\speed*0.8, n\currSpeed, 10.0)
                     
                     AnimateNPC(n, 298, 316, n\currSpeed*10)
                     ;Animate2(n\obj, AnimTime(n\obj), 298, 316, n\currSpeed*10)

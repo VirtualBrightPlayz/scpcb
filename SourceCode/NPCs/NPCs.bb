@@ -199,10 +199,10 @@ Function CreateNPC.NPCs(NPCtype%, x#, y#, z#)
 	
 	ResetEntity(n\collider)
 	
-	n\ID = 0
-	n\ID = FindFreeNPCID()
+	n\iD = 0
+	n\iD = FindFreeNPCID()
 	
-	DebugLog ("Created NPC "+n\nvName+" (ID: "+n\ID+")")
+	DebugLog ("Created NPC "+n\nvName+" (ID: "+n\iD+")")
 	
 	NPCSpeedChange(n)
 	
@@ -267,7 +267,7 @@ Function UpdateNPCs()
 	For n = Each NPCs
 		;A variable to determine if the NPC is in the facility or not
 		;TODO: remove because this is practically useless
-		n\InFacility = CheckForNPCInFacility(n)
+		n\inFacility = CheckForNPCInFacility(n)
 		
 		n\playerDistance = EntityDistance(mainPlayer\collider, n\collider)
 		
@@ -317,7 +317,7 @@ Function UpdateNPCs()
 				UpdateNPCtype1499(n)
 		End Select
 		
-		If n\IsDead Then
+		If n\isDead Then
 			EntityType(n\collider, HIT_DEAD)
 		EndIf
 		
@@ -333,7 +333,7 @@ Function UpdateNPCs()
 		Local gravityDist# = Distance(EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider),EntityX(n\collider),EntityZ(n\collider))
 		
 		If gravityDist<HideDistance*0.7 Or n\npcType = NPCtype1499 Then
-			If n\InFacility = InFacility Then
+			If n\inFacility = InFacility Then
 				TranslateEntity n\collider, 0, n\dropSpeed, 0
 				
 				Local CollidedFloor% = False
@@ -461,14 +461,14 @@ End Function
 Function TeleportMTFGroup(n.NPCs)
 	Local n2.NPCs
 	
-	If n\MTFLeader <> Null Then Return
+	If n\mtfLeader <> Null Then Return
 	
 	TeleportCloser(n)
 	
 	For n2 = Each NPCs
 		If n2\npcType = NPCtypeMTF Then
-			If n2\MTFLeader <> Null Then
-				PositionEntity n2\collider,EntityX(n2\MTFLeader\collider),EntityY(n2\MTFLeader\collider)+0.1,EntityZ(n2\MTFLeader\collider)
+			If n2\mtfLeader <> Null Then
+				PositionEntity n2\collider,EntityX(n2\mtfLeader\collider),EntityY(n2\mtfLeader\collider)+0.1,EntityZ(n2\mtfLeader\collider)
 			EndIf
 		EndIf
 	Next
@@ -481,7 +481,7 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 	;muzzle flash
 	Local p.particles = CreateParticle(x,y,z, 1, Rnd(0.08,0.1), 0.0, 5)
 	TurnEntity p\obj, 0,0,Rnd(360)
-	p\achange = -0.15
+	p\aChange = -0.15
 	
 	;LightVolume = TempLightVolume*1.2
 	
@@ -590,9 +590,9 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 					;dust/smoke particles
 					p.Particles = CreateParticle(PickedX(),PickedY(),PickedZ(), 0, 0.03, 0, 80)
 					p\speed = 0.001
-					p\SizeChange = 0.003
+					p\sizeChange = 0.003
 					p\a = 0.8
-					p\achange = -0.01
+					p\aChange = -0.01
 					RotateEntity p\pvt, EntityPitch(pvt)-180, EntityYaw(pvt),0
 					
 					Local i%
@@ -600,7 +600,7 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 						p.Particles = CreateParticle(PickedX(),PickedY(),PickedZ(), 0, 0.006, 0.003, 80)
 						p\speed = 0.02
 						p\a = 0.8
-						p\achange = -0.01
+						p\aChange = -0.01
 						RotateEntity p\pvt, EntityPitch(pvt)+Rnd(170,190), EntityYaw(pvt)+Rnd(-10,10),0	
 					Next
 					
@@ -611,8 +611,8 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 					EntityFX de\obj, 1
 					de\lifetime = 70*20
 					EntityBlend de\obj, 2
-					de\Size = Rnd(0.028,0.034)
-					ScaleSprite de\obj, de\Size, de\Size
+					de\size = Rnd(0.028,0.034)
+					ScaleSprite de\obj, de\size, de\size
 				EndIf				
 			EndIf
 			FreeEntity(pvt)
@@ -645,7 +645,7 @@ Function MoveToPocketDimension()
 	Local r.Rooms
 	
 	For r.Rooms = Each Rooms
-		If r\RoomTemplate\Name = "pocketdimension" Then
+		If r\roomTemplate\name = "pocketdimension" Then
 			mainPlayer\fallTimer = 0
 			UpdateDoors()
 			UpdateRooms()
@@ -674,7 +674,7 @@ Function FindFreeNPCID%()
 		
 		Local n2.NPCs
 		For n2.NPCs = Each NPCs
-			If n2\ID = id Then
+			If n2\iD = id Then
 				taken = True
 				Exit
 			EndIf
@@ -687,12 +687,12 @@ Function FindFreeNPCID%()
 End Function
 
 Function ForceSetNPCID(n.NPCs, newID%)
-	n\ID = newID
+	n\iD = newID
 	
 	Local n2.NPCs
 	For n2.NPCs = Each NPCs
-		If n2 <> n And n2\ID = newID Then
-			n2\ID = FindFreeNPCID()
+		If n2 <> n And n2\iD = newID Then
+			n2\iD = FindFreeNPCID()
 		EndIf
 	Next
 End Function
@@ -795,29 +795,29 @@ Function ManipulateNPCBones()
 	Local pitchoffset#,yawoffset#,rolloffset#
 	
 	For n = Each NPCs
-		If n\ManipulateBone Then
+		If n\manipulateBone Then
 			pitchvalue# = 0
 			yawvalue# = 0
 			rollvalue# = 0
-			pitchoffset# = TransformNPCManipulationData(n\NPCNameInSection,n\boneToManipulate,"pitchoffset")
-			yawoffset# = TransformNPCManipulationData(n\NPCNameInSection,n\boneToManipulate,"yawoffset")
-			rolloffset# = TransformNPCManipulationData(n\NPCNameInSection,n\boneToManipulate,"rolloffset")
+			pitchoffset# = TransformNPCManipulationData(n\npcNameInSection,n\boneToManipulate,"pitchoffset")
+			yawoffset# = TransformNPCManipulationData(n\npcNameInSection,n\boneToManipulate,"yawoffset")
+			rolloffset# = TransformNPCManipulationData(n\npcNameInSection,n\boneToManipulate,"rolloffset")
 			pvt% = CreatePivot()
-			bonename$ = GetNPCManipulationValue(n\NPCNameInSection,n\boneToManipulate,"bonename",0)
+			bonename$ = GetNPCManipulationValue(n\npcNameInSection,n\boneToManipulate,"bonename",0)
 			bone% = FindChild(n\obj,bonename$)
 			If bone% = 0 Then RuntimeError "ERROR: NPC bone "+Chr(34)+bonename$+Chr(34)+" does not exist."
 			If n\boneToManipulate2<>"" Then
-				bonename2$ = GetNPCManipulationValue(n\NPCNameInSection,n\boneToManipulate,"navbone",0)
+				bonename2$ = GetNPCManipulationValue(n\npcNameInSection,n\boneToManipulate,"navbone",0)
 				bone2% = FindChild(n\obj,n\boneToManipulate2$)
 				If bone2% = 0 Then RuntimeError "ERROR: NPC bone "+Chr(34)+bonename2$+Chr(34)+" does not exist."
 			EndIf
 			PositionEntity pvt%,EntityX(bone%,True),EntityY(bone%,True),EntityZ(bone%,True)
-			Select n\ManipulationType
+			Select n\manipulationType
 				Case 0 ;<--- looking at player
 					PointEntity bone%,mainPlayer\cam
 					PointEntity pvt%,mainPlayer\cam
 					n\bonePitch# = CurveAngle(EntityPitch(pvt%),n\bonePitch#,10.0)
-					Select TransformNPCManipulationData(n\NPCNameInSection,n\boneToManipulate,"yaw")
+					Select TransformNPCManipulationData(n\npcNameInSection,n\boneToManipulate,"yaw")
 						Case 0
 							n\boneYaw# = CurveAngle(EntityPitch(bone%),n\boneYaw#,10.0)
 							pitchvalue# = n\boneYaw#
@@ -828,7 +828,7 @@ Function ManipulateNPCBones()
 							n\boneYaw# = CurveAngle(EntityRoll(bone%),n\boneYaw#,10.0)
 							rollvalue# = n\boneYaw#
 					End Select
-					Select TransformNPCManipulationData(n\NPCNameInSection,n\boneToManipulate,"pitch")
+					Select TransformNPCManipulationData(n\npcNameInSection,n\boneToManipulate,"pitch")
 						Case 0
 							pitchvalue# = n\bonePitch#
 						Case 1
@@ -836,19 +836,19 @@ Function ManipulateNPCBones()
 						Case 2
 							rollvalue# = n\bonePitch#
 					End Select
-					If GetNPCManipulationValue(n\NPCNameInSection,n\boneToManipulate,"pitchinverse",3)=True Then
+					If GetNPCManipulationValue(n\npcNameInSection,n\boneToManipulate,"pitchinverse",3)=True Then
 						pitchvalue# = -pitchvalue#
 					EndIf
-					If GetNPCManipulationValue(n\NPCNameInSection,n\boneToManipulate,"yawinverse",3)=True Then
+					If GetNPCManipulationValue(n\npcNameInSection,n\boneToManipulate,"yawinverse",3)=True Then
 						yawvalue# = -yawvalue#
 					EndIf
-					If GetNPCManipulationValue(n\NPCNameInSection,n\boneToManipulate,"rollinverse",3)=True Then
+					If GetNPCManipulationValue(n\npcNameInSection,n\boneToManipulate,"rollinverse",3)=True Then
 						rollvalue# = -rollvalue#
 					EndIf
 					RotateEntity bone%,pitchvalue#+pitchoffset#,yawvalue#+yawoffset#,rollvalue#+rolloffset#
 				Case 1 ;<--- looking at player #2
 					n\bonePitch# = CurveAngle(DeltaPitch(bone2%,mainPlayer\cam),n\bonePitch#,10.0)
-					Select TransformNPCManipulationData(n\NPCNameInSection,n\boneToManipulate,"pitch")
+					Select TransformNPCManipulationData(n\npcNameInSection,n\boneToManipulate,"pitch")
 						Case 0
 							pitchvalue# = n\bonePitch#
 						Case 1
@@ -856,19 +856,19 @@ Function ManipulateNPCBones()
 						Case 2
 							rollvalue# = n\bonePitch#
 					End Select
-					If GetNPCManipulationValue(n\NPCNameInSection,n\boneToManipulate,"pitchinverse",3)=True Then
+					If GetNPCManipulationValue(n\npcNameInSection,n\boneToManipulate,"pitchinverse",3)=True Then
 						pitchvalue# = -pitchvalue#
 					EndIf
-					If GetNPCManipulationValue(n\NPCNameInSection,n\boneToManipulate,"yawinverse",3)=True Then
+					If GetNPCManipulationValue(n\npcNameInSection,n\boneToManipulate,"yawinverse",3)=True Then
 						yawvalue# = -yawvalue#
 					EndIf
-					If GetNPCManipulationValue(n\NPCNameInSection,n\boneToManipulate,"rollinverse",3)=True Then
+					If GetNPCManipulationValue(n\npcNameInSection,n\boneToManipulate,"rollinverse",3)=True Then
 						rollvalue# = -rollvalue#
 					EndIf
 					RotateEntity bone%,pitchvalue#+pitchoffset#,yawvalue#+yawoffset#,rollvalue#+rolloffset#
 				Case 2 ;<--- looking away from SCP-096
 					PointEntity bone%,Curr096\obj
-					Select TransformNPCManipulationData(n\NPCNameInSection,n\boneToManipulate,"yaw")
+					Select TransformNPCManipulationData(n\npcNameInSection,n\boneToManipulate,"yaw")
 						Case 0
 							n\boneYaw# = CurveAngle(EntityPitch(bone%),n\boneYaw#,10.0)
 							pitchvalue# = -n\boneYaw#
@@ -879,20 +879,20 @@ Function ManipulateNPCBones()
 							n\boneYaw# = CurveAngle(EntityRoll(bone%),n\boneYaw#,10.0)
 							rollvalue# = -n\boneYaw#
 					End Select
-					If GetNPCManipulationValue(n\NPCNameInSection,n\boneToManipulate,"pitchinverse",3)=True Then
+					If GetNPCManipulationValue(n\npcNameInSection,n\boneToManipulate,"pitchinverse",3)=True Then
 						pitchvalue# = -pitchvalue#
 					EndIf
-					If GetNPCManipulationValue(n\NPCNameInSection,n\boneToManipulate,"yawinverse",3)=True Then
+					If GetNPCManipulationValue(n\npcNameInSection,n\boneToManipulate,"yawinverse",3)=True Then
 						yawvalue# = -yawvalue#
 					EndIf
-					If GetNPCManipulationValue(n\NPCNameInSection,n\boneToManipulate,"rollinverse",3)=True Then
+					If GetNPCManipulationValue(n\npcNameInSection,n\boneToManipulate,"rollinverse",3)=True Then
 						rollvalue# = -rollvalue#
 					EndIf
 					RotateEntity bone%,pitchvalue#+pitchoffset#,yawvalue#+yawoffset#,rollvalue#+rolloffset#
 				Case 3 ;<-- looking and pitching towards the player
 					PointEntity pvt%,mainPlayer\cam
 					n\boneYaw# = CurveAngle(EntityPitch(pvt%),n\boneYaw#,10.0)
-					Select TransformNPCManipulationData(n\NPCNameInSection,n\boneToManipulate,"yaw")
+					Select TransformNPCManipulationData(n\npcNameInSection,n\boneToManipulate,"yaw")
 						Case 0
 							pitchvalue# = n\boneYaw#
 						Case 1
@@ -900,13 +900,13 @@ Function ManipulateNPCBones()
 						Case 2
 							rollvalue# = n\boneYaw#
 					End Select
-					If GetNPCManipulationValue(n\NPCNameInSection,n\boneToManipulate,"pitchinverse",3)=True Then
+					If GetNPCManipulationValue(n\npcNameInSection,n\boneToManipulate,"pitchinverse",3)=True Then
 						pitchvalue# = -pitchvalue#
 					EndIf
-					If GetNPCManipulationValue(n\NPCNameInSection,n\boneToManipulate,"yawinverse",3)=True Then
+					If GetNPCManipulationValue(n\npcNameInSection,n\boneToManipulate,"yawinverse",3)=True Then
 						yawvalue# = -yawvalue#
 					EndIf
-					If GetNPCManipulationValue(n\NPCNameInSection,n\boneToManipulate,"rollinverse",3)=True Then
+					If GetNPCManipulationValue(n\npcNameInSection,n\boneToManipulate,"rollinverse",3)=True Then
 						rollvalue# = -rollvalue#
 					EndIf
 					RotateEntity bone%,pitchvalue#+pitchoffset#,yawvalue#+yawoffset#,rollvalue#+rolloffset#
@@ -984,7 +984,7 @@ Function NPCSpeedChange(n.NPCs)
 End Function
 
 Function PlayerInReachableRoom()
-	Local RN$ = mainPlayer\currRoom\RoomTemplate\Name$
+	Local RN$ = mainPlayer\currRoom\roomTemplate\name$
 	Local e.Events, temp
 	
 	;Player is in these rooms, returning false
@@ -1035,11 +1035,11 @@ Function FindNextElevator(n.NPCs)
 	Local eo.ElevatorObj, eo2.ElevatorObj
 	
 	For eo = Each ElevatorObj
-		If eo\InFacility = n\InFacility Then
+		If eo\inFacility = n\inFacility Then
 			If Abs(EntityY(eo\obj,True)-EntityY(n\collider))<10.0 Then
 				For eo2 = Each ElevatorObj
 					If eo2 <> eo Then
-						If eo2\InFacility = n\InFacility Then
+						If eo2\inFacility = n\inFacility Then
 							If Abs(EntityY(eo2\obj,True)-EntityY(n\collider))<10.0 Then
 								If EntityDistance(eo2\obj,n\collider)<EntityDistance(eo\obj,n\collider) Then
 									n\pathStatus = FindPath(n, EntityX(eo2\obj,True),EntityY(eo2\obj,True),EntityZ(eo2\obj,True))
@@ -1093,8 +1093,8 @@ Function GoToElevator(n.NPCs)
 		Else
 			If dist# < 0.7 Then
 				n\currSpeed = 0.0
-				If n\currElevator\door\NPCCalledElevator=False Then
-					n\currElevator\door\NPCCalledElevator = True
+				If n\currElevator\door\npcCalledElevator=False Then
+					n\currElevator\door\npcCalledElevator = True
 					DebugLog n\npcType+" called elevator"
 				EndIf
 			EndIf

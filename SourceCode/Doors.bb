@@ -208,7 +208,7 @@ Function UpdateDoors()
 			EndIf
 			
 			;TODO: this is cancer
-			If mainPlayer\currRoom\RoomTemplate\name$ = "room2sl" Then
+			If mainPlayer\currRoom\roomTemplate\name$ = "room2sl" Then
 				If ValidRoom2slCamRoom(d\room) Then
 					If d\obj <> 0 Then ShowEntity d\obj
 					If d\frameobj <> 0 Then ShowEntity d\frameobj
@@ -442,10 +442,10 @@ Function UseDoor(d.Doors, showmsg%=True)
 				Return
 			EndIf
 		EndIf	
-	ElseIf d\KeyCard < 0 Then
+	ElseIf d\keyCard < 0 Then
 		;I can't find any way to produce short circuited boolean expressions so work around this by using a temporary variable - risingstar64
 		If mainPlayer\selectedItem <> Null Then
-			temp = (mainPlayer\selectedItem\itemtemplate\tempName = "hand" And d\KeyCard=-1) Or (mainPlayer\selectedItem\itemtemplate\tempName = "hand2" And d\KeyCard=-2)
+			temp = (mainPlayer\selectedItem\itemtemplate\tempName = "hand" And d\keyCard=-1) Or (mainPlayer\selectedItem\itemtemplate\tempName = "hand2" And d\keyCard=-2)
 		EndIf
 		If temp <> 0 Then
 			PlaySound_SM(sndManager\scannerUse)
@@ -462,12 +462,12 @@ Function UseDoor(d.Doors, showmsg%=True)
 	Else
 		If d\locked Then
 			If showmsg = True Then 
-				If Not (d\IsElevatorDoor>0) Then
+				If Not (d\isElevatorDoor>0) Then
 					PlaySound_SM(sndManager\buttonErr)
 					Msg = "The door appears to be locked."
 					MsgTimer = 70 * 5
 				Else
-					If d\IsElevatorDoor = 1 Then
+					If d\isElevatorDoor = 1 Then
 						Msg = "You called the elevator."
 						MsgTimer = 70 * 5
 					ElseIf (Msg<>"You called the elevator.") Then

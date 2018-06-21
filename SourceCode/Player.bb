@@ -296,18 +296,18 @@ Function MovePlayer()
 	EndIf
 	
 	If mainPlayer\currRoom<>Null Then
-		If (mainPlayer\currRoom\RoomTemplate\name <> "pocketdimension") Then 
+		If (mainPlayer\currRoom\roomTemplate\name <> "pocketdimension") Then 
 			If KeyDown(keyBinds\sprint) Then
 				If (mainPlayer\stamina < 5) Then ;out of breath
 					If (Not IsChannelPlaying(mainPlayer\breathChn)) Then mainPlayer\breathChn = PlaySound(GetIntArrayElem(mainPlayer\breathingSFX, IsPlayerWearingTempName(mainPlayer,"gasmask"), 0))
 				ElseIf (mainPlayer\stamina < 50) Then ;panting
 					If (mainPlayer\breathChn = 0) Then
 						mainPlayer\breathChn = PlaySound(GetIntArrayElem(mainPlayer\breathingSFX, IsPlayerWearingTempName(mainPlayer,"gasmask"), Rand(1, 3)))
-						ChannelVolume(mainPlayer\breathChn, Min((70.0-mainPlayer\stamina)/70.0,1.0)*userOptions\SoundVolume)
+						ChannelVolume(mainPlayer\breathChn, Min((70.0-mainPlayer\stamina)/70.0,1.0)*userOptions\soundVolume)
 					Else
 						If (Not IsChannelPlaying(mainPlayer\breathChn)) Then
 							mainPlayer\breathChn = PlaySound(GetIntArrayElem(mainPlayer\breathingSFX, IsPlayerWearingTempName(mainPlayer,"gasmask"), Rand(1, 3)))
-							ChannelVolume(mainPlayer\breathChn, Min((70.0-mainPlayer\stamina)/70.0,1.0)*userOptions\SoundVolume)		
+							ChannelVolume(mainPlayer\breathChn, Min((70.0-mainPlayer\stamina)/70.0,1.0)*userOptions\soundVolume)		
 						EndIf
 					EndIf
 				EndIf
@@ -338,7 +338,7 @@ Function MovePlayer()
 				If mainPlayer\stamina <= 0 Then mainPlayer\stamina = -20.0
 			EndIf
 			
-			If mainPlayer\currRoom\RoomTemplate\name = "pocketdimension" Then 
+			If mainPlayer\currRoom\roomTemplate\name = "pocketdimension" Then 
 				If EntityY(mainPlayer\collider)<2000*RoomScale Or EntityY(mainPlayer\collider)>2608*RoomScale Then
 					mainPlayer\stamina = 0
 					Speed = 0.015
@@ -370,7 +370,7 @@ Function MovePlayer()
 							tempchn% = PlaySound_SM(sndManager\footstep[Rand(0, 7)])
 						EndIf
 
-						ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\SoundVolume
+						ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\soundVolume
 					Else
 						mainPlayer\loudness = Max(2.5-(mainPlayer\crouching*0.6),mainPlayer\loudness)
 
@@ -380,23 +380,23 @@ Function MovePlayer()
 							tempchn% = PlaySound_SM(sndManager\footstepRun[Rand(0, 7)])
 						EndIf
 						
-						ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\SoundVolume
+						ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\soundVolume
 					EndIf
 				ElseIf mainPlayer\footstepOverride=1 Then
 					tempchn% = PlaySound_SM(sndManager\footstepPD[Rand(0, 2)])
-					ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.4))*userOptions\SoundVolume
+					ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.4))*userOptions\soundVolume
 				ElseIf mainPlayer\footstepOverride=2 Then
 					tempchn% = PlaySound_SM(sndManager\footstep8601[Rand(0, 2)])
-					ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.4))*userOptions\SoundVolume
+					ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.4))*userOptions\soundVolume
 				ElseIf mainPlayer\footstepOverride=3 Then
 					If Sprint = 1.0 Then
 						mainPlayer\loudness = Max(4.0,mainPlayer\loudness)
 						tempchn% = PlaySound_SM(sndManager\footstep[Rand(0, 7)])
-						ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\SoundVolume
+						ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\soundVolume
 					Else
 						mainPlayer\loudness = Max(2.5-(mainPlayer\crouching*0.6),mainPlayer\loudness)
 						tempchn% = PlaySound_SM(sndManager\footstepRun[Rand(0, 7)])
-						ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\SoundVolume
+						ChannelVolume tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\soundVolume
 					EndIf
 				EndIf
 				
@@ -525,9 +525,9 @@ Function MovePlayer()
 			TurnEntity pvt, 90, 0, 0
 			EntityPick(pvt,0.3)
 			Local de.Decals = CreateDecal(Rand(15,16), PickedX(), PickedY()+0.005, PickedZ(), 90, Rand(360), 0)
-			de\Size = Rnd(0.03,0.08)*Min(mainPlayer\injuries,3.0) : EntityAlpha(de\obj, 1.0) : ScaleSprite de\obj, de\Size, de\Size
+			de\size = Rnd(0.03,0.08)*Min(mainPlayer\injuries,3.0) : EntityAlpha(de\obj, 1.0) : ScaleSprite de\obj, de\size, de\size
 			tempchn% = PlaySound2(mainPlayer\bloodDrip[Rand(0,3)])
-			ChannelVolume tempchn, Rnd(0.0,0.8)*userOptions\SoundVolume
+			ChannelVolume tempchn, Rnd(0.0,0.8)*userOptions\soundVolume
 			ChannelPitch tempchn, Rand(20000,30000)
 			
 			FreeEntity pvt
@@ -554,7 +554,7 @@ Function MovePlayer()
 	
 	If mainPlayer\heartbeatIntensity > 0 Then
 		tempchn = PlaySound2(mainPlayer\heartbeat)
-		ChannelVolume tempchn, Max(Min((mainPlayer\heartbeatIntensity-80.0)/60.0,1.0),0.0)*userOptions\SoundVolume
+		ChannelVolume tempchn, Max(Min((mainPlayer\heartbeatIntensity-80.0)/60.0,1.0),0.0)*userOptions\soundVolume
 		
 		mainPlayer\heartbeatIntensity = mainPlayer\heartbeatIntensity - timing\tickDuration
 	EndIf
@@ -649,7 +649,7 @@ Function MouseLook()
 		
 		RotateEntity mainPlayer\cam, WrapAngle(mainPlayer\headPitch + Rnd(-mainPlayer\camShake, mainPlayer\camShake)), WrapAngle(EntityYaw(mainPlayer\collider) + Rnd(-mainPlayer\camShake, mainPlayer\camShake)), roll ; Pitch the user;s camera up And down.
 		
-		If mainPlayer\currRoom\RoomTemplate\Name = "pocketdimension" Then
+		If mainPlayer\currRoom\roomTemplate\name = "pocketdimension" Then
 			If EntityY(mainPlayer\collider)<2000*RoomScale Or EntityY(mainPlayer\collider)>2608*RoomScale Then
 				RotateEntity mainPlayer\cam, WrapAngle(EntityPitch(mainPlayer\cam)),WrapAngle(EntityYaw(mainPlayer\cam)), roll+WrapAngle(Sin(TimeInPosMilliSecs()/150.0)*30.0) ; Pitch the user;s camera up And down.
 			EndIf
@@ -705,7 +705,7 @@ Function MouseLook()
 		p\speed = 0.001
 		RotateEntity(p\pvt, Rnd(-20, 20), Rnd(360), 0)
 		
-		p\SizeChange = -0.00001
+		p\sizeChange = -0.00001
 		
 		FreeEntity pvt
 	EndIf
@@ -768,7 +768,7 @@ Function EquipItem(player.Player,item.Items,toggle%)
 				MsgTimer = 70 * 7
 			Case "scp1499","super1499"
 				For r.Rooms = Each Rooms
-					If r\RoomTemplate\Name = "dimension1499" Then
+					If r\roomTemplate\name = "dimension1499" Then
 						player\blinkTimer = -1
 						NTF_1499PrevRoom = player\currRoom
 						NTF_1499PrevX# = EntityX(player\collider)
@@ -1008,7 +1008,7 @@ Function DrawInventory(player.Player)
 					
 					If player\selectedItem\state > 0 Then
 						;TODO: remove coffindistance
-						If Not (player\currRoom\RoomTemplate\Name = "pocketdimension" Or CoffinDistance < 4.0) Then
+						If Not (player\currRoom\roomTemplate\name = "pocketdimension" Or CoffinDistance < 4.0) Then
 							Select Int(player\selectedItem\state2)
 								Case 1 ;hälytyskanava
 									strtemp = "        WARNING - CONTAINMENT BREACH          "
@@ -1071,14 +1071,14 @@ Function DrawInventory(player.Player)
 					
 					SetFont uiAssets\font[2]
 					
-					If player\currRoom\RoomTemplate\name = "pocketdimension" Then
+					If player\currRoom\roomTemplate\name = "pocketdimension" Then
 						If (TimeInPosMilliSecs() Mod 1000) > 300 Then	
 							Text(x, y + height / 2 - 80, "ERROR 06", True)
 							Text(x, y + height / 2 - 60, "LOCATION UNKNOWN", True)						
 						EndIf
 					Else
 						
-						If player\selectedItem\state > 0 And (Rnd(CoffinDistance + 15.0) > 1.0 Or player\currRoom\RoomTemplate\name <> "coffin") Then
+						If player\selectedItem\state > 0 And (Rnd(CoffinDistance + 15.0) > 1.0 Or player\currRoom\roomTemplate\name <> "coffin") Then
 							
 							If player\selectedItem\itemtemplate\name = "S-NAV Navigator" Then 
 								Color(100, 0, 0)
@@ -1141,7 +1141,7 @@ Function DrawInventory(player.Player)
 									EndIf
 								Next
 								
-								If player\currRoom\RoomTemplate\Name = "coffin" Then
+								If player\currRoom\roomTemplate\name = "coffin" Then
 									If CoffinDistance < 8.0 Then
 										dist = Rnd(4.0, 8.0)
 										Color 100, 0, 0
@@ -1262,13 +1262,13 @@ Function UpdateInventory(player.Player)
 	
 	Local strtemp$
 	If CurrGameState=GAMESTATE_INVENTORY Then
-		If (player\currRoom\RoomTemplate\name = "gatea") Then
+		If (player\currRoom\roomTemplate\name = "gatea") Then
 			HideEntity player\overlays[OVERLAY_FOG]
 			CameraFogRange player\cam, 5,30
 			CameraFogColor (player\cam,200,200,200)
 			CameraClsColor (player\cam,200,200,200)					
 			CameraRange(player\cam, 0.05, 30)
-		ElseIf (player\currRoom\RoomTemplate\name = "exit1") And (EntityY(player\collider)>1040.0*RoomScale) Then
+		ElseIf (player\currRoom\roomTemplate\name = "exit1") And (EntityY(player\collider)>1040.0*RoomScale) Then
 			HideEntity player\overlays[OVERLAY_FOG]
 			CameraFogRange player\cam, 5,45
 			CameraFogColor (player\cam,200,200,200)
@@ -1481,7 +1481,7 @@ Function UpdateInventory(player.Player)
 		If player\selectedItem <> Null Then
 			Select player\selectedItem\itemtemplate\tempName
 				Case "1123"
-					If player\currRoom\RoomTemplate\Name <> "room1123" Then
+					If player\currRoom\roomTemplate\name <> "room1123" Then
 						ShowEntity player\overlays[OVERLAY_WHITE]
 						player\lightFlash = 7
 						PlaySound2(LoadTempSound("SFX/SCP/1123/Touch.ogg"))		
@@ -1510,7 +1510,7 @@ Function UpdateInventory(player.Player)
 					
 					temp = True
 					For np.NPCs = Each NPCs
-						If np\NPCtype = NPCtype5131 Then
+						If np\npctype = NPCtype5131 Then
 							temp = False
 							Exit
 						EndIf
@@ -1707,7 +1707,7 @@ Function UpdateInventory(player.Player)
 						MsgTimer = 70*6		
 					Else
 						it.Items = CreateItem("Empty Cup", "emptycup", 0,0,0)
-						it\Picked = True
+						it\picked = True
 						For i = 0 To player\openInventory\size-1
 							If player\openInventory\items[i]=player\selectedItem Then player\openInventory\items[i] = it : Exit
 						Next					
@@ -1732,7 +1732,7 @@ Function UpdateInventory(player.Player)
 					
 					If player\selectedItem\state > 0 Then
 						;TODO: remove coffindistance
-						If player\currRoom\RoomTemplate\name = "pocketdimension" Or CoffinDistance < 4.0 Then
+						If player\currRoom\roomTemplate\name = "pocketdimension" Or CoffinDistance < 4.0 Then
 							ResumeChannel(RadioCHN(5))
 							If IsChannelPlaying(RadioCHN(5)) = False Then RadioCHN(5) = PlaySound(RadioStatic)	
 						Else

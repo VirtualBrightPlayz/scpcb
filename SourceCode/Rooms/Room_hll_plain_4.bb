@@ -22,7 +22,7 @@ Function UpdateEvent_hll_plain_4(e.Events)
 							PositionEntity n\collider, EntityX(e\room\obj)+TFormedX(), TFormedY(), EntityZ(e\room\obj)+TFormedZ()
 							DebugLog TFormedX()+", "+ TFormedY()+", "+ TFormedZ()
 							ResetEntity n\collider
-							n\PathStatus = 0
+							n\pathStatus = 0
 							n\state = 4
 							n\state2 = 0
 							RemoveEvent(e)

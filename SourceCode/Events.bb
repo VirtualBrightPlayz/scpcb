@@ -33,7 +33,7 @@ Function CreateEvent.Events(eventname$, roomname$, id%, prob# = 0.0)
 	
 	If prob = 0.0 Then
 		For r.Rooms = Each Rooms
-			If (roomname = "" Or roomname = r\RoomTemplate\name) Then
+			If (roomname = "" Or roomname = r\roomTemplate\name) Then
 				temp = False
 				For e2.Events = Each Events
 					If e2\room = r Then temp = True : Exit
@@ -50,7 +50,7 @@ Function CreateEvent.Events(eventname$, roomname$, id%, prob# = 0.0)
 		Next
 	Else
 		For r.Rooms = Each Rooms
-			If (roomname = "" Or roomname = r\RoomTemplate\name) Then
+			If (roomname = "" Or roomname = r\roomTemplate\name) Then
 				temp = False
 				For e2.Events = Each Events
 					If e2\room = r Then temp = True : Exit

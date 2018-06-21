@@ -1,7 +1,7 @@
 Function InitializeNPCtype966(n.NPCs)
     i = 1
     For n2.NPCs = Each NPCs
-        If (n\npcType = n2\NPCtype) And (n<>n2) Then i=i+1
+        If (n\npcType = n2\npctype) And (n<>n2) Then i=i+1
     Next
     n\nvName = "SCP-966-"+i
     
@@ -9,7 +9,7 @@ Function InitializeNPCtype966(n.NPCs)
     EntityRadius n\collider,0.2
     
     For n2.NPCs = Each NPCs
-        If (n\npcType = n2\NPCtype) And (n<>n2) Then
+        If (n\npcType = n2\npctype) And (n<>n2) Then
             n\obj = CopyEntity (n2\obj)
             Exit
         EndIf
@@ -57,7 +57,7 @@ Function UpdateNPCtype966(n.NPCs)
         
         If (Not IsPlayerWearingTempName(mainPlayer,"nvgoggles")) Then
             HideEntity n\obj
-            If dist<1 And n\Reload <= 0 And MsgTimer <= 0 Then
+            If dist<1 And n\reload <= 0 And MsgTimer <= 0 Then
                 Select Rand(6)
                     Case 1
                         Msg="You feel something breathing right next to you."
@@ -72,10 +72,10 @@ Function UpdateNPCtype966(n.NPCs)
                     Case 6
                         Msg="You can feel something near you, but you are unable to see it. Perhaps its time is now."
                 End Select
-                n\Reload = 20*70
+                n\reload = 20*70
                 MsgTimer=8*70
             EndIf
-            n\Reload = n\Reload - timing\tickDuration
+            n\reload = n\reload - timing\tickDuration
             
         Else
             ShowEntity n\obj
@@ -85,7 +85,7 @@ Function UpdateNPCtype966(n.NPCs)
         ;n\state = 1
             If n\state3<1000.0 Then
                 For n2.NPCs = Each NPCs	
-                    If n2\NPCtype = n\npcType Then n2\state3=1000.0 
+                    If n2\npctype = n\npcType Then n2\state3=1000.0 
                 Next
             EndIf
             
@@ -101,7 +101,7 @@ Function UpdateNPCtype966(n.NPCs)
         EndIf
         
         If n\state <> 10 Then
-            n\LastSeen = 0
+            n\lastSeen = 0
         EndIf
         
         Select n\state
@@ -199,41 +199,41 @@ Function UpdateNPCtype966(n.NPCs)
                     
                 ;chasing the player
                     If n\state = 8 And dist<32 Then
-                        If n\PathTimer <= 0 Then
-                            n\PathStatus = FindPath (n, EntityX(mainPlayer\collider,True), EntityY(mainPlayer\collider,True), EntityZ(mainPlayer\collider,True))
-                            n\PathTimer = 40*10
+                        If n\pathTimer <= 0 Then
+                            n\pathStatus = FindPath (n, EntityX(mainPlayer\collider,True), EntityY(mainPlayer\collider,True), EntityZ(mainPlayer\collider,True))
+                            n\pathTimer = 40*10
                             n\currSpeed = 0
                         EndIf
-                        n\PathTimer = Max(n\PathTimer-timing\tickDuration,0)
+                        n\pathTimer = Max(n\pathTimer-timing\tickDuration,0)
                         
                         If (Not EntityVisible(n\collider,mainPlayer\collider)) Then
-                            If n\PathStatus = 2 Then
+                            If n\pathStatus = 2 Then
                                 n\currSpeed = 0
                                 SetNPCFrame(n,201)
                             ;SetAnimTime n\obj,15
-                            ElseIf n\PathStatus = 1 Then
-                                If n\Path[n\PathLocation]=Null Then 
-                                    If n\PathLocation > 19 Then 
-                                        n\PathLocation = 0 : n\PathStatus = 0
+                            ElseIf n\pathStatus = 1 Then
+                                If n\path[n\pathLocation]=Null Then 
+                                    If n\pathLocation > 19 Then 
+                                        n\pathLocation = 0 : n\pathStatus = 0
                                     Else
-                                        n\PathLocation = n\PathLocation + 1
+                                        n\pathLocation = n\pathLocation + 1
                                     EndIf
                                 Else
-                                    n\angle = VectorYaw(EntityX(n\Path[n\PathLocation]\obj,True)-EntityX(n\collider),0,EntityZ(n\Path[n\PathLocation]\obj,True)-EntityZ(n\collider))
+                                    n\angle = VectorYaw(EntityX(n\path[n\pathLocation]\obj,True)-EntityX(n\collider),0,EntityZ(n\path[n\pathLocation]\obj,True)-EntityZ(n\collider))
                     ;RotateEntity n\collider,0.0,CurveAngle(angle,EntityYaw(n\collider),10.0),0.0
                                     
-                                    dist2 = EntityDistance(n\collider,n\Path[n\PathLocation]\obj)
+                                    dist2 = EntityDistance(n\collider,n\path[n\pathLocation]\obj)
                                     
                                     If dist2 < 0.8 Then 
                                         ;TODO: fix
-										;If n\Path[n\PathLocation]\door<>Null Then
-                                        ;    If (Not n\Path[n\PathLocation]\door\open) Then UseDoor(n\Path[n\PathLocation]\door,False)
+										;If n\path[n\pathLocation]\door<>Null Then
+                                        ;    If (Not n\path[n\pathLocation]\door\open) Then UseDoor(n\path[n\pathLocation]\door,False)
                                         ;EndIf
-                                        If dist < 0.2 Then n\PathLocation = n\PathLocation + 1
+                                        If dist < 0.2 Then n\pathLocation = n\pathLocation + 1
                                     EndIf
                                     
                                 EndIf
-                            ElseIf n\PathStatus = 0 Then
+                            ElseIf n\pathStatus = 0 Then
                                 n\currSpeed = CurveValue(0,n\currSpeed,10.0)
                             EndIf
                         Else
@@ -243,7 +243,7 @@ Function UpdateNPCtype966(n.NPCs)
                             
                         EndIf
                         
-                        n\currSpeed = CurveValue(n\Speed,n\currSpeed,10.0)
+                        n\currSpeed = CurveValue(n\speed,n\currSpeed,10.0)
                     Else
                         If TimeInPosMilliSecs() > n\state2 And dist<16.0 Then
                             HideEntity n\collider
@@ -258,7 +258,7 @@ Function UpdateNPCtype966(n.NPCs)
                             If Rand(5)=1 Then n\state=0
                         EndIf	
                         
-                        n\currSpeed = CurveValue(n\Speed*0.5, n\currSpeed, 20.0)
+                        n\currSpeed = CurveValue(n\speed*0.5, n\currSpeed, 20.0)
                         
                     EndIf
                     
@@ -267,9 +267,9 @@ Function UpdateNPCtype966(n.NPCs)
                     MoveEntity n\collider,0,0,n\currSpeed
                 EndIf
             Case 10 ;attack
-                If n\LastSeen=0 Then
+                If n\lastSeen=0 Then
                     PlayRangedSound(LoadTempSound("SFX/SCP/966/Echo"+Rand(1,3)+".ogg"), mainPlayer\cam, n\collider)
-                    n\LastSeen = 1
+                    n\lastSeen = 1
                 EndIf
                 
                 If n\frame>2300.0 Then

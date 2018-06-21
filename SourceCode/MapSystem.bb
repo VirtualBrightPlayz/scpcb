@@ -106,7 +106,7 @@ Function LoadMaterials(file$)
 			mat\diff = 0
 			
 			stepSound = GetINIString(file, TemporaryString, "stepsound")
-			If Lower(stepSound)="metal" Then mat\StepSound = STEPSOUND_METAL
+			If Lower(stepSound)="metal" Then mat\stepSound = STEPSOUND_METAL
 		EndIf
 	Wend
 	
@@ -282,14 +282,14 @@ Function LoadRoomTemplates(file$)
 				
 				AmountRange = GetINIString(file, TemporaryString, "amount", "")
 				If AmountRange="" Then
-					rt\MinAmount = -1
-					rt\MaxAmount = -1
+					rt\minAmount = -1
+					rt\maxAmount = -1
 				ElseIf Instr(AmountRange,"-")>0 Then
-					rt\MinAmount = Int(Left(AmountRange,Instr(AmountRange,"-")))
-					rt\MaxAmount = Int(Mid(AmountRange,Instr(AmountRange,"-")+1))
+					rt\minAmount = Int(Left(AmountRange,Instr(AmountRange,"-")))
+					rt\maxAmount = Int(Mid(AmountRange,Instr(AmountRange,"-")+1))
 				Else
-					rt\MinAmount = Int(AmountRange)
-					rt\MaxAmount = rt\MinAmount
+					rt\minAmount = Int(AmountRange)
+					rt\maxAmount = rt\minAmount
 				EndIf
 				
 				rt\large = GetINIInt(file, TemporaryString, "large")
@@ -311,8 +311,8 @@ Function LoadRoomTemplates(file$)
 				rt\yRangeStart = Float(Left(yRange,Instr(yRange,"-")))
 				rt\yrangeEnd = Float(Mid(yRange,Instr(yRange,"-")+1))
 			Else
-				rt\MinAmount = 0
-				rt\MaxAmount = 0
+				rt\minAmount = 0
+				rt\maxAmount = 0
 				rt\zones = 0
 				rt\commonness = 0
 			EndIf
@@ -459,7 +459,7 @@ Function CountRooms%(rt.RoomTemplates)
 	
 	Local r.Rooms
 	For r = Each Rooms
-		If r\RoomTemplate = rt Then count=count+1
+		If r\roomTemplate = rt Then count=count+1
 	Next
 	Return count
 End Function
@@ -474,7 +474,7 @@ Function CreateRoom.Rooms(rt.RoomTemplates, x#, y#, z#)
 	
 	r\x = x : r\y = y : r\z = z
 	
-	r\RoomTemplate = rt
+	r\roomTemplate = rt
 	
 	If Not rt\loaded Then LoadRoomMesh(rt)
 	
@@ -518,7 +518,7 @@ Function CreateRoom.Rooms(rt.RoomTemplates, x#, y#, z#)
 End Function
 
 Function FillRoom(r.Rooms)
-	Select r\RoomTemplate\name
+	Select r\roomTemplate\name
 		Case "test_860_2"
 			FillRoom_test_860_2(r)
 		Case "lck_cam_2c"
@@ -656,7 +656,7 @@ Function FillRoom(r.Rooms)
 	End Select
 	
 	For lt.lighttemplates = Each LightTemplates
-		If lt\roomtemplate = r\RoomTemplate Then
+		If lt\roomtemplate = r\roomTemplate Then
 			newlt = AddLight(r, r\x+lt\x*RoomScale, r\y+lt\y*RoomScale, r\z+lt\z*RoomScale, lt\ltype, lt\range, lt\r, lt\g, lt\b)
 			If newlt <> 0 Then 
 				If lt\ltype = 3 Then
@@ -668,7 +668,7 @@ Function FillRoom(r.Rooms)
 	Next
 	
 	For ts.tempscreens = Each TempScreens
-		If ts\roomtemplate = r\RoomTemplate Then
+		If ts\roomtemplate = r\roomTemplate Then
 			CreateScreen(r\x+ts\x*RoomScale, r\y+ts\y*RoomScale, r\z+ts\z*RoomScale, ts\imgpath, r)
 		EndIf
 	Next
@@ -676,7 +676,7 @@ Function FillRoom(r.Rooms)
 	Local waypoints.IntArrayList = CreateIntArrayList()
 	Local waypoint.WayPoints
 	For tw.TempWayPoints = Each TempWayPoints
-		If tw\roomtemplate = r\RoomTemplate Then
+		If tw\roomtemplate = r\roomTemplate Then
 			waypoint = CreateWaypoint(r\x+tw\x*RoomScale, r\y+tw\y*RoomScale, r\z+tw\z*RoomScale, r)
 			PushIntArrayListElem(waypoints,Handle(waypoint))
 		EndIf
@@ -684,7 +684,7 @@ Function FillRoom(r.Rooms)
 	
 	Local i% = 0
 	For tw.TempWayPoints = Each TempWayPoints
-		If tw\roomtemplate = r\RoomTemplate Then
+		If tw\roomtemplate = r\roomTemplate Then
 			waypoint = Object.WayPoints(GetIntArrayListElem(waypoints,i))
 			For j% = 0 To 15
 				If tw\connectedTo[j]=0 Then Exit
@@ -697,25 +697,25 @@ Function FillRoom(r.Rooms)
 	
 	DeleteIntArrayList(waypoints)
 	
-;	If r\RoomTemplate\TempTriggerboxAmount > 0
-;		r\TriggerboxAmount = r\RoomTemplate\TempTriggerboxAmount
-;		For i = 0 To r\TriggerboxAmount-1
-;			r\Triggerbox[i] = CopyEntity(r\RoomTemplate\TempTriggerbox[i],r\obj)
-;			EntityAlpha r\Triggerbox[i],0.0
-;			r\TriggerboxName[i] = r\RoomTemplate\TempTriggerboxName[i]
+;	If r\roomTemplate\tempTriggerboxAmount > 0
+;		r\triggerboxAmount = r\roomTemplate\tempTriggerboxAmount
+;		For i = 0 To r\triggerboxAmount-1
+;			r\triggerbox[i] = CopyEntity(r\roomTemplate\tempTriggerbox[i],r\obj)
+;			EntityAlpha r\triggerbox[i],0.0
+;			r\triggerboxName[i] = r\roomTemplate\tempTriggerboxName[i]
 ;			DebugLog "Triggerbox found: "+i
-;			DebugLog "Triggerbox "+i+" name: "+r\TriggerboxName[i]
+;			DebugLog "Triggerbox "+i+" name: "+r\triggerboxName[i]
 ;		Next
 ;	EndIf
 	
 	For i = 0 To MaxRoomEmitters-1
-		If r\RoomTemplate\TempSoundEmitter[i]<>0 Then
-			r\SoundEmitterObj[i]=CreatePivot(r\obj)
-			PositionEntity r\SoundEmitterObj[i], r\x+r\RoomTemplate\TempSoundEmitterX[i]*RoomScale,r\y+r\RoomTemplate\TempSoundEmitterY[i]*RoomScale,r\z+r\RoomTemplate\TempSoundEmitterZ[i]*RoomScale,True
-			EntityParent(r\SoundEmitterObj[i],r\obj)
+		If r\roomTemplate\tempSoundEmitter[i]<>0 Then
+			r\soundEmitterObj[i]=CreatePivot(r\obj)
+			PositionEntity r\soundEmitterObj[i], r\x+r\roomTemplate\tempSoundEmitterX[i]*RoomScale,r\y+r\roomTemplate\tempSoundEmitterY[i]*RoomScale,r\z+r\roomTemplate\tempSoundEmitterZ[i]*RoomScale,True
+			EntityParent(r\soundEmitterObj[i],r\obj)
 			
-			r\SoundEmitter[i] = r\RoomTemplate\TempSoundEmitter[i]
-			r\SoundEmitterRange[i] = r\RoomTemplate\TempSoundEmitterRange[i]
+			r\soundEmitter[i] = r\roomTemplate\tempSoundEmitter[i]
+			r\soundEmitterRange[i] = r\roomTemplate\tempSoundEmitterRange[i]
 		EndIf
 	Next
 	
@@ -795,10 +795,10 @@ Function UpdateRooms()
 		
 		If x<16 And z < 16 Then
 			For i = 0 To MaxRoomEmitters-1
-				If r\SoundEmitter[i]<>0 Then 
-					dist# = EntityDistance(r\SoundEmitterObj[i],mainPlayer\collider)
-					If dist < r\SoundEmitterRange[i] Then
-						r\SoundEmitterCHN[i] = LoopRangedSound(RoomAmbience[r\SoundEmitter[i]],r\SoundEmitterCHN[i], mainPlayer\cam, r\SoundEmitterObj[i],r\SoundEmitterRange[i])
+				If r\soundEmitter[i]<>0 Then 
+					dist# = EntityDistance(r\soundEmitterObj[i],mainPlayer\collider)
+					If dist < r\soundEmitterRange[i] Then
+						r\soundEmitterCHN[i] = LoopRangedSound(RoomAmbience[r\soundEmitter[i]],r\soundEmitterCHN[i], mainPlayer\cam, r\soundEmitterObj[i],r\soundEmitterRange[i])
 					EndIf
 				EndIf
 			Next
@@ -830,11 +830,11 @@ Function UpdateRooms()
 		Else
 			ShowEntity r\obj
 			For i = 0 To MaxRoomLights-1
-				If r\Lights[i] <> 0 Then
-					dist = EntityDistance(mainPlayer\collider,r\Lights[i])
+				If r\lights[i] <> 0 Then
+					dist = EntityDistance(mainPlayer\collider,r\lights[i])
 					If dist < HideDistance Then
-						;TempLightVolume = TempLightVolume + r\LightIntensity[i]*r\LightIntensity[i]*((HideDistance-dist)/HideDistance)
-						;ShowEntity(r\Lights[i]) 						
+						;TempLightVolume = TempLightVolume + r\lightIntensity[i]*r\lightIntensity[i]*((HideDistance-dist)/HideDistance)
+						;ShowEntity(r\lights[i]) 						
 					EndIf
 				Else
 					Exit
@@ -890,49 +890,49 @@ Function AddLight%(room.Rooms, x#, y#, z#, ltype%, range#, r%, g%, b%)
 	
 	If room<>Null Then
 		For i = 0 To MaxRoomLights-1
-			If room\Lights[i]=0 Then
-				room\Lights[i] = CreateLight(ltype)
-				;room\LightDist[i] = range
-				LightRange(room\Lights[i],range)
-				LightColor(room\Lights[i],r,g,b)
-				PositionEntity(room\Lights[i],x,y,z,True)
-				EntityParent(room\Lights[i],room\obj)
+			If room\lights[i]=0 Then
+				room\lights[i] = CreateLight(ltype)
+				;room\lightDist[i] = range
+				LightRange(room\lights[i],range)
+				LightColor(room\lights[i],r,g,b)
+				PositionEntity(room\lights[i],x,y,z,True)
+				EntityParent(room\lights[i],room\obj)
 				
-				room\LightIntensity[i] = (r+g+b)/255.0/3.0
+				room\lightIntensity[i] = (r+g+b)/255.0/3.0
 				
-				room\LightSprites[i]= CreateSprite()
-				PositionEntity(room\LightSprites[i], x, y, z)
-				ScaleSprite(room\LightSprites[i], 0.13 , 0.13)
-				EntityTexture(room\LightSprites[i], LightSpriteTex(0))
-				EntityBlend (room\LightSprites[i], 3)
+				room\lightSprites[i]= CreateSprite()
+				PositionEntity(room\lightSprites[i], x, y, z)
+				ScaleSprite(room\lightSprites[i], 0.13 , 0.13)
+				EntityTexture(room\lightSprites[i], LightSpriteTex(0))
+				EntityBlend (room\lightSprites[i], 3)
 				
-				EntityParent(room\LightSprites[i], room\obj)
+				EntityParent(room\lightSprites[i], room\obj)
 				
-				room\LightSpritesPivot[i] = CreatePivot()
-				EntityRadius room\LightSpritesPivot[i],0.05
-				PositionEntity(room\LightSpritesPivot[i], x, y, z)
-				EntityParent(room\LightSpritesPivot[i], room\obj)
+				room\lightSpritesPivot[i] = CreatePivot()
+				EntityRadius room\lightSpritesPivot[i],0.05
+				PositionEntity(room\lightSpritesPivot[i], x, y, z)
+				EntityParent(room\lightSpritesPivot[i], room\obj)
 				
-				room\LightSprites2[i] = CreateSprite()
-				PositionEntity(room\LightSprites2[i], x, y, z)
-				ScaleSprite(room\LightSprites2[i], 0.6, 0.6)
-				EntityTexture(room\LightSprites2[i], LightSpriteTex(2))
-				EntityBlend(room\LightSprites2[i], 3)
-				EntityOrder(room\LightSprites2[i], -1)
-				EntityColor(room\LightSprites2[i], r%, g%, b%)
-				EntityParent(room\LightSprites2[i], room\obj)
-				EntityFX(room\LightSprites2[i],1)
-				RotateEntity(room\LightSprites2[i],0,0,Rand(360))
-				SpriteViewMode(room\LightSprites2[i],1)
-				room\LightSpriteHidden%[i] = True
-				HideEntity room\LightSprites2[i]
-				room\LightFlicker%[i] = Rand(1,10)
+				room\lightSprites2[i] = CreateSprite()
+				PositionEntity(room\lightSprites2[i], x, y, z)
+				ScaleSprite(room\lightSprites2[i], 0.6, 0.6)
+				EntityTexture(room\lightSprites2[i], LightSpriteTex(2))
+				EntityBlend(room\lightSprites2[i], 3)
+				EntityOrder(room\lightSprites2[i], -1)
+				EntityColor(room\lightSprites2[i], r%, g%, b%)
+				EntityParent(room\lightSprites2[i], room\obj)
+				EntityFX(room\lightSprites2[i],1)
+				RotateEntity(room\lightSprites2[i],0,0,Rand(360))
+				SpriteViewMode(room\lightSprites2[i],1)
+				room\lightSpriteHidden%[i] = True
+				HideEntity room\lightSprites2[i]
+				room\lightFlicker%[i] = Rand(1,10)
 				
-				HideEntity room\Lights[i]
+				HideEntity room\lights[i]
 				
-				room\MaxLights% = room\MaxLights% + 1
+				room\maxLights% = room\maxLights% + 1
 				
-				Return room\Lights[i]
+				Return room\lights[i]
 			EndIf
 		Next
 	Else
@@ -1073,7 +1073,7 @@ Function FindPath(n.NPCs, x#, y#, z#)
 		w\state = 0
 		w\fcost = 0
 		w\gcost = 0
-		w\Hcost = 0
+		w\hcost = 0
 	Next
 	
 	n\pathStatus = 0
@@ -1184,18 +1184,18 @@ Function FindPath(n.NPCs, x#, y#, z#)
 							;EndIf
 							If gtemp < w\connected[i]\gcost Then ;parempi reitti -> overwrite
 								w\connected[i]\gcost = gtemp
-								w\connected[i]\fcost = w\connected[i]\gcost + w\connected[i]\Hcost
+								w\connected[i]\fcost = w\connected[i]\gcost + w\connected[i]\hcost
 								w\connected[i]\parent = w
 							EndIf
 						Else
-							w\connected[i]\Hcost# = Abs(EntityX(w\connected[i]\obj,True)-EntityX(EndPoint\obj,True))+Abs(EntityZ(w\connected[i]\obj,True)-EntityZ(EndPoint\obj,True))
+							w\connected[i]\hcost# = Abs(EntityX(w\connected[i]\obj,True)-EntityX(EndPoint\obj,True))+Abs(EntityZ(w\connected[i]\obj,True)-EntityZ(EndPoint\obj,True))
 							gtemp# = w\gcost+w\dist[i]
 							;TODO: fix?
 							;If n\npcType = NPCtypeMTF Then
 							;	If w\connected[i]\door = Null Then gtemp = gtemp + 0.5
 							;EndIf
 							w\connected[i]\gcost = gtemp
-							w\connected[i]\fcost = w\gcost+w\Hcost
+							w\connected[i]\fcost = w\gcost+w\hcost
 							w\connected[i]\parent = w
 							w\connected[i]\state=1
 						EndIf            
@@ -1246,10 +1246,10 @@ Function FindPath(n.NPCs, x#, y#, z#)
     ;      For i = 0 To (length-1)
     ;         temp =False
     ;         If length < 20 Then
-    ;            n\Path[length-1-i] = currpoint.WayPoints
+    ;            n\path[length-1-i] = currpoint.WayPoints
     ;         Else
     ;            If i < 20 Then
-    ;               n\Path[20-1-i] = w.WayPoints
+    ;               n\path[20-1-i] = w.WayPoints
     ;            Else
     ;               ;Return 1
     ;            EndIf
@@ -1406,32 +1406,32 @@ Function CreateSecurityCam.SecurityCams(x#, y#, z#, r.Rooms, screen% = False)
 	
 	sc\room = r
 	
-	sc\Screen = screen
+	sc\screen = screen
 	If screen Then
 		sc\allowSaving = True
 		
-		sc\RenderInterval = 12
+		sc\renderInterval = 12
 		
 		Local scale# = RoomScale * 4.5 * 0.4
 		
-		sc\ScrObj = CreateSprite()
-		EntityFX sc\ScrObj, 17
-		SpriteViewMode(sc\ScrObj, 2)
-		sc\ScrTexture = 0
-		EntityTexture sc\ScrObj, ScreenTexs[sc\ScrTexture]
-		ScaleSprite(sc\ScrObj, MeshWidth(Monitor) * scale * 0.95 * 0.5, MeshHeight(Monitor) * scale * 0.95 * 0.5)
+		sc\scrObj = CreateSprite()
+		EntityFX sc\scrObj, 17
+		SpriteViewMode(sc\scrObj, 2)
+		sc\scrTexture = 0
+		EntityTexture sc\scrObj, ScreenTexs[sc\scrTexture]
+		ScaleSprite(sc\scrObj, MeshWidth(Monitor) * scale * 0.95 * 0.5, MeshHeight(Monitor) * scale * 0.95 * 0.5)
 		
-		sc\ScrOverlay = CreateSprite(sc\ScrObj)
+		sc\scrOverlay = CreateSprite(sc\scrObj)
 		;	scaleSprite(sc\scrOverlay , 0.5, 0.4)
-		ScaleSprite(sc\ScrOverlay, MeshWidth(Monitor) * scale * 0.95 * 0.5, MeshHeight(Monitor) * scale * 0.95 * 0.5)
-		MoveEntity(sc\ScrOverlay, 0, 0, -0.0005)
-		EntityTexture(sc\ScrOverlay, MonitorTexture)
-		SpriteViewMode(sc\ScrOverlay, 2)
-		EntityBlend(sc\ScrOverlay , 3)
+		ScaleSprite(sc\scrOverlay, MeshWidth(Monitor) * scale * 0.95 * 0.5, MeshHeight(Monitor) * scale * 0.95 * 0.5)
+		MoveEntity(sc\scrOverlay, 0, 0, -0.0005)
+		EntityTexture(sc\scrOverlay, MonitorTexture)
+		SpriteViewMode(sc\scrOverlay, 2)
+		EntityBlend(sc\scrOverlay , 3)
 		
-		sc\MonitorObj = CopyEntity(Monitor, sc\ScrObj)
+		sc\monitorObj = CopyEntity(Monitor, sc\scrObj)
 		
-		ScaleEntity(sc\MonitorObj, scale, scale, scale)
+		ScaleEntity(sc\monitorObj, scale, scale, scale)
 		
 		sc\cam = CreateCamera()
 		CameraViewport(sc\cam, 0, 0, 512, 512)
@@ -1459,26 +1459,26 @@ Function UpdateSecurityCams()
 	
 	For sc.SecurityCams = Each SecurityCams
 		Local close = False
-		If sc\room = Null And (Not sc\SpecialCam) Then
+		If sc\room = Null And (Not sc\specialCam) Then
 			HideEntity sc\cam
 		Else
-			If (Not sc\SpecialCam) Then
+			If (Not sc\specialCam) Then
 				If sc\room\dist < 6.0 Or mainPlayer\currRoom=sc\room Then 
 					close = True
-				ElseIf sc\IsRoom2slCam Then
+				ElseIf sc\isRoom2slCam Then
 					close = True
 				ElseIf sc\cam<>0 Then
 					HideEntity sc\cam
 				EndIf
 			EndIf
 			
-			If sc\IsRoom2slCam Then sc\coffinEffect = 0
+			If sc\isRoom2slCam Then sc\coffinEffect = 0
 			If sc\room <> Null Then
-				If sc\room\RoomTemplate\name$ = "hll_sl_2" Then sc\coffinEffect = 0
+				If sc\room\roomTemplate\name$ = "hll_sl_2" Then sc\coffinEffect = 0
 			EndIf
-			If sc\SpecialCam Then sc\coffinEffect = 0
+			If sc\specialCam Then sc\coffinEffect = 0
 			
-			If close Or sc=CoffinCam Or sc\IsRoom2slCam Then 
+			If close Or sc=CoffinCam Or sc\isRoom2slCam Then 
 				If sc\followPlayer Then
 					If sc<>CoffinCam Then
 						If EntityVisible(sc\cameraObj,mainPlayer\cam) Then
@@ -1526,12 +1526,12 @@ Function UpdateSecurityCams()
 				EndIf
 			EndIf
 			
-			If close = True Or sc\IsRoom2slCam Or sc\SpecialCam Then
-				If sc\Screen Then 
+			If close = True Or sc\isRoom2slCam Or sc\specialCam Then
+				If sc\screen Then 
 					sc\state = sc\state+timing\tickDuration
 					
-					If sc\InSight And sc\allowSaving Then 
-						If SelectedDifficulty\saveType = SAVEONSCREENS And EntityDistance(mainPlayer\cam, sc\ScrObj)<1.0 Then
+					If sc\inSight And sc\allowSaving Then 
+						If SelectedDifficulty\saveType = SAVEONSCREENS And EntityDistance(mainPlayer\cam, sc\scrObj)<1.0 Then
 							DrawHandIcon = True
 							If MouseHit1 Then SelectedMonitor = sc
 						ElseIf SelectedMonitor = sc Then
@@ -1541,11 +1541,11 @@ Function UpdateSecurityCams()
 						SelectedMonitor = Null
 					EndIf
 					
-					If sc\state >= sc\RenderInterval Then
-						sc\InSight = False
-						If mainPlayer\blinkTimer > - 5 And EntityInView(sc\ScrObj, mainPlayer\cam) Then
-							If EntityVisible(mainPlayer\cam,sc\ScrObj) Then
-								sc\InSight = True
+					If sc\state >= sc\renderInterval Then
+						sc\inSight = False
+						If mainPlayer\blinkTimer > - 5 And EntityInView(sc\scrObj, mainPlayer\cam) Then
+							If EntityVisible(mainPlayer\cam,sc\scrObj) Then
+								sc\inSight = True
 								
 								If sc\coffinEffect=1 Or sc\coffinEffect=3 Then
 									If mainPlayer\blinkTimer > - 5 Then mainPlayer\sanity895=mainPlayer\sanity895-(timing\tickDuration * 16)
@@ -1558,8 +1558,8 @@ Function UpdateSecurityCams()
 									EndIf
 								EndIf
 								
-								If (Not sc\IsRoom2slCam) Then
-									If (Not sc\SpecialCam) Then
+								If (Not sc\isRoom2slCam) Then
+									If (Not sc\specialCam) Then
 										If CoffinCam = Null Or Rand(5)=5 Or sc\coffinEffect <> 3 Then
 											HideEntity(mainPlayer\cam)
 											ShowEntity(sc\cam)
@@ -1567,7 +1567,7 @@ Function UpdateSecurityCams()
 											
 											SetBuffer BackBuffer()
 											RenderWorld
-											CopyRect 0,0,512,512,0,0,BackBuffer(),TextureBuffer(ScreenTexs[sc\ScrTexture])
+											CopyRect 0,0,512,512,0,0,BackBuffer(),TextureBuffer(ScreenTexs[sc\scrTexture])
 											
 											HideEntity(sc\cam)
 											ShowEntity(mainPlayer\cam)										
@@ -1580,7 +1580,7 @@ Function UpdateSecurityCams()
 											
 											SetBuffer BackBuffer()
 											RenderWorld
-											CopyRect 0,0,512,512,0,0,BackBuffer(),TextureBuffer(ScreenTexs[sc\ScrTexture])
+											CopyRect 0,0,512,512,0,0,BackBuffer(),TextureBuffer(ScreenTexs[sc\scrTexture])
 											
 											HideEntity (CoffinCam\room\obj)
 											HideEntity(CoffinCam\cam)
@@ -1596,7 +1596,7 @@ Function UpdateSecurityCams()
 										HideEntity(sc\cam)
 										ShowEntity(mainPlayer\cam)	
 										
-										CopyRect(0,0,512,512,0,0,BackBuffer(),TextureBuffer(sc\Room2slTexs[sc\ScrTexture]))
+										CopyRect(0,0,512,512,0,0,BackBuffer(),TextureBuffer(sc\room2slTexs[sc\scrTexture]))
 										
 									EndIf
 								Else
@@ -1612,7 +1612,7 @@ Function UpdateSecurityCams()
 									HideEntity(sc\cam)
 									ShowEntity(mainPlayer\cam)	
 									
-									CopyRect(0, 0, userOptions\screenWidth, userOptions\screenHeight, 0, 0, BackBuffer(), TextureBuffer(sc\Room2slTexs[sc\ScrTexture]))
+									CopyRect(0, 0, userOptions\screenWidth, userOptions\screenHeight, 0, 0, BackBuffer(), TextureBuffer(sc\room2slTexs[sc\scrTexture]))
 								EndIf
 								
 							EndIf
@@ -1621,11 +1621,11 @@ Function UpdateSecurityCams()
 					EndIf
 					
 					If SelectedMonitor = sc Or sc\coffinEffect=1 Or sc\coffinEffect=3 Then
-						If sc\InSight Then
+						If sc\inSight Then
 						;If (Not NoClip) Then 
 							Local pvt% = CreatePivot()
 							PositionEntity pvt, EntityX(mainPlayer\cam), EntityY(mainPlayer\cam), EntityZ(mainPlayer\cam)
-							PointEntity(pvt, sc\ScrObj)
+							PointEntity(pvt, sc\scrObj)
 							
 							DebugLog("curvea: "+CurveAngle(EntityYaw(pvt), EntityYaw(mainPlayer\collider), Min(Max(15000.0 / (-mainPlayer\sanity895), 20.0), 200.0)))
 							RotateEntity(mainPlayer\collider, EntityPitch(mainPlayer\collider), CurveAngle(EntityYaw(pvt), EntityYaw(mainPlayer\collider), Min(Max(15000.0 / (-mainPlayer\sanity895), 20.0), 200.0)), 0)
@@ -1641,61 +1641,61 @@ Function UpdateSecurityCams()
 						;EndIf
 							If sc\coffinEffect=1 Or sc\coffinEffect=3 Then
 								If mainPlayer\sanity895 < - 800 Then
-									If Rand(3) = 1 Then EntityTexture(sc\ScrOverlay, MonitorTexture)
+									If Rand(3) = 1 Then EntityTexture(sc\scrOverlay, MonitorTexture)
 									If Rand(6) < 5 Then
-										EntityTexture(sc\ScrOverlay, GorePics(Rand(0, 5)))
-										;If sc\PlayerState = 1 Then PlaySound(HorrorSFX(1)) ;TODO: fix
-										sc\PlayerState = 2
+										EntityTexture(sc\scrOverlay, GorePics(Rand(0, 5)))
+										;If sc\playerState = 1 Then PlaySound(HorrorSFX(1)) ;TODO: fix
+										sc\playerState = 2
 										If sc\soundCHN = 0 Then
 											;sc\soundCHN = PlaySound(HorrorSFX(4)) ;TODO: fix
 										Else
 											;If Not IsChannelPlaying(sc\soundCHN) Then sc\soundCHN = PlaySound(HorrorSFX(4)) ;TODO: fix
 										EndIf
-										If sc\coffinEffect=3 And Rand(200)=1 Then sc\coffinEffect=2 : sc\PlayerState = Rand(10000, 20000)
+										If sc\coffinEffect=3 And Rand(200)=1 Then sc\coffinEffect=2 : sc\playerState = Rand(10000, 20000)
 									EndIf	
 									mainPlayer\blurTimer = 1000
 								ElseIf mainPlayer\sanity895 < - 500 Then
-									If Rand(7) = 1 Then EntityTexture(sc\ScrOverlay, MonitorTexture)
+									If Rand(7) = 1 Then EntityTexture(sc\scrOverlay, MonitorTexture)
 									If Rand(50) = 1 Then
-										EntityTexture(sc\ScrOverlay, GorePics(Rand(0, 5)))
-										;If sc\PlayerState = 0 Then PlaySound(HorrorSFX(0)) ;TODO: fix
-										sc\PlayerState = Max(sc\PlayerState, 1)
-										If sc\coffinEffect=3 And Rand(100)=1 Then sc\coffinEffect=2 : sc\PlayerState = Rand(10000, 20000)
+										EntityTexture(sc\scrOverlay, GorePics(Rand(0, 5)))
+										;If sc\playerState = 0 Then PlaySound(HorrorSFX(0)) ;TODO: fix
+										sc\playerState = Max(sc\playerState, 1)
+										If sc\coffinEffect=3 And Rand(100)=1 Then sc\coffinEffect=2 : sc\playerState = Rand(10000, 20000)
 									EndIf
 								Else
-									EntityTexture(sc\ScrOverlay, MonitorTexture)
+									EntityTexture(sc\scrOverlay, MonitorTexture)
 								EndIf
 							EndIf
 						EndIf
 					EndIf 
 					
-					If sc\InSight And sc\coffinEffect=0 Or sc\coffinEffect=2 Then
-						If sc\PlayerState = 0 Then
-							sc\PlayerState = Rand(60000, 65000)
+					If sc\inSight And sc\coffinEffect=0 Or sc\coffinEffect=2 Then
+						If sc\playerState = 0 Then
+							sc\playerState = Rand(60000, 65000)
 						EndIf
 						
 						If Rand(500) = 1 Then
-							EntityTexture(sc\ScrOverlay, OldAiPics(0))
+							EntityTexture(sc\scrOverlay, OldAiPics(0))
 						EndIf
 						
-						If (TimeInPosMilliSecs() Mod sc\PlayerState) >= Rand(600) Then
-							EntityTexture(sc\ScrOverlay, MonitorTexture)
+						If (TimeInPosMilliSecs() Mod sc\playerState) >= Rand(600) Then
+							EntityTexture(sc\scrOverlay, MonitorTexture)
 						Else
 							If sc\soundCHN = 0 Then
 								sc\soundCHN = PlaySound(LoadTempSound("SFX/SCP/079/Broadcast"+Rand(1,3)+".ogg"))
-								If sc\coffinEffect=2 Then sc\coffinEffect=3 : sc\PlayerState = 0
+								If sc\coffinEffect=2 Then sc\coffinEffect=3 : sc\playerState = 0
 							ElseIf (Not IsChannelPlaying(sc\soundCHN)) Then
 								sc\soundCHN = PlaySound(LoadTempSound("SFX/SCP/079/Broadcast"+Rand(1,3)+".ogg"))
-								If sc\coffinEffect=2 Then sc\coffinEffect=3 : sc\PlayerState = 0
+								If sc\coffinEffect=2 Then sc\coffinEffect=3 : sc\playerState = 0
 							EndIf
-							EntityTexture(sc\ScrOverlay, OldAiPics(0))
+							EntityTexture(sc\scrOverlay, OldAiPics(0))
 						EndIf
 						
 					EndIf
 					
 				EndIf ;if screen=true
 				
-				If (Not sc\InSight) Then sc\soundCHN = LoopRangedSound_SM(sndManager\camera, sc\soundCHN, mainPlayer\cam, sc\cameraObj, 4.0)
+				If (Not sc\inSight) Then sc\soundCHN = LoopRangedSound_SM(sndManager\camera, sc\soundCHN, mainPlayer\cam, sc\cameraObj, 4.0)
 			Else
 				If SelectedMonitor=sc Then SelectedMonitor=Null
 			EndIf
@@ -1831,7 +1831,7 @@ Function CreateMap()
 	;start off by placing rooms that ask to be placed a certain amount of times
 	Local prioritizedTemplateCount% = 0
 	For rt.RoomTemplates = Each RoomTemplates
-		If ((rt\zones And zone)<>0) And (rt\MaxAmount>0) And (rt\Shape<>ROOM0) Then
+		If ((rt\zones And zone)<>0) And (rt\maxAmount>0) And (rt\shape<>ROOM0) Then
 			prioritizedTemplateCount=prioritizedTemplateCount+1
 		EndIf
 	Next
@@ -1840,9 +1840,9 @@ Function CreateMap()
 	Local tempTemplate2.RoomTemplates
 	SetIntArrayElem(prioritizedTemplates,0,0,0)
 	For rt.RoomTemplates = Each RoomTemplates
-		If ((rt\zones And zone)<>0) And (rt\MaxAmount>0) And (rt\Shape<>ROOM0) Then
+		If ((rt\zones And zone)<>0) And (rt\maxAmount>0) And (rt\shape<>ROOM0) Then
 			tempTemplate = rt
-			DebugLog "queueing up "+rt\Name
+			DebugLog "queueing up "+rt\name
 			For i%=0 To prioritizedTemplateCount-1
 				If GetIntArrayElem(prioritizedTemplates,i,0)=0 Then
 					If i<prioritizedTemplateCount-1 Then
@@ -1852,9 +1852,9 @@ Function CreateMap()
 					Exit
 				Else
 					tempTemplate2 = Object.RoomTemplates(GetIntArrayElem(prioritizedTemplates,i,0))
-					If tempTemplate2\MaxAmount>tempTemplate\MaxAmount Then
+					If tempTemplate2\maxAmount>tempTemplate\maxAmount Then
 						SetIntArrayElem(prioritizedTemplates,Handle(tempTemplate),i,0)
-						;DebugLog "swapping "+tempTemplate2\Name+" for "+tempTemplate\Name
+						;DebugLog "swapping "+tempTemplate2\name+" for "+tempTemplate\name
 						tempTemplate = tempTemplate2
 					EndIf
 				EndIf
@@ -1887,9 +1887,9 @@ Function CreateMap()
 	For k%=0 To prioritizedTemplateCount-1
 		rt.RoomTemplates = Object.RoomTemplates(GetIntArrayElem(prioritizedTemplates,k,0))
 		
-		placementCount = Rand(rt\MinAmount,rt\MaxAmount)
+		placementCount = Rand(rt\minAmount,rt\maxAmount)
 		
-		DebugLog "trying to place "+placementCount+" "+rt\Name
+		DebugLog "trying to place "+placementCount+" "+rt\name
 		For c% = 1 To placementCount
 			loopStartX = Int(Min(Floor(Float(mapDim)*rt\xRangeStart),mapDim-1))
 			loopStartY = Int(Min(Floor(Float(mapDim)*rt\yRangeStart),mapDim-1))
@@ -1908,7 +1908,7 @@ Function CreateMap()
 					x% = ((i+offsetX) Mod (loopX+1)) + loopStartX
 					y% = ((j+offsetY) Mod (loopY+1)) + loopStartY
 					
-					If (GetIntArrayElem(layout,x,y)>0) And (GetIntArrayElem(layout,x,y)=rt\Shape) Then
+					If (GetIntArrayElem(layout,x,y)>0) And (GetIntArrayElem(layout,x,y)=rt\shape) Then
 						r = CreateRoom(rt,x*8.0,0.0,y*8.0)
 						r\angle = DetermineRotation(layout,x,y)
 						TurnEntity r\obj,0,r\angle,0
@@ -1921,7 +1921,7 @@ Function CreateMap()
 				Next
 				If placed Then Exit
 			Next
-			If Not placed Then RuntimeError "(seed: "+RandomSeed+") Failed To place "+rt\Name+" around ("+loopStartX+","+loopStartY+","+loopEndX+","+loopEndY+")"
+			If Not placed Then RuntimeError "(seed: "+RandomSeed+") Failed To place "+rt\name+" around ("+loopStartX+","+loopStartY+","+loopEndX+","+loopEndY+")"
 		Next
 	Next
 	
@@ -1933,9 +1933,9 @@ Function CreateMap()
 		totalCommonness[i] = 0
 	Next
 	For rt.RoomTemplates = Each RoomTemplates
-		If ((rt\zones And zone)<>0) And (rt\MaxAmount<0) And (rt\Shape<>ROOM0) Then
+		If ((rt\zones And zone)<>0) And (rt\maxAmount<0) And (rt\shape<>ROOM0) Then
 			randomTemplateCount=randomTemplateCount+1
-			totalCommonness[rt\Shape]=totalCommonness[rt\Shape]+rt\commonness
+			totalCommonness[rt\shape]=totalCommonness[rt\shape]+rt\commonness
 		EndIf
 	Next
 	Local randomTemplates.IntArray = CreateIntArray(randomTemplateCount,1)
@@ -1944,7 +1944,7 @@ Function CreateMap()
 	Local tempHandle2%
 	
 	For rt.RoomTemplates = Each RoomTemplates
-		If ((rt\zones And zone)<>0) And (rt\MaxAmount<0) And (rt\Shape<>ROOM0) Then
+		If ((rt\zones And zone)<>0) And (rt\maxAmount<0) And (rt\shape<>ROOM0) Then
 			SetIntArrayElem(randomTemplates,Handle(rt),index,0)
 			index=index+1
 		EndIf
@@ -2296,12 +2296,12 @@ Function FindAndDeleteFakeMonitor(r.Rooms,x#,y#,z#,Amount%)
 	Local i%
 	
 	For i = 0 To Amount%
-		If r\Objects[i]<>0 Then
-			If EntityX(r\Objects[i],True) = x# Then
-				If EntityY(r\Objects[i],True) = y# Then
-					If EntityZ(r\Objects[i],True) = z# Then
-						FreeEntity r\Objects[i]
-						r\Objects[i]=0
+		If r\objects[i]<>0 Then
+			If EntityX(r\objects[i],True) = x# Then
+				If EntityY(r\objects[i],True) = y# Then
+					If EntityZ(r\objects[i],True) = z# Then
+						FreeEntity r\objects[i]
+						r\objects[i]=0
 						DebugLog "Deleted Fake Monitor: "+i
 						Exit
 					EndIf

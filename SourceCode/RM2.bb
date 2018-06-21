@@ -352,13 +352,13 @@ Function LoadRM2(rt.RoomTemplates)
 				range = ReadFloat(file)
 				
 				For j = 0 To MaxRoomEmitters-1
-					If rt\TempSoundEmitter[j]=0 Then
-						rt\TempSoundEmitterX[j]=x
-						rt\TempSoundEmitterY[j]=y
-						rt\TempSoundEmitterZ[j]=z
-						rt\TempSoundEmitter[j]=ambienceInd
+					If rt\tempSoundEmitter[j]=0 Then
+						rt\tempSoundEmitterX[j]=x
+						rt\tempSoundEmitterY[j]=y
+						rt\tempSoundEmitterZ[j]=z
+						rt\tempSoundEmitter[j]=ambienceInd
 						
-						rt\TempSoundEmitterRange[j]=range
+						rt\tempSoundEmitterRange[j]=range
 						temp1i=1
 						Exit
 					EndIf

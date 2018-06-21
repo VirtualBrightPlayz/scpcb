@@ -115,7 +115,7 @@ Function UpdateNPCtype173(n.NPCs)
 				;more than 6 room lengths away from the player -> teleport to a room closer to the player
 				If dist > 50 Then
 					If Rand(70)=1 Then
-						If mainPlayer\currRoom\RoomTemplate\name <> "exit1" And mainPlayer\currRoom\RoomTemplate\name <> "gatea" And mainPlayer\currRoom\RoomTemplate\Name <> "pocketdimension" Then
+						If mainPlayer\currRoom\roomTemplate\name <> "exit1" And mainPlayer\currRoom\roomTemplate\name <> "gatea" And mainPlayer\currRoom\roomTemplate\name <> "pocketdimension" Then
 							For w.waypoints = Each WayPoints
 								If Rand(5)=1 Then ;w\door=Null And (TODO: fix?)
 									x = Abs(EntityX(mainPlayer\collider) - EntityX(w\obj, True))
@@ -141,7 +141,7 @@ Function UpdateNPCtype173(n.NPCs)
 					If Rand(20) = 1 Then
 						Local d.Doors
 						For d.Doors = Each Doors
-							If (Not d\locked) And d\open = False And d\code = "" And d\KeyCard=0 Then
+							If (Not d\locked) And d\open = False And d\code = "" And d\keyCard=0 Then
 								For i% = 0 To 1
 									If d\buttons[i] <> 0 Then
 										If Abs(EntityX(n\collider) - EntityX(d\buttons[i])) < 0.5 Then
@@ -172,7 +172,7 @@ Function UpdateNPCtype173(n.NPCs)
 						If dist < 0.65 Then
 							If (Not mainPlayer\dead) And (Not mainPlayer\godMode) Then
 								
-								Select mainPlayer\currRoom\RoomTemplate\Name
+								Select mainPlayer\currRoom\roomTemplate\name
 									Case "lockroom", "room2closets", "coffin"
 										DeathMSG = "Subject D-9341. Cause of death: Fatal cervical fracture. The surveillance tapes confirm that the subject was killed by SCP-173."	
 									Case "173"
@@ -228,10 +228,10 @@ Function UpdateNPCtype173(n.NPCs)
 			EndIf
 		Case STATE173_MOVE_TO_TARGET
 			;If 173 was given a target then use its position.
-			If (n\Target <> Null) Then
-				n\targetX = EntityX(n\Target\collider)
-				n\targetY = EntityY(n\Target\collider)
-				n\targetZ = EntityZ(n\Target\collider)
+			If (n\target <> Null) Then
+				n\targetX = EntityX(n\target\collider)
+				n\targetY = EntityY(n\target\collider)
+				n\targetZ = EntityZ(n\target\collider)
 			EndIf
 
 			If (n\targetX <> 0) Then
@@ -248,7 +248,7 @@ Function UpdateNPCtype173(n.NPCs)
 				n\state = STATE173_IDLE
 			EndIf
 		Case STATE173_BEING_CONTAINED
-			If (n\Target <> Null) Then
+			If (n\target <> Null) Then
 				Local tmp = False
 				If dist > HideDistance*0.7 Then
 					If EntityVisible(n\obj,mainPlayer\collider)=False Then
@@ -256,16 +256,16 @@ Function UpdateNPCtype173(n.NPCs)
 					EndIf
 				EndIf
 				If (Not tmp) Then
-					PointEntity n\obj, n\Target\collider
+					PointEntity n\obj, n\target\collider
 					RotateEntity n\collider, 0, CurveAngle(EntityYaw(n\obj),EntityYaw(n\collider),10.0), 0, True								
-					dist = EntityDistance(n\collider, n\Target\collider)
+					dist = EntityDistance(n\collider, n\target\collider)
 					MoveEntity n\collider, 0, 0, 0.016*timing\tickDuration*Max(Min((dist*2-1.0)*0.5,1.0),-0.5)
 				Else
-					PositionEntity n\collider,EntityX(n\Target\collider),EntityY(n\Target\collider)+0.3,EntityZ(n\Target\collider)
+					PositionEntity n\collider,EntityX(n\target\collider),EntityY(n\target\collider)+0.3,EntityZ(n\target\collider)
 					ResetEntity n\collider
-					;PointEntity n\collider, n\Target\collider
+					;PointEntity n\collider, n\target\collider
 					;RotateEntity n\collider, 0, CurveAngle(EntityYaw(n\obj),EntityYaw(n\collider),10.0), 0, True
-					;dist = EntityDistance(n\collider, n\Target\collider)
+					;dist = EntityDistance(n\collider, n\target\collider)
 					;MoveEntity n\collider, 0, 0, dist-0.6
 				EndIf
 			EndIf

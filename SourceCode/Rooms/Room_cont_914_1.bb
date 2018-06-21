@@ -9,42 +9,42 @@ Function FillRoom_cont_914_1(r.Rooms)
     ;d\dir = 1 : d\autoClose = False : d\open = False
     ;PositionEntity (d\buttons[0], r\x - 496.0 * RoomScale, 0.7, r\z - 272.0 * RoomScale, True)
     ;TurnEntity(d\buttons[0], 0, 90, 0)
-    r\RoomDoors[2] = CreateDoor(r\zone,r\x,0,r\z-368.0*RoomScale,0,r,False,True,2)
-    r\RoomDoors[2]\dir=1 : r\RoomDoors[2]\autoClose=False : r\RoomDoors[2]\open=False
-    PositionEntity (r\RoomDoors[2]\buttons[0], r\x - 496.0 * RoomScale, 0.7, r\z - 272.0 * RoomScale, True)
-    TurnEntity(r\RoomDoors[2]\buttons[0], 0, 90, 0)
+    r\roomDoors[2] = CreateDoor(r\zone,r\x,0,r\z-368.0*RoomScale,0,r,False,True,2)
+    r\roomDoors[2]\dir=1 : r\roomDoors[2]\autoClose=False : r\roomDoors[2]\open=False
+    PositionEntity (r\roomDoors[2]\buttons[0], r\x - 496.0 * RoomScale, 0.7, r\z - 272.0 * RoomScale, True)
+    TurnEntity(r\roomDoors[2]\buttons[0], 0, 90, 0)
     
-    r\Objects[0] = LoadMesh("GFX/map/914key.x")
-    r\Objects[1] = LoadMesh("GFX/map/914knob.x")
+    r\objects[0] = LoadMesh("GFX/map/914key.x")
+    r\objects[1] = LoadMesh("GFX/map/914knob.x")
     
     For  i% = 0 To 1
-        ScaleEntity(r\Objects[i], RoomScale, RoomScale, RoomScale)
-        EntityPickMode(r\Objects[i], 2)
+        ScaleEntity(r\objects[i], RoomScale, RoomScale, RoomScale)
+        EntityPickMode(r\objects[i], 2)
     Next
     
-    PositionEntity (r\Objects[0], r\x, r\y + 190.0 * RoomScale, r\z + 374.0 * RoomScale)
-    PositionEntity (r\Objects[1], r\x, r\y + 230.0 * RoomScale, r\z + 374.0 * RoomScale)
-    EntityParent(r\Objects[0], r\obj)
-    EntityParent(r\Objects[1], r\obj)
+    PositionEntity (r\objects[0], r\x, r\y + 190.0 * RoomScale, r\z + 374.0 * RoomScale)
+    PositionEntity (r\objects[1], r\x, r\y + 230.0 * RoomScale, r\z + 374.0 * RoomScale)
+    EntityParent(r\objects[0], r\obj)
+    EntityParent(r\objects[1], r\obj)
     
     d = CreateDoor(r\zone, r\x - 624.0 * RoomScale, 0.0, r\z + 528.0 * RoomScale, 180, r, True)
     FreeEntity (d\obj2) : d\obj2 = 0
     FreeEntity (d\buttons[0]) : d\buttons[0] = 0
     FreeEntity (d\buttons[1]) : d\buttons[1] = 0
-    r\RoomDoors[0] = d: d\autoClose = False
+    r\roomDoors[0] = d: d\autoClose = False
     
     d = CreateDoor(r\zone, r\x + 816.0 * RoomScale, 0.0, r\z + 528.0 * RoomScale, 180, r, True)
     FreeEntity (d\obj2) : d\obj2 = 0	
     FreeEntity (d\buttons[0]) : d\buttons[0] = 0
     FreeEntity (d\buttons[1]) : d\buttons[1] = 0
-    r\RoomDoors[1] = d : d\autoClose = False
+    r\roomDoors[1] = d : d\autoClose = False
     
-    r\Objects[2] = CreatePivot()
-    r\Objects[3] = CreatePivot()
-    PositionEntity(r\Objects[2], r\x - 712.0 * RoomScale, 0.5, r\z + 640.0 * RoomScale)
-    PositionEntity(r\Objects[3], r\x + 728.0 * RoomScale, 0.5, r\z + 640.0 * RoomScale)
-    EntityParent(r\Objects[2], r\obj)
-    EntityParent(r\Objects[3], r\obj)
+    r\objects[2] = CreatePivot()
+    r\objects[3] = CreatePivot()
+    PositionEntity(r\objects[2], r\x - 712.0 * RoomScale, 0.5, r\z + 640.0 * RoomScale)
+    PositionEntity(r\objects[3], r\x + 728.0 * RoomScale, 0.5, r\z + 640.0 * RoomScale)
+    EntityParent(r\objects[2], r\obj)
+    EntityParent(r\objects[3], r\obj)
     
     it = CreateItem("Note", "paper", r\x +954.0 * RoomScale, r\y +228.0 * RoomScale, r\z + 127.0 * RoomScale)
     EntityParent(it\collider, r\obj)	
@@ -67,7 +67,7 @@ Function Use914(item.Items, setting$, x#, y#, z#)
 			Select setting
 				Case "rough", "coarse"
 					d.Decals = CreateDecal(0, x, 8 * RoomScale + 0.005, z, 90, Rand(360), 0)
-					d\Size = 0.12 : ScaleSprite(d\obj, d\Size, d\Size)
+					d\size = 0.12 : ScaleSprite(d\obj, d\size, d\size)
 					RemoveItem(item)
 				Case "1:1"
 					PositionEntity(item\collider, x, y, z)
@@ -80,7 +80,7 @@ Function Use914(item.Items, setting$, x#, y#, z#)
 				Select setting
 				Case "rough", "coarse"
 					d.Decals = CreateDecal(0, x, 8 * RoomScale + 0.005, z, 90, Rand(360), 0)
-					d\Size = 0.12 : ScaleSprite(d\obj, d\Size, d\Size)
+					d\size = 0.12 : ScaleSprite(d\obj, d\size, d\size)
 					RemoveItem(item)
 				Case "1:1"
 					it2 = CreateItem("Gas Mask", "gasmask", x, y, z)
@@ -100,7 +100,7 @@ Function Use914(item.Items, setting$, x#, y#, z#)
 			Select setting
 				Case "rough", "coarse"
 					d.Decals = CreateDecal(0, x, 8 * RoomScale + 0.005, z, 90, Rand(360), 0)
-					d\Size = 0.12 : ScaleSprite(d\obj, d\Size, d\Size)
+					d\size = 0.12 : ScaleSprite(d\obj, d\size, d\size)
 					RemoveItem(item)
 				Case "1:1"
 					PositionEntity(item\collider, x, y, z)
@@ -116,7 +116,7 @@ Function Use914(item.Items, setting$, x#, y#, z#)
 			Select setting
 				Case "rough", "coarse"
 					d.Decals = CreateDecal(7, x, 8 * RoomScale + 0.005, z, 90, Rand(360), 0)
-					d\Size = 0.12 : ScaleSprite(d\obj, d\Size, d\Size)
+					d\size = 0.12 : ScaleSprite(d\obj, d\size, d\size)
 					
 					RemoveItem(item)
 				Case "1:1"
@@ -135,7 +135,7 @@ Function Use914(item.Items, setting$, x#, y#, z#)
 			Select setting
 				Case "rough","coarse"
 					d.Decals = CreateDecal(0, x, 8*RoomScale+0.010, z, 90, Rand(360), 0)
-					d\Size = 0.2 : EntityAlpha(d\obj, 0.8) : ScaleSprite(d\obj, d\Size, d\Size)
+					d\size = 0.2 : EntityAlpha(d\obj, 0.8) : ScaleSprite(d\obj, d\size, d\size)
 					RemoveItem(item)
 				Case "1:1","fine","very fine"
 					PositionEntity(item\collider, x, y, z)
@@ -145,7 +145,7 @@ Function Use914(item.Items, setting$, x#, y#, z#)
 			Select setting
 				Case "rough", "coarse"
 					d.Decals = CreateDecal(0, x, 8 * RoomScale + 0.005, z, 90, Rand(360), 0)
-					d\Size = 0.12 : ScaleSprite(d\obj, d\Size, d\Size)
+					d\size = 0.12 : ScaleSprite(d\obj, d\size, d\size)
 					RemoveItem(item)
 				Case "1:1"
 					PositionEntity(item\collider, x, y, z)
@@ -165,7 +165,7 @@ Function Use914(item.Items, setting$, x#, y#, z#)
 				Case "1:1", "fine", "very fine"
 					it2 = Null
 					For it.Items = Each Items
-						If it<>item And it\collider <> 0 And it\Picked = False Then
+						If it<>item And it\collider <> 0 And it\picked = False Then
 							If Distance(EntityX(it\collider,True), EntityZ(it\collider,True), EntityX(item\collider, True), EntityZ(item\collider, True)) < (180.0 * RoomScale) Then
 								it2 = it
 								Exit
@@ -207,7 +207,7 @@ Function Use914(item.Items, setting$, x#, y#, z#)
 			Select setting
 				Case "rough", "coarse"
 					d.Decals = CreateDecal(3, x, 8 * RoomScale + 0.005, z, 90, Rand(360), 0)
-					d\Size = 0.12 : ScaleSprite(d\obj, d\Size, d\Size)
+					d\size = 0.12 : ScaleSprite(d\obj, d\size, d\size)
 				Case "1:1", "fine", "very fine"
 					If (item\itemtemplate\name = "Severed Hand") Then
 						it2 = CreateItem("Black Severed Hand", "hand2", x, y, z)
@@ -221,7 +221,7 @@ Function Use914(item.Items, setting$, x#, y#, z#)
 			Select setting
 				Case "rough", "coarse"
 					d.Decals = CreateDecal(0, x, 8 * RoomScale + 0.005, z, 90, Rand(360), 0)
-					d\Size = 0.12 : ScaleSprite(d\obj, d\Size, d\Size)
+					d\size = 0.12 : ScaleSprite(d\obj, d\size, d\size)
 				Case "1:1"
 				If Rand(2)=1 Then
 					it2 = CreateItem("Blue First Aid Kit", "firstaid2", x, y, z)
@@ -238,7 +238,7 @@ Function Use914(item.Items, setting$, x#, y#, z#)
 			Select setting
 				Case "rough", "coarse"
 					d.Decals = CreateDecal(0, x, 8 * RoomScale + 0.005, z, 90, Rand(360), 0)
-					d\Size = 0.07 : ScaleSprite(d\obj, d\Size, d\Size)
+					d\size = 0.07 : ScaleSprite(d\obj, d\size, d\size)
 				Case "1:1"
 					it2 = CreateItem("Playing Card", "misc", x, y, z)
 				Case "fine"
@@ -353,7 +353,7 @@ Function Use914(item.Items, setting$, x#, y#, z#)
 			Select setting
 				Case "rough", "coarse"
 					d.Decals = CreateDecal(0, x, 8 * RoomScale + 0.005, z, 90, Rand(360), 0)
-					d\Size = 0.07 : ScaleSprite(d\obj, d\Size, d\Size)
+					d\size = 0.07 : ScaleSprite(d\obj, d\size, d\size)
 				Case "1:1"
 						it2 = CreateItem("Level 1 Key Card", "key1", x, y, z)	
 			    Case "fine", "very fine"
@@ -400,7 +400,7 @@ Function Use914(item.Items, setting$, x#, y#, z#)
 						If n\npctype = NPCtype5131 Then RemoveNPC(n)
 					Next
 					d.Decals = CreateDecal(0, x, 8*RoomScale+0.010, z, 90, Rand(360), 0)
-					d\Size = 0.2 : EntityAlpha(d\obj, 0.8) : ScaleSprite(d\obj, d\Size, d\Size)
+					d\size = 0.2 : EntityAlpha(d\obj, 0.8) : ScaleSprite(d\obj, d\size, d\size)
 				Case "1:1", "fine", "very fine"
 					it2 = CreateItem("SCP-513", "scp513", x, y, z)
 					
@@ -411,7 +411,7 @@ Function Use914(item.Items, setting$, x#, y#, z#)
 			Select setting
 				Case "rough", "coarse"			
 					d.Decals = CreateDecal(0, x, 8*RoomScale+0.010, z, 90, Rand(360), 0)
-					d\Size = 0.2 : EntityAlpha(d\obj, 0.8) : ScaleSprite(d\obj, d\Size, d\Size)
+					d\size = 0.2 : EntityAlpha(d\obj, 0.8) : ScaleSprite(d\obj, d\size, d\size)
 				Case "1:1"
 					it2 = CreateItem("Cigarette", "cigarette", x + 1.5, y + 0.5, z + 1.0)
 				Case "fine"
@@ -425,7 +425,7 @@ Function Use914(item.Items, setting$, x#, y#, z#)
 			Select setting
 				Case "rough", "coarse"
 					d.Decals = CreateDecal(0, x, 8 * RoomScale + 0.010, z, 90, Rand(360), 0)
-					d\Size = 0.2 : EntityAlpha(d\obj, 0.8) : ScaleSprite(d\obj, d\Size, d\Size)
+					d\size = 0.2 : EntityAlpha(d\obj, 0.8) : ScaleSprite(d\obj, d\size, d\size)
 				Case "1:1"
 					it2 = CreateItem("18V Battery", "18vbat", x, y, z)
 				Case "fine"
@@ -439,7 +439,7 @@ Function Use914(item.Items, setting$, x#, y#, z#)
 			Select setting
 				Case "rough", "coarse"
 					d.Decals = CreateDecal(0, x, 8 * RoomScale + 0.010, z, 90, Rand(360), 0)
-					d\Size = 0.2 : EntityAlpha(d\obj, 0.8) : ScaleSprite(d\obj, d\Size, d\Size)
+					d\size = 0.2 : EntityAlpha(d\obj, 0.8) : ScaleSprite(d\obj, d\size, d\size)
 				Case "1:1"
 					it2 = CreateItem("RedVision Eyedrops", "eyedrops", x,y,z)
 				Case "fine"
@@ -453,7 +453,7 @@ Function Use914(item.Items, setting$, x#, y#, z#)
 			Select setting
 				Case "rough", "coarse"
 					d.Decals = CreateDecal(0, x, 8 * RoomScale + 0.010, z, 90, Rand(360), 0)
-					d\Size = 0.2 : EntityAlpha(d\obj, 0.8) : ScaleSprite(d\obj, d\Size, d\Size)
+					d\size = 0.2 : EntityAlpha(d\obj, 0.8) : ScaleSprite(d\obj, d\size, d\size)
 				Case "1:1"
 					it2 = CreateItem("Hazmat Suit", "hazmatsuit", x,y,z)
 				Case "fine"
@@ -470,7 +470,7 @@ Function Use914(item.Items, setting$, x#, y#, z#)
 					Select setting
 						Case "rough", "coarse"
 							d.Decals = CreateDecal(0, x, 8 * RoomScale + 0.010, z, 90, Rand(360), 0)
-							d\Size = 0.2 : EntityAlpha(d\obj, 0.8) : ScaleSprite(d\obj, d\Size, d\Size)
+							d\size = 0.2 : EntityAlpha(d\obj, 0.8) : ScaleSprite(d\obj, d\size, d\size)
 						Case "1:1"
 							it2 = CreateItem("cup", "cup", x,y,z)
 							it2\name = item\name
@@ -501,7 +501,7 @@ Function Use914(item.Items, setting$, x#, y#, z#)
 					Select setting
 						Case "rough", "coarse"
 							d.Decals = CreateDecal(7, x, 8 * RoomScale + 0.005, z, 90, Rand(360), 0)
-							d\Size = 0.12 : ScaleSprite(d\obj, d\Size, d\Size)
+							d\size = 0.12 : ScaleSprite(d\obj, d\size, d\size)
 						Case "1:1"
 							Select Rand(6)
 								Case 1
@@ -555,22 +555,22 @@ Function UpdateEvent_cont_914_1(e.Events)
 		EndIf
 		
 		EntityPick(mainPlayer\cam, 1.0)
-		If PickedEntity() = e\room\Objects[0] Then
+		If PickedEntity() = e\room\objects[0] Then
 			DrawHandIcon = True
-			If MouseHit1 Then mainPlayer\grabbedEntity = e\room\Objects[0]
-		ElseIf PickedEntity() = e\room\Objects[1] Then
+			If MouseHit1 Then mainPlayer\grabbedEntity = e\room\objects[0]
+		ElseIf PickedEntity() = e\room\objects[1] Then
 			DrawHandIcon = True
-			If MouseHit1 Then mainPlayer\grabbedEntity = e\room\Objects[1]
+			If MouseHit1 Then mainPlayer\grabbedEntity = e\room\objects[1]
 		EndIf
 		
 		If MouseDown1 Or MouseHit1 Then
 			If mainPlayer\grabbedEntity <> 0 Then ;avain
-				If mainPlayer\grabbedEntity = e\room\Objects[0] Then
+				If mainPlayer\grabbedEntity = e\room\objects[0] Then
 					If e\eventState = 0 Then
 						DrawHandIcon = True
 						TurnEntity(mainPlayer\grabbedEntity, 0, 0, -mouse_x_speed_1 * 2.5)
 						
-						angle = WrapAngle(EntityRoll(e\room\Objects[0]))
+						angle = WrapAngle(EntityRoll(e\room\objects[0]))
 						If angle > 181 Then DrawArrowIcon(3) = True
 						DrawArrowIcon(1) = True
 						
@@ -582,11 +582,11 @@ Function UpdateEvent_cont_914_1(e.Events)
 						
 						If angle < 181 And angle > 90 Then
 							For it.Items = Each Items
-								If it\collider <> 0 And it\Picked = False Then
+								If it\collider <> 0 And it\picked = False Then
 									If Abs(EntityX(it\collider) - (e\room\x - 712.0 * RoomScale)) < 200.0 Then
 										If Abs(EntityY(it\collider) - (e\room\y + 648.0 * RoomScale)) < 104.0 Then
 											e\eventState = 1
-											e\soundChannels[0] = PlayRangedSound(e\sounds[0], mainPlayer\cam, e\room\Objects[1])
+											e\soundChannels[0] = PlayRangedSound(e\sounds[0], mainPlayer\cam, e\room\objects[1])
 											Exit
 										EndIf
 									EndIf
@@ -594,12 +594,12 @@ Function UpdateEvent_cont_914_1(e.Events)
 							Next
 						EndIf
 					EndIf
-				ElseIf mainPlayer\grabbedEntity = e\room\Objects[1] Then
+				ElseIf mainPlayer\grabbedEntity = e\room\objects[1] Then
 					If e\eventState = 0 Then
 						DrawHandIcon = True
 						TurnEntity(mainPlayer\grabbedEntity, 0, 0, -mouse_x_speed_1 * 2.5)
 						
-						angle# = WrapAngle(EntityRoll(e\room\Objects[1]))
+						angle# = WrapAngle(EntityRoll(e\room\objects[1]))
 						DrawArrowIcon(3) = True
 						DrawArrowIcon(1) = True
 						
@@ -620,8 +620,8 @@ Function UpdateEvent_cont_914_1(e.Events)
 		
 		Local setting$ = ""
 		
-		If mainPlayer\grabbedEntity <> e\room\Objects[1] Then
-			angle# = WrapAngle(EntityRoll(e\room\Objects[1]))
+		If mainPlayer\grabbedEntity <> e\room\objects[1] Then
+			angle# = WrapAngle(EntityRoll(e\room\objects[1]))
 			If angle < 22.5 Then
 				angle = 0
 				setting = "1:1"
@@ -641,14 +641,14 @@ Function UpdateEvent_cont_914_1(e.Events)
 				angle = 270 - 360
 				setting = "very fine"
 			EndIf
-			RotateEntity(e\room\Objects[1], 0, 0, CurveValue(angle, EntityRoll(e\room\Objects[1]), 20))
+			RotateEntity(e\room\objects[1], 0, 0, CurveValue(angle, EntityRoll(e\room\objects[1]), 20))
 		EndIf
 		
 		For i% = 0 To 1
-			If mainPlayer\grabbedEntity = e\room\Objects[i] Then
-				If Not EntityInView(e\room\Objects[i], mainPlayer\cam) Then
+			If mainPlayer\grabbedEntity = e\room\objects[i] Then
+				If Not EntityInView(e\room\objects[i], mainPlayer\cam) Then
 					mainPlayer\grabbedEntity = 0
-				ElseIf EntityDistance(e\room\Objects[i], mainPlayer\cam) > 1.0 Then
+				ElseIf EntityDistance(e\room\objects[i], mainPlayer\cam) > 1.0 Then
 					mainPlayer\grabbedEntity = 0
 				EndIf
 			EndIf
@@ -657,12 +657,12 @@ Function UpdateEvent_cont_914_1(e.Events)
 		If e\eventState > 0 Then
 			e\eventState = e\eventState + timing\tickDuration
 			
-			e\room\RoomDoors[1]\open = False
+			e\room\roomDoors[1]\open = False
 			If e\eventState > 70 * 2 Then
-				e\room\RoomDoors[0]\open = False
+				e\room\roomDoors[0]\open = False
 			EndIf
 			
-			If Distance(EntityX(mainPlayer\collider), EntityZ(mainPlayer\collider), EntityX(e\room\Objects[2], True), EntityZ(e\room\Objects[2], True)) < (170.0 * RoomScale) Then
+			If Distance(EntityX(mainPlayer\collider), EntityZ(mainPlayer\collider), EntityX(e\room\objects[2], True), EntityZ(e\room\objects[2], True)) < (170.0 * RoomScale) Then
 				
 				If setting = "rough" Or setting = "coarse" Then
 					If e\eventState > 70 * 2.6 And e\eventState - timing\tickDuration < 70 * 2.6 Then PlaySound2(e\sounds[2])
@@ -691,22 +691,22 @@ Function UpdateEvent_cont_914_1(e.Events)
 			EndIf
 			
 			If e\eventState > (6 * 70) Then	
-				RotateEntity(e\room\Objects[0], EntityPitch(e\room\Objects[0]), EntityYaw(e\room\Objects[0]), CurveAngle(0, EntityRoll(e\room\Objects[0]),10.0))
+				RotateEntity(e\room\objects[0], EntityPitch(e\room\objects[0]), EntityYaw(e\room\objects[0]), CurveAngle(0, EntityRoll(e\room\objects[0]),10.0))
 			Else
-				RotateEntity(e\room\Objects[0], EntityPitch(e\room\Objects[0]), EntityYaw(e\room\Objects[0]), 180)
+				RotateEntity(e\room\objects[0], EntityPitch(e\room\objects[0]), EntityYaw(e\room\objects[0]), 180)
 			EndIf
 			
 			If e\eventState > (12 * 70) Then							
 				For it.Items = Each Items
-					If it\collider <> 0 And it\Picked = False Then
-						If Distance(EntityX(it\collider), EntityZ(it\collider), EntityX(e\room\Objects[2], True), EntityZ(e\room\Objects[2], True)) < (180.0 * RoomScale) Then
-							Use914(it, setting, EntityX(e\room\Objects[3], True), EntityY(e\room\Objects[3], True), EntityZ(e\room\Objects[3], True))
+					If it\collider <> 0 And it\picked = False Then
+						If Distance(EntityX(it\collider), EntityZ(it\collider), EntityX(e\room\objects[2], True), EntityZ(e\room\objects[2], True)) < (180.0 * RoomScale) Then
+							Use914(it, setting, EntityX(e\room\objects[3], True), EntityY(e\room\objects[3], True), EntityZ(e\room\objects[3], True))
 							
 						EndIf
 					EndIf
 				Next
 				
-				If Distance(EntityX(mainPlayer\collider), EntityZ(mainPlayer\collider), EntityX(e\room\Objects[2], True), EntityZ(e\room\Objects[2], True)) < (160.0 * RoomScale) Then
+				If Distance(EntityX(mainPlayer\collider), EntityZ(mainPlayer\collider), EntityX(e\room\objects[2], True), EntityZ(e\room\objects[2], True)) < (160.0 * RoomScale) Then
 					Select setting
 						Case "coarse"
 							mainPlayer\injuries = 4.0
@@ -718,14 +718,14 @@ Function UpdateEvent_cont_914_1(e.Events)
 							mainPlayer\superMan = 1.0
 					End Select
 					mainPlayer\blurTimer = 1000
-					PositionEntity(mainPlayer\collider, EntityX(e\room\Objects[3], True), EntityY(e\room\Objects[3], True) + 1.0, EntityZ(e\room\Objects[3], True))
+					PositionEntity(mainPlayer\collider, EntityX(e\room\objects[3], True), EntityY(e\room\objects[3], True) + 1.0, EntityZ(e\room\objects[3], True))
 					ResetEntity(mainPlayer\collider)
 					mainPlayer\dropSpeed = 0
 				EndIf								
 				
-				e\room\RoomDoors[0]\open = True
-				e\room\RoomDoors[1]\open = True
-				RotateEntity(e\room\Objects[0], 0, 0, 0)
+				e\room\roomDoors[0]\open = True
+				e\room\roomDoors[1]\open = True
+				RotateEntity(e\room\objects[0], 0, 0, 0)
 				e\eventState = 0
 			EndIf
 		EndIf

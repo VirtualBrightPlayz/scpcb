@@ -555,7 +555,7 @@ Function UpdateGame()
 				ToggleInventory(mainPlayer)
 			EndIf
 			
-			If mainPlayer\currRoom\RoomTemplate\name <> "pocketdimension" And mainPlayer\currRoom\RoomTemplate\name <> "gatea" And mainPlayer\currRoom\RoomTemplate\name <> "exit1" And (Not IsPaused()) Then 
+			If mainPlayer\currRoom\roomTemplate\name <> "pocketdimension" And mainPlayer\currRoom\roomTemplate\name <> "gatea" And mainPlayer\currRoom\roomTemplate\name <> "exit1" And (Not IsPaused()) Then 
 				
 				If Rand(1500) = 1 Then
 					;TODO: reimplement
@@ -567,7 +567,7 @@ Function UpdateGame()
 ;					
 ;					PositionEntity (SoundEmitter, EntityX(mainPlayer\cam) + Rnd(-1.0, 1.0), 0.0, EntityZ(mainPlayer\cam) + Rnd(-1.0, 1.0))
 ;					
-;					If mainPlayer\currRoom\RoomTemplate\Name = "room860"
+;					If mainPlayer\currRoom\roomTemplate\name = "room860"
 ;						For e.Events = Each Events
 ;							If e\name = "room860"
 ;								If e\eventState = 1.0 Then
@@ -596,7 +596,7 @@ Function UpdateGame()
 				EndIf
 				
 				If Rand(50000) = 3 Then
-					Local RN$ = mainPlayer\currRoom\RoomTemplate\name$
+					Local RN$ = mainPlayer\currRoom\roomTemplate\name$
 					If RN$ <> "room860" And RN$ <> "room1123" And RN$ <> "173" And RN$ <> "dimension1499" Then
 						;If timing\tickDuration > 0 Then LightBlink = Rnd(1.0,2.0)
 						PlaySound2  LoadTempSound("SFX/SCP/079/Broadcast"+Rand(1,7)+".ogg")
@@ -773,7 +773,7 @@ Function UpdateGame()
 			
 			If KeyHit(keyBinds\save) Then
 				If SelectedDifficulty\saveType = SAVEANYWHERE Then
-					RN$ = mainPlayer\currRoom\RoomTemplate\name$
+					RN$ = mainPlayer\currRoom\roomTemplate\name$
 					If RN$ = "173" Or RN$ = "exit1" Or RN$ = "gatea" Then
 						Msg = "You cannot save in this location."
 						MsgTimer = 70 * 4
@@ -788,7 +788,7 @@ Function UpdateGame()
 						Msg = "Saving is only permitted on clickable monitors scattered throughout the facility."
 						MsgTimer = 70 * 4						
 					Else
-						RN$ = mainPlayer\currRoom\RoomTemplate\name$
+						RN$ = mainPlayer\currRoom\roomTemplate\name$
 						If RN$ = "173" Or RN$ = "exit1" Or RN$ = "gatea" Then
 							Msg = "You cannot save in this location."
 							MsgTimer = 70 * 4
@@ -839,7 +839,7 @@ Function UpdateGame()
 				Local temp% = False ;TODO: change this variable's name because it's dumb as hell
 				If CurrGameState<>GAMESTATE_INVENTORY Then
 					If mainPlayer\selectedItem <> Null Then
-						If mainPlayer\selectedItem\itemtemplate\tempName = "paper" Or mainPlayer\SelectedItem\itemtemplate\tempName = "oldpaper" Then
+						If mainPlayer\selectedItem\itemtemplate\tempName = "paper" Or mainPlayer\selectedItem\itemtemplate\tempName = "oldpaper" Then
 							temp% = True
 						EndIf
 					EndIf
@@ -1223,7 +1223,7 @@ Function DrawGUI()
 	
 	Local e.Events, it.Items
 	
-	If mainPlayer\currRoom\RoomTemplate\name = "pocketdimension" Then
+	If mainPlayer\currRoom\roomTemplate\name = "pocketdimension" Then
 		For e.Events = Each Events
 			If e\room = mainPlayer\currRoom And e\eventState > 600 Then
 				If mainPlayer\blinkTimer < -3 And mainPlayer\blinkTimer > -11 Then
@@ -1344,7 +1344,7 @@ Function DrawGUI()
 			Text x - 50, 70, "Camera Position: (" + f2s(EntityX(mainPlayer\cam), 3)+ ", " + f2s(EntityY(mainPlayer\cam), 3) +", " + f2s(EntityZ(mainPlayer\cam), 3) + ")"
 			Text x - 50, 100, "Player Rotation: (" + f2s(EntityPitch(mainPlayer\collider), 3) + ", " + f2s(EntityYaw(mainPlayer\collider), 3) + ", " + f2s(EntityRoll(mainPlayer\collider), 3) + ")"
 			Text x - 50, 120, "Camera Rotation: (" + f2s(EntityPitch(mainPlayer\cam), 3)+ ", " + f2s(EntityYaw(mainPlayer\cam), 3) +", " + f2s(EntityRoll(mainPlayer\cam), 3) + ")"
-			Text x - 50, 150, "Room: " + mainPlayer\currRoom\RoomTemplate\name
+			Text x - 50, 150, "Room: " + mainPlayer\currRoom\roomTemplate\name
 			For ev.Events = Each Events
 				If ev\room = mainPlayer\currRoom Then
 					Text x - 50, 170, "Room event: " + ev\name   
@@ -1362,20 +1362,20 @@ Function DrawGUI()
 			Text x - 50, 360, "Bloodloss: " + mainPlayer\bloodloss
 			Text x - 50, 390, "SCP - 173 Position (collider): (" + f2s(EntityX(Curr173\collider), 3) + ", " + f2s(EntityY(Curr173\collider), 3) + ", " + f2s(EntityZ(Curr173\collider), 3) + ")"
 			Text x - 50, 410, "SCP - 173 Position (obj): (" + f2s(EntityX(Curr173\obj), 3) + ", " + f2s(EntityY(Curr173\obj), 3) + ", " + f2s(EntityZ(Curr173\obj), 3) + ")"
-			;Text x - 50, 410, "SCP - 173 Idle: " + Curr173\Idle
+			;Text x - 50, 410, "SCP - 173 Idle: " + Curr173\idle
 			Text x - 50, 430, "SCP - 173 State: " + Curr173\state
 			Text x - 50, 450, "SCP - 106 Position: (" + f2s(EntityX(Curr106\obj), 3) + ", " + f2s(EntityY(Curr106\obj), 3) + ", " + f2s(EntityZ(Curr106\obj), 3) + ")"
-			Text x - 50, 470, "SCP - 106 Idle: " + Curr106\Idle
+			Text x - 50, 470, "SCP - 106 Idle: " + Curr106\idle
 			Text x - 50, 490, "SCP - 106 State: " + Curr106\state
 			offset% = 0
 			For npc.NPCs = Each NPCs
-				If npc\NPCtype = NPCtype096 Then
+				If npc\npctype = NPCtype096 Then
 					Text x - 50, 510, "SCP - 096 Position: (" + f2s(EntityX(npc\obj), 3) + ", " + f2s(EntityY(npc\obj), 3) + ", " + f2s(EntityZ(npc\obj), 3) + ")"
-					Text x - 50, 530, "SCP - 096 Idle: " + npc\Idle
+					Text x - 50, 530, "SCP - 096 Idle: " + npc\idle
 					Text x - 50, 550, "SCP - 096 State: " + npc\state
 					Text x - 50, 570, "SCP - 096 Speed: " + f2s(npc\currspeed, 5)
 				EndIf
-				If npc\NPCtype = NPCtypeMTF Then
+				If npc\npctype = NPCtypeMTF Then
 					Text x - 50, 600 + 60 * offset, "MTF " + offset + " Position: (" + f2s(EntityX(npc\obj), 3) + ", " + f2s(EntityY(npc\obj), 3) + ", " + f2s(EntityZ(npc\obj), 3) + ")"
 					Text x - 50, 640 + 60 * offset, "MTF " + offset + " State: " + npc\state
 					Text x - 50, 620 + 60 * offset, "MTF " + offset + " LastSeen: " + npc\lastseen					
@@ -1727,16 +1727,16 @@ Function UpdateInfect()
 				mainPlayer\blinkTimer = Max(Min(-10*(mainPlayer\infect008-91.5),mainPlayer\blinkTimer),-10)
 				If mainPlayer\infect008 >= 92.7 And temp < 92.7 Then
 					For r.Rooms = Each Rooms
-						If r\RoomTemplate\Name="008" Then
-							PositionEntity mainPlayer\collider, EntityX(r\Objects[7],True),EntityY(r\Objects[7],True),EntityZ(r\Objects[7],True),True
+						If r\roomTemplate\name="008" Then
+							PositionEntity mainPlayer\collider, EntityX(r\objects[7],True),EntityY(r\objects[7],True),EntityZ(r\objects[7],True),True
 							ResetEntity mainPlayer\collider
-							r\NPC[0] = CreateNPC(NPCtypeD, EntityX(r\Objects[6],True),EntityY(r\Objects[6],True)+0.2,EntityZ(r\Objects[6],True))
-							r\NPC[0]\sounds[0] = LoadSound("SFX/SCP/008/KillScientist1.ogg")
-							r\NPC[0]\soundChannels[0] = PlaySound(r\NPC[0]\sounds[0])
+							r\npc[0] = CreateNPC(NPCtypeD, EntityX(r\objects[6],True),EntityY(r\objects[6],True)+0.2,EntityZ(r\objects[6],True))
+							r\npc[0]\sounds[0] = LoadSound("SFX/SCP/008/KillScientist1.ogg")
+							r\npc[0]\soundChannels[0] = PlaySound(r\npc[0]\sounds[0])
 							tex = LoadTexture("GFX/NPCs/classd/scientist2.jpg")
-							EntityTexture r\NPC[0]\obj, tex
+							EntityTexture r\npc[0]\obj, tex
 							FreeTexture tex
-							r\NPC[0]\state=6
+							r\npc[0]\state=6
 							mainPlayer\currRoom = r
 							Exit
 						EndIf
@@ -1752,29 +1752,29 @@ Function UpdateInfect()
 				mainPlayer\blurTimer = 900
 				
 				If mainPlayer\infect008 > 94.5 Then mainPlayer\blinkTimer = Max(Min(-50*(mainPlayer\infect008-94.5),mainPlayer\blinkTimer),-10)
-				PointEntity mainPlayer\collider, mainPlayer\currRoom\NPC[0]\collider
-				PointEntity mainPlayer\currRoom\NPC[0]\collider, mainPlayer\collider
+				PointEntity mainPlayer\collider, mainPlayer\currRoom\npc[0]\collider
+				PointEntity mainPlayer\currRoom\npc[0]\collider, mainPlayer\collider
 				mainPlayer\forceMove = 0.4
 				mainPlayer\injuries = 2.5
 				mainPlayer\bloodloss = 0
 				
-				Animate2(mainPlayer\currRoom\NPC[0]\obj, AnimTime(mainPlayer\currRoom\NPC[0]\obj), 357, 381, 0.3)
+				Animate2(mainPlayer\currRoom\npc[0]\obj, AnimTime(mainPlayer\currRoom\npc[0]\obj), 357, 381, 0.3)
 			ElseIf mainPlayer\infect008 < 98.5 Then
 				
 				EntityAlpha mainPlayer\overlays[OVERLAY_008], 0.5 * (Sin(TimeInPosMilliSecs()/5.0)+2.0)
 				mainPlayer\blurTimer = 950
 				
 				If temp < 94.7 Then 
-					mainPlayer\currRoom\NPC[0]\sounds[0] = LoadSound("SFX/SCP/008/KillScientist2.ogg")
-					mainPlayer\currRoom\NPC[0]\soundChannels[0] = PlaySound(mainPlayer\currRoom\NPC[0]\sounds[0])
+					mainPlayer\currRoom\npc[0]\sounds[0] = LoadSound("SFX/SCP/008/KillScientist2.ogg")
+					mainPlayer\currRoom\npc[0]\soundChannels[0] = PlaySound(mainPlayer\currRoom\npc[0]\sounds[0])
 					
 					DeathMSG = "Subject D-9341 found ingesting Dr. [REDACTED] at Sector [REDACTED]. Subject was immediately terminated by Nine-Tailed Fox and sent for autopsy. "
 					DeathMSG = DeathMSG + "SCP-008 infection was confirmed, after which the body was incinerated."
 					
 					Kill(mainPlayer)
-					de.Decals = CreateDecal(3, EntityX(mainPlayer\currRoom\NPC[0]\collider), 544*RoomScale + 0.01, EntityZ(mainPlayer\currRoom\NPC[0]\collider),90,Rnd(360),0)
-					de\Size = 0.8
-					ScaleSprite(de\obj, de\Size,de\Size)
+					de.Decals = CreateDecal(3, EntityX(mainPlayer\currRoom\npc[0]\collider), 544*RoomScale + 0.01, EntityZ(mainPlayer\currRoom\npc[0]\collider),90,Rnd(360),0)
+					de\size = 0.8
+					ScaleSprite(de\obj, de\size,de\size)
 				ElseIf mainPlayer\overlays[OVERLAY_008] > 96 Then
 					mainPlayer\blinkTimer = Max(Min(-10*(mainPlayer\infect008-96),mainPlayer\blinkTimer),-10)
 				Else
@@ -1783,24 +1783,24 @@ Function UpdateInfect()
 				EndIf
 				
 				;TODO: this could break
-				If mainPlayer\currRoom\NPC[0]\state2=0 Then
-					Animate2(mainPlayer\currRoom\NPC[0]\obj, AnimTime(mainPlayer\currRoom\NPC[0]\obj), 13, 19, 0.3,False)
-					If AnimTime(mainPlayer\currRoom\NPC[0]\obj) => 19 Then mainPlayer\currRoom\NPC[0]\state2=1
+				If mainPlayer\currRoom\npc[0]\state2=0 Then
+					Animate2(mainPlayer\currRoom\npc[0]\obj, AnimTime(mainPlayer\currRoom\npc[0]\obj), 13, 19, 0.3,False)
+					If AnimTime(mainPlayer\currRoom\npc[0]\obj) => 19 Then mainPlayer\currRoom\npc[0]\state2=1
 				Else
-					Animate2(mainPlayer\currRoom\NPC[0]\obj, AnimTime(mainPlayer\currRoom\NPC[0]\obj), 19, 13, -0.3)
-					If AnimTime(mainPlayer\currRoom\NPC[0]\obj) =< 13 Then mainPlayer\currRoom\NPC[0]\state2=0
+					Animate2(mainPlayer\currRoom\npc[0]\obj, AnimTime(mainPlayer\currRoom\npc[0]\obj), 19, 13, -0.3)
+					If AnimTime(mainPlayer\currRoom\npc[0]\obj) =< 13 Then mainPlayer\currRoom\npc[0]\state2=0
 				EndIf
 				
 				If Rand(50)=1 Then
-					p.Particles = CreateParticle(EntityX(mainPlayer\currRoom\NPC[0]\collider),EntityY(mainPlayer\currRoom\NPC[0]\collider),EntityZ(mainPlayer\currRoom\NPC[0]\collider), 5, Rnd(0.05,0.1), 0.15, 200)
+					p.Particles = CreateParticle(EntityX(mainPlayer\currRoom\npc[0]\collider),EntityY(mainPlayer\currRoom\npc[0]\collider),EntityZ(mainPlayer\currRoom\npc[0]\collider), 5, Rnd(0.05,0.1), 0.15, 200)
 					p\speed = 0.01
-					p\SizeChange = 0.01
+					p\sizeChange = 0.01
 					p\a = 0.5
-					p\achange = -0.01
+					p\aChange = -0.01
 					RotateEntity p\pvt, Rnd(360),Rnd(360),0
 				EndIf
 				
-				PositionEntity mainPlayer\head, EntityX(mainPlayer\currRoom\NPC[0]\collider,True), EntityY(mainPlayer\currRoom\NPC[0]\collider,True)+0.65,EntityZ(mainPlayer\currRoom\NPC[0]\collider,True),True
+				PositionEntity mainPlayer\head, EntityX(mainPlayer\currRoom\npc[0]\collider,True), EntityY(mainPlayer\currRoom\npc[0]\collider,True)+0.65,EntityZ(mainPlayer\currRoom\npc[0]\collider,True),True
 				RotateEntity mainPlayer\head, (1.0+Sin(TimeInPosMilliSecs()/5.0))*15, mainPlayer\currRoom\angle-180, 0, True
 				MoveEntity mainPlayer\head, 0,0,0.4
 				TurnEntity mainPlayer\head, 80+(Sin(TimeInPosMilliSecs()/5.0))*30,(Sin(TimeInPosMilliSecs()/5.0))*40,0
@@ -1840,10 +1840,10 @@ Function CreateDecal.Decals(id%, x#, y#, z#, pitch#, yaw#, roll#)
 	d\yaw = yaw
 	d\roll = roll
 	
-	d\MaxSize = 1.0
+	d\maxSize = 1.0
 	
 	d\alpha = 1.0
-	d\Size = 1.0
+	d\size = 1.0
 	d\obj = CreateSprite()
 	d\blendmode = 1
 	
@@ -1853,7 +1853,7 @@ Function CreateDecal.Decals(id%, x#, y#, z#, pitch#, yaw#, roll#)
 	PositionEntity(d\obj, x, y, z)
 	RotateEntity(d\obj, pitch, yaw, roll)
 	
-	d\ID = id
+	d\iD = id
 	
 	If DecalTextures(id) = 0 Or d\obj = 0 Then Return Null
 	
@@ -1863,31 +1863,31 @@ End Function
 Function UpdateDecals()
 	Local d.Decals
 	For d.Decals = Each Decals
-		If d\SizeChange <> 0 Then
-			d\Size=d\Size + d\SizeChange * timing\tickDuration
-			ScaleSprite(d\obj, d\Size, d\Size)
+		If d\sizeChange <> 0 Then
+			d\size=d\size + d\sizeChange * timing\tickDuration
+			ScaleSprite(d\obj, d\size, d\size)
 			
-			Select d\ID
+			Select d\iD
 				Case 0
-					If d\Timer <= 0 Then
+					If d\timer <= 0 Then
 						Local angle# = Rand(360)
-						Local temp# = Rnd(d\Size)
+						Local temp# = Rnd(d\size)
 						Local d2.Decals = CreateDecal(1, EntityX(d\obj) + Cos(angle) * temp, EntityY(d\obj) - 0.0005, EntityZ(d\obj) + Sin(angle) * temp, EntityPitch(d\obj), Rnd(360), EntityRoll(d\obj))
-						d2\Size = Rnd(0.1, 0.5) : ScaleSprite(d2\obj, d2\Size, d2\Size)
+						d2\size = Rnd(0.1, 0.5) : ScaleSprite(d2\obj, d2\size, d2\size)
 						;TODO: fix
 						;PlayRangedSound(DecaySFX(Rand(1, 3)), mainPlayer\cam, d2\obj, 10.0, Rnd(0.1, 0.5))
-						;d\Timer = d\Timer + Rand(50,150)
-						d\Timer = Rand(50, 100)
+						;d\timer = d\timer + Rand(50,150)
+						d\timer = Rand(50, 100)
 					Else
-						d\Timer= d\Timer-timing\tickDuration
+						d\timer= d\timer-timing\tickDuration
 					EndIf
 				;Case 6
 				;	EntityBlend d\obj, 2
 			End Select
 			
-			If d\Size >= d\MaxSize Then
-				d\SizeChange = 0
-				d\Size = d\MaxSize
+			If d\size >= d\maxSize Then
+				d\sizeChange = 0
+				d\size = d\maxSize
 			EndIf
 		EndIf
 		
@@ -1900,7 +1900,7 @@ Function UpdateDecals()
 			d\lifetime=Max(d\lifetime-timing\tickDuration,5)
 		EndIf
 		
-		If d\Size <= 0 Or d\alpha <= 0 Or d\lifetime=5.0  Then
+		If d\size <= 0 Or d\alpha <= 0 Or d\lifetime=5.0  Then
 			FreeEntity(d\obj)
 			Delete d
 		EndIf
@@ -1938,7 +1938,7 @@ Function RenderWorld2()
 	;ElseIf WearingNightVision=3
 	;	AmbientLight 255,255,255
 	;ElseIf mainPlayer\currRoom<>Null
-	;	If (mainPlayer\currRoom\RoomTemplate\Name<>"173") And (mainPlayer/currRoom\RoomTemplate\Name<>"exit1") And (mainPlayer/currRoom\RoomTemplate/Name<>"gatea") Then
+	;	If (mainPlayer\currRoom\roomTemplate\name<>"173") And (mainPlayer/currRoom\roomTemplate\name<>"exit1") And (mainPlayer/currRoom\roomTemplate/Name<>"gatea") Then
 	;		AmbientLight Brightness, Brightness, Brightness
 	;	EndIf
 	;EndIf
@@ -1989,9 +1989,9 @@ Function RenderWorld2()
 			
 			;If NVTimer<=0.0 Then
 			For np.NPCs = Each NPCs
-				np\NVX = EntityX(np\collider,True)
-				np\NVY = EntityY(np\collider,True)
-				np\NVZ = EntityZ(np\collider,True)
+				np\nVX = EntityX(np\collider,True)
+				np\nVY = EntityY(np\collider,True)
+				np\nVZ = EntityZ(np\collider,True)
 			Next
 			;IsNVGBlinking% = True
 			;	ShowEntity NVBlink%
@@ -2015,8 +2015,8 @@ Function RenderWorld2()
 			Color 255,255,255;*(NVTimer/600.0)
 			
 			For np.NPCs = Each NPCs
-				If np\NVName<>"" Then ;don't waste your time if the string is empty
-					PositionEntity temp2,np\NVX,np\NVY,np\NVZ
+				If np\nVName<>"" Then ;don't waste your time if the string is empty
+					PositionEntity temp2,np\nVX,np\nVY,np\nVZ
 					dist# = EntityDistance(temp2,mainPlayer\collider)
 					If dist<23.5 Then ;don't draw text if the NPC is too far away
 						PointEntity temp, temp2
@@ -2040,7 +2040,7 @@ Function RenderWorld2()
 						EndIf
 						
 						;If (Not IsNVGBlinking%) Then
-						Text userOptions\screenWidth / 2 + xvalue * (userOptions\screenWidth / 2),userOptions\screenHeight / 2 - yvalue * (userOptions\screenHeight / 2),np\NVName,True,True
+						Text userOptions\screenWidth / 2 + xvalue * (userOptions\screenWidth / 2),userOptions\screenHeight / 2 - yvalue * (userOptions\screenHeight / 2),np\nVName,True,True
 						Text userOptions\screenWidth / 2 + xvalue * (userOptions\screenWidth / 2),userOptions\screenHeight / 2 - yvalue * (userOptions\screenHeight / 2) + 30.0 * MenuScale,f2s(dist,1)+" m",True,True
 						;EndIf
 					EndIf
@@ -2128,16 +2128,16 @@ Function CheckTriggers$()
 	Local i%,sx#,sy#,sz#
 	Local inside% = -1
 	
-	If mainPlayer\currRoom\TriggerboxAmount = 0 Then
+	If mainPlayer\currRoom\triggerboxAmount = 0 Then
 		Return ""
 	Else
-		For i = 0 To mainPlayer\currRoom\TriggerboxAmount-1
-			EntityAlpha mainPlayer\currRoom\Triggerbox[i],1.0
-			sx# = EntityScaleX(mainPlayer\currRoom\Triggerbox[i], 1)
-			sy# = Max(EntityScaleY(mainPlayer\currRoom\Triggerbox[i], 1), 0.001)
-			sz# = EntityScaleZ(mainPlayer\currRoom\Triggerbox[i], 1)
-			GetMeshExtents(mainPlayer\currRoom\Triggerbox[i])
-			EntityAlpha mainPlayer\currRoom\Triggerbox[i],0.0
+		For i = 0 To mainPlayer\currRoom\triggerboxAmount-1
+			EntityAlpha mainPlayer\currRoom\triggerbox[i],1.0
+			sx# = EntityScaleX(mainPlayer\currRoom\triggerbox[i], 1)
+			sy# = Max(EntityScaleY(mainPlayer\currRoom\triggerbox[i], 1), 0.001)
+			sz# = EntityScaleZ(mainPlayer\currRoom\triggerbox[i], 1)
+			GetMeshExtents(mainPlayer\currRoom\triggerbox[i])
+			EntityAlpha mainPlayer\currRoom\triggerbox[i],0.0
 			If EntityX(mainPlayer\collider)>((sx#*Mesh_MinX)+mainPlayer\currRoom\x) And EntityX(mainPlayer\collider)<((sx#*Mesh_MaxX)+mainPlayer\currRoom\x) Then
 				If EntityY(mainPlayer\collider)>((sy#*Mesh_MinY)+mainPlayer\currRoom\y) And EntityY(mainPlayer\collider)<((sy#*Mesh_MaxY)+mainPlayer\currRoom\y) Then
 					If EntityZ(mainPlayer\collider)>((sz#*Mesh_MinZ)+mainPlayer\currRoom\z) And EntityZ(mainPlayer\collider)<((sz#*Mesh_MaxZ)+mainPlayer\currRoom\z) Then
@@ -2148,7 +2148,7 @@ Function CheckTriggers$()
 			EndIf
 		Next
 		
-		If inside% > -1 Then Return mainPlayer\currRoom\TriggerboxName[inside%]
+		If inside% > -1 Then Return mainPlayer\currRoom\triggerboxName[inside%]
 	EndIf
 	
 End Function

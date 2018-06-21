@@ -16,19 +16,19 @@ Function FillRoom_cont_966_3(r.Rooms)
     sc\turn = 45
     TurnEntity(sc\cameraObj, 20, 0, 0)
     ;sc\followPlayer = True
-    sc\ID = 9
+    sc\iD = 9
     
-    r\Objects[0] = CreatePivot(r\obj)
-    PositionEntity(r\Objects[0], r\x, 0.5, r\z + 512.0 * RoomScale, True)
+    r\objects[0] = CreatePivot(r\obj)
+    PositionEntity(r\objects[0], r\x, 0.5, r\z + 512.0 * RoomScale, True)
     
-    r\Objects[1] = CreatePivot(r\obj)
-    PositionEntity(r\Objects[1], r\x + 64.0 * RoomScale, 0.5, r\z - 640.0 * RoomScale, True)
+    r\objects[1] = CreatePivot(r\obj)
+    PositionEntity(r\objects[1], r\x + 64.0 * RoomScale, 0.5, r\z - 640.0 * RoomScale, True)
     
-    r\Objects[2] = CreatePivot(r\obj)
-    PositionEntity(r\Objects[2], r\x - 608.0 * RoomScale, 0.5, r\z, True)
+    r\objects[2] = CreatePivot(r\obj)
+    PositionEntity(r\objects[2], r\x - 608.0 * RoomScale, 0.5, r\z, True)
     
-    r\Objects[3] = CreatePivot(r\obj)
-    PositionEntity(r\Objects[3], r\x + 320.0 * RoomScale, 0.5, r\z + 704.0 * RoomScale, True)
+    r\objects[3] = CreatePivot(r\obj)
+    PositionEntity(r\objects[3], r\x + 320.0 * RoomScale, 0.5, r\z + 704.0 * RoomScale, True)
     
     it = CreateItem("Night Vision Goggles", "nvgoggles", r\x + 320.0 * RoomScale, 0.5, r\z + 704.0 * RoomScale)
     EntityParent(it\collider, r\obj)
@@ -38,9 +38,9 @@ End Function
 Function UpdateEvent_cont_966_3(e.Events)
 	If mainPlayer\currRoom = e\room Then
 		If (Not e\loaded) Then
-			CreateNPC(NPCtype966, EntityX(e\room\Objects[0],True), EntityY(e\room\Objects[0],True), EntityZ(e\room\Objects[0],True))
-			CreateNPC(NPCtype966, EntityX(e\room\Objects[1],True), EntityY(e\room\Objects[1],True), EntityZ(e\room\Objects[1],True))
-			CreateNPC(NPCtype966, EntityX(e\room\Objects[2],True), EntityY(e\room\Objects[2],True), EntityZ(e\room\Objects[2],True))
+			CreateNPC(NPCtype966, EntityX(e\room\objects[0],True), EntityY(e\room\objects[0],True), EntityZ(e\room\objects[0],True))
+			CreateNPC(NPCtype966, EntityX(e\room\objects[1],True), EntityY(e\room\objects[1],True), EntityZ(e\room\objects[1],True))
+			CreateNPC(NPCtype966, EntityX(e\room\objects[2],True), EntityY(e\room\objects[2],True), EntityZ(e\room\objects[2],True))
 			
 			e\loaded = True
 		EndIf

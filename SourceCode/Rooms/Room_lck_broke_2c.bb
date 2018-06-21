@@ -23,19 +23,19 @@ Function FillRoom_lck_broke_2c(r.Rooms)
     
     FreeEntity(d2\buttons[1]) : d2\buttons[1] = 0
     
-    d\LinkedDoor = d2
-    d2\LinkedDoor = d
+    d\linkedDoor = d2
+    d2\linkedDoor = d
     
     scale# = RoomScale * 4.5 * 0.4
     
-    r\Objects[0] = CopyEntity(Monitor)
-    ScaleEntity r\Objects[0],scale#,scale#,scale#
-    PositionEntity r\Objects[0],r\x+668*RoomScale,1.1,r\z-96.0*RoomScale,True
-    RotateEntity r\Objects[0],0,90,0
-    EntityParent r\Objects[0],r\obj
+    r\objects[0] = CopyEntity(Monitor)
+    ScaleEntity r\objects[0],scale#,scale#,scale#
+    PositionEntity r\objects[0],r\x+668*RoomScale,1.1,r\z-96.0*RoomScale,True
+    RotateEntity r\objects[0],0,90,0
+    EntityParent r\objects[0],r\obj
     
-    r\Objects[1] = CopyEntity(Monitor)
-    ScaleEntity r\Objects[1],scale#,scale#,scale#
-    PositionEntity r\Objects[1],r\x+96.0*RoomScale,1.1,r\z-668.0*RoomScale,True
-    EntityParent r\Objects[1],r\obj
+    r\objects[1] = CopyEntity(Monitor)
+    ScaleEntity r\objects[1],scale#,scale#,scale#
+    PositionEntity r\objects[1],r\x+96.0*RoomScale,1.1,r\z-668.0*RoomScale,True
+    EntityParent r\objects[1],r\obj
 End Function

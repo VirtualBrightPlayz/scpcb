@@ -75,7 +75,7 @@ Function UpdateNPCtype096(n.NPCs)
                         n\soundChannels[1] = PlaySound(n\sounds[1])
                     Else
                         If (Not IsChannelPlaying(n\soundChannels[1])) Then n\soundChannels[1] = PlaySound(n\sounds[1])
-                        ChannelVolume(n\soundChannels[1], Min(Max(8.0-n\playerDistance,0.6),1.0)*userOptions\SoundVolume)
+                        ChannelVolume(n\soundChannels[1], Min(Max(8.0-n\playerDistance,0.6),1.0)*userOptions\soundVolume)
                     EndIf
                 EndIf
             EndIf
@@ -125,7 +125,7 @@ Function UpdateNPCtype096(n.NPCs)
                                         EntityPick(pvt,0.3)
                                         
                                         de.Decals = CreateDecal(Rand(15,16), PickedX(), PickedY()+0.005, PickedZ(), 90, Rand(360), 0)
-                                        de\Size = Rnd(0.2,0.6) : EntityAlpha(de\obj, 1.0) : ScaleSprite de\obj, de\Size, de\Size
+                                        de\size = Rnd(0.2,0.6) : EntityAlpha(de\obj, 1.0) : ScaleSprite de\obj, de\size, de\size
                                     Next
                                     FreeEntity pvt
                                 EndIf
@@ -151,7 +151,7 @@ Function UpdateNPCtype096(n.NPCs)
                         
                         If n\frame<1058 Then
                             AnimateNPC(n, 892, 1058, n\speed*5, False)	
-                            ;Animate2(n\obj, AnimTime(n\obj),892,1058, n\Speed*5, False)	
+                            ;Animate2(n\obj, AnimTime(n\obj),892,1058, n\speed*5, False)	
                         Else
                             AnimateNPC(n, 1059, 1074, n\currSpeed*5)	
                             ;Animate2(n\obj, AnimTime(n\obj),1059,1074, n\currSpeed*5)	
@@ -180,7 +180,7 @@ Function UpdateNPCtype096(n.NPCs)
                             
                             If n\frame<1058 Then
                                 AnimateNPC(n, 892,1058, n\speed*8, False)
-                                ;Animate2(n\obj, AnimTime(n\obj),892,1058, n\Speed*8, False)
+                                ;Animate2(n\obj, AnimTime(n\obj),892,1058, n\speed*8, False)
                             Else
                                 AnimateNPC(n, 1059,1084, n\currSpeed*8)	
                                 ;Animate2(n\obj, AnimTime(n\obj),1059,1084, n\currSpeed*8)	
@@ -189,14 +189,14 @@ Function UpdateNPCtype096(n.NPCs)
                             dist2# = EntityDistance(n\collider,n\path[n\pathLocation]\obj)
                             If dist2 < 0.4 Then
 								;TODO: fix
-;                                If n\Path[n\PathLocation]\door <> Null Then
-;									If n\Path[n\PathLocation]\door\open = False Then
-;										n\Path[n\PathLocation]\door\open = True
-;                                        n\Path[n\PathLocation]\door\fastopen = 1
+;                                If n\path[n\pathLocation]\door <> Null Then
+;									If n\path[n\pathLocation]\door\open = False Then
+;										n\path[n\pathLocation]\door\open = True
+;                                        n\path[n\pathLocation]\door\fastopen = 1
 ;                                        PlayRangedSound(n\sounds[2], mainPlayer\cam, n\path[n\pathLocation]\door\obj)
 ;                                    EndIf
 ;                                EndIf							
-                                If dist2 < 0.2 Then n\PathLocation = n\PathLocation + 1
+                                If dist2 < 0.2 Then n\pathLocation = n\pathLocation + 1
 
                             EndIf 
                         EndIf
@@ -283,19 +283,19 @@ Function UpdateNPCtype096(n.NPCs)
                     If n\state2>1600 Then n\state2=Rand(0,500) : n\frame = 1652 ;: SetAnimTime(n\obj, 1652)
                     
                     If n\frame<1652 Then ;idle to walk
-                        n\currSpeed = CurveValue(n\Speed*0.1,n\currSpeed,5.0)
+                        n\currSpeed = CurveValue(n\speed*0.1,n\currSpeed,5.0)
                         AnimateNPC(n, 1638,1652, n\currSpeed*45,False)
                         ;Animate2(n\obj, AnimTime(n\obj),1638,1652, n\currSpeed*45,False)
                     Else
-                        n\currSpeed = CurveValue(n\Speed*0.1,n\currSpeed,5.0)
+                        n\currSpeed = CurveValue(n\speed*0.1,n\currSpeed,5.0)
                         AnimateNPC(n, 1653,1724, n\currSpeed*45) ;walk
                         ;Animate2(n\obj, AnimTime(n\obj),1653,1724, n\currSpeed*45) ;walk
                     EndIf
                     
                     If TimeInPosMilliSecs() > n\state3 Then
-                        n\LastSeen=0
+                        n\lastSeen=0
                         If EntityVisible(mainPlayer\collider, n\collider) Then 
-                            n\LastSeen=1
+                            n\lastSeen=1
                         Else
                             HideEntity n\collider
                             EntityPick(n\collider, 1.5)
@@ -307,7 +307,7 @@ Function UpdateNPCtype096(n.NPCs)
                         n\state3=TimeInPosMilliSecs()+3000
                     EndIf
                     
-                    If n\LastSeen Then 
+                    If n\lastSeen Then 
                         PointEntity n\obj, mainPlayer\collider
                         RotateEntity n\collider, 0, CurveAngle(EntityYaw(n\obj),EntityYaw(n\collider),130.0),0
                         If dist < 1.5 Then n\state2=0
@@ -316,7 +316,7 @@ Function UpdateNPCtype096(n.NPCs)
                     EndIf
                 Else
                     If n\frame>1638 Then ;walk to idle
-                        n\currSpeed = CurveValue(n\Speed*0.05,n\currSpeed,8.0)	
+                        n\currSpeed = CurveValue(n\speed*0.05,n\currSpeed,8.0)	
                         AnimateNPC(n, 1652, 1638, -n\currSpeed*45,False)
                         ;Animate2(n\obj, AnimTime(n\obj),1652,1638, -n\currSpeed*45,False)
                         

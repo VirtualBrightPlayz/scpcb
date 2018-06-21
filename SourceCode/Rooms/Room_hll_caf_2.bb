@@ -6,11 +6,11 @@ Function FillRoom_hll_caf_2(r.Rooms)
 	Local t1;, Bump
     
     ;scp-294
-    r\Objects[0] = CreatePivot(r\obj)
-    PositionEntity(r\Objects[0], r\x+1847.0*RoomScale, -240.0*RoomScale, r\z-321*RoomScale, True)
+    r\objects[0] = CreatePivot(r\obj)
+    PositionEntity(r\objects[0], r\x+1847.0*RoomScale, -240.0*RoomScale, r\z-321*RoomScale, True)
     ;"spawnpoint" for the cups
-    r\Objects[1] = CreatePivot(r\obj)
-    PositionEntity(r\Objects[1], r\x+1780.0*RoomScale, -248.0*RoomScale, r\z-276*RoomScale, True)
+    r\objects[1] = CreatePivot(r\obj)
+    PositionEntity(r\objects[1], r\x+1780.0*RoomScale, -248.0*RoomScale, r\z-276*RoomScale, True)
     
     it = CreateItem("cup", "cup", r\x-508.0*RoomScale, -187*RoomScale, r\z+284.0*RoomScale, 240,175,70)
     EntityParent(it\collider, r\obj) : it\name = "Cup of Orange Juice"
@@ -47,7 +47,7 @@ Function Update294()
 	DropAsset(panel294)
 	
 	temp = True
-	If mainPlayer\currRoom\SoundCHN<>0 Then temp = False
+	If mainPlayer\currRoom\soundCHN<>0 Then temp = False
 	
 	If temp Then
 		If MouseHit1 Then
@@ -157,9 +157,9 @@ Function Update294()
 				If loc > 0 Then
 					strtemp$ = GetINIString2("DATA/SCP-294.ini", loc, "dispensesound")
 					If strtemp = "" Then
-						mainPlayer\currRoom\SoundCHN = PlaySound(LoadTempSound("SFX/SCP/294/dispense1.ogg"))
+						mainPlayer\currRoom\soundCHN = PlaySound(LoadTempSound("SFX/SCP/294/dispense1.ogg"))
 					Else
-						mainPlayer\currRoom\SoundCHN = PlaySound(LoadTempSound(strtemp))
+						mainPlayer\currRoom\soundCHN = PlaySound(LoadTempSound(strtemp))
 					EndIf
 					
 					If GetINIInt2("DATA/SCP-294.ini", loc, "explosion")=True Then 
@@ -180,13 +180,13 @@ Function Update294()
 					If alpha = 0 Then alpha = 1.0
 					If glow Then alpha = -alpha
 					
-					it.items = CreateItem("Cup", "cup", EntityX(mainPlayer\currRoom\Objects[1],True),EntityY(mainPlayer\currRoom\Objects[1],True),EntityZ(mainPlayer\currRoom\Objects[1],True), r,g,b,alpha)
+					it.items = CreateItem("Cup", "cup", EntityX(mainPlayer\currRoom\objects[1],True),EntityY(mainPlayer\currRoom\objects[1],True),EntityZ(mainPlayer\currRoom\objects[1],True), r,g,b,alpha)
 					it\name = "Cup of "+Input294
 					EntityType (it\collider, HIT_ITEM)
 				Else
 					;out of range
 					Input294 = "OUT OF RANGE"
-					mainPlayer\currRoom\SoundCHN = PlaySound(LoadTempSound("SFX/SCP/294/outofrange.ogg"))
+					mainPlayer\currRoom\soundCHN = PlaySound(LoadTempSound("SFX/SCP/294/outofrange.ogg"))
 				EndIf
 				
 			EndIf
@@ -202,13 +202,13 @@ Function Update294()
 	Else ;playing a dispensing sound
 		If Input294 <> "OUT OF RANGE" Then Input294 = "DISPENSING..." : DebugLog "cringe"
 		
-		If Not IsChannelPlaying(mainPlayer\currRoom\SoundCHN) Then
+		If Not IsChannelPlaying(mainPlayer\currRoom\soundCHN) Then
 			If Input294 <> "OUT OF RANGE" Then
 				HidePointer()
 				CurrGameState = GAMESTATE_SCP294
 			EndIf
 			Input294=""
-			mainPlayer\currRoom\SoundCHN=0
+			mainPlayer\currRoom\soundCHN=0
 		EndIf
 	EndIf
 	
@@ -228,15 +228,15 @@ Function UpdateEvent_hll_caf_2(e.Events)
 	;[Block]
 	If mainPlayer\currRoom = e\room Then
 		If CurrGameState<>GAMESTATE_SCP294 Then
-			If EntityDistance(e\room\Objects[0], mainPlayer\collider)<1.5 Then
-				If EntityInView(e\room\Objects[0], mainPlayer\cam) Then
+			If EntityDistance(e\room\objects[0], mainPlayer\collider)<1.5 Then
+				If EntityInView(e\room\objects[0], mainPlayer\cam) Then
 					DrawHandIcon = True
 					If MouseHit1 Then
 						temp = True
 						For it.Items = Each Items
-							If it\Picked=False Then
-								If EntityX(it\collider)-EntityX(e\room\Objects[1],True)=0 Then
-									If EntityZ(it\collider)-EntityZ(e\room\Objects[1],True)=0 Then
+							If it\picked=False Then
+								If EntityX(it\collider)-EntityX(e\room\objects[1],True)=0 Then
+									If EntityZ(it\collider)-EntityZ(e\room\objects[1],True)=0 Then
 										temp = False
 										Exit
 									EndIf

@@ -89,7 +89,7 @@ Function UpdateNPCtype066(n.NPCs)
                                 n\state3 = Rand(700,1400)
                             Case 3
                                 For d.Doors = Each Doors
-                                    If d\locked = False And d\KeyCard = 0 And d\code = "" Then
+                                    If d\locked = False And d\keyCard = 0 And d\code = "" Then
                                         If Abs(EntityX(d\frameobj)-EntityX(n\collider))<16.0 Then
                                             If Abs(EntityZ(d\frameobj)-EntityZ(n\collider))<16.0 Then
                                                 UseDoor(d, False)
@@ -98,10 +98,10 @@ Function UpdateNPCtype066(n.NPCs)
                                     EndIf
                                 Next
                             Case 4
-                                If mainPlayer\currRoom\RoomTemplate\disableDecals = False Then
+                                If mainPlayer\currRoom\roomTemplate\disableDecals = False Then
                                     mainPlayer\camShake = 5.0
                                     de.Decals = CreateDecal(1, EntityX(n\collider), 0.01, EntityZ(n\collider), 90, Rand(360), 0)
-                                    de\Size = 0.3 : UpdateDecals
+                                    de\size = 0.3 : UpdateDecals
                                     PlaySound2(LoadTempSound("SFX/General/BodyFall.ogg"))
                                     If Distance(EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider),EntityX(n\collider),EntityZ(n\collider))<0.8 Then
                                         mainPlayer\injuries = mainPlayer\injuries + Rnd(0.3,0.5)

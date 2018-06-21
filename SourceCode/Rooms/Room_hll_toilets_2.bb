@@ -5,17 +5,17 @@ Function FillRoom_hll_toilets_2(r.Rooms)
 	
 	Local t1;, Bump
     
-    r\Objects[0] = CreatePivot()
-    PositionEntity(r\Objects[0], r\x + 1040.0 * RoomScale, 192.0 * RoomScale, r\z)
-    EntityParent(r\Objects[0], r\obj)
+    r\objects[0] = CreatePivot()
+    PositionEntity(r\objects[0], r\x + 1040.0 * RoomScale, 192.0 * RoomScale, r\z)
+    EntityParent(r\objects[0], r\obj)
     
-    r\Objects[1] = CreatePivot()
-    PositionEntity(r\Objects[1], r\x + 1312.0*RoomScale, 0.5, r\z+448.0*RoomScale)
-    EntityParent(r\Objects[1], r\obj)			
+    r\objects[1] = CreatePivot()
+    PositionEntity(r\objects[1], r\x + 1312.0*RoomScale, 0.5, r\z+448.0*RoomScale)
+    EntityParent(r\objects[1], r\obj)			
     
-    r\Objects[2] = CreatePivot()
-    PositionEntity(r\Objects[2], r\x + 1248.0*RoomScale, 0.01, r\z+384.0*RoomScale)
-    EntityParent(r\Objects[2], r\obj)
+    r\objects[2] = CreatePivot()
+    PositionEntity(r\objects[2], r\x + 1248.0*RoomScale, 0.01, r\z+384.0*RoomScale)
+    EntityParent(r\objects[2], r\obj)
 End Function
 
 Function UpdateEventToiletguard(e.Events)
@@ -33,25 +33,25 @@ Function UpdateEventToiletguard(e.Events)
 	If e\eventState = 0 Then
 		If e\room\dist < 8.0  And e\room\dist > 0 Then e\eventState = 1
 	ElseIf e\eventState = 1 Then
-		e\room\NPC[0]=CreateNPC(NPCtypeGuard, EntityX(e\room\Objects[1],True), EntityY(e\room\Objects[1],True)+0.5, EntityZ(e\room\Objects[1],True))
-		PointEntity e\room\NPC[0]\collider, e\room\obj
-		RotateEntity e\room\NPC[0]\collider, 0, EntityYaw(e\room\NPC[0]\collider)-20,0, True
+		e\room\npc[0]=CreateNPC(NPCtypeGuard, EntityX(e\room\objects[1],True), EntityY(e\room\objects[1],True)+0.5, EntityZ(e\room\objects[1],True))
+		PointEntity e\room\npc[0]\collider, e\room\obj
+		RotateEntity e\room\npc[0]\collider, 0, EntityYaw(e\room\npc[0]\collider)-20,0, True
 		
-		SetNPCFrame (e\room\NPC[0], 906)
-		e\room\NPC[0]\state = 8
+		SetNPCFrame (e\room\npc[0], 906)
+		e\room\npc[0]\state = 8
 		
 		e\eventState = 2	
 	Else
 		If e\sounds[0] = 0 Then e\sounds[0] = LoadSound("SFX/Character/Guard/SuicideGuard1.ogg")
 		If e\room\dist < 15.0 And e\room\dist >= 4.0 Then 
-			e\soundChannels[0] = LoopRangedSound(e\sounds[0], e\soundChannels[0], mainPlayer\cam, e\room\NPC[0]\collider, 15.0)
+			e\soundChannels[0] = LoopRangedSound(e\sounds[0], e\soundChannels[0], mainPlayer\cam, e\room\npc[0]\collider, 15.0)
 			
 		ElseIf e\room\dist<4.0 And mainPlayer\loudness > 1.0 Then
-			de.Decals = CreateDecal(3,  EntityX(e\room\Objects[2],True), 0.01, EntityZ(e\room\Objects[2],True),90,Rnd(360),0)
-			de\Size = 0.3 : ScaleSprite (de\obj, de\size, de\size)
+			de.Decals = CreateDecal(3,  EntityX(e\room\objects[2],True), 0.01, EntityZ(e\room\objects[2],True),90,Rnd(360),0)
+			de\size = 0.3 : ScaleSprite (de\obj, de\size, de\size)
 			
-			de.Decals = CreateDecal(17,  EntityX(e\room\Objects[2],True), 0.01, EntityZ(e\room\Objects[2],True),90,Rnd(360),0)
-			de\Size = 0.1 : de\maxsize = 0.45 : de\sizechange = 0.0002 : UpdateDecals()
+			de.Decals = CreateDecal(17,  EntityX(e\room\objects[2],True), 0.01, EntityZ(e\room\objects[2],True),90,Rnd(360),0)
+			de\size = 0.1 : de\maxsize = 0.45 : de\sizechange = 0.0002 : UpdateDecals()
 			
 			;FreeSound e\sounds[0]
 			;StopChannel e\soundChannels[0]
@@ -59,10 +59,10 @@ Function UpdateEventToiletguard(e.Events)
 			If e\soundChannels[1] = 0 Then
 				StopChannel(e\soundChannels[0])
 				FreeSound(e\sounds[0])
-				e\room\NPC[0]\sounds[0] = LoadSound("SFX/Character/Guard/SuicideGuard2.ogg")
-				e\soundChannels[1] = PlayRangedSound(e\room\NPC[0]\sounds[0], mainPlayer\cam, e\room\NPC[0]\collider, 15.0)
+				e\room\npc[0]\sounds[0] = LoadSound("SFX/Character/Guard/SuicideGuard2.ogg")
+				e\soundChannels[1] = PlayRangedSound(e\room\npc[0]\sounds[0], mainPlayer\cam, e\room\npc[0]\collider, 15.0)
 			EndIf
-			UpdateRangedSoundOrigin(e\soundChannels[1],mainPlayer\cam,e\room\NPC[0]\collider,15.0)
+			UpdateRangedSoundOrigin(e\soundChannels[1],mainPlayer\cam,e\room\npc[0]\collider,15.0)
 			If (Not IsChannelPlaying(e\soundChannels[1])) Then RemoveEvent(e)
 		EndIf
 	EndIf
@@ -85,9 +85,9 @@ Function UpdateEventButtghost(e.Events)
 
 	;[Block]
 	If mainPlayer\currRoom = e\room Then
-		If EntityDistance(mainPlayer\collider, e\room\Objects[0]) < 1.8 Then
+		If EntityDistance(mainPlayer\collider, e\room\objects[0]) < 1.8 Then
 			If e\eventState = 0 Then
-				e\soundChannels[0] = PlayRangedSound(LoadTempSound("SFX/SCP/Joke/789J.ogg"), mainPlayer\cam,e\room\Objects[0])
+				e\soundChannels[0] = PlayRangedSound(LoadTempSound("SFX/SCP/Joke/789J.ogg"), mainPlayer\cam,e\room\objects[0])
 				e\eventState = 1
 			Else
 				If (Not IsChannelPlaying(e\soundChannels[0])) Then

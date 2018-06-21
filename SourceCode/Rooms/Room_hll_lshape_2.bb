@@ -5,7 +5,7 @@ Function FillRoom_hll_lshape_2(r.Rooms)
     
     Local t1;, Bump
     
-    r\Objects[6] = CreatePivot()
-    PositionEntity(r\Objects[6], r\x + 640.0 * RoomScale, 8.0 * RoomScale, r\z - 896.0 * RoomScale)
-    EntityParent(r\Objects[6], r\obj)
+    r\objects[6] = CreatePivot()
+    PositionEntity(r\objects[6], r\x + 640.0 * RoomScale, 8.0 * RoomScale, r\z - 896.0 * RoomScale)
+    EntityParent(r\objects[6], r\obj)
 End Function

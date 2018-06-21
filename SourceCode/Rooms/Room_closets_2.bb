@@ -28,13 +28,13 @@ Function FillRoom_closets_2(r.Rooms)
     EntityParent(it\collider, r\obj)
     
     it = CreateItem("Incident Report SCP-1048-A", "paper",r\x + 736.0 * RoomScale, r\y + 224.0 * RoomScale, r\z -480.0 * RoomScale)
-    ;clipboard\SecondInv[0] = it
+    ;clipboard\secondInv[0] = it
     HideEntity(it\collider)
     
-    r\Objects[0]=CreatePivot(r\obj)
-    PositionEntity r\Objects[0], r\x-1120*RoomScale, -256*RoomScale, r\z+896*RoomScale, True
-    r\Objects[1]=CreatePivot(r\obj)
-    PositionEntity r\Objects[1], r\x-1232*RoomScale, -256*RoomScale, r\z-160*RoomScale, True
+    r\objects[0]=CreatePivot(r\obj)
+    PositionEntity r\objects[0], r\x-1120*RoomScale, -256*RoomScale, r\z+896*RoomScale, True
+    r\objects[1]=CreatePivot(r\obj)
+    PositionEntity r\objects[1], r\x-1232*RoomScale, -256*RoomScale, r\z-160*RoomScale, True
     
     d.Doors = CreateDoor(0, r\x - 240.0 * RoomScale, 0.0, r\z, 90, r, False)
     d\open = False : d\autoClose = False 
@@ -45,7 +45,7 @@ Function FillRoom_closets_2(r.Rooms)
     sc\angle = 180
     sc\turn = 45
     TurnEntity(sc\cameraObj, 20, 0, 0)
-    sc\ID = 0
+    sc\iD = 0
     ;sc\followPlayer = True
 End Function
 
@@ -64,32 +64,32 @@ Function UpdateEvent_closets_2(e.Events)
 	;[Block]
 	If e\eventState = 0 Then
 		If (Not e\loaded) Then
-			If e\room\NPC[0]=Null Then
-				e\room\NPC[0] = CreateNPC(NPCtypeD, EntityX(e\room\Objects[0],True),EntityY(e\room\Objects[0],True),EntityZ(e\room\Objects[0],True))
+			If e\room\npc[0]=Null Then
+				e\room\npc[0] = CreateNPC(NPCtypeD, EntityX(e\room\objects[0],True),EntityY(e\room\objects[0],True),EntityZ(e\room\objects[0],True))
 			EndIf
-			e\room\NPC[0]\texture = "GFX/NPCs/classd/janitor.jpg"
-			Local tex% = LoadTexture(e\room\NPC[0]\texture)
+			e\room\npc[0]\texture = "GFX/NPCs/classd/janitor.jpg"
+			Local tex% = LoadTexture(e\room\npc[0]\texture)
 			
-			EntityTexture e\room\NPC[0]\obj, tex
+			EntityTexture e\room\npc[0]\obj, tex
 			FreeTexture tex
 			
-			e\room\NPC[0]\sounds[0] = LoadSound("SFX/Room/Storeroom/Escape1.ogg")
+			e\room\npc[0]\sounds[0] = LoadSound("SFX/Room/Storeroom/Escape1.ogg")
 			
-			e\room\NPC[0]\soundChannels[0] = PlayRangedSound(e\room\NPC[0]\sounds[0], mainPlayer\cam, e\room\NPC[0]\collider, 12)
+			e\room\npc[0]\soundChannels[0] = PlayRangedSound(e\room\npc[0]\sounds[0], mainPlayer\cam, e\room\npc[0]\collider, 12)
 			
-			If e\room\NPC[1]=Null Then
-				e\room\NPC[1] = CreateNPC(NPCtypeD, EntityX(e\room\Objects[1],True),EntityY(e\room\Objects[1],True),EntityZ(e\room\Objects[1],True))
+			If e\room\npc[1]=Null Then
+				e\room\npc[1] = CreateNPC(NPCtypeD, EntityX(e\room\objects[1],True),EntityY(e\room\objects[1],True),EntityZ(e\room\objects[1],True))
 			EndIf
-			e\room\NPC[1]\texture = "GFX/NPCs/classd/scientist.jpg"
-			tex = LoadTexture(e\room\NPC[1]\texture)
-			EntityTexture e\room\NPC[1]\obj, tex
+			e\room\npc[1]\texture = "GFX/NPCs/classd/scientist.jpg"
+			tex = LoadTexture(e\room\npc[1]\texture)
+			EntityTexture e\room\npc[1]\obj, tex
 			
 			FreeTexture tex
 			
-			e\room\NPC[1]\sounds[0] = LoadSound("SFX/Room/Storeroom/Escape2.ogg")
+			e\room\npc[1]\sounds[0] = LoadSound("SFX/Room/Storeroom/Escape2.ogg")
 			
-			PointEntity e\room\NPC[0]\collider, e\room\NPC[1]\collider
-			PointEntity e\room\NPC[1]\collider, e\room\NPC[0]\collider
+			PointEntity e\room\npc[0]\collider, e\room\npc[1]\collider
+			PointEntity e\room\npc[1]\collider, e\room\npc[0]\collider
 			
 			e\loaded = True
 			e\eventState=1
@@ -97,23 +97,23 @@ Function UpdateEvent_closets_2(e.Events)
 	Else
 		e\eventState=e\eventState+timing\tickDuration
 		If e\eventState < 70*3.5 Then
-			RotateEntity(e\room\NPC[1]\collider,0,CurveAngle(e\room\angle+90,EntityYaw(e\room\NPC[1]\collider),100.0),0,True)
+			RotateEntity(e\room\npc[1]\collider,0,CurveAngle(e\room\angle+90,EntityYaw(e\room\npc[1]\collider),100.0),0,True)
 			
-			e\room\NPC[0]\state=1
+			e\room\npc[0]\state=1
 			If e\eventState > 70*3.2 And e\eventState-timing\tickDuration =< 70*3.2 Then PlayRangedSound(IntroSFX(15),mainPlayer\cam,e\room\obj,15.0)
 		ElseIf e\eventState < 70*6.5 Then
 			If e\eventState-timing\tickDuration < 70*3.5 Then
-				e\room\NPC[0]\state=0
-				e\room\NPC[1]\soundChannels[0] = PlayRangedSound(e\room\NPC[1]\sounds[0], mainPlayer\cam, e\room\NPC[1]\collider,12.0)
+				e\room\npc[0]\state=0
+				e\room\npc[1]\soundChannels[0] = PlayRangedSound(e\room\npc[1]\sounds[0], mainPlayer\cam, e\room\npc[1]\collider,12.0)
 			EndIf
 			
 			If e\eventState > 70*4.5 Then
-				PointEntity e\room\NPC[0]\obj, e\room\obj
-				RotateEntity(e\room\NPC[0]\collider,0,CurveAngle(EntityYaw(e\room\NPC[0]\obj),EntityYaw(e\room\NPC[0]\collider),30.0),0,True)
+				PointEntity e\room\npc[0]\obj, e\room\obj
+				RotateEntity(e\room\npc[0]\collider,0,CurveAngle(EntityYaw(e\room\npc[0]\obj),EntityYaw(e\room\npc[0]\collider),30.0),0,True)
 			EndIf
-			PointEntity e\room\NPC[1]\obj, e\room\obj
-			TurnEntity e\room\NPC[1]\obj, 0, Sin(e\eventState)*25, 0
-			RotateEntity(e\room\NPC[1]\collider,0,CurveAngle(EntityYaw(e\room\NPC[1]\obj),EntityYaw(e\room\NPC[1]\collider),30.0),0,True)
+			PointEntity e\room\npc[1]\obj, e\room\obj
+			TurnEntity e\room\npc[1]\obj, 0, Sin(e\eventState)*25, 0
+			RotateEntity(e\room\npc[1]\collider,0,CurveAngle(EntityYaw(e\room\npc[1]\obj),EntityYaw(e\room\npc[1]\collider),30.0),0,True)
 		Else
 			If e\eventState-timing\tickDuration < 70*6.5 Then
 				PlaySound_SM(sndManager\lightSwitch)
@@ -121,17 +121,17 @@ Function UpdateEvent_closets_2(e.Events)
 			mainPlayer\blinkTimer = Max((70*6.5-e\eventState)/5.0 - Rnd(0.0,2.0),-10)
 			If mainPlayer\blinkTimer =-10 Then
 				;TODO: fix
-				;If e\eventState > 70*7.5 And e\eventState-timing\tickDuration =< 70*7.5 Then PlayRangedSound(NeckSnapSFX(0),mainPlayer\cam,e\room\NPC[0]\collider,8.0)
-				;If e\eventState > 70*8.0 And e\eventState-timing\tickDuration =< 70*8.0 Then PlayRangedSound(NeckSnapSFX(1),mainPlayer\cam,e\room\NPC[1]\collider,8.0)
-				SetNPCFrame e\room\NPC[0], 60
-				e\room\NPC[0]\state=8
+				;If e\eventState > 70*7.5 And e\eventState-timing\tickDuration =< 70*7.5 Then PlayRangedSound(NeckSnapSFX(0),mainPlayer\cam,e\room\npc[0]\collider,8.0)
+				;If e\eventState > 70*8.0 And e\eventState-timing\tickDuration =< 70*8.0 Then PlayRangedSound(NeckSnapSFX(1),mainPlayer\cam,e\room\npc[1]\collider,8.0)
+				SetNPCFrame e\room\npc[0], 60
+				e\room\npc[0]\state=8
 				
-				SetNPCFrame e\room\NPC[1], 19
-				e\room\NPC[1]\state = 6
+				SetNPCFrame e\room\npc[1], 19
+				e\room\npc[1]\state = 6
 			EndIf
 			
 			If e\eventState > 70*8.5 Then
-				PositionEntity Curr173\collider, (EntityX(e\room\Objects[0],True)+EntityX(e\room\Objects[1],True))/2,EntityY(e\room\Objects[0],True),(EntityZ(e\room\Objects[0],True)+EntityZ(e\room\Objects[1],True))/2
+				PositionEntity Curr173\collider, (EntityX(e\room\objects[0],True)+EntityX(e\room\objects[1],True))/2,EntityY(e\room\objects[0],True),(EntityZ(e\room\objects[0],True)+EntityZ(e\room\objects[1],True))/2
 				PointEntity Curr173\collider, mainPlayer\collider
 				ResetEntity Curr173\collider
 				RemoveEvent(e)

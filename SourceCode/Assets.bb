@@ -385,28 +385,28 @@ Function InitNewGame()
 	
 	For r.Rooms = Each Rooms
 		For i = 0 To MaxRoomLights
-			If r\Lights[i]<>0 Then EntityParent(r\Lights[i],0)
+			If r\lights[i]<>0 Then EntityParent(r\lights[i],0)
 		Next
 		
-		If (Not r\RoomTemplate\disableDecals) Then
+		If (Not r\roomTemplate\disableDecals) Then
 			If Rand(4) = 1 Then
 				de.Decals = CreateDecal(Rand(2, 3), EntityX(r\obj)+Rnd(- 2,2), 0.003, EntityZ(r\obj)+Rnd(-2,2), 90, Rand(360), 0)
-				de\Size = Rnd(0.1, 0.4) : ScaleSprite(de\obj, de\Size, de\Size)
+				de\size = Rnd(0.1, 0.4) : ScaleSprite(de\obj, de\size, de\size)
 				EntityAlpha(de\obj, Rnd(0.85, 0.95))
 			EndIf
 			
 			If Rand(4) = 1 Then
 				de.Decals = CreateDecal(0, EntityX(r\obj)+Rnd(- 2,2), 0.003, EntityZ(r\obj)+Rnd(-2,2), 90, Rand(360), 0)
-				de\Size = Rnd(0.5, 0.7) : EntityAlpha(de\obj, 0.7) : de\ID = 1 : ScaleSprite(de\obj, de\Size, de\Size)
+				de\size = Rnd(0.5, 0.7) : EntityAlpha(de\obj, 0.7) : de\iD = 1 : ScaleSprite(de\obj, de\size, de\size)
 				EntityAlpha(de\obj, Rnd(0.7, 0.85))
 			EndIf
 		EndIf
 		
-		If (r\RoomTemplate\name = "cont_173_1" And (userOptions\introEnabled = False)) Then 
+		If (r\roomTemplate\name = "cont_173_1" And (userOptions\introEnabled = False)) Then 
 			PositionEntity (mainPlayer\collider, EntityX(r\obj)+3584*RoomScale, 714*RoomScale, EntityZ(r\obj)+1024*RoomScale)
 			ResetEntity mainPlayer\collider
 			mainPlayer\currRoom = r
-		ElseIf (r\RoomTemplate\name = "intro" And userOptions\introEnabled) Then
+		ElseIf (r\roomTemplate\name = "intro" And userOptions\introEnabled) Then
 			PositionEntity (mainPlayer\collider, EntityX(r\obj), 1.0, EntityZ(r\obj))
 			ResetEntity mainPlayer\collider
 			mainPlayer\currRoom = r
@@ -560,19 +560,19 @@ Function InitLoadGame()
 			If e\eventState = 2 Then
 				;[Block]
 				DrawLoading(91)
-				e\room\Objects[0] = CreatePlane()
+				e\room\objects[0] = CreatePlane()
 				Local planetex% = LoadTexture("GFX/map/Rooms/dimension1499/grit3.jpg")
-				EntityTexture e\room\Objects[0],planetex%
+				EntityTexture e\room\objects[0],planetex%
 				FreeTexture planetex%
-				PositionEntity e\room\Objects[0],0,EntityY(e\room\obj),0
-				EntityType e\room\Objects[0],HIT_MAP
-				;EntityParent e\room\Objects[0],e\room\obj
+				PositionEntity e\room\objects[0],0,EntityY(e\room\obj),0
+				EntityType e\room\objects[0],HIT_MAP
+				;EntityParent e\room\objects[0],e\room\obj
 				DrawLoading(92)
 				NTF_1499Sky = sky_CreateSky("GFX/map/sky/1499sky")
 				DrawLoading(93)
 				For i = 1 To 15
-					e\room\Objects[i] = LoadMesh("GFX/map/Rooms/dimension1499/1499object"+i+".b3d")
-					HideEntity e\room\Objects[i]
+					e\room\objects[i] = LoadMesh("GFX/map/Rooms/dimension1499/1499object"+i+".b3d")
+					HideEntity e\room\objects[i]
 				Next
 				DrawLoading(96)
 				CreateChunkParts(e\room)
@@ -628,7 +628,7 @@ Function NullGame()
 	Next
 	
 	Contained106 = False
-	Curr173\Idle = False
+	Curr173\idle = False
 	
 	MTFtimer = 0
 	For i = 0 To 9

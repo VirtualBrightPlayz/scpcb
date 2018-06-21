@@ -1,5 +1,5 @@
 Function InitializeNPCtypeD(n.NPCs)
-    n\NVName = "Human"
+    n\nVName = "Human"
     n\collider = CreatePivot()
     EntityRadius n\collider, 0.32
     EntityType n\collider, HIT_PLAYER
@@ -19,7 +19,7 @@ Function InitializeNPCtypeD(n.NPCs)
     temp# = 0.5 / MeshWidth(n\obj)
     ScaleEntity n\obj, temp, temp, temp
     
-    n\Speed = 2.0 / 100
+    n\speed = 2.0 / 100
     
     MeshCullBox (n\obj, -MeshWidth(n\obj), -MeshHeight(n\obj), -MeshDepth(n\obj), MeshWidth(n\obj)*2, MeshHeight(n\obj)*2, MeshDepth(n\obj)*2)
 End Function
@@ -35,7 +35,7 @@ Function UpdateNPCtypeD(n.NPCs)
             Animate2(n\obj, AnimTime(n\obj), 210, 235, 0.1)
         Case 1 ;walking
             If n\state2 = 1.0 Then
-                n\currSpeed = CurveValue(n\Speed*0.7, n\currSpeed, 20.0)
+                n\currSpeed = CurveValue(n\speed*0.7, n\currSpeed, 20.0)
             Else
                 n\currSpeed = CurveValue(0.015, n\currSpeed, 5.0)
             EndIf

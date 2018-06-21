@@ -456,7 +456,7 @@ Function UpdateConsole()
 					CreateConsoleMsg("    - collider: "+EntityPitch(mainPlayer\collider)+", "+EntityYaw(mainPlayer\collider)+", "+EntityRoll(mainPlayer\collider))
 					CreateConsoleMsg("    - camera: "+EntityPitch(mainPlayer\cam)+", "+EntityYaw(mainPlayer\cam)+", "+EntityRoll(mainPlayer\cam))
 					
-					CreateConsoleMsg("Room: "+mainPlayer\currRoom\RoomTemplate\name)
+					CreateConsoleMsg("Room: "+mainPlayer\currRoom\roomTemplate\name)
 					For ev.Events = Each Events
 						If ev\room = mainPlayer\currRoom Then
 							CreateConsoleMsg("Room event: "+ev\name)	
@@ -539,7 +539,7 @@ Function UpdateConsole()
 					End Select
 					
 					For r.Rooms = Each Rooms
-						If r\RoomTemplate\name = StrTemp Then
+						If r\roomTemplate\name = StrTemp Then
 							;PositionEntity (mainPlayer\collider, EntityX(r\obj), 0.7, EntityZ(r\obj))
 							PositionEntity (mainPlayer\collider, r\x, r\y+0.7, r\z)
 							ResetEntity(mainPlayer\collider)
@@ -553,7 +553,7 @@ Function UpdateConsole()
 						EndIf
 					Next
 					
-					If mainPlayer\currRoom\RoomTemplate\name <> StrTemp Then CreateConsoleMsg("Room not found.",255,150,0)
+					If mainPlayer\currRoom\roomTemplate\name <> StrTemp Then CreateConsoleMsg("Room not found.",255,150,0)
 					
 				Case "spawnitem"
 					StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))

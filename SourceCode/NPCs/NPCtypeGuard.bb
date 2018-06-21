@@ -100,7 +100,7 @@ Function UpdateNPCtypeGuard(n.NPCs)
                 RotateEntity(p\pvt, EntityPitch(n\collider), EntityYaw(n\collider), 0, True)
                 MoveEntity (p\pvt,0.8*0.079, 10.75*0.079, 6.9*0.079)
 
-                n\Reload = 7
+                n\reload = 7
             EndIf
 
             FreeEntity(pvt)

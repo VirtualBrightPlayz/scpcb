@@ -5,17 +5,17 @@ Function FillRoom_scp_970_2(r.Rooms)
 	
 	Local t1;, Bump
     
-    r\RoomDoors[0] = CreateDoor(r\zone, r\x - 1288.0 * RoomScale, 0, r\z, 270, r)
-    r\RoomDoors[1] = CreateDoor(r\zone, r\x - 760.0 * RoomScale, 0, r\z, 270, r)
-    r\RoomDoors[2] = CreateDoor(r\zone, r\x - 264.0 * RoomScale, 0, r\z, 270, r)
-    r\RoomDoors[3] = CreateDoor(r\zone, r\x + 264.0 * RoomScale, 0, r\z, 270, r)
-    r\RoomDoors[4] = CreateDoor(r\zone, r\x + 760.0 * RoomScale, 0, r\z, 270, r)
-    r\RoomDoors[5] = CreateDoor(r\zone, r\x + 1288.0 * RoomScale, 0, r\z, 270, r)
+    r\roomDoors[0] = CreateDoor(r\zone, r\x - 1288.0 * RoomScale, 0, r\z, 270, r)
+    r\roomDoors[1] = CreateDoor(r\zone, r\x - 760.0 * RoomScale, 0, r\z, 270, r)
+    r\roomDoors[2] = CreateDoor(r\zone, r\x - 264.0 * RoomScale, 0, r\z, 270, r)
+    r\roomDoors[3] = CreateDoor(r\zone, r\x + 264.0 * RoomScale, 0, r\z, 270, r)
+    r\roomDoors[4] = CreateDoor(r\zone, r\x + 760.0 * RoomScale, 0, r\z, 270, r)
+    r\roomDoors[5] = CreateDoor(r\zone, r\x + 1288.0 * RoomScale, 0, r\z, 270, r)
     
     For i = 0 To 5
-        MoveEntity r\RoomDoors[i]\buttons[0], 0,0,-8.0
-        MoveEntity r\RoomDoors[i]\buttons[1], 0,0,-8.0
-        r\RoomDoors[i]\autoClose = False : r\RoomDoors[i]\open = False				
+        MoveEntity r\roomDoors[i]\buttons[0], 0,0,-8.0
+        MoveEntity r\roomDoors[i]\buttons[1], 0,0,-8.0
+        r\roomDoors[i]\autoClose = False : r\roomDoors[i]\open = False				
     Next
     
     it = CreateItem("Document SCP-939", "paper", r\x + 352.0 * RoomScale, r\y + 176.0 * RoomScale, r\z + 256.0 * RoomScale)
@@ -47,18 +47,18 @@ Function UpdateEvent_scp_970_2(e.Events)
 	;[Block]
 	If mainPlayer\currRoom = e\room Then
 		If e\eventState2 <= 0 Then
-			e\room\RoomDoors[1]\locked = False
-			e\room\RoomDoors[4]\locked = False
+			e\room\roomDoors[1]\locked = False
+			e\room\roomDoors[4]\locked = False
 			
 			If EntityDistance(mainPlayer\collider, Curr173\obj)<8.0 Or EntityDistance(mainPlayer\collider, Curr106\obj)<8.0 Then
-				e\room\RoomDoors[1]\locked = True
-				e\room\RoomDoors[4]\locked = True
+				e\room\roomDoors[1]\locked = True
+				e\room\roomDoors[4]\locked = True
 			Else
 				For n.NPCs = Each NPCs
 					If n\npcType = NPCtypeMTF Then 
 						If EntityDistance(mainPlayer\collider, Curr173\obj)<8.0 Then 
-							e\room\RoomDoors[1]\locked = True
-							e\room\RoomDoors[4]\locked = True
+							e\room\roomDoors[1]\locked = True
+							e\room\roomDoors[4]\locked = True
 							Exit
 						EndIf
 					EndIf
@@ -81,15 +81,15 @@ Function UpdateEvent_scp_970_2(e.Events)
 			;1->3, 2->4
 			;3->0, 4->0
 			For i = 1 To 2
-				e\room\RoomDoors[i]\open = e\room\RoomDoors[i+2]\open
-				e\room\RoomDoors[i]\openstate = e\room\RoomDoors[i+2]\openstate
-				PositionEntity e\room\RoomDoors[i]\obj, EntityX(e\room\RoomDoors[i+2]\obj),EntityY(e\room\RoomDoors[i+2]\obj),EntityZ(e\room\RoomDoors[i+2]\obj)
-				PositionEntity e\room\RoomDoors[i]\obj2, EntityX(e\room\RoomDoors[i+2]\obj2),EntityY(e\room\RoomDoors[i+2]\obj2),EntityZ(e\room\RoomDoors[i+2]\obj2)							
+				e\room\roomDoors[i]\open = e\room\roomDoors[i+2]\open
+				e\room\roomDoors[i]\openstate = e\room\roomDoors[i+2]\openstate
+				PositionEntity e\room\roomDoors[i]\obj, EntityX(e\room\roomDoors[i+2]\obj),EntityY(e\room\roomDoors[i+2]\obj),EntityZ(e\room\roomDoors[i+2]\obj)
+				PositionEntity e\room\roomDoors[i]\obj2, EntityX(e\room\roomDoors[i+2]\obj2),EntityY(e\room\roomDoors[i+2]\obj2),EntityZ(e\room\roomDoors[i+2]\obj2)							
 				
-				e\room\RoomDoors[i+2]\open = False
-				e\room\RoomDoors[i+2]\openstate = 0
-				PositionEntity e\room\RoomDoors[i+2]\obj, EntityX(e\room\RoomDoors[0]\obj),EntityY(e\room\RoomDoors[0]\obj),EntityZ(e\room\RoomDoors[0]\obj)
-				PositionEntity e\room\RoomDoors[i+2]\obj2, EntityX(e\room\RoomDoors[0]\obj2),EntityY(e\room\RoomDoors[0]\obj2),EntityZ(e\room\RoomDoors[0]\obj2)							
+				e\room\roomDoors[i+2]\open = False
+				e\room\roomDoors[i+2]\openstate = 0
+				PositionEntity e\room\roomDoors[i+2]\obj, EntityX(e\room\roomDoors[0]\obj),EntityY(e\room\roomDoors[0]\obj),EntityZ(e\room\roomDoors[0]\obj)
+				PositionEntity e\room\roomDoors[i+2]\obj2, EntityX(e\room\roomDoors[0]\obj2),EntityY(e\room\roomDoors[0]\obj2),EntityZ(e\room\roomDoors[0]\obj2)							
 			Next	
 			
 			TFormPoint TFormedX()-1024, TFormedY(), TFormedZ(),e\room\obj,0
@@ -106,15 +106,15 @@ Function UpdateEvent_scp_970_2(e.Events)
 			;3->1, 4->2
 			;1->0, 2->0
 			For i = 1 To 2
-				e\room\RoomDoors[i+2]\open = e\room\RoomDoors[i]\open
-				e\room\RoomDoors[i+2]\openstate = e\room\RoomDoors[i]\openstate
-				PositionEntity e\room\RoomDoors[i+2]\obj, EntityX(e\room\RoomDoors[i]\obj),EntityY(e\room\RoomDoors[i]\obj),EntityZ(e\room\RoomDoors[i]\obj)
-				PositionEntity e\room\RoomDoors[i+2]\obj2, EntityX(e\room\RoomDoors[i]\obj2),EntityY(e\room\RoomDoors[i]\obj2),EntityZ(e\room\RoomDoors[i]\obj2)							
+				e\room\roomDoors[i+2]\open = e\room\roomDoors[i]\open
+				e\room\roomDoors[i+2]\openstate = e\room\roomDoors[i]\openstate
+				PositionEntity e\room\roomDoors[i+2]\obj, EntityX(e\room\roomDoors[i]\obj),EntityY(e\room\roomDoors[i]\obj),EntityZ(e\room\roomDoors[i]\obj)
+				PositionEntity e\room\roomDoors[i+2]\obj2, EntityX(e\room\roomDoors[i]\obj2),EntityY(e\room\roomDoors[i]\obj2),EntityZ(e\room\roomDoors[i]\obj2)							
 				
-				e\room\RoomDoors[i]\open = False
-				e\room\RoomDoors[i]\openstate = 0
-				PositionEntity e\room\RoomDoors[i]\obj, EntityX(e\room\RoomDoors[0]\obj),EntityY(e\room\RoomDoors[0]\obj),EntityZ(e\room\RoomDoors[0]\obj)
-				PositionEntity e\room\RoomDoors[i]\obj2, EntityX(e\room\RoomDoors[0]\obj2),EntityY(e\room\RoomDoors[0]\obj2),EntityZ(e\room\RoomDoors[0]\obj2)							
+				e\room\roomDoors[i]\open = False
+				e\room\roomDoors[i]\openstate = 0
+				PositionEntity e\room\roomDoors[i]\obj, EntityX(e\room\roomDoors[0]\obj),EntityY(e\room\roomDoors[0]\obj),EntityZ(e\room\roomDoors[0]\obj)
+				PositionEntity e\room\roomDoors[i]\obj2, EntityX(e\room\roomDoors[0]\obj2),EntityY(e\room\roomDoors[0]\obj2),EntityZ(e\room\roomDoors[0]\obj2)							
 			Next
 			
 			TFormPoint TFormedX()+1024, TFormedY(), TFormedZ(),e\room\obj,0
@@ -166,7 +166,7 @@ Function UpdateEvent_scp_970_2(e.Events)
 									If itt\tempName = "paper" And Rand(6)=1 Then
 										mainPlayer\inventory\items[i] = CreateItem(itt\name, itt\tempName, 1,1,1)
 										HideEntity mainPlayer\inventory\items[i]\collider
-										mainPlayer\inventory\items[i]\Picked = True
+										mainPlayer\inventory\items[i]\picked = True
 										Exit
 									EndIf
 								Next
@@ -179,34 +179,34 @@ Function UpdateEvent_scp_970_2(e.Events)
 					it.Items = CreateItem("Strange Note", "paper", TFormedX(), TFormedY(), TFormedZ())
 					EntityType(it\collider, HIT_ITEM)
 				Case 25
-					e\room\NPC[0]=CreateNPC(NPCtypeD, EntityX(e\room\obj)+Cos(e\room\angle-90)*760*RoomScale, 0.35, EntityZ(e\room\obj)+Sin(e\room\angle-90)*760*RoomScale)
-					RotateEntity e\room\NPC[0]\collider, 0, e\room\angle-200, 0, True
+					e\room\npc[0]=CreateNPC(NPCtypeD, EntityX(e\room\obj)+Cos(e\room\angle-90)*760*RoomScale, 0.35, EntityZ(e\room\obj)+Sin(e\room\angle-90)*760*RoomScale)
+					RotateEntity e\room\npc[0]\collider, 0, e\room\angle-200, 0, True
 					tex=LoadTexture("GFX/NPCs/corpse.jpg")
-					e\room\NPC[0]\texture = "GFX/NPCs/corpse.jpg"
-					EntityTexture e\room\NPC[0]\obj, tex
+					e\room\npc[0]\texture = "GFX/NPCs/corpse.jpg"
+					EntityTexture e\room\npc[0]\obj, tex
 					FreeTexture tex
-					SetAnimTime(e\room\NPC[0]\obj,80)
-					e\room\NPC[0]\state=10
+					SetAnimTime(e\room\npc[0]\obj,80)
+					e\room\npc[0]\state=10
 				Case 30
 					i = Rand(0,mainPlayer\inventory\size)
 					If mainPlayer\inventory\items[i]<>Null Then RemoveItem(mainPlayer\inventory\items[i])
 					mainPlayer\inventory\items[i] = CreateItem("Strange Note", "paper", 1,1,1)
 					HideEntity mainPlayer\inventory\items[i]\collider
-					mainPlayer\inventory\items[i]\Picked = True
+					mainPlayer\inventory\items[i]\picked = True
 				Case 35
 					For i = 0 To 3
 						de.Decals = CreateDecal(17, e\room\x+Rnd(-2,2), 700*RoomScale, e\room\z+Rnd(-2,2), 270, Rand(360), 0)
-						de\Size = 0.05 : de\SizeChange = 0.0005 : EntityAlpha(de\obj, 0.8) : UpdateDecals
+						de\size = 0.05 : de\sizeChange = 0.0005 : EntityAlpha(de\obj, 0.8) : UpdateDecals
 					Next
 				Case 40
 					PlaySound2(LoadTempSound("SFX/radio/franklin4.ogg"))
 				Case 50
-					e\room\NPC[1]=CreateNPC(NPCtypeGuard, EntityX(e\room\obj)+Cos(e\room\angle+90)*600*RoomScale, 0.35, EntityZ(e\room\obj)+Sin(e\room\angle+90)*600*RoomScale)
-					e\room\NPC[1]\state=7
+					e\room\npc[1]=CreateNPC(NPCtypeGuard, EntityX(e\room\obj)+Cos(e\room\angle+90)*600*RoomScale, 0.35, EntityZ(e\room\obj)+Sin(e\room\angle+90)*600*RoomScale)
+					e\room\npc[1]\state=7
 				Case 52
-					If e\room\NPC[1] <> Null Then
-						RemoveNPC(e\room\NPC[1])
-						e\room\NPC[1]=Null
+					If e\room\npc[1] <> Null Then
+						RemoveNPC(e\room\npc[1])
+						e\room\npc[1]=Null
 					EndIf
 				Case 60
 					If (Not HalloweenTex) Then
@@ -222,9 +222,9 @@ Function UpdateEvent_scp_970_2(e.Events)
 			;	PlaySound2(AmbientSFX(temp, Rand(0,AmbientSFXAmount(temp)-1)))
 			;EndIf
 		Else
-			If e\room\NPC[0] <> Null Then
-				If EntityDistance(mainPlayer\collider, e\room\NPC[0]\collider)<3.0 Then
-					If EntityInView(e\room\NPC[0]\obj, mainPlayer\cam) Then
+			If e\room\npc[0] <> Null Then
+				If EntityDistance(mainPlayer\collider, e\room\npc[0]\collider)<3.0 Then
+					If EntityInView(e\room\npc[0]\obj, mainPlayer\cam) Then
 						mainPlayer\camZoom = (Sin(Float(TimeInPosMilliSecs())/20.0)+1.0)*15.0
 						;HeartBeatVolume = Max(CurveValue(0.3, HeartBeatVolume, 2.0), HeartBeatVolume)
 						mainPlayer\heartbeatIntensity = Max(mainPlayer\heartbeatIntensity, 120)
@@ -232,9 +232,9 @@ Function UpdateEvent_scp_970_2(e.Events)
 				EndIf
 			EndIf
 			
-			If e\room\NPC[1] <> Null Then
-				PointEntity e\room\NPC[1]\obj, mainPlayer\collider
-				RotateEntity e\room\NPC[1]\collider, 0, CurveAngle(EntityYaw(e\room\NPC[1]\obj),EntityYaw(e\room\NPC[1]\collider),35),0
+			If e\room\npc[1] <> Null Then
+				PointEntity e\room\npc[1]\obj, mainPlayer\collider
+				RotateEntity e\room\npc[1]\collider, 0, CurveAngle(EntityYaw(e\room\npc[1]\obj),EntityYaw(e\room\npc[1]\collider),35),0
 			EndIf
 			
 			;If Abs(TFormedX())<264 Then 
@@ -279,17 +279,17 @@ Function UpdateEvent_scp_970_2(e.Events)
 				If e\sounds[0] = 0 Then
 					e\sounds[0] = LoadSound("SFX/SCP/970/Corpse.ogg")
 				EndIf
-				e\soundChannels[0] = LoopRangedSound(e\sounds[0], e\soundChannels[0], mainPlayer\cam, e\room\NPC[0]\obj);
+				e\soundChannels[0] = LoopRangedSound(e\sounds[0], e\soundChannels[0], mainPlayer\cam, e\room\npc[0]\obj);
 				If e\eventState < 30 Then
 					;LightVolume = TempLightVolume*0.4
 				ElseIf e\eventState > 60 Then
-					AnimateNPC(e\room\NPC[0], 80, 61, -0.02, False)
+					AnimateNPC(e\room\npc[0], 80, 61, -0.02, False)
 					
-					e\room\NPC[0]\dropSpeed = 0
-					y = CurveValue(1.5+Sin(Float(TimeInPosMilliSecs())/20.0)*0.1,EntityY(e\room\NPC[0]\collider),50.0)
+					e\room\npc[0]\dropSpeed = 0
+					y = CurveValue(1.5+Sin(Float(TimeInPosMilliSecs())/20.0)*0.1,EntityY(e\room\npc[0]\collider),50.0)
 					
-					PositionEntity e\room\NPC[0]\collider,EntityX(e\room\NPC[0]\collider),y,EntityZ(e\room\NPC[0]\collider)
-					TurnEntity e\room\NPC[0]\collider,0,0.1*timing\tickDuration,0
+					PositionEntity e\room\npc[0]\collider,EntityX(e\room\npc[0]\collider),y,EntityZ(e\room\npc[0]\collider)
+					TurnEntity e\room\npc[0]\collider,0,0.1*timing\tickDuration,0
 				EndIf 								
 			EndIf
 			

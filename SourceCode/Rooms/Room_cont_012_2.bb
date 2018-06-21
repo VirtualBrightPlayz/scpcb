@@ -10,46 +10,46 @@ Function FillRoom_cont_012_2(r.Rooms)
     PositionEntity(d\buttons[1], r\x + 304.0 * RoomScale, EntityY(d\buttons[1],True), r\z + 840.0 * RoomScale, True)	
     TurnEntity d\buttons[1],0,0,0,True
     
-    r\RoomDoors[0] = CreateDoor(r\zone, r\x -512.0 * RoomScale, -768.0*RoomScale, r\z -336.0 * RoomScale, 0, r, False, False)
-    r\RoomDoors[0]\autoClose = False : r\RoomDoors[0]\open = False : r\RoomDoors[0]\locked = True
-    PositionEntity(r\RoomDoors[0]\buttons[0], r\x + 176.0 * RoomScale, -512.0*RoomScale, r\z - 364.0 * RoomScale, True)
-    FreeEntity r\RoomDoors[0]\buttons[1] : r\RoomDoors[0]\buttons[1]=0
+    r\roomDoors[0] = CreateDoor(r\zone, r\x -512.0 * RoomScale, -768.0*RoomScale, r\z -336.0 * RoomScale, 0, r, False, False)
+    r\roomDoors[0]\autoClose = False : r\roomDoors[0]\open = False : r\roomDoors[0]\locked = True
+    PositionEntity(r\roomDoors[0]\buttons[0], r\x + 176.0 * RoomScale, -512.0*RoomScale, r\z - 364.0 * RoomScale, True)
+    FreeEntity r\roomDoors[0]\buttons[1] : r\roomDoors[0]\buttons[1]=0
     
-    r\Levers[0] = CreateLever()
+    r\levers[0] = CreateLever()
     
-	ScaleEntity(r\Levers[0]\baseObj, 0.04, 0.04, 0.04)
-	ScaleEntity(r\Levers[0]\obj, 0.04, 0.04, 0.04)
-	PositionEntity (r\Levers[0]\baseObj, r\x + 240.0 * RoomScale, r\y - 512.0 * RoomScale, r\z - 364 * RoomScale, True)
-	PositionEntity (r\Levers[0]\obj, r\x + 240.0 * RoomScale, r\y - 512.0 * RoomScale, r\z - 364 * RoomScale, True)
+	ScaleEntity(r\levers[0]\baseObj, 0.04, 0.04, 0.04)
+	ScaleEntity(r\levers[0]\obj, 0.04, 0.04, 0.04)
+	PositionEntity (r\levers[0]\baseObj, r\x + 240.0 * RoomScale, r\y - 512.0 * RoomScale, r\z - 364 * RoomScale, True)
+	PositionEntity (r\levers[0]\obj, r\x + 240.0 * RoomScale, r\y - 512.0 * RoomScale, r\z - 364 * RoomScale, True)
 	
-	EntityParent(r\Levers[0]\baseObj, r\obj)
-	EntityParent(r\Levers[0]\obj, r\obj)
+	EntityParent(r\levers[0]\baseObj, r\obj)
+	EntityParent(r\levers[0]\obj, r\obj)
 		
-    ;RotateEntity(r\Levers[0]\baseObj, 0, 0, 0)
-    RotateEntity(r\Levers[0]\obj, 10, -180, 0)
+    ;RotateEntity(r\levers[0]\baseObj, 0, 0, 0)
+    RotateEntity(r\levers[0]\obj, 10, -180, 0)
     
-    EntityPickMode r\Levers[0]\obj, 1, False
-    EntityRadius r\Levers[0]\obj, 0.1
+    EntityPickMode r\levers[0]\obj, 1, False
+    EntityRadius r\levers[0]\obj, 0.1
     
-    r\Objects[2] = LoadMesh("GFX/map/room012_2.b3d")
-    ScaleEntity r\Objects[2], RoomScale, RoomScale, RoomScale
-    PositionEntity(r\Objects[2], r\x - 360 * RoomScale, - 130 * RoomScale, r\z + 456.0 * RoomScale, 0)
-    EntityParent(r\Objects[2], r\obj)
+    r\objects[2] = LoadMesh("GFX/map/room012_2.b3d")
+    ScaleEntity r\objects[2], RoomScale, RoomScale, RoomScale
+    PositionEntity(r\objects[2], r\x - 360 * RoomScale, - 130 * RoomScale, r\z + 456.0 * RoomScale, 0)
+    EntityParent(r\objects[2], r\obj)
     
-    r\Objects[3] = CreateSprite()
-    PositionEntity(r\Objects[3], r\x - 43.5 * RoomScale, - 574 * RoomScale, r\z - 362.0 * RoomScale)
-    ScaleSprite(r\Objects[3], 0.015, 0.015)
-    EntityTexture(r\Objects[3], LightSpriteTex(1))
-    EntityBlend (r\Objects[3], 3)
-    EntityParent(r\Objects[3], r\obj)
-    HideEntity r\Objects[3]
+    r\objects[3] = CreateSprite()
+    PositionEntity(r\objects[3], r\x - 43.5 * RoomScale, - 574 * RoomScale, r\z - 362.0 * RoomScale)
+    ScaleSprite(r\objects[3], 0.015, 0.015)
+    EntityTexture(r\objects[3], LightSpriteTex(1))
+    EntityBlend (r\objects[3], 3)
+    EntityParent(r\objects[3], r\obj)
+    HideEntity r\objects[3]
     
-    r\Objects[4] = LoadMesh("GFX/map/room012_3.b3d")
+    r\objects[4] = LoadMesh("GFX/map/room012_3.b3d")
     Local tex% = LoadTexture("GFX/map/Textures/scp-012_0.jpg")
-    EntityTexture r\Objects[4],tex, 0,1
-    ScaleEntity r\Objects[4], RoomScale, RoomScale, RoomScale
-    PositionEntity(r\Objects[4], r\x - 360 * RoomScale, - 130 * RoomScale, r\z + 456.0 * RoomScale, 0)
-    EntityParent(r\Objects[4], r\Objects[2])
+    EntityTexture r\objects[4],tex, 0,1
+    ScaleEntity r\objects[4], RoomScale, RoomScale, RoomScale
+    PositionEntity(r\objects[4], r\x - 360 * RoomScale, - 130 * RoomScale, r\z + 456.0 * RoomScale, 0)
+    EntityParent(r\objects[4], r\objects[2])
     
     it = CreateItem("Document SCP-012", "paper", r\x - 56.0 * RoomScale, r\y - 576.0 * RoomScale, r\z - 408.0 * RoomScale)
     EntityParent(it\collider, r\obj)
@@ -58,8 +58,8 @@ Function FillRoom_cont_012_2(r.Rooms)
     EntityParent(it\collider, r\obj)
     
     de.Decals = CreateDecal(3,  r\x - 784*RoomScale, -768*RoomScale+0.01, r\z+640*RoomScale,90,Rnd(360),0)
-    de\Size = 0.5
-    ScaleSprite(de\obj, de\Size,de\Size)
+    de\size = 0.5
+    ScaleSprite(de\obj, de\size,de\size)
     EntityParent de\obj, r\obj
 End Function
 
@@ -79,48 +79,48 @@ Function UpdateEvent_cont_012_2(e.Events)
 	If mainPlayer\currRoom = e\room Then
 		
 		If e\eventState=0 Then
-			If EntityDistance(mainPlayer\collider, e\room\RoomDoors[0]\obj)<2.5 And RemoteDoorOn Then
+			If EntityDistance(mainPlayer\collider, e\room\roomDoors[0]\obj)<2.5 And RemoteDoorOn Then
 				;PlaySound2 HorrorSFX(7)
-				PlayRangedSound_SM(sndManager\lever,mainPlayer\cam,e\room\RoomDoors[0]\obj) 
+				PlayRangedSound_SM(sndManager\lever,mainPlayer\cam,e\room\roomDoors[0]\obj) 
 				e\eventState=1
-				e\room\RoomDoors[0]\locked = False
-				UseDoor(e\room\RoomDoors[0],False)
-				e\room\RoomDoors[0]\locked = True
+				e\room\roomDoors[0]\locked = False
+				UseDoor(e\room\roomDoors[0],False)
+				e\room\roomDoors[0]\locked = True
 			EndIf
 		Else
 			
 			If (e\sounds[0] = 0) Then LoadEventSound(e,"SFX/Music/012Golgotha.ogg")
-			e\soundChannels[0] = LoopRangedSound(e\sounds[0], e\soundChannels[0], mainPlayer\cam, e\room\Objects[3], 5.0)
+			e\soundChannels[0] = LoopRangedSound(e\sounds[0], e\soundChannels[0], mainPlayer\cam, e\room\objects[3], 5.0)
 			
 			; TODO: Move to musicmanager.
 			;If (e\sounds[1] = 0) Then LoadEventSound(e, "SFX/Music/012.ogg", 1)
 			
 			If e\eventState<90 Then e\eventState=CurveValue(90,e\eventState,500)
-			PositionEntity e\room\Objects[2], EntityX(e\room\Objects[2],True),(-130-448*Sin(e\eventState))*RoomScale,EntityZ(e\room\Objects[2],True),True
+			PositionEntity e\room\objects[2], EntityX(e\room\objects[2],True),(-130-448*Sin(e\eventState))*RoomScale,EntityZ(e\room\objects[2],True),True
 			
 			If e\eventState2 > 0 And e\eventState2 < 200 Then
 				e\eventState2 = e\eventState2 + timing\tickDuration
-				RotateEntity(e\room\Levers[0]\obj, CurveValue(85, EntityPitch(e\room\Levers[0]\obj), 5), EntityYaw(e\room\Levers[0]\obj), 0)
+				RotateEntity(e\room\levers[0]\obj, CurveValue(85, EntityPitch(e\room\levers[0]\obj), 5), EntityYaw(e\room\levers[0]\obj), 0)
 			Else
 				e\eventState2 = e\eventState2 + timing\tickDuration
 				If e\eventState2<250 Then
-					ShowEntity e\room\Objects[3] 
+					ShowEntity e\room\objects[3] 
 				Else
-					HideEntity e\room\Objects[3] 
+					HideEntity e\room\objects[3] 
 					If e\eventState2>300 Then e\eventState2=200
 				EndIf
 			EndIf
 			
 			If (Not IsPlayerWearingTempName(mainPlayer,"hazmatsuit3")) And (Not IsPlayerWearingTempName(mainPlayer,"gasmask3")) And (Not IsPlayerWearingTempName(mainPlayer,"nvgoggles")) Then
 				temp = False
-				If EntityVisible(e\room\Objects[2],mainPlayer\cam) Then temp = True
+				If EntityVisible(e\room\objects[2],mainPlayer\cam) Then temp = True
 				
 				;012 not visible, walk to the door
 				If temp=False Then
-					If EntityVisible(e\room\RoomDoors[0]\frameobj,mainPlayer\cam) Then
+					If EntityVisible(e\room\roomDoors[0]\frameobj,mainPlayer\cam) Then
 						pvt% = CreatePivot()
 						PositionEntity pvt, EntityX(mainPlayer\cam), EntityY(mainPlayer\collider), EntityZ(mainPlayer\cam)
-						PointEntity(pvt, e\room\RoomDoors[0]\frameobj)
+						PointEntity(pvt, e\room\roomDoors[0]\frameobj)
 						;TurnEntity(pvt, 90, 0, 0)
 						mainPlayer\headPitch = CurveAngle(90, mainPlayer\headPitch+90, 100)
 						mainPlayer\headPitch=mainPlayer\headPitch-90
@@ -136,18 +136,18 @@ Function UpdateEvent_cont_012_2(e.Events)
 						FreeEntity pvt										
 					EndIf
 				Else
-					e\soundChannels[1] = LoopRangedSound(e\sounds[1], e\soundChannels[1], mainPlayer\cam, e\room\Objects[3], 10, e\eventState3/(86.0*70.0))
+					e\soundChannels[1] = LoopRangedSound(e\sounds[1], e\soundChannels[1], mainPlayer\cam, e\room\objects[3], 10, e\eventState3/(86.0*70.0))
 					
 					pvt% = CreatePivot()
-					PositionEntity pvt, EntityX(mainPlayer\cam), EntityY(e\room\Objects[2],True)-0.05, EntityZ(mainPlayer\cam)
-					PointEntity(pvt, e\room\Objects[2])
+					PositionEntity pvt, EntityX(mainPlayer\cam), EntityY(e\room\objects[2],True)-0.05, EntityZ(mainPlayer\cam)
+					PointEntity(pvt, e\room\objects[2])
 					RotateEntity(mainPlayer\collider, EntityPitch(mainPlayer\collider), CurveAngle(EntityYaw(pvt), EntityYaw(mainPlayer\collider), 80-(e\eventState3/200.0)), 0)
 					
 					TurnEntity(pvt, 90, 0, 0)
 					mainPlayer\headPitch = CurveAngle(EntityPitch(pvt)+25, mainPlayer\headPitch + 90.0, 80-(e\eventState3/200.0))
 					mainPlayer\headPitch=mainPlayer\headPitch-90
 					
-					dist = Distance(EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider),EntityX(e\room\Objects[2],True),EntityZ(e\room\Objects[2],True))
+					dist = Distance(EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider),EntityX(e\room\objects[2],True),EntityZ(e\room\objects[2],True))
 					
 					mainPlayer\heartbeatIntensity = 150
 					;HeartBeatVolume = Max(3.0-dist,0.0)/3.0
@@ -169,7 +169,7 @@ Function UpdateEvent_cont_012_2(e.Events)
 							PlaySound2 LoadTempSound("SFX/SCP/012/Speech2.ogg")
 						ElseIf e\eventState3>31*70 And e\eventState3-timing\tickDuration=<31*70 Then
 							Local tex% = LoadTexture("GFX/map/Textures/scp-012_1.jpg")
-							EntityTexture (e\room\Objects[4], tex,0,1)
+							EntityTexture (e\room\objects[4], tex,0,1)
 							FreeTexture tex
 							
 							Msg="You tear open your left wrist and start writing on the composition with your blood."
@@ -183,14 +183,14 @@ Function UpdateEvent_cont_012_2(e.Events)
 							PlaySound2 LoadTempSound("SFX/SCP/012/Speech5.ogg")
 						ElseIf e\eventState3>63*70 And e\eventState3-timing\tickDuration=<63*70 Then
 							tex = LoadTexture("GFX/map/Textures/scp-012_2.jpg")
-							EntityTexture (e\room\Objects[4], tex,0,1)	
+							EntityTexture (e\room\objects[4], tex,0,1)	
 							FreeTexture tex
 							
 							mainPlayer\injuries=mainPlayer\injuries+0.5
 							PlaySound2 LoadTempSound("SFX/SCP/012/Speech6.ogg")
 						ElseIf e\eventState3>74*70 And e\eventState3-timing\tickDuration=<74*70 Then
 							tex = LoadTexture("GFX/map/Textures/scp-012_3.jpg")
-							EntityTexture (e\room\Objects[4], tex,0,1)
+							EntityTexture (e\room\objects[4], tex,0,1)
 							FreeTexture tex
 							
 							Msg="You rip the wound wide open. Grabbing scoops of blood pouring out."
@@ -200,7 +200,7 @@ Function UpdateEvent_cont_012_2(e.Events)
 							mainPlayer\crouching = True
 							
 							Local de.Decals = CreateDecal(17,  EntityX(mainPlayer\collider), -768*RoomScale+0.01, EntityZ(mainPlayer\collider),90,Rnd(360),0)
-							de\Size = 0.1 : de\MaxSize = 0.45 : de\SizeChange = 0.0002 : UpdateDecals()
+							de\size = 0.1 : de\maxSize = 0.45 : de\sizeChange = 0.0002 : UpdateDecals()
 						ElseIf e\eventState3>85*70 And e\eventState3-timing\tickDuration=<85*70	Then
 							DeathMSG = "Subject D-9341 found in a pool of blood next to SCP-012. Subject seems to have ripped open his wrists and written three extra "
 							DeathMSG = DeathMSG + "lines to the composition before dying of blood loss."

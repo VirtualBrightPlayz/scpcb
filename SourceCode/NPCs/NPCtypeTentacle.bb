@@ -4,7 +4,7 @@ Function InitializeNPCtypeTentacle(n.NPCs)
     n\collider = CreatePivot()
     
     For n2.NPCs = Each NPCs
-        If n\npcType = n2\NPCtype And n<>n2 Then
+        If n\npcType = n2\npctype And n<>n2 Then
             n\obj = CopyEntity (n2\obj)
             Exit
         EndIf

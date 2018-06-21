@@ -53,7 +53,7 @@ Function UpdateNPCtype106(n.NPCs)
 
     Select n\state
         Case STATE106_RISE
-            If (mainPlayer\currRoom\RoomTemplate\name$ = "dimension1499") Then
+            If (mainPlayer\currRoom\roomTemplate\name$ = "dimension1499") Then
                 Return
             EndIf
 
@@ -67,9 +67,9 @@ Function UpdateNPCtype106(n.NPCs)
             ;Otherwise begin spawning 106.
             ElseIf n\timer >= -10 Then
                 If EntityY(n\collider) < EntityY(mainPlayer\collider) - 20.0 - 0.55 Then
-                    If Not mainPlayer\currRoom\RoomTemplate\disableDecals Then
+                    If Not mainPlayer\currRoom\roomTemplate\disableDecals Then
                         de.Decals = CreateDecal(0, EntityX(mainPlayer\collider), 0.01, EntityZ(mainPlayer\collider), 90, Rand(360), 0)
-                        de\Size = 0.05 : de\SizeChange = 0.001 : EntityAlpha(de\obj, 0.8) : UpdateDecals
+                        de\size = 0.05 : de\sizeChange = 0.001 : EntityAlpha(de\obj, 0.8) : UpdateDecals
                     EndIf
                     
                     n\prevY = EntityY(mainPlayer\collider)
@@ -88,7 +88,7 @@ Function UpdateNPCtype106(n.NPCs)
                 If n\timer >= - 10 Then
                     ShouldPlay = 66
                     If (n\frame < 259) Then
-                        PositionEntity n\collider, EntityX(n\collider), n\PrevY-0.15, EntityZ(n\collider)
+                        PositionEntity n\collider, EntityX(n\collider), n\prevY-0.15, EntityZ(n\collider)
                         PointEntity n\obj, mainPlayer\collider
                         RotateEntity (n\collider, 0, CurveValue(EntityYaw(n\obj),EntityYaw(n\collider),100.0), 0, True)
                         
@@ -149,39 +149,39 @@ Function UpdateNPCtype106(n.NPCs)
                     
                     n\pathTimer = Max(n\pathTimer - timing\tickDuration, 0)
                     If n\pathTimer =< 0 Then
-                        n\PathStatus = 0
+                        n\pathStatus = 0
                     EndIf
                 ;Between 0.8 and 25 units.
                 Else 
                     ;Pathfind to the player.
-                    If n\PathTimer <= 0 Then
-                        n\PathStatus = FindPath (n, EntityX(mainPlayer\collider,True), EntityY(mainPlayer\collider,True), EntityZ(mainPlayer\collider,True))
-                        n\PathTimer = 70*10
+                    If n\pathTimer <= 0 Then
+                        n\pathStatus = FindPath (n, EntityX(mainPlayer\collider,True), EntityY(mainPlayer\collider,True), EntityZ(mainPlayer\collider,True))
+                        n\pathTimer = 70*10
                         n\currSpeed = 0
                     Else
-                        n\PathTimer = Max(n\PathTimer-timing\tickDuration,0)
+                        n\pathTimer = Max(n\pathTimer-timing\tickDuration,0)
                         
-                        If n\PathStatus = 2 Then
+                        If n\pathStatus = 2 Then
                             n\currSpeed = 0
-                        ElseIf n\PathStatus = 1 Then
-                            If n\Path[n\PathLocation]=Null Then 
-                                If n\PathLocation > 19 Then 
-                                    n\PathLocation = 0 : n\PathStatus = 0
+                        ElseIf n\pathStatus = 1 Then
+                            If n\path[n\pathLocation]=Null Then 
+                                If n\pathLocation > 19 Then 
+                                    n\pathLocation = 0 : n\pathStatus = 0
                                 Else
-                                    n\PathLocation = n\PathLocation + 1
+                                    n\pathLocation = n\pathLocation + 1
                                 EndIf
                             Else
-                                TranslateEntity n\collider, 0, ((EntityY(n\Path[n\PathLocation]\obj,True) - 0.11) - EntityY(n\collider)) / 50.0, 0
+                                TranslateEntity n\collider, 0, ((EntityY(n\path[n\pathLocation]\obj,True) - 0.11) - EntityY(n\collider)) / 50.0, 0
                                 
-                                PointEntity n\obj, n\Path[n\PathLocation]\obj
+                                PointEntity n\obj, n\path[n\pathLocation]\obj
                                 
-                                dist2# = EntityDistance(n\collider,n\Path[n\PathLocation]\obj)
+                                dist2# = EntityDistance(n\collider,n\path[n\pathLocation]\obj)
                                 
                                 RotateEntity(n\collider, 0, CurveAngle(EntityYaw(n\obj), EntityYaw(n\collider), Min(20.0,dist2*10.0)), 0)
                                 
-                                If dist2 < 0.2 Then n\PathLocation = n\PathLocation + 1
+                                If dist2 < 0.2 Then n\pathLocation = n\pathLocation + 1
                             EndIf
-                        ElseIf n\PathStatus = 0 Then
+                        ElseIf n\pathStatus = 0 Then
                             If n\state3=0 Then AnimateNPC(n, 334, 494, 0.3)
                         EndIf
                     EndIf

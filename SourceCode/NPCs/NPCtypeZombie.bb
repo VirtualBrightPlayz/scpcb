@@ -5,7 +5,7 @@ Function InitializeNPCtypeZombie(n.NPCs)
     EntityType n\collider, HIT_PLAYER
     
     For n2.NPCs = Each NPCs
-        If n\npcType = n2\NPCtype And n<>n2 Then
+        If n\npcType = n2\npctype And n<>n2 Then
             n\obj = CopyEntity (n2\obj)
             Exit
         EndIf
@@ -26,7 +26,7 @@ Function InitializeNPCtypeZombie(n.NPCs)
     
     n\sounds[0] = LoadSound("SFX/SCP/049/0492Breath.ogg")
     
-    n\HP = 100
+    n\hp = 100
 End Function
 
 Function UpdateNPCtypeZombie(n.NPCs)
@@ -34,7 +34,7 @@ Function UpdateNPCtypeZombie(n.NPCs)
         
         prevFrame# = n\frame
         
-        If (Not n\IsDead) Then
+        If (Not n\isDead) Then
             Select n\state
                 Case 0
                     AnimateNPC(n, 719, 777, 0.2, False)
@@ -94,7 +94,7 @@ Function UpdateNPCtypeZombie(n.NPCs)
                                 ;SetAnimTime n\obj, 66
                             EndIf
                         Else
-                            n\currSpeed = CurveValue(n\Speed, n\currSpeed, 20.0)
+                            n\currSpeed = CurveValue(n\speed, n\currSpeed, 20.0)
                             MoveEntity n\collider, 0, 0, n\currSpeed * timing\tickDuration
                             
                             AnimateNPC(n, 936, 1017, n\currSpeed*60)
@@ -105,25 +105,25 @@ Function UpdateNPCtypeZombie(n.NPCs)
                         
                         n\state2=n\state2-timing\tickDuration
                     Else
-                        If n\PathStatus = 1 Then ;path found
-                            If n\Path[n\PathLocation]=Null Then 
-                                If n\PathLocation > 19 Then 
-                                    n\PathLocation = 0 : n\PathStatus = 0
+                        If n\pathStatus = 1 Then ;path found
+                            If n\path[n\pathLocation]=Null Then 
+                                If n\pathLocation > 19 Then 
+                                    n\pathLocation = 0 : n\pathStatus = 0
                                 Else
-                                    n\PathLocation = n\PathLocation + 1
+                                    n\pathLocation = n\pathLocation + 1
                                 EndIf
                             Else
-                                PointEntity n\obj, n\Path[n\PathLocation]\obj
+                                PointEntity n\obj, n\path[n\pathLocation]\obj
                                 
                                 RotateEntity n\collider, 0, CurveAngle(EntityYaw(n\obj), EntityYaw(n\collider), 30.0), 0
-                                n\currSpeed = CurveValue(n\Speed, n\currSpeed, 20.0)
+                                n\currSpeed = CurveValue(n\speed, n\currSpeed, 20.0)
                                 MoveEntity n\collider, 0, 0, n\currSpeed * timing\tickDuration
                                 
                                 AnimateNPC(n, 936, 1017, n\currSpeed*60)
                                 ;Animate2(n\obj, AnimTime(n\obj), 936, 1017, n\currSpeed*60)
                                 
-                                If EntityDistance(n\collider,n\Path[n\PathLocation]\obj) < 0.2 Then
-                                    n\PathLocation = n\PathLocation + 1
+                                If EntityDistance(n\collider,n\path[n\pathLocation]\obj) < 0.2 Then
+                                    n\pathLocation = n\pathLocation + 1
                                 EndIf 
                             EndIf
                         Else ;no path to the player, stands still
@@ -131,10 +131,10 @@ Function UpdateNPCtypeZombie(n.NPCs)
                             AnimateNPC(n, 778, 926, 0.1)
                             ;Animate2(n\obj, AnimTime(n\obj), 778, 926, 0.1)
                             
-                            n\PathTimer = n\PathTimer-timing\tickDuration
-                            If n\PathTimer =< 0 Then
-                                n\PathStatus = FindPath(n, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.1,EntityZ(mainPlayer\collider))
-                                n\PathTimer = n\PathTimer+70*5
+                            n\pathTimer = n\pathTimer-timing\tickDuration
+                            If n\pathTimer =< 0 Then
+                                n\pathStatus = FindPath(n, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.1,EntityZ(mainPlayer\collider))
+                                n\pathTimer = n\pathTimer+70*5
                             EndIf
                         EndIf
                     EndIf					

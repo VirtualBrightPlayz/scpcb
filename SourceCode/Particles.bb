@@ -105,7 +105,7 @@ Function UpdateEmitters()
 	Local e.Emitters
 	For e.Emitters = Each Emitters
 		If timing\tickDuration > 0 And (mainPlayer\currRoom = e\room Or e\room\dist < 8) Then
-			;If EntityDistance(mainPlayer\cam, e\Obj) < 6.0 Then
+			;If EntityDistance(mainPlayer\cam, e\obj) < 6.0 Then
 			Local p.Particles = CreateParticle(EntityX(e\obj, True), EntityY(e\obj, True), EntityZ(e\obj, True), Rand(e\minImage, e\maxImage), e\size, e\gravity, e\lifeTime)
 			p\speed = e\speed
 			RotateEntity(p\pvt, EntityPitch(e\obj, True), EntityYaw(e\obj, True), EntityRoll(e\obj, True), True)

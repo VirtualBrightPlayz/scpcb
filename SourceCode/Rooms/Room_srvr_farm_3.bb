@@ -19,20 +19,20 @@ Function FillRoom_srvr_farm_3(r.Rooms)
     it = CreateItem("S-NAV 300 Navigator", "nav", r\x + 124.0 * RoomScale, r\y - 368.0 * RoomScale, r\z - 648.0 * RoomScale)
     it\state = 20 : EntityParent(it\collider, r\obj)
     
-    r\Objects[0] = CreatePivot(r\obj)
-    PositionEntity(r\Objects[0], r\x + 736.0 * RoomScale, -512.0 * RoomScale, r\z - 400.0 * RoomScale, True)
-    r\Objects[1] = CreatePivot(r\obj)
-    PositionEntity(r\Objects[1], r\x - 552.0 * RoomScale, -512.0 * RoomScale, r\z - 528.0 * RoomScale, True)			
-    r\Objects[2] = CreatePivot(r\obj)
-    PositionEntity(r\Objects[2], r\x + 736.0 * RoomScale, -512.0 * RoomScale, r\z + 272.0 * RoomScale, True)
+    r\objects[0] = CreatePivot(r\obj)
+    PositionEntity(r\objects[0], r\x + 736.0 * RoomScale, -512.0 * RoomScale, r\z - 400.0 * RoomScale, True)
+    r\objects[1] = CreatePivot(r\obj)
+    PositionEntity(r\objects[1], r\x - 552.0 * RoomScale, -512.0 * RoomScale, r\z - 528.0 * RoomScale, True)			
+    r\objects[2] = CreatePivot(r\obj)
+    PositionEntity(r\objects[2], r\x + 736.0 * RoomScale, -512.0 * RoomScale, r\z + 272.0 * RoomScale, True)
     
-    r\Objects[3] = LoadMesh("GFX/npcs/duck_low_res.b3d")
-    ScaleEntity(r\Objects[3], 0.07, 0.07, 0.07)
+    r\objects[3] = LoadMesh("GFX/npcs/duck_low_res.b3d")
+    ScaleEntity(r\objects[3], 0.07, 0.07, 0.07)
     tex = LoadTexture("GFX/npcs/duck2.png")
-    EntityTexture r\Objects[3], tex
-    PositionEntity (r\Objects[3], r\x + 928.0 * RoomScale, -640*RoomScale, r\z + 704.0 * RoomScale)
+    EntityTexture r\objects[3], tex
+    PositionEntity (r\objects[3], r\x + 928.0 * RoomScale, -640*RoomScale, r\z + 704.0 * RoomScale)
     
-    EntityParent r\Objects[3], r\obj
+    EntityParent r\objects[3], r\obj
 End Function
 
 
@@ -49,19 +49,19 @@ Function UpdateEvent_srvr_farm_3(e.Events)
 
 	;[Block]
 	If mainPlayer\currRoom = e\room Then
-		If e\eventState3=0 And Curr173\Idle = 0 Then
+		If e\eventState3=0 And Curr173\idle = 0 Then
 			If mainPlayer\blinkTimer < -10 Then 
 				temp = Rand(0,2)
-				PositionEntity Curr173\collider, EntityX(e\room\Objects[temp],True),EntityY(e\room\Objects[temp],True),EntityZ(e\room\Objects[temp],True)
+				PositionEntity Curr173\collider, EntityX(e\room\objects[temp],True),EntityY(e\room\objects[temp],True),EntityZ(e\room\objects[temp],True)
 				ResetEntity Curr173\collider
 				e\eventState3=1
 			EndIf
 		EndIf
 		
-		If e\room\Objects[3]>0 Then 
+		If e\room\objects[3]>0 Then 
 			If mainPlayer\blinkTimer<-8 And mainPlayer\blinkTimer >-12 Then
-				PointEntity e\room\Objects[3], mainPlayer\cam
-				RotateEntity(e\room\Objects[3], 0, EntityYaw(e\room\Objects[3],True),0, True)
+				PointEntity e\room\objects[3], mainPlayer\cam
+				RotateEntity(e\room\objects[3], 0, EntityYaw(e\room\objects[3],True),0, True)
 			EndIf
 			If e\eventState2 = 0 Then 
 				e\eventState = CurveValue(0, e\eventState, 15.0)
@@ -73,7 +73,7 @@ Function UpdateEvent_srvr_farm_3(e.Events)
 				If Rand(1200)=1 Then e\eventState2 = 0
 			EndIf
 			
-			PositionEntity e\room\Objects[3], EntityX(e\room\Objects[3],True), (-608.0*RoomScale)+0.05+Sin(e\eventState+270)*0.05, EntityZ(e\room\Objects[3],True), True
+			PositionEntity e\room\objects[3], EntityX(e\room\objects[3],True), (-608.0*RoomScale)+0.05+Sin(e\eventState+270)*0.05, EntityZ(e\room\objects[3],True), True
 		EndIf
 	EndIf
 	;[End Block]

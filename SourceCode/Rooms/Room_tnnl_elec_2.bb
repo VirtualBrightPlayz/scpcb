@@ -5,11 +5,11 @@ Function FillRoom_tnnl_elec_2(r.Rooms)
 	
 	Local t1;, Bump
     
-    r\Objects[0] = CreatePivot(r\obj)
-    PositionEntity(r\Objects[0], r\x, 544.0 * RoomScale, r\z + 512.0 * RoomScale, True)
+    r\objects[0] = CreatePivot(r\obj)
+    PositionEntity(r\objects[0], r\x, 544.0 * RoomScale, r\z + 512.0 * RoomScale, True)
     
-    r\Objects[1] = CreatePivot(r\obj)
-    PositionEntity(r\Objects[1], r\x, 544.0 * RoomScale, r\z - 512.0 * RoomScale, True)
+    r\objects[1] = CreatePivot(r\obj)
+    PositionEntity(r\objects[1], r\x, 544.0 * RoomScale, r\z - 512.0 * RoomScale, True)
 End Function
 
 
@@ -29,21 +29,21 @@ Function UpdateEventTunnel2smoke(e.Events)
 		If e\room\dist < 3.5 Then
 			PlayRangedSound(LoadTempSound("SFX/SCP/914/PlayerUse.ogg"), mainPlayer\cam, e\room\obj) 
 			For i = 0 To 1
-				em.Emitters = CreateEmitter(EntityX(e\room\Objects[i],True),EntityY(e\room\Objects[i],True), EntityZ(e\room\Objects[i],True),0)
-				TurnEntity(em\Obj, 90, 0, 0, True)
-				EntityParent(em\Obj, e\room\obj)
-				em\Size = 0.05
-				em\RandAngle = 10
-				em\Speed = 0.06
-				em\SizeChange = 0.007
-				;EntityParent(em\Obj, e\room\obj)
+				em.Emitters = CreateEmitter(EntityX(e\room\objects[i],True),EntityY(e\room\objects[i],True), EntityZ(e\room\objects[i],True),0)
+				TurnEntity(em\obj, 90, 0, 0, True)
+				EntityParent(em\obj, e\room\obj)
+				em\size = 0.05
+				em\randAngle = 10
+				em\speed = 0.06
+				em\sizeChange = 0.007
+				;EntityParent(em\obj, e\room\obj)
 				
 				For z = 0 To 10
-					p.Particles = CreateParticle(EntityX(em\Obj, True), 448*RoomScale, EntityZ(em\Obj, True), Rand(em\MinImage, em\MaxImage), em\Size, em\gravity, em\LifeTime)
-					p\speed = em\Speed
+					p.Particles = CreateParticle(EntityX(em\obj, True), 448*RoomScale, EntityZ(em\obj, True), Rand(em\minImage, em\maxImage), em\size, em\gravity, em\lifeTime)
+					p\speed = em\speed
 					RotateEntity(p\pvt, Rnd(360), Rnd(360), 0, True)
 					p\size = 0.05
-					p\SizeChange = 0.008
+					p\sizeChange = 0.008
 				Next
 				
 			Next
@@ -69,7 +69,7 @@ Function UpdateEvent_tnnl_elec_2(e.Events)
 
 	;[Block]
 	If mainPlayer\currRoom = e\room Then
-		If Curr173\Idle = 2 Then
+		If Curr173\idle = 2 Then
 			RemoveEvent(e)
 		Else		
 			If e\eventState = 0 Then
@@ -92,14 +92,14 @@ Function UpdateEvent_tnnl_elec_2(e.Events)
 					PlaySound2 LoadTempSound("SFX/ambient/general/ambient6.ogg")
 					PositionEntity(Curr173\collider, EntityX(e\room\obj), 0.6, EntityZ(e\room\obj))
 					ResetEntity(Curr173\collider)					
-					Curr173\Idle = True		
+					Curr173\idle = True		
 				EndIf
 				;LightBlink = 1.0
 				e\eventState = e\eventState + timing\tickDuration
 			Else
 				mainPlayer\blinkTimer = mainPlayer\blinkFreq
 				
-				Curr173\Idle = False
+				Curr173\idle = False
 				RemoveEvent(e)
 			EndIf	
 		EndIf

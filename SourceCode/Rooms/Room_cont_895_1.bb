@@ -18,29 +18,29 @@ Function FillRoom_cont_895_1(r.Rooms)
     
     CoffinCam = sc
     
-    PositionEntity(sc\ScrObj, r\x - 800 * RoomScale, 288.0 * RoomScale, r\z - 340.0 * RoomScale)
-    EntityParent(sc\ScrObj, r\obj)
-    TurnEntity(sc\ScrObj, 0, 180, 0)
+    PositionEntity(sc\scrObj, r\x - 800 * RoomScale, 288.0 * RoomScale, r\z - 340.0 * RoomScale)
+    EntityParent(sc\scrObj, r\obj)
+    TurnEntity(sc\scrObj, 0, 180, 0)
         
-    r\Levers[0] = CreateLever()
+    r\levers[0] = CreateLever()
 
-	ScaleEntity(r\Levers[0]\baseObj, 0.04, 0.04, 0.04)
-	ScaleEntity(r\Levers[0]\obj, 0.04, 0.04, 0.04)
-	PositionEntity (r\Levers[0]\baseObj, r\x - 800.0 * RoomScale, r\y + 180.0 * RoomScale, r\z - 336 * RoomScale, True)
-	PositionEntity (r\Levers[0]\obj, r\x - 800.0 * RoomScale, r\y + 180.0 * RoomScale, r\z - 336 * RoomScale, True)
+	ScaleEntity(r\levers[0]\baseObj, 0.04, 0.04, 0.04)
+	ScaleEntity(r\levers[0]\obj, 0.04, 0.04, 0.04)
+	PositionEntity (r\levers[0]\baseObj, r\x - 800.0 * RoomScale, r\y + 180.0 * RoomScale, r\z - 336 * RoomScale, True)
+	PositionEntity (r\levers[0]\obj, r\x - 800.0 * RoomScale, r\y + 180.0 * RoomScale, r\z - 336 * RoomScale, True)
 	
-	EntityParent(r\Levers[0]\baseObj, r\obj)
-	EntityParent(r\Levers[0]\obj, r\obj)
+	EntityParent(r\levers[0]\baseObj, r\obj)
+	EntityParent(r\levers[0]\obj, r\obj)
 		
-    RotateEntity(r\Levers[0]\baseObj, 0, 180, 0)
-    RotateEntity(r\Levers[0]\obj, 10, 0, 0)
+    RotateEntity(r\levers[0]\baseObj, 0, 180, 0)
+    RotateEntity(r\levers[0]\obj, 10, 0, 0)
     
-    EntityPickMode r\Levers[0]\obj, 1, False
-    EntityRadius r\Levers[0]\obj, 0.1
+    EntityPickMode r\levers[0]\obj, 1, False
+    EntityRadius r\levers[0]\obj, 0.1
     
-    r\Objects[0] = CreatePivot()
-    PositionEntity(r\Objects[0], r\x, -1320.0 * RoomScale, r\z + 2304.0 * RoomScale)
-    EntityParent(r\Objects[0], r\obj)
+    r\objects[0] = CreatePivot()
+    PositionEntity(r\objects[0], r\x, -1320.0 * RoomScale, r\z + 2304.0 * RoomScale)
+    EntityParent(r\objects[0], r\obj)
     
     it = CreateItem("Document SCP-895", "paper", r\x - 688.0 * RoomScale, r\y + 133.0 * RoomScale, r\z - 304.0 * RoomScale)
     EntityParent(it\collider, r\obj)
@@ -51,8 +51,8 @@ Function FillRoom_cont_895_1(r.Rooms)
     it = CreateItem("Night Vision Goggles", "nvgoggles", r\x + 280.0 * RoomScale, r\y -1456.0 * RoomScale, r\z + 2164.0 * RoomScale)
     EntityParent(it\collider, r\obj)
     
-    r\Objects[1] = CreatePivot(r\obj)
-    PositionEntity(r\Objects[1], r\x + 96.0*RoomScale, -1532.0 * RoomScale, r\z + 2016.0 * RoomScale,True)
+    r\objects[1] = CreatePivot(r\obj)
+    PositionEntity(r\objects[1], r\x + 96.0*RoomScale, -1532.0 * RoomScale, r\z + 2016.0 * RoomScale,True)
     
     ;de.Decals = CreateDecal(0, r\x + 96.0*RoomScale, -1535.0 * RoomScale, r\z + 32.0 * RoomScale, 90, Rand(360), 0)
     ;EntityParent de\obj, r\obj
@@ -90,18 +90,18 @@ Function UpdateEventCoffin(e.Events)
 	If e\eventState < TimeInPosMilliSecs() Then
 		;SCP-079 starts broadcasting 895 camera feed on monitors after leaving the first zone
 		;TODO: rewrite this to adjust for separate zone loading
-		If EntityPitch(e\room\Levers[0]\obj, True) > 0 Then ;camera feed on
+		If EntityPitch(e\room\levers[0]\obj, True) > 0 Then ;camera feed on
 			For sc.SecurityCams = Each SecurityCams
-				If (Not sc\SpecialCam) Then
-					If sc\coffinEffect=0 And sc\room\RoomTemplate\Name<>"room106" And sc\room\RoomTemplate\Name<>"room205" Then sc\coffinEffect = 2
-					If sc\room = e\room Then sc\Screen = True
+				If (Not sc\specialCam) Then
+					If sc\coffinEffect=0 And sc\room\roomTemplate\name<>"room106" And sc\room\roomTemplate\name<>"room205" Then sc\coffinEffect = 2
+					If sc\room = e\room Then sc\screen = True
 				EndIf
 			Next
 		Else ;camera feed off
 			For sc.SecurityCams = Each SecurityCams
-				If (Not sc\SpecialCam) Then
+				If (Not sc\specialCam) Then
 					If sc\coffinEffect<>1 Then sc\coffinEffect = 0
-					If sc\room = e\room Then sc\Screen = False
+					If sc\room = e\room Then sc\screen = False
 				EndIf
 			Next
 		EndIf
@@ -110,14 +110,14 @@ Function UpdateEventCoffin(e.Events)
 	EndIf
 	
 	If mainPlayer\currRoom = e\room Then
-		CoffinDistance = EntityDistance(mainPlayer\collider, e\room\Objects[1])
+		CoffinDistance = EntityDistance(mainPlayer\collider, e\room\objects[1])
 		If CoffinDistance < 1.5 Then 
 			If (Not Contained106) And e\name="coffin106" And e\eventState2 = 0 Then
-				de.Decals = CreateDecal(0, EntityX(e\room\Objects[1],True), -1531.0*RoomScale, EntityZ(e\room\Objects[1],True), 90, Rand(360), 0)
-				de\Size = 0.05 : de\SizeChange = 0.001 : EntityAlpha(de\obj, 0.8) : UpdateDecals()
+				de.Decals = CreateDecal(0, EntityX(e\room\objects[1],True), -1531.0*RoomScale, EntityZ(e\room\objects[1],True), 90, Rand(360), 0)
+				de\size = 0.05 : de\sizeChange = 0.001 : EntityAlpha(de\obj, 0.8) : UpdateDecals()
 				
 				If Curr106\state > 0 Then
-					PositionEntity Curr106\collider, EntityX(e\room\Objects[1],True), -10240*RoomScale, EntityZ(e\room\Objects[1],True)
+					PositionEntity Curr106\collider, EntityX(e\room\objects[1],True), -10240*RoomScale, EntityZ(e\room\objects[1],True)
 					Curr106\state = -0.1
 					ShowEntity Curr106\obj
 					e\eventState2 = 1
@@ -138,21 +138,21 @@ Function UpdateEventCoffin(e.Events)
 					EndIf
 				EndIf
 			Next
-			;If EntityVisible(mainPlayer\cam,e\room\Levers[0]\baseObj) Then
-				;If EntityInView(e\room\Levers[0]\baseObj, mainPlayer\cam) Then
-			;If EntityVisible(mainPlayer\cam,e\room\Objects[1])
+			;If EntityVisible(mainPlayer\cam,e\room\levers[0]\baseObj) Then
+				;If EntityInView(e\room\levers[0]\baseObj, mainPlayer\cam) Then
+			;If EntityVisible(mainPlayer\cam,e\room\objects[1])
 				If (CoffinDistance < 4.0) And (hasBatteryFor895) Then
 					
 					mainPlayer\sanity895 = mainPlayer\sanity895-(timing\tickDuration*1.1);/WearingNightVision)
 					mainPlayer\blurTimer = Sin(TimeInPosMilliSecs()/10)*Abs(mainPlayer\sanity895)
 					
-					tempF# = GetAngle(EntityX(mainPlayer\collider,True),EntityZ(mainPlayer\collider,True),EntityX(e\room\Objects[1],True),EntityZ(e\room\Objects[1],True))
+					tempF# = GetAngle(EntityX(mainPlayer\collider,True),EntityZ(mainPlayer\collider,True),EntityX(e\room\objects[1],True),EntityZ(e\room\objects[1],True))
 					tempF2# = EntityYaw(mainPlayer\collider)
 					tempF3# = angleDist(tempF+90+Sin(WrapAngle(e\eventState3/10)),tempF2)
 					
 					TurnEntity mainPlayer\collider, 0,tempF3/4,0,True
 					
-					tempF# = Abs(Distance(EntityX(mainPlayer\collider,True),EntityZ(mainPlayer\collider,True),EntityX(e\room\Objects[1],True),EntityZ(e\room\Objects[1],True)))
+					tempF# = Abs(Distance(EntityX(mainPlayer\collider,True),EntityZ(mainPlayer\collider,True),EntityX(e\room\objects[1],True),EntityZ(e\room\objects[1],True)))
 					tempF2# = -60.0 * Min(Max((2.0-tempF)/2.0,0.0),1.0)
 					
 					mainPlayer\headPitch=(mainPlayer\headPitch * 0.8)+(tempF2 * 0.2)
@@ -191,20 +191,20 @@ Function UpdateEventCoffin(e.Events)
 		
 		ShouldPlay = 66
 		
-		If (e\room\Levers[0]\succ) Then
+		If (e\room\levers[0]\succ) Then
 			For sc.SecurityCams = Each SecurityCams
-				If (Not sc\SpecialCam) Then
-					If sc\coffinEffect=0 And sc\room\RoomTemplate\Name<>"room106" Then sc\coffinEffect = 2
-					If sc\coffinEffect = 1 Then EntityBlend(sc\ScrOverlay, 3)
-					If sc\room = e\room Then sc\Screen = True
+				If (Not sc\specialCam) Then
+					If sc\coffinEffect=0 And sc\room\roomTemplate\name<>"room106" Then sc\coffinEffect = 2
+					If sc\coffinEffect = 1 Then EntityBlend(sc\scrOverlay, 3)
+					If sc\room = e\room Then sc\screen = True
 				EndIf
 			Next
 		Else
 			For sc.SecurityCams = Each SecurityCams
-				If (Not sc\SpecialCam) Then
+				If (Not sc\specialCam) Then
 					If sc\coffinEffect <> 1 Then sc\coffinEffect = 0
-					If sc\coffinEffect = 1 Then EntityBlend(sc\ScrOverlay, 0)
-					If sc\room = e\room Then sc\Screen = False
+					If sc\coffinEffect = 1 Then EntityBlend(sc\scrOverlay, 0)
+					If sc\room = e\room Then sc\screen = False
 				EndIf
 			Next
 		EndIf
