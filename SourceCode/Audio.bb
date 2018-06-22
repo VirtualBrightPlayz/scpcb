@@ -198,7 +198,7 @@ Type SoundChannel
 End Type
 
 Function AddPositionalChannel(ref%, cam%, ent%, range# = 10, vol# = 1.0)
-	If (ref = 0) Then
+	If ((ref = 0)) Then
 		Return
 	EndIf
 
@@ -214,10 +214,10 @@ End Function
 Function UpdateChannelList()
 	Local chn.SoundChannel
 	For chn = Each SoundChannel
-		If (Not IsChannelPlaying(chn\internal)) Then
+		If ((Not IsChannelPlaying(chn\internal))) Then
 			FreeEntity(chn\point)
 			Delete chn
-		ElseIf (chn\camera <> 0) Then
+		ElseIf ((chn\camera <> 0)) Then
 			UpdateRangedSoundOrigin_SM(chn)
 		EndIf
 	Next
@@ -251,7 +251,7 @@ End Function
 
 Function PlaySound_SM%(snd.Sound)
 	;If the sound hasn't been loaded yet then do that.
-	If (snd\internal = 0) Then
+	If ((snd\internal = 0)) Then
 		snd\internal = LoadSound(snd\file)
 	EndIf
 
@@ -260,7 +260,7 @@ Function PlaySound_SM%(snd.Sound)
 End Function
 
 Function FreeSound_SM(snd.Sound)
-	If (snd\internal <> 0) Then
+	If ((snd\internal <> 0)) Then
 		FreeSound(snd\internal)
 		snd\internal = 0
 	EndIf
@@ -269,7 +269,7 @@ Function FreeSound_SM(snd.Sound)
 End Function
 
 Function IsChannelPlaying%(chn%)
-	If (chn = 0) Then
+	If ((chn = 0)) Then
 		Return False
 	EndIf
 
@@ -282,9 +282,9 @@ Function PlayRangedSound%(soundHandle%, cam%, entity%, range# = 10, volume# = 1.
 	range# = Max(range, 1.0)
 	Local soundChn% = 0
 
-	If (volume > 0) Then
+	If ((volume > 0)) Then
 		dist# = EntityDistance(cam, entity) / range
-		If (1 - dist > 0 And 1 - dist < 1) Then
+		If ((1 - dist > 0 And 1 - dist < 1)) Then
 			panvalue# = Sin(-DeltaYaw(cam, entity))
 			soundChn = PlaySound(soundHandle)
 			
@@ -300,7 +300,7 @@ End Function
 
 Function PlayRangedSound_SM%(snd.Sound, cam%, entity%, range# = 10, volume# = 1.0)
 	;If the sound hasn't been loaded yet then do that.
-	If (snd\internal = 0) Then
+	If ((snd\internal = 0)) Then
 		snd\internal = LoadSound(snd\file)
 	EndIf
 
@@ -311,7 +311,7 @@ End Function
 Function LoopRangedSound%(soundHandle%, chn%, cam%, entity%, range# = 10, volume# = 1.0)
 	range = Max(range,1.0)
 
-	If (Not IsChannelPlaying(chn)) Then chn% = PlaySound(soundHandle)
+	If ((Not IsChannelPlaying(chn))) Then chn% = PlaySound(soundHandle)
 
 	UpdateRangedSoundOrigin(chn, cam, entity, range, volume)
 
@@ -320,7 +320,7 @@ End Function
 
 Function LoopRangedSound_SM%(snd.Sound, chn%, cam%, entity%, range# = 10, volume# = 1.0)
 	;If the sound hasn't been loaded yet then do that.
-	If (snd\internal = 0) Then
+	If ((snd\internal = 0)) Then
 		snd\internal = LoadSound(snd\file)
 	EndIf
 
@@ -332,17 +332,17 @@ Function UpdateRangedSoundOrigin(chn%, cam%, entity%, range# = 10, volume# = 1.0
 	
 	range = Max(range, 1.0)
 
-	If (volume > 0) Then
+	If ((volume > 0)) Then
 
 		dist# = EntityDistance(cam, entity) / range
-		If (1 - dist > 0 And 1 - dist < 1) Then
+		If ((1 - dist > 0 And 1 - dist < 1)) Then
 			panvalue# = Sin(-DeltaYaw(cam,entity))
 			
 			ChannelVolume(chn, volume * (1 - dist) * userOptions\sndVolume)
 			ChannelPan(chn, panvalue)
 		EndIf
 	Else
-		If (chn <> 0) Then
+		If ((chn <> 0)) Then
 			ChannelVolume(chn, 0)
 		EndIf
 	EndIf
@@ -351,9 +351,9 @@ End Function
 Function UpdateRangedSoundOrigin_SM(chn.SoundChannel)
 	Local dist#, panvalue#
 	
-	If (chn\volume > 0) Then
+	If ((chn\volume > 0)) Then
 		dist# = EntityDistance(chn\camera, chn\point) / chn\range
-		If (1 - dist > 0 And 1 - dist < 1) Then
+		If ((1 - dist > 0 And 1 - dist < 1)) Then
 			panvalue# = Sin(-DeltaYaw(chn\camera, chn\point))
 			
 			ChannelVolume(chn\internal, chn\volume * (1 - dist) * userOptions\sndVolume)
@@ -365,7 +365,7 @@ Function UpdateRangedSoundOrigin_SM(chn.SoundChannel)
 End Function
 
 Function LoadTempSound%(file$)
-	If (TempSounds[TempSoundIndex] <> 0) Then
+	If ((TempSounds[TempSoundIndex] <> 0)) Then
 		FreeSound(TempSounds[TempSoundIndex])
 	EndIf
 
@@ -378,7 +378,7 @@ Function LoadTempSound%(file$)
 End Function
 
 Function LoadEventSound%(e.Events, file$, i%=0)
-	If (e\sounds[i] <> 0) Then
+	If ((e\sounds[i] <> 0)) Then
 		FreeSound(e\sounds[i])
 		e\sounds[i] = 0
 	EndIf
@@ -391,26 +391,26 @@ Function PauseSounds()
 	Local chn.SoundChannel, sc.SecurityCams, r.Rooms, e.Events, n.NPCs, em.Emitters, i%
 
 	For chn = Each SoundChannel
-		If (IsChannelPlaying(chn\internal)) Then
+		If ((IsChannelPlaying(chn\internal))) Then
 			PauseChannel(chn\internal)
 		EndIf
 	Next
 
 	For sc = Each SecurityCams
-		If (IsChannelPlaying(sc\soundCHN)) Then
+		If ((IsChannelPlaying(sc\soundCHN))) Then
 			PauseChannel(sc\soundCHN)
 		EndIf
 	Next
 
 	For r = Each Rooms
-		If (IsChannelPlaying(r\soundCHN)) Then
+		If ((IsChannelPlaying(r\soundCHN))) Then
 			PauseChannel(r\soundCHN)
 		EndIf
 	Next
 
 	For e = Each Events
 		For i = 0 To EVENT_CHANNEL_COUNT-1
-			If IsChannelPlaying(e\soundChannels[i]) Then
+			If (IsChannelPlaying(e\soundChannels[i])) Then
 				PauseChannel(e\soundChannels[i])
 			EndIf
 		Next
@@ -418,19 +418,19 @@ Function PauseSounds()
 
 	For n = Each NPCs
 		For i = 0 To NPC_CHANNEL_COUNT-1
-			If IsChannelPlaying(n\soundChannels[i]) Then
+			If (IsChannelPlaying(n\soundChannels[i])) Then
 				PauseChannel(n\soundChannels[i])
 			EndIf
 		Next
 	Next
 
 	For em = Each Emitters
-		If (IsChannelPlaying(em\soundCHN)) Then
+		If ((IsChannelPlaying(em\soundCHN))) Then
 			PauseChannel(em\soundCHN)
 		EndIf
 	Next
 
-	If (IsChannelPlaying(mainPlayer\breathChn)) Then
+	If ((IsChannelPlaying(mainPlayer\breathChn))) Then
 		PauseChannel(mainPlayer\breathChn)
 	EndIf
 End Function
@@ -439,26 +439,26 @@ Function ResumeSounds()
 	Local chn.SoundChannel, sc.SecurityCams, r.Rooms, e.Events, n.NPCs, em.Emitters, i%
 
 	For chn = Each SoundChannel
-		If (IsChannelPlaying(chn\internal)) Then
+		If ((IsChannelPlaying(chn\internal))) Then
 			ResumeChannel(chn\internal)
 		EndIf
 	Next
 
 	For sc = Each SecurityCams
-		If (IsChannelPlaying(sc\soundCHN)) Then
+		If ((IsChannelPlaying(sc\soundCHN))) Then
 			ResumeChannel(sc\soundCHN)
 		EndIf
 	Next
 
 	For r = Each Rooms
-		If (IsChannelPlaying(r\soundCHN)) Then
+		If ((IsChannelPlaying(r\soundCHN))) Then
 			ResumeChannel(r\soundCHN)
 		EndIf
 	Next
 
 	For e = Each Events
 		For i = 0 To EVENT_CHANNEL_COUNT-1
-			If IsChannelPlaying(e\soundChannels[i]) Then
+			If (IsChannelPlaying(e\soundChannels[i])) Then
 				ResumeChannel(e\soundChannels[i])
 			EndIf
 		Next
@@ -466,19 +466,19 @@ Function ResumeSounds()
 
 	For n = Each NPCs
 		For i = 0 To NPC_CHANNEL_COUNT-1
-			If IsChannelPlaying(n\soundChannels[i]) Then
+			If (IsChannelPlaying(n\soundChannels[i])) Then
 				ResumeChannel(n\soundChannels[i])
 			EndIf
 		Next
 	Next
 
 	For em = Each Emitters
-		If (IsChannelPlaying(em\soundCHN)) Then
+		If ((IsChannelPlaying(em\soundCHN))) Then
 			ResumeChannel(em\soundCHN)
 		EndIf
 	Next
 
-	If (IsChannelPlaying(mainPlayer\breathChn)) Then
+	If ((IsChannelPlaying(mainPlayer\breathChn))) Then
 		ResumeChannel(mainPlayer\breathChn)
 	EndIf
 End Function
@@ -487,18 +487,18 @@ Function GetMaterialStepSound(entity%)
     Local picker% = LinePick(EntityX(entity),EntityY(entity),EntityZ(entity),0,-1,0)
 	Local brush%, texture%, name$, mat.Materials
 
-    If picker <> 0 Then
-        If GetEntityType(picker) <> HIT_MAP Then Return 0
+    If (picker <> 0) Then
+        If (GetEntityType(picker) <> HIT_MAP) Then Return 0
         brush% = GetSurfaceBrush(GetSurface(picker,CountSurfaces(picker)))
-        If brush <> 0 Then
+        If (brush <> 0) Then
             texture% = GetBrushTexture(brush,2)
 
-            If texture <> 0 Then
+            If (texture <> 0) Then
                 name = StripPath(TextureName(texture))
-                If (name <> "") Then FreeTexture(texture)
+                If ((name <> "")) Then FreeTexture(texture)
                 For mat.Materials = Each Materials
-                    If mat\name = name Then
-                        If mat\stepSound > 0 Then
+                    If (mat\name = name) Then
+                        If (mat\stepSound > 0) Then
                             FreeBrush(brush)
                             Return mat\stepSound
                         EndIf
@@ -507,13 +507,13 @@ Function GetMaterialStepSound(entity%)
                 Next
             EndIf
             texture = GetBrushTexture(brush,1)
-            If texture <> 0 Then
+            If (texture <> 0) Then
                 name = StripPath(TextureName(texture))
-                If (name <> "") Then FreeTexture(texture)
+                If ((name <> "")) Then FreeTexture(texture)
                 FreeBrush(brush)
                 For mat.Materials = Each Materials
-                    If mat\name = name Then
-                        If mat\stepSound > 0 Then
+                    If (mat\name = name) Then
+                        If (mat\stepSound > 0) Then
                             Return mat\stepSound
                         EndIf
                         Exit
@@ -581,12 +581,12 @@ Function RestoreDefaultMusic()
 End Function
 
 Function SetNextMusicTrack(trackName$, fadeOut% = True)
-	If (musicManager\shouldPlay = trackName) Then
+	If ((musicManager\shouldPlay = trackName)) Then
 		Return
 	EndIf
 
 	;If the track's already being overwritten then don't let anything else change it.
-	If (Not musicManager\useDefault) Then
+	If ((Not musicManager\useDefault)) Then
 		Return
 	EndIf
 
@@ -597,19 +597,19 @@ End Function
 
 ; Frees the current music track.
 Function FreeMusic()
-	If (musicManager\currMusic <> 0) Then
+	If ((musicManager\currMusic <> 0)) Then
 		FreeSound(musicManager\currMusic)
 		musicManager\currMusic = 0
 	EndIf
 End Function
 
 Function UpdateMusic()
-	If (userOptions\musicVolume <= 0) Then
+	If ((userOptions\musicVolume <= 0)) Then
 		Return
 	EndIf
 
-	If (musicManager\useDefault) Then
-		If (CurrGameState = GAMESTATE_MAINMENU) Then
+	If ((musicManager\useDefault)) Then
+		If ((CurrGameState = GAMESTATE_MAINMENU)) Then
 			musicManager\shouldPlay = MUS_MENU
 		Else
 			musicManager\shouldPlay = MUS_LCZ
@@ -617,11 +617,11 @@ Function UpdateMusic()
 		;TODO: Play zone track here depending on game's current state.
 	EndIf
 
-	If (musicManager\nowPlaying <> musicManager\shouldPlay) Then
-		If (musicManager\fadeOut And musicManager\currMusicVolume > 0) Then
+	If ((musicManager\nowPlaying <> musicManager\shouldPlay)) Then
+		If ((musicManager\fadeOut And musicManager\currMusicVolume > 0)) Then
 			musicManager\currMusicVolume = musicManager\currMusicVolume - (timing\tickDuration / 250.0)
 		Else
-			If (musicManager\channel <> 0) Then
+			If ((musicManager\channel <> 0)) Then
 				StopChannel(musicManager\channel)
 				musicManager\channel = 0
 			EndIf
@@ -633,11 +633,11 @@ Function UpdateMusic()
 			musicManager\fadeOut = False
 			musicManager\currMusicVolume = userOptions\musicVolume
 		EndIf
-	ElseIf (musicManager\currMusicVolume <> userOptions\musicVolume) Then
+	ElseIf ((musicManager\currMusicVolume <> userOptions\musicVolume)) Then
 		musicManager\currMusicVolume = userOptions\musicVolume
 	EndIf
 
-	If (Not IsChannelPlaying(musicManager\channel)) Then
+	If ((Not IsChannelPlaying(musicManager\channel))) Then
 		musicManager\channel = PlaySound(musicManager\currMusic)
 	EndIf
 

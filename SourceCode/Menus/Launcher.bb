@@ -22,7 +22,7 @@ Function CreateLauncher.Launcher()
 
     Local i%
 	For i = 1 To CountGfxModes3D()
-		If (GfxModeDepth(i) = 32) Then
+		If ((GfxModeDepth(i) = 32)) Then
 			SetIntArrayElem(launch\resWidths, GfxModeWidth(i), i - 1)
             SetIntArrayElem(launch\resHeights, GfxModeHeight(i), i - 1)
 		EndIf
@@ -60,13 +60,13 @@ Function UpdateLauncher()
 
     Local i%
     For i = 1 To CountGfxModes3D()
-        If (GfxModeDepth(i) = 32) Then
-            If MouseOn(x - 1, y - 1, 100, 20) Then
-                If MouseHit1 Then launcher\selectedGFXMode = i-1
+        If ((GfxModeDepth(i) = 32)) Then
+            If (MouseOn(x - 1, y - 1, 100, 20)) Then
+                If (MouseHit1) Then launcher\selectedGFXMode = i-1
             EndIf
 
             y=y+20
-            If (y >= 240 - 65 + (launcher\height - 80 - 260)) Then
+            If ((y >= 240 - 65 + (launcher\height - 80 - 260))) Then
                 y = 280 - 65
                 x = x + 100
             EndIf
@@ -79,8 +79,8 @@ Function UpdateLauncher()
 
     y = y + 10
     For i = 1 To CountGfxDrivers()
-        If MouseOn(x - 1, y - 1, 290, 20) Then
-            If MouseHit1 Then userOptions\gfxDriver = i
+        If (MouseOn(x - 1, y - 1, 290, 20)) Then
+            If (MouseHit1) Then userOptions\gfxDriver = i
         EndIf
 
         y = y + 20
@@ -90,7 +90,7 @@ Function UpdateLauncher()
 
     userOptions\launcher = UpdateUITick(40 + 430 - 15, 260 - 55 + 95 + 8, userOptions\launcher)
 
-    If UpdateUIButton(launcher\width - 30 - 90, launcher\height - 50 - 55, 100, 30, "LAUNCH", False) Then
+    If (UpdateUIButton(launcher\width - 30 - 90, launcher\height - 50 - 55, 100, 30, "LAUNCH", False)) Then
         userOptions\screenWidth = GetIntArrayElem(launcher\resWidths, launcher\selectedGFXMode)
         userOptions\screenHeight = GetIntArrayElem(launcher\resHeights, launcher\selectedGFXMode)
 
@@ -104,7 +104,7 @@ Function UpdateLauncher()
         Return
     EndIf
 
-    If UpdateUIButton(launcher\width - 30 - 90, launcher\height - 50, 100, 30, "EXIT", False) Then End()
+    If (UpdateUIButton(launcher\width - 30 - 90, launcher\height - 50, 100, 30, "EXIT", False)) Then End()
 End Function
 
 Function DrawLauncher()
@@ -123,21 +123,21 @@ Function DrawLauncher()
 
     Local i%
     For i = 1 To CountGfxModes3D()
-        If (GfxModeDepth(i) = 32) Then
+        If ((GfxModeDepth(i) = 32)) Then
             Color(0, 0, 0)
 
-            If (launcher\selectedGFXMode = (i-1)) Then
+            If ((launcher\selectedGFXMode = (i-1))) Then
                 Rect(x - 1, y - 1, 100, 20, False)
             EndIf
 
             Text(x, y, (GetIntArrayElem(launcher\resWidths, i - 1) + "x" + GetIntArrayElem(launcher\resHeights, i - 1)))
-            If MouseOn(x - 1, y - 1, 100, 20) Then
+            If (MouseOn(x - 1, y - 1, 100, 20)) Then
                 Color(100, 100, 100)
                 Rect(x - 1, y - 1, 100, 20, False)
             EndIf
 
             y=y+20
-            If (y >= 240 - 65 + (launcher\height - 80 - 260)) Then
+            If ((y >= 240 - 65 + (launcher\height - 80 - 260))) Then
                 y = 280 - 65
                 x = x + 100
             EndIf
@@ -153,11 +153,11 @@ Function DrawLauncher()
     y = y + 10
     For i = 1 To CountGfxDrivers()
         Color(0, 0, 0)
-        If userOptions\gfxDriver = i Then Rect(x - 1, y - 1, 290, 20, False)
+        If (userOptions\gfxDriver = i) Then Rect(x - 1, y - 1, 290, 20, False)
         ;text(x, y, bbGfxDriverName(i))
 
         LimitText(GfxDriverName(i), x, y, 290, False)
-        If MouseOn(x - 1, y - 1, 290, 20) Then
+        If (MouseOn(x - 1, y - 1, 290, 20)) Then
             Color(100, 100, 100)
             Rect(x - 1, y - 1, 290, 20, False)
         EndIf
@@ -177,9 +177,9 @@ Function DrawLauncher()
 
     Text(40+ 260 + 15, 262 - 55 + 140, "Current Resolution: "+GetIntArrayElem(launcher\resWidths, launcher\selectedGFXMode) + "x" + GetIntArrayElem(launcher\resHeights, launcher\selectedGFXMode))
 
-    ;If GfxModeWidths(SelectedGFXMode)<G_viewport_width Then
+    ;If (GfxModeWidths(SelectedGFXMode)<G_viewport_width) Then
     ;	Text(40+ 260 + 65, 262 - 55 + 160, "(upscaled to")
-    ;ElseIf GfxModeWidths(SelectedGFXMode)>G_viewport_width Then
+    ;ElseIf (GfxModeWidths(SelectedGFXMode)>G_viewport_width) Then
     ;	Text(40+ 260 + 65, 262 - 55 + 160, "(downscaled to")
     ;EndIf
 

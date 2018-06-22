@@ -83,8 +83,8 @@ Function DrawTiledImageRect(img%, srcX%, srcY%, srcwidth#, srcheight#, x%, y%, w
 	While x2 < x+width
 		y2 = y
 		While y2 < y+height
-			If x2 + srcwidth > x + width Then srcwidth = srcwidth - Max((x2 + srcwidth) - (x + width), 1)
-			If y2 + srcheight > y + height Then srcheight = srcheight - Max((y2 + srcheight) - (y + height), 1)
+			If (x2 + srcwidth > x + width) Then srcwidth = srcwidth - Max((x2 + srcwidth) - (x + width), 1)
+			If (y2 + srcheight > y + height) Then srcheight = srcheight - Max((y2 + srcheight) - (y + height), 1)
 			DrawImageRect(img, x2, y2, srcX, srcY, srcwidth, srcheight)
 			y2 = y2 + srcheight
 		Wend
@@ -99,14 +99,14 @@ Function rInput$(aString$)
 	Local value% = GetKey()
 	Local length% = Len(aString$)
 
-	If value = 8 Then
+	If (value = 8) Then
 		value = 0
-		If length > 0 Then aString$ = Left(aString, length - 1)
+		If (length > 0) Then aString$ = Left(aString, length - 1)
 	EndIf
 
-	If value = 13 Or value = 0 Then
+	If (value = 13 Or value = 0) Then
 		Return aString$
-	ElseIf value > 0 And value < 7 Or value > 26 And value < 32 Or value = 9 Then
+	ElseIf (value > 0 And value < 7 Or value > 26 And value < 32 Or value = 9) Then
 		Return aString$
 	Else
 		aString$ = aString$ + Chr(value)
@@ -117,8 +117,8 @@ End Function
 
 
 Function MouseOn%(x%, y%, width%, height%)
-	If MouseX() > x And MouseX() < x + width Then
-		If MouseY() > y And MouseY() < y + height Then
+	If (MouseX() > x And MouseX() < x + width) Then
+		If (MouseY() > y And MouseY() < y + height) Then
 			Return True
 		EndIf
 	EndIf
@@ -127,14 +127,14 @@ End Function
 
 Function UpdateInputBox$(x%, y%, width%, height%, Txt$, ID% = 0)
 	Local MouseOnBox% = False
-	If MouseOn(x, y, width, height) Then
+	If (MouseOn(x, y, width, height)) Then
 		MouseOnBox = True
-		If MouseHit1 Then SelectedInputBox = ID : FlushKeys()
+		If (MouseHit1) Then SelectedInputBox = ID : FlushKeys()
 	EndIf
 
-	If (Not MouseOnBox) And MouseHit1 And SelectedInputBox = ID Then SelectedInputBox = 0
+	If ((Not MouseOnBox) And MouseHit1 And SelectedInputBox = ID) Then SelectedInputBox = 0
 
-	If SelectedInputBox = ID Then
+	If (SelectedInputBox = ID) Then
 		Txt = rInput(Txt)
 	EndIf
 
@@ -149,7 +149,7 @@ Function DrawInputBox$(x%, y%, width%, height%, Txt$, ID% = 0)
 	Color(0, 0, 0)
 
 	Local MouseOnBox% = False
-	If MouseOn(x, y, width, height) Then
+	If (MouseOn(x, y, width, height)) Then
 		Color(50, 50, 50)
 		MouseOnBox = True
 	EndIf
@@ -157,8 +157,8 @@ Function DrawInputBox$(x%, y%, width%, height%, Txt$, ID% = 0)
 	Rect(x + 2, y + 2, width - 4, height - 4)
 	Color(255, 255, 255)
 
-	If SelectedInputBox = ID Then
-		If (TimeInPosMilliSecs() Mod 800) < 400 Then Rect(x + width / 2 + StringWidth(Txt) / 2 + 2, y + height / 2 - 5, 2, 12)
+	If (SelectedInputBox = ID) Then
+		If ((TimeInPosMilliSecs() Mod 800) < 400) Then Rect(x + width / 2 + StringWidth(Txt) / 2 + 2, y + height / 2 - 5, 2, 12)
 	EndIf
 
 	Text(x + width / 2, y + height / 2, Txt, True, True)
@@ -174,7 +174,7 @@ End Function
 Function DrawUIButton(x%, y%, width%, height%, txt$, bigfont% = True)
 
 	DrawFrame (x, y, width, height)
-	If MouseOn(x, y, width, height) Then
+	If (MouseOn(x, y, width, height)) Then
 		Color(30, 30, 30)
 		Rect(x + 4, y + 4, width - 8, height - 8)
 	Else
@@ -182,7 +182,7 @@ Function DrawUIButton(x%, y%, width%, height%, txt$, bigfont% = True)
 	EndIf
 
 	Color(255, 255, 255)
-	If (bigfont) Then
+	If ((bigfont)) Then
 		SetFont(uiAssets\font[1])
 	Else
 		SetFont(uiAssets\font[0])
@@ -194,8 +194,8 @@ End Function
 Function UpdateUIButton%(x%, y%, width%, height%, txt$="", waitForMouseUp%=False)
 	Local clicked% = False
 
-	If MouseOn(x, y, width, height) Then
-		If (MouseHit1 And (Not waitForMouseUp)) Or (MouseUp1 And waitForMouseUp) Then
+	If (MouseOn(x, y, width, height)) Then
+		If ((MouseHit1 And (Not waitForMouseUp)) Or (MouseUp1 And waitForMouseUp)) Then
 			clicked = True
 			PlaySound_SM(sndManager\button)
 		EndIf
@@ -213,7 +213,7 @@ Function DrawUITick(x%, y%, selected%, locked% = False)
 
 	Local Highlight% = MouseOn(x, y, width, height) And (Not locked)
 
-	If Highlight Then
+	If (Highlight) Then
 		Color(50, 50, 50)
 	Else
 		Color(0, 0, 0)
@@ -221,8 +221,8 @@ Function DrawUITick(x%, y%, selected%, locked% = False)
 
 	Rect(x + 2, y + 2, width - 4, height - 4)
 
-	If selected Then
-		If Highlight Then
+	If (selected) Then
+		If (Highlight) Then
 			Color(255,255,255)
 		Else
 			Color(200,200,200)
@@ -239,8 +239,8 @@ Function UpdateUITick%(x%, y%, selected%, locked% = False)
 
 	Local Highlight% = MouseOn(x, y, width, height) And (Not locked)
 
-	If Highlight Then
-		If MouseHit1 Then
+	If (Highlight) Then
+		If (MouseHit1) Then
 			selected = (Not selected)
 			PlaySound_SM(sndManager\button)
 		EndIf
@@ -250,8 +250,8 @@ Function UpdateUITick%(x%, y%, selected%, locked% = False)
 End Function
 
 Function UpdateSlideBar#(x%, y%, width%, value#)
-	If MouseDown1 Then
-		If MouseX() >= x And MouseX() <= x + width + 14 And MouseY() >= y And MouseY() <= y + 20 Then
+	If (MouseDown1) Then
+		If (MouseX() >= x And MouseX() <= x + width + 14 And MouseY() >= y And MouseY() <= y + 20) Then
 			value = Min(Max((MouseX() - x) * 100 / width, 0), 100)
 		EndIf
 	EndIf
@@ -277,7 +277,7 @@ Function RowText(A$, X%, Y%, W%, H%, align% = 0, Leading#=1)
 	;Display A$ starting at X,Y - no wider than W And no taller than H (all in pixels).
 	;Leading is optional extra vertical spacing in pixels
 
-	If H<1 Then H=2048
+	If (H<1) Then H=2048
 
 	Local LinesShown% = 0
 	Local Height% = StringHeight(A$) + Leading
@@ -288,18 +288,18 @@ Function RowText(A$, X%, Y%, W%, H%, align% = 0, Leading#=1)
 	
 	While Len(A) > 0
 		space = Instr(A$, " ")
-		If space = 0 Then space = Len(A$)
+		If (space = 0) Then space = Len(A$)
 		temp = Left(A$, space)
 		trimmed = Trim(temp) ;we might ignore a final space
 		extra = 0 ;we haven't ignored it yet
 		;ignore final space If doing so would make a word fit at End of Line:
-		If (StringWidth(b$ + temp$) > W) And (StringWidth(b$ + trimmed$) <= W) Then
+		If ((StringWidth(b$ + temp$) > W) And (StringWidth(b$ + trimmed$) <= W)) Then
 			temp = trimmed
 			extra = 1
 		EndIf
 
-		If StringWidth(b$ + temp$) > W Then ;too big, so Print what will fit
-			If align Then
+		If (StringWidth(b$ + temp$) > W) Then ;too big, so Print what will fit
+			If (align) Then
 				Text(X + W / 2 - (StringWidth(b) / 2), LinesShown * Height + Y, b)
 			Else
 				Text(X, LinesShown * Height + Y, b)
@@ -312,11 +312,11 @@ Function RowText(A$, X%, Y%, W%, H%, align% = 0, Leading#=1)
 			A$ = Right(A$, Len(A$) - (Len(temp$) + extra))
 		EndIf
 
-		If ((LinesShown + 1) * Height) > H Then Exit ;the Next Line(would be too tall, so leave)
+		If (((LinesShown + 1) * Height) > H) Then Exit ;the Next Line(would be too tall, so leave)
 	Wend
 
-	If (b$ <> "") And((LinesShown + 1) <= H) Then
-		If align Then
+	If ((b$ <> "") And((LinesShown + 1) <= H)) Then
+		If (align) Then
 			Text(X + W / 2 - (StringWidth(b) / 2), LinesShown * Height + Y, b) ;Print(any remaining Text If it'll fit vertically)
 		Else
 			Text(X, LinesShown * Height + Y, b) ;Print(any remaining Text If it'll fit vertically)
@@ -328,11 +328,11 @@ Function LimitText%(txt$, x%, y%, width%, usingAA%=True)
 	Local TextLength%
 	Local UnFitting%
 	Local LetterWidth%
-	If usingAA Then
-		If txt = "" Or width = 0 Then Return 0
+	If (usingAA) Then
+		If (txt = "" Or width = 0) Then Return 0
 		TextLength = StringWidth(txt)
 		UnFitting = TextLength - width
-		If UnFitting <= 0 Then ;mahtuu
+		If (UnFitting <= 0) Then ;mahtuu
 			Text(x, y, txt)
 		Else ;ei mahdu
 			LetterWidth = TextLength / Len(txt)
@@ -340,10 +340,10 @@ Function LimitText%(txt$, x%, y%, width%, usingAA%=True)
 			Text(x, y, Left(txt, Max(Len(txt) - UnFitting / LetterWidth - 4, 1)) + "...")
 		EndIf
 	Else
-		If txt = "" Or width = 0 Then Return 0
+		If (txt = "" Or width = 0) Then Return 0
 		TextLength = StringWidth(txt)
 		UnFitting = TextLength - width
-		If UnFitting <= 0 Then ;mahtuu
+		If (UnFitting <= 0) Then ;mahtuu
 			Text(x, y, txt)
 		Else ;ei mahdu
 			LetterWidth = TextLength / Len(txt)
@@ -368,7 +368,7 @@ End Function
 
 Function ShowPointer2()
 	ShowPointer()
-	If (userOptions\fullscreen) Then
+	If ((userOptions\fullscreen)) Then
 		DrawImage(uiAssets\cursorIMG, MouseX(), MouseY())
 	EndIf
 End Function

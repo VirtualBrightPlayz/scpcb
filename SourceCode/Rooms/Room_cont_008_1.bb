@@ -102,38 +102,38 @@ Function UpdateEvent_cont_008_1(e.Events)
 	Local angle#
 
 	;[Block]
-	If mainPlayer\currRoom = e\room Then
-		If Curr173\idle<2 Then
+	If (mainPlayer\currRoom = e\room) Then
+		If (Curr173\idle<2) Then
 			;container open
-			If e\eventState = 0 Then
+			If (e\eventState = 0) Then
 
 				PositionEntity(Curr173\collider, EntityX(e\room\objects[3],True),0.5,EntityZ(e\room\objects[3],True),True)
 				ResetEntity(Curr173\collider)
 
 				e\eventState = 1
-			ElseIf e\eventState = 1 Then
+			ElseIf (e\eventState = 1) Then
 				e\soundChannels[0] = LoopRangedSound(AlarmSFX(0), e\soundChannels[0], mainPlayer\cam, e\room\objects[0], 5.0)
 
-				If (TimeInPosMilliSecs() Mod 1000)<500 Then
+				If ((TimeInPosMilliSecs() Mod 1000)<500) Then
 					ShowEntity(e\room\objects[5])
 				Else
 					HideEntity(e\room\objects[5])
 				EndIf
 
 				dist = EntityDistance(mainPlayer\collider, e\room\objects[0])
-				If dist<2.0 Then
+				If (dist<2.0) Then
 					e\room\roomDoors[0]\locked = True
 					e\room\roomDoors[1]\locked = True
 
-					If e\eventState2=0 Then
+					If (e\eventState2=0) Then
 						ShowEntity(e\room\objects[2])
-						If mainPlayer\blinkTimer<-10 And Curr173\idle = 0 Then
+						If (mainPlayer\blinkTimer<-10 And Curr173\idle = 0) Then
 							PositionEntity(Curr173\collider, EntityX(e\room\objects[4],True),0.5,EntityZ(e\room\objects[4],True),True)
 							ResetEntity(Curr173\collider)
 
 							HideEntity(e\room\objects[2])
 
-							If (Not IsPlayerWearingTempName(mainPlayer,"hazmatsuit")) Then
+							If ((Not IsPlayerWearingTempName(mainPlayer,"hazmatsuit"))) Then
 								mainPlayer\injuries=mainPlayer\injuries+0.1
 								mainPlayer\infect008=1
 								Msg = "The window shattered and a piece of glass cut your arm."
@@ -146,18 +146,18 @@ Function UpdateEvent_cont_008_1(e.Events)
 						EndIf
 					EndIf
 
-					If dist<1.0 Then
-						If EntityInView(e\room\objects[0], mainPlayer\cam) Then
+					If (dist<1.0) Then
+						If (EntityInView(e\room\objects[0], mainPlayer\cam)) Then
 							DrawHandIcon = True
 
-							If MouseDown1 Then
+							If (MouseDown1) Then
 								RotateEntity(e\room\objects[1], Max(Min(EntityPitch(e\room\objects[1])+Max(Min(-mouse_y_speed_1,10.0),-10), 89), 35), EntityYaw(e\room\objects[1]), 0)
 							EndIf
 						EndIf
 					EndIf
 				EndIf
 
-				If EntityPitch(e\room\objects[1],True)<40 Then
+				If (EntityPitch(e\room\objects[1],True)<40) Then
 					e\eventState = 2
 					PlaySound_SM(sndManager\lever)
 				Else
@@ -176,7 +176,7 @@ Function UpdateEvent_cont_008_1(e.Events)
 
 				RotateEntity(e\room\objects[1],CurveAngle(1,EntityPitch(e\room\objects[1],True),15.0),EntityYaw(e\room\objects[1],True),0,True)
 
-				If EntityPitch(e\room\objects[1],True)=<1.0 Then
+				If (EntityPitch(e\room\objects[1],True)=<1.0) Then
 					RemoveEvent(e)
 				EndIf
 			EndIf

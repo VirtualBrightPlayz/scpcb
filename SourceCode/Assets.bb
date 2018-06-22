@@ -55,7 +55,7 @@ End Function
 Function GrabAsset%(filePath$, asType%, flag%=1)
 	Local as.AssetWrap
 	For as = Each AssetWrap
-		If (filePath = as\file) Then
+		If ((filePath = as\file)) Then
 			as\decayTimer = ASSET_DECAY_TIMER
 			as\grabCount = as\grabCount + 1
 			DebugLog("GRABBED ASSET: " + filePath + ", " + as\grabCount)
@@ -86,7 +86,7 @@ End Function
 Function DropAsset(obj%)
 	Local as.AssetWrap
 	For as = Each AssetWrap
-		If (obj = as\intVal) Then
+		If ((obj = as\intVal)) Then
 			as\grabCount = as\grabCount - 1
 			DebugLog("DROPPED ASSET: " + as\file + ", " + as\grabCount)
 			Return
@@ -100,10 +100,10 @@ End Function
 Function UpdateAssets()
 	Local as.AssetWrap
 	For as = Each AssetWrap
-		If (as\grabCount < 1) Then
+		If ((as\grabCount < 1)) Then
 			as\decayTimer = as\decayTimer - timing\tickDuration
 			DebugLog("ASSET DECAYING: " + as\file + ", " + as\decayTimer)
-			If (as\decayTimer < 0) Then
+			If ((as\decayTimer < 0)) Then
 				FreeAsset(as)
 			EndIf
 		EndIf
@@ -346,7 +346,7 @@ Function InitNewGame()
 		AccessCode = AccessCode + Rand(1,9)*(10^i)
 	Next
 
-	If SelectedMap = "" Then
+	If (SelectedMap = "") Then
 		CreateMap()
 	Else
 		LoadMap("Map Creator/Maps/"+SelectedMap)
@@ -361,12 +361,12 @@ Function InitNewGame()
 
 	For d.Doors = Each Doors
 		EntityParent(d\obj, 0)
-		If d\obj2 > 0 Then EntityParent(d\obj2, 0)
-		If d\frameobj > 0 Then EntityParent(d\frameobj, 0)
-		If d\buttons[0] > 0 Then EntityParent(d\buttons[0], 0)
-		If d\buttons[1] > 0 Then EntityParent(d\buttons[1], 0)
+		If (d\obj2 > 0) Then EntityParent(d\obj2, 0)
+		If (d\frameobj > 0) Then EntityParent(d\frameobj, 0)
+		If (d\buttons[0] > 0) Then EntityParent(d\buttons[0], 0)
+		If (d\buttons[1] > 0) Then EntityParent(d\buttons[1], 0)
 
-		If d\obj2 <> 0 And d\dir = 0 Then
+		If (d\obj2 <> 0 And d\dir = 0) Then
 			MoveEntity(d\obj, 0, 0, 8.0 * RoomScale)
 			MoveEntity(d\obj2, 0, 0, 8.0 * RoomScale)
 		EndIf
@@ -385,28 +385,28 @@ Function InitNewGame()
 
 	For r.Rooms = Each Rooms
 		For i = 0 To MaxRoomLights
-			If r\lights[i]<>0 Then EntityParent(r\lights[i],0)
+			If (r\lights[i]<>0) Then EntityParent(r\lights[i],0)
 		Next
 
-		If (Not r\roomTemplate\disableDecals) Then
-			If Rand(4) = 1 Then
+		If ((Not r\roomTemplate\disableDecals)) Then
+			If (Rand(4) = 1) Then
 				de.Decals = CreateDecal(Rand(2, 3), EntityX(r\obj)+Rnd(- 2,2), 0.003, EntityZ(r\obj)+Rnd(-2,2), 90, Rand(360), 0)
 				de\size = Rnd(0.1, 0.4) : ScaleSprite(de\obj, de\size, de\size)
 				EntityAlpha(de\obj, Rnd(0.85, 0.95))
 			EndIf
 
-			If Rand(4) = 1 Then
+			If (Rand(4) = 1) Then
 				de.Decals = CreateDecal(0, EntityX(r\obj)+Rnd(- 2,2), 0.003, EntityZ(r\obj)+Rnd(-2,2), 90, Rand(360), 0)
 				de\size = Rnd(0.5, 0.7) : EntityAlpha(de\obj, 0.7) : de\id = 1 : ScaleSprite(de\obj, de\size, de\size)
 				EntityAlpha(de\obj, Rnd(0.7, 0.85))
 			EndIf
 		EndIf
 
-		If (r\roomTemplate\name = "cont_173_1" And (userOptions\introEnabled = False)) Then
+		If ((r\roomTemplate\name = "cont_173_1" And (userOptions\introEnabled = False))) Then
 			PositionEntity(mainPlayer\collider, EntityX(r\obj)+3584*RoomScale, 714*RoomScale, EntityZ(r\obj)+1024*RoomScale)
 			ResetEntity(mainPlayer\collider)
 			mainPlayer\currRoom = r
-		ElseIf (r\roomTemplate\name = "intro" And userOptions\introEnabled) Then
+		ElseIf ((r\roomTemplate\name = "intro" And userOptions\introEnabled)) Then
 			PositionEntity(mainPlayer\collider, EntityX(r\obj), 1.0, EntityZ(r\obj))
 			ResetEntity(mainPlayer\collider)
 			mainPlayer\currRoom = r
@@ -416,7 +416,7 @@ Function InitNewGame()
 
 	Local rt.RoomTemplates
 	For rt.RoomTemplates = Each RoomTemplates
-		If rt\collisionObjs<>Null Then
+		If (rt\collisionObjs<>Null) Then
 			For i% = 0 To rt\collisionObjs\size-1
 				FreeEntity(GetIntArrayListElem(rt\collisionObjs,i))
 			Next
@@ -424,9 +424,9 @@ Function InitNewGame()
 		EndIf
 
 		FreeEntity(rt\opaqueMesh)
-		If rt\alphaMesh<>0 Then FreeEntity(rt\alphaMesh)
+		If (rt\alphaMesh<>0) Then FreeEntity(rt\alphaMesh)
 		
-		If rt\props<>Null Then
+		If (rt\props<>Null) Then
 			For i% = 0 To rt\props\size-1
 				prop = Object.Props(GetIntArrayListElem(rt\props,i))
 				FreeEntity(prop\obj)
@@ -445,7 +445,7 @@ Function InitNewGame()
 
 	ResetEntity(mainPlayer\collider)
 
-	If SelectedMap = "" Then InitEvents()
+	If (SelectedMap = "") Then InitEvents()
 
 	;TODO: fix
 ;	For e.Events = Each Events
@@ -481,7 +481,7 @@ Function InitNewGame()
 		UpdateNPCs()
 		UpdateWorld()
 		;Cls()
-		If (Int(Float(i)*0.27)<>Int(Float(i-1)*0.27)) Then
+		If ((Int(Float(i)*0.27)<>Int(Float(i-1)*0.27))) Then
 			DrawLoading(80+Int(Float(i)*0.27))
 		EndIf
 	Next
@@ -502,10 +502,10 @@ Function InitLoadGame()
 
 	For d.Doors = Each Doors
 		EntityParent(d\obj, 0)
-		If d\obj2 > 0 Then EntityParent(d\obj2, 0)
-		If d\frameobj > 0 Then EntityParent(d\frameobj, 0)
-		If d\buttons[0] > 0 Then EntityParent(d\buttons[0], 0)
-		If d\buttons[1] > 0 Then EntityParent(d\buttons[1], 0)
+		If (d\obj2 > 0) Then EntityParent(d\obj2, 0)
+		If (d\frameobj > 0) Then EntityParent(d\frameobj, 0)
+		If (d\buttons[0] > 0) Then EntityParent(d\buttons[0], 0)
+		If (d\buttons[1] > 0) Then EntityParent(d\buttons[1], 0)
 
 	Next
 
@@ -531,7 +531,7 @@ Function InitLoadGame()
 
 	Local i%, x#, z#
 	For rt.RoomTemplates = Each RoomTemplates
-		If rt\collisionObjs<>Null Then
+		If (rt\collisionObjs<>Null) Then
 			For i% = 0 To rt\collisionObjs\size-1
 				FreeEntity(GetIntArrayListElem(rt\collisionObjs,i))
 			Next
@@ -539,9 +539,9 @@ Function InitLoadGame()
 		EndIf
 
 		FreeEntity(rt\opaqueMesh)
-		If rt\alphaMesh<>0 Then FreeEntity(rt\alphaMesh)
+		If (rt\alphaMesh<>0) Then FreeEntity(rt\alphaMesh)
 		
-		If rt\props<>Null Then
+		If (rt\props<>Null) Then
 			For i% = 0 To rt\props\size-1
 				prop = Object.Props(GetIntArrayListElem(rt\props,i))
 				FreeEntity(prop\obj)
@@ -556,8 +556,8 @@ Function InitLoadGame()
 	;TODO: Not load this at the start of the game jesus.
 	For e.Events = Each Events
 		;Loading the necessary stuff for dimension1499, but this will only be done if the player is in this dimension already
-		If e\name = "dimension1499" Then
-			If e\eventState = 2 Then
+		If (e\name = "dimension1499") Then
+			If (e\eventState = 2) Then
 				;[Block]
 				DrawLoading(91)
 				e\room\objects[0] = CreatePlane()
@@ -582,7 +582,7 @@ Function InitLoadGame()
 				For i = -2 To 2 Step 2
 					ch = CreateChunk(-1,x#*(i*2.5),EntityY(e\room\obj),z#)
 				Next
-				;If Music(18)=0 Then Music(18) = LoadSound("SFX/Music/1499.ogg") ;TODO: fix
+				;If (Music(18)=0) Then Music(18) = LoadSound("SFX/Music/1499.ogg") ;TODO: fix
 				DrawLoading(98)
 				UpdateChunks(e\room,15,False)
 				;MoveEntity(mainPlayer\collider,0,10,0)
@@ -636,7 +636,7 @@ Function NullGame()
 	Next
 
 	For s.Screens = Each Screens
-		If s\img <> 0 Then
+		If (s\img <> 0) Then
 			FreeImage(s\img)
 			s\img = 0
 		EndIf
@@ -679,7 +679,7 @@ Function NullGame()
 
 	For r.Rooms = Each Rooms
 		DeleteIntArray(r\collisionObjs)
-		If r\props<>Null Then DeleteIntArray(r\props)
+		If (r\props<>Null) Then DeleteIntArray(r\props)
 		Delete r
 	Next
 	DeleteIntArray(MapRooms)
@@ -720,8 +720,8 @@ Function NullGame()
 
 	Local e.Events
 	For e.Events = Each Events
-		If e\sounds[0]<>0 Then FreeSound(e\sounds[0])
-		If e\sounds[1]<>0 Then FreeSound(e\sounds[1])
+		If (e\sounds[0]<>0) Then FreeSound(e\sounds[0])
+		If (e\sounds[1]<>0) Then FreeSound(e\sounds[1])
 		Delete e
 	Next
 
@@ -741,7 +741,7 @@ Function NullGame()
 	Next
 
 	For i = 0 To 5
-		If IsChannelPlaying(RadioCHN(i)) Then StopChannel(RadioCHN(i))
+		If (IsChannelPlaying(RadioCHN(i))) Then StopChannel(RadioCHN(i))
 	Next
 
 	NTF_1499PrevX# = 0.0
@@ -769,7 +769,7 @@ Function NullGame()
 	InitFastResize()
 
 	For i=0 To 9
-		If TempSounds[i]<>0 Then FreeSound(TempSounds[i]) : TempSounds[i]=0
+		If (TempSounds[i]<>0) Then FreeSound(TempSounds[i]) : TempSounds[i]=0
 	Next
 
 End Function

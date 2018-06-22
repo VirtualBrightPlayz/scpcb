@@ -79,15 +79,15 @@ Function UpdateEvent_srvr_096_2(e.Events)
 	Local angle#
 
 	;[Block]
-	If e\eventState=0 Then
-		If mainPlayer\currRoom = e\room Then
+	If (e\eventState=0) Then
+		If (mainPlayer\currRoom = e\room) Then
 		 ;close the doors when the player enters the room
 			UseDoor(e\room\roomDoors[0],False)
 			e\room\roomDoors[0]\locked = True
 			UseDoor(e\room\roomDoors[1],False)
 			e\room\roomDoors[1]\locked = True
 
-			If Curr096=Null Then
+			If (Curr096=Null) Then
 				Curr096 = CreateNPC(NPCtype096, EntityX(e\room\objects[6],True),EntityY(e\room\objects[6],True)+0.1,EntityZ(e\room\objects[6],True))
 			Else
 				PositionEntity(Curr096\collider, EntityX(e\room\objects[6],True),EntityY(e\room\objects[6],True)+0.1,EntityZ(e\room\objects[6],True),True)
@@ -105,25 +105,25 @@ Function UpdateEvent_srvr_096_2(e.Events)
 
 			e\eventState=1
 		EndIf
-	ElseIf e\eventState < 70*45 Then
-		If Rand(200)<5 And mainPlayer\currRoom = e\room Then
+	ElseIf (e\eventState < 70*45) Then
+		If (Rand(200)<5 And mainPlayer\currRoom = e\room) Then
 			;LightBlink = Rnd(1.0,2.0)
-			If Rand(5)=1 Then PlayRangedSound(IntroSFX(Rand(10,12)), mainPlayer\cam, e\room\obj, 8.0, Rnd(0.1,0.3))
+			If (Rand(5)=1) Then PlayRangedSound(IntroSFX(Rand(10,12)), mainPlayer\cam, e\room\obj, 8.0, Rnd(0.1,0.3))
 		EndIf
 
 		e\eventState=Min(e\eventState+timing\tickDuration,70*43)
 
-		If e\room\npc[0]<>Null Then
-			If e\eventState < 70*13 Then
+		If (e\room\npc[0]<>Null) Then
+			If (e\eventState < 70*13) Then
 
-				If e\eventState > 70*8 Then
+				If (e\eventState > 70*8) Then
 					Curr096\state=Min(Max(2,Curr096\state),3)
 					Curr096\state2=70*10
 				Else
 					Curr096\state = 5
 					PointEntity(Curr096\collider, e\room\objects[9])
 					RotateEntity(Curr096\collider, 0, EntityYaw(Curr096\collider,True),0,True)
-					If EntityDistance(Curr096\collider, e\room\objects[8])<2.4 Then
+					If (EntityDistance(Curr096\collider, e\room\objects[8])<2.4) Then
 						Curr096\state2 = 0
 					Else
 						Curr096\state2 = 1001
@@ -133,14 +133,14 @@ Function UpdateEvent_srvr_096_2(e.Events)
 				e\room\npc[0]\state=8
 				SetAnimTime(e\room\npc[0]\obj, 115)
 				PointEntity(e\room\npc[0]\collider, Curr096\collider)
-			ElseIf e\eventState-timing\tickDuration =< 70*15 Then ;walk to the doorway
-				If e\eventState > 70*15 Then
+			ElseIf (e\eventState-timing\tickDuration =< 70*15) Then ;walk to the doorway
+				If (e\eventState > 70*15) Then
 					e\room\npc[0]\state=3
 					e\room\npc[0]\pathStatus = FindPath(e\room\npc[0], EntityX(e\room\objects[8],True),0.5,EntityZ(e\room\objects[8],True))
 					e\room\npc[0]\pathTimer=300
 				EndIf
-			ElseIf e\eventState<70*20 Then
-				If e\room\npc[0]\pathStatus=0 Then
+			ElseIf (e\eventState<70*20) Then
+				If (e\room\npc[0]\pathStatus=0) Then
 					e\room\roomDoors[2]\open = False
 
 					e\room\npc[0]\state=7
@@ -151,17 +151,17 @@ Function UpdateEvent_srvr_096_2(e.Events)
 				EndIf
 			Else ;start walking away
 
-				If Curr096\state = 4 Then ;shoot at 096 when it starts attacking
+				If (Curr096\state = 4) Then ;shoot at 096 when it starts attacking
 					Curr096\lastSeen=1
 
 					e\room\npc[0]\state = 2
 					PointEntity(e\room\npc[0]\obj, Curr096\collider)
 					RotateEntity(e\room\npc[0]\collider, 0, CurveAngle(EntityYaw(e\room\npc[0]\obj),EntityYaw(e\room\npc[0]\collider),30),0)
-					;If mainPlayer\currRoom = e\room Then LightBlink = (e\room\npc[0]\reload)+Rnd(0.5,2.0)
+					;If (mainPlayer\currRoom = e\room) Then LightBlink = (e\room\npc[0]\reload)+Rnd(0.5,2.0)
 					Curr096\target = e\room\npc[0]
 				Else
-					If e\eventState>70*22 Then Curr096\state = 4
-					If e\room\npc[0]\state=7 Then
+					If (e\eventState>70*22) Then Curr096\state = 4
+					If (e\room\npc[0]\state=7) Then
 						e\room\npc[0]\state=3
 						e\room\npc[0]\pathStatus = FindPath(e\room\npc[0], EntityX(e\room\obj,True),0.4,EntityZ(e\room\obj,True))
 						e\room\npc[0]\pathTimer=300
@@ -170,7 +170,7 @@ Function UpdateEvent_srvr_096_2(e.Events)
 			EndIf
 
 			Curr096\target = e\room\npc[0]
-			If AnimTime(Curr096\obj)>25 And AnimTime(Curr096\obj)<150 Then
+			If (AnimTime(Curr096\obj)>25 And AnimTime(Curr096\obj)<150) Then
 				FreeSound(e\sounds[0])
 				e\sounds[0] = 0
 				e\sounds[0]=LoadSound("SFX/Character/Guard/096ServerRoom2.ogg")
@@ -179,7 +179,7 @@ Function UpdateEvent_srvr_096_2(e.Events)
 				Curr096\currSpeed = 0
 
 				For i = 0 To 6
-					If e\room\angle = 0 Or e\room\angle = 180 Then
+					If (e\room\angle = 0 Or e\room\angle = 180) Then
 						de.Decals = CreateDecal(Rand(2,3), e\room\x-Rnd(197,199)*Cos(e\room\angle)*RoomScale, 1.0, e\room\z+(140.0*(i-3))*RoomScale,0,e\room\angle+90,Rnd(360))
 						de\size = Rnd(0.8,0.85) : de\sizeChange = 0.001
 						de.Decals = CreateDecal(Rand(2,3), e\room\x-Rnd(197,199)*Cos(e\room\angle)*RoomScale, 1.0, e\room\z+(140.0*(i-3))*RoomScale,0,e\room\angle-90,Rnd(360))
@@ -204,7 +204,7 @@ Function UpdateEvent_srvr_096_2(e.Events)
 			EndIf
 		Else
 
-			If e\eventState >= 70*40 And e\eventState-timing\tickDuration < 70*40 Then ;open them again to let the player in
+			If (e\eventState >= 70*40 And e\eventState-timing\tickDuration < 70*40) Then ;open them again to let the player in
 				e\room\roomDoors[0]\locked=False
 				e\room\roomDoors[1]\locked=False
 				UseDoor(e\room\roomDoors[0],False)
@@ -215,21 +215,21 @@ Function UpdateEvent_srvr_096_2(e.Events)
 				e\room\roomDoors[1]\locked=True
 			EndIf
 
-			If mainPlayer\currRoom = e\room Then
-				If e\soundChannels[0]<>0 Then
+			If (mainPlayer\currRoom = e\room) Then
+				If (e\soundChannels[0]<>0) Then
 					If	IsChannelPlaying(e\soundChannels[0]) Then
 						;LightBlink = Rnd(0.5,6.0)
-						If Rand(50)=1 Then PlayRangedSound(IntroSFX(Rand(10,12)), mainPlayer\cam, e\room\obj, 8.0, Rnd(0.1,0.3))
+						If (Rand(50)=1) Then PlayRangedSound(IntroSFX(Rand(10,12)), mainPlayer\cam, e\room\obj, 8.0, Rnd(0.1,0.3))
 					EndIf
 				EndIf
 
-				If (e\room\angle = 0 Or e\room\angle = 180) Then ;lock the player inside
-					If Abs(EntityX(mainPlayer\collider)-EntityX(e\room\obj,True))> 1.3 Then
+				If ((e\room\angle = 0 Or e\room\angle = 180)) Then ;lock the player inside
+					If (Abs(EntityX(mainPlayer\collider)-EntityX(e\room\obj,True))> 1.3) Then
 						e\eventState = 70*50
 						e\sounds[0]=0
 					EndIf
 				Else
-					If Abs(EntityZ(mainPlayer\collider)-EntityZ(e\room\obj,True))> 1.3 Then
+					If (Abs(EntityZ(mainPlayer\collider)-EntityZ(e\room\obj,True))> 1.3) Then
 						e\eventState = 70*50
 						e\sounds[0]=0
 					EndIf
@@ -238,18 +238,18 @@ Function UpdateEvent_srvr_096_2(e.Events)
 
 		EndIf
 
-	ElseIf mainPlayer\currRoom = e\room Then
+	ElseIf (mainPlayer\currRoom = e\room) Then
 		temp = e\room\levers[0]\succ ;power switch
 		x = e\room\levers[1]\succ ;fuel pump
 		z = e\room\levers[2]\succ ;generator
 
 		;fuel pump on
-		If x Then
+		If (x) Then
 			e\eventState2 = Min(1.0, e\eventState2+timing\tickDuration/350)
 
 			;generator on
-			If z Then
-				If e\sounds[1]=0 Then LoadEventSound(e,"SFX/General/GeneratorOn.ogg",1)
+			If (z) Then
+				If (e\sounds[1]=0) Then LoadEventSound(e,"SFX/General/GeneratorOn.ogg",1)
 				e\eventState3 = Min(1.0, e\eventState3+timing\tickDuration/450)
 			Else
 				e\eventState3 = Min(0.0, e\eventState3-timing\tickDuration/450)
@@ -259,20 +259,20 @@ Function UpdateEvent_srvr_096_2(e.Events)
 			e\eventState3 = Max(0, e\eventState3-timing\tickDuration/450)
 		EndIf
 
-		If e\eventState2>0 Then e\soundChannels[0]=LoopRangedSound(RoomAmbience[8], e\soundChannels[0], mainPlayer\cam, e\room\levers[1]\obj, 5.0, e\eventState2*0.8)
-		If e\eventState3>0 Then e\soundChannels[1]=LoopRangedSound(e\sounds[1], e\soundChannels[1], mainPlayer\cam, e\room\levers[2]\obj, 6.0, e\eventState3)
+		If (e\eventState2>0) Then e\soundChannels[0]=LoopRangedSound(RoomAmbience[8], e\soundChannels[0], mainPlayer\cam, e\room\levers[1]\obj, 5.0, e\eventState2*0.8)
+		If (e\eventState3>0) Then e\soundChannels[1]=LoopRangedSound(e\sounds[1], e\soundChannels[1], mainPlayer\cam, e\room\levers[2]\obj, 6.0, e\eventState3)
 
-		If temp=0 And x And z Then
+		If (temp=0 And x And z) Then
 			e\room\roomDoors[0]\locked = False
 			e\room\roomDoors[1]\locked = False
 		Else
-			;If Rand(200)<5 Then LightBlink = Rnd(0.5,1.0)
+			;If (Rand(200)<5) Then LightBlink = Rnd(0.5,1.0)
 
-			If e\room\roomDoors[0]\open Then
+			If (e\room\roomDoors[0]\open) Then
 				e\room\roomDoors[0]\locked = False
 				UseDoor(e\room\roomDoors[0],False)
 			EndIf
-			If e\room\roomDoors[1]\open Then
+			If (e\room\roomDoors[1]\open) Then
 				e\room\roomDoors[1]\locked = False
 				UseDoor(e\room\roomDoors[1],False)
 			EndIf

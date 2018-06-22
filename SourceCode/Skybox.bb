@@ -25,7 +25,7 @@ Function sky_CreateSky(filename$,parent%=0)
 				direction = "_down"
 		End Select
 		fname$ = filename$ + direction$ + ".jpg"
-		If FileType(fname$)=1 Then
+		If (FileType(fname$)=1) Then
 			b% = LoadBrush(fname$,%110001)
 			s% = CreateSurface(sky,b)
 			

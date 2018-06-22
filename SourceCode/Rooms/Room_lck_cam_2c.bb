@@ -82,11 +82,11 @@ Function UpdateEventLockroom173(e.Events)
 	Local angle#
 
 	;[Block]
-	If e\room\dist < 6.0  And e\room\dist > 0 Then
-		If Curr173\idle = 2 Then
+	If (e\room\dist < 6.0  And e\room\dist > 0) Then
+		If (Curr173\idle = 2) Then
 			RemoveEvent(e)
 		Else
-			If (Not EntityInView(Curr173\collider, mainPlayer\cam)) Or EntityDistance(Curr173\collider, mainPlayer\collider)>15.0 Then
+			If ((Not EntityInView(Curr173\collider, mainPlayer\cam)) Or EntityDistance(Curr173\collider, mainPlayer\collider)>15.0) Then
 				PositionEntity(Curr173\collider, e\room\x + Cos(225-90 + e\room\angle) * 2, 0.6, e\room\z + Sin(225-90 + e\room\angle) * 2)
 				ResetEntity(Curr173\collider)
 				RemoveEvent(e)

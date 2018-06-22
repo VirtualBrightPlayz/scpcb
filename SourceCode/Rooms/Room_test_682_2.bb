@@ -41,14 +41,14 @@ Function UpdateEvent_test_682_2(e.Events)
 	Local angle#
 
 	;[Block]
-	If e <> Null Then
-		If mainPlayer\currRoom = e\room Then
-			If e\eventState = 0 Then
+	If (e <> Null) Then
+		If (mainPlayer\currRoom = e\room) Then
+			If (e\eventState = 0) Then
 				e\room\objects[7]=LoadAnimMesh("GFX/npcs/scp-1048.b3d")
 				ScaleEntity(e\room\objects[7], 0.05,0.05,0.05)
 
 				TFormPoint(EntityX(mainPlayer\collider),EntityY(mainPlayer\collider),EntityZ(mainPlayer\collider),0,e\room\obj)
-				If TFormedZ()=0 Then temp = -1 Else temp = -Sgn(TFormedZ())
+				If (TFormedZ()=0) Then temp = -1 Else temp = -Sgn(TFormedZ())
 				TFormPoint(-720,0,816*temp,e\room\obj,0)
 				PositionEntity(e\room\objects[7],TFormedX(),0,TFormedZ())
 
@@ -56,7 +56,7 @@ Function UpdateEvent_test_682_2(e.Events)
 				SetAnimTime(e\room\objects[7],297)
 				e\eventState = 1
 			EndIf
-			If EntityDistance(mainPlayer\collider, e\room\objects[6]) < 2.5 And e\eventState > 0 Then
+			If (EntityDistance(mainPlayer\collider, e\room\objects[6]) < 2.5 And e\eventState > 0) Then
 				PlaySound2(LoadTempSound("SFX/SCP/079/TestroomWarning.ogg"))
 				For i = 0 To 5
 					em.Emitters = CreateEmitter(EntityX(e\room\objects[i], True), EntityY(e\room\objects[i], True), EntityZ(e\room\objects[i], True), 0)
@@ -69,18 +69,18 @@ Function UpdateEvent_test_682_2(e.Events)
 				;Delete e
 				e\eventState = e\eventState * -1
 			EndIf
-			If e\room\objects[7]<>0 Then
+			If (e\room\objects[7]<>0) Then
 				Animate2(e\room\objects[7],AnimTime(e\room\objects[7]),284,308,0.3)
 				MoveEntity(e\room\objects[7],0,-0.008*timing\tickDuration,0)
 				TFormPoint(EntityX(e\room\objects[7]),EntityY(e\room\objects[7]),EntityZ(e\room\objects[7]),0,e\room\obj)
 
-				If Abs(TFormedX())>725 Then
+				If (Abs(TFormedX())>725) Then
 					FreeEntity(e\room\objects[7])
 					e\room\objects[7]=0
 					e\eventState = e\eventState *2
 				EndIf
 			EndIf
-			If e\eventState = -2 Then RemoveEvent(e)
+			If (e\eventState = -2) Then RemoveEvent(e)
 		EndIf
 	EndIf
 	;[End Block]

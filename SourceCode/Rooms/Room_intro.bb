@@ -87,7 +87,7 @@ Function FillRoom_intro(r.Rooms)
 
         d.Doors = CreateDoor(r\zone, r\x - 8288 * RoomScale, 0, r\z + (320+896*ztemp) * RoomScale, 0, r, False)
         d\locked = True
-        If ztemp = 0 Then d\open = True
+        If (ztemp = 0) Then d\open = True
 
         For xtemp = 0 To 2
             d.Doors = CreateDoor(r\zone, r\x - (7424.0-512.0*xtemp) * RoomScale, 0, r\z + (1008.0-480.0*ztemp) * RoomScale, 180*(Not ztemp), r, False)
@@ -111,7 +111,7 @@ Function FillRoom_intro(r.Rooms)
             FreeEntity(d\buttons[1])
 			d\buttons[1]=0
 
-            If xtemp = 2 And ztemp = 1 Then r\roomDoors[6] = d
+            If (xtemp = 2 And ztemp = 1) Then r\roomDoors[6] = d
         Next
     Next
 

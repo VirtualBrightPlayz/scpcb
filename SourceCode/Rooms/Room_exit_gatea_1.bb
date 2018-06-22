@@ -33,13 +33,13 @@ Function UpdateEvent_exit_gatea_1(e.Events)
 	Local angle#, gatea.Rooms
 
 	;[Block]
-	If mainPlayer\currRoom = e\room Then
-		If RemoteDoorOn=False Then
+	If (mainPlayer\currRoom = e\room) Then
+		If (RemoteDoorOn=False) Then
 			e\room\roomDoors[1]\locked=True
-		ElseIf RemoteDoorOn And e\eventState3=0 Then
+		ElseIf (RemoteDoorOn And e\eventState3=0) Then
 			e\room\roomDoors[1]\locked=False
-			If e\room\roomDoors[1]\open Then
-				If e\room\roomDoors[1]\openstate > 50 Or EntityDistance(mainPlayer\collider, e\room\roomDoors[1]\frameobj)<0.5 Then
+			If (e\room\roomDoors[1]\open) Then
+				If (e\room\roomDoors[1]\openstate > 50 Or EntityDistance(mainPlayer\collider, e\room\roomDoors[1]\frameobj)<0.5) Then
 					e\room\roomDoors[1]\openstate = Min(e\room\roomDoors[1]\openstate,50)
 					e\room\roomDoors[1]\open = False
 					PlayRangedSound (LoadTempSound("SFX/Door/DoorError.ogg"), mainPlayer\cam, e\room\roomDoors[1]\frameobj)
@@ -49,20 +49,20 @@ Function UpdateEvent_exit_gatea_1(e.Events)
 			e\room\roomDoors[1]\locked=False
 			gatea.Rooms =Null
 			For r.Rooms = Each Rooms
-				If r\roomTemplate\name = "gatea" Then
+				If (r\roomTemplate\name = "gatea") Then
 					gatea = r
 					Exit
 				EndIf
 			Next
 
 			e\eventState = UpdateElevators(e\eventState, e\room\roomDoors[0], gatea\roomDoors[1], e\room\objects[0], e\room\objects[1], e)
-			If Contained106 = False Then
-				If e\eventState < -1.5 And e\eventState+timing\tickDuration=> -1.5 Then
+			If (Contained106 = False) Then
+				If (e\eventState < -1.5 And e\eventState+timing\tickDuration=> -1.5) Then
 					;PlaySound2(OldManSFX(3)) ;TODO: fix
 				EndIf
 			EndIf
 
-			If EntityDistance(mainPlayer\collider, e\room\objects[1])<4.0 Then
+			If (EntityDistance(mainPlayer\collider, e\room\objects[1])<4.0) Then
 				gatea\roomDoors[1]\locked = True
 				mainPlayer\currRoom = gatea
 				RemoveEvent(e)

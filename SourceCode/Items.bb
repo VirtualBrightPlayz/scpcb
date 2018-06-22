@@ -55,8 +55,8 @@ Function CreateItemTemplate(file$, section$)
 
 	;The model and inv image are in the specified directory.
 	Local dataPath$ = GetINIString(file, section, "datapath")
-	If (dataPath <> "") Then
-		If (FileType(dataPath) <> 2) Then RuntimeError("Item template directory not found ("+section+", "+dataPath+")")
+	If ((dataPath <> "")) Then
+		If ((FileType(dataPath) <> 2)) Then RuntimeError("Item template directory not found ("+section+", "+dataPath+")")
 
 		it\objPath = dataPath + it\name + ".b3d"
 		it\invImagePath[0] = dataPath + "inv_" + it\name + ".jpg"
@@ -64,22 +64,22 @@ Function CreateItemTemplate(file$, section$)
 
 	;Otherwise the obj, tex and inv paths are specified in the INI.
 	Local objPath$ = GetINIString(file, section, "objpath")
-	If (objPath <> "") Then
+	If ((objPath <> "")) Then
 		it\objPath = objPath
 	EndIf
 
 	Local texPath$ = GetINIString(file, section, "texpath")
-	If (texPath <> "") Then
+	If ((texPath <> "")) Then
 		it\texPath = texPath
 	EndIf
 
 	Local invImgPath$ = GetINIString(file, section, "invimgpath")
-	If (invImgPath <> "") Then
+	If ((invImgPath <> "")) Then
 		it\invImagePath[0] = invImgPath
 	EndIf
 
 	Local invImgPath2$ = GetINIString(file, section, "invimgpath2")
-	If (invImgPath2 <> "") Then
+	If ((invImgPath2 <> "")) Then
 		it\invImagePath[1] = invImgPath2
 	EndIf
 
@@ -110,30 +110,30 @@ Function CreateItemTemplate(file$, section$)
 	;Does another item already use that model?
 	Local it2.ItemTemplates
 	For it2 = Each ItemTemplates
-		If (it2\objPath = it\objPath And it2\obj <> 0) Then
+		If ((it2\objPath = it\objPath And it2\obj <> 0)) Then
 			it\obj = CopyEntity(it2\obj)
 			Exit
 		EndIf
 	Next
 
 	;Otherwise load the model.
-	If (it\obj = 0) Then
-		If (GetINIInt(file, section, "animated") = 1) Then
+	If ((it\obj = 0)) Then
+		If ((GetINIInt(file, section, "animated") = 1)) Then
 			it\obj = LoadAnimMesh(it\objPath)
 		Else
 			it\obj = LoadMesh(it\objPath)
 		EndIf
 	EndIf
 
-	If (it\texPath <> "") Then
+	If ((it\texPath <> "")) Then
 		For it2 = Each ItemTemplates
-			If (it2\texPath = it\texPath And it2\tex <> 0) Then
+			If ((it2\texPath = it\texPath And it2\tex <> 0)) Then
 				it\tex = it2\tex
 				Exit
 			EndIf
 		Next
 
-		If (it\tex = 0) Then
+		If ((it\tex = 0)) Then
 			flags = GetINIInt(file, section, "textureflags", 1+8)
 			it\tex = LoadTexture(it\texPath, flags)
 		EndIf
@@ -143,15 +143,15 @@ Function CreateItemTemplate(file$, section$)
 
 	Local i%
 	For i=0 To 1
-		If (it\invImagePath[i] <> "") Then
+		If ((it\invImagePath[i] <> "")) Then
 			For it2 = Each ItemTemplates
-				If (it2\invImagePath[i] = it\invImagePath[i] And it2\invImage[i] <> 0) Then
+				If ((it2\invImagePath[i] = it\invImagePath[i] And it2\invImage[i] <> 0)) Then
 					it\invImage[i] = it2\invImage[i]
 					Exit
 				EndIf
 			Next
 
-			If (it\invImage[i] = 0) Then
+			If ((it\invImage[i] = 0)) Then
 				it\invImage[i] = LoadImage(it\invImagePath[i])
 				MaskImage(it\invImage[i], 255, 0, 255)
 			EndIf
@@ -170,7 +170,7 @@ Function FindItemTemplate.ItemTemplates(tempname$)
 	Local it.ItemTemplates = Null
 	Local candidate.ItemTemplates = Null
 	For it = Each ItemTemplates
-		If it\name = tempname Then
+		If (it\name = tempname) Then
 			candidate = it
 			Exit
 		EndIf
@@ -186,7 +186,7 @@ Function LoadItemTemplates(file$)
 
 	While Not Eof(f)
 		section = Trim(ReadLine(f))
-		If Left(section,1) = "[" Then
+		If (Left(section,1) = "[") Then
 			section = Mid(section, 2, Len(section) - 2)
 
 			CreateItemTemplate(file, section)
@@ -202,10 +202,10 @@ Function InitItemTemplates()
 	
 
 	For it = Each ItemTemplates
-		If (it\tex<>0) Then
-			If (it\texPath<>"") Then
+		If ((it\tex<>0)) Then
+			If ((it\texPath<>"")) Then
 				For it2=Each ItemTemplates
-					If (it2<>it) And (it2\tex=it\tex) Then
+					If ((it2<>it) And (it2\tex=it\tex)) Then
 						it2\tex = 0
 					EndIf
 				Next
@@ -262,7 +262,7 @@ End Function
 Function DeleteInventory(inv.Inventory)
 	Local i%
 	For i=0 To MAX_ITEM_COUNT-1
-		If inv\items[i]<>Null Then RemoveItem(inv\items[i])
+		If (inv\items[i]<>Null) Then RemoveItem(inv\items[i])
 	Next
 	Delete inv
 End Function
@@ -271,7 +271,7 @@ Function CountItemsInInventory%(inv.Inventory)
 	Local retVal% = 0
 	Local i%
 	For i=0 To inv\size-1
-		If inv\items[i]<>Null Then
+		If (inv\items[i]<>Null) Then
 			retVal=retVal+1
 		EndIf
 	Next
@@ -288,8 +288,8 @@ Function CreateItem.Items(name$, tempname$, x#, y#, z#, r# = 1.0, g# = 1.0, b# =
 	tempname = Lower(tempname)
 
 	For it.ItemTemplates = Each ItemTemplates
-		If Lower(it\name) = name Then
-			If Lower(it\name) = tempname Then
+		If (Lower(it\name) = name) Then
+			If (Lower(it\name) = tempname) Then
 				i\itemtemplate = it
 				i\collider = CreatePivot()
 				EntityRadius(i\collider, 0.01)
@@ -304,7 +304,7 @@ Function CreateItem.Items(name$, tempname$, x#, y#, z#, r# = 1.0, g# = 1.0, b# =
 
 	i\wontColl = False
 
-	;If i\itemtemplate = Null Then RuntimeError("Item template not found ("+name+", "+tempname+")")
+	;If (i\itemtemplate = Null) Then RuntimeError("Item template not found ("+name+", "+tempname+")")
 	i\model = CreateMesh()
 	i\collider = CreatePivot()
 
@@ -314,7 +314,7 @@ Function CreateItem.Items(name$, tempname$, x#, y#, z#, r# = 1.0, g# = 1.0, b# =
 	i\dist = EntityDistance(mainPlayer\collider, i\collider)
 	i\dropSpeed = 0.0
 
-	;If tempname = "cup" Then
+	;If (tempname = "cup") Then
 	;	i\r=r
 	;	i\g=g
 	;	i\b=b
@@ -327,7 +327,7 @@ Function CreateItem.Items(name$, tempname$, x#, y#, z#, r# = 1.0, g# = 1.0, b# =
 		;EntityParent(liquid, i\model)
 		;EntityColor(liquid, r,g,b)
 
-		;If a < 0 Then
+		;If (a < 0) Then
 		;	EntityFX(liquid, 1)
 		;	EntityAlpha(liquid, Abs(a))
 		;Else
@@ -339,14 +339,14 @@ Function CreateItem.Items(name$, tempname$, x#, y#, z#, r# = 1.0, g# = 1.0, b# =
 
 	i\invimg = CreateImage(64, 64) ;i\invimg = i\itemtemplate\invimg
 
-;	If (tempname="clipboard") And (invSlots=0) Then
+;	If ((tempname="clipboard") And (invSlots=0)) Then
 ;		invSlots = 20
 ;		SetAnimTime(i\model,17.0)
 ;		i\invimg = i\itemtemplate\invimg2
 ;	EndIf
 
 	i\inventory = Null
-	If invSlots>0 Then
+	If (invSlots>0) Then
 		i\inventory = CreateInventory(invSlots)
 	EndIf
 
@@ -357,14 +357,14 @@ Function CreateItem.Items(name$, tempname$, x#, y#, z#, r# = 1.0, g# = 1.0, b# =
 End Function
 
 Function RemoveItem(i.Items)
-	If i\inventory<>Null Then DeleteInventory(i\inventory)
+	If (i\inventory<>Null) Then DeleteInventory(i\inventory)
 
 	DropItem(i,False)
 
 	Local n%
 	FreeEntity(i\model) : FreeEntity(i\collider) : i\collider = 0
 
-	If i\itemtemplate\img <> 0 Then
+	If (i\itemtemplate\img <> 0) Then
 		FreeImage(i\itemtemplate\img)
 		i\itemtemplate\img = 0
 	EndIf
@@ -387,49 +387,49 @@ Function UpdateItems()
 	For i.Items = Each Items
 		i\dropped = 0
 
-		If (Not i\picked) Then
-			If i\disttimer < TimeInPosMilliSecs() Then
+		If ((Not i\picked)) Then
+			If (i\disttimer < TimeInPosMilliSecs()) Then
 				i\dist = EntityDistance(mainPlayer\collider, i\collider)
 				i\disttimer = TimeInPosMilliSecs() + Rand(600,800)
-				If i\dist < HideDist Then ShowEntity(i\collider)
+				If (i\dist < HideDist) Then ShowEntity(i\collider)
 			EndIf
 
-			If i\dist < HideDist Then
+			If (i\dist < HideDist) Then
 				ShowEntity(i\collider)
 
-				If (Not EntityVisible(i\collider,mainPlayer\cam)) Then
+				If ((Not EntityVisible(i\collider,mainPlayer\cam))) Then
 					;the player can't grab this
-					If (Not EntityVisible(i\collider,mainPlayer\collider)) Then i\dist = 2.5
+					If ((Not EntityVisible(i\collider,mainPlayer\collider))) Then i\dist = 2.5
 				EndIf
 
-				If i\dist < 1.2 Then
-					If mainPlayer\closestItem = Null Then
-						If EntityInView(i\model, mainPlayer\cam) Then mainPlayer\closestItem = i
-						ElseIf mainPlayer\closestItem = i Or i\dist < EntityDistance(mainPlayer\collider, mainPlayer\closestItem\collider) Then
-							If EntityInView(i\model, mainPlayer\cam) Then mainPlayer\closestItem = i
+				If (i\dist < 1.2) Then
+					If (mainPlayer\closestItem = Null) Then
+						If (EntityInView(i\model, mainPlayer\cam)) Then mainPlayer\closestItem = i
+						ElseIf (mainPlayer\closestItem = i Or i\dist < EntityDistance(mainPlayer\collider, mainPlayer\closestItem\collider)) Then
+							If (EntityInView(i\model, mainPlayer\cam)) Then mainPlayer\closestItem = i
 					EndIf
 				EndIf
 
-				If EntityCollided(i\collider, HIT_MAP) Then
+				If (EntityCollided(i\collider, HIT_MAP)) Then
 					i\dropSpeed = 0
 					i\xspeed = 0.0
 					i\zspeed = 0.0
 				Else
 					i\dropSpeed = i\dropSpeed - 0.0004 * timing\tickDuration
 					TranslateEntity(i\collider, i\xspeed*timing\tickDuration, i\dropSpeed * timing\tickDuration, i\zspeed*timing\tickDuration)
-					If i\wontColl Then ResetEntity(i\collider)
+					If (i\wontColl) Then ResetEntity(i\collider)
 				EndIf
 
-				If i\dist<HideDist*0.2 Then
+				If (i\dist<HideDist*0.2) Then
 					For i2.Items = Each Items
-						If i<>i2 And (Not i2\picked) And i2\dist<HideDist*0.2 Then
+						If (i<>i2 And (Not i2\picked) And i2\dist<HideDist*0.2) Then
 
 							xtemp# = (EntityX(i2\collider,True)-EntityX(i\collider,True))
 							ytemp# = (EntityY(i2\collider,True)-EntityY(i\collider,True))
 							ztemp# = (EntityZ(i2\collider,True)-EntityZ(i\collider,True))
 
 							ed = (xtemp*xtemp+ztemp*ztemp)
-							If ed<0.07 And Abs(ytemp)<0.25 Then
+							If (ed<0.07 And Abs(ytemp)<0.25) Then
 								;items are too close together, push away
 
 								xtemp = xtemp*(0.07-ed)
@@ -447,7 +447,7 @@ Function UpdateItems()
 					Next
 				EndIf
 
-				If EntityY(i\collider) < - 35.0 Then
+				If (EntityY(i\collider) < - 35.0) Then
 					DebugLog("remove: " + i\itemtemplate\name)
 					RemoveItem(i)
 					deletedItem=True
@@ -460,10 +460,10 @@ Function UpdateItems()
 		deletedItem = False
 	Next
 
-	If mainPlayer\closestItem <> Null Then
+	If (mainPlayer\closestItem <> Null) Then
 		;DrawHandIcon = True
 
-		If MouseHit1 Then PickItem(mainPlayer\closestItem)
+		If (MouseHit1) Then PickItem(mainPlayer\closestItem)
 	EndIf
 
 End Function
@@ -473,12 +473,12 @@ Function PickItem(item.Items)
 	Local e.Events
 	Local z%
 
-	If CountItemsInInventory(mainPlayer\inventory) < mainPlayer\inventory\size Then
+	If (CountItemsInInventory(mainPlayer\inventory) < mainPlayer\inventory\size) Then
 		For n% = 0 To mainPlayer\inventory\size - 1
-			If mainPlayer\inventory\items[n] = Null Then
+			If (mainPlayer\inventory\items[n] = Null) Then
 				Select item\itemtemplate\name
 					Case "1123"
-						If mainPlayer\currRoom\roomTemplate\name <> "room1123" Then
+						If (mainPlayer\currRoom\roomTemplate\name <> "room1123") Then
 							ShowEntity(mainPlayer\overlays[OVERLAY_WHITE])
 							mainPlayer\lightFlash = 7.0
 							PlaySound2(LoadTempSound("SFX/SCP/1123/Touch.ogg"))
@@ -490,8 +490,8 @@ Function PickItem(item.Items)
 							Return
 						EndIf
 						For e.Events = Each Events
-							If e\name = "room1123" Then
-								If e\eventState = 0 Then
+							If (e\name = "room1123") Then
+								If (e\eventState = 0) Then
 									ShowEntity(mainPlayer\overlays[OVERLAY_WHITE])
 									mainPlayer\lightFlash = 3.0
 									PlaySound2(LoadTempSound("SFX/SCP/1123/Touch.ogg"))
@@ -519,8 +519,8 @@ Function PickItem(item.Items)
 						mainPlayer\wornItems[WORNITEM_SLOT_BODY] = item
 
 						For z% = 0 To mainPlayer\inventory\size - 1
-							If mainPlayer\inventory\items[z] <> Null Then
-								If mainPlayer\inventory\items[z]\itemtemplate\name="hazmatsuit" Or mainPlayer\inventory\items[z]\itemtemplate\name="hazmatsuit2" Or mainPlayer\inventory\items[z]\itemtemplate\name="hazmatsuit3" Then
+							If (mainPlayer\inventory\items[z] <> Null) Then
+								If (mainPlayer\inventory\items[z]\itemtemplate\name="hazmatsuit" Or mainPlayer\inventory\items[z]\itemtemplate\name="hazmatsuit2" Or mainPlayer\inventory\items[z]\itemtemplate\name="hazmatsuit3") Then
 									DropItem(mainPlayer\inventory\items[z])
 								EndIf
 							EndIf
@@ -528,7 +528,7 @@ Function PickItem(item.Items)
 
 				End Select
 
-				If item\itemtemplate\sound <> 66 Then PlaySound_SM(sndManager\itemPick[item\itemtemplate\sound])
+				If (item\itemtemplate\sound <> 66) Then PlaySound_SM(sndManager\itemPick[item\itemtemplate\sound])
 				item\picked = True
 				item\dropped = -1
 
@@ -551,7 +551,7 @@ Function DropItem(item.Items,playDropSound%=True)
 		DeEquipItem(player,item)
 	Next
 
-	If playDropSound And (item\itemtemplate\sound <> 66) Then PlaySound_SM(sndManager\itemPick[item\itemtemplate\sound])
+	If (playDropSound And (item\itemtemplate\sound <> 66)) Then PlaySound_SM(sndManager\itemPick[item\itemtemplate\sound])
 
 	item\dropped = 1
 
@@ -565,13 +565,13 @@ Function DropItem(item.Items,playDropSound%=True)
 
 	;move the item so that it doesn't overlap with other items
 	;For it.Items = Each Items
-	;	If it <> item And it\picked = False Then
+	;	If (it <> item And it\picked = False) Then
 	;		x = Abs(EntityX(item\collider, True)-EntityX(it\collider, True))
-	;		;If x < 0.2 Then
-	;		If x < 0.01 Then
+	;		;If (x < 0.2) Then
+	;		If (x < 0.01) Then
 	;			z = Abs(EntityZ(item\obj, True)-EntityZ(it\collider, True))
-	;			;If z < 0.2 Then
-	;			If z < 0.01 Then
+	;			;If (z < 0.2) Then
+	;			If (z < 0.01) Then
 	;				;While (x+z)<0.25
 	;				While (x+z)<0.05
 	;					;MoveEntity(item\obj, 0, 0, 0.025)
@@ -589,7 +589,7 @@ Function DropItem(item.Items,playDropSound%=True)
 	Local j%
 	For inv.Inventory = Each Inventory
 		For j%=0 To inv\size-1
-			If inv\items[j]=item Then inv\items[j]=Null
+			If (inv\items[j]=item) Then inv\items[j]=Null
 		Next
 	Next
 	;Select item\itemtemplate\name
@@ -600,11 +600,11 @@ Function DropItem(item.Items,playDropSound%=True)
 	;	Case "vest", "finevest"
 	;		WearingVest = False
 	;	Case "nvgoggles"
-	;		If WearingNightVision = 1 Then CameraFogFar = StoredCameraFogFar : WearingNightVision = False
+	;		If (WearingNightVision = 1) Then CameraFogFar = StoredCameraFogFar : WearingNightVision = False
 	;	Case "supernv"
-	;		If WearingNightVision = 2 Then CameraFogFar = StoredCameraFogFar : WearingNightVision = False
+	;		If (WearingNightVision = 2) Then CameraFogFar = StoredCameraFogFar : WearingNightVision = False
 	;	Case "veryfinenvgoggles"
-	;		If WearingNightVision = 3 Then CameraFogFar = StoredCameraFogFar : WearingNightVision = False
+	;		If (WearingNightVision = 3) Then CameraFogFar = StoredCameraFogFar : WearingNightVision = False
 	;	Case "scp1499","super1499"
 	;		Wearing1499 = False
 	;End Select
@@ -631,11 +631,11 @@ Function CreateRadio.Radio()
 End Function
 
 Function ChangeRadioChannel(newChn%)
-	If (IsChannelPlaying(radio\channels[radio\currChn])) Then
+	If ((IsChannelPlaying(radio\channels[radio\currChn]))) Then
 		PauseChannel(radio\channels[radio\currChn])
 	EndIf
 
-	If (Not IsChannelPlaying(radio\channels[newChn])) Then
+	If ((Not IsChannelPlaying(radio\channels[newChn]))) Then
 		radio\channels[newChn] = PlaySound(radio\sndStatic)
 	Else
 		ResumeChannel(radio\channels[newChn])

@@ -50,17 +50,17 @@ Function UpdateEvent_strg_elec_2c(e.Events)
 	Local angle#, prevpitch#
 
 	;[Block]
-	If mainPlayer\currRoom = e\room Then
+	If (mainPlayer\currRoom = e\room) Then
 
 		EntityPick(mainPlayer\cam, 1.5)
 
 		For i = 1 To 5 Step 2
-			If PickedEntity() = e\room\objects[i] Then
+			If (PickedEntity() = e\room\objects[i]) Then
 				DrawHandIcon = True
-				If MouseHit1 Then mainPlayer\grabbedEntity = e\room\objects[i]
+				If (MouseHit1) Then mainPlayer\grabbedEntity = e\room\objects[i]
 
-				If e\eventState = 0 Then
-					If i = 3 Then
+				If (e\eventState = 0) Then
+					If (i = 3) Then
 						e\eventState = Max(e\eventState,1)
 						;PlaySound2(HorrorSFX(7))
 						PlaySound_SM(sndManager\lever)
@@ -70,9 +70,9 @@ Function UpdateEvent_strg_elec_2c(e.Events)
 
 			prevpitch# = EntityPitch(e\room\objects[i])
 
-			If MouseDown1 Or MouseHit1 Then
-				If mainPlayer\grabbedEntity <> 0 Then
-					If mainPlayer\grabbedEntity = e\room\objects[i] Then
+			If (MouseDown1 Or MouseHit1) Then
+				If (mainPlayer\grabbedEntity <> 0) Then
+					If (mainPlayer\grabbedEntity = e\room\objects[i]) Then
 						DrawHandIcon = True
 						TurnEntity(e\room\objects[i], mouse_y_speed_1 * 2.5, 0, 0)
 						RotateEntity(mainPlayer\grabbedEntity, Max(Min(EntityPitch(e\room\objects[i]), 85), -85), EntityYaw(e\room\objects[i]), 0)
@@ -83,7 +83,7 @@ Function UpdateEvent_strg_elec_2c(e.Events)
 					EndIf
 				EndIf
 			Else
-				If EntityPitch(e\room\objects[i]) > 0 Then
+				If (EntityPitch(e\room\objects[i]) > 0) Then
 					RotateEntity(e\room\objects[i], CurveValue(85, EntityPitch(e\room\objects[i]), 10), EntityYaw(e\room\objects[i]), 0)
 				Else
 					RotateEntity(e\room\objects[i], CurveValue(-85, EntityPitch(e\room\objects[i]), 10), EntityYaw(e\room\objects[i]), 0)
@@ -91,25 +91,25 @@ Function UpdateEvent_strg_elec_2c(e.Events)
 				mainPlayer\grabbedEntity = 0
 			EndIf
 
-			If EntityPitch(e\room\objects[i]) > 83 Then
-				If prevpitch =< 83 Then PlayRangedSound_SM(sndManager\lever, mainPlayer\cam, e\room\objects[i])
-				If i = 3 Then
+			If (EntityPitch(e\room\objects[i]) > 83) Then
+				If (prevpitch =< 83) Then PlayRangedSound_SM(sndManager\lever, mainPlayer\cam, e\room\objects[i])
+				If (i = 3) Then
 					SecondaryLightOn = CurveValue(1.0, SecondaryLightOn, 10.0)
-					If prevpitch =< 83 Then
+					If (prevpitch =< 83) Then
 						PlayRangedSound_SM(sndManager\lightSwitch, mainPlayer\cam, e\room\objects[i])
 					EndIf
 				Else
 					RemoteDoorOn = True
 				EndIf
-			ElseIf EntityPitch(e\room\objects[i]) < -83 Then
+			ElseIf (EntityPitch(e\room\objects[i]) < -83) Then
 
-				If prevpitch => -83 Then PlayRangedSound_SM(sndManager\lever, mainPlayer\cam, e\room\objects[i])
-				If i = 3 Then
-					If prevpitch => -83 Then
+				If (prevpitch => -83) Then PlayRangedSound_SM(sndManager\lever, mainPlayer\cam, e\room\objects[i])
+				If (i = 3) Then
+					If (prevpitch => -83) Then
 						PlayRangedSound_SM(sndManager\lightSwitch, mainPlayer\cam, e\room\objects[i])
 						For r.Rooms = Each Rooms
 							For z = 0 To 19
-								If r\lightSprites[z] <> 0 Then HideEntity(r\lightSprites[z])
+								If (r\lightSprites[z] <> 0) Then HideEntity(r\lightSprites[z])
 							Next
 						Next
 					EndIf
@@ -120,7 +120,7 @@ Function UpdateEvent_strg_elec_2c(e.Events)
 			EndIf
 		Next
 
-		If e\eventState > 0 And e\eventState < 200 Then
+		If (e\eventState > 0 And e\eventState < 200) Then
 			e\eventState = e\eventState + timing\tickDuration
 			RotateEntity(e\room\levers[1]\obj, CurveValue(-85, EntityPitch(e\room\objects[3]), 5), EntityYaw(e\room\objects[3]), 0)
 		EndIf

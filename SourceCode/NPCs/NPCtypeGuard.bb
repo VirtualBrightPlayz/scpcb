@@ -37,13 +37,13 @@ Function UpdateNPCtypeGuard(n.NPCs)
 			head = FindChild(n\obj,"head")
 			headangle = EntityYaw(head)
 
-			If (n\target <> Null) Then
+			If ((n\target <> Null)) Then
 				n\targetX = EntityX(n\target\collider)
 				n\targetY = EntityY(n\target\collider)
 				n\targetZ = EntityZ(n\target\collider)
 			EndIf
 
-			If (headangle > -45 And headangle < 45) Then
+			If ((headangle > -45 And headangle < 45)) Then
 				PointEntity(head,n\target\collider)
 			EndIf
 
@@ -55,16 +55,16 @@ Function UpdateNPCtypeGuard(n.NPCs)
 
             AnimateNPC(n, 1614, 1641, n\currSpeed * 30)
 
-            If dist > 2.0 Or dist < 1.0  Then
+            If (dist > 2.0 Or dist < 1.0 ) Then
                 n\currSpeed = CurveValue(n\speed * Sgn(dist - 1.5) * 0.75, n\currSpeed, 10.0)
             Else
                 n\currSpeed = CurveValue(0, n\currSpeed, 10.0)
             EndIf
 
-            If n\currSpeed > 0.01 Then
-                If (prevFrame > 1638 And n\frame < 1620) Then
+            If (n\currSpeed > 0.01) Then
+                If ((prevFrame > 1638 And n\frame < 1620)) Then
                     PlayRangedSound(sndManager\footstepMetal[Rand(0,7)]\internal, mainPlayer\cam, n\collider, 8.0, Rnd(0.5, 0.7))
-                ElseIf prevFrame < 1627 And n\frame=>1627 Then
+                ElseIf (prevFrame < 1627 And n\frame=>1627) Then
                     PlayRangedSound(sndManager\footstepMetal[Rand(0,7)]\internal, mainPlayer\cam, n\collider, 8.0, Rnd(0.5, 0.7))
                 EndIf
             EndIf
@@ -86,7 +86,7 @@ Function UpdateNPCtypeGuard(n.NPCs)
             RotateEntity(n\collider, CurveAngle(EntityPitch(pvt), EntityPitch(n\collider), 10), CurveAngle(EntityYaw(pvt), EntityYaw(n\collider), 10), 0, True)
 
             ;Start shooting once the aiming animation is done.
-            If (n\timer < 0 And n\frame>1550) Then
+            If ((n\timer < 0 And n\frame>1550)) Then
                 PlayRangedSound_SM(sndManager\gunshot[0], mainPlayer\cam, n\collider, 35)
 
                 RotateEntity(pvt, EntityPitch(n\collider), EntityYaw(n\collider), 0, True)
@@ -107,7 +107,7 @@ Function UpdateNPCtypeGuard(n.NPCs)
 
             n\timer = n\timer - timing\tickDuration
 		Case STATEGUARD_DEAD
-			If n\frame <= 151 Then
+			If (n\frame <= 151) Then
 				SetNPCFrame(n,151)
 			Else
 				AnimateNPC(n,113,151,0.2)

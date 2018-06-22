@@ -65,11 +65,11 @@ Function UpdateEvent_test_860_2(e.Events)
 
 	Local fr.Forest=e\room\fr
 
-	If mainPlayer\currRoom = e\room And fr<>Null Then
+	If (mainPlayer\currRoom = e\room And fr<>Null) Then
 
 		;Local dp.DrawPortal
 
-		If e\eventState=1.0 Then ;the player is in the forest
+		If (e\eventState=1.0) Then ;the player is in the forest
 			mainPlayer\footstepOverride = 2
 			e\overwriteMusic = True
 
@@ -80,18 +80,18 @@ Function UpdateEvent_test_860_2(e.Events)
 
 			UpdateForest(fr,mainPlayer\collider)
 
-			If (Not e\loaded) Then
+			If ((Not e\loaded)) Then
 				e\musicTrack = MUS_8601
-				;If Music(12) = 0 Then Music(12) = LoadSound("SFX/Music/8601Cancer.ogg") ;TODO: fix
-				If e\room\npc[0]=Null Then
+				;If (Music(12) = 0) Then Music(12) = LoadSound("SFX/Music/8601Cancer.ogg") ;TODO: fix
+				If (e\room\npc[0]=Null) Then
 					e\room\npc[0]=CreateNPC(NPCtype860, 0,0,0)
 				EndIf
 
 				e\loaded = True
 			EndIf
 
-			If e\room\npc[0]<>Null Then
-				If e\room\npc[0]\state2 = 1 And e\room\npc[0]\state>1 Then ;the monster is chasing the player
+			If (e\room\npc[0]<>Null) Then
+				If (e\room\npc[0]\state2 = 1 And e\room\npc[0]\state>1) Then ;the monster is chasing the player
 					e\overwriteMusic = False
 					SetNextMusicTrack(MUS_8602, False)
 				Else
@@ -100,19 +100,19 @@ Function UpdateEvent_test_860_2(e.Events)
 			EndIf
 
 			;the player fell
-			If EntityY(mainPlayer\collider)<=28.5 Then
+			If (EntityY(mainPlayer\collider)<=28.5) Then
 				Kill(mainPlayer)
 				mainPlayer\blinkTimer=-2
-			ElseIf EntityY(mainPlayer\collider)>EntityY(fr\forest_Pivot,True)+0.5 Then
+			ElseIf (EntityY(mainPlayer\collider)>EntityY(fr\forest_Pivot,True)+0.5) Then
 				MoveEntity(mainPlayer\collider, 0, ((EntityY(fr\forest_Pivot,True)+0.5) - EntityY(mainPlayer\collider))*timing\tickDuration, 0)
 			EndIf
 
-			If e\room\npc[0]<>Null Then
-				If e\room\npc[0]\state = 0 Or EntityDistance(mainPlayer\collider, e\room\npc[0]\collider)>12.0 Then
+			If (e\room\npc[0]<>Null) Then
+				If (e\room\npc[0]\state = 0 Or EntityDistance(mainPlayer\collider, e\room\npc[0]\collider)>12.0) Then
 					e\eventState3 = e\eventState3 + (1+mainPlayer\moveSpeed)* timing\tickDuration
-					If (e\eventState3 Mod 500) < 10.0 And ((e\eventState3-timing\tickDuration) Mod 500) > 490.0 Then
-						;If e\eventState3 > 3500 And Rnd(10000)<e\eventState3 Then
-						If e\eventState3 > 3000-(500*SelectedDifficulty\aggressiveNPCs) And Rnd(10000+(500*SelectedDifficulty\aggressiveNPCs)) < e\eventState3 Then
+					If ((e\eventState3 Mod 500) < 10.0 And ((e\eventState3-timing\tickDuration) Mod 500) > 490.0) Then
+						;If (e\eventState3 > 3500 And Rnd(10000)<e\eventState3) Then
+						If (e\eventState3 > 3000-(500*SelectedDifficulty\aggressiveNPCs) And Rnd(10000+(500*SelectedDifficulty\aggressiveNPCs)) < e\eventState3) Then
 							e\room\npc[0]\state=2
 							PositionEntity(e\room\npc[0]\collider, 0,-110,0)
 							;e\eventState3=e\eventState3-Rnd(2000,3000)
@@ -127,18 +127,18 @@ Function UpdateEvent_test_860_2(e.Events)
 				EndIf
 			EndIf
 
-			;If KeyHit(25) Then
+			;If (KeyHit(25)) Then
 			;	e\room\npc[0]\state=2
 			;	PositionEntity(e\room\npc[0]\collider, 0,-110,0)
 			;	e\eventState3=e\eventState3-Rnd(2000,3000)
 			;EndIf
 
 			For i = 0 To 1
-				If EntityDistance(fr\door[i], mainPlayer\collider)<0.5 Then
-					If EntityInView(fr\door[i], mainPlayer\cam) Then
+				If (EntityDistance(fr\door[i], mainPlayer\collider)<0.5) Then
+					If (EntityInView(fr\door[i], mainPlayer\cam)) Then
 						DrawHandIcon = True
-						If MouseHit1 Then
-							If i=1 Then
+						If (MouseHit1) Then
+							If (i=1) Then
 								mainPlayer\blinkTimer = -10
 
 								PlaySound2(LoadTempSound("SFX/Door/WoodenDoorOpen.ogg"))
@@ -171,7 +171,7 @@ Function UpdateEvent_test_860_2(e.Events)
 				EndIf
 			Next
 
-			If e\room\npc[0]<>Null Then
+			If (e\room\npc[0]<>Null) Then
 				x = Max(1.0-(e\room\npc[0]\state3/300.0),0.1)
 			Else
 				x = 2.0
@@ -184,26 +184,26 @@ Function UpdateEvent_test_860_2(e.Events)
 
 		Else
 
-			If (Not Contained106) Then Curr106\idle = False
+			If ((Not Contained106)) Then Curr106\idle = False
 
 			;dp.DrawPortal=e\room\dp;Object.DrawPortal(e\room\objects[0])
 
 			;HideEntity(fr\detailEntities[0])
 			;HideEntity(fr\detailEntities[1])
 
-			If EntityYaw(e\room\objects[3])=0.0 Then
+			If (EntityYaw(e\room\objects[3])=0.0) Then
 				HideEntity(fr.Forest\forest_Pivot)
-				If (Abs(Distance(EntityX(e\room\objects[3],True),EntityZ(e\room\objects[3],True),EntityX(mainPlayer\collider,True),EntityZ(mainPlayer\collider,True)))<1.0) Then
+				If ((Abs(Distance(EntityX(e\room\objects[3],True),EntityZ(e\room\objects[3],True),EntityX(mainPlayer\collider,True),EntityZ(mainPlayer\collider,True)))<1.0)) Then
 					DrawHandIcon = True
 
-					If mainPlayer\selectedItem = Null Then
-						If MouseHit1 Then
+					If (mainPlayer\selectedItem = Null) Then
+						If (MouseHit1) Then
 							PlaySound2(LoadTempSound("SFX/Door/WoodenDoorBudge.ogg"))
 							Msg = "The door will not budge."
 							MsgTimer = 5*70
 						EndIf
-					ElseIf mainPlayer\selectedItem\itemtemplate\name="scp860" Then
-						If MouseHit1 Then
+					ElseIf (mainPlayer\selectedItem\itemtemplate\name="scp860") Then
+						If (MouseHit1) Then
 							PlaySound2(LoadTempSound("SFX/Door/WoodenDoorOpen.ogg"))
 							ShowEntity(fr.Forest\forest_Pivot)
 							mainPlayer\selectedItem = Null
@@ -223,7 +223,7 @@ Function UpdateEvent_test_860_2(e.Events)
 							PositionEntity(pvt, EntityX(mainPlayer\cam),EntityY(mainPlayer\cam),EntityZ(mainPlayer\cam))
 							PointEntity(pvt, e\room\obj)
 							ang# = WrapAngle(EntityYaw(pvt)-EntityYaw(e\room\obj,True))
-							If ang > 90 And ang < 270 Then
+							If (ang > 90 And ang < 270) Then
 								;TurnEntity(mainPlayer\collider,0,180+90,0,True)
 								e\eventState2 = 1
 							Else
@@ -247,10 +247,10 @@ Function UpdateEvent_test_860_2(e.Events)
 		EndIf
 
 	Else
-		If (fr=Null) Then
+		If ((fr=Null)) Then
 			RemoveEvent(e)
 		Else
-			If (fr\forest_Pivot<>0) Then HideEntity(fr\forest_Pivot)
+			If ((fr\forest_Pivot<>0)) Then HideEntity(fr\forest_Pivot)
 		EndIf
 	EndIf
 
@@ -289,14 +289,14 @@ End Type
 
 Function move_forward%(dir%,pathx%,pathy%,retval%=0)
 	;move 1 unit along the grid in the designated direction
-	If dir = 1 Then
-		If retval=0 Then
+	If (dir = 1) Then
+		If (retval=0) Then
 			Return pathx
 		Else
 			Return pathy+1
 		EndIf
 	EndIf
-	If retval=0 Then
+	If (retval=0) Then
 		Return pathx-1+dir
 	Else
 		Return pathy
@@ -312,11 +312,11 @@ Function turn_if_deviating%(max_deviation_distance_%,pathx%,center_%,dir%,retval
 	;check if deviating and return the answer. if deviating, turn around
 	Local current_deviation% = center_ - pathx
 	Local deviated% = False
-	If (dir = 0 And current_deviation >= max_deviation_distance_) Or (dir = 2 And current_deviation <= -max_deviation_distance_) Then
+	If ((dir = 0 And current_deviation >= max_deviation_distance_) Or (dir = 2 And current_deviation <= -max_deviation_distance_)) Then
 		dir = (dir + 2) Mod 4
 		deviated = True
 	EndIf
-	If retval=0 Then Return dir Else Return deviated
+	If (retval=0) Then Return dir Else Return deviated
 End Function
 
 Global LastForestID% = 0
@@ -354,14 +354,14 @@ Function GenForestGrid(fr.Forest)
 	Local deviated%
 
 	While pathy < gridsize -4
-		If dir = 1 Then ;determine whether to go forward or to the side
-			If chance(deviation_chance) Then
+		If (dir = 1) Then ;determine whether to go forward or to the side
+			If (chance(deviation_chance)) Then
 				;pick a branch direction
 				dir = 2 * Rand(0,1)
 				;make sure you have not passed max side distance
 				dir = turn_if_deviating(max_deviation_distance,pathx,center,dir)
 				deviated = turn_if_deviating(max_deviation_distance,pathx,center,dir,1)
-				If deviated Then fr\grid[((gridsize-1-pathy)*gridsize)+pathx]=1
+				If (deviated) Then fr\grid[((gridsize-1-pathy)*gridsize)+pathx]=1
 				pathx=move_forward(dir,pathx,pathy)
 				pathy=move_forward(dir,pathx,pathy,1)
 			EndIf
@@ -370,12 +370,12 @@ Function GenForestGrid(fr.Forest)
 			;we are going to the side, so determine whether to keep going or go forward again
 			dir = turn_if_deviating(max_deviation_distance,pathx,center,dir)
 			deviated = turn_if_deviating(max_deviation_distance,pathx,center,dir,1)
-			If deviated Or chance(return_chance) Then dir = 1
+			If (deviated Or chance(return_chance)) Then dir = 1
 
 			pathx=move_forward(dir,pathx,pathy)
 			pathy=move_forward(dir,pathx,pathy,1)
 			;if we just started going forward go twice so as to avoid creating a potential 2x2 line
-			If dir=1 Then
+			If (dir=1) Then
 				fr\grid[((gridsize-1-pathy)*gridsize)+pathx]=1
 				pathx=move_forward(dir,pathx,pathy)
 				pathy=move_forward(dir,pathx,pathy,1)
@@ -394,9 +394,9 @@ Function GenForestGrid(fr.Forest)
 		fr\grid[((gridsize-1-pathy)*gridsize)+pathx]=1
 	Wend
 
-	If pathx<>door1_pos Then
+	If (pathx<>door1_pos) Then
 		dir=0
-		If door1_pos>pathx Then dir=2
+		If (door1_pos>pathx) Then dir=2
 		While pathx<>door1_pos
 			pathx=move_forward(dir,pathx,pathy)
 			pathy=move_forward(dir,pathx,pathy,1)
@@ -413,9 +413,9 @@ Function GenForestGrid(fr.Forest)
 		new_y=new_y+4
 		temp_y=new_y
 		new_x=0
-		If chance(branch_chance) Then
+		If (chance(branch_chance)) Then
 			branch_type=-1
-			;If chance(cobble_chance) Then
+			;If (chance(cobble_chance)) Then
 			;	branch_type=-2
 			;EndIf
 			;create a branch at this spot
@@ -425,27 +425,27 @@ Function GenForestGrid(fr.Forest)
 			leftmost% = gridsize
 			rightmost% = 0
 			For i=0 To gridsize
-				If fr\grid[((gridsize-1-new_y)*gridsize)+i]=1 Then
-					If i<leftmost Then leftmost=i
-					If i>rightmost Then rightmost=i
+				If (fr\grid[((gridsize-1-new_y)*gridsize)+i]=1) Then
+					If (i<leftmost) Then leftmost=i
+					If (i>rightmost) Then rightmost=i
 				EndIf
 			Next
-			If branch_pos=0 Then new_x=leftmost-1 Else new_x=rightmost+1
+			If (branch_pos=0) Then new_x=leftmost-1 Else new_x=rightmost+1
 			;before creating a branch make sure there are no 1's above or below
-			If (temp_y<>0 And fr\grid[((gridsize-1-temp_y+1)*gridsize)+new_x]=1) Or fr\grid[((gridsize-1-temp_y-1)*gridsize)+new_x]=1 Then
+			If ((temp_y<>0 And fr\grid[((gridsize-1-temp_y+1)*gridsize)+new_x]=1) Or fr\grid[((gridsize-1-temp_y-1)*gridsize)+new_x]=1) Then
 				Exit ;break simply to stop creating the branch
 			EndIf
 			fr\grid[((gridsize-1-temp_y)*gridsize)+new_x]=branch_type ;make 4s so you don't confuse your branch for a path; will be changed later
-			If branch_pos=0 Then new_x=leftmost-2 Else new_x=rightmost+2
+			If (branch_pos=0) Then new_x=leftmost-2 Else new_x=rightmost+2
 			fr\grid[((gridsize-1-temp_y)*gridsize)+new_x]=branch_type ;branch out twice to avoid creating an unwanted 2x2 path with the real path
 			i = 2
 			While i<branch_max_life
 				i=i+1
-				If chance(branch_die_chance) Then
+				If (chance(branch_die_chance)) Then
 					Exit
 				EndIf
-				If Rand(0,3)=0 Then ;have a higher chance to go up to confuse the player
-					If branch_pos = 0 Then
+				If (Rand(0,3)=0) Then ;have a higher chance to go up to confuse the player
+					If (branch_pos = 0) Then
 						new_x=new_x-1
 					Else
 						new_x=new_x+1
@@ -456,19 +456,19 @@ Function GenForestGrid(fr.Forest)
 
 				;before creating a branch make sure there are no 1's above or below
 				n% = ((gridsize - 1 - temp_y + 1)*gridsize)+new_x
-				If n < gridsize-1 Then
-					If temp_y <> 0 And fr\grid[n]=1 Then Exit
+				If (n < gridsize-1) Then
+					If (temp_y <> 0 And fr\grid[n]=1) Then Exit
 				EndIf
 				n=((gridsize - 1 - temp_y - 1)*gridsize)+new_x
-				If n>0 Then
-					If fr\grid[n]=1 Then Exit
+				If (n>0) Then
+					If (fr\grid[n]=1) Then Exit
 				EndIf
 
-				;If (temp_y <> 0 And fr\grid[((gridsize - 1 - temp_y + 1)*gridsize)+new_x]=1) Or fr\grid[((gridsize - 1 - temp_y - 1)*gridsize)+new_x] = 1 Then
+				;If ((temp_y <> 0 And fr\grid[((gridsize - 1 - temp_y + 1)*gridsize)+new_x]=1) Or fr\grid[((gridsize - 1 - temp_y - 1)*gridsize)+new_x] = 1) Then
 				;	Exit
 				;EndIf
 				fr\grid[((gridsize-1-temp_y)*gridsize)+new_x]=branch_type ;make 4s so you don't confuse your branch for a path; will be changed later
-				If temp_y>=gridsize-2 Then Exit
+				If (temp_y>=gridsize-2) Then Exit
 			Wend
 		EndIf
 	Wend
@@ -476,9 +476,9 @@ Function GenForestGrid(fr.Forest)
 	;change branches from 4s to 1s (they were 4s so that they didn't accidently create a 2x2 path unintentionally)
 	For i=0 To gridsize-1
 		For j=0 To gridsize-1
-			If fr\grid[(i*gridsize)+j]=-1 Then
+			If (fr\grid[(i*gridsize)+j]=-1) Then
 				fr\grid[(i*gridsize)+j]=1
-			ElseIf fr\grid[(i*gridsize)+j]=-2 Then
+			ElseIf (fr\grid[(i*gridsize)+j]=-2) Then
 				fr\grid[(i*gridsize)+j]=1
 			;ElseIf fr\grid[(i*gridsize)+j]=0
 
@@ -503,24 +503,24 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Rooms)
 	Local tempf4#
 	Local lx%, ly%, d%, frame%
 
-	If fr\forest_Pivot<>0 Then
+	If (fr\forest_Pivot<>0) Then
 		FreeEntity(fr\forest_Pivot)
 		fr\forest_Pivot=0
 	EndIf
 	For i%=0 To 3
-		If fr\tileMesh[i]<>0 Then
+		If (fr\tileMesh[i]<>0) Then
 			FreeEntity(fr\tileMesh[i])
 			fr\tileMesh[i]=0
 		EndIf
 	Next
 	For i%=0 To 4
-		If fr\detailMesh[i]<>0 Then
+		If (fr\detailMesh[i]<>0) Then
 			FreeEntity(fr\detailMesh[i])
 			fr\detailMesh[i]=0
 		EndIf
 	Next
 	For i%=0 To 9
-		If fr\tileTexture[i]<>0 Then
+		If (fr\tileTexture[i]<>0) Then
 			FreeEntity(fr\tileTexture[i])
 			fr\tileTexture[i]=0
 		EndIf
@@ -580,14 +580,14 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Rooms)
 	
 	For tx%=1 To gridsize-1
 		For ty%=1 To gridsize-1
-			If fr\grid[(ty*gridsize)+tx]=1 Then
+			If (fr\grid[(ty*gridsize)+tx]=1) Then
 
 				tile_type = 0
-				If tx+1<gridsize Then tile_type = (fr\grid[(ty*gridsize)+tx+1]>0)
-				If tx-1=>0 Then tile_type = tile_type+(fr\grid[(ty*gridsize)+tx-1]>0)
+				If (tx+1<gridsize) Then tile_type = (fr\grid[(ty*gridsize)+tx+1]>0)
+				If (tx-1=>0) Then tile_type = tile_type+(fr\grid[(ty*gridsize)+tx-1]>0)
 
-				If ty+1<gridsize Then tile_type = tile_type+(fr\grid[((ty+1)*gridsize)+tx]>0)
-				If ty-1=>0 Then tile_type = tile_type+(fr\grid[((ty-1)*gridsize)+tx]>0)
+				If (ty+1<gridsize) Then tile_type = tile_type+(fr\grid[((ty+1)*gridsize)+tx]>0)
+				If (ty-1=>0) Then tile_type = tile_type+(fr\grid[((ty-1)*gridsize)+tx]>0)
 
 				;fr\grid[(ty*gridsize)+tx]=tile_type
 
@@ -596,30 +596,30 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Rooms)
 					Case 1
 						tile_entity = CopyEntity(fr\tileMesh[ROOM1])
 
-						If fr\grid[((ty+1)*gridsize)+tx]>0 Then
+						If (fr\grid[((ty+1)*gridsize)+tx]>0) Then
 							angle = 180
-						ElseIf fr\grid[(ty*gridsize)+tx-1]>0 Then
+						ElseIf (fr\grid[(ty*gridsize)+tx-1]>0) Then
 							angle = 270
-						ElseIf fr\grid[(ty*gridsize)+tx+1]>0 Then
+						ElseIf (fr\grid[(ty*gridsize)+tx+1]>0) Then
 							angle = 90
 						EndIf
 
 						tile_type = ROOM1
 					Case 2
-						If fr\grid[((ty-1)*gridsize)+tx]>0 And fr\grid[((ty+1)*gridsize)+tx]>0 Then
+						If (fr\grid[((ty-1)*gridsize)+tx]>0 And fr\grid[((ty+1)*gridsize)+tx]>0) Then
 							tile_entity = CopyEntity(fr\tileMesh[ROOM2])
 							tile_type = ROOM2
-						ElseIf fr\grid[(ty*gridsize)+tx+1]>0 And fr\grid[(ty*gridsize)+tx-1]>0 Then
+						ElseIf (fr\grid[(ty*gridsize)+tx+1]>0 And fr\grid[(ty*gridsize)+tx-1]>0) Then
 							tile_entity = CopyEntity(fr\tileMesh[ROOM2])
 							angle = 90
 							tile_type = ROOM2
 						Else
 							tile_entity = CopyEntity(fr\tileMesh[ROOM2C])
-							If fr\grid[(ty*gridsize)+tx-1]>0 And fr\grid[((ty+1)*gridsize)+tx]>0 Then
+							If (fr\grid[(ty*gridsize)+tx-1]>0 And fr\grid[((ty+1)*gridsize)+tx]>0) Then
 								angle = 180
-							ElseIf fr\grid[(ty*gridsize)+tx+1]>0 And fr\grid[((ty-1)*gridsize)+tx]>0 Then
+							ElseIf (fr\grid[(ty*gridsize)+tx+1]>0 And fr\grid[((ty-1)*gridsize)+tx]>0) Then
 
-							ElseIf fr\grid[(ty*gridsize)+tx-1]>0 And fr\grid[((ty-1)*gridsize)+tx]>0 Then
+							ElseIf (fr\grid[(ty*gridsize)+tx-1]>0 And fr\grid[((ty-1)*gridsize)+tx]>0) Then
 								angle = 270
 							Else
 								angle = 90
@@ -629,11 +629,11 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Rooms)
 					Case 3
 						tile_entity = CopyEntity(fr\tileMesh[ROOM3])
 
-						If fr\grid[((ty-1)*gridsize)+tx]=0 Then
+						If (fr\grid[((ty-1)*gridsize)+tx]=0) Then
 							angle = 180
-						ElseIf fr\grid[(ty*gridsize)+tx-1]=0 Then
+						ElseIf (fr\grid[(ty*gridsize)+tx-1]=0) Then
 							angle = 90
-						ElseIf fr\grid[(ty*gridsize)+tx+1]=0 Then
+						ElseIf (fr\grid[(ty*gridsize)+tx+1]=0) Then
 							angle = 270
 						EndIf
 
@@ -645,10 +645,10 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Rooms)
 						DebugLog("tile_type: "+tile_type)
 				End Select
 
-				If tile_type > 0 Then
+				If (tile_type > 0) Then
 					;2, 5, 8
 					it.Items = Null
-					If (ty Mod 3)=2 And itemPlaced[Floor(ty/3)]=False Then
+					If ((ty Mod 3)=2 And itemPlaced[Floor(ty/3)]=False) Then
 						itemPlaced[Floor(ty/3)]=True
 						it.Items = CreateItem("Log#"+Int(Floor(ty/3)+1), "paper", 0,0.5,0)
 						EntityType(it\collider, HIT_ITEM)
@@ -664,7 +664,7 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Rooms)
 						For ly = 3 To width-2
 							GetColor(lx,width-ly)
 
-							If ColorRed()>Rand(100,260) Then
+							If (ColorRed()>Rand(100,260)) Then
 								Select Rand(0,7)
 									Case 0,1,2,3,4,5,6 ;create a tree
 										detail_entity=CopyEntity(fr\detailMesh[1])
@@ -723,7 +723,7 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Rooms)
 					EntityFX(tile_entity,1)
 					EntityParent(tile_entity,fr\forest_Pivot)
 
-					If it<>Null Then EntityParent(it\collider,0)
+					If (it<>Null) Then EntityParent(it\collider,0)
 
 					fr\tileEntities[tx+(ty*gridsize)] = tile_entity
 				Else
@@ -739,7 +739,7 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Rooms)
 		ty = ((gridsize-1)*i)
 
 		For tx = 1 To gridsize-1
-			If fr\grid[(ty*gridsize)+tx]=3 Then
+			If (fr\grid[(ty*gridsize)+tx]=3) Then
 				fr\detailEntities[i]=CopyEntity(fr\detailMesh[5])
 				ScaleEntity(fr\detailEntities[i],RoomScale,RoomScale,RoomScale)
 
@@ -772,49 +772,49 @@ Function DestroyForest(fr.Forest)
 	Local tx%,ty%
 	For tx% = 0 To gridsize-1
 		For ty% = 0 To gridsize-1
-			If fr\tileEntities[tx+(ty*gridsize)]<>0 Then
+			If (fr\tileEntities[tx+(ty*gridsize)]<>0) Then
 				FreeEntity(fr\tileEntities[tx+(ty*gridsize)])
 				fr\tileEntities[tx+(ty*gridsize)] = 0
 				fr\grid[tx+(ty*gridsize)] = 0
 			EndIf
 		Next
 	Next
-	If fr\door[0]<>0 Then
+	If (fr\door[0]<>0) Then
 		FreeEntity(fr\door[0])
 		fr\door[0] = 0
 	EndIf
-	If fr\door[1]<>0 Then
+	If (fr\door[1]<>0) Then
 		FreeEntity(fr\door[1])
 		fr\door[0] = 1
 	EndIf
-	If fr\detailEntities[0]<>0 Then
+	If (fr\detailEntities[0]<>0) Then
 		FreeEntity(fr\detailEntities[0])
 		fr\detailEntities[0] = 0
 	EndIf
-	If fr\detailEntities[1]<>0 Then
+	If (fr\detailEntities[1]<>0) Then
 		FreeEntity(fr\detailEntities[1])
 		fr\detailEntities[1] = 0
 	EndIf
 
-	If fr\forest_Pivot<>0 Then
+	If (fr\forest_Pivot<>0) Then
 		FreeEntity(fr\forest_Pivot)
 		fr\forest_Pivot=0
 	EndIf
 	Local i%
 	For i%=0 To 3
-		If fr\tileMesh[i]<>0 Then
+		If (fr\tileMesh[i]<>0) Then
 			FreeEntity(fr\tileMesh[i])
 			fr\tileMesh[i]=0
 		EndIf
 	Next
 	For i%=0 To 4
-		If fr\detailMesh[i]<>0 Then
+		If (fr\detailMesh[i]<>0) Then
 			FreeEntity(fr\detailMesh[i])
 			fr\detailMesh[i]=0
 		EndIf
 	Next
 	For i%=0 To 9
-		If fr\tileTexture[i]<>0 Then
+		If (fr\tileTexture[i]<>0) Then
 			FreeEntity(fr\tileTexture[i])
 			fr\tileTexture[i]=0
 		EndIf
@@ -827,12 +827,12 @@ End Function
 Function UpdateForest(fr.Forest,ent%)
 	;local variables
 	Local tx%,ty%
-	If Abs(EntityY(ent,True)-EntityY(fr\forest_Pivot,True))<12.0 Then
+	If (Abs(EntityY(ent,True)-EntityY(fr\forest_Pivot,True))<12.0) Then
 		For tx% = 0 To gridsize-1
 			For ty% = 0 To gridsize-1
-				If fr\tileEntities[tx+(ty*gridsize)]<>0 Then
-					If Abs(EntityX(ent,True)-EntityX(fr\tileEntities[tx+(ty*gridsize)],True))<20.0 Then
-						If Abs(EntityZ(ent,True)-EntityZ(fr\tileEntities[tx+(ty*gridsize)],True))<20.0 Then
+				If (fr\tileEntities[tx+(ty*gridsize)]<>0) Then
+					If (Abs(EntityX(ent,True)-EntityX(fr\tileEntities[tx+(ty*gridsize)],True))<20.0) Then
+						If (Abs(EntityZ(ent,True)-EntityZ(fr\tileEntities[tx+(ty*gridsize)],True))<20.0) Then
 							ShowEntity(fr\tileEntities[tx+(ty*gridsize)])
 						Else
 							HideEntity(fr\tileEntities[tx+(ty*gridsize)])

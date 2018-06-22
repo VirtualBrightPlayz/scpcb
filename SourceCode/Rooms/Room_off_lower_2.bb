@@ -10,7 +10,7 @@ Function FillRoom_off_lower_2(r.Rooms)
 
     it = CreateItem("Document SCP-895", "paper", r\x - 800.0 * RoomScale, r\y - 48.0 * RoomScale, r\z + 368.0 * RoomScale)
     EntityParent(it\collider, r\obj)
-    If Rand(2) = 1 Then
+    If (Rand(2) = 1) Then
         it = CreateItem("Document SCP-860", "paper", r\x - 800.0 * RoomScale, r\y - 48.0 * RoomScale, r\z - 464.0 * RoomScale)
     Else
         it = CreateItem("SCP-093 Recovered Materials", "paper", r\x - 800.0 * RoomScale, r\y - 48.0 * RoomScale, r\z - 464.0 * RoomScale)
@@ -51,8 +51,8 @@ Function UpdateEvent_off_lower_2(e.Events)
 	Local angle#
 
 	;[Block]
-	If mainPlayer\currRoom = e\room Then
-		If mainPlayer\blinkTimer<-8 And mainPlayer\blinkTimer >-12 Then
+	If (mainPlayer\currRoom = e\room) Then
+		If (mainPlayer\blinkTimer<-8 And mainPlayer\blinkTimer >-12) Then
 			temp = Rand(1,4)
 			PositionEntity(e\room\objects[0], EntityX(e\room\objects[temp],True),EntityY(e\room\objects[temp],True),EntityZ(e\room\objects[temp],True),True)
 			RotateEntity(e\room\objects[0], 0, Rnd(360), 0)

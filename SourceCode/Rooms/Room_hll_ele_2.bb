@@ -29,7 +29,7 @@ Function UpdateEventRoom2elevator2(e.Events)
 	Local angle#
 
 	;[Block]
-	If e\room\dist < 8.0 And e\room\dist > 0 Then
+	If (e\room\dist < 8.0 And e\room\dist > 0) Then
 
 		de.Decals = CreateDecal(3, EntityX(e\room\objects[0],True), 0.0005, EntityZ(e\room\objects[0],True),90,Rnd(360),0)
 
@@ -66,8 +66,8 @@ Function UpdateEvent_hll_ele_2(e.Events)
 	Local angle#
 
 	;[Block]
-	If e\eventState = 0 Then
-		If e\room\dist < 8.0 And e\room\dist > 0 Then
+	If (e\eventState = 0) Then
+		If (e\room\dist < 8.0 And e\room\dist > 0) Then
 			e\room\npc[0]=CreateNPC(NPCtypeGuard, EntityX(e\room\obj,True), 0.5, EntityZ(e\room\obj,True))
 			PointEntity(e\room\npc[0]\collider, mainPlayer\collider)
 			RotateEntity(e\room\npc[0]\collider, 0, EntityYaw(e\room\npc[0]\collider),0, True)
@@ -75,8 +75,8 @@ Function UpdateEvent_hll_ele_2(e.Events)
 			e\eventState = 1
 		EndIf
 	Else
-		If e\eventState = 1 Then
-			If e\room\dist<5.0 Or Rand(700)=1 Then
+		If (e\eventState = 1) Then
+			If (e\room\dist<5.0 Or Rand(700)=1) Then
 				e\eventState = 2
 
 				e\room\npc[0]\state = 5
@@ -84,8 +84,8 @@ Function UpdateEvent_hll_ele_2(e.Events)
 				e\room\npc[0]\enemyY = EntityY(e\room\objects[1],True)
 				e\room\npc[0]\enemyZ = EntityZ(e\room\objects[1],True)
 			EndIf
-		ElseIf e\eventState = 2 Then
-			If EntityDistance(e\room\npc[0]\collider,e\room\objects[1])<2.0 Then
+		ElseIf (e\eventState = 2) Then
+			If (EntityDistance(e\room\npc[0]\collider,e\room\objects[1])<2.0) Then
 				e\room\roomDoors[0]\open = False
 				;PlayRangedSound(CloseDoorSFX(0, 0), mainPlayer\cam, e\room\roomDoors[0]\obj, 8.0)
 
@@ -93,17 +93,17 @@ Function UpdateEvent_hll_ele_2(e.Events)
 
 				e\eventState = 2.05
 			EndIf
-		ElseIf e\eventState < 13*70 Then
+		ElseIf (e\eventState < 13*70) Then
 			e\eventState = e\eventState+timing\tickDuration
 			;6.7 - 7.4
 			;8.6 - 10
-			If e\eventState > 6.7*70 And e\eventState < 7.4*70 Then
+			If (e\eventState > 6.7*70 And e\eventState < 7.4*70) Then
 				mainPlayer\camShake = 7.4-(e\eventState/70.0)
-			ElseIf e\eventState > 8.6*70 And e\eventState < 10.6*70 Then
+			ElseIf (e\eventState > 8.6*70 And e\eventState < 10.6*70) Then
 				mainPlayer\camShake = 10.6-(e\eventState/70.0)
-			ElseIf e\eventState > 12.6*70 Then
+			ElseIf (e\eventState > 12.6*70) Then
 				mainPlayer\camShake = 0
-				If e\eventState-timing\tickDuration < 12.6*70 And e\room\npc[0]<>Null Then
+				If (e\eventState-timing\tickDuration < 12.6*70 And e\room\npc[0]<>Null) Then
 					RemoveNPC(e\room\npc[0])
 					e\room\npc[0]=Null
 
@@ -118,7 +118,7 @@ Function UpdateEvent_hll_ele_2(e.Events)
 				e\room\roomDoors[0]\locked = False
 			EndIf
 		Else
-			If e\room\roomDoors[0]\open Then e\room\roomDoors[0]\locked = True : RemoveEvent(e)
+			If (e\room\roomDoors[0]\open) Then e\room\roomDoors[0]\locked = True : RemoveEvent(e)
 		EndIf
 	EndIf
 	;[End Block]

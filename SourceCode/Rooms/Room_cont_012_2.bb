@@ -77,10 +77,10 @@ Function UpdateEvent_cont_012_2(e.Events)
 	Local angle#
 
 	;[Block]
-	If mainPlayer\currRoom = e\room Then
+	If (mainPlayer\currRoom = e\room) Then
 
-		If e\eventState=0 Then
-			If EntityDistance(mainPlayer\collider, e\room\roomDoors[0]\obj)<2.5 And RemoteDoorOn Then
+		If (e\eventState=0) Then
+			If (EntityDistance(mainPlayer\collider, e\room\roomDoors[0]\obj)<2.5 And RemoteDoorOn) Then
 				;PlaySound2(HorrorSFX(7))
 				PlayRangedSound_SM(sndManager\lever,mainPlayer\cam,e\room\roomDoors[0]\obj)
 				e\eventState=1
@@ -90,35 +90,35 @@ Function UpdateEvent_cont_012_2(e.Events)
 			EndIf
 		Else
 
-			If (e\sounds[0] = 0) Then LoadEventSound(e,"SFX/Music/012Golgotha.ogg")
+			If ((e\sounds[0] = 0)) Then LoadEventSound(e,"SFX/Music/012Golgotha.ogg")
 			e\soundChannels[0] = LoopRangedSound(e\sounds[0], e\soundChannels[0], mainPlayer\cam, e\room\objects[3], 5.0)
 
 			; TODO: Move to musicmanager.
-			;If (e\sounds[1] = 0) Then LoadEventSound(e, "SFX/Music/012.ogg", 1)
+			;If ((e\sounds[1] = 0)) Then LoadEventSound(e, "SFX/Music/012.ogg", 1)
 
-			If e\eventState<90 Then e\eventState=CurveValue(90,e\eventState,500)
+			If (e\eventState<90) Then e\eventState=CurveValue(90,e\eventState,500)
 			PositionEntity(e\room\objects[2], EntityX(e\room\objects[2],True),(-130-448*Sin(e\eventState))*RoomScale,EntityZ(e\room\objects[2],True),True)
 
-			If e\eventState2 > 0 And e\eventState2 < 200 Then
+			If (e\eventState2 > 0 And e\eventState2 < 200) Then
 				e\eventState2 = e\eventState2 + timing\tickDuration
 				RotateEntity(e\room\levers[0]\obj, CurveValue(85, EntityPitch(e\room\levers[0]\obj), 5), EntityYaw(e\room\levers[0]\obj), 0)
 			Else
 				e\eventState2 = e\eventState2 + timing\tickDuration
-				If e\eventState2<250 Then
+				If (e\eventState2<250) Then
 					ShowEntity(e\room\objects[3])
 				Else
 					HideEntity(e\room\objects[3])
-					If e\eventState2>300 Then e\eventState2=200
+					If (e\eventState2>300) Then e\eventState2=200
 				EndIf
 			EndIf
 
-			If (Not IsPlayerWearingTempName(mainPlayer,"hazmatsuit3")) And (Not IsPlayerWearingTempName(mainPlayer,"gasmask3")) And (Not IsPlayerWearingTempName(mainPlayer,"nvgoggles")) Then
+			If ((Not IsPlayerWearingTempName(mainPlayer,"hazmatsuit3")) And (Not IsPlayerWearingTempName(mainPlayer,"gasmask3")) And (Not IsPlayerWearingTempName(mainPlayer,"nvgoggles"))) Then
 				temp = False
-				If EntityVisible(e\room\objects[2],mainPlayer\cam) Then temp = True
+				If (EntityVisible(e\room\objects[2],mainPlayer\cam)) Then temp = True
 
 				;012 not visible, walk to the door
-				If temp=False Then
-					If EntityVisible(e\room\roomDoors[0]\frameobj,mainPlayer\cam) Then
+				If (temp=False) Then
+					If (EntityVisible(e\room\roomDoors[0]\frameobj,mainPlayer\cam)) Then
 						pvt% = CreatePivot()
 						PositionEntity(pvt, EntityX(mainPlayer\cam), EntityY(mainPlayer\collider), EntityZ(mainPlayer\cam))
 						PointEntity(pvt, e\room\roomDoors[0]\frameobj)
@@ -128,9 +128,9 @@ Function UpdateEvent_cont_012_2(e.Events)
 						RotateEntity(mainPlayer\collider, EntityPitch(mainPlayer\collider), CurveAngle(EntityYaw(pvt), EntityYaw(mainPlayer\collider), 150), 0)
 
 						angle = WrapAngle(EntityYaw(pvt)-EntityYaw(mainPlayer\collider))
-						If angle<40.0 Then
+						If (angle<40.0) Then
 							mainPlayer\forceMove = (40.0-angle)*0.008
-						ElseIf angle > 310.0 Then
+						ElseIf (angle > 310.0) Then
 							mainPlayer\forceMove = (40.0-Abs(360.0-angle))*0.008
 						EndIf
 
@@ -155,20 +155,20 @@ Function UpdateEvent_cont_012_2(e.Events)
 					mainPlayer\blurTimer = Max((2.0-dist)*(e\eventState3/800.0)*(Sin(Float(TimeInPosMilliSecs()) / 20.0 + 1.0)),mainPlayer\blurTimer)
 					mainPlayer\camZoom = Max(mainPlayer\camZoom, (Sin(Float(TimeInPosMilliSecs()) / 20.0)+1.0)*8.0*Max((3.0-dist),0.0))
 
-					If mainPlayer\breathChn <> 0 Then
-						If IsChannelPlaying(mainPlayer\breathChn) Then StopChannel(mainPlayer\breathChn)
+					If (mainPlayer\breathChn <> 0) Then
+						If (IsChannelPlaying(mainPlayer\breathChn)) Then StopChannel(mainPlayer\breathChn)
 					EndIf
 
-					If dist < 0.6 Then
+					If (dist < 0.6) Then
 						e\eventState3=Min(e\eventState3+timing\tickDuration,86*70)
-						If e\eventState3>70 And e\eventState3-timing\tickDuration=<70 Then
+						If (e\eventState3>70 And e\eventState3-timing\tickDuration=<70) Then
 							PlaySound2(LoadTempSound("SFX/SCP/012/Speech1.ogg"))
-						ElseIf e\eventState3>13*70 And e\eventState3-timing\tickDuration=<13*70 Then
+						ElseIf (e\eventState3>13*70 And e\eventState3-timing\tickDuration=<13*70) Then
 							Msg="You start pushing your nails into your wrist, drawing blood."
 							MsgTimer = 7*70
 							mainPlayer\injuries=mainPlayer\injuries+0.5
 							PlaySound2(LoadTempSound("SFX/SCP/012/Speech2.ogg"))
-						ElseIf e\eventState3>31*70 And e\eventState3-timing\tickDuration=<31*70 Then
+						ElseIf (e\eventState3>31*70 And e\eventState3-timing\tickDuration=<31*70) Then
 							tex% = LoadTexture("GFX/Map/Textures/scp-012_1.jpg")
 							EntityTexture(e\room\objects[4], tex,0,1)
 							FreeTexture(tex)
@@ -177,19 +177,19 @@ Function UpdateEvent_cont_012_2(e.Events)
 							MsgTimer = 7*70
 							mainPlayer\injuries=Max(mainPlayer\injuries,1.5)
 							PlaySound2(LoadTempSound("SFX/SCP/012/Speech"+Rand(3,4)+".ogg"))
-						ElseIf e\eventState3>49*70 And e\eventState3-timing\tickDuration=<49*70 Then
+						ElseIf (e\eventState3>49*70 And e\eventState3-timing\tickDuration=<49*70) Then
 							Msg="You push your fingers deeper into the wound."
 							MsgTimer = 8*70
 							mainPlayer\injuries=mainPlayer\injuries+0.3
 							PlaySound2(LoadTempSound("SFX/SCP/012/Speech5.ogg"))
-						ElseIf e\eventState3>63*70 And e\eventState3-timing\tickDuration=<63*70 Then
+						ElseIf (e\eventState3>63*70 And e\eventState3-timing\tickDuration=<63*70) Then
 							tex = LoadTexture("GFX/Map/Textures/scp-012_2.jpg")
 							EntityTexture(e\room\objects[4], tex,0,1)
 							FreeTexture(tex)
 
 							mainPlayer\injuries=mainPlayer\injuries+0.5
 							PlaySound2(LoadTempSound("SFX/SCP/012/Speech6.ogg"))
-						ElseIf e\eventState3>74*70 And e\eventState3-timing\tickDuration=<74*70 Then
+						ElseIf (e\eventState3>74*70 And e\eventState3-timing\tickDuration=<74*70) Then
 							tex = LoadTexture("GFX/Map/Textures/scp-012_3.jpg")
 							EntityTexture(e\room\objects[4], tex,0,1)
 							FreeTexture(tex)
@@ -212,9 +212,9 @@ Function UpdateEvent_cont_012_2(e.Events)
 
 					Else
 						angle = WrapAngle(EntityYaw(pvt)-EntityYaw(mainPlayer\collider))
-						If angle<40.0 Then
+						If (angle<40.0) Then
 							mainPlayer\forceMove = (40.0-angle)*0.02
-						ElseIf angle > 310.0 Then
+						ElseIf (angle > 310.0) Then
 							mainPlayer\forceMove = (40.0-Abs(360.0-angle))*0.02
 						EndIf
 					EndIf

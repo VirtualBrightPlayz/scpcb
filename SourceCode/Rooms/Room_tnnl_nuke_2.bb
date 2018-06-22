@@ -81,7 +81,7 @@ Function UpdateEvent_tnnl_nuke_2(e.Events)
 	Local angle#
 
 	;[Block]
-	If mainPlayer\currRoom = e\room Then
+	If (mainPlayer\currRoom = e\room) Then
 		e\eventState2 = UpdateElevators(e\eventState2, e\room\roomDoors[0], e\room\roomDoors[1], e\room\objects[4], e\room\objects[5], e)
 
 		e\eventState = e\room\levers[0]\succ

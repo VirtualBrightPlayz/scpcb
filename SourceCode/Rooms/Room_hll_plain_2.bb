@@ -10,9 +10,9 @@ Function UpdateEventRoom2trick(e.Events)
 	Local angle#
 
 	;[Block]
-	If mainPlayer\currRoom = e\room Then
-		If EntityDistance(e\room\obj,mainPlayer\collider)<2.0 Then
-			If EntityDistance(mainPlayer\collider, Curr173\obj)<6.0 Or EntityDistance(mainPlayer\collider, Curr106\obj)<6.0 Then
+	If (mainPlayer\currRoom = e\room) Then
+		If (EntityDistance(e\room\obj,mainPlayer\collider)<2.0) Then
+			If (EntityDistance(mainPlayer\collider, Curr173\obj)<6.0 Or EntityDistance(mainPlayer\collider, Curr106\obj)<6.0) Then
 				RemoveEvent(e)
 			Else
 				DebugLog("%@@= / {2E6C2=FD gi`h]c")

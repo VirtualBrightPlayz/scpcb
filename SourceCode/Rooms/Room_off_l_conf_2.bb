@@ -47,22 +47,22 @@ Function UpdateEvent_off_l_conf_2(e.Events)
 	Local angle#
 
 	;[Block]
-	If mainPlayer\currRoom = e\room Then
-		If e\eventState = 0 Then
-			If e\room\roomDoors[0]\open = True Then
-				If e\room\roomDoors[0]\openstate = 180 Then
+	If (mainPlayer\currRoom = e\room) Then
+		If (e\eventState = 0) Then
+			If (e\room\roomDoors[0]\open = True) Then
+				If (e\room\roomDoors[0]\openstate = 180) Then
 					e\eventState = 1
 					;TODO: load temp sound.
 					;TODO: fix
 					;PlaySound2(HorrorSFX(5))
 				EndIf
 			Else
-				If (EntityDistance(mainPlayer\collider, e\room\roomDoors[0]\obj)<1.5) And (RemoteDoorOn) Then
+				If ((EntityDistance(mainPlayer\collider, e\room\roomDoors[0]\obj)<1.5) And (RemoteDoorOn)) Then
 					e\room\roomDoors[0]\open = True
 				EndIf
 			EndIf
 		Else
-			If EntityDistance(e\room\objects[0], mainPlayer\collider) < 2.0 Then
+			If (EntityDistance(e\room\objects[0], mainPlayer\collider) < 2.0) Then
 				;HeartBeatVolume = CurveValue(0.5, HeartBeatVolume, 5)
 				mainPlayer\heartbeatIntensity = CurveValue(120, mainPlayer\heartbeatIntensity, 150)
 				;TODO: fix

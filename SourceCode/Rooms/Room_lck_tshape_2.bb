@@ -40,9 +40,9 @@ Function UpdateEventRoom2doors173(e.Events)
 	Local angle#
 
 	;[Block]
-	If mainPlayer\currRoom = e\room Then
-		If e\eventState = 0 And Curr173\idle = 0 Then
-			If (Not EntityInView(Curr173\obj, mainPlayer\cam)) Then
+	If (mainPlayer\currRoom = e\room) Then
+		If (e\eventState = 0 And Curr173\idle = 0) Then
+			If ((Not EntityInView(Curr173\obj, mainPlayer\cam))) Then
 				e\eventState = 1
 				PositionEntity(Curr173\collider, EntityX(e\room\objects[0], True), 0.5, EntityZ(e\room\objects[0], True))
 				ResetEntity(Curr173\collider)

@@ -57,10 +57,10 @@ Function UpdateEventTestroom173(e.Events)
 	Local angle#
 
 	;[Block]
-	If mainPlayer\currRoom = e\room Then
-		If Curr173\idle = 0 Then
-			If e\eventState = 0 Then
-				If e\room\roomDoors[0]\open = True Then
+	If (mainPlayer\currRoom = e\room) Then
+		If (Curr173\idle = 0) Then
+			If (e\eventState = 0) Then
+				If (e\room\roomDoors[0]\open = True) Then
 					PositionEntity(Curr173\collider, EntityX(e\room\objects[0], True), 0.5, EntityZ(e\room\objects[0], True))
 					ResetEntity(Curr173\collider)
 					e\eventState = 1
@@ -70,13 +70,13 @@ Function UpdateEventTestroom173(e.Events)
 				;start a timer for 173 breaking through the window
 				e\eventState = e\eventState + 1
 				dist# = EntityDistance(mainPlayer\collider, e\room\objects[1])
-				If dist<1.0 Then
+				If (dist<1.0) Then
 					;if close, increase the timer so that 173 is ready to attack
 					e\eventState = Max(e\eventState, 70*12)
-				ElseIf dist > 1.4 Then
+				ElseIf (dist > 1.4) Then
 					;if the player moves a bit further and blinks, 173 attacks
-					If e\eventState > 70*12 And mainPlayer\blinkTimer =< -10 Then
-						If (EntityDistance(Curr173\collider, e\room\objects[0]) > 5.0) Then
+					If (e\eventState > 70*12 And mainPlayer\blinkTimer =< -10) Then
+						If ((EntityDistance(Curr173\collider, e\room\objects[0]) > 5.0)) Then
 							;if 173 is far away from the room (perhaps because the player
 							;left and 173 moved to some other room?) -> disable the event
 							RemoveEvent(e)

@@ -77,7 +77,7 @@ Function FillRoom_cont_049_2(r.Rooms)
     PositionEntity(r\roomDoors[3]\buttons[1], r\x + 2312.0 * RoomScale, EntityY(r\roomDoors[3]\buttons[1],True), r\z + 472.0 * RoomScale, True)
 
     For i = 0 To 3
-        If (i Mod 2) = 1 Then
+        If ((i Mod 2) = 1) Then
             AssignElevatorObj(r\objects[i],r\roomDoors[i],2)
         Else
             AssignElevatorObj(r\objects[i],r\roomDoors[i],True)
@@ -118,16 +118,16 @@ Function UpdateEvent_cont_049_2(e.Events)
 	Local angle#
 
 	;[Block]
-	If mainPlayer\currRoom = e\room Then
-		If EntityY(mainPlayer\collider) > -2848*RoomScale Then
+	If (mainPlayer\currRoom = e\room) Then
+		If (EntityY(mainPlayer\collider) > -2848*RoomScale) Then
 			e\eventState2 = UpdateElevators(e\eventState2, e\room\roomDoors[0], e\room\roomDoors[1],e\room\objects[0],e\room\objects[1], e)
 			e\eventState3 = UpdateElevators(e\eventState3, e\room\roomDoors[2], e\room\roomDoors[3],e\room\objects[2],e\room\objects[3], e)
 			e\overwriteMusic = False
 		Else
 			e\overwriteMusic = True
 
-			If e\eventState = 0 Then
-				If (Not e\loaded) Then
+			If (e\eventState = 0) Then
+				If ((Not e\loaded)) Then
 					n.NPCs = CreateNPC(NPCtypeZombie, EntityX(e\room\objects[4],True),EntityY(e\room\objects[4],True),EntityZ(e\room\objects[4],True))
 					PointEntity(n\collider, e\room\obj)
 					TurnEntity(n\collider, 0, 190, 0)
@@ -137,7 +137,7 @@ Function UpdateEvent_cont_049_2(e.Events)
 					TurnEntity(n\collider, 0, 20, 0)
 
 					For n.NPCs = Each NPCs
-						If n\npcType = NPCtype049 Then
+						If (n\npcType = NPCtype049) Then
 							e\room\npc[0]=n
 							e\room\npc[0]\state = 2
 							e\room\npc[0]\idle = 1
@@ -146,7 +146,7 @@ Function UpdateEvent_cont_049_2(e.Events)
 							Exit
 						EndIf
 					Next
-					If e\room\npc[0]=Null Then
+					If (e\room\npc[0]=Null) Then
 						n.NPCs = CreateNPC(NPCtype049, EntityX(e\room\objects[4],True), EntityY(e\room\objects[4],True)+3, EntityZ(e\room\objects[4],True))
 						PointEntity(n\collider, e\room\obj)
 						n\state = 2
@@ -158,7 +158,7 @@ Function UpdateEvent_cont_049_2(e.Events)
 					e\loaded = True
 					e\eventState=1
 				EndIf
-			ElseIf e\eventState > 0 Then
+			ElseIf (e\eventState > 0) Then
 
 				temp = (Not e\room\levers[0]\succ) ;power feed
 				x = e\room\levers[1]\succ ;generator
@@ -166,27 +166,27 @@ Function UpdateEvent_cont_049_2(e.Events)
 				e\room\roomDoors[1]\locked = True
 				e\room\roomDoors[3]\locked = True
 
-				If temp Or x Then
+				If (temp Or x) Then
 					;049 appears when either of the levers is turned
 					e\eventState = Max(e\eventState,70*180)
 
-					If temp And x Then
+					If (temp And x) Then
 						e\room\roomDoors[1]\locked = False
 						e\room\roomDoors[3]\locked = False
 						e\eventState2 = UpdateElevators(e\eventState2, e\room\roomDoors[0], e\room\roomDoors[1],e\room\objects[0],e\room\objects[1], e)
 						e\eventState3 = UpdateElevators(e\eventState3, e\room\roomDoors[2], e\room\roomDoors[3],e\room\objects[2],e\room\objects[3], e)
 
-						If e\sounds[1]=0 Then LoadEventSound(e,"SFX/General/GeneratorOn.ogg",1)
+						If (e\sounds[1]=0) Then LoadEventSound(e,"SFX/General/GeneratorOn.ogg",1)
 						e\soundChannels[1]=LoopRangedSound(e\sounds[1], e\soundChannels[1], mainPlayer\cam, e\room\levers[1]\baseObj, 6.0, e\eventState3)
 
-						If e\room\npc[0]\idle > 0 Then
+						If (e\room\npc[0]\idle > 0) Then
 							i = 0
-							If EntityDistance(mainPlayer\collider,e\room\roomDoors[1]\frameobj)<3.0 Then
+							If (EntityDistance(mainPlayer\collider,e\room\roomDoors[1]\frameobj)<3.0) Then
 								i = 1
-							ElseIf EntityDistance(mainPlayer\collider,e\room\roomDoors[3]\frameobj)<3.0 Then
+							ElseIf (EntityDistance(mainPlayer\collider,e\room\roomDoors[3]\frameobj)<3.0) Then
 								i = 3
 							EndIf
-							If i > 0 Then
+							If (i > 0) Then
 								;If EntityVisible(mainPlayer\collider,e\room\roomDoors[i]\frameobj)
 								PositionEntity(e\room\npc[0]\collider,EntityX(e\room\objects[i],True),EntityY(e\room\objects[i],True),EntityZ(e\room\objects[i],True))
 								ResetEntity(e\room\npc[0]\collider)
@@ -203,14 +203,14 @@ Function UpdateEvent_cont_049_2(e.Events)
 					EndIf
 				EndIf
 
-				If e\eventState < 70*190 Then
+				If (e\eventState < 70*190) Then
 					e\eventState = Min(e\eventState+timing\tickDuration,70*190)
 					;049 spawns after 3 minutes
-					If e\eventState > 70*180 Then
+					If (e\eventState > 70*180) Then
 
-						;If e\room\npc[0]=Null Then
+						;If (e\room\npc[0]=Null) Then
 						;	For n.NPCs = Each NPCs
-						;		If n\npcType=NPCtype049 Then e\room\npc[0]=n : Exit
+						;		If (n\npcType=NPCtype049) Then e\room\npc[0]=n : Exit
 						;	Next
 						;EndIf
 						;e\room\npc[0]\state = 1
@@ -226,18 +226,18 @@ Function UpdateEvent_cont_049_2(e.Events)
 
 						e\eventState= 70*190
 					EndIf
-				ElseIf e\eventState < 70*240 Then
+				ElseIf (e\eventState < 70*240) Then
 
-					;If e\room\npc[0]=Null Then
+					;If (e\room\npc[0]=Null) Then
 					;	For n.NPCs = Each NPCs
-					;		If n\npcType=NPCtype049 Then e\room\npc[0]=n : Exit
+					;		If (n\npcType=NPCtype049) Then e\room\npc[0]=n : Exit
 					;	Next
 					;Else
-						;If EntityDistance(e\room\npc[0]\collider,mainPlayer\collider)<4.0 Then
+						;If (EntityDistance(e\room\npc[0]\collider,mainPlayer\collider)<4.0) Then
 						;	e\eventState=e\eventState+timing\tickDuration
-						;	If e\eventState > 70*195 And e\eventState-timing\tickDuration =< 70*195 Then
+						;	If (e\eventState > 70*195 And e\eventState-timing\tickDuration =< 70*195) Then
 						;		For n.NPCs = Each NPCs ;awake the zombies
-						;			If n\npcType = NPCtypeZombie And n\state = 0 Then
+						;			If (n\npcType = NPCtypeZombie And n\state = 0) Then
 						;				n\state = 1
 						;				SetNPCFrame(n, 155)
 						;			EndIf
@@ -253,7 +253,7 @@ Function UpdateEvent_cont_049_2(e.Events)
 					;EndIf
 
 					For n.NPCs = Each NPCs ;awake the zombies
-						If n\npcType = NPCtypeZombie And n\state = 0 Then
+						If (n\npcType = NPCtypeZombie And n\state = 0) Then
 							n\state = 1
 							SetNPCFrame(n, 155)
 						EndIf
@@ -268,19 +268,19 @@ Function UpdateEvent_cont_049_2(e.Events)
 		e\overwriteMusic = False
 	EndIf
 
-	If e\eventState < 0 Then
-		If e\eventState > -70*4 Then
-			If mainPlayer\fallTimer => 0 Then
+	If (e\eventState < 0) Then
+		If (e\eventState > -70*4) Then
+			If (mainPlayer\fallTimer => 0) Then
 				mainPlayer\fallTimer = Min(-1, mainPlayer\fallTimer)
 				PositionEntity(mainPlayer\head, EntityX(mainPlayer\cam, True), EntityY(mainPlayer\cam, True), EntityZ(mainPlayer\cam, True), True)
 				ResetEntity(mainPlayer\head)
 				RotateEntity(mainPlayer\head, 0, EntityYaw(mainPlayer\cam) + Rand(-45, 45), 0)
-			ElseIf mainPlayer\fallTimer < -230 Then
+			ElseIf (mainPlayer\fallTimer < -230) Then
 				mainPlayer\fallTimer = -231
 				mainPlayer\blinkTimer = 0
 				e\eventState = e\eventState-timing\tickDuration
 
-				If e\eventState =< -70*4 Then
+				If (e\eventState =< -70*4) Then
 					UpdateDoorsTimer = 0
 					UpdateDoors()
 					UpdateRooms()
@@ -295,7 +295,7 @@ Function UpdateEvent_cont_049_2(e.Events)
 					ResetEntity(e\room\npc[0]\collider)
 
 					For n.NPCs = Each NPCs
-						If n\npcType = NPCtypeZombie Then
+						If (n\npcType = NPCtypeZombie) Then
 							PositionEntity(n\collider, EntityX(e\room\objects[4],True),EntityY(e\room\objects[4],True),EntityZ(e\room\objects[4],True),True)
 							ResetEntity(n\collider)
 							n\state = 4
@@ -343,15 +343,15 @@ Function UpdateEvent_cont_049_2(e.Events)
 
 			;Msg = ""
 
-			If e\room\npc[2]\state = 7 Then
-				If e\room\npc[2]\state3 < 70*1.75 Then
+			If (e\room\npc[2]\state = 7) Then
+				If (e\room\npc[2]\state3 < 70*1.75) Then
 					e\room\npc[2]\state3 = e\room\npc[2]\state3 + timing\tickDuration
 				Else
 					e\room\npc[2]\state = 6
 					e\room\npc[2]\reload = e\room\npc[1]\reload+Rnd(5,10)
 				EndIf
-			ElseIf e\room\npc[2]\state = 6 And e\room\npc[2]\reload > 70*4 Then
-				If e\room\npc[2]\state3 > -(70*4) Then
+			ElseIf (e\room\npc[2]\state = 6 And e\room\npc[2]\reload > 70*4) Then
+				If (e\room\npc[2]\state3 > -(70*4)) Then
 					e\room\npc[2]\state3 = e\room\npc[2]\state3 - timing\tickDuration
 				Else
 					e\room\npc[2]\state3 = 0.0
@@ -368,15 +368,15 @@ Function UpdateEvent_cont_049_2(e.Events)
 
 			FreeEntity(pvt%)
 
-			If mainPlayer\dead = True Then
-				If IsChannelPlaying(e\room\npc[1]\soundChannels[0]) Then StopChannel(e\room\npc[1]\soundChannels[0])
+			If (mainPlayer\dead = True) Then
+				If (IsChannelPlaying(e\room\npc[1]\soundChannels[0])) Then StopChannel(e\room\npc[1]\soundChannels[0])
 				PlaySound2(LoadTempSound("SFX/Character/MTF/049/Player0492_2.ogg"))
 				RemoveEvent(e)
 			Else
-				If e\soundChannels[0] = 0 Then
+				If (e\soundChannels[0] = 0) Then
 					e\soundChannels[0] = PlaySound(e\sounds[0])
 				Else
-					If (Not IsChannelPlaying(e\soundChannels[0])) Then e\soundChannels[0] = PlaySound(e\sounds[0])
+					If ((Not IsChannelPlaying(e\soundChannels[0]))) Then e\soundChannels[0] = PlaySound(e\sounds[0])
 				EndIf
 			EndIf
 		EndIf

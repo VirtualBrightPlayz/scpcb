@@ -129,7 +129,7 @@ Function FillRoom_strg_939_3(r.Rooms)
         ScaleEntity(r\levers[n-10]\obj, 0.04, 0.04, 0.04)
         ScaleEntity(r\levers[n-10]\baseObj, 0.04, 0.04, 0.04)
 
-        If n = 10 Then
+        If (n = 10) Then
             ;r\z+6578
             PositionEntity(r\levers[n-10]\obj,r\x+3101*RoomScale,r\y-5461*RoomScale,r\z+6568*RoomScale,True)
             PositionEntity(r\levers[n-10]\baseObj,r\x+3101*RoomScale,r\y-5461*RoomScale,r\z+6568*RoomScale,True)
@@ -191,17 +191,17 @@ Function UpdateEvent_strg_939_3(e.Events)
 	Local angle#
 
 	;[Block]
-	If mainPlayer\currRoom = e\room Then
+	If (mainPlayer\currRoom = e\room) Then
 		e\eventState2 = UpdateElevators2(e\eventState2, e\room\roomDoors[0], e\room\roomDoors[1],e\room\objects[0],e\room\objects[1], e)
 
 		e\eventState3 = UpdateElevators2(e\eventState3, e\room\roomDoors[2], e\room\roomDoors[3],e\room\objects[2],e\room\objects[3], e)
 
-		If EntityY(mainPlayer\collider)<-4600*RoomScale Then
+		If (EntityY(mainPlayer\collider)<-4600*RoomScale) Then
 
-			;If Music(7)=0 Then Music(7) = LoadSound("SFX/Music/Room3Storage.ogg") ;TODO: fix
+			;If (Music(7)=0) Then Music(7) = LoadSound("SFX/Music/Room3Storage.ogg") ;TODO: fix
 			;ShouldPlay = 7
 
-			;If e\room\npc[0]=Null Then
+			;If (e\room\npc[0]=Null) Then
 				;DrawLoading(0, True)
 				;e\room\npc[0]=CreateNPC(NPCtype939, 0,0,0)
 
@@ -213,21 +213,21 @@ Function UpdateEvent_strg_939_3(e.Events)
 
 				;DrawLoading(100, True)
 			;EndIf
-			If e\room\npc[2]=Null Or e\eventState = 3 Then
-				If e\eventState = 0 Then
+			If (e\room\npc[2]=Null Or e\eventState = 3) Then
+				If (e\eventState = 0) Then
 					e\eventState = 1
-				ElseIf e\eventState = 1 Then
+				ElseIf (e\eventState = 1) Then
 					e\room\npc[0]=CreateNPC(NPCtype939, 0,0,0)
 					e\eventState = 2
-				ElseIf e\eventState = 2 Then
+				ElseIf (e\eventState = 2) Then
 					e\room\npc[1]=CreateNPC(NPCtype939, 0,0,0)
 					e\eventState = 3
-				ElseIf e\eventState = 3 Then
+				ElseIf (e\eventState = 3) Then
 					e\room\npc[2]=CreateNPC(NPCtype939, 0,0,0)
 					e\eventState = 0
 				EndIf
 			Else
-				If e\eventState = 0 Then
+				If (e\eventState = 0) Then
 					;Instance 1
 					PositionEntity(e\room\npc[0]\collider, EntityX(e\room\objects[4],True),EntityY(e\room\objects[4],True)+0.2,EntityZ(e\room\objects[4],True))
 					ResetEntity(e\room\npc[0]\collider)
@@ -250,10 +250,10 @@ Function UpdateEvent_strg_939_3(e.Events)
 					e\eventState = 1
 				EndIf
 
-				If (e\room\roomDoors[4]\open = False) Then
-					If (e\room\levers[0]\succ Or e\room\levers[1]\succ) Then
+				If ((e\room\roomDoors[4]\open = False)) Then
+					If ((e\room\levers[0]\succ Or e\room\levers[1]\succ)) Then
 						e\room\roomDoors[4]\open = True
-						If (e\sounds[1] <> 0) Then
+						If ((e\sounds[1] <> 0)) Then
                             FreeSound(e\sounds[1])
                             e\sounds[1] = 0
                         EndIf
@@ -278,11 +278,11 @@ Function UpdateEvent_strg_939_3(e.Events)
 						e\room\npc[2]\ignorePlayer = True
 				End Select
 
-				If IsChannelPlaying(e\soundChannels[1]) Then
+				If (IsChannelPlaying(e\soundChannels[1])) Then
 					UpdateRangedSoundOrigin(e\soundChannels[1],mainPlayer\cam,e\room\roomDoors[4]\obj,400)
 				EndIf
 
-				If EntityY(mainPlayer\collider)<-6400*RoomScale And mainPlayer\dead = False Then
+				If (EntityY(mainPlayer\collider)<-6400*RoomScale And mainPlayer\dead = False) Then
 					DeathMSG=""
 					PlaySound2(LoadTempSound("SFX/Room/PocketDimension/Impact.ogg"))
 					mainPlayer\dead = True
@@ -290,14 +290,14 @@ Function UpdateEvent_strg_939_3(e.Events)
 			EndIf
 		Else
 			e\eventState = 0
-			If e\room\npc[0]<>Null Then e\room\npc[0]\state = 66
-			If e\room\npc[1]<>Null Then e\room\npc[1]\state = 66
-			If e\room\npc[2]<>Null Then e\room\npc[2]\state = 66
+			If (e\room\npc[0]<>Null) Then e\room\npc[0]\state = 66
+			If (e\room\npc[1]<>Null) Then e\room\npc[1]\state = 66
+			If (e\room\npc[2]<>Null) Then e\room\npc[2]\state = 66
 		EndIf
 	Else
-		If e\room\npc[0]<>Null Then e\room\npc[0]\state = 66
-		If e\room\npc[1]<>Null Then e\room\npc[1]\state = 66
-		If e\room\npc[2]<>Null Then e\room\npc[2]\state = 66
+		If (e\room\npc[0]<>Null) Then e\room\npc[0]\state = 66
+		If (e\room\npc[1]<>Null) Then e\room\npc[1]\state = 66
+		If (e\room\npc[2]<>Null) Then e\room\npc[2]\state = 66
 	EndIf
 	;[End Block]
 End Function

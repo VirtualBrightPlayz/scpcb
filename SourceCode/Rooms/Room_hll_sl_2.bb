@@ -9,7 +9,7 @@ Function FillRoom_hll_sl_2(r.Rooms)
 
     ;Monitor Objects
     For i = 0 To 14
-        If i <> 7 Then
+        If (i <> 7) Then
             r\objects[i] = CopyEntity(Monitor)
             ScaleEntity(r\objects[i], scale, scale, scale)
         EndIf
@@ -177,18 +177,18 @@ Function UpdateEvent_hll_sl_2(e.Events)
 
 	;mainPlayer\cam-Spawning Code + SCP-049-Spawning (it is a little messy!) ;TODO: reimplement
 	;[Block]
-	If mainPlayer\currRoom = e\room Then
+	If (mainPlayer\currRoom = e\room) Then
 	EndIf
-	If e\eventState = 0 Then
+	If (e\eventState = 0) Then
 		For r.Rooms = Each Rooms
-			If ValidRoom2slCamRoom(r) Then
+			If (ValidRoom2slCamRoom(r)) Then
 				For sc.SecurityCams = Each SecurityCams
-					If sc\room = r And (Not sc\specialCam) Then
+					If (sc\room = r And (Not sc\specialCam)) Then
 						hasCamera% = False
 						For sc2.SecurityCams = Each SecurityCams
-							If sc2\room <> sc\room And (Not sc2\specialCam) Then
-								If sc2\room\roomTemplate\name = sc\room\roomTemplate\name Then
-									If sc2\screen Then
+							If (sc2\room <> sc\room And (Not sc2\specialCam)) Then
+								If (sc2\room\roomTemplate\name = sc\room\roomTemplate\name) Then
+									If (sc2\screen) Then
 										hasCamera% = True
 										DebugLog("HasCamera% = True ("+Chr(34)+sc2\room\roomTemplate\name+Chr(34)+")")
 										Exit
@@ -196,8 +196,8 @@ Function UpdateEvent_hll_sl_2(e.Events)
 								EndIf
 							EndIf
 						Next
-						If (Not hasCamera%) Then
-							If (Not e\loaded) Then
+						If ((Not hasCamera%)) Then
+							If ((Not e\loaded)) Then
 								For i = 0 To 9
 									sc\screen = True
 									sc\allowSaving = False
@@ -324,9 +324,9 @@ Function UpdateEvent_hll_sl_2(e.Events)
 				Next
 			EndIf
 		Next
-		If (Not e\loaded) Then
+		If ((Not e\loaded)) Then
 			For sc.SecurityCams = Each SecurityCams
-				If sc\specialCam Then
+				If (sc\specialCam) Then
 					sc\screen = True
 					sc\allowSaving = False
 
@@ -376,15 +376,15 @@ Function UpdateEvent_hll_sl_2(e.Events)
 			Next
 
 				;For SCP-049
-			If e\room\npc[0]=Null Then
+			If (e\room\npc[0]=Null) Then
 				For n.NPCs = Each NPCs
-					If n\npcType = NPCtype049 Then
+					If (n\npcType = NPCtype049) Then
 						e\room\npc[0] = n
 						Exit
 					EndIf
 				Next
 
-				If e\room\npc[0]=Null Then
+				If (e\room\npc[0]=Null) Then
 					e\room\npc[0] = CreateNPC(NPCtype049,EntityX(e\room\objects[7],True),EntityY(e\room\objects[7],True)+5,EntityZ(e\room\objects[7],True))
 				EndIf
 			EndIf
@@ -400,20 +400,20 @@ Function UpdateEvent_hll_sl_2(e.Events)
 
 			e\loaded = True
 			e\eventState = 1
-			If e\eventState2 = 0 Then e\eventState2 = -(70*5)
+			If (e\eventState2 = 0) Then e\eventState2 = -(70*5)
 		EndIf
 	EndIf
 	;[End Block]
 
 	;SCP-049
 	;[Block]
-	If e\eventState = 1 Then
-		If e\eventState2 < 0 Then
-			If e\eventState2 = -(70*5) Then
+	If (e\eventState = 1) Then
+		If (e\eventState2 < 0) Then
+			If (e\eventState2 = -(70*5)) Then
 				For sc.SecurityCams = Each SecurityCams
-					If sc\room = e\room Then
-						If EntityDistance(sc\scrObj,mainPlayer\cam)<5.0 Then
-							If EntityVisible(sc\scrObj,mainPlayer\cam) Then
+					If (sc\room = e\room) Then
+						If (EntityDistance(sc\scrObj,mainPlayer\cam)<5.0) Then
+							If (EntityVisible(sc\scrObj,mainPlayer\cam)) Then
 								e\eventState2 = Min(e\eventState2+timing\tickDuration,0)
 								Exit
 							EndIf
@@ -423,16 +423,16 @@ Function UpdateEvent_hll_sl_2(e.Events)
 			Else
 				e\eventState2 = Min(e\eventState2+timing\tickDuration,0)
 			EndIf
-		ElseIf e\eventState2 = 0 Then
-			If e\room\npc[0] <> Null Then
+		ElseIf (e\eventState2 = 0) Then
+			If (e\room\npc[0] <> Null) Then
 				;PositionEntity(e\room\npc[0]\collider,EntityX(e\room\npc[0]\collider),EntityY(e\room\objects[7],True),EntityZ(e\room\npc[0]\collider))
 				AdjDist1# = 0.0
 				AdjDist2# = 0.0
 				Ldj1% = -1
 				Adj2% = -1
 				For i = 0 To 3
-					If e\room\adjDoor[i]<>Null Then
-						If Adj1 = -1 Then
+					If (e\room\adjDoor[i]<>Null) Then
+						If (Adj1 = -1) Then
 							AdjDist1# = EntityDistance(e\room\objects[7],e\room\adjDoor[i]\frameobj)
 							Adj1 = i
 						Else
@@ -441,7 +441,7 @@ Function UpdateEvent_hll_sl_2(e.Events)
 						EndIf
 					EndIf
 				Next
-				If AdjDist1# > AdjDist2# Then
+				If (AdjDist1# > AdjDist2#) Then
 					PositionEntity(e\room\npc[0]\collider,EntityX(e\room\adjDoor[Adj1]\frameobj),EntityY(e\room\objects[7],True),EntityZ(e\room\adjDoor[Adj1]\frameobj))
 				Else
 					PositionEntity(e\room\npc[0]\collider,EntityX(e\room\adjDoor[Adj2]\frameobj),EntityY(e\room\objects[7],True),EntityZ(e\room\adjDoor[Adj2]\frameobj))
@@ -455,74 +455,74 @@ Function UpdateEvent_hll_sl_2(e.Events)
 				DebugLog("aaaaaaaaa")
 				e\eventState2 = 1
 			EndIf
-		ElseIf e\eventState2 = 1 Then
-			If e\room\npc[0]\pathStatus <> 1 Then
+		ElseIf (e\eventState2 = 1) Then
+			If (e\room\npc[0]\pathStatus <> 1) Then
 				e\room\npc[0]\pathStatus = FindPath(e\room\npc[0],EntityX(e\room\objects[15],True),EntityY(e\room\objects[15],True),EntityZ(e\room\objects[15],True))
 			Else
 				DebugLog("bbbbbbbbb")
 				e\eventState2 = 2
 			EndIf
-		ElseIf e\eventState2 = 2 Then
-			If e\room\npc[0]\pathStatus <> 1 Then
+		ElseIf (e\eventState2 = 2) Then
+			If (e\room\npc[0]\pathStatus <> 1) Then
 				e\room\npc[0]\state3 = 1.0
 				e\eventState2 = 3
 				e\room\npc[0]\pathTimer# = 0.0
 				DebugLog("ccccccccc")
 			Else
-				If EntityDistance(e\room\npc[0]\collider,e\room\roomDoors[0]\frameobj) < 5.0 Then
+				If (EntityDistance(e\room\npc[0]\collider,e\room\roomDoors[0]\frameobj) < 5.0) Then
 					e\room\roomDoors[0]\locked = True
 					e\room\roomDoors[1]\locked = True
-					If e\room\npc[0]\reload = 0 Then
+					If (e\room\npc[0]\reload = 0) Then
 						PlaySound2(LoadTempSound("SFX/Door/DoorOpen079.ogg"))
 						DebugLog("079 - OPEN DOORS IN ROOM2SL")
 						e\room\npc[0]\reload = 1
 					EndIf
-					If (Not e\room\roomDoors[0]\open) Then
+					If ((Not e\room\roomDoors[0]\open)) Then
 						e\room\roomDoors[0]\open = True
 						;sound=Rand(0, 2)
 						;PlayRangedSound(OpenDoorSFX(0,sound),mainPlayer\cam,e\room\roomDoors[0]\obj)
 					EndIf
-					If (Not e\room\roomDoors[1]\open) Then
+					If ((Not e\room\roomDoors[1]\open)) Then
 						e\room\roomDoors[1]\open = True
 						;sound=Rand(0, 2)
 						;PlayRangedSound(OpenDoorSFX(0,sound),mainPlayer\cam,e\room\roomDoors[1]\obj)
 					EndIf
 				EndIf
-				If e\room\npc[0]\reload = 1 Then
+				If (e\room\npc[0]\reload = 1) Then
 					e\room\npc[0]\dropSpeed = 0
 				EndIf
 			EndIf
 
-			If e\room\npc[0]\state <> 5 Then
+			If (e\room\npc[0]\state <> 5) Then
 				e\eventState2 = 7
 				DebugLog("fffffffff")
 			EndIf
-		ElseIf e\eventState2 = 3 Then
-			If e\room\npc[0]\state <> 5 Then
+		ElseIf (e\eventState2 = 3) Then
+			If (e\room\npc[0]\state <> 5) Then
 				e\eventState2 = 7
 				DebugLog("fffffffff")
 			EndIf
 
-			If MeNPCSeesPlayer(e\room\npc[0],True)=2 Then
+			If (MeNPCSeesPlayer(e\room\npc[0],True)=2) Then
 				e\eventState2 = 4
 				DebugLog("ddddddddd")
 			EndIf
 
-			If e\room\npc[0]\pathStatus <> 1 Then
+			If (e\room\npc[0]\pathStatus <> 1) Then
 				;If e\room\npc[0]\pathTimer# < 70*3
-				If e\room\npc[0]\pathTimer# = 0.0 Then
+				If (e\room\npc[0]\pathTimer# = 0.0) Then
 					;e\room\npc[0]\pathTimer# = e\room\npc[0]\pathTimer# + timing\tickDuration
-					If e\room\npc[0]\prevState = 1 Then
-						If (e\room\npc[0]\soundChannels[1] = 0) Then
+					If (e\room\npc[0]\prevState = 1) Then
+						If ((e\room\npc[0]\soundChannels[1] = 0)) Then
 							e\room\npc[0]\sounds[1] = LoadSound("SFX/SCP/049/Room2SLEnter.ogg")
 							e\room\npc[0]\soundChannels[1] = PlayRangedSound(e\room\npc[0]\sounds[1], mainPlayer\cam, e\room\npc[0]\collider)
 						Else
-							If (Not IsChannelPlaying(e\room\npc[0]\soundChannels[1])) Then
+							If ((Not IsChannelPlaying(e\room\npc[0]\soundChannels[1]))) Then
 								e\room\npc[0]\pathTimer# = 1.0
 							EndIf
 						EndIf
-					ElseIf e\room\npc[0]\prevState = 2 Then
-						If e\room\npc[0]\frame >= 1118 Then
+					ElseIf (e\room\npc[0]\prevState = 2) Then
+						If (e\room\npc[0]\frame >= 1118) Then
 							e\room\npc[0]\pathTimer# = 1.0
 						EndIf
 					EndIf
@@ -549,35 +549,35 @@ Function UpdateEvent_hll_sl_2(e.Events)
 					e\room\npc[0]\state3 = e\room\npc[0]\state3 + 1
 				EndIf
 			EndIf
-		ElseIf e\eventState2 = 4 Then
-			If e\room\npc[0]\state <> 5 Then
+		ElseIf (e\eventState2 = 4) Then
+			If (e\room\npc[0]\state <> 5) Then
 				e\eventState2 = 7
 				e\room\npc[0]\state3 = 5.0
 				DebugLog("fffffffff")
 			EndIf
-		ElseIf e\eventState2 = 5 Then
+		ElseIf (e\eventState2 = 5) Then
 			;RemoveNPC(e\room\npc[0])
 			DebugLog("ddddddddd")
 			e\room\npc[0]\state = 2
 			For r.Rooms = Each Rooms
-				If r <> mainPlayer\currRoom Then
-					If (EntityDistance(r\obj,e\room\npc[0]\collider)<HideDistance*2 And EntityDistance(r\obj,e\room\npc[0]\collider)>HideDistance) Then
+				If (r <> mainPlayer\currRoom) Then
+					If ((EntityDistance(r\obj,e\room\npc[0]\collider)<HideDistance*2 And EntityDistance(r\obj,e\room\npc[0]\collider)>HideDistance)) Then
 						e\room\npc[0]\pathStatus = FindPath(e\room\npc[0],EntityX(r\obj),EntityY(r\obj),EntityZ(r\obj))
 						e\room\npc[0]\pathTimer = 0.0
-						If e\room\npc[0]\pathStatus = 1 Then e\eventState2 = 6
+						If (e\room\npc[0]\pathStatus = 1) Then e\eventState2 = 6
 						Exit
 					EndIf
 				EndIf
 			Next
-		ElseIf e\eventState2 = 6 Then
-			If MeNPCSeesPlayer(e\room\npc[0],True) Or e\room\npc[0]\state2 > 0 Or e\room\npc[0]\lastSeen > 0 Then
+		ElseIf (e\eventState2 = 6) Then
+			If (MeNPCSeesPlayer(e\room\npc[0],True) Or e\room\npc[0]\state2 > 0 Or e\room\npc[0]\lastSeen > 0) Then
 				DebugLog("fffffffff")
 				e\eventState2 = 7
 			Else
 				;Still playing the Music for SCP-049 (in the real, SCP-049's State will be set to 2, causing it to stop playing the chasing track)
-				;If Music(20) = 0 Then Music(20) = LoadSound("SFX/Horror/Horror12.ogg") ;TODO: fix ;TODOTODO: None of this to begin with.
+				;If (Music(20) = 0) Then Music(20) = LoadSound("SFX/Horror/Horror12.ogg") ;TODO: fix ;TODOTODO: None of this to begin with.
 				;ShouldPlay = 20
-				If e\room\npc[0]\pathStatus<>1 Then
+				If (e\room\npc[0]\pathStatus<>1) Then
 					e\room\npc[0]\idle = 70*60 ;(Making SCP-049 idle for one minute (twice as fast for aggressive NPCs = True))
 					PositionEntity(e\room\npc[0]\collider,0,500,0)
 					ResetEntity(e\room\npc[0]\collider)
@@ -591,12 +591,12 @@ Function UpdateEvent_hll_sl_2(e.Events)
 		;	e\eventState2 = 8
 		EndIf
 
-		If e\room\npc[0]<>Null Then
-			If e\eventState2 < 7 Then
-				If e\eventState2 > 2 Then
-					If Abs(EntityY(e\room\roomDoors[0]\frameobj)-EntityY(e\room\npc[0]\collider))>1.0 Then
-						If Abs(EntityY(e\room\roomDoors[0]\frameobj)-EntityY(mainPlayer\collider))<1.0 Then
-							If e\room\roomDoors[0]\open Then
+		If (e\room\npc[0]<>Null) Then
+			If (e\eventState2 < 7) Then
+				If (e\eventState2 > 2) Then
+					If (Abs(EntityY(e\room\roomDoors[0]\frameobj)-EntityY(e\room\npc[0]\collider))>1.0) Then
+						If (Abs(EntityY(e\room\roomDoors[0]\frameobj)-EntityY(mainPlayer\collider))<1.0) Then
+							If (e\room\roomDoors[0]\open) Then
 								e\room\roomDoors[0]\open = False
 								e\room\roomDoors[0]\fastopen = 1
 								PlaySound2(LoadTempSound("SFX/Door/DoorClose079.ogg"))
@@ -604,7 +604,7 @@ Function UpdateEvent_hll_sl_2(e.Events)
 							EndIf
 						EndIf
 					Else
-						If e\room\roomDoors[0]\open = False Then
+						If (e\room\roomDoors[0]\open = False) Then
 							e\room\roomDoors[0]\fastopen = 0
 							e\room\roomDoors[0]\open = True
 							;sound=Rand(0, 2)
@@ -615,9 +615,9 @@ Function UpdateEvent_hll_sl_2(e.Events)
 					EndIf
 				EndIf
 
-				If e\eventState2 > 0 Then CanSave% = False
+				If (e\eventState2 > 0) Then CanSave% = False
 			Else
-				If e\room\roomDoors[0]\open = False Then
+				If (e\room\roomDoors[0]\open = False) Then
 					e\room\roomDoors[0]\fastopen = 0
 					e\room\roomDoors[0]\open = True
 					;sound=Rand(0, 2)
@@ -631,9 +631,9 @@ Function UpdateEvent_hll_sl_2(e.Events)
 	;[End Block]
 
 	;Lever for checkpoint locking (might have a function in the future for the case if the checkpoint needs to be locked again)
-	If mainPlayer\currRoom = e\room Then
+	If (mainPlayer\currRoom = e\room) Then
 		e\eventState3 = e\room\levers[0]\succ
-		If e\eventState3 = 1 Then
+		If (e\eventState3 = 1) Then
 			;UpdateCheckpointMonitors(0)
 		Else
 			;TurnCheckpointMonitorsOff(0)
@@ -645,23 +645,23 @@ End Function
 
 
 Function ValidRoom2slCamRoom(r.Rooms)
-	If (r = Null) Then
+	If ((r = Null)) Then
 		Return False
 	EndIf
 
 	Local RN$ = r\roomTemplate\name$
 
-	If RN$ = "room2closets" Then Return True
-	If RN$ = "room1archive" Then Return True
-	If RN$ = "room3z3" Then Return True
-	If RN$ = "room1lifts" Then Return True
-	If RN$ = "room106" Then Return True
-	If RN$ = "checkpoint1" Then Return True
-	If RN$ = "room2nuke" Then Return True
-	If RN$ = "008" Then Return True
-	If RN$ = "room1162" Then Return True
-	If RN$ = "room966" Then Return True
-	If RN$ = "room2ccont" Then Return True
+	If (RN$ = "room2closets") Then Return True
+	If (RN$ = "room1archive") Then Return True
+	If (RN$ = "room3z3") Then Return True
+	If (RN$ = "room1lifts") Then Return True
+	If (RN$ = "room106") Then Return True
+	If (RN$ = "checkpoint1") Then Return True
+	If (RN$ = "room2nuke") Then Return True
+	If (RN$ = "008") Then Return True
+	If (RN$ = "room1162") Then Return True
+	If (RN$ = "room966") Then Return True
+	If (RN$ = "room2ccont") Then Return True
 
 	Return False
 

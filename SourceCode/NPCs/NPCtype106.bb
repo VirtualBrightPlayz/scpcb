@@ -55,21 +55,21 @@ Function UpdateNPCtype106(n.NPCs)
 
     Select n\state
         Case STATE106_RISE
-            If (mainPlayer\currRoom\roomTemplate\name$ = "dimension1499") Then
+            If ((mainPlayer\currRoom\roomTemplate\name$ = "dimension1499")) Then
                 Return
             EndIf
 
             n\timer = n\timer - (timing\tickDuration * (SelectedDifficulty\aggressiveNPCs * 2))
 
             ;Check if 106's timer is below 0, if not decrease it.
-            If (n\timer >= 0) Then
+            If ((n\timer >= 0)) Then
                 n\currSpeed = 0
                 MoveEntity(n\collider, 0, ((EntityY(mainPlayer\collider) - 30) - EntityY(n\collider)) / 200.0, 0)
                 n\frame = 110
             ;Otherwise begin spawning 106.
-            ElseIf n\timer >= -10 Then
-                If EntityY(n\collider) < EntityY(mainPlayer\collider) - 20.0 - 0.55 Then
-                    If Not mainPlayer\currRoom\roomTemplate\disableDecals Then
+            ElseIf (n\timer >= -10) Then
+                If (EntityY(n\collider) < EntityY(mainPlayer\collider) - 20.0 - 0.55) Then
+                    If (Not mainPlayer\currRoom\roomTemplate\disableDecals) Then
                         de.Decals = CreateDecal(0, EntityX(mainPlayer\collider), 0.01, EntityZ(mainPlayer\collider), 90, Rand(360), 0)
                         de\size = 0.05 : de\sizeChange = 0.001 : EntityAlpha(de\obj, 0.8) : UpdateDecals()
                     EndIf
@@ -82,14 +82,14 @@ Function UpdateNPCtype106(n.NPCs)
                 EndIf
 
                 ;Corrosion.
-                If Rand(500) = 1 Then PlayRangedSound(n\sounds[Rand(3, 5)], mainPlayer\cam, n\collider)
+                If (Rand(500) = 1) Then PlayRangedSound(n\sounds[Rand(3, 5)], mainPlayer\cam, n\collider)
                 ;Breathing
                 n\soundChannels[0] = LoopRangedSound(n\sounds[1], n\soundChannels[0], mainPlayer\cam, n\collider, 8.0, 0.8)
 
                 ;Rising.
-                If n\timer >= - 10 Then
+                If (n\timer >= - 10) Then
                     ;ShouldPlay = 66 ;TODO
-                    If (n\frame < 259) Then
+                    If ((n\frame < 259)) Then
                         PositionEntity(n\collider, EntityX(n\collider), n\prevY-0.15, EntityZ(n\collider))
                         PointEntity(n\obj, mainPlayer\collider)
                         RotateEntity(n\collider, 0, CurveValue(EntityYaw(n\obj),EntityYaw(n\collider),100.0), 0, True)
@@ -105,25 +105,25 @@ Function UpdateNPCtype106(n.NPCs)
 
         Case STATE106_ATTACK
             ;TODO: Set music to play 106 theme?
-            If (dist < 8.0 And (Not NoTarget)) Then
+            If ((dist < 8.0 And (Not NoTarget))) Then
                 visible = EntityVisible(n\collider, mainPlayer\collider)
             EndIf
 
             ;Show glowing eyes.
             ;TODO: fix
-			;If dist < CameraFogFar*LightVolume*0.6 Then
+			;If (dist < CameraFogFar*LightVolume*0.6) Then
             ;    HideEntity(n\obj2)
             ;Else
             ;    ShowEntity(n\obj2)
             ;    EntityAlpha(n\obj2, Min(dist-CameraFogFar*LightVolume*0.6,1.0))
             ;EndIf
 
-            If (visible) Then
-                If EntityInView(n\collider, mainPlayer\cam) Then
+            If ((visible)) Then
+                If (EntityInView(n\collider, mainPlayer\cam)) Then
                     mainPlayer\blurTimer = Max(Max(Min((4.0 - dist) / 6.0, 0.9), 0.1), mainPlayer\blurTimer)
                     mainPlayer\camZoom = Max(mainPlayer\camZoom, (Sin(Float(TimeInPosMilliSecs())/20.0)+1.0) * 20.0 * Max((4.0-dist)/4.0,0))
 
-                    If (TimeInPosMilliSecs() - n\lastSeen > 60000) Then
+                    If ((TimeInPosMilliSecs() - n\lastSeen > 60000)) Then
                         mainPlayer\camZoom = 40
                         PlaySound2(n\sounds[2])
                         n\lastSeen = TimeInPosMilliSecs()
@@ -133,41 +133,41 @@ Function UpdateNPCtype106(n.NPCs)
 
             n\currSpeed = CurveValue(n\speed, n\currSpeed, 10.0)
 
-            If dist > 0.8 Then
+            If (dist > 0.8) Then
                 prevFrame# = n\frame
 
                 ;Walking animation.
                 AnimateNPC(n, 284, 333, n\currSpeed * 43)
 
                 ;Footstep sounds.
-                If (prevFrame =< 286 And n\frame > 286) Or (prevFrame=<311 And n\frame > 311.0) Then
+                If ((prevFrame =< 286 And n\frame > 286) Or (prevFrame=<311 And n\frame > 311.0)) Then
                     PlayRangedSound(sndManager\footstepPD[Rand(0, 2)]\internal, mainPlayer\cam, n\collider, 6.0, Rnd(0.8,1.0))
                 EndIf
 
-                If (dist > 25.0 Or visible Or n\pathStatus = 2) Then
+                If ((dist > 25.0 Or visible Or n\pathStatus = 2)) Then
 
                     PointEntity(n\obj, mainPlayer\collider)
                     RotateEntity(n\collider, 0, CurveAngle(EntityYaw(n\obj), EntityYaw(n\collider), 10.0), 0)
 
                     n\pathTimer = Max(n\pathTimer - timing\tickDuration, 0)
-                    If n\pathTimer =< 0 Then
+                    If (n\pathTimer =< 0) Then
                         n\pathStatus = 0
                     EndIf
                 ;Between 0.8 and 25 units.
                 Else
                     ;Pathfind to the player.
-                    If n\pathTimer <= 0 Then
+                    If (n\pathTimer <= 0) Then
                         n\pathStatus = FindPath (n, EntityX(mainPlayer\collider,True), EntityY(mainPlayer\collider,True), EntityZ(mainPlayer\collider,True))
                         n\pathTimer = 70*10
                         n\currSpeed = 0
                     Else
                         n\pathTimer = Max(n\pathTimer-timing\tickDuration,0)
 
-                        If n\pathStatus = 2 Then
+                        If (n\pathStatus = 2) Then
                             n\currSpeed = 0
-                        ElseIf n\pathStatus = 1 Then
-                            If n\path[n\pathLocation]=Null Then
-                                If n\pathLocation > 19 Then
+                        ElseIf (n\pathStatus = 1) Then
+                            If (n\path[n\pathLocation]=Null) Then
+                                If (n\pathLocation > 19) Then
                                     n\pathLocation = 0 : n\pathStatus = 0
                                 Else
                                     n\pathLocation = n\pathLocation + 1
@@ -181,28 +181,28 @@ Function UpdateNPCtype106(n.NPCs)
 
                                 RotateEntity(n\collider, 0, CurveAngle(EntityYaw(n\obj), EntityYaw(n\collider), Min(20.0,dist2*10.0)), 0)
 
-                                If dist2 < 0.2 Then n\pathLocation = n\pathLocation + 1
+                                If (dist2 < 0.2) Then n\pathLocation = n\pathLocation + 1
                             EndIf
-                        ElseIf n\pathStatus = 0 Then
-                            If n\state3=0 Then AnimateNPC(n, 334, 494, 0.3)
+                        ElseIf (n\pathStatus = 0) Then
+                            If (n\state3=0) Then AnimateNPC(n, 334, 494, 0.3)
                         EndIf
                     EndIf
                 EndIf
             Else
                 ;Caught.
-                If dist > 0.5 Then
+                If (dist > 0.5) Then
                     n\currSpeed = CurveValue(n\speed * 2.5, n\currSpeed, 10.0)
                 Else
                     n\currSpeed = 0
                 EndIf
                 AnimateNPC(n, 105, 110, 0.15, False)
 
-                If (Not mainPlayer\dead) And mainPlayer\fallTimer >= 0 Then
+                If ((Not mainPlayer\dead) And mainPlayer\fallTimer >= 0) Then
                     PointEntity(n\obj, mainPlayer\collider)
                     RotateEntity(n\collider, 0, CurveAngle(EntityYaw(n\obj), EntityYaw(n\collider), 10.0), 0)
 
                     ;TODO: Teleport to pocket dimension.
-                    If Ceil(n\frame) = 110 And (Not mainPlayer\godMode) Then
+                    If (Ceil(n\frame) = 110 And (Not mainPlayer\godMode)) Then
                         PlaySound2(DamageSFX(1))
                         PlaySound2(n\sounds[7])
 
@@ -217,9 +217,9 @@ Function UpdateNPCtype106(n.NPCs)
 
             MoveEntity(n\collider, 0, 0, n\currSpeed * timing\tickDuration)
 
-            If (dist > 48) Then
+            If ((dist > 48)) Then
                 ;Reset state.
-                If (Not EntityInView(n\obj,mainPlayer\cam) And Rand(5)=1) Then
+                If ((Not EntityInView(n\obj,mainPlayer\cam) And Rand(5)=1)) Then
                     n\timer = Rand(22000, 27000)
                     n\state = STATE106_RISE
                 ;Flank.

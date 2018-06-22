@@ -22,7 +22,7 @@ Function UpdateEvent_tnnl_plain_3(e.Events)
 	Local angle#
 
 	;[Block]
-	If e\eventState = 0 Then
+	If (e\eventState = 0) Then
 		e\room\npc[0]=CreateNPC(NPCtypeGuard, EntityX(e\room\objects[0],True), EntityY(e\room\objects[0],True)+0.5, EntityZ(e\room\objects[0],True))
 		PointEntity(e\room\npc[0]\collider, e\room\obj)
 		RotateEntity(e\room\npc[0]\collider, 0, EntityYaw(e\room\npc[0]\collider)+Rnd(-20,20),0, True)

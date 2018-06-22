@@ -214,8 +214,8 @@ End Function
 Function LoadOrCopyMesh(n.NPCs, filePath$)
 	Local n2.NPCs
 	For n2.NPCs = Each NPCs
-		If (n\npcType = n2\npcType And n <> n2) Then
-			If (n2\obj <> 0) Then
+		If ((n\npcType = n2\npcType And n <> n2)) Then
+			If ((n2\obj <> 0)) Then
 				n\obj = CopyEntity(n2\obj)
 				Return
 			EndIf
@@ -226,19 +226,19 @@ Function LoadOrCopyMesh(n.NPCs, filePath$)
 End Function
 
 Function RemoveNPC(n.NPCs)
-	If (n = Null) Then
+	If ((n = Null)) Then
 		Return
 	EndIf
 
-	If n\obj2 <> 0 Then
+	If (n\obj2 <> 0) Then
 		FreeEntity(n\obj2)
 		n\obj2 = 0
 	EndIf
-	If n\obj3 <> 0 Then
+	If (n\obj3 <> 0) Then
 		FreeEntity(n\obj3)
 		n\obj3 = 0
 	EndIf
-	If n\obj4 <> 0 Then
+	If (n\obj4 <> 0) Then
 		FreeEntity(n\obj4)
 		n\obj4 = 0
 	EndIf
@@ -247,7 +247,7 @@ Function RemoveNPC(n.NPCs)
 
 	Local i%
 	For i = 0 To NPC_SOUND_COUNT-1
-		If (n\sounds[i] <> 0) Then
+		If ((n\sounds[i] <> 0)) Then
 			FreeSound(n\sounds[i])
 		EndIf
 	Next
@@ -273,14 +273,14 @@ Function UpdateNPCs()
 		n\playerDistance = EntityDistance(mainPlayer\collider, n\collider)
 
 		;If the npc was given a target then use its position.
-		If (n\target <> Null) Then
+		If ((n\target <> Null)) Then
 			n\targetX = EntityX(n\target\collider)
 			n\targetY = EntityY(n\target\collider)
 			n\targetZ = EntityZ(n\target\collider)
 		EndIf
 
 		;If the player is too far away then don't run the update code.
-		If (n\playerDistance >= HideDistance*2) Then
+		If ((n\playerDistance >= HideDistance*2)) Then
 			;TODO: Implement roaming code.
 			Return
 		EndIf
@@ -318,13 +318,13 @@ Function UpdateNPCs()
 				UpdateNPCtype1499(n)
 		End Select
 
-		If n\isDead Then
+		If (n\isDead) Then
 			EntityType(n\collider, HIT_DEAD)
 		EndIf
 
 		;Update sound locations.
 		For i = 0 To 2
-			If (IsChannelPlaying(n\soundChannels[i])) Then
+			If ((IsChannelPlaying(n\soundChannels[i]))) Then
 				UpdateRangedSoundOrigin(n\soundChannels[i], mainPlayer\cam, n\obj)
 			EndIf
 		Next
@@ -332,16 +332,16 @@ Function UpdateNPCs()
 		;TODO: Rework.
 		gravityDist# = Distance(EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider),EntityX(n\collider),EntityZ(n\collider))
 
-		If gravityDist<HideDistance*0.7 Or n\npcType = NPCtype1499 Then
-			If n\inFacility = InFacility Then
+		If (gravityDist<HideDistance*0.7 Or n\npcType = NPCtype1499) Then
+			If (n\inFacility = InFacility) Then
 				TranslateEntity(n\collider, 0, n\dropSpeed, 0)
 
 				collidedFloor% = False
 				For i% = 1 To CountCollisions(n\collider)
-					If CollisionY(n\collider, i) < EntityY(n\collider) - 0.01 Then collidedFloor = True : Exit
+					If (CollisionY(n\collider, i) < EntityY(n\collider) - 0.01) Then collidedFloor = True : Exit
 				Next
 
-				If collidedFloor = True Then
+				If (collidedFloor = True) Then
 					n\dropSpeed# = 0
 				Else
 					n\dropSpeed# = Max(n\dropSpeed - 0.005*timing\tickDuration*n\gravityMult,-n\maxGravity)
@@ -360,7 +360,7 @@ End Function
 Function NPCStopAllChannels(n.NPCs)
 	Local i%
 	For i = 0 To NPC_CHANNEL_COUNT-1
-		If (IsChannelPlaying(n\soundChannels[i])) Then
+		If ((IsChannelPlaying(n\soundChannels[i]))) Then
 			StopChannel(n\soundChannels[i])
 		EndIf
 	Next
@@ -374,16 +374,16 @@ Function TeleportCloser(n.NPCs)
 	Local xtemp#, ztemp#, newDist#
 
 	For w.WayPoints = Each WayPoints
-		;If w\door = Null Then ;TODO: fix?
+		;If (w\door = Null) Then ;TODO: fix?
 		xtemp = Abs(EntityX(w\obj,True)-EntityX(n\collider,True))
-		If xtemp < 10.0 And xtemp > 1.0 Then
+		If (xtemp < 10.0 And xtemp > 1.0) Then
 			ztemp = Abs(EntityZ(w\obj,True)-EntityZ(n\collider,True))
-			If ztemp < 10.0 And ztemp > 1.0 Then
-				If (EntityDistance(mainPlayer\collider, w\obj)>8) Then
+			If (ztemp < 10.0 And ztemp > 1.0) Then
+				If ((EntityDistance(mainPlayer\collider, w\obj)>8)) Then
 					If (SelectedDifficulty\aggressiveNPCs)Then
 						;teleports to the nearby waypoint that takes it closest to the player
 						newDist# = EntityDistance(mainPlayer\collider, w\obj)
-						If (newDist < closestDist Or closestWaypoint = Null) Then
+						If ((newDist < closestDist Or closestWaypoint = Null)) Then
 							closestDist = newDist
 							closestWaypoint = w
 						EndIf
@@ -398,7 +398,7 @@ Function TeleportCloser(n.NPCs)
 		;EndIf
 	Next
 
-	If (closestWaypoint<>Null) Then
+	If ((closestWaypoint<>Null)) Then
 		PositionEntity(n\collider, EntityX(closestWaypoint\obj,True), EntityY(closestWaypoint\obj,True)+0.15, EntityZ(closestWaypoint\obj,True), True)
 		ResetEntity(n\collider)
 	EndIf
@@ -407,10 +407,10 @@ End Function
 
 ;TODO: rename lol
 Function OtherNPCSeesMeNPC%(me.NPCs,other.NPCs)
-	If other\blinkTimer<=0.0 Then Return False
+	If (other\blinkTimer<=0.0) Then Return False
 
-	If EntityDistance(other\collider,me\collider)<6.0 Then
-		If Abs(DeltaYaw(other\collider,me\collider))<60.0 Then
+	If (EntityDistance(other\collider,me\collider)<6.0) Then
+		If (Abs(DeltaYaw(other\collider,me\collider))<60.0) Then
 			Return True
 		EndIf
 	EndIf
@@ -425,33 +425,33 @@ Function MeNPCSeesPlayer%(me.NPCs,disableSoundOnCrouch%=False)
 		;3: Player is detected by a camera (only for MTF Units!)
 		;4: Player is detected through glass
 
-	If NoTarget Then Return False
+	If (NoTarget) Then Return False
 
-	If (Not PlayerDetected) Or me\npcType <> NPCtypeMTF Then
-		If me\blinkTimer<=0.0 Then Return False
-		If EntityDistance(mainPlayer\collider,me\collider)>(8.0-mainPlayer\crouchState+mainPlayer\loudness) Then Return False
+	If ((Not PlayerDetected) Or me\npcType <> NPCtypeMTF) Then
+		If (me\blinkTimer<=0.0) Then Return False
+		If (EntityDistance(mainPlayer\collider,me\collider)>(8.0-mainPlayer\crouchState+mainPlayer\loudness)) Then Return False
 
 		;spots the player if he's either in view or making a loud sound
-		If mainPlayer\loudness>1.0 Then
-			If (Abs(DeltaYaw(me\collider,mainPlayer\collider))>60.0) And EntityVisible(me\collider,mainPlayer\collider) Then
+		If (mainPlayer\loudness>1.0) Then
+			If ((Abs(DeltaYaw(me\collider,mainPlayer\collider))>60.0) And EntityVisible(me\collider,mainPlayer\collider)) Then
 				Return 1
-			ElseIf (Not EntityVisible(me\collider,mainPlayer\collider)) Then
-				If disableSoundOnCrouch% And mainPlayer\crouching Then
+			ElseIf ((Not EntityVisible(me\collider,mainPlayer\collider))) Then
+				If (disableSoundOnCrouch% And mainPlayer\crouching) Then
 					Return False
 				Else
 					Return 2
 				EndIf
 			EndIf
 		Else
-			If (Abs(DeltaYaw(me\collider,mainPlayer\collider))>60.0) Then Return False
+			If ((Abs(DeltaYaw(me\collider,mainPlayer\collider))>60.0)) Then Return False
 		EndIf
 		Return EntityVisible(me\collider,mainPlayer\collider)
 	Else
-		If EntityDistance(mainPlayer\collider,me\collider)>(8.0-mainPlayer\crouchState+mainPlayer\loudness) Then Return 3
-		If EntityVisible(me\collider, mainPlayer\cam) Then Return True
+		If (EntityDistance(mainPlayer\collider,me\collider)>(8.0-mainPlayer\crouchState+mainPlayer\loudness)) Then Return 3
+		If (EntityVisible(me\collider, mainPlayer\cam)) Then Return True
 
 		;spots the player if he's either in view or making a loud sound
-		If mainPlayer\loudness>1.0 Then Return 2
+		If (mainPlayer\loudness>1.0) Then Return 2
 		Return 3
 	EndIf
 
@@ -461,13 +461,13 @@ End Function
 Function TeleportMTFGroup(n.NPCs)
 	Local n2.NPCs
 
-	If n\mtfLeader <> Null Then Return
+	If (n\mtfLeader <> Null) Then Return
 
 	TeleportCloser(n)
 
 	For n2 = Each NPCs
-		If n2\npcType = NPCtypeMTF Then
-			If n2\mtfLeader <> Null Then
+		If (n2\npcType = NPCtypeMTF) Then
+			If (n2\mtfLeader <> Null) Then
 				PositionEntity(n2\collider,EntityX(n2\mtfLeader\collider),EntityY(n2\mtfLeader\collider)+0.1,EntityZ(n2\mtfLeader\collider))
 			EndIf
 		EndIf
@@ -487,23 +487,23 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 
 	;LightVolume = TempLightVolume*1.2
 
-	If (Not mainPlayer\godMode) Then
+	If ((Not mainPlayer\godMode)) Then
 
-		If instaKill Then
+		If (instaKill) Then
 			Kill(mainPlayer)
 			PlaySound_SM(sndManager\bulletHit)
 			Return
 		EndIf
 
-		If Rnd(1.0) =< hitProb Then
+		If (Rnd(1.0) =< hitProb) Then
 			TurnEntity(mainPlayer\cam, Rnd(-3,3), Rnd(-3,3), 0)
 			
 			wearingVest% = False
 			wearingVest = wearingVest Or IsPlayerWearingTempName(mainPlayer,"vest")
 			wearingVest = wearingVest Or IsPlayerWearingTempName(mainPlayer,"finevest")
 			wearingVest = wearingVest Or IsPlayerWearingTempName(mainPlayer,"veryfinevest")
-			If wearingVest Then
-				If IsPlayerWearingTempName(mainPlayer,"vest") Then
+			If (wearingVest) Then
+				If (IsPlayerWearingTempName(mainPlayer,"vest")) Then
 					Select Rand(8)
 						Case 1,2,3,4,5
 							mainPlayer\blurTimer = 500
@@ -525,7 +525,7 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 							mainPlayer\injuries = mainPlayer\injuries + Rnd(1.2,1.6)
 					End Select
 				Else
-					If Rand(10)=1 Then
+					If (Rand(10)=1) Then
 						mainPlayer\blurTimer = 500
 						mainPlayer\stamina = mainPlayer\stamina - 1
 						shotMessageUpdate = "A bullet hit your chest. The vest absorbed some of the damage."
@@ -536,8 +536,8 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 					EndIf
 				EndIf
 
-				If mainPlayer\injuries >= 3 Then
-					If Rand(3) = 1 Then Kill(mainPlayer)
+				If (mainPlayer\injuries >= 3) Then
+					If (Rand(3) = 1) Then Kill(mainPlayer)
 				EndIf
 			Else
 				Select Rand(6)
@@ -567,7 +567,7 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 			EndIf
 
 			;Only updates the message if it's been more than two seconds.
-			If (MsgTimer < 64*4) Then
+			If ((MsgTimer < 64*4)) Then
 				Msg = shotMessageUpdate
 				MsgTimer = 70*6
 			EndIf
@@ -576,7 +576,7 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 
 			;Kill(mainPlayer)
 			PlaySound_SM(sndManager\bulletHit)
-		ElseIf particles Then
+		ElseIf (particles) Then
 			pvt% = CreatePivot()
 			PositionEntity(pvt, EntityX(mainPlayer\collider),(EntityY(mainPlayer\collider)+EntityY(mainPlayer\cam))/2,EntityZ(mainPlayer\collider))
 			PointEntity(pvt, p\obj)
@@ -584,10 +584,10 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 
 			EntityPick(pvt, 2.5)
 
-			If PickedEntity() <> 0 Then
+			If (PickedEntity() <> 0) Then
 				PlayRangedSound_SM(sndManager\bulletMiss, mainPlayer\cam, pvt, 0.4, Rnd(0.8,1.0))
 
-				If particles Then
+				If (particles) Then
 					;dust/smoke particles
 					p.Particles = CreateParticle(PickedX(),PickedY(),PickedZ(), 0, 0.03, 0, 80)
 					p\speed = 0.001
@@ -625,15 +625,15 @@ End Function
 
 ;TODO: Move to MTF file?
 Function PlayMTFSound(sound%, n.NPCs)
-	If n <> Null Then
+	If (n <> Null) Then
 		n\soundChannels[0] = PlayRangedSound(sound, mainPlayer\cam, n\collider, 8.0)
 	EndIf
 
-	If mainPlayer\selectedItem <> Null Then
-		If mainPlayer\selectedItem\state2 = 3 And mainPlayer\selectedItem\state > 0 Then
+	If (mainPlayer\selectedItem <> Null) Then
+		If (mainPlayer\selectedItem\state2 = 3 And mainPlayer\selectedItem\state > 0) Then
 			Select mainPlayer\selectedItem\itemtemplate\name
 				Case "radio","fineradio","18vradio"
-					If RadioCHN(3)<> 0 Then StopChannel(RadioCHN(3))
+					If (RadioCHN(3)<> 0) Then StopChannel(RadioCHN(3))
 					RadioCHN(3) = PlaySound(sound)
 			End Select
 		EndIf
@@ -645,7 +645,7 @@ Function MoveToPocketDimension()
 	Local r.Rooms
 
 	For r.Rooms = Each Rooms
-		If r\roomTemplate\name = "pocketdimension" Then
+		If (r\roomTemplate\name = "pocketdimension") Then
 			mainPlayer\fallTimer = 0
 			UpdateDoors()
 			UpdateRooms()
@@ -674,12 +674,12 @@ Function FindFreeNPCID%()
 	While (True)
 		taken% = False
 		For n2.NPCs = Each NPCs
-			If n2\id = id Then
+			If (n2\id = id) Then
 				taken = True
 				Exit
 			EndIf
 		Next
-		If (Not taken) Then
+		If ((Not taken)) Then
 			Return id
 		EndIf
 		id = id + 1
@@ -691,7 +691,7 @@ Function ForceSetNPCID(n.NPCs, newID%)
 
 	Local n2.NPCs
 	For n2.NPCs = Each NPCs
-		If n2 <> n And n2\id = newID Then
+		If (n2 <> n And n2\id = newID) Then
 			n2\id = FindFreeNPCID()
 		EndIf
 	Next
@@ -710,13 +710,13 @@ Function Find860Angle(n.NPCs, fr.Forest)
 	Local xt% = Floor(x), zt% = Floor(z)
 
 	Local x2%, z2%
-	If xt<>playerx Or zt<>playerz Then ;the monster is not on the same tile as the player
+	If (xt<>playerx Or zt<>playerz) Then ;the monster is not on the same tile as the player
 		For x2 = Max(xt-1,0) To Min(xt+1,gridsize-1)
 			For z2 = Max(zt-1,0) To Min(zt+1,gridsize-1)
-				If fr\grid[(z2*gridsize)+x2]>0 And (x2<>xt Or z2<>zt) And (x2=xt Or z2=zt) Then
+				If (fr\grid[(z2*gridsize)+x2]>0 And (x2<>xt Or z2<>zt) And (x2=xt Or z2=zt)) Then
 
 					;tile (x2,z2) is closer to the player than the monsters current tile
-					If (Abs(playerx-x2)+Abs(playerz-z2))<(Abs(playerx-xt)+Abs(playerz-zt)) Then
+					If ((Abs(playerx-x2)+Abs(playerz-z2))<(Abs(playerx-xt)+Abs(playerz-zt))) Then
 						Return GetAngle(x-0.5,z-0.5,x2,z2)+EntityYaw(mainPlayer\currRoom\obj)+180
 					EndIf
 
@@ -743,13 +743,13 @@ Function Console_SpawnNPC(c_input$,state%=-9999)
 			n.NPCs = CreateNPC(NPCtypeGuard, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider))
 		Case "096","scp096","scp-096"
 			n.NPCs = CreateNPC(NPCtype096, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider))
-			If Curr096 = Null Then Curr096 = n
+			If (Curr096 = Null) Then Curr096 = n
 		Case "049","scp049","scp-049"
 			n.NPCs = CreateNPC(NPCtype049, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider))
-			If state%=-9999 Then n\state = 2
+			If (state%=-9999) Then n\state = 2
 		Case "zombie","scp-049-2"
 			n.NPCs = CreateNPC(NPCtypeZombie, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider))
-			If state%=-9999 Then n\state = 1
+			If (state%=-9999) Then n\state = 1
 		Case "966", "scp966", "scp-966"
 			n.NPCs = CreateNPC(NPCtype966, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider))
 		Case "class-d","classd","d"
@@ -764,7 +764,7 @@ Function Console_SpawnNPC(c_input$,state%=-9999)
 			n.NPCs = CreateNPC(NPCtype860, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider))
 		Case "939","scp939","scp-939"
 			n.NPCs = CreateNPC(NPCtype939, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider))
-			If state%=-9999 Then n\state = 1
+			If (state%=-9999) Then n\state = 1
 		Case "066","scp066","scp-066"
 			n.NPCs = CreateNPC(NPCtype066, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider))
 		Case "pdplane"
@@ -775,8 +775,8 @@ Function Console_SpawnNPC(c_input$,state%=-9999)
 			CreateConsoleMsg("NPC type not found.")
 	End Select
 
-	If n <> Null Then
-		If state%<>-9999 Then
+	If (n <> Null) Then
+		If (state%<>-9999) Then
 			n\state = state%
 		EndIf
 	EndIf
@@ -791,7 +791,7 @@ Function ManipulateNPCBones()
 	Local pitchoffset#,yawoffset#,rolloffset#
 
 	For n = Each NPCs
-		If n\manipulateBone Then
+		If (n\manipulateBone) Then
 			pitchvalue# = 0
 			yawvalue# = 0
 			rollvalue# = 0
@@ -801,11 +801,11 @@ Function ManipulateNPCBones()
 			pvt% = CreatePivot()
 			bonename$ = GetNPCManipulationValue(n\npcNameInSection,n\boneToManipulate,"bonename",0)
 			bone% = FindChild(n\obj,bonename$)
-			If bone% = 0 Then RuntimeError("ERROR: NPC bone "+Chr(34)+bonename$+Chr(34)+" does not exist.")
-			If n\boneToManipulate2<>"" Then
+			If (bone% = 0) Then RuntimeError("ERROR: NPC bone "+Chr(34)+bonename$+Chr(34)+" does not exist.")
+			If (n\boneToManipulate2<>"") Then
 				bonename2$ = GetNPCManipulationValue(n\npcNameInSection,n\boneToManipulate,"navbone",0)
 				bone2% = FindChild(n\obj,n\boneToManipulate2$)
-				If bone2% = 0 Then RuntimeError("ERROR: NPC bone "+Chr(34)+bonename2$+Chr(34)+" does not exist.")
+				If (bone2% = 0) Then RuntimeError("ERROR: NPC bone "+Chr(34)+bonename2$+Chr(34)+" does not exist.")
 			EndIf
 			PositionEntity(pvt%,EntityX(bone%,True),EntityY(bone%,True),EntityZ(bone%,True))
 			Select n\manipulationType
@@ -832,13 +832,13 @@ Function ManipulateNPCBones()
 						Case 2
 							rollvalue# = n\bonePitch#
 					End Select
-					If GetNPCManipulationValue(n\npcNameInSection,n\boneToManipulate,"pitchinverse",3)=True Then
+					If (GetNPCManipulationValue(n\npcNameInSection,n\boneToManipulate,"pitchinverse",3)=True) Then
 						pitchvalue# = -pitchvalue#
 					EndIf
-					If GetNPCManipulationValue(n\npcNameInSection,n\boneToManipulate,"yawinverse",3)=True Then
+					If (GetNPCManipulationValue(n\npcNameInSection,n\boneToManipulate,"yawinverse",3)=True) Then
 						yawvalue# = -yawvalue#
 					EndIf
-					If GetNPCManipulationValue(n\npcNameInSection,n\boneToManipulate,"rollinverse",3)=True Then
+					If (GetNPCManipulationValue(n\npcNameInSection,n\boneToManipulate,"rollinverse",3)=True) Then
 						rollvalue# = -rollvalue#
 					EndIf
 					RotateEntity(bone%,pitchvalue#+pitchoffset#,yawvalue#+yawoffset#,rollvalue#+rolloffset#)
@@ -852,13 +852,13 @@ Function ManipulateNPCBones()
 						Case 2
 							rollvalue# = n\bonePitch#
 					End Select
-					If GetNPCManipulationValue(n\npcNameInSection,n\boneToManipulate,"pitchinverse",3)=True Then
+					If (GetNPCManipulationValue(n\npcNameInSection,n\boneToManipulate,"pitchinverse",3)=True) Then
 						pitchvalue# = -pitchvalue#
 					EndIf
-					If GetNPCManipulationValue(n\npcNameInSection,n\boneToManipulate,"yawinverse",3)=True Then
+					If (GetNPCManipulationValue(n\npcNameInSection,n\boneToManipulate,"yawinverse",3)=True) Then
 						yawvalue# = -yawvalue#
 					EndIf
-					If GetNPCManipulationValue(n\npcNameInSection,n\boneToManipulate,"rollinverse",3)=True Then
+					If (GetNPCManipulationValue(n\npcNameInSection,n\boneToManipulate,"rollinverse",3)=True) Then
 						rollvalue# = -rollvalue#
 					EndIf
 					RotateEntity(bone%,pitchvalue#+pitchoffset#,yawvalue#+yawoffset#,rollvalue#+rolloffset#)
@@ -875,13 +875,13 @@ Function ManipulateNPCBones()
 							n\boneYaw# = CurveAngle(EntityRoll(bone%),n\boneYaw#,10.0)
 							rollvalue# = -n\boneYaw#
 					End Select
-					If GetNPCManipulationValue(n\npcNameInSection,n\boneToManipulate,"pitchinverse",3)=True Then
+					If (GetNPCManipulationValue(n\npcNameInSection,n\boneToManipulate,"pitchinverse",3)=True) Then
 						pitchvalue# = -pitchvalue#
 					EndIf
-					If GetNPCManipulationValue(n\npcNameInSection,n\boneToManipulate,"yawinverse",3)=True Then
+					If (GetNPCManipulationValue(n\npcNameInSection,n\boneToManipulate,"yawinverse",3)=True) Then
 						yawvalue# = -yawvalue#
 					EndIf
-					If GetNPCManipulationValue(n\npcNameInSection,n\boneToManipulate,"rollinverse",3)=True Then
+					If (GetNPCManipulationValue(n\npcNameInSection,n\boneToManipulate,"rollinverse",3)=True) Then
 						rollvalue# = -rollvalue#
 					EndIf
 					RotateEntity(bone%,pitchvalue#+pitchoffset#,yawvalue#+yawoffset#,rollvalue#+rolloffset#)
@@ -896,13 +896,13 @@ Function ManipulateNPCBones()
 						Case 2
 							rollvalue# = n\boneYaw#
 					End Select
-					If GetNPCManipulationValue(n\npcNameInSection,n\boneToManipulate,"pitchinverse",3)=True Then
+					If (GetNPCManipulationValue(n\npcNameInSection,n\boneToManipulate,"pitchinverse",3)=True) Then
 						pitchvalue# = -pitchvalue#
 					EndIf
-					If GetNPCManipulationValue(n\npcNameInSection,n\boneToManipulate,"yawinverse",3)=True Then
+					If (GetNPCManipulationValue(n\npcNameInSection,n\boneToManipulate,"yawinverse",3)=True) Then
 						yawvalue# = -yawvalue#
 					EndIf
-					If GetNPCManipulationValue(n\npcNameInSection,n\boneToManipulate,"rollinverse",3)=True Then
+					If (GetNPCManipulationValue(n\npcNameInSection,n\boneToManipulate,"rollinverse",3)=True) Then
 						rollvalue# = -rollvalue#
 					EndIf
 					RotateEntity(bone%,pitchvalue#+pitchoffset#,yawvalue#+yawoffset#,rollvalue#+rolloffset#)
@@ -930,7 +930,7 @@ Function GetNPCManipulationValue$(NPC$,bone$,section$,valuetype%=0)
 		Case 2
 			Return Float(value$)
 		Case 3
-			If value$ = "true" Or value$ = "1" Then
+			If (value$ = "true" Or value$ = "1") Then
 				Return True
 			Else
 				Return False
@@ -984,22 +984,22 @@ Function PlayerInReachableRoom()
 	Local e.Events, temp%
 
 	;Player is in these rooms, returning false
-	If RN = "pocketdimension" Or RN = "gatea" Or RN = "dimension1499" Or RN = "173" Then
+	If (RN = "pocketdimension" Or RN = "gatea" Or RN = "dimension1499" Or RN = "173") Then
 		Return False
 	EndIf
 	;Player is at GateB and is at the surface, returning false
-	If RN = "exit1" And EntityY(mainPlayer\collider)>1040.0*RoomScale Then
+	If (RN = "exit1" And EntityY(mainPlayer\collider)>1040.0*RoomScale) Then
 		Return False
 	EndIf
 	;Player is in 860's test room and inside the forest, returning false
 	temp = False
 	For e = Each Events
-		If e\name$ = "room860" And e\eventState = 1.0 Then
+		If (e\name$ = "room860" And e\eventState = 1.0) Then
 			temp = True
 			Exit
 		EndIf
 	Next
-	If RN = "room860" And temp Then
+	If (RN = "room860" And temp) Then
 		Return False
 	EndIf
 	;Return true, this means player is in reachable room
@@ -1013,13 +1013,13 @@ Function CheckForNPCInFacility(n.NPCs)
 	;True (=1): NPC is in facility
 	;2: NPC is in tunnels (maintenance tunnels/049 tunnels/939 storage room, etc...)
 
-	If EntityY(n\collider)>100.0 Then
+	If (EntityY(n\collider)>100.0) Then
 		Return False
 	EndIf
-	If EntityY(n\collider)< -10.0 Then
+	If (EntityY(n\collider)< -10.0) Then
 		Return 2
 	EndIf
-	If EntityY(n\collider)> 7.0 And EntityY(n\collider)<=100.0 Then
+	If (EntityY(n\collider)> 7.0 And EntityY(n\collider)<=100.0) Then
 		Return 2
 	EndIf
 
@@ -1031,13 +1031,13 @@ Function FindNextElevator(n.NPCs)
 	Local eo.ElevatorObj, eo2.ElevatorObj
 
 	For eo = Each ElevatorObj
-		If eo\inFacility = n\inFacility Then
-			If Abs(EntityY(eo\obj,True)-EntityY(n\collider))<10.0 Then
+		If (eo\inFacility = n\inFacility) Then
+			If (Abs(EntityY(eo\obj,True)-EntityY(n\collider))<10.0) Then
 				For eo2 = Each ElevatorObj
-					If eo2 <> eo Then
-						If eo2\inFacility = n\inFacility Then
-							If Abs(EntityY(eo2\obj,True)-EntityY(n\collider))<10.0 Then
-								If EntityDistance(eo2\obj,n\collider)<EntityDistance(eo\obj,n\collider) Then
+					If (eo2 <> eo) Then
+						If (eo2\inFacility = n\inFacility) Then
+							If (Abs(EntityY(eo2\obj,True)-EntityY(n\collider))<10.0) Then
+								If (EntityDistance(eo2\obj,n\collider)<EntityDistance(eo\obj,n\collider)) Then
 									n\pathStatus = FindPath(n, EntityX(eo2\obj,True),EntityY(eo2\obj,True),EntityZ(eo2\obj,True))
 									n\currElevator = eo2
 									DebugLog("eo2 found for "+n\npcType)
@@ -1047,12 +1047,12 @@ Function FindNextElevator(n.NPCs)
 						EndIf
 					EndIf
 				Next
-				If n\currElevator = Null Then
+				If (n\currElevator = Null) Then
 					n\pathStatus = FindPath(n, EntityX(eo\obj,True),EntityY(eo\obj,True),EntityZ(eo\obj,True))
 					n\currElevator = eo
 					DebugLog("eo found for "+n\npcType)
 				EndIf
-				If n\pathStatus <> 1 Then
+				If (n\pathStatus <> 1) Then
 					n\currElevator = Null
 					DebugLog("Unable to find elevator path: Resetting CurrElevator")
 				EndIf
@@ -1067,29 +1067,29 @@ End Function
 Function GoToElevator(n.NPCs)
 	Local dist#,inside%
 
-	If n\pathStatus <> 1 Then
+	If (n\pathStatus <> 1) Then
 		PointEntity(n\obj,n\currElevator\obj)
 		RotateEntity(n\collider,0,CurveAngle(EntityYaw(n\obj),EntityYaw(n\collider),20.0),0)
 
 		inside% = False
-		If Abs(EntityX(n\collider)-EntityX(n\currElevator\obj,True))<280.0*RoomScale Then
-			If Abs(EntityZ(n\collider)-EntityZ(n\currElevator\obj,True))<280.0*RoomScale Then
-				If Abs(EntityY(n\collider)-EntityY(n\currElevator\obj,True))<280.0*RoomScale Then
+		If (Abs(EntityX(n\collider)-EntityX(n\currElevator\obj,True))<280.0*RoomScale) Then
+			If (Abs(EntityZ(n\collider)-EntityZ(n\currElevator\obj,True))<280.0*RoomScale) Then
+				If (Abs(EntityY(n\collider)-EntityY(n\currElevator\obj,True))<280.0*RoomScale) Then
 					inside% = True
 				EndIf
 			EndIf
 		EndIf
 
 		dist# = EntityDistance(n\collider,n\currElevator\door\frameobj)
-		If n\currElevator\door\open Then
-			If (dist# > 0.4 And dist# < 0.7) And inside% Then
+		If (n\currElevator\door\open) Then
+			If ((dist# > 0.4 And dist# < 0.7) And inside%) Then
 				UseDoor(n\currElevator\door,False)
 				DebugLog(n\npcType+" used elevator")
 			EndIf
 		Else
-			If dist# < 0.7 Then
+			If (dist# < 0.7) Then
 				n\currSpeed = 0.0
-				If n\currElevator\door\npcCalledElevator=False Then
+				If (n\currElevator\door\npcCalledElevator=False) Then
 					n\currElevator\door\npcCalledElevator = True
 					DebugLog(n\npcType+" called elevator")
 				EndIf
@@ -1102,9 +1102,9 @@ End Function
 Function FinishWalking(n.NPCs,startframe#,endframe#,speed#)
 	Local centerframe#
 
-	If n<>Null Then
+	If (n<>Null) Then
 		centerframe# = (endframe#-startframe#)/2
-		If n\frame >= centerframe# Then
+		If (n\frame >= centerframe#) Then
 			AnimateNPC(n,startframe#,endframe#,speed#,False)
 		Else
 			AnimateNPC(n,endframe#,startframe#,-speed#,False)
@@ -1118,15 +1118,15 @@ Function RotateToDirection(n.NPCs)
 	
 	HideEntity(n\collider)
 	EntityPick(n\collider, 1.0)
-	If PickedEntity() <> 0 Then
+	If (PickedEntity() <> 0) Then
 		turnToSide% = 0
 		TurnEntity(n\collider,0,90,0)
 		EntityPick(n\collider,1.0)
-		If PickedEntity()=0 Then
+		If (PickedEntity()=0) Then
 			turnToSide% = 1
 		EndIf
 		TurnEntity(n\collider,0,270,0)
-		If turnToSide% = 1 Then
+		If (turnToSide% = 1) Then
 			TurnEntity(n\collider,0.0,45,0.0,True)
 		Else
 			TurnEntity(n\collider,0.0,-45,0.0,True)
@@ -1139,25 +1139,25 @@ End Function
 Function AnimateNPC(n.NPCs, start#, quit#, speed#, loop%=True)
 	Local newTime#, temp%
 
-	If speed > 0.0 Then
+	If (speed > 0.0) Then
 		newTime = Max(Min(n\frame + speed * timing\tickDuration, quit), start)
 
-		If loop And newTime => quit Then
+		If (loop And newTime => quit) Then
 			newTime = start
 		EndIf
 	Else
-		If start < quit Then
+		If (start < quit) Then
 			temp% = start
 			start = quit
 			quit = temp
 		EndIf
 
-		If loop Then
+		If (loop) Then
 			newTime = n\frame + speed * timing\tickDuration
 
-			If newTime < quit Then
+			If (newTime < quit) Then
 				newTime = start
-			ElseIf newTime > start Then
+			ElseIf (newTime > start) Then
 				newTime = quit
 			EndIf
 		Else
@@ -1169,7 +1169,7 @@ Function AnimateNPC(n.NPCs, start#, quit#, speed#, loop%=True)
 End Function
 
 Function SetNPCFrame(n.NPCs, frame#)
-	If (Abs(n\frame-frame)<0.001) Then Return
+	If ((Abs(n\frame-frame)<0.001)) Then Return
 
 	SetAnimTime(n\obj, frame)
 

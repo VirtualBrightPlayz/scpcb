@@ -7,11 +7,11 @@ Function FillRoom_srvr_farm_3(r.Rooms)
 
     it = CreateItem("9V Battery", "bat", r\x - 132.0 * RoomScale, r\y - 368.0 * RoomScale, r\z - 648.0 * RoomScale)
     EntityParent(it\collider, r\obj)
-    If Rand(2) = 1 Then
+    If (Rand(2) = 1) Then
         it = CreateItem("9V Battery", "bat", r\x - 76.0 * RoomScale, r\y - 368.0 * RoomScale, r\z - 648.0 * RoomScale)
         EntityParent(it\collider, r\obj)
     EndIf
-    If Rand(2) = 1 Then
+    If (Rand(2) = 1) Then
         it = CreateItem("9V Battery", "bat", r\x - 196.0 * RoomScale, r\y - 368.0 * RoomScale, r\z - 648.0 * RoomScale)
         EntityParent(it\collider, r\obj)
     EndIf
@@ -48,9 +48,9 @@ Function UpdateEvent_srvr_farm_3(e.Events)
 	Local angle#
 
 	;[Block]
-	If mainPlayer\currRoom = e\room Then
-		If e\eventState3=0 And Curr173\idle = 0 Then
-			If mainPlayer\blinkTimer < -10 Then
+	If (mainPlayer\currRoom = e\room) Then
+		If (e\eventState3=0 And Curr173\idle = 0) Then
+			If (mainPlayer\blinkTimer < -10) Then
 				temp = Rand(0,2)
 				PositionEntity(Curr173\collider, EntityX(e\room\objects[temp],True),EntityY(e\room\objects[temp],True),EntityZ(e\room\objects[temp],True))
 				ResetEntity(Curr173\collider)
@@ -58,19 +58,19 @@ Function UpdateEvent_srvr_farm_3(e.Events)
 			EndIf
 		EndIf
 
-		If e\room\objects[3]>0 Then
-			If mainPlayer\blinkTimer<-8 And mainPlayer\blinkTimer >-12 Then
+		If (e\room\objects[3]>0) Then
+			If (mainPlayer\blinkTimer<-8 And mainPlayer\blinkTimer >-12) Then
 				PointEntity(e\room\objects[3], mainPlayer\cam)
 				RotateEntity(e\room\objects[3], 0, EntityYaw(e\room\objects[3],True),0, True)
 			EndIf
-			If e\eventState2 = 0 Then
+			If (e\eventState2 = 0) Then
 				e\eventState = CurveValue(0, e\eventState, 15.0)
-				If Rand(800)=1 Then e\eventState2 = 1
+				If (Rand(800)=1) Then e\eventState2 = 1
 			Else
 				e\eventState = e\eventState+(timing\tickDuration*0.5)
-				If e\eventState > 360 Then e\eventState = 0
+				If (e\eventState > 360) Then e\eventState = 0
 
-				If Rand(1200)=1 Then e\eventState2 = 0
+				If (Rand(1200)=1) Then e\eventState2 = 0
 			EndIf
 
 			PositionEntity(e\room\objects[3], EntityX(e\room\objects[3],True), (-608.0*RoomScale)+0.05+Sin(e\eventState+270)*0.05, EntityZ(e\room\objects[3],True), True)

@@ -54,7 +54,7 @@ Function SetIntArrayListElem(arrayList.IntArrayList,val%,i%)
 End Function
 
 Function PushIntArrayListElem(arrayList.IntArrayList,val%)
-	If (arrayList\size>=arrayList\capacity) Then
+	If ((arrayList\size>=arrayList\capacity)) Then
 		arrayList\capacity=arrayList\capacity*2
 		ResizeBank(arrayList\bank,INT_SIZE*arrayList\capacity)
 	EndIf
@@ -65,7 +65,7 @@ End Function
 
 Function PopIntArrayListElem(arrayList.IntArrayList)
 	arrayList\size=arrayList\size-1
-	If arrayList\size<0 Then
+	If (arrayList\size<0) Then
 		arrayList\size = 0
 	EndIf
 End Function
@@ -73,7 +73,7 @@ End Function
 Function EraseIntArrayListElem(arrayList.IntArrayList,pos%)
 	Local i%
 	Local val%
-	If pos>=arrayList\size Then Return
+	If (pos>=arrayList\size) Then Return
 
 	For i = pos To arrayList\size-2
 		val = PeekInt(arrayList\bank,(i+1)*INT_SIZE)

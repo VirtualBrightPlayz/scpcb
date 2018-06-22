@@ -30,14 +30,14 @@ Function FillRoom_lck_ez_3(r.Rooms)
     EntityParent(r\objects[0],r\obj)
 
     For r2.Rooms = Each Rooms
-        If r2<>r Then
-            If r2\roomTemplate\name = "room3gw" Then
+        If (r2<>r) Then
+            If (r2\roomTemplate\name = "room3gw") Then
                 r\objects[3] = CopyEntity(r2\objects[3],r\obj) ;don't load the mesh again
                 Exit
             EndIf
         EndIf
     Next
-    If r\objects[3]=0 Then r\objects[3] = LoadMesh("GFX/Map/room3gw_pipes.b3d",r\obj)
+    If (r\objects[3]=0) Then r\objects[3] = LoadMesh("GFX/Map/room3gw_pipes.b3d",r\obj)
     EntityPickMode(r\objects[3],2)
 End Function
 

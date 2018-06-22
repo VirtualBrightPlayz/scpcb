@@ -12,15 +12,15 @@ Function LoadSaveGames()
 	Local file$, f%
 
 	SaveGameAmount = 0
-	If FileType(SavePath)=1 Then RuntimeError("Can't create dir "+Chr(34)+SavePath+Chr(34))
-	If FileType(SavePath)=0 Then CreateDir(SavePath)
+	If (FileType(SavePath)=1) Then RuntimeError("Can't create dir "+Chr(34)+SavePath+Chr(34))
+	If (FileType(SavePath)=0) Then CreateDir(SavePath)
 	Local myDir% = ReadDir(SavePath)
 	Repeat
 		file$=NextFile$(myDir)
-		If file$="" Then Exit
-		If FileType(SavePath+"/"+file$) = 2 Then
-			If file <> "." And file <> ".." Then
-				If (FileType(SavePath + file + "/save.txt")>0) Then
+		If (file$="") Then Exit
+		If (FileType(SavePath+"/"+file$) = 2) Then
+			If (file <> "." And file <> "..") Then
+				If ((FileType(SavePath + file + "/save.txt")>0)) Then
 					SaveGameAmount=SaveGameAmount+1
 				EndIf
 			EndIf
@@ -34,10 +34,10 @@ Function LoadSaveGames()
 	Local i% = 0
 	Repeat
 		file$=NextFile$(myDir)
-		If file$="" Then Exit
-		If FileType(SavePath+"/"+file$) = 2 Then
-			If file <> "." And file <> ".." Then
-				If (FileType(SavePath + file + "/save.txt")>0) Then
+		If (file$="") Then Exit
+		If (FileType(SavePath+"/"+file$) = 2) Then
+			If (file <> "." And file <> "..") Then
+				If ((FileType(SavePath + file + "/save.txt")>0)) Then
 					SaveGames(i) = file
 					i=i+1
 				EndIf
@@ -72,16 +72,16 @@ Function LoadSavedMaps()
 
 		DebugLog(file)
 
-		If file$="" Then Exit
+		If (file$="") Then Exit
 		DebugLog(CurrentDir()+"Map Creator/Maps/"+file$)
-		If FileType(CurrentDir()+"Map Creator/Maps/"+file$) = 1 Then
-			If file <> "." And file <> ".." Then
+		If (FileType(CurrentDir()+"Map Creator/Maps/"+file$) = 1) Then
+			If (file <> "." And file <> "..") Then
 				SavedMaps(i) = Left(file,Max(Len(file)-6,1))
 				DebugLog(i+": "+file)
 				i=i+1
 			EndIf
 
-			If i > MAXSAVEDMAPS Then Exit
+			If (i > MAXSAVEDMAPS) Then Exit
 		EndIf
 	Forever
 	CloseDir(Dir)

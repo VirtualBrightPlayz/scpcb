@@ -21,7 +21,7 @@ Function ResizeImage2%(image%,width%,height%)
 End Function
 
 Function ScaleRender(x#,y#,hscale#=1.0,vscale#=1.0)
-	If mainPlayer<>Null Then HideEntity(mainPlayer\cam)
+	If (mainPlayer<>Null) Then HideEntity(mainPlayer\cam)
 	WireFrame(0)
 	ShowEntity(fresize_image)
 	ScaleEntity(fresize_image,hscale,vscale,1.0)
@@ -31,7 +31,7 @@ Function ScaleRender(x#,y#,hscale#=1.0,vscale#=1.0)
 	HideEntity(fresize_cam)
 	HideEntity(fresize_image)
 	WireFrame(WireframeState)
-	If mainPlayer<>Null Then ShowEntity(mainPlayer\cam)
+	If (mainPlayer<>Null) Then ShowEntity(mainPlayer\cam)
 End Function
 
 Function InitFastResize()

@@ -31,16 +31,16 @@ Function CreateEvent.Events(eventname$, roomname$, id%, prob# = 0.0)
 
 	Local i% = 0, temp%, e.Events, e2.Events, r.Rooms
 
-	If prob = 0.0 Then
+	If (prob = 0.0) Then
 		For r.Rooms = Each Rooms
-			If (roomname = "" Or roomname = r\roomTemplate\name) Then
+			If ((roomname = "" Or roomname = r\roomTemplate\name)) Then
 				temp = False
 				For e2.Events = Each Events
-					If e2\room = r Then temp = True : Exit
+					If (e2\room = r) Then temp = True : Exit
 				Next
 
 				i=i+1
-				If i >= id And temp = False Then
+				If (i >= id And temp = False) Then
 					e.Events = New Events
 					e\name = eventname
 					e\room = r
@@ -50,13 +50,13 @@ Function CreateEvent.Events(eventname$, roomname$, id%, prob# = 0.0)
 		Next
 	Else
 		For r.Rooms = Each Rooms
-			If (roomname = "" Or roomname = r\roomTemplate\name) Then
+			If ((roomname = "" Or roomname = r\roomTemplate\name)) Then
 				temp = False
 				For e2.Events = Each Events
-					If e2\room = r Then temp = True : Exit
+					If (e2\room = r) Then temp = True : Exit
 				Next
 
-				If Rnd(0.0, 1.0) < prob And temp = False Then
+				If (Rnd(0.0, 1.0) < prob And temp = False) Then
 					e.Events = New Events
 					e\name = eventname
 					e\room = r
@@ -71,20 +71,20 @@ End Function
 Function RemoveEvent(e.Events)
 	Local i%
 	For i = 0 To EVENT_SOUND_COUNT-1
-		If (e\sounds[i] <> 0) Then
+		If ((e\sounds[i] <> 0)) Then
 			FreeSound(e\sounds[i])
 		EndIf
 	Next
 
 	For i = 0 To EVENT_CHANNEL_COUNT-1
-		If (e\soundChannels[i] <> 0) Then
-			If (IsChannelPlaying(e\soundChannels[i])) Then
+		If ((e\soundChannels[i] <> 0)) Then
+			If ((IsChannelPlaying(e\soundChannels[i]))) Then
 				StopChannel(e\soundChannels[i])
 			EndIf
 		EndIf
 	Next
 
-	;If (e\img<>0) Then FreeImage(e\img)
+	;If ((e\img<>0)) Then FreeImage(e\img)
 
 	Delete e
 End Function
@@ -102,7 +102,7 @@ Function InitEvents()
 
 	;the chance for 173 appearing in the first lockroom is about 66%
 	;there's a 30% chance that it appears in the later lockrooms
-	If Rand(3)<3 Then CreateEvent("evt_lck_173", "lck_cam_2c", 0)
+	If (Rand(3)<3) Then CreateEvent("evt_lck_173", "lck_cam_2c", 0)
 	CreateEvent("evt_lck_173", "lck_cam_2c", 0, 0.3 + (0.5*SelectedDifficulty\aggressiveNPCs))
 
 	CreateEvent("evt_hll_trick", "hll_plain_2", 0, 0.15)
@@ -150,7 +150,7 @@ Function InitEvents()
 
 	CreateEvent("evt_hll_plain_4","hll_plain_4", 0)
 
-	If Rand(5)<5 Then
+	If (Rand(5)<5) Then
 		Select Rand(3)
 			Case 1
 				CreateEvent("evnt_roar_682", "tnnl_plain_2", Rand(0,2), 0)
@@ -169,7 +169,7 @@ Function InitEvents()
 
 	CreateEvent("evt_tnnl_nuke", "tnnl_nuke_2", 0, 0)
 
-	If Rand(5) < 5 Then
+	If (Rand(5) < 5) Then
 		CreateEvent("evt_cont_895_106", "coffin", 0, 0)
 	Else
 		CreateEvent("evt_cont_895", "coffin", 0, 0)
@@ -178,7 +178,7 @@ Function InitEvents()
 	CreateEvent("evt_chck", "chck_lcz_hcz_2", 0, 1.0)
 	CreateEvent("evt_chck", "chck_hcz_ez_2", 0, 1.0)
 
-	If Rand(2)=1 Then
+	If (Rand(2)=1) Then
 		CreateEvent("evt_hll_106_victim", "hll_plain_3", Rand(1,2))
 		CreateEvent("evt_hll_sinkhole", "hll_plain_3", Rand(2,3))
 	Else
@@ -257,11 +257,11 @@ Function UpdateEvents()
 
     For e.Events = Each Events
 		; Does the event have music to play?
-		If (e\overwriteMusic) Then
+		If ((e\overwriteMusic)) Then
 			SetNextMusicTrack(e\musicTrack)
-		ElseIf (Not musicManager\useDefault) Then
+		ElseIf ((Not musicManager\useDefault)) Then
 			; If the event was previously playing music then go back to the default.
-			If (e\musicTrack = musicManager\nowPlaying) Then
+			If ((e\musicTrack = musicManager\nowPlaying)) Then
 				RestoreDefaultMusic()
 			EndIf
 		EndIf
@@ -396,11 +396,11 @@ Function UpdateEvents()
 		End Select
 	Next
 
-	If ExplosionTimer > 0 Then
+	If (ExplosionTimer > 0) Then
 		ExplosionTimer = ExplosionTimer+timing\tickDuration
 
-		If ExplosionTimer < 140.0 Then
-			If ExplosionTimer-timing\tickDuration < 5.0 Then
+		If (ExplosionTimer < 140.0) Then
+			If (ExplosionTimer-timing\tickDuration < 5.0) Then
 				PlaySound2(LoadTempSound("SFX/Ending/GateB/Nuke1.ogg"))
 				mainPlayer\camShake = 10.0
 				ExplosionTimer = 5.0
@@ -409,7 +409,7 @@ Function UpdateEvents()
 			mainPlayer\camShake = CurveValue(ExplosionTimer/60.0,mainPlayer\camShake, 50.0)
 		Else
 			mainPlayer\camShake = Min((ExplosionTimer/20.0),20.0)
-			If ExplosionTimer-timing\tickDuration < 140.0 Then
+			If (ExplosionTimer-timing\tickDuration < 140.0) Then
 				mainPlayer\blinkTimer = 1.0
 				PlaySound2(LoadTempSound("SFX/Ending/GateB/Nuke2.ogg"))
 				For i = 0 To 40
@@ -419,8 +419,8 @@ Function UpdateEvents()
 				Next
 			EndIf
 			mainPlayer\lightFlash = Min((ExplosionTimer-160.0)/40.0,2.0)
-			If ExplosionTimer > 160 Then Kill(mainPlayer); : EndingTimer = Min(mainPlayer\fallTimer,-0.1)
-			If ExplosionTimer > 500 Then ExplosionTimer = 0
+			If (ExplosionTimer > 160) Then Kill(mainPlayer); : EndingTimer = Min(mainPlayer\fallTimer,-0.1)
+			If (ExplosionTimer > 500) Then ExplosionTimer = 0
 		EndIf
 
 	EndIf

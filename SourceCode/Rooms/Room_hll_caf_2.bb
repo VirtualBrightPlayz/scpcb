@@ -55,15 +55,15 @@ Function Update294()
 	DropAsset(panel294)
 
 	temp = True
-	If mainPlayer\currRoom\soundCHN<>0 Then temp = False
+	If (mainPlayer\currRoom\soundCHN<>0) Then temp = False
 
-	If temp Then
-		If MouseHit1 Then
+	If (temp) Then
+		If (MouseHit1) Then
 			xtemp = Floor((MouseX()-x-228) / 35.5)
 			ytemp = Floor((MouseY()-y-342) / 36.5)
 
-			If ytemp => 0 And ytemp < 5 Then
-				If xtemp => 0 And xtemp < 10 Then
+			If (ytemp => 0 And ytemp < 5) Then
+				If (xtemp => 0 And xtemp < 10) Then
 					PlaySound_SM(sndManager\button)
 				EndIf
 			EndIf
@@ -152,25 +152,25 @@ Function Update294()
 
 			Input294 = Left(Input294, Min(Len(Input294),15))
 
-			If temp And Input294 <> "" Then ;dispense
+			If (temp And Input294 <> "") Then ;dispense
 				Input294 = Trim(Lower(Input294))
-				If Left(Input294, Min(7,Len(Input294))) = "cup of " Then
+				If (Left(Input294, Min(7,Len(Input294))) = "cup of ") Then
 					Input294 = Right(Input294, Len(Input294)-7)
-				ElseIf Left(Input294, Min(9,Len(Input294))) = "a cup of "  Then
+				ElseIf (Left(Input294, Min(9,Len(Input294))) = "a cup of " ) Then
 					Input294 = Right(Input294, Len(Input294)-9)
 				EndIf
 
 				loc% = GetINISectionLocation("Data/SCP-294.ini", Input294)
 
-				If loc > 0 Then
+				If (loc > 0) Then
 					strtemp$ = GetINIString2("Data/SCP-294.ini", loc, "dispensesound")
-					If strtemp = "" Then
+					If (strtemp = "") Then
 						mainPlayer\currRoom\soundCHN = PlaySound(LoadTempSound("SFX/SCP/294/dispense1.ogg"))
 					Else
 						mainPlayer\currRoom\soundCHN = PlaySound(LoadTempSound(strtemp))
 					EndIf
 
-					If GetINIInt2("Data/SCP-294.ini", loc, "explosion")=True Then
+					If (GetINIInt2("Data/SCP-294.ini", loc, "explosion")=True) Then
 						ExplosionTimer = 135
 						DeathMSG = GetINIString2("Data/SCP-294.ini", loc, "deathmessage")
 					EndIf
@@ -185,8 +185,8 @@ Function Update294()
 
 					alpha# = Float(GetINIString2("Data/SCP-294.ini", loc, "alpha"))
 					glow = GetINIInt2("Data/SCP-294.ini", loc, "glow")
-					If alpha = 0 Then alpha = 1.0
-					If glow Then alpha = -alpha
+					If (alpha = 0) Then alpha = 1.0
+					If (glow) Then alpha = -alpha
 					;TODO: Re-implement
 					;it.Items = CreateItem("Cup", "cup", EntityX(mainPlayer\currRoom\objects[1],True),EntityY(mainPlayer\currRoom\objects[1],True),EntityZ(mainPlayer\currRoom\objects[1],True), r,g,b,alpha)
 					it\name = "Cup of "+Input294
@@ -201,17 +201,17 @@ Function Update294()
 
 		EndIf ;if mousehit1
 
-		If MouseHit2 And CurrGameState=GAMESTATE_SCP294 Then
+		If (MouseHit2 And CurrGameState=GAMESTATE_SCP294) Then
 			HidePointer()
 			CurrGameState = GAMESTATE_PLAYING
 			Input294 = ""
 		EndIf
 
 	Else ;playing a dispensing sound
-		If Input294 <> "OUT OF RANGE" Then Input294 = "DISPENSING..." : DebugLog("cringe")
+		If (Input294 <> "OUT OF RANGE") Then Input294 = "DISPENSING..." : DebugLog("cringe")
 
-		If Not IsChannelPlaying(mainPlayer\currRoom\soundCHN) Then
-			If Input294 <> "OUT OF RANGE" Then
+		If (Not IsChannelPlaying(mainPlayer\currRoom\soundCHN)) Then
+			If (Input294 <> "OUT OF RANGE") Then
 				HidePointer()
 				CurrGameState = GAMESTATE_SCP294
 			EndIf
@@ -234,24 +234,24 @@ Function UpdateEvent_hll_caf_2(e.Events)
 	Local angle#
 
 	;[Block]
-	If mainPlayer\currRoom = e\room Then
-		If CurrGameState<>GAMESTATE_SCP294 Then
-			If EntityDistance(e\room\objects[0], mainPlayer\collider)<1.5 Then
-				If EntityInView(e\room\objects[0], mainPlayer\cam) Then
+	If (mainPlayer\currRoom = e\room) Then
+		If (CurrGameState<>GAMESTATE_SCP294) Then
+			If (EntityDistance(e\room\objects[0], mainPlayer\collider)<1.5) Then
+				If (EntityInView(e\room\objects[0], mainPlayer\cam)) Then
 					DrawHandIcon = True
-					If MouseHit1 Then
+					If (MouseHit1) Then
 						temp = True
 						For it.Items = Each Items
-							If it\picked=False Then
-								If EntityX(it\collider)-EntityX(e\room\objects[1],True)=0 Then
-									If EntityZ(it\collider)-EntityZ(e\room\objects[1],True)=0 Then
+							If (it\picked=False) Then
+								If (EntityX(it\collider)-EntityX(e\room\objects[1],True)=0) Then
+									If (EntityZ(it\collider)-EntityZ(e\room\objects[1],True)=0) Then
 										temp = False
 										Exit
 									EndIf
 								EndIf
 							EndIf
 						Next
-						If temp Then
+						If (temp) Then
 							CurrGameState = GAMESTATE_SCP294
 							MouseHit1=False
 						EndIf
@@ -261,7 +261,7 @@ Function UpdateEvent_hll_caf_2(e.Events)
 		EndIf
 	EndIf
 
-	If e\eventState = 0 Then
+	If (e\eventState = 0) Then
 		CreateNPC(NPCtype066, EntityX(e\room\obj), 0.5, EntityZ(e\room\obj))
 		e\eventState = 1
 	EndIf

@@ -14,7 +14,7 @@ Function FillRoom_hll_gas_2(r.Rooms)
             em\sizeChange = 0.007
             em\aChange = -0.016
             r\objects[i] = em\obj
-            If i < 3 Then
+            If (i < 3) Then
                 TurnEntity(em\obj, 0, -90, 0, True)
             Else
                 TurnEntity(em\obj, 0, 90, 0, True)
@@ -47,9 +47,9 @@ Function UpdateEvent_hll_gas_2(e.Events)
 	Local angle#
 
 	;[Block]
-	If Curr173\idle = 0 Then
-		If e\room\dist < 8.0  And e\room\dist > 0 Then
-			If (Not EntityVisible(Curr173\collider, mainPlayer\cam)) And (Not EntityVisible(e\room\objects[6], mainPlayer\cam)) Then
+	If (Curr173\idle = 0) Then
+		If (e\room\dist < 8.0  And e\room\dist > 0) Then
+			If ((Not EntityVisible(Curr173\collider, mainPlayer\cam)) And (Not EntityVisible(e\room\objects[6], mainPlayer\cam))) Then
 				PositionEntity(Curr173\collider, EntityX(e\room\objects[6], True), 0.5, EntityZ(e\room\objects[6], True))
 				ResetEntity(Curr173\collider)
 				RemoveEvent(e)

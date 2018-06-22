@@ -13,7 +13,7 @@ Function StripPath$(file$)
 		For i=Len(file$) To 1 Step -1
 
 			mi$=Mid$(file$,i,1)
-			If mi$="\" Or mi$="/" Then Return name$
+			If (mi$="\" Or mi$="/") Then Return name$
 
 			name$=mi$+name$
 		Next
@@ -30,7 +30,7 @@ Function StripFilename$(file$)
 	If Len(file)>0
 		For i%=1 To Len(file)
 			mi=Mid(file$,i,1)
-			If mi="\" Or mi="/" Then
+			If (mi="\" Or mi="/") Then
 				lastSlash=i
 			EndIf
 		Next
@@ -40,17 +40,17 @@ Function StripFilename$(file$)
 End Function
 
 Function EntityScaleX#(entity, globl=False)
-	If globl Then TFormVector(1,0,0,entity,0 Else TFormVector 1,0,0,entity,GetParent(entity))
+	If (globl) Then TFormVector(1,0,0,entity,0 Else TFormVector 1,0,0,entity,GetParent(entity))
 	Return Sqr(TFormedX()*TFormedX()+TFormedY()*TFormedY()+TFormedZ()*TFormedZ())
 End Function
 
 Function EntityScaleY#(entity, globl=False)
-	If globl Then TFormVector(0,1,0,entity,0 Else TFormVector 0,1,0,entity,GetParent(entity))
+	If (globl) Then TFormVector(0,1,0,entity,0 Else TFormVector 0,1,0,entity,GetParent(entity))
 	Return Sqr(TFormedX()*TFormedX()+TFormedY()*TFormedY()+TFormedZ()*TFormedZ())
 End Function
 
 Function EntityScaleZ#(entity, globl=False)
-	If globl Then TFormVector(0,0,1,entity,0 Else TFormVector 0,0,1,entity,GetParent(entity))
+	If (globl) Then TFormVector(0,0,1,entity,0 Else TFormVector 0,0,1,entity,GetParent(entity))
 	Return Sqr(TFormedX()*TFormedX()+TFormedY()*TFormedY()+TFormedZ()*TFormedZ())
 End Function
 
@@ -77,18 +77,18 @@ Function KeyValue$(entity,key$,defaultvalue$="")
 	key$=Lower(key)
 	Repeat
 		p=Instr(properties,Chr(10))
-		If p Then test$=(Left(properties,p-1)) Else test=properties
+		If (p) Then test$=(Left(properties,p-1)) Else test=properties
 		testkey$=Piece(test,1,"=")
 		testkey=Trim(testkey)
 		testkey=Replace(testkey,Chr(34),"")
 		testkey=Lower(testkey)
-		If testkey=key Then
+		If (testkey=key) Then
 			value$=Piece(test,2,"=")
 			value$=Trim(value$)
 			value$=Replace(value$,Chr(34),"")
 			Return value
 		EndIf
-		If Not p Then Return defaultvalue$
+		If (Not p) Then Return defaultvalue$
 		properties=Right(properties,Len(properties)-p)
 	Forever
 End Function
@@ -96,13 +96,13 @@ End Function
 Function isAlpha%(tex%) ;detect transparency in textures
 	Local temp1s$=StripPath(TextureName(tex))
 	Local temp1i%
-	If Instr(temp1s,".png")<>0 Or Instr(temp1s,".tga")<>0 Or Instr(temp1s,".tpic")<>0 Then ;texture is PNG or TARGA
+	If (Instr(temp1s,".png")<>0 Or Instr(temp1s,".tga")<>0 Or Instr(temp1s,".tpic")<>0) Then ;texture is PNG or TARGA
 		LockBuffer(TextureBuffer(tex))
 		For x%=0 To TextureWidth(tex)-1
 			For y%=0 To TextureHeight(tex)-1
 				temp1i=ReadPixelFast(x,y,TextureBuffer(tex))
 				temp1i=temp1i Shr 24
-				If temp1i<255 Then
+				If (temp1i<255) Then
 					UnlockBuffer(TextureBuffer(tex))
 					;DebugLog(temp1s + " has transparency.")
 					Return 3 ;texture has transparency
@@ -112,7 +112,7 @@ Function isAlpha%(tex%) ;detect transparency in textures
 		UnlockBuffer(TextureBuffer(tex))
 		;DebugLog(temp1s + " is opaque.")
 		Return 1 ;texture is opaque
-	ElseIf Instr(temp1s,"_lm")<>0 Then ;texture is a lightmap
+	ElseIf (Instr(temp1s,"_lm")<>0) Then ;texture is a lightmap
 		;DebugLog(temp1s + " is a lightmap.")
 		Return 2
 	EndIf
@@ -124,7 +124,7 @@ Function SaveRoomMesh(BaseMesh%,filename$) ;base mesh should be a 3D World Studi
 
 	DebugLog(filename + "___" + BaseMesh)
 
-	;If Right(filename, 5)="rmesh" Then filename=Left(filename, Len(filename)-5)+"b3d"
+	;If (Right(filename, 5)="rmesh") Then filename=Left(filename, Len(filename)-5)+"b3d"
 	;DebugLog(filename)
 
 	Local node%,classname$
@@ -187,7 +187,7 @@ Function SaveRoomMesh(BaseMesh%,filename$) ;base mesh should be a 3D World Studi
 
 		tex=0
 		tex=GetBrushTexture(brush,0)
-		If tex<>0 Then
+		If (tex<>0) Then
 			WriteByte(f,isAlpha(tex))
 			texname=TextureName(tex)
 			WriteString(f,StripPath(texname))
@@ -198,7 +198,7 @@ Function SaveRoomMesh(BaseMesh%,filename$) ;base mesh should be a 3D World Studi
 
 		tex=0
 		tex=GetBrushTexture(brush,1)
-		If tex<>0 Then
+		If (tex<>0) Then
 			WriteByte(f,isAlpha(tex))
 			texname=TextureName(tex)
 			WriteString(f,StripPath(texname))
@@ -397,10 +397,10 @@ Function GetINIString$(file$, section$, parameter$)
 	Local f = ReadFile(file)
 
 	While Not Eof(f)
-		If ReadLine(f) = "["+section+"]" Then
+		If (ReadLine(f) = "["+section+"]") Then
 			Repeat
 				TemporaryString = ReadLine(f))
-				If Trim( Left(TemporaryString, Max(Instr(TemporaryString,"=")-1,0)) ) = parameter Then
+				If (Trim( Left(TemporaryString, Max(Instr(TemporaryString,"=")-1,0)) ) = parameter) Then
 					CloseFile(f)
 					Return Trim( Right(TemporaryString,Len(TemporaryString)-Instr(TemporaryString,"=")) )
 				EndIf
@@ -452,7 +452,7 @@ Function PutINIValue%(INI_sAppName$, INI_sSection$, INI_sKey$, INI_sValue$)
 	INI_sCurrentSection$ = ""
 
 	INI_lFileHandle = WriteFile(INI_sFilename)
-	If INI_lFileHandle = 0 Then Return False ; Create file failed!
+	If (INI_lFileHandle = 0) Then Return False ; Create file failed!
 
 	INI_lOldPos% = 1
 	INI_lPos% = Instr(INI_sContents, Chr$(0))
@@ -461,26 +461,26 @@ Function PutINIValue%(INI_sAppName$, INI_sSection$, INI_sKey$, INI_sValue$)
 
 		INI_sTemp$ =Trim$(Mid$(INI_sContents, INI_lOldPos, (INI_lPos - INI_lOldPos)))
 
-		If (INI_sTemp <> "") Then
+		If ((INI_sTemp <> "")) Then
 
-			If Left$(INI_sTemp, 1) = "[" And Right$(INI_sTemp, 1) = "]" Then
+			If (Left$(INI_sTemp, 1) = "[" And Right$(INI_sTemp, 1) = "]") Then
 
 				; Process SECTION
 
-				If (INI_sCurrentSection = INI_sUpperSection) And (INI_bWrittenKey = False) Then
+				If ((INI_sCurrentSection = INI_sUpperSection) And (INI_bWrittenKey = False)) Then
 					INI_bWrittenKey = INI_CreateKey(INI_lFileHandle, INI_sKey, INI_sValue)
 				EndIf
 				INI_sCurrentSection = Upper$(INI_CreateSection(INI_lFileHandle, INI_sTemp))
-				If (INI_sCurrentSection = INI_sUpperSection) Then INI_bSectionFound = True
+				If ((INI_sCurrentSection = INI_sUpperSection)) Then INI_bSectionFound = True
 
 			Else
 
 				; KEY=VALUE
 
 				lEqualsPos% = Instr(INI_sTemp, "=")
-				If (lEqualsPos <> 0) Then
-					If (INI_sCurrentSection = INI_sUpperSection) And (Upper$(Trim$(Left$(INI_sTemp, (lEqualsPos - 1)))) = Upper$(INI_sKey)) Then
-						If (INI_sValue <> "") Then INI_CreateKey INI_lFileHandle, INI_sKey, INI_sValue
+				If ((lEqualsPos <> 0)) Then
+					If ((INI_sCurrentSection = INI_sUpperSection) And (Upper$(Trim$(Left$(INI_sTemp, (lEqualsPos - 1)))) = Upper$(INI_sKey))) Then
+						If ((INI_sValue <> "")) Then INI_CreateKey INI_lFileHandle, INI_sKey, INI_sValue
 						INI_bWrittenKey = True
 					Else
 						WriteLine(INI_lFileHandle, INI_sTemp)
@@ -500,8 +500,8 @@ Function PutINIValue%(INI_sAppName$, INI_sSection$, INI_sKey$, INI_sValue$)
 
 	; KEY wasn't found in the INI file - Append a new SECTION if required and create our KEY=VALUE line
 
-	If (INI_bWrittenKey = False) Then
-		If (INI_bSectionFound = False) Then INI_CreateSection INI_lFileHandle, INI_sSection
+	If ((INI_bWrittenKey = False)) Then
+		If ((INI_bSectionFound = False)) Then INI_CreateSection INI_lFileHandle, INI_sSection
 		INI_CreateKey INI_lFileHandle, INI_sKey, INI_sValue
 	EndIf
 
@@ -516,7 +516,7 @@ Function INI_FileToString$(INI_sFilename$)
 
 	INI_sString$ = ""
 	INI_lFileHandle% = ReadFile(INI_sFilename)
-	If INI_lFileHandle <> 0 Then
+	If (INI_lFileHandle <> 0) Then
 		While Not(Eof(INI_lFileHandle))
 			INI_sString(= INI_sString + ReadLine$(INI_lFileHandle) + Chr$(0))
 		Wend
@@ -528,7 +528,7 @@ End Function
 
 Function INI_CreateSection$(INI_lFileHandle%, INI_sNewSection$)
 
-	If FilePos(INI_lFileHandle) <> 0 Then WriteLine(INI_lFileHandle, "" ; Blank line between sections)
+	If (FilePos(INI_lFileHandle) <> 0) Then WriteLine(INI_lFileHandle, "" ; Blank line between sections)
 	WriteLine(INI_lFileHandle, INI_sNewSection)
 	Return INI_sNewSection
 
@@ -543,11 +543,11 @@ End Function
 
 ; matemaattiset funktiot:
 Function Min#(a#,b#)
-	If a < b Then Return a Else Return b
+	If (a < b) Then Return a Else Return b
 End Function
 
 Function Max#(a#,b#)
-	If a > b Then Return a Else Return b
+	If (a > b) Then Return a Else Return b
 End Function
 
 Local state%=0
@@ -563,8 +563,8 @@ Text(5,65,"ESC - Close without doing anything")
 Flip
 
 While (Not KeyHit(1))
-	If KeyHit(2) Or KeyHit(79) Then state=1 : Exit
-	If KeyHit(3) Or KeyHit(80) Then state=2 : Exit
+	If (KeyHit(2) Or KeyHit(79)) Then state=1 : Exit
+	If (KeyHit(3) Or KeyHit(80)) Then state=2 : Exit
 Wend
 
 Local Stri$,TemporaryString$,f%
@@ -578,9 +578,9 @@ End Type
 
 Local ic.INIConvert
 
-If state=1 Then ;convert B3D to Rmesh
+If (state=1) Then ;convert B3D to Rmesh
 
-	If FileSize("Data/rooms_b3d.ini")=0 Then
+	If (FileSize("Data/rooms_b3d.ini")=0) Then
 		CopyFile("Data/rooms.ini","Data/rooms_b3d.ini")
 	EndIf
 
@@ -588,10 +588,10 @@ If state=1 Then ;convert B3D to Rmesh
 
 	While Not Eof(f)
 		TemporaryString = Trim(ReadLine(f)))
-		If Left(TemporaryString,1) = "[" Then
+		If (Left(TemporaryString,1) = "[") Then
 			TemporaryString = Mid(TemporaryString, 2, Len(TemporaryString) - 2))
 
-			If TemporaryString(<> "room ambience" Then)
+			If (TemporaryString(<> "room ambience") Then)
 				Stri=GetINIString("Data/rooms.ini",TemporaryString,"mesh path")
 
 				mesh=LoadAnimMesh(Stri)
@@ -628,10 +628,10 @@ ElseIf state=2
 
 	While Not Eof(f)
 		TemporaryString = Trim(ReadLine(f)))
-		If Left(TemporaryString,1) = "[" Then
+		If (Left(TemporaryString,1) = "[") Then
 			TemporaryString = Mid(TemporaryString, 2, Len(TemporaryString) - 2))
 
-			If TemporaryString(<> "room ambience" Then)
+			If (TemporaryString(<> "room ambience") Then)
 				Stri=GetINIString("Data/rooms.ini",TemporaryString,"mesh path")
 
 				ic.INIConvert=New INIConvert

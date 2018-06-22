@@ -103,14 +103,14 @@ Function UpdateEvent_cont_1123_2(e.Events)
 	Local angle#, nazi%, scale#
 
 	;[Block]
-	If mainPlayer\currRoom = e\room Then
+	If (mainPlayer\currRoom = e\room) Then
 		;the event is started when the player picks up SCP-1123 (in Items.bb/UpdateItems())
 
-		If e\eventState = 1 Then
-			;If e\soundChannels[0] = 0 Then
+		If (e\eventState = 1) Then
+			;If (e\soundChannels[0] = 0) Then
 			;	e\soundChannels[0] =
 			;Else
-			;	If Not IsChannelPlaying(e\soundChannels[0]) Then e\soundChannels[0] = PlaySound2(moddedambience)
+			;	If (Not IsChannelPlaying(e\soundChannels[0])) Then e\soundChannels[0] = PlaySound2(moddedambience)
 			;EndIf
 
 			;Saving injuries and bloodloss, so that the player won't be healed automatically
@@ -141,33 +141,33 @@ Function UpdateEvent_cont_1123_2(e.Events)
 			mainPlayer\injuries = 1.0
 			e\eventState = 2
 
-		ElseIf e\eventState = 2 Then
+		ElseIf (e\eventState = 2) Then
 			e\eventState2 = e\eventState2 + timing\tickDuration
 
 			PointEntity(e\room\npc[0]\collider, mainPlayer\collider)
 			mainPlayer\blurTimer = Max(mainPlayer\blurTimer, 100)
 
-			If e\eventState2>200 And e\eventState2-timing\tickDuration=<200 Then
+			If (e\eventState2>200 And e\eventState2-timing\tickDuration=<200) Then
 				;e\sounds[0] = LoadSound("SFX/Music/1123.ogg");TODO: fix
 				e\soundChannels[0] = PlaySound(e\sounds[0])
 			EndIf
 
 
-			If e\eventState2 > 1000 Then
-				If e\sounds[1]=0 Then
+			If (e\eventState2 > 1000) Then
+				If (e\sounds[1]=0) Then
 					e\sounds[1] = LoadSound("SFX/Door/1123DoorOpen.ogg")
 					e\soundChannels[1] = PlaySound(e\sounds[1])
 				EndIf
 				RotateEntity(e\room\objects[11], 0, CurveAngle(10, EntityYaw(e\room\objects[11],0), 40), 0)
 
-				If e\eventState2=>1040 And e\eventState2-timing\tickDuration<1040 Then
+				If (e\eventState2=>1040 And e\eventState2-timing\tickDuration<1040) Then
 					PlayRangedSound(LoadTempSound("SFX/SCP/1123/Officer1.ogg"), mainPlayer\cam, e\room\npc[0]\obj)
-				ElseIf e\eventState2=>1400 And e\eventState2-timing\tickDuration<1400 Then
+				ElseIf (e\eventState2=>1400 And e\eventState2-timing\tickDuration<1400) Then
 					PlayRangedSound(LoadTempSound("SFX/SCP/1123/Officer2.ogg"), mainPlayer\cam, e\room\npc[0]\obj)
 				EndIf
 
 				;Animate2(e\room\objects[4], AnimTime(e\room\objects[4]), 0, 8, 0.1, False)
-				If EntityDistance(mainPlayer\collider, e\room\objects[4])>392*RoomScale Then
+				If (EntityDistance(mainPlayer\collider, e\room\objects[4])>392*RoomScale) Then
 					mainPlayer\blinkTimer = -10
 					mainPlayer\blurTimer = 500
 					PositionEntity(mainPlayer\collider, EntityX(e\room\objects[5],True),EntityY(e\room\objects[5],True),EntityZ(e\room\objects[5],True),True)
@@ -177,9 +177,9 @@ Function UpdateEvent_cont_1123_2(e.Events)
 				EndIf
 
 			EndIf
-		ElseIf e\eventState=3 Then
-			If e\room\roomDoors[0]\openstate>160 Then
-				If e\sounds[0]=0 Then e\sounds[0] = LoadSound("SFX/Music/1123.ogg")
+		ElseIf (e\eventState=3) Then
+			If (e\room\roomDoors[0]\openstate>160) Then
+				If (e\sounds[0]=0) Then e\sounds[0] = LoadSound("SFX/Music/1123.ogg")
 				e\soundChannels[0] = PlaySound(e\sounds[0])
 
 				PositionEntity(e\room\npc[0]\collider, EntityX(e\room\objects[7],True),EntityY(e\room\objects[7],True),EntityZ(e\room\objects[7],True))
@@ -187,21 +187,21 @@ Function UpdateEvent_cont_1123_2(e.Events)
 
 				e\eventState=4
 			EndIf
-		ElseIf e\eventState=4 Then
+		ElseIf (e\eventState=4) Then
 
 			;PointEntity(e\room\npc[1]\collider, mainPlayer\collider)
 
 			TFormPoint(EntityX(mainPlayer\collider),EntityY(mainPlayer\collider),EntityZ(mainPlayer\collider),0,e\room\obj)
 
-			If TFormedX()<256 And TFormedZ()>-480 Then
+			If (TFormedX()<256 And TFormedZ()>-480) Then
 				e\room\roomDoors[0]\open = False
 			EndIf
 
-			If EntityYaw(e\room\objects[13],False)=0 Then
+			If (EntityYaw(e\room\objects[13],False)=0) Then
 				DebugLog("aaaaaaaa")
-				If EntityDistance(mainPlayer\collider, e\room\objects[12])<1.0 Then
+				If (EntityDistance(mainPlayer\collider, e\room\objects[12])<1.0) Then
 					DrawHandIcon = True
-					If MouseHit1 Then
+					If (MouseHit1) Then
 						RotateEntity(e\room\objects[13], 0, 1, 0, False)
 						PlaySound2(LoadTempSound("SFX/SCP/1123/Horror.ogg"))
 					EndIf
@@ -209,11 +209,11 @@ Function UpdateEvent_cont_1123_2(e.Events)
 			Else
 				DebugLog("bbbbbbb")
 				RotateEntity(e\room\objects[13], 0, CurveAngle(90, EntityYaw(e\room\objects[13], False), 40), 0)
-				If EntityYaw(e\room\objects[13], False)>30 Then
+				If (EntityYaw(e\room\objects[13], False)>30) Then
 					e\room\npc[0]\state = 3
 					PointEntity(e\room\npc[0]\collider, mainPlayer\collider)
 					AnimateNPC(e\room\npc[0], 570, 596, 0.5, False)
-					If e\room\npc[0]\frame => 596 Then
+					If (e\room\npc[0]\frame => 596) Then
 						e\eventState = 5
 						e\eventState2 = 0
 						PositionEntity(mainPlayer\collider, EntityX(e\room\obj,True),0.3,EntityZ(e\room\obj,True),True)
@@ -231,9 +231,9 @@ Function UpdateEvent_cont_1123_2(e.Events)
 			;RemoveNPC(e\room\npc[0])
 			;RemoveNPC(e\room\npc[1])
 			;RemoveEvent(e)
-		ElseIf e\eventState = 5 Then
+		ElseIf (e\eventState = 5) Then
 			e\eventState2 = e\eventState2 + timing\tickDuration
-			If e\eventState2 > 500 Then
+			If (e\eventState2 > 500) Then
 				RotateEntity(e\room\objects[9],0,90,0,False)
 				RotateEntity(e\room\objects[13],0,0,0,False)
 
@@ -261,12 +261,12 @@ Function UpdateEvent_cont_1123_2(e.Events)
 
 				e\eventState = 6
 			EndIf
-		ElseIf e\eventState = 6 Then
+		ElseIf (e\eventState = 6) Then
 			PointEntity(e\room\npc[0]\collider, mainPlayer\collider)
 
-			If e\room\npc[0]\sounds[0]<>0 Then
-				If e\room\npc[0]\soundChannels[0]<>0 Then
-					If (Not IsChannelPlaying(e\room\npc[0]\soundChannels[0])) Then
+			If (e\room\npc[0]\sounds[0]<>0) Then
+				If (e\room\npc[0]\soundChannels[0]<>0) Then
+					If ((Not IsChannelPlaying(e\room\npc[0]\soundChannels[0]))) Then
 						PlaySound2(LoadTempSound("SFX/SCP/1123/Gunshot.ogg"))
 						e\eventState = 7
 						FreeSound(e\room\npc[0]\sounds[0])
@@ -274,9 +274,9 @@ Function UpdateEvent_cont_1123_2(e.Events)
 					EndIf
 				EndIf
 
-				If e\room\npc[0]\sounds[0]<>0 Then e\room\npc[0]\soundChannels[0] = LoopRangedSound(e\room\npc[0]\sounds[0], e\room\npc[0]\soundChannels[0], mainPlayer\cam, e\room\npc[0]\collider, 7.0)
+				If (e\room\npc[0]\sounds[0]<>0) Then e\room\npc[0]\soundChannels[0] = LoopRangedSound(e\room\npc[0]\sounds[0], e\room\npc[0]\soundChannels[0], mainPlayer\cam, e\room\npc[0]\collider, 7.0)
 			EndIf
-		ElseIf e\eventState=7 Then
+		ElseIf (e\eventState=7) Then
 			PositionEntity(mainPlayer\collider, EntityX(e\room\obj,True),0.3,EntityZ(e\room\obj,True),True)
 			ResetEntity(mainPlayer\collider)
 			ShowEntity(mainPlayer\overlays[OVERLAY_WHITE])
@@ -290,8 +290,8 @@ Function UpdateEvent_cont_1123_2(e.Events)
 			PrevBloodloss = 0
 
 			For i = 0 To mainPlayer\inventory\size-1
-				If mainPlayer\inventory\items[i] <> Null Then
-					If mainPlayer\inventory\items[i]\itemtemplate\name = "Leaflet" Then
+				If (mainPlayer\inventory\items[i] <> Null) Then
+					If (mainPlayer\inventory\items[i]\itemtemplate\name = "Leaflet") Then
 						mainPlayer\inventory\items[i] = Null
 						RemoveItem(mainPlayer\inventory\items[i])
 						Exit

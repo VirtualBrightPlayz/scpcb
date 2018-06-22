@@ -14,8 +14,8 @@ Function UpdateEvent_dimension1499(e.Events)
 		;0: The player never entered SCP-1499
 		;1: The player had already entered the dimension at least once
 		;2: The player is in dimension
-	If mainPlayer\currRoom = e\room Then
-		If e\eventState < 2.0 Then
+	If (mainPlayer\currRoom = e\room) Then
+		If (e\eventState < 2.0) Then
 			;1499 random generator
 			;[Block]
 			;TODO: Reimplement.
@@ -49,7 +49,7 @@ Function UpdateEvent_dimension1499(e.Events)
 ;						For i = -2 To 2 Step 2
 ;							ch = CreateChunk(-1,x#*(i*2.5),EntityY(e\room\obj),z#)
 ;						Next
-;						;If Music(18)=0 Then Music(18) = LoadSound("SFX/Music/1499.ogg")
+;						;If (Music(18)=0) Then Music(18) = LoadSound("SFX/Music/1499.ogg")
 ;						e\eventState = 2.0
 ;						e\eventStr = 18
 ;					EndIf
@@ -59,10 +59,10 @@ Function UpdateEvent_dimension1499(e.Events)
 ;			EndIf
 			;[End Block]
 			For n.NPCs = Each NPCs
-				If n\npcType = NPCtype1499 Then
+				If (n\npcType = NPCtype1499) Then
 					n\idle = False
 					n\state = 0
-					;If Rand(2)=1 Then n\state2 = 500*3
+					;If (Rand(2)=1) Then n\state2 = 500*3
 					n\angle = Rnd(360)
 					PositionEntity(n\collider,EntityX(n\collider)+Rnd(-60.0,60.0),EntityY(n\collider)+0.05,EntityZ(n\collider)+Rnd(-60.0,60.0))
 					ResetEntity(n\collider)
@@ -84,16 +84,16 @@ Function UpdateEvent_dimension1499(e.Events)
 		ShowEntity(NTF_1499Sky)
 		Update1499Sky()
 		;ShouldPlay = 18 ;TODO
-		If EntityY(mainPlayer\collider)<800.0 Then PositionEntity(mainPlayer\collider,EntityX(mainPlayer\collider),800.1,EntityZ(mainPlayer\collider),True)
+		If (EntityY(mainPlayer\collider)<800.0) Then PositionEntity(mainPlayer\collider,EntityX(mainPlayer\collider),800.1,EntityZ(mainPlayer\collider),True)
 		ResetEntity(mainPlayer\collider)
 
 		mainPlayer\footstepOverride=3
 	Else
-		If e\eventState = 2.0 Then
+		If (e\eventState = 2.0) Then
 			HideEntity(NTF_1499Sky)
 			HideChunks()
 			For n.NPCs = Each NPCs
-				If n\npcType = NPCtype1499 Then
+				If (n\npcType = NPCtype1499) Then
 					;RemoveNPC(n)
 					n\idle = True
 				EndIf
@@ -107,9 +107,9 @@ End Function
 Function UpdateLeave1499()
 	Local r.Rooms, it.Items
 
-	If (Not (IsPlayerWearingTempName(mainPlayer,"scp1499") Or IsPlayerWearingTempName(mainPlayer,"super1499"))) And mainPlayer\currRoom\roomTemplate\name$ = "dimension1499" Then
+	If ((Not (IsPlayerWearingTempName(mainPlayer,"scp1499") Or IsPlayerWearingTempName(mainPlayer,"super1499"))) And mainPlayer\currRoom\roomTemplate\name$ = "dimension1499") Then
 		For r.Rooms = Each Rooms
-			If r = NTF_1499PrevRoom Then
+			If (r = NTF_1499PrevRoom) Then
 				mainPlayer\blinkTimer = -1
 				;Msg = "You removed the gas mask and reappeared inside the facility."
 				;MsgTimer = 70 * 5
@@ -122,8 +122,8 @@ Function UpdateLeave1499()
 				UpdateRooms()
 				For it.Items = Each Items
 					it\disttimer = 0
-					If it\itemtemplate\name = "scp1499" Or it\itemtemplate\name = "super1499" Then
-						If EntityY(it\collider) >= EntityY(mainPlayer\currRoom\obj)-5 Then
+					If (it\itemtemplate\name = "scp1499" Or it\itemtemplate\name = "super1499") Then
+						If (EntityY(it\collider) >= EntityY(mainPlayer\currRoom\obj)-5) Then
 							PositionEntity(it\collider,NTF_1499PrevX#,NTF_1499PrevY#+(EntityY(it\collider)-EntityY(mainPlayer\currRoom\obj)),NTF_1499PrevZ#)
 							ResetEntity(it\collider)
 						EndIf
@@ -169,7 +169,7 @@ Function CreateChunkParts(r.Rooms)
 
 	For i = 0 To ChunkAmount%
 		loc% = GetINISectionLocation(File$,"chunk"+i)
-		If loc > 0 Then
+		If (loc > 0) Then
 			StrTemp$ = GetINIString2(File,loc%,"count")
 			chp = New ChunkPart
 			chp\amount% = Int(StrTemp$)
@@ -181,7 +181,7 @@ Function CreateChunkParts(r.Rooms)
 				yaw$ = GetINIString2(File$,loc%,"obj"+j+"-yaw")
 				DebugLog("1499 chunk X/Z/Yaw: "+x$+"|"+z$+"|"+yaw$)
 				chp\obj%[j] = CopyEntity(r\objects[objID%])
-				If Lower(yaw$) = "random" Then
+				If (Lower(yaw$) = "random") Then
 					chp\randomYaw#[j] = Rnd(360)
 					RotateEntity(chp\obj[j],0,chp\randomYaw[j],0)
 				Else
@@ -194,7 +194,7 @@ Function CreateChunkParts(r.Rooms)
 				;EntityParent(chp\obj[j],r\obj)
 			Next
 			chp2 = Before(chp)
-			If chp2 <> Null Then
+			If (chp2 <> Null) Then
 				chp\id = chp2\id+1
 			EndIf
 			DebugLog("<<<<<<<<<<<<<<<<")
@@ -223,9 +223,9 @@ Function CreateChunk.Chunk(obj%,x#,y#,z#,spawnNPCs%=True)
 	;EntityColor(ch\debugobj%,Rand(0,255),Rand(0,255),Rand(0,255))
 	;EntityFX(ch\debugobj%,1+FE_WIRE)
 
-	If obj% > -1 Then
+	If (obj% > -1) Then
 		For chp = Each ChunkPart
-			If chp\id = obj% Then
+			If (chp\id = obj%) Then
 				ch\amount% = chp\amount%
 				For i = 0 To chp\amount
 					ch\obj[i] = CopyEntity(chp\obj[i])
@@ -236,10 +236,10 @@ Function CreateChunk.Chunk(obj%,x#,y#,z#,spawnNPCs%=True)
 				Exit
 			EndIf
 		Next
-		If spawnNPCs% Then
+		If (spawnNPCs%) Then
 			For i = 0 To Rand(5,10)
 				n.NPCs = CreateNPC(NPCtype1499,x+Rnd(-60.0,60.0),y+0.5,z+Rnd(-60.0,60.0))
-				If Rand(2)=1 Then n\state2 = 500*3
+				If (Rand(2)=1) Then n\state2 = 500*3
 				n\angle = Rnd(360)
 			Next
 		EndIf
@@ -261,28 +261,28 @@ Function UpdateChunks(r.Rooms,ChunkPartAmount%,spawnNPCs%=True)
 
 	For ch = Each Chunk
 		;If Distance(EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider),ch\x,ch\z)<ChunkHideDistance
-		;	;If ch\obj <> 0 Then ShowEntity(ch\obj)
+		;	;If (ch\obj <> 0) Then ShowEntity(ch\obj)
 		;	If ch\obj[0]<>0
 		;		For i = 0 To ch\amount
 		;			ShowEntity(ch\obj[i])
 		;		Next
 		;	EndIf
 		;Else
-		;	;If ch\obj <> 0 Then HideEntity(ch\obj)
+		;	;If (ch\obj <> 0) Then HideEntity(ch\obj)
 		;	If ch\obj[0]<>0
 		;		For i = 0 To ch\amount
 		;			HideEntity(ch\obj[i])
 		;		Next
 		;	EndIf
 		;EndIf
-		If ch\obj[0]<>0 Then
+		If (ch\obj[0]<>0) Then
 			For i = 0 To ch\amount
 				ShowEntity(ch\obj[i])
 			Next
 		EndIf
 		y# = ch\y
-		If Abs(EntityX(mainPlayer\collider)-ch\x)<20 Then
-			If Abs(EntityZ(mainPlayer\collider)-ch\z)<20 Then
+		If (Abs(EntityX(mainPlayer\collider)-ch\x)<20) Then
+			If (Abs(EntityZ(mainPlayer\collider)-ch\z)<20) Then
 				CurrChunkX# = ch\x
 				CurrChunkZ# = ch\z
 			EndIf
@@ -301,20 +301,20 @@ Function UpdateChunks(r.Rooms,ChunkPartAmount%,spawnNPCs%=True)
 	Repeat
 		temp2% = False
 		For ch = Each Chunk
-			If (ch\x=x#) And (ch\z=z#) Then
+			If ((ch\x=x#) And (ch\z=z#)) Then
 				temp2% = True
 				Exit
 			EndIf
 		Next
-		If (Not temp2%) Then
+		If ((Not temp2%)) Then
 			;ch2 = CreateChunk(r\objects[Rand(1,ChunkPartAmount%)],x#,y#,z#)
 			ChunkPartAmount2 = GetINIInt("Data/1499chunks.INI","general","count")
 			ch2 = CreateChunk(Rand(0,ChunkPartAmount2),x#,y#,z#,spawnNPCs%)
 		EndIf
-		If x# < (ChunkHideDistance+(CurrChunkX#)) Then
+		If (x# < (ChunkHideDistance+(CurrChunkX#))) Then
 			x# = x# + 40
 		Else
-			If z# < (ChunkHideDistance+(CurrChunkZ#)) Then
+			If (z# < (ChunkHideDistance+(CurrChunkZ#))) Then
 				x# = -(ChunkHideDistance+(CurrChunkX#))
 				z# = z# + 40
 			Else
@@ -331,8 +331,8 @@ Function HideChunks()
 	Local ch.Chunk,i%
 
 	For ch = Each Chunk
-		;If ch\obj <> 0 Then HideEntity(ch\obj)
-		If ch\obj[0]<>0 Then
+		;If (ch\obj <> 0) Then HideEntity(ch\obj)
+		If (ch\obj[0]<>0) Then
 			For i = 0 To ch\amount
 				HideEntity(ch\obj[i])
 			Next

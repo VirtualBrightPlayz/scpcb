@@ -6,13 +6,13 @@ Function InitializeNPCtypeD(n.NPCs)
 
     Local n2.NPCs
 	For n2 = Each NPCs
-		If (n2\npcType = n\npcType And n2\obj <> 0) Then
+		If ((n2\npcType = n\npcType And n2\obj <> 0)) Then
 			n\obj = CopyEntity(n2\obj)
 			Exit
 		EndIf
 	Next
 
-	If (n\obj = 0) Then
+	If ((n\obj = 0)) Then
 		n\obj = LoadAnimMesh("GFX/NPCs/classd/classd.b3d")
 	EndIf
 
@@ -34,7 +34,7 @@ Function UpdateNPCtypeD(n.NPCs)
             n\currSpeed = CurveValue(0.0, n\currSpeed, 5.0)
             Animate2(n\obj, AnimTime(n\obj), 210, 235, 0.1)
         Case 1 ;walking
-            If n\state2 = 1.0 Then
+            If (n\state2 = 1.0) Then
                 n\currSpeed = CurveValue(n\speed*0.7, n\currSpeed, 20.0)
             Else
                 n\currSpeed = CurveValue(0.015, n\currSpeed, 5.0)

@@ -58,9 +58,9 @@ Function UpdateEvent_cont_079_1(e.Events)
 	Local angle#
 
 	;[Block]
-	If mainPlayer\currRoom = e\room Then
+	If (mainPlayer\currRoom = e\room) Then
 
-		If e\eventState = 0 Then
+		If (e\eventState = 0) Then
 			;Music(4) = LoadSound("SFX/Music/079.ogg") ;TODO: fix
 			e\room\npc[0]=CreateNPC(NPCtypeGuard, EntityX(e\room\objects[2],True), EntityY(e\room\objects[2],True)+0.5, EntityZ(e\room\objects[2],True))
 			PointEntity(e\room\npc[0]\collider, e\room\obj)
@@ -74,36 +74,36 @@ Function UpdateEvent_cont_079_1(e.Events)
 
 		;TODO
 		;ShouldPlay = 4
-		If RemoteDoorOn Then
-			If e\room\roomDoors[0]\open Then
-				If e\room\roomDoors[0]\openstate > 50 Or EntityDistance(mainPlayer\collider, e\room\roomDoors[0]\frameobj)<0.5 Then
+		If (RemoteDoorOn) Then
+			If (e\room\roomDoors[0]\open) Then
+				If (e\room\roomDoors[0]\openstate > 50 Or EntityDistance(mainPlayer\collider, e\room\roomDoors[0]\frameobj)<0.5) Then
 					e\room\roomDoors[0]\openstate = Min(e\room\roomDoors[0]\openstate,50)
 					e\room\roomDoors[0]\open = False
 					PlaySound2((LoadTempSound("SFX/Door/DoorError.ogg")))
 				EndIf
 			EndIf
-		ElseIf e\eventState < 10000 Then
-			If e\eventState = 1 Then
+		ElseIf (e\eventState < 10000) Then
+			If (e\eventState = 1) Then
 				e\eventState = 2
-			ElseIf e\eventState = 2 Then
-				If EntityDistance(e\room\objects[0], mainPlayer\collider)<3.0 Then
+			ElseIf (e\eventState = 2) Then
+				If (EntityDistance(e\room\objects[0], mainPlayer\collider)<3.0) Then
 					e\eventState = 3
 					e\eventState2 = 1
 					;e\sounds[0] = LoadSound("SFX/SCP/079/Speech.ogg")
 					LoadEventSound(e,"SFX/SCP/079/Speech.ogg")
 					e\soundChannels[0] = PlaySound(e\sounds[0])
 				EndIf
-			ElseIf e\eventState = 3 Then
-				If e\eventState < 3500 Then
-					If IsChannelPlaying(e\soundChannels[0]) Then
-						If Rand(3) = 1 Then
+			ElseIf (e\eventState = 3) Then
+				If (e\eventState < 3500) Then
+					If (IsChannelPlaying(e\soundChannels[0])) Then
+						If (Rand(3) = 1) Then
 							EntityTexture(e\room\objects[1], OldAiPics(0))
 							ShowEntity(e\room\objects[1])
-						ElseIf Rand(10) = 1 Then
+						ElseIf (Rand(10) = 1) Then
 							HideEntity(e\room\objects[1])
 						EndIf
 					Else
-						If e\sounds[0] <> 0 Then
+						If (e\sounds[0] <> 0) Then
 							FreeSound(e\sounds[0])
 							e\sounds[0] = 0
 						EndIf
@@ -111,7 +111,7 @@ Function UpdateEvent_cont_079_1(e.Events)
 						ShowEntity(e\room\objects[1])
 					EndIf
 				Else
-					If EntityDistance(e\room\objects[0], mainPlayer\collider)<2.5 Then
+					If (EntityDistance(e\room\objects[0], mainPlayer\collider)<2.5) Then
 						e\eventState = 10001
 						;e\sounds[0] = LoadSound("SFX/SCP/079/Refuse.ogg")
 						LoadEventSound(e,"SFX/SCP/079/Refuse.ogg")
@@ -128,14 +128,14 @@ Function UpdateEvent_cont_079_1(e.Events)
 	EndIf
 
 
-	If e\eventState2 = 1 Then
-		If RemoteDoorOn Then
+	If (e\eventState2 = 1) Then
+		If (RemoteDoorOn) Then
 			LoadEventSound(e,"SFX/SCP/079/GateB.ogg")
 			e\soundChannels[0] = PlaySound(e\sounds[0])
 			e\eventState2 = 2
 
 			For e2.Events = Each Events
-				If e2\name="exit1" Or e2\name="gateaentrance" Then
+				If (e2\name="exit1" Or e2\name="gateaentrance") Then
 					e2\eventState3 = 1
 				EndIf
 			Next

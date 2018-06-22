@@ -30,7 +30,7 @@ Function FillRoom_cont_106_1(r.Rooms)
     EntityPickMode(r\objects[6], 3)
     PositionEntity(r\objects[6],r\x+784.0*RoomScale,-980.0*RoomScale,r\z+720.0*RoomScale,True)
 
-    ;If BumpEnabled Then
+    ;If (BumpEnabled) Then
     ;
     ;	For i = 1 To CountSurfaces(r\objects[6])
     ;		sf = GetSurface(r\objects[6],i)
@@ -39,8 +39,8 @@ Function FillRoom_cont_106_1(r.Rooms)
     ;		texname$ =  StripPath(TextureName(t))
     ;
     ;		mat.Materials=GetCache(texname)
-    ;		If mat<>Null Then
-    ;			If mat\bump<>0 Then
+    ;		If (mat<>Null) Then
+    ;			If (mat\bump<>0) Then
     ;				t1 = GetBrushTexture(b,0)
     ;
     ;				BrushTexture(b, t1, 0, 0)
@@ -49,12 +49,12 @@ Function FillRoom_cont_106_1(r.Rooms)
     ;
     ;				PaintSurface(sf,b)
     ;
-    ;				If t1<>0 Then FreeTexture(t1 : t1=0)
+    ;				If (t1<>0) Then FreeTexture(t1 : t1=0)
     ;			EndIf
     ;		EndIf
     ;
-    ;		If t<>0 Then FreeTexture(t : t=0)
-    ;		If b<>0 Then FreeBrush(b : b=0)
+    ;		If (t<>0) Then FreeTexture(t : t=0)
+    ;		If (b<>0) Then FreeBrush(b : b=0)
     ;	Next
     ;
     ;EndIf
@@ -137,21 +137,21 @@ Function UpdateEvent_cont_106_1(e.Events)
 
 	;eventstate2 = are the magnets on
 
-	If SoundTransmission Then
-		If e\eventState = 1 Then
+	If (SoundTransmission) Then
+		If (e\eventState = 1) Then
 			e\eventState3 = Min(e\eventState3+timing\tickDuration,4000)
 		EndIf
-		If (Not IsChannelPlaying(e\soundChannels[0])) Then e\soundChannels[0] = PlaySound(RadioStatic)
+		If ((Not IsChannelPlaying(e\soundChannels[0]))) Then e\soundChannels[0] = PlaySound(RadioStatic)
 	EndIf
 
-	If e\room\npc[0]=Null Then ;add the lure subject
+	If (e\room\npc[0]=Null) Then ;add the lure subject
 		TFormPoint(1088, 1096, 1728, e\room\obj, 0)
 		e\room\npc[0] = CreateNPC(NPCtypeD, TFormedX(), TFormedY(), TFormedZ())
 		TurnEntity(e\room\npc[0]\collider,0,e\room\angle+90,0,True)
 	EndIf
 
-	If mainPlayer\currRoom = e\room And e\room\npc[0]<>Null Then
-		If (Not e\loaded) Then
+	If (mainPlayer\currRoom = e\room And e\room\npc[0]<>Null) Then
+		If ((Not e\loaded)) Then
 			e\sounds[2] = LoadSound("SFX/Room/106Chamber/MagnetUp.ogg")
 			e\sounds[3] = LoadSound("SFX/Room/106Chamber/MagnetDown.ogg")
 			e\sounds[4] = LoadSound("SFX/Room/106Chamber/FemurBreaker.ogg")
@@ -162,12 +162,12 @@ Function UpdateEvent_cont_106_1(e.Events)
 		;ShowEntity(e\room\npc[0]\obj)
 
 		e\room\npc[0]\state=6
-		If e\room\npc[0]\idle = 0 Then
+		If (e\room\npc[0]\idle = 0) Then
 			AnimateNPC(e\room\npc[0], 17.0, 19.0, 0.01, False)
-			If e\room\npc[0]\frame = 19.0 Then e\room\npc[0]\idle = 1
+			If (e\room\npc[0]\frame = 19.0) Then e\room\npc[0]\idle = 1
 		Else
 			AnimateNPC(e\room\npc[0], 19.0, 17.0, -0.01, False)
-			If e\room\npc[0]\frame = 17.0 Then e\room\npc[0]\idle = 0
+			If (e\room\npc[0]\frame = 17.0) Then e\room\npc[0]\idle = 0
 		EndIf
 
 		PositionEntity(e\room\npc[0]\collider, EntityX(e\room\objects[5],True),EntityY(e\room\objects[5],True)+0.1,EntityZ(e\room\objects[5],True),True)
@@ -176,66 +176,66 @@ Function UpdateEvent_cont_106_1(e.Events)
 
 		temp = e\eventState2
 
-		If ((EntityY(e\room\objects[6],True)<-990*RoomScale) And (EntityY(e\room\objects[6],True)>-1275.0*RoomScale)) Then
+		If (((EntityY(e\room\objects[6],True)<-990*RoomScale) And (EntityY(e\room\objects[6],True)>-1275.0*RoomScale))) Then
 			e\room\levers[0]\locked = True
 		EndIf
 
 		leverstate = e\room\levers[0]\succ
-		If mainPlayer\grabbedEntity = e\room\objects[1] And DrawHandIcon = True Then e\eventState2 = leverstate
+		If (mainPlayer\grabbedEntity = e\room\objects[1] And DrawHandIcon = True) Then e\eventState2 = leverstate
 
-		If e\eventState2 <> temp Then
-			If e\eventState2 = False Then
+		If (e\eventState2 <> temp) Then
+			If (e\eventState2 = False) Then
 				PlaySound2(e\sounds[3])
 			Else
 				PlaySound2(e\sounds[2])
 			EndIf
 		EndIf
 
-		If ((e\eventState3>3200) Or (e\eventState3<2500)) Or (e\eventState<>1) Then
+		If (((e\eventState3>3200) Or (e\eventState3<2500)) Or (e\eventState<>1)) Then
 			SoundTransmission% = e\room\levers[1]\succ
 		EndIf
-		If (Not SoundTransmission) Then
-			If IsChannelPlaying(e\soundChannels[1]) Then StopChannel(e\soundChannels[1])
+		If ((Not SoundTransmission)) Then
+			If (IsChannelPlaying(e\soundChannels[1])) Then StopChannel(e\soundChannels[1])
 
-			If IsChannelPlaying(e\soundChannels[0]) Then StopChannel(e\soundChannels[0])
+			If (IsChannelPlaying(e\soundChannels[0])) Then StopChannel(e\soundChannels[0])
 		EndIf
 
-		If e\eventState = 0 Then
-			If SoundTransmission And Rand(100)=1 Then
-				If e\soundChannels[1] = 0 Then
+		If (e\eventState = 0) Then
+			If (SoundTransmission And Rand(100)=1) Then
+				If (e\soundChannels[1] = 0) Then
 					LoadEventSound(e,"SFX/Character/LureSubject/Idle"+Rand(1,6)+".ogg",1)
 					e\soundChannels[1] = PlaySound(e\sounds[1])
 				EndIf
-				If IsChannelPlaying(e\soundChannels[1]) = False Then
+				If (IsChannelPlaying(e\soundChannels[1]) = False) Then
 					LoadEventSound(e,"SFX/Character/LureSubject/Idle"+Rand(1,6)+".ogg",1)
 					e\soundChannels[1] = PlaySound(e\sounds[1])
 				EndIf
 			EndIf
 
 			UpdateButton(e\room\objects[4])
-			If mainPlayer\closestButton = e\room\objects[4] And MouseHit1 Then
+			If (mainPlayer\closestButton = e\room\objects[4] And MouseHit1) Then
 				e\eventState = 1 ;start the femur breaker
-				If SoundTransmission = True Then ;only play sounds if transmission is on
-					If IsChannelPlaying(e\soundChannels[1]) Then StopChannel(e\soundChannels[1])
+				If (SoundTransmission = True) Then ;only play sounds if transmission is on
+					If (IsChannelPlaying(e\soundChannels[1])) Then StopChannel(e\soundChannels[1])
 
 					e\soundChannels[1] = PlaySound(e\sounds[4])
 				EndIf
 			EndIf
-		ElseIf e\eventState = 1 Then ;nut BUSTED
-			If SoundTransmission And e\eventState3 < 2000 Then
-				If e\soundChannels[1] = 0 Then
+		ElseIf (e\eventState = 1) Then ;nut BUSTED
+			If (SoundTransmission And e\eventState3 < 2000) Then
+				If (e\soundChannels[1] = 0) Then
 					LoadEventSound(e,"SFX/Character/LureSubject/Sniffling.ogg",1)
 					e\soundChannels[1] = PlaySound(e\sounds[1])
 				EndIf
-				If IsChannelPlaying(e\soundChannels[1]) = False Then
+				If (IsChannelPlaying(e\soundChannels[1]) = False) Then
 					LoadEventSound(e,"SFX/Character/LureSubject/Sniffling.ogg",1)
 					e\soundChannels[1] = PlaySound(e\sounds[1])
 				EndIf
 			EndIf
 
-			If e\eventState3 => 2500 Then
+			If (e\eventState3 => 2500) Then
 
-				If e\eventState2 = 1 And e\eventState3-timing\tickDuration < 2500 Then
+				If (e\eventState2 = 1 And e\eventState3-timing\tickDuration < 2500) Then
 					PositionEntity(Curr106\collider, EntityX(e\room\objects[6], True), EntityY(e\room\objects[6], True), EntityZ(e\room\objects[6], True))
 					Contained106 = False
 					ShowEntity(Curr106\obj)
@@ -254,17 +254,17 @@ Function UpdateEvent_cont_106_1(e.Events)
 				AnimateNPC(Curr106, 206, 250, 0.1)
 				Curr106\idle = True
 
-				If e\eventState3-timing\tickDuration < 2500 Then
+				If (e\eventState3-timing\tickDuration < 2500) Then
 					d.Decals = CreateDecal(0, EntityX(e\room\objects[5], True), 936.0*RoomScale, EntityZ(e\room\objects[5], True), 90, 0, Rnd(360))
 					d\timer = 90000
 					d\alpha = 0.01 : d\alphaChange = 0.005
 					d\size = 0.1 : d\sizeChange = 0.003
 
-					If IsChannelPlaying(e\soundChannels[1]) Then StopChannel(e\soundChannels[1])
+					If (IsChannelPlaying(e\soundChannels[1])) Then StopChannel(e\soundChannels[1])
 
 					LoadEventSound(e,"SFX/Character/LureSubject/106Bait.ogg",1)
 					e\soundChannels[1]=PlaySound(e\sounds[1])
-				ElseIf e\eventState3-timing\tickDuration < 2900 And e\eventState3 => 2900 Then
+				ElseIf (e\eventState3-timing\tickDuration < 2900 And e\eventState3 => 2900) Then
 					d.Decals = CreateDecal(0, EntityX(e\room\objects[7], True), EntityY(e\room\objects[7], True) , EntityZ(e\room\objects[7], True), 0, 0, 0)
 					RotateEntity(d\obj, EntityPitch(e\room\objects[7], True)+Rand(10,20), EntityYaw(e\room\objects[7], True)+30, EntityRoll(d\obj))
 					MoveEntity(d\obj, 0,0,0.15)
@@ -276,11 +276,11 @@ Function UpdateEvent_cont_106_1(e.Events)
 					d\timer = 90000
 					d\alpha = 0.01 : d\alphaChange = 0.005
 					d\size = 0.05 : d\sizeChange = 0.002
-				ElseIf e\eventState3 > 3200 Then
+				ElseIf (e\eventState3 > 3200) Then
 					PositionEntity(e\room\objects[8], 0, 1000.0, 0, True)
 					PositionEntity(e\room\objects[7], 0, 1000.0, 0, True)
 
-					If e\eventState2 = True Then ;magnets off -> 106 caught
+					If (e\eventState2 = True) Then ;magnets off -> 106 caught
 						Contained106 = True
 					Else ;magnets off -> 106 comes out and attacks
 						PositionEntity(Curr106\collider, EntityX(e\room\objects[6], True), EntityY(e\room\objects[6], True), EntityZ(e\room\objects[6], True))
@@ -299,7 +299,7 @@ Function UpdateEvent_cont_106_1(e.Events)
 
 		EndIf
 
-		If e\eventState2 Then
+		If (e\eventState2) Then
 			PositionEntity(e\room\objects[6],EntityX(e\room\objects[6],True),CurveValue(-980.0*RoomScale + Sin(Float(TimeInPosMilliSecs())*0.04)*0.07,EntityY(e\room\objects[6],True),200.0),EntityZ(e\room\objects[6],True),True)
 			RotateEntity(e\room\objects[6], Sin(Float(TimeInPosMilliSecs())*0.03), EntityYaw(e\room\objects[6],True), -Sin(Float(TimeInPosMilliSecs())*0.025), True)
 		Else

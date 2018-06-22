@@ -35,20 +35,20 @@ Function UpdateEvent_cont_500_1499_2(e.Events)
 
 	;[Block]
 	;If mainPlayer\currRoom = e\room
-	If e\room\dist < 15 Then
-		If Contained106 Then e\eventState = 2.0
-		If Curr106\state < 0 Then e\eventState = 2.0
+	If (e\room\dist < 15) Then
+		If (Contained106) Then e\eventState = 2.0
+		If (Curr106\state < 0) Then e\eventState = 2.0
 
-		If e\eventState < 2.0 Then
-			If e\eventState = 0.0 Then
+		If (e\eventState < 2.0) Then
+			If (e\eventState = 0.0) Then
 				LoadEventSound(e,"SFX/Character/Scientist/EmilyScream.ogg")
 				e\soundChannels[0] = PlayRangedSound(e\sounds[0], mainPlayer\cam, e\room\objects[0], 100, 1.0)
 				de.Decals = CreateDecal(0, EntityX(e\room\objects[0],True), e\room\y+2.0*RoomScale, EntityZ(e\room\objects[0],True), 90, Rand(360), 0)
 				de\size = 0.5 : EntityAlpha(de\obj, 0.8)
 				EntityFX(de\obj,1)
 				e\eventState = 1.0
-			ElseIf e\eventState = 1.0 Then
-				If (Not IsChannelPlaying(e\soundChannels[0])) Then
+			ElseIf (e\eventState = 1.0) Then
+				If ((Not IsChannelPlaying(e\soundChannels[0]))) Then
 					e\eventState = 2.0
 					e\room\roomDoors[0]\locked = False
 				Else

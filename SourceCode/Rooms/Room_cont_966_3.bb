@@ -36,8 +36,8 @@ End Function
 
 
 Function UpdateEvent_cont_966_3(e.Events)
-	If mainPlayer\currRoom = e\room Then
-		If (Not e\loaded) Then
+	If (mainPlayer\currRoom = e\room) Then
+		If ((Not e\loaded)) Then
 			CreateNPC(NPCtype966, EntityX(e\room\objects[0],True), EntityY(e\room\objects[0],True), EntityZ(e\room\objects[0],True))
 			CreateNPC(NPCtype966, EntityX(e\room\objects[1],True), EntityY(e\room\objects[1],True), EntityZ(e\room\objects[1],True))
 			CreateNPC(NPCtype966, EntityX(e\room\objects[2],True), EntityY(e\room\objects[2],True), EntityZ(e\room\objects[2],True))

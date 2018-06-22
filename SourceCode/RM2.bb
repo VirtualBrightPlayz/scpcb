@@ -49,7 +49,7 @@ Function LoadRM2(rt.RoomTemplates)
 
 	Local file% = ReadFile(fullFilename)
 
-	If file=0 Then
+	If (file=0) Then
 		RuntimeError("Failed to read "+fullFilename)
 	EndIf
 
@@ -59,7 +59,7 @@ Function LoadRM2(rt.RoomTemplates)
 		header=header+Chr(ReadByte(file))
 	Next
 
-	If header<>RM2_HEADER Then
+	If (header<>RM2_HEADER) Then
 		RuntimeError("Error while loading "+fullFilename+": expected "+RM2_HEADER+", found "+header)
 	EndIf
 
@@ -133,18 +133,18 @@ Function LoadRM2(rt.RoomTemplates)
 					uvSet = ReadByte(file)
 
 					mat = GetCache(texName)
-					If mat=Null Then
+					If (mat=Null) Then
 						shouldLoadTexture=True
-					ElseIf mat\diff=0 Then
+					ElseIf (mat\diff=0) Then
 						shouldLoadTexture=True
 					EndIf
 
-					If (shouldLoadTexture) Then
-						If blendFlags=RM2_BLENDFLAG_NORMAL Then
+					If ((shouldLoadTexture)) Then
+						If (blendFlags=RM2_BLENDFLAG_NORMAL) Then
 							blendFlags = 2
-						ElseIf blendFlags=RM2_BLENDFLAG_DIFFUSE Then
+						ElseIf (blendFlags=RM2_BLENDFLAG_DIFFUSE) Then
 							blendFlags = 5
-						ElseIf blendFlags=RM2_BLENDFLAG_LM Then
+						ElseIf (blendFlags=RM2_BLENDFLAG_LM) Then
 							blendFlags = 3
 						EndIf
 
@@ -164,26 +164,26 @@ Function LoadRM2(rt.RoomTemplates)
 				layerCount = 0
 				For i% = 0 To 1
 					textureIndex[i] = ReadByte(file)
-					If textureIndex[i]>0 Then layerCount=layerCount+1
+					If (textureIndex[i]>0) Then layerCount=layerCount+1
 				Next
 
 				For i% = 0 To 1
 					mat = Null
-					If textureIndex[i]>0 Then
+					If (textureIndex[i]>0) Then
 						mat = Object.Materials(GetIntArrayListElem(usedTextures,textureIndex[i]-1))
 					EndIf
-					If mat<>Null Then
-						If brush=0 Then brush = CreateBrush(255,255,255)
+					If (mat<>Null) Then
+						If (brush=0) Then brush = CreateBrush(255,255,255)
 						BrushTexture(brush,mat\diff,0,i+(layerCount=2)) ;TODO: replace this hack once we can start using shaders
 					EndIf
 				Next
 
-				If brush<>0 And (layerCount=2) Then
+				If (brush<>0 And (layerCount=2)) Then
 					BrushTexture(brush,AmbientLightRoomTex,0,0)
 				EndIf
 
 				surf = CreateSurface(mesh)
-				If brush<>0 Then
+				If (brush<>0) Then
 					PaintSurface(surf,brush)
 					FreeBrush(brush)
 				EndIf
@@ -213,10 +213,10 @@ Function LoadRM2(rt.RoomTemplates)
 					AddTriangle(surf,vert1,vert2,vert3)
 				Next
 
-				If partType=RM2_OPAQUE Then
+				If (partType=RM2_OPAQUE) Then
 					AddMesh(mesh,opaqueMesh)
-				ElseIf partType=RM2_ALPHA Then
-					If alphaMesh=0 Then alphaMesh = CreateMesh()
+				ElseIf (partType=RM2_ALPHA) Then
+					If (alphaMesh=0) Then alphaMesh = CreateMesh()
 					AddMesh(mesh,alphaMesh)
 				EndIf
 				EntityPickMode(mesh,2,True)
@@ -282,7 +282,7 @@ Function LoadRM2(rt.RoomTemplates)
 				waypointTemp\z = ReadFloat(file)
 				For i% = 0 To 16
 					waypointTemp\connectedTo[i] = ReadByte(file)
-					If waypointTemp\connectedTo[i]=0 Then Exit
+					If (waypointTemp\connectedTo[i]=0) Then Exit
 				Next
 				waypointTemp\roomtemplate = rt
 				;did some waypoint-based lifeform just say... ICE
@@ -355,7 +355,7 @@ Function LoadRM2(rt.RoomTemplates)
 				range = ReadFloat(file)
 
 				For j = 0 To MaxRoomEmitters-1
-					If rt\tempSoundEmitter[j]=0 Then
+					If (rt\tempSoundEmitter[j]=0) Then
 						rt\tempSoundEmitterX[j]=x
 						rt\tempSoundEmitterY[j]=y
 						rt\tempSoundEmitterZ[j]=z
@@ -385,7 +385,7 @@ Function LoadRM2(rt.RoomTemplates)
 
 				prop = LoadProp(propName,x,y,z,pitch,yaw,roll,xScale,yScale,zScale)
 
-				If props=Null Then props=CreateIntArrayList()
+				If (props=Null) Then props=CreateIntArrayList()
 				PushIntArrayListElem(props,Handle(prop))
 				;[End Block]
 			Default
@@ -396,12 +396,12 @@ Function LoadRM2(rt.RoomTemplates)
 	DeleteIntArrayList(usedTextures)
 
 	EntityFX(opaqueMesh,1+2)
-	If alphaMesh<>0 Then
+	If (alphaMesh<>0) Then
 		EntityFX(alphaMesh,1+2+16)
 	EndIf
 
 	rt\opaqueMesh = opaqueMesh : HideEntity(opaqueMesh)
-	If alphaMesh<>0 Then
+	If (alphaMesh<>0) Then
 		rt\alphaMesh = alphaMesh : HideEntity(alphaMesh)
 	EndIf
 	rt\collisionObjs = collisionObjs
