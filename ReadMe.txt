@@ -50,7 +50,7 @@ The source code of the game is available on GitHub: https://github.com/Regalis11
 	Left Control			-	Crouch.
 	Tab				-	Toggle inventory.
 	F5				-	Save.
-	F3				-	[DATA EXPUNGED]
+	F3				-	Toggle console.
 
 	Pick up items and use levers/buttons by left-clicking on them.
 

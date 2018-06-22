@@ -63,12 +63,12 @@ Function LoadRMeshTexture%(roompath$,name$,flags%)
 	Local texture% = 0
 	If texture=0 Then texture = LoadTexture(roompath+name+".jpg",flags)
 	If texture=0 Then texture = LoadTexture(roompath+name+".png",flags)
-	If texture=0 Then texture = LoadTexture("GFX/map/Textures/"+name+".jpg",flags)
-	If texture=0 Then texture = LoadTexture("GFX/map/Textures/"+name+".png",flags)
+	If texture=0 Then texture = LoadTexture("GFX/Map/Textures/"+name+".jpg",flags)
+	If texture=0 Then texture = LoadTexture("GFX/Map/Textures/"+name+".png",flags)
 	If texture<>0 Then
 		DebugLog TextureName(texture)
 	Else
-		texture = LoadTexture("GFX/map/Textures/dirtymetal.jpg",flags);RuntimeError name
+		texture = LoadTexture("GFX/Map/Textures/dirtymetal.jpg",flags);RuntimeError name
 	EndIf
 	Return texture
 End Function

@@ -10,7 +10,7 @@ Function FillRoom_off_glss_3(r.Rooms)
     PositionEntity(d\buttons[1], r\x + 892.0 * RoomScale, EntityY(d\buttons[1],True), r\z + 255.0 * RoomScale, True)
     FreeEntity d\obj2 : d\obj2 = 0
 
-    ;r\objects[0] = LoadMesh("GFX/map/room3offices_hb.b3d",r\obj)
+    ;r\objects[0] = LoadMesh("GFX/Map/room3offices_hb.b3d",r\obj)
     ;EntityPickMode r\objects[0],2
     ;EntityType r\objects[0],HIT_MAP
     ;EntityAlpha r\objects[0],0.0

@@ -259,7 +259,7 @@ Function LoadEntities()
 	;Listener = CreateListener(mainPlayer\cam)
 
 	DrawLoading(5)
-	TeslaTexture = LoadTexture("GFX/map/Textures/tesla.jpg", 1+2)
+	TeslaTexture = LoadTexture("GFX/Map/Textures/tesla.jpg", 1+2)
 
 	LightSpriteTex(0) = LoadTexture("GFX/Sprites/light1.jpg", 1)
 	LightSpriteTex(1) = LoadTexture("GFX/Sprites/light2.jpg", 1)
@@ -297,13 +297,13 @@ Function LoadEntities()
 
 	DrawLoading(25)
 
-	Monitor = LoadMesh("GFX/map/monitor.b3d")
+	Monitor = LoadMesh("GFX/Map/monitor.b3d")
 	HideEntity Monitor
 	MonitorTexture = LoadTexture("GFX/General/monitortexture.jpg")
 
-	CamBaseOBJ = LoadMesh("GFX/map/cambase.x")
+	CamBaseOBJ = LoadMesh("GFX/Map/cambase.x")
 	HideEntity(CamBaseOBJ)
-	CamOBJ = LoadMesh("GFX/map/CamHead.b3d")
+	CamOBJ = LoadMesh("GFX/Map/CamHead.b3d")
 	HideEntity(CamOBJ)
 
 	InitItemTemplates()
@@ -562,17 +562,17 @@ Function InitLoadGame()
 				;[Block]
 				DrawLoading(91)
 				e\room\objects[0] = CreatePlane()
-				Local planetex% = LoadTexture("GFX/map/Rooms/dimension1499/grit3.jpg")
+				Local planetex% = LoadTexture("GFX/Map/Rooms/dimension1499/grit3.jpg")
 				EntityTexture e\room\objects[0],planetex%
 				FreeTexture planetex%
 				PositionEntity e\room\objects[0],0,EntityY(e\room\obj),0
 				EntityType e\room\objects[0],HIT_MAP
 				;EntityParent e\room\objects[0],e\room\obj
 				DrawLoading(92)
-				NTF_1499Sky = sky_CreateSky("GFX/map/sky/1499sky")
+				NTF_1499Sky = sky_CreateSky("GFX/Map/sky/1499sky")
 				DrawLoading(93)
 				For i = 1 To 15
-					e\room\objects[i] = LoadMesh("GFX/map/Rooms/dimension1499/1499object"+i+".b3d")
+					e\room\objects[i] = LoadMesh("GFX/Map/Rooms/dimension1499/1499object"+i+".b3d")
 					HideEntity e\room\objects[i]
 				Next
 				DrawLoading(96)
@@ -772,6 +772,3 @@ Function NullGame()
 	Next
 
 End Function
-;~IDEal Editor Parameters:
-;~F#49#4D#51#63#73#8F#BF
-;~C#Blitz3D

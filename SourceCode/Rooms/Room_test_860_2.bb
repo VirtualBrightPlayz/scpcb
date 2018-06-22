@@ -6,12 +6,12 @@ Function FillRoom_test_860_2(r.Rooms)
 	Local t1;, Bump
 
     ;the wooden door
-    r\objects[2] = LoadMesh("GFX/map/forest/door_frame.b3d")
+    r\objects[2] = LoadMesh("GFX/Map/forest/door_frame.b3d")
     PositionEntity r\objects[2],r\x + 184.0 * RoomScale,0,r\z,True
     ScaleEntity r\objects[2],45.0*RoomScale,45.0*RoomScale,80.0*RoomScale,True
     EntityParent r\objects[2],r\obj
 
-    r\objects[3] =  LoadMesh("GFX/map/forest/door.b3d")
+    r\objects[3] =  LoadMesh("GFX/Map/forest/door.b3d")
     PositionEntity r\objects[3],r\x + 112.0 * RoomScale,0,r\z+0.05,True
     EntityType r\objects[3], HIT_MAP
 
@@ -514,25 +514,25 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Rooms)
 	;load assets
 
 	Local hmap[ROOM4], mask[ROOM4]
-	Local GroundTexture = LoadTexture("GFX/map/forest/forestfloor.jpg")
+	Local GroundTexture = LoadTexture("GFX/Map/forest/forestfloor.jpg")
 	;TextureBlend GroundTexture, FE_ALPHACURRENT
-	Local PathTexture = LoadTexture("GFX/map/forest/forestpath.jpg")
+	Local PathTexture = LoadTexture("GFX/Map/forest/forestpath.jpg")
 	;TextureBlend PathTexture, FE_ALPHACURRENT
 
-	hmap[ROOM1]=LoadImage("GFX/map/forest/forest1h.png")
-	mask[ROOM1]=LoadTexture("GFX/map/forest/forest1h_mask.png",1+2)
+	hmap[ROOM1]=LoadImage("GFX/Map/forest/forest1h.png")
+	mask[ROOM1]=LoadTexture("GFX/Map/forest/forest1h_mask.png",1+2)
 
-	hmap[ROOM2]=LoadImage("GFX/map/forest/forest2h.png")
-	mask[ROOM2]=LoadTexture("GFX/map/forest/forest2h_mask.png",1+2)
+	hmap[ROOM2]=LoadImage("GFX/Map/forest/forest2h.png")
+	mask[ROOM2]=LoadTexture("GFX/Map/forest/forest2h_mask.png",1+2)
 
-	hmap[ROOM2C]=LoadImage("GFX/map/forest/forest2Ch.png")
-	mask[ROOM2C]=LoadTexture("GFX/map/forest/forest2Ch_mask.png",1+2)
+	hmap[ROOM2C]=LoadImage("GFX/Map/forest/forest2Ch.png")
+	mask[ROOM2C]=LoadTexture("GFX/Map/forest/forest2Ch_mask.png",1+2)
 
-	hmap[ROOM3]=LoadImage("GFX/map/forest/forest3h.png")
-	mask[ROOM3]=LoadTexture("GFX/map/forest/forest3h_mask.png",1+2)
+	hmap[ROOM3]=LoadImage("GFX/Map/forest/forest3h.png")
+	mask[ROOM3]=LoadTexture("GFX/Map/forest/forest3h_mask.png",1+2)
 
-	hmap[ROOM4]=LoadImage("GFX/map/forest/forest4h.png")
-	mask[ROOM4]=LoadTexture("GFX/map/forest/forest4h_mask.png",1+2)
+	hmap[ROOM4]=LoadImage("GFX/Map/forest/forest4h.png")
+	mask[ROOM4]=LoadTexture("GFX/Map/forest/forest4h_mask.png",1+2)
 
 	For i = ROOM1 To ROOM4
 		;TextureBlend mask[i], FE_ALPHAMODULATE
@@ -541,14 +541,14 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Rooms)
 	Next
 
 	;detail meshes
-	;fr\detailMesh[0]=LoadMesh("GFX/map/forest/detail/860_1_tree1.b3d")
-	;fr\detailMesh[1]=LoadMesh("GFX/map/forest/detail/860_1_tree1_leaves.b3d")
-	fr\detailMesh[1]=LoadMesh("GFX/map/forest/detail/treetest4.b3d");1.b3d)
+	;fr\detailMesh[0]=LoadMesh("GFX/Map/forest/detail/860_1_tree1.b3d")
+	;fr\detailMesh[1]=LoadMesh("GFX/Map/forest/detail/860_1_tree1_leaves.b3d")
+	fr\detailMesh[1]=LoadMesh("GFX/Map/forest/detail/treetest4.b3d");1.b3d)
 	;EntityParent fr\detailMesh[1],fr\detailMesh[0]
-	fr\detailMesh[2]=LoadMesh("GFX/map/forest/detail/rock.b3d")
-	fr\detailMesh[3]=LoadMesh("GFX/map/forest/detail/rock2.b3d")
-	fr\detailMesh[4]=LoadMesh("GFX/map/forest/detail/treetest5.b3d")
-	fr\detailMesh[5]=LoadMesh("GFX/map/forest/wall.b3d")
+	fr\detailMesh[2]=LoadMesh("GFX/Map/forest/detail/rock.b3d")
+	fr\detailMesh[3]=LoadMesh("GFX/Map/forest/detail/rock2.b3d")
+	fr\detailMesh[4]=LoadMesh("GFX/Map/forest/detail/treetest5.b3d")
+	fr\detailMesh[5]=LoadMesh("GFX/Map/forest/wall.b3d")
 
 	For i%=ROOM1 To ROOM4
 		HideEntity fr\tileMesh[i]

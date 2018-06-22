@@ -23,7 +23,7 @@ Function FillRoom_cont_106_1(r.Rooms)
     d = CreateDoor(r\zone, r\x - 624.0 * RoomScale, -1280.0 * RoomScale, r\z, 90, r, False, False, 4)
     d\autoClose = False : d\open = False
 
-    r\objects[6] = LoadMesh("GFX/map/room1062.b3d")
+    r\objects[6] = LoadMesh("GFX/Map/room1062.b3d")
 
     ScaleEntity (r\objects[6],RoomScale,RoomScale,RoomScale)
     EntityType r\objects[6], HIT_MAP

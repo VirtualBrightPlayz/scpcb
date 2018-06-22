@@ -5,10 +5,10 @@ Function InitializeNPCtype066(n.NPCs)
     EntityType n\collider, HIT_PLAYER
 
     n\obj = LoadAnimMesh("GFX/NPCs/scp066/scp-066.b3d")
-    Local temp# = GetINIFloat("DATA/NPCs.ini", "SCP-066", "scale")/2.5
+    Local temp# = GetINIFloat("Data/NPCs.ini", "SCP-066", "scale")/2.5
     ScaleEntity n\obj, temp, temp, temp
 
-    n\speed = (GetINIFloat("DATA/NPCs.ini", "SCP-066", "speed") / 100.0)
+    n\speed = (GetINIFloat("Data/NPCs.ini", "SCP-066", "speed") / 100.0)
 End Function
 
 Function UpdateNPCtype066(n.NPCs)

@@ -31,7 +31,7 @@ Function FillRoom_cont_012_2(r.Rooms)
     EntityPickMode r\levers[0]\obj, 1, False
     EntityRadius r\levers[0]\obj, 0.1
 
-    r\objects[2] = LoadMesh("GFX/map/room012_2.b3d")
+    r\objects[2] = LoadMesh("GFX/Map/room012_2.b3d")
     ScaleEntity r\objects[2], RoomScale, RoomScale, RoomScale
     PositionEntity(r\objects[2], r\x - 360 * RoomScale, - 130 * RoomScale, r\z + 456.0 * RoomScale, 0)
     EntityParent(r\objects[2], r\obj)
@@ -44,8 +44,8 @@ Function FillRoom_cont_012_2(r.Rooms)
     EntityParent(r\objects[3], r\obj)
     HideEntity r\objects[3]
 
-    r\objects[4] = LoadMesh("GFX/map/room012_3.b3d")
-    Local tex% = LoadTexture("GFX/map/Textures/scp-012_0.jpg")
+    r\objects[4] = LoadMesh("GFX/Map/room012_3.b3d")
+    Local tex% = LoadTexture("GFX/Map/Textures/scp-012_0.jpg")
     EntityTexture r\objects[4],tex, 0,1
     ScaleEntity r\objects[4], RoomScale, RoomScale, RoomScale
     PositionEntity(r\objects[4], r\x - 360 * RoomScale, - 130 * RoomScale, r\z + 456.0 * RoomScale, 0)
@@ -168,7 +168,7 @@ Function UpdateEvent_cont_012_2(e.Events)
 							mainPlayer\injuries=mainPlayer\injuries+0.5
 							PlaySound2 LoadTempSound("SFX/SCP/012/Speech2.ogg")
 						ElseIf e\eventState3>31*70 And e\eventState3-timing\tickDuration=<31*70 Then
-							Local tex% = LoadTexture("GFX/map/Textures/scp-012_1.jpg")
+							Local tex% = LoadTexture("GFX/Map/Textures/scp-012_1.jpg")
 							EntityTexture (e\room\objects[4], tex,0,1)
 							FreeTexture tex
 
@@ -182,14 +182,14 @@ Function UpdateEvent_cont_012_2(e.Events)
 							mainPlayer\injuries=mainPlayer\injuries+0.3
 							PlaySound2 LoadTempSound("SFX/SCP/012/Speech5.ogg")
 						ElseIf e\eventState3>63*70 And e\eventState3-timing\tickDuration=<63*70 Then
-							tex = LoadTexture("GFX/map/Textures/scp-012_2.jpg")
+							tex = LoadTexture("GFX/Map/Textures/scp-012_2.jpg")
 							EntityTexture (e\room\objects[4], tex,0,1)
 							FreeTexture tex
 
 							mainPlayer\injuries=mainPlayer\injuries+0.5
 							PlaySound2 LoadTempSound("SFX/SCP/012/Speech6.ogg")
 						ElseIf e\eventState3>74*70 And e\eventState3-timing\tickDuration=<74*70 Then
-							tex = LoadTexture("GFX/map/Textures/scp-012_3.jpg")
+							tex = LoadTexture("GFX/Map/Textures/scp-012_3.jpg")
 							EntityTexture (e\room\objects[4], tex,0,1)
 							FreeTexture tex
 

@@ -12,7 +12,7 @@ Function FillRoom_hll_fan_2(r.Rooms)
             EndIf
         EndIf
     Next
-    If r\objects[0]=0 Then r\objects[0] = LoadMesh("GFX/map/fan.b3d")
+    If r\objects[0]=0 Then r\objects[0] = LoadMesh("GFX/Map/fan.b3d")
     ScaleEntity r\objects[0], RoomScale, RoomScale, RoomScale
     PositionEntity(r\objects[0], r\x - 248 * RoomScale, 528 * RoomScale, r\z, 0)
     EntityParent(r\objects[0], r\obj)

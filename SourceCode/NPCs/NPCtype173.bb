@@ -23,10 +23,10 @@ Function InitializeNPCtype173(n.NPCs)
 		FreeTexture(texFestive)
 	EndIf
 
-	Local temp# = (GetINIFloat("DATA/NPCs.ini", "SCP-173", "scale") / MeshDepth(n\obj))
+	Local temp# = (GetINIFloat("Data/NPCs.ini", "SCP-173", "scale") / MeshDepth(n\obj))
 	ScaleEntity(n\obj, temp, temp, temp)
 
-	n\speed = (GetINIFloat("DATA/NPCs.ini", "SCP-173", "speed") / 100.0)
+	n\speed = (GetINIFloat("Data/NPCs.ini", "SCP-173", "speed") / 100.0)
 
 	n\obj2 = LoadMesh("GFX/NPCs/scp173/173box.b3d")
 	ScaleEntity(n\obj2, RoomScale, RoomScale, RoomScale)

@@ -13,7 +13,7 @@ Function FillRoom_test_smallwindow_2(r.Rooms)
     PositionEntity(r\objects[1], r\x - 632.0 * RoomScale, 0.5, r\z - 16.0 * RoomScale)
     EntityParent(r\objects[1], r\obj)
 
-    Local Glasstex = LoadTexture("GFX/map/Textures/glass.png",1+2)
+    Local Glasstex = LoadTexture("GFX/Map/Textures/glass.png",1+2)
     r\objects[2] = CreateSprite()
     EntityTexture(r\objects[2],Glasstex)
     SpriteViewMode(r\objects[2],2)

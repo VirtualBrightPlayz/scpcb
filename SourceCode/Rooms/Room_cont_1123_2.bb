@@ -43,13 +43,13 @@ Function FillRoom_cont_1123_2(r.Rooms)
     r\objects[7] = CreatePivot(r\obj)
     PositionEntity(r\objects[7], r\x - 640.0 * RoomScale, r\y + 620.0 * RoomScale, r\z - 864.0 * RoomScale, True)
 
-    r\objects[8] = LoadMesh("GFX/map/forest/door_frame.b3d")
+    r\objects[8] = LoadMesh("GFX/Map/forest/door_frame.b3d")
     PositionEntity r\objects[8], r\x - 272.0 * RoomScale, 512.0 * RoomScale, r\z + 288.0 * RoomScale,True
     RotateEntity r\objects[8],0,90,0,True
     ScaleEntity r\objects[8],45.0*RoomScale,45.0*RoomScale,80.0*RoomScale,True
     EntityParent r\objects[8],r\obj
 
-    r\objects[9] =  LoadMesh("GFX/map/forest/door.b3d")
+    r\objects[9] =  LoadMesh("GFX/Map/forest/door.b3d")
     PositionEntity r\objects[9],r\x - 272.0 * RoomScale, 512.0 * RoomScale, r\z + (288.0-70) * RoomScale,True
     RotateEntity r\objects[9],0,10,0,True
     EntityType r\objects[9], HIT_MAP
@@ -82,7 +82,7 @@ Function FillRoom_cont_1123_2(r.Rooms)
     ScaleEntity r\objects[13],46.0*RoomScale,45.0*RoomScale,46.0*RoomScale,True
     EntityParent r\objects[13],r\obj
 
-    ;r\objects[14] = LoadMesh("GFX/map/1123_hb.b3d",r\obj)
+    ;r\objects[14] = LoadMesh("GFX/Map/1123_hb.b3d",r\obj)
     ;EntityPickMode r\objects[14],2
     ;EntityType r\objects[14],HIT_MAP
     ;EntityAlpha r\objects[14],0.0

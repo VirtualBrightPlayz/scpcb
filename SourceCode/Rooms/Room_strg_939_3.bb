@@ -60,7 +60,7 @@ Function FillRoom_strg_939_3(r.Rooms)
     r\objects[16] = CreatePivot(r\obj)
     PositionEntity(r\objects[16], r\x - 432.0 * RoomScale, -5550.0 * RoomScale, r\z + 2976.0 * RoomScale, True)
 
-    ;r\objects[20] = LoadMesh("GFX/map/room3storage_hb.b3d",r\obj)
+    ;r\objects[20] = LoadMesh("GFX/Map/room3storage_hb.b3d",r\obj)
     ;EntityPickMode r\objects[20],2
     ;EntityType r\objects[20],HIT_MAP
     ;EntityAlpha r\objects[20],0.0

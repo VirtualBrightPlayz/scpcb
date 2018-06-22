@@ -142,10 +142,10 @@ Function FreeTextureCache()
 End Function
 
 Function LoadRMeshTexture%(roompath$,name$,flags%)
-	If FileType("GFX/map/extend_gateb/"+name)=1 Then
-		Return LoadTexture("GFX/map/extend_gateb/"+name,flags)
+	If FileType("GFX/Map/extend_gateb/"+name)=1 Then
+		Return LoadTexture("GFX/Map/extend_gateb/"+name,flags)
 	Else
-		Return LoadTexture("GFX/map/"+name,flags) ;TODO: don't hardcode?
+		Return LoadTexture("GFX/Map/"+name,flags) ;TODO: don't hardcode?
 	EndIf
 End Function
 
@@ -495,7 +495,7 @@ Function LoadRMesh(file$)
 	
 	FreeTexture blankTexture
 	
-	Local rm2% = WriteFile("GFX/map/extend_gateb/extend_gateb.rm2");Replace(origFile,".rmesh",".rm2"))
+	Local rm2% = WriteFile("GFX/Map/extend_gateb/extend_gateb.rm2");Replace(origFile,".rmesh",".rm2"))
 	WriteByte(rm2,Asc(".")) : WriteByte(rm2,Asc("R")) : WriteByte(rm2,Asc("M")) : WriteByte(rm2,Asc("2"))
 	
 	WriteByte(rm2,RM2_TEXTURES)
@@ -683,18 +683,18 @@ Function LoadRMesh(file$)
 	DebugLog Replace(StripPath(origFile),".rmesh","")
 	Select Replace(StripPath(origFile),".rmesh","")
 		Case "cont_049_2"
-			hbMesh = LoadMesh("GFX/map/room049_hb.b3d")
+			hbMesh = LoadMesh("GFX/Map/room049_hb.b3d")
 		Case "cont_1123_2"
-			hbMesh = LoadMesh("GFX/map/1123_hb.b3d")
+			hbMesh = LoadMesh("GFX/Map/1123_hb.b3d")
 		Case "hll_dirty_3"
-			hbMesh = LoadMesh("GFX/map/room3z2_hb.b3d")
+			hbMesh = LoadMesh("GFX/Map/room3z2_hb.b3d")
 		Case "hll_sl_2"
-			hbMesh = LoadMesh("GFX/map/room2sl_hb.b3d")
+			hbMesh = LoadMesh("GFX/Map/room2sl_hb.b3d")
 			DebugLog "HBMESH "+hbMesh
 		Case "off_glss_3"
-			hbMesh = LoadMesh("GFX/map/room3offices_hb.b3d")
+			hbMesh = LoadMesh("GFX/Map/room3offices_hb.b3d")
 		Case "strg_939_2"
-			hbMesh = LoadMesh("GFX/map/room3storage_hb.b3d")
+			hbMesh = LoadMesh("GFX/Map/room3storage_hb.b3d")
 	End Select
 	
 	If hbMesh<>0 Then
@@ -1270,7 +1270,7 @@ RotateEntity cam,45,0,0
 CameraRange cam,1.0,5000.0
 
 ;LoadRoomTemplates("Data/rooms.ini")
-LoadRMesh("GFX/map/exit_gateb_1/exit_gateb_1.rmesh")
+LoadRMesh("GFX/Map/exit_gateb_1/exit_gateb_1.rmesh")
 
 ;~IDEal Editor Parameters:
 ;~F#1C#2B#3B#4C#62#69#70#7F#87#B3#BA#C2#D2#4C7#4D9

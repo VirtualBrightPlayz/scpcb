@@ -13,21 +13,21 @@ Function LoadRoomTemplates(file$)
 		If (Left(ln,1)="[") And (Instr(ln,"room amb")=0) Then
 			ln = Mid(ln, 2, Len(ln) - 2)
 			meshpath$ = GetINIString(file,ln,"meshpath")
-			CreateDir("newGFX/GFX/map/"+ln)
-			CopyRMesh meshpath,"newGFX/GFX/map/"+ln+"/"+ln+".rmesh"
+			CreateDir("newGFX/GFX/Map/"+ln)
+			CopyRMesh meshpath,"newGFX/GFX/Map/"+ln+"/"+ln+".rmesh"
 			DeleteFile meshpath
-			PutINIValue("Data/newRooms.ini",ln,"meshpath","GFX/map/"+ln+"/"+ln+".rmesh")
+			PutINIValue("Data/newRooms.ini",ln,"meshpath","GFX/Map/"+ln+"/"+ln+".rmesh")
 			meshpath = Replace(meshpath,".rmesh","")
 			meshpath = Replace(meshpath,"_opt","") : meshpath = Replace(meshpath,"_opt","")
 			counter% = 1
 			While FileType(meshpath+"_lm"+counter+".png")=1
-				CopyFile meshpath+"_lm"+counter+".png","newGFX/GFX/map/"+ln+"/"+ln+"_lm"+counter+".png"
+				CopyFile meshpath+"_lm"+counter+".png","newGFX/GFX/Map/"+ln+"/"+ln+"_lm"+counter+".png"
 				DeleteFile meshpath+"_lm"+counter+".png"
 				counter=counter+1
 			Wend
 			counter = 1
 			While FileType(meshpath+"_lm"+counter+".bmp")=1
-				CopyFile meshpath+"_lm"+counter+".png","newGFX/GFX/map/"+ln+"/"+ln+"_lm"+counter+".png"
+				CopyFile meshpath+"_lm"+counter+".png","newGFX/GFX/Map/"+ln+"/"+ln+"_lm"+counter+".png"
 				DeleteFile meshpath+"_lm"+counter+".bmp"
 				counter=counter+1
 			Wend

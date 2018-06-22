@@ -17,12 +17,12 @@ Function InitializeNPCtype106(n.NPCs)
 
     n\gravity = False
 
-    Local temp# = (GetINIFloat("DATA/NPCs.ini", "SCP-106", "scale") / 2.2)
+    Local temp# = (GetINIFloat("Data/NPCs.ini", "SCP-106", "scale") / 2.2)
     ScaleEntity(n\obj, temp, temp, temp)
 
     Local oldManEyes% = LoadTexture("GFX/NPCs/scp106/oldmaneyes.jpg")
 
-    n\speed = (GetINIFloat("DATA/NPCs.ini", "SCP-106", "speed") / 100.0)
+    n\speed = (GetINIFloat("Data/NPCs.ini", "SCP-106", "speed") / 100.0)
 
     n\obj2 = CreateSprite()
     ScaleSprite(n\obj2, 0.03, 0.03)

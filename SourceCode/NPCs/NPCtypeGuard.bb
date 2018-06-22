@@ -14,9 +14,9 @@ Function InitializeNPCtypeGuard(n.NPCs)
 
     LoadOrCopyMesh(n, "GFX/NPCs/guard/guard.b3d")
 
-    n\speed = (GetINIFloat("DATA/NPCs.ini", "Guard", "speed") / 100.0)
+    n\speed = (GetINIFloat("Data/NPCs.ini", "Guard", "speed") / 100.0)
 
-    Local temp# = (GetINIFloat("DATA/NPCs.ini", "Guard", "scale") / 2.5)
+    Local temp# = (GetINIFloat("Data/NPCs.ini", "Guard", "scale") / 2.5)
     ScaleEntity(n\obj, temp, temp, temp)
 
     MeshCullBox(n\obj, -MeshWidth(n\obj), -MeshHeight(n\obj), -MeshDepth(n\obj), MeshWidth(n\obj)*2, MeshHeight(n\obj)*2, MeshDepth(n\obj)*2)

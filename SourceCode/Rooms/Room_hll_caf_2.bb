@@ -152,22 +152,22 @@ Function Update294()
 					Input294 = Right(Input294, Len(Input294)-9)
 				EndIf
 
-				Local loc% = GetINISectionLocation("DATA/SCP-294.ini", Input294)
+				Local loc% = GetINISectionLocation("Data/SCP-294.ini", Input294)
 
 				If loc > 0 Then
-					strtemp$ = GetINIString2("DATA/SCP-294.ini", loc, "dispensesound")
+					strtemp$ = GetINIString2("Data/SCP-294.ini", loc, "dispensesound")
 					If strtemp = "" Then
 						mainPlayer\currRoom\soundCHN = PlaySound(LoadTempSound("SFX/SCP/294/dispense1.ogg"))
 					Else
 						mainPlayer\currRoom\soundCHN = PlaySound(LoadTempSound(strtemp))
 					EndIf
 
-					If GetINIInt2("DATA/SCP-294.ini", loc, "explosion")=True Then
+					If GetINIInt2("Data/SCP-294.ini", loc, "explosion")=True Then
 						ExplosionTimer = 135
-						DeathMSG = GetINIString2("DATA/SCP-294.ini", loc, "deathmessage")
+						DeathMSG = GetINIString2("Data/SCP-294.ini", loc, "deathmessage")
 					EndIf
 
-					strtemp$ = GetINIString2("DATA/SCP-294.ini", loc, "color")
+					strtemp$ = GetINIString2("Data/SCP-294.ini", loc, "color")
 
 					Local sep1 = Instr(strtemp, ",", 1)
 					Local sep2 = Instr(strtemp, ",", sep1+1)
@@ -175,8 +175,8 @@ Function Update294()
 					Local g% = Trim(Mid(strtemp, sep1+1, sep2-sep1-1))
 					Local b% = Trim(Right(strtemp, Len(strtemp)-sep2))
 
-					Local alpha# = Float(GetINIString2("DATA/SCP-294.ini", loc, "alpha"))
-					Local glow = GetINIInt2("DATA/SCP-294.ini", loc, "glow")
+					Local alpha# = Float(GetINIString2("Data/SCP-294.ini", loc, "alpha"))
+					Local glow = GetINIInt2("Data/SCP-294.ini", loc, "glow")
 					If alpha = 0 Then alpha = 1.0
 					If glow Then alpha = -alpha
 

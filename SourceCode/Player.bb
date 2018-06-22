@@ -1678,7 +1678,7 @@ Function UpdateInventory(player.Player)
 					;the state of refined items is more than 1.0 (fine setting increases it by 1, very fine doubles it)
 					x2 = (player\selectedItem\state+1.0)
 
-					Local iniStr$ = "DATA/SCP-294.ini"
+					Local iniStr$ = "Data/SCP-294.ini"
 
 					Local loc% = GetINISectionLocation(iniStr, player\selectedItem\name)
 

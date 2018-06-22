@@ -11,9 +11,9 @@ Function InitializeNPCtype049(n.NPCs)
 
     n\obj = LoadAnimMesh("GFX/NPCs/scp049/scp-049.b3d")
 
-    n\speed = GetINIFloat("DATA/NPCs.ini", "SCP-049", "speed") / 100.0
+    n\speed = GetINIFloat("Data/NPCs.ini", "SCP-049", "speed") / 100.0
 
-    Local temp# = GetINIFloat("DATA/NPCs.ini", "SCP-049", "scale")
+    Local temp# = GetINIFloat("Data/NPCs.ini", "SCP-049", "scale")
     ScaleEntity(n\obj, temp, temp, temp)
 
     n\sounds[0] = LoadSound("SFX/SCP/049/Catch.ogg")

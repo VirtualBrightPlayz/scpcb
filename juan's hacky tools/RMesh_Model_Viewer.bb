@@ -714,7 +714,7 @@ Local fname$ = Input("RMesh To load: ")
 
 Graphics3D 1280,720,32,2
 
-;Global bump% = LoadTexture("scpcb/gfx/map/tilebump.jpg")
+;Global bump% = LoadTexture("scpcb/gfx/Map/tilebump.jpg")
 ;TextureBlend bump,6
 ;TextureBumpEnvMat bump,0,0,1.009
 ;TextureBumpEnvMat bump,0,1,-1.000
@@ -725,7 +725,7 @@ Graphics3D 1280,720,32,2
 
 Global mesh% = LoadRMesh(fname)
 
-;white% = LoadTexture("scpcb/gfx/map/wood.jpg")
+;white% = LoadTexture("scpcb/gfx/Map/wood.jpg")
 ;TextureCoords white,1
 ;EntityTexture mesh,bump,0,0
 ;FreeTexture bump

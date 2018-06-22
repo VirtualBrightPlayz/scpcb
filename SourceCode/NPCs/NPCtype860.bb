@@ -19,9 +19,9 @@ Function InitializeNPCtype860(n.NPCs)
     EntityBlend(n\obj2, BLEND_ADD)
     SpriteViewMode(n\obj2, 2)
 
-    n\speed = (GetINIFloat("DATA/NPCs.ini", "forestmonster", "speed") / 100.0)
+    n\speed = (GetINIFloat("Data/NPCs.ini", "forestmonster", "speed") / 100.0)
 
-    Local temp# = (GetINIFloat("DATA/NPCs.ini", "forestmonster", "scale") / 20.0)
+    Local temp# = (GetINIFloat("Data/NPCs.ini", "forestmonster", "scale") / 20.0)
     ScaleEntity n\obj, temp, temp, temp
 
     MeshCullBox (n\obj, -MeshWidth(n\obj)*2, -MeshHeight(n\obj)*2, -MeshDepth(n\obj)*2, MeshWidth(n\obj)*2, MeshHeight(n\obj)*4, MeshDepth(n\obj)*4)

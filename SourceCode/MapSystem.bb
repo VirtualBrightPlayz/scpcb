@@ -1746,7 +1746,7 @@ Function LoadProp.Props(file$,x#,y#,z#,pitch#,yaw#,roll#,xScale#,yScale#,zScale#
 		EndIf
 	Next
 
-	If p\obj=0 Then p\obj = LoadMesh("GFX/map/Props/"+file+".b3d")
+	If p\obj=0 Then p\obj = LoadMesh("GFX/Map/Props/"+file+".b3d")
 	If p\obj=0 Then RuntimeError file
 	HideEntity(p\obj)
 	Return p

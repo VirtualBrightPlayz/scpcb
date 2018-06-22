@@ -21,7 +21,7 @@ Function FillRoom_cont_079_1(r.Rooms)
 
     CreateDoor(0, r\x + 1144.0*RoomScale, -448.0*RoomScale, r\z + 704.0 * RoomScale, 90, r, False, False, -1)
 
-    r\objects[0] = LoadAnimMesh("GFX/map/079.b3d")
+    r\objects[0] = LoadAnimMesh("GFX/Map/079.b3d")
     ScaleEntity(r\objects[0], 1.3, 1.3, 1.3, True)
     PositionEntity (r\objects[0], r\x + 1856.0*RoomScale, -560.0*RoomScale, r\z-672.0*RoomScale, True)
     EntityParent(r\objects[0], r\obj)

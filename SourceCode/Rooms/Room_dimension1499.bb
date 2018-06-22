@@ -24,7 +24,7 @@ Function UpdateEvent_dimension1499(e.Events)
 ;					e\eventStr = "load0"
 ;				ElseIf e\eventStr = "load0"
 ;					e\room\objects[0] = CreatePlane()
-;					Local planetex% = LoadTexture("GFX/map/Rooms/dimension1499/grit3.jpg")
+;					Local planetex% = LoadTexture("GFX/Map/Rooms/dimension1499/grit3.jpg")
 ;					EntityTexture e\room\objects[0],planetex%
 ;					FreeTexture planetex%
 ;					PositionEntity e\room\objects[0],0,EntityY(e\room\obj),0
@@ -32,11 +32,11 @@ Function UpdateEvent_dimension1499(e.Events)
 ;					;EntityParent e\room\objects[0],e\room\obj
 ;					e\eventStr = "load1"
 ;				ElseIf e\eventStr = "load1"
-;					NTF_1499Sky = sky_CreateSky("GFX/map/sky/1499sky")
+;					NTF_1499Sky = sky_CreateSky("GFX/Map/sky/1499sky")
 ;					e\eventStr = 1
 ;				Else
 ;					If Int(e\eventStr)<16
-;						e\room\objects[Int(e\eventStr)] = LoadMesh("GFX/map/Rooms/dimension1499/1499object"+(Int(e/EventStr))+".b3d")
+;						e\room\objects[Int(e\eventStr)] = LoadMesh("GFX/Map/Rooms/dimension1499/1499object"+(Int(e/EventStr))+".b3d")
 ;						HideEntity e\room\objects[Int(e\eventStr)]
 ;						e\eventStr = Int(e\eventStr)+1
 ;					ElseIf Int(e\eventStr)=16

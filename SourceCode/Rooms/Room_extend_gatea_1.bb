@@ -91,12 +91,12 @@ Function FillRoom_extend_gatea_1(r.Rooms)
     PositionEntity(r\objects[11], r\x-4064.0*RoomScale, -1248.0*RoomScale, r\z-1696.0*RoomScale, True)
     EntityParent r\objects[11], r\obj
 
-    r\objects[13]=LoadMesh("GFX/map/gateawall1.b3d",r\obj)
+    r\objects[13]=LoadMesh("GFX/Map/gateawall1.b3d",r\obj)
     PositionEntity(r\objects[13], r\x-4308.0*RoomScale, -1045.0*RoomScale, r\z+544.0*RoomScale, True)
     EntityColor r\objects[13], 25,25,25
     ;EntityFX(r\objects[13],1)
 
-    r\objects[14]=LoadMesh("GFX/map/gateawall2.b3d",r\obj)
+    r\objects[14]=LoadMesh("GFX/Map/gateawall2.b3d",r\obj)
     PositionEntity(r\objects[14], r\x-3820.0*RoomScale, -1045.0*RoomScale, r\z+544.0*RoomScale, True)
     EntityColor r\objects[14], 25,25,25
     ;EntityFX(r\objects[14],1)
@@ -157,7 +157,7 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 			TranslateEntity(e\room\obj, 0,12000.0*RoomScale,0)
 			TranslateEntity(mainPlayer\collider, 0,12000.0*RoomScale,0)
 
-			Sky = sky_CreateSky("GFX/map/sky/sky")
+			Sky = sky_CreateSky("GFX/Map/sky/sky")
 			RotateEntity Sky,0,e\room\angle,0
 
 			DrawLoading(60)
@@ -198,11 +198,11 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 			Local ztemp#=EntityZ(e\room\objects[9],True)
 			FreeEntity e\room\objects[9]
 
-			e\room\objects[9] = LoadMesh("GFX/map/lightgunbase.b3d")
+			e\room\objects[9] = LoadMesh("GFX/Map/lightgunbase.b3d")
 			ScaleEntity e\room\objects[9], RoomScale,RoomScale,RoomScale
 			EntityFX(e\room\objects[9],0)
 			PositionEntity(e\room\objects[9], xtemp, (992.0+12000.0)*RoomScale, ztemp)
-			e\room\objects[10] = LoadMesh("GFX/map/lightgun.b3d")
+			e\room\objects[10] = LoadMesh("GFX/Map/lightgun.b3d")
 			EntityFX(e\room\objects[10],0)
 			ScaleEntity e\room\objects[10], RoomScale,RoomScale,RoomScale
 			PositionEntity(e\room\objects[10], xtemp, (992.0+12000.0+288.0)*RoomScale, ztemp-176.0*RoomScale,True)

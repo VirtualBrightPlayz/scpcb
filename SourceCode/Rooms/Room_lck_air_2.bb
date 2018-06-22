@@ -35,7 +35,7 @@ Function FillRoom_lck_air_2(r.Rooms)
             EndIf
         EndIf
     Next
-    If r\objects[3]=0 Then r\objects[3] = LoadMesh("GFX/map/room2gw_pipes.b3d",r\obj)
+    If r\objects[3]=0 Then r\objects[3] = LoadMesh("GFX/Map/room2gw_pipes.b3d",r\obj)
     EntityPickMode r\objects[3],2
 
     If r\roomTemplate\name = "lck_air_2" Then

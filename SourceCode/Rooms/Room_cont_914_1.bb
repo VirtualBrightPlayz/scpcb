@@ -14,8 +14,8 @@ Function FillRoom_cont_914_1(r.Rooms)
     PositionEntity (r\roomDoors[2]\buttons[0], r\x - 496.0 * RoomScale, 0.7, r\z - 272.0 * RoomScale, True)
     TurnEntity(r\roomDoors[2]\buttons[0], 0, 90, 0)
 
-    r\objects[0] = LoadMesh("GFX/map/914key.x")
-    r\objects[1] = LoadMesh("GFX/map/914knob.x")
+    r\objects[0] = LoadMesh("GFX/Map/914key.x")
+    r\objects[1] = LoadMesh("GFX/Map/914knob.x")
 
     For  i% = 0 To 1
         ScaleEntity(r\objects[i], RoomScale, RoomScale, RoomScale)

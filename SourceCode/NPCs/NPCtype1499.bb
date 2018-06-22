@@ -16,8 +16,8 @@ Function InitializeNPCtype1499(n.NPCs)
         n\obj = LoadAnimMesh("GFX/NPCs/scp1499/scp1499.b3d")
     EndIf
 
-    n\speed = (GetINIFloat("DATA/NPCs.ini", "SCP-1499-1", "speed") / 100.0) * Rnd(0.9,1.1)
-    Local temp# = (GetINIFloat("DATA/NPCs.ini", "SCP-1499-1", "scale") / 6.0) * Rnd(0.8,1.0)
+    n\speed = (GetINIFloat("Data/NPCs.ini", "SCP-1499-1", "speed") / 100.0) * Rnd(0.9,1.1)
+    Local temp# = (GetINIFloat("Data/NPCs.ini", "SCP-1499-1", "scale") / 6.0) * Rnd(0.8,1.0)
 
     ScaleEntity n\obj, temp, temp, temp
 

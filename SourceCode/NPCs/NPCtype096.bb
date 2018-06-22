@@ -6,9 +6,9 @@ Function InitializeNPCtype096(n.NPCs)
     n\obj = LoadAnimMesh("GFX/NPCs/scp096/scp096.b3d")
 	n\sounds[2] = LoadSound("SFX/Door/DoorOpenFast.ogg")
 
-    n\speed = (GetINIFloat("DATA/NPCs.ini", "SCP-096", "speed") / 100.0)
+    n\speed = (GetINIFloat("Data/NPCs.ini", "SCP-096", "speed") / 100.0)
 
-    Local temp# = (GetINIFloat("DATA/NPCs.ini", "SCP-096", "scale") / 3.0)
+    Local temp# = (GetINIFloat("Data/NPCs.ini", "SCP-096", "scale") / 3.0)
     ScaleEntity n\obj, temp, temp, temp
 
     MeshCullBox (n\obj, -MeshWidth(n\obj)*2, -MeshHeight(n\obj)*2, -MeshDepth(n\obj)*2, MeshWidth(n\obj)*2, MeshHeight(n\obj)*4, MeshDepth(n\obj)*4)

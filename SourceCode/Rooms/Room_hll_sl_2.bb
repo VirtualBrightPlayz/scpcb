@@ -71,7 +71,7 @@ Function FillRoom_hll_sl_2(r.Rooms)
     EntityParent r\objects[16],r\obj
 
     ;Faked room409
-    r\objects[17] = LoadMesh("GFX/map/room2sl_2.b3d",r\obj)
+    r\objects[17] = LoadMesh("GFX/Map/room2sl_2.b3d",r\obj)
     sc.SecurityCams = CreateSecurityCam(r\x-160.0*RoomScale,r\y-22689.1*RoomScale,r\z-288.0*RoomScale,Null)
     sc\angle = 225
     TurnEntity sc\cameraObj, 20, 0, 0
@@ -146,7 +146,7 @@ Function FillRoom_hll_sl_2(r.Rooms)
 
     ;r\maxWayPointY# = 400.0*RoomScale
 
-    ;r\objects[22] = LoadMesh("GFX/map/room2sl_hb.b3d",r\obj)
+    ;r\objects[22] = LoadMesh("GFX/Map/room2sl_hb.b3d",r\obj)
 	;ScaleEntity r\objects[22],RoomScale,RoomScale,RoomScale
     ;EntityPickMode r\objects[22],2
     ;EntityType r\objects[22],HIT_MAP

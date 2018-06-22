@@ -5,15 +5,15 @@ Function FillRoom_pocketdimension(r.Rooms)
 
     Local t1;, Bump
 
-    Local hallway = LoadMesh("GFX/map/pocketdimension2.b3d") ;the tunnels in the first room
-    r\objects[8]=LoadMesh("GFX/map/pocketdimension3.b3d")	;the room with the throne, moving pillars etc
-    r\objects[9]=LoadMesh("GFX/map/pocketdimension4.b3d") ;the flying pillar
+    Local hallway = LoadMesh("GFX/Map/pocketdimension2.b3d") ;the tunnels in the first room
+    r\objects[8]=LoadMesh("GFX/Map/pocketdimension3.b3d")	;the room with the throne, moving pillars etc
+    r\objects[9]=LoadMesh("GFX/Map/pocketdimension4.b3d") ;the flying pillar
     r\objects[10]=CopyEntity(r\objects[9])
 
-    r\objects[11]=LoadMesh("GFX/map/pocketdimension5.b3d") ;the pillar room
+    r\objects[11]=LoadMesh("GFX/Map/pocketdimension5.b3d") ;the pillar room
 
 
-    Local terrain% = LoadMesh("GFX/map/pocketdimensionterrain.b3d")
+    Local terrain% = LoadMesh("GFX/Map/pocketdimensionterrain.b3d")
     ScaleEntity terrain,RoomScale,RoomScale,RoomScale,True
     ;RotateEntity terrain,0,e\room\angle,0,True
     PositionEntity terrain, 0, 2944, 0, True

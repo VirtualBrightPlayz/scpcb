@@ -38,7 +38,7 @@ Function FillRoom_cont_173_1(r.Rooms)
     d.Doors = CreateDoor(r\zone, r\x, 0, r\z + 1184.0 * RoomScale, 0, r, False)
     d\locked = True
 
-    r\objects[0] = LoadMesh("GFX/map/IntroDesk.b3d")
+    r\objects[0] = LoadMesh("GFX/Map/IntroDesk.b3d")
     ScaleEntity r\objects[0], RoomScale, RoomScale ,RoomScale
     PositionEntity r\objects[0], r\x + 272.0 * RoomScale, 0, r\z + 400.0 * RoomScale
     EntityParent r\objects[0], r\obj
@@ -46,7 +46,7 @@ Function FillRoom_cont_173_1(r.Rooms)
     de.Decals = CreateDecal(0, r\x + 272.0 * RoomScale, 0.005, r\z + 262.0 * RoomScale, 90, Rand(360), 0)
     EntityParent(de\obj, r\obj)
 
-    r\objects[1] = LoadMesh("GFX/map/IntroDrawer.b3d")
+    r\objects[1] = LoadMesh("GFX/Map/IntroDrawer.b3d")
     ScaleEntity r\objects[1], RoomScale, RoomScale ,RoomScale
     PositionEntity r\objects[1], r\x + 448.0 * RoomScale, 0, r\z + 192.0 * RoomScale
     EntityParent r\objects[1], r\obj

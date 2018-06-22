@@ -10,14 +10,14 @@ Function FillRoom_cont_008_1(r.Rooms)
     PositionEntity(r\objects[0], r\x + 292.0 * RoomScale, 130.0*RoomScale, r\z + 516.0 * RoomScale, True)
 
     ;the lid of the container
-    r\objects[1] = LoadMesh("GFX/map/008_2.b3d")
+    r\objects[1] = LoadMesh("GFX/Map/008_2.b3d")
     ScaleEntity r\objects[1], RoomScale, RoomScale, RoomScale
     PositionEntity(r\objects[1], r\x + 292 * RoomScale, 151 * RoomScale, r\z + 576.0 * RoomScale, 0)
     EntityParent(r\objects[1], r\obj)
 
     RotateEntity(r\objects[1],89,0,0,True)
 
-    Local Glasstex% = LoadTexture("GFX/map/Textures/glass.png",1+2)
+    Local Glasstex% = LoadTexture("GFX/Map/Textures/glass.png",1+2)
     r\objects[2] = CreateSprite()
     EntityTexture(r\objects[2],Glasstex)
     SpriteViewMode(r\objects[2],2)

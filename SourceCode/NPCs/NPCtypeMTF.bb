@@ -20,9 +20,9 @@ Function InitializeNPCtypeMTF(n.NPCs)
 		n\obj = LoadAnimMesh("GFX/NPCs/MTF/mtf.b3d")
 	EndIf
 
-    n\speed = (GetINIFloat("DATA/NPCs.ini", "MTF", "speed") / 100.0)
+    n\speed = (GetINIFloat("Data/NPCs.ini", "MTF", "speed") / 100.0)
 
-    Local temp# = (GetINIFloat("DATA/NPCs.ini", "MTF", "scale") / 2.5)
+    Local temp# = (GetINIFloat("Data/NPCs.ini", "MTF", "scale") / 2.5)
 
     ScaleEntity n\obj, temp, temp, temp
 

@@ -80,7 +80,7 @@ Function FillRoom_intro(r.Rooms)
     PositionEntity(d\buttons[1], r\x - 2592 * RoomScale, EntityY(d\buttons[0],True), r\z - 992 * RoomScale, True)
     d\locked = True
 
-    Local tex% = LoadTexture("GFX/map/Textures/Door02.jpg")
+    Local tex% = LoadTexture("GFX/Map/Textures/Door02.jpg")
     For ztemp = 0 To 1
         d.Doors = CreateDoor(r\zone, r\x - 5760 * RoomScale, 0, r\z + (320+896*ztemp) * RoomScale, 0, r, False)
         d\locked = True
@@ -122,7 +122,7 @@ Function FillRoom_intro(r.Rooms)
     TurnEntity(sc\scrObj, 0, 90, 0)
     EntityParent(sc\scrObj, r\obj)
 
-    r\objects[9] = LoadMesh("GFX/map/173_2.b3d",r\obj)
+    r\objects[9] = LoadMesh("GFX/Map/173_2.b3d",r\obj)
     EntityType r\objects[9],HIT_MAP
     EntityPickMode r\objects[9],2
 End Function

@@ -36,6 +36,6 @@ Function FillRoom_lck_ez_3(r.Rooms)
             EndIf
         EndIf
     Next
-    If r\objects[3]=0 Then r\objects[3] = LoadMesh("GFX/map/room3gw_pipes.b3d",r\obj)
+    If r\objects[3]=0 Then r\objects[3] = LoadMesh("GFX/Map/room3gw_pipes.b3d",r\obj)
     EntityPickMode r\objects[3],2
 End Function
