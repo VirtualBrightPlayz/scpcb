@@ -68,7 +68,7 @@ Dim SaveGames$(SaveGameAmount+1)
 Dim SaveGameTime$(SaveGameAmount + 1)
 Dim SaveGameDate$(SaveGameAmount + 1)
 
-Const MAXSAVEDMAPS = 20
+Const MAXSAVEDMAPS% = 20
 Dim SavedMaps$(MAXSAVEDMAPS)
 Global SelectedMap$
 
@@ -79,8 +79,9 @@ Include "SourceCode/Menus/LoadingScreen.bb"
 Function DrawTiledImageRect(img%, srcX%, srcY%, srcwidth#, srcheight#, x%, y%, width%, height%)
 
 	Local x2% = x
+	Local y2%
 	While x2 < x+width
-		Local y2% = y
+		y2 = y
 		While y2 < y+height
 			If x2 + srcwidth > x + width Then srcwidth = srcwidth - Max((x2 + srcwidth) - (x + width), 1)
 			If y2 + srcheight > y + height Then srcheight = srcheight - Max((y2 + srcheight) - (y + height), 1)
@@ -185,7 +186,7 @@ Function DrawUIButton(x%, y%, width%, height%, txt$, bigfont% = True)
 	Text(x + width / 2, y + height / 2, txt, True, True)
 End Function
 
-Function UpdateUIButton%(x%, y%, width%, height, txt$="", waitForMouseUp%=False)
+Function UpdateUIButton%(x%, y%, width%, height%, txt$="", waitForMouseUp%=False)
 	Local clicked% = False
 
 	If MouseOn(x, y, width, height) Then
@@ -267,22 +268,25 @@ End Function
 
 
 
-Function RowText(A$, X, Y, W, H, align% = 0, Leading#=1)
+Function RowText(A$, X%, Y%, W%, H%, align% = 0, Leading#=1)
 	;Display A$ starting at X,Y - no wider than W And no taller than H (all in pixels).
 	;Leading is optional extra vertical spacing in pixels
 
 	If H<1 Then H=2048
 
-	Local LinesShown = 0
-	Local Height = StringHeight(A$) + Leading
+	Local LinesShown% = 0
+	Local Height% = StringHeight(A$) + Leading
 	Local b$
-
+	Local space%
+	Local temp$,trimmed$
+	Local extra%
+	
 	While Len(A) > 0
-		Local space = Instr(A$, " ")
+		space = Instr(A$, " ")
 		If space = 0 Then space = Len(A$)
-		Local temp$ = Left(A$, space)
-		Local trimmed$ = Trim(temp) ;we might ignore a final space
-		Local extra = 0 ;we haven't ignored it yet
+		temp = Left(A$, space)
+		trimmed = Trim(temp) ;we might ignore a final space
+		extra = 0 ;we haven't ignored it yet
 		;ignore final space If doing so would make a word fit at End of Line:
 		If (StringWidth (b$ + temp$) > W) And (StringWidth (b$ + trimmed$) <= W) Then
 			temp = trimmed
@@ -347,7 +351,7 @@ End Function
 Function DrawTooltip(message$)
 	Local scale# = userOptions\screenHeight/768.0
 
-	Local width = (StringWidth(message$))+20*MenuScale
+	Local width% = (StringWidth(message$))+20*MenuScale
 
 	Color 25,25,25
 	Rect(MouseX()+20,MouseY(),width,19*scale,True)

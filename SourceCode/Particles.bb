@@ -103,10 +103,12 @@ End Type
 Function UpdateEmitters()
 	InSmoke = False
 	Local e.Emitters
+	Local p.Particles
+	Local dist#
 	For e.Emitters = Each Emitters
 		If timing\tickDuration > 0 And (mainPlayer\currRoom = e\room Or e\room\dist < 8) Then
 			;If EntityDistance(mainPlayer\cam, e\obj) < 6.0 Then
-			Local p.Particles = CreateParticle(EntityX(e\obj, True), EntityY(e\obj, True), EntityZ(e\obj, True), Rand(e\minImage, e\maxImage), e\size, e\gravity, e\lifeTime)
+			p = CreateParticle(EntityX(e\obj, True), EntityY(e\obj, True), EntityZ(e\obj, True), Rand(e\minImage, e\maxImage), e\size, e\gravity, e\lifeTime)
 			p\speed = e\speed
 			RotateEntity(p\pvt, EntityPitch(e\obj, True), EntityYaw(e\obj, True), EntityRoll(e\obj, True), True)
 			TurnEntity(p\pvt, Rnd(-e\randAngle, e\randAngle), Rnd(-e\randAngle, e\randAngle), 0)
@@ -121,7 +123,7 @@ Function UpdateEmitters()
 
 			If InSmoke = False Then
 				If IsPlayerWearingTempName(mainPlayer,"gasmask") And IsPlayerWearingTempName(mainPlayer,"hazmatsuit") Then
-					Local dist# = Distance(EntityX(mainPlayer\cam, True), EntityZ(mainPlayer\cam, True), EntityX(e\obj, True), EntityZ(e\obj, True))
+					dist = Distance(EntityX(mainPlayer\cam, True), EntityZ(mainPlayer\cam, True), EntityX(e\obj, True), EntityZ(e\obj, True))
 					If dist < 0.8 Then
 						If Abs(EntityY(mainPlayer\cam, True)-EntityY(e\obj,True))<5.0 Then InSmoke = True
 					EndIf

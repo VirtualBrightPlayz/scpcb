@@ -14,10 +14,12 @@ Const MAINMENU_BUTTON_COUNT% = 4
 Function UpdateMainMenu()
 	Local x%, y%, width%, height%, temp.MarkedForRemoval
 	Local n%
-
+	Local i%
+	Local strtemp$
+	Local SameFound%
+	
 	Local mouseHitButton%
 	If CurrGameSubstate = GAMESUBSTATE_MAINMENU_MAIN Then
-		Local i%
 		For i% = 0 To MAINMENU_BUTTON_COUNT-1
 			mouseHitButton = False
 			x = 159 * MenuScale
@@ -182,10 +184,10 @@ Function UpdateMainMenu()
 						If RandomSeed = "" Then
 							RandomSeed = Abs(MilliSecs())
 						EndIf
-						Local strtemp$ = ""
+						strtemp$ = ""
 						SeedRnd SeedStringToInt(RandomSeed)
 
-						Local SameFound% = False
+						SameFound% = False
 						For  i% = 1 To SaveGameAmount
 							If SaveGames(i - 1) = CurrSave Then SameFound=SameFound+1
 						Next
@@ -528,7 +530,8 @@ Function DrawMainMenu()
 	If userOptions\screenWidth > 1240 * MenuScale Then
 		DrawTiledImageRect(uiAssets\tileWhite, 0, 5, 512, 7 * MenuScale, 985.0 * MenuScale, 407.0 * MenuScale, (userOptions\screenWidth - 1240 * MenuScale) + 300, 7 * MenuScale)
 	EndIf
-
+	
+	Local txt$
 	If CurrGameSubstate = GAMESUBSTATE_MAINMENU_MAIN Then
 		For i% = 0 To MAINMENU_BUTTON_COUNT-1
 			x = 159 * MenuScale
@@ -536,8 +539,7 @@ Function DrawMainMenu()
 
 			width = 400 * MenuScale
 			height = 70 * MenuScale
-
-			Local txt$
+			
 			Select i
 				Case MAINMENU_BUTTON_NEWGAME ;new game
 					txt = "NEW GAME"

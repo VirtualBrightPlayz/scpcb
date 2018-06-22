@@ -33,8 +33,8 @@ End Type
 Dim BigDoorOBJ.MarkedForRemoval(2) ;yo yeye alright
 Dim HeavyDoorObj.MarkedForRemoval(2)
 
-Function CreateDoor.Doors(lvl, x#, y#, z#, angle#, room.Rooms, dopen% = False,  big% = False, keycard% = False, code$="")
-	Local d.Doors, parent, i%
+Function CreateDoor.Doors(lvl%, x#, y#, z#, angle#, room.Rooms, dopen% = False,  big% = False, keycard% = False, code$="")
+	Local d.Doors, parent%, i%
 	If room <> Null Then parent = room\obj
 
 	Local doorObj%      = GrabMesh("GFX/Map/Meshes/door.b3d")
@@ -49,7 +49,9 @@ Function CreateDoor.Doors(lvl, x#, y#, z#, angle#, room.Rooms, dopen% = False,  
 	For i=0 To 1
 		hczDoorObj[i] = GrabMesh("GFX/Map/Meshes/heavydoor" + Str(i + 1) + ".b3d")
 	Next
-
+	
+	Local buttonCodeObj%
+	
 	d.Doors = New Doors
 	If big=1 Then
 		d\obj = CopyEntity(contDoorLeft)
@@ -96,7 +98,7 @@ Function CreateDoor.Doors(lvl, x#, y#, z#, angle#, room.Rooms, dopen% = False,  
 
 	For i% = 0 To 1
 		If code <> "" Then
-			Local buttonCodeObj% = GrabMesh("GFX/Map/Meshes/ButtonCode.b3d")
+			buttonCodeObj = GrabMesh("GFX/Map/Meshes/ButtonCode.b3d")
 			d\buttons[i] = CopyEntity(buttonCodeObj)
 			EntityFX(d\buttons[i], 1)
 			DropAsset(buttonCodeObj)

@@ -16,7 +16,7 @@ Function InitLoadingScreens(file$)
 	Local TemporaryString$, i%
 	Local ls.LoadingScreens
 
-	Local f = OpenFile(file)
+	Local f% = OpenFile(file)
 
 	While Not Eof(f)
 		TemporaryString = Trim(ReadLine(f))
@@ -63,16 +63,18 @@ End Function
 
 
 
-Function DrawLoading(percent%, shortloading=False)
+Function DrawLoading(percent%, shortloading%=False)
 	Local x%, y%
 	Local i%
 	Local strtemp$
-
+	Local temp%
+	Local ls.LoadingScreens
+	Local width%, height%
+	
 	If percent = 0 Then
 		LoadingScreenText=0
-
-		Local temp% = Rand(1,LoadingScreenAmount)
-		Local ls.LoadingScreens
+		
+		temp = Rand(1,LoadingScreenAmount)
 		For ls = Each LoadingScreens
 			If ls\id = temp Then
 				If ls\img=0 Then ls\img = LoadImage("Loadingscreens/"+ls\imgpath)
@@ -125,7 +127,7 @@ Function DrawLoading(percent%, shortloading=False)
 
 		DrawImage SelectedLoadingScreen\img, x, y
 
-		Local width% = 300, height% = 20
+		width = 300 : height = 20
 		x% = userOptions\screenWidth / 2 - width / 2
 		y% = userOptions\screenHeight / 2 + 30 - 100
 

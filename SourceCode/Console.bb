@@ -38,15 +38,27 @@ Function DrawConsole()
 	Local cm.ConsoleMsg
 	Local inBar%
 	Local inBox%
+	
+	Local x%,y%
+	Local width%,height%
+	
+	Local consoleHeight%
+	Local scrollbarHeight%
+	
+	Local TempY%
+	Local count%
 	If CurrGameState=GAMESTATE_CONSOLE Then
 		SetFont uiAssets\consoleFont
 
-		Local x% = 0, y% = userOptions\screenHeight-300*MenuScale, width% = userOptions\screenWidth, height% = 300*MenuScale-30*MenuScale
+		x = 0
+		y = userOptions\screenHeight-300*MenuScale
+		width = userOptions\screenWidth
+		height = 300*MenuScale-30*MenuScale
 
 		DrawFrame x,y,width,height+30*MenuScale
 
-		Local consoleHeight% = 0
-		Local scrollbarHeight% = 0
+		consoleHeight = 0
+		scrollbarHeight = 0
 
 		For cm = Each ConsoleMsg
 			consoleHeight = consoleHeight + 15*MenuScale
@@ -69,8 +81,8 @@ Function DrawConsole()
 
 		Color 255, 255, 255
 
-		Local TempY% = y + height - 25*MenuScale - ConsoleScroll
-		Local count% = 0
+		TempY = y + height - 25*MenuScale - ConsoleScroll
+		count = 0
 		For cm.ConsoleMsg = Each ConsoleMsg
 			count = count+1
 			If count>1000 Then
@@ -112,20 +124,26 @@ Function UpdateConsole()
 	Local scrollbarHeight%
 	Local width%,height%
 	Local itt.ItemTemplates
+	
+	Local cm.ConsoleMsg
+	Local n.NPCs
+	Local args$
+	
+	Local reissuePos%
+	
+	Local oldConsoleInput$
+	
+	Local tex%,tex2%
 	If CurrGameState=GAMESTATE_CONSOLE Then
-		Local cm.ConsoleMsg
-		Local n.NPCs
-		Local args$
-
 		ConsoleR = 255 : ConsoleG = 255 : ConsoleB = 255
 
-		x% = 0
-		y% = userOptions\screenHeight-300*MenuScale
-		width% = userOptions\screenWidth
-		height% = 300*MenuScale-30*MenuScale
+		x = 0
+		y = userOptions\screenHeight-300*MenuScale
+		width = userOptions\screenWidth
+		height = 300*MenuScale-30*MenuScale
 
-		consoleHeight% = 0
-		scrollbarHeight% = 0
+		consoleHeight = 0
+		scrollbarHeight = 0
 		For cm.ConsoleMsg = Each ConsoleMsg
 			consoleHeight = consoleHeight + 15*MenuScale
 		Next
@@ -133,9 +151,9 @@ Function UpdateConsole()
 		If scrollbarHeight>height Then scrollbarHeight = height
 		If consoleHeight<height Then consoleHeight = height
 
-		inBar% = MouseOn(x+width-26*MenuScale,y,26*MenuScale,height)
+		inBar = MouseOn(x+width-26*MenuScale,y,26*MenuScale,height)
 
-		inBox% = MouseOn(x+width-23*MenuScale,y+height-scrollbarHeight+(ConsoleScroll*scrollbarHeight/height),20*MenuScale,scrollbarHeight)
+		inBox = MouseOn(x+width-23*MenuScale,y+height-scrollbarHeight+(ConsoleScroll*scrollbarHeight/height),20*MenuScale,scrollbarHeight)
 
 		If Not MouseDown(1) Then
 			ConsoleScrollDragging=False
@@ -156,14 +174,13 @@ Function UpdateConsole()
 			EndIf
 		EndIf
 
-		mouseScroll% = MouseZSpeed()
+		mouseScroll = MouseZSpeed()
 		If mouseScroll=1 Then
 			ConsoleScroll = ConsoleScroll - 15*MenuScale
 		ElseIf mouseScroll=-1 Then
 			ConsoleScroll = ConsoleScroll + 15*MenuScale
 		EndIf
 
-		Local reissuePos%
 		If KeyHit(200) Then
 			reissuePos% = 0
 			If (ConsoleReissue=Null) Then
@@ -254,7 +271,7 @@ Function UpdateConsole()
 		If ConsoleScroll>0 Then ConsoleScroll = 0
 
 		SelectedInputBox = 2
-		Local oldConsoleInput$ = ConsoleInput
+		oldConsoleInput = ConsoleInput
 		ConsoleInput = UpdateInputBox(x, y + height, width, 30*MenuScale, ConsoleInput, 2)
 		If oldConsoleInput<>ConsoleInput Then
 			ConsoleReissue = Null
@@ -657,12 +674,12 @@ Function UpdateConsole()
 				Case "halloween"
 					HalloweenTex = Not HalloweenTex
 					If HalloweenTex Then
-						Local tex = LoadTexture("GFX/npcs/173h.pt", 1)
+						tex = LoadTexture("GFX/npcs/173h.pt", 1)
 						EntityTexture Curr173\obj, tex, 0, 0
 						FreeTexture tex
 						CreateConsoleMsg("173 JACK-O-LANTERN ON")
 					Else
-						Local tex2 = LoadTexture("GFX/npcs/173texture.png", 1)
+						tex2 = LoadTexture("GFX/npcs/173texture.png", 1)
 						EntityTexture Curr173\obj, tex2, 0, 0
 						FreeTexture tex2
 						CreateConsoleMsg("173 JACK-O-LANTERN OFF")
