@@ -163,22 +163,22 @@ Function CreateChunkParts(r.Rooms)
 	Local ChunkAmount% = GetINIInt(File$,"general","count")
 	Local i%,StrTemp$,j%
 	Local chp.ChunkPart,chp2.ChunkPart
-	Local obj%
+	Local obj%, loc%, objID%, x$, z$, yaw$
 
 	SeedRnd SeedStringToInt(RandomSeed)
 
 	For i = 0 To ChunkAmount%
-		Local loc% = GetINISectionLocation(File$,"chunk"+i)
+		loc% = GetINISectionLocation(File$,"chunk"+i)
 		If loc > 0 Then
 			StrTemp$ = GetINIString2(File,loc%,"count")
 			chp = New ChunkPart
 			chp\amount% = Int(StrTemp$)
 			DebugLog "------------------"
 			For j = 0 To Int(StrTemp$)
-				Local objID% = GetINIString2(File$,loc%,"obj"+j)
-				Local x$ = GetINIString2(File$,loc%,"obj"+j+"-x")
-				Local z$ = GetINIString2(File$,loc%,"obj"+j+"-z")
-				Local yaw$ = GetINIString2(File$,loc%,"obj"+j+"-yaw")
+				objID% = GetINIString2(File$,loc%,"obj"+j)
+				x$ = GetINIString2(File$,loc%,"obj"+j+"-x")
+				z$ = GetINIString2(File$,loc%,"obj"+j+"-z")
+				yaw$ = GetINIString2(File$,loc%,"obj"+j+"-yaw")
 				DebugLog "1499 chunk X/Z/Yaw: "+x$+"|"+z$+"|"+yaw$
 				chp\obj%[j] = CopyEntity(r\objects[objID%])
 				If Lower(yaw$) = "random" Then
@@ -208,7 +208,7 @@ End Function
 
 Function CreateChunk.Chunk(obj%,x#,y#,z#,spawnNPCs%=True)
 	Local ch.Chunk = New Chunk
-	Local chp.ChunkPart,i,n.NPCs
+	Local chp.ChunkPart,i%,n.NPCs
 
 	;If obj%<>0
 	;	ch\obj% = CopyEntity(obj%)
@@ -328,7 +328,7 @@ Function UpdateChunks(r.Rooms,ChunkPartAmount%,spawnNPCs%=True)
 End Function
 
 Function HideChunks()
-	Local ch.Chunk,i
+	Local ch.Chunk,i%
 
 	For ch = Each Chunk
 		;If ch\obj <> 0 Then HideEntity ch\obj
@@ -349,5 +349,4 @@ Function DeleteChunks()
 End Function
 
 ;~IDEal Editor Parameters:
-;~F#A0
 ;~C#Blitz3D

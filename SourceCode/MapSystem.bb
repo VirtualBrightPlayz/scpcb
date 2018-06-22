@@ -79,7 +79,7 @@ Include "SourceCode/Skybox.bb"
 
 Type Materials
 	Field name$
-	Field diff
+	Field diff%
 	;Field Bump
 
 	Field stepSound%
@@ -90,7 +90,7 @@ Function LoadMaterials(file$)
 	Local mat.Materials = Null
 	Local StrTemp$ = ""
 
-	Local f = OpenFile(file)
+	Local f% = OpenFile(file)
 
 	Local stepSound$ = ""
 
@@ -118,11 +118,11 @@ Include "SourceCode/Materials.bb"
 
 Function StripPath$(file$)
 	Local name$=""
+	Local i%, mi$
 	If Len(file$)>0 Then
-		Local i%
 		For i=Len(file$) To 1 Step -1
 
-			Local mi$ = Mid$(file$,i,1)
+			mi$ = Mid$(file$,i,1)
 			If mi$="\" Or mi$="/" Then Return name$
 
 			name$=mi$+name$
@@ -133,15 +133,15 @@ Function StripPath$(file$)
 	Return name$
 End Function
 
-Function Piece$(s$,entry,char$=" ")
-	Local a$
+Function Piece$(s$,entry%,char$=" ")
+	Local a$, p%
 
 	While Instr(s,char+char)
 		s=Replace(s,char+char,char)
 	Wend
 	Local n%
 	For n=1 To entry-1
-		Local p% = Instr(s,char)
+		p% = Instr(s,char)
 		s=Right(s,Len(s) - p)
 	Next
 	p=Instr(s,char)
@@ -154,13 +154,15 @@ Function Piece$(s$,entry,char$=" ")
 	Return a
 End Function
 
-Function KeyValue$(entity,key$,defaultvalue$="")
+Function KeyValue$(entity%,key$,defaultvalue$="")
 	Local test$, testkey$, value$
 	Local properties$ = EntityName(entity)
+	Local p%
+	
 	properties$=Replace(properties$,Chr(13),"")
 	key$=Lower(key)
 	Repeat
-		Local p% = Instr(properties,Chr(10))
+		p% = Instr(properties,Chr(10))
 		If p Then test$=(Left(properties,p-1)) Else test=properties
 		testkey$=Piece(test,1,"=")
 		testkey=Trim(testkey)
@@ -213,8 +215,8 @@ Type RoomTemplates
 	Field disableDecals%
 
 	;TODO: remove
-	Field tempTriggerboxAmount
-	Field tempTriggerbox[128]
+	Field tempTriggerboxAmount%
+	Field tempTriggerbox%[128]
 	Field tempTriggerboxName$[128]
 End Type
 
@@ -235,7 +237,7 @@ Function LoadRoomTemplates(file$)
 	Local AmountRange$ = ""
 	Local xRange$, yRange$
 
-	Local f = OpenFile(file)
+	Local f% = OpenFile(file)
 
 	While Not Eof(f)
 		TemporaryString = Trim(ReadLine(f))
@@ -337,7 +339,7 @@ Function LoadRoomMesh(rt.RoomTemplates)
 	LoadRM2(rt)
 End Function
 
-Const MAP_SIZE = 19
+Const MAP_SIZE% = 19
 Global RoomScale# = 8.0 / 2048.0
 Global ZONEAMOUNT.MarkedForRemoval
 
@@ -352,8 +354,8 @@ Global HideDistance# = 15.0
 
 ;TODO: remove/replace with functions
 Global SecondaryLightOn#
-Global RemoteDoorOn
-Global Contained106
+Global RemoteDoorOn%
+Global Contained106%
 
 Type Rooms
 	Field zone%
@@ -407,8 +409,8 @@ Type Rooms
 	Field lightFlicker%[MaxRoomLights]
 	Field alarmRotor%[1]
 	Field alarmRotorLight%[1]
-	Field triggerboxAmount
-	Field triggerbox[128]
+	Field triggerboxAmount%
+	Field triggerbox%[128]
 	Field triggerboxName$[128]
 	Field maxWayPointY#
 End Type
@@ -655,10 +657,10 @@ Function FillRoom(r.Rooms)
 			FillRoom_lck_broke_2c(r)
 	End Select
 
-	Local lt.LightTemplates
+	Local lt.LightTemplates, newlt%
 	For lt = Each LightTemplates
 		If lt\roomtemplate = r\roomTemplate Then
-			Local newlt% = AddLight(r, r\x+lt\x*RoomScale, r\y+lt\y*RoomScale, r\z+lt\z*RoomScale, lt\ltype, lt\range, lt\r, lt\g, lt\b)
+			newlt% = AddLight(r, r\x+lt\x*RoomScale, r\y+lt\y*RoomScale, r\z+lt\z*RoomScale, lt\ltype, lt\range, lt\r, lt\g, lt\b)
 			If newlt <> 0 Then
 				If lt\ltype = 3 Then
 					LightConeAngles(newlt, lt\innerconeangle, lt\outerconeangle)
@@ -685,11 +687,10 @@ Function FillRoom(r.Rooms)
 		EndIf
 	Next
 
-	Local i% = 0
+	Local i% = 0, j%
 	For tw.TempWayPoints = Each TempWayPoints
 		If tw\roomtemplate = r\roomTemplate Then
 			waypoint = Object.WayPoints(GetIntArrayListElem(waypoints,i))
-			Local j%
 			For j% = 0 To 15
 				If tw\connectedTo[j]=0 Then Exit
 				waypoint\connected[j] = Object.WayPoints(GetIntArrayListElem(waypoints,tw\connectedTo[j]-1))
@@ -740,7 +741,7 @@ Function SetRoomVisibility(r.Rooms,on%)
 End Function
 
 Function UpdateRooms()
-	Local dist#, i%, j%, r.Rooms
+	Local dist#, i%, j%, r.Rooms, minDist#
 
 	Local x#,z#,hide%=True
 
@@ -777,7 +778,7 @@ Function UpdateRooms()
 			foundPlayerRoom = True ;mainPlayer\currRoom stays the same when you're high up, or deep down
 		EndIf
 	Else
-		Local minDist# = 999.0
+		minDist# = 999.0
 		For r.Rooms = Each Rooms
 			x = Abs(r\x-EntityX(mainPlayer\collider,True))
 			z = Abs(r\z-EntityZ(mainPlayer\collider,True))
@@ -891,7 +892,8 @@ End Function
 
 Global LightVolume.MarkedForRemoval, TempLightVolume.MarkedForRemoval
 Function AddLight%(room.Rooms, x#, y#, z#, ltype%, range#, r%, g%, b%)
-	Local i
+	Local i%
+	Local light%,sprite%
 
 	If room<>Null Then
 		For i = 0 To MaxRoomLights-1
@@ -941,7 +943,6 @@ Function AddLight%(room.Rooms, x#, y#, z#, ltype%, range#, r%, g%, b%)
 			EndIf
 		Next
 	Else
-		Local light%,sprite%
 		light=CreateLight(ltype)
 		LightRange(light,range)
 		LightColor(light,r,g,b)
@@ -993,7 +994,7 @@ Type TempWayPoints
 End Type
 
 Type WayPoints
-	Field obj
+	Field obj%
 	Field room.Rooms
 	Field state%
 	;Field tempDist#
@@ -1019,11 +1020,11 @@ Function CreateWaypoint.WayPoints(x#,y#,z#,room.Rooms)
 	Return w
 End Function
 
-Function InitWayPoints(loadingstart=45)
+Function InitWayPoints(loadingstart%=45)
 
 	Local d.Doors, w.WayPoints, w2.WayPoints, r.Rooms, ClosestRoom.Rooms
 
-	Local x#, y#, z#
+	Local x#, y#, z#, i%, tline%
 
 	Local temper% = MilliSecs()
 
@@ -1032,11 +1033,10 @@ Function InitWayPoints(loadingstart=45)
 	For w.WayPoints = Each WayPoints
 		EntityPickMode w\obj, 0, 0
 		EntityRadius w\obj, 0
-
-		Local i%
+		
 		For i = 0 To 4
 			If w\connected[i]<>Null Then
-				Local tline = CreateLine(EntityX(w\obj,True),EntityY(w\obj,True),EntityZ(w\obj,True),EntityX(w\connected[i]\obj,True),EntityY(w\connected[i]\obj,True),EntityZ(w\connected[i]\obj,True))
+				tline = CreateLine(EntityX(w\obj,True),EntityY(w\obj,True),EntityZ(w\obj,True),EntityX(w\connected[i]\obj,True),EntityY(w\connected[i]\obj,True),EntityZ(w\connected[i]\obj,True))
 				EntityColor(tline, 255,0,0)
 				EntityParent tline, w\obj
 			EndIf
@@ -1058,8 +1058,13 @@ Function FindPath(n.NPCs, x#, y#, z#)
 
 	Local temp%, dist#, dist2#
 	Local xtemp#, ytemp#, ztemp#
+	Local gtemp#
 
 	Local w.WayPoints, StartPoint.WayPoints, EndPoint.WayPoints
+	Local currpoint.WayPoints
+	Local twentiethpoint.WayPoints
+	
+	Local length% = 0
 
 	Local StartX% = Floor(EntityX(n\collider,True) / 8.0 + 0.5), StartZ% = Floor(EntityZ(n\collider,True) / 8.0 + 0.5)
        ;If StartX < 0 Or StartX > MapWidth Then Return 2
@@ -1069,7 +1074,7 @@ Function FindPath(n.NPCs, x#, y#, z#)
        ;If EndX < 0 Or EndX > MapWidth Then Return 2
        ;If EndZ < 0 Or EndZ > MapWidth Then Return 2
 
-	Local CurrX, CurrZ
+	Local CurrX%, CurrZ%
 
        ;pathstatus = 0, ei ole etsitty reitti�
        ;pathstatus = 1, reitti l�ydetty
@@ -1090,7 +1095,7 @@ Function FindPath(n.NPCs, x#, y#, z#)
 		n\path[i] = Null
 	Next
 
-	Local pvt = CreatePivot()
+	Local pvt% = CreatePivot()
 	PositionEntity(pvt, x,y,z, True)
 
 	temp = CreatePivot()
@@ -1157,11 +1162,12 @@ Function FindPath(n.NPCs, x#, y#, z#)
 	If EndPoint = Null Then Return 2
 
        ;aloitus- ja lopetuspisteet l�ydetty, aletaan etsi� reitti�
-
+	
+	Local smallest.WayPoints
 	Repeat
 
 		temp% = False
-		Local smallest.WayPoints = Null
+		smallest.WayPoints = Null
 		dist# = 10000.0
 		For w.WayPoints = Each WayPoints
 			If w\state = 1 Then
@@ -1183,7 +1189,7 @@ Function FindPath(n.NPCs, x#, y#, z#)
 					If w\connected[i]\state < 2 Then
 
 						If w\connected[i]\state=1 Then ;open list
-							Local gtemp# = w\gCost+w\dist[i]
+							gtemp# = w\gCost+w\dist[i]
 							;TODO: fix?
 							;If n\npcType = NPCtypeMTF Then
 							;	If w\connected[i]\door = Null Then gtemp = gtemp + 0.5
@@ -1227,10 +1233,10 @@ Function FindPath(n.NPCs, x#, y#, z#)
 
 	If EndPoint\state > 0 Then
 
-		Local currpoint.WayPoints = EndPoint
-		Local twentiethpoint.WayPoints = EndPoint
+		currpoint.WayPoints = EndPoint
+		twentiethpoint.WayPoints = EndPoint
 
-		Local length% = 0
+		length% = 0
 		Repeat
 			length = length +1
 			currpoint = currpoint\parent
@@ -1280,8 +1286,8 @@ Function FindPath(n.NPCs, x#, y#, z#)
 
 End Function
 
-Function CreateLine(x1#,y1#,z1#, x2#,y2#,z2#, mesh=0)
-	Local surf, verts
+Function CreateLine(x1#,y1#,z1#, x2#,y2#,z2#, mesh%=0)
+	Local surf%, verts%
 
 	If mesh = 0 Then
 		mesh=CreateMesh()
@@ -1404,6 +1410,7 @@ Global ScreenTexs%[2]
 
 Function CreateSecurityCam.SecurityCams(x#, y#, z#, r.Rooms, screen% = False)
 	Local sc.SecurityCams = New SecurityCams
+	Local scale#
 
 	sc\obj = CopyEntity(CamBaseOBJ)
 	ScaleEntity(sc\obj, 0.0015, 0.0015, 0.0015)
@@ -1418,7 +1425,7 @@ Function CreateSecurityCam.SecurityCams(x#, y#, z#, r.Rooms, screen% = False)
 
 		sc\renderInterval = 12
 
-		Local scale# = RoomScale * 4.5 * 0.4
+		scale# = RoomScale * 4.5 * 0.4
 
 		sc\scrObj = CreateSprite()
 		EntityFX sc\scrObj, 17
@@ -1455,6 +1462,7 @@ End Function
 
 Function UpdateSecurityCams()
 	Local sc.SecurityCams
+	Local close%, temp#, pvt%
 
 	PlayerDetected = False
 
@@ -1464,7 +1472,7 @@ Function UpdateSecurityCams()
 	;coffineffect = 3, 079 broadcasting 895 feed
 
 	For sc.SecurityCams = Each SecurityCams
-		Local close = False
+		close = False
 		If sc\room = Null And (Not sc\specialCam) Then
 			HideEntity sc\cam
 		Else
@@ -1492,7 +1500,7 @@ Function UpdateSecurityCams()
 						EndIf
 					EndIf
 					PointEntity(sc\cameraObj, mainPlayer\cam)
-					Local temp# = EntityPitch(sc\cameraObj)
+					temp# = EntityPitch(sc\cameraObj)
 					RotateEntity(sc\obj, 0, CurveAngle(EntityYaw(sc\cameraObj), EntityYaw(sc\obj), 75.0), 0)
 
 					If temp < 40.0 Then temp = 40
@@ -1629,7 +1637,7 @@ Function UpdateSecurityCams()
 					If SelectedMonitor = sc Or sc\coffinEffect=1 Or sc\coffinEffect=3 Then
 						If sc\inSight Then
 						;If (Not NoClip) Then
-							Local pvt% = CreatePivot()
+							pvt% = CreatePivot()
 							PositionEntity pvt, EntityX(mainPlayer\cam), EntityY(mainPlayer\cam), EntityZ(mainPlayer\cam)
 							PointEntity(pvt, sc\scrObj)
 
@@ -1757,6 +1765,8 @@ End Function
 Global MapRooms.IntArray = Null ;TODO: replace with an array of the proper type after moving to C++
 
 Function CreateMap()
+	Local i%, c%, j%
+	
 	DebugLog ("Generating a map using the seed "+RandomSeed)
 
 	SeedRnd SeedStringToInt(RandomSeed)
@@ -1801,8 +1811,7 @@ Function CreateMap()
 					If nonShiftStreak>5 Then shift = 1
 					If (x/rectWidth) Mod 2 Then shift = -shift
 					If shift<>0 Then
-
-						Local i%
+						
 						For i% = 0 To rectWidth-2
 							SetIntArrayElem(layout,0,x+i,y)
 							SetIntArrayElem(layout,ROOM2,x+i,y+shift)
@@ -1904,7 +1913,7 @@ Function CreateMap()
 		placementCount = Rand(rt\minAmount,rt\maxAmount)
 
 		DebugLog "trying to place "+placementCount+" "+rt\name
-		Local c%
+		
 		For c% = 1 To placementCount
 			loopStartX = Int(Min(Floor(Float(mapDim)*rt\xRangeStart),mapDim-1))
 			loopStartY = Int(Min(Floor(Float(mapDim)*rt\yRangeStart),mapDim-1))
@@ -1918,7 +1927,7 @@ Function CreateMap()
 			offsetY = Rand(0,loopY)
 
 			placed = False
-			Local j%
+			
 			For j% = 0 To loopY
 				For i% = 0 To loopX
 					x% = ((i+offsetX) Mod (loopX+1)) + loopStartX
@@ -2103,9 +2112,8 @@ Function DetermineRoomTypes(layout.IntArray,mapDim%)
 	Local horNeighborCount% = 0
 	Local vertNeighborCount% = 0
 
-	Local y%
+	Local y%, x%
 	For y% = 0 To mapDim-1
-		Local x%
 		For x% = 0 To mapDim-1
 			If GetIntArrayElem(layout,x,y)<>0 Then
 				horNeighborCount = 0
@@ -2201,7 +2209,12 @@ End Function
 ;-------------------------------------------------------------------------------------------------------
 
 
-Function load_terrain(hmap,yscale#=0.7,t1%,t2%,mask%)
+Function load_terrain(hmap%,yscale#=0.7,t1%,t2%,mask%)
+	Local maskX#
+	Local maskY#
+	Local RGB1%
+	Local r%
+	Local alpha#
 
 	DebugLog "load_terrain: "+hmap
 
@@ -2209,8 +2222,8 @@ Function load_terrain(hmap,yscale#=0.7,t1%,t2%,mask%)
 	If hmap = 0 Then RuntimeError "Heightmap image "+hmap+" does not exist."
 
 	; store heightmap dimensions
-	Local x = ImageWidth(hmap)-1, y = ImageHeight(hmap)-1
-	Local lx,ly,index
+	Local x% = ImageWidth(hmap)-1, y% = ImageHeight(hmap)-1
+	Local lx%, ly%, index%
 
 	; load texture and lightmaps
 	If t1 = 0 Then RuntimeError "load_terrain error: invalid texture 1"
@@ -2223,8 +2236,8 @@ Function load_terrain(hmap,yscale#=0.7,t1%,t2%,mask%)
 	If mask Then ScaleTexture mask,x,y
 
 	; start building the terrain
-	Local mesh = CreateMesh()
-	Local surf = CreateSurface(mesh)
+	Local mesh% = CreateMesh()
+	Local surf% = CreateSurface(mesh)
 
 	; create some verts for the terrain
 	For ly = 0 To y
@@ -2257,11 +2270,11 @@ Function load_terrain(hmap,yscale#=0.7,t1%,t2%,mask%)
 			;using vertex alpha and two meshes instead of FE_ALPHAWHATEVER
 			;it doesn't look perfect but it does the job
 			;you might get better results by downscaling the mask to the same size as the heightmap
-			Local maskX# = Min(lx*Float(TextureWidth(mask))/Float(ImageWidth(hmap)),TextureWidth(mask)-1)
-			Local maskY# = TextureHeight(mask)-Min(ly*Float(TextureHeight(mask))/Float(ImageHeight(hmap)),TextureHeight(mask)-1)
-			Local RGB1% = ReadPixelFast(Min(lx,x-1),y-Min(ly,y-1),ImageBuffer(hmap))
-			Local r% = (RGB1 And $FF0000)Shr 16 ;separate out the red
-			Local alpha#=(((ReadPixelFast(Max(maskX-5,5),Max(maskY-5,5),TextureBuffer(mask)) And $FF000000) Shr 24)/$FF)
+			maskX# = Min(lx*Float(TextureWidth(mask))/Float(ImageWidth(hmap)),TextureWidth(mask)-1)
+			maskY# = TextureHeight(mask)-Min(ly*Float(TextureHeight(mask))/Float(ImageHeight(hmap)),TextureHeight(mask)-1)
+			RGB1% = ReadPixelFast(Min(lx,x-1),y-Min(ly,y-1),ImageBuffer(hmap))
+			r% = (RGB1 And $FF0000)Shr 16 ;separate out the red
+			alpha#=(((ReadPixelFast(Max(maskX-5,5),Max(maskY-5,5),TextureBuffer(mask)) And $FF000000) Shr 24)/$FF)
 			alpha#=alpha+(((ReadPixelFast(Min(maskX+5,TextureWidth(mask)-5),Min(maskY+5,TextureHeight(mask)-5),TextureBuffer(mask)) And $FF000000) Shr 24)/$FF)
 			alpha#=alpha+(((ReadPixelFast(Max(maskX-5,5),Min(maskY+5,TextureHeight(mask)-5),TextureBuffer(mask)) And $FF000000) Shr 24)/$FF)
 			alpha#=alpha+(((ReadPixelFast(Min(maskX+5,TextureWidth(mask)-5),Max(maskY-5,5),TextureBuffer(mask)) And $FF000000) Shr 24)/$FF)
@@ -2331,5 +2344,5 @@ Function FindAndDeleteFakeMonitor(r.Rooms,x#,y#,z#,Amount%)
 
 End Function
 ;~IDEal Editor Parameters:
-;~F#4F#165#1A0#1A8#1BD#1C8
+;~F#1A2#1AA#1BF#1CA
 ;~C#Blitz3D

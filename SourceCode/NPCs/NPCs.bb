@@ -155,8 +155,8 @@ End Type
 
 Function CreateNPC.NPCs(NPCtype%, x#, y#, z#)
 	Local n.NPCs = New NPCs, n2.NPCs
-	Local temp#, i%, diff1, bump1, spec1
-	Local sf, b, t1
+	Local temp#, i%, diff1%, bump1%, spec1%
+	Local sf%, b%, t1%
 
 	n\npcType = NPCtype
 	n\gravityMult = 1.0
@@ -263,6 +263,7 @@ End Function
 
 Function UpdateNPCs()
 	Local n.NPCs
+	Local i%, gravityDist#, collidedFloor%
 
 	For n = Each NPCs
 		;A variable to determine if the NPC is in the facility or not
@@ -322,7 +323,6 @@ Function UpdateNPCs()
 		EndIf
 
 		;Update sound locations.
-		Local i%
 		For i = 0 To 2
 			If (IsChannelPlaying(n\soundChannels[i])) Then
 				UpdateRangedSoundOrigin(n\soundChannels[i], mainPlayer\cam, n\obj)
@@ -330,18 +330,18 @@ Function UpdateNPCs()
 		Next
 
 		;TODO: Rework.
-		Local gravityDist# = Distance(EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider),EntityX(n\collider),EntityZ(n\collider))
+		gravityDist# = Distance(EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider),EntityX(n\collider),EntityZ(n\collider))
 
 		If gravityDist<HideDistance*0.7 Or n\npcType = NPCtype1499 Then
 			If n\inFacility = InFacility Then
 				TranslateEntity n\collider, 0, n\dropSpeed, 0
 
-				Local CollidedFloor% = False
+				collidedFloor% = False
 				For i% = 1 To CountCollisions(n\collider)
-					If CollisionY(n\collider, i) < EntityY(n\collider) - 0.01 Then CollidedFloor = True : Exit
+					If CollisionY(n\collider, i) < EntityY(n\collider) - 0.01 Then collidedFloor = True : Exit
 				Next
 
-				If CollidedFloor = True Then
+				If collidedFloor = True Then
 					n\dropSpeed# = 0
 				Else
 					n\dropSpeed# = Max(n\dropSpeed - 0.005*timing\tickDuration*n\gravityMult,-n\maxGravity)
@@ -371,7 +371,7 @@ Function TeleportCloser(n.NPCs)
 	Local closestWaypoint.WayPoints
 	Local w.WayPoints
 
-	Local xtemp#, ztemp#
+	Local xtemp#, ztemp#, newDist#
 
 	For w.WayPoints = Each WayPoints
 		;If w\door = Null Then ;TODO: fix?
@@ -382,7 +382,7 @@ Function TeleportCloser(n.NPCs)
 				If (EntityDistance(mainPlayer\collider, w\obj)>8) Then
 					If (SelectedDifficulty\aggressiveNPCs)Then
 						;teleports to the nearby waypoint that takes it closest to the player
-						Local newDist# = EntityDistance(mainPlayer\collider, w\obj)
+						newDist# = EntityDistance(mainPlayer\collider, w\obj)
 						If (newDist < closestDist Or closestWaypoint = Null) Then
 							closestDist = newDist
 							closestWaypoint = w
@@ -478,6 +478,8 @@ Function TeleportMTFGroup(n.NPCs)
 End Function
 
 Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False)
+	Local shotMessageUpdate$, wearingVest%, pvt%, i%, de.Decals
+	
 	;muzzle flash
 	Local p.Particles = CreateParticle(x,y,z, 1, Rnd(0.08,0.1), 0.0, 5)
 	TurnEntity p\obj, 0,0,Rnd(360)
@@ -495,42 +497,41 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 
 		If Rnd(1.0) =< hitProb Then
 			TurnEntity mainPlayer\cam, Rnd(-3,3), Rnd(-3,3), 0
-
-			Local ShotMessageUpdate$
-			Local WearingVest% = False
-			WearingVest = WearingVest Or IsPlayerWearingTempName(mainPlayer,"vest")
-			WearingVest = WearingVest Or IsPlayerWearingTempName(mainPlayer,"finevest")
-			WearingVest = WearingVest Or IsPlayerWearingTempName(mainPlayer,"veryfinevest")
-			If WearingVest Then
+			
+			wearingVest% = False
+			wearingVest = wearingVest Or IsPlayerWearingTempName(mainPlayer,"vest")
+			wearingVest = wearingVest Or IsPlayerWearingTempName(mainPlayer,"finevest")
+			wearingVest = wearingVest Or IsPlayerWearingTempName(mainPlayer,"veryfinevest")
+			If wearingVest Then
 				If IsPlayerWearingTempName(mainPlayer,"vest") Then
 					Select Rand(8)
 						Case 1,2,3,4,5
 							mainPlayer\blurTimer = 500
 							mainPlayer\stamina = 0
-							ShotMessageUpdate = "A bullet penetrated your vest, making you gasp."
+							shotMessageUpdate = "A bullet penetrated your vest, making you gasp."
 							mainPlayer\injuries = mainPlayer\injuries + Rnd(0.1,0.5)
 						Case 6
 							mainPlayer\blurTimer = 500
-							ShotMessageUpdate = "A bullet hit your left leg."
+							shotMessageUpdate = "A bullet hit your left leg."
 							mainPlayer\injuries = mainPlayer\injuries + Rnd(0.8,1.2)
 						Case 7
 							mainPlayer\blurTimer = 500
-							ShotMessageUpdate = "A bullet hit your right leg."
+							shotMessageUpdate = "A bullet hit your right leg."
 							mainPlayer\injuries = mainPlayer\injuries + Rnd(0.8,1.2)
 						Case 8
 							mainPlayer\blurTimer = 500
 							mainPlayer\stamina = 0
-							ShotMessageUpdate = "A bullet struck your neck, making you gasp."
+							shotMessageUpdate = "A bullet struck your neck, making you gasp."
 							mainPlayer\injuries = mainPlayer\injuries + Rnd(1.2,1.6)
 					End Select
 				Else
 					If Rand(10)=1 Then
 						mainPlayer\blurTimer = 500
 						mainPlayer\stamina = mainPlayer\stamina - 1
-						ShotMessageUpdate = "A bullet hit your chest. The vest absorbed some of the damage."
+						shotMessageUpdate = "A bullet hit your chest. The vest absorbed some of the damage."
 						mainPlayer\injuries = mainPlayer\injuries + Rnd(0.8,1.1)
 					Else
-						ShotMessageUpdate = "A bullet hit your chest. The vest absorbed most of the damage."
+						shotMessageUpdate = "A bullet hit your chest. The vest absorbed most of the damage."
 						mainPlayer\injuries = mainPlayer\injuries + Rnd(0.1,0.5)
 					EndIf
 				EndIf
@@ -544,30 +545,30 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 						Kill(mainPlayer)
 					Case 2
 						mainPlayer\blurTimer = 500
-						ShotMessageUpdate = "A bullet hit your left leg."
+						shotMessageUpdate = "A bullet hit your left leg."
 						mainPlayer\injuries = mainPlayer\injuries + Rnd(0.8,1.2)
 					Case 3
 						mainPlayer\blurTimer = 500
-						ShotMessageUpdate = "A bullet hit your right leg."
+						shotMessageUpdate = "A bullet hit your right leg."
 						mainPlayer\injuries = mainPlayer\injuries + Rnd(0.8,1.2)
 					Case 4
 						mainPlayer\blurTimer = 500
-						ShotMessageUpdate = "A bullet hit your right shoulder."
+						shotMessageUpdate = "A bullet hit your right shoulder."
 						mainPlayer\injuries = mainPlayer\injuries + Rnd(0.8,1.2)
 					Case 5
 						mainPlayer\blurTimer = 500
-						ShotMessageUpdate = "A bullet hit your left shoulder."
+						shotMessageUpdate = "A bullet hit your left shoulder."
 						mainPlayer\injuries = mainPlayer\injuries + Rnd(0.8,1.2)
 					Case 6
 						mainPlayer\blurTimer = 500
-						ShotMessageUpdate = "A bullet hit your right shoulder."
+						shotMessageUpdate = "A bullet hit your right shoulder."
 						mainPlayer\injuries = mainPlayer\injuries + Rnd(2.5,4.0)
 				End Select
 			EndIf
 
 			;Only updates the message if it's been more than two seconds.
 			If (MsgTimer < 64*4) Then
-				Msg = ShotMessageUpdate
+				Msg = shotMessageUpdate
 				MsgTimer = 70*6
 			EndIf
 
@@ -576,7 +577,7 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 			;Kill(mainPlayer)
 			PlaySound_SM(sndManager\bulletHit)
 		ElseIf particles Then
-			Local pvt% = CreatePivot()
+			pvt% = CreatePivot()
 			PositionEntity pvt, EntityX(mainPlayer\collider),(EntityY(mainPlayer\collider)+EntityY(mainPlayer\cam))/2,EntityZ(mainPlayer\collider)
 			PointEntity pvt, p\obj
 			TurnEntity pvt, 0, 180, 0
@@ -594,8 +595,7 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 					p\a = 0.8
 					p\aChange = -0.01
 					RotateEntity p\pvt, EntityPitch(pvt)-180, EntityYaw(pvt),0
-
-					Local i%
+					
 					For i = 0 To Rand(2,3)
 						p.Particles = CreateParticle(PickedX(),PickedY(),PickedZ(), 0, 0.006, 0.003, 80)
 						p\speed = 0.02
@@ -605,7 +605,7 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 					Next
 
 					;bullet hole decal
-					Local de.Decals = CreateDecal(Rand(13,14), PickedX(),PickedY(),PickedZ(), 0,0,0)
+					de.Decals = CreateDecal(Rand(13,14), PickedX(),PickedY(),PickedZ(), 0,0,0)
 					AlignToVector de\obj,-PickedNX(),-PickedNY(),-PickedNZ(),3
 					MoveEntity de\obj, 0,0,-0.001
 					EntityFX de\obj, 1
@@ -668,11 +668,13 @@ Function MoveToPocketDimension()
 End Function
 
 Function FindFreeNPCID%()
+	Local taken%, n2.NPCs
 	Local id% = 1
+	
 	While (True)
-		Local taken% = False
+		taken% = False
 
-		Local n2.NPCs
+		n2.NPCs
 		For n2.NPCs = Each NPCs
 			If n2\id = id Then
 				taken = True
@@ -700,16 +702,16 @@ End Function
 ;TODO: Move to 860 creature file.
 Function Find860Angle(n.NPCs, fr.Forest)
 	TFormPoint(EntityX(mainPlayer\collider),EntityY(mainPlayer\collider),EntityZ(mainPlayer\collider),0,mainPlayer\currRoom\obj)
-	Local playerx = Floor((TFormedX()*RoomScale+6.0)/12.0)
-	Local playerz = Floor((TFormedZ()*RoomScale+6.0)/12.0)
+	Local playerx% = Floor((TFormedX()*RoomScale+6.0)/12.0)
+	Local playerz% = Floor((TFormedZ()*RoomScale+6.0)/12.0)
 
 	TFormPoint(EntityX(n\collider),EntityY(n\collider),EntityZ(n\collider),0,mainPlayer\currRoom\obj)
 	Local x# = (TFormedX()*RoomScale+6.0)/12.0
 	Local z# = (TFormedZ()*RoomScale+6.0)/12.0
 
-	Local xt = Floor(x), zt = Floor(z)
+	Local xt% = Floor(x), zt% = Floor(z)
 
-	Local x2,z2
+	Local x2%, z2%
 	If xt<>playerx Or zt<>playerz Then ;the monster is not on the same tile as the player
 		For x2 = Max(xt-1,0) To Min(xt+1,gridsize-1)
 			For z2 = Max(zt-1,0) To Min(zt+1,gridsize-1)
@@ -981,7 +983,7 @@ End Function
 
 Function PlayerInReachableRoom()
 	Local RN$ = mainPlayer\currRoom\roomTemplate\name$
-	Local e.Events, temp
+	Local e.Events, temp%
 
 	;Player is in these rooms, returning false
 	If RN = "pocketdimension" Or RN = "gatea" Or RN = "dimension1499" Or RN = "173" Then
@@ -1114,11 +1116,12 @@ Function FinishWalking(n.NPCs,startframe#,endframe#,speed#)
 End Function
 
 Function RotateToDirection(n.NPCs)
-
+	Local turnToSide%
+	
 	HideEntity n\collider
 	EntityPick(n\collider, 1.0)
 	If PickedEntity() <> 0 Then
-		Local turnToSide% = 0
+		turnToSide% = 0
 		TurnEntity n\collider,0,90,0
 		EntityPick(n\collider,1.0)
 		If PickedEntity()=0 Then
@@ -1135,8 +1138,8 @@ Function RotateToDirection(n.NPCs)
 
 End Function
 
-Function AnimateNPC(n.NPCs, start#, quit#, speed#, loop=True)
-	Local newTime#
+Function AnimateNPC(n.NPCs, start#, quit#, speed#, loop%=True)
+	Local newTime#, temp%
 
 	If speed > 0.0 Then
 		newTime = Max(Min(n\frame + speed * timing\tickDuration, quit), start)
@@ -1146,7 +1149,7 @@ Function AnimateNPC(n.NPCs, start#, quit#, speed#, loop=True)
 		EndIf
 	Else
 		If start < quit Then
-			Local temp% = start
+			temp% = start
 			start = quit
 			quit = temp
 		EndIf

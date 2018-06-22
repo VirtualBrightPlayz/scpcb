@@ -11,11 +11,12 @@ Function InitializeNPCtypeZombie(n.NPCs)
             Exit
         EndIf
     Next
-
+	
+	Local temp#
     If n\obj = 0 Then
         n\obj = LoadAnimMesh("GFX/NPCs/zombie/zombie.b3d")
 
-        Local temp# = (GetINIFloat("Data/NPCs.ini", "SCP-049-2", "scale") / 2.5)
+        temp# = (GetINIFloat("Data/NPCs.ini", "SCP-049-2", "scale") / 2.5)
         ScaleEntity n\obj, temp, temp, temp
 
         MeshCullBox (n\obj, -MeshWidth(n\obj), -MeshHeight(n\obj), -MeshDepth(n\obj), MeshWidth(n\obj)*2, MeshHeight(n\obj)*2, MeshDepth(n\obj)*2)
@@ -31,10 +32,9 @@ Function InitializeNPCtypeZombie(n.NPCs)
 End Function
 
 Function UpdateNPCtypeZombie(n.NPCs)
+	Local prevFrame# = n\frame
+	
     If Abs(EntityY(mainPlayer\collider)-EntityY(n\collider))<4.0 Then
-
-        Local prevFrame# = n\frame
-
         If (Not n\isDead) Then
             Select n\state
                 Case 0

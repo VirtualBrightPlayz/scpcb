@@ -29,11 +29,13 @@ End Function
 
 Function UpdateNPCtype049(n.NPCs)
     Local prevFrame# = n\frame
-	Local r.Rooms
+	Local r.Rooms, e.Events
+	Local npcDetectsPlayer%
+	Local dist2#, temp%
 
 	If (n\state <> STATE049_IDLE) Then
 		;Depending on whether 049 has detected the player, choose the state it's in.
-		Local npcDetectsPlayer% = MeNPCSeesPlayer(n)
+		npcDetectsPlayer% = MeNPCSeesPlayer(n)
 
 		If (npcDetectsPlayer = 1) Then
 			n\state = STATE049_ATTACK
@@ -69,7 +71,7 @@ Function UpdateNPCtype049(n.NPCs)
 				If (Not mainPlayer\godMode) Then
 					If (mainPlayer\currRoom\roomTemplate\name$ = "room049") Then
 						DeathMSG = "Three (3) active instances of SCP-049-2 discovered in the tunnel outside SCP-049's containment chamber. Terminated by Nine-Tailed Fox."
-						Local e.Events
+						
 						For e.Events = Each Events
 							If e\name = "room049" Then e\eventState=-1 : Exit
 						Next
@@ -102,8 +104,6 @@ Function UpdateNPCtype049(n.NPCs)
 
 		Case STATE049_ROAMING
 			;[Block]
-			Local dist2#
-
 			;Finding a path to the player
 			If (npcDetectsPlayer = 2) Then
 				n\lastSeen = 70*15
@@ -140,7 +140,7 @@ Function UpdateNPCtype049(n.NPCs)
 						;opens doors in front of him
 						dist2# = EntityDistance(n\collider,n\path[n\pathLocation]\obj)
 						If (dist2 < 0.6) Then
-							Local temp% = True
+							temp% = True
 							;TODO: fix
 							;If (n\path[n\pathLocation]\door <> Null) Then
 							;	If (Not n\path[n\pathLocation]\door\isElevatorDoor)

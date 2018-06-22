@@ -53,6 +53,7 @@ End Function
 
 Function GetINIString$(file$, section$, parameter$, defaultvalue$="")
 	Local TemporaryString$ = ""
+	Local strtemp$
 
 	Local lfile.INIFile = Null
 
@@ -77,7 +78,7 @@ Function GetINIString$(file$, section$, parameter$, defaultvalue$="")
 
 	;While Not Eof(f)
 	While lfile\bankOffset<lfile\size
-		Local strtemp$ = ReadINILine(lfile)
+		strtemp$ = ReadINILine(lfile)
 		If Left(strtemp,1) = "[" Then
 			strtemp$ = Lower(strtemp)
 			If Mid(strtemp, 2, Len(strtemp)-2)=section Then
@@ -116,11 +117,12 @@ End Function
 
 Function GetINIString2$(file$, start%, parameter$, defaultvalue$="")
 	Local TemporaryString$ = ""
+	Local strTemp$
 	Local f% = ReadFile(file)
 
 	Local n%=0
 	While Not Eof(f)
-		Local strtemp$ = ReadLine(f)
+		strTemp$ = ReadLine(f)
 		n=n+1
 		If n=start Then
 			Repeat
@@ -154,19 +156,20 @@ End Function
 
 Function GetINISectionLocation%(file$, section$)
 	Local Temp%
+	Local strTemp$
 	Local f% = ReadFile(file)
 
 	section = Lower(section)
 
 	Local n%=0
 	While Not Eof(f)
-		Local strtemp$ = ReadLine(f)
+		strTemp$ = ReadLine(f)
 		n=n+1
-		If Left(strtemp,1) = "[" Then
-			strtemp$ = Lower(strtemp)
-			Temp = Instr(strtemp, section)
+		If Left(strTemp,1) = "[" Then
+			strTemp$ = Lower(strTemp)
+			Temp = Instr(strTemp, section)
 			If Temp>0 Then
-				If Mid(strtemp, Temp-1, 1)="[" Or Mid(strtemp, Temp-1, 1)="|" Then
+				If Mid(strTemp, Temp-1, 1)="[" Or Mid(strTemp, Temp-1, 1)="|" Then
 					CloseFile f
 					Return n
 				EndIf
@@ -204,10 +207,11 @@ Function PutINIValue%(file$, INI_sSection$, INI_sKey$, INI_sValue$)
 
 	Local INI_lOldPos% = 1
 	Local INI_lPos% = Instr(INI_sContents, Chr$(0))
+	Local INI_sTemp$, lEqualsPos%
 
 	While (INI_lPos <> 0)
 
-		Local INI_sTemp$ = Mid$(INI_sContents, INI_lOldPos, (INI_lPos - INI_lOldPos))
+		INI_sTemp$ = Mid$(INI_sContents, INI_lOldPos, (INI_lPos - INI_lOldPos))
 
 		If (INI_sTemp <> "") Then
 
@@ -226,7 +230,7 @@ Function PutINIValue%(file$, INI_sSection$, INI_sKey$, INI_sValue$)
 					WriteLine INI_lFileHandle, INI_sTemp
 				Else
 						; KEY=VALUE
-					Local lEqualsPos% = Instr(INI_sTemp, "=")
+					lEqualsPos% = Instr(INI_sTemp, "=")
 					If (lEqualsPos <> 0) Then
 						If (INI_sCurrentSection = INI_sUpperSection) And (Upper$(Trim$(Left$(INI_sTemp, (lEqualsPos - 1)))) = Upper$(INI_sKey)) Then
 							If (INI_sValue <> "") Then INI_CreateKey INI_lFileHandle, INI_sKey, INI_sValue

@@ -3,7 +3,7 @@ Function FillRoom_lck_tshape_2(r.Rooms)
     Local it.Items, i%
     Local xtemp%, ytemp%, ztemp%
 
-    Local t1;, Bump
+    Local t1%;, Bump
 
     d = CreateDoor(r\zone, r\x, 0, r\z + 528.0 * RoomScale, 0, r, True)
     d\autoClose = False ;: d\buttons[0] = False

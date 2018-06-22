@@ -277,13 +277,15 @@ Function IsChannelPlaying%(chn%)
 End Function
 
 Function PlayRangedSound%(soundHandle%, cam%, entity%, range# = 10, volume# = 1.0)
+	Local dist#, panvalue#
+	
 	range# = Max(range, 1.0)
 	Local soundChn% = 0
 
 	If (volume > 0) Then
-		Local dist# = EntityDistance(cam, entity) / range
+		dist# = EntityDistance(cam, entity) / range
 		If (1 - dist > 0 And 1 - dist < 1) Then
-			Local panvalue# = Sin(-DeltaYaw(cam, entity))
+			panvalue# = Sin(-DeltaYaw(cam, entity))
 			soundChn = PlaySound(soundHandle)
 			
 			ChannelVolume(soundChn, volume * (1 - dist) * userOptions\sndVolume)
@@ -326,13 +328,15 @@ Function LoopRangedSound_SM%(snd.Sound, chn%, cam%, entity%, range# = 10, volume
 End Function
 
 Function UpdateRangedSoundOrigin(chn%, cam%, entity%, range# = 10, volume# = 1.0)
+	Local dist#, panvalue#
+	
 	range = Max(range, 1.0)
 
 	If (volume > 0) Then
 
-		Local dist# = EntityDistance(cam, entity) / range
+		dist# = EntityDistance(cam, entity) / range
 		If (1 - dist > 0 And 1 - dist < 1) Then
-			Local panvalue# = Sin(-DeltaYaw(cam,entity))
+			panvalue# = Sin(-DeltaYaw(cam,entity))
 			
 			ChannelVolume(chn, volume * (1 - dist) * userOptions\sndVolume)
 			ChannelPan(chn, panvalue)
@@ -345,10 +349,12 @@ Function UpdateRangedSoundOrigin(chn%, cam%, entity%, range# = 10, volume# = 1.0
 End Function
 
 Function UpdateRangedSoundOrigin_SM(chn.SoundChannel)
+	Local dist#, panvalue#
+	
 	If (chn\volume > 0) Then
-		Local dist# = EntityDistance(chn\camera, chn\point) / chn\range
+		dist# = EntityDistance(chn\camera, chn\point) / chn\range
 		If (1 - dist > 0 And 1 - dist < 1) Then
-			Local panvalue# = Sin(-DeltaYaw(chn\camera, chn\point))
+			panvalue# = Sin(-DeltaYaw(chn\camera, chn\point))
 			
 			ChannelVolume(chn\internal, chn\volume * (1 - dist) * userOptions\sndVolume)
 			ChannelPan(chn\internal, panvalue)
@@ -479,14 +485,13 @@ End Function
 
 Function GetMaterialStepSound(entity%)
     Local picker% = LinePick(EntityX(entity),EntityY(entity),EntityZ(entity),0,-1,0)
+	Local brush%, texture%, name$, mat.Materials
 
     If picker <> 0 Then
         If GetEntityType(picker) <> HIT_MAP Then Return 0
-        Local brush% = GetSurfaceBrush(GetSurface(picker,CountSurfaces(picker)))
+        brush% = GetSurfaceBrush(GetSurface(picker,CountSurfaces(picker)))
         If brush <> 0 Then
-            Local texture% = GetBrushTexture(brush,2)
-			Local name$
-			Local mat.Materials
+            texture% = GetBrushTexture(brush,2)
 
             If texture <> 0 Then
                 name = StripPath(TextureName(texture))

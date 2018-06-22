@@ -3,7 +3,7 @@ Function FillRoom_hll_gas_3(r.Rooms)
 	Local it.Items, i%
 	Local xtemp%, ytemp%, ztemp%
 
-	Local t1;, Bump
+	Local t1%;, Bump
 
     em.Emitters = CreateEmitter(r\x + 512.0 * RoomScale, -76 * RoomScale, r\z - 688 * RoomScale, 0)
     TurnEntity(em\obj, -90, 0, 0)
@@ -70,15 +70,15 @@ End Function
 
 
 Function UpdateEventRoom3pit1048(e.Events)
-	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%, tex%
+	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%, tex%, brush%
 
-	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
+	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, itt.ItemTemplates, em.Emitters, sc.SecurityCams, sc2.SecurityCams
 
 	Local CurrTrigger$ = ""
 
 	Local x#, y#, z#
 
-	Local angle#
+	Local angle#, imgPath$, sf%, b%, t%, texname$
 
 	;[Block]
 	If mainPlayer\currRoom = e\room Then
@@ -87,9 +87,8 @@ Function UpdateEventRoom3pit1048(e.Events)
 			ScaleEntity e\room\objects[2], 0.05,0.05,0.05
 			SetAnimTime(e\room\objects[2], 414)
 
-			Local imgPath$ = "GFX/items/1048/1048_"+Rand(1,20)+".jpg"
-
-			Local itt.ItemTemplates
+			imgPath$ = "GFX/items/1048/1048_"+Rand(1,20)+".jpg"
+			
 			For itt.ItemTemplates = Each ItemTemplates
 				If itt\name = "Drawing" Then
 					If itt\img<>0 Then FreeImage itt\img
@@ -102,13 +101,13 @@ Function UpdateEventRoom3pit1048(e.Events)
 			Next
 
 			tex% = LoadTexture(imgPath)
-			Local brush% = LoadBrush(imgPath, 1)
+			brush% = LoadBrush(imgPath, 1)
 
 			For i = 1 To CountSurfaces(e\room\objects[2])
-				Local sf% = GetSurface(e\room\objects[2],i)
-				Local b% = GetSurfaceBrush( sf )
-				Local t% = GetBrushTexture(b, 0)
-				Local texname$ = StripPath(TextureName(t))
+				sf% = GetSurface(e\room\objects[2],i)
+				b% = GetSurfaceBrush( sf )
+				t% = GetBrushTexture(b, 0)
+				texname$ = StripPath(TextureName(t))
 				DebugLog "texname: "+texname
 				If Lower(texname) = "1048_1.jpg" Then
 					PaintSurface sf, brush

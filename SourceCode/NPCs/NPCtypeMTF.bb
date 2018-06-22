@@ -37,8 +37,9 @@ Function InitializeNPCtypeMTF(n.NPCs)
         MTFSFX(5)=LoadSound("SFX/Character/MTF/Beep.ogg")
         MTFSFX(6)=LoadSound("SFX/Character/MTF/Breath.ogg")
     EndIf
+	
+	Local r.Rooms
     If MTFrooms[6]=Null Then
-		Local r.Rooms
         For r.Rooms = Each Rooms
             Select Lower(r\roomTemplate\name)
                 Case "room106"
@@ -61,12 +62,14 @@ Function InitializeNPCtypeMTF(n.NPCs)
 End Function
 
 Function UpdateNPCtypeMTF(n.NPCs)
-	Local x#,y#,z#
+	Local x#,y#,z#, tmp%
 	Local r.Rooms
 	Local prevDist#,newDist#, prev%
 	Local n2.NPCs
 
-	Local p.Particles, target, dist#, dist2#, wp.WayPoints
+	Local p.Particles, target%, dist#, dist2#, wp.WayPoints
+	Local foundChamber%
+	Local pvt%, temp%, soundVol173#, angle#, curr173Dist#, tempDist#
 
 	If n\isDead Then
 		n\blinkTimer = -1.0
@@ -123,7 +126,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 								EndIf
 							Next
 						Else
-							Local tmp = False
+							tmp = False
 							If EntityDistance(n\collider,Curr173\collider)>4.0 Then
 								If (Not EntityVisible(n\collider,Curr173\collider)) Then
 									tmp = True
@@ -133,8 +136,8 @@ Function UpdateNPCtypeMTF(n.NPCs)
 							If (Not tmp) Then
 								For r = Each Rooms
 									If r\roomTemplate\name$ = "start" Then
-										Local foundChamber% = False
-										Local pvt% = CreatePivot()
+										foundChamber% = False
+										pvt% = CreatePivot()
 										PositionEntity pvt%,EntityX(r\obj,True)+4736*RoomScale,0.5,EntityZ(r\obj,True)+1692*RoomScale
 
 										If Distance(EntityX(pvt%),EntityZ(pvt%),EntityX(n\collider),EntityZ(n\collider))<3.5 Then
@@ -306,7 +309,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 					EndIf
                 EndIf
 
-				Local temp = MeNPCSeesPlayer(n)
+				temp = MeNPCSeesPlayer(n)
 
 				If NoTarget Then temp = False
 
@@ -350,9 +353,9 @@ Function UpdateNPCtypeMTF(n.NPCs)
 
 				;B3D doesn't do short-circuit evaluation, so this retarded nesting is an optimization
                 If Curr173\idle<2 Then
-					Local SoundVol173# = Max(Min((Distance(EntityX(Curr173\collider), EntityZ(Curr173\collider), Curr173\prevX, Curr173\prevZ) * 2.5), 1.0), 0.0)
-					If OtherNPCSeesMeNPC(Curr173,n) Or (SoundVol173#>0.0 And EntityDistance(n\collider,Curr173\collider)<6.0) Then
-						If EntityVisible(n\collider,Curr173\collider) Or SoundVol173#>0.0 Then
+					soundVol173# = Max(Min((Distance(EntityX(Curr173\collider), EntityZ(Curr173\collider), Curr173\prevX, Curr173\prevZ) * 2.5), 1.0), 0.0)
+					If OtherNPCSeesMeNPC(Curr173,n) Or (soundVol173#>0.0 And EntityDistance(n\collider,Curr173\collider)<6.0) Then
+						If EntityVisible(n\collider,Curr173\collider) Or soundVol173#>0.0 Then
 							n\state = 2
 							n\enemyX = EntityX(Curr173\collider,True)
 							n\enemyY = EntityY(Curr173\collider,True)
@@ -466,7 +469,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 					;if close enough, start shooting at the player
 					If n\playerDistance < 4.0 Then
 
-						Local angle# = VectorYaw(EntityX(mainPlayer\collider)-EntityX(n\collider),0,EntityZ(mainPlayer\collider)-EntityZ(n\collider))
+						angle# = VectorYaw(EntityX(mainPlayer\collider)-EntityX(n\collider),0,EntityZ(mainPlayer\collider)-EntityZ(n\collider))
 
 						RotateEntity(n\collider, 0, CurveAngle(angle, EntityYaw(n\collider), 10.0), 0, True)
 						n\angle = EntityYaw(n\collider)
@@ -680,9 +683,9 @@ Function UpdateNPCtypeMTF(n.NPCs)
 
 				;B3D doesn't do short-circuit evaluation, so this retarded nesting is an optimization
                 If Curr173\idle<2 Then
-					SoundVol173# = Max(Min((Distance(EntityX(Curr173\collider), EntityZ(Curr173\collider), Curr173\prevX, Curr173\prevZ) * 2.5), 1.0), 0.0)
-					If OtherNPCSeesMeNPC(Curr173,n) Or (SoundVol173#>0.0 And EntityDistance(n\collider,Curr173\collider)<6.0) Then
-						If EntityVisible(n\collider,Curr173\collider) Or SoundVol173#>0.0 Then
+					soundVol173# = Max(Min((Distance(EntityX(Curr173\collider), EntityZ(Curr173\collider), Curr173\prevX, Curr173\prevZ) * 2.5), 1.0), 0.0)
+					If OtherNPCSeesMeNPC(Curr173,n) Or (soundVol173#>0.0 And EntityDistance(n\collider,Curr173\collider)<6.0) Then
+						If EntityVisible(n\collider,Curr173\collider) Or soundVol173#>0.0 Then
 							n\state = 2
 							n\enemyX = EntityX(Curr173\collider,True)
 							n\enemyY = EntityY(Curr173\collider,True)
@@ -805,13 +808,13 @@ Function UpdateNPCtypeMTF(n.NPCs)
 						EndIf
 					Next
 
-					Local curr173Dist# = Distance(EntityX(n\collider,True),EntityZ(n\collider,True),EntityX(Curr173\collider,True),EntityZ(Curr173\collider,True))
+					curr173Dist# = Distance(EntityX(n\collider,True),EntityZ(n\collider,True),EntityX(Curr173\collider,True),EntityZ(Curr173\collider,True))
 
 					If curr173Dist<5.0 Then
 						If Curr173\idle <> 2 Then Curr173\idle = True
 						n\state2 = 70.0*15.0
 						n\pathTimer = 0.0
-						Local tempDist# = 1.0
+						tempDist# = 1.0
 						If n\mtfLeader<>Null Then tempDist = 2.0
 						If curr173Dist<tempDist Then
 							If n\mtfLeader = Null Then
@@ -1565,14 +1568,15 @@ End Function
 Function UpdateMTF%()
 	If mainPlayer\currRoom\roomTemplate\name = "gateaentrance" Then Return
 
-	Local r.Rooms, n.NPCs
+	Local r.Rooms, n.NPCs, leader.NPCs
 	Local dist#, i%
+	Local entrance.Rooms
 
 	;mtf ei vielä spawnannut, spawnataan jos pelaaja menee tarpeeksi lähelle gate b:tä
 	If MTFtimer = 0 Then
 		If Rand(30)=1 And mainPlayer\currRoom\roomTemplate\name$ <> "dimension1499" Then
 
-			Local entrance.Rooms = Null
+			entrance.Rooms = Null
 			For r.Rooms = Each Rooms
 				If Lower(r\roomTemplate\name) = "gateaentrance" Then entrance = r : Exit
 			Next
@@ -1585,7 +1589,7 @@ Function UpdateMTF%()
 					EndIf
 
 					MTFtimer = 1
-					Local leader.NPCs
+					
 					For i = 0 To 2
 						n.NPCs = CreateNPC(NPCtypeMTF, EntityX(entrance\obj)+0.3*(i-1), 1.0,EntityZ(entrance\obj)+8.0)
 

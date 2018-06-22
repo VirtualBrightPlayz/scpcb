@@ -3,7 +3,7 @@ Function FillRoom_end_1(r.Rooms)
     Local it.Items, i%
     Local xtemp%, ytemp%, ztemp%
 
-    Local t1;, Bump
+    Local t1%;, Bump
 
     r\roomDoors[0] = CreateDoor(r\zone, r\x, 0, r\z + 1136 * RoomScale, 0, r, False, True, 6)
     r\roomDoors[0]\autoClose = False : r\roomDoors[0]\open = False

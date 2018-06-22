@@ -3,7 +3,7 @@ Function FillRoom_cont_500_1499_2(r.Rooms)
     Local it.Items, i%
     Local xtemp%, ytemp%, ztemp%
 
-    Local t1;, Bump
+    Local t1%;, Bump
 
     r\roomDoors[0] = CreateDoor(r\zone, r\x + 288.0*RoomScale, r\y, r\z + 576.0*RoomScale, 90, r, False, False, 3)
     r\roomDoors[0]\open = False : r\roomDoors[0]\locked = True

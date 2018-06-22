@@ -3,7 +3,7 @@ Function FillRoom_tnnl_maintenance_2(r.Rooms)
 	Local it.Items, i%
 	Local xtemp%, ytemp%, ztemp%
 
-	Local t1;, Bump
+	Local t1%;, Bump
 
     r\objects[0] = CreatePivot()
     PositionEntity(r\objects[0], r\x + 2640.0 * RoomScale, -2496.0 * RoomScale, r\z + 400.0 * RoomScale)

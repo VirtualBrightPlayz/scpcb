@@ -3,7 +3,7 @@ Function FillRoom_chck_hcz_ez_2(r.Rooms)
 	Local it.Items, i%
 	Local xtemp%, ytemp%, ztemp%
 
-	Local t1;, Bump
+	Local t1%;, Bump
 
     r\roomDoors[0]= CreateDoor(0, r\x - 48.0*RoomScale, 0, r\z + 128.0 * RoomScale, 0, r, False, False, 5)
     PositionEntity(r\roomDoors[0]\buttons[0], r\x + 152.0 * RoomScale, EntityY(r\roomDoors[0]\buttons[0],True), r\z - 96.0 * RoomScale, True)
@@ -38,3 +38,6 @@ Function FillRoom_chck_hcz_ez_2(r.Rooms)
     ;    CreateDoor(r\zone, r\x, 0, r\z  - 4.0, 0, r, 0, False, 0, "GEAR")
     ;EndIf
 End Function
+
+;~IDEal Editor Parameters:
+;~C#Blitz3D

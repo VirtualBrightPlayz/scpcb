@@ -3,7 +3,7 @@ Function FillRoom_cont_012_2(r.Rooms)
 	Local it.Items, i%
 	Local xtemp%, ytemp%, ztemp%
 
-	Local t1;, Bump
+	Local t1%;, Bump
 
     d.Doors = CreateDoor(r\zone, r\x + 264.0 * RoomScale, 0.0, r\z + 672.0 * RoomScale, 270, r, False, False, 3)
     PositionEntity(d\buttons[0], r\x + 224.0 * RoomScale, EntityY(d\buttons[0],True), r\z + 880.0 * RoomScale, True)
@@ -65,9 +65,9 @@ End Function
 
 
 Function UpdateEvent_cont_012_2(e.Events)
-	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
+	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%, tex%
 
-	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
+	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams, de.Decals
 
 	Local CurrTrigger$ = ""
 
@@ -168,7 +168,7 @@ Function UpdateEvent_cont_012_2(e.Events)
 							mainPlayer\injuries=mainPlayer\injuries+0.5
 							PlaySound2 LoadTempSound("SFX/SCP/012/Speech2.ogg")
 						ElseIf e\eventState3>31*70 And e\eventState3-timing\tickDuration=<31*70 Then
-							Local tex% = LoadTexture("GFX/Map/Textures/scp-012_1.jpg")
+							tex% = LoadTexture("GFX/Map/Textures/scp-012_1.jpg")
 							EntityTexture (e\room\objects[4], tex,0,1)
 							FreeTexture tex
 
@@ -199,7 +199,7 @@ Function UpdateEvent_cont_012_2(e.Events)
 							PlaySound2 LoadTempSound("SFX/SCP/012/Speech7.ogg")
 							mainPlayer\crouching = True
 
-							Local de.Decals = CreateDecal(17,  EntityX(mainPlayer\collider), -768*RoomScale+0.01, EntityZ(mainPlayer\collider),90,Rnd(360),0)
+							de.Decals = CreateDecal(17,  EntityX(mainPlayer\collider), -768*RoomScale+0.01, EntityZ(mainPlayer\collider),90,Rnd(360),0)
 							de\size = 0.1 : de\maxSize = 0.45 : de\sizeChange = 0.0002 : UpdateDecals()
 						ElseIf e\eventState3>85*70 And e\eventState3-timing\tickDuration=<85*70	Then
 							DeathMSG = "Subject D-9341 found in a pool of blood next to SCP-012. Subject seems to have ripped open his wrists and written three extra "

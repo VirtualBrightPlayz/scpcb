@@ -1,8 +1,8 @@
 Function StripFilename$(file$)
 	Local mi$=""
 	Local lastSlash%=0
+	Local i%
 	If Len(file)>0 Then
-		Local i%
 		For i%=1 To Len(file)
 			mi=Mid(file$,i,1)
 			If mi="\" Or mi="/" Then

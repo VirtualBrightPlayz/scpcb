@@ -3,7 +3,7 @@ Function FillRoom_srvr_096_2(r.Rooms)
 	Local it.Items, i%
 	Local xtemp%, ytemp%, ztemp%
 
-	Local t1;, Bump
+	Local t1%;, Bump
 
     d.Doors = CreateDoor(0, r\x,0,r\z, 0, r, False, 2, False)
     d\locked = True

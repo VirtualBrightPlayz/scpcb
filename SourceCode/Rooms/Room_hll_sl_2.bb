@@ -3,7 +3,7 @@ Function FillRoom_hll_sl_2(r.Rooms)
     Local it.Items, i%
     Local xtemp%, ytemp%, ztemp%
 
-    Local t1;, Bump
+    Local t1%;, Bump
 
     Local scale# = RoomScale * 4.5 * 0.4
 
@@ -163,7 +163,11 @@ Function UpdateEvent_hll_sl_2(e.Events)
 
 	Local x#, y#, z#
 
-	Local angle#
+	Local angle#, hasCamera%, sclae#
+	Local AdjDist1#
+	Local AdjDist2#
+	Local Adj1%
+	Local Adj2%
 
 	;[Block]
 	;e\eventState: Determines if the player already entered the room or not (0 = No, 1 = Yes)
@@ -179,19 +183,19 @@ Function UpdateEvent_hll_sl_2(e.Events)
 			If ValidRoom2slCamRoom(r) Then
 				For sc.SecurityCams = Each SecurityCams
 					If sc\room = r And (Not sc\specialCam) Then
-						Local HasCamera% = False
+						hasCamera% = False
 						For sc2.SecurityCams = Each SecurityCams
 							If sc2\room <> sc\room And (Not sc2\specialCam) Then
 								If sc2\room\roomTemplate\name = sc\room\roomTemplate\name Then
 									If sc2\screen Then
-										HasCamera% = True
+										hasCamera% = True
 										DebugLog "HasCamera% = True ("+Chr(34)+sc2\room\roomTemplate\name+Chr(34)+")"
 										Exit
 									EndIf
 								EndIf
 							EndIf
 						Next
-						If (Not HasCamera%) Then
+						If (Not hasCamera%) Then
 							If (Not e\loaded) Then
 								For i = 0 To 9
 									sc\screen = True
@@ -199,7 +203,7 @@ Function UpdateEvent_hll_sl_2(e.Events)
 
 									sc\renderInterval = 12
 
-									Local scale# = RoomScale * 4.5 * 0.4
+									scale# = RoomScale * 4.5 * 0.4
 
 									sc\scrObj = CreateSprite()
 									EntityFX sc\scrObj, 17
@@ -421,10 +425,10 @@ Function UpdateEvent_hll_sl_2(e.Events)
 		ElseIf e\eventState2 = 0 Then
 			If e\room\npc[0] <> Null Then
 				;PositionEntity e\room\npc[0]\collider,EntityX(e\room\npc[0]\collider),EntityY(e\room\objects[7],True),EntityZ(e\room\npc[0]\collider)
-				Local AdjDist1# = 0.0
-				Local AdjDist2# = 0.0
-				Local Adj1% = -1
-				Local Adj2% = -1
+				AdjDist1# = 0.0
+				AdjDist2# = 0.0
+				Ldj1% = -1
+				Adj2% = -1
 				For i = 0 To 3
 					If e\room\adjDoor[i]<>Null Then
 						If Adj1 = -1 Then

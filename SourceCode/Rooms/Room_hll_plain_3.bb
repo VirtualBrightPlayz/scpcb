@@ -7,7 +7,7 @@ Function UpdateEvent106victim(e.Events)
 
 	Local x#, y#, z#
 
-	Local angle#
+	Local angle#, fdir#
 
 	;[Block]
 	If (Not Contained106) Then
@@ -45,7 +45,7 @@ Function UpdateEvent106victim(e.Events)
 					AnimateNPC(e\room\npc[0], 1, 10, 0.12, False)
 					dist# = EntityDistance(mainPlayer\collider,e\room\npc[0]\collider)
 					If dist<0.8 Then ;get the player out of the way
-						Local fdir# = GetAngle(EntityX(mainPlayer\collider,True),EntityZ(mainPlayer\collider,True),EntityX(e\room\npc[0]\collider,True),EntityZ(e\room\npc[0]\collider,True))
+						fdir# = GetAngle(EntityX(mainPlayer\collider,True),EntityZ(mainPlayer\collider,True),EntityX(e\room\npc[0]\collider,True),EntityZ(e\room\npc[0]\collider,True))
 						TranslateEntity mainPlayer\collider,Cos(-fdir+90)*(dist-0.8)*(dist-0.8),0,Sin(-fdir+90)*(dist-0.8)*(dist-0.8)
 					EndIf
 

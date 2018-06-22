@@ -9,7 +9,7 @@ Function LoadGame(file$,quick%=False)
 End Function
 
 Function LoadSaveGames()
-	Local file$
+	Local file$, f%
 
 	SaveGameAmount = 0
 	If FileType(SavePath)=1 Then RuntimeError "Can't create dir "+Chr(34)+SavePath+Chr(34)
@@ -50,7 +50,7 @@ Function LoadSaveGames()
 	Dim SaveGameDate$(SaveGameAmount + 1)
 	For i = 1 To SaveGameAmount
 		DebugLog (SavePath + SaveGames(i - 1) + "/save.txt")
-		Local f% = ReadFile(SavePath + SaveGames(i - 1) + "/save.txt")
+		f% = ReadFile(SavePath + SaveGames(i - 1) + "/save.txt")
 		SaveGameTime(i - 1) = ReadString(f)
 		SaveGameDate(i - 1) = ReadString(f)
 		CloseFile f
@@ -59,7 +59,7 @@ End Function
 
 
 Function LoadSavedMaps()
-	Local i, Dir, file$
+	Local i%, Dir%, file$
 
 	For i = 0 To MAXSAVEDMAPS-1
 		SavedMaps(i)=""

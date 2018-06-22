@@ -3,7 +3,7 @@ Function FillRoom_hll_gas_2(r.Rooms)
 	Local it.Items, i%
 	Local xtemp%, ytemp%, ztemp%
 
-	Local t1;, Bump
+	Local t1%;, Bump
 
     i = 0
     For  xtemp% = -1 To 1 Step 2

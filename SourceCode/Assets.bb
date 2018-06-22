@@ -330,7 +330,7 @@ Function LoadEntities()
 End Function
 
 Function InitNewGame()
-	Local i%, de.Decals, d.Doors, it.Items, r.Rooms, sc.SecurityCams, e.Events
+	Local i%, de.Decals, d.Doors, it.Items, r.Rooms, sc.SecurityCams, e.Events, prop.Props
 
 	DrawLoading(45)
 
@@ -425,8 +425,7 @@ Function InitNewGame()
 
 		FreeEntity rt\opaqueMesh
 		If rt\alphaMesh<>0 Then FreeEntity rt\alphaMesh
-
-		Local prop.Props
+		
 		If rt\props<>Null Then
 			For i% = 0 To rt\props\size-1
 				prop = Object.Props(GetIntArrayListElem(rt\props,i))
@@ -497,7 +496,7 @@ Function InitNewGame()
 End Function
 
 Function InitLoadGame()
-	Local d.Doors, sc.SecurityCams, rt.RoomTemplates, e.Events
+	Local d.Doors, sc.SecurityCams, rt.RoomTemplates, e.Events, prop.Props, planetex%, ch.Chunk
 
 	DrawLoading(80)
 
@@ -541,8 +540,7 @@ Function InitLoadGame()
 
 		FreeEntity rt\opaqueMesh
 		If rt\alphaMesh<>0 Then FreeEntity rt\alphaMesh
-
-		Local prop.Props
+		
 		If rt\props<>Null Then
 			For i% = 0 To rt\props\size-1
 				prop = Object.Props(GetIntArrayListElem(rt\props,i))
@@ -554,7 +552,8 @@ Function InitLoadGame()
 	Next
 
 	mainPlayer\dropSpeed = 0.0
-
+	
+	;TODO: Not load this at the start of the game jesus.
 	For e.Events = Each Events
 		;Loading the necessary stuff for dimension1499, but this will only be done if the player is in this dimension already
 		If e\name = "dimension1499" Then
@@ -562,7 +561,7 @@ Function InitLoadGame()
 				;[Block]
 				DrawLoading(91)
 				e\room\objects[0] = CreatePlane()
-				Local planetex% = LoadTexture("GFX/Map/Rooms/dimension1499/grit3.jpg")
+				planetex% = LoadTexture("GFX/Map/Rooms/dimension1499/grit3.jpg")
 				EntityTexture e\room\objects[0],planetex%
 				FreeTexture planetex%
 				PositionEntity e\room\objects[0],0,EntityY(e\room\obj),0
@@ -580,7 +579,6 @@ Function InitLoadGame()
 				DrawLoading(97)
 				x# = EntityX(e\room\obj)
 				z# = EntityZ(e\room\obj)
-				Local ch.Chunk
 				For i = -2 To 2 Step 2
 					ch = CreateChunk(-1,x#*(i*2.5),EntityY(e\room\obj),z#)
 				Next
@@ -604,7 +602,7 @@ Function InitLoadGame()
 End Function
 
 Function NullGame()
-	Local i%, x%, y%, lvl
+	Local i%, x%, y%, lvl%
 	Local itt.ItemTemplates, s.Screens, lt.LightTemplates, d.Doors, m.Materials
 	Local wp.WayPoints, twp.TempWayPoints, r.Rooms, it.Items
 
@@ -772,3 +770,5 @@ Function NullGame()
 	Next
 
 End Function
+;~IDEal Editor Parameters:
+;~C#Blitz3D

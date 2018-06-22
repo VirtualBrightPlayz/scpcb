@@ -3,7 +3,7 @@ Function FillRoom_closets_2(r.Rooms)
 	Local it.Items, i%
 	Local xtemp%, ytemp%, ztemp%
 
-	Local t1;, Bump
+	Local t1%;, Bump
     it = CreateItem("Document SCP-173", "paper", r\x + 736.0 * RoomScale, r\y + 176.0 * RoomScale, r\z + 736.0 * RoomScale)
     EntityParent(it\collider, r\obj)
 
@@ -51,7 +51,7 @@ End Function
 
 
 Function UpdateEvent_closets_2(e.Events)
-	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
+	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%, tex%
 
 	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
 
@@ -68,7 +68,7 @@ Function UpdateEvent_closets_2(e.Events)
 				e\room\npc[0] = CreateNPC(NPCtypeD, EntityX(e\room\objects[0],True),EntityY(e\room\objects[0],True),EntityZ(e\room\objects[0],True))
 			EndIf
 			e\room\npc[0]\texture = "GFX/NPCs/classd/janitor.jpg"
-			Local tex% = LoadTexture(e\room\npc[0]\texture)
+			tex% = LoadTexture(e\room\npc[0]\texture)
 
 			EntityTexture e\room\npc[0]\obj, tex
 			FreeTexture tex

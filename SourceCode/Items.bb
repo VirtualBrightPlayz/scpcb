@@ -242,7 +242,7 @@ Type Items
 	Field zspeed#
 	Field id%
 
-	Field inventory.Inventory = Null
+	Field Inventory.Inventory = Null
 End Type
 
 Const MAX_ITEM_COUNT% = 20

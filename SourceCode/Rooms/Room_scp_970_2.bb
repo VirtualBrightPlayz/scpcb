@@ -3,7 +3,7 @@ Function FillRoom_scp_970_2(r.Rooms)
 	Local it.Items, i%
 	Local xtemp%, ytemp%, ztemp%
 
-	Local t1;, Bump
+	Local t1%;, Bump
 
     r\roomDoors[0] = CreateDoor(r\zone, r\x - 1288.0 * RoomScale, 0, r\z, 270, r)
     r\roomDoors[1] = CreateDoor(r\zone, r\x - 760.0 * RoomScale, 0, r\z, 270, r)
@@ -42,7 +42,7 @@ Function UpdateEvent_scp_970_2(e.Events)
 
 	Local x#, y#, z#
 
-	Local angle#
+	Local angle#, tex970%
 
 	;[Block]
 	If mainPlayer\currRoom = e\room Then
@@ -210,7 +210,7 @@ Function UpdateEvent_scp_970_2(e.Events)
 					EndIf
 				Case 60
 					If (Not HalloweenTex) Then
-						Local tex970 = LoadTexture("GFX/npcs/173h.pt", 1)
+						tex970 = LoadTexture("GFX/npcs/173h.pt", 1)
 						EntityTexture Curr173\obj, tex970, 0, 0
 						FreeTexture tex970
 					EndIf

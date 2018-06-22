@@ -3,7 +3,7 @@ Function FillRoom_cont_008_1(r.Rooms)
 	Local it.Items, i%
 	Local xtemp%, ytemp%, ztemp%
 
-	Local t1;, Bump
+	Local t1%;, Bump
 
     ;the container
     r\objects[0] = CreatePivot(r\obj)

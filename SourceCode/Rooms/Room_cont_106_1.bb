@@ -3,7 +3,7 @@ Function FillRoom_cont_106_1(r.Rooms)
     Local it.Items, i%
     Local xtemp%, ytemp%, ztemp%
 
-    Local t1;, Bump
+    Local t1%;, Bump
 
     it = CreateItem("Level 5 Key Card", "key5", r\x - 752.0 * RoomScale, r\y - 592 * RoomScale, r\z + 3026.0 * RoomScale)
     EntityParent(it\collider, r\obj)
@@ -123,9 +123,9 @@ End Function
 
 
 Function UpdateEvent_cont_106_1(e.Events)
-	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
+	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%, leverstate%
 
-	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
+	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams, d.Decals
 
 	Local CurrTrigger$ = ""
 
@@ -180,7 +180,7 @@ Function UpdateEvent_cont_106_1(e.Events)
 			e\room\levers[0]\locked = True
 		EndIf
 
-		Local leverstate = e\room\levers[0]\succ
+		leverstate = e\room\levers[0]\succ
 		If mainPlayer\grabbedEntity = e\room\objects[1] And DrawHandIcon = True Then e\eventState2 = leverstate
 
 		If e\eventState2 <> temp Then
@@ -255,7 +255,7 @@ Function UpdateEvent_cont_106_1(e.Events)
 				Curr106\idle = True
 
 				If e\eventState3-timing\tickDuration < 2500 Then
-					Local d.Decals = CreateDecal(0, EntityX(e\room\objects[5], True), 936.0*RoomScale, EntityZ(e\room\objects[5], True), 90, 0, Rnd(360))
+					d.Decals = CreateDecal(0, EntityX(e\room\objects[5], True), 936.0*RoomScale, EntityZ(e\room\objects[5], True), 90, 0, Rnd(360))
 					d\timer = 90000
 					d\alpha = 0.01 : d\alphaChange = 0.005
 					d\size = 0.1 : d\sizeChange = 0.003

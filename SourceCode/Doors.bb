@@ -51,6 +51,8 @@ Function CreateDoor.Doors(lvl%, x#, y#, z#, angle#, room.Rooms, dopen% = False, 
 	Next
 	
 	Local buttonCodeObj%
+	Local buttonKeyObj%
+	Local buttonScannerOBJ%
 	
 	d.Doors = New Doors
 	If big=1 Then
@@ -104,13 +106,13 @@ Function CreateDoor.Doors(lvl%, x#, y#, z#, angle#, room.Rooms, dopen% = False, 
 			DropAsset(buttonCodeObj)
 		Else
 			If keycard>0 Then
-				Local buttonKeyObj% = GrabMesh("GFX/Map/Meshes/ButtonKeycard.b3d")
+				buttonKeyObj% = GrabMesh("GFX/Map/Meshes/ButtonKeycard.b3d")
 				d\buttons[i]= CopyEntity(buttonKeyObj)
 				DropAsset(buttonKeyObj)
 			ElseIf keycard<0 Then
-				Local buttonScannerObj% = GrabMesh("GFX/Map/Meshes/ButtonScanner.b3d")
-				d\buttons[i]= CopyEntity(buttonScannerObj)
-				DropAsset(buttonScannerObj)
+				buttonScannerOBJ% = GrabMesh("GFX/Map/Meshes/ButtonScanner.b3d")
+				d\buttons[i]= CopyEntity(buttonScannerOBJ)
+				DropAsset(buttonScannerOBJ)
 			Else
 				d\buttons[i] = CopyEntity(buttonObj)
 			EndIf
@@ -186,12 +188,14 @@ Function CreateDoor.Doors(lvl%, x#, y#, z#, angle#, room.Rooms, dopen% = False, 
 End Function
 
 Function UpdateDoors()
-
-	Local i%, d.Doors, x#, z#, dist#
+	Local i%, d.Doors, p.Particles, pvt%, x#, z#, temp%
+	
+	Local dist#, xdist#, zdist#
+	
 	If UpdateDoorsTimer =< 0 Then
 		For d.Doors = Each Doors
-			Local xdist# = Abs(EntityX(mainPlayer\collider)-EntityX(d\obj,True))
-			Local zdist# = Abs(EntityZ(mainPlayer\collider)-EntityZ(d\obj,True))
+			xdist# = Abs(EntityX(mainPlayer\collider)-EntityX(d\obj,True))
+			zdist# = Abs(EntityZ(mainPlayer\collider)-EntityZ(d\obj,True))
 
 			d\dist = xdist+zdist
 
@@ -240,7 +244,7 @@ Function UpdateDoors()
 								dist# = Distance(EntityX(mainPlayer\collider, True), EntityZ(mainPlayer\collider, True), EntityX(d\buttons[i], True), EntityZ(d\buttons[i], True));entityDistance(collider, d\buttons[i])
 								If dist < 0.7 Then
 									;TODO: use deltayaw as faster way to determine whether the player can press the button or not
-									Local temp% = CreatePivot()
+									temp% = CreatePivot()
 									PositionEntity temp, EntityX(mainPlayer\cam), EntityY(mainPlayer\cam), EntityZ(mainPlayer\cam)
 									PointEntity temp,d\buttons[i]
 
@@ -328,11 +332,11 @@ Function UpdateDoors()
 							If d\obj2 <> 0 Then MoveEntity(d\obj2, Sin(d\openstate) * timing\tickDuration / 180.0, 0, 0)
 							If d\openstate < 15 And d\openstate+timing\tickDuration => 15 Then
 								For i = 0 To Rand(75,99)
-									Local pvt% = CreatePivot()
+									pvt% = CreatePivot()
 									PositionEntity(pvt, EntityX(d\frameobj,True)+Rnd(-0.2,0.2), EntityY(d\frameobj,True)+Rnd(0.0,1.2), EntityZ(d\frameobj,True)+Rnd(-0.2,0.2))
 									RotateEntity(pvt, 0, Rnd(360), 0)
 
-									Local p.Particles = CreateParticle(EntityX(pvt), EntityY(pvt), EntityZ(pvt), 2, 0.002, 0, 300)
+									p.Particles = CreateParticle(EntityX(pvt), EntityY(pvt), EntityZ(pvt), 2, 0.002, 0, 300)
 									p\speed = 0.005
 									RotateEntity(p\pvt, Rnd(-20, 20), Rnd(360), 0)
 

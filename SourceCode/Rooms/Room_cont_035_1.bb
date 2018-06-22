@@ -1,9 +1,9 @@
 Function FillRoom_cont_035_1(r.Rooms)
-    Local d.Doors, d2.Doors, sc.SecurityCams, de.Decals, r2.Rooms, sc2.SecurityCams
+    Local d.Doors, d2.Doors, sc.SecurityCams, de.Decals, em.Emitters, r2.Rooms, sc2.SecurityCams
 	Local it.Items, i%
 	Local xtemp%, ytemp%, ztemp%
 
-	Local t1;, Bump
+	Local t1%;, Bump
 
     d = CreateDoor(r\zone, r\x - 296.0 * RoomScale, 0, r\z - 672.0 * RoomScale, 180, r, True, 0, 5)
     d\autoClose = False : d\locked = True : r\roomDoors[0]=d
@@ -54,7 +54,7 @@ Function FillRoom_cont_035_1(r.Rooms)
     PositionEntity(r\objects[4], r\x - 576 * RoomScale, 0.5, r\z + 640.0 * RoomScale, True)
 
     For i = 0 To 1
-        Local em.Emitters = CreateEmitter(r\x - 272.0 * RoomScale, 10, r\z + (624.0-i*512) * RoomScale, 0)
+        em.Emitters = CreateEmitter(r\x - 272.0 * RoomScale, 10, r\z + (624.0-i*512) * RoomScale, 0)
         TurnEntity(em\obj, 90, 0, 0, True)
         EntityParent(em\obj, r\obj)
         em\randAngle = 15
@@ -92,7 +92,7 @@ End Function
 Function UpdateEvent_cont_035_1(e.Events)
 	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
 
-	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
+	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams, do.Doors
 
 	Local CurrTrigger$ = ""
 
@@ -406,7 +406,7 @@ Function UpdateEvent_cont_035_1(e.Events)
 							e\room\roomDoors[1]\locked = False
 							e\room\roomDoors[2]\locked = False
 							UseDoor(e\room\roomDoors[1],False)
-							Local do.Doors
+							do.Doors
 							For do = Each Doors
 								If do\dir = 2 Then
 									If Abs(EntityX(e\room\obj)-EntityX(do\frameobj,True))<4.5 Then

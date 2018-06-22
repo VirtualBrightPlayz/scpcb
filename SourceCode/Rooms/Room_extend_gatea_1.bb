@@ -3,7 +3,7 @@ Function FillRoom_extend_gatea_1(r.Rooms)
 	Local it.Items, i%
 	Local xtemp%, ytemp%, ztemp%
 
-	Local t1;, Bump
+	Local t1%;, Bump
 
     r\roomDoors[2] = CreateDoor(r\zone, r\x - 4064.0 * RoomScale, (-1280.0+12000.0)*RoomScale, r\z + 3952.0 * RoomScale, 0, r, False)
     r\roomDoors[2]\autoClose = False : r\roomDoors[2]\open = False
@@ -114,7 +114,7 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 
 	Local x#, y#, z#
 
-	Local angle#
+	Local angle#, xtemp#, ytemp#, obj%
 
 	;[Block]
 	If mainPlayer\currRoom = e\room Then
@@ -194,8 +194,8 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 
 			EndIf
 
-			Local xtemp#=EntityX(e\room\objects[9],True)
-			Local ztemp#=EntityZ(e\room\objects[9],True)
+			xtemp#=EntityX(e\room\objects[9],True)
+			ztemp#=EntityZ(e\room\objects[9],True)
 			FreeEntity e\room\objects[9]
 
 			e\room\objects[9] = LoadMesh("GFX/Map/lightgunbase.b3d")
@@ -446,12 +446,12 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 								PositionEntity e\room\objects[12], EntityX(e\room\objects[11],True), EntityY(e\room\objects[11],True), EntityZ(e\room\objects[11],True)
 
 								; TODO: Isn't this a memory leak?
-								Local obj% = CopyEntity(e\room\objects[12])
+								obj% = CopyEntity(e\room\objects[12])
 								PositionEntity obj, EntityX(e\room\obj,True)-3968*RoomScale, EntityY(e\room\objects[11],True), EntityZ(e\room\obj,True)-1920*RoomScale
-
+								
 								obj = CopyEntity(e\room\objects[12])
 								PositionEntity obj, EntityX(e\room\obj,True)-4160*RoomScale, EntityY(e\room\objects[11],True), EntityZ(e\room\obj,True)-1920*RoomScale
-
+								
 								obj = CopyEntity(e\room\objects[12])
 								PositionEntity obj, EntityX(e\room\obj,True)-4064*RoomScale, EntityY(e\room\objects[11],True), EntityZ(e\room\obj,True)-2112*RoomScale
 

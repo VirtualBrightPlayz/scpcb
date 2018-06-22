@@ -3,7 +3,7 @@ Function FillRoom_test_860_2(r.Rooms)
 	Local it.Items, i%
 	Local xtemp%, ytemp%, ztemp%
 
-	Local t1;, Bump
+	Local t1%;, Bump
 
     ;the wooden door
     r\objects[2] = LoadMesh("GFX/Map/forest/door_frame.b3d")
@@ -59,7 +59,7 @@ Function UpdateEvent_test_860_2(e.Events)
 
 	Local x#, y#, z#
 
-	Local angle#
+	Local angle#, ang#
 
 	;[Block]
 
@@ -222,7 +222,7 @@ Function UpdateEvent_test_860_2(e.Events)
 							pvt = CreatePivot()
 							PositionEntity pvt, EntityX(mainPlayer\cam),EntityY(mainPlayer\cam),EntityZ(mainPlayer\cam)
 							PointEntity pvt, e\room\obj
-							Local ang# = WrapAngle(EntityYaw(pvt)-EntityYaw(e\room\obj,True))
+							ang# = WrapAngle(EntityYaw(pvt)-EntityYaw(e\room\obj,True))
 							If ang > 90 And ang < 270 Then
 								;TurnEntity mainPlayer\collider,0,180+90,0,True
 								e\eventState2 = 1
@@ -271,7 +271,7 @@ Const branch_max_life% = 4
 Const branch_die_chance% = 18
 Const max_deviation_distance% = 3
 Const return_chance% = 27
-Const center = 5 ;(gridsize-1) / 2
+Const center% = 5 ;(gridsize-1) / 2
 
 Type Forest
 	Field tileMesh%[6]
@@ -326,7 +326,7 @@ Function GenForestGrid(fr.Forest)
 	LastForestID=LastForestID+1
 
 	Local door1_pos%,door2_pos%
-	Local i%,j%
+	Local i%,j%, n%
 	door1_pos=Rand(3,7)
 	door2_pos=Rand(3,7)
 
@@ -346,9 +346,9 @@ Function GenForestGrid(fr.Forest)
 	fr\grid[((gridsize-1)*gridsize)+door2_pos]=3
 
 	;generate the path
-	Local pathx = door2_pos
-	Local pathy = 1
-	Local dir = 1 ;0 = left, 1 = up, 2 = right
+	Local pathx% = door2_pos
+	Local pathy% = 1
+	Local dir% = 1 ;0 = left, 1 = up, 2 = right
 	fr\grid[((gridsize-1-pathy)*gridsize)+pathx] = 1
 
 	Local deviated%
@@ -407,6 +407,7 @@ Function GenForestGrid(fr.Forest)
 	;attempt to create new branches
 	Local new_y%,temp_y%,new_x%
 	Local branch_type%,branch_pos%
+	Local leftmost%, rightmost%
 	new_y=-3 ;used for counting off; branches will only be considered once every 4 units so as to avoid potentially too many branches
 	While new_y<gridsize-6
 		new_y=new_y+4
@@ -421,8 +422,8 @@ Function GenForestGrid(fr.Forest)
 			;determine if on left or on right
 			branch_pos=2*Rand(0,1)
 			;get leftmost or rightmost path in this row
-			Local leftmost% = gridsize
-			Local rightmost% = 0
+			leftmost% = gridsize
+			rightmost% = 0
 			For i=0 To gridsize
 				If fr\grid[((gridsize-1-new_y)*gridsize)+i]=1 Then
 					If i<leftmost Then leftmost=i
@@ -454,7 +455,7 @@ Function GenForestGrid(fr.Forest)
 				EndIf
 
 				;before creating a branch make sure there are no 1's above or below
-				Local n% = ((gridsize - 1 - temp_y + 1)*gridsize)+new_x
+				n% = ((gridsize - 1 - temp_y + 1)*gridsize)+new_x
 				If n < gridsize-1 Then
 					If temp_y <> 0 And fr\grid[n]=1 Then Exit
 				EndIf
@@ -495,7 +496,12 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Rooms)
 	Local tile_entity%,detail_entity%
 
 	Local tempf1#,tempf2#,tempf3#
-	Local i%
+	Local i%, angle%
+	Local itemPlaced%[4]
+	Local it.Items
+	Local width%
+	Local tempf4#
+	Local lx%, ly%, d%, frame%
 
 	If fr\forest_Pivot<>0 Then FreeEntity fr\forest_Pivot : fr\forest_Pivot=0
 	For i%=0 To 3
@@ -513,10 +519,10 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Rooms)
 
 	;load assets
 
-	Local hmap[ROOM4], mask[ROOM4]
-	Local GroundTexture = LoadTexture("GFX/Map/forest/forestfloor.jpg")
+	Local hmap%[ROOM4], mask%[ROOM4]
+	Local GroundTexture% = LoadTexture("GFX/Map/forest/forestfloor.jpg")
 	;TextureBlend GroundTexture, FE_ALPHACURRENT
-	Local PathTexture = LoadTexture("GFX/Map/forest/forestpath.jpg")
+	Local PathTexture% = LoadTexture("GFX/Map/forest/forestpath.jpg")
 	;TextureBlend PathTexture, FE_ALPHACURRENT
 
 	hmap[ROOM1]=LoadImage("GFX/Map/forest/forest1h.png")
@@ -559,7 +565,7 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Rooms)
 
 	tempf3=MeshWidth(fr\tileMesh[ROOM1])
 	tempf1=tile_size/tempf3
-
+	
 	For tx%=1 To gridsize-1
 		For ty%=1 To gridsize-1
 			If fr\grid[(ty*gridsize)+tx]=1 Then
@@ -573,7 +579,7 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Rooms)
 
 				;fr\grid[(ty*gridsize)+tx]=tile_type
 
-				Local angle%=0
+				angle%=0
 				Select tile_type
 					Case 1
 						tile_entity = CopyEntity(fr\tileMesh[ROOM1])
@@ -628,10 +634,8 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Rooms)
 				End Select
 
 				If tile_type > 0 Then
-
-					Local itemPlaced[4]
 					;2, 5, 8
-					Local it.Items = Null
+					it.Items = Null
 					If (ty Mod 3)=2 And itemPlaced[Floor(ty/3)]=False Then
 						itemPlaced[Floor(ty/3)]=True
 						it.Items = CreateItem("Log #"+Int(Floor(ty/3)+1), "paper", 0,0.5,0)
@@ -642,9 +646,8 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Rooms)
 					;place trees and other details
 					;only placed on spots where the value of the heightmap is above 100
 					SetBuffer ImageBuffer(hmap[tile_type])
-					Local width = ImageWidth(hmap[tile_type])
-					Local tempf4# = (tempf3/Float(width))
-					Local lx%, ly%
+					width = ImageWidth(hmap[tile_type])
+					tempf4# = (tempf3/Float(width))
 					For lx = 3 To width-2
 						For ly = 3 To width-2
 							GetColor lx,width-ly
@@ -657,7 +660,7 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Rooms)
 										tempf2=Rnd(0.25,0.4)
 
 										For i = 0 To 3
-											Local d% = CopyEntity(fr\detailMesh[4])
+											d% = CopyEntity(fr\detailMesh[4])
 											;ScaleEntity d,tempf2*1.1,tempf2,tempf2*1.1,True
 											RotateEntity d, 0, 90*i+Rnd(-20,20), 0
 											EntityParent(d,detail_entity)
@@ -735,7 +738,7 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Rooms)
 				EntityParent fr\door[i],fr\detailEntities[i]
 				;SetAnimTime fr\door[i], 0
 
-				Local frame% = CopyEntity(r\objects[2],fr\door[i])
+				frame% = CopyEntity(r\objects[2],fr\door[i])
 				PositionEntity frame,0,32.0*RoomScale,0,True
 				ScaleEntity frame,48*RoomScale,45*RoomScale,48*RoomScale,True
 				EntityParent frame,fr\detailEntities[i]

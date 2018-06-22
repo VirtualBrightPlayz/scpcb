@@ -128,7 +128,7 @@ Function CreatePlayer.Player()
 	Local scaleHeight# = MenuScale * 0.8
 
 	;TODO: take ownership of ark_blur_cam
-	Local gasMaskTexture = LoadTexture("GFX/Overlays/GasmaskOverlay.jpg", 1)
+	Local gasMaskTexture% = LoadTexture("GFX/Overlays/GasmaskOverlay.jpg", 1)
 	player\overlays[OVERLAY_GASMASK] = CreateSprite(ark_blur_cam)
 	ScaleSprite(player\overlays[OVERLAY_GASMASK], Max(scaleWidth, 1.0), Max(scaleHeight, 0.8))
 	EntityTexture(player\overlays[OVERLAY_GASMASK], gasMaskTexture)
@@ -138,7 +138,7 @@ Function CreatePlayer.Player()
 	MoveEntity(player\overlays[OVERLAY_GASMASK], 0, 0, 1.0)
 	HideEntity(player\overlays[OVERLAY_GASMASK])
 
-	Local infectTexture = LoadTexture("GFX/Overlays/InfectOverlay.jpg", 1)
+	Local infectTexture% = LoadTexture("GFX/Overlays/InfectOverlay.jpg", 1)
 	player\overlays[OVERLAY_008] = CreateSprite(ark_blur_cam)
 	ScaleSprite(player\overlays[OVERLAY_008], Max(scaleWidth, 1.0), Max(scaleHeight, 0.8))
 	EntityTexture(player\overlays[OVERLAY_008], infectTexture)
@@ -149,7 +149,7 @@ Function CreatePlayer.Player()
 	;EntityAlpha (InfectOverlay, 255.0)
 	HideEntity(player\overlays[OVERLAY_008])
 
-	Local nvTexture = LoadTexture("GFX/Overlays/NightVisionOverlay.jpg", 1)
+	Local nvTexture% = LoadTexture("GFX/Overlays/NightVisionOverlay.jpg", 1)
 	player\overlays[OVERLAY_NIGHTVISION] = CreateSprite(ark_blur_cam)
 	ScaleSprite(player\overlays[OVERLAY_NIGHTVISION], Max(scaleWidth, 1.0), Max(scaleHeight, 0.8))
 	EntityTexture(player\overlays[OVERLAY_NIGHTVISION], nvTexture)
@@ -168,7 +168,7 @@ Function CreatePlayer.Player()
 	;MoveEntity(NVBlink, 0, 0, 1.0)
 	;HideEntity(NVBlink)
 
-	Local darkTexture = CreateTexture(1024, 1024, 1 + 2)
+	Local darkTexture% = CreateTexture(1024, 1024, 1 + 2)
 	SetBuffer TextureBuffer(darkTexture)
 	Cls
 	SetBuffer BackBuffer()
@@ -191,7 +191,7 @@ Function CreatePlayer.Player()
 	MoveEntity(player\overlays[OVERLAY_BLACK], 0, 0, 1.0)
 	EntityAlpha player\overlays[OVERLAY_BLACK], 0.0
 
-	Local lightTexture = CreateTexture(1024, 1024, 1 + 2)
+	Local lightTexture% = CreateTexture(1024, 1024, 1 + 2)
 	SetBuffer TextureBuffer(lightTexture)
 	ClsColor 255, 255, 255
 	Cls
@@ -260,7 +260,7 @@ Function DeletePlayer(player.Player)
 End Function
 
 Function MovePlayer()
-	Local Sprint# = 1.0, Speed# = 0.018, i%, angle#
+	Local Sprint# = 1.0, Speed# = 0.018, i%, angle#, temp#, tempchn%, collidedFloor%, pvt%, de.Decals
 
 	If mainPlayer\superMan>0.0 Then
 		Speed = Speed * 3
@@ -354,7 +354,7 @@ Function MovePlayer()
 				EndIf
 			EndIf
 
-			Local temp# = (mainPlayer\camAnimState Mod 360), tempchn%
+			temp# = (mainPlayer\camAnimState Mod 360)
 			If (Not mainPlayer\disableControls) Then mainPlayer\camAnimState = (mainPlayer\camAnimState + timing\tickDuration * Min(Sprint, 1.5) * 7) Mod 720
 			If temp < 180 And (mainPlayer\camAnimState Mod 360) >= 180 And (Not mainPlayer\dead) Then
 				;TODO: define constants for each override state
@@ -471,14 +471,14 @@ Function MovePlayer()
 
 		If (Not mainPlayer\disableControls) Then TranslateEntity mainPlayer\collider, Cos(angle)*mainPlayer\moveSpeed * timing\tickDuration, 0, Sin(angle)*mainPlayer\moveSpeed * timing\tickDuration, True
 
-		Local CollidedFloor% = False
+		collidedFloor% = False
 		For i = 1 To CountCollisions(mainPlayer\collider)
 			If (CollisionY(mainPlayer\collider, i) < EntityY(mainPlayer\collider,True)) And (Abs(CollisionNY(mainPlayer\collider, i))>0.8) Then
-				CollidedFloor = True
+				collidedFloor = True
 			EndIf
 		Next
 
-		If CollidedFloor = True Then
+		If collidedFloor = True Then
 			If mainPlayer\dropSpeed# < - 0.07 Then
 				If mainPlayer\footstepOverride=0 Then
 					If (GetMaterialStepSound(mainPlayer\collider) = 1) Then
@@ -520,11 +520,11 @@ Function MovePlayer()
 
 	If mainPlayer\bloodloss > 0 Then
 		If Rnd(200)<Min(mainPlayer\injuries,4.0) Then
-			Local pvt% = CreatePivot()
+			pvt% = CreatePivot()
 			PositionEntity pvt, EntityX(mainPlayer\collider)+Rnd(-0.05,0.05),EntityY(mainPlayer\collider)-0.05,EntityZ(mainPlayer\collider)+Rnd(-0.05,0.05)
 			TurnEntity pvt, 90, 0, 0
 			EntityPick(pvt,0.3)
-			Local de.Decals = CreateDecal(Rand(15,16), PickedX(), PickedY()+0.005, PickedZ(), 90, Rand(360), 0)
+			de.Decals = CreateDecal(Rand(15,16), PickedX(), PickedY()+0.005, PickedZ(), 90, Rand(360), 0)
 			de\size = Rnd(0.03,0.08)*Min(mainPlayer\injuries,3.0) : EntityAlpha(de\obj, 1.0) : ScaleSprite de\obj, de\size, de\size
 			tempchn% = PlaySound2(mainPlayer\bloodDrip[Rand(0,3)])
 			ChannelVolume tempchn, Rnd(0.0,0.8)*userOptions\sndVolume
@@ -578,7 +578,7 @@ Global mouse_bottom_limit%
 Global mouse_x_speed_1#, mouse_y_speed_1#
 
 Function MouseLook()
-	Local i%
+	Local i%, up#, roll#, the_yaw#, the_pitch#, collidedFloor%, pvt%, p.Particles
 
 	Local wearingGasMask%
 	wearingGasMask = IsPlayerWearingTempName(mainPlayer,"gasmask")
@@ -616,8 +616,8 @@ Function MouseLook()
 
 		;HeadDropSpeed = 0
 
-		Local up# = (Sin(mainPlayer\camAnimState) / (20.0+mainPlayer\crouchState*20.0))*0.6
-		Local roll# = Max(Min(Sin(mainPlayer\camAnimState*0.5)*2.5*Min(mainPlayer\injuries+0.25,3.0),8.0),-8.0)
+		up# = (Sin(mainPlayer\camAnimState) / (20.0+mainPlayer\crouchState*20.0))*0.6
+		roll# = Max(Min(Sin(mainPlayer\camAnimState*0.5)*2.5*Min(mainPlayer\injuries+0.25,3.0),8.0),-8.0)
 
 		;tilt the camera to the side if the player is injured
 		;RotateEntity mainPlayer\collider, EntityPitch(mainPlayer\collider), EntityYaw(mainPlayer\collider), Max(Min(up*30*mainPlayer\injuries,50),-50)
@@ -640,8 +640,8 @@ Function MouseLook()
 		If Int(mouse_y_speed_1) = Int(Nan1) Then mouse_y_speed_1 = 0
 
 		;TODO: CHANGE THESE NAMES
-		Local the_yaw# = ((mouse_x_speed_1#)) * mouselook_x_inc# / (1.0+IsPlayerWearingTempName(mainPlayer,"vest"))
-		Local the_pitch# = ((mouse_y_speed_1#)) * mouselook_y_inc# / (1.0+IsPlayerWearingTempName(mainPlayer,"vest"))
+		the_yaw# = ((mouse_x_speed_1#)) * mouselook_x_inc# / (1.0+IsPlayerWearingTempName(mainPlayer,"vest"))
+		the_pitch# = ((mouse_y_speed_1#)) * mouselook_y_inc# / (1.0+IsPlayerWearingTempName(mainPlayer,"vest"))
 
 		TurnEntity mainPlayer\collider, 0.0, -the_yaw#, 0.0 ; Turn the user on the Y (yaw) axis.
 		mainPlayer\headPitch# = mainPlayer\headPitch# + the_pitch#
@@ -661,12 +661,12 @@ Function MouseLook()
 		HideEntity mainPlayer\collider
 		PositionEntity mainPlayer\cam, EntityX(mainPlayer\head), EntityY(mainPlayer\head), EntityZ(mainPlayer\head)
 
-		Local CollidedFloor% = False
+		collidedFloor% = False
 		For i = 1 To CountCollisions(mainPlayer\head)
-			If CollisionY(mainPlayer\head, i) < EntityY(mainPlayer\head) - 0.01 Then CollidedFloor = True
+			If CollisionY(mainPlayer\head, i) < EntityY(mainPlayer\head) - 0.01 Then collidedFloor = True
 		Next
 
-		If CollidedFloor = True Then
+		If collidedFloor = True Then
 			;HeadDropSpeed# = 0
 		Else
 
@@ -694,7 +694,7 @@ Function MouseLook()
 
 	;DUST PARTICLES
 	If Rand(35) = 1 Then
-		Local pvt% = CreatePivot()
+		pvt% = CreatePivot()
 		PositionEntity(pvt, EntityX(mainPlayer\cam, True), EntityY(mainPlayer\cam, True), EntityZ(mainPlayer\cam, True))
 		RotateEntity(pvt, 0, Rnd(360), 0)
 		If Rand(2) = 1 Then
@@ -703,7 +703,7 @@ Function MouseLook()
 			MoveEntity(pvt, 0, Rnd(-0.5, 0.5), Rnd(0.5, 1.0))
 		EndIf
 
-		Local p.Particles = CreateParticle(EntityX(pvt), EntityY(pvt), EntityZ(pvt), 2, 0.002, 0, 300)
+		p.Particles = CreateParticle(EntityX(pvt), EntityY(pvt), EntityZ(pvt), 2, 0.002, 0, 300)
 		p\speed = 0.001
 		RotateEntity(p\pvt, Rnd(-20, 20), Rnd(360), 0)
 
@@ -752,6 +752,8 @@ Function MouseLook()
 End Function
 
 Function EquipItem(player.Player,item.Items,toggle%)
+	Local r.Rooms, it.Items
+	
 	If item=Null Then Return
 	If item\itemtemplate\invSlot = WORNITEM_SLOT_NONE Then Return
 	Local currItem.Items = player\wornItems[item\itemtemplate\invSlot]
@@ -759,8 +761,7 @@ Function EquipItem(player.Player,item.Items,toggle%)
 	DebugLog (Not toggle)+" + "+(currItem<>item)
 	If (Not toggle) Or currItem<>item Then
 		player\wornItems[item\itemtemplate\invSlot] = item
-
-		Local r.Rooms, it.Items
+		
 		Select item\itemtemplate\name
 			Case "vest"
 				Msg = "You put on the vest and feel slightly encumbered."
@@ -858,7 +859,8 @@ Function DrawInventory(player.Player)
 
 	Local strtemp$
 
-	Local width%, height%, itemsPerRow%, x%, y%, i%, yawvalue#, x1#, x2#, x3#, y1#, y2#, y3#, xtemp%, ytemp%
+	Local width%, height%, itemsPerRow%, x%, y%, i%, yawvalue#, x1#, x2#, x3#, y1#, y2#, y3#, xtemp%, ytemp%, n%, journalFont%, code%
+	Local SCPs_found%, playerx%, playerz%, dist#, np.NPCs
 
 	If CurrGameState=GAMESTATE_INVENTORY Then
 		ShowPointer2()
@@ -871,8 +873,7 @@ Function DrawInventory(player.Player)
 
 		x = userOptions\screenWidth / 2 - (width * itemsPerRow + spacing * (itemsPerRow - 1)) / 2
 		y = userOptions\screenHeight / 2 - height * (player\openInventory\size/itemsPerRow) + height / 2
-
-		Local n%
+		
 		For  n% = 0 To player\openInventory\size - 1
 			isMouseOn% = False
 			If MouseX() > x And MouseX() < x + width Then
@@ -964,11 +965,11 @@ Function DrawInventory(player.Player)
 								SetBuffer ImageBuffer(player\selectedItem\itemtemplate\img)
 								Color 37,45,137
 
-								Local journalFont% = LoadFont("GFX/font/Journal/Journal.ttf", Int(58 * MenuScale), 0,0,0)
+								journalFont% = LoadFont("GFX/font/Journal/Journal.ttf", Int(58 * MenuScale), 0,0,0)
 								SetFont(journalFont)
 
 								;TODO: This looks stupid.
-								Local code% = ((Int(AccessCode)*3) Mod 10000)
+								code% = ((Int(AccessCode)*3) Mod 10000)
 								If (code < 1000) Then
 									code = code+1000
 								EndIf
@@ -1106,10 +1107,11 @@ Function DrawInventory(player.Player)
 								Line x2,y2,x3,y3
 							EndIf
 
-							Local PlayerX% = Floor(EntityX(player\currRoom\obj) / 8.0 + 0.5), PlayerZ% = Floor(EntityZ(player\currRoom\obj) / 8.0 + 0.5)
-							Local SCPs_found% = 0
+							playerx% = Floor(EntityX(player\currRoom\obj) / 8.0 + 0.5)
+							playerz% = Floor(EntityZ(player\currRoom\obj) / 8.0 + 0.5)
+							SCPs_found% = 0
 							If player\selectedItem\itemtemplate\name = "S-NAV Navigator Ultimate" And (TimeInPosMilliSecs() Mod 600) < 400 Then
-								Local dist# = EntityDistance(player\cam, Curr173\obj)
+								dist# = EntityDistance(player\cam, Curr173\obj)
 								dist = Ceil(dist / 8.0) * 8.0
 								If dist < 8.0 * 4 Then
 									Color 100, 0, 0
@@ -1133,7 +1135,7 @@ Function DrawInventory(player.Player)
 										SCPs_found% = SCPs_found% + 1
 									EndIf
 								EndIf
-								Local np.NPCs
+								
 								For np = Each NPCs
 									If np\npcType = NPCtype049 Then
 										dist# = EntityDistance(player\cam, np\obj)
@@ -1263,9 +1265,11 @@ Function UpdateInventory(player.Player)
 
 	Local spacing%
 
-	Local np.NPCs, e.Events, it.Items
+	Local np.NPCs, e.Events, it.Items, added.Items
 
-	Local width%, height%, itemsPerRow%, x%, y%, n%, isMouseOn%, z%, c%, ri%, temp%, i%, x2%
+	Local width%, height%, itemsPerRow%, x%, y%, n%, isMouseOn%, z%, c%, ri%, temp%, i%, x2%, nvname$
+	
+	Local iniStr$, loc%, IN$, IN2$
 
 	Local strtemp$
 	If CurrGameState=GAMESTATE_INVENTORY Then
@@ -1358,7 +1362,7 @@ Function UpdateInventory(player.Player)
 							Case "paper","key1","key2","key3","key4","key5","misc","oldpaper","badge","ticket"
 								If player\openInventory\items[MouseSlot]\itemtemplate\name = "clipboard" Then
 									;Add an item to clipboard
-									Local added.Items = Null
+									added.Items = Null
 									If player\selectedItem\itemtemplate\name<>"misc" Or (player\selectedItem\itemtemplate\name="Playing Card" Or player\selectedItem\itemtemplate\name="Mastercard") Then
 										For c% = 0 To player\openInventory\items[MouseSlot]\inventory\size-1
 											If (player\openInventory\items[MouseSlot]\inventory\items[c] = Null) Then
@@ -1428,7 +1432,7 @@ Function UpdateInventory(player.Player)
 												MsgTimer = 70 * 5
 										End Select
 									Case "Night Vision Goggles"
-										Local nvname$ = player\openInventory\items[MouseSlot]\itemtemplate\name
+										nvname$ = player\openInventory\items[MouseSlot]\itemtemplate\name
 										If nvname$="nvgoggles" Or nvname$="supernv" Then
 											If player\selectedItem\itemtemplate\sound <> 66 Then PlaySound_SM(sndManager\itemPick[player\selectedItem\itemtemplate\sound])
 											RemoveItem (player\selectedItem)
@@ -1678,9 +1682,8 @@ Function UpdateInventory(player.Player)
 					;the state of refined items is more than 1.0 (fine setting increases it by 1, very fine doubles it)
 					x2 = (player\selectedItem\state+1.0)
 
-					Local iniStr$ = "Data/SCP-294.ini"
-
-					Local loc% = GetINISectionLocation(iniStr, player\selectedItem\name)
+					iniStr$ = "Data/SCP-294.ini"
+					loc% = GetINISectionLocation(iniStr, player\selectedItem\name)
 
 					;Stop
 
@@ -2007,11 +2010,11 @@ Function UpdateInventory(player.Player)
 
 			If player\selectedItem <> Null Then
 				If player\selectedItem\itemtemplate\img <> 0 Then
-					Local IN$ = player\selectedItem\itemtemplate\name
+					IN$ = player\selectedItem\itemtemplate\name
 					If IN$ = "paper" Or IN$ = "badge" Or IN$ = "oldpaper" Or IN$ = "ticket" Then
 						For it.Items = Each Items
 							If it <> player\selectedItem Then
-								Local IN2$ = it\itemtemplate\name
+								IN2$ = it\itemtemplate\name
 								If IN2$ = "paper" Or IN2$ = "badge" Or IN2$ = "oldpaper" Or IN2$ = "ticket" Then
 									If it\itemtemplate\img<>0 Then
 										If it\itemtemplate\img <> player\selectedItem\itemtemplate\img Then

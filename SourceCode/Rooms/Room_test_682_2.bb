@@ -3,7 +3,7 @@
 	Local it.Items, i%
 	Local xtemp%, ytemp%, ztemp%
 
-	Local t1;, Bump
+	Local t1%;, Bump
 
     For xtemp = 0 To 1
         For ztemp = -1 To 1

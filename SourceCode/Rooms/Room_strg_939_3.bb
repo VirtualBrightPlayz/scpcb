@@ -3,7 +3,7 @@ Function FillRoom_strg_939_3(r.Rooms)
 	Local it.Items, i%, x#, z#
 	Local xtemp%, ytemp%, ztemp%
 
-	Local t1;, Bump
+	Local t1%;, Bump
 
     r\objects[0] = CreatePivot(r\obj)
     PositionEntity(r\objects[0], r\x, 240.0 * RoomScale, r\z + 752.0 * RoomScale, True)

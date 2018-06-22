@@ -3,7 +3,7 @@ Function FillRoom_cont_895_1(r.Rooms)
     Local it.Items, i%
     Local xtemp%, ytemp%, ztemp%
 
-    Local t1;, Bump
+    Local t1%;, Bump
 
     d = CreateDoor(r\zone, r\x, 0, r\z - 448.0 * RoomScale, 0, r, False, True, 2)
     d\autoClose = False : d\open = False
@@ -83,7 +83,7 @@ Function UpdateEventCoffin(e.Events)
 
 	Local x#, y#, z#
 
-	Local angle#
+	Local angle#, hasBatteryFor895%, tempF#, tempF2#, tempF3#
 
 	;[Block]
 
@@ -127,7 +127,7 @@ Function UpdateEventCoffin(e.Events)
 
 		;TODO: cleanup
 		If IsPlayerWearingTempName(mainPlayer,"nvgoggles") Then
-			Local hasBatteryFor895% = 0
+			hasBatteryFor895% = 0
 			For i% = 0 To mainPlayer\inventory\size - 1
 				If (mainPlayer\inventory\items[i] <> Null) Then
 					If (mainPlayer\inventory\items[i]\itemtemplate\name = "nvgoggles" Or mainPlayer\inventory\items[i]\itemtemplate\name = "supernv") And IsPlayerWearingItem(mainPlayer,mainPlayer\inventory\items[i]) Then
@@ -146,9 +146,9 @@ Function UpdateEventCoffin(e.Events)
 					mainPlayer\sanity895 = mainPlayer\sanity895-(timing\tickDuration*1.1);/WearingNightVision)
 					mainPlayer\blurTimer = Sin(TimeInPosMilliSecs()/10)*Abs(mainPlayer\sanity895)
 
-					Local tempF# = GetAngle(EntityX(mainPlayer\collider,True),EntityZ(mainPlayer\collider,True),EntityX(e\room\objects[1],True),EntityZ(e\room\objects[1],True))
-					Local tempF2# = EntityYaw(mainPlayer\collider)
-					Local tempF3# = angleDist(tempF+90+Sin(WrapAngle(e\eventState3/10)),tempF2)
+				    tempF# = GetAngle(EntityX(mainPlayer\collider,True),EntityZ(mainPlayer\collider,True),EntityX(e\room\objects[1],True),EntityZ(e\room\objects[1],True))
+					tempF2# = EntityYaw(mainPlayer\collider)
+					tempF3# = angleDist(tempF+90+Sin(WrapAngle(e\eventState3/10)),tempF2)
 
 					TurnEntity mainPlayer\collider, 0,tempF3/4,0,True
 

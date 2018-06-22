@@ -3,7 +3,7 @@ Function FillRoom_cont_914_1(r.Rooms)
     Local it.Items, i%
     Local xtemp%, ytemp%, ztemp%
 
-    Local t1;, Bump
+    Local t1%;, Bump
 
     ;d = CreateDoor(r\zone, r\x, 0, r\z - 368.0 * RoomScale, 0, r, False, True, 2)
     ;d\dir = 1 : d\autoClose = False : d\open = False
@@ -527,7 +527,7 @@ Function UpdateEvent_cont_914_1(e.Events)
 
 	Local x#, y#, z#
 
-	Local angle#
+	Local angle#, setting$
 
 	;[Block]
 	If mainPlayer\currRoom = e\room Then
@@ -602,8 +602,6 @@ Function UpdateEvent_cont_914_1(e.Events)
 		Else
 			mainPlayer\grabbedEntity = 0
 		EndIf
-
-		Local setting$ = ""
 
 		If mainPlayer\grabbedEntity <> e\room\objects[1] Then
 			angle# = WrapAngle(EntityRoll(e\room\objects[1]))

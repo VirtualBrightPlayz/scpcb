@@ -3,7 +3,7 @@ Function FillRoom_chck_lcz_hcz_2(r.Rooms)
 	Local it.Items, i%
 	Local xtemp%, ytemp%, ztemp%
 
-	Local t1;, Bump
+	Local t1%;, Bump
 
     r\roomDoors[0] = CreateDoor(0, r\x + 48.0*RoomScale, 0, r\z - 128.0 * RoomScale, 0, r, False, False, 3)
     PositionEntity(r\roomDoors[0]\buttons[0], r\x - 152.0 * RoomScale, EntityY(r\roomDoors[0]\buttons[0],True), r\z - 352.0 * RoomScale, True)

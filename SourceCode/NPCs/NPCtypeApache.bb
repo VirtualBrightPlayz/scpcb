@@ -26,9 +26,9 @@ Function InitializeNPCtypeApache(n.NPCs)
 
 	n\sounds[0] = LoadSound("SFX/Character/Apache/Propeller.ogg")
 
-	Local i%
+	Local i%, rotor2%
     For i = -1 To 1 Step 2
-        Local rotor2 = CopyEntity(n\obj2,n\obj2)
+        rotor2 = CopyEntity(n\obj2,n\obj2)
         RotateEntity rotor2,0,4.0*i,0
         EntityAlpha rotor2, 0.5
     Next
@@ -37,15 +37,16 @@ Function InitializeNPCtypeApache(n.NPCs)
 
     EntityType n\collider, HIT_APACHE
     EntityRadius n\collider, 3.0
-
+	
+	Local light1%, lightsprite%
     For i = -1 To 1 Step 2
-        Local Light1 = CreateLight(2,n\obj)
+        light1 = CreateLight(2,n\obj)
         ;room\lightDist[i] = range
-        LightRange(Light1,2.0)
-        LightColor(Light1,255,255,255)
-        PositionEntity(Light1, 1.65*i, 1.17, -0.25)
+        LightRange(light1,2.0)
+        LightColor(light1,255,255,255)
+        PositionEntity(light1, 1.65*i, 1.17, -0.25)
 
-        Local lightsprite = CreateSprite(n\obj)
+        lightsprite = CreateSprite(n\obj)
         PositionEntity(lightsprite, 1.65*i, 1.17, 0, -0.25)
         ScaleSprite(lightsprite, 0.13, 0.13)
         EntityTexture(lightsprite, LightSpriteTex(0))

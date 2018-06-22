@@ -3,7 +3,7 @@ Function FillRoom_lck_cam_2c(r.Rooms)
 	Local it.Items, i%
 	Local xtemp%, ytemp%, ztemp%
 
-	Local t1;, Bump
+	Local t1%;, Bump
 
     d = CreateDoor(r\zone, r\x - 736.0 * RoomScale, 0, r\z - 104.0 * RoomScale, 0, r, True)
     d\timer = 70 * 5 : d\autoClose = False : d\open = False

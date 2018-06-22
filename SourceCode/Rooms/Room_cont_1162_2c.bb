@@ -3,7 +3,7 @@ Function FillRoom_cont_1162_2c(r.Rooms)
     Local it.Items, i%
     Local xtemp%, ytemp%, ztemp%
 
-    Local t1;, Bump
+    Local t1%;, Bump
 
     d = CreateDoor(r\zone, r\x + 248.0*RoomScale, 0.0, r\z - 736.0*RoomScale, 90, r, False, False, 2)
     r\objects[0] = CreatePivot()
@@ -23,13 +23,13 @@ End Function
 Function UpdateEvent_cont_1162_2c(e.Events)
 	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
 
-	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams, de.Decals
+	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, itt.ItemTemplates, em.Emitters, sc.SecurityCams, sc2.SecurityCams, de.Decals
 
 	Local CurrTrigger$ = ""
 
 	Local x#, y#, z#
 
-	Local angle#
+	Local angle#, pick1162%, pp%, isSlotEmpty%, itemExists%, itemName$, shouldCreateItem%
 
 	;[Block]
 	;e\eventState = A variable to determine the "nostalgia" items
@@ -52,19 +52,19 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 
 		e\eventState = 0
 
-		Local Pick1162% = True
-		Local pp% = CreatePivot(e\room\obj)
+		pick1162% = True
+		pp% = CreatePivot(e\room\obj)
 		PositionEntity pp,976,128,-640,False
 
 		For it.Items = Each Items
 			If (Not it\picked) Then
 				If EntityDistance(it\collider,e\room\objects[0])<0.75 Then
-					Pick1162% = False
+					pick1162% = False
 				EndIf
 			EndIf
 		Next
 
-		If EntityDistance(e\room\objects[0],mainPlayer\collider)<0.75 And Pick1162% Then
+		If EntityDistance(e\room\objects[0],mainPlayer\collider)<0.75 And pick1162% Then
 			DrawHandIcon = True
 			If MouseHit1 Then mainPlayer\grabbedEntity = e\room\objects[0]
 		EndIf
@@ -78,7 +78,7 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 			Else
 				;randomly picked item slot is empty, getting the first available slot
 				For i = 0 To mainPlayer\inventory\size-1
-					Local isSlotEmpty% = (mainPlayer\inventory\items[(i+e\eventState2) Mod mainPlayer\inventory\size] = Null)
+					isSlotEmpty% = (mainPlayer\inventory\items[(i+e\eventState2) Mod mainPlayer\inventory\size] = Null)
 
 					If (Not isSlotEmpty) Then
 						;successful
@@ -95,7 +95,7 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 						e\eventState = Rand(1,5)
 
 						;Checking if the selected nostalgia item already exists or not
-						Local itemName$ = ""
+						itemName$ = ""
 						Select (e\eventState)
 							Case 1
 								itemName = "Lost Key"
@@ -109,7 +109,7 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 								itemName = "Old Badge"
 						End Select
 
-						Local itemExists% = False
+						itemExists% = False
 						For it.Items = Each Items
 							If (it\name = itemName) Then
 								itemExists = True
@@ -135,9 +135,8 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 
 		;trade successful
 		If e\eventState3 = 1.0 Then
-			Local shouldCreateItem% = False
-
-			Local itt.ItemTemplates
+			shouldCreateItem% = False
+			
 			For itt = Each ItemTemplates
 				If (IsItemGoodFor1162(itt)) Then
 					Select mainPlayer\inventory\items[e\eventState2]\itemtemplate\name

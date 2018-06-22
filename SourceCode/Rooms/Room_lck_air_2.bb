@@ -3,7 +3,8 @@ Function FillRoom_lck_air_2(r.Rooms)
     Local it.Items, i%
     Local xtemp%, ytemp%, ztemp%
 
-    Local t1;, Bump
+    Local t1%;, Bump
+	Local bd_temp%
 
     If r\roomTemplate\name = "room2gw_b" Then
         r\objects[2] = CreatePivot(r\obj)
@@ -44,7 +45,7 @@ Function FillRoom_lck_air_2(r.Rooms)
         PositionEntity r\objects[0],r\x+344.0*RoomScale,128.0*RoomScale,r\z
         EntityParent r\objects[0],r\obj
 
-        Local bd_temp% = False
+        bd_temp% = False
         If room2gw_brokendoor Then
             If room2gw_x = r\x Then
                 If room2gw_z = r\z Then
@@ -79,7 +80,7 @@ Function UpdateEventRoom_gw(e.Events)
 
 	Local x#, y#, z#
 
-	Local angle#
+	Local angle#, d_ent%
 
 	;[Block]
 	;e\eventState: Determines if the airlock is in operation or not
@@ -121,7 +122,7 @@ Function UpdateEventRoom_gw(e.Events)
 
 					If brokendoor Then
 						pvt% = CreatePivot()
-						Local d_ent% = e\room\objects[1]
+						d_ent% = e\room\objects[1]
 						PositionEntity(pvt, EntityX(d_ent%,True), EntityY(d_ent%,True)+Rnd(0.0,0.05), EntityZ(d_ent%,True))
 						RotateEntity(pvt, 0, EntityYaw(d_ent%,True)+90, 0)
 						MoveEntity pvt,0,0,0.2

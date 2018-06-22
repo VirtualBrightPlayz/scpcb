@@ -3,7 +3,7 @@ Function FillRoom_hll_toilets_2(r.Rooms)
 	Local it.Items, i%
 	Local xtemp%, ytemp%, ztemp%
 
-	Local t1;, Bump
+	Local t1%;, Bump
 
     r\objects[0] = CreatePivot()
     PositionEntity(r\objects[0], r\x + 1040.0 * RoomScale, 192.0 * RoomScale, r\z)

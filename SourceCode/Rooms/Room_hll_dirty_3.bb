@@ -3,7 +3,7 @@ Function FillRoom_hll_dirty_3(r.Rooms)
     Local it.Items, i%
     Local xtemp%, ytemp%, ztemp%
 
-    Local t1;, Bump
+    Local t1%;, Bump
 
     For r2.Rooms = Each Rooms
         If r2\roomTemplate\name = r\roomTemplate\name And r2 <> r Then

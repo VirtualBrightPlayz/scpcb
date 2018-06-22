@@ -28,11 +28,12 @@ Function InitializeNPCtype939(n.NPCs)
             Exit
         EndIf
     Next
-
+	
+	Local temp#
     If n\obj = 0 Then
         n\obj = LoadAnimMesh("GFX/NPCs/scp939/scp-939.b3d")
 
-        Local temp# = GetINIFloat("Data/NPCs.ini", "SCP-939", "scale")/2.5
+        temp# = GetINIFloat("Data/NPCs.ini", "SCP-939", "scale")/2.5
         ScaleEntity n\obj, temp, temp, temp
     EndIf
 

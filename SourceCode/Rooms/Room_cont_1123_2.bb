@@ -3,7 +3,7 @@ Function FillRoom_cont_1123_2(r.Rooms)
     Local it.Items, i%
     Local xtemp%, ytemp%, ztemp%
 
-    Local t1;, Bump
+    Local t1%;, Bump
 
     it = CreateItem("Document SCP-1123", "paper", r\x + 511.0 * RoomScale, r\y + 125.0 * RoomScale, r\z - 936.0 * RoomScale)
     EntityParent(it\collider, r\obj)
@@ -92,13 +92,13 @@ End Function
 Function UpdateEvent_cont_1123_2(e.Events)
 	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
 
-	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
+	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams, de.Decals
 
 	Local CurrTrigger$ = ""
 
 	Local x#, y#, z#
 
-	Local angle#
+	Local angle#, nazi%, scale#
 
 	;[Block]
 	If mainPlayer\currRoom = e\room Then
@@ -118,8 +118,8 @@ Function UpdateEvent_cont_1123_2(e.Events)
 			e\room\npc[0] = CreateNPC(NPCtypeD, EntityX(e\room\objects[6],True),EntityY(e\room\objects[6],True),EntityZ(e\room\objects[6],True))
 			;e\room\npc[1] = CreateNPC(NPCtypeD, EntityX(e\room\objects[7],True),EntityY(e\room\objects[7],True),EntityZ(e\room\objects[7],True))
 
-			Local nazi% = LoadAnimMesh("GFX/npcs/naziofficer.b3d")
-			Local scale# = 0.5 / MeshWidth(nazi)
+			nazi% = LoadAnimMesh("GFX/npcs/naziofficer.b3d")
+			scale# = 0.5 / MeshWidth(nazi)
 
 			FreeEntity e\room\npc[0]\obj
 			e\room\npc[0]\obj = CopyEntity(nazi)
@@ -252,7 +252,7 @@ Function UpdateEvent_cont_1123_2(e.Events)
 
 				mainPlayer\blinkTimer = -10
 
-				Local de.Decals = CreateDecal(3, EntityX(mainPlayer\collider), 512*RoomScale + 0.0005, EntityZ(mainPlayer\collider),90,Rnd(360),0)
+				de.Decals = CreateDecal(3, EntityX(mainPlayer\collider), 512*RoomScale + 0.0005, EntityZ(mainPlayer\collider),90,Rnd(360),0)
 				de\size = 0.5 : ScaleSprite de\obj, de\size, de\size
 
 				e\room\npc[0]\sounds[0] = LoadSound("SFX/SCP/1123/Officer3.ogg")

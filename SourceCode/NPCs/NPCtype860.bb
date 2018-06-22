@@ -28,11 +28,12 @@ Function InitializeNPCtype860(n.NPCs)
 End Function
 
 Function UpdateNPCtype860(n.NPCs)
-	Local x%, z%, x2%, z2%
+	Local x%, z%, x2%, z2%, pvt%
 	Local prevFrame%, angle#, temp%
+	Local fr.Forest
 
     If mainPlayer\currRoom\roomTemplate\name = "room860" Then
-        Local fr.Forest=mainPlayer\currRoom\fr;Object.Forest(e\room\objects[1])
+        fr.Forest=mainPlayer\currRoom\fr;Object.Forest(e\room\objects[1])
 
         Select n\state
             Case 0 ;idle (hidden)
@@ -292,7 +293,7 @@ Function UpdateNPCtype860(n.NPCs)
 
                 ;render distance is set to 8.5 inside the forest,
                 ;so we need to cheat a bit to make the eyes visible if they're further than that
-                Local pvt% = CreatePivot()
+                pvt% = CreatePivot()
                 PositionEntity pvt, EntityX(mainPlayer\cam),EntityY(mainPlayer\cam),EntityZ(mainPlayer\cam)
                 PointEntity pvt, n\obj2
                 MoveEntity pvt, 0,0,8.0

@@ -13,10 +13,12 @@ Function CreateButton%(x#,y#,z#, pitch#,yaw#,roll#=0)
 	Return obj
 End Function
 
-Function UpdateButton(obj)
+Function UpdateButton(obj%)
 	Local dist# = EntityDistance(mainPlayer\collider, obj);entityDistance(collider, d\buttons[i])
+	Local temp%
+	
 	If dist < 0.8 Then
-		Local temp% = CreatePivot()
+		temp% = CreatePivot()
 		PositionEntity temp, EntityX(mainPlayer\cam), EntityY(mainPlayer\cam), EntityZ(mainPlayer\cam)
 		PointEntity temp,obj
 
@@ -56,10 +58,10 @@ End Function
 
 ; TODO: Call this somewhere.
 Function UpdateLevers()
-	Local lever.Lever
+	Local lever.Lever, dist#, prevpitch#
 
 	For lever = Each Lever
-		Local dist# = EntityDistance(mainPlayer\cam, lever\obj)
+		dist# = EntityDistance(mainPlayer\cam, lever\obj)
 
 		If dist < 8.0 Then
 			If dist < 0.8 And (Not lever\locked) Then
@@ -72,7 +74,7 @@ Function UpdateLevers()
 						If MouseHit1 Then mainPlayer\grabbedEntity = lever\obj
 					EndIf
 
-					Local prevpitch# = EntityPitch(lever\obj)
+					prevpitch# = EntityPitch(lever\obj)
 
 					If (MouseDown1 Or MouseHit1) Then
 						If mainPlayer\grabbedEntity <> 0 Then
@@ -118,13 +120,13 @@ End Function
 ;-------------------------------------------------------------------------------------------------------
 
 ;TODO: rewrite elevator code, use only one function
-Function UpdateElevators#(State#, door1.Doors, door2.Doors, room1, room2, event.Events)
+Function UpdateElevators#(state#, door1.Doors, door2.Doors, room1%, room2%, event.Events)
 	Local x#, z#, n.NPCs, NPC_inside.NPCs
 
 	door1\isElevatorDoor = 1
 	door2\isElevatorDoor = 1
 	If door1\open = True And door2\open = False Then
-		State = -1
+		state = -1
 		If (mainPlayer\closestButton = door2\buttons[0] Or mainPlayer\closestButton = door2\buttons[1]) And MouseHit1 Then
 			UseDoor(door1,False)
 		EndIf
@@ -133,7 +135,7 @@ Function UpdateElevators#(State#, door1.Doors, door2.Doors, room1, room2, event.
 			door2\npcCalledElevator = 2
 		EndIf
 	ElseIf door2\open = True And door1\open = False Then
-		State = 1
+		state = 1
 		If (mainPlayer\closestButton = door1\buttons[0] Or mainPlayer\closestButton = door1\buttons[1]) And MouseHit1 Then
 			UseDoor(door2,False)
 		EndIf
@@ -146,7 +148,7 @@ Function UpdateElevators#(State#, door1.Doors, door2.Doors, room1, room2, event.
 		door2\isElevatorDoor = 2
 	EndIf
 
-	Local inside = False
+	Local inside% = False
 	NPC_inside = Null
 
 	;molemmat ovet kiinni = hissi liikkuu
@@ -262,12 +264,12 @@ Function UpdateElevators#(State#, door1.Doors, door2.Doors, room1, room2, event.
 				NPC_inside\idle = False
 			EndIf
 
-			If State > 400 Then
+			If state > 400 Then
 				door1\locked = False
 				door2\locked = False
 				door1\npcCalledElevator = False
 				door2\npcCalledElevator = False
-				State = 0
+				state = 0
 
 				;pelaaja hissin sis�ll�, siirret��n
 				If inside Then
@@ -304,11 +306,11 @@ Function UpdateElevators#(State#, door1.Doors, door2.Doors, room1, room2, event.
 		EndIf
 	EndIf
 
-	Return State
+	Return state
 
 End Function
 
-Function UpdateElevators2#(State#, door1.Doors, door2.Doors, room1, room2, event.Events)
+Function UpdateElevators2#(State#, door1.Doors, door2.Doors, room1%, room2%, event.Events)
 	Local x#, z#
 
 	door1\isElevatorDoor = 1
@@ -330,7 +332,8 @@ Function UpdateElevators2#(State#, door1.Doors, door2.Doors, room1, room2, event
 		door2\isElevatorDoor = 2
 	EndIf
 
-	Local inside = False
+	Local inside% = False
+	Local dist#, dir#
 
 	;molemmat ovet kiinni = hissi liikkuu
 	If door1\open = False And door2\open = False Then
@@ -362,9 +365,9 @@ Function UpdateElevators2#(State#, door1.Doors, door2.Doors, room1, room2, event
 
 				If inside Then
 
-					Local dist# = Distance(EntityX(mainPlayer\collider,True),EntityZ(mainPlayer\collider,True),EntityX(room1,True),EntityZ(room1,True))
+					dist# = Distance(EntityX(mainPlayer\collider,True),EntityZ(mainPlayer\collider,True),EntityX(room1,True),EntityZ(room1,True))
 
-					Local dir# = GetAngle(EntityX(mainPlayer\collider,True),EntityZ(mainPlayer\collider,True),EntityX(room1,True),EntityZ(room1,True))
+					dir# = GetAngle(EntityX(mainPlayer\collider,True),EntityZ(mainPlayer\collider,True),EntityX(room1,True),EntityZ(room1,True))
 					dir=dir+EntityYaw(room2,True)-EntityYaw(room1,True);EntityYaw(room2,True)+angleDist(dir,EntityYaw(room1,True))
 					;dir=dir-90.0
 

@@ -11,8 +11,8 @@ Type Events
 
 	;Field img% ;???
 
-	Field soundChannels[EVENT_CHANNEL_COUNT]
-	Field sounds[EVENT_SOUND_COUNT]
+	Field soundChannels%[EVENT_CHANNEL_COUNT]
+	Field sounds%[EVENT_SOUND_COUNT]
 
 	Field musicTrack$
 	Field overwriteMusic%

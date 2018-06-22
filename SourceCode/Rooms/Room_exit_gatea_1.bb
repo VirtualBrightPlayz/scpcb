@@ -3,7 +3,7 @@ Function FillRoom_exit_gatea_1(r.Rooms)
 	Local it.Items, i%
 	Local xtemp%, ytemp%, ztemp%
 
-	Local t1;, Bump
+	Local t1%;, Bump
 
     ;alempi hissi
     r\roomDoors[0] = CreateDoor(0, r\x+744.0*RoomScale, 0, r\z+512.0*RoomScale, 90, r, True)
@@ -30,7 +30,7 @@ Function UpdateEvent_exit_gatea_1(e.Events)
 
 	Local x#, y#, z#
 
-	Local angle#
+	Local angle#, gatea.Rooms
 
 	;[Block]
 	If mainPlayer\currRoom = e\room Then
@@ -47,7 +47,7 @@ Function UpdateEvent_exit_gatea_1(e.Events)
 			EndIf
 		Else
 			e\room\roomDoors[1]\locked=False
-			Local gatea.Rooms =Null
+			gatea.Rooms =Null
 			For r.Rooms = Each Rooms
 				If r\roomTemplate\name = "gatea" Then
 					gatea = r

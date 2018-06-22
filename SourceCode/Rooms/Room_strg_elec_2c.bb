@@ -3,7 +3,7 @@ Function FillRoom_strg_elec_2c(r.Rooms)
     Local it.Items, i%
     Local xtemp%, ytemp%, ztemp%
 
-    Local t1;, Bump
+    Local t1%;, Bump
 
     d = CreateDoor(r\zone, r\x + 64.0 * RoomScale, 0.0, r\z + 368.0 * RoomScale, 180, r, False, False, 2)
     d\autoClose = False : d\open = False
@@ -47,7 +47,7 @@ Function UpdateEvent_strg_elec_2c(e.Events)
 
 	Local x#, y#, z#
 
-	Local angle#
+	Local angle#, prevpitch#
 
 	;[Block]
 	If mainPlayer\currRoom = e\room Then
@@ -68,7 +68,7 @@ Function UpdateEvent_strg_elec_2c(e.Events)
 				EndIf
 			EndIf
 
-			Local prevpitch# = EntityPitch(e\room\objects[i])
+			prevpitch# = EntityPitch(e\room\objects[i])
 
 			If MouseDown1 Or MouseHit1 Then
 				If mainPlayer\grabbedEntity <> 0 Then

@@ -1,11 +1,11 @@
 Function FillRoom_pocketdimension(r.Rooms)
     Local d.Doors, d2.Doors, sc.SecurityCams, de.Decals, r2.Rooms, sc2.SecurityCams
     Local it.Items, i%
-    Local xtemp%, ytemp%, ztemp%
+    Local xtemp%, ytemp%, ztemp%, angle#, safe%
 
-    Local t1;, Bump
+    Local t1%;, Bump
 
-    Local hallway = LoadMesh("GFX/Map/pocketdimension2.b3d") ;the tunnels in the first room
+    Local hallway% = LoadMesh("GFX/Map/pocketdimension2.b3d") ;the tunnels in the first room
     r\objects[8]=LoadMesh("GFX/Map/pocketdimension3.b3d")	;the room with the throne, moving pillars etc
     r\objects[9]=LoadMesh("GFX/Map/pocketdimension4.b3d") ;the flying pillar
     r\objects[10]=CopyEntity(r\objects[9])
@@ -22,9 +22,8 @@ Function FillRoom_pocketdimension(r.Rooms)
 
     CreateItem("Burnt Note", "paper", EntityX(r\obj),0.5,EntityZ(r\obj)+3.5)
 
-	Local n%
+	Local n%, entity%
     For n = 0 To -1;4 ;TODO: wut
-		Local entity%
         Select n
             Case 0
                 entity = hallway
@@ -98,7 +97,7 @@ Function FillRoom_pocketdimension(r.Rooms)
     For i = 1 To 8
         r\objects[i-1] = CopyEntity(hallway) ;CopyMesh
         ScaleEntity (r\objects[i-1],RoomScale,RoomScale,RoomScale)
-        Local angle# = (i-1) * (360.0/8.0)
+        angle# = (i-1) * (360.0/8.0)
 
         EntityType r\objects[i-1], HIT_MAP
         EntityPickMode r\objects[i-1], 3
@@ -285,7 +284,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 
 
 					;check if the plane can see the player
-					Local safe=False
+					safe=False
 					For i = 0 To 2
 						Select i
 							Case 0

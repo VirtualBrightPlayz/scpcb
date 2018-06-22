@@ -16,9 +16,10 @@ Function InitializeNPCtype173(n.NPCs)
 	n\obj = LoadMesh("GFX/NPCs/scp173/173.b3d")
 
 	;On Halloween set jack-o-latern texture.
+	Local texFestive%
 	If (Left(CurrentDate(), 6) = "31 Oct") Then
 		HalloweenTex = True
-		Local texFestive% = LoadTexture("GFX/NPCs/scp173/173h.png", 1)
+		texFestive% = LoadTexture("GFX/NPCs/scp173/173h.png", 1)
 		EntityTexture(n\obj, texFestive, 0, 0)
 		FreeTexture(texFestive)
 	EndIf
@@ -52,8 +53,9 @@ Function InitializeNPCtype173(n.NPCs)
 End Function
 
 Function UpdateNPCtype173(n.NPCs)
-	Local x%, z%, i%
-	Local w.WayPoints
+	Local x%, z%, i%, tmp%
+	Local w.WayPoints, d.Doors
+	Local playerVisible%, canMove%
 
 	If (n\state = STATE173_IDLE Or n\state = STATE173_CONTAINED) Then
 		Return
@@ -66,8 +68,8 @@ Function UpdateNPCtype173(n.NPCs)
 			PositionEntity(n\obj, EntityX(n\collider), EntityY(n\collider) - 0.32, EntityZ(n\collider))
 			RotateEntity(n\obj, 0, EntityYaw(n\collider) - 180, 0)
 
-			Local playerVisible% = False
-			Local canMove% = True
+			playerVisible% = False
+			canMove% = True
 			If dist < 15 Then
 				If dist < 10.0 Then
 					If EntityVisible(n\collider, mainPlayer\collider) Then
@@ -142,7 +144,6 @@ Function UpdateNPCtype173(n.NPCs)
 
 					;try to open doors
 					If Rand(20) = 1 Then
-						Local d.Doors
 						For d.Doors = Each Doors
 							If (Not d\locked) And d\open = False And d\code = "" And d\keyCard=0 Then
 								For i% = 0 To 1
@@ -252,7 +253,7 @@ Function UpdateNPCtype173(n.NPCs)
 			EndIf
 		Case STATE173_BEING_CONTAINED
 			If (n\target <> Null) Then
-				Local tmp = False
+				tmp = False
 				If dist > HideDistance*0.7 Then
 					If EntityVisible(n\obj,mainPlayer\collider)=False Then
 						tmp = True

@@ -3,7 +3,7 @@ Function FillRoom_hll_caf_2(r.Rooms)
 	Local it.Items, i%
 	Local xtemp%, ytemp%, ztemp%
 
-	Local t1;, Bump
+	Local t1%;, Bump
 
     ;scp-294
     r\objects[0] = CreatePivot(r\obj)
@@ -39,7 +39,15 @@ Function Draw294()
 End Function
 
 Function Update294()
-	Local x#,y#, xtemp%,ytemp%, strtemp$, temp%
+	Local x#,y#, xtemp%,ytemp%, strtemp$, temp%, loc%
+	Local sep1%
+	Local sep2%
+	Local r%
+	Local g%
+	Local b%
+	
+	Local alpha#
+	Local glow%
 
 	Local panel294% = GrabImage("GFX/HUD/294panel.jpg")
 	x = userOptions\screenWidth/2 - (ImageWidth(panel294)/2)
@@ -152,7 +160,7 @@ Function Update294()
 					Input294 = Right(Input294, Len(Input294)-9)
 				EndIf
 
-				Local loc% = GetINISectionLocation("Data/SCP-294.ini", Input294)
+				loc% = GetINISectionLocation("Data/SCP-294.ini", Input294)
 
 				If loc > 0 Then
 					strtemp$ = GetINIString2("Data/SCP-294.ini", loc, "dispensesound")
@@ -169,18 +177,18 @@ Function Update294()
 
 					strtemp$ = GetINIString2("Data/SCP-294.ini", loc, "color")
 
-					Local sep1 = Instr(strtemp, ",", 1)
-					Local sep2 = Instr(strtemp, ",", sep1+1)
-					Local r% = Trim(Left(strtemp, sep1-1))
-					Local g% = Trim(Mid(strtemp, sep1+1, sep2-sep1-1))
-					Local b% = Trim(Right(strtemp, Len(strtemp)-sep2))
+					sep1 = Instr(strtemp, ",", 1)
+					sep2 = Instr(strtemp, ",", sep1+1)
+					r% = Trim(Left(strtemp, sep1-1))
+					g% = Trim(Mid(strtemp, sep1+1, sep2-sep1-1))
+					b% = Trim(Right(strtemp, Len(strtemp)-sep2))
 
-					Local alpha# = Float(GetINIString2("Data/SCP-294.ini", loc, "alpha"))
-					Local glow = GetINIInt2("Data/SCP-294.ini", loc, "glow")
+					alpha# = Float(GetINIString2("Data/SCP-294.ini", loc, "alpha"))
+					glow = GetINIInt2("Data/SCP-294.ini", loc, "glow")
 					If alpha = 0 Then alpha = 1.0
 					If glow Then alpha = -alpha
-
-					Local it.Items = CreateItem("Cup", "cup", EntityX(mainPlayer\currRoom\objects[1],True),EntityY(mainPlayer\currRoom\objects[1],True),EntityZ(mainPlayer\currRoom\objects[1],True), r,g,b,alpha)
+					;TODO: Re-implement
+					;it.Items = CreateItem("Cup", "cup", EntityX(mainPlayer\currRoom\objects[1],True),EntityY(mainPlayer\currRoom\objects[1],True),EntityZ(mainPlayer\currRoom\objects[1],True), r,g,b,alpha)
 					it\name = "Cup of "+Input294
 					EntityType (it\collider, HIT_ITEM)
 				Else
