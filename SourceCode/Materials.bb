@@ -44,8 +44,8 @@ End Function
 Function ClearTextureCache()
 	Local tc.Materials
 	For tc.Materials=Each Materials
-		If tc\diff<>0 Then FreeTexture tc\diff
-		;If tc\bump<>0 Then FreeTexture tc\bump
+		If tc\diff<>0 Then FreeTexture(tc\diff)
+		;If tc\bump<>0 Then FreeTexture(tc\bump)
 		Delete tc
 	Next
 End Function
@@ -53,8 +53,8 @@ End Function
 Function FreeTextureCache()
 	Local tc.Materials
 	For tc.Materials=Each Materials
-		If tc\diff<>0 Then FreeTexture tc\diff
-		;If tc\bump<>0 Then FreeTexture tc\bump
+		If tc\diff<>0 Then FreeTexture(tc\diff)
+		;If tc\bump<>0 Then FreeTexture(tc\bump)
 		tc\diff = 0; : tc\bump = 0
 	Next
 End Function
@@ -66,9 +66,9 @@ Function LoadRMeshTexture%(roompath$,name$,flags%)
 	If texture=0 Then texture = LoadTexture("GFX/Map/Textures/"+name+".jpg",flags)
 	If texture=0 Then texture = LoadTexture("GFX/Map/Textures/"+name+".png",flags)
 	If texture<>0 Then
-		DebugLog TextureName(texture)
+		DebugLog(TextureName(texture))
 	Else
-		texture = LoadTexture("GFX/Map/Textures/dirtymetal.jpg",flags);RuntimeError name
+		texture = LoadTexture("GFX/Map/Textures/dirtymetal.jpg",flags);RuntimeError(name)
 	EndIf
 	Return texture
 End Function

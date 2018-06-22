@@ -15,7 +15,7 @@ Function FillRoom_off_rosewood_2(r.Rooms)
     EntityParent(it\collider, r\obj)
 
     it = CreateItem("Level 5 Key Card", "key5", r\x + 2232.0 * RoomScale, r\y + 392.0 * RoomScale, r\z + 387.0 * RoomScale)
-    RotateEntity it\collider, 0, r\angle, 0, True
+    RotateEntity(it\collider, 0, r\angle, 0, True)
     EntityParent(it\collider, r\obj)
 
     it = CreateItem("Nuclear Device Document", "paper", r\x + 2248.0 * RoomScale, r\y + 440.0 * RoomScale, r\z + 372.0 * RoomScale)

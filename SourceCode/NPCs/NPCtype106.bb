@@ -27,7 +27,7 @@ Function InitializeNPCtype106(n.NPCs)
     n\obj2 = CreateSprite()
     ScaleSprite(n\obj2, 0.03, 0.03)
     EntityTexture(n\obj2, oldManEyes)
-    EntityBlend (n\obj2, BLEND_ADD)
+    EntityBlend(n\obj2, BLEND_ADD)
     EntityFX(n\obj2, 1 + 8) ;Full-bright + no fog.
     SpriteViewMode(n\obj2, 2)
 
@@ -71,12 +71,12 @@ Function UpdateNPCtype106(n.NPCs)
                 If EntityY(n\collider) < EntityY(mainPlayer\collider) - 20.0 - 0.55 Then
                     If Not mainPlayer\currRoom\roomTemplate\disableDecals Then
                         de.Decals = CreateDecal(0, EntityX(mainPlayer\collider), 0.01, EntityZ(mainPlayer\collider), 90, Rand(360), 0)
-                        de\size = 0.05 : de\sizeChange = 0.001 : EntityAlpha(de\obj, 0.8) : UpdateDecals
+                        de\size = 0.05 : de\sizeChange = 0.001 : EntityAlpha(de\obj, 0.8) : UpdateDecals()
                     EndIf
 
                     n\prevY = EntityY(mainPlayer\collider)
 
-                    SetAnimTime n\obj, 110
+                    SetAnimTime(n\obj, 110)
 
                     PlaySound2(n\sounds[0])
                 EndIf
@@ -90,9 +90,9 @@ Function UpdateNPCtype106(n.NPCs)
                 If n\timer >= - 10 Then
                     ;ShouldPlay = 66 ;TODO
                     If (n\frame < 259) Then
-                        PositionEntity n\collider, EntityX(n\collider), n\prevY-0.15, EntityZ(n\collider)
-                        PointEntity n\obj, mainPlayer\collider
-                        RotateEntity (n\collider, 0, CurveValue(EntityYaw(n\obj),EntityYaw(n\collider),100.0), 0, True)
+                        PositionEntity(n\collider, EntityX(n\collider), n\prevY-0.15, EntityZ(n\collider))
+                        PointEntity(n\obj, mainPlayer\collider)
+                        RotateEntity(n\collider, 0, CurveValue(EntityYaw(n\obj),EntityYaw(n\collider),100.0), 0, True)
 
                         AnimateNPC(n, 110, 259, 0.15, False)
                     EndIf
@@ -112,10 +112,10 @@ Function UpdateNPCtype106(n.NPCs)
             ;Show glowing eyes.
             ;TODO: fix
 			;If dist < CameraFogFar*LightVolume*0.6 Then
-            ;    HideEntity n\obj2
+            ;    HideEntity(n\obj2)
             ;Else
-            ;    ShowEntity n\obj2
-            ;    EntityAlpha (n\obj2, Min(dist-CameraFogFar*LightVolume*0.6,1.0))
+            ;    ShowEntity(n\obj2)
+            ;    EntityAlpha(n\obj2, Min(dist-CameraFogFar*LightVolume*0.6,1.0))
             ;EndIf
 
             If (visible) Then
@@ -173,9 +173,9 @@ Function UpdateNPCtype106(n.NPCs)
                                     n\pathLocation = n\pathLocation + 1
                                 EndIf
                             Else
-                                TranslateEntity n\collider, 0, ((EntityY(n\path[n\pathLocation]\obj,True) - 0.11) - EntityY(n\collider)) / 50.0, 0
+                                TranslateEntity(n\collider, 0, ((EntityY(n\path[n\pathLocation]\obj,True) - 0.11) - EntityY(n\collider)) / 50.0, 0)
 
-                                PointEntity n\obj, n\path[n\pathLocation]\obj
+                                PointEntity(n\obj, n\path[n\pathLocation]\obj)
 
                                 dist2# = EntityDistance(n\collider,n\path[n\pathLocation]\obj)
 

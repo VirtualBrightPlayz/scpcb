@@ -40,11 +40,11 @@ Function UpdateEventRoom2elevator2(e.Events)
 		e\room\npc[0]\texture = "GFX/NPCs/gonzales.jpg"
 		tex = LoadTexture(e\room\npc[0]\texture)
 		EntityTexture(e\room\npc[0]\obj, tex)
-		FreeTexture tex
+		FreeTexture(tex)
 
-		RotateEntity e\room\npc[0]\collider, 0, EntityYaw(e\room\obj)-80,0, True
+		RotateEntity(e\room\npc[0]\collider, 0, EntityYaw(e\room\obj)-80,0, True)
 
-		SetNPCFrame e\room\npc[0], 19
+		SetNPCFrame(e\room\npc[0], 19)
 		e\room\npc[0]\state=8
 
 		RemoveEvent(e)
@@ -69,8 +69,8 @@ Function UpdateEvent_hll_ele_2(e.Events)
 	If e\eventState = 0 Then
 		If e\room\dist < 8.0 And e\room\dist > 0 Then
 			e\room\npc[0]=CreateNPC(NPCtypeGuard, EntityX(e\room\obj,True), 0.5, EntityZ(e\room\obj,True))
-			PointEntity e\room\npc[0]\collider, mainPlayer\collider
-			RotateEntity e\room\npc[0]\collider, 0, EntityYaw(e\room\npc[0]\collider),0, True
+			PointEntity(e\room\npc[0]\collider, mainPlayer\collider)
+			RotateEntity(e\room\npc[0]\collider, 0, EntityYaw(e\room\npc[0]\collider),0, True)
 
 			e\eventState = 1
 		EndIf
@@ -89,7 +89,7 @@ Function UpdateEvent_hll_ele_2(e.Events)
 				e\room\roomDoors[0]\open = False
 				;PlayRangedSound(CloseDoorSFX(0, 0), mainPlayer\cam, e\room\roomDoors[0]\obj, 8.0)
 
-				PlaySound2 (LoadTempSound("SFX/Room/Room2ElevatorDeath.ogg"))
+				PlaySound2((LoadTempSound("SFX/Room/Room2ElevatorDeath.ogg")))
 
 				e\eventState = 2.05
 			EndIf

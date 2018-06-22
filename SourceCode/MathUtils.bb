@@ -167,7 +167,7 @@ Function MakeCollBox(mesh%)
 	Local sy# = Max(EntityScaleY(mesh, 1), 0.001)
 	Local sz# = EntityScaleZ(mesh, 1)
 	GetMeshExtents(mesh)
-	EntityBox mesh, Mesh_MinX * sx, Mesh_MinY * sy, Mesh_MinZ * sz, Mesh_MagX * sx, Mesh_MagY * sy, Mesh_MagZ * sz
+	EntityBox(mesh, Mesh_MinX * sx, Mesh_MinY * sy, Mesh_MinZ * sz, Mesh_MagX * sx, Mesh_MagY * sy, Mesh_MagZ * sz)
 End Function
 
 ; Find mesh extents
@@ -213,17 +213,29 @@ Function GetMeshExtents(Mesh%)
 End Function
 
 Function EntityScaleX#(entity%, globl% = False)
-	If globl Then TFormVector 1, 0, 0, entity, 0 Else TFormVector 1, 0, 0, entity, GetParent(entity)
+	If globl Then
+		TFormVector(1, 0, 0, entity, 0)
+	Else
+		TFormVector( 1, 0, 0, entity, GetParent(entity))
+	EndIf
 	Return Sqr(TFormedX() * TFormedX() + TFormedY() * TFormedY() + TFormedZ() * TFormedZ())
 End Function
 
 Function EntityScaleY#(entity%, globl% = False)
-	If globl Then TFormVector 0, 1, 0, entity, 0 Else TFormVector 0, 1, 0, entity, GetParent(entity)
+	If globl Then
+		TFormVector(0, 1, 0, entity, 0)
+	Else
+		TFormVector( 0, 1, 0, entity, GetParent(entity))
+	EndIf
 	Return Sqr(TFormedX() * TFormedX() + TFormedY() * TFormedY() + TFormedZ() * TFormedZ())
 End Function
 
 Function EntityScaleZ#(entity%, globl% = False)
-	If globl Then TFormVector 0, 0, 1, entity, 0 Else TFormVector 0, 0, 1, entity, GetParent(entity)
+	If globl Then
+		TFormVector(0, 0, 1, entity, 0)
+	Else
+		TFormVector(0, 0, 1, entity, GetParent(entity))
+	EndIf
 	Return Sqr(TFormedX() * TFormedX() + TFormedY() * TFormedY() + TFormedZ() * TFormedZ())
 End Function
 

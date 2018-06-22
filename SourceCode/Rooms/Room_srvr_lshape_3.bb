@@ -13,7 +13,7 @@ Function FillRoom_srvr_lshape_3(r.Rooms)
     PositionEntity(r\objects[2], r\x - 532.0 * RoomScale, -512.0 * RoomScale, r\z - 877.0 * RoomScale, True)
 
     it = CreateItem("Document SCP-970", "paper", r\x + 960.0 * RoomScale, r\y - 448.0 * RoomScale, r\z + 251.0 * RoomScale)
-    RotateEntity it\collider, 0, r\angle, 0
+    RotateEntity(it\collider, 0, r\angle, 0)
     EntityParent(it\collider, r\obj)
 
     it = CreateItem("Gas Mask", "gasmask", r\x + 954.0 * RoomScale, r\y - 504.0 * RoomScale, r\z + 235.0 * RoomScale)

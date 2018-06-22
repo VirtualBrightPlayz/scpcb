@@ -139,7 +139,7 @@ Function LoadRM2(rt.RoomTemplates)
 						shouldLoadTexture=True
 					EndIf
 
-					If shouldLoadTexture Then
+					If (shouldLoadTexture) Then
 						If blendFlags=RM2_BLENDFLAG_NORMAL Then
 							blendFlags = 2
 						ElseIf blendFlags=RM2_BLENDFLAG_DIFFUSE Then
@@ -179,13 +179,13 @@ Function LoadRM2(rt.RoomTemplates)
 				Next
 
 				If brush<>0 And (layerCount=2) Then
-					BrushTexture brush,AmbientLightRoomTex,0,0
+					BrushTexture(brush,AmbientLightRoomTex,0,0)
 				EndIf
 
 				surf = CreateSurface(mesh)
 				If brush<>0 Then
-					PaintSurface surf,brush
-					FreeBrush brush
+					PaintSurface(surf,brush)
+					FreeBrush(brush)
 				EndIf
 
 				;vertices
@@ -229,7 +229,7 @@ Function LoadRM2(rt.RoomTemplates)
 
 				EntityAlpha(mesh,0.0)
 
-				EntityType mesh,HIT_MAP
+				EntityType(mesh,HIT_MAP)
 				PushIntArrayListElem(collisionObjs,mesh) : HideEntity(mesh)
 				;[End Block]
 			Case RM2_INVISIBLE
@@ -261,7 +261,7 @@ Function LoadRM2(rt.RoomTemplates)
 
 				EntityFX(mesh,1+2)
 				EntityAlpha(mesh,1.0)
-				EntityType mesh,HIT_MAP
+				EntityType(mesh,HIT_MAP)
 				AddMesh(mesh,opaqueMesh)
 				PushIntArrayListElem(collisionObjs,mesh) : HideEntity(mesh)
 				;[End Block]
@@ -290,7 +290,7 @@ Function LoadRM2(rt.RoomTemplates)
 ;				ScaleMesh(cuboid,60.0,60.0,60.0)
 ;				PositionMesh(cuboid,waypointTemp\x,waypointTemp\y,waypointTemp\z)
 ;				AddMesh(cuboid,opaqueMesh)
-;				FreeEntity cuboid
+;				FreeEntity(cuboid)
 				;GET ICCED DUMMY
 				;RT FOR FREE IPOD
 				;you may now access
@@ -389,7 +389,7 @@ Function LoadRM2(rt.RoomTemplates)
 				PushIntArrayListElem(props,Handle(prop))
 				;[End Block]
 			Default
-				RuntimeError "Error after reading type "+prevType
+				RuntimeError("Error after reading type "+prevType)
 		End Select
 	Wend
 

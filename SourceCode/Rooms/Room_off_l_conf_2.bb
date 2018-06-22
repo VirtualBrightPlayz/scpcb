@@ -12,7 +12,8 @@ Function FillRoom_off_l_conf_2(r.Rooms)
 
     r\roomDoors[0] = CreateDoor(r\zone, r\x - 432.0 * RoomScale, 0.0, r\z, 90, r, False, False, 0, "1234")
     PositionEntity(r\roomDoors[0]\buttons[0], r\x - 416.0 * RoomScale, EntityY(r\roomDoors[0]\buttons[0],True), r\z + 176.0 * RoomScale,True)
-    FreeEntity r\roomDoors[0]\buttons[1] : r\roomDoors[0]\buttons[1] = 0
+    FreeEntity(r\roomDoors[0]\buttons[1])
+	r\roomDoors[0]\buttons[1] = 0
     r\roomDoors[0]\autoClose = False : r\roomDoors[0]\open = False : r\roomDoors[0]\locked = True
 
     de.Decals = CreateDecal(0, r\x - 808.0 * RoomScale, 0.005, r\z - 72.0 * RoomScale, 90, Rand(360), 0)
@@ -53,7 +54,7 @@ Function UpdateEvent_off_l_conf_2(e.Events)
 					e\eventState = 1
 					;TODO: load temp sound.
 					;TODO: fix
-					;PlaySound2 HorrorSFX(5)
+					;PlaySound2(HorrorSFX(5))
 				EndIf
 			Else
 				If (EntityDistance(mainPlayer\collider, e\room\roomDoors[0]\obj)<1.5) And (RemoteDoorOn) Then
@@ -73,3 +74,6 @@ Function UpdateEvent_off_l_conf_2(e.Events)
 	EndIf
 	;[End Block]
 End Function
+
+;~IDEal Editor Parameters:
+;~C#Blitz3D

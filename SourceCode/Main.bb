@@ -154,7 +154,7 @@ End Function
 
 Function AddToTimingAccumulator(milliseconds%)
 	If milliseconds<1 Or milliseconds>500 Then
-		;DebugLog milliseconds
+		;DebugLog(milliseconds)
 		Return
 	EndIf
 	timing\accumulator = timing\accumulator+Max(0,Float(milliseconds)*70.0/1000.0)
@@ -368,7 +368,7 @@ Function InitializeMainGame()
 	CurrGameSubstate = GAMESUBSTATE_MAINMENU_MAIN
 
 	Graphics3DExt(userOptions\screenWidth, userOptions\screenHeight, 0, (1 + (Not userOptions\fullscreen)))
-	AppTitle "SCP - Containment Breach v"+VERSION
+	AppTitle("SCP - Containment Breach v"+VERSION)
 
 	MenuScale = (userOptions\screenHeight / 1024.0)
 
@@ -376,7 +376,7 @@ Function InitializeMainGame()
 
 	SetBuffer(BackBuffer())
 
-	SeedRnd MilliSecs()
+	SeedRnd(MilliSecs())
 
 	CanSave = True
 
@@ -388,7 +388,7 @@ Function InitializeMainGame()
 	musicManager.MusicManager = CreateMusicManager()
 	SetNextMusicTrack(MUS_EZ, False)
 
-	SetFont uiAssets\font[1]
+	SetFont(uiAssets\font[1])
 
 	DrawLoading(0, True)
 
@@ -447,7 +447,7 @@ Function InitializeMainGame()
 
 	;TODO: Assets.bb
 	;NVGImages = LoadAnimImage("GFX/battery.png",64,64,0,2)
-	;MaskImage NVGImages,255,0,255
+	;MaskImage(NVGImages,255,0,255)
 
 	;TODO: Die.
 	InFacility% = True
@@ -477,11 +477,11 @@ Function InitializeMainGame()
 	mouse_top_limit% = 150
 	mouse_bottom_limit% = userOptions\screenHeight - 150
 
-	Collisions HIT_PLAYER, HIT_MAP, 2, 2
-	Collisions HIT_PLAYER, HIT_PLAYER, 1, 3
-	Collisions HIT_ITEM, HIT_MAP, 2, 2
-	Collisions HIT_APACHE, HIT_APACHE, 1, 2
-	Collisions HIT_DEAD, HIT_MAP, 2, 2
+	Collisions(HIT_PLAYER, HIT_MAP, 2, 2)
+	Collisions(HIT_PLAYER, HIT_PLAYER, 1, 3)
+	Collisions(HIT_ITEM, HIT_MAP, 2, 2)
+	Collisions(HIT_APACHE, HIT_APACHE, 1, 2)
+	Collisions(HIT_DEAD, HIT_MAP, 2, 2)
 
 	DrawLoading(90, True)
 
@@ -507,9 +507,9 @@ Function UpdateGame()
 	;If userOptions\framelimit > 0 Then
 	;    ;Framelimit
 	;	Local WaitingTime% = (1000.0 / userOptions\framelimit) - (MilliSecs() - LoopDelay)
-	;	Delay WaitingTime%
+	;	Delay(WaitingTime%)
 	;
-	;   LoopDelay = MilliSecs()
+	;   LoopDelay(= MilliSecs())
 	;EndIf
 
 	;Counting the fps
@@ -521,9 +521,9 @@ Function UpdateGame()
 	;[Block]
 	While timing\accumulator>0.0
 		timing\accumulator = timing\accumulator-timing\tickDuration
-		If timing\accumulator<=0.0 Then CaptureWorld
+		If timing\accumulator<=0.0 Then CaptureWorld()
 
-		Cls
+		Cls()
 
 		DoubleClick = False
 		MouseHit1 = MouseHit(1)
@@ -565,17 +565,17 @@ Function UpdateGame()
 					;TODO: reimplement
 ;					For i = 0 To 5
 ;						If AmbientSFX(i,CurrAmbientSFX) <> 0 Then
-;							If IsChannelPlaying(AmbientSFXCHN) = 0 Then FreeSound AmbientSFX(i,CurrAmbientSFX) : AmbientSFX(i,CurrAmbientSFX) = 0
+;							If IsChannelPlaying(AmbientSFXCHN) = 0 Then FreeSound(AmbientSFX(i,CurrAmbientSFX) : AmbientSFX(i,CurrAmbientSFX) = 0)
 ;						EndIf
 ;					Next
 ;
-;					PositionEntity (SoundEmitter, EntityX(mainPlayer\cam) + Rnd(-1.0, 1.0), 0.0, EntityZ(mainPlayer\cam) + Rnd(-1.0, 1.0))
+;					PositionEntity(SoundEmitter, EntityX(mainPlayer\cam) + Rnd(-1.0, 1.0), 0.0, EntityZ(mainPlayer\cam) + Rnd(-1.0, 1.0))
 ;
 ;					If mainPlayer\currRoom\roomTemplate\name = "room860"
 ;						For e.Events = Each Events
 ;							If e\name = "room860"
 ;								If e\eventState = 1.0 Then
-;									PositionEntity (SoundEmitter, EntityX(mainPlayer\cam) + Rnd(-1.0, 1.0), 30.0, EntityZ(mainPlayer\cam) + Rnd(-1.0, 1.0))
+;									PositionEntity(SoundEmitter, EntityX(mainPlayer\cam) + Rnd(-1.0, 1.0), 30.0, EntityZ(mainPlayer\cam) + Rnd(-1.0, 1.0))
 ;								EndIf
 ;
 ;								Exit
@@ -603,7 +603,7 @@ Function UpdateGame()
 					rn$ = mainPlayer\currRoom\roomTemplate\name$
 					If rn$ <> "room860" And rn$ <> "room1123" And rn$ <> "173" And rn$ <> "dimension1499" Then
 						;If timing\tickDuration > 0 Then LightBlink = Rnd(1.0,2.0)
-						PlaySound2  LoadTempSound("SFX/SCP/079/Broadcast"+Rand(1,7)+".ogg")
+						PlaySound2( LoadTempSound("SFX/SCP/079/Broadcast"+Rand(1,7)+".ogg"))
 					EndIf
 				EndIf
 			EndIf
@@ -615,10 +615,10 @@ Function UpdateGame()
 				;LightVolume = CurveValue(TempLightVolume, LightVolume, 50.0)
 				;CameraFogRange(mainPlayer\cam, mainPlayer\camFogNear*LightVolume,mainPlayer\camFogFar*LightVolume)
 				;CameraFogColor(mainPlayer\cam, 0,0,0)
-				;CameraFogMode mainPlayer\cam,1
+				;CameraFogMode(mainPlayer\cam,1)
 				;CameraRange(mainPlayer\cam, 0.05, Min(mainPlayer\camFogFar*LightVolume*1.5,28))
 
-				AmbientLight Brightness, Brightness, Brightness
+				AmbientLight(Brightness, Brightness, Brightness)
 				mainPlayer\loudness = CurveValue(0.0, mainPlayer\loudness, 5.0)
 
 				CanSave% = True
@@ -763,15 +763,15 @@ Function UpdateGame()
 			EndIf
 
 			If mainPlayer\lightFlash > 0 Then
-				ShowEntity mainPlayer\overlays[OVERLAY_WHITE]
+				ShowEntity(mainPlayer\overlays[OVERLAY_WHITE])
 				EntityAlpha(mainPlayer\overlays[OVERLAY_WHITE], Max(Min(mainPlayer\lightFlash + Rnd(-0.2, 0.2), 1.0), 0.0))
 				mainPlayer\lightFlash = Max(mainPlayer\lightFlash - (timing\tickDuration / 70.0), 0)
 			Else
-				HideEntity mainPlayer\overlays[OVERLAY_WHITE]
+				HideEntity(mainPlayer\overlays[OVERLAY_WHITE])
 				;EntityAlpha(Light, mainPlayer\lightFlash)
 			EndIf
 
-			EntityColor mainPlayer\overlays[OVERLAY_WHITE],255,255,255
+			EntityColor(mainPlayer\overlays[OVERLAY_WHITE],255,255,255)
 
 			;[End block]
 
@@ -850,14 +850,14 @@ Function UpdateGame()
 				EndIf
 
 				If (Not temp%) Then
-					Color 0,0,0
+					Color(0,0,0)
 					Text((userOptions\screenWidth / 2)+1, (userOptions\screenHeight / 2) + 201, Msg, True, False);, Min(MsgTimer / 2, 255)/255.0)
-					Color 255,255,255;Min(MsgTimer / 2, 255), Min(MsgTimer / 2, 255), Min(MsgTimer / 2, 255)
+					Color(255,255,255);Min(MsgTimer / 2, 255), Min(MsgTimer / 2, 255), Min(MsgTimer / 2, 255))
 					Text((userOptions\screenWidth / 2), (userOptions\screenHeight / 2) + 200, Msg, True, False);, Min(MsgTimer / 2, 255)/255.0)
 				Else
-					Color 0,0,0
+					Color(0,0,0)
 					Text((userOptions\screenWidth / 2)+1, (userOptions\screenHeight * 0.94) + 1, Msg, True, False);, Min(MsgTimer / 2, 255)/255.0)
-					Color 255,255,255;Min(MsgTimer / 2, 255), Min(MsgTimer / 2, 255), Min(MsgTimer / 2, 255)
+					Color(255,255,255);Min(MsgTimer / 2, 255), Min(MsgTimer / 2, 255), Min(MsgTimer / 2, 255))
 					Text((userOptions\screenWidth / 2), (userOptions\screenHeight * 0.94), Msg, True, False);, Min(MsgTimer / 2, 255)/255.0)
 				EndIf
 				MsgTimer=MsgTimer-timing\tickDuration
@@ -878,48 +878,50 @@ Function UpdateGame()
 		DrawPauseMenu()
 		DrawConsole()
 
-		Color 255, 255, 255
+		Color(255, 255, 255)
 		If userOptions\showFPS Then
-			SetFont uiAssets\consoleFont
-			Text 20, 20, "FPS: " + Int(timing\fps)
-			SetFont uiAssets\font[0]
+			SetFont(uiAssets\consoleFont)
+			Text(20, 20, "FPS: " + Int(timing\fps))
+			SetFont(uiAssets\font[0])
 		EndIf
 	EndIf
 
 	;not by any means a perfect solution
 	;Not even proper gamma correction but it's a nice looking alternative that works in windowed mode
 	If userOptions\screenGamma>1.0 Then
-		CopyRect 0,0,userOptions\screenWidth,userOptions\screenHeight,1024-userOptions\screenWidth/2,1024-userOptions\screenHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
-		EntityBlend fresize_image,1
-		ClsColor 0,0,0 : Cls
+		CopyRect(0,0,userOptions\screenWidth,userOptions\screenHeight,1024-userOptions\screenWidth/2,1024-userOptions\screenHeight/2,BackBuffer(),TextureBuffer(fresize_texture))
+		EntityBlend(fresize_image,1)
+		ClsColor(0,0,0)
+		Cls()
 		ScaleRender(-1.0/Float(userOptions\screenWidth),1.0/Float(userOptions\screenWidth),2048.0 / Float(userOptions\screenWidth),2048.0 / Float(userOptions\screenWidth))
-		EntityFX fresize_image,1+32
-		EntityBlend fresize_image,3
-		EntityAlpha fresize_image,userOptions\screenGamma-1.0
+		EntityFX(fresize_image,1+32)
+		EntityBlend(fresize_image,3)
+		EntityAlpha(fresize_image,userOptions\screenGamma-1.0)
 		ScaleRender(-1.0/Float(userOptions\screenWidth),1.0/Float(userOptions\screenWidth),2048.0 / Float(userOptions\screenWidth),2048.0 / Float(userOptions\screenWidth))
 	ElseIf userOptions\screenGamma<1.0 Then ;todo: maybe optimize this if it's too slow, alternatively give players the option to disable gamma
-		CopyRect 0,0,userOptions\screenWidth,userOptions\screenHeight,1024-userOptions\screenWidth/2,1024-userOptions\screenHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
-		EntityBlend fresize_image,1
-		ClsColor 0,0,0 : Cls
+		CopyRect(0,0,userOptions\screenWidth,userOptions\screenHeight,1024-userOptions\screenWidth/2,1024-userOptions\screenHeight/2,BackBuffer(),TextureBuffer(fresize_texture))
+		EntityBlend(fresize_image,1)
+		ClsColor(0,0,0)
+		Cls()
 		ScaleRender(-1.0/Float(userOptions\screenWidth),1.0/Float(userOptions\screenWidth),2048.0 / Float(userOptions\screenWidth),2048.0 / Float(userOptions\screenWidth))
-		EntityFX fresize_image,1+32
-		EntityBlend fresize_image,2
-		EntityAlpha fresize_image,1.0
-		SetBuffer TextureBuffer(fresize_texture2)
-		ClsColor 255*userOptions\screenGamma,255*userOptions\screenGamma,255*userOptions\screenGamma
-		Cls
-		SetBuffer BackBuffer()
+		EntityFX(fresize_image,1+32)
+		EntityBlend(fresize_image,2)
+		EntityAlpha(fresize_image,1.0)
+		SetBuffer(TextureBuffer(fresize_texture2))
+		ClsColor(255*userOptions\screenGamma,255*userOptions\screenGamma,255*userOptions\screenGamma)
+		Cls()
+		SetBuffer(BackBuffer())
 		ScaleRender(-1.0/Float(userOptions\screenWidth),1.0/Float(userOptions\screenWidth),2048.0 / Float(userOptions\screenWidth),2048.0 / Float(userOptions\screenWidth))
 		SetBuffer(TextureBuffer(fresize_texture2))
-		ClsColor 0,0,0
-		Cls
+		ClsColor(0,0,0)
+		Cls()
 		SetBuffer(BackBuffer())
 	EndIf
-	EntityFX fresize_image,1
-	EntityBlend fresize_image,1
-	EntityAlpha fresize_image,1.0
+	EntityFX(fresize_image,1)
+	EntityBlend(fresize_image,1)
+	EntityAlpha(fresize_image,1.0)
 
-	Flip userOptions\vsync<>0
+	Flip(userOptions\vsync<>0)
 	;[End block]
 End Function
 
@@ -939,19 +941,19 @@ End Function
 ;
 ;	Select Lower(SelectedEnding)
 ;		Case "b2", "a1"
-;			ClsColor Max(255+(EndingTimer)*2.8,0), Max(255+(EndingTimer)*2.8,0), Max(255+(EndingTimer)*2.8,0)
+;			ClsColor(Max(255+(EndingTimer)*2.8,0), Max(255+(EndingTimer)*2.8,0), Max(255+(EndingTimer)*2.8,0))
 ;		Default
-;			ClsColor 0,0,0
+;			ClsColor(0,0,0)
 ;	End Select
 ;
 ;	ShouldPlay = 66
 ;
-;	Cls
+;	Cls()
 ;
 ;	If EndingTimer<-200 Then
 ;
 ;		If BreathCHN <> 0 Then
-;			If IsChannelPlaying(BreathCHN) Then StopChannel BreathCHN : mainPlayer\stamina = 100
+;			If IsChannelPlaying(BreathCHN) Then StopChannel(BreathCHN : mainPlayer\stamina = 100)
 ;		EndIf
 ;
 ;		If EndingTimer <-400 Then
@@ -962,10 +964,10 @@ End Function
 ;		If EndingScreen = 0 Then
 ;			EndingScreen = LoadImage("GFX/endingscreen.pt")
 ;
-;			temp = LoadSound ("SFX/Music/Ending.ogg")
-;			PlaySound2 temp
+;			temp = LoadSound("SFX/Music/Ending.ogg")
+;			PlaySound2(temp)
 ;
-;			PlaySound2 LightSFX
+;			PlaySound2(LightSFX)
 ;		EndIf
 ;
 ;		If EndingTimer > -700 Then
@@ -973,25 +975,25 @@ End Function
 ;			;-200 -> -700
 ;			;Max(50 - (Abs(KillTimer)-200),0)    =    0->50
 ;			If Rand(1,150)<Min((Abs(EndingTimer)-200),155) Then
-;				DrawImage EndingScreen, userOptions\screenWidth/2-400, userOptions\screenHeight/2-400
+;				DrawImage(EndingScreen, userOptions\screenWidth/2-400, userOptions\screenHeight/2-400)
 ;			Else
-;				Color 0,0,0
-;				Rect 100,100,userOptions\screenWidth-200,userOptions\screenHeight-200
-;				Color 255,255,255
+;				Color(0,0,0)
+;				Rect(100,100,userOptions\screenWidth-200,userOptions\screenHeight-200)
+;				Color(255,255,255)
 ;			EndIf
 ;
 ;			If EndingTimer+timing\tickDuration2 > -450 And EndingTimer <= -450 Then
 ;				Select Lower(SelectedEnding)
 ;					Case "a1", "a2"
-;						PlaySound2 LoadTempSound("SFX/Ending/GateA/Ending"+SelectedEnding+".ogg")
+;						PlaySound2(LoadTempSound("SFX/Ending/GateA/Ending"+SelectedEnding+".ogg"))
 ;					Case "b1", "b2", "b3"
-;						PlaySound2 LoadTempSound("SFX/Ending/GateB/Ending"+SelectedEnding+".ogg")
+;						PlaySound2(LoadTempSound("SFX/Ending/GateB/Ending"+SelectedEnding+".ogg"))
 ;				End Select
 ;			EndIf
 ;
 ;		Else
 ;
-;			DrawImage EndingScreen, userOptions\screenWidth/2-400, userOptions\screenHeight/2-400
+;			DrawImage(EndingScreen, userOptions\screenWidth/2-400, userOptions\screenHeight/2-400)
 ;
 ;			If EndingTimer < -1000 Then
 ;
@@ -1000,12 +1002,12 @@ End Function
 ;				x = userOptions\screenWidth / 2 - width / 2
 ;				y = userOptions\screenHeight / 2 - height / 2
 ;
-;				DrawImage PauseMenuIMG, x, y
+;				DrawImage(PauseMenuIMG, x, y)
 ;
 ;				Color(255, 255, 255)
-;				SetFont uiAssets\font[1]
+;				SetFont(uiAssets\font[1])
 ;				Text(x + width / 2 + 40*MenuScale, y + 20*MenuScale, "THE END", True)
-;				SetFont uiAssets\font[0]
+;				SetFont(uiAssets\font[0])
 
 ;					x = x+132*MenuScale
 ;					y = y+122*MenuScale
@@ -1029,10 +1031,10 @@ End Function
 ;						scpsEncountered = scpsEncountered
 ;					Next
 ;
-;					Text x, y, "SCPs encountered: " +scpsEncountered
-;					Text x, y+40*MenuScale, "Rooms found: " + roomsfound+"/"+roomamount
-;					Text x, y+60*MenuScale, "Documents discovered: " +docsfound+"/"+docamount
-;					Text x, y+80*MenuScale, "Items refined in SCP-914: " +RefinedItems
+;					Text(x, y, "SCPs encountered: " +scpsEncountered)
+;					Text(x, y+40*MenuScale, "Rooms found: " + roomsfound+"/"+roomamount)
+;					Text(x, y+60*MenuScale, "Documents discovered: " +docsfound+"/"+docamount)
+;					Text(x, y+80*MenuScale, "Items refined in SCP-914: " +RefinedItems)
 ;
 ;					x = userOptions\screenWidth / 2 - width / 2
 ;					y = userOptions\screenHeight / 2 - height / 2
@@ -1059,7 +1061,7 @@ End Function
 ;
 ;	ShowPointer2()
 ;
-;	SetFont uiAssets\font[0]
+;	SetFont(uiAssets\font[0])
 ;End Function
 ;[End Block]
 
@@ -1090,7 +1092,8 @@ Function UpdateGUI()
 
 	If SelectedScreen <> Null Then
 		If MouseUp1 Or MouseHit2 Then
-			FreeImage SelectedScreen\img : SelectedScreen\img = 0
+			FreeImage(SelectedScreen\img)
+			SelectedScreen\img = 0
 			SelectedScreen = Null
 			MouseUp1 = False
 		EndIf
@@ -1103,12 +1106,12 @@ Function UpdateGUI()
 		If shouldDrawHUD Then
 			buttonObj% = GrabMesh("GFX/Map/Meshes/Button.b3d")
 			pvt% = CreatePivot()
-			PositionEntity pvt, EntityX(mainPlayer\closestButton,True),EntityY(mainPlayer\closestButton,True),EntityZ(mainPlayer\closestButton,True)
-			RotateEntity pvt, 0, EntityYaw(mainPlayer\closestButton,True)-180,0
-			MoveEntity pvt, 0,0,0.22
-			PositionEntity mainPlayer\head, EntityX(pvt),EntityY(pvt),EntityZ(pvt)
-			PointEntity mainPlayer\head, mainPlayer\closestButton
-			FreeEntity pvt
+			PositionEntity(pvt, EntityX(mainPlayer\closestButton,True),EntityY(mainPlayer\closestButton,True),EntityZ(mainPlayer\closestButton,True))
+			RotateEntity(pvt, 0, EntityYaw(mainPlayer\closestButton,True)-180,0)
+			MoveEntity(pvt, 0,0,0.22)
+			PositionEntity(mainPlayer\head, EntityX(pvt),EntityY(pvt),EntityZ(pvt))
+			PointEntity(mainPlayer\head, mainPlayer\closestButton)
+			FreeEntity(pvt)
 
 			CameraProject(mainPlayer\cam, EntityX(mainPlayer\closestButton,True),EntityY(mainPlayer\closestButton,True)+MeshHeight(buttonObj)*0.015,EntityZ(mainPlayer\closestButton,True))
 			projY# = ProjectedY()
@@ -1120,11 +1123,11 @@ Function UpdateGUI()
 
 			DropAsset(buttonObj)
 
-			SetFont uiAssets\font[2]
+			SetFont(uiAssets\font[2])
 			If KeypadMSG <> "" Then
 				KeypadTimer = KeypadTimer-timing\tickDuration
 
-				If (KeypadTimer Mod 70) < 35 Then Text userOptions\screenWidth/2, y+124*scale, KeypadMSG, True,True
+				If (KeypadTimer Mod 70) < 35 Then Text(userOptions\screenWidth/2, y+124*scale, KeypadMSG, True,True)
 				If KeypadTimer =<0 Then
 					KeypadMSG = ""
 					SelectedDoor = Null
@@ -1147,11 +1150,11 @@ Function UpdateGUI()
 
 							Select (n+1)+(i*4)
 								Case 1,2,3
-									KeypadInput=KeypadInput + ((n+1)+(i*4))
+									KeypadInput=KeypadInput(+ ((n+1)+(i*4)))
 								Case 4
-									KeypadInput=KeypadInput + "0"
+									KeypadInput=KeypadInput(+ "0")
 								Case 5,6,7
-									KeypadInput=KeypadInput + ((n+1)+(i*4)-1)
+									KeypadInput=KeypadInput(+ ((n+1)+(i*4)-1))
 								Case 8 ;enter
 									If KeypadInput = mainPlayer\selectedDoor\code Then
 										PlaySound_SM(sndManager\scannerUse)
@@ -1167,7 +1170,7 @@ Function UpdateGUI()
 										KeypadInput = ""
 									EndIf
 								Case 9,10,11
-									KeypadInput=KeypadInput + ((n+1)+(i*4)-2)
+									KeypadInput=KeypadInput(+ ((n+1)+(i*4)-2))
 								Case 12
 									KeypadInput = ""
 							End Select
@@ -1237,10 +1240,10 @@ Function DrawGUI()
 ;							If e\img = 0 Then e\img = LoadImage("GFX/npcs/106face.jpg")
 ;						EndIf
 ;					Else
-;						DrawImage e\img, userOptions\screenWidth/2-Rand(390,310), userOptions\screenHeight/2-Rand(290,310)
+;						DrawImage(e\img, userOptions\screenWidth/2-Rand(390,310), userOptions\screenHeight/2-Rand(290,310))
 ;					EndIf
 ;				Else
-;					If e\img <> 0 Then FreeImage e\img : e\img = 0
+;					If e\img <> 0 Then FreeImage(e\img : e\img = 0)
 ;				EndIf
 ;
 ;				Exit
@@ -1286,7 +1289,7 @@ Function DrawGUI()
 					x = x - 5 - 64
 			End Select
 			DrawImage(uiAssets\handIcon[HAND_ICON_TOUCH], x, y)
-			Color 0, 0, 0
+			Color(0, 0, 0)
 			Rect(x + 4, y + 4, 64 - 8, 64 - 8)
 			DrawImage(uiAssets\arrow[i], x + 21, y + 21)
 			DrawArrowIcon(i) = False
@@ -1304,101 +1307,101 @@ Function DrawGUI()
 		x% = 80
 		y% = userOptions\screenHeight - 95
 
-		Color 255, 255, 255
-		Rect (x, y, width, height, False)
+		Color(255, 255, 255)
+		Rect(x, y, width, height, False)
 		For i = 1 To Int(((width - 2) * (mainPlayer\blinkTimer / (mainPlayer\blinkFreq))) / 10)
 			DrawImage(uiAssets\blinkBar, x + 3 + 10 * (i - 1), y + 3)
 		Next
-		Color 0, 0, 0
+		Color(0, 0, 0)
 		Rect(x - 50, y, 30, 30)
 
 		;TODO: FIX
 		;If EyeIrritation > 0 Then
-		;	Color 200, 0, 0
+		;	Color(200, 0, 0)
 		;	Rect(x - 50 - 3, y - 3, 30 + 6, 30 + 6)
 		;EndIf
 
-		Color 255, 255, 255
+		Color(255, 255, 255)
 		Rect(x - 50 - 1, y - 1, 30 + 2, 30 + 2, False)
 
-		DrawImage uiAssets\blinkIcon, x - 50, y
+		DrawImage(uiAssets\blinkIcon, x - 50, y)
 
 		y = userOptions\screenHeight - 55
-		Color 255, 255, 255
-		Rect (x, y, width, height, False)
+		Color(255, 255, 255)
+		Rect(x, y, width, height, False)
 		For i = 1 To Int(((width - 2) * (mainPlayer\stamina / 100.0)) / 10)
 			DrawImage(uiAssets\staminaBar, x + 3 + 10 * (i - 1), y + 3)
 		Next
 
-		Color 0, 0, 0
+		Color(0, 0, 0)
 		Rect(x - 50, y, 30, 30)
 
-		Color 255, 255, 255
+		Color(255, 255, 255)
 		Rect(x - 50 - 1, y - 1, 30 + 2, 30 + 2, False)
 		If mainPlayer\crouching Then
-			DrawImage uiAssets\crouchIcon, x - 50, y
+			DrawImage(uiAssets\crouchIcon, x - 50, y)
 		Else
-			DrawImage uiAssets\sprintIcon, x - 50, y
+			DrawImage(uiAssets\sprintIcon, x - 50, y)
 		EndIf
 
 		If DebugHUD Then
-			Color 255, 255, 255
-			SetFont uiAssets\consoleFont
+			Color(255, 255, 255)
+			SetFont(uiAssets\consoleFont)
 
-			;Text x + 250, 50, "Zone: " + (EntityZ(mainPlayer\collider)/8.0)
-			Text x - 50, 50, "Player Position: (" + f2s(EntityX(mainPlayer\collider), 3) + ", " + f2s(EntityY(mainPlayer\collider), 3) + ", " + f2s(EntityZ(mainPlayer\collider), 3) + "), speed: "+f2s(mainPlayer\dropSpeed, 3)
-			Text x - 50, 70, "Camera Position: (" + f2s(EntityX(mainPlayer\cam), 3)+ ", " + f2s(EntityY(mainPlayer\cam), 3) +", " + f2s(EntityZ(mainPlayer\cam), 3) + ")"
-			Text x - 50, 100, "Player Rotation: (" + f2s(EntityPitch(mainPlayer\collider), 3) + ", " + f2s(EntityYaw(mainPlayer\collider), 3) + ", " + f2s(EntityRoll(mainPlayer\collider), 3) + ")"
-			Text x - 50, 120, "Camera Rotation: (" + f2s(EntityPitch(mainPlayer\cam), 3)+ ", " + f2s(EntityYaw(mainPlayer\cam), 3) +", " + f2s(EntityRoll(mainPlayer\cam), 3) + ")"
-			Text x - 50, 150, "Room: " + mainPlayer\currRoom\roomTemplate\name
+			;Text(x + 250, 50, "Zone: " + (EntityZ(mainPlayer\collider)/8.0))
+			Text(x - 50, 50, "Player Position: (" + f2s(EntityX(mainPlayer\collider), 3) + ", " + f2s(EntityY(mainPlayer\collider), 3) + ", " + f2s(EntityZ(mainPlayer\collider), 3) + "), speed: "+f2s(mainPlayer\dropSpeed, 3))
+			Text(x - 50, 70, "Camera Position: (" + f2s(EntityX(mainPlayer\cam), 3)+ ", " + f2s(EntityY(mainPlayer\cam), 3) +", " + f2s(EntityZ(mainPlayer\cam), 3) + ")")
+			Text(x - 50, 100, "Player Rotation: (" + f2s(EntityPitch(mainPlayer\collider), 3) + ", " + f2s(EntityYaw(mainPlayer\collider), 3) + ", " + f2s(EntityRoll(mainPlayer\collider), 3) + ")")
+			Text(x - 50, 120, "Camera Rotation: (" + f2s(EntityPitch(mainPlayer\cam), 3)+ ", " + f2s(EntityYaw(mainPlayer\cam), 3) +", " + f2s(EntityRoll(mainPlayer\cam), 3) + ")")
+			Text(x - 50, 150, "Room: " + mainPlayer\currRoom\roomTemplate\name)
 
 			
 			For ev.Events = Each Events
 				If ev\room = mainPlayer\currRoom Then
-					Text x - 50, 170, "Room event: " + ev\name
-					Text x - 50, 190, "state: " + ev\eventState
-					Text x - 50, 210, "state2: " + ev\eventState2
-					Text x - 50, 230, "state3: " + ev\eventState3
+					Text(x - 50, 170, "Room event: " + ev\name)
+					Text(x - 50, 190, "state: " + ev\eventState)
+					Text(x - 50, 210, "state2: " + ev\eventState2)
+					Text(x - 50, 230, "state3: " + ev\eventState3)
 					Exit
 				EndIf
 			Next
-			Text x - 50, 250, "Room coordinates: (" + Floor(EntityX(mainPlayer\currRoom\obj) / 8.0 + 0.5) + ", " + Floor(EntityZ(mainPlayer\currRoom\obj) / 8.0 + 0.5) + ")"
-			Text x - 50, 280, "Stamina: " + f2s(mainPlayer\stamina, 3)
-			Text x - 50, 300, "Dead: " + mainPlayer\dead
-			Text x - 50, 320, "Blink timer: " + f2s(mainPlayer\blinkTimer, 3)
-			Text x - 50, 340, "Injuries: " + mainPlayer\injuries
-			Text x - 50, 360, "Bloodloss: " + mainPlayer\bloodloss
-			Text x - 50, 390, "SCP - 173 Position (collider): (" + f2s(EntityX(Curr173\collider), 3) + ", " + f2s(EntityY(Curr173\collider), 3) + ", " + f2s(EntityZ(Curr173\collider), 3) + ")"
-			Text x - 50, 410, "SCP - 173 Position (obj): (" + f2s(EntityX(Curr173\obj), 3) + ", " + f2s(EntityY(Curr173\obj), 3) + ", " + f2s(EntityZ(Curr173\obj), 3) + ")"
-			;Text x - 50, 410, "SCP - 173 Idle: " + Curr173\idle
-			Text x - 50, 430, "SCP - 173 State: " + Curr173\state
-			Text x - 50, 450, "SCP - 106 Position: (" + f2s(EntityX(Curr106\obj), 3) + ", " + f2s(EntityY(Curr106\obj), 3) + ", " + f2s(EntityZ(Curr106\obj), 3) + ")"
-			Text x - 50, 470, "SCP - 106 Idle: " + Curr106\idle
-			Text x - 50, 490, "SCP - 106 State: " + Curr106\state
+			Text(x - 50, 250, "Room coordinates: (" + Floor(EntityX(mainPlayer\currRoom\obj) / 8.0 + 0.5) + ", " + Floor(EntityZ(mainPlayer\currRoom\obj) / 8.0 + 0.5) + ")")
+			Text(x - 50, 280, "Stamina: " + f2s(mainPlayer\stamina, 3))
+			Text(x - 50, 300, "Dead: " + mainPlayer\dead)
+			Text(x - 50, 320, "Blink timer: " + f2s(mainPlayer\blinkTimer, 3))
+			Text(x - 50, 340, "Injuries: " + mainPlayer\injuries)
+			Text(x - 50, 360, "Bloodloss: " + mainPlayer\bloodloss)
+			Text(x - 50, 390, "SCP - 173 Position (collider): (" + f2s(EntityX(Curr173\collider), 3) + ", " + f2s(EntityY(Curr173\collider), 3) + ", " + f2s(EntityZ(Curr173\collider), 3) + ")")
+			Text(x - 50, 410, "SCP - 173 Position (obj): (" + f2s(EntityX(Curr173\obj), 3) + ", " + f2s(EntityY(Curr173\obj), 3) + ", " + f2s(EntityZ(Curr173\obj), 3) + ")")
+			;Text(x - 50, 410, "SCP - 173 Idle: " + Curr173\idle)
+			Text(x - 50, 430, "SCP - 173 State: " + Curr173\state)
+			Text(x - 50, 450, "SCP - 106 Position: (" + f2s(EntityX(Curr106\obj), 3) + ", " + f2s(EntityY(Curr106\obj), 3) + ", " + f2s(EntityZ(Curr106\obj), 3) + ")")
+			Text(x - 50, 470, "SCP - 106 Idle: " + Curr106\idle)
+			Text(x - 50, 490, "SCP - 106 State: " + Curr106\state)
 			offset% = 0
 			
 			For npc.NPCs = Each NPCs
 				If npc\npcType = NPCtype096 Then
-					Text x - 50, 510, "SCP - 096 Position: (" + f2s(EntityX(npc\obj), 3) + ", " + f2s(EntityY(npc\obj), 3) + ", " + f2s(EntityZ(npc\obj), 3) + ")"
-					Text x - 50, 530, "SCP - 096 Idle: " + npc\idle
-					Text x - 50, 550, "SCP - 096 State: " + npc\state
-					Text x - 50, 570, "SCP - 096 Speed: " + f2s(npc\currSpeed, 5)
+					Text(x - 50, 510, "SCP - 096 Position: (" + f2s(EntityX(npc\obj), 3) + ", " + f2s(EntityY(npc\obj), 3) + ", " + f2s(EntityZ(npc\obj), 3) + ")")
+					Text(x - 50, 530, "SCP - 096 Idle: " + npc\idle)
+					Text(x - 50, 550, "SCP - 096 State: " + npc\state)
+					Text(x - 50, 570, "SCP - 096 Speed: " + f2s(npc\currSpeed, 5))
 				EndIf
 				If npc\npcType = NPCtypeMTF Then
-					Text x - 50, 600 + 60 * offset, "MTF " + offset + " Position: (" + f2s(EntityX(npc\obj), 3) + ", " + f2s(EntityY(npc\obj), 3) + ", " + f2s(EntityZ(npc\obj), 3) + ")"
-					Text x - 50, 640 + 60 * offset, "MTF " + offset + " State: " + npc\state
-					Text x - 50, 620 + 60 * offset, "MTF " + offset + " LastSeen: " + npc\lastSeen
+					Text(x - 50, 600 + 60 * offset, "MTF " + offset + " Position: (" + f2s(EntityX(npc\obj), 3) + ", " + f2s(EntityY(npc\obj), 3) + ", " + f2s(EntityZ(npc\obj), 3) + ")")
+					Text(x - 50, 640 + 60 * offset, "MTF " + offset + " State: " + npc\state)
+					Text(x - 50, 620 + 60 * offset, "MTF " + offset + " LastSeen: " + npc\lastSeen)
 					offset = offset + 1
 				EndIf
 			Next
 
-			SetFont uiAssets\font[0]
+			SetFont(uiAssets\font[0])
 		EndIf
 
 	EndIf
 
 	If SelectedScreen <> Null Then
-		DrawImage SelectedScreen\img, userOptions\screenWidth/2-ImageWidth(SelectedScreen\img)/2,userOptions\screenHeight/2-ImageHeight(SelectedScreen\img)/2
+		DrawImage(SelectedScreen\img, userOptions\screenWidth/2-ImageWidth(SelectedScreen\img)/2,userOptions\screenHeight/2-ImageHeight(SelectedScreen\img)/2)
 	EndIf
 
 	;TODO: cleanup
@@ -1409,12 +1412,12 @@ Function DrawGUI()
 		If shouldDrawHUD Then
 			buttonObj% = GrabMesh("GFX/Map/Meshes/Button.b3d")
 			pvt% = CreatePivot()
-			PositionEntity pvt, EntityX(mainPlayer\closestButton,True),EntityY(mainPlayer\closestButton,True),EntityZ(mainPlayer\closestButton,True)
-			RotateEntity pvt, 0, EntityYaw(mainPlayer\closestButton,True)-180,0
-			MoveEntity pvt, 0,0,0.22
-			PositionEntity mainPlayer\head, EntityX(pvt),EntityY(pvt),EntityZ(pvt)
-			PointEntity mainPlayer\head, mainPlayer\closestButton
-			FreeEntity pvt
+			PositionEntity(pvt, EntityX(mainPlayer\closestButton,True),EntityY(mainPlayer\closestButton,True),EntityZ(mainPlayer\closestButton,True))
+			RotateEntity(pvt, 0, EntityYaw(mainPlayer\closestButton,True)-180,0)
+			MoveEntity(pvt, 0,0,0.22)
+			PositionEntity(mainPlayer\head, EntityX(pvt),EntityY(pvt),EntityZ(pvt))
+			PointEntity(mainPlayer\head, mainPlayer\closestButton)
+			FreeEntity(pvt)
 
 			CameraProject(mainPlayer\cam, EntityX(mainPlayer\closestButton,True),EntityY(mainPlayer\closestButton,True)+MeshHeight(buttonObj)*0.015,EntityZ(mainPlayer\closestButton,True))
 			projY# = ProjectedY()
@@ -1426,11 +1429,11 @@ Function DrawGUI()
 
 			DropAsset(buttonObj)
 
-			SetFont uiAssets\font[2]
+			SetFont(uiAssets\font[2])
 			If KeypadMSG = "" Then
-				Text userOptions\screenWidth/2, y+70*scale, "ACCESS CODE: ",True,True
-				SetFont uiAssets\font[3]
-				Text userOptions\screenWidth/2, y+124*scale, KeypadInput,True,True
+				Text(userOptions\screenWidth/2, y+70*scale, "ACCESS CODE: ",True,True)
+				SetFont(uiAssets\font[3])
+				Text(userOptions\screenWidth/2, y+124*scale, KeypadInput,True,True)
 			EndIf
 
 			ShowPointer2()
@@ -1450,7 +1453,7 @@ Function DrawPauseMenu()
 		x = userOptions\screenWidth / 2 - width / 2
 		y = userOptions\screenHeight / 2 - height / 2
 
-		DrawImage uiAssets\pauseMenuBG, x, y
+		DrawImage(uiAssets\pauseMenuBG, x, y)
 
 		Color(255, 255, 255)
 
@@ -1460,13 +1463,13 @@ Function DrawPauseMenu()
 		If mainPlayer\dead Then
 			titleText = "YOU DIED"
 		EndIf
-		SetFont uiAssets\font[1]
+		SetFont(uiAssets\font[1])
 		Text(x, y-(122-45)*MenuScale, titleText,False,True)
 
-		SetFont uiAssets\font[0]
-		Text x, y, "Difficulty: "+SelectedDifficulty\name
-		Text x, y+20*MenuScale, "Save: "+CurrSave
-		Text x, y+40*MenuScale, "Map seed: "+RandomSeed
+		SetFont(uiAssets\font[0])
+		Text(x, y, "Difficulty: "+SelectedDifficulty\name)
+		Text(x, y+20*MenuScale, "Save: "+CurrSave)
+		Text(x, y+40*MenuScale, "Map seed: "+RandomSeed)
 
 		y = y+10
 
@@ -1480,8 +1483,8 @@ Function DrawPauseMenu()
 					DrawUIButton(x, y, 390*MenuScale, 60*MenuScale, "Load Game")
 				Else
 					DrawFrame(x,y,390*MenuScale, 60*MenuScale)
-					Color (100, 100, 100)
-					SetFont uiAssets\font[1]
+					Color(100, 100, 100)
+					SetFont(uiAssets\font[1])
 					Text(x + (390*MenuScale) / 2, y + (60*MenuScale) / 2, "Load Game", True, True)
 				EndIf
 				y = y + 75*MenuScale
@@ -1497,21 +1500,21 @@ Function DrawPauseMenu()
 				DrawUIButton(x, y, 390*MenuScale, 60*MenuScale, "Load Game")
 			Else
 				DrawUIButton(x, y, 390*MenuScale, 60*MenuScale, "")
-				Color 50,50,50
+				Color(50,50,50)
 				Text(x + 185*MenuScale, y + 30*MenuScale, "Load Game", True, True)
 			EndIf
 			DrawUIButton(x, y + 80*MenuScale, 390*MenuScale, 60*MenuScale, "Quit to Menu")
 			y = y + 80*MenuScale
 		EndIf
 
-		SetFont uiAssets\font[0]
+		SetFont(uiAssets\font[0])
 		If mainPlayer\dead Then RowText(DeathMSG$, x, y + 80*MenuScale, 390*MenuScale, 600*MenuScale)
 		;EndIf
 
 		ShowPointer2()
 	EndIf
 
-	SetFont uiAssets\font[0]
+	SetFont(uiAssets\font[0])
 
 End Function
 
@@ -1553,9 +1556,9 @@ Function UpdatePauseMenu()
 						CurrGameState = GAMESTATE_PLAYING
 						LoadGame(SavePath + CurrSave + "/",True)
 
-						MoveMouse viewport_center_x,viewport_center_y
-						SetFont uiAssets\font[0]
-						HidePointer ()
+						MoveMouse(viewport_center_x,viewport_center_y)
+						SetFont(uiAssets\font[0])
+						HidePointer()
 
 						FlushKeys()
 						FlushMouse()
@@ -1580,7 +1583,7 @@ Function UpdatePauseMenu()
 
 						mainPlayer\dropSpeed=0
 
-						UpdateWorld 0.0
+						UpdateWorld(0.0)
 					EndIf
 				EndIf
 				y = y + 75*MenuScale
@@ -1605,9 +1608,9 @@ Function UpdatePauseMenu()
 					CurrGameState = GAMESTATE_PLAYING
 					LoadGame(SavePath + CurrSave + "/",True)
 
-					MoveMouse viewport_center_x,viewport_center_y
-					SetFont uiAssets\font[0]
-					HidePointer ()
+					MoveMouse(viewport_center_x,viewport_center_y)
+					SetFont(uiAssets\font[0])
+					HidePointer()
 
 					FlushKeys()
 					FlushMouse()
@@ -1632,7 +1635,7 @@ Function UpdatePauseMenu()
 
 					mainPlayer\dropSpeed=0
 
-					UpdateWorld 0.0
+					UpdateWorld(0.0)
 				EndIf
 			EndIf
 			If UpdateUIButton(x, y + 80*MenuScale, 390*MenuScale, 60*MenuScale, "Quit to Menu") Then
@@ -1646,7 +1649,7 @@ Function UpdatePauseMenu()
 		EndIf
 	EndIf
 
-	SetFont uiAssets\font[0]
+	SetFont(uiAssets\font[0])
 
 End Function
 
@@ -1665,13 +1668,13 @@ Function Animate2#(entity%, curr#, start%, quit%, speed#, loop%=True)
 
 		If loop Then
 			If newTime => quit Then
-				;SetAnimTime entity, start
+				;SetAnimTime(entity, start)
 				newTime = start
 			Else
-				;SetAnimTime entity, newTime
+				;SetAnimTime(entity, newTime)
 			EndIf
 		Else
-			;SetAnimTime entity, newTime
+			;SetAnimTime(entity, newTime)
 		EndIf
 	Else
 		If start < quit Then
@@ -1686,14 +1689,14 @@ Function Animate2#(entity%, curr#, start%, quit%, speed#, loop%=True)
 			If newTime < quit Then newTime = start
 			If newTime > start Then newTime = quit
 
-			;SetAnimTime entity, newTime
+			;SetAnimTime(entity, newTime)
 		Else
-			;SetAnimTime (entity, Max(Min(curr + speed * timing\tickDuration,start),quit))
+			;SetAnimTime(entity, Max(Min(curr + speed * timing\tickDuration,start),quit))
 			newTime = Max(Min(curr + speed * timing\tickDuration,start),quit)
 		EndIf
 	EndIf
 
-	SetAnimTime entity, newTime
+	SetAnimTime(entity, newTime)
 	Return newTime
 
 End Function
@@ -1702,7 +1705,7 @@ Function UpdateInfect()
 	Local temp#, i%, r.Rooms, tex%, de.Decals, p.Particles
 
 	If mainPlayer\infect008>0 Then
-		ShowEntity mainPlayer\overlays[OVERLAY_008]
+		ShowEntity(mainPlayer\overlays[OVERLAY_008])
 
 		If mainPlayer\infect008 < 93.0 Then
 			temp=mainPlayer\infect008
@@ -1713,11 +1716,11 @@ Function UpdateInfect()
 			;HeartBeatRate = Max(HeartBeatRate, 100)
 			mainPlayer\heartbeatIntensity = Max(100, mainPlayer\infect008/120.0)
 
-			EntityAlpha mainPlayer\overlays[OVERLAY_008], Min(((mainPlayer\infect008*0.2)^2)/1000.0,0.5) * (Sin(TimeInPosMilliSecs()/8.0)+2.0)
+			EntityAlpha(mainPlayer\overlays[OVERLAY_008], Min(((mainPlayer\infect008*0.2)^2)/1000.0,0.5) * (Sin(TimeInPosMilliSecs()/8.0)+2.0))
 
 			For i = 0 To 6
 				If mainPlayer\infect008>i*15+10 And temp =< i*15+10 Then
-					PlaySound2 LoadTempSound("SFX/SCP/008/Voices"+i+".ogg")
+					PlaySound2(LoadTempSound("SFX/SCP/008/Voices"+i+".ogg"))
 				EndIf
 			Next
 
@@ -1738,14 +1741,14 @@ Function UpdateInfect()
 				If mainPlayer\infect008 >= 92.7 And temp < 92.7 Then
 					For r.Rooms = Each Rooms
 						If r\roomTemplate\name="008" Then
-							PositionEntity mainPlayer\collider, EntityX(r\objects[7],True),EntityY(r\objects[7],True),EntityZ(r\objects[7],True),True
-							ResetEntity mainPlayer\collider
+							PositionEntity(mainPlayer\collider, EntityX(r\objects[7],True),EntityY(r\objects[7],True),EntityZ(r\objects[7],True),True)
+							ResetEntity(mainPlayer\collider)
 							r\npc[0] = CreateNPC(NPCtypeD, EntityX(r\objects[6],True),EntityY(r\objects[6],True)+0.2,EntityZ(r\objects[6],True))
 							r\npc[0]\sounds[0] = LoadSound("SFX/SCP/008/KillScientist1.ogg")
 							r\npc[0]\soundChannels[0] = PlaySound(r\npc[0]\sounds[0])
 							tex = LoadTexture("GFX/NPCs/classd/scientist2.jpg")
-							EntityTexture r\npc[0]\obj, tex
-							FreeTexture tex
+							EntityTexture(r\npc[0]\obj, tex)
+							FreeTexture(tex)
 							r\npc[0]\state=6
 							mainPlayer\currRoom = r
 							Exit
@@ -1758,12 +1761,12 @@ Function UpdateInfect()
 			mainPlayer\infect008 = Min(mainPlayer\infect008+timing\tickDuration*0.004,100)
 
 			If mainPlayer\infect008 < 94.7 Then
-				EntityAlpha mainPlayer\overlays[OVERLAY_008], 0.5 * (Sin(TimeInPosMilliSecs()/8.0)+2.0)
+				EntityAlpha(mainPlayer\overlays[OVERLAY_008], 0.5 * (Sin(TimeInPosMilliSecs()/8.0)+2.0))
 				mainPlayer\blurTimer = 900
 
 				If mainPlayer\infect008 > 94.5 Then mainPlayer\blinkTimer = Max(Min(-50*(mainPlayer\infect008-94.5),mainPlayer\blinkTimer),-10)
-				PointEntity mainPlayer\collider, mainPlayer\currRoom\npc[0]\collider
-				PointEntity mainPlayer\currRoom\npc[0]\collider, mainPlayer\collider
+				PointEntity(mainPlayer\collider, mainPlayer\currRoom\npc[0]\collider)
+				PointEntity(mainPlayer\currRoom\npc[0]\collider, mainPlayer\collider)
 				mainPlayer\forceMove = 0.4
 				mainPlayer\injuries = 2.5
 				mainPlayer\bloodloss = 0
@@ -1771,7 +1774,7 @@ Function UpdateInfect()
 				Animate2(mainPlayer\currRoom\npc[0]\obj, AnimTime(mainPlayer\currRoom\npc[0]\obj), 357, 381, 0.3)
 			ElseIf mainPlayer\infect008 < 98.5 Then
 
-				EntityAlpha mainPlayer\overlays[OVERLAY_008], 0.5 * (Sin(TimeInPosMilliSecs()/5.0)+2.0)
+				EntityAlpha(mainPlayer\overlays[OVERLAY_008], 0.5 * (Sin(TimeInPosMilliSecs()/5.0)+2.0))
 				mainPlayer\blurTimer = 950
 
 				If temp < 94.7 Then
@@ -1807,19 +1810,19 @@ Function UpdateInfect()
 					p\sizeChange = 0.01
 					p\a = 0.5
 					p\aChange = -0.01
-					RotateEntity p\pvt, Rnd(360),Rnd(360),0
+					RotateEntity(p\pvt, Rnd(360),Rnd(360),0)
 				EndIf
 
-				PositionEntity mainPlayer\head, EntityX(mainPlayer\currRoom\npc[0]\collider,True), EntityY(mainPlayer\currRoom\npc[0]\collider,True)+0.65,EntityZ(mainPlayer\currRoom\npc[0]\collider,True),True
-				RotateEntity mainPlayer\head, (1.0+Sin(TimeInPosMilliSecs()/5.0))*15, mainPlayer\currRoom\angle-180, 0, True
-				MoveEntity mainPlayer\head, 0,0,0.4
-				TurnEntity mainPlayer\head, 80+(Sin(TimeInPosMilliSecs()/5.0))*30,(Sin(TimeInPosMilliSecs()/5.0))*40,0
+				PositionEntity(mainPlayer\head, EntityX(mainPlayer\currRoom\npc[0]\collider,True), EntityY(mainPlayer\currRoom\npc[0]\collider,True)+0.65,EntityZ(mainPlayer\currRoom\npc[0]\collider,True),True)
+				RotateEntity(mainPlayer\head, (1.0+Sin(TimeInPosMilliSecs()/5.0))*15, mainPlayer\currRoom\angle-180, 0, True)
+				MoveEntity(mainPlayer\head, 0,0,0.4)
+				TurnEntity(mainPlayer\head, 80+(Sin(TimeInPosMilliSecs()/5.0))*30,(Sin(TimeInPosMilliSecs()/5.0))*40,0)
 			EndIf
 		EndIf
 
 
 	Else
-		HideEntity mainPlayer\overlays[OVERLAY_008]
+		HideEntity(mainPlayer\overlays[OVERLAY_008])
 	EndIf
 End Function
 
@@ -1894,7 +1897,7 @@ Function UpdateDecals()
 						d\timer= d\timer-timing\tickDuration
 					EndIf
 				;Case 6
-				;	EntityBlend d\obj, 2
+				;	EntityBlend(d\obj, 2)
 			End Select
 
 			If d\size >= d\maxSize Then
@@ -1921,7 +1924,7 @@ End Function
 
 Function Graphics3DExt%(width%,height%,depth%=32,mode%=2)
 	;If FE_InitExtFlag = 1 Then DeInitExt() ;prevent FastExt from breaking itself
-	Graphics3D width,height,depth,mode
+	Graphics3D(width,height,depth,mode)
 	InitFastResize()
 	;InitExt()
 End Function
@@ -1945,22 +1948,22 @@ Function RenderWorld2()
 	Local k%, l%, decayMultiplier# = 1.0, temp%, temp2%, dist#, yawvalue#, xvalue#
 	Local np.NPCs
 
-	CameraProjMode ark_blur_cam,0
-	CameraProjMode mainPlayer\cam,1
+	CameraProjMode(ark_blur_cam,0)
+	CameraProjMode(mainPlayer\cam,1)
 
 	;TODO: fix
 	;If WearingNightVision>0 And WearingNightVision<3 Then
-	;	AmbientLight Min(Brightness*2,255), Min(Brightness*2,255), Min(Brightness*2,255)
+	;	AmbientLight(Min(Brightness*2,255), Min(Brightness*2,255), Min(Brightness*2,255))
 	;ElseIf WearingNightVision=3
-	;	AmbientLight 255,255,255
+	;	AmbientLight(255,255,255)
 	;ElseIf mainPlayer\currRoom<>Null
 	;	If (mainPlayer\currRoom\roomTemplate\name<>"173") And (mainPlayer/currRoom\roomTemplate\name<>"exit1") And (mainPlayer/currRoom\roomTemplate/Name<>"gatea") Then
-	;		AmbientLight Brightness, Brightness, Brightness
+	;		AmbientLight(Brightness, Brightness, Brightness)
 	;	EndIf
 	;EndIf
 
 	;IsNVGBlinking% = False
-	;HideEntity NVBlink
+	;HideEntity(NVBlink)
 
 	Local hasBattery% = 2
 	Local power% = 0
@@ -1995,7 +1998,7 @@ Function RenderWorld2()
 
 	;If hasBattery=0 And WearingNightVision<>3
 	;	;IsNVGBlinking% = True
-	;	ShowEntity NVBlink%
+	;	ShowEntity(NVBlink%)
 	;EndIf
 
 	If mainPlayer\blinkTimer < - 16 Or mainPlayer\blinkTimer > - 6 Then
@@ -2009,33 +2012,33 @@ Function RenderWorld2()
 				np\nvZ = EntityZ(np\collider,True)
 			Next
 			;IsNVGBlinking% = True
-			;	ShowEntity NVBlink%
+			;	ShowEntity(NVBlink%)
 			;	If NVTimer<=-10 Then
 			;		NVTimer = 600.0
 			;	EndIf
 			;EndIf
 
-			Color 255,255,255
+			Color(255,255,255)
 
-			SetFont uiAssets\font[2]
+			SetFont(uiAssets\font[2])
 
-			Text userOptions\screenWidth/2,20*MenuScale,"REFRESHING DATA IN",True,False
+			Text(userOptions\screenWidth/2,20*MenuScale,"REFRESHING DATA IN",True,False)
 
-			;Text userOptions\screenWidth/2,60*MenuScale,Max(f2s(NVTimer/60.0,1),0.0),True,False
-			Text userOptions\screenWidth/2,100*MenuScale,"SECONDS",True,False
+			;Text(userOptions\screenWidth/2,60*MenuScale,Max(f2s(NVTimer/60.0,1),0.0),True,False)
+			Text(userOptions\screenWidth/2,100*MenuScale,"SECONDS",True,False)
 
 			temp% = CreatePivot()
 			temp2% = CreatePivot()
-			PositionEntity temp, EntityX(mainPlayer\collider), EntityY(mainPlayer\collider), EntityZ(mainPlayer\collider)
+			PositionEntity(temp, EntityX(mainPlayer\collider), EntityY(mainPlayer\collider), EntityZ(mainPlayer\collider))
 
-			Color 255,255,255;*(NVTimer/600.0)
+			Color(255,255,255);*(NVTimer/600.0))
 
 			For np.NPCs = Each NPCs
 				If np\nvName<>"" Then ;don't waste your time if the string is empty
-					PositionEntity temp2,np\nvX,np\nvY,np\nvZ
+					PositionEntity(temp2,np\nvX,np\nvY,np\nvZ)
 					dist# = EntityDistance(temp2,mainPlayer\collider)
 					If dist<23.5 Then ;don't draw text if the NPC is too far away
-						PointEntity temp, temp2
+						PointEntity(temp, temp2)
 						yawvalue# = WrapAngle(EntityYaw(mainPlayer\cam) - EntityYaw(temp))
 						xvalue# = 0.0
 						If yawvalue > 90 And yawvalue <= 180 Then
@@ -2057,52 +2060,52 @@ Function RenderWorld2()
 						EndIf
 
 						;If (Not IsNVGBlinking%) Then
-						Text userOptions\screenWidth / 2 + xvalue * (userOptions\screenWidth / 2),userOptions\screenHeight / 2 - yvalue * (userOptions\screenHeight / 2),np\nvName,True,True
-						Text userOptions\screenWidth / 2 + xvalue * (userOptions\screenWidth / 2),userOptions\screenHeight / 2 - yvalue * (userOptions\screenHeight / 2) + 30.0 * MenuScale,f2s(dist,1)+" m",True,True
+						Text(userOptions\screenWidth / 2 + xvalue * (userOptions\screenWidth / 2),userOptions\screenHeight / 2 - yvalue * (userOptions\screenHeight / 2),np\nvName,True,True)
+						Text(userOptions\screenWidth / 2 + xvalue * (userOptions\screenWidth / 2),userOptions\screenHeight / 2 - yvalue * (userOptions\screenHeight / 2) + 30.0 * MenuScale,f2s(dist,1)+" m",True,True)
 						;EndIf
 					EndIf
 				EndIf
 			Next
 
-			FreeEntity (temp) : FreeEntity (temp2)
+			FreeEntity(temp) : FreeEntity (temp2)
 
-			Color 0,0,55
+			Color(0,0,55)
 			For k=0 To 10
-				Rect 45,userOptions\screenHeight*0.5-(k*20),54,10,True
+				Rect(45,userOptions\screenHeight*0.5-(k*20),54,10,True)
 			Next
-			Color 0,0,255
+			Color(0,0,255)
 			For l=0 To Floor((power%+50)*0.01)
-				Rect 45,userOptions\screenHeight*0.5-(l*20),54,10,True
+				Rect(45,userOptions\screenHeight*0.5-(l*20),54,10,True)
 			Next
-			;DrawImage NVGImages,40,userOptions\screenHeight*0.5+30,1
+			;DrawImage(NVGImages,40,userOptions\screenHeight*0.5+30,1)
 
-			Color 255,255,255
+			Color(255,255,255)
 		ElseIf IsPlayerWearingTempName(mainPlayer,"nvgoggles") And hasBattery<>0 Then
-			Color 0,55,0
+			Color(0,55,0)
 			For k=0 To 10
-				Rect 45,userOptions\screenHeight*0.5-(k*20),54,10,True
+				Rect(45,userOptions\screenHeight*0.5-(k*20),54,10,True)
 			Next
-			Color 0,255,0
+			Color(0,255,0)
 			For l=0 To Floor((power%+50)*0.01)
-				Rect 45,userOptions\screenHeight*0.5-(l*20),54,10,True
+				Rect(45,userOptions\screenHeight*0.5-(l*20),54,10,True)
 			Next
-			;DrawImage NVGImages,40,userOptions\screenHeight*0.5+30,0
+			;DrawImage(NVGImages,40,userOptions\screenHeight*0.5+30,0)
 		EndIf
 	EndIf
 
 	;render sprites
-	CameraProjMode ark_blur_cam,2
-	CameraProjMode mainPlayer\cam,0
+	CameraProjMode(ark_blur_cam,2)
+	CameraProjMode(mainPlayer\cam,0)
 	RenderWorld()
-	CameraProjMode ark_blur_cam,0
+	CameraProjMode(ark_blur_cam,0)
 
 	If mainPlayer\blinkTimer < - 16 Or mainPlayer\blinkTimer > - 6 Then
 		If (wornItem<>Null) And (hasBattery=1) And ((TimeInPosMilliSecs() Mod 800) < 400) Then
-			Color 255,0,0
-			SetFont uiAssets\font[2]
+			Color(255,0,0)
+			SetFont(uiAssets\font[2])
 
-			Text userOptions\screenWidth/2,20*MenuScale,"WARNING: LOW BATTERY",True,False
-			Color 255,255,255
+			Text(userOptions\screenWidth/2,20*MenuScale,"WARNING: LOW BATTERY",True,False)
+			Color(255,255,255)
 		EndIf
 	EndIf
 End Function
@@ -2131,9 +2134,9 @@ End Function
 ;	For snd.Sound = Each Sound
 ;		For i=0 To 31
 ;			;If snd\channels[i]<>0 Then
-;			;	ChannelVolume snd\channels[i],userOptions\soundVolume#
+;			;	ChannelVolume(snd\channels[i],userOptions\soundVolume#)
 ;			;Else
-;				ChannelVolume snd\channels[i],userOptions\soundVolume#
+;				ChannelVolume(snd\channels[i],userOptions\soundVolume#)
 ;			;EndIf
 ;		Next
 ;	Next
@@ -2149,12 +2152,12 @@ Function CheckTriggers$()
 		Return ""
 	Else
 		For i = 0 To mainPlayer\currRoom\triggerboxAmount-1
-			EntityAlpha mainPlayer\currRoom\triggerbox[i],1.0
+			EntityAlpha(mainPlayer\currRoom\triggerbox[i],1.0)
 			sx# = EntityScaleX(mainPlayer\currRoom\triggerbox[i], 1)
 			sy# = Max(EntityScaleY(mainPlayer\currRoom\triggerbox[i], 1), 0.001)
 			sz# = EntityScaleZ(mainPlayer\currRoom\triggerbox[i], 1)
 			GetMeshExtents(mainPlayer\currRoom\triggerbox[i])
-			EntityAlpha mainPlayer\currRoom\triggerbox[i],0.0
+			EntityAlpha(mainPlayer\currRoom\triggerbox[i],0.0)
 			If EntityX(mainPlayer\collider)>((sx#*Mesh_MinX)+mainPlayer\currRoom\x) And EntityX(mainPlayer\collider)<((sx#*Mesh_MaxX)+mainPlayer\currRoom\x) Then
 				If EntityY(mainPlayer\collider)>((sy#*Mesh_MinY)+mainPlayer\currRoom\y) And EntityY(mainPlayer\collider)<((sy#*Mesh_MaxY)+mainPlayer\currRoom\y) Then
 					If EntityZ(mainPlayer\collider)>((sz#*Mesh_MinZ)+mainPlayer\currRoom\z) And EntityZ(mainPlayer\collider)<((sz#*Mesh_MaxZ)+mainPlayer\currRoom\z) Then

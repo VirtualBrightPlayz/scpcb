@@ -26,7 +26,7 @@ Function UpdateEventTunnel106(e.Events)
 			d\size = Rnd(0.5, 0.7) : EntityAlpha(d\obj, 0.7) : d\id = 1 : ScaleSprite(d\obj, d\size, d\size)
 			EntityAlpha(d\obj, Rnd(0.7, 0.85))
 
-			;PlaySound2 HorrorSFX(10)
+			;PlaySound2(HorrorSFX(10))
 		ElseIf e\room\dist > 8.0 Then
 			If Rand(5) = 1 Then
 				Curr106\idle = False
@@ -84,7 +84,7 @@ Function UpdateEvent682roar(e.Events)
 			If e\eventState > 17*70 - 3*70 Then mainPlayer\camShake = 0.5
 			If e\eventState < 17*70 - 7.5*70 And e\eventState > 17*70 - 11*70 Then mainPlayer\camShake = 2.0
 			If e\eventState < 70 Then
-				If e\sounds[0]<>0 Then FreeSound (e\sounds[0])
+				If e\sounds[0]<>0 Then FreeSound(e\sounds[0])
 				RemoveEvent(e)
 			EndIf
 		EndIf

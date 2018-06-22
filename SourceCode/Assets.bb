@@ -149,14 +149,14 @@ Function InitializeUIAssets()
 	uiAssets\scp173 = LoadImage("GFX/menu/173back.jpg")
 	uiAssets\tileWhite = LoadImage("GFX/menu/menuwhite.jpg")
 	uiAssets\tileBlack = LoadImage("GFX/menu/menublack.jpg")
-	MaskImage uiAssets\tileBlack, 255,255,0
+	MaskImage(uiAssets\tileBlack, 255,255,0)
 
 	ResizeImage(uiAssets\back, ImageWidth(uiAssets\back) * MenuScale, ImageHeight(uiAssets\back) * MenuScale)
 	ResizeImage(uiAssets\scpText, ImageWidth(uiAssets\scpText) * MenuScale, ImageHeight(uiAssets\scpText) * MenuScale)
 	ResizeImage(uiAssets\scp173, ImageWidth(uiAssets\scp173) * MenuScale, ImageHeight(uiAssets\scp173) * MenuScale)
 
 	uiAssets\pauseMenuBG = LoadImage("GFX/menu/pausemenu.jpg")
-	MaskImage uiAssets\pauseMenuBG, 255,255,0
+	MaskImage(uiAssets\pauseMenuBG, 255,255,0)
 	ScaleImage(uiAssets\pauseMenuBG, MenuScale, MenuScale)
 
 	uiAssets\cursorIMG = LoadImage("GFX/cursor.png")
@@ -237,17 +237,17 @@ Function LoadEntities()
 	;TextureLodBias
 
 	AmbientLightRoomTex% = CreateTexture(2,2,257)
-	TextureBlend AmbientLightRoomTex,5
+	TextureBlend(AmbientLightRoomTex,5)
 	SetBuffer(TextureBuffer(AmbientLightRoomTex))
-	ClsColor 0,0,0
-	Cls
-	SetBuffer BackBuffer()
+	ClsColor(0,0,0)
+	Cls()
+	SetBuffer(BackBuffer())
 	AmbientLightRoomVal = 0
 
 	SoundEmitter = CreatePivot()
 
 	CreateBlurImage()
-	CameraProjMode ark_blur_cam,0
+	CameraProjMode(ark_blur_cam,0)
 
 	mainPlayer = CreatePlayer()
 
@@ -298,7 +298,7 @@ Function LoadEntities()
 	DrawLoading(25)
 
 	Monitor = LoadMesh("GFX/Map/monitor.b3d")
-	HideEntity Monitor
+	HideEntity(Monitor)
 	MonitorTexture = LoadTexture("GFX/General/monitortexture.jpg")
 
 	CamBaseOBJ = LoadMesh("GFX/Map/cambase.x")
@@ -373,7 +373,7 @@ Function InitNewGame()
 	Next
 
 	For it.Items = Each Items
-		EntityType (it\collider, HIT_ITEM)
+		EntityType(it\collider, HIT_ITEM)
 		EntityParent(it\collider, 0)
 	Next
 
@@ -403,12 +403,12 @@ Function InitNewGame()
 		EndIf
 
 		If (r\roomTemplate\name = "cont_173_1" And (userOptions\introEnabled = False)) Then
-			PositionEntity (mainPlayer\collider, EntityX(r\obj)+3584*RoomScale, 714*RoomScale, EntityZ(r\obj)+1024*RoomScale)
-			ResetEntity mainPlayer\collider
+			PositionEntity(mainPlayer\collider, EntityX(r\obj)+3584*RoomScale, 714*RoomScale, EntityZ(r\obj)+1024*RoomScale)
+			ResetEntity(mainPlayer\collider)
 			mainPlayer\currRoom = r
 		ElseIf (r\roomTemplate\name = "intro" And userOptions\introEnabled) Then
-			PositionEntity (mainPlayer\collider, EntityX(r\obj), 1.0, EntityZ(r\obj))
-			ResetEntity mainPlayer\collider
+			PositionEntity(mainPlayer\collider, EntityX(r\obj), 1.0, EntityZ(r\obj))
+			ResetEntity(mainPlayer\collider)
 			mainPlayer\currRoom = r
 		EndIf
 
@@ -418,13 +418,13 @@ Function InitNewGame()
 	For rt.RoomTemplates = Each RoomTemplates
 		If rt\collisionObjs<>Null Then
 			For i% = 0 To rt\collisionObjs\size-1
-				FreeEntity GetIntArrayListElem(rt\collisionObjs,i)
+				FreeEntity(GetIntArrayListElem(rt\collisionObjs,i))
 			Next
 			DeleteIntArrayList(rt\collisionObjs) : rt\collisionObjs = Null
 		EndIf
 
-		FreeEntity rt\opaqueMesh
-		If rt\alphaMesh<>0 Then FreeEntity rt\alphaMesh
+		FreeEntity(rt\opaqueMesh)
+		If rt\alphaMesh<>0 Then FreeEntity(rt\alphaMesh)
 		
 		If rt\props<>Null Then
 			For i% = 0 To rt\props\size-1
@@ -443,7 +443,7 @@ Function InitNewGame()
 
 	TurnEntity(mainPlayer\collider, 0, Rand(160, 200), 0)
 
-	ResetEntity mainPlayer\collider
+	ResetEntity(mainPlayer\collider)
 
 	If SelectedMap = "" Then InitEvents()
 
@@ -451,21 +451,21 @@ Function InitNewGame()
 ;	For e.Events = Each Events
 ;		If e\name = "room2nuke"
 ;			e\eventState = 1
-;			DebugLog "room2nuke"
+;			DebugLog("room2nuke")
 ;		EndIf
 ;		If e\name = "room106"
 ;			e\eventState2 = 1
-;			DebugLog "room106"
+;			DebugLog("room106")
 ;		EndIf
 ;		If e\name = "room2sl"
 ;			e\eventState3 = 1
-;			DebugLog "room2sl"
+;			DebugLog("room2sl")
 ;		EndIf
 ;	Next
 
-	MoveMouse viewport_center_x,viewport_center_y;320, 240
+	MoveMouse(viewport_center_x,viewport_center_y);320, 240)
 
-	SetFont uiAssets\font[0]
+	SetFont(uiAssets\font[0])
 
 	HidePointer()
 
@@ -480,17 +480,17 @@ Function InitNewGame()
 		UpdateDoors()
 		UpdateNPCs()
 		UpdateWorld()
-		;Cls
+		;Cls()
 		If (Int(Float(i)*0.27)<>Int(Float(i-1)*0.27)) Then
 			DrawLoading(80+Int(Float(i)*0.27))
 		EndIf
 	Next
 
-	FreeTextureCache
+	FreeTextureCache()
 	DrawLoading(100)
 
-	FlushKeys
-	FlushMouse
+	FlushKeys()
+	FlushMouse()
 
 	mainPlayer\dropSpeed = 0
 End Function
@@ -514,17 +514,17 @@ Function InitLoadGame()
 		EntityParent(sc\obj, 0)
 	Next
 
-	ResetEntity mainPlayer\collider
+	ResetEntity(mainPlayer\collider)
 
 	;InitEvents()
 
 	DrawLoading(90)
 
-	MoveMouse viewport_center_x,viewport_center_y
+	MoveMouse(viewport_center_x,viewport_center_y)
 
-	SetFont uiAssets\font[0]
+	SetFont(uiAssets\font[0])
 
-	HidePointer ()
+	HidePointer()
 
 	mainPlayer\blinkTimer = mainPlayer\blinkFreq
 	mainPlayer\stamina = 100
@@ -533,13 +533,13 @@ Function InitLoadGame()
 	For rt.RoomTemplates = Each RoomTemplates
 		If rt\collisionObjs<>Null Then
 			For i% = 0 To rt\collisionObjs\size-1
-				FreeEntity GetIntArrayListElem(rt\collisionObjs,i)
+				FreeEntity(GetIntArrayListElem(rt\collisionObjs,i))
 			Next
 			DeleteIntArrayList(rt\collisionObjs) : rt\collisionObjs = Null
 		EndIf
 
-		FreeEntity rt\opaqueMesh
-		If rt\alphaMesh<>0 Then FreeEntity rt\alphaMesh
+		FreeEntity(rt\opaqueMesh)
+		If rt\alphaMesh<>0 Then FreeEntity(rt\alphaMesh)
 		
 		If rt\props<>Null Then
 			For i% = 0 To rt\props\size-1
@@ -562,17 +562,17 @@ Function InitLoadGame()
 				DrawLoading(91)
 				e\room\objects[0] = CreatePlane()
 				planetex% = LoadTexture("GFX/Map/Rooms/dimension1499/grit3.jpg")
-				EntityTexture e\room\objects[0],planetex%
-				FreeTexture planetex%
-				PositionEntity e\room\objects[0],0,EntityY(e\room\obj),0
-				EntityType e\room\objects[0],HIT_MAP
-				;EntityParent e\room\objects[0],e\room\obj
+				EntityTexture(e\room\objects[0],planetex%)
+				FreeTexture(planetex%)
+				PositionEntity(e\room\objects[0],0,EntityY(e\room\obj),0)
+				EntityType(e\room\objects[0],HIT_MAP)
+				;EntityParent(e\room\objects[0],e\room\obj)
 				DrawLoading(92)
 				NTF_1499Sky = sky_CreateSky("GFX/Map/sky/1499sky")
 				DrawLoading(93)
 				For i = 1 To 15
 					e\room\objects[i] = LoadMesh("GFX/Map/Rooms/dimension1499/1499object"+i+".b3d")
-					HideEntity e\room\objects[i]
+					HideEntity(e\room\objects[i])
 				Next
 				DrawLoading(96)
 				CreateChunkParts(e\room)
@@ -585,10 +585,10 @@ Function InitLoadGame()
 				;If Music(18)=0 Then Music(18) = LoadSound("SFX/Music/1499.ogg") ;TODO: fix
 				DrawLoading(98)
 				UpdateChunks(e\room,15,False)
-				;MoveEntity mainPlayer\collider,0,10,0
-				;ResetEntity mainPlayer\collider
+				;MoveEntity(mainPlayer\collider,0,10,0)
+				;ResetEntity(mainPlayer\collider)
 
-				DebugLog "Loaded dimension1499 successful"
+				DebugLog("Loaded dimension1499 successful")
 
 				Exit
 				;[End Block]
@@ -596,7 +596,7 @@ Function InitLoadGame()
 		EndIf
 	Next
 
-	FreeTextureCache
+	FreeTextureCache()
 
 	DrawLoading(100)
 End Function
@@ -636,7 +636,10 @@ Function NullGame()
 	Next
 
 	For s.Screens = Each Screens
-		If s\img <> 0 Then FreeImage s\img : s\img = 0
+		If s\img <> 0 Then
+			FreeImage(s\img)
+			s\img = 0
+		EndIf
 		Delete s
 	Next
 
@@ -717,8 +720,8 @@ Function NullGame()
 
 	Local e.Events
 	For e.Events = Each Events
-		If e\sounds[0]<>0 Then FreeSound e\sounds[0]
-		If e\sounds[1]<>0 Then FreeSound e\sounds[1]
+		If e\sounds[0]<>0 Then FreeSound(e\sounds[0])
+		If e\sounds[1]<>0 Then FreeSound(e\sounds[1])
 		Delete e
 	Next
 
@@ -761,7 +764,7 @@ Function NullGame()
 
 	;DeInitExt
 
-	ClearWorld
+	ClearWorld()
 	ark_blur_cam = 0
 	InitFastResize()
 

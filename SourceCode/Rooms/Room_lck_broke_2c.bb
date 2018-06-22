@@ -18,7 +18,7 @@ Function FillRoom_lck_broke_2c(r.Rooms)
     d2\timer = 70 * 5 : d2\autoClose = False: d2\open = False : d2\locked = True
     EntityParent(d2\buttons[0], 0)
     PositionEntity(d2\buttons[0], r\x + 640.0 * RoomScale, 0.7, r\z + 288.0 * RoomScale)
-    RotateEntity (d2\buttons[0], 0, 90, 0)
+    RotateEntity(d2\buttons[0], 0, 90, 0)
     EntityParent(d2\buttons[0], r\obj)
 
     FreeEntity(d2\buttons[1]) : d2\buttons[1] = 0
@@ -29,13 +29,13 @@ Function FillRoom_lck_broke_2c(r.Rooms)
     Local scale# = RoomScale * 4.5 * 0.4
 
     r\objects[0] = CopyEntity(Monitor)
-    ScaleEntity r\objects[0],scale#,scale#,scale#
-    PositionEntity r\objects[0],r\x+668*RoomScale,1.1,r\z-96.0*RoomScale,True
-    RotateEntity r\objects[0],0,90,0
-    EntityParent r\objects[0],r\obj
+    ScaleEntity(r\objects[0],scale#,scale#,scale#)
+    PositionEntity(r\objects[0],r\x+668*RoomScale,1.1,r\z-96.0*RoomScale,True)
+    RotateEntity(r\objects[0],0,90,0)
+    EntityParent(r\objects[0],r\obj)
 
     r\objects[1] = CopyEntity(Monitor)
-    ScaleEntity r\objects[1],scale#,scale#,scale#
-    PositionEntity r\objects[1],r\x+96.0*RoomScale,1.1,r\z-668.0*RoomScale,True
-    EntityParent r\objects[1],r\obj
+    ScaleEntity(r\objects[1],scale#,scale#,scale#)
+    PositionEntity(r\objects[1],r\x+96.0*RoomScale,1.1,r\z-668.0*RoomScale,True)
+    EntityParent(r\objects[1],r\obj)
 End Function

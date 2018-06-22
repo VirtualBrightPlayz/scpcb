@@ -39,11 +39,11 @@ Function UpdateEvent106sinkhole(e.Events)
 				x = CurveValue(EntityX(e\room\obj),EntityX(mainPlayer\collider),10.0)
 				y = CurveValue(EntityY(e\room\obj)-e\eventState2,EntityY(mainPlayer\collider),25.0)
 				z = CurveValue(EntityZ(e\room\obj),EntityZ(mainPlayer\collider),10.0)
-				PositionEntity mainPlayer\collider, x, y, z, True
+				PositionEntity(mainPlayer\collider, x, y, z, True)
 
 				mainPlayer\dropSpeed = 0
 
-				ResetEntity mainPlayer\collider
+				ResetEntity(mainPlayer\collider)
 
 				e\eventState2=Min(e\eventState2+timing\tickDuration/200.0,2.0)
 

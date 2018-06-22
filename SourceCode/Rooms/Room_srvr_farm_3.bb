@@ -29,10 +29,10 @@ Function FillRoom_srvr_farm_3(r.Rooms)
     r\objects[3] = LoadMesh("GFX/npcs/duck_low_res.b3d")
     ScaleEntity(r\objects[3], 0.07, 0.07, 0.07)
     Local tex% = LoadTexture("GFX/npcs/duck2.png")
-    EntityTexture r\objects[3], tex
-    PositionEntity (r\objects[3], r\x + 928.0 * RoomScale, -640*RoomScale, r\z + 704.0 * RoomScale)
+    EntityTexture(r\objects[3], tex)
+    PositionEntity(r\objects[3], r\x + 928.0 * RoomScale, -640*RoomScale, r\z + 704.0 * RoomScale)
 
-    EntityParent r\objects[3], r\obj
+    EntityParent(r\objects[3], r\obj)
 End Function
 
 
@@ -52,15 +52,15 @@ Function UpdateEvent_srvr_farm_3(e.Events)
 		If e\eventState3=0 And Curr173\idle = 0 Then
 			If mainPlayer\blinkTimer < -10 Then
 				temp = Rand(0,2)
-				PositionEntity Curr173\collider, EntityX(e\room\objects[temp],True),EntityY(e\room\objects[temp],True),EntityZ(e\room\objects[temp],True)
-				ResetEntity Curr173\collider
+				PositionEntity(Curr173\collider, EntityX(e\room\objects[temp],True),EntityY(e\room\objects[temp],True),EntityZ(e\room\objects[temp],True))
+				ResetEntity(Curr173\collider)
 				e\eventState3=1
 			EndIf
 		EndIf
 
 		If e\room\objects[3]>0 Then
 			If mainPlayer\blinkTimer<-8 And mainPlayer\blinkTimer >-12 Then
-				PointEntity e\room\objects[3], mainPlayer\cam
+				PointEntity(e\room\objects[3], mainPlayer\cam)
 				RotateEntity(e\room\objects[3], 0, EntityYaw(e\room\objects[3],True),0, True)
 			EndIf
 			If e\eventState2 = 0 Then
@@ -73,7 +73,7 @@ Function UpdateEvent_srvr_farm_3(e.Events)
 				If Rand(1200)=1 Then e\eventState2 = 0
 			EndIf
 
-			PositionEntity e\room\objects[3], EntityX(e\room\objects[3],True), (-608.0*RoomScale)+0.05+Sin(e\eventState+270)*0.05, EntityZ(e\room\objects[3],True), True
+			PositionEntity(e\room\objects[3], EntityX(e\room\objects[3],True), (-608.0*RoomScale)+0.05+Sin(e\eventState+270)*0.05, EntityZ(e\room\objects[3],True), True)
 		EndIf
 	EndIf
 	;[End Block]

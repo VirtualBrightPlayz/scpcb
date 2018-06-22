@@ -32,9 +32,9 @@ Function FillRoom_closets_2(r.Rooms)
     HideEntity(it\collider)
 
     r\objects[0]=CreatePivot(r\obj)
-    PositionEntity r\objects[0], r\x-1120*RoomScale, -256*RoomScale, r\z+896*RoomScale, True
+    PositionEntity(r\objects[0], r\x-1120*RoomScale, -256*RoomScale, r\z+896*RoomScale, True)
     r\objects[1]=CreatePivot(r\obj)
-    PositionEntity r\objects[1], r\x-1232*RoomScale, -256*RoomScale, r\z-160*RoomScale, True
+    PositionEntity(r\objects[1], r\x-1232*RoomScale, -256*RoomScale, r\z-160*RoomScale, True)
 
     d.Doors = CreateDoor(0, r\x - 240.0 * RoomScale, 0.0, r\z, 90, r, False)
     d\open = False : d\autoClose = False
@@ -70,8 +70,8 @@ Function UpdateEvent_closets_2(e.Events)
 			e\room\npc[0]\texture = "GFX/NPCs/classd/janitor.jpg"
 			tex% = LoadTexture(e\room\npc[0]\texture)
 
-			EntityTexture e\room\npc[0]\obj, tex
-			FreeTexture tex
+			EntityTexture(e\room\npc[0]\obj, tex)
+			FreeTexture(tex)
 
 			e\room\npc[0]\sounds[0] = LoadSound("SFX/Room/Storeroom/Escape1.ogg")
 
@@ -82,14 +82,14 @@ Function UpdateEvent_closets_2(e.Events)
 			EndIf
 			e\room\npc[1]\texture = "GFX/NPCs/classd/scientist.jpg"
 			tex = LoadTexture(e\room\npc[1]\texture)
-			EntityTexture e\room\npc[1]\obj, tex
+			EntityTexture(e\room\npc[1]\obj, tex)
 
-			FreeTexture tex
+			FreeTexture(tex)
 
 			e\room\npc[1]\sounds[0] = LoadSound("SFX/Room/Storeroom/Escape2.ogg")
 
-			PointEntity e\room\npc[0]\collider, e\room\npc[1]\collider
-			PointEntity e\room\npc[1]\collider, e\room\npc[0]\collider
+			PointEntity(e\room\npc[0]\collider, e\room\npc[1]\collider)
+			PointEntity(e\room\npc[1]\collider, e\room\npc[0]\collider)
 
 			e\loaded = True
 			e\eventState=1
@@ -108,11 +108,11 @@ Function UpdateEvent_closets_2(e.Events)
 			EndIf
 
 			If e\eventState > 70*4.5 Then
-				PointEntity e\room\npc[0]\obj, e\room\obj
+				PointEntity(e\room\npc[0]\obj, e\room\obj)
 				RotateEntity(e\room\npc[0]\collider,0,CurveAngle(EntityYaw(e\room\npc[0]\obj),EntityYaw(e\room\npc[0]\collider),30.0),0,True)
 			EndIf
-			PointEntity e\room\npc[1]\obj, e\room\obj
-			TurnEntity e\room\npc[1]\obj, 0, Sin(e\eventState)*25, 0
+			PointEntity(e\room\npc[1]\obj, e\room\obj)
+			TurnEntity(e\room\npc[1]\obj, 0, Sin(e\eventState)*25, 0)
 			RotateEntity(e\room\npc[1]\collider,0,CurveAngle(EntityYaw(e\room\npc[1]\obj),EntityYaw(e\room\npc[1]\collider),30.0),0,True)
 		Else
 			If e\eventState-timing\tickDuration < 70*6.5 Then
@@ -123,17 +123,17 @@ Function UpdateEvent_closets_2(e.Events)
 				;TODO: fix
 				;If e\eventState > 70*7.5 And e\eventState-timing\tickDuration =< 70*7.5 Then PlayRangedSound(NeckSnapSFX(0),mainPlayer\cam,e\room\npc[0]\collider,8.0)
 				;If e\eventState > 70*8.0 And e\eventState-timing\tickDuration =< 70*8.0 Then PlayRangedSound(NeckSnapSFX(1),mainPlayer\cam,e\room\npc[1]\collider,8.0)
-				SetNPCFrame e\room\npc[0], 60
+				SetNPCFrame(e\room\npc[0], 60)
 				e\room\npc[0]\state=8
 
-				SetNPCFrame e\room\npc[1], 19
+				SetNPCFrame(e\room\npc[1], 19)
 				e\room\npc[1]\state = 6
 			EndIf
 
 			If e\eventState > 70*8.5 Then
-				PositionEntity Curr173\collider, (EntityX(e\room\objects[0],True)+EntityX(e\room\objects[1],True))/2,EntityY(e\room\objects[0],True),(EntityZ(e\room\objects[0],True)+EntityZ(e\room\objects[1],True))/2
-				PointEntity Curr173\collider, mainPlayer\collider
-				ResetEntity Curr173\collider
+				PositionEntity(Curr173\collider, (EntityX(e\room\objects[0],True)+EntityX(e\room\objects[1],True))/2,EntityY(e\room\objects[0],True),(EntityZ(e\room\objects[0],True)+EntityZ(e\room\objects[1],True))/2)
+				PointEntity(Curr173\collider, mainPlayer\collider)
+				ResetEntity(Curr173\collider)
 				RemoveEvent(e)
 			EndIf
 		EndIf

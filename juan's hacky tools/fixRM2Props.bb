@@ -219,7 +219,7 @@ Function FixRM2Props(fullFilename$)
 				;triangles
 				count = ReadShort(file) : WriteShort(writer,count)
 				If Instr(fullFilename,"_sl_")>0 Then
-					DebugLog "HYPE "+count
+					DebugLog("HYPE "+count)
 				EndIf
 				
 				For i%=0 To count-1
@@ -306,7 +306,7 @@ Function FixRM2Props(fullFilename$)
 				WriteFloat(writer,ReadFloat(file))
 				;[End Block]
 			Default
-				RuntimeError "Error after reading type "+prevType
+				RuntimeError("Error after reading type "+prevType)
 		End Select
 	Wend
 	
@@ -321,7 +321,7 @@ Function LoadRoomTemplates(file$)
 		If (Left(ln,1)="[") And (Instr(ln,"room amb")=0) Then
 			ln = Mid(ln, 2, Len(ln) - 2)
 			meshpath$ = GetINIString(file,ln,"meshpath")
-			DebugLog "FIXING: "+meshpath
+			DebugLog("FIXING: "+meshpath)
 			FixRM2Props(meshpath)
 			DeleteFile(meshpath)
 			CopyFile("temp.rm2",meshpath)
@@ -330,7 +330,7 @@ Function LoadRoomTemplates(file$)
 	Wend
 End Function
 
-ChangeDir ".."
+ChangeDir("..")
 LoadRoomTemplates("Data/rooms.ini")
 
 ;~IDEal Editor Parameters:

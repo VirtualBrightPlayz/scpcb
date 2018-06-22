@@ -10,14 +10,14 @@ Function FillRoom_chck_lcz_hcz_2(r.Rooms)
     PositionEntity(r\roomDoors[0]\buttons[1], r\x - 152.0 * RoomScale, EntityY(r\roomDoors[0]\buttons[1],True), r\z + 96.0 * RoomScale, True)
 
     r\roomDoors[1] = CreateDoor(0, r\x - 352.0*RoomScale, 0, r\z - 128.0 * RoomScale, 0, r, False, False, 3)
-    ;FreeEntity r\roomDoors[1]\buttons[0]
-    ;FreeEntity r\roomDoors[1]\buttons[1]
+    ;FreeEntity(r\roomDoors[1]\buttons[0])
+    ;FreeEntity(r\roomDoors[1]\buttons[1])
 
     r\roomDoors[1]\linkedDoor = r\roomDoors[0]
     r\roomDoors[0]\linkedDoor = r\roomDoors[1]
 
     r\objects[0] = CreatePivot(r\obj)
-    PositionEntity (r\objects[0], r\x + 720.0*RoomScale, 120.0*RoomScale, r\z+333.0*RoomScale, True)
+    PositionEntity(r\objects[0], r\x + 720.0*RoomScale, 120.0*RoomScale, r\z+333.0*RoomScale, True)
 
     r\roomDoors[0]\timer = 70 * 5
     r\roomDoors[1]\timer = 70 * 5
@@ -30,15 +30,15 @@ Function FillRoom_chck_lcz_hcz_2(r.Rooms)
 
     ;r\objects[2] = CopyEntity(Monitor2,r\obj)
     ;ScaleEntity(r\objects[2], 2.0, 2.0, 2.0)
-    ;PositionEntity (r\objects[2], r\x - 152.0*RoomScale, 384.0*RoomScale, r\z+124.0*RoomScale, True)
-    ;RotateEntity (r\objects[2],0,180,0)
-    ;EntityFX r\objects[2],1
+    ;PositionEntity(r\objects[2], r\x - 152.0*RoomScale, 384.0*RoomScale, r\z+124.0*RoomScale, True)
+    ;RotateEntity(r\objects[2],0,180,0)
+    ;EntityFX(r\objects[2],1)
 
     ;r\objects[3] = CopyEntity(Monitor2,r\obj)
     ;ScaleEntity(r\objects[3], 2.0, 2.0, 2.0)
-    ;PositionEntity (r\objects[3], r\x - 152.0*RoomScale, 384.0*RoomScale, r\z-380.0*RoomScale, True)
-    ;RotateEntity (r\objects[3],0,0,0)
-    ;EntityFX r\objects[3],1
+    ;PositionEntity(r\objects[3], r\x - 152.0*RoomScale, 384.0*RoomScale, r\z-380.0*RoomScale, True)
+    ;RotateEntity(r\objects[3],0,0,0)
+    ;EntityFX(r\objects[3],1)
 
     ;If MapTemp(Floor(r\x / 8.0),Floor(r\z /8.0)-1)=0 Then
     ;    CreateDoor(r\zone, r\x, 0, r\z  - 4.0, 0, r, 0, False, 0, "GEAR")
@@ -61,7 +61,7 @@ Function UpdateEventCheckpoint(e.Events)
 	If mainPlayer\currRoom = e\room Then
 		;If e\room\roomDoors[0]\open <> e\eventState Then
 		;	If e\sounds[0] = 0 Then LoadEventSound(e,"SFX/Door/DoorCheckpoint.Ogg")
-		;	PlaySound2 e\sounds[0]
+		;	PlaySound2(e\sounds[0])
 		;EndIf
 
 		;play a sound clip when the player passes through the gate
@@ -80,21 +80,21 @@ Function UpdateEventCheckpoint(e.Events)
 		If e\eventState3=0 Then
 			If Rand(2)=1 Then
 				e\room\objects[1]=LoadAnimMesh("GFX/npcs/scp-1048.b3d")
-				ScaleEntity e\room\objects[1], 0.05,0.05,0.05
+				ScaleEntity(e\room\objects[1], 0.05,0.05,0.05)
 				PositionEntity(e\room\objects[1],EntityX(e\room\objects[0],True),EntityY(e\room\objects[0],True),EntityZ(e\room\objects[0],True))
-				SetAnimTime e\room\objects[1],267
+				SetAnimTime(e\room\objects[1],267)
 			EndIf
 
 			e\eventState3 = 1
 		ElseIf e\room\objects[1]<>0 Then
 			If e\eventState3 = 1 Then
-				PointEntity e\room\objects[1], mainPlayer\collider
-				RotateEntity e\room\objects[1], -90, EntityYaw(e\room\objects[1]),0
+				PointEntity(e\room\objects[1], mainPlayer\collider)
+				RotateEntity(e\room\objects[1], -90, EntityYaw(e\room\objects[1]),0)
 				angle = WrapAngle(DeltaYaw(mainPlayer\collider, e\room\objects[1]))
 				If angle<40 Or angle > 320 Then e\eventState3=2
 			ElseIf e\eventState3 = 2 Then
-				PointEntity e\room\objects[1], mainPlayer\collider
-				RotateEntity e\room\objects[1], -90, EntityYaw(e\room\objects[1]),0
+				PointEntity(e\room\objects[1], mainPlayer\collider)
+				RotateEntity(e\room\objects[1], -90, EntityYaw(e\room\objects[1]),0)
 				Animate2(e\room\objects[1],AnimTime(e\room\objects[1]),267,283,0.3,False)
 				If AnimTime(e\room\objects[1])=283 Then e\eventState3=3
 			ElseIf e\eventState3 = 3 Then

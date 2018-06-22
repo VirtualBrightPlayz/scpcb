@@ -24,7 +24,7 @@ Function SetIntArrayElem(array.IntArray, val%, x%, y%=0, z%=0)
 End Function
 
 Function DeleteIntArray(array.IntArray)
-	FreeBank array\bank
+	FreeBank(array\bank)
 	Delete array
 End Function
 
@@ -56,7 +56,7 @@ End Function
 Function PushIntArrayListElem(arrayList.IntArrayList,val%)
 	If (arrayList\size>=arrayList\capacity) Then
 		arrayList\capacity=arrayList\capacity*2
-		ResizeBank arrayList\bank,INT_SIZE*arrayList\capacity
+		ResizeBank(arrayList\bank,INT_SIZE*arrayList\capacity)
 	EndIf
 
 	SetIntArrayListElem(arrayList,val,arrayList\size)
@@ -83,7 +83,7 @@ Function EraseIntArrayListElem(arrayList.IntArrayList,pos%)
 End Function
 
 Function DeleteIntArrayList(arrayList.IntArrayList)
-	FreeBank arrayList\bank
+	FreeBank(arrayList\bank)
 	Delete arrayList
 End Function
 

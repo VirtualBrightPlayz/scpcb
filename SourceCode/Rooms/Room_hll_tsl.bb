@@ -18,15 +18,15 @@ Function FillRoom_hll_tsl(r.Rooms)
     EntityParent(r\objects[2], r\obj)
 
     r\objects[3] = CreateSprite()
-    EntityTexture (r\objects[3], TeslaTexture)
+    EntityTexture(r\objects[3], TeslaTexture)
     SpriteViewMode(r\objects[3],2)
-    ;ScaleSprite (r\objects[3],((512.0 * RoomScale)/2.0),((512.0 * RoomScale)/2.0))
-    EntityBlend (r\objects[3], 3)
+    ;ScaleSprite(r\objects[3],((512.0 * RoomScale)/2.0),((512.0 * RoomScale)/2.0))
+    EntityBlend(r\objects[3], 3)
     EntityFX(r\objects[3], 1 + 8 + 16)
 
     PositionEntity(r\objects[3], r\x, 0.8, r\z)
 
-    HideEntity r\objects[3]
+    HideEntity(r\objects[3])
     EntityParent(r\objects[3], r\obj)
 
 	;TODO: fix?
@@ -39,9 +39,9 @@ Function FillRoom_hll_tsl(r.Rooms)
     PositionEntity(r\objects[4], r\x - 32 * RoomScale, 568 * RoomScale, r\z)
     ScaleSprite(r\objects[4], 0.03, 0.03)
     EntityTexture(r\objects[4], LightSpriteTex(1))
-    EntityBlend (r\objects[4], 3)
+    EntityBlend(r\objects[4], 3)
     EntityParent(r\objects[4], r\obj)
-    HideEntity r\objects[4]
+    HideEntity(r\objects[4])
 
     r\objects[5] = CreatePivot()
     PositionEntity(r\objects[5],r\x,0,r\z-800*RoomScale)
@@ -71,9 +71,9 @@ Function UpdateEvent_tesla(e.Events)
 	If temp And EntityY(mainPlayer\collider, True) > EntityY(e\room\obj,True) And EntityY(mainPlayer\collider, True) < 4.0 Then
 		If e\eventState = 0 Then
 			If (TimeInPosMilliSecs() Mod 1500) < 800 Then
-				ShowEntity e\room\objects[4]
+				ShowEntity(e\room\objects[4])
 			Else
-				HideEntity e\room\objects[4]
+				HideEntity(e\room\objects[4])
 			EndIf
 
 			If e\room\dist < 8 Then
@@ -102,7 +102,7 @@ Function UpdateEvent_tesla(e.Events)
 						If Not mainPlayer\dead Then
 							StopChannel(e\soundChannels[0])
 							e\soundChannels[0] = PlayRangedSound_SM(sndManager\teslaActive, mainPlayer\cam, e\room\objects[3],4.0,0.5)
-							HideEntity e\room\objects[4]
+							HideEntity(e\room\objects[4])
 							e\eventState = 1
 							Curr106\state = 70 * 60 * Rand(10,13)
 							Exit
@@ -114,9 +114,9 @@ Function UpdateEvent_tesla(e.Events)
 			e\eventState = e\eventState+timing\tickDuration
 			If e\eventState =< 40 Then
 				If (TimeInPosMilliSecs() Mod 100) < 50 Then
-					ShowEntity e\room\objects[4]
+					ShowEntity(e\room\objects[4])
 				Else
-					HideEntity e\room\objects[4]
+					HideEntity(e\room\objects[4])
 				EndIf
 			Else
 				If e\room\dist < 2 Then
@@ -129,7 +129,7 @@ Function UpdateEvent_tesla(e.Events)
 					If Not mainPlayer\dead Then
 						For i = 0 To 2
 							If Distance(EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider),EntityX(e\room\objects[i],True),EntityZ(e\room\objects[i],True)) < 250.0*RoomScale Then
-								ShowEntity mainPlayer\overlays[OVERLAY_WHITE]
+								ShowEntity(mainPlayer\overlays[OVERLAY_WHITE])
 								mainPlayer\lightFlash = 0.4
 								mainPlayer\camShake = 1.0
 								Kill(mainPlayer)
@@ -141,7 +141,7 @@ Function UpdateEvent_tesla(e.Events)
 					If Curr106\state < -10 Then
 						For i = 0 To 2
 							If Distance(EntityX(Curr106\collider),EntityZ(Curr106\collider),EntityX(e\room\objects[i],True),EntityZ(e\room\objects[i],True)) < 250.0*RoomScale Then
-								ShowEntity mainPlayer\overlays[OVERLAY_WHITE]
+								ShowEntity(mainPlayer\overlays[OVERLAY_WHITE])
 								mainPlayer\lightFlash = 0.3
 								For i = 0 To 10
 									p.Particles = CreateParticle(EntityX(Curr106\collider, True), EntityY(Curr106\collider, True), EntityZ(Curr106\collider, True), 0, 0.015, -0.2, 250)
@@ -158,19 +158,19 @@ Function UpdateEvent_tesla(e.Events)
 						Next
 					EndIf
 
-					HideEntity e\room\objects[3]
-					HideEntity e\room\objects[4]
+					HideEntity(e\room\objects[3])
+					HideEntity(e\room\objects[4])
 
 					If Rand(5)<5 Then
-						PositionTexture TeslaTexture,0.0,Rnd(0,1.0)
-						ShowEntity e\room\objects[3]
+						PositionTexture(TeslaTexture,0.0,Rnd(0,1.0))
+						ShowEntity(e\room\objects[3])
 					EndIf
 				Else
 					If e\eventState-timing\tickDuration < 70 Then
 						StopChannel(e\soundChannels[0])
 						e\soundChannels[0] = PlayRangedSound_SM(sndManager\teslaPowerUp, mainPlayer\cam, e\room\objects[3],4.0,0.5)
 					EndIf
-					HideEntity e\room\objects[3]
+					HideEntity(e\room\objects[3])
 
 					If e\eventState > 150 Then e\eventState = 0
 				EndIf

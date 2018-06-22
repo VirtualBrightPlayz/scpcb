@@ -2,8 +2,8 @@ Function InitializeNPCtype860(n.NPCs)
     n\nvName = "Unidentified"
 
     n\collider = CreatePivot()
-    EntityRadius n\collider, 0.25
-    EntityType n\collider, HIT_PLAYER
+    EntityRadius(n\collider, 0.25)
+    EntityType(n\collider, HIT_PLAYER)
     n\obj = LoadAnimMesh("GFX/NPCs/scp860/forestmonster.b3d")
 
     EntityFX(n\obj, 1)
@@ -13,7 +13,7 @@ Function InitializeNPCtype860(n.NPCs)
     n\obj2 = CreateSprite()
     ScaleSprite(n\obj2, 0.1, 0.1)
     EntityTexture(n\obj2, tex)
-    FreeTexture tex
+    FreeTexture(tex)
 
     EntityFX(n\obj2, 1 + 8)
     EntityBlend(n\obj2, BLEND_ADD)
@@ -22,7 +22,7 @@ Function InitializeNPCtype860(n.NPCs)
     n\speed = (GetINIFloat("Data/NPCs.ini", "forestmonster", "speed") / 100.0)
 
     Local temp# = (GetINIFloat("Data/NPCs.ini", "forestmonster", "scale") / 20.0)
-    ScaleEntity n\obj, temp, temp, temp
+    ScaleEntity(n\obj, temp, temp, temp)
 
     MeshCullBox (n\obj, -MeshWidth(n\obj)*2, -MeshHeight(n\obj)*2, -MeshDepth(n\obj)*2, MeshWidth(n\obj)*2, MeshHeight(n\obj)*4, MeshDepth(n\obj)*4)
 End Function
@@ -38,9 +38,9 @@ Function UpdateNPCtype860(n.NPCs)
         Select n\state
             Case 0 ;idle (hidden)
 
-                HideEntity n\collider
-                HideEntity n\obj
-                HideEntity n\obj2
+                HideEntity(n\collider)
+                HideEntity(n\obj)
+                HideEntity(n\obj2)
 
                 n\state2 = 0
                 PositionEntity(n\collider, 0, -100, 0)
@@ -61,10 +61,10 @@ Function UpdateNPCtype860(n.NPCs)
 
                                 TFormPoint((x*12 + (x2-x)*6)/RoomScale,0,(z*12 + (z2-z)*6)/RoomScale,mainPlayer\currRoom\obj,0)
 
-                                PositionEntity n\collider, TFormedX(), EntityY(fr\forest_Pivot,True)+2.3, TFormedZ()
+                                PositionEntity(n\collider, TFormedX(), EntityY(fr\forest_Pivot,True)+2.3, TFormedZ())
 
                                 If EntityInView(n\collider, mainPlayer\cam) Then
-                                    PositionEntity n\collider, 0, -110, 0
+                                    PositionEntity(n\collider, 0, -110, 0)
                                 Else ;only spawn the monster outside the player's field of view
                                     x2 = Min(x+1,gridsize)
                                     Exit
@@ -79,16 +79,16 @@ Function UpdateNPCtype860(n.NPCs)
 
                         Select Rand(3)
                             Case 1
-                                PointEntity n\collider,mainPlayer\collider
+                                PointEntity(n\collider,mainPlayer\collider)
                                 n\frame = 2
                                 ;SetAnimTime(n\obj, 2)
                             Case 2
-                                PointEntity n\collider,mainPlayer\collider
+                                PointEntity(n\collider,mainPlayer\collider)
                                 n\frame = 201
                                 ;SetAnimTime(n\obj, 201)
                             Case 3
-                                PointEntity n\collider,mainPlayer\collider
-                                TurnEntity n\collider, 0, 90, 0
+                                PointEntity(n\collider,mainPlayer\collider)
+                                TurnEntity(n\collider, 0, 90, 0)
                                 n\frame = 299
                                 ;SetAnimTime(n\obj, 299)
                         End Select
@@ -97,10 +97,10 @@ Function UpdateNPCtype860(n.NPCs)
                     EndIf
                 Else
 
-                    ShowEntity n\obj
-                    ShowEntity n\collider
+                    ShowEntity(n\obj)
+                    ShowEntity(n\collider)
 
-                    PositionEntity n\collider, EntityX(n\collider), EntityY(fr\forest_Pivot,True)+2.3, EntityZ(n\collider)
+                    PositionEntity(n\collider, EntityX(n\collider), EntityY(fr\forest_Pivot,True)+2.3, EntityZ(n\collider))
 
                     If n\state2 = 0 Then ;don't start moving until the player is looking
                         If EntityInView(n\collider, mainPlayer\cam) Then
@@ -117,7 +117,7 @@ Function UpdateNPCtype860(n.NPCs)
                             ;Animate2(n\obj, AnimTime(n\obj), 2, 199, 0.5,False)
                             ;If AnimTime(n\obj)=199 Then SetAnimTime(n\obj,298) : PlayRangedSound(sndManager\footstep8601[Rand(0, 2)]\internal, mainPlayer\cam, n\collider, 15.0)
                         ElseIf n\frame <= 297 Then
-                            PointEntity n\collider,mainPlayer\collider
+                            PointEntity(n\collider,mainPlayer\collider)
 
                             AnimateNPC(n, 200, 297, 0.5, False)
                             If n\frame=297 Then n\frame=298 : PlayRangedSound(sndManager\footstep8601[Rand(0, 2)]\internal, mainPlayer\cam, n\collider, 15.0)
@@ -127,17 +127,17 @@ Function UpdateNPCtype860(n.NPCs)
                         Else
                             angle# = CurveAngle(GetAngle(EntityX(n\collider),EntityZ(n\collider),EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider)),EntityYaw(n\collider)+90,20.0)
 
-                            RotateEntity n\collider, 0, angle-90, 0, True
+                            RotateEntity(n\collider, 0, angle-90, 0, True)
 
                             AnimateNPC(n, 298, 316, n\currSpeed*10)
 
                             ;Animate2(n\obj, AnimTime(n\obj), 298, 316, n\currSpeed*10)
 
                             n\currSpeed = CurveValue(n\speed, n\currSpeed, 10.0)
-                            MoveEntity n\collider, 0,0,n\currSpeed*timing\tickDuration
+                            MoveEntity(n\collider, 0,0,n\currSpeed*timing\tickDuration)
 
                             If n\playerDistance>15.0 Then
-                                PositionEntity n\collider, 0,-110,0
+                                PositionEntity(n\collider, 0,-110,0)
                                 n\state = 0
                                 n\state2 = 0
                             EndIf
@@ -146,10 +146,10 @@ Function UpdateNPCtype860(n.NPCs)
 
                 EndIf
 
-                ResetEntity n\collider
+                ResetEntity(n\collider)
             Case 2 ;appears on the path and starts to walk towards the player
-                ShowEntity n\obj
-                ShowEntity n\collider
+                ShowEntity(n\obj)
+                ShowEntity(n\collider)
 
                 prevFrame = n\frame
 
@@ -164,9 +164,9 @@ Function UpdateNPCtype860(n.NPCs)
 
                                 TFormPoint((x2*12)/RoomScale,0,(z2*12)/RoomScale,mainPlayer\currRoom\obj,0)
 
-                                ;PositionEntity n\collider, TFormedX(), EntityY(fr\forest_Pivot,True)+0.5, TFormedZ()
-                                PositionEntity n\collider, TFormedX(), EntityY(fr\forest_Pivot,True)+1.0, TFormedZ()
-                                DebugLog EntityY(fr\forest_Pivot,True)
+                                ;PositionEntity(n\collider, TFormedX(), EntityY(fr\forest_Pivot,True)+0.5, TFormedZ())
+                                PositionEntity(n\collider, TFormedX(), EntityY(fr\forest_Pivot,True)+1.0, TFormedZ())
+                                DebugLog(EntityY(fr\forest_Pivot,True))
 
                                 If EntityInView(n\collider, mainPlayer\cam) Then
                                     mainPlayer\blinkTimer=-10
@@ -181,10 +181,10 @@ Function UpdateNPCtype860(n.NPCs)
 
                     angle = CurveAngle(Find860Angle(n, fr),EntityYaw(n\collider)+90,80.0)
 
-                    RotateEntity n\collider, 0, angle-90, 0, True
+                    RotateEntity(n\collider, 0, angle-90, 0, True)
 
                     n\currSpeed = CurveValue(n\speed*0.3, n\currSpeed, 50.0)
-                    MoveEntity n\collider, 0,0,n\currSpeed*timing\tickDuration
+                    MoveEntity(n\collider, 0,0,n\currSpeed*timing\tickDuration)
 
                     AnimateNPC(n, 494, 569, n\currSpeed*25)
 
@@ -193,7 +193,7 @@ Function UpdateNPCtype860(n.NPCs)
                     If n\state2 = 0 Then
                         If n\playerDistance<8.0 Then
                             If EntityInView(n\collider,mainPlayer\cam) Then
-                                PlaySound2 LoadTempSound("SFX/SCP/860/Chase"+Rand(1,2)+".ogg")
+                                PlaySound2(LoadTempSound("SFX/SCP/860/Chase"+Rand(1,2)+".ogg"))
 
                                 PlayRangedSound(LoadTempSound("SFX/SCP/860/Cancer"+Rand(0,2)+".ogg"), mainPlayer\cam, n\collider)
                                 n\state2 = 1
@@ -206,7 +206,7 @@ Function UpdateNPCtype860(n.NPCs)
                         If Rnd(5000)<n\state3 Then
                             temp = True
                             If n\soundChannels[0] <> 0 Then
-                                If IsChannelPlaying (n\soundChannels[0]) Then temp = False
+                                If IsChannelPlaying(n\soundChannels[0]) Then temp = False
                             EndIf
                             If temp Then
                                 n\soundChannels[0] = PlayRangedSound(LoadTempSound("SFX/SCP/860/Cancer"+Rand(0,2)+".ogg"), mainPlayer\cam, n\collider)
@@ -224,7 +224,7 @@ Function UpdateNPCtype860(n.NPCs)
                     If n\playerDistance > 16.0 Then
                         n\state = 0
                         n\state2 = 0
-                        PositionEntity n\collider, 0,-110,0
+                        PositionEntity(n\collider, 0,-110,0)
                     EndIf
                 EndIf
 
@@ -234,14 +234,14 @@ Function UpdateNPCtype860(n.NPCs)
                 EndIf
 
             Case 3 ;runs towards the player and attacks
-                ShowEntity n\obj
-                ShowEntity n\collider
+                ShowEntity(n\obj)
+                ShowEntity(n\collider)
 
                 prevFrame = n\frame
 
                 angle = CurveAngle(Find860Angle(n, fr),EntityYaw(n\collider)+90,40.0)
 
-                RotateEntity n\collider, 0, angle-90, 0, True
+                RotateEntity(n\collider, 0, angle-90, 0, True)
 
                 If n\sounds[0] = 0 Then n\sounds[0] = LoadSound("SFX/General/Slash1.ogg")
                 If n\sounds[1] = 0 Then n\sounds[1] = LoadSound("SFX/General/Slash2.ogg")
@@ -274,18 +274,18 @@ Function UpdateNPCtype860(n.NPCs)
 
                 EndIf
 
-                MoveEntity n\collider, 0,0,n\currSpeed*timing\tickDuration
+                MoveEntity(n\collider, 0,0,n\currSpeed*timing\tickDuration)
         End Select
 
         If n\state <> 0 Then
-            RotateEntity n\collider, 0, EntityYaw(n\collider), 0, True
+            RotateEntity(n\collider, 0, EntityYaw(n\collider), 0, True)
 
             PositionEntity(n\obj, EntityX(n\collider), EntityY(n\collider)-0.1, EntityZ(n\collider))
-            RotateEntity n\obj, EntityPitch(n\collider)-90, EntityYaw(n\collider), EntityRoll(n\collider), True
+            RotateEntity(n\obj, EntityPitch(n\collider)-90, EntityYaw(n\collider), EntityRoll(n\collider), True)
 
             If n\playerDistance > 8.0 Then
-                ShowEntity n\obj2
-                EntityAlpha n\obj2, Min(n\playerDistance-8.0,1.0)
+                ShowEntity(n\obj2)
+                EntityAlpha(n\obj2, Min(n\playerDistance-8.0,1.0))
 
                 PositionEntity(n\obj2, EntityX(n\obj), EntityY(n\obj) , EntityZ(n\obj))
                 RotateEntity(n\obj2, 0, EntityYaw(n\collider) - 180, 0)
@@ -294,13 +294,13 @@ Function UpdateNPCtype860(n.NPCs)
                 ;render distance is set to 8.5 inside the forest,
                 ;so we need to cheat a bit to make the eyes visible if they're further than that
                 pvt% = CreatePivot()
-                PositionEntity pvt, EntityX(mainPlayer\cam),EntityY(mainPlayer\cam),EntityZ(mainPlayer\cam)
-                PointEntity pvt, n\obj2
-                MoveEntity pvt, 0,0,8.0
-                PositionEntity n\obj2, EntityX(pvt),EntityY(pvt),EntityZ(pvt)
-                FreeEntity pvt
+                PositionEntity(pvt, EntityX(mainPlayer\cam),EntityY(mainPlayer\cam),EntityZ(mainPlayer\cam))
+                PointEntity(pvt, n\obj2)
+                MoveEntity(pvt, 0,0,8.0)
+                PositionEntity(n\obj2, EntityX(pvt),EntityY(pvt),EntityZ(pvt))
+                FreeEntity(pvt)
             Else
-                HideEntity n\obj2
+                HideEntity(n\obj2)
             EndIf
         EndIf
     EndIf

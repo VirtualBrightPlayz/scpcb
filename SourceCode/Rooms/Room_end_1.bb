@@ -7,8 +7,10 @@ Function FillRoom_end_1(r.Rooms)
 
     r\roomDoors[0] = CreateDoor(r\zone, r\x, 0, r\z + 1136 * RoomScale, 0, r, False, True, 6)
     r\roomDoors[0]\autoClose = False : r\roomDoors[0]\open = False
-    FreeEntity r\roomDoors[0]\buttons[0] : r\roomDoors[0]\buttons[0]=0
-    FreeEntity r\roomDoors[0]\buttons[1] : r\roomDoors[0]\buttons[1]=0
+    FreeEntity(r\roomDoors[0]\buttons[0])
+	r\roomDoors[0]\buttons[0]=0
+    FreeEntity(r\roomDoors[0]\buttons[1])
+	r\roomDoors[0]\buttons[1]=0
 End Function
 
 
@@ -36,12 +38,12 @@ Function UpdateEventEndroom106(e.Events)
 
 					tex = LoadTexture("GFX/NPCs/classd/janitor.jpg")
 					e\room\npc[0]\texture = "GFX/NPCs/classd/janitor.jpg"
-					EntityTexture e\room\npc[0]\obj, tex
-					FreeTexture tex
+					EntityTexture(e\room\npc[0]\obj, tex)
+					FreeTexture(tex)
 
-					PointEntity e\room\npc[0]\collider, e\room\obj
-					RotateEntity e\room\npc[0]\collider, 0, EntityYaw(e\room\npc[0]\collider),0, True
-					MoveEntity e\room\npc[0]\collider, 0,0,0.5
+					PointEntity(e\room\npc[0]\collider, e\room\obj)
+					RotateEntity(e\room\npc[0]\collider, 0, EntityYaw(e\room\npc[0]\collider),0, True)
+					MoveEntity(e\room\npc[0]\collider, 0,0,0.5)
 
 					e\room\roomDoors[0]\open = False
 					PlayRangedSound(LoadTempSound("SFX/Door/EndroomDoor.ogg"), mainPlayer\cam, e\room\obj, 15)
@@ -60,7 +62,7 @@ Function UpdateEventEndroom106(e.Events)
 				e\sounds[0] = LoadSound("SFX/Character/Janitor/106Abduct.ogg")
 				PlaySound2(e\sounds[0])
 
-				If e\soundChannels[0]<>0 Then StopChannel e\soundChannels[0]
+				If e\soundChannels[0]<>0 Then StopChannel(e\soundChannels[0])
 			ElseIf e\room\dist < 8 Then
 				If e\sounds[0] = 0 Then e\sounds[0] = LoadSound("SFX/Character/Janitor/Idle.ogg")
 				e\soundChannels[0] = LoopRangedSound(e\sounds[0], e\soundChannels[0], mainPlayer\cam, e\room\npc[0]\obj, 15.0)
@@ -69,7 +71,7 @@ Function UpdateEventEndroom106(e.Events)
 			dist = EntityDistance(e\room\npc[0]\collider, e\room\obj)
 			If dist<1.5 Then
 				de.Decals = CreateDecal(0, EntityX(e\room\obj), 0.01, EntityZ(e\room\obj), 90, Rand(360), 0)
-				de\size = 0.05 : de\sizeChange = 0.008 : de\timer=10000 : UpdateDecals
+				de\size = 0.05 : de\sizeChange = 0.008 : de\timer=10000 : UpdateDecals()
 				e\eventState = 3
 
 				;PlaySound2(DecaySFX(1))

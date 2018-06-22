@@ -58,7 +58,7 @@ Function InitLoadingScreens(file$)
 		EndIf
 	Wend
 
-	CloseFile f
+	CloseFile(f)
 End Function
 
 
@@ -87,11 +87,11 @@ Function DrawLoading(percent%, shortloading%=False)
 	Local firstloop% = True
 	Repeat
 
-		;Color 0,0,0
-		;Rect 0,0,userOptions\screenWidth,userOptions\screenHeight,True
-		;Color 255, 255, 255
-		ClsColor 0,0,0
-		Cls
+		;Color(0,0,0)
+		;Rect(0,0,userOptions\screenWidth,userOptions\screenHeight,True)
+		;Color(255, 255, 255)
+		ClsColor(0,0,0)
+		Cls()
 
 		;Cls(True,False)
 
@@ -106,7 +106,7 @@ Function DrawLoading(percent%, shortloading%=False)
 		EndIf
 
 		If (Not SelectedLoadingScreen\disablebackground) Then
-			DrawImage LoadingBack, userOptions\screenWidth/2 - ImageWidth(LoadingBack)/2, userOptions\screenHeight/2 - ImageHeight(LoadingBack)/2
+			DrawImage(LoadingBack, userOptions\screenWidth/2 - ImageWidth(LoadingBack)/2, userOptions\screenHeight/2 - ImageHeight(LoadingBack)/2)
 		EndIf
 
 		If SelectedLoadingScreen\alignx = 0 Then
@@ -125,7 +125,7 @@ Function DrawLoading(percent%, shortloading%=False)
 			y = 0
 		EndIf
 
-		DrawImage SelectedLoadingScreen\img, x, y
+		DrawImage(SelectedLoadingScreen\img, x, y)
 
 		width = 300 : height = 20
 		x% = userOptions\screenWidth / 2 - width / 2
@@ -141,14 +141,14 @@ Function DrawLoading(percent%, shortloading%=False)
 			If Not shortloading Then
 				If firstloop Then
 					If percent = 0 Then
-						PlaySound2 LoadTempSound("SFX/SCP/990/cwm1.cwm")
+						PlaySound2(LoadTempSound("SFX/SCP/990/cwm1.cwm"))
 					ElseIf percent = 100 Then
-						PlaySound2 LoadTempSound("SFX/SCP/990/cwm2.cwm")
+						PlaySound2(LoadTempSound("SFX/SCP/990/cwm2.cwm"))
 					EndIf
 				EndIf
 			EndIf
 
-			SetFont uiAssets\font[1]
+			SetFont(uiAssets\font[1])
 			temp = Rand(2,9)
 			For i = 0 To temp
 				strtemp$ = strtemp + Chr(Rand(48,122))
@@ -198,31 +198,31 @@ Function DrawLoading(percent%, shortloading%=False)
 			For i = 0 To Rand(10,15);temp
 				strtemp$ = Replace(SelectedLoadingScreen\txt[0],Mid(SelectedLoadingScreen\txt[0],Rand(1,Len(strtemp)-1),1),Chr(Rand(130,250)))
 			Next
-			SetFont uiAssets\font[0]
+			SetFont(uiAssets\font[0])
 			RowText(strtemp, userOptions\screenWidth / 2-200, userOptions\screenHeight / 2 +120,400,300,True)
 		Else
 
-			Color 0,0,0
-			SetFont uiAssets\font[1]
+			Color(0,0,0)
+			SetFont(uiAssets\font[1])
 			Text(userOptions\screenWidth / 2 + 1, userOptions\screenHeight / 2 + 80 + 1, SelectedLoadingScreen\title, True, True)
-			SetFont uiAssets\font[0]
+			SetFont(uiAssets\font[0])
 			RowText(SelectedLoadingScreen\txt[LoadingScreenText], userOptions\screenWidth / 2-200+1, userOptions\screenHeight / 2 +120+1,400,300,True)
 
-			Color 255,255,255
-			SetFont uiAssets\font[1]
+			Color(255,255,255)
+			SetFont(uiAssets\font[1])
 			Text(userOptions\screenWidth / 2, userOptions\screenHeight / 2 +80, SelectedLoadingScreen\title, True, True)
-			SetFont uiAssets\font[0]
+			SetFont(uiAssets\font[0])
 			RowText(SelectedLoadingScreen\txt[LoadingScreenText], userOptions\screenWidth / 2-200, userOptions\screenHeight / 2 +120,400,300,True)
 
 		EndIf
 
-		Color 0,0,0
+		Color(0,0,0)
 		Text(userOptions\screenWidth / 2 + 1, userOptions\screenHeight / 2 - 100 + 1, "LOADING - " + percent + " %", True, True)
-		Color 255,255,255
+		Color(255,255,255)
 		Text(userOptions\screenWidth / 2, userOptions\screenHeight / 2 - 100, "LOADING - " + percent + " %", True, True)
 
 		If percent = 100 Then
-			;If firstloop And SelectedLoadingScreen\title <> "CWM" Then PlaySound2 HorrorSFX(8) ;TODO: fix
+			;If firstloop And SelectedLoadingScreen\title <> "CWM" Then PlaySound2(HorrorSFX(8) ;TODO: fix)
 			timing\prevTime = MilliSecs()
 			Text(userOptions\screenWidth / 2, userOptions\screenHeight - 50, "PRESS ANY KEY TO CONTINUE", True, True)
 		Else
@@ -233,37 +233,39 @@ Function DrawLoading(percent%, shortloading%=False)
 		;not by any means a perfect solution
 		;Not even proper gamma correction but it's a nice looking alternative that works in windowed mode
 		If userOptions\screenGamma>1.0 Then
-			CopyRect 0,0,userOptions\screenWidth,userOptions\screenHeight,1024-userOptions\screenWidth/2,1024-userOptions\screenHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
-			EntityBlend fresize_image,1
-			ClsColor 0,0,0 : Cls
+			CopyRect(0,0,userOptions\screenWidth,userOptions\screenHeight,1024-userOptions\screenWidth/2,1024-userOptions\screenHeight/2,BackBuffer(),TextureBuffer(fresize_texture))
+			EntityBlend(fresize_image,1)
+			ClsColor(0,0,0)
+			Cls()
 			ScaleRender(-1.0/Float(userOptions\screenWidth),1.0/Float(userOptions\screenWidth),2048.0 / Float(userOptions\screenWidth),2048.0 / Float(userOptions\screenWidth))
-			EntityFX fresize_image,1+32
-			EntityBlend fresize_image,3
-			EntityAlpha fresize_image,userOptions\screenGamma-1.0
+			EntityFX(fresize_image,1+32)
+			EntityBlend(fresize_image,3)
+			EntityAlpha(fresize_image,userOptions\screenGamma-1.0)
 			ScaleRender(-1.0/Float(userOptions\screenWidth),1.0/Float(userOptions\screenWidth),2048.0 / Float(userOptions\screenWidth),2048.0 / Float(userOptions\screenWidth))
 		ElseIf userOptions\screenGamma<1.0 Then ;todo: maybe optimize this if it's too slow, alternatively give players the option to disable gamma
-			CopyRect 0,0,userOptions\screenWidth,userOptions\screenHeight,1024-userOptions\screenWidth/2,1024-userOptions\screenHeight/2,BackBuffer(),TextureBuffer(fresize_texture)
-			EntityBlend fresize_image,1
-			ClsColor 0,0,0 : Cls
+			CopyRect(0,0,userOptions\screenWidth,userOptions\screenHeight,1024-userOptions\screenWidth/2,1024-userOptions\screenHeight/2,BackBuffer(),TextureBuffer(fresize_texture))
+			EntityBlend(fresize_image,1)
+			ClsColor(0,0,0)
+			Cls()
 			ScaleRender(-1.0/Float(userOptions\screenWidth),1.0/Float(userOptions\screenWidth),2048.0 / Float(userOptions\screenWidth),2048.0 / Float(userOptions\screenWidth))
-			EntityFX fresize_image,1+32
-			EntityBlend fresize_image,2
-			EntityAlpha fresize_image,1.0
-			SetBuffer TextureBuffer(fresize_texture2)
-			ClsColor 255*userOptions\screenGamma,255*userOptions\screenGamma,255*userOptions\screenGamma
-			Cls
-			SetBuffer BackBuffer()
+			EntityFX(fresize_image,1+32)
+			EntityBlend(fresize_image,2)
+			EntityAlpha(fresize_image,1.0)
+			SetBuffer(TextureBuffer(fresize_texture2))
+			ClsColor(255*userOptions\screenGamma,255*userOptions\screenGamma,255*userOptions\screenGamma)
+			Cls()
+			SetBuffer(BackBuffer())
 			ScaleRender(-1.0/Float(userOptions\screenWidth),1.0/Float(userOptions\screenWidth),2048.0 / Float(userOptions\screenWidth),2048.0 / Float(userOptions\screenWidth))
 			SetBuffer(TextureBuffer(fresize_texture2))
-			ClsColor 0,0,0
-			Cls
+			ClsColor(0,0,0)
+			Cls()
 			SetBuffer(BackBuffer())
 		EndIf
-		EntityFX fresize_image,1
-		EntityBlend fresize_image,1
-		EntityAlpha fresize_image,1.0
+		EntityFX(fresize_image,1)
+		EntityBlend(fresize_image,1)
+		EntityAlpha(fresize_image,1.0)
 
-		Flip False
+		Flip(False)
 
 		firstloop = False
 		If (percent <> 100) Then

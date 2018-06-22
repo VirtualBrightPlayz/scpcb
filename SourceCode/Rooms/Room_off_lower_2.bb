@@ -54,8 +54,8 @@ Function UpdateEvent_off_lower_2(e.Events)
 	If mainPlayer\currRoom = e\room Then
 		If mainPlayer\blinkTimer<-8 And mainPlayer\blinkTimer >-12 Then
 			temp = Rand(1,4)
-			PositionEntity e\room\objects[0], EntityX(e\room\objects[temp],True),EntityY(e\room\objects[temp],True),EntityZ(e\room\objects[temp],True),True
-			RotateEntity e\room\objects[0], 0, Rnd(360), 0
+			PositionEntity(e\room\objects[0], EntityX(e\room\objects[temp],True),EntityY(e\room\objects[temp],True),EntityZ(e\room\objects[temp],True),True)
+			RotateEntity(e\room\objects[0], 0, Rnd(360), 0)
 		EndIf
 	EndIf
 	;[End Block]

@@ -202,7 +202,7 @@ Function CreateNPC.NPCs(NPCtype%, x#, y#, z#)
 	n\id = 0
 	n\id = FindFreeNPCID()
 
-	DebugLog ("Created NPC "+n\nvName+" (ID: "+n\id+")")
+	DebugLog("Created NPC "+n\nvName+" (ID: "+n\id+")")
 
 	NPCSpeedChange(n)
 
@@ -231,15 +231,15 @@ Function RemoveNPC(n.NPCs)
 	EndIf
 
 	If n\obj2 <> 0 Then
-		FreeEntity n\obj2
+		FreeEntity(n\obj2)
 		n\obj2 = 0
 	EndIf
 	If n\obj3 <> 0 Then
-		FreeEntity n\obj3
+		FreeEntity(n\obj3)
 		n\obj3 = 0
 	EndIf
 	If n\obj4 <> 0 Then
-		FreeEntity n\obj4
+		FreeEntity(n\obj4)
 		n\obj4 = 0
 	EndIf
 
@@ -334,7 +334,7 @@ Function UpdateNPCs()
 
 		If gravityDist<HideDistance*0.7 Or n\npcType = NPCtype1499 Then
 			If n\inFacility = InFacility Then
-				TranslateEntity n\collider, 0, n\dropSpeed, 0
+				TranslateEntity(n\collider, 0, n\dropSpeed, 0)
 
 				collidedFloor% = False
 				For i% = 1 To CountCollisions(n\collider)
@@ -399,8 +399,8 @@ Function TeleportCloser(n.NPCs)
 	Next
 
 	If (closestWaypoint<>Null) Then
-		PositionEntity n\collider, EntityX(closestWaypoint\obj,True), EntityY(closestWaypoint\obj,True)+0.15, EntityZ(closestWaypoint\obj,True), True
-		ResetEntity n\collider
+		PositionEntity(n\collider, EntityX(closestWaypoint\obj,True), EntityY(closestWaypoint\obj,True)+0.15, EntityZ(closestWaypoint\obj,True), True)
+		ResetEntity(n\collider)
 	EndIf
 
 End Function
@@ -468,12 +468,12 @@ Function TeleportMTFGroup(n.NPCs)
 	For n2 = Each NPCs
 		If n2\npcType = NPCtypeMTF Then
 			If n2\mtfLeader <> Null Then
-				PositionEntity n2\collider,EntityX(n2\mtfLeader\collider),EntityY(n2\mtfLeader\collider)+0.1,EntityZ(n2\mtfLeader\collider)
+				PositionEntity(n2\collider,EntityX(n2\mtfLeader\collider),EntityY(n2\mtfLeader\collider)+0.1,EntityZ(n2\mtfLeader\collider))
 			EndIf
 		EndIf
 	Next
 
-	DebugLog "Teleported MTF Group (dist:"+EntityDistance(n\collider,mainPlayer\collider)+")"
+	DebugLog("Teleported MTF Group (dist:"+EntityDistance(n\collider,mainPlayer\collider)+")")
 
 End Function
 
@@ -482,7 +482,7 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 	
 	;muzzle flash
 	Local p.Particles = CreateParticle(x,y,z, 1, Rnd(0.08,0.1), 0.0, 5)
-	TurnEntity p\obj, 0,0,Rnd(360)
+	TurnEntity(p\obj, 0,0,Rnd(360))
 	p\aChange = -0.15
 
 	;LightVolume = TempLightVolume*1.2
@@ -496,7 +496,7 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 		EndIf
 
 		If Rnd(1.0) =< hitProb Then
-			TurnEntity mainPlayer\cam, Rnd(-3,3), Rnd(-3,3), 0
+			TurnEntity(mainPlayer\cam, Rnd(-3,3), Rnd(-3,3), 0)
 			
 			wearingVest% = False
 			wearingVest = wearingVest Or IsPlayerWearingTempName(mainPlayer,"vest")
@@ -578,9 +578,9 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 			PlaySound_SM(sndManager\bulletHit)
 		ElseIf particles Then
 			pvt% = CreatePivot()
-			PositionEntity pvt, EntityX(mainPlayer\collider),(EntityY(mainPlayer\collider)+EntityY(mainPlayer\cam))/2,EntityZ(mainPlayer\collider)
-			PointEntity pvt, p\obj
-			TurnEntity pvt, 0, 180, 0
+			PositionEntity(pvt, EntityX(mainPlayer\collider),(EntityY(mainPlayer\collider)+EntityY(mainPlayer\cam))/2,EntityZ(mainPlayer\collider))
+			PointEntity(pvt, p\obj)
+			TurnEntity(pvt, 0, 180, 0)
 
 			EntityPick(pvt, 2.5)
 
@@ -594,25 +594,25 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 					p\sizeChange = 0.003
 					p\a = 0.8
 					p\aChange = -0.01
-					RotateEntity p\pvt, EntityPitch(pvt)-180, EntityYaw(pvt),0
+					RotateEntity(p\pvt, EntityPitch(pvt)-180, EntityYaw(pvt),0)
 					
 					For i = 0 To Rand(2,3)
 						p.Particles = CreateParticle(PickedX(),PickedY(),PickedZ(), 0, 0.006, 0.003, 80)
 						p\speed = 0.02
 						p\a = 0.8
 						p\aChange = -0.01
-						RotateEntity p\pvt, EntityPitch(pvt)+Rnd(170,190), EntityYaw(pvt)+Rnd(-10,10),0
+						RotateEntity(p\pvt, EntityPitch(pvt)+Rnd(170,190), EntityYaw(pvt)+Rnd(-10,10),0)
 					Next
 
 					;bullet hole decal
 					de.Decals = CreateDecal(Rand(13,14), PickedX(),PickedY(),PickedZ(), 0,0,0)
-					AlignToVector de\obj,-PickedNX(),-PickedNY(),-PickedNZ(),3
-					MoveEntity de\obj, 0,0,-0.001
-					EntityFX de\obj, 1
+					AlignToVector(de\obj,-PickedNX(),-PickedNY(),-PickedNZ(),3)
+					MoveEntity(de\obj, 0,0,-0.001)
+					EntityFX(de\obj, 1)
 					de\lifetime = 70*20
-					EntityBlend de\obj, 2
+					EntityBlend(de\obj, 2)
 					de\size = Rnd(0.028,0.034)
-					ScaleSprite de\obj, de\size, de\size
+					ScaleSprite(de\obj, de\size, de\size)
 				EndIf
 			EndIf
 			FreeEntity(pvt)
@@ -633,7 +633,7 @@ Function PlayMTFSound(sound%, n.NPCs)
 		If mainPlayer\selectedItem\state2 = 3 And mainPlayer\selectedItem\state > 0 Then
 			Select mainPlayer\selectedItem\itemtemplate\name
 				Case "radio","fineradio","18vradio"
-					If RadioCHN(3)<> 0 Then StopChannel RadioCHN(3)
+					If RadioCHN(3)<> 0 Then StopChannel(RadioCHN(3))
 					RadioCHN(3) = PlaySound(sound)
 			End Select
 		EndIf
@@ -649,12 +649,12 @@ Function MoveToPocketDimension()
 			mainPlayer\fallTimer = 0
 			UpdateDoors()
 			UpdateRooms()
-			ShowEntity mainPlayer\collider
+			ShowEntity(mainPlayer\collider)
 			PlaySound2(LoadTempSound("SFX/SCP/914/PlayerUse.ogg"))
 			;PlaySound2(OldManSFX(5)) ;TODO: fix
 			PositionEntity(mainPlayer\collider, EntityX(r\obj),0.8,EntityZ(r\obj))
 			mainPlayer\dropSpeed = 0
-			ResetEntity mainPlayer\collider
+			ResetEntity(mainPlayer\collider)
 
 			mainPlayer\blinkTimer = -10
 
@@ -673,8 +673,6 @@ Function FindFreeNPCID%()
 	
 	While (True)
 		taken% = False
-
-		n2.NPCs
 		For n2.NPCs = Each NPCs
 			If n2\id = id Then
 				taken = True
@@ -803,17 +801,17 @@ Function ManipulateNPCBones()
 			pvt% = CreatePivot()
 			bonename$ = GetNPCManipulationValue(n\npcNameInSection,n\boneToManipulate,"bonename",0)
 			bone% = FindChild(n\obj,bonename$)
-			If bone% = 0 Then RuntimeError "ERROR: NPC bone "+Chr(34)+bonename$+Chr(34)+" does not exist."
+			If bone% = 0 Then RuntimeError("ERROR: NPC bone "+Chr(34)+bonename$+Chr(34)+" does not exist.")
 			If n\boneToManipulate2<>"" Then
 				bonename2$ = GetNPCManipulationValue(n\npcNameInSection,n\boneToManipulate,"navbone",0)
 				bone2% = FindChild(n\obj,n\boneToManipulate2$)
-				If bone2% = 0 Then RuntimeError "ERROR: NPC bone "+Chr(34)+bonename2$+Chr(34)+" does not exist."
+				If bone2% = 0 Then RuntimeError("ERROR: NPC bone "+Chr(34)+bonename2$+Chr(34)+" does not exist.")
 			EndIf
-			PositionEntity pvt%,EntityX(bone%,True),EntityY(bone%,True),EntityZ(bone%,True)
+			PositionEntity(pvt%,EntityX(bone%,True),EntityY(bone%,True),EntityZ(bone%,True))
 			Select n\manipulationType
 				Case 0 ;<--- looking at player
-					PointEntity bone%,mainPlayer\cam
-					PointEntity pvt%,mainPlayer\cam
+					PointEntity(bone%,mainPlayer\cam)
+					PointEntity(pvt%,mainPlayer\cam)
 					n\bonePitch# = CurveAngle(EntityPitch(pvt%),n\bonePitch#,10.0)
 					Select TransformNPCManipulationData(n\npcNameInSection,n\boneToManipulate,"yaw")
 						Case 0
@@ -843,7 +841,7 @@ Function ManipulateNPCBones()
 					If GetNPCManipulationValue(n\npcNameInSection,n\boneToManipulate,"rollinverse",3)=True Then
 						rollvalue# = -rollvalue#
 					EndIf
-					RotateEntity bone%,pitchvalue#+pitchoffset#,yawvalue#+yawoffset#,rollvalue#+rolloffset#
+					RotateEntity(bone%,pitchvalue#+pitchoffset#,yawvalue#+yawoffset#,rollvalue#+rolloffset#)
 				Case 1 ;<--- looking at player #2
 					n\bonePitch# = CurveAngle(DeltaPitch(bone2%,mainPlayer\cam),n\bonePitch#,10.0)
 					Select TransformNPCManipulationData(n\npcNameInSection,n\boneToManipulate,"pitch")
@@ -863,9 +861,9 @@ Function ManipulateNPCBones()
 					If GetNPCManipulationValue(n\npcNameInSection,n\boneToManipulate,"rollinverse",3)=True Then
 						rollvalue# = -rollvalue#
 					EndIf
-					RotateEntity bone%,pitchvalue#+pitchoffset#,yawvalue#+yawoffset#,rollvalue#+rolloffset#
+					RotateEntity(bone%,pitchvalue#+pitchoffset#,yawvalue#+yawoffset#,rollvalue#+rolloffset#)
 				Case 2 ;<--- looking away from SCP-096
-					PointEntity bone%,Curr096\obj
+					PointEntity(bone%,Curr096\obj)
 					Select TransformNPCManipulationData(n\npcNameInSection,n\boneToManipulate,"yaw")
 						Case 0
 							n\boneYaw# = CurveAngle(EntityPitch(bone%),n\boneYaw#,10.0)
@@ -886,9 +884,9 @@ Function ManipulateNPCBones()
 					If GetNPCManipulationValue(n\npcNameInSection,n\boneToManipulate,"rollinverse",3)=True Then
 						rollvalue# = -rollvalue#
 					EndIf
-					RotateEntity bone%,pitchvalue#+pitchoffset#,yawvalue#+yawoffset#,rollvalue#+rolloffset#
+					RotateEntity(bone%,pitchvalue#+pitchoffset#,yawvalue#+yawoffset#,rollvalue#+rolloffset#)
 				Case 3 ;<-- looking and pitching towards the player
-					PointEntity pvt%,mainPlayer\cam
+					PointEntity(pvt%,mainPlayer\cam)
 					n\boneYaw# = CurveAngle(EntityPitch(pvt%),n\boneYaw#,10.0)
 					Select TransformNPCManipulationData(n\npcNameInSection,n\boneToManipulate,"yaw")
 						Case 0
@@ -907,9 +905,9 @@ Function ManipulateNPCBones()
 					If GetNPCManipulationValue(n\npcNameInSection,n\boneToManipulate,"rollinverse",3)=True Then
 						rollvalue# = -rollvalue#
 					EndIf
-					RotateEntity bone%,pitchvalue#+pitchoffset#,yawvalue#+yawoffset#,rollvalue#+rolloffset#
+					RotateEntity(bone%,pitchvalue#+pitchoffset#,yawvalue#+yawoffset#,rollvalue#+rolloffset#)
 			End Select
-			FreeEntity pvt%
+			FreeEntity(pvt%)
 		EndIf
 	Next
 
@@ -1042,7 +1040,7 @@ Function FindNextElevator(n.NPCs)
 								If EntityDistance(eo2\obj,n\collider)<EntityDistance(eo\obj,n\collider) Then
 									n\pathStatus = FindPath(n, EntityX(eo2\obj,True),EntityY(eo2\obj,True),EntityZ(eo2\obj,True))
 									n\currElevator = eo2
-									DebugLog "eo2 found for "+n\npcType
+									DebugLog("eo2 found for "+n\npcType)
 									Exit
 								EndIf
 							EndIf
@@ -1052,11 +1050,11 @@ Function FindNextElevator(n.NPCs)
 				If n\currElevator = Null Then
 					n\pathStatus = FindPath(n, EntityX(eo\obj,True),EntityY(eo\obj,True),EntityZ(eo\obj,True))
 					n\currElevator = eo
-					DebugLog "eo found for "+n\npcType
+					DebugLog("eo found for "+n\npcType)
 				EndIf
 				If n\pathStatus <> 1 Then
 					n\currElevator = Null
-					DebugLog "Unable to find elevator path: Resetting CurrElevator"
+					DebugLog("Unable to find elevator path: Resetting CurrElevator")
 				EndIf
 				Exit
 			EndIf
@@ -1070,8 +1068,8 @@ Function GoToElevator(n.NPCs)
 	Local dist#,inside%
 
 	If n\pathStatus <> 1 Then
-		PointEntity n\obj,n\currElevator\obj
-		RotateEntity n\collider,0,CurveAngle(EntityYaw(n\obj),EntityYaw(n\collider),20.0),0
+		PointEntity(n\obj,n\currElevator\obj)
+		RotateEntity(n\collider,0,CurveAngle(EntityYaw(n\obj),EntityYaw(n\collider),20.0),0)
 
 		inside% = False
 		If Abs(EntityX(n\collider)-EntityX(n\currElevator\obj,True))<280.0*RoomScale Then
@@ -1086,14 +1084,14 @@ Function GoToElevator(n.NPCs)
 		If n\currElevator\door\open Then
 			If (dist# > 0.4 And dist# < 0.7) And inside% Then
 				UseDoor(n\currElevator\door,False)
-				DebugLog n\npcType+" used elevator"
+				DebugLog(n\npcType+" used elevator")
 			EndIf
 		Else
 			If dist# < 0.7 Then
 				n\currSpeed = 0.0
 				If n\currElevator\door\npcCalledElevator=False Then
 					n\currElevator\door\npcCalledElevator = True
-					DebugLog n\npcType+" called elevator"
+					DebugLog(n\npcType+" called elevator")
 				EndIf
 			EndIf
 		EndIf
@@ -1118,23 +1116,23 @@ End Function
 Function RotateToDirection(n.NPCs)
 	Local turnToSide%
 	
-	HideEntity n\collider
+	HideEntity(n\collider)
 	EntityPick(n\collider, 1.0)
 	If PickedEntity() <> 0 Then
 		turnToSide% = 0
-		TurnEntity n\collider,0,90,0
+		TurnEntity(n\collider,0,90,0)
 		EntityPick(n\collider,1.0)
 		If PickedEntity()=0 Then
 			turnToSide% = 1
 		EndIf
-		TurnEntity n\collider,0,270,0
+		TurnEntity(n\collider,0,270,0)
 		If turnToSide% = 1 Then
-			TurnEntity n\collider,0.0,45,0.0,True
+			TurnEntity(n\collider,0.0,45,0.0,True)
 		Else
-			TurnEntity n\collider,0.0,-45,0.0,True
+			TurnEntity(n\collider,0.0,-45,0.0,True)
 		EndIf
 	EndIf
-	ShowEntity n\collider
+	ShowEntity(n\collider)
 
 End Function
 
@@ -1173,7 +1171,7 @@ End Function
 Function SetNPCFrame(n.NPCs, frame#)
 	If (Abs(n\frame-frame)<0.001) Then Return
 
-	SetAnimTime n\obj, frame
+	SetAnimTime(n\obj, frame)
 
 	n\frame = frame
 End Function

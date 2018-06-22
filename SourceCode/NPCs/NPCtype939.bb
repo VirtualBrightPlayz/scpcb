@@ -20,11 +20,11 @@ Function InitializeNPCtype939(n.NPCs)
     n\nvName = "SCP-939-"+i
 
     n\collider = CreatePivot()
-    EntityRadius n\collider, 0.3
-    EntityType n\collider, HIT_PLAYER
+    EntityRadius(n\collider, 0.3)
+    EntityType(n\collider, HIT_PLAYER)
     For n2.NPCs = Each NPCs
         If n\npcType = n2\npcType And n<>n2 Then
-            n\obj = CopyEntity (n2\obj)
+            n\obj = CopyEntity(n2\obj)
             Exit
         EndIf
     Next
@@ -34,7 +34,7 @@ Function InitializeNPCtype939(n.NPCs)
         n\obj = LoadAnimMesh("GFX/NPCs/scp939/scp-939.b3d")
 
         temp# = GetINIFloat("Data/NPCs.ini", "SCP-939", "scale")/2.5
-        ScaleEntity n\obj, temp, temp, temp
+        ScaleEntity(n\obj, temp, temp, temp)
     EndIf
 
     n\speed = (GetINIFloat("Data/NPCs.ini", "SCP-939", "speed") / 100.0)
@@ -75,7 +75,7 @@ Function UpdateNPCtype939(n.NPCs)
 
                 n\lastSeen = 0
 
-                MoveEntity n\collider, 0,0,n\currSpeed*timing\tickDuration
+                MoveEntity(n\collider, 0,0,n\currSpeed*timing\tickDuration)
 
             Case 2
                 n\state2 = Max(n\state2, (n\prevState-3))
@@ -83,7 +83,7 @@ Function UpdateNPCtype939(n.NPCs)
                 dist = EntityDistance(n\collider, mainPlayer\currRoom\objects[n\state2])
 
                 n\currSpeed = CurveValue(n\speed*0.3*Min(dist,1.0), n\currSpeed, 10.0)
-                MoveEntity n\collider, 0,0,n\currSpeed*timing\tickDuration
+                MoveEntity(n\collider, 0,0,n\currSpeed*timing\tickDuration)
 
                 prevFrame = n\frame
                 AnimateNPC(n, 644,683,28*n\currSpeed) ;walk
@@ -99,15 +99,18 @@ Function UpdateNPCtype939(n.NPCs)
                             temp = True
                         EndIf
                         If temp Then
-                            If n\sounds[0] <> 0 Then FreeSound n\sounds[0] : n\sounds[0] = 0
+                            If n\sounds[0] <> 0 Then
+								FreeSound(n\sounds[0])
+								n\sounds[0] = 0
+							EndIf
                             n\sounds[0] = LoadSound("SFX/SCP/939/"+(n\id Mod 3)+"Lure"+Rand(1,10)+".ogg")
                             n\soundChannels[0] = PlayRangedSound(n\sounds[0], mainPlayer\cam, n\collider)
                         EndIf
                     EndIf
                 EndIf
 
-                PointEntity n\obj, mainPlayer\currRoom\objects[n\state2]
-                RotateEntity n\collider, 0, CurveAngle(EntityYaw(n\obj),EntityYaw(n\collider),20.0), 0
+                PointEntity(n\obj, mainPlayer\currRoom\objects[n\state2])
+                RotateEntity(n\collider, 0, CurveAngle(EntityYaw(n\obj),EntityYaw(n\collider),20.0), 0)
 
                 If dist<0.4 Then
                     n\state2 = n\state2 + 1
@@ -182,9 +185,9 @@ Function UpdateNPCtype939(n.NPCs)
                     EndIf
 
                     angle = VectorYaw(n\enemyX-EntityX(n\collider), 0.0, n\enemyZ-EntityZ(n\collider))
-                    RotateEntity n\collider, 0, CurveAngle(angle,EntityYaw(n\collider),15.0), 0
+                    RotateEntity(n\collider, 0, CurveAngle(angle,EntityYaw(n\collider),15.0), 0)
 
-                    MoveEntity n\collider, 0,0,n\currSpeed*timing\tickDuration
+                    MoveEntity(n\collider, 0,0,n\currSpeed*timing\tickDuration)
 
                     n\lastSeen = n\lastSeen - timing\tickDuration
                 Else
@@ -211,7 +214,10 @@ Function UpdateNPCtype939(n.NPCs)
             If dist < 4.0 Then dist = dist - EntityVisible(mainPlayer\collider, n\collider)
             If mainPlayer\loudness*1.2>dist Or dist < 1.5 Then
                 If n\state3 = 0 Then
-                    If n\sounds[0] <> 0 Then FreeSound n\sounds[0] : n\sounds[0] = 0
+                    If n\sounds[0] <> 0 Then
+						FreeSound(n\sounds[0])
+						n\sounds[0] = 0
+					EndIf
                     n\sounds[0] = LoadSound("SFX/SCP/939/"+(n\id Mod 3)+"Attack"+Rand(1,3)+".ogg")
                     n\soundChannels[0] = PlayRangedSound(n\sounds[0], mainPlayer\cam, n\collider)
 
@@ -222,7 +228,10 @@ Function UpdateNPCtype939(n.NPCs)
                 n\state = 3
             ElseIf mainPlayer\loudness*1.6>dist Then
                 If n\state<>1 And n\reload <= 0 Then
-                    If n\sounds[0] <> 0 Then FreeSound n\sounds[0] : n\sounds[0] = 0
+                    If n\sounds[0] <> 0 Then
+						FreeSound(n\sounds[0])
+						n\sounds[0] = 0
+					EndIf
                     n\sounds[0] = LoadSound("SFX/SCP/939/"+(n\id Mod 3)+"Alert"+Rand(1,3)+".ogg")
                     n\soundChannels[0] = PlayRangedSound(n\sounds[0], mainPlayer\cam, n\collider)
 
@@ -239,10 +248,10 @@ Function UpdateNPCtype939(n.NPCs)
 
         EndIf
 
-        RotateEntity n\collider, 0, EntityYaw(n\collider), 0, True
+        RotateEntity(n\collider, 0, EntityYaw(n\collider), 0, True)
 
         PositionEntity(n\obj, EntityX(n\collider), EntityY(n\collider)-0.28, EntityZ(n\collider))
-        RotateEntity n\obj, EntityPitch(n\collider)-90, EntityYaw(n\collider), EntityRoll(n\collider), True
+        RotateEntity(n\obj, EntityPitch(n\collider)-90, EntityYaw(n\collider), EntityRoll(n\collider), True)
     EndIf
 End Function
 ;~IDEal Editor Parameters:

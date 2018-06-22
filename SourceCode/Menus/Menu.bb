@@ -129,7 +129,7 @@ Function UpdateInputBox$(x%, y%, width%, height%, Txt$, ID% = 0)
 	Local MouseOnBox% = False
 	If MouseOn(x, y, width, height) Then
 		MouseOnBox = True
-		If MouseHit1 Then SelectedInputBox = ID : FlushKeys
+		If MouseHit1 Then SelectedInputBox = ID : FlushKeys()
 	EndIf
 
 	If (Not MouseOnBox) And MouseHit1 And SelectedInputBox = ID Then SelectedInputBox = 0
@@ -143,10 +143,10 @@ End Function
 
 Function DrawInputBox$(x%, y%, width%, height%, Txt$, ID% = 0)
 	;TextBox(x,y,width,height,Txt$)
-	Color (255, 255, 255)
+	Color(255, 255, 255)
 	DrawTiledImageRect(uiAssets\tileWhite, (x Mod 256), (y Mod 256), 512, 512, x, y, width, height)
 	;Rect(x, y, width, height)
-	Color (0, 0, 0)
+	Color(0, 0, 0)
 
 	Local MouseOnBox% = False
 	If MouseOn(x, y, width, height) Then
@@ -155,17 +155,17 @@ Function DrawInputBox$(x%, y%, width%, height%, Txt$, ID% = 0)
 	EndIf
 
 	Rect(x + 2, y + 2, width - 4, height - 4)
-	Color (255, 255, 255)
+	Color(255, 255, 255)
 
 	If SelectedInputBox = ID Then
-		If (TimeInPosMilliSecs() Mod 800) < 400 Then Rect (x + width / 2 + StringWidth(Txt) / 2 + 2, y + height / 2 - 5, 2, 12)
+		If (TimeInPosMilliSecs() Mod 800) < 400 Then Rect(x + width / 2 + StringWidth(Txt) / 2 + 2, y + height / 2 - 5, 2, 12)
 	EndIf
 
 	Text(x + width / 2, y + height / 2, Txt, True, True)
 End Function
 
 Function DrawFrame(x%, y%, width%, height%, xoffset%=0, yoffset%=0)
-	Color 255, 255, 255
+	Color(255, 255, 255)
 	DrawTiledImageRect(uiAssets\tileWhite, xoffset, (y Mod 256), 512, 512, x, y, width, height)
 
 	DrawTiledImageRect(uiAssets\tileBlack, yoffset, (y Mod 256), 512, 512, x+3*MenuScale, y+3*MenuScale, width-6*MenuScale, height-6*MenuScale)
@@ -181,8 +181,13 @@ Function DrawUIButton(x%, y%, width%, height%, txt$, bigfont% = True)
 		Color(0, 0, 0)
 	EndIf
 
-	Color (255, 255, 255)
-	If bigfont Then SetFont uiAssets\font[1] Else SetFont uiAssets\font[0]
+	Color(255, 255, 255)
+	If (bigfont) Then
+		SetFont(uiAssets\font[1])
+	Else
+		SetFont(uiAssets\font[0])
+	EndIf
+		
 	Text(x + width / 2, y + height / 2, txt, True, True)
 End Function
 
@@ -202,7 +207,7 @@ End Function
 Function DrawUITick(x%, y%, selected%, locked% = False)
 	Local width% = 20 * MenuScale, height% = 20 * MenuScale
 
-	Color (255, 255, 255)
+	Color(255, 255, 255)
 	DrawTiledImageRect(uiAssets\tileWhite, (x Mod 256), (y Mod 256), 512, 512, x, y, width, height)
 	;Rect(x, y, width, height)
 
@@ -218,15 +223,15 @@ Function DrawUITick(x%, y%, selected%, locked% = False)
 
 	If selected Then
 		If Highlight Then
-			Color 255,255,255
+			Color(255,255,255)
 		Else
-			Color 200,200,200
+			Color(200,200,200)
 		EndIf
 		DrawTiledImageRect(uiAssets\tileWhite, (x Mod 256), (y Mod 256), 512, 512, x + 4, y + 4, width - 8, height - 8)
 		;Rect(x + 4, y + 4, width - 8, height - 8)
 	EndIf
 
-	Color 255, 255, 255
+	Color(255, 255, 255)
 End Function
 
 Function UpdateUITick%(x%, y%, selected%, locked% = False)
@@ -255,14 +260,14 @@ Function UpdateSlideBar#(x%, y%, width%, value#)
 End Function
 
 Function DrawSlideBar(x%, y%, width%, value#)
-	Color 255,255,255
+	Color(255,255,255)
 	Rect(x, y, width + 14, 20,False)
 
 	DrawImage(uiAssets\blinkBar, x + width * value / 100.0 +3, y+3)
 
-	Color 170,170,170
-	Text (x - 50 * MenuScale, y + 4*MenuScale, "LOW")
-	Text (x + width + 38 * MenuScale, y+4*MenuScale, "HIGH")
+	Color(170,170,170)
+	Text(x - 50 * MenuScale, y + 4*MenuScale, "LOW")
+	Text(x + width + 38 * MenuScale, y+4*MenuScale, "HIGH")
 End Function
 
 
@@ -288,12 +293,12 @@ Function RowText(A$, X%, Y%, W%, H%, align% = 0, Leading#=1)
 		trimmed = Trim(temp) ;we might ignore a final space
 		extra = 0 ;we haven't ignored it yet
 		;ignore final space If doing so would make a word fit at End of Line:
-		If (StringWidth (b$ + temp$) > W) And (StringWidth (b$ + trimmed$) <= W) Then
+		If (StringWidth(b$ + temp$) > W) And (StringWidth(b$ + trimmed$) <= W) Then
 			temp = trimmed
 			extra = 1
 		EndIf
 
-		If StringWidth (b$ + temp$) > W Then ;too big, so Print what will fit
+		If StringWidth(b$ + temp$) > W Then ;too big, so Print what will fit
 			If align Then
 				Text(X + W / 2 - (StringWidth(b) / 2), LinesShown * Height + Y, b)
 			Else
@@ -307,14 +312,14 @@ Function RowText(A$, X%, Y%, W%, H%, align% = 0, Leading#=1)
 			A$ = Right(A$, Len(A$) - (Len(temp$) + extra))
 		EndIf
 
-		If ((LinesShown + 1) * Height) > H Then Exit ;the Next Line would be too tall, so leave
+		If ((LinesShown + 1) * Height) > H Then Exit ;the Next Line(would be too tall, so leave)
 	Wend
 
 	If (b$ <> "") And((LinesShown + 1) <= H) Then
 		If align Then
-			Text(X + W / 2 - (StringWidth(b) / 2), LinesShown * Height + Y, b) ;Print any remaining Text If it'll fit vertically
+			Text(X + W / 2 - (StringWidth(b) / 2), LinesShown * Height + Y, b) ;Print(any remaining Text If it'll fit vertically)
 		Else
-			Text(X, LinesShown * Height + Y, b) ;Print any remaining Text If it'll fit vertically
+			Text(X, LinesShown * Height + Y, b) ;Print(any remaining Text If it'll fit vertically)
 		EndIf
 	EndIf
 End Function
@@ -353,11 +358,11 @@ Function DrawTooltip(message$)
 
 	Local width% = (StringWidth(message$))+20*MenuScale
 
-	Color 25,25,25
+	Color(25,25,25)
 	Rect(MouseX()+20,MouseY(),width,19*scale,True)
-	Color 150,150,150
+	Color(150,150,150)
 	Rect(MouseX()+20,MouseY(),width,19*scale,False)
-	SetFont uiAssets\font[0]
+	SetFont(uiAssets\font[0])
 	Text(MouseX()+(20*MenuScale)+(width/2),MouseY()+(12*MenuScale), message$, True, True)
 End Function
 

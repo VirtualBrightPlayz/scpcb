@@ -25,9 +25,9 @@ IniHackTool("Leaflet", "leaflet.jpg")
 IniHackTool("Journal Page", "journal.jpg")
 
 
-IniHackTool("Log #1", "f4.jpg")
-IniHackTool("Log #2", "f5.jpg")
-IniHackTool("Log #3", "f6.jpg")
+IniHackTool("Log(#1", "f4.jpg"))
+IniHackTool("Log(#2", "f5.jpg"))
+IniHackTool("Log(#3", "f6.jpg"))
 
 IniHackTool("Nuclear Device Document", "docWar.jpg")
 IniHackTool("Class D Orientation Leaflet", "docORI.jpg")

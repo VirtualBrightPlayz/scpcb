@@ -21,9 +21,9 @@ Function FillRoom_test_smallwindow_2(r.Rooms)
     PositionEntity(r\objects[2], r\x - 595.0 * RoomScale, 224.0*RoomScale, r\z - 208.0 * RoomScale)
     TurnEntity(r\objects[2],0,180,0)
     EntityParent(r\objects[2], r\obj)
-    HideEntity (r\objects[2])
+    HideEntity(r\objects[2])
 
-    FreeTexture Glasstex
+    FreeTexture(Glasstex)
 
     ;d = CreateDoor(r\zone, r\x - 240.0 * RoomScale, 0.0, r\z + 640.0 * RoomScale, 90, r, False, False, 1)
     ;d\autoClose = False : d\open = False
@@ -66,7 +66,7 @@ Function UpdateEventTestroom173(e.Events)
 					e\eventState = 1
 				EndIf
 			Else
-				ShowEntity (e\room\objects[2])
+				ShowEntity(e\room\objects[2])
 				;start a timer for 173 breaking through the window
 				e\eventState = e\eventState + 1
 				dist# = EntityDistance(mainPlayer\collider, e\room\objects[1])

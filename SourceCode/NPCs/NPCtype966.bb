@@ -9,11 +9,11 @@ Function InitializeNPCtype966(n.NPCs)
     n\nvName = "SCP-966-"+i
 
     n\collider = CreatePivot()
-    EntityRadius n\collider,0.2
+    EntityRadius(n\collider,0.2)
 
     For n2.NPCs = Each NPCs
         If (n\npcType = n2\npcType) And (n<>n2) Then
-            n\obj = CopyEntity (n2\obj)
+            n\obj = CopyEntity(n2\obj)
             Exit
         EndIf
     Next
@@ -22,16 +22,16 @@ Function InitializeNPCtype966(n.NPCs)
         n\obj = LoadAnimMesh("GFX/NPCs/scp966/scp-966.b3d")
     EndIf
 
-    EntityFX n\obj,1
+    EntityFX(n\obj,1)
 
     Local temp# = GetINIFloat("Data/NPCs.ini", "SCP-966", "scale")/40.0
-    ScaleEntity n\obj, temp, temp, temp
+    ScaleEntity(n\obj, temp, temp, temp)
 
-    ;EntityColor n\obj,Rnd(0,50),0,Rnd(50,100)
+    ;EntityColor(n\obj,Rnd(0,50),0,Rnd(50,100))
 
-    SetAnimTime n\obj,15.0
+    SetAnimTime(n\obj,15.0)
 
-    EntityType n\collider,HIT_PLAYER
+    EntityType(n\collider,HIT_PLAYER)
 
     n\speed = 0.02
 End Function
@@ -56,11 +56,11 @@ Function UpdateNPCtype966(n.NPCs)
         EndIf
 
         temp = Rnd(-1.0,1.0)
-        PositionEntity n\obj,EntityX(n\collider,True),EntityY(n\collider,True)-0.2,EntityZ(n\collider,True)
-        RotateEntity n\obj,-90.0,EntityYaw(n\collider),0.0
+        PositionEntity(n\obj,EntityX(n\collider,True),EntityY(n\collider,True)-0.2,EntityZ(n\collider,True))
+        RotateEntity(n\obj,-90.0,EntityYaw(n\collider),0.0)
 
         If (Not IsPlayerWearingTempName(mainPlayer,"nvgoggles")) Then
-            HideEntity n\obj
+            HideEntity(n\obj)
             If n\playerDistance<1 And n\reload <= 0 And MsgTimer <= 0 Then
                 Select Rand(6)
                     Case 1
@@ -82,7 +82,7 @@ Function UpdateNPCtype966(n.NPCs)
             n\reload = n\reload - timing\tickDuration
 
         Else
-            ShowEntity n\obj
+            ShowEntity(n\obj)
         EndIf
 
         If n\state3>5*70 Then
@@ -133,7 +133,7 @@ Function UpdateNPCtype966(n.NPCs)
 
                 n\currSpeed = CurveValue(0.0, n\currSpeed, 10.0)
 
-                MoveEntity n\collider,0,0,n\currSpeed
+                MoveEntity(n\collider,0,0,n\currSpeed)
 
             Case 1,2 ;echo
                 If n\state=1 Then
@@ -149,7 +149,7 @@ Function UpdateNPCtype966(n.NPCs)
                 EndIf
 
                 angle = VectorYaw(EntityX(mainPlayer\collider)-EntityX(n\collider),0,EntityZ(mainPlayer\collider)-EntityZ(n\collider))
-                RotateEntity n\collider,0.0,CurveAngle(angle,EntityYaw(n\collider),20.0),0.0
+                RotateEntity(n\collider,0.0,CurveAngle(angle,EntityYaw(n\collider),20.0),0.0)
 
                 If n\state3<900 Then
                     mainPlayer\blurTimer = ((Sin(TimeInPosMilliSecs()/50)+1.0)*200)/n\playerDistance
@@ -194,7 +194,7 @@ Function UpdateNPCtype966(n.NPCs)
                 EndIf
 
                 angle = VectorYaw(EntityX(mainPlayer\collider)-EntityX(n\collider),0,EntityZ(mainPlayer\collider)-EntityZ(n\collider))
-                RotateEntity n\collider,0.0,CurveAngle(angle,EntityYaw(n\collider),20.0),0.0
+                RotateEntity(n\collider,0.0,CurveAngle(angle,EntityYaw(n\collider),20.0),0.0)
             Case 5,6,8 ;walking or chasing
                 If n\frame<2343.0 Then ;start walking
                     AnimateNPC(n, 2319, 2343, 0.5, False)
@@ -214,7 +214,7 @@ Function UpdateNPCtype966(n.NPCs)
                             If n\pathStatus = 2 Then
                                 n\currSpeed = 0
                                 SetNPCFrame(n,201)
-                            ;SetAnimTime n\obj,15
+                            ;SetAnimTime(n\obj,15)
                             ElseIf n\pathStatus = 1 Then
                                 If n\path[n\pathLocation]=Null Then
                                     If n\pathLocation > 19 Then
@@ -224,7 +224,7 @@ Function UpdateNPCtype966(n.NPCs)
                                     EndIf
                                 Else
                                     n\angle = VectorYaw(EntityX(n\path[n\pathLocation]\obj,True)-EntityX(n\collider),0,EntityZ(n\path[n\pathLocation]\obj,True)-EntityZ(n\collider))
-                    ;RotateEntity n\collider,0.0,CurveAngle(angle,EntityYaw(n\collider),10.0),0.0
+                    ;RotateEntity(n\collider,0.0,CurveAngle(angle,EntityYaw(n\collider),10.0),0.0)
 
                                     dist2 = EntityDistance(n\collider,n\path[n\pathLocation]\obj)
 
@@ -250,12 +250,12 @@ Function UpdateNPCtype966(n.NPCs)
                         n\currSpeed = CurveValue(n\speed,n\currSpeed,10.0)
                     Else
                         If TimeInPosMilliSecs() > n\state2 And n\playerDistance<16.0 Then
-                            HideEntity n\collider
+                            HideEntity(n\collider)
                             EntityPick(n\collider, 1.5)
                             If PickedEntity() <> 0 Then
                                 n\angle = EntityYaw(n\collider)+Rnd(80,110)
                             EndIf
-                            ShowEntity n\collider
+                            ShowEntity(n\collider)
 
                             n\state2=TimeInPosMilliSecs()+1000
 
@@ -266,9 +266,9 @@ Function UpdateNPCtype966(n.NPCs)
 
                     EndIf
 
-                    RotateEntity n\collider, 0, CurveAngle(n\angle,EntityYaw(n\collider),30.0),0
+                    RotateEntity(n\collider, 0, CurveAngle(n\angle,EntityYaw(n\collider),30.0),0)
 
-                    MoveEntity n\collider,0,0,n\currSpeed
+                    MoveEntity(n\collider,0,0,n\currSpeed)
                 EndIf
             Case 10 ;attack
                 If n\lastSeen=0 Then
@@ -310,11 +310,11 @@ Function UpdateNPCtype966(n.NPCs)
                 EndIf
 
                 n\angle = VectorYaw(EntityX(mainPlayer\collider)-EntityX(n\collider),0,EntityZ(mainPlayer\collider)-EntityZ(n\collider))
-                RotateEntity n\collider, 0, CurveAngle(n\angle,EntityYaw(n\collider),30.0),0
+                RotateEntity(n\collider, 0, CurveAngle(n\angle,EntityYaw(n\collider),30.0),0)
 
         End Select
     Else
-        HideEntity n\obj
+        HideEntity(n\obj)
         If (Rand(600)=1) Then
             TeleportCloser(n)
         EndIf

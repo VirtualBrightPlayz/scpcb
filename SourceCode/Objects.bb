@@ -5,8 +5,8 @@ Function CreateButton%(x#,y#,z#, pitch#,yaw#,roll#=0)
 
 	ScaleEntity(obj, 0.03, 0.03, 0.03)
 
-	PositionEntity obj, x,y,z
-	RotateEntity obj, pitch,yaw,roll
+	PositionEntity(obj, x,y,z)
+	RotateEntity(obj, pitch,yaw,roll)
 
 	EntityPickMode(obj, 2)
 
@@ -19,8 +19,8 @@ Function UpdateButton(obj%)
 	
 	If dist < 0.8 Then
 		temp% = CreatePivot()
-		PositionEntity temp, EntityX(mainPlayer\cam), EntityY(mainPlayer\cam), EntityZ(mainPlayer\cam)
-		PointEntity temp,obj
+		PositionEntity(temp, EntityX(mainPlayer\cam), EntityY(mainPlayer\cam), EntityZ(mainPlayer\cam))
+		PointEntity(temp,obj)
 
 		If EntityPick(temp, 0.65) = obj Then
 			If mainPlayer\closestButton = 0 Then
@@ -30,7 +30,7 @@ Function UpdateButton(obj%)
 			EndIf
 		EndIf
 
-		FreeEntity temp
+		FreeEntity(temp)
 	EndIf
 End Function
 
@@ -203,7 +203,7 @@ Function UpdateElevators#(state#, door1.Doors, door2.Doors, room1%, room2%, even
 					x# = Max(Min((EntityX(mainPlayer\collider)-EntityX(room1,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
 					z# = Max(Min((EntityZ(mainPlayer\collider)-EntityZ(room1,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
 					PositionEntity(mainPlayer\collider, EntityX(room2,True)+x,0.1+EntityY(room2,True)+(EntityY(mainPlayer\collider)-EntityY(room1,True)),EntityZ(room2,True)+z,True)
-					ResetEntity mainPlayer\collider
+					ResetEntity(mainPlayer\collider)
 					UpdateDoorsTimer = 0
 					mainPlayer\dropSpeed = 0
 					UpdateDoors()
@@ -214,12 +214,12 @@ Function UpdateElevators#(state#, door1.Doors, door2.Doors, room1%, room2%, even
 					x# = Max(Min((EntityX(NPC_inside\collider)-EntityX(room1,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
 					z# = Max(Min((EntityZ(NPC_inside\collider)-EntityZ(room1,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
 					PositionEntity(NPC_inside\collider, EntityX(room2,True)+x,0.1+EntityY(room2,True)+(EntityY(NPC_inside\collider)-EntityY(room1,True)),EntityZ(room2,True)+z,True)
-					ResetEntity NPC_inside\collider
+					ResetEntity(NPC_inside\collider)
 					UpdateDoorsTimer = 0
 					NPC_inside\dropSpeed = 0
 					If NPC_inside\idle Then
-						TurnEntity NPC_inside\obj,0,180,0
-						TurnEntity NPC_inside\collider,0,180,0
+						TurnEntity(NPC_inside\obj,0,180,0)
+						TurnEntity(NPC_inside\collider,0,180,0)
 						NPC_inside\idle = False
 					EndIf
 					NPC_inside\currElevator = Null
@@ -276,7 +276,7 @@ Function UpdateElevators#(state#, door1.Doors, door2.Doors, room1%, room2%, even
 					x# = Max(Min((EntityX(mainPlayer\collider)-EntityX(room2,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
 					z# = Max(Min((EntityZ(mainPlayer\collider)-EntityZ(room2,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
 					PositionEntity(mainPlayer\collider, EntityX(room1,True)+x,0.1+EntityY(room1,True)+(EntityY(mainPlayer\collider)-EntityY(room2,True)),EntityZ(room1,True)+z,True)
-					ResetEntity mainPlayer\collider
+					ResetEntity(mainPlayer\collider)
 					UpdateDoorsTimer = 0
 					mainPlayer\dropSpeed = 0
 					UpdateDoors()
@@ -287,12 +287,12 @@ Function UpdateElevators#(state#, door1.Doors, door2.Doors, room1%, room2%, even
 					x# = Max(Min((EntityX(NPC_inside\collider)-EntityX(room2,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
 					z# = Max(Min((EntityZ(NPC_inside\collider)-EntityZ(room2,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
 					PositionEntity(NPC_inside\collider, EntityX(room1,True)+x,0.1+EntityY(room1,True)+(EntityY(NPC_inside\collider)-EntityY(room2,True)),EntityZ(room1,True)+z,True)
-					ResetEntity NPC_inside\collider
+					ResetEntity(NPC_inside\collider)
 					UpdateDoorsTimer = 0
 					NPC_inside\dropSpeed = 0
 					If NPC_inside\idle Then
-						TurnEntity NPC_inside\obj,0,180,0
-						TurnEntity NPC_inside\collider,0,180,0
+						TurnEntity(NPC_inside\obj,0,180,0)
+						TurnEntity(NPC_inside\collider,0,180,0)
 						NPC_inside\idle = False
 					EndIf
 					NPC_inside\currElevator = Null
@@ -381,11 +381,11 @@ Function UpdateElevators2#(State#, door1.Doors, door2.Doors, room1%, room2%, eve
 					;x# = Max(Min((EntityX(mainPlayer\collider)-EntityX(room1,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
 					;z# = Max(Min((EntityZ(mainPlayer\collider)-EntityZ(room1,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
 
-					RotateEntity mainPlayer\collider,EntityPitch(mainPlayer\collider,True),EntityYaw(room2,True)+angleDist(EntityYaw(mainPlayer\collider,True),EntityYaw(room1,True)),EntityRoll(mainPlayer\collider,True),True ;dir
+					RotateEntity(mainPlayer\collider,EntityPitch(mainPlayer\collider,True),EntityYaw(room2,True)+angleDist(EntityYaw(mainPlayer\collider,True),EntityYaw(room1,True)),EntityRoll(mainPlayer\collider,True),True) ;dir
 
-					PositionEntity mainPlayer\collider, EntityX(room2,True)+x,0.05+EntityY(room2,True)+(EntityY(mainPlayer\collider)-EntityY(room1,True)),EntityZ(room2,True)+z,True
+					PositionEntity(mainPlayer\collider, EntityX(room2,True)+x,0.05+EntityY(room2,True)+(EntityY(mainPlayer\collider)-EntityY(room1,True)),EntityZ(room2,True)+z,True)
 
-					ResetEntity mainPlayer\collider
+					ResetEntity(mainPlayer\collider)
 					UpdateDoors()
 					UpdateRooms()
 				EndIf
@@ -436,11 +436,11 @@ Function UpdateElevators2#(State#, door1.Doors, door2.Doors, room1%, room2%, eve
 					;x# = Max(Min((EntityX(mainPlayer\collider)-EntityX(room2,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
 					;z# = Max(Min((EntityZ(mainPlayer\collider)-EntityZ(room2,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
 
-					RotateEntity mainPlayer\collider,EntityPitch(mainPlayer\collider,True),EntityYaw(room2,True)+angleDist(EntityYaw(mainPlayer\collider,True),EntityYaw(room1,True)),EntityRoll(mainPlayer\collider,True),True ;dir
+					RotateEntity(mainPlayer\collider, EntityPitch(mainPlayer\collider,True),EntityYaw(room2,True)+angleDist(EntityYaw(mainPlayer\collider,True),EntityYaw(room1,True)),EntityRoll(mainPlayer\collider,True),True) ;dir
 
-					PositionEntity mainPlayer\collider, EntityX(room1,True)+x,0.05+EntityY(room1,True)+(EntityY(mainPlayer\collider)-EntityY(room2,True)),EntityZ(room1,True)+z,True
+					PositionEntity(mainPlayer\collider, EntityX(room1,True)+x,0.05+EntityY(room1,True)+(EntityY(mainPlayer\collider)-EntityY(room2,True)),EntityZ(room1,True)+z,True)
 
-					ResetEntity mainPlayer\collider
+					ResetEntity(mainPlayer\collider)
 					UpdateDoors()
 					UpdateRooms()
 				EndIf

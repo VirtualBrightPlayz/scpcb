@@ -33,7 +33,7 @@ Function Draw294()
 	DrawImage(panel294, x, y)
 	DropAsset(panel294)
 
-	Text x+907, y+185, Input294, True,True
+	Text(x+907, y+185, Input294, True,True)
 
 	ShowPointer2()
 End Function
@@ -190,7 +190,7 @@ Function Update294()
 					;TODO: Re-implement
 					;it.Items = CreateItem("Cup", "cup", EntityX(mainPlayer\currRoom\objects[1],True),EntityY(mainPlayer\currRoom\objects[1],True),EntityZ(mainPlayer\currRoom\objects[1],True), r,g,b,alpha)
 					it\name = "Cup of "+Input294
-					EntityType (it\collider, HIT_ITEM)
+					EntityType(it\collider, HIT_ITEM)
 				Else
 					;out of range
 					Input294 = "OUT OF RANGE"
@@ -208,7 +208,7 @@ Function Update294()
 		EndIf
 
 	Else ;playing a dispensing sound
-		If Input294 <> "OUT OF RANGE" Then Input294 = "DISPENSING..." : DebugLog "cringe"
+		If Input294 <> "OUT OF RANGE" Then Input294 = "DISPENSING..." : DebugLog("cringe")
 
 		If Not IsChannelPlaying(mainPlayer\currRoom\soundCHN) Then
 			If Input294 <> "OUT OF RANGE" Then

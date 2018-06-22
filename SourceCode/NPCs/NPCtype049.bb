@@ -87,7 +87,7 @@ Function UpdateNPCtype049(n.NPCs)
 				EndIf
 			Else ; S T O P P ;chasing
 				n\currSpeed = CurveValue(n\speed, n\currSpeed, 20.0)
-				MoveEntity n\collider, 0, 0, n\currSpeed * timing\tickDuration
+				MoveEntity(n\collider, 0, 0, n\currSpeed * timing\tickDuration)
 
 				If n\playerDistance < 3.0 Then ;extends arm
 					AnimateNPC(n, Max(Min(AnimTime(n\obj),428.0),387), 463.0, n\currSpeed*38)
@@ -133,9 +133,9 @@ Function UpdateNPCtype049(n.NPCs)
 						EndIf
 
 						n\currSpeed = CurveValue(n\speed, n\currSpeed, 20.0)
-						PointEntity n\obj,n\path[n\pathLocation]\obj
-						RotateEntity n\collider,0,CurveAngle(EntityYaw(n\obj),EntityYaw(n\collider),10.0),0
-						MoveEntity n\collider,0,0,n\currSpeed*timing\tickDuration
+						PointEntity(n\obj,n\path[n\pathLocation]\obj)
+						RotateEntity(n\collider,0,CurveAngle(EntityYaw(n\obj),EntityYaw(n\collider),10.0),0)
+						MoveEntity(n\collider,0,0,n\currSpeed*timing\tickDuration)
 
 						;opens doors in front of him
 						dist2# = EntityDistance(n\collider,n\path[n\pathLocation]\obj)
@@ -211,7 +211,7 @@ Function UpdateNPCtype049(n.NPCs)
 						GoToElevator(n)
 
 						If n\currSpeed > 0.0 Then
-							MoveEntity n\collider,0,0,n\currSpeed*timing\tickDuration
+							MoveEntity(n\collider,0,0,n\currSpeed*timing\tickDuration)
 							AnimateNPC(n, Max(Min(AnimTime(n\obj),358.0),346), 393.0, n\currSpeed*38)
 						Else
 							AnimateNPC(n, 269, 345, 0.2)
@@ -242,9 +242,9 @@ Function UpdateNPCtype049(n.NPCs)
 						EndIf
 
 						n\currSpeed = CurveValue(n\speed, n\currSpeed, 20.0)
-						PointEntity n\obj,n\path[n\pathLocation]\obj
-						RotateEntity n\collider,0,CurveAngle(EntityYaw(n\obj),EntityYaw(n\collider),10.0),0
-						MoveEntity n\collider,0,0,n\currSpeed*timing\tickDuration
+						PointEntity(n\obj,n\path[n\pathLocation]\obj)
+						RotateEntity(n\collider,0,CurveAngle(EntityYaw(n\obj),EntityYaw(n\collider),10.0),0)
+						MoveEntity(n\collider,0,0,n\currSpeed*timing\tickDuration)
 
 						;opens doors in front of him
 						dist2# = EntityDistance(n\collider,n\path[n\pathLocation]\obj)
@@ -332,7 +332,7 @@ Function UpdateNPCtype049(n.NPCs)
 
     PositionEntity(n\obj, EntityX(n\collider), EntityY(n\collider)-0.22, EntityZ(n\collider))
 
-    RotateEntity n\obj, 0, EntityYaw(n\collider), 0
+    RotateEntity(n\obj, 0, EntityYaw(n\collider), 0)
 
     n\lastSeen = Max(n\lastSeen-timing\tickDuration,0)
 

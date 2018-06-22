@@ -27,14 +27,14 @@ Function FillRoom_srvr_096_2(r.Rooms)
 
 		Select n
 			Case 0 ;power switch
-				PositionEntity (r\levers[n]\obj, r\x - 1260.0 * RoomScale, r\y + 234.0 * RoomScale, r\z + 750 * RoomScale, True)
-				PositionEntity (r\levers[n]\baseObj, r\x - 1260.0 * RoomScale, r\y + 234.0 * RoomScale, r\z + 750 * RoomScale, True)
+				PositionEntity(r\levers[n]\obj, r\x - 1260.0 * RoomScale, r\y + 234.0 * RoomScale, r\z + 750 * RoomScale, True)
+				PositionEntity(r\levers[n]\baseObj, r\x - 1260.0 * RoomScale, r\y + 234.0 * RoomScale, r\z + 750 * RoomScale, True)
 			Case 1 ;generator fuel pump
-				PositionEntity (r\levers[n]\obj, r\x - 920.0 * RoomScale, r\y + 164.0 * RoomScale, r\z + 898 * RoomScale, True)
-				PositionEntity (r\levers[n]\baseObj, r\x - 920.0 * RoomScale, r\y + 164.0 * RoomScale, r\z + 898 * RoomScale, True)
+				PositionEntity(r\levers[n]\obj, r\x - 920.0 * RoomScale, r\y + 164.0 * RoomScale, r\z + 898 * RoomScale, True)
+				PositionEntity(r\levers[n]\baseObj, r\x - 920.0 * RoomScale, r\y + 164.0 * RoomScale, r\z + 898 * RoomScale, True)
 			Case 2 ;generator on/off
-				PositionEntity (r\levers[n]\obj, r\x - 837.0 * RoomScale, r\y + 152.0 * RoomScale, r\z + 886 * RoomScale, True)
-				PositionEntity (r\levers[n]\baseObj, r\x - 837.0 * RoomScale, r\y + 152.0 * RoomScale, r\z + 886 * RoomScale, True)
+				PositionEntity(r\levers[n]\obj, r\x - 837.0 * RoomScale, r\y + 152.0 * RoomScale, r\z + 886 * RoomScale, True)
+				PositionEntity(r\levers[n]\baseObj, r\x - 837.0 * RoomScale, r\y + 152.0 * RoomScale, r\z + 886 * RoomScale, True)
 		End Select
 
 		EntityParent(r\levers[n]\obj, r\obj)
@@ -44,8 +44,8 @@ Function FillRoom_srvr_096_2(r.Rooms)
         RotateEntity(r\levers[n]\obj, 81, -180, 0)
 
         ;EntityPickMode(r\levers[n]\obj, 2)
-        EntityPickMode r\levers[n]\obj, 1, False
-        EntityRadius r\levers[n]\obj, 0.1
+        EntityPickMode(r\levers[n]\obj, 1, False)
+        EntityRadius(r\levers[n]\obj, 0.1)
         ;makecollbox(r\levers[n]\obj)
     Next
 
@@ -90,11 +90,11 @@ Function UpdateEvent_srvr_096_2(e.Events)
 			If Curr096=Null Then
 				Curr096 = CreateNPC(NPCtype096, EntityX(e\room\objects[6],True),EntityY(e\room\objects[6],True)+0.1,EntityZ(e\room\objects[6],True))
 			Else
-				PositionEntity Curr096\collider, EntityX(e\room\objects[6],True),EntityY(e\room\objects[6],True)+0.1,EntityZ(e\room\objects[6],True),True
+				PositionEntity(Curr096\collider, EntityX(e\room\objects[6],True),EntityY(e\room\objects[6],True)+0.1,EntityZ(e\room\objects[6],True),True)
 			EndIf
 
-			RotateEntity Curr096\collider, 0, e\room\angle, 0, True
-			ResetEntity Curr096\collider
+			RotateEntity(Curr096\collider, 0, e\room\angle, 0, True)
+			ResetEntity(Curr096\collider)
 			Curr096\state=2
 			Curr096\state2=70*10
 
@@ -121,8 +121,8 @@ Function UpdateEvent_srvr_096_2(e.Events)
 					Curr096\state2=70*10
 				Else
 					Curr096\state = 5
-					PointEntity Curr096\collider, e\room\objects[9]
-					RotateEntity Curr096\collider, 0, EntityYaw(Curr096\collider,True),0,True
+					PointEntity(Curr096\collider, e\room\objects[9])
+					RotateEntity(Curr096\collider, 0, EntityYaw(Curr096\collider,True),0,True)
 					If EntityDistance(Curr096\collider, e\room\objects[8])<2.4 Then
 						Curr096\state2 = 0
 					Else
@@ -131,8 +131,8 @@ Function UpdateEvent_srvr_096_2(e.Events)
 				EndIf
 
 				e\room\npc[0]\state=8
-				SetAnimTime e\room\npc[0]\obj, 115
-				PointEntity e\room\npc[0]\collider, Curr096\collider
+				SetAnimTime(e\room\npc[0]\obj, 115)
+				PointEntity(e\room\npc[0]\collider, Curr096\collider)
 			ElseIf e\eventState-timing\tickDuration =< 70*15 Then ;walk to the doorway
 				If e\eventState > 70*15 Then
 					e\room\npc[0]\state=3
@@ -144,9 +144,9 @@ Function UpdateEvent_srvr_096_2(e.Events)
 					e\room\roomDoors[2]\open = False
 
 					e\room\npc[0]\state=7
-					;SetAnimTime e\room\npc[0]\obj, 115
-					PointEntity e\room\npc[0]\obj, Curr096\collider
-					RotateEntity (e\room\npc[0]\collider, 0, CurveAngle(EntityYaw(e\room\npc[0]\obj),EntityYaw(e\room\npc[0]\collider),30),0)
+					;SetAnimTime(e\room\npc[0]\obj, 115)
+					PointEntity(e\room\npc[0]\obj, Curr096\collider)
+					RotateEntity(e\room\npc[0]\collider, 0, CurveAngle(EntityYaw(e\room\npc[0]\obj),EntityYaw(e\room\npc[0]\collider),30),0)
 
 				EndIf
 			Else ;start walking away
@@ -155,8 +155,8 @@ Function UpdateEvent_srvr_096_2(e.Events)
 					Curr096\lastSeen=1
 
 					e\room\npc[0]\state = 2
-					PointEntity e\room\npc[0]\obj, Curr096\collider
-					RotateEntity (e\room\npc[0]\collider, 0, CurveAngle(EntityYaw(e\room\npc[0]\obj),EntityYaw(e\room\npc[0]\collider),30),0)
+					PointEntity(e\room\npc[0]\obj, Curr096\collider)
+					RotateEntity(e\room\npc[0]\collider, 0, CurveAngle(EntityYaw(e\room\npc[0]\obj),EntityYaw(e\room\npc[0]\collider),30),0)
 					;If mainPlayer\currRoom = e\room Then LightBlink = (e\room\npc[0]\reload)+Rnd(0.5,2.0)
 					Curr096\target = e\room\npc[0]
 				Else
@@ -171,7 +171,8 @@ Function UpdateEvent_srvr_096_2(e.Events)
 
 			Curr096\target = e\room\npc[0]
 			If AnimTime(Curr096\obj)>25 And AnimTime(Curr096\obj)<150 Then
-				FreeSound e\sounds[0] : e\sounds[0] = 0
+				FreeSound(e\sounds[0])
+				e\sounds[0] = 0
 				e\sounds[0]=LoadSound("SFX/Character/Guard/096ServerRoom2.ogg")
 				e\soundChannels[0]=PlaySound(e\sounds[0])
 
@@ -208,7 +209,8 @@ Function UpdateEvent_srvr_096_2(e.Events)
 				e\room\roomDoors[1]\locked=False
 				UseDoor(e\room\roomDoors[0],False)
 				UseDoor(e\room\roomDoors[1],False)
-				FreeSound e\sounds[0] : e\sounds[0] = 0
+				FreeSound(e\sounds[0])
+				e\sounds[0] = 0
 				e\room\roomDoors[0]\locked=True
 				e\room\roomDoors[1]\locked=True
 			EndIf

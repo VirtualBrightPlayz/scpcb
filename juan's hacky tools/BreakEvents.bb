@@ -5,7 +5,7 @@ Function CreateEvent(eventname$, roomname$, id%, prob# = 0.0)
 	
 	Local roomFile% = OpenFile("Rooms - Copy/"+roomname+".bb")
 	If roomFile=0 Then
-		RuntimeError roomname+" isn't a bb file"
+		RuntimeError(roomname+" isn't a bb file")
 	EndIf
 	SeekFile(roomFile,FileSize("Rooms - Copy/"+roomname+".bb"))
 	
@@ -41,14 +41,14 @@ Function CreateEvent(eventname$, roomname$, id%, prob# = 0.0)
 	WriteLine(roomFile,"End Function")
 	WriteLine(roomFile,"")
 
-	CloseFile roomFile
-	CloseFile eventsFile
+	CloseFile(roomFile)
+	CloseFile(eventsFile)
 	
 	Local newEventsFile% = OpenFile("NewEvents - Copy.bb")
 	SeekFile(newEventsFile,FileSize("NewEvents - Copy.bb"))
 	WriteLine(newEventsFile,Chr(9)+Chr(9)+Chr(9)+"Case "+Chr(34)+eventname+Chr(34))
 	WriteLine(newEventsFile,Chr(9)+Chr(9)+Chr(9)+Chr(9)+"UpdateEvent"+capeventname+"(e)")
-	CloseFile newEventsFile
+	CloseFile(newEventsFile)
 End Function
 
 Function InitEvents()

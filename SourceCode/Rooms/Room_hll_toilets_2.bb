@@ -34,10 +34,10 @@ Function UpdateEventToiletguard(e.Events)
 		If e\room\dist < 8.0  And e\room\dist > 0 Then e\eventState = 1
 	ElseIf e\eventState = 1 Then
 		e\room\npc[0]=CreateNPC(NPCtypeGuard, EntityX(e\room\objects[1],True), EntityY(e\room\objects[1],True)+0.5, EntityZ(e\room\objects[1],True))
-		PointEntity e\room\npc[0]\collider, e\room\obj
-		RotateEntity e\room\npc[0]\collider, 0, EntityYaw(e\room\npc[0]\collider)-20,0, True
+		PointEntity(e\room\npc[0]\collider, e\room\obj)
+		RotateEntity(e\room\npc[0]\collider, 0, EntityYaw(e\room\npc[0]\collider)-20,0, True)
 
-		SetNPCFrame (e\room\npc[0], 906)
+		SetNPCFrame(e\room\npc[0], 906)
 		e\room\npc[0]\state = 8
 
 		e\eventState = 2
@@ -48,13 +48,13 @@ Function UpdateEventToiletguard(e.Events)
 
 		ElseIf e\room\dist<4.0 And mainPlayer\loudness > 1.0 Then
 			de.Decals = CreateDecal(3,  EntityX(e\room\objects[2],True), 0.01, EntityZ(e\room\objects[2],True),90,Rnd(360),0)
-			de\size = 0.3 : ScaleSprite (de\obj, de\size, de\size)
+			de\size = 0.3 : ScaleSprite(de\obj, de\size, de\size)
 
 			de.Decals = CreateDecal(17,  EntityX(e\room\objects[2],True), 0.01, EntityZ(e\room\objects[2],True),90,Rnd(360),0)
 			de\size = 0.1 : de\maxSize = 0.45 : de\sizeChange = 0.0002 : UpdateDecals()
 
-			;FreeSound e\sounds[0]
-			;StopChannel e\soundChannels[0]
+			;FreeSound(e\sounds[0])
+			;StopChannel(e\soundChannels[0])
 			;LoadEventSound(e,"SFX/Character/Guard/SuicideGuard2.ogg",1)
 			If e\soundChannels[1] = 0 Then
 				StopChannel(e\soundChannels[0])

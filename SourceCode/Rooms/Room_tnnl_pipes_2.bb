@@ -55,14 +55,14 @@ Function UpdateEventRoom2pipes106(e.Events)
 				If EntityDistance(Curr106\collider, mainPlayer\collider)<4.0 Then
 					pvt = CreatePivot()
 					PositionEntity(pvt, EntityX(Curr106\collider),EntityY(Curr106\collider),EntityZ(Curr106\collider))
-					PointEntity pvt, mainPlayer\collider
+					PointEntity(pvt, mainPlayer\collider)
 					If WrapAngle(EntityYaw(pvt)-EntityYaw(Curr106\collider))<80 Then
 						Curr106\state = -11
 						Curr106\idle = False
 						;PlaySound2(HorrorSFX(10)) ;TODO: fix
 						e\eventState = 260
 					EndIf
-					FreeEntity pvt
+					FreeEntity(pvt)
 				EndIf
 			ElseIf e\eventState < 250 Then
 				Curr106\idle = True
@@ -75,7 +75,7 @@ Function UpdateEventRoom2pipes106(e.Events)
 			ResetEntity(Curr106\collider)
 
 			PositionEntity(Curr106\obj, EntityX(Curr106\collider), EntityY(Curr106\collider) - 0.15, EntityZ(Curr106\collider))
-			RotateEntity Curr106\obj, 0, EntityYaw(Curr106\collider), 0
+			RotateEntity(Curr106\obj, 0, EntityYaw(Curr106\collider), 0)
 
 			;PositionEntity(Curr106\collider, EntityX(Curr106\collider), EntityY(mainPlayer\collider) - 0.20, EntityZ(Curr106\collider))
 

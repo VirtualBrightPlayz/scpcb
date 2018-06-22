@@ -22,7 +22,7 @@ Function CreateParticle.Particles(x#, y#, z#, image%, size#, gravity# = 1.0, lif
 	RotateEntity(p\obj, 0, 0, Rnd(360))
 	EntityFX(p\obj, 1 + 8)
 
-	SpriteViewMode (p\obj, 3)
+	SpriteViewMode(p\obj, 3)
 
 	Select image
 		Case 0,5,6
@@ -60,7 +60,7 @@ Function UpdateParticles()
 
 		If p\sizeChange <> 0 Then
 			p\size= p\size+p\sizeChange * timing\tickDuration
-			ScaleSprite p\obj, p\size, p\size
+			ScaleSprite(p\obj, p\size, p\size)
 		EndIf
 
 		ShowEntity(p\obj)
@@ -113,7 +113,7 @@ Function UpdateEmitters()
 			RotateEntity(p\pvt, EntityPitch(e\obj, True), EntityYaw(e\obj, True), EntityRoll(e\obj, True), True)
 			TurnEntity(p\pvt, Rnd(-e\randAngle, e\randAngle), Rnd(-e\randAngle, e\randAngle), 0)
 
-			TurnEntity p\obj, 0,0,Rnd(360)
+			TurnEntity(p\obj, 0,0,Rnd(360))
 
 			p\sizeChange = e\sizeChange
 

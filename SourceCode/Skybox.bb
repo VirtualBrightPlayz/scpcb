@@ -44,23 +44,23 @@ Function sky_CreateSky(filename$,parent%=0)
 				Case 6
 					
 			End Select
-			AddTriangle s,0,1,2
-			AddTriangle s,0,2,3
-			FreeBrush b
+			AddTriangle(s,0,1,2)
+			AddTriangle(s,0,2,3)
+			FreeBrush(b)
 		EndIf
 	Next
-	FlipMesh sky
-	EntityFX sky,1+8
-	EntityOrder sky,1000
+	FlipMesh(sky)
+	EntityFX(sky,1+8)
+	EntityOrder(sky,1000)
 	Return sky
 End Function
 
 Function UpdateSky()
-	PositionEntity Sky, EntityX(mainPlayer\cam),EntityY(mainPlayer\cam),EntityZ(mainPlayer\cam), True
+	PositionEntity(Sky, EntityX(mainPlayer\cam),EntityY(mainPlayer\cam),EntityZ(mainPlayer\cam), True)
 End Function
 
 Function Update1499Sky()
-	PositionEntity NTF_1499Sky, EntityX(mainPlayer\cam),EntityY(mainPlayer\cam),EntityZ(mainPlayer\cam), True
+	PositionEntity(NTF_1499Sky, EntityX(mainPlayer\cam),EntityY(mainPlayer\cam),EntityZ(mainPlayer\cam), True)
 End Function
 
 

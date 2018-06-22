@@ -7,22 +7,22 @@ Function FillRoom_test_860_2(r.Rooms)
 
     ;the wooden door
     r\objects[2] = LoadMesh("GFX/Map/forest/door_frame.b3d")
-    PositionEntity r\objects[2],r\x + 184.0 * RoomScale,0,r\z,True
-    ScaleEntity r\objects[2],45.0*RoomScale,45.0*RoomScale,80.0*RoomScale,True
-    EntityParent r\objects[2],r\obj
+    PositionEntity(r\objects[2],r\x + 184.0 * RoomScale,0,r\z,True)
+    ScaleEntity(r\objects[2],45.0*RoomScale,45.0*RoomScale,80.0*RoomScale,True)
+    EntityParent(r\objects[2],r\obj)
 
     r\objects[3] =  LoadMesh("GFX/Map/forest/door.b3d")
-    PositionEntity r\objects[3],r\x + 112.0 * RoomScale,0,r\z+0.05,True
-    EntityType r\objects[3], HIT_MAP
+    PositionEntity(r\objects[3],r\x + 112.0 * RoomScale,0,r\z+0.05,True)
+    EntityType(r\objects[3], HIT_MAP)
 
-    ScaleEntity r\objects[3],46.0*RoomScale,45.0*RoomScale,46.0*RoomScale,True
-    EntityParent r\objects[3],r\obj
+    ScaleEntity(r\objects[3],46.0*RoomScale,45.0*RoomScale,46.0*RoomScale,True)
+    EntityParent(r\objects[3],r\obj)
 
     r\objects[4] = CopyEntity(r\objects[3])
-    PositionEntity r\objects[4],r\x + 256.0 * RoomScale,0,r\z-0.05,True
-    RotateEntity r\objects[4], 0,180,0
-    ScaleEntity r\objects[4],46.0*RoomScale,45.0*RoomScale,46.0*RoomScale,True
-    EntityParent r\objects[4],r\obj
+    PositionEntity(r\objects[4],r\x + 256.0 * RoomScale,0,r\z-0.05,True)
+    RotateEntity(r\objects[4], 0,180,0)
+    ScaleEntity(r\objects[4],46.0*RoomScale,45.0*RoomScale,46.0*RoomScale,True)
+    EntityParent(r\objects[4],r\obj)
 
     ;doors to observation booth
     d = CreateDoor(r\zone, r\x + 928.0 * RoomScale,0,r\z + 640.0 * RoomScale,0,r,False,False,False,"ABCD")
@@ -38,14 +38,14 @@ Function FillRoom_test_860_2(r.Rooms)
     r\fr=fr
     GenForestGrid(fr)
     PlaceForest(fr,r\x,r\y+30.0,r\z,r)
-    ;EntityParent fr\forest_Pivot,r\obj
+    ;EntityParent(fr\forest_Pivot,r\obj)
 
     it = CreateItem("Document SCP-860-1", "paper", r\x + 672.0 * RoomScale, r\y + 176.0 * RoomScale, r\z + 335.0 * RoomScale)
-    RotateEntity it\collider, 0, r\angle+10, 0
+    RotateEntity(it\collider, 0, r\angle+10, 0)
     EntityParent(it\collider, r\obj)
 
     it = CreateItem("Document SCP-860", "paper", r\x + 1152.0 * RoomScale, r\y + 176.0 * RoomScale, r\z - 384.0 * RoomScale)
-    RotateEntity it\collider, 0, r\angle+170, 0
+    RotateEntity(it\collider, 0, r\angle+170, 0)
     EntityParent(it\collider, r\obj)
 End Function
 
@@ -75,8 +75,8 @@ Function UpdateEvent_test_860_2(e.Events)
 
 			Curr106\idle = True
 
-			;ShowEntity fr\detailEntities[0]
-			;ShowEntity fr\detailEntities[1]
+			;ShowEntity(fr\detailEntities[0])
+			;ShowEntity(fr\detailEntities[1])
 
 			UpdateForest(fr,mainPlayer\collider)
 
@@ -114,14 +114,14 @@ Function UpdateEvent_test_860_2(e.Events)
 						;If e\eventState3 > 3500 And Rnd(10000)<e\eventState3 Then
 						If e\eventState3 > 3000-(500*SelectedDifficulty\aggressiveNPCs) And Rnd(10000+(500*SelectedDifficulty\aggressiveNPCs)) < e\eventState3 Then
 							e\room\npc[0]\state=2
-							PositionEntity e\room\npc[0]\collider, 0,-110,0
+							PositionEntity(e\room\npc[0]\collider, 0,-110,0)
 							;e\eventState3=e\eventState3-Rnd(2000,3000)
 							e\eventState3=e\eventState3-Rnd(1000,2000-(500*SelectedDifficulty\aggressiveNPCs))
-							DebugLog "attack"
+							DebugLog("attack")
 						Else
 							e\room\npc[0]\state=1
-							PositionEntity e\room\npc[0]\collider, 0,-110,0
-							DebugLog "spawn"
+							PositionEntity(e\room\npc[0]\collider, 0,-110,0)
+							DebugLog("spawn")
 						EndIf
 					EndIf
 				EndIf
@@ -129,7 +129,7 @@ Function UpdateEvent_test_860_2(e.Events)
 
 			;If KeyHit(25) Then
 			;	e\room\npc[0]\state=2
-			;	PositionEntity e\room\npc[0]\collider, 0,-110,0
+			;	PositionEntity(e\room\npc[0]\collider, 0,-110,0)
 			;	e\eventState3=e\eventState3-Rnd(2000,3000)
 			;EndIf
 
@@ -143,18 +143,18 @@ Function UpdateEvent_test_860_2(e.Events)
 
 								PlaySound2(LoadTempSound("SFX/Door/WoodenDoorOpen.ogg"))
 
-								RotateEntity e\room\objects[3], 0, 0, 0
-								RotateEntity e\room\objects[4], 0, 180, 0
-								;SetAnimTime e\room\objects[3], 0.0
-								;SetAnimTime e\room\objects[4], 0.0
+								RotateEntity(e\room\objects[3], 0, 0, 0)
+								RotateEntity(e\room\objects[4], 0, 180, 0)
+								;SetAnimTime(e\room\objects[3], 0.0)
+								;SetAnimTime(e\room\objects[4], 0.0)
 
 								;dp.DrawPortal=e\room\dp;Object.DrawPortal(e\room\objects[0])
-								PositionEntity mainPlayer\collider, EntityX(e\room\objects[2],True),0.5,EntityZ(e\room\objects[2],True)
+								PositionEntity(mainPlayer\collider, EntityX(e\room\objects[2],True),0.5,EntityZ(e\room\objects[2],True))
 
-								RotateEntity mainPlayer\collider, 0, EntityYaw(e\room\obj,True)+e\eventState2*180, 0
-								MoveEntity mainPlayer\collider, 0,0,1.5
+								RotateEntity(mainPlayer\collider, 0, EntityYaw(e\room\obj,True)+e\eventState2*180, 0)
+								MoveEntity(mainPlayer\collider, 0,0,1.5)
 
-								ResetEntity mainPlayer\collider
+								ResetEntity(mainPlayer\collider)
 
 								UpdateDoorsTimer = 0
 								UpdateDoors()
@@ -177,10 +177,10 @@ Function UpdateEvent_test_860_2(e.Events)
 				x = 2.0
 			EndIf
 
-			CameraClsColor mainPlayer\cam,98*x,133*x,162*x
-			CameraRange mainPlayer\cam,RoomScale,8.5
-			CameraFogRange mainPlayer\cam,0.5,8.0
-			CameraFogColor mainPlayer\cam,98*x,133*x,162*x
+			CameraClsColor(mainPlayer\cam,98*x,133*x,162*x)
+			CameraRange(mainPlayer\cam,RoomScale,8.5)
+			CameraFogRange(mainPlayer\cam,0.5,8.0)
+			CameraFogColor(mainPlayer\cam,98*x,133*x,162*x)
 
 		Else
 
@@ -188,11 +188,11 @@ Function UpdateEvent_test_860_2(e.Events)
 
 			;dp.DrawPortal=e\room\dp;Object.DrawPortal(e\room\objects[0])
 
-			;HideEntity fr\detailEntities[0]
-			;HideEntity fr\detailEntities[1]
+			;HideEntity(fr\detailEntities[0])
+			;HideEntity(fr\detailEntities[1])
 
 			If EntityYaw(e\room\objects[3])=0.0 Then
-				HideEntity fr.Forest\forest_Pivot
+				HideEntity(fr.Forest\forest_Pivot)
 				If (Abs(Distance(EntityX(e\room\objects[3],True),EntityZ(e\room\objects[3],True),EntityX(mainPlayer\collider,True),EntityZ(mainPlayer\collider,True)))<1.0) Then
 					DrawHandIcon = True
 
@@ -205,40 +205,40 @@ Function UpdateEvent_test_860_2(e.Events)
 					ElseIf mainPlayer\selectedItem\itemtemplate\name="scp860" Then
 						If MouseHit1 Then
 							PlaySound2(LoadTempSound("SFX/Door/WoodenDoorOpen.ogg"))
-							ShowEntity fr.Forest\forest_Pivot
+							ShowEntity(fr.Forest\forest_Pivot)
 							mainPlayer\selectedItem = Null
 
 							mainPlayer\blinkTimer = -10
 
 							e\eventState=1.0
 
-							PositionEntity mainPlayer\collider,EntityX(fr\door[0],True),EntityY(fr\door[0],True)+EntityY(mainPlayer\collider,True)+0.5,EntityZ(fr\door[0],True),True
+							PositionEntity(mainPlayer\collider,EntityX(fr\door[0],True),EntityY(fr\door[0],True)+EntityY(mainPlayer\collider,True)+0.5,EntityZ(fr\door[0],True),True)
 
-							RotateEntity mainPlayer\collider, 0.0, EntityYaw(fr\door[0],True)-180, 0.0, True
-							MoveEntity mainPlayer\collider, -0.5,0.0,0.5
+							RotateEntity(mainPlayer\collider, 0.0, EntityYaw(fr\door[0],True)-180, 0.0, True)
+							MoveEntity(mainPlayer\collider, -0.5,0.0,0.5)
 
 
 
 							pvt = CreatePivot()
-							PositionEntity pvt, EntityX(mainPlayer\cam),EntityY(mainPlayer\cam),EntityZ(mainPlayer\cam)
-							PointEntity pvt, e\room\obj
+							PositionEntity(pvt, EntityX(mainPlayer\cam),EntityY(mainPlayer\cam),EntityZ(mainPlayer\cam))
+							PointEntity(pvt, e\room\obj)
 							ang# = WrapAngle(EntityYaw(pvt)-EntityYaw(e\room\obj,True))
 							If ang > 90 And ang < 270 Then
-								;TurnEntity mainPlayer\collider,0,180+90,0,True
+								;TurnEntity(mainPlayer\collider,0,180+90,0,True)
 								e\eventState2 = 1
 							Else
-									TurnEntity mainPlayer\collider,0,90,0,True
-							;RotateEntity mainPlayer\collider,0,EntityYaw(fr\door[0],True)+EntityYaw(mainPlayer\collider)-EntityYaw(dp\portal,True),0,True
+									TurnEntity(mainPlayer\collider,0,90,0,True)
+							;RotateEntity(mainPlayer\collider,0,EntityYaw(fr\door[0],True)+EntityYaw(mainPlayer\collider)-EntityYaw(dp\portal,True),0,True)
 								e\eventState2 = 0
 							EndIf
-							FreeEntity pvt
+							FreeEntity(pvt)
 
-							ResetEntity mainPlayer\collider
+							ResetEntity(mainPlayer\collider)
 
 
 
-							;RotateEntity e\room\objects[3], 0, 0.5, 0
-							;RotateEntity e\room\objects[3], 0, 359.5, 0
+							;RotateEntity(e\room\objects[3], 0, 0.5, 0)
+							;RotateEntity(e\room\objects[3], 0, 359.5, 0)
 						EndIf
 					EndIf
 				EndIf
@@ -250,7 +250,7 @@ Function UpdateEvent_test_860_2(e.Events)
 		If (fr=Null) Then
 			RemoveEvent(e)
 		Else
-			If (fr\forest_Pivot<>0) Then HideEntity fr\forest_Pivot
+			If (fr\forest_Pivot<>0) Then HideEntity(fr\forest_Pivot)
 		EndIf
 	EndIf
 
@@ -503,27 +503,39 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Rooms)
 	Local tempf4#
 	Local lx%, ly%, d%, frame%
 
-	If fr\forest_Pivot<>0 Then FreeEntity fr\forest_Pivot : fr\forest_Pivot=0
+	If fr\forest_Pivot<>0 Then
+		FreeEntity(fr\forest_Pivot)
+		fr\forest_Pivot=0
+	EndIf
 	For i%=0 To 3
-		If fr\tileMesh[i]<>0 Then FreeEntity fr\tileMesh[i] : fr\tileMesh[i]=0
+		If fr\tileMesh[i]<>0 Then
+			FreeEntity(fr\tileMesh[i])
+			fr\tileMesh[i]=0
+		EndIf
 	Next
 	For i%=0 To 4
-		If fr\detailMesh[i]<>0 Then FreeEntity fr\detailMesh[i] : fr\detailMesh[i]=0
+		If fr\detailMesh[i]<>0 Then
+			FreeEntity(fr\detailMesh[i])
+			fr\detailMesh[i]=0
+		EndIf
 	Next
 	For i%=0 To 9
-		If fr\tileTexture[i]<>0 Then FreeEntity fr\tileTexture[i] : fr\tileTexture[i]=0
+		If fr\tileTexture[i]<>0 Then
+			FreeEntity(fr\tileTexture[i])
+			fr\tileTexture[i]=0
+		EndIf
 	Next
 
 	fr\forest_Pivot=CreatePivot()
-	PositionEntity fr\forest_Pivot,x,y,z,True
+	PositionEntity(fr\forest_Pivot,x,y,z,True)
 
 	;load assets
 
 	Local hmap%[ROOM4], mask%[ROOM4]
 	Local GroundTexture% = LoadTexture("GFX/Map/forest/forestfloor.jpg")
-	;TextureBlend GroundTexture, FE_ALPHACURRENT
+	;TextureBlend(GroundTexture, FE_ALPHACURRENT)
 	Local PathTexture% = LoadTexture("GFX/Map/forest/forestpath.jpg")
-	;TextureBlend PathTexture, FE_ALPHACURRENT
+	;TextureBlend(PathTexture, FE_ALPHACURRENT)
 
 	hmap[ROOM1]=LoadImage("GFX/Map/forest/forest1h.png")
 	mask[ROOM1]=LoadTexture("GFX/Map/forest/forest1h_mask.png",1+2)
@@ -541,7 +553,7 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Rooms)
 	mask[ROOM4]=LoadTexture("GFX/Map/forest/forest4h_mask.png",1+2)
 
 	For i = ROOM1 To ROOM4
-		;TextureBlend mask[i], FE_ALPHAMODULATE
+		;TextureBlend(mask[i], FE_ALPHAMODULATE)
 
 		fr\tileMesh[i]=load_terrain(hmap[i],0.03,GroundTexture,PathTexture,mask[i])
 	Next
@@ -550,17 +562,17 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Rooms)
 	;fr\detailMesh[0]=LoadMesh("GFX/Map/forest/detail/860_1_tree1.b3d")
 	;fr\detailMesh[1]=LoadMesh("GFX/Map/forest/detail/860_1_tree1_leaves.b3d")
 	fr\detailMesh[1]=LoadMesh("GFX/Map/forest/detail/treetest4.b3d");1.b3d)
-	;EntityParent fr\detailMesh[1],fr\detailMesh[0]
+	;EntityParent(fr\detailMesh[1],fr\detailMesh[0])
 	fr\detailMesh[2]=LoadMesh("GFX/Map/forest/detail/rock.b3d")
 	fr\detailMesh[3]=LoadMesh("GFX/Map/forest/detail/rock2.b3d")
 	fr\detailMesh[4]=LoadMesh("GFX/Map/forest/detail/treetest5.b3d")
 	fr\detailMesh[5]=LoadMesh("GFX/Map/forest/wall.b3d")
 
 	For i%=ROOM1 To ROOM4
-		HideEntity fr\tileMesh[i]
+		HideEntity(fr\tileMesh[i])
 	Next
 	For i%=1 To 5
-		HideEntity fr\detailMesh[i]
+		HideEntity(fr\detailMesh[i])
 	Next
 
 	tempf3=MeshWidth(fr\tileMesh[ROOM1])
@@ -630,7 +642,7 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Rooms)
 						tile_entity = CopyEntity(fr\tileMesh[ROOM4])
 						tile_type = ROOM4
 					Default
-						DebugLog "tile_type: "+tile_type
+						DebugLog("tile_type: "+tile_type)
 				End Select
 
 				If tile_type > 0 Then
@@ -638,84 +650,84 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Rooms)
 					it.Items = Null
 					If (ty Mod 3)=2 And itemPlaced[Floor(ty/3)]=False Then
 						itemPlaced[Floor(ty/3)]=True
-						it.Items = CreateItem("Log #"+Int(Floor(ty/3)+1), "paper", 0,0.5,0)
+						it.Items = CreateItem("Log#"+Int(Floor(ty/3)+1), "paper", 0,0.5,0)
 						EntityType(it\collider, HIT_ITEM)
 						EntityParent(it\collider, tile_entity)
 					EndIf
 
 					;place trees and other details
 					;only placed on spots where the value of the heightmap is above 100
-					SetBuffer ImageBuffer(hmap[tile_type])
+					SetBuffer(ImageBuffer(hmap[tile_type]))
 					width = ImageWidth(hmap[tile_type])
 					tempf4# = (tempf3/Float(width))
 					For lx = 3 To width-2
 						For ly = 3 To width-2
-							GetColor lx,width-ly
+							GetColor(lx,width-ly)
 
 							If ColorRed()>Rand(100,260) Then
 								Select Rand(0,7)
 									Case 0,1,2,3,4,5,6 ;create a tree
 										detail_entity=CopyEntity(fr\detailMesh[1])
-										;EntityType detail_entity,HIT_MAP
+										;EntityType(detail_entity,HIT_MAP)
 										tempf2=Rnd(0.25,0.4)
 
 										For i = 0 To 3
 											d% = CopyEntity(fr\detailMesh[4])
-											;ScaleEntity d,tempf2*1.1,tempf2,tempf2*1.1,True
-											RotateEntity d, 0, 90*i+Rnd(-20,20), 0
+											;ScaleEntity(d,tempf2*1.1,tempf2,tempf2*1.1,True)
+											RotateEntity(d, 0, 90*i+Rnd(-20,20), 0)
 											EntityParent(d,detail_entity)
 
-											EntityFX d, 1;+8
+											EntityFX(d, 1);+8
 										Next
 
-										ScaleEntity detail_entity,tempf2*1.1,tempf2,tempf2*1.1,True
-										PositionEntity detail_entity,lx*tempf4-(tempf3/2.0),ColorRed()*0.03-Rnd(3.0,3.2),ly*tempf4-(tempf3/2.0),True
+										ScaleEntity(detail_entity,tempf2*1.1,tempf2,tempf2*1.1,True)
+										PositionEntity(detail_entity,lx*tempf4-(tempf3/2.0),ColorRed()*0.03-Rnd(3.0,3.2),ly*tempf4-(tempf3/2.0),True)
 
-										RotateEntity detail_entity,Rnd(-5,5),Rnd(360.0),0.0,True
+										RotateEntity(detail_entity,Rnd(-5,5),Rnd(360.0),0.0,True)
 
 										;EntityAutoFade(detail_entity,4.0,6.0)
 									Case 7 ;add a rock
 										detail_entity=CopyEntity(fr\detailMesh[2])
-										;EntityType detail_entity,HIT_MAP
+										;EntityType(detail_entity,HIT_MAP)
 										tempf2=Rnd(0.01,0.012)
-										;ScaleEntity detail_entity,tempf2,tempf2*Rnd(1.0,2.0),tempf2,True
+										;ScaleEntity(detail_entity,tempf2,tempf2*Rnd(1.0,2.0),tempf2,True)
 
-										PositionEntity detail_entity,lx*tempf4-(tempf3/2.0),ColorRed()*0.03-1.3,ly*tempf4-(tempf3/2.0),True
+										PositionEntity(detail_entity,lx*tempf4-(tempf3/2.0),ColorRed()*0.03-1.3,ly*tempf4-(tempf3/2.0),True)
 
-										EntityFX detail_entity, 1
+										EntityFX(detail_entity, 1)
 
-										RotateEntity detail_entity,0.0,Rnd(360.0),0.0,True
+										RotateEntity(detail_entity,0.0,Rnd(360.0),0.0,True)
 									Case 6 ;add a stump
 										detail_entity=CopyEntity(fr\detailMesh[4])
-										;EntityType detail_entity,HIT_MAP
+										;EntityType(detail_entity,HIT_MAP)
 										tempf2=Rnd(0.1,0.12)
-										ScaleEntity detail_entity,tempf2,tempf2,tempf2,True
+										ScaleEntity(detail_entity,tempf2,tempf2,tempf2,True)
 
-										PositionEntity detail_entity,lx*tempf4-(tempf3/2.0),ColorRed()*0.03-1.3,ly*tempf4-(tempf3/2.0),True
+										PositionEntity(detail_entity,lx*tempf4-(tempf3/2.0),ColorRed()*0.03-1.3,ly*tempf4-(tempf3/2.0),True)
 								End Select
 
-								EntityFX detail_entity, 1
-								;PositionEntity detail_entity,Rnd(0.0,tempf3)-(tempf3/2.0),ColorRed()*0.03-0.05,Rnd(0.0,tempf3)-(tempf3/2.0),True
-								EntityParent detail_entity,tile_entity
+								EntityFX(detail_entity, 1)
+								;PositionEntity(detail_entity,Rnd(0.0,tempf3)-(tempf3/2.0),ColorRed()*0.03-0.05,Rnd(0.0,tempf3)-(tempf3/2.0),True)
+								EntityParent(detail_entity,tile_entity)
 							EndIf
 						Next
 					Next
-					SetBuffer BackBuffer()
+					SetBuffer(BackBuffer())
 
-					TurnEntity tile_entity, 0, angle, 0
+					TurnEntity(tile_entity, 0, angle, 0)
 
-					PositionEntity tile_entity,x+(tx*tile_size),y,z+(ty*tile_size),True
+					PositionEntity(tile_entity,x+(tx*tile_size),y,z+(ty*tile_size),True)
 
-					ScaleEntity tile_entity,tempf1,tempf1,tempf1
-					EntityType tile_entity,HIT_MAP
-					EntityFX tile_entity,1
-					EntityParent tile_entity,fr\forest_Pivot
+					ScaleEntity(tile_entity,tempf1,tempf1,tempf1)
+					EntityType(tile_entity,HIT_MAP)
+					EntityFX(tile_entity,1)
+					EntityParent(tile_entity,fr\forest_Pivot)
 
-					If it<>Null Then EntityParent it\collider,0
+					If it<>Null Then EntityParent(it\collider,0)
 
 					fr\tileEntities[tx+(ty*gridsize)] = tile_entity
 				Else
-					DebugLog "INVALID TILE @ ("+tx+", "+ty+ "): "+tile_type
+					DebugLog("INVALID TILE @ ("+tx+", "+ty+ "): "+tile_type)
 				EndIf
 			EndIf
 
@@ -729,27 +741,27 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Rooms)
 		For tx = 1 To gridsize-1
 			If fr\grid[(ty*gridsize)+tx]=3 Then
 				fr\detailEntities[i]=CopyEntity(fr\detailMesh[5])
-				ScaleEntity fr\detailEntities[i],RoomScale,RoomScale,RoomScale
+				ScaleEntity(fr\detailEntities[i],RoomScale,RoomScale,RoomScale)
 
 				fr\door[i] = CopyEntity(r\objects[3])
-				PositionEntity fr\door[i],72*RoomScale,32.0*RoomScale,0,True
-				RotateEntity fr\door[i], 0,180,0
-				ScaleEntity fr\door[i],48*RoomScale,45*RoomScale,48*RoomScale,True
-				EntityParent fr\door[i],fr\detailEntities[i]
-				;SetAnimTime fr\door[i], 0
+				PositionEntity(fr\door[i],72*RoomScale,32.0*RoomScale,0,True)
+				RotateEntity(fr\door[i], 0,180,0)
+				ScaleEntity(fr\door[i],48*RoomScale,45*RoomScale,48*RoomScale,True)
+				EntityParent(fr\door[i],fr\detailEntities[i])
+				;SetAnimTime(fr\door[i], 0)
 
 				frame% = CopyEntity(r\objects[2],fr\door[i])
-				PositionEntity frame,0,32.0*RoomScale,0,True
-				ScaleEntity frame,48*RoomScale,45*RoomScale,48*RoomScale,True
-				EntityParent frame,fr\detailEntities[i]
+				PositionEntity(frame,0,32.0*RoomScale,0,True)
+				ScaleEntity(frame,48*RoomScale,45*RoomScale,48*RoomScale,True)
+				EntityParent(frame,fr\detailEntities[i])
 
-				EntityType fr\detailEntities[i],HIT_MAP
-				;EntityParent frame,fr\detailEntities[i]
+				EntityType(fr\detailEntities[i],HIT_MAP)
+				;EntityParent(frame,fr\detailEntities[i])
 
-				PositionEntity fr\detailEntities[i],x+(tx*tile_size),y,z+(ty*tile_size)+(tile_size/2)-(tile_size*i),True
-				RotateEntity fr\detailEntities[i],0,180*i,0
+				PositionEntity(fr\detailEntities[i],x+(tx*tile_size),y,z+(ty*tile_size)+(tile_size/2)-(tile_size*i),True)
+				RotateEntity(fr\detailEntities[i],0,180*i,0)
 
-				EntityParent fr\detailEntities[i],fr\forest_Pivot
+				EntityParent(fr\detailEntities[i],fr\forest_Pivot)
 			EndIf
 		Next
 	Next
@@ -761,27 +773,51 @@ Function DestroyForest(fr.Forest)
 	For tx% = 0 To gridsize-1
 		For ty% = 0 To gridsize-1
 			If fr\tileEntities[tx+(ty*gridsize)]<>0 Then
-				FreeEntity fr\tileEntities[tx+(ty*gridsize)]
+				FreeEntity(fr\tileEntities[tx+(ty*gridsize)])
 				fr\tileEntities[tx+(ty*gridsize)] = 0
 				fr\grid[tx+(ty*gridsize)] = 0
 			EndIf
 		Next
 	Next
-	If fr\door[0]<>0 Then FreeEntity fr\door[0] : fr\door[0] = 0
-	If fr\door[1]<>0 Then FreeEntity fr\door[1] : fr\door[0] = 1
-	If fr\detailEntities[0]<>0 Then FreeEntity fr\detailEntities[0] : fr\detailEntities[0] = 0
-	If fr\detailEntities[1]<>0 Then FreeEntity fr\detailEntities[1] : fr\detailEntities[1] = 0
+	If fr\door[0]<>0 Then
+		FreeEntity(fr\door[0])
+		fr\door[0] = 0
+	EndIf
+	If fr\door[1]<>0 Then
+		FreeEntity(fr\door[1])
+		fr\door[0] = 1
+	EndIf
+	If fr\detailEntities[0]<>0 Then
+		FreeEntity(fr\detailEntities[0])
+		fr\detailEntities[0] = 0
+	EndIf
+	If fr\detailEntities[1]<>0 Then
+		FreeEntity(fr\detailEntities[1])
+		fr\detailEntities[1] = 0
+	EndIf
 
-	If fr\forest_Pivot<>0 Then FreeEntity fr\forest_Pivot : fr\forest_Pivot=0
+	If fr\forest_Pivot<>0 Then
+		FreeEntity(fr\forest_Pivot)
+		fr\forest_Pivot=0
+	EndIf
 	Local i%
 	For i%=0 To 3
-		If fr\tileMesh[i]<>0 Then FreeEntity fr\tileMesh[i] : fr\tileMesh[i]=0
+		If fr\tileMesh[i]<>0 Then
+			FreeEntity(fr\tileMesh[i])
+			fr\tileMesh[i]=0
+		EndIf
 	Next
 	For i%=0 To 4
-		If fr\detailMesh[i]<>0 Then FreeEntity fr\detailMesh[i] : fr\detailMesh[i]=0
+		If fr\detailMesh[i]<>0 Then
+			FreeEntity(fr\detailMesh[i])
+			fr\detailMesh[i]=0
+		EndIf
 	Next
 	For i%=0 To 9
-		If fr\tileTexture[i]<>0 Then FreeEntity fr\tileTexture[i] : fr\tileTexture[i]=0
+		If fr\tileTexture[i]<>0 Then
+			FreeEntity(fr\tileTexture[i])
+			fr\tileTexture[i]=0
+		EndIf
 	Next
 
 	;Delete fr
@@ -797,12 +833,12 @@ Function UpdateForest(fr.Forest,ent%)
 				If fr\tileEntities[tx+(ty*gridsize)]<>0 Then
 					If Abs(EntityX(ent,True)-EntityX(fr\tileEntities[tx+(ty*gridsize)],True))<20.0 Then
 						If Abs(EntityZ(ent,True)-EntityZ(fr\tileEntities[tx+(ty*gridsize)],True))<20.0 Then
-							ShowEntity fr\tileEntities[tx+(ty*gridsize)]
+							ShowEntity(fr\tileEntities[tx+(ty*gridsize)])
 						Else
-							HideEntity fr\tileEntities[tx+(ty*gridsize)]
+							HideEntity(fr\tileEntities[tx+(ty*gridsize)])
 						EndIf
 					Else
-						HideEntity fr\tileEntities[tx+(ty*gridsize)]
+						HideEntity(fr\tileEntities[tx+(ty*gridsize)])
 					EndIf
 				EndIf
 			Next

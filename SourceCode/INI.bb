@@ -36,7 +36,7 @@ Function UpdateINIFile$(filename$)
 
 	If file=Null Then Return
 
-	If file\bank<>0 Then FreeBank file\bank
+	If file\bank<>0 Then FreeBank(file\bank)
 	Local f% = ReadFile(file\name)
 	Local fleSize% = 1
 	While fleSize<FileSize(file\name)
@@ -65,7 +65,7 @@ Function GetINIString$(file$, section$, parameter$, defaultvalue$="")
 	Next
 
 	If lfile = Null Then
-		DebugLog "CREATE BANK FOR "+file
+		DebugLog("CREATE BANK FOR "+file)
 		lfile = New INIFile
 		lfile\name = Lower(file)
 		lfile\bank = 0
@@ -85,12 +85,12 @@ Function GetINIString$(file$, section$, parameter$, defaultvalue$="")
 				Repeat
 					TemporaryString = ReadINILine(lfile)
 					If Lower(Trim(Left(TemporaryString, Max(Instr(TemporaryString, "=") - 1, 0)))) = Lower(parameter) Then
-						;CloseFile f
+						;CloseFile(f)
 						Return Trim( Right(TemporaryString,Len(TemporaryString)-Instr(TemporaryString,"=")) )
 					EndIf
 				Until (Left(TemporaryString, 1) = "[") Or (lfile\bankOffset>=lfile\size)
 
-				;CloseFile f
+				;CloseFile(f)
 				Return defaultvalue
 			EndIf
 		EndIf
@@ -128,16 +128,16 @@ Function GetINIString2$(file$, start%, parameter$, defaultvalue$="")
 			Repeat
 				TemporaryString = ReadLine(f)
 				If Lower(Trim(Left(TemporaryString, Max(Instr(TemporaryString, "=") - 1, 0)))) = Lower(parameter) Then
-					CloseFile f
+					CloseFile(f)
 					Return Trim( Right(TemporaryString,Len(TemporaryString)-Instr(TemporaryString,"=")) )
 				EndIf
 			Until Left(TemporaryString, 1) = "[" Or Eof(f)
-			CloseFile f
+			CloseFile(f)
 			Return defaultvalue
 		EndIf
 	Wend
 
-	CloseFile f
+	CloseFile(f)
 
 	Return defaultvalue
 End Function
@@ -170,14 +170,14 @@ Function GetINISectionLocation%(file$, section$)
 			Temp = Instr(strTemp, section)
 			If Temp>0 Then
 				If Mid(strTemp, Temp-1, 1)="[" Or Mid(strTemp, Temp-1, 1)="|" Then
-					CloseFile f
+					CloseFile(f)
 					Return n
 				EndIf
 			EndIf
 		EndIf
 	Wend
 
-	CloseFile f
+	CloseFile(f)
 End Function
 
 
@@ -227,16 +227,16 @@ Function PutINIValue%(file$, INI_sSection$, INI_sKey$, INI_sValue$)
 
 			Else
 				If (Left(INI_sTemp, 1) = ":") Or (Left(INI_sTemp, 1) = ";") Then
-					WriteLine INI_lFileHandle, INI_sTemp
+					WriteLine(INI_lFileHandle, INI_sTemp)
 				Else
 						; KEY=VALUE
 					lEqualsPos% = Instr(INI_sTemp, "=")
 					If (lEqualsPos <> 0) Then
 						If (INI_sCurrentSection = INI_sUpperSection) And (Upper$(Trim$(Left$(INI_sTemp, (lEqualsPos - 1)))) = Upper$(INI_sKey)) Then
-							If (INI_sValue <> "") Then INI_CreateKey INI_lFileHandle, INI_sKey, INI_sValue
+							If (INI_sValue <> "") Then INI_CreateKey(INI_lFileHandle, INI_sKey, INI_sValue)
 							INI_bWrittenKey = True
 						Else
-							WriteLine INI_lFileHandle, INI_sTemp
+							WriteLine(INI_lFileHandle, INI_sTemp)
 						EndIf
 					EndIf
 				EndIf
@@ -255,11 +255,11 @@ Function PutINIValue%(file$, INI_sSection$, INI_sKey$, INI_sValue$)
 		; KEY wasn;t found in the INI file - Append a New SECTION If required And create our KEY=VALUE Line
 
 	If (INI_bWrittenKey = False) Then
-		If (INI_bSectionFound = False) Then INI_CreateSection INI_lFileHandle, INI_sSection
-		INI_CreateKey INI_lFileHandle, INI_sKey, INI_sValue
+		If (INI_bSectionFound = False) Then INI_CreateSection(INI_lFileHandle, INI_sSection)
+		INI_CreateKey(INI_lFileHandle, INI_sKey, INI_sValue)
 	EndIf
 
-	CloseFile INI_lFileHandle
+	CloseFile(INI_lFileHandle)
 
 	Return True ; Success
 
@@ -273,7 +273,7 @@ Function INI_FileToString$(INI_sFilename$)
 		While Not(Eof(INI_lFileHandle))
 			INI_sString = INI_sString + ReadLine$(INI_lFileHandle) + Chr$(0)
 		Wend
-		CloseFile INI_lFileHandle
+		CloseFile(INI_lFileHandle)
 	EndIf
 	Return INI_sString
 
@@ -281,15 +281,15 @@ End Function
 
 Function INI_CreateSection$(INI_lFileHandle%, INI_sNewSection$)
 
-	If FilePos(INI_lFileHandle) <> 0 Then WriteLine INI_lFileHandle, "" ; Blank Line between sections
-	WriteLine INI_lFileHandle, INI_sNewSection
+	If FilePos(INI_lFileHandle) <> 0 Then WriteLine(INI_lFileHandle, "") ; Blank Line between sections)
+	WriteLine(INI_lFileHandle, INI_sNewSection)
 	Return INI_sNewSection
 
 End Function
 
 Function INI_CreateKey%(INI_lFileHandle%, INI_sKey$, INI_sValue$)
 
-	WriteLine INI_lFileHandle, INI_sKey + " = " + INI_sValue
+	WriteLine(INI_lFileHandle, INI_sKey + " = " + INI_sValue)
 	Return True
 
 End Function

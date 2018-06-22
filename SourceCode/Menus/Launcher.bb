@@ -31,7 +31,7 @@ Function CreateLauncher.Launcher()
 	launch\selectedGFXMode = VerifyResolution()
 
 	Graphics3DExt(launch\width, launch\height, 0, 2)
-	AppTitle "SCP - Containment Breach Launcher"
+	AppTitle("SCP - Containment Breach Launcher")
 
 	MenuScale = 1
 
@@ -39,7 +39,7 @@ Function CreateLauncher.Launcher()
 
     InitializeUIAssets()
 
-	SetBuffer BackBuffer()
+	SetBuffer(BackBuffer())
 
 	SetFont(uiAssets\font[0])
 
@@ -104,13 +104,13 @@ Function UpdateLauncher()
         Return
     EndIf
 
-    If UpdateUIButton(launcher\width - 30 - 90, launcher\height - 50, 100, 30, "EXIT", False) Then End
+    If UpdateUIButton(launcher\width - 30 - 90, launcher\height - 50, 100, 30, "EXIT", False) Then End()
 End Function
 
 Function DrawLauncher()
 	SetFont(uiAssets\font[0])
 
-	Color 0,0,0
+	Color(0,0,0)
     Rect(0, 0, launcher\width, launcher\height, True)
 
     Color(255, 255, 255)
@@ -168,7 +168,7 @@ Function DrawLauncher()
 	DrawUITick(40 + 430 - 15, 260 - 55 + 5 - 8, userOptions\fullscreen)
     Text(40 + 430 + 15,       262 - 55 + 5 - 8, "Fullscreen")
 
-    Color 255, 255, 255
+    Color(255, 255, 255)
     ;Text(40 + 430 + 15, 262 - 55 + 35 - 8, "Borderless",False,False)
     ;Text(40 + 430 + 15, 262 - 55 + 35 + 12, "windowed mode",False,False)
 
@@ -188,7 +188,7 @@ Function DrawLauncher()
     DrawUIButton(launcher\width - 30 - 90, launcher\height - 50 - 55, 100, 30, "LAUNCH", False)
 
     DrawUIButton(launcher\width - 30 - 90, launcher\height - 50, 100, 30, "EXIT", False)
-    Flip
+    Flip()
 End Function
 ;~IDEal Editor Parameters:
 ;~F#30

@@ -17,11 +17,11 @@ Function UpdateEvent_tnnl_plain_4(e.Events)
 		e\room\npc[0]\texture = "GFX/npcs/body1.jpg"
 		tex% = LoadTexture(e\room\npc[0]\texture)
 		EntityTexture(e\room\npc[0]\obj, tex)
-		FreeTexture tex
+		FreeTexture(tex)
 
-		RotateEntity e\room\npc[0]\collider, 0, EntityYaw(e\room\obj)-(Rand(20,60)),0, True
+		RotateEntity(e\room\npc[0]\collider, 0, EntityYaw(e\room\obj)-(Rand(20,60)),0, True)
 
-		SetNPCFrame e\room\npc[0], 19
+		SetNPCFrame(e\room\npc[0], 19)
 		e\room\npc[0]\state=8
 
 		;Delete e

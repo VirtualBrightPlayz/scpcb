@@ -63,8 +63,8 @@ Function CreateDoor.Doors(lvl%, x#, y#, z#, angle#, room.Rooms, dopen% = False, 
 
 		d\frameobj = CopyEntity(doorColl)
 		ScaleEntity(d\frameobj, RoomScale, RoomScale, RoomScale)
-		EntityType d\frameobj, HIT_MAP
-		EntityAlpha d\frameobj, 0.0
+		EntityType(d\frameobj, HIT_MAP)
+		EntityAlpha(d\frameobj, 0.0)
 	ElseIf big=2 Then
 		d\obj = CopyEntity(hczDoorObj[0])
 		ScaleEntity(d\obj, RoomScale, RoomScale, RoomScale)
@@ -84,10 +84,10 @@ Function CreateDoor.Doors(lvl%, x#, y#, z#, angle#, room.Rooms, dopen% = False, 
 	EndIf
 
 	;scaleentity(d\obj, 0.1, 0.1, 0.1)
-	PositionEntity d\frameobj, x, y, z
+	PositionEntity(d\frameobj, x, y, z)
 	ScaleEntity(d\frameobj, (8.0 / 2048.0), (8.0 / 2048.0), (8.0 / 2048.0))
-	EntityType d\obj, HIT_MAP
-	EntityType d\obj2, HIT_MAP
+	EntityType(d\obj, HIT_MAP)
+	EntityType(d\obj2, HIT_MAP)
 
 	d\id = DoorTempID
 	DoorTempID=DoorTempID+1
@@ -122,27 +122,27 @@ Function CreateDoor.Doors(lvl%, x#, y#, z#, angle#, room.Rooms, dopen% = False, 
 	Next
 
 	If big=1 Then
-		PositionEntity d\buttons[0], x - 432.0 * RoomScale, y + 0.7, z + 192.0 * RoomScale
-		PositionEntity d\buttons[1], x + 432.0 * RoomScale, y + 0.7, z - 192.0 * RoomScale
-		RotateEntity d\buttons[0], 0, 90, 0
-		RotateEntity d\buttons[1], 0, 270, 0
+		PositionEntity(d\buttons[0], x - 432.0 * RoomScale, y + 0.7, z + 192.0 * RoomScale)
+		PositionEntity(d\buttons[1], x + 432.0 * RoomScale, y + 0.7, z - 192.0 * RoomScale)
+		RotateEntity(d\buttons[0], 0, 90, 0)
+		RotateEntity(d\buttons[1], 0, 270, 0)
 	Else
-		PositionEntity d\buttons[0], x + 0.6, y + 0.7, z - 0.1
-		PositionEntity d\buttons[1], x - 0.6, y + 0.7, z + 0.1
-		RotateEntity d\buttons[1], 0, 180, 0
+		PositionEntity(d\buttons[0], x + 0.6, y + 0.7, z - 0.1)
+		PositionEntity(d\buttons[1], x - 0.6, y + 0.7, z + 0.1)
+		RotateEntity(d\buttons[1], 0, 180, 0)
 	EndIf
 	EntityParent(d\buttons[0], d\frameobj)
 	EntityParent(d\buttons[1], d\frameobj)
 	EntityPickMode(d\buttons[0], 2)
 	EntityPickMode(d\buttons[1], 2)
 
-	PositionEntity d\obj, x, y, z
+	PositionEntity(d\obj, x, y, z)
 
-	RotateEntity d\obj, 0, angle, 0
-	RotateEntity d\frameobj, 0, angle, 0
+	RotateEntity(d\obj, 0, angle, 0)
+	RotateEntity(d\frameobj, 0, angle, 0)
 
 	If d\obj2 <> 0 Then
-		PositionEntity d\obj2, x, y, z
+		PositionEntity(d\obj2, x, y, z)
 		If big=1 Then
 			RotateEntity(d\obj2, 0, angle, 0)
 		Else
@@ -164,7 +164,7 @@ Function CreateDoor.Doors(lvl%, x#, y#, z#, angle#, room.Rooms, dopen% = False, 
 		MakeCollBox(d\obj2)
 	EndIf
 
-	EntityPickMode d\frameobj,2
+	EntityPickMode(d\frameobj,2)
 
 	If d\open And big = False And Rand(8) = 1 Then d\autoClose = True
 	d\dir=big
@@ -200,27 +200,27 @@ Function UpdateDoors()
 			d\dist = xdist+zdist
 
 			If d\dist > HideDistance*2 Then
-				If d\obj <> 0 Then HideEntity d\obj
-				If d\frameobj <> 0 Then HideEntity d\frameobj
-				If d\obj2 <> 0 Then HideEntity d\obj2
-				If d\buttons[0] <> 0 Then HideEntity d\buttons[0]
-				If d\buttons[1] <> 0 Then HideEntity d\buttons[1]
+				If d\obj <> 0 Then HideEntity(d\obj)
+				If d\frameobj <> 0 Then HideEntity(d\frameobj)
+				If d\obj2 <> 0 Then HideEntity(d\obj2)
+				If d\buttons[0] <> 0 Then HideEntity(d\buttons[0])
+				If d\buttons[1] <> 0 Then HideEntity(d\buttons[1])
 			Else
-				If d\obj <> 0 Then ShowEntity d\obj
-				If d\frameobj <> 0 Then ShowEntity d\frameobj
-				If d\obj2 <> 0 Then ShowEntity d\obj2
-				If d\buttons[0] <> 0 Then ShowEntity d\buttons[0]
-				If d\buttons[1] <> 0 Then ShowEntity d\buttons[1]
+				If d\obj <> 0 Then ShowEntity(d\obj)
+				If d\frameobj <> 0 Then ShowEntity(d\frameobj)
+				If d\obj2 <> 0 Then ShowEntity(d\obj2)
+				If d\buttons[0] <> 0 Then ShowEntity(d\buttons[0])
+				If d\buttons[1] <> 0 Then ShowEntity(d\buttons[1])
 			EndIf
 
 			;TODO: this is cancer
 			If mainPlayer\currRoom\roomTemplate\name$ = "room2sl" Then
 				If ValidRoom2slCamRoom(d\room) Then
-					If d\obj <> 0 Then ShowEntity d\obj
-					If d\frameobj <> 0 Then ShowEntity d\frameobj
-					If d\obj2 <> 0 Then ShowEntity d\obj2
-					If d\buttons[0] <> 0 Then ShowEntity d\buttons[0]
-					If d\buttons[1] <> 0 Then ShowEntity d\buttons[1]
+					If d\obj <> 0 Then ShowEntity(d\obj)
+					If d\frameobj <> 0 Then ShowEntity(d\frameobj)
+					If d\obj2 <> 0 Then ShowEntity(d\obj2)
+					If d\buttons[0] <> 0 Then ShowEntity(d\buttons[0])
+					If d\buttons[1] <> 0 Then ShowEntity(d\buttons[1])
 				EndIf
 			EndIf
 		Next
@@ -245,8 +245,8 @@ Function UpdateDoors()
 								If dist < 0.7 Then
 									;TODO: use deltayaw as faster way to determine whether the player can press the button or not
 									temp% = CreatePivot()
-									PositionEntity temp, EntityX(mainPlayer\cam), EntityY(mainPlayer\cam), EntityZ(mainPlayer\cam)
-									PointEntity temp,d\buttons[i]
+									PositionEntity(temp, EntityX(mainPlayer\cam), EntityY(mainPlayer\cam), EntityZ(mainPlayer\cam))
+									PointEntity(temp,d\buttons[i])
 
 									If EntityPick(temp, 0.6) = d\buttons[i] Then
 										If mainPlayer\closestButton = 0 Then
@@ -257,7 +257,7 @@ Function UpdateDoors()
 										EndIf
 									EndIf
 
-									FreeEntity temp
+									FreeEntity(temp)
 
 								EndIf
 							EndIf
@@ -305,7 +305,7 @@ Function UpdateDoors()
 					EndIf
 					If d\autoClose And RemoteDoorOn = True Then
 						If EntityDistance(mainPlayer\cam, d\obj) < 2.1 Then
-							;PlaySound2 HorrorSFX(7) ;TODO: fix
+							;PlaySound2(HorrorSFX(7) ;TODO: fix)
 							d\open = False
 							Select (d\dir)
 								Case 1
@@ -342,13 +342,13 @@ Function UpdateDoors()
 
 									p\sizeChange = -0.00001
 									p\size = 0.01
-									ScaleSprite p\obj,p\size,p\size
+									ScaleSprite(p\obj,p\size,p\size)
 
 									p\aChange = -0.01
 
-									EntityOrder p\obj,-1
+									EntityOrder(p\obj,-1)
 
-									FreeEntity pvt
+									FreeEntity(pvt)
 								Next
 							EndIf
 						Case 2
@@ -361,14 +361,14 @@ Function UpdateDoors()
 						If Abs(EntityZ(d\frameobj, True)-EntityZ(mainPlayer\collider))<0.15 Then
 							If Abs(EntityX(d\frameobj, True)-EntityX(mainPlayer\collider))<0.7*(d\dir*2+1) Then
 								z# = CurveValue(EntityZ(d\frameobj,True)+0.15*Sgn(EntityZ(mainPlayer\collider)-EntityZ(d\frameobj, True)), EntityZ(mainPlayer\collider), 5)
-								PositionEntity mainPlayer\collider, EntityX(mainPlayer\collider), EntityY(mainPlayer\collider), z
+								PositionEntity(mainPlayer\collider, EntityX(mainPlayer\collider), EntityY(mainPlayer\collider), z)
 							EndIf
 						EndIf
 					Else
 						If Abs(EntityX(d\frameobj, True)-EntityX(mainPlayer\collider))<0.15 Then
 							If Abs(EntityZ(d\frameobj, True)-EntityZ(mainPlayer\collider))<0.7*(d\dir*2+1) Then
 								x# = CurveValue(EntityX(d\frameobj,True)+0.15*Sgn(EntityX(mainPlayer\collider)-EntityX(d\frameobj, True)), EntityX(mainPlayer\collider), 5)
-								PositionEntity mainPlayer\collider, x, EntityY(mainPlayer\collider), EntityZ(mainPlayer\collider)
+								PositionEntity(mainPlayer\collider, x, EntityY(mainPlayer\collider), EntityZ(mainPlayer\collider))
 							EndIf
 						EndIf
 					EndIf
@@ -531,14 +531,14 @@ Function UseDoor(d.Doors, showmsg%=True)
 End Function
 
 Function RemoveDoor(d.Doors)
-	If d\buttons[0] <> 0 Then EntityParent d\buttons[0], 0
-	If d\buttons[1] <> 0 Then EntityParent d\buttons[1], 0
+	If d\buttons[0] <> 0 Then EntityParent(d\buttons[0], 0)
+	If d\buttons[1] <> 0 Then EntityParent(d\buttons[1], 0)
 
-	If d\obj <> 0 Then FreeEntity d\obj
-	If d\obj2 <> 0 Then FreeEntity d\obj2
-	If d\frameobj <> 0 Then FreeEntity d\frameobj
-	If d\buttons[0] <> 0 Then FreeEntity d\buttons[0]
-	If d\buttons[1] <> 0 Then FreeEntity d\buttons[1]
+	If d\obj <> 0 Then FreeEntity(d\obj)
+	If d\obj2 <> 0 Then FreeEntity(d\obj2)
+	If d\frameobj <> 0 Then FreeEntity(d\frameobj)
+	If d\buttons[0] <> 0 Then FreeEntity(d\buttons[0])
+	If d\buttons[1] <> 0 Then FreeEntity(d\buttons[1])
 
 	Delete d
 End Function

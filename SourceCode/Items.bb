@@ -163,7 +163,7 @@ Function CreateItemTemplate(file$, section$)
 	it\scale = scale
 	ScaleEntity(it\obj, scale, scale, scale, True)
 
-	HideEntity it\obj
+	HideEntity(it\obj)
 End Function
 
 Function FindItemTemplate.ItemTemplates(tempname$)
@@ -193,7 +193,7 @@ Function LoadItemTemplates(file$)
 		EndIf
 	Wend
 
-	CloseFile f
+	CloseFile(f)
 End Function
 
 Function InitItemTemplates()
@@ -210,7 +210,8 @@ Function InitItemTemplates()
 					EndIf
 				Next
 			EndIf
-			FreeTexture it\tex : it\tex = 0
+			FreeTexture(it\tex)
+			it\tex = 0
 		EndIf
 	Next
 
@@ -291,12 +292,12 @@ Function CreateItem.Items(name$, tempname$, x#, y#, z#, r# = 1.0, g# = 1.0, b# =
 			If Lower(it\name) = tempname Then
 				i\itemtemplate = it
 				i\collider = CreatePivot()
-				EntityRadius i\collider, 0.01
-				EntityPickMode i\collider, 1, False
+				EntityRadius(i\collider, 0.01)
+				EntityPickMode(i\collider, 1, False)
 				i\model = CopyEntity(it\obj,i\collider)
 				i\name = it\name
-				ShowEntity i\collider
-				ShowEntity i\model
+				ShowEntity(i\collider)
+				ShowEntity(i\model)
 			EndIf
 		EndIf
 	Next
@@ -307,9 +308,9 @@ Function CreateItem.Items(name$, tempname$, x#, y#, z#, r# = 1.0, g# = 1.0, b# =
 	i\model = CreateMesh()
 	i\collider = CreatePivot()
 
-	ResetEntity i\collider
+	ResetEntity(i\collider)
 	PositionEntity(i\collider, x, y, z, True)
-	RotateEntity (i\collider, 0, Rand(360), 0)
+	RotateEntity(i\collider, 0, Rand(360), 0)
 	i\dist = EntityDistance(mainPlayer\collider, i\collider)
 	i\dropSpeed = 0.0
 
@@ -321,26 +322,26 @@ Function CreateItem.Items(name$, tempname$, x#, y#, z#, r# = 1.0, g# = 1.0, b# =
 
 		;TODO: re-implement.
 		;Local liquid = CopyEntity(LiquidObj)
-		;ScaleEntity liquid, i\itemtemplate\scale,i\itemtemplate\scale,i\itemtemplate\scale,True
-		;PositionEntity liquid, EntityX(i\collider,True),EntityY(i\collider,True),EntityZ(i\collider,True)
-		;EntityParent liquid, i\model
-		;EntityColor liquid, r,g,b
+		;ScaleEntity(liquid, i\itemtemplate\scale,i\itemtemplate\scale,i\itemtemplate\scale,True)
+		;PositionEntity(liquid, EntityX(i\collider,True),EntityY(i\collider,True),EntityZ(i\collider,True))
+		;EntityParent(liquid, i\model)
+		;EntityColor(liquid, r,g,b)
 
 		;If a < 0 Then
-		;	EntityFX liquid, 1
-		;	EntityAlpha liquid, Abs(a)
+		;	EntityFX(liquid, 1)
+		;	EntityAlpha(liquid, Abs(a))
 		;Else
-		;	EntityAlpha liquid, Abs(a)
+		;	EntityAlpha(liquid, Abs(a))
 		;EndIf
 
-		;EntityShininess liquid, 1.0
+		;EntityShininess(liquid, 1.0)
 	;EndIf
 
 	i\invimg = CreateImage(64, 64) ;i\invimg = i\itemtemplate\invimg
 
 ;	If (tempname="clipboard") And (invSlots=0) Then
 ;		invSlots = 20
-;		SetAnimTime i\model,17.0
+;		SetAnimTime(i\model,17.0)
 ;		i\invimg = i\itemtemplate\invimg2
 ;	EndIf
 
@@ -364,7 +365,7 @@ Function RemoveItem(i.Items)
 	FreeEntity(i\model) : FreeEntity(i\collider) : i\collider = 0
 
 	If i\itemtemplate\img <> 0 Then
-		FreeImage i\itemtemplate\img
+		FreeImage(i\itemtemplate\img)
 		i\itemtemplate\img = 0
 	EndIf
 	Delete i
@@ -390,11 +391,11 @@ Function UpdateItems()
 			If i\disttimer < TimeInPosMilliSecs() Then
 				i\dist = EntityDistance(mainPlayer\collider, i\collider)
 				i\disttimer = TimeInPosMilliSecs() + Rand(600,800)
-				If i\dist < HideDist Then ShowEntity i\collider
+				If i\dist < HideDist Then ShowEntity(i\collider)
 			EndIf
 
 			If i\dist < HideDist Then
-				ShowEntity i\collider
+				ShowEntity(i\collider)
 
 				If (Not EntityVisible(i\collider,mainPlayer\cam)) Then
 					;the player can't grab this
@@ -415,7 +416,7 @@ Function UpdateItems()
 					i\zspeed = 0.0
 				Else
 					i\dropSpeed = i\dropSpeed - 0.0004 * timing\tickDuration
-					TranslateEntity i\collider, i\xspeed*timing\tickDuration, i\dropSpeed * timing\tickDuration, i\zspeed*timing\tickDuration
+					TranslateEntity(i\collider, i\xspeed*timing\tickDuration, i\dropSpeed * timing\tickDuration, i\zspeed*timing\tickDuration)
 					If i\wontColl Then ResetEntity(i\collider)
 				EndIf
 
@@ -439,16 +440,20 @@ Function UpdateItems()
 									ztemp = ztemp+Rnd(-0.002,0.002)
 								Wend
 
-								TranslateEntity i2\collider,xtemp,0,ztemp
-								TranslateEntity i\collider,-xtemp,0,-ztemp
+								TranslateEntity(i2\collider,xtemp,0,ztemp)
+								TranslateEntity(i\collider,-xtemp,0,-ztemp)
 							EndIf
 						EndIf
 					Next
 				EndIf
 
-				If EntityY(i\collider) < - 35.0 Then DebugLog "remove: " + i\itemtemplate\name:RemoveItem(i):deletedItem=True
+				If EntityY(i\collider) < - 35.0 Then
+					DebugLog("remove: " + i\itemtemplate\name)
+					RemoveItem(i)
+					deletedItem=True
+				EndIf
 			Else
-				HideEntity i\collider
+				HideEntity(i\collider)
 			EndIf
 		EndIf
 
@@ -474,7 +479,7 @@ Function PickItem(item.Items)
 				Select item\itemtemplate\name
 					Case "1123"
 						If mainPlayer\currRoom\roomTemplate\name <> "room1123" Then
-							ShowEntity mainPlayer\overlays[OVERLAY_WHITE]
+							ShowEntity(mainPlayer\overlays[OVERLAY_WHITE])
 							mainPlayer\lightFlash = 7.0
 							PlaySound2(LoadTempSound("SFX/SCP/1123/Touch.ogg"))
 							DeathMSG = "Subject D-9341 was shot dead after attempting to attack a member of Nine-Tailed Fox. Surveillance tapes show that the subject had been "
@@ -487,7 +492,7 @@ Function PickItem(item.Items)
 						For e.Events = Each Events
 							If e\name = "room1123" Then
 								If e\eventState = 0 Then
-									ShowEntity mainPlayer\overlays[OVERLAY_WHITE]
+									ShowEntity(mainPlayer\overlays[OVERLAY_WHITE])
 									mainPlayer\lightFlash = 3.0
 									PlaySound2(LoadTempSound("SFX/SCP/1123/Touch.ogg"))
 								EndIf
@@ -496,7 +501,7 @@ Function PickItem(item.Items)
 							EndIf
 						Next
 					Case "killbat"
-						ShowEntity mainPlayer\overlays[OVERLAY_WHITE]
+						ShowEntity(mainPlayer\overlays[OVERLAY_WHITE])
 						mainPlayer\lightFlash = 1.0
 						PlaySound2(IntroSFX(11))
 						DeathMSG = "Subject D-9341 found dead inside SCP-914's output booth next to what appears to be an ordinary nine-volt battery. The subject is covered in severe "
@@ -556,7 +561,7 @@ Function DropItem(item.Items,playDropSound%=True)
 	MoveEntity(item\collider, 0, -0.1, 0.1)
 	RotateEntity(item\collider, 0, EntityYaw(mainPlayer\cam)+Rnd(-110,110), 0)
 
-	ResetEntity (item\collider)
+	ResetEntity(item\collider)
 
 	;move the item so that it doesn't overlap with other items
 	;For it.Items = Each Items

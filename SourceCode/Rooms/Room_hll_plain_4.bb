@@ -19,9 +19,9 @@ Function UpdateEvent_hll_plain_4(e.Events)
 					If n\npcType = NPCtype049 Then
 						If n\state = 2 And EntityDistance(mainPlayer\collider,n\collider)>16.0 Then
 							TFormVector(368, 528, 176, e\room\obj, 0)
-							PositionEntity n\collider, EntityX(e\room\obj)+TFormedX(), TFormedY(), EntityZ(e\room\obj)+TFormedZ()
-							DebugLog TFormedX()+", "+ TFormedY()+", "+ TFormedZ()
-							ResetEntity n\collider
+							PositionEntity(n\collider, EntityX(e\room\obj)+TFormedX(), TFormedY(), EntityZ(e\room\obj)+TFormedZ())
+							DebugLog(TFormedX()+", "+ TFormedY()+", "+ TFormedZ())
+							ResetEntity(n\collider)
 							n\pathStatus = 0
 							n\state = 4
 							n\state2 = 0

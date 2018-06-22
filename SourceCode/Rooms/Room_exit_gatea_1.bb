@@ -12,12 +12,12 @@ Function FillRoom_exit_gatea_1(r.Rooms)
     PositionEntity(r\roomDoors[0]\buttons[0],r\x+784*RoomScale, EntityY(r\roomDoors[0]\buttons[0],True), r\z+656*RoomScale, True)
     r\objects[0] = CreatePivot()
     PositionEntity(r\objects[0], r\x+1048.0*RoomScale, 0, r\z+512.0*RoomScale, True)
-    EntityParent r\objects[0], r\obj
+    EntityParent(r\objects[0], r\obj)
 
     r\roomDoors[1] = CreateDoor(r\zone, r\x, 0, r\z - 360.0 * RoomScale, 0, r, False, True, 5)
     r\roomDoors[1]\dir = 1 : r\roomDoors[1]\autoClose = False : r\roomDoors[1]\open = False
     PositionEntity(r\roomDoors[1]\buttons[1], r\x+416*RoomScale, EntityY(r\roomDoors[0]\buttons[1],True), r\z-576*RoomScale, True)
-    RotateEntity r\roomDoors[1]\buttons[1],0,r\angle-90,0,True
+    RotateEntity(r\roomDoors[1]\buttons[1],0,r\angle-90,0,True)
     PositionEntity(r\roomDoors[1]\buttons[0], r\x, 20.0, r\z, True)
 End Function
 

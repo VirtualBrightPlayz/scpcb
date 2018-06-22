@@ -7,11 +7,11 @@ Function FillRoom_cont_914_1(r.Rooms)
 
     ;d = CreateDoor(r\zone, r\x, 0, r\z - 368.0 * RoomScale, 0, r, False, True, 2)
     ;d\dir = 1 : d\autoClose = False : d\open = False
-    ;PositionEntity (d\buttons[0], r\x - 496.0 * RoomScale, 0.7, r\z - 272.0 * RoomScale, True)
+    ;PositionEntity(d\buttons[0], r\x - 496.0 * RoomScale, 0.7, r\z - 272.0 * RoomScale, True)
     ;TurnEntity(d\buttons[0], 0, 90, 0)
     r\roomDoors[2] = CreateDoor(r\zone,r\x,0,r\z-368.0*RoomScale,0,r,False,True,2)
     r\roomDoors[2]\dir=1 : r\roomDoors[2]\autoClose=False : r\roomDoors[2]\open=False
-    PositionEntity (r\roomDoors[2]\buttons[0], r\x - 496.0 * RoomScale, 0.7, r\z - 272.0 * RoomScale, True)
+    PositionEntity(r\roomDoors[2]\buttons[0], r\x - 496.0 * RoomScale, 0.7, r\z - 272.0 * RoomScale, True)
     TurnEntity(r\roomDoors[2]\buttons[0], 0, 90, 0)
 
     r\objects[0] = LoadMesh("GFX/Map/914key.x")
@@ -22,22 +22,29 @@ Function FillRoom_cont_914_1(r.Rooms)
         EntityPickMode(r\objects[i], 2)
     Next
 
-    PositionEntity (r\objects[0], r\x, r\y + 190.0 * RoomScale, r\z + 374.0 * RoomScale)
-    PositionEntity (r\objects[1], r\x, r\y + 230.0 * RoomScale, r\z + 374.0 * RoomScale)
+    PositionEntity(r\objects[0], r\x, r\y + 190.0 * RoomScale, r\z + 374.0 * RoomScale)
+    PositionEntity(r\objects[1], r\x, r\y + 230.0 * RoomScale, r\z + 374.0 * RoomScale)
     EntityParent(r\objects[0], r\obj)
     EntityParent(r\objects[1], r\obj)
 
     d = CreateDoor(r\zone, r\x - 624.0 * RoomScale, 0.0, r\z + 528.0 * RoomScale, 180, r, True)
-    FreeEntity (d\obj2) : d\obj2 = 0
-    FreeEntity (d\buttons[0]) : d\buttons[0] = 0
-    FreeEntity (d\buttons[1]) : d\buttons[1] = 0
+    FreeEntity(d\obj2)
+	d\obj2 = 0
+    FreeEntity(d\buttons[0])
+	d\buttons[0] = 0
+    FreeEntity(d\buttons[1])
+	d\buttons[1] = 0
     r\roomDoors[0] = d: d\autoClose = False
 
     d = CreateDoor(r\zone, r\x + 816.0 * RoomScale, 0.0, r\z + 528.0 * RoomScale, 180, r, True)
-    FreeEntity (d\obj2) : d\obj2 = 0
-    FreeEntity (d\buttons[0]) : d\buttons[0] = 0
-    FreeEntity (d\buttons[1]) : d\buttons[1] = 0
-    r\roomDoors[1] = d : d\autoClose = False
+    FreeEntity(d\obj2)
+	d\obj2 = 0
+    FreeEntity(d\buttons[0])
+	d\buttons[0] = 0
+    FreeEntity(d\buttons[1])
+	d\buttons[1] = 0
+    r\roomDoors[1] = d
+	d\autoClose = False
 
     r\objects[2] = CreatePivot()
     r\objects[3] = CreatePivot()
@@ -514,7 +521,7 @@ Function Use914(item.Items, setting$, x#, y#, z#)
 
 	End Select
 
-	If it2 <> Null Then EntityType (it2\collider, HIT_ITEM)
+	If it2 <> Null Then EntityType(it2\collider, HIT_ITEM)
 End Function
 
 
@@ -656,7 +663,7 @@ Function UpdateEvent_cont_914_1(e.Events)
 						Case "rough"
 							Kill(mainPlayer)
 							mainPlayer\blinkTimer = -10
-							If e\soundChannels[0] <> 0 Then StopChannel e\soundChannels[0]
+							If e\soundChannels[0] <> 0 Then StopChannel(e\soundChannels[0])
 							DeathMSG = Chr(34)+"A heavily mutilated corpse found inside the output booth of SCP-914. DNA testing identified the corpse as Class D Subject D-9341. "
 							DeathMSG = DeathMSG + "The subject had obviously been "+Chr(34)+"refined"+Chr(34)+" by SCP-914 on the "+Chr(34)+"Rough"+Chr(34)+" setting, but we are still confused as to how he "
 							DeathMSG = DeathMSG + "ended up inside the intake booth and who or what wound the key."+Chr(34)

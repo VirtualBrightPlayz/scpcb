@@ -127,7 +127,7 @@ Function UpdateNPCtype173(n.NPCs)
 									If x < 25.0 And x > 15.0 Then
 										z = Abs(EntityZ(mainPlayer\collider)-EntityZ(w\obj,True))
 										If z < 25 And z > 15.0 Then
-											DebugLog "MOVING 173 TO " + w\room\roomTemplate\name
+											DebugLog("MOVING 173 TO " + w\room\roomTemplate\name)
 											PositionEntity(n\collider, EntityX(w\obj,True), EntityY(w\obj,True)+0.25,EntityZ(w\obj,True))
 											ResetEntity(n\collider)
 											Exit
@@ -205,8 +205,8 @@ Function UpdateNPCtype173(n.NPCs)
 							EndIf
 						Else
 							PointEntity(n\collider, mainPlayer\collider)
-							RotateEntity n\collider, 0, EntityYaw(n\collider), EntityRoll(n\collider)
-							TranslateEntity n\collider,Cos(EntityYaw(n\collider)+90.0)*n\speed*timing\tickDuration,0.0,Sin(EntityYaw(n\collider)+90.0)*n\speed*timing\tickDuration
+							RotateEntity(n\collider, 0, EntityYaw(n\collider), EntityRoll(n\collider))
+							TranslateEntity(n\collider,Cos(EntityYaw(n\collider)+90.0)*n\speed*timing\tickDuration,0.0,Sin(EntityYaw(n\collider)+90.0)*n\speed*timing\tickDuration)
 						EndIf
 
 					Else ;player is not visible -> move to the location where he was last seen
@@ -220,7 +220,7 @@ Function UpdateNPCtype173(n.NPCs)
 							EndIf
 						Else
 							If Rand(400)=1 Then RotateEntity(n\collider, 0, Rnd(360), 10)
-							TranslateEntity n\collider,Cos(EntityYaw(n\collider)+90.0)*n\speed*timing\tickDuration,0.0,Sin(EntityYaw(n\collider)+90.0)*n\speed*timing\tickDuration
+							TranslateEntity(n\collider,Cos(EntityYaw(n\collider)+90.0)*n\speed*timing\tickDuration,0.0,Sin(EntityYaw(n\collider)+90.0)*n\speed*timing\tickDuration)
 
 						EndIf
 					EndIf
@@ -260,27 +260,27 @@ Function UpdateNPCtype173(n.NPCs)
 					EndIf
 				EndIf
 				If (Not tmp) Then
-					PointEntity n\obj, n\target\collider
-					RotateEntity n\collider, 0, CurveAngle(EntityYaw(n\obj),EntityYaw(n\collider),10.0), 0, True
+					PointEntity(n\obj, n\target\collider)
+					RotateEntity(n\collider, 0, CurveAngle(EntityYaw(n\obj),EntityYaw(n\collider),10.0), 0, True)
 					dist = EntityDistance(n\collider, n\target\collider)
-					MoveEntity n\collider, 0, 0, 0.016*timing\tickDuration*Max(Min((dist*2-1.0)*0.5,1.0),-0.5)
+					MoveEntity(n\collider, 0, 0, 0.016*timing\tickDuration*Max(Min((dist*2-1.0)*0.5,1.0),-0.5))
 				Else
-					PositionEntity n\collider,EntityX(n\target\collider),EntityY(n\target\collider)+0.3,EntityZ(n\target\collider)
-					ResetEntity n\collider
-					;PointEntity n\collider, n\target\collider
-					;RotateEntity n\collider, 0, CurveAngle(EntityYaw(n\obj),EntityYaw(n\collider),10.0), 0, True
+					PositionEntity(n\collider,EntityX(n\target\collider),EntityY(n\target\collider)+0.3,EntityZ(n\target\collider))
+					ResetEntity(n\collider)
+					;PointEntity(n\collider, n\target\collider)
+					;RotateEntity(n\collider, 0, CurveAngle(EntityYaw(n\obj),EntityYaw(n\collider),10.0), 0, True)
 					;dist = EntityDistance(n\collider, n\target\collider)
-					;MoveEntity n\collider, 0, 0, dist-0.6
+					;MoveEntity(n\collider, 0, 0, dist-0.6)
 				EndIf
 			EndIf
 
 			PositionEntity(n\obj, EntityX(n\collider), EntityY(n\collider) + 0.05 + Sin(TimeInPosMilliSecs()*0.08)*0.02, EntityZ(n\collider))
-			RotateEntity (n\obj, 0, EntityYaw(n\collider)-180, 0)
+			RotateEntity(n\obj, 0, EntityYaw(n\collider)-180, 0)
 
-			ShowEntity n\obj2
+			ShowEntity(n\obj2)
 
 			PositionEntity(n\obj2, EntityX(n\collider), EntityY(n\collider) - 0.05 + Sin(TimeInPosMilliSecs()*0.08)*0.02, EntityZ(n\collider))
-			RotateEntity (n\obj2, 0, EntityYaw(n\collider)-180, 0)
+			RotateEntity(n\obj2, 0, EntityYaw(n\collider)-180, 0)
 	End Select
 End Function
 ;~IDEal Editor Parameters:

@@ -24,20 +24,20 @@ Function FillRoom_cont_205_1(r.Rooms)
 
     EntityParent(sc\scrObj, 0)
     PositionEntity(sc\scrObj, r\x - 1716.0 * RoomScale, r\y + 160.0 * RoomScale, r\z + 176.0 * RoomScale, True)
-    TurnEntity sc\scrObj, 0, 90, 0
-    ScaleSprite sc\scrObj, 896.0*0.5*RoomScale, 896.0*0.5*RoomScale
+    TurnEntity(sc\scrObj, 0, 90, 0)
+    ScaleSprite(sc\scrObj, 896.0*0.5*RoomScale, 896.0*0.5*RoomScale)
 
     EntityParent(sc\scrObj, r\obj)
     ;EntityBlend(sc\scrObj, 2)
 
-    CameraZoom (sc\cam, 1.5)
+    CameraZoom(sc\cam, 1.5)
 
-    HideEntity sc\scrOverlay
-    HideEntity sc\monitorObj
+    HideEntity(sc\scrOverlay)
+    HideEntity(sc\monitorObj)
 
     r\objects[0] = CreatePivot(r\obj)
-    PositionEntity r\objects[0], r\x - 1536.0 * RoomScale, r\y + 730.0 * RoomScale, r\z + 192.0 * RoomScale, True
-    RotateEntity r\objects[0], 0,-90,0,True
+    PositionEntity(r\objects[0], r\x - 1536.0 * RoomScale, r\y + 730.0 * RoomScale, r\z + 192.0 * RoomScale, True)
+    RotateEntity(r\objects[0], 0,-90,0,True)
 
     r\objects[1] = sc\scrObj
 End Function
@@ -66,13 +66,13 @@ Function UpdateEvent_cont_205_1(e.Events)
 				e\room\objects[6] = LoadAnimMesh("GFX/npcs/205_woman.b3d")
 
 				For i = 3 To 6
-				;EntityColor e\room\objects[i], 30,30,30
-				;EntityShininess e\room\objects[i],0.0
+				;EntityColor(e\room\objects[i], 30,30,30)
+				;EntityShininess(e\room\objects[i],0.0)
 				;vertex color + flatshaded
-				;EntityFX e\room\objects[i], 2
+				;EntityFX(e\room\objects[i], 2)
 
-					PositionEntity e\room\objects[i], EntityX(e\room\objects[0],True), EntityY(e\room\objects[0],True), EntityZ(e\room\objects[0],True), True
-					RotateEntity e\room\objects[i], -90, EntityYaw(e\room\objects[0],True), 0, True
+					PositionEntity(e\room\objects[i], EntityX(e\room\objects[0],True), EntityY(e\room\objects[0],True), EntityZ(e\room\objects[0],True), True)
+					RotateEntity(e\room\objects[i], -90, EntityYaw(e\room\objects[0],True), 0, True)
 					ScaleEntity(e\room\objects[i], 0.05, 0.05, 0.05, True)
 				Next
 
@@ -184,7 +184,7 @@ Function UpdateEvent_cont_205_1(e.Events)
 							e\eventState = 67
 							e\eventState2 = 0
 							e\eventState3 = 0
-							HideEntity e\room\objects[1]
+							HideEntity(e\room\objects[1])
 						EndIf
 					EndIf
 				Case 67
@@ -195,7 +195,7 @@ Function UpdateEvent_cont_205_1(e.Events)
 						DeathMSG = DeathMSG + "entered the chamber when the lights are off."
 
 						mainPlayer\injuries=mainPlayer\injuries+Rnd(0.4,0.8)
-						PlaySound2 DamageSFX(Rand(2,3))
+						PlaySound2(DamageSFX(Rand(2,3)))
 						mainPlayer\camShake = 0.5
 
 						e\eventState2 = Rnd(-0.1, 0.1)
@@ -209,14 +209,14 @@ Function UpdateEvent_cont_205_1(e.Events)
 					e\eventState3 = CurveValue(e\eventState3, 0, 10.0)
 				Default
 					If (Rand(3)=1) Then
-						HideEntity e\room\objects[1]
+						HideEntity(e\room\objects[1])
 					Else
-						ShowEntity e\room\objects[1]
+						ShowEntity(e\room\objects[1])
 					EndIf
 
 					e\eventState3 = e\eventState3 + timing\tickDuration
 					If (e\eventState3>50) Then
-						ShowEntity e\room\objects[1]
+						ShowEntity(e\room\objects[1])
 						e\eventState = e\eventState+1
 						e\eventState3=0
 					EndIf

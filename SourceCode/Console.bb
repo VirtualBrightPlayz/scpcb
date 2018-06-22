@@ -48,14 +48,14 @@ Function DrawConsole()
 	Local TempY%
 	Local count%
 	If CurrGameState=GAMESTATE_CONSOLE Then
-		SetFont uiAssets\consoleFont
+		SetFont(uiAssets\consoleFont)
 
 		x = 0
 		y = userOptions\screenHeight-300*MenuScale
 		width = userOptions\screenWidth
 		height = 300*MenuScale-30*MenuScale
 
-		DrawFrame x,y,width,height+30*MenuScale
+		DrawFrame(x,y,width,height+30*MenuScale)
 
 		consoleHeight = 0
 		scrollbarHeight = 0
@@ -67,19 +67,19 @@ Function DrawConsole()
 		If scrollbarHeight>height Then scrollbarHeight = height
 		If consoleHeight<height Then consoleHeight = height
 
-		Color 50,50,50
+		Color(50,50,50)
 		inBar% = MouseOn(x+width-26*MenuScale,y,26*MenuScale,height)
-		If inBar Then Color 70,70,70
-		Rect x+width-26*MenuScale,y,26*MenuScale,height,True
+		If inBar Then Color(70,70,70)
+		Rect(x+width-26*MenuScale,y,26*MenuScale,height,True)
 
 
-		Color 120,120,120
+		Color(120,120,120)
 		inBox% = MouseOn(x+width-23*MenuScale,y+height-scrollbarHeight+(ConsoleScroll*scrollbarHeight/height),20*MenuScale,scrollbarHeight)
-		If inBox Then Color 200,200,200
-		If ConsoleScrollDragging Then Color 255,255,255
-		Rect x+width-23*MenuScale,y+height-scrollbarHeight+(ConsoleScroll*scrollbarHeight/height),20*MenuScale,scrollbarHeight,True
+		If inBox Then Color(200,200,200)
+		If ConsoleScrollDragging Then Color(255,255,255)
+		Rect(x+width-23*MenuScale,y+height-scrollbarHeight+(ConsoleScroll*scrollbarHeight/height),20*MenuScale,scrollbarHeight,True)
 
-		Color 255, 255, 255
+		Color(255, 255, 255)
 
 		TempY = y + height - 25*MenuScale - ConsoleScroll
 		count = 0
@@ -90,10 +90,10 @@ Function DrawConsole()
 			Else
 				If TempY >= y And TempY < y + height - 20*MenuScale Then
 					If cm=ConsoleReissue Then
-						Color cm\r/4,cm\g/4,cm\b/4
-						Rect x,TempY-2*MenuScale,width-30*MenuScale,24*MenuScale,True
+						Color(cm\r/4,cm\g/4,cm\b/4)
+						Rect(x,TempY-2*MenuScale,width-30*MenuScale,24*MenuScale,True)
 					EndIf
-					Color cm\r,cm\g,cm\b
+					Color(cm\r,cm\g,cm\b)
 					If cm\isCommand Then
 						Text(x + 20*MenuScale, TempY, "> "+cm\txt)
 					Else
@@ -105,7 +105,7 @@ Function DrawConsole()
 
 		Next
 
-		Color 255,255,255
+		Color(255,255,255)
 
 		DrawInputBox(x, y + height, width, 30*MenuScale, ConsoleInput, 2)
 
@@ -219,7 +219,7 @@ Function UpdateConsole()
 			EndIf
 
 			If ConsoleReissue<>Null Then
-				ConsoleInput = ConsoleReissue\txt
+				ConsoleInput= ConsoleReissue\txt
 				ConsoleScroll = reissuePos+(height/2)
 			EndIf
 		EndIf
@@ -278,7 +278,7 @@ Function UpdateConsole()
 		EndIf
 		ConsoleInput = Left(ConsoleInput, 100)
 
-		If KeyHit(28) And ConsoleInput <> "" Then
+		If KeyHit(28) And ConsoleInput<> "" Then
 			ConsoleReissue = Null
 			ConsoleScroll = 0
 			CreateConsoleMsg(ConsoleInput,255,255,0,True)
@@ -455,7 +455,7 @@ Function UpdateConsole()
 					End Select
 
 				Case "asd"
-					WireFrame 1
+					WireFrame(1)
 					WireframeState=1
 					mainPlayer\godMode = True
 					mainPlayer\noclip = True
@@ -509,8 +509,8 @@ Function UpdateConsole()
 						CreateConsoleMsg("Texture name: "+texname)
 						CreateConsoleMsg("Coordinates: "+EntityX(c)+", "+EntityY(c)+", "+EntityZ(c))
 						CreateConsoleMsg("******************************")
-						FreeTexture t
-						FreeBrush b
+						FreeTexture(t)
+						FreeBrush(b)
 					EndIf
 
 				Case "hidedistance"
@@ -524,7 +524,7 @@ Function UpdateConsole()
 					Kill(mainPlayer)
 
 				Case "noclipspeed"
-					RuntimeError "TODO: reimplement?"
+					RuntimeError("TODO: reimplement?")
 					;StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 
 					;NoClipSpeed = Float(StrTemp)
@@ -557,8 +557,8 @@ Function UpdateConsole()
 
 					For r.Rooms = Each Rooms
 						If r\roomTemplate\name = StrTemp Then
-							;PositionEntity (mainPlayer\collider, EntityX(r\obj), 0.7, EntityZ(r\obj))
-							PositionEntity (mainPlayer\collider, r\x, r\y+0.7, r\z)
+							;PositionEntity(mainPlayer\collider, EntityX(r\obj), 0.7, EntityZ(r\obj))
+							PositionEntity(mainPlayer\collider, r\x, r\y+0.7, r\z)
 							ResetEntity(mainPlayer\collider)
 							UpdateDoors()
 							UpdateRooms()
@@ -611,7 +611,7 @@ Function UpdateConsole()
 						CreateConsoleMsg("WIREFRAME OFF")
 					EndIf
 
-					WireFrame WireframeState
+					WireFrame(WireframeState)
 
 				Case "173speed"
 					StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
@@ -640,7 +640,7 @@ Function UpdateConsole()
 
 				Case "spawn106"
 					Curr106\state = -1
-					PositionEntity Curr106\collider, EntityX(mainPlayer\collider), EntityY(Curr106\collider), EntityZ(mainPlayer\collider)
+					PositionEntity(Curr106\collider, EntityX(mainPlayer\collider), EntityY(Curr106\collider), EntityZ(mainPlayer\collider))
 
 				Case "reset096"
 					For n = Each NPCs
@@ -652,13 +652,13 @@ Function UpdateConsole()
 
 				Case "disable173"
 					Curr173\idle = 3 ;TODO: clean up
-					HideEntity Curr173\obj
-					HideEntity Curr173\collider
+					HideEntity(Curr173\obj)
+					HideEntity(Curr173\collider)
 
 				Case "enable173"
 					Curr173\idle = False
-					ShowEntity Curr173\obj
-					ShowEntity Curr173\collider
+					ShowEntity(Curr173\obj)
+					ShowEntity(Curr173\collider)
 
 				Case "disable106"
 					Curr106\idle = True
@@ -668,20 +668,20 @@ Function UpdateConsole()
 				Case "enable106"
 					Curr106\idle = False
 					Contained106 = False
-					ShowEntity Curr106\collider
-					ShowEntity Curr106\obj
+					ShowEntity(Curr106\collider)
+					ShowEntity(Curr106\obj)
 
 				Case "halloween"
 					HalloweenTex = Not HalloweenTex
 					If HalloweenTex Then
 						tex = LoadTexture("GFX/npcs/173h.pt", 1)
-						EntityTexture Curr173\obj, tex, 0, 0
-						FreeTexture tex
+						EntityTexture(Curr173\obj, tex, 0, 0)
+						FreeTexture(tex)
 						CreateConsoleMsg("173 JACK-O-LANTERN ON")
 					Else
 						tex2 = LoadTexture("GFX/npcs/173texture.png", 1)
-						EntityTexture Curr173\obj, tex2, 0, 0
-						FreeTexture tex2
+						EntityTexture(Curr173\obj, tex2, 0, 0)
+						FreeTexture(tex2)
 						CreateConsoleMsg("173 JACK-O-LANTERN OFF")
 					EndIf
 
@@ -696,13 +696,13 @@ Function UpdateConsole()
 				Case "scp-420-j","420","weed"
 					For i = 1 To 20
 						If Rand(2)=1 Then
-							it.Items = CreateItem("Some SCP-420-J","420", EntityX(mainPlayer\collider,True)+Cos((360.0/20.0)*i)*Rnd(0.3,0.5), EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider,True)+Sin((360.0/20.0)*i)*Rnd(0.3,0.5))
+							it.Items = CreateItem("Some SCP-420-J","420", EntityX(mainPlayer\collider,True)+Cos(360.0/20.0)*i*Rnd(0.3,0.5), EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider,True)+Sin((360.0/20.0)*i)*Rnd(0.3,0.5))
 						Else
-							it.Items = CreateItem("Joint","420s", EntityX(mainPlayer\collider,True)+Cos((360.0/20.0)*i)*Rnd(0.3,0.5), EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider,True)+Sin((360.0/20.0)*i)*Rnd(0.3,0.5))
+							it.Items = CreateItem("Joint","420s", EntityX(mainPlayer\collider,True)+Cos(360.0/20.0)*i)*Rnd(0.3,0.5, EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider,True)+Sin((360.0/20.0)*i)*Rnd(0.3,0.5))
 						EndIf
-						EntityType (it\collider, HIT_ITEM)
+						EntityType(it\collider, HIT_ITEM)
 					Next
-					PlaySound2 LoadTempSound("SFX/Music/420J.ogg")
+					PlaySound2(LoadTempSound("SFX/Music/420J.ogg"))
 
 				Case "godmode"
 					StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
@@ -738,7 +738,7 @@ Function UpdateConsole()
 					mainPlayer\godMode = 0
 					mainPlayer\noclip = 0
 
-					ShowEntity mainPlayer\collider
+					ShowEntity(mainPlayer\collider)
 
 				Case "noclip","fly"
 					StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
@@ -749,11 +749,11 @@ Function UpdateConsole()
 							mainPlayer\disableControls = False
 						Case "off", "0", "false"
 							mainPlayer\noclip = False
-							RotateEntity mainPlayer\collider, 0, EntityYaw(mainPlayer\collider), 0
+							RotateEntity(mainPlayer\collider, 0, EntityYaw(mainPlayer\collider), 0)
 						Default
 							mainPlayer\noclip = Not mainPlayer\noclip
 							If mainPlayer\noclip = False Then
-								RotateEntity mainPlayer\collider, 0, EntityYaw(mainPlayer\collider), 0
+								RotateEntity(mainPlayer\collider, 0, EntityYaw(mainPlayer\collider), 0)
 							Else
 								mainPlayer\disableControls = False
 							EndIf
@@ -801,10 +801,10 @@ Function UpdateConsole()
 					EndIf
 
 				Case "stopsound", "stfu"
-					RuntimeError "TODO: reimplement"
+					RuntimeError("TODO: reimplement")
 
 				Case "camerafog"
-					RuntimeError "TODO: reimplement?"
+					RuntimeError("TODO: reimplement?")
 					;args$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 					;CameraFogNear = Float(Left(args, Len(args) - Instr(args, " ")))
 					;CameraFogFar = Float(Right(args, Len(args) - Instr(args, " ")))
@@ -820,7 +820,7 @@ Function UpdateConsole()
 					Console_SpawnNPC(StrTemp$)
 
 				Case "infinitestamina","infstam"
-					RuntimeError "TODO: reimplement?"
+					RuntimeError("TODO: reimplement?")
 
 					;StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 
@@ -912,8 +912,8 @@ Function UpdateConsole()
 					For n.NPCs = Each NPCs
 						If n\npcType = NPCtypeMTF Then
 							If n\mtfLeader = Null Then
-								PositionEntity mainPlayer\collider,EntityX(n\collider),EntityY(n\collider)+5,EntityZ(n\collider)
-								ResetEntity mainPlayer\collider
+								PositionEntity(mainPlayer\collider,EntityX(n\collider),EntityY(n\collider)+5,EntityZ(n\collider))
+								ResetEntity(mainPlayer\collider)
 								Exit
 							EndIf
 						EndIf
@@ -924,8 +924,8 @@ Function UpdateConsole()
 					StrTemp$ = Piece$(args$,1," ")
 					StrTemp2$ = Piece$(args$,2," ")
 					StrTemp3$ = Piece$(args$,3," ")
-					PositionEntity mainPlayer\collider,StrTemp$,StrTemp2$,StrTemp3$
-					PositionEntity mainPlayer\cam,StrTemp$,StrTemp2$,StrTemp3$
+					PositionEntity(mainPlayer\collider,StrTemp$,StrTemp2$,StrTemp3$)
+					PositionEntity(mainPlayer\cam,StrTemp$,StrTemp2$,StrTemp3$)
 					CreateConsoleMsg("Teleported to coordinates (X|Y|Z): "+EntityX(mainPlayer\collider)+"|"+EntityY(mainPlayer\collider)+"|"+EntityZ(mainPlayer\collider))
 
 				Case "notarget"
@@ -961,8 +961,8 @@ Function UpdateConsole()
 					EntityType(it\collider, HIT_ITEM)
 					it\state = 101
 				Case "teleport173"
-					PositionEntity Curr173\collider,EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider)
-					ResetEntity Curr173\collider
+					PositionEntity(Curr173\collider,EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider))
+					ResetEntity(Curr173\collider)
 				Case Chr($6A)+Chr($6F)+Chr($72)+Chr($67)+Chr($65) ;TODO
 					RuntimeError("Implement")
 				Default
@@ -973,7 +973,7 @@ Function UpdateConsole()
 		EndIf
 	EndIf
 
-	SetFont uiAssets\font[0]
+	SetFont(uiAssets\font[0])
 
 End Function
 

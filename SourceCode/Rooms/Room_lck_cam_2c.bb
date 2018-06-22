@@ -18,7 +18,7 @@ Function FillRoom_lck_cam_2c(r.Rooms)
     d2\timer = 70 * 5 : d2\autoClose = False: d2\open = False
     EntityParent(d2\buttons[0], 0)
     PositionEntity(d2\buttons[0], r\x + 640.0 * RoomScale, 0.7, r\z + 288.0 * RoomScale)
-    RotateEntity (d2\buttons[0], 0, 90, 0)
+    RotateEntity(d2\buttons[0], 0, 90, 0)
     EntityParent(d2\buttons[0], r\obj)
 
     FreeEntity(d2\buttons[1]) : d2\buttons[1] = 0
@@ -30,7 +30,7 @@ Function FillRoom_lck_cam_2c(r.Rooms)
     sc\angle = 45 + 180
     sc\turn = 45
     sc\scrTexture = 1
-    EntityTexture sc\scrObj, ScreenTexs[sc\scrTexture]
+    EntityTexture(sc\scrObj, ScreenTexs[sc\scrTexture])
 
     TurnEntity(sc\cameraObj, 40, 0, 0)
     EntityParent(sc\obj, r\obj)
@@ -43,7 +43,7 @@ Function FillRoom_lck_cam_2c(r.Rooms)
     sc\angle = 45
     sc\turn = 45
     sc\scrTexture = 1
-    EntityTexture sc\scrObj, ScreenTexs[sc\scrTexture]
+    EntityTexture(sc\scrObj, ScreenTexs[sc\scrTexture])
 
     TurnEntity(sc\cameraObj, 40, 0, 0)
     EntityParent(sc\obj, r\obj)

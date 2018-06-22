@@ -7,16 +7,20 @@ Function FillRoom_cont_035_1(r.Rooms)
 
     d = CreateDoor(r\zone, r\x - 296.0 * RoomScale, 0, r\z - 672.0 * RoomScale, 180, r, True, 0, 5)
     d\autoClose = False : d\locked = True : r\roomDoors[0]=d
-    PositionEntity (d\buttons[1], r\x - 164.0 * RoomScale, EntityY(d\buttons[1],True), EntityZ(d\buttons[1],True), True)
-    FreeEntity d\buttons[0] : d\buttons[0]=0
-    FreeEntity d\obj2 : d\obj2=0
+    PositionEntity(d\buttons[1], r\x - 164.0 * RoomScale, EntityY(d\buttons[1],True), EntityZ(d\buttons[1],True), True)
+    FreeEntity(d\buttons[0])
+	d\buttons[0]=0
+    FreeEntity(d\obj2)
+	d\obj2=0
 
     d2 = CreateDoor(r\zone, r\x - 296.0 * RoomScale, 0, r\z - 144.0 * RoomScale, 0, r, False)
     d2\autoClose = False : d2\locked = True : r\roomDoors[1]=d2
-    PositionEntity (d2\buttons[0], r\x - 432.0 * RoomScale, EntityY(d2\buttons[0],True), r\z - 480.0 * RoomScale, True)
+    PositionEntity(d2\buttons[0], r\x - 432.0 * RoomScale, EntityY(d2\buttons[0],True), r\z - 480.0 * RoomScale, True)
     RotateEntity(d2\buttons[0], 0, 90, 0, True)
-    FreeEntity d2\buttons[1] : d2\buttons[1]=0
-    FreeEntity d2\obj2 : d2\obj2=0
+    FreeEntity(d2\buttons[1])
+	d2\buttons[1]=0
+    FreeEntity(d2\obj2)
+	d2\obj2=0
 
     ;door to the control room
     r\roomDoors[2] = CreateDoor(r\zone, r\x + 384.0 * RoomScale, 0, r\z - 672.0 * RoomScale, 180, r, False, 0, 5)
@@ -33,8 +37,8 @@ Function FillRoom_cont_035_1(r.Rooms)
 
 		ScaleEntity(r\levers[i]\baseObj, 0.04, 0.04, 0.04)
 		ScaleEntity(r\levers[i]\obj, 0.04, 0.04, 0.04)
-		PositionEntity (r\levers[i]\baseObj, r\x + 210.0 * RoomScale, r\y + 224.0 * RoomScale, r\z - (208-i*76) * RoomScale, True)
-		PositionEntity (r\levers[i]\obj, r\x + 210.0 * RoomScale, r\y + 224.0 * RoomScale, r\z - (208-i*76) * RoomScale, True)
+		PositionEntity(r\levers[i]\baseObj, r\x + 210.0 * RoomScale, r\y + 224.0 * RoomScale, r\z - (208-i*76) * RoomScale, True)
+		PositionEntity(r\levers[i]\obj, r\x + 210.0 * RoomScale, r\y + 224.0 * RoomScale, r\z - (208-i*76) * RoomScale, True)
 
 		EntityParent(r\levers[i]\baseObj, r\obj)
 		EntityParent(r\levers[i]\obj, r\obj)
@@ -42,8 +46,8 @@ Function FillRoom_cont_035_1(r.Rooms)
         RotateEntity(r\levers[i]\baseObj, 0, -90-180, 0)
         RotateEntity(r\levers[i]\obj, -80, -90, 0)
 
-        EntityPickMode r\levers[i]\obj, 1, False
-        EntityRadius r\levers[i]\obj, 0.1
+        EntityPickMode(r\levers[i]\obj, 1, False)
+        EntityRadius(r\levers[i]\obj, 0.1)
     Next
 
     ;the control room
@@ -110,7 +114,7 @@ Function UpdateEvent_cont_035_1(e.Events)
 				n.NPCs = CreateNPC(NPCtypeD, EntityX(e\room\objects[4],True),0.5,EntityZ(e\room\objects[4],True))
 
 				n\texture = "GFX/NPCs/035victim.jpg"
-				HideEntity n\obj
+				HideEntity(n\obj)
 
 				SetAnimTime(n\obj, 501)
 				n\frame = 501
@@ -128,16 +132,16 @@ Function UpdateEvent_cont_035_1(e.Events)
 
 						temp = e\room\npc[0]\frame
 
-						FreeEntity e\room\npc[0]\obj
+						FreeEntity(e\room\npc[0]\obj)
 						e\room\npc[0]\obj = LoadAnimMesh("GFX/NPCs/035.b3d")
 						x = 0.5 / MeshWidth(e\room\npc[0]\obj)
-						ScaleEntity e\room\npc[0]\obj, x,x,x
+						ScaleEntity(e\room\npc[0]\obj, x,x,x)
 
 						SetAnimTime(e\room\npc[0]\obj, temp)
 
-						ShowEntity e\room\npc[0]\obj
+						ShowEntity(e\room\npc[0]\obj)
 
-						RotateEntity n\collider, 0, e\room\angle+270, 0, True
+						RotateEntity(n\collider, 0, e\room\angle+270, 0, True)
 
 						Exit
 					EndIf
@@ -231,8 +235,8 @@ Function UpdateEvent_cont_035_1(e.Events)
 						PositionEntity(e\room\objects[6], EntityX(e\room\objects[6],True), 10, EntityZ(e\room\objects[6],True),True)
 
 						If e\room\npc[0]\state = 0 Then
-							PointEntity e\room\npc[0]\obj, mainPlayer\collider
-							RotateEntity e\room\npc[0]\collider, 0, CurveAngle(EntityYaw(e\room\npc[0]\obj), EntityYaw(e\room\npc[0]\collider), 15.0), 0
+							PointEntity(e\room\npc[0]\obj, mainPlayer\collider)
+							RotateEntity(e\room\npc[0]\collider, 0, CurveAngle(EntityYaw(e\room\npc[0]\obj), EntityYaw(e\room\npc[0]\collider), 15.0), 0)
 
 							If Rand(500)=1 Then
 								If EntityDistance(e\room\npc[0]\collider, e\room\objects[4])>2 Then
@@ -244,14 +248,14 @@ Function UpdateEvent_cont_035_1(e.Events)
 							EndIf
 						ElseIf e\room\npc[0]\state = 1 Then
 							If e\room\npc[0]\state2 = 1 Then
-								PointEntity e\room\npc[0]\obj, e\room\objects[4]
+								PointEntity(e\room\npc[0]\obj, e\room\objects[4])
 								If EntityDistance(e\room\npc[0]\collider, e\room\objects[4])<0.2 Then e\room\npc[0]\state = 0
 							Else
-								RotateEntity e\room\npc[0]\obj, 0, e\room\angle-180, 0, True
+								RotateEntity(e\room\npc[0]\obj, 0, e\room\angle-180, 0, True)
 								If EntityDistance(e\room\npc[0]\collider, e\room\objects[4])>2 Then e\room\npc[0]\state = 0
 							EndIf
 
-							RotateEntity e\room\npc[0]\collider, 0, CurveAngle(EntityYaw(e\room\npc[0]\obj), EntityYaw(e\room\npc[0]\collider), 15.0), 0
+							RotateEntity(e\room\npc[0]\collider, 0, CurveAngle(EntityYaw(e\room\npc[0]\obj), EntityYaw(e\room\npc[0]\collider), 15.0), 0)
 
 						EndIf
 
@@ -385,16 +389,16 @@ Function UpdateEvent_cont_035_1(e.Events)
 
 						e\room\npc[0]\state = 1
 						If dist > 2.5 Then
-							PointEntity e\room\npc[0]\obj, e\room\roomDoors[1]\frameobj
-							RotateEntity e\room\npc[0]\collider, 0, CurveAngle(EntityYaw(e\room\npc[0]\obj), EntityYaw(e\room\npc[0]\collider), 15.0), 0
+							PointEntity(e\room\npc[0]\obj, e\room\roomDoors[1]\frameobj)
+							RotateEntity(e\room\npc[0]\collider, 0, CurveAngle(EntityYaw(e\room\npc[0]\obj), EntityYaw(e\room\npc[0]\collider), 15.0), 0)
 						ElseIf dist > 0.7 Then
-							If IsChannelPlaying (e\room\npc[0]\soundChannels[0]) Then
+							If IsChannelPlaying(e\room\npc[0]\soundChannels[0]) Then
 								e\room\npc[0]\state = 0
-								PointEntity e\room\npc[0]\obj, mainPlayer\collider
-								RotateEntity e\room\npc[0]\collider, 0, CurveAngle(EntityYaw(e\room\npc[0]\obj), EntityYaw(e\room\npc[0]\collider), 15.0), 0
+								PointEntity(e\room\npc[0]\obj, mainPlayer\collider)
+								RotateEntity(e\room\npc[0]\collider, 0, CurveAngle(EntityYaw(e\room\npc[0]\obj), EntityYaw(e\room\npc[0]\collider), 15.0), 0)
 							Else
-								PointEntity e\room\npc[0]\obj, e\room\roomDoors[0]\frameobj
-								RotateEntity e\room\npc[0]\collider, 0, CurveAngle(EntityYaw(e\room\npc[0]\obj), EntityYaw(e\room\npc[0]\collider), 15.0), 0
+								PointEntity(e\room\npc[0]\obj, e\room\roomDoors[0]\frameobj)
+								RotateEntity(e\room\npc[0]\collider, 0, CurveAngle(EntityYaw(e\room\npc[0]\obj), EntityYaw(e\room\npc[0]\collider), 15.0), 0)
 							EndIf
 						Else
 							RemoveNPC(e\room\npc[0])
@@ -406,7 +410,6 @@ Function UpdateEvent_cont_035_1(e.Events)
 							e\room\roomDoors[1]\locked = False
 							e\room\roomDoors[2]\locked = False
 							UseDoor(e\room\roomDoors[1],False)
-							do.Doors
 							For do = Each Doors
 								If do\dir = 2 Then
 									If Abs(EntityX(e\room\obj)-EntityX(do\frameobj,True))<4.5 Then
@@ -451,7 +454,7 @@ Function UpdateEvent_cont_035_1(e.Events)
 								If e\room\npc[0]=Null Then e\room\npc[0] = CreateNPC(NPCtypeTentacle, 0,0,0)
 							EndIf
 
-							PositionEntity e\room\npc[0]\collider, EntityX(e\room\objects[4],True), 0, EntityZ(e\room\objects[4],True)
+							PositionEntity(e\room\npc[0]\collider, EntityX(e\room\objects[4],True), 0, EntityZ(e\room\objects[4],True))
 
 							If e\room\npc[0]\state > 0 Then
 								If e\room\npc[1]=Null Then
@@ -491,14 +494,14 @@ Function UpdateEvent_cont_035_1(e.Events)
 			EndIf
 
 			If e\room\npc[1]<>Null Then
-				PositionEntity e\room\npc[1]\collider, EntityX(e\room\obj,True), 0, EntityZ(e\room\obj,True)
+				PositionEntity(e\room\npc[1]\collider, EntityX(e\room\obj,True), 0, EntityZ(e\room\obj,True))
 				angle = WrapAngle(EntityYaw(e\room\npc[1]\collider)-e\room\angle)
 
 				If angle>90 Then
 					If angle < 225 Then
-						RotateEntity e\room\npc[1]\collider, 0, e\room\angle-89-180, 0
+						RotateEntity(e\room\npc[1]\collider, 0, e\room\angle-89-180, 0)
 					Else
-						RotateEntity e\room\npc[1]\collider, 0, e\room\angle-1, 0
+						RotateEntity(e\room\npc[1]\collider, 0, e\room\angle-1, 0)
 					EndIf
 				EndIf
 			EndIf
@@ -520,7 +523,7 @@ Function UpdateEvent_cont_035_1(e.Events)
 			If e\sounds[0] = 0 Then
 				If EntityDistance(mainPlayer\collider, e\room\obj) < 20 Then
 					LoadEventSound(e,"SFX/Room/035Chamber/InProximity.ogg")
-					PlaySound2 e\sounds[0]
+					PlaySound2(e\sounds[0])
 				EndIf
 			EndIf
 		ElseIf e\eventState < 0 Then

@@ -25,11 +25,11 @@ Function UpdateEvent_dimension1499(e.Events)
 ;				ElseIf e\eventStr = "load0"
 ;					e\room\objects[0] = CreatePlane()
 ;					Local planetex% = LoadTexture("GFX/Map/Rooms/dimension1499/grit3.jpg")
-;					EntityTexture e\room\objects[0],planetex%
-;					FreeTexture planetex%
-;					PositionEntity e\room\objects[0],0,EntityY(e\room\obj),0
-;					EntityType e\room\objects[0],HIT_MAP
-;					;EntityParent e\room\objects[0],e\room\obj
+;					EntityTexture(e\room\objects[0],planetex%)
+;					FreeTexture(planetex%)
+;					PositionEntity(e\room\objects[0],0,EntityY(e\room\obj),0)
+;					EntityType(e\room\objects[0],HIT_MAP)
+;					;EntityParent(e\room\objects[0],e\room\obj)
 ;					e\eventStr = "load1"
 ;				ElseIf e\eventStr = "load1"
 ;					NTF_1499Sky = sky_CreateSky("GFX/Map/sky/1499sky")
@@ -37,7 +37,7 @@ Function UpdateEvent_dimension1499(e.Events)
 ;				Else
 ;					If Int(e\eventStr)<16
 ;						e\room\objects[Int(e\eventStr)] = LoadMesh("GFX/Map/Rooms/dimension1499/1499object"+(Int(e/EventStr))+".b3d")
-;						HideEntity e\room\objects[Int(e\eventStr)]
+;						HideEntity(e\room\objects[Int(e\eventStr)])
 ;						e\eventStr = Int(e\eventStr)+1
 ;					ElseIf Int(e\eventStr)=16
 ;						CreateChunkParts(e\room)
@@ -64,33 +64,33 @@ Function UpdateEvent_dimension1499(e.Events)
 					n\state = 0
 					;If Rand(2)=1 Then n\state2 = 500*3
 					n\angle = Rnd(360)
-					PositionEntity n\collider,EntityX(n\collider)+Rnd(-60.0,60.0),EntityY(n\collider)+0.05,EntityZ(n\collider)+Rnd(-60.0,60.0)
-					ResetEntity n\collider
+					PositionEntity(n\collider,EntityX(n\collider)+Rnd(-60.0,60.0),EntityY(n\collider)+0.05,EntityZ(n\collider)+Rnd(-60.0,60.0))
+					ResetEntity(n\collider)
 				EndIf
 			Next
 		EndIf
-		;PositionEntity e\room\objects[0],0,800,0
-		CameraFogRange mainPlayer\cam,40,80
-		CameraFogColor mainPlayer\cam,96,97,104
-		CameraClsColor mainPlayer\cam,96,97,104
-		CameraRange mainPlayer\cam,0.05,90
+		;PositionEntity(e\room\objects[0],0,800,0)
+		CameraFogRange(mainPlayer\cam,40,80)
+		CameraFogColor(mainPlayer\cam,96,97,104)
+		CameraClsColor(mainPlayer\cam,96,97,104)
+		CameraRange(mainPlayer\cam,0.05,90)
 
 		For r.Rooms = Each Rooms
-			HideEntity r\obj
+			HideEntity(r\obj)
 		Next
-		ShowEntity e\room\obj
+		ShowEntity(e\room\obj)
 
 		UpdateChunks(e\room,15)
-		ShowEntity NTF_1499Sky
+		ShowEntity(NTF_1499Sky)
 		Update1499Sky()
 		;ShouldPlay = 18 ;TODO
-		If EntityY(mainPlayer\collider)<800.0 Then PositionEntity mainPlayer\collider,EntityX(mainPlayer\collider),800.1,EntityZ(mainPlayer\collider),True
-		ResetEntity mainPlayer\collider
+		If EntityY(mainPlayer\collider)<800.0 Then PositionEntity(mainPlayer\collider,EntityX(mainPlayer\collider),800.1,EntityZ(mainPlayer\collider),True)
+		ResetEntity(mainPlayer\collider)
 
 		mainPlayer\footstepOverride=3
 	Else
 		If e\eventState = 2.0 Then
-			HideEntity NTF_1499Sky
+			HideEntity(NTF_1499Sky)
 			HideChunks()
 			For n.NPCs = Each NPCs
 				If n\npcType = NPCtype1499 Then
@@ -116,7 +116,7 @@ Function UpdateLeave1499()
 				NTF_1499X# = EntityX(mainPlayer\collider)
 				NTF_1499Y# = EntityY(mainPlayer\collider)
 				NTF_1499Z# = EntityZ(mainPlayer\collider)
-				PositionEntity (mainPlayer\collider, NTF_1499PrevX#, NTF_1499PrevY#+0.05, NTF_1499PrevZ#)
+				PositionEntity(mainPlayer\collider, NTF_1499PrevX#, NTF_1499PrevY#+0.05, NTF_1499PrevZ#)
 				ResetEntity(mainPlayer\collider)
 				UpdateDoors()
 				UpdateRooms()
@@ -124,8 +124,8 @@ Function UpdateLeave1499()
 					it\disttimer = 0
 					If it\itemtemplate\name = "scp1499" Or it\itemtemplate\name = "super1499" Then
 						If EntityY(it\collider) >= EntityY(mainPlayer\currRoom\obj)-5 Then
-							PositionEntity it\collider,NTF_1499PrevX#,NTF_1499PrevY#+(EntityY(it\collider)-EntityY(mainPlayer\currRoom\obj)),NTF_1499PrevZ#
-							ResetEntity it\collider
+							PositionEntity(it\collider,NTF_1499PrevX#,NTF_1499PrevY#+(EntityY(it\collider)-EntityY(mainPlayer\currRoom\obj)),NTF_1499PrevZ#)
+							ResetEntity(it\collider)
 						EndIf
 					EndIf
 				Next
@@ -165,7 +165,7 @@ Function CreateChunkParts(r.Rooms)
 	Local chp.ChunkPart,chp2.ChunkPart
 	Local obj%, loc%, objID%, x$, z$, yaw$
 
-	SeedRnd SeedStringToInt(RandomSeed)
+	SeedRnd(SeedStringToInt(RandomSeed))
 
 	For i = 0 To ChunkAmount%
 		loc% = GetINISectionLocation(File$,"chunk"+i)
@@ -173,36 +173,36 @@ Function CreateChunkParts(r.Rooms)
 			StrTemp$ = GetINIString2(File,loc%,"count")
 			chp = New ChunkPart
 			chp\amount% = Int(StrTemp$)
-			DebugLog "------------------"
+			DebugLog("------------------")
 			For j = 0 To Int(StrTemp$)
 				objID% = GetINIString2(File$,loc%,"obj"+j)
 				x$ = GetINIString2(File$,loc%,"obj"+j+"-x")
 				z$ = GetINIString2(File$,loc%,"obj"+j+"-z")
 				yaw$ = GetINIString2(File$,loc%,"obj"+j+"-yaw")
-				DebugLog "1499 chunk X/Z/Yaw: "+x$+"|"+z$+"|"+yaw$
+				DebugLog("1499 chunk X/Z/Yaw: "+x$+"|"+z$+"|"+yaw$)
 				chp\obj%[j] = CopyEntity(r\objects[objID%])
 				If Lower(yaw$) = "random" Then
 					chp\randomYaw#[j] = Rnd(360)
-					RotateEntity chp\obj[j],0,chp\randomYaw[j],0
+					RotateEntity(chp\obj[j],0,chp\randomYaw[j],0)
 				Else
-					RotateEntity chp\obj[j],0,Float(yaw),0
+					RotateEntity(chp\obj[j],0,Float(yaw),0)
 				EndIf
-				PositionEntity chp\obj[j],Float(x),0,Float(z)
-				ScaleEntity chp\obj[j],RoomScale,RoomScale,RoomScale
-				EntityType chp\obj[j],HIT_MAP
-				EntityPickMode chp\obj[j],2
-				;EntityParent chp\obj[j],r\obj
+				PositionEntity(chp\obj[j],Float(x),0,Float(z))
+				ScaleEntity(chp\obj[j],RoomScale,RoomScale,RoomScale)
+				EntityType(chp\obj[j],HIT_MAP)
+				EntityPickMode(chp\obj[j],2)
+				;EntityParent(chp\obj[j],r\obj)
 			Next
 			chp2 = Before(chp)
 			If chp2 <> Null Then
 				chp\id = chp2\id+1
 			EndIf
-			DebugLog "<<<<<<<<<<<<<<<<"
-			DebugLog "Generated 1499 chunk "+chp\id+" sucessfully"
+			DebugLog("<<<<<<<<<<<<<<<<")
+			DebugLog("Generated 1499 chunk "+chp\id+" sucessfully")
 		EndIf
 	Next
 
-	SeedRnd MilliSecs()
+	SeedRnd(MilliSecs())
 
 End Function
 
@@ -212,16 +212,16 @@ Function CreateChunk.Chunk(obj%,x#,y#,z#,spawnNPCs%=True)
 
 	;If obj%<>0
 	;	ch\obj% = CopyEntity(obj%)
-	;	PositionEntity ch\obj%,x,y,z
-	;	ScaleEntity ch\obj%,RoomScale,RoomScale,RoomScale
-	;	EntityType ch\obj%,HIT_MAP
+	;	PositionEntity(ch\obj%,x,y,z)
+	;	ScaleEntity(ch\obj%,RoomScale,RoomScale,RoomScale)
+	;	EntityType(ch\obj%,HIT_MAP)
 	;EndIf
 
 	;ch\debugobj% = CreateCube()
-	;ScaleEntity ch\debugobj%,20,20,20
-	;PositionEntity ch\debugobj%,x#,y#+20,z#
-	;EntityColor ch\debugobj%,Rand(0,255),Rand(0,255),Rand(0,255)
-	;EntityFX ch\debugobj%,1+FE_WIRE
+	;ScaleEntity(ch\debugobj%,20,20,20)
+	;PositionEntity(ch\debugobj%,x#,y#+20,z#)
+	;EntityColor(ch\debugobj%,Rand(0,255),Rand(0,255),Rand(0,255))
+	;EntityFX(ch\debugobj%,1+FE_WIRE)
 
 	If obj% > -1 Then
 		For chp = Each ChunkPart
@@ -229,9 +229,9 @@ Function CreateChunk.Chunk(obj%,x#,y#,z#,spawnNPCs%=True)
 				ch\amount% = chp\amount%
 				For i = 0 To chp\amount
 					ch\obj[i] = CopyEntity(chp\obj[i])
-					PositionEntity ch\obj[i],x#,y#,z#
-					;ScaleEntity ch\obj[i],RoomScale,RoomScale,RoomScale
-					MoveEntity ch\obj[i],EntityX(chp\obj[i]),0,EntityZ(chp\obj[i])
+					PositionEntity(ch\obj[i],x#,y#,z#)
+					;ScaleEntity(ch\obj[i],RoomScale,RoomScale,RoomScale)
+					MoveEntity(ch\obj[i],EntityX(chp\obj[i]),0,EntityZ(chp\obj[i]))
 				Next
 				Exit
 			EndIf
@@ -261,23 +261,23 @@ Function UpdateChunks(r.Rooms,ChunkPartAmount%,spawnNPCs%=True)
 
 	For ch = Each Chunk
 		;If Distance(EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider),ch\x,ch\z)<ChunkHideDistance
-		;	;If ch\obj <> 0 Then ShowEntity ch\obj
+		;	;If ch\obj <> 0 Then ShowEntity(ch\obj)
 		;	If ch\obj[0]<>0
 		;		For i = 0 To ch\amount
-		;			ShowEntity ch\obj[i]
+		;			ShowEntity(ch\obj[i])
 		;		Next
 		;	EndIf
 		;Else
-		;	;If ch\obj <> 0 Then HideEntity ch\obj
+		;	;If ch\obj <> 0 Then HideEntity(ch\obj)
 		;	If ch\obj[0]<>0
 		;		For i = 0 To ch\amount
-		;			HideEntity ch\obj[i]
+		;			HideEntity(ch\obj[i])
 		;		Next
 		;	EndIf
 		;EndIf
 		If ch\obj[0]<>0 Then
 			For i = 0 To ch\amount
-				ShowEntity ch\obj[i]
+				ShowEntity(ch\obj[i])
 			Next
 		EndIf
 		y# = ch\y
@@ -296,7 +296,7 @@ Function UpdateChunks(r.Rooms,ChunkPartAmount%,spawnNPCs%=True)
 	z# = -(ChunkHideDistance+(CurrChunkZ#))
 
 	Local StrTemp$ = ""
-	SeedRnd SeedStringToInt(RandomSeed)
+	SeedRnd(SeedStringToInt(RandomSeed))
 
 	Repeat
 		temp2% = False
@@ -323,7 +323,7 @@ Function UpdateChunks(r.Rooms,ChunkPartAmount%,spawnNPCs%=True)
 		EndIf
 	Forever
 
-	SeedRnd MilliSecs()
+	SeedRnd(MilliSecs())
 
 End Function
 
@@ -331,10 +331,10 @@ Function HideChunks()
 	Local ch.Chunk,i%
 
 	For ch = Each Chunk
-		;If ch\obj <> 0 Then HideEntity ch\obj
+		;If ch\obj <> 0 Then HideEntity(ch\obj)
 		If ch\obj[0]<>0 Then
 			For i = 0 To ch\amount
-				HideEntity ch\obj[i]
+				HideEntity(ch\obj[i])
 			Next
 		EndIf
 	Next

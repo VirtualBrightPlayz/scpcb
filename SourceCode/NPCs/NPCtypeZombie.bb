@@ -1,13 +1,13 @@
 Function InitializeNPCtypeZombie(n.NPCs)
     n\nvName = "Human"
     n\collider = CreatePivot()
-    EntityRadius n\collider, 0.2
-    EntityType n\collider, HIT_PLAYER
+    EntityRadius(n\collider, 0.2)
+    EntityType(n\collider, HIT_PLAYER)
 
 	Local n2.NPCs
     For n2.NPCs = Each NPCs
         If n\npcType = n2\npcType And n<>n2 Then
-            n\obj = CopyEntity (n2\obj)
+            n\obj = CopyEntity(n2\obj)
             Exit
         EndIf
     Next
@@ -17,7 +17,7 @@ Function InitializeNPCtypeZombie(n.NPCs)
         n\obj = LoadAnimMesh("GFX/NPCs/zombie/zombie.b3d")
 
         temp# = (GetINIFloat("Data/NPCs.ini", "SCP-049-2", "scale") / 2.5)
-        ScaleEntity n\obj, temp, temp, temp
+        ScaleEntity(n\obj, temp, temp, temp)
 
         MeshCullBox (n\obj, -MeshWidth(n\obj), -MeshHeight(n\obj), -MeshDepth(n\obj), MeshWidth(n\obj)*2, MeshHeight(n\obj)*2, MeshDepth(n\obj)*2)
     EndIf
@@ -45,11 +45,11 @@ Function UpdateNPCtypeZombie(n.NPCs)
                         If Rand(700)=1 Then
                             If EntityDistance(mainPlayer\collider, n\collider)<5.0 Then
                                 n\frame = 719
-                                ;SetAnimTime (n\obj, 719)
+                                ;SetAnimTime(n\obj, 719)
                                 If Rand(3)=1 Then
                                     n\state=1
                                     n\frame = 155
-                                    ;SetAnimTime n\obj, 155
+                                    ;SetAnimTime(n\obj, 155)
                                 EndIf
                             EndIf
                         EndIf
@@ -80,21 +80,21 @@ Function UpdateNPCtypeZombie(n.NPCs)
 
                         n\pathStatus = 0
 
-                        PointEntity n\obj, mainPlayer\collider
-                        RotateEntity n\collider, 0, CurveAngle(EntityYaw(n\obj), EntityYaw(n\collider), 30.0), 0
+                        PointEntity(n\obj, mainPlayer\collider)
+                        RotateEntity(n\collider, 0, CurveAngle(EntityYaw(n\obj), EntityYaw(n\collider), 30.0), 0)
 
                         If n\playerDistance < 0.7 Then
                             n\state = 3
                             If Rand(2)=1 Then
                                 n\frame = 2
-                                ;SetAnimTime n\obj, 2
+                                ;SetAnimTime(n\obj, 2)
                             Else
                                 n\frame = 66
-                                ;SetAnimTime n\obj, 66
+                                ;SetAnimTime(n\obj, 66)
                             EndIf
                         Else
                             n\currSpeed = CurveValue(n\speed, n\currSpeed, 20.0)
-                            MoveEntity n\collider, 0, 0, n\currSpeed * timing\tickDuration
+                            MoveEntity(n\collider, 0, 0, n\currSpeed * timing\tickDuration)
 
                             AnimateNPC(n, 936, 1017, n\currSpeed*60)
 
@@ -112,11 +112,11 @@ Function UpdateNPCtypeZombie(n.NPCs)
                                     n\pathLocation = n\pathLocation + 1
                                 EndIf
                             Else
-                                PointEntity n\obj, n\path[n\pathLocation]\obj
+                                PointEntity(n\obj, n\path[n\pathLocation]\obj)
 
-                                RotateEntity n\collider, 0, CurveAngle(EntityYaw(n\obj), EntityYaw(n\collider), 30.0), 0
+                                RotateEntity(n\collider, 0, CurveAngle(EntityYaw(n\obj), EntityYaw(n\collider), 30.0), 0)
                                 n\currSpeed = CurveValue(n\speed, n\currSpeed, 20.0)
-                                MoveEntity n\collider, 0, 0, n\currSpeed * timing\tickDuration
+                                MoveEntity(n\collider, 0, 0, n\currSpeed * timing\tickDuration)
 
                                 AnimateNPC(n, 936, 1017, n\currSpeed*60)
                                 ;Animate2(n\obj, AnimTime(n\obj), 936, 1017, n\currSpeed*60)
@@ -144,7 +144,7 @@ Function UpdateNPCtypeZombie(n.NPCs)
 
                         ;Animate2(n\obj, AnimTime(n\obj), 2, 65, 0.7, False)
                         If prevFrame < 23 And n\frame=>23 Then
-                            PlaySound2 DamageSFX(Rand(5,8))
+                            PlaySound2(DamageSFX(Rand(5,8)))
                             mainPlayer\injuries = mainPlayer\injuries+Rnd(0.4,1.0)
                             DeathMSG = "Subject D-9341. Cause of death: multiple lacerations and severe blunt force trauma caused by an instance of SCP-049-2."
                         ElseIf n\frame=65 Then
@@ -154,7 +154,7 @@ Function UpdateNPCtypeZombie(n.NPCs)
                         AnimateNPC(n, 66, 132, 0.7, False)
                         ;Animate2(n\obj, AnimTime(n\obj), 66, 132, 0.7, False)
                         If prevFrame < 90 And n\frame=>90 Then
-                            PlaySound2 DamageSFX(Rand(5,8))
+                            PlaySound2(DamageSFX(Rand(5,8)))
                             mainPlayer\injuries = mainPlayer\injuries+Rnd(0.4,1.0)
                             DeathMSG = "Subject D-9341. Cause of death: multiple lacerations and severe blunt force trauma caused by an instance of SCP-049-2."
                         ElseIf n\frame=132 Then
@@ -169,7 +169,7 @@ Function UpdateNPCtypeZombie(n.NPCs)
 
         PositionEntity(n\obj, EntityX(n\collider), EntityY(n\collider) - 0.2, EntityZ(n\collider))
 
-        RotateEntity n\obj, -90, EntityYaw(n\collider), 0
+        RotateEntity(n\obj, -90, EntityYaw(n\collider), 0)
     EndIf
 End Function
 ;~IDEal Editor Parameters:

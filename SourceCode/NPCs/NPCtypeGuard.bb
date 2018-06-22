@@ -98,7 +98,7 @@ Function UpdateNPCtypeGuard(n.NPCs)
                 p.Particles = CreateParticle(EntityX(n\obj, True), EntityY(n\obj, True), EntityZ(n\obj, True), 1, 0.2, 0.0, 5)
                 PositionEntity(p\pvt, EntityX(n\obj), EntityY(n\obj), EntityZ(n\obj))
                 RotateEntity(p\pvt, EntityPitch(n\collider), EntityYaw(n\collider), 0, True)
-                MoveEntity (p\pvt,0.8*0.079, 10.75*0.079, 6.9*0.079)
+                MoveEntity(p\pvt,0.8*0.079, 10.75*0.079, 6.9*0.079)
 
                 n\reload = 7
             EndIf

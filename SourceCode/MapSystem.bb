@@ -110,7 +110,7 @@ Function LoadMaterials(file$)
 		EndIf
 	Wend
 
-	CloseFile f
+	CloseFile(f)
 
 End Function
 
@@ -331,7 +331,7 @@ Function LoadRoomTemplates(file$)
 		i=i+1
 	Forever
 
-	CloseFile f
+	CloseFile(f)
 
 End Function
 
@@ -433,12 +433,12 @@ Function UpdateGrid(grid.Grids)
 				If Abs(EntityY(mainPlayer\collider,True)-EntityY(grid\entities[tx+(ty*gridsz)],True))>4.0 Then Exit
 				If Abs(EntityX(mainPlayer\collider,True)-EntityX(grid\entities[tx+(ty*gridsz)],True))<HideDistance Then
 					If Abs(EntityZ(mainPlayer\collider,True)-EntityZ(grid\entities[tx+(ty*gridsz)],True))<HideDistance Then
-						ShowEntity grid\entities[tx+(ty*gridsz)]
+						ShowEntity(grid\entities[tx+(ty*gridsz)])
 					Else
-						HideEntity grid\entities[tx+(ty*gridsz)]
+						HideEntity(grid\entities[tx+(ty*gridsz)])
 					EndIf
 				Else
-					HideEntity grid\entities[tx+(ty*gridsz)]
+					HideEntity(grid\entities[tx+(ty*gridsz)])
 				EndIf
 			EndIf
 		Next
@@ -469,7 +469,7 @@ End Function
 Function CreateRoom.Rooms(rt.RoomTemplates, x#, y#, z#)
 	Local r.Rooms = New Rooms
 
-	DebugLog "Placing "+rt\name
+	DebugLog("Placing "+rt\name)
 
 	; TODO: do we still need this?
 	r\zone = rt\zones
@@ -706,17 +706,17 @@ Function FillRoom(r.Rooms)
 ;		r\triggerboxAmount = r\roomTemplate\tempTriggerboxAmount
 ;		For i = 0 To r\triggerboxAmount-1
 ;			r\triggerbox[i] = CopyEntity(r\roomTemplate\tempTriggerbox[i],r\obj)
-;			EntityAlpha r\triggerbox[i],0.0
+;			EntityAlpha(r\triggerbox[i],0.0)
 ;			r\triggerboxName[i] = r\roomTemplate\tempTriggerboxName[i]
-;			DebugLog "Triggerbox found: "+i
-;			DebugLog "Triggerbox "+i+" name: "+r\triggerboxName[i]
+;			DebugLog("Triggerbox found: "+i)
+;			DebugLog("Triggerbox "+i+" name: "+r\triggerboxName[i])
 ;		Next
 ;	EndIf
 
 	For i = 0 To MaxRoomEmitters-1
 		If r\roomTemplate\tempSoundEmitter[i]<>0 Then
 			r\soundEmitterObj[i]=CreatePivot(r\obj)
-			PositionEntity r\soundEmitterObj[i], r\x+r\roomTemplate\tempSoundEmitterX[i]*RoomScale,r\y+r\roomTemplate\tempSoundEmitterY[i]*RoomScale,r\z+r\roomTemplate\tempSoundEmitterZ[i]*RoomScale,True
+			PositionEntity(r\soundEmitterObj[i], r\x+r\roomTemplate\tempSoundEmitterX[i]*RoomScale,r\y+r\roomTemplate\tempSoundEmitterY[i]*RoomScale,r\z+r\roomTemplate\tempSoundEmitterZ[i]*RoomScale,True)
 			EntityParent(r\soundEmitterObj[i],r\obj)
 
 			r\soundEmitter[i] = r\roomTemplate\tempSoundEmitter[i]
@@ -831,9 +831,9 @@ Function UpdateRooms()
 		EndIf
 
 		If hide Then
-			HideEntity r\obj
+			HideEntity(r\obj)
 		Else
-			ShowEntity r\obj
+			ShowEntity(r\obj)
 			For i = 0 To MaxRoomLights-1
 				If r\lights[i] <> 0 Then
 					dist = EntityDistance(mainPlayer\collider,r\lights[i])
@@ -911,12 +911,12 @@ Function AddLight%(room.Rooms, x#, y#, z#, ltype%, range#, r%, g%, b%)
 				PositionEntity(room\lightSprites[i], x, y, z)
 				ScaleSprite(room\lightSprites[i], 0.13 , 0.13)
 				EntityTexture(room\lightSprites[i], LightSpriteTex(0))
-				EntityBlend (room\lightSprites[i], 3)
+				EntityBlend(room\lightSprites[i], 3)
 
 				EntityParent(room\lightSprites[i], room\obj)
 
 				room\lightSpritesPivot[i] = CreatePivot()
-				EntityRadius room\lightSpritesPivot[i],0.05
+				EntityRadius(room\lightSpritesPivot[i],0.05)
 				PositionEntity(room\lightSpritesPivot[i], x, y, z)
 				EntityParent(room\lightSpritesPivot[i], room\obj)
 
@@ -932,10 +932,10 @@ Function AddLight%(room.Rooms, x#, y#, z#, ltype%, range#, r%, g%, b%)
 				RotateEntity(room\lightSprites2[i],0,0,Rand(360))
 				SpriteViewMode(room\lightSprites2[i],1)
 				room\lightSpriteHidden%[i] = True
-				HideEntity room\lightSprites2[i]
+				HideEntity(room\lightSprites2[i])
 				room\lightFlicker%[i] = Rand(1,10)
 
-				HideEntity room\lights[i]
+				HideEntity(room\lights[i])
 
 				room\maxLights% = room\maxLights% + 1
 
@@ -951,7 +951,7 @@ Function AddLight%(room.Rooms, x#, y#, z#, ltype%, range#, r%, g%, b%)
 		PositionEntity(sprite, x, y, z)
 		ScaleSprite(sprite, 0.13 , 0.13)
 		EntityTexture(sprite, LightSpriteTex(0))
-		EntityBlend (sprite, 3)
+		EntityBlend(sprite, 3)
 		Return light
 	EndIf
 End Function
@@ -1011,9 +1011,9 @@ Function CreateWaypoint.WayPoints(x#,y#,z#,room.Rooms)
 	Local w.WayPoints = New WayPoints
 
 	w\obj = CreatePivot()
-	PositionEntity w\obj, x,y,z
+	PositionEntity(w\obj, x,y,z)
 
-	EntityParent w\obj, room\obj
+	EntityParent(w\obj, room\obj)
 
 	w\room = room
 
@@ -1031,30 +1031,30 @@ Function InitWayPoints(loadingstart%=45)
 	Local dist#, dist2#
 
 	For w.WayPoints = Each WayPoints
-		EntityPickMode w\obj, 0, 0
-		EntityRadius w\obj, 0
+		EntityPickMode(w\obj, 0, 0)
+		EntityRadius(w\obj, 0)
 		
 		For i = 0 To 4
 			If w\connected[i]<>Null Then
 				tline = CreateLine(EntityX(w\obj,True),EntityY(w\obj,True),EntityZ(w\obj,True),EntityX(w\connected[i]\obj,True),EntityY(w\connected[i]\obj,True),EntityZ(w\connected[i]\obj,True))
 				EntityColor(tline, 255,0,0)
-				EntityParent tline, w\obj
+				EntityParent(tline, w\obj)
 			EndIf
 		Next
 	Next
 
-	DebugLog "InitWaypoints() - "+(TimeInPosMilliSecs()-temper)
+	DebugLog("InitWaypoints() - "+(TimeInPosMilliSecs()-temper))
 
 End Function
 
 Function RemoveWaypoint(w.WayPoints)
-	FreeEntity w\obj
+	FreeEntity(w\obj)
 	Delete w
 End Function
 
 Function FindPath(n.NPCs, x#, y#, z#)
 
-	DebugLog "findpath: "+n\npcType
+	DebugLog("findpath: "+n\npcType)
 
 	Local temp%, dist#, dist2#
 	Local xtemp#, ytemp#, ztemp#
@@ -1122,9 +1122,9 @@ Function FindPath(n.NPCs, x#, y#, z#)
              ;EndIf
           ;EndIf
 	Next
-	DebugLog "DIST: "+dist
+	DebugLog("DIST: "+dist)
 
-	FreeEntity temp
+	FreeEntity(temp)
 
 	If StartPoint = Null Then Return 2
 	StartPoint\state = 1
@@ -1149,7 +1149,7 @@ Function FindPath(n.NPCs, x#, y#, z#)
 	Next
        ;EndIf
 
-	FreeEntity pvt
+	FreeEntity(pvt)
 
 	If EndPoint = StartPoint Then
 		If dist < 0.4 Then
@@ -1248,13 +1248,13 @@ Function FindPath(n.NPCs, x#, y#, z#)
 		currpoint.WayPoints = EndPoint
 		While twentiethpoint<>Null
 			length=Min(length-1,19)
-             ;DebugLog "LENGTH "+length
+             ;DebugLog("LENGTH "+length)
 			twentiethpoint = twentiethpoint\parent
 			n\path[length] = twentiethpoint
 		Wend
 
 		Return 1
-          ;RuntimeError length
+          ;RuntimeError(length)
     ;      For i = 0 To (length-1)
     ;         temp =False
     ;         If length < 20 Then
@@ -1279,7 +1279,7 @@ Function FindPath(n.NPCs, x#, y#, z#)
 
 	Else
 
-		DebugLog "FUNCTION FindPath() - reitti� ei l�ytynyt"
+		DebugLog("FUNCTION FindPath() - reitti� ei l�ytynyt")
 		Return 2 ;reitti� m��r�np��h�n ei l�ytynyt
 
 	EndIf
@@ -1295,20 +1295,20 @@ Function CreateLine(x1#,y1#,z1#, x2#,y2#,z2#, mesh%=0)
 		surf=CreateSurface(mesh)
 		verts = 0
 
-		AddVertex surf,x1#,y1#,z1#,0,0
+		AddVertex(surf,x1#,y1#,z1#,0,0)
 	Else
 		surf = GetSurface(mesh,1)
 		verts = CountVertices(surf)-1
 	EndIf
 
-	AddVertex surf,(x1#+x2#)/2,(y1#+y2#)/2,(z1#+z2#)/2,0,0
+	AddVertex(surf,(x1#+x2#)/2,(y1#+y2#)/2,(z1#+z2#)/2,0,0)
 	; you could skip creating the above vertex and change the line below to
-	; AddTriangle surf,verts,verts+1,verts+0
+	; AddTriangle(surf,verts,verts+1,verts+0)
 	; so your line mesh would use less vertices, the drawback is that some videocards (like the matrox g400)
 	; aren't able to create a triangle with 2 vertices. so, it's your call :)
-	AddVertex surf,x2#,y2#,z2#,1,0
+	AddVertex(surf,x2#,y2#,z2#,1,0)
 
-	AddTriangle surf,verts,verts+2,verts+1
+	AddTriangle(surf,verts,verts+2,verts+1)
 
 	Return mesh
 End Function
@@ -1333,12 +1333,12 @@ Function CreateScreen.Screens(x#,y#,z#,imgpath$,r.Rooms)
 	Local s.Screens = New Screens
 	s\obj = CreatePivot()
 	EntityPickMode(s\obj, 1)
-	EntityRadius s\obj, 0.1
+	EntityRadius(s\obj, 0.1)
 
-	PositionEntity s\obj, x,y,z
+	PositionEntity(s\obj, x,y,z)
 	s\imgpath = imgpath
 	s\room = r
-	EntityParent s\obj, r\obj
+	EntityParent(s\obj, r\obj)
 
 	Return s
 End Function
@@ -1358,7 +1358,7 @@ Function UpdateScreens()
 						SelectedScreen=s
 						s\img = LoadImage("GFX/screens/"+s\imgpath)
 						s\img = ResizeImage2(s\img, ImageWidth(s\img) * MenuScale, ImageHeight(s\img) * MenuScale)
-						MaskImage s\img, 255,0,255
+						MaskImage(s\img, 255,0,255)
 						PlaySound_SM(sndManager\button)
 						MouseUp1=False
 					EndIf
@@ -1428,10 +1428,10 @@ Function CreateSecurityCam.SecurityCams(x#, y#, z#, r.Rooms, screen% = False)
 		scale# = RoomScale * 4.5 * 0.4
 
 		sc\scrObj = CreateSprite()
-		EntityFX sc\scrObj, 17
+		EntityFX(sc\scrObj, 17)
 		SpriteViewMode(sc\scrObj, 2)
 		sc\scrTexture = 0
-		EntityTexture sc\scrObj, ScreenTexs[sc\scrTexture]
+		EntityTexture(sc\scrObj, ScreenTexs[sc\scrTexture])
 		ScaleSprite(sc\scrObj, MeshWidth(Monitor) * scale * 0.95 * 0.5, MeshHeight(Monitor) * scale * 0.95 * 0.5)
 
 		sc\scrOverlay = CreateSprite(sc\scrObj)
@@ -1448,7 +1448,7 @@ Function CreateSecurityCam.SecurityCams(x#, y#, z#, r.Rooms, screen% = False)
 
 		sc\cam = CreateCamera()
 		CameraViewport(sc\cam, 0, 0, 512, 512)
-		CameraRange sc\cam, 0.05, 6.0
+		CameraRange(sc\cam, 0.05, 6.0)
 		CameraZoom(sc\cam, 0.8)
 		HideEntity(sc\cam)
 	EndIf
@@ -1474,7 +1474,7 @@ Function UpdateSecurityCams()
 	For sc.SecurityCams = Each SecurityCams
 		close = False
 		If sc\room = Null And (Not sc\specialCam) Then
-			HideEntity sc\cam
+			HideEntity(sc\cam)
 		Else
 			If (Not sc\specialCam) Then
 				If sc\room\dist < 6.0 Or mainPlayer\currRoom=sc\room Then
@@ -1482,7 +1482,7 @@ Function UpdateSecurityCams()
 				ElseIf sc\isRoom2slCam Then
 					close = True
 				ElseIf sc\cam<>0 Then
-					HideEntity sc\cam
+					HideEntity(sc\cam)
 				EndIf
 			EndIf
 
@@ -1577,35 +1577,35 @@ Function UpdateSecurityCams()
 										If CoffinCam = Null Or Rand(5)=5 Or sc\coffinEffect <> 3 Then
 											HideEntity(mainPlayer\cam)
 											ShowEntity(sc\cam)
-											Cls
+											Cls()
 
-											SetBuffer BackBuffer()
-											RenderWorld
-											CopyRect 0,0,512,512,0,0,BackBuffer(),TextureBuffer(ScreenTexs[sc\scrTexture])
+											SetBuffer(BackBuffer())
+											RenderWorld()
+											CopyRect(0,0,512,512,0,0,BackBuffer(),TextureBuffer(ScreenTexs[sc\scrTexture]))
 
 											HideEntity(sc\cam)
 											ShowEntity(mainPlayer\cam)
 										Else
 											HideEntity(mainPlayer\cam)
-											ShowEntity (CoffinCam\room\obj)
+											ShowEntity(CoffinCam\room\obj)
 											SetRoomVisibility(CoffinCam\room,True)
 											ShowEntity(CoffinCam\cam)
-											Cls
+											Cls()
 
-											SetBuffer BackBuffer()
-											RenderWorld
-											CopyRect 0,0,512,512,0,0,BackBuffer(),TextureBuffer(ScreenTexs[sc\scrTexture])
+											SetBuffer(BackBuffer())
+											RenderWorld()
+											CopyRect(0,0,512,512,0,0,BackBuffer(),TextureBuffer(ScreenTexs[sc\scrTexture]))
 
-											HideEntity (CoffinCam\room\obj)
+											HideEntity(CoffinCam\room\obj)
 											HideEntity(CoffinCam\cam)
 											ShowEntity(mainPlayer\cam)
 										EndIf
 									Else
 										HideEntity(mainPlayer\cam)
 										ShowEntity(sc\cam)
-										Cls
+										Cls()
 
-										RenderWorld
+										RenderWorld()
 
 										HideEntity(sc\cam)
 										ShowEntity(mainPlayer\cam)
@@ -1615,14 +1615,14 @@ Function UpdateSecurityCams()
 									EndIf
 								Else
 									HideEntity(mainPlayer\cam)
-									ShowEntity (sc\room\obj)
+									ShowEntity(sc\room\obj)
 									SetRoomVisibility(sc\room,True)
 									ShowEntity(sc\cam)
-									Cls
+									Cls()
 
-									RenderWorld
+									RenderWorld()
 
-									HideEntity (sc\room\obj)
+									HideEntity(sc\room\obj)
 									HideEntity(sc\cam)
 									ShowEntity(mainPlayer\cam)
 
@@ -1638,7 +1638,7 @@ Function UpdateSecurityCams()
 						If sc\inSight Then
 						;If (Not NoClip) Then
 							pvt% = CreatePivot()
-							PositionEntity pvt, EntityX(mainPlayer\cam), EntityY(mainPlayer\cam), EntityZ(mainPlayer\cam)
+							PositionEntity(pvt, EntityX(mainPlayer\cam), EntityY(mainPlayer\cam), EntityZ(mainPlayer\cam))
 							PointEntity(pvt, sc\scrObj)
 
 							DebugLog("curvea: "+CurveAngle(EntityYaw(pvt), EntityYaw(mainPlayer\collider), Min(Max(15000.0 / (-mainPlayer\sanity895), 20.0), 200.0)))
@@ -1651,7 +1651,7 @@ Function UpdateSecurityCams()
 							DebugLog("pvt: "+EntityYaw(pvt)+"   - coll: "+EntityYaw(mainPlayer\collider))
 
 
-							FreeEntity pvt
+							FreeEntity(pvt)
 						;EndIf
 							If sc\coffinEffect=1 Or sc\coffinEffect=3 Then
 								If mainPlayer\sanity895 < - 800 Then
@@ -1716,7 +1716,7 @@ Function UpdateSecurityCams()
 		EndIf
 	Next
 
-	Cls
+	Cls()
 
 
 End Function
@@ -1755,7 +1755,7 @@ Function LoadProp.Props(file$,x#,y#,z#,pitch#,yaw#,roll#,xScale#,yScale#,zScale#
 	Next
 
 	If p\obj=0 Then p\obj = LoadMesh("GFX/Map/Props/"+file+".b3d")
-	If p\obj=0 Then RuntimeError file
+	If p\obj=0 Then RuntimeError(file)
 	HideEntity(p\obj)
 	Return p
 End Function
@@ -1767,9 +1767,9 @@ Global MapRooms.IntArray = Null ;TODO: replace with an array of the proper type 
 Function CreateMap()
 	Local i%, c%, j%
 	
-	DebugLog ("Generating a map using the seed "+RandomSeed)
+	DebugLog("Generating a map using the seed "+RandomSeed)
 
-	SeedRnd SeedStringToInt(RandomSeed)
+	SeedRnd(SeedStringToInt(RandomSeed))
 
 	Local mapDim% = MAP_SIZE
 	Local layout.IntArray = CreateIntArray(mapDim,mapDim)
@@ -1863,7 +1863,7 @@ Function CreateMap()
 	For rt.RoomTemplates = Each RoomTemplates
 		If ((rt\zones And zone)<>0) And (rt\maxAmount>0) And (rt\shape<>ROOM0) Then
 			tempTemplate = rt
-			DebugLog "queueing up "+rt\name
+			DebugLog("queueing up "+rt\name)
 			For i%=0 To prioritizedTemplateCount-1
 				If GetIntArrayElem(prioritizedTemplates,i,0)=0 Then
 					If i<prioritizedTemplateCount-1 Then
@@ -1875,7 +1875,7 @@ Function CreateMap()
 					tempTemplate2 = Object.RoomTemplates(GetIntArrayElem(prioritizedTemplates,i,0))
 					If tempTemplate2\maxAmount>tempTemplate\maxAmount Then
 						SetIntArrayElem(prioritizedTemplates,Handle(tempTemplate),i,0)
-						;DebugLog "swapping "+tempTemplate2\name+" for "+tempTemplate\name
+						;DebugLog("swapping "+tempTemplate2\name+" for "+tempTemplate\name)
 						tempTemplate = tempTemplate2
 					EndIf
 				EndIf
@@ -1890,7 +1890,7 @@ Function CreateMap()
 		Next
 	Next
 	For i% = 1 To ROOM4
-		DebugLog "Type"+i+" count: "+RoomCount[i]
+		DebugLog("Type"+i+" count: "+RoomCount[i])
 	Next
 
 	Local r.Rooms
@@ -1912,7 +1912,7 @@ Function CreateMap()
 
 		placementCount = Rand(rt\minAmount,rt\maxAmount)
 
-		DebugLog "trying to place "+placementCount+" "+rt\name
+		DebugLog("trying to place "+placementCount+" "+rt\name)
 		
 		For c% = 1 To placementCount
 			loopStartX = Int(Min(Floor(Float(mapDim)*rt\xRangeStart),mapDim-1))
@@ -1936,7 +1936,7 @@ Function CreateMap()
 					If (GetIntArrayElem(layout,x,y)>0) And (GetIntArrayElem(layout,x,y)=rt\shape) Then
 						r = CreateRoom(rt,x*8.0,0.0,y*8.0)
 						r\angle = DetermineRotation(layout,x,y)
-						TurnEntity r\obj,0,r\angle,0
+						TurnEntity(r\obj,0,r\angle,0)
 						SetIntArrayElem(layout,-1,x,y) ;mark as used
 						SetIntArrayElem(MapRooms,Handle(r),x,y) ;add to the MapRooms array
 						placed = True
@@ -1946,7 +1946,7 @@ Function CreateMap()
 				Next
 				If placed Then Exit
 			Next
-			If Not placed Then RuntimeError "(seed: "+RandomSeed+") Failed To place "+rt\name+" around ("+loopStartX+","+loopStartY+","+loopEndX+","+loopEndY+")"
+			If Not placed Then RuntimeError("(seed: "+RandomSeed+") Failed To place "+rt\name+" around ("+loopStartX+","+loopStartY+","+loopEndX+","+loopEndY+")")
 		Next
 	Next
 
@@ -2001,7 +2001,7 @@ Function CreateMap()
 						If commonnessAccumulator>=targetCommonness Then
 							r = CreateRoom(tempTemplate,x*8.0,0.0,y*8.0)
 							r\angle = DetermineRotation(layout,x,y)
-							TurnEntity r\obj,0,r\angle,0
+							TurnEntity(r\obj,0,r\angle,0)
 							SetIntArrayElem(layout,-1,x,y) ;mark as used
 							SetIntArrayElem(MapRooms,Handle(r),x,y) ;add to the MapRooms array
 							Exit
@@ -2049,7 +2049,7 @@ Function CreateMap()
 								r\adjDoor[i] = CreateDoor(zone,r\x+4.0*tempX,0.0,r\z+4.0*tempY,90.0*((i+1) Mod 2),Null)
 								newWaypoint = CreateWaypoint(r\x+4.0*tempX,50.0*RoomScale,r\z+4.0*tempY,r)
 
-								DebugLog "step1"
+								DebugLog("step1")
 								roomAWaypoint = Null : roomBWaypoint = Null
 								For tempWaypoint = Each WayPoints
 									If tempWaypoint<>newWaypoint Then
@@ -2071,7 +2071,7 @@ Function CreateMap()
 									EndIf
 								Next
 
-								DebugLog "step2"
+								DebugLog("step2")
 								If roomAWaypoint<>Null And roomBWaypoint<>Null Then
 									For j% = 0 To 15
 										If roomAWaypoint\connected[j]=Null Then
@@ -2096,7 +2096,7 @@ Function CreateMap()
 									Next
 								EndIf
 
-								DebugLog "step3"
+								DebugLog("step3")
 							Else
 								r\adjDoor[i] = r\adjacent[i]\adjDoor[(i+2) Mod 4]
 							EndIf
@@ -2216,24 +2216,24 @@ Function load_terrain(hmap%,yscale#=0.7,t1%,t2%,mask%)
 	Local r%
 	Local alpha#
 
-	DebugLog "load_terrain: "+hmap
+	DebugLog("load_terrain: "+hmap)
 
 	; load the heightmap
-	If hmap = 0 Then RuntimeError "Heightmap image "+hmap+" does not exist."
+	If hmap = 0 Then RuntimeError("Heightmap image "+hmap+" does not exist.")
 
 	; store heightmap dimensions
 	Local x% = ImageWidth(hmap)-1, y% = ImageHeight(hmap)-1
 	Local lx%, ly%, index%
 
 	; load texture and lightmaps
-	If t1 = 0 Then RuntimeError "load_terrain error: invalid texture 1"
-	If t2 = 0 Then RuntimeError "load_terrain error: invalid texture 2"
-	If mask = 0 Then RuntimeError "load_terrain error: invalid texture mask"
+	If t1 = 0 Then RuntimeError("load_terrain error: invalid texture 1")
+	If t2 = 0 Then RuntimeError("load_terrain error: invalid texture 2")
+	If mask = 0 Then RuntimeError("load_terrain error: invalid texture mask")
 
 	; auto scale the textures to the right size
-	If t1 Then ScaleTexture t1,x/4,y/4
-	If t2 Then ScaleTexture t2,x/4,y/4
-	If mask Then ScaleTexture mask,x,y
+	If t1 Then ScaleTexture(t1,x/4,y/4)
+	If t2 Then ScaleTexture(t2,x/4,y/4)
+	If mask Then ScaleTexture(mask,x,y)
 
 	; start building the terrain
 	Local mesh% = CreateMesh()
@@ -2242,28 +2242,28 @@ Function load_terrain(hmap%,yscale#=0.7,t1%,t2%,mask%)
 	; create some verts for the terrain
 	For ly = 0 To y
 		For lx = 0 To x
-			AddVertex surf,lx,0,ly,1.0/lx,1.0/ly
+			AddVertex(surf,lx,0,ly,1.0/lx,1.0/ly)
 		Next
 	Next
-	RenderWorld
+	RenderWorld()
 
 	; connect the verts with faces
 	For ly = 0 To y-1
 		For lx = 0 To x-1
-			AddTriangle surf,lx+((x+1)*ly),lx+((x+1)*ly)+(x+1),(lx+1)+((x+1)*ly)
-			AddTriangle surf,(lx+1)+((x+1)*ly),lx+((x+1)*ly)+(x+1),(lx+1)+((x+1)*ly)+(x+1)
+			AddTriangle(surf,lx+((x+1)*ly),lx+((x+1)*ly)+(x+1),(lx+1)+((x+1)*ly))
+			AddTriangle(surf,(lx+1)+((x+1)*ly),lx+((x+1)*ly)+(x+1),(lx+1)+((x+1)*ly)+(x+1))
 		Next
 	Next
 
 	; position the terrain to center 0,0,0
 	Local mesh2% = CopyMesh(mesh,mesh)
 	Local surf2% = GetSurface(mesh2,1)
-	PositionMesh mesh, -x/2.0,0,-y/2.0
-	PositionMesh mesh2, -x/2.0,0.01,-y/2.0
+	PositionMesh(mesh, -x/2.0,0,-y/2.0)
+	PositionMesh(mesh2, -x/2.0,0.01,-y/2.0)
 
 	; alter vertice height to match the heightmap red channel
-	LockBuffer ImageBuffer(hmap)
-	LockBuffer TextureBuffer(mask)
+	LockBuffer(ImageBuffer(hmap))
+	LockBuffer(TextureBuffer(mask))
 	;SetBuffer
 	For lx = 0 To x
 		For ly = 0 To y
@@ -2282,26 +2282,26 @@ Function load_terrain(hmap%,yscale#=0.7,t1%,t2%,mask%)
 			alpha#=Sqr(alpha)
 
 			index = lx + ((x+1)*ly)
-			VertexCoords surf, index , VertexX(surf,index), r*yscale,VertexZ(surf,index)
-			VertexCoords surf2, index , VertexX(surf2,index), r*yscale,VertexZ(surf2,index)
-			VertexColor surf2, index, 255.0,255.0,255.0,alpha
+			VertexCoords(surf, index , VertexX(surf,index), r*yscale,VertexZ(surf,index))
+			VertexCoords(surf2, index , VertexX(surf2,index), r*yscale,VertexZ(surf2,index))
+			VertexColor(surf2, index, 255.0,255.0,255.0,alpha)
 			; set the terrain texture coordinates
-			VertexTexCoords surf,index,lx,-ly
-			VertexTexCoords surf2,index,lx,-ly
+			VertexTexCoords(surf,index,lx,-ly)
+			VertexTexCoords(surf2,index,lx,-ly)
 		Next
 	Next
-	UnlockBuffer TextureBuffer(mask)
-	UnlockBuffer ImageBuffer(hmap)
+	UnlockBuffer(TextureBuffer(mask))
+	UnlockBuffer(ImageBuffer(hmap))
 
-	UpdateNormals mesh
-	UpdateNormals mesh2
+	UpdateNormals(mesh)
+	UpdateNormals(mesh2)
 
-	EntityTexture mesh,t1,0,0
-	;EntityTexture mesh,mask,0,1
-	EntityTexture mesh2,t2,0,0;2
+	EntityTexture(mesh,t1,0,0)
+	;EntityTexture(mesh,mask,0,1)
+	EntityTexture(mesh2,t2,0,0);2
 
-	EntityFX mesh, 1
-	EntityFX mesh2, 1+2+32
+	EntityFX(mesh, 1)
+	EntityFX(mesh2, 1+2+32)
 
 	Return mesh
 End Function
@@ -2314,13 +2314,13 @@ Function AmbientLightRooms(value%=0)
 
 	Local oldbuffer% = BackBuffer() ;probably shouldn't make assumptions here but who cares, why wouldn't it use the backbuffer ;GetBuffer()
 
-	SetBuffer TextureBuffer(AmbientLightRoomTex)
+	SetBuffer(TextureBuffer(AmbientLightRoomTex))
 
-	ClsColor value,value,value
-	Cls
-	ClsColor 0,0,0
+	ClsColor(value,value,value)
+	Cls()
+	ClsColor(0,0,0)
 
-	SetBuffer oldbuffer
+	SetBuffer(oldbuffer)
 End Function
 
 ;TODO: Probably remove.
@@ -2332,9 +2332,9 @@ Function FindAndDeleteFakeMonitor(r.Rooms,x#,y#,z#,Amount%)
 			If EntityX(r\objects[i],True) = x# Then
 				If EntityY(r\objects[i],True) = y# Then
 					If EntityZ(r\objects[i],True) = z# Then
-						FreeEntity r\objects[i]
+						FreeEntity(r\objects[i])
 						r\objects[i]=0
-						DebugLog "Deleted Fake Monitor: "+i
+						DebugLog("Deleted Fake Monitor: "+i)
 						Exit
 					EndIf
 				EndIf

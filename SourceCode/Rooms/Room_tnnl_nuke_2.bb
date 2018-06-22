@@ -37,8 +37,8 @@ Function FillRoom_tnnl_nuke_2(r.Rooms)
 
         ScaleEntity(r\levers[n]\obj, 0.04, 0.04, 0.04)
         ScaleEntity(r\levers[n]\baseObj, 0.04, 0.04, 0.04)
-        PositionEntity (r\levers[n]\obj, r\x - 975.0 * RoomScale, r\y + 1712.0 * RoomScale, r\z - (502.0-132.0*n) * RoomScale, True)
-        PositionEntity (r\levers[n]\baseObj, r\x - 975.0 * RoomScale, r\y + 1712.0 * RoomScale, r\z - (502.0-132.0*n) * RoomScale, True)
+        PositionEntity(r\levers[n]\obj, r\x - 975.0 * RoomScale, r\y + 1712.0 * RoomScale, r\z - (502.0-132.0*n) * RoomScale, True)
+        PositionEntity(r\levers[n]\baseObj, r\x - 975.0 * RoomScale, r\y + 1712.0 * RoomScale, r\z - (502.0-132.0*n) * RoomScale, True)
 
         EntityParent(r\levers[n]\obj, r\obj)
         EntityParent(r\levers[n]\baseObj, r\obj)
@@ -47,8 +47,8 @@ Function FillRoom_tnnl_nuke_2(r.Rooms)
         RotateEntity(r\levers[n]\obj, 10, -90 - 180-180, 0)
 
         ;EntityPickMode(r\levers[n]\obj, 2)
-        EntityPickMode r\levers[n]\obj, 1, False
-        EntityRadius r\levers[n]\obj, 0.1
+        EntityPickMode(r\levers[n]\obj, 1, False)
+        EntityRadius(r\levers[n]\obj, 0.1)
         ;makecollbox(r\levers[n]\obj)
     Next
 

@@ -17,8 +17,8 @@ Function FillRoom_strg_elec_2c(r.Rooms)
 
 		ScaleEntity(r\levers[n]\obj, 0.04, 0.04, 0.04)
 		ScaleEntity(r\levers[n]\baseObj, 0.04, 0.04, 0.04)
-		PositionEntity (r\levers[n]\obj, r\x - 240.0 * RoomScale, r\y + 1104.0 * RoomScale, r\z + (632.0 - 64.0 * n) * RoomScale, True)
-		PositionEntity (r\levers[n]\baseObj, r\x - 240.0 * RoomScale, r\y + 1104.0 * RoomScale, r\z + (632.0 - 64.0 * n) * RoomScale, True)
+		PositionEntity(r\levers[n]\obj, r\x - 240.0 * RoomScale, r\y + 1104.0 * RoomScale, r\z + (632.0 - 64.0 * n) * RoomScale, True)
+		PositionEntity(r\levers[n]\baseObj, r\x - 240.0 * RoomScale, r\y + 1104.0 * RoomScale, r\z + (632.0 - 64.0 * n) * RoomScale, True)
 
 		EntityParent(r\levers[n]\obj, r\obj)
 		EntityParent(r\levers[n]\baseObj, r\obj)
@@ -26,8 +26,8 @@ Function FillRoom_strg_elec_2c(r.Rooms)
         RotateEntity(r\levers[n]\baseObj, 0, -90, 0)
         RotateEntity(r\levers[n]\obj, 10, -90 - 180, 0)
 
-        EntityPickMode r\levers[n]\obj, 1, False
-        EntityRadius r\levers[n]\obj, 0.1
+        EntityPickMode(r\levers[n]\obj, 1, False)
+        EntityRadius(r\levers[n]\obj, 0.1)
     Next
 
     sc.SecurityCams = CreateSecurityCam(r\x-265.0*RoomScale, r\y+1280.0*RoomScale, r\z+105.0*RoomScale, r)
@@ -62,7 +62,7 @@ Function UpdateEvent_strg_elec_2c(e.Events)
 				If e\eventState = 0 Then
 					If i = 3 Then
 						e\eventState = Max(e\eventState,1)
-						;PlaySound2 HorrorSFX(7)
+						;PlaySound2(HorrorSFX(7))
 						PlaySound_SM(sndManager\lever)
 					EndIf
 				EndIf
@@ -109,7 +109,7 @@ Function UpdateEvent_strg_elec_2c(e.Events)
 						PlayRangedSound_SM(sndManager\lightSwitch, mainPlayer\cam, e\room\objects[i])
 						For r.Rooms = Each Rooms
 							For z = 0 To 19
-								If r\lightSprites[z] <> 0 Then HideEntity r\lightSprites[z]
+								If r\lightSprites[z] <> 0 Then HideEntity(r\lightSprites[z])
 							Next
 						Next
 					EndIf

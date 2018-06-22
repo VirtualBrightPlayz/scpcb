@@ -45,15 +45,15 @@ Function UpdateEvent_test_682_2(e.Events)
 		If mainPlayer\currRoom = e\room Then
 			If e\eventState = 0 Then
 				e\room\objects[7]=LoadAnimMesh("GFX/npcs/scp-1048.b3d")
-				ScaleEntity e\room\objects[7], 0.05,0.05,0.05
+				ScaleEntity(e\room\objects[7], 0.05,0.05,0.05)
 
-				TFormPoint EntityX(mainPlayer\collider),EntityY(mainPlayer\collider),EntityZ(mainPlayer\collider),0,e\room\obj
+				TFormPoint(EntityX(mainPlayer\collider),EntityY(mainPlayer\collider),EntityZ(mainPlayer\collider),0,e\room\obj)
 				If TFormedZ()=0 Then temp = -1 Else temp = -Sgn(TFormedZ())
-				TFormPoint -720,0,816*temp,e\room\obj,0
+				TFormPoint(-720,0,816*temp,e\room\obj,0)
 				PositionEntity(e\room\objects[7],TFormedX(),0,TFormedZ())
 
-				RotateEntity e\room\objects[7],-90,e\room\angle-90,0
-				SetAnimTime e\room\objects[7],297
+				RotateEntity(e\room\objects[7],-90,e\room\angle-90,0)
+				SetAnimTime(e\room\objects[7],297)
 				e\eventState = 1
 			EndIf
 			If EntityDistance(mainPlayer\collider, e\room\objects[6]) < 2.5 And e\eventState > 0 Then
@@ -71,8 +71,8 @@ Function UpdateEvent_test_682_2(e.Events)
 			EndIf
 			If e\room\objects[7]<>0 Then
 				Animate2(e\room\objects[7],AnimTime(e\room\objects[7]),284,308,0.3)
-				MoveEntity e\room\objects[7],0,-0.008*timing\tickDuration,0
-				TFormPoint EntityX(e\room\objects[7]),EntityY(e\room\objects[7]),EntityZ(e\room\objects[7]),0,e\room\obj
+				MoveEntity(e\room\objects[7],0,-0.008*timing\tickDuration,0)
+				TFormPoint(EntityX(e\room\objects[7]),EntityY(e\room\objects[7]),EntityZ(e\room\objects[7]),0,e\room\obj)
 
 				If Abs(TFormedX())>725 Then
 					FreeEntity(e\room\objects[7])

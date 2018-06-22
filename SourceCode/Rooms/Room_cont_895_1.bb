@@ -26,8 +26,8 @@ Function FillRoom_cont_895_1(r.Rooms)
 
 	ScaleEntity(r\levers[0]\baseObj, 0.04, 0.04, 0.04)
 	ScaleEntity(r\levers[0]\obj, 0.04, 0.04, 0.04)
-	PositionEntity (r\levers[0]\baseObj, r\x - 800.0 * RoomScale, r\y + 180.0 * RoomScale, r\z - 336 * RoomScale, True)
-	PositionEntity (r\levers[0]\obj, r\x - 800.0 * RoomScale, r\y + 180.0 * RoomScale, r\z - 336 * RoomScale, True)
+	PositionEntity(r\levers[0]\baseObj, r\x - 800.0 * RoomScale, r\y + 180.0 * RoomScale, r\z - 336 * RoomScale, True)
+	PositionEntity(r\levers[0]\obj, r\x - 800.0 * RoomScale, r\y + 180.0 * RoomScale, r\z - 336 * RoomScale, True)
 
 	EntityParent(r\levers[0]\baseObj, r\obj)
 	EntityParent(r\levers[0]\obj, r\obj)
@@ -35,8 +35,8 @@ Function FillRoom_cont_895_1(r.Rooms)
     RotateEntity(r\levers[0]\baseObj, 0, 180, 0)
     RotateEntity(r\levers[0]\obj, 10, 0, 0)
 
-    EntityPickMode r\levers[0]\obj, 1, False
-    EntityRadius r\levers[0]\obj, 0.1
+    EntityPickMode(r\levers[0]\obj, 1, False)
+    EntityRadius(r\levers[0]\obj, 0.1)
 
     r\objects[0] = CreatePivot()
     PositionEntity(r\objects[0], r\x, -1320.0 * RoomScale, r\z + 2304.0 * RoomScale)
@@ -55,7 +55,7 @@ Function FillRoom_cont_895_1(r.Rooms)
     PositionEntity(r\objects[1], r\x + 96.0*RoomScale, -1532.0 * RoomScale, r\z + 2016.0 * RoomScale,True)
 
     ;de.Decals = CreateDecal(0, r\x + 96.0*RoomScale, -1535.0 * RoomScale, r\z + 32.0 * RoomScale, 90, Rand(360), 0)
-    ;EntityParent de\obj, r\obj
+    ;EntityParent(de\obj, r\obj)
 End Function
 
 
@@ -117,9 +117,9 @@ Function UpdateEventCoffin(e.Events)
 				de\size = 0.05 : de\sizeChange = 0.001 : EntityAlpha(de\obj, 0.8) : UpdateDecals()
 
 				If Curr106\state > 0 Then
-					PositionEntity Curr106\collider, EntityX(e\room\objects[1],True), -10240*RoomScale, EntityZ(e\room\objects[1],True)
+					PositionEntity(Curr106\collider, EntityX(e\room\objects[1],True), -10240*RoomScale, EntityZ(e\room\objects[1],True))
 					Curr106\state = -0.1
-					ShowEntity Curr106\obj
+					ShowEntity(Curr106\obj)
 					e\eventState2 = 1
 				EndIf
 			EndIf
@@ -150,7 +150,7 @@ Function UpdateEventCoffin(e.Events)
 					tempF2# = EntityYaw(mainPlayer\collider)
 					tempF3# = angleDist(tempF+90+Sin(WrapAngle(e\eventState3/10)),tempF2)
 
-					TurnEntity mainPlayer\collider, 0,tempF3/4,0,True
+					TurnEntity(mainPlayer\collider, 0,tempF3/4,0,True)
 
 					tempF# = Abs(Distance(EntityX(mainPlayer\collider,True),EntityZ(mainPlayer\collider,True),EntityX(e\room\objects[1],True),EntityZ(e\room\objects[1],True)))
 					tempF2# = -60.0 * Min(Max((2.0-tempF)/2.0,0.0),1.0)

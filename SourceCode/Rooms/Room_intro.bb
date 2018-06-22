@@ -6,19 +6,19 @@ Function FillRoom_intro(r.Rooms)
     Local t1%;, Bump
 
     r\objects[0] = CreatePivot()
-    PositionEntity (r\objects[0], EntityX(r\obj) + 40.0 * RoomScale, 460.0 * RoomScale, EntityZ(r\obj) + 1072.0 * RoomScale)
+    PositionEntity(r\objects[0], EntityX(r\obj) + 40.0 * RoomScale, 460.0 * RoomScale, EntityZ(r\obj) + 1072.0 * RoomScale)
     r\objects[1] = CreatePivot()
-    PositionEntity (r\objects[1], EntityX(r\obj) - 80.0 * RoomScale, 100.0 * RoomScale, EntityZ(r\obj) + 526.0 * RoomScale)
+    PositionEntity(r\objects[1], EntityX(r\obj) - 80.0 * RoomScale, 100.0 * RoomScale, EntityZ(r\obj) + 526.0 * RoomScale)
     r\objects[2] = CreatePivot()
-    PositionEntity (r\objects[2], EntityX(r\obj) - 128.0 * RoomScale, 100.0 * RoomScale, EntityZ(r\obj) + 320.0 * RoomScale)
+    PositionEntity(r\objects[2], EntityX(r\obj) - 128.0 * RoomScale, 100.0 * RoomScale, EntityZ(r\obj) + 320.0 * RoomScale)
 
     r\objects[3] = CreatePivot()
-    PositionEntity (r\objects[3], EntityX(r\obj) + 660.0 * RoomScale, 100.0 * RoomScale, EntityZ(r\obj) + 526.0 * RoomScale)
+    PositionEntity(r\objects[3], EntityX(r\obj) + 660.0 * RoomScale, 100.0 * RoomScale, EntityZ(r\obj) + 526.0 * RoomScale)
     r\objects[4] = CreatePivot()
-    PositionEntity (r\objects[4], EntityX(r\obj) + 700 * RoomScale, 100.0 * RoomScale, EntityZ(r\obj) + 320.0 * RoomScale)
+    PositionEntity(r\objects[4], EntityX(r\obj) + 700 * RoomScale, 100.0 * RoomScale, EntityZ(r\obj) + 320.0 * RoomScale)
 
     r\objects[5] = CreatePivot()
-    PositionEntity (r\objects[5], EntityX(r\obj) + 1472.0 * RoomScale, 100.0 * RoomScale, EntityZ(r\obj) + 912.0 * RoomScale)
+    PositionEntity(r\objects[5], EntityX(r\obj) + 1472.0 * RoomScale, 100.0 * RoomScale, EntityZ(r\obj) + 912.0 * RoomScale)
 
     For i = 0 To 5
         EntityParent(r\objects[i], r\obj)
@@ -91,19 +91,25 @@ Function FillRoom_intro(r.Rooms)
 
         For xtemp = 0 To 2
             d.Doors = CreateDoor(r\zone, r\x - (7424.0-512.0*xtemp) * RoomScale, 0, r\z + (1008.0-480.0*ztemp) * RoomScale, 180*(Not ztemp), r, False)
-            EntityTexture d\obj, tex
+            EntityTexture(d\obj, tex)
             d\locked = True
-            FreeEntity d\obj2 : d\obj2=0
-            FreeEntity d\buttons[0] : d\buttons[0]=0
-            FreeEntity d\buttons[1] : d\buttons[1]=0
+            FreeEntity(d\obj2)
+			d\obj2=0
+            FreeEntity(d\buttons[0])
+			d\buttons[0]=0
+            FreeEntity(d\buttons[1])
+			d\buttons[1]=0
         Next
         For xtemp = 0 To 4
             d.Doors = CreateDoor(r\zone, r\x - (5120.0-512.0*xtemp) * RoomScale, 0, r\z + (1008.0-480.0*ztemp) * RoomScale, 180*(Not ztemp), r, False)
-            EntityTexture d\obj, tex
+            EntityTexture(d\obj, tex)
             d\locked = True
-            FreeEntity d\obj2 : d\obj2=0
-            FreeEntity d\buttons[0] : d\buttons[0]=0
-            FreeEntity d\buttons[1] : d\buttons[1]=0
+            FreeEntity(d\obj2)
+			d\obj2=0
+            FreeEntity(d\buttons[0])
+			d\buttons[0]=0
+            FreeEntity(d\buttons[1])
+			d\buttons[1]=0
 
             If xtemp = 2 And ztemp = 1 Then r\roomDoors[6] = d
         Next
@@ -123,8 +129,8 @@ Function FillRoom_intro(r.Rooms)
     EntityParent(sc\scrObj, r\obj)
 
     r\objects[9] = LoadMesh("GFX/Map/173_2.b3d",r\obj)
-    EntityType r\objects[9],HIT_MAP
-    EntityPickMode r\objects[9],2
+    EntityType(r\objects[9],HIT_MAP)
+    EntityPickMode(r\objects[9],2)
 End Function
 
 Function UpdateEvent173(e.Events)

@@ -43,10 +43,10 @@ Function UpdateEventRoom3pitduck(e.Events)
 			e\room\objects[2] =	LoadMesh("GFX/npcs/duck_low_res.b3d")
 			ScaleEntity(e\room\objects[2], 0.07, 0.07, 0.07)
 			tex = LoadTexture("GFX/npcs/duck1.png")
-			EntityTexture e\room\objects[2], tex
-			FreeTexture tex
-			PositionEntity (e\room\objects[2], EntityX(e\room\objects[0],True), EntityY(e\room\objects[0],True), EntityZ(e\room\objects[0],True))
-			PointEntity e\room\objects[2], e\room\obj
+			EntityTexture(e\room\objects[2], tex)
+			FreeTexture(tex)
+			PositionEntity(e\room\objects[2], EntityX(e\room\objects[0],True), EntityY(e\room\objects[0],True), EntityZ(e\room\objects[0],True))
+			PointEntity(e\room\objects[2], e\room\obj)
 			RotateEntity(e\room\objects[2], 0, EntityYaw(e\room\objects[2],True),0, True)
 
 			LoadEventSound(e,"SFX/SCP/Joke/Saxophone.ogg")
@@ -59,7 +59,7 @@ Function UpdateEventRoom3pitduck(e.Events)
 				EndIf
 			Else
 				If e\soundChannels[0] <> 0 Then
-					If IsChannelPlaying(e\soundChannels[0]) Then StopChannel e\soundChannels[0]
+					If IsChannelPlaying(e\soundChannels[0]) Then StopChannel(e\soundChannels[0])
 				EndIf
 			EndIf
 		EndIf
@@ -84,14 +84,14 @@ Function UpdateEventRoom3pit1048(e.Events)
 	If mainPlayer\currRoom = e\room Then
 		If e\room\objects[2] = 0 Then
 			e\room\objects[2] =	LoadAnimMesh("GFX/npcs/scp-1048pp.b3d")
-			ScaleEntity e\room\objects[2], 0.05,0.05,0.05
+			ScaleEntity(e\room\objects[2], 0.05,0.05,0.05)
 			SetAnimTime(e\room\objects[2], 414)
 
 			imgPath$ = "GFX/items/1048/1048_"+Rand(1,20)+".jpg"
 			
 			For itt.ItemTemplates = Each ItemTemplates
 				If itt\name = "Drawing" Then
-					If itt\img<>0 Then FreeImage itt\img
+					If itt\img<>0 Then FreeImage(itt\img)
 					itt\img = LoadImage(imgPath)
 					MaskImage(itt\img, 255,0,255)
 					itt\imgpath = imgPath
@@ -108,24 +108,24 @@ Function UpdateEventRoom3pit1048(e.Events)
 				b% = GetSurfaceBrush( sf )
 				t% = GetBrushTexture(b, 0)
 				texname$ = StripPath(TextureName(t))
-				DebugLog "texname: "+texname
+				DebugLog("texname: "+texname)
 				If Lower(texname) = "1048_1.jpg" Then
-					PaintSurface sf, brush
+					PaintSurface(sf, brush)
 				EndIf
 				;TODO: I'm just todo-ing so Juan will see it later and explain it to me.
 				;MAV???
-				;If texname<>"" Then FreeTexture t
-				FreeBrush b
+				;If texname<>"" Then FreeTexture(t)
+				FreeBrush(b)
 			Next
 
-			FreeTexture tex
-			FreeBrush brush
+			FreeTexture(tex)
+			FreeBrush(brush)
 
-			PositionEntity (e\room\objects[2], EntityX(e\room\objects[0],True), EntityY(e\room\objects[0],True), EntityZ(e\room\objects[0],True))
+			PositionEntity(e\room\objects[2], EntityX(e\room\objects[0],True), EntityY(e\room\objects[0],True), EntityZ(e\room\objects[0],True))
 
 			;e\sounds[0] = LoadSound("SFX/SCP/Joke/Saxophone.ogg")
 		Else
-			PointEntity e\room\objects[2], mainPlayer\collider
+			PointEntity(e\room\objects[2], mainPlayer\collider)
 			RotateEntity(e\room\objects[2], -90, EntityYaw(e\room\objects[2],True),0, True)
 
 			If e\eventState=0 Then

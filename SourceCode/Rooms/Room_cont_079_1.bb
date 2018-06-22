@@ -23,27 +23,27 @@ Function FillRoom_cont_079_1(r.Rooms)
 
     r\objects[0] = LoadAnimMesh("GFX/Map/079.b3d")
     ScaleEntity(r\objects[0], 1.3, 1.3, 1.3, True)
-    PositionEntity (r\objects[0], r\x + 1856.0*RoomScale, -560.0*RoomScale, r\z-672.0*RoomScale, True)
+    PositionEntity(r\objects[0], r\x + 1856.0*RoomScale, -560.0*RoomScale, r\z-672.0*RoomScale, True)
     EntityParent(r\objects[0], r\obj)
-    TurnEntity r\objects[0],0,180,0,True
+    TurnEntity(r\objects[0],0,180,0,True)
 
     r\objects[1] = CreateSprite(r\objects[0])
     SpriteViewMode(r\objects[1],2)
     PositionEntity(r\objects[1], 0.082, 0.119, 0.010)
     ScaleSprite(r\objects[1],0.18*0.5,0.145*0.5)
     TurnEntity(r\objects[1],0,13.0,0)
-    MoveEntity r\objects[1], 0,0,-0.022
-    EntityTexture (r\objects[1],OldAiPics(0))
+    MoveEntity(r\objects[1], 0,0,-0.022)
+    EntityTexture(r\objects[1],OldAiPics(0))
 
-    HideEntity r\objects[1]
+    HideEntity(r\objects[1])
 
     r\objects[2] = CreatePivot(r\obj)
-    PositionEntity (r\objects[2], r\x + 1184.0*RoomScale, -448.0*RoomScale, r\z+1792.0*RoomScale, True)
+    PositionEntity(r\objects[2], r\x + 1184.0*RoomScale, -448.0*RoomScale, r\z+1792.0*RoomScale, True)
 
     de.Decals = CreateDecal(3,  r\x + 1184.0*RoomScale, -448.0*RoomScale+0.01, r\z+1792.0*RoomScale,90,Rnd(360),0)
     de\size = 0.5
     ScaleSprite(de\obj, de\size,de\size)
-    EntityParent de\obj, r\obj
+    EntityParent(de\obj, r\obj)
 End Function
 
 Function UpdateEvent_cont_079_1(e.Events)
@@ -63,9 +63,9 @@ Function UpdateEvent_cont_079_1(e.Events)
 		If e\eventState = 0 Then
 			;Music(4) = LoadSound("SFX/Music/079.ogg") ;TODO: fix
 			e\room\npc[0]=CreateNPC(NPCtypeGuard, EntityX(e\room\objects[2],True), EntityY(e\room\objects[2],True)+0.5, EntityZ(e\room\objects[2],True))
-			PointEntity e\room\npc[0]\collider, e\room\obj
-			RotateEntity e\room\npc[0]\collider, 0, EntityYaw(e\room\npc[0]\collider),0, True
-			;SetAnimTime e\room\npc[0]\obj, 906
+			PointEntity(e\room\npc[0]\collider, e\room\obj)
+			RotateEntity(e\room\npc[0]\collider, 0, EntityYaw(e\room\npc[0]\collider),0, True)
+			;SetAnimTime(e\room\npc[0]\obj, 906)
 			SetNPCFrame(e\room\npc[0], 906)
 			e\room\npc[0]\state = 8
 
@@ -79,7 +79,7 @@ Function UpdateEvent_cont_079_1(e.Events)
 				If e\room\roomDoors[0]\openstate > 50 Or EntityDistance(mainPlayer\collider, e\room\roomDoors[0]\frameobj)<0.5 Then
 					e\room\roomDoors[0]\openstate = Min(e\room\roomDoors[0]\openstate,50)
 					e\room\roomDoors[0]\open = False
-					PlaySound2 (LoadTempSound("SFX/Door/DoorError.ogg"))
+					PlaySound2((LoadTempSound("SFX/Door/DoorError.ogg")))
 				EndIf
 			EndIf
 		ElseIf e\eventState < 10000 Then
@@ -98,14 +98,17 @@ Function UpdateEvent_cont_079_1(e.Events)
 					If IsChannelPlaying(e\soundChannels[0]) Then
 						If Rand(3) = 1 Then
 							EntityTexture(e\room\objects[1], OldAiPics(0))
-							ShowEntity (e\room\objects[1])
+							ShowEntity(e\room\objects[1])
 						ElseIf Rand(10) = 1 Then
-							HideEntity (e\room\objects[1])
+							HideEntity(e\room\objects[1])
 						EndIf
 					Else
-						If e\sounds[0] <> 0 Then FreeSound e\sounds[0] : e\sounds[0] = 0
+						If e\sounds[0] <> 0 Then
+							FreeSound(e\sounds[0])
+							e\sounds[0] = 0
+						EndIf
 						EntityTexture(e\room\objects[1], OldAiPics(1))
-						ShowEntity (e\room\objects[1])
+						ShowEntity(e\room\objects[1])
 					EndIf
 				Else
 					If EntityDistance(e\room\objects[0], mainPlayer\collider)<2.5 Then
@@ -114,7 +117,7 @@ Function UpdateEvent_cont_079_1(e.Events)
 						LoadEventSound(e,"SFX/SCP/079/Refuse.ogg")
 						e\soundChannels[0] = PlaySound(e\sounds[0])
 						EntityTexture(e\room\objects[1], OldAiPics(1))
-						ShowEntity (e\room\objects[1])
+						ShowEntity(e\room\objects[1])
 					EndIf
 				EndIf
 

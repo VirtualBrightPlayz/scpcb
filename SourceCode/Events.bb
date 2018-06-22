@@ -84,7 +84,7 @@ Function RemoveEvent(e.Events)
 		EndIf
 	Next
 
-	;If (e\img<>0) Then FreeImage e\img
+	;If (e\img<>0) Then FreeImage(e\img)
 
 	Delete e
 End Function
@@ -414,7 +414,7 @@ Function UpdateEvents()
 				PlaySound2(LoadTempSound("SFX/Ending/GateB/Nuke2.ogg"))
 				For i = 0 To 40
 					p.Particles = CreateParticle(EntityX(mainPlayer\collider)+Rnd(-0.5,0.5),EntityY(mainPlayer\collider)-Rnd(0.2,1.5),EntityZ(mainPlayer\collider)+Rnd(-0.5,0.5),0, Rnd(0.2,0.6), 0.0, 350)
-					RotateEntity p\pvt,-90,0,0,True
+					RotateEntity(p\pvt,-90,0,0,True)
 					p\speed = Rnd(0.05,0.07)
 				Next
 			EndIf

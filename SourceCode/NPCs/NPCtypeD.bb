@@ -1,8 +1,8 @@
 Function InitializeNPCtypeD(n.NPCs)
     n\nvName = "Human"
     n\collider = CreatePivot()
-    EntityRadius n\collider, 0.32
-    EntityType n\collider, HIT_PLAYER
+    EntityRadius(n\collider, 0.32)
+    EntityType(n\collider, HIT_PLAYER)
 
     Local n2.NPCs
 	For n2 = Each NPCs
@@ -17,7 +17,7 @@ Function InitializeNPCtypeD(n.NPCs)
 	EndIf
 
     Local temp# = 0.5 / MeshWidth(n\obj)
-    ScaleEntity n\obj, temp, temp, temp
+    ScaleEntity(n\obj, temp, temp, temp)
 
     n\speed = 2.0 / 100
 
@@ -49,7 +49,7 @@ Function UpdateNPCtypeD(n.NPCs)
 
     PositionEntity(n\obj, EntityX(n\collider), EntityY(n\collider) - 0.32, EntityZ(n\collider))
 
-    RotateEntity n\obj, EntityPitch(n\collider), EntityYaw(n\collider)-180.0, 0
+    RotateEntity(n\obj, EntityPitch(n\collider), EntityYaw(n\collider)-180.0, 0)
 End Function
 
 ;~IDEal Editor Parameters:

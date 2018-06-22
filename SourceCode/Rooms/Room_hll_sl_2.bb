@@ -16,66 +16,67 @@ Function FillRoom_hll_sl_2(r.Rooms)
     Next
 	;TODO: cleanu- oh wait, this is room2sl, i already had to rewrite this
     For i = 0 To 2
-        PositionEntity r\objects[i],r\x-207.94*RoomScale,r\y+(648.0+(112*i))*RoomScale,r\z-60.0686*RoomScale
-        RotateEntity r\objects[i],0,105+r\angle,0
-        EntityParent r\objects[i],r\obj
-        DebugLog i
+        PositionEntity(r\objects[i],r\x-207.94*RoomScale,r\y+(648.0+(112*i))*RoomScale,r\z-60.0686*RoomScale)
+        RotateEntity(r\objects[i],0,105+r\angle,0)
+        EntityParent(r\objects[i],r\obj)
+        DebugLog(i)
     Next
     For i = 3 To 5
-        PositionEntity r\objects[i],r\x-231.489*RoomScale,r\y+(648.0+(112*(i-3)))*RoomScale,r\z+95.7443*RoomScale
-        RotateEntity r\objects[i],0,90+r\angle,0
-        EntityParent r\objects[i],r\obj
-        DebugLog i
+        PositionEntity(r\objects[i],r\x-231.489*RoomScale,r\y+(648.0+(112*(i-3)))*RoomScale,r\z+95.7443*RoomScale)
+        RotateEntity(r\objects[i],0,90+r\angle,0)
+        EntityParent(r\objects[i],r\obj)
+        DebugLog(i)
     Next
     For i = 6 To 8 Step 2
-        PositionEntity r\objects[i],r\x-231.489*RoomScale,r\y+(648.0+(112*(i-6)))*RoomScale,r\z+255.744*RoomScale
-        RotateEntity r\objects[i],0,90+r\angle,0
-        EntityParent r\objects[i],r\obj
-        DebugLog i
+        PositionEntity(r\objects[i],r\x-231.489*RoomScale,r\y+(648.0+(112*(i-6)))*RoomScale,r\z+255.744*RoomScale)
+        RotateEntity(r\objects[i],0,90+r\angle,0)
+        EntityParent(r\objects[i],r\obj)
+        DebugLog(i)
     Next
     For i = 9 To 11
-        PositionEntity r\objects[i],r\x-231.489*RoomScale,r\y+(648.0+(112*(i-9)))*RoomScale,r\z+415.744*RoomScale
-        RotateEntity r\objects[i],0,90+r\angle,0
-        EntityParent r\objects[i],r\obj
-        DebugLog i
+        PositionEntity(r\objects[i],r\x-231.489*RoomScale,r\y+(648.0+(112*(i-9)))*RoomScale,r\z+415.744*RoomScale)
+        RotateEntity(r\objects[i],0,90+r\angle,0)
+        EntityParent(r\objects[i],r\obj)
+        DebugLog(i)
     Next
     For i = 12 To 14
-        PositionEntity r\objects[i],r\x-208.138*RoomScale,r\y+(648.0+(112*(i-12)))*RoomScale,r\z+571.583*RoomScale
-        RotateEntity r\objects[i],0,75+r\angle,0
-        EntityParent r\objects[i],r\obj
-        DebugLog i
+        PositionEntity(r\objects[i],r\x-208.138*RoomScale,r\y+(648.0+(112*(i-12)))*RoomScale,r\z+571.583*RoomScale)
+        RotateEntity(r\objects[i],0,75+r\angle,0)
+        EntityParent(r\objects[i],r\obj)
+        DebugLog(i)
     Next
 
     ;Doors for room
     r\roomDoors[0] = CreateDoor(r\zone,r\x+480.0*RoomScale,r\y,r\z-640.0*RoomScale,90,r,False,False,3)
     r\roomDoors[0]\autoClose = False
-    PositionEntity r\roomDoors[0]\buttons[0],r\x+576.0*RoomScale,EntityY(r\roomDoors[0]\buttons[0],True),r\z-480*RoomScale,True
-    RotateEntity r\roomDoors[0]\buttons[0],0,270,0
+    PositionEntity(r\roomDoors[0]\buttons[0],r\x+576.0*RoomScale,EntityY(r\roomDoors[0]\buttons[0],True),r\z-480*RoomScale,True)
+    RotateEntity(r\roomDoors[0]\buttons[0],0,270,0)
     r\roomDoors[1] = CreateDoor(r\zone,r\x+544.0*RoomScale,r\y+480.0*RoomScale,r\z+256.0*RoomScale,270,r,False,False,3)
     r\roomDoors[1]\autoClose = False
-    FreeEntity r\roomDoors[1]\obj2 : r\roomDoors[1]\obj2 = 0
+    FreeEntity(r\roomDoors[1]\obj2)
+	r\roomDoors[1]\obj2 = 0
     d = CreateDoor(r\zone,r\x+1504.0*RoomScale,r\y+480.0*RoomScale,r\z+960.0*RoomScale,0,r)
     d\autoClose = False : d\locked = True
 
     ;PathPoint 1 for SCP-049
     r\objects[7] = CreatePivot()
-    PositionEntity r\objects[7],r\x,r\y+100.0*RoomScale,r\z-800.0*RoomScale,True
-    EntityParent r\objects[7],r\obj
+    PositionEntity(r\objects[7],r\x,r\y+100.0*RoomScale,r\z-800.0*RoomScale,True)
+    EntityParent(r\objects[7],r\obj)
 
     ;PathPoints for SCP-049
     r\objects[15] = CreatePivot()
-    PositionEntity r\objects[15],r\x+700.0*RoomScale,r\y+700.0*RoomScale,r\z+256.0*RoomScale,True
-    EntityParent r\objects[15],r\obj
+    PositionEntity(r\objects[15],r\x+700.0*RoomScale,r\y+700.0*RoomScale,r\z+256.0*RoomScale,True)
+    EntityParent(r\objects[15],r\obj)
     r\objects[16] = CreatePivot()
-    PositionEntity r\objects[16],r\x-100.0*RoomScale,r\y+700.0*RoomScale,r\z+256.0*RoomScale,True
-    EntityParent r\objects[16],r\obj
+    PositionEntity(r\objects[16],r\x-100.0*RoomScale,r\y+700.0*RoomScale,r\z+256.0*RoomScale,True)
+    EntityParent(r\objects[16],r\obj)
 
     ;Faked room409
     r\objects[17] = LoadMesh("GFX/Map/room2sl_2.b3d",r\obj)
     sc.SecurityCams = CreateSecurityCam(r\x-160.0*RoomScale,r\y-22689.1*RoomScale,r\z-288.0*RoomScale,Null)
     sc\angle = 225
-    TurnEntity sc\cameraObj, 20, 0, 0
-    EntityParent sc\obj,r\obj
+    TurnEntity(sc\cameraObj, 20, 0, 0)
+    EntityParent(sc\obj,r\obj)
     sc\specialCam = True
 
     ;-49.0 689.0 912.0
@@ -84,8 +85,8 @@ Function FillRoom_hll_sl_2(r.Rooms)
 
 	ScaleEntity(r\levers[0]\baseObj, 0.04, 0.04, 0.04)
 	ScaleEntity(r\levers[0]\obj, 0.04, 0.04, 0.04)
-	PositionEntity r\levers[0]\baseObj,r\x-49*RoomScale,r\y+689*RoomScale,r\z+912*RoomScale,True
-	PositionEntity r\levers[0]\obj,r\x-49*RoomScale,r\y+689*RoomScale,r\z+912*RoomScale,True
+	PositionEntity(r\levers[0]\baseObj,r\x-49*RoomScale,r\y+689*RoomScale,r\z+912*RoomScale,True)
+	PositionEntity(r\levers[0]\obj,r\x-49*RoomScale,r\y+689*RoomScale,r\z+912*RoomScale,True)
 
 	EntityParent(r\levers[0]\baseObj, r\obj)
 	EntityParent(r\levers[0]\obj, r\obj)
@@ -93,8 +94,8 @@ Function FillRoom_hll_sl_2(r.Rooms)
     RotateEntity(r\levers[0]\baseObj, 0, 0, 0)
     RotateEntity(r\levers[0]\obj, 10, 0 - 180, 0)
 
-    EntityPickMode r\levers[0]\obj, 1, False
-    EntityRadius r\levers[0]\obj, 0.1
+    EntityPickMode(r\levers[0]\obj, 1, False)
+    EntityRadius(r\levers[0]\obj, 0.1)
 
     ;Camera in the room itself
     sc.SecurityCams = CreateSecurityCam(r\x-159.0*RoomScale, r\y+384.0*RoomScale, r\z-929.0*RoomScale, r, True)
@@ -113,19 +114,19 @@ Function FillRoom_hll_sl_2(r.Rooms)
 	ScaleEntity(r\levers[1]\baseObj, 0.04, 0.04, 0.04)
 	ScaleEntity(r\levers[1]\obj, 0.04, 0.04, 0.04)
 
-	PositionEntity r\levers[1]\baseObj,r\x+82.0*RoomScale, r\y+689.0*RoomScale, r\z+912.0*RoomScale,True
-	PositionEntity r\levers[1]\obj,r\x+90.9775*RoomScale, r\y+604.347*RoomScale, r\z+890.584*RoomScale,True
+	PositionEntity(r\levers[1]\baseObj,r\x+82.0*RoomScale, r\y+689.0*RoomScale, r\z+912.0*RoomScale,True)
+	PositionEntity(r\levers[1]\obj,r\x+90.9775*RoomScale, r\y+604.347*RoomScale, r\z+890.584*RoomScale,True)
 
 	EntityParent(r\levers[1]\baseObj, r\obj)
 	EntityParent(r\levers[1]\obj, r\obj)
 
-    RotateEntity r\levers[1]\obj,8.6,-150.0,-5.0
+    RotateEntity(r\levers[1]\obj,8.6,-150.0,-5.0)
 
 	;lmfao
 	;For  i% = 0 To 1
 	;	ScaleEntity(r\objects[20 + i], 0.04, 0.04, 0.04)
-	;	PositionEntity r\objects[20],r\x+82.0*RoomScale, r\y+689.0*RoomScale, r\z+912.0*RoomScale,True
-	;	PositionEntity r\objects[21],r\x+90.9775*RoomScale, r\y+604.347*RoomScale, r\z+890.584*RoomScale,True
+	;	PositionEntity(r\objects[20],r\x+82.0*RoomScale, r\y+689.0*RoomScale, r\z+912.0*RoomScale,True)
+	;	PositionEntity(r\objects[21],r\x+90.9775*RoomScale, r\y+604.347*RoomScale, r\z+890.584*RoomScale,True)
 
 	;	EntityParent(r\objects[20 + i], r\obj)
 	;Next
@@ -147,10 +148,10 @@ Function FillRoom_hll_sl_2(r.Rooms)
     ;r\maxWayPointY# = 400.0*RoomScale
 
     ;r\objects[22] = LoadMesh("GFX/Map/room2sl_hb.b3d",r\obj)
-	;ScaleEntity r\objects[22],RoomScale,RoomScale,RoomScale
-    ;EntityPickMode r\objects[22],2
-    ;EntityType r\objects[22],HIT_MAP
-    ;EntityAlpha r\objects[22],1.0
+	;ScaleEntity(r\objects[22],RoomScale,RoomScale,RoomScale)
+    ;EntityPickMode(r\objects[22],2)
+    ;EntityType(r\objects[22],HIT_MAP)
+    ;EntityAlpha(r\objects[22],1.0)
 End Function
 
 
@@ -189,7 +190,7 @@ Function UpdateEvent_hll_sl_2(e.Events)
 								If sc2\room\roomTemplate\name = sc\room\roomTemplate\name Then
 									If sc2\screen Then
 										hasCamera% = True
-										DebugLog "HasCamera% = True ("+Chr(34)+sc2\room\roomTemplate\name+Chr(34)+")"
+										DebugLog("HasCamera% = True ("+Chr(34)+sc2\room\roomTemplate\name+Chr(34)+")")
 										Exit
 									EndIf
 								EndIf
@@ -206,10 +207,10 @@ Function UpdateEvent_hll_sl_2(e.Events)
 									scale# = RoomScale * 4.5 * 0.4
 
 									sc\scrObj = CreateSprite()
-									EntityFX sc\scrObj, 17
+									EntityFX(sc\scrObj, 17)
 									SpriteViewMode(sc\scrObj, 2)
 									sc\scrTexture = 0
-									;EntityTexture sc\scrObj, ScreenTexs[sc\scrTexture]
+									;EntityTexture(sc\scrObj, ScreenTexs[sc\scrTexture])
 									ScaleSprite(sc\scrObj, MeshWidth(Monitor) * scale * 0.95* 0.5, MeshHeight(Monitor) * scale * 0.95* 0.5)
 
 									sc\scrOverlay = CreateSprite(sc\scrObj)
@@ -226,96 +227,96 @@ Function UpdateEvent_hll_sl_2(e.Events)
 
 									sc\cam = CreateCamera()
 									CameraViewport(sc\cam, 0, 0, 512, 512)
-									CameraRange sc\cam, 0.05, 6.0
+									CameraRange(sc\cam, 0.05, 6.0)
 									CameraZoom(sc\cam, 0.8)
 									HideEntity(sc\cam)
 
 									sc\isRoom2slCam = True
 									sc\room2slTexs%[0] = CreateTexture(512, 512, 1+256)
-									EntityTexture sc\scrObj, sc\room2slTexs%[0]
+									EntityTexture(sc\scrObj, sc\room2slTexs%[0])
 
 									pvt% = CreatePivot(e\room\obj)
 									Select r\roomTemplate\name$
 										Case "room2closets" ;ID=0 q
-											PositionEntity pvt%,-207.94,872.0,-60.0686,False
+											PositionEntity(pvt%,-207.94,872.0,-60.0686,False)
 											PositionEntity(sc\scrObj,EntityX(pvt%,True),EntityY(pvt%,True),EntityZ(pvt%,True))
 											EntityParent(sc\scrObj, e\room\obj)
 											TurnEntity(sc\scrObj, 0, 105+e\room\angle, 0)
 											FindAndDeleteFakeMonitor(e\room,EntityX(pvt%,True),EntityY(pvt%,True),EntityZ(pvt%,True),14)
-											DebugLog "Created Monitor for "+Chr(34)+"room2closets"+Chr(34)
+											DebugLog("Created Monitor for "+Chr(34)+"room2closets"+Chr(34))
 										Case "room1archive" ;ID=1 q
-											PositionEntity pvt%,-231.489,872.0,95.7443,False
+											PositionEntity(pvt%,-231.489,872.0,95.7443,False)
 											PositionEntity(sc\scrObj,EntityX(pvt%,True),EntityY(pvt%,True),EntityZ(pvt%,True))
 											EntityParent(sc\scrObj, e\room\obj)
 											TurnEntity(sc\scrObj, 0, 90+e\room\angle, 0)
 											FindAndDeleteFakeMonitor(e\room,EntityX(pvt%,True),EntityY(pvt%,True),EntityZ(pvt%,True),14)
-											DebugLog "Created Monitor for "+Chr(34)+"room1archive"+Chr(34)
+											DebugLog("Created Monitor for "+Chr(34)+"room1archive"+Chr(34))
 										Case "room3z3" ;ID=2 q
-											PositionEntity pvt%,-231.489,872.0,255.744,False
+											PositionEntity(pvt%,-231.489,872.0,255.744,False)
 											PositionEntity(sc\scrObj,EntityX(pvt%,True),EntityY(pvt%,True),EntityZ(pvt%,True))
 											EntityParent(sc\scrObj, e\room\obj)
 											TurnEntity(sc\scrObj, 0, 90+e\room\angle, 0)
 											FindAndDeleteFakeMonitor(e\room,EntityX(pvt%,True),EntityY(pvt%,True),EntityZ(pvt%,True),14)
-											DebugLog "Created Monitor for "+Chr(34)+"room3z3"+Chr(34)
+											DebugLog("Created Monitor for "+Chr(34)+"room3z3"+Chr(34))
 										Case "room1lifts" ;ID=3 q
-											PositionEntity pvt%,-231.489,872.0,415.744,False
+											PositionEntity(pvt%,-231.489,872.0,415.744,False)
 											PositionEntity(sc\scrObj,EntityX(pvt%,True),EntityY(pvt%,True),EntityZ(pvt%,True))
 											EntityParent(sc\scrObj, e\room\obj)
 											TurnEntity(sc\scrObj, 0, 90+e\room\angle, 0)
 											FindAndDeleteFakeMonitor(e\room,EntityX(pvt%,True),EntityY(pvt%,True),EntityZ(pvt%,True),14)
-											DebugLog "Created Monitor for "+Chr(34)+"room1lifts"+Chr(34)
+											DebugLog("Created Monitor for "+Chr(34)+"room1lifts"+Chr(34))
 										Case "room106" ;ID=4 q
-											PositionEntity pvt%,-208.138,872.0,571.583,False
+											PositionEntity(pvt%,-208.138,872.0,571.583,False)
 											PositionEntity(sc\scrObj,EntityX(pvt%,True),EntityY(pvt%,True),EntityZ(pvt%,True))
 											EntityParent(sc\scrObj, e\room\obj)
 											TurnEntity(sc\scrObj, 0, 75+e\room\angle, 0)
 											FindAndDeleteFakeMonitor(e\room,EntityX(pvt%,True),EntityY(pvt%,True),EntityZ(pvt%,True),14)
-											DebugLog "Created Monitor for "+Chr(34)+"room106"+Chr(34)
+											DebugLog("Created Monitor for "+Chr(34)+"room106"+Chr(34))
 										Case "checkpoint1" ;ID=5 q
-											PositionEntity pvt%,-207.94,760.0,-60.0686,False
+											PositionEntity(pvt%,-207.94,760.0,-60.0686,False)
 											PositionEntity(sc\scrObj,EntityX(pvt%,True),EntityY(pvt%,True),EntityZ(pvt%,True))
 											EntityParent(sc\scrObj, e\room\obj)
 											TurnEntity(sc\scrObj, 0, 105+e\room\angle, 0)
 											FindAndDeleteFakeMonitor(e\room,EntityX(pvt%,True),EntityY(pvt%,True),EntityZ(pvt%,True),14)
-											DebugLog "Created Monitor for "+Chr(34)+"checkpoint1"+Chr(34)
+											DebugLog("Created Monitor for "+Chr(34)+"checkpoint1"+Chr(34))
 										Case "room2nuke" ;ID=6 q
-											PositionEntity pvt%,-231.489,760.0,415.744,False
+											PositionEntity(pvt%,-231.489,760.0,415.744,False)
 											PositionEntity(sc\scrObj,EntityX(pvt%,True),EntityY(pvt%,True),EntityZ(pvt%,True))
 											EntityParent(sc\scrObj, e\room\obj)
 											TurnEntity(sc\scrObj, 0, 90+e\room\angle, 0)
 											FindAndDeleteFakeMonitor(e\room,EntityX(pvt%,True),EntityY(pvt%,True),EntityZ(pvt%,True),14)
-											DebugLog "Created Monitor for "+Chr(34)+"room2nuke"+Chr(34)
+											DebugLog("Created Monitor for "+Chr(34)+"room2nuke"+Chr(34))
 										Case "008" ;ID=7 q
-											PositionEntity pvt%,-208.138,760.0,571.583,False
+											PositionEntity(pvt%,-208.138,760.0,571.583,False)
 											PositionEntity(sc\scrObj,EntityX(pvt%,True),EntityY(pvt%,True),EntityZ(pvt%,True))
 											EntityParent(sc\scrObj, e\room\obj)
 											TurnEntity(sc\scrObj, 0, 75+e\room\angle, 0)
 											FindAndDeleteFakeMonitor(e\room,EntityX(pvt%,True),EntityY(pvt%,True),EntityZ(pvt%,True),14)
-											DebugLog "Created Monitor for "+Chr(34)+"008"+Chr(34)
+											DebugLog("Created Monitor for "+Chr(34)+"008"+Chr(34))
 										Case "room1162" ;ID=8 q
-											PositionEntity pvt%,-207.94,648.0,-60.0686,False
+											PositionEntity(pvt%,-207.94,648.0,-60.0686,False)
 											PositionEntity(sc\scrObj,EntityX(pvt%,True),EntityY(pvt%,True),EntityZ(pvt%,True))
 											EntityParent(sc\scrObj, e\room\obj)
 											TurnEntity(sc\scrObj, 0, 105+e\room\angle, 0)
 											FindAndDeleteFakeMonitor(e\room,EntityX(pvt%,True),EntityY(pvt%,True),EntityZ(pvt%,True),14)
-											DebugLog "Created Monitor for "+Chr(34)+"room1162"+Chr(34)
+											DebugLog("Created Monitor for "+Chr(34)+"room1162"+Chr(34))
 										Case "room966" ;ID=9 q
-											PositionEntity pvt%,-231.489,648.0,255.744,False
+											PositionEntity(pvt%,-231.489,648.0,255.744,False)
 											PositionEntity(sc\scrObj,EntityX(pvt%,True),EntityY(pvt%,True),EntityZ(pvt%,True))
 											EntityParent(sc\scrObj, e\room\obj)
 											TurnEntity(sc\scrObj, 0, 90+e\room\angle, 0)
 											FindAndDeleteFakeMonitor(e\room,EntityX(pvt%,True),EntityY(pvt%,True),EntityZ(pvt%,True),14)
-											DebugLog "Created Monitor for "+Chr(34)+"room966"+Chr(34)
+											DebugLog("Created Monitor for "+Chr(34)+"room966"+Chr(34))
 										Case "room2ccont" ;ID=10 q
-											PositionEntity pvt%,-231.489,648.0,415.744,False
+											PositionEntity(pvt%,-231.489,648.0,415.744,False)
 											PositionEntity(sc\scrObj,EntityX(pvt%,True),EntityY(pvt%,True),EntityZ(pvt%,True))
 											EntityParent(sc\scrObj, e\room\obj)
 											TurnEntity(sc\scrObj, 0, 90+e\room\angle, 0)
 											FindAndDeleteFakeMonitor(e\room,EntityX(pvt%,True),EntityY(pvt%,True),EntityZ(pvt%,True),14)
-											DebugLog "Created Monitor for "+Chr(34)+"room2ccont"+Chr(34)
+											DebugLog("Created Monitor for "+Chr(34)+"room2ccont"+Chr(34))
 									End Select
 
-									FreeEntity pvt%
+									FreeEntity(pvt%)
 								Next
 							EndIf
 						EndIf
@@ -334,7 +335,7 @@ Function UpdateEvent_hll_sl_2(e.Events)
 					scale# = RoomScale * 4.5 * 0.4
 
 					sc\scrObj = CreateSprite()
-					EntityFX sc\scrObj, 17
+					EntityFX(sc\scrObj, 17)
 					SpriteViewMode(sc\scrObj, 2)
 					sc\scrTexture = 0
 					ScaleSprite(sc\scrObj, MeshWidth(Monitor) * scale * 0.95* 0.5, MeshHeight(Monitor) * scale * 0.95* 0.5)
@@ -353,23 +354,23 @@ Function UpdateEvent_hll_sl_2(e.Events)
 
 					sc\cam = CreateCamera()
 					CameraViewport(sc\cam, 0, 0, 512, 512)
-					CameraRange sc\cam, 0.05, 6.0
+					CameraRange(sc\cam, 0.05, 6.0)
 					CameraZoom(sc\cam, 0.8)
 					HideEntity(sc\cam)
 
 					sc\room2slTexs%[0] = CreateTexture(512, 512, 1+256)
-					EntityTexture sc\scrObj, sc\room2slTexs%[0]
+					EntityTexture(sc\scrObj, sc\room2slTexs%[0])
 
 					pvt% = CreatePivot(e\room\obj)
 
-					PositionEntity pvt%,-231.489,648.0,95.7443,False
+					PositionEntity(pvt%,-231.489,648.0,95.7443,False)
 					PositionEntity(sc\scrObj,EntityX(pvt%,True),EntityY(pvt%,True),EntityZ(pvt%,True))
 					EntityParent(sc\scrObj, e\room\obj)
 					TurnEntity(sc\scrObj, 0, 90+e\room\angle, 0)
 					FindAndDeleteFakeMonitor(e\room,EntityX(pvt%,True),EntityY(pvt%,True),EntityZ(pvt%,True),14)
-					DebugLog "Created Monitor for "+Chr(34)+"room2sl"+Chr(34)+" (faked SCP-409 mainPlayer/cam)"
+					DebugLog("Created Monitor for "+Chr(34)+"room2sl"+Chr(34)+" (faked SCP-409 mainPlayer/cam)")
 
-					FreeEntity pvt%
+					FreeEntity(pvt%)
 					Exit
 				EndIf
 			Next
@@ -388,9 +389,9 @@ Function UpdateEvent_hll_sl_2(e.Events)
 				EndIf
 			EndIf
 
-			PositionEntity e\room\npc[0]\collider,EntityX(e\room\objects[7],True),EntityY(e\room\objects[7],True)+5,EntityZ(e\room\objects[7],True)
-			ResetEntity e\room\npc[0]\collider
-			RotateEntity e\room\npc[0]\collider,0,e\room\angle+180,0
+			PositionEntity(e\room\npc[0]\collider,EntityX(e\room\objects[7],True),EntityY(e\room\objects[7],True)+5,EntityZ(e\room\objects[7],True))
+			ResetEntity(e\room\npc[0]\collider)
+			RotateEntity(e\room\npc[0]\collider,0,e\room\angle+180,0)
 
 			DebugLog(EntityX(e\room\objects[7],True)+", "+EntityY(e\room\objects[7],True)+", "+EntityZ(e\room\objects[7],True))
 
@@ -424,7 +425,7 @@ Function UpdateEvent_hll_sl_2(e.Events)
 			EndIf
 		ElseIf e\eventState2 = 0 Then
 			If e\room\npc[0] <> Null Then
-				;PositionEntity e\room\npc[0]\collider,EntityX(e\room\npc[0]\collider),EntityY(e\room\objects[7],True),EntityZ(e\room\npc[0]\collider)
+				;PositionEntity(e\room\npc[0]\collider,EntityX(e\room\npc[0]\collider),EntityY(e\room\objects[7],True),EntityZ(e\room\npc[0]\collider))
 				AdjDist1# = 0.0
 				AdjDist2# = 0.0
 				Ldj1% = -1
@@ -441,24 +442,24 @@ Function UpdateEvent_hll_sl_2(e.Events)
 					EndIf
 				Next
 				If AdjDist1# > AdjDist2# Then
-					PositionEntity e\room\npc[0]\collider,EntityX(e\room\adjDoor[Adj1]\frameobj),EntityY(e\room\objects[7],True),EntityZ(e\room\adjDoor[Adj1]\frameobj)
+					PositionEntity(e\room\npc[0]\collider,EntityX(e\room\adjDoor[Adj1]\frameobj),EntityY(e\room\objects[7],True),EntityZ(e\room\adjDoor[Adj1]\frameobj))
 				Else
-					PositionEntity e\room\npc[0]\collider,EntityX(e\room\adjDoor[Adj2]\frameobj),EntityY(e\room\objects[7],True),EntityZ(e\room\adjDoor[Adj2]\frameobj)
+					PositionEntity(e\room\npc[0]\collider,EntityX(e\room\adjDoor[Adj2]\frameobj),EntityY(e\room\objects[7],True),EntityZ(e\room\adjDoor[Adj2]\frameobj))
 				EndIf
-				PointEntity e\room\npc[0]\collider,e\room\obj
-				MoveEntity e\room\npc[0]\collider,0,0,-1
-				ResetEntity e\room\npc[0]\collider
+				PointEntity(e\room\npc[0]\collider,e\room\obj)
+				MoveEntity(e\room\npc[0]\collider,0,0,-1)
+				ResetEntity(e\room\npc[0]\collider)
 				e\room\npc[0]\pathX = EntityX(e\room\npc[0]\collider)
 				e\room\npc[0]\pathZ = EntityZ(e\room\npc[0]\collider)
 				e\room\npc[0]\state = 5
-				DebugLog "aaaaaaaaa"
+				DebugLog("aaaaaaaaa")
 				e\eventState2 = 1
 			EndIf
 		ElseIf e\eventState2 = 1 Then
 			If e\room\npc[0]\pathStatus <> 1 Then
 				e\room\npc[0]\pathStatus = FindPath(e\room\npc[0],EntityX(e\room\objects[15],True),EntityY(e\room\objects[15],True),EntityZ(e\room\objects[15],True))
 			Else
-				DebugLog "bbbbbbbbb"
+				DebugLog("bbbbbbbbb")
 				e\eventState2 = 2
 			EndIf
 		ElseIf e\eventState2 = 2 Then
@@ -466,14 +467,14 @@ Function UpdateEvent_hll_sl_2(e.Events)
 				e\room\npc[0]\state3 = 1.0
 				e\eventState2 = 3
 				e\room\npc[0]\pathTimer# = 0.0
-				DebugLog "ccccccccc"
+				DebugLog("ccccccccc")
 			Else
 				If EntityDistance(e\room\npc[0]\collider,e\room\roomDoors[0]\frameobj) < 5.0 Then
 					e\room\roomDoors[0]\locked = True
 					e\room\roomDoors[1]\locked = True
 					If e\room\npc[0]\reload = 0 Then
-						PlaySound2 LoadTempSound("SFX/Door/DoorOpen079.ogg")
-						DebugLog "079 - OPEN DOORS IN ROOM2SL"
+						PlaySound2(LoadTempSound("SFX/Door/DoorOpen079.ogg"))
+						DebugLog("079 - OPEN DOORS IN ROOM2SL")
 						e\room\npc[0]\reload = 1
 					EndIf
 					If (Not e\room\roomDoors[0]\open) Then
@@ -494,17 +495,17 @@ Function UpdateEvent_hll_sl_2(e.Events)
 
 			If e\room\npc[0]\state <> 5 Then
 				e\eventState2 = 7
-				DebugLog "fffffffff"
+				DebugLog("fffffffff")
 			EndIf
 		ElseIf e\eventState2 = 3 Then
 			If e\room\npc[0]\state <> 5 Then
 				e\eventState2 = 7
-				DebugLog "fffffffff"
+				DebugLog("fffffffff")
 			EndIf
 
 			If MeNPCSeesPlayer(e\room\npc[0],True)=2 Then
 				e\eventState2 = 4
-				DebugLog "ddddddddd"
+				DebugLog("ddddddddd")
 			EndIf
 
 			If e\room\npc[0]\pathStatus <> 1 Then
@@ -530,17 +531,17 @@ Function UpdateEvent_hll_sl_2(e.Events)
 						Case 1
 							e\room\npc[0]\pathStatus = FindPath(e\room\npc[0],EntityX(e\room\objects[16],True),EntityY(e\room\objects[16],True),EntityZ(e\room\objects[16],True))
 							e\room\npc[0]\prevState = 1
-							DebugLog "Path1"
+							DebugLog("Path1")
 						Case 2
 							e\room\npc[0]\pathStatus = FindPath(e\room\npc[0],EntityX(e\room\objects[15],True),EntityY(e\room\objects[15],True),EntityZ(e\room\objects[15],True))
 							e\room\npc[0]\prevState = 2
-							DebugLog "Path2"
+							DebugLog("Path2")
 						Case 3
 							;e\room\npc[0]\pathStatus = FindPath(e\room\npc[0],EntityX(e\room\objects[7],True),EntityY(e\room\objects[7],True),EntityZ(e\room\objects[7],True))
 							;e\room\npc[0]\pathStatus = FindPath(e\room\npc[0],EntityX(e\room\obj,True),EntityY(e\room\objects[7],True),EntityZ(e\room\obj,True))
 							e\room\npc[0]\pathStatus = FindPath(e\room\npc[0],e\room\npc[0]\pathX,0.1,e\room\npc[0]\pathZ)
 							e\room\npc[0]\prevState = 1
-							DebugLog "Path3"
+							DebugLog("Path3")
 						Case 4
 							e\eventState2 = 5
 					End Select
@@ -552,11 +553,11 @@ Function UpdateEvent_hll_sl_2(e.Events)
 			If e\room\npc[0]\state <> 5 Then
 				e\eventState2 = 7
 				e\room\npc[0]\state3 = 5.0
-				DebugLog "fffffffff"
+				DebugLog("fffffffff")
 			EndIf
 		ElseIf e\eventState2 = 5 Then
 			;RemoveNPC(e\room\npc[0])
-			DebugLog "ddddddddd"
+			DebugLog("ddddddddd")
 			e\room\npc[0]\state = 2
 			For r.Rooms = Each Rooms
 				If r <> mainPlayer\currRoom Then
@@ -570,7 +571,7 @@ Function UpdateEvent_hll_sl_2(e.Events)
 			Next
 		ElseIf e\eventState2 = 6 Then
 			If MeNPCSeesPlayer(e\room\npc[0],True) Or e\room\npc[0]\state2 > 0 Or e\room\npc[0]\lastSeen > 0 Then
-				DebugLog "fffffffff"
+				DebugLog("fffffffff")
 				e\eventState2 = 7
 			Else
 				;Still playing the Music for SCP-049 (in the real, SCP-049's State will be set to 2, causing it to stop playing the chasing track)
@@ -578,9 +579,9 @@ Function UpdateEvent_hll_sl_2(e.Events)
 				;ShouldPlay = 20
 				If e\room\npc[0]\pathStatus<>1 Then
 					e\room\npc[0]\idle = 70*60 ;(Making SCP-049 idle for one minute (twice as fast for aggressive NPCs = True))
-					PositionEntity e\room\npc[0]\collider,0,500,0
-					ResetEntity e\room\npc[0]\collider
-					DebugLog "eeeeeeeee"
+					PositionEntity(e\room\npc[0]\collider,0,500,0)
+					ResetEntity(e\room\npc[0]\collider)
+					DebugLog("eeeeeeeee")
 					e\eventState2 = 7
 				EndIf
 			EndIf
@@ -598,8 +599,8 @@ Function UpdateEvent_hll_sl_2(e.Events)
 							If e\room\roomDoors[0]\open Then
 								e\room\roomDoors[0]\open = False
 								e\room\roomDoors[0]\fastopen = 1
-								PlaySound2 LoadTempSound("SFX/Door/DoorClose079.ogg")
-								DebugLog "079 - CLOSE DOOR AT HALLWAY IN ROOM2SL"
+								PlaySound2(LoadTempSound("SFX/Door/DoorClose079.ogg"))
+								DebugLog("079 - CLOSE DOOR AT HALLWAY IN ROOM2SL")
 							EndIf
 						EndIf
 					Else
@@ -608,8 +609,8 @@ Function UpdateEvent_hll_sl_2(e.Events)
 							e\room\roomDoors[0]\open = True
 							;sound=Rand(0, 2)
 							;PlayRangedSound(OpenDoorSFX(0,sound),mainPlayer\cam,e\room\roomDoors[0]\obj)
-							PlaySound2 LoadTempSound("SFX/Door/DoorOpen079.ogg")
-							DebugLog "079 - OPEN DOOR AT HALLWAY IN ROOM2SL"
+							PlaySound2(LoadTempSound("SFX/Door/DoorOpen079.ogg"))
+							DebugLog("079 - OPEN DOOR AT HALLWAY IN ROOM2SL")
 						EndIf
 					EndIf
 				EndIf
@@ -621,8 +622,8 @@ Function UpdateEvent_hll_sl_2(e.Events)
 					e\room\roomDoors[0]\open = True
 					;sound=Rand(0, 2)
 					;PlayRangedSound(OpenDoorSFX(0,sound),mainPlayer\cam,e\room\roomDoors[0]\obj)
-					PlaySound2 LoadTempSound("SFX/Door/DoorOpen079.ogg")
-					DebugLog "079 - OPEN DOOR AT HALLWAY IN ROOM2SL"
+					PlaySound2(LoadTempSound("SFX/Door/DoorOpen079.ogg"))
+					DebugLog("079 - OPEN DOOR AT HALLWAY IN ROOM2SL")
 				EndIf
 			EndIf
 		EndIf
