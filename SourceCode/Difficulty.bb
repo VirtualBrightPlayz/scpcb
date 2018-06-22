@@ -2,7 +2,7 @@ Type Difficulty
 	Field name$
 	Field description$
 	Field permaDeath%
-	Field aggressiveNPCs
+	Field aggressiveNPCs%
 	Field saveType%
 	Field otherFactors%
 
@@ -14,11 +14,11 @@ Dim difficulties.Difficulty(4)
 
 Global SelectedDifficulty.Difficulty
 
-Const SAFE=0, EUCLID=1, KETER=2, CUSTOM=3
+Const SAFE%=0, EUCLID%=1, KETER%=2, CUSTOM%=3
 
-Const SAVEANYWHERE = 0, SAVEONQUIT=1, SAVEONSCREENS=2
+Const SAVEANYWHERE% = 0, SAVEONQUIT%=1, SAVEONSCREENS%=2
 
-Const EASY = 0, NORMAL = 1, HARD = 2
+Const EASY% = 0, NORMAL% = 1, HARD% = 2
 
 difficulties(SAFE) = New Difficulty
 difficulties(SAFE)\name = "Safe"
@@ -57,5 +57,4 @@ difficulties(SAFE)\otherFactors = EASY
 
 SelectedDifficulty = difficulties(SAFE)
 ;~IDEal Editor Parameters:
-;~F#0
 ;~C#Blitz3D

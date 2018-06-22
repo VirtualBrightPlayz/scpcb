@@ -26,7 +26,7 @@ Dim OpenDoorSFX.MarkedForRemoval(3,3), CloseDoorSFX.MarkedForRemoval(3,3)
 Dim DripSFX.MarkedForRemoval(4)
 
 ;TODO: Radio struct.
-Dim RadioSFX(5,10)
+Dim RadioSFX%(5,10)
 
 Dim PickSFX.MarkedForRemoval(10)
 
@@ -2167,5 +2167,4 @@ Function CheckTriggers$()
 End Function
 
 ;~IDEal Editor Parameters:
-;~F#5
 ;~C#Blitz3D

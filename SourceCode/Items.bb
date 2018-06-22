@@ -48,6 +48,7 @@ End Type
 
 Function CreateItemTemplate(file$, section$)
 	Local it.ItemTemplates = New ItemTemplates
+	Local flags%
 
 	it\name = section
 	it\invName = GetINIString(file, section, "invname")
@@ -133,7 +134,7 @@ Function CreateItemTemplate(file$, section$)
 		Next
 
 		If (it\tex = 0) Then
-			Local flags% = GetINIInt(file, section, "textureflags", 1+8)
+			flags = GetINIInt(file, section, "textureflags", 1+8)
 			it\tex = LoadTexture(it\texPath, flags)
 		EndIf
 
@@ -226,7 +227,7 @@ Type Items
 
 	Field r%,g%,b%,a#
 
-	Field level
+	Field level% ;TODO: what
 
 	Field dist#, disttimer#
 
@@ -359,7 +360,7 @@ Function RemoveItem(i.Items)
 
 	DropItem(i,False)
 
-	Local n
+	Local n%
 	FreeEntity(i\model) : FreeEntity(i\collider) : i\collider = 0
 
 	If i\itemtemplate\img <> 0 Then
@@ -372,12 +373,14 @@ End Function
 
 
 Function UpdateItems()
-	Local n, i.Items, i2.Items
+	Local n%, i.Items, i2.Items
 	Local xtemp#, ytemp#, ztemp#
 	Local temp%, np.NPCs
 
-	Local HideDist = HideDistance*0.5
+	Local HideDist% = HideDistance*0.5
 	Local deletedItem% = False
+	
+	Local ed#
 
 	mainPlayer\closestItem = Null
 	For i.Items = Each Items
@@ -424,7 +427,7 @@ Function UpdateItems()
 							ytemp# = (EntityY(i2\collider,True)-EntityY(i\collider,True))
 							ztemp# = (EntityZ(i2\collider,True)-EntityZ(i\collider,True))
 
-							Local ed# = (xtemp*xtemp+ztemp*ztemp)
+							ed = (xtemp*xtemp+ztemp*ztemp)
 							If ed<0.07 And Abs(ytemp)<0.25 Then
 								;items are too close together, push away
 
@@ -578,8 +581,8 @@ Function DropItem(item.Items,playDropSound%=True)
 
 	item\picked = False
 	Local inv.Inventory
+	Local j%
 	For inv.Inventory = Each Inventory
-		Local j%
 		For j%=0 To inv\size-1
 			If inv\items[j]=item Then inv\items[j]=Null
 		Next
