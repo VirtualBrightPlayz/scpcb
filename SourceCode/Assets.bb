@@ -769,7 +769,9 @@ Function NullGame()
 	InitFastResize()
 
 	For i=0 To 9
-		If (TempSounds[i]<>0) Then FreeSound(TempSounds[i]) : TempSounds[i]=0
+		If (TempSounds[i]<>0) Then
+			FreeSound(TempSounds[i]) : TempSounds[i]=0
+		EndIf
 	Next
 
 End Function

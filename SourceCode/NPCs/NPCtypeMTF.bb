@@ -1617,7 +1617,9 @@ Function UpdateMTF%()
 
 			entrance.Rooms = Null
 			For r.Rooms = Each Rooms
-				If (Lower(r\roomTemplate\name) = "gateaentrance") Then entrance = r : Exit
+				If (Lower(r\roomTemplate\name) = "gateaentrance") Then
+					entrance = r : Exit
+				EndIf
 			Next
 
 			If (entrance <> Null) Then

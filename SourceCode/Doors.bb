@@ -253,7 +253,9 @@ Function UpdateDoors()
 											mainPlayer\closestButton = d\buttons[i]
 											mainPlayer\closestDoor = d
 										Else
-											If (dist < EntityDistance(mainPlayer\collider, mainPlayer\closestButton)) Then mainPlayer\closestButton = d\buttons[i] : mainPlayer\closestDoor = d
+											If (dist < EntityDistance(mainPlayer\collider, mainPlayer\closestButton)) Then
+												mainPlayer\closestButton = d\buttons[i] : mainPlayer\closestDoor = d
+											EndIf
 										EndIf
 									EndIf
 

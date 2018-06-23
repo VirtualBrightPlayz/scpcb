@@ -259,7 +259,9 @@ Function UpdateEvent_scp_970_2(e.Events)
 								TFormPoint(EntityX(it2\collider),EntityY(it2\collider),EntityZ(it2\collider),0,e\room\obj)
 								DebugLog(TFormedZ()+" - "+z)
 
-								If (TFormedZ()=z) Then RemoveItem(it2) : DebugLog("item removed")
+								If (TFormedZ()=z) Then
+									RemoveItem(it2) : DebugLog("item removed")
+								EndIf
 							EndIf
 						Next
 					EndIf

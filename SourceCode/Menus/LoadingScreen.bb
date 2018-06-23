@@ -23,7 +23,7 @@ Function InitLoadingScreens(file$)
 		If (Left(TemporaryString,1) = "[") Then
 			TemporaryString = Mid(TemporaryString, 2, Len(TemporaryString) - 2)
 
-			ls.LoadingScreens = New LoadingScreens
+			ls = New LoadingScreens
 			LoadingScreenAmount=LoadingScreenAmount+1
 			ls\id = LoadingScreenAmount
 
@@ -31,7 +31,7 @@ Function InitLoadingScreens(file$)
 			ls\imgpath = GetINIString(file, TemporaryString, "image path")
 
 			For i = 0 To 4
-				ls\txt[i] = GetINIString(file, TemporaryString, "text"+(i+1))
+				ls\txt[i] = GetINIString(file, TemporaryString, "text"+Str(i+1))
 				If (ls\txt[i]<> "") Then ls\txtamount=ls\txtamount+1
 			Next
 
@@ -128,8 +128,8 @@ Function DrawLoading(percent%, shortloading%=False)
 		DrawImage(SelectedLoadingScreen\img, x, y)
 
 		width = 300 : height = 20
-		x% = userOptions\screenWidth / 2 - width / 2
-		y% = userOptions\screenHeight / 2 + 30 - 100
+		x = userOptions\screenWidth / 2 - width / 2
+		y = userOptions\screenHeight / 2 + 30 - 100
 
 		Rect(x, y, width+4, height, False)
 		For  i = 1 To Int((width - 2) * (percent / 100.0) / 10)
@@ -151,7 +151,7 @@ Function DrawLoading(percent%, shortloading%=False)
 			SetFont(uiAssets\font[1])
 			temp = Rand(2,9)
 			For i = 0 To temp
-				strtemp$ = strtemp + Chr(Rand(48,122))
+				strtemp = strtemp + Chr(Rand(48,122))
 			Next
 			Text(userOptions\screenWidth / 2, userOptions\screenHeight / 2 + 80, strtemp, True, True)
 
@@ -193,10 +193,10 @@ Function DrawLoading(percent%, shortloading%=False)
 				EndIf
 			EndIf
 
-			strtemp$ = SelectedLoadingScreen\txt[0]
+			strtemp = SelectedLoadingScreen\txt[0]
 			temp = Int(Len(SelectedLoadingScreen\txt[0])-Rand(5))
 			For i = 0 To Rand(10,15);temp
-				strtemp$ = Replace(SelectedLoadingScreen\txt[0],Mid(SelectedLoadingScreen\txt[0],Rand(1,Len(strtemp)-1),1),Chr(Rand(130,250)))
+				strtemp = Replace(SelectedLoadingScreen\txt[0],Mid(SelectedLoadingScreen\txt[0],Rand(1,Len(strtemp)-1),1),Chr(Rand(130,250)))
 			Next
 			SetFont(uiAssets\font[0])
 			RowText(strtemp, userOptions\screenWidth / 2-200, userOptions\screenHeight / 2 +120,400,300,True)
@@ -217,9 +217,9 @@ Function DrawLoading(percent%, shortloading%=False)
 		EndIf
 
 		Color(0,0,0)
-		Text(userOptions\screenWidth / 2 + 1, userOptions\screenHeight / 2 - 100 + 1, "LOADING - " + percent + " %", True, True)
+		Text(userOptions\screenWidth / 2 + 1, userOptions\screenHeight / 2 - 100 + 1, "LOADING - " + Str(percent) + " %", True, True)
 		Color(255,255,255)
-		Text(userOptions\screenWidth / 2, userOptions\screenHeight / 2 - 100, "LOADING - " + percent + " %", True, True)
+		Text(userOptions\screenWidth / 2, userOptions\screenHeight / 2 - 100, "LOADING - " + Str(percent) + " %", True, True)
 
 		If (percent = 100) Then
 			;If (firstloop And SelectedLoadingScreen\title <> "CWM") Then PlaySound2(HorrorSFX(8) ;TODO: fix)
@@ -252,7 +252,7 @@ Function DrawLoading(percent%, shortloading%=False)
 			EntityBlend(fresize_image,2)
 			EntityAlpha(fresize_image,1.0)
 			SetBuffer(TextureBuffer(fresize_texture2))
-			ClsColor(255*userOptions\screenGamma,255*userOptions\screenGamma,255*userOptions\screenGamma)
+			ClsColor(Int(255.0*userOptions\screenGamma),Int(255.0*userOptions\screenGamma),Int(255.0*userOptions\screenGamma))
 			Cls()
 			SetBuffer(BackBuffer())
 			ScaleRender(-1.0/Float(userOptions\screenWidth),1.0/Float(userOptions\screenWidth),2048.0 / Float(userOptions\screenWidth),2048.0 / Float(userOptions\screenWidth))

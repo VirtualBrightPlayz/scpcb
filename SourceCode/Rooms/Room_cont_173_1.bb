@@ -134,7 +134,9 @@ Function UpdateEventAlarm(e.Events)
 				MoveEntity(e\room\roomDoors[1]\obj2, -Sin(e\room\roomDoors[1]\openstate) / 180.0, 0, 0)
 			Wend
 
-			If (e\room\npc[0] <> Null) Then SetNPCFrame(e\room\npc[0], 74) : e\room\npc[0]\state = 8
+			If (e\room\npc[0] <> Null) Then
+				SetNPCFrame(e\room\npc[0], 74) : e\room\npc[0]\state = 8
+			EndIf
 
 			If (e\room\npc[1] = Null) Then
 				e\room\npc[1] = CreateNPC(NPCtypeD, 0,0,0)

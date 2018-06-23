@@ -14,8 +14,8 @@ Global launcher.Launcher = Null
 Function CreateLauncher.Launcher()
     Local launch.Launcher = New Launcher
 
-    launch\width = Min(GetINIInt(OptionFile, "launcher", "launcher width"), 1024)
-    launch\height = Min(GetINIInt(OptionFile, "launcher", "launcher height"), 768)
+    launch\width = Int(Min(GetINIInt(OptionFile, "launcher", "launcher width"), 1024))
+    launch\height = Int(Min(GetINIInt(OptionFile, "launcher", "launcher height"), 768))
 
 	launch\resWidths = CreateIntArray(CountGfxModes3D())
 	launch\resHeights = CreateIntArray(CountGfxModes3D())
@@ -130,7 +130,7 @@ Function DrawLauncher()
                 Rect(x - 1, y - 1, 100, 20, False)
             EndIf
 
-            Text(x, y, (GetIntArrayElem(launcher\resWidths, i - 1) + "x" + GetIntArrayElem(launcher\resHeights, i - 1)))
+            Text(x, y, (Str(GetIntArrayElem(launcher\resWidths, i - 1)) + "x" + Str(GetIntArrayElem(launcher\resHeights, i - 1))))
             If (MouseOn(x - 1, y - 1, 100, 20)) Then
                 Color(100, 100, 100)
                 Rect(x - 1, y - 1, 100, 20, False)
@@ -175,7 +175,7 @@ Function DrawLauncher()
     DrawUITick(40 + 430 - 15, 260 - 55 + 95 + 8, userOptions\launcher)
     Text(40 + 430 + 15,       262 - 55 + 95 + 8, "Use launcher")
 
-    Text(40+ 260 + 15, 262 - 55 + 140, "Current Resolution: "+GetIntArrayElem(launcher\resWidths, launcher\selectedGFXMode) + "x" + GetIntArrayElem(launcher\resHeights, launcher\selectedGFXMode))
+    Text(40+ 260 + 15, 262 - 55 + 140, "Current Resolution: "+Str(GetIntArrayElem(launcher\resWidths, launcher\selectedGFXMode)) + "x" + Str(GetIntArrayElem(launcher\resHeights, launcher\selectedGFXMode)))
 
     ;If (GfxModeWidths(SelectedGFXMode)<G_viewport_width) Then
     ;	Text(40+ 260 + 65, 262 - 55 + 160, "(upscaled to")

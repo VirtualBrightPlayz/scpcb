@@ -208,7 +208,9 @@ Function Update294()
 		EndIf
 
 	Else ;playing a dispensing sound
-		If (Input294 <> "OUT OF RANGE") Then Input294 = "DISPENSING..." : DebugLog("cringe")
+		If (Input294 <> "OUT OF RANGE") Then
+			Input294 = "DISPENSING..." : DebugLog("cringe")
+		EndIf
 
 		If (Not IsChannelPlaying(mainPlayer\currRoom\soundCHN)) Then
 			If (Input294 <> "OUT OF RANGE") Then

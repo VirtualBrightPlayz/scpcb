@@ -36,7 +36,9 @@ Function CreateEvent.Events(eventname$, roomname$, id%, prob# = 0.0)
 			If ((roomname = "" Or roomname = r\roomTemplate\name)) Then
 				temp = False
 				For e2.Events = Each Events
-					If (e2\room = r) Then temp = True : Exit
+					If (e2\room = r) Then
+						temp = True : Exit
+					EndIf
 				Next
 
 				i=i+1
@@ -53,7 +55,9 @@ Function CreateEvent.Events(eventname$, roomname$, id%, prob# = 0.0)
 			If ((roomname = "" Or roomname = r\roomTemplate\name)) Then
 				temp = False
 				For e2.Events = Each Events
-					If (e2\room = r) Then temp = True : Exit
+					If (e2\room = r) Then
+						temp = True : Exit
+					EndIf
 				Next
 
 				If (Rnd(0.0, 1.0) < prob And temp = False) Then

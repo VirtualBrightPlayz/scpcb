@@ -214,7 +214,9 @@ Function UpdateNPCtype173(n.NPCs)
 							If (Distance(EntityX(n\collider), EntityZ(n\collider), n\targetX, n\targetZ) > 0.5) Then
 								AlignToVector(n\collider, n\targetX-EntityX(n\collider), 0, n\targetZ-EntityZ(n\collider), 3)
 								MoveEntity(n\collider, 0, 0, n\speed * timing\tickDuration)
-								If (Rand(500) = 1) Then n\targetX = 0 : n\targetY = 0 : n\targetZ = 0
+								If (Rand(500) = 1) Then
+									n\targetX = 0 : n\targetY = 0 : n\targetZ = 0
+								EndIf
 							Else
 								n\targetX = 0 : n\targetY = 0 : n\targetZ = 0
 							EndIf

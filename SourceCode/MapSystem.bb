@@ -163,7 +163,11 @@ Function KeyValue$(entity%,key$,defaultvalue$="")
 	key$=Lower(key)
 	Repeat
 		p% = Instr(properties,Chr(10))
-		If (p) Then test$=(Left(properties,p-1)) Else test=properties
+		If (p) Then
+			test$=(Left(properties,p-1))
+		Else
+			test=properties
+		EndIf
 		testkey$=Piece(test,1,"=")
 		testkey=Trim(testkey)
 		testkey=Replace(testkey,Chr(34),"")
@@ -826,7 +830,9 @@ Function UpdateRooms()
 		EndIf
 		If (hide) Then
 			For i=0 To 3
-				If ((IsRoomAdjacent(mainPlayer\currRoom\adjacent[i],r))) Then hide=False : Exit
+				If ((IsRoomAdjacent(mainPlayer\currRoom\adjacent[i],r))) Then
+					hide=False : Exit
+				EndIf
 			Next
 		EndIf
 
@@ -1665,7 +1671,9 @@ Function UpdateSecurityCams()
 										Else
 											;If (Not IsChannelPlaying(sc\soundCHN)) Then sc\soundCHN = PlaySound(HorrorSFX(4)) ;TODO: fix
 										EndIf
-										If (sc\coffinEffect=3 And Rand(200)=1) Then sc\coffinEffect=2 : sc\playerState = Rand(10000, 20000)
+										If (sc\coffinEffect=3 And Rand(200)=1) Then
+											sc\coffinEffect=2 : sc\playerState = Rand(10000, 20000)
+										EndIf
 									EndIf
 									mainPlayer\blurTimer = 1000
 								ElseIf (mainPlayer\sanity895 < - 500) Then
@@ -1674,7 +1682,9 @@ Function UpdateSecurityCams()
 										EntityTexture(sc\scrOverlay, GorePics(Rand(0, 5)))
 										;If (sc\playerState = 0) Then PlaySound(HorrorSFX(0)) ;TODO: fix
 										sc\playerState = Max(sc\playerState, 1)
-										If (sc\coffinEffect=3 And Rand(100)=1) Then sc\coffinEffect=2 : sc\playerState = Rand(10000, 20000)
+										If (sc\coffinEffect=3 And Rand(100)=1) Then
+											sc\coffinEffect=2 : sc\playerState = Rand(10000, 20000)
+										EndIf
 									EndIf
 								Else
 									EntityTexture(sc\scrOverlay, MonitorTexture)
@@ -1697,10 +1707,14 @@ Function UpdateSecurityCams()
 						Else
 							If (sc\soundCHN = 0) Then
 								sc\soundCHN = PlaySound(LoadTempSound("SFX/SCP/079/Broadcast"+Rand(1,3)+".ogg"))
-								If (sc\coffinEffect=2) Then sc\coffinEffect=3 : sc\playerState = 0
+								If (sc\coffinEffect=2) Then
+									sc\coffinEffect=3 : sc\playerState = 0
+								EndIf
 							ElseIf ((Not IsChannelPlaying(sc\soundCHN))) Then
 								sc\soundCHN = PlaySound(LoadTempSound("SFX/SCP/079/Broadcast"+Rand(1,3)+".ogg"))
-								If (sc\coffinEffect=2) Then sc\coffinEffect=3 : sc\playerState = 0
+								If (sc\coffinEffect=2) Then
+									sc\coffinEffect=3 : sc\playerState = 0
+								EndIf
 							EndIf
 							EntityTexture(sc\scrOverlay, OldAiPics(0))
 						EndIf
@@ -2344,5 +2358,5 @@ Function FindAndDeleteFakeMonitor(r.Rooms,x#,y#,z#,Amount%)
 
 End Function
 ;~IDEal Editor Parameters:
-;~F#1A2#1AA#1BF#1CA
+;~F#1A6#1AE#1C3#1CE
 ;~C#Blitz3D

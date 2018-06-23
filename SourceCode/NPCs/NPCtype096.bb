@@ -245,7 +245,9 @@ Function UpdateNPCtype096(n.NPCs)
                     ;If (AnimTime(n\obj)=1412) Then SetAnimTime(n\obj, 307)
                 Else
                     AnimateNPC(n, 307, 424, 0.3, False)
-                    If (n\frame > 423.9) Then n\state = 2 : n\frame = 892
+                    If (n\frame > 423.9) Then
+						n\state = 2 : n\frame = 892
+					EndIf
 
                     ;Animate2(n\obj, AnimTime(n\obj),307,424, 0.3, False)
                     ;If (AnimTime(n\obj)=424) Then n\state = 2 : SetAnimTime(n\obj, 892)
@@ -254,7 +256,9 @@ Function UpdateNPCtype096(n.NPCs)
                 AnimateNPC(n, 833, 972, 0.3, False)
 
                 ;Animate2(n\obj, AnimTime(n\obj),833,972, 0.3, False)
-                If (n\frame=>972) Then n\state = 3 : n\state2=0
+                If (n\frame=>972) Then
+					n\state = 3 : n\state2=0
+				EndIf
             ElseIf (n\state=3) Then
                 n\state2 = n\state2+timing\tickDuration
                 If (n\state2 > 70*18) Then
@@ -282,8 +286,10 @@ Function UpdateNPCtype096(n.NPCs)
 
                 n\state2=n\state2+timing\tickDuration
                 If (n\state2>1000) Then ;walking around
-                    If (n\state2>1600) Then n\state2=Rand(0,500) : n\frame = 1652 ;: SetAnimTime(n\obj, 1652)
-
+                    If (n\state2>1600) Then
+						n\state2=Rand(0,500) : n\frame = 1652 ;: SetAnimTime(n\obj, 1652)
+					EndIf
+					
                     If (n\frame<1652) Then ;idle to walk
                         n\currSpeed = CurveValue(n\speed*0.1,n\currSpeed,5.0)
                         AnimateNPC(n, 1638,1652, n\currSpeed*45,False)

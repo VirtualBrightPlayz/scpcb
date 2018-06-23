@@ -99,13 +99,17 @@ Function UpdateEventRoom_gw(e.Events)
 			If (EntityDistance(e\room\objects[0],mainPlayer\collider)<1.4 And e\eventState3 = 0.0) Then
 				e\eventState = 1.0
 				If (brokendoor) Then
-					If (e\sounds[1] <> 0) Then FreeSound(e\sounds[1]) : e\sounds[1] = 0
+					If (e\sounds[1] <> 0) Then
+						FreeSound(e\sounds[1]) : e\sounds[1] = 0
+					EndIf
 					e\sounds[1] = LoadSound("SFX/Door/DoorSparks.ogg")
 					e\soundChannels[1] = PlayRangedSound(e\sounds[1],mainPlayer\cam,e\room\objects[1],5)
 				EndIf
 				StopChannel(e\soundChannels[0])
 				e\soundChannels[0] = 0
-				If (e\sounds[0] <> 0) Then FreeSound(e\sounds[0]) : e\sounds[0] = 0
+				If (e\sounds[0] <> 0) Then
+					FreeSound(e\sounds[0]) : e\sounds[0] = 0
+				EndIf
 				e\sounds[0] = LoadSound("SFX/Door/Airlock.ogg")
 				e\room\roomDoors[0]\locked = False
 				e\room\roomDoors[1]\locked = False

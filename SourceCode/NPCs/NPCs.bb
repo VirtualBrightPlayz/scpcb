@@ -338,7 +338,9 @@ Function UpdateNPCs()
 
 				collidedFloor% = False
 				For i% = 1 To CountCollisions(n\collider)
-					If (CollisionY(n\collider, i) < EntityY(n\collider) - 0.01) Then collidedFloor = True : Exit
+					If (CollisionY(n\collider, i) < EntityY(n\collider) - 0.01) Then
+						collidedFloor = True : Exit
+					EndIf
 				Next
 
 				If (collidedFloor = True) Then

@@ -118,7 +118,9 @@ Function UpdateEvent_hll_ele_2(e.Events)
 				e\room\roomDoors[0]\locked = False
 			EndIf
 		Else
-			If (e\room\roomDoors[0]\open) Then e\room\roomDoors[0]\locked = True : RemoveEvent(e)
+			If (e\room\roomDoors[0]\open) Then
+				e\room\roomDoors[0]\locked = True : RemoveEvent(e)
+			EndIf
 		EndIf
 	EndIf
 	;[End Block]

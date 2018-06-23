@@ -48,7 +48,11 @@ Function UpdateEvent_test_682_2(e.Events)
 				ScaleEntity(e\room\objects[7], 0.05,0.05,0.05)
 
 				TFormPoint(EntityX(mainPlayer\collider),EntityY(mainPlayer\collider),EntityZ(mainPlayer\collider),0,e\room\obj)
-				If (TFormedZ()=0) Then temp = -1 Else temp = -Sgn(TFormedZ())
+				If (TFormedZ()=0) Then
+					temp = -1
+				Else
+					temp = -Sgn(TFormedZ())
+				EndIf
 				TFormPoint(-720,0,816*temp,e\room\obj,0)
 				PositionEntity(e\room\objects[7],TFormedX(),0,TFormedZ())
 
@@ -86,3 +90,6 @@ Function UpdateEvent_test_682_2(e.Events)
 	;[End Block]
 End Function
 
+
+;~IDEal Editor Parameters:
+;~C#Blitz3D

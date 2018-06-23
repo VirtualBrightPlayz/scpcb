@@ -22,7 +22,7 @@ Global CurrGameState% = GAMESTATE_MAINMENU
 Global CurrGameSubstate% = GAMESUBSTATE_MAINMENU_MAIN
 Global CurrGameStatePage% = 0
 
-Function IsPaused()
+Function IsPaused%()
 	Return CurrGameState <> GAMESTATE_PLAYING
 End Function
 
@@ -47,9 +47,9 @@ Global MenuBlack.MarkedForRemoval
 
 Global RandomSeed$
 
-Dim MenuBlinkTimer%(2), MenuBlinkDuration%(2)
-MenuBlinkTimer%(0) = 1
-MenuBlinkTimer%(1) = 1
+Dim MenuBlinkTimer#(2), MenuBlinkDuration#(2)
+MenuBlinkTimer(0) = 1
+MenuBlinkTimer(1) = 1
 
 Global MenuStr$, MenuStrX%, MenuStrY%
 
@@ -76,15 +76,15 @@ Include "SourceCode/Menus/Launcher.bb"
 Include "SourceCode/Menus/MainMenu.bb"
 Include "SourceCode/Menus/LoadingScreen.bb"
 
-Function DrawTiledImageRect(img%, srcX%, srcY%, srcwidth#, srcheight#, x%, y%, width%, height%)
+Function DrawTiledImageRect(img%, srcX%, srcY%, srcwidth%, srcheight%, x%, y%, width%, height%)
 
 	Local x2% = x
 	Local y2%
 	While x2 < x+width
 		y2 = y
 		While y2 < y+height
-			If (x2 + srcwidth > x + width) Then srcwidth = srcwidth - Max((x2 + srcwidth) - (x + width), 1)
-			If (y2 + srcheight > y + height) Then srcheight = srcheight - Max((y2 + srcheight) - (y + height), 1)
+			If (x2 + srcwidth > x + width) Then srcwidth = srcwidth - Int(Max((x2 + srcwidth) - (x + width), 1))
+			If (y2 + srcheight > y + height) Then srcheight = srcheight - Int(Max((y2 + srcheight) - (y + height), 1))
 			DrawImageRect(img, x2, y2, srcX, srcY, srcwidth, srcheight)
 			y2 = y2 + srcheight
 		Wend
@@ -97,20 +97,20 @@ End Function
 
 Function rInput$(aString$)
 	Local value% = GetKey()
-	Local length% = Len(aString$)
+	Local length% = Len(aString)
 
 	If (value = 8) Then
 		value = 0
-		If (length > 0) Then aString$ = Left(aString, length - 1)
+		If (length > 0) Then aString = Left(aString, length - 1)
 	EndIf
 
 	If (value = 13 Or value = 0) Then
-		Return aString$
+		Return aString
 	ElseIf (value > 0 And value < 7 Or value > 26 And value < 32 Or value = 9) Then
-		Return aString$
+		Return aString
 	Else
-		aString$ = aString$ + Chr(value)
-		Return aString$
+		aString = aString + Chr(value)
+		Return aString
 	EndIf
 End Function
 
@@ -129,7 +129,9 @@ Function UpdateInputBox$(x%, y%, width%, height%, Txt$, ID% = 0)
 	Local MouseOnBox% = False
 	If (MouseOn(x, y, width, height)) Then
 		MouseOnBox = True
-		If (MouseHit1) Then SelectedInputBox = ID : FlushKeys()
+		If (MouseHit1) Then
+			SelectedInputBox = ID : FlushKeys()
+		EndIf
 	EndIf
 
 	If ((Not MouseOnBox) And MouseHit1 And SelectedInputBox = ID) Then SelectedInputBox = 0
@@ -168,7 +170,7 @@ Function DrawFrame(x%, y%, width%, height%, xoffset%=0, yoffset%=0)
 	Color(255, 255, 255)
 	DrawTiledImageRect(uiAssets\tileWhite, xoffset, (y Mod 256), 512, 512, x, y, width, height)
 
-	DrawTiledImageRect(uiAssets\tileBlack, yoffset, (y Mod 256), 512, 512, x+3*MenuScale, y+3*MenuScale, width-6*MenuScale, height-6*MenuScale)
+	DrawTiledImageRect(uiAssets\tileBlack, yoffset, (y Mod 256), 512, 512, x+Int(3*MenuScale), y+Int(3*MenuScale), width-Int(6*MenuScale), height-Int(6*MenuScale))
 End Function
 
 Function DrawUIButton(x%, y%, width%, height%, txt$, bigfont% = True)
@@ -205,7 +207,7 @@ Function UpdateUIButton%(x%, y%, width%, height%, txt$="", waitForMouseUp%=False
 End Function
 
 Function DrawUITick(x%, y%, selected%, locked% = False)
-	Local width% = 20 * MenuScale, height% = 20 * MenuScale
+	Local width% = Int(20.0 * MenuScale), height% = Int(20 * MenuScale)
 
 	Color(255, 255, 255)
 	DrawTiledImageRect(uiAssets\tileWhite, (x Mod 256), (y Mod 256), 512, 512, x, y, width, height)
@@ -235,7 +237,7 @@ Function DrawUITick(x%, y%, selected%, locked% = False)
 End Function
 
 Function UpdateUITick%(x%, y%, selected%, locked% = False)
-	Local width% = 20 * MenuScale, height% = 20 * MenuScale
+	Local width% = Int(20.0 * MenuScale), height% = Int(20.0 * MenuScale)
 
 	Local Highlight% = MouseOn(x, y, width, height) And (Not locked)
 
@@ -263,11 +265,11 @@ Function DrawSlideBar(x%, y%, width%, value#)
 	Color(255,255,255)
 	Rect(x, y, width + 14, 20,False)
 
-	DrawImage(uiAssets\blinkBar, x + width * value / 100.0 +3, y+3)
+	DrawImage(uiAssets\blinkBar, x + Int(width * value / 100.0)+3, y+3)
 
 	Color(170,170,170)
-	Text(x - 50 * MenuScale, y + 4*MenuScale, "LOW")
-	Text(x + width + 38 * MenuScale, y+4*MenuScale, "HIGH")
+	Text(x - Int(50.0 * MenuScale), y + Int(4.0*MenuScale), "LOW")
+	Text(x + width + Int(38.0 * MenuScale), y+Int(4.0*MenuScale), "HIGH")
 End Function
 
 
@@ -280,25 +282,25 @@ Function RowText(A$, X%, Y%, W%, H%, align% = 0, Leading#=1)
 	If (H<1) Then H=2048
 
 	Local LinesShown% = 0
-	Local Height% = StringHeight(A$) + Leading
+	Local Height% = StringHeight(A) + Int(Leading)
 	Local b$
 	Local space%
 	Local temp$,trimmed$
 	Local extra%
 	
 	While Len(A) > 0
-		space = Instr(A$, " ")
-		If (space = 0) Then space = Len(A$)
-		temp = Left(A$, space)
+		space = Instr(A, " ")
+		If (space = 0) Then space = Len(A)
+		temp = Left(A, space)
 		trimmed = Trim(temp) ;we might ignore a final space
 		extra = 0 ;we haven't ignored it yet
 		;ignore final space If doing so would make a word fit at End of Line:
-		If ((StringWidth(b$ + temp$) > W) And (StringWidth(b$ + trimmed$) <= W)) Then
+		If ((StringWidth(b + temp) > W) And (StringWidth(b + trimmed) <= W)) Then
 			temp = trimmed
 			extra = 1
 		EndIf
 
-		If (StringWidth(b$ + temp$) > W) Then ;too big, so Print what will fit
+		If (StringWidth(b + temp) > W) Then ;too big, so Print what will fit
 			If (align) Then
 				Text(X + W / 2 - (StringWidth(b) / 2), LinesShown * Height + Y, b)
 			Else
@@ -306,16 +308,16 @@ Function RowText(A$, X%, Y%, W%, H%, align% = 0, Leading#=1)
 			EndIf
 
 			LinesShown = LinesShown + 1
-			b$=""
+			b=""
 		Else ;append it To b$ (which will eventually be printed) And remove it from A$
-			b$ = b$ + temp$
-			A$ = Right(A$, Len(A$) - (Len(temp$) + extra))
+			b = b + temp
+			A = Right(A, Len(A) - (Len(temp) + extra))
 		EndIf
 
 		If (((LinesShown + 1) * Height) > H) Then Exit ;the Next Line(would be too tall, so leave)
 	Wend
 
-	If ((b$ <> "") And((LinesShown + 1) <= H)) Then
+	If ((b <> "") And((LinesShown + 1) <= H)) Then
 		If (align) Then
 			Text(X + W / 2 - (StringWidth(b) / 2), LinesShown * Height + Y, b) ;Print(any remaining Text If it'll fit vertically)
 		Else
@@ -337,7 +339,7 @@ Function LimitText%(txt$, x%, y%, width%, usingAA%=True)
 		Else ;ei mahdu
 			LetterWidth = TextLength / Len(txt)
 
-			Text(x, y, Left(txt, Max(Len(txt) - UnFitting / LetterWidth - 4, 1)) + "...")
+			Text(x, y, Left(txt, Int(Max(Len(txt) - UnFitting / LetterWidth - 4, 1))) + "...")
 		EndIf
 	Else
 		If (txt = "" Or width = 0) Then Return 0
@@ -348,7 +350,7 @@ Function LimitText%(txt$, x%, y%, width%, usingAA%=True)
 		Else ;ei mahdu
 			LetterWidth = TextLength / Len(txt)
 
-			Text(x, y, Left(txt, Max(Len(txt) - UnFitting / LetterWidth - 4, 1)) + "...")
+			Text(x, y, Left(txt, Int(Max(Len(txt) - UnFitting / LetterWidth - 4, 1))) + "...")
 		EndIf
 	EndIf
 End Function
@@ -356,7 +358,7 @@ End Function
 Function DrawTooltip(message$)
 	Local scale# = userOptions\screenHeight/768.0
 
-	Local width% = (StringWidth(message$))+20*MenuScale
+	Local width% = (StringWidth(message))+Int(20.0*MenuScale)
 
 	Color(25,25,25)
 	Rect(MouseX()+20,MouseY(),width,19*scale,True)

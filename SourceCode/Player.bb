@@ -332,7 +332,7 @@ Function MovePlayer()
 	If ((Not mainPlayer\noclip)) Then
 		If (((KeyDown(keyBinds\down) Xor KeyDown(keyBinds\up)) Or (KeyDown(keyBinds\rght) Xor KeyDown(keyBinds\lft)) And (Not mainPlayer\disableControls)) Or mainPlayer\forceMove>0) Then
 
-			If (mainPlayer\crouching = 0 And (KeyDown(keyBinds\sprint)) And mainPlayer\stamina > 0.0 Then; And (Not IsZombie)) Then
+			If (mainPlayer\crouching = 0 And (KeyDown(keyBinds\sprint)) And mainPlayer\stamina > 0.0) Then; And (Not IsZombie)) Then
 				Sprint = 2.5
 				mainPlayer\stamina = mainPlayer\stamina - timing\tickDuration * 0.5 * (1.0/mainPlayer\staminaEffect)
 				If (mainPlayer\stamina <= 0) Then mainPlayer\stamina = -20.0
@@ -453,8 +453,12 @@ Function MovePlayer()
 			temp=True
 			angle = mainPlayer\forceAngle
 		ElseIf ((Not mainPlayer\disableControls)) Then
-			If (KeyDown(keyBinds\lft)) Then angle = 90 : temp = True
-			If (KeyDown(keyBinds\rght)) Then angle = -90 : temp = True
+			If (KeyDown(keyBinds\lft)) Then
+				angle = 90 : temp = True
+			EndIf
+			If (KeyDown(keyBinds\rght)) Then
+				angle = -90 : temp = True
+			EndIf
 		EndIf
 		;Else
 		;	temp=True
@@ -1688,7 +1692,9 @@ Function UpdateInventory(player.Player)
 					;Stop
 
 					strtemp = GetINIString2(iniStr, loc, "message")
-					If (strtemp <> "") Then Msg = strtemp : MsgTimer = 70*6
+					If (strtemp <> "") Then
+						Msg = strtemp : MsgTimer = 70*6
+					EndIf
 
 					If (GetINIInt2(iniStr, loc, "lethal") Or GetINIInt2(iniStr, loc, "deathtimer")) Then
 						DeathMSG = GetINIString2(iniStr, loc, "deathmessage")
@@ -1719,7 +1725,9 @@ Function UpdateInventory(player.Player)
 						it.Items = CreateItem("Empty Cup", "emptycup", 0,0,0)
 						it\picked = True
 						For i = 0 To player\openInventory\size-1
-							If (player\openInventory\items[i]=player\selectedItem) Then player\openInventory\items[i] = it : Exit
+							If (player\openInventory\items[i]=player\selectedItem) Then
+								player\openInventory\items[i] = it : Exit
+							EndIf
 						Next
 						EntityType(it\collider, HIT_ITEM)
 
@@ -1923,7 +1931,9 @@ Function UpdateInventory(player.Player)
 										RadioState(7)=0
 										RadioState(6)=-100
 										RadioState(8)=RadioState(8)+1
-										If (RadioState(8)=4) Then RadioState(8)=0 : RadioState(6)=-200
+										If (RadioState(8)=4) Then
+											RadioState(8)=0 : RadioState(6)=-200
+										EndIf
 									EndIf
 								EndIf
 							Else

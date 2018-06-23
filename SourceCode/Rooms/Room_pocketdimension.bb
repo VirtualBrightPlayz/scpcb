@@ -301,7 +301,9 @@ Function UpdateEvent_pocketdimension(e.Events)
 						x = x + EntityX(e\room\objects[8],True)
 						z = z + EntityZ(e\room\objects[8],True)
 
-						If (Distance(EntityX(mainPlayer\collider), EntityZ(mainPlayer\collider), x, z) < 200*RoomScale) Then safe = True : Exit
+						If (Distance(EntityX(mainPlayer\collider), EntityZ(mainPlayer\collider), x, z) < 200*RoomScale) Then
+							safe = True : Exit
+						EndIf
 					Next
 
 					dist = EntityDistance(mainPlayer\collider, e\room\objects[20])

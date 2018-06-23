@@ -316,7 +316,11 @@ Function turn_if_deviating%(max_deviation_distance_%,pathx%,center_%,dir%,retval
 		dir = (dir + 2) Mod 4
 		deviated = True
 	EndIf
-	If (retval=0) Then Return dir Else Return deviated
+	If (retval=0) Then
+		Return dir
+	Else
+		Return deviated
+	EndIf
 End Function
 
 Global LastForestID% = 0
@@ -430,13 +434,21 @@ Function GenForestGrid(fr.Forest)
 					If (i>rightmost) Then rightmost=i
 				EndIf
 			Next
-			If (branch_pos=0) Then new_x=leftmost-1 Else new_x=rightmost+1
+			If (branch_pos=0) Then
+				new_x=leftmost-1
+			Else
+				new_x=rightmost+1
+			EndIf
 			;before creating a branch make sure there are no 1's above or below
 			If ((temp_y<>0 And fr\grid[((gridsize-1-temp_y+1)*gridsize)+new_x]=1) Or fr\grid[((gridsize-1-temp_y-1)*gridsize)+new_x]=1) Then
 				Exit ;break simply to stop creating the branch
 			EndIf
 			fr\grid[((gridsize-1-temp_y)*gridsize)+new_x]=branch_type ;make 4s so you don't confuse your branch for a path; will be changed later
-			If (branch_pos=0) Then new_x=leftmost-2 Else new_x=rightmost+2
+			If (branch_pos=0) Then
+				new_x=leftmost-2
+			Else
+				new_x=rightmost+2
+			EndIf
 			fr\grid[((gridsize-1-temp_y)*gridsize)+new_x]=branch_type ;branch out twice to avoid creating an unwanted 2x2 path with the real path
 			i = 2
 			While i<branch_max_life

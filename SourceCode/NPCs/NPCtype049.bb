@@ -73,7 +73,9 @@ Function UpdateNPCtype049(n.NPCs)
 						DeathMSG = "Three (3) active instances of SCP-049-2 discovered in the tunnel outside SCP-049's containment chamber. Terminated by Nine-Tailed Fox."
 						
 						For e.Events = Each Events
-							If (e\name = "room049") Then e\eventState=-1 : Exit
+							If (e\name = "room049") Then
+								e\eventState=-1 : Exit
+							EndIf
 						Next
 					Else
 						DeathMSG = "An active instance of SCP-049-2 was discovered in [REDACTED]. Terminated by Nine-Tailed Fox."

@@ -45,7 +45,7 @@ Function CreateIntArrayList.IntArrayList(initialCapacity% = ARRAYLIST_INITIAL_CA
 	Return arrayList
 End Function
 
-Function GetIntArrayListElem(arrayList.IntArrayList,i%)
+Function GetIntArrayListElem%(arrayList.IntArrayList,i%)
 	Return PeekInt(arrayList\bank,i*INT_SIZE)
 End Function
 

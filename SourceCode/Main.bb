@@ -534,7 +534,11 @@ Function UpdateGame()
 
 		prevmousedown1 = MouseDown1
 		MouseDown1 = MouseDown(1)
-		If (prevmousedown1 = True And MouseDown1=False) Then MouseUp1 = True Else MouseUp1 = False
+		If (prevmousedown1 = True And MouseDown1=False) Then
+			MouseUp1 = True
+		Else
+			MouseUp1 = False
+		EndIf
 
 		MouseHit2 = MouseHit(2)
 		;TODO: A better way?
@@ -1198,7 +1202,7 @@ Function UpdateGUI()
 		KeypadMSG= ""
 	EndIf
 
-	If (KeyHit(1) Then;TODO: fix ;And EndingTimer = 0) Then
+	If (KeyHit(1)) Then;TODO: fix ;And EndingTimer = 0 Then
 		If (IsPaused()) Then
 			If (CurrGameState=GAMESTATE_INVENTORY) Then
 				ToggleInventory(mainPlayer)

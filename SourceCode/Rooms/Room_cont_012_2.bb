@@ -202,7 +202,7 @@ Function UpdateEvent_cont_012_2(e.Events)
 
 							de.Decals = CreateDecal(17,  EntityX(mainPlayer\collider), -768*RoomScale+0.01, EntityZ(mainPlayer\collider),90,Rnd(360),0)
 							de\size = 0.1 : de\maxSize = 0.45 : de\sizeChange = 0.0002 : UpdateDecals()
-						ElseIf e\eventState3>85*70 And e\eventState3-timing\tickDuration=<85*70	Then
+						ElseIf (e\eventState3>85*70 And e\eventState3-timing\tickDuration=<85*70) Then
 							DeathMSG = "Subject D-9341 found in a pool of blood next to SCP-012. Subject seems to have ripped open his wrists and written three extra "
 							DeathMSG = DeathMSG + "lines to the composition before dying of blood loss."
 							Kill(mainPlayer)

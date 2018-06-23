@@ -367,7 +367,7 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 								EndIf
 							Else
 								If (dist < 8.5) Then
-									If (e\eventState2=0 Then ;IsChannelPlaying(e\soundChannels[1]) = 0) Then
+									If (e\eventState2=0) Then ;IsChannelPlaying(e\soundChannels[1]) = 0) Then
 										e\soundChannels[1] = PlaySound(LoadTempSound("SFX/Ending/GateA/HIDTurret.ogg"))
 										e\eventState2 = 1
 									ElseIf (e\eventState2>0) Then
@@ -509,7 +509,7 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 								e\soundChannels[0] = PlaySound(LoadTempSound("SFX/Ending/GateA/CI.ogg"))
 							EndIf
 
-							If (IsChannelPlaying(e\soundChannels[0])=False Then; And SelectedEnding="") Then
+							If (IsChannelPlaying(e\soundChannels[0])=False) Then; And SelectedEnding="" Then
 								PlaySound2(LoadTempSound("SFX/Ending/GateA/Bell2.ogg"))
 
 								p.Particles = CreateParticle(EntityX(e\room\objects[11],True),EntityY(mainPlayer\cam,True), EntityZ(e\room\objects[11],True), 4, 8.0, 0, 50)

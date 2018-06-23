@@ -95,8 +95,9 @@ Function UpdateEventRoom2pipes106(e.Events)
 				d\size = 0.1 : d\sizeChange = 0.003
 			EndIf
 
-			If (e\eventState > 250) Then Curr106\idle = False :RemoveEvent(e)
-
+			If (e\eventState > 250) Then
+				Curr106\idle = False : RemoveEvent(e)
+			EndIf
 		EndIf
 	EndIf
 	;[End Block]

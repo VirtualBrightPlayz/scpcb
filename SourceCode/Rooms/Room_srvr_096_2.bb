@@ -217,7 +217,7 @@ Function UpdateEvent_srvr_096_2(e.Events)
 
 			If (mainPlayer\currRoom = e\room) Then
 				If (e\soundChannels[0]<>0) Then
-					If	IsChannelPlaying(e\soundChannels[0]) Then
+					If (IsChannelPlaying(e\soundChannels[0])) Then
 						;LightBlink = Rnd(0.5,6.0)
 						If (Rand(50)=1) Then PlayRangedSound(IntroSFX(Rand(10,12)), mainPlayer\cam, e\room\obj, 8.0, Rnd(0.1,0.3))
 					EndIf
