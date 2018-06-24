@@ -223,7 +223,7 @@ Function UpdateEvent_srvr_096_2(e.Events)
 					EndIf
 				EndIf
 
-				If ((e\room\angle = 0 Or e\room\angle = 180)) Then ;lock the player inside
+				If (e\room\angle = 0 Or e\room\angle = 180) Then ;lock the player inside
 					If (Abs(EntityX(mainPlayer\collider)-EntityX(e\room\obj,True))> 1.3) Then
 						e\eventState = 70*50
 						e\sounds[0]=0

@@ -206,7 +206,7 @@ Function UpdateEvent_scp_970_2(e.Events)
 						e\room\npc[1]=Null
 					EndIf
 				Case 60
-					If ((Not HalloweenTex)) Then
+					If (Not HalloweenTex) Then
 						tex970 = LoadTexture("GFX/npcs/173h.pt", 1)
 						EntityTexture(Curr173\obj, tex970, 0, 0)
 						FreeTexture(tex970)

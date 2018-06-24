@@ -306,7 +306,7 @@ Function UpdateChunks(r.Rooms,ChunkPartAmount%,spawnNPCs%=True)
 				Exit
 			EndIf
 		Next
-		If ((Not temp2)) Then
+		If (Not temp2) Then
 			;ch2 = CreateChunk(r\objects[Rand(1,ChunkPartAmount%)],x#,y#,z#)
 			ChunkPartAmount2 = GetINIInt("Data/1499chunks.INI","general","count")
 			ch2 = CreateChunk(Rand(0,ChunkPartAmount2),x,y,z,spawnNPCs)

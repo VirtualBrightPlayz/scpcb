@@ -17,7 +17,7 @@ Function InitializeNPCtype173(n.NPCs)
 
 	;On Halloween set jack-o-latern texture.
 	Local texFestive%
-	If ((Left(CurrentDate(), 6) = "31 Oct")) Then
+	If (Left(CurrentDate(), 6) = "31 Oct") Then
 		HalloweenTex = True
 		texFestive = LoadTexture("GFX/NPCs/scp173/173h.png", 1)
 		EntityTexture(n\obj, texFestive, 0, 0)
@@ -57,7 +57,7 @@ Function UpdateNPCtype173(n.NPCs)
 	Local w.WayPoints, d.Doors
 	Local playerVisible%, canMove%
 
-	If ((n\state = STATE173_IDLE Or n\state = STATE173_CONTAINED)) Then
+	If (n\state = STATE173_IDLE Or n\state = STATE173_CONTAINED) Then
 		Return
 	EndIf
 
@@ -83,7 +83,7 @@ Function UpdateNPCtype173(n.NPCs)
 				n\prevX = EntityX(n\collider)
 				n\prevZ = EntityZ(n\collider)
 
-				If ((mainPlayer\blinkTimer < - 16 Or mainPlayer\blinkTimer > - 6)) Then
+				If (mainPlayer\blinkTimer < - 16 Or mainPlayer\blinkTimer > - 6) Then
 					If (EntityInView(n\obj, mainPlayer\cam)) Then canMove = False
 				EndIf
 			EndIf
@@ -91,7 +91,7 @@ Function UpdateNPCtype173(n.NPCs)
 			If (NoTarget) Then canMove = True
 
 			;player is looking at it -> doesn't move
-			If ((Not canMove)) Then
+			If (Not canMove) Then
 				;Blur and zoom camera slightly when looking at 173.
 				mainPlayer\blurTimer = Max(Max(Min((4.0 - dist) / 6.0, 0.9), 0.1), mainPlayer\blurTimer)
 				mainPlayer\camZoom = Max(mainPlayer\camZoom, (Sin(Float(TimeInPosMilliSecs())/20.0)+1.0)*15.0*Max((3.5-dist)/3.5,0.0))
@@ -149,7 +149,7 @@ Function UpdateNPCtype173(n.NPCs)
 									If (d\buttons[i] <> 0) Then
 										If (Abs(EntityX(n\collider) - EntityX(d\buttons[i])) < 0.5) Then
 											If (Abs(EntityZ(n\collider) - EntityZ(d\buttons[i])) < 0.5) Then
-												If ((d\openstate >= 180 Or d\openstate <= 0)) Then
+												If (d\openstate >= 180 Or d\openstate <= 0) Then
 													If (DeltaYaw(n\collider, d\buttons[i]) < 60 And DeltaYaw(d\buttons[i], n\collider) < 60) Then
 														PlaySound2(LoadTempSound("SFX/Door/DoorOpen173.ogg"))
 														UseDoor(d,False)
@@ -173,7 +173,7 @@ Function UpdateNPCtype173(n.NPCs)
 					;player is not looking and is visible from 173's position -> attack
 					If (playerVisible) Then
 						If (dist < 0.65) Then
-							If ((Not mainPlayer\dead) And (Not mainPlayer\godMode)) Then
+							If (Not mainPlayer\dead) And (Not mainPlayer\godMode) Then
 
 								Select mainPlayer\currRoom\roomTemplate\name
 									Case "lockroom", "room2closets", "coffin"
@@ -209,7 +209,7 @@ Function UpdateNPCtype173(n.NPCs)
 						EndIf
 
 					Else ;player is not visible -> move to the location where he was last seen
-						If ((n\targetX <> 0)) Then
+						If (n\targetX <> 0) Then
 							If (Distance(EntityX(n\collider), EntityZ(n\collider), n\targetX, n\targetZ) > 0.5) Then
 								AlignToVector(n\collider, n\targetX-EntityX(n\collider), 0, n\targetZ-EntityZ(n\collider), 3)
 								MoveEntity(n\collider, 0, 0, n\speed * timing\tickDuration)
@@ -233,13 +233,13 @@ Function UpdateNPCtype173(n.NPCs)
 			EndIf
 		Case STATE173_MOVE_TO_TARGET
 			;If 173 was given a target then use its position.
-			If ((n\target <> Null)) Then
+			If (n\target <> Null) Then
 				n\targetX = EntityX(n\target\collider)
 				n\targetY = EntityY(n\target\collider)
 				n\targetZ = EntityZ(n\target\collider)
 			EndIf
 
-			If ((n\targetX <> 0)) Then
+			If (n\targetX <> 0) Then
 				If (Distance(EntityX(n\collider), EntityZ(n\collider), n\targetX, n\targetZ) > 0.5) Then
 					AlignToVector(n\collider, n\targetX-EntityX(n\collider), 0, n\targetZ-EntityZ(n\collider), 3)
 					MoveEntity(n\collider, 0, 0, n\speed * timing\tickDuration)
@@ -253,14 +253,14 @@ Function UpdateNPCtype173(n.NPCs)
 				n\state = STATE173_IDLE
 			EndIf
 		Case STATE173_BEING_CONTAINED
-			If ((n\target <> Null)) Then
+			If (n\target <> Null) Then
 				tmp = False
 				If (dist > HideDistance*0.7) Then
 					If (EntityVisible(n\obj,mainPlayer\collider)=False) Then
 						tmp = True
 					EndIf
 				EndIf
-				If ((Not tmp)) Then
+				If (Not tmp) Then
 					PointEntity(n\obj, n\target\collider)
 					RotateEntity(n\collider, 0, CurveAngle(EntityYaw(n\obj),EntityYaw(n\collider),10.0), 0, True)
 					dist = EntityDistance(n\collider, n\target\collider)

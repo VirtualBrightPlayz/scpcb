@@ -214,7 +214,7 @@ End Function
 Function LoadOrCopyMesh(n.NPCs, filePath$)
 	Local n2.NPCs
 	For n2 = Each NPCs
-		If ((n\npcType = n2\npcType And n <> n2)) Then
+		If (n\npcType = n2\npcType And n <> n2) Then
 			If ((n2\obj <> 0)) Then
 				n\obj = CopyEntity(n2\obj)
 				Return
@@ -226,7 +226,7 @@ Function LoadOrCopyMesh(n.NPCs, filePath$)
 End Function
 
 Function RemoveNPC(n.NPCs)
-	If ((n = Null)) Then
+	If (n = Null) Then
 		Return
 	EndIf
 
@@ -247,7 +247,7 @@ Function RemoveNPC(n.NPCs)
 
 	Local i%
 	For i = 0 To NPC_SOUND_COUNT-1
-		If ((n\sounds[i] <> 0)) Then
+		If (n\sounds[i] <> 0) Then
 			FreeSound(n\sounds[i])
 		EndIf
 	Next
@@ -273,14 +273,14 @@ Function UpdateNPCs()
 		n\playerDistance = EntityDistance(mainPlayer\collider, n\collider)
 
 		;If the npc was given a target then use its position.
-		If ((n\target <> Null)) Then
+		If (n\target <> Null) Then
 			n\targetX = EntityX(n\target\collider)
 			n\targetY = EntityY(n\target\collider)
 			n\targetZ = EntityZ(n\target\collider)
 		EndIf
 
 		;If the player is too far away then don't run the update code.
-		If ((n\playerDistance >= HideDistance*2)) Then
+		If (n\playerDistance >= HideDistance*2) Then
 			;TODO: Implement roaming code.
 			Return
 		EndIf
@@ -324,7 +324,7 @@ Function UpdateNPCs()
 
 		;Update sound locations.
 		For i = 0 To 2
-			If ((IsChannelPlaying(n\soundChannels[i]))) Then
+			If (IsChannelPlaying(n\soundChannels[i])) Then
 				UpdateRangedSoundOrigin(n\soundChannels[i], mainPlayer\cam, n\obj)
 			EndIf
 		Next
@@ -362,7 +362,7 @@ End Function
 Function NPCStopAllChannels(n.NPCs)
 	Local i%
 	For i = 0 To NPC_CHANNEL_COUNT-1
-		If ((IsChannelPlaying(n\soundChannels[i]))) Then
+		If (IsChannelPlaying(n\soundChannels[i])) Then
 			StopChannel(n\soundChannels[i])
 		EndIf
 	Next
@@ -381,11 +381,11 @@ Function TeleportCloser(n.NPCs)
 		If (xtemp < 10.0 And xtemp > 1.0) Then
 			ztemp = Abs(EntityZ(w\obj,True)-EntityZ(n\collider,True))
 			If (ztemp < 10.0 And ztemp > 1.0) Then
-				If ((EntityDistance(mainPlayer\collider, w\obj)>8)) Then
+				If (EntityDistance(mainPlayer\collider, w\obj)>8) Then
 					If (SelectedDifficulty\aggressiveNPCs)Then
 						;teleports to the nearby waypoint that takes it closest to the player
 						newDist = EntityDistance(mainPlayer\collider, w\obj)
-						If ((newDist < closestDist Or closestWaypoint = Null)) Then
+						If (newDist < closestDist Or closestWaypoint = Null) Then
 							closestDist = newDist
 							closestWaypoint = w
 						EndIf
@@ -400,7 +400,7 @@ Function TeleportCloser(n.NPCs)
 		;EndIf
 	Next
 
-	If ((closestWaypoint<>Null)) Then
+	If (closestWaypoint<>Null) Then
 		PositionEntity(n\collider, EntityX(closestWaypoint\obj,True), EntityY(closestWaypoint\obj,True)+0.15, EntityZ(closestWaypoint\obj,True), True)
 		ResetEntity(n\collider)
 	EndIf
@@ -435,9 +435,9 @@ Function MeNPCSeesPlayer%(me.NPCs,disableSoundOnCrouch%=False)
 
 		;spots the player if he's either in view or making a loud sound
 		If (mainPlayer\loudness>1.0) Then
-			If ((Abs(DeltaYaw(me\collider,mainPlayer\collider))>60.0) And EntityVisible(me\collider,mainPlayer\collider)) Then
+			If (Abs(DeltaYaw(me\collider,mainPlayer\collider))>60.0) And EntityVisible(me\collider,mainPlayer\collider) Then
 				Return 1
-			ElseIf ((Not EntityVisible(me\collider,mainPlayer\collider))) Then
+			ElseIf (Not EntityVisible(me\collider,mainPlayer\collider)) Then
 				If (disableSoundOnCrouch And mainPlayer\crouching) Then
 					Return False
 				Else
@@ -445,7 +445,7 @@ Function MeNPCSeesPlayer%(me.NPCs,disableSoundOnCrouch%=False)
 				EndIf
 			EndIf
 		Else
-			If ((Abs(DeltaYaw(me\collider,mainPlayer\collider))>60.0)) Then Return False
+			If (Abs(DeltaYaw(me\collider,mainPlayer\collider))>60.0) Then Return False
 		EndIf
 		Return EntityVisible(me\collider,mainPlayer\collider)
 	Else
@@ -489,7 +489,7 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 
 	;LightVolume = TempLightVolume*1.2
 
-	If ((Not mainPlayer\godMode)) Then
+	If (Not mainPlayer\godMode) Then
 
 		If (instaKill) Then
 			Kill(mainPlayer)
@@ -569,7 +569,7 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 			EndIf
 
 			;Only updates the message if it's been more than two seconds.
-			If ((MsgTimer < 64*4)) Then
+			If (MsgTimer < 64*4) Then
 				Msg = shotMessageUpdate
 				MsgTimer = 70*6
 			EndIf
@@ -1137,7 +1137,7 @@ Function AnimateNPC(n.NPCs, start#, quit#, speed#, loop%=True)
 End Function
 
 Function SetNPCFrame(n.NPCs, frame#)
-	If ((Abs(n\frame-frame)<0.001)) Then Return
+	If (Abs(n\frame-frame)<0.001) Then Return
 
 	SetAnimTime(n\obj, frame)
 

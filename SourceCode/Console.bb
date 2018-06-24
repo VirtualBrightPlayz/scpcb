@@ -29,9 +29,9 @@ Function CreateConsoleMsg(txt$,r%=-1,g%=-1,b%=-1,isCommand%=False)
 	c\g = g
 	c\b = b
 
-	If ((c\r<0)) Then c\r = ConsoleR
-	If ((c\g<0)) Then c\g = ConsoleG
-	If ((c\b<0)) Then c\b = ConsoleB
+	If (c\r<0) Then c\r = ConsoleR
+	If (c\g<0) Then c\g = ConsoleG
+	If (c\b<0) Then c\b = ConsoleB
 End Function
 
 Function DrawConsole()
@@ -162,7 +162,7 @@ Function UpdateConsole()
 			ConsoleMouseMem = MouseY()
 		EndIf
 
-		If ((Not ConsoleScrollDragging)) Then
+		If (Not ConsoleScrollDragging) Then
 			If (MouseHit1) Then
 				If (inBox) Then
 					ConsoleScrollDragging=True
@@ -183,11 +183,11 @@ Function UpdateConsole()
 
 		If (KeyHit(200)) Then
 			reissuePos = 0
-			If ((ConsoleReissue=Null)) Then
+			If (ConsoleReissue=Null) Then
 				ConsoleReissue=First ConsoleMsg
 
 				While (ConsoleReissue<>Null)
-					If ((ConsoleReissue\isCommand)) Then
+					If (ConsoleReissue\isCommand) Then
 						Exit
 					EndIf
 					reissuePos = reissuePos - Int(15.0*MenuScale)
@@ -205,12 +205,12 @@ Function UpdateConsole()
 				reissuePos = reissuePos-Int(15.0*MenuScale)
 
 				While True
-					If ((ConsoleReissue=Null)) Then
+					If (ConsoleReissue=Null) Then
 						ConsoleReissue=First ConsoleMsg
 						reissuePos = 0
 					EndIf
 
-					If ((ConsoleReissue\isCommand)) Then
+					If (ConsoleReissue\isCommand) Then
 						Exit
 					EndIf
 					reissuePos = reissuePos - Int(15.0*MenuScale)
@@ -226,11 +226,11 @@ Function UpdateConsole()
 
 		If (KeyHit(208)) Then
 			reissuePos = -consoleHeight+Int(15.0*MenuScale)
-			If ((ConsoleReissue=Null)) Then
+			If (ConsoleReissue=Null) Then
 				ConsoleReissue=Last ConsoleMsg
 
 				While (ConsoleReissue<>Null)
-					If ((ConsoleReissue\isCommand)) Then
+					If (ConsoleReissue\isCommand) Then
 						Exit
 					EndIf
 					reissuePos = reissuePos + Int(15.0*MenuScale)
@@ -248,12 +248,12 @@ Function UpdateConsole()
 				reissuePos = reissuePos+Int(15.0*MenuScale)
 
 				While True
-					If ((ConsoleReissue=Null)) Then
+					If (ConsoleReissue=Null) Then
 						ConsoleReissue=Last ConsoleMsg
 						reissuePos=-consoleHeight+Int(15.0*MenuScale)
 					EndIf
 
-					If ((ConsoleReissue\isCommand)) Then
+					If (ConsoleReissue\isCommand) Then
 						Exit
 					EndIf
 					reissuePos = reissuePos + Int(15.0*MenuScale)
@@ -573,7 +573,7 @@ Function UpdateConsole()
 					StrTemp = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 					temp = False
 					For itt = Each ItemTemplates
-						If ((Lower(itt\name) = StrTemp)) Then
+						If (Lower(itt\name) = StrTemp) Then
 							temp = True
 							CreateConsoleMsg(itt\name + " spawned.")
 							it.Items = CreateItem(itt\name, EntityX(mainPlayer\collider), EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider))

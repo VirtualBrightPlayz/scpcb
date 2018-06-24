@@ -33,7 +33,7 @@ Function CreateEvent.Events(eventname$, roomname$, id%, prob# = 0.0)
 
 	If (prob = 0.0) Then
 		For r.Rooms = Each Rooms
-			If ((roomname = "" Or roomname = r\roomTemplate\name)) Then
+			If (roomname = "" Or roomname = r\roomTemplate\name) Then
 				temp = False
 				For e2.Events = Each Events
 					If (e2\room = r) Then
@@ -52,7 +52,7 @@ Function CreateEvent.Events(eventname$, roomname$, id%, prob# = 0.0)
 		Next
 	Else
 		For r.Rooms = Each Rooms
-			If ((roomname = "" Or roomname = r\roomTemplate\name)) Then
+			If (roomname = "" Or roomname = r\roomTemplate\name) Then
 				temp = False
 				For e2.Events = Each Events
 					If (e2\room = r) Then
@@ -75,20 +75,20 @@ End Function
 Function RemoveEvent(e.Events)
 	Local i%
 	For i = 0 To EVENT_SOUND_COUNT-1
-		If ((e\sounds[i] <> 0)) Then
+		If (e\sounds[i] <> 0) Then
 			FreeSound(e\sounds[i])
 		EndIf
 	Next
 
 	For i = 0 To EVENT_CHANNEL_COUNT-1
-		If ((e\soundChannels[i] <> 0)) Then
-			If ((IsChannelPlaying(e\soundChannels[i]))) Then
+		If (e\soundChannels[i] <> 0) Then
+			If (IsChannelPlaying(e\soundChannels[i])) Then
 				StopChannel(e\soundChannels[i])
 			EndIf
 		EndIf
 	Next
 
-	;If ((e\img<>0)) Then FreeImage(e\img)
+	;If (e\img<>0) Then FreeImage(e\img)
 
 	Delete e
 End Function
@@ -261,11 +261,11 @@ Function UpdateEvents()
 
     For e.Events = Each Events
 		; Does the event have music to play?
-		If ((e\overwriteMusic)) Then
+		If (e\overwriteMusic) Then
 			SetNextMusicTrack(e\musicTrack)
-		ElseIf ((Not musicManager\useDefault)) Then
+		ElseIf (Not musicManager\useDefault) Then
 			; If the event was previously playing music then go back to the default.
-			If ((e\musicTrack = musicManager\nowPlaying)) Then
+			If (e\musicTrack = musicManager\nowPlaying) Then
 				RestoreDefaultMusic()
 			EndIf
 		EndIf

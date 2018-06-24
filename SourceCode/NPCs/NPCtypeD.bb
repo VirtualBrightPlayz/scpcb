@@ -6,13 +6,13 @@ Function InitializeNPCtypeD(n.NPCs)
 
     Local n2.NPCs
 	For n2 = Each NPCs
-		If ((n2\npcType = n\npcType And n2\obj <> 0)) Then
+		If (n2\npcType = n\npcType And n2\obj <> 0) Then
 			n\obj = CopyEntity(n2\obj)
 			Exit
 		EndIf
 	Next
 
-	If ((n\obj = 0)) Then
+	If (n\obj = 0) Then
 		n\obj = LoadAnimMesh("GFX/NPCs/classd/classd.b3d")
 	EndIf
 

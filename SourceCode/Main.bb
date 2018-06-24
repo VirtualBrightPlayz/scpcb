@@ -119,8 +119,8 @@ Function VerifyResolution%()
 
 	Local i%
 	For i = 1 To CountGfxModes3D()
-		If ((GfxModeDepth(i) = 32)) Then
-			If ((userOptions\screenWidth = GfxModeWidth(i)) And (userOptions\screenHeight = GfxModeHeight(i))) Then
+		If (GfxModeDepth(i) = 32) Then
+			If (userOptions\screenWidth = GfxModeWidth(i)) And (userOptions\screenHeight = GfxModeHeight(i)) Then
 				selectedMode = i
 				Exit
 			EndIf
@@ -542,7 +542,7 @@ Function UpdateGame()
 
 		MouseHit2 = MouseHit(2)
 		;TODO: A better way?
-		If ((CurrGameState <> GAMESTATE_LAUNCHER)) Then
+		If (CurrGameState <> GAMESTATE_LAUNCHER) Then
 			UpdateMusic()
 		EndIf
 
@@ -551,7 +551,7 @@ Function UpdateGame()
 		ElseIf (CurrGameState=GAMESTATE_MAINMENU) Then
 			UpdateMainMenu()
 		Else
-			If ((Not MouseDown1) And (Not MouseHit1)) Then mainPlayer\grabbedEntity = 0
+			If (Not MouseDown1) And (Not MouseHit1) Then mainPlayer\grabbedEntity = 0
 
 			;ShouldPlay = 0 ;TODO: FIX ;Min(PlayerZone,2)
 
@@ -730,7 +730,7 @@ Function UpdateGame()
 
 				If (CurrGameState=GAMESTATE_SCP294) Then darkA=1.0
 
-				If ((Not IsPlayerWearingTempName(mainPlayer,"nvgoggles"))) Then darkA = Max((1.0-SecondaryLightOn)*0.9, darkA)
+				If (Not IsPlayerWearingTempName(mainPlayer,"nvgoggles")) Then darkA = Max((1.0-SecondaryLightOn)*0.9, darkA)
 
 				If (mainPlayer\dead) Then
 					CurrGameState = GAMESTATE_PLAYING
@@ -785,7 +785,7 @@ Function UpdateGame()
 					If (rn$ = "173" Or rn$ = "exit1" Or rn$ = "gatea") Then
 						Msg = "You cannot save in this location."
 						MsgTimer = 70 * 4
-					ElseIf ((Not CanSave)) Then
+					ElseIf (Not CanSave) Then
 						Msg = "You cannot save at this moment."
 						MsgTimer = 70 * 4
 					Else
@@ -800,7 +800,7 @@ Function UpdateGame()
 						If (rn$ = "173" Or rn$ = "exit1" Or rn$ = "gatea") Then
 							Msg = "You cannot save in this location."
 							MsgTimer = 70 * 4
-						ElseIf ((Not CanSave)) Then
+						ElseIf (Not CanSave) Then
 							Msg = "You cannot save at this moment."
 							MsgTimer = 70 * 4
 						Else
@@ -853,7 +853,7 @@ Function UpdateGame()
 					EndIf
 				EndIf
 
-				If ((Not temp%)) Then
+				If (Not temp%) Then
 					Color(0,0,0)
 					Text((userOptions\screenWidth / 2)+1, (userOptions\screenHeight / 2) + 201, Msg, True, False);, Min(MsgTimer / 2, 255)/255.0)
 					Color(255,255,255);Min(MsgTimer / 2, 255), Min(MsgTimer / 2, 255), Min(MsgTimer / 2, 255))
@@ -1088,7 +1088,7 @@ Function UpdateGUI()
 		EndIf
 	EndIf
 
-	If ((CurrGameState = GAMESTATE_SCP294)) Then
+	If (CurrGameState = GAMESTATE_SCP294) Then
 		Update294()
 	EndIf
 
@@ -1298,7 +1298,7 @@ Function DrawGUI()
 		EndIf
 	Next
 
-	If ((CurrGameState = GAMESTATE_SCP294)) Then
+	If (CurrGameState = GAMESTATE_SCP294) Then
 		Draw294()
 	EndIf
 
@@ -1480,7 +1480,7 @@ Function DrawPauseMenu()
 
 			DrawUIButton(x, y, 390*MenuScale, 60*MenuScale, "Resume", True)
 			y = y + 75*MenuScale
-			If ((Not SelectedDifficulty\permaDeath)) Then
+			If (Not SelectedDifficulty\permaDeath) Then
 				If (GameSaved) Then
 					DrawUIButton(x, y, 390*MenuScale, 60*MenuScale, "Load Game")
 				Else
@@ -1550,7 +1550,7 @@ Function UpdatePauseMenu()
 			EndIf
 
 			y = y + 75*MenuScale
-			If ((Not SelectedDifficulty\permaDeath)) Then
+			If (Not SelectedDifficulty\permaDeath) Then
 				If (GameSaved) Then
 					If (UpdateUIButton(x, y, 390*MenuScale, 60*MenuScale, "Load Game")) Then
 						DrawLoading(0)
@@ -1959,7 +1959,7 @@ Function RenderWorld2()
 	;ElseIf WearingNightVision=3
 	;	AmbientLight(255,255,255)
 	;ElseIf mainPlayer\currRoom<>Null
-	;	If ((mainPlayer\currRoom\roomTemplate\name<>"173") And (mainPlayer/currRoom\roomTemplate\name<>"exit1") And (mainPlayer/currRoom\roomTemplate/Name<>"gatea")) Then
+	;	If (mainPlayer\currRoom\roomTemplate\name<>"173") And (mainPlayer/currRoom\roomTemplate\name<>"exit1") And (mainPlayer/currRoom\roomTemplate/Name<>"gatea") Then
 	;		AmbientLight(Brightness, Brightness, Brightness)
 	;	EndIf
 	;EndIf
@@ -2061,7 +2061,7 @@ Function RenderWorld2()
 							yvalue# = Sin(pitchvalue)
 						EndIf
 
-						;If ((Not IsNVGBlinking%)) Then
+						;If (Not IsNVGBlinking%) Then
 						Text(userOptions\screenWidth / 2 + xvalue * (userOptions\screenWidth / 2),userOptions\screenHeight / 2 - yvalue * (userOptions\screenHeight / 2),np\nvName,True,True)
 						Text(userOptions\screenWidth / 2 + xvalue * (userOptions\screenWidth / 2),userOptions\screenHeight / 2 - yvalue * (userOptions\screenHeight / 2) + 30.0 * MenuScale,f2s(dist,1)+" m",True,True)
 						;EndIf
@@ -2102,7 +2102,7 @@ Function RenderWorld2()
 	CameraProjMode(ark_blur_cam,0)
 
 	If (mainPlayer\blinkTimer < - 16 Or mainPlayer\blinkTimer > - 6) Then
-		If ((wornItem<>Null) And (hasBattery=1) And ((TimeInPosMilliSecs() Mod 800) < 400)) Then
+		If (wornItem<>Null) And (hasBattery=1) And ((TimeInPosMilliSecs() Mod 800) < 400) Then
 			Color(255,0,0)
 			SetFont(uiAssets\font[2])
 

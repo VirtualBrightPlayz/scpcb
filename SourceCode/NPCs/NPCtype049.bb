@@ -33,11 +33,11 @@ Function UpdateNPCtype049(n.NPCs)
 	Local npcDetectsPlayer%
 	Local dist2#, temp%
 
-	If ((n\state <> STATE049_IDLE)) Then
+	If (n\state <> STATE049_IDLE) Then
 		;Depending on whether 049 has detected the player, choose the state it's in.
 		npcDetectsPlayer = MeNPCSeesPlayer(n)
 
-		If ((npcDetectsPlayer = 1)) Then
+		If (npcDetectsPlayer = 1) Then
 			n\state = STATE049_ATTACK
 		Else
 			n\state = STATE049_ROAMING
@@ -52,7 +52,7 @@ Function UpdateNPCtype049(n.NPCs)
 		Case STATE049_ATTACK
 			;[Block]
 			;Playing a sound after detecting the player
-			If ((n\prevState = STATE049_ROAMING And (Not IsChannelPlaying(n\soundChannels[0])))) Then
+			If (n\prevState = STATE049_ROAMING And (Not IsChannelPlaying(n\soundChannels[0]))) Then
 				n\soundChannels[0] = LoopRangedSound(n\sounds[Rand(1,2)], n\soundChannels[0], mainPlayer\cam, n\obj)
 			EndIf
 
@@ -64,14 +64,14 @@ Function UpdateNPCtype049(n.NPCs)
 			RotateEntity(n\collider, 0, CurveAngle(EntityYaw(n\obj), EntityYaw(n\collider), 10.0), 0)
 
 			;Now I must only T O U C H...
-			If ((n\playerDistance < 0.5)) Then
+			If (n\playerDistance < 0.5) Then
 				mainPlayer\camZoom = 20.0
 				mainPlayer\blurTimer = 500.0
 
-				If ((Not mainPlayer\godMode)) Then
-					If ((mainPlayer\currRoom\roomTemplate\name$ = "room049")) Then
+				If (Not mainPlayer\godMode) Then
+					If (mainPlayer\currRoom\roomTemplate\name$ = "room049") Then
 						DeathMSG = "Three (3) active instances of SCP-049-2 discovered in the tunnel outside SCP-049's containment chamber. Terminated by Nine-Tailed Fox."
-						
+
 						For e = Each Events
 							If (e\name = "room049") Then
 								e\eventState=-1 : Exit
@@ -107,7 +107,7 @@ Function UpdateNPCtype049(n.NPCs)
 		Case STATE049_ROAMING
 			;[Block]
 			;Finding a path to the player
-			If ((npcDetectsPlayer = 2)) Then
+			If (npcDetectsPlayer = 2) Then
 				n\lastSeen = 70*15
 			EndIf
 
@@ -144,7 +144,7 @@ Function UpdateNPCtype049(n.NPCs)
 						If ((dist2 < 0.6)) Then
 							temp = True
 							;TODO: fix
-							;If ((n\path[n\pathLocation]\door <> Null)) Then
+							;If (n\path[n\pathLocation]\door <> Null) Then
 							;	If (Not n\path[n\pathLocation]\door\isElevatorDoor)
 							;		If (n\path[n\pathLocation]\door\locked Or n\path[n\pathLocation]\door\keyCard>0 Or n\path[n\pathLocation]\door\code<>"") Then
 							;			temp = False
@@ -166,7 +166,7 @@ Function UpdateNPCtype049(n.NPCs)
 						AnimateNPC(n, Max(Min(AnimTime(n\obj),358.0),346), 393.0, n\currSpeed*38)
 
 						;Playing a sound if he hears the player
-						If ((n\soundTimer < 0 And (Not IsChannelPlaying(n\soundChannels[0])))) Then
+						If (n\soundTimer < 0 And (Not IsChannelPlaying(n\soundChannels[0]))) Then
 							n\soundTimer = Rand(10, 20) * 70
 
 							If (Rand(8)=3) Then
@@ -176,7 +176,7 @@ Function UpdateNPCtype049(n.NPCs)
 							EndIf
 						EndIf
 
-						If ((n\timer > 70*7)) Then ;Updating the path every 7 seconds
+						If (n\timer > 70*7) Then ;Updating the path every 7 seconds
 							n\pathStatus = FindPath(n, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider))
 							n\timer = 0.0
 						EndIf
@@ -338,7 +338,7 @@ Function UpdateNPCtype049(n.NPCs)
 
     n\lastSeen = Int(Max(n\lastSeen-timing\tickDuration,0))
 
-	If ((n\soundTimer >= 0)) Then
+	If (n\soundTimer >= 0) Then
 		n\soundTimer = n\soundTimer - timing\tickDuration
 	EndIf
 

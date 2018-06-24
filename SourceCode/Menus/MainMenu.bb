@@ -17,7 +17,7 @@ Function UpdateMainMenu()
 	Local i%
 	Local strtemp$
 	Local SameFound%
-	
+
 	Local mouseHitButton%
 	If (CurrGameSubstate = GAMESUBSTATE_MAINMENU_MAIN) Then
 		For i = 0 To MAINMENU_BUTTON_COUNT-1
@@ -468,8 +468,8 @@ Function DrawMainMenu()
 	Rect(0,0,userOptions\screenWidth,userOptions\screenHeight,True)
 
 	DrawImage(uiAssets\back, 0, 0)
-	
-	If ((TimeInPosMilliSecs() Mod Int(MenuBlinkTimer(0))) >= Rand(Int(MenuBlinkDuration(0)))) Then
+
+	If (TimeInPosMilliSecs() Mod Int(MenuBlinkTimer(0))) >= Rand(Int(MenuBlinkDuration(0))) Then
 		DrawImage(uiAssets\scp173, userOptions\screenWidth - ImageWidth(uiAssets\scp173), userOptions\screenHeight - ImageHeight(uiAssets\scp173))
 	EndIf
 
@@ -530,7 +530,7 @@ Function DrawMainMenu()
 	If (userOptions\screenWidth > 1240 * MenuScale) Then
 		DrawTiledImageRect(uiAssets\tileWhite, 0, 5, 512, Int(7.0 * MenuScale), Int(985.0 * MenuScale), Int(407.0 * MenuScale), (userOptions\screenWidth - Int(1240 * MenuScale)) + 300, Int(7.0 * MenuScale))
 	EndIf
-	
+
 	Local txt$
 	If (CurrGameSubstate = GAMESUBSTATE_MAINMENU_MAIN) Then
 		For i = 0 To MAINMENU_BUTTON_COUNT-1
@@ -539,7 +539,7 @@ Function DrawMainMenu()
 
 			width = Int(400.0 * MenuScale)
 			height = Int(70.0 * MenuScale)
-			
+
 			Select i
 				Case MAINMENU_BUTTON_NEWGAME ;new game
 					txt = "NEW GAME"

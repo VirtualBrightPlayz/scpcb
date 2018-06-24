@@ -76,7 +76,7 @@ Function UpdateNPCtype1499(n.NPCs)
                 If (n\currSpeed = 0.0) Then
                     AnimateNPC(n,296,317,0.2)
                 Else
-                    If ((n\id Mod 2 = 0)) Then
+                    If (n\id Mod 2 = 0) Then
                         AnimateNPC(n,1,62,(n\currSpeed*28))
                     Else
                         AnimateNPC(n,100,167,(n\currSpeed*28))
@@ -84,12 +84,12 @@ Function UpdateNPCtype1499(n.NPCs)
                 EndIf
 
                 ;randomly play the "screaming animation" and revert back to state 0
-                If ((Rand(5000)=1)) Then
+                If (Rand(5000)=1) Then
                     n\state = 2
                     n\state2 = 0
 
                     If (Not IsChannelPlaying(n\soundChannels[0])) Then
-                        If ((n\playerDistance < 20.0)) Then
+                        If (n\playerDistance < 20.0) Then
                             If (n\sounds[0] <> 0) Then
 								FreeSound(n\sounds[0])
 								n\sounds[0] = 0
@@ -100,7 +100,7 @@ Function UpdateNPCtype1499(n.NPCs)
                     EndIf
                 EndIf
 
-                If ((n\id Mod 2 = 0) And (Not NoTarget)) Then
+                If (n\id Mod 2 = 0) And (Not NoTarget) Then
                     If (n\playerDistance < 10.0) Then
                         If (EntityVisible(n\collider,mainPlayer\collider)) Then
                             ;play the "screaming animation"
@@ -144,7 +144,7 @@ Function UpdateNPCtype1499(n.NPCs)
                 If (n\state2 = 0.0) Then
                     n\currSpeed = CurveValue(n\speed*1.75,n\currSpeed,10.0)
 
-                    If ((n\id Mod 2 = 0)) Then
+                    If (n\id Mod 2 = 0) Then
                         AnimateNPC(n,1,62,(n\currSpeed*28))
                     Else
                         AnimateNPC(n,100,167,(n\currSpeed*28))

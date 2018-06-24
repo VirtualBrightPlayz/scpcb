@@ -10,7 +10,7 @@ Function UpdateEvent106victim(e.Events)
 	Local angle#, fdir#
 
 	;[Block]
-	If ((Not Contained106)) Then
+	If (Not Contained106) Then
 		If (mainPlayer\currRoom = e\room) Then
 			If (e\eventState = 0) Then
 				de = CreateDecal(0, EntityX(e\room\obj), 799.0*RoomScale, EntityZ(e\room\obj), -90, Rand(360), 0)

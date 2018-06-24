@@ -222,7 +222,7 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 			ResetEntity(mainPlayer\collider)
 			e\eventState = 1.0
 
-			If ((Not Contained106)) Then PlaySound2(LoadTempSound("SFX/Ending/GateA/106Escape.ogg"))
+			If (Not Contained106) Then PlaySound2(LoadTempSound("SFX/Ending/GateA/106Escape.ogg"))
 
 			DrawLoading(100)
 		Else
@@ -451,10 +451,10 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 								; TODO: Isn't this a memory leak?
 								obj = CopyEntity(e\room\objects[12])
 								PositionEntity(obj, EntityX(e\room\obj,True)-3968*RoomScale, EntityY(e\room\objects[11],True), EntityZ(e\room\obj,True)-1920*RoomScale)
-								
+
 								obj = CopyEntity(e\room\objects[12])
 								PositionEntity(obj, EntityX(e\room\obj,True)-4160*RoomScale, EntityY(e\room\objects[11],True), EntityZ(e\room\obj,True)-1920*RoomScale)
-								
+
 								obj = CopyEntity(e\room\objects[12])
 								PositionEntity(obj, EntityX(e\room\obj,True)-4064*RoomScale, EntityY(e\room\objects[11],True), EntityZ(e\room\obj,True)-2112*RoomScale)
 

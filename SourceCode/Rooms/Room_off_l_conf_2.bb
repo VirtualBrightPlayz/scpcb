@@ -57,7 +57,7 @@ Function UpdateEvent_off_l_conf_2(e.Events)
 					;PlaySound2(HorrorSFX(5))
 				EndIf
 			Else
-				If ((EntityDistance(mainPlayer\collider, e\room\roomDoors[0]\obj)<1.5) And (RemoteDoorOn)) Then
+				If (EntityDistance(mainPlayer\collider, e\room\roomDoors[0]\obj)<1.5) And (RemoteDoorOn) Then
 					e\room\roomDoors[0]\open = True
 				EndIf
 			EndIf

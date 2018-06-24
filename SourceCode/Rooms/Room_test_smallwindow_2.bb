@@ -73,7 +73,7 @@ Function UpdateEventTestroom173(e.Events)
 				ElseIf (dist > 1.4) Then
 					;if the player moves a bit further and blinks, 173 attacks
 					If (e\eventState > 70*12 And mainPlayer\blinkTimer =< -10) Then
-						If ((EntityDistance(Curr173\collider, e\room\objects[0]) > 5.0)) Then
+						If (EntityDistance(Curr173\collider, e\room\objects[0]) > 5.0) Then
 							;if 173 is far away from the room (perhaps because the player
 							;left and 173 moved to some other room?) -> disable the event
 							RemoveEvent(e)

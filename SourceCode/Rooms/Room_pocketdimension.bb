@@ -189,7 +189,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 
 		mainPlayer\injuries = mainPlayer\injuries+timing\tickDuration*0.00005
 
-		If ((EntityY(mainPlayer\collider)<2000*RoomScale Or EntityY(mainPlayer\collider)>2608*RoomScale)) Then mainPlayer\footstepOverride = 1
+		If (EntityY(mainPlayer\collider)<2000*RoomScale Or EntityY(mainPlayer\collider)>2608*RoomScale) Then mainPlayer\footstepOverride = 1
 
 		If (e\sounds[0] = 0) Then LoadEventSound(e,"SFX/Room/PocketDimension/Rumble.ogg")
 		If (e\sounds[1] = 0) Then e\sounds[1] = LoadEventSound(e,"SFX/Room/PocketDimension/PrisonVoices.ogg",1)

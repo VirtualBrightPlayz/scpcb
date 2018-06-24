@@ -77,7 +77,7 @@ Function UpdateEvent_cont_914_1(e.Events)
 
 	;[Block]
 	If (mainPlayer\currRoom = e\room) Then
-		If ((Not e\loaded)) Then
+		If (Not e\loaded) Then
 			e\sounds[0] = LoadSound("SFX/SCP/914/Refining.ogg")
 			e\sounds[1] = LoadSound("SFX/SCP/914/PlayerUse.ogg")
 			e\sounds[2] = LoadSound("SFX/SCP/914/PlayerDeath.ogg")

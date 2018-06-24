@@ -70,10 +70,10 @@ Function DrawLoading(percent%, shortloading%=False)
 	Local temp%
 	Local ls.LoadingScreens
 	Local width%, height%
-	
+
 	If (percent = 0) Then
 		LoadingScreenText=0
-		
+
 		temp = Rand(1,LoadingScreenAmount)
 		For ls = Each LoadingScreens
 			If (ls\id = temp) Then
@@ -105,7 +105,7 @@ Function DrawLoading(percent%, shortloading%=False)
 			EndIf
 		EndIf
 
-		If ((Not SelectedLoadingScreen\disablebackground)) Then
+		If (Not SelectedLoadingScreen\disablebackground) Then
 			DrawImage(LoadingBack, userOptions\screenWidth/2 - ImageWidth(LoadingBack)/2, userOptions\screenHeight/2 - ImageHeight(LoadingBack)/2)
 		EndIf
 
@@ -268,13 +268,13 @@ Function DrawLoading(percent%, shortloading%=False)
 		Flip(False)
 
 		firstloop = False
-		If ((percent <> 100)) Then
+		If (percent <> 100) Then
 			Exit
 		EndIf
 
 	Until (GetKey()<>0 Or MouseHit(1))
 
-	If ((percent >= 100)) Then
+	If (percent >= 100) Then
 		RestoreDefaultMusic()
 	EndIf
 End Function

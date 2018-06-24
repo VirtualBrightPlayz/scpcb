@@ -184,12 +184,12 @@ Function DrawUIButton(x%, y%, width%, height%, txt$, bigfont% = True)
 	EndIf
 
 	Color(255, 255, 255)
-	If ((bigfont)) Then
+	If (bigfont) Then
 		SetFont(uiAssets\font[1])
 	Else
 		SetFont(uiAssets\font[0])
 	EndIf
-		
+
 	Text(x + width / 2, y + height / 2, txt, True, True)
 End Function
 
@@ -197,7 +197,7 @@ Function UpdateUIButton%(x%, y%, width%, height%, txt$="", waitForMouseUp%=False
 	Local clicked% = False
 
 	If (MouseOn(x, y, width, height)) Then
-		If ((MouseHit1 And (Not waitForMouseUp)) Or (MouseUp1 And waitForMouseUp)) Then
+		If (MouseHit1 And (Not waitForMouseUp)) Or (MouseUp1 And waitForMouseUp) Then
 			clicked = True
 			PlaySound_SM(sndManager\button)
 		EndIf
@@ -287,7 +287,7 @@ Function RowText(A$, X%, Y%, W%, H%, align% = 0, Leading#=1)
 	Local space%
 	Local temp$,trimmed$
 	Local extra%
-	
+
 	While Len(A) > 0
 		space = Instr(A, " ")
 		If (space = 0) Then space = Len(A)
@@ -295,7 +295,7 @@ Function RowText(A$, X%, Y%, W%, H%, align% = 0, Leading#=1)
 		trimmed = Trim(temp) ;we might ignore a final space
 		extra = 0 ;we haven't ignored it yet
 		;ignore final space If doing so would make a word fit at End of Line:
-		If ((StringWidth(b + temp) > W) And (StringWidth(b + trimmed) <= W)) Then
+		If (StringWidth(b + temp) > W) And (StringWidth(b + trimmed) <= W) Then
 			temp = trimmed
 			extra = 1
 		EndIf
@@ -317,7 +317,7 @@ Function RowText(A$, X%, Y%, W%, H%, align% = 0, Leading#=1)
 		If (((LinesShown + 1) * Height) > H) Then Exit ;the Next Line(would be too tall, so leave)
 	Wend
 
-	If ((b <> "") And((LinesShown + 1) <= H)) Then
+	If (b <> "") And((LinesShown + 1) <= H) Then
 		If (align) Then
 			Text(X + W / 2 - (StringWidth(b) / 2), LinesShown * Height + Y, b) ;Print(any remaining Text If it'll fit vertically)
 		Else
@@ -370,7 +370,7 @@ End Function
 
 Function ShowPointer2()
 	ShowPointer()
-	If ((userOptions\fullscreen)) Then
+	If (userOptions\fullscreen) Then
 		DrawImage(uiAssets\cursorIMG, MouseX(), MouseY())
 	EndIf
 End Function

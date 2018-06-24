@@ -78,7 +78,7 @@ Function CircleToLineSegIsect% (cx#, cy#, r#, l1x#, l1y#, l2x#, l2y#)
 	;Checks whether the value of another point is 0
 	;tai molempien merkki sama
 	If (dp1 = 0 Or dp2 = 0) Then
-	ElseIf ((dp1 > 0 And dp2 > 0) Or (dp1 < 0 And dp2 < 0)) Then
+	ElseIf (dp1 > 0 And dp2 > 0) Or (dp1 < 0 And dp2 < 0) Then
 	Else
 		;Neither -> no cutting
 		Return False
@@ -191,12 +191,12 @@ Function GetMeshExtents(Mesh%)
 			y = VertexY(surf, v)
 			z = VertexZ(surf, v)
 
-			If ((x < minx)) Then minx = x
-			If ((x > maxx)) Then maxx = x
-			If ((y < miny)) Then miny = y
-			If ((y > maxy)) Then maxy = y
-			If ((z < minz)) Then minz = z
-			If ((z > maxz)) Then maxz = z
+			If (x < minx) Then minx = x
+			If (x > maxx) Then maxx = x
+			If (y < miny) Then miny = y
+			If (y > maxy) Then maxy = y
+			If (z < minz) Then minz = z
+			If (z > maxz) Then maxz = z
 		Next
 	Next
 

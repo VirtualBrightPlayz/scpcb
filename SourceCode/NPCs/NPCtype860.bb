@@ -115,7 +115,7 @@ Function UpdateNPCtype860(n.NPCs)
                             If (n\frame=199) Then
 								n\frame = 298 : ;PlayRangedSound(sndManager\footstep8601[Rand(0, 2)]\internal, mainPlayer\cam, n\collider, 15.0)
 							EndIf
-							
+
                             ;Animate2(n\obj, AnimTime(n\obj), 2, 199, 0.5,False)
                             ;If (AnimTime(n\obj)=199) Then SetAnimTime(n\obj,298) : PlayRangedSound(sndManager\footstep8601[Rand(0, 2)]\internal, mainPlayer\cam, n\collider, 15.0)
                         ElseIf (n\frame <= 297) Then
@@ -125,7 +125,7 @@ Function UpdateNPCtype860(n.NPCs)
                             If (n\frame=297) Then
 								n\frame=298 : PlayRangedSound(sndManager\footstep8601[Rand(0, 2)]\internal, mainPlayer\cam, n\collider, 15.0)
 							EndIf
-							
+
                             ;Animate2(n\obj, AnimTime(n\obj), 200, 297, 0.5,False)
                             ;If (AnimTime(n\obj)=297) Then SetAnimTime(n\obj,298) : PlayRangedSound(sndManager\footstep8601[Rand(0, 2)]\internal, mainPlayer\cam, n\collider, 15.0)
                         Else
@@ -233,7 +233,7 @@ Function UpdateNPCtype860(n.NPCs)
                 EndIf
 
                 ;535, 568
-                If ((prevFrame < 533 And n\frame=>533) Or (prevFrame > 568 And n\frame<2)) Then
+                If (prevFrame < 533 And n\frame=>533) Or (prevFrame > 568 And n\frame<2) Then
                     PlayRangedSound(sndManager\footstep8601[Rand(0, 2)]\internal, mainPlayer\cam, n\collider, 15.0, 0.6)
                 EndIf
 
@@ -256,7 +256,7 @@ Function UpdateNPCtype860(n.NPCs)
                     AnimateNPC(n, 298, 316, n\currSpeed*10)
                     ;Animate2(n\obj, AnimTime(n\obj), 298, 316, n\currSpeed*10)
 
-                    If ((prevFrame < 307 And n\frame=>307)) Then
+                    If (prevFrame < 307 And n\frame=>307) Then
                         PlayRangedSound(sndManager\footstep8601[Rand(0, 2)]\internal, mainPlayer\cam, n\collider, 10.0)
                     EndIf
                 Else
@@ -269,12 +269,12 @@ Function UpdateNPCtype860(n.NPCs)
                     AnimateNPC(n, 451,493, 0.5, False)
 
                     ;Animate2(n\obj, AnimTime(n\obj), 451,493, 0.5, False)
-                    If ((prevFrame < 461 And n\frame=>461)) Then
-                        If ((Not mainPlayer\dead)) Then Kill(mainPlayer)
+                    If (prevFrame < 461 And n\frame=>461) Then
+                        If (Not mainPlayer\dead) Then Kill(mainPlayer)
                         PlaySound2(n\sounds[0])
                     EndIf
-                    If ((prevFrame < 476 And n\frame=>476)) Then PlaySound2(n\sounds[1])
-                    If ((prevFrame < 486 And n\frame=>486)) Then PlaySound2(n\sounds[1])
+                    If (prevFrame < 476 And n\frame=>476) Then PlaySound2(n\sounds[1])
+                    If (prevFrame < 486 And n\frame=>486) Then PlaySound2(n\sounds[1])
 
                 EndIf
 

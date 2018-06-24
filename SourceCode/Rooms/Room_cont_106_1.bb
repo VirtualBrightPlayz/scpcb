@@ -138,7 +138,7 @@ Function UpdateEvent_cont_106_1(e.Events)
 		If (e\eventState = 1) Then
 			e\eventState3 = Min(e\eventState3+timing\tickDuration,4000)
 		EndIf
-		If ((Not IsChannelPlaying(e\soundChannels[0]))) Then e\soundChannels[0] = PlaySound(RadioStatic)
+		If (Not IsChannelPlaying(e\soundChannels[0])) Then e\soundChannels[0] = PlaySound(RadioStatic)
 	EndIf
 
 	If (e\room\npc[0]=Null) Then ;add the lure subject
@@ -148,7 +148,7 @@ Function UpdateEvent_cont_106_1(e.Events)
 	EndIf
 
 	If (mainPlayer\currRoom = e\room And e\room\npc[0]<>Null) Then
-		If ((Not e\loaded)) Then
+		If (Not e\loaded) Then
 			e\sounds[2] = LoadSound("SFX/Room/106Chamber/MagnetUp.ogg")
 			e\sounds[3] = LoadSound("SFX/Room/106Chamber/MagnetDown.ogg")
 			e\sounds[4] = LoadSound("SFX/Room/106Chamber/FemurBreaker.ogg")
@@ -173,7 +173,7 @@ Function UpdateEvent_cont_106_1(e.Events)
 
 		temp = Int(e\eventState2)
 
-		If (((EntityY(e\room\objects[6],True)<-990*RoomScale) And (EntityY(e\room\objects[6],True)>-1275.0*RoomScale))) Then
+		If ((EntityY(e\room\objects[6],True)<-990*RoomScale) And (EntityY(e\room\objects[6],True)>-1275.0*RoomScale)) Then
 			e\room\levers[0]\locked = True
 		EndIf
 
@@ -187,11 +187,11 @@ Function UpdateEvent_cont_106_1(e.Events)
 				PlaySound2(e\sounds[2])
 			EndIf
 		EndIf
-
-		If (((e\eventState3>3200) Or (e\eventState3<2500)) Or (e\eventState<>1)) Then
+		
+		If ((e\eventState3>3200) Or (e\eventState3<2500)) Or (e\eventState<>1) Then
 			SoundTransmission = e\room\levers[1]\succ
 		EndIf
-		If ((Not SoundTransmission)) Then
+		If (Not SoundTransmission) Then
 			If (IsChannelPlaying(e\soundChannels[1])) Then StopChannel(e\soundChannels[1])
 
 			If (IsChannelPlaying(e\soundChannels[0])) Then StopChannel(e\soundChannels[0])

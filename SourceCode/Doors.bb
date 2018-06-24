@@ -467,8 +467,8 @@ Function UseDoor(d.Doors, showmsg%=True)
 					If (d\isElevatorDoor = 1) Then
 						Msg = "You called the elevator."
 						MsgTimer = 70 * 5
-					ElseIf ((Msg<>"You called the elevator.")) Then
-						If ((Msg="You already called the elevator.") Or (MsgTimer<70*3)) Then
+					ElseIf (Msg<>"You called the elevator.") Then
+						If (Msg="You already called the elevator.") Or (MsgTimer<70*3) Then
 							Select Rand(10)
 								Case 1
 									Msg = "Stop spamming the button."

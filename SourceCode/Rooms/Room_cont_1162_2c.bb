@@ -55,9 +55,9 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 		pick1162 = True
 		pp = CreatePivot(e\room\obj)
 		PositionEntity(pp,976,128,-640,False)
-
+		
 		For it = Each Items
-			If ((Not it\picked)) Then
+			If (Not it\picked) Then
 				If (EntityDistance(it\collider,e\room\objects[0])<0.75) Then
 					pick1162 = False
 				EndIf
@@ -80,7 +80,7 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 				For i = 0 To mainPlayer\inventory\size-1
 					isSlotEmpty = (mainPlayer\inventory\items[Int(i+e\eventState2) Mod mainPlayer\inventory\size] = Null)
 
-					If ((Not isSlotEmpty)) Then
+					If (Not isSlotEmpty) Then
 						;successful
 						e\eventState2 = (i+e\eventState2) Mod mainPlayer\inventory\size
 					EndIf
@@ -108,10 +108,10 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 							Case 5
 								itemName = "Old Badge"
 						End Select
-
+						
 						itemExists = False
 						For it = Each Items
-							If ((it\name = itemName)) Then
+							If (it\name = itemName) Then
 								itemExists = True
 								e\eventState3 = 1.0
 								e\eventState = 0.0
@@ -119,7 +119,7 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 							EndIf
 						Next
 
-						If (((Not itemExists) And (Not isSlotEmpty))) Then Exit
+						If ((Not itemExists) And (Not isSlotEmpty)) Then Exit
 					Else
 						If (isSlotEmpty) Then
 							e\eventState3 = 2.0
@@ -173,7 +173,7 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 					End Select
 				EndIf
 
-				If ((shouldCreateItem)) Then
+				If (shouldCreateItem) Then
 					RemoveItem(mainPlayer\inventory\items[e\eventState2])
 					it=CreateItem(itt\name,EntityX(pp,True),EntityY(pp,True),EntityZ(pp,True))
 					EntityType(it\collider, HIT_ITEM)

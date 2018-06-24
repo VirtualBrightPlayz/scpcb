@@ -297,16 +297,16 @@ Function MovePlayer()
 	EndIf
 
 	If (mainPlayer\currRoom<>Null) Then
-		If ((mainPlayer\currRoom\roomTemplate\name <> "pocketdimension")) Then
+		If (mainPlayer\currRoom\roomTemplate\name <> "pocketdimension") Then
 			If (KeyDown(keyBinds\sprint)) Then
-				If ((mainPlayer\stamina < 5)) Then ;out of breath
-					If ((Not IsChannelPlaying(mainPlayer\breathChn))) Then mainPlayer\breathChn = PlaySound(GetIntArrayElem(mainPlayer\breathingSFX, IsPlayerWearingTempName(mainPlayer,"gasmask"), 0))
-				ElseIf ((mainPlayer\stamina < 50)) Then ;panting
-					If ((mainPlayer\breathChn = 0)) Then
+				If (mainPlayer\stamina < 5) Then ;out of breath
+					If (Not IsChannelPlaying(mainPlayer\breathChn)) Then mainPlayer\breathChn = PlaySound(GetIntArrayElem(mainPlayer\breathingSFX, IsPlayerWearingTempName(mainPlayer,"gasmask"), 0))
+				ElseIf (mainPlayer\stamina < 50) Then ;panting
+					If (mainPlayer\breathChn = 0) Then
 						mainPlayer\breathChn = PlaySound(GetIntArrayElem(mainPlayer\breathingSFX, IsPlayerWearingTempName(mainPlayer,"gasmask"), Rand(1, 3)))
 						ChannelVolume(mainPlayer\breathChn, Min((70.0-mainPlayer\stamina)/70.0,1.0)*userOptions\sndVolume)
 					Else
-						If ((Not IsChannelPlaying(mainPlayer\breathChn))) Then
+						If (Not IsChannelPlaying(mainPlayer\breathChn)) Then
 							mainPlayer\breathChn = PlaySound(GetIntArrayElem(mainPlayer\breathingSFX, IsPlayerWearingTempName(mainPlayer,"gasmask"), Rand(1, 3)))
 							ChannelVolume(mainPlayer\breathChn, Min((70.0-mainPlayer\stamina)/70.0,1.0)*userOptions\sndVolume)
 						EndIf
@@ -317,8 +317,8 @@ Function MovePlayer()
 	EndIf
 
 	For i=0 To mainPlayer\inventory\size-1
-		If ((mainPlayer\inventory\items[i]<>Null)) Then
-			If ((mainPlayer\inventory\items[i]\template\name="finevest")) Then mainPlayer\stamina = Min(mainPlayer\stamina,60.0)
+		If (mainPlayer\inventory\items[i]<>Null) Then
+			If (mainPlayer\inventory\items[i]\template\name="finevest") Then mainPlayer\stamina = Min(mainPlayer\stamina,60.0)
 		EndIf
 	Next
 
@@ -330,7 +330,7 @@ Function MovePlayer()
 		mainPlayer\crouchState = CurveValue(mainPlayer\crouching, mainPlayer\crouchState, 10.0)
 	EndIf
 
-	If ((Not mainPlayer\noclip)) Then
+	If (Not mainPlayer\noclip) Then
 		If (((KeyDown(keyBinds\down) Xor KeyDown(keyBinds\up)) Or (KeyDown(keyBinds\rght) Xor KeyDown(keyBinds\lft)) And (Not mainPlayer\disableControls)) Or mainPlayer\forceMove>0) Then
 
 			If (mainPlayer\crouching = 0 And (KeyDown(keyBinds\sprint)) And mainPlayer\stamina > 0.0) Then; And (Not IsZombie)) Then
@@ -356,7 +356,7 @@ Function MovePlayer()
 			EndIf
 
 			temp = (mainPlayer\camAnimState Mod 360)
-			If ((Not mainPlayer\disableControls)) Then mainPlayer\camAnimState = (mainPlayer\camAnimState + timing\tickDuration * Min(Sprint, 1.5) * 7) Mod 720
+			If (Not mainPlayer\disableControls) Then mainPlayer\camAnimState = (mainPlayer\camAnimState + timing\tickDuration * Min(Sprint, 1.5) * 7) Mod 720
 			If (temp < 180 And (mainPlayer\camAnimState Mod 360) >= 180 And (Not mainPlayer\dead)) Then
 				;TODO: define constants for each override state
 				If (mainPlayer\footstepOverride=0) Then
@@ -365,7 +365,7 @@ Function MovePlayer()
 					If (Sprint = 1.0) Then
 						mainPlayer\loudness = Max(4.0,mainPlayer\loudness)
 
-						If ((temp = STEPSOUND_METAL)) Then
+						If (temp = STEPSOUND_METAL) Then
 							tempchn = PlaySound_SM(sndManager\footstepMetal[Rand(0, 7)])
 						Else
 							tempchn = PlaySound_SM(sndManager\footstep[Rand(0, 7)])
@@ -375,7 +375,7 @@ Function MovePlayer()
 					Else
 						mainPlayer\loudness = Max(2.5-(mainPlayer\crouching*0.6),mainPlayer\loudness)
 
-						If ((temp = 1)) Then
+						If (temp = 1) Then
 							tempchn = PlaySound_SM(sndManager\footstepMetalRun[Rand(0, 7)])
 						Else
 							tempchn = PlaySound_SM(sndManager\footstepRun[Rand(0, 7)])
@@ -404,7 +404,7 @@ Function MovePlayer()
 			EndIf
 		EndIf
 	Else ;noclip on
-		If ((KeyDown(keyBinds\sprint))) Then
+		If (KeyDown(keyBinds\sprint)) Then
 			Sprint = 2.5
 		ElseIf (KeyDown(keyBinds\crouch)) Then
 			Sprint = 0.5
@@ -445,7 +445,7 @@ Function MovePlayer()
 			angle = 180
 			If (KeyDown(keyBinds\lft)) Then angle = 135
 			If (KeyDown(keyBinds\rght)) Then angle = -135
-		ElseIf ((KeyDown(keyBinds\up) And (Not mainPlayer\disableControls))) Then; Or ForceMove>0
+		ElseIf (KeyDown(keyBinds\up) And (Not mainPlayer\disableControls)) Then; Or ForceMove>0
 			temp = True
 			angle = 0
 			If (KeyDown(keyBinds\lft)) Then angle = 45
@@ -453,7 +453,7 @@ Function MovePlayer()
 		ElseIf (mainPlayer\forceMove>0) Then
 			temp=True
 			angle = mainPlayer\forceAngle
-		ElseIf ((Not mainPlayer\disableControls)) Then
+		ElseIf (Not mainPlayer\disableControls) Then
 			If (KeyDown(keyBinds\lft)) Then
 				angle = 90 : temp = True
 			EndIf
@@ -474,11 +474,11 @@ Function MovePlayer()
 			mainPlayer\moveSpeed = Max(CurveValue(0.0, mainPlayer\moveSpeed-0.1, 1.0),0.0)
 		EndIf
 
-		If ((Not mainPlayer\disableControls)) Then TranslateEntity(mainPlayer\collider, Cos(angle)*mainPlayer\moveSpeed * timing\tickDuration, 0, Sin(angle)*mainPlayer\moveSpeed * timing\tickDuration, True)
+		If (Not mainPlayer\disableControls) Then TranslateEntity(mainPlayer\collider, Cos(angle)*mainPlayer\moveSpeed * timing\tickDuration, 0, Sin(angle)*mainPlayer\moveSpeed * timing\tickDuration, True)
 
 		collidedFloor = False
 		For i = 1 To CountCollisions(mainPlayer\collider)
-			If ((CollisionY(mainPlayer\collider, i) < EntityY(mainPlayer\collider,True)) And (Abs(CollisionNY(mainPlayer\collider, i))>0.8)) Then
+			If (CollisionY(mainPlayer\collider, i) < EntityY(mainPlayer\collider,True)) And (Abs(CollisionNY(mainPlayer\collider, i))>0.8) Then
 				collidedFloor = True
 			EndIf
 		Next
@@ -486,7 +486,7 @@ Function MovePlayer()
 		If (collidedFloor = True) Then
 			If (mainPlayer\dropSpeed# < - 0.07) Then
 				If (mainPlayer\footstepOverride=0) Then
-					If ((GetMaterialStepSound(mainPlayer\collider) = 1)) Then
+					If (GetMaterialStepSound(mainPlayer\collider) = 1) Then
 						PlaySound_SM(sndManager\footstepMetal[Rand(0, 7)])
 					Else
 						PlaySound_SM(sndManager\footstep[Rand(0, 7)])
@@ -505,7 +505,7 @@ Function MovePlayer()
 			mainPlayer\dropSpeed# = Min(Max(mainPlayer\dropSpeed - 0.006 * timing\tickDuration, -2.0), 0.0)
 		EndIf
 
-		If ((Not mainPlayer\disableControls)) Then TranslateEntity(mainPlayer\collider, 0, mainPlayer\dropSpeed * timing\tickDuration, 0)
+		If (Not mainPlayer\disableControls) Then TranslateEntity(mainPlayer\collider, 0, mainPlayer\dropSpeed * timing\tickDuration, 0)
 	EndIf
 
 	mainPlayer\forceMove = 0.0
@@ -551,7 +551,7 @@ Function MovePlayer()
 		EndIf
 	EndIf
 
-	If ((Not mainPlayer\disableControls)) Then
+	If (Not mainPlayer\disableControls) Then
 		If (KeyHit(keyBinds\blink)) Then mainPlayer\blinkTimer = 0
 		If (KeyDown(keyBinds\blink) And mainPlayer\blinkTimer < - 10) Then mainPlayer\blinkTimer = -10
 	EndIf
@@ -637,7 +637,7 @@ Function MouseLook()
 		mouse_x_speed_1 = CurveValue(MouseXSpeed() * (userOptions\mouseSensitivity + 0.6) , mouse_x_speed_1, 6.0 / (userOptions\mouseSensitivity + 1.0))
 		If (Int(mouse_x_speed_1) = Int(Nan1)) Then mouse_x_speed_1 = 0
 
-		If ((userOptions\invertMouseY)) Then
+		If (userOptions\invertMouseY) Then
 			mouse_y_speed_1 = CurveValue(-MouseYSpeed() * (userOptions\mouseSensitivity + 0.6), mouse_y_speed_1, 6.0/(userOptions\mouseSensitivity+1.0))
 		Else
 			mouse_y_speed_1 = CurveValue(MouseYSpeed() * (userOptions\mouseSensitivity + 0.6), mouse_y_speed_1, 6.0/(userOptions\mouseSensitivity+1.0))
@@ -718,7 +718,7 @@ Function MouseLook()
 	EndIf
 
 	; -- Limit the mouse;s movement. Using this method produces smoother mouselook movement than centering the mouse Each loop.
-	If ((MouseX() > mouse_right_limit) Or (MouseX() < mouse_left_limit) Or (MouseY() > mouse_bottom_limit) Or (MouseY() < mouse_top_limit)) Then
+	If (MouseX() > mouse_right_limit) Or (MouseX() < mouse_left_limit) Or (MouseY() > mouse_bottom_limit) Or (MouseY() < mouse_top_limit) Then
 		MoveMouse(viewport_center_x, viewport_center_y)
 	EndIf
 
@@ -736,7 +736,7 @@ Function MouseLook()
 		HideEntity(mainPlayer\overlays[OVERLAY_GASMASK])
 	EndIf
 
-	If ((Not wearingNightVision=0)) Then
+	If (Not wearingNightVision=0) Then
 		ShowEntity(mainPlayer\overlays[OVERLAY_NIGHTVISION])
 		If (wearingNightVision=2) Then
 			EntityColor(mainPlayer\overlays[OVERLAY_NIGHTVISION], 0,100,255)
@@ -904,7 +904,7 @@ Function DrawInventory(player.Player)
 			DrawFrame(x, y, width, height, (x Mod 64), (x Mod 64))
 
 			If (player\openInventory\items[n] <> Null) Then
-				If ((player\selectedItem <> player\openInventory\items[n] Or isMouseOn)) Then
+				If (player\selectedItem <> player\openInventory\items[n] Or isMouseOn) Then
 					DrawImage(player\openInventory\items[n]\invimg, x + width / 2 - 32, y + height / 2 - 32)
 				EndIf
 			EndIf
@@ -989,7 +989,7 @@ Function DrawInventory(player.Player)
 								;TODO: this is retarded, fix
 								player\selectedItem\itemtemplate\img=LoadImage(player\selectedItem\itemtemplate\imgpath)
 
-								If ((player\selectedItem\state = 0)) Then
+								If (player\selectedItem\state = 0) Then
 									Msg = Chr(34)+"Hey, I remember getting this ticket from the kickstarter! Wonder if it ever came out..."+Chr(34)
 									MsgTimer = 70*10
 									PlaySound2(LoadTempSound("SFX/SCP/1162/NostalgiaCancer"+Str(Rand(1,10))+".ogg"))
@@ -1278,13 +1278,13 @@ Function UpdateInventory(player.Player)
 
 	Local strtemp$
 	If (CurrGameState=GAMESTATE_INVENTORY) Then
-		If ((player\currRoom\roomTemplate\name = "gatea")) Then
+		If (player\currRoom\roomTemplate\name = "gatea") Then
 			HideEntity(player\overlays[OVERLAY_FOG])
 			CameraFogRange(player\cam, 5,30)
 			CameraFogColor(player\cam,200,200,200)
 			CameraClsColor(player\cam,200,200,200)
 			CameraRange(player\cam, 0.05, 30)
-		ElseIf ((player\currRoom\roomTemplate\name = "exit1") And (EntityY(player\collider)>1040.0*RoomScale)) Then
+		ElseIf (player\currRoom\roomTemplate\name = "exit1") And (EntityY(player\collider)>1040.0*RoomScale) Then
 			HideEntity(player\overlays[OVERLAY_FOG])
 			CameraFogRange(player\cam, 5,45)
 			CameraFogColor(player\cam,200,200,200)
@@ -1370,7 +1370,7 @@ Function UpdateInventory(player.Player)
 									added = Null
 									If (player\selectedItem\itemtemplate\name<>"misc" Or (player\selectedItem\itemtemplate\name="Playing Card" Or player\selectedItem\itemtemplate\name="Mastercard")) Then
 										For c = 0 To player\openInventory\items[MouseSlot]\subInventory\size-1
-											If ((player\openInventory\items[MouseSlot]\subInventory\items[c] = Null)) Then
+											If (player\openInventory\items[MouseSlot]\subInventory\items[c] = Null) Then
 												If (player\selectedItem <> Null) Then
 													player\openInventory\items[MouseSlot]\subInventory\items[c] = player\selectedItem
 													player\openInventory\items[MouseSlot]\state = 1.0
@@ -2104,5 +2104,5 @@ Function Kill(player.Player)
 	EndIf
 End Function
 ;~IDEal Editor Parameters:
-;~F#2F6#328#33F#347#359
+;~F#2F6#328#33F#347#359#4F1
 ;~C#Blitz3D

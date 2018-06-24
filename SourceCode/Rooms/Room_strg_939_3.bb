@@ -247,10 +247,10 @@ Function UpdateEvent_strg_939_3(e.Events)
 					e\eventState = 1
 				EndIf
 
-				If ((e\room\roomDoors[4]\open = False)) Then
-					If ((e\room\levers[0]\succ Or e\room\levers[1]\succ)) Then
+				If (e\room\roomDoors[4]\open = False) Then
+					If (e\room\levers[0]\succ Or e\room\levers[1]\succ) Then
 						e\room\roomDoors[4]\open = True
-						If ((e\sounds[1] <> 0)) Then
+						If (e\sounds[1] <> 0) Then
                             FreeSound(e\sounds[1])
                             e\sounds[1] = 0
                         EndIf
