@@ -1,6 +1,6 @@
-Function FillRoom_cont_1162_2c(r.Rooms)
-    Local d.Doors, d2.Doors, sc.SecurityCams, de.Decals, r2.Rooms, sc2.SecurityCams
-    Local it.Items, i%
+Function FillRoom_cont_1162_2c(r.Room)
+    Local d.Door, d2.Door, sc.SecurityCam, de.Decal, r2.Room, sc2.SecurityCam
+    Local it.Item, i%
     Local xtemp%, ytemp%, ztemp%
 
     Local t1%;, Bump
@@ -20,10 +20,10 @@ Function FillRoom_cont_1162_2c(r.Rooms)
     sc\id = 8
 End Function
 
-Function UpdateEvent_cont_1162_2c(e.Events)
+Function UpdateEvent_cont_1162_2c(e.Event)
 	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
 
-	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, itt.ItemTemplates, em.Emitters, sc.SecurityCams, sc2.SecurityCams, de.Decals
+	Local p.Particle, n.NPC, r.Room, e2.Event, it.Item, itt.ItemTemplate, em.Emitter, sc.SecurityCam, sc2.SecurityCam, de.Decal
 
 	Local CurrTrigger$ = ""
 
@@ -56,7 +56,7 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 		pp = CreatePivot(e\room\obj)
 		PositionEntity(pp,976,128,-640,False)
 		
-		For it = Each Items
+		For it = Each Item
 			If (Not it\picked) Then
 				If (EntityDistance(it\collider,e\room\objects[0])<0.75) Then
 					pick1162 = False
@@ -110,7 +110,7 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 						End Select
 						
 						itemExists = False
-						For it = Each Items
+						For it = Each Item
 							If (it\name = itemName) Then
 								itemExists = True
 								e\eventState3 = 1.0
@@ -137,7 +137,7 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 		If (e\eventState3 = 1.0) Then
 			shouldCreateItem = False
 			
-			For itt = Each ItemTemplates
+			For itt = Each ItemTemplate
 				If (IsItemGoodFor1162(itt)) Then
 					Select mainPlayer\inventory\items[Int(e\eventState2)]\itemtemplate\name
 						Case "key"
@@ -194,7 +194,7 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 			de = CreateDecal(3, PickedX(), PickedY()+0.005, PickedZ(), 90, Rand(360), 0)
 			de\size = 0.75 : ScaleSprite(de\obj, de\size, de\size)
 			FreeEntity(pvt)
-			For itt = Each ItemTemplates
+			For itt = Each ItemTemplate
 				If (IsItemGoodFor1162(itt) And Rand(6)=1) Then
 					it = CreateItem(itt\name, EntityX(pp,True),EntityY(pp,True),EntityZ(pp,True))
 					MouseHit1 = False
@@ -266,7 +266,7 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 End Function
 
 
-Function IsItemGoodFor1162%(itt.ItemTemplates)
+Function IsItemGoodFor1162%(itt.ItemTemplate)
 	Local IN$ = itt\name$
 	
 	;TODO: remember which items the player has collected instead of just picking random shit

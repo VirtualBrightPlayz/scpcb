@@ -1,6 +1,6 @@
-Function FillRoom_lck_broke_2c(r.Rooms)
-    Local d.Doors, d2.Doors, sc.SecurityCams, de.Decals, r2.Rooms, sc2.SecurityCams
-    Local it.Items, i%
+Function FillRoom_lck_broke_2c(r.Room)
+    Local d.Door, d2.Door, sc.SecurityCam, de.Decal, r2.Room, sc2.SecurityCam
+    Local it.Item, i%
     Local xtemp%, ytemp%, ztemp%
 
     Local t1%;, Bump

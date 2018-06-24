@@ -1,12 +1,12 @@
-Function InitializeNPCtypeApache(n.NPCs)
+Function InitializeNPCtypeApache(n.NPC)
     n\nvName = "Human"
     n\gravityMult = 0.0
     n\maxGravity = 0.0
     n\collider = CreatePivot()
     EntityRadius(n\collider, 0.2)
 
-	Local n2.NPCs
-	For n2 = Each NPCs
+	Local n2.NPC
+	For n2 = Each NPC
         If (n\npcType = n2\npcType) And (n <> n2) Then
             n\obj = CopyEntity(n2\obj)
 			n\obj2 = CopyEntity(n2\obj2)
@@ -58,7 +58,7 @@ Function InitializeNPCtypeApache(n.NPCs)
     ScaleEntity(n\obj, temp, temp, temp)
 End Function
 
-Function UpdateNPCtypeApache(n.NPCs)
+Function UpdateNPCtypeApache(n.NPC)
     Local dist2#, dist#, target%, pvt%
 
     If (n\playerDistance<60.0) Then

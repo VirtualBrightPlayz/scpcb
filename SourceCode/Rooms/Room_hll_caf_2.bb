@@ -1,6 +1,6 @@
-Function FillRoom_hll_caf_2(r.Rooms)
-    Local d.Doors, d2.Doors, sc.SecurityCams, de.Decals, r2.Rooms, sc2.SecurityCams
-	Local it.Items, i%
+Function FillRoom_hll_caf_2(r.Room)
+    Local d.Door, d2.Door, sc.SecurityCam, de.Decal, r2.Room, sc2.SecurityCam
+	Local it.Item, i%
 	Local xtemp%, ytemp%, ztemp%
 
 	Local t1%;, Bump
@@ -188,7 +188,7 @@ Function Update294()
 					If (alpha = 0) Then alpha = 1.0
 					If (glow) Then alpha = -alpha
 					;TODO: Re-implement
-					;it.Items = CreateItem("Cup", "cup", EntityX(mainPlayer\currRoom\objects[1],True),EntityY(mainPlayer\currRoom\objects[1],True),EntityZ(mainPlayer\currRoom\objects[1],True), r,g,b,alpha)
+					;it.Item = CreateItem("Cup", "cup", EntityX(mainPlayer\currRoom\objects[1],True),EntityY(mainPlayer\currRoom\objects[1],True),EntityZ(mainPlayer\currRoom\objects[1],True), r,g,b,alpha)
 					;it\name = "Cup of "+Input294
 					;EntityType(it\collider, HIT_ITEM)
 				Else
@@ -224,10 +224,10 @@ Function Update294()
 
 End Function
 
-Function UpdateEvent_hll_caf_2(e.Events)
+Function UpdateEvent_hll_caf_2(e.Event)
 	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
 
-	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
+	Local p.Particle, n.NPC, r.Room, e2.Event, it.Item, em.Emitter, sc.SecurityCam, sc2.SecurityCam
 
 	Local CurrTrigger$ = ""
 
@@ -243,7 +243,7 @@ Function UpdateEvent_hll_caf_2(e.Events)
 					DrawHandIcon = True
 					If (MouseHit1) Then
 						temp = True
-						For it = Each Items
+						For it = Each Item
 							If (it\picked=False) Then
 								If (EntityX(it\collider)-EntityX(e\room\objects[1],True)=0) Then
 									If (EntityZ(it\collider)-EntityZ(e\room\objects[1],True)=0) Then

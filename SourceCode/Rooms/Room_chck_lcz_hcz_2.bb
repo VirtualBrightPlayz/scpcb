@@ -1,5 +1,5 @@
-Function FillRoom_chck_lcz_hcz_2(r.Rooms)
-    Local d.Doors, d2.Doors, sc.SecurityCams, de.Decals, r2.Rooms, sc2.SecurityCams
+Function FillRoom_chck_lcz_hcz_2(r.Room)
+    Local d.Door, d2.Door, sc.SecurityCam, de.Decal, r2.Room, sc2.SecurityCam
 	Local i%
 	Local xtemp%, ytemp%, ztemp%
 
@@ -46,10 +46,10 @@ Function FillRoom_chck_lcz_hcz_2(r.Rooms)
 End Function
 
 
-Function UpdateEventCheckpoint(e.Events)
+Function UpdateEventCheckpoint(e.Event)
 	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
 
-	Local p.Particles, n.NPCs, r.Rooms, e2.Events, em.Emitters, sc.SecurityCams, sc2.SecurityCams
+	Local p.Particle, n.NPC, r.Room, e2.Event, em.Emitter, sc.SecurityCam, sc2.SecurityCam
 
 	Local CurrTrigger$ = ""
 
@@ -112,7 +112,7 @@ Function UpdateEventCheckpoint(e.Events)
 	EndIf
 
 	If (e\room\roomTemplate\name = "checkpoint2") Then
-		For e2 = Each Events
+		For e2 = Each Event
 			If (e2\name = "008") Then
 				If (e2\eventState = 2) Then
 					If (e\room\roomDoors[0]\locked) Then
@@ -130,7 +130,7 @@ Function UpdateEventCheckpoint(e.Events)
 			EndIf
 		Next
 	Else
-		For e2 = Each Events
+		For e2 = Each Event
 			If (e2\name = "room2sl") Then
 				If (e2\eventState3 = 0) Then
 					If (e\room\dist < 12) Then

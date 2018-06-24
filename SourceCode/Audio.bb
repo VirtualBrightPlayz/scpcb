@@ -377,7 +377,7 @@ Function LoadTempSound%(file$)
 	Return TempSound
 End Function
 
-Function LoadEventSound%(e.Events, file$, i%=0)
+Function LoadEventSound%(e.Event, file$, i%=0)
 	If (e\sounds[i] <> 0) Then
 		FreeSound(e\sounds[i])
 		e\sounds[i] = 0
@@ -388,7 +388,7 @@ Function LoadEventSound%(e.Events, file$, i%=0)
 End Function
 ; TODO: Rooms
 Function PauseSounds()
-	Local chn.SoundChannel, sc.SecurityCams, r.Rooms, e.Events, n.NPCs, em.Emitters, i%
+	Local chn.SoundChannel, sc.SecurityCam, r.Room, e.Event, n.NPC, em.Emitter, i%
 
 	For chn = Each SoundChannel
 		If (IsChannelPlaying(chn\internal)) Then
@@ -396,19 +396,19 @@ Function PauseSounds()
 		EndIf
 	Next
 
-	For sc = Each SecurityCams
+	For sc = Each SecurityCam
 		If (IsChannelPlaying(sc\soundCHN)) Then
 			PauseChannel(sc\soundCHN)
 		EndIf
 	Next
 
-	For r = Each Rooms
+	For r = Each Room
 		If (IsChannelPlaying(r\soundCHN)) Then
 			PauseChannel(r\soundCHN)
 		EndIf
 	Next
 
-	For e = Each Events
+	For e = Each Event
 		For i = 0 To EVENT_CHANNEL_COUNT-1
 			If (IsChannelPlaying(e\soundChannels[i])) Then
 				PauseChannel(e\soundChannels[i])
@@ -416,7 +416,7 @@ Function PauseSounds()
 		Next
 	Next
 
-	For n = Each NPCs
+	For n = Each NPC
 		For i = 0 To NPC_CHANNEL_COUNT-1
 			If (IsChannelPlaying(n\soundChannels[i])) Then
 				PauseChannel(n\soundChannels[i])
@@ -424,7 +424,7 @@ Function PauseSounds()
 		Next
 	Next
 
-	For em = Each Emitters
+	For em = Each Emitter
 		If (IsChannelPlaying(em\soundCHN)) Then
 			PauseChannel(em\soundCHN)
 		EndIf
@@ -436,7 +436,7 @@ Function PauseSounds()
 End Function
 
 Function ResumeSounds()
-	Local chn.SoundChannel, sc.SecurityCams, r.Rooms, e.Events, n.NPCs, em.Emitters, i%
+	Local chn.SoundChannel, sc.SecurityCam, r.Room, e.Event, n.NPC, em.Emitter, i%
 
 	For chn = Each SoundChannel
 		If (IsChannelPlaying(chn\internal)) Then
@@ -444,19 +444,19 @@ Function ResumeSounds()
 		EndIf
 	Next
 
-	For sc = Each SecurityCams
+	For sc = Each SecurityCam
 		If (IsChannelPlaying(sc\soundCHN)) Then
 			ResumeChannel(sc\soundCHN)
 		EndIf
 	Next
 
-	For r = Each Rooms
+	For r = Each Room
 		If (IsChannelPlaying(r\soundCHN)) Then
 			ResumeChannel(r\soundCHN)
 		EndIf
 	Next
 
-	For e = Each Events
+	For e = Each Event
 		For i = 0 To EVENT_CHANNEL_COUNT-1
 			If (IsChannelPlaying(e\soundChannels[i])) Then
 				ResumeChannel(e\soundChannels[i])
@@ -464,7 +464,7 @@ Function ResumeSounds()
 		Next
 	Next
 
-	For n = Each NPCs
+	For n = Each NPC
 		For i = 0 To NPC_CHANNEL_COUNT-1
 			If (IsChannelPlaying(n\soundChannels[i])) Then
 				ResumeChannel(n\soundChannels[i])
@@ -472,7 +472,7 @@ Function ResumeSounds()
 		Next
 	Next
 
-	For em = Each Emitters
+	For em = Each Emitter
 		If (IsChannelPlaying(em\soundCHN)) Then
 			ResumeChannel(em\soundCHN)
 		EndIf
@@ -485,7 +485,7 @@ End Function
 
 Function GetMaterialStepSound%(entity%)
     Local picker% = LinePick(EntityX(entity),EntityY(entity),EntityZ(entity),0,-1,0)
-	Local brush%, texture%, name$, mat.Materials
+	Local brush%, texture%, name$, mat.Material
 
     If (picker <> 0) Then
         If (GetEntityType(picker) <> HIT_MAP) Then Return 0
@@ -496,7 +496,7 @@ Function GetMaterialStepSound%(entity%)
             If (texture <> 0) Then
                 name = StripPath(TextureName(texture))
                 If (name <> "") Then FreeTexture(texture)
-                For mat.Materials = Each Materials
+                For mat.Material = Each Material
                     If (mat\name = name) Then
                         If (mat\stepSound > 0) Then
                             FreeBrush(brush)
@@ -511,7 +511,7 @@ Function GetMaterialStepSound%(entity%)
                 name = StripPath(TextureName(texture))
                 If (name <> "") Then FreeTexture(texture)
                 FreeBrush(brush)
-                For mat.Materials = Each Materials
+                For mat.Material = Each Material
                     If (mat\name = name) Then
                         If (mat\stepSound > 0) Then
                             Return mat\stepSound

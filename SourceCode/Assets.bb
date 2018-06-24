@@ -330,7 +330,7 @@ Function LoadEntities()
 End Function
 
 Function InitNewGame()
-	Local i%, de.Decals, d.Doors, it.Items, r.Rooms, sc.SecurityCams, e.Events, prop.Props
+	Local i%, de.Decal, d.Door, it.Item, r.Room, sc.SecurityCam, e.Event, prop.Prop
 
 	DrawLoading(45)
 
@@ -359,7 +359,7 @@ Function InitNewGame()
 	Curr106 = CreateNPC(NPCtype106, 0, -30.0, 0)
 	Curr106\state = 70 * 60 * Rand(12,17)
 
-	For d.Doors = Each Doors
+	For d.Door = Each Door
 		EntityParent(d\obj, 0)
 		If (d\obj2 > 0) Then EntityParent(d\obj2, 0)
 		If (d\frameobj > 0) Then EntityParent(d\frameobj, 0)
@@ -372,31 +372,31 @@ Function InitNewGame()
 		EndIf
 	Next
 
-	For it.Items = Each Items
+	For it.Item = Each Item
 		EntityType(it\collider, HIT_ITEM)
 		EntityParent(it\collider, 0)
 	Next
 
 	DrawLoading(80)
-	For sc.SecurityCams= Each SecurityCams
+	For sc.SecurityCam= Each SecurityCam
 		sc\angle = EntityYaw(sc\obj) + sc\angle
 		EntityParent(sc\obj, 0)
 	Next
 
-	For r.Rooms = Each Rooms
+	For r.Room = Each Room
 		For i = 0 To MaxRoomLights
 			If (r\lights[i]<>0) Then EntityParent(r\lights[i],0)
 		Next
 
 		If (Not r\roomTemplate\disableDecals) Then
 			If (Rand(4) = 1) Then
-				de.Decals = CreateDecal(Rand(2, 3), EntityX(r\obj)+Rnd(- 2,2), 0.003, EntityZ(r\obj)+Rnd(-2,2), 90, Rand(360), 0)
+				de.Decal = CreateDecal(Rand(2, 3), EntityX(r\obj)+Rnd(- 2,2), 0.003, EntityZ(r\obj)+Rnd(-2,2), 90, Rand(360), 0)
 				de\size = Rnd(0.1, 0.4) : ScaleSprite(de\obj, de\size, de\size)
 				EntityAlpha(de\obj, Rnd(0.85, 0.95))
 			EndIf
 
 			If (Rand(4) = 1) Then
-				de.Decals = CreateDecal(0, EntityX(r\obj)+Rnd(- 2,2), 0.003, EntityZ(r\obj)+Rnd(-2,2), 90, Rand(360), 0)
+				de.Decal = CreateDecal(0, EntityX(r\obj)+Rnd(- 2,2), 0.003, EntityZ(r\obj)+Rnd(-2,2), 90, Rand(360), 0)
 				de\size = Rnd(0.5, 0.7) : EntityAlpha(de\obj, 0.7) : de\id = 1 : ScaleSprite(de\obj, de\size, de\size)
 				EntityAlpha(de\obj, Rnd(0.7, 0.85))
 			EndIf
@@ -414,8 +414,8 @@ Function InitNewGame()
 
 	Next
 
-	Local rt.RoomTemplates
-	For rt.RoomTemplates = Each RoomTemplates
+	Local rt.RoomTemplate
+	For rt.RoomTemplate = Each RoomTemplate
 		If (rt\collisionObjs<>Null) Then
 			For i% = 0 To rt\collisionObjs\size-1
 				FreeEntity(GetIntArrayListElem(rt\collisionObjs,i))
@@ -428,7 +428,7 @@ Function InitNewGame()
 
 		If (rt\props<>Null) Then
 			For i% = 0 To rt\props\size-1
-				prop = Object.Props(GetIntArrayListElem(rt\props,i))
+				prop = Object.Prop(GetIntArrayListElem(rt\props,i))
 				FreeEntity(prop\obj)
 				Delete prop
 			Next
@@ -436,8 +436,8 @@ Function InitNewGame()
 		EndIf
 	Next
 
-	Local tw.TempWayPoints
-	For tw.TempWayPoints = Each TempWayPoints
+	Local tw.TempWaypoint
+	For tw.TempWaypoint = Each TempWaypoint
 		Delete tw
 	Next
 
@@ -448,7 +448,7 @@ Function InitNewGame()
 	If (SelectedMap = "") Then InitEvents()
 
 	;TODO: fix
-;	For e.Events = Each Events
+;	For e.Event = Each Event
 ;		If e\name = "room2nuke"
 ;			e\eventState = 1
 ;			DebugLog("room2nuke")
@@ -496,11 +496,11 @@ Function InitNewGame()
 End Function
 
 Function InitLoadGame()
-	Local d.Doors, sc.SecurityCams, rt.RoomTemplates, e.Events, prop.Props, planetex%, ch.Chunk
+	Local d.Door, sc.SecurityCam, rt.RoomTemplate, e.Event, prop.Prop, planetex%, ch.Chunk
 
 	DrawLoading(80)
 
-	For d.Doors = Each Doors
+	For d.Door = Each Door
 		EntityParent(d\obj, 0)
 		If (d\obj2 > 0) Then EntityParent(d\obj2, 0)
 		If (d\frameobj > 0) Then EntityParent(d\frameobj, 0)
@@ -509,7 +509,7 @@ Function InitLoadGame()
 
 	Next
 
-	For sc.SecurityCams = Each SecurityCams
+	For sc.SecurityCam = Each SecurityCam
 		sc\angle = EntityYaw(sc\obj) + sc\angle
 		EntityParent(sc\obj, 0)
 	Next
@@ -530,7 +530,7 @@ Function InitLoadGame()
 	mainPlayer\stamina = 100
 
 	Local i%, x#, z#
-	For rt.RoomTemplates = Each RoomTemplates
+	For rt.RoomTemplate = Each RoomTemplate
 		If (rt\collisionObjs<>Null) Then
 			For i% = 0 To rt\collisionObjs\size-1
 				FreeEntity(GetIntArrayListElem(rt\collisionObjs,i))
@@ -543,7 +543,7 @@ Function InitLoadGame()
 
 		If (rt\props<>Null) Then
 			For i% = 0 To rt\props\size-1
-				prop = Object.Props(GetIntArrayListElem(rt\props,i))
+				prop = Object.Prop(GetIntArrayListElem(rt\props,i))
 				FreeEntity(prop\obj)
 				Delete prop
 			Next
@@ -554,7 +554,7 @@ Function InitLoadGame()
 	mainPlayer\dropSpeed = 0.0
 
 	;TODO: Not load this at the start of the game jesus.
-	For e.Events = Each Events
+	For e.Event = Each Event
 		;Loading the necessary stuff for dimension1499, but this will only be done if the player is in this dimension already
 		If (e\name = "dimension1499") Then
 			If (e\eventState = 2) Then
@@ -604,8 +604,8 @@ End Function
 ;TODO: Go through this to fix memory leaks.
 Function NullGame()
 	Local i%, x%, y%, lvl%
-	Local itt.ItemTemplates, s.Screens, lt.LightTemplates, d.Doors, m.Materials
-	Local wp.WayPoints, twp.TempWayPoints, r.Rooms, it.Items
+	Local itt.ItemTemplate, s.Screen, lt.LightTemplate, d.Door, m.Material
+	Local wp.Waypoint, twp.TempWaypoint, r.Room, it.Item
 
 	DeloadInGameSounds(sndManager)
 
@@ -632,7 +632,7 @@ Function NullGame()
 		MTFroomState[i]=0
 	Next
 
-	For s.Screens = Each Screens
+	For s.Screen = Each Screen
 		If (s\img <> 0) Then
 			FreeImage(s\img)
 			s\img = 0
@@ -645,41 +645,41 @@ Function NullGame()
 	Msg = ""
 	MsgTimer = 0
 
-	Delete Each Doors
+	Delete Each Door
 
-	Delete Each LightTemplates
+	Delete Each LightTemplate
 
-	Delete Each Materials
+	Delete Each Material
 
-	Delete Each WayPoints
+	Delete Each WayPoint
 
-	Delete Each TempWayPoints
+	Delete Each TempWaypoint
 
-	For r.Rooms = Each Rooms
+	For r.Room = Each Room
 		DeleteIntArray(r\collisionObjs)
 		If (r\props<>Null) Then DeleteIntArray(r\props)
 		Delete r
 	Next
 	DeleteIntArray(MapRooms)
 
-	Delete Each RoomTemplates
+	Delete Each RoomTemplate
 
-	Local it.ItemTemplates
-	For it = Each ItemTemplates
+	Local it.ItemTemplate
+	For it = Each ItemTemplate
 		Delete it
 	Next
 
-	Local i.Items
-	For i = Each Items
+	Local i.Item
+	For i = Each Item
 		Delete i
 	Next
 
-	Delete Each Props
+	Delete Each Prop
 
-	Delete Each Decals
+	Delete Each Decal
 
-	Local n.NPCs
-	For n.NPCs = Each NPCs
+	Local n.NPC
+	For n.NPC = Each NPC
 		RemoveNPC(n)
 	Next
 	Curr173 = Null
@@ -689,16 +689,16 @@ Function NullGame()
 		MTFrooms[i]=Null
 	Next
 
-	Local e.Events
-	For e.Events = Each Events
+	Local e.Event
+	For e.Event = Each Event
 		RemoveEvent(e)
 	Next
 
-	Delete Each SecurityCams
+	Delete Each SecurityCam
 
-	Delete Each Emitters
+	Delete Each Emitter
 
-	Delete Each Particles
+	Delete Each Particle
 
 	For i = 0 To 5
 		If (IsChannelPlaying(RadioCHN(i))) Then StopChannel(RadioCHN(i))

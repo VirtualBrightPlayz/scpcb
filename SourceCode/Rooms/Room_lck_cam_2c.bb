@@ -1,6 +1,6 @@
-Function FillRoom_lck_cam_2c(r.Rooms)
-    Local d.Doors, d2.Doors, sc.SecurityCams, de.Decals, r2.Rooms, sc2.SecurityCams
-	Local it.Items, i%
+Function FillRoom_lck_cam_2c(r.Room)
+    Local d.Door, d2.Door, sc.SecurityCam, de.Decal, r2.Room, sc2.SecurityCam
+	Local it.Item, i%
 	Local xtemp%, ytemp%, ztemp%
 
 	Local t1%;, Bump
@@ -51,7 +51,7 @@ Function FillRoom_lck_cam_2c(r.Rooms)
     PositionEntity(sc\scrObj, r\x + 96.0 * RoomScale, 1.1, r\z - 668.0 * RoomScale)
     EntityParent(sc\scrObj, r\obj)
 
-    Local em.Emitters = CreateEmitter(r\x - 175.0 * RoomScale, 370.0 * RoomScale, r\z + 656.0 * RoomScale, 0)
+    Local em.Emitter = CreateEmitter(r\x - 175.0 * RoomScale, 370.0 * RoomScale, r\z + 656.0 * RoomScale, 0)
     TurnEntity(em\obj, 90, 0, 0, True)
     EntityParent(em\obj, r\obj)
     em\randAngle = 20
@@ -70,10 +70,10 @@ Function FillRoom_lck_cam_2c(r.Rooms)
     em\gravity = -0.24
 End Function
 
-Function UpdateEventLockroom173(e.Events)
+Function UpdateEventLockroom173(e.Event)
 	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
 
-	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
+	Local p.Particle, n.NPC, r.Room, e2.Event, it.Item, em.Emitter, sc.SecurityCam, sc2.SecurityCam
 
 	Local CurrTrigger$ = ""
 

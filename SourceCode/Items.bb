@@ -17,7 +17,7 @@ Const ITEMPICK_SOUND_MEDIUM% = 1
 Const ITEMPICK_SOUND_LARGE%  = 2
 Const ITEMPICK_SOUND_SMALL%  = 3
 
-Type ItemTemplates
+Type ItemTemplate
 	Field name$
 	Field invName$
 
@@ -39,7 +39,7 @@ Type ItemTemplates
 End Type
 
 Function CreateItemTemplate(file$, section$)
-	Local it.ItemTemplates = New ItemTemplates
+	Local it.ItemTemplate = New ItemTemplate
 	Local flags%
 
 	it\name = section
@@ -78,11 +78,11 @@ Function CreateItemTemplate(file$, section$)
 	Local slot$ = Lower(GetINIString(file, section, "slot"))
 	Select slot
 		Case "head"
-			it\bodySlot = WORNITEM_SLOT_HEAD
+			it\wornSlot = WORNITEM_SLOT_HEAD
 		Case "body"
-			it\bodySlot = WORNITEM_SLOT_BODY
+			it\wornSlot = WORNITEM_SLOT_BODY
 		Default
-			it\bodySlot = WORNITEM_SLOT_NONE
+			it\wornSlot = WORNITEM_SLOT_NONE
 	End Select
 
 	it\wornOnly = (GetINIInt(file, section, "wornonly") = 1)
@@ -102,8 +102,8 @@ Function CreateItemTemplate(file$, section$)
 	;Start loading the assets needed.
 
 	;Does another item already use that model?
-	Local it2.ItemTemplates
-	For it2 = Each ItemTemplates
+	Local it2.ItemTemplate
+	For it2 = Each ItemTemplate
 		If (it2\objPath = it\objPath And it2\obj <> 0) Then
 			it\obj = CopyEntity(it2\obj)
 			Exit
@@ -120,7 +120,7 @@ Function CreateItemTemplate(file$, section$)
 	EndIf
 
 	If (it\texPath <> "") Then
-		For it2 = Each ItemTemplates
+		For it2 = Each ItemTemplate
 			If (it2\texPath = it\texPath And it2\tex <> 0) Then
 				it\tex = it2\tex
 				Exit
@@ -138,7 +138,7 @@ Function CreateItemTemplate(file$, section$)
 	Local i%
 	For i=0 To 1
 		If (it\invImagePath[i] <> "") Then
-			For it2 = Each ItemTemplates
+			For it2 = Each ItemTemplate
 				If (it2\invImagePath[i] = it\invImagePath[i] And it2\invImage[i] <> 0) Then
 					it\invImage[i] = it2\invImage[i]
 					Exit
@@ -160,10 +160,10 @@ Function CreateItemTemplate(file$, section$)
 	HideEntity(it\obj)
 End Function
 
-Function FindItemTemplate.ItemTemplates(tempname$)
-	Local it.ItemTemplates = Null
-	Local candidate.ItemTemplates = Null
-	For it = Each ItemTemplates
+Function FindItemTemplate.ItemTemplate(tempname$)
+	Local it.ItemTemplate = Null
+	Local candidate.ItemTemplate = Null
+	For it = Each ItemTemplate
 		If (it\name = tempname) Then
 			candidate = it
 			Exit
@@ -175,7 +175,7 @@ End Function
 
 Function LoadItemTemplates(file$)
 	Local f% = OpenFile(file)
-	Local it.ItemTemplates
+	Local it.ItemTemplate
 	Local section$
 
 	While Not Eof(f)
@@ -192,11 +192,11 @@ End Function
 
 
 
-Type Items
+Type Item
 	Field name$
 	Field collider%
 	Field model%
-	Field template.ItemTemplates
+	Field template.ItemTemplate
 	Field img%
 	Field id%
 
@@ -225,7 +225,7 @@ End Type
 
 Const MAX_ITEM_COUNT% = 20
 Type Inventory
-	Field items.Items[MAX_ITEM_COUNT]
+	Field items.Item[MAX_ITEM_COUNT]
 	Field size% = 10
 	Field parent.Inventory = Null
 End Type
@@ -257,11 +257,11 @@ End Function
 
 Global LastItemID%
 
-Function CreateItem.Items(name$, x#, y#, z#, invSlots%=0)
-	Local i.Items = New Items
-	Local it.ItemTemplates
+Function CreateItem.Item(name$, x#, y#, z#, invSlots%=0)
+	Local i.Item = New Item
+	Local it.ItemTemplate
 
-	For it.ItemTemplates = Each ItemTemplates
+	For it = Each ItemTemplate
 		If (it\name = name) Then
 			i\template = it
 			i\collider = CreatePivot()
@@ -277,7 +277,7 @@ Function CreateItem.Items(name$, x#, y#, z#, invSlots%=0)
 	Next
 
 	If (i\template = Null) Then
-		RuntimeError("Item template not found ("+name+", "+tempname+")")
+		RuntimeError("Item template not found ("+name+")")
 	EndIf
 
 	ResetEntity(i\collider)
@@ -287,11 +287,11 @@ Function CreateItem.Items(name$, x#, y#, z#, invSlots%=0)
 	i\dropSpeed = 0.0
 
 	;TODO: Re-implement.
-	If (tempname="clipboard") And (invSlots=0) Then
-		invSlots = 20
-		SetAnimTime(i\model, 17.0)
-		i\invimg = i\template\invimg2 ;<-- this Future Mark.
-	EndIf
+;	If (tempname="clipboard") And (invSlots=0) Then
+;		invSlots = 20
+;		SetAnimTime(i\model, 17.0)
+;		i\invimg = i\template\invimg2 ;<-- this Future Mark.
+;	EndIf
 
 	i\subInventory = Null
 	If (invSlots>0) Then
@@ -305,14 +305,14 @@ Function CreateItem.Items(name$, x#, y#, z#, invSlots%=0)
 	Return i
 End Function
 
-Function CreatePaper.Items(name$, x#, y#, z#)
-	Local i.Items = CreateItem("paper", x, y, z, 0)
+Function CreatePaper.Item(name$, x#, y#, z#)
+	Local i.Item = CreateItem("paper", x, y, z, 0)
 	i\name = GetINIString("Data/Items/paper.ini", name, "name")
 
 	;Load the document image.
-	Local imgPath$ = GetImagePath("GFX/Items/Paper/Documents/" + i/name)
+	Local imgPath$ = GetImagePath("GFX/Items/Paper/Documents/" + i\name)
 	If (FileType(imgPath) <> 1) Then
-		imgPath$ = GetImagePath("GFX/Items/Paper/Notes/" + i/name)
+		imgPath = GetImagePath("GFX/Items/Paper/Notes/" + i\name)
 	EndIf
 
 	i\img = LoadImage(imgPath)
@@ -324,15 +324,15 @@ Function CreatePaper.Items(name$, x#, y#, z#)
 	img = ResizeImage2(img, texDim, texDim)
 
 	Local tex% = CreateTexture(texDim, texDim, 1+2+8)
-	CopyRect(0, 0, texDim, texDim, 0, 0, texDim, texDim, ImageBuffer(img), TextureBuffer(tex))
-	EntityTexture(i\obj, tex)
+	CopyRect(0, 0, texDim, texDim, 0, 0, ImageBuffer(img), TextureBuffer(tex))
+	EntityTexture(i\model, tex)
 	FreeImage(img)
 	FreeTexture(tex)
 
 	Return i
 End Function
 
-Function RemoveItem(i.Items)
+Function RemoveItem(i.Item)
 	If (i\subInventory<>Null) Then DeleteInventory(i\subInventory)
 
 	If (i\img <> 0) Then
@@ -348,9 +348,9 @@ End Function
 
 Global itemDistanceTimer% = 0
 Function UpdateItems()
-	Local n%, i.Items, i2.Items
+	Local n%, i.Item, i2.Item
 	Local xtemp#, ytemp#, ztemp#
-	Local temp%, np.NPCs
+	Local temp%, np.NPC
 
 	Local HideDist# = HideDistance*0.5
 	Local deletedItem% = False
@@ -358,7 +358,7 @@ Function UpdateItems()
 	Local ed#
 
 	mainPlayer\closestItem = Null
-	For i = Each Items
+	For i = Each Item
 		i\dropped = 0
 
 		If (Not i\picked) Then
@@ -392,7 +392,7 @@ Function UpdateItems()
 				EndIf
 
 				If (i\dist<HideDist*0.2) Then
-					For i2 = Each Items
+					For i2 = Each Item
 						If (i<>i2 And (Not i2\picked) And i2\dist<HideDist*0.2) Then
 
 							xtemp = (EntityX(i2\collider,True)-EntityX(i\collider,True))
@@ -444,9 +444,9 @@ Function UpdateItems()
 	EndIf
 End Function
 
-Function PickItem(item.Items)
+Function PickItem(item.Item)
 	Local n% = 0
-	Local e.Events
+	Local e.Event
 	Local z%
 
 	Select item\template\name
@@ -494,7 +494,7 @@ Function PickItem(item.Items)
 	EndIf
 End Function
 
-Function DropItem(item.Items,playDropSound%=True)
+Function DropItem(item.Item,playDropSound%=True)
 	Local player.Player
 	For player = Each Player
 		DeEquipItem(player,item)
@@ -524,7 +524,7 @@ Function DropItem(item.Items,playDropSound%=True)
 	Next
 End Function
 
-Function AssignTag(item.Items, tag$)
+Function AssignTag(item.Item, tag$)
 	If (HasTag(item, tag)) Then
 		Return
 	EndIf
@@ -544,7 +544,7 @@ Function AssignTag(item.Items, tag$)
 	EndIf
 End Function
 
-Function RemoveTag(item.Items, tag$)
+Function RemoveTag(item.Item, tag$)
 	Local found% = False
 	Local i%
 	For i=0 To 4
@@ -560,7 +560,7 @@ Function RemoveTag(item.Items, tag$)
 	EndIf
 End Function
 
-Function HasTag%(item.Items, tag$)
+Function HasTag%(item.Item, tag$)
 	Local i%
 	For i=0 To 4
 		If (item\tags[i] = tag) Then
@@ -572,7 +572,7 @@ Function HasTag%(item.Items, tag$)
 End Function
 
 Function IsPlayerWearingTempName%(player.Player,templateName$)
-	Local it.ItemTemplates = FindItemTemplate(templateName)
+	Local it.ItemTemplate = FindItemTemplate(templateName)
 	If (it=Null) Then Return False
 	Local slot% = it\wornSlot
 	If (slot=WORNITEM_SLOT_NONE) Then Return False
@@ -580,7 +580,7 @@ Function IsPlayerWearingTempName%(player.Player,templateName$)
 	Return (player\wornItems[slot]\template\name=templateName)
 End Function
 
-Function IsPlayerWearingItem%(player.Player,item.Items)
+Function IsPlayerWearingItem%(player.Player,item.Item)
 	If (item = Null) Then
 		Return False
 	EndIf
@@ -590,14 +590,14 @@ Function IsPlayerWearingItem%(player.Player,item.Items)
 	Return (player\wornItems[slot] = item)
 End Function
 
-Function EquipItem(player.Player, item.Items)
+Function EquipItem(player.Player, item.Item)
 	If (item=Null) Then Return
 	If (item\template\wornSlot = WORNITEM_SLOT_NONE) Then Return
 
 	player\wornItems[item\template\invSlot] = item
 End Function
 
-Function DeEquipItem(player.Player,item.Items)
+Function DeEquipItem(player.Player,item.Item)
 	If (item = Null) Then
 		Return
 	EndIf
@@ -629,7 +629,7 @@ Function UpdateInventory(player.Player)
 	Local PrevInvOpen% = (CurrGameState=GAMESTATE_INVENTORY)
 	Local mouseSlot% = 66
 
-	Local np.NPCs, e.Events, it.Items
+	Local np.NPC, e.Event, it.Item
 
 	Local x%, y%, isMouseOn%, i%
 
@@ -859,7 +859,7 @@ Function ChangeRadioChannel(newChn%)
 End Function
 
 
-Function UpdateRadio(i.Items)
+Function UpdateRadio(i.Item)
 	Select radio\currChn
 		Case 0 ;-nothing
 			;TODO: something?

@@ -1,4 +1,4 @@
-Function InitializeNPCtype066(n.NPCs)
+Function InitializeNPCtype066(n.NPC)
     n\nvName = "SCP-066"
     n\collider = CreatePivot()
     EntityRadius(n\collider, 0.2)
@@ -11,8 +11,8 @@ Function InitializeNPCtype066(n.NPCs)
     n\speed = (GetINIFloat("Data/NPCs.ini", "SCP-066", "speed") / 100.0)
 End Function
 
-Function UpdateNPCtype066(n.NPCs)
-	Local w.WayPoints, de.Decals, d.Doors
+Function UpdateNPCtype066(n.NPC)
+	Local w.Waypoint, de.Decal, d.Door
 	Local angle#
 
     Select n\state
@@ -25,7 +25,7 @@ Function UpdateNPCtype066(n.NPCs)
                 ;Animate2(n\obj, AnimTime(n\obj), 451, 612, 0.2, True)
 
                 If (n\state2 < TimeInPosMilliSecs()) Then
-                    For w = Each WayPoints
+                    For w = Each WayPoint
                         ;If (w\door = Null) Then ;TODO: fix?
 						If (Abs(EntityX(w\obj,True)-EntityX(n\collider))<4.0) Then
 							If (Abs(EntityZ(w\obj,True)-EntityZ(n\collider))<4.0) Then
@@ -88,7 +88,7 @@ Function UpdateNPCtype066(n.NPCs)
                             Case 2
                                 n\state3 = Rand(700,1400)
                             Case 3
-                                For d = Each Doors
+                                For d = Each Door
                                     If (d\locked = False And d\keyCard = 0 And d\code = "") Then
                                         If (Abs(EntityX(d\frameobj)-EntityX(n\collider))<16.0) Then
                                             If (Abs(EntityZ(d\frameobj)-EntityZ(n\collider))<16.0) Then

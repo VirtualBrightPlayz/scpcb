@@ -1,4 +1,4 @@
-Function InitializeNPCtype096(n.NPCs)
+Function InitializeNPCtype096(n.NPC)
     n\nvName = "SCP-096"
     n\collider = CreatePivot()
     EntityRadius(n\collider, 0.3)
@@ -14,8 +14,8 @@ Function InitializeNPCtype096(n.NPCs)
     MeshCullBox (n\obj, -MeshWidth(n\obj)*2, -MeshHeight(n\obj)*2, -MeshDepth(n\obj)*2, MeshWidth(n\obj)*2, MeshHeight(n\obj)*4, MeshDepth(n\obj)*4)
 End Function
 
-Function UpdateNPCtype096(n.NPCs)
-	Local angle#, i%, pvt%, de.Decals
+Function UpdateNPCtype096(n.NPC)
+	Local angle#, i%, pvt%, de.Decal
 	Local dist2#
 
     Select n\state

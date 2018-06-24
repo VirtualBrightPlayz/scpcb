@@ -1,9 +1,9 @@
 
 
-Function UpdateEvent_hll_plain_4(e.Events)
+Function UpdateEvent_hll_plain_4(e.Event)
 	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
 
-	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
+	Local p.Particle, n.NPC, r.Room, e2.Event, it.Item, em.Emitter, sc.SecurityCam, sc2.SecurityCam
 
 	Local CurrTrigger$ = ""
 
@@ -15,7 +15,7 @@ Function UpdateEvent_hll_plain_4(e.Events)
 	If (e\eventState < TimeInPosMilliSecs()) Then
 		If (mainPlayer\currRoom <> e\room) Then
 			If (Distance(EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider),EntityX(e\room\obj),EntityZ(e\room\obj))<16.0) Then
-				For n = Each NPCs
+				For n = Each NPC
 					If (n\npcType = NPCtype049) Then
 						If (n\state = 2 And EntityDistance(mainPlayer\collider,n\collider)>16.0) Then
 							TFormVector(368, 528, 176, e\room\obj, 0)

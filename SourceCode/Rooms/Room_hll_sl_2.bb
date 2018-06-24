@@ -1,9 +1,9 @@
-Function FillRoom_hll_sl_2(r.Rooms)
+Function FillRoom_hll_sl_2(r.Room)
     
 End Function
 
 
-Function UpdateEvent_hll_sl_2(e.Events)
+Function UpdateEvent_hll_sl_2(e.Event)
 	
 End Function
 

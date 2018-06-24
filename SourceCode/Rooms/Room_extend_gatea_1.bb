@@ -1,6 +1,6 @@
-Function FillRoom_extend_gatea_1(r.Rooms)
-    Local d.Doors, d2.Doors, sc.SecurityCams, de.Decals, r2.Rooms, sc2.SecurityCams
-	Local it.Items, i%
+Function FillRoom_extend_gatea_1(r.Room)
+    Local d.Door, d2.Door, sc.SecurityCam, de.Decal, r2.Room, sc2.SecurityCam
+	Local it.Item, i%
 	Local xtemp%, ytemp%, ztemp%
 
 	Local t1%;, Bump
@@ -34,7 +34,7 @@ Function FillRoom_extend_gatea_1(r.Rooms)
     PositionEntity(d2\buttons[1], r\x-1584.0*RoomScale, EntityY(d2\buttons[0],True), r\z + 4232.0*RoomScale, True)
     RotateEntity(d2\buttons[1], 0, 90, 0, True)
 
-    For r2 = Each Rooms
+    For r2 = Each Room
         If (r2\roomTemplate\name = "exit1") Then
             r\objects[1]=r2\objects[1]
             r\objects[2]=r2\objects[2]
@@ -105,10 +105,10 @@ Function FillRoom_extend_gatea_1(r.Rooms)
     PositionEntity(r\objects[15], r\x-3568.0*RoomScale, -1089.0*RoomScale, r\z+4944.0*RoomScale, True)
 End Function
 
-Function UpdateEvent_extend_gatea_1(e.Events)
+Function UpdateEvent_extend_gatea_1(e.Event)
 	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
 
-	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams, de.Decals
+	Local p.Particle, n.NPC, r.Room, e2.Event, it.Item, em.Emitter, sc.SecurityCam, sc2.SecurityCam, de.Decal
 
 	Local CurrTrigger$ = ""
 
@@ -118,7 +118,7 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 
 	;[Block]
 	If (mainPlayer\currRoom = e\room) Then
-		For r = Each Rooms
+		For r = Each Room
 			HideEntity(r\obj)
 		Next
 		ShowEntity(e\room\obj)
@@ -162,7 +162,7 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 
 			DrawLoading(60)
 
-			For n = Each NPCs
+			For n = Each NPC
 				If (n\npcType = NPCtypeMTF) Then Delete n
 			Next
 

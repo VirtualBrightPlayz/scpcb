@@ -6,7 +6,7 @@ Const STATEGUARD_DEAD%             = 4
 
 ;AnimateNPC(n, 923, 1071, 0.2) ; IDLE STATE
 
-Function InitializeNPCtypeGuard(n.NPCs)
+Function InitializeNPCtypeGuard(n.NPC)
     n\nvName = "Humen"
     n\collider = CreatePivot()
     EntityRadius(n\collider, 0.2)
@@ -22,13 +22,13 @@ Function InitializeNPCtypeGuard(n.NPCs)
     MeshCullBox(n\obj, -MeshWidth(n\obj), -MeshHeight(n\obj), -MeshDepth(n\obj), MeshWidth(n\obj)*2, MeshHeight(n\obj)*2, MeshDepth(n\obj)*2)
 End Function
 
-Function UpdateNPCtypeGuard(n.NPCs)
+Function UpdateNPCtypeGuard(n.NPC)
 	Local dist#
 
 	Local head%
 	Local headangle#
 	Local pvt%
-	Local p.Particles
+	Local p.Particle
 
     Local prevFrame# = n\frame
 

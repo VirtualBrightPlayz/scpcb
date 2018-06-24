@@ -8,7 +8,7 @@ Const STATE106_CONTAINED%       = 5
 Type Data106
 End Type
 
-Function InitializeNPCtype106(n.NPCs)
+Function InitializeNPCtype106(n.NPC)
     n\nvName = "SCP-106"
     n\collider = CreatePivot()
     EntityRadius(n\collider, 0.2)
@@ -45,13 +45,13 @@ Function InitializeNPCtype106(n.NPCs)
     n\timer = Rand(22000, 27000)
 End Function
 
-Function UpdateNPCtype106(n.NPCs)
+Function UpdateNPCtype106(n.NPC)
     Local dist# = EntityDistance(n\collider, mainPlayer\collider)
     Local dist2#
     Local visible%
     Local prevFrame#
 
-	Local de.Decals
+	Local de.Decal
 
     Select n\state
         Case STATE106_RISE

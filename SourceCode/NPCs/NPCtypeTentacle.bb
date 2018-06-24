@@ -1,10 +1,10 @@
-Function InitializeNPCtypeTentacle(n.NPCs)
+Function InitializeNPCtypeTentacle(n.NPC)
     n\nvName = "Unidentified"
 
     n\collider = CreatePivot()
 
-	Local n2.NPCs
-    For n2 = Each NPCs
+	Local n2.NPC
+    For n2 = Each NPC
         If (n\npcType = n2\npcType And n<>n2) Then
             n\obj = CopyEntity(n2\obj)
             Exit
@@ -23,7 +23,7 @@ Function InitializeNPCtypeTentacle(n.NPCs)
     SetAnimTime(n\obj, 283)
 End Function
 
-Function UpdateNPCtypeTentacle(n.NPCs)
+Function UpdateNPCtypeTentacle(n.NPC)
     If (n\playerDistance < 8.0) Then
 
         Select n\state

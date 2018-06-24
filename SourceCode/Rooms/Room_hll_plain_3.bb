@@ -1,7 +1,7 @@
-Function UpdateEvent106victim(e.Events)
+Function UpdateEvent106victim(e.Event)
 	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%, tex%
 
-	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams, de.Decals
+	Local p.Particle, n.NPC, r.Room, e2.Event, it.Item, em.Emitter, sc.SecurityCam, sc2.SecurityCam, de.Decal
 
 	Local CurrTrigger$ = ""
 

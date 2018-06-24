@@ -120,8 +120,8 @@ End Function
 ;-------------------------------------------------------------------------------------------------------
 
 ;TODO: rewrite elevator code, use only one function
-Function UpdateElevators#(state#, door1.Doors, door2.Doors, room1%, room2%, event.Events)
-	Local x#, z#, n.NPCs, NPC_inside.NPCs
+Function UpdateElevators#(state#, door1.Door, door2.Door, room1%, room2%, event.Event)
+	Local x#, z#, n.NPC, NPC_inside.NPC
 
 	door1\isElevatorDoor = 1
 	door2\isElevatorDoor = 1
@@ -174,7 +174,7 @@ Function UpdateElevators#(state#, door1.Doors, door2.Doors, room1%, room2%, even
 				EndIf
 			EndIf
 
-			For n = Each NPCs
+			For n = Each NPC
 				If (n\canUseElevator) Then
 					If (Abs(EntityX(n\collider)-EntityX(room1,True))<280.0*RoomScale) Then
 						If (Abs(EntityZ(n\collider)-EntityZ(room1,True))<280.0*RoomScale) Then
@@ -246,7 +246,7 @@ Function UpdateElevators#(state#, door1.Doors, door2.Doors, room1%, room2%, even
 				EndIf
 			EndIf
 
-			For n = Each NPCs
+			For n = Each NPC
 				If (n\canUseElevator) Then
 					If (Abs(EntityX(n\collider)-EntityX(room2,True))<280.0*RoomScale) Then
 						If (Abs(EntityZ(n\collider)-EntityZ(room2,True))<280.0*RoomScale) Then
@@ -310,7 +310,7 @@ Function UpdateElevators#(state#, door1.Doors, door2.Doors, room1%, room2%, even
 
 End Function
 
-Function UpdateElevators2#(State#, door1.Doors, door2.Doors, room1%, room2%, event.Events)
+Function UpdateElevators2#(State#, door1.Door, door2.Door, room1%, room2%, event.Event)
 	Local x#, z#
 
 	door1\isElevatorDoor = 1
@@ -458,10 +458,10 @@ End Function
 Type ElevatorObj
 	Field obj%
 	Field inFacility%
-	Field door.Doors
+	Field door.Door
 End Type
 
-Function AssignElevatorObj.ElevatorObj(obj%,door.Doors,in_facility%)
+Function AssignElevatorObj.ElevatorObj(obj%,door.Door,in_facility%)
 	Local eo.ElevatorObj = New ElevatorObj
 
 	eo\obj = obj

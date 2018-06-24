@@ -1,11 +1,11 @@
-Function InitializeNPCtypeZombie(n.NPCs)
+Function InitializeNPCtypeZombie(n.NPC)
     n\nvName = "Human"
     n\collider = CreatePivot()
     EntityRadius(n\collider, 0.2)
     EntityType(n\collider, HIT_PLAYER)
 
-	Local n2.NPCs
-    For n2 = Each NPCs
+	Local n2.NPC
+    For n2 = Each NPC
         If (n\npcType = n2\npcType And n<>n2) Then
             n\obj = CopyEntity(n2\obj)
             Exit
@@ -31,7 +31,7 @@ Function InitializeNPCtypeZombie(n.NPCs)
     n\hp = 100
 End Function
 
-Function UpdateNPCtypeZombie(n.NPCs)
+Function UpdateNPCtypeZombie(n.NPC)
 	Local prevFrame# = n\frame
 
     If (Abs(EntityY(mainPlayer\collider)-EntityY(n\collider))<4.0) Then

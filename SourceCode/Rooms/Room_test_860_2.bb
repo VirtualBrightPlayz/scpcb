@@ -1,6 +1,6 @@
-Function FillRoom_test_860_2(r.Rooms)
-    Local d.Doors, d2.Doors, sc.SecurityCams, de.Decals, r2.Rooms, sc2.SecurityCams
-	Local it.Items, i%
+Function FillRoom_test_860_2(r.Room)
+    Local d.Door, d2.Door, sc.SecurityCam, de.Decal, r2.Room, sc2.SecurityCam
+	Local it.Item, i%
 	Local xtemp%, ytemp%, ztemp%
 
 	Local t1%;, Bump
@@ -50,10 +50,10 @@ Function FillRoom_test_860_2(r.Rooms)
 End Function
 
 
-Function UpdateEvent_test_860_2(e.Events)
+Function UpdateEvent_test_860_2(e.Event)
 	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
 
-	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
+	Local p.Particle, n.NPC, r.Room, e2.Event, it.Item, em.Emitter, sc.SecurityCam, sc2.SecurityCam
 
 	Local CurrTrigger$ = ""
 
@@ -500,7 +500,7 @@ Function GenForestGrid(fr.Forest)
 
 End Function
 
-Function PlaceForest(fr.Forest,x#,y#,z#,r.Rooms)
+Function PlaceForest(fr.Forest,x#,y#,z#,r.Room)
 	;local variables
 	Local tx%,ty%
 	Local tile_size#=12.0
@@ -510,7 +510,7 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Rooms)
 	Local tempf1#,tempf2#,tempf3#
 	Local i%, angle%
 	Local itemPlaced%[4]
-	Local it.Items
+	Local it.Item
 	Local width%
 	Local tempf4#
 	Local lx%, ly%, d%, frame%
@@ -659,11 +659,11 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Rooms)
 
 				If (tile_type > 0) Then
 					;2, 5, 8
-					it.Items = Null
+					it.Item = Null
 					If ((ty Mod 3)=2 And itemPlaced[Floor(ty/3)]=False) Then
 						itemPlaced[Floor(ty/3)]=True
 						;TODO: Rename the files.
-						;it.Items = CreateItem("Log #"+Int(Floor(ty/3)+1), "paper", 0,0.5,0)
+						;it.Item = CreateItem("Log #"+Int(Floor(ty/3)+1), "paper", 0,0.5,0)
 						EntityType(it\collider, HIT_ITEM)
 						EntityParent(it\collider, tile_entity)
 					EndIf

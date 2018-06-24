@@ -1,10 +1,10 @@
-Function FillRoom_hll_fan_2(r.Rooms)
-    Local d.Doors, d2.Doors, sc.SecurityCams, de.Decals, r2.Rooms, sc2.SecurityCams
-	Local it.Items, i%
+Function FillRoom_hll_fan_2(r.Room)
+    Local d.Door, d2.Door, sc.SecurityCam, de.Decal, r2.Room, sc2.SecurityCam
+	Local it.Item, i%
 	Local xtemp%, ytemp%, ztemp%
 
 	Local t1%;, Bump
-    For r2 = Each Rooms
+    For r2 = Each Room
         If (r2<>r) Then
             If (r2\roomTemplate\name = "room2_2") Then
                 r\objects[0] = CopyEntity(r2\objects[0]) ;don't load the mesh again
@@ -19,10 +19,10 @@ Function FillRoom_hll_fan_2(r.Rooms)
 End Function
 
 
-Function UpdateEventRoom2fan(e.Events)
+Function UpdateEventRoom2fan(e.Event)
 	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
 
-	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
+	Local p.Particle, n.NPC, r.Room, e2.Event, it.Item, em.Emitter, sc.SecurityCam, sc2.SecurityCam
 
 	Local CurrTrigger$ = ""
 

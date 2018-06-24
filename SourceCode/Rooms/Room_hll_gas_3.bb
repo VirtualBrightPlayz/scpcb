@@ -1,6 +1,6 @@
-Function FillRoom_hll_gas_3(r.Rooms)
-    Local d.Doors, d2.Doors, sc.SecurityCams, de.Decals, r2.Rooms, sc2.SecurityCams, em.Emitters
-	Local it.Items, i%
+Function FillRoom_hll_gas_3(r.Room)
+    Local d.Door, d2.Door, sc.SecurityCam, de.Decal, r2.Room, sc2.SecurityCam, em.Emitter
+	Local it.Item, i%
 	Local xtemp%, ytemp%, ztemp%
 
 	Local t1%;, Bump
@@ -26,10 +26,10 @@ Function FillRoom_hll_gas_3(r.Rooms)
 End Function
 
 
-Function UpdateEventRoom3pitduck(e.Events)
+Function UpdateEventRoom3pitduck(e.Event)
 	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%, tex%
 
-	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
+	Local p.Particle, n.NPC, r.Room, e2.Event, it.Item, em.Emitter, sc.SecurityCam, sc2.SecurityCam
 
 	Local CurrTrigger$ = ""
 
@@ -69,10 +69,10 @@ End Function
 
 
 
-Function UpdateEventRoom3pit1048(e.Events)
+Function UpdateEventRoom3pit1048(e.Event)
 	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%, tex%, brush%
 
-	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, itt.ItemTemplates, em.Emitters, sc.SecurityCams, sc2.SecurityCams
+	Local p.Particle, n.NPC, r.Room, e2.Event, it.Item, itt.ItemTemplate, em.Emitter, sc.SecurityCam, sc2.SecurityCam
 
 	Local CurrTrigger$ = ""
 
@@ -89,7 +89,7 @@ Function UpdateEventRoom3pit1048(e.Events)
 
 			imgPath = "GFX/items/1048/1048_"+Str(Rand(1,20))+".jpg"
 			
-			For itt = Each ItemTemplates
+			For itt = Each ItemTemplate
 				If (itt\name = "Drawing") Then
 					If (itt\img<>0) Then FreeImage(itt\img)
 					itt\img = LoadImage(imgPath)

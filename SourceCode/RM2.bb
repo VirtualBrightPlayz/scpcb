@@ -33,7 +33,7 @@ Function ReadByteString$(stream%)
 	Return retVal
 End Function
 
-Function LoadRM2(rt.RoomTemplates)
+Function LoadRM2(rt.RoomTemplate)
 	Local fullFilename$ = rt\objPath
 
 	Local opaqueMesh% = CreateMesh()
@@ -79,7 +79,7 @@ Function LoadRM2(rt.RoomTemplates)
 	Local brush%
 	Local textureIndex%[2]
 	Local layerCount%
-	Local mat.Materials
+	Local mat.Material
 	Local surf%
 	Local x#
 	Local y#
@@ -95,7 +95,7 @@ Function LoadRM2(rt.RoomTemplates)
 	Local j%
 
 	Local tempScreen.TempScreens
-	Local waypointTemp.TempWayPoints
+	Local waypointTemp.TempWaypoint
 
 	Local range#
 	Local intensity#
@@ -107,7 +107,7 @@ Function LoadRM2(rt.RoomTemplates)
 	Local innerConeAngle#
 	Local outerConeAngle#
 
-	Local lightTemplate.LightTemplates
+	Local lightTemplate.LightTemplate
 
 	Local ambienceInd%
 
@@ -115,7 +115,7 @@ Function LoadRM2(rt.RoomTemplates)
 	Local xScale#
 	Local yScale#
 	Local zScale#
-    Local prop.Props
+    Local prop.Prop
 
 	Local prevType%
 	While Not Eof(file)
@@ -170,7 +170,7 @@ Function LoadRM2(rt.RoomTemplates)
 				For i = 0 To 1
 					mat = Null
 					If (textureIndex[i]>0) Then
-						mat = Object.Materials(GetIntArrayListElem(usedTextures,textureIndex[i]-1))
+						mat = Object.Material(GetIntArrayListElem(usedTextures,textureIndex[i]-1))
 					EndIf
 					If (mat<>Null) Then
 						If (brush=0) Then brush = CreateBrush(255,255,255)
@@ -276,7 +276,7 @@ Function LoadRM2(rt.RoomTemplates)
 				;[End Block]
 			Case RM2_WAYPOINT
 				;[Block]
-				waypointTemp = New TempWayPoints
+				waypointTemp = New TempWaypoint
 				waypointTemp\x = ReadFloat(file)
 				waypointTemp\y = ReadFloat(file)
 				waypointTemp\z = ReadFloat(file)

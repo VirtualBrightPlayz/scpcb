@@ -1,6 +1,6 @@
-Function FillRoom_lck_ez_3(r.Rooms)
-    Local d.Doors, d2.Doors, sc.SecurityCams, de.Decals, r2.Rooms, sc2.SecurityCams
-    Local it.Items, i%
+Function FillRoom_lck_ez_3(r.Room)
+    Local d.Door, d2.Door, sc.SecurityCam, de.Decal, r2.Room, sc2.SecurityCam
+    Local it.Item, i%
     Local xtemp%, ytemp%, ztemp%
 
     Local t1%;, Bump
@@ -29,7 +29,7 @@ Function FillRoom_lck_ez_3(r.Rooms)
     PositionEntity(r\objects[0],r\x-48.0*RoomScale,128.0*RoomScale,r\z+320.0*RoomScale)
     EntityParent(r\objects[0],r\obj)
 
-    For r2 = Each Rooms
+    For r2 = Each Room
         If (r2<>r) Then
             If (r2\roomTemplate\name = "room3gw") Then
                 r\objects[3] = CopyEntity(r2\objects[3],r\obj) ;don't load the mesh again

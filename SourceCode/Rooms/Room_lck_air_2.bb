@@ -1,6 +1,6 @@
-Function FillRoom_lck_air_2(r.Rooms)
-    Local d.Doors, d2.Doors, sc.SecurityCams, de.Decals, r2.Rooms, sc2.SecurityCams
-    Local it.Items, i%
+Function FillRoom_lck_air_2(r.Room)
+    Local d.Door, d2.Door, sc.SecurityCam, de.Decal, r2.Room, sc2.SecurityCam
+    Local it.Item, i%
     Local xtemp%, ytemp%, ztemp%
 
     Local t1%;, Bump
@@ -28,7 +28,7 @@ Function FillRoom_lck_air_2(r.Rooms)
     r\roomDoors[1]\dir = 0 : r\roomDoors[1]\autoClose = False	: r\roomDoors[1]\open = True  : r\roomDoors[1]\locked = True
     r\roomDoors[1]\mtfClose = False
 
-    For r2 = Each Rooms
+    For r2 = Each Room
         If (r2<>r) Then
             If (r2\roomTemplate\name = "lck_air_2" Or r2\roomTemplate\name = "lck_air_broke_2") Then
                 r\objects[3] = CopyEntity(r2\objects[3],r\obj) ;don't load the mesh again
@@ -72,10 +72,10 @@ Function FillRoom_lck_air_2(r.Rooms)
 End Function
 
 
-Function UpdateEventRoom_gw(e.Events)
+Function UpdateEventRoom_gw(e.Event)
 	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
 
-	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
+	Local p.Particle, n.NPC, r.Room, e2.Event, it.Item, em.Emitter, sc.SecurityCam, sc2.SecurityCam
 
 	Local CurrTrigger$ = ""
 
@@ -205,10 +205,10 @@ End Function
 
 
 
-Function UpdateEventRoom2gw_b(e.Events)
+Function UpdateEventRoom2gw_b(e.Event)
 	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
 
-	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
+	Local p.Particle, n.NPC, r.Room, e2.Event, it.Item, em.Emitter, sc.SecurityCam, sc2.SecurityCam
 
 	Local CurrTrigger$ = ""
 

@@ -2,7 +2,7 @@ Const STATE049_IDLE%     = 0
 Const STATE049_ATTACK%   = 1
 Const STATE049_ROAMING%  = 2
 
-Function InitializeNPCtype049(n.NPCs)
+Function InitializeNPCtype049(n.NPC)
     n\nvName = "SCP-049"
     n\collider = CreatePivot()
 
@@ -27,9 +27,9 @@ Function InitializeNPCtype049(n.NPCs)
     ;If (HorrorSFX(13)=0) Then HorrorSFX(13)=LoadSound("SFX/Music/049Chase.ogg") ;TODO: implement
 End Function
 
-Function UpdateNPCtype049(n.NPCs)
+Function UpdateNPCtype049(n.NPC)
     Local prevFrame# = n\frame
-	Local r.Rooms, e.Events
+	Local r.Room, e.Event
 	Local npcDetectsPlayer%
 	Local dist2#, temp%
 
@@ -72,7 +72,7 @@ Function UpdateNPCtype049(n.NPCs)
 					If (mainPlayer\currRoom\roomTemplate\name$ = "room049") Then
 						DeathMSG = "Three (3) active instances of SCP-049-2 discovered in the tunnel outside SCP-049's containment chamber. Terminated by Nine-Tailed Fox."
 
-						For e = Each Events
+						For e = Each Event
 							If (e\name = "room049") Then
 								e\eventState=-1 : Exit
 							EndIf
@@ -303,7 +303,7 @@ Function UpdateNPCtype049(n.NPCs)
 						Else
 							If (n\inFacility = True) Then
 								If (Rand(2)=1) Then
-									For r = Each Rooms
+									For r = Each Room
 										If (EntityDistance(r\obj,n\collider)<12.0 And EntityDistance(r\obj,n\collider)>4.0) Then
 											n\pathStatus = FindPath(n,EntityX(r\obj),EntityY(r\obj),EntityZ(r\obj))
 											Exit

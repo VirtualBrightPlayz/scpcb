@@ -1,9 +1,9 @@
 Const EVENT_MAX_STATE_COUNT% = 5
 Const EVENT_SOUND_COUNT% = 5
 Const EVENT_CHANNEL_COUNT% = 2
-Type Events
+Type Event
 	Field name$
-	Field room.Rooms
+	Field room.Room
 
 	Field eventState#, eventState2#, eventState3#
 
@@ -18,7 +18,7 @@ Type Events
 	Field overwriteMusic%
 End Type
 
-Function CreateEvent.Events(eventname$, roomname$, id%, prob# = 0.0)
+Function CreateEvent.Event(eventname$, roomname$, id%, prob# = 0.0)
 	;roomname = the name of the room(s) you want the event to be assigned to
 
 	;the id-variable determines which of the rooms the event is assigned to,
@@ -29,13 +29,13 @@ Function CreateEvent.Events(eventname$, roomname$, id%, prob# = 0.0)
 	;1.0 means that the event is assigned to every room
 	;the id-variable is ignored if prob <> 0.0
 
-	Local i% = 0, temp%, e.Events, e2.Events, r.Rooms
+	Local i% = 0, temp%, e.Event, e2.Event, r.Room
 
 	If (prob = 0.0) Then
-		For r.Rooms = Each Rooms
+		For r.Room = Each Room
 			If (roomname = "" Or roomname = r\roomTemplate\name) Then
 				temp = False
-				For e2.Events = Each Events
+				For e2.Event = Each Event
 					If (e2\room = r) Then
 						temp = True : Exit
 					EndIf
@@ -43,7 +43,7 @@ Function CreateEvent.Events(eventname$, roomname$, id%, prob# = 0.0)
 
 				i=i+1
 				If (i >= id And temp = False) Then
-					e.Events = New Events
+					e.Event = New Events
 					e\name = eventname
 					e\room = r
 					Return e
@@ -51,17 +51,17 @@ Function CreateEvent.Events(eventname$, roomname$, id%, prob# = 0.0)
 			EndIf
 		Next
 	Else
-		For r.Rooms = Each Rooms
+		For r.Room = Each Room
 			If (roomname = "" Or roomname = r\roomTemplate\name) Then
 				temp = False
-				For e2.Events = Each Events
+				For e2.Event = Each Event
 					If (e2\room = r) Then
 						temp = True : Exit
 					EndIf
 				Next
 
 				If (Rnd(0.0, 1.0) < prob And temp = False) Then
-					e.Events = New Events
+					e.Event = New Events
 					e\name = eventname
 					e\room = r
 				EndIf
@@ -72,7 +72,7 @@ Function CreateEvent.Events(eventname$, roomname$, id%, prob# = 0.0)
 	Return Null
 End Function
 
-Function RemoveEvent(e.Events)
+Function RemoveEvent(e.Event)
 	Local i%
 	For i = 0 To EVENT_SOUND_COUNT-1
 		If (e\sounds[i] <> 0) Then
@@ -94,7 +94,7 @@ Function RemoveEvent(e.Events)
 End Function
 
 Function InitEvents()
-	Local e.Events
+	Local e.Event
 
 	CreateEvent("evt_intro", "roomintro", 0)
 	CreateEvent("evt_cont_173", "cont_173_1", 0)
@@ -247,7 +247,7 @@ End Function
 Function UpdateEvents()
 	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
 
-	Local p.Particles, n.NPCs, r.Rooms, e.Events, e2.Events, em.Emitters, sc.SecurityCams, sc2.SecurityCams
+	Local p.Particle, n.NPC, r.Room, e.Event, e2.Event, em.Emitter, sc.SecurityCam, sc2.SecurityCam
 
 	Local CurrTrigger$ = ""
 
@@ -259,7 +259,7 @@ Function UpdateEvents()
 
 	UpdateRooms()
 
-    For e.Events = Each Events
+    For e.Event = Each Event
 		; Does the event have music to play?
 		If (e\overwriteMusic) Then
 			SetNextMusicTrack(e\musicTrack)
@@ -417,7 +417,7 @@ Function UpdateEvents()
 				mainPlayer\blinkTimer = 1.0
 				PlaySound2(LoadTempSound("SFX/Ending/GateB/Nuke2.ogg"))
 				For i = 0 To 40
-					p.Particles = CreateParticle(EntityX(mainPlayer\collider)+Rnd(-0.5,0.5),EntityY(mainPlayer\collider)-Rnd(0.2,1.5),EntityZ(mainPlayer\collider)+Rnd(-0.5,0.5),0, Rnd(0.2,0.6), 0.0, 350)
+					p.Particle = CreateParticle(EntityX(mainPlayer\collider)+Rnd(-0.5,0.5),EntityY(mainPlayer\collider)-Rnd(0.2,1.5),EntityZ(mainPlayer\collider)+Rnd(-0.5,0.5),0, Rnd(0.2,0.6), 0.0, 350)
 					RotateEntity(p\pvt,-90,0,0,True)
 					p\speed = Rnd(0.05,0.07)
 				Next

@@ -1,4 +1,4 @@
-Function InitializeNPCtype860(n.NPCs)
+Function InitializeNPCtype860(n.NPC)
     n\nvName = "Unidentified"
 
     n\collider = CreatePivot()
@@ -27,7 +27,7 @@ Function InitializeNPCtype860(n.NPCs)
     MeshCullBox (n\obj, -MeshWidth(n\obj)*2, -MeshHeight(n\obj)*2, -MeshDepth(n\obj)*2, MeshWidth(n\obj)*2, MeshHeight(n\obj)*4, MeshDepth(n\obj)*4)
 End Function
 
-Function UpdateNPCtype860(n.NPCs)
+Function UpdateNPCtype860(n.NPC)
 	Local x%, z%, x2%, z2%, pvt%
 	Local prevFrame%, angle#, temp%
 	Local fr.Forest
@@ -311,7 +311,7 @@ Function UpdateNPCtype860(n.NPCs)
 End Function
 
 ;TODO: Move to 860 creature file.
-Function Find860Angle#(n.NPCs, fr.Forest)
+Function Find860Angle#(n.NPC, fr.Forest)
 	TFormPoint(EntityX(mainPlayer\collider),EntityY(mainPlayer\collider),EntityZ(mainPlayer\collider),0,mainPlayer\currRoom\obj)
 	Local playerx% = Int(Floor((TFormedX()*RoomScale+6.0)/12.0))
 	Local playerz% = Int(Floor((TFormedZ()*RoomScale+6.0)/12.0))

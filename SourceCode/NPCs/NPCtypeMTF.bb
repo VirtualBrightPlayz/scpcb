@@ -1,6 +1,6 @@
-Global MTFtimer#, MTFrooms.Rooms[10], MTFroomState%[10]
+Global MTFtimer#, MTFrooms.Room[10], MTFroomState%[10]
 
-Function InitializeNPCtypeMTF(n.NPCs)
+Function InitializeNPCtypeMTF(n.NPC)
     n\nvName = "Human"
     n\collider = CreatePivot()
     EntityRadius(n\collider, 0.2)
@@ -8,8 +8,8 @@ Function InitializeNPCtypeMTF(n.NPCs)
     EntityType(n\collider, HIT_PLAYER)
     ;EntityPickMode(n\collider, 1)
 
-	Local n2.NPCs
-	For n2 = Each NPCs
+	Local n2.NPC
+	For n2 = Each NPC
 		If (n2\npcType = n\npcType And n2\obj <> 0) Then
 			n\obj = CopyEntity(n2\obj)
 			Exit
@@ -38,9 +38,9 @@ Function InitializeNPCtypeMTF(n.NPCs)
         MTFSFX(6)=LoadSound("SFX/Character/MTF/Breath.ogg")
     EndIf
 
-	Local r.Rooms
+	Local r.Room
     If (MTFrooms[6]=Null) Then
-        For r = Each Rooms
+        For r = Each Room
             Select Lower(r\roomTemplate\name)
                 Case "room106"
                     MTFrooms[0]=r
@@ -61,13 +61,13 @@ Function InitializeNPCtypeMTF(n.NPCs)
     EndIf
 End Function
 
-Function UpdateNPCtypeMTF(n.NPCs)
+Function UpdateNPCtypeMTF(n.NPC)
 	Local x#,y#,z#, tmp%
-	Local r.Rooms
+	Local r.Room
 	Local prevDist#,newDist#, prev%
-	Local n2.NPCs
+	Local n2.NPC
 
-	Local p.Particles, target%, dist#, dist2#, wp.WayPoints
+	Local p.Particle, target%, dist#, dist2#, wp.Waypoint
 	Local foundChamber%
 	Local pvt%, temp%, soundVol173#, angle#, curr173Dist#, tempDist#
 
@@ -116,7 +116,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 						n\pathStatus = FindPath(n,EntityX(n\mtfLeader\collider,True),EntityY(n\mtfLeader\collider,True)+0.1,EntityZ(n\mtfLeader\collider,True)) ;whatever you say boss
 					Else ;i am the leader
 						If (Curr173\idle<>2) Then
-							For r = Each Rooms
+							For r = Each Room
 								If (((Abs(r\x-EntityX(n\collider,True))>12.0) Or (Abs(r\z-EntityZ(n\collider,True))>12.0)) And (Rand(1,Int(Max(4-Int(Abs(r\z-EntityZ(n\collider,True)/8.0)),2)))=1)) Then
 									x = r\x
 									y = 0.1
@@ -134,7 +134,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 							EndIf
 
 							If (Not tmp) Then
-								For r = Each Rooms
+								For r = Each Room
 									If (r\roomTemplate\name$ = "start") Then
 										foundChamber = False
 										pvt = CreatePivot()
@@ -433,7 +433,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 					EndIf
 				EndIf
 
-				For n2 = Each NPCs
+				For n2 = Each NPC
 					If (n2\npcType = NPCtype049) Then
 						If (OtherNPCSeesMeNPC(n2,n)) Then
 							If (EntityVisible(n\collider,n2\collider)) Then
@@ -525,7 +525,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 							EndIf
 						EndIf
 
-						For n2 = Each NPCs
+						For n2 = Each NPC
 							If (n2\npcType = NPCtypeMTF And n2 <> n) Then
 								If (n2\state = 0) Then
 									If (EntityDistance(n\collider,n2\collider)<6.0) Then
@@ -657,7 +657,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 								EndIf
 								FinishWalking(n,488,522,n\speed*26)
 								If (Rand(1,35)=1) Then
-									For wp = Each WayPoints
+									For wp = Each WayPoint
 										If (Rand(1,3)=1) Then
 											If (EntityDistance(wp\obj,n\collider)<6.0) Then
 												n\enemyX = EntityX(wp\obj,True)
@@ -775,7 +775,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 					EndIf
 				EndIf
 
-				For n2 = Each NPCs
+				For n2 = Each NPC
 					If (n2\npcType = NPCtype049) Then
 						If (OtherNPCSeesMeNPC(n2,n)) Then
 							If (EntityVisible(n\collider,n2\collider)) Then
@@ -833,7 +833,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
                 If (Curr173\idle = 2) Then
 					n\state = 0
                 Else
-					For n2 = Each NPCs
+					For n2 = Each NPC
 						If (n2<>n) Then
 							If (n2\npcType = NPCtypeMTF) Then
 								n2\state = 2
@@ -993,7 +993,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 							dist2 = EntityDistance(n\collider,n\path[n\pathLocation]\obj)
 
 							;If (Rand(5)=1) Then
-							;	For n2.NPCs = Each NPCs
+							;	For n2.NPC = Each NPC
 							;		If (n2\npctype = n\npcType And n2<>n) Then
 							;			If (EntityDistance(n\collider, n2\collider)<2) Then
 							;				n\idle = 150
@@ -1109,7 +1109,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 						If (n\mtfLeader<>Null) Then
 							n\pathStatus = FindPath(n,EntityX(n\mtfLeader\collider,True),EntityY(n\mtfLeader\collider,True)+0.1,EntityZ(n\mtfLeader\collider,True))
 						Else
-							For r = Each Rooms
+							For r = Each Room
 								If (((Abs(r\x-EntityX(n\collider,True))>12.0) Or (Abs(r\z-EntityZ(n\collider,True))>12.0)) And (Rand(1,Int(Max(4-Int(Abs(r\z-EntityZ(n\collider,True)/8.0)),2)))=1)) Then
 									If (EntityDistance(r\obj,n\target\collider)>6.0) Then
 										x = r\x
@@ -1220,7 +1220,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 						;
 						;	If (WrapAngle(EntityYaw(pvt)-EntityYaw(n\collider))<5) Then
 						;		PlayRangedSound(GunshotSFX, mainPlayer\cam, n\collider, 20)
-						;		p.Particles = CreateParticle(EntityX(n\obj, True), EntityY(n\obj, True), EntityZ(n\obj, True), 1, 0.2, 0.0, 5)
+						;		p.Particle = CreateParticle(EntityX(n\obj, True), EntityY(n\obj, True), EntityZ(n\obj, True), 1, 0.2, 0.0, 5)
 						;		PositionEntity(p\pvt, EntityX(pvt), EntityY(pvt), EntityZ(pvt))
 						;
 						;		n\reload = 7
@@ -1309,7 +1309,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 					If (n\mtfLeader<>Null) Then ;i'll follow the leader
 						n\pathStatus = FindPath(n,EntityX(n\mtfLeader\collider,True),EntityY(n\mtfLeader\collider,True)+0.1,EntityZ(n\mtfLeader\collider,True)) ;whatever you say boss
 					Else ;i am the leader
-						For r = Each Rooms
+						For r = Each Room
 							If (((Abs(r\x-EntityX(n\collider,True))>12.0) Or (Abs(r\z-EntityZ(n\collider,True))>12.0)) And (Rand(1,Int(Max(4-Int(Abs(r\z-EntityZ(n\collider,True)/8.0)),2)))=1)) Then
 								x = r\x
 								y = 0.1
@@ -1578,7 +1578,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 					TranslateEntity(n\collider, Cos(EntityYaw(n\collider,True)-45)* 0.01 * timing\tickDuration, 0, Sin(EntityYaw(n\collider,True)-45)* 0.01 * timing\tickDuration, True)
 				EndIf
 			Else
-				For n2 = Each NPCs
+				For n2 = Each NPC
 					If (n2<>n And n2\isDead=False) Then
 						If (Abs(DeltaYaw(n\collider,n2\collider))<80.0) Then
 							If (EntityDistance(n\collider,n2\collider)<0.7) Then
@@ -1607,16 +1607,16 @@ End Function
 Function UpdateMTF()
 	If (mainPlayer\currRoom\roomTemplate\name = "gateaentrance") Then Return
 
-	Local r.Rooms, n.NPCs, leader.NPCs
+	Local r.Room, n.NPC, leader.NPC
 	Local dist#, i%
-	Local entrance.Rooms
+	Local entrance.Room
 
 	;mtf ei vielä spawnannut, spawnataan jos pelaaja menee tarpeeksi lähelle gate b:tä
 	If (MTFtimer = 0) Then
 		If (Rand(30)=1 And mainPlayer\currRoom\roomTemplate\name$ <> "dimension1499") Then
 
 			entrance = Null
-			For r = Each Rooms
+			For r = Each Room
 				If (Lower(r\roomTemplate\name) = "gateaentrance") Then
 					entrance = r : Exit
 				EndIf

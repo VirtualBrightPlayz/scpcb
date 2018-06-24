@@ -1,6 +1,6 @@
-Function FillRoom_scp_970_2(r.Rooms)
-    Local d.Doors, d2.Doors, sc.SecurityCams, de.Decals, r2.Rooms, sc2.SecurityCams
-	Local it.Items, i%
+Function FillRoom_scp_970_2(r.Room)
+    Local d.Door, d2.Door, sc.SecurityCam, de.Decal, r2.Room, sc2.SecurityCam
+	Local it.Item, i%
 	Local xtemp%, ytemp%, ztemp%
 
 	Local t1%;, Bump
@@ -30,10 +30,10 @@ Function FillRoom_scp_970_2(r.Rooms)
 End Function
 
 
-Function UpdateEvent_scp_970_2(e.Events)
+Function UpdateEvent_scp_970_2(e.Event)
 	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%, tex%
 
-	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, it2.Items, itt.ItemTemplates, em.Emitters, sc.SecurityCams, sc2.SecurityCams, de.Decals
+	Local p.Particle, n.NPC, r.Room, e2.Event, it.Item, it2.Item, itt.ItemTemplate, em.Emitter, sc.SecurityCam, sc2.SecurityCam, de.Decal
 
 	Local CurrTrigger$ = ""
 
@@ -51,7 +51,7 @@ Function UpdateEvent_scp_970_2(e.Events)
 				e\room\roomDoors[1]\locked = True
 				e\room\roomDoors[4]\locked = True
 			Else
-				For n = Each NPCs
+				For n = Each NPC
 					If (n\npcType = NPCtypeMTF) Then
 						If (EntityDistance(mainPlayer\collider, Curr173\obj)<8.0) Then
 							e\room\roomDoors[1]\locked = True
@@ -128,7 +128,7 @@ Function UpdateEvent_scp_970_2(e.Events)
 
 			e\eventState=e\eventState+1;Rand(1,2)
 
-			For it = Each Items
+			For it = Each Item
 				If (EntityDistance(it\collider,mainPlayer\collider)<5.0) Then
 
 					TFormPoint(EntityX(it\collider),EntityY(it\collider),EntityZ(it\collider),0,e\room\obj)
@@ -159,7 +159,7 @@ Function UpdateEvent_scp_970_2(e.Events)
 						If (mainPlayer\inventory\items[i]<> Null) Then
 							If (mainPlayer\inventory\items[i]\template\name = "paper") Then
 								RemoveItem(mainPlayer\inventory\items[i])
-								For itt = Each ItemTemplates
+								For itt = Each ItemTemplate
 									If (itt\name = "paper" And Rand(6)=1) Then
 										mainPlayer\inventory\items[i] = CreateItem(itt\name, itt\name, 1,1,1)
 										HideEntity(mainPlayer\inventory\items[i]\collider)
@@ -235,7 +235,7 @@ Function UpdateEvent_scp_970_2(e.Events)
 			EndIf
 
 			;If (Abs(TFormedX())<264) Then
-			For it = Each Items
+			For it = Each Item
 				If ((it\dropped=1 And Abs(TFormedX())<264) Or it\dropped=-1) Then
 					;DebugLog("dropping/picking: "+it\dropped+" - "+EntityX(it\collider)+", "+EntityY(it\collider)+", "+EntityZ(it\collider))
 
@@ -250,7 +250,7 @@ Function UpdateEvent_scp_970_2(e.Events)
 							EntityType(it2\collider, HIT_ITEM)
 						Next
 					Else
-						For it2 = Each Items
+						For it2 = Each Item
 							If (it2<>it And it2\dist < 15.0) Then
 
 								TFormPoint(EntityX(it2\collider),EntityY(it2\collider),EntityZ(it2\collider),0,e\room\obj)

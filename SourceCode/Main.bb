@@ -282,7 +282,7 @@ Global AmbientLightRoomTex%, AmbientLightRoomVal%
 Global NTF_1499PrevX#
 Global NTF_1499PrevY#
 Global NTF_1499PrevZ#
-Global NTF_1499PrevRoom.Rooms
+Global NTF_1499PrevRoom.Room
 Global NTF_1499X#
 Global NTF_1499Y#
 Global NTF_1499Z#
@@ -576,7 +576,7 @@ Function UpdateGame()
 ;					PositionEntity(SoundEmitter, EntityX(mainPlayer\cam) + Rnd(-1.0, 1.0), 0.0, EntityZ(mainPlayer\cam) + Rnd(-1.0, 1.0))
 ;
 ;					If mainPlayer\currRoom\roomTemplate\name = "room860"
-;						For e.Events = Each Events
+;						For e.Event = Each Event
 ;							If e\name = "room860"
 ;								If (e\eventState = 1.0) Then
 ;									PositionEntity(SoundEmitter, EntityX(mainPlayer\cam) + Rnd(-1.0, 1.0), 30.0, EntityZ(mainPlayer\cam) + Rnd(-1.0, 1.0))
@@ -941,7 +941,7 @@ End Function
 ;
 ;
 ;	Local x,y,width,height, temp
-;	Local itt.ItemTemplates, r.Rooms
+;	Local itt.ItemTemplate, r.Room
 ;
 ;	Select Lower(SelectedEnding)
 ;		Case "b2", "a1"
@@ -1017,13 +1017,13 @@ End Function
 ;					y = y+122*MenuScale
 ;
 ;					Local roomamount = 0, roomsfound = 0
-;					For r.Rooms = Each Rooms
+;					For r.Room = Each Room
 ;						roomamount = roomamount + 1
 ;						roomsfound = roomsfound + r\found
 ;					Next
 ;
 ;					Local docamount=0, docsfound=0
-;					For itt.ItemTemplates = Each ItemTemplates
+;					For itt.ItemTemplate = Each ItemTemplate
 ;						If (itt\name = "paper") Then
 ;							docamount=docamount+1
 ;							docsfound=docsfound+itt\found
@@ -1230,11 +1230,11 @@ Function DrawGUI()
 	Local x2#,y2#,z2#
 	Local n%, xtemp%, ytemp%, strtemp$, width%, height%
 
-	Local e.Events, ev.Events, it.Items, npc.NPCs, offset%, buttonObj%, pvt%, projY#, scale#
+	Local e.Event, ev.Event, it.Item, npc.NPC, offset%, buttonObj%, pvt%, projY#, scale#
 
 	;TODO: Re-implement.
 ;	If (mainPlayer\currRoom\roomTemplate\name = "pocketdimension") Then
-;		For e.Events = Each Events
+;		For e.Event = Each Event
 ;			If (e\room = mainPlayer\currRoom And e\eventState > 600) Then
 ;				If (mainPlayer\blinkTimer < -3 And mainPlayer\blinkTimer > -11) Then
 ;					If (e\img = 0) Then
@@ -1358,7 +1358,7 @@ Function DrawGUI()
 			Text(x - 50, 150, "Room: " + mainPlayer\currRoom\roomTemplate\name)
 
 
-			For ev.Events = Each Events
+			For ev.Event = Each Event
 				If (ev\room = mainPlayer\currRoom) Then
 					Text(x - 50, 170, "Room event: " + ev\name)
 					Text(x - 50, 190, "state: " + ev\eventState)
@@ -1382,7 +1382,7 @@ Function DrawGUI()
 			Text(x - 50, 490, "SCP - 106 State: " + Curr106\state)
 			offset% = 0
 
-			For npc.NPCs = Each NPCs
+			For npc.NPC = Each NPC
 				If (npc\npcType = NPCtype096) Then
 					Text(x - 50, 510, "SCP - 096 Position: (" + f2s(EntityX(npc\obj), 3) + ", " + f2s(EntityY(npc\obj), 3) + ", " + f2s(EntityZ(npc\obj), 3) + ")")
 					Text(x - 50, 530, "SCP - 096 Idle: " + npc\idle)
@@ -1522,7 +1522,7 @@ End Function
 
 Function UpdatePauseMenu()
 	Local x%, y%, z%, width%, height%
-	Local r.Rooms, achvXImg%, scale#, separationConst%, imgSize%
+	Local r.Room, achvXImg%, scale#, separationConst%, imgSize%
 
 	If (CurrGameState = GAMESTATE_PAUSED) Then
 		width = ImageWidth(uiAssets\pauseMenuBG)
@@ -1568,7 +1568,7 @@ Function UpdatePauseMenu()
 
 						UpdateRooms()
 
-						For r.Rooms = Each Rooms
+						For r.Room = Each Room
 							x = Abs(EntityX(mainPlayer\collider) - EntityX(r\obj))
 							z = Abs(EntityZ(mainPlayer\collider) - EntityZ(r\obj))
 
@@ -1620,7 +1620,7 @@ Function UpdatePauseMenu()
 
 					UpdateRooms()
 
-					For r.Rooms = Each Rooms
+					For r.Room = Each Room
 						x = Abs(EntityX(mainPlayer\collider) - EntityX(r\obj))
 						z = Abs(EntityZ(mainPlayer\collider) - EntityZ(r\obj))
 
@@ -1704,7 +1704,7 @@ Function Animate2#(entity%, curr#, start%, quit%, speed#, loop%=True)
 End Function
 
 Function UpdateInfect()
-	Local temp#, i%, r.Rooms, tex%, de.Decals, p.Particles
+	Local temp#, i%, r.Room, tex%, de.Decal, p.Particle
 
 	If (mainPlayer\infect008>0) Then
 		ShowEntity(mainPlayer\overlays[OVERLAY_008])
@@ -1741,7 +1741,7 @@ Function UpdateInfect()
 			ElseIf (mainPlayer\infect008 =>91.5) Then
 				mainPlayer\blinkTimer = Max(Min(-10*(mainPlayer\infect008-91.5),mainPlayer\blinkTimer),-10)
 				If (mainPlayer\infect008 >= 92.7 And temp < 92.7) Then
-					For r.Rooms = Each Rooms
+					For r.Room = Each Room
 						If (r\roomTemplate\name="008") Then
 							PositionEntity(mainPlayer\collider, EntityX(r\objects[7],True),EntityY(r\objects[7],True),EntityZ(r\objects[7],True),True)
 							ResetEntity(mainPlayer\collider)
@@ -1787,7 +1787,7 @@ Function UpdateInfect()
 					DeathMSG = DeathMSG + "SCP-008 infection was confirmed, after which the body was incinerated."
 
 					Kill(mainPlayer)
-					de.Decals = CreateDecal(3, EntityX(mainPlayer\currRoom\npc[0]\collider), 544*RoomScale + 0.01, EntityZ(mainPlayer\currRoom\npc[0]\collider),90,Rnd(360),0)
+					de.Decal = CreateDecal(3, EntityX(mainPlayer\currRoom\npc[0]\collider), 544*RoomScale + 0.01, EntityZ(mainPlayer\currRoom\npc[0]\collider),90,Rnd(360),0)
 					de\size = 0.8
 					ScaleSprite(de\obj, de\size,de\size)
 				ElseIf (mainPlayer\overlays[OVERLAY_008] > 96) Then
@@ -1807,7 +1807,7 @@ Function UpdateInfect()
 				EndIf
 
 				If (Rand(50)=1) Then
-					p.Particles = CreateParticle(EntityX(mainPlayer\currRoom\npc[0]\collider),EntityY(mainPlayer\currRoom\npc[0]\collider),EntityZ(mainPlayer\currRoom\npc[0]\collider), 5, Rnd(0.05,0.1), 0.15, 200)
+					p.Particle = CreateParticle(EntityX(mainPlayer\currRoom\npc[0]\collider),EntityY(mainPlayer\currRoom\npc[0]\collider),EntityZ(mainPlayer\currRoom\npc[0]\collider), 5, Rnd(0.05,0.1), 0.15, 200)
 					p\speed = 0.01
 					p\sizeChange = 0.01
 					p\a = 0.5
@@ -1830,7 +1830,7 @@ End Function
 
 ;--------------------------------------- decals -------------------------------------------------------
 ;TODO: Move to their own file?
-Type Decals
+Type Decal
 	Field obj%
 	Field sizeChange#, size#, maxSize#
 	Field alphaChange#, alpha#
@@ -1845,8 +1845,8 @@ Type Decals
 	Field pitch#, yaw#, roll#
 End Type
 
-Function CreateDecal.Decals(id%, x#, y#, z#, pitch#, yaw#, roll#)
-	Local d.Decals = New Decals
+Function CreateDecal.Decal(id%, x#, y#, z#, pitch#, yaw#, roll#)
+	Local d.Decal = New Decals
 
 	d\x = x
 	d\y = y
@@ -1878,8 +1878,8 @@ End Function
 Function UpdateDecals()
 	Local angle#, temp#
 
-	Local d.Decals, d2.Decals
-	For d.Decals = Each Decals
+	Local d.Decal, d2.Decal
+	For d.Decal = Each Decal
 		If (d\sizeChange <> 0) Then
 			d\size=d\size + d\sizeChange * timing\tickDuration
 			ScaleSprite(d\obj, d\size, d\size)
@@ -1889,7 +1889,7 @@ Function UpdateDecals()
 					If (d\timer <= 0) Then
 						angle# = Rand(360)
 						temp# = Rnd(d\size)
-						d2.Decals = CreateDecal(1, EntityX(d\obj) + Cos(angle) * temp, EntityY(d\obj) - 0.0005, EntityZ(d\obj) + Sin(angle) * temp, EntityPitch(d\obj), Rnd(360), EntityRoll(d\obj))
+						d2.Decal = CreateDecal(1, EntityX(d\obj) + Cos(angle) * temp, EntityY(d\obj) - 0.0005, EntityZ(d\obj) + Sin(angle) * temp, EntityPitch(d\obj), Rnd(360), EntityRoll(d\obj))
 						d2\size = Rnd(0.1, 0.5) : ScaleSprite(d2\obj, d2\size, d2\size)
 						;TODO: fix
 						;PlayRangedSound(DecaySFX(Rand(1, 3)), mainPlayer\cam, d2\obj, 10.0, Rnd(0.1, 0.5))
@@ -1932,7 +1932,7 @@ Function Graphics3DExt%(width%,height%,depth%=32,mode%=2)
 End Function
 
 Function UpdateNVG()
-	Local wornItem.Items = mainPlayer\wornItems[WORNITEM_SLOT_HEAD]
+	Local wornItem.Item = mainPlayer\wornItems[WORNITEM_SLOT_HEAD]
 
 	If (wornItem <> Null) Then
 		If (wornItem\template\name <> "nvgoggles" And wornItem\template\name <> "supernv") Then
@@ -1948,7 +1948,7 @@ End Function
 
 Function RenderWorld2()
 	Local k%, l%, decayMultiplier# = 1.0, temp%, temp2%, dist#, yawvalue#, xvalue#
-	Local np.NPCs
+	Local np.NPC
 
 	CameraProjMode(ark_blur_cam,0)
 	CameraProjMode(mainPlayer\cam,1)
@@ -1970,7 +1970,7 @@ Function RenderWorld2()
 	Local hasBattery% = 2
 	Local power% = 0
 
-	Local wornItem.Items = mainPlayer\wornItems[WORNITEM_SLOT_HEAD]
+	Local wornItem.Item = mainPlayer\wornItems[WORNITEM_SLOT_HEAD]
 
     If (wornItem<>Null) Then
 		If (wornItem\template\name <> "nvgoggles" And wornItem\template\name <> "supernv") Then
@@ -2008,7 +2008,7 @@ Function RenderWorld2()
 			;NVTimer=NVTimer-timing\tickDuration
 
 			;If (NVTimer<=0.0) Then
-			For np.NPCs = Each NPCs
+			For np.NPC = Each NPC
 				np\nvX = EntityX(np\collider,True)
 				np\nvY = EntityY(np\collider,True)
 				np\nvZ = EntityZ(np\collider,True)
@@ -2035,7 +2035,7 @@ Function RenderWorld2()
 
 			Color(255,255,255);*(NVTimer/600.0))
 
-			For np.NPCs = Each NPCs
+			For np.NPC = Each NPC
 				If (np\nvName<>"") Then ;don't waste your time if the string is empty
 					PositionEntity(temp2,np\nvX,np\nvY,np\nvZ)
 					dist# = EntityDistance(temp2,mainPlayer\collider)

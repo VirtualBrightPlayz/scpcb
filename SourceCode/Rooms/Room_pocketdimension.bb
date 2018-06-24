@@ -1,6 +1,6 @@
-Function FillRoom_pocketdimension(r.Rooms)
-    Local d.Doors, d2.Doors, sc.SecurityCams, de.Decals, r2.Rooms, sc2.SecurityCams
-    Local it.Items, i%
+Function FillRoom_pocketdimension(r.Room)
+    Local d.Door, d2.Door, sc.SecurityCam, de.Decal, r2.Room, sc2.SecurityCam
+    Local it.Item, i%
     Local xtemp%, ytemp%, ztemp%, angle#, safe%
 
     Local t1%;, Bump
@@ -44,7 +44,7 @@ Function FillRoom_pocketdimension(r.Rooms)
         ;		b = GetSurfaceBrush( sf )
         ;		t = GetBrushTexture(b,1)
         ;		texname$ =  StripPath(TextureName(t))
-        ;		mat.Materials=GetCache(texname)
+        ;		mat.Material=GetCache(texname)
         ;		If (mat<>Null) Then
         ;			If (mat\bump<>0) Then
         ;				t1 = GetBrushTexture(b,0)
@@ -158,10 +158,10 @@ Function FillRoom_pocketdimension(r.Rooms)
 End Function
 
 
-Function UpdateEvent_pocketdimension(e.Events)
+Function UpdateEvent_pocketdimension(e.Event)
 	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
 
-	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams, de.Decals
+	Local p.Particle, n.NPC, r.Room, e2.Event, it.Item, em.Emitter, sc.SecurityCam, sc2.SecurityCam, de.Decal
 
 	Local CurrTrigger$ = ""
 
@@ -441,7 +441,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 
 							If (temp < 130*RoomScale) Then
 
-								For r = Each Rooms
+								For r = Each Room
 									If (r\roomTemplate\name = "room2_3") Then
 										e\eventState = 0
 										e\eventState2 = 0
@@ -475,7 +475,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 					mainPlayer\blurTimer = 500
 					mainPlayer\blurTimer = 1500
 					PositionEntity(mainPlayer\collider, EntityX(e\room\obj,True), 0.4, EntityX(e\room\obj,True))
-					For r = Each Rooms
+					For r = Each Room
 						If (r\roomTemplate\name = "room106") Then
 							e\eventState = 0
 							e\eventState2 = 0
@@ -553,7 +553,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 						ResetEntity(mainPlayer\collider)
 					Case 16,17,18,19
 						mainPlayer\blurTimer = 1500
-						For r = Each Rooms
+						For r = Each Room
 							If (r\roomTemplate\name = "tunnel") Then
 								e\eventState = 0
 								e\eventState2 = 0

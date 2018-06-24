@@ -1,11 +1,11 @@
-Function FillRoom_hll_dirty_3(r.Rooms)
-    Local d.Doors, d2.Doors, sc.SecurityCams, de.Decals, r2.Rooms, sc2.SecurityCams
-    Local it.Items, i%
+Function FillRoom_hll_dirty_3(r.Room)
+    Local d.Door, d2.Door, sc.SecurityCam, de.Decal, r2.Room, sc2.SecurityCam
+    Local it.Item, i%
     Local xtemp%, ytemp%, ztemp%
 
     Local t1%;, Bump
 
-    For r2 = Each Rooms
+    For r2 = Each Room
         If (r2\roomTemplate\name = r\roomTemplate\name And r2 <> r) Then
             r\objects[0] = CopyEntity(r2\objects[0],r\obj)
             Exit

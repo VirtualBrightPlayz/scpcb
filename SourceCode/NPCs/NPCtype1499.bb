@@ -1,11 +1,11 @@
-Function InitializeNPCtype1499(n.NPCs)
+Function InitializeNPCtype1499(n.NPC)
     n\nvName = "Unidentified"
     n\collider = CreatePivot()
     EntityRadius(n\collider, 0.2)
     EntityType(n\collider, HIT_PLAYER)
 
-	Local n2.NPCs
-    For n2 = Each NPCs
+	Local n2.NPC
+    For n2 = Each NPC
         If ((n\npcType = n2\npcType) And (n<>n2)) Then
             n\obj = CopyEntity(n2\obj)
             Exit
@@ -24,16 +24,16 @@ Function InitializeNPCtype1499(n.NPCs)
     EntityFX(n\obj,1)
 End Function
 
-Function UpdateNPCtype1499(n.NPCs)
+Function UpdateNPCtype1499(n.NPC)
     ;n\state: Current State of the NPC
     ;n\state2: A second state variable (dependend on the current NPC's n\state)
 
-	Local n2.NPCs
+	Local n2.NPC
     Local prevFrame% = Int(n\frame)
 
     If ((Not n\idle) And EntityDistance(n\collider,mainPlayer\collider)<HideDistance*2) Then
         If (n\state = 0 Or n\state = 2) Then
-            For n2 = Each NPCs
+            For n2 = Each NPC
                 If (n2\npcType = n\npcType And n2 <> n) Then
                     If (n2\state <> 0 And n2\state <> 2) Then
                         n\state = 1
@@ -115,7 +115,7 @@ Function UpdateNPCtype1499(n.NPCs)
 
                                 n\state2 = 1 ;if player is too close, switch to attack after screaming
 
-                                For n2 = Each NPCs
+                                For n2 = Each NPC
                                     ;If (n2\npctype = n\npcType And n2 <> n And (n\id Mod 2 = 0)) Then
                                     If (n2\npcType = n\npcType And n2 <> n) Then
                                         n2\state = 1

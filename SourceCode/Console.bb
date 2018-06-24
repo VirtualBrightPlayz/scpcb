@@ -119,14 +119,14 @@ Function UpdateConsole()
 	Local x%,y%,c%
 	Local sf%,b%,t%,texname$
 	Local StrTemp$, StrTemp2$, StrTemp3$, temp%,  i%
-	Local ev.Events, r.Rooms, it.Items
+	Local ev.Event, r.Room, it.Item
 	Local consoleHeight%
 	Local scrollbarHeight%
 	Local width%,height%
-	Local itt.ItemTemplates
+	Local itt.ItemTemplate
 
 	Local cm.ConsoleMsg
-	Local n.NPCs
+	Local n.NPC
 	Local args$
 
 	Local reissuePos%
@@ -474,7 +474,7 @@ Function UpdateConsole()
 					CreateConsoleMsg("    - camera: "+Str(EntityPitch(mainPlayer\cam))+", "+Str(EntityYaw(mainPlayer\cam))+", "+Str(EntityRoll(mainPlayer\cam)))
 
 					CreateConsoleMsg("Room: "+mainPlayer\currRoom\roomTemplate\name)
-					For ev = Each Events
+					For ev = Each Event
 						If (ev\room = mainPlayer\currRoom) Then
 							CreateConsoleMsg("Room event: "+ev\name)
 							CreateConsoleMsg("-    state: "+Str(ev\eventState))
@@ -555,7 +555,7 @@ Function UpdateConsole()
 							StrTemp = "room2offices"
 					End Select
 
-					For r = Each Rooms
+					For r = Each Room
 						If (r\roomTemplate\name = StrTemp) Then
 							;PositionEntity(mainPlayer\collider, EntityX(r\obj), 0.7, EntityZ(r\obj))
 							PositionEntity(mainPlayer\collider, r\x, r\y+0.7, r\z)
@@ -572,11 +572,11 @@ Function UpdateConsole()
 				Case "spawnitem"
 					StrTemp = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 					temp = False
-					For itt = Each ItemTemplates
+					For itt = Each ItemTemplate
 						If (Lower(itt\name) = StrTemp) Then
 							temp = True
 							CreateConsoleMsg(itt\name + " spawned.")
-							it.Items = CreateItem(itt\name, EntityX(mainPlayer\collider), EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider))
+							it = CreateItem(itt\name, EntityX(mainPlayer\collider), EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider))
 							Exit
 						EndIf
 					Next
@@ -584,7 +584,7 @@ Function UpdateConsole()
 					If (temp = False) Then CreateConsoleMsg("Item not found.",255,150,0)
 
 				Case "spawndoc"
-					StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
+					StrTemp = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 					CreatePaper(StrTemp, EntityX(mainPlayer\collider), EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider))
 
 				Case "wireframe"
@@ -637,7 +637,7 @@ Function UpdateConsole()
 					PositionEntity(Curr106\collider, EntityX(mainPlayer\collider), EntityY(Curr106\collider), EntityZ(mainPlayer\collider))
 
 				Case "reset096"
-					For n = Each NPCs
+					For n = Each NPC
 						If (n\npcType = NPCtype096) Then
 							n\state = 0
 							Exit
@@ -754,7 +754,7 @@ Function UpdateConsole()
 					CreateConsoleMsg("ShowFPS: " + Str(userOptions\showFPS))
 
 				Case "096state"
-					For n = Each NPCs
+					For n = Each NPC
 						If (n\npcType = NPCtype096) Then
 							CreateConsoleMsg("SCP-096")
 							CreateConsoleMsg("Position: " + Str(EntityX(n\obj)) + ", " + Str(EntityY(n\obj)) + ", " + Str(EntityZ(n\obj)))
@@ -828,7 +828,7 @@ Function UpdateConsole()
 					Console_SpawnNPC(StrTemp,Int(StrTemp2))
 
 				Case "toggle_warhead_lever"
-					For ev = Each Events
+					For ev = Each Event
 						If (ev\name = "room2nuke") Then
 							ev\eventState = (Not ev\eventState)
 							Exit
@@ -840,7 +840,7 @@ Function UpdateConsole()
 
 					Select StrTemp
 						Case "a"
-							For ev = Each Events
+							For ev = Each Event
 								If (ev\name = "gateaentrance") Then
 									ev\eventState3 = 1
 									ev\room\roomDoors[1]\open = True
@@ -849,7 +849,7 @@ Function UpdateConsole()
 							Next
 							CreateConsoleMsg("Gate A is now unlocked.")
 						Case "b"
-							For ev = Each Events
+							For ev = Each Event
 								If (ev\name = "exit1") Then
 									ev\eventState3 = 1
 									ev\room\roomDoors[4]\open = True
@@ -858,7 +858,7 @@ Function UpdateConsole()
 							Next
 							CreateConsoleMsg("Gate B is now unlocked.")
 						Default
-							For ev = Each Events
+							For ev = Each Event
 								If (ev\name = "gateaentrance") Then
 									ev\eventState3 = 1
 									ev\room\roomDoors[1]\open = True
@@ -891,7 +891,7 @@ Function UpdateConsole()
 					End Select
 
 				Case "tp_to_mtf"
-					For n = Each NPCs
+					For n = Each NPC
 						If (n\npcType = NPCtypeMTF) Then
 							If (n\mtfLeader = Null) Then
 								PositionEntity(mainPlayer\collider,EntityX(n\collider),EntityY(n\collider)+5,EntityZ(n\collider))

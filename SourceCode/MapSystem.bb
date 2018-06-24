@@ -79,7 +79,7 @@ Include "SourceCode/Skybox.bb"
 
 Include "SourceCode/Materials.bb"
 
-Type Materials
+Type Material
 	Field name$
 	Field diff%
 	;Field Bump
@@ -89,7 +89,7 @@ End Type
 
 Function LoadMaterials(file$)
 	Local TemporaryString$
-	Local mat.Materials = Null
+	Local mat.Material = Null
 	Local StrTemp$ = ""
 
 	Local f% = OpenFile(file)
@@ -192,7 +192,7 @@ Const ROOM0%=0, ROOM1% = 1, ROOM2% = 2, ROOM2C% = 3, ROOM3% = 4, ROOM4% = 5
 Const ZONE_LCZ% = 1, ZONE_HCZ% = 2, ZONE_EZ% = 4
 
 Global RoomTempID.MarkedForRemoval
-Type RoomTemplates
+Type RoomTemplate
 	Field name$
 	Field shape%
 	Field large% ;TODO: might not be needed?
@@ -224,8 +224,8 @@ Type RoomTemplates
 	Field tempTriggerboxName$[128]
 End Type
 
-Function CreateRoomTemplate.RoomTemplates(meshpath$)
-	Local rt.RoomTemplates = New RoomTemplates
+Function CreateRoomTemplate.RoomTemplate(meshpath$)
+	Local rt.RoomTemplate = New RoomTemplates
 
 	rt\objPath = meshpath
 	rt\loaded = False
@@ -235,7 +235,7 @@ End Function
 
 Function LoadRoomTemplates(file$)
 	Local TemporaryString$, i%
-	Local rt.RoomTemplates = Null
+	Local rt.RoomTemplate = Null
 	Local StrTemp$ = ""
 	Local Zones$ = ""
 	Local AmountRange$ = ""
@@ -339,7 +339,7 @@ Function LoadRoomTemplates(file$)
 
 End Function
 
-Function LoadRoomMesh(rt.RoomTemplates)
+Function LoadRoomMesh(rt.RoomTemplate)
 	LoadRM2(rt)
 End Function
 
@@ -361,14 +361,14 @@ Global SecondaryLightOn#
 Global RemoteDoorOn%
 Global Contained106%
 
-Type Rooms
+Type Room
 	Field zone%
 
 	Field found%
 
 	Field x#, y#, z#
 	Field angle%
-	Field roomTemplate.RoomTemplates
+	Field roomTemplate.RoomTemplate
 
 	Field obj% ;TODO: rename
 	Field opaqueMesh%
@@ -395,12 +395,12 @@ Type Rooms
 
 	Field objects%[MaxRoomObjects]
 	Field levers.Lever[11]
-	Field roomDoors.Doors[7]
-	Field npc.NPCs[12]
-	Field grid.Grids
+	Field roomDoors.Door[7]
+	Field npc.NPC[12]
+	Field grid.Grid
 
-	Field adjacent.Rooms[4]
-	Field adjDoor.Doors[4]
+	Field adjacent.Room[4]
+	Field adjDoor.Door[4]
 
 	Field nonFreeAble%[10]
 	Field textures%[10]
@@ -420,15 +420,15 @@ Type Rooms
 End Type
 
 Const gridsz%=20
-Type Grids
+Type Grid
 	Field grid%[gridsz*gridsz]
 	Field angles%[gridsz*gridsz]
 	Field meshes%[7]
 	Field entities%[gridsz*gridsz]
-	Field waypoints.WayPoints[gridsz*gridsz]
+	Field waypoints.Waypoint[gridsz*gridsz]
 End Type
 
-Function UpdateGrid(grid.Grids)
+Function UpdateGrid(grid.Grid)
 	;local variables
 	Local tx%,ty%
 	For tx = 0 To gridsz-1
@@ -449,29 +449,29 @@ Function UpdateGrid(grid.Grids)
 	Next
 End Function
 
-Function GetRoomTemplate.RoomTemplates(name$)
+Function GetRoomTemplate.RoomTemplate(name$)
 	name = Lower(name)
 
-	Local rt.RoomTemplates
-	For rt = Each RoomTemplates
+	Local rt.RoomTemplate
+	For rt = Each RoomTemplate
 		If (rt\name = name) Then
 			Return rt
 		EndIf
 	Next
 End Function
 
-Function CountRooms%(rt.RoomTemplates)
+Function CountRooms%(rt.RoomTemplate)
 	Local count% = 0
 
-	Local r.Rooms
-	For r = Each Rooms
+	Local r.Room
+	For r = Each Room
 		If (r\roomTemplate = rt) Then count=count+1
 	Next
 	Return count
 End Function
 
-Function CreateRoom.Rooms(rt.RoomTemplates, x#, y#, z#)
-	Local r.Rooms = New Rooms
+Function CreateRoom.Room(rt.RoomTemplate, x#, y#, z#)
+	Local r.Room = New Rooms
 
 	DebugLog("Placing "+rt\name)
 
@@ -484,7 +484,7 @@ Function CreateRoom.Rooms(rt.RoomTemplates, x#, y#, z#)
 	If (Not rt\loaded) Then LoadRoomMesh(rt)
 
 	Local tempObj%
-	Local tempProp.Props
+	Local tempProp.Prop
 
 	r\obj = CreatePivot()
 	r\opaqueMesh = CopyEntity(rt\opaqueMesh) : ScaleEntity(r\opaqueMesh, RoomScale, RoomScale, RoomScale)
@@ -506,7 +506,7 @@ Function CreateRoom.Rooms(rt.RoomTemplates, x#, y#, z#)
 	If (rt\props<>Null) Then
 		r\props = CreateIntArray(rt\props\size)
 		For i = 0 To rt\props\size-1
-			tempProp = Object.Props(GetIntArrayListElem(rt\props,i))
+			tempProp = Object.Prop(GetIntArrayListElem(rt\props,i))
 			tempObj = CopyEntity(tempProp\obj)
 			SetIntArrayElem(r\props,tempObj,i)
 			PositionEntity(tempObj,tempProp\x*RoomScale,tempProp\y*RoomScale,tempProp\z*RoomScale)
@@ -523,7 +523,7 @@ Function CreateRoom.Rooms(rt.RoomTemplates, x#, y#, z#)
 	Return r
 End Function
 
-Function FillRoom(r.Rooms)
+Function FillRoom(r.Room)
 	Select r\roomTemplate\name
 		Case "test_860_2"
 			FillRoom_test_860_2(r)
@@ -661,8 +661,8 @@ Function FillRoom(r.Rooms)
 			FillRoom_lck_broke_2c(r)
 	End Select
 
-	Local lt.LightTemplates, newlt%
-	For lt = Each LightTemplates
+	Local lt.LightTemplate, newlt%
+	For lt = Each LightTemplate
 		If (lt\roomtemplate = r\roomTemplate) Then
 			newlt = AddLight(r, r\x+lt\x*RoomScale, r\y+lt\y*RoomScale, r\z+lt\z*RoomScale, lt\ltype, lt\range, lt\r, lt\g, lt\b)
 			If (newlt <> 0) Then
@@ -675,16 +675,16 @@ Function FillRoom(r.Rooms)
 	Next
 
 	Local ts.TempScreens
-	For ts = Each TempScreens
+	For ts = Each TempScreen
 		If (ts\roomtemplate = r\roomTemplate) Then
 			CreateScreen(r\x+ts\x*RoomScale, r\y+ts\y*RoomScale, r\z+ts\z*RoomScale, ts\imgpath, r)
 		EndIf
 	Next
 
 	Local waypoints.IntArrayList = CreateIntArrayList()
-	Local waypoint.WayPoints
-	Local tw.TempWayPoints
-	For tw = Each TempWayPoints
+	Local waypoint.Waypoint
+	Local tw.TempWaypoint
+	For tw = Each TempWaypoint
 		If (tw\roomtemplate = r\roomTemplate) Then
 			waypoint = CreateWaypoint(r\x+tw\x*RoomScale, r\y+tw\y*RoomScale, r\z+tw\z*RoomScale, r)
 			PushIntArrayListElem(waypoints,Handle(waypoint))
@@ -692,12 +692,12 @@ Function FillRoom(r.Rooms)
 	Next
 
 	Local i% = 0, j%
-	For tw = Each TempWayPoints
+	For tw = Each TempWaypoint
 		If (tw\roomtemplate = r\roomTemplate) Then
-			waypoint = Object.WayPoints(GetIntArrayListElem(waypoints,i))
+			waypoint = Object.Waypoint(GetIntArrayListElem(waypoints,i))
 			For j = 0 To 15
 				If (tw\connectedTo[j]=0) Then Exit
-				waypoint\connected[j] = Object.WayPoints(GetIntArrayListElem(waypoints,tw\connectedTo[j]-1))
+				waypoint\connected[j] = Object.Waypoint(GetIntArrayListElem(waypoints,tw\connectedTo[j]-1))
 				waypoint\dist[j] = EntityDistance(waypoint\obj,waypoint\connected[j]\obj)
 			Next
 			i=i+1
@@ -730,7 +730,7 @@ Function FillRoom(r.Rooms)
 
 End Function
 
-Function SetRoomVisibility(r.Rooms,on%)
+Function SetRoomVisibility(r.Room,on%)
 	If (on) Then
 		ShowEntity(r\opaqueMesh)
 		If (r\alphaMesh<>0) Then
@@ -745,7 +745,7 @@ Function SetRoomVisibility(r.Rooms,on%)
 End Function
 
 Function UpdateRooms()
-	Local dist#, i%, j%, r.Rooms, minDist#
+	Local dist#, i%, j%, r.Room, minDist#
 
 	Local x#,z#,hide%=True
 
@@ -783,7 +783,7 @@ Function UpdateRooms()
 		EndIf
 	Else
 		minDist = 999.0
-		For r = Each Rooms
+		For r = Each Room
 			x = Abs(r\x-EntityX(mainPlayer\collider,True))
 			z = Abs(r\z-EntityZ(mainPlayer\collider,True))
 			r\dist = Max(x,z)
@@ -796,7 +796,7 @@ Function UpdateRooms()
 		Return
 	EndIf
 
-	For r = Each Rooms
+	For r = Each Room
 		x = Abs(r\x-EntityX(mainPlayer\collider,True))
 		z = Abs(r\z-EntityZ(mainPlayer\collider,True))
 		r\dist = Max(x,z)
@@ -884,7 +884,7 @@ Function UpdateRooms()
 
 End Function
 
-Function IsRoomAdjacent%(this.Rooms,that.Rooms)
+Function IsRoomAdjacent%(this.Room,that.Room)
 	If (this=Null) Then Return False
 	If (this=that) Then Return True
 	Local i%
@@ -897,7 +897,7 @@ End Function
 ;-------------------------------------------------------------------------------------------------------
 
 Global LightVolume.MarkedForRemoval, TempLightVolume.MarkedForRemoval
-Function AddLight%(room.Rooms, x#, y#, z#, ltype%, range#, r%, g%, b%)
+Function AddLight%(room.Room, x#, y#, z#, ltype%, range#, r%, g%, b%)
 	Local i%
 	Local light%,sprite%
 
@@ -962,8 +962,8 @@ Function AddLight%(room.Rooms, x#, y#, z#, ltype%, range#, r%, g%, b%)
 	EndIf
 End Function
 
-Type LightTemplates
-	Field roomtemplate.RoomTemplates
+Type LightTemplate
+	Field roomtemplate.RoomTemplate
 	Field ltype%
 	Field x#, y#, z#
 	Field range#
@@ -976,8 +976,8 @@ End Type
 Const LIGHTTYPE_POINT% = 2
 Const LIGHTTYPE_SPOT% = 3
 
-Function AddTempLight.LightTemplates(rt.RoomTemplates, x#, y#, z#, ltype%, range#, r%, g%, b%)
-	Local lt.LightTemplates = New LightTemplates
+Function AddTempLight.LightTemplate(rt.RoomTemplate, x#, y#, z#, ltype%, range#, r%, g%, b%)
+	Local lt.LightTemplate = New LightTemplates
 	lt\roomtemplate = rt
 	lt\x = x
 	lt\y = y
@@ -993,28 +993,28 @@ End Function
 
 ;-------------------------------------------------------------------------------------------------------
 
-Type TempWayPoints
+Type TempWayPoint
 	Field x#, y#, z#
 	Field connectedTo%[32]
-	Field roomtemplate.RoomTemplates
+	Field roomtemplate.RoomTemplate
 End Type
 
-Type WayPoints
+Type Waypoint
 	Field obj%
-	Field room.Rooms
+	Field room.Room
 	Field state%
 	;Field tempDist#
 	;Field tempSteps%
-	Field connected.WayPoints[16]
+	Field connected.Waypoint[16]
 	Field dist#[16]
 
 	Field fCost#, gCost#, hCost#
 
-	Field parent.WayPoints
+	Field parent.Waypoint
 End Type
 
-Function CreateWaypoint.WayPoints(x#,y#,z#,room.Rooms)
-	Local w.WayPoints = New WayPoints
+Function CreateWaypoint.Waypoint(x#,y#,z#,room.Room)
+	Local w.Waypoint = New WayPoints
 
 	w\obj = CreatePivot()
 	PositionEntity(w\obj, x,y,z)
@@ -1028,7 +1028,7 @@ End Function
 
 Function InitWayPoints(loadingstart%=45)
 
-	Local d.Doors, w.WayPoints, w2.WayPoints, r.Rooms, ClosestRoom.Rooms
+	Local d.Door, w.Waypoint, w2.Waypoint, r.Room, ClosestRoom.Room
 
 	Local x#, y#, z#, i%, tline%
 
@@ -1036,7 +1036,7 @@ Function InitWayPoints(loadingstart%=45)
 
 	Local dist#, dist2#
 
-	For w = Each WayPoints
+	For w = Each WayPoint
 		EntityPickMode(w\obj, 0, 0)
 		EntityRadius(w\obj, 0)
 
@@ -1053,12 +1053,12 @@ Function InitWayPoints(loadingstart%=45)
 
 End Function
 
-Function RemoveWaypoint(w.WayPoints)
+Function RemoveWaypoint(w.Waypoint)
 	FreeEntity(w\obj)
 	Delete w
 End Function
 
-Function FindPath%(n.NPCs, x#, y#, z#)
+Function FindPath%(n.NPC, x#, y#, z#)
 
 	DebugLog("findpath: "+Str(n\npcType))
 
@@ -1066,9 +1066,9 @@ Function FindPath%(n.NPCs, x#, y#, z#)
 	Local xtemp#, ytemp#, ztemp#
 	Local gtemp#
 
-	Local w.WayPoints, StartPoint.WayPoints, EndPoint.WayPoints
-	Local currpoint.WayPoints
-	Local twentiethpoint.WayPoints
+	Local w.Waypoint, StartPoint.Waypoint, EndPoint.Waypoint
+	Local currpoint.Waypoint
+	Local twentiethpoint.Waypoint
 
 	Local length% = 0
 
@@ -1086,7 +1086,7 @@ Function FindPath%(n.NPCs, x#, y#, z#)
        ;pathstatus = 1, reitti l�ydetty
        ;pathstatus = 2, reitti� ei ole olemassa
 
-	For w = Each WayPoints
+	For w = Each WayPoint
 		w\state = 0
 		w\fCost = 0
 		w\gCost = 0
@@ -1108,7 +1108,7 @@ Function FindPath%(n.NPCs, x#, y#, z#)
 	PositionEntity(temp, EntityX(n\collider,True), EntityY(n\collider,True)+0.15, EntityZ(n\collider,True))
 
 	dist = 350.0
-	For w = Each WayPoints
+	For w = Each WayPoint
 		xtemp = EntityX(w\obj,True)-EntityX(temp,True)
           ;If (xtemp < 8.0) Then
 		ztemp = EntityZ(w\obj,True)-EntityZ(temp,True)
@@ -1138,7 +1138,7 @@ Function FindPath%(n.NPCs, x#, y#, z#)
        ;If (EndPoint = Null) Then
 	EndPoint = Null
 	dist = 400.0
-	For w = Each WayPoints
+	For w = Each WayPoint
 		xtemp = EntityX(pvt,True)-EntityX(w\obj,True)
           ;If (xtemp =< 8.0) Then
 		ztemp = EntityZ(pvt,True)-EntityZ(w\obj,True)
@@ -1169,13 +1169,13 @@ Function FindPath%(n.NPCs, x#, y#, z#)
 
        ;aloitus- ja lopetuspisteet l�ydetty, aletaan etsi� reitti�
 
-	Local smallest.WayPoints
+	Local smallest.Waypoint
 	Repeat
 
 		temp = False
 		smallest = Null
 		dist = 10000.0
-		For w = Each WayPoints
+		For w = Each WayPoint
 			If (w\state = 1) Then
                 temp = True
                 If ((w\fCost) < dist) Then
@@ -1264,10 +1264,10 @@ Function FindPath%(n.NPCs, x#, y#, z#)
     ;      For i = 0 To (length-1)
     ;         temp =False
     ;         If (length < 20) Then
-    ;            n\path[length-1-i] = currpoint.WayPoints
+    ;            n\path[length-1-i] = currpoint.Waypoint
     ;         Else
     ;            If (i < 20) Then
-    ;               n\path[20-1-i] = w.WayPoints
+    ;               n\path[20-1-i] = w.Waypoint
     ;            Else
     ;               ;Return 1
     ;            EndIf
@@ -1321,22 +1321,22 @@ End Function
 
 ;-------------------------------------------------------------------------------------------------------
 
-Global SelectedScreen.Screens
-Type Screens
+Global SelectedScreen.Screen
+Type Screen
 	Field obj%
 	Field imgpath$
 	Field img%
-	Field room.Rooms
+	Field room.Room
 End Type
 
-Type TempScreens
+Type TempScreen
 	Field imgpath$
 	Field x#,y#,z#
-	Field roomtemplate.RoomTemplates
+	Field roomtemplate.RoomTemplate
 End Type
 
-Function CreateScreen.Screens(x#,y#,z#,imgpath$,r.Rooms)
-	Local s.Screens = New Screens
+Function CreateScreen.Screen(x#,y#,z#,imgpath$,r.Room)
+	Local s.Screen = New Screens
 	s\obj = CreatePivot()
 	EntityPickMode(s\obj, 1)
 	EntityRadius(s\obj, 0.1)
@@ -1353,8 +1353,8 @@ Function UpdateScreens()
 	If (SelectedScreen <> Null) Then Return
 	If (SelectedDoor <> Null) Then Return
 
-	Local s.Screens
-	For s = Each Screens
+	Local s.Screen
+	For s = Each Screen
 		If (s\room = mainPlayer\currRoom) Then
 			If (EntityDistance(mainPlayer\collider,s\obj)<1.2) Then
 				EntityPick(mainPlayer\cam, 1.2)
@@ -1379,9 +1379,9 @@ End Function
 
 
 Dim GorePics%(10)
-Global SelectedMonitor.SecurityCams
-Global CoffinCam.SecurityCams
-Type SecurityCams
+Global SelectedMonitor.SecurityCam
+Global CoffinCam.SecurityCam
+Type SecurityCam
 	Field obj%, monitorObj%
 
 	Field baseObj%, cameraObj%
@@ -1397,7 +1397,7 @@ Type SecurityCams
 
 	Field renderInterval#
 
-	Field room.Rooms
+	Field room.Room
 
 	Field followPlayer%
 	Field coffinEffect%
@@ -1414,8 +1414,8 @@ End Type
 
 Global ScreenTexs%[2]
 
-Function CreateSecurityCam.SecurityCams(x#, y#, z#, r.Rooms, screen% = False)
-	Local sc.SecurityCams = New SecurityCams
+Function CreateSecurityCam.SecurityCam(x#, y#, z#, r.Room, screen% = False)
+	Local sc.SecurityCam = New SecurityCams
 	Local scale#
 
 	sc\obj = CopyEntity(CamBaseOBJ)
@@ -1467,7 +1467,7 @@ Function CreateSecurityCam.SecurityCams(x#, y#, z#, r.Rooms, screen% = False)
 End Function
 
 Function UpdateSecurityCams()
-	Local sc.SecurityCams
+	Local sc.SecurityCam
 	Local close%, temp#, pvt%
 
 	PlayerDetected = False
@@ -1477,7 +1477,7 @@ Function UpdateSecurityCams()
 	;coffineffect = 2, 079 can broadcast 895 feed on this screen
 	;coffineffect = 3, 079 broadcasting 895 feed
 
-	For sc = Each SecurityCams
+	For sc = Each SecurityCam
 		close = False
 		If (sc\room = Null And (Not sc\specialCam)) Then
 			HideEntity(sc\cam)
@@ -1737,7 +1737,7 @@ End Function
 
 ;-------------------------------------------------------------------------------------------------------
 
-Type Props
+Type Prop
 	Field file$
 	Field obj%
 
@@ -1746,8 +1746,8 @@ Type Props
 	Field xScale#,yScale#,zScale#
 End Type
 
-Function LoadProp.Props(file$,x#,y#,z#,pitch#,yaw#,roll#,xScale#,yScale#,zScale#)
-	Local p.Props
+Function LoadProp.Prop(file$,x#,y#,z#,pitch#,yaw#,roll#,xScale#,yScale#,zScale#)
+	Local p.Prop
 	p = New Props
 	p\file = file
 	p\x = x
@@ -1760,8 +1760,8 @@ Function LoadProp.Props(file$,x#,y#,z#,pitch#,yaw#,roll#,xScale#,yScale#,zScale#
 	p\yScale = yScale
 	p\zScale = zScale
 
-	Local p2.Props
-	For p2 = Each Props
+	Local p2.Prop
+	For p2 = Each Prop
 		If ((p<>p2) And (p2\file = file)) Then
 			p\obj = CopyEntity(p2\obj)
 			Exit
@@ -1864,18 +1864,18 @@ Function CreateMap()
 
 	;start off by placing rooms that ask to be placed a certain amount of times
 	Local prioritizedTemplateCount% = 0
-	Local rt.RoomTemplates
+	Local rt.RoomTemplate
 	
-	For rt = Each RoomTemplates
+	For rt = Each RoomTemplate
 		If (((rt\zones And zone)<>0) And (rt\maxAmount>0) And (rt\shape<>ROOM0)) Then
 			prioritizedTemplateCount=prioritizedTemplateCount+1
 		EndIf
 	Next
 	Local prioritizedTemplates.IntArray = CreateIntArray(prioritizedTemplateCount,1) ;TODO: replace with an array of the right type once we move to C++
-	Local tempTemplate.RoomTemplates
-	Local tempTemplate2.RoomTemplates
+	Local tempTemplate.RoomTemplate
+	Local tempTemplate2.RoomTemplate
 	SetIntArrayElem(prioritizedTemplates,0,0,0)
-	For rt = Each RoomTemplates
+	For rt = Each RoomTemplate
 		If (((rt\zones And zone)<>0) And (rt\maxAmount>0) And (rt\shape<>ROOM0)) Then
 			tempTemplate = rt
 			DebugLog("queueing up "+rt\name)
@@ -1887,7 +1887,7 @@ Function CreateMap()
 					SetIntArrayElem(prioritizedTemplates,Handle(tempTemplate),i,0)
 					Exit
 				Else
-					tempTemplate2 = Object.RoomTemplates(GetIntArrayElem(prioritizedTemplates,i,0))
+					tempTemplate2 = Object.RoomTemplate(GetIntArrayElem(prioritizedTemplates,i,0))
 					If (tempTemplate2\maxAmount>tempTemplate\maxAmount) Then
 						SetIntArrayElem(prioritizedTemplates,Handle(tempTemplate),i,0)
 						;DebugLog("swapping "+tempTemplate2\name+" for "+tempTemplate\name)
@@ -1908,7 +1908,7 @@ Function CreateMap()
 		DebugLog("Type"+Str(i)+" count: "+Str(RoomCount[i]))
 	Next
 
-	Local r.Rooms
+	Local r.Room
 
 	Local placementCount%
 	Local loopStartX%
@@ -1923,7 +1923,7 @@ Function CreateMap()
 
 	Local k%
 	For k=0 To prioritizedTemplateCount-1
-		rt = Object.RoomTemplates(GetIntArrayElem(prioritizedTemplates,k,0))
+		rt = Object.RoomTemplate(GetIntArrayElem(prioritizedTemplates,k,0))
 
 		placementCount = Rand(rt\minAmount,rt\maxAmount)
 		
@@ -1971,7 +1971,7 @@ Function CreateMap()
 	For i = 1 To ROOM4
 		totalCommonness[i] = 0
 	Next
-	For rt = Each RoomTemplates
+	For rt = Each RoomTemplate
 		If (((rt\zones And zone)<>0) And (rt\maxAmount<0) And (rt\shape<>ROOM0)) Then
 			randomTemplateCount=randomTemplateCount+1
 			totalCommonness[rt\shape]=totalCommonness[rt\shape]+Int(rt\commonness)
@@ -1982,7 +1982,7 @@ Function CreateMap()
 	Local tempHandle1%
 	Local tempHandle2%
 	
-	For rt = Each RoomTemplates
+	For rt = Each RoomTemplate
 		If (((rt\zones And zone)<>0) And (rt\maxAmount<0) And (rt\shape<>ROOM0)) Then
 			SetIntArrayElem(randomTemplates,Handle(rt),index,0)
 			index=index+1
@@ -2009,7 +2009,7 @@ Function CreateMap()
 				targetCommonness = Rand(0,totalCommonness[currType])
 
 				For i = 0 To randomTemplateCount-1
-					tempTemplate = Object.RoomTemplates(GetIntArrayElem(randomTemplates,i,0))
+					tempTemplate = Object.RoomTemplate(GetIntArrayElem(randomTemplates,i,0))
 					If (tempTemplate\shape = currType) Then
 						commonnessAccumulator=commonnessAccumulator+Int(tempTemplate\commonness)
 						If (commonnessAccumulator>=targetCommonness) Then
@@ -2032,13 +2032,13 @@ Function CreateMap()
 	;finally, let rooms know who their neighbors are
 	Local tempX%
 	Local tempY%
-	Local tempWaypoint.WayPoints
-	Local newWaypoint.WayPoints
-	Local roomAWaypoint.WayPoints
-	Local roomBWaypoint.WayPoints
+	Local tempWaypoint.Waypoint
+	Local newWaypoint.Waypoint
+	Local roomAWaypoint.Waypoint
+	Local roomBWaypoint.Waypoint
 	For y = 0 To mapDim-1
 		For x = 0 To mapDim-1
-			r = Object.Rooms(GetIntArrayElem(MapRooms,x,y))
+			r = Object.Room(GetIntArrayElem(MapRooms,x,y))
 			If (r<>Null) Then
 				For i = 0 To 3
 					Select i
@@ -2057,7 +2057,7 @@ Function CreateMap()
 					End Select
 
 					If (x+tempX>=0) And (x+tempX<mapDim) And (y+tempY>=0) And (y+tempY<mapDim) Then
-						r\adjacent[i] = Object.Rooms(GetIntArrayElem(MapRooms,x+tempX,y+tempY))
+						r\adjacent[i] = Object.Room(GetIntArrayElem(MapRooms,x+tempX,y+tempY))
 						If (r\adjacent[i]<>Null) Then
 							If (r\adjacent[i]\adjDoor[(i+2) Mod 4]=Null) Then
 								r\adjDoor[i] = CreateDoor(zone,r\x+4.0*tempX,0.0,r\z+4.0*tempY,90.0*((i+1) Mod 2),Null)
@@ -2065,7 +2065,7 @@ Function CreateMap()
 
 								DebugLog("step1")
 								roomAWaypoint = Null : roomBWaypoint = Null
-								For tempWaypoint = Each WayPoints
+								For tempWaypoint = Each WayPoint
 									If (tempWaypoint<>newWaypoint) Then
 										If (tempWaypoint\room = r) Then
 											If (roomAWaypoint = Null) Then
@@ -2240,7 +2240,7 @@ Function AmbientLightRooms(value%=0)
 End Function
 
 ;TODO: Probably remove.
-Function FindAndDeleteFakeMonitor(r.Rooms,x#,y#,z#,Amount%)
+Function FindAndDeleteFakeMonitor(r.Room,x#,y#,z#,Amount%)
 	Local i%
 
 	For i = 0 To Amount

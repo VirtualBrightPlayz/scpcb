@@ -1,8 +1,8 @@
-Function FillRoom_exit_gateb_1(r.Rooms)
+Function FillRoom_exit_gateb_1(r.Room)
     ;TODO: rewrite
 End Function
 
-Function UpdateEventExit1(e.Events)
+Function UpdateEventExit1(e.Event)
 	;TODO: rewrite
 End Function
 

@@ -1,6 +1,6 @@
-Function FillRoom_exit_gatea_1(r.Rooms)
-    Local d.Doors, d2.Doors, sc.SecurityCams, de.Decals, r2.Rooms, sc2.SecurityCams
-	Local it.Items, i%
+Function FillRoom_exit_gatea_1(r.Room)
+    Local d.Door, d2.Door, sc.SecurityCam, de.Decal, r2.Room, sc2.SecurityCam
+	Local it.Item, i%
 	Local xtemp%, ytemp%, ztemp%
 
 	Local t1%;, Bump
@@ -21,16 +21,16 @@ Function FillRoom_exit_gatea_1(r.Rooms)
     PositionEntity(r\roomDoors[1]\buttons[0], r\x, 20.0, r\z, True)
 End Function
 
-Function UpdateEvent_exit_gatea_1(e.Events)
+Function UpdateEvent_exit_gatea_1(e.Event)
 	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
 
-	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
+	Local p.Particle, n.NPC, r.Room, e2.Event, it.Item, em.Emitter, sc.SecurityCam, sc2.SecurityCam
 
 	Local CurrTrigger$ = ""
 
 	Local x#, y#, z#
 
-	Local angle#, gatea.Rooms
+	Local angle#, gatea.Room
 
 	;[Block]
 	If (mainPlayer\currRoom = e\room) Then
@@ -48,7 +48,7 @@ Function UpdateEvent_exit_gatea_1(e.Events)
 		Else
 			e\room\roomDoors[1]\locked=False
 			gatea =Null
-			For r = Each Rooms
+			For r = Each Room
 				If (r\roomTemplate\name = "gatea") Then
 					gatea = r
 					Exit

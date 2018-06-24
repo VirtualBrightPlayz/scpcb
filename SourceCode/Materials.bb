@@ -15,23 +15,23 @@ Function StripFilename$(file$)
 End Function
 
 Function GetTextureFromCache%(name$)
-	Local tc.Materials
-	For tc=Each Materials
+	Local tc.Material
+	For tc=Each Material
 		If (Lower(tc\name) = Lower(name)) Then Return tc\diff
 	Next
 	Return 0
 End Function
 
-Function GetCache.Materials(name$)
-	Local tc.Materials
-	For tc=Each Materials
+Function GetCache.Material(name$)
+	Local tc.Material
+	For tc=Each Material
 		If (Lower(tc\name) = Lower(name)) Then Return tc
 	Next
 	Return Null
 End Function
 
 Function AddTextureToCache(name$,texture%)
-	Local tc.Materials=GetCache(name)
+	Local tc.Material=GetCache(name)
 	If (tc=Null) Then
 		tc=New Materials
 		tc\name=Lower(name)
@@ -42,8 +42,8 @@ Function AddTextureToCache(name$,texture%)
 End Function
 
 Function ClearTextureCache()
-	Local tc.Materials
-	For tc=Each Materials
+	Local tc.Material
+	For tc=Each Material
 		If (tc\diff<>0) Then FreeTexture(tc\diff)
 		;If (tc\bump<>0) Then FreeTexture(tc\bump)
 		Delete tc
@@ -51,8 +51,8 @@ Function ClearTextureCache()
 End Function
 
 Function FreeTextureCache()
-	Local tc.Materials
-	For tc=Each Materials
+	Local tc.Material
+	For tc=Each Material
 		If (tc\diff<>0) Then FreeTexture(tc\diff)
 		;If (tc\bump<>0) Then FreeTexture(tc\bump)
 		tc\diff = 0; : tc\bump = 0

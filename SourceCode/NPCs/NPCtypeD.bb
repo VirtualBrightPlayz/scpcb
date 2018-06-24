@@ -1,11 +1,11 @@
-Function InitializeNPCtypeD(n.NPCs)
+Function InitializeNPCtypeD(n.NPC)
     n\nvName = "Human"
     n\collider = CreatePivot()
     EntityRadius(n\collider, 0.32)
     EntityType(n\collider, HIT_PLAYER)
 
-    Local n2.NPCs
-	For n2 = Each NPCs
+    Local n2.NPC
+	For n2 = Each NPC
 		If (n2\npcType = n\npcType And n2\obj <> 0) Then
 			n\obj = CopyEntity(n2\obj)
 			Exit
@@ -24,7 +24,7 @@ Function InitializeNPCtypeD(n.NPCs)
     MeshCullBox (n\obj, -MeshWidth(n\obj), -MeshHeight(n\obj), -MeshDepth(n\obj), MeshWidth(n\obj)*2, MeshHeight(n\obj)*2, MeshDepth(n\obj)*2)
 End Function
 
-Function UpdateNPCtypeD(n.NPCs)
+Function UpdateNPCtypeD(n.NPC)
     RotateEntity(n\collider, 0, EntityYaw(n\collider), EntityRoll(n\collider), True)
 
     Local prevFrame# = AnimTime(n\obj)

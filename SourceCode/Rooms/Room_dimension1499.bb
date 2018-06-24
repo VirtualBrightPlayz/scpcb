@@ -1,7 +1,7 @@
-Function UpdateEvent_dimension1499(e.Events)
+Function UpdateEvent_dimension1499(e.Event)
 	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
 
-	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
+	Local p.Particle, n.NPC, r.Room, e2.Event, it.Item, em.Emitter, sc.SecurityCam, sc2.SecurityCam
 
 	Local CurrTrigger$ = ""
 
@@ -58,7 +58,7 @@ Function UpdateEvent_dimension1499(e.Events)
 ;				e\eventState = 2.0
 ;			EndIf
 			;[End Block]
-			For n = Each NPCs
+			For n = Each NPC
 				If (n\npcType = NPCtype1499) Then
 					n\idle = False
 					n\state = 0
@@ -75,7 +75,7 @@ Function UpdateEvent_dimension1499(e.Events)
 		CameraClsColor(mainPlayer\cam,96,97,104)
 		CameraRange(mainPlayer\cam,0.05,90)
 
-		For r = Each Rooms
+		For r = Each Room
 			HideEntity(r\obj)
 		Next
 		ShowEntity(e\room\obj)
@@ -92,7 +92,7 @@ Function UpdateEvent_dimension1499(e.Events)
 		If (e\eventState = 2.0) Then
 			HideEntity(NTF_1499Sky)
 			HideChunks()
-			For n = Each NPCs
+			For n = Each NPC
 				If (n\npcType = NPCtype1499) Then
 					;RemoveNPC(n)
 					n\idle = True
@@ -105,10 +105,10 @@ Function UpdateEvent_dimension1499(e.Events)
 End Function
 
 Function UpdateLeave1499()
-	Local r.Rooms, it.Items
+	Local r.Room, it.Item
 
 	If ((Not (IsPlayerWearingTempName(mainPlayer,"scp1499") Or IsPlayerWearingTempName(mainPlayer,"super1499"))) And mainPlayer\currRoom\roomTemplate\name$ = "dimension1499") Then
-		For r = Each Rooms
+		For r = Each Room
 			If (r = NTF_1499PrevRoom) Then
 				mainPlayer\blinkTimer = -1
 				;Msg = "You removed the gas mask and reappeared inside the facility."
@@ -120,7 +120,7 @@ Function UpdateLeave1499()
 				ResetEntity(mainPlayer\collider)
 				UpdateDoors()
 				UpdateRooms()
-				For it = Each Items
+				For it = Each Item
 					it\disttimer = 0
 					If (it\template\name = "scp1499" Or it\template\name = "super1499") Then
 						If (EntityY(it\collider) >= EntityY(mainPlayer\currRoom\obj)-5) Then
@@ -158,7 +158,7 @@ Type Chunk
 	;Field debugobj%
 End Type
 
-Function CreateChunkParts(r.Rooms)
+Function CreateChunkParts(r.Room)
 	Local File$ = "Data/1499chunks.INI"
 	Local ChunkAmount% = GetINIInt(File,"general","count")
 	Local i%,StrTemp$,j%
@@ -208,7 +208,7 @@ End Function
 
 Function CreateChunk.Chunk(obj%,x#,y#,z#,spawnNPCs%=True)
 	Local ch.Chunk = New Chunk
-	Local chp.ChunkPart,i%,n.NPCs
+	Local chp.ChunkPart,i%,n.NPC
 
 	;If obj%<>0
 	;	ch\obj% = CopyEntity(obj%)
@@ -252,7 +252,7 @@ Function CreateChunk.Chunk(obj%,x#,y#,z#,spawnNPCs%=True)
 	Return ch
 End Function
 
-Function UpdateChunks(r.Rooms,ChunkPartAmount%,spawnNPCs%=True)
+Function UpdateChunks(r.Room,ChunkPartAmount%,spawnNPCs%=True)
 	Local ch.Chunk, ch2.Chunk, chp.ChunkPart, ChunkPartAmount2%
 	Local ChunkHideDistance% = 120
 	Local temp% = False, temp2% = False

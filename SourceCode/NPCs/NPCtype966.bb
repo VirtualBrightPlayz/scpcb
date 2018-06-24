@@ -1,7 +1,7 @@
-Function InitializeNPCtype966(n.NPCs)
+Function InitializeNPCtype966(n.NPC)
     Local i% = 1
-	Local n2.NPCs
-    For n2 = Each NPCs
+	Local n2.NPC
+    For n2 = Each NPC
         If ((n\npcType = n2\npcType) And (n<>n2)) Then
 			i= i + Rand(1,3)
 		EndIf
@@ -11,7 +11,7 @@ Function InitializeNPCtype966(n.NPCs)
     n\collider = CreatePivot()
     EntityRadius(n\collider,0.2)
 
-    For n2 = Each NPCs
+    For n2 = Each NPC
         If ((n\npcType = n2\npcType) And (n<>n2)) Then
             n\obj = CopyEntity(n2\obj)
             Exit
@@ -36,9 +36,9 @@ Function InitializeNPCtype966(n.NPCs)
     n\speed = 0.02
 End Function
 
-Function UpdateNPCtype966(n.NPCs)
+Function UpdateNPCtype966(n.NPC)
 	Local prevFrame%, temp#, angle#, dist2#
-	Local n2.NPCs
+	Local n2.NPC
 
     If (n\playerDistance<HideDistance) Then
 
@@ -88,7 +88,7 @@ Function UpdateNPCtype966(n.NPCs)
         If (n\state3>5*70) Then
         ;n\state = 1
             If (n\state3<1000.0) Then
-                For n2 = Each NPCs
+                For n2 = Each NPC
                     If (n2\npcType = n\npcType) Then n2\state3=1000.0
                 Next
             EndIf

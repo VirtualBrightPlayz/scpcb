@@ -15,9 +15,9 @@ Include "SourceCode/NPCs/NPCtype966.bb"
 Include "SourceCode/NPCs/NPCtype1499.bb"
 
 ;TODO: replace with functions that return the first instance of each NPC
-Global Curr173.NPCs
-Global Curr106.NPCs
-Global Curr096.NPCs
+Global Curr173.NPC
+Global Curr106.NPC
+Global Curr096.NPC
 
 Const NPCtype173%       = 1
 Const NPCtype106%       = 2
@@ -39,7 +39,7 @@ Const NPCtypePdPlane%   = 18 ;TODO: Remove, don't think this is ever used even.
 
 Const NPC_SOUND_COUNT% = 12
 Const NPC_CHANNEL_COUNT% = 3
-Type NPCs
+Type NPC
 	Field obj%
 	Field obj2%
 	Field obj3%
@@ -90,7 +90,7 @@ Type NPCs
 	Field prevY#
 	Field prevZ#
 
-	Field target.NPCs, targetID%
+	Field target.NPC, targetID%
 
 	;TODO: Deprecate in favor of target.
 	Field enemyX#
@@ -101,7 +101,7 @@ Type NPCs
 	Field targetY#
 	Field targetZ#
 
-	Field path.WayPoints[20]
+	Field path.Waypoint[20]
 	Field pathStatus%
 	Field pathTimer#
 	Field pathLocation%
@@ -124,7 +124,7 @@ Type NPCs
 
 	;TODO: Move this to DataMTF
 	Field mtfVariant%
-	Field mtfLeader.NPCs
+	Field mtfLeader.NPC
 	Field isDead%
 	Field blinkTimer# = 1.0
 	Field ignorePlayer%
@@ -153,8 +153,8 @@ Type NPCs
 	Field modelScaleX#,modelScaleY#,modelScaleZ#
 End Type
 
-Function CreateNPC.NPCs(NPCtype%, x#, y#, z#)
-	Local n.NPCs = New NPCs, n2.NPCs
+Function CreateNPC.NPC(NPCtype%, x#, y#, z#)
+	Local n.NPC = New NPCs, n2.NPC
 	Local temp#, i%, diff1%, bump1%, spec1%
 	Local sf%, b%, t1%
 
@@ -211,9 +211,9 @@ End Function
 
 ;Attempts to copy an existing mesh from an NPC of the same type.
 ;Otherwise it loads the mesh from the specified filepath.
-Function LoadOrCopyMesh(n.NPCs, filePath$)
-	Local n2.NPCs
-	For n2 = Each NPCs
+Function LoadOrCopyMesh(n.NPC, filePath$)
+	Local n2.NPC
+	For n2 = Each NPC
 		If (n\npcType = n2\npcType And n <> n2) Then
 			If ((n2\obj <> 0)) Then
 				n\obj = CopyEntity(n2\obj)
@@ -225,7 +225,7 @@ Function LoadOrCopyMesh(n.NPCs, filePath$)
 	n\obj = LoadAnimMesh(filePath)
 End Function
 
-Function RemoveNPC(n.NPCs)
+Function RemoveNPC(n.NPC)
 	If (n = Null) Then
 		Return
 	EndIf
@@ -262,10 +262,10 @@ End Function
 
 
 Function UpdateNPCs()
-	Local n.NPCs
+	Local n.NPC
 	Local i%, gravityDist#, collidedFloor%
 
-	For n = Each NPCs
+	For n = Each NPC
 		;A variable to determine if the NPC is in the facility or not
 		;TODO: remove because this is practically useless
 		n\inFacility = CheckForNPCInFacility(n)
@@ -359,7 +359,7 @@ Function UpdateNPCs()
 End Function
 
 ;Stops all audio channels for a given NPC.
-Function NPCStopAllChannels(n.NPCs)
+Function NPCStopAllChannels(n.NPC)
 	Local i%
 	For i = 0 To NPC_CHANNEL_COUNT-1
 		If (IsChannelPlaying(n\soundChannels[i])) Then
@@ -368,14 +368,14 @@ Function NPCStopAllChannels(n.NPCs)
 	Next
 End Function
 
-Function TeleportCloser(n.NPCs)
+Function TeleportCloser(n.NPC)
 	Local closestDist# = 0
-	Local closestWaypoint.WayPoints
-	Local w.WayPoints
+	Local closestWaypoint.Waypoint
+	Local w.Waypoint
 
 	Local xtemp#, ztemp#, newDist#
 
-	For w = Each WayPoints
+	For w = Each WayPoint
 		;If (w\door = Null) Then ;TODO: fix?
 		xtemp = Abs(EntityX(w\obj,True)-EntityX(n\collider,True))
 		If (xtemp < 10.0 And xtemp > 1.0) Then
@@ -408,7 +408,7 @@ Function TeleportCloser(n.NPCs)
 End Function
 
 ;TODO: rename lol
-Function OtherNPCSeesMeNPC%(me.NPCs,other.NPCs)
+Function OtherNPCSeesMeNPC%(me.NPC,other.NPC)
 	If (other\blinkTimer<=0.0) Then Return False
 
 	If (EntityDistance(other\collider,me\collider)<6.0) Then
@@ -419,7 +419,7 @@ Function OtherNPCSeesMeNPC%(me.NPCs,other.NPCs)
 	Return False
 End Function
 
-Function MeNPCSeesPlayer%(me.NPCs,disableSoundOnCrouch%=False)
+Function MeNPCSeesPlayer%(me.NPC,disableSoundOnCrouch%=False)
 	;Return values:
 		;False (=0): Player is not detected anyhow
 		;True (=1): Player is detected by vision
@@ -460,14 +460,14 @@ Function MeNPCSeesPlayer%(me.NPCs,disableSoundOnCrouch%=False)
 End Function
 
 ;TODO: Move to MTF file?
-Function TeleportMTFGroup(n.NPCs)
-	Local n2.NPCs
+Function TeleportMTFGroup(n.NPC)
+	Local n2.NPC
 
 	If (n\mtfLeader <> Null) Then Return
 
 	TeleportCloser(n)
 
-	For n2 = Each NPCs
+	For n2 = Each NPC
 		If (n2\npcType = NPCtypeMTF) Then
 			If (n2\mtfLeader <> Null) Then
 				PositionEntity(n2\collider,EntityX(n2\mtfLeader\collider),EntityY(n2\mtfLeader\collider)+0.1,EntityZ(n2\mtfLeader\collider))
@@ -480,10 +480,10 @@ Function TeleportMTFGroup(n.NPCs)
 End Function
 
 Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False)
-	Local shotMessageUpdate$, wearingVest%, pvt%, i%, de.Decals
+	Local shotMessageUpdate$, wearingVest%, pvt%, i%, de.Decal
 
 	;muzzle flash
-	Local p.Particles = CreateParticle(x,y,z, 1, Rnd(0.08,0.1), 0.0, 5)
+	Local p.Particle = CreateParticle(x,y,z, 1, Rnd(0.08,0.1), 0.0, 5)
 	TurnEntity(p\obj, 0,0,Rnd(360))
 	p\aChange = -0.15
 
@@ -626,7 +626,7 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 End Function
 
 ;TODO: Move to MTF file?
-Function PlayMTFSound(sound%, n.NPCs)
+Function PlayMTFSound(sound%, n.NPC)
 	If (n <> Null) Then
 		n\soundChannels[0] = PlayRangedSound(sound, mainPlayer\cam, n\collider, 8.0)
 	EndIf
@@ -644,9 +644,9 @@ End Function
 
 ;TODO: Does this even have anything to do with NPCs? Move to Player file whenever that's made?
 Function MoveToPocketDimension()
-	Local r.Rooms
+	Local r.Room
 
-	For r = Each Rooms
+	For r = Each Room
 		If (r\roomTemplate\name = "pocketdimension") Then
 			mainPlayer\fallTimer = 0
 			UpdateDoors()
@@ -670,12 +670,12 @@ Function MoveToPocketDimension()
 End Function
 
 Function FindFreeNPCID%()
-	Local taken%, n2.NPCs
+	Local taken%, n2.NPC
 	Local id% = 1
 
 	While (True)
 		taken = False
-		For n2 = Each NPCs
+		For n2 = Each NPC
 			If (n2\id = id) Then
 				taken = True
 				Exit
@@ -688,11 +688,11 @@ Function FindFreeNPCID%()
 	Wend
 End Function
 
-Function ForceSetNPCID(n.NPCs, newID%)
+Function ForceSetNPCID(n.NPC, newID%)
 	n\id = newID
 
-	Local n2.NPCs
-	For n2 = Each NPCs
+	Local n2.NPC
+	For n2 = Each NPC
 		If (n2 <> n And n2\id = newID) Then
 			n2\id = FindFreeNPCID()
 		EndIf
@@ -702,7 +702,7 @@ End Function
 
 ;TODO: Reimplement the revamp of this function from post-1.3.2.
 Function Console_SpawnNPC(c_input$,state%=-9999)
-	Local n.NPCs
+	Local n.NPC
 
 	Select c_input
 		Case "mtf"
@@ -757,12 +757,12 @@ End Function
 
 ;TODO: Restore pre-shitty bone system iteration of this function.
 Function ManipulateNPCBones()
-	Local n.NPCs,bone%,bone2%,pvt%,pitch#,yaw#,roll#
+	Local n.NPC,bone%,bone2%,pvt%,pitch#,yaw#,roll#
 	Local bonename$,bonename2$
 	Local pitchvalue#,yawvalue#,rollvalue#
 	Local pitchoffset#,yawoffset#,rolloffset#
 
-	For n = Each NPCs
+	For n = Each NPC
 		If (n\manipulateBone) Then
 			pitchvalue = 0
 			yawvalue = 0
@@ -933,7 +933,7 @@ Function TransformNPCManipulationData#(NPC$,bone$,section$)
 
 End Function
 
-Function NPCSpeedChange(n.NPCs)
+Function NPCSpeedChange(n.NPC)
 
 	Select n\npcType
 		Case NPCtype173,NPCtype106,NPCtype096,NPCtype049,NPCtype939,NPCtypeMTF
@@ -949,7 +949,7 @@ End Function
 
 Function PlayerInReachableRoom%()
 	Local RN$ = mainPlayer\currRoom\roomTemplate\name$
-	Local e.Events, temp%
+	Local e.Event, temp%
 
 	;Player is in these rooms, returning false
 	If (RN = "pocketdimension" Or RN = "gatea" Or RN = "dimension1499" Or RN = "173") Then
@@ -961,7 +961,7 @@ Function PlayerInReachableRoom%()
 	EndIf
 	;Player is in 860's test room and inside the forest, returning false
 	temp = False
-	For e = Each Events
+	For e = Each Event
 		If (e\name$ = "room860" And e\eventState = 1.0) Then
 			temp = True
 			Exit
@@ -976,7 +976,7 @@ Function PlayerInReachableRoom%()
 End Function
 
 ;TODO: Remove in favor of doing checks as needed.
-Function CheckForNPCInFacility%(n.NPCs)
+Function CheckForNPCInFacility%(n.NPC)
 	;False (=0): NPC is not in facility (mostly meant for "dimension1499")
 	;True (=1): NPC is in facility
 	;2: NPC is in tunnels (maintenance tunnels/049 tunnels/939 storage room, etc...)
@@ -995,7 +995,7 @@ Function CheckForNPCInFacility%(n.NPCs)
 End Function
 
 ;TODO: Remove?
-Function FindNextElevator(n.NPCs)
+Function FindNextElevator(n.NPC)
 	Local eo.ElevatorObj, eo2.ElevatorObj
 
 	For eo = Each ElevatorObj
@@ -1032,7 +1032,7 @@ Function FindNextElevator(n.NPCs)
 End Function
 
 ;TODO: Remove?
-Function GoToElevator(n.NPCs)
+Function GoToElevator(n.NPC)
 	Local dist#,inside%
 
 	If (n\pathStatus <> 1) Then
@@ -1067,7 +1067,7 @@ Function GoToElevator(n.NPCs)
 
 End Function
 
-Function FinishWalking(n.NPCs,startframe#,endframe#,speed#)
+Function FinishWalking(n.NPC,startframe#,endframe#,speed#)
 	Local centerframe#
 
 	If (n<>Null) Then
@@ -1081,7 +1081,7 @@ Function FinishWalking(n.NPCs,startframe#,endframe#,speed#)
 
 End Function
 
-Function RotateToDirection(n.NPCs)
+Function RotateToDirection(n.NPC)
 	Local turnToSide%
 
 	HideEntity(n\collider)
@@ -1104,7 +1104,7 @@ Function RotateToDirection(n.NPCs)
 
 End Function
 
-Function AnimateNPC(n.NPCs, start#, quit#, speed#, loop%=True)
+Function AnimateNPC(n.NPC, start#, quit#, speed#, loop%=True)
 	Local newTime#, temp#
 
 	If (speed > 0.0) Then
@@ -1136,7 +1136,7 @@ Function AnimateNPC(n.NPCs, start#, quit#, speed#, loop%=True)
 
 End Function
 
-Function SetNPCFrame(n.NPCs, frame#)
+Function SetNPCFrame(n.NPC, frame#)
 	If (Abs(n\frame-frame)<0.001) Then Return
 
 	SetAnimTime(n\obj, frame)

@@ -1,6 +1,6 @@
-Function FillRoom_hll_tsl(r.Rooms)
-    Local d.Doors, d2.Doors, sc.SecurityCams, de.Decals, r2.Rooms, sc2.SecurityCams
-    Local it.Items, i%
+Function FillRoom_hll_tsl(r.Room)
+    Local d.Door, d2.Door, sc.SecurityCam, de.Decal, r2.Room, sc2.SecurityCam
+    Local it.Item, i%
     Local xtemp%, ytemp%, ztemp%
 
     Local t1%;, Bump
@@ -53,10 +53,10 @@ Function FillRoom_hll_tsl(r.Rooms)
 End Function
 
 
-Function UpdateEvent_tesla(e.Events)
+Function UpdateEvent_tesla(e.Event)
 	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
 
-	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
+	Local p.Particle, n.NPC, r.Room, e2.Event, it.Item, em.Emitter, sc.SecurityCam, sc2.SecurityCam
 
 	Local CurrTrigger$ = ""
 
@@ -182,7 +182,7 @@ Function UpdateEvent_tesla(e.Events)
 		If (e\eventState2 = 0) Then
 			If (e\eventState3 <=0) Then
 				temp = False
-				For n = Each NPCs
+				For n = Each NPC
 					If (n\npcType = NPCtypeMTF) Then
 						If (Abs(EntityX(n\collider)-EntityX(e\room\obj,True))<4.0) Then
 							If (Abs(EntityZ(n\collider)-EntityZ(e\room\obj,True))<4.0) Then

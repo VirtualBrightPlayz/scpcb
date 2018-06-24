@@ -1,6 +1,6 @@
-Function FillRoom_cont_079_1(r.Rooms)
-    Local d.Doors, d2.Doors, sc.SecurityCams, de.Decals, r2.Rooms, sc2.SecurityCams
-	Local it.Items, i%
+Function FillRoom_cont_079_1(r.Room)
+    Local d.Door, d2.Door, sc.SecurityCam, de.Decal, r2.Room, sc2.SecurityCam
+	Local it.Item, i%
 	Local xtemp%, ytemp%, ztemp%
 
 	Local t1%;, Bump
@@ -46,10 +46,10 @@ Function FillRoom_cont_079_1(r.Rooms)
     EntityParent(de\obj, r\obj)
 End Function
 
-Function UpdateEvent_cont_079_1(e.Events)
+Function UpdateEvent_cont_079_1(e.Event)
 	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
 
-	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
+	Local p.Particle, n.NPC, r.Room, e2.Event, it.Item, em.Emitter, sc.SecurityCam, sc2.SecurityCam
 
 	Local CurrTrigger$ = ""
 
@@ -134,7 +134,7 @@ Function UpdateEvent_cont_079_1(e.Events)
 			e\soundChannels[0] = PlaySound(e\sounds[0])
 			e\eventState2 = 2
 
-			For e2 = Each Events
+			For e2 = Each Event
 				If (e2\name="exit1" Or e2\name="gateaentrance") Then
 					e2\eventState3 = 1
 				EndIf

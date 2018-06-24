@@ -2,13 +2,13 @@
 Global ClosestButton.MarkedForRemoval, ClosestDoor.MarkedForRemoval
 Global SelectedDoor.MarkedForRemoval, UpdateDoorsTimer#
 Global DoorTempID%
-Type Doors
+Type Door
 	Field obj%, obj2%, frameobj%, buttons%[2]
 	Field locked%, open%, angle#, openstate#, fastopen%
 	Field dir%
 	Field timer%, timerstate#
 	Field keyCard%
-	Field room.Rooms
+	Field room.Room
 
 	Field dist#
 
@@ -21,7 +21,7 @@ Type Doors
 
 	Field autoClose%
 
-	Field linkedDoor.Doors
+	Field linkedDoor.Door
 
 	Field isElevatorDoor% = False
 
@@ -33,8 +33,8 @@ End Type
 Dim BigDoorOBJ.MarkedForRemoval(2) ;yo yeye alright
 Dim HeavyDoorObj.MarkedForRemoval(2)
 
-Function CreateDoor.Doors(lvl%, x#, y#, z#, angle#, room.Rooms, dopen% = False,  big% = False, keycard% = False, code$="")
-	Local d.Doors, parent%, i%
+Function CreateDoor.Door(lvl%, x#, y#, z#, angle#, room.Room, dopen% = False,  big% = False, keycard% = False, code$="")
+	Local d.Door, parent%, i%
 	If (room <> Null) Then parent = room\obj
 
 	Local doorObj%      = GrabMesh("GFX/Map/Meshes/door.b3d")
@@ -188,12 +188,12 @@ Function CreateDoor.Doors(lvl%, x#, y#, z#, angle#, room.Rooms, dopen% = False, 
 End Function
 
 Function UpdateDoors()
-	Local i%, d.Doors, p.Particles, pvt%, x#, z#, temp%
+	Local i%, d.Door, p.Particle, pvt%, x#, z#, temp%
 
 	Local dist#, xdist#, zdist#
 
 	If (UpdateDoorsTimer =< 0) Then
-		For d = Each Doors
+		For d = Each Door
 			xdist = Abs(EntityX(mainPlayer\collider)-EntityX(d\obj,True))
 			zdist = Abs(EntityZ(mainPlayer\collider)-EntityZ(d\obj,True))
 
@@ -222,7 +222,7 @@ Function UpdateDoors()
 	mainPlayer\closestButton = 0
 	mainPlayer\closestDoor = Null
 
-	For d = Each Doors
+	For d = Each Door
 		If (d\dist < HideDistance*2) Then
 
 			If ((d\openstate >= 180 Or d\openstate <= 0) And mainPlayer\grabbedEntity = 0) Then
@@ -380,7 +380,7 @@ Function UpdateDoors()
 	Next
 End Function
 
-Function UseDoor(d.Doors, showmsg%=True)
+Function UseDoor(d.Door, showmsg%=True)
 	Local temp% = 0
 	If (d\keyCard > 0) Then
 		If (mainPlayer\selectedItem = Null) Then
@@ -521,7 +521,7 @@ Function UseDoor(d.Doors, showmsg%=True)
 	EndIf
 End Function
 
-Function RemoveDoor(d.Doors)
+Function RemoveDoor(d.Door)
 	If (d\buttons[0] <> 0) Then EntityParent(d\buttons[0], 0)
 	If (d\buttons[1] <> 0) Then EntityParent(d\buttons[1], 0)
 

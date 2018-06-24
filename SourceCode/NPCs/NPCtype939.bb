@@ -1,7 +1,7 @@
-Function InitializeNPCtype939(n.NPCs)
+Function InitializeNPCtype939(n.NPC)
     Local i% = 53
-	Local n2.NPCs
-    For n2 = Each NPCs
+	Local n2.NPC
+    For n2 = Each NPC
 		If ((n\npcType = n2\npcType) And (n<>n2)) Then
 			i = i + Rand(12, 36)
 		EndIf
@@ -9,7 +9,7 @@ Function InitializeNPCtype939(n.NPCs)
     n\nvName = "SCP-939-"+Str(i)
     Local amount939% = 0
 
-    For n2 = Each NPCs
+    For n2 = Each NPC
         If ((n\npcType = n2\npcType) And (n<>n2)) Then
             amount939 = amount939 + 1
         EndIf
@@ -22,7 +22,7 @@ Function InitializeNPCtype939(n.NPCs)
     n\collider = CreatePivot()
     EntityRadius(n\collider, 0.3)
     EntityType(n\collider, HIT_PLAYER)
-    For n2 = Each NPCs
+    For n2 = Each NPC
         If (n\npcType = n2\npcType And n<>n2) Then
             n\obj = CopyEntity(n2\obj)
             Exit
@@ -40,7 +40,7 @@ Function InitializeNPCtype939(n.NPCs)
     n\speed = (GetINIFloat("Data/NPCs.ini", "SCP-939", "speed") / 100.0)
 End Function
 
-Function UpdateNPCtype939(n.NPCs)
+Function UpdateNPCtype939(n.NPC)
 	Local dist#, prevFrame%, temp%, angle#
 
     If (mainPlayer\currRoom\roomTemplate\name <> "room3storage") Then

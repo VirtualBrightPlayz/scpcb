@@ -1,6 +1,6 @@
-Function FillRoom_strg_elec_2c(r.Rooms)
-    Local d.Doors, d2.Doors, sc.SecurityCams, de.Decals, r2.Rooms, sc2.SecurityCams
-    Local it.Items, i%
+Function FillRoom_strg_elec_2c(r.Room)
+    Local d.Door, d2.Door, sc.SecurityCam, de.Decal, r2.Room, sc2.SecurityCam
+    Local it.Item, i%
     Local xtemp%, ytemp%, ztemp%
 
     Local t1%;, Bump
@@ -38,10 +38,10 @@ Function FillRoom_strg_elec_2c(r.Rooms)
 End Function
 
 
-Function UpdateEvent_strg_elec_2c(e.Events)
+Function UpdateEvent_strg_elec_2c(e.Event)
 	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
 
-	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
+	Local p.Particle, n.NPC, r.Room, e2.Event, it.Item, em.Emitter, sc.SecurityCam, sc2.SecurityCam
 
 	Local CurrTrigger$ = ""
 
@@ -107,7 +107,7 @@ Function UpdateEvent_strg_elec_2c(e.Events)
 				If (i = 3) Then
 					If (prevpitch => -83) Then
 						PlayRangedSound_SM(sndManager\lightSwitch, mainPlayer\cam, e\room\objects[i])
-						For r = Each Rooms
+						For r = Each Room
 							For z = 0 To 19
 								If (r\lightSprites[Int(z)] <> 0) Then HideEntity(r\lightSprites[Int(z)])
 							Next

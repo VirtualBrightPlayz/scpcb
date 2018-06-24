@@ -1,6 +1,6 @@
-Function FillRoom_cont_106_1(r.Rooms)
-    Local d.Doors, d2.Doors, sc.SecurityCams, de.Decals, r2.Rooms, sc2.SecurityCams
-    Local it.Items, i%
+Function FillRoom_cont_106_1(r.Room)
+    Local d.Door, d2.Door, sc.SecurityCam, de.Decal, r2.Room, sc2.SecurityCam
+    Local it.Item, i%
     Local xtemp%, ytemp%, ztemp%
 
     Local t1%;, Bump
@@ -35,7 +35,7 @@ Function FillRoom_cont_106_1(r.Rooms)
     ;		t = GetBrushTexture(b,1)
     ;		texname$ =  StripPath(TextureName(t))
     ;
-    ;		mat.Materials=GetCache(texname)
+    ;		mat.Material=GetCache(texname)
     ;		If (mat<>Null) Then
     ;			If (mat\bump<>0) Then
     ;				t1 = GetBrushTexture(b,0)
@@ -119,10 +119,10 @@ Function FillRoom_cont_106_1(r.Rooms)
 End Function
 
 
-Function UpdateEvent_cont_106_1(e.Events)
+Function UpdateEvent_cont_106_1(e.Event)
 	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%, leverstate%
 
-	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams, d.Decals
+	Local p.Particle, n.NPC, r.Room, e2.Event, it.Item, em.Emitter, sc.SecurityCam, sc2.SecurityCam, d.Decal
 
 	Local CurrTrigger$ = ""
 

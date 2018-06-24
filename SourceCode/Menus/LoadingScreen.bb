@@ -1,8 +1,8 @@
-Global SelectedLoadingScreen.LoadingScreens, LoadingScreenAmount%, LoadingScreenText%
+Global SelectedLoadingScreen.LoadingScreen, LoadingScreenAmount%, LoadingScreenText%
 Global LoadingBack%
 
 ;TODO: Redo loading screens to provide tips rather than SCP article info.
-Type LoadingScreens
+Type LoadingScreen
 	Field imgpath$
 	Field img%
 	Field id%
@@ -14,7 +14,7 @@ End Type
 
 Function InitLoadingScreens(file$)
 	Local TemporaryString$, i%
-	Local ls.LoadingScreens
+	Local ls.LoadingScreen
 
 	Local f% = OpenFile(file)
 
@@ -23,7 +23,7 @@ Function InitLoadingScreens(file$)
 		If (Left(TemporaryString,1) = "[") Then
 			TemporaryString = Mid(TemporaryString, 2, Len(TemporaryString) - 2)
 
-			ls = New LoadingScreens
+			ls = New LoadingScreen
 			LoadingScreenAmount=LoadingScreenAmount+1
 			ls\id = LoadingScreenAmount
 
@@ -68,14 +68,14 @@ Function DrawLoading(percent%, shortloading%=False)
 	Local i%
 	Local strtemp$
 	Local temp%
-	Local ls.LoadingScreens
+	Local ls.LoadingScreen
 	Local width%, height%
 
 	If (percent = 0) Then
 		LoadingScreenText=0
 
 		temp = Rand(1,LoadingScreenAmount)
-		For ls = Each LoadingScreens
+		For ls = Each LoadingScreen
 			If (ls\id = temp) Then
 				If (ls\img=0) Then ls\img = LoadImage("Loadingscreens/"+ls\imgpath)
 				SelectedLoadingScreen = ls

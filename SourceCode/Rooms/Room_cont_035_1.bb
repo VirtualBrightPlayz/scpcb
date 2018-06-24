@@ -1,6 +1,6 @@
-Function FillRoom_cont_035_1(r.Rooms)
-    Local d.Doors, d2.Doors, sc.SecurityCams, de.Decals, em.Emitters, r2.Rooms, sc2.SecurityCams
-	Local it.Items, i%
+Function FillRoom_cont_035_1(r.Room)
+    Local d.Door, d2.Door, sc.SecurityCam, de.Decal, em.Emitter, r2.Room, sc2.SecurityCam
+	Local it.Item, i%
 	Local xtemp%, ytemp%, ztemp%
 
 	Local t1%;, Bump
@@ -93,10 +93,10 @@ Function FillRoom_cont_035_1(r.Rooms)
 End Function
 
 
-Function UpdateEvent_cont_035_1(e.Events)
+Function UpdateEvent_cont_035_1(e.Event)
 	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
 
-	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams, do.Doors
+	Local p.Particle, n.NPC, r.Room, e2.Event, it.Item, em.Emitter, sc.SecurityCam, sc2.SecurityCam, do.Door
 
 	Local CurrTrigger$ = ""
 
@@ -126,7 +126,7 @@ Function UpdateEvent_cont_035_1(e.Events)
 
 		ElseIf (e\eventState > 0) Then
 			If (e\room\npc[0]=Null) Then
-				For n = Each NPCs
+				For n = Each NPC
 					If (n\texture = "GFX/NPCs/035victim.jpg") Then
 						e\room\npc[0]=n
 
@@ -452,7 +452,7 @@ Function UpdateEvent_cont_035_1(e.Events)
 							e\room\roomDoors[1]\locked = False
 							e\room\roomDoors[2]\locked = False
 							UseDoor(e\room\roomDoors[1],False)
-							For do = Each Doors
+							For do = Each Door
 								If (do\dir = 2) Then
 									If (Abs(EntityX(e\room\obj)-EntityX(do\frameobj,True))<4.5) Then
 										If (Abs(EntityZ(e\room\obj)-EntityZ(do\frameobj,True))<4.5) Then

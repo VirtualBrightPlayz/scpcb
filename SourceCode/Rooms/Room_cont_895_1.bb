@@ -1,6 +1,6 @@
-Function FillRoom_cont_895_1(r.Rooms)
-    Local d.Doors, d2.Doors, sc.SecurityCams, de.Decals, r2.Rooms, sc2.SecurityCams
-    Local it.Items, i%
+Function FillRoom_cont_895_1(r.Room)
+    Local d.Door, d2.Door, sc.SecurityCam, de.Decal, r2.Room, sc2.SecurityCam
+    Local it.Item, i%
     Local xtemp%, ytemp%, ztemp%
 
     Local t1%;, Bump
@@ -51,15 +51,15 @@ Function FillRoom_cont_895_1(r.Rooms)
     r\objects[1] = CreatePivot(r\obj)
     PositionEntity(r\objects[1], r\x + 96.0*RoomScale, -1532.0 * RoomScale, r\z + 2016.0 * RoomScale,True)
 
-    ;de.Decals = CreateDecal(0, r\x + 96.0*RoomScale, -1535.0 * RoomScale, r\z + 32.0 * RoomScale, 90, Rand(360), 0)
+    ;de.Decal = CreateDecal(0, r\x + 96.0*RoomScale, -1535.0 * RoomScale, r\z + 32.0 * RoomScale, 90, Rand(360), 0)
     ;EntityParent(de\obj, r\obj)
 End Function
 
 
-Function UpdateEventCoffin106(e.Events)
+Function UpdateEventCoffin106(e.Event)
 	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
 
-	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
+	Local p.Particle, n.NPC, r.Room, e2.Event, it.Item, em.Emitter, sc.SecurityCam, sc2.SecurityCam
 
 	Local CurrTrigger$ = ""
 
@@ -71,10 +71,10 @@ End Function
 
 
 
-Function UpdateEventCoffin(e.Events)
+Function UpdateEventCoffin(e.Event)
 	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
 
-	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams, de.Decals
+	Local p.Particle, n.NPC, r.Room, e2.Event, it.Item, em.Emitter, sc.SecurityCam, sc2.SecurityCam, de.Decal
 
 	Local CurrTrigger$ = ""
 
@@ -88,14 +88,14 @@ Function UpdateEventCoffin(e.Events)
 		;SCP-079 starts broadcasting 895 camera feed on monitors after leaving the first zone
 		;TODO: rewrite this to adjust for separate zone loading
 		If (EntityPitch(e\room\levers[0]\obj, True) > 0) Then ;camera feed on
-			For sc = Each SecurityCams
+			For sc = Each SecurityCam
 				If (Not sc\specialCam) Then
 					If (sc\coffinEffect=0 And sc\room\roomTemplate\name<>"room106" And sc\room\roomTemplate\name<>"room205") Then sc\coffinEffect = 2
 					If (sc\room = e\room) Then sc\screen = True
 				EndIf
 			Next
 		Else ;camera feed off
-			For sc = Each SecurityCams
+			For sc = Each SecurityCam
 				If (Not sc\specialCam) Then
 					If (sc\coffinEffect<>1) Then sc\coffinEffect = 0
 					If (sc\room = e\room) Then sc\screen = False
@@ -190,7 +190,7 @@ Function UpdateEventCoffin(e.Events)
 		;ShouldPlay = 66
 
 		If (e\room\levers[0]\succ) Then
-			For sc = Each SecurityCams
+			For sc = Each SecurityCam
 				If (Not sc\specialCam) Then
 					If (sc\coffinEffect=0 And sc\room\roomTemplate\name<>"room106") Then sc\coffinEffect = 2
 					If (sc\coffinEffect = 1) Then EntityBlend(sc\scrOverlay, 3)
@@ -198,7 +198,7 @@ Function UpdateEventCoffin(e.Events)
 				EndIf
 			Next
 		Else
-		For sc = Each SecurityCams
+		For sc = Each SecurityCam
 				If (Not sc\specialCam) Then
 					If (sc\coffinEffect <> 1) Then sc\coffinEffect = 0
 					If (sc\coffinEffect = 1) Then EntityBlend(sc\scrOverlay, 0)

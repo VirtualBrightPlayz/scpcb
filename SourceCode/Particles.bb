@@ -1,6 +1,6 @@
 Dim ParticleTextures%(10)
 
-Type Particles
+Type Particle
 	Field obj%, pvt%
 	Field image%
 
@@ -12,8 +12,8 @@ Type Particles
 	Field lifetime#
 End Type
 
-Function CreateParticle.Particles(x#, y#, z#, image%, size#, gravity# = 1.0, lifetime% = 200)
-	Local p.Particles = New Particles
+Function CreateParticle.Particle(x#, y#, z#, image%, size#, gravity# = 1.0, lifetime% = 200)
+	Local p.Particle = New Particles
 	p\lifetime = lifetime
 
 	p\obj = CreateSprite()
@@ -43,8 +43,8 @@ Function CreateParticle.Particles(x#, y#, z#, image%, size#, gravity# = 1.0, lif
 End Function
 
 Function UpdateParticles()
-	Local p.Particles
-	For p = Each Particles
+	Local p.Particle
+	For p = Each Particle
 		MoveEntity(p\pvt, 0, 0, p\speed * timing\tickDuration)
 		If (p\gravity <> 0) Then p\yspeed = p\yspeed - p\gravity * timing\tickDuration
 		TranslateEntity(p\pvt, 0, p\yspeed * timing\tickDuration, 0, True)
@@ -73,7 +73,7 @@ Function UpdateParticles()
 	Next
 End Function
 
-Function RemoveParticle(p.Particles)
+Function RemoveParticle(p.Particle)
 	FreeEntity(p\obj)
 	FreeEntity(p\pvt)
 	Delete p
@@ -82,7 +82,7 @@ End Function
 Global InSmoke%
 Global HissSFX.MarkedForRemoval
 
-Type Emitters
+Type Emitter
 	Field obj%
 
 	Field size#
@@ -92,7 +92,7 @@ Type Emitters
 
 	Field disable%
 
-	Field room.Rooms
+	Field room.Room
 
 	Field soundCHN%
 
@@ -102,11 +102,11 @@ End Type
 
 Function UpdateEmitters()
 	InSmoke = False
-	Local e.Emitters
-	Local p.Particles
+	Local e.Emitter
+	Local p.Particle
 	Local dist#
 	
-	For e = Each Emitters
+	For e = Each Emitter
 		If (timing\tickDuration > 0 And (mainPlayer\currRoom = e\room Or e\room\dist < 8)) Then
 			;If (EntityDistance(mainPlayer\cam, e\obj) < 6.0) Then
 			p = CreateParticle(EntityX(e\obj, True), EntityY(e\obj, True), EntityZ(e\obj, True), Rand(e\minImage, e\maxImage), e\size, e\gravity, e\lifeTime)
@@ -152,8 +152,8 @@ Function UpdateEmitters()
 End Function
 
 
-Function CreateEmitter.Emitters(x#, y#, z#, emittertype%)
-	Local e.Emitters = New Emitters
+Function CreateEmitter.Emitter(x#, y#, z#, emittertype%)
+	Local e.Emitter = New Emitters
 
 	e\obj = CreatePivot()
 	PositionEntity(e\obj, x, y, z, True)
@@ -179,8 +179,8 @@ Function CreateEmitter.Emitters(x#, y#, z#, emittertype%)
 			e\minImage = 6 : e\maxImage = 6
 	End Select
 
-	Local r.Rooms
-	For r = Each Rooms
+	Local r.Room
+	For r = Each Room
 		If (Abs(EntityX(e\obj) - EntityX(r\obj)) < 4.0 And Abs(EntityZ(e\obj) - EntityZ(r\obj)) < 4.0) Then
 			e\room = r
 		EndIf

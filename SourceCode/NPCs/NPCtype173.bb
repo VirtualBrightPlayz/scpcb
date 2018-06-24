@@ -4,7 +4,7 @@ Const STATE173_MOVE_TO_TARGET%   = 2
 Const STATE173_BEING_CONTAINED%  = 3
 Const STATE173_CONTAINED%        = 4
 
-Function InitializeNPCtype173(n.NPCs)
+Function InitializeNPCtype173(n.NPC)
 	n\nvName = "SCP-173"
 	n\collider = CreatePivot()
 	EntityRadius(n\collider, 0.32)
@@ -52,9 +52,9 @@ Function InitializeNPCtype173(n.NPCs)
 	n\state = STATE173_ATTACK
 End Function
 
-Function UpdateNPCtype173(n.NPCs)
+Function UpdateNPCtype173(n.NPC)
 	Local x#, z#, i%, tmp%
-	Local w.WayPoints, d.Doors
+	Local w.Waypoint, d.Door
 	Local playerVisible%, canMove%
 
 	If (n\state = STATE173_IDLE Or n\state = STATE173_CONTAINED) Then
@@ -121,7 +121,7 @@ Function UpdateNPCtype173(n.NPCs)
 				If (dist > 50) Then
 					If (Rand(70)=1) Then
 						If (mainPlayer\currRoom\roomTemplate\name <> "exit1" And mainPlayer\currRoom\roomTemplate\name <> "gatea" And mainPlayer\currRoom\roomTemplate\name <> "pocketdimension") Then
-							For w = Each WayPoints
+							For w = Each WayPoint
 								If (Rand(5)=1) Then ;w\door=Null And (TODO: fix?)
 									x = Abs(EntityX(mainPlayer\collider) - EntityX(w\obj, True))
 									If (x < 25.0 And x > 15.0) Then
@@ -143,7 +143,7 @@ Function UpdateNPCtype173(n.NPCs)
 
 					;try to open doors
 					If (Rand(20) = 1) Then
-						For d = Each Doors
+						For d = Each Door
 							If ((Not d\locked) And d\open = False And d\code = "" And d\keyCard=0) Then
 								For i = 0 To 1
 									If (d\buttons[i] <> 0) Then

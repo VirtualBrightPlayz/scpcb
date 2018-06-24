@@ -1,6 +1,6 @@
-Function FillRoom_cont_049_2(r.Rooms)
-    Local d.Doors, d2.Doors, sc.SecurityCams, de.Decals, r2.Rooms, sc2.SecurityCams
-	Local it.Items, i%
+Function FillRoom_cont_049_2(r.Room)
+    Local d.Door, d2.Door, sc.SecurityCam, de.Decal, r2.Room, sc2.SecurityCam
+	Local it.Item, i%
 	Local xtemp%, ytemp%, ztemp%
 
 	Local t1%;, Bump
@@ -103,10 +103,10 @@ Function FillRoom_cont_049_2(r.Rooms)
 End Function
 
 
-Function UpdateEvent_cont_049_2(e.Events)
+Function UpdateEvent_cont_049_2(e.Event)
 	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
 
-	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
+	Local p.Particle, n.NPC, r.Room, e2.Event, it.Item, em.Emitter, sc.SecurityCam, sc2.SecurityCam
 
 	Local CurrTrigger$ = ""
 
@@ -133,7 +133,7 @@ Function UpdateEvent_cont_049_2(e.Events)
 					PointEntity(n\collider, e\room\obj)
 					TurnEntity(n\collider, 0, 20, 0)
 
-					For n = Each NPCs
+					For n = Each NPC
 						If (n\npcType = NPCtype049) Then
 							e\room\npc[0]=n
 							e\room\npc[0]\state = 2
@@ -206,7 +206,7 @@ Function UpdateEvent_cont_049_2(e.Events)
 					If (e\eventState > 70*180) Then
 
 						;If (e\room\npc[0]=Null) Then
-						;	For n.NPCs = Each NPCs
+						;	For n.NPC = Each NPC
 						;		If (n\npcType=NPCtype049) Then e\room\npc[0]=n : Exit
 						;	Next
 						;EndIf
@@ -226,14 +226,14 @@ Function UpdateEvent_cont_049_2(e.Events)
 				ElseIf (e\eventState < 70*240) Then
 
 					;If (e\room\npc[0]=Null) Then
-					;	For n.NPCs = Each NPCs
+					;	For n.NPC = Each NPC
 					;		If (n\npcType=NPCtype049) Then e\room\npc[0]=n : Exit
 					;	Next
 					;Else
 						;If (EntityDistance(e\room\npc[0]\collider,mainPlayer\collider)<4.0) Then
 						;	e\eventState=e\eventState+timing\tickDuration
 						;	If (e\eventState > 70*195 And e\eventState-timing\tickDuration =< 70*195) Then
-						;		For n.NPCs = Each NPCs ;awake the zombies
+						;		For n.NPC = Each NPC ;awake the zombies
 						;			If (n\npcType = NPCtypeZombie And n\state = 0) Then
 						;				n\state = 1
 						;				SetNPCFrame(n, 155)
@@ -249,7 +249,7 @@ Function UpdateEvent_cont_049_2(e.Events)
 						;EndIf
 					;EndIf
 
-					For n = Each NPCs ;awake the zombies
+					For n = Each NPC ;awake the zombies
 						If (n\npcType = NPCtypeZombie And n\state = 0) Then
 							n\state = 1
 							SetNPCFrame(n, 155)
@@ -291,7 +291,7 @@ Function UpdateEvent_cont_049_2(e.Events)
 					PositionEntity(e\room\npc[0]\collider, EntityX(e\room\objects[0],True),EntityY(e\room\objects[0],True),EntityZ(e\room\objects[0],True),True)
 					ResetEntity(e\room\npc[0]\collider)
 
-					For n = Each NPCs
+					For n = Each NPC
 						If (n\npcType = NPCtypeZombie) Then
 							PositionEntity(n\collider, EntityX(e\room\objects[4],True),EntityY(e\room\objects[4],True),EntityZ(e\room\objects[4],True),True)
 							ResetEntity(n\collider)
