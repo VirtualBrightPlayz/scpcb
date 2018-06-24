@@ -393,7 +393,7 @@ Function UseDoor(d.Doors, showmsg%=True)
 			EndIf
 			Return
 		Else
-			Select mainPlayer\selectedItem\itemtemplate\name
+			Select mainPlayer\selectedItem\template\name
 				Case "key1"
 					temp = 1
 				Case "key2"
@@ -445,7 +445,7 @@ Function UseDoor(d.Doors, showmsg%=True)
 	ElseIf d\keyCard < 0 Then
 		;I can't find any way to produce short circuited boolean expressions so work around this by using a temporary variable - risingstar64
 		If mainPlayer\selectedItem <> Null Then
-			temp = (mainPlayer\selectedItem\itemtemplate\name = "hand" And d\keyCard=-1) Or (mainPlayer\selectedItem\itemtemplate\name = "hand2" And d\keyCard=-2)
+			temp = (mainPlayer\selectedItem\template\name = "hand" And d\keyCard=-1) Or (mainPlayer\selectedItem\template\name = "hand2" And d\keyCard=-2)
 		EndIf
 		If temp <> 0 Then
 			PlaySound_SM(sndManager\scannerUse)

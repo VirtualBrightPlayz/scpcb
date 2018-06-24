@@ -1,6 +1,6 @@
 Function FillRoom_chck_hcz_ez_2(r.Rooms)
     Local d.Doors, d2.Doors, sc.SecurityCams, de.Decals, r2.Rooms, sc2.SecurityCams
-	Local it.Items, i%
+	Local i%
 	Local xtemp%, ytemp%, ztemp%
 
 	Local t1;, Bump

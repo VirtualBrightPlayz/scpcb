@@ -109,7 +109,7 @@ Function FillRoom_intro(r.Rooms)
         Next
     Next
 
-    CreateItem("Class D Orientation Leaflet", "paper", r\x-(2914+1024)*RoomScale, 170.0*RoomScale, r\z+40*RoomScale)
+    CreatePaper("docORI", r\x-(2914+1024)*RoomScale, 170.0*RoomScale, r\z+40*RoomScale)
 
     sc.SecurityCams = CreateSecurityCam(r\x - 4048.0 * RoomScale, r\y - 32.0 * RoomScale, r\z - 1232.0 * RoomScale, r, True)
     sc\angle = 270

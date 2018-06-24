@@ -631,7 +631,7 @@ Function PlayMTFSound(sound%, n.NPCs)
 
 	If mainPlayer\selectedItem <> Null Then
 		If mainPlayer\selectedItem\state2 = 3 And mainPlayer\selectedItem\state > 0 Then
-			Select mainPlayer\selectedItem\itemtemplate\name
+			Select mainPlayer\selectedItem\template\name
 				Case "radio","fineradio","18vradio"
 					If RadioCHN(3)<> 0 Then StopChannel RadioCHN(3)
 					RadioCHN(3) = PlaySound(sound)

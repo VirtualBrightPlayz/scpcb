@@ -10,7 +10,7 @@ Function FillRoom_cont_1162_2c(r.Rooms)
     PositionEntity r\objects[0],r\x+1012.0*RoomScale,r\y+128.0*RoomScale,r\z-640.0*RoomScale
     EntityParent r\objects[0],r\obj
     EntityPickMode r\objects[0],1
-    it = CreateItem("Document SCP-1162", "paper", r\x + 863.227 * RoomScale, r\y + 152.0 * RoomScale, r\z - 953.231 * RoomScale)
+    it = CreatePaper("doc1162", r\x + 863.227 * RoomScale, r\y + 152.0 * RoomScale, r\z - 953.231 * RoomScale)
     EntityParent(it\collider, r\obj)
 
     sc.SecurityCams = CreateSecurityCam(r\x-192.0*RoomScale, r\y+704.0*RoomScale, r\z+192.0*RoomScale, r)
@@ -140,7 +140,7 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 			Local itt.ItemTemplates
 			For itt = Each ItemTemplates
 				If (IsItemGoodFor1162(itt)) Then
-					Select mainPlayer\inventory\items[e\eventState2]\itemtemplate\name
+					Select mainPlayer\inventory\items[e\eventState2]\template\name
 						Case "key"
 							If itt\name = "key1" Or itt\name = "key2" And Rand(2)=1 Then
 								shouldCreateItem = True
@@ -176,7 +176,7 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 
 				If (shouldCreateItem) Then
 					RemoveItem(mainPlayer\inventory\items[e\eventState2])
-					it=CreateItem(itt\name,itt\name,EntityX(pp,True),EntityY(pp,True),EntityZ(pp,True))
+					it=CreateItem(itt\name,EntityX(pp,True),EntityY(pp,True),EntityZ(pp,True))
 					EntityType(it\collider, HIT_ITEM)
 					PlaySound2 LoadTempSound("SFX/SCP/1162/Exchange"+Rand(0,4)+".ogg")
 					e\eventState3 = 0.0
@@ -197,7 +197,7 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 			FreeEntity pvt
 			For itt.ItemTemplates = Each ItemTemplates
 				If IsItemGoodFor1162(itt) And Rand(6)=1 Then
-					it = CreateItem(itt\name, itt\name, EntityX(pp,True),EntityY(pp,True),EntityZ(pp,True))
+					it = CreateItem(itt\name, EntityX(pp,True),EntityY(pp,True),EntityZ(pp,True))
 					EntityType(it\collider, HIT_ITEM)
 					MouseHit1 = False
 					e\eventState3 = 0.0
@@ -248,15 +248,15 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 			EndIf
 			Select e\eventState
 				Case 1
-					it = CreateItem("Lost Key","key",EntityX(pp,True),EntityY(pp,True),EntityZ(pp,True))
+					it = CreateItem("key",EntityX(pp,True),EntityY(pp,True),EntityZ(pp,True))
 				Case 2
-					it = CreateItem("Disciplinary Hearing DH-S-4137-17092","oldpaper",EntityX(pp,True),EntityY(pp,True),EntityZ(pp,True))
+					it = CreateItem("docDH",EntityX(pp,True),EntityY(pp,True),EntityZ(pp,True))
 				Case 3
-					it = CreateItem("Coin","coin",EntityX(pp,True),EntityY(pp,True),EntityZ(pp,True))
+					it = CreateItem("coin",EntityX(pp,True),EntityY(pp,True),EntityZ(pp,True))
 				Case 4
-					it = CreateItem("Movie Ticket","ticket",EntityX(pp,True),EntityY(pp,True),EntityZ(pp,True))
+					it = CreateItem("ticket",EntityX(pp,True),EntityY(pp,True),EntityZ(pp,True))
 				Case 5
-					it = CreateItem("Old Badge","badge",EntityX(pp,True),EntityY(pp,True),EntityZ(pp,True))
+					it = CreateItem("badge9341",EntityX(pp,True),EntityY(pp,True),EntityZ(pp,True))
 			End Select
 			EntityType(it\collider, HIT_ITEM)
 			MouseHit1 = False

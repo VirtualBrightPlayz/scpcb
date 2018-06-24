@@ -20,7 +20,7 @@ Function FillRoom_pocketdimension(r.Rooms)
 
 
 
-    CreateItem("Burnt Note", "paper", EntityX(r\obj),0.5,EntityZ(r\obj)+3.5)
+    CreatePaper("docBurn", EntityX(r\obj),0.5,EntityZ(r\obj)+3.5)
 
 	Local n%
     For n = 0 To -1;4 ;TODO: wut

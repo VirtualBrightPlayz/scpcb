@@ -148,7 +148,7 @@ Function Rnd_Array(numb1#,numb2#,Array1#,Array2#)
 
 End Function
 
-Function TimeInPosMilliSecs()
+Function TimeInPosMilliSecs%()
 	Local retVal% = MilliSecs()
 	If retVal < 0 Then retVal = retVal + 2147483648
 	Return retVal

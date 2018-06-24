@@ -753,7 +753,7 @@ Function UpdateGame()
 				EndIf
 
 				If mainPlayer\selectedItem <> Null Then
-					If mainPlayer\selectedItem\itemtemplate\name = "navigator" Or mainPlayer\selectedItem\itemtemplate\name = "nav" Then darkA = Max(darkA, 0.5)
+					If mainPlayer\selectedItem\template\name = "navigator" Or mainPlayer\selectedItem\template\name = "nav" Then darkA = Max(darkA, 0.5)
 				EndIf
 				If SelectedScreen <> Null Then darkA = Max(darkA, 0.5)
 
@@ -841,7 +841,7 @@ Function UpdateGame()
 				Local temp% = False ;TODO: change this variable's name because it's dumb as hell
 				If CurrGameState<>GAMESTATE_INVENTORY Then
 					If mainPlayer\selectedItem <> Null Then
-						If mainPlayer\selectedItem\itemtemplate\name = "paper" Or mainPlayer\selectedItem\itemtemplate\name = "oldpaper" Then
+						If mainPlayer\selectedItem\template\name = "paper" Or mainPlayer\selectedItem\template\name = "oldpaper" Then
 							temp% = True
 						EndIf
 					EndIf
@@ -1030,7 +1030,6 @@ End Function
 ;					Text x, y, "SCPs encountered: " +scpsEncountered
 ;					Text x, y+40*MenuScale, "Rooms found: " + roomsfound+"/"+roomamount
 ;					Text x, y+60*MenuScale, "Documents discovered: " +docsfound+"/"+docamount
-;					Text x, y+80*MenuScale, "Items refined in SCP-914: " +RefinedItems
 ;
 ;					x = userOptions\screenWidth / 2 - width / 2
 ;					y = userOptions\screenHeight / 2 - height / 2
@@ -1925,7 +1924,7 @@ Function UpdateNVG()
 	Local wornItem.Items = mainPlayer\wornItems[WORNITEM_SLOT_HEAD]
 
 	If wornItem<>Null Then
-		If wornItem\itemtemplate\name <> "nvgoggles" And wornItem\itemtemplate\name <> "supernv" Then
+		If wornItem\template\name <> "nvgoggles" And wornItem\template\name <> "supernv" Then
 			wornItem = Null
 		EndIf
 	EndIf
@@ -1962,14 +1961,14 @@ Function RenderWorld2()
 	Local wornItem.Items = mainPlayer\wornItems[WORNITEM_SLOT_HEAD]
 
     If wornItem<>Null Then
-		If wornItem\itemtemplate\name <> "nvgoggles" And wornItem\itemtemplate\name <> "supernv" Then
+		If wornItem\template\name <> "nvgoggles" And wornItem\template\name <> "supernv" Then
 			wornItem = Null
 		EndIf
 	EndIf
 
 	If wornItem<>Null Then
 		Local decayMultiplier# = 1.0
-		If wornItem\itemtemplate\name = "supernv" Then decayMultiplier = 2.0
+		If wornItem\template\name = "supernv" Then decayMultiplier = 2.0
 
 		power = Int(wornItem\state)
 		If wornItem\state <= 0.0 Then ;this nvg can't be used

@@ -5,16 +5,10 @@ Function FillRoom_cont_1123_2(r.Rooms)
 
     Local t1;, Bump
 
-    it = CreateItem("Document SCP-1123", "paper", r\x + 511.0 * RoomScale, r\y + 125.0 * RoomScale, r\z - 936.0 * RoomScale)
+    it = CreateItem("doc1123", r\x + 511.0 * RoomScale, r\y + 125.0 * RoomScale, r\z - 936.0 * RoomScale)
     EntityParent(it\collider, r\obj)
 
-    it = CreateItem("SCP-1123", "1123", r\x + 832.0 * RoomScale, r\y + 166.0 * RoomScale, r\z + 784.0 * RoomScale)
-    EntityParent(it\collider, r\obj)
-
-    it = CreateItem("Leaflet", "paper", r\x - 816.0 * RoomScale, r\y + 704.0 * RoomScale, r\z+ 888.0 * RoomScale)
-    EntityParent(it\collider, r\obj)
-
-    it = CreateItem("Gas Mask", "gasmask", r\x + 457.0 * RoomScale, r\y + 150.0 * RoomScale, r\z + 960.0 * RoomScale)
+    it = CreateItem("gasmask", r\x + 457.0 * RoomScale, r\y + 150.0 * RoomScale, r\z + 960.0 * RoomScale)
     EntityParent(it\collider, r\obj)
 
     d.Doors = CreateDoor(r\zone, r\x + 832.0 * RoomScale, 0.0, r\z + 367.0 * RoomScale, 0, r, False, False, 3)
@@ -288,7 +282,7 @@ Function UpdateEvent_cont_1123_2(e.Events)
 
 			For i = 0 To mainPlayer\inventory\size-1
 				If mainPlayer\inventory\items[i] <> Null Then
-					If mainPlayer\inventory\items[i]\itemtemplate\name = "Leaflet" Then
+					If mainPlayer\inventory\items[i]\template\name = "Leaflet" Then
 						mainPlayer\inventory\items[i] = Null
 						RemoveItem(mainPlayer\inventory\items[i])
 						Exit

@@ -66,10 +66,10 @@ Function FillRoom_cont_008_1(r.Rooms)
     d\autoClose = False : d\locked = True : r\roomDoors[2]=d
 
 
-    it = CreateItem("Hazmat Suit", "hazmatsuit", r\x - 76.0 * RoomScale, 0.5, r\z - 396.0 * RoomScale)
+    it = CreateItem("hazmatsuit", r\x - 76.0 * RoomScale, 0.5, r\z - 396.0 * RoomScale)
     EntityParent(it\collider, r\obj) : RotateEntity(it\collider, 0, 90, 0)
 
-    it = CreateItem("Document SCP-008", "paper", r\x - 245.0 * RoomScale, r\y + 192.0 * RoomScale, r\z + 368.0 * RoomScale)
+    it = CreatePaper("doc008", r\x - 245.0 * RoomScale, r\y + 192.0 * RoomScale, r\z + 368.0 * RoomScale)
     EntityParent(it\collider, r\obj)
 
     ;spawnpoint for the scientist used in the "008 zombie scene"

@@ -122,7 +122,7 @@ Function UpdateLeave1499()
 				UpdateRooms()
 				For it.Items = Each Items
 					it\disttimer = 0
-					If it\itemtemplate\name = "scp1499" Or it\itemtemplate\name = "super1499" Then
+					If it\template\name = "scp1499" Or it\template\name = "super1499" Then
 						If EntityY(it\collider) >= EntityY(mainPlayer\currRoom\obj)-5 Then
 							PositionEntity it\collider,NTF_1499PrevX#,NTF_1499PrevY#+(EntityY(it\collider)-EntityY(mainPlayer\currRoom\obj)),NTF_1499PrevZ#
 							ResetEntity it\collider

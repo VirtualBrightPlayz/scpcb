@@ -5,16 +5,13 @@ Function FillRoom_off_plain_2(r.Rooms)
 
     Local t1;, Bump
 
-    it = CreateItem("Document SCP-106", "paper", r\x + 404.0 * RoomScale, r\y + 145.0 * RoomScale, r\z + 559.0 * RoomScale)
+    it = CreatePaper("doc106", r\x + 404.0 * RoomScale, r\y + 145.0 * RoomScale, r\z + 559.0 * RoomScale)
     EntityParent(it\collider, r\obj)
 
-    it = CreateItem("Level 2 Key Card", "key2", r\x - 156.0 * RoomScale, r\y + 151.0 * RoomScale, r\z + 72.0 * RoomScale)
-    EntityParent(it\collider, r\obj)
-
-    it = CreateItem("S-NAV 300 Navigator", "nav", r\x + 305.0 * RoomScale, r\y + 153.0 * RoomScale, r\z + 944.0 * RoomScale)
+    it = CreateItem("navigator", r\x + 305.0 * RoomScale, r\y + 153.0 * RoomScale, r\z + 944.0 * RoomScale)
     it\state = 20 : EntityParent(it\collider, r\obj)
 
-    it = CreateItem("Notification", "paper", r\x -137.0 * RoomScale, r\y + 153.0 * RoomScale, r\z + 464.0 * RoomScale)
+    it = CreatePaper("914_organic", r\x -137.0 * RoomScale, r\y + 153.0 * RoomScale, r\z + 464.0 * RoomScale)
     EntityParent(it\collider, r\obj)
 
 	;TODO: fix?
