@@ -155,7 +155,7 @@ Function CreateItemTemplate(file$, section$)
 	;TODO: Item scale.
 	Local scale# = 1.0
 	it\scale = scale
-	ScaleEntity(it\obj, scale, scale, scale, True)
+	ScaleEntity(it\obj, scale * RoomScale, scale * RoomScale, scale * RoomScale, True)
 
 	HideEntity(it\obj)
 End Function
