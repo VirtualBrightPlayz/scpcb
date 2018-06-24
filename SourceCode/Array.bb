@@ -54,7 +54,7 @@ Function SetIntArrayListElem(arrayList.IntArrayList,val%,i%)
 End Function
 
 Function PushIntArrayListElem(arrayList.IntArrayList,val%)
-	If ((arrayList\size>=arrayList\capacity)) Then
+	If (arrayList\size>=arrayList\capacity) Then
 		arrayList\capacity=arrayList\capacity*2
 		ResizeBank(arrayList\bank,INT_SIZE*arrayList\capacity)
 	EndIf

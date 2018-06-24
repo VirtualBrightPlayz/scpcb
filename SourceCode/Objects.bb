@@ -16,7 +16,7 @@ End Function
 Function UpdateButton(obj%)
 	Local dist# = EntityDistance(mainPlayer\collider, obj);entityDistance(collider, d\buttons[i])
 	Local temp%
-	
+
 	If (dist < 0.8) Then
 		temp% = CreatePivot()
 		PositionEntity(temp, EntityX(mainPlayer\cam), EntityY(mainPlayer\cam), EntityZ(mainPlayer\cam))
@@ -69,14 +69,14 @@ Function UpdateLevers()
 
 					EntityPick(mainPlayer\cam, 0.65)
 
-					If ((PickedEntity() = lever\obj)) Then
+					If (PickedEntity() = lever\obj) Then
 						DrawHandIcon = True
 						If (MouseHit1) Then mainPlayer\grabbedEntity = lever\obj
 					EndIf
 
 					prevpitch# = EntityPitch(lever\obj)
 
-					If ((MouseDown1 Or MouseHit1)) Then
+					If (MouseDown1 Or MouseHit1) Then
 						If (mainPlayer\grabbedEntity <> 0) Then
 							If (mainPlayer\grabbedEntity = lever\obj) Then
 								DrawHandIcon = True
@@ -109,7 +109,7 @@ Function UpdateLevers()
 
 		EndIf
 
-		If ((EntityPitch(lever\obj, True) > 0)) Then
+		If (EntityPitch(lever\obj, True) > 0) Then
 			lever\succ = True
 		Else
 			lever\succ = False
@@ -165,7 +165,7 @@ Function UpdateElevators#(state#, door1.Doors, door2.Doors, room1%, room2%, even
 					If (Abs(EntityY(mainPlayer\collider)-EntityY(room1,True))<280.0*RoomScale) Then
 						inside = True
 
-						If ((Not IsChannelPlaying(event\soundChannels[0]))) Then
+						If (Not IsChannelPlaying(event\soundChannels[0])) Then
 							event\soundChannels[0] = PlaySound_SM(sndManager\elevatorMove)
 						EndIf
 
@@ -237,7 +237,7 @@ Function UpdateElevators#(state#, door1.Doors, door2.Doors, room1%, room2%, even
 					If (Abs(EntityY(mainPlayer\collider)-EntityY(room2,True))<280.0*RoomScale) Then
 						inside = True
 
-						If ((Not IsChannelPlaying(event\soundChannels[0]))) Then
+						If (Not IsChannelPlaying(event\soundChannels[0])) Then
 							event\soundChannels[0] = PlaySound_SM(sndManager\elevatorMove)
 						EndIf
 
@@ -347,7 +347,7 @@ Function UpdateElevators2#(State#, door1.Doors, door2.Doors, room1%, room2%, eve
 					If (Abs(EntityY(mainPlayer\collider)-EntityY(room1,True))<280.0*RoomScale) Then
 						inside = True
 
-						If ((Not IsChannelPlaying(event\soundChannels[0]))) Then
+						If (Not IsChannelPlaying(event\soundChannels[0])) Then
 							event\soundChannels[0] = PlaySound_SM(sndManager\elevatorMove)
 						EndIf
 
@@ -401,7 +401,7 @@ Function UpdateElevators2#(State#, door1.Doors, door2.Doors, room1%, room2%, eve
 					If (Abs(EntityY(mainPlayer\collider)-EntityY(room2,True))<280.0*RoomScale) Then
 						inside = True
 
-						If ((Not IsChannelPlaying(event\soundChannels[0]))) Then
+						If (Not IsChannelPlaying(event\soundChannels[0])) Then
 							event\soundChannels[0] = PlaySound_SM(sndManager\elevatorMove)
 						EndIf
 

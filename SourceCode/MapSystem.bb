@@ -158,7 +158,7 @@ Function KeyValue$(entity%,key$,defaultvalue$="")
 	Local test$, testkey$, value$
 	Local properties$ = EntityName(entity)
 	Local p%
-	
+
 	properties$=Replace(properties$,Chr(13),"")
 	key$=Lower(key)
 	Repeat
@@ -812,7 +812,7 @@ Function UpdateRooms()
 				EndIf
 			Next
 
-			If ((Not foundPlayerRoom) And (mainPlayer\currRoom<>r)) Then
+			If (Not foundPlayerRoom) And (mainPlayer\currRoom<>r) Then
 				If (x < 4.0) Then
 					If (z < 4.0) Then
 						If (Abs(EntityY(mainPlayer\collider) - EntityY(r\obj)) < 1.5) Then mainPlayer\currRoom = r
@@ -830,7 +830,7 @@ Function UpdateRooms()
 		EndIf
 		If (hide) Then
 			For i=0 To 3
-				If ((IsRoomAdjacent(mainPlayer\currRoom\adjacent[i],r))) Then
+				If (IsRoomAdjacent(mainPlayer\currRoom\adjacent[i],r)) Then
 					hide=False : Exit
 				EndIf
 			Next
@@ -867,15 +867,15 @@ Function UpdateRooms()
 				z = Abs(EntityZ(mainPlayer\collider,True)-EntityZ(mainPlayer\currRoom\adjDoor[i]\frameobj,True))
 				If (mainPlayer\currRoom\adjDoor[i]\openstate = 0) Then
 					SetRoomVisibility(mainPlayer\currRoom\adjacent[i],False)
-				ElseIf ((Not EntityInView(mainPlayer\currRoom\adjDoor[i]\frameobj,mainPlayer\cam))) Then
+				ElseIf (Not EntityInView(mainPlayer\currRoom\adjDoor[i]\frameobj,mainPlayer\cam)) Then
 					SetRoomVisibility(mainPlayer\currRoom\adjacent[i],False)
 				Else
 					SetRoomVisibility(mainPlayer\currRoom\adjacent[i],True)
 				EndIf
 
 				For j=0 To 3
-					If ((mainPlayer\currRoom\adjacent[i]\adjacent[j]<>Null)) Then
-						If ((mainPlayer\currRoom\adjacent[i]\adjacent[j]<>mainPlayer\currRoom)) Then SetRoomVisibility(mainPlayer\currRoom\adjacent[i]\adjacent[j],False)
+					If (mainPlayer\currRoom\adjacent[i]\adjacent[j]<>Null) Then
+						If (mainPlayer\currRoom\adjacent[i]\adjacent[j]<>mainPlayer\currRoom) Then SetRoomVisibility(mainPlayer\currRoom\adjacent[i]\adjacent[j],False)
 					EndIf
 				Next
 			EndIf
@@ -1039,7 +1039,7 @@ Function InitWayPoints(loadingstart%=45)
 	For w.WayPoints = Each WayPoints
 		EntityPickMode(w\obj, 0, 0)
 		EntityRadius(w\obj, 0)
-		
+
 		For i = 0 To 4
 			If (w\connected[i]<>Null) Then
 				tline = CreateLine(EntityX(w\obj,True),EntityY(w\obj,True),EntityZ(w\obj,True),EntityX(w\connected[i]\obj,True),EntityY(w\connected[i]\obj,True),EntityZ(w\connected[i]\obj,True))
@@ -1069,7 +1069,7 @@ Function FindPath(n.NPCs, x#, y#, z#)
 	Local w.WayPoints, StartPoint.WayPoints, EndPoint.WayPoints
 	Local currpoint.WayPoints
 	Local twentiethpoint.WayPoints
-	
+
 	Local length% = 0
 
 	Local StartX% = Floor(EntityX(n\collider,True) / 8.0 + 0.5), StartZ% = Floor(EntityZ(n\collider,True) / 8.0 + 0.5)
@@ -1168,7 +1168,7 @@ Function FindPath(n.NPCs, x#, y#, z#)
 	If (EndPoint = Null) Then Return 2
 
        ;aloitus- ja lopetuspisteet l�ydetty, aletaan etsi� reitti�
-	
+
 	Local smallest.WayPoints
 	Repeat
 
@@ -1482,7 +1482,7 @@ Function UpdateSecurityCams()
 		If (sc\room = Null And (Not sc\specialCam)) Then
 			HideEntity(sc\cam)
 		Else
-			If ((Not sc\specialCam)) Then
+			If (Not sc\specialCam) Then
 				If (sc\room\dist < 6.0 Or mainPlayer\currRoom=sc\room) Then
 					close = True
 				ElseIf (sc\isRoom2slCam) Then
@@ -1537,7 +1537,7 @@ Function UpdateSecurityCams()
 					EndIf
 
 					If (sc<>CoffinCam) Then
-						If ((Abs(DeltaYaw(sc\cameraObj,mainPlayer\cam))<60.0)) Then
+						If (Abs(DeltaYaw(sc\cameraObj,mainPlayer\cam))<60.0) Then
 							If (EntityVisible(sc\cameraObj,mainPlayer\cam)) Then
 								PlayerDetected = True
 							EndIf
@@ -1578,8 +1578,8 @@ Function UpdateSecurityCams()
 									EndIf
 								EndIf
 
-								If ((Not sc\isRoom2slCam)) Then
-									If ((Not sc\specialCam)) Then
+								If (Not sc\isRoom2slCam) Then
+									If (Not sc\specialCam) Then
 										If (CoffinCam = Null Or Rand(5)=5 Or sc\coffinEffect <> 3) Then
 											HideEntity(mainPlayer\cam)
 											ShowEntity(sc\cam)
@@ -1642,7 +1642,7 @@ Function UpdateSecurityCams()
 
 					If (SelectedMonitor = sc Or sc\coffinEffect=1 Or sc\coffinEffect=3) Then
 						If (sc\inSight) Then
-						;If ((Not NoClip)) Then
+						;If (Not NoClip) Then
 							pvt% = CreatePivot()
 							PositionEntity(pvt, EntityX(mainPlayer\cam), EntityY(mainPlayer\cam), EntityZ(mainPlayer\cam))
 							PointEntity(pvt, sc\scrObj)
@@ -1702,7 +1702,7 @@ Function UpdateSecurityCams()
 							EntityTexture(sc\scrOverlay, OldAiPics(0))
 						EndIf
 
-						If ((TimeInPosMilliSecs() Mod sc\playerState) >= Rand(600)) Then
+						If (TimeInPosMilliSecs() Mod sc\playerState) >= Rand(600) Then
 							EntityTexture(sc\scrOverlay, MonitorTexture)
 						Else
 							If (sc\soundCHN = 0) Then
@@ -1710,7 +1710,7 @@ Function UpdateSecurityCams()
 								If (sc\coffinEffect=2) Then
 									sc\coffinEffect=3 : sc\playerState = 0
 								EndIf
-							ElseIf ((Not IsChannelPlaying(sc\soundCHN))) Then
+							ElseIf (Not IsChannelPlaying(sc\soundCHN)) Then
 								sc\soundCHN = PlaySound(LoadTempSound("SFX/SCP/079/Broadcast"+Rand(1,3)+".ogg"))
 								If (sc\coffinEffect=2) Then
 									sc\coffinEffect=3 : sc\playerState = 0
@@ -1723,7 +1723,7 @@ Function UpdateSecurityCams()
 
 				EndIf ;if screen=true
 
-				If ((Not sc\inSight)) Then sc\soundCHN = LoopRangedSound_SM(sndManager\camera, sc\soundCHN, mainPlayer\cam, sc\cameraObj, 4.0)
+				If (Not sc\inSight) Then sc\soundCHN = LoopRangedSound_SM(sndManager\camera, sc\soundCHN, mainPlayer\cam, sc\cameraObj, 4.0)
 			Else
 				If (SelectedMonitor=sc) Then SelectedMonitor=Null
 			EndIf
@@ -1762,7 +1762,7 @@ Function LoadProp.Props(file$,x#,y#,z#,pitch#,yaw#,roll#,xScale#,yScale#,zScale#
 
 	Local p2.Props
 	For p2.Props = Each Props
-		If ((p<>p2) And (p2\file = file)) Then
+		If (p<>p2) And (p2\file = file) Then
 			p\obj = CopyEntity(p2\obj)
 			Exit
 		EndIf
@@ -1780,7 +1780,7 @@ Global MapRooms.IntArray = Null ;TODO: replace with an array of the proper type 
 
 Function CreateMap()
 	Local i%, c%, j%
-	
+
 	DebugLog("Generating a map using the seed "+RandomSeed)
 
 	SeedRnd(SeedStringToInt(RandomSeed))
@@ -1803,8 +1803,8 @@ Function CreateMap()
 	Local rectHeight% = 3
 	For y% = 0 To mapDim-1
 		For x% = 0 To mapDim-1
-			If ((x Mod rectWidth=1) Or (y Mod rectHeight=1)) Then
-				If ((x>=rectWidth And x<mapDim-rectWidth) Or (y>=rectHeight And y<mapDim-rectHeight)) Then
+			If (x Mod rectWidth=1) Or (y Mod rectHeight=1) Then
+				If (x>=rectWidth And x<mapDim-rectWidth) Or (y>=rectHeight And y<mapDim-rectHeight) Then
 					SetIntArrayElem(layout,1,x,y)
 				EndIf
 			EndIf
@@ -1825,7 +1825,7 @@ Function CreateMap()
 					If (nonShiftStreak>5) Then shift = 1
 					If ((x/rectWidth) Mod 2) Then shift = -shift
 					If (shift<>0) Then
-						
+
 						For i% = 0 To rectWidth-2
 							SetIntArrayElem(layout,0,x+i,y)
 							SetIntArrayElem(layout,ROOM2,x+i,y+shift)
@@ -1848,10 +1848,10 @@ Function CreateMap()
 	Local roomBelow%
 	For y% = 2 To mapDim-4
 		For x% = 0 To mapDim-1
-			If ((((x/rectWidth) Mod 2)=punchOffset) And (GetIntArrayElem(layout,x,y)=ROOM2)) Then
+			If (((x/rectWidth) Mod 2)=punchOffset) And (GetIntArrayElem(layout,x,y)=ROOM2) Then
 				roomAbove = GetIntArrayElem(layout,x,y-1)
 				roomBelow = GetIntArrayElem(layout,x,y+1)
-				If (((roomAbove>=ROOM2) And (roomBelow>=ROOM2)) And ((roomAbove+roomBelow)>(ROOM2+ROOM3))) Then
+				If ((roomAbove>=ROOM2) And (roomBelow>=ROOM2)) And ((roomAbove+roomBelow)>(ROOM2+ROOM3)) Then
 					SetIntArrayElem(layout,0,x,y)
 				EndIf
 			EndIf
@@ -1866,7 +1866,7 @@ Function CreateMap()
 	Local prioritizedTemplateCount% = 0
 	Local rt.RoomTemplates
 	For rt.RoomTemplates = Each RoomTemplates
-		If (((rt\zones And zone)<>0) And (rt\maxAmount>0) And (rt\shape<>ROOM0)) Then
+		If ((rt\zones And zone)<>0) And (rt\maxAmount>0) And (rt\shape<>ROOM0) Then
 			prioritizedTemplateCount=prioritizedTemplateCount+1
 		EndIf
 	Next
@@ -1875,7 +1875,7 @@ Function CreateMap()
 	Local tempTemplate2.RoomTemplates
 	SetIntArrayElem(prioritizedTemplates,0,0,0)
 	For rt.RoomTemplates = Each RoomTemplates
-		If (((rt\zones And zone)<>0) And (rt\maxAmount>0) And (rt\shape<>ROOM0)) Then
+		If ((rt\zones And zone)<>0) And (rt\maxAmount>0) And (rt\shape<>ROOM0) Then
 			tempTemplate = rt
 			DebugLog("queueing up "+rt\name)
 			For i%=0 To prioritizedTemplateCount-1
@@ -1927,7 +1927,7 @@ Function CreateMap()
 		placementCount = Rand(rt\minAmount,rt\maxAmount)
 
 		DebugLog("trying to place "+placementCount+" "+rt\name)
-		
+
 		For c% = 1 To placementCount
 			loopStartX = Int(Min(Floor(Float(mapDim)*rt\xRangeStart),mapDim-1))
 			loopStartY = Int(Min(Floor(Float(mapDim)*rt\yRangeStart),mapDim-1))
@@ -1941,13 +1941,13 @@ Function CreateMap()
 			offsetY = Rand(0,loopY)
 
 			placed = False
-			
+
 			For j% = 0 To loopY
 				For i% = 0 To loopX
 					x% = ((i+offsetX) Mod (loopX+1)) + loopStartX
 					y% = ((j+offsetY) Mod (loopY+1)) + loopStartY
 
-					If ((GetIntArrayElem(layout,x,y)>0) And (GetIntArrayElem(layout,x,y)=rt\shape)) Then
+					If (GetIntArrayElem(layout,x,y)>0) And (GetIntArrayElem(layout,x,y)=rt\shape) Then
 						r = CreateRoom(rt,x*8.0,0.0,y*8.0)
 						r\angle = DetermineRotation(layout,x,y)
 						TurnEntity(r\obj,0,r\angle,0)
@@ -1972,7 +1972,7 @@ Function CreateMap()
 		totalCommonness[i] = 0
 	Next
 	For rt.RoomTemplates = Each RoomTemplates
-		If (((rt\zones And zone)<>0) And (rt\maxAmount<0) And (rt\shape<>ROOM0)) Then
+		If ((rt\zones And zone)<>0) And (rt\maxAmount<0) And (rt\shape<>ROOM0) Then
 			randomTemplateCount=randomTemplateCount+1
 			totalCommonness[rt\shape]=totalCommonness[rt\shape]+rt\commonness
 		EndIf
@@ -1983,7 +1983,7 @@ Function CreateMap()
 	Local tempHandle2%
 
 	For rt.RoomTemplates = Each RoomTemplates
-		If (((rt\zones And zone)<>0) And (rt\maxAmount<0) And (rt\shape<>ROOM0)) Then
+		If ((rt\zones And zone)<>0) And (rt\maxAmount<0) And (rt\shape<>ROOM0) Then
 			SetIntArrayElem(randomTemplates,Handle(rt),index,0)
 			index=index+1
 		EndIf
@@ -2005,7 +2005,7 @@ Function CreateMap()
 		For x% = 0 To mapDim-1
 			commonnessAccumulator = 0
 			currType = GetIntArrayElem(layout,x,y)
-			If ((currType>0)) Then
+			If (currType>0) Then
 				targetCommonness = Rand(0,totalCommonness[currType])
 
 				For i% = 0 To randomTemplateCount-1
@@ -2056,10 +2056,10 @@ Function CreateMap()
 							tempY = 1
 					End Select
 
-					If ((x+tempX>=0) And (x+tempX<mapDim) And (y+tempY>=0) And (y+tempY<mapDim)) Then
+					If (x+tempX>=0) And (x+tempX<mapDim) And (y+tempY>=0) And (y+tempY<mapDim) Then
 						r\adjacent[i] = Object.Rooms(GetIntArrayElem(MapRooms,x+tempX,y+tempY))
 						If (r\adjacent[i]<>Null) Then
-							If ((r\adjacent[i]\adjDoor[(i+2) Mod 4]=Null)) Then
+							If (r\adjacent[i]\adjDoor[(i+2) Mod 4]=Null) Then
 								r\adjDoor[i] = CreateDoor(zone,r\x+4.0*tempX,0.0,r\z+4.0*tempY,90.0*((i+1) Mod 2),Null)
 								newWaypoint = CreateWaypoint(r\x+4.0*tempX,50.0*RoomScale,r\z+4.0*tempY,r)
 
@@ -2151,9 +2151,9 @@ Function DetermineRoomTypes(layout.IntArray,mapDim%)
 					SetIntArrayElem(layout,ROOM3,x,y)
 				ElseIf (horNeighborCount+vertNeighborCount = 4) Then
 					SetIntArrayElem(layout,ROOM4,x,y)
-				ElseIf ((horNeighborCount = 1) And (vertNeighborCount = 1)) Then
+				ElseIf (horNeighborCount = 1) And (vertNeighborCount = 1) Then
 					SetIntArrayElem(layout,ROOM2C,x,y)
-				ElseIf ((horNeighborCount = 2) Xor (vertNeighborCount = 2)) Then
+				ElseIf (horNeighborCount = 2) Xor (vertNeighborCount = 2) Then
 					SetIntArrayElem(layout,ROOM2,x,y)
 				Else
 					SetIntArrayElem(layout,0,x,y)
@@ -2166,41 +2166,41 @@ End Function
 Function DetermineRotation%(layout.IntArray,x%,y%)
 	Select GetIntArrayElem(layout,x,y)
 		Case ROOM1
-			If ((x>0) And (GetIntArrayElem(layout,x-1,y)<>0)) Then
+			If (x>0) And (GetIntArrayElem(layout,x-1,y)<>0) Then
 				Return 270
-			ElseIf ((x<layout\xDim-1) And (GetIntArrayElem(layout,x+1,y)<>0)) Then
+			ElseIf (x<layout\xDim-1) And (GetIntArrayElem(layout,x+1,y)<>0) Then
 				Return 90
-			ElseIf ((y>0) And (GetIntArrayElem(layout,x,y-1)<>0)) Then
+			ElseIf (y>0) And (GetIntArrayElem(layout,x,y-1)<>0) Then
 				Return 0
 			Else
 				Return 180
 			EndIf
 		Case ROOM2
-			If ((GetIntArrayElem(layout,x-1,y)<>0)) Then
+			If (GetIntArrayElem(layout,x-1,y)<>0) Then
 				Return 90+Rand(0,1)*180
 			Else
 				Return (Rand(0,1)*180)
 			EndIf
 		Case ROOM2C
-			If ((x>0) And (GetIntArrayElem(layout,x-1,y)<>0)) Then
-				If ((y>0) And (GetIntArrayElem(layout,x,y-1)<>0)) Then
+			If (x>0) And (GetIntArrayElem(layout,x-1,y)<>0) Then
+				If (y>0) And (GetIntArrayElem(layout,x,y-1)<>0) Then
 					Return 270
 				Else
 					Return 180
 				EndIf
 			Else
-				If ((y>0) And (GetIntArrayElem(layout,x,y-1)<>0)) Then
+				If (y>0) And (GetIntArrayElem(layout,x,y-1)<>0) Then
 					Return 0
 				Else
 					Return 90
 				EndIf
 			EndIf
 		Case ROOM3
-			If ((x>0) And (GetIntArrayElem(layout,x-1,y)=0)) Then
+			If (x>0) And (GetIntArrayElem(layout,x-1,y)=0) Then
 				Return 90
-			ElseIf ((y>0) And (GetIntArrayElem(layout,x,y-1)=0)) Then
+			ElseIf (y>0) And (GetIntArrayElem(layout,x,y-1)=0) Then
 				Return 180
-			ElseIf ((x<layout\xDim-1) And (GetIntArrayElem(layout,x+1,y)=0)) Then
+			ElseIf (x<layout\xDim-1) And (GetIntArrayElem(layout,x+1,y)=0) Then
 				Return 270
 			Else
 				Return 0

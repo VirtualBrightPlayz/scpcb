@@ -124,7 +124,7 @@ Function UpdateEvent_cont_049_2(e.Events)
 			e\overwriteMusic = True
 
 			If (e\eventState = 0) Then
-				If ((Not e\loaded)) Then
+				If (Not e\loaded) Then
 					n.NPCs = CreateNPC(NPCtypeZombie, EntityX(e\room\objects[4],True),EntityY(e\room\objects[4],True),EntityZ(e\room\objects[4],True))
 					PointEntity(n\collider, e\room\obj)
 					TurnEntity(n\collider, 0, 190, 0)
@@ -373,7 +373,7 @@ Function UpdateEvent_cont_049_2(e.Events)
 				If (e\soundChannels[0] = 0) Then
 					e\soundChannels[0] = PlaySound(e\sounds[0])
 				Else
-					If ((Not IsChannelPlaying(e\soundChannels[0]))) Then e\soundChannels[0] = PlaySound(e\sounds[0])
+					If (Not IsChannelPlaying(e\soundChannels[0])) Then e\soundChannels[0] = PlaySound(e\sounds[0])
 				EndIf
 			EndIf
 		EndIf

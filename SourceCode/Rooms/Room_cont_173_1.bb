@@ -199,9 +199,9 @@ Function UpdateEventAlarm(e.Events)
 
 		CurrTrigger = CheckTriggers()
 
-		If ((CurrTrigger = "173scene_timer")) Then
+		If (CurrTrigger = "173scene_timer") Then
 			e\eventState = e\eventState+timing\tickDuration
-		ElseIf ((CurrTrigger = "173scene_activated")) Then
+		ElseIf (CurrTrigger = "173scene_activated") Then
 			e\eventState = Max(e\eventState, 500)
 		EndIf
 
@@ -280,7 +280,7 @@ Function UpdateEventAlarm(e.Events)
 					EndIf
 
 					;If Ulgrin can see the player then start shooting at them.
-					If ((CurrTrigger = "173scene_end") And EntityVisible(e\room\npc[2]\collider,mainPlayer\collider) And (Not mainPlayer\godMode)) Then
+					If (CurrTrigger = "173scene_end") And EntityVisible(e\room\npc[2]\collider,mainPlayer\collider) And (Not mainPlayer\godMode) Then
 						e\room\npc[2]\state = 1
 						e\room\npc[2]\state3 = 1
 					ElseIf (e\room\npc[2]\state = 1 And (Not EntityVisible(e\room\npc[2]\collider, mainPlayer\collider))) Then
@@ -328,7 +328,7 @@ Function UpdateEventAlarm(e.Events)
 			EndIf
 		EndIf
 
-		If ((e\eventState < 2000)) Then
+		If (e\eventState < 2000) Then
 			If (e\soundChannels[0] = 0) Then
 				e\soundChannels[0] = PlaySound(AlarmSFX(0))
 			Else
@@ -336,11 +336,11 @@ Function UpdateEventAlarm(e.Events)
 			EndIf
 		EndIf
 
-		If ((e\eventState3<10)) Then
-			If ((Not IsChannelPlaying(e\soundChannels[1]))) Then
+		If (e\eventState3<10) Then
+			If (Not IsChannelPlaying(e\soundChannels[1])) Then
 				e\eventState3 = e\eventState3+1
 
-				If ((e\sounds[1] <> 0)) Then
+				If (e\sounds[1] <> 0) Then
 					FreeSound(e\sounds[1])
 					e\sounds[1] = 0
 				EndIf
@@ -352,19 +352,19 @@ Function UpdateEventAlarm(e.Events)
 			EndIf
 		EndIf
 
-		If (((e\eventState Mod 600 > 300) And ((e\eventState+timing\tickDuration) Mod 600 < 300))) Then
+		If ((e\eventState Mod 600 > 300) And ((e\eventState+timing\tickDuration) Mod 600 < 300)) Then
 			i = Floor((e\eventState-5000)/600)+1
 
 			If (i = 0) Then PlaySound2(LoadTempSound("SFX/Room/Intro/PA/scripted/scripted6.ogg"))
 
-			If ((i>0 And i<24)) Then
+			If (i>0 And i<24) Then
 				If (Not CommotionState(i)) Then ;Prevents the same commotion file from playing more then once.
 					PlaySound2(LoadTempSound("SFX/Room/Intro/Commotion/Commotion"+i+".ogg"))
 					CommotionState(i) = True
 				EndIf
 			EndIf
 
-			If ((i>24)) Then
+			If (i>24) Then
 				If (e\room\npc[0] <> Null) Then RemoveNPC(e\room\npc[0])
 				If (e\room\npc[1] <> Null) Then RemoveNPC(e\room\npc[1])
 				If (e\room\npc[2] <> Null) Then RemoveNPC(e\room\npc[2])

@@ -139,7 +139,7 @@ Function LoadRM2(rt.RoomTemplates)
 						shouldLoadTexture=True
 					EndIf
 
-					If ((shouldLoadTexture)) Then
+					If (shouldLoadTexture) Then
 						If (blendFlags=RM2_BLENDFLAG_NORMAL) Then
 							blendFlags = 2
 						ElseIf (blendFlags=RM2_BLENDFLAG_DIFFUSE) Then

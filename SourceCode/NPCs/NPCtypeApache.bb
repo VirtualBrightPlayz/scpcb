@@ -7,7 +7,7 @@ Function InitializeNPCtypeApache(n.NPCs)
 
 	Local n2.NPCs
 	For n2 = Each NPCs
-        If ((n\npcType = n2\npcType) And (n <> n2)) Then
+        If (n\npcType = n2\npcType) And (n <> n2) Then
             n\obj = CopyEntity(n2\obj)
 			n\obj2 = CopyEntity(n2\obj2)
 			n\obj3 = CopyEntity(n2\obj3)
@@ -15,7 +15,7 @@ Function InitializeNPCtypeApache(n.NPCs)
         EndIf
     Next
 
-	If ((n\obj = 0)) Then
+	If (n\obj = 0) Then
 		n\obj = LoadAnimMesh("GFX/NPCs/apache/apache.b3d")
 		n\obj2 = LoadAnimMesh("GFX/NPCs/apache/apacherotor.b3d")
 		n\obj3 = LoadAnimMesh("GFX/NPCs/apache/apacherotor2.b3d")
@@ -37,7 +37,7 @@ Function InitializeNPCtypeApache(n.NPCs)
 
     EntityType(n\collider, HIT_APACHE)
     EntityRadius(n\collider, 3.0)
-	
+
 	Local light1%, lightsprite%
     For i = -1 To 1 Step 2
         light1 = CreateLight(2,n\obj)

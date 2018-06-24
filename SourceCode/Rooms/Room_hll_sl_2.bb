@@ -196,8 +196,8 @@ Function UpdateEvent_hll_sl_2(e.Events)
 								EndIf
 							EndIf
 						Next
-						If ((Not hasCamera%)) Then
-							If ((Not e\loaded)) Then
+						If (Not hasCamera%) Then
+							If (Not e\loaded) Then
 								For i = 0 To 9
 									sc\screen = True
 									sc\allowSaving = False
@@ -324,7 +324,7 @@ Function UpdateEvent_hll_sl_2(e.Events)
 				Next
 			EndIf
 		Next
-		If ((Not e\loaded)) Then
+		If (Not e\loaded) Then
 			For sc.SecurityCams = Each SecurityCams
 				If (sc\specialCam) Then
 					sc\screen = True
@@ -477,12 +477,12 @@ Function UpdateEvent_hll_sl_2(e.Events)
 						DebugLog("079 - OPEN DOORS IN ROOM2SL")
 						e\room\npc[0]\reload = 1
 					EndIf
-					If ((Not e\room\roomDoors[0]\open)) Then
+					If (Not e\room\roomDoors[0]\open) Then
 						e\room\roomDoors[0]\open = True
 						;sound=Rand(0, 2)
 						;PlayRangedSound(OpenDoorSFX(0,sound),mainPlayer\cam,e\room\roomDoors[0]\obj)
 					EndIf
-					If ((Not e\room\roomDoors[1]\open)) Then
+					If (Not e\room\roomDoors[1]\open) Then
 						e\room\roomDoors[1]\open = True
 						;sound=Rand(0, 2)
 						;PlayRangedSound(OpenDoorSFX(0,sound),mainPlayer\cam,e\room\roomDoors[1]\obj)
@@ -513,11 +513,11 @@ Function UpdateEvent_hll_sl_2(e.Events)
 				If (e\room\npc[0]\pathTimer# = 0.0) Then
 					;e\room\npc[0]\pathTimer# = e\room\npc[0]\pathTimer# + timing\tickDuration
 					If (e\room\npc[0]\prevState = 1) Then
-						If ((e\room\npc[0]\soundChannels[1] = 0)) Then
+						If (e\room\npc[0]\soundChannels[1] = 0) Then
 							e\room\npc[0]\sounds[1] = LoadSound("SFX/SCP/049/Room2SLEnter.ogg")
 							e\room\npc[0]\soundChannels[1] = PlayRangedSound(e\room\npc[0]\sounds[1], mainPlayer\cam, e\room\npc[0]\collider)
 						Else
-							If ((Not IsChannelPlaying(e\room\npc[0]\soundChannels[1]))) Then
+							If (Not IsChannelPlaying(e\room\npc[0]\soundChannels[1])) Then
 								e\room\npc[0]\pathTimer# = 1.0
 							EndIf
 						EndIf
@@ -561,7 +561,7 @@ Function UpdateEvent_hll_sl_2(e.Events)
 			e\room\npc[0]\state = 2
 			For r.Rooms = Each Rooms
 				If (r <> mainPlayer\currRoom) Then
-					If ((EntityDistance(r\obj,e\room\npc[0]\collider)<HideDistance*2 And EntityDistance(r\obj,e\room\npc[0]\collider)>HideDistance)) Then
+					If (EntityDistance(r\obj,e\room\npc[0]\collider)<HideDistance*2 And EntityDistance(r\obj,e\room\npc[0]\collider)>HideDistance) Then
 						e\room\npc[0]\pathStatus = FindPath(e\room\npc[0],EntityX(r\obj),EntityY(r\obj),EntityZ(r\obj))
 						e\room\npc[0]\pathTimer = 0.0
 						If (e\room\npc[0]\pathStatus = 1) Then e\eventState2 = 6
@@ -645,7 +645,7 @@ End Function
 
 
 Function ValidRoom2slCamRoom(r.Rooms)
-	If ((r = Null)) Then
+	If (r = Null) Then
 		Return False
 	EndIf
 

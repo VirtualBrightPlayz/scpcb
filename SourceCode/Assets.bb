@@ -55,7 +55,7 @@ End Function
 Function GrabAsset%(filePath$, asType%, flag%=1)
 	Local as.AssetWrap
 	For as = Each AssetWrap
-		If ((filePath = as\file)) Then
+		If (filePath = as\file) Then
 			as\decayTimer = ASSET_DECAY_TIMER
 			as\grabCount = as\grabCount + 1
 			DebugLog("GRABBED ASSET: " + filePath + ", " + as\grabCount)
@@ -86,7 +86,7 @@ End Function
 Function DropAsset(obj%)
 	Local as.AssetWrap
 	For as = Each AssetWrap
-		If ((obj = as\intVal)) Then
+		If (obj = as\intVal) Then
 			as\grabCount = as\grabCount - 1
 			DebugLog("DROPPED ASSET: " + as\file + ", " + as\grabCount)
 			Return
@@ -100,10 +100,10 @@ End Function
 Function UpdateAssets()
 	Local as.AssetWrap
 	For as = Each AssetWrap
-		If ((as\grabCount < 1)) Then
+		If (as\grabCount < 1) Then
 			as\decayTimer = as\decayTimer - timing\tickDuration
 			DebugLog("ASSET DECAYING: " + as\file + ", " + as\decayTimer)
-			If ((as\decayTimer < 0)) Then
+			If (as\decayTimer < 0) Then
 				FreeAsset(as)
 			EndIf
 		EndIf
@@ -388,7 +388,7 @@ Function InitNewGame()
 			If (r\lights[i]<>0) Then EntityParent(r\lights[i],0)
 		Next
 
-		If ((Not r\roomTemplate\disableDecals)) Then
+		If (Not r\roomTemplate\disableDecals) Then
 			If (Rand(4) = 1) Then
 				de.Decals = CreateDecal(Rand(2, 3), EntityX(r\obj)+Rnd(- 2,2), 0.003, EntityZ(r\obj)+Rnd(-2,2), 90, Rand(360), 0)
 				de\size = Rnd(0.1, 0.4) : ScaleSprite(de\obj, de\size, de\size)
@@ -402,11 +402,11 @@ Function InitNewGame()
 			EndIf
 		EndIf
 
-		If ((r\roomTemplate\name = "cont_173_1" And (userOptions\introEnabled = False))) Then
+		If (r\roomTemplate\name = "cont_173_1" And (userOptions\introEnabled = False)) Then
 			PositionEntity(mainPlayer\collider, EntityX(r\obj)+3584*RoomScale, 714*RoomScale, EntityZ(r\obj)+1024*RoomScale)
 			ResetEntity(mainPlayer\collider)
 			mainPlayer\currRoom = r
-		ElseIf ((r\roomTemplate\name = "intro" And userOptions\introEnabled)) Then
+		ElseIf (r\roomTemplate\name = "intro" And userOptions\introEnabled) Then
 			PositionEntity(mainPlayer\collider, EntityX(r\obj), 1.0, EntityZ(r\obj))
 			ResetEntity(mainPlayer\collider)
 			mainPlayer\currRoom = r
@@ -481,7 +481,7 @@ Function InitNewGame()
 		UpdateNPCs()
 		UpdateWorld()
 		;Cls()
-		If ((Int(Float(i)*0.27)<>Int(Float(i-1)*0.27))) Then
+		If (Int(Float(i)*0.27)<>Int(Float(i-1)*0.27)) Then
 			DrawLoading(80+Int(Float(i)*0.27))
 		EndIf
 	Next

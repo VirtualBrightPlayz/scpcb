@@ -80,7 +80,7 @@ Function UpdateEvent_test_860_2(e.Events)
 
 			UpdateForest(fr,mainPlayer\collider)
 
-			If ((Not e\loaded)) Then
+			If (Not e\loaded) Then
 				e\musicTrack = MUS_8601
 				;If (Music(12) = 0) Then Music(12) = LoadSound("SFX/Music/8601Cancer.ogg") ;TODO: fix
 				If (e\room\npc[0]=Null) Then
@@ -184,7 +184,7 @@ Function UpdateEvent_test_860_2(e.Events)
 
 		Else
 
-			If ((Not Contained106)) Then Curr106\idle = False
+			If (Not Contained106) Then Curr106\idle = False
 
 			;dp.DrawPortal=e\room\dp;Object.DrawPortal(e\room\objects[0])
 
@@ -193,7 +193,7 @@ Function UpdateEvent_test_860_2(e.Events)
 
 			If (EntityYaw(e\room\objects[3])=0.0) Then
 				HideEntity(fr.Forest\forest_Pivot)
-				If ((Abs(Distance(EntityX(e\room\objects[3],True),EntityZ(e\room\objects[3],True),EntityX(mainPlayer\collider,True),EntityZ(mainPlayer\collider,True)))<1.0)) Then
+				If (Abs(Distance(EntityX(e\room\objects[3],True),EntityZ(e\room\objects[3],True),EntityX(mainPlayer\collider,True),EntityZ(mainPlayer\collider,True)))<1.0) Then
 					DrawHandIcon = True
 
 					If (mainPlayer\selectedItem = Null) Then
@@ -247,10 +247,10 @@ Function UpdateEvent_test_860_2(e.Events)
 		EndIf
 
 	Else
-		If ((fr=Null)) Then
+		If (fr=Null) Then
 			RemoveEvent(e)
 		Else
-			If ((fr\forest_Pivot<>0)) Then HideEntity(fr\forest_Pivot)
+			If (fr\forest_Pivot<>0) Then HideEntity(fr\forest_Pivot)
 		EndIf
 	EndIf
 
@@ -312,7 +312,7 @@ Function turn_if_deviating%(max_deviation_distance_%,pathx%,center_%,dir%,retval
 	;check if deviating and return the answer. if deviating, turn around
 	Local current_deviation% = center_ - pathx
 	Local deviated% = False
-	If ((dir = 0 And current_deviation >= max_deviation_distance_) Or (dir = 2 And current_deviation <= -max_deviation_distance_)) Then
+	If (dir = 0 And current_deviation >= max_deviation_distance_) Or (dir = 2 And current_deviation <= -max_deviation_distance_) Then
 		dir = (dir + 2) Mod 4
 		deviated = True
 	EndIf

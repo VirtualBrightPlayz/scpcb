@@ -2,7 +2,7 @@ Function InitializeNPCtype966(n.NPCs)
     Local i% = 1
 	Local n2.NPCs
     For n2.NPCs = Each NPCs
-        If ((n\npcType = n2\npcType) And (n<>n2)) Then
+        If (n\npcType = n2\npcType) And (n<>n2) Then
 			i= i + Rand(1,3)
 		EndIf
     Next
@@ -12,7 +12,7 @@ Function InitializeNPCtype966(n.NPCs)
     EntityRadius(n\collider,0.2)
 
     For n2.NPCs = Each NPCs
-        If ((n\npcType = n2\npcType) And (n<>n2)) Then
+        If (n\npcType = n2\npcType) And (n<>n2) Then
             n\obj = CopyEntity(n2\obj)
             Exit
         EndIf
@@ -40,7 +40,7 @@ Function UpdateNPCtype966(n.NPCs)
 	Local prevFrame%, temp%, angle#, dist2#
 	Local n2.NPCs
 
-    If ((n\playerDistance<HideDistance)) Then
+    If (n\playerDistance<HideDistance) Then
 
     ;n\state = the "general" state (idle/wander/attack/echo etc)
     ;n\state2 = timer for doing raycasts
@@ -59,7 +59,7 @@ Function UpdateNPCtype966(n.NPCs)
         PositionEntity(n\obj,EntityX(n\collider,True),EntityY(n\collider,True)-0.2,EntityZ(n\collider,True))
         RotateEntity(n\obj,-90.0,EntityYaw(n\collider),0.0)
 
-        If ((Not IsPlayerWearingTempName(mainPlayer,"nvgoggles"))) Then
+        If (Not IsPlayerWearingTempName(mainPlayer,"nvgoggles")) Then
             HideEntity(n\obj)
             If (n\playerDistance<1 And n\reload <= 0 And MsgTimer <= 0) Then
                 Select Rand(6)
@@ -210,7 +210,7 @@ Function UpdateNPCtype966(n.NPCs)
                         EndIf
                         n\pathTimer = Max(n\pathTimer-timing\tickDuration,0)
 
-                        If ((Not EntityVisible(n\collider,mainPlayer\collider))) Then
+                        If (Not EntityVisible(n\collider,mainPlayer\collider)) Then
                             If (n\pathStatus = 2) Then
                                 n\currSpeed = 0
                                 SetNPCFrame(n,201)
@@ -231,7 +231,7 @@ Function UpdateNPCtype966(n.NPCs)
                                     If (dist2 < 0.8) Then
                                         ;TODO: fix
 										;If (n\path[n\pathLocation]\door<>Null) Then
-                                        ;    If ((Not n\path[n\pathLocation]\door\open)) Then UseDoor(n\path[n\pathLocation]\door,False)
+                                        ;    If (Not n\path[n\pathLocation]\door\open) Then UseDoor(n\path[n\pathLocation]\door,False)
                                         ;EndIf
                                         If (n\playerDistance < 0.2) Then n\pathLocation = n\pathLocation + 1
                                     EndIf
@@ -315,7 +315,7 @@ Function UpdateNPCtype966(n.NPCs)
         End Select
     Else
         HideEntity(n\obj)
-        If ((Rand(600)=1)) Then
+        If (Rand(600)=1) Then
             TeleportCloser(n)
         EndIf
     EndIf

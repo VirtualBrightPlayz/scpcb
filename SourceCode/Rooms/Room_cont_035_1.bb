@@ -164,11 +164,11 @@ Function UpdateEvent_cont_035_1(e.Events)
 				If (e\room\roomDoors[3]\open) Then e\eventState2 = Max(e\eventState2, 1)
 
 				;the door is closed
-				If ((e\eventState2 = 20)) Then
+				If (e\eventState2 = 20) Then
 					e\room\levers[0]\succ = True
 				EndIf
 
-				If ((Not e\room\levers[0]\succ)) Then
+				If (Not e\room\levers[0]\succ) Then
 					;the gas valves are open
 					temp = e\room\levers[1]\succ
 					If (temp Or (e\eventState3>25*70 And e\eventState3<50*70)) Then
@@ -471,7 +471,7 @@ Function UpdateEvent_cont_035_1(e.Events)
 
 		Else ;eventstate < 0 (SCP-035 has left)
 
-			If ((e\room\levers[1]\succ)) Then
+			If (e\room\levers[1]\succ) Then
 				PositionEntity(e\room\objects[5], EntityX(e\room\objects[5],True), 424.0*RoomScale, EntityZ(e\room\objects[5],True),True)
 				PositionEntity(e\room\objects[6], EntityX(e\room\objects[6],True), 424.0*RoomScale, EntityZ(e\room\objects[6],True),True)
 			Else
@@ -479,7 +479,7 @@ Function UpdateEvent_cont_035_1(e.Events)
 				PositionEntity(e\room\objects[6], EntityX(e\room\objects[6],True), 10, EntityZ(e\room\objects[6],True),True)
 			EndIf
 
-			;If ((e\room\levers[0]\succ)) Then
+			;If (e\room\levers[0]\succ) Then
 			;	If (e\room\roomDoors[0]\open = True) Then UseDoor(e\room\roomDoors[1])
 			;Else
 			;	If (e\room\roomDoors[0]\open = False) Then UseDoor(e\room\roomDoors[1])
@@ -514,12 +514,12 @@ Function UpdateEvent_cont_035_1(e.Events)
 							e\eventState2 = Min(e\eventState2+(timing\tickDuration/6000),1.0)
 							e\eventState3 = CurveValue(e\eventState2, e\eventState3, 50)
 
-							If ((Not IsPlayerWearingTempName(mainPlayer,"hazmatsuit3")) And (Not IsPlayerWearingTempName(mainPlayer,"gasmask3"))) Then
+							If (Not IsPlayerWearingTempName(mainPlayer,"hazmatsuit3")) And (Not IsPlayerWearingTempName(mainPlayer,"gasmask3")) Then
 								mainPlayer\sanity895=mainPlayer\sanity895-timing\tickDuration*1.1
 								mainPlayer\blurTimer = Sin(TimeInPosMilliSecs()/10)*Abs(mainPlayer\sanity895)
 							EndIf
 
-							If ((Not IsPlayerWearingTempName(mainPlayer,"hazmatsuit3"))) Then
+							If (Not IsPlayerWearingTempName(mainPlayer,"hazmatsuit3")) Then
 								mainPlayer\injuries = mainPlayer\injuries + (timing\tickDuration/5000)
 							Else
 								mainPlayer\injuries = mainPlayer\injuries + (timing\tickDuration/10000)

@@ -47,8 +47,8 @@ Function CreateItemTemplate(file$, section$)
 
 	;The model and inv image are in the specified directory.
 	Local dataPath$ = GetINIString(file, section, "datapath")
-	If ((dataPath <> "")) Then
-		If ((FileType(dataPath) <> 2)) Then RuntimeError("Item template directory not found ("+section+", "+dataPath+")")
+	If (dataPath <> "") Then
+		If (FileType(dataPath) <> 2) Then RuntimeError("Item template directory not found ("+section+", "+dataPath+")")
 
 		it\objPath = dataPath + it\name + ".b3d"
 		it\invImagePath[0] = GetImagePath(dataPath + "inv_" + it\name)
@@ -56,22 +56,22 @@ Function CreateItemTemplate(file$, section$)
 
 	;Otherwise the obj, tex and inv paths are specified in the INI.
 	Local objPath$ = GetINIString(file, section, "objpath")
-	If ((objPath <> "")) Then
+	If (objPath <> "") Then
 		it\objPath = objPath
 	EndIf
 
 	Local texPath$ = GetINIString(file, section, "texpath")
-	If ((texPath <> "")) Then
+	If (texPath <> "") Then
 		it\texPath = texPath
 	EndIf
 
 	Local invImgPath$ = GetINIString(file, section, "invimgpath")
-	If ((invImgPath <> "")) Then
+	If (invImgPath <> "") Then
 		it\invImagePath[0] = invImgPath
 	EndIf
 
 	Local invImgPath2$ = GetINIString(file, section, "invimgpath2")
-	If ((invImgPath2 <> "")) Then
+	If (invImgPath2 <> "") Then
 		it\invImagePath[1] = invImgPath2
 	EndIf
 
@@ -104,30 +104,30 @@ Function CreateItemTemplate(file$, section$)
 	;Does another item already use that model?
 	Local it2.ItemTemplates
 	For it2 = Each ItemTemplates
-		If ((it2\objPath = it\objPath And it2\obj <> 0)) Then
+		If (it2\objPath = it\objPath And it2\obj <> 0) Then
 			it\obj = CopyEntity(it2\obj)
 			Exit
 		EndIf
 	Next
 
 	;Otherwise load the model.
-	If ((it\obj = 0)) Then
-		If ((GetINIInt(file, section, "animated") = 1)) Then
+	If (it\obj = 0) Then
+		If (GetINIInt(file, section, "animated") = 1) Then
 			it\obj = LoadAnimMesh(it\objPath)
 		Else
 			it\obj = LoadMesh(it\objPath)
 		EndIf
 	EndIf
 
-	If ((it\texPath <> "")) Then
+	If (it\texPath <> "") Then
 		For it2 = Each ItemTemplates
-			If ((it2\texPath = it\texPath And it2\tex <> 0)) Then
+			If (it2\texPath = it\texPath And it2\tex <> 0) Then
 				it\tex = it2\tex
 				Exit
 			EndIf
 		Next
 
-		If ((it\tex = 0)) Then
+		If (it\tex = 0) Then
 			flags = GetINIInt(file, section, "textureflags", 1+8)
 			it\tex = LoadTexture(it\texPath, flags)
 		EndIf
@@ -137,15 +137,15 @@ Function CreateItemTemplate(file$, section$)
 
 	Local i%
 	For i=0 To 1
-		If ((it\invImagePath[i] <> "")) Then
+		If (it\invImagePath[i] <> "") Then
 			For it2 = Each ItemTemplates
-				If ((it2\invImagePath[i] = it\invImagePath[i] And it2\invImage[i] <> 0)) Then
+				If (it2\invImagePath[i] = it\invImagePath[i] And it2\invImage[i] <> 0) Then
 					it\invImage[i] = it2\invImage[i]
 					Exit
 				EndIf
 			Next
 
-			If ((it\invImage[i] = 0)) Then
+			If (it\invImage[i] = 0) Then
 				it\invImage[i] = LoadImage(it\invImagePath[i])
 				MaskImage(it\invImage[i], 255, 0, 255)
 			EndIf
@@ -843,11 +843,11 @@ Function CreateRadio.Radio()
 End Function
 
 Function ChangeRadioChannel(newChn%)
-	If ((IsChannelPlaying(radio\channels[radio\currChn]))) Then
+	If (IsChannelPlaying(radio\channels[radio\currChn])) Then
 		PauseChannel(radio\channels[radio\currChn])
 	EndIf
 
-	If ((Not IsChannelPlaying(radio\channels[newChn]))) Then
+	If (Not IsChannelPlaying(radio\channels[newChn])) Then
 		radio\channels[newChn] = PlaySound(radio\sndStatic)
 	Else
 		ResumeChannel(radio\channels[newChn])

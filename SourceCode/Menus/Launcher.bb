@@ -22,7 +22,7 @@ Function CreateLauncher.Launcher()
 
     Local i%
 	For i = 1 To CountGfxModes3D()
-		If ((GfxModeDepth(i) = 32)) Then
+		If (GfxModeDepth(i) = 32) Then
 			SetIntArrayElem(launch\resWidths, GfxModeWidth(i), i - 1)
             SetIntArrayElem(launch\resHeights, GfxModeHeight(i), i - 1)
 		EndIf
@@ -60,13 +60,13 @@ Function UpdateLauncher()
 
     Local i%
     For i = 1 To CountGfxModes3D()
-        If ((GfxModeDepth(i) = 32)) Then
+        If (GfxModeDepth(i) = 32) Then
             If (MouseOn(x - 1, y - 1, 100, 20)) Then
                 If (MouseHit1) Then launcher\selectedGFXMode = i-1
             EndIf
 
             y=y+20
-            If ((y >= 240 - 65 + (launcher\height - 80 - 260))) Then
+            If (y >= 240 - 65 + (launcher\height - 80 - 260)) Then
                 y = 280 - 65
                 x = x + 100
             EndIf
@@ -123,10 +123,10 @@ Function DrawLauncher()
 
     Local i%
     For i = 1 To CountGfxModes3D()
-        If ((GfxModeDepth(i) = 32)) Then
+        If (GfxModeDepth(i) = 32) Then
             Color(0, 0, 0)
 
-            If ((launcher\selectedGFXMode = (i-1))) Then
+            If (launcher\selectedGFXMode = (i-1)) Then
                 Rect(x - 1, y - 1, 100, 20, False)
             EndIf
 
@@ -137,7 +137,7 @@ Function DrawLauncher()
             EndIf
 
             y=y+20
-            If ((y >= 240 - 65 + (launcher\height - 80 - 260))) Then
+            If (y >= 240 - 65 + (launcher\height - 80 - 260)) Then
                 y = 280 - 65
                 x = x + 100
             EndIf

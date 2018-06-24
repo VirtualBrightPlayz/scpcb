@@ -20,7 +20,7 @@ Function UpdateNPCtype096(n.NPCs)
 
     Select n\state
         Case 0
-            If ((n\playerDistance < 8.0)) Then
+            If (n\playerDistance < 8.0) Then
                 If (n\sounds[0] = 0) Then
                     n\sounds[0] = LoadSound("SFX/Music/096.ogg")
                 Else
@@ -32,14 +32,14 @@ Function UpdateNPCtype096(n.NPCs)
 
                 angle = WrapAngle(DeltaYaw(n\collider, mainPlayer\collider));-EntityYaw(n\collider,True))
 
-                If ((Not NoTarget)) Then
+                If (Not NoTarget) Then
                     If (angle<90 Or angle>270) Then
                         CameraProject(mainPlayer\cam,EntityX(n\collider), EntityY(n\collider)+0.25, EntityZ(n\collider))
 
                         If (ProjectedX()>0 And ProjectedX()<userOptions\screenWidth) Then
                             If (ProjectedY()>0 And ProjectedY()<userOptions\screenHeight) Then
                                 If (EntityVisible(mainPlayer\collider, n\collider)) Then
-                                    If ((mainPlayer\blinkTimer < - 16 Or mainPlayer\blinkTimer > - 6)) Then
+                                    If (mainPlayer\blinkTimer < - 16 Or mainPlayer\blinkTimer > - 6) Then
                                         PlaySound2(LoadTempSound("SFX/SCP/096/Triggered.ogg"))
 
                                         mainPlayer\camZoom = 10
@@ -75,7 +75,7 @@ Function UpdateNPCtype096(n.NPCs)
                     If (n\soundChannels[1] = 0) Then
                         n\soundChannels[1] = PlaySound(n\sounds[1])
                     Else
-                        If ((Not IsChannelPlaying(n\soundChannels[1]))) Then n\soundChannels[1] = PlaySound(n\sounds[1])
+                        If (Not IsChannelPlaying(n\soundChannels[1])) Then n\soundChannels[1] = PlaySound(n\sounds[1])
                         ChannelVolume(n\soundChannels[1], Min(Max(8.0-n\playerDistance,0.6),1.0)*userOptions\sndVolume)
                     EndIf
                 EndIf
@@ -83,7 +83,7 @@ Function UpdateNPCtype096(n.NPCs)
 
             If (NoTarget And n\target = Null) Then n\state = 5
 
-            If ((Not mainPlayer\dead)) Then
+            If (Not mainPlayer\dead) Then
 
                 If (TimeInPosMilliSecs() > n\state3) Then
                     n\lastSeen=0
@@ -111,7 +111,7 @@ Function UpdateNPCtype096(n.NPCs)
                             n\currSpeed = 0
 
                             If (n\target=Null) Then
-                                If ((Not mainPlayer\godMode)) Then
+                                If (Not mainPlayer\godMode) Then
                                     PlaySound2(DamageSFX(4))
 
                                     pvt = CreatePivot()
@@ -289,7 +289,7 @@ Function UpdateNPCtype096(n.NPCs)
                     If (n\state2>1600) Then
 						n\state2=Rand(0,500) : n\frame = 1652 ;: SetAnimTime(n\obj, 1652)
 					EndIf
-					
+
                     If (n\frame<1652) Then ;idle to walk
                         n\currSpeed = CurveValue(n\speed*0.1,n\currSpeed,5.0)
                         AnimateNPC(n, 1638,1652, n\currSpeed*45,False)
@@ -336,14 +336,14 @@ Function UpdateNPCtype096(n.NPCs)
                 EndIf
 
                 angle = WrapAngle(DeltaYaw(n\collider, mainPlayer\cam));-EntityYaw(n\collider))
-                If ((Not NoTarget)) Then
+                If (Not NoTarget) Then
                     If (angle<55 Or angle>360-55) Then
                         CameraProject(mainPlayer\cam,EntityX(n\collider), EntityY(mainPlayer\collider)+5.8*0.2-0.25, EntityZ(n\collider))
 
                         If (ProjectedX()>0 And ProjectedX()<userOptions\screenWidth) Then
                             If (ProjectedY()>0 And ProjectedY()<userOptions\screenHeight) Then
                                 If (EntityVisible(mainPlayer\collider, n\collider)) Then
-                                    If ((mainPlayer\blinkTimer < - 16 Or mainPlayer\blinkTimer > - 6)) Then
+                                    If (mainPlayer\blinkTimer < - 16 Or mainPlayer\blinkTimer > - 6) Then
                                         PlaySound2(LoadTempSound("SFX/SCP/096/Triggered.ogg"))
 
                                         mainPlayer\camZoom = 10

@@ -58,7 +58,7 @@ Function UpdateEvent_cont_205_1(e.Events)
 	If (mainPlayer\currRoom = e\room) Then
 		e\overwriteMusic = True
 		If (e\eventState=0 Or e\room\objects[0]=0) Then
-			If ((Not e\loaded)) Then
+			If (Not e\loaded) Then
 
 				e\room\objects[3] = LoadAnimMesh("GFX/npcs/205_demon1.b3d")
 				e\room\objects[4] = LoadAnimMesh("GFX/npcs/205_demon2.b3d")
@@ -87,8 +87,8 @@ Function UpdateEvent_cont_205_1(e.Events)
 
 		Else
 
-			If ((e\eventState<65)) Then
-				If ((Distance(EntityX(mainPlayer\collider), EntityZ(mainPlayer\collider), EntityX(e\room\objects[0],True), EntityZ(e\room\objects[0],True))<2.0)) Then
+			If (e\eventState<65) Then
+				If (Distance(EntityX(mainPlayer\collider), EntityZ(mainPlayer\collider), EntityX(e\room\objects[0],True), EntityZ(e\room\objects[0],True))<2.0) Then
 					PlaySound2(LoadTempSound("SFX/SCP/205/Enter.ogg"))
 
 					e\eventState = Max(e\eventState, 65)
@@ -106,7 +106,7 @@ Function UpdateEvent_cont_205_1(e.Events)
 				EndIf
 
 				If (e\eventState>7) Then
-					If ((Rand(0,300)=1)) Then
+					If (Rand(0,300)=1) Then
 						e\room\roomDoors[0]\open = Not e\room\roomDoors[0]\open
 					EndIf
 				EndIf
@@ -166,7 +166,7 @@ Function UpdateEvent_cont_205_1(e.Events)
 
 					If (e\eventState2 > 85*70) Then e\eventState = e\eventState+1
 				Case 13
-					If ((AnimTime(e\room\objects[6])<>227)) Then SetAnimTime(e\room\objects[6], 227)
+					If (AnimTime(e\room\objects[6])<>227) Then SetAnimTime(e\room\objects[6], 227)
 
 					Animate2(e\room\objects[3], AnimTime(e\room\objects[3]), 2, 491, 0.05)
 					Animate2(e\room\objects[4], AnimTime(e\room\objects[4]), 197, 433, 0.05)
@@ -188,7 +188,7 @@ Function UpdateEvent_cont_205_1(e.Events)
 						EndIf
 					EndIf
 				Case 67
-					If ((Rand(150)=1)) Then
+					If (Rand(150)=1) Then
 						DeathMSG = "The SCP-205 cycle seems to have resumed its normal course after the anomalies observed during "
 						DeathMSG = DeathMSG + "[REDACTED]. The body of subject D-9341 was discovered inside the chamber. "
 						DeathMSG = DeathMSG + "The subject exhibits signs of blunt force trauma typical for personnel who have "
@@ -201,21 +201,21 @@ Function UpdateEvent_cont_205_1(e.Events)
 						e\eventState2 = Rnd(-0.1, 0.1)
 						e\eventState3 = Rnd(-0.1, 0.1)
 
-						If ((mainPlayer\injuries>5.0)) Then Kill(mainPlayer)
+						If (mainPlayer\injuries>5.0) Then Kill(mainPlayer)
 					EndIf
 
 					TranslateEntity(mainPlayer\collider, e\eventState2,0,e\eventState3)
 					e\eventState2 = CurveValue(e\eventState2, 0, 10.0)
 					e\eventState3 = CurveValue(e\eventState3, 0, 10.0)
 				Default
-					If ((Rand(3)=1)) Then
+					If (Rand(3)=1) Then
 						HideEntity(e\room\objects[1])
 					Else
 						ShowEntity(e\room\objects[1])
 					EndIf
 
 					e\eventState3 = e\eventState3 + timing\tickDuration
-					If ((e\eventState3>50)) Then
+					If (e\eventState3>50) Then
 						ShowEntity(e\room\objects[1])
 						e\eventState = e\eventState+1
 						e\eventState3=0

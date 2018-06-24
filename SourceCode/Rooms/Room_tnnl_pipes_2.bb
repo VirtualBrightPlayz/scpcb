@@ -31,7 +31,7 @@ Function UpdateEventRoom2pipes106(e.Events)
 	Local angle#
 
 	;[Block]
-	If ((Not Contained106)) Then
+	If (Not Contained106) Then
 		If (e\eventState = 0) Then
 			If (mainPlayer\currRoom = e\room) Then e\eventState = 1
 		Else

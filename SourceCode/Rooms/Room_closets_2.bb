@@ -56,7 +56,7 @@ Function UpdateEvent_closets_2(e.Events)
 
 	;[Block]
 	If (e\eventState = 0) Then
-		If ((Not e\loaded)) Then
+		If (Not e\loaded) Then
 			If (e\room\npc[0]=Null) Then
 				e\room\npc[0] = CreateNPC(NPCtypeD, EntityX(e\room\objects[0],True),EntityY(e\room\objects[0],True),EntityZ(e\room\objects[0],True))
 			EndIf

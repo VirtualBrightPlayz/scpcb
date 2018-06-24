@@ -260,7 +260,7 @@ Function UpdateEvent_cont_1123_2(e.Events)
 
 			If (e\room\npc[0]\sounds[0]<>0) Then
 				If (e\room\npc[0]\soundChannels[0]<>0) Then
-					If ((Not IsChannelPlaying(e\room\npc[0]\soundChannels[0]))) Then
+					If (Not IsChannelPlaying(e\room\npc[0]\soundChannels[0])) Then
 						PlaySound2(LoadTempSound("SFX/SCP/1123/Gunshot.ogg"))
 						e\eventState = 7
 						FreeSound(e\room\npc[0]\sounds[0])

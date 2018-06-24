@@ -63,7 +63,7 @@ Function UpdateEventToiletguard(e.Events)
 				e\soundChannels[1] = PlayRangedSound(e\room\npc[0]\sounds[0], mainPlayer\cam, e\room\npc[0]\collider, 15.0)
 			EndIf
 			UpdateRangedSoundOrigin(e\soundChannels[1],mainPlayer\cam,e\room\npc[0]\collider,15.0)
-			If ((Not IsChannelPlaying(e\soundChannels[1]))) Then RemoveEvent(e)
+			If (Not IsChannelPlaying(e\soundChannels[1])) Then RemoveEvent(e)
 		EndIf
 	EndIf
 	;[End Block]
@@ -90,7 +90,7 @@ Function UpdateEventButtghost(e.Events)
 				e\soundChannels[0] = PlayRangedSound(LoadTempSound("SFX/SCP/Joke/789J.ogg"), mainPlayer\cam,e\room\objects[0])
 				e\eventState = 1
 			Else
-				If ((Not IsChannelPlaying(e\soundChannels[0]))) Then
+				If (Not IsChannelPlaying(e\soundChannels[0])) Then
 					RemoveEvent(e)
 				EndIf
 			EndIf

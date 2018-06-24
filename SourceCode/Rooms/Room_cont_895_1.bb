@@ -89,14 +89,14 @@ Function UpdateEventCoffin(e.Events)
 		;TODO: rewrite this to adjust for separate zone loading
 		If (EntityPitch(e\room\levers[0]\obj, True) > 0) Then ;camera feed on
 			For sc.SecurityCams = Each SecurityCams
-				If ((Not sc\specialCam)) Then
+				If (Not sc\specialCam) Then
 					If (sc\coffinEffect=0 And sc\room\roomTemplate\name<>"room106" And sc\room\roomTemplate\name<>"room205") Then sc\coffinEffect = 2
 					If (sc\room = e\room) Then sc\screen = True
 				EndIf
 			Next
 		Else ;camera feed off
 			For sc.SecurityCams = Each SecurityCams
-				If ((Not sc\specialCam)) Then
+				If (Not sc\specialCam) Then
 					If (sc\coffinEffect<>1) Then sc\coffinEffect = 0
 					If (sc\room = e\room) Then sc\screen = False
 				EndIf
@@ -138,7 +138,7 @@ Function UpdateEventCoffin(e.Events)
 			;If (EntityVisible(mainPlayer\cam,e\room\levers[0]\baseObj)) Then
 				;If (EntityInView(e\room\levers[0]\baseObj, mainPlayer\cam)) Then
 			;If EntityVisible(mainPlayer\cam,e\room\objects[1])
-				If ((CoffinDistance < 4.0) And (hasBatteryFor895)) Then
+				If (CoffinDistance < 4.0) And (hasBatteryFor895) Then
 
 					mainPlayer\sanity895 = mainPlayer\sanity895-(timing\tickDuration*1.1);/WearingNightVision)
 					mainPlayer\blurTimer = Sin(TimeInPosMilliSecs()/10)*Abs(mainPlayer\sanity895)
@@ -155,7 +155,7 @@ Function UpdateEventCoffin(e.Events)
 					mainPlayer\headPitch=(mainPlayer\headPitch * 0.8)+(tempF2 * 0.2)
 
 					;TODO: fix
-					;If ((Rand(Int(Max(tempF*100.0,1.0)))=1) And (e\eventState3<0.0)) Then
+					;If (Rand(Int(Max(tempF*100.0,1.0)))=1) And (e\eventState3<0.0) Then
 					;	EntityTexture(mainPlayer\overlays[OVERLAY_NIGHTVISION], GorePics(Rand(0, 5)))
 					;	;PlaySound2(HorrorSFX(1))
 					;	e\eventState3 = 10.0
@@ -189,9 +189,9 @@ Function UpdateEventCoffin(e.Events)
 		;TODO
 		;ShouldPlay = 66
 
-		If ((e\room\levers[0]\succ)) Then
+		If (e\room\levers[0]\succ) Then
 			For sc.SecurityCams = Each SecurityCams
-				If ((Not sc\specialCam)) Then
+				If (Not sc\specialCam) Then
 					If (sc\coffinEffect=0 And sc\room\roomTemplate\name<>"room106") Then sc\coffinEffect = 2
 					If (sc\coffinEffect = 1) Then EntityBlend(sc\scrOverlay, 3)
 					If (sc\room = e\room) Then sc\screen = True
@@ -199,7 +199,7 @@ Function UpdateEventCoffin(e.Events)
 			Next
 		Else
 			For sc.SecurityCams = Each SecurityCams
-				If ((Not sc\specialCam)) Then
+				If (Not sc\specialCam) Then
 					If (sc\coffinEffect <> 1) Then sc\coffinEffect = 0
 					If (sc\coffinEffect = 1) Then EntityBlend(sc\scrOverlay, 0)
 					If (sc\room = e\room) Then sc\screen = False

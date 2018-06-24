@@ -87,11 +87,11 @@ Function UpdateEvent_cont_012_2(e.Events)
 			EndIf
 		Else
 
-			If ((e\sounds[0] = 0)) Then LoadEventSound(e,"SFX/Music/012Golgotha.ogg")
+			If (e\sounds[0] = 0) Then LoadEventSound(e,"SFX/Music/012Golgotha.ogg")
 			e\soundChannels[0] = LoopRangedSound(e\sounds[0], e\soundChannels[0], mainPlayer\cam, e\room\objects[3], 5.0)
 
 			; TODO: Move to musicmanager.
-			;If ((e\sounds[1] = 0)) Then LoadEventSound(e, "SFX/Music/012.ogg", 1)
+			;If (e\sounds[1] = 0) Then LoadEventSound(e, "SFX/Music/012.ogg", 1)
 
 			If (e\eventState<90) Then e\eventState=CurveValue(90,e\eventState,500)
 			PositionEntity(e\room\objects[2], EntityX(e\room\objects[2],True),(-130-448*Sin(e\eventState))*RoomScale,EntityZ(e\room\objects[2],True),True)
@@ -109,7 +109,7 @@ Function UpdateEvent_cont_012_2(e.Events)
 				EndIf
 			EndIf
 
-			If ((Not IsPlayerWearingTempName(mainPlayer,"hazmatsuit3")) And (Not IsPlayerWearingTempName(mainPlayer,"gasmask3")) And (Not IsPlayerWearingTempName(mainPlayer,"nvgoggles"))) Then
+			If (Not IsPlayerWearingTempName(mainPlayer,"hazmatsuit3")) And (Not IsPlayerWearingTempName(mainPlayer,"gasmask3")) And (Not IsPlayerWearingTempName(mainPlayer,"nvgoggles")) Then
 				temp = False
 				If (EntityVisible(e\room\objects[2],mainPlayer\cam)) Then temp = True
 

@@ -2,7 +2,7 @@ Function InitializeNPCtype939(n.NPCs)
     Local i% = 53
 	Local n2.NPCs
     For n2.NPCs = Each NPCs
-		If ((n\npcType = n2\npcType) And (n<>n2)) Then
+		If (n\npcType = n2\npcType) And (n<>n2) Then
 			i = i + Rand(12, 36)
 		EndIf
 	Next
@@ -10,7 +10,7 @@ Function InitializeNPCtype939(n.NPCs)
     Local amount939% = 0
 
     For n2.NPCs = Each NPCs
-        If ((n\npcType = n2\npcType) And (n<>n2)) Then
+        If (n\npcType = n2\npcType) And (n<>n2) Then
             amount939% = amount939% + 1
         EndIf
     Next
@@ -28,7 +28,7 @@ Function InitializeNPCtype939(n.NPCs)
             Exit
         EndIf
     Next
-	
+
 	Local temp#
     If (n\obj = 0) Then
         n\obj = LoadAnimMesh("GFX/NPCs/scp939/scp-939.b3d")
@@ -91,11 +91,11 @@ Function UpdateNPCtype939(n.NPCs)
                 ;prevFrame = AnimTime(n\obj)
                 ;Animate2(n\obj,AnimTime(n\obj),644,683,28*n\currSpeed) ;walk
 
-                If ((prevFrame<664 And n\frame=>664) Or (prevFrame>673 And n\frame<654)) Then
+                If (prevFrame<664 And n\frame=>664) Or (prevFrame>673 And n\frame<654) Then
                     PlayRangedSound(sndManager\footstepMetal[Rand(0,7)]\internal, mainPlayer\cam, n\collider, 12.0)
                     If (Rand(10)=1) Then
                         temp = False
-                        If ((Not IsChannelPlaying(n\soundChannels[0]))) Then
+                        If (Not IsChannelPlaying(n\soundChannels[0])) Then
                             temp = True
                         EndIf
                         If (temp) Then
@@ -130,7 +130,7 @@ Function UpdateNPCtype939(n.NPCs)
                 If (n\lastSeen > 0 And (Not NoTarget)) Then
                     prevFrame = n\frame
 
-                    If ((n\frame=>18.0 And n\frame<68.0)) Then
+                    If (n\frame=>18.0 And n\frame<68.0) Then
                         n\currSpeed = CurveValue(0, n\currSpeed, 5.0)
                         AnimateNPC(n, 18,68,0.5,True)
                         ;Animate2(n\obj,AnimTime(n\obj),18,68,0.5,True)
@@ -159,7 +159,7 @@ Function UpdateNPCtype939(n.NPCs)
                             DeathMSG=Chr(34)+"All four (4) escaped SCP-939 specimens have been captured and recontained successfully. "
                             DeathMSG=DeathMSG+"Three (3) of them made quite a mess at Storage Area 6. A cleaning team has been dispatched."+Chr(34)
                             Kill(mainPlayer)
-                            If ((Not mainPlayer\godMode)) Then n\state = 5
+                            If (Not mainPlayer\godMode) Then n\state = 5
                         EndIf
                     Else
                         If (n\lastSeen = 10*7) Then
@@ -168,7 +168,7 @@ Function UpdateNPCtype939(n.NPCs)
                             AnimateNPC(n, 449,464,6*n\currSpeed) ;run
                             ;Animate2(n\obj,AnimTime(n\obj),449,464,6*n\currSpeed) ;run
 
-                            If ((prevFrame<452 And n\frame=>452) Or (prevFrame<459 And n\frame=>459)) Then
+                            If (prevFrame<452 And n\frame=>452) Or (prevFrame<459 And n\frame=>459) Then
                                 PlayRangedSound(sndManager\footstepMetalRun[Rand(0,7)]\internal, mainPlayer\cam, n\collider, 12.0)
                             EndIf
 

@@ -77,7 +77,7 @@ Function UpdateEvent_tesla(e.Events)
 			EndIf
 
 			If (e\room\dist < 8) Then
-				If ((Not IsChannelPlaying(e\soundChannels[0]))) Then
+				If (Not IsChannelPlaying(e\soundChannels[0])) Then
 					e\soundChannels[0] = PlayRangedSound_SM(sndManager\teslaIdle, mainPlayer\cam, e\room\objects[3],4.0,0.5)
 				EndIf
 			EndIf

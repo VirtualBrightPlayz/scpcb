@@ -11,7 +11,7 @@ Function InitializeNPCtypeZombie(n.NPCs)
             Exit
         EndIf
     Next
-	
+
 	Local temp#
     If (n\obj = 0) Then
         n\obj = LoadAnimMesh("GFX/NPCs/zombie/zombie.b3d")
@@ -33,9 +33,9 @@ End Function
 
 Function UpdateNPCtypeZombie(n.NPCs)
 	Local prevFrame# = n\frame
-	
+
     If (Abs(EntityY(mainPlayer\collider)-EntityY(n\collider))<4.0) Then
-        If ((Not n\isDead)) Then
+        If (Not n\isDead) Then
             Select n\state
                 Case 0
                     AnimateNPC(n, 719, 777, 0.2, False)
