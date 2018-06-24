@@ -369,13 +369,13 @@ Function UpdateItems()
 			If (i\dist < hideDist) Then
 				ShowEntity(i\collider)
 
-				If i\dist < 1.2 Then
-					If mainPlayer\closestItem = Null Then
-						If EntityInView(i\model, mainPlayer\cam) Then
+				If (i\dist < 1.2) Then
+					If (mainPlayer\closestItem = Null) Then
+						If (EntityInView(i\model, mainPlayer\cam)) Then
 							mainPlayer\closestItem = i
 						EndIf
-					ElseIf i\dist < EntityDistance(mainPlayer\collider, mainPlayer\closestItem\collider) Then
-						If EntityInView(i\model, mainPlayer\cam) Then
+					ElseIf (i\dist < EntityDistance(mainPlayer\collider, mainPlayer\closestItem\collider)) Then
+						If (EntityInView(i\model, mainPlayer\cam)) Then
 							mainPlayer\closestItem = i
 						EndIf
 					EndIf
@@ -418,7 +418,7 @@ Function UpdateItems()
 					Next
 				EndIf
 
-				If EntityY(i\collider) < - 35.0 Then
+				If (EntityY(i\collider) < - 35.0) Then
 					DebugLog("remove: " + i\name)
 					RemoveItem(i)
 				EndIf
@@ -428,11 +428,11 @@ Function UpdateItems()
 		EndIf
 	Next
 
-	If mainPlayer\closestItem <> Null Then
+	If (mainPlayer\closestItem <> Null) Then
 		;Can the player see this?
 		If (EntityVisible(i\collider,mainPlayer\cam)) Then
 			If (EntityVisible(i\collider,mainPlayer\collider)) Then
-				If MouseHit1 Then
+				If (MouseHit1) Then
 					PickItem(mainPlayer\closestItem)
 				EndIf
 			EndIf
@@ -452,7 +452,7 @@ Function PickItem(item.Items)
 	Select item\template\name
 		Case "battery"
 			If (HasTag(item, ITEM_TAG_914VF)) Then
-				ShowEntity mainPlayer\overlays[OVERLAY_WHITE]
+				ShowEntity(mainPlayer\overlays[OVERLAY_WHITE])
 				mainPlayer\lightFlash = 1.0
 				PlaySound2(IntroSFX(11))
 				DeathMSG = "Subject D-9341 found dead inside SCP-914's output booth next to what appears to be an ordinary nine-volt battery. The subject is covered in severe "
@@ -476,11 +476,9 @@ Function PickItem(item.Items)
 			Return
 	End Select
 
-	If CountItemsInInventory(mainPlayer\inventory) < mainPlayer\inventory\size Then
+	If (CountItemsInInventory(mainPlayer\inventory) < mainPlayer\inventory\size) Then
 		For n% = 0 To mainPlayer\inventory\size - 1
-			If mainPlayer\inventory\items[n] = Null Then
-
-
+			If (mainPlayer\inventory\items[n] = Null) Then
 				PlaySound_SM(sndManager\itemPick[item\template\sound])
 				item\picked = True
 				item\dropped = -1
@@ -533,7 +531,7 @@ Function AssignTag(item.Items, tag$)
 
 	Local space% = False
 	Local i%
-	For i=0 to 4
+	For i=0 To 4
 		If (item\tags[i] = "") Then
 			space = True
 			item\tags[i] = tag
@@ -549,7 +547,7 @@ End Function
 Function RemoveTag(item.Items, tag$)
 	Local found% = False
 	Local i%
-	For i=0 to 4
+	For i=0 To 4
 		If (item\tags[i] = tag) Then
 			found = True
 			item\tags[i] = ""
@@ -573,38 +571,38 @@ Function HasTag%(item.Items, tag$)
 	Return False
 End Function
 
-Function IsPlayerWearingTempName(player.Player,templateName$)
+Function IsPlayerWearingTempName%(player.Player,templateName$)
 	Local it.ItemTemplates = FindItemTemplate(templateName)
-	If it=Null Then Return False
+	If (it=Null) Then Return False
 	Local slot% = it\wornSlot
-	If slot=WORNITEM_SLOT_NONE Then Return False
-	If player\wornItems[slot]=Null Then Return False
+	If (slot=WORNITEM_SLOT_NONE) Then Return False
+	If (player\wornItems[slot]=Null) Then Return False
 	Return (player\wornItems[slot]\template\name=templateName)
 End Function
 
-Function IsPlayerWearingItem(player.Player,item.Items)
-	If item = Null Then
+Function IsPlayerWearingItem%(player.Player,item.Items)
+	If (item = Null) Then
 		Return False
 	EndIf
 	Local slot% = item\template\wornSlot
-	If slot=WORNITEM_SLOT_NONE Then Return False
-	If player\wornItems[slot]=Null Then Return False
+	If (slot=WORNITEM_SLOT_NONE) Then Return False
+	If (player\wornItems[slot]=Null) Then Return False
 	Return (player\wornItems[slot] = item)
 End Function
 
 Function EquipItem(player.Player, item.Items)
-	If item=Null Then Return
-	If item\template\wornSlot = WORNITEM_SLOT_NONE Then Return
+	If (item=Null) Then Return
+	If (item\template\wornSlot = WORNITEM_SLOT_NONE) Then Return
 
 	player\wornItems[item\template\invSlot] = item
 End Function
 
 Function DeEquipItem(player.Player,item.Items)
-	If item = Null Then
+	If (item = Null) Then
 		Return
 	EndIf
 
-	If player\wornItems[item\template\wornSlot]<>item Then
+	If (player\wornItems[item\template\wornSlot]<>item) Then
 		Return
 	EndIf
 
@@ -661,7 +659,7 @@ Function UpdateInventory(player.Player)
 							MouseHit1 = False
 						EndIf
 					EndIf
-				ElseIf (MouseUp1 And player\selectedItem <> Null)
+				ElseIf (MouseUp1 And player\selectedItem <> Null) Then
 					;Item already selected and mouse release.
 
 					;Hovering over empty slot. Move the item to the empty slot.
@@ -669,7 +667,7 @@ Function UpdateInventory(player.Player)
 						player\openInventory\items[slotIndex] = player\selectedItem
 
 						;Remove the item from its previous slot.
-						For i=0 to player\openInventory\size - 1
+						For i=0 To player\openInventory\size - 1
 							If (player\openInventory\items[i] = player\selectedItem) Then
 								player\openInventory\items[i] = Null
 								Exit
@@ -695,7 +693,7 @@ Function UpdateInventory(player.Player)
 
 			;Move x and y coords to point to next item.
 			x = x + ITEM_CELL_SIZE + ITEM_CELL_SPACING
-			If n Mod 5 = 4 Then
+			If (n Mod 5 = 4) Then
 				y = y + ITEM_CELL_SIZE * 2
 				x = userOptions\screenWidth / 2 - (ITEM_CELL_SIZE * ITEMS_PER_ROW + ITEM_CELL_SPACING * (ITEMS_PER_ROW - 1)) / 2
 			EndIf
@@ -753,13 +751,14 @@ Function DrawInventory(player.Player)
 	Local strtemp$
 
 	Local x%, y%, i%, yawvalue#, x1#, x2#, x3#, y1#, y2#, y3#, xtemp%, ytemp%
-
+	
+	Local n%
+	
 	If (CurrGameState = GAMESTATE_INVENTORY) Then
 		x = userOptions\screenWidth / 2 - (ITEM_CELL_SIZE * ITEMS_PER_ROW + ITEM_CELL_SPACING * (ITEMS_PER_ROW - 1)) / 2
 		y = userOptions\screenHeight / 2 - ITEM_CELL_SIZE * (player\openInventory\size / ITEMS_PER_ROW) + ITEM_CELL_SIZE / 2
-
-		Local n%
-		For  n% = 0 To player\openInventory\size - 1
+		
+		For  n = 0 To player\openInventory\size - 1
 			isMouseOn% = False
 			If (MouseX() > x And MouseX() < x + ITEM_CELL_SIZE) Then
 				If (MouseY() > y And MouseY() < y + ITEM_CELL_SIZE) Then
@@ -768,7 +767,7 @@ Function DrawInventory(player.Player)
 			EndIf
 
 			If (player\openInventory\items[n] <> Null) Then
-				Color 200, 200, 200
+				Color(200, 200, 200)
 				If (IsPlayerWearingItem(player,player\openInventory\items[n])) Then
 					Rect(x - 3, y - 3, ITEM_CELL_SIZE + 6, ITEM_CELL_SIZE + 6)
 				EndIf
@@ -783,7 +782,7 @@ Function DrawInventory(player.Player)
 			Color(255, 255, 255)
 			DrawFrame(x, y, ITEM_CELL_SIZE, ITEM_CELL_SIZE, (x Mod 64), (x Mod 64))
 
-			If player\openInventory\items[n] <> Null Then
+			If (player\openInventory\items[n] <> Null) Then
 				If (player\selectedItem <> player\openInventory\items[n] Or isMouseOn) Then
 					DrawImage(player\openInventory\items[n]\invimg, x + ITEM_CELL_SIZE / 2 - 32, y + ITEM_CELL_SIZE / 2 - 32)
 				EndIf
@@ -801,7 +800,7 @@ Function DrawInventory(player.Player)
 				EndIf
 			EndIf
 
-			x= x + ITEM_CELL_SIZE + ITEM_CELL_SPACING
+			x = x + ITEM_CELL_SIZE + ITEM_CELL_SPACING
 			If (n Mod 5 = 4) Then
 				y = y + ITEM_CELL_SIZE * 2
 				x = userOptions\screenWidth / 2 - (ITEM_CELL_SIZE * ITEMS_PER_ROW + ITEM_CELL_SPACING * (ITEMS_PER_ROW - 1)) / 2

@@ -758,8 +758,8 @@ Function UpdateGame()
 					darkA = Max(darkA, Min(Abs(mainPlayer\fallTimer / 400.0), 1.0))
 				EndIf
 
-				If mainPlayer\selectedItem <> Null Then
-					If mainPlayer\selectedItem\template\name = "navigator" Or mainPlayer\selectedItem\template\name = "nav" Then darkA = Max(darkA, 0.5)
+				If (mainPlayer\selectedItem <> Null) Then
+					If (mainPlayer\selectedItem\template\name = "navigator" Or mainPlayer\selectedItem\template\name = "nav") Then darkA = Max(darkA, 0.5)
 				EndIf
 				If (SelectedScreen <> Null) Then darkA = Max(darkA, 0.5)
 
@@ -1935,7 +1935,7 @@ Function UpdateNVG()
 	Local wornItem.Items = mainPlayer\wornItems[WORNITEM_SLOT_HEAD]
 
 	If (wornItem <> Null) Then
-		If wornItem\template\name <> "nvgoggles" And wornItem\template\name <> "supernv" Then
+		If (wornItem\template\name <> "nvgoggles" And wornItem\template\name <> "supernv") Then
 			wornItem = Null
 		EndIf
 	EndIf

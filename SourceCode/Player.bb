@@ -2104,5 +2104,5 @@ Function Kill(player.Player)
 	EndIf
 End Function
 ;~IDEal Editor Parameters:
-;~F#2F5
+;~F#2F6#328#33F#347#359
 ;~C#Blitz3D
