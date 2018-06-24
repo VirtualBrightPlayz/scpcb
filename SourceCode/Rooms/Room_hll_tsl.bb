@@ -144,7 +144,7 @@ Function UpdateEvent_tesla(e.Events)
 								ShowEntity(mainPlayer\overlays[OVERLAY_WHITE])
 								mainPlayer\lightFlash = 0.3
 								For i = 0 To 10
-									p.Particles = CreateParticle(EntityX(Curr106\collider, True), EntityY(Curr106\collider, True), EntityZ(Curr106\collider, True), 0, 0.015, -0.2, 250)
+									p = CreateParticle(EntityX(Curr106\collider, True), EntityY(Curr106\collider, True), EntityZ(Curr106\collider, True), 0, 0.015, -0.2, 250)
 									p\size = 0.03
 									p\gravity = -0.2
 									p\lifetime = 200
@@ -182,7 +182,7 @@ Function UpdateEvent_tesla(e.Events)
 		If (e\eventState2 = 0) Then
 			If (e\eventState3 <=0) Then
 				temp = False
-				For n.NPCs = Each NPCs
+				For n = Each NPCs
 					If (n\npcType = NPCtypeMTF) Then
 						If (Abs(EntityX(n\collider)-EntityX(e\room\obj,True))<4.0) Then
 							If (Abs(EntityZ(n\collider)-EntityZ(e\room\obj,True))<4.0) Then

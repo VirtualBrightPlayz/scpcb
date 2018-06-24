@@ -70,7 +70,7 @@ Function UpdateEventEndroom106(e.Events)
 		ElseIf (e\eventState = 2) Then
 			dist = EntityDistance(e\room\npc[0]\collider, e\room\obj)
 			If (dist<1.5) Then
-				de.Decals = CreateDecal(0, EntityX(e\room\obj), 0.01, EntityZ(e\room\obj), 90, Rand(360), 0)
+				de = CreateDecal(0, EntityX(e\room\obj), 0.01, EntityZ(e\room\obj), 90, Rand(360), 0)
 				de\size = 0.05 : de\sizeChange = 0.008 : de\timer=10000 : UpdateDecals()
 				e\eventState = 3
 

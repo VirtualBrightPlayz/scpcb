@@ -10,7 +10,7 @@ Function FillRoom_lifts_1(r.Rooms)
     r\objects[1] = CreateButton(r\x - 96.0*RoomScale, r\y + 160.0 * RoomScale, r\z + 64.0 * RoomScale, 0,0,0)
     EntityParent(r\objects[1],r\obj)
 
-    sc.SecurityCams = CreateSecurityCam(r\x+384.0*RoomScale, r\y+(448-64)*RoomScale, r\z-960.0*RoomScale, r, True)
+    sc = CreateSecurityCam(r\x+384.0*RoomScale, r\y+(448-64)*RoomScale, r\z-960.0*RoomScale, r, True)
     sc\angle = 45
     sc\turn = 45
     sc\room = r
@@ -18,3 +18,6 @@ Function FillRoom_lifts_1(r.Rooms)
     EntityParent(sc\obj, r\obj)
     sc\id = 3
 End Function
+
+;~IDEal Editor Parameters:
+;~C#Blitz3D

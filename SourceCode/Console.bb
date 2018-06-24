@@ -51,63 +51,63 @@ Function DrawConsole()
 		SetFont(uiAssets\consoleFont)
 
 		x = 0
-		y = userOptions\screenHeight-300*MenuScale
+		y = userOptions\screenHeight-Int(300.0*MenuScale)
 		width = userOptions\screenWidth
-		height = 300*MenuScale-30*MenuScale
+		height = Int(300.0*MenuScale-30.0*MenuScale)
 
-		DrawFrame(x,y,width,height+30*MenuScale)
+		DrawFrame(x,y,width,height+Int(30.0*MenuScale))
 
 		consoleHeight = 0
 		scrollbarHeight = 0
 
 		For cm = Each ConsoleMsg
-			consoleHeight = consoleHeight + 15*MenuScale
+			consoleHeight = consoleHeight + Int(15.0*MenuScale)
 		Next
-		scrollbarHeight = (Float(height)/Float(consoleHeight))*height
+		scrollbarHeight = Int((Float(height)/Float(consoleHeight))*height)
 		If (scrollbarHeight>height) Then scrollbarHeight = height
 		If (consoleHeight<height) Then consoleHeight = height
 
 		Color(50,50,50)
-		inBar% = MouseOn(x+width-26*MenuScale,y,26*MenuScale,height)
+		inBar = MouseOn(x+width-Int(26.0*MenuScale),y,Int(26.0*MenuScale),height)
 		If (inBar) Then Color(70,70,70)
-		Rect(x+width-26*MenuScale,y,26*MenuScale,height,True)
+		Rect(x+width-Int(26.0*MenuScale),y,Int(26.0*MenuScale),height,True)
 
 
 		Color(120,120,120)
-		inBox% = MouseOn(x+width-23*MenuScale,y+height-scrollbarHeight+(ConsoleScroll*scrollbarHeight/height),20*MenuScale,scrollbarHeight)
+		inBox = MouseOn(x+width-Int(23.0*MenuScale),y+height-scrollbarHeight+Int(ConsoleScroll*scrollbarHeight/height),Int(20.0*MenuScale),scrollbarHeight)
 		If (inBox) Then Color(200,200,200)
 		If (ConsoleScrollDragging) Then Color(255,255,255)
-		Rect(x+width-23*MenuScale,y+height-scrollbarHeight+(ConsoleScroll*scrollbarHeight/height),20*MenuScale,scrollbarHeight,True)
+		Rect(x+width-Int(23.0*MenuScale),y+height-scrollbarHeight+Int(ConsoleScroll*scrollbarHeight/height),Int(20.0*MenuScale),scrollbarHeight,True)
 
 		Color(255, 255, 255)
 
-		TempY = y + height - 25*MenuScale - ConsoleScroll
+		TempY = y + height - Int(25.0*MenuScale) - Int(ConsoleScroll)
 		count = 0
-		For cm.ConsoleMsg = Each ConsoleMsg
+		For cm = Each ConsoleMsg
 			count = count+1
 			If (count>1000) Then
 				Delete cm
 			Else
-				If (TempY >= y And TempY < y + height - 20*MenuScale) Then
+				If (TempY >= y And TempY < y + height - Int(20.0*MenuScale)) Then
 					If (cm=ConsoleReissue) Then
 						Color(cm\r/4,cm\g/4,cm\b/4)
-						Rect(x,TempY-2*MenuScale,width-30*MenuScale,24*MenuScale,True)
+						Rect(x,TempY-Int(2.0*MenuScale),width-Int(30.0*MenuScale),Int(24.0*MenuScale),True)
 					EndIf
 					Color(cm\r,cm\g,cm\b)
 					If (cm\isCommand) Then
-						Text(x + 20*MenuScale, TempY, "> "+cm\txt)
+						Text(x + Int(20.0*MenuScale), TempY, "> "+cm\txt)
 					Else
-						Text(x + 20*MenuScale, TempY, cm\txt)
+						Text(x + Int(20.0*MenuScale), TempY, cm\txt)
 					EndIf
 				EndIf
-				TempY = TempY - 15*MenuScale
+				TempY = TempY - Int(15.0*MenuScale)
 			EndIf
 
 		Next
 
 		Color(255,255,255)
 
-		DrawInputBox(x, y + height, width, 30*MenuScale, ConsoleInput, 2)
+		DrawInputBox(x, y + height, width, Int(30.0*MenuScale), ConsoleInput, 2)
 
 		ShowPointer2()
 	EndIf
@@ -138,22 +138,22 @@ Function UpdateConsole()
 		ConsoleR = 255 : ConsoleG = 255 : ConsoleB = 255
 
 		x = 0
-		y = userOptions\screenHeight-300*MenuScale
+		y = userOptions\screenHeight-Int(300.0*MenuScale)
 		width = userOptions\screenWidth
-		height = 300*MenuScale-30*MenuScale
+		height = Int(300.0*MenuScale-30.0*MenuScale)
 
 		consoleHeight = 0
 		scrollbarHeight = 0
-		For cm.ConsoleMsg = Each ConsoleMsg
-			consoleHeight = consoleHeight + 15*MenuScale
+		For cm = Each ConsoleMsg
+			consoleHeight = consoleHeight + Int(15.0*MenuScale)
 		Next
-		scrollbarHeight = (Float(height)/Float(consoleHeight))*height
+		scrollbarHeight = Int((Float(height)/Float(consoleHeight))*height)
 		If (scrollbarHeight>height) Then scrollbarHeight = height
 		If (consoleHeight<height) Then consoleHeight = height
 
-		inBar = MouseOn(x+width-26*MenuScale,y,26*MenuScale,height)
+		inBar = MouseOn(x+width-Int(26.0*MenuScale),y,Int(26.0*MenuScale),height)
 
-		inBox = MouseOn(x+width-23*MenuScale,y+height-scrollbarHeight+(ConsoleScroll*scrollbarHeight/height),20*MenuScale,scrollbarHeight)
+		inBox = MouseOn(x+width-Int(23.0*MenuScale),y+height-scrollbarHeight+Int(ConsoleScroll*scrollbarHeight/height),Int(20.0*MenuScale),scrollbarHeight)
 
 		If (Not MouseDown(1)) Then
 			ConsoleScrollDragging=False
@@ -182,7 +182,7 @@ Function UpdateConsole()
 		EndIf
 
 		If (KeyHit(200)) Then
-			reissuePos% = 0
+			reissuePos = 0
 			If ((ConsoleReissue=Null)) Then
 				ConsoleReissue=First ConsoleMsg
 
@@ -190,19 +190,19 @@ Function UpdateConsole()
 					If ((ConsoleReissue\isCommand)) Then
 						Exit
 					EndIf
-					reissuePos = reissuePos - 15*MenuScale
+					reissuePos = reissuePos - Int(15.0*MenuScale)
 					ConsoleReissue = After ConsoleReissue
 				Wend
 
 			Else
-				cm.ConsoleMsg = First ConsoleMsg
+				cm = First ConsoleMsg
 				While cm<>Null
 					If (cm=ConsoleReissue) Then Exit
-					reissuePos = reissuePos-15*MenuScale
+					reissuePos = reissuePos-Int(15.0*MenuScale)
 					cm = After cm
 				Wend
 				ConsoleReissue = After ConsoleReissue
-				reissuePos = reissuePos-15*MenuScale
+				reissuePos = reissuePos-Int(15.0*MenuScale)
 
 				While True
 					If ((ConsoleReissue=Null)) Then
@@ -213,7 +213,7 @@ Function UpdateConsole()
 					If ((ConsoleReissue\isCommand)) Then
 						Exit
 					EndIf
-					reissuePos = reissuePos - 15*MenuScale
+					reissuePos = reissuePos - Int(15.0*MenuScale)
 					ConsoleReissue = After ConsoleReissue
 				Wend
 			EndIf
@@ -225,7 +225,7 @@ Function UpdateConsole()
 		EndIf
 
 		If (KeyHit(208)) Then
-			reissuePos% = -consoleHeight+15*MenuScale
+			reissuePos = -consoleHeight+Int(15.0*MenuScale)
 			If ((ConsoleReissue=Null)) Then
 				ConsoleReissue=Last ConsoleMsg
 
@@ -233,30 +233,30 @@ Function UpdateConsole()
 					If ((ConsoleReissue\isCommand)) Then
 						Exit
 					EndIf
-					reissuePos = reissuePos + 15*MenuScale
+					reissuePos = reissuePos + Int(15.0*MenuScale)
 					ConsoleReissue = Before ConsoleReissue
 				Wend
 
 			Else
-				cm.ConsoleMsg = Last ConsoleMsg
+				cm = Last ConsoleMsg
 				While cm<>Null
 					If (cm=ConsoleReissue) Then Exit
-					reissuePos = reissuePos+15*MenuScale
+					reissuePos = reissuePos+Int(15.0*MenuScale)
 					cm = Before cm
 				Wend
 				ConsoleReissue = Before ConsoleReissue
-				reissuePos = reissuePos+15*MenuScale
+				reissuePos = reissuePos+Int(15.0*MenuScale)
 
 				While True
 					If ((ConsoleReissue=Null)) Then
 						ConsoleReissue=Last ConsoleMsg
-						reissuePos=-consoleHeight+15*MenuScale
+						reissuePos=-consoleHeight+Int(15.0*MenuScale)
 					EndIf
 
 					If ((ConsoleReissue\isCommand)) Then
 						Exit
 					EndIf
-					reissuePos = reissuePos + 15*MenuScale
+					reissuePos = reissuePos + Int(15.0*MenuScale)
 					ConsoleReissue = Before ConsoleReissue
 				Wend
 			EndIf
@@ -272,7 +272,7 @@ Function UpdateConsole()
 
 		SelectedInputBox = 2
 		oldConsoleInput = ConsoleInput
-		ConsoleInput = UpdateInputBox(x, y + height, width, 30*MenuScale, ConsoleInput, 2)
+		ConsoleInput = UpdateInputBox(x, y + height, width, Int(30.0*MenuScale), ConsoleInput, 2)
 		If (oldConsoleInput<>ConsoleInput) Then
 			ConsoleReissue = Null
 		EndIf
@@ -283,18 +283,18 @@ Function UpdateConsole()
 			ConsoleScroll = 0
 			CreateConsoleMsg(ConsoleInput,255,255,0,True)
 			If (Instr(ConsoleInput, " ") > 0) Then
-				StrTemp$ = Lower(Left(ConsoleInput, Instr(ConsoleInput, " ") - 1))
+				StrTemp = Lower(Left(ConsoleInput, Instr(ConsoleInput, " ") - 1))
 			Else
-				StrTemp$ = Lower(ConsoleInput)
+				StrTemp = Lower(ConsoleInput)
 			EndIf
 
-			;TODO: Overhaul this. Move all of the argument stuff to dedicated functions to this is actually readable/maintainable.
+			;TODO: Overhaul this. Move all of the argument stuff to dedicated functions so this is actually readable/maintainable.
 			Select Lower(StrTemp)
 				Case "help"
 					If (Instr(ConsoleInput, " ")<>0) Then
-						StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
+						StrTemp = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 					Else
-						StrTemp$ = ""
+						StrTemp = ""
 					EndIf
 					ConsoleR = 0 : ConsoleG = 255 : ConsoleB = 255
 
@@ -466,30 +466,30 @@ Function UpdateConsole()
 					CreateConsoleMsg("******************************")
 					CreateConsoleMsg("Status: ")
 					CreateConsoleMsg("Coordinates: ")
-					CreateConsoleMsg("    - collider: "+EntityX(mainPlayer\collider)+", "+EntityY(mainPlayer\collider)+", "+EntityZ(mainPlayer\collider))
-					CreateConsoleMsg("    - camera: "+EntityX(mainPlayer\cam)+", "+EntityY(mainPlayer\cam)+", "+EntityZ(mainPlayer\cam))
+					CreateConsoleMsg("    - collider: "+Str(EntityX(mainPlayer\collider))+", "+Str(EntityY(mainPlayer\collider))+", "+Str(EntityZ(mainPlayer\collider)))
+					CreateConsoleMsg("    - camera: "+Str(EntityX(mainPlayer\cam))+", "+Str(EntityY(mainPlayer\cam))+", "+Str(EntityZ(mainPlayer\cam)))
 
 					CreateConsoleMsg("Rotation: ")
-					CreateConsoleMsg("    - collider: "+EntityPitch(mainPlayer\collider)+", "+EntityYaw(mainPlayer\collider)+", "+EntityRoll(mainPlayer\collider))
-					CreateConsoleMsg("    - camera: "+EntityPitch(mainPlayer\cam)+", "+EntityYaw(mainPlayer\cam)+", "+EntityRoll(mainPlayer\cam))
+					CreateConsoleMsg("    - collider: "+Str(EntityPitch(mainPlayer\collider))+", "+Str(EntityYaw(mainPlayer\collider))+", "+Str(EntityRoll(mainPlayer\collider)))
+					CreateConsoleMsg("    - camera: "+Str(EntityPitch(mainPlayer\cam))+", "+Str(EntityYaw(mainPlayer\cam))+", "+Str(EntityRoll(mainPlayer\cam)))
 
 					CreateConsoleMsg("Room: "+mainPlayer\currRoom\roomTemplate\name)
-					For ev.Events = Each Events
+					For ev = Each Events
 						If (ev\room = mainPlayer\currRoom) Then
 							CreateConsoleMsg("Room event: "+ev\name)
-							CreateConsoleMsg("-    state: "+ev\eventState)
-							CreateConsoleMsg("-    state2: "+ev\eventState2)
-							CreateConsoleMsg("-    state3: "+ev\eventState3)
+							CreateConsoleMsg("-    state: "+Str(ev\eventState))
+							CreateConsoleMsg("-    state2: "+Str(ev\eventState2))
+							CreateConsoleMsg("-    state3: "+Str(ev\eventState3))
 							Exit
 						EndIf
 					Next
 
-					CreateConsoleMsg("Room coordinates: "+Floor(EntityX(mainPlayer\currRoom\obj) / 8.0 + 0.5)+", "+ Floor(EntityZ(mainPlayer\currRoom\obj) / 8.0 + 0.5))
-					CreateConsoleMsg("Stamina: "+mainPlayer\stamina)
+					CreateConsoleMsg("Room coordinates: "+Str(Floor(EntityX(mainPlayer\currRoom\obj) / 8.0 + 0.5))+", "+Str(Floor(EntityZ(mainPlayer\currRoom\obj) / 8.0 + 0.5)))
+					CreateConsoleMsg("Stamina: "+Str(mainPlayer\stamina))
 					;CreateConsoleMsg("Dead: "+mainPlayer\dead)
-					CreateConsoleMsg("Blinktimer: "+mainPlayer\blinkTimer)
-					CreateConsoleMsg("Injuries: "+mainPlayer\injuries)
-					CreateConsoleMsg("Bloodloss: "+mainPlayer\bloodloss)
+					CreateConsoleMsg("Blinktimer: "+Str(mainPlayer\blinkTimer))
+					CreateConsoleMsg("Injuries: "+Str(mainPlayer\injuries))
+					CreateConsoleMsg("Bloodloss: "+Str(mainPlayer\bloodloss))
 					CreateConsoleMsg("******************************")
 
 				Case "camerapick"
@@ -497,7 +497,7 @@ Function UpdateConsole()
 					c = CameraPick(mainPlayer\cam, userOptions\screenWidth / 2, userOptions\screenHeight / 2)
 					If (c = 0) Then
 						CreateConsoleMsg("******************************")
-						CreateConsoleMsg("No entity  picked")
+						CreateConsoleMsg("No entity picked")
 						CreateConsoleMsg("******************************")
 					Else
 						CreateConsoleMsg("******************************")
@@ -505,9 +505,9 @@ Function UpdateConsole()
 						sf = GetSurface(c,1)
 						b = GetSurfaceBrush( sf )
 						t = GetBrushTexture(b,0)
-						texname$ =  StripPath(TextureName(t))
+						texname =  StripPath(TextureName(t))
 						CreateConsoleMsg("Texture name: "+texname)
-						CreateConsoleMsg("Coordinates: "+EntityX(c)+", "+EntityY(c)+", "+EntityZ(c))
+						CreateConsoleMsg("Coordinates: "+Str(EntityX(c))+", "+Str(EntityY(c))+", "+Str(EntityZ(c)))
 						CreateConsoleMsg("******************************")
 						FreeTexture(t)
 						FreeBrush(b)
@@ -515,11 +515,11 @@ Function UpdateConsole()
 
 				Case "hidedistance"
 					HideDistance = Float(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
-					CreateConsoleMsg("Hidedistance set to "+HideDistance)
+					CreateConsoleMsg("Hidedistance set to "+Str(HideDistance))
 
 				Case "ending"
 					CurrGameState = GAMESTATE_ENDING
-					StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
+					StrTemp = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 
 					Kill(mainPlayer)
 
@@ -530,12 +530,12 @@ Function UpdateConsole()
 					;NoClipSpeed = Float(StrTemp)
 
 				Case "injure"
-					StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
+					StrTemp = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 
 					mainPlayer\injuries = Float(StrTemp)
 
 				Case "infect"
-					StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
+					StrTemp = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 
 					mainPlayer\infect008 = Float(StrTemp)
 
@@ -544,7 +544,7 @@ Function UpdateConsole()
 					mainPlayer\bloodloss = 0
 
 				Case "teleport"
-					StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
+					StrTemp = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 
 					Select StrTemp
 						Case "895", "scp-895"
@@ -555,14 +555,14 @@ Function UpdateConsole()
 							StrTemp = "room2offices"
 					End Select
 
-					For r.Rooms = Each Rooms
+					For r = Each Rooms
 						If (r\roomTemplate\name = StrTemp) Then
 							;PositionEntity(mainPlayer\collider, EntityX(r\obj), 0.7, EntityZ(r\obj))
 							PositionEntity(mainPlayer\collider, r\x, r\y+0.7, r\z)
 							ResetEntity(mainPlayer\collider)
 							UpdateDoors()
 							UpdateRooms()
-							For it.Items = Each Items
+							For it = Each Items
 								it\disttimer = 0
 							Next
 							mainPlayer\currRoom = r
@@ -573,19 +573,19 @@ Function UpdateConsole()
 					If (mainPlayer\currRoom\roomTemplate\name <> StrTemp) Then CreateConsoleMsg("Room not found.",255,150,0)
 
 				Case "spawnitem"
-					StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
+					StrTemp = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 					temp = False
-					For itt.ItemTemplates = Each ItemTemplates
+					For itt = Each ItemTemplates
 						If ((Lower(itt\name) = StrTemp)) Then
 							temp = True
 							CreateConsoleMsg(itt\name + " spawned.")
-							it.Items = CreateItem(itt\name, itt\name, EntityX(mainPlayer\collider), EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider))
+							it = CreateItem(itt\name, itt\name, EntityX(mainPlayer\collider), EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider))
 							EntityType(it\collider, HIT_ITEM)
 							Exit
 						ElseIf ((Lower(itt\name) = StrTemp)) Then
 							temp = True
 							CreateConsoleMsg(itt\name + " spawned.")
-							it.Items = CreateItem(itt\name, itt\name, EntityX(mainPlayer\collider), EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider))
+							it = CreateItem(itt\name, itt\name, EntityX(mainPlayer\collider), EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider))
 							EntityType(it\collider, HIT_ITEM)
 							Exit
 						EndIf
@@ -594,7 +594,7 @@ Function UpdateConsole()
 					If (temp = False) Then CreateConsoleMsg("Item not found.",255,150,0)
 
 				Case "wireframe"
-					StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
+					StrTemp = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 
 					Select StrTemp
 						Case "on", "1", "true"
@@ -614,26 +614,26 @@ Function UpdateConsole()
 					WireFrame(WireframeState)
 
 				Case "173speed"
-					StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
+					StrTemp = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 					Curr173\speed = Float(StrTemp)
 					CreateConsoleMsg("173's speed set to " + StrTemp)
 
 				Case "106speed"
-					StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
+					StrTemp = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 					Curr106\speed = Float(StrTemp)
 					CreateConsoleMsg("106's speed set to " + StrTemp)
 
 				Case "173state"
 					CreateConsoleMsg("SCP-173")
-					CreateConsoleMsg("Position: " + EntityX(Curr173\obj) + ", " + EntityY(Curr173\obj) + ", " + EntityZ(Curr173\obj))
-					CreateConsoleMsg("Idle: " + Curr173\idle)
-					CreateConsoleMsg("State: " + Curr173\state)
+					CreateConsoleMsg("Position: " + Str(EntityX(Curr173\obj)) + ", " + Str(EntityY(Curr173\obj)) + ", " + Str(EntityZ(Curr173\obj)))
+					CreateConsoleMsg("Idle: " + Str(Curr173\idle))
+					CreateConsoleMsg("State: " + Str(Curr173\state))
 
 				Case "106state"
 					CreateConsoleMsg("SCP-106")
-					CreateConsoleMsg("Position: " + EntityX(Curr106\obj) + ", " + EntityY(Curr106\obj) + ", " + EntityZ(Curr106\obj))
-					CreateConsoleMsg("Idle: " + Curr106\idle)
-					CreateConsoleMsg("State: " + Curr106\state)
+					CreateConsoleMsg("Position: " + Str(EntityX(Curr106\obj)) + ", " + Str(EntityY(Curr106\obj)) + ", " + Str(EntityZ(Curr106\obj)))
+					CreateConsoleMsg("Idle: " + Str(Curr106\idle))
+					CreateConsoleMsg("State: " + Str(Curr106\state))
 
 				Case "spawn513-1"
 					CreateNPC(NPCtype5131, 0,0,0)
@@ -696,16 +696,16 @@ Function UpdateConsole()
 				Case "scp-420-j","420","weed"
 					For i = 1 To 20
 						If (Rand(2)=1) Then
-							it.Items = CreateItem("Some SCP-420-J","420", EntityX(mainPlayer\collider,True)+Cos(360.0/20.0)*i*Rnd(0.3,0.5), EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider,True)+Sin((360.0/20.0)*i)*Rnd(0.3,0.5))
+							it = CreateItem("Some SCP-420-J","420", EntityX(mainPlayer\collider,True)+Cos(360.0/20.0)*i*Rnd(0.3,0.5), EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider,True)+Sin((360.0/20.0)*i)*Rnd(0.3,0.5))
 						Else
-							it.Items = CreateItem("Joint","420s", EntityX(mainPlayer\collider,True)+Cos(360.0/20.0)*i)*Rnd(0.3,0.5, EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider,True)+Sin((360.0/20.0)*i)*Rnd(0.3,0.5))
+							it = CreateItem("Joint","420s", EntityX(mainPlayer\collider,True)+Cos(360.0/20.0)*i*Rnd(0.3,0.5), EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider,True)+Sin((360.0/20.0)*i)*Rnd(0.3,0.5))
 						EndIf
 						EntityType(it\collider, HIT_ITEM)
 					Next
 					PlaySound2(LoadTempSound("SFX/Music/420J.ogg"))
 
 				Case "godmode"
-					StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
+					StrTemp = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 
 					Select StrTemp
 						Case "on", "1", "true"
@@ -741,7 +741,7 @@ Function UpdateConsole()
 					ShowEntity(mainPlayer\collider)
 
 				Case "noclip","fly"
-					StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
+					StrTemp = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 
 					Select StrTemp
 						Case "on", "1", "true"
@@ -772,19 +772,19 @@ Function UpdateConsole()
 					CreateConsoleMsg("ShowFPS: " + Str(userOptions\showFPS))
 
 				Case "096state"
-					For n.NPCs = Each NPCs
+					For n = Each NPCs
 						If (n\npcType = NPCtype096) Then
 							CreateConsoleMsg("SCP-096")
-							CreateConsoleMsg("Position: " + EntityX(n\obj) + ", " + EntityY(n\obj) + ", " + EntityZ(n\obj))
-							CreateConsoleMsg("Idle: " + n\idle)
-							CreateConsoleMsg("State: " + n\state)
+							CreateConsoleMsg("Position: " + Str(EntityX(n\obj)) + ", " + Str(EntityY(n\obj)) + ", " + Str(EntityZ(n\obj)))
+							CreateConsoleMsg("Idle: " + Str(n\idle))
+							CreateConsoleMsg("State: " + Str(n\state))
 							Exit
 						EndIf
 					Next
 					CreateConsoleMsg("SCP-096 has not spawned.")
 
 				Case "debughud"
-					StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
+					StrTemp = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 					Select StrTemp
 						Case "on", "1", "true"
 							DebugHUD = True
@@ -811,13 +811,13 @@ Function UpdateConsole()
 					;CreateConsoleMsg("Near set to: " + CameraFogNear + ", far set to: " + CameraFogFar)
 
 				Case "gamma"
-					StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
-					userOptions\screenGamma = Int(StrTemp)
-					CreateConsoleMsg("Gamma set to " + userOptions\screenGamma)
+					StrTemp = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
+					userOptions\screenGamma = Float(StrTemp)
+					CreateConsoleMsg("Gamma set to " + Str(userOptions\screenGamma))
 
 				Case "spawn"
-					StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
-					Console_SpawnNPC(StrTemp$)
+					StrTemp = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
+					Console_SpawnNPC(StrTemp)
 
 				Case "infinitestamina","infstam"
 					RuntimeError("TODO: reimplement?")
@@ -840,13 +840,13 @@ Function UpdateConsole()
 					;EndIf
 
 				Case "spawnnpcstate"
-					args$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
-					StrTemp$ = Piece$(args$,1," ")
-					StrTemp2$ = Piece$(args$,2," ")
-					Console_SpawnNPC(StrTemp$,Int(StrTemp2$))
+					args = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
+					StrTemp = Piece$(args,1," ")
+					StrTemp2 = Piece$(args,2," ")
+					Console_SpawnNPC(StrTemp,Int(StrTemp2))
 
 				Case "toggle_warhead_lever"
-					For ev.Events = Each Events
+					For ev = Each Events
 						If (ev\name = "room2nuke") Then
 							ev\eventState = (Not ev\eventState)
 							Exit
@@ -854,11 +854,11 @@ Function UpdateConsole()
 					Next
 
 				Case "unlockexits"
-					StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
+					StrTemp = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 
 					Select StrTemp
 						Case "a"
-							For ev.Events = Each Events
+							For ev = Each Events
 								If (ev\name = "gateaentrance") Then
 									ev\eventState3 = 1
 									ev\room\roomDoors[1]\open = True
@@ -867,7 +867,7 @@ Function UpdateConsole()
 							Next
 							CreateConsoleMsg("Gate A is now unlocked.")
 						Case "b"
-							For ev.Events = Each Events
+							For ev = Each Events
 								If (ev\name = "exit1") Then
 									ev\eventState3 = 1
 									ev\room\roomDoors[4]\open = True
@@ -876,7 +876,7 @@ Function UpdateConsole()
 							Next
 							CreateConsoleMsg("Gate B is now unlocked.")
 						Default
-							For ev.Events = Each Events
+							For ev = Each Events
 								If (ev\name = "gateaentrance") Then
 									ev\eventState3 = 1
 									ev\room\roomDoors[1]\open = True
@@ -909,7 +909,7 @@ Function UpdateConsole()
 					End Select
 
 				Case "tp_to_mtf"
-					For n.NPCs = Each NPCs
+					For n = Each NPCs
 						If (n\npcType = NPCtypeMTF) Then
 							If (n\mtfLeader = Null) Then
 								PositionEntity(mainPlayer\collider,EntityX(n\collider),EntityY(n\collider)+5,EntityZ(n\collider))
@@ -920,44 +920,44 @@ Function UpdateConsole()
 					Next
 
 				Case "tele"
-					args$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
-					StrTemp$ = Piece$(args$,1," ")
-					StrTemp2$ = Piece$(args$,2," ")
-					StrTemp3$ = Piece$(args$,3," ")
-					PositionEntity(mainPlayer\collider,StrTemp$,StrTemp2$,StrTemp3$)
-					PositionEntity(mainPlayer\cam,StrTemp$,StrTemp2$,StrTemp3$)
-					CreateConsoleMsg("Teleported to coordinates (X|Y|Z): "+EntityX(mainPlayer\collider)+"|"+EntityY(mainPlayer\collider)+"|"+EntityZ(mainPlayer\collider))
+					args = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
+					StrTemp = Piece$(args,1," ")
+					StrTemp2 = Piece$(args,2," ")
+					StrTemp3 = Piece$(args,3," ")
+					PositionEntity(mainPlayer\collider,Float(StrTemp),Float(StrTemp2),Float(StrTemp3))
+					PositionEntity(mainPlayer\cam,Float(StrTemp),Float(StrTemp2),Float(StrTemp3))
+					CreateConsoleMsg("Teleported to coordinates (X|Y|Z): "+Str(EntityX(mainPlayer\collider))+"|"+Str(EntityY(mainPlayer\collider))+"|"+Str(EntityZ(mainPlayer\collider)))
 
 				Case "notarget"
-					StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
+					StrTemp = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 
 					Select StrTemp
 						Case "on", "1", "true"
-							NoTarget% = True
+							NoTarget = True
 						Case "off", "0", "false"
-							NoTarget% = False
+							NoTarget = False
 						Default
-							NoTarget% = Not NoTarget%
+							NoTarget = Not NoTarget
 					End Select
 
-					If (NoTarget% = False) Then
+					If (NoTarget = False) Then
 						CreateConsoleMsg("NOTARGET OFF")
 					Else
 						CreateConsoleMsg("NOTARGET ON")
 					EndIf
 
 				Case "spawnradio"
-					it.Items = CreateItem("Radio Transceiver", "fineradio", EntityX(mainPlayer\collider), EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider))
+					it = CreateItem("Radio Transceiver", "fineradio", EntityX(mainPlayer\collider), EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider))
 					EntityType(it\collider, HIT_ITEM)
 					it\state = 101
 				Case "spawnnvg"
-					it.Items = CreateItem("Night Vision Goggles", "nvgoggles", EntityX(mainPlayer\collider), EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider))
+					it = CreateItem("Night Vision Goggles", "nvgoggles", EntityX(mainPlayer\collider), EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider))
 					EntityType(it\collider, HIT_ITEM)
 					it\state = 1000
 				Case "spawnpumpkin","pumpkin"
 					CreateConsoleMsg("What pumpkin?")
 				Case "spawnnav"
-					it.Items = CreateItem("S-NAV Navigator Ultimate", "nav", EntityX(mainPlayer\collider), EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider))
+					it = CreateItem("S-NAV Navigator Ultimate", "nav", EntityX(mainPlayer\collider), EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider))
 					EntityType(it\collider, HIT_ITEM)
 					it\state = 101
 				Case "teleport173"

@@ -58,7 +58,7 @@ Function FillRoom_cont_035_1(r.Rooms)
     PositionEntity(r\objects[4], r\x - 576 * RoomScale, 0.5, r\z + 640.0 * RoomScale, True)
 
     For i = 0 To 1
-        em.Emitters = CreateEmitter(r\x - 272.0 * RoomScale, 10, r\z + (624.0-i*512) * RoomScale, 0)
+        em = CreateEmitter(r\x - 272.0 * RoomScale, 10, r\z + (624.0-i*512) * RoomScale, 0)
         TurnEntity(em\obj, 90, 0, 0, True)
         EntityParent(em\obj, r\obj)
         em\randAngle = 15
@@ -111,7 +111,7 @@ Function UpdateEvent_cont_035_1(e.Events)
 
 		If (e\eventState = 0) Then
 			If (EntityDistance(mainPlayer\collider, e\room\objects[3])<2) Then
-				n.NPCs = CreateNPC(NPCtypeD, EntityX(e\room\objects[4],True),0.5,EntityZ(e\room\objects[4],True))
+				n = CreateNPC(NPCtypeD, EntityX(e\room\objects[4],True),0.5,EntityZ(e\room\objects[4],True))
 
 				n\texture = "GFX/NPCs/035victim.jpg"
 				HideEntity(n\obj)
@@ -126,11 +126,11 @@ Function UpdateEvent_cont_035_1(e.Events)
 
 		ElseIf (e\eventState > 0) Then
 			If (e\room\npc[0]=Null) Then
-				For n.NPCs = Each NPCs
+				For n = Each NPCs
 					If (n\texture = "GFX/NPCs/035victim.jpg") Then
 						e\room\npc[0]=n
 
-						temp = e\room\npc[0]\frame
+						temp = Int(e\room\npc[0]\frame)
 
 						FreeEntity(e\room\npc[0]\obj)
 						e\room\npc[0]\obj = LoadAnimMesh("GFX/NPCs/035.b3d")
@@ -317,7 +317,7 @@ Function UpdateEvent_cont_035_1(e.Events)
 								e\room\npc[0]\sounds[0] = LoadSound("SFX/SCP/035/Idle2.ogg")
 								e\room\npc[0]\soundChannels[0] = PlaySound(e\room\npc[0]\sounds[0])
 							ElseIf (e\eventState > 80*70 And e\eventState-timing\tickDuration =<80*70) Then
-								If (e\eventState2) Then ;skip the closet part if player has already opened it
+								If (Int(e\eventState2)) Then ;skip the closet part if player has already opened it
 									e\eventState = 130*70
 								Else
 									If (e\eventState3<-30*70) Then ;the host is dead
@@ -341,9 +341,9 @@ Function UpdateEvent_cont_035_1(e.Events)
 									EndIf
 								EndIf
 							ElseIf (e\eventState > 80*70) Then
-								If (e\eventState2) Then e\eventState = Max(e\eventState,100*70)
+								If (Int(e\eventState2)) Then e\eventState = Max(e\eventState,100*70)
 								If (e\eventState>110*70 And e\eventState-timing\tickDuration =<110*70) Then
-									If (e\eventState2) Then
+									If (Int(e\eventState2)) Then
 										If (e\room\npc[0]\sounds[0]<>0) Then
 											FreeSound(e\room\npc[0]\sounds[0]) : e\room\npc[0]\sounds[0] = 0
 										EndIf
@@ -358,7 +358,7 @@ Function UpdateEvent_cont_035_1(e.Events)
 										e\room\npc[0]\soundChannels[0] = PlaySound(e\room\npc[0]\sounds[0])
 									EndIf
 								ElseIf (e\eventState>125*70 And e\eventState-timing\tickDuration =<125*70) Then
-									If (e\eventState2) Then
+									If (Int(e\eventState2)) Then
 										If (e\room\npc[0]\sounds[0]<>0) Then
 											FreeSound(e\room\npc[0]\sounds[0]) : e\room\npc[0]\sounds[0] = 0
 										EndIf

@@ -19,23 +19,23 @@ Function FillRoom_cont_173_1(r.Rooms)
     FreeEntity(r\roomDoors[2]\buttons[1]) : r\roomDoors[2]\buttons[1] = 0
     r\roomDoors[2]\mtfClose = False
 
-    d.Doors = CreateDoor(r\zone, r\x + 1392.0 * RoomScale, 384.0*RoomScale, r\z + 64.0 * RoomScale, 90, r, True)
+    d = CreateDoor(r\zone, r\x + 1392.0 * RoomScale, 384.0*RoomScale, r\z + 64.0 * RoomScale, 90, r, True)
     d\autoClose = False
     FreeEntity(d\buttons[0]) : d\buttons[0]=0
     FreeEntity(d\buttons[1]) : d\buttons[1]=0
     d\mtfClose = False
 
-    d.Doors = CreateDoor(r\zone, r\x - 640.0 * RoomScale, 384.0*RoomScale, r\z + 64.0 * RoomScale, 90, r, False)
+    d = CreateDoor(r\zone, r\x - 640.0 * RoomScale, 384.0*RoomScale, r\z + 64.0 * RoomScale, 90, r, False)
     d\locked = True : d\autoClose = False
 
-    d.Doors = CreateDoor(r\zone, r\x + 1280.0 * RoomScale, 384.0*RoomScale, r\z + 312.0 * RoomScale, 180, r, True)
+    d = CreateDoor(r\zone, r\x + 1280.0 * RoomScale, 384.0*RoomScale, r\z + 312.0 * RoomScale, 180, r, True)
     d\locked = True : d\autoClose = False
     PositionEntity(d\buttons[0], r\x + 1120.0 * RoomScale, EntityY(d\buttons[0],True), r\z + 328.0 * RoomScale, True)
     PositionEntity(d\buttons[1], r\x + 1120.0 * RoomScale, EntityY(d\buttons[1],True), r\z + 296.0 * RoomScale, True)
     FreeEntity(d\obj2) : d\obj2=0
     d\mtfClose = False
 
-    d.Doors = CreateDoor(r\zone, r\x, 0, r\z + 1184.0 * RoomScale, 0, r, False)
+    d = CreateDoor(r\zone, r\x, 0, r\z + 1184.0 * RoomScale, 0, r, False)
     d\locked = True
 
     r\objects[0] = LoadMesh("GFX/Map/IntroDesk.b3d")
@@ -43,7 +43,7 @@ Function FillRoom_cont_173_1(r.Rooms)
     PositionEntity(r\objects[0], r\x + 272.0 * RoomScale, 0, r\z + 400.0 * RoomScale)
     EntityParent(r\objects[0], r\obj)
 
-    de.Decals = CreateDecal(0, r\x + 272.0 * RoomScale, 0.005, r\z + 262.0 * RoomScale, 90, Rand(360), 0)
+    de = CreateDecal(0, r\x + 272.0 * RoomScale, 0.005, r\z + 262.0 * RoomScale, 90, Rand(360), 0)
     EntityParent(de\obj, r\obj)
 
     r\objects[1] = LoadMesh("GFX/Map/IntroDrawer.b3d")
@@ -51,10 +51,10 @@ Function FillRoom_cont_173_1(r.Rooms)
     PositionEntity(r\objects[1], r\x + 448.0 * RoomScale, 0, r\z + 192.0 * RoomScale)
     EntityParent(r\objects[1], r\obj)
 
-    de.Decals = CreateDecal(0, r\x + 456.0 * RoomScale, 0.005, r\z + 135.0 * RoomScale, 90, Rand(360), 0)
+    de = CreateDecal(0, r\x + 456.0 * RoomScale, 0.005, r\z + 135.0 * RoomScale, 90, Rand(360), 0)
     EntityParent(de\obj, r\obj)
 
-    sc.SecurityCams = CreateSecurityCam(r\x - 336.0 * RoomScale, r\y + 352 * RoomScale, r\z + 48.0 * RoomScale, r, True)
+    sc = CreateSecurityCam(r\x - 336.0 * RoomScale, r\y + 352 * RoomScale, r\z + 48.0 * RoomScale, r, True)
     sc\angle = 270
     sc\turn = 45
     sc\room = r
@@ -181,9 +181,9 @@ Function UpdateEventAlarm(e.Events)
 				MoveEntity(e\room\npc[5]\collider,0.25,0,3.0)
 				RotateEntity(e\room\npc[5]\collider,0,0,0)
 
-				x# = EntityX(e\room\obj, True)+3712*RoomScale
-				y# = 384.0*RoomScale
-				z# = EntityZ(e\room\obj, True)+1312*RoomScale
+				x = EntityX(e\room\obj, True)+3712*RoomScale
+				y = 384.0*RoomScale
+				z = EntityZ(e\room\obj, True)+1312*RoomScale
 
 				For i = 3 To 5
 					PositionEntity(e\room\npc[i]\collider, x + (EntityX(e\room\npc[i]\collider) - EntityX(e\room\obj)), y+EntityY(e\room\npc[i]\collider)+0.4, z + (EntityZ(e\room\npc[i]\collider) - EntityZ(e\room\obj)))
@@ -345,7 +345,7 @@ Function UpdateEventAlarm(e.Events)
 					e\sounds[1] = 0
 				EndIf
 
-				e\sounds[1] = LoadSound("SFX/Alarm/Alarm2_"+Int(e\eventState3)+".ogg")
+				e\sounds[1] = LoadSound("SFX/Alarm/Alarm2_"+Str(Int(e\eventState3))+".ogg")
 				e\soundChannels[1] = PlaySound(e\sounds[1])
 				Else
 					If (Int(e\eventState3) = 8) Then mainPlayer\camShake = 1.0
@@ -353,13 +353,13 @@ Function UpdateEventAlarm(e.Events)
 		EndIf
 
 		If (((e\eventState Mod 600 > 300) And ((e\eventState+timing\tickDuration) Mod 600 < 300))) Then
-			i = Floor((e\eventState-5000)/600)+1
+			i = Int(Floor((e\eventState-5000)/600))+1
 
 			If (i = 0) Then PlaySound2(LoadTempSound("SFX/Room/Intro/PA/scripted/scripted6.ogg"))
 
 			If ((i>0 And i<24)) Then
 				If (Not CommotionState(i)) Then ;Prevents the same commotion file from playing more then once.
-					PlaySound2(LoadTempSound("SFX/Room/Intro/Commotion/Commotion"+i+".ogg"))
+					PlaySound2(LoadTempSound("SFX/Room/Intro/Commotion/Commotion"+Str(i)+".ogg"))
 					CommotionState(i) = True
 				EndIf
 			EndIf

@@ -227,11 +227,11 @@ Function CreatePlayer.Player()
 
 	Local i%
 	For i = 0 To 4
-		SetIntArrayElem(player\breathingSFX, LoadSound("SFX/Character/D9341/breath"+i+".ogg"), 0, i)
-		SetIntArrayElem(player\breathingSFX, LoadSound("SFX/Character/D9341/breath"+i+"gas.ogg"), 1, i)
+		SetIntArrayElem(player\breathingSFX, LoadSound("SFX/Character/D9341/breath"+Str(i)+".ogg"), 0, i)
+		SetIntArrayElem(player\breathingSFX, LoadSound("SFX/Character/D9341/breath"+Str(i)+"gas.ogg"), 1, i)
 	Next
 	For i = 0 To 3
-		player\bloodDrip[i] = LoadSound("SFX/Character/D9341/BloodDrip" + i + ".ogg")
+		player\bloodDrip[i] = LoadSound("SFX/Character/D9341/BloodDrip" + Str(i) + ".ogg")
 	Next
 	player\heartbeat = LoadSound("SFX/Character/D9341/Heartbeat.ogg")
 
@@ -315,7 +315,7 @@ Function MovePlayer()
 		EndIf
 	EndIf
 
-	For i%=0 To mainPlayer\inventory\size-1
+	For i=0 To mainPlayer\inventory\size-1
 		If ((mainPlayer\inventory\items[i]<>Null)) Then
 			If ((mainPlayer\inventory\items[i]\itemtemplate\name="finevest")) Then mainPlayer\stamina = Min(mainPlayer\stamina,60.0)
 		EndIf
@@ -354,7 +354,7 @@ Function MovePlayer()
 				EndIf
 			EndIf
 
-			temp# = (mainPlayer\camAnimState Mod 360)
+			temp = (mainPlayer\camAnimState Mod 360)
 			If ((Not mainPlayer\disableControls)) Then mainPlayer\camAnimState = (mainPlayer\camAnimState + timing\tickDuration * Min(Sprint, 1.5) * 7) Mod 720
 			If (temp < 180 And (mainPlayer\camAnimState Mod 360) >= 180 And (Not mainPlayer\dead)) Then
 				;TODO: define constants for each override state
@@ -365,9 +365,9 @@ Function MovePlayer()
 						mainPlayer\loudness = Max(4.0,mainPlayer\loudness)
 
 						If ((temp = STEPSOUND_METAL)) Then
-							tempchn% = PlaySound_SM(sndManager\footstepMetal[Rand(0, 7)])
+							tempchn = PlaySound_SM(sndManager\footstepMetal[Rand(0, 7)])
 						Else
-							tempchn% = PlaySound_SM(sndManager\footstep[Rand(0, 7)])
+							tempchn = PlaySound_SM(sndManager\footstep[Rand(0, 7)])
 						EndIf
 
 						ChannelVolume(tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\sndVolume)
@@ -375,27 +375,27 @@ Function MovePlayer()
 						mainPlayer\loudness = Max(2.5-(mainPlayer\crouching*0.6),mainPlayer\loudness)
 
 						If ((temp = 1)) Then
-							tempchn% = PlaySound_SM(sndManager\footstepMetalRun[Rand(0, 7)])
+							tempchn = PlaySound_SM(sndManager\footstepMetalRun[Rand(0, 7)])
 						Else
-							tempchn% = PlaySound_SM(sndManager\footstepRun[Rand(0, 7)])
+							tempchn = PlaySound_SM(sndManager\footstepRun[Rand(0, 7)])
 						EndIf
 						
 						ChannelVolume(tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\sndVolume)
 					EndIf
 				ElseIf (mainPlayer\footstepOverride=1) Then
-					tempchn% = PlaySound_SM(sndManager\footstepPD[Rand(0, 2)])
+					tempchn = PlaySound_SM(sndManager\footstepPD[Rand(0, 2)])
 					ChannelVolume(tempchn, (1.0-(mainPlayer\crouching*0.4))*userOptions\sndVolume)
 				ElseIf (mainPlayer\footstepOverride=2) Then
-					tempchn% = PlaySound_SM(sndManager\footstep8601[Rand(0, 2)])
+					tempchn = PlaySound_SM(sndManager\footstep8601[Rand(0, 2)])
 					ChannelVolume(tempchn, (1.0-(mainPlayer\crouching*0.4))*userOptions\sndVolume)
 				ElseIf (mainPlayer\footstepOverride=3) Then
 					If (Sprint = 1.0) Then
 						mainPlayer\loudness = Max(4.0,mainPlayer\loudness)
-						tempchn% = PlaySound_SM(sndManager\footstep[Rand(0, 7)])
+						tempchn = PlaySound_SM(sndManager\footstep[Rand(0, 7)])
 						ChannelVolume(tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\sndVolume)
 					Else
 						mainPlayer\loudness = Max(2.5-(mainPlayer\crouching*0.6),mainPlayer\loudness)
-						tempchn% = PlaySound_SM(sndManager\footstepRun[Rand(0, 7)])
+						tempchn = PlaySound_SM(sndManager\footstepRun[Rand(0, 7)])
 						ChannelVolume(tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\sndVolume)
 					EndIf
 				EndIf
@@ -432,7 +432,7 @@ Function MovePlayer()
 
 		ResetEntity(mainPlayer\collider)
 	Else
-		temp2# = temp2 / Max((mainPlayer\injuries+3.0)/3.0,1.0)
+		temp2 = temp2 / Max((mainPlayer\injuries+3.0)/3.0,1.0)
 		If (mainPlayer\injuries > 0.5) Then
 			temp2 = temp2*Min((Sin(mainPlayer\camAnimState/2)+1.2),1.0)
 		EndIf
@@ -467,7 +467,7 @@ Function MovePlayer()
 
 		angle = WrapAngle(EntityYaw(mainPlayer\collider,True)+angle+90.0)
 
-		If (temp) Then
+		If (Int(temp)) Then
 			mainPlayer\moveSpeed = CurveValue(temp2, mainPlayer\moveSpeed, 20.0)
 		Else
 			mainPlayer\moveSpeed = Max(CurveValue(0.0, mainPlayer\moveSpeed-0.1, 1.0),0.0)
@@ -475,7 +475,7 @@ Function MovePlayer()
 
 		If ((Not mainPlayer\disableControls)) Then TranslateEntity(mainPlayer\collider, Cos(angle)*mainPlayer\moveSpeed * timing\tickDuration, 0, Sin(angle)*mainPlayer\moveSpeed * timing\tickDuration, True)
 
-		collidedFloor% = False
+		collidedFloor = False
 		For i = 1 To CountCollisions(mainPlayer\collider)
 			If ((CollisionY(mainPlayer\collider, i) < EntityY(mainPlayer\collider,True)) And (Abs(CollisionNY(mainPlayer\collider, i))>0.8)) Then
 				collidedFloor = True
@@ -524,13 +524,13 @@ Function MovePlayer()
 
 	If (mainPlayer\bloodloss > 0) Then
 		If (Rnd(200)<Min(mainPlayer\injuries,4.0)) Then
-			pvt% = CreatePivot()
+			pvt = CreatePivot()
 			PositionEntity(pvt, EntityX(mainPlayer\collider)+Rnd(-0.05,0.05),EntityY(mainPlayer\collider)-0.05,EntityZ(mainPlayer\collider)+Rnd(-0.05,0.05))
 			TurnEntity(pvt, 90, 0, 0)
 			EntityPick(pvt,0.3)
-			de.Decals = CreateDecal(Rand(15,16), PickedX(), PickedY()+0.005, PickedZ(), 90, Rand(360), 0)
+			de = CreateDecal(Rand(15,16), PickedX(), PickedY()+0.005, PickedZ(), 90, Rand(360), 0)
 			de\size = Rnd(0.03,0.08)*Min(mainPlayer\injuries,3.0) : EntityAlpha(de\obj, 1.0) : ScaleSprite(de\obj, de\size, de\size)
-			tempchn% = PlaySound2(mainPlayer\bloodDrip[Rand(0,3)])
+			tempchn = PlaySound2(mainPlayer\bloodDrip[Rand(0,3)])
 			ChannelVolume(tempchn, Rnd(0.0,0.8)*userOptions\sndVolume)
 			ChannelPitch(tempchn, Rand(20000,30000))
 
@@ -620,8 +620,8 @@ Function MouseLook()
 
 		;HeadDropSpeed = 0
 
-		up# = (Sin(mainPlayer\camAnimState) / (20.0+mainPlayer\crouchState*20.0))*0.6
-		roll# = Max(Min(Sin(mainPlayer\camAnimState*0.5)*2.5*Min(mainPlayer\injuries+0.25,3.0),8.0),-8.0)
+		up = (Sin(mainPlayer\camAnimState) / (20.0+mainPlayer\crouchState*20.0))*0.6
+		roll = Max(Min(Sin(mainPlayer\camAnimState*0.5)*2.5*Min(mainPlayer\injuries+0.25,3.0),8.0),-8.0)
 
 		;tilt the camera to the side if the player is injured
 		;RotateEntity(mainPlayer\collider, EntityPitch(mainPlayer\collider), EntityYaw(mainPlayer\collider), Max(Min(up*30*mainPlayer\injuries,50),-50))
@@ -633,25 +633,25 @@ Function MouseLook()
 		;RotateEntity(mainPlayer\collider, EntityPitch(mainPlayer\collider), EntityYaw(mainPlayer\collider), 0)
 		;moveentity player, side, up, 0
 		; -- Update the smoothing que To smooth the movement of the mouse.
-		mouse_x_speed_1# = CurveValue(MouseXSpeed() * (userOptions\mouseSensitivity + 0.6) , mouse_x_speed_1, 6.0 / (userOptions\mouseSensitivity + 1.0))
+		mouse_x_speed_1 = CurveValue(MouseXSpeed() * (userOptions\mouseSensitivity + 0.6) , mouse_x_speed_1, 6.0 / (userOptions\mouseSensitivity + 1.0))
 		If (Int(mouse_x_speed_1) = Int(Nan1)) Then mouse_x_speed_1 = 0
 
 		If ((userOptions\invertMouseY)) Then
-			mouse_y_speed_1# = CurveValue(-MouseYSpeed() * (userOptions\mouseSensitivity + 0.6), mouse_y_speed_1, 6.0/(userOptions\mouseSensitivity+1.0))
+			mouse_y_speed_1 = CurveValue(-MouseYSpeed() * (userOptions\mouseSensitivity + 0.6), mouse_y_speed_1, 6.0/(userOptions\mouseSensitivity+1.0))
 		Else
-			mouse_y_speed_1# = CurveValue(MouseYSpeed() * (userOptions\mouseSensitivity + 0.6), mouse_y_speed_1, 6.0/(userOptions\mouseSensitivity+1.0))
+			mouse_y_speed_1 = CurveValue(MouseYSpeed() * (userOptions\mouseSensitivity + 0.6), mouse_y_speed_1, 6.0/(userOptions\mouseSensitivity+1.0))
 		EndIf
 		If (Int(mouse_y_speed_1) = Int(Nan1)) Then mouse_y_speed_1 = 0
 
 		;TODO: CHANGE THESE NAMES
-		the_yaw# = ((mouse_x_speed_1#)) * mouselook_x_inc# / (1.0+IsPlayerWearingTempName(mainPlayer,"vest"))
-		the_pitch# = ((mouse_y_speed_1#)) * mouselook_y_inc# / (1.0+IsPlayerWearingTempName(mainPlayer,"vest"))
+		the_yaw = ((mouse_x_speed_1)) * mouselook_x_inc / (1.0+IsPlayerWearingTempName(mainPlayer,"vest"))
+		the_pitch = ((mouse_y_speed_1)) * mouselook_y_inc / (1.0+IsPlayerWearingTempName(mainPlayer,"vest"))
 
-		TurnEntity(mainPlayer\collider, 0.0, -the_yaw#, 0.0) ; Turn the user on the Y (yaw) axis.)
-		mainPlayer\headPitch# = mainPlayer\headPitch# + the_pitch#
+		TurnEntity(mainPlayer\collider, 0.0, -the_yaw, 0.0) ; Turn the user on the Y (yaw) axis.)
+		mainPlayer\headPitch = mainPlayer\headPitch + the_pitch
 		; -- Limit the user;s camera To within 180 degrees of pitch rotation. ;EntityPitch(); returns useless values so we need To use a variable To keep track of the camera pitch.
-		If (mainPlayer\headPitch# > 70.0) Then mainPlayer\headPitch# = 70.0
-		If (mainPlayer\headPitch# < - 70.0) Then mainPlayer\headPitch# = -70.0
+		If (mainPlayer\headPitch > 70.0) Then mainPlayer\headPitch = 70.0
+		If (mainPlayer\headPitch < - 70.0) Then mainPlayer\headPitch = -70.0
 
 		RotateEntity(mainPlayer\cam, WrapAngle(mainPlayer\headPitch + Rnd(-mainPlayer\camShake, mainPlayer\camShake)), WrapAngle(EntityYaw(mainPlayer\collider) + Rnd(-mainPlayer\camShake, mainPlayer\camShake)), roll) ; Pitch the user;s camera up And down.)
 
@@ -665,7 +665,7 @@ Function MouseLook()
 		HideEntity(mainPlayer\collider)
 		PositionEntity(mainPlayer\cam, EntityX(mainPlayer\head), EntityY(mainPlayer\head), EntityZ(mainPlayer\head))
 
-		collidedFloor% = False
+		collidedFloor = False
 		For i = 1 To CountCollisions(mainPlayer\head)
 			If (CollisionY(mainPlayer\head, i) < EntityY(mainPlayer\head) - 0.01) Then collidedFloor = True
 		Next
@@ -698,7 +698,7 @@ Function MouseLook()
 
 	;DUST PARTICLES
 	If (Rand(35) = 1) Then
-		pvt% = CreatePivot()
+		pvt = CreatePivot()
 		PositionEntity(pvt, EntityX(mainPlayer\cam, True), EntityY(mainPlayer\cam, True), EntityZ(mainPlayer\cam, True))
 		RotateEntity(pvt, 0, Rnd(360), 0)
 		If (Rand(2) = 1) Then
@@ -707,7 +707,7 @@ Function MouseLook()
 			MoveEntity(pvt, 0, Rnd(-0.5, 0.5), Rnd(0.5, 1.0))
 		EndIf
 
-		p.Particles = CreateParticle(EntityX(pvt), EntityY(pvt), EntityZ(pvt), 2, 0.002, 0, 300)
+		p = CreateParticle(EntityX(pvt), EntityY(pvt), EntityZ(pvt), 2, 0.002, 0, 300)
 		p\speed = 0.001
 		RotateEntity(p\pvt, Rnd(-20, 20), Rnd(360), 0)
 
@@ -762,7 +762,7 @@ Function EquipItem(player.Player,item.Items,toggle%)
 	If (item\itemtemplate\invSlot = WORNITEM_SLOT_NONE) Then Return
 	Local currItem.Items = player\wornItems[item\itemtemplate\invSlot]
 	DeEquipSlot(player,item\itemtemplate\invSlot)
-	DebugLog(Not toggle)+" + "+(currItem<>item)
+	DebugLog(Str(Not toggle)+" + "+Str(currItem<>item))
 	If ((Not toggle) Or currItem<>item) Then
 		player\wornItems[item\itemtemplate\invSlot] = item
 		
@@ -774,30 +774,30 @@ Function EquipItem(player.Player,item.Items,toggle%)
 				Msg = "You put on the vest and feel heavily encumbered."
 				MsgTimer = 70 * 7
 			Case "scp1499","super1499"
-				For r.Rooms = Each Rooms
+				For r = Each Rooms
 					If (r\roomTemplate\name = "dimension1499") Then
 						player\blinkTimer = -1
 						NTF_1499PrevRoom = player\currRoom
-						NTF_1499PrevX# = EntityX(player\collider)
-						NTF_1499PrevY# = EntityY(player\collider)
-						NTF_1499PrevZ# = EntityZ(player\collider)
+						NTF_1499PrevX = EntityX(player\collider)
+						NTF_1499PrevY = EntityY(player\collider)
+						NTF_1499PrevZ = EntityZ(player\collider)
 
-						If (NTF_1499X# = 0.0 And NTF_1499Y# = 0.0 And NTF_1499Z# = 0.0) Then
+						If (NTF_1499X = 0.0 And NTF_1499Y = 0.0 And NTF_1499Z = 0.0) Then
 							PositionEntity(player\collider, r\x+676.0*RoomScale, r\y+314.0*RoomScale, r\z-2080.0*RoomScale)
 						Else
-							PositionEntity(player\collider, NTF_1499X#, NTF_1499Y#+0.05, NTF_1499Z#)
+							PositionEntity(player\collider, NTF_1499X, NTF_1499Y+0.05, NTF_1499Z)
 						EndIf
 						ResetEntity(player\collider)
 						UpdateDoors()
 						UpdateRooms()
-						For it.Items = Each Items
+						For it = Each Items
 							it\disttimer = 0
 						Next
 						player\currRoom = r
 						PlaySound2(LoadTempSound("SFX/SCP/1499/Enter.ogg"))
-						NTF_1499X# = 0.0
-						NTF_1499Y# = 0.0
-						NTF_1499Z# = 0.0
+						NTF_1499X = 0.0
+						NTF_1499Y = 0.0
+						NTF_1499Z = 0.0
 						Exit
 					EndIf
 				Next
@@ -841,7 +841,7 @@ Function ToggleInventory(player.Player)
 		If (mainPlayer\openInventory = mainPlayer\inventory) Then
 			CurrGameState=GAMESTATE_PLAYING
 			ResumeSounds()
-			MouseXSpeed() : MouseYSpeed() : MouseZSpeed() : mouse_x_speed_1# = 0.0 : mouse_y_speed_1# = 0.0
+			MouseXSpeed() : MouseYSpeed() : MouseZSpeed() : mouse_x_speed_1 = 0.0 : mouse_y_speed_1 = 0.0
 		Else
 			mainPlayer\openInventory = mainPlayer\inventory
 		EndIf
@@ -869,17 +869,17 @@ Function DrawInventory(player.Player)
 	If (CurrGameState=GAMESTATE_INVENTORY) Then
 		ShowPointer2()
 
-		width% = 70
-		height% = 70
-		spacing% = 35
+		width = 70
+		height = 70
+		spacing = 35
 
-		itemsPerRow% = 5
+		itemsPerRow = 5
 
 		x = userOptions\screenWidth / 2 - (width * itemsPerRow + spacing * (itemsPerRow - 1)) / 2
 		y = userOptions\screenHeight / 2 - height * (player\openInventory\size/itemsPerRow) + height / 2
 		
-		For  n% = 0 To player\openInventory\size - 1
-			isMouseOn% = False
+		For n = 0 To player\openInventory\size - 1
+			isMouseOn = False
 			If (MouseX() > x And MouseX() < x + width) Then
 				If (MouseY() > y And MouseY() < y + height) Then
 					isMouseOn = True
@@ -944,12 +944,12 @@ Function DrawInventory(player.Player)
 				Case "firstaid","finefirstaid","firstaid2"
 					DrawImage(player\selectedItem\itemtemplate\invimg, userOptions\screenWidth / 2 - ImageWidth(player\selectedItem\itemtemplate\invimg) / 2, userOptions\screenHeight / 2 - ImageHeight(player\selectedItem\itemtemplate\invimg) / 2)
 
-					width% = 300
-					height% = 20
-					x% = userOptions\screenWidth / 2 - width / 2
-					y% = userOptions\screenHeight / 2 + 80
+					width = 300
+					height = 20
+					x = userOptions\screenWidth / 2 - width / 2
+					y = userOptions\screenHeight / 2 + 80
 					Rect(x, y, width+4, height, False)
-					For  i% = 1 To Int((width - 2) * (player\selectedItem\state / 100.0) / 10)
+					For i = 1 To Int((width - 2) * (player\selectedItem\state / 100.0) / 10)
 						DrawImage(uiAssets\blinkBar, x + 3 + 10 * (i - 1), y + 3)
 					Next
 				Case "paper","ticket"
@@ -959,26 +959,26 @@ Function DrawInventory(player.Player)
 								player\selectedItem\itemtemplate\img = LoadImage("GFX/items/bn.it")
 								SetBuffer(ImageBuffer(player\selectedItem\itemtemplate\img))
 								Color(0,0,0)
-								Text(277, 469, AccessCode, True, True)
+								Text(277, 469, Str(AccessCode), True, True)
 								Color(255,255,255)
 								SetBuffer(BackBuffer())
 							Case "Document SCP-513"
 								player\selectedItem\itemtemplate\img = LoadImage(player\selectedItem\itemtemplate\imgpath)
-								player\selectedItem\itemtemplate\img = ResizeImage2(player\selectedItem\itemtemplate\img, ImageWidth(player\selectedItem\itemtemplate\img) * MenuScale, ImageHeight(player\selectedItem\itemtemplate\img) * MenuScale)
+								player\selectedItem\itemtemplate\img = ResizeImage2(player\selectedItem\itemtemplate\img, Int(ImageWidth(player\selectedItem\itemtemplate\img) * MenuScale), Int(ImageHeight(player\selectedItem\itemtemplate\img) * MenuScale))
 
 								SetBuffer(ImageBuffer(player\selectedItem\itemtemplate\img))
 								Color(37,45,137)
 
-								journalFont% = LoadFont("GFX/font/Journal/Journal.ttf", Int(58 * MenuScale), 0,0,0)
+								journalFont = LoadFont("GFX/font/Journal/Journal.ttf", Int(58 * MenuScale), 0,0,0)
 								SetFont(journalFont)
 
 								;TODO: This looks stupid.
-								code% = ((Int(AccessCode)*3) Mod 10000)
-								If ((code < 1000)) Then
+								code = ((Int(AccessCode)*3) Mod 10000)
+								If (code < 1000) Then
 									code = code+1000
 								EndIf
 
-								Text(383 * MenuScale, 734 * MenuScale, code, True, True)
+								Text(Int(383 * MenuScale),Int(734 * MenuScale), Str(code), True, True)
 
 								FreeFont(journalFont)
 								Color(255,255,255)
@@ -991,12 +991,12 @@ Function DrawInventory(player.Player)
 								If ((player\selectedItem\state = 0)) Then
 									Msg = Chr(34)+"Hey, I remember getting this ticket from the kickstarter! Wonder if it ever came out..."+Chr(34)
 									MsgTimer = 70*10
-									PlaySound2(LoadTempSound("SFX/SCP/1162/NostalgiaCancer"+Rand(1,10)+".ogg"))
+									PlaySound2(LoadTempSound("SFX/SCP/1162/NostalgiaCancer"+Str(Rand(1,10))+".ogg"))
 									player\selectedItem\state = 1
 								EndIf
 							Default
 								player\selectedItem\itemtemplate\img=LoadImage(player\selectedItem\itemtemplate\imgpath)
-								player\selectedItem\itemtemplate\img = ResizeImage2(player\selectedItem\itemtemplate\img, ImageWidth(player\selectedItem\itemtemplate\img) * MenuScale, ImageHeight(player\selectedItem\itemtemplate\img) * MenuScale)
+								player\selectedItem\itemtemplate\img = ResizeImage2(player\selectedItem\itemtemplate\img, Int(ImageWidth(player\selectedItem\itemtemplate\img) * MenuScale), Int(ImageHeight(player\selectedItem\itemtemplate\img) * MenuScale))
 						End Select
 
 						MaskImage(player\selectedItem\itemtemplate\img, 255, 0, 255)
@@ -1004,7 +1004,7 @@ Function DrawInventory(player.Player)
 
 					DrawImage(player\selectedItem\itemtemplate\img, userOptions\screenWidth / 2 - ImageWidth(player\selectedItem\itemtemplate\img) / 2, userOptions\screenHeight / 2 - ImageHeight(player\selectedItem\itemtemplate\img) / 2)
 				Case "radio","18vradio","fineradio","veryfineradio"
-					strtemp$ = ""
+					strtemp = ""
 
 					If (player\selectedItem\itemtemplate\img=0) Then
 						player\selectedItem\itemtemplate\img=LoadImage(player\selectedItem\itemtemplate\imgpath)
@@ -1051,10 +1051,10 @@ Function DrawInventory(player.Player)
 								Next
 
 								SetFont(uiAssets\font[3])
-								Text(x+97, y+16, Rand(0,9),True,True)
+								Text(x+97, y+16, Str(Rand(0,9)),True,True)
 							Else
 								SetFont(uiAssets\font[3])
-								Text(x+97, y+16, Int(player\selectedItem\state2+1),True,True)
+								Text(x+97, y+16, Str(Int(player\selectedItem\state2+1)),True,True)
 							EndIf
 
 							SetFont(uiAssets\font[2])
@@ -1072,8 +1072,8 @@ Function DrawInventory(player.Player)
 						MaskImage(player\selectedItem\itemtemplate\img, 255, 0, 255)
 					EndIf
 
-					x = userOptions\screenWidth - ImageWidth(player\selectedItem\itemtemplate\img)*0.5+20
-					y = userOptions\screenHeight - ImageHeight(player\selectedItem\itemtemplate\img)*0.4-85
+					x = userOptions\screenWidth - Int(ImageWidth(player\selectedItem\itemtemplate\img)*0.5)+20
+					y = userOptions\screenHeight - Int(ImageHeight(player\selectedItem\itemtemplate\img)*0.4)-85
 					width = 287
 					height = 256
 
@@ -1106,48 +1106,48 @@ Function DrawInventory(player.Player)
 								x2 = x+Cos(yawvalue-140)*5 : y2 = y-Sin(yawvalue-140)*5
 								x3 = x+Cos(yawvalue+140)*5 : y3 = y-Sin(yawvalue+140)*5
 
-								Line(x1,y1,x2,y2)
-								Line(x1,y1,x3,y3)
-								Line(x2,y2,x3,y3)
+								Line(Int(x1),Int(y1),Int(x2),Int(y2))
+								Line(Int(x1),Int(y1),Int(x3),Int(y3))
+								Line(Int(x2),Int(y2),Int(x3),Int(y3))
 							EndIf
 
-							playerx% = Floor(EntityX(player\currRoom\obj) / 8.0 + 0.5)
-							playerz% = Floor(EntityZ(player\currRoom\obj) / 8.0 + 0.5)
-							SCPs_found% = 0
+							playerx = Int(Floor(EntityX(player\currRoom\obj) / 8.0 + 0.5))
+							playerz = Int(Floor(EntityZ(player\currRoom\obj) / 8.0 + 0.5))
+							SCPs_found = 0
 							If (player\selectedItem\itemtemplate\name = "S-NAV Navigator Ultimate" And (TimeInPosMilliSecs() Mod 600) < 400) Then
-								dist# = EntityDistance(player\cam, Curr173\obj)
+								dist = EntityDistance(player\cam, Curr173\obj)
 								dist = Ceil(dist / 8.0) * 8.0
 								If (dist < 8.0 * 4) Then
 									Color(100, 0, 0)
-									Oval(x - dist * 3, y - 7 - dist * 3, dist * 3 * 2, dist * 3 * 2, False)
-									Text(x - width / 2 + 20, y - height / 2 + 20, "SCP-173")
-									SCPs_found% = SCPs_found% + 1
+									Oval(Int(x - dist * 3), Int(y - 7 - dist * 3), Int(dist * 3 * 2), Int(dist * 3 * 2), False)
+									Text(Int(x - width / 2 + 20), Int(y - height / 2 + 20), "SCP-173")
+									SCPs_found = SCPs_found + 1
 								EndIf
-								dist# = EntityDistance(player\cam, Curr106\obj)
+								dist = EntityDistance(player\cam, Curr106\obj)
 								If (dist < 8.0 * 4) Then
 									Color(100, 0, 0)
-									Oval(x - dist * 1.5, y - 7 - dist * 1.5, dist * 3, dist * 3, False)
-									Text(x - width / 2 + 20, y - height / 2 + 20 + (20*SCPs_found), "SCP-106")
-									SCPs_found% = SCPs_found% + 1
+									Oval(Int(x - dist * 1.5), Int(y - 7 - dist * 1.5), Int(dist * 3), Int(dist * 3), False)
+									Text(Int(x - width / 2 + 20), Int(y - height / 2 + 20 + (20*SCPs_found)), "SCP-106")
+									SCPs_found = SCPs_found + 1
 								EndIf
 								If (Curr096<>Null) Then
-									dist# = EntityDistance(player\cam, Curr096\obj)
+									dist = EntityDistance(player\cam, Curr096\obj)
 									If (dist < 8.0 * 4) Then
 										Color(100, 0, 0)
-										Oval(x - dist * 1.5, y - 7 - dist * 1.5, dist * 3, dist * 3, False)
-										Text(x - width / 2 + 20, y - height / 2 + 20 + (20*SCPs_found), "SCP-096")
-										SCPs_found% = SCPs_found% + 1
+										Oval(Int(x - dist * 1.5), Int(y - 7 - dist * 1.5), Int(dist * 3), Int(dist * 3), False)
+										Text(Int(x - width / 2 + 20), Int(y - height / 2 + 20 + (20*SCPs_found)), "SCP-096")
+										SCPs_found = SCPs_found + 1
 									EndIf
 								EndIf
 								
 								For np = Each NPCs
 									If (np\npcType = NPCtype049) Then
-										dist# = EntityDistance(player\cam, np\obj)
+										dist = EntityDistance(player\cam, np\obj)
 										If (dist < 8.0 * 4) Then
 											Color(100, 0, 0)
-											Oval(x - dist * 1.5, y - 7 - dist * 1.5, dist * 3, dist * 3, False)
-											Text(x - width / 2 + 20, y - height / 2 + 20 + (20*SCPs_found), "SCP-049")
-											SCPs_found% = SCPs_found% + 1
+											Oval(Int(x - dist * 1.5), Int(y - 7 - dist * 1.5), Int(dist * 3), Int(dist * 3), False)
+											Text(Int(x - width / 2 + 20), Int(y - height / 2 + 20 + (20*SCPs_found)), "SCP-049")
+											SCPs_found = SCPs_found + 1
 										EndIf
 									EndIf
 								Next
@@ -1156,8 +1156,8 @@ Function DrawInventory(player.Player)
 									If (CoffinDistance < 8.0) Then
 										dist = Rnd(4.0, 8.0)
 										Color(100, 0, 0)
-										Oval(x - dist * 1.5, y - 7 - dist * 1.5, dist * 3, dist * 3, False)
-										Text(x - width / 2 + 20, y - height / 2 + 20 + (20*SCPs_found), "SCP-895")
+										Oval(Int(x - dist * 1.5), Int(y - 7 - dist * 1.5), Int(dist * 3), Int(dist * 3), False)
+										Text(Int(x - width / 2 + 20), Int(y - height / 2 + 20 + (20*SCPs_found)), "SCP-895")
 									EndIf
 								EndIf
 							EndIf
@@ -1174,15 +1174,15 @@ Function DrawInventory(player.Player)
 								Line(xtemp+20, ytemp, xtemp+20, ytemp+100)
 
 								SetFont(uiAssets\font[3])
-								For i = 1 To Ceil(player\selectedItem\state / 10.0)
+								For i = 1 To Int(Ceil(player\selectedItem\state / 10.0))
 									Text(xtemp+11, ytemp+i*10-26, "-", True)
 									;Rect(x - width/2, y+i*15, 40 - i * 6, 5, Ceil(player\selectedItem\state / 20.0) > 4 - i)
 								Next
 								SetFont(uiAssets\font[2])
 							EndIf
 
-							x = x - 19 + ((EntityX(player\collider) - 4.0) Mod 8.0)*3
-							y = y + 14 - ((EntityZ(player\collider)-4.0) Mod 8.0)*3
+							x = x - 19 + Int((EntityX(player\collider) - 4.0) Mod 8.0)*3
+							y = y + 14 - Int((EntityZ(player\collider)-4.0) Mod 8.0)*3
 							;TODO: fix
 							;For x2 = Max(1, PlayerX - 4) To Min(MapWidth - 1, PlayerX + 4)
 							;	For z2 = Max(1, PlayerZ - 4) To Min(MapHeight - 1, PlayerZ + 4)
@@ -1216,7 +1216,7 @@ Function DrawInventory(player.Player)
 					DrawImage(player\selectedItem\itemtemplate\img, userOptions\screenWidth / 2 - ImageWidth(player\selectedItem\itemtemplate\img) / 2, userOptions\screenHeight / 2 - ImageHeight(player\selectedItem\itemtemplate\img) / 2)
 
 					If (player\selectedItem\state = 0) Then
-						PlaySound2(LoadTempSound("SFX/SCP/1162/NostalgiaCancer"+Rand(1,10)+".ogg"))
+						PlaySound2(LoadTempSound("SFX/SCP/1162/NostalgiaCancer"+Str(Rand(1,10))+".ogg"))
 						Select player\selectedItem\itemtemplate\name
 							Case "Old Badge"
 								Msg = Chr(34)+"Huh? This guy looks just like me!"+Chr(34)
@@ -1227,7 +1227,7 @@ Function DrawInventory(player.Player)
 					EndIf
 				Case "key"
 					If (player\selectedItem\state = 0) Then
-						PlaySound2(LoadTempSound("SFX/SCP/1162/NostalgiaCancer"+Rand(1,10)+".ogg"))
+						PlaySound2(LoadTempSound("SFX/SCP/1162/NostalgiaCancer"+Str(Rand(1,10))+".ogg"))
 
 						Msg = Chr(34)+"Isn't this the key to that old shack? The one where I... No, it can't be."+Chr(34)
 						MsgTimer = 70*10
@@ -1238,7 +1238,7 @@ Function DrawInventory(player.Player)
 				Case "oldpaper"
 					If (player\selectedItem\itemtemplate\img = 0) Then
 						player\selectedItem\itemtemplate\img = LoadImage(player\selectedItem\itemtemplate\imgpath)
-						player\selectedItem\itemtemplate\img = ResizeImage2(player\selectedItem\itemtemplate\img, ImageWidth(player\selectedItem\itemtemplate\img) * MenuScale, ImageHeight(player\selectedItem\itemtemplate\img) * MenuScale)
+						player\selectedItem\itemtemplate\img = ResizeImage2(player\selectedItem\itemtemplate\img, Int(ImageWidth(player\selectedItem\itemtemplate\img) * MenuScale), Int(ImageHeight(player\selectedItem\itemtemplate\img) * MenuScale))
 
 						MaskImage(player\selectedItem\itemtemplate\img, 255, 0, 255)
 					EndIf
@@ -1252,7 +1252,7 @@ Function DrawInventory(player.Player)
 
 								Msg = Chr(34)+"Why does this seem so familiar?"+Chr(34)
 								MsgTimer = 70*10
-								PlaySound2(LoadTempSound("SFX/SCP/1162/NostalgiaCancer"+Rand(1,10)+".ogg"))
+								PlaySound2(LoadTempSound("SFX/SCP/1162/NostalgiaCancer"+Str(Rand(1,10))+".ogg"))
 								player\selectedItem\state = 1
 						End Select
 					EndIf
@@ -1293,17 +1293,17 @@ Function UpdateInventory(player.Player)
 
 		mainPlayer\selectedDoor = Null
 
-		width% = 70
-		height% = 70
-		spacing% = 35
+		width = 70
+		height = 70
+		spacing = 35
 
-		itemsPerRow% = 5
+		itemsPerRow = 5
 
 		x = userOptions\screenWidth / 2 - (width * itemsPerRow + spacing * (itemsPerRow - 1)) / 2
 		y = userOptions\screenHeight / 2 - height * (player\openInventory\size/itemsPerRow) + height / 2
 
-		For  n% = 0 To player\openInventory\size - 1
-			isMouseOn% = False
+		For n = 0 To player\openInventory\size - 1
+			isMouseOn = False
 			If (MouseX() > x And MouseX() < x + width) Then
 				If (MouseY() > y And MouseY() < y + height) Then
 					isMouseOn = True
@@ -1327,7 +1327,7 @@ Function UpdateInventory(player.Player)
 				EndIf
 			Else
 				If (isMouseOn And MouseHit1) Then
-					For z% = 0 To player\openInventory\size - 1
+					For z = 0 To player\openInventory\size - 1
 						If (player\openInventory\items[z] = player\selectedItem) Then player\openInventory\items[z] = Null
 					Next
 					player\openInventory\items[n] = player\selectedItem
@@ -1356,7 +1356,7 @@ Function UpdateInventory(player.Player)
 					MoveMouse(viewport_center_x, viewport_center_y)
 				Else
 					If (player\openInventory\items[MouseSlot] = Null) Then
-						For z% = 0 To player\openInventory\size - 1
+						For z = 0 To player\openInventory\size - 1
 							If (player\openInventory\items[z] = player\selectedItem) Then player\openInventory\items[z] = Null
 						Next
 						player\openInventory\items[MouseSlot] = player\selectedItem
@@ -1366,17 +1366,17 @@ Function UpdateInventory(player.Player)
 							Case "paper","key1","key2","key3","key4","key5","misc","oldpaper","badge","ticket"
 								If (player\openInventory\items[MouseSlot]\itemtemplate\name = "clipboard") Then
 									;Add an item to clipboard
-									added.Items = Null
+									added = Null
 									If (player\selectedItem\itemtemplate\name<>"misc" Or (player\selectedItem\itemtemplate\name="Playing Card" Or player\selectedItem\itemtemplate\name="Mastercard")) Then
-										For c% = 0 To player\openInventory\items[MouseSlot]\inventory\size-1
-											If ((player\openInventory\items[MouseSlot]\inventory\items[c] = Null)) Then
+										For c = 0 To player\openInventory\items[MouseSlot]\subInventory\size-1
+											If ((player\openInventory\items[MouseSlot]\subInventory\items[c] = Null)) Then
 												If (player\selectedItem <> Null) Then
-													player\openInventory\items[MouseSlot]\inventory\items[c] = player\selectedItem
+													player\openInventory\items[MouseSlot]\subInventory\items[c] = player\selectedItem
 													player\openInventory\items[MouseSlot]\state = 1.0
 													SetAnimTime(player\openInventory\items[MouseSlot]\model,0.0)
 													player\openInventory\items[MouseSlot]\invimg = player\inventory\items[MouseSlot]\itemtemplate\invimg
 
-													For ri% = 0 To player\openInventory\size - 1
+													For ri = 0 To player\openInventory\size - 1
 														If (player\openInventory\items[ri] = player\selectedItem) Then
 															player\openInventory\items[ri] = Null
 															PlaySound_SM(sndManager\itemPick[player\selectedItem\itemtemplate\sound])
@@ -1436,8 +1436,8 @@ Function UpdateInventory(player.Player)
 												MsgTimer = 70 * 5
 										End Select
 									Case "Night Vision Goggles"
-										nvname$ = player\openInventory\items[MouseSlot]\itemtemplate\name
-										If (nvname$="nvgoggles" Or nvname$="supernv") Then
+										nvname = player\openInventory\items[MouseSlot]\itemtemplate\name
+										If (nvname="nvgoggles" Or nvname="supernv") Then
 											If (player\selectedItem\itemtemplate\sound <> 66) Then PlaySound_SM(sndManager\itemPick[player\selectedItem\itemtemplate\sound])
 											RemoveItem (player\selectedItem)
 											player\selectedItem = Null
@@ -1490,7 +1490,7 @@ Function UpdateInventory(player.Player)
 
 		If (CurrGameState = GAMESTATE_PLAYING) Then
 			ResumeSounds()
-			MouseXSpeed() : MouseYSpeed() : MouseZSpeed() : mouse_x_speed_1#=0.0 : mouse_y_speed_1#=0.0
+			MouseXSpeed() : MouseYSpeed() : MouseZSpeed() : mouse_x_speed_1=0.0 : mouse_y_speed_1=0.0
 		EndIf
 	Else
 		If (player\selectedItem <> Null) Then
@@ -1507,7 +1507,7 @@ Function UpdateInventory(player.Player)
 						Kill(player)
 						Return
 					EndIf
-					For e.Events = Each Events
+					For e = Each Events
 						If (e\name = "room1123") Then
 							If (e\eventState = 0) Then
 								ShowEntity(player\overlays[OVERLAY_WHITE])
@@ -1521,10 +1521,10 @@ Function UpdateInventory(player.Player)
 				Case "battery","key1", "key2", "key3", "key4", "key5", "scp860", "hand", "hand2"
 					;do nothing
 				Case "scp513"
-					PlaySound2(LoadTempSound("SFX/SCP/513/Bell"+Rand(1,3)+".ogg"))
+					PlaySound2(LoadTempSound("SFX/SCP/513/Bell"+Str(Rand(1,3))+".ogg"))
 
 					temp = True
-					For np.NPCs = Each NPCs
+					For np = Each NPCs
 						If (np\npcType = NPCtype5131) Then
 							temp = False
 							Exit
@@ -1677,9 +1677,9 @@ Function UpdateInventory(player.Player)
 				Case "cup"
 
 					player\selectedItem\name = Trim(Lower(player\selectedItem\name))
-					If (Left(player\selectedItem\name, Min(6,Len(player\selectedItem\name))) = "cup of") Then
+					If (Left(player\selectedItem\name, Int(Min(6,Len(player\selectedItem\name)))) = "cup of") Then
 						player\selectedItem\name = Right(player\selectedItem\name, Len(player\selectedItem\name)-7)
-					ElseIf (Left(player\selectedItem\name, Min(8,Len(player\selectedItem\name))) = "a cup of") Then
+					ElseIf (Left(player\selectedItem\name, Int(Min(8,Len(player\selectedItem\name)))) = "a cup of") Then
 						player\selectedItem\name = Right(player\selectedItem\name, Len(player\selectedItem\name)-9)
 					EndIf
 
@@ -2059,7 +2059,7 @@ Function UpdateInventory(player.Player)
 	If (PrevInvOpen And (CurrGameState<>GAMESTATE_INVENTORY)) Then MoveMouse(viewport_center_x, viewport_center_y)
 End Function
 
-Function IsPlayerWearingTempName(player.Player,templateName$)
+Function IsPlayerWearingTempName%(player.Player,templateName$)
 	Local it.ItemTemplates = FindItemTemplate(templateName)
 	If (it=Null) Then Return False
 	Local slot% = it\invSlot
@@ -2068,7 +2068,7 @@ Function IsPlayerWearingTempName(player.Player,templateName$)
 	Return (player\wornItems[slot]\itemtemplate\name=templateName)
 End Function
 
-Function IsPlayerWearingItem(player.Player,item.Items)
+Function IsPlayerWearingItem%(player.Player,item.Items)
 	If (item = Null) Then
 		Return False
 	EndIf
@@ -2103,4 +2103,5 @@ Function Kill(player.Player)
 	EndIf
 End Function
 ;~IDEal Editor Parameters:
+;~F#2F5
 ;~C#Blitz3D

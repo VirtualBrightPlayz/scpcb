@@ -44,7 +44,7 @@ End Function
 
 Function UpdateParticles()
 	Local p.Particles
-	For p.Particles = Each Particles
+	For p = Each Particles
 		MoveEntity(p\pvt, 0, 0, p\speed * timing\tickDuration)
 		If (p\gravity <> 0) Then p\yspeed = p\yspeed - p\gravity * timing\tickDuration
 		TranslateEntity(p\pvt, 0, p\yspeed * timing\tickDuration, 0, True)
@@ -105,7 +105,8 @@ Function UpdateEmitters()
 	Local e.Emitters
 	Local p.Particles
 	Local dist#
-	For e.Emitters = Each Emitters
+	
+	For e = Each Emitters
 		If (timing\tickDuration > 0 And (mainPlayer\currRoom = e\room Or e\room\dist < 8)) Then
 			;If (EntityDistance(mainPlayer\cam, e\obj) < 6.0) Then
 			p = CreateParticle(EntityX(e\obj, True), EntityY(e\obj, True), EntityZ(e\obj, True), Rand(e\minImage, e\maxImage), e\size, e\gravity, e\lifeTime)
@@ -179,7 +180,7 @@ Function CreateEmitter.Emitters(x#, y#, z#, emittertype%)
 	End Select
 
 	Local r.Rooms
-	For r.Rooms = Each Rooms
+	For r = Each Rooms
 		If (Abs(EntityX(e\obj) - EntityX(r\obj)) < 4.0 And Abs(EntityZ(e\obj) - EntityZ(r\obj)) < 4.0) Then
 			e\room = r
 		EndIf

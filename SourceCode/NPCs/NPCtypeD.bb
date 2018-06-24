@@ -27,7 +27,7 @@ End Function
 Function UpdateNPCtypeD(n.NPCs)
     RotateEntity(n\collider, 0, EntityYaw(n\collider), EntityRoll(n\collider), True)
 
-    Local prevFrame% = AnimTime(n\obj)
+    Local prevFrame# = AnimTime(n\obj)
 
     Select n\state
         Case 0 ;idle

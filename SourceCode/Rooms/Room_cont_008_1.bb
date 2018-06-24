@@ -82,7 +82,7 @@ Function FillRoom_cont_008_1(r.Rooms)
     r\objects[7] = CreatePivot(r\obj)
     PositionEntity(r\objects[7], r\x, 672 * RoomScale, r\z + 352.0 * RoomScale, True)
 
-    sc.SecurityCams = CreateSecurityCam(r\x+578.956*RoomScale, r\y+444.956*RoomScale, r\z+772.0*RoomScale, r)
+    sc = CreateSecurityCam(r\x+578.956*RoomScale, r\y+444.956*RoomScale, r\z+772.0*RoomScale, r)
     sc\angle = 135
     sc\turn = 45
     TurnEntity(sc\cameraObj, 20, 0, 0)
@@ -161,7 +161,7 @@ Function UpdateEvent_cont_008_1(e.Events)
 					e\eventState = 2
 					PlaySound_SM(sndManager\lever)
 				Else
-					p.Particles = CreateParticle(EntityX(e\room\objects[0],True),EntityY(e\room\objects[0],True),EntityZ(e\room\objects[0],True), 6, 0.02, -0.12)
+					p = CreateParticle(EntityX(e\room\objects[0],True),EntityY(e\room\objects[0],True),EntityZ(e\room\objects[0],True), 6, 0.02, -0.12)
 					RotateEntity(p\pvt,-90,0,0,True)
 					TurnEntity(p\pvt, Rnd(-26,26), Rnd(-26,26), Rnd(360))
 
@@ -181,7 +181,7 @@ Function UpdateEvent_cont_008_1(e.Events)
 				EndIf
 			EndIf
 		Else
-			p.Particles = CreateParticle(EntityX(e\room\objects[0],True),EntityY(e\room\objects[0],True),EntityZ(e\room\objects[0],True), 6, 0.02, -0.12)
+			p = CreateParticle(EntityX(e\room\objects[0],True),EntityY(e\room\objects[0],True),EntityZ(e\room\objects[0],True), 6, 0.02, -0.12)
 			RotateEntity(p\pvt,-90,0,0,True)
 			TurnEntity(p\pvt, Rnd(-26,26), Rnd(-26,26), Rnd(360))
 		EndIf

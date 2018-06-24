@@ -5,7 +5,7 @@ Function FillRoom_cont_012_2(r.Rooms)
 
 	Local t1%;, Bump
 
-    d.Doors = CreateDoor(r\zone, r\x + 264.0 * RoomScale, 0.0, r\z + 672.0 * RoomScale, 270, r, False, False, 3)
+    d = CreateDoor(r\zone, r\x + 264.0 * RoomScale, 0.0, r\z + 672.0 * RoomScale, 270, r, False, False, 3)
     PositionEntity(d\buttons[0], r\x + 224.0 * RoomScale, EntityY(d\buttons[0],True), r\z + 880.0 * RoomScale, True)
     PositionEntity(d\buttons[1], r\x + 304.0 * RoomScale, EntityY(d\buttons[1],True), r\z + 840.0 * RoomScale, True)
     TurnEntity(d\buttons[1],0,0,0,True)
@@ -55,10 +55,10 @@ Function FillRoom_cont_012_2(r.Rooms)
     it = CreateItem("Document SCP-012", "paper", r\x - 56.0 * RoomScale, r\y - 576.0 * RoomScale, r\z - 408.0 * RoomScale)
     EntityParent(it\collider, r\obj)
 
-    it.Items = CreateItem("Severed Hand", "hand", r\x - 784*RoomScale, -576*RoomScale+0.3, r\z+640*RoomScale)
+    it = CreateItem("Severed Hand", "hand", r\x - 784*RoomScale, -576*RoomScale+0.3, r\z+640*RoomScale)
     EntityParent(it\collider, r\obj)
 
-    de.Decals = CreateDecal(3,  r\x - 784*RoomScale, -768*RoomScale+0.01, r\z+640*RoomScale,90,Rnd(360),0)
+    de = CreateDecal(3,  r\x - 784*RoomScale, -768*RoomScale+0.01, r\z+640*RoomScale,90,Rnd(360),0)
     de\size = 0.5
     ScaleSprite(de\obj, de\size,de\size)
     EntityParent(de\obj, r\obj)
@@ -119,7 +119,7 @@ Function UpdateEvent_cont_012_2(e.Events)
 				;012 not visible, walk to the door
 				If (temp=False) Then
 					If (EntityVisible(e\room\roomDoors[0]\frameobj,mainPlayer\cam)) Then
-						pvt% = CreatePivot()
+						pvt = CreatePivot()
 						PositionEntity(pvt, EntityX(mainPlayer\cam), EntityY(mainPlayer\collider), EntityZ(mainPlayer\cam))
 						PointEntity(pvt, e\room\roomDoors[0]\frameobj)
 						;TurnEntity(pvt, 90, 0, 0)
@@ -139,7 +139,7 @@ Function UpdateEvent_cont_012_2(e.Events)
 				Else
 					e\soundChannels[1] = LoopRangedSound(e\sounds[1], e\soundChannels[1], mainPlayer\cam, e\room\objects[3], 10, e\eventState3/(86.0*70.0))
 
-					pvt% = CreatePivot()
+					pvt = CreatePivot()
 					PositionEntity(pvt, EntityX(mainPlayer\cam), EntityY(e\room\objects[2],True)-0.05, EntityZ(mainPlayer\cam))
 					PointEntity(pvt, e\room\objects[2])
 					RotateEntity(mainPlayer\collider, EntityPitch(mainPlayer\collider), CurveAngle(EntityYaw(pvt), EntityYaw(mainPlayer\collider), 80-(e\eventState3/200.0)), 0)
@@ -169,14 +169,14 @@ Function UpdateEvent_cont_012_2(e.Events)
 							mainPlayer\injuries=mainPlayer\injuries+0.5
 							PlaySound2(LoadTempSound("SFX/SCP/012/Speech2.ogg"))
 						ElseIf (e\eventState3>31*70 And e\eventState3-timing\tickDuration=<31*70) Then
-							tex% = LoadTexture("GFX/Map/Textures/scp-012_1.jpg")
+							tex = LoadTexture("GFX/Map/Textures/scp-012_1.jpg")
 							EntityTexture(e\room\objects[4], tex,0,1)
 							FreeTexture(tex)
 
 							Msg="You tear open your left wrist and start writing on the composition with your blood."
 							MsgTimer = 7*70
 							mainPlayer\injuries=Max(mainPlayer\injuries,1.5)
-							PlaySound2(LoadTempSound("SFX/SCP/012/Speech"+Rand(3,4)+".ogg"))
+							PlaySound2(LoadTempSound("SFX/SCP/012/Speech"+Str(Rand(3,4))+".ogg"))
 						ElseIf (e\eventState3>49*70 And e\eventState3-timing\tickDuration=<49*70) Then
 							Msg="You push your fingers deeper into the wound."
 							MsgTimer = 8*70
@@ -200,7 +200,7 @@ Function UpdateEvent_cont_012_2(e.Events)
 							PlaySound2(LoadTempSound("SFX/SCP/012/Speech7.ogg"))
 							mainPlayer\crouching = True
 
-							de.Decals = CreateDecal(17,  EntityX(mainPlayer\collider), -768*RoomScale+0.01, EntityZ(mainPlayer\collider),90,Rnd(360),0)
+							de = CreateDecal(17,  EntityX(mainPlayer\collider), -768*RoomScale+0.01, EntityZ(mainPlayer\collider),90,Rnd(360),0)
 							de\size = 0.1 : de\maxSize = 0.45 : de\sizeChange = 0.0002 : UpdateDecals()
 						ElseIf (e\eventState3>85*70 And e\eventState3-timing\tickDuration=<85*70) Then
 							DeathMSG = "Subject D-9341 found in a pool of blood next to SCP-012. Subject seems to have ripped open his wrists and written three extra "

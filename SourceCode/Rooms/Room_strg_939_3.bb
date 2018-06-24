@@ -91,7 +91,7 @@ Function FillRoom_strg_939_3(r.Rooms)
     ;X=-176 | Z=+40
     PositionEntity(r\roomDoors[3]\buttons[1], r\x - 632.0*RoomScale, EntityY(r\roomDoors[3]\buttons[1],True), r\z - 784.0 * RoomScale, True)
 
-    em.Emitters = CreateEmitter(r\x + 5218.0 * RoomScale, -5584.0*RoomScale, r\z - 600* RoomScale, 0)
+    em = CreateEmitter(r\x + 5218.0 * RoomScale, -5584.0*RoomScale, r\z - 600* RoomScale, 0)
     TurnEntity(em\obj, 20, -100, 0, True)
     EntityParent(em\obj, r\obj) : em\room = r
     em\randAngle = 15 : em\speed = 0.03
@@ -100,30 +100,30 @@ Function FillRoom_strg_939_3(r.Rooms)
 
     Select Rand(3)
         Case 1
-            x# = 2312
-            z#=-952
+            x = 2312
+            z = -952
         Case 2
-            x# = 3032
-            z#=1288
+            x = 3032
+            z = 1288
         Case 3
-            x# = 2824
-            z#=2808
+            x = 2824
+            z = 2808
     End Select
 
-    it.Items = CreateItem("Black Severed Hand", "hand2", r\x + x*RoomScale, -5596.0*RoomScale+1.0, r\z+z*RoomScale)
+    it = CreateItem("Black Severed Hand", "hand2", r\x + x*RoomScale, -5596.0*RoomScale+1.0, r\z+z*RoomScale)
     EntityParent(it\collider, r\obj)
 
     it = CreateItem("Night Vision Goggles", "nvgoggles", r\x + 1936.0 * RoomScale, r\y - 5496.0 * RoomScale, r\z - 944.0 * RoomScale)
     EntityParent(it\collider, r\obj)
 
-    de.Decals = CreateDecal(3,  r\x + x*RoomScale, -5632.0*RoomScale+0.01, r\z+z*RoomScale,90,Rnd(360),0)
+    de = CreateDecal(3,  r\x + x*RoomScale, -5632.0*RoomScale+0.01, r\z+z*RoomScale,90,Rnd(360),0)
     de\size = 0.5
     ScaleSprite(de\obj, de\size,de\size)
     EntityParent(de\obj, r\obj)
 
     ;Objects [20],[21],[22],[23]
 	Local n%
-    For n% = 10 To 11
+    For n = 10 To 11
         r\levers[n-10] = CreateLever()
 
         ScaleEntity(r\levers[n-10]\obj, 0.04, 0.04, 0.04)
@@ -269,9 +269,9 @@ Function UpdateEvent_strg_939_3(e.Events)
 				e\room\npc[0]\ignorePlayer = False
 				e\room\npc[2]\ignorePlayer = False
 
-				CurrTrigger$ = CheckTriggers()
+				CurrTrigger = CheckTriggers()
 
-				Select CurrTrigger$
+				Select CurrTrigger
 					Case "939-1_fix"
 						e\room\npc[0]\ignorePlayer = True
 					Case "939-3_fix"

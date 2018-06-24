@@ -34,13 +34,13 @@ Function FillRoom_tnnl_maintenance_2(r.Rooms)
 ;
     Local temp% = ((Int(AccessCode)*3) Mod 10000)
     If (temp < 1000) Then temp = temp+1000
-    d.Doors = CreateDoor(0, r\x,r\y,r\z,0, r, False, True, False, temp)
+    d = CreateDoor(0, r\x,r\y,r\z,0, r, False, True, False, Str(temp))
     PositionEntity(d\buttons[0], r\x + 224.0 * RoomScale, r\y + 0.7, r\z - 384.0 * RoomScale, True)
     RotateEntity(d\buttons[0], 0,-90,0,True)
     PositionEntity(d\buttons[1], r\x - 224.0 * RoomScale, r\y + 0.7, r\z + 384.0 * RoomScale, True)
     RotateEntity(d\buttons[1], 0,90,0,True)
 
-    de.Decals = CreateDecal(0, r\x + 64.0 * RoomScale, 0.005, r\z + 144.0 * RoomScale, 90, Rand(360), 0)
+    de = CreateDecal(0, r\x + 64.0 * RoomScale, 0.005, r\z + 144.0 * RoomScale, 90, Rand(360), 0)
     EntityParent(de\obj, r\obj)
     it = CreateItem("Scorched Note", "paper", r\x + 64.0 * RoomScale, r\y +144.0 * RoomScale, r\z - 384.0 * RoomScale)
     EntityParent(it\collider, r\obj)

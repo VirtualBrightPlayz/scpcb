@@ -54,7 +54,7 @@ Function UpdateEvent_scp_970_2(e.Events)
 				e\room\roomDoors[1]\locked = True
 				e\room\roomDoors[4]\locked = True
 			Else
-				For n.NPCs = Each NPCs
+				For n = Each NPCs
 					If (n\npcType = NPCtypeMTF) Then
 						If (EntityDistance(mainPlayer\collider, Curr173\obj)<8.0) Then
 							e\room\roomDoors[1]\locked = True
@@ -131,7 +131,7 @@ Function UpdateEvent_scp_970_2(e.Events)
 
 			e\eventState=e\eventState+1;Rand(1,2)
 
-			For it.Items = Each Items
+			For it = Each Items
 				If (EntityDistance(it\collider,mainPlayer\collider)<5.0) Then
 
 					TFormPoint(EntityX(it\collider),EntityY(it\collider),EntityZ(it\collider),0,e\room\obj)
@@ -156,13 +156,13 @@ Function UpdateEvent_scp_970_2(e.Events)
 				Case 5
 					mainPlayer\injuries = mainPlayer\injuries + 0.3
 				Case 10
-					de.Decals = CreateDecal(3, EntityX(e\room\obj)+Cos(e\room\angle-90)*760*RoomScale, 0.0005, EntityZ(e\room\obj)+Sin(e\room\angle-90)*760*RoomScale,90,Rnd(360),0)
+					de = CreateDecal(3, EntityX(e\room\obj)+Cos(e\room\angle-90)*760*RoomScale, 0.0005, EntityZ(e\room\obj)+Sin(e\room\angle-90)*760*RoomScale,90,Rnd(360),0)
 				Case 14
 					For i = 0 To mainPlayer\inventory\size-1
 						If (mainPlayer\inventory\items[i]<> Null) Then
 							If (mainPlayer\inventory\items[i]\itemtemplate\name = "paper") Then
 								RemoveItem(mainPlayer\inventory\items[i])
-								For itt.ItemTemplates = Each ItemTemplates
+								For itt = Each ItemTemplates
 									If (itt\name = "paper" And Rand(6)=1) Then
 										mainPlayer\inventory\items[i] = CreateItem(itt\name, itt\name, 1,1,1)
 										HideEntity(mainPlayer\inventory\items[i]\collider)
@@ -176,7 +176,7 @@ Function UpdateEvent_scp_970_2(e.Events)
 					Next
 				Case 18
 					TFormPoint(-344,176, 272, e\room\obj,0)
-					it.Items = CreateItem("Strange Note", "paper", TFormedX(), TFormedY(), TFormedZ())
+					it = CreateItem("Strange Note", "paper", TFormedX(), TFormedY(), TFormedZ())
 					EntityType(it\collider, HIT_ITEM)
 				Case 25
 					e\room\npc[0]=CreateNPC(NPCtypeD, EntityX(e\room\obj)+Cos(e\room\angle-90)*760*RoomScale, 0.35, EntityZ(e\room\obj)+Sin(e\room\angle-90)*760*RoomScale)
@@ -195,7 +195,7 @@ Function UpdateEvent_scp_970_2(e.Events)
 					mainPlayer\inventory\items[i]\picked = True
 				Case 35
 					For i = 0 To 3
-						de.Decals = CreateDecal(17, e\room\x+Rnd(-2,2), 700*RoomScale, e\room\z+Rnd(-2,2), 270, Rand(360), 0)
+						de = CreateDecal(17, e\room\x+Rnd(-2,2), 700*RoomScale, e\room\z+Rnd(-2,2), 270, Rand(360), 0)
 						de\size = 0.05 : de\sizeChange = 0.0005 : EntityAlpha(de\obj, 0.8) : UpdateDecals()
 					Next
 				Case 40
@@ -238,9 +238,9 @@ Function UpdateEvent_scp_970_2(e.Events)
 			EndIf
 
 			;If (Abs(TFormedX())<264) Then
-			For it.Items = Each Items
+			For it = Each Items
 				If ((it\dropped=1 And Abs(TFormedX())<264) Or it\dropped=-1) Then
-					DebugLog("dropping/picking: "+it\dropped+" - "+EntityX(it\collider)+", "+EntityY(it\collider)+", "+EntityZ(it\collider))
+					;DebugLog("dropping/picking: "+it\dropped+" - "+EntityX(it\collider)+", "+EntityY(it\collider)+", "+EntityZ(it\collider))
 
 					TFormPoint(EntityX(it\collider),EntityY(it\collider),EntityZ(it\collider),0,e\room\obj)
 					x = TFormedX() : y = TFormedY() : z = TFormedZ()
@@ -248,16 +248,16 @@ Function UpdateEvent_scp_970_2(e.Events)
 					If (it\dropped=1) Then
 						For i = - 1 To 1 Step 2
 							TFormPoint(x+1024*i,y,z,e\room\obj,0)
-							it2.Items = CreateItem(it\name, it\itemtemplate\name, TFormedX(), EntityY(it\collider), TFormedZ())
+							it2 = CreateItem(it\name, it\itemtemplate\name, TFormedX(), EntityY(it\collider), TFormedZ())
 							RotateEntity(it2\collider, EntityPitch(it\collider),EntityYaw(it\collider),0)
 							EntityType(it2\collider, HIT_ITEM)
 						Next
 					Else
-						For it2.Items = Each Items
+						For it2 = Each Items
 							If (it2<>it And it2\dist < 15.0) Then
 
 								TFormPoint(EntityX(it2\collider),EntityY(it2\collider),EntityZ(it2\collider),0,e\room\obj)
-								DebugLog(TFormedZ()+" - "+z)
+								;DebugLog(TFormedZ()+" - "+z)
 
 								If (TFormedZ()=z) Then
 									RemoveItem(it2) : DebugLog("item removed")

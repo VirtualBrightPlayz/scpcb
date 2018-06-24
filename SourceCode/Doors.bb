@@ -4,7 +4,7 @@ Global SelectedDoor.MarkedForRemoval, UpdateDoorsTimer#
 Global DoorTempID%
 Type Doors
 	Field obj%, obj2%, frameobj%, buttons%[2]
-	Field locked%, open%, angle%, openstate#, fastopen%
+	Field locked%, open%, angle#, openstate#, fastopen%
 	Field dir%
 	Field timer%, timerstate#
 	Field keyCard%
@@ -54,7 +54,7 @@ Function CreateDoor.Doors(lvl%, x#, y#, z#, angle#, room.Rooms, dopen% = False, 
 	Local buttonKeyObj%
 	Local buttonScannerOBJ%
 	
-	d.Doors = New Doors
+	d = New Doors
 	If (big=1) Then
 		d\obj = CopyEntity(contDoorLeft)
 		ScaleEntity(d\obj, 55 * RoomScale, 55 * RoomScale, 55 * RoomScale)
@@ -98,7 +98,7 @@ Function CreateDoor.Doors(lvl%, x#, y#, z#, angle#, room.Rooms, dopen% = False, 
 	d\level = lvl
 	d\levelDest = 66
 
-	For i% = 0 To 1
+	For i = 0 To 1
 		If (code <> "") Then
 			buttonCodeObj = GrabMesh("GFX/Map/Meshes/ButtonCode.b3d")
 			d\buttons[i] = CopyEntity(buttonCodeObj)
@@ -106,11 +106,11 @@ Function CreateDoor.Doors(lvl%, x#, y#, z#, angle#, room.Rooms, dopen% = False, 
 			DropAsset(buttonCodeObj)
 		Else
 			If (keycard>0) Then
-				buttonKeyObj% = GrabMesh("GFX/Map/Meshes/ButtonKeycard.b3d")
+				buttonKeyObj = GrabMesh("GFX/Map/Meshes/ButtonKeycard.b3d")
 				d\buttons[i]= CopyEntity(buttonKeyObj)
 				DropAsset(buttonKeyObj)
 			ElseIf (keycard<0) Then
-				buttonScannerOBJ% = GrabMesh("GFX/Map/Meshes/ButtonScanner.b3d")
+				buttonScannerOBJ = GrabMesh("GFX/Map/Meshes/ButtonScanner.b3d")
 				d\buttons[i]= CopyEntity(buttonScannerOBJ)
 				DropAsset(buttonScannerOBJ)
 			Else
@@ -193,9 +193,9 @@ Function UpdateDoors()
 	Local dist#, xdist#, zdist#
 	
 	If (UpdateDoorsTimer =< 0) Then
-		For d.Doors = Each Doors
-			xdist# = Abs(EntityX(mainPlayer\collider)-EntityX(d\obj,True))
-			zdist# = Abs(EntityZ(mainPlayer\collider)-EntityZ(d\obj,True))
+		For d = Each Doors
+			xdist = Abs(EntityX(mainPlayer\collider)-EntityX(d\obj,True))
+			zdist = Abs(EntityZ(mainPlayer\collider)-EntityZ(d\obj,True))
 
 			d\dist = xdist+zdist
 
@@ -212,17 +212,6 @@ Function UpdateDoors()
 				If (d\buttons[0] <> 0) Then ShowEntity(d\buttons[0])
 				If (d\buttons[1] <> 0) Then ShowEntity(d\buttons[1])
 			EndIf
-
-			;TODO: this is cancer
-			If (mainPlayer\currRoom\roomTemplate\name$ = "room2sl") Then
-				If (ValidRoom2slCamRoom(d\room)) Then
-					If (d\obj <> 0) Then ShowEntity(d\obj)
-					If (d\frameobj <> 0) Then ShowEntity(d\frameobj)
-					If (d\obj2 <> 0) Then ShowEntity(d\obj2)
-					If (d\buttons[0] <> 0) Then ShowEntity(d\buttons[0])
-					If (d\buttons[1] <> 0) Then ShowEntity(d\buttons[1])
-				EndIf
-			EndIf
 		Next
 
 		UpdateDoorsTimer = 30
@@ -233,18 +222,18 @@ Function UpdateDoors()
 	mainPlayer\closestButton = 0
 	mainPlayer\closestDoor = Null
 
-	For d.Doors = Each Doors
+	For d = Each Doors
 		If (d\dist < HideDistance*2) Then
 
 			If ((d\openstate >= 180 Or d\openstate <= 0) And mainPlayer\grabbedEntity = 0) Then
-				For i% = 0 To 1
+				For i = 0 To 1
 					If (d\buttons[i] <> 0) Then
 						If (Abs(EntityX(mainPlayer\collider)-EntityX(d\buttons[i],True)) < 1.0) Then
 							If (Abs(EntityZ(mainPlayer\collider)-EntityZ(d\buttons[i],True)) < 1.0) Then
-								dist# = Distance(EntityX(mainPlayer\collider, True), EntityZ(mainPlayer\collider, True), EntityX(d\buttons[i], True), EntityZ(d\buttons[i], True));entityDistance(collider, d\buttons[i])
+								dist = Distance(EntityX(mainPlayer\collider, True), EntityZ(mainPlayer\collider, True), EntityX(d\buttons[i], True), EntityZ(d\buttons[i], True));entityDistance(collider, d\buttons[i])
 								If (dist < 0.7) Then
 									;TODO: use deltayaw as faster way to determine whether the player can press the button or not
-									temp% = CreatePivot()
+									temp = CreatePivot()
 									PositionEntity(temp, EntityX(mainPlayer\cam), EntityY(mainPlayer\cam), EntityZ(mainPlayer\cam))
 									PointEntity(temp,d\buttons[i])
 
@@ -334,11 +323,11 @@ Function UpdateDoors()
 							If (d\obj2 <> 0) Then MoveEntity(d\obj2, Sin(d\openstate) * timing\tickDuration / 180.0, 0, 0)
 							If (d\openstate < 15 And d\openstate+timing\tickDuration => 15) Then
 								For i = 0 To Rand(75,99)
-									pvt% = CreatePivot()
+									pvt = CreatePivot()
 									PositionEntity(pvt, EntityX(d\frameobj,True)+Rnd(-0.2,0.2), EntityY(d\frameobj,True)+Rnd(0.0,1.2), EntityZ(d\frameobj,True)+Rnd(-0.2,0.2))
 									RotateEntity(pvt, 0, Rnd(360), 0)
 
-									p.Particles = CreateParticle(EntityX(pvt), EntityY(pvt), EntityZ(pvt), 2, 0.002, 0, 300)
+									p = CreateParticle(EntityX(pvt), EntityY(pvt), EntityZ(pvt), 2, 0.002, 0, 300)
 									p\speed = 0.005
 									RotateEntity(p\pvt, Rnd(-20, 20), Rnd(360), 0)
 
@@ -362,14 +351,14 @@ Function UpdateDoors()
 					If (d\angle = 0 Or d\angle=180) Then
 						If (Abs(EntityZ(d\frameobj, True)-EntityZ(mainPlayer\collider))<0.15) Then
 							If (Abs(EntityX(d\frameobj, True)-EntityX(mainPlayer\collider))<0.7*(d\dir*2+1)) Then
-								z# = CurveValue(EntityZ(d\frameobj,True)+0.15*Sgn(EntityZ(mainPlayer\collider)-EntityZ(d\frameobj, True)), EntityZ(mainPlayer\collider), 5)
+								z = CurveValue(EntityZ(d\frameobj,True)+0.15*Sgn(EntityZ(mainPlayer\collider)-EntityZ(d\frameobj, True)), EntityZ(mainPlayer\collider), 5)
 								PositionEntity(mainPlayer\collider, EntityX(mainPlayer\collider), EntityY(mainPlayer\collider), z)
 							EndIf
 						EndIf
 					Else
 						If (Abs(EntityX(d\frameobj, True)-EntityX(mainPlayer\collider))<0.15) Then
 							If (Abs(EntityZ(d\frameobj, True)-EntityZ(mainPlayer\collider))<0.7*(d\dir*2+1)) Then
-								x# = CurveValue(EntityX(d\frameobj,True)+0.15*Sgn(EntityX(mainPlayer\collider)-EntityX(d\frameobj, True)), EntityX(mainPlayer\collider), 5)
+								x = CurveValue(EntityX(d\frameobj,True)+0.15*Sgn(EntityX(mainPlayer\collider)-EntityX(d\frameobj, True)), EntityX(mainPlayer\collider), 5)
 								PositionEntity(mainPlayer\collider, x, EntityY(mainPlayer\collider), EntityZ(mainPlayer\collider))
 							EndIf
 						EndIf

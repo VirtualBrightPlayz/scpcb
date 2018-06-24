@@ -6,9 +6,9 @@ Function FillRoom_hll_gas_2(r.Rooms)
 	Local t1%;, Bump
 
     i = 0
-    For  xtemp% = -1 To 1 Step 2
-        For ztemp% = -1 To 1
-            em.Emitters = CreateEmitter(r\x + 202.0 * RoomScale * xtemp, 8.0 * RoomScale, r\z + 256.0 * RoomScale * ztemp, 0)
+    For xtemp = -1 To 1 Step 2
+        For ztemp = -1 To 1
+            em = CreateEmitter(r\x + 202.0 * RoomScale * xtemp, 8.0 * RoomScale, r\z + 256.0 * RoomScale * ztemp, 0)
             em\randAngle = 30
             em\speed = 0.0045
             em\sizeChange = 0.007
@@ -59,3 +59,6 @@ Function UpdateEvent_hll_gas_2(e.Events)
 	;[End Block]
 End Function
 
+
+;~IDEal Editor Parameters:
+;~C#Blitz3D

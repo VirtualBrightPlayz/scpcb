@@ -3,8 +3,8 @@ Function StripFilename$(file$)
 	Local lastSlash%=0
 	Local i%
 	If (Len(file)>0) Then
-		For i%=1 To Len(file)
-			mi=Mid(file$,i,1)
+		For i=1 To Len(file)
+			mi=Mid(file,i,1)
 			If (mi="\" Or mi="/") Then
 				lastSlash=i
 			EndIf
@@ -16,7 +16,7 @@ End Function
 
 Function GetTextureFromCache%(name$)
 	Local tc.Materials
-	For tc.Materials=Each Materials
+	For tc=Each Materials
 		If (Lower(tc\name) = Lower(name)) Then Return tc\diff
 	Next
 	Return 0
@@ -24,7 +24,7 @@ End Function
 
 Function GetCache.Materials(name$)
 	Local tc.Materials
-	For tc.Materials=Each Materials
+	For tc=Each Materials
 		If (Lower(tc\name) = Lower(name)) Then Return tc
 	Next
 	Return Null
@@ -32,8 +32,8 @@ End Function
 
 Function AddTextureToCache(name$,texture%)
 	Local tc.Materials=GetCache(name)
-	If (tc.Materials=Null) Then
-		tc.Materials=New Materials
+	If (tc=Null) Then
+		tc=New Materials
 		tc\name=Lower(name)
 
 		tc\diff=0
@@ -43,7 +43,7 @@ End Function
 
 Function ClearTextureCache()
 	Local tc.Materials
-	For tc.Materials=Each Materials
+	For tc=Each Materials
 		If (tc\diff<>0) Then FreeTexture(tc\diff)
 		;If (tc\bump<>0) Then FreeTexture(tc\bump)
 		Delete tc
@@ -52,7 +52,7 @@ End Function
 
 Function FreeTextureCache()
 	Local tc.Materials
-	For tc.Materials=Each Materials
+	For tc=Each Materials
 		If (tc\diff<>0) Then FreeTexture(tc\diff)
 		;If (tc\bump<>0) Then FreeTexture(tc\bump)
 		tc\diff = 0; : tc\bump = 0

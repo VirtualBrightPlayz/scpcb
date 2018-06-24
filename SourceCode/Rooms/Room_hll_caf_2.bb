@@ -23,7 +23,7 @@ Function FillRoom_hll_caf_2(r.Rooms)
 End Function
 
 Function Draw294()
-	Local x#,y#, xtemp%,ytemp%, strtemp$, temp%
+	Local x%,y%, xtemp%,ytemp%, strtemp$, temp%
 
 	Local panel294% = GrabImage("GFX/HUD/294panel.jpg")
 	x = userOptions\screenWidth/2 - (ImageWidth(panel294)/2)
@@ -59,8 +59,8 @@ Function Update294()
 
 	If (temp) Then
 		If (MouseHit1) Then
-			xtemp = Floor((MouseX()-x-228) / 35.5)
-			ytemp = Floor((MouseY()-y-342) / 36.5)
+			xtemp = Int(Floor((MouseX()-x-228) / 35.5))
+			ytemp = Int(Floor((MouseY()-y-342) / 36.5))
 
 			If (ytemp => 0 And ytemp < 5) Then
 				If (xtemp => 0 And xtemp < 10) Then
@@ -74,7 +74,7 @@ Function Update294()
 
 			Select ytemp
 				Case 0
-					strtemp = (xtemp + 1) Mod 10
+					strtemp = Str((xtemp + 1) Mod 10)
 				Case 1
 					Select xtemp
 						Case 0
@@ -142,7 +142,7 @@ Function Update294()
 						Case 8
 							strtemp = " "
 						Case 9
-							Input294 = Left(Input294, Max(Len(Input294)-1,0))
+							Input294 = Left(Input294, Int(Max(Len(Input294)-1,0)))
 					End Select
 				Case 4
 					strtemp = " "
@@ -150,20 +150,20 @@ Function Update294()
 
 			Input294 = Input294 + strtemp
 
-			Input294 = Left(Input294, Min(Len(Input294),15))
+			Input294 = Left(Input294, Int(Min(Len(Input294),15)))
 
 			If (temp And Input294 <> "") Then ;dispense
 				Input294 = Trim(Lower(Input294))
-				If (Left(Input294, Min(7,Len(Input294))) = "cup of ") Then
+				If (Left(Input294, Int(Min(7,Len(Input294)))) = "cup of ") Then
 					Input294 = Right(Input294, Len(Input294)-7)
-				ElseIf (Left(Input294, Min(9,Len(Input294))) = "a cup of " ) Then
+				ElseIf (Left(Input294, Int(Min(9,Len(Input294)))) = "a cup of " ) Then
 					Input294 = Right(Input294, Len(Input294)-9)
 				EndIf
 
-				loc% = GetINISectionLocation("Data/SCP-294.ini", Input294)
+				loc = GetINISectionLocation("Data/SCP-294.ini", Input294)
 
 				If (loc > 0) Then
-					strtemp$ = GetINIString2("Data/SCP-294.ini", loc, "dispensesound")
+					strtemp = GetINIString2("Data/SCP-294.ini", loc, "dispensesound")
 					If (strtemp = "") Then
 						mainPlayer\currRoom\soundCHN = PlaySound(LoadTempSound("SFX/SCP/294/dispense1.ogg"))
 					Else
@@ -175,22 +175,22 @@ Function Update294()
 						DeathMSG = GetINIString2("Data/SCP-294.ini", loc, "deathmessage")
 					EndIf
 
-					strtemp$ = GetINIString2("Data/SCP-294.ini", loc, "color")
+					strtemp = GetINIString2("Data/SCP-294.ini", loc, "color")
 
 					sep1 = Instr(strtemp, ",", 1)
 					sep2 = Instr(strtemp, ",", sep1+1)
-					r% = Trim(Left(strtemp, sep1-1))
-					g% = Trim(Mid(strtemp, sep1+1, sep2-sep1-1))
-					b% = Trim(Right(strtemp, Len(strtemp)-sep2))
+					r = Int(Trim(Left(strtemp, sep1-1)))
+					g = Int(Trim(Mid(strtemp, sep1+1, sep2-sep1-1)))
+					b = Int(Trim(Right(strtemp, Len(strtemp)-sep2)))
 
-					alpha# = Float(GetINIString2("Data/SCP-294.ini", loc, "alpha"))
+					alpha = Float(GetINIString2("Data/SCP-294.ini", loc, "alpha"))
 					glow = GetINIInt2("Data/SCP-294.ini", loc, "glow")
 					If (alpha = 0) Then alpha = 1.0
 					If (glow) Then alpha = -alpha
 					;TODO: Re-implement
 					;it.Items = CreateItem("Cup", "cup", EntityX(mainPlayer\currRoom\objects[1],True),EntityY(mainPlayer\currRoom\objects[1],True),EntityZ(mainPlayer\currRoom\objects[1],True), r,g,b,alpha)
-					it\name = "Cup of "+Input294
-					EntityType(it\collider, HIT_ITEM)
+					;it\name = "Cup of "+Input294
+					;EntityType(it\collider, HIT_ITEM)
 				Else
 					;out of range
 					Input294 = "OUT OF RANGE"
@@ -243,7 +243,7 @@ Function UpdateEvent_hll_caf_2(e.Events)
 					DrawHandIcon = True
 					If (MouseHit1) Then
 						temp = True
-						For it.Items = Each Items
+						For it = Each Items
 							If (it\picked=False) Then
 								If (EntityX(it\collider)-EntityX(e\room\objects[1],True)=0) Then
 									If (EntityZ(it\collider)-EntityZ(e\room\objects[1],True)=0) Then

@@ -18,7 +18,7 @@ Function UpdateButton(obj%)
 	Local temp%
 	
 	If (dist < 0.8) Then
-		temp% = CreatePivot()
+		temp = CreatePivot()
 		PositionEntity(temp, EntityX(mainPlayer\cam), EntityY(mainPlayer\cam), EntityZ(mainPlayer\cam))
 		PointEntity(temp,obj)
 
@@ -61,7 +61,7 @@ Function UpdateLevers()
 	Local lever.Lever, dist#, prevpitch#
 
 	For lever = Each Lever
-		dist# = EntityDistance(mainPlayer\cam, lever\obj)
+		dist = EntityDistance(mainPlayer\cam, lever\obj)
 
 		If (dist < 8.0) Then
 			If (dist < 0.8 And (Not lever\locked)) Then
@@ -74,7 +74,7 @@ Function UpdateLevers()
 						If (MouseHit1) Then mainPlayer\grabbedEntity = lever\obj
 					EndIf
 
-					prevpitch# = EntityPitch(lever\obj)
+					prevpitch = EntityPitch(lever\obj)
 
 					If ((MouseDown1 Or MouseHit1)) Then
 						If (mainPlayer\grabbedEntity <> 0) Then
@@ -157,8 +157,8 @@ Function UpdateElevators#(state#, door1.Doors, door2.Doors, room1%, room2%, even
 		door2\locked = True
 		door1\npcCalledElevator = 2
 		door2\npcCalledElevator = 2
-		If (State < 0) Then ;ylh��lt� alas
-			State = State - timing\tickDuration
+		If (state < 0) Then ;ylh��lt� alas
+			state = state - timing\tickDuration
 			;pelaaja hissin sis�ll�
 			If (Abs(EntityX(mainPlayer\collider)-EntityX(room1,True))<280.0*RoomScale) Then
 				If (Abs(EntityZ(mainPlayer\collider)-EntityZ(room1,True))<280.0*RoomScale) Then
@@ -169,12 +169,12 @@ Function UpdateElevators#(state#, door1.Doors, door2.Doors, room1%, room2%, even
 							event\soundChannels[0] = PlaySound_SM(sndManager\elevatorMove)
 						EndIf
 
-						mainPlayer\camShake = Sin(Abs(State)/3.0)*0.3
+						mainPlayer\camShake = Sin(Abs(state)/3.0)*0.3
 					EndIf
 				EndIf
 			EndIf
 
-			For n.NPCs = Each NPCs
+			For n = Each NPCs
 				If (n\canUseElevator) Then
 					If (Abs(EntityX(n\collider)-EntityX(room1,True))<280.0*RoomScale) Then
 						If (Abs(EntityZ(n\collider)-EntityZ(room1,True))<280.0*RoomScale) Then
@@ -192,16 +192,16 @@ Function UpdateElevators#(state#, door1.Doors, door2.Doors, room1%, room2%, even
 				NPC_inside\idle = False
 			EndIf
 
-			If (State < -400) Then
+			If (state < -400) Then
 				door1\locked = False
 				door2\locked = False
 				door1\npcCalledElevator = False
 				door2\npcCalledElevator = False
-				State = 0
+				state = 0
 
 				If (inside) Then
-					x# = Max(Min((EntityX(mainPlayer\collider)-EntityX(room1,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
-					z# = Max(Min((EntityZ(mainPlayer\collider)-EntityZ(room1,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
+					x = Max(Min((EntityX(mainPlayer\collider)-EntityX(room1,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
+					z = Max(Min((EntityZ(mainPlayer\collider)-EntityZ(room1,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
 					PositionEntity(mainPlayer\collider, EntityX(room2,True)+x,0.1+EntityY(room2,True)+(EntityY(mainPlayer\collider)-EntityY(room1,True)),EntityZ(room2,True)+z,True)
 					ResetEntity(mainPlayer\collider)
 					UpdateDoorsTimer = 0
@@ -211,13 +211,13 @@ Function UpdateElevators#(state#, door1.Doors, door2.Doors, room1%, room2%, even
 				EndIf
 
 				If (NPC_inside <> Null) Then
-					x# = Max(Min((EntityX(NPC_inside\collider)-EntityX(room1,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
-					z# = Max(Min((EntityZ(NPC_inside\collider)-EntityZ(room1,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
+					x = Max(Min((EntityX(NPC_inside\collider)-EntityX(room1,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
+					z = Max(Min((EntityZ(NPC_inside\collider)-EntityZ(room1,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
 					PositionEntity(NPC_inside\collider, EntityX(room2,True)+x,0.1+EntityY(room2,True)+(EntityY(NPC_inside\collider)-EntityY(room1,True)),EntityZ(room2,True)+z,True)
 					ResetEntity(NPC_inside\collider)
 					UpdateDoorsTimer = 0
 					NPC_inside\dropSpeed = 0
-					If (NPC_inside\idle) Then
+					If (Int(NPC_inside\idle)) Then
 						TurnEntity(NPC_inside\obj,0,180,0)
 						TurnEntity(NPC_inside\collider,0,180,0)
 						NPC_inside\idle = False
@@ -230,7 +230,7 @@ Function UpdateElevators#(state#, door1.Doors, door2.Doors, room1%, room2%, even
 				PlayRangedSound_SM(sndManager\elevatorBeep, mainPlayer\cam, room2, 4.0)
 			EndIf
 		Else ;alhaalta yl�s
-			State = State + timing\tickDuration
+			state = state + timing\tickDuration
 			;pelaaja hissin sis�ll�
 			If (Abs(EntityX(mainPlayer\collider)-EntityX(room2,True))<280.0*RoomScale) Then
 				If (Abs(EntityZ(mainPlayer\collider)-EntityZ(room2,True))<280.0*RoomScale) Then
@@ -241,12 +241,12 @@ Function UpdateElevators#(state#, door1.Doors, door2.Doors, room1%, room2%, even
 							event\soundChannels[0] = PlaySound_SM(sndManager\elevatorMove)
 						EndIf
 
-						mainPlayer\camShake = Sin(Abs(State)/3.0)*0.3
+						mainPlayer\camShake = Sin(Abs(state)/3.0)*0.3
 					EndIf
 				EndIf
 			EndIf
 
-			For n.NPCs = Each NPCs
+			For n = Each NPCs
 				If (n\canUseElevator) Then
 					If (Abs(EntityX(n\collider)-EntityX(room2,True))<280.0*RoomScale) Then
 						If (Abs(EntityZ(n\collider)-EntityZ(room2,True))<280.0*RoomScale) Then
@@ -273,8 +273,8 @@ Function UpdateElevators#(state#, door1.Doors, door2.Doors, room1%, room2%, even
 
 				;pelaaja hissin sis�ll�, siirret��n
 				If (inside) Then
-					x# = Max(Min((EntityX(mainPlayer\collider)-EntityX(room2,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
-					z# = Max(Min((EntityZ(mainPlayer\collider)-EntityZ(room2,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
+					x = Max(Min((EntityX(mainPlayer\collider)-EntityX(room2,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
+					z = Max(Min((EntityZ(mainPlayer\collider)-EntityZ(room2,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
 					PositionEntity(mainPlayer\collider, EntityX(room1,True)+x,0.1+EntityY(room1,True)+(EntityY(mainPlayer\collider)-EntityY(room2,True)),EntityZ(room1,True)+z,True)
 					ResetEntity(mainPlayer\collider)
 					UpdateDoorsTimer = 0
@@ -284,13 +284,13 @@ Function UpdateElevators#(state#, door1.Doors, door2.Doors, room1%, room2%, even
 				EndIf
 
 				If (NPC_inside <> Null) Then
-					x# = Max(Min((EntityX(NPC_inside\collider)-EntityX(room2,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
-					z# = Max(Min((EntityZ(NPC_inside\collider)-EntityZ(room2,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
+					x = Max(Min((EntityX(NPC_inside\collider)-EntityX(room2,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
+					z = Max(Min((EntityZ(NPC_inside\collider)-EntityZ(room2,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
 					PositionEntity(NPC_inside\collider, EntityX(room1,True)+x,0.1+EntityY(room1,True)+(EntityY(NPC_inside\collider)-EntityY(room2,True)),EntityZ(room1,True)+z,True)
 					ResetEntity(NPC_inside\collider)
 					UpdateDoorsTimer = 0
 					NPC_inside\dropSpeed = 0
-					If (NPC_inside\idle) Then
+					If (Int(NPC_inside\idle)) Then
 						TurnEntity(NPC_inside\obj,0,180,0)
 						TurnEntity(NPC_inside\collider,0,180,0)
 						NPC_inside\idle = False
@@ -365,9 +365,9 @@ Function UpdateElevators2#(State#, door1.Doors, door2.Doors, room1%, room2%, eve
 
 				If (inside) Then
 
-					dist# = Distance(EntityX(mainPlayer\collider,True),EntityZ(mainPlayer\collider,True),EntityX(room1,True),EntityZ(room1,True))
+					dist = Distance(EntityX(mainPlayer\collider,True),EntityZ(mainPlayer\collider,True),EntityX(room1,True),EntityZ(room1,True))
 
-					dir# = GetAngle(EntityX(mainPlayer\collider,True),EntityZ(mainPlayer\collider,True),EntityX(room1,True),EntityZ(room1,True))
+					dir = GetAngle(EntityX(mainPlayer\collider,True),EntityZ(mainPlayer\collider,True),EntityX(room1,True),EntityZ(room1,True))
 					dir=dir+EntityYaw(room2,True)-EntityYaw(room1,True);EntityYaw(room2,True)+angleDist(dir,EntityYaw(room1,True))
 					;dir=dir-90.0
 
@@ -375,8 +375,8 @@ Function UpdateElevators2#(State#, door1.Doors, door2.Doors, room1%, room2%, eve
 
 					dir=WrapAngle(dir)
 
-					x# = Max(Min(Cos(dir)*dist,280*RoomScale-0.17),-280*RoomScale+0.17)
-					z# = Max(Min(Sin(dir)*dist,280*RoomScale-0.17),-280*RoomScale+0.17)
+					x = Max(Min(Cos(dir)*dist,280*RoomScale-0.17),-280*RoomScale+0.17)
+					z = Max(Min(Sin(dir)*dist,280*RoomScale-0.17),-280*RoomScale+0.17)
 
 					;x# = Max(Min((EntityX(mainPlayer\collider)-EntityX(room1,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
 					;z# = Max(Min((EntityZ(mainPlayer\collider)-EntityZ(room1,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
@@ -420,9 +420,9 @@ Function UpdateElevators2#(State#, door1.Doors, door2.Doors, room1%, room2%, eve
 				;pelaaja hissin sis�ll? siirret��n
 				If (inside) Then
 
-					dist# = Distance(EntityX(mainPlayer\collider,True),EntityZ(mainPlayer\collider,True),EntityX(room2,True),EntityZ(room2,True))
+					dist = Distance(EntityX(mainPlayer\collider,True),EntityZ(mainPlayer\collider,True),EntityX(room2,True),EntityZ(room2,True))
 
-					dir# = GetAngle(EntityX(mainPlayer\collider,True),EntityZ(mainPlayer\collider,True),EntityX(room2,True),EntityZ(room2,True))
+					dir = GetAngle(EntityX(mainPlayer\collider,True),EntityZ(mainPlayer\collider,True),EntityX(room2,True),EntityZ(room2,True))
 					dir=dir+EntityYaw(room1,True)-EntityYaw(room2,True) ;EntityYaw(room1,True)+angleDist(dir,EntityYaw(room2,True))
 					;dir=dir-90.0
 
@@ -430,8 +430,8 @@ Function UpdateElevators2#(State#, door1.Doors, door2.Doors, room1%, room2%, eve
 
 					;dir=WrapAngle(dir)
 
-					x# = Max(Min(Cos(dir)*dist,280*RoomScale-0.17),-280*RoomScale+0.17)
-					z# = Max(Min(Sin(dir)*dist,280*RoomScale-0.17),-280*RoomScale+0.17)
+					x = Max(Min(Cos(dir)*dist,280*RoomScale-0.17),-280*RoomScale+0.17)
+					z = Max(Min(Sin(dir)*dist,280*RoomScale-0.17),-280*RoomScale+0.17)
 
 					;x# = Max(Min((EntityX(mainPlayer\collider)-EntityX(room2,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
 					;z# = Max(Min((EntityZ(mainPlayer\collider)-EntityZ(room2,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
@@ -464,9 +464,9 @@ End Type
 Function AssignElevatorObj.ElevatorObj(obj%,door.Doors,in_facility%)
 	Local eo.ElevatorObj = New ElevatorObj
 
-	eo\obj% = obj%
+	eo\obj = obj
 	eo\door = door
-	eo\inFacility% = in_facility%
+	eo\inFacility = in_facility
 
 	Return eo
 End Function

@@ -25,7 +25,7 @@ Function UpdateNPCtype066(n.NPCs)
                 ;Animate2(n\obj, AnimTime(n\obj), 451, 612, 0.2, True)
 
                 If (n\state2 < TimeInPosMilliSecs()) Then
-                    For w.WayPoints = Each WayPoints
+                    For w = Each WayPoints
                         ;If (w\door = Null) Then ;TODO: fix?
 						If (Abs(EntityX(w\obj,True)-EntityX(n\collider))<4.0) Then
 							If (Abs(EntityZ(w\obj,True)-EntityZ(n\collider))<4.0) Then
@@ -57,7 +57,7 @@ Function UpdateNPCtype066(n.NPCs)
                 ;If (AnimTime(n\obj)=646) Then SetAnimTime(n\obj, 2)
             EndIf
 
-			If (Rand(700)=1) Then PlayRangedSound(LoadTempSound("SFX/SCP/066/Eric"+Rand(1,3)+".ogg"),mainPlayer\cam, n\collider, 8.0)
+			If (Rand(700)=1) Then PlayRangedSound(LoadTempSound("SFX/SCP/066/Eric"+Str(Rand(1,3))+".ogg"),mainPlayer\cam, n\collider, 8.0)
 
             If (n\playerDistance < 1.0+n\lastDist) Then n\state = Rand(2,3)
         Case 2 ;roll towards the player and make a sound, and then escape
@@ -75,9 +75,9 @@ Function UpdateNPCtype066(n.NPCs)
                 If (n\frame=683) Then
                     If (n\state2 = 0) Then
                         If (Rand(2)=1) Then
-                            PlayRangedSound(LoadTempSound("SFX/SCP/066/Eric"+Rand(1,3)+".ogg"),mainPlayer\cam, n\collider, 8.0)
+                            PlayRangedSound(LoadTempSound("SFX/SCP/066/Eric"+Str(Rand(1,3))+".ogg"),mainPlayer\cam, n\collider, 8.0)
                         Else
-                            PlayRangedSound(LoadTempSound("SFX/SCP/066/Notes"+Rand(1,6)+".ogg"), mainPlayer\cam, n\collider, 8.0)
+                            PlayRangedSound(LoadTempSound("SFX/SCP/066/Notes"+Str(Rand(1,6))+".ogg"), mainPlayer\cam, n\collider, 8.0)
                         EndIf
 
                         Select Rand(1,6)
@@ -88,7 +88,7 @@ Function UpdateNPCtype066(n.NPCs)
                             Case 2
                                 n\state3 = Rand(700,1400)
                             Case 3
-                                For d.Doors = Each Doors
+                                For d = Each Doors
                                     If (d\locked = False And d\keyCard = 0 And d\code = "") Then
                                         If (Abs(EntityX(d\frameobj)-EntityX(n\collider))<16.0) Then
                                             If (Abs(EntityZ(d\frameobj)-EntityZ(n\collider))<16.0) Then
@@ -100,7 +100,7 @@ Function UpdateNPCtype066(n.NPCs)
                             Case 4
                                 If (mainPlayer\currRoom\roomTemplate\disableDecals = False) Then
                                     mainPlayer\camShake = 5.0
-                                    de.Decals = CreateDecal(1, EntityX(n\collider), 0.01, EntityZ(n\collider), 90, Rand(360), 0)
+                                    de = CreateDecal(1, EntityX(n\collider), 0.01, EntityZ(n\collider), 90, Rand(360), 0)
                                     de\size = 0.3 : UpdateDecals()
                                     PlaySound2(LoadTempSound("SFX/General/BodyFall.ogg"))
                                     If (Distance(EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider),EntityX(n\collider),EntityZ(n\collider))<0.8) Then

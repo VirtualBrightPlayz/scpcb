@@ -1,5 +1,5 @@
 
-Function sky_CreateSky(filename$,parent%=0)
+Function sky_CreateSky%(filename$,parent%=0)
 	Local sky%
 	Local fname$
 	Local direction$
@@ -24,10 +24,10 @@ Function sky_CreateSky(filename$,parent%=0)
 			Case 6
 				direction = "_down"
 		End Select
-		fname$ = filename$ + direction$ + ".jpg"
-		If (FileType(fname$)=1) Then
-			b% = LoadBrush(fname$,%110001)
-			s% = CreateSurface(sky,b)
+		fname = filename + direction + ".jpg"
+		If (FileType(fname)=1) Then
+			b = LoadBrush(fname,%110001)
+			s = CreateSurface(sky,b)
 			
 			;TODO: finish and remove Data
 			Select face
@@ -62,7 +62,6 @@ End Function
 Function Update1499Sky()
 	PositionEntity(NTF_1499Sky, EntityX(mainPlayer\cam),EntityY(mainPlayer\cam),EntityZ(mainPlayer\cam), True)
 End Function
-
 
 ;-----------------------------------------------------------------------
 ;Data

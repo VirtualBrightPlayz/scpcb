@@ -27,7 +27,7 @@ Function ReadByteString$(stream%)
 	Local retVal$ = ""
 	Local length% = ReadByte(stream)
 	Local i%
-	For i% = 1 To length
+	For i = 1 To length
 		retVal=retVal+Chr(ReadByte(stream))
 	Next
 	Return retVal
@@ -55,7 +55,7 @@ Function LoadRM2(rt.RoomTemplates)
 
 	Local header$ = ""
 	Local i%
-	For i% = 0 To 3
+	For i = 0 To 3
 		header=header+Chr(ReadByte(file))
 	Next
 
@@ -125,7 +125,7 @@ Function LoadRM2(rt.RoomTemplates)
 			Case RM2_TEXTURES
 				;[Block]
 				count = ReadByte(file)
-				For i% = 0 To count-1
+				For i = 0 To count-1
 					texName = ReadByteString(file)
 					flags = ReadByte(file)
 					loadFlags = flags Shr 4
@@ -162,12 +162,12 @@ Function LoadRM2(rt.RoomTemplates)
 				brush = 0
 
 				layerCount = 0
-				For i% = 0 To 1
+				For i = 0 To 1
 					textureIndex[i] = ReadByte(file)
 					If (textureIndex[i]>0) Then layerCount=layerCount+1
 				Next
 
-				For i% = 0 To 1
+				For i = 0 To 1
 					mat = Null
 					If (textureIndex[i]>0) Then
 						mat = Object.Materials(GetIntArrayListElem(usedTextures,textureIndex[i]-1))
@@ -190,14 +190,14 @@ Function LoadRM2(rt.RoomTemplates)
 
 				;vertices
 				count = ReadShort(file)
-				For i%=0 To count-1
+				For i=0 To count-1
 					x = ReadFloat(file) : y = ReadFloat(file) : z = ReadFloat(file)
 
 					r = ReadByte(file) : g = ReadByte(file) : b = ReadByte(file)
 
 					AddVertex(surf,x,y,z)
 					VertexColor(surf,i,r,g,b,1.0)
-					For j%=0 To 1
+					For j=0 To 1
 						u = ReadFloat(file) : v = ReadFloat(file)
 						VertexTexCoords(surf,i,u,v,0.0,j)
 					Next
@@ -205,7 +205,7 @@ Function LoadRM2(rt.RoomTemplates)
 
 				;triangles
 				count = ReadShort(file)
-				For i%=0 To count-1
+				For i=0 To count-1
 					vert1 = ReadShort(file)
 					vert2 = ReadShort(file)
 					vert3 = ReadShort(file)
@@ -241,7 +241,7 @@ Function LoadRM2(rt.RoomTemplates)
 				;vertices
 				count = ReadShort(file)
 
-				For i%=0 To count-1
+				For i=0 To count-1
 					x = ReadFloat(file) : y = ReadFloat(file) : z = ReadFloat(file)
 
 					AddVertex(surf,x,y,z)
@@ -251,7 +251,7 @@ Function LoadRM2(rt.RoomTemplates)
 				;triangles
 				count = ReadShort(file)
 
-				For i%=0 To count-1
+				For i=0 To count-1
 					vert1 = ReadShort(file)
 					vert2 = ReadShort(file)
 					vert3 = ReadShort(file)
@@ -280,7 +280,7 @@ Function LoadRM2(rt.RoomTemplates)
 				waypointTemp\x = ReadFloat(file)
 				waypointTemp\y = ReadFloat(file)
 				waypointTemp\z = ReadFloat(file)
-				For i% = 0 To 16
+				For i = 0 To 16
 					waypointTemp\connectedTo[i] = ReadByte(file)
 					If (waypointTemp\connectedTo[i]=0) Then Exit
 				Next
@@ -337,7 +337,7 @@ Function LoadRM2(rt.RoomTemplates)
 				innerConeAngle = ReadFloat(file)
 				outerConeAngle = ReadFloat(file)
 
-				lightTemplate = AddTempLight(rt, x,y,z, LIGHTTYPE_SPOT, range, r*intensity,g*intensity,b*intensity)
+				lightTemplate = AddTempLight(rt, x,y,z, LIGHTTYPE_SPOT, range, Int(r*intensity),Int(g*intensity),Int(b*intensity))
 
 				lightTemplate\pitch = pitch
 				lightTemplate\yaw = yaw
@@ -389,7 +389,7 @@ Function LoadRM2(rt.RoomTemplates)
 				PushIntArrayListElem(props,Handle(prop))
 				;[End Block]
 			Default
-				RuntimeError("Error after reading type "+prevType)
+				RuntimeError("Error after reading type "+Str(prevType))
 		End Select
 	Wend
 

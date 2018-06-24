@@ -13,7 +13,7 @@ Function UpdateEvent106victim(e.Events)
 	If ((Not Contained106)) Then
 		If (mainPlayer\currRoom = e\room) Then
 			If (e\eventState = 0) Then
-				de.Decals = CreateDecal(0, EntityX(e\room\obj), 799.0*RoomScale, EntityZ(e\room\obj), -90, Rand(360), 0)
+				de = CreateDecal(0, EntityX(e\room\obj), 799.0*RoomScale, EntityZ(e\room\obj), -90, Rand(360), 0)
 				de\size = 0.05 : de\sizeChange = 0.0015 : EntityAlpha(de\obj, 0.8) : UpdateDecals()
 				;TODO: fix
 				;PlayRangedSound(DecaySFX(3), mainPlayer\cam, de\obj, 15.0)
@@ -43,9 +43,9 @@ Function UpdateEvent106victim(e.Events)
 				EntityType(e\room\npc[0]\collider,HIT_PLAYER)
 				If (EntityY(e\room\npc[0]\collider)>0.35) Then
 					AnimateNPC(e\room\npc[0], 1, 10, 0.12, False)
-					dist# = EntityDistance(mainPlayer\collider,e\room\npc[0]\collider)
+					dist = EntityDistance(mainPlayer\collider,e\room\npc[0]\collider)
 					If (dist<0.8) Then ;get the player out of the way
-						fdir# = GetAngle(EntityX(mainPlayer\collider,True),EntityZ(mainPlayer\collider,True),EntityX(e\room\npc[0]\collider,True),EntityZ(e\room\npc[0]\collider,True))
+						fdir = GetAngle(EntityX(mainPlayer\collider,True),EntityZ(mainPlayer\collider,True),EntityX(e\room\npc[0]\collider,True),EntityZ(e\room\npc[0]\collider,True))
 						TranslateEntity(mainPlayer\collider,Cos(-fdir+90)*(dist-0.8)*(dist-0.8),0,Sin(-fdir+90)*(dist-0.8)*(dist-0.8))
 					EndIf
 
@@ -58,7 +58,7 @@ Function UpdateEvent106victim(e.Events)
 						LoadEventSound(e,"SFX/General/BodyFall.ogg")
 						PlaySound2(e\sounds[0])
 
-						de.Decals = CreateDecal(0, EntityX(e\room\obj), 0.001, EntityZ(e\room\obj), 90, Rand(360), 0)
+						de = CreateDecal(0, EntityX(e\room\obj), 0.001, EntityZ(e\room\obj), 90, Rand(360), 0)
 						de\size = 0.4 : EntityAlpha(de\obj, 0.8) : UpdateDecals()
 					EndIf
 

@@ -4,7 +4,7 @@ Function FillRoom_hll_fan_2(r.Rooms)
 	Local xtemp%, ytemp%, ztemp%
 
 	Local t1%;, Bump
-    For r2.Rooms = Each Rooms
+    For r2 = Each Rooms
         If (r2<>r) Then
             If (r2\roomTemplate\name = "room2_2") Then
                 r\objects[0] = CopyEntity(r2\objects[0]) ;don't load the mesh again
@@ -45,7 +45,7 @@ Function UpdateEventRoom2fan(e.Events)
 	If (e\room\dist < 16.0) Then
 		If (e\eventState < 0) Then
 			e\eventState = Rand(15,30)*70
-			temp = e\eventState2
+			temp = Int(e\eventState2)
 			e\eventState2 = Rand(0,1)
 			If (mainPlayer\currRoom<>e\room) Then
 				e\eventState3 = e\eventState2*5

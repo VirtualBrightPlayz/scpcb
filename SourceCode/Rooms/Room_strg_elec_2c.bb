@@ -12,7 +12,7 @@ Function FillRoom_strg_elec_2c(r.Rooms)
     EntityParent(it\collider, r\obj)
 
 	Local n%
-    For n% = 0 To 2
+    For n = 0 To 2
         r\levers[n] = CreateLever()
 
 		ScaleEntity(r\levers[n]\obj, 0.04, 0.04, 0.04)
@@ -30,7 +30,7 @@ Function FillRoom_strg_elec_2c(r.Rooms)
         EntityRadius(r\levers[n]\obj, 0.1)
     Next
 
-    sc.SecurityCams = CreateSecurityCam(r\x-265.0*RoomScale, r\y+1280.0*RoomScale, r\z+105.0*RoomScale, r)
+    sc = CreateSecurityCam(r\x-265.0*RoomScale, r\y+1280.0*RoomScale, r\z+105.0*RoomScale, r)
     sc\angle = 45
     sc\turn = 45
     TurnEntity(sc\cameraObj, 20, 0, 0)
@@ -68,7 +68,7 @@ Function UpdateEvent_strg_elec_2c(e.Events)
 				EndIf
 			EndIf
 
-			prevpitch# = EntityPitch(e\room\objects[i])
+			prevpitch = EntityPitch(e\room\objects[i])
 
 			If (MouseDown1 Or MouseHit1) Then
 				If (mainPlayer\grabbedEntity <> 0) Then
@@ -107,9 +107,9 @@ Function UpdateEvent_strg_elec_2c(e.Events)
 				If (i = 3) Then
 					If (prevpitch => -83) Then
 						PlayRangedSound_SM(sndManager\lightSwitch, mainPlayer\cam, e\room\objects[i])
-						For r.Rooms = Each Rooms
+						For r = Each Rooms
 							For z = 0 To 19
-								If (r\lightSprites[z] <> 0) Then HideEntity(r\lightSprites[z])
+								If (r\lightSprites[Int(z)] <> 0) Then HideEntity(r\lightSprites[Int(z)])
 							Next
 						Next
 					EndIf

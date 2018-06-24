@@ -29,7 +29,7 @@ Function FillRoom_lck_ez_3(r.Rooms)
     PositionEntity(r\objects[0],r\x-48.0*RoomScale,128.0*RoomScale,r\z+320.0*RoomScale)
     EntityParent(r\objects[0],r\obj)
 
-    For r2.Rooms = Each Rooms
+    For r2 = Each Rooms
         If (r2<>r) Then
             If (r2\roomTemplate\name = "room3gw") Then
                 r\objects[3] = CopyEntity(r2\objects[3],r\obj) ;don't load the mesh again

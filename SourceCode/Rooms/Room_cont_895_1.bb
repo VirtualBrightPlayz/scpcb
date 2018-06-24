@@ -9,7 +9,7 @@ Function FillRoom_cont_895_1(r.Rooms)
     d\autoClose = False : d\open = False
     PositionEntity(d\buttons[0], r\x - 384.0 * RoomScale, 0.7, r\z - 280.0 * RoomScale, True)
 
-    sc.SecurityCams = CreateSecurityCam(r\x - 320.0 * RoomScale, r\y + 704 * RoomScale, r\z + 288.0 * RoomScale, r, True)
+    sc = CreateSecurityCam(r\x - 320.0 * RoomScale, r\y + 704 * RoomScale, r\z + 288.0 * RoomScale, r, True)
     sc\angle = 45 + 180
     sc\turn = 45
     sc\coffinEffect = True
@@ -91,14 +91,14 @@ Function UpdateEventCoffin(e.Events)
 		;SCP-079 starts broadcasting 895 camera feed on monitors after leaving the first zone
 		;TODO: rewrite this to adjust for separate zone loading
 		If (EntityPitch(e\room\levers[0]\obj, True) > 0) Then ;camera feed on
-			For sc.SecurityCams = Each SecurityCams
+			For sc = Each SecurityCams
 				If ((Not sc\specialCam)) Then
 					If (sc\coffinEffect=0 And sc\room\roomTemplate\name<>"room106" And sc\room\roomTemplate\name<>"room205") Then sc\coffinEffect = 2
 					If (sc\room = e\room) Then sc\screen = True
 				EndIf
 			Next
 		Else ;camera feed off
-			For sc.SecurityCams = Each SecurityCams
+			For sc = Each SecurityCams
 				If ((Not sc\specialCam)) Then
 					If (sc\coffinEffect<>1) Then sc\coffinEffect = 0
 					If (sc\room = e\room) Then sc\screen = False
@@ -113,7 +113,7 @@ Function UpdateEventCoffin(e.Events)
 		CoffinDistance = EntityDistance(mainPlayer\collider, e\room\objects[1])
 		If (CoffinDistance < 1.5) Then
 			If ((Not Contained106) And e\name="coffin106" And e\eventState2 = 0) Then
-				de.Decals = CreateDecal(0, EntityX(e\room\objects[1],True), -1531.0*RoomScale, EntityZ(e\room\objects[1],True), 90, Rand(360), 0)
+				de = CreateDecal(0, EntityX(e\room\objects[1],True), -1531.0*RoomScale, EntityZ(e\room\objects[1],True), 90, Rand(360), 0)
 				de\size = 0.05 : de\sizeChange = 0.001 : EntityAlpha(de\obj, 0.8) : UpdateDecals()
 
 				If (Curr106\state > 0) Then
@@ -127,8 +127,8 @@ Function UpdateEventCoffin(e.Events)
 
 		;TODO: cleanup
 		If (IsPlayerWearingTempName(mainPlayer,"nvgoggles")) Then
-			hasBatteryFor895% = 0
-			For i% = 0 To mainPlayer\inventory\size - 1
+			hasBatteryFor895 = 0
+			For i = 0 To mainPlayer\inventory\size - 1
 				If ((mainPlayer\inventory\items[i] <> Null)) Then
 					If ((mainPlayer\inventory\items[i]\itemtemplate\name = "nvgoggles" Or mainPlayer\inventory\items[i]\itemtemplate\name = "supernv") And IsPlayerWearingItem(mainPlayer,mainPlayer\inventory\items[i])) Then
 						If (mainPlayer\inventory\items[i]\state > 0.0) Then
@@ -146,14 +146,14 @@ Function UpdateEventCoffin(e.Events)
 					mainPlayer\sanity895 = mainPlayer\sanity895-(timing\tickDuration*1.1);/WearingNightVision)
 					mainPlayer\blurTimer = Sin(TimeInPosMilliSecs()/10)*Abs(mainPlayer\sanity895)
 
-				    tempF# = GetAngle(EntityX(mainPlayer\collider,True),EntityZ(mainPlayer\collider,True),EntityX(e\room\objects[1],True),EntityZ(e\room\objects[1],True))
-					tempF2# = EntityYaw(mainPlayer\collider)
-					tempF3# = angleDist(tempF+90+Sin(WrapAngle(e\eventState3/10)),tempF2)
+				    tempF = GetAngle(EntityX(mainPlayer\collider,True),EntityZ(mainPlayer\collider,True),EntityX(e\room\objects[1],True),EntityZ(e\room\objects[1],True))
+					tempF2 = EntityYaw(mainPlayer\collider)
+					tempF3 = angleDist(tempF+90+Sin(WrapAngle(e\eventState3/10)),tempF2)
 
 					TurnEntity(mainPlayer\collider, 0,tempF3/4,0,True)
 
-					tempF# = Abs(Distance(EntityX(mainPlayer\collider,True),EntityZ(mainPlayer\collider,True),EntityX(e\room\objects[1],True),EntityZ(e\room\objects[1],True)))
-					tempF2# = -60.0 * Min(Max((2.0-tempF)/2.0,0.0),1.0)
+					tempF = Abs(Distance(EntityX(mainPlayer\collider,True),EntityZ(mainPlayer\collider,True),EntityX(e\room\objects[1],True),EntityZ(e\room\objects[1],True)))
+					tempF2 = -60.0 * Min(Max((2.0-tempF)/2.0,0.0),1.0)
 
 					mainPlayer\headPitch=(mainPlayer\headPitch * 0.8)+(tempF2 * 0.2)
 
@@ -192,17 +192,17 @@ Function UpdateEventCoffin(e.Events)
 		;TODO
 		;ShouldPlay = 66
 
-		If ((e\room\levers[0]\succ)) Then
-			For sc.SecurityCams = Each SecurityCams
-				If ((Not sc\specialCam)) Then
+		If (e\room\levers[0]\succ) Then
+			For sc = Each SecurityCams
+				If (Not sc\specialCam) Then
 					If (sc\coffinEffect=0 And sc\room\roomTemplate\name<>"room106") Then sc\coffinEffect = 2
 					If (sc\coffinEffect = 1) Then EntityBlend(sc\scrOverlay, 3)
 					If (sc\room = e\room) Then sc\screen = True
 				EndIf
 			Next
 		Else
-			For sc.SecurityCams = Each SecurityCams
-				If ((Not sc\specialCam)) Then
+			For sc = Each SecurityCams
+				If (Not sc\specialCam) Then
 					If (sc\coffinEffect <> 1) Then sc\coffinEffect = 0
 					If (sc\coffinEffect = 1) Then EntityBlend(sc\scrOverlay, 0)
 					If (sc\room = e\room) Then sc\screen = False

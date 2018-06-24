@@ -93,7 +93,7 @@ Function CreateItemTemplate(file$, section$)
 			it\bodySlot = WORNITEM_SLOT_NONE
 	End Select
 
-	Local sound$ = Lower(GetINIInt(file, section, "sound"))
+	Local sound$ = Lower(GetINIString(file, section, "sound"))
 	Select sound
 		Case "medium"
 			it\sound = ITEMPICK_SOUND_MEDIUM
@@ -243,7 +243,7 @@ Type Items
 	Field zspeed#
 	Field id%
 
-	Field Inventory.Inventory = Null
+	Field subInventory.Inventory = Null
 End Type
 
 Const MAX_ITEM_COUNT% = 20
@@ -287,7 +287,7 @@ Function CreateItem.Items(name$, tempname$, x#, y#, z#, r# = 1.0, g# = 1.0, b# =
 	name = Lower(name)
 	tempname = Lower(tempname)
 
-	For it.ItemTemplates = Each ItemTemplates
+	For it = Each ItemTemplates
 		If (Lower(it\name) = name) Then
 			If (Lower(it\name) = tempname) Then
 				i\itemtemplate = it
@@ -345,9 +345,9 @@ Function CreateItem.Items(name$, tempname$, x#, y#, z#, r# = 1.0, g# = 1.0, b# =
 ;		i\invimg = i\itemtemplate\invimg2
 ;	EndIf
 
-	i\inventory = Null
+	i\subInventory = Null
 	If (invSlots>0) Then
-		i\inventory = CreateInventory(invSlots)
+		i\subInventory = CreateInventory(invSlots)
 	EndIf
 
 	i\id=LastItemID+1
@@ -357,7 +357,7 @@ Function CreateItem.Items(name$, tempname$, x#, y#, z#, r# = 1.0, g# = 1.0, b# =
 End Function
 
 Function RemoveItem(i.Items)
-	If (i\inventory<>Null) Then DeleteInventory(i\inventory)
+	If (i\subInventory<>Null) Then DeleteInventory(i\subInventory)
 
 	DropItem(i,False)
 
@@ -378,13 +378,13 @@ Function UpdateItems()
 	Local xtemp#, ytemp#, ztemp#
 	Local temp%, np.NPCs
 
-	Local HideDist% = HideDistance*0.5
+	Local HideDist# = HideDistance*0.5
 	Local deletedItem% = False
 	
 	Local ed#
 
 	mainPlayer\closestItem = Null
-	For i.Items = Each Items
+	For i = Each Items
 		i\dropped = 0
 
 		If ((Not i\picked)) Then
@@ -421,12 +421,12 @@ Function UpdateItems()
 				EndIf
 
 				If (i\dist<HideDist*0.2) Then
-					For i2.Items = Each Items
+					For i2 = Each Items
 						If (i<>i2 And (Not i2\picked) And i2\dist<HideDist*0.2) Then
 
-							xtemp# = (EntityX(i2\collider,True)-EntityX(i\collider,True))
-							ytemp# = (EntityY(i2\collider,True)-EntityY(i\collider,True))
-							ztemp# = (EntityZ(i2\collider,True)-EntityZ(i\collider,True))
+							xtemp = (EntityX(i2\collider,True)-EntityX(i\collider,True))
+							ytemp = (EntityY(i2\collider,True)-EntityY(i\collider,True))
+							ztemp = (EntityZ(i2\collider,True)-EntityZ(i\collider,True))
 
 							ed = (xtemp*xtemp+ztemp*ztemp)
 							If (ed<0.07 And Abs(ytemp)<0.25) Then
@@ -474,7 +474,7 @@ Function PickItem(item.Items)
 	Local z%
 
 	If (CountItemsInInventory(mainPlayer\inventory) < mainPlayer\inventory\size) Then
-		For n% = 0 To mainPlayer\inventory\size - 1
+		For n = 0 To mainPlayer\inventory\size - 1
 			If (mainPlayer\inventory\items[n] = Null) Then
 				Select item\itemtemplate\name
 					Case "1123"
@@ -489,7 +489,7 @@ Function PickItem(item.Items)
 							Kill(mainPlayer)
 							Return
 						EndIf
-						For e.Events = Each Events
+						For e = Each Events
 							If (e\name = "room1123") Then
 								If (e\eventState = 0) Then
 									ShowEntity(mainPlayer\overlays[OVERLAY_WHITE])
@@ -518,7 +518,7 @@ Function PickItem(item.Items)
 						MsgTimer = 70 * 5
 						mainPlayer\wornItems[WORNITEM_SLOT_BODY] = item
 
-						For z% = 0 To mainPlayer\inventory\size - 1
+						For z = 0 To mainPlayer\inventory\size - 1
 							If (mainPlayer\inventory\items[z] <> Null) Then
 								If (mainPlayer\inventory\items[z]\itemtemplate\name="hazmatsuit" Or mainPlayer\inventory\items[z]\itemtemplate\name="hazmatsuit2" Or mainPlayer\inventory\items[z]\itemtemplate\name="hazmatsuit3") Then
 									DropItem(mainPlayer\inventory\items[z])
@@ -547,7 +547,7 @@ End Function
 
 Function DropItem(item.Items,playDropSound%=True)
 	Local player.Player
-	For player.Player = Each Player
+	For player = Each Player
 		DeEquipItem(player,item)
 	Next
 
@@ -587,8 +587,8 @@ Function DropItem(item.Items,playDropSound%=True)
 	item\picked = False
 	Local inv.Inventory
 	Local j%
-	For inv.Inventory = Each Inventory
-		For j%=0 To inv\size-1
+	For inv = Each Inventory
+		For j=0 To inv\size-1
 			If (inv\items[j]=item) Then inv\items[j]=Null
 		Next
 	Next

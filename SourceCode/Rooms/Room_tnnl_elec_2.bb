@@ -29,7 +29,7 @@ Function UpdateEventTunnel2smoke(e.Events)
 		If (e\room\dist < 3.5) Then
 			PlayRangedSound(LoadTempSound("SFX/SCP/914/PlayerUse.ogg"), mainPlayer\cam, e\room\obj)
 			For i = 0 To 1
-				em.Emitters = CreateEmitter(EntityX(e\room\objects[i],True),EntityY(e\room\objects[i],True), EntityZ(e\room\objects[i],True),0)
+				em = CreateEmitter(EntityX(e\room\objects[i],True),EntityY(e\room\objects[i],True), EntityZ(e\room\objects[i],True),0)
 				TurnEntity(em\obj, 90, 0, 0, True)
 				EntityParent(em\obj, e\room\obj)
 				em\size = 0.05
@@ -39,7 +39,7 @@ Function UpdateEventTunnel2smoke(e.Events)
 				;EntityParent(em\obj, e\room\obj)
 
 				For z = 0 To 10
-					p.Particles = CreateParticle(EntityX(em\obj, True), 448*RoomScale, EntityZ(em\obj, True), Rand(em\minImage, em\maxImage), em\size, em\gravity, em\lifeTime)
+					p = CreateParticle(EntityX(em\obj, True), 448*RoomScale, EntityZ(em\obj, True), Rand(em\minImage, em\maxImage), em\size, em\gravity, em\lifeTime)
 					p\speed = em\speed
 					RotateEntity(p\pvt, Rnd(360), Rnd(360), 0, True)
 					p\size = 0.05

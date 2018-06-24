@@ -32,7 +32,7 @@ Function FillRoom_tnnl_nuke_2(r.Rooms)
     EntityParent(r\objects[5], r\obj)
 
 	Local n%
-    For n% = 0 To 1
+    For n = 0 To 1
         r\levers[n] = CreateLever()
 
         ScaleEntity(r\levers[n]\obj, 0.04, 0.04, 0.04)
@@ -61,7 +61,7 @@ Function FillRoom_tnnl_nuke_2(r.Rooms)
     it = CreateItem("Dr L's Note", "paper", r\x + 800.0 * RoomScale, 88.0 * RoomScale, r\z + 256.0 * RoomScale)
     EntityParent(it\collider, r\obj)
 
-    sc.SecurityCams = CreateSecurityCam(r\x+624.0*RoomScale, r\y+1888.0*RoomScale, r\z-312.0*RoomScale, r)
+    sc = CreateSecurityCam(r\x+624.0*RoomScale, r\y+1888.0*RoomScale, r\z-312.0*RoomScale, r)
     sc\angle = 90
     sc\turn = 45
     TurnEntity(sc\cameraObj, 20, 0, 0)

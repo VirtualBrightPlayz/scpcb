@@ -43,7 +43,7 @@ Function UpdateEvent_cont_500_1499_2(e.Events)
 			If (e\eventState = 0.0) Then
 				LoadEventSound(e,"SFX/Character/Scientist/EmilyScream.ogg")
 				e\soundChannels[0] = PlayRangedSound(e\sounds[0], mainPlayer\cam, e\room\objects[0], 100, 1.0)
-				de.Decals = CreateDecal(0, EntityX(e\room\objects[0],True), e\room\y+2.0*RoomScale, EntityZ(e\room\objects[0],True), 90, Rand(360), 0)
+				de = CreateDecal(0, EntityX(e\room\objects[0],True), e\room\y+2.0*RoomScale, EntityZ(e\room\objects[0],True), 90, Rand(360), 0)
 				de\size = 0.5 : EntityAlpha(de\obj, 0.8)
 				EntityFX(de\obj,1)
 				e\eventState = 1.0
@@ -58,7 +58,7 @@ Function UpdateEvent_cont_500_1499_2(e.Events)
 		Else
 			DebugLog("Removed 'room2scps2' event")
 			e\room\roomDoors[0]\locked = False
-			de.Decals = CreateDecal(0, EntityX(e\room\objects[0],True), e\room\y+2.0*RoomScale, EntityZ(e\room\objects[0],True), 90, Rand(360), 0)
+			de = CreateDecal(0, EntityX(e\room\objects[0],True), e\room\y+2.0*RoomScale, EntityZ(e\room\objects[0],True), 90, Rand(360), 0)
 			de\size = 0.5 : EntityAlpha(de\obj, 0.8)
 			EntityFX(de\obj,1)
 			RemoveEvent(e)

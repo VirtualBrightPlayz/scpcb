@@ -58,7 +58,7 @@ Function UpdateEvent_dimension1499(e.Events)
 ;				e\eventState = 2.0
 ;			EndIf
 			;[End Block]
-			For n.NPCs = Each NPCs
+			For n = Each NPCs
 				If (n\npcType = NPCtype1499) Then
 					n\idle = False
 					n\state = 0
@@ -75,7 +75,7 @@ Function UpdateEvent_dimension1499(e.Events)
 		CameraClsColor(mainPlayer\cam,96,97,104)
 		CameraRange(mainPlayer\cam,0.05,90)
 
-		For r.Rooms = Each Rooms
+		For r = Each Rooms
 			HideEntity(r\obj)
 		Next
 		ShowEntity(e\room\obj)
@@ -92,7 +92,7 @@ Function UpdateEvent_dimension1499(e.Events)
 		If (e\eventState = 2.0) Then
 			HideEntity(NTF_1499Sky)
 			HideChunks()
-			For n.NPCs = Each NPCs
+			For n = Each NPCs
 				If (n\npcType = NPCtype1499) Then
 					;RemoveNPC(n)
 					n\idle = True
@@ -108,32 +108,32 @@ Function UpdateLeave1499()
 	Local r.Rooms, it.Items
 
 	If ((Not (IsPlayerWearingTempName(mainPlayer,"scp1499") Or IsPlayerWearingTempName(mainPlayer,"super1499"))) And mainPlayer\currRoom\roomTemplate\name$ = "dimension1499") Then
-		For r.Rooms = Each Rooms
+		For r = Each Rooms
 			If (r = NTF_1499PrevRoom) Then
 				mainPlayer\blinkTimer = -1
 				;Msg = "You removed the gas mask and reappeared inside the facility."
 				;MsgTimer = 70 * 5
-				NTF_1499X# = EntityX(mainPlayer\collider)
-				NTF_1499Y# = EntityY(mainPlayer\collider)
-				NTF_1499Z# = EntityZ(mainPlayer\collider)
-				PositionEntity(mainPlayer\collider, NTF_1499PrevX#, NTF_1499PrevY#+0.05, NTF_1499PrevZ#)
+				NTF_1499X = EntityX(mainPlayer\collider)
+				NTF_1499Y = EntityY(mainPlayer\collider)
+				NTF_1499Z = EntityZ(mainPlayer\collider)
+				PositionEntity(mainPlayer\collider, NTF_1499PrevX, NTF_1499PrevY+0.05, NTF_1499PrevZ)
 				ResetEntity(mainPlayer\collider)
 				UpdateDoors()
 				UpdateRooms()
-				For it.Items = Each Items
+				For it = Each Items
 					it\disttimer = 0
 					If (it\itemtemplate\name = "scp1499" Or it\itemtemplate\name = "super1499") Then
 						If (EntityY(it\collider) >= EntityY(mainPlayer\currRoom\obj)-5) Then
-							PositionEntity(it\collider,NTF_1499PrevX#,NTF_1499PrevY#+(EntityY(it\collider)-EntityY(mainPlayer\currRoom\obj)),NTF_1499PrevZ#)
+							PositionEntity(it\collider,NTF_1499PrevX,NTF_1499PrevY+(EntityY(it\collider)-EntityY(mainPlayer\currRoom\obj)),NTF_1499PrevZ)
 							ResetEntity(it\collider)
 						EndIf
 					EndIf
 				Next
 				mainPlayer\currRoom = r
-				PlaySound2(LoadTempSound(LoadSound("SFX/SCP/1499/Exit.ogg")))
-				NTF_1499PrevX# = 0.0
-				NTF_1499PrevY# = 0.0
-				NTF_1499PrevZ# = 0.0
+				PlaySound2(LoadTempSound("SFX/SCP/1499/Exit.ogg"))
+				NTF_1499PrevX = 0.0
+				NTF_1499PrevY = 0.0
+				NTF_1499PrevZ = 0.0
 				NTF_1499PrevRoom = Null
 				;Brightness = StoredBrightness
 				Exit
@@ -160,29 +160,29 @@ End Type
 
 Function CreateChunkParts(r.Rooms)
 	Local File$ = "Data/1499chunks.INI"
-	Local ChunkAmount% = GetINIInt(File$,"general","count")
+	Local ChunkAmount% = GetINIInt(File,"general","count")
 	Local i%,StrTemp$,j%
 	Local chp.ChunkPart,chp2.ChunkPart
 	Local obj%, loc%, objID%, x$, z$, yaw$
 
 	SeedRnd(SeedStringToInt(RandomSeed))
 
-	For i = 0 To ChunkAmount%
-		loc% = GetINISectionLocation(File$,"chunk"+i)
+	For i = 0 To ChunkAmount
+		loc = GetINISectionLocation(File,"chunk"+Str(i))
 		If (loc > 0) Then
-			StrTemp$ = GetINIString2(File,loc%,"count")
+			StrTemp = GetINIString2(File,loc,"count")
 			chp = New ChunkPart
-			chp\amount% = Int(StrTemp$)
+			chp\amount = Int(StrTemp)
 			DebugLog("------------------")
-			For j = 0 To Int(StrTemp$)
-				objID% = GetINIString2(File$,loc%,"obj"+j)
-				x$ = GetINIString2(File$,loc%,"obj"+j+"-x")
-				z$ = GetINIString2(File$,loc%,"obj"+j+"-z")
-				yaw$ = GetINIString2(File$,loc%,"obj"+j+"-yaw")
-				DebugLog("1499 chunk X/Z/Yaw: "+x$+"|"+z$+"|"+yaw$)
-				chp\obj%[j] = CopyEntity(r\objects[objID%])
-				If (Lower(yaw$) = "random") Then
-					chp\randomYaw#[j] = Rnd(360)
+			For j = 0 To Int(StrTemp)
+				objID = Int(GetINIString2(File,loc,"obj"+Str(j)))
+				x = GetINIString2(File,loc,"obj"+Str(j)+"-x")
+				z = GetINIString2(File,loc,"obj"+Str(j)+"-z")
+				yaw = GetINIString2(File,loc,"obj"+Str(j)+"-yaw")
+				DebugLog("1499 chunk X/Z/Yaw: "+x+"|"+z+"|"+yaw)
+				chp\obj[j] = CopyEntity(r\objects[objID])
+				If (Lower(yaw) = "random") Then
+					chp\randomYaw[j] = Rnd(360)
 					RotateEntity(chp\obj[j],0,chp\randomYaw[j],0)
 				Else
 					RotateEntity(chp\obj[j],0,Float(yaw),0)
@@ -198,7 +198,7 @@ Function CreateChunkParts(r.Rooms)
 				chp\id = chp2\id+1
 			EndIf
 			DebugLog("<<<<<<<<<<<<<<<<")
-			DebugLog("Generated 1499 chunk "+chp\id+" sucessfully")
+			DebugLog("Generated 1499 chunk "+Str(chp\id)+" sucessfully")
 		EndIf
 	Next
 
@@ -223,22 +223,22 @@ Function CreateChunk.Chunk(obj%,x#,y#,z#,spawnNPCs%=True)
 	;EntityColor(ch\debugobj%,Rand(0,255),Rand(0,255),Rand(0,255))
 	;EntityFX(ch\debugobj%,1+FE_WIRE)
 
-	If (obj% > -1) Then
+	If (obj > -1) Then
 		For chp = Each ChunkPart
-			If (chp\id = obj%) Then
-				ch\amount% = chp\amount%
+			If (chp\id = obj) Then
+				ch\amount = chp\amount
 				For i = 0 To chp\amount
 					ch\obj[i] = CopyEntity(chp\obj[i])
-					PositionEntity(ch\obj[i],x#,y#,z#)
+					PositionEntity(ch\obj[i],x,y,z)
 					;ScaleEntity(ch\obj[i],RoomScale,RoomScale,RoomScale)
 					MoveEntity(ch\obj[i],EntityX(chp\obj[i]),0,EntityZ(chp\obj[i]))
 				Next
 				Exit
 			EndIf
 		Next
-		If (spawnNPCs%) Then
+		If (spawnNPCs) Then
 			For i = 0 To Rand(5,10)
-				n.NPCs = CreateNPC(NPCtype1499,x+Rnd(-60.0,60.0),y+0.5,z+Rnd(-60.0,60.0))
+				n = CreateNPC(NPCtype1499,x+Rnd(-60.0,60.0),y+0.5,z+Rnd(-60.0,60.0))
 				If (Rand(2)=1) Then n\state2 = 500*3
 				n\angle = Rnd(360)
 			Next
@@ -280,11 +280,11 @@ Function UpdateChunks(r.Rooms,ChunkPartAmount%,spawnNPCs%=True)
 				ShowEntity(ch\obj[i])
 			Next
 		EndIf
-		y# = ch\y
+		y = ch\y
 		If (Abs(EntityX(mainPlayer\collider)-ch\x)<20) Then
 			If (Abs(EntityZ(mainPlayer\collider)-ch\z)<20) Then
-				CurrChunkX# = ch\x
-				CurrChunkZ# = ch\z
+				CurrChunkX = ch\x
+				CurrChunkZ = ch\z
 			EndIf
 		EndIf
 	Next
@@ -292,31 +292,31 @@ Function UpdateChunks(r.Rooms,ChunkPartAmount%,spawnNPCs%=True)
 	;CurrChunkX# = Int(EntityX(mainPlayer\collider)/40)*40
 	;CurrChunkZ# = Int(EntityZ(mainPlayer\collider)/40)*40
 
-	x# = -(ChunkHideDistance+(CurrChunkX#))
-	z# = -(ChunkHideDistance+(CurrChunkZ#))
+	x = -(ChunkHideDistance+(CurrChunkX))
+	z = -(ChunkHideDistance+(CurrChunkZ))
 
 	Local StrTemp$ = ""
 	SeedRnd(SeedStringToInt(RandomSeed))
 
 	Repeat
-		temp2% = False
+		temp2 = False
 		For ch = Each Chunk
-			If ((ch\x=x#) And (ch\z=z#)) Then
-				temp2% = True
+			If ((ch\x=x) And (ch\z=z)) Then
+				temp2 = True
 				Exit
 			EndIf
 		Next
-		If ((Not temp2%)) Then
+		If ((Not temp2)) Then
 			;ch2 = CreateChunk(r\objects[Rand(1,ChunkPartAmount%)],x#,y#,z#)
 			ChunkPartAmount2 = GetINIInt("Data/1499chunks.INI","general","count")
-			ch2 = CreateChunk(Rand(0,ChunkPartAmount2),x#,y#,z#,spawnNPCs%)
+			ch2 = CreateChunk(Rand(0,ChunkPartAmount2),x,y,z,spawnNPCs)
 		EndIf
-		If (x# < (ChunkHideDistance+(CurrChunkX#))) Then
-			x# = x# + 40
+		If (x < (ChunkHideDistance+(CurrChunkX))) Then
+			x = x + 40
 		Else
-			If (z# < (ChunkHideDistance+(CurrChunkZ#))) Then
-				x# = -(ChunkHideDistance+(CurrChunkX#))
-				z# = z# + 40
+			If (z < (ChunkHideDistance+(CurrChunkZ))) Then
+				x = -(ChunkHideDistance+(CurrChunkX))
+				z = z + 40
 			Else
 				Exit
 			EndIf

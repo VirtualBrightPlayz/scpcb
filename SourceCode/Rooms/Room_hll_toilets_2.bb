@@ -47,10 +47,10 @@ Function UpdateEventToiletguard(e.Events)
 			e\soundChannels[0] = LoopRangedSound(e\sounds[0], e\soundChannels[0], mainPlayer\cam, e\room\npc[0]\collider, 15.0)
 
 		ElseIf (e\room\dist<4.0 And mainPlayer\loudness > 1.0) Then
-			de.Decals = CreateDecal(3,  EntityX(e\room\objects[2],True), 0.01, EntityZ(e\room\objects[2],True),90,Rnd(360),0)
+			de = CreateDecal(3,  EntityX(e\room\objects[2],True), 0.01, EntityZ(e\room\objects[2],True),90,Rnd(360),0)
 			de\size = 0.3 : ScaleSprite(de\obj, de\size, de\size)
 
-			de.Decals = CreateDecal(17,  EntityX(e\room\objects[2],True), 0.01, EntityZ(e\room\objects[2],True),90,Rnd(360),0)
+			de = CreateDecal(17, EntityX(e\room\objects[2],True), 0.01, EntityZ(e\room\objects[2],True),90,Rnd(360),0)
 			de\size = 0.1 : de\maxSize = 0.45 : de\sizeChange = 0.0002 : UpdateDecals()
 
 			;FreeSound(e\sounds[0])

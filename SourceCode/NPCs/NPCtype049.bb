@@ -35,7 +35,7 @@ Function UpdateNPCtype049(n.NPCs)
 
 	If ((n\state <> STATE049_IDLE)) Then
 		;Depending on whether 049 has detected the player, choose the state it's in.
-		npcDetectsPlayer% = MeNPCSeesPlayer(n)
+		npcDetectsPlayer = MeNPCSeesPlayer(n)
 
 		If ((npcDetectsPlayer = 1)) Then
 			n\state = STATE049_ATTACK
@@ -72,7 +72,7 @@ Function UpdateNPCtype049(n.NPCs)
 					If ((mainPlayer\currRoom\roomTemplate\name$ = "room049")) Then
 						DeathMSG = "Three (3) active instances of SCP-049-2 discovered in the tunnel outside SCP-049's containment chamber. Terminated by Nine-Tailed Fox."
 						
-						For e.Events = Each Events
+						For e = Each Events
 							If (e\name = "room049") Then
 								e\eventState=-1 : Exit
 							EndIf
@@ -140,9 +140,9 @@ Function UpdateNPCtype049(n.NPCs)
 						MoveEntity(n\collider,0,0,n\currSpeed*timing\tickDuration)
 
 						;opens doors in front of him
-						dist2# = EntityDistance(n\collider,n\path[n\pathLocation]\obj)
+						dist2 = EntityDistance(n\collider,n\path[n\pathLocation]\obj)
 						If ((dist2 < 0.6)) Then
-							temp% = True
+							temp = True
 							;TODO: fix
 							;If ((n\path[n\pathLocation]\door <> Null)) Then
 							;	If (Not n\path[n\pathLocation]\door\isElevatorDoor)
@@ -154,9 +154,9 @@ Function UpdateNPCtype049(n.NPCs)
 							;		EndIf
 							;	EndIf
 							;EndIf
-							If (dist2#<0.2 And temp) Then
+							If (dist2<0.2 And temp) Then
 								n\pathLocation = n\pathLocation + 1
-							ElseIf (dist2#<0.5 And (Not temp)) Then
+							ElseIf (dist2<0.5 And (Not temp)) Then
 								;Breaking up the path because the door cannot be operated by SCP-049
 								n\pathStatus = 0
 								n\pathTimer# = 0.0
@@ -183,8 +183,8 @@ Function UpdateNPCtype049(n.NPCs)
 					EndIf
 
 					If (n\currElevator <> Null) Then
-						dist2# = EntityDistance(n\collider,n\currElevator\door\frameobj)
-						If (dist2# < 0.7) Then
+						dist2 = EntityDistance(n\collider,n\currElevator\door\frameobj)
+						If (dist2 < 0.7) Then
 							n\pathStatus = 0
 							n\pathLocation = 0
 							n\pathTimer# = 0.0
@@ -249,7 +249,7 @@ Function UpdateNPCtype049(n.NPCs)
 						MoveEntity(n\collider,0,0,n\currSpeed*timing\tickDuration)
 
 						;opens doors in front of him
-						dist2# = EntityDistance(n\collider,n\path[n\pathLocation]\obj)
+						dist2 = EntityDistance(n\collider,n\path[n\pathLocation]\obj)
 						If (dist2 < 0.6) Then
 							temp = True
 							;TODO: AAAAAHHHHH
@@ -263,9 +263,9 @@ Function UpdateNPCtype049(n.NPCs)
 							;		EndIf
 							;	EndIf
 							;EndIf
-							If (dist2#<0.2 And temp) Then
+							If (dist2<0.2 And temp) Then
 								n\pathLocation = n\pathLocation + 1
-							ElseIf (dist2#<0.5 And (Not temp)) Then
+							ElseIf (dist2<0.5 And (Not temp)) Then
 								;Breaking up the path because the door cannot be operated by SCP-049
 								n\pathStatus = 0
 								n\pathTimer# = 0.0
@@ -287,11 +287,11 @@ Function UpdateNPCtype049(n.NPCs)
 					EndIf
 
 					If (n\currElevator <> Null) Then
-						dist2# = EntityDistance(n\collider,n\currElevator\door\frameobj)
-						If (dist2# < 0.7) Then
+						dist2 = EntityDistance(n\collider,n\currElevator\door\frameobj)
+						If (dist2 < 0.7) Then
 							n\pathStatus = 0
 							n\pathLocation = 0
-							n\pathTimer# = 0.0
+							n\pathTimer = 0.0
 						EndIf
 					EndIf
 				Else
@@ -303,7 +303,7 @@ Function UpdateNPCtype049(n.NPCs)
 						Else
 							If (n\inFacility = True) Then
 								If (Rand(2)=1) Then
-									For r.Rooms = Each Rooms
+									For r = Each Rooms
 										If (EntityDistance(r\obj,n\collider)<12.0 And EntityDistance(r\obj,n\collider)>4.0) Then
 											n\pathStatus = FindPath(n,EntityX(r\obj),EntityY(r\obj),EntityZ(r\obj))
 											Exit
@@ -336,13 +336,13 @@ Function UpdateNPCtype049(n.NPCs)
 
     RotateEntity(n\obj, 0, EntityYaw(n\collider), 0)
 
-    n\lastSeen = Max(n\lastSeen-timing\tickDuration,0)
+    n\lastSeen = Int(Max(n\lastSeen-timing\tickDuration,0))
 
 	If ((n\soundTimer >= 0)) Then
 		n\soundTimer = n\soundTimer - timing\tickDuration
 	EndIf
 
-	n\prevState = n\state
+	n\prevState = Int(n\state)
 End Function
 ;~IDEal Editor Parameters:
 ;~C#Blitz3D

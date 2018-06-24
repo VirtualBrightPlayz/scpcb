@@ -29,7 +29,7 @@ Function FillRoom_cont_049_2(r.Rooms)
     PositionEntity(r\objects[5], r\x  + 64.0 * RoomScale, -3440.0 * RoomScale, r\z - 1000.0 * RoomScale, True)
 
 	Local n%
-    For n% = 0 To 1
+    For n = 0 To 1
 		r\levers[n] = CreateLever()
 
 		ScaleEntity(r\levers[n]\obj, 0.03, 0.03, 0.03)
@@ -88,7 +88,7 @@ Function FillRoom_cont_049_2(r.Rooms)
     r\roomDoors[4] = CreateDoor(r\zone, r\x + 272.0 * RoomScale, -3552.0 * RoomScale, r\z + 104.0 * RoomScale, 90, r, False)
     r\roomDoors[4]\autoClose = False : r\roomDoors[4]\open = False : r\roomDoors[4]\locked = True
 
-    d.Doors = CreateDoor(0, r\x,0,r\z, 0, r, False, 2, -2)
+    d = CreateDoor(0, r\x,0,r\z, 0, r, False, 2, -2)
 
     it = CreateItem("Document SCP-049", "paper", r\x - 608.0 * RoomScale, r\y - 3332.0 * RoomScale, r\z + 876.0 * RoomScale)
     EntityParent(it\collider, r\obj)
@@ -128,15 +128,15 @@ Function UpdateEvent_cont_049_2(e.Events)
 
 			If (e\eventState = 0) Then
 				If ((Not e\loaded)) Then
-					n.NPCs = CreateNPC(NPCtypeZombie, EntityX(e\room\objects[4],True),EntityY(e\room\objects[4],True),EntityZ(e\room\objects[4],True))
+					n = CreateNPC(NPCtypeZombie, EntityX(e\room\objects[4],True),EntityY(e\room\objects[4],True),EntityZ(e\room\objects[4],True))
 					PointEntity(n\collider, e\room\obj)
 					TurnEntity(n\collider, 0, 190, 0)
 
-					n.NPCs = CreateNPC(NPCtypeZombie, EntityX(e\room\objects[5],True),EntityY(e\room\objects[5],True),EntityZ(e\room\objects[5],True))
+					n = CreateNPC(NPCtypeZombie, EntityX(e\room\objects[5],True),EntityY(e\room\objects[5],True),EntityZ(e\room\objects[5],True))
 					PointEntity(n\collider, e\room\obj)
 					TurnEntity(n\collider, 0, 20, 0)
 
-					For n.NPCs = Each NPCs
+					For n = Each NPCs
 						If (n\npcType = NPCtype049) Then
 							e\room\npc[0]=n
 							e\room\npc[0]\state = 2
@@ -147,7 +147,7 @@ Function UpdateEvent_cont_049_2(e.Events)
 						EndIf
 					Next
 					If (e\room\npc[0]=Null) Then
-						n.NPCs = CreateNPC(NPCtype049, EntityX(e\room\objects[4],True), EntityY(e\room\objects[4],True)+3, EntityZ(e\room\objects[4],True))
+						n = CreateNPC(NPCtype049, EntityX(e\room\objects[4],True), EntityY(e\room\objects[4],True)+3, EntityZ(e\room\objects[4],True))
 						PointEntity(n\collider, e\room\obj)
 						n\state = 2
 						n\idle = 1
@@ -166,11 +166,11 @@ Function UpdateEvent_cont_049_2(e.Events)
 				e\room\roomDoors[1]\locked = True
 				e\room\roomDoors[3]\locked = True
 
-				If (temp Or x) Then
+				If (temp Or Int(x)) Then ;TODO: really
 					;049 appears when either of the levers is turned
 					e\eventState = Max(e\eventState,70*180)
 
-					If (temp And x) Then
+					If (temp And Int(x)) Then
 						e\room\roomDoors[1]\locked = False
 						e\room\roomDoors[3]\locked = False
 						e\eventState2 = UpdateElevators(e\eventState2, e\room\roomDoors[0], e\room\roomDoors[1],e\room\objects[0],e\room\objects[1], e)
@@ -195,7 +195,7 @@ Function UpdateEvent_cont_049_2(e.Events)
 								e\room\roomDoors[i-1]\open = False
 								e\room\roomDoors[i]\open = True
 								e\room\npc[0]\pathStatus = FindPath(e\room\npc[0],EntityX(mainPlayer\collider),EntityY(mainPlayer\collider),EntityZ(mainPlayer\collider))
-								PlayRangedSound(LoadTempSound("SFX/SCP/049/Greeting"+Rand(1,2)+".ogg"),mainPlayer\cam, e\room\npc[0]\collider)
+								PlayRangedSound(LoadTempSound("SFX/SCP/049/Greeting"+Str(Rand(1,2))+".ogg"),mainPlayer\cam, e\room\npc[0]\collider)
 								e\room\npc[0]\idle = 0
 								;EndIf
 							EndIf
@@ -252,7 +252,7 @@ Function UpdateEvent_cont_049_2(e.Events)
 						;EndIf
 					;EndIf
 
-					For n.NPCs = Each NPCs ;awake the zombies
+					For n = Each NPCs ;awake the zombies
 						If (n\npcType = NPCtypeZombie And n\state = 0) Then
 							n\state = 1
 							SetNPCFrame(n, 155)
@@ -294,7 +294,7 @@ Function UpdateEvent_cont_049_2(e.Events)
 					PositionEntity(e\room\npc[0]\collider, EntityX(e\room\objects[0],True),EntityY(e\room\objects[0],True),EntityZ(e\room\objects[0],True),True)
 					ResetEntity(e\room\npc[0]\collider)
 
-					For n.NPCs = Each NPCs
+					For n = Each NPCs
 						If (n\npcType = NPCtypeZombie) Then
 							PositionEntity(n\collider, EntityX(e\room\objects[4],True),EntityY(e\room\objects[4],True),EntityZ(e\room\objects[4],True),True)
 							ResetEntity(n\collider)
@@ -303,20 +303,20 @@ Function UpdateEvent_cont_049_2(e.Events)
 						EndIf
 					Next
 
-					n.NPCs = CreateNPC(NPCtypeMTF, EntityX(e\room\objects[5],True), EntityY(e\room\objects[5],True)+0.2, EntityZ(e\room\objects[5],True))
+					n = CreateNPC(NPCtypeMTF, EntityX(e\room\objects[5],True), EntityY(e\room\objects[5],True)+0.2, EntityZ(e\room\objects[5],True))
 					n\state = 6
 					n\reload = 6*70
 					PointEntity(n\collider,mainPlayer\collider)
 					e\room\npc[1] = n
 
-					n.NPCs = CreateNPC(NPCtypeMTF, EntityX(e\room\objects[5],True), EntityY(e\room\objects[5],True)+0.2, EntityZ(e\room\objects[5],True))
+					n = CreateNPC(NPCtypeMTF, EntityX(e\room\objects[5],True), EntityY(e\room\objects[5],True)+0.2, EntityZ(e\room\objects[5],True))
 					n\state = 6
 					n\reload = (6*70)+Rnd(15,30)
 					RotateEntity(n\collider,0,EntityYaw(e\room\npc[1]\collider),0)
 					MoveEntity(n\collider,0.5,0,0)
 					PointEntity(n\collider,mainPlayer\collider)
 
-					n.NPCs = CreateNPC(NPCtypeMTF, EntityX(e\room\objects[5],True), EntityY(e\room\objects[5],True)+0.2, EntityZ(e\room\objects[5],True))
+					n = CreateNPC(NPCtypeMTF, EntityX(e\room\objects[5],True), EntityY(e\room\objects[5],True)+0.2, EntityZ(e\room\objects[5],True))
 					n\state = 6
 					;n\reload = 70*4.75
 					n\reload = 10000
@@ -360,13 +360,13 @@ Function UpdateEvent_cont_049_2(e.Events)
 				EndIf
 			EndIf
 
-			pvt% = CreatePivot()
-			PositionEntity(pvt%,EntityX(e\room\npc[1]\collider),EntityY(e\room\npc[1]\collider)+0.2,EntityZ(e\room\npc[1]\collider))
+			pvt = CreatePivot()
+			PositionEntity(pvt,EntityX(e\room\npc[1]\collider),EntityY(e\room\npc[1]\collider)+0.2,EntityZ(e\room\npc[1]\collider))
 
 			PointEntity(mainPlayer\collider, e\room\npc[1]\collider)
-			PointEntity(mainPlayer\cam, pvt%)
+			PointEntity(mainPlayer\cam, pvt)
 
-			FreeEntity(pvt%)
+			FreeEntity(pvt)
 
 			If (mainPlayer\dead = True) Then
 				If (IsChannelPlaying(e\room\npc[1]\soundChannels[0])) Then StopChannel(e\room\npc[1]\soundChannels[0])

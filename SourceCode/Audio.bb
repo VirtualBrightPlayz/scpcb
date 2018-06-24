@@ -483,7 +483,7 @@ Function ResumeSounds()
 	EndIf
 End Function
 
-Function GetMaterialStepSound(entity%)
+Function GetMaterialStepSound%(entity%)
     Local picker% = LinePick(EntityX(entity),EntityY(entity),EntityZ(entity),0,-1,0)
 	Local brush%, texture%, name$, mat.Materials
 

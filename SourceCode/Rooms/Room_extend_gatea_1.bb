@@ -34,7 +34,7 @@ Function FillRoom_extend_gatea_1(r.Rooms)
     PositionEntity(d2\buttons[1], r\x-1584.0*RoomScale, EntityY(d2\buttons[0],True), r\z + 4232.0*RoomScale, True)
     RotateEntity(d2\buttons[1], 0, 90, 0, True)
 
-    For r2.Rooms = Each Rooms
+    For r2 = Each Rooms
         If (r2\roomTemplate\name = "exit1") Then
             r\objects[1]=r2\objects[1]
             r\objects[2]=r2\objects[2]
@@ -114,11 +114,11 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 
 	Local x#, y#, z#
 
-	Local angle#, xtemp#, ytemp#, obj%
+	Local angle#, xtemp#, ytemp#, ztemp#, obj%
 
 	;[Block]
 	If (mainPlayer\currRoom = e\room) Then
-		For r.Rooms = Each Rooms
+		For r = Each Rooms
 			HideEntity(r\obj)
 		Next
 		ShowEntity(e\room\obj)
@@ -162,7 +162,7 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 
 			DrawLoading(60)
 
-			For n.NPCs = Each NPCs
+			For n = Each NPCs
 				If (n\npcType = NPCtypeMTF) Then Delete n
 			Next
 
@@ -194,8 +194,8 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 
 			EndIf
 
-			xtemp#=EntityX(e\room\objects[9],True)
-			ztemp#=EntityZ(e\room\objects[9],True)
+			xtemp=EntityX(e\room\objects[9],True)
+			ztemp=EntityZ(e\room\objects[9],True)
 			FreeEntity(e\room\objects[9])
 
 			e\room\objects[9] = LoadMesh("GFX/Map/lightgunbase.b3d")
@@ -260,7 +260,7 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 						SetNPCFrame(Curr106, 110.0)
 						PositionEntity(Curr106\collider, EntityX(e\room\objects[3],True),EntityY(mainPlayer\collider)-50.0,EntityZ(e\room\objects[3],True),True)
 						PositionEntity(Curr106\obj, EntityX(e\room\objects[3],True),EntityY(mainPlayer\collider)-50.0,EntityZ(e\room\objects[3],True),True)
-						de.Decals = CreateDecal(0, EntityX(e\room\objects[3],True),EntityY(e\room\objects[3],True)+0.01,EntityZ(e\room\objects[3],True), 90, Rand(360), 0)
+						de = CreateDecal(0, EntityX(e\room\objects[3],True),EntityY(e\room\objects[3],True)+0.01,EntityZ(e\room\objects[3],True), 90, Rand(360), 0)
 						de\size = 0.05 : de\sizeChange = 0.001 : EntityAlpha(de\obj, 0.8) : UpdateDecals()
 						;TODO: fix audio
 						;PlaySound2((HorrorSFX(5)))
@@ -273,7 +273,7 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 							If (Curr106\pathStatus <> 1) Then
 								PositionEntity(Curr106\collider,EntityX(e\room\objects[3],True),EntityY(Curr106\collider),EntityZ(e\room\objects[3],True),True)
 								If (Curr106\state =< -10) Then
-									dist# = EntityY(Curr106\collider)
+									dist = EntityY(Curr106\collider)
 									PositionEntity(Curr106\collider,EntityX(Curr106\collider),EntityY(e\room\objects[3],True),EntityZ(Curr106\collider),True)
 									;Curr106\pathStatus = FindPath(Curr106, EntityX(e\room\objects[4],True),EntityY(e\room\objects[4],True),EntityZ(e\room\objects[4],True))
 									Curr106\pathStatus = FindPath(Curr106,EntityX(e\room\npc[5]\collider,True),EntityY(e\room\npc[5]\collider,True),EntityZ(e\room\npc[5]\collider,True))
@@ -315,14 +315,14 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 
 								If (timing\tickDuration > 0) Then ;decals under 106
 									If (((e\eventState-timing\tickDuration) Mod 100.0)=<50.0 And (e\eventState Mod 100.0)>50.0) Then
-										de.Decals = CreateDecal(0, EntityX(Curr106\collider,True),EntityY(e\room\objects[3],True)+0.01,EntityZ(Curr106\collider,True), 90, Rand(360), 0)
+										de = CreateDecal(0, EntityX(Curr106\collider,True),EntityY(e\room\objects[3],True)+0.01,EntityZ(Curr106\collider,True), 90, Rand(360), 0)
 										de\size = 0.2 : de\sizeChange = 0.004 : de\timer = 90000 : EntityAlpha(de\obj, 0.8) : UpdateDecals()
 									EndIf
 								EndIf
 							EndIf
 						EndIf
 
-						dist# = Distance(EntityX(Curr106\collider),EntityZ(Curr106\collider),EntityX(e\room\objects[4],True),EntityZ(e\room\objects[4],True))
+						dist = Distance(EntityX(Curr106\collider),EntityZ(Curr106\collider),EntityX(e\room\objects[4],True),EntityZ(e\room\objects[4],True))
 
 						Curr106\currSpeed = CurveValue(0, Curr106\currSpeed, Max(5*dist,2.0))
 						If (dist < 15.0) Then
@@ -345,7 +345,7 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 
 								If (timing\tickDuration > 0) Then ;106:n alle ilmestyy decaleita
 									If (((e\eventState-timing\tickDuration) Mod 160.0)=<50.0 And (e\eventState Mod 160.0)>50.0) Then
-										de.Decals = CreateDecal(0, EntityX(Curr106\collider,True),EntityY(e\room\objects[3],True)+0.01,EntityZ(Curr106\collider,True), 90, Rand(360), 0)
+										de = CreateDecal(0, EntityX(Curr106\collider,True),EntityY(e\room\objects[3],True)+0.01,EntityZ(Curr106\collider,True), 90, Rand(360), 0)
 										de\size = 0.05 : de\sizeChange = 0.004 : de\timer = 90000 : EntityAlpha(de\obj, 0.8) : UpdateDecals()
 									EndIf
 								EndIf
@@ -374,12 +374,12 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 										e\eventState2=e\eventState2+timing\tickDuration
 										If (e\eventState2=> 7.5*70) Then
 											If (e\eventState2-timing\tickDuration < 7.5*70) Then
-												p.Particles = CreateParticle(EntityX(Curr106\obj,True),EntityY(Curr106\obj,True)+0.4, EntityZ(Curr106\obj,True), 4, 7.0, 0, (6.7*70))
+												p = CreateParticle(EntityX(Curr106\obj,True),EntityY(Curr106\obj,True)+0.4, EntityZ(Curr106\obj,True), 4, 7.0, 0, Int(6.7*70))
 												p\speed = 0.0
 												p\a = 1.0
 												EntityParent(p\pvt, Curr106\collider, True)
 
-												p.Particles = CreateParticle(EntityX(e\room\objects[10],True),EntityY(e\room\objects[10],True),EntityZ(e\room\objects[10],True), 4, 2.0, 0, (6.7*70))
+												p = CreateParticle(EntityX(e\room\objects[10],True),EntityY(e\room\objects[10],True),EntityZ(e\room\objects[10],True), 4, 2.0, 0, Int(6.7*70))
 												RotateEntity(p\pvt, EntityPitch(e\room\objects[10],True),EntityYaw(e\room\objects[10],True),0,True)
 												MoveEntity(p\pvt, 0, 92.0*RoomScale, 512.0*RoomScale)
 												p\speed = 0.0
@@ -393,7 +393,7 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 									EndIf
 
 									For i = 0 To Rand(2,8)-Int(dist)
-										p.Particles = CreateParticle(EntityX(Curr106\obj,True),EntityY(Curr106\obj,True)+Rnd(0.4,0.9), EntityZ(Curr106\obj), 0, 0.006, -0.002, 40)
+										p = CreateParticle(EntityX(Curr106\obj,True),EntityY(Curr106\obj,True)+Rnd(0.4,0.9), EntityZ(Curr106\obj), 0, 0.006, -0.002, 40)
 										p\speed = 0.005
 										p\a = 0.8
 										p\aChange = -0.01
@@ -449,7 +449,7 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 								PositionEntity(e\room\objects[12], EntityX(e\room\objects[11],True), EntityY(e\room\objects[11],True), EntityZ(e\room\objects[11],True))
 
 								; TODO: Isn't this a memory leak?
-								obj% = CopyEntity(e\room\objects[12])
+								obj = CopyEntity(e\room\objects[12])
 								PositionEntity(obj, EntityX(e\room\obj,True)-3968*RoomScale, EntityY(e\room\objects[11],True), EntityZ(e\room\obj,True)-1920*RoomScale)
 								
 								obj = CopyEntity(e\room\objects[12])
@@ -460,10 +460,10 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 
 								e\soundChannels[0] = PlayRangedSound(LoadTempSound("SFX/Ending/GateA/Bell1.ogg"), mainPlayer\cam, e\room\objects[12])
 
-								p.Particles = CreateParticle(EntityX(e\room\objects[11],True),EntityY(mainPlayer\cam,True), EntityZ(e\room\objects[11],True), 4, 8.0, 0, 50)
+								p = CreateParticle(EntityX(e\room\objects[11],True),EntityY(mainPlayer\cam,True), EntityZ(e\room\objects[11],True), 4, 8.0, 0, 50)
 								p\speed = 0.15
 								p\a = 0.5
-								p.Particles = CreateParticle(EntityX(e\room\objects[11],True),EntityY(mainPlayer\cam,True), EntityZ(e\room\objects[11],True), 4, 8.0, 0, 50)
+								p = CreateParticle(EntityX(e\room\objects[11],True),EntityY(mainPlayer\cam,True), EntityZ(e\room\objects[11],True), 4, 8.0, 0, 50)
 								p\speed = 0.25
 								p\a = 0.5
 								PointEntity(p\pvt, mainPlayer\collider)
@@ -512,10 +512,10 @@ Function UpdateEvent_extend_gatea_1(e.Events)
 							If (IsChannelPlaying(e\soundChannels[0])=False) Then; And SelectedEnding="" Then
 								PlaySound2(LoadTempSound("SFX/Ending/GateA/Bell2.ogg"))
 
-								p.Particles = CreateParticle(EntityX(e\room\objects[11],True),EntityY(mainPlayer\cam,True), EntityZ(e\room\objects[11],True), 4, 8.0, 0, 50)
+								p = CreateParticle(EntityX(e\room\objects[11],True),EntityY(mainPlayer\cam,True), EntityZ(e\room\objects[11],True), 4, 8.0, 0, 50)
 								p\speed = 0.15
 								p\a = 0.5
-								p.Particles = CreateParticle(EntityX(e\room\objects[11],True),EntityY(mainPlayer\cam,True), EntityZ(e\room\objects[11],True), 4, 8.0, 0, 50)
+								p = CreateParticle(EntityX(e\room\objects[11],True),EntityY(mainPlayer\cam,True), EntityZ(e\room\objects[11],True), 4, 8.0, 0, 50)
 								p\speed = 0.25
 								p\a = 0.5
 

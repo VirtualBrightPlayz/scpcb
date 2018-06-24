@@ -26,7 +26,7 @@ Function FillRoom_lck_cam_2c(r.Rooms)
     d\linkedDoor = d2
     d2\linkedDoor = d
 
-    sc.SecurityCams = CreateSecurityCam(r\x - 688.0 * RoomScale, r\y + 384 * RoomScale, r\z + 688.0 * RoomScale, r, True)
+    sc = CreateSecurityCam(r\x - 688.0 * RoomScale, r\y + 384 * RoomScale, r\z + 688.0 * RoomScale, r, True)
     sc\angle = 45 + 180
     sc\turn = 45
     sc\scrTexture = 1
@@ -39,7 +39,7 @@ Function FillRoom_lck_cam_2c(r.Rooms)
     TurnEntity(sc\scrObj, 0, 90, 0)
     EntityParent(sc\scrObj, r\obj)
 
-    sc.SecurityCams = CreateSecurityCam(r\x - 112.0 * RoomScale, r\y + 384 * RoomScale, r\z + 112.0 * RoomScale, r, True)
+    sc = CreateSecurityCam(r\x - 112.0 * RoomScale, r\y + 384 * RoomScale, r\z + 112.0 * RoomScale, r, True)
     sc\angle = 45
     sc\turn = 45
     sc\scrTexture = 1
@@ -60,7 +60,7 @@ Function FillRoom_lck_cam_2c(r.Rooms)
     em\aChange = -0.006
     em\gravity = -0.24
 
-    em.Emitters = CreateEmitter(r\x - 655.0 * RoomScale, 370.0 * RoomScale, r\z + 240.0 * RoomScale, 0)
+    em = CreateEmitter(r\x - 655.0 * RoomScale, 370.0 * RoomScale, r\z + 240.0 * RoomScale, 0)
     TurnEntity(em\obj, 90, 0, 0, True)
     EntityParent(em\obj, r\obj)
     em\randAngle = 20
@@ -96,3 +96,6 @@ Function UpdateEventLockroom173(e.Events)
 	;[End Block]
 End Function
 
+
+;~IDEal Editor Parameters:
+;~C#Blitz3D

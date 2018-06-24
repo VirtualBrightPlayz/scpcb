@@ -5,7 +5,7 @@ Function FillRoom_srvr_096_2(r.Rooms)
 
 	Local t1%;, Bump
 
-    d.Doors = CreateDoor(0, r\x,0,r\z, 0, r, False, 2, False)
+    d = CreateDoor(0, r\x,0,r\z, 0, r, False, 2, False)
     d\locked = True
 
     r\roomDoors[0] = CreateDoor(r\zone, r\x - 208.0 * RoomScale, 0.0, r\z - 736.0 * RoomScale, 90, r, True, False)
@@ -19,7 +19,7 @@ Function FillRoom_srvr_096_2(r.Rooms)
     FreeEntity(r\roomDoors[2]\buttons[1]) : r\roomDoors[2]\buttons[1]=0
 
 	Local n%
-    For n% = 0 To 2
+    For n = 0 To 2
 		r\levers[n] = CreateLever()
 
 		ScaleEntity(r\levers[n]\obj, 0.03, 0.03, 0.03)
@@ -180,17 +180,17 @@ Function UpdateEvent_srvr_096_2(e.Events)
 
 				For i = 0 To 6
 					If (e\room\angle = 0 Or e\room\angle = 180) Then
-						de.Decals = CreateDecal(Rand(2,3), e\room\x-Rnd(197,199)*Cos(e\room\angle)*RoomScale, 1.0, e\room\z+(140.0*(i-3))*RoomScale,0,e\room\angle+90,Rnd(360))
+						de = CreateDecal(Rand(2,3), e\room\x-Rnd(197,199)*Cos(e\room\angle)*RoomScale, 1.0, e\room\z+(140.0*(i-3))*RoomScale,0,e\room\angle+90,Rnd(360))
 						de\size = Rnd(0.8,0.85) : de\sizeChange = 0.001
-						de.Decals = CreateDecal(Rand(2,3), e\room\x-Rnd(197,199)*Cos(e\room\angle)*RoomScale, 1.0, e\room\z+(140.0*(i-3))*RoomScale,0,e\room\angle-90,Rnd(360))
+						de = CreateDecal(Rand(2,3), e\room\x-Rnd(197,199)*Cos(e\room\angle)*RoomScale, 1.0, e\room\z+(140.0*(i-3))*RoomScale,0,e\room\angle-90,Rnd(360))
 						de\size = Rnd(0.8,0.85) : de\sizeChange = 0.001
 					Else
-						de.Decals = CreateDecal(Rand(2,3), e\room\x+(140.0*(i-3))*RoomScale, 1.0, e\room\z-Rnd(197,199)*Sin(e\room\angle)*RoomScale-Rnd(0.001,0.003),0,e\room\angle+90,Rnd(360))
+						de = CreateDecal(Rand(2,3), e\room\x+(140.0*(i-3))*RoomScale, 1.0, e\room\z-Rnd(197,199)*Sin(e\room\angle)*RoomScale-Rnd(0.001,0.003),0,e\room\angle+90,Rnd(360))
 						de\size = Rnd(0.8,0.85) : de\sizeChange = 0.001
-						de.Decals = CreateDecal(Rand(2,3), e\room\x+(140.0*(i-3))*RoomScale, 1.0, e\room\z-Rnd(197,199)*Sin(e\room\angle)*RoomScale-Rnd(0.001,0.003),0,e\room\angle-90,Rnd(360))
+						de = CreateDecal(Rand(2,3), e\room\x+(140.0*(i-3))*RoomScale, 1.0, e\room\z-Rnd(197,199)*Sin(e\room\angle)*RoomScale-Rnd(0.001,0.003),0,e\room\angle-90,Rnd(360))
 						de\size = Rnd(0.8,0.85) : de\sizeChange = 0.001
 					EndIf
-					de.Decals = CreateDecal(Rand(2,3), EntityX(e\room\npc[0]\collider)+Rnd(-2,2),Rnd(0.001,0.003),EntityZ(e\room\npc[0]\collider)+Rnd(-2,2),90,Rnd(360),0)
+					de = CreateDecal(Rand(2,3), EntityX(e\room\npc[0]\collider)+Rnd(-2,2),Rnd(0.001,0.003),EntityZ(e\room\npc[0]\collider)+Rnd(-2,2),90,Rnd(360),0)
 
 				Next
 				de\size = Rnd(0.5,0.7)
@@ -244,11 +244,11 @@ Function UpdateEvent_srvr_096_2(e.Events)
 		z = e\room\levers[2]\succ ;generator
 
 		;fuel pump on
-		If (x) Then
+		If (Int(x)) Then
 			e\eventState2 = Min(1.0, e\eventState2+timing\tickDuration/350)
 
 			;generator on
-			If (z) Then
+			If (Int(z)) Then
 				If (e\sounds[1]=0) Then LoadEventSound(e,"SFX/General/GeneratorOn.ogg",1)
 				e\eventState3 = Min(1.0, e\eventState3+timing\tickDuration/450)
 			Else
@@ -262,7 +262,7 @@ Function UpdateEvent_srvr_096_2(e.Events)
 		If (e\eventState2>0) Then e\soundChannels[0]=LoopRangedSound(RoomAmbience[8], e\soundChannels[0], mainPlayer\cam, e\room\levers[1]\obj, 5.0, e\eventState2*0.8)
 		If (e\eventState3>0) Then e\soundChannels[1]=LoopRangedSound(e\sounds[1], e\soundChannels[1], mainPlayer\cam, e\room\levers[2]\obj, 6.0, e\eventState3)
 
-		If (temp=0 And x And z) Then
+		If (temp=0 And Int(x) And Int(z)) Then
 			e\room\roomDoors[0]\locked = False
 			e\room\roomDoors[1]\locked = False
 		Else

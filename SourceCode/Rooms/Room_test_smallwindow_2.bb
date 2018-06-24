@@ -69,7 +69,7 @@ Function UpdateEventTestroom173(e.Events)
 				ShowEntity(e\room\objects[2])
 				;start a timer for 173 breaking through the window
 				e\eventState = e\eventState + 1
-				dist# = EntityDistance(mainPlayer\collider, e\room\objects[1])
+				dist = EntityDistance(mainPlayer\collider, e\room\objects[1])
 				If (dist<1.0) Then
 					;if close, increase the timer so that 173 is ready to attack
 					e\eventState = Max(e\eventState, 70*12)

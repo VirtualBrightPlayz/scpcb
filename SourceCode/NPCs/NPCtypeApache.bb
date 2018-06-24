@@ -47,7 +47,7 @@ Function InitializeNPCtypeApache(n.NPCs)
         PositionEntity(light1, 1.65*i, 1.17, -0.25)
 
         lightsprite = CreateSprite(n\obj)
-        PositionEntity(lightsprite, 1.65*i, 1.17, 0, -0.25)
+        PositionEntity(lightsprite, 1.65*i, 1.17, 0);, -0.25) ;TODO: what the actual fuck
         ScaleSprite(lightsprite, 0.13, 0.13)
         EntityTexture(lightsprite, LightSpriteTex(0))
         EntityBlend(lightsprite, 3)
@@ -113,7 +113,7 @@ Function UpdateNPCtypeApache(n.NPCs)
                         RotateEntity(n\collider, CurveAngle(Min(WrapAngle(EntityPitch(n\obj)),40.0),EntityPitch(n\collider),40.0), CurveAngle(EntityYaw(n\obj),EntityYaw(n\collider),90.0), EntityRoll(n\collider), True)
                         PositionEntity(n\collider, EntityX(n\collider), CurveValue(EntityY(target)+8.0,EntityY(n\collider),70.0), EntityZ(n\collider))
 
-                        dist# = Distance(EntityX(target),EntityZ(target),EntityX(n\collider),EntityZ(n\collider))
+                        dist = Distance(EntityX(target),EntityZ(target),EntityX(n\collider),EntityZ(n\collider))
 
                         n\currSpeed = CurveValue(Min(dist-6.5,6.5)*0.008, n\currSpeed, 50.0)
 

@@ -17,7 +17,7 @@
     PositionEntity(r\objects[6], r\x + 754.0 * RoomScale, r\y - 1248.0 * RoomScale, r\z)
     EntityParent(r\objects[6], r\obj)
 
-    sc.SecurityCams = CreateSecurityCam(r\x + 744.0 * RoomScale, r\y - 856.0 * RoomScale, r\z + 236.0 * RoomScale, r)
+    sc = CreateSecurityCam(r\x + 744.0 * RoomScale, r\y - 856.0 * RoomScale, r\z + 236.0 * RoomScale, r)
     sc\followPlayer = True
 
     CreateDoor(0, r\x + 720.0 * RoomScale, 0, r\z, 0, r, False, 2, -1)
@@ -51,7 +51,7 @@ Function UpdateEvent_test_682_2(e.Events)
 				If (TFormedZ()=0) Then
 					temp = -1
 				Else
-					temp = -Sgn(TFormedZ())
+					temp = Int(-Sgn(TFormedZ()))
 				EndIf
 				TFormPoint(-720,0,816*temp,e\room\obj,0)
 				PositionEntity(e\room\objects[7],TFormedX(),0,TFormedZ())
@@ -63,7 +63,7 @@ Function UpdateEvent_test_682_2(e.Events)
 			If (EntityDistance(mainPlayer\collider, e\room\objects[6]) < 2.5 And e\eventState > 0) Then
 				PlaySound2(LoadTempSound("SFX/SCP/079/TestroomWarning.ogg"))
 				For i = 0 To 5
-					em.Emitters = CreateEmitter(EntityX(e\room\objects[i], True), EntityY(e\room\objects[i], True), EntityZ(e\room\objects[i], True), 0)
+					em = CreateEmitter(EntityX(e\room\objects[i], True), EntityY(e\room\objects[i], True), EntityZ(e\room\objects[i], True), 0)
 					TurnEntity(em\obj, 90, 0, 0, True)
 					;entityParent(em\obj, e\room\obj)
 					em\randAngle = 5

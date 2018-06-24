@@ -47,8 +47,8 @@ Function UpdateEvent_exit_gatea_1(e.Events)
 			EndIf
 		Else
 			e\room\roomDoors[1]\locked=False
-			gatea.Rooms =Null
-			For r.Rooms = Each Rooms
+			gatea =Null
+			For r = Each Rooms
 				If (r\roomTemplate\name = "gatea") Then
 					gatea = r
 					Exit

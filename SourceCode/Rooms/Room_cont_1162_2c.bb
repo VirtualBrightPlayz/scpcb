@@ -13,7 +13,7 @@ Function FillRoom_cont_1162_2c(r.Rooms)
     it = CreateItem("Document SCP-1162", "paper", r\x + 863.227 * RoomScale, r\y + 152.0 * RoomScale, r\z - 953.231 * RoomScale)
     EntityParent(it\collider, r\obj)
 
-    sc.SecurityCams = CreateSecurityCam(r\x-192.0*RoomScale, r\y+704.0*RoomScale, r\z+192.0*RoomScale, r)
+    sc = CreateSecurityCam(r\x-192.0*RoomScale, r\y+704.0*RoomScale, r\z+192.0*RoomScale, r)
     sc\angle = 225
     sc\turn = 45
     TurnEntity(sc\cameraObj, 20, 0, 0)
@@ -52,33 +52,33 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 
 		e\eventState = 0
 
-		pick1162% = True
-		pp% = CreatePivot(e\room\obj)
+		pick1162 = True
+		pp = CreatePivot(e\room\obj)
 		PositionEntity(pp,976,128,-640,False)
 
-		For it.Items = Each Items
+		For it = Each Items
 			If ((Not it\picked)) Then
 				If (EntityDistance(it\collider,e\room\objects[0])<0.75) Then
-					pick1162% = False
+					pick1162 = False
 				EndIf
 			EndIf
 		Next
 
-		If (EntityDistance(e\room\objects[0],mainPlayer\collider)<0.75 And pick1162%) Then
+		If (EntityDistance(e\room\objects[0],mainPlayer\collider)<0.75 And pick1162) Then
 			DrawHandIcon = True
 			If (MouseHit1) Then mainPlayer\grabbedEntity = e\room\objects[0]
 		EndIf
 
 		If (mainPlayer\grabbedEntity <> 0) Then
 			e\eventState2 = Rand(0,mainPlayer\inventory\size-1)
-			If (mainPlayer\inventory\items[e\eventState2]<>Null) Then
+			If (mainPlayer\inventory\items[Int(e\eventState2)]<>Null) Then
 				;randomly picked item slot has an item in it, using this slot
 				e\eventState3 = 1.0
 				DebugLog("pick1")
 			Else
 				;randomly picked item slot is empty, getting the first available slot
 				For i = 0 To mainPlayer\inventory\size-1
-					isSlotEmpty% = (mainPlayer\inventory\items[(i+e\eventState2) Mod mainPlayer\inventory\size] = Null)
+					isSlotEmpty = (mainPlayer\inventory\items[Int(i+e\eventState2) Mod mainPlayer\inventory\size] = Null)
 
 					If ((Not isSlotEmpty)) Then
 						;successful
@@ -95,7 +95,7 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 						e\eventState = Rand(1,5)
 
 						;Checking if the selected nostalgia item already exists or not
-						itemName$ = ""
+						itemName = ""
 						Select (e\eventState)
 							Case 1
 								itemName = "Lost Key"
@@ -109,8 +109,8 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 								itemName = "Old Badge"
 						End Select
 
-						itemExists% = False
-						For it.Items = Each Items
+						itemExists = False
+						For it = Each Items
 							If ((it\name = itemName)) Then
 								itemExists = True
 								e\eventState3 = 1.0
@@ -135,11 +135,11 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 
 		;trade successful
 		If (e\eventState3 = 1.0) Then
-			shouldCreateItem% = False
+			shouldCreateItem = False
 			
 			For itt = Each ItemTemplates
-				If ((IsItemGoodFor1162(itt))) Then
-					Select mainPlayer\inventory\items[e\eventState2]\itemtemplate\name
+				If (IsItemGoodFor1162(itt)) Then
+					Select mainPlayer\inventory\items[Int(e\eventState2)]\itemtemplate\name
 						Case "key"
 							If (itt\name = "key1" Or itt\name = "key2" And Rand(2)=1) Then
 								shouldCreateItem = True
@@ -174,10 +174,10 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 				EndIf
 
 				If ((shouldCreateItem)) Then
-					RemoveItem(mainPlayer\inventory\items[e\eventState2])
+					RemoveItem(mainPlayer\inventory\items[Int(e\eventState2)])
 					it=CreateItem(itt\name,itt\name,EntityX(pp,True),EntityY(pp,True),EntityZ(pp,True))
 					EntityType(it\collider, HIT_ITEM)
-					PlaySound2(LoadTempSound("SFX/SCP/1162/Exchange"+Rand(0,4)+".ogg"))
+					PlaySound2(LoadTempSound("SFX/SCP/1162/Exchange"+Str(Rand(0,4))+".ogg"))
 					e\eventState3 = 0.0
 
 					MouseHit1 = False
@@ -191,10 +191,10 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 			PositionEntity(pvt, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)-0.05,EntityZ(mainPlayer\collider))
 			TurnEntity(pvt, 90, 0, 0)
 			EntityPick(pvt,0.3)
-			de.Decals = CreateDecal(3, PickedX(), PickedY()+0.005, PickedZ(), 90, Rand(360), 0)
+			de = CreateDecal(3, PickedX(), PickedY()+0.005, PickedZ(), 90, Rand(360), 0)
 			de\size = 0.75 : ScaleSprite(de\obj, de\size, de\size)
 			FreeEntity(pvt)
-			For itt.ItemTemplates = Each ItemTemplates
+			For itt = Each ItemTemplates
 				If (IsItemGoodFor1162(itt) And Rand(6)=1) Then
 					it = CreateItem(itt\name, itt\name, EntityX(pp,True),EntityY(pp,True),EntityZ(pp,True))
 					EntityType(it\collider, HIT_ITEM)
@@ -204,11 +204,11 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 						DeathMSG = "A dead Class D subject was discovered within the containment chamber of SCP-1162."
 						DeathMSG = DeathMSG + " An autopsy revealed that his right lung was missing, which suggests"
 						DeathMSG = DeathMSG + " interaction with SCP-1162."
-						PlaySound2(LoadTempSound("SFX/SCP/1162/BodyHorrorExchange"+Rand(1,4)+".ogg"))
+						PlaySound2(LoadTempSound("SFX/SCP/1162/BodyHorrorExchange"+Str(Rand(1,4))+".ogg"))
 						mainPlayer\lightFlash = 5.0
 						Kill(mainPlayer)
 					Else
-						PlaySound2(LoadTempSound("SFX/SCP/1162/BodyHorrorExchange"+Rand(1,4)+".ogg"))
+						PlaySound2(LoadTempSound("SFX/SCP/1162/BodyHorrorExchange"+Str(Rand(1,4))+".ogg"))
 						mainPlayer\lightFlash = 5.0
 						Msg = "You feel a sudden overwhelming pain in your chest."
 						MsgTimer = 70*5
@@ -219,26 +219,26 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 		;trade with nostalgia item
 		ElseIf (e\eventState3 >= 3.0) Then
 			If (e\eventState3 < 3.1) Then
-				PlaySound2(LoadTempSound("SFX/SCP/1162/Exchange"+Rand(0,4)+".ogg"))
-				RemoveItem(mainPlayer\inventory\items[e\eventState2])
+				PlaySound2(LoadTempSound("SFX/SCP/1162/Exchange"+Str(Rand(0,4))+".ogg"))
+				RemoveItem(mainPlayer\inventory\items[Int(e\eventState2)])
 			Else
 				mainPlayer\injuries = mainPlayer\injuries + 5.0
 				pvt = CreatePivot()
 				PositionEntity(pvt, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)-0.05,EntityZ(mainPlayer\collider))
 				TurnEntity(pvt, 90, 0, 0)
 				EntityPick(pvt,0.3)
-				de.Decals = CreateDecal(3, PickedX(), PickedY()+0.005, PickedZ(), 90, Rand(360), 0)
+				de = CreateDecal(3, PickedX(), PickedY()+0.005, PickedZ(), 90, Rand(360), 0)
 				de\size = 0.75 : ScaleSprite(de\obj, de\size, de\size)
 				FreeEntity(pvt)
 				If (mainPlayer\injuries > 15) Then
 					DeathMSG = "A dead Class D subject was discovered within the containment chamber of SCP-1162."
 					DeathMSG = DeathMSG + " An autopsy revealed that his right lung was missing, which suggests"
 					DeathMSG = DeathMSG + " interaction with SCP-1162."
-					PlaySound2(LoadTempSound("SFX/SCP/1162/BodyHorrorExchange"+Rand(1,4)+".ogg"))
+					PlaySound2(LoadTempSound("SFX/SCP/1162/BodyHorrorExchange"+Str(Rand(1,4))+".ogg"))
 					mainPlayer\lightFlash = 5.0
 					Kill(mainPlayer)
 				Else
-					PlaySound2(LoadTempSound("SFX/SCP/1162/BodyHorrorExchange"+Rand(1,4)+".ogg"))
+					PlaySound2(LoadTempSound("SFX/SCP/1162/BodyHorrorExchange"+Str(Rand(1,4))+".ogg"))
 					mainPlayer\lightFlash = 5.0
 					Msg = "You notice something moving in your pockets and a sudden pain in your chest."
 					MsgTimer = 70*5
@@ -267,9 +267,10 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 End Function
 
 
-Function IsItemGoodFor1162(itt.ItemTemplates)
+Function IsItemGoodFor1162%(itt.ItemTemplates)
 	Local IN$ = itt\name$
-
+	
+	;TODO: remember which items the player has collected instead of just picking random shit
 	Select itt\name
 		Case "key1", "key2", "key3"
 			Return True

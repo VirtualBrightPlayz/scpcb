@@ -10,7 +10,7 @@ Function FillRoom_lck_air_2(r.Rooms)
         r\objects[2] = CreatePivot(r\obj)
         PositionEntity(r\objects[2], r\x - 156.825*RoomScale, -37.3458*RoomScale, r\z+121.364*RoomScale, True)
 
-        de.Decals = CreateDecal(3,  r\x - 156.825*RoomScale, -37.3458*RoomScale, r\z+121.364*RoomScale,90,Rnd(360),0)
+        de = CreateDecal(3,  r\x - 156.825*RoomScale, -37.3458*RoomScale, r\z+121.364*RoomScale,90,Rnd(360),0)
         de\size = 0.5
         ScaleSprite(de\obj, de\size,de\size)
         EntityParent(de\obj, r\obj)
@@ -28,7 +28,7 @@ Function FillRoom_lck_air_2(r.Rooms)
     r\roomDoors[1]\dir = 0 : r\roomDoors[1]\autoClose = False	: r\roomDoors[1]\open = True  : r\roomDoors[1]\locked = True
     r\roomDoors[1]\mtfClose = False
 
-    For r2.Rooms = Each Rooms
+    For r2 = Each Rooms
         If (r2<>r) Then
             If (r2\roomTemplate\name = "lck_air_2" Or r2\roomTemplate\name = "lck_air_broke_2") Then
                 r\objects[3] = CopyEntity(r2\objects[3],r\obj) ;don't load the mesh again
@@ -45,16 +45,16 @@ Function FillRoom_lck_air_2(r.Rooms)
         PositionEntity(r\objects[0],r\x+344.0*RoomScale,128.0*RoomScale,r\z)
         EntityParent(r\objects[0],r\obj)
 
-        bd_temp% = False
+        bd_temp = False
         If (room2gw_brokendoor) Then
             If (room2gw_x = r\x) Then
                 If (room2gw_z = r\z) Then
-                    bd_temp% = True
+                    bd_temp = True
                 EndIf
             EndIf
         EndIf
 
-        If ((room2gw_brokendoor = 0 And Rand(1,2)=1) Or bd_temp%) Then
+        If ((room2gw_brokendoor = 0 And Rand(1,2)=1) Or bd_temp) Then
             r\objects[1] = LoadMesh("GFX/Map/Meshes/door.b3d") ;TODO: Not this.
             ScaleEntity(r\objects[1], (204.0 * RoomScale) / MeshWidth(r\objects[1]), 312.0 * RoomScale / MeshHeight(r\objects[1]), 16.0 * RoomScale / MeshDepth(r\objects[1]))
             EntityType(r\objects[1], HIT_MAP)
@@ -63,8 +63,8 @@ Function FillRoom_lck_air_2(r.Rooms)
             EntityParent(r\objects[1], r\obj)
             MoveEntity(r\objects[1],120.0,0,5.0)
             room2gw_brokendoor = True
-            room2gw_x# = r\x
-            room2gw_z# = r\z
+            room2gw_x = r\x
+            room2gw_z = r\z
             FreeEntity(r\roomDoors[1]\obj2)
 			r\roomDoors[1]\obj2 = 0
         EndIf
@@ -92,7 +92,7 @@ Function UpdateEventRoom_gw(e.Events)
 	e\room\roomDoors[1]\locked = True
 
 	Local brokendoor% = False
-	If (e\room\objects[1]<>0) Then brokendoor% = True
+	If (e\room\objects[1]<>0) Then brokendoor = True
 
 	If (mainPlayer\currRoom = e\room) Then
 		If (e\eventState = 0.0) Then
@@ -126,14 +126,14 @@ Function UpdateEventRoom_gw(e.Events)
 				If (e\eventState2 < 70*1) Then
 
 					If (brokendoor) Then
-						pvt% = CreatePivot()
-						d_ent% = e\room\objects[1]
-						PositionEntity(pvt, EntityX(d_ent%,True), EntityY(d_ent%,True)+Rnd(0.0,0.05), EntityZ(d_ent%,True))
-						RotateEntity(pvt, 0, EntityYaw(d_ent%,True)+90, 0)
+						pvt = CreatePivot()
+						d_ent = e\room\objects[1]
+						PositionEntity(pvt, EntityX(d_ent,True), EntityY(d_ent,True)+Rnd(0.0,0.05), EntityZ(d_ent,True))
+						RotateEntity(pvt, 0, EntityYaw(d_ent,True)+90, 0)
 						MoveEntity(pvt,0,0,0.2)
 
 						For i = 0 To 3
-							p.Particles = CreateParticle(EntityX(pvt), EntityY(pvt), EntityZ(pvt), 7, 0.002, 0, 25)
+							p = CreateParticle(EntityX(pvt), EntityY(pvt), EntityZ(pvt), 7, 0.002, 0, 25)
 							p\speed = Rnd(0.01,0.05)
 							;RotateEntity(p\pvt, Rnd(-20, 20), Rnd(360), 0)
 							RotateEntity(p\pvt, Rnd(-45,0), EntityYaw(pvt)+Rnd(-10.0,10.0), 0)
@@ -150,23 +150,23 @@ Function UpdateEventRoom_gw(e.Events)
 					EndIf
 
 				ElseIf (e\eventState2 > 70*3 And e\eventState < 70*5.5) Then
-					pvt% = CreatePivot(e\room\obj)
+					pvt = CreatePivot(e\room\obj)
 					For i = 0 To 1
 						If (e\room\roomTemplate\name$ = "lck_ez_3") Then
 							If (i = 0) Then
-								PositionEntity(pvt%,-288.0*RoomScale,416.0*RoomScale,320.0*RoomScale,False)
+								PositionEntity(pvt,-288.0*RoomScale,416.0*RoomScale,320.0*RoomScale,False)
 							Else
-								PositionEntity(pvt%,192.0*RoomScale,416.0*RoomScale,320.0*RoomScale,False)
+								PositionEntity(pvt,192.0*RoomScale,416.0*RoomScale,320.0*RoomScale,False)
 							EndIf
 						Else
 							If (i = 0) Then
-								PositionEntity(pvt%,312.0*RoomScale,416.0*RoomScale,-128.0*RoomScale,False)
+								PositionEntity(pvt,312.0*RoomScale,416.0*RoomScale,-128.0*RoomScale,False)
 							Else
-								PositionEntity(pvt%,312.0*RoomScale,416.0*RoomScale,224.0*RoomScale,False)
+								PositionEntity(pvt,312.0*RoomScale,416.0*RoomScale,224.0*RoomScale,False)
 							EndIf
 						EndIf
 
-						p.Particles = CreateParticle(EntityX(pvt,True), EntityY(pvt,True), EntityZ(pvt,True),  6, 0.8, 0, 50)
+						p = CreateParticle(EntityX(pvt,True), EntityY(pvt,True), EntityZ(pvt,True), 6, 0.8, 0, 50)
 						p\speed = 0.025
 						RotateEntity(p\pvt, 90, 0, 0)
 

@@ -361,11 +361,11 @@ Function DrawTooltip(message$)
 	Local width% = (StringWidth(message))+Int(20.0*MenuScale)
 
 	Color(25,25,25)
-	Rect(MouseX()+20,MouseY(),width,19*scale,True)
+	Rect(MouseX()+20,MouseY(),width,Int(19.0*scale),True)
 	Color(150,150,150)
-	Rect(MouseX()+20,MouseY(),width,19*scale,False)
+	Rect(MouseX()+20,MouseY(),width,Int(19.0*scale),False)
 	SetFont(uiAssets\font[0])
-	Text(MouseX()+(20*MenuScale)+(width/2),MouseY()+(12*MenuScale), message$, True, True)
+	Text(MouseX()+Int(20.0*MenuScale)+(width/2),MouseY()+Int(12.0*MenuScale), message, True, True)
 End Function
 
 Function ShowPointer2()

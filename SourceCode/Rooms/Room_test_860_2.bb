@@ -192,7 +192,7 @@ Function UpdateEvent_test_860_2(e.Events)
 			;HideEntity(fr\detailEntities[1])
 
 			If (EntityYaw(e\room\objects[3])=0.0) Then
-				HideEntity(fr.Forest\forest_Pivot)
+				HideEntity(fr\forest_Pivot)
 				If ((Abs(Distance(EntityX(e\room\objects[3],True),EntityZ(e\room\objects[3],True),EntityX(mainPlayer\collider,True),EntityZ(mainPlayer\collider,True)))<1.0)) Then
 					DrawHandIcon = True
 
@@ -205,7 +205,7 @@ Function UpdateEvent_test_860_2(e.Events)
 					ElseIf (mainPlayer\selectedItem\itemtemplate\name="scp860") Then
 						If (MouseHit1) Then
 							PlaySound2(LoadTempSound("SFX/Door/WoodenDoorOpen.ogg"))
-							ShowEntity(fr.Forest\forest_Pivot)
+							ShowEntity(fr\forest_Pivot)
 							mainPlayer\selectedItem = Null
 
 							mainPlayer\blinkTimer = -10
@@ -222,7 +222,7 @@ Function UpdateEvent_test_860_2(e.Events)
 							pvt = CreatePivot()
 							PositionEntity(pvt, EntityX(mainPlayer\cam),EntityY(mainPlayer\cam),EntityZ(mainPlayer\cam))
 							PointEntity(pvt, e\room\obj)
-							ang# = WrapAngle(EntityYaw(pvt)-EntityYaw(e\room\obj,True))
+							ang = WrapAngle(EntityYaw(pvt)-EntityYaw(e\room\obj,True))
 							If (ang > 90 And ang < 270) Then
 								;TurnEntity(mainPlayer\collider,0,180+90,0,True)
 								e\eventState2 = 1
@@ -426,8 +426,8 @@ Function GenForestGrid(fr.Forest)
 			;determine if on left or on right
 			branch_pos=2*Rand(0,1)
 			;get leftmost or rightmost path in this row
-			leftmost% = gridsize
-			rightmost% = 0
+			leftmost = gridsize
+			rightmost = 0
 			For i=0 To gridsize
 				If (fr\grid[((gridsize-1-new_y)*gridsize)+i]=1) Then
 					If (i<leftmost) Then leftmost=i
@@ -467,7 +467,7 @@ Function GenForestGrid(fr.Forest)
 				EndIf
 
 				;before creating a branch make sure there are no 1's above or below
-				n% = ((gridsize - 1 - temp_y + 1)*gridsize)+new_x
+				n = ((gridsize - 1 - temp_y + 1)*gridsize)+new_x
 				If (n < gridsize-1) Then
 					If (temp_y <> 0 And fr\grid[n]=1) Then Exit
 				EndIf
@@ -519,19 +519,19 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Rooms)
 		FreeEntity(fr\forest_Pivot)
 		fr\forest_Pivot=0
 	EndIf
-	For i%=0 To 3
+	For i=0 To 3
 		If (fr\tileMesh[i]<>0) Then
 			FreeEntity(fr\tileMesh[i])
 			fr\tileMesh[i]=0
 		EndIf
 	Next
-	For i%=0 To 4
+	For i=0 To 4
 		If (fr\detailMesh[i]<>0) Then
 			FreeEntity(fr\detailMesh[i])
 			fr\detailMesh[i]=0
 		EndIf
 	Next
-	For i%=0 To 9
+	For i=0 To 9
 		If (fr\tileTexture[i]<>0) Then
 			FreeEntity(fr\tileTexture[i])
 			fr\tileTexture[i]=0
@@ -580,18 +580,18 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Rooms)
 	fr\detailMesh[4]=LoadMesh("GFX/Map/forest/detail/treetest5.b3d")
 	fr\detailMesh[5]=LoadMesh("GFX/Map/forest/wall.b3d")
 
-	For i%=ROOM1 To ROOM4
+	For i=ROOM1 To ROOM4
 		HideEntity(fr\tileMesh[i])
 	Next
-	For i%=1 To 5
+	For i=1 To 5
 		HideEntity(fr\detailMesh[i])
 	Next
 
 	tempf3=MeshWidth(fr\tileMesh[ROOM1])
 	tempf1=tile_size/tempf3
 	
-	For tx%=1 To gridsize-1
-		For ty%=1 To gridsize-1
+	For tx=1 To gridsize-1
+		For ty=1 To gridsize-1
 			If (fr\grid[(ty*gridsize)+tx]=1) Then
 
 				tile_type = 0
@@ -603,7 +603,7 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Rooms)
 
 				;fr\grid[(ty*gridsize)+tx]=tile_type
 
-				angle%=0
+				angle=0
 				Select tile_type
 					Case 1
 						tile_entity = CopyEntity(fr\tileMesh[ROOM1])
@@ -654,15 +654,15 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Rooms)
 						tile_entity = CopyEntity(fr\tileMesh[ROOM4])
 						tile_type = ROOM4
 					Default
-						DebugLog("tile_type: "+tile_type)
+						DebugLog("tile_type: "+Str(tile_type))
 				End Select
 
 				If (tile_type > 0) Then
 					;2, 5, 8
-					it.Items = Null
-					If ((ty Mod 3)=2 And itemPlaced[Floor(ty/3)]=False) Then
-						itemPlaced[Floor(ty/3)]=True
-						it.Items = CreateItem("Log#"+Int(Floor(ty/3)+1), "paper", 0,0.5,0)
+					it = Null
+					If ((ty Mod 3)=2 And itemPlaced[Int(Floor(ty/3))]=False) Then
+						itemPlaced[Int(Floor(ty/3))]=True
+						it = CreateItem("Log#"+Str(Int(Floor(ty/3)+1)), "paper", 0,0.5,0)
 						EntityType(it\collider, HIT_ITEM)
 						EntityParent(it\collider, tile_entity)
 					EndIf
@@ -671,7 +671,7 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Rooms)
 					;only placed on spots where the value of the heightmap is above 100
 					SetBuffer(ImageBuffer(hmap[tile_type]))
 					width = ImageWidth(hmap[tile_type])
-					tempf4# = (tempf3/Float(width))
+					tempf4 = (tempf3/Float(width))
 					For lx = 3 To width-2
 						For ly = 3 To width-2
 							GetColor(lx,width-ly)
@@ -684,7 +684,7 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Rooms)
 										tempf2=Rnd(0.25,0.4)
 
 										For i = 0 To 3
-											d% = CopyEntity(fr\detailMesh[4])
+											d = CopyEntity(fr\detailMesh[4])
 											;ScaleEntity(d,tempf2*1.1,tempf2,tempf2*1.1,True)
 											RotateEntity(d, 0, 90*i+Rnd(-20,20), 0)
 											EntityParent(d,detail_entity)
@@ -739,7 +739,7 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Rooms)
 
 					fr\tileEntities[tx+(ty*gridsize)] = tile_entity
 				Else
-					DebugLog("INVALID TILE @ ("+tx+", "+ty+ "): "+tile_type)
+					DebugLog("INVALID TILE @ ("+Str(tx)+", "+Str(ty)+ "): "+Str(tile_type))
 				EndIf
 			EndIf
 
@@ -762,7 +762,7 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Rooms)
 				EntityParent(fr\door[i],fr\detailEntities[i])
 				;SetAnimTime(fr\door[i], 0)
 
-				frame% = CopyEntity(r\objects[2],fr\door[i])
+				frame = CopyEntity(r\objects[2],fr\door[i])
 				PositionEntity(frame,0,32.0*RoomScale,0,True)
 				ScaleEntity(frame,48*RoomScale,45*RoomScale,48*RoomScale,True)
 				EntityParent(frame,fr\detailEntities[i])
@@ -782,8 +782,8 @@ End Function
 
 Function DestroyForest(fr.Forest)
 	Local tx%,ty%
-	For tx% = 0 To gridsize-1
-		For ty% = 0 To gridsize-1
+	For tx = 0 To gridsize-1
+		For ty = 0 To gridsize-1
 			If (fr\tileEntities[tx+(ty*gridsize)]<>0) Then
 				FreeEntity(fr\tileEntities[tx+(ty*gridsize)])
 				fr\tileEntities[tx+(ty*gridsize)] = 0
@@ -813,19 +813,19 @@ Function DestroyForest(fr.Forest)
 		fr\forest_Pivot=0
 	EndIf
 	Local i%
-	For i%=0 To 3
+	For i=0 To 3
 		If (fr\tileMesh[i]<>0) Then
 			FreeEntity(fr\tileMesh[i])
 			fr\tileMesh[i]=0
 		EndIf
 	Next
-	For i%=0 To 4
+	For i=0 To 4
 		If (fr\detailMesh[i]<>0) Then
 			FreeEntity(fr\detailMesh[i])
 			fr\detailMesh[i]=0
 		EndIf
 	Next
-	For i%=0 To 9
+	For i=0 To 9
 		If (fr\tileTexture[i]<>0) Then
 			FreeEntity(fr\tileTexture[i])
 			fr\tileTexture[i]=0
@@ -840,8 +840,8 @@ Function UpdateForest(fr.Forest,ent%)
 	;local variables
 	Local tx%,ty%
 	If (Abs(EntityY(ent,True)-EntityY(fr\forest_Pivot,True))<12.0) Then
-		For tx% = 0 To gridsize-1
-			For ty% = 0 To gridsize-1
+		For tx = 0 To gridsize-1
+			For ty = 0 To gridsize-1
 				If (fr\tileEntities[tx+(ty*gridsize)]<>0) Then
 					If (Abs(EntityX(ent,True)-EntityX(fr\tileEntities[tx+(ty*gridsize)],True))<20.0) Then
 						If (Abs(EntityZ(ent,True)-EntityZ(fr\tileEntities[tx+(ty*gridsize)],True))<20.0) Then
@@ -856,6 +856,103 @@ Function UpdateForest(fr.Forest,ent%)
 			Next
 		Next
 	EndIf
+End Function
+
+Function load_terrain%(hmap%,yscale#=0.7,t1%,t2%,mask%)
+	Local maskX#
+	Local maskY#
+	Local RGB1%
+	Local r%
+	Local alpha#
+	
+	DebugLog("load_terrain: "+Str(hmap))
+	
+	; load the heightmap
+	If (hmap = 0) Then RuntimeError("Heightmap image "+Str(hmap)+" does not exist.")
+	
+	; store heightmap dimensions
+	Local x% = ImageWidth(hmap)-1, y% = ImageHeight(hmap)-1
+	Local lx%, ly%, index%
+	
+	; load texture and lightmaps
+	If (t1 = 0) Then RuntimeError("load_terrain error: invalid texture 1")
+	If (t2 = 0) Then RuntimeError("load_terrain error: invalid texture 2")
+	If (mask = 0) Then RuntimeError("load_terrain error: invalid texture mask")
+	
+	; auto scale the textures to the right size
+	If (t1) Then ScaleTexture(t1,x/4,y/4)
+	If (t2) Then ScaleTexture(t2,x/4,y/4)
+	If (mask) Then ScaleTexture(mask,x,y)
+	
+	; start building the terrain
+	Local mesh% = CreateMesh()
+	Local surf% = CreateSurface(mesh)
+	
+	; create some verts for the terrain
+	For ly = 0 To y
+		For lx = 0 To x
+			AddVertex(surf,lx,0,ly,1.0/lx,1.0/ly)
+		Next
+	Next
+	RenderWorld()
+	
+	; connect the verts with faces
+	For ly = 0 To y-1
+		For lx = 0 To x-1
+			AddTriangle(surf,lx+((x+1)*ly),lx+((x+1)*ly)+(x+1),(lx+1)+((x+1)*ly))
+			AddTriangle(surf,(lx+1)+((x+1)*ly),lx+((x+1)*ly)+(x+1),(lx+1)+((x+1)*ly)+(x+1))
+		Next
+	Next
+	
+	; position the terrain to center 0,0,0
+	Local mesh2% = CopyMesh(mesh,mesh)
+	Local surf2% = GetSurface(mesh2,1)
+	PositionMesh(mesh, -x/2.0,0,-y/2.0)
+	PositionMesh(mesh2, -x/2.0,0.01,-y/2.0)
+	
+	; alter vertice height to match the heightmap red channel
+	LockBuffer(ImageBuffer(hmap))
+	LockBuffer(TextureBuffer(mask))
+	;SetBuffer
+	For lx = 0 To x
+		For ly = 0 To y
+			;using vertex alpha and two meshes instead of FE_ALPHAWHATEVER
+			;it doesn't look perfect but it does the job
+			;you might get better results by downscaling the mask to the same size as the heightmap
+			maskX = Min(lx*Float(TextureWidth(mask))/Float(ImageWidth(hmap)),TextureWidth(mask)-1)
+			maskY = TextureHeight(mask)-Min(ly*Float(TextureHeight(mask))/Float(ImageHeight(hmap)),TextureHeight(mask)-1)
+			RGB1 = ReadPixelFast(Int(Min(lx,x-1)),Int(y-Min(ly,y-1)),ImageBuffer(hmap))
+			r = (RGB1 And $FF0000)Shr 16 ;separate out the red
+			alpha=(((ReadPixelFast(Int(Max(maskX-5,5)),Int(Max(maskY-5,5)),TextureBuffer(mask)) And $FF000000) Shr 24)/$FF)
+			alpha=alpha+(((ReadPixelFast(Int(Min(maskX+5,TextureWidth(mask)-5)),Int(Min(maskY+5,TextureHeight(mask)-5)),TextureBuffer(mask)) And $FF000000) Shr 24)/$FF)
+			alpha=alpha+(((ReadPixelFast(Int(Max(maskX-5,5)),Int(Min(maskY+5,TextureHeight(mask)-5)),TextureBuffer(mask)) And $FF000000) Shr 24)/$FF)
+			alpha=alpha+(((ReadPixelFast(Int(Min(maskX+5,TextureWidth(mask)-5)),Int(Max(maskY-5,5)),TextureBuffer(mask)) And $FF000000) Shr 24)/$FF)
+			alpha=alpha*0.25
+			alpha=Sqr(alpha)
+			
+			index = lx + ((x+1)*ly)
+			VertexCoords(surf, index , VertexX(surf,index), r*yscale,VertexZ(surf,index))
+			VertexCoords(surf2, index , VertexX(surf2,index), r*yscale,VertexZ(surf2,index))
+			VertexColor(surf2, index, 255.0,255.0,255.0,alpha)
+			; set the terrain texture coordinates
+			VertexTexCoords(surf,index,lx,-ly)
+			VertexTexCoords(surf2,index,lx,-ly)
+		Next
+	Next
+	UnlockBuffer(TextureBuffer(mask))
+	UnlockBuffer(ImageBuffer(hmap))
+	
+	UpdateNormals(mesh)
+	UpdateNormals(mesh2)
+	
+	EntityTexture(mesh,t1,0,0)
+	;EntityTexture(mesh,mask,0,1)
+	EntityTexture(mesh2,t2,0,0);2
+	
+	EntityFX(mesh, 1)
+	EntityFX(mesh2, 1+2+32)
+	
+	Return mesh
 End Function
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

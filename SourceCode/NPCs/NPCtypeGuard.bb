@@ -26,7 +26,7 @@ Function UpdateNPCtypeGuard(n.NPCs)
 	Local dist#
 
 	Local head%
-	Local headangle%
+	Local headangle#
 	Local pvt%
 	Local p.Particles
 
@@ -51,7 +51,7 @@ Function UpdateNPCtypeGuard(n.NPCs)
         Case STATEGUARD_MOVE_TO_TARGET
             RotateEntity(n\collider, 0, CurveAngle(VectorYaw(n\targetX-EntityX(n\collider), 0, n\targetZ-EntityZ(n\collider))+n\angle, EntityYaw(n\collider), 20.0), 0)
 
-            dist# = Distance(EntityX(n\collider), EntityZ(n\collider), n\targetX, n\targetZ)
+            dist = Distance(EntityX(n\collider), EntityZ(n\collider), n\targetX, n\targetZ)
 
             AnimateNPC(n, 1614, 1641, n\currSpeed * 30)
 
@@ -95,7 +95,7 @@ Function UpdateNPCtypeGuard(n.NPCs)
 
                 PointEntity(pvt, mainPlayer\collider)
 
-                p.Particles = CreateParticle(EntityX(n\obj, True), EntityY(n\obj, True), EntityZ(n\obj, True), 1, 0.2, 0.0, 5)
+                p = CreateParticle(EntityX(n\obj, True), EntityY(n\obj, True), EntityZ(n\obj, True), 1, 0.2, 0.0, 5)
                 PositionEntity(p\pvt, EntityX(n\obj), EntityY(n\obj), EntityZ(n\obj))
                 RotateEntity(p\pvt, EntityPitch(n\collider), EntityYaw(n\collider), 0, True)
                 MoveEntity(p\pvt,0.8*0.079, 10.75*0.079, 6.9*0.079)

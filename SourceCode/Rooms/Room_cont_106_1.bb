@@ -88,7 +88,7 @@ Function FillRoom_cont_106_1(r.Rooms)
     r\objects[4] = CreateButton(r\x - 146.0*RoomScale, r\y - 576.0 * RoomScale, r\z + 3045.0 * RoomScale, 0,0,0)
     EntityParent(r\objects[4],r\obj)
 
-    sc.SecurityCams = CreateSecurityCam(r\x + 768.0 * RoomScale, r\y + 1392.0 * RoomScale, r\z + 1696.0 * RoomScale, r, True)
+    sc = CreateSecurityCam(r\x + 768.0 * RoomScale, r\y + 1392.0 * RoomScale, r\z + 1696.0 * RoomScale, r, True)
     sc\angle = 45 + 90 + 180
     sc\turn = 20
     TurnEntity(sc\cameraObj, 45, 0, 0)
@@ -112,7 +112,7 @@ Function FillRoom_cont_106_1(r.Rooms)
     r\objects[9] = CreatePivot(r\obj)
     PositionEntity(r\objects[9], r\x - 272 * RoomScale, r\y - 672.0 * RoomScale, r\z + 2736.0 * RoomScale, True)
 
-    sc.SecurityCams = CreateSecurityCam(r\x-1216.0*RoomScale, r\y-336.0*RoomScale, r\z+1468.0*RoomScale, r, True)
+    sc = CreateSecurityCam(r\x-1216.0*RoomScale, r\y-336.0*RoomScale, r\z+1468.0*RoomScale, r, True)
     sc\angle = 315
     sc\turn = 45
     sc\room = r
@@ -174,7 +174,7 @@ Function UpdateEvent_cont_106_1(e.Events)
 		RotateEntity(e\room\npc[0]\collider,EntityPitch(e\room\objects[5],True),EntityYaw(e\room\objects[5],True),0,True)
 		ResetEntity(e\room\npc[0]\collider)
 
-		temp = e\eventState2
+		temp = Int(e\eventState2)
 
 		If (((EntityY(e\room\objects[6],True)<-990*RoomScale) And (EntityY(e\room\objects[6],True)>-1275.0*RoomScale))) Then
 			e\room\levers[0]\locked = True
@@ -192,7 +192,7 @@ Function UpdateEvent_cont_106_1(e.Events)
 		EndIf
 
 		If (((e\eventState3>3200) Or (e\eventState3<2500)) Or (e\eventState<>1)) Then
-			SoundTransmission% = e\room\levers[1]\succ
+			SoundTransmission = e\room\levers[1]\succ
 		EndIf
 		If ((Not SoundTransmission)) Then
 			If (IsChannelPlaying(e\soundChannels[1])) Then StopChannel(e\soundChannels[1])
@@ -203,11 +203,11 @@ Function UpdateEvent_cont_106_1(e.Events)
 		If (e\eventState = 0) Then
 			If (SoundTransmission And Rand(100)=1) Then
 				If (e\soundChannels[1] = 0) Then
-					LoadEventSound(e,"SFX/Character/LureSubject/Idle"+Rand(1,6)+".ogg",1)
+					LoadEventSound(e,"SFX/Character/LureSubject/Idle"+Str(Rand(1,6))+".ogg",1)
 					e\soundChannels[1] = PlaySound(e\sounds[1])
 				EndIf
 				If (IsChannelPlaying(e\soundChannels[1]) = False) Then
-					LoadEventSound(e,"SFX/Character/LureSubject/Idle"+Rand(1,6)+".ogg",1)
+					LoadEventSound(e,"SFX/Character/LureSubject/Idle"+Str(Rand(1,6))+".ogg",1)
 					e\soundChannels[1] = PlaySound(e\sounds[1])
 				EndIf
 			EndIf
@@ -255,7 +255,7 @@ Function UpdateEvent_cont_106_1(e.Events)
 				Curr106\idle = True
 
 				If (e\eventState3-timing\tickDuration < 2500) Then
-					d.Decals = CreateDecal(0, EntityX(e\room\objects[5], True), 936.0*RoomScale, EntityZ(e\room\objects[5], True), 90, 0, Rnd(360))
+					d = CreateDecal(0, EntityX(e\room\objects[5], True), 936.0*RoomScale, EntityZ(e\room\objects[5], True), 90, 0, Rnd(360))
 					d\timer = 90000
 					d\alpha = 0.01 : d\alphaChange = 0.005
 					d\size = 0.1 : d\sizeChange = 0.003
@@ -265,7 +265,7 @@ Function UpdateEvent_cont_106_1(e.Events)
 					LoadEventSound(e,"SFX/Character/LureSubject/106Bait.ogg",1)
 					e\soundChannels[1]=PlaySound(e\sounds[1])
 				ElseIf (e\eventState3-timing\tickDuration < 2900 And e\eventState3 => 2900) Then
-					d.Decals = CreateDecal(0, EntityX(e\room\objects[7], True), EntityY(e\room\objects[7], True) , EntityZ(e\room\objects[7], True), 0, 0, 0)
+					d = CreateDecal(0, EntityX(e\room\objects[7], True), EntityY(e\room\objects[7], True) , EntityZ(e\room\objects[7], True), 0, 0, 0)
 					RotateEntity(d\obj, EntityPitch(e\room\objects[7], True)+Rand(10,20), EntityYaw(e\room\objects[7], True)+30, EntityRoll(d\obj))
 					MoveEntity(d\obj, 0,0,0.15)
 					RotateEntity(d\obj, EntityPitch(e\room\objects[7], True), EntityYaw(e\room\objects[7], True), EntityRoll(d\obj))
@@ -299,7 +299,7 @@ Function UpdateEvent_cont_106_1(e.Events)
 
 		EndIf
 
-		If (e\eventState2) Then
+		If (Int(e\eventState2)) Then
 			PositionEntity(e\room\objects[6],EntityX(e\room\objects[6],True),CurveValue(-980.0*RoomScale + Sin(Float(TimeInPosMilliSecs())*0.04)*0.07,EntityY(e\room\objects[6],True),200.0),EntityZ(e\room\objects[6],True),True)
 			RotateEntity(e\room\objects[6], Sin(Float(TimeInPosMilliSecs())*0.03), EntityYaw(e\room\objects[6],True), -Sin(Float(TimeInPosMilliSecs())*0.025), True)
 		Else

@@ -36,12 +36,12 @@ Function FillRoom_closets_2(r.Rooms)
     r\objects[1]=CreatePivot(r\obj)
     PositionEntity(r\objects[1], r\x-1232*RoomScale, -256*RoomScale, r\z-160*RoomScale, True)
 
-    d.Doors = CreateDoor(0, r\x - 240.0 * RoomScale, 0.0, r\z, 90, r, False)
+    d = CreateDoor(0, r\x - 240.0 * RoomScale, 0.0, r\z, 90, r, False)
     d\open = False : d\autoClose = False
     MoveEntity(d\buttons[0], 0.0, 0.0, 22.0 * RoomScale)
     MoveEntity(d\buttons[1], 0.0, 0.0, 22.0 * RoomScale)
 
-    sc.SecurityCams = CreateSecurityCam(r\x, r\y + 704*RoomScale, r\z + 863*RoomScale, r)
+    sc = CreateSecurityCam(r\x, r\y + 704*RoomScale, r\z + 863*RoomScale, r)
     sc\angle = 180
     sc\turn = 45
     TurnEntity(sc\cameraObj, 20, 0, 0)
@@ -68,7 +68,7 @@ Function UpdateEvent_closets_2(e.Events)
 				e\room\npc[0] = CreateNPC(NPCtypeD, EntityX(e\room\objects[0],True),EntityY(e\room\objects[0],True),EntityZ(e\room\objects[0],True))
 			EndIf
 			e\room\npc[0]\texture = "GFX/NPCs/classd/janitor.jpg"
-			tex% = LoadTexture(e\room\npc[0]\texture)
+			tex = LoadTexture(e\room\npc[0]\texture)
 
 			EntityTexture(e\room\npc[0]\obj, tex)
 			FreeTexture(tex)

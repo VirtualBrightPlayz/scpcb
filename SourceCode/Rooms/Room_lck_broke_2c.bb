@@ -29,13 +29,16 @@ Function FillRoom_lck_broke_2c(r.Rooms)
     Local scale# = RoomScale * 4.5 * 0.4
 
     r\objects[0] = CopyEntity(Monitor)
-    ScaleEntity(r\objects[0],scale#,scale#,scale#)
+    ScaleEntity(r\objects[0],scale,scale,scale)
     PositionEntity(r\objects[0],r\x+668*RoomScale,1.1,r\z-96.0*RoomScale,True)
     RotateEntity(r\objects[0],0,90,0)
     EntityParent(r\objects[0],r\obj)
 
     r\objects[1] = CopyEntity(Monitor)
-    ScaleEntity(r\objects[1],scale#,scale#,scale#)
+    ScaleEntity(r\objects[1],scale,scale,scale)
     PositionEntity(r\objects[1],r\x+96.0*RoomScale,1.1,r\z-668.0*RoomScale,True)
     EntityParent(r\objects[1],r\obj)
 End Function
+
+;~IDEal Editor Parameters:
+;~C#Blitz3D

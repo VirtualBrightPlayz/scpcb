@@ -40,7 +40,7 @@ Function InitializeNPCtypeMTF(n.NPCs)
 	
 	Local r.Rooms
     If (MTFrooms[6]=Null) Then
-        For r.Rooms = Each Rooms
+        For r = Each Rooms
             Select Lower(r\roomTemplate\name)
                 Case "room106"
                     MTFrooms[0]=r
@@ -117,7 +117,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 					Else ;i am the leader
 						If (Curr173\idle<>2) Then
 							For r = Each Rooms
-								If (((Abs(r\x-EntityX(n\collider,True))>12.0) Or (Abs(r\z-EntityZ(n\collider,True))>12.0)) And (Rand(1,Max(4-Int(Abs(r\z-EntityZ(n\collider,True)/8.0)),2))=1)) Then
+								If (((Abs(r\x-EntityX(n\collider,True))>12.0) Or (Abs(r\z-EntityZ(n\collider,True))>12.0)) And (Rand(1,Int(Max(4-Int(Abs(r\z-EntityZ(n\collider,True)/8.0)),2)))=1)) Then
 									x = r\x
 									y = 0.1
 									z = r\z
@@ -136,20 +136,20 @@ Function UpdateNPCtypeMTF(n.NPCs)
 							If ((Not tmp)) Then
 								For r = Each Rooms
 									If (r\roomTemplate\name$ = "start") Then
-										foundChamber% = False
-										pvt% = CreatePivot()
-										PositionEntity(pvt%,EntityX(r\obj,True)+4736*RoomScale,0.5,EntityZ(r\obj,True)+1692*RoomScale)
+										foundChamber = False
+										pvt = CreatePivot()
+										PositionEntity(pvt,EntityX(r\obj,True)+4736*RoomScale,0.5,EntityZ(r\obj,True)+1692*RoomScale)
 
-										If (Distance(EntityX(pvt%),EntityZ(pvt%),EntityX(n\collider),EntityZ(n\collider))<3.5) Then
-											foundChamber% = True
-											DebugLog(Distance(EntityX(pvt%),EntityZ(pvt%),EntityX(n\collider),EntityZ(n\collider)))
+										If (Distance(EntityX(pvt),EntityZ(pvt),EntityX(n\collider),EntityZ(n\collider))<3.5) Then
+											foundChamber = True
+											DebugLog(Str(Distance(EntityX(pvt),EntityZ(pvt),EntityX(n\collider),EntityZ(n\collider))))
 										EndIf
 
-										If (Curr173\idle = 3 And Distance(EntityX(pvt%),EntityZ(pvt%),EntityX(n\collider),EntityZ(n\collider)) > 4.0) Then
+										If (Curr173\idle = 3 And Distance(EntityX(pvt),EntityZ(pvt),EntityX(n\collider),EntityZ(n\collider)) > 4.0) Then
 											If (r\roomDoors[1]\open = True) Then UseDoor(r\roomDoors[1],False)
 										EndIf
 
-										FreeEntity(pvt%)
+										FreeEntity(pvt)
 
 										If (Distance(EntityX(n\collider),EntityZ(n\collider),EntityX(r\obj,True)+4736*RoomScale,EntityZ(r\obj,True)+1692*RoomScale)>1.6 And (Not foundChamber)) Then
 											x = EntityX(r\obj,True)+4736*RoomScale
@@ -170,7 +170,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 												FreeSound(n\sounds[0])
 												n\sounds[0] = 0
 											EndIf
-											n\sounds[0] = LoadSound("SFX/Character/MTF/173/Cont"+Rand(1,4)+".ogg")
+											n\sounds[0] = LoadSound("SFX/Character/MTF/173/Cont"+Str(Rand(1,4))+".ogg")
 											PlayMTFSound(n\sounds[0], n)
 											DebugLog("173 contained")
 											Exit
@@ -229,7 +229,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 								n\pathLocation = n\pathLocation + 1
 							EndIf
 						Else
-							prevDist# = EntityDistance(n\collider,n\path[n\pathLocation]\obj)
+							prevDist = EntityDistance(n\collider,n\path[n\pathLocation]\obj)
 
 							PointEntity(n\collider,n\path[n\pathLocation]\obj)
 							RotateEntity(n\collider,0.0,EntityYaw(n\collider,True),0.0,True)
@@ -246,7 +246,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 							TranslateEntity(n\collider, Cos(EntityYaw(n\collider,True)+90.0)*n\currSpeed * timing\tickDuration, 0, Sin(EntityYaw(n\collider,True)+90.0)*n\currSpeed * timing\tickDuration, True)
 							AnimateNPC(n,488, 522, n\currSpeed*26)
 
-							newDist# = EntityDistance(n\collider,n\path[n\pathLocation]\obj)
+							newDist = EntityDistance(n\collider,n\path[n\pathLocation]\obj)
 
 							;TODO: fix
 							;If ((newDist<1.0 And n\path[n\pathLocation]\door<>Null)) Then
@@ -323,7 +323,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 								FreeSound(n\sounds[0])
 								n\sounds[0] = 0
 							EndIf
-							n\sounds[0] = LoadSound("SFX/Character/MTF/ThereHeIs"+Rand(1,6)+".ogg")
+							n\sounds[0] = LoadSound("SFX/Character/MTF/ThereHeIs"+Str(Rand(1,6))+".ogg")
 							PlayMTFSound(n\sounds[0], n)
 						EndIf
 					Else
@@ -332,7 +332,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 								FreeSound(n\sounds[0])
 								n\sounds[0] = 0
 							EndIf
-							n\sounds[0] = LoadSound("SFX/Character/MTF/Stop"+Rand(1,6)+".ogg")
+							n\sounds[0] = LoadSound("SFX/Character/MTF/Stop"+Str(Rand(1,6))+".ogg")
 							PlayMTFSound(n\sounds[0], n)
 						ElseIf (temp = 2) Then
 							;If (n\sounds[0] <> 0) Then FreeSound(n\sounds[0] : n\sounds[0] = 0)
@@ -342,7 +342,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 						EndIf
 					EndIf
 
-					n\lastSeen = (70*Rnd(30,40))
+					n\lastSeen = Int(70*Rnd(30,40))
 					n\lastDist = 1
 
 					n\state = 1
@@ -350,7 +350,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 					n\enemyY = EntityY(mainPlayer\collider,True)
 					n\enemyZ = EntityZ(mainPlayer\collider,True)
 					n\state2 = 70.0*(15.0*temp) ;give up after 15 seconds (30 seconds if detected by loud noise, over camera: 45)
-					DebugLog("player spotted :"+n\state2)
+					DebugLog("player spotted :"+Str(n\state2))
 					n\pathTimer=0.0
 					n\pathStatus=0
 					n\reload = 200-(100*SelectedDifficulty\aggressiveNPCs)
@@ -362,23 +362,23 @@ Function UpdateNPCtypeMTF(n.NPCs)
 
 				;B3D doesn't do short-circuit evaluation, so this retarded nesting is an optimization
                 If (Curr173\idle<2) Then
-					soundVol173# = Max(Min((Distance(EntityX(Curr173\collider), EntityZ(Curr173\collider), Curr173\prevX, Curr173\prevZ) * 2.5), 1.0), 0.0)
-					If (OtherNPCSeesMeNPC(Curr173,n) Or (soundVol173#>0.0 And EntityDistance(n\collider,Curr173\collider)<6.0)) Then
-						If (EntityVisible(n\collider,Curr173\collider) Or soundVol173#>0.0) Then
+					soundVol173 = Max(Min((Distance(EntityX(Curr173\collider), EntityZ(Curr173\collider), Curr173\prevX, Curr173\prevZ) * 2.5), 1.0), 0.0)
+					If (OtherNPCSeesMeNPC(Curr173,n) Or (soundVol173>0.0 And EntityDistance(n\collider,Curr173\collider)<6.0)) Then
+						If (EntityVisible(n\collider,Curr173\collider) Or soundVol173>0.0) Then
 							n\state = 2
 							n\enemyX = EntityX(Curr173\collider,True)
 							n\enemyY = EntityY(Curr173\collider,True)
 							n\enemyZ = EntityZ(Curr173\collider,True)
-							n\state2 = 70.0*15.0 ;give up after 15 seconds
+							n\state2 = Int(70.0*15.0) ;give up after 15 seconds
 							n\state3 = 0.0
 							n\pathTimer=0.0
 							n\pathStatus=0
-							DebugLog("173 spotted :"+n\state2)
+							DebugLog("173 spotted :"+Str(n\state2))
 							If (n\sounds[0] <> 0) Then
 								FreeSound(n\sounds[0])
 								n\sounds[0] = 0
 							EndIf
-							n\sounds[0] = LoadSound("SFX/Character/MTF/173/Spotted"+Rand(1,2)+".ogg")
+							n\sounds[0] = LoadSound("SFX/Character/MTF/173/Spotted"+Str(Rand(1,2))+".ogg")
 							PlayMTFSound(n\sounds[0], n)
 						EndIf
 					EndIf
@@ -396,13 +396,13 @@ Function UpdateNPCtypeMTF(n.NPCs)
 							n\pathTimer = 0.0
 							n\pathStatus = 0
 							n\target = Curr106
-							DebugLog("106 spotted :"+n\state2)
+							DebugLog("106 spotted :"+Str(n\state2))
 							;If n\mtfLeader=Null
 							If (n\sounds[0] <> 0) Then
 								FreeSound(n\sounds[0])
 								n\sounds[0] = 0
 							EndIf
-								n\sounds[0] = LoadSound("SFX/Character/MTF/106/Spotted"+Rand(1,3)+".ogg")
+							n\sounds[0] = LoadSound("SFX/Character/MTF/106/Spotted"+Str(Rand(1,3))+".ogg")
 								PlayMTFSound(n\sounds[0], n)
 							;EndIf
 						EndIf
@@ -420,20 +420,20 @@ Function UpdateNPCtypeMTF(n.NPCs)
 							n\state3 = 0.0
 							n\pathTimer = 0.0
 							n\pathStatus = 0
-							DebugLog("096 spotted :"+n\state2)
+							DebugLog("096 spotted :"+Str(n\state2))
 							;If n\mtfLeader=Null
 								If (n\sounds[0] <> 0) Then
 									FreeSound(n\sounds[0])
 									n\sounds[0] = 0
 								EndIf
-								n\sounds[0] = LoadSound("SFX/Character/MTF/096/Spotted"+Rand(1,2)+".ogg")
+								n\sounds[0] = LoadSound("SFX/Character/MTF/096/Spotted"+Str(Rand(1,2))+".ogg")
 								PlayMTFSound(n\sounds[0], n)
 							;EndIf
 						EndIf
 					EndIf
 				EndIf
 
-				For n2.NPCs = Each NPCs
+				For n2 = Each NPCs
 					If (n2\npcType = NPCtype049) Then
 						If (OtherNPCSeesMeNPC(n2,n)) Then
 							If (EntityVisible(n\collider,n2\collider)) Then
@@ -446,7 +446,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 								n\pathTimer = 0.0
 								n\pathStatus = 0
 								n\target = n2
-								DebugLog("049 spotted :"+n\state2)
+								DebugLog("049 spotted :"+Str(n\state2))
 								;If n\mtfLeader=Null
 								;	If (n\sounds[0] <> 0) Then FreeSound(n\sounds[0] : n\sounds[0] = 0)
 								;	n\sounds[0] = LoadSound("SFX/Character/MTF/"
@@ -468,7 +468,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 								n\pathStatus = 0
 								n\target = n2
 								n\reload = 70*5
-								DebugLog("049-2 spotted :"+n\state2)
+								DebugLog("049-2 spotted :"+Str(n\state2))
 								If (n\sounds[0] <> 0) Then
 									FreeSound(n\sounds[0])
 									n\sounds[0] = 0
@@ -490,20 +490,20 @@ Function UpdateNPCtypeMTF(n.NPCs)
 					;if close enough, start shooting at the player
 					If (n\playerDistance < 4.0) Then
 
-						angle# = VectorYaw(EntityX(mainPlayer\collider)-EntityX(n\collider),0,EntityZ(mainPlayer\collider)-EntityZ(n\collider))
+						angle = VectorYaw(EntityX(mainPlayer\collider)-EntityX(n\collider),0,EntityZ(mainPlayer\collider)-EntityZ(n\collider))
 
 						RotateEntity(n\collider, 0, CurveAngle(angle, EntityYaw(n\collider), 10.0), 0, True)
 						n\angle = EntityYaw(n\collider)
 
 						If (n\reload =< 0 And (Not mainPlayer\dead)) Then
 							If (EntityVisible(n\collider, mainPlayer\cam)) Then
-								angle# = WrapAngle(angle - EntityYaw(n\collider))
+								angle = WrapAngle(angle - EntityYaw(n\collider))
 								If (angle < 5 Or angle > 355) Then
-									prev% = (Not mainPlayer\dead)
+									prev = (Not mainPlayer\dead)
 
 									PlayRangedSound_SM(sndManager\gunshot[0], mainPlayer\cam, n\collider, 15)
 
-									pvt% = CreatePivot()
+									pvt = CreatePivot()
 
 									RotateEntity(pvt, EntityPitch(n\collider), EntityYaw(n\collider), 0, True)
 									PositionEntity(pvt, EntityX(n\obj), EntityY(n\obj), EntityZ(n\obj))
@@ -519,18 +519,18 @@ Function UpdateNPCtypeMTF(n.NPCs)
 									;player killed -> "target terminated"
 									If ((Not prev) And mainPlayer\dead) Then
 										DeathMSG="Subject D-9341. Terminated by Nine-Tailed Fox."
-										PlayMTFSound(LoadTempSound("SFX/Character/MTF/Targetterminated"+Rand(1,4)+".ogg"),n)
+										PlayMTFSound(LoadTempSound("SFX/Character/MTF/Targetterminated"+Str(Rand(1,4))+".ogg"),n)
 									EndIf
 								EndIf
 							EndIf
 						EndIf
 
-						For n2.NPCs = Each NPCs
+						For n2 = Each NPCs
 							If (n2\npcType = NPCtypeMTF And n2 <> n) Then
 								If (n2\state = 0) Then
 									If (EntityDistance(n\collider,n2\collider)<6.0) Then
 										n\prevState = 1
-										n2\lastSeen = (70*Rnd(30,40))
+										n2\lastSeen = Int(70*Rnd(30,40))
 										n2\lastDist = 1
 
 										n2\state = 1
@@ -581,7 +581,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 						AnimateNPC(n,488, 522, n\currSpeed*26)
 					EndIf
                 Else
-					n\lastSeen = n\lastSeen - timing\tickDuration
+					n\lastSeen = Int(n\lastSeen - timing\tickDuration)
 
 					n\reload = 200-(100*SelectedDifficulty\aggressiveNPCs)
 
@@ -615,7 +615,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 									n\pathLocation = n\pathLocation + 1
 								EndIf
 							Else
-								prevDist# = EntityDistance(n\collider,n\path[n\pathLocation]\obj)
+								prevDist = EntityDistance(n\collider,n\path[n\pathLocation]\obj)
 
 								PointEntity(n\collider,n\path[n\pathLocation]\obj)
 								RotateEntity(n\collider,0.0,EntityYaw(n\collider,True),0.0,True)
@@ -627,7 +627,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 								TranslateEntity(n\collider, Cos(EntityYaw(n\collider,True)+90.0)*n\currSpeed * timing\tickDuration, 0, Sin(EntityYaw(n\collider,True)+90.0)*n\currSpeed * timing\tickDuration, True)
 								AnimateNPC(n,488, 522, n\currSpeed*26)
 
-								newDist# = EntityDistance(n\collider,n\path[n\pathLocation]\obj)
+								newDist = EntityDistance(n\collider,n\path[n\pathLocation]\obj)
 
 								;TODO: fix
 								;If ((newDist<1.0 And n\path[n\pathLocation]\door<>Null)) Then
@@ -657,7 +657,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 								EndIf
 								FinishWalking(n,488,522,n\speed*26)
 								If (Rand(1,35)=1) Then
-									For wp.WayPoints = Each WayPoints
+									For wp = Each WayPoints
 										If ((Rand(1,3)=1)) Then
 											If ((EntityDistance(wp\obj,n\collider)<6.0)) Then
 												n\enemyX = EntityX(wp\obj,True)
@@ -685,7 +685,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 
 					If (n\mtfLeader=Null And n\lastSeen<70*30 And n\lastSeen+timing\tickDuration=>70*30) Then
 						If (Rand(2)=1) Then
-							PlayMTFSound(LoadTempSound("SFX/Character/MTF/Searching"+Rand(1,6)+".ogg"),n)
+							PlayMTFSound(LoadTempSound("SFX/Character/MTF/Searching"+Str(Rand(1,6))+".ogg"),n)
 						EndIf
 					EndIf
 
@@ -696,23 +696,23 @@ Function UpdateNPCtypeMTF(n.NPCs)
 
                 If (n\state2<=0.0 And n\state2+timing\tickDuration >0.0) Then
 					If (n\mtfLeader = Null) Then
-						DebugLog("targetlost: "+n\state2)
-						PlayMTFSound(LoadTempSound("SFX/Character/MTF/Targetlost"+Rand(1,3)+".ogg"),n)
+						DebugLog("targetlost: "+Str(n\state2))
+						PlayMTFSound(LoadTempSound("SFX/Character/MTF/Targetlost"+Str(Rand(1,3))+".ogg"),n)
 					EndIf
 					n\state = 0
                 EndIf
 
 				;B3D doesn't do short-circuit evaluation, so this retarded nesting is an optimization
                 If (Curr173\idle<2) Then
-					soundVol173# = Max(Min((Distance(EntityX(Curr173\collider), EntityZ(Curr173\collider), Curr173\prevX, Curr173\prevZ) * 2.5), 1.0), 0.0)
-					If (OtherNPCSeesMeNPC(Curr173,n) Or (soundVol173#>0.0 And EntityDistance(n\collider,Curr173\collider)<6.0)) Then
-						If (EntityVisible(n\collider,Curr173\collider) Or soundVol173#>0.0) Then
+					soundVol173 = Max(Min((Distance(EntityX(Curr173\collider), EntityZ(Curr173\collider), Curr173\prevX, Curr173\prevZ) * 2.5), 1.0), 0.0)
+					If (OtherNPCSeesMeNPC(Curr173,n) Or (soundVol173>0.0 And EntityDistance(n\collider,Curr173\collider)<6.0)) Then
+						If (EntityVisible(n\collider,Curr173\collider) Or soundVol173>0.0) Then
 							n\state = 2
 							n\enemyX = EntityX(Curr173\collider,True)
 							n\enemyY = EntityY(Curr173\collider,True)
 							n\enemyZ = EntityZ(Curr173\collider,True)
 							n\state2 = 70.0*15.0 ;give up after 15 seconds
-							DebugLog("173 spotted :"+n\state2)
+							DebugLog("173 spotted :"+Str(n\state2))
 							If (n\sounds[0] <> 0) Then
 								FreeSound(n\sounds[0])
 								n\sounds[0] = 0
@@ -738,7 +738,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 							n\pathTimer = 0.0
 							n\pathStatus = 0
 							n\target = Curr106
-							DebugLog("106 spotted :"+n\state2)
+							DebugLog("106 spotted :"+Str(n\state2))
 							If (n\mtfLeader=Null) Then
 								If (n\sounds[0] <> 0) Then
 									FreeSound(n\sounds[0])
@@ -762,20 +762,20 @@ Function UpdateNPCtypeMTF(n.NPCs)
 							n\state3 = 0.0
 							n\pathTimer = 0.0
 							n\pathStatus = 0
-							DebugLog("096 spotted :"+n\state2)
+							DebugLog("096 spotted :"+Str(n\state2))
 							If (n\mtfLeader=Null) Then
 								If (n\sounds[0] <> 0) Then
 									FreeSound(n\sounds[0])
 									n\sounds[0] = 0
 								EndIf
-								n\sounds[0] = LoadSound("SFX/Character/MTF/096/Spotted"+Rand(1,2)+".ogg")
+								n\sounds[0] = LoadSound("SFX/Character/MTF/096/Spotted"+Str(Rand(1,2))+".ogg")
 								PlayMTFSound(n\sounds[0], n)
 							EndIf
 						EndIf
 					EndIf
 				EndIf
 
-				For n2.NPCs = Each NPCs
+				For n2 = Each NPCs
 					If (n2\npcType = NPCtype049) Then
 						If (OtherNPCSeesMeNPC(n2,n)) Then
 							If (EntityVisible(n\collider,n2\collider)) Then
@@ -788,7 +788,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 								n\pathTimer = 0.0
 								n\pathStatus = 0
 								n\target = n2
-								DebugLog("049 spotted :"+n\state2)
+								DebugLog("049 spotted :"+Str(n\state2))
 								;If n\mtfLeader=Null
 								;	If (n\sounds[0] <> 0) Then FreeSound(n\sounds[0] : n\sounds[0] = 0)
 								;	n\sounds[0] = LoadSound("SFX/Character/MTF/"
@@ -810,7 +810,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 								n\pathStatus = 0
 								n\target = n2
 								n\reload = 70*5
-								DebugLog("049-2 spotted :"+n\state2)
+								DebugLog("049-2 spotted :"+Str(n\state2))
 								;If n\mtfLeader=Null
 								If (n\sounds[0] <> 0) Then
 									FreeSound(n\sounds[0])
@@ -833,7 +833,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
                 If (Curr173\idle = 2) Then
 					n\state = 0
                 Else
-					For n2.NPCs = Each NPCs
+					For n2 = Each NPCs
 						If (n2<>n) Then
 							If (n2\npcType = NPCtypeMTF) Then
 								n2\state = 2
@@ -841,18 +841,18 @@ Function UpdateNPCtypeMTF(n.NPCs)
 						EndIf
 					Next
 
-					curr173Dist# = Distance(EntityX(n\collider,True),EntityZ(n\collider,True),EntityX(Curr173\collider,True),EntityZ(Curr173\collider,True))
+					curr173Dist = Distance(EntityX(n\collider,True),EntityZ(n\collider,True),EntityX(Curr173\collider,True),EntityZ(Curr173\collider,True))
 
 					If (curr173Dist<5.0) Then
 						If (Curr173\idle <> 2) Then Curr173\idle = True
 						n\state2 = 70.0*15.0
 						n\pathTimer = 0.0
-						tempDist# = 1.0
+						tempDist = 1.0
 						If (n\mtfLeader<>Null) Then tempDist = 2.0
 						If (curr173Dist<tempDist) Then
 							If (n\mtfLeader = Null) Then
 								n\state3=n\state3+timing\tickDuration
-								DebugLog("CONTAINING 173: "+n\state3)
+								DebugLog("CONTAINING 173: "+Str(n\state3))
 								;If (n\state3>=70.0*10.0) Then
 								If (n\state3>=70.0*15.0) Then
 									Curr173\idle = 2
@@ -861,7 +861,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 										FreeSound(n\sounds[0])
 										n\sounds[0] = 0
 									EndIf
-									n\sounds[0] = LoadSound("SFX/Character/MTF/173/Box"+Rand(1,3)+".ogg")
+									n\sounds[0] = LoadSound("SFX/Character/MTF/173/Box"+Str(Rand(1,3))+".ogg")
 									PlayMTFSound(n\sounds[0], n)
 								EndIf
 							EndIf
@@ -914,7 +914,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 										n\pathLocation = n\pathLocation + 1
 									EndIf
 								Else
-									prevDist# = EntityDistance(n\collider,n\path[n\pathLocation]\obj)
+									prevDist = EntityDistance(n\collider,n\path[n\pathLocation]\obj)
 
 									PointEntity(n\collider,n\path[n\pathLocation]\obj)
 									RotateEntity(n\collider,0.0,EntityYaw(n\collider,True),0.0,True)
@@ -926,7 +926,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 									TranslateEntity(n\collider, Cos(EntityYaw(n\collider,True)+90.0)*n\currSpeed * timing\tickDuration, 0, Sin(EntityYaw(n\collider,True)+90.0)*n\currSpeed * timing\tickDuration, True)
 									AnimateNPC(n,488, 522, n\currSpeed*26)
 
-									newDist# = EntityDistance(n\collider,n\path[n\pathLocation]\obj)
+									newDist = EntityDistance(n\collider,n\path[n\pathLocation]\obj)
 
 									;TODO: fix
 									;If ((newDist<1.0 And n\path[n\pathLocation]\door<>Null)) Then
@@ -990,7 +990,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 						;EndIf
 
 						If (dist < HideDistance*0.7) Then
-							dist2# = EntityDistance(n\collider,n\path[n\pathLocation]\obj)
+							dist2 = EntityDistance(n\collider,n\path[n\pathLocation]\obj)
 
 							;If (Rand(5)=1) Then
 							;	For n2.NPCs = Each NPCs
@@ -1110,7 +1110,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 							n\pathStatus = FindPath(n,EntityX(n\mtfLeader\collider,True),EntityY(n\mtfLeader\collider,True)+0.1,EntityZ(n\mtfLeader\collider,True))
 						Else
 							For r = Each Rooms
-								If (((Abs(r\x-EntityX(n\collider,True))>12.0) Or (Abs(r\z-EntityZ(n\collider,True))>12.0)) And (Rand(1,Max(4-Int(Abs(r\z-EntityZ(n\collider,True)/8.0)),2))=1)) Then
+								If (((Abs(r\x-EntityX(n\collider,True))>12.0) Or (Abs(r\z-EntityZ(n\collider,True))>12.0)) And (Rand(1,Int(Max(4-Int(Abs(r\z-EntityZ(n\collider,True)/8.0)),2)))=1)) Then
 									If (EntityDistance(r\obj,n\target\collider)>6.0) Then
 										x = r\x
 										y = 0.1
@@ -1147,7 +1147,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 									n\pathLocation = n\pathLocation + 1
 								EndIf
 							Else
-								prevDist# = EntityDistance(n\collider,n\path[n\pathLocation]\obj)
+								prevDist = EntityDistance(n\collider,n\path[n\pathLocation]\obj)
 
 								PointEntity(n\collider,n\path[n\pathLocation]\obj)
 								RotateEntity(n\collider,0.0,EntityYaw(n\collider,True),0.0,True)
@@ -1158,7 +1158,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 								TranslateEntity(n\collider, Cos(EntityYaw(n\collider,True)+90.0)*n\currSpeed * timing\tickDuration, 0, Sin(EntityYaw(n\collider,True)+90.0)*n\currSpeed * timing\tickDuration, True)
 								AnimateNPC(n,488, 522, n\currSpeed*26) ;Placeholder (until running animation has been implemented)
 
-								newDist# = EntityDistance(n\collider,n\path[n\pathLocation]\obj)
+								newDist = EntityDistance(n\collider,n\path[n\pathLocation]\obj)
 
 								;TODO: fix and remove duplicates maybe???
 								;If ((newDist<2.0 And n\path[n\pathLocation]\door<>Null)) Then
@@ -1209,7 +1209,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 					EndIf
 
 					If (n\pathStatus = 1 And n\reload =< 0) Then
-						dist# = Distance(EntityX(target),EntityZ(target),EntityX(n\collider),EntityZ(n\collider))
+						dist = Distance(EntityX(target),EntityZ(target),EntityX(n\collider),EntityZ(n\collider))
 
 						;If (dist<20.0) Then
 						;	pvt = CreatePivot()
@@ -1254,7 +1254,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 
 							PlayRangedSound_SM(sndManager\gunshot[0], mainPlayer\cam, n\collider, 15)
 
-							pvt% = CreatePivot()
+							pvt = CreatePivot()
 
 							RotateEntity(pvt, EntityPitch(n\collider), EntityYaw(n\collider), 0, True)
 							PositionEntity(pvt, EntityX(n\obj), EntityY(n\obj), EntityZ(n\obj))
@@ -1285,13 +1285,13 @@ Function UpdateNPCtypeMTF(n.NPCs)
 					;LightVolume = TempLightVolume*1.2
 					PlayRangedSound_SM(sndManager\gunshot[0], mainPlayer\cam, n\collider, 20)
 
-					pvt% = CreatePivot()
+					pvt = CreatePivot()
 
 					RotateEntity(pvt, EntityPitch(n\collider), EntityYaw(n\collider), 0, True)
 					PositionEntity(pvt, EntityX(n\obj), EntityY(n\obj), EntityZ(n\obj))
 					MoveEntity(pvt,0.8*0.079, 10.75*0.079, 6.9*0.079)
 
-					p.Particles = CreateParticle(EntityX(pvt), EntityY(pvt), EntityZ(pvt), 1, Rnd(0.08,0.1), 0.0, 5)
+					p = CreateParticle(EntityX(pvt), EntityY(pvt), EntityZ(pvt), 1, Rnd(0.08,0.1), 0.0, 5)
 					TurnEntity(p\obj, 0,0,Rnd(360))
 					p\aChange = -0.15
 
@@ -1310,7 +1310,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 						n\pathStatus = FindPath(n,EntityX(n\mtfLeader\collider,True),EntityY(n\mtfLeader\collider,True)+0.1,EntityZ(n\mtfLeader\collider,True)) ;whatever you say boss
 					Else ;i am the leader
 						For r = Each Rooms
-							If (((Abs(r\x-EntityX(n\collider,True))>12.0) Or (Abs(r\z-EntityZ(n\collider,True))>12.0)) And (Rand(1,Max(4-Int(Abs(r\z-EntityZ(n\collider,True)/8.0)),2))=1)) Then
+							If (((Abs(r\x-EntityX(n\collider,True))>12.0) Or (Abs(r\z-EntityZ(n\collider,True))>12.0)) And (Rand(1,Int(Max(4-Int(Abs(r\z-EntityZ(n\collider,True)/8.0)),2)))=1)) Then
 								x = r\x
 								y = 0.1
 								z = r\z
@@ -1363,7 +1363,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 								n\pathLocation = n\pathLocation + 1
 							EndIf
 						Else
-							prevDist# = EntityDistance(n\collider,n\path[n\pathLocation]\obj)
+							prevDist = EntityDistance(n\collider,n\path[n\pathLocation]\obj)
 
 							PointEntity(n\collider,n\path[n\pathLocation]\obj)
 							RotateEntity(n\collider,0.0,EntityYaw(n\collider,True),0.0,True)
@@ -1375,7 +1375,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 							TranslateEntity(n\collider, Cos(EntityYaw(n\collider,True)+90.0)*n\currSpeed * timing\tickDuration, 0, Sin(EntityYaw(n\collider,True)+90.0)*n\currSpeed * timing\tickDuration, True)
 							AnimateNPC(n,488, 522, n\currSpeed*26)
 
-							newDist# = EntityDistance(n\collider,n\path[n\pathLocation]\obj)
+							newDist = EntityDistance(n\collider,n\path[n\pathLocation]\obj)
 
 							;TODO: fix AND REMOVE DUPLICATES OMG
 							;If ((newDist<1.0 And n\path[n\pathLocation]\door<>Null)) Then
@@ -1462,17 +1462,17 @@ Function UpdateNPCtypeMTF(n.NPCs)
 
 							PlayRangedSound_SM(sndManager\gunshot[0], mainPlayer\cam, n\collider, 15)
 
-							pvt% = CreatePivot()
+							pvt = CreatePivot()
 
 							RotateEntity(pvt, EntityPitch(n\collider), EntityYaw(n\collider), 0, True)
 							PositionEntity(pvt, EntityX(n\obj), EntityY(n\obj), EntityZ(n\obj))
 							MoveEntity(pvt,0.8*0.079, 10.75*0.079, 6.9*0.079)
 
-							p.Particles = CreateParticle(EntityX(pvt), EntityY(pvt), EntityZ(pvt), 1, Rnd(0.08,0.1), 0.0, 5)
+							p = CreateParticle(EntityX(pvt), EntityY(pvt), EntityZ(pvt), 1, Rnd(0.08,0.1), 0.0, 5)
 							TurnEntity(p\obj, 0,0,Rnd(360))
 							p\aChange = -0.15
 							If (n\target\hp > 0) Then
-								n\target\hp = Max(n\target\hp-Rand(5,10),0)
+								n\target\hp = Int(Max(n\target\hp-Rand(5,10),0))
 							Else
 								If ((Not n\target\isDead)) Then
 									If (n\sounds[0] <> 0) Then
@@ -1520,7 +1520,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 									n\pathLocation = n\pathLocation + 1
 								EndIf
 							Else
-								prevDist# = EntityDistance(n\collider,n\path[n\pathLocation]\obj)
+								prevDist = EntityDistance(n\collider,n\path[n\pathLocation]\obj)
 
 								PointEntity(n\collider,n\path[n\pathLocation]\obj)
 								RotateEntity(n\collider,0.0,EntityYaw(n\collider,True),0.0,True)
@@ -1531,7 +1531,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 								TranslateEntity(n\collider, Cos(EntityYaw(n\collider,True)+90.0)*n\currSpeed * timing\tickDuration, 0, Sin(EntityYaw(n\collider,True)+90.0)*n\currSpeed * timing\tickDuration, True)
 								AnimateNPC(n,488, 522, n\currSpeed*26)
 
-								newDist# = EntityDistance(n\collider,n\path[n\pathLocation]\obj)
+								newDist = EntityDistance(n\collider,n\path[n\pathLocation]\obj)
 
 								;TODO: fix
 								;If ((newDist<1.0 And n\path[n\pathLocation]\door<>Null)) Then
@@ -1578,7 +1578,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 					TranslateEntity(n\collider, Cos(EntityYaw(n\collider,True)-45)* 0.01 * timing\tickDuration, 0, Sin(EntityYaw(n\collider,True)-45)* 0.01 * timing\tickDuration, True)
 				EndIf
 			Else
-				For n2.NPCs = Each NPCs
+				For n2 = Each NPCs
 					If (n2<>n And n2\isDead=False) Then
 						If (Abs(DeltaYaw(n\collider,n2\collider))<80.0) Then
 							If (EntityDistance(n\collider,n2\collider)<0.7) Then
@@ -1604,7 +1604,7 @@ Function UpdateNPCtypeMTF(n.NPCs)
 	EndIf
 End Function
 
-Function UpdateMTF%()
+Function UpdateMTF()
 	If (mainPlayer\currRoom\roomTemplate\name = "gateaentrance") Then Return
 
 	Local r.Rooms, n.NPCs, leader.NPCs
@@ -1615,8 +1615,8 @@ Function UpdateMTF%()
 	If (MTFtimer = 0) Then
 		If (Rand(30)=1 And mainPlayer\currRoom\roomTemplate\name$ <> "dimension1499") Then
 
-			entrance.Rooms = Null
-			For r.Rooms = Each Rooms
+			entrance = Null
+			For r = Each Rooms
 				If (Lower(r\roomTemplate\name) = "gateaentrance") Then
 					entrance = r : Exit
 				EndIf
@@ -1632,7 +1632,7 @@ Function UpdateMTF%()
 					MTFtimer = 1
 					
 					For i = 0 To 2
-						n.NPCs = CreateNPC(NPCtypeMTF, EntityX(entrance\obj)+0.3*(i-1), 1.0,EntityZ(entrance\obj)+8.0)
+						n = CreateNPC(NPCtypeMTF, EntityX(entrance\obj)+0.3*(i-1), 1.0,EntityZ(entrance\obj)+8.0)
 
 						If (i = 0) Then
 							leader = n

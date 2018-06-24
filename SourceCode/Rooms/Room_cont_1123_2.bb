@@ -17,16 +17,16 @@ Function FillRoom_cont_1123_2(r.Rooms)
     it = CreateItem("Gas Mask", "gasmask", r\x + 457.0 * RoomScale, r\y + 150.0 * RoomScale, r\z + 960.0 * RoomScale)
     EntityParent(it\collider, r\obj)
 
-    d.Doors = CreateDoor(r\zone, r\x + 832.0 * RoomScale, 0.0, r\z + 367.0 * RoomScale, 0, r, False, False, 3)
+    d = CreateDoor(r\zone, r\x + 832.0 * RoomScale, 0.0, r\z + 367.0 * RoomScale, 0, r, False, False, 3)
     PositionEntity(d\buttons[0], r\x + 956.0 * RoomScale, EntityY(d\buttons[0],True), r\z + 352.0 * RoomScale, True)
     PositionEntity(d\buttons[1], r\x + 713.0 * RoomScale, EntityY(d\buttons[1],True), r\z + 384.0 * RoomScale, True)
     FreeEntity(d\obj2)
 	d\obj2 = 0
-    d.Doors = CreateDoor(r\zone, r\x + 280.0 * RoomScale, 0.0, r\z - 607.0 * RoomScale, 90, r, False, False)
+    d = CreateDoor(r\zone, r\x + 280.0 * RoomScale, 0.0, r\z - 607.0 * RoomScale, 90, r, False, False)
     PositionEntity(d\buttons[0], EntityX(d\buttons[0],True), EntityY(d\buttons[0],True), EntityZ(d\buttons[0],True), True)
     PositionEntity(d\buttons[1], EntityX(d\buttons[1],True), EntityY(d\buttons[1],True), EntityZ(d\buttons[1],True), True)
 
-    d.Doors = CreateDoor(r\zone, r\x + 280.0 * RoomScale, 512.0 * RoomScale, r\z - 607.0 * RoomScale, 90, r, False, False)
+    d = CreateDoor(r\zone, r\x + 280.0 * RoomScale, 512.0 * RoomScale, r\z - 607.0 * RoomScale, 90, r, False, False)
     PositionEntity(d\buttons[0], EntityX(d\buttons[0],True), EntityY(d\buttons[0],True), EntityZ(d\buttons[0],True), True)
     FreeEntity(d\buttons[1])
 	d\buttons[1]=0
@@ -120,8 +120,8 @@ Function UpdateEvent_cont_1123_2(e.Events)
 			e\room\npc[0] = CreateNPC(NPCtypeD, EntityX(e\room\objects[6],True),EntityY(e\room\objects[6],True),EntityZ(e\room\objects[6],True))
 			;e\room\npc[1] = CreateNPC(NPCtypeD, EntityX(e\room\objects[7],True),EntityY(e\room\objects[7],True),EntityZ(e\room\objects[7],True))
 
-			nazi% = LoadAnimMesh("GFX/npcs/naziofficer.b3d")
-			scale# = 0.5 / MeshWidth(nazi)
+			nazi = LoadAnimMesh("GFX/npcs/naziofficer.b3d")
+			scale = 0.5 / MeshWidth(nazi)
 
 			FreeEntity(e\room\npc[0]\obj)
 			e\room\npc[0]\obj = CopyEntity(nazi)
@@ -254,7 +254,7 @@ Function UpdateEvent_cont_1123_2(e.Events)
 
 				mainPlayer\blinkTimer = -10
 
-				de.Decals = CreateDecal(3, EntityX(mainPlayer\collider), 512*RoomScale + 0.0005, EntityZ(mainPlayer\collider),90,Rnd(360),0)
+				de = CreateDecal(3, EntityX(mainPlayer\collider), 512*RoomScale + 0.0005, EntityZ(mainPlayer\collider),90,Rnd(360),0)
 				de\size = 0.5 : ScaleSprite(de\obj, de\size, de\size)
 
 				e\room\npc[0]\sounds[0] = LoadSound("SFX/SCP/1123/Officer3.ogg")

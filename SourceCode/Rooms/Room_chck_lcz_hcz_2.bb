@@ -22,7 +22,7 @@ Function FillRoom_chck_lcz_hcz_2(r.Rooms)
     r\roomDoors[0]\timer = 70 * 5
     r\roomDoors[1]\timer = 70 * 5
 
-    sc.SecurityCams = CreateSecurityCam(r\x+192.0*RoomScale, r\y+704.0*RoomScale, r\z-960.0*RoomScale, r)
+    sc = CreateSecurityCam(r\x+192.0*RoomScale, r\y+704.0*RoomScale, r\z-960.0*RoomScale, r)
     sc\angle = 45
     sc\turn = 0
     TurnEntity(sc\cameraObj, 20, 0, 0)
@@ -112,7 +112,7 @@ Function UpdateEventCheckpoint(e.Events)
 	EndIf
 
 	If (e\room\roomTemplate\name = "checkpoint2") Then
-		For e2.Events = Each Events
+		For e2 = Each Events
 			If (e2\name = "008") Then
 				If (e2\eventState = 2) Then
 					If (e\room\roomDoors[0]\locked) Then
@@ -130,7 +130,7 @@ Function UpdateEventCheckpoint(e.Events)
 			EndIf
 		Next
 	Else
-		For e2.Events = Each Events
+		For e2 = Each Events
 			If (e2\name = "room2sl") Then
 				If (e2\eventState3 = 0) Then
 					If (e\room\dist < 12) Then

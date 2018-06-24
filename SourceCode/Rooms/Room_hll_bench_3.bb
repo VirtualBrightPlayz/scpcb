@@ -5,10 +5,13 @@ Function FillRoom_hll_bench_3(r.Rooms)
 
     Local t1%;, Bump
 
-    sc.SecurityCams = CreateSecurityCam(r\x-320.0*RoomScale, r\y+384.0*RoomScale, r\z+512.25*RoomScale, r)
+    sc = CreateSecurityCam(r\x-320.0*RoomScale, r\y+384.0*RoomScale, r\z+512.25*RoomScale, r)
     sc\angle = 225
     sc\turn = 45
     TurnEntity(sc\cameraObj, 20, 0, 0)
     ;sc\followPlayer = True
     sc\id = 2
 End Function
+
+;~IDEal Editor Parameters:
+;~C#Blitz3D

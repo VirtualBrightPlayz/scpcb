@@ -82,7 +82,7 @@ Function FillRoom_pocketdimension(r.Rooms)
     r\roomDoors[0] = CreateDoor(0, r\x,2048*RoomScale,r\z+32.0-1024*RoomScale,0,r,False)
     r\roomDoors[1] = CreateDoor(0, r\x,2048*RoomScale,r\z+32.0+1024*RoomScale,180,r,False)
 
-    de.Decals = CreateDecal(18, r\x-(1536*RoomScale), 0.02,r\z+608*RoomScale+32.0, 90,0,0)
+    de = CreateDecal(18, r\x-(1536*RoomScale), 0.02,r\z+608*RoomScale+32.0, 90,0,0)
     EntityParent(de\obj, r\obj)
     de\size = Rnd(0.8, 0.8)
     de\blendmode = 2
@@ -97,7 +97,7 @@ Function FillRoom_pocketdimension(r.Rooms)
     For i = 1 To 8
         r\objects[i-1] = CopyEntity(hallway) ;CopyMesh
         ScaleEntity(r\objects[i-1],RoomScale,RoomScale,RoomScale)
-        angle# = (i-1) * (360.0/8.0)
+        angle = (i-1) * (360.0/8.0)
 
         EntityType(r\objects[i-1], HIT_MAP)
         EntityPickMode(r\objects[i-1], 3)
@@ -107,7 +107,7 @@ Function FillRoom_pocketdimension(r.Rooms)
         EntityParent(r\objects[i-1], r\obj)
 
         If (i < 6) Then
-            de.Decals = CreateDecal(i+7, r\x+Cos(angle)*(512.0*RoomScale)*3.0, 0.02,r\z+Sin(angle)*(512.0*RoomScale)*3.0, 90,angle-90,0)
+            de = CreateDecal(i+7, r\x+Cos(angle)*(512.0*RoomScale)*3.0, 0.02,r\z+Sin(angle)*(512.0*RoomScale)*3.0, 90,angle-90,0)
             de\size = Rnd(0.5, 0.5)
             de\blendmode = 2
             de\fx = 1+8
@@ -168,6 +168,8 @@ Function UpdateEvent_pocketdimension(e.Events)
 	Local x#, y#, z#
 
 	Local angle#
+	
+	Local safe%
 
 	;[Block]
 
@@ -320,7 +322,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 						mainPlayer\injuries=mainPlayer\injuries+(8.0-dist)*timing\tickDuration*0.001
 
 						If (dist<7.0) Then
-							pvt% = CreatePivot()
+							pvt = CreatePivot()
 							PositionEntity(pvt, EntityX(mainPlayer\cam), EntityY(mainPlayer\cam), EntityZ(mainPlayer\cam))
 							PointEntity(pvt, e\room\objects[20])
 							TurnEntity(pvt, 90, 0, 0)
@@ -390,7 +392,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 					PointEntity(e\room\objects[17], mainPlayer\collider)
 					TurnEntity(e\room\objects[17], 0, 180, 0)
 
-					temp = EntityDistance(mainPlayer\collider, e\room\objects[17])
+					temp = Int(EntityDistance(mainPlayer\collider, e\room\objects[17]))
 					If (temp < 2000*RoomScale) Then
 						mainPlayer\injuries = mainPlayer\injuries + (timing\tickDuration/4000)
 
@@ -407,7 +409,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 
 						mainPlayer\camZoom = Max(mainPlayer\camZoom, (Sin(Float(TimeInPosMilliSecs()) / 20.0)+1.0)*15.0*Max((6.0-temp)/6.0,0.0))
 
-						pvt% = CreatePivot()
+						pvt = CreatePivot()
 						PositionEntity(pvt, EntityX(mainPlayer\cam), EntityY(mainPlayer\cam), EntityZ(mainPlayer\cam))
 						PointEntity(pvt, e\room\objects[17])
 						TurnEntity(pvt, 90, 0, 0)
@@ -429,7 +431,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 
 						EndIf
 					ElseIf (EntityY(mainPlayer\collider)<-180*RoomScale) Then ;the "exit room"
-						temp = Distance(EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider),EntityX(e\room\objects[8],True)+1024*RoomScale,EntityZ(e\room\objects[8],True))
+						temp = Int(Distance(EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider),EntityX(e\room\objects[8],True)+1024*RoomScale,EntityZ(e\room\objects[8],True)))
 						If (temp<640*RoomScale) Then
 							mainPlayer\blurTimer = (640*RoomScale-temp)*3000
 
@@ -439,7 +441,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 
 							If (temp < 130*RoomScale) Then
 
-								For r.Rooms = Each Rooms
+								For r = Each Rooms
 									If (r\roomTemplate\name = "room2_3") Then
 										e\eventState = 0
 										e\eventState2 = 0
@@ -450,7 +452,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 
 										PlaySound2(LoadTempSound("SFX/Room/PocketDimension/Exit.ogg"))
 
-										de.Decals = CreateDecal(0, EntityX(r\obj), 381*RoomScale, EntityZ(r\obj), 270, Rand(360), 0)
+										de = CreateDecal(0, EntityX(r\obj), 381*RoomScale, EntityZ(r\obj), 270, Rand(360), 0)
 
 										PositionEntity(mainPlayer\collider, EntityX(r\obj), 0.4, EntityZ(r\obj))
 										ResetEntity(mainPlayer\collider)
@@ -473,7 +475,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 					mainPlayer\blurTimer = 500
 					mainPlayer\blurTimer = 1500
 					PositionEntity(mainPlayer\collider, EntityX(e\room\obj,True), 0.4, EntityX(e\room\obj,True))
-					For r.Rooms = Each Rooms
+					For r = Each Rooms
 						If (r\roomTemplate\name = "room106") Then
 							e\eventState = 0
 							e\eventState2 = 0
@@ -508,7 +510,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 			UpdateRooms()
 
 		ElseIf (e\eventState2 = 0) Then
-			dist# = EntityDistance(mainPlayer\collider, e\room\obj)
+			dist = EntityDistance(mainPlayer\collider, e\room\obj)
 
 			If (dist > 1700*RoomScale) Then
 				mainPlayer\blinkTimer = -10
@@ -551,7 +553,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 						ResetEntity(mainPlayer\collider)
 					Case 16,17,18,19
 						mainPlayer\blurTimer = 1500
-						For r.Rooms = Each Rooms
+						For r = Each Rooms
 							If (r\roomTemplate\name = "tunnel") Then
 								e\eventState = 0
 								e\eventState2 = 0
@@ -590,7 +592,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 
 			If (Rand(800)=1) Then
 				angle = EntityYaw(mainPlayer\cam,True)+Rnd(150,210)
-				p.Particles = CreateParticle(EntityX(mainPlayer\collider)+Cos(angle)*7.5, 0.0, EntityZ(mainPlayer\collider)+Sin(angle)*7.5, 3, 4.0, 0.0, 2500)
+				p = CreateParticle(EntityX(mainPlayer\collider)+Cos(angle)*7.5, 0.0, EntityZ(mainPlayer\collider)+Sin(angle)*7.5, 3, 4.0, 0.0, 2500)
 				EntityBlend(p\obj, 2)
 				;EntityFX(p\obj, 1)
 				p\speed = 0.01
@@ -602,7 +604,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 
 			If (e\eventState2 > 12) Then
 				Curr106\idle = True
-				PositionEntity(Curr106\collider, EntityX(e\room\objects[e\eventState2],True),0.27, EntityZ(e\room\objects[e\eventState2],True))
+				PositionEntity(Curr106\collider, EntityX(e\room\objects[Int(e\eventState2)],True),0.27, EntityZ(e\room\objects[Int(e\eventState2)],True))
 
 				PointEntity(Curr106\collider, mainPlayer\cam)
 				TurnEntity(Curr106\collider, 0, Sin(TimeInPosMilliSecs() / 20) * 6.0, 0, True)
@@ -616,7 +618,7 @@ Function UpdateEvent_pocketdimension(e.Events)
 
 				If (e\eventState2 = 12) Then
 					mainPlayer\camShake = 1.0
-					PositionEntity(Curr106\collider, EntityX(e\room\objects[e\eventState2],True),-1.0, EntityZ(e\room\objects[e\eventState2],True))
+					PositionEntity(Curr106\collider, EntityX(e\room\objects[Int(e\eventState2)],True),-1.0, EntityZ(e\room\objects[Int(e\eventState2)],True))
 					Curr106\state = -11
 					ResetEntity(Curr106\collider)
 				EndIf

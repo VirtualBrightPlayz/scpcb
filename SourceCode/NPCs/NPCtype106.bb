@@ -70,7 +70,7 @@ Function UpdateNPCtype106(n.NPCs)
             ElseIf (n\timer >= -10) Then
                 If (EntityY(n\collider) < EntityY(mainPlayer\collider) - 20.0 - 0.55) Then
                     If (Not mainPlayer\currRoom\roomTemplate\disableDecals) Then
-                        de.Decals = CreateDecal(0, EntityX(mainPlayer\collider), 0.01, EntityZ(mainPlayer\collider), 90, Rand(360), 0)
+                        de = CreateDecal(0, EntityX(mainPlayer\collider), 0.01, EntityZ(mainPlayer\collider), 90, Rand(360), 0)
                         de\size = 0.05 : de\sizeChange = 0.001 : EntityAlpha(de\obj, 0.8) : UpdateDecals()
                     EndIf
 
@@ -134,7 +134,7 @@ Function UpdateNPCtype106(n.NPCs)
             n\currSpeed = CurveValue(n\speed, n\currSpeed, 10.0)
 
             If (dist > 0.8) Then
-                prevFrame# = n\frame
+                prevFrame = n\frame
 
                 ;Walking animation.
                 AnimateNPC(n, 284, 333, n\currSpeed * 43)
@@ -177,7 +177,7 @@ Function UpdateNPCtype106(n.NPCs)
 
                                 PointEntity(n\obj, n\path[n\pathLocation]\obj)
 
-                                dist2# = EntityDistance(n\collider,n\path[n\pathLocation]\obj)
+                                dist2 = EntityDistance(n\collider,n\path[n\pathLocation]\obj)
 
                                 RotateEntity(n\collider, 0, CurveAngle(EntityYaw(n\obj), EntityYaw(n\collider), Min(20.0,dist2*10.0)), 0)
 

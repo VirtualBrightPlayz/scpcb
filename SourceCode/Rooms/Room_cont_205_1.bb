@@ -5,7 +5,7 @@ Function FillRoom_cont_205_1(r.Rooms)
 
     Local t1%;, Bump
 
-    d.Doors = CreateDoor(r\zone, r\x + 128.0 * RoomScale, 0, r\z + 640.0 *RoomScale, 90, r, True, False, 3)
+    d = CreateDoor(r\zone, r\x + 128.0 * RoomScale, 0, r\z + 640.0 *RoomScale, 90, r, True, False, 3)
     d\autoClose = False : d\open = False
     ;PositionEntity(d\buttons[0], r\x + 320.0 * RoomScale, EntityY(d\buttons[0],True), EntityZ(d\buttons[0],True), True)
     ;PositionEntity(d\buttons[1], r\x + 224.0 * RoomScale, EntityY(d\buttons[1],True), EntityZ(d\buttons[1],True), True)
@@ -15,7 +15,7 @@ Function FillRoom_cont_205_1(r.Rooms)
     FreeEntity(r\roomDoors[0]\buttons[0]) : r\roomDoors[0]\buttons[0]=0
     FreeEntity(r\roomDoors[0]\buttons[1]) : r\roomDoors[0]\buttons[1]=0
 
-    sc.SecurityCams = CreateSecurityCam(r\x - 1152.0 * RoomScale, r\y + 900.0 * RoomScale, r\z + 176.0 * RoomScale, r, True)
+    sc = CreateSecurityCam(r\x - 1152.0 * RoomScale, r\y + 900.0 * RoomScale, r\z + 176.0 * RoomScale, r, True)
     sc\angle = 90 : sc\turn = 0
     EntityParent(sc\obj, r\obj)
 

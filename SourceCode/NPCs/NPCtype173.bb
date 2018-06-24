@@ -19,7 +19,7 @@ Function InitializeNPCtype173(n.NPCs)
 	Local texFestive%
 	If ((Left(CurrentDate(), 6) = "31 Oct")) Then
 		HalloweenTex = True
-		texFestive% = LoadTexture("GFX/NPCs/scp173/173h.png", 1)
+		texFestive = LoadTexture("GFX/NPCs/scp173/173h.png", 1)
 		EntityTexture(n\obj, texFestive, 0, 0)
 		FreeTexture(texFestive)
 	EndIf
@@ -53,7 +53,7 @@ Function InitializeNPCtype173(n.NPCs)
 End Function
 
 Function UpdateNPCtype173(n.NPCs)
-	Local x%, z%, i%, tmp%
+	Local x#, z#, i%, tmp%
 	Local w.WayPoints, d.Doors
 	Local playerVisible%, canMove%
 
@@ -68,8 +68,8 @@ Function UpdateNPCtype173(n.NPCs)
 			PositionEntity(n\obj, EntityX(n\collider), EntityY(n\collider) - 0.32, EntityZ(n\collider))
 			RotateEntity(n\obj, 0, EntityYaw(n\collider) - 180, 0)
 
-			playerVisible% = False
-			canMove% = True
+			playerVisible = False
+			canMove = True
 			If (dist < 15) Then
 				If (dist < 10.0) Then
 					If (EntityVisible(n\collider, mainPlayer\collider)) Then
@@ -121,7 +121,7 @@ Function UpdateNPCtype173(n.NPCs)
 				If (dist > 50) Then
 					If (Rand(70)=1) Then
 						If (mainPlayer\currRoom\roomTemplate\name <> "exit1" And mainPlayer\currRoom\roomTemplate\name <> "gatea" And mainPlayer\currRoom\roomTemplate\name <> "pocketdimension") Then
-							For w.WayPoints = Each WayPoints
+							For w = Each WayPoints
 								If (Rand(5)=1) Then ;w\door=Null And (TODO: fix?)
 									x = Abs(EntityX(mainPlayer\collider) - EntityX(w\obj, True))
 									If (x < 25.0 And x > 15.0) Then
@@ -133,7 +133,6 @@ Function UpdateNPCtype173(n.NPCs)
 											Exit
 										EndIf
 									EndIf
-
 								EndIf
 							Next
 						EndIf
@@ -144,9 +143,9 @@ Function UpdateNPCtype173(n.NPCs)
 
 					;try to open doors
 					If (Rand(20) = 1) Then
-						For d.Doors = Each Doors
+						For d = Each Doors
 							If ((Not d\locked) And d\open = False And d\code = "" And d\keyCard=0) Then
-								For i% = 0 To 1
+								For i = 0 To 1
 									If (d\buttons[i] <> 0) Then
 										If (Abs(EntityX(n\collider) - EntityX(d\buttons[i])) < 0.5) Then
 											If (Abs(EntityZ(n\collider) - EntityZ(d\buttons[i])) < 0.5) Then

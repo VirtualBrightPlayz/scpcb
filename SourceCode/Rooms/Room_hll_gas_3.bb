@@ -5,7 +5,7 @@ Function FillRoom_hll_gas_3(r.Rooms)
 
 	Local t1%;, Bump
 
-    em.Emitters = CreateEmitter(r\x + 512.0 * RoomScale, -76 * RoomScale, r\z - 688 * RoomScale, 0)
+    em = CreateEmitter(r\x + 512.0 * RoomScale, -76 * RoomScale, r\z - 688 * RoomScale, 0)
     TurnEntity(em\obj, -90, 0, 0)
     EntityParent(em\obj, r\obj)
     em\randAngle = 55
@@ -13,7 +13,7 @@ Function FillRoom_hll_gas_3(r.Rooms)
     em\aChange = -0.015
     em\sizeChange = 0.007
 
-    em.Emitters = CreateEmitter(r\x - 512.0 * RoomScale, -76 * RoomScale, r\z - 688 * RoomScale, 0)
+    em = CreateEmitter(r\x - 512.0 * RoomScale, -76 * RoomScale, r\z - 688 * RoomScale, 0)
     TurnEntity(em\obj, -90, 0, 0)
     EntityParent(em\obj, r\obj)
     em\randAngle = 55
@@ -79,7 +79,7 @@ Function UpdateEventRoom3pit1048(e.Events)
 	Local x#, y#, z#
 
 	Local angle#, imgPath$, sf%, b%, t%, texname$
-
+	
 	;[Block]
 	If (mainPlayer\currRoom = e\room) Then
 		If (e\room\objects[2] = 0) Then
@@ -87,9 +87,9 @@ Function UpdateEventRoom3pit1048(e.Events)
 			ScaleEntity(e\room\objects[2], 0.05,0.05,0.05)
 			SetAnimTime(e\room\objects[2], 414)
 
-			imgPath$ = "GFX/items/1048/1048_"+Rand(1,20)+".jpg"
+			imgPath = "GFX/items/1048/1048_"+Str(Rand(1,20))+".jpg"
 			
-			For itt.ItemTemplates = Each ItemTemplates
+			For itt = Each ItemTemplates
 				If (itt\name = "Drawing") Then
 					If (itt\img<>0) Then FreeImage(itt\img)
 					itt\img = LoadImage(imgPath)
@@ -100,14 +100,14 @@ Function UpdateEventRoom3pit1048(e.Events)
 				EndIf
 			Next
 
-			tex% = LoadTexture(imgPath)
-			brush% = LoadBrush(imgPath, 1)
+			tex = LoadTexture(imgPath)
+			brush = LoadBrush(imgPath, 1)
 
 			For i = 1 To CountSurfaces(e\room\objects[2])
-				sf% = GetSurface(e\room\objects[2],i)
-				b% = GetSurfaceBrush( sf )
-				t% = GetBrushTexture(b, 0)
-				texname$ = StripPath(TextureName(t))
+				sf = GetSurface(e\room\objects[2],i)
+				b = GetSurfaceBrush( sf )
+				t = GetBrushTexture(b, 0)
+				texname = StripPath(TextureName(t))
 				DebugLog("texname: "+texname)
 				If (Lower(texname) = "1048_1.jpg") Then
 					PaintSurface(sf, brush)

@@ -15,7 +15,7 @@ Function InitializeNPCtype096(n.NPCs)
 End Function
 
 Function UpdateNPCtype096(n.NPCs)
-	Local angle%, i%, pvt%, de.Decals
+	Local angle#, i%, pvt%, de.Decals
 	Local dist2#
 
     Select n\state
@@ -125,7 +125,7 @@ Function UpdateNPCtype096(n.NPCs)
                                         TurnEntity(pvt, 90, 0, 0)
                                         EntityPick(pvt,0.3)
 
-                                        de.Decals = CreateDecal(Rand(15,16), PickedX(), PickedY()+0.005, PickedZ(), 90, Rand(360), 0)
+                                        de = CreateDecal(Rand(15,16), PickedX(), PickedY()+0.005, PickedZ(), 90, Rand(360), 0)
                                         de\size = Rnd(0.2,0.6) : EntityAlpha(de\obj, 1.0) : ScaleSprite(de\obj, de\size, de\size)
                                     Next
                                     FreeEntity(pvt)
@@ -187,7 +187,7 @@ Function UpdateNPCtype096(n.NPCs)
                                 ;Animate2(n\obj, AnimTime(n\obj),1059,1084, n\currSpeed*8)
                             EndIf
 
-                            dist2# = EntityDistance(n\collider,n\path[n\pathLocation]\obj)
+                            dist2 = EntityDistance(n\collider,n\path[n\pathLocation]\obj)
                             If (dist2 < 0.4) Then
 								;TODO: fix
 ;                                If (n\path[n\pathLocation]\door <> Null) Then
