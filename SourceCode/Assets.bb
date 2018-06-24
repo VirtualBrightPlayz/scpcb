@@ -738,9 +738,9 @@ End Function
 
 Function GetImagePath$(path$)
 	If (FileType(path + ".png") = 1) Then
-		Return path + "png"
+		Return path + ".png"
 	EndIf
-	Return path + "jpg"
+	Return path + ".jpg"
 End Function
 
 
