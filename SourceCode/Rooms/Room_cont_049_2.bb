@@ -90,13 +90,10 @@ Function FillRoom_cont_049_2(r.Rooms)
 
     d = CreateDoor(0, r\x,0,r\z, 0, r, False, 2, -2)
 
-    it = CreateItem("Document SCP-049", "paper", r\x - 608.0 * RoomScale, r\y - 3332.0 * RoomScale, r\z + 876.0 * RoomScale)
+    it = CreatePaper("doc049", r\x - 608.0 * RoomScale, r\y - 3332.0 * RoomScale, r\z + 876.0 * RoomScale)
     EntityParent(it\collider, r\obj)
 
-    it = CreateItem("Level 4 Key Card", "key4", r\x - 512.0 * RoomScale, r\y - 3412.0 * RoomScale, r\z + 864.0 * RoomScale)
-    EntityParent(it\collider, r\obj)
-
-    it = CreateItem("First Aid Kit", "firstaid", r\x +385.0 * RoomScale, r\y - 3412.0 * RoomScale, r\z + 271.0 * RoomScale)
+    it = CreateItem("firstaid", r\x +385.0 * RoomScale, r\y - 3412.0 * RoomScale, r\z + 271.0 * RoomScale)
     EntityParent(it\collider, r\obj)
 
     ;r\objects[10] = LoadMesh("GFX/Map/room049_hb.b3d",r\obj)

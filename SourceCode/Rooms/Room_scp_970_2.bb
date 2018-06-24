@@ -18,17 +18,14 @@ Function FillRoom_scp_970_2(r.Rooms)
         r\roomDoors[i]\autoClose = False : r\roomDoors[i]\open = False
     Next
 
-    it = CreateItem("Document SCP-939", "paper", r\x + 352.0 * RoomScale, r\y + 176.0 * RoomScale, r\z + 256.0 * RoomScale)
+    it = CreatePaper("doc939", r\x + 352.0 * RoomScale, r\y + 176.0 * RoomScale, r\z + 256.0 * RoomScale)
     RotateEntity(it\collider, 0, r\angle+4, 0)
     EntityParent(it\collider, r\obj)
 
-    it = CreateItem("9V Battery", "bat", r\x + 352.0 * RoomScale, r\y + 112.0 * RoomScale, r\z + 448.0 * RoomScale)
+    it = CreateItem("battery", r\x + 352.0 * RoomScale, r\y + 112.0 * RoomScale, r\z + 448.0 * RoomScale)
     EntityParent(it\collider, r\obj)
 
-    it = CreateItem("Empty Cup", "emptycup", r\x-672*RoomScale, 240*RoomScale, r\z+288.0*RoomScale)
-    EntityParent(it\collider, r\obj)
-
-    it = CreateItem("Level 1 Key Card", "key1", r\x - 672.0 * RoomScale, r\y + 240.0 * RoomScale, r\z + 224.0 * RoomScale)
+    it = CreateItem("cup", r\x-672*RoomScale, 240*RoomScale, r\z+288.0*RoomScale)
     EntityParent(it\collider, r\obj)
 End Function
 
@@ -160,7 +157,7 @@ Function UpdateEvent_scp_970_2(e.Events)
 				Case 14
 					For i = 0 To mainPlayer\inventory\size-1
 						If (mainPlayer\inventory\items[i]<> Null) Then
-							If (mainPlayer\inventory\items[i]\itemtemplate\name = "paper") Then
+							If (mainPlayer\inventory\items[i]\template\name = "paper") Then
 								RemoveItem(mainPlayer\inventory\items[i])
 								For itt = Each ItemTemplates
 									If (itt\name = "paper" And Rand(6)=1) Then

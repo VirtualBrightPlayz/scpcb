@@ -143,7 +143,7 @@ Function UpdateEventRoom3pit1048(e.Events)
 					DrawHandIcon = True
 
 					If (MouseHit1) Then
-						mainPlayer\selectedItem = CreateItem("Drawing", "paper", 0.0, 0.0, 0.0)
+						mainPlayer\selectedItem = CreateItem("paper", 0.0, 0.0, 0.0)
 
 						If (CountItemsInInventory(mainPlayer\inventory) >= mainPlayer\inventory\size) Then DropItem(mainPlayer\inventory\items[0])
 

@@ -5,19 +5,19 @@ Function FillRoom_srvr_farm_3(r.Rooms)
 
 	Local t1%;, Bump
 
-    it = CreateItem("9V Battery", "bat", r\x - 132.0 * RoomScale, r\y - 368.0 * RoomScale, r\z - 648.0 * RoomScale)
+    it = CreateItem("battery", r\x - 132.0 * RoomScale, r\y - 368.0 * RoomScale, r\z - 648.0 * RoomScale)
     EntityParent(it\collider, r\obj)
     If (Rand(2) = 1) Then
-        it = CreateItem("9V Battery", "bat", r\x - 76.0 * RoomScale, r\y - 368.0 * RoomScale, r\z - 648.0 * RoomScale)
+        it = CreateItem("battery", r\x - 76.0 * RoomScale, r\y - 368.0 * RoomScale, r\z - 648.0 * RoomScale)
         EntityParent(it\collider, r\obj)
     EndIf
     If (Rand(2) = 1) Then
-        it = CreateItem("9V Battery", "bat", r\x - 196.0 * RoomScale, r\y - 368.0 * RoomScale, r\z - 648.0 * RoomScale)
+        it = CreateItem("battery", r\x - 196.0 * RoomScale, r\y - 368.0 * RoomScale, r\z - 648.0 * RoomScale)
         EntityParent(it\collider, r\obj)
     EndIf
 
-    it = CreateItem("S-NAV 300 Navigator", "nav", r\x + 124.0 * RoomScale, r\y - 368.0 * RoomScale, r\z - 648.0 * RoomScale)
-    it\state = 20 : EntityParent(it\collider, r\obj)
+    it = CreateItem("navigator", r\x + 124.0 * RoomScale, r\y - 368.0 * RoomScale, r\z - 648.0 * RoomScale)
+	EntityParent(it\collider, r\obj)
 
     r\objects[0] = CreatePivot(r\obj)
     PositionEntity(r\objects[0], r\x + 736.0 * RoomScale, -512.0 * RoomScale, r\z - 400.0 * RoomScale, True)

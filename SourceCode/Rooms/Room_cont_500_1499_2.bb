@@ -13,11 +13,11 @@ Function FillRoom_cont_500_1499_2(r.Rooms)
     PositionEntity(r\objects[0],r\x + 576.0*RoomScale,r\y+160.0*RoomScale,r\z+632.0*RoomScale)
     EntityParent(r\objects[0],r\obj)
 
-    it = CreateItem("SCP-1499", "scp1499", r\x + 600.0 * RoomScale, r\y + 176.0 * RoomScale, r\z - 228.0 * RoomScale)
+    it = CreateItem("scp1499", r\x + 600.0 * RoomScale, r\y + 176.0 * RoomScale, r\z - 228.0 * RoomScale)
     RotateEntity(it\collider, 0, r\angle, 0)
     EntityParent(it\collider, r\obj)
 
-    it = CreateItem("Emily Ross' Badge", "badge", r\x + 364.0 * RoomScale, r\y + 5.0 * RoomScale, r\z + 716.0 * RoomScale)
+    it = CreateItem("badge", r\x + 364.0 * RoomScale, r\y + 5.0 * RoomScale, r\z + 716.0 * RoomScale)
     EntityParent(it\collider, r\obj)
 End Function
 

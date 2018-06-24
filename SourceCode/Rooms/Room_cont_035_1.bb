@@ -76,19 +76,19 @@ Function FillRoom_cont_035_1(r.Rooms)
     r\objects[8] = CreatePivot(r\obj)
     PositionEntity(r\objects[8], r\x + 176 * RoomScale, 0.5, r\z - 144.0 * RoomScale, True)
 
-    it = CreateItem("SCP-035 Addendum", "paper", r\x + 248.0 * RoomScale, r\y + 220.0 * RoomScale, r\z + 576.0 * RoomScale)
+    it = CreatePaper("doc035ad", r\x + 248.0 * RoomScale, r\y + 220.0 * RoomScale, r\z + 576.0 * RoomScale)
     EntityParent(it\collider, r\obj)
 
-    it = CreateItem("Radio Transceiver", "radio", r\x - 544.0 * RoomScale, 0.5, r\z + 704.0 * RoomScale)
+    it = CreateItem("radio", r\x - 544.0 * RoomScale, 0.5, r\z + 704.0 * RoomScale)
     EntityParent(it\collider, r\obj)
 
-    it = CreateItem("SCP-500-01", "scp500", r\x + 1168*RoomScale, 224*RoomScale, r\z+576*RoomScale)
+    it = CreateItem("scp500", r\x + 1168*RoomScale, 224*RoomScale, r\z+576*RoomScale)
     EntityParent(it\collider, r\obj)
 
-    it = CreateItem("Metal Panel", "scp148", r\x - 360 * RoomScale, 0.5, r\z + 644 * RoomScale)
+    it = CreateItem("scp148", r\x - 360 * RoomScale, 0.5, r\z + 644 * RoomScale)
     EntityParent(it\collider, r\obj)
 
-    it = CreateItem("Document SCP-035", "paper", r\x + 1168.0 * RoomScale, 104.0 * RoomScale, r\z + 608.0 * RoomScale)
+    it = CreatePaper("doc035", r\x + 1168.0 * RoomScale, 104.0 * RoomScale, r\z + 608.0 * RoomScale)
     EntityParent(it\collider, r\obj)
 End Function
 

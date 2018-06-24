@@ -1,7 +1,8 @@
-Const WORNITEM_SLOT_COUNT% = 2
+Const WORNITEM_SLOT_COUNT% = 3
 Const WORNITEM_SLOT_NONE%  = WORNITEM_SLOT_COUNT
 Const WORNITEM_SLOT_HEAD%  = 0
 Const WORNITEM_SLOT_BODY%  = 1
+Const WORNITEM_SLOT_HAND%  = 2
 
 Const OVERLAY_COUNT%       = 6
 Const OVERLAY_BLACK%       = 0
@@ -307,7 +308,7 @@ Function MovePlayer()
 					Else
 						If ((Not IsChannelPlaying(mainPlayer\breathChn))) Then
 							mainPlayer\breathChn = PlaySound(GetIntArrayElem(mainPlayer\breathingSFX, IsPlayerWearingTempName(mainPlayer,"gasmask"), Rand(1, 3)))
-							ChannelVolume(mainPlayer\breathChn, Min((70.0-mainPlayer\stamina)/70.0,1.0)*userOptions\sndVolume)		
+							ChannelVolume(mainPlayer\breathChn, Min((70.0-mainPlayer\stamina)/70.0,1.0)*userOptions\sndVolume)
 						EndIf
 					EndIf
 				EndIf
@@ -317,7 +318,7 @@ Function MovePlayer()
 
 	For i=0 To mainPlayer\inventory\size-1
 		If ((mainPlayer\inventory\items[i]<>Null)) Then
-			If ((mainPlayer\inventory\items[i]\itemtemplate\name="finevest")) Then mainPlayer\stamina = Min(mainPlayer\stamina,60.0)
+			If ((mainPlayer\inventory\items[i]\template\name="finevest")) Then mainPlayer\stamina = Min(mainPlayer\stamina,60.0)
 		EndIf
 	Next
 
@@ -349,7 +350,7 @@ Function MovePlayer()
 			If (mainPlayer\forceMove>0) Then Speed=Speed*mainPlayer\forceMove
 
 			If (mainPlayer\selectedItem<>Null) Then
-				If (mainPlayer\selectedItem\itemtemplate\name = "firstaid" Or mainPlayer\selectedItem\itemtemplate\name = "finefirstaid" Or mainPlayer\selectedItem\itemtemplate\name = "firstaid2") Then
+				If (mainPlayer\selectedItem\template\name = "firstaid" Or mainPlayer\selectedItem\template\name = "finefirstaid" Or mainPlayer\selectedItem\template\name = "firstaid2") Then
 					Sprint = 0
 				EndIf
 			EndIf
@@ -379,7 +380,7 @@ Function MovePlayer()
 						Else
 							tempchn = PlaySound_SM(sndManager\footstepRun[Rand(0, 7)])
 						EndIf
-						
+
 						ChannelVolume(tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\sndVolume)
 					EndIf
 				ElseIf (mainPlayer\footstepOverride=1) Then
@@ -559,7 +560,7 @@ Function MovePlayer()
 	If (mainPlayer\heartbeatIntensity > 0) Then
 		tempchn = PlaySound2(mainPlayer\heartbeat)
 		ChannelVolume(tempchn, Max(Min((mainPlayer\heartbeatIntensity-80.0)/60.0,1.0),0.0)*userOptions\sndVolume)
-		
+
 		mainPlayer\heartbeatIntensity = mainPlayer\heartbeatIntensity - timing\tickDuration
 	EndIf
 
@@ -613,9 +614,9 @@ Function MouseLook()
 	;CameraZoomTemp = CurveValue(mainPlayer\camZoom,CameraZoomTemp, 5.0)
 	CameraZoom(mainPlayer\cam, Min(1.0+(mainPlayer\camZoom/400.0),1.1))
 	mainPlayer\camZoom = Max(mainPlayer\camZoom - timing\tickDuration, 0)
-	
+
 	Local Nan1# = NAN
-	
+
 	If (mainPlayer\fallTimer >=0) Then
 
 		;HeadDropSpeed = 0
@@ -757,7 +758,7 @@ End Function
 
 Function EquipItem(player.Player,item.Items,toggle%)
 	Local r.Rooms, it.Items
-	
+
 	If (item=Null) Then Return
 	If (item\itemtemplate\invSlot = WORNITEM_SLOT_NONE) Then Return
 	Local currItem.Items = player\wornItems[item\itemtemplate\invSlot]
@@ -765,7 +766,7 @@ Function EquipItem(player.Player,item.Items,toggle%)
 	DebugLog(Str(Not toggle)+" + "+Str(currItem<>item))
 	If ((Not toggle) Or currItem<>item) Then
 		player\wornItems[item\itemtemplate\invSlot] = item
-		
+
 		Select item\itemtemplate\name
 			Case "vest"
 				Msg = "You put on the vest and feel slightly encumbered."
@@ -1139,7 +1140,7 @@ Function DrawInventory(player.Player)
 										SCPs_found = SCPs_found + 1
 									EndIf
 								EndIf
-								
+
 								For np = Each NPCs
 									If (np\npcType = NPCtype049) Then
 										dist = EntityDistance(player\cam, np\obj)
@@ -1272,7 +1273,7 @@ Function UpdateInventory(player.Player)
 	Local np.NPCs, e.Events, it.Items, added.Items
 
 	Local width%, height%, itemsPerRow%, x%, y%, n%, isMouseOn%, z%, c%, ri%, temp%, i%, x2%, nvname$
-	
+
 	Local iniStr$, loc%, IN$, IN2$
 
 	Local strtemp$

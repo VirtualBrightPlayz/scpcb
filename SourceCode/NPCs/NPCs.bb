@@ -481,7 +481,7 @@ End Function
 
 Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False)
 	Local shotMessageUpdate$, wearingVest%, pvt%, i%, de.Decals
-	
+
 	;muzzle flash
 	Local p.Particles = CreateParticle(x,y,z, 1, Rnd(0.08,0.1), 0.0, 5)
 	TurnEntity(p\obj, 0,0,Rnd(360))
@@ -597,7 +597,7 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 					p\a = 0.8
 					p\aChange = -0.01
 					RotateEntity(p\pvt, EntityPitch(pvt)-180, EntityYaw(pvt),0)
-					
+
 					For i = 0 To Rand(2,3)
 						p = CreateParticle(PickedX(),PickedY(),PickedZ(), 0, 0.006, 0.003, 80)
 						p\speed = 0.02
@@ -633,7 +633,7 @@ Function PlayMTFSound(sound%, n.NPCs)
 
 	If (mainPlayer\selectedItem <> Null) Then
 		If (mainPlayer\selectedItem\state2 = 3 And mainPlayer\selectedItem\state > 0) Then
-			Select mainPlayer\selectedItem\itemtemplate\name
+			Select mainPlayer\selectedItem\template\name
 				Case "radio","fineradio","18vradio"
 					If (RadioCHN(3)<> 0) Then StopChannel(RadioCHN(3))
 					RadioCHN(3) = PlaySound(sound)
@@ -672,7 +672,7 @@ End Function
 Function FindFreeNPCID%()
 	Local taken%, n2.NPCs
 	Local id% = 1
-	
+
 	While (True)
 		taken = False
 		For n2 = Each NPCs
@@ -1083,7 +1083,7 @@ End Function
 
 Function RotateToDirection(n.NPCs)
 	Local turnToSide%
-	
+
 	HideEntity(n\collider)
 	EntityPick(n\collider, 1.0)
 	If (PickedEntity() <> 0) Then

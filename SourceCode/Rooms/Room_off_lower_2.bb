@@ -5,22 +5,19 @@ Function FillRoom_off_lower_2(r.Rooms)
 
     Local t1%;, Bump
 
-    it = CreateItem("Level 1 Key Card", "key1", r\x - 368.0 * RoomScale, r\y - 48.0 * RoomScale, r\z + 80.0 * RoomScale)
-    EntityParent(it\collider, r\obj)
-
-    it = CreateItem("Document SCP-895", "paper", r\x - 800.0 * RoomScale, r\y - 48.0 * RoomScale, r\z + 368.0 * RoomScale)
+    it = CreatePaper("doc895", r\x - 800.0 * RoomScale, r\y - 48.0 * RoomScale, r\z + 368.0 * RoomScale)
     EntityParent(it\collider, r\obj)
     If (Rand(2) = 1) Then
-        it = CreateItem("Document SCP-860", "paper", r\x - 800.0 * RoomScale, r\y - 48.0 * RoomScale, r\z - 464.0 * RoomScale)
+        it = CreatePaper("doc860", r\x - 800.0 * RoomScale, r\y - 48.0 * RoomScale, r\z - 464.0 * RoomScale)
     Else
-        it = CreateItem("SCP-093 Recovered Materials", "paper", r\x - 800.0 * RoomScale, r\y - 48.0 * RoomScale, r\z - 464.0 * RoomScale)
+        it = CreatePaper("doc093rm", r\x - 800.0 * RoomScale, r\y - 48.0 * RoomScale, r\z - 464.0 * RoomScale)
     EndIf
     EntityParent(it\collider, r\obj)
 
-    it = CreateItem("S-NAV 300 Navigator", "nav", r\x - 336.0 * RoomScale, r\y - 48.0 * RoomScale, r\z - 480.0 * RoomScale)
-    it\state = 28 : EntityParent(it\collider, r\obj)
+    it = CreateItem("navigator", r\x - 336.0 * RoomScale, r\y - 48.0 * RoomScale, r\z - 480.0 * RoomScale)
+    EntityParent(it\collider, r\obj)
 
-    r\objects[0] = LoadMesh("GFX/npcs/duck_low_res.b3d")
+    r\objects[0] = LoadMesh("GFX/NPCs/ducks/duck.b3d")
     ScaleEntity(r\objects[0], 0.07, 0.07, 0.07)
 
     EntityParent(r\objects[0], r\obj)

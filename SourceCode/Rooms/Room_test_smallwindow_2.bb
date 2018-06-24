@@ -38,11 +38,8 @@ Function FillRoom_test_smallwindow_2(r.Rooms)
     FreeEntity(d\buttons[0]) : d\buttons[0]=0
     FreeEntity(d\buttons[1]) : d\buttons[1]=0
 
-    it = CreateItem("Level 2 Key Card", "key2", r\x - 336.0 * RoomScale, r\y + 165.0 * RoomScale, r\z + 88.0 * RoomScale)
+    it = CreateItem("navigator", r\x - 312.0 * RoomScale, r\y + 264.0 * RoomScale, r\z + 176.0 * RoomScale)
     EntityParent(it\collider, r\obj)
-
-    it = CreateItem("S-NAV 300 Navigator", "nav", r\x - 312.0 * RoomScale, r\y + 264.0 * RoomScale, r\z + 176.0 * RoomScale)
-    it\state = 20 : EntityParent(it\collider, r\obj)
 End Function
 
 Function UpdateEventTestroom173(e.Events)

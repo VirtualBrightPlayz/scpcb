@@ -42,7 +42,7 @@ Function FillRoom_tnnl_maintenance_2(r.Rooms)
 
     de = CreateDecal(0, r\x + 64.0 * RoomScale, 0.005, r\z + 144.0 * RoomScale, 90, Rand(360), 0)
     EntityParent(de\obj, r\obj)
-    it = CreateItem("Scorched Note", "paper", r\x + 64.0 * RoomScale, r\y +144.0 * RoomScale, r\z - 384.0 * RoomScale)
+    it = CreatePaper("docL6", r\x + 64.0 * RoomScale, r\y +144.0 * RoomScale, r\z - 384.0 * RoomScale)
     EntityParent(it\collider, r\obj)
 End Function
 

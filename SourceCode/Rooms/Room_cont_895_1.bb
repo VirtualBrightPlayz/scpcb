@@ -42,13 +42,10 @@ Function FillRoom_cont_895_1(r.Rooms)
     PositionEntity(r\objects[0], r\x, -1320.0 * RoomScale, r\z + 2304.0 * RoomScale)
     EntityParent(r\objects[0], r\obj)
 
-    it = CreateItem("Document SCP-895", "paper", r\x - 688.0 * RoomScale, r\y + 133.0 * RoomScale, r\z - 304.0 * RoomScale)
+    it = CreatePaper("doc895", r\x - 688.0 * RoomScale, r\y + 133.0 * RoomScale, r\z - 304.0 * RoomScale)
     EntityParent(it\collider, r\obj)
 
-    it = CreateItem("Level 3 Key Card", "key3", r\x + 240.0 * RoomScale, r\y -1456.0 * RoomScale, r\z + 2064.0 * RoomScale)
-    EntityParent(it\collider, r\obj)
-
-    it = CreateItem("Night Vision Goggles", "nvgoggles", r\x + 280.0 * RoomScale, r\y -1456.0 * RoomScale, r\z + 2164.0 * RoomScale)
+    it = CreateItem("nvgoggles", r\x + 280.0 * RoomScale, r\y -1456.0 * RoomScale, r\z + 2164.0 * RoomScale)
     EntityParent(it\collider, r\obj)
 
     r\objects[1] = CreatePivot(r\obj)
@@ -129,8 +126,8 @@ Function UpdateEventCoffin(e.Events)
 		If (IsPlayerWearingTempName(mainPlayer,"nvgoggles")) Then
 			hasBatteryFor895 = 0
 			For i = 0 To mainPlayer\inventory\size - 1
-				If ((mainPlayer\inventory\items[i] <> Null)) Then
-					If ((mainPlayer\inventory\items[i]\itemtemplate\name = "nvgoggles" Or mainPlayer\inventory\items[i]\itemtemplate\name = "supernv") And IsPlayerWearingItem(mainPlayer,mainPlayer\inventory\items[i])) Then
+				If (mainPlayer\inventory\items[i] <> Null) Then
+					If (mainPlayer\inventory\items[i]\template\name = "nvgoggles" Or mainPlayer\inventory\items[i]\template\name = "supernv" And IsPlayerWearingItem(mainPlayer,mainPlayer\inventory\items[i])) Then
 						If (mainPlayer\inventory\items[i]\state > 0.0) Then
 							hasBatteryFor895 = 1
 							Exit

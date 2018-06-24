@@ -247,7 +247,7 @@ End Function
 Function UpdateEvents()
 	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
 
-	Local p.Particles, n.NPCs, r.Rooms, e.Events, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
+	Local p.Particles, n.NPCs, r.Rooms, e.Events, e2.Events, em.Emitters, sc.SecurityCams, sc2.SecurityCams
 
 	Local CurrTrigger$ = ""
 

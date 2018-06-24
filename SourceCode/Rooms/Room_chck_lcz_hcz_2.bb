@@ -1,6 +1,6 @@
 Function FillRoom_chck_lcz_hcz_2(r.Rooms)
     Local d.Doors, d2.Doors, sc.SecurityCams, de.Decals, r2.Rooms, sc2.SecurityCams
-	Local it.Items, i%
+	Local i%
 	Local xtemp%, ytemp%, ztemp%
 
 	Local t1%;, Bump
@@ -49,7 +49,7 @@ End Function
 Function UpdateEventCheckpoint(e.Events)
 	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
 
-	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams
+	Local p.Particles, n.NPCs, r.Rooms, e2.Events, em.Emitters, sc.SecurityCams, sc2.SecurityCams
 
 	Local CurrTrigger$ = ""
 

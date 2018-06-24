@@ -40,11 +40,11 @@ Function FillRoom_test_860_2(r.Rooms)
     PlaceForest(fr,r\x,r\y+30.0,r\z,r)
     ;EntityParent(fr\forest_Pivot,r\obj)
 
-    it = CreateItem("Document SCP-860-1", "paper", r\x + 672.0 * RoomScale, r\y + 176.0 * RoomScale, r\z + 335.0 * RoomScale)
+    it = CreatePaper("doc860", r\x + 672.0 * RoomScale, r\y + 176.0 * RoomScale, r\z + 335.0 * RoomScale)
     RotateEntity(it\collider, 0, r\angle+10, 0)
     EntityParent(it\collider, r\obj)
 
-    it = CreateItem("Document SCP-860", "paper", r\x + 1152.0 * RoomScale, r\y + 176.0 * RoomScale, r\z - 384.0 * RoomScale)
+    it = CreatePaper("doc8601", r\x + 1152.0 * RoomScale, r\y + 176.0 * RoomScale, r\z - 384.0 * RoomScale)
     RotateEntity(it\collider, 0, r\angle+170, 0)
     EntityParent(it\collider, r\obj)
 End Function
@@ -202,7 +202,7 @@ Function UpdateEvent_test_860_2(e.Events)
 							Msg = "The door will not budge."
 							MsgTimer = 5*70
 						EndIf
-					ElseIf (mainPlayer\selectedItem\itemtemplate\name="scp860") Then
+					ElseIf (mainPlayer\selectedItem\template\name="scp860") Then
 						If (MouseHit1) Then
 							PlaySound2(LoadTempSound("SFX/Door/WoodenDoorOpen.ogg"))
 							ShowEntity(fr\forest_Pivot)
@@ -659,10 +659,11 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Rooms)
 
 				If (tile_type > 0) Then
 					;2, 5, 8
-					it = Null
-					If ((ty Mod 3)=2 And itemPlaced[Int(Floor(ty/3))]=False) Then
-						itemPlaced[Int(Floor(ty/3))]=True
-						it = CreateItem("Log#"+Str(Int(Floor(ty/3)+1)), "paper", 0,0.5,0)
+					it.Items = Null
+					If ((ty Mod 3)=2 And itemPlaced[Floor(ty/3)]=False) Then
+						itemPlaced[Floor(ty/3)]=True
+						;TODO: Rename the files.
+						;it.Items = CreateItem("Log #"+Int(Floor(ty/3)+1), "paper", 0,0.5,0)
 						EntityType(it\collider, HIT_ITEM)
 						EntityParent(it\collider, tile_entity)
 					EndIf

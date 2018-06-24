@@ -4,32 +4,25 @@ Function FillRoom_closets_2(r.Rooms)
 	Local xtemp%, ytemp%, ztemp%
 
 	Local t1%;, Bump
-    it = CreateItem("Document SCP-173", "paper", r\x + 736.0 * RoomScale, r\y + 176.0 * RoomScale, r\z + 736.0 * RoomScale)
+    it = CreatePaper("doc173", r\x + 736.0 * RoomScale, r\y + 176.0 * RoomScale, r\z + 736.0 * RoomScale)
     EntityParent(it\collider, r\obj)
 
-    it = CreateItem("Gas Mask", "gasmask", r\x + 736.0 * RoomScale, r\y + 176.0 * RoomScale, r\z + 544.0 * RoomScale)
+    it = CreateItem("gasmask", r\x + 736.0 * RoomScale, r\y + 176.0 * RoomScale, r\z + 544.0 * RoomScale)
     ScaleEntity(it\collider, 0.02, 0.02, 0.02) : EntityParent(it\collider, r\obj)
 
-    it = CreateItem("9V Battery", "bat", r\x + 736.0 * RoomScale, r\y + 176.0 * RoomScale, r\z - 448.0 * RoomScale)
+    it = CreateItem("battery", r\x + 736.0 * RoomScale, r\y + 176.0 * RoomScale, r\z - 448.0 * RoomScale)
     EntityParent(it\collider, r\obj)
     If (Rand(2) = 1) Then
-        it = CreateItem("9V Battery", "bat", r\x + 730.0 * RoomScale, r\y + 176.0 * RoomScale, r\z - 496.0 * RoomScale)
+        it = CreateItem("battery", r\x + 730.0 * RoomScale, r\y + 176.0 * RoomScale, r\z - 496.0 * RoomScale)
         EntityParent(it\collider, r\obj)
     EndIf
     If (Rand(2) = 1) Then
-        it = CreateItem("9V Battery", "bat", r\x + 740.0 * RoomScale, r\y + 176.0 * RoomScale, r\z - 560.0 * RoomScale)
+        it = CreateItem("battery", r\x + 740.0 * RoomScale, r\y + 176.0 * RoomScale, r\z - 560.0 * RoomScale)
         EntityParent(it\collider, r\obj)
     EndIf
 
-    it = CreateItem("Level 1 Key Card", "key1", r\x + 736.0 * RoomScale, r\y + 240.0 * RoomScale, r\z + 752.0 * RoomScale)
+    Local clipboard.Items = CreateItem("clipboard",r\x + 736.0 * RoomScale, r\y + 224.0 * RoomScale, r\z -480.0 * RoomScale)
     EntityParent(it\collider, r\obj)
-
-    Local clipboard.Items = CreateItem("Clipboard","clipboard",r\x + 736.0 * RoomScale, r\y + 224.0 * RoomScale, r\z -480.0 * RoomScale)
-    EntityParent(it\collider, r\obj)
-
-    it = CreateItem("Incident Report SCP-1048-A", "paper",r\x + 736.0 * RoomScale, r\y + 224.0 * RoomScale, r\z -480.0 * RoomScale)
-    ;clipboard\secondInv[0] = it
-    HideEntity(it\collider)
 
     r\objects[0]=CreatePivot(r\obj)
     PositionEntity(r\objects[0], r\x-1120*RoomScale, -256*RoomScale, r\z+896*RoomScale, True)

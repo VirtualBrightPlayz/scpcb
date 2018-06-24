@@ -515,9 +515,9 @@ Function UpdateGame()
 	;Counting the fps
 	Local instantFramerate# = 1000.0/Max(1,elapsedMilliseconds)
 	timing\fps = Max(0,timing\fps*0.99 + instantFramerate*0.01)
-	
+
 	Local prevmousedown1%, rn$, darkA#, temp%
-	
+
 	;[Block]
 	While timing\accumulator>0.0
 		timing\accumulator = timing\accumulator-timing\tickDuration
@@ -758,8 +758,8 @@ Function UpdateGame()
 					darkA = Max(darkA, Min(Abs(mainPlayer\fallTimer / 400.0), 1.0))
 				EndIf
 
-				If (mainPlayer\selectedItem <> Null) Then
-					If (mainPlayer\selectedItem\itemtemplate\name = "navigator" Or mainPlayer\selectedItem\itemtemplate\name = "nav") Then darkA = Max(darkA, 0.5)
+				If mainPlayer\selectedItem <> Null Then
+					If mainPlayer\selectedItem\template\name = "navigator" Or mainPlayer\selectedItem\template\name = "nav" Then darkA = Max(darkA, 0.5)
 				EndIf
 				If (SelectedScreen <> Null) Then darkA = Max(darkA, 0.5)
 
@@ -847,7 +847,7 @@ Function UpdateGame()
 				temp% = False ;TODO: change this variable's name because it's dumb as hell
 				If (CurrGameState<>GAMESTATE_INVENTORY) Then
 					If (mainPlayer\selectedItem <> Null) Then
-						If (mainPlayer\selectedItem\itemtemplate\name = "paper" Or mainPlayer\selectedItem\itemtemplate\name = "oldpaper") Then
+						If (mainPlayer\selectedItem\template\name = "paper" Or mainPlayer\selectedItem\template\name = "oldpaper") Then
 							temp% = True
 						EndIf
 					EndIf
@@ -1037,8 +1037,6 @@ End Function
 ;
 ;					Text(x, y, "SCPs encountered: " +scpsEncountered)
 ;					Text(x, y+40*MenuScale, "Rooms found: " + roomsfound+"/"+roomamount)
-;					Text(x, y+60*MenuScale, "Documents discovered: " +docsfound+"/"+docamount)
-;					Text(x, y+80*MenuScale, "Items refined in SCP-914: " +RefinedItems)
 ;
 ;					x = userOptions\screenWidth / 2 - width / 2
 ;					y = userOptions\screenHeight / 2 - height / 2
@@ -1359,7 +1357,7 @@ Function DrawGUI()
 			Text(x - 50, 120, "Camera Rotation: (" + f2s(EntityPitch(mainPlayer\cam), 3)+ ", " + f2s(EntityYaw(mainPlayer\cam), 3) +", " + f2s(EntityRoll(mainPlayer\cam), 3) + ")")
 			Text(x - 50, 150, "Room: " + mainPlayer\currRoom\roomTemplate\name)
 
-			
+
 			For ev.Events = Each Events
 				If (ev\room = mainPlayer\currRoom) Then
 					Text(x - 50, 170, "Room event: " + ev\name)
@@ -1383,7 +1381,7 @@ Function DrawGUI()
 			Text(x - 50, 470, "SCP - 106 Idle: " + Curr106\idle)
 			Text(x - 50, 490, "SCP - 106 State: " + Curr106\state)
 			offset% = 0
-			
+
 			For npc.NPCs = Each NPCs
 				If (npc\npcType = NPCtype096) Then
 					Text(x - 50, 510, "SCP - 096 Position: (" + f2s(EntityX(npc\obj), 3) + ", " + f2s(EntityY(npc\obj), 3) + ", " + f2s(EntityZ(npc\obj), 3) + ")")
@@ -1879,7 +1877,7 @@ End Function
 
 Function UpdateDecals()
 	Local angle#, temp#
-	
+
 	Local d.Decals, d2.Decals
 	For d.Decals = Each Decals
 		If (d\sizeChange <> 0) Then
@@ -1936,8 +1934,8 @@ End Function
 Function UpdateNVG()
 	Local wornItem.Items = mainPlayer\wornItems[WORNITEM_SLOT_HEAD]
 
-	If (wornItem<>Null) Then
-		If (wornItem\itemtemplate\name <> "nvgoggles" And wornItem\itemtemplate\name <> "supernv") Then
+	If (wornItem <> Null) Then
+		If wornItem\template\name <> "nvgoggles" And wornItem\template\name <> "supernv" Then
 			wornItem = Null
 		EndIf
 	EndIf
@@ -1975,13 +1973,13 @@ Function RenderWorld2()
 	Local wornItem.Items = mainPlayer\wornItems[WORNITEM_SLOT_HEAD]
 
     If (wornItem<>Null) Then
-		If (wornItem\itemtemplate\name <> "nvgoggles" And wornItem\itemtemplate\name <> "supernv") Then
+		If (wornItem\template\name <> "nvgoggles" And wornItem\template\name <> "supernv") Then
 			wornItem = Null
 		EndIf
 	EndIf
 
 	If (wornItem<>Null) Then
-		If (wornItem\itemtemplate\name = "supernv") Then decayMultiplier = 2.0
+		If (wornItem\template\name = "supernv") Then decayMultiplier = 2.0
 
 		power = Int(wornItem\state)
 		If (wornItem\state <= 0.0) Then ;this nvg can't be used
@@ -1993,7 +1991,7 @@ Function RenderWorld2()
 			hasBattery = 1
 		EndIf
 
-		If ((hasBattery)) Then
+		If (hasBattery) Then
 			RenderWorld(Max(0.0,1.0+(timing\accumulator/timing\tickDuration)))
 		EndIf
 	Else

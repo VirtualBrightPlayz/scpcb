@@ -425,7 +425,7 @@ Function InitNewGame()
 
 		FreeEntity(rt\opaqueMesh)
 		If (rt\alphaMesh<>0) Then FreeEntity(rt\alphaMesh)
-		
+
 		If (rt\props<>Null) Then
 			For i% = 0 To rt\props\size-1
 				prop = Object.Props(GetIntArrayListElem(rt\props,i))
@@ -540,7 +540,7 @@ Function InitLoadGame()
 
 		FreeEntity(rt\opaqueMesh)
 		If (rt\alphaMesh<>0) Then FreeEntity(rt\alphaMesh)
-		
+
 		If (rt\props<>Null) Then
 			For i% = 0 To rt\props\size-1
 				prop = Object.Props(GetIntArrayListElem(rt\props,i))
@@ -552,7 +552,7 @@ Function InitLoadGame()
 	Next
 
 	mainPlayer\dropSpeed = 0.0
-	
+
 	;TODO: Not load this at the start of the game jesus.
 	For e.Events = Each Events
 		;Loading the necessary stuff for dimension1499, but this will only be done if the player is in this dimension already
@@ -601,6 +601,7 @@ Function InitLoadGame()
 	DrawLoading(100)
 End Function
 
+;TODO: Go through this to fix memory leaks.
 Function NullGame()
 	Local i%, x%, y%, lvl%
 	Local itt.ItemTemplates, s.Screens, lt.LightTemplates, d.Doors, m.Materials
@@ -622,10 +623,6 @@ Function NullGame()
 
 	HideDistance# = 15.0
 
-	For itt.ItemTemplates = Each ItemTemplates
-		itt\found = False
-	Next
-
 	Contained106 = False
 	Curr173\idle = False
 
@@ -643,39 +640,20 @@ Function NullGame()
 		Delete s
 	Next
 
-	;RefinedItems = 0 ;TODO: reimplement?
-
 	ConsoleInput = ""
-	;ConsoleOpen = False
-
-	;TODO: fix
-	;EyeIrritation = 0
-	;EyeStuck = 0
 
 	Msg = ""
 	MsgTimer = 0
 
-	For d.Doors = Each Doors
-		Delete d
-	Next
+	Delete Each Doors
 
-	;ClearWorld
+	Delete Each LightTemplates
 
-	For lt.LightTemplates = Each LightTemplates
-		Delete lt
-	Next
+	Delete Each Materials
 
-	For m.Materials = Each Materials
-		Delete m
-	Next
+	Delete Each WayPoints
 
-	For wp.WayPoints = Each WayPoints
-		Delete wp
-	Next
-
-	For twp.TempWayPoints = Each TempWayPoints
-		Delete twp
-	Next
+	Delete Each TempWayPoints
 
 	For r.Rooms = Each Rooms
 		DeleteIntArray(r\collisionObjs)
@@ -684,32 +662,25 @@ Function NullGame()
 	Next
 	DeleteIntArray(MapRooms)
 
-	Local rt.RoomTemplates
-	For rt.RoomTemplates = Each RoomTemplates
-		Delete rt
-	Next
+	Delete Each RoomTemplates
 
-	For itt.ItemTemplates = Each ItemTemplates
-		Delete itt
-	Next
-
-	For it.Items = Each Items
+	Local it.ItemTemplates
+	For it = Each ItemTemplates
 		Delete it
 	Next
 
-	Local pr.Props
-	For pr.Props = Each Props
-		Delete pr
+	Local i.Items
+	For i = Each Items
+		Delete i
 	Next
 
-	Local de.Decals
-	For de.Decals = Each Decals
-		Delete de
-	Next
+	Delete Each Props
+
+	Delete Each Decals
 
 	Local n.NPCs
 	For n.NPCs = Each NPCs
-		Delete n
+		RemoveNPC(n)
 	Next
 	Curr173 = Null
 	Curr106 = Null
@@ -720,25 +691,14 @@ Function NullGame()
 
 	Local e.Events
 	For e.Events = Each Events
-		If (e\sounds[0]<>0) Then FreeSound(e\sounds[0])
-		If (e\sounds[1]<>0) Then FreeSound(e\sounds[1])
-		Delete e
+		RemoveEvent(e)
 	Next
 
-	Local sc.SecurityCams
-	For sc.SecurityCams = Each SecurityCams
-		Delete sc
-	Next
+	Delete Each SecurityCams
 
-	Local em.Emitters
-	For em.Emitters = Each Emitters
-		Delete em
-	Next
+	Delete Each Emitters
 
-	Local p.Particles
-	For p.Particles = Each Particles
-		Delete p
-	Next
+	Delete Each Particles
 
 	For i = 0 To 5
 		If (IsChannelPlaying(RadioCHN(i))) Then StopChannel(RadioCHN(i))
@@ -775,5 +735,22 @@ Function NullGame()
 	Next
 
 End Function
+
+Function GetImagePath$(path$)
+	If (FileType(path + ".png") = 1) Then
+		Return path + "png"
+	EndIf
+	Return path + "jpg"
+End Function
+
+
+
+
+
+
+
+
+
+
 ;~IDEal Editor Parameters:
 ;~C#Blitz3D

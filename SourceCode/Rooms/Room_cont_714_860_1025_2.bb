@@ -24,10 +24,10 @@ Function FillRoom_cont_714_860_1025_2(r.Rooms)
     r\roomDoors[3] = CreateDoor(r\zone, r\x + 560.0 * RoomScale, 0, r\z + 272.0 * RoomScale, 180, r, True, False, 3)
     r\roomDoors[3]\autoClose = False : r\roomDoors[3]\open = False
 
-    it = CreateItem("Some SCP-420-J", "420", r\x - 552.0 * RoomScale, r\y + 220.0 * RoomScale, r\z - 728.0 * RoomScale)
+    it = CreateItem("scp420j", r\x - 552.0 * RoomScale, r\y + 220.0 * RoomScale, r\z - 728.0 * RoomScale)
     EntityParent(it\collider, r\obj)
 
-    it = CreateItem("SCP-860", "scp860", r\x + 568.0 * RoomScale, r\y + 178.0 * RoomScale, r\z + 760.0 * RoomScale)
+    it = CreateItem("scp860", r\x + 568.0 * RoomScale, r\y + 178.0 * RoomScale, r\z + 760.0 * RoomScale)
     EntityParent(it\collider, r\obj)
 
     sc = CreateSecurityCam(r\x + 560.0 * RoomScale, r\y + 386 * RoomScale, r\z - 416.0 * RoomScale, r)
@@ -39,9 +39,6 @@ Function FillRoom_cont_714_860_1025_2(r.Rooms)
     sc\angle = 180 : sc\turn = 30
     TurnEntity(sc\cameraObj, 30, 0, 0)
     EntityParent(sc\obj, r\obj)
-
-    it = CreateItem("Document SCP-714", "paper", r\x - 728.0 * RoomScale, r\y + 288.0 * RoomScale, r\z - 328.0 * RoomScale)
-    EntityParent(it\collider, r\obj)
 End Function
 
 ;~IDEal Editor Parameters:

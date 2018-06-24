@@ -38,13 +38,13 @@ Function DrawConsole()
 	Local cm.ConsoleMsg
 	Local inBar%
 	Local inBox%
-	
+
 	Local x%,y%
 	Local width%,height%
-	
+
 	Local consoleHeight%
 	Local scrollbarHeight%
-	
+
 	Local TempY%
 	Local count%
 	If (CurrGameState=GAMESTATE_CONSOLE) Then
@@ -124,15 +124,15 @@ Function UpdateConsole()
 	Local scrollbarHeight%
 	Local width%,height%
 	Local itt.ItemTemplates
-	
+
 	Local cm.ConsoleMsg
 	Local n.NPCs
 	Local args$
-	
+
 	Local reissuePos%
-	
+
 	Local oldConsoleInput$
-	
+
 	Local tex%,tex2%
 	If (CurrGameState=GAMESTATE_CONSOLE) Then
 		ConsoleR = 255 : ConsoleG = 255 : ConsoleB = 255
@@ -562,9 +562,6 @@ Function UpdateConsole()
 							ResetEntity(mainPlayer\collider)
 							UpdateDoors()
 							UpdateRooms()
-							For it = Each Items
-								it\disttimer = 0
-							Next
 							mainPlayer\currRoom = r
 							Exit
 						EndIf
@@ -579,19 +576,16 @@ Function UpdateConsole()
 						If ((Lower(itt\name) = StrTemp)) Then
 							temp = True
 							CreateConsoleMsg(itt\name + " spawned.")
-							it = CreateItem(itt\name, itt\name, EntityX(mainPlayer\collider), EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider))
-							EntityType(it\collider, HIT_ITEM)
-							Exit
-						ElseIf ((Lower(itt\name) = StrTemp)) Then
-							temp = True
-							CreateConsoleMsg(itt\name + " spawned.")
-							it = CreateItem(itt\name, itt\name, EntityX(mainPlayer\collider), EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider))
-							EntityType(it\collider, HIT_ITEM)
+							it.Items = CreateItem(itt\name, EntityX(mainPlayer\collider), EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider))
 							Exit
 						EndIf
 					Next
 
 					If (temp = False) Then CreateConsoleMsg("Item not found.",255,150,0)
+
+				Case "spawndoc"
+					StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
+					CreatePaper(StrTemp, EntityX(mainPlayer\collider), EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider))
 
 				Case "wireframe"
 					StrTemp = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
@@ -692,18 +686,6 @@ Function UpdateConsole()
 					Else
 						CreateConsoleMsg("WHOA SLOW DOWN")
 					EndIf
-
-				Case "scp-420-j","420","weed"
-					For i = 1 To 20
-						If (Rand(2)=1) Then
-							it = CreateItem("Some SCP-420-J","420", EntityX(mainPlayer\collider,True)+Cos(360.0/20.0)*i*Rnd(0.3,0.5), EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider,True)+Sin((360.0/20.0)*i)*Rnd(0.3,0.5))
-						Else
-							it = CreateItem("Joint","420s", EntityX(mainPlayer\collider,True)+Cos(360.0/20.0)*i*Rnd(0.3,0.5), EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider,True)+Sin((360.0/20.0)*i)*Rnd(0.3,0.5))
-						EndIf
-						EntityType(it\collider, HIT_ITEM)
-					Next
-					PlaySound2(LoadTempSound("SFX/Music/420J.ogg"))
-
 				Case "godmode"
 					StrTemp = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 
@@ -945,21 +927,6 @@ Function UpdateConsole()
 					Else
 						CreateConsoleMsg("NOTARGET ON")
 					EndIf
-
-				Case "spawnradio"
-					it = CreateItem("Radio Transceiver", "fineradio", EntityX(mainPlayer\collider), EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider))
-					EntityType(it\collider, HIT_ITEM)
-					it\state = 101
-				Case "spawnnvg"
-					it = CreateItem("Night Vision Goggles", "nvgoggles", EntityX(mainPlayer\collider), EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider))
-					EntityType(it\collider, HIT_ITEM)
-					it\state = 1000
-				Case "spawnpumpkin","pumpkin"
-					CreateConsoleMsg("What pumpkin?")
-				Case "spawnnav"
-					it = CreateItem("S-NAV Navigator Ultimate", "nav", EntityX(mainPlayer\collider), EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider))
-					EntityType(it\collider, HIT_ITEM)
-					it\state = 101
 				Case "teleport173"
 					PositionEntity(Curr173\collider,EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider))
 					ResetEntity(Curr173\collider)

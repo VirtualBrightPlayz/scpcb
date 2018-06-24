@@ -32,18 +32,10 @@ Type ItemTemplates
 
 	Field sound%
 
-	Field bodySlot%
+	Field wornSlot%
+	Field wornOnly%
 
 	Field scale#
-
-	;TODO: Remove.
-	Field invSlot%
-
-	Field invimg%,invimg2%,invimgpath$
-
-	Field found%
-
-	Field imgpath$, img% ;Doing something with this that's (hopefully) a little smarter.
 End Type
 
 Function CreateItemTemplate(file$, section$)
@@ -59,7 +51,7 @@ Function CreateItemTemplate(file$, section$)
 		If ((FileType(dataPath) <> 2)) Then RuntimeError("Item template directory not found ("+section+", "+dataPath+")")
 
 		it\objPath = dataPath + it\name + ".b3d"
-		it\invImagePath[0] = dataPath + "inv_" + it\name + ".jpg"
+		it\invImagePath[0] = GetImagePath(dataPath + "inv_" + it\name)
 	EndIf
 
 	;Otherwise the obj, tex and inv paths are specified in the INI.
@@ -92,6 +84,8 @@ Function CreateItemTemplate(file$, section$)
 		Default
 			it\bodySlot = WORNITEM_SLOT_NONE
 	End Select
+
+	it\wornOnly = (GetINIInt(file, section, "wornonly") = 1)
 
 	Local sound$ = Lower(GetINIString(file, section, "sound"))
 	Select sound
@@ -196,53 +190,36 @@ Function LoadItemTemplates(file$)
 	CloseFile(f)
 End Function
 
-Function InitItemTemplates()
-	Local it.ItemTemplates,it2.ItemTemplates
-
-	
-
-	For it = Each ItemTemplates
-		If ((it\tex<>0)) Then
-			If ((it\texPath<>"")) Then
-				For it2=Each ItemTemplates
-					If ((it2<>it) And (it2\tex=it\tex)) Then
-						it2\tex = 0
-					EndIf
-				Next
-			EndIf
-			FreeTexture(it\tex)
-			it\tex = 0
-		EndIf
-	Next
-
-End Function
-
 
 
 Type Items
 	Field name$
 	Field collider%
 	Field model%
-	Field itemtemplate.ItemTemplates
-	Field dropSpeed#
+	Field template.ItemTemplates
+	Field img%
+	Field id%
 
 	Field r%,g%,b%,a#
 
-	Field level% ;TODO: what
+	Field dist#
 
-	Field dist#, disttimer#
-
-	Field state#, state2#
+	Field state#
+	;TODO: Deprecate
+	Field state2#
 
 	Field picked%
 	Field dropped%
 
+	;TODO: Deprecate.
 	Field invimg%
+
 	Field wontColl% = False
 	Field xspeed#
 	Field zspeed#
-	Field id%
+	Field dropSpeed#
 
+	Field tags$[5]
 	Field subInventory.Inventory = Null
 End Type
 
@@ -280,33 +257,28 @@ End Function
 
 Global LastItemID%
 
-Function CreateItem.Items(name$, tempname$, x#, y#, z#, r# = 1.0, g# = 1.0, b# = 1.0, a# = 1.0, invSlots%=0)
+Function CreateItem.Items(name$, x#, y#, z#, invSlots%=0)
 	Local i.Items = New Items
 	Local it.ItemTemplates
 
-	name = Lower(name)
-	tempname = Lower(tempname)
+	For it.ItemTemplates = Each ItemTemplates
+		If (it\name = name) Then
+			i\template = it
+			i\collider = CreatePivot()
+			EntityRadius(i\collider, 0.01)
+			EntityPickMode(i\collider, 1, False)
+			i\model = CopyEntity(it\obj, i\collider)
+			i\name = it\name
+			ShowEntity(i\collider)
+			ShowEntity(i\model)
 
-	For it = Each ItemTemplates
-		If (Lower(it\name) = name) Then
-			If (Lower(it\name) = tempname) Then
-				i\itemtemplate = it
-				i\collider = CreatePivot()
-				EntityRadius(i\collider, 0.01)
-				EntityPickMode(i\collider, 1, False)
-				i\model = CopyEntity(it\obj,i\collider)
-				i\name = it\name
-				ShowEntity(i\collider)
-				ShowEntity(i\model)
-			EndIf
+			Exit
 		EndIf
 	Next
 
-	i\wontColl = False
-
-	;If (i\itemtemplate = Null) Then RuntimeError("Item template not found ("+name+", "+tempname+")")
-	i\model = CreateMesh()
-	i\collider = CreatePivot()
+	If (i\template = Null) Then
+		RuntimeError("Item template not found ("+name+", "+tempname+")")
+	EndIf
 
 	ResetEntity(i\collider)
 	PositionEntity(i\collider, x, y, z, True)
@@ -314,36 +286,12 @@ Function CreateItem.Items(name$, tempname$, x#, y#, z#, r# = 1.0, g# = 1.0, b# =
 	i\dist = EntityDistance(mainPlayer\collider, i\collider)
 	i\dropSpeed = 0.0
 
-	;If (tempname = "cup") Then
-	;	i\r=r
-	;	i\g=g
-	;	i\b=b
-	;	i\a=a
-
-		;TODO: re-implement.
-		;Local liquid = CopyEntity(LiquidObj)
-		;ScaleEntity(liquid, i\itemtemplate\scale,i\itemtemplate\scale,i\itemtemplate\scale,True)
-		;PositionEntity(liquid, EntityX(i\collider,True),EntityY(i\collider,True),EntityZ(i\collider,True))
-		;EntityParent(liquid, i\model)
-		;EntityColor(liquid, r,g,b)
-
-		;If (a < 0) Then
-		;	EntityFX(liquid, 1)
-		;	EntityAlpha(liquid, Abs(a))
-		;Else
-		;	EntityAlpha(liquid, Abs(a))
-		;EndIf
-
-		;EntityShininess(liquid, 1.0)
-	;EndIf
-
-	i\invimg = CreateImage(64, 64) ;i\invimg = i\itemtemplate\invimg
-
-;	If ((tempname="clipboard") And (invSlots=0)) Then
-;		invSlots = 20
-;		SetAnimTime(i\model,17.0)
-;		i\invimg = i\itemtemplate\invimg2
-;	EndIf
+	;TODO: Re-implement.
+	If (tempname="clipboard") And (invSlots=0) Then
+		invSlots = 20
+		SetAnimTime(i\model, 17.0)
+		i\invimg = i\template\invimg2 ;<-- this Future Mark.
+	EndIf
 
 	i\subInventory = Null
 	If (invSlots>0) Then
@@ -353,26 +301,52 @@ Function CreateItem.Items(name$, tempname$, x#, y#, z#, r# = 1.0, g# = 1.0, b# =
 	i\id=LastItemID+1
 	LastItemID=i\id
 
+	EntityType(i\collider, HIT_ITEM)
+	Return i
+End Function
+
+Function CreatePaper.Items(name$, x#, y#, z#)
+	Local i.Items = CreateItem("paper", x, y, z, 0)
+	i\name = GetINIString("Data/Items/paper.ini", name, "name")
+
+	;Load the document image.
+	Local imgPath$ = GetImagePath("GFX/Items/Paper/Documents/" + i/name)
+	If (FileType(imgPath) <> 1) Then
+		imgPath$ = GetImagePath("GFX/Items/Paper/Notes/" + i/name)
+	EndIf
+
+	i\img = LoadImage(imgPath)
+	MaskImage(i\img, 255, 255, 0)
+
+	;Make a resized copy to texture the model with.
+	Local texDim% = 256
+	Local img% = CopyImage(i\img)
+	img = ResizeImage2(img, texDim, texDim)
+
+	Local tex% = CreateTexture(texDim, texDim, 1+2+8)
+	CopyRect(0, 0, texDim, texDim, 0, 0, texDim, texDim, ImageBuffer(img), TextureBuffer(tex))
+	EntityTexture(i\obj, tex)
+	FreeImage(img)
+	FreeTexture(tex)
+
 	Return i
 End Function
 
 Function RemoveItem(i.Items)
 	If (i\subInventory<>Null) Then DeleteInventory(i\subInventory)
 
+	If (i\img <> 0) Then
+		FreeImage(i\img)
+	EndIf
+
 	DropItem(i,False)
 
-	Local n%
 	FreeEntity(i\model) : FreeEntity(i\collider) : i\collider = 0
 
-	If (i\itemtemplate\img <> 0) Then
-		FreeImage(i\itemtemplate\img)
-		i\itemtemplate\img = 0
-	EndIf
 	Delete i
-
 End Function
 
-
+Global itemDistanceTimer% = 0
 Function UpdateItems()
 	Local n%, i.Items, i2.Items
 	Local xtemp#, ytemp#, ztemp#
@@ -387,26 +361,23 @@ Function UpdateItems()
 	For i = Each Items
 		i\dropped = 0
 
-		If ((Not i\picked)) Then
+		If (Not i\picked) Then
 			If (i\disttimer < TimeInPosMilliSecs()) Then
 				i\dist = EntityDistance(mainPlayer\collider, i\collider)
-				i\disttimer = TimeInPosMilliSecs() + Rand(600,800)
-				If (i\dist < HideDist) Then ShowEntity(i\collider)
 			EndIf
 
-			If (i\dist < HideDist) Then
+			If (i\dist < hideDist) Then
 				ShowEntity(i\collider)
 
-				If ((Not EntityVisible(i\collider,mainPlayer\cam))) Then
-					;the player can't grab this
-					If ((Not EntityVisible(i\collider,mainPlayer\collider))) Then i\dist = 2.5
-				EndIf
-
-				If (i\dist < 1.2) Then
-					If (mainPlayer\closestItem = Null) Then
-						If (EntityInView(i\model, mainPlayer\cam)) Then mainPlayer\closestItem = i
-						ElseIf (mainPlayer\closestItem = i Or i\dist < EntityDistance(mainPlayer\collider, mainPlayer\closestItem\collider)) Then
-							If (EntityInView(i\model, mainPlayer\cam)) Then mainPlayer\closestItem = i
+				If i\dist < 1.2 Then
+					If mainPlayer\closestItem = Null Then
+						If EntityInView(i\model, mainPlayer\cam) Then
+							mainPlayer\closestItem = i
+						EndIf
+					ElseIf i\dist < EntityDistance(mainPlayer\collider, mainPlayer\closestItem\collider) Then
+						If EntityInView(i\model, mainPlayer\cam) Then
+							mainPlayer\closestItem = i
+						EndIf
 					EndIf
 				EndIf
 
@@ -447,25 +418,30 @@ Function UpdateItems()
 					Next
 				EndIf
 
-				If (EntityY(i\collider) < - 35.0) Then
-					DebugLog("remove: " + i\itemtemplate\name)
+				If EntityY(i\collider) < - 35.0 Then
+					DebugLog("remove: " + i\name)
 					RemoveItem(i)
-					deletedItem=True
 				EndIf
 			Else
 				HideEntity(i\collider)
 			EndIf
 		EndIf
-
-		deletedItem = False
 	Next
 
-	If (mainPlayer\closestItem <> Null) Then
-		;DrawHandIcon = True
-
-		If (MouseHit1) Then PickItem(mainPlayer\closestItem)
+	If mainPlayer\closestItem <> Null Then
+		;Can the player see this?
+		If (EntityVisible(i\collider,mainPlayer\cam)) Then
+			If (EntityVisible(i\collider,mainPlayer\collider)) Then
+				If MouseHit1 Then
+					PickItem(mainPlayer\closestItem)
+				EndIf
+			EndIf
+		EndIf
 	EndIf
 
+	If (itemDistanceTimer < TimeInPosMilliSecs()) Then
+		itemDistanceTimer = TimeInPosMilliSecs() + 800
+	EndIf
 End Function
 
 Function PickItem(item.Items)
@@ -473,66 +449,41 @@ Function PickItem(item.Items)
 	Local e.Events
 	Local z%
 
-	If (CountItemsInInventory(mainPlayer\inventory) < mainPlayer\inventory\size) Then
-		For n = 0 To mainPlayer\inventory\size - 1
-			If (mainPlayer\inventory\items[n] = Null) Then
-				Select item\itemtemplate\name
-					Case "1123"
-						If (mainPlayer\currRoom\roomTemplate\name <> "room1123") Then
-							ShowEntity(mainPlayer\overlays[OVERLAY_WHITE])
-							mainPlayer\lightFlash = 7.0
-							PlaySound2(LoadTempSound("SFX/SCP/1123/Touch.ogg"))
-							DeathMSG = "Subject D-9341 was shot dead after attempting to attack a member of Nine-Tailed Fox. Surveillance tapes show that the subject had been "
-							DeathMSG = DeathMSG + "wandering around the site approximately 9 minutes prior, shouting the phrase " + Chr(34) + "get rid of the four pests" + Chr(34)
-							DeathMSG = DeathMSG + " in chinese. SCP-1123 was found in [REDACTED] nearby, suggesting the subject had come into physical contact with it. How "
-							DeathMSG = DeathMSG + "exactly SCP-1123 was removed from its containment chamber is still unknown."
-							Kill(mainPlayer)
-							Return
-						EndIf
-						For e = Each Events
-							If (e\name = "room1123") Then
-								If (e\eventState = 0) Then
-									ShowEntity(mainPlayer\overlays[OVERLAY_WHITE])
-									mainPlayer\lightFlash = 3.0
-									PlaySound2(LoadTempSound("SFX/SCP/1123/Touch.ogg"))
-								EndIf
-								e\eventState = Max(1, e\eventState)
-								Exit
-							EndIf
-						Next
-					Case "killbat"
-						ShowEntity(mainPlayer\overlays[OVERLAY_WHITE])
-						mainPlayer\lightFlash = 1.0
-						PlaySound2(IntroSFX(11))
-						DeathMSG = "Subject D-9341 found dead inside SCP-914's output booth next to what appears to be an ordinary nine-volt battery. The subject is covered in severe "
-						DeathMSG = DeathMSG + "electrical burns, and assumed to be killed via an electrical shock caused by the battery. The battery has been stored for further study."
-						Kill(mainPlayer)
-					Case "veryfinevest"
-						Msg = "The vest is too heavy to pick up."
-						MsgTimer = 70*6
-						Exit
-					Case "firstaid", "finefirstaid", "veryfinefirstaid", "firstaid2"
-						item\state = 0
-					Case "hazmatsuit", "hazmatsuit2", "hazmatsuit3"
-						Msg = "You put on the hazmat suit."
-						MsgTimer = 70 * 5
-						mainPlayer\wornItems[WORNITEM_SLOT_BODY] = item
+	Select item\template\name
+		Case "battery"
+			If (HasTag(item, ITEM_TAG_914VF)) Then
+				ShowEntity mainPlayer\overlays[OVERLAY_WHITE]
+				mainPlayer\lightFlash = 1.0
+				PlaySound2(IntroSFX(11))
+				DeathMSG = "Subject D-9341 found dead inside SCP-914's output booth next to what appears to be an ordinary nine-volt battery. The subject is covered in severe "
+				DeathMSG = DeathMSG + "electrical burns, and assumed to be killed via an electrical shock caused by the battery. The battery has been stored for further study."
+				Kill(mainPlayer)
 
-						For z = 0 To mainPlayer\inventory\size - 1
-							If (mainPlayer\inventory\items[z] <> Null) Then
-								If (mainPlayer\inventory\items[z]\itemtemplate\name="hazmatsuit" Or mainPlayer\inventory\items[z]\itemtemplate\name="hazmatsuit2" Or mainPlayer\inventory\items[z]\itemtemplate\name="hazmatsuit3") Then
-									DropItem(mainPlayer\inventory\items[z])
-								EndIf
-							EndIf
-						Next
+				Return
+			EndIf
+		Case "vest"
+			If (HasTag(item, ITEM_TAG_914VF)) Then
+				Msg = "The vest is too heavy to pick up."
+				MsgTimer = 70*6
 
-				End Select
+				Return
+			EndIf
+		Case "hazmatsuit"
+			Msg = "You put on the hazmat suit."
+			MsgTimer = 70 * 5
+			mainPlayer\wornItems[WORNITEM_SLOT_BODY] = item
 
-				If (item\itemtemplate\sound <> 66) Then PlaySound_SM(sndManager\itemPick[item\itemtemplate\sound])
+			Return
+	End Select
+
+	If CountItemsInInventory(mainPlayer\inventory) < mainPlayer\inventory\size Then
+		For n% = 0 To mainPlayer\inventory\size - 1
+			If mainPlayer\inventory\items[n] = Null Then
+
+
+				PlaySound_SM(sndManager\itemPick[item\template\sound])
 				item\picked = True
 				item\dropped = -1
-
-				item\itemtemplate\found=True
 
 				mainPlayer\inventory\items[n] = item
 				HideEntity(item\collider)
@@ -551,7 +502,9 @@ Function DropItem(item.Items,playDropSound%=True)
 		DeEquipItem(player,item)
 	Next
 
-	If (playDropSound And (item\itemtemplate\sound <> 66)) Then PlaySound_SM(sndManager\itemPick[item\itemtemplate\sound])
+	If (playDropSound) Then
+		PlaySound_SM(sndManager\itemPick[item\template\sound])
+	EndIf
 
 	item\dropped = 1
 
@@ -563,27 +516,6 @@ Function DropItem(item.Items,playDropSound%=True)
 
 	ResetEntity(item\collider)
 
-	;move the item so that it doesn't overlap with other items
-	;For it.Items = Each Items
-	;	If (it <> item And it\picked = False) Then
-	;		x = Abs(EntityX(item\collider, True)-EntityX(it\collider, True))
-	;		;If (x < 0.2) Then
-	;		If (x < 0.01) Then
-	;			z = Abs(EntityZ(item\obj, True)-EntityZ(it\collider, True))
-	;			;If (z < 0.2) Then
-	;			If (z < 0.01) Then
-	;				;While (x+z)<0.25
-	;				While (x+z)<0.05
-	;					;MoveEntity(item\obj, 0, 0, 0.025)
-	;					MoveEntity(item\collider, 0, 0, 0.005)
-	;					x = Abs(EntityX(item\collider, True)-EntityX(it\collider, True))
-	;					z = Abs(EntityZ(item\collider, True)-EntityZ(it\collider, True))
-	;				Wend
-	;			EndIf
-	;		EndIf
-	;	EndIf
-	;Next
-
 	item\picked = False
 	Local inv.Inventory
 	Local j%
@@ -592,22 +524,305 @@ Function DropItem(item.Items,playDropSound%=True)
 			If (inv\items[j]=item) Then inv\items[j]=Null
 		Next
 	Next
-	;Select item\itemtemplate\name
-	;	Case "gasmask", "supergasmask", "gasmask3"
-	;		WearingGasMask = False
-	;	Case "hazmatsuit",  "hazmatsuit2", "hazmatsuit3"
-	;		WearingHazmat = False
-	;	Case "vest", "finevest"
-	;		WearingVest = False
-	;	Case "nvgoggles"
-	;		If (WearingNightVision = 1) Then CameraFogFar = StoredCameraFogFar : WearingNightVision = False
-	;	Case "supernv"
-	;		If (WearingNightVision = 2) Then CameraFogFar = StoredCameraFogFar : WearingNightVision = False
-	;	Case "veryfinenvgoggles"
-	;		If (WearingNightVision = 3) Then CameraFogFar = StoredCameraFogFar : WearingNightVision = False
-	;	Case "scp1499","super1499"
-	;		Wearing1499 = False
-	;End Select
+End Function
+
+Function AssignTag(item.Items, tag$)
+	If (HasTag(item, tag)) Then
+		Return
+	EndIf
+
+	Local space% = False
+	Local i%
+	For i=0 to 4
+		If (item\tags[i] = "") Then
+			space = True
+			item\tags[i] = tag
+			Return
+		EndIf
+	Next
+
+	If (Not space) Then
+		RuntimeError("Assigned tag without space: " + item\name + ", tag: " + tag)
+	EndIf
+End Function
+
+Function RemoveTag(item.Items, tag$)
+	Local found% = False
+	Local i%
+	For i=0 to 4
+		If (item\tags[i] = tag) Then
+			found = True
+			item\tags[i] = ""
+			Return
+		EndIf
+	Next
+
+	If (Not found) Then
+		RuntimeError("Removed non-existant tag: " + item\name + ", tag: " + tag)
+	EndIf
+End Function
+
+Function HasTag%(item.Items, tag$)
+	Local i%
+	For i=0 To 4
+		If (item\tags[i] = tag) Then
+			Return True
+		EndIf
+	Next
+
+	Return False
+End Function
+
+Function IsPlayerWearingTempName(player.Player,templateName$)
+	Local it.ItemTemplates = FindItemTemplate(templateName)
+	If it=Null Then Return False
+	Local slot% = it\wornSlot
+	If slot=WORNITEM_SLOT_NONE Then Return False
+	If player\wornItems[slot]=Null Then Return False
+	Return (player\wornItems[slot]\template\name=templateName)
+End Function
+
+Function IsPlayerWearingItem(player.Player,item.Items)
+	If item = Null Then
+		Return False
+	EndIf
+	Local slot% = item\template\wornSlot
+	If slot=WORNITEM_SLOT_NONE Then Return False
+	If player\wornItems[slot]=Null Then Return False
+	Return (player\wornItems[slot] = item)
+End Function
+
+Function EquipItem(player.Player, item.Items)
+	If item=Null Then Return
+	If item\template\wornSlot = WORNITEM_SLOT_NONE Then Return
+
+	player\wornItems[item\template\invSlot] = item
+End Function
+
+Function DeEquipItem(player.Player,item.Items)
+	If item = Null Then
+		Return
+	EndIf
+
+	If player\wornItems[item\template\wornSlot]<>item Then
+		Return
+	EndIf
+
+	player\wornItems[item\template\wornSlot] = Null
+	If (item\template\wornSlot = WORNITEM_SLOT_HAND) Then
+		Return
+	EndIf
+
+	;Check if this item can be put back into the inventory.
+	If (item\template\wornOnly) Then
+		DropItem(item)
+	ElseIf (CountItemsInInventory(mainPlayer\inventory) >= mainPlayer\inventory\size) Then
+		DropItem(item)
+	Else
+		PickItem(item)
+	EndIf
+End Function
+
+Const ITEM_CELL_SIZE% = 70
+Const ITEM_CELL_SPACING% = 35
+Const ITEMS_PER_ROW% = 5
+Function UpdateInventory(player.Player)
+	;TODO: cleanup
+	Local PrevInvOpen% = (CurrGameState=GAMESTATE_INVENTORY)
+	Local mouseSlot% = 66
+
+	Local np.NPCs, e.Events, it.Items
+
+	Local x%, y%, isMouseOn%, i%
+
+	Local slotIndex%
+	If (CurrGameState = GAMESTATE_INVENTORY) Then
+		mainPlayer\selectedDoor = Null
+
+		x = userOptions\screenWidth / 2 - (ITEM_CELL_SIZE * ITEMS_PER_ROW + ITEM_CELL_SPACING * (ITEMS_PER_ROW - 1)) / 2
+		y = userOptions\screenHeight / 2 - ITEM_CELL_SIZE * (player\openInventory\size/itemsPerRow) + ITEM_CELL_SIZE / 2
+
+		For slotIndex = 0 To player\openInventory\size - 1
+			isMouseOn% = False
+			If (MouseX() > x And MouseX() < x + ITEM_CELL_SIZE) Then
+				If (MouseY() > y And MouseY() < y + ITEM_CELL_SIZE) Then
+					isMouseOn = True
+				EndIf
+			EndIf
+
+			If (isMouseOn) Then
+				mouseSlot = n
+
+				If (MouseHit1) Then
+					;Selecting an item.
+					If (player\selectedItem = Null) Then
+						If (player\openInventory\items[slotIndex] <> Null) Then
+							player\selectedItem = player\openInventory\items[n]
+							MouseHit1 = False
+						EndIf
+					EndIf
+				ElseIf (MouseUp1 And player\selectedItem <> Null)
+					;Item already selected and mouse release.
+
+					;Hovering over empty slot. Move the item to the empty slot.
+					If (player\openInventory\items[slotIndex] = Null) Then
+						player\openInventory\items[slotIndex] = player\selectedItem
+
+						;Remove the item from its previous slot.
+						For i=0 to player\openInventory\size - 1
+							If (player\openInventory\items[i] = player\selectedItem) Then
+								player\openInventory\items[i] = Null
+								Exit
+							EndIf
+						Next
+						player\selectedItem = Null
+					ElseIf (player\openInventory\items[slotIndex] <> player\selectedItem) Then
+						;Hovering over another item. Attempt to combine the items.
+						;CombineItems(player\selectedItem, player\openInventory\items[slotIndex])
+					Else
+						;Hovering over the item's slot. Stop selecting the item.
+						player\selectedItem = Null
+					EndIf
+				ElseIf (DoubleClick And player\openInventory\items[slotIndex] <> Null) Then
+					;Use the item.
+					;EquipItem(player\openInventory\items[slotIndex])
+					DoubleClick = False
+				EndIf
+
+				;If the mouse was hovering over this slot then don't bother iterating through the rest of the inventory.
+				Exit
+			EndIf
+
+			;Move x and y coords to point to next item.
+			x = x + ITEM_CELL_SIZE + ITEM_CELL_SPACING
+			If n Mod 5 = 4 Then
+				y = y + ITEM_CELL_SIZE * 2
+				x = userOptions\screenWidth / 2 - (ITEM_CELL_SIZE * ITEMS_PER_ROW + ITEM_CELL_SPACING * (ITEMS_PER_ROW - 1)) / 2
+			EndIf
+		Next
+
+		If (MouseUp1 And player\selectedItem <> Null) Then
+			;Mouse release outside a slot, drop the item.
+			If (mouseSlot = 66) Then
+				DropItem(player\selectedItem)
+				player\selectedItem = Null
+			EndIf
+		EndIf
+
+	;Update any items that are used outside the inventory (firstaid for example).
+	Else
+		If (player\selectedItem <> Null) Then
+			If (MouseHit2) Then
+				;TODO: Move to de-equip function.
+				EntityAlpha(player\overlays[OVERLAY_BLACK], 0.0)
+
+				PlaySound_SM(sndManager\itemPick[player\selectedItem\template\sound])
+				player\selectedItem = Null
+			EndIf
+		EndIf
+	EndIf
+
+	If (PrevInvOpen And CurrGameState <> GAMESTATE_INVENTORY) Then
+		MoveMouse(viewport_center_x, viewport_center_y)
+	EndIf
+End Function
+
+Function ToggleInventory(player.Player)
+	If (CurrGameState = GAMESTATE_INVENTORY) Then
+		If (mainPlayer\openInventory = mainPlayer\inventory) Then
+			CurrGameState = GAMESTATE_PLAYING
+			ResumeSounds()
+			MouseXSpeed() : MouseYSpeed() : MouseZSpeed() : mouse_x_speed_1# = 0.0 : mouse_y_speed_1# = 0.0
+		Else
+			mainPlayer\openInventory = mainPlayer\inventory
+		EndIf
+	Else
+		CurrGameState = GAMESTATE_INVENTORY
+		mainPlayer\openInventory = mainPlayer\inventory
+		PauseSounds()
+	EndIf
+
+	mainPlayer\selectedItem = Null
+End Function
+
+Function DrawInventory(player.Player)
+	Local MouseSlot% = 66
+
+	Local isMouseOn%
+
+	Local strtemp$
+
+	Local x%, y%, i%, yawvalue#, x1#, x2#, x3#, y1#, y2#, y3#, xtemp%, ytemp%
+
+	If (CurrGameState = GAMESTATE_INVENTORY) Then
+		x = userOptions\screenWidth / 2 - (ITEM_CELL_SIZE * ITEMS_PER_ROW + ITEM_CELL_SPACING * (ITEMS_PER_ROW - 1)) / 2
+		y = userOptions\screenHeight / 2 - ITEM_CELL_SIZE * (player\openInventory\size / ITEMS_PER_ROW) + ITEM_CELL_SIZE / 2
+
+		Local n%
+		For  n% = 0 To player\openInventory\size - 1
+			isMouseOn% = False
+			If (MouseX() > x And MouseX() < x + ITEM_CELL_SIZE) Then
+				If (MouseY() > y And MouseY() < y + ITEM_CELL_SIZE) Then
+					isMouseOn = True
+				EndIf
+			EndIf
+
+			If (player\openInventory\items[n] <> Null) Then
+				Color 200, 200, 200
+				If (IsPlayerWearingItem(player,player\openInventory\items[n])) Then
+					Rect(x - 3, y - 3, ITEM_CELL_SIZE + 6, ITEM_CELL_SIZE + 6)
+				EndIf
+			EndIf
+
+			If (isMouseOn) Then
+				MouseSlot = n
+				Color(255, 0, 0)
+				Rect(x - 1, y - 1, ITEM_CELL_SIZE + 2, ITEM_CELL_SIZE + 2)
+			EndIf
+
+			Color(255, 255, 255)
+			DrawFrame(x, y, ITEM_CELL_SIZE, ITEM_CELL_SIZE, (x Mod 64), (x Mod 64))
+
+			If player\openInventory\items[n] <> Null Then
+				If (player\selectedItem <> player\openInventory\items[n] Or isMouseOn) Then
+					DrawImage(player\openInventory\items[n]\invimg, x + ITEM_CELL_SIZE / 2 - 32, y + ITEM_CELL_SIZE / 2 - 32)
+				EndIf
+			EndIf
+
+			If (player\openInventory\items[n] <> Null And player\selectedItem <> player\openInventory\items[n]) Then
+				If (isMouseOn) Then
+					If (player\selectedItem = Null) Then
+						SetFont(uiAssets\font[0])
+						Color(0,0,0)
+						Text(x + ITEM_CELL_SIZE / 2 + 1, y + ITEM_CELL_SIZE + ITEM_CELL_SPACING - 15 + 1, player\openInventory\items[n]\name, True)
+						Color(255, 255, 255)
+						Text(x + ITEM_CELL_SIZE / 2, y + ITEM_CELL_SIZE + ITEM_CELL_SPACING - 15, player\openInventory\items[n]\name, True)
+					EndIf
+				EndIf
+			EndIf
+
+			x= x + ITEM_CELL_SIZE + ITEM_CELL_SPACING
+			If (n Mod 5 = 4) Then
+				y = y + ITEM_CELL_SIZE * 2
+				x = userOptions\screenWidth / 2 - (ITEM_CELL_SIZE * ITEMS_PER_ROW + ITEM_CELL_SPACING * (ITEMS_PER_ROW - 1)) / 2
+			EndIf
+		Next
+
+		If (player\selectedItem <> Null) Then
+			If (MouseDown1) Then
+				If (MouseSlot = 66) Then
+					DrawImage(player\selectedItem\invimg, MouseX() - ImageWidth(player\selectedItem\template\invimg) / 2, MouseY() - ImageHeight(player\selectedItem\template\invimg) / 2)
+				ElseIf (player\selectedItem <> player\openInventory\items[MouseSlot]) Then
+					DrawImage(player\selectedItem\invimg, MouseX() - ImageWidth(player\selectedItem\template\invimg) / 2, MouseY() - ImageHeight(player\selectedItem\template\invimg) / 2)
+				EndIf
+			EndIf
+		EndIf
+	Else
+		If (player\selectedItem <> Null) Then
+			;TODO
+		EndIf
+	EndIf
+
 End Function
 
 Const RADIO_CHANNEL_COUNT% = 5
@@ -658,7 +873,7 @@ Function UpdateRadio(i.Items)
 		Case 4 ;-idfk
 	End Select
 
-	radio\airTime[radio\currChn] = radio\airTime[radio\currChn] + timing\tickDuration
+	radio\airTime[radio\currChn] = radio\airTime[radio\currChn] + (timing\tickDuration/70)
 End Function
 
 ;~IDEal Editor Parameters:

@@ -3,7 +3,7 @@
 	Local it.Items, i%
 	Local xtemp%, ytemp%, ztemp%
 
-	Local t1%;, Bump
+	Local t1;, Bump
 
     For xtemp = 0 To 1
         For ztemp = -1 To 1
@@ -24,7 +24,7 @@
 
     CreateDoor(0, r\x - 624.0 * RoomScale, -1280.0 * RoomScale, r\z, 90, r, True)
 
-    it = CreateItem("Document SCP-682", "paper", r\x + 656.0 * RoomScale, r\y - 1200.0 * RoomScale, r\z - 16.0 * RoomScale)
+    it = CreatePaper("doc682", r\x + 656.0 * RoomScale, r\y - 1200.0 * RoomScale, r\z - 16.0 * RoomScale)
     EntityParent(it\collider, r\obj)
 End Function
 
@@ -41,11 +41,11 @@ Function UpdateEvent_test_682_2(e.Events)
 	Local angle#
 
 	;[Block]
-	If (e <> Null) Then
-		If (mainPlayer\currRoom = e\room) Then
-			If (e\eventState = 0) Then
+	If e <> Null Then
+		If mainPlayer\currRoom = e\room Then
+			If e\eventState = 0 Then
 				e\room\objects[7]=LoadAnimMesh("GFX/npcs/scp-1048.b3d")
-				ScaleEntity(e\room\objects[7], 0.05,0.05,0.05)
+				ScaleEntity e\room\objects[7], 0.05,0.05,0.05
 
 				TFormPoint(EntityX(mainPlayer\collider),EntityY(mainPlayer\collider),EntityZ(mainPlayer\collider),0,e\room\obj)
 				If (TFormedZ()=0) Then
@@ -56,11 +56,11 @@ Function UpdateEvent_test_682_2(e.Events)
 				TFormPoint(-720,0,816*temp,e\room\obj,0)
 				PositionEntity(e\room\objects[7],TFormedX(),0,TFormedZ())
 
-				RotateEntity(e\room\objects[7],-90,e\room\angle-90,0)
-				SetAnimTime(e\room\objects[7],297)
+				RotateEntity e\room\objects[7],-90,e\room\angle-90,0
+				SetAnimTime e\room\objects[7],297
 				e\eventState = 1
 			EndIf
-			If (EntityDistance(mainPlayer\collider, e\room\objects[6]) < 2.5 And e\eventState > 0) Then
+			If EntityDistance(mainPlayer\collider, e\room\objects[6]) < 2.5 And e\eventState > 0 Then
 				PlaySound2(LoadTempSound("SFX/SCP/079/TestroomWarning.ogg"))
 				For i = 0 To 5
 					em = CreateEmitter(EntityX(e\room\objects[i], True), EntityY(e\room\objects[i], True), EntityZ(e\room\objects[i], True), 0)
@@ -73,23 +73,20 @@ Function UpdateEvent_test_682_2(e.Events)
 				;Delete e
 				e\eventState = e\eventState * -1
 			EndIf
-			If (e\room\objects[7]<>0) Then
+			If e\room\objects[7]<>0 Then
 				Animate2(e\room\objects[7],AnimTime(e\room\objects[7]),284,308,0.3)
-				MoveEntity(e\room\objects[7],0,-0.008*timing\tickDuration,0)
-				TFormPoint(EntityX(e\room\objects[7]),EntityY(e\room\objects[7]),EntityZ(e\room\objects[7]),0,e\room\obj)
+				MoveEntity e\room\objects[7],0,-0.008*timing\tickDuration,0
+				TFormPoint EntityX(e\room\objects[7]),EntityY(e\room\objects[7]),EntityZ(e\room\objects[7]),0,e\room\obj
 
-				If (Abs(TFormedX())>725) Then
+				If Abs(TFormedX())>725 Then
 					FreeEntity(e\room\objects[7])
 					e\room\objects[7]=0
 					e\eventState = e\eventState *2
 				EndIf
 			EndIf
-			If (e\eventState = -2) Then RemoveEvent(e)
+			If e\eventState = -2 Then RemoveEvent(e)
 		EndIf
 	EndIf
 	;[End Block]
 End Function
 
-
-;~IDEal Editor Parameters:
-;~C#Blitz3D

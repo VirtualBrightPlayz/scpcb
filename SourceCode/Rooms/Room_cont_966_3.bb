@@ -30,7 +30,7 @@ Function FillRoom_cont_966_3(r.Rooms)
     r\objects[3] = CreatePivot(r\obj)
     PositionEntity(r\objects[3], r\x + 320.0 * RoomScale, 0.5, r\z + 704.0 * RoomScale, True)
 
-    it = CreateItem("Night Vision Goggles", "nvgoggles", r\x + 320.0 * RoomScale, 0.5, r\z + 704.0 * RoomScale)
+    it = CreateItem("nvgoggles", r\x + 320.0 * RoomScale, 0.5, r\z + 704.0 * RoomScale)
     EntityParent(it\collider, r\obj)
 End Function
 

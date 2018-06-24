@@ -52,10 +52,7 @@ Function FillRoom_cont_012_2(r.Rooms)
     PositionEntity(r\objects[4], r\x - 360 * RoomScale, - 130 * RoomScale, r\z + 456.0 * RoomScale, 0)
     EntityParent(r\objects[4], r\objects[2])
 
-    it = CreateItem("Document SCP-012", "paper", r\x - 56.0 * RoomScale, r\y - 576.0 * RoomScale, r\z - 408.0 * RoomScale)
-    EntityParent(it\collider, r\obj)
-
-    it = CreateItem("Severed Hand", "hand", r\x - 784*RoomScale, -576*RoomScale+0.3, r\z+640*RoomScale)
+    it = CreatePaper("doc012", r\x - 56.0 * RoomScale, r\y - 576.0 * RoomScale, r\z - 408.0 * RoomScale)
     EntityParent(it\collider, r\obj)
 
     de = CreateDecal(3,  r\x - 784*RoomScale, -768*RoomScale+0.01, r\z+640*RoomScale,90,Rnd(360),0)
