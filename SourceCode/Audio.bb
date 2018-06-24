@@ -76,27 +76,27 @@ Function LoadInGameSounds(sndMan.SoundManager)
 	sndMan\buttonErr = InitializeSound_SM("SFX/Interact/Button2.ogg")
 
 	For i = 0 To 7
-		sndMan\footstep[i] = LoadSound_SM("SFX/Step/Step" + (i + 1) + ".ogg")
-		sndMan\footstepRun[i] = LoadSound_SM("SFX/Step/Run" + (i + 1) + ".ogg")
-		sndMan\footstepMetal[i] = LoadSound_SM("SFX/Step/StepMetal" + (i + 1) + ".ogg")
-		sndMan\footstepMetalRun[i] = LoadSound_SM("SFX/Step/RunMetal" + (i + 1) + ".ogg")
+		sndMan\footstep[i] = LoadSound_SM("SFX/Step/Step" + Str(i + 1) + ".ogg")
+		sndMan\footstepRun[i] = LoadSound_SM("SFX/Step/Run" + Str(i + 1) + ".ogg")
+		sndMan\footstepMetal[i] = LoadSound_SM("SFX/Step/StepMetal" + Str(i + 1) + ".ogg")
+		sndMan\footstepMetalRun[i] = LoadSound_SM("SFX/Step/RunMetal" + Str(i + 1) + ".ogg")
 	Next
 
 	For i = 0 To 2
-		sndMan\footstepPD[i] = InitializeSound_SM("SFX/Step/StepPD" + (i + 1) + ".ogg")
-		sndMan\footstep8601[i] = InitializeSound_SM("SFX/Step/StepForest" + (i + 1) + ".ogg")
+		sndMan\footstepPD[i] = InitializeSound_SM("SFX/Step/StepPD" + Str(i + 1) + ".ogg")
+		sndMan\footstep8601[i] = InitializeSound_SM("SFX/Step/StepForest" + Str(i + 1) + ".ogg")
 	Next
 
 	For i = 0 To 2
-		sndMan\openDoor[i] = LoadSound_SM("SFX/Door/DoorOpen" + (i + 1) + ".ogg")
-		sndMan\closeDoor[i] = LoadSound_SM("SFX/Door/DoorClose" + (i + 1) + ".ogg")
-		sndMan\openHCZDoor[i] = LoadSound_SM("SFX/Door/Door2Open" + (i + 1) + ".ogg")
-		sndMan\closeHCZDoor[i] = LoadSound_SM("SFX/Door/Door2Close" + (i + 1) + ".ogg")
+		sndMan\openDoor[i] = LoadSound_SM("SFX/Door/DoorOpen" + Str(i + 1) + ".ogg")
+		sndMan\closeDoor[i] = LoadSound_SM("SFX/Door/DoorClose" + Str(i + 1) + ".ogg")
+		sndMan\openHCZDoor[i] = LoadSound_SM("SFX/Door/Door2Open" + Str(i + 1) + ".ogg")
+		sndMan\closeHCZDoor[i] = LoadSound_SM("SFX/Door/Door2Close" + Str(i + 1) + ".ogg")
 	Next
 
 	For i = 0 To 1
-		sndMan\openBigDoor[i] = InitializeSound_SM("SFX/Door/BigDoorOpen" + (i + 1) + ".ogg")
-		sndMan\closeBigDoor[i] = InitializeSound_SM("SFX/Door/BigDoorClose" + (i + 1) + ".ogg")
+		sndMan\openBigDoor[i] = InitializeSound_SM("SFX/Door/BigDoorOpen" + Str(i + 1) + ".ogg")
+		sndMan\closeBigDoor[i] = InitializeSound_SM("SFX/Door/BigDoorClose" + Str(i + 1) + ".ogg")
 	Next
 
 	sndMan\keycardUse = InitializeSound_SM("SFX/Interact/KeyCardUse1.ogg")
@@ -105,7 +105,7 @@ Function LoadInGameSounds(sndMan.SoundManager)
 	sndMan\scannerErr = InitializeSound_SM("SFX/Interact/ScannerUse2.ogg")
 
 	For i = 0 To 3
-		sndMan\itemPick[i] = LoadSound_SM("SFX/Interact/PickItem" + i + ".ogg")
+		sndMan\itemPick[i] = LoadSound_SM("SFX/Interact/PickItem" + Str(i) + ".ogg")
 	Next
 
 	sndMan\elevatorBeep = InitializeSound_SM("SFX/General/Elevator/Beep.ogg")
@@ -279,13 +279,13 @@ End Function
 Function PlayRangedSound%(soundHandle%, cam%, entity%, range# = 10, volume# = 1.0)
 	Local dist#, panvalue#
 
-	range# = Max(range, 1.0)
+	range = Max(range, 1.0)
 	Local soundChn% = 0
 
 	If (volume > 0) Then
-		dist# = EntityDistance(cam, entity) / range
+		dist = EntityDistance(cam, entity) / range
 		If (1 - dist > 0 And 1 - dist < 1) Then
-			panvalue# = Sin(-DeltaYaw(cam, entity))
+			panvalue = Sin(-DeltaYaw(cam, entity))
 			soundChn = PlaySound(soundHandle)
 
 			ChannelVolume(soundChn, volume * (1 - dist) * userOptions\sndVolume)
@@ -311,7 +311,7 @@ End Function
 Function LoopRangedSound%(soundHandle%, chn%, cam%, entity%, range# = 10, volume# = 1.0)
 	range = Max(range,1.0)
 
-	If (Not IsChannelPlaying(chn)) Then chn% = PlaySound(soundHandle)
+	If (Not IsChannelPlaying(chn)) Then chn = PlaySound(soundHandle)
 
 	UpdateRangedSoundOrigin(chn, cam, entity, range, volume)
 
@@ -334,9 +334,9 @@ Function UpdateRangedSoundOrigin(chn%, cam%, entity%, range# = 10, volume# = 1.0
 
 	If (volume > 0) Then
 
-		dist# = EntityDistance(cam, entity) / range
+		dist = EntityDistance(cam, entity) / range
 		If (1 - dist > 0 And 1 - dist < 1) Then
-			panvalue# = Sin(-DeltaYaw(cam,entity))
+			panvalue = Sin(-DeltaYaw(cam,entity))
 
 			ChannelVolume(chn, volume * (1 - dist) * userOptions\sndVolume)
 			ChannelPan(chn, panvalue)
@@ -352,9 +352,9 @@ Function UpdateRangedSoundOrigin_SM(chn.SoundChannel)
 	Local dist#, panvalue#
 
 	If (chn\volume > 0) Then
-		dist# = EntityDistance(chn\camera, chn\point) / chn\range
+		dist = EntityDistance(chn\camera, chn\point) / chn\range
 		If (1 - dist > 0 And 1 - dist < 1) Then
-			panvalue# = Sin(-DeltaYaw(chn\camera, chn\point))
+			panvalue = Sin(-DeltaYaw(chn\camera, chn\point))
 
 			ChannelVolume(chn\internal, chn\volume * (1 - dist) * userOptions\sndVolume)
 			ChannelPan(chn\internal, panvalue)
@@ -489,14 +489,14 @@ Function GetMaterialStepSound%(entity%)
 
     If (picker <> 0) Then
         If (GetEntityType(picker) <> HIT_MAP) Then Return 0
-        brush% = GetSurfaceBrush(GetSurface(picker,CountSurfaces(picker)))
+        brush = GetSurfaceBrush(GetSurface(picker,CountSurfaces(picker)))
         If (brush <> 0) Then
-            texture% = GetBrushTexture(brush,2)
+            texture = GetBrushTexture(brush,2)
 
             If (texture <> 0) Then
                 name = StripPath(TextureName(texture))
                 If (name <> "") Then FreeTexture(texture)
-                For mat.Material = Each Material
+                For mat = Each Material
                     If (mat\name = name) Then
                         If (mat\stepSound > 0) Then
                             FreeBrush(brush)
@@ -511,7 +511,7 @@ Function GetMaterialStepSound%(entity%)
                 name = StripPath(TextureName(texture))
                 If (name <> "") Then FreeTexture(texture)
                 FreeBrush(brush)
-                For mat.Material = Each Material
+                For mat = Each Material
                     If (mat\name = name) Then
                         If (mat\stepSound > 0) Then
                             Return mat\stepSound

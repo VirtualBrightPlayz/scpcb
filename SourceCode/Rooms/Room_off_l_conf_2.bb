@@ -27,10 +27,10 @@ Function FillRoom_off_l_conf_2(r.Room)
     r\objects[0] = CreatePivot(r\obj)
     PositionEntity(r\objects[0], r\x - 808.0 * RoomScale, 1.0, r\z - 72.0 * RoomScale, True)
 
-    it = CreatePaper("docL1", r\x - 688.0 * RoomScale, 1.0, r\z - 16.0 * RoomScale)
+    it = CreatePaper("drL1", r\x - 688.0 * RoomScale, 1.0, r\z - 16.0 * RoomScale)
     EntityParent(it\collider, r\obj)
 
-    it = CreatePaper("docL5", r\x - 808.0 * RoomScale, 1.0, r\z - 72.0 * RoomScale)
+    it = CreatePaper("drL5", r\x - 808.0 * RoomScale, 1.0, r\z - 72.0 * RoomScale)
     EntityParent(it\collider, r\obj)
 End Function
 

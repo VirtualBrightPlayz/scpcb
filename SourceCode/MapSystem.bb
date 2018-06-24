@@ -101,7 +101,7 @@ Function LoadMaterials(file$)
 		If (Left(TemporaryString,1) = "[") Then
 			TemporaryString = Mid(TemporaryString, 2, Len(TemporaryString) - 2)
 
-			mat = New Materials
+			mat = New Material
 
 			mat\name = Lower(TemporaryString)
 
@@ -225,7 +225,7 @@ Type RoomTemplate
 End Type
 
 Function CreateRoomTemplate.RoomTemplate(meshpath$)
-	Local rt.RoomTemplate = New RoomTemplates
+	Local rt.RoomTemplate = New RoomTemplate
 
 	rt\objPath = meshpath
 	rt\loaded = False
@@ -425,7 +425,7 @@ Type Grid
 	Field angles%[gridsz*gridsz]
 	Field meshes%[7]
 	Field entities%[gridsz*gridsz]
-	Field waypoints.Waypoint[gridsz*gridsz]
+	Field waypoints.WayPoint[gridsz*gridsz]
 End Type
 
 Function UpdateGrid(grid.Grid)
@@ -471,7 +471,7 @@ Function CountRooms%(rt.RoomTemplate)
 End Function
 
 Function CreateRoom.Room(rt.RoomTemplate, x#, y#, z#)
-	Local r.Room = New Rooms
+	Local r.Room = New Room
 
 	DebugLog("Placing "+rt\name)
 
@@ -674,7 +674,7 @@ Function FillRoom(r.Room)
 		EndIf
 	Next
 
-	Local ts.TempScreens
+	Local ts.TempScreen
 	For ts = Each TempScreen
 		If (ts\roomtemplate = r\roomTemplate) Then
 			CreateScreen(r\x+ts\x*RoomScale, r\y+ts\y*RoomScale, r\z+ts\z*RoomScale, ts\imgpath, r)
@@ -682,9 +682,9 @@ Function FillRoom(r.Room)
 	Next
 
 	Local waypoints.IntArrayList = CreateIntArrayList()
-	Local waypoint.Waypoint
-	Local tw.TempWaypoint
-	For tw = Each TempWaypoint
+	Local waypoint.WayPoint
+	Local tw.TempWayPoint
+	For tw = Each TempWayPoint
 		If (tw\roomtemplate = r\roomTemplate) Then
 			waypoint = CreateWaypoint(r\x+tw\x*RoomScale, r\y+tw\y*RoomScale, r\z+tw\z*RoomScale, r)
 			PushIntArrayListElem(waypoints,Handle(waypoint))
@@ -692,12 +692,12 @@ Function FillRoom(r.Room)
 	Next
 
 	Local i% = 0, j%
-	For tw = Each TempWaypoint
+	For tw = Each TempWayPoint
 		If (tw\roomtemplate = r\roomTemplate) Then
-			waypoint = Object.Waypoint(GetIntArrayListElem(waypoints,i))
+			waypoint = Object.WayPoint(GetIntArrayListElem(waypoints,i))
 			For j = 0 To 15
 				If (tw\connectedTo[j]=0) Then Exit
-				waypoint\connected[j] = Object.Waypoint(GetIntArrayListElem(waypoints,tw\connectedTo[j]-1))
+				waypoint\connected[j] = Object.WayPoint(GetIntArrayListElem(waypoints,tw\connectedTo[j]-1))
 				waypoint\dist[j] = EntityDistance(waypoint\obj,waypoint\connected[j]\obj)
 			Next
 			i=i+1
@@ -977,7 +977,7 @@ Const LIGHTTYPE_POINT% = 2
 Const LIGHTTYPE_SPOT% = 3
 
 Function AddTempLight.LightTemplate(rt.RoomTemplate, x#, y#, z#, ltype%, range#, r%, g%, b%)
-	Local lt.LightTemplate = New LightTemplates
+	Local lt.LightTemplate = New LightTemplate
 	lt\roomtemplate = rt
 	lt\x = x
 	lt\y = y
@@ -999,22 +999,22 @@ Type TempWayPoint
 	Field roomtemplate.RoomTemplate
 End Type
 
-Type Waypoint
+Type WayPoint
 	Field obj%
 	Field room.Room
 	Field state%
 	;Field tempDist#
 	;Field tempSteps%
-	Field connected.Waypoint[16]
+	Field connected.WayPoint[16]
 	Field dist#[16]
 
 	Field fCost#, gCost#, hCost#
 
-	Field parent.Waypoint
+	Field parent.WayPoint
 End Type
 
-Function CreateWaypoint.Waypoint(x#,y#,z#,room.Room)
-	Local w.Waypoint = New WayPoints
+Function CreateWaypoint.WayPoint(x#,y#,z#,room.Room)
+	Local w.WayPoint = New WayPoint
 
 	w\obj = CreatePivot()
 	PositionEntity(w\obj, x,y,z)
@@ -1028,7 +1028,7 @@ End Function
 
 Function InitWayPoints(loadingstart%=45)
 
-	Local d.Door, w.Waypoint, w2.Waypoint, r.Room, ClosestRoom.Room
+	Local d.Door, w.WayPoint, w2.WayPoint, r.Room, ClosestRoom.Room
 
 	Local x#, y#, z#, i%, tline%
 
@@ -1053,7 +1053,7 @@ Function InitWayPoints(loadingstart%=45)
 
 End Function
 
-Function RemoveWaypoint(w.Waypoint)
+Function RemoveWaypoint(w.WayPoint)
 	FreeEntity(w\obj)
 	Delete w
 End Function
@@ -1066,9 +1066,9 @@ Function FindPath%(n.NPC, x#, y#, z#)
 	Local xtemp#, ytemp#, ztemp#
 	Local gtemp#
 
-	Local w.Waypoint, StartPoint.Waypoint, EndPoint.Waypoint
-	Local currpoint.Waypoint
-	Local twentiethpoint.Waypoint
+	Local w.WayPoint, StartPoint.WayPoint, EndPoint.WayPoint
+	Local currpoint.WayPoint
+	Local twentiethpoint.WayPoint
 
 	Local length% = 0
 
@@ -1169,7 +1169,7 @@ Function FindPath%(n.NPC, x#, y#, z#)
 
        ;aloitus- ja lopetuspisteet l�ydetty, aletaan etsi� reitti�
 
-	Local smallest.Waypoint
+	Local smallest.WayPoint
 	Repeat
 
 		temp = False
@@ -1264,10 +1264,10 @@ Function FindPath%(n.NPC, x#, y#, z#)
     ;      For i = 0 To (length-1)
     ;         temp =False
     ;         If (length < 20) Then
-    ;            n\path[length-1-i] = currpoint.Waypoint
+    ;            n\path[length-1-i] = currpoint.WayPoint
     ;         Else
     ;            If (i < 20) Then
-    ;               n\path[20-1-i] = w.Waypoint
+    ;               n\path[20-1-i] = w.WayPoint
     ;            Else
     ;               ;Return 1
     ;            EndIf
@@ -1336,7 +1336,7 @@ Type TempScreen
 End Type
 
 Function CreateScreen.Screen(x#,y#,z#,imgpath$,r.Room)
-	Local s.Screen = New Screens
+	Local s.Screen = New Screen
 	s\obj = CreatePivot()
 	EntityPickMode(s\obj, 1)
 	EntityRadius(s\obj, 0.1)
@@ -1415,7 +1415,7 @@ End Type
 Global ScreenTexs%[2]
 
 Function CreateSecurityCam.SecurityCam(x#, y#, z#, r.Room, screen% = False)
-	Local sc.SecurityCam = New SecurityCams
+	Local sc.SecurityCam = New SecurityCam
 	Local scale#
 
 	sc\obj = CopyEntity(CamBaseOBJ)
@@ -1748,7 +1748,7 @@ End Type
 
 Function LoadProp.Prop(file$,x#,y#,z#,pitch#,yaw#,roll#,xScale#,yScale#,zScale#)
 	Local p.Prop
-	p = New Props
+	p = New Prop
 	p\file = file
 	p\x = x
 	p\y = y
@@ -2032,10 +2032,10 @@ Function CreateMap()
 	;finally, let rooms know who their neighbors are
 	Local tempX%
 	Local tempY%
-	Local tempWaypoint.Waypoint
-	Local newWaypoint.Waypoint
-	Local roomAWaypoint.Waypoint
-	Local roomBWaypoint.Waypoint
+	Local tempWaypoint.WayPoint
+	Local newWaypoint.WayPoint
+	Local roomAWaypoint.WayPoint
+	Local roomBWaypoint.WayPoint
 	For y = 0 To mapDim-1
 		For x = 0 To mapDim-1
 			r = Object.Room(GetIntArrayElem(MapRooms,x,y))

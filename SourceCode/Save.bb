@@ -16,9 +16,9 @@ Function LoadSaveGames()
 	If (FileType(SavePath)=0) Then CreateDir(SavePath)
 	Local myDir% = ReadDir(SavePath)
 	Repeat
-		file$=NextFile$(myDir)
-		If (file$="") Then Exit
-		If (FileType(SavePath+"/"+file$) = 2) Then
+		file = NextFile(myDir)
+		If (file = "") Then Exit
+		If (FileType(SavePath + "/" + file) = 2) Then
 			If (file <> "." And file <> "..") Then
 				If (FileType(SavePath + file + "/save.txt")>0) Then
 					SaveGameAmount=SaveGameAmount+1
@@ -33,9 +33,9 @@ Function LoadSaveGames()
 	myDir=ReadDir(SavePath)
 	Local i% = 0
 	Repeat
-		file$=NextFile$(myDir)
-		If (file$="") Then Exit
-		If (FileType(SavePath+"/"+file$) = 2) Then
+		file = NextFile(myDir)
+		If (file = "") Then Exit
+		If (FileType(SavePath + "/" + file) = 2) Then
 			If (file <> "." And file <> "..") Then
 				If (FileType(SavePath + file + "/save.txt")>0) Then
 					SaveGames(i) = file
@@ -50,7 +50,7 @@ Function LoadSaveGames()
 	Dim SaveGameDate$(SaveGameAmount + 1)
 	For i = 1 To SaveGameAmount
 		DebugLog(SavePath + SaveGames(i - 1) + "/save.txt")
-		f% = ReadFile(SavePath + SaveGames(i - 1) + "/save.txt")
+		f = ReadFile(SavePath + SaveGames(i - 1) + "/save.txt")
 		SaveGameTime(i - 1) = ReadString(f)
 		SaveGameDate(i - 1) = ReadString(f)
 		CloseFile(f)
@@ -68,16 +68,16 @@ Function LoadSavedMaps()
 	Dir=ReadDir("Map Creator/Maps")
 	i = 0
 	Repeat
-		file$=NextFile$(Dir)
+		file = NextFile(Dir)
 
 		DebugLog(file)
 
-		If (file$="") Then Exit
-		DebugLog(CurrentDir()+"Map Creator/Maps/"+file$)
-		If (FileType(CurrentDir()+"Map Creator/Maps/"+file$) = 1) Then
+		If (file = "") Then Exit
+		DebugLog(CurrentDir()+"Map Creator/Maps/"+file)
+		If (FileType(CurrentDir() + "Map Creator/Maps/" + file) = 1) Then
 			If (file <> "." And file <> "..") Then
-				SavedMaps(i) = Left(file,Max(Len(file)-6,1))
-				DebugLog(i+": "+file)
+				SavedMaps(i) = Left(file, Int(Max(Len(file)-6,1)))
+				DebugLog(Str(i) + ": " + file)
 				i=i+1
 			EndIf
 

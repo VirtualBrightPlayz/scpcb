@@ -54,7 +54,7 @@ End Function
 
 Function UpdateNPCtype173(n.NPC)
 	Local x#, z#, i%, tmp%
-	Local w.Waypoint, d.Door
+	Local w.WayPoint, d.Door
 	Local playerVisible%, canMove%
 
 	If (n\state = STATE173_IDLE Or n\state = STATE173_CONTAINED) Then

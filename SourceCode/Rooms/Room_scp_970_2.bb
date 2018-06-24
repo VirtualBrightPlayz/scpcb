@@ -161,7 +161,7 @@ Function UpdateEvent_scp_970_2(e.Event)
 								RemoveItem(mainPlayer\inventory\items[i])
 								For itt = Each ItemTemplate
 									If (itt\name = "paper" And Rand(6)=1) Then
-										mainPlayer\inventory\items[i] = CreateItem(itt\name, itt\name, 1,1,1)
+										mainPlayer\inventory\items[i] = CreateItem(itt\name, 1,1,1)
 										HideEntity(mainPlayer\inventory\items[i]\collider)
 										mainPlayer\inventory\items[i]\picked = True
 										Exit
@@ -173,7 +173,7 @@ Function UpdateEvent_scp_970_2(e.Event)
 					Next
 				Case 18
 					TFormPoint(-344,176, 272, e\room\obj,0)
-					it = CreateItem("Strange Note", "paper", TFormedX(), TFormedY(), TFormedZ())
+					it = CreatePaper("docStrange", TFormedX(), TFormedY(), TFormedZ())
 					EntityType(it\collider, HIT_ITEM)
 				Case 25
 					e\room\npc[0]=CreateNPC(NPCtypeD, EntityX(e\room\obj)+Cos(e\room\angle-90)*760*RoomScale, 0.35, EntityZ(e\room\obj)+Sin(e\room\angle-90)*760*RoomScale)
@@ -187,7 +187,7 @@ Function UpdateEvent_scp_970_2(e.Event)
 				Case 30
 					i = Rand(0,mainPlayer\inventory\size)
 					If (mainPlayer\inventory\items[i]<>Null) Then RemoveItem(mainPlayer\inventory\items[i])
-					mainPlayer\inventory\items[i] = CreateItem("Strange Note", "paper", 1,1,1)
+					mainPlayer\inventory\items[i] = CreatePaper("docStrange", 1,1,1)
 					HideEntity(mainPlayer\inventory\items[i]\collider)
 					mainPlayer\inventory\items[i]\picked = True
 				Case 35
@@ -245,7 +245,7 @@ Function UpdateEvent_scp_970_2(e.Event)
 					If (it\dropped=1) Then
 						For i = - 1 To 1 Step 2
 							TFormPoint(x+1024*i,y,z,e\room\obj,0)
-							it2 = CreateItem(it\name, it\itemtemplate\name, TFormedX(), EntityY(it\collider), TFormedZ())
+							it2 = CreateItem(it\template\name, TFormedX(), EntityY(it\collider), TFormedZ())
 							RotateEntity(it2\collider, EntityPitch(it\collider),EntityYaw(it\collider),0)
 							EntityType(it2\collider, HIT_ITEM)
 						Next

@@ -12,7 +12,7 @@ Function FillRoom_srvr_pc_2(r.Room)
     d = CreateDoor(r\zone, r\x -512.0 * RoomScale, -768.0*RoomScale, r\z -336.0 * RoomScale, 0, r, False, False, 3)
     d = CreateDoor(r\zone, r\x -509.0 * RoomScale, -768.0*RoomScale, r\z -1037.0 * RoomScale, 0, r, False, False, 3)
     d\locked = True
-    it = CreateItem("Night Vision Goggles", "nvgoggles", r\x + 56.0154 * RoomScale, r\y - 648.0 * RoomScale, r\z + 749.638 * RoomScale)
+    it = CreateItem("nvgoggles", r\x + 56.0154 * RoomScale, r\y - 648.0 * RoomScale, r\z + 749.638 * RoomScale)
     it\state = 20
     RotateEntity(it\collider, 0, r\angle+Rand(245), 0)
     EntityParent(it\collider, r\obj)

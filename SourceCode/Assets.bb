@@ -58,7 +58,7 @@ Function GrabAsset%(filePath$, asType%, flag%=1)
 		If (filePath = as\file) Then
 			as\decayTimer = ASSET_DECAY_TIMER
 			as\grabCount = as\grabCount + 1
-			DebugLog("GRABBED ASSET: " + filePath + ", " + as\grabCount)
+			DebugLog("GRABBED ASSET: " + filePath + ", " + Str(as\grabCount))
 			Return as\intVal
 		EndIf
 	Next
@@ -66,7 +66,7 @@ Function GrabAsset%(filePath$, asType%, flag%=1)
 	;Asset doesn't exist, create it.
 	as = CreateAsset(filePath, asType, flag)
 	as\grabCount = 1
-	DebugLog("GRABBED ASSET: " + filePath + ", " + as\grabCount)
+	DebugLog("GRABBED ASSET: " + filePath + ", " + Str(as\grabCount))
 
 	Return as\intVal
 End Function
@@ -88,7 +88,7 @@ Function DropAsset(obj%)
 	For as = Each AssetWrap
 		If (obj = as\intVal) Then
 			as\grabCount = as\grabCount - 1
-			DebugLog("DROPPED ASSET: " + as\file + ", " + as\grabCount)
+			DebugLog("DROPPED ASSET: " + as\file + ", " + Str(as\grabCount))
 			Return
 		EndIf
 	Next
@@ -102,7 +102,7 @@ Function UpdateAssets()
 	For as = Each AssetWrap
 		If (as\grabCount < 1) Then
 			as\decayTimer = as\decayTimer - timing\tickDuration
-			DebugLog("ASSET DECAYING: " + as\file + ", " + as\decayTimer)
+			DebugLog("ASSET DECAYING: " + as\file + ", " + Str(as\decayTimer))
 			If (as\decayTimer < 0) Then
 				FreeAsset(as)
 			EndIf
@@ -236,7 +236,7 @@ Function LoadEntities()
 
 	;TextureLodBias
 
-	AmbientLightRoomTex% = CreateTexture(2,2,257)
+	AmbientLightRoomTex = CreateTexture(2,2,257)
 	TextureBlend(AmbientLightRoomTex,5)
 	SetBuffer(TextureBuffer(AmbientLightRoomTex))
 	ClsColor(0,0,0)
@@ -284,7 +284,7 @@ Function LoadEntities()
 	Next
 	;DecalTextures(7) = LoadTexture("GFX/items/INVpaperstrips.jpg", 1 + 2)
 	For i = 8 To 12
-		DecalTextures(i) = LoadTexture("GFX/Decals/decalpd"+(i-7)+".jpg", 1 + 2)
+		DecalTextures(i) = LoadTexture("GFX/Decals/decalpd"+Str(i-7)+".jpg", 1 + 2)
 	Next
 	For i = 13 To 14
 		DecalTextures(i) = LoadTexture("GFX/Decals/bullethole"+Str(i-12)+".jpg", 1 + 2)
@@ -306,7 +306,7 @@ Function LoadEntities()
 	CamOBJ = LoadMesh("GFX/Map/CamHead.b3d")
 	HideEntity(CamOBJ)
 
-	InitItemTemplates()
+	LoadItemTemplates("Data/Items/templates.ini")
 
 	ParticleTextures(0) = LoadTexture("GFX/Sprites/smoke.png", 1 + 2)
 	ParticleTextures(1) = LoadTexture("GFX/Sprites/flash.jpg", 1 + 2)
@@ -336,14 +336,14 @@ Function InitNewGame()
 
 	LoadInGameSounds(sndManager)
 
-	HideDistance# = 15.0
+	HideDistance = 15.0
 
 	mainPlayer\heartbeatIntensity = 70
 	;HeartBeatRate = 70
 
 	AccessCode = 0
 	For i = 0 To 3
-		AccessCode = AccessCode + Rand(1,9)*(10^i)
+		AccessCode = AccessCode + Int(Rand(1,9)*(10^i))
 	Next
 
 	If (SelectedMap = "") Then
@@ -359,7 +359,7 @@ Function InitNewGame()
 	Curr106 = CreateNPC(NPCtype106, 0, -30.0, 0)
 	Curr106\state = 70 * 60 * Rand(12,17)
 
-	For d.Door = Each Door
+	For d = Each Door
 		EntityParent(d\obj, 0)
 		If (d\obj2 > 0) Then EntityParent(d\obj2, 0)
 		If (d\frameobj > 0) Then EntityParent(d\frameobj, 0)
@@ -372,31 +372,31 @@ Function InitNewGame()
 		EndIf
 	Next
 
-	For it.Item = Each Item
+	For it = Each Item
 		EntityType(it\collider, HIT_ITEM)
 		EntityParent(it\collider, 0)
 	Next
 
 	DrawLoading(80)
-	For sc.SecurityCam= Each SecurityCam
+	For sc = Each SecurityCam
 		sc\angle = EntityYaw(sc\obj) + sc\angle
 		EntityParent(sc\obj, 0)
 	Next
 
-	For r.Room = Each Room
+	For r = Each Room
 		For i = 0 To MaxRoomLights
 			If (r\lights[i]<>0) Then EntityParent(r\lights[i],0)
 		Next
 
 		If (Not r\roomTemplate\disableDecals) Then
 			If (Rand(4) = 1) Then
-				de.Decal = CreateDecal(Rand(2, 3), EntityX(r\obj)+Rnd(- 2,2), 0.003, EntityZ(r\obj)+Rnd(-2,2), 90, Rand(360), 0)
+				de = CreateDecal(Rand(2, 3), EntityX(r\obj)+Rnd(- 2,2), 0.003, EntityZ(r\obj)+Rnd(-2,2), 90, Rand(360), 0)
 				de\size = Rnd(0.1, 0.4) : ScaleSprite(de\obj, de\size, de\size)
 				EntityAlpha(de\obj, Rnd(0.85, 0.95))
 			EndIf
 
 			If (Rand(4) = 1) Then
-				de.Decal = CreateDecal(0, EntityX(r\obj)+Rnd(- 2,2), 0.003, EntityZ(r\obj)+Rnd(-2,2), 90, Rand(360), 0)
+				de = CreateDecal(0, EntityX(r\obj)+Rnd(- 2,2), 0.003, EntityZ(r\obj)+Rnd(-2,2), 90, Rand(360), 0)
 				de\size = Rnd(0.5, 0.7) : EntityAlpha(de\obj, 0.7) : de\id = 1 : ScaleSprite(de\obj, de\size, de\size)
 				EntityAlpha(de\obj, Rnd(0.7, 0.85))
 			EndIf
@@ -415,9 +415,9 @@ Function InitNewGame()
 	Next
 
 	Local rt.RoomTemplate
-	For rt.RoomTemplate = Each RoomTemplate
+	For rt = Each RoomTemplate
 		If (rt\collisionObjs<>Null) Then
-			For i% = 0 To rt\collisionObjs\size-1
+			For i = 0 To rt\collisionObjs\size-1
 				FreeEntity(GetIntArrayListElem(rt\collisionObjs,i))
 			Next
 			DeleteIntArrayList(rt\collisionObjs) : rt\collisionObjs = Null
@@ -427,7 +427,7 @@ Function InitNewGame()
 		If (rt\alphaMesh<>0) Then FreeEntity(rt\alphaMesh)
 
 		If (rt\props<>Null) Then
-			For i% = 0 To rt\props\size-1
+			For i = 0 To rt\props\size-1
 				prop = Object.Prop(GetIntArrayListElem(rt\props,i))
 				FreeEntity(prop\obj)
 				Delete prop
@@ -436,8 +436,8 @@ Function InitNewGame()
 		EndIf
 	Next
 
-	Local tw.TempWaypoint
-	For tw.TempWaypoint = Each TempWaypoint
+	Local tw.TempWayPoint
+	For tw = Each TempWayPoint
 		Delete tw
 	Next
 
@@ -448,7 +448,7 @@ Function InitNewGame()
 	If (SelectedMap = "") Then InitEvents()
 
 	;TODO: fix
-;	For e.Event = Each Event
+;	For e = Each Event
 ;		If e\name = "room2nuke"
 ;			e\eventState = 1
 ;			DebugLog("room2nuke")
@@ -473,7 +473,7 @@ Function InitNewGame()
 	mainPlayer\blurTimer = 100
 	mainPlayer\stamina = 100
 
-	For i% = 0 To 70
+	For i = 0 To 70
 		FlushKeys()
 		MovePlayer()
 		UpdateRooms()
@@ -500,7 +500,7 @@ Function InitLoadGame()
 
 	DrawLoading(80)
 
-	For d.Door = Each Door
+	For d = Each Door
 		EntityParent(d\obj, 0)
 		If (d\obj2 > 0) Then EntityParent(d\obj2, 0)
 		If (d\frameobj > 0) Then EntityParent(d\frameobj, 0)
@@ -509,7 +509,7 @@ Function InitLoadGame()
 
 	Next
 
-	For sc.SecurityCam = Each SecurityCam
+	For sc = Each SecurityCam
 		sc\angle = EntityYaw(sc\obj) + sc\angle
 		EntityParent(sc\obj, 0)
 	Next
@@ -530,9 +530,9 @@ Function InitLoadGame()
 	mainPlayer\stamina = 100
 
 	Local i%, x#, z#
-	For rt.RoomTemplate = Each RoomTemplate
+	For rt = Each RoomTemplate
 		If (rt\collisionObjs<>Null) Then
-			For i% = 0 To rt\collisionObjs\size-1
+			For i = 0 To rt\collisionObjs\size-1
 				FreeEntity(GetIntArrayListElem(rt\collisionObjs,i))
 			Next
 			DeleteIntArrayList(rt\collisionObjs) : rt\collisionObjs = Null
@@ -542,7 +542,7 @@ Function InitLoadGame()
 		If (rt\alphaMesh<>0) Then FreeEntity(rt\alphaMesh)
 
 		If (rt\props<>Null) Then
-			For i% = 0 To rt\props\size-1
+			For i = 0 To rt\props\size-1
 				prop = Object.Prop(GetIntArrayListElem(rt\props,i))
 				FreeEntity(prop\obj)
 				Delete prop
@@ -554,16 +554,16 @@ Function InitLoadGame()
 	mainPlayer\dropSpeed = 0.0
 
 	;TODO: Not load this at the start of the game jesus.
-	For e.Event = Each Event
+	For e = Each Event
 		;Loading the necessary stuff for dimension1499, but this will only be done if the player is in this dimension already
 		If (e\name = "dimension1499") Then
 			If (e\eventState = 2) Then
 				;[Block]
 				DrawLoading(91)
 				e\room\objects[0] = CreatePlane()
-				planetex% = LoadTexture("GFX/Map/Rooms/dimension1499/grit3.jpg")
-				EntityTexture(e\room\objects[0],planetex%)
-				FreeTexture(planetex%)
+				planetex = LoadTexture("GFX/Map/Rooms/dimension1499/grit3.jpg")
+				EntityTexture(e\room\objects[0],planetex)
+				FreeTexture(planetex)
 				PositionEntity(e\room\objects[0],0,EntityY(e\room\obj),0)
 				EntityType(e\room\objects[0],HIT_MAP)
 				;EntityParent(e\room\objects[0],e\room\obj)
@@ -571,16 +571,16 @@ Function InitLoadGame()
 				NTF_1499Sky = sky_CreateSky("GFX/Map/sky/1499sky")
 				DrawLoading(93)
 				For i = 1 To 15
-					e\room\objects[i] = LoadMesh("GFX/Map/Rooms/dimension1499/1499object"+i+".b3d")
+					e\room\objects[i] = LoadMesh("GFX/Map/Rooms/dimension1499/1499object" + Str(i) + ".b3d")
 					HideEntity(e\room\objects[i])
 				Next
 				DrawLoading(96)
 				CreateChunkParts(e\room)
 				DrawLoading(97)
-				x# = EntityX(e\room\obj)
-				z# = EntityZ(e\room\obj)
+				x = EntityX(e\room\obj)
+				z = EntityZ(e\room\obj)
 				For i = -2 To 2 Step 2
-					ch = CreateChunk(-1,x#*(i*2.5),EntityY(e\room\obj),z#)
+					ch = CreateChunk(-1, x * (i * 2.5), EntityY(e\room\obj),z)
 				Next
 				;If (Music(18)=0) Then Music(18) = LoadSound("SFX/Music/1499.ogg") ;TODO: fix
 				DrawLoading(98)
@@ -605,7 +605,7 @@ End Function
 Function NullGame()
 	Local i%, x%, y%, lvl%
 	Local itt.ItemTemplate, s.Screen, lt.LightTemplate, d.Door, m.Material
-	Local wp.Waypoint, twp.TempWaypoint, r.Room, it.Item
+	Local wp.WayPoint, twp.TempWayPoint, r.Room, it.Item
 
 	DeloadInGameSounds(sndManager)
 
@@ -613,7 +613,7 @@ Function NullGame()
 
 	DeletePlayer(mainPlayer) : mainPlayer = Null
 
-	DeathMSG$=""
+	DeathMSG = ""
 
 	SelectedMap = ""
 
@@ -621,7 +621,7 @@ Function NullGame()
 
 	GameSaved = 0
 
-	HideDistance# = 15.0
+	HideDistance = 15.0
 
 	Contained106 = False
 	Curr173\idle = False
@@ -632,7 +632,7 @@ Function NullGame()
 		MTFroomState[i]=0
 	Next
 
-	For s.Screen = Each Screen
+	For s = Each Screen
 		If (s\img <> 0) Then
 			FreeImage(s\img)
 			s\img = 0
@@ -653,9 +653,9 @@ Function NullGame()
 
 	Delete Each WayPoint
 
-	Delete Each TempWaypoint
+	Delete Each TempWayPoint
 
-	For r.Room = Each Room
+	For r = Each Room
 		DeleteIntArray(r\collisionObjs)
 		If (r\props<>Null) Then DeleteIntArray(r\props)
 		Delete r
@@ -663,15 +663,13 @@ Function NullGame()
 	DeleteIntArray(MapRooms)
 
 	Delete Each RoomTemplate
-
-	Local it.ItemTemplate
-	For it = Each ItemTemplate
-		Delete it
+	
+	For itt = Each ItemTemplate
+		Delete itt
 	Next
-
-	Local i.Item
-	For i = Each Item
-		Delete i
+	
+	For it = Each Item
+		Delete it
 	Next
 
 	Delete Each Prop
@@ -679,7 +677,7 @@ Function NullGame()
 	Delete Each Decal
 
 	Local n.NPC
-	For n.NPC = Each NPC
+	For n = Each NPC
 		RemoveNPC(n)
 	Next
 	Curr173 = Null
@@ -690,7 +688,7 @@ Function NullGame()
 	Next
 
 	Local e.Event
-	For e.Event = Each Event
+	For e = Each Event
 		RemoveEvent(e)
 	Next
 
@@ -704,23 +702,23 @@ Function NullGame()
 		If (IsChannelPlaying(RadioCHN(i))) Then StopChannel(RadioCHN(i))
 	Next
 
-	NTF_1499PrevX# = 0.0
-	NTF_1499PrevY# = 0.0
-	NTF_1499PrevZ# = 0.0
+	NTF_1499PrevX = 0.0
+	NTF_1499PrevY = 0.0
+	NTF_1499PrevZ = 0.0
 	NTF_1499PrevRoom = Null
-	NTF_1499X# = 0.0
-	NTF_1499Y# = 0.0
-	NTF_1499Z# = 0.0
+	NTF_1499X = 0.0
+	NTF_1499Y = 0.0
+	NTF_1499Z = 0.0
 	DeleteChunks()
 
 	DeleteElevatorObjects()
 
-	NoTarget% = False
+	NoTarget = False
 
 	;OptionsMenu% = -1
 	;QuitMSG% = -1
 
-	IsZombie% = False
+	IsZombie = False
 
 	;DeInitExt
 

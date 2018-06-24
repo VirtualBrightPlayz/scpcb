@@ -58,7 +58,7 @@ Function FillRoom_tnnl_nuke_2(r.Room)
     it = CreateItem("vest", r\x - 944.0 * RoomScale, r\y + 1652.0 * RoomScale, r\z - 656.0 * RoomScale)
     EntityParent(it\collider, r\obj) : RotateEntity(it\collider, 0, -90, 0)
 
-    it = CreatePaper("docL5", r\x + 800.0 * RoomScale, 88.0 * RoomScale, r\z + 256.0 * RoomScale)
+    it = CreatePaper("drL5", r\x + 800.0 * RoomScale, 88.0 * RoomScale, r\z + 256.0 * RoomScale)
     EntityParent(it\collider, r\obj)
 
     sc = CreateSecurityCam(r\x+624.0*RoomScale, r\y+1888.0*RoomScale, r\z-312.0*RoomScale, r)

@@ -659,9 +659,9 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Room)
 
 				If (tile_type > 0) Then
 					;2, 5, 8
-					it.Item = Null
-					If ((ty Mod 3)=2 And itemPlaced[Floor(ty/3)]=False) Then
-						itemPlaced[Floor(ty/3)]=True
+					it = Null
+					If ((ty Mod 3)=2 And itemPlaced[Int(Floor(ty/3))]=False) Then
+						itemPlaced[Int(Floor(ty/3))]=True
 						;TODO: Rename the files.
 						;it.Item = CreateItem("Log #"+Int(Floor(ty/3)+1), "paper", 0,0.5,0)
 						EntityType(it\collider, HIT_ITEM)

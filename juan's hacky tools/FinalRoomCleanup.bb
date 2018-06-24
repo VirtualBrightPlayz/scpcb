@@ -77,13 +77,13 @@ Function CopyRMesh(from$,tto$)
 		count2%=ReadInt(r) ;vertices
 		WriteInt(w,count2)
 		
-		For j%=1 To count2
+		For j=1 To count2
 			;world coords
 			x#=ReadFloat(r) : y#=ReadFloat(r) : z#=ReadFloat(r)
 			WriteFloat(w,x) : WriteFloat(w,y) : WriteFloat(w,z)
 			
 			;texture coords
-			For k%=0 To 1
+			For k=0 To 1
 				u#=ReadFloat(r) : v#=ReadFloat(r)
 				WriteFloat(w,u) : WriteFloat(w,v)
 			Next
@@ -97,7 +97,7 @@ Function CopyRMesh(from$,tto$)
 		
 		count2=ReadInt(r) ;polys
 		WriteInt(w,count2)
-		For j%=1 To count2
+		For j=1 To count2
 			temp1i = ReadInt(r) : temp2i = ReadInt(r) : temp3i = ReadInt(r)
 			WriteInt(w,temp1i) : WriteInt(w,temp2i) : WriteInt(w,temp3i)
 		Next

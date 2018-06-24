@@ -16,13 +16,13 @@ While Left(file,1)<>"." And Len(file)>0
 				Exit
 			Else
 				ln = Replace(ln,"Function FillRoom_","Case "+Chr(34))
-				ln = Replace(ln,"(r.Rooms)",Chr(34))
+				ln = Replace(ln,"(r.Room)",Chr(34))
 				WriteLine(w,ln)
 			EndIf
 		ElseIf Instr(ln,"CreateDoor")<>0 Then
 			aln$ = ""
 			comma% = 0
-			For i% = 1 To Len(ln)
+			For i = 1 To Len(ln)
 				If Mid(ln,i,1)="," Then
 					comma=comma+1
 				EndIf

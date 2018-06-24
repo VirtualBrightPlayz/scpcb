@@ -38,7 +38,7 @@ Const RM2_BLENDFLAG_DIFFUSE% = 1
 Const RM2_BLENDFLAG_LM% = 2
 
 Function TrimExtension$(s$)
-	For i% = Len(s) To 1 Step -1
+	For i = Len(s) To 1 Step -1
 		If Mid(s,i,1)="." Then
 			Return Left(s,i-1)
 		EndIf
@@ -49,7 +49,7 @@ End Function
 Function ReadByteString$(stream%)
 	Local retVal$ = ""
 	Local length% = ReadByte(stream)
-	For i% = 1 To length
+	For i = 1 To length
 		retVal=retVal+Chr(ReadByte(stream))
 	Next
 	Return retVal
@@ -57,7 +57,7 @@ End Function
 
 Function WriteByteString(stream%,stri$)
 	WriteByte(stream,Len(stri))
-	For i% = 1 To Len(stri)
+	For i = 1 To Len(stri)
 		WriteByte(stream,Asc(Mid(stri,i,1)))
 	Next
 End Function
@@ -82,7 +82,7 @@ Function StripFilename$(file$)
 	Local mi$=""
 	Local lastSlash%=0
 	If Len(file)>0
-		For i%=1 To Len(file)
+		For i=1 To Len(file)
 			mi=Mid(file$,i,1)
 			If mi="\" Or mi="/" Then
 				lastSlash=i
@@ -107,7 +107,7 @@ Function FixRM2Props(fullFilename$)
 	
 	Local byte% = 0
 	Local header$ = ""
-	For i% = 0 To 3
+	For i = 0 To 3
 		byte = ReadByte(file) : WriteByte(writer,byte)
 		header=header+Chr(byte)
 	Next
@@ -171,7 +171,7 @@ Function FixRM2Props(fullFilename$)
 			Case RM2_TEXTURES
 				;[Block]
 				count = ReadByte(file) : WriteByte(writer,count)
-				For i% = 0 To count-1
+				For i = 0 To count-1
 					texName = ReadByteString(file) : WriteByteString(writer,TrimExtension(texName))
 					flags = ReadByte(file) : WriteByte(writer,flags)
 					uvSet = ReadByte(file) : WriteByte(writer,uvSet)
@@ -179,20 +179,20 @@ Function FixRM2Props(fullFilename$)
 				;[End Block]
 			Case RM2_OPAQUE,RM2_ALPHA
 				;[Block]
-				For i% = 0 To 1
+				For i = 0 To 1
 					WriteByte(writer,ReadByte(file))
 				Next
 				
 				;vertices
 				count = ReadShort(file) : WriteShort(writer,count)
-				For i%=0 To count-1
+				For i=0 To count-1
 					x = ReadFloat(file) : y = ReadFloat(file) : z = ReadFloat(file)
 					WriteFloat(writer,x) : WriteFloat(writer,y) : WriteFloat(writer,z)
 					
 					r = ReadByte(file) : g = ReadByte(file) : b = ReadByte(file)
 					WriteByte(writer,r) : WriteByte(writer,g) : WriteByte(writer,b)
 					
-					For j%=0 To 1
+					For j=0 To 1
 						u = ReadFloat(file) : v = ReadFloat(file)
 						WriteFloat(writer,u) : WriteFloat(writer,v)
 					Next
@@ -200,7 +200,7 @@ Function FixRM2Props(fullFilename$)
 				
 				;triangles
 				count = ReadShort(file) : WriteShort(writer,count)
-				For i%=0 To count-1
+				For i=0 To count-1
 					vert1 = ReadShort(file) : WriteShort(writer,vert1)
 					vert2 = ReadShort(file) : WriteShort(writer,vert2)
 					vert3 = ReadShort(file) : WriteShort(writer,vert3)
@@ -211,7 +211,7 @@ Function FixRM2Props(fullFilename$)
 				;vertices
 				count = ReadShort(file) : WriteShort(writer,count)
 				
-				For i%=0 To count-1
+				For i=0 To count-1
 					x = ReadFloat(file) : y = ReadFloat(file) : z = ReadFloat(file)
 					WriteFloat(writer,x) : WriteFloat(writer,y) : WriteFloat(writer,z)
 				Next
@@ -222,7 +222,7 @@ Function FixRM2Props(fullFilename$)
 					DebugLog("HYPE "+count)
 				EndIf
 				
-				For i%=0 To count-1
+				For i=0 To count-1
 					vert1 = ReadShort(file) : WriteShort(writer,vert1)
 					vert2 = ReadShort(file) : WriteShort(writer,vert2)
 					vert3 = ReadShort(file) : WriteShort(writer,vert3)
@@ -240,7 +240,7 @@ Function FixRM2Props(fullFilename$)
 				WriteFloat(writer,ReadFloat(file))
 				WriteFloat(writer,ReadFloat(file))
 				WriteFloat(writer,ReadFloat(file))
-				For i% = 0 To 16
+				For i = 0 To 16
 					byte = ReadByte(file) : WriteByte(writer,byte)
 					If byte=0 Then Exit
 				Next

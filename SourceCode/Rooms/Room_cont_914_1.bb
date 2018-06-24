@@ -59,7 +59,7 @@ Function FillRoom_cont_914_1(r.Room)
     it = CreateItem("firstaid", r\x + 960.0 * RoomScale, r\y + 112.0 * RoomScale, r\z - 40.0 * RoomScale)
     EntityParent(it\collider, r\obj) : RotateEntity(it\collider, 0, 90, 0)
 
-    it = CreatePaper("docL4", r\x - 928.0 * RoomScale, 160.0 * RoomScale, r\z - 160.0 * RoomScale)
+    it = CreatePaper("drL4", r\x - 928.0 * RoomScale, 160.0 * RoomScale, r\z - 160.0 * RoomScale)
     EntityParent(it\collider, r\obj)
 End Function
 
@@ -229,7 +229,7 @@ Function UpdateEvent_cont_914_1(e.Event)
 				For it = Each Item
 					If (it\collider <> 0 And it\picked = False) Then
 						If (Distance(EntityX(it\collider), EntityZ(it\collider), EntityX(e\room\objects[2], True), EntityZ(e\room\objects[2], True)) < (180.0 * RoomScale)) Then
-							Use914(it, setting, EntityX(e\room\objects[3], True), EntityY(e\room\objects[3], True), EntityZ(e\room\objects[3], True))
+							;Use914(it, setting, EntityX(e\room\objects[3], True), EntityY(e\room\objects[3], True), EntityZ(e\room\objects[3], True))
 
 						EndIf
 					EndIf

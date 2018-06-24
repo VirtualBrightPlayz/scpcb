@@ -16,7 +16,7 @@ Function FillRoom_cont_513_3(r.Room)
     it = CreateItem("scp513", r\x - 32.0 * RoomScale, r\y + 196.0 * RoomScale, r\z + 688.0 * RoomScale)
     EntityParent(it\collider, r\obj)
 
-    it = CreatePaper("docL3", r\x + 736.0 * RoomScale,1.0, r\z + 48.0 * RoomScale)
+    it = CreatePaper("drL3", r\x + 736.0 * RoomScale,1.0, r\z + 48.0 * RoomScale)
     EntityParent(it\collider, r\obj)
 
     it = CreatePaper("scp1048", r\x - 480.0 * RoomScale, 104.0*RoomScale, r\z - 176.0 * RoomScale)

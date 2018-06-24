@@ -32,10 +32,10 @@ Function CreateEvent.Event(eventname$, roomname$, id%, prob# = 0.0)
 	Local i% = 0, temp%, e.Event, e2.Event, r.Room
 
 	If (prob = 0.0) Then
-		For r.Room = Each Room
+		For r = Each Room
 			If (roomname = "" Or roomname = r\roomTemplate\name) Then
 				temp = False
-				For e2.Event = Each Event
+				For e2 = Each Event
 					If (e2\room = r) Then
 						temp = True : Exit
 					EndIf
@@ -43,7 +43,7 @@ Function CreateEvent.Event(eventname$, roomname$, id%, prob# = 0.0)
 
 				i=i+1
 				If (i >= id And temp = False) Then
-					e.Event = New Events
+					e = New Event
 					e\name = eventname
 					e\room = r
 					Return e
@@ -51,17 +51,17 @@ Function CreateEvent.Event(eventname$, roomname$, id%, prob# = 0.0)
 			EndIf
 		Next
 	Else
-		For r.Room = Each Room
+		For r = Each Room
 			If (roomname = "" Or roomname = r\roomTemplate\name) Then
 				temp = False
-				For e2.Event = Each Event
+				For e2 = Each Event
 					If (e2\room = r) Then
 						temp = True : Exit
 					EndIf
 				Next
 
 				If (Rnd(0.0, 1.0) < prob And temp = False) Then
-					e.Event = New Events
+					e = New Event
 					e\name = eventname
 					e\room = r
 				EndIf
@@ -259,7 +259,7 @@ Function UpdateEvents()
 
 	UpdateRooms()
 
-    For e.Event = Each Event
+    For e = Each Event
 		; Does the event have music to play?
 		If (e\overwriteMusic) Then
 			SetNextMusicTrack(e\musicTrack)
@@ -417,7 +417,7 @@ Function UpdateEvents()
 				mainPlayer\blinkTimer = 1.0
 				PlaySound2(LoadTempSound("SFX/Ending/GateB/Nuke2.ogg"))
 				For i = 0 To 40
-					p.Particle = CreateParticle(EntityX(mainPlayer\collider)+Rnd(-0.5,0.5),EntityY(mainPlayer\collider)-Rnd(0.2,1.5),EntityZ(mainPlayer\collider)+Rnd(-0.5,0.5),0, Rnd(0.2,0.6), 0.0, 350)
+					p = CreateParticle(EntityX(mainPlayer\collider)+Rnd(-0.5,0.5),EntityY(mainPlayer\collider)-Rnd(0.2,1.5),EntityZ(mainPlayer\collider)+Rnd(-0.5,0.5),0, Rnd(0.2,0.6), 0.0, 350)
 					RotateEntity(p\pvt,-90,0,0,True)
 					p\speed = Rnd(0.05,0.07)
 				Next

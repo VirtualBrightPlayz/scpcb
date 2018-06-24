@@ -310,9 +310,9 @@ Function CreatePaper.Item(name$, x#, y#, z#)
 	i\name = GetINIString("Data/Items/paper.ini", name, "name")
 
 	;Load the document image.
-	Local imgPath$ = GetImagePath("GFX/Items/Paper/Documents/" + i\name)
+	Local imgPath$ = GetImagePath("GFX/Items/Paper/Documents/" + name)
 	If (FileType(imgPath) <> 1) Then
-		imgPath = GetImagePath("GFX/Items/Paper/Notes/" + i\name)
+		imgPath = GetImagePath("GFX/Items/Paper/Notes/" + name)
 	EndIf
 
 	i\img = LoadImage(imgPath)
@@ -362,11 +362,11 @@ Function UpdateItems()
 		i\dropped = 0
 
 		If (Not i\picked) Then
-			If (i\disttimer < TimeInPosMilliSecs()) Then
+			If (itemDistanceTimer < TimeInPosMilliSecs()) Then
 				i\dist = EntityDistance(mainPlayer\collider, i\collider)
 			EndIf
 
-			If (i\dist < hideDist) Then
+			If (i\dist < HideDist) Then
 				ShowEntity(i\collider)
 
 				If (i\dist < 1.2) Then
@@ -430,8 +430,8 @@ Function UpdateItems()
 
 	If (mainPlayer\closestItem <> Null) Then
 		;Can the player see this?
-		If (EntityVisible(i\collider,mainPlayer\cam)) Then
-			If (EntityVisible(i\collider,mainPlayer\collider)) Then
+		If (EntityVisible(mainPlayer\closestItem\collider,mainPlayer\cam)) Then
+			If (EntityVisible(mainPlayer\closestItem\collider,mainPlayer\collider)) Then
 				If (MouseHit1) Then
 					PickItem(mainPlayer\closestItem)
 				EndIf
@@ -477,7 +477,7 @@ Function PickItem(item.Item)
 	End Select
 
 	If (CountItemsInInventory(mainPlayer\inventory) < mainPlayer\inventory\size) Then
-		For n% = 0 To mainPlayer\inventory\size - 1
+		For n = 0 To mainPlayer\inventory\size - 1
 			If (mainPlayer\inventory\items[n] = Null) Then
 				PlaySound_SM(sndManager\itemPick[item\template\sound])
 				item\picked = True
@@ -594,7 +594,7 @@ Function EquipItem(player.Player, item.Item)
 	If (item=Null) Then Return
 	If (item\template\wornSlot = WORNITEM_SLOT_NONE) Then Return
 
-	player\wornItems[item\template\invSlot] = item
+	player\wornItems[item\template\wornSlot] = item
 End Function
 
 Function DeEquipItem(player.Player,item.Item)
@@ -638,10 +638,10 @@ Function UpdateInventory(player.Player)
 		mainPlayer\selectedDoor = Null
 
 		x = userOptions\screenWidth / 2 - (ITEM_CELL_SIZE * ITEMS_PER_ROW + ITEM_CELL_SPACING * (ITEMS_PER_ROW - 1)) / 2
-		y = userOptions\screenHeight / 2 - ITEM_CELL_SIZE * (player\openInventory\size/itemsPerRow) + ITEM_CELL_SIZE / 2
+		y = userOptions\screenHeight / 2 - ITEM_CELL_SIZE * (player\openInventory\size / ITEMS_PER_ROW) + ITEM_CELL_SIZE / 2
 
 		For slotIndex = 0 To player\openInventory\size - 1
-			isMouseOn% = False
+			isMouseOn = False
 			If (MouseX() > x And MouseX() < x + ITEM_CELL_SIZE) Then
 				If (MouseY() > y And MouseY() < y + ITEM_CELL_SIZE) Then
 					isMouseOn = True
@@ -649,13 +649,13 @@ Function UpdateInventory(player.Player)
 			EndIf
 
 			If (isMouseOn) Then
-				mouseSlot = n
+				mouseSlot = slotIndex
 
 				If (MouseHit1) Then
 					;Selecting an item.
 					If (player\selectedItem = Null) Then
 						If (player\openInventory\items[slotIndex] <> Null) Then
-							player\selectedItem = player\openInventory\items[n]
+							player\selectedItem = player\openInventory\items[slotIndex]
 							MouseHit1 = False
 						EndIf
 					EndIf
@@ -693,7 +693,7 @@ Function UpdateInventory(player.Player)
 
 			;Move x and y coords to point to next item.
 			x = x + ITEM_CELL_SIZE + ITEM_CELL_SPACING
-			If (n Mod 5 = 4) Then
+			If (slotIndex Mod 5 = 4) Then
 				y = y + ITEM_CELL_SIZE * 2
 				x = userOptions\screenWidth / 2 - (ITEM_CELL_SIZE * ITEMS_PER_ROW + ITEM_CELL_SPACING * (ITEMS_PER_ROW - 1)) / 2
 			EndIf
@@ -730,7 +730,7 @@ Function ToggleInventory(player.Player)
 		If (mainPlayer\openInventory = mainPlayer\inventory) Then
 			CurrGameState = GAMESTATE_PLAYING
 			ResumeSounds()
-			MouseXSpeed() : MouseYSpeed() : MouseZSpeed() : mouse_x_speed_1# = 0.0 : mouse_y_speed_1# = 0.0
+			MouseXSpeed() : MouseYSpeed() : MouseZSpeed() : mouse_x_speed_1 = 0.0 : mouse_y_speed_1 = 0.0
 		Else
 			mainPlayer\openInventory = mainPlayer\inventory
 		EndIf
@@ -759,7 +759,7 @@ Function DrawInventory(player.Player)
 		y = userOptions\screenHeight / 2 - ITEM_CELL_SIZE * (player\openInventory\size / ITEMS_PER_ROW) + ITEM_CELL_SIZE / 2
 		
 		For  n = 0 To player\openInventory\size - 1
-			isMouseOn% = False
+			isMouseOn = False
 			If (MouseX() > x And MouseX() < x + ITEM_CELL_SIZE) Then
 				If (MouseY() > y And MouseY() < y + ITEM_CELL_SIZE) Then
 					isMouseOn = True
@@ -808,13 +808,14 @@ Function DrawInventory(player.Player)
 		Next
 
 		If (player\selectedItem <> Null) Then
-			If (MouseDown1) Then
-				If (MouseSlot = 66) Then
-					DrawImage(player\selectedItem\invimg, MouseX() - ImageWidth(player\selectedItem\template\invimg) / 2, MouseY() - ImageHeight(player\selectedItem\template\invimg) / 2)
-				ElseIf (player\selectedItem <> player\openInventory\items[MouseSlot]) Then
-					DrawImage(player\selectedItem\invimg, MouseX() - ImageWidth(player\selectedItem\template\invimg) / 2, MouseY() - ImageHeight(player\selectedItem\template\invimg) / 2)
-				EndIf
-			EndIf
+			;TODO: I have no idea why Reg made it this way to begin with.
+;			If (MouseDown1) Then
+;				If (MouseSlot = 66) Then
+;					DrawImage(player\selectedItem\invimg, MouseX() - ImageWidth(player\selectedItem\template\invimg) / 2, MouseY() - ImageHeight(player\selectedItem\template\invimg) / 2)
+;				ElseIf (player\selectedItem <> player\openInventory\items[MouseSlot]) Then
+;					DrawImage(player\selectedItem\invimg, MouseX() - ImageWidth(player\selectedItem\template\invimg) / 2, MouseY() - ImageHeight(player\selectedItem\template\invimg) / 2)
+;				EndIf
+;			EndIf
 		EndIf
 	Else
 		If (player\selectedItem <> Null) Then

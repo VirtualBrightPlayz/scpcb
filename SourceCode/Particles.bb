@@ -13,7 +13,7 @@ Type Particle
 End Type
 
 Function CreateParticle.Particle(x#, y#, z#, image%, size#, gravity# = 1.0, lifetime% = 200)
-	Local p.Particle = New Particles
+	Local p.Particle = New Particle
 	p\lifetime = lifetime
 
 	p\obj = CreateSprite()
@@ -153,7 +153,7 @@ End Function
 
 
 Function CreateEmitter.Emitter(x#, y#, z#, emittertype%)
-	Local e.Emitter = New Emitters
+	Local e.Emitter = New Emitter
 
 	e\obj = CreatePivot()
 	PositionEntity(e\obj, x, y, z, True)

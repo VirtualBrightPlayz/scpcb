@@ -385,7 +385,7 @@ Function StripFilename$(file$)
 	Local mi$=""
 	Local lastSlash%=0
 	If Len(file)>0
-		For i%=1 To Len(file)
+		For i=1 To Len(file)
 			mi=Mid(file$,i,1)
 			If mi="\" Or mi="/" Then
 				lastSlash=i
@@ -452,30 +452,30 @@ Function KeyValue$(entity,key$,defaultvalue$="")
 End Function
 
 Function GetTextureFromCache%(name$)
-	For tc.Materials=Each Materials
+	For tc.Material=Each Materials
 		If tc\name = name Then Return tc\diff
 	Next
 	Return 0
 End Function
 
 ;Function GetBumpFromCache%(name$)
-;	For tc.Materials=Each Materials
+;	For tc.Material=Each Materials
 ;		If tc\name = name Then Return tc\bump
 ;	Next
 ;	Return 0
 ;End Function
 
-Function GetCache.Materials(name$)
-	For tc.Materials=Each Materials
+Function GetCache.Material(name$)
+	For tc.Material=Each Materials
 		If tc\name = name Then Return tc
 	Next
 	Return Null
 End Function
 
 Function AddTextureToCache(texture%)
-	Local tc.Materials=GetCache(StripPath(TextureName(texture)))
-	If tc.Materials=Null Then
-		tc.Materials=New Materials
+	Local tc.Material=GetCache(StripPath(TextureName(texture)))
+	If tc.Material=Null Then
+		tc.Material=New Material
 		tc\name=StripPath(TextureName(texture))
 		;Local temp$=GetINIString("Data/materials.ini",tc\name,"bump")
 		;If temp<>"" Then
@@ -490,7 +490,7 @@ Function AddTextureToCache(texture%)
 End Function
 
 Function ClearTextureCache()
-	For tc.Materials=Each Materials
+	For tc.Material=Each Materials
 		If tc\diff<>0 Then FreeTexture(tc\diff)
 		;If tc\bump<>0 Then FreeTexture(tc\bump)
 		Delete tc
@@ -498,7 +498,7 @@ Function ClearTextureCache()
 End Function
 
 Function FreeTextureCache()
-	For tc.Materials=Each Materials
+	For tc.Material=Each Materials
 		If tc\diff<>0 Then FreeTexture(tc\diff)
 		;If tc\bump<>0 Then FreeTexture(tc\bump)
 		tc\diff = 0; : tc\bump = 0
@@ -640,13 +640,13 @@ Function LoadRMesh(file$)
 		
 		count2=ReadInt(f) ;vertices
 		
-		For j%=1 To count2
+		For j=1 To count2
 			;world coords
 			x=ReadFloat(f) : y=ReadFloat(f) : z=ReadFloat(f)
 			vertex=AddVertex(surf,x,y,z)
 			
 			;texture coords
-			For k%=0 To 1
+			For k=0 To 1
 				u=ReadFloat(f) : v=ReadFloat(f)
 				VertexTexCoords(surf,vertex,u,v,0.0,k)
 			Next
@@ -659,7 +659,7 @@ Function LoadRMesh(file$)
 		Next
 		
 		count2=ReadInt(f) ;polys
-		For j%=1 To count2
+		For j=1 To count2
 			temp1i = ReadInt(f) : temp2i = ReadInt(f) : temp3i = ReadInt(f)
 			AddTriangle(surf,temp1i,temp2i,temp3i)
 		Next

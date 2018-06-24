@@ -101,7 +101,7 @@ Type NPC
 	Field targetY#
 	Field targetZ#
 
-	Field path.Waypoint[20]
+	Field path.WayPoint[20]
 	Field pathStatus%
 	Field pathTimer#
 	Field pathLocation%
@@ -154,7 +154,7 @@ Type NPC
 End Type
 
 Function CreateNPC.NPC(NPCtype%, x#, y#, z#)
-	Local n.NPC = New NPCs, n2.NPC
+	Local n.NPC = New NPC, n2.NPC
 	Local temp#, i%, diff1%, bump1%, spec1%
 	Local sf%, b%, t1%
 
@@ -370,8 +370,8 @@ End Function
 
 Function TeleportCloser(n.NPC)
 	Local closestDist# = 0
-	Local closestWaypoint.Waypoint
-	Local w.Waypoint
+	Local closestWaypoint.WayPoint
+	Local w.WayPoint
 
 	Local xtemp#, ztemp#, newDist#
 

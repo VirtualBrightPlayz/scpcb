@@ -94,8 +94,8 @@ Function LoadRM2(rt.RoomTemplate)
 	Local vert3%
 	Local j%
 
-	Local tempScreen.TempScreens
-	Local waypointTemp.TempWaypoint
+	Local tempScreen.TempScreen
+	Local waypointTemp.TempWayPoint
 
 	Local range#
 	Local intensity#
@@ -267,7 +267,7 @@ Function LoadRM2(rt.RoomTemplate)
 				;[End Block]
 			Case RM2_SCREEN
 				;[Block]
-				tempScreen = New TempScreens
+				tempScreen = New TempScreen
 				tempScreen\x = ReadFloat(file)
 				tempScreen\y = ReadFloat(file)
 				tempScreen\z = ReadFloat(file)
@@ -276,7 +276,7 @@ Function LoadRM2(rt.RoomTemplate)
 				;[End Block]
 			Case RM2_WAYPOINT
 				;[Block]
-				waypointTemp = New TempWaypoint
+				waypointTemp = New TempWayPoint
 				waypointTemp\x = ReadFloat(file)
 				waypointTemp\y = ReadFloat(file)
 				waypointTemp\z = ReadFloat(file)

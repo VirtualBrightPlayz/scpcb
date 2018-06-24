@@ -33,7 +33,7 @@ End Function
 Function AddTextureToCache(name$,texture%)
 	Local tc.Material=GetCache(name)
 	If (tc=Null) Then
-		tc=New Materials
+		tc=New Material
 		tc\name=Lower(name)
 
 		tc\diff=0

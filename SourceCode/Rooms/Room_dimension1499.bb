@@ -121,7 +121,7 @@ Function UpdateLeave1499()
 				UpdateDoors()
 				UpdateRooms()
 				For it = Each Item
-					it\disttimer = 0
+					;it\disttimer = 0
 					If (it\template\name = "scp1499" Or it\template\name = "super1499") Then
 						If (EntityY(it\collider) >= EntityY(mainPlayer\currRoom\obj)-5) Then
 							PositionEntity(it\collider,NTF_1499PrevX,NTF_1499PrevY+(EntityY(it\collider)-EntityY(mainPlayer\currRoom\obj)),NTF_1499PrevZ)

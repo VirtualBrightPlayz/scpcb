@@ -52,12 +52,12 @@ IniHackTool("Dr. Allok's Note", "106_treats.jpg")
 
 IniHackTool("Strange Note", "docStrange.jpg")
 
-IniHackTool("Dr. L's Note", "docL1.jpg")
-IniHackTool("Dr L's Note", "docL2.jpg")
-IniHackTool("Blood-stained Note", "docL3.jpg")
-IniHackTool("Dr. L's Burnt Note", "docL4.jpg")
-IniHackTool("Dr L's Burnt Note", "docL5.jpg")
-IniHackTool("Scorched Note", "docL6.jpg")
+IniHackTool("Dr. L's Note", "drL1.jpg")
+IniHackTool("Dr L's Note", "drL2.jpg")
+IniHackTool("Blood-stained Note", "drL3.jpg")
+IniHackTool("Dr. L's Burnt Note", "drL4.jpg")
+IniHackTool("Dr L's Burnt Note", "drL5.jpg")
+IniHackTool("Scorched Note", "drL6.jpg")
 
 Function IniHackTool(name$, fileName$)
 	PutINIValue("Data/Items/paper.ini", fileName, "name", name)

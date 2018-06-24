@@ -139,7 +139,7 @@ Function UpdateEvent_cont_1162_2c(e.Event)
 			
 			For itt = Each ItemTemplate
 				If (IsItemGoodFor1162(itt)) Then
-					Select mainPlayer\inventory\items[Int(e\eventState2)]\itemtemplate\name
+					Select mainPlayer\inventory\items[Int(e\eventState2)]\template\name
 						Case "key"
 							If (itt\name = "key1" Or itt\name = "key2" And Rand(2)=1) Then
 								shouldCreateItem = True
@@ -174,7 +174,8 @@ Function UpdateEvent_cont_1162_2c(e.Event)
 				EndIf
 
 				If (shouldCreateItem) Then
-					RemoveItem(mainPlayer\inventory\items[e\eventState2])
+					;TODO: This was a float-int cast, redo.
+					;RemoveItem(mainPlayer\inventory\items[e\eventState2])
 					it=CreateItem(itt\name,EntityX(pp,True),EntityY(pp,True),EntityZ(pp,True))
 					EntityType(it\collider, HIT_ITEM)
 					PlaySound2(LoadTempSound("SFX/SCP/1162/Exchange"+Str(Rand(0,4))+".ogg"))

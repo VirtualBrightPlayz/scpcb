@@ -12,7 +12,7 @@ Function InitializeNPCtype066(n.NPC)
 End Function
 
 Function UpdateNPCtype066(n.NPC)
-	Local w.Waypoint, de.Decal, d.Door
+	Local w.WayPoint, de.Decal, d.Door
 	Local angle#
 
     Select n\state

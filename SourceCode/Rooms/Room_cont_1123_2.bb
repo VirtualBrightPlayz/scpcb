@@ -5,7 +5,7 @@ Function FillRoom_cont_1123_2(r.Room)
 
     Local t1%;, Bump
 
-    it = CreateItem("doc1123", r\x + 511.0 * RoomScale, r\y + 125.0 * RoomScale, r\z - 936.0 * RoomScale)
+    it = CreatePaper("doc1123", r\x + 511.0 * RoomScale, r\y + 125.0 * RoomScale, r\z - 936.0 * RoomScale)
     EntityParent(it\collider, r\obj)
 
     it = CreateItem("gasmask", r\x + 457.0 * RoomScale, r\y + 150.0 * RoomScale, r\z + 960.0 * RoomScale)

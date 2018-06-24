@@ -54,7 +54,7 @@ Function CreateDoor.Door(lvl%, x#, y#, z#, angle#, room.Room, dopen% = False,  b
 	Local buttonKeyObj%
 	Local buttonScannerOBJ%
 	
-	d = New Doors
+	d = New Door
 	If (big=1) Then
 		d\obj = CopyEntity(contDoorLeft)
 		ScaleEntity(d\obj, 55 * RoomScale, 55 * RoomScale, 55 * RoomScale)

@@ -133,17 +133,17 @@ End Function
 
 Function Inverse#(number#)
 
-	Return Float(1.0-number#)
+	Return Float(1.0 - number)
 
 End Function
 
 Function Rnd_Array#(numb1#,numb2#,Array1#,Array2#)
 	Local whatarray% = Rand(1,2)
 
-	If (whatarray% = 1) Then
-		Return Rnd(numb1#,Array1#)
+	If (whatarray = 1) Then
+		Return Rnd(numb1, Array1)
 	Else
-		Return Rnd(Array2#,numb2#)
+		Return Rnd(Array2, numb2)
 	EndIf
 
 End Function
@@ -246,7 +246,7 @@ Function SeedStringToInt%(seed$)
 	Local retVal% = 0
 
 	Local i%
-	For i% = 1 To Len(seed)
+	For i = 1 To Len(seed)
 		char = Asc(Mid(seed,i,1))
 		retVal = (retVal Shl 1) + char
 	Next

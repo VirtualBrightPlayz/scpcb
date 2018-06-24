@@ -67,7 +67,7 @@ Function UpdateNPCtypeMTF(n.NPC)
 	Local prevDist#,newDist#, prev%
 	Local n2.NPC
 
-	Local p.Particle, target%, dist#, dist2#, wp.Waypoint
+	Local p.Particle, target%, dist#, dist2#, wp.WayPoint
 	Local foundChamber%
 	Local pvt%, temp%, soundVol173#, angle#, curr173Dist#, tempDist#
 

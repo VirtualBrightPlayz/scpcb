@@ -30,7 +30,7 @@ Function StripFilename$(file$)
 	Local mi$=""
 	Local lastSlash%=0
 	If Len(file)>0
-		For i%=1 To Len(file)
+		For i=1 To Len(file)
 			mi=Mid(file$,i,1)
 			If mi="\" Or mi="/" Then
 				lastSlash=i
@@ -97,14 +97,14 @@ Function KeyValue$(entity,key$,defaultvalue$="")
 End Function
 
 Function GetTextureFromCache%(name$)
-	For tc.Materials=Each Materials
+	For tc.Material=Each Materials
 		If tc\name = name Then Return tc\diff
 	Next
 	Return 0
 End Function
 
-Function GetCache.Materials(name$)
-	For tc.Materials=Each Materials
+Function GetCache.Material(name$)
+	For tc.Material=Each Materials
 		If tc\name = name Then Return tc
 	Next
 	Return Null
@@ -112,10 +112,10 @@ End Function
 
 Function AddTextureToCache(texture%,loadflags%,blendflags%,uvSet%)
 	If Trim(StripPath(TextureName(texture)))="" Then Return
-	Local tc.Materials=GetCache(StripPath(TextureName(texture)))
+	Local tc.Material=GetCache(StripPath(TextureName(texture)))
 	;DebugLog(StripPath(TextureName(texture)))
-	If tc.Materials=Null Then
-		tc.Materials=New Materials
+	If tc.Material=Null Then
+		tc.Material=New Material
 		tc\name=StripPath(TextureName(texture))
 		tc\loadflags=loadflags
 		tc\blendflags=blendflags
@@ -126,7 +126,7 @@ Function AddTextureToCache(texture%,loadflags%,blendflags%,uvSet%)
 End Function
 
 Function ClearTextureCache()
-	For tc.Materials=Each Materials
+	For tc.Material=Each Materials
 		If tc\diff<>0 Then FreeTexture(tc\diff)
 		;If tc\bump<>0 Then FreeTexture(tc\bump)
 		Delete tc
@@ -134,7 +134,7 @@ Function ClearTextureCache()
 End Function
 
 Function FreeTextureCache()
-	For tc.Materials=Each Materials
+	For tc.Material=Each Materials
 		If tc\diff<>0 Then FreeTexture(tc\diff)
 		;If tc\bump<>0 Then FreeTexture(tc\bump)
 		tc\diff = 0; : tc\bump = 0
@@ -179,7 +179,7 @@ Const RM2_BLENDFLAG_LM% = 2
 
 Function WriteByteString(stream%,stri$)
 	WriteByte(stream,Len(stri))
-	For i% = 1 To Len(stri)
+	For i = 1 To Len(stri)
 		WriteByte(stream,Asc(Mid(stri,i,1)))
 	Next
 End Function
@@ -187,13 +187,13 @@ End Function
 Function ReadByteString(stream%)
 	Local length% = ReadByte(stream)
 	Local retVal$ = ""
-	For i% = 1 To length
+	For i = 1 To length
 		retVal=retVal+Chr(ReadByte(stream))
 	Next
 End Function
 
 Function CreateWaypoint(x#,y#,z#)
-	wpt.WaypointTemp = New WaypointTemp
+	wpt.WayPointTemp = New WayPointTemp
 	
 	wpt\x = x
 	wpt\y = y
@@ -421,13 +421,13 @@ Function LoadRMesh(file$)
 		
 		count2=ReadInt(f) ;vertices
 		
-		For j%=1 To count2
+		For j=1 To count2
 			;world coords
 			x=ReadFloat(f) : y=ReadFloat(f) : z=ReadFloat(f)
 			vertex=AddVertex(surf,x,y,z)
 			
 			;texture coords
-			For k%=0 To 1
+			For k=0 To 1
 				u=ReadFloat(f) : v=ReadFloat(f)
 				VertexTexCoords(surf,vertex,u,v,0.0,k)
 			Next
@@ -440,7 +440,7 @@ Function LoadRMesh(file$)
 		Next
 		
 		count2=ReadInt(f) ;polys
-		For j%=1 To count2
+		For j=1 To count2
 			temp1i = ReadInt(f) : temp2i = ReadInt(f) : temp3i = ReadInt(f)
 			AddTriangle(surf,temp1i,temp2i,temp3i)
 		Next
@@ -466,11 +466,11 @@ Function LoadRMesh(file$)
 	WriteByte(rm2,RM2_TEXTURES)
 	
 	count = 0
-	For tc.Materials = Each Materials
+	For tc.Material = Each Materials
 		count=count+1
 	Next
 	WriteByte(rm2,count)
-	For tc.Materials = Each Materials
+	For tc.Material = Each Materials
 		WriteByteString(rm2,tc\name)
 		If Instr(origFile,"1123")>0 Then
 			DebugLog(tc\name)
@@ -479,7 +479,7 @@ Function LoadRMesh(file$)
 		WriteByte(rm2,tc\uvSet)
 	Next
 	
-	For i% = 1 To CountSurfaces(Opaque)
+	For i = 1 To CountSurfaces(Opaque)
 		surf% = GetSurface(Opaque,i)
 		
 		If CountVertices(surf)>0 Then
@@ -493,7 +493,7 @@ Function LoadRMesh(file$)
 					stri$ = StripPath(TextureName(tx))				
 					found% = False
 					count% = 0
-					For tc.Materials = Each Materials
+					For tc.Material = Each Materials
 						count=count+1
 						If tc\name = StripPath(TextureName(tx)) Then
 							found = True
@@ -516,7 +516,7 @@ Function LoadRMesh(file$)
 			
 			;DebugLog(CountVertices(surf))
 			WriteShort(rm2,CountVertices(surf))
-			For j% = 1 To CountVertices(surf)
+			For j = 1 To CountVertices(surf)
 				WriteFloat(rm2,VertexX(surf,j-1))
 				WriteFloat(rm2,VertexY(surf,j-1))
 				WriteFloat(rm2,VertexZ(surf,j-1))
@@ -525,14 +525,14 @@ Function LoadRMesh(file$)
 				WriteByte(rm2,VertexGreen(surf,j-1))
 				WriteByte(rm2,VertexBlue(surf,j-1))
 				
-				For k% = 0 To 1
+				For k = 0 To 1
 					WriteFloat(rm2,VertexU(surf,j-1,k))
 					WriteFloat(rm2,VertexV(surf,j-1,k))
 				Next
 			Next
 			
 			WriteShort(rm2,CountTriangles(surf))
-			For j% = 1 To CountTriangles(surf)
+			For j = 1 To CountTriangles(surf)
 				WriteShort(rm2,TriangleVertex(surf,j-1,0))
 				WriteShort(rm2,TriangleVertex(surf,j-1,1))
 				WriteShort(rm2,TriangleVertex(surf,j-1,2))
@@ -540,7 +540,7 @@ Function LoadRMesh(file$)
 		EndIf
 	Next
 	
-	For i% = 1 To CountSurfaces(Alpha)
+	For i = 1 To CountSurfaces(Alpha)
 		surf% = GetSurface(Alpha,i)
 		
 		If CountVertices(surf)>0 Then
@@ -554,7 +554,7 @@ Function LoadRMesh(file$)
 					stri$ = StripPath(TextureName(tx))				
 					found% = False
 					count% = 0
-					For tc.Materials = Each Materials
+					For tc.Material = Each Materials
 						count=count+1
 						If tc\name = StripPath(TextureName(tx)) Then
 							found = True
@@ -577,7 +577,7 @@ Function LoadRMesh(file$)
 			
 			;DebugLog(CountVertices(surf))
 			WriteShort(rm2,CountVertices(surf))
-			For j% = 1 To CountVertices(surf)
+			For j = 1 To CountVertices(surf)
 				WriteFloat(rm2,VertexX(surf,j-1))
 				WriteFloat(rm2,VertexY(surf,j-1))
 				WriteFloat(rm2,VertexZ(surf,j-1))
@@ -586,14 +586,14 @@ Function LoadRMesh(file$)
 				WriteByte(rm2,VertexGreen(surf,j-1))
 				WriteByte(rm2,VertexBlue(surf,j-1))
 				
-				For k% = 0 To 1
+				For k = 0 To 1
 					WriteFloat(rm2,VertexU(surf,j-1,k))
 					WriteFloat(rm2,VertexV(surf,j-1,k))
 				Next
 			Next
 			
 			WriteShort(rm2,CountTriangles(surf))
-			For j% = 1 To CountTriangles(surf)
+			For j = 1 To CountTriangles(surf)
 				WriteShort(rm2,TriangleVertex(surf,j-1,0))
 				WriteShort(rm2,TriangleVertex(surf,j-1,1))
 				WriteShort(rm2,TriangleVertex(surf,j-1,2))
@@ -629,13 +629,13 @@ Function LoadRMesh(file$)
 		hiddenMesh = CreateMesh()
 		surf = CreateSurface(hiddenMesh)
 		
-		For i% = 1 To CountSurfaces(hbMesh)
+		For i = 1 To CountSurfaces(hbMesh)
 			hbSurf = GetSurface(hbMesh,i)
-			For j% = 0 To CountVertices(hbSurf)-1
+			For j = 0 To CountVertices(hbSurf)-1
 				AddVertex(surf,VertexX(hbSurf,j),VertexY(hbSurf,j),VertexZ(hbSurf,j))
 			Next
 			
-			For j% = 0 To CountTriangles(hbSurf)-1
+			For j = 0 To CountTriangles(hbSurf)-1
 				AddTriangle(surf,TriangleVertex(hbSurf,j,0)+totalVerts,TriangleVertex(hbSurf,j,1)+totalVerts,TriangleVertex(hbSurf,j,2)+totalVerts)
 			Next
 			
@@ -653,13 +653,13 @@ Function LoadRMesh(file$)
 		Else
 			surf=GetSurface(hiddenMesh,1)
 		EndIf
-		For i%=1 To count
+		For i=1 To count
 			count2=ReadInt(f) ;vertices
 			If Instr(origFile,"_sl_")>0 Then
 				DebugLog("SL3 "+count2)
 			EndIf
 			totalVerts=totalVerts+count2
-			For j%=1 To count2
+			For j=1 To count2
 				;world coords
 				x=ReadFloat(f) : y=ReadFloat(f) : z=ReadFloat(f)
 				vertex=AddVertex(surf,x,y,z)
@@ -667,7 +667,7 @@ Function LoadRMesh(file$)
 			
 			count2=ReadInt(f) ;polys
 			totalTris=totalTris+count2
-			For j%=1 To count2
+			For j=1 To count2
 				temp1i = ReadInt(f) : temp2i = ReadInt(f) : temp3i = ReadInt(f)
 				AddTriangle(surf,totalVerts+temp1i,totalVerts+temp2i,totalVerts+temp3i)
 			Next
@@ -681,14 +681,14 @@ Function LoadRMesh(file$)
 			DebugLog("SL4 "+CountVertices(surf))
 		EndIf
 		WriteShort(rm2,CountVertices(surf))
-		For i% = 1 To CountVertices(surf)
+		For i = 1 To CountVertices(surf)
 			WriteFloat(rm2,VertexX(surf,i-1))
 			WriteFloat(rm2,VertexY(surf,i-1))
 			WriteFloat(rm2,VertexZ(surf,i-1))
 		Next
 		
 		WriteShort(rm2,CountTriangles(surf))
-		For i% = 1 To CountTriangles(surf)
+		For i = 1 To CountTriangles(surf)
 			WriteShort(rm2,TriangleVertex(surf,i-1,0))
 			WriteShort(rm2,TriangleVertex(surf,i-1,1))
 			WriteShort(rm2,TriangleVertex(surf,i-1,2))
@@ -708,13 +708,13 @@ Function LoadRMesh(file$)
 		count = ReadInt(f)
 		For tb = 0 To count-1
 			count2 = ReadInt(f)
-			For i%=1 To count2
+			For i=1 To count2
 				count3=ReadInt(f)
-				For j%=1 To count3
+				For j=1 To count3
 					x=ReadFloat(f) : y=ReadFloat(f) : z=ReadFloat(f)
 				Next
 				count3=ReadInt(f)
-				For j%=1 To count3
+				For j=1 To count3
 					temp1i = ReadInt(f) : temp2i = ReadInt(f) : temp3i = ReadInt(f)
 				Next
 			Next
@@ -723,7 +723,7 @@ Function LoadRMesh(file$)
 	EndIf
 	
 	count=ReadInt(f) ;point entities
-	For i%=1 To count
+	For i=1 To count
 		temp1s=ReadString(f)
 		If Instr(origFile,"closet")>0 Then
 			DebugLog(temp1s)
@@ -1034,12 +1034,12 @@ Function LoadRMesh(file$)
 	EndIf
 	
 	a% = 0
-	For wpt.WaypointTemp = Each WaypointTemp
+	For wpt.WayPointTemp = Each WaypointTemp
 		a=a+1
 		i% = 0
 		c% = 0
 		wpt\connectedTo[0]=0
-		For wpt2.WaypointTemp = Each WaypointTemp
+		For wpt2.WayPointTemp = Each WaypointTemp
 			c=c+1
 			If wpt2<>wpt Then
 				If EntityVisibleLazy(wpt\pivot,wpt2\pivot) And EntityVisibleLazy(wpt2\pivot,wpt\pivot) Then
@@ -1063,7 +1063,7 @@ Function LoadRMesh(file$)
 	Next
 	
 	a% = 0
-	For wpt.WaypointTemp = Each WaypointTemp
+	For wpt.WayPointTemp = Each WaypointTemp
 		a=a+1
 		If Instr(origFile,"closet")>0 Then
 			DebugLog("WAYPOINT "+a)
@@ -1072,7 +1072,7 @@ Function LoadRMesh(file$)
 		WriteFloat(rm2,wpt\x)
 		WriteFloat(rm2,wpt\y)
 		WriteFloat(rm2,wpt\z)
-		For i% = 0 To 32
+		For i = 0 To 32
 			WriteByte(rm2,wpt\connectedTo[i])
 			If wpt\connectedTo[i]=0 Then Exit
 		Next
@@ -1085,8 +1085,8 @@ Function LoadRMesh(file$)
 	Return Opaque
 End Function
 
-Function ConnectWaypoints(i1%,wp1.WaypointTemp,i2%,wp2.WaypointTemp)
-	For i% = 0 To 15
+Function ConnectWaypoints(i1%,wp1.WayPointTemp,i2%,wp2.WayPointTemp)
+	For i = 0 To 15
 		If wp1\connectedTo[i]=0 Then
 			wp1\connectedTo[i]=i2
 			wp1\connectedTo[i+1]=0
@@ -1094,7 +1094,7 @@ Function ConnectWaypoints(i1%,wp1.WaypointTemp,i2%,wp2.WaypointTemp)
 		EndIf
 	Next
 	
-	For i% = 0 To 15
+	For i = 0 To 15
 		If wp2\connectedTo[i]=0 Then
 			wp2\connectedTo[i]=i1
 			wp2\connectedTo[i+1]=0
@@ -1115,7 +1115,7 @@ Function LoadRoomTemplates(file$)
 					DebugLog("CONVERTING: "+meshpath)
 					mesh% = LoadRMesh(meshpath)
 					
-					For wpt.WaypointTemp = Each WaypointTemp
+					For wpt.WayPointTemp = Each WaypointTemp
 						FreeEntity(wpt\pivot)
 						Delete wpt
 					Next
