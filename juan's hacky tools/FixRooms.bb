@@ -9,7 +9,7 @@ While Not Eof(fuck)
 			ln = Right(ln,Len(ln)-1)
 			prevln = Left(prevln,Len(prevln)-1)
 			prevln = Right(prevln,Len(prevln)-1)
-			DebugLog ln+" - "+prevln
+			DebugLog(ln+" - "+prevln)
 			
 			dir% = ReadDir("Rooms")
 			fn$ = NextFile(dir)
@@ -17,7 +17,7 @@ While Not Eof(fuck)
 				If FileType("Rooms/"+fn)=1 Then
 					cond% = Instr(Lower(fn),"room"+ln+".")>0 Or Left(Lower(fn),Len(ln)+1)=ln+"."
 					If cond Then
-						CopyFile "Rooms/"+fn,"NewRooms/Room_"+prevln+"TEMP.bb"
+						CopyFile("Rooms/"+fn,"NewRooms/Room_"+prevln+"TEMP.bb")
 						
 						rread% = ReadFile("NewRooms/Room_"+prevln+"TEMP.bb")
 						rwrite% = WriteFile("NewRooms/Room_"+prevln+".bb")
@@ -30,10 +30,10 @@ While Not Eof(fuck)
 						Wend
 						CloseFile(rread)
 						CloseFile(rwrite)
-						DeleteFile "NewRooms/Room_"+prevln+"TEMP.bb"
+						DeleteFile("NewRooms/Room_"+prevln+"TEMP.bb")
 						
-						;DebugLog fn+"!!!!!!"
-						DeleteFile "Rooms/"+fn
+						;DebugLog(fn+"!!!!!!")
+						DeleteFile("Rooms/"+fn)
 						Exit
 					EndIf
 				EndIf
@@ -51,9 +51,9 @@ While Not Eof(fuck)
 			Wend
 			CloseFile(mapsystem)
 			CloseFile(mapsystemalt)
-			DeleteFile "MapSystem.bb"
-			CopyFile "MapSystemAlt.bb","MapSystem.bb"
-			DeleteFile "MapSystemAlt.bb"
+			DeleteFile("MapSystem.bb")
+			CopyFile("MapSystemAlt.bb","MapSystem.bb")
+			DeleteFile("MapSystemAlt.bb")
 			
 			events% = ReadFile("Events.bb")
 			eventsalt% = WriteFile("EventsAlt.bb")
@@ -67,9 +67,9 @@ While Not Eof(fuck)
 			Wend
 			CloseFile(events)
 			CloseFile(eventsalt)
-			DeleteFile "Events.bb"
-			CopyFile "EventsAlt.bb","Events.bb"
-			DeleteFile "EventsAlt.bb"
+			DeleteFile("Events.bb")
+			CopyFile("EventsAlt.bb","Events.bb")
+			DeleteFile("EventsAlt.bb")
 		EndIf
 	EndIf
 Wend

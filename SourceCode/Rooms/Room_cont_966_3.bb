@@ -3,13 +3,13 @@ Function FillRoom_cont_966_3(r.Rooms)
 	Local it.Items, i%
 	Local xtemp%, ytemp%, ztemp%
 
-	Local t1;, Bump
+	Local t1%;, Bump
 
     d = CreateDoor(r\zone, r\x - 400.0 * RoomScale, 0, r\z, -90, r, False, False, 3)
     d = CreateDoor(r\zone, r\x, 0, r\z - 480.0 * RoomScale, 180, r, False, False, 3);: d\buttons[0] = False
 
-    ;PositionEntity (d\buttons[0], EntityX(d\buttons[0],True), EntityY(d\buttons[0],True), r\z + 288.0 * RoomScale, True)
-    ;PositionEntity (d\buttons[1], EntityX(d\buttons[1],True), EntityY(d\buttons[1],True), r\z + 320.0 * RoomScale, True)
+    ;PositionEntity(d\buttons[0], EntityX(d\buttons[0],True), EntityY(d\buttons[0],True), r\z + 288.0 * RoomScale, True)
+    ;PositionEntity(d\buttons[1], EntityX(d\buttons[1],True), EntityY(d\buttons[1],True), r\z + 320.0 * RoomScale, True)
 
     sc.SecurityCams = CreateSecurityCam(r\x-312.0 * RoomScale, r\y + 414*RoomScale, r\z + 656*RoomScale, r)
     sc\angle = 225
@@ -36,8 +36,8 @@ End Function
 
 
 Function UpdateEvent_cont_966_3(e.Events)
-	If mainPlayer\currRoom = e\room Then
-		If (Not e\loaded) Then
+	If (mainPlayer\currRoom = e\room) Then
+		If ((Not e\loaded)) Then
 			CreateNPC(NPCtype966, EntityX(e\room\objects[0],True), EntityY(e\room\objects[0],True), EntityZ(e\room\objects[0],True))
 			CreateNPC(NPCtype966, EntityX(e\room\objects[1],True), EntityY(e\room\objects[1],True), EntityZ(e\room\objects[1],True))
 			CreateNPC(NPCtype966, EntityX(e\room\objects[2],True), EntityY(e\room\objects[2],True), EntityZ(e\room\objects[2],True))

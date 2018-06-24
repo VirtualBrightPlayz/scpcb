@@ -79,7 +79,7 @@ Include "SourceCode/Skybox.bb"
 
 Type Materials
 	Field name$
-	Field diff
+	Field diff%
 	;Field Bump
 
 	Field stepSound%
@@ -90,13 +90,13 @@ Function LoadMaterials(file$)
 	Local mat.Materials = Null
 	Local StrTemp$ = ""
 
-	Local f = OpenFile(file)
+	Local f% = OpenFile(file)
 
 	Local stepSound$ = ""
 
 	While Not Eof(f)
 		TemporaryString = Trim(ReadLine(f))
-		If Left(TemporaryString,1) = "[" Then
+		If (Left(TemporaryString,1) = "[") Then
 			TemporaryString = Mid(TemporaryString, 2, Len(TemporaryString) - 2)
 
 			mat.Materials = New Materials
@@ -106,11 +106,11 @@ Function LoadMaterials(file$)
 			mat\diff = 0
 
 			stepSound = GetINIString(file, TemporaryString, "stepsound")
-			If Lower(stepSound)="metal" Then mat\stepSound = STEPSOUND_METAL
+			If (Lower(stepSound)="metal") Then mat\stepSound = STEPSOUND_METAL
 		EndIf
 	Wend
 
-	CloseFile f
+	CloseFile(f)
 
 End Function
 
@@ -118,12 +118,12 @@ Include "SourceCode/Materials.bb"
 
 Function StripPath$(file$)
 	Local name$=""
-	If Len(file$)>0 Then
-		Local i%
+	Local i%, mi$
+	If (Len(file$)>0) Then
 		For i=Len(file$) To 1 Step -1
 
-			Local mi$ = Mid$(file$,i,1)
-			If mi$="\" Or mi$="/" Then Return name$
+			mi$ = Mid$(file$,i,1)
+			If (mi$="\" Or mi$="/") Then Return name$
 
 			name$=mi$+name$
 		Next
@@ -133,19 +133,19 @@ Function StripPath$(file$)
 	Return name$
 End Function
 
-Function Piece$(s$,entry,char$=" ")
-	Local a$
+Function Piece$(s$,entry%,char$=" ")
+	Local a$, p%
 
 	While Instr(s,char+char)
 		s=Replace(s,char+char,char)
 	Wend
 	Local n%
 	For n=1 To entry-1
-		Local p% = Instr(s,char)
+		p% = Instr(s,char)
 		s=Right(s,Len(s) - p)
 	Next
 	p=Instr(s,char)
-	If p<1 Then
+	If (p<1) Then
 		a$=s
 	Else
 		a=Left(s,p-1)
@@ -154,25 +154,31 @@ Function Piece$(s$,entry,char$=" ")
 	Return a
 End Function
 
-Function KeyValue$(entity,key$,defaultvalue$="")
+Function KeyValue$(entity%,key$,defaultvalue$="")
 	Local test$, testkey$, value$
 	Local properties$ = EntityName(entity)
+	Local p%
+	
 	properties$=Replace(properties$,Chr(13),"")
 	key$=Lower(key)
 	Repeat
-		Local p% = Instr(properties,Chr(10))
-		If p Then test$=(Left(properties,p-1)) Else test=properties
+		p% = Instr(properties,Chr(10))
+		If (p) Then
+			test$=(Left(properties,p-1))
+		Else
+			test=properties
+		EndIf
 		testkey$=Piece(test,1,"=")
 		testkey=Trim(testkey)
 		testkey=Replace(testkey,Chr(34),"")
 		testkey=Lower(testkey)
-		If testkey=key Then
+		If (testkey=key) Then
 			value$=Piece(test,2,"=")
 			value$=Trim(value$)
 			value$=Replace(value$,Chr(34),"")
 			Return value
 		EndIf
-		If Not p Then Return defaultvalue$
+		If (Not p) Then Return defaultvalue$
 		properties=Right(properties,Len(properties)-p)
 	Forever
 End Function
@@ -213,8 +219,8 @@ Type RoomTemplates
 	Field disableDecals%
 
 	;TODO: remove
-	Field tempTriggerboxAmount
-	Field tempTriggerbox[128]
+	Field tempTriggerboxAmount%
+	Field tempTriggerbox%[128]
 	Field tempTriggerboxName$[128]
 End Type
 
@@ -235,11 +241,11 @@ Function LoadRoomTemplates(file$)
 	Local AmountRange$ = ""
 	Local xRange$, yRange$
 
-	Local f = OpenFile(file)
+	Local f% = OpenFile(file)
 
 	While Not Eof(f)
 		TemporaryString = Trim(ReadLine(f))
-		If Left(TemporaryString,1) = "[" Then
+		If (Left(TemporaryString,1) = "[") Then
 			TemporaryString = Mid(TemporaryString, 2, Len(TemporaryString) - 2)
 			StrTemp = GetINIString(file, TemporaryString, "meshpath")
 
@@ -267,24 +273,24 @@ Function LoadRoomTemplates(file$)
 
 			Zones = Lower(GetINIString(file, TemporaryString, "zones"))
 			rt\zones = 0
-			If Instr(Zones,"lcz")>0 Then
+			If (Instr(Zones,"lcz")>0) Then
 				rt\zones = rt\zones Or ZONE_LCZ
 			EndIf
-			If Instr(Zones,"hcz")>0 Then
+			If (Instr(Zones,"hcz")>0) Then
 				rt\zones = rt\zones Or ZONE_HCZ
 			EndIf
-			If Instr(Zones,"ez")>0 Then
+			If (Instr(Zones,"ez")>0) Then
 				rt\zones = rt\zones Or ZONE_EZ
 			EndIf
 
-			If rt\shape<>ROOM0 Then
+			If (rt\shape<>ROOM0) Then
 				rt\commonness = Max(Min(GetINIFloat(file, TemporaryString, "commonness"), 100), 0)
 
 				AmountRange = GetINIString(file, TemporaryString, "amount", "")
-				If AmountRange="" Then
+				If (AmountRange="") Then
 					rt\minAmount = -1
 					rt\maxAmount = -1
-				ElseIf Instr(AmountRange,"-")>0 Then
+				ElseIf (Instr(AmountRange,"-")>0) Then
 					rt\minAmount = Int(Left(AmountRange,Instr(AmountRange,"-")))
 					rt\maxAmount = Int(Mid(AmountRange,Instr(AmountRange,"-")+1))
 				Else
@@ -298,10 +304,10 @@ Function LoadRoomTemplates(file$)
 				xRange = GetINIString(file, TemporaryString, "xrange")
 				yRange = GetINIString(file, TemporaryString, "yrange")
 
-				If xRange = "" Then
+				If (xRange = "") Then
 					xRange = "0-1"
 				EndIf
-				If yRange = "" Then
+				If (yRange = "") Then
 					yRange = "0-1"
 				EndIf
 
@@ -323,13 +329,13 @@ Function LoadRoomTemplates(file$)
 	i = 1
 	Repeat
 		StrTemp = GetINIString(file, "room ambience", "ambience"+i)
-		If StrTemp = "" Then Exit
+		If (StrTemp = "") Then Exit
 
 		RoomAmbience[i]=LoadSound(StrTemp)
 		i=i+1
 	Forever
 
-	CloseFile f
+	CloseFile(f)
 
 End Function
 
@@ -337,7 +343,7 @@ Function LoadRoomMesh(rt.RoomTemplates)
 	LoadRM2(rt)
 End Function
 
-Const MAP_SIZE = 19
+Const MAP_SIZE% = 19
 Global RoomScale# = 8.0 / 2048.0
 Global ZONEAMOUNT.MarkedForRemoval
 
@@ -352,8 +358,8 @@ Global HideDistance# = 15.0
 
 ;TODO: remove/replace with functions
 Global SecondaryLightOn#
-Global RemoteDoorOn
-Global Contained106
+Global RemoteDoorOn%
+Global Contained106%
 
 Type Rooms
 	Field zone%
@@ -407,8 +413,8 @@ Type Rooms
 	Field lightFlicker%[MaxRoomLights]
 	Field alarmRotor%[1]
 	Field alarmRotorLight%[1]
-	Field triggerboxAmount
-	Field triggerbox[128]
+	Field triggerboxAmount%
+	Field triggerbox%[128]
 	Field triggerboxName$[128]
 	Field maxWayPointY#
 End Type
@@ -427,16 +433,16 @@ Function UpdateGrid(grid.Grids)
 	Local tx%,ty%
 	For tx% = 0 To gridsz-1
 		For ty% = 0 To gridsz-1
-			If grid\entities[tx+(ty*gridsz)]<>0 Then
-				If Abs(EntityY(mainPlayer\collider,True)-EntityY(grid\entities[tx+(ty*gridsz)],True))>4.0 Then Exit
-				If Abs(EntityX(mainPlayer\collider,True)-EntityX(grid\entities[tx+(ty*gridsz)],True))<HideDistance Then
-					If Abs(EntityZ(mainPlayer\collider,True)-EntityZ(grid\entities[tx+(ty*gridsz)],True))<HideDistance Then
-						ShowEntity grid\entities[tx+(ty*gridsz)]
+			If (grid\entities[tx+(ty*gridsz)]<>0) Then
+				If (Abs(EntityY(mainPlayer\collider,True)-EntityY(grid\entities[tx+(ty*gridsz)],True))>4.0) Then Exit
+				If (Abs(EntityX(mainPlayer\collider,True)-EntityX(grid\entities[tx+(ty*gridsz)],True))<HideDistance) Then
+					If (Abs(EntityZ(mainPlayer\collider,True)-EntityZ(grid\entities[tx+(ty*gridsz)],True))<HideDistance) Then
+						ShowEntity(grid\entities[tx+(ty*gridsz)])
 					Else
-						HideEntity grid\entities[tx+(ty*gridsz)]
+						HideEntity(grid\entities[tx+(ty*gridsz)])
 					EndIf
 				Else
-					HideEntity grid\entities[tx+(ty*gridsz)]
+					HideEntity(grid\entities[tx+(ty*gridsz)])
 				EndIf
 			EndIf
 		Next
@@ -448,7 +454,7 @@ Function GetRoomTemplate.RoomTemplates(name$)
 
 	Local rt.RoomTemplates
 	For rt = Each RoomTemplates
-		If rt\name = name Then
+		If (rt\name = name) Then
 			Return rt
 		EndIf
 	Next
@@ -459,7 +465,7 @@ Function CountRooms%(rt.RoomTemplates)
 
 	Local r.Rooms
 	For r = Each Rooms
-		If r\roomTemplate = rt Then count=count+1
+		If (r\roomTemplate = rt) Then count=count+1
 	Next
 	Return count
 End Function
@@ -467,7 +473,7 @@ End Function
 Function CreateRoom.Rooms(rt.RoomTemplates, x#, y#, z#)
 	Local r.Rooms = New Rooms
 
-	DebugLog "Placing "+rt\name
+	DebugLog("Placing "+rt\name)
 
 	; TODO: do we still need this?
 	r\zone = rt\zones
@@ -475,7 +481,7 @@ Function CreateRoom.Rooms(rt.RoomTemplates, x#, y#, z#)
 
 	r\roomTemplate = rt
 
-	If Not rt\loaded Then LoadRoomMesh(rt)
+	If (Not rt\loaded) Then LoadRoomMesh(rt)
 
 	Local tempObj%
 	Local tempProp.Props
@@ -484,7 +490,7 @@ Function CreateRoom.Rooms(rt.RoomTemplates, x#, y#, z#)
 	r\opaqueMesh = CopyEntity(rt\opaqueMesh) : ScaleEntity(r\opaqueMesh, RoomScale, RoomScale, RoomScale)
 	EntityParent(r\opaqueMesh,r\obj)
 	ShowEntity(r\opaqueMesh)
-	If rt\alphaMesh<>0 Then
+	If (rt\alphaMesh<>0) Then
 		r\alphaMesh = CopyEntity(rt\alphaMesh) : ScaleEntity(r\alphaMesh, RoomScale, RoomScale, RoomScale)
 		ShowEntity(r\alphaMesh)
 		EntityParent(r\alphaMesh,r\obj)
@@ -497,7 +503,7 @@ Function CreateRoom.Rooms(rt.RoomTemplates, x#, y#, z#)
 		ShowEntity(tempObj) : EntityAlpha(tempObj,0.0)
 		EntityParent(tempObj,r\obj)
 	Next
-	If rt\props<>Null Then
+	If (rt\props<>Null) Then
 		r\props = CreateIntArray(rt\props\size)
 		For i% = 0 To rt\props\size-1
 			tempProp = Object.Props(GetIntArrayListElem(rt\props,i))
@@ -655,12 +661,12 @@ Function FillRoom(r.Rooms)
 			FillRoom_lck_broke_2c(r)
 	End Select
 
-	Local lt.LightTemplates
+	Local lt.LightTemplates, newlt%
 	For lt = Each LightTemplates
-		If lt\roomtemplate = r\roomTemplate Then
-			Local newlt% = AddLight(r, r\x+lt\x*RoomScale, r\y+lt\y*RoomScale, r\z+lt\z*RoomScale, lt\ltype, lt\range, lt\r, lt\g, lt\b)
-			If newlt <> 0 Then
-				If lt\ltype = 3 Then
+		If (lt\roomtemplate = r\roomTemplate) Then
+			newlt% = AddLight(r, r\x+lt\x*RoomScale, r\y+lt\y*RoomScale, r\z+lt\z*RoomScale, lt\ltype, lt\range, lt\r, lt\g, lt\b)
+			If (newlt <> 0) Then
+				If (lt\ltype = 3) Then
 					LightConeAngles(newlt, lt\innerconeangle, lt\outerconeangle)
 					RotateEntity(newlt, lt\pitch, lt\yaw, 0)
 				EndIf
@@ -670,7 +676,7 @@ Function FillRoom(r.Rooms)
 
 	Local ts.TempScreens
 	For ts.TempScreens = Each TempScreens
-		If ts\roomtemplate = r\roomTemplate Then
+		If (ts\roomtemplate = r\roomTemplate) Then
 			CreateScreen(r\x+ts\x*RoomScale, r\y+ts\y*RoomScale, r\z+ts\z*RoomScale, ts\imgpath, r)
 		EndIf
 	Next
@@ -679,19 +685,18 @@ Function FillRoom(r.Rooms)
 	Local waypoint.WayPoints
 	Local tw.TempWayPoints
 	For tw.TempWayPoints = Each TempWayPoints
-		If tw\roomtemplate = r\roomTemplate Then
+		If (tw\roomtemplate = r\roomTemplate) Then
 			waypoint = CreateWaypoint(r\x+tw\x*RoomScale, r\y+tw\y*RoomScale, r\z+tw\z*RoomScale, r)
 			PushIntArrayListElem(waypoints,Handle(waypoint))
 		EndIf
 	Next
 
-	Local i% = 0
+	Local i% = 0, j%
 	For tw.TempWayPoints = Each TempWayPoints
-		If tw\roomtemplate = r\roomTemplate Then
+		If (tw\roomtemplate = r\roomTemplate) Then
 			waypoint = Object.WayPoints(GetIntArrayListElem(waypoints,i))
-			Local j%
 			For j% = 0 To 15
-				If tw\connectedTo[j]=0 Then Exit
+				If (tw\connectedTo[j]=0) Then Exit
 				waypoint\connected[j] = Object.WayPoints(GetIntArrayListElem(waypoints,tw\connectedTo[j]-1))
 				waypoint\dist[j] = EntityDistance(waypoint\obj,waypoint\connected[j]\obj)
 			Next
@@ -705,17 +710,17 @@ Function FillRoom(r.Rooms)
 ;		r\triggerboxAmount = r\roomTemplate\tempTriggerboxAmount
 ;		For i = 0 To r\triggerboxAmount-1
 ;			r\triggerbox[i] = CopyEntity(r\roomTemplate\tempTriggerbox[i],r\obj)
-;			EntityAlpha r\triggerbox[i],0.0
+;			EntityAlpha(r\triggerbox[i],0.0)
 ;			r\triggerboxName[i] = r\roomTemplate\tempTriggerboxName[i]
-;			DebugLog "Triggerbox found: "+i
-;			DebugLog "Triggerbox "+i+" name: "+r\triggerboxName[i]
+;			DebugLog("Triggerbox found: "+i)
+;			DebugLog("Triggerbox "+i+" name: "+r\triggerboxName[i])
 ;		Next
 ;	EndIf
 
 	For i = 0 To MaxRoomEmitters-1
-		If r\roomTemplate\tempSoundEmitter[i]<>0 Then
+		If (r\roomTemplate\tempSoundEmitter[i]<>0) Then
 			r\soundEmitterObj[i]=CreatePivot(r\obj)
-			PositionEntity r\soundEmitterObj[i], r\x+r\roomTemplate\tempSoundEmitterX[i]*RoomScale,r\y+r\roomTemplate\tempSoundEmitterY[i]*RoomScale,r\z+r\roomTemplate\tempSoundEmitterZ[i]*RoomScale,True
+			PositionEntity(r\soundEmitterObj[i], r\x+r\roomTemplate\tempSoundEmitterX[i]*RoomScale,r\y+r\roomTemplate\tempSoundEmitterY[i]*RoomScale,r\z+r\roomTemplate\tempSoundEmitterZ[i]*RoomScale,True)
 			EntityParent(r\soundEmitterObj[i],r\obj)
 
 			r\soundEmitter[i] = r\roomTemplate\tempSoundEmitter[i]
@@ -726,21 +731,21 @@ Function FillRoom(r.Rooms)
 End Function
 
 Function SetRoomVisibility(r.Rooms,on%)
-	If on Then
+	If (on) Then
 		ShowEntity(r\opaqueMesh)
-		If r\alphaMesh<>0 Then
+		If (r\alphaMesh<>0) Then
 			ShowEntity(r\alphaMesh)
 		EndIf
 	Else
 		HideEntity(r\opaqueMesh)
-		If r\alphaMesh<>0 Then
+		If (r\alphaMesh<>0) Then
 			HideEntity(r\alphaMesh)
 		EndIf
 	EndIf
 End Function
 
 Function UpdateRooms()
-	Local dist#, i%, j%, r.Rooms
+	Local dist#, i%, j%, r.Rooms, minDist#
 
 	Local x#,z#,hide%=True
 
@@ -748,23 +753,23 @@ Function UpdateRooms()
 
 	;TempLightVolume=0
 	Local foundPlayerRoom% = False
-	If mainPlayer\currRoom<>Null Then
-		If Abs(EntityY(mainPlayer\collider) - EntityY(mainPlayer\currRoom\obj)) < 1.5 Then
+	If (mainPlayer\currRoom<>Null) Then
+		If (Abs(EntityY(mainPlayer\collider) - EntityY(mainPlayer\currRoom\obj)) < 1.5) Then
 			x = Abs(mainPlayer\currRoom\x-EntityX(mainPlayer\collider,True))
-			If x < 4.0 Then
+			If (x < 4.0) Then
 				z = Abs(mainPlayer\currRoom\z-EntityZ(mainPlayer\collider,True))
-				If z < 4.0 Then
+				If (z < 4.0) Then
 					foundPlayerRoom = True
 				EndIf
 			EndIf
 
-			If foundPlayerRoom = False Then ;it's likely that an adjacent room is the new player room, check for that
+			If (foundPlayerRoom = False) Then ;it's likely that an adjacent room is the new player room, check for that
 				For i=0 To 3
-					If mainPlayer\currRoom\adjacent[i]<>Null Then
+					If (mainPlayer\currRoom\adjacent[i]<>Null) Then
 						x = Abs(mainPlayer\currRoom\adjacent[i]\x-EntityX(mainPlayer\collider,True))
-						If x < 4.0 Then
+						If (x < 4.0) Then
 							z = Abs(mainPlayer\currRoom\adjacent[i]\z-EntityZ(mainPlayer\collider,True))
-							If z < 4.0 Then
+							If (z < 4.0) Then
 								foundPlayerRoom = True
 								mainPlayer\currRoom = mainPlayer\currRoom\adjacent[i]
 								Exit
@@ -777,13 +782,13 @@ Function UpdateRooms()
 			foundPlayerRoom = True ;mainPlayer\currRoom stays the same when you're high up, or deep down
 		EndIf
 	Else
-		Local minDist# = 999.0
+		minDist# = 999.0
 		For r.Rooms = Each Rooms
 			x = Abs(r\x-EntityX(mainPlayer\collider,True))
 			z = Abs(r\z-EntityZ(mainPlayer\collider,True))
 			r\dist = Max(x,z)
 
-			If r\dist<minDist Then
+			If (r\dist<minDist) Then
 				mainPlayer\currRoom = r
 				minDist = r\dist
 			EndIf
@@ -797,20 +802,20 @@ Function UpdateRooms()
 		r\dist = Max(x,z)
 
 
-		If x<16 And z < 16 Then
+		If (x<16 And z < 16) Then
 			For i = 0 To MaxRoomEmitters-1
-				If r\soundEmitter[i]<>0 Then
+				If (r\soundEmitter[i]<>0) Then
 					dist# = EntityDistance(r\soundEmitterObj[i],mainPlayer\collider)
-					If dist < r\soundEmitterRange[i] Then
+					If (dist < r\soundEmitterRange[i]) Then
 						r\soundEmitterCHN[i] = LoopRangedSound(RoomAmbience[r\soundEmitter[i]],r\soundEmitterCHN[i], mainPlayer\cam, r\soundEmitterObj[i],r\soundEmitterRange[i])
 					EndIf
 				EndIf
 			Next
 
-			If (Not foundPlayerRoom) And (mainPlayer\currRoom<>r) Then
-				If x < 4.0 Then
-					If z < 4.0 Then
-						If Abs(EntityY(mainPlayer\collider) - EntityY(r\obj)) < 1.5 Then mainPlayer\currRoom = r
+			If ((Not foundPlayerRoom) And (mainPlayer\currRoom<>r)) Then
+				If (x < 4.0) Then
+					If (z < 4.0) Then
+						If (Abs(EntityY(mainPlayer\collider) - EntityY(r\obj)) < 1.5) Then mainPlayer\currRoom = r
 						foundPlayerRoom = True
 					EndIf
 				EndIf
@@ -819,24 +824,26 @@ Function UpdateRooms()
 
 		hide = True
 
-		If r=mainPlayer\currRoom Then hide = False
-		If hide Then
-			If IsRoomAdjacent(mainPlayer\currRoom,r) Then hide = False
+		If (r=mainPlayer\currRoom) Then hide = False
+		If (hide) Then
+			If (IsRoomAdjacent(mainPlayer\currRoom,r)) Then hide = False
 		EndIf
-		If hide Then
+		If (hide) Then
 			For i=0 To 3
-				If (IsRoomAdjacent(mainPlayer\currRoom\adjacent[i],r)) Then hide=False : Exit
+				If ((IsRoomAdjacent(mainPlayer\currRoom\adjacent[i],r))) Then
+					hide=False : Exit
+				EndIf
 			Next
 		EndIf
 
-		If hide Then
-			HideEntity r\obj
+		If (hide) Then
+			HideEntity(r\obj)
 		Else
-			ShowEntity r\obj
+			ShowEntity(r\obj)
 			For i = 0 To MaxRoomLights-1
-				If r\lights[i] <> 0 Then
+				If (r\lights[i] <> 0) Then
 					dist = EntityDistance(mainPlayer\collider,r\lights[i])
-					If dist < HideDistance Then
+					If (dist < HideDistance) Then
 						;TempLightVolume = TempLightVolume + r\lightIntensity[i]*r\lightIntensity[i]*((HideDistance-dist)/HideDistance)
 						;ShowEntity(r\lights[i])
 					EndIf
@@ -852,23 +859,23 @@ Function UpdateRooms()
 
 	;TempLightVolume = Max(TempLightVolume / 4.5, 1.0)
 
-	If mainPlayer\currRoom<>Null Then
+	If (mainPlayer\currRoom<>Null) Then
 		SetRoomVisibility(mainPlayer\currRoom,True)
 		For i=0 To 3
-			If mainPlayer\currRoom\adjacent[i]<>Null Then
+			If (mainPlayer\currRoom\adjacent[i]<>Null) Then
 				x = Abs(EntityX(mainPlayer\collider,True)-EntityX(mainPlayer\currRoom\adjDoor[i]\frameobj,True))
 				z = Abs(EntityZ(mainPlayer\collider,True)-EntityZ(mainPlayer\currRoom\adjDoor[i]\frameobj,True))
-				If mainPlayer\currRoom\adjDoor[i]\openstate = 0 Then
+				If (mainPlayer\currRoom\adjDoor[i]\openstate = 0) Then
 					SetRoomVisibility(mainPlayer\currRoom\adjacent[i],False)
-				ElseIf (Not EntityInView(mainPlayer\currRoom\adjDoor[i]\frameobj,mainPlayer\cam)) Then
+				ElseIf ((Not EntityInView(mainPlayer\currRoom\adjDoor[i]\frameobj,mainPlayer\cam))) Then
 					SetRoomVisibility(mainPlayer\currRoom\adjacent[i],False)
 				Else
 					SetRoomVisibility(mainPlayer\currRoom\adjacent[i],True)
 				EndIf
 
 				For j=0 To 3
-					If (mainPlayer\currRoom\adjacent[i]\adjacent[j]<>Null) Then
-						If (mainPlayer\currRoom\adjacent[i]\adjacent[j]<>mainPlayer\currRoom) Then SetRoomVisibility(mainPlayer\currRoom\adjacent[i]\adjacent[j],False)
+					If ((mainPlayer\currRoom\adjacent[i]\adjacent[j]<>Null)) Then
+						If ((mainPlayer\currRoom\adjacent[i]\adjacent[j]<>mainPlayer\currRoom)) Then SetRoomVisibility(mainPlayer\currRoom\adjacent[i]\adjacent[j],False)
 					EndIf
 				Next
 			EndIf
@@ -878,11 +885,11 @@ Function UpdateRooms()
 End Function
 
 Function IsRoomAdjacent(this.Rooms,that.Rooms)
-	If this=Null Then Return False
-	If this=that Then Return True
+	If (this=Null) Then Return False
+	If (this=that) Then Return True
 	Local i%
 	For i=0 To 3
-		If that=this\adjacent[i] Then Return True
+		If (that=this\adjacent[i]) Then Return True
 	Next
 	Return False
 End Function
@@ -891,11 +898,12 @@ End Function
 
 Global LightVolume.MarkedForRemoval, TempLightVolume.MarkedForRemoval
 Function AddLight%(room.Rooms, x#, y#, z#, ltype%, range#, r%, g%, b%)
-	Local i
+	Local i%
+	Local light%,sprite%
 
-	If room<>Null Then
+	If (room<>Null) Then
 		For i = 0 To MaxRoomLights-1
-			If room\lights[i]=0 Then
+			If (room\lights[i]=0) Then
 				room\lights[i] = CreateLight(ltype)
 				;room\lightDist[i] = range
 				LightRange(room\lights[i],range)
@@ -909,12 +917,12 @@ Function AddLight%(room.Rooms, x#, y#, z#, ltype%, range#, r%, g%, b%)
 				PositionEntity(room\lightSprites[i], x, y, z)
 				ScaleSprite(room\lightSprites[i], 0.13 , 0.13)
 				EntityTexture(room\lightSprites[i], LightSpriteTex(0))
-				EntityBlend (room\lightSprites[i], 3)
+				EntityBlend(room\lightSprites[i], 3)
 
 				EntityParent(room\lightSprites[i], room\obj)
 
 				room\lightSpritesPivot[i] = CreatePivot()
-				EntityRadius room\lightSpritesPivot[i],0.05
+				EntityRadius(room\lightSpritesPivot[i],0.05)
 				PositionEntity(room\lightSpritesPivot[i], x, y, z)
 				EntityParent(room\lightSpritesPivot[i], room\obj)
 
@@ -930,10 +938,10 @@ Function AddLight%(room.Rooms, x#, y#, z#, ltype%, range#, r%, g%, b%)
 				RotateEntity(room\lightSprites2[i],0,0,Rand(360))
 				SpriteViewMode(room\lightSprites2[i],1)
 				room\lightSpriteHidden%[i] = True
-				HideEntity room\lightSprites2[i]
+				HideEntity(room\lightSprites2[i])
 				room\lightFlicker%[i] = Rand(1,10)
 
-				HideEntity room\lights[i]
+				HideEntity(room\lights[i])
 
 				room\maxLights% = room\maxLights% + 1
 
@@ -941,7 +949,6 @@ Function AddLight%(room.Rooms, x#, y#, z#, ltype%, range#, r%, g%, b%)
 			EndIf
 		Next
 	Else
-		Local light%,sprite%
 		light=CreateLight(ltype)
 		LightRange(light,range)
 		LightColor(light,r,g,b)
@@ -950,7 +957,7 @@ Function AddLight%(room.Rooms, x#, y#, z#, ltype%, range#, r%, g%, b%)
 		PositionEntity(sprite, x, y, z)
 		ScaleSprite(sprite, 0.13 , 0.13)
 		EntityTexture(sprite, LightSpriteTex(0))
-		EntityBlend (sprite, 3)
+		EntityBlend(sprite, 3)
 		Return light
 	EndIf
 End Function
@@ -993,7 +1000,7 @@ Type TempWayPoints
 End Type
 
 Type WayPoints
-	Field obj
+	Field obj%
 	Field room.Rooms
 	Field state%
 	;Field tempDist#
@@ -1010,66 +1017,70 @@ Function CreateWaypoint.WayPoints(x#,y#,z#,room.Rooms)
 	Local w.WayPoints = New WayPoints
 
 	w\obj = CreatePivot()
-	PositionEntity w\obj, x,y,z
+	PositionEntity(w\obj, x,y,z)
 
-	EntityParent w\obj, room\obj
+	EntityParent(w\obj, room\obj)
 
 	w\room = room
 
 	Return w
 End Function
 
-Function InitWayPoints(loadingstart=45)
+Function InitWayPoints(loadingstart%=45)
 
 	Local d.Doors, w.WayPoints, w2.WayPoints, r.Rooms, ClosestRoom.Rooms
 
-	Local x#, y#, z#
+	Local x#, y#, z#, i%, tline%
 
 	Local temper% = MilliSecs()
 
 	Local dist#, dist2#
 
 	For w.WayPoints = Each WayPoints
-		EntityPickMode w\obj, 0, 0
-		EntityRadius w\obj, 0
-
-		Local i%
+		EntityPickMode(w\obj, 0, 0)
+		EntityRadius(w\obj, 0)
+		
 		For i = 0 To 4
-			If w\connected[i]<>Null Then
-				Local tline = CreateLine(EntityX(w\obj,True),EntityY(w\obj,True),EntityZ(w\obj,True),EntityX(w\connected[i]\obj,True),EntityY(w\connected[i]\obj,True),EntityZ(w\connected[i]\obj,True))
+			If (w\connected[i]<>Null) Then
+				tline = CreateLine(EntityX(w\obj,True),EntityY(w\obj,True),EntityZ(w\obj,True),EntityX(w\connected[i]\obj,True),EntityY(w\connected[i]\obj,True),EntityZ(w\connected[i]\obj,True))
 				EntityColor(tline, 255,0,0)
-				EntityParent tline, w\obj
+				EntityParent(tline, w\obj)
 			EndIf
 		Next
 	Next
 
-	DebugLog "InitWaypoints() - "+(TimeInPosMilliSecs()-temper)
+	DebugLog("InitWaypoints() - "+(TimeInPosMilliSecs()-temper))
 
 End Function
 
 Function RemoveWaypoint(w.WayPoints)
-	FreeEntity w\obj
+	FreeEntity(w\obj)
 	Delete w
 End Function
 
 Function FindPath(n.NPCs, x#, y#, z#)
 
-	DebugLog "findpath: "+n\npcType
+	DebugLog("findpath: "+n\npcType)
 
 	Local temp%, dist#, dist2#
 	Local xtemp#, ytemp#, ztemp#
+	Local gtemp#
 
 	Local w.WayPoints, StartPoint.WayPoints, EndPoint.WayPoints
+	Local currpoint.WayPoints
+	Local twentiethpoint.WayPoints
+	
+	Local length% = 0
 
 	Local StartX% = Floor(EntityX(n\collider,True) / 8.0 + 0.5), StartZ% = Floor(EntityZ(n\collider,True) / 8.0 + 0.5)
-       ;If StartX < 0 Or StartX > MapWidth Then Return 2
-       ;If StartZ < 0 Or StartZ > MapWidth Then Return 2
+       ;If (StartX < 0 Or StartX > MapWidth) Then Return 2
+       ;If (StartZ < 0 Or StartZ > MapWidth) Then Return 2
 
 	Local EndX% = Floor(x / 8.0 + 0.5), EndZ% = Floor(z / 8.0 + 0.5)
-       ;If EndX < 0 Or EndX > MapWidth Then Return 2
-       ;If EndZ < 0 Or EndZ > MapWidth Then Return 2
+       ;If (EndX < 0 Or EndX > MapWidth) Then Return 2
+       ;If (EndZ < 0 Or EndZ > MapWidth) Then Return 2
 
-	Local CurrX, CurrZ
+	Local CurrX%, CurrZ%
 
        ;pathstatus = 0, ei ole etsitty reitti�
        ;pathstatus = 1, reitti l�ydetty
@@ -1090,7 +1101,7 @@ Function FindPath(n.NPCs, x#, y#, z#)
 		n\path[i] = Null
 	Next
 
-	Local pvt = CreatePivot()
+	Local pvt% = CreatePivot()
 	PositionEntity(pvt, x,y,z, True)
 
 	temp = CreatePivot()
@@ -1099,16 +1110,16 @@ Function FindPath(n.NPCs, x#, y#, z#)
 	dist = 350.0
 	For w.WayPoints = Each WayPoints
 		xtemp = EntityX(w\obj,True)-EntityX(temp,True)
-          ;If xtemp < 8.0 Then
+          ;If (xtemp < 8.0) Then
 		ztemp = EntityZ(w\obj,True)-EntityZ(temp,True)
-             ;If ztemp < 8.0 Then
+             ;If (ztemp < 8.0) Then
 		ytemp = EntityY(w\obj,True)-EntityY(temp,True)
-                ;If ytemp < 8.0 Then
+                ;If (ytemp < 8.0) Then
 		dist2# = (xtemp*xtemp)+(ytemp*ytemp)+(ztemp*ztemp)
-		If dist2 < dist Then
+		If (dist2 < dist) Then
 			;prefer waypoints that are visible
-			If Not EntityVisible(w\obj, temp) Then dist2 = dist2*3
-			If dist2 < dist Then
+			If (Not EntityVisible(w\obj, temp)) Then dist2 = dist2*3
+			If (dist2 < dist) Then
 				dist = dist2
 				StartPoint = w
 			EndIf
@@ -1117,25 +1128,25 @@ Function FindPath(n.NPCs, x#, y#, z#)
              ;EndIf
           ;EndIf
 	Next
-	DebugLog "DIST: "+dist
+	DebugLog("DIST: "+dist)
 
-	FreeEntity temp
+	FreeEntity(temp)
 
-	If StartPoint = Null Then Return 2
+	If (StartPoint = Null) Then Return 2
 	StartPoint\state = 1
 
-       ;If EndPoint = Null Then
+       ;If (EndPoint = Null) Then
 	EndPoint = Null
 	dist# = 400.0
 	For w.WayPoints = Each WayPoints
 		xtemp = EntityX(pvt,True)-EntityX(w\obj,True)
-          ;If xtemp =< 8.0 Then
+          ;If (xtemp =< 8.0) Then
 		ztemp = EntityZ(pvt,True)-EntityZ(w\obj,True)
-             ;If ztemp =< 8 Then
+             ;If (ztemp =< 8) Then
 		ytemp = EntityY(pvt,True)-EntityY(w\obj,True)
 		dist2# = (xtemp*xtemp)+(ytemp*ytemp)+(ztemp*ztemp)
 
-		If dist2 < dist Then ; And EntityVisible(w\obj, pvt)
+		If (dist2 < dist) Then ; And EntityVisible(w\obj, pvt)
 			dist = dist2
 			EndPoint = w
 		EndIf
@@ -1144,51 +1155,52 @@ Function FindPath(n.NPCs, x#, y#, z#)
 	Next
        ;EndIf
 
-	FreeEntity pvt
+	FreeEntity(pvt)
 
-	If EndPoint = StartPoint Then
-		If dist < 0.4 Then
+	If (EndPoint = StartPoint) Then
+		If (dist < 0.4) Then
 			Return 0
 		Else
 			n\path[0]=EndPoint
 			Return 1
 		EndIf
 	EndIf
-	If EndPoint = Null Then Return 2
+	If (EndPoint = Null) Then Return 2
 
        ;aloitus- ja lopetuspisteet l�ydetty, aletaan etsi� reitti�
-
+	
+	Local smallest.WayPoints
 	Repeat
 
 		temp% = False
-		Local smallest.WayPoints = Null
+		smallest.WayPoints = Null
 		dist# = 10000.0
 		For w.WayPoints = Each WayPoints
-			If w\state = 1 Then
+			If (w\state = 1) Then
                 temp = True
-                If (w\fCost) < dist Then
+                If ((w\fCost) < dist) Then
 					dist = w\fCost
 					smallest = w
                 EndIf
 			EndIf
 		Next
 
-		If smallest <> Null Then
+		If (smallest <> Null) Then
 
 			w = smallest
 			w\state = 2
 
 			For i = 0 To 15
-                If w\connected[i]<>Null Then
-					If w\connected[i]\state < 2 Then
+                If (w\connected[i]<>Null) Then
+					If (w\connected[i]\state < 2) Then
 
-						If w\connected[i]\state=1 Then ;open list
-							Local gtemp# = w\gCost+w\dist[i]
+						If (w\connected[i]\state=1) Then ;open list
+							gtemp# = w\gCost+w\dist[i]
 							;TODO: fix?
-							;If n\npcType = NPCtypeMTF Then
-							;	If w\connected[i]\door = Null Then gtemp = gtemp + 0.5
+							;If (n\npcType = NPCtypeMTF) Then
+							;	If (w\connected[i]\door = Null) Then gtemp = gtemp + 0.5
 							;EndIf
-							If gtemp < w\connected[i]\gCost Then ;parempi reitti -> overwrite
+							If (gtemp < w\connected[i]\gCost) Then ;parempi reitti -> overwrite
 								w\connected[i]\gCost = gtemp
 								w\connected[i]\fCost = w\connected[i]\gCost + w\connected[i]\hCost
 								w\connected[i]\parent = w
@@ -1197,8 +1209,8 @@ Function FindPath(n.NPCs, x#, y#, z#)
 							w\connected[i]\hCost# = Abs(EntityX(w\connected[i]\obj,True)-EntityX(EndPoint\obj,True))+Abs(EntityZ(w\connected[i]\obj,True)-EntityZ(EndPoint\obj,True))
 							gtemp# = w\gCost+w\dist[i]
 							;TODO: fix?
-							;If n\npcType = NPCtypeMTF Then
-							;	If w\connected[i]\door = Null Then gtemp = gtemp + 0.5
+							;If (n\npcType = NPCtypeMTF) Then
+							;	If (w\connected[i]\door = Null) Then gtemp = gtemp + 0.5
 							;EndIf
 							w\connected[i]\gCost = gtemp
 							w\connected[i]\fCost = w\gCost+w\hCost
@@ -1210,14 +1222,14 @@ Function FindPath(n.NPCs, x#, y#, z#)
                 EndIf
 			Next
 		Else ;open listilt� ei l�ytynyt mit��n
-			If EndPoint\state > 0 Then
+			If (EndPoint\state > 0) Then
                 StartPoint\parent = Null
                 EndPoint\state = 2
                 Exit
 			EndIf
 		EndIf
 
-		If EndPoint\state > 0 Then
+		If (EndPoint\state > 0) Then
 			StartPoint\parent = Null
 			EndPoint\state = 2
 			Exit
@@ -1225,16 +1237,16 @@ Function FindPath(n.NPCs, x#, y#, z#)
 
 	Until temp = False
 
-	If EndPoint\state > 0 Then
+	If (EndPoint\state > 0) Then
 
-		Local currpoint.WayPoints = EndPoint
-		Local twentiethpoint.WayPoints = EndPoint
+		currpoint.WayPoints = EndPoint
+		twentiethpoint.WayPoints = EndPoint
 
-		Local length% = 0
+		length% = 0
 		Repeat
 			length = length +1
 			currpoint = currpoint\parent
-			If length>20 Then
+			If (length>20) Then
                 twentiethpoint = twentiethpoint\parent
 			EndIf
 		Until currpoint = Null
@@ -1242,28 +1254,28 @@ Function FindPath(n.NPCs, x#, y#, z#)
 		currpoint.WayPoints = EndPoint
 		While twentiethpoint<>Null
 			length=Min(length-1,19)
-             ;DebugLog "LENGTH "+length
+             ;DebugLog("LENGTH "+length)
 			twentiethpoint = twentiethpoint\parent
 			n\path[length] = twentiethpoint
 		Wend
 
 		Return 1
-          ;RuntimeError length
+          ;RuntimeError(length)
     ;      For i = 0 To (length-1)
     ;         temp =False
-    ;         If length < 20 Then
+    ;         If (length < 20) Then
     ;            n\path[length-1-i] = currpoint.WayPoints
     ;         Else
-    ;            If i < 20 Then
+    ;            If (i < 20) Then
     ;               n\path[20-1-i] = w.WayPoints
     ;            Else
     ;               ;Return 1
     ;            EndIf
     ;         EndIf
     ;
-    ;         If currpoint = StartPoint Then Return 1
+    ;         If (currpoint = StartPoint) Then Return 1
     ;
-    ;         If currpoint\parent <> Null Then
+    ;         If (currpoint\parent <> Null) Then
     ;            currpoint = currpoint\parent
     ;         Else
     ;            Exit
@@ -1273,36 +1285,36 @@ Function FindPath(n.NPCs, x#, y#, z#)
 
 	Else
 
-		DebugLog "FUNCTION FindPath() - reitti� ei l�ytynyt"
+		DebugLog("FUNCTION FindPath() - reitti� ei l�ytynyt")
 		Return 2 ;reitti� m��r�np��h�n ei l�ytynyt
 
 	EndIf
 
 End Function
 
-Function CreateLine(x1#,y1#,z1#, x2#,y2#,z2#, mesh=0)
-	Local surf, verts
+Function CreateLine(x1#,y1#,z1#, x2#,y2#,z2#, mesh%=0)
+	Local surf%, verts%
 
-	If mesh = 0 Then
+	If (mesh = 0) Then
 		mesh=CreateMesh()
 		EntityFX(mesh,16)
 		surf=CreateSurface(mesh)
 		verts = 0
 
-		AddVertex surf,x1#,y1#,z1#,0,0
+		AddVertex(surf,x1#,y1#,z1#,0,0)
 	Else
 		surf = GetSurface(mesh,1)
 		verts = CountVertices(surf)-1
 	EndIf
 
-	AddVertex surf,(x1#+x2#)/2,(y1#+y2#)/2,(z1#+z2#)/2,0,0
+	AddVertex(surf,(x1#+x2#)/2,(y1#+y2#)/2,(z1#+z2#)/2,0,0)
 	; you could skip creating the above vertex and change the line below to
-	; AddTriangle surf,verts,verts+1,verts+0
+	; AddTriangle(surf,verts,verts+1,verts+0)
 	; so your line mesh would use less vertices, the drawback is that some videocards (like the matrox g400)
 	; aren't able to create a triangle with 2 vertices. so, it's your call :)
-	AddVertex surf,x2#,y2#,z2#,1,0
+	AddVertex(surf,x2#,y2#,z2#,1,0)
 
-	AddTriangle surf,verts,verts+2,verts+1
+	AddTriangle(surf,verts,verts+2,verts+1)
 
 	Return mesh
 End Function
@@ -1327,32 +1339,32 @@ Function CreateScreen.Screens(x#,y#,z#,imgpath$,r.Rooms)
 	Local s.Screens = New Screens
 	s\obj = CreatePivot()
 	EntityPickMode(s\obj, 1)
-	EntityRadius s\obj, 0.1
+	EntityRadius(s\obj, 0.1)
 
-	PositionEntity s\obj, x,y,z
+	PositionEntity(s\obj, x,y,z)
 	s\imgpath = imgpath
 	s\room = r
-	EntityParent s\obj, r\obj
+	EntityParent(s\obj, r\obj)
 
 	Return s
 End Function
 
 Function UpdateScreens()
-	If SelectedScreen <> Null Then Return
-	If SelectedDoor <> Null Then Return
+	If (SelectedScreen <> Null) Then Return
+	If (SelectedDoor <> Null) Then Return
 
 	Local s.Screens
 	For s = Each Screens
-		If s\room = mainPlayer\currRoom Then
-			If EntityDistance(mainPlayer\collider,s\obj)<1.2 Then
+		If (s\room = mainPlayer\currRoom) Then
+			If (EntityDistance(mainPlayer\collider,s\obj)<1.2) Then
 				EntityPick(mainPlayer\cam, 1.2)
-				If PickedEntity()=s\obj And s\imgpath<>"" Then
+				If (PickedEntity()=s\obj And s\imgpath<>"") Then
 					DrawHandIcon=True
-					If MouseUp1 Then
+					If (MouseUp1) Then
 						SelectedScreen=s
 						s\img = LoadImage("GFX/screens/"+s\imgpath)
 						s\img = ResizeImage2(s\img, ImageWidth(s\img) * MenuScale, ImageHeight(s\img) * MenuScale)
-						MaskImage s\img, 255,0,255
+						MaskImage(s\img, 255,0,255)
 						PlaySound_SM(sndManager\button)
 						MouseUp1=False
 					EndIf
@@ -1404,6 +1416,7 @@ Global ScreenTexs%[2]
 
 Function CreateSecurityCam.SecurityCams(x#, y#, z#, r.Rooms, screen% = False)
 	Local sc.SecurityCams = New SecurityCams
+	Local scale#
 
 	sc\obj = CopyEntity(CamBaseOBJ)
 	ScaleEntity(sc\obj, 0.0015, 0.0015, 0.0015)
@@ -1413,18 +1426,18 @@ Function CreateSecurityCam.SecurityCams(x#, y#, z#, r.Rooms, screen% = False)
 	sc\room = r
 
 	sc\screen = screen
-	If screen Then
+	If (screen) Then
 		sc\allowSaving = True
 
 		sc\renderInterval = 12
 
-		Local scale# = RoomScale * 4.5 * 0.4
+		scale# = RoomScale * 4.5 * 0.4
 
 		sc\scrObj = CreateSprite()
-		EntityFX sc\scrObj, 17
+		EntityFX(sc\scrObj, 17)
 		SpriteViewMode(sc\scrObj, 2)
 		sc\scrTexture = 0
-		EntityTexture sc\scrObj, ScreenTexs[sc\scrTexture]
+		EntityTexture(sc\scrObj, ScreenTexs[sc\scrTexture])
 		ScaleSprite(sc\scrObj, MeshWidth(Monitor) * scale * 0.95 * 0.5, MeshHeight(Monitor) * scale * 0.95 * 0.5)
 
 		sc\scrOverlay = CreateSprite(sc\scrObj)
@@ -1441,20 +1454,21 @@ Function CreateSecurityCam.SecurityCams(x#, y#, z#, r.Rooms, screen% = False)
 
 		sc\cam = CreateCamera()
 		CameraViewport(sc\cam, 0, 0, 512, 512)
-		CameraRange sc\cam, 0.05, 6.0
+		CameraRange(sc\cam, 0.05, 6.0)
 		CameraZoom(sc\cam, 0.8)
 		HideEntity(sc\cam)
 	EndIf
 
 	PositionEntity(sc\obj, x, y, z)
 
-	If r<>Null Then EntityParent(sc\obj, r\obj)
+	If (r<>Null) Then EntityParent(sc\obj, r\obj)
 
 	Return sc
 End Function
 
 Function UpdateSecurityCams()
 	Local sc.SecurityCams
+	Local close%, temp#, pvt%
 
 	PlayerDetected = False
 
@@ -1464,51 +1478,51 @@ Function UpdateSecurityCams()
 	;coffineffect = 3, 079 broadcasting 895 feed
 
 	For sc.SecurityCams = Each SecurityCams
-		Local close = False
-		If sc\room = Null And (Not sc\specialCam) Then
-			HideEntity sc\cam
+		close = False
+		If (sc\room = Null And (Not sc\specialCam)) Then
+			HideEntity(sc\cam)
 		Else
-			If (Not sc\specialCam) Then
-				If sc\room\dist < 6.0 Or mainPlayer\currRoom=sc\room Then
+			If ((Not sc\specialCam)) Then
+				If (sc\room\dist < 6.0 Or mainPlayer\currRoom=sc\room) Then
 					close = True
-				ElseIf sc\isRoom2slCam Then
+				ElseIf (sc\isRoom2slCam) Then
 					close = True
-				ElseIf sc\cam<>0 Then
-					HideEntity sc\cam
+				ElseIf (sc\cam<>0) Then
+					HideEntity(sc\cam)
 				EndIf
 			EndIf
 
-			If sc\isRoom2slCam Then sc\coffinEffect = 0
-			If sc\room <> Null Then
-				If sc\room\roomTemplate\name$ = "hll_sl_2" Then sc\coffinEffect = 0
+			If (sc\isRoom2slCam) Then sc\coffinEffect = 0
+			If (sc\room <> Null) Then
+				If (sc\room\roomTemplate\name$ = "hll_sl_2") Then sc\coffinEffect = 0
 			EndIf
-			If sc\specialCam Then sc\coffinEffect = 0
+			If (sc\specialCam) Then sc\coffinEffect = 0
 
-			If close Or sc=CoffinCam Or sc\isRoom2slCam Then
-				If sc\followPlayer Then
-					If sc<>CoffinCam Then
-						If EntityVisible(sc\cameraObj,mainPlayer\cam) Then
+			If (close Or sc=CoffinCam Or sc\isRoom2slCam) Then
+				If (sc\followPlayer) Then
+					If (sc<>CoffinCam) Then
+						If (EntityVisible(sc\cameraObj,mainPlayer\cam)) Then
 							PlayerDetected = True
 						EndIf
 					EndIf
 					PointEntity(sc\cameraObj, mainPlayer\cam)
-					Local temp# = EntityPitch(sc\cameraObj)
+					temp# = EntityPitch(sc\cameraObj)
 					RotateEntity(sc\obj, 0, CurveAngle(EntityYaw(sc\cameraObj), EntityYaw(sc\obj), 75.0), 0)
 
-					If temp < 40.0 Then temp = 40
-					If temp > 70.0 Then temp = 70
+					If (temp < 40.0) Then temp = 40
+					If (temp > 70.0) Then temp = 70
 					RotateEntity(sc\cameraObj, CurveAngle(temp, EntityPitch(sc\cameraObj), 75.0), EntityYaw(sc\obj), 0)
 
 					PositionEntity(sc\cameraObj, EntityX(sc\obj, True), EntityY(sc\obj, True) - 0.083, EntityZ(sc\obj, True))
 					RotateEntity(sc\cameraObj, EntityPitch(sc\cameraObj), EntityYaw(sc\obj), 0)
 				Else
-					If sc\turn > 0 Then
-						If sc\dir = 0 Then
+					If (sc\turn > 0) Then
+						If (sc\dir = 0) Then
 							sc\currAngle=sc\currAngle+0.2 * timing\tickDuration
-							If sc\currAngle > (sc\turn * 1.3) Then sc\dir = 1
+							If (sc\currAngle > (sc\turn * 1.3)) Then sc\dir = 1
 						Else
 							sc\currAngle=sc\currAngle-0.2 * timing\tickDuration
-							If sc\currAngle < (-sc\turn * 1.3) Then sc\dir = 0
+							If (sc\currAngle < (-sc\turn * 1.3)) Then sc\dir = 0
 						EndIf
 					EndIf
 					RotateEntity(sc\obj, 0, sc\room\angle + sc\angle + Max(Min(sc\currAngle, sc\turn), -sc\turn), 0)
@@ -1516,15 +1530,15 @@ Function UpdateSecurityCams()
 					PositionEntity(sc\cameraObj, EntityX(sc\obj, True), EntityY(sc\obj, True) - 0.083, EntityZ(sc\obj, True))
 					RotateEntity(sc\cameraObj, EntityPitch(sc\cameraObj), EntityYaw(sc\obj), 0)
 
-					If sc\cam<>0 Then
+					If (sc\cam<>0) Then
 						PositionEntity(sc\cam, EntityX(sc\cameraObj, True), EntityY(sc\cameraObj, True), EntityZ(sc\cameraObj, True))
 						RotateEntity(sc\cam, EntityPitch(sc\cameraObj), EntityYaw(sc\cameraObj), 0)
 						MoveEntity(sc\cam, 0, 0, 0.1)
 					EndIf
 
-					If sc<>CoffinCam Then
-						If (Abs(DeltaYaw(sc\cameraObj,mainPlayer\cam))<60.0) Then
-							If EntityVisible(sc\cameraObj,mainPlayer\cam) Then
+					If (sc<>CoffinCam) Then
+						If ((Abs(DeltaYaw(sc\cameraObj,mainPlayer\cam))<60.0)) Then
+							If (EntityVisible(sc\cameraObj,mainPlayer\cam)) Then
 								PlayerDetected = True
 							EndIf
 						EndIf
@@ -1532,31 +1546,31 @@ Function UpdateSecurityCams()
 				EndIf
 			EndIf
 
-			If close = True Or sc\isRoom2slCam Or sc\specialCam Then
-				If sc\screen Then
+			If (close = True Or sc\isRoom2slCam Or sc\specialCam) Then
+				If (sc\screen) Then
 					sc\state = sc\state+timing\tickDuration
 
-					If sc\inSight And sc\allowSaving Then
-						If SelectedDifficulty\saveType = SAVEONSCREENS And EntityDistance(mainPlayer\cam, sc\scrObj)<1.0 Then
+					If (sc\inSight And sc\allowSaving) Then
+						If (SelectedDifficulty\saveType = SAVEONSCREENS And EntityDistance(mainPlayer\cam, sc\scrObj)<1.0) Then
 							DrawHandIcon = True
-							If MouseHit1 Then SelectedMonitor = sc
-						ElseIf SelectedMonitor = sc Then
+							If (MouseHit1) Then SelectedMonitor = sc
+						ElseIf (SelectedMonitor = sc) Then
 							SelectedMonitor = Null
 						EndIf
 					Else
 						SelectedMonitor = Null
 					EndIf
 
-					If sc\state >= sc\renderInterval Then
+					If (sc\state >= sc\renderInterval) Then
 						sc\inSight = False
-						If mainPlayer\blinkTimer > - 5 And EntityInView(sc\scrObj, mainPlayer\cam) Then
-							If EntityVisible(mainPlayer\cam,sc\scrObj) Then
+						If (mainPlayer\blinkTimer > - 5 And EntityInView(sc\scrObj, mainPlayer\cam)) Then
+							If (EntityVisible(mainPlayer\cam,sc\scrObj)) Then
 								sc\inSight = True
 
-								If sc\coffinEffect=1 Or sc\coffinEffect=3 Then
-									If mainPlayer\blinkTimer > - 5 Then mainPlayer\sanity895=mainPlayer\sanity895-(timing\tickDuration * 16)
+								If (sc\coffinEffect=1 Or sc\coffinEffect=3) Then
+									If (mainPlayer\blinkTimer > - 5) Then mainPlayer\sanity895=mainPlayer\sanity895-(timing\tickDuration * 16)
 
-									If mainPlayer\sanity895 < (-1000) Then
+									If (mainPlayer\sanity895 < (-1000)) Then
 										DeathMSG = Chr(34)+"What we know is that he died of cardiac arrest. My guess is that it was caused by SCP-895, although it has never been observed affecting video equipment from this far before. "
 										DeathMSG = DeathMSG + "Further testing is needed to determine whether SCP-895's "+Chr(34)+"Red Zone"+Chr(34)+" is increasing."+Chr(34)
 
@@ -1564,40 +1578,40 @@ Function UpdateSecurityCams()
 									EndIf
 								EndIf
 
-								If (Not sc\isRoom2slCam) Then
-									If (Not sc\specialCam) Then
-										If CoffinCam = Null Or Rand(5)=5 Or sc\coffinEffect <> 3 Then
+								If ((Not sc\isRoom2slCam)) Then
+									If ((Not sc\specialCam)) Then
+										If (CoffinCam = Null Or Rand(5)=5 Or sc\coffinEffect <> 3) Then
 											HideEntity(mainPlayer\cam)
 											ShowEntity(sc\cam)
-											Cls
+											Cls()
 
-											SetBuffer BackBuffer()
-											RenderWorld
-											CopyRect 0,0,512,512,0,0,BackBuffer(),TextureBuffer(ScreenTexs[sc\scrTexture])
+											SetBuffer(BackBuffer())
+											RenderWorld()
+											CopyRect(0,0,512,512,0,0,BackBuffer(),TextureBuffer(ScreenTexs[sc\scrTexture]))
 
 											HideEntity(sc\cam)
 											ShowEntity(mainPlayer\cam)
 										Else
 											HideEntity(mainPlayer\cam)
-											ShowEntity (CoffinCam\room\obj)
+											ShowEntity(CoffinCam\room\obj)
 											SetRoomVisibility(CoffinCam\room,True)
 											ShowEntity(CoffinCam\cam)
-											Cls
+											Cls()
 
-											SetBuffer BackBuffer()
-											RenderWorld
-											CopyRect 0,0,512,512,0,0,BackBuffer(),TextureBuffer(ScreenTexs[sc\scrTexture])
+											SetBuffer(BackBuffer())
+											RenderWorld()
+											CopyRect(0,0,512,512,0,0,BackBuffer(),TextureBuffer(ScreenTexs[sc\scrTexture]))
 
-											HideEntity (CoffinCam\room\obj)
+											HideEntity(CoffinCam\room\obj)
 											HideEntity(CoffinCam\cam)
 											ShowEntity(mainPlayer\cam)
 										EndIf
 									Else
 										HideEntity(mainPlayer\cam)
 										ShowEntity(sc\cam)
-										Cls
+										Cls()
 
-										RenderWorld
+										RenderWorld()
 
 										HideEntity(sc\cam)
 										ShowEntity(mainPlayer\cam)
@@ -1607,14 +1621,14 @@ Function UpdateSecurityCams()
 									EndIf
 								Else
 									HideEntity(mainPlayer\cam)
-									ShowEntity (sc\room\obj)
+									ShowEntity(sc\room\obj)
 									SetRoomVisibility(sc\room,True)
 									ShowEntity(sc\cam)
-									Cls
+									Cls()
 
-									RenderWorld
+									RenderWorld()
 
-									HideEntity (sc\room\obj)
+									HideEntity(sc\room\obj)
 									HideEntity(sc\cam)
 									ShowEntity(mainPlayer\cam)
 
@@ -1626,11 +1640,11 @@ Function UpdateSecurityCams()
 						sc\state = 0
 					EndIf
 
-					If SelectedMonitor = sc Or sc\coffinEffect=1 Or sc\coffinEffect=3 Then
-						If sc\inSight Then
-						;If (Not NoClip) Then
-							Local pvt% = CreatePivot()
-							PositionEntity pvt, EntityX(mainPlayer\cam), EntityY(mainPlayer\cam), EntityZ(mainPlayer\cam)
+					If (SelectedMonitor = sc Or sc\coffinEffect=1 Or sc\coffinEffect=3) Then
+						If (sc\inSight) Then
+						;If ((Not NoClip)) Then
+							pvt% = CreatePivot()
+							PositionEntity(pvt, EntityX(mainPlayer\cam), EntityY(mainPlayer\cam), EntityZ(mainPlayer\cam))
 							PointEntity(pvt, sc\scrObj)
 
 							DebugLog("curvea: "+CurveAngle(EntityYaw(pvt), EntityYaw(mainPlayer\collider), Min(Max(15000.0 / (-mainPlayer\sanity895), 20.0), 200.0)))
@@ -1643,30 +1657,34 @@ Function UpdateSecurityCams()
 							DebugLog("pvt: "+EntityYaw(pvt)+"   - coll: "+EntityYaw(mainPlayer\collider))
 
 
-							FreeEntity pvt
+							FreeEntity(pvt)
 						;EndIf
-							If sc\coffinEffect=1 Or sc\coffinEffect=3 Then
-								If mainPlayer\sanity895 < - 800 Then
-									If Rand(3) = 1 Then EntityTexture(sc\scrOverlay, MonitorTexture)
-									If Rand(6) < 5 Then
+							If (sc\coffinEffect=1 Or sc\coffinEffect=3) Then
+								If (mainPlayer\sanity895 < - 800) Then
+									If (Rand(3) = 1) Then EntityTexture(sc\scrOverlay, MonitorTexture)
+									If (Rand(6) < 5) Then
 										EntityTexture(sc\scrOverlay, GorePics(Rand(0, 5)))
-										;If sc\playerState = 1 Then PlaySound(HorrorSFX(1)) ;TODO: fix
+										;If (sc\playerState = 1) Then PlaySound(HorrorSFX(1)) ;TODO: fix
 										sc\playerState = 2
-										If sc\soundCHN = 0 Then
+										If (sc\soundCHN = 0) Then
 											;sc\soundCHN = PlaySound(HorrorSFX(4)) ;TODO: fix
 										Else
-											;If Not IsChannelPlaying(sc\soundCHN) Then sc\soundCHN = PlaySound(HorrorSFX(4)) ;TODO: fix
+											;If (Not IsChannelPlaying(sc\soundCHN)) Then sc\soundCHN = PlaySound(HorrorSFX(4)) ;TODO: fix
 										EndIf
-										If sc\coffinEffect=3 And Rand(200)=1 Then sc\coffinEffect=2 : sc\playerState = Rand(10000, 20000)
+										If (sc\coffinEffect=3 And Rand(200)=1) Then
+											sc\coffinEffect=2 : sc\playerState = Rand(10000, 20000)
+										EndIf
 									EndIf
 									mainPlayer\blurTimer = 1000
-								ElseIf mainPlayer\sanity895 < - 500 Then
-									If Rand(7) = 1 Then EntityTexture(sc\scrOverlay, MonitorTexture)
-									If Rand(50) = 1 Then
+								ElseIf (mainPlayer\sanity895 < - 500) Then
+									If (Rand(7) = 1) Then EntityTexture(sc\scrOverlay, MonitorTexture)
+									If (Rand(50) = 1) Then
 										EntityTexture(sc\scrOverlay, GorePics(Rand(0, 5)))
-										;If sc\playerState = 0 Then PlaySound(HorrorSFX(0)) ;TODO: fix
+										;If (sc\playerState = 0) Then PlaySound(HorrorSFX(0)) ;TODO: fix
 										sc\playerState = Max(sc\playerState, 1)
-										If sc\coffinEffect=3 And Rand(100)=1 Then sc\coffinEffect=2 : sc\playerState = Rand(10000, 20000)
+										If (sc\coffinEffect=3 And Rand(100)=1) Then
+											sc\coffinEffect=2 : sc\playerState = Rand(10000, 20000)
+										EndIf
 									EndIf
 								Else
 									EntityTexture(sc\scrOverlay, MonitorTexture)
@@ -1675,24 +1693,28 @@ Function UpdateSecurityCams()
 						EndIf
 					EndIf
 
-					If sc\inSight And sc\coffinEffect=0 Or sc\coffinEffect=2 Then
-						If sc\playerState = 0 Then
+					If (sc\inSight And sc\coffinEffect=0 Or sc\coffinEffect=2) Then
+						If (sc\playerState = 0) Then
 							sc\playerState = Rand(60000, 65000)
 						EndIf
 
-						If Rand(500) = 1 Then
+						If (Rand(500) = 1) Then
 							EntityTexture(sc\scrOverlay, OldAiPics(0))
 						EndIf
 
-						If (TimeInPosMilliSecs() Mod sc\playerState) >= Rand(600) Then
+						If ((TimeInPosMilliSecs() Mod sc\playerState) >= Rand(600)) Then
 							EntityTexture(sc\scrOverlay, MonitorTexture)
 						Else
-							If sc\soundCHN = 0 Then
+							If (sc\soundCHN = 0) Then
 								sc\soundCHN = PlaySound(LoadTempSound("SFX/SCP/079/Broadcast"+Rand(1,3)+".ogg"))
-								If sc\coffinEffect=2 Then sc\coffinEffect=3 : sc\playerState = 0
-							ElseIf (Not IsChannelPlaying(sc\soundCHN)) Then
+								If (sc\coffinEffect=2) Then
+									sc\coffinEffect=3 : sc\playerState = 0
+								EndIf
+							ElseIf ((Not IsChannelPlaying(sc\soundCHN))) Then
 								sc\soundCHN = PlaySound(LoadTempSound("SFX/SCP/079/Broadcast"+Rand(1,3)+".ogg"))
-								If sc\coffinEffect=2 Then sc\coffinEffect=3 : sc\playerState = 0
+								If (sc\coffinEffect=2) Then
+									sc\coffinEffect=3 : sc\playerState = 0
+								EndIf
 							EndIf
 							EntityTexture(sc\scrOverlay, OldAiPics(0))
 						EndIf
@@ -1701,14 +1723,14 @@ Function UpdateSecurityCams()
 
 				EndIf ;if screen=true
 
-				If (Not sc\inSight) Then sc\soundCHN = LoopRangedSound_SM(sndManager\camera, sc\soundCHN, mainPlayer\cam, sc\cameraObj, 4.0)
+				If ((Not sc\inSight)) Then sc\soundCHN = LoopRangedSound_SM(sndManager\camera, sc\soundCHN, mainPlayer\cam, sc\cameraObj, 4.0)
 			Else
-				If SelectedMonitor=sc Then SelectedMonitor=Null
+				If (SelectedMonitor=sc) Then SelectedMonitor=Null
 			EndIf
 		EndIf
 	Next
 
-	Cls
+	Cls()
 
 
 End Function
@@ -1740,14 +1762,14 @@ Function LoadProp.Props(file$,x#,y#,z#,pitch#,yaw#,roll#,xScale#,yScale#,zScale#
 
 	Local p2.Props
 	For p2.Props = Each Props
-		If (p<>p2) And (p2\file = file) Then
+		If ((p<>p2) And (p2\file = file)) Then
 			p\obj = CopyEntity(p2\obj)
 			Exit
 		EndIf
 	Next
 
-	If p\obj=0 Then p\obj = LoadMesh("GFX/map/Props/"+file+".b3d")
-	If p\obj=0 Then RuntimeError file
+	If (p\obj=0) Then p\obj = LoadMesh("GFX/Map/Props/"+file+".b3d")
+	If (p\obj=0) Then RuntimeError(file)
 	HideEntity(p\obj)
 	Return p
 End Function
@@ -1757,9 +1779,11 @@ End Function
 Global MapRooms.IntArray = Null ;TODO: replace with an array of the proper type after moving to C++
 
 Function CreateMap()
-	DebugLog ("Generating a map using the seed "+RandomSeed)
+	Local i%, c%, j%
+	
+	DebugLog("Generating a map using the seed "+RandomSeed)
 
-	SeedRnd SeedStringToInt(RandomSeed)
+	SeedRnd(SeedStringToInt(RandomSeed))
 
 	Local mapDim% = MAP_SIZE
 	Local layout.IntArray = CreateIntArray(mapDim,mapDim)
@@ -1779,8 +1803,8 @@ Function CreateMap()
 	Local rectHeight% = 3
 	For y% = 0 To mapDim-1
 		For x% = 0 To mapDim-1
-			If (x Mod rectWidth=1) Or (y Mod rectHeight=1) Then
-				If (x>=rectWidth And x<mapDim-rectWidth) Or (y>=rectHeight And y<mapDim-rectHeight) Then
+			If ((x Mod rectWidth=1) Or (y Mod rectHeight=1)) Then
+				If ((x>=rectWidth And x<mapDim-rectWidth) Or (y>=rectHeight And y<mapDim-rectHeight)) Then
 					SetIntArrayElem(layout,1,x,y)
 				EndIf
 			EndIf
@@ -1794,15 +1818,14 @@ Function CreateMap()
 	Local nonShiftStreak% = Rand(0,5)
 	For y% = 1 To mapDim-2
 		For x% = 0 To mapDim-2
-			If y>6 Or x>6 Then
-				If (y Mod rectHeight=1) And GetIntArrayElem(layout,x,y)=ROOM2 Then
+			If (y>6 Or x>6) Then
+				If ((y Mod rectHeight=1) And GetIntArrayElem(layout,x,y)=ROOM2) Then
 					shift = Rand(0,1)
-					If nonShiftStreak=0 Then shift = 0
-					If nonShiftStreak>5 Then shift = 1
-					If (x/rectWidth) Mod 2 Then shift = -shift
-					If shift<>0 Then
-
-						Local i%
+					If (nonShiftStreak=0) Then shift = 0
+					If (nonShiftStreak>5) Then shift = 1
+					If ((x/rectWidth) Mod 2) Then shift = -shift
+					If (shift<>0) Then
+						
 						For i% = 0 To rectWidth-2
 							SetIntArrayElem(layout,0,x+i,y)
 							SetIntArrayElem(layout,ROOM2,x+i,y+shift)
@@ -1825,10 +1848,10 @@ Function CreateMap()
 	Local roomBelow%
 	For y% = 2 To mapDim-4
 		For x% = 0 To mapDim-1
-			If (((x/rectWidth) Mod 2)=punchOffset) And (GetIntArrayElem(layout,x,y)=ROOM2) Then
+			If ((((x/rectWidth) Mod 2)=punchOffset) And (GetIntArrayElem(layout,x,y)=ROOM2)) Then
 				roomAbove = GetIntArrayElem(layout,x,y-1)
 				roomBelow = GetIntArrayElem(layout,x,y+1)
-				If ((roomAbove>=ROOM2) And (roomBelow>=ROOM2)) And ((roomAbove+roomBelow)>(ROOM2+ROOM3)) Then
+				If (((roomAbove>=ROOM2) And (roomBelow>=ROOM2)) And ((roomAbove+roomBelow)>(ROOM2+ROOM3))) Then
 					SetIntArrayElem(layout,0,x,y)
 				EndIf
 			EndIf
@@ -1843,7 +1866,7 @@ Function CreateMap()
 	Local prioritizedTemplateCount% = 0
 	Local rt.RoomTemplates
 	For rt.RoomTemplates = Each RoomTemplates
-		If ((rt\zones And zone)<>0) And (rt\maxAmount>0) And (rt\shape<>ROOM0) Then
+		If (((rt\zones And zone)<>0) And (rt\maxAmount>0) And (rt\shape<>ROOM0)) Then
 			prioritizedTemplateCount=prioritizedTemplateCount+1
 		EndIf
 	Next
@@ -1852,21 +1875,21 @@ Function CreateMap()
 	Local tempTemplate2.RoomTemplates
 	SetIntArrayElem(prioritizedTemplates,0,0,0)
 	For rt.RoomTemplates = Each RoomTemplates
-		If ((rt\zones And zone)<>0) And (rt\maxAmount>0) And (rt\shape<>ROOM0) Then
+		If (((rt\zones And zone)<>0) And (rt\maxAmount>0) And (rt\shape<>ROOM0)) Then
 			tempTemplate = rt
-			DebugLog "queueing up "+rt\name
+			DebugLog("queueing up "+rt\name)
 			For i%=0 To prioritizedTemplateCount-1
-				If GetIntArrayElem(prioritizedTemplates,i,0)=0 Then
-					If i<prioritizedTemplateCount-1 Then
+				If (GetIntArrayElem(prioritizedTemplates,i,0)=0) Then
+					If (i<prioritizedTemplateCount-1) Then
 						SetIntArrayElem(prioritizedTemplates,0,i+1,0)
 					EndIf
 					SetIntArrayElem(prioritizedTemplates,Handle(tempTemplate),i,0)
 					Exit
 				Else
 					tempTemplate2 = Object.RoomTemplates(GetIntArrayElem(prioritizedTemplates,i,0))
-					If tempTemplate2\maxAmount>tempTemplate\maxAmount Then
+					If (tempTemplate2\maxAmount>tempTemplate\maxAmount) Then
 						SetIntArrayElem(prioritizedTemplates,Handle(tempTemplate),i,0)
-						;DebugLog "swapping "+tempTemplate2\name+" for "+tempTemplate\name
+						;DebugLog("swapping "+tempTemplate2\name+" for "+tempTemplate\name)
 						tempTemplate = tempTemplate2
 					EndIf
 				EndIf
@@ -1877,11 +1900,11 @@ Function CreateMap()
 	Local RoomCount%[ROOM4+1]
 	For y% = 0 To mapDim-1
 		For x% = 0 To mapDim-1
-			If GetIntArrayElem(layout,x,y)<>ROOM0 Then RoomCount[GetIntArrayElem(layout,x,y)]=RoomCount[GetIntArrayElem(layout,x,y)]+1
+			If (GetIntArrayElem(layout,x,y)<>ROOM0) Then RoomCount[GetIntArrayElem(layout,x,y)]=RoomCount[GetIntArrayElem(layout,x,y)]+1
 		Next
 	Next
 	For i% = 1 To ROOM4
-		DebugLog "Type"+i+" count: "+RoomCount[i]
+		DebugLog("Type"+i+" count: "+RoomCount[i])
 	Next
 
 	Local r.Rooms
@@ -1903,8 +1926,8 @@ Function CreateMap()
 
 		placementCount = Rand(rt\minAmount,rt\maxAmount)
 
-		DebugLog "trying to place "+placementCount+" "+rt\name
-		Local c%
+		DebugLog("trying to place "+placementCount+" "+rt\name)
+		
 		For c% = 1 To placementCount
 			loopStartX = Int(Min(Floor(Float(mapDim)*rt\xRangeStart),mapDim-1))
 			loopStartY = Int(Min(Floor(Float(mapDim)*rt\yRangeStart),mapDim-1))
@@ -1918,26 +1941,26 @@ Function CreateMap()
 			offsetY = Rand(0,loopY)
 
 			placed = False
-			Local j%
+			
 			For j% = 0 To loopY
 				For i% = 0 To loopX
 					x% = ((i+offsetX) Mod (loopX+1)) + loopStartX
 					y% = ((j+offsetY) Mod (loopY+1)) + loopStartY
 
-					If (GetIntArrayElem(layout,x,y)>0) And (GetIntArrayElem(layout,x,y)=rt\shape) Then
+					If ((GetIntArrayElem(layout,x,y)>0) And (GetIntArrayElem(layout,x,y)=rt\shape)) Then
 						r = CreateRoom(rt,x*8.0,0.0,y*8.0)
 						r\angle = DetermineRotation(layout,x,y)
-						TurnEntity r\obj,0,r\angle,0
+						TurnEntity(r\obj,0,r\angle,0)
 						SetIntArrayElem(layout,-1,x,y) ;mark as used
 						SetIntArrayElem(MapRooms,Handle(r),x,y) ;add to the MapRooms array
 						placed = True
 					EndIf
 
-					If placed Then Exit
+					If (placed) Then Exit
 				Next
-				If placed Then Exit
+				If (placed) Then Exit
 			Next
-			If Not placed Then RuntimeError "(seed: "+RandomSeed+") Failed To place "+rt\name+" around ("+loopStartX+","+loopStartY+","+loopEndX+","+loopEndY+")"
+			If (Not placed) Then RuntimeError("(seed: "+RandomSeed+") Failed To place "+rt\name+" around ("+loopStartX+","+loopStartY+","+loopEndX+","+loopEndY+")")
 		Next
 	Next
 
@@ -1949,7 +1972,7 @@ Function CreateMap()
 		totalCommonness[i] = 0
 	Next
 	For rt.RoomTemplates = Each RoomTemplates
-		If ((rt\zones And zone)<>0) And (rt\maxAmount<0) And (rt\shape<>ROOM0) Then
+		If (((rt\zones And zone)<>0) And (rt\maxAmount<0) And (rt\shape<>ROOM0)) Then
 			randomTemplateCount=randomTemplateCount+1
 			totalCommonness[rt\shape]=totalCommonness[rt\shape]+rt\commonness
 		EndIf
@@ -1960,7 +1983,7 @@ Function CreateMap()
 	Local tempHandle2%
 
 	For rt.RoomTemplates = Each RoomTemplates
-		If ((rt\zones And zone)<>0) And (rt\maxAmount<0) And (rt\shape<>ROOM0) Then
+		If (((rt\zones And zone)<>0) And (rt\maxAmount<0) And (rt\shape<>ROOM0)) Then
 			SetIntArrayElem(randomTemplates,Handle(rt),index,0)
 			index=index+1
 		EndIf
@@ -1982,17 +2005,17 @@ Function CreateMap()
 		For x% = 0 To mapDim-1
 			commonnessAccumulator = 0
 			currType = GetIntArrayElem(layout,x,y)
-			If (currType>0) Then
+			If ((currType>0)) Then
 				targetCommonness = Rand(0,totalCommonness[currType])
 
 				For i% = 0 To randomTemplateCount-1
 					tempTemplate = Object.RoomTemplates(GetIntArrayElem(randomTemplates,i,0))
-					If tempTemplate\shape = currType Then
+					If (tempTemplate\shape = currType) Then
 						commonnessAccumulator=commonnessAccumulator+tempTemplate\commonness
-						If commonnessAccumulator>=targetCommonness Then
+						If (commonnessAccumulator>=targetCommonness) Then
 							r = CreateRoom(tempTemplate,x*8.0,0.0,y*8.0)
 							r\angle = DetermineRotation(layout,x,y)
-							TurnEntity r\obj,0,r\angle,0
+							TurnEntity(r\obj,0,r\angle,0)
 							SetIntArrayElem(layout,-1,x,y) ;mark as used
 							SetIntArrayElem(MapRooms,Handle(r),x,y) ;add to the MapRooms array
 							Exit
@@ -2016,7 +2039,7 @@ Function CreateMap()
 	For y% = 0 To mapDim-1
 		For x% = 0 To mapDim-1
 			r = Object.Rooms(GetIntArrayElem(MapRooms,x,y))
-			If r<>Null Then
+			If (r<>Null) Then
 				For i% = 0 To 3
 					Select i
 						Case 0
@@ -2033,53 +2056,53 @@ Function CreateMap()
 							tempY = 1
 					End Select
 
-					If (x+tempX>=0) And (x+tempX<mapDim) And (y+tempY>=0) And (y+tempY<mapDim) Then
+					If ((x+tempX>=0) And (x+tempX<mapDim) And (y+tempY>=0) And (y+tempY<mapDim)) Then
 						r\adjacent[i] = Object.Rooms(GetIntArrayElem(MapRooms,x+tempX,y+tempY))
-						If r\adjacent[i]<>Null Then
-							If (r\adjacent[i]\adjDoor[(i+2) Mod 4]=Null) Then
+						If (r\adjacent[i]<>Null) Then
+							If ((r\adjacent[i]\adjDoor[(i+2) Mod 4]=Null)) Then
 								r\adjDoor[i] = CreateDoor(zone,r\x+4.0*tempX,0.0,r\z+4.0*tempY,90.0*((i+1) Mod 2),Null)
 								newWaypoint = CreateWaypoint(r\x+4.0*tempX,50.0*RoomScale,r\z+4.0*tempY,r)
 
-								DebugLog "step1"
+								DebugLog("step1")
 								roomAWaypoint = Null : roomBWaypoint = Null
 								For tempWaypoint = Each WayPoints
-									If tempWaypoint<>newWaypoint Then
-										If tempWaypoint\room = r Then
-											If roomAWaypoint = Null Then
+									If (tempWaypoint<>newWaypoint) Then
+										If (tempWaypoint\room = r) Then
+											If (roomAWaypoint = Null) Then
 												roomAWaypoint = tempWaypoint
-											ElseIf EntityDistance(roomAWaypoint\obj,newWaypoint\obj)>EntityDistance(tempWaypoint\obj,newWaypoint\obj) Then
+											ElseIf (EntityDistance(roomAWaypoint\obj,newWaypoint\obj)>EntityDistance(tempWaypoint\obj,newWaypoint\obj)) Then
 												roomAWaypoint = tempWaypoint
 											EndIf
 										EndIf
 
-										If tempWaypoint\room = r\adjacent[i] Then
-											If roomBWaypoint = Null Then
+										If (tempWaypoint\room = r\adjacent[i]) Then
+											If (roomBWaypoint = Null) Then
 												roomBWaypoint = tempWaypoint
-											ElseIf EntityDistance(roomBWaypoint\obj,newWaypoint\obj)>EntityDistance(tempWaypoint\obj,newWaypoint\obj) Then
+											ElseIf (EntityDistance(roomBWaypoint\obj,newWaypoint\obj)>EntityDistance(tempWaypoint\obj,newWaypoint\obj)) Then
 												roomBWaypoint = tempWaypoint
 											EndIf
 										EndIf
 									EndIf
 								Next
 
-								DebugLog "step2"
-								If roomAWaypoint<>Null And roomBWaypoint<>Null Then
+								DebugLog("step2")
+								If (roomAWaypoint<>Null And roomBWaypoint<>Null) Then
 									For j% = 0 To 15
-										If roomAWaypoint\connected[j]=Null Then
+										If (roomAWaypoint\connected[j]=Null) Then
 											roomAWaypoint\connected[j]=newWaypoint
 											Exit
 										EndIf
 									Next
 
 									For j% = 0 To 15
-										If roomBWaypoint\connected[j]=Null Then
+										If (roomBWaypoint\connected[j]=Null) Then
 											roomBWaypoint\connected[j]=newWaypoint
 											Exit
 										EndIf
 									Next
 
 									For j% = 0 To 15
-										If newWaypoint\connected[j]=Null Then
+										If (newWaypoint\connected[j]=Null) Then
 											newWaypoint\connected[j]=roomAWaypoint
 											newWaypoint\connected[j+1]=roomBWaypoint
 											Exit
@@ -2087,7 +2110,7 @@ Function CreateMap()
 									Next
 								EndIf
 
-								DebugLog "step3"
+								DebugLog("step3")
 							Else
 								r\adjDoor[i] = r\adjacent[i]\adjDoor[(i+2) Mod 4]
 							EndIf
@@ -2103,35 +2126,34 @@ Function DetermineRoomTypes(layout.IntArray,mapDim%)
 	Local horNeighborCount% = 0
 	Local vertNeighborCount% = 0
 
-	Local y%
+	Local y%, x%
 	For y% = 0 To mapDim-1
-		Local x%
 		For x% = 0 To mapDim-1
-			If GetIntArrayElem(layout,x,y)<>0 Then
+			If (GetIntArrayElem(layout,x,y)<>0) Then
 				horNeighborCount = 0
-				If x>0 Then
+				If (x>0) Then
 					horNeighborCount=horNeighborCount+(GetIntArrayElem(layout,x-1,y)<>0)
 				EndIf
-				If x<mapDim-1 Then
+				If (x<mapDim-1) Then
 					horNeighborCount=horNeighborCount+(GetIntArrayElem(layout,x+1,y)<>0)
 				EndIf
 				vertNeighborCount = 0
-				If y>0 Then
+				If (y>0) Then
 					vertNeighborCount=vertNeighborCount+(GetIntArrayElem(layout,x,y-1)<>0)
 				EndIf
-				If y<mapDim-1 Then
+				If (y<mapDim-1) Then
 					vertNeighborCount=vertNeighborCount+(GetIntArrayElem(layout,x,y+1)<>0)
 				EndIf
 
-				If horNeighborCount+vertNeighborCount = 1 Then
+				If (horNeighborCount+vertNeighborCount = 1) Then
 					SetIntArrayElem(layout,ROOM1,x,y)
-				ElseIf horNeighborCount+vertNeighborCount = 3 Then
+				ElseIf (horNeighborCount+vertNeighborCount = 3) Then
 					SetIntArrayElem(layout,ROOM3,x,y)
-				ElseIf horNeighborCount+vertNeighborCount = 4 Then
+				ElseIf (horNeighborCount+vertNeighborCount = 4) Then
 					SetIntArrayElem(layout,ROOM4,x,y)
-				ElseIf (horNeighborCount = 1) And (vertNeighborCount = 1) Then
+				ElseIf ((horNeighborCount = 1) And (vertNeighborCount = 1)) Then
 					SetIntArrayElem(layout,ROOM2C,x,y)
-				ElseIf (horNeighborCount = 2) Xor (vertNeighborCount = 2) Then
+				ElseIf ((horNeighborCount = 2) Xor (vertNeighborCount = 2)) Then
 					SetIntArrayElem(layout,ROOM2,x,y)
 				Else
 					SetIntArrayElem(layout,0,x,y)
@@ -2144,41 +2166,41 @@ End Function
 Function DetermineRotation%(layout.IntArray,x%,y%)
 	Select GetIntArrayElem(layout,x,y)
 		Case ROOM1
-			If (x>0) And (GetIntArrayElem(layout,x-1,y)<>0) Then
+			If ((x>0) And (GetIntArrayElem(layout,x-1,y)<>0)) Then
 				Return 270
-			ElseIf (x<layout\xDim-1) And (GetIntArrayElem(layout,x+1,y)<>0) Then
+			ElseIf ((x<layout\xDim-1) And (GetIntArrayElem(layout,x+1,y)<>0)) Then
 				Return 90
-			ElseIf (y>0) And (GetIntArrayElem(layout,x,y-1)<>0) Then
+			ElseIf ((y>0) And (GetIntArrayElem(layout,x,y-1)<>0)) Then
 				Return 0
 			Else
 				Return 180
 			EndIf
 		Case ROOM2
-			If (GetIntArrayElem(layout,x-1,y)<>0) Then
+			If ((GetIntArrayElem(layout,x-1,y)<>0)) Then
 				Return 90+Rand(0,1)*180
 			Else
 				Return (Rand(0,1)*180)
 			EndIf
 		Case ROOM2C
-			If (x>0) And (GetIntArrayElem(layout,x-1,y)<>0) Then
-				If (y>0) And (GetIntArrayElem(layout,x,y-1)<>0) Then
+			If ((x>0) And (GetIntArrayElem(layout,x-1,y)<>0)) Then
+				If ((y>0) And (GetIntArrayElem(layout,x,y-1)<>0)) Then
 					Return 270
 				Else
 					Return 180
 				EndIf
 			Else
-				If (y>0) And (GetIntArrayElem(layout,x,y-1)<>0) Then
+				If ((y>0) And (GetIntArrayElem(layout,x,y-1)<>0)) Then
 					Return 0
 				Else
 					Return 90
 				EndIf
 			EndIf
 		Case ROOM3
-			If (x>0) And (GetIntArrayElem(layout,x-1,y)=0) Then
+			If ((x>0) And (GetIntArrayElem(layout,x-1,y)=0)) Then
 				Return 90
-			ElseIf (y>0) And (GetIntArrayElem(layout,x,y-1)=0) Then
+			ElseIf ((y>0) And (GetIntArrayElem(layout,x,y-1)=0)) Then
 				Return 180
-			ElseIf (x<layout\xDim-1) And (GetIntArrayElem(layout,x+1,y)=0) Then
+			ElseIf ((x<layout\xDim-1) And (GetIntArrayElem(layout,x+1,y)=0)) Then
 				Return 270
 			Else
 				Return 0
@@ -2201,67 +2223,72 @@ End Function
 ;-------------------------------------------------------------------------------------------------------
 
 
-Function load_terrain(hmap,yscale#=0.7,t1%,t2%,mask%)
+Function load_terrain(hmap%,yscale#=0.7,t1%,t2%,mask%)
+	Local maskX#
+	Local maskY#
+	Local RGB1%
+	Local r%
+	Local alpha#
 
-	DebugLog "load_terrain: "+hmap
+	DebugLog("load_terrain: "+hmap)
 
 	; load the heightmap
-	If hmap = 0 Then RuntimeError "Heightmap image "+hmap+" does not exist."
+	If (hmap = 0) Then RuntimeError("Heightmap image "+hmap+" does not exist.")
 
 	; store heightmap dimensions
-	Local x = ImageWidth(hmap)-1, y = ImageHeight(hmap)-1
-	Local lx,ly,index
+	Local x% = ImageWidth(hmap)-1, y% = ImageHeight(hmap)-1
+	Local lx%, ly%, index%
 
 	; load texture and lightmaps
-	If t1 = 0 Then RuntimeError "load_terrain error: invalid texture 1"
-	If t2 = 0 Then RuntimeError "load_terrain error: invalid texture 2"
-	If mask = 0 Then RuntimeError "load_terrain error: invalid texture mask"
+	If (t1 = 0) Then RuntimeError("load_terrain error: invalid texture 1")
+	If (t2 = 0) Then RuntimeError("load_terrain error: invalid texture 2")
+	If (mask = 0) Then RuntimeError("load_terrain error: invalid texture mask")
 
 	; auto scale the textures to the right size
-	If t1 Then ScaleTexture t1,x/4,y/4
-	If t2 Then ScaleTexture t2,x/4,y/4
-	If mask Then ScaleTexture mask,x,y
+	If (t1) Then ScaleTexture(t1,x/4,y/4)
+	If (t2) Then ScaleTexture(t2,x/4,y/4)
+	If (mask) Then ScaleTexture(mask,x,y)
 
 	; start building the terrain
-	Local mesh = CreateMesh()
-	Local surf = CreateSurface(mesh)
+	Local mesh% = CreateMesh()
+	Local surf% = CreateSurface(mesh)
 
 	; create some verts for the terrain
 	For ly = 0 To y
 		For lx = 0 To x
-			AddVertex surf,lx,0,ly,1.0/lx,1.0/ly
+			AddVertex(surf,lx,0,ly,1.0/lx,1.0/ly)
 		Next
 	Next
-	RenderWorld
+	RenderWorld()
 
 	; connect the verts with faces
 	For ly = 0 To y-1
 		For lx = 0 To x-1
-			AddTriangle surf,lx+((x+1)*ly),lx+((x+1)*ly)+(x+1),(lx+1)+((x+1)*ly)
-			AddTriangle surf,(lx+1)+((x+1)*ly),lx+((x+1)*ly)+(x+1),(lx+1)+((x+1)*ly)+(x+1)
+			AddTriangle(surf,lx+((x+1)*ly),lx+((x+1)*ly)+(x+1),(lx+1)+((x+1)*ly))
+			AddTriangle(surf,(lx+1)+((x+1)*ly),lx+((x+1)*ly)+(x+1),(lx+1)+((x+1)*ly)+(x+1))
 		Next
 	Next
 
 	; position the terrain to center 0,0,0
 	Local mesh2% = CopyMesh(mesh,mesh)
 	Local surf2% = GetSurface(mesh2,1)
-	PositionMesh mesh, -x/2.0,0,-y/2.0
-	PositionMesh mesh2, -x/2.0,0.01,-y/2.0
+	PositionMesh(mesh, -x/2.0,0,-y/2.0)
+	PositionMesh(mesh2, -x/2.0,0.01,-y/2.0)
 
 	; alter vertice height to match the heightmap red channel
-	LockBuffer ImageBuffer(hmap)
-	LockBuffer TextureBuffer(mask)
+	LockBuffer(ImageBuffer(hmap))
+	LockBuffer(TextureBuffer(mask))
 	;SetBuffer
 	For lx = 0 To x
 		For ly = 0 To y
 			;using vertex alpha and two meshes instead of FE_ALPHAWHATEVER
 			;it doesn't look perfect but it does the job
 			;you might get better results by downscaling the mask to the same size as the heightmap
-			Local maskX# = Min(lx*Float(TextureWidth(mask))/Float(ImageWidth(hmap)),TextureWidth(mask)-1)
-			Local maskY# = TextureHeight(mask)-Min(ly*Float(TextureHeight(mask))/Float(ImageHeight(hmap)),TextureHeight(mask)-1)
-			Local RGB1% = ReadPixelFast(Min(lx,x-1),y-Min(ly,y-1),ImageBuffer(hmap))
-			Local r% = (RGB1 And $FF0000)Shr 16 ;separate out the red
-			Local alpha#=(((ReadPixelFast(Max(maskX-5,5),Max(maskY-5,5),TextureBuffer(mask)) And $FF000000) Shr 24)/$FF)
+			maskX# = Min(lx*Float(TextureWidth(mask))/Float(ImageWidth(hmap)),TextureWidth(mask)-1)
+			maskY# = TextureHeight(mask)-Min(ly*Float(TextureHeight(mask))/Float(ImageHeight(hmap)),TextureHeight(mask)-1)
+			RGB1% = ReadPixelFast(Min(lx,x-1),y-Min(ly,y-1),ImageBuffer(hmap))
+			r% = (RGB1 And $FF0000)Shr 16 ;separate out the red
+			alpha#=(((ReadPixelFast(Max(maskX-5,5),Max(maskY-5,5),TextureBuffer(mask)) And $FF000000) Shr 24)/$FF)
 			alpha#=alpha+(((ReadPixelFast(Min(maskX+5,TextureWidth(mask)-5),Min(maskY+5,TextureHeight(mask)-5),TextureBuffer(mask)) And $FF000000) Shr 24)/$FF)
 			alpha#=alpha+(((ReadPixelFast(Max(maskX-5,5),Min(maskY+5,TextureHeight(mask)-5),TextureBuffer(mask)) And $FF000000) Shr 24)/$FF)
 			alpha#=alpha+(((ReadPixelFast(Min(maskX+5,TextureWidth(mask)-5),Max(maskY-5,5),TextureBuffer(mask)) And $FF000000) Shr 24)/$FF)
@@ -2269,26 +2296,26 @@ Function load_terrain(hmap,yscale#=0.7,t1%,t2%,mask%)
 			alpha#=Sqr(alpha)
 
 			index = lx + ((x+1)*ly)
-			VertexCoords surf, index , VertexX(surf,index), r*yscale,VertexZ(surf,index)
-			VertexCoords surf2, index , VertexX(surf2,index), r*yscale,VertexZ(surf2,index)
-			VertexColor surf2, index, 255.0,255.0,255.0,alpha
+			VertexCoords(surf, index , VertexX(surf,index), r*yscale,VertexZ(surf,index))
+			VertexCoords(surf2, index , VertexX(surf2,index), r*yscale,VertexZ(surf2,index))
+			VertexColor(surf2, index, 255.0,255.0,255.0,alpha)
 			; set the terrain texture coordinates
-			VertexTexCoords surf,index,lx,-ly
-			VertexTexCoords surf2,index,lx,-ly
+			VertexTexCoords(surf,index,lx,-ly)
+			VertexTexCoords(surf2,index,lx,-ly)
 		Next
 	Next
-	UnlockBuffer TextureBuffer(mask)
-	UnlockBuffer ImageBuffer(hmap)
+	UnlockBuffer(TextureBuffer(mask))
+	UnlockBuffer(ImageBuffer(hmap))
 
-	UpdateNormals mesh
-	UpdateNormals mesh2
+	UpdateNormals(mesh)
+	UpdateNormals(mesh2)
 
-	EntityTexture mesh,t1,0,0
-	;EntityTexture mesh,mask,0,1
-	EntityTexture mesh2,t2,0,0;2
+	EntityTexture(mesh,t1,0,0)
+	;EntityTexture(mesh,mask,0,1)
+	EntityTexture(mesh2,t2,0,0);2
 
-	EntityFX mesh, 1
-	EntityFX mesh2, 1+2+32
+	EntityFX(mesh, 1)
+	EntityFX(mesh2, 1+2+32)
 
 	Return mesh
 End Function
@@ -2296,18 +2323,18 @@ End Function
 Function AmbientLightRooms(value%=0)
 	Local mesh%,surf%,brush%,tex0%
 
-	If value=AmbientLightRoomVal Then Return
+	If (value=AmbientLightRoomVal) Then Return
 	AmbientLightRoomVal = value
 
 	Local oldbuffer% = BackBuffer() ;probably shouldn't make assumptions here but who cares, why wouldn't it use the backbuffer ;GetBuffer()
 
-	SetBuffer TextureBuffer(AmbientLightRoomTex)
+	SetBuffer(TextureBuffer(AmbientLightRoomTex))
 
-	ClsColor value,value,value
-	Cls
-	ClsColor 0,0,0
+	ClsColor(value,value,value)
+	Cls()
+	ClsColor(0,0,0)
 
-	SetBuffer oldbuffer
+	SetBuffer(oldbuffer)
 End Function
 
 ;TODO: Probably remove.
@@ -2315,13 +2342,13 @@ Function FindAndDeleteFakeMonitor(r.Rooms,x#,y#,z#,Amount%)
 	Local i%
 
 	For i = 0 To Amount%
-		If r\objects[i]<>0 Then
-			If EntityX(r\objects[i],True) = x# Then
-				If EntityY(r\objects[i],True) = y# Then
-					If EntityZ(r\objects[i],True) = z# Then
-						FreeEntity r\objects[i]
+		If (r\objects[i]<>0) Then
+			If (EntityX(r\objects[i],True) = x#) Then
+				If (EntityY(r\objects[i],True) = y#) Then
+					If (EntityZ(r\objects[i],True) = z#) Then
+						FreeEntity(r\objects[i])
 						r\objects[i]=0
-						DebugLog "Deleted Fake Monitor: "+i
+						DebugLog("Deleted Fake Monitor: "+i)
 						Exit
 					EndIf
 				EndIf
@@ -2331,5 +2358,5 @@ Function FindAndDeleteFakeMonitor(r.Rooms,x#,y#,z#,Amount%)
 
 End Function
 ;~IDEal Editor Parameters:
-;~F#4F#165#1A0#1A8#1BD#1C8
+;~F#1A6#1AE#1C3#1CE
 ;~C#Blitz3D

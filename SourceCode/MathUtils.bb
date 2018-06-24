@@ -10,9 +10,9 @@ End Function
 
 
 Function CurveValue#(number#, old#, smooth#)
-	If timing\tickDuration = 0 Then Return old
+	If (timing\tickDuration = 0) Then Return old
 
-	If number < old Then
+	If (number < old) Then
 		Return Max(old + (number - old) * (1.0 / smooth * timing\tickDuration), number)
 	Else
 		Return Min(old + (number - old) * (1.0 / smooth * timing\tickDuration), number)
@@ -20,16 +20,16 @@ Function CurveValue#(number#, old#, smooth#)
 End Function
 
 Function CurveAngle#(val#, old#, smooth#)
-	If timing\tickDuration = 0 Then Return old
+	If (timing\tickDuration = 0) Then Return old
 
    Local diff# = WrapAngle(val) - WrapAngle(old)
-   If diff > 180 Then diff = diff - 360
-   If diff < - 180 Then diff = diff + 360
+   If (diff > 180) Then diff = diff - 360
+   If (diff < - 180) Then diff = diff + 360
    Return WrapAngle(old + diff * (1.0 / smooth * timing\tickDuration))
 End Function
 
 Function WrapAngle#(angle#)
-	If angle = INFINITY Then Return 0.0
+	If (angle = INFINITY) Then Return 0.0
 	While angle < 0
 		angle = angle + 360
 	Wend
@@ -53,11 +53,11 @@ Function CircleToLineSegIsect% (cx#, cy#, r#, l1x#, l1y#, l2x#, l2y#)
 
 	;Ympyrän keskipisteen ja (ainakin toisen) janan päätepisteen etäisyys < r
 	;-> leikkaus
-	If Distance(cx, cy, l1x, l1y) <= r Then
+	If (Distance(cx, cy, l1x, l1y) <= r) Then
 		Return True
 	EndIf
 
-	If Distance(cx, cy, l2x, l2y) <= r Then
+	If (Distance(cx, cy, l2x, l2y) <= r) Then
 		Return True
 	EndIf
 
@@ -77,8 +77,8 @@ Function CircleToLineSegIsect% (cx#, cy#, r#, l1x#, l1y#, l2x#, l2y#)
 
 	;Checks whether the value of another point is 0
 	;tai molempien merkki sama
-	If dp1 = 0 Or dp2 = 0 Then
-	ElseIf (dp1 > 0 And dp2 > 0) Or (dp1 < 0 And dp2 < 0) Then
+	If (dp1 = 0 Or dp2 = 0) Then
+	ElseIf ((dp1 > 0 And dp2 > 0) Or (dp1 < 0 And dp2 < 0)) Then
 	Else
 		;Neither -> no cutting
 		Return False
@@ -94,7 +94,7 @@ Function CircleToLineSegIsect% (cx#, cy#, r#, l1x#, l1y#, l2x#, l2y#)
 
 	;The circle is too far away
 	;-> not cutting
-	If d > r Then Return False
+	If (d > r) Then Return False
 
 	;Local kateetin_pituus# = Cos(angle) * hyp
 
@@ -103,7 +103,7 @@ Function CircleToLineSegIsect% (cx#, cy#, r#, l1x#, l1y#, l2x#, l2y#)
 End Function
 
 Function Min#(a#, b#)
-	If a < b Then
+	If (a < b) Then
 		Return a
 	Else
 		Return b
@@ -111,7 +111,7 @@ Function Min#(a#, b#)
 End Function
 
 Function Max#(a#, b#)
-	If a > b Then
+	If (a > b) Then
 		Return a
 	Else
 		Return b
@@ -121,9 +121,9 @@ End Function
 Function angleDist#(a0#,a1#)
 	Local b# = a0-a1
 	Local bb#
-	If b<-180.0 Then
+	If (b<-180.0) Then
 		bb = b+360.0
-	ElseIf b>180.0 Then
+	ElseIf (b>180.0) Then
 		bb = b-360.0
 	Else
 		bb = b
@@ -137,10 +137,10 @@ Function Inverse#(number#)
 
 End Function
 
-Function Rnd_Array(numb1#,numb2#,Array1#,Array2#)
+Function Rnd_Array#(numb1#,numb2#,Array1#,Array2#)
 	Local whatarray% = Rand(1,2)
 
-	If whatarray% = 1 Then
+	If (whatarray% = 1) Then
 		Return Rnd(numb1#,Array1#)
 	Else
 		Return Rnd(Array2#,numb2#)
@@ -150,7 +150,7 @@ End Function
 
 Function TimeInPosMilliSecs%()
 	Local retVal% = MilliSecs()
-	If retVal < 0 Then retVal = retVal + 2147483648
+	If (retVal < 0) Then retVal = retVal + 2147483648
 	Return retVal
 End Function
 
@@ -167,7 +167,7 @@ Function MakeCollBox(mesh%)
 	Local sy# = Max(EntityScaleY(mesh, 1), 0.001)
 	Local sz# = EntityScaleZ(mesh, 1)
 	GetMeshExtents(mesh)
-	EntityBox mesh, Mesh_MinX * sx, Mesh_MinY * sy, Mesh_MinZ * sz, Mesh_MagX * sx, Mesh_MagY * sy, Mesh_MagZ * sz
+	EntityBox(mesh, Mesh_MinX * sx, Mesh_MinY * sy, Mesh_MinZ * sz, Mesh_MagX * sx, Mesh_MagY * sy, Mesh_MagZ * sz)
 End Function
 
 ; Find mesh extents
@@ -191,12 +191,12 @@ Function GetMeshExtents(Mesh%)
 			y = VertexY(surf, v)
 			z = VertexZ(surf, v)
 
-			If (x < minx) Then minx = x
-			If (x > maxx) Then maxx = x
-			If (y < miny) Then miny = y
-			If (y > maxy) Then maxy = y
-			If (z < minz) Then minz = z
-			If (z > maxz) Then maxz = z
+			If ((x < minx)) Then minx = x
+			If ((x > maxx)) Then maxx = x
+			If ((y < miny)) Then miny = y
+			If ((y > maxy)) Then maxy = y
+			If ((z < minz)) Then minz = z
+			If ((z > maxz)) Then maxz = z
 		Next
 	Next
 
@@ -213,17 +213,29 @@ Function GetMeshExtents(Mesh%)
 End Function
 
 Function EntityScaleX#(entity%, globl% = False)
-	If globl Then TFormVector 1, 0, 0, entity, 0 Else TFormVector 1, 0, 0, entity, GetParent(entity)
+	If (globl) Then
+		TFormVector(1, 0, 0, entity, 0)
+	Else
+		TFormVector( 1, 0, 0, entity, GetParent(entity))
+	EndIf
 	Return Sqr(TFormedX() * TFormedX() + TFormedY() * TFormedY() + TFormedZ() * TFormedZ())
 End Function
 
 Function EntityScaleY#(entity%, globl% = False)
-	If globl Then TFormVector 0, 1, 0, entity, 0 Else TFormVector 0, 1, 0, entity, GetParent(entity)
+	If (globl) Then
+		TFormVector(0, 1, 0, entity, 0)
+	Else
+		TFormVector( 0, 1, 0, entity, GetParent(entity))
+	EndIf
 	Return Sqr(TFormedX() * TFormedX() + TFormedY() * TFormedY() + TFormedZ() * TFormedZ())
 End Function
 
 Function EntityScaleZ#(entity%, globl% = False)
-	If globl Then TFormVector 0, 0, 1, entity, 0 Else TFormVector 0, 0, 1, entity, GetParent(entity)
+	If (globl) Then
+		TFormVector(0, 0, 1, entity, 0)
+	Else
+		TFormVector(0, 0, 1, entity, GetParent(entity))
+	EndIf
 	Return Sqr(TFormedX() * TFormedX() + TFormedY() * TFormedY() + TFormedZ() * TFormedZ())
 End Function
 
@@ -239,8 +251,9 @@ Function SeedStringToInt%(seed$)
 		retVal = (retVal Shl 1) + char
 	Next
 
-	If retVal=0 Then retVal = 1
+	If (retVal=0) Then retVal = 1
 	Return Abs(retVal)
 End Function
 ;~IDEal Editor Parameters:
+;~F#3#B#15#1E#29#2D#68#70#78#85#8B
 ;~C#Blitz3D

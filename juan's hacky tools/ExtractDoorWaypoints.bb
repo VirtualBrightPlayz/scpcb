@@ -7,7 +7,7 @@ file$ = NextFile(dir)
 w% = WriteFile("AAAAAAAAA.bb")
 
 While Left(file,1)<>"." And Len(file)>0
-	DebugLog "Rooms/"+file
+	DebugLog("Rooms/"+file)
 	f% = ReadFile("Rooms/"+file)
 	While Not Eof(f)
 		ln$ = ReadLine(f)
@@ -52,8 +52,8 @@ While Left(file,1)<>"." And Len(file)>0
 	file = NextFile(dir)
 Wend
 
-CloseFile w
+CloseFile(w)
 
-CloseDir dir
+CloseDir(dir)
 ;~IDEal Editor Parameters:
 ;~C#Blitz3D

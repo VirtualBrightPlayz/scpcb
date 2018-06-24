@@ -1,23 +1,23 @@
 Function InitializeNPCtypeD(n.NPCs)
     n\nvName = "Human"
     n\collider = CreatePivot()
-    EntityRadius n\collider, 0.32
-    EntityType n\collider, HIT_PLAYER
+    EntityRadius(n\collider, 0.32)
+    EntityType(n\collider, HIT_PLAYER)
 
     Local n2.NPCs
 	For n2 = Each NPCs
-		If (n2\npcType = n\npcType And n2\obj <> 0) Then
+		If ((n2\npcType = n\npcType And n2\obj <> 0)) Then
 			n\obj = CopyEntity(n2\obj)
 			Exit
 		EndIf
 	Next
 
-	If (n\obj = 0) Then
+	If ((n\obj = 0)) Then
 		n\obj = LoadAnimMesh("GFX/NPCs/classd/classd.b3d")
 	EndIf
 
     Local temp# = 0.5 / MeshWidth(n\obj)
-    ScaleEntity n\obj, temp, temp, temp
+    ScaleEntity(n\obj, temp, temp, temp)
 
     n\speed = 2.0 / 100
 
@@ -34,7 +34,7 @@ Function UpdateNPCtypeD(n.NPCs)
             n\currSpeed = CurveValue(0.0, n\currSpeed, 5.0)
             Animate2(n\obj, AnimTime(n\obj), 210, 235, 0.1)
         Case 1 ;walking
-            If n\state2 = 1.0 Then
+            If (n\state2 = 1.0) Then
                 n\currSpeed = CurveValue(n\speed*0.7, n\currSpeed, 20.0)
             Else
                 n\currSpeed = CurveValue(0.015, n\currSpeed, 5.0)
@@ -49,7 +49,7 @@ Function UpdateNPCtypeD(n.NPCs)
 
     PositionEntity(n\obj, EntityX(n\collider), EntityY(n\collider) - 0.32, EntityZ(n\collider))
 
-    RotateEntity n\obj, EntityPitch(n\collider), EntityYaw(n\collider)-180.0, 0
+    RotateEntity(n\obj, EntityPitch(n\collider), EntityYaw(n\collider)-180.0, 0)
 End Function
 
 ;~IDEal Editor Parameters:

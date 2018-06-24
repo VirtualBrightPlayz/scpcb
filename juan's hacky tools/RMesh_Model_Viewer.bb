@@ -13,42 +13,42 @@ Function writemesh(mesh,e_filename$)
 	
 	;open output file
 	filenameout$=e_filename$
-	XE_XF=WriteFile (filenameout$);
+	XE_XF=WriteFile((filenameout$);)
 	
 	;File version 
-	WriteLine XE_XF,"xof 0302txt 0064"
-	WriteLine XE_XF,""
+	WriteLine(XE_XF,"xof 0302txt 0064")
+	WriteLine(XE_XF,"")
 	;Header 
-	WriteLine XE_XF,"Header {"
-	WriteLine XE_XF,"1;"
-	WriteLine XE_XF,"0;"
-	WriteLine XE_XF,"1;"
-	WriteLine XE_XF,"}"
-	WriteLine XE_XF,""
+	WriteLine(XE_XF,"Header {")
+	WriteLine(XE_XF,"1;")
+	WriteLine(XE_XF,"0;")
+	WriteLine(XE_XF,"1;")
+	WriteLine(XE_XF,"}")
+	WriteLine(XE_XF,"")
 	
-	WriteLine XE_XF,"//Exported By D-Mapper Registered to "+regname$
+	WriteLine(XE_XF,"//Exported By D-Mapper Registered to "+regname$)
 
-	;Write all materials in meshes
+	;Write(all materials in meshes)
 
 	XE_MAXtextures=0
 
 	RecursiveAddMaterial(mesh,forcematerial$,e_directory)
-	WriteLine XE_XF," //Truncatemarker" ; textures cannot be truncated for giles
+	WriteLine(XE_XF," //Truncatemarker" ; textures cannot be truncated for giles)
 
 	;Start of frame root
-	WriteLine XE_XF,"Frame root {"
-	WriteLine XE_XF,"   FrameTransformMatrix {"
-	WriteLine XE_XF,"      1.000000,0.000000,0.000000,0.000000,"
-	WriteLine XE_XF,"      0.000000,1.000000,0.000000,0.000000,"
-	WriteLine XE_XF,"      0.000000,0.000000,1.000000,0.000000,"
-	WriteLine XE_XF,"      0.000000,0.000000,0.000000,1.000000;;"
-	WriteLine XE_XF,"   }"
+	WriteLine(XE_XF,"Frame root {")
+	WriteLine(XE_XF,"   FrameTransformMatrix {")
+	WriteLine(XE_XF,"      1.000000,0.000000,0.000000,0.000000,")
+	WriteLine(XE_XF,"      0.000000,1.000000,0.000000,0.000000,")
+	WriteLine(XE_XF,"      0.000000,0.000000,1.000000,0.000000,")
+	WriteLine(XE_XF,"      0.000000,0.000000,0.000000,1.000000;;")
+	WriteLine(XE_XF,"   }")
 
 	;chiname$=EntityName(mesh)
 	RecursiveAddMesh(mesh)
 
-	WriteLine XE_XF,"} //End of root"
-	CloseFile XE_XF
+	WriteLine(XE_XF,"} //End of root")
+	CloseFile(XE_XF)
 
 	If trunc
 		Rfile=ReadFile(filenameout$)
@@ -63,56 +63,56 @@ Function writemesh(mesh,e_filename$)
 					If Instr(l$,"//Exported By") headerwrite=0
 				Else
 					l$=ReadLine(rfile)
-					If Instr (l$,"//") Then l$=usv(ReadLine(rfile),1,"//")
+					If Instr(l$,"//") Then l$=usv(ReadLine(rfile),1,"//")
 					l$=Trim(l$)
-					WriteLine wfile,l$
+					WriteLine(wfile,l$)
 					;dat$=dat$+l$
-					;If MilliSecs()>gtime+1000 gtime=MilliSecs():messagebox(-1,0,300,"Truncating ","Collapsing whitespace, end Of Line characters and ","comments, Please Wait..","","Line "+lines+" "+ l$)
+					;If MilliSecs()>gtime+1000 gtime=MilliSecs():messagebox(-1,0,300,"Truncating ","Collapsing whitespace, end Of Line(characters and ","comments, Please Wait..","","Line "+lines+" "+ l$))
 
 				EndIf
 			Wend
-			CloseFile rfile
-			CloseFile wfile
+			CloseFile(rfile)
+			CloseFile(wfile)
 		Else
 			
 			
 		EndIf	
        EndIf
-       ;CopyFile filenameout$+"temp",filenameout$
+       ;CopyFile(filenameout$+"temp",filenameout$)
 
        ;anti NAN patch for X exporter
-       fileR=OpenFile (filenameout)
-       fileW=OpenFile (tempfilename)
+       fileR=OpenFile(filenameout)
+       fileW=OpenFile(tempfilename)
        If fileR While Not Eof(fileR)
            l$=ReadLine(fileR)             
-           l$=Replace (l$,"NaN","0.0")
+           l$=Replace(l$,"NaN","0.0")
            WriteLine(fileW,l$)
       Wend
-      CloseFile fileR
-      CloseFile fileW
-      CopyFile fileW,fileR
-      DeleteFile fileW
+      CloseFile(fileR)
+      CloseFile(fileW)
+      CopyFile(fileW,fileR)
+      DeleteFile(fileW)
 
 	
 End Function
 
 
 Function RecursiveAddMaterial(h,forcematerial$,e_directory$="")
-DebugLog CountChildren(h)
+DebugLog(CountChildren(h))
 
 	If EntityClass$(h)="Mesh"
 		;get neccacaries
 		For surfc=1 To CountSurfaces(h)
 			surf=GetSurface(h,surfc)
 			brush=GetSurfaceBrush(surf)
-			tex=GetBrushTexture (brush)
+			tex=GetBrushTexture(brush)
 			
 			;get rid of tex path & copy textures
 			If forcematerial$="" Then
 				from$=TextureName(tex)
 				XE_XFilen$=strip_path(from)
-				CopyFile from,e_directory+XE_XFilen$
-				DebugLog "Copying tex to "+e_directory+XE_XFilen$
+				CopyFile(from,e_directory+XE_XFilen$)
+				DebugLog("Copying tex to "+e_directory+XE_XFilen$)
 			Else
 				XE_XFilen$=strip_path(forcematerial$)
 			EndIf 
@@ -133,26 +133,26 @@ DebugLog CountChildren(h)
 			
 			;only add texture if a new one is present
 			If Not noadd
-				WriteLine XE_XF,"Material dx_brush"+Str(Tindex)+" {"
-				WriteLine XE_XF,"   1.000000;1.000000;1.000000;1.000000;;"
-				WriteLine XE_XF,"   0.000000;"
-				WriteLine XE_XF,"   1.000000;1.000000;1.000000;;"
-				WriteLine XE_XF,"   0.000000;0.000000;0.000000;;"
-				WriteLine XE_XF,"   TextureFilename {"
-				WriteLine XE_XF,"      "+Chr(34)+XE_XFilen$+Chr(34)+";"
-				WriteLine XE_XF,"   }"
-				WriteLine XE_XF,"}"
+				WriteLine(XE_XF,"Material dx_brush"+Str(Tindex)+" {")
+				WriteLine(XE_XF,"   1.000000;1.000000;1.000000;1.000000;;")
+				WriteLine(XE_XF,"   0.000000;")
+				WriteLine(XE_XF,"   1.000000;1.000000;1.000000;;")
+				WriteLine(XE_XF,"   0.000000;0.000000;0.000000;;")
+				WriteLine(XE_XF,"   TextureFilename {")
+				WriteLine(XE_XF,"      "+Chr(34)+XE_XFilen$+Chr(34)+";")
+				WriteLine(XE_XF,"   }")
+				WriteLine(XE_XF,"}")
 				XE_MAXtextures=XE_MAXtextures+1
 			EndIf 
 	
 			;do the cleaning
-			FreeTexture Tex
-			FreeBrush brush
+			FreeTexture(Tex)
+			FreeBrush(brush)
 		Next 
 	EndIf 
 
 	For cc =CountChildren(h) To 1 Step -1
-		chi=GetChild (h,cc)
+		chi=GetChild(h,cc)
 		RecursiveAddMaterial(chi,forcematerial$)
 	Next 
 
@@ -175,7 +175,7 @@ Function GetStringofMatElement$(mesh,x,y)
 	ElseIf Len(dp$)=5
 		final$=me$+"0"
 	EndIf
-	DebugLog "Matrix="+me$+" ("+dp$+") "+final$
+	DebugLog("Matrix="+me$+" ("+dp$+") "+final$)
 	Return final$
 End Function
 
@@ -184,118 +184,118 @@ Function RecursiveAddMesh(h,basescaleX#=1,basescaleY#=1,basescaleZ#=1)
 		recuse_depth=recuse_depth+1
 		
 		chiname$=EntityName(h)
-		DebugLog "Recursing "+chiname+" Childs="+CountChildren(h)+" Depth="+recuse_depth
+		DebugLog("Recursing "+chiname+" Childs="+CountChildren(h)+" Depth="+recuse_depth)
 		If chiname="" Or Instr(chiname,"NoName") chiname="NoName"+MilliSecs()
-		DebugLog chiname
+		DebugLog(chiname)
 		
 ;		mesh=CopyEntity(h)
-;		EntityParent mesh,0
+;		EntityParent(mesh,0)
 		mesh=h
 
-		WriteLine XE_XF,"   Frame "+ChiName$+" {"
-		WriteLine XE_XF,"      FrameTransformMatrix {"
-		WriteLine XE_XF,"         "+GetStringofMatElement(mesh,0,0)+","+GetStringofMatElement(mesh,0,1)+","+GetStringofMatElement(mesh,0,2)+",0.000000,"
-		WriteLine XE_XF,"         "+GetStringofMatElement(mesh,1,0)+","+GetStringofMatElement(mesh,1,1)+","+GetStringofMatElement(mesh,1,2)+",0.000000,"
-		WriteLine XE_XF,"         "+GetStringofMatElement(mesh,2,0)+","+GetStringofMatElement(mesh,2,1)+","+GetStringofMatElement(mesh,2,2)+",0.000000,"
-		WriteLine XE_XF,"         "+GetStringofMatElement(mesh,3,0)+","+GetStringofMatElement(mesh,3,1)+","+GetStringofMatElement(mesh,3,2)+",1.000000;;"
-		WriteLine XE_XF,"   }"
+		WriteLine(XE_XF,"   Frame "+ChiName$+" {")
+		WriteLine(XE_XF,"      FrameTransformMatrix {")
+		WriteLine(XE_XF,"         "+GetStringofMatElement(mesh,0,0)+","+GetStringofMatElement(mesh,0,1)+","+GetStringofMatElement(mesh,0,2)+",0.000000,")
+		WriteLine(XE_XF,"         "+GetStringofMatElement(mesh,1,0)+","+GetStringofMatElement(mesh,1,1)+","+GetStringofMatElement(mesh,1,2)+",0.000000,")
+		WriteLine(XE_XF,"         "+GetStringofMatElement(mesh,2,0)+","+GetStringofMatElement(mesh,2,1)+","+GetStringofMatElement(mesh,2,2)+",0.000000,")
+		WriteLine(XE_XF,"         "+GetStringofMatElement(mesh,3,0)+","+GetStringofMatElement(mesh,3,1)+","+GetStringofMatElement(mesh,3,2)+",1.000000;;")
+		WriteLine(XE_XF,"   }")
 
 		
 		If EntityClass$(mesh)="Mesh"
-			For surfc=1 To CountSurfaces (mesh)
+			For surfc=1 To CountSurfaces(mesh)
 				surf=GetSurface(mesh,surfc)
 				verts=CountVertices(surf)
 				tris=CountTriangles(surf)
 				;meshinfo
-				WriteLine XE_XF,"      Mesh "+ChiName$+" {"
+				WriteLine(XE_XF,"      Mesh "+ChiName$+" {")
 	
 	
 				;Number of verts;
-				WriteLine XE_XF,"         "+verts+";"
+				WriteLine(XE_XF,"         "+verts+";")
 	
 	
 				;X;Y;Z; of verts;
 				For v=0 To verts-1
 					If v=verts-1 Then term$=";;" Else term$=";,"
-					WriteLine XE_XF,"         "+VertexX (surf,v)+";"+VertexY (surf,v)+";"+VertexZ (surf,v)+term$
+					WriteLine(XE_XF,"         "+VertexX (surf,v)+";"+VertexY (surf,v)+";"+VertexZ (surf,v)+term$)
 				Next
 	
 				
 				;No of tris;
-				WriteLine XE_XF,"         "+tris+";"
+				WriteLine(XE_XF,"         "+tris+";")
 	
 	
 				;Tri ordering 3;t0,t1,t2;,
 				For t=0 To Tris-1
 					If t=tris-1 Then term$=";;" Else term$=";,"
-					WriteLine XE_XF,"         3;"+TriangleVertex(Surf,t,0)+","+TriangleVertex(Surf,t,1)+","+TriangleVertex(Surf,t,2)+term$
+					WriteLine(XE_XF,"         3;"+TriangleVertex(Surf,t,0)+","+TriangleVertex(Surf,t,1)+","+TriangleVertex(Surf,t,2)+term$)
 				Next 
 	
 				;Material List
-				WriteLine XE_XF,"         MeshMaterialList {"
-				WriteLine XE_XF,"            1;";num of materials for mesh
-				WriteLine XE_XF,"            "+tris+";";number of faces/tris
+				WriteLine(XE_XF,"         MeshMaterialList {")
+				WriteLine(XE_XF,"            1;";num of materials for mesh)
+				WriteLine(XE_XF,"            "+tris+";";number of faces/tris)
 				For t=0 To tris-1
 					If t=tris-1 Then term$=";;" Else term$=","
-					WriteLine XE_XF,"            0"+term$ ; face indexes?
+					WriteLine(XE_XF,"            0"+term$ ; face indexes?)
 				Next 
-				WriteLine XE_XF,"            {dx_brush"+LookUpTindex(surf)+"}"
-				WriteLine XE_XF,"         } // end of material list"
+				WriteLine(XE_XF,"            {dx_brush"+LookUpTindex(surf)+"}")
+				WriteLine(XE_XF,"         } // end of material list")
 	
 				;Normals List
-				WriteLine XE_XF,"         MeshNormals {"
-				WriteLine XE_XF,"            "+verts+";"
+				WriteLine(XE_XF,"         MeshNormals {")
+				WriteLine(XE_XF,"            "+verts+";")
 				For v=0 To verts-1
 					If v=verts-1 Then term$=";;" Else term$=";,"
-					WriteLine XE_XF,"            "+VertexNX (surf,v)+";"+VertexNY (surf,v)+";"+VertexNZ (surf,v)+term$
+					WriteLine(XE_XF,"            "+VertexNX (surf,v)+";"+VertexNY (surf,v)+";"+VertexNZ (surf,v)+term$)
 				Next
-				WriteLine XE_XF,"            "+tris+";"
+				WriteLine(XE_XF,"            "+tris+";")
 				For t=0 To Tris-1
 					If t=tris-1 Then term$=";;" Else term$=";,"
-					WriteLine XE_XF,"            3;"+TriangleVertex(Surf,t,0)+","+TriangleVertex(Surf,t,1)+","+TriangleVertex(Surf,t,2)+term$
+					WriteLine(XE_XF,"            3;"+TriangleVertex(Surf,t,0)+","+TriangleVertex(Surf,t,1)+","+TriangleVertex(Surf,t,2)+term$)
 				Next 
-				WriteLine XE_XF,"         } // end of normal list"
+				WriteLine(XE_XF,"         } // end of normal list")
 	
 				;Texturecoords List
-				WriteLine XE_XF,"         MeshTextureCoords {"
-				WriteLine XE_XF,"            "+verts+";"
+				WriteLine(XE_XF,"         MeshTextureCoords {")
+				WriteLine(XE_XF,"            "+verts+";")
 				For v=0 To verts-1
 					If v=verts-1 Then term$=";;" Else term$=";,"
-					WriteLine XE_XF,"            "+VertexU (surf,v)+";"+VertexV (surf,v)+term$
+					WriteLine(XE_XF,"            "+VertexU (surf,v)+";"+VertexV (surf,v)+term$)
 				Next
-				WriteLine XE_XF,"         } // end of Texturecoord list"
+				WriteLine(XE_XF,"         } // end of Texturecoord list")
 	
 				;Vertexcolor List
-				WriteLine XE_XF,"         MeshVertexColors {"
-				WriteLine XE_XF,"            "+verts+";"
+				WriteLine(XE_XF,"         MeshVertexColors {")
+				WriteLine(XE_XF,"            "+verts+";")
 				For v=0 To verts-1
 					If v=verts-1 Then term$=";;" Else term$=";,"
-					vred#=VertexRed (surf,v)/256
-					vgreen#=VertexGreen (surf,v)/256
-					vblue#=VertexBlue (surf,v)/256
-					WriteLine XE_XF,"            "+v+";"+vred+";"+vgreen+";"+vblue+";"+VertexAlpha (surf,v)+term$
+					vred#=VertexRed((surf,v)/256)
+					vgreen#=VertexGreen((surf,v)/256)
+					vblue#=VertexBlue((surf,v)/256)
+					WriteLine(XE_XF,"            "+v+";"+vred+";"+vgreen+";"+vblue+";"+VertexAlpha (surf,v)+term$)
 				Next
-				WriteLine XE_XF,"         } // end of Vertexcolor list"
+				WriteLine(XE_XF,"         } // end of Vertexcolor list")
 	
 				;End of mesh
-				WriteLine XE_XF,"      } // end of mesh block for "+ChiName$
+				WriteLine(XE_XF,"      } // end of mesh block for "+ChiName$)
 	
 			Next	 
 		EndIf
 
-		;FreeEntity mesh
+		;FreeEntity(mesh)
 		
 		;do all childs.. of childs etc
-		DebugLog "has "+CountChildren(h)
+		DebugLog("has "+CountChildren(h))
 		For cc=CountChildren(h) To 1 Step -1
-			chi=GetChild (h,cc)
+			chi=GetChild(h,cc)
 			RecursiveAddMesh(chi,basescaleX#,basescaleY#,basescaleZ#)
 		Next 
 
 
 		;close branch frame
-		WriteLine XE_XF,"   } // End of frame"+ChiName$
-		DebugLog "recuse_depth Depth "+recuse_depth
+		WriteLine(XE_XF,"   } // End of frame"+ChiName$)
+		DebugLog("recuse_depth Depth "+recuse_depth)
 
 
 	recuse_depth=recuse_depth-1
@@ -312,12 +312,12 @@ End Function
 Function strip_path$(f$)
 	 	f$=Lower$(f$) ; Full (!) Texture Path
 		lastknown=0
-		For p=1 To Len (f$)
+		For p=1 To Len(f$)
 			If Instr(f$,"\",p) Then lastknown=lastknown+1
 		Next
 		fnl=Len(f$)-lastknown
 		f$=Right(f$,fnl)
- 		;DebugLog "filename stripped"+ f$
+ 		;DebugLog("filename stripped"+ f$)
 
 		Return f$
 End Function
@@ -480,7 +480,7 @@ Function AddTextureToCache(texture%)
 		;Local temp$=GetINIString("Data/materials.ini",tc\name,"bump")
 		;If temp<>"" Then
 		;	tc\bump=LoadTexture_Strict(temp)
-		;	TextureBlend tc\bump,FE_BUMP
+		;	TextureBlend(tc\bump,FE_BUMP)
 		;Else
 		;	tc\bump=0
 		;EndIf
@@ -491,16 +491,16 @@ End Function
 
 Function ClearTextureCache()
 	For tc.Materials=Each Materials
-		If tc\diff<>0 Then FreeTexture tc\diff
-		;If tc\bump<>0 Then FreeTexture tc\bump
+		If tc\diff<>0 Then FreeTexture(tc\diff)
+		;If tc\bump<>0 Then FreeTexture(tc\bump)
 		Delete tc
 	Next
 End Function
 
 Function FreeTextureCache()
 	For tc.Materials=Each Materials
-		If tc\diff<>0 Then FreeTexture tc\diff
-		;If tc\bump<>0 Then FreeTexture tc\bump
+		If tc\diff<>0 Then FreeTexture(tc\diff)
+		;If tc\bump<>0 Then FreeTexture(tc\bump)
 		tc\diff = 0; : tc\bump = 0
 	Next
 End Function
@@ -510,19 +510,19 @@ Function LoadRMesh(file$)
 	;generate a texture made of white
 	Local blankTexture%
 	blankTexture=CreateTexture(4,4,1,1)
-	ClsColor 255,255,255
-	SetBuffer TextureBuffer(blankTexture)
-	Cls
-	SetBuffer BackBuffer()
+	ClsColor(255,255,255)
+	SetBuffer(TextureBuffer(blankTexture))
+	Cls()
+	SetBuffer(BackBuffer())
 	
 	Local pinkTexture%
 	pinkTexture=CreateTexture(4,4,1,1)
-	ClsColor 255,255,255
-	SetBuffer TextureBuffer(pinkTexture)
-	Cls
-	SetBuffer BackBuffer()
+	ClsColor(255,255,255)
+	SetBuffer(TextureBuffer(pinkTexture))
+	Cls()
+	SetBuffer(BackBuffer())
 	
-	ClsColor 0,0,0
+	ClsColor(0,0,0)
 	
 	;read the file
 	Local f%=ReadFile(file)
@@ -543,14 +543,14 @@ Function LoadRMesh(file$)
 			Exit
 		EndIf
 	Next
-	If f=0 Then RuntimeError "Error reading file "+Chr(34)+file+Chr(34)
+	If f=0 Then RuntimeError("Error reading file "+Chr(34)+file+Chr(34))
 	Local isRMesh$ = ReadString(f)
 	If isRMesh$="RoomMesh"
 		;Continue
 	ElseIf isRMesh$="RoomMesh.HasTriggerBox"
 		hasTriggerBox% = True
 	Else
-		RuntimeError Chr(34)+file+Chr(34)+" is Not RMESH ("+isRMesh+")"
+		RuntimeError(Chr(34)+file+Chr(34)+" is Not RMESH ("+isRMesh+")")
 	EndIf
 	
 	file=StripFilename(file)
@@ -595,9 +595,9 @@ Function LoadRMesh(file$)
 					End Select
 					
 					If tex[j]<>0 Then
-						If temp1i=1 Then TextureBlend tex[j],5
+						If temp1i=1 Then TextureBlend(tex[j],5)
 						;If Instr(Lower(temp1s),"_lm")<>0 Then
-						;	TextureBlend tex[j],3
+						;	TextureBlend(tex[j],3)
 						;EndIf
 						AddTextureToCache(tex[j])
 					EndIf
@@ -607,26 +607,26 @@ Function LoadRMesh(file$)
 					isAlpha=2
 					If temp1i=3 Then isAlpha=1
 					
-					TextureCoords tex[j],1-j
+					TextureCoords(tex[j],1-j)
 				EndIf
 			EndIf
 		Next
 		
 		If isAlpha=1 Then
 			If tex[1]<>0 Then
-				TextureBlend tex[1],2
-				BrushTexture brush,tex[1],0,0
+				TextureBlend(tex[1],2)
+				BrushTexture(brush,tex[1],0,0)
 			Else
-				BrushTexture brush,blankTexture,0,0
+				BrushTexture(brush,blankTexture,0,0)
 			EndIf
 		Else
 			
 
 			For j=0 To 1
 				If tex[j]<>0 Then
-					BrushTexture brush,tex[j],0,j+1
+					BrushTexture(brush,tex[j],0,j+1)
 				Else
-					BrushTexture brush,blankTexture,0,j+1
+					BrushTexture(brush,blankTexture,0,j+1)
 				EndIf
 			Next
 
@@ -634,9 +634,9 @@ Function LoadRMesh(file$)
 		
 		surf=CreateSurface(childMesh)
 		
-		If isAlpha>0 Then PaintSurface surf,brush
+		If isAlpha>0 Then PaintSurface(surf,brush)
 		
-		FreeBrush brush : brush = 0
+		FreeBrush(brush : brush = 0)
 		
 		count2=ReadInt(f) ;vertices
 		
@@ -648,14 +648,14 @@ Function LoadRMesh(file$)
 			;texture coords
 			For k%=0 To 1
 				u=ReadFloat(f) : v=ReadFloat(f)
-				VertexTexCoords surf,vertex,u,v,0.0,k
+				VertexTexCoords(surf,vertex,u,v,0.0,k)
 			Next
 			
 			;colors
 			temp1i=ReadByte(f)
 			temp2i=ReadByte(f)
 			temp3i=ReadByte(f)
-			VertexColor surf,vertex,temp1i,temp2i,temp3i,1.0
+			VertexColor(surf,vertex,temp1i,temp2i,temp3i,1.0)
 		Next
 		
 		count2=ReadInt(f) ;polys
@@ -665,19 +665,19 @@ Function LoadRMesh(file$)
 		Next
 		
 		If isAlpha=1 Then
-			AddMesh childMesh,Alpha
+			AddMesh(childMesh,Alpha)
 		Else
-			AddMesh childMesh,Opaque
-			EntityParent childMesh,collisionMeshes
-			EntityAlpha childMesh,0.0
-			EntityType childMesh,HIT_MAP
-			EntityPickMode childMesh,2
+			AddMesh(childMesh,Opaque)
+			EntityParent(childMesh,collisionMeshes)
+			EntityAlpha(childMesh,0.0)
+			EntityType(childMesh,HIT_MAP)
+			EntityPickMode(childMesh,2)
 			
 			;make collision double-sided
 			Local flipChild% = CopyMesh(childMesh)
 			FlipMesh(flipChild)
-			AddMesh flipChild,childMesh
-			FreeEntity flipChild			
+			AddMesh(flipChild,childMesh)
+			FreeEntity(flipChild			)
 		EndIf
 		
 		
@@ -686,36 +686,36 @@ Function LoadRMesh(file$)
 	Local obj%
 	
 	temp1i=CopyMesh(Alpha)
-	FlipMesh temp1i
-	AddMesh temp1i,Alpha
-	FreeEntity temp1i
+	FlipMesh(temp1i)
+	AddMesh(temp1i,Alpha)
+	FreeEntity(temp1i)
 	
-	If brush <> 0 Then FreeBrush brush
+	If brush <> 0 Then FreeBrush(brush)
 	
-	AddMesh Alpha,Opaque
-	FreeEntity Alpha
+	AddMesh(Alpha,Opaque)
+	FreeEntity(Alpha)
 	
-	EntityFX Opaque,3
+	EntityFX(Opaque,3)
 	
-	EntityAlpha Opaque,1.0
+	EntityAlpha(Opaque,1.0)
 
-	FreeTexture blankTexture
+	FreeTexture(blankTexture)
 	
-	CloseFile f
+	CloseFile(f)
 	
 	Return Opaque
 End Function
 
-Print "Hey Mark,"
-Print "stop losing this ffs"
-Print "Thanks for your time."
-Print ""
+Print("Hey Mark,")
+Print("stop losing this ffs")
+Print("Thanks for your time.")
+Print("")
 Local fname$ = Input("RMesh To load: ")
 
-Graphics3D 1280,720,32,2
+Graphics3D(1280,720,32,2)
 
-;Global bump% = LoadTexture("scpcb/gfx/map/tilebump.jpg")
-;TextureBlend bump,6
+;Global bump% = LoadTexture("scpcb/gfx/Map/tilebump.jpg")
+;TextureBlend(bump,6)
 ;TextureBumpEnvMat bump,0,0,1.009
 ;TextureBumpEnvMat bump,0,1,-1.000
 ;TextureBumpEnvMat bump,1,0,-1.000
@@ -725,21 +725,21 @@ Graphics3D 1280,720,32,2
 
 Global mesh% = LoadRMesh(fname)
 
-;white% = LoadTexture("scpcb/gfx/map/wood.jpg")
-;TextureCoords white,1
-;EntityTexture mesh,bump,0,0
-;FreeTexture bump
-;EntityTexture mesh,white,0,2
-ScaleEntity mesh,0.1,0.1,0.1
-EntityPickMode mesh,2
-ShowEntity mesh
+;white% = LoadTexture("scpcb/gfx/Map/wood.jpg")
+;TextureCoords(white,1)
+;EntityTexture(mesh,bump,0,0)
+;FreeTexture(bump)
+;EntityTexture(mesh,white,0,2)
+ScaleEntity(mesh,0.1,0.1,0.1)
+EntityPickMode(mesh,2)
+ShowEntity(mesh)
 
 Global sphere% = CreateSphere()
-ScaleEntity sphere,5,5,5
-EntityColor sphere,255,0,0
+ScaleEntity(sphere,5,5,5)
+EntityColor(sphere,255,0,0)
 
 Global Camera% = CreateCamera()
-TranslateEntity Camera,0,5,0
+TranslateEntity(Camera,0,5,0)
 Global camPitch# = 0 : Global camYaw# = 0
 
 HidePointer 
@@ -750,7 +750,7 @@ While Not KeyHit(1)
 	;mouselook
 	Local diffX% = MouseX()-(GraphicsWidth()/2)
 	Local diffY% = MouseY()-(GraphicsHeight()/2)
-	MoveMouse GraphicsWidth()/2,GraphicsHeight()/2
+	MoveMouse(GraphicsWidth()/2,GraphicsHeight()/2)
 	camYaw = camYaw - (Float(diffX)/30.0)
 	While camYaw>=360.0
 		camYaw=camYaw-360.0
@@ -765,34 +765,34 @@ While Not KeyHit(1)
 	If camPitch<-90.0
 		camPitch = -90.0
 	EndIf
-	RotateEntity Camera,camPitch,camYaw,0.0,True
+	RotateEntity(Camera,camPitch,camYaw,0.0,True)
 	
-	If KeyDown(17) Then MoveEntity Camera,0,0,1+KeyDown(42)*2
+	If KeyDown(17) Then MoveEntity(Camera,0,0,1+KeyDown(42)*2)
 	
-	If KeyDown(30) Then MoveEntity Camera,-1-KeyDown(42)*2,0,0
-	If KeyDown(32) Then MoveEntity Camera,1+KeyDown(42)*2,0,0
+	If KeyDown(30) Then MoveEntity(Camera,-1-KeyDown(42)*2,0,0)
+	If KeyDown(32) Then MoveEntity(Camera,1+KeyDown(42)*2,0,0)
 	
-	If KeyDown(31) Then MoveEntity Camera,0,0,-1-KeyDown(42)*2
+	If KeyDown(31) Then MoveEntity(Camera,0,0,-1-KeyDown(42)*2)
 	
-	If KeyDown(57) Then TranslateEntity Camera,0,4+KeyDown(42)*8,0
+	If KeyDown(57) Then TranslateEntity(Camera,0,4+KeyDown(42)*8,0)
 	
-	SetBuffer BackBuffer()
+	SetBuffer(BackBuffer())
 	
-	CameraPick Camera,GraphicsWidth()/2,GraphicsHeight()/2
-	PositionEntity sphere,PickedX(),PickedY(),PickedZ(),True
+	CameraPick(Camera,GraphicsWidth()/2,GraphicsHeight()/2)
+	PositionEntity(sphere,PickedX(),PickedY(),PickedZ(),True)
 	Local dist# = 2.5;EntityDistance(Camera,sphere)*0.01
-	ScaleEntity sphere,dist,dist,dist
+	ScaleEntity(sphere,dist,dist,dist)
 	
-	RenderWorld
+	RenderWorld()
 	
-	Color 0,0,0
-	Text 6,6,"Picked X = "+Str(PickedX()*10.0)
-	Text 6,26,"Picked Y = "+Str(PickedY()*10.0)
-	Text 6,46,"Picked Z = "+Str(PickedZ()*10.0)
-	Color 0,255,0
-	Text 5,5,"Picked X = "+Str(PickedX()*10.0)
-	Text 5,25,"Picked Y = "+Str(PickedY()*10.0)
-	Text 5,45,"Picked Z = "+Str(PickedZ()*10.0)
+	Color(0,0,0)
+	Text(6,6,"Picked X = "+Str(PickedX()*10.0))
+	Text(6,26,"Picked Y = "+Str(PickedY()*10.0))
+	Text(6,46,"Picked Z = "+Str(PickedZ()*10.0))
+	Color(0,255,0)
+	Text(5,5,"Picked X = "+Str(PickedX()*10.0))
+	Text(5,25,"Picked Y = "+Str(PickedY()*10.0))
+	Text(5,45,"Picked Z = "+Str(PickedZ()*10.0))
 	
 	If KeyHit(44) Then
 		BumpEnvMat = -BumpEnvMat

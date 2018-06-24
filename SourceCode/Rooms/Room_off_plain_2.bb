@@ -3,7 +3,7 @@ Function FillRoom_off_plain_2(r.Rooms)
     Local it.Items, i%
     Local xtemp%, ytemp%, ztemp%
 
-    Local t1;, Bump
+    Local t1%;, Bump
 
     it = CreatePaper("doc106", r\x + 404.0 * RoomScale, r\y + 145.0 * RoomScale, r\z + 559.0 * RoomScale)
     EntityParent(it\collider, r\obj)

@@ -3,21 +3,21 @@ Function FillRoom_cont_008_1(r.Rooms)
 	Local it.Items, i%
 	Local xtemp%, ytemp%, ztemp%
 
-	Local t1;, Bump
+	Local t1%;, Bump
 
     ;the container
     r\objects[0] = CreatePivot(r\obj)
     PositionEntity(r\objects[0], r\x + 292.0 * RoomScale, 130.0*RoomScale, r\z + 516.0 * RoomScale, True)
 
     ;the lid of the container
-    r\objects[1] = LoadMesh("GFX/map/008_2.b3d")
-    ScaleEntity r\objects[1], RoomScale, RoomScale, RoomScale
+    r\objects[1] = LoadMesh("GFX/Map/008_2.b3d")
+    ScaleEntity(r\objects[1], RoomScale, RoomScale, RoomScale)
     PositionEntity(r\objects[1], r\x + 292 * RoomScale, 151 * RoomScale, r\z + 576.0 * RoomScale, 0)
     EntityParent(r\objects[1], r\obj)
 
     RotateEntity(r\objects[1],89,0,0,True)
 
-    Local Glasstex% = LoadTexture("GFX/map/Textures/glass.png",1+2)
+    Local Glasstex% = LoadTexture("GFX/Map/Textures/glass.png",1+2)
     r\objects[2] = CreateSprite()
     EntityTexture(r\objects[2],Glasstex)
     SpriteViewMode(r\objects[2],2)
@@ -26,7 +26,7 @@ Function FillRoom_cont_008_1(r.Rooms)
     TurnEntity(r\objects[2],0,90,0)
     EntityParent(r\objects[2], r\obj)
 
-    FreeTexture Glasstex
+    FreeTexture(Glasstex)
 
     ;scp-173 spawnpoint
     r\objects[3] = CreatePivot(r\obj)
@@ -40,23 +40,26 @@ Function FillRoom_cont_008_1(r.Rooms)
     PositionEntity(r\objects[5], r\x - 158 * RoomScale, 368 * RoomScale, r\z + 298.0 * RoomScale)
     ScaleSprite(r\objects[5], 0.02, 0.02)
     EntityTexture(r\objects[5], LightSpriteTex(1))
-    EntityBlend (r\objects[5], 3)
+    EntityBlend(r\objects[5], 3)
     EntityParent(r\objects[5], r\obj)
-    HideEntity r\objects[5]
+    HideEntity(r\objects[5])
 
     d = CreateDoor(r\zone, r\x + 296.0 * RoomScale, 0, r\z - 672.0 * RoomScale, 180, r, True, 0, 4)
     d\autoClose = False
-    PositionEntity (d\buttons[1], r\x + 164.0 * RoomScale, EntityY(d\buttons[1],True), EntityZ(d\buttons[1],True), True)
-    FreeEntity d\buttons[0] : d\buttons[0]=0
-    FreeEntity d\obj2 : d\obj2=0
+    PositionEntity(d\buttons[1], r\x + 164.0 * RoomScale, EntityY(d\buttons[1],True), EntityZ(d\buttons[1],True), True)
+    FreeEntity(d\buttons[0])
+	d\buttons[0]=0
+    FreeEntity(d\obj2)
+	d\obj2=0
     r\roomDoors[0] = d
 
     d2 = CreateDoor(r\zone, r\x + 296.0 * RoomScale, 0, r\z - 144.0 * RoomScale, 0, r, False)
     d2\autoClose = False
-    PositionEntity (d2\buttons[0], r\x + 432.0 * RoomScale, EntityY(d2\buttons[0],True), r\z - 480.0 * RoomScale, True)
+    PositionEntity(d2\buttons[0], r\x + 432.0 * RoomScale, EntityY(d2\buttons[0],True), r\z - 480.0 * RoomScale, True)
     RotateEntity(d2\buttons[0], 0, -90, 0, True)
-    PositionEntity (d2\buttons[1], r\x + 164.0 * RoomScale, EntityY(d2\buttons[0],True), r\z - 128.0 * RoomScale, True)
-    FreeEntity d2\obj2 : d2\obj2=0
+    PositionEntity(d2\buttons[1], r\x + 164.0 * RoomScale, EntityY(d2\buttons[0],True), r\z - 128.0 * RoomScale, True)
+    FreeEntity(d2\obj2)
+	d2\obj2=0
     r\roomDoors[1] = d2
 
     d\linkedDoor = d2
@@ -99,38 +102,38 @@ Function UpdateEvent_cont_008_1(e.Events)
 	Local angle#
 
 	;[Block]
-	If mainPlayer\currRoom = e\room Then
-		If Curr173\idle<2 Then
+	If (mainPlayer\currRoom = e\room) Then
+		If (Curr173\idle<2) Then
 			;container open
-			If e\eventState = 0 Then
+			If (e\eventState = 0) Then
 
-				PositionEntity Curr173\collider, EntityX(e\room\objects[3],True),0.5,EntityZ(e\room\objects[3],True),True
-				ResetEntity Curr173\collider
+				PositionEntity(Curr173\collider, EntityX(e\room\objects[3],True),0.5,EntityZ(e\room\objects[3],True),True)
+				ResetEntity(Curr173\collider)
 
 				e\eventState = 1
-			ElseIf e\eventState = 1 Then
+			ElseIf (e\eventState = 1) Then
 				e\soundChannels[0] = LoopRangedSound(AlarmSFX(0), e\soundChannels[0], mainPlayer\cam, e\room\objects[0], 5.0)
 
-				If (TimeInPosMilliSecs() Mod 1000)<500 Then
-					ShowEntity e\room\objects[5]
+				If ((TimeInPosMilliSecs() Mod 1000)<500) Then
+					ShowEntity(e\room\objects[5])
 				Else
-					HideEntity e\room\objects[5]
+					HideEntity(e\room\objects[5])
 				EndIf
 
 				dist = EntityDistance(mainPlayer\collider, e\room\objects[0])
-				If dist<2.0 Then
+				If (dist<2.0) Then
 					e\room\roomDoors[0]\locked = True
 					e\room\roomDoors[1]\locked = True
 
-					If e\eventState2=0 Then
-						ShowEntity e\room\objects[2]
-						If mainPlayer\blinkTimer<-10 And Curr173\idle = 0 Then
-							PositionEntity Curr173\collider, EntityX(e\room\objects[4],True),0.5,EntityZ(e\room\objects[4],True),True
-							ResetEntity Curr173\collider
+					If (e\eventState2=0) Then
+						ShowEntity(e\room\objects[2])
+						If (mainPlayer\blinkTimer<-10 And Curr173\idle = 0) Then
+							PositionEntity(Curr173\collider, EntityX(e\room\objects[4],True),0.5,EntityZ(e\room\objects[4],True),True)
+							ResetEntity(Curr173\collider)
 
-							HideEntity e\room\objects[2]
+							HideEntity(e\room\objects[2])
 
-							If (Not IsPlayerWearingTempName(mainPlayer,"hazmatsuit")) Then
+							If ((Not IsPlayerWearingTempName(mainPlayer,"hazmatsuit"))) Then
 								mainPlayer\injuries=mainPlayer\injuries+0.1
 								mainPlayer\infect008=1
 								Msg = "The window shattered and a piece of glass cut your arm."
@@ -143,43 +146,43 @@ Function UpdateEvent_cont_008_1(e.Events)
 						EndIf
 					EndIf
 
-					If dist<1.0 Then
-						If EntityInView(e\room\objects[0], mainPlayer\cam) Then
+					If (dist<1.0) Then
+						If (EntityInView(e\room\objects[0], mainPlayer\cam)) Then
 							DrawHandIcon = True
 
-							If MouseDown1 Then
+							If (MouseDown1) Then
 								RotateEntity(e\room\objects[1], Max(Min(EntityPitch(e\room\objects[1])+Max(Min(-mouse_y_speed_1,10.0),-10), 89), 35), EntityYaw(e\room\objects[1]), 0)
 							EndIf
 						EndIf
 					EndIf
 				EndIf
 
-				If EntityPitch(e\room\objects[1],True)<40 Then
+				If (EntityPitch(e\room\objects[1],True)<40) Then
 					e\eventState = 2
 					PlaySound_SM(sndManager\lever)
 				Else
 					p.Particles = CreateParticle(EntityX(e\room\objects[0],True),EntityY(e\room\objects[0],True),EntityZ(e\room\objects[0],True), 6, 0.02, -0.12)
-					RotateEntity (p\pvt,-90,0,0,True)
+					RotateEntity(p\pvt,-90,0,0,True)
 					TurnEntity(p\pvt, Rnd(-26,26), Rnd(-26,26), Rnd(360))
 
 					p\sizeChange = 0.012
 					p\aChange = -0.015
 				EndIf
 			Else
-				HideEntity e\room\objects[5]
+				HideEntity(e\room\objects[5])
 				e\room\roomDoors[0]\locked = False
 				e\room\roomDoors[1]\locked = False
 				e\room\roomDoors[2]\locked = False
 
-				RotateEntity (e\room\objects[1],CurveAngle(1,EntityPitch(e\room\objects[1],True),15.0),EntityYaw(e\room\objects[1],True),0,True)
+				RotateEntity(e\room\objects[1],CurveAngle(1,EntityPitch(e\room\objects[1],True),15.0),EntityYaw(e\room\objects[1],True),0,True)
 
-				If EntityPitch(e\room\objects[1],True)=<1.0 Then
+				If (EntityPitch(e\room\objects[1],True)=<1.0) Then
 					RemoveEvent(e)
 				EndIf
 			EndIf
 		Else
 			p.Particles = CreateParticle(EntityX(e\room\objects[0],True),EntityY(e\room\objects[0],True),EntityZ(e\room\objects[0],True), 6, 0.02, -0.12)
-			RotateEntity (p\pvt,-90,0,0,True)
+			RotateEntity(p\pvt,-90,0,0,True)
 			TurnEntity(p\pvt, Rnd(-26,26), Rnd(-26,26), Rnd(360))
 		EndIf
 

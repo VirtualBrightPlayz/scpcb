@@ -1,6 +1,7 @@
 
 Function sky_CreateSky(filename$,parent%=0)
-	Local sky
+	Local sky%
+	Local fname$
 	Local direction$
 	Local x#,y#,z#,u#,v#
 	Local b%,s%
@@ -23,8 +24,8 @@ Function sky_CreateSky(filename$,parent%=0)
 			Case 6
 				direction = "_down"
 		End Select
-		Local fname$ = filename$ + direction$ + ".jpg"
-		If FileType(fname$)=1 Then
+		fname$ = filename$ + direction$ + ".jpg"
+		If (FileType(fname$)=1) Then
 			b% = LoadBrush(fname$,%110001)
 			s% = CreateSurface(sky,b)
 			
@@ -43,23 +44,23 @@ Function sky_CreateSky(filename$,parent%=0)
 				Case 6
 					
 			End Select
-			AddTriangle s,0,1,2
-			AddTriangle s,0,2,3
-			FreeBrush b
+			AddTriangle(s,0,1,2)
+			AddTriangle(s,0,2,3)
+			FreeBrush(b)
 		EndIf
 	Next
-	FlipMesh sky
-	EntityFX sky,1+8
-	EntityOrder sky,1000
+	FlipMesh(sky)
+	EntityFX(sky,1+8)
+	EntityOrder(sky,1000)
 	Return sky
 End Function
 
 Function UpdateSky()
-	PositionEntity Sky, EntityX(mainPlayer\cam),EntityY(mainPlayer\cam),EntityZ(mainPlayer\cam), True
+	PositionEntity(Sky, EntityX(mainPlayer\cam),EntityY(mainPlayer\cam),EntityZ(mainPlayer\cam), True)
 End Function
 
 Function Update1499Sky()
-	PositionEntity NTF_1499Sky, EntityX(mainPlayer\cam),EntityY(mainPlayer\cam),EntityZ(mainPlayer\cam), True
+	PositionEntity(NTF_1499Sky, EntityX(mainPlayer\cam),EntityY(mainPlayer\cam),EntityZ(mainPlayer\cam), True)
 End Function
 
 
@@ -67,36 +68,36 @@ End Function
 ;Data
 ;-----------------------------------------------------------------------
 
-.sky_SkyboxData
-Data "_back"
-Data -1,+1,-1,0,0
-Data +1,+1,-1,1,0
-Data +1,-1,-1,1,1
-Data -1,-1,-1,0,1
-Data "_left"
-Data +1,+1,-1,0,0
-Data +1,+1,+1,1,0
-Data +1,-1,+1,1,1
-Data +1,-1,-1,0,1
-Data "_front"
-Data +1,+1,+1,0,0
-Data -1,+1,+1,1,0
-Data -1,-1,+1,1,1
-Data +1,-1,+1,0,1
-Data "_right"
-Data -1,+1,+1,0,0
-Data -1,+1,-1,1,0
-Data -1,-1,-1,1,1
-Data -1,-1,+1,0,1
-Data "_up"
-Data -1,+1,+1,0,0
-Data +1,+1,+1,1,0
-Data +1,+1,-1,1,1
-Data -1,+1,-1,0,1
-Data "_down"
-Data -1,-1,-1,1,0
-Data +1,-1,-1,1,1
-Data +1,-1,+1,0,1
-Data -1,-1,+1,0,0
+;.sky_SkyboxData
+;Data "_back"
+;Data -1,+1,-1,0,0
+;Data +1,+1,-1,1,0
+;Data +1,-1,-1,1,1
+;Data -1,-1,-1,0,1
+;Data "_left"
+;Data +1,+1,-1,0,0
+;Data +1,+1,+1,1,0
+;Data +1,-1,+1,1,1
+;Data +1,-1,-1,0,1
+;Data "_front"
+;Data +1,+1,+1,0,0
+;Data -1,+1,+1,1,0
+;Data -1,-1,+1,1,1
+;Data +1,-1,+1,0,1
+;Data "_right"
+;Data -1,+1,+1,0,0
+;Data -1,+1,-1,1,0
+;Data -1,-1,-1,1,1
+;Data -1,-1,+1,0,1
+;Data "_up"
+;Data -1,+1,+1,0,0
+;Data +1,+1,+1,1,0
+;Data +1,+1,-1,1,1
+;Data -1,+1,-1,0,1
+;Data "_down"
+;Data -1,-1,-1,1,0
+;Data +1,-1,-1,1,1
+;Data +1,-1,+1,0,1
+;Data -1,-1,+1,0,0
 ;~IDEal Editor Parameters:
 ;~C#Blitz3D

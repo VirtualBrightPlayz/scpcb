@@ -3,7 +3,7 @@ Function FillRoom_strg_939_3(r.Rooms)
 	Local it.Items, i%, x#, z#
 	Local xtemp%, ytemp%, ztemp%
 
-	Local t1;, Bump
+	Local t1%;, Bump
 
     r\objects[0] = CreatePivot(r\obj)
     PositionEntity(r\objects[0], r\x, 240.0 * RoomScale, r\z + 752.0 * RoomScale, True)
@@ -60,10 +60,10 @@ Function FillRoom_strg_939_3(r.Rooms)
     r\objects[16] = CreatePivot(r\obj)
     PositionEntity(r\objects[16], r\x - 432.0 * RoomScale, -5550.0 * RoomScale, r\z + 2976.0 * RoomScale, True)
 
-    ;r\objects[20] = LoadMesh("GFX/map/room3storage_hb.b3d",r\obj)
-    ;EntityPickMode r\objects[20],2
-    ;EntityType r\objects[20],HIT_MAP
-    ;EntityAlpha r\objects[20],0.0
+    ;r\objects[20] = LoadMesh("GFX/Map/room3storage_hb.b3d",r\obj)
+    ;EntityPickMode(r\objects[20],2)
+    ;EntityType(r\objects[20],HIT_MAP)
+    ;EntityAlpha(r\objects[20],0.0)
 
     ;Doors
     r\roomDoors[0] = CreateDoor(r\zone, r\x, 0.0, r\z + 448.0 * RoomScale, 0, r, True)
@@ -87,9 +87,9 @@ Function FillRoom_strg_939_3(r.Rooms)
     r\roomDoors[3] = CreateDoor(r\zone, r\x - 456.0 * RoomScale,  -5632.0 * RoomScale, r\z - 824.0 * RoomScale, 0, r, False)
     r\roomDoors[3]\autoClose = False : r\roomDoors[3]\open = False
     ;X=+176 | Z=-40
-    PositionEntity r\roomDoors[3]\buttons[0], r\x - 280.0*RoomScale, EntityY(r\roomDoors[3]\buttons[0],True), r\z - 864.0 * RoomScale, True
+    PositionEntity(r\roomDoors[3]\buttons[0], r\x - 280.0*RoomScale, EntityY(r\roomDoors[3]\buttons[0],True), r\z - 864.0 * RoomScale, True)
     ;X=-176 | Z=+40
-    PositionEntity r\roomDoors[3]\buttons[1], r\x - 632.0*RoomScale, EntityY(r\roomDoors[3]\buttons[1],True), r\z - 784.0 * RoomScale, True
+    PositionEntity(r\roomDoors[3]\buttons[1], r\x - 632.0*RoomScale, EntityY(r\roomDoors[3]\buttons[1],True), r\z - 784.0 * RoomScale, True)
 
     em.Emitters = CreateEmitter(r\x + 5218.0 * RoomScale, -5584.0*RoomScale, r\z - 600* RoomScale, 0)
     TurnEntity(em\obj, 20, -100, 0, True)
@@ -116,7 +116,7 @@ Function FillRoom_strg_939_3(r.Rooms)
     de.Decals = CreateDecal(3,  r\x + x*RoomScale, -5632.0*RoomScale+0.01, r\z+z*RoomScale,90,Rnd(360),0)
     de\size = 0.5
     ScaleSprite(de\obj, de\size,de\size)
-    EntityParent de\obj, r\obj
+    EntityParent(de\obj, r\obj)
 
     ;Objects [20],[21],[22],[23]
 	Local n%
@@ -126,14 +126,14 @@ Function FillRoom_strg_939_3(r.Rooms)
         ScaleEntity(r\levers[n-10]\obj, 0.04, 0.04, 0.04)
         ScaleEntity(r\levers[n-10]\baseObj, 0.04, 0.04, 0.04)
 
-        If n = 10 Then
+        If (n = 10) Then
             ;r\z+6578
-            PositionEntity r\levers[n-10]\obj,r\x+3101*RoomScale,r\y-5461*RoomScale,r\z+6568*RoomScale,True
-            PositionEntity r\levers[n-10]\baseObj,r\x+3101*RoomScale,r\y-5461*RoomScale,r\z+6568*RoomScale,True
+            PositionEntity(r\levers[n-10]\obj,r\x+3101*RoomScale,r\y-5461*RoomScale,r\z+6568*RoomScale,True)
+            PositionEntity(r\levers[n-10]\baseObj,r\x+3101*RoomScale,r\y-5461*RoomScale,r\z+6568*RoomScale,True)
         Else
             ;r\z+3174
-            PositionEntity r\levers[n-10]\obj,r\x+1209*RoomScale,r\y-5461*RoomScale,r\z+3164*RoomScale,True
-            PositionEntity r\levers[n-10]\baseObj,r\x+1209*RoomScale,r\y-5461*RoomScale,r\z+3164*RoomScale,True
+            PositionEntity(r\levers[n-10]\obj,r\x+1209*RoomScale,r\y-5461*RoomScale,r\z+3164*RoomScale,True)
+            PositionEntity(r\levers[n-10]\baseObj,r\x+1209*RoomScale,r\y-5461*RoomScale,r\z+3164*RoomScale,True)
         EndIf
 
         EntityParent(r\levers[n-10]\obj, r\obj)
@@ -142,32 +142,36 @@ Function FillRoom_strg_939_3(r.Rooms)
         RotateEntity(r\levers[n-10]\baseObj, 0, 0, 0)
         RotateEntity(r\levers[n-10]\obj, -10, 0 - 180, 0)
 
-        EntityPickMode r\levers[n-10]\obj, 1, False
-        EntityRadius r\levers[n-10]\obj, 0.1
+        EntityPickMode(r\levers[n-10]\obj, 1, False)
+        EntityRadius(r\levers[n-10]\obj, 0.1)
     Next
 
     r\roomDoors[4] = CreateDoor(r\zone,r\x+56*RoomScale,r\y-5632*RoomScale,r\z+6344*RoomScale,90,r,False,2)
     r\roomDoors[4]\autoClose = False : r\roomDoors[4]\open = False
     For i = 0 To 1
-        FreeEntity r\roomDoors[4]\buttons[i] : r\roomDoors[4]\buttons[i] = 0
+        FreeEntity(r\roomDoors[4]\buttons[i])
+		r\roomDoors[4]\buttons[i] = 0
     Next
 
     d = CreateDoor(r\zone,r\x+1157.0*RoomScale,r\y-5632.0*RoomScale,r\z+660.0*RoomScale,0,r,False,2)
     d\locked = True : d\open = False : d\autoClose = False
     For i = 0 To 1
-        FreeEntity d\buttons[i] : d\buttons[i]=0
+        FreeEntity(d\buttons[i])
+		d\buttons[i]=0
     Next
 
     d = CreateDoor(r\zone,r\x+234.0*RoomScale,r\y-5632.0*RoomScale,r\z+5239.0*RoomScale,90,r,False,2)
     d\locked = True : d\open = False : d\autoClose = False
     For i = 0 To 1
-        FreeEntity d\buttons[i] : d\buttons[i]=0
+        FreeEntity(d\buttons[i])
+		d\buttons[i]=0
     Next
 
     d = CreateDoor(r\zone,r\x+3446.0*RoomScale,r\y-5632.0*RoomScale,r\z+6369.0*RoomScale,90,r,False,2)
     d\locked = True : d\open = False : d\autoClose = False
     For i = 0 To 1
-        FreeEntity d\buttons[i] : d\buttons[i]=0
+        FreeEntity(d\buttons[i])
+		d\buttons[i]=0
     Next
 End Function
 
@@ -184,17 +188,17 @@ Function UpdateEvent_strg_939_3(e.Events)
 	Local angle#
 
 	;[Block]
-	If mainPlayer\currRoom = e\room Then
+	If (mainPlayer\currRoom = e\room) Then
 		e\eventState2 = UpdateElevators2(e\eventState2, e\room\roomDoors[0], e\room\roomDoors[1],e\room\objects[0],e\room\objects[1], e)
 
 		e\eventState3 = UpdateElevators2(e\eventState3, e\room\roomDoors[2], e\room\roomDoors[3],e\room\objects[2],e\room\objects[3], e)
 
-		If EntityY(mainPlayer\collider)<-4600*RoomScale Then
+		If (EntityY(mainPlayer\collider)<-4600*RoomScale) Then
 
-			;If Music(7)=0 Then Music(7) = LoadSound("SFX/Music/Room3Storage.ogg") ;TODO: fix
+			;If (Music(7)=0) Then Music(7) = LoadSound("SFX/Music/Room3Storage.ogg") ;TODO: fix
 			;ShouldPlay = 7
 
-			;If e\room\npc[0]=Null Then
+			;If (e\room\npc[0]=Null) Then
 				;DrawLoading(0, True)
 				;e\room\npc[0]=CreateNPC(NPCtype939, 0,0,0)
 
@@ -206,36 +210,36 @@ Function UpdateEvent_strg_939_3(e.Events)
 
 				;DrawLoading(100, True)
 			;EndIf
-			If e\room\npc[2]=Null Or e\eventState = 3 Then
-				If e\eventState = 0 Then
+			If (e\room\npc[2]=Null Or e\eventState = 3) Then
+				If (e\eventState = 0) Then
 					e\eventState = 1
-				ElseIf e\eventState = 1 Then
+				ElseIf (e\eventState = 1) Then
 					e\room\npc[0]=CreateNPC(NPCtype939, 0,0,0)
 					e\eventState = 2
-				ElseIf e\eventState = 2 Then
+				ElseIf (e\eventState = 2) Then
 					e\room\npc[1]=CreateNPC(NPCtype939, 0,0,0)
 					e\eventState = 3
-				ElseIf e\eventState = 3 Then
+				ElseIf (e\eventState = 3) Then
 					e\room\npc[2]=CreateNPC(NPCtype939, 0,0,0)
 					e\eventState = 0
 				EndIf
 			Else
-				If e\eventState = 0 Then
+				If (e\eventState = 0) Then
 					;Instance 1
 					PositionEntity(e\room\npc[0]\collider, EntityX(e\room\objects[4],True),EntityY(e\room\objects[4],True)+0.2,EntityZ(e\room\objects[4],True))
-					ResetEntity e\room\npc[0]\collider
+					ResetEntity(e\room\npc[0]\collider)
 					e\room\npc[0]\state = 2
 					e\room\npc[0]\state2 = 5
 					e\room\npc[0]\prevState = 7
 					;Instance 2
 					PositionEntity(e\room\npc[1]\collider, EntityX(e\room\objects[9],True),EntityY(e\room\objects[9],True)+0.2,EntityZ(e\room\objects[9],True))
-					ResetEntity e\room\npc[1]\collider
+					ResetEntity(e\room\npc[1]\collider)
 					e\room\npc[1]\state = 2
 					e\room\npc[1]\state2 = 10
 					e\room\npc[1]\prevState = 12
 					;Instance 3
 					PositionEntity(e\room\npc[2]\collider, EntityX(e\room\objects[13],True),EntityY(e\room\objects[13],True)+0.2,EntityZ(e\room\objects[13],True))
-					ResetEntity e\room\npc[2]\collider
+					ResetEntity(e\room\npc[2]\collider)
 					e\room\npc[2]\state = 2
 					e\room\npc[2]\state2 = 14
 					e\room\npc[2]\prevState = 16
@@ -243,11 +247,11 @@ Function UpdateEvent_strg_939_3(e.Events)
 					e\eventState = 1
 				EndIf
 
-				If (e\room\roomDoors[4]\open = False) Then
-					If (e\room\levers[0]\succ Or e\room\levers[1]\succ) Then
+				If ((e\room\roomDoors[4]\open = False)) Then
+					If ((e\room\levers[0]\succ Or e\room\levers[1]\succ)) Then
 						e\room\roomDoors[4]\open = True
-						If (e\sounds[1] <> 0) Then
-                            FreeSound e\sounds[1]
+						If ((e\sounds[1] <> 0)) Then
+                            FreeSound(e\sounds[1])
                             e\sounds[1] = 0
                         EndIf
 
@@ -271,26 +275,26 @@ Function UpdateEvent_strg_939_3(e.Events)
 						e\room\npc[2]\ignorePlayer = True
 				End Select
 
-				If IsChannelPlaying(e\soundChannels[1]) Then
+				If (IsChannelPlaying(e\soundChannels[1])) Then
 					UpdateRangedSoundOrigin(e\soundChannels[1],mainPlayer\cam,e\room\roomDoors[4]\obj,400)
 				EndIf
 
-				If EntityY(mainPlayer\collider)<-6400*RoomScale And mainPlayer\dead = False Then
+				If (EntityY(mainPlayer\collider)<-6400*RoomScale And mainPlayer\dead = False) Then
 					DeathMSG=""
-					PlaySound2 LoadTempSound("SFX/Room/PocketDimension/Impact.ogg")
+					PlaySound2(LoadTempSound("SFX/Room/PocketDimension/Impact.ogg"))
 					mainPlayer\dead = True
 				EndIf
 			EndIf
 		Else
 			e\eventState = 0
-			If e\room\npc[0]<>Null Then e\room\npc[0]\state = 66
-			If e\room\npc[1]<>Null Then e\room\npc[1]\state = 66
-			If e\room\npc[2]<>Null Then e\room\npc[2]\state = 66
+			If (e\room\npc[0]<>Null) Then e\room\npc[0]\state = 66
+			If (e\room\npc[1]<>Null) Then e\room\npc[1]\state = 66
+			If (e\room\npc[2]<>Null) Then e\room\npc[2]\state = 66
 		EndIf
 	Else
-		If e\room\npc[0]<>Null Then e\room\npc[0]\state = 66
-		If e\room\npc[1]<>Null Then e\room\npc[1]\state = 66
-		If e\room\npc[2]<>Null Then e\room\npc[2]\state = 66
+		If (e\room\npc[0]<>Null) Then e\room\npc[0]\state = 66
+		If (e\room\npc[1]<>Null) Then e\room\npc[1]\state = 66
+		If (e\room\npc[2]<>Null) Then e\room\npc[2]\state = 66
 	EndIf
 	;[End Block]
 End Function

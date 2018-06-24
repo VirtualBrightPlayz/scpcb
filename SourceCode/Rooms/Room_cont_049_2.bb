@@ -3,7 +3,7 @@ Function FillRoom_cont_049_2(r.Rooms)
 	Local it.Items, i%
 	Local xtemp%, ytemp%, ztemp%
 
-	Local t1;, Bump
+	Local t1%;, Bump
 
     r\objects[0] = CreatePivot(r\obj)
     PositionEntity(r\objects[0], r\x + 640.0 * RoomScale, 240.0 * RoomScale, r\z + 656.0 * RoomScale, True)
@@ -37,12 +37,12 @@ Function FillRoom_cont_049_2(r.Rooms)
 
 		Select n
 			Case 0 ;power feed
-				PositionEntity (r\levers[n]\obj, r\x - 328.0 * RoomScale, r\y - 3374.0 * RoomScale, r\z + 916 * RoomScale, True)
-				PositionEntity (r\levers[n]\baseObj, r\x - 328.0 * RoomScale, r\y - 3374.0 * RoomScale, r\z + 916 * RoomScale, True)
+				PositionEntity(r\levers[n]\obj, r\x - 328.0 * RoomScale, r\y - 3374.0 * RoomScale, r\z + 916 * RoomScale, True)
+				PositionEntity(r\levers[n]\baseObj, r\x - 328.0 * RoomScale, r\y - 3374.0 * RoomScale, r\z + 916 * RoomScale, True)
 
 			Case 1 ;generator
-				PositionEntity (r\levers[n]\obj, r\x - 370.0 * RoomScale, r\y - 3400.0 * RoomScale, r\z - 799 * RoomScale, True)
-				PositionEntity (r\levers[n]\baseObj, r\x - 370.0 * RoomScale, r\y - 3400.0 * RoomScale, r\z - 799 * RoomScale, True)
+				PositionEntity(r\levers[n]\obj, r\x - 370.0 * RoomScale, r\y - 3400.0 * RoomScale, r\z - 799 * RoomScale, True)
+				PositionEntity(r\levers[n]\baseObj, r\x - 370.0 * RoomScale, r\y - 3400.0 * RoomScale, r\z - 799 * RoomScale, True)
 		End Select
 
 		EntityParent(r\levers[n]\obj, r\obj)
@@ -51,8 +51,8 @@ Function FillRoom_cont_049_2(r.Rooms)
         RotateEntity(r\objects[n*2+6], 0, -180*n, 0)
         RotateEntity(r\levers[n]\obj, 81-92*n, -180*(Not n), 0)
 
-        EntityPickMode r\levers[n]\obj, 1, False
-        EntityRadius r\levers[n]\obj, 0.1
+        EntityPickMode(r\levers[n]\obj, 1, False)
+        EntityRadius(r\levers[n]\obj, 0.1)
     Next
 
 
@@ -77,7 +77,7 @@ Function FillRoom_cont_049_2(r.Rooms)
     PositionEntity(r\roomDoors[3]\buttons[1], r\x + 2312.0 * RoomScale, EntityY(r\roomDoors[3]\buttons[1],True), r\z + 472.0 * RoomScale, True)
 
     For i = 0 To 3
-        If (i Mod 2) = 1 Then
+        If ((i Mod 2) = 1) Then
             AssignElevatorObj(r\objects[i],r\roomDoors[i],2)
         Else
             AssignElevatorObj(r\objects[i],r\roomDoors[i],True)
@@ -96,10 +96,10 @@ Function FillRoom_cont_049_2(r.Rooms)
     it = CreateItem("firstaid", r\x +385.0 * RoomScale, r\y - 3412.0 * RoomScale, r\z + 271.0 * RoomScale)
     EntityParent(it\collider, r\obj)
 
-    ;r\objects[10] = LoadMesh("GFX/map/room049_hb.b3d",r\obj)
-    ;EntityPickMode r\objects[10],2
-    ;EntityType r\objects[10],HIT_MAP
-    ;EntityAlpha r\objects[10],0.0
+    ;r\objects[10] = LoadMesh("GFX/Map/room049_hb.b3d",r\obj)
+    ;EntityPickMode(r\objects[10],2)
+    ;EntityType(r\objects[10],HIT_MAP)
+    ;EntityAlpha(r\objects[10],0.0)
 End Function
 
 
@@ -115,37 +115,37 @@ Function UpdateEvent_cont_049_2(e.Events)
 	Local angle#
 
 	;[Block]
-	If mainPlayer\currRoom = e\room Then
-		If EntityY(mainPlayer\collider) > -2848*RoomScale Then
+	If (mainPlayer\currRoom = e\room) Then
+		If (EntityY(mainPlayer\collider) > -2848*RoomScale) Then
 			e\eventState2 = UpdateElevators(e\eventState2, e\room\roomDoors[0], e\room\roomDoors[1],e\room\objects[0],e\room\objects[1], e)
 			e\eventState3 = UpdateElevators(e\eventState3, e\room\roomDoors[2], e\room\roomDoors[3],e\room\objects[2],e\room\objects[3], e)
 			e\overwriteMusic = False
 		Else
 			e\overwriteMusic = True
 
-			If e\eventState = 0 Then
-				If (Not e\loaded) Then
+			If (e\eventState = 0) Then
+				If ((Not e\loaded)) Then
 					n.NPCs = CreateNPC(NPCtypeZombie, EntityX(e\room\objects[4],True),EntityY(e\room\objects[4],True),EntityZ(e\room\objects[4],True))
-					PointEntity n\collider, e\room\obj
-					TurnEntity n\collider, 0, 190, 0
+					PointEntity(n\collider, e\room\obj)
+					TurnEntity(n\collider, 0, 190, 0)
 
 					n.NPCs = CreateNPC(NPCtypeZombie, EntityX(e\room\objects[5],True),EntityY(e\room\objects[5],True),EntityZ(e\room\objects[5],True))
-					PointEntity n\collider, e\room\obj
-					TurnEntity n\collider, 0, 20, 0
+					PointEntity(n\collider, e\room\obj)
+					TurnEntity(n\collider, 0, 20, 0)
 
 					For n.NPCs = Each NPCs
-						If n\npcType = NPCtype049 Then
+						If (n\npcType = NPCtype049) Then
 							e\room\npc[0]=n
 							e\room\npc[0]\state = 2
 							e\room\npc[0]\idle = 1
-							PositionEntity e\room\npc[0]\collider,EntityX(e\room\objects[4],True),EntityY(e\room\objects[4],True)+3,EntityZ(e\room\objects[4],True)
-							ResetEntity e\room\npc[0]\collider
+							PositionEntity(e\room\npc[0]\collider,EntityX(e\room\objects[4],True),EntityY(e\room\objects[4],True)+3,EntityZ(e\room\objects[4],True))
+							ResetEntity(e\room\npc[0]\collider)
 							Exit
 						EndIf
 					Next
-					If e\room\npc[0]=Null Then
+					If (e\room\npc[0]=Null) Then
 						n.NPCs = CreateNPC(NPCtype049, EntityX(e\room\objects[4],True), EntityY(e\room\objects[4],True)+3, EntityZ(e\room\objects[4],True))
-						PointEntity n\collider, e\room\obj
+						PointEntity(n\collider, e\room\obj)
 						n\state = 2
 						n\idle = 1
 						e\room\npc[0]=n
@@ -155,7 +155,7 @@ Function UpdateEvent_cont_049_2(e.Events)
 					e\loaded = True
 					e\eventState=1
 				EndIf
-			ElseIf e\eventState > 0 Then
+			ElseIf (e\eventState > 0) Then
 
 				temp = (Not e\room\levers[0]\succ) ;power feed
 				x = e\room\levers[1]\succ ;generator
@@ -163,30 +163,30 @@ Function UpdateEvent_cont_049_2(e.Events)
 				e\room\roomDoors[1]\locked = True
 				e\room\roomDoors[3]\locked = True
 
-				If temp Or x Then
+				If (temp Or x) Then
 					;049 appears when either of the levers is turned
 					e\eventState = Max(e\eventState,70*180)
 
-					If temp And x Then
+					If (temp And x) Then
 						e\room\roomDoors[1]\locked = False
 						e\room\roomDoors[3]\locked = False
 						e\eventState2 = UpdateElevators(e\eventState2, e\room\roomDoors[0], e\room\roomDoors[1],e\room\objects[0],e\room\objects[1], e)
 						e\eventState3 = UpdateElevators(e\eventState3, e\room\roomDoors[2], e\room\roomDoors[3],e\room\objects[2],e\room\objects[3], e)
 
-						If e\sounds[1]=0 Then LoadEventSound(e,"SFX/General/GeneratorOn.ogg",1)
+						If (e\sounds[1]=0) Then LoadEventSound(e,"SFX/General/GeneratorOn.ogg",1)
 						e\soundChannels[1]=LoopRangedSound(e\sounds[1], e\soundChannels[1], mainPlayer\cam, e\room\levers[1]\baseObj, 6.0, e\eventState3)
 
-						If e\room\npc[0]\idle > 0 Then
+						If (e\room\npc[0]\idle > 0) Then
 							i = 0
-							If EntityDistance(mainPlayer\collider,e\room\roomDoors[1]\frameobj)<3.0 Then
+							If (EntityDistance(mainPlayer\collider,e\room\roomDoors[1]\frameobj)<3.0) Then
 								i = 1
-							ElseIf EntityDistance(mainPlayer\collider,e\room\roomDoors[3]\frameobj)<3.0 Then
+							ElseIf (EntityDistance(mainPlayer\collider,e\room\roomDoors[3]\frameobj)<3.0) Then
 								i = 3
 							EndIf
-							If i > 0 Then
+							If (i > 0) Then
 								;If EntityVisible(mainPlayer\collider,e\room\roomDoors[i]\frameobj)
-								PositionEntity e\room\npc[0]\collider,EntityX(e\room\objects[i],True),EntityY(e\room\objects[i],True),EntityZ(e\room\objects[i],True)
-								ResetEntity e\room\npc[0]\collider
+								PositionEntity(e\room\npc[0]\collider,EntityX(e\room\objects[i],True),EntityY(e\room\objects[i],True),EntityZ(e\room\objects[i],True))
+								ResetEntity(e\room\npc[0]\collider)
 								PlayRangedSound_SM(sndManager\elevatorBeep, mainPlayer\cam, e\room\objects[i], 4.0)
 								UseDoor(e\room\roomDoors[i],False)
 								e\room\roomDoors[i-1]\open = False
@@ -200,14 +200,14 @@ Function UpdateEvent_cont_049_2(e.Events)
 					EndIf
 				EndIf
 
-				If e\eventState < 70*190 Then
+				If (e\eventState < 70*190) Then
 					e\eventState = Min(e\eventState+timing\tickDuration,70*190)
 					;049 spawns after 3 minutes
-					If e\eventState > 70*180 Then
+					If (e\eventState > 70*180) Then
 
-						;If e\room\npc[0]=Null Then
+						;If (e\room\npc[0]=Null) Then
 						;	For n.NPCs = Each NPCs
-						;		If n\npcType=NPCtype049 Then e\room\npc[0]=n : Exit
+						;		If (n\npcType=NPCtype049) Then e\room\npc[0]=n : Exit
 						;	Next
 						;EndIf
 						;e\room\npc[0]\state = 1
@@ -223,18 +223,18 @@ Function UpdateEvent_cont_049_2(e.Events)
 
 						e\eventState= 70*190
 					EndIf
-				ElseIf e\eventState < 70*240 Then
+				ElseIf (e\eventState < 70*240) Then
 
-					;If e\room\npc[0]=Null Then
+					;If (e\room\npc[0]=Null) Then
 					;	For n.NPCs = Each NPCs
-					;		If n\npcType=NPCtype049 Then e\room\npc[0]=n : Exit
+					;		If (n\npcType=NPCtype049) Then e\room\npc[0]=n : Exit
 					;	Next
 					;Else
-						;If EntityDistance(e\room\npc[0]\collider,mainPlayer\collider)<4.0 Then
+						;If (EntityDistance(e\room\npc[0]\collider,mainPlayer\collider)<4.0) Then
 						;	e\eventState=e\eventState+timing\tickDuration
-						;	If e\eventState > 70*195 And e\eventState-timing\tickDuration =< 70*195 Then
+						;	If (e\eventState > 70*195 And e\eventState-timing\tickDuration =< 70*195) Then
 						;		For n.NPCs = Each NPCs ;awake the zombies
-						;			If n\npcType = NPCtypeZombie And n\state = 0 Then
+						;			If (n\npcType = NPCtypeZombie And n\state = 0) Then
 						;				n\state = 1
 						;				SetNPCFrame(n, 155)
 						;			EndIf
@@ -250,7 +250,7 @@ Function UpdateEvent_cont_049_2(e.Events)
 					;EndIf
 
 					For n.NPCs = Each NPCs ;awake the zombies
-						If n\npcType = NPCtypeZombie And n\state = 0 Then
+						If (n\npcType = NPCtypeZombie And n\state = 0) Then
 							n\state = 1
 							SetNPCFrame(n, 155)
 						EndIf
@@ -265,67 +265,67 @@ Function UpdateEvent_cont_049_2(e.Events)
 		e\overwriteMusic = False
 	EndIf
 
-	If e\eventState < 0 Then
-		If e\eventState > -70*4 Then
-			If mainPlayer\fallTimer => 0 Then
+	If (e\eventState < 0) Then
+		If (e\eventState > -70*4) Then
+			If (mainPlayer\fallTimer => 0) Then
 				mainPlayer\fallTimer = Min(-1, mainPlayer\fallTimer)
 				PositionEntity(mainPlayer\head, EntityX(mainPlayer\cam, True), EntityY(mainPlayer\cam, True), EntityZ(mainPlayer\cam, True), True)
-				ResetEntity (mainPlayer\head)
+				ResetEntity(mainPlayer\head)
 				RotateEntity(mainPlayer\head, 0, EntityYaw(mainPlayer\cam) + Rand(-45, 45), 0)
-			ElseIf mainPlayer\fallTimer < -230 Then
+			ElseIf (mainPlayer\fallTimer < -230) Then
 				mainPlayer\fallTimer = -231
 				mainPlayer\blinkTimer = 0
 				e\eventState = e\eventState-timing\tickDuration
 
-				If e\eventState =< -70*4 Then
+				If (e\eventState =< -70*4) Then
 					UpdateDoorsTimer = 0
 					UpdateDoors()
 					UpdateRooms()
-					ShowEntity mainPlayer\collider
+					ShowEntity(mainPlayer\collider)
 					mainPlayer\dropSpeed = 0
 					mainPlayer\blinkTimer = -10
 					mainPlayer\fallTimer = 0
-					PositionEntity mainPlayer\collider, EntityX(e\room\obj,True), EntityY(e\room\objects[5],True)+0.2, EntityZ(e\room\obj,True)
-					ResetEntity mainPlayer\collider
+					PositionEntity(mainPlayer\collider, EntityX(e\room\obj,True), EntityY(e\room\objects[5],True)+0.2, EntityZ(e\room\obj,True))
+					ResetEntity(mainPlayer\collider)
 
-					PositionEntity e\room\npc[0]\collider, EntityX(e\room\objects[0],True),EntityY(e\room\objects[0],True),EntityZ(e\room\objects[0],True),True
-					ResetEntity e\room\npc[0]\collider
+					PositionEntity(e\room\npc[0]\collider, EntityX(e\room\objects[0],True),EntityY(e\room\objects[0],True),EntityZ(e\room\objects[0],True),True)
+					ResetEntity(e\room\npc[0]\collider)
 
 					For n.NPCs = Each NPCs
-						If n\npcType = NPCtypeZombie Then
-							PositionEntity n\collider, EntityX(e\room\objects[4],True),EntityY(e\room\objects[4],True),EntityZ(e\room\objects[4],True),True
-							ResetEntity n\collider
+						If (n\npcType = NPCtypeZombie) Then
+							PositionEntity(n\collider, EntityX(e\room\objects[4],True),EntityY(e\room\objects[4],True),EntityZ(e\room\objects[4],True),True)
+							ResetEntity(n\collider)
 							n\state = 4
-							DebugLog "moving zombie"
+							DebugLog("moving zombie")
 						EndIf
 					Next
 
 					n.NPCs = CreateNPC(NPCtypeMTF, EntityX(e\room\objects[5],True), EntityY(e\room\objects[5],True)+0.2, EntityZ(e\room\objects[5],True))
 					n\state = 6
 					n\reload = 6*70
-					PointEntity n\collider,mainPlayer\collider
+					PointEntity(n\collider,mainPlayer\collider)
 					e\room\npc[1] = n
 
 					n.NPCs = CreateNPC(NPCtypeMTF, EntityX(e\room\objects[5],True), EntityY(e\room\objects[5],True)+0.2, EntityZ(e\room\objects[5],True))
 					n\state = 6
 					n\reload = (6*70)+Rnd(15,30)
-					RotateEntity n\collider,0,EntityYaw(e\room\npc[1]\collider),0
-					MoveEntity n\collider,0.5,0,0
-					PointEntity n\collider,mainPlayer\collider
+					RotateEntity(n\collider,0,EntityYaw(e\room\npc[1]\collider),0)
+					MoveEntity(n\collider,0.5,0,0)
+					PointEntity(n\collider,mainPlayer\collider)
 
 					n.NPCs = CreateNPC(NPCtypeMTF, EntityX(e\room\objects[5],True), EntityY(e\room\objects[5],True)+0.2, EntityZ(e\room\objects[5],True))
 					n\state = 6
 					;n\reload = 70*4.75
 					n\reload = 10000
-					RotateEntity n\collider,0,EntityYaw(e\room\npc[1]\collider),0
+					RotateEntity(n\collider,0,EntityYaw(e\room\npc[1]\collider),0)
 					n\state2 = EntityYaw(n\collider)
-					MoveEntity n\collider,-0.65,0,0
+					MoveEntity(n\collider,-0.65,0,0)
 					e\room\npc[2] = n
 
-					MoveEntity e\room\npc[1]\collider,0,0,0.1
-					PointEntity mainPlayer\collider, e\room\npc[1]\collider
+					MoveEntity(e\room\npc[1]\collider,0,0,0.1)
+					PointEntity(mainPlayer\collider, e\room\npc[1]\collider)
 
-					PlaySound2 LoadTempSound("SFX/Character/MTF/049/Player0492_1.ogg")
+					PlaySound2(LoadTempSound("SFX/Character/MTF/049/Player0492_1.ogg"))
 
 					LoadEventSound(e,"SFX/SCP/049/0492Breath.ogg")
 
@@ -340,15 +340,15 @@ Function UpdateEvent_cont_049_2(e.Events)
 
 			;Msg = ""
 
-			If e\room\npc[2]\state = 7 Then
-				If e\room\npc[2]\state3 < 70*1.75 Then
+			If (e\room\npc[2]\state = 7) Then
+				If (e\room\npc[2]\state3 < 70*1.75) Then
 					e\room\npc[2]\state3 = e\room\npc[2]\state3 + timing\tickDuration
 				Else
 					e\room\npc[2]\state = 6
 					e\room\npc[2]\reload = e\room\npc[1]\reload+Rnd(5,10)
 				EndIf
-			ElseIf e\room\npc[2]\state = 6 And e\room\npc[2]\reload > 70*4 Then
-				If e\room\npc[2]\state3 > -(70*4) Then
+			ElseIf (e\room\npc[2]\state = 6 And e\room\npc[2]\reload > 70*4) Then
+				If (e\room\npc[2]\state3 > -(70*4)) Then
 					e\room\npc[2]\state3 = e\room\npc[2]\state3 - timing\tickDuration
 				Else
 					e\room\npc[2]\state3 = 0.0
@@ -358,22 +358,22 @@ Function UpdateEvent_cont_049_2(e.Events)
 			EndIf
 
 			pvt% = CreatePivot()
-			PositionEntity pvt%,EntityX(e\room\npc[1]\collider),EntityY(e\room\npc[1]\collider)+0.2,EntityZ(e\room\npc[1]\collider)
+			PositionEntity(pvt%,EntityX(e\room\npc[1]\collider),EntityY(e\room\npc[1]\collider)+0.2,EntityZ(e\room\npc[1]\collider))
 
-			PointEntity mainPlayer\collider, e\room\npc[1]\collider
-			PointEntity mainPlayer\cam, pvt%
+			PointEntity(mainPlayer\collider, e\room\npc[1]\collider)
+			PointEntity(mainPlayer\cam, pvt%)
 
-			FreeEntity pvt%
+			FreeEntity(pvt%)
 
-			If mainPlayer\dead = True Then
-				If IsChannelPlaying(e\room\npc[1]\soundChannels[0]) Then StopChannel(e\room\npc[1]\soundChannels[0])
-				PlaySound2 LoadTempSound("SFX/Character/MTF/049/Player0492_2.ogg")
+			If (mainPlayer\dead = True) Then
+				If (IsChannelPlaying(e\room\npc[1]\soundChannels[0])) Then StopChannel(e\room\npc[1]\soundChannels[0])
+				PlaySound2(LoadTempSound("SFX/Character/MTF/049/Player0492_2.ogg"))
 				RemoveEvent(e)
 			Else
-				If e\soundChannels[0] = 0 Then
+				If (e\soundChannels[0] = 0) Then
 					e\soundChannels[0] = PlaySound(e\sounds[0])
 				Else
-					If (Not IsChannelPlaying(e\soundChannels[0])) Then e\soundChannels[0] = PlaySound(e\sounds[0])
+					If ((Not IsChannelPlaying(e\soundChannels[0]))) Then e\soundChannels[0] = PlaySound(e\sounds[0])
 				EndIf
 			EndIf
 		EndIf

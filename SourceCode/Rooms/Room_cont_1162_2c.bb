@@ -3,13 +3,13 @@ Function FillRoom_cont_1162_2c(r.Rooms)
     Local it.Items, i%
     Local xtemp%, ytemp%, ztemp%
 
-    Local t1;, Bump
+    Local t1%;, Bump
 
     d = CreateDoor(r\zone, r\x + 248.0*RoomScale, 0.0, r\z - 736.0*RoomScale, 90, r, False, False, 2)
     r\objects[0] = CreatePivot()
-    PositionEntity r\objects[0],r\x+1012.0*RoomScale,r\y+128.0*RoomScale,r\z-640.0*RoomScale
-    EntityParent r\objects[0],r\obj
-    EntityPickMode r\objects[0],1
+    PositionEntity(r\objects[0],r\x+1012.0*RoomScale,r\y+128.0*RoomScale,r\z-640.0*RoomScale)
+    EntityParent(r\objects[0],r\obj)
+    EntityPickMode(r\objects[0],1)
     it = CreatePaper("doc1162", r\x + 863.227 * RoomScale, r\y + 152.0 * RoomScale, r\z - 953.231 * RoomScale)
     EntityParent(it\collider, r\obj)
 
@@ -23,13 +23,13 @@ End Function
 Function UpdateEvent_cont_1162_2c(e.Events)
 	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
 
-	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, em.Emitters, sc.SecurityCams, sc2.SecurityCams, de.Decals
+	Local p.Particles, n.NPCs, r.Rooms, e2.Events, it.Items, itt.ItemTemplates, em.Emitters, sc.SecurityCams, sc2.SecurityCams, de.Decals
 
 	Local CurrTrigger$ = ""
 
 	Local x#, y#, z#
 
-	Local angle#
+	Local angle#, pick1162%, pp%, isSlotEmpty%, itemExists%, itemName$, shouldCreateItem%
 
 	;[Block]
 	;e\eventState = A variable to determine the "nostalgia" items
@@ -46,47 +46,47 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 	;- 2.0 = the player doesn't has any items in the Inventory, giving him heavily injuries and giving him a random item
 	;- 3.0 = player got a memorial item (to explain a bit D-9341's background)
 	;- 3.1 = player got a memorial item + injuries (because he didn't had any item in his inventory before)
-	If mainPlayer\currRoom = e\room Then
+	If (mainPlayer\currRoom = e\room) Then
 
 		mainPlayer\grabbedEntity = 0
 
 		e\eventState = 0
 
-		Local Pick1162% = True
-		Local pp% = CreatePivot(e\room\obj)
-		PositionEntity pp,976,128,-640,False
+		pick1162% = True
+		pp% = CreatePivot(e\room\obj)
+		PositionEntity(pp,976,128,-640,False)
 
 		For it.Items = Each Items
-			If (Not it\picked) Then
-				If EntityDistance(it\collider,e\room\objects[0])<0.75 Then
-					Pick1162% = False
+			If ((Not it\picked)) Then
+				If (EntityDistance(it\collider,e\room\objects[0])<0.75) Then
+					pick1162% = False
 				EndIf
 			EndIf
 		Next
 
-		If EntityDistance(e\room\objects[0],mainPlayer\collider)<0.75 And Pick1162% Then
+		If (EntityDistance(e\room\objects[0],mainPlayer\collider)<0.75 And pick1162%) Then
 			DrawHandIcon = True
-			If MouseHit1 Then mainPlayer\grabbedEntity = e\room\objects[0]
+			If (MouseHit1) Then mainPlayer\grabbedEntity = e\room\objects[0]
 		EndIf
 
-		If mainPlayer\grabbedEntity <> 0 Then
+		If (mainPlayer\grabbedEntity <> 0) Then
 			e\eventState2 = Rand(0,mainPlayer\inventory\size-1)
-			If mainPlayer\inventory\items[e\eventState2]<>Null Then
+			If (mainPlayer\inventory\items[e\eventState2]<>Null) Then
 				;randomly picked item slot has an item in it, using this slot
 				e\eventState3 = 1.0
-				DebugLog "pick1"
+				DebugLog("pick1")
 			Else
 				;randomly picked item slot is empty, getting the first available slot
 				For i = 0 To mainPlayer\inventory\size-1
-					Local isSlotEmpty% = (mainPlayer\inventory\items[(i+e\eventState2) Mod mainPlayer\inventory\size] = Null)
+					isSlotEmpty% = (mainPlayer\inventory\items[(i+e\eventState2) Mod mainPlayer\inventory\size] = Null)
 
-					If (Not isSlotEmpty) Then
+					If ((Not isSlotEmpty)) Then
 						;successful
 						e\eventState2 = (i+e\eventState2) Mod mainPlayer\inventory\size
 					EndIf
 
-					If Rand(8)=1 Then
-						If isSlotEmpty Then
+					If (Rand(8)=1) Then
+						If (isSlotEmpty) Then
 							e\eventState3 = 3.1
 						Else
 							e\eventState3 = 3.0
@@ -95,7 +95,7 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 						e\eventState = Rand(1,5)
 
 						;Checking if the selected nostalgia item already exists or not
-						Local itemName$ = ""
+						itemName$ = ""
 						Select (e\eventState)
 							Case 1
 								itemName = "Lost Key"
@@ -109,9 +109,9 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 								itemName = "Old Badge"
 						End Select
 
-						Local itemExists% = False
+						itemExists% = False
 						For it.Items = Each Items
-							If (it\name = itemName) Then
+							If ((it\name = itemName)) Then
 								itemExists = True
 								e\eventState3 = 1.0
 								e\eventState = 0.0
@@ -119,9 +119,9 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 							EndIf
 						Next
 
-						If ((Not itemExists) And (Not isSlotEmpty)) Then Exit
+						If (((Not itemExists) And (Not isSlotEmpty))) Then Exit
 					Else
-						If isSlotEmpty Then
+						If (isSlotEmpty) Then
 							e\eventState3 = 2.0
 						Else
 							e\eventState3 = 1.0
@@ -134,51 +134,50 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 
 
 		;trade successful
-		If e\eventState3 = 1.0 Then
-			Local shouldCreateItem% = False
+		If (e\eventState3 = 1.0) Then
+			shouldCreateItem% = False
 
-			Local itt.ItemTemplates
 			For itt = Each ItemTemplates
 				If (IsItemGoodFor1162(itt)) Then
 					Select mainPlayer\inventory\items[e\eventState2]\template\name
 						Case "key"
-							If itt\name = "key1" Or itt\name = "key2" And Rand(2)=1 Then
+							If (itt\name = "key1" Or itt\name = "key2" And Rand(2)=1) Then
 								shouldCreateItem = True
-								DebugLog "lostkey"
+								DebugLog("lostkey")
 							EndIf
 						Case "paper","oldpaper"
-							If itt\name = "paper" And Rand(12)=1 Then
+							If (itt\name = "paper" And Rand(12)=1) Then
 								shouldCreateItem = True
-								DebugLog "paper"
+								DebugLog("paper")
 							EndIf
 						Case "gasmask","gasmask3","supergasmask","hazmatsuit","hazmatsuit2","hazmatsuit3"
-							If itt\name = "gasmask" Or itt\name = "gasmask3" Or itt\name = "supergasmask" Or itt\name = "hazmatsuit" Or itt\name = "hazmatsuit2" Or itt\name = "hazmatsuit3" And Rand(2)=1 Then
+							If (itt\name = "gasmask" Or itt\name = "gasmask3" Or itt\name = "supergasmask" Or itt\name = "hazmatsuit" Or itt\name = "hazmatsuit2" Or itt\name = "hazmatsuit3" And Rand(2)=1) Then
 								shouldCreateItem = True
-								DebugLog "gasmask hazmat"
+								DebugLog("gasmask hazmat")
 							EndIf
 						Case "key1","key2","key3"
-							If itt\name = "key1" Or itt\name = "key2" Or itt\name = "key3" Or itt\name = "misc" And Rand(6)=1 Then
+							If (itt\name = "key1" Or itt\name = "key2" Or itt\name = "key3" Or itt\name = "misc" And Rand(6)=1) Then
 								shouldCreateItem = True
-								DebugLog "key"
+								DebugLog("key")
 							EndIf
 						Case "vest","finevest"
-							If itt\name = "vest" Or itt\name = "finevest" And Rand(1)=1 Then
+							If (itt\name = "vest" Or itt\name = "finevest" And Rand(1)=1) Then
 								shouldCreateItem = True
-								DebugLog "vest"
+								DebugLog("vest")
 							EndIf
 						Default
-							If itt\name = "misc" And Rand(6)=1 Then
+							If (itt\name = "misc" And Rand(6)=1) Then
 								shouldCreateItem = True
-								DebugLog "default"
+								DebugLog("default")
 							EndIf
 					End Select
 				EndIf
 
-				If (shouldCreateItem) Then
+				If ((shouldCreateItem)) Then
 					RemoveItem(mainPlayer\inventory\items[e\eventState2])
 					it=CreateItem(itt\name,EntityX(pp,True),EntityY(pp,True),EntityZ(pp,True))
 					EntityType(it\collider, HIT_ITEM)
-					PlaySound2 LoadTempSound("SFX/SCP/1162/Exchange"+Rand(0,4)+".ogg")
+					PlaySound2(LoadTempSound("SFX/SCP/1162/Exchange"+Rand(0,4)+".ogg"))
 					e\eventState3 = 0.0
 
 					MouseHit1 = False
@@ -186,30 +185,29 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 				EndIf
 			Next
 		;trade not sucessful (player got in return to injuries a new item)
-		ElseIf e\eventState3 = 2.0 Then
+		ElseIf (e\eventState3 = 2.0) Then
 			mainPlayer\injuries = mainPlayer\injuries + 5.0
 			pvt = CreatePivot()
-			PositionEntity pvt, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)-0.05,EntityZ(mainPlayer\collider)
-			TurnEntity pvt, 90, 0, 0
+			PositionEntity(pvt, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)-0.05,EntityZ(mainPlayer\collider))
+			TurnEntity(pvt, 90, 0, 0)
 			EntityPick(pvt,0.3)
 			de.Decals = CreateDecal(3, PickedX(), PickedY()+0.005, PickedZ(), 90, Rand(360), 0)
-			de\size = 0.75 : ScaleSprite de\obj, de\size, de\size
-			FreeEntity pvt
+			de\size = 0.75 : ScaleSprite(de\obj, de\size, de\size)
+			FreeEntity(pvt)
 			For itt.ItemTemplates = Each ItemTemplates
-				If IsItemGoodFor1162(itt) And Rand(6)=1 Then
+				If (IsItemGoodFor1162(itt) And Rand(6)=1) Then
 					it = CreateItem(itt\name, EntityX(pp,True),EntityY(pp,True),EntityZ(pp,True))
-					EntityType(it\collider, HIT_ITEM)
 					MouseHit1 = False
 					e\eventState3 = 0.0
-					If mainPlayer\injuries > 15 Then
+					If (mainPlayer\injuries > 15) Then
 						DeathMSG = "A dead Class D subject was discovered within the containment chamber of SCP-1162."
 						DeathMSG = DeathMSG + " An autopsy revealed that his right lung was missing, which suggests"
 						DeathMSG = DeathMSG + " interaction with SCP-1162."
-						PlaySound2 LoadTempSound("SFX/SCP/1162/BodyHorrorExchange"+Rand(1,4)+".ogg")
+						PlaySound2(LoadTempSound("SFX/SCP/1162/BodyHorrorExchange"+Rand(1,4)+".ogg"))
 						mainPlayer\lightFlash = 5.0
 						Kill(mainPlayer)
 					Else
-						PlaySound2 LoadTempSound("SFX/SCP/1162/BodyHorrorExchange"+Rand(1,4)+".ogg")
+						PlaySound2(LoadTempSound("SFX/SCP/1162/BodyHorrorExchange"+Rand(1,4)+".ogg"))
 						mainPlayer\lightFlash = 5.0
 						Msg = "You feel a sudden overwhelming pain in your chest."
 						MsgTimer = 70*5
@@ -218,28 +216,28 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 				EndIf
 			Next
 		;trade with nostalgia item
-		ElseIf e\eventState3 >= 3.0 Then
-			If e\eventState3 < 3.1 Then
-				PlaySound2 LoadTempSound("SFX/SCP/1162/Exchange"+Rand(0,4)+".ogg")
+		ElseIf (e\eventState3 >= 3.0) Then
+			If (e\eventState3 < 3.1) Then
+				PlaySound2(LoadTempSound("SFX/SCP/1162/Exchange"+Rand(0,4)+".ogg"))
 				RemoveItem(mainPlayer\inventory\items[e\eventState2])
 			Else
 				mainPlayer\injuries = mainPlayer\injuries + 5.0
 				pvt = CreatePivot()
-				PositionEntity pvt, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)-0.05,EntityZ(mainPlayer\collider)
-				TurnEntity pvt, 90, 0, 0
+				PositionEntity(pvt, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)-0.05,EntityZ(mainPlayer\collider))
+				TurnEntity(pvt, 90, 0, 0)
 				EntityPick(pvt,0.3)
 				de.Decals = CreateDecal(3, PickedX(), PickedY()+0.005, PickedZ(), 90, Rand(360), 0)
-				de\size = 0.75 : ScaleSprite de\obj, de\size, de\size
-				FreeEntity pvt
-				If mainPlayer\injuries > 15 Then
+				de\size = 0.75 : ScaleSprite(de\obj, de\size, de\size)
+				FreeEntity(pvt)
+				If (mainPlayer\injuries > 15) Then
 					DeathMSG = "A dead Class D subject was discovered within the containment chamber of SCP-1162."
 					DeathMSG = DeathMSG + " An autopsy revealed that his right lung was missing, which suggests"
 					DeathMSG = DeathMSG + " interaction with SCP-1162."
-					PlaySound2 LoadTempSound("SFX/SCP/1162/BodyHorrorExchange"+Rand(1,4)+".ogg")
+					PlaySound2(LoadTempSound("SFX/SCP/1162/BodyHorrorExchange"+Rand(1,4)+".ogg"))
 					mainPlayer\lightFlash = 5.0
 					Kill(mainPlayer)
 				Else
-					PlaySound2 LoadTempSound("SFX/SCP/1162/BodyHorrorExchange"+Rand(1,4)+".ogg")
+					PlaySound2(LoadTempSound("SFX/SCP/1162/BodyHorrorExchange"+Rand(1,4)+".ogg"))
 					mainPlayer\lightFlash = 5.0
 					Msg = "You notice something moving in your pockets and a sudden pain in your chest."
 					MsgTimer = 70*5
@@ -262,7 +260,7 @@ Function UpdateEvent_cont_1162_2c(e.Events)
 			MouseHit1 = False
 			e\eventState3 = 0.0
 		EndIf
-		FreeEntity pp
+		FreeEntity(pp)
 	EndIf
 	;[End Block]
 End Function
@@ -283,9 +281,9 @@ Function IsItemGoodFor1162(itt.ItemTemplates)
 		Case "clipboard","eyedrops","nvgoggles"
 			Return True
 		Default
-			If itt\name <> "paper" Then
+			If (itt\name <> "paper") Then
 				Return False
-			ElseIf Instr(itt\name, "Leaflet") Then
+			ElseIf (Instr(itt\name, "Leaflet")) Then
 				Return False
 			Else
 				;if the item is a paper, only allow spawning it if the name contains the word "note" or "log"

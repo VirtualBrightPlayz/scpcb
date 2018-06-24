@@ -3,7 +3,7 @@ Function FillRoom_lck_cam_2c(r.Rooms)
 	Local it.Items, i%
 	Local xtemp%, ytemp%, ztemp%
 
-	Local t1;, Bump
+	Local t1%;, Bump
 
     d = CreateDoor(r\zone, r\x - 736.0 * RoomScale, 0, r\z - 104.0 * RoomScale, 0, r, True)
     d\timer = 70 * 5 : d\autoClose = False : d\open = False
@@ -18,7 +18,7 @@ Function FillRoom_lck_cam_2c(r.Rooms)
     d2\timer = 70 * 5 : d2\autoClose = False: d2\open = False
     EntityParent(d2\buttons[0], 0)
     PositionEntity(d2\buttons[0], r\x + 640.0 * RoomScale, 0.7, r\z + 288.0 * RoomScale)
-    RotateEntity (d2\buttons[0], 0, 90, 0)
+    RotateEntity(d2\buttons[0], 0, 90, 0)
     EntityParent(d2\buttons[0], r\obj)
 
     FreeEntity(d2\buttons[1]) : d2\buttons[1] = 0
@@ -30,7 +30,7 @@ Function FillRoom_lck_cam_2c(r.Rooms)
     sc\angle = 45 + 180
     sc\turn = 45
     sc\scrTexture = 1
-    EntityTexture sc\scrObj, ScreenTexs[sc\scrTexture]
+    EntityTexture(sc\scrObj, ScreenTexs[sc\scrTexture])
 
     TurnEntity(sc\cameraObj, 40, 0, 0)
     EntityParent(sc\obj, r\obj)
@@ -43,7 +43,7 @@ Function FillRoom_lck_cam_2c(r.Rooms)
     sc\angle = 45
     sc\turn = 45
     sc\scrTexture = 1
-    EntityTexture sc\scrObj, ScreenTexs[sc\scrTexture]
+    EntityTexture(sc\scrObj, ScreenTexs[sc\scrTexture])
 
     TurnEntity(sc\cameraObj, 40, 0, 0)
     EntityParent(sc\obj, r\obj)
@@ -82,11 +82,11 @@ Function UpdateEventLockroom173(e.Events)
 	Local angle#
 
 	;[Block]
-	If e\room\dist < 6.0  And e\room\dist > 0 Then
-		If Curr173\idle = 2 Then
+	If (e\room\dist < 6.0  And e\room\dist > 0) Then
+		If (Curr173\idle = 2) Then
 			RemoveEvent(e)
 		Else
-			If (Not EntityInView(Curr173\collider, mainPlayer\cam)) Or EntityDistance(Curr173\collider, mainPlayer\collider)>15.0 Then
+			If ((Not EntityInView(Curr173\collider, mainPlayer\cam)) Or EntityDistance(Curr173\collider, mainPlayer\collider)>15.0) Then
 				PositionEntity(Curr173\collider, e\room\x + Cos(225-90 + e\room\angle) * 2, 0.6, e\room\z + Sin(225-90 + e\room\angle) * 2)
 				ResetEntity(Curr173\collider)
 				RemoveEvent(e)

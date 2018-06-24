@@ -3,7 +3,7 @@ Function FillRoom_tnnl_nuke_2(r.Rooms)
 	Local it.Items, i%
 	Local xtemp%, ytemp%, ztemp%
 
-	Local t1;, Bump
+	Local t1%;, Bump
 
     ;"tuulikaapin" ovi
     d = CreateDoor(r\zone, r\x + 576.0 * RoomScale, 0.0, r\z - 152.0 * RoomScale, 90, r, False, False, 5)
@@ -37,8 +37,8 @@ Function FillRoom_tnnl_nuke_2(r.Rooms)
 
         ScaleEntity(r\levers[n]\obj, 0.04, 0.04, 0.04)
         ScaleEntity(r\levers[n]\baseObj, 0.04, 0.04, 0.04)
-        PositionEntity (r\levers[n]\obj, r\x - 975.0 * RoomScale, r\y + 1712.0 * RoomScale, r\z - (502.0-132.0*n) * RoomScale, True)
-        PositionEntity (r\levers[n]\baseObj, r\x - 975.0 * RoomScale, r\y + 1712.0 * RoomScale, r\z - (502.0-132.0*n) * RoomScale, True)
+        PositionEntity(r\levers[n]\obj, r\x - 975.0 * RoomScale, r\y + 1712.0 * RoomScale, r\z - (502.0-132.0*n) * RoomScale, True)
+        PositionEntity(r\levers[n]\baseObj, r\x - 975.0 * RoomScale, r\y + 1712.0 * RoomScale, r\z - (502.0-132.0*n) * RoomScale, True)
 
         EntityParent(r\levers[n]\obj, r\obj)
         EntityParent(r\levers[n]\baseObj, r\obj)
@@ -47,8 +47,8 @@ Function FillRoom_tnnl_nuke_2(r.Rooms)
         RotateEntity(r\levers[n]\obj, 10, -90 - 180-180, 0)
 
         ;EntityPickMode(r\levers[n]\obj, 2)
-        EntityPickMode r\levers[n]\obj, 1, False
-        EntityRadius r\levers[n]\obj, 0.1
+        EntityPickMode(r\levers[n]\obj, 1, False)
+        EntityRadius(r\levers[n]\obj, 0.1)
         ;makecollbox(r\levers[n]\obj)
     Next
 
@@ -81,7 +81,7 @@ Function UpdateEvent_tnnl_nuke_2(e.Events)
 	Local angle#
 
 	;[Block]
-	If mainPlayer\currRoom = e\room Then
+	If (mainPlayer\currRoom = e\room) Then
 		e\eventState2 = UpdateElevators(e\eventState2, e\room\roomDoors[0], e\room\roomDoors[1], e\room\objects[4], e\room\objects[5], e)
 
 		e\eventState = e\room\levers[0]\succ

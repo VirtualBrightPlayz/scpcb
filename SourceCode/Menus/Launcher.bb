@@ -14,15 +14,15 @@ Global launcher.Launcher = Null
 Function CreateLauncher.Launcher()
     Local launch.Launcher = New Launcher
 
-    launch\width = Min(GetINIInt(OptionFile, "launcher", "launcher width"), 1024)
-    launch\height = Min(GetINIInt(OptionFile, "launcher", "launcher height"), 768)
+    launch\width = Int(Min(GetINIInt(OptionFile, "launcher", "launcher width"), 1024))
+    launch\height = Int(Min(GetINIInt(OptionFile, "launcher", "launcher height"), 768))
 
 	launch\resWidths = CreateIntArray(CountGfxModes3D())
 	launch\resHeights = CreateIntArray(CountGfxModes3D())
 
     Local i%
 	For i = 1 To CountGfxModes3D()
-		If (GfxModeDepth(i) = 32) Then
+		If ((GfxModeDepth(i) = 32)) Then
 			SetIntArrayElem(launch\resWidths, GfxModeWidth(i), i - 1)
             SetIntArrayElem(launch\resHeights, GfxModeHeight(i), i - 1)
 		EndIf
@@ -31,7 +31,7 @@ Function CreateLauncher.Launcher()
 	launch\selectedGFXMode = VerifyResolution()
 
 	Graphics3DExt(launch\width, launch\height, 0, 2)
-	AppTitle "SCP - Containment Breach Launcher"
+	AppTitle("SCP - Containment Breach Launcher")
 
 	MenuScale = 1
 
@@ -39,7 +39,7 @@ Function CreateLauncher.Launcher()
 
     InitializeUIAssets()
 
-	SetBuffer BackBuffer()
+	SetBuffer(BackBuffer())
 
 	SetFont(uiAssets\font[0])
 
@@ -60,13 +60,13 @@ Function UpdateLauncher()
 
     Local i%
     For i = 1 To CountGfxModes3D()
-        If (GfxModeDepth(i) = 32) Then
-            If MouseOn(x - 1, y - 1, 100, 20) Then
-                If MouseHit1 Then launcher\selectedGFXMode = i-1
+        If ((GfxModeDepth(i) = 32)) Then
+            If (MouseOn(x - 1, y - 1, 100, 20)) Then
+                If (MouseHit1) Then launcher\selectedGFXMode = i-1
             EndIf
 
             y=y+20
-            If (y >= 240 - 65 + (launcher\height - 80 - 260)) Then
+            If ((y >= 240 - 65 + (launcher\height - 80 - 260))) Then
                 y = 280 - 65
                 x = x + 100
             EndIf
@@ -79,8 +79,8 @@ Function UpdateLauncher()
 
     y = y + 10
     For i = 1 To CountGfxDrivers()
-        If MouseOn(x - 1, y - 1, 290, 20) Then
-            If MouseHit1 Then userOptions\gfxDriver = i
+        If (MouseOn(x - 1, y - 1, 290, 20)) Then
+            If (MouseHit1) Then userOptions\gfxDriver = i
         EndIf
 
         y = y + 20
@@ -90,7 +90,7 @@ Function UpdateLauncher()
 
     userOptions\launcher = UpdateUITick(40 + 430 - 15, 260 - 55 + 95 + 8, userOptions\launcher)
 
-    If UpdateUIButton(launcher\width - 30 - 90, launcher\height - 50 - 55, 100, 30, "LAUNCH", False) Then
+    If (UpdateUIButton(launcher\width - 30 - 90, launcher\height - 50 - 55, 100, 30, "LAUNCH", False)) Then
         userOptions\screenWidth = GetIntArrayElem(launcher\resWidths, launcher\selectedGFXMode)
         userOptions\screenHeight = GetIntArrayElem(launcher\resHeights, launcher\selectedGFXMode)
 
@@ -104,13 +104,13 @@ Function UpdateLauncher()
         Return
     EndIf
 
-    If UpdateUIButton(launcher\width - 30 - 90, launcher\height - 50, 100, 30, "EXIT", False) Then End
+    If (UpdateUIButton(launcher\width - 30 - 90, launcher\height - 50, 100, 30, "EXIT", False)) Then End()
 End Function
 
 Function DrawLauncher()
 	SetFont(uiAssets\font[0])
 
-	Color 0,0,0
+	Color(0,0,0)
     Rect(0, 0, launcher\width, launcher\height, True)
 
     Color(255, 255, 255)
@@ -123,21 +123,21 @@ Function DrawLauncher()
 
     Local i%
     For i = 1 To CountGfxModes3D()
-        If (GfxModeDepth(i) = 32) Then
+        If ((GfxModeDepth(i) = 32)) Then
             Color(0, 0, 0)
 
-            If (launcher\selectedGFXMode = (i-1)) Then
+            If ((launcher\selectedGFXMode = (i-1))) Then
                 Rect(x - 1, y - 1, 100, 20, False)
             EndIf
 
-            Text(x, y, (GetIntArrayElem(launcher\resWidths, i - 1) + "x" + GetIntArrayElem(launcher\resHeights, i - 1)))
-            If MouseOn(x - 1, y - 1, 100, 20) Then
+            Text(x, y, (Str(GetIntArrayElem(launcher\resWidths, i - 1)) + "x" + Str(GetIntArrayElem(launcher\resHeights, i - 1))))
+            If (MouseOn(x - 1, y - 1, 100, 20)) Then
                 Color(100, 100, 100)
                 Rect(x - 1, y - 1, 100, 20, False)
             EndIf
 
             y=y+20
-            If (y >= 240 - 65 + (launcher\height - 80 - 260)) Then
+            If ((y >= 240 - 65 + (launcher\height - 80 - 260))) Then
                 y = 280 - 65
                 x = x + 100
             EndIf
@@ -153,11 +153,11 @@ Function DrawLauncher()
     y = y + 10
     For i = 1 To CountGfxDrivers()
         Color(0, 0, 0)
-        If userOptions\gfxDriver = i Then Rect(x - 1, y - 1, 290, 20, False)
+        If (userOptions\gfxDriver = i) Then Rect(x - 1, y - 1, 290, 20, False)
         ;text(x, y, bbGfxDriverName(i))
 
         LimitText(GfxDriverName(i), x, y, 290, False)
-        If MouseOn(x - 1, y - 1, 290, 20) Then
+        If (MouseOn(x - 1, y - 1, 290, 20)) Then
             Color(100, 100, 100)
             Rect(x - 1, y - 1, 290, 20, False)
         EndIf
@@ -168,18 +168,18 @@ Function DrawLauncher()
 	DrawUITick(40 + 430 - 15, 260 - 55 + 5 - 8, userOptions\fullscreen)
     Text(40 + 430 + 15,       262 - 55 + 5 - 8, "Fullscreen")
 
-    Color 255, 255, 255
+    Color(255, 255, 255)
     ;Text(40 + 430 + 15, 262 - 55 + 35 - 8, "Borderless",False,False)
     ;Text(40 + 430 + 15, 262 - 55 + 35 + 12, "windowed mode",False,False)
 
     DrawUITick(40 + 430 - 15, 260 - 55 + 95 + 8, userOptions\launcher)
     Text(40 + 430 + 15,       262 - 55 + 95 + 8, "Use launcher")
 
-    Text(40+ 260 + 15, 262 - 55 + 140, "Current Resolution: "+GetIntArrayElem(launcher\resWidths, launcher\selectedGFXMode) + "x" + GetIntArrayElem(launcher\resHeights, launcher\selectedGFXMode))
+    Text(40+ 260 + 15, 262 - 55 + 140, "Current Resolution: "+Str(GetIntArrayElem(launcher\resWidths, launcher\selectedGFXMode)) + "x" + Str(GetIntArrayElem(launcher\resHeights, launcher\selectedGFXMode)))
 
-    ;If GfxModeWidths(SelectedGFXMode)<G_viewport_width Then
+    ;If (GfxModeWidths(SelectedGFXMode)<G_viewport_width) Then
     ;	Text(40+ 260 + 65, 262 - 55 + 160, "(upscaled to")
-    ;ElseIf GfxModeWidths(SelectedGFXMode)>G_viewport_width Then
+    ;ElseIf (GfxModeWidths(SelectedGFXMode)>G_viewport_width) Then
     ;	Text(40+ 260 + 65, 262 - 55 + 160, "(downscaled to")
     ;EndIf
 
@@ -188,7 +188,7 @@ Function DrawLauncher()
     DrawUIButton(launcher\width - 30 - 90, launcher\height - 50 - 55, 100, 30, "LAUNCH", False)
 
     DrawUIButton(launcher\width - 30 - 90, launcher\height - 50, 100, 30, "EXIT", False)
-    Flip
+    Flip()
 End Function
 ;~IDEal Editor Parameters:
 ;~F#30

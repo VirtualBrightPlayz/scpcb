@@ -22,7 +22,7 @@ Function CreateParticle.Particles(x#, y#, z#, image%, size#, gravity# = 1.0, lif
 	RotateEntity(p\obj, 0, 0, Rnd(360))
 	EntityFX(p\obj, 1 + 8)
 
-	SpriteViewMode (p\obj, 3)
+	SpriteViewMode(p\obj, 3)
 
 	Select image
 		Case 0,5,6
@@ -46,28 +46,28 @@ Function UpdateParticles()
 	Local p.Particles
 	For p.Particles = Each Particles
 		MoveEntity(p\pvt, 0, 0, p\speed * timing\tickDuration)
-		If p\gravity <> 0 Then p\yspeed = p\yspeed - p\gravity * timing\tickDuration
+		If (p\gravity <> 0) Then p\yspeed = p\yspeed - p\gravity * timing\tickDuration
 		TranslateEntity(p\pvt, 0, p\yspeed * timing\tickDuration, 0, True)
 
 		PositionEntity(p\obj, EntityX(p\pvt,True), EntityY(p\pvt,True), EntityZ(p\pvt,True), True)
 
 		;TurnEntity(p\obj, 0, 0, timing\tickDuration)
 
-		If p\aChange <> 0 Then
+		If (p\aChange <> 0) Then
 			p\a=Min(Max(p\a+p\aChange * timing\tickDuration,0.0),1.0)
 			EntityAlpha(p\obj, p\a)
 		EndIf
 
-		If p\sizeChange <> 0 Then
+		If (p\sizeChange <> 0) Then
 			p\size= p\size+p\sizeChange * timing\tickDuration
-			ScaleSprite p\obj, p\size, p\size
+			ScaleSprite(p\obj, p\size, p\size)
 		EndIf
 
 		ShowEntity(p\obj)
 		EntityAlpha(p\obj,1.0)
 
 		p\lifetime=p\lifetime-timing\tickDuration
-		If p\lifetime <= 0 Or p\size < 0.00001 Or p\a =< 0 Then
+		If (p\lifetime <= 0 Or p\size < 0.00001 Or p\a =< 0) Then
 			RemoveParticle(p)
 		EndIf
 	Next
@@ -103,15 +103,17 @@ End Type
 Function UpdateEmitters()
 	InSmoke = False
 	Local e.Emitters
+	Local p.Particles
+	Local dist#
 	For e.Emitters = Each Emitters
-		If timing\tickDuration > 0 And (mainPlayer\currRoom = e\room Or e\room\dist < 8) Then
-			;If EntityDistance(mainPlayer\cam, e\obj) < 6.0 Then
-			Local p.Particles = CreateParticle(EntityX(e\obj, True), EntityY(e\obj, True), EntityZ(e\obj, True), Rand(e\minImage, e\maxImage), e\size, e\gravity, e\lifeTime)
+		If (timing\tickDuration > 0 And (mainPlayer\currRoom = e\room Or e\room\dist < 8)) Then
+			;If (EntityDistance(mainPlayer\cam, e\obj) < 6.0) Then
+			p = CreateParticle(EntityX(e\obj, True), EntityY(e\obj, True), EntityZ(e\obj, True), Rand(e\minImage, e\maxImage), e\size, e\gravity, e\lifeTime)
 			p\speed = e\speed
 			RotateEntity(p\pvt, EntityPitch(e\obj, True), EntityYaw(e\obj, True), EntityRoll(e\obj, True), True)
 			TurnEntity(p\pvt, Rnd(-e\randAngle, e\randAngle), Rnd(-e\randAngle, e\randAngle), 0)
 
-			TurnEntity p\obj, 0,0,Rnd(360)
+			TurnEntity(p\obj, 0,0,Rnd(360))
 
 			p\sizeChange = e\sizeChange
 
@@ -119,11 +121,11 @@ Function UpdateEmitters()
 
 			e\soundCHN = LoopRangedSound_SM(sndManager\hiss, e\soundCHN, mainPlayer\cam, e\obj)
 
-			If InSmoke = False Then
-				If IsPlayerWearingTempName(mainPlayer,"gasmask") And IsPlayerWearingTempName(mainPlayer,"hazmatsuit") Then
-					Local dist# = Distance(EntityX(mainPlayer\cam, True), EntityZ(mainPlayer\cam, True), EntityX(e\obj, True), EntityZ(e\obj, True))
-					If dist < 0.8 Then
-						If Abs(EntityY(mainPlayer\cam, True)-EntityY(e\obj,True))<5.0 Then InSmoke = True
+			If (InSmoke = False) Then
+				If (IsPlayerWearingTempName(mainPlayer,"gasmask") And IsPlayerWearingTempName(mainPlayer,"hazmatsuit")) Then
+					dist = Distance(EntityX(mainPlayer\cam, True), EntityZ(mainPlayer\cam, True), EntityX(e\obj, True), EntityZ(e\obj, True))
+					If (dist < 0.8) Then
+						If (Abs(EntityY(mainPlayer\cam, True)-EntityY(e\obj,True))<5.0) Then InSmoke = True
 					EndIf
 				EndIf
 			EndIf
@@ -131,16 +133,16 @@ Function UpdateEmitters()
 		EndIf
 	Next
 
-	If InSmoke Then
-		If mainPlayer\blinkEffect > (70 * 6) Then mainPlayer\blurTimer = Max(mainPlayer\blurTimer, (mainPlayer\blinkEffect - (70 * 6)) / (70.0 * 24.0))
-		If mainPlayer\blinkEffect > (70 * 24) Then
+	If (InSmoke) Then
+		If (mainPlayer\blinkEffect > (70 * 6)) Then mainPlayer\blurTimer = Max(mainPlayer\blurTimer, (mainPlayer\blinkEffect - (70 * 6)) / (70.0 * 24.0))
+		If (mainPlayer\blinkEffect > (70 * 24)) Then
 			DeathMSG = "Subject D-9341 found dead in [DATA REDACTED]. Cause of death: Suffocation due to decontamination gas."
 			Kill(mainPlayer)
 		EndIf
 
-		If Not mainPlayer\dead Then
-			If Rand(150) = 1 Then
-				;If Not IsChannelPlaying(CoughCHN) Then CoughCHN = PlaySound2(CoughSFX(Rand(0, 2))) ;TODO: fix by not using a dim
+		If (Not mainPlayer\dead) Then
+			If (Rand(150) = 1) Then
+				;If (Not IsChannelPlaying(CoughCHN)) Then CoughCHN = PlaySound2(CoughSFX(Rand(0, 2))) ;TODO: fix by not using a dim
 			EndIf
 		EndIf
 
@@ -178,7 +180,7 @@ Function CreateEmitter.Emitters(x#, y#, z#, emittertype%)
 
 	Local r.Rooms
 	For r.Rooms = Each Rooms
-		If Abs(EntityX(e\obj) - EntityX(r\obj)) < 4.0 And Abs(EntityZ(e\obj) - EntityZ(r\obj)) < 4.0 Then
+		If (Abs(EntityX(e\obj) - EntityX(r\obj)) < 4.0 And Abs(EntityZ(e\obj) - EntityZ(r\obj)) < 4.0) Then
 			e\room = r
 		EndIf
 	Next

@@ -14,7 +14,7 @@ Function ReadINILine$(file.INIFile)
 	rdbyte = PeekByte(bank,offset)
 	While ((firstbyte) Or ((rdbyte<>13) And (rdbyte<>10))) And (offset<file\size)
 		rdbyte = PeekByte(bank,offset)
-		If ((rdbyte<>13) And (rdbyte<>10)) Then
+		If (((rdbyte<>13) And (rdbyte<>10))) Then
 			firstbyte = False
 			retStr=retStr+Chr(rdbyte)
 		EndIf
@@ -29,14 +29,14 @@ Function UpdateINIFile$(filename$)
 
 	Local k.INIFile
 	For k = Each INIFile
-		If k\name = Lower(filename) Then
+		If (k\name = Lower(filename)) Then
 			file = k
 		EndIf
 	Next
 
-	If file=Null Then Return
+	If (file=Null) Then Return
 
-	If file\bank<>0 Then FreeBank file\bank
+	If (file\bank<>0) Then FreeBank(file\bank)
 	Local f% = ReadFile(file\name)
 	Local fleSize% = 1
 	While fleSize<FileSize(file\name)
@@ -53,18 +53,19 @@ End Function
 
 Function GetINIString$(file$, section$, parameter$, defaultvalue$="")
 	Local TemporaryString$ = ""
+	Local strtemp$
 
 	Local lfile.INIFile = Null
 
 	Local k.INIFile
 	For k = Each INIFile
-		If k\name = Lower(file) Then
+		If (k\name = Lower(file)) Then
 			lfile = k
 		EndIf
 	Next
 
-	If lfile = Null Then
-		DebugLog "CREATE BANK FOR "+file
+	If (lfile = Null) Then
+		DebugLog("CREATE BANK FOR "+file)
 		lfile = New INIFile
 		lfile\name = Lower(file)
 		lfile\bank = 0
@@ -77,19 +78,19 @@ Function GetINIString$(file$, section$, parameter$, defaultvalue$="")
 
 	;While Not Eof(f)
 	While lfile\bankOffset<lfile\size
-		Local strtemp$ = ReadINILine(lfile)
-		If Left(strtemp,1) = "[" Then
+		strtemp$ = ReadINILine(lfile)
+		If (Left(strtemp,1) = "[") Then
 			strtemp$ = Lower(strtemp)
-			If Mid(strtemp, 2, Len(strtemp)-2)=section Then
+			If (Mid(strtemp, 2, Len(strtemp)-2)=section) Then
 				Repeat
 					TemporaryString = ReadINILine(lfile)
-					If Lower(Trim(Left(TemporaryString, Max(Instr(TemporaryString, "=") - 1, 0)))) = Lower(parameter) Then
-						;CloseFile f
+					If (Lower(Trim(Left(TemporaryString, Max(Instr(TemporaryString, "=") - 1, 0)))) = Lower(parameter)) Then
+						;CloseFile(f)
 						Return Trim( Right(TemporaryString,Len(TemporaryString)-Instr(TemporaryString,"=")) )
 					EndIf
 				Until (Left(TemporaryString, 1) = "[") Or (lfile\bankOffset>=lfile\size)
 
-				;CloseFile f
+				;CloseFile(f)
 				Return defaultvalue
 			EndIf
 		EndIf
@@ -100,9 +101,9 @@ End Function
 
 Function GetINIInt%(file$, section$, parameter$, defaultvalue% = 0)
 	Local txt$ = GetINIString(file$, section$, parameter$, defaultvalue)
-	If Lower(txt) = "true" Then
+	If (Lower(txt) = "true") Then
 		Return 1
-	ElseIf Lower(txt) = "false" Then
+	ElseIf (Lower(txt) = "false") Then
 		Return 0
 	Else
 		Return Int(txt)
@@ -116,35 +117,36 @@ End Function
 
 Function GetINIString2$(file$, start%, parameter$, defaultvalue$="")
 	Local TemporaryString$ = ""
+	Local strTemp$
 	Local f% = ReadFile(file)
 
 	Local n%=0
 	While Not Eof(f)
-		Local strtemp$ = ReadLine(f)
+		strTemp$ = ReadLine(f)
 		n=n+1
-		If n=start Then
+		If (n=start) Then
 			Repeat
 				TemporaryString = ReadLine(f)
-				If Lower(Trim(Left(TemporaryString, Max(Instr(TemporaryString, "=") - 1, 0)))) = Lower(parameter) Then
-					CloseFile f
+				If (Lower(Trim(Left(TemporaryString, Max(Instr(TemporaryString, "=") - 1, 0)))) = Lower(parameter)) Then
+					CloseFile(f)
 					Return Trim( Right(TemporaryString,Len(TemporaryString)-Instr(TemporaryString,"=")) )
 				EndIf
 			Until Left(TemporaryString, 1) = "[" Or Eof(f)
-			CloseFile f
+			CloseFile(f)
 			Return defaultvalue
 		EndIf
 	Wend
 
-	CloseFile f
+	CloseFile(f)
 
 	Return defaultvalue
 End Function
 
 Function GetINIInt2%(file$, start%, parameter$, defaultvalue$="")
 	Local txt$ = GetINIString2(file$, start%, parameter$, defaultvalue$)
-	If Lower(txt) = "true" Then
+	If (Lower(txt) = "true") Then
 		Return 1
-	ElseIf Lower(txt) = "false" Then
+	ElseIf (Lower(txt) = "false") Then
 		Return 0
 	Else
 		Return Int(txt)
@@ -154,27 +156,28 @@ End Function
 
 Function GetINISectionLocation%(file$, section$)
 	Local Temp%
+	Local strTemp$
 	Local f% = ReadFile(file)
 
 	section = Lower(section)
 
 	Local n%=0
 	While Not Eof(f)
-		Local strtemp$ = ReadLine(f)
+		strTemp$ = ReadLine(f)
 		n=n+1
-		If Left(strtemp,1) = "[" Then
-			strtemp$ = Lower(strtemp)
-			Temp = Instr(strtemp, section)
-			If Temp>0 Then
-				If Mid(strtemp, Temp-1, 1)="[" Or Mid(strtemp, Temp-1, 1)="|" Then
-					CloseFile f
+		If (Left(strTemp,1) = "[") Then
+			strTemp$ = Lower(strTemp)
+			Temp = Instr(strTemp, section)
+			If (Temp>0) Then
+				If (Mid(strTemp, Temp-1, 1)="[" Or Mid(strTemp, Temp-1, 1)="|") Then
+					CloseFile(f)
 					Return n
 				EndIf
 			EndIf
 		EndIf
 	Wend
 
-	CloseFile f
+	CloseFile(f)
 End Function
 
 
@@ -200,39 +203,40 @@ Function PutINIValue%(file$, INI_sSection$, INI_sKey$, INI_sValue$)
 	Local INI_sCurrentSection$ = ""
 
 	Local INI_lFileHandle% = WriteFile(INI_sFilename)
-	If INI_lFileHandle = 0 Then Return False ; Create file failed!
+	If (INI_lFileHandle = 0) Then Return False ; Create file failed!
 
 	Local INI_lOldPos% = 1
 	Local INI_lPos% = Instr(INI_sContents, Chr$(0))
+	Local INI_sTemp$, lEqualsPos%
 
 	While (INI_lPos <> 0)
 
-		Local INI_sTemp$ = Mid$(INI_sContents, INI_lOldPos, (INI_lPos - INI_lOldPos))
+		INI_sTemp$ = Mid$(INI_sContents, INI_lOldPos, (INI_lPos - INI_lOldPos))
 
-		If (INI_sTemp <> "") Then
+		If ((INI_sTemp <> "")) Then
 
-			If Left$(INI_sTemp, 1) = "[" And Right$(INI_sTemp, 1) = "]" Then
+			If (Left$(INI_sTemp, 1) = "[" And Right$(INI_sTemp, 1) = "]") Then
 
 					; Process SECTION
 
-				If (INI_sCurrentSection = INI_sUpperSection) And (INI_bWrittenKey = False) Then
+				If ((INI_sCurrentSection = INI_sUpperSection) And (INI_bWrittenKey = False)) Then
 					INI_bWrittenKey = INI_CreateKey(INI_lFileHandle, INI_sKey, INI_sValue)
 				EndIf
 				INI_sCurrentSection = Upper$(INI_CreateSection(INI_lFileHandle, INI_sTemp))
-				If (INI_sCurrentSection = INI_sUpperSection) Then INI_bSectionFound = True
+				If ((INI_sCurrentSection = INI_sUpperSection)) Then INI_bSectionFound = True
 
 			Else
-				If (Left(INI_sTemp, 1) = ":") Or (Left(INI_sTemp, 1) = ";") Then
-					WriteLine INI_lFileHandle, INI_sTemp
+				If ((Left(INI_sTemp, 1) = ":") Or (Left(INI_sTemp, 1) = ";")) Then
+					WriteLine(INI_lFileHandle, INI_sTemp)
 				Else
 						; KEY=VALUE
-					Local lEqualsPos% = Instr(INI_sTemp, "=")
-					If (lEqualsPos <> 0) Then
-						If (INI_sCurrentSection = INI_sUpperSection) And (Upper$(Trim$(Left$(INI_sTemp, (lEqualsPos - 1)))) = Upper$(INI_sKey)) Then
-							If (INI_sValue <> "") Then INI_CreateKey INI_lFileHandle, INI_sKey, INI_sValue
+					lEqualsPos% = Instr(INI_sTemp, "=")
+					If ((lEqualsPos <> 0)) Then
+						If ((INI_sCurrentSection = INI_sUpperSection) And (Upper$(Trim$(Left$(INI_sTemp, (lEqualsPos - 1)))) = Upper$(INI_sKey))) Then
+							If ((INI_sValue <> "")) Then INI_CreateKey(INI_lFileHandle, INI_sKey, INI_sValue)
 							INI_bWrittenKey = True
 						Else
-							WriteLine INI_lFileHandle, INI_sTemp
+							WriteLine(INI_lFileHandle, INI_sTemp)
 						EndIf
 					EndIf
 				EndIf
@@ -250,12 +254,12 @@ Function PutINIValue%(file$, INI_sSection$, INI_sKey$, INI_sValue$)
 
 		; KEY wasn;t found in the INI file - Append a New SECTION If required And create our KEY=VALUE Line
 
-	If (INI_bWrittenKey = False) Then
-		If (INI_bSectionFound = False) Then INI_CreateSection INI_lFileHandle, INI_sSection
-		INI_CreateKey INI_lFileHandle, INI_sKey, INI_sValue
+	If ((INI_bWrittenKey = False)) Then
+		If ((INI_bSectionFound = False)) Then INI_CreateSection(INI_lFileHandle, INI_sSection)
+		INI_CreateKey(INI_lFileHandle, INI_sKey, INI_sValue)
 	EndIf
 
-	CloseFile INI_lFileHandle
+	CloseFile(INI_lFileHandle)
 
 	Return True ; Success
 
@@ -265,11 +269,11 @@ Function INI_FileToString$(INI_sFilename$)
 
 	Local INI_sString$ = ""
 	Local INI_lFileHandle%= ReadFile(INI_sFilename)
-	If INI_lFileHandle <> 0 Then
+	If (INI_lFileHandle <> 0) Then
 		While Not(Eof(INI_lFileHandle))
 			INI_sString = INI_sString + ReadLine$(INI_lFileHandle) + Chr$(0)
 		Wend
-		CloseFile INI_lFileHandle
+		CloseFile(INI_lFileHandle)
 	EndIf
 	Return INI_sString
 
@@ -277,15 +281,15 @@ End Function
 
 Function INI_CreateSection$(INI_lFileHandle%, INI_sNewSection$)
 
-	If FilePos(INI_lFileHandle) <> 0 Then WriteLine INI_lFileHandle, "" ; Blank Line between sections
-	WriteLine INI_lFileHandle, INI_sNewSection
+	If (FilePos(INI_lFileHandle) <> 0) Then WriteLine(INI_lFileHandle, "") ; Blank Line between sections)
+	WriteLine(INI_lFileHandle, INI_sNewSection)
 	Return INI_sNewSection
 
 End Function
 
 Function INI_CreateKey%(INI_lFileHandle%, INI_sKey$, INI_sValue$)
 
-	WriteLine INI_lFileHandle, INI_sKey + " = " + INI_sValue
+	WriteLine(INI_lFileHandle, INI_sKey + " = " + INI_sValue)
 	Return True
 
 End Function

@@ -3,7 +3,7 @@ Function FillRoom_off_bain_2(r.Rooms)
     Local it.Items, i%
     Local xtemp%, ytemp%, ztemp%
 
-    Local t1;, Bump
+    Local t1%;, Bump
 
     d.Doors = CreateDoor(0, r\x - 240.0 * RoomScale, 0.0, r\z, 90, r, False)
     d\open = False : d\autoClose = False

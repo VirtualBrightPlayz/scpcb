@@ -40,14 +40,15 @@ End Type
 
 Function CreateItemTemplate(file$, section$)
 	Local it.ItemTemplates = New ItemTemplates
+	Local flags%
 
 	it\name = section
 	it\invName = GetINIString(file, section, "invname")
 
 	;The model and inv image are in the specified directory.
 	Local dataPath$ = GetINIString(file, section, "datapath")
-	If (dataPath <> "") Then
-		If (FileType(dataPath) <> 2) Then RuntimeError("Item template directory not found ("+section+", "+dataPath+")")
+	If ((dataPath <> "")) Then
+		If ((FileType(dataPath) <> 2)) Then RuntimeError("Item template directory not found ("+section+", "+dataPath+")")
 
 		it\objPath = dataPath + it\name + ".b3d"
 		it\invImagePath[0] = GetImagePath(dataPath + "inv_" + it\name)
@@ -55,22 +56,22 @@ Function CreateItemTemplate(file$, section$)
 
 	;Otherwise the obj, tex and inv paths are specified in the INI.
 	Local objPath$ = GetINIString(file, section, "objpath")
-	If (objPath <> "") Then
+	If ((objPath <> "")) Then
 		it\objPath = objPath
 	EndIf
 
 	Local texPath$ = GetINIString(file, section, "texpath")
-	If (texPath <> "") Then
+	If ((texPath <> "")) Then
 		it\texPath = texPath
 	EndIf
 
 	Local invImgPath$ = GetINIString(file, section, "invimgpath")
-	If (invImgPath <> "") Then
+	If ((invImgPath <> "")) Then
 		it\invImagePath[0] = invImgPath
 	EndIf
 
 	Local invImgPath2$ = GetINIString(file, section, "invimgpath2")
-	If (invImgPath2 <> "") Then
+	If ((invImgPath2 <> "")) Then
 		it\invImagePath[1] = invImgPath2
 	EndIf
 
@@ -103,31 +104,31 @@ Function CreateItemTemplate(file$, section$)
 	;Does another item already use that model?
 	Local it2.ItemTemplates
 	For it2 = Each ItemTemplates
-		If (it2\objPath = it\objPath And it2\obj <> 0) Then
+		If ((it2\objPath = it\objPath And it2\obj <> 0)) Then
 			it\obj = CopyEntity(it2\obj)
 			Exit
 		EndIf
 	Next
 
 	;Otherwise load the model.
-	If (it\obj = 0) Then
-		If (GetINIInt(file, section, "animated") = 1) Then
+	If ((it\obj = 0)) Then
+		If ((GetINIInt(file, section, "animated") = 1)) Then
 			it\obj = LoadAnimMesh(it\objPath)
 		Else
 			it\obj = LoadMesh(it\objPath)
 		EndIf
 	EndIf
 
-	If (it\texPath <> "") Then
+	If ((it\texPath <> "")) Then
 		For it2 = Each ItemTemplates
-			If (it2\texPath = it\texPath And it2\tex <> 0) Then
+			If ((it2\texPath = it\texPath And it2\tex <> 0)) Then
 				it\tex = it2\tex
 				Exit
 			EndIf
 		Next
 
-		If (it\tex = 0) Then
-			Local flags% = GetINIInt(file, section, "textureflags", 1+8)
+		If ((it\tex = 0)) Then
+			flags = GetINIInt(file, section, "textureflags", 1+8)
 			it\tex = LoadTexture(it\texPath, flags)
 		EndIf
 
@@ -136,15 +137,15 @@ Function CreateItemTemplate(file$, section$)
 
 	Local i%
 	For i=0 To 1
-		If (it\invImagePath[i] <> "") Then
+		If ((it\invImagePath[i] <> "")) Then
 			For it2 = Each ItemTemplates
-				If (it2\invImagePath[i] = it\invImagePath[i] And it2\invImage[i] <> 0) Then
+				If ((it2\invImagePath[i] = it\invImagePath[i] And it2\invImage[i] <> 0)) Then
 					it\invImage[i] = it2\invImage[i]
 					Exit
 				EndIf
 			Next
 
-			If (it\invImage[i] = 0) Then
+			If ((it\invImage[i] = 0)) Then
 				it\invImage[i] = LoadImage(it\invImagePath[i])
 				MaskImage(it\invImage[i], 255, 0, 255)
 			EndIf
@@ -156,27 +157,20 @@ Function CreateItemTemplate(file$, section$)
 	it\scale = scale
 	ScaleEntity(it\obj, scale, scale, scale, True)
 
-	HideEntity it\obj
+	HideEntity(it\obj)
 End Function
 
 Function FindItemTemplate.ItemTemplates(tempname$)
 	Local it.ItemTemplates = Null
 	Local candidate.ItemTemplates = Null
 	For it = Each ItemTemplates
-		If it\name = tempname Then
+		If (it\name = tempname) Then
 			candidate = it
 			Exit
 		EndIf
 	Next
 
 	Return candidate
-End Function
-
-Const dewit% = False
-Function IniHackTool(name$, fileName$)
-	If (dewit) Then
-		PutINIValue("Data/Items/paper.ini", fileName, "name", name)
-	EndIf
 End Function
 
 Function LoadItemTemplates(file$)
@@ -186,79 +180,14 @@ Function LoadItemTemplates(file$)
 
 	While Not Eof(f)
 		section = Trim(ReadLine(f))
-		If Left(section,1) = "[" Then
+		If (Left(section,1) = "[") Then
 			section = Mid(section, 2, Len(section) - 2)
 
 			CreateItemTemplate(file, section)
 		EndIf
 	Wend
 
-	CloseFile f
-End Function
-
-Function InitItemTemplates()
-	Local it.ItemTemplates,it2.ItemTemplates
-
-	IniHackTool("Document SCP-079", "doc079.jpg")
-	IniHackTool("SCP-093 Recovered Materials", "doc093rm.jpg")
-	IniHackTool("Document SCP-106", "doc106.jpg")
-	IniHackTool("Recall Protocol RP-106-N", "docRecall.jpg")
-	IniHackTool("Document SCP-682", "doc682.jpg")
-	IniHackTool("Document SCP-173", "doc173.jpg")
-	IniHackTool("Document SCP-049", "doc049.jpg")
-	IniHackTool("Document SCP-096", "doc096.jpg")
-	IniHackTool("Document SCP-008", "doc008.jpg")
-	IniHackTool("Document SCP-012", "doc012.jpg")
-	IniHackTool("Document SCP-035", "doc035.jpg")
-	IniHackTool("SCP-035 Addendum", "doc035ad.jpg")
-	IniHackTool("Document SCP-860", "doc860.jpg")
-	IniHackTool("Document SCP-860-1", "doc8601.jpg")
-	IniHackTool("Document SCP-895", "doc895.jpg")
-	IniHackTool("Document SCP-939", "doc939.jpg")
-	IniHackTool("Document SCP-966", "doc966.jpg")
-	IniHackTool("Document SCP-970", "doc970.jpg")
-	IniHackTool("Document SCP-1048", "doc1048.jpg")
-	IniHackTool("Document SCP-1123", "doc1123.jpg")
-	IniHackTool("Document SCP-1162", "doc1162.jpg")
-
-	IniHackTool("Leaflet", "leaflet.jpg")
-
-	IniHackTool("Journal Page", "journal.jpg")
-
-
-	IniHackTool("Log #1", "f4.jpg")
-	IniHackTool("Log #2", "f5.jpg")
-	IniHackTool("Log #3", "f6.jpg")
-
-	IniHackTool("Nuclear Device Document", "docWar.jpg")
-	IniHackTool("Class D Orientation Leaflet", "docORI.jpg")
-
-
-	IniHackTool("Burnt Note", "docBurn.jpg")
-
-
-	IniHackTool("Mobile Task Forces", "docMTF.jpg")
-	IniHackTool("Security Clearance Levels", "docSC.jpg")
-	IniHackTool("Object Classes", "docOBJC.jpg")
-	IniHackTool("Incident Report SCP-106-0204", "docIR106.jpg")
-
-
-	IniHackTool("Disciplinary Hearing DH-S-4137-17092", "docDH.jpg")
-
-	IniHackTool("Note", "radical_linguini.jpg")
-	IniHackTool("Notification", "914_organic.jpg")
-	IniHackTool("Mysterious Note", "big_reveal.jpg")
-	IniHackTool("Note from Daniel", "docdan.jpg")
-	IniHackTool("Dr. Allok's Note", "106_treats.jpg")
-
-	IniHackTool("Strange Note", "docStrange.jpg")
-
-	IniHackTool("Dr. L's Note", "docL1.jpg")
-	IniHackTool("Dr L's Note", "docL2.jpg")
-	IniHackTool("Blood-stained Note", "docL3.jpg")
-	IniHackTool("Dr. L's Burnt Note", "docL4.jpg")
-	IniHackTool("Dr L's Burnt Note", "docL5.jpg")
-	IniHackTool("Scorched Note", "docL6.jpg")
+	CloseFile(f)
 End Function
 
 
@@ -274,7 +203,6 @@ Type Items
 	Field r%,g%,b%,a#
 
 	Field dist#
-	Field disttimer# ;TODO: Deprecate
 
 	Field state#
 	;TODO: Deprecate
@@ -352,9 +280,9 @@ Function CreateItem.Items(name$, x#, y#, z#, invSlots%=0)
 		RuntimeError("Item template not found ("+name+", "+tempname+")")
 	EndIf
 
-	ResetEntity i\collider
+	ResetEntity(i\collider)
 	PositionEntity(i\collider, x, y, z, True)
-	RotateEntity (i\collider, 0, Rand(360), 0)
+	RotateEntity(i\collider, 0, Rand(360), 0)
 	i\dist = EntityDistance(mainPlayer\collider, i\collider)
 	i\dropSpeed = 0.0
 
@@ -405,7 +333,7 @@ Function CreatePaper.Items(name$, x#, y#, z#)
 End Function
 
 Function RemoveItem(i.Items)
-	If i\inventory<>Null Then DeleteInventory(i\inventory)
+	If (i\inventory<>Null) Then DeleteInventory(i\inventory)
 
 	If (i\img <> 0) Then
 		FreeImage(i\img)
@@ -420,11 +348,11 @@ End Function
 
 Global itemDistanceTimer% = 0
 Function UpdateItems()
-	Local n, i.Items, i2.Items
+	Local n%, i.Items, i2.Items
 	Local xtemp#, ytemp#, ztemp#
 	Local temp%, np.NPCs
 
-	Local HideDist# = HideDistance*0.5
+	Local hideDist# = HideDistance*0.5
 
 	mainPlayer\closestItem = Null
 	For i.Items = Each Items
@@ -435,8 +363,8 @@ Function UpdateItems()
 				i\dist = EntityDistance(mainPlayer\collider, i\collider)
 			EndIf
 
-			If i\dist < HideDist Then
-				ShowEntity i\collider
+			If (i\dist < hideDist) Then
+				ShowEntity(i\collider)
 
 				If i\dist < 1.2 Then
 					If mainPlayer\closestItem = Null Then
@@ -450,26 +378,26 @@ Function UpdateItems()
 					EndIf
 				EndIf
 
-				If EntityCollided(i\collider, HIT_MAP) Then
+				If (EntityCollided(i\collider, HIT_MAP)) Then
 					i\dropSpeed = 0
 					i\xspeed = 0.0
 					i\zspeed = 0.0
 				Else
 					i\dropSpeed = i\dropSpeed - 0.0004 * timing\tickDuration
-					TranslateEntity i\collider, i\xspeed*timing\tickDuration, i\dropSpeed * timing\tickDuration, i\zspeed*timing\tickDuration
-					If i\wontColl Then ResetEntity(i\collider)
+					TranslateEntity(i\collider, i\xspeed*timing\tickDuration, i\dropSpeed * timing\tickDuration, i\zspeed*timing\tickDuration)
+					If (i\wontColl) Then ResetEntity(i\collider)
 				EndIf
 
-				If i\dist<HideDist*0.2 Then
+				If (i\dist<HideDist*0.2) Then
 					For i2.Items = Each Items
-						If i<>i2 And (Not i2\picked) And i2\dist<HideDist*0.2 Then
+						If (i<>i2 And (Not i2\picked) And i2\dist<HideDist*0.2) Then
 
 							xtemp# = (EntityX(i2\collider,True)-EntityX(i\collider,True))
 							ytemp# = (EntityY(i2\collider,True)-EntityY(i\collider,True))
 							ztemp# = (EntityZ(i2\collider,True)-EntityZ(i\collider,True))
 
-							Local ed# = (xtemp*xtemp+ztemp*ztemp)
-							If ed<0.07 And Abs(ytemp)<0.25 Then
+							ed = (xtemp*xtemp+ztemp*ztemp)
+							If (ed<0.07 And Abs(ytemp)<0.25) Then
 								;items are too close together, push away
 
 								xtemp = xtemp*(0.07-ed)
@@ -480,8 +408,8 @@ Function UpdateItems()
 									ztemp = ztemp+Rnd(-0.002,0.002)
 								Wend
 
-								TranslateEntity i2\collider,xtemp,0,ztemp
-								TranslateEntity i\collider,-xtemp,0,-ztemp
+								TranslateEntity(i2\collider,xtemp,0,ztemp)
+								TranslateEntity(i\collider,-xtemp,0,-ztemp)
 							EndIf
 						EndIf
 					Next
@@ -492,7 +420,7 @@ Function UpdateItems()
 					RemoveItem(i)
 				EndIf
 			Else
-				HideEntity i\collider
+				HideEntity(i\collider)
 			EndIf
 		EndIf
 	Next
@@ -571,7 +499,9 @@ Function DropItem(item.Items,playDropSound%=True)
 		DeEquipItem(player,item)
 	Next
 
-	If playDropSound Then PlaySound_SM(sndManager\itemPick[item\template\sound])
+	If (playDropSound) Then
+		PlaySound_SM(sndManager\itemPick[item\template\sound])
+	EndIf
 
 	item\dropped = 1
 
@@ -581,14 +511,14 @@ Function DropItem(item.Items,playDropSound%=True)
 	MoveEntity(item\collider, 0, -0.1, 0.1)
 	RotateEntity(item\collider, 0, EntityYaw(mainPlayer\cam)+Rnd(-110,110), 0)
 
-	ResetEntity (item\collider)
+	ResetEntity(item\collider)
 
 	item\picked = False
 	Local inv.Inventory
+	Local j%
 	For inv.Inventory = Each Inventory
-		Local j%
 		For j%=0 To inv\size-1
-			If inv\items[j]=item Then inv\items[j]=Null
+			If (inv\items[j]=item) Then inv\items[j]=Null
 		Next
 	Next
 End Function
@@ -913,11 +843,11 @@ Function CreateRadio.Radio()
 End Function
 
 Function ChangeRadioChannel(newChn%)
-	If (IsChannelPlaying(radio\channels[radio\currChn])) Then
+	If ((IsChannelPlaying(radio\channels[radio\currChn]))) Then
 		PauseChannel(radio\channels[radio\currChn])
 	EndIf
 
-	If (Not IsChannelPlaying(radio\channels[newChn])) Then
+	If ((Not IsChannelPlaying(radio\channels[newChn]))) Then
 		radio\channels[newChn] = PlaySound(radio\sndStatic)
 	Else
 		ResumeChannel(radio\channels[newChn])

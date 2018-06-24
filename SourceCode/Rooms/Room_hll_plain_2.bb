@@ -10,31 +10,31 @@ Function UpdateEventRoom2trick(e.Events)
 	Local angle#
 
 	;[Block]
-	If mainPlayer\currRoom = e\room Then
-		If EntityDistance(e\room\obj,mainPlayer\collider)<2.0 Then
-			If EntityDistance(mainPlayer\collider, Curr173\obj)<6.0 Or EntityDistance(mainPlayer\collider, Curr106\obj)<6.0 Then
+	If (mainPlayer\currRoom = e\room) Then
+		If (EntityDistance(e\room\obj,mainPlayer\collider)<2.0) Then
+			If (EntityDistance(mainPlayer\collider, Curr173\obj)<6.0 Or EntityDistance(mainPlayer\collider, Curr106\obj)<6.0) Then
 				RemoveEvent(e)
 			Else
-				DebugLog "%@@= / {2E6C2=FD gi`h]c"
+				DebugLog("%@@= / {2E6C2=FD gi`h]c")
 
 				pvt = CreatePivot()
-				PositionEntity pvt, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider),EntityZ(mainPlayer\collider)
-				PointEntity pvt, e\room\obj
-				RotateEntity pvt, 0, EntityYaw(pvt),0,True
-				MoveEntity pvt, 0,0,EntityDistance(pvt,e\room\obj)*2
+				PositionEntity(pvt, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider),EntityZ(mainPlayer\collider))
+				PointEntity(pvt, e\room\obj)
+				RotateEntity(pvt, 0, EntityYaw(pvt),0,True)
+				MoveEntity(pvt, 0,0,EntityDistance(pvt,e\room\obj)*2)
 
 				;mainPlayer\camShake = 5.0
 				;mainPlayer\blurTimer = 100
 
 				mainPlayer\blinkTimer = -10
 
-				PositionEntity mainPlayer\collider, EntityX(pvt),EntityY(pvt)+0.05,EntityZ(pvt)
+				PositionEntity(mainPlayer\collider, EntityX(pvt),EntityY(pvt)+0.05,EntityZ(pvt))
 				UpdateWorld()
-				;ResetEntity Collider
+				;ResetEntity(Collider)
 
-				TurnEntity mainPlayer\collider, 0,180,0
+				TurnEntity(mainPlayer\collider, 0,180,0)
 
-				FreeEntity pvt
+				FreeEntity(pvt)
 				RemoveEvent(e)
 			EndIf
 		EndIf

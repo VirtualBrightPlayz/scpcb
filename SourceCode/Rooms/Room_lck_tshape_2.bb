@@ -3,17 +3,19 @@ Function FillRoom_lck_tshape_2(r.Rooms)
     Local it.Items, i%
     Local xtemp%, ytemp%, ztemp%
 
-    Local t1;, Bump
+    Local t1%;, Bump
 
     d = CreateDoor(r\zone, r\x, 0, r\z + 528.0 * RoomScale, 0, r, True)
     d\autoClose = False ;: d\buttons[0] = False
-    PositionEntity (d\buttons[0], r\x - 832.0 * RoomScale, 0.7, r\z + 160.0 * RoomScale, True)
-    PositionEntity (d\buttons[1], r\x + 160.0 * RoomScale, 0.7, r\z + 536.0 * RoomScale, True)
+    PositionEntity(d\buttons[0], r\x - 832.0 * RoomScale, 0.7, r\z + 160.0 * RoomScale, True)
+    PositionEntity(d\buttons[1], r\x + 160.0 * RoomScale, 0.7, r\z + 536.0 * RoomScale, True)
     ;RotateEntity(d\buttons[1], 0, 90, 0, True)
 
     d2 = CreateDoor(r\zone, r\x, 0, r\z - 528.0 * RoomScale, 180, r, True)
-    d2\autoClose = False : FreeEntity (d2\buttons[0]) : d2\buttons[0] = 0
-    PositionEntity (d2\buttons[1], r\x +160.0 * RoomScale, 0.7, r\z - 536.0 * RoomScale, True)
+    d2\autoClose = False
+	FreeEntity(d2\buttons[0])
+	d2\buttons[0] = 0
+    PositionEntity(d2\buttons[1], r\x +160.0 * RoomScale, 0.7, r\z - 536.0 * RoomScale, True)
     ;RotateEntity(d2\buttons[1], 0, 90, 0, True)
 
     r\objects[0] = CreatePivot()
@@ -38,9 +40,9 @@ Function UpdateEventRoom2doors173(e.Events)
 	Local angle#
 
 	;[Block]
-	If mainPlayer\currRoom = e\room Then
-		If e\eventState = 0 And Curr173\idle = 0 Then
-			If (Not EntityInView(Curr173\obj, mainPlayer\cam)) Then
+	If (mainPlayer\currRoom = e\room) Then
+		If (e\eventState = 0 And Curr173\idle = 0) Then
+			If ((Not EntityInView(Curr173\obj, mainPlayer\cam))) Then
 				e\eventState = 1
 				PositionEntity(Curr173\collider, EntityX(e\room\objects[0], True), 0.5, EntityZ(e\room\objects[0], True))
 				ResetEntity(Curr173\collider)
@@ -51,3 +53,6 @@ Function UpdateEventRoom2doors173(e.Events)
 	;[End Block]
 End Function
 
+
+;~IDEal Editor Parameters:
+;~C#Blitz3D
