@@ -146,7 +146,7 @@ Function UpdateNPCtypeMTF(n.NPC)
 										EndIf
 
 										If (Curr173\idle = 3 And Distance(EntityX(pvt),EntityZ(pvt),EntityX(n\collider),EntityZ(n\collider)) > 4.0) Then
-											If (r\roomDoors[1]\open = True) Then UseDoor(r\roomDoors[1],False)
+											If (r\doors[1]\open = True) Then UseDoor(r\doors[1],False)
 										EndIf
 
 										FreeEntity(pvt)

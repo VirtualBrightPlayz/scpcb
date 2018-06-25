@@ -10,10 +10,10 @@ Function FillRoom_cont_205_1(r.Room)
     ;PositionEntity(d\buttons[0], r\x + 320.0 * RoomScale, EntityY(d\buttons[0],True), EntityZ(d\buttons[0],True), True)
     ;PositionEntity(d\buttons[1], r\x + 224.0 * RoomScale, EntityY(d\buttons[1],True), EntityZ(d\buttons[1],True), True)
 
-    r\roomDoors[0] = CreateDoor(r\zone, r\x - 1392.0 * RoomScale, -128.0 * RoomScale, r\z - 384*RoomScale, 0, r, True, False, 3)
-    r\roomDoors[0]\autoClose = False : r\roomDoors[0]\open = False
-    FreeEntity(r\roomDoors[0]\buttons[0]) : r\roomDoors[0]\buttons[0]=0
-    FreeEntity(r\roomDoors[0]\buttons[1]) : r\roomDoors[0]\buttons[1]=0
+    r\doors[0] = CreateDoor(r\zone, r\x - 1392.0 * RoomScale, -128.0 * RoomScale, r\z - 384*RoomScale, 0, r, True, False, 3)
+    r\doors[0]\autoClose = False : r\doors[0]\open = False
+    FreeEntity(r\doors[0]\buttons[0]) : r\doors[0]\buttons[0]=0
+    FreeEntity(r\doors[0]\buttons[1]) : r\doors[0]\buttons[1]=0
 
     sc = CreateSecurityCam(r\x - 1152.0 * RoomScale, r\y + 900.0 * RoomScale, r\z + 176.0 * RoomScale, r, True)
     sc\angle = 90 : sc\turn = 0
@@ -102,12 +102,12 @@ Function UpdateEvent_cont_205_1(e.Event)
 					SetAnimTime(e\room\objects[4], 434)
 					SetAnimTime(e\room\objects[5], 434)
 
-					e\room\roomDoors[0]\open = False
+					e\room\doors[0]\open = False
 				EndIf
 
 				If (e\eventState>7) Then
 					If (Rand(0,300)=1) Then
-						e\room\roomDoors[0]\open = Not e\room\roomDoors[0]\open
+						e\room\doors[0]\open = Not e\room\doors[0]\open
 					EndIf
 				EndIf
 

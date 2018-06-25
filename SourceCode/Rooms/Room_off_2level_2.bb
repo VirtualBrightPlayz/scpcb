@@ -35,10 +35,10 @@ Function FillRoom_off_2level_2(r.Room)
         EntityParent(it\collider, r\obj)
     EndIf
 
-    r\roomDoors[0] = CreateDoor(r\zone, r\x - 1056.0 * RoomScale, 384.0*RoomScale, r\z + 290.0 * RoomScale, 90, r, True)
-    r\roomDoors[0]\autoClose = False : r\roomDoors[0]\open = True
-    PositionEntity(r\roomDoors[0]\buttons[0], EntityX(r\roomDoors[0]\buttons[0],True),EntityY(r\roomDoors[0]\buttons[0],True),r\z + 161.0 * RoomScale,True)
-    PositionEntity(r\roomDoors[0]\buttons[1], EntityX(r\roomDoors[0]\buttons[1],True),EntityY(r\roomDoors[0]\buttons[1],True),r\z + 161.0 * RoomScale,True)
+    r\doors[0] = CreateDoor(r\zone, r\x - 1056.0 * RoomScale, 384.0*RoomScale, r\z + 290.0 * RoomScale, 90, r, True)
+    r\doors[0]\autoClose = False : r\doors[0]\open = True
+    PositionEntity(r\doors[0]\buttons[0], EntityX(r\doors[0]\buttons[0],True),EntityY(r\doors[0]\buttons[0],True),r\z + 161.0 * RoomScale,True)
+    PositionEntity(r\doors[0]\buttons[1], EntityX(r\doors[0]\buttons[1],True),EntityY(r\doors[0]\buttons[1],True),r\z + 161.0 * RoomScale,True)
 End Function
 
 
@@ -57,10 +57,10 @@ Function UpdateEvent_off_2level_2(e.Event)
 	If (mainPlayer\currRoom = e\room) Then
 		e\eventState = e\eventState+timing\tickDuration
 		If (e\eventState > 700) Then
-			If (EntityDistance(e\room\roomDoors[0]\obj, mainPlayer\collider)>0.5) Then
-				If (EntityInView(e\room\roomDoors[0]\obj, mainPlayer\cam)=False) Then
+			If (EntityDistance(e\room\doors[0]\obj, mainPlayer\collider)>0.5) Then
+				If (EntityInView(e\room\doors[0]\obj, mainPlayer\cam)=False) Then
 					DebugLog("%@@= / {2E6C2=FD gi`h]c")
-					e\room\roomDoors[0]\open = False
+					e\room\doors[0]\open = False
 					RemoveEvent(e)
 				EndIf
 			EndIf

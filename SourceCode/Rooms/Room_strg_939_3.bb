@@ -66,30 +66,30 @@ Function FillRoom_strg_939_3(r.Room)
     ;EntityAlpha(r\objects[20],0.0)
 
     ;Doors
-    r\roomDoors[0] = CreateDoor(r\zone, r\x, 0.0, r\z + 448.0 * RoomScale, 0, r, True)
-    r\roomDoors[0]\autoClose = False : r\roomDoors[0]\open = True
-    PositionEntity(r\roomDoors[0]\buttons[1], r\x - 160.0 * RoomScale, 0.7, r\z + 480.0 * RoomScale, True)
-    PositionEntity(r\roomDoors[0]\buttons[0], r\x + 160.0 * RoomScale, 0.7, r\z + 416.0 * RoomScale, True)
+    r\doors[0] = CreateDoor(r\zone, r\x, 0.0, r\z + 448.0 * RoomScale, 0, r, True)
+    r\doors[0]\autoClose = False : r\doors[0]\open = True
+    PositionEntity(r\doors[0]\buttons[1], r\x - 160.0 * RoomScale, 0.7, r\z + 480.0 * RoomScale, True)
+    PositionEntity(r\doors[0]\buttons[0], r\x + 160.0 * RoomScale, 0.7, r\z + 416.0 * RoomScale, True)
 
-    r\roomDoors[1] = CreateDoor(r\zone, r\x + 5840.0 * RoomScale,  -5632.0 * RoomScale, r\z + 1048.0 * RoomScale, 0, r, False)
-    r\roomDoors[1]\autoClose = False : r\roomDoors[1]\open = False
-    PositionEntity(r\roomDoors[1]\buttons[0], r\x + 6000.0 * RoomScale, EntityY(r\roomDoors[1]\buttons[0],True), r\z + 1008.0 * RoomScale, True)
-    PositionEntity(r\roomDoors[1]\buttons[1], r\x + 5680.0 * RoomScale, EntityY(r\roomDoors[1]\buttons[1],True), r\z + 1088.0 * RoomScale, True)
+    r\doors[1] = CreateDoor(r\zone, r\x + 5840.0 * RoomScale,  -5632.0 * RoomScale, r\z + 1048.0 * RoomScale, 0, r, False)
+    r\doors[1]\autoClose = False : r\doors[1]\open = False
+    PositionEntity(r\doors[1]\buttons[0], r\x + 6000.0 * RoomScale, EntityY(r\doors[1]\buttons[0],True), r\z + 1008.0 * RoomScale, True)
+    PositionEntity(r\doors[1]\buttons[1], r\x + 5680.0 * RoomScale, EntityY(r\doors[1]\buttons[1],True), r\z + 1088.0 * RoomScale, True)
 
-    r\roomDoors[2] = CreateDoor(r\zone, r\x + 608.0 * RoomScale, 0.0, r\z - 312.0 * RoomScale, 0, r, True)
-    r\roomDoors[2]\autoClose = False : r\roomDoors[2]\open = True
-    PositionEntity(r\roomDoors[2]\buttons[1], r\x + 448.0 * RoomScale, 0.7, r\z - 272.0 * RoomScale, True)
-    PositionEntity(r\roomDoors[2]\buttons[0], r\x + 768.0 * RoomScale, 0.7, r\z - 352.0 * RoomScale, True)
+    r\doors[2] = CreateDoor(r\zone, r\x + 608.0 * RoomScale, 0.0, r\z - 312.0 * RoomScale, 0, r, True)
+    r\doors[2]\autoClose = False : r\doors[2]\open = True
+    PositionEntity(r\doors[2]\buttons[1], r\x + 448.0 * RoomScale, 0.7, r\z - 272.0 * RoomScale, True)
+    PositionEntity(r\doors[2]\buttons[0], r\x + 768.0 * RoomScale, 0.7, r\z - 352.0 * RoomScale, True)
 
-    ;r\roomDoors[3] = CreateDoor(r\zone, r\x + 720.0 * RoomScale,  -5632.0 * RoomScale, r\z + 1064.0 * RoomScale, 0, r, False)
-    ;PositionEntity(r\roomDoors[3]\buttons[0], r\x + 896.0 * RoomScale, EntityY(r\roomDoors[3]\buttons[0],True), r\z + 1024.0 * RoomScale, True)
-    ;PositionEntity(r\roomDoors[3]\buttons[1], r\x + 544.0 * RoomScale, EntityY(r\roomDoors[3]\buttons[1],True), r\z + 1104.0 * RoomScale, True)
-    r\roomDoors[3] = CreateDoor(r\zone, r\x - 456.0 * RoomScale,  -5632.0 * RoomScale, r\z - 824.0 * RoomScale, 0, r, False)
-    r\roomDoors[3]\autoClose = False : r\roomDoors[3]\open = False
+    ;r\doors[3] = CreateDoor(r\zone, r\x + 720.0 * RoomScale,  -5632.0 * RoomScale, r\z + 1064.0 * RoomScale, 0, r, False)
+    ;PositionEntity(r\doors[3]\buttons[0], r\x + 896.0 * RoomScale, EntityY(r\doors[3]\buttons[0],True), r\z + 1024.0 * RoomScale, True)
+    ;PositionEntity(r\doors[3]\buttons[1], r\x + 544.0 * RoomScale, EntityY(r\doors[3]\buttons[1],True), r\z + 1104.0 * RoomScale, True)
+    r\doors[3] = CreateDoor(r\zone, r\x - 456.0 * RoomScale,  -5632.0 * RoomScale, r\z - 824.0 * RoomScale, 0, r, False)
+    r\doors[3]\autoClose = False : r\doors[3]\open = False
     ;X=+176 | Z=-40
-    PositionEntity(r\roomDoors[3]\buttons[0], r\x - 280.0*RoomScale, EntityY(r\roomDoors[3]\buttons[0],True), r\z - 864.0 * RoomScale, True)
+    PositionEntity(r\doors[3]\buttons[0], r\x - 280.0*RoomScale, EntityY(r\doors[3]\buttons[0],True), r\z - 864.0 * RoomScale, True)
     ;X=-176 | Z=+40
-    PositionEntity(r\roomDoors[3]\buttons[1], r\x - 632.0*RoomScale, EntityY(r\roomDoors[3]\buttons[1],True), r\z - 784.0 * RoomScale, True)
+    PositionEntity(r\doors[3]\buttons[1], r\x - 632.0*RoomScale, EntityY(r\doors[3]\buttons[1],True), r\z - 784.0 * RoomScale, True)
 
     em = CreateEmitter(r\x + 5218.0 * RoomScale, -5584.0*RoomScale, r\z - 600* RoomScale, 0)
     TurnEntity(em\obj, 20, -100, 0, True)
@@ -146,11 +146,11 @@ Function FillRoom_strg_939_3(r.Room)
         EntityRadius(r\levers[n-10]\obj, 0.1)
     Next
 
-    r\roomDoors[4] = CreateDoor(r\zone,r\x+56*RoomScale,r\y-5632*RoomScale,r\z+6344*RoomScale,90,r,False,2)
-    r\roomDoors[4]\autoClose = False : r\roomDoors[4]\open = False
+    r\doors[4] = CreateDoor(r\zone,r\x+56*RoomScale,r\y-5632*RoomScale,r\z+6344*RoomScale,90,r,False,2)
+    r\doors[4]\autoClose = False : r\doors[4]\open = False
     For i = 0 To 1
-        FreeEntity(r\roomDoors[4]\buttons[i])
-		r\roomDoors[4]\buttons[i] = 0
+        FreeEntity(r\doors[4]\buttons[i])
+		r\doors[4]\buttons[i] = 0
     Next
 
     d = CreateDoor(r\zone,r\x+1157.0*RoomScale,r\y-5632.0*RoomScale,r\z+660.0*RoomScale,0,r,False,2)
@@ -189,9 +189,9 @@ Function UpdateEvent_strg_939_3(e.Event)
 
 	;[Block]
 	If (mainPlayer\currRoom = e\room) Then
-		e\eventState2 = UpdateElevators2(e\eventState2, e\room\roomDoors[0], e\room\roomDoors[1],e\room\objects[0],e\room\objects[1], e)
+		e\eventState2 = UpdateElevators2(e\eventState2, e\room\doors[0], e\room\doors[1],e\room\objects[0],e\room\objects[1], e)
 
-		e\eventState3 = UpdateElevators2(e\eventState3, e\room\roomDoors[2], e\room\roomDoors[3],e\room\objects[2],e\room\objects[3], e)
+		e\eventState3 = UpdateElevators2(e\eventState3, e\room\doors[2], e\room\doors[3],e\room\objects[2],e\room\objects[3], e)
 
 		If (EntityY(mainPlayer\collider)<-4600*RoomScale) Then
 
@@ -247,16 +247,16 @@ Function UpdateEvent_strg_939_3(e.Event)
 					e\eventState = 1
 				EndIf
 
-				If (e\room\roomDoors[4]\open = False) Then
+				If (e\room\doors[4]\open = False) Then
 					If (e\room\levers[0]\succ Or e\room\levers[1]\succ) Then
-						e\room\roomDoors[4]\open = True
+						e\room\doors[4]\open = True
 						If (e\sounds[1] <> 0) Then
                             FreeSound(e\sounds[1])
                             e\sounds[1] = 0
                         EndIf
 
 						e\sounds[1] = LoadSound("SFX/Door/Door2Open1_dist.ogg")
-						e\soundChannels[1] = PlayRangedSound(e\sounds[1],mainPlayer\cam,e\room\roomDoors[4]\obj,400)
+						e\soundChannels[1] = PlayRangedSound(e\sounds[1],mainPlayer\cam,e\room\doors[4]\obj,400)
 
                         e\room\levers[0]\locked = True
                         e\room\levers[1]\locked = True
@@ -276,7 +276,7 @@ Function UpdateEvent_strg_939_3(e.Event)
 				End Select
 
 				If (IsChannelPlaying(e\soundChannels[1])) Then
-					UpdateRangedSoundOrigin(e\soundChannels[1],mainPlayer\cam,e\room\roomDoors[4]\obj,400)
+					UpdateRangedSoundOrigin(e\soundChannels[1],mainPlayer\cam,e\room\doors[4]\obj,400)
 				EndIf
 
 				If (EntityY(mainPlayer\collider)<-6400*RoomScale And mainPlayer\dead = False) Then

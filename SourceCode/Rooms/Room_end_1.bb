@@ -5,12 +5,12 @@ Function FillRoom_end_1(r.Room)
 
     Local t1%;, Bump
 
-    r\roomDoors[0] = CreateDoor(r\zone, r\x, 0, r\z + 1136 * RoomScale, 0, r, False, True, 6)
-    r\roomDoors[0]\autoClose = False : r\roomDoors[0]\open = False
-    FreeEntity(r\roomDoors[0]\buttons[0])
-	r\roomDoors[0]\buttons[0]=0
-    FreeEntity(r\roomDoors[0]\buttons[1])
-	r\roomDoors[0]\buttons[1]=0
+    r\doors[0] = CreateDoor(r\zone, r\x, 0, r\z + 1136 * RoomScale, 0, r, False, True, 6)
+    r\doors[0]\autoClose = False : r\doors[0]\open = False
+    FreeEntity(r\doors[0]\buttons[0])
+	r\doors[0]\buttons[0]=0
+    FreeEntity(r\doors[0]\buttons[1])
+	r\doors[0]\buttons[1]=0
 End Function
 
 
@@ -32,9 +32,9 @@ Function UpdateEventEndroom106(e.Event)
 				If (Curr106\state < 0) Then
 					RemoveEvent(e)
 				Else
-					e\room\roomDoors[0]\open = True
+					e\room\doors[0]\open = True
 
-					e\room\npc[0]=CreateNPC(NPCtypeD, EntityX(e\room\roomDoors[0]\obj,True), 0.5, EntityZ(e\room\roomDoors[0]\obj,True))
+					e\room\npc[0]=CreateNPC(NPCtypeD, EntityX(e\room\doors[0]\obj,True), 0.5, EntityZ(e\room\doors[0]\obj,True))
 
 					tex = LoadTexture("GFX/NPCs/classd/janitor.jpg")
 					e\room\npc[0]\texture = "GFX/NPCs/classd/janitor.jpg"
@@ -45,7 +45,7 @@ Function UpdateEventEndroom106(e.Event)
 					RotateEntity(e\room\npc[0]\collider, 0, EntityYaw(e\room\npc[0]\collider),0, True)
 					MoveEntity(e\room\npc[0]\collider, 0,0,0.5)
 
-					e\room\roomDoors[0]\open = False
+					e\room\doors[0]\open = False
 					PlayRangedSound(LoadTempSound("SFX/Door/EndroomDoor.ogg"), mainPlayer\cam, e\room\obj, 15)
 
 					e\eventState = 1
@@ -55,7 +55,7 @@ Function UpdateEventEndroom106(e.Event)
 			If (mainPlayer\currRoom = e\room) Then
 				;PlaySound2(CloseDoorSFX(1,0))
 				;PlaySound2(DecaySFX(0))
-				;e\room\roomDoors[0]\open = False
+				;e\room\doors[0]\open = False
 				e\room\npc[0]\state = 1
 				e\eventState = 2
 

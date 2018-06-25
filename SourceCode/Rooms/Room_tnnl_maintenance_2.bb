@@ -22,15 +22,15 @@ Function FillRoom_tnnl_maintenance_2(r.Room)
     PositionEntity(r\objects[4], r\x - 552.0 * RoomScale, 240.0 * RoomScale, r\z - 656.0 * RoomScale)
     EntityParent(r\objects[4], r\obj)
 ;
-    r\roomDoors[0] = CreateDoor(r\zone, r\x + 264.0 * RoomScale, 0.0, r\z + 656.0 * RoomScale, 90, r, True)
-    r\roomDoors[0]\autoClose = False : r\roomDoors[0]\open = True
-    PositionEntity(r\roomDoors[0]\buttons[1], r\x + 224.0 * RoomScale, 0.7, r\z + 480.0 * RoomScale, True)
-    PositionEntity(r\roomDoors[0]\buttons[0], r\x + 304.0 * RoomScale, 0.7, r\z + 832.0 * RoomScale, True)
+    r\doors[0] = CreateDoor(r\zone, r\x + 264.0 * RoomScale, 0.0, r\z + 656.0 * RoomScale, 90, r, True)
+    r\doors[0]\autoClose = False : r\doors[0]\open = True
+    PositionEntity(r\doors[0]\buttons[1], r\x + 224.0 * RoomScale, 0.7, r\z + 480.0 * RoomScale, True)
+    PositionEntity(r\doors[0]\buttons[0], r\x + 304.0 * RoomScale, 0.7, r\z + 832.0 * RoomScale, True)
 
-    r\roomDoors[2] = CreateDoor(r\zone, r\x - 264.0 * RoomScale, 0.0, r\z - 656.0 * RoomScale, 90, r, True)
-    r\roomDoors[2]\autoClose = False : r\roomDoors[2]\open = True
-    PositionEntity(r\roomDoors[2]\buttons[0], r\x - 224.0 * RoomScale, 0.7, r\z - 480.0 * RoomScale, True)
-    PositionEntity(r\roomDoors[2]\buttons[1], r\x - 304.0 * RoomScale, 0.7, r\z - 832.0 * RoomScale, True)
+    r\doors[2] = CreateDoor(r\zone, r\x - 264.0 * RoomScale, 0.0, r\z - 656.0 * RoomScale, 90, r, True)
+    r\doors[2]\autoClose = False : r\doors[2]\open = True
+    PositionEntity(r\doors[2]\buttons[0], r\x - 224.0 * RoomScale, 0.7, r\z - 480.0 * RoomScale, True)
+    PositionEntity(r\doors[2]\buttons[1], r\x - 304.0 * RoomScale, 0.7, r\z - 832.0 * RoomScale, True)
 ;
     Local temp% = ((Int(AccessCode)*3) Mod 10000)
     If (temp < 1000) Then temp = temp+1000

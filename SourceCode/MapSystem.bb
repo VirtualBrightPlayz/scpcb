@@ -395,7 +395,7 @@ Type Room
 
 	Field objects%[MaxRoomObjects]
 	Field levers.Lever[11]
-	Field roomDoors.Door[7]
+	Field doors.Door[7]
 	Field npc.NPC[12]
 	Field grid.Grid
 
@@ -404,7 +404,8 @@ Type Room
 
 	Field nonFreeAble%[10]
 	Field textures%[10]
-
+	
+	;TODO: what the fuck
 	Field maxLights% = 0
 	Field lightSpriteHidden%[MaxRoomLights]
 	Field lightSpritesPivot%[MaxRoomLights]

@@ -15,14 +15,14 @@ Function FillRoom_cont_714_860_1025_2(r.Room)
     PositionEntity(d\buttons[0], r\x - 320.0 * RoomScale, EntityY(d\buttons[0],True), EntityZ(d\buttons[0],True), True)
     PositionEntity(d\buttons[1], r\x - 224.0 * RoomScale, EntityY(d\buttons[1],True), EntityZ(d\buttons[1],True), True)
 
-    r\roomDoors[1] = CreateDoor(r\zone, r\x-560.0 * RoomScale, 0, r\z - 240.0 * RoomScale, 0, r, True, False, 3)
-    r\roomDoors[1]\autoClose = False : r\roomDoors[1]\open = False
+    r\doors[1] = CreateDoor(r\zone, r\x-560.0 * RoomScale, 0, r\z - 240.0 * RoomScale, 0, r, True, False, 3)
+    r\doors[1]\autoClose = False : r\doors[1]\open = False
 
-    r\roomDoors[2] = CreateDoor(r\zone, r\x + 560.0 * RoomScale, 0, r\z - 272.0 * RoomScale, 180, r, True, False, 3)
-    r\roomDoors[2]\autoClose = False : r\roomDoors[2]\open = False
+    r\doors[2] = CreateDoor(r\zone, r\x + 560.0 * RoomScale, 0, r\z - 272.0 * RoomScale, 180, r, True, False, 3)
+    r\doors[2]\autoClose = False : r\doors[2]\open = False
 
-    r\roomDoors[3] = CreateDoor(r\zone, r\x + 560.0 * RoomScale, 0, r\z + 272.0 * RoomScale, 180, r, True, False, 3)
-    r\roomDoors[3]\autoClose = False : r\roomDoors[3]\open = False
+    r\doors[3] = CreateDoor(r\zone, r\x + 560.0 * RoomScale, 0, r\z + 272.0 * RoomScale, 180, r, True, False, 3)
+    r\doors[3]\autoClose = False : r\doors[3]\open = False
 
     it = CreateItem("scp420j", r\x - 552.0 * RoomScale, r\y + 220.0 * RoomScale, r\z - 728.0 * RoomScale)
     EntityParent(it\collider, r\obj)

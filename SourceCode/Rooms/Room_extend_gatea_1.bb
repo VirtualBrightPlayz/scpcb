@@ -5,8 +5,8 @@ Function FillRoom_extend_gatea_1(r.Room)
 
 	Local t1%;, Bump
 
-    r\roomDoors[2] = CreateDoor(r\zone, r\x - 4064.0 * RoomScale, (-1280.0+12000.0)*RoomScale, r\z + 3952.0 * RoomScale, 0, r, False)
-    r\roomDoors[2]\autoClose = False : r\roomDoors[2]\open = False
+    r\doors[2] = CreateDoor(r\zone, r\x - 4064.0 * RoomScale, (-1280.0+12000.0)*RoomScale, r\z + 3952.0 * RoomScale, 0, r, False)
+    r\doors[2]\autoClose = False : r\doors[2]\open = False
 
     d2 = CreateDoor(r\zone, r\x, 12000.0*RoomScale, r\z - 1024.0 * RoomScale, 0, r, False)
     d2\autoClose = False : d2\open = False : d2\locked = True
@@ -40,10 +40,10 @@ Function FillRoom_extend_gatea_1(r.Room)
             r\objects[2]=r2\objects[2]
         ElseIf (r2\roomTemplate\name = "gateaentrance") Then
             ;ylempi hissi
-            r\roomDoors[1] = CreateDoor(0, r\x+1544.0*RoomScale,12000.0*RoomScale, r\z-64.0*RoomScale, 90, r, False)
-            r\roomDoors[1]\autoClose = False : r\roomDoors[1]\open = False
-            PositionEntity(r\roomDoors[1]\buttons[0],r\x+1584*RoomScale, EntityY(r\roomDoors[1]\buttons[0],True), r\z+80*RoomScale, True)
-            PositionEntity(r\roomDoors[1]\buttons[1],r\x+1456*RoomScale, EntityY(r\roomDoors[1]\buttons[1],True), r\z-208*RoomScale, True)
+            r\doors[1] = CreateDoor(0, r\x+1544.0*RoomScale,12000.0*RoomScale, r\z-64.0*RoomScale, 90, r, False)
+            r\doors[1]\autoClose = False : r\doors[1]\open = False
+            PositionEntity(r\doors[1]\buttons[0],r\x+1584*RoomScale, EntityY(r\doors[1]\buttons[0],True), r\z+80*RoomScale, True)
+            PositionEntity(r\doors[1]\buttons[1],r\x+1456*RoomScale, EntityY(r\doors[1]\buttons[1],True), r\z-208*RoomScale, True)
             r2\objects[1] = CreatePivot()
             PositionEntity(r2\objects[1], r\x+1848.0*RoomScale, 240.0*RoomScale, r\z-64.0*RoomScale, True)
             EntityParent(r2\objects[1], r\obj)
@@ -187,7 +187,7 @@ Function UpdateEvent_extend_gatea_1(e.Event)
 			Next
 
 			If (Contained106) Then
-				e\room\roomDoors[2]\locked = True
+				e\room\doors[2]\locked = True
 
 				PositionEntity(e\room\npc[5]\collider, EntityX(e\room\objects[15],True)+(i-6)*0.2,EntityY(e\room\objects[15],True),EntityZ(e\room\objects[15],True)+(i-6)*0.2, True)
 				ResetEntity(e\room\npc[5]\collider)
@@ -425,7 +425,7 @@ Function UpdateEvent_extend_gatea_1(e.Event)
 								e\room\npc[5]\sounds[0] = LoadSound("SFX/Character/MTF/ThereHeIs1.ogg")
 								PlayRangedSound(e\room\npc[5]\sounds[0], mainPlayer\cam, e\room\npc[5]\collider, 25.0)
 
-								e\room\roomDoors[2]\open = True
+								e\room\doors[2]\open = True
 
 								For i = 2 To 4
 									Delete e\room\npc[i]
@@ -499,7 +499,7 @@ Function UpdateEvent_extend_gatea_1(e.Event)
 							TurnEntity(e\room\objects[14], 0, Sin(e\eventState3-50)*0.85, 0, True)
 
 							For i = 5 To 8
-								PositionEntity(e\room\npc[i]\collider, CurveValue(EntityX(e\room\roomDoors[2]\frameobj,True), EntityX(e\room\npc[i]\collider,True),50.0),EntityY(e\room\npc[i]\collider,True),CurveValue(EntityZ(e\room\roomDoors[2]\frameobj,True), EntityZ(e\room\npc[i]\collider,True),50.0),True)
+								PositionEntity(e\room\npc[i]\collider, CurveValue(EntityX(e\room\doors[2]\frameobj,True), EntityX(e\room\npc[i]\collider,True),50.0),EntityY(e\room\npc[i]\collider,True),CurveValue(EntityZ(e\room\doors[2]\frameobj,True), EntityZ(e\room\npc[i]\collider,True),50.0),True)
 								ResetEntity(e\room\npc[i]\collider)
 							Next
 						EndIf

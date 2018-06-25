@@ -24,7 +24,7 @@ Function FillRoom_cont_1123_2(r.Room)
     PositionEntity(d\buttons[0], EntityX(d\buttons[0],True), EntityY(d\buttons[0],True), EntityZ(d\buttons[0],True), True)
     FreeEntity(d\buttons[1])
 	d\buttons[1]=0
-    r\roomDoors[0] = d
+    r\doors[0] = d
     ;PositionEntity(d\buttons[1], EntityX(d\buttons[1],True), EntityY(d\buttons[1],True), EntityZ(d\buttons[1],True), True)
 
     r\objects[3] = CreatePivot(r\obj)
@@ -172,7 +172,7 @@ Function UpdateEvent_cont_1123_2(e.Event)
 
 			EndIf
 		ElseIf (e\eventState=3) Then
-			If (e\room\roomDoors[0]\openstate>160) Then
+			If (e\room\doors[0]\openstate>160) Then
 				If (e\sounds[0]=0) Then e\sounds[0] = LoadSound("SFX/Music/1123.ogg")
 				e\soundChannels[0] = PlaySound(e\sounds[0])
 
@@ -188,7 +188,7 @@ Function UpdateEvent_cont_1123_2(e.Event)
 			TFormPoint(EntityX(mainPlayer\collider),EntityY(mainPlayer\collider),EntityZ(mainPlayer\collider),0,e\room\obj)
 
 			If (TFormedX()<256 And TFormedZ()>-480) Then
-				e\room\roomDoors[0]\open = False
+				e\room\doors[0]\open = False
 			EndIf
 
 			If (EntityYaw(e\room\objects[13],False)=0) Then

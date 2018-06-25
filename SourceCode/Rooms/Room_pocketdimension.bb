@@ -79,8 +79,8 @@ Function FillRoom_pocketdimension(r.Room)
     EntityPickMode(terrain, 3)
     PositionEntity(terrain,r\x,r\y+2944.0*RoomScale,r\z+32.0,True)
 
-    r\roomDoors[0] = CreateDoor(0, r\x,2048*RoomScale,r\z+32.0-1024*RoomScale,0,r,False)
-    r\roomDoors[1] = CreateDoor(0, r\x,2048*RoomScale,r\z+32.0+1024*RoomScale,180,r,False)
+    r\doors[0] = CreateDoor(0, r\x,2048*RoomScale,r\z+32.0-1024*RoomScale,0,r,False)
+    r\doors[1] = CreateDoor(0, r\x,2048*RoomScale,r\z+32.0+1024*RoomScale,180,r,False)
 
     de = CreateDecal(18, r\x-(1536*RoomScale), 0.02,r\z+608*RoomScale+32.0, 90,0,0)
     EntityParent(de\obj, r\obj)
@@ -216,8 +216,8 @@ Function UpdateEvent_pocketdimension(e.Event)
 		e\eventState = e\eventState + timing\tickDuration
 
 		If (e\eventState2 = 0) Then
-			e\room\roomDoors[0]\open = False
-			e\room\roomDoors[1]\open = False
+			e\room\doors[0]\open = False
+			e\room\doors[1]\open = False
 
 			If (e\eventState > 65*70) Then
 				If (Rand(800)=1 And Curr106\state =>0) Then
@@ -254,7 +254,7 @@ Function UpdateEvent_pocketdimension(e.Event)
 			RotateEntity(e\room\objects[10],0,e\eventState * 2,0)
 
 			If (e\eventState3 = 1 Or e\eventState3 = 2) Then ;the "trick room"
-				If (e\eventState3 = 1 And (e\room\roomDoors[0]\openstate>150 Or e\room\roomDoors[1]\openstate>150)) Then
+				If (e\eventState3 = 1 And (e\room\doors[0]\openstate>150 Or e\room\doors[1]\openstate>150)) Then
 					PlaySound2(LoadTempSound("SFX/Horror/Horror16.ogg"))
 					mainPlayer\blurTimer = 800
 					e\eventState3=2

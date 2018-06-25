@@ -16,17 +16,17 @@ Function FillRoom_lck_air_2(r.Room)
         EntityParent(de\obj, r\obj)
     EndIf
 
-    r\roomDoors[0] = CreateDoor(r\zone, r\x + 336.0 * RoomScale, 0.0, r\z - 382.0 * RoomScale, 0, r, False, False)
-    PositionEntity(r\roomDoors[0]\buttons[0], r\x + 580.822 * RoomScale, EntityY(r\roomDoors[0]\buttons[0],True), r\z - 606.679 * RoomScale, True)
-    PositionEntity(r\roomDoors[0]\buttons[1], r\x + 580.822 * RoomScale, EntityY(r\roomDoors[0]\buttons[1],True), r\z - 606.679 * RoomScale, True)
-    r\roomDoors[0]\dir = 0 : r\roomDoors[0]\autoClose = False	: r\roomDoors[0]\open = True  : r\roomDoors[0]\locked = True
-    r\roomDoors[0]\mtfClose = False
+    r\doors[0] = CreateDoor(r\zone, r\x + 336.0 * RoomScale, 0.0, r\z - 382.0 * RoomScale, 0, r, False, False)
+    PositionEntity(r\doors[0]\buttons[0], r\x + 580.822 * RoomScale, EntityY(r\doors[0]\buttons[0],True), r\z - 606.679 * RoomScale, True)
+    PositionEntity(r\doors[0]\buttons[1], r\x + 580.822 * RoomScale, EntityY(r\doors[0]\buttons[1],True), r\z - 606.679 * RoomScale, True)
+    r\doors[0]\dir = 0 : r\doors[0]\autoClose = False	: r\doors[0]\open = True  : r\doors[0]\locked = True
+    r\doors[0]\mtfClose = False
 
-    r\roomDoors[1] = CreateDoor(r\zone, r\x + 336.0 * RoomScale, 0.0, r\z + 462.0 * RoomScale, 180, r, False, False)
-    PositionEntity(r\roomDoors[1]\buttons[0], r\x + 580.822 * RoomScale, EntityY(r\roomDoors[1]\buttons[0],True), r\z - 606.679 * RoomScale, True)
-    PositionEntity(r\roomDoors[1]\buttons[1], r\x + 580.822 * RoomScale, EntityY(r\roomDoors[1]\buttons[1],True), r\z - 606.679 * RoomScale, True)
-    r\roomDoors[1]\dir = 0 : r\roomDoors[1]\autoClose = False	: r\roomDoors[1]\open = True  : r\roomDoors[1]\locked = True
-    r\roomDoors[1]\mtfClose = False
+    r\doors[1] = CreateDoor(r\zone, r\x + 336.0 * RoomScale, 0.0, r\z + 462.0 * RoomScale, 180, r, False, False)
+    PositionEntity(r\doors[1]\buttons[0], r\x + 580.822 * RoomScale, EntityY(r\doors[1]\buttons[0],True), r\z - 606.679 * RoomScale, True)
+    PositionEntity(r\doors[1]\buttons[1], r\x + 580.822 * RoomScale, EntityY(r\doors[1]\buttons[1],True), r\z - 606.679 * RoomScale, True)
+    r\doors[1]\dir = 0 : r\doors[1]\autoClose = False	: r\doors[1]\open = True  : r\doors[1]\locked = True
+    r\doors[1]\mtfClose = False
 
     For r2 = Each Room
         If (r2<>r) Then
@@ -65,8 +65,8 @@ Function FillRoom_lck_air_2(r.Room)
             room2gw_brokendoor = True
             room2gw_x = r\x
             room2gw_z = r\z
-            FreeEntity(r\roomDoors[1]\obj2)
-			r\roomDoors[1]\obj2 = 0
+            FreeEntity(r\doors[1]\obj2)
+			r\doors[1]\obj2 = 0
         EndIf
     EndIf
 End Function
@@ -88,8 +88,8 @@ Function UpdateEventRoom_gw(e.Event)
 	;e\eventState2: The timer for the airlocks
 	;e\eventState3: Checks if the player had left the airlock or not
 
-	e\room\roomDoors[0]\locked = True
-	e\room\roomDoors[1]\locked = True
+	e\room\doors[0]\locked = True
+	e\room\doors[1]\locked = True
 
 	Local brokendoor% = False
 	If (e\room\objects[1]<>0) Then brokendoor = True
@@ -111,18 +111,18 @@ Function UpdateEventRoom_gw(e.Event)
 					FreeSound(e\sounds[0]) : e\sounds[0] = 0
 				EndIf
 				e\sounds[0] = LoadSound("SFX/Door/Airlock.ogg")
-				e\room\roomDoors[0]\locked = False
-				e\room\roomDoors[1]\locked = False
-				UseDoor(e\room\roomDoors[0])
-				UseDoor(e\room\roomDoors[1])
+				e\room\doors[0]\locked = False
+				e\room\doors[1]\locked = False
+				UseDoor(e\room\doors[0])
+				UseDoor(e\room\doors[1])
 			ElseIf (EntityDistance(e\room\objects[0],mainPlayer\collider)>2.4) Then
 				e\eventState3 = 0.0
 			EndIf
 		Else
 			If (e\eventState2 < 70*7) Then
 				e\eventState2 = e\eventState2 + timing\tickDuration
-				e\room\roomDoors[0]\open = False
-				e\room\roomDoors[1]\open = False
+				e\room\doors[0]\open = False
+				e\room\doors[1]\open = False
 				If (e\eventState2 < 70*1) Then
 
 					If (brokendoor) Then
@@ -180,11 +180,11 @@ Function UpdateEventRoom_gw(e.Event)
 				e\eventState = 0.0
 				e\eventState2 = 0.0
 				e\eventState3 = 1.0
-				If (e\room\roomDoors[0]\open = False) Then
-					e\room\roomDoors[0]\locked = False
-					e\room\roomDoors[1]\locked = False
-					UseDoor(e\room\roomDoors[0])
-					UseDoor(e\room\roomDoors[1])
+				If (e\room\doors[0]\open = False) Then
+					e\room\doors[0]\locked = False
+					e\room\doors[1]\locked = False
+					UseDoor(e\room\doors[0])
+					UseDoor(e\room\doors[1])
 				EndIf
 			EndIf
 		EndIf

@@ -51,7 +51,7 @@ Function FillRoom_cont_008_1(r.Room)
 	d\buttons[0]=0
     FreeEntity(d\obj2)
 	d\obj2=0
-    r\roomDoors[0] = d
+    r\doors[0] = d
 
     d2 = CreateDoor(r\zone, r\x + 296.0 * RoomScale, 0, r\z - 144.0 * RoomScale, 0, r, False)
     d2\autoClose = False
@@ -60,13 +60,13 @@ Function FillRoom_cont_008_1(r.Room)
     PositionEntity(d2\buttons[1], r\x + 164.0 * RoomScale, EntityY(d2\buttons[0],True), r\z - 128.0 * RoomScale, True)
     FreeEntity(d2\obj2)
 	d2\obj2=0
-    r\roomDoors[1] = d2
+    r\doors[1] = d2
 
     d\linkedDoor = d2
     d2\linkedDoor = d
 
     d = CreateDoor(r\zone, r\x - 384.0 * RoomScale, 0, r\z - 672.0 * RoomScale, 0, r, False, 0, 4)
-    d\autoClose = False : d\locked = True : r\roomDoors[2]=d
+    d\autoClose = False : d\locked = True : r\doors[2]=d
 
 
     it = CreateItem("hazmatsuit", r\x - 76.0 * RoomScale, 0.5, r\z - 396.0 * RoomScale)
@@ -122,8 +122,8 @@ Function UpdateEvent_cont_008_1(e.Event)
 
 				dist = EntityDistance(mainPlayer\collider, e\room\objects[0])
 				If (dist<2.0) Then
-					e\room\roomDoors[0]\locked = True
-					e\room\roomDoors[1]\locked = True
+					e\room\doors[0]\locked = True
+					e\room\doors[1]\locked = True
 
 					If (e\eventState2=0) Then
 						ShowEntity(e\room\objects[2])
@@ -170,9 +170,9 @@ Function UpdateEvent_cont_008_1(e.Event)
 				EndIf
 			Else
 				HideEntity(e\room\objects[5])
-				e\room\roomDoors[0]\locked = False
-				e\room\roomDoors[1]\locked = False
-				e\room\roomDoors[2]\locked = False
+				e\room\doors[0]\locked = False
+				e\room\doors[1]\locked = False
+				e\room\doors[2]\locked = False
 
 				RotateEntity(e\room\objects[1],CurveAngle(1,EntityPitch(e\room\objects[1],True),15.0),EntityYaw(e\room\objects[1],True),0,True)
 

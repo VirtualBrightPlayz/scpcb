@@ -5,17 +5,17 @@ Function FillRoom_scp_970_2(r.Room)
 
 	Local t1%;, Bump
 
-    r\roomDoors[0] = CreateDoor(r\zone, r\x - 1288.0 * RoomScale, 0, r\z, 270, r)
-    r\roomDoors[1] = CreateDoor(r\zone, r\x - 760.0 * RoomScale, 0, r\z, 270, r)
-    r\roomDoors[2] = CreateDoor(r\zone, r\x - 264.0 * RoomScale, 0, r\z, 270, r)
-    r\roomDoors[3] = CreateDoor(r\zone, r\x + 264.0 * RoomScale, 0, r\z, 270, r)
-    r\roomDoors[4] = CreateDoor(r\zone, r\x + 760.0 * RoomScale, 0, r\z, 270, r)
-    r\roomDoors[5] = CreateDoor(r\zone, r\x + 1288.0 * RoomScale, 0, r\z, 270, r)
+    r\doors[0] = CreateDoor(r\zone, r\x - 1288.0 * RoomScale, 0, r\z, 270, r)
+    r\doors[1] = CreateDoor(r\zone, r\x - 760.0 * RoomScale, 0, r\z, 270, r)
+    r\doors[2] = CreateDoor(r\zone, r\x - 264.0 * RoomScale, 0, r\z, 270, r)
+    r\doors[3] = CreateDoor(r\zone, r\x + 264.0 * RoomScale, 0, r\z, 270, r)
+    r\doors[4] = CreateDoor(r\zone, r\x + 760.0 * RoomScale, 0, r\z, 270, r)
+    r\doors[5] = CreateDoor(r\zone, r\x + 1288.0 * RoomScale, 0, r\z, 270, r)
 
     For i = 0 To 5
-        MoveEntity(r\roomDoors[i]\buttons[0], 0,0,-8.0)
-        MoveEntity(r\roomDoors[i]\buttons[1], 0,0,-8.0)
-        r\roomDoors[i]\autoClose = False : r\roomDoors[i]\open = False
+        MoveEntity(r\doors[i]\buttons[0], 0,0,-8.0)
+        MoveEntity(r\doors[i]\buttons[1], 0,0,-8.0)
+        r\doors[i]\autoClose = False : r\doors[i]\open = False
     Next
 
     it = CreatePaper("doc939", r\x + 352.0 * RoomScale, r\y + 176.0 * RoomScale, r\z + 256.0 * RoomScale)
@@ -44,18 +44,18 @@ Function UpdateEvent_scp_970_2(e.Event)
 	;[Block]
 	If (mainPlayer\currRoom = e\room) Then
 		If (e\eventState2 <= 0) Then
-			e\room\roomDoors[1]\locked = False
-			e\room\roomDoors[4]\locked = False
+			e\room\doors[1]\locked = False
+			e\room\doors[4]\locked = False
 
 			If (EntityDistance(mainPlayer\collider, Curr173\obj)<8.0 Or EntityDistance(mainPlayer\collider, Curr106\obj)<8.0) Then
-				e\room\roomDoors[1]\locked = True
-				e\room\roomDoors[4]\locked = True
+				e\room\doors[1]\locked = True
+				e\room\doors[4]\locked = True
 			Else
 				For n = Each NPC
 					If (n\npcType = NPCtypeMTF) Then
 						If (EntityDistance(mainPlayer\collider, Curr173\obj)<8.0) Then
-							e\room\roomDoors[1]\locked = True
-							e\room\roomDoors[4]\locked = True
+							e\room\doors[1]\locked = True
+							e\room\doors[4]\locked = True
 							Exit
 						EndIf
 					EndIf
@@ -78,15 +78,15 @@ Function UpdateEvent_scp_970_2(e.Event)
 			;1->3, 2->4
 			;3->0, 4->0
 			For i = 1 To 2
-				e\room\roomDoors[i]\open = e\room\roomDoors[i+2]\open
-				e\room\roomDoors[i]\openstate = e\room\roomDoors[i+2]\openstate
-				PositionEntity(e\room\roomDoors[i]\obj, EntityX(e\room\roomDoors[i+2]\obj),EntityY(e\room\roomDoors[i+2]\obj),EntityZ(e\room\roomDoors[i+2]\obj))
-				PositionEntity(e\room\roomDoors[i]\obj2, EntityX(e\room\roomDoors[i+2]\obj2),EntityY(e\room\roomDoors[i+2]\obj2),EntityZ(e\room\roomDoors[i+2]\obj2))
+				e\room\doors[i]\open = e\room\doors[i+2]\open
+				e\room\doors[i]\openstate = e\room\doors[i+2]\openstate
+				PositionEntity(e\room\doors[i]\obj, EntityX(e\room\doors[i+2]\obj),EntityY(e\room\doors[i+2]\obj),EntityZ(e\room\doors[i+2]\obj))
+				PositionEntity(e\room\doors[i]\obj2, EntityX(e\room\doors[i+2]\obj2),EntityY(e\room\doors[i+2]\obj2),EntityZ(e\room\doors[i+2]\obj2))
 
-				e\room\roomDoors[i+2]\open = False
-				e\room\roomDoors[i+2]\openstate = 0
-				PositionEntity(e\room\roomDoors[i+2]\obj, EntityX(e\room\roomDoors[0]\obj),EntityY(e\room\roomDoors[0]\obj),EntityZ(e\room\roomDoors[0]\obj))
-				PositionEntity(e\room\roomDoors[i+2]\obj2, EntityX(e\room\roomDoors[0]\obj2),EntityY(e\room\roomDoors[0]\obj2),EntityZ(e\room\roomDoors[0]\obj2))
+				e\room\doors[i+2]\open = False
+				e\room\doors[i+2]\openstate = 0
+				PositionEntity(e\room\doors[i+2]\obj, EntityX(e\room\doors[0]\obj),EntityY(e\room\doors[0]\obj),EntityZ(e\room\doors[0]\obj))
+				PositionEntity(e\room\doors[i+2]\obj2, EntityX(e\room\doors[0]\obj2),EntityY(e\room\doors[0]\obj2),EntityZ(e\room\doors[0]\obj2))
 			Next
 
 			TFormPoint(TFormedX()-1024, TFormedY(), TFormedZ(),e\room\obj,0)
@@ -103,15 +103,15 @@ Function UpdateEvent_scp_970_2(e.Event)
 			;3->1, 4->2
 			;1->0, 2->0
 			For i = 1 To 2
-				e\room\roomDoors[i+2]\open = e\room\roomDoors[i]\open
-				e\room\roomDoors[i+2]\openstate = e\room\roomDoors[i]\openstate
-				PositionEntity(e\room\roomDoors[i+2]\obj, EntityX(e\room\roomDoors[i]\obj),EntityY(e\room\roomDoors[i]\obj),EntityZ(e\room\roomDoors[i]\obj))
-				PositionEntity(e\room\roomDoors[i+2]\obj2, EntityX(e\room\roomDoors[i]\obj2),EntityY(e\room\roomDoors[i]\obj2),EntityZ(e\room\roomDoors[i]\obj2))
+				e\room\doors[i+2]\open = e\room\doors[i]\open
+				e\room\doors[i+2]\openstate = e\room\doors[i]\openstate
+				PositionEntity(e\room\doors[i+2]\obj, EntityX(e\room\doors[i]\obj),EntityY(e\room\doors[i]\obj),EntityZ(e\room\doors[i]\obj))
+				PositionEntity(e\room\doors[i+2]\obj2, EntityX(e\room\doors[i]\obj2),EntityY(e\room\doors[i]\obj2),EntityZ(e\room\doors[i]\obj2))
 
-				e\room\roomDoors[i]\open = False
-				e\room\roomDoors[i]\openstate = 0
-				PositionEntity(e\room\roomDoors[i]\obj, EntityX(e\room\roomDoors[0]\obj),EntityY(e\room\roomDoors[0]\obj),EntityZ(e\room\roomDoors[0]\obj))
-				PositionEntity(e\room\roomDoors[i]\obj2, EntityX(e\room\roomDoors[0]\obj2),EntityY(e\room\roomDoors[0]\obj2),EntityZ(e\room\roomDoors[0]\obj2))
+				e\room\doors[i]\open = False
+				e\room\doors[i]\openstate = 0
+				PositionEntity(e\room\doors[i]\obj, EntityX(e\room\doors[0]\obj),EntityY(e\room\doors[0]\obj),EntityZ(e\room\doors[0]\obj))
+				PositionEntity(e\room\doors[i]\obj2, EntityX(e\room\doors[0]\obj2),EntityY(e\room\doors[0]\obj2),EntityZ(e\room\doors[0]\obj2))
 			Next
 
 			TFormPoint(TFormedX()+1024, TFormedY(), TFormedZ(),e\room\obj,0)

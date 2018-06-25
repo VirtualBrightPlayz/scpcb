@@ -9,10 +9,10 @@ Function FillRoom_cont_914_1(r.Room)
     ;d\dir = 1 : d\autoClose = False : d\open = False
     ;PositionEntity(d\buttons[0], r\x - 496.0 * RoomScale, 0.7, r\z - 272.0 * RoomScale, True)
     ;TurnEntity(d\buttons[0], 0, 90, 0)
-    r\roomDoors[2] = CreateDoor(r\zone,r\x,0,r\z-368.0*RoomScale,0,r,False,True,2)
-    r\roomDoors[2]\dir=1 : r\roomDoors[2]\autoClose=False : r\roomDoors[2]\open=False
-    PositionEntity(r\roomDoors[2]\buttons[0], r\x - 496.0 * RoomScale, 0.7, r\z - 272.0 * RoomScale, True)
-    TurnEntity(r\roomDoors[2]\buttons[0], 0, 90, 0)
+    r\doors[2] = CreateDoor(r\zone,r\x,0,r\z-368.0*RoomScale,0,r,False,True,2)
+    r\doors[2]\dir=1 : r\doors[2]\autoClose=False : r\doors[2]\open=False
+    PositionEntity(r\doors[2]\buttons[0], r\x - 496.0 * RoomScale, 0.7, r\z - 272.0 * RoomScale, True)
+    TurnEntity(r\doors[2]\buttons[0], 0, 90, 0)
 
     r\objects[0] = LoadMesh("GFX/Map/914key.x")
     r\objects[1] = LoadMesh("GFX/Map/914knob.x")
@@ -34,7 +34,7 @@ Function FillRoom_cont_914_1(r.Room)
 	d\buttons[0] = 0
     FreeEntity(d\buttons[1])
 	d\buttons[1] = 0
-    r\roomDoors[0] = d: d\autoClose = False
+    r\doors[0] = d: d\autoClose = False
 
     d = CreateDoor(r\zone, r\x + 816.0 * RoomScale, 0.0, r\z + 528.0 * RoomScale, 180, r, True)
     FreeEntity(d\obj2)
@@ -43,7 +43,7 @@ Function FillRoom_cont_914_1(r.Room)
 	d\buttons[0] = 0
     FreeEntity(d\buttons[1])
 	d\buttons[1] = 0
-    r\roomDoors[1] = d
+    r\doors[1] = d
 	d\autoClose = False
 
     r\objects[2] = CreatePivot()
@@ -186,9 +186,9 @@ Function UpdateEvent_cont_914_1(e.Event)
 		If (e\eventState > 0) Then
 			e\eventState = e\eventState + timing\tickDuration
 
-			e\room\roomDoors[1]\open = False
+			e\room\doors[1]\open = False
 			If (e\eventState > 70 * 2) Then
-				e\room\roomDoors[0]\open = False
+				e\room\doors[0]\open = False
 			EndIf
 
 			If (Distance(EntityX(mainPlayer\collider), EntityZ(mainPlayer\collider), EntityX(e\room\objects[2], True), EntityZ(e\room\objects[2], True)) < (170.0 * RoomScale)) Then
@@ -252,8 +252,8 @@ Function UpdateEvent_cont_914_1(e.Event)
 					mainPlayer\dropSpeed = 0
 				EndIf
 
-				e\room\roomDoors[0]\open = True
-				e\room\roomDoors[1]\open = True
+				e\room\doors[0]\open = True
+				e\room\doors[1]\open = True
 				RotateEntity(e\room\objects[0], 0, 0, 0)
 				e\eventState = 0
 			EndIf
