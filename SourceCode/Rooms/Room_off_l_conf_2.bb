@@ -10,11 +10,11 @@ Function FillRoom_off_l_conf_2(r.Room)
     PositionEntity(d\buttons[1], r\x + 256.0 * RoomScale, EntityY(d\buttons[1],True), EntityZ(d\buttons[1],True),True)
     d\autoClose = False : d\open = False
 
-    r\roomDoors[0] = CreateDoor(r\zone, r\x - 432.0 * RoomScale, 0.0, r\z, 90, r, False, False, 0, "1234")
-    PositionEntity(r\roomDoors[0]\buttons[0], r\x - 416.0 * RoomScale, EntityY(r\roomDoors[0]\buttons[0],True), r\z + 176.0 * RoomScale,True)
-    FreeEntity(r\roomDoors[0]\buttons[1])
-	r\roomDoors[0]\buttons[1] = 0
-    r\roomDoors[0]\autoClose = False : r\roomDoors[0]\open = False : r\roomDoors[0]\locked = True
+    r\doors[0] = CreateDoor(r\zone, r\x - 432.0 * RoomScale, 0.0, r\z, 90, r, False, False, 0, "1234")
+    PositionEntity(r\doors[0]\buttons[0], r\x - 416.0 * RoomScale, EntityY(r\doors[0]\buttons[0],True), r\z + 176.0 * RoomScale,True)
+    FreeEntity(r\doors[0]\buttons[1])
+	r\doors[0]\buttons[1] = 0
+    r\doors[0]\autoClose = False : r\doors[0]\open = False : r\doors[0]\locked = True
 
     de = CreateDecal(0, r\x - 808.0 * RoomScale, 0.005, r\z - 72.0 * RoomScale, 90, Rand(360), 0)
     EntityParent(de\obj, r\obj)
@@ -49,16 +49,16 @@ Function UpdateEvent_off_l_conf_2(e.Event)
 	;[Block]
 	If (mainPlayer\currRoom = e\room) Then
 		If (e\eventState = 0) Then
-			If (e\room\roomDoors[0]\open = True) Then
-				If (e\room\roomDoors[0]\openstate = 180) Then
+			If (e\room\doors[0]\open = True) Then
+				If (e\room\doors[0]\openstate = 180) Then
 					e\eventState = 1
 					;TODO: load temp sound.
 					;TODO: fix
 					;PlaySound2(HorrorSFX(5))
 				EndIf
 			Else
-				If (EntityDistance(mainPlayer\collider, e\room\roomDoors[0]\obj)<1.5) And (RemoteDoorOn) Then
-					e\room\roomDoors[0]\open = True
+				If (EntityDistance(mainPlayer\collider, e\room\doors[0]\obj)<1.5) And (RemoteDoorOn) Then
+					e\room\doors[0]\open = True
 				EndIf
 			EndIf
 		Else

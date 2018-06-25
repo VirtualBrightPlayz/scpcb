@@ -6,7 +6,7 @@ Function FillRoom_cont_035_1(r.Room)
 	Local t1%;, Bump
 
     d = CreateDoor(r\zone, r\x - 296.0 * RoomScale, 0, r\z - 672.0 * RoomScale, 180, r, True, 0, 5)
-    d\autoClose = False : d\locked = True : r\roomDoors[0]=d
+    d\autoClose = False : d\locked = True : r\doors[0]=d
     PositionEntity(d\buttons[1], r\x - 164.0 * RoomScale, EntityY(d\buttons[1],True), EntityZ(d\buttons[1],True), True)
     FreeEntity(d\buttons[0])
 	d\buttons[0]=0
@@ -14,7 +14,7 @@ Function FillRoom_cont_035_1(r.Room)
 	d\obj2=0
 
     d2 = CreateDoor(r\zone, r\x - 296.0 * RoomScale, 0, r\z - 144.0 * RoomScale, 0, r, False)
-    d2\autoClose = False : d2\locked = True : r\roomDoors[1]=d2
+    d2\autoClose = False : d2\locked = True : r\doors[1]=d2
     PositionEntity(d2\buttons[0], r\x - 432.0 * RoomScale, EntityY(d2\buttons[0],True), r\z - 480.0 * RoomScale, True)
     RotateEntity(d2\buttons[0], 0, 90, 0, True)
     FreeEntity(d2\buttons[1])
@@ -23,12 +23,12 @@ Function FillRoom_cont_035_1(r.Room)
 	d2\obj2=0
 
     ;door to the control room
-    r\roomDoors[2] = CreateDoor(r\zone, r\x + 384.0 * RoomScale, 0, r\z - 672.0 * RoomScale, 180, r, False, 0, 5)
-    r\roomDoors[2]\autoClose = False
+    r\doors[2] = CreateDoor(r\zone, r\x + 384.0 * RoomScale, 0, r\z - 672.0 * RoomScale, 180, r, False, 0, 5)
+    r\doors[2]\autoClose = False
 
     ;door to the storage room
-    r\roomDoors[3] = CreateDoor(0, r\x + 768.0 * RoomScale, 0, r\z +512.0 * RoomScale, 90, r, False, 0, 0, "5731")
-    r\roomDoors[3]\autoClose = False
+    r\doors[3] = CreateDoor(0, r\x + 768.0 * RoomScale, 0, r\z +512.0 * RoomScale, 90, r, False, 0, 0, "5731")
+    r\doors[3]\autoClose = False
 
     d\linkedDoor = d2 : d2\linkedDoor = d
 
@@ -161,7 +161,7 @@ Function UpdateEvent_cont_035_1(e.Event)
 				EndIf
 			Else
 
-				If (e\room\roomDoors[3]\open) Then e\eventState2 = Max(e\eventState2, 1)
+				If (e\room\doors[3]\open) Then e\eventState2 = Max(e\eventState2, 1)
 
 				;the door is closed
 				If (e\eventState2 = 20) Then
@@ -392,15 +392,15 @@ Function UpdateEvent_cont_035_1(e.Event)
 
 				Else ;the player has opened the door
 					If (e\eventState2 < 10) Then
-						e\room\roomDoors[2]\open = False
-						e\room\roomDoors[2]\locked = True
+						e\room\doors[2]\open = False
+						e\room\doors[2]\locked = True
 
-						If (e\room\roomDoors[1]\open = False) Then
-							e\room\roomDoors[0]\locked = False
-							e\room\roomDoors[1]\locked = False
-							UseDoor(e\room\roomDoors[1])
-							e\room\roomDoors[0]\locked = True
-							e\room\roomDoors[1]\locked = True
+						If (e\room\doors[1]\open = False) Then
+							e\room\doors[0]\locked = False
+							e\room\doors[1]\locked = False
+							UseDoor(e\room\doors[1])
+							e\room\doors[0]\locked = True
+							e\room\doors[1]\locked = True
 
 						EndIf
 
@@ -427,11 +427,11 @@ Function UpdateEvent_cont_035_1(e.Event)
 					EndIf
 
 					If (e\eventState2 = 20) Then
-						dist = EntityDistance(e\room\roomDoors[0]\frameobj, e\room\npc[0]\collider)
+						dist = EntityDistance(e\room\doors[0]\frameobj, e\room\npc[0]\collider)
 
 						e\room\npc[0]\state = 1
 						If (dist > 2.5) Then
-							PointEntity(e\room\npc[0]\obj, e\room\roomDoors[1]\frameobj)
+							PointEntity(e\room\npc[0]\obj, e\room\doors[1]\frameobj)
 							RotateEntity(e\room\npc[0]\collider, 0, CurveAngle(EntityYaw(e\room\npc[0]\obj), EntityYaw(e\room\npc[0]\collider), 15.0), 0)
 						ElseIf (dist > 0.7) Then
 							If (IsChannelPlaying(e\room\npc[0]\soundChannels[0])) Then
@@ -439,7 +439,7 @@ Function UpdateEvent_cont_035_1(e.Event)
 								PointEntity(e\room\npc[0]\obj, mainPlayer\collider)
 								RotateEntity(e\room\npc[0]\collider, 0, CurveAngle(EntityYaw(e\room\npc[0]\obj), EntityYaw(e\room\npc[0]\collider), 15.0), 0)
 							Else
-								PointEntity(e\room\npc[0]\obj, e\room\roomDoors[0]\frameobj)
+								PointEntity(e\room\npc[0]\obj, e\room\doors[0]\frameobj)
 								RotateEntity(e\room\npc[0]\collider, 0, CurveAngle(EntityYaw(e\room\npc[0]\obj), EntityYaw(e\room\npc[0]\collider), 15.0), 0)
 							EndIf
 						Else
@@ -448,10 +448,10 @@ Function UpdateEvent_cont_035_1(e.Event)
 							e\eventState = -1
 							e\eventState2 = 0
 							e\eventState3 = 0
-							e\room\roomDoors[0]\locked = False
-							e\room\roomDoors[1]\locked = False
-							e\room\roomDoors[2]\locked = False
-							UseDoor(e\room\roomDoors[1],False)
+							e\room\doors[0]\locked = False
+							e\room\doors[1]\locked = False
+							e\room\doors[2]\locked = False
+							UseDoor(e\room\doors[1],False)
 							For do = Each Door
 								If (do\dir = 2) Then
 									If (Abs(EntityX(e\room\obj)-EntityX(do\frameobj,True))<4.5) Then
@@ -480,9 +480,9 @@ Function UpdateEvent_cont_035_1(e.Event)
 			EndIf
 
 			;If (e\room\levers[0]\succ) Then
-			;	If (e\room\roomDoors[0]\open = True) Then UseDoor(e\room\roomDoors[1])
+			;	If (e\room\doors[0]\open = True) Then UseDoor(e\room\doors[1])
 			;Else
-			;	If (e\room\roomDoors[0]\open = False) Then UseDoor(e\room\roomDoors[1])
+			;	If (e\room\doors[0]\open = False) Then UseDoor(e\room\doors[1])
 			;EndIf
 
 			temp = False

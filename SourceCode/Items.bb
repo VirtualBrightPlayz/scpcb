@@ -621,7 +621,7 @@ End Function
 
 Const ITEM_CELL_SIZE% = 70
 Const ITEM_CELL_SPACING% = 35
-Const ITEMS_PER_ROW% = 6
+Const ITEMS_PER_ROW% = 3
 Function UpdateInventory(player.Player)
 	;TODO: cleanup
 	Local prevInvOpen% = (CurrGameState=GAMESTATE_INVENTORY)

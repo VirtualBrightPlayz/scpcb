@@ -8,15 +8,15 @@ Function FillRoom_srvr_096_2(r.Room)
     d = CreateDoor(0, r\x,0,r\z, 0, r, False, 2, False)
     d\locked = True
 
-    r\roomDoors[0] = CreateDoor(r\zone, r\x - 208.0 * RoomScale, 0.0, r\z - 736.0 * RoomScale, 90, r, True, False)
-    r\roomDoors[0]\autoClose=False
-    r\roomDoors[1] = CreateDoor(r\zone, r\x - 208.0 * RoomScale, 0.0, r\z + 736.0 * RoomScale, 90, r, True, False)
-    r\roomDoors[1]\autoClose=False
+    r\doors[0] = CreateDoor(r\zone, r\x - 208.0 * RoomScale, 0.0, r\z - 736.0 * RoomScale, 90, r, True, False)
+    r\doors[0]\autoClose=False
+    r\doors[1] = CreateDoor(r\zone, r\x - 208.0 * RoomScale, 0.0, r\z + 736.0 * RoomScale, 90, r, True, False)
+    r\doors[1]\autoClose=False
 
-    r\roomDoors[2] = CreateDoor(r\zone, r\x - 672.0 * RoomScale, 0.0, r\z - 1024.0 * RoomScale, 0, r, False, False, False, "GEAR")
-    r\roomDoors[2]\autoClose=False
-    FreeEntity(r\roomDoors[2]\buttons[0]) : r\roomDoors[2]\buttons[0]=0
-    FreeEntity(r\roomDoors[2]\buttons[1]) : r\roomDoors[2]\buttons[1]=0
+    r\doors[2] = CreateDoor(r\zone, r\x - 672.0 * RoomScale, 0.0, r\z - 1024.0 * RoomScale, 0, r, False, False, False, "GEAR")
+    r\doors[2]\autoClose=False
+    FreeEntity(r\doors[2]\buttons[0]) : r\doors[2]\buttons[0]=0
+    FreeEntity(r\doors[2]\buttons[1]) : r\doors[2]\buttons[1]=0
 
 	Local n%
     For n = 0 To 2
@@ -82,10 +82,10 @@ Function UpdateEvent_srvr_096_2(e.Event)
 	If (e\eventState=0) Then
 		If (mainPlayer\currRoom = e\room) Then
 		 ;close the doors when the player enters the room
-			UseDoor(e\room\roomDoors[0],False)
-			e\room\roomDoors[0]\locked = True
-			UseDoor(e\room\roomDoors[1],False)
-			e\room\roomDoors[1]\locked = True
+			UseDoor(e\room\doors[0],False)
+			e\room\doors[0]\locked = True
+			UseDoor(e\room\doors[1],False)
+			e\room\doors[1]\locked = True
 
 			If (Curr096=Null) Then
 				Curr096 = CreateNPC(NPCtype096, EntityX(e\room\objects[6],True),EntityY(e\room\objects[6],True)+0.1,EntityZ(e\room\objects[6],True))
@@ -141,7 +141,7 @@ Function UpdateEvent_srvr_096_2(e.Event)
 				EndIf
 			ElseIf (e\eventState<70*20) Then
 				If (e\room\npc[0]\pathStatus=0) Then
-					e\room\roomDoors[2]\open = False
+					e\room\doors[2]\open = False
 
 					e\room\npc[0]\state=7
 					;SetAnimTime(e\room\npc[0]\obj, 115)
@@ -205,14 +205,14 @@ Function UpdateEvent_srvr_096_2(e.Event)
 		Else
 
 			If (e\eventState >= 70*40 And e\eventState-timing\tickDuration < 70*40) Then ;open them again to let the player in
-				e\room\roomDoors[0]\locked=False
-				e\room\roomDoors[1]\locked=False
-				UseDoor(e\room\roomDoors[0],False)
-				UseDoor(e\room\roomDoors[1],False)
+				e\room\doors[0]\locked=False
+				e\room\doors[1]\locked=False
+				UseDoor(e\room\doors[0],False)
+				UseDoor(e\room\doors[1],False)
 				FreeSound(e\sounds[0])
 				e\sounds[0] = 0
-				e\room\roomDoors[0]\locked=True
-				e\room\roomDoors[1]\locked=True
+				e\room\doors[0]\locked=True
+				e\room\doors[1]\locked=True
 			EndIf
 
 			If (mainPlayer\currRoom = e\room) Then
@@ -263,21 +263,21 @@ Function UpdateEvent_srvr_096_2(e.Event)
 		If (e\eventState3>0) Then e\soundChannels[1]=LoopRangedSound(e\sounds[1], e\soundChannels[1], mainPlayer\cam, e\room\levers[2]\obj, 6.0, e\eventState3)
 
 		If (temp=0 And Int(x) And Int(z)) Then
-			e\room\roomDoors[0]\locked = False
-			e\room\roomDoors[1]\locked = False
+			e\room\doors[0]\locked = False
+			e\room\doors[1]\locked = False
 		Else
 			;If (Rand(200)<5) Then LightBlink = Rnd(0.5,1.0)
 
-			If (e\room\roomDoors[0]\open) Then
-				e\room\roomDoors[0]\locked = False
-				UseDoor(e\room\roomDoors[0],False)
+			If (e\room\doors[0]\open) Then
+				e\room\doors[0]\locked = False
+				UseDoor(e\room\doors[0],False)
 			EndIf
-			If (e\room\roomDoors[1]\open) Then
-				e\room\roomDoors[1]\locked = False
-				UseDoor(e\room\roomDoors[1],False)
+			If (e\room\doors[1]\open) Then
+				e\room\doors[1]\locked = False
+				UseDoor(e\room\doors[1],False)
 			EndIf
-			e\room\roomDoors[0]\locked=True
-			e\room\roomDoors[1]\locked=True
+			e\room\doors[0]\locked=True
+			e\room\doors[1]\locked=True
 		EndIf
 	EndIf
 

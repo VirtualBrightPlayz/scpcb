@@ -5,22 +5,22 @@ Function FillRoom_chck_lcz_hcz_2(r.Room)
 
 	Local t1%;, Bump
 
-    r\roomDoors[0] = CreateDoor(0, r\x + 48.0*RoomScale, 0, r\z - 128.0 * RoomScale, 0, r, False, False, 3)
-    PositionEntity(r\roomDoors[0]\buttons[0], r\x - 152.0 * RoomScale, EntityY(r\roomDoors[0]\buttons[0],True), r\z - 352.0 * RoomScale, True)
-    PositionEntity(r\roomDoors[0]\buttons[1], r\x - 152.0 * RoomScale, EntityY(r\roomDoors[0]\buttons[1],True), r\z + 96.0 * RoomScale, True)
+    r\doors[0] = CreateDoor(0, r\x + 48.0*RoomScale, 0, r\z - 128.0 * RoomScale, 0, r, False, False, 3)
+    PositionEntity(r\doors[0]\buttons[0], r\x - 152.0 * RoomScale, EntityY(r\doors[0]\buttons[0],True), r\z - 352.0 * RoomScale, True)
+    PositionEntity(r\doors[0]\buttons[1], r\x - 152.0 * RoomScale, EntityY(r\doors[0]\buttons[1],True), r\z + 96.0 * RoomScale, True)
 
-    r\roomDoors[1] = CreateDoor(0, r\x - 352.0*RoomScale, 0, r\z - 128.0 * RoomScale, 0, r, False, False, 3)
-    ;FreeEntity(r\roomDoors[1]\buttons[0])
-    ;FreeEntity(r\roomDoors[1]\buttons[1])
+    r\doors[1] = CreateDoor(0, r\x - 352.0*RoomScale, 0, r\z - 128.0 * RoomScale, 0, r, False, False, 3)
+    ;FreeEntity(r\doors[1]\buttons[0])
+    ;FreeEntity(r\doors[1]\buttons[1])
 
-    r\roomDoors[1]\linkedDoor = r\roomDoors[0]
-    r\roomDoors[0]\linkedDoor = r\roomDoors[1]
+    r\doors[1]\linkedDoor = r\doors[0]
+    r\doors[0]\linkedDoor = r\doors[1]
 
     r\objects[0] = CreatePivot(r\obj)
     PositionEntity(r\objects[0], r\x + 720.0*RoomScale, 120.0*RoomScale, r\z+333.0*RoomScale, True)
 
-    r\roomDoors[0]\timer = 70 * 5
-    r\roomDoors[1]\timer = 70 * 5
+    r\doors[0]\timer = 70 * 5
+    r\doors[1]\timer = 70 * 5
 
     sc = CreateSecurityCam(r\x+192.0*RoomScale, r\y+704.0*RoomScale, r\z-960.0*RoomScale, r)
     sc\angle = 45
@@ -59,7 +59,7 @@ Function UpdateEventCheckpoint(e.Event)
 
 	;[Block]
 	If (mainPlayer\currRoom = e\room) Then
-		;If (e\room\roomDoors[0]\open <> e\eventState) Then
+		;If (e\room\doors[0]\open <> e\eventState) Then
 		;	If (e\sounds[0] = 0) Then LoadEventSound(e,"SFX/Door/DoorCheckpoint.Ogg")
 		;	PlaySound2(e\sounds[0])
 		;EndIf
@@ -115,16 +115,16 @@ Function UpdateEventCheckpoint(e.Event)
 		For e2 = Each Event
 			If (e2\name = "008") Then
 				If (e2\eventState = 2) Then
-					If (e\room\roomDoors[0]\locked) Then
+					If (e\room\doors[0]\locked) Then
 						;TurnCheckpointMonitorsOff(1)
-						e\room\roomDoors[0]\locked = False
-						e\room\roomDoors[1]\locked = False
+						e\room\doors[0]\locked = False
+						e\room\doors[1]\locked = False
 					EndIf
 				Else
 					If (e\room\dist < 12) Then
 						;UpdateCheckpointMonitors(1)
-						e\room\roomDoors[0]\locked = True
-						e\room\roomDoors[1]\locked = True
+						e\room\doors[0]\locked = True
+						e\room\doors[1]\locked = True
 					EndIf
 				EndIf
 			EndIf
@@ -135,34 +135,34 @@ Function UpdateEventCheckpoint(e.Event)
 				If (e2\eventState3 = 0) Then
 					If (e\room\dist < 12) Then
 						;TurnCheckpointMonitorsOff(0)
-						e\room\roomDoors[0]\locked = False
-						e\room\roomDoors[1]\locked = False
+						e\room\doors[0]\locked = False
+						e\room\doors[1]\locked = False
 					EndIf
 				Else
 					If (e\room\dist < 12) Then
 						;UpdateCheckpointMonitors(0)
-						e\room\roomDoors[0]\locked = True
-						e\room\roomDoors[1]\locked = True
+						e\room\doors[0]\locked = True
+						e\room\doors[1]\locked = True
 					EndIf
 				EndIf
 			EndIf
 		Next
 	EndIf
 
-	If (e\room\roomDoors[0]\open <> e\eventState) Then
+	If (e\room\doors[0]\open <> e\eventState) Then
 		If (e\sounds[0] = 0) Then LoadEventSound(e,"SFX/Door/DoorCheckpoint.ogg")
 		;TODO: wtf is this bullshit
-		e\soundChannels[0] = PlayRangedSound(e\sounds[0], mainPlayer\cam, e\room\roomDoors[0]\obj)
-		e\soundChannels[1] = PlayRangedSound(e\sounds[0], mainPlayer\cam, e\room\roomDoors[1]\obj)
+		e\soundChannels[0] = PlayRangedSound(e\sounds[0], mainPlayer\cam, e\room\doors[0]\obj)
+		e\soundChannels[1] = PlayRangedSound(e\sounds[0], mainPlayer\cam, e\room\doors[1]\obj)
 	EndIf
 
-	e\eventState = e\room\roomDoors[0]\open
+	e\eventState = e\room\doors[0]\open
 
 	If (IsChannelPlaying(e\soundChannels[0])) Then
-		UpdateRangedSoundOrigin(e\soundChannels[0], mainPlayer\cam, e\room\roomDoors[0]\obj)
+		UpdateRangedSoundOrigin(e\soundChannels[0], mainPlayer\cam, e\room\doors[0]\obj)
 	EndIf
 	If (IsChannelPlaying(e\soundChannels[1])) Then
-		UpdateRangedSoundOrigin(e\soundChannels[1], mainPlayer\cam, e\room\roomDoors[1]\obj)
+		UpdateRangedSoundOrigin(e\soundChannels[1], mainPlayer\cam, e\room\doors[1]\obj)
 	EndIf
 	;[End Block]
 End Function

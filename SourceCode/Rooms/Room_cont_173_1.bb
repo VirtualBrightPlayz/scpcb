@@ -6,18 +6,18 @@ Function FillRoom_cont_173_1(r.Room)
     Local t1%;, Bump
 
     ;the containment doors
-    r\roomDoors[1] = CreateDoor(r\zone, r\x + 4000.0 * RoomScale, 384.0*RoomScale, r\z + 1696.0 * RoomScale, 90, r, True, True)
-    r\roomDoors[1]\locked = False : r\roomDoors[1]\autoClose = False
-    r\roomDoors[1]\dir = 1 : r\roomDoors[1]\open = True
-    FreeEntity(r\roomDoors[1]\buttons[0]) : r\roomDoors[1]\buttons[0] = 0
-    FreeEntity(r\roomDoors[1]\buttons[1]) : r\roomDoors[1]\buttons[1] = 0
-    r\roomDoors[1]\mtfClose = False
+    r\doors[1] = CreateDoor(r\zone, r\x + 4000.0 * RoomScale, 384.0*RoomScale, r\z + 1696.0 * RoomScale, 90, r, True, True)
+    r\doors[1]\locked = False : r\doors[1]\autoClose = False
+    r\doors[1]\dir = 1 : r\doors[1]\open = True
+    FreeEntity(r\doors[1]\buttons[0]) : r\doors[1]\buttons[0] = 0
+    FreeEntity(r\doors[1]\buttons[1]) : r\doors[1]\buttons[1] = 0
+    r\doors[1]\mtfClose = False
 
-    r\roomDoors[2] = CreateDoor(r\zone, r\x + 2704.0 * RoomScale, 384.0*RoomScale, r\z + 624.0 * RoomScale, 90, r, False)
-    r\roomDoors[2]\autoClose = False : r\roomDoors[2]\open = False
-    FreeEntity(r\roomDoors[2]\buttons[0]) : r\roomDoors[2]\buttons[0] = 0
-    FreeEntity(r\roomDoors[2]\buttons[1]) : r\roomDoors[2]\buttons[1] = 0
-    r\roomDoors[2]\mtfClose = False
+    r\doors[2] = CreateDoor(r\zone, r\x + 2704.0 * RoomScale, 384.0*RoomScale, r\z + 624.0 * RoomScale, 90, r, False)
+    r\doors[2]\autoClose = False : r\doors[2]\open = False
+    FreeEntity(r\doors[2]\buttons[0]) : r\doors[2]\buttons[0] = 0
+    FreeEntity(r\doors[2]\buttons[1]) : r\doors[2]\buttons[1] = 0
+    r\doors[2]\mtfClose = False
 
     d = CreateDoor(r\zone, r\x + 1392.0 * RoomScale, 384.0*RoomScale, r\z + 64.0 * RoomScale, 90, r, True)
     d\autoClose = False
@@ -99,11 +99,11 @@ Function UpdateEventAlarm(e.Event)
 
 	;[Block]
 
-	If (e\room\roomDoors[5]=Null) Then
+	If (e\room\doors[5]=Null) Then
 		For i=0 To 3
 			If (e\room\adjDoor[i]<>Null) Then
-				e\room\roomDoors[5] = e\room\adjDoor[i]
-				e\room\roomDoors[5]\open = True
+				e\room\doors[5] = e\room\adjDoor[i]
+				e\room\doors[5]\open = True
 				Exit
 			EndIf
 		Next
@@ -111,7 +111,7 @@ Function UpdateEventAlarm(e.Event)
 	If (e\eventState = 0) Then
 		If (mainPlayer\currRoom = e\room) Then
 
-			e\room\roomDoors[2]\open=True
+			e\room\doors[2]\open=True
 
 			ShowEntity(mainPlayer\overlays[OVERLAY_FOG])
 			AmbientLight(Brightness, Brightness, Brightness)
@@ -128,10 +128,10 @@ Function UpdateEventAlarm(e.Event)
 
 			Curr173\idle=False
 
-			While e\room\roomDoors[1]\openstate < 180
-				e\room\roomDoors[1]\openstate = Min(180, e\room\roomDoors[1]\openstate + 0.8)
-				MoveEntity(e\room\roomDoors[1]\obj, Sin(e\room\roomDoors[1]\openstate) / 180.0, 0, 0)
-				MoveEntity(e\room\roomDoors[1]\obj2, -Sin(e\room\roomDoors[1]\openstate) / 180.0, 0, 0)
+			While e\room\doors[1]\openstate < 180
+				e\room\doors[1]\openstate = Min(180, e\room\doors[1]\openstate + 0.8)
+				MoveEntity(e\room\doors[1]\obj, Sin(e\room\doors[1]\openstate) / 180.0, 0, 0)
+				MoveEntity(e\room\doors[1]\obj2, -Sin(e\room\doors[1]\openstate) / 180.0, 0, 0)
 			Wend
 
 			If (e\room\npc[0] <> Null) Then
@@ -211,7 +211,7 @@ Function UpdateEventAlarm(e.Event)
 
 			If (e\eventState2 = 0) Then
 				CanSave = False
-				If (e\eventState > 900 And e\room\roomDoors[5]\open) Then
+				If (e\eventState > 900 And e\room\doors[5]\open) Then
 					If (e\eventState - timing\tickDuration <= 900) Then
 						e\room\npc[1]\soundChannels[0] = LoadSound("SFX/Room/Intro/WhatThe.ogg")
 						e\room\npc[1]\soundChannels[0] = PlayRangedSound(e\room\npc[1]\soundChannels[0], mainPlayer\cam, e\room\npc[1]\collider)
@@ -263,7 +263,7 @@ Function UpdateEventAlarm(e.Event)
 
 						If (e\room\npc[2]\state <> 1 And (Not mainPlayer\dead)) Then
 							If (EntityZ(e\room\npc[2]\collider) < e\room\z-1150*RoomScale) Then
-								e\room\roomDoors[5]\open = False
+								e\room\doors[5]\open = False
 								;LightBlink = 3.0
 								PlaySound2(IntroSFX(11))
 								mainPlayer\blinkTimer = -10
@@ -288,13 +288,13 @@ Function UpdateEventAlarm(e.Event)
 						e\room\npc[2]\state3 = 0
 					EndIf
 
-					If (e\room\npc[2]\state = 1) Then e\room\roomDoors[5]\open = True
+					If (e\room\npc[2]\state = 1) Then e\room\doors[5]\open = True
 				Else
 					CanSave = True
 					If (e\room\npc[2]\state <> 1) Then
 						If (EntityX(mainPlayer\collider)<(e\room\x+1384*RoomScale)) Then e\eventState = Max(e\eventState,900)
 
-						If (e\room\roomDoors[5]\openstate = 0) Then
+						If (e\room\doors[5]\openstate = 0) Then
 							HideEntity(e\room\npc[1]\obj)
 							HideEntity(e\room\npc[1]\collider)
 

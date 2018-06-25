@@ -10,11 +10,11 @@ Function FillRoom_cont_012_2(r.Room)
     PositionEntity(d\buttons[1], r\x + 304.0 * RoomScale, EntityY(d\buttons[1],True), r\z + 840.0 * RoomScale, True)
     TurnEntity(d\buttons[1],0,0,0,True)
 
-    r\roomDoors[0] = CreateDoor(r\zone, r\x -512.0 * RoomScale, -768.0*RoomScale, r\z -336.0 * RoomScale, 0, r, False, False)
-    r\roomDoors[0]\autoClose = False : r\roomDoors[0]\open = False : r\roomDoors[0]\locked = True
-    PositionEntity(r\roomDoors[0]\buttons[0], r\x + 176.0 * RoomScale, -512.0*RoomScale, r\z - 364.0 * RoomScale, True)
-    FreeEntity(r\roomDoors[0]\buttons[1])
-	r\roomDoors[0]\buttons[1]=0
+    r\doors[0] = CreateDoor(r\zone, r\x -512.0 * RoomScale, -768.0*RoomScale, r\z -336.0 * RoomScale, 0, r, False, False)
+    r\doors[0]\autoClose = False : r\doors[0]\open = False : r\doors[0]\locked = True
+    PositionEntity(r\doors[0]\buttons[0], r\x + 176.0 * RoomScale, -512.0*RoomScale, r\z - 364.0 * RoomScale, True)
+    FreeEntity(r\doors[0]\buttons[1])
+	r\doors[0]\buttons[1]=0
 
     r\levers[0] = CreateLever()
 
@@ -77,13 +77,13 @@ Function UpdateEvent_cont_012_2(e.Event)
 	If (mainPlayer\currRoom = e\room) Then
 
 		If (e\eventState=0) Then
-			If (EntityDistance(mainPlayer\collider, e\room\roomDoors[0]\obj)<2.5 And RemoteDoorOn) Then
+			If (EntityDistance(mainPlayer\collider, e\room\doors[0]\obj)<2.5 And RemoteDoorOn) Then
 				;PlaySound2(HorrorSFX(7))
-				PlayRangedSound_SM(sndManager\lever,mainPlayer\cam,e\room\roomDoors[0]\obj)
+				PlayRangedSound_SM(sndManager\lever,mainPlayer\cam,e\room\doors[0]\obj)
 				e\eventState=1
-				e\room\roomDoors[0]\locked = False
-				UseDoor(e\room\roomDoors[0],False)
-				e\room\roomDoors[0]\locked = True
+				e\room\doors[0]\locked = False
+				UseDoor(e\room\doors[0],False)
+				e\room\doors[0]\locked = True
 			EndIf
 		Else
 
@@ -115,10 +115,10 @@ Function UpdateEvent_cont_012_2(e.Event)
 
 				;012 not visible, walk to the door
 				If (temp=False) Then
-					If (EntityVisible(e\room\roomDoors[0]\frameobj,mainPlayer\cam)) Then
+					If (EntityVisible(e\room\doors[0]\frameobj,mainPlayer\cam)) Then
 						pvt = CreatePivot()
 						PositionEntity(pvt, EntityX(mainPlayer\cam), EntityY(mainPlayer\collider), EntityZ(mainPlayer\cam))
-						PointEntity(pvt, e\room\roomDoors[0]\frameobj)
+						PointEntity(pvt, e\room\doors[0]\frameobj)
 						;TurnEntity(pvt, 90, 0, 0)
 						mainPlayer\headPitch = CurveAngle(90, mainPlayer\headPitch+90, 100)
 						mainPlayer\headPitch=mainPlayer\headPitch-90

@@ -11,10 +11,10 @@ Function FillRoom_hll_ele_2(r.Room)
     r\objects[1] = CreatePivot(r\obj)
     PositionEntity(r\objects[1], r\x+1024.0*RoomScale-0.01, 120.0*RoomScale, r\z, True)
 
-    r\roomDoors[0] = CreateDoor(r\zone, r\x + 448.0 * RoomScale, 0.0, r\z, 90, r)
-    PositionEntity(r\roomDoors[0]\buttons[1], r\x + 416.0 * RoomScale, EntityY(r\roomDoors[0]\buttons[1],True), r\z - 208.0 * RoomScale,True)
-    PositionEntity(r\roomDoors[0]\buttons[0], r\x + 480.0 * RoomScale, EntityY(r\roomDoors[0]\buttons[0],True), r\z + 184.0 * RoomScale,True)
-    r\roomDoors[0]\autoClose = False : r\roomDoors[0]\open = True : r\roomDoors[0]\locked = True
+    r\doors[0] = CreateDoor(r\zone, r\x + 448.0 * RoomScale, 0.0, r\z, 90, r)
+    PositionEntity(r\doors[0]\buttons[1], r\x + 416.0 * RoomScale, EntityY(r\doors[0]\buttons[1],True), r\z - 208.0 * RoomScale,True)
+    PositionEntity(r\doors[0]\buttons[0], r\x + 480.0 * RoomScale, EntityY(r\doors[0]\buttons[0],True), r\z + 184.0 * RoomScale,True)
+    r\doors[0]\autoClose = False : r\doors[0]\open = True : r\doors[0]\locked = True
 End Function
 
 Function UpdateEventRoom2elevator2(e.Event)
@@ -86,8 +86,8 @@ Function UpdateEvent_hll_ele_2(e.Event)
 			EndIf
 		ElseIf (e\eventState = 2) Then
 			If (EntityDistance(e\room\npc[0]\collider,e\room\objects[1])<2.0) Then
-				e\room\roomDoors[0]\open = False
-				;PlayRangedSound(CloseDoorSFX(0, 0), mainPlayer\cam, e\room\roomDoors[0]\obj, 8.0)
+				e\room\doors[0]\open = False
+				;PlayRangedSound(CloseDoorSFX(0, 0), mainPlayer\cam, e\room\doors[0]\obj, 8.0)
 
 				PlaySound2((LoadTempSound("SFX/Room/Room2ElevatorDeath.ogg")))
 
@@ -115,11 +115,11 @@ Function UpdateEvent_hll_ele_2(e.Event)
 					de = CreateDecal(3, EntityX(e\room\objects[1],True), EntityY(e\room\objects[1],True), EntityZ(e\room\objects[1],True),0,e\room\angle+270,0)
 					de\size = 0.9
 				EndIf
-				e\room\roomDoors[0]\locked = False
+				e\room\doors[0]\locked = False
 			EndIf
 		Else
-			If (e\room\roomDoors[0]\open) Then
-				e\room\roomDoors[0]\locked = True : RemoveEvent(e)
+			If (e\room\doors[0]\open) Then
+				e\room\doors[0]\locked = True : RemoveEvent(e)
 			EndIf
 		EndIf
 	EndIf

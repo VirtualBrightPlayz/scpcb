@@ -17,15 +17,15 @@ Function FillRoom_tnnl_nuke_2(r.Room)
     PositionEntity(d\buttons[1], EntityX(d\buttons[1],True), EntityY(d\buttons[1],True), r\z + 608.0 * RoomScale,True)
 
     ;yl�kerran hissin ovi
-    r\roomDoors[0] = CreateDoor(r\zone, r\x + 1192.0 * RoomScale, 0.0, r\z, 90, r, True)
-    r\roomDoors[0]\autoClose = False : r\roomDoors[0]\open = True
+    r\doors[0] = CreateDoor(r\zone, r\x + 1192.0 * RoomScale, 0.0, r\z, 90, r, True)
+    r\doors[0]\autoClose = False : r\doors[0]\open = True
     ;yl�kerran hissi
     r\objects[4] = CreatePivot()
     PositionEntity(r\objects[4], r\x + 1496.0 * RoomScale, 240.0 * RoomScale, r\z)
     EntityParent(r\objects[4], r\obj)
     ;alakerran hissin ovi
-    r\roomDoors[1] = CreateDoor(r\zone, r\x + 680.0 * RoomScale, 1504.0 * RoomScale, r\z, 90, r, False)
-    r\roomDoors[1]\autoClose = False : r\roomDoors[1]\open = False
+    r\doors[1] = CreateDoor(r\zone, r\x + 680.0 * RoomScale, 1504.0 * RoomScale, r\z, 90, r, False)
+    r\doors[1]\autoClose = False : r\doors[1]\open = False
     ;alakerran hissi
     r\objects[5] = CreatePivot()
     PositionEntity(r\objects[5], r\x + 984.0 * RoomScale, 1744.0 * RoomScale, r\z)
@@ -82,7 +82,7 @@ Function UpdateEvent_tnnl_nuke_2(e.Event)
 
 	;[Block]
 	If (mainPlayer\currRoom = e\room) Then
-		e\eventState2 = UpdateElevators(e\eventState2, e\room\roomDoors[0], e\room\roomDoors[1], e\room\objects[4], e\room\objects[5], e)
+		e\eventState2 = UpdateElevators(e\eventState2, e\room\doors[0], e\room\doors[1], e\room\objects[4], e\room\objects[5], e)
 
 		e\eventState = e\room\levers[0]\succ
 	EndIf

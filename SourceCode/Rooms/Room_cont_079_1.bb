@@ -12,12 +12,12 @@ Function FillRoom_cont_079_1(r.Room)
     PositionEntity(d\buttons[0], r\x - 240.0 * RoomScale, -250*RoomScale, r\z + 1366.0 * RoomScale, True)
     ;TurnEntity(d\buttons[1],0, 90,0,True)
 
-    r\roomDoors[0] = CreateDoor(r\zone, r\x + 1456.0*RoomScale, -448.0*RoomScale, r\z + 976.0 * RoomScale, 0, r, False, True, 3)
-    r\roomDoors[0]\dir = 1 : r\roomDoors[0]\autoClose = False : r\roomDoors[0]\open = False
-    PositionEntity(r\roomDoors[0]\buttons[1], r\x + 1760.0 * RoomScale, -250*RoomScale, r\z + 1236.0 * RoomScale, True)
-    TurnEntity(r\roomDoors[0]\buttons[0],0,-90-90,0,True)
-    PositionEntity(r\roomDoors[0]\buttons[0], r\x + 1760.0 * RoomScale, -240*RoomScale, r\z + 740.0 * RoomScale, True)
-    TurnEntity(r\roomDoors[0]\buttons[1],0, 90-90,0,True)
+    r\doors[0] = CreateDoor(r\zone, r\x + 1456.0*RoomScale, -448.0*RoomScale, r\z + 976.0 * RoomScale, 0, r, False, True, 3)
+    r\doors[0]\dir = 1 : r\doors[0]\autoClose = False : r\doors[0]\open = False
+    PositionEntity(r\doors[0]\buttons[1], r\x + 1760.0 * RoomScale, -250*RoomScale, r\z + 1236.0 * RoomScale, True)
+    TurnEntity(r\doors[0]\buttons[0],0,-90-90,0,True)
+    PositionEntity(r\doors[0]\buttons[0], r\x + 1760.0 * RoomScale, -240*RoomScale, r\z + 740.0 * RoomScale, True)
+    TurnEntity(r\doors[0]\buttons[1],0, 90-90,0,True)
 
     CreateDoor(0, r\x + 1144.0*RoomScale, -448.0*RoomScale, r\z + 704.0 * RoomScale, 90, r, False, False, -1)
 
@@ -75,10 +75,10 @@ Function UpdateEvent_cont_079_1(e.Event)
 		;TODO
 		;ShouldPlay = 4
 		If (RemoteDoorOn) Then
-			If (e\room\roomDoors[0]\open) Then
-				If (e\room\roomDoors[0]\openstate > 50 Or EntityDistance(mainPlayer\collider, e\room\roomDoors[0]\frameobj)<0.5) Then
-					e\room\roomDoors[0]\openstate = Min(e\room\roomDoors[0]\openstate,50)
-					e\room\roomDoors[0]\open = False
+			If (e\room\doors[0]\open) Then
+				If (e\room\doors[0]\openstate > 50 Or EntityDistance(mainPlayer\collider, e\room\doors[0]\frameobj)<0.5) Then
+					e\room\doors[0]\openstate = Min(e\room\doors[0]\openstate,50)
+					e\room\doors[0]\open = False
 					PlaySound2((LoadTempSound("SFX/Door/DoorError.ogg")))
 				EndIf
 			EndIf

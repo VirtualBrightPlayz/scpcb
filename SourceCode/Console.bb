@@ -847,7 +847,7 @@ Function UpdateConsole()
 							For ev = Each Event
 								If (ev\name = "gateaentrance") Then
 									ev\eventState3 = 1
-									ev\room\roomDoors[1]\open = True
+									ev\room\doors[1]\open = True
 									Exit
 								EndIf
 							Next
@@ -856,7 +856,7 @@ Function UpdateConsole()
 							For ev = Each Event
 								If (ev\name = "exit1") Then
 									ev\eventState3 = 1
-									ev\room\roomDoors[4]\open = True
+									ev\room\doors[4]\open = True
 									Exit
 								EndIf
 							Next
@@ -865,10 +865,10 @@ Function UpdateConsole()
 							For ev = Each Event
 								If (ev\name = "gateaentrance") Then
 									ev\eventState3 = 1
-									ev\room\roomDoors[1]\open = True
+									ev\room\doors[1]\open = True
 								ElseIf (ev\name = "exit1") Then
 									ev\eventState3 = 1
-									ev\room\roomDoors[4]\open = True
+									ev\room\doors[4]\open = True
 								EndIf
 							Next
 							CreateConsoleMsg("Gate A and B are now unlocked.")

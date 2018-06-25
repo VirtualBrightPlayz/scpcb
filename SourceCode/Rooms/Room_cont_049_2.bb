@@ -56,37 +56,37 @@ Function FillRoom_cont_049_2(r.Room)
     Next
 
 
-    r\roomDoors[0] = CreateDoor(r\zone, r\x + 328.0 * RoomScale, 0.0, r\z + 656.0 * RoomScale, 90, r, True)
-    r\roomDoors[0]\autoClose = False : r\roomDoors[0]\open = True
-    PositionEntity(r\roomDoors[0]\buttons[1], r\x + 288.0 * RoomScale, 0.7, r\z + 512.0 * RoomScale, True)
-    PositionEntity(r\roomDoors[0]\buttons[0], r\x + 368.0 * RoomScale, 0.7, r\z + 840.0 * RoomScale, True)
+    r\doors[0] = CreateDoor(r\zone, r\x + 328.0 * RoomScale, 0.0, r\z + 656.0 * RoomScale, 90, r, True)
+    r\doors[0]\autoClose = False : r\doors[0]\open = True
+    PositionEntity(r\doors[0]\buttons[1], r\x + 288.0 * RoomScale, 0.7, r\z + 512.0 * RoomScale, True)
+    PositionEntity(r\doors[0]\buttons[0], r\x + 368.0 * RoomScale, 0.7, r\z + 840.0 * RoomScale, True)
 
-    r\roomDoors[1] = CreateDoor(r\zone, r\x - 2328.0 * RoomScale, -3520.0 * RoomScale, r\z - 656.0 * RoomScale, 90, r, False)
-    r\roomDoors[1]\autoClose = False : r\roomDoors[1]\open = False
-    PositionEntity(r\roomDoors[1]\buttons[1], r\x - 2432.0 * RoomScale, EntityY(r\roomDoors[1]\buttons[1],True), r\z - 816.0 * RoomScale, True)
-    PositionEntity(r\roomDoors[1]\buttons[0], r\x - 2304.0 * RoomScale, EntityY(r\roomDoors[1]\buttons[0],True), r\z - 472.0 * RoomScale, True)
+    r\doors[1] = CreateDoor(r\zone, r\x - 2328.0 * RoomScale, -3520.0 * RoomScale, r\z - 656.0 * RoomScale, 90, r, False)
+    r\doors[1]\autoClose = False : r\doors[1]\open = False
+    PositionEntity(r\doors[1]\buttons[1], r\x - 2432.0 * RoomScale, EntityY(r\doors[1]\buttons[1],True), r\z - 816.0 * RoomScale, True)
+    PositionEntity(r\doors[1]\buttons[0], r\x - 2304.0 * RoomScale, EntityY(r\doors[1]\buttons[0],True), r\z - 472.0 * RoomScale, True)
 
-    r\roomDoors[2] = CreateDoor(r\zone, r\x - 328.0 * RoomScale, 0.0, r\z - 656.0 * RoomScale, 90, r, True)
-    r\roomDoors[2]\autoClose = False : r\roomDoors[2]\open = True
-    PositionEntity(r\roomDoors[2]\buttons[0], r\x - 288.0 * RoomScale, 0.7, r\z - 512.0 * RoomScale, True)
-    PositionEntity(r\roomDoors[2]\buttons[1], r\x - 368.0 * RoomScale, 0.7, r\z - 840.0 * RoomScale, True)
+    r\doors[2] = CreateDoor(r\zone, r\x - 328.0 * RoomScale, 0.0, r\z - 656.0 * RoomScale, 90, r, True)
+    r\doors[2]\autoClose = False : r\doors[2]\open = True
+    PositionEntity(r\doors[2]\buttons[0], r\x - 288.0 * RoomScale, 0.7, r\z - 512.0 * RoomScale, True)
+    PositionEntity(r\doors[2]\buttons[1], r\x - 368.0 * RoomScale, 0.7, r\z - 840.0 * RoomScale, True)
 
-    r\roomDoors[3] = CreateDoor(r\zone, r\x + 2360.0 * RoomScale, -3520.0 * RoomScale, r\z + 656.0 * RoomScale, 90, r, False)
-    r\roomDoors[3]\autoClose = False : r\roomDoors[3]\open = False
-    PositionEntity(r\roomDoors[3]\buttons[0], r\x + 2432.0 * RoomScale, EntityY(r\roomDoors[3]\buttons[0],True), r\z + 816.0 * RoomScale, True)
-    PositionEntity(r\roomDoors[3]\buttons[1], r\x + 2312.0 * RoomScale, EntityY(r\roomDoors[3]\buttons[1],True), r\z + 472.0 * RoomScale, True)
+    r\doors[3] = CreateDoor(r\zone, r\x + 2360.0 * RoomScale, -3520.0 * RoomScale, r\z + 656.0 * RoomScale, 90, r, False)
+    r\doors[3]\autoClose = False : r\doors[3]\open = False
+    PositionEntity(r\doors[3]\buttons[0], r\x + 2432.0 * RoomScale, EntityY(r\doors[3]\buttons[0],True), r\z + 816.0 * RoomScale, True)
+    PositionEntity(r\doors[3]\buttons[1], r\x + 2312.0 * RoomScale, EntityY(r\doors[3]\buttons[1],True), r\z + 472.0 * RoomScale, True)
 
     For i = 0 To 3
         If ((i Mod 2) = 1) Then
-            AssignElevatorObj(r\objects[i],r\roomDoors[i],2)
+            AssignElevatorObj(r\objects[i],r\doors[i],2)
         Else
-            AssignElevatorObj(r\objects[i],r\roomDoors[i],True)
+            AssignElevatorObj(r\objects[i],r\doors[i],True)
         EndIf
     Next
 
     ;storage room door
-    r\roomDoors[4] = CreateDoor(r\zone, r\x + 272.0 * RoomScale, -3552.0 * RoomScale, r\z + 104.0 * RoomScale, 90, r, False)
-    r\roomDoors[4]\autoClose = False : r\roomDoors[4]\open = False : r\roomDoors[4]\locked = True
+    r\doors[4] = CreateDoor(r\zone, r\x + 272.0 * RoomScale, -3552.0 * RoomScale, r\z + 104.0 * RoomScale, 90, r, False)
+    r\doors[4]\autoClose = False : r\doors[4]\open = False : r\doors[4]\locked = True
 
     d = CreateDoor(0, r\x,0,r\z, 0, r, False, 2, -2)
 
@@ -117,8 +117,8 @@ Function UpdateEvent_cont_049_2(e.Event)
 	;[Block]
 	If (mainPlayer\currRoom = e\room) Then
 		If (EntityY(mainPlayer\collider) > -2848*RoomScale) Then
-			e\eventState2 = UpdateElevators(e\eventState2, e\room\roomDoors[0], e\room\roomDoors[1],e\room\objects[0],e\room\objects[1], e)
-			e\eventState3 = UpdateElevators(e\eventState3, e\room\roomDoors[2], e\room\roomDoors[3],e\room\objects[2],e\room\objects[3], e)
+			e\eventState2 = UpdateElevators(e\eventState2, e\room\doors[0], e\room\doors[1],e\room\objects[0],e\room\objects[1], e)
+			e\eventState3 = UpdateElevators(e\eventState3, e\room\doors[2], e\room\doors[3],e\room\objects[2],e\room\objects[3], e)
 			e\overwriteMusic = False
 		Else
 			e\overwriteMusic = True
@@ -160,37 +160,37 @@ Function UpdateEvent_cont_049_2(e.Event)
 				temp = (Not e\room\levers[0]\succ) ;power feed
 				x = e\room\levers[1]\succ ;generator
 
-				e\room\roomDoors[1]\locked = True
-				e\room\roomDoors[3]\locked = True
+				e\room\doors[1]\locked = True
+				e\room\doors[3]\locked = True
 
 				If (temp Or Int(x)) Then ;TODO: really
 					;049 appears when either of the levers is turned
 					e\eventState = Max(e\eventState,70*180)
 
 					If (temp And Int(x)) Then
-						e\room\roomDoors[1]\locked = False
-						e\room\roomDoors[3]\locked = False
-						e\eventState2 = UpdateElevators(e\eventState2, e\room\roomDoors[0], e\room\roomDoors[1],e\room\objects[0],e\room\objects[1], e)
-						e\eventState3 = UpdateElevators(e\eventState3, e\room\roomDoors[2], e\room\roomDoors[3],e\room\objects[2],e\room\objects[3], e)
+						e\room\doors[1]\locked = False
+						e\room\doors[3]\locked = False
+						e\eventState2 = UpdateElevators(e\eventState2, e\room\doors[0], e\room\doors[1],e\room\objects[0],e\room\objects[1], e)
+						e\eventState3 = UpdateElevators(e\eventState3, e\room\doors[2], e\room\doors[3],e\room\objects[2],e\room\objects[3], e)
 
 						If (e\sounds[1]=0) Then LoadEventSound(e,"SFX/General/GeneratorOn.ogg",1)
 						e\soundChannels[1]=LoopRangedSound(e\sounds[1], e\soundChannels[1], mainPlayer\cam, e\room\levers[1]\baseObj, 6.0, e\eventState3)
 
 						If (e\room\npc[0]\idle > 0) Then
 							i = 0
-							If (EntityDistance(mainPlayer\collider,e\room\roomDoors[1]\frameobj)<3.0) Then
+							If (EntityDistance(mainPlayer\collider,e\room\doors[1]\frameobj)<3.0) Then
 								i = 1
-							ElseIf (EntityDistance(mainPlayer\collider,e\room\roomDoors[3]\frameobj)<3.0) Then
+							ElseIf (EntityDistance(mainPlayer\collider,e\room\doors[3]\frameobj)<3.0) Then
 								i = 3
 							EndIf
 							If (i > 0) Then
-								;If EntityVisible(mainPlayer\collider,e\room\roomDoors[i]\frameobj)
+								;If EntityVisible(mainPlayer\collider,e\room\doors[i]\frameobj)
 								PositionEntity(e\room\npc[0]\collider,EntityX(e\room\objects[i],True),EntityY(e\room\objects[i],True),EntityZ(e\room\objects[i],True))
 								ResetEntity(e\room\npc[0]\collider)
 								PlayRangedSound_SM(sndManager\elevatorBeep, mainPlayer\cam, e\room\objects[i], 4.0)
-								UseDoor(e\room\roomDoors[i],False)
-								e\room\roomDoors[i-1]\open = False
-								e\room\roomDoors[i]\open = True
+								UseDoor(e\room\doors[i],False)
+								e\room\doors[i-1]\open = False
+								e\room\doors[i]\open = True
 								e\room\npc[0]\pathStatus = FindPath(e\room\npc[0],EntityX(mainPlayer\collider),EntityY(mainPlayer\collider),EntityZ(mainPlayer\collider))
 								PlayRangedSound(LoadTempSound("SFX/SCP/049/Greeting"+Str(Rand(1,2))+".ogg"),mainPlayer\cam, e\room\npc[0]\collider)
 								e\room\npc[0]\idle = 0
@@ -212,14 +212,14 @@ Function UpdateEvent_cont_049_2(e.Event)
 						;EndIf
 						;e\room\npc[0]\state = 1
 
-						e\room\roomDoors[4]\open = True
+						e\room\doors[4]\open = True
 						PlaySound_SM(sndManager\teslaPowerUp)
-						PlayRangedSound_SM(sndManager\openDoor[Rand(0,2)], mainPlayer\cam, e\room\roomDoors[4]\obj, 6.0)
+						PlayRangedSound_SM(sndManager\openDoor[Rand(0,2)], mainPlayer\cam, e\room\doors[4]\obj, 6.0)
 
-						e\room\roomDoors[1]\open = False
-						e\room\roomDoors[3]\open = False
-						e\room\roomDoors[0]\open = True
-						e\room\roomDoors[2]\open = True
+						e\room\doors[1]\open = False
+						e\room\doors[3]\open = False
+						e\room\doors[0]\open = True
+						e\room\doors[2]\open = True
 
 						e\eventState= 70*190
 					EndIf
@@ -260,8 +260,8 @@ Function UpdateEvent_cont_049_2(e.Event)
 			EndIf
 		EndIf
 	Else
-		e\eventState2 = UpdateElevators(e\eventState2, e\room\roomDoors[0], e\room\roomDoors[1],e\room\objects[0],e\room\objects[1], e)
-		e\eventState3 = UpdateElevators(e\eventState3, e\room\roomDoors[2], e\room\roomDoors[3],e\room\objects[2],e\room\objects[3], e)
+		e\eventState2 = UpdateElevators(e\eventState2, e\room\doors[0], e\room\doors[1],e\room\objects[0],e\room\objects[1], e)
+		e\eventState3 = UpdateElevators(e\eventState3, e\room\doors[2], e\room\doors[3],e\room\objects[2],e\room\objects[3], e)
 		e\overwriteMusic = False
 	EndIf
 
