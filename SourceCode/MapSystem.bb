@@ -29,7 +29,6 @@ Include "SourceCode/Rooms/Room_hll_ele_2.bb"
 Include "SourceCode/Rooms/Room_hll_fan_2.bb"
 Include "SourceCode/Rooms/Room_hll_gas_2.bb"
 Include "SourceCode/Rooms/Room_hll_gas_3.bb"
-Include "SourceCode/Rooms/Room_hll_lights_2.bb"
 Include "SourceCode/Rooms/Room_hll_lshape_2.bb"
 Include "SourceCode/Rooms/Room_hll_pipes_3.bb"
 Include "SourceCode/Rooms/Room_hll_plain_2.bb"
@@ -634,8 +633,6 @@ Function FillRoom(r.Room)
 			FillRoom_pocketdimension(r)
 		Case "hll_bench_3"
 			FillRoom_hll_bench_3(r)
-		Case "hll_lights_2"
-			FillRoom_hll_lights_2(r)
 		Case "lifts_1"
 			FillRoom_lifts_1(r)
 		Case "srvr_pc_2"
