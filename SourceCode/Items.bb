@@ -151,9 +151,8 @@ Function CreateItemTemplate(file$, section$)
 			EndIf
 		EndIf
 	Next
-
-	;TODO: Item scale.
-	Local scale# = 1.0
+	
+	Local scale# = GetINIFloat(file, section, "scale", 1.0)
 	it\scale = scale
 	ScaleEntity(it\obj, scale * RoomScale, scale * RoomScale, scale * RoomScale, True)
 
@@ -427,14 +426,15 @@ Function UpdateItems()
 			EndIf
 		EndIf
 	Next
-
+	
+	Local canSeePlayer% = True
 	If (mainPlayer\closestItem <> Null) Then
-		;Can the player see this?
-		If (EntityVisible(mainPlayer\closestItem\collider,mainPlayer\cam)) Then
-			If (EntityVisible(mainPlayer\closestItem\collider,mainPlayer\collider)) Then
-				If (MouseHit1) Then
-					PickItem(mainPlayer\closestItem)
-				EndIf
+		;Can the player see this? (TODO: fix)
+		;canSeePlayer = EntityVisible(mainPlayer\closestItem\collider,mainPlayer\cam)
+		;If (Not canSeePlayer) Then canSeePlayer = EntityVisible(mainPlayer\closestItem\collider,mainPlayer\collider)
+		If (canSeePlayer) Then
+			If (MouseHit1) Then
+				PickItem(mainPlayer\closestItem)
 			EndIf
 		EndIf
 	EndIf
@@ -754,6 +754,8 @@ Function DrawInventory(player.Player)
 	
 	Local n%
 	
+	Local tempCamera%, tempLight%, tempObj%
+	
 	If (CurrGameState = GAMESTATE_INVENTORY) Then
 		x = userOptions\screenWidth / 2 - (ITEM_CELL_SIZE * ITEMS_PER_ROW + ITEM_CELL_SPACING * (ITEMS_PER_ROW - 1)) / 2
 		y = userOptions\screenHeight / 2 - ITEM_CELL_SIZE * (player\openInventory\size / ITEMS_PER_ROW) + ITEM_CELL_SIZE / 2
@@ -784,6 +786,39 @@ Function DrawInventory(player.Player)
 
 			If (player\openInventory\items[n] <> Null) Then
 				If (player\selectedItem <> player\openInventory\items[n] Or isMouseOn) Then
+					If (player\openInventory\items[n]\invimg = 0) Then
+						player\openInventory\items[n]\invimg = CreateImage(64,64)
+						tempCamera = CreateCamera()
+						tempObj = player\openInventory\items[n]\collider
+						CameraZoom(tempCamera,1.2)
+						tempLight = CreateLight(1)
+						AmbientLight(40,40,40)
+						
+						RotateEntity(tempObj,0,0,0,True)
+						
+						CameraRange(tempCamera,0.01,512.0*RoomScale)
+						CameraViewport(tempCamera,0,0,64,64)
+						CameraClsColor(tempCamera,255,0,255)
+						PositionEntity(tempCamera,10000.0+10.0*RoomScale,10000.0+70.0*RoomScale,10000.0+20.0*RoomScale,True)
+						PositionEntity(tempLight,10000.0,10000.0+20.0*RoomScale,10000.0,True)
+						ShowEntity(tempObj)
+						PositionEntity(tempObj,10000.0,10000.0,10000.0,True)
+						PointEntity(tempCamera,tempObj)
+						PointEntity(tempLight,tempObj)
+						PositionEntity(tempObj,10000.0,10000.0+12.0*RoomScale,10000.0,True)
+						HideEntity(mainPlayer\cam)
+						
+						SetBuffer(BackBuffer())
+						RenderWorld()
+						CopyRect(0,0,64,64,0,0,BackBuffer(),ImageBuffer(player\openInventory\items[n]\invimg))
+						MaskImage(player\openInventory\items[n]\invimg,255,0,255)
+						
+						HideEntity(tempObj)
+						ShowEntity(mainPlayer\cam)
+						FreeEntity(tempCamera)
+						FreeEntity(tempLight)
+						AmbientLight(Brightness, Brightness, Brightness)
+					EndIf
 					DrawImage(player\openInventory\items[n]\invimg, x + ITEM_CELL_SIZE / 2 - 32, y + ITEM_CELL_SIZE / 2 - 32)
 				EndIf
 			EndIf
