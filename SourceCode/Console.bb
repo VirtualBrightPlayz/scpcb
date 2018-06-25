@@ -546,15 +546,6 @@ Function UpdateConsole()
 				Case "teleport"
 					StrTemp = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 
-					Select StrTemp
-						Case "895", "scp-895"
-							StrTemp = "coffin"
-						Case "scp-914"
-							StrTemp = "914"
-						Case "offices", "office"
-							StrTemp = "room2offices"
-					End Select
-
 					For r = Each Room
 						If (r\roomTemplate\name = StrTemp) Then
 							;PositionEntity(mainPlayer\collider, EntityX(r\obj), 0.7, EntityZ(r\obj))
@@ -568,6 +559,19 @@ Function UpdateConsole()
 					Next
 
 					If (mainPlayer\currRoom\roomTemplate\name <> StrTemp) Then CreateConsoleMsg("Room not found.",255,150,0)
+					
+				Case "guh"
+					For r = Each Room
+						If (r\roomTemplate\name = "cont_914_1") Then
+							;PositionEntity(mainPlayer\collider, EntityX(r\obj), 0.7, EntityZ(r\obj))
+							PositionEntity(mainPlayer\collider, r\x, r\y+0.7, r\z)
+							ResetEntity(mainPlayer\collider)
+							UpdateDoors()
+							UpdateRooms()
+							mainPlayer\currRoom = r
+							Exit
+						EndIf
+					Next
 
 				Case "spawnitem"
 					StrTemp = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))

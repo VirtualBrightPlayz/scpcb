@@ -209,9 +209,8 @@ Type Item
 
 	Field picked%
 	Field dropped%
-
-	;TODO: Deprecate.
-	Field invimg%
+	
+	Field invImage%
 
 	Field wontColl% = False
 	Field xspeed#
@@ -267,7 +266,7 @@ Function CreateItem.Item(name$, x#, y#, z#, invSlots%=0)
 			EntityRadius(i\collider, 0.01)
 			EntityPickMode(i\collider, 1, False)
 			i\model = CopyEntity(it\obj, i\collider)
-			i\name = it\name
+			i\name = it\invName
 			ShowEntity(i\collider)
 			ShowEntity(i\model)
 
@@ -282,7 +281,6 @@ Function CreateItem.Item(name$, x#, y#, z#, invSlots%=0)
 	ResetEntity(i\collider)
 	PositionEntity(i\collider, x, y, z, True)
 	RotateEntity(i\collider, 0, Rand(360), 0)
-	i\dist = EntityDistance(mainPlayer\collider, i\collider)
 	i\dropSpeed = 0.0
 
 	;TODO: Re-implement.
@@ -322,7 +320,7 @@ Function CreatePaper.Item(name$, x#, y#, z#)
 	Local img% = CopyImage(i\img)
 	img = ResizeImage2(img, texDim, texDim)
 
-	Local tex% = CreateTexture(texDim, texDim, 1+2+8)
+	Local tex% = CreateTexture(texDim, texDim, 1+8)
 	CopyRect(0, 0, texDim, texDim, 0, 0, ImageBuffer(img), TextureBuffer(tex))
 	EntityTexture(i\model, tex)
 	FreeImage(img)
@@ -623,7 +621,7 @@ End Function
 
 Const ITEM_CELL_SIZE% = 70
 Const ITEM_CELL_SPACING% = 35
-Const ITEMS_PER_ROW% = 5
+Const ITEMS_PER_ROW% = 6
 Function UpdateInventory(player.Player)
 	;TODO: cleanup
 	Local PrevInvOpen% = (CurrGameState=GAMESTATE_INVENTORY)
@@ -650,22 +648,26 @@ Function UpdateInventory(player.Player)
 
 			If (isMouseOn) Then
 				mouseSlot = slotIndex
-
+				
 				If (MouseHit1) Then
 					;Selecting an item.
 					If (player\selectedItem = Null) Then
 						If (player\openInventory\items[slotIndex] <> Null) Then
 							player\selectedItem = player\openInventory\items[slotIndex]
-							MouseHit1 = False
 						EndIf
+					EndIf
+					
+					MouseHit1 = False
+					If (DoubleClick) Then
+						;Using the item.
+						;UseItem(player\openInventory\items[slotIndex])
+						DoubleClick = False
 					EndIf
 				ElseIf (MouseUp1 And player\selectedItem <> Null) Then
 					;Item already selected and mouse release.
-
+					
 					;Hovering over empty slot. Move the item to the empty slot.
 					If (player\openInventory\items[slotIndex] = Null) Then
-						player\openInventory\items[slotIndex] = player\selectedItem
-
 						;Remove the item from its previous slot.
 						For i=0 To player\openInventory\size - 1
 							If (player\openInventory\items[i] = player\selectedItem) Then
@@ -673,6 +675,8 @@ Function UpdateInventory(player.Player)
 								Exit
 							EndIf
 						Next
+						
+						player\openInventory\items[slotIndex] = player\selectedItem
 						player\selectedItem = Null
 					ElseIf (player\openInventory\items[slotIndex] <> player\selectedItem) Then
 						;Hovering over another item. Attempt to combine the items.
@@ -681,10 +685,6 @@ Function UpdateInventory(player.Player)
 						;Hovering over the item's slot. Stop selecting the item.
 						player\selectedItem = Null
 					EndIf
-				ElseIf (DoubleClick And player\openInventory\items[slotIndex] <> Null) Then
-					;Use the item.
-					;EquipItem(player\openInventory\items[slotIndex])
-					DoubleClick = False
 				EndIf
 
 				;If the mouse was hovering over this slot then don't bother iterating through the rest of the inventory.
@@ -693,7 +693,7 @@ Function UpdateInventory(player.Player)
 
 			;Move x and y coords to point to next item.
 			x = x + ITEM_CELL_SIZE + ITEM_CELL_SPACING
-			If (slotIndex Mod 5 = 4) Then
+			If (slotIndex Mod ITEMS_PER_ROW = ITEMS_PER_ROW-1) Then
 				y = y + ITEM_CELL_SIZE * 2
 				x = userOptions\screenWidth / 2 - (ITEM_CELL_SIZE * ITEMS_PER_ROW + ITEM_CELL_SPACING * (ITEMS_PER_ROW - 1)) / 2
 			EndIf
@@ -768,13 +768,6 @@ Function DrawInventory(player.Player)
 				EndIf
 			EndIf
 
-			If (player\openInventory\items[n] <> Null) Then
-				Color(200, 200, 200)
-				If (IsPlayerWearingItem(player,player\openInventory\items[n])) Then
-					Rect(x - 3, y - 3, ITEM_CELL_SIZE + 6, ITEM_CELL_SIZE + 6)
-				EndIf
-			EndIf
-
 			If (isMouseOn) Then
 				MouseSlot = n
 				Color(255, 0, 0)
@@ -785,41 +778,49 @@ Function DrawInventory(player.Player)
 			DrawFrame(x, y, ITEM_CELL_SIZE, ITEM_CELL_SIZE, (x Mod 64), (x Mod 64))
 
 			If (player\openInventory\items[n] <> Null) Then
+				Color(200, 200, 200)
+				If (IsPlayerWearingItem(player,player\openInventory\items[n])) Then
+					Rect(x - 3, y - 3, ITEM_CELL_SIZE + 6, ITEM_CELL_SIZE + 6)
+				EndIf
+				Color(255, 255, 255)
+				
+				;Render icon.
+				If (player\openInventory\items[n]\invImage = 0) Then
+					player\openInventory\items[n]\invImage = CreateImage(64,64)
+					tempCamera = CreateCamera()
+					tempObj = player\openInventory\items[n]\collider
+					CameraZoom(tempCamera,1.2)
+					tempLight = CreateLight(1)
+					AmbientLight(40,40,40)
+					
+					RotateEntity(tempObj,0,0,0,True)
+					
+					CameraRange(tempCamera,0.01,512.0*RoomScale)
+					CameraViewport(tempCamera,0,0,64,64)
+					CameraClsColor(tempCamera,255,0,255)
+					PositionEntity(tempCamera,10000.0+10.0*RoomScale,10000.0+70.0*RoomScale,10000.0+20.0*RoomScale,True)
+					PositionEntity(tempLight,10000.0,10000.0+20.0*RoomScale,10000.0,True)
+					ShowEntity(tempObj)
+					PositionEntity(tempObj,10000.0,10000.0,10000.0,True)
+					PointEntity(tempCamera,tempObj)
+					PointEntity(tempLight,tempObj)
+					PositionEntity(tempObj,10000.0,10000.0+12.0*RoomScale,10000.0,True)
+					HideEntity(mainPlayer\cam)
+					
+					SetBuffer(BackBuffer())
+					RenderWorld()
+					CopyRect(0,0,64,64,0,0,BackBuffer(),ImageBuffer(player\openInventory\items[n]\invImage))
+					MaskImage(player\openInventory\items[n]\invImage,255,0,255)
+					
+					HideEntity(tempObj)
+					ShowEntity(mainPlayer\cam)
+					FreeEntity(tempCamera)
+					FreeEntity(tempLight)
+					AmbientLight(Brightness, Brightness, Brightness)
+				EndIf
+				
 				If (player\selectedItem <> player\openInventory\items[n] Or isMouseOn) Then
-					If (player\openInventory\items[n]\invimg = 0) Then
-						player\openInventory\items[n]\invimg = CreateImage(64,64)
-						tempCamera = CreateCamera()
-						tempObj = player\openInventory\items[n]\collider
-						CameraZoom(tempCamera,1.2)
-						tempLight = CreateLight(1)
-						AmbientLight(40,40,40)
-						
-						RotateEntity(tempObj,0,0,0,True)
-						
-						CameraRange(tempCamera,0.01,512.0*RoomScale)
-						CameraViewport(tempCamera,0,0,64,64)
-						CameraClsColor(tempCamera,255,0,255)
-						PositionEntity(tempCamera,10000.0+10.0*RoomScale,10000.0+70.0*RoomScale,10000.0+20.0*RoomScale,True)
-						PositionEntity(tempLight,10000.0,10000.0+20.0*RoomScale,10000.0,True)
-						ShowEntity(tempObj)
-						PositionEntity(tempObj,10000.0,10000.0,10000.0,True)
-						PointEntity(tempCamera,tempObj)
-						PointEntity(tempLight,tempObj)
-						PositionEntity(tempObj,10000.0,10000.0+12.0*RoomScale,10000.0,True)
-						HideEntity(mainPlayer\cam)
-						
-						SetBuffer(BackBuffer())
-						RenderWorld()
-						CopyRect(0,0,64,64,0,0,BackBuffer(),ImageBuffer(player\openInventory\items[n]\invimg))
-						MaskImage(player\openInventory\items[n]\invimg,255,0,255)
-						
-						HideEntity(tempObj)
-						ShowEntity(mainPlayer\cam)
-						FreeEntity(tempCamera)
-						FreeEntity(tempLight)
-						AmbientLight(Brightness, Brightness, Brightness)
-					EndIf
-					DrawImage(player\openInventory\items[n]\invimg, x + ITEM_CELL_SIZE / 2 - 32, y + ITEM_CELL_SIZE / 2 - 32)
+					DrawImage(player\openInventory\items[n]\invImage, x + ITEM_CELL_SIZE / 2 - 32, y + ITEM_CELL_SIZE / 2 - 32)
 				EndIf
 			EndIf
 
@@ -836,25 +837,26 @@ Function DrawInventory(player.Player)
 			EndIf
 
 			x = x + ITEM_CELL_SIZE + ITEM_CELL_SPACING
-			If (n Mod 5 = 4) Then
+			If (n Mod ITEMS_PER_ROW = ITEMS_PER_ROW-1) Then
 				y = y + ITEM_CELL_SIZE * 2
 				x = userOptions\screenWidth / 2 - (ITEM_CELL_SIZE * ITEMS_PER_ROW + ITEM_CELL_SPACING * (ITEMS_PER_ROW - 1)) / 2
 			EndIf
 		Next
-
+		
+		;Only re-draw the item under the cursor once it has left the item's original slot.
 		If (player\selectedItem <> Null) Then
-			;TODO: I have no idea why Reg made it this way to begin with.
-;			If (MouseDown1) Then
-;				If (MouseSlot = 66) Then
-;					DrawImage(player\selectedItem\invimg, MouseX() - ImageWidth(player\selectedItem\template\invimg) / 2, MouseY() - ImageHeight(player\selectedItem\template\invimg) / 2)
-;				ElseIf (player\selectedItem <> player\openInventory\items[MouseSlot]) Then
-;					DrawImage(player\selectedItem\invimg, MouseX() - ImageWidth(player\selectedItem\template\invimg) / 2, MouseY() - ImageHeight(player\selectedItem\template\invimg) / 2)
-;				EndIf
-;			EndIf
+			If (MouseDown1) Then
+				;TODO: Short-circuit eval in C.
+				If (MouseSlot = 66) Then
+					DrawImage(player\selectedItem\invImage, MouseX() - ImageWidth(player\selectedItem\invImage) / 2, MouseY() - ImageHeight(player\selectedItem\invImage) / 2)
+				ElseIf (player\selectedItem <> player\openInventory\items[MouseSlot]) Then
+					DrawImage(player\selectedItem\invImage, MouseX() - ImageWidth(player\selectedItem\invImage) / 2, MouseY() - ImageHeight(player\selectedItem\invImage) / 2)
+				EndIf
+			EndIf
 		EndIf
 	Else
 		If (player\selectedItem <> Null) Then
-			;TODO
+			;TODO: Draw firstaid, nav, radio, docs.
 		EndIf
 	EndIf
 

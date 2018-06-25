@@ -112,7 +112,7 @@ Global mainPlayer.Player = Null
 Function CreatePlayer.Player()
 	Local player.Player = New Player
 
-	player\inventory = CreateInventory(10)
+	player\inventory = CreateInventory(6)
 
 	player\cam = CreateCamera()
 	CameraViewport(player\cam, 0, 0, userOptions\screenWidth, userOptions\screenHeight)
