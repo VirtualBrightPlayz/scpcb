@@ -32,6 +32,10 @@ Function CreateAsset.AssetWrap(filePath$, asType%, flag%=1)
 		Case ASSET_ANIM_MESH
 			as\intVal = LoadAnimMesh(as\file)
 	End Select
+	
+	If (as\intVal <> 0) Then
+		HideEntity(as\intVal)
+	EndIf
 
 	DebugLog("CREATED ASSET: " + filePath)
 	Return as
