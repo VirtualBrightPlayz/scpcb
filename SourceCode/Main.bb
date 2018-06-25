@@ -889,6 +889,7 @@ Function UpdateGame()
 			SetFont(uiAssets\font[0])
 		EndIf
 	EndIf
+	DrawPointer()
 
 	;not by any means a perfect solution
 	;Not even proper gamma correction but it's a nice looking alternative that works in windowed mode
@@ -1061,7 +1062,7 @@ End Function
 ;
 ;	EndIf
 ;
-;	ShowPointer2()
+;	
 ;
 ;	SetFont(uiAssets\font[0])
 ;End Function
@@ -1438,7 +1439,7 @@ Function DrawGUI()
 				Text(userOptions\screenWidth/2, Int(y+124*scale), KeypadInput,True,True)
 			EndIf
 
-			ShowPointer2()
+			
 		EndIf
 	EndIf
 
@@ -1513,7 +1514,7 @@ Function DrawPauseMenu()
 		If (mainPlayer\dead) Then RowText(DeathMSG, x, Int(y + 80*MenuScale), Int(390*MenuScale), Int(600*MenuScale))
 		;EndIf
 
-		ShowPointer2()
+		
 	EndIf
 
 	SetFont(uiAssets\font[0])

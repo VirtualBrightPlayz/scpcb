@@ -624,7 +624,7 @@ Const ITEM_CELL_SPACING% = 35
 Const ITEMS_PER_ROW% = 6
 Function UpdateInventory(player.Player)
 	;TODO: cleanup
-	Local PrevInvOpen% = (CurrGameState=GAMESTATE_INVENTORY)
+	Local prevInvOpen% = (CurrGameState=GAMESTATE_INVENTORY)
 	Local mouseSlot% = 66
 
 	Local np.NPC, e.Event, it.Item
@@ -720,7 +720,7 @@ Function UpdateInventory(player.Player)
 		EndIf
 	EndIf
 
-	If (PrevInvOpen And CurrGameState <> GAMESTATE_INVENTORY) Then
+	If (prevInvOpen And CurrGameState <> GAMESTATE_INVENTORY) Then
 		MoveMouse(viewport_center_x, viewport_center_y)
 	EndIf
 End Function

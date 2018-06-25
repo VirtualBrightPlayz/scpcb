@@ -368,7 +368,12 @@ Function DrawTooltip(message$)
 	Text(MouseX()+Int(20.0*MenuScale)+(width/2),MouseY()+Int(12.0*MenuScale), message, True, True)
 End Function
 
-Function ShowPointer2()
+Function DrawPointer()
+	If (CurrGameState = GAMESTATE_PLAYING) Then
+		HidePointer()
+		Return
+	EndIf
+	
 	ShowPointer()
 	If (userOptions\fullscreen) Then
 		DrawImage(uiAssets\cursorIMG, MouseX(), MouseY())

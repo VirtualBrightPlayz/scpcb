@@ -948,7 +948,7 @@ Function DrawMainMenu()
 
 	;DrawTiledImageRect(MenuBack, 985 * MenuScale, 860 * MenuScale, 200 * MenuScale, 20 * MenuScale, 1200 * MenuScale, 866 * MenuScale, 300, 20 * MenuScale)
 
-	ShowPointer2()
+	
 
 	SetFont(uiAssets\font[0])
 End Function

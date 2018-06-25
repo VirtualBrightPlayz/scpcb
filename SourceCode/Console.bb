@@ -109,7 +109,7 @@ Function DrawConsole()
 
 		DrawInputBox(x, y + height, width, Int(30.0*MenuScale), ConsoleInput, 2)
 
-		ShowPointer2()
+		
 	EndIf
 End Function
 

@@ -35,7 +35,7 @@ Function Draw294()
 
 	Text(x+907, y+185, Input294, True,True)
 
-	ShowPointer2()
+	
 End Function
 
 Function Update294()
