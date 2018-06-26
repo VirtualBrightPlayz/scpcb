@@ -34,7 +34,7 @@ Function FillRoom_tnnl_maintenance_2(r.Room)
 ;
     Local temp% = ((Int(AccessCode)*3) Mod 10000)
     If (temp < 1000) Then temp = temp+1000
-    d = CreateDoor(0, r\x,r\y,r\z,0, r, False, DOOR_TYPE_CONT, "", Str(temp))
+    d = CreateDoor(r\x,r\y,r\z,0, r, False, DOOR_TYPE_CONT, "", Str(temp))
     PositionEntity(d\buttons[0], r\x + 224.0 * RoomScale, r\y + 0.7, r\z - 384.0 * RoomScale, True)
     RotateEntity(d\buttons[0], 0,-90,0,True)
     PositionEntity(d\buttons[1], r\x - 224.0 * RoomScale, r\y + 0.7, r\z + 384.0 * RoomScale, True)

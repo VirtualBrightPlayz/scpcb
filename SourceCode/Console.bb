@@ -590,11 +590,15 @@ Function UpdateConsole()
 				Case "spawndoc"
 					StrTemp = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 					CreatePaper(StrTemp, EntityX(mainPlayer\collider), EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider))
+					
+				Case "test914key"
+					it = CreateItem("keycard", EntityX(mainPlayer\collider), EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider))
+					AssignTag(it, "cont_914_1")
 
-				Case "op"
-					StrTemp = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
+				Case "spawnomni"
 					it = CreateItem("keycard", EntityX(mainPlayer\collider), EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider))
 					AssignTag(it, "omni")
+					CreateConsoleMsg("Nerd.",255,150,0)
 
 				Case "wireframe"
 					StrTemp = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))

@@ -40,7 +40,7 @@ Function FillRoom_extend_gatea_1(r.Room)
             r\objects[2]=r2\objects[2]
         ElseIf (r2\roomTemplate\name = "gateaentrance") Then
             ;ylempi hissi
-            r\doors[1] = CreateDoor(0, r\x+1544.0*RoomScale,12000.0*RoomScale, r\z-64.0*RoomScale, 90, r, False)
+            r\doors[1] = CreateDoor(r\x+1544.0*RoomScale,12000.0*RoomScale, r\z-64.0*RoomScale, 90, r, False)
             r\doors[1]\autoClose = False : r\doors[1]\open = False
             PositionEntity(r\doors[1]\buttons[0],r\x+1584*RoomScale, EntityY(r\doors[1]\buttons[0],True), r\z+80*RoomScale, True)
             PositionEntity(r\doors[1]\buttons[1],r\x+1456*RoomScale, EntityY(r\doors[1]\buttons[1],True), r\z-208*RoomScale, True)

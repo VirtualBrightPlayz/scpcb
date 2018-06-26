@@ -144,7 +144,7 @@ Function UpdateNPCtype173(n.NPC)
 					;try to open doors
 					If (Rand(20) = 1) Then
 						For d = Each Door
-							If ((Not d\locked) And d\open = False And d\code = "" And d\keyCard=0) Then
+							If ((Not d\locked) And d\open = False And d\code = "" And d\tag = "") Then
 								For i = 0 To 1
 									If (d\buttons[i] <> 0) Then
 										If (Abs(EntityX(n\collider) - EntityX(d\buttons[i])) < 0.5) Then

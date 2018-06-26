@@ -5,7 +5,7 @@ Function FillRoom_srvr_096_2(r.Room)
 
 	Local t1%;, Bump
 
-    d = CreateDoor(0, r\x,0,r\z, 0, r, False, DOOR_TYPE_HCZ)
+    d = CreateDoor(r\x,0,r\z, 0, r, False, DOOR_TYPE_HCZ)
     d\locked = True
 
     r\doors[0] = CreateDoor(r\x - 208.0 * RoomScale, 0.0, r\z - 736.0 * RoomScale, 90, r, True)

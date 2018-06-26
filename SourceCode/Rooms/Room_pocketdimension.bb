@@ -79,8 +79,8 @@ Function FillRoom_pocketdimension(r.Room)
     EntityPickMode(terrain, 3)
     PositionEntity(terrain,r\x,r\y+2944.0*RoomScale,r\z+32.0,True)
 
-    r\doors[0] = CreateDoor(0, r\x,2048*RoomScale,r\z+32.0-1024*RoomScale,0,r)
-    r\doors[1] = CreateDoor(0, r\x,2048*RoomScale,r\z+32.0+1024*RoomScale,180,r)
+    r\doors[0] = CreateDoor(r\x,2048*RoomScale,r\z+32.0-1024*RoomScale,0,r)
+    r\doors[1] = CreateDoor(r\x,2048*RoomScale,r\z+32.0+1024*RoomScale,180,r)
 
     de = CreateDecal(18, r\x-(1536*RoomScale), 0.02,r\z+608*RoomScale+32.0, 90,0,0)
     EntityParent(de\obj, r\obj)

@@ -6,7 +6,7 @@ Function FillRoom_exit_gatea_1(r.Room)
 	Local t1%;, Bump
 
     ;alempi hissi
-    r\doors[0] = CreateDoor(0, r\x+744.0*RoomScale, 0, r\z+512.0*RoomScale, 90, r, True)
+    r\doors[0] = CreateDoor(r\x+744.0*RoomScale, 0, r\z+512.0*RoomScale, 90, r, True)
     r\doors[0]\autoClose = False : r\doors[0]\open = True
     PositionEntity(r\doors[0]\buttons[1],r\x+688*RoomScale, EntityY(r\doors[0]\buttons[1],True), r\z+368*RoomScale, True)
     PositionEntity(r\doors[0]\buttons[0],r\x+784*RoomScale, EntityY(r\doors[0]\buttons[0],True), r\z+656*RoomScale, True)

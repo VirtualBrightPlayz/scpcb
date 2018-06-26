@@ -370,7 +370,7 @@ Function InitNewGame()
 		If (d\buttons[0] > 0) Then EntityParent(d\buttons[0], 0)
 		If (d\buttons[1] > 0) Then EntityParent(d\buttons[1], 0)
 
-		If (d\obj2 <> 0 And d\type = DOOR_TYPE_DEF) Then
+		If (d\obj2 <> 0 And d\typ = DOOR_TYPE_DEF) Then
 			MoveEntity(d\obj, 0, 0, 8.0 * RoomScale)
 			MoveEntity(d\obj2, 0, 0, 8.0 * RoomScale)
 		EndIf

@@ -89,7 +89,7 @@ Function UpdateNPCtype066(n.NPC)
                                 n\state3 = Rand(700,1400)
                             Case 3
                                 For d = Each Door
-                                    If (d\locked = False And d\keyCard = 0 And d\code = "") Then
+                                    If (d\locked = False And d\tag = "" And d\code = "") Then
                                         If (Abs(EntityX(d\frameobj)-EntityX(n\collider))<16.0) Then
                                             If (Abs(EntityZ(d\frameobj)-EntityZ(n\collider))<16.0) Then
                                                 UseDoor(d, False)

@@ -5,7 +5,7 @@ Function FillRoom_lck_ez_3(r.Room)
 
     Local t1%;, Bump
 
-    d = CreateDoor(r\x - 728.0 * RoomScale, 0.0, r\z - 458.0 * RoomScale, 0, r, False, DOOR_TYPE_DEF, r\roomTemplate\name
+    d = CreateDoor(r\x - 728.0 * RoomScale, 0.0, r\z - 458.0 * RoomScale, 0, r, False, DOOR_TYPE_DEF, r\roomTemplate\name)
 
     d = CreateDoor(r\x - 223.0 * RoomScale, 0.0, r\z - 736.0 * RoomScale, -90, r, False, DOOR_TYPE_DEF, r\roomTemplate\name)
 

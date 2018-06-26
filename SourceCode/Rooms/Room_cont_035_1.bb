@@ -453,7 +453,7 @@ Function UpdateEvent_cont_035_1(e.Event)
 							e\room\doors[2]\locked = False
 							UseDoor(e\room\doors[1],False)
 							For do = Each Door
-								If (do\type = DOOR_TYPE_HCZ) Then
+								If (do\typ = DOOR_TYPE_HCZ) Then
 									If (Abs(EntityX(e\room\obj)-EntityX(do\frameobj,True))<4.5) Then
 										If (Abs(EntityZ(e\room\obj)-EntityZ(do\frameobj,True))<4.5) Then
 											UseDoor(do,False)
