@@ -243,83 +243,86 @@ Function LoadRoomTemplates(file$)
 	While Not Eof(f)
 		TemporaryString = Trim(ReadLine(f))
 		If (Left(TemporaryString,1) = "[") Then
+			DebugLog(TemporaryString)
 			TemporaryString = Mid(TemporaryString, 2, Len(TemporaryString) - 2)
-			StrTemp = GetINIString(file, TemporaryString, "meshpath")
-
-			rt = CreateRoomTemplate(StrTemp)
-			rt\name = Lower(TemporaryString)
-
-			StrTemp = Lower(GetINIString(file, TemporaryString, "shape", "0"))
-
-			Select StrTemp
-				Case "room0", "0"
-					rt\shape = ROOM0
-				Case "room1", "1"
-					rt\shape = ROOM1
-				Case "room2", "2"
-					rt\shape = ROOM2
-				Case "room2c", "2c"
-					rt\shape = ROOM2C
-				Case "room3", "3"
-					rt\shape = ROOM3
-				Case "room4", "4"
-					rt\shape = ROOM4
-				Default
-					rt\shape = ROOM0
-			End Select
-
-			Zones = Lower(GetINIString(file, TemporaryString, "zones"))
-			rt\zones = 0
-			If (Instr(Zones,"lcz")>0) Then
-				rt\zones = rt\zones Or ZONE_LCZ
-			EndIf
-			If (Instr(Zones,"hcz")>0) Then
-				rt\zones = rt\zones Or ZONE_HCZ
-			EndIf
-			If (Instr(Zones,"ez")>0) Then
-				rt\zones = rt\zones Or ZONE_EZ
-			EndIf
-
-			If (rt\shape<>ROOM0) Then
-				rt\commonness = Max(Min(GetINIFloat(file, TemporaryString, "commonness"), 100), 0)
-
-				AmountRange = GetINIString(file, TemporaryString, "amount", "")
-				If (AmountRange="") Then
-					rt\minAmount = -1
-					rt\maxAmount = -1
-				ElseIf (Instr(AmountRange,"-")>0) Then
-					rt\minAmount = Int(Left(AmountRange,Instr(AmountRange,"-")))
-					rt\maxAmount = Int(Mid(AmountRange,Instr(AmountRange,"-")+1))
-				Else
-					rt\minAmount = Int(AmountRange)
-					rt\maxAmount = rt\minAmount
-				EndIf
-
-				rt\large = GetINIInt(file, TemporaryString, "large")
-				rt\disableDecals = GetINIInt(file, TemporaryString, "disabledecals")
-
-				xRange = GetINIString(file, TemporaryString, "xrange")
-				yRange = GetINIString(file, TemporaryString, "yrange")
-
-				If (xRange = "") Then
-					xRange = "0-1"
-				EndIf
-				If (yRange = "") Then
-					yRange = "0-1"
-				EndIf
-
-				rt\xRangeStart = Float(Left(xRange,Instr(xRange,"-")))
-				rt\xRangeEnd = Float(Mid(xRange,Instr(xRange,"-")+1))
-
-				rt\yRangeStart = Float(Left(yRange,Instr(yRange,"-")))
-				rt\yrangeEnd = Float(Mid(yRange,Instr(yRange,"-")+1))
-			Else
-				rt\minAmount = 0
-				rt\maxAmount = 0
+			If (Not (Lower(TemporaryString)="room ambience")) Then
+				StrTemp = GetINIString(file, TemporaryString, "meshpath")
+	
+				rt = CreateRoomTemplate(StrTemp)
+				rt\name = Lower(TemporaryString)
+	
+				StrTemp = Lower(GetINIString(file, TemporaryString, "shape", "0"))
+	
+				Select StrTemp
+					Case "room0", "0"
+						rt\shape = ROOM0
+					Case "room1", "1"
+						rt\shape = ROOM1
+					Case "room2", "2"
+						rt\shape = ROOM2
+					Case "room2c", "2c"
+						rt\shape = ROOM2C
+					Case "room3", "3"
+						rt\shape = ROOM3
+					Case "room4", "4"
+						rt\shape = ROOM4
+					Default
+						rt\shape = ROOM0
+				End Select
+	
+				Zones = Lower(GetINIString(file, TemporaryString, "zones"))
 				rt\zones = 0
-				rt\commonness = 0
+				If (Instr(Zones,"lcz")>0) Then
+					rt\zones = rt\zones Or ZONE_LCZ
+				EndIf
+				If (Instr(Zones,"hcz")>0) Then
+					rt\zones = rt\zones Or ZONE_HCZ
+				EndIf
+				If (Instr(Zones,"ez")>0) Then
+					rt\zones = rt\zones Or ZONE_EZ
+				EndIf
+	
+				If (rt\shape<>ROOM0) Then
+					rt\commonness = Max(Min(GetINIFloat(file, TemporaryString, "commonness"), 100), 0)
+	
+					AmountRange = GetINIString(file, TemporaryString, "amount", "")
+					If (AmountRange="") Then
+						rt\minAmount = -1
+						rt\maxAmount = -1
+					ElseIf (Instr(AmountRange,"-")>0) Then
+						rt\minAmount = Int(Left(AmountRange,Instr(AmountRange,"-")))
+						rt\maxAmount = Int(Mid(AmountRange,Instr(AmountRange,"-")+1))
+					Else
+						rt\minAmount = Int(AmountRange)
+						rt\maxAmount = rt\minAmount
+					EndIf
+	
+					rt\large = GetINIInt(file, TemporaryString, "large")
+					rt\disableDecals = GetINIInt(file, TemporaryString, "disabledecals")
+	
+					xRange = GetINIString(file, TemporaryString, "xrange")
+					yRange = GetINIString(file, TemporaryString, "yrange")
+	
+					If (xRange = "") Then
+						xRange = "0-1"
+					EndIf
+					If (yRange = "") Then
+						yRange = "0-1"
+					EndIf
+	
+					rt\xRangeStart = Float(Left(xRange,Instr(xRange,"-")))
+					rt\xRangeEnd = Float(Mid(xRange,Instr(xRange,"-")+1))
+	
+					rt\yRangeStart = Float(Left(yRange,Instr(yRange,"-")))
+					rt\yrangeEnd = Float(Mid(yRange,Instr(yRange,"-")+1))
+				Else
+					rt\minAmount = 0
+					rt\maxAmount = 0
+					rt\zones = 0
+					rt\commonness = 0
+				EndIf
+	
 			EndIf
-
 		EndIf
 	Wend
 

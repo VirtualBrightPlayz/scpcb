@@ -1,3 +1,4 @@
+;TODO: work on this next
 Function FillRoom_lck_air_2(r.Room)
     Local d.Door, d2.Door, sc.SecurityCam, de.Decal, r2.Room, sc2.SecurityCam
     Local it.Item, i%
