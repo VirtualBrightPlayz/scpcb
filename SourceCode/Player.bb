@@ -4,6 +4,9 @@ Const WORNITEM_SLOT_HEAD%  = 0
 Const WORNITEM_SLOT_BODY%  = 1
 Const WORNITEM_SLOT_HAND%  = 2
 
+Const PLAYER_INV_COUNT% = 6
+Global WORNITEM_INV_OFFSET% = WORNITEM_SLOT_COUNT-1
+
 Const OVERLAY_COUNT%       = 6
 Const OVERLAY_BLACK%       = 0
 Const OVERLAY_WHITE%       = 1
@@ -112,7 +115,7 @@ Global mainPlayer.Player = Null
 Function CreatePlayer.Player()
 	Local player.Player = New Player
 
-	player\inventory = CreateInventory(6)
+	player\inventory = CreateInventory(PLAYER_INV_COUNT + WORNITEM_SLOT_COUNT)
 
 	player\cam = CreateCamera()
 	CameraViewport(player\cam, 0, 0, userOptions\screenWidth, userOptions\screenHeight)
