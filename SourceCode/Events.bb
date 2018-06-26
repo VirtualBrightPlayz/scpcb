@@ -393,9 +393,9 @@ Function UpdateEvents()
 			Case "evt_tnnl_plain_4"
 				UpdateEvent_tnnl_plain_4(e)
 			Case "evt_lck_air"
-				UpdateEventRoom_gw(e)
+				UpdateEvent_lck_air_2(e)
 			Case "evt_lck_air_broke"
-				UpdateEventRoom2gw_b(e)
+				UpdateEvent_lck_air_broke_2(e)
 			Case "evt_hll_sl"
 				UpdateEvent_hll_sl_2(e)
 		End Select
