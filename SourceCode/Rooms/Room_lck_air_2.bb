@@ -99,9 +99,9 @@ Function UpdateEvent_lck_air_2(e.Event)
 	If (e\room\objects[ROOM_LCKA2_BROKENDOOR]<>0) Then brokendoor = True
 
 	If (mainPlayer\currRoom = e\room) Then
-		If (Not e\intStates[EVENT_LCKA2_ACTIVE]) Then
-			If (EntityDistance(e\room\objects[ROOM_LCKA2_TRIGGERPIVOT],mainPlayer\collider)<1.4 And (Not e\intStates[EVENT_LCKA2_LEAVING])) Then
-				e\intStates[EVENT_LCKA2_ACTIVE] = True
+		If (Not e\intState[EVENT_LCKA2_ACTIVE]) Then
+			If (EntityDistance(e\room\objects[ROOM_LCKA2_TRIGGERPIVOT],mainPlayer\collider)<1.4 And (Not e\intState[EVENT_LCKA2_LEAVING])) Then
+				e\intState[EVENT_LCKA2_ACTIVE] = True
 				If (brokendoor) Then
 					If (e\sounds[1] <> 0) Then
 						FreeSound(e\sounds[1]) : e\sounds[1] = 0
@@ -120,7 +120,7 @@ Function UpdateEvent_lck_air_2(e.Event)
 				UseDoor(e\room\doors[0])
 				UseDoor(e\room\doors[1])
 			ElseIf (EntityDistance(e\room\objects[ROOM_LCKA2_TRIGGERPIVOT],mainPlayer\collider)>2.4) Then
-				e\intStates[EVENT_LCKA2_LEAVING] = False
+				e\intState[EVENT_LCKA2_LEAVING] = False
 			EndIf
 		Else
 			If (e\floatState[EVENT_LCKA2_TIMER] < 70*7) Then
@@ -222,14 +222,14 @@ Function UpdateEvent_lck_air_broke_2(e.Event)
 
 	;[Block]
 	If (e\room\dist < 8) Then
-		If (Not e\intStates[EVENT_LCKA2_SPAWNEDCORPSE]) Then
+		If (Not e\intState[EVENT_LCKA2_SPAWNEDCORPSE]) Then
 			e\room\npc[0]=CreateNPC(NPCtypeGuard, EntityX(e\room\objects[ROOM_LCKA2_CORPSESPAWN],True), EntityY(e\room\objects[ROOM_LCKA2_CORPSESPAWN],True)+0.5, EntityZ(e\room\objects[ROOM_LCKA2_CORPSESPAWN],True))
 			PointEntity(e\room\npc[0]\collider, e\room\obj)
 			RotateEntity(e\room\npc[0]\collider, 0, EntityYaw(e\room\npc[0]\collider),0, True)
 			SetNPCFrame(e\room\npc[0], 906)
 			e\room\npc[0]\state = 8
 
-			e\intStates[EVENT_LCKA2_SPAWNEDCORPSE] = True
+			e\intState[EVENT_LCKA2_SPAWNEDCORPSE] = True
 		EndIf
 	EndIf
 	;[End Block]
