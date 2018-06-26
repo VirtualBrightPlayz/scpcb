@@ -76,6 +76,9 @@ Function FillRoom_lck_air_2(r.Room)
     EndIf
 End Function
 
+Const EVENT_LCKA2_ACTIVE% = 0
+Const EVENT_LCKA2_LEAVING% = 1
+Const EVENT_LCKA2_TIMER% = 0
 
 Function UpdateEvent_lck_air_2(e.Event)
 	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
@@ -89,10 +92,6 @@ Function UpdateEvent_lck_air_2(e.Event)
 	Local angle#, d_ent%
 
 	;[Block]
-	;e\eventState: Determines if the airlock is in operation or not
-	;e\eventState2: The timer for the airlocks
-	;e\eventState3: Checks if the player had left the airlock or not
-
 	e\room\doors[0]\locked = True
 	e\room\doors[1]\locked = True
 
@@ -100,9 +99,9 @@ Function UpdateEvent_lck_air_2(e.Event)
 	If (e\room\objects[ROOM_LCKA2_BROKENDOOR]<>0) Then brokendoor = True
 
 	If (mainPlayer\currRoom = e\room) Then
-		If (e\eventState = 0.0) Then
-			If (EntityDistance(e\room\objects[ROOM_LCKA2_TRIGGERPIVOT],mainPlayer\collider)<1.4 And e\eventState3 = 0.0) Then
-				e\eventState = 1.0
+		If (Not e\intStates[EVENT_LCKA2_ACTIVE]) Then
+			If (EntityDistance(e\room\objects[ROOM_LCKA2_TRIGGERPIVOT],mainPlayer\collider)<1.4 And (Not e\intStates[EVENT_LCKA2_LEAVING])) Then
+				e\intStates[EVENT_LCKA2_ACTIVE] = True
 				If (brokendoor) Then
 					If (e\sounds[1] <> 0) Then
 						FreeSound(e\sounds[1]) : e\sounds[1] = 0
@@ -121,14 +120,14 @@ Function UpdateEvent_lck_air_2(e.Event)
 				UseDoor(e\room\doors[0])
 				UseDoor(e\room\doors[1])
 			ElseIf (EntityDistance(e\room\objects[ROOM_LCKA2_TRIGGERPIVOT],mainPlayer\collider)>2.4) Then
-				e\eventState3 = 0.0
+				e\intStates[EVENT_LCKA2_LEAVING] = False
 			EndIf
 		Else
-			If (e\eventState2 < 70*7) Then
-				e\eventState2 = e\eventState2 + timing\tickDuration
+			If (e\floatState[EVENT_LCKA2_TIMER] < 70*7) Then
+				e\floatState[EVENT_LCKA2_TIMER] = e\floatState[EVENT_LCKA2_TIMER] + timing\tickDuration
 				e\room\doors[0]\open = False
 				e\room\doors[1]\open = False
-				If (e\eventState2 < 70*1) Then
+				If (e\floatState[EVENT_LCKA2_TIMER] < 70*1) Then
 
 					If (brokendoor) Then
 						pvt = CreatePivot()
@@ -154,7 +153,7 @@ Function UpdateEvent_lck_air_2(e.Event)
 						FreeEntity(pvt)
 					EndIf
 
-				ElseIf (e\eventState2 > 70*3 And e\eventState < 70*5.5) Then
+				ElseIf (e\floatState[EVENT_LCKA2_TIMER] > 70*3 And e\floatState[EVENT_LCKA2_TIMER] < 70*5.5) Then
 					pvt = CreatePivot(e\room\obj)
 					For i = 0 To 1
 						If (e\room\roomTemplate\name$ = "lck_ez_3") Then
@@ -182,9 +181,9 @@ Function UpdateEvent_lck_air_2(e.Event)
 					If (e\soundChannels[0] = 0) Then e\soundChannels[0] = PlayRangedSound(e\sounds[0],mainPlayer\cam,e\room\objects[ROOM_LCKA2_TRIGGERPIVOT],5)
 				EndIf
 			Else
-				e\eventState = 0.0
-				e\eventState2 = 0.0
-				e\eventState3 = 1.0
+				e\floatState[EVENT_LCKA2_TIMER] = 0.0
+				e\intState[EVENT_LCKA2_ACTIVE] = False
+				e\intState[EVENT_LCKA2_LEAVING] = True
 				If (e\room\doors[0]\open = False) Then
 					e\room\doors[0]\locked = False
 					e\room\doors[1]\locked = False
@@ -203,12 +202,12 @@ Function UpdateEvent_lck_air_2(e.Event)
 			UpdateRangedSoundOrigin(e\soundChannels[0],mainPlayer\cam,e\room\objects[ROOM_LCKA2_TRIGGERPIVOT],5)
 		EndIf
 	Else
-		e\eventState3 = 0.0
+		e\intState[EVENT_LCKA2_LEAVING] = False
 	EndIf
 	;[End Block]
 End Function
 
-
+Const EVENT_LCKA2_SPAWNEDCORPSE% = 0
 
 Function UpdateEvent_lck_air_broke_2(e.Event)
 	Local dist#, i%, temp%, pvt%, strtemp$, j%, k%
@@ -223,14 +222,14 @@ Function UpdateEvent_lck_air_broke_2(e.Event)
 
 	;[Block]
 	If (e\room\dist < 8) Then
-		If (e\eventState = 0) Then
+		If (Not e\intStates[EVENT_LCKA2_SPAWNEDCORPSE]) Then
 			e\room\npc[0]=CreateNPC(NPCtypeGuard, EntityX(e\room\objects[ROOM_LCKA2_CORPSESPAWN],True), EntityY(e\room\objects[ROOM_LCKA2_CORPSESPAWN],True)+0.5, EntityZ(e\room\objects[ROOM_LCKA2_CORPSESPAWN],True))
 			PointEntity(e\room\npc[0]\collider, e\room\obj)
 			RotateEntity(e\room\npc[0]\collider, 0, EntityYaw(e\room\npc[0]\collider),0, True)
 			SetNPCFrame(e\room\npc[0], 906)
 			e\room\npc[0]\state = 8
 
-			e\eventState = 1
+			e\intStates[EVENT_LCKA2_SPAWNEDCORPSE] = True
 		EndIf
 	EndIf
 	;[End Block]
