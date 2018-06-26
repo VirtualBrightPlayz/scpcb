@@ -1,3 +1,5 @@
+Include "SourceCode/MathUtils/Vector.bb"
+
 Const INFINITY# = (999.0) ^ (99999.0) ;Bigger!
 Const NAN# = (-1.0) ^ (0.5) ;Bigger?
 
@@ -255,5 +257,5 @@ Function SeedStringToInt%(seed$)
 	Return Abs(retVal)
 End Function
 ;~IDEal Editor Parameters:
-;~F#3#B#15#1E#29#2D#68#70#78#85#8B
+;~F#5#D#17#20#2B#6A#72#7A#87#8D
 ;~C#Blitz3D

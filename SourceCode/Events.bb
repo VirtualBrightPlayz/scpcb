@@ -338,8 +338,6 @@ Function UpdateEvents()
 				UpdateEventCoffin106(e)
 			Case "evt_cont_895"
 				UpdateEventCoffin(e)
-			Case "evt_chck"
-				UpdateEventCheckpoint(e)
 			Case "evt_hll_106_victim"
 				UpdateEvent106victim(e)
 			Case "evt_hll_sinkhole"

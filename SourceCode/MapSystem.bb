@@ -1,5 +1,3 @@
-Include "SourceCode/Rooms/Room_chck_hcz_ez_2.bb"
-Include "SourceCode/Rooms/Room_chck_lcz_hcz_2.bb"
 Include "SourceCode/Rooms/Room_closets_2.bb"
 Include "SourceCode/Rooms/Room_cont_008_1.bb"
 Include "SourceCode/Rooms/Room_cont_012_2.bb"
@@ -539,10 +537,6 @@ Function FillRoom(r.Room)
 			FillRoom_exit_gateb_1(r)
 		Case "cont_079_1"
 			FillRoom_cont_079_1(r)
-		Case "chck_lcz_hcz_2"
-			FillRoom_chck_lcz_hcz_2(r)
-		Case "chck_hcz_ez_2"
-			FillRoom_chck_hcz_ez_2(r)
 		Case "hll_gas_2"
 			FillRoom_hll_gas_2(r)
 		Case "test_smallwindow_2"

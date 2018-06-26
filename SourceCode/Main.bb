@@ -99,7 +99,7 @@ Include "SourceCode/Events.bb"
 Include "SourceCode/Assets.bb"
 Include "SourceCode/Save.bb"
 Include "SourceCode/Audio.bb"
-Include "SourceCode/MathUtils.bb"
+Include "SourceCode/MathUtils/MathUtils.bb"
 Include "SourceCode/INI.bb"
 
 Const VERSION$ = "1.CBN"
