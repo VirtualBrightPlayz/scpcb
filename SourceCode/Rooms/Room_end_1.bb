@@ -5,7 +5,7 @@ Function FillRoom_end_1(r.Room)
 
     Local t1%;, Bump
 
-    r\doors[0] = CreateDoor(r\zone, r\x, 0, r\z + 1136 * RoomScale, 0, r, False, True, 6)
+    r\doors[0] = CreateDoor(r\x, 0, r\z + 1136 * RoomScale, 0, r, False, DOOR_TYPE_CONT, r\roomTemplate\name)
     r\doors[0]\autoClose = False : r\doors[0]\open = False
     FreeEntity(r\doors[0]\buttons[0])
 	r\doors[0]\buttons[0]=0

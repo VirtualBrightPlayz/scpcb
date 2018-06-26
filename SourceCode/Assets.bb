@@ -32,7 +32,7 @@ Function CreateAsset.AssetWrap(filePath$, asType%, flag%=1)
 		Case ASSET_ANIM_MESH
 			as\intVal = LoadAnimMesh(as\file)
 	End Select
-	
+
 	If (as\intVal <> 0) Then
 		HideEntity(as\intVal)
 	EndIf
@@ -370,7 +370,7 @@ Function InitNewGame()
 		If (d\buttons[0] > 0) Then EntityParent(d\buttons[0], 0)
 		If (d\buttons[1] > 0) Then EntityParent(d\buttons[1], 0)
 
-		If (d\obj2 <> 0 And d\dir = 0) Then
+		If (d\obj2 <> 0 And d\type = DOOR_TYPE_DEF) Then
 			MoveEntity(d\obj, 0, 0, 8.0 * RoomScale)
 			MoveEntity(d\obj2, 0, 0, 8.0 * RoomScale)
 		EndIf
@@ -667,11 +667,11 @@ Function NullGame()
 	DeleteIntArray(MapRooms)
 
 	Delete Each RoomTemplate
-	
+
 	For itt = Each ItemTemplate
 		Delete itt
 	Next
-	
+
 	For it = Each Item
 		Delete it
 	Next

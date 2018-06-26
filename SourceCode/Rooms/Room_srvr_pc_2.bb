@@ -5,12 +5,12 @@ Function FillRoom_srvr_pc_2(r.Room)
 
     Local t1%;, Bump
 
-    d = CreateDoor(r\zone, r\x + 264.0 * RoomScale, 0.0, r\z + 672.0 * RoomScale, 270, r, False, False, 3)
+    d = CreateDoor(r\x + 264.0 * RoomScale, 0.0, r\z + 672.0 * RoomScale, 270, r, False, DOOR_TYPE_DEF, r\roomTemplate\name)
     PositionEntity(d\buttons[0], r\x + 224.0 * RoomScale, EntityY(d\buttons[0],True), r\z + 880.0 * RoomScale, True)
     PositionEntity(d\buttons[1], r\x + 304.0 * RoomScale, EntityY(d\buttons[1],True), r\z + 840.0 * RoomScale, True)
     TurnEntity(d\buttons[1],0,0,0,True)
-    d = CreateDoor(r\zone, r\x -512.0 * RoomScale, -768.0*RoomScale, r\z -336.0 * RoomScale, 0, r, False, False, 3)
-    d = CreateDoor(r\zone, r\x -509.0 * RoomScale, -768.0*RoomScale, r\z -1037.0 * RoomScale, 0, r, False, False, 3)
+    d = CreateDoor(r\x -512.0 * RoomScale, -768.0*RoomScale, r\z -336.0 * RoomScale, 0, r, False, DOOR_TYPE_DEF, r\roomTemplate\name)
+    d = CreateDoor(r\x -509.0 * RoomScale, -768.0*RoomScale, r\z -1037.0 * RoomScale, 0, r, False, DOOR_TYPE_DEF, r\roomTemplate\name)
     d\locked = True
     it = CreateItem("nvgoggles", r\x + 56.0154 * RoomScale, r\y - 648.0 * RoomScale, r\z + 749.638 * RoomScale)
     it\state = 20

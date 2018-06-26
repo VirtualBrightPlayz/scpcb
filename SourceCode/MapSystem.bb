@@ -155,7 +155,7 @@ Function KeyValue$(entity%,key$,defaultvalue$="")
 	Local test$, testkey$, value$
 	Local properties$ = EntityName(entity)
 	Local p%
-	
+
 	properties=Replace(properties,Chr(13),"")
 	key=Lower(key)
 	Repeat
@@ -247,12 +247,12 @@ Function LoadRoomTemplates(file$)
 			TemporaryString = Mid(TemporaryString, 2, Len(TemporaryString) - 2)
 			If (Not (Lower(TemporaryString)="room ambience")) Then
 				StrTemp = GetINIString(file, TemporaryString, "meshpath")
-	
+
 				rt = CreateRoomTemplate(StrTemp)
 				rt\name = Lower(TemporaryString)
-	
+
 				StrTemp = Lower(GetINIString(file, TemporaryString, "shape", "0"))
-	
+
 				Select StrTemp
 					Case "room0", "0"
 						rt\shape = ROOM0
@@ -269,7 +269,7 @@ Function LoadRoomTemplates(file$)
 					Default
 						rt\shape = ROOM0
 				End Select
-	
+
 				Zones = Lower(GetINIString(file, TemporaryString, "zones"))
 				rt\zones = 0
 				If (Instr(Zones,"lcz")>0) Then
@@ -281,10 +281,10 @@ Function LoadRoomTemplates(file$)
 				If (Instr(Zones,"ez")>0) Then
 					rt\zones = rt\zones Or ZONE_EZ
 				EndIf
-	
+
 				If (rt\shape<>ROOM0) Then
 					rt\commonness = Max(Min(GetINIFloat(file, TemporaryString, "commonness"), 100), 0)
-	
+
 					AmountRange = GetINIString(file, TemporaryString, "amount", "")
 					If (AmountRange="") Then
 						rt\minAmount = -1
@@ -296,23 +296,23 @@ Function LoadRoomTemplates(file$)
 						rt\minAmount = Int(AmountRange)
 						rt\maxAmount = rt\minAmount
 					EndIf
-	
+
 					rt\large = GetINIInt(file, TemporaryString, "large")
 					rt\disableDecals = GetINIInt(file, TemporaryString, "disabledecals")
-	
+
 					xRange = GetINIString(file, TemporaryString, "xrange")
 					yRange = GetINIString(file, TemporaryString, "yrange")
-	
+
 					If (xRange = "") Then
 						xRange = "0-1"
 					EndIf
 					If (yRange = "") Then
 						yRange = "0-1"
 					EndIf
-	
+
 					rt\xRangeStart = Float(Left(xRange,Instr(xRange,"-")))
 					rt\xRangeEnd = Float(Mid(xRange,Instr(xRange,"-")+1))
-	
+
 					rt\yRangeStart = Float(Left(yRange,Instr(yRange,"-")))
 					rt\yrangeEnd = Float(Mid(yRange,Instr(yRange,"-")+1))
 				Else
@@ -321,7 +321,7 @@ Function LoadRoomTemplates(file$)
 					rt\zones = 0
 					rt\commonness = 0
 				EndIf
-	
+
 			EndIf
 		EndIf
 	Wend
@@ -404,7 +404,7 @@ Type Room
 
 	Field nonFreeAble%[10]
 	Field textures%[10]
-	
+
 	;TODO: what the fuck
 	Field maxLights% = 0
 	Field lightSpriteHidden%[MaxRoomLights]
@@ -1796,7 +1796,7 @@ Function CreateMap()
 	;4x4 squares, offset 1 slot from 0,0
 	Local rectWidth% = 3
 	Local rectHeight% = 3
-	
+
 	For y = 0 To mapDim-1
 		For x = 0 To mapDim-1
 			If ((x Mod rectWidth=1) Or (y Mod rectHeight=1)) Then
@@ -1860,7 +1860,7 @@ Function CreateMap()
 	;start off by placing rooms that ask to be placed a certain amount of times
 	Local prioritizedTemplateCount% = 0
 	Local rt.RoomTemplate
-	
+
 	For rt = Each RoomTemplate
 		If (((rt\zones And zone)<>0) And (rt\maxAmount>0) And (rt\shape<>ROOM0)) Then
 			prioritizedTemplateCount=prioritizedTemplateCount+1
@@ -1921,9 +1921,9 @@ Function CreateMap()
 		rt = Object.RoomTemplate(GetIntArrayElem(prioritizedTemplates,k,0))
 
 		placementCount = Rand(rt\minAmount,rt\maxAmount)
-		
+
 		DebugLog("trying to place "+Str(placementCount)+" "+rt\name)
-		
+
 		For c = 1 To placementCount
 			loopStartX = Int(Min(Floor(Float(mapDim)*rt\xRangeStart),mapDim-1))
 			loopStartY = Int(Min(Floor(Float(mapDim)*rt\yRangeStart),mapDim-1))
@@ -1937,7 +1937,7 @@ Function CreateMap()
 			offsetY = Rand(0,loopY)
 
 			placed = False
-			
+
 			For j = 0 To loopY
 				For i = 0 To loopX
 					x = ((i+offsetX) Mod (loopX+1)) + loopStartX
@@ -1976,7 +1976,7 @@ Function CreateMap()
 	Local index% = 0
 	Local tempHandle1%
 	Local tempHandle2%
-	
+
 	For rt = Each RoomTemplate
 		If (((rt\zones And zone)<>0) And (rt\maxAmount<0) And (rt\shape<>ROOM0)) Then
 			SetIntArrayElem(randomTemplates,Handle(rt),index,0)
@@ -2055,7 +2055,7 @@ Function CreateMap()
 						r\adjacent[i] = Object.Room(GetIntArrayElem(MapRooms,x+tempX,y+tempY))
 						If (r\adjacent[i]<>Null) Then
 							If (r\adjacent[i]\adjDoor[(i+2) Mod 4]=Null) Then
-								r\adjDoor[i] = CreateDoor(zone,r\x+4.0*tempX,0.0,r\z+4.0*tempY,90.0*((i+1) Mod 2),Null)
+								r\adjDoor[i] = CreateDoor(r\x+4.0*tempX, 0.0,r\z+4.0*tempY, 90.0*((i+1) Mod 2), Null)
 								newWaypoint = CreateWaypoint(r\x+4.0*tempX,50.0*RoomScale,r\z+4.0*tempY,r)
 
 								DebugLog("step1")

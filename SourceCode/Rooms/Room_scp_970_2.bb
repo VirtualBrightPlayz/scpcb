@@ -5,12 +5,12 @@ Function FillRoom_scp_970_2(r.Room)
 
 	Local t1%;, Bump
 
-    r\doors[0] = CreateDoor(r\zone, r\x - 1288.0 * RoomScale, 0, r\z, 270, r)
-    r\doors[1] = CreateDoor(r\zone, r\x - 760.0 * RoomScale, 0, r\z, 270, r)
-    r\doors[2] = CreateDoor(r\zone, r\x - 264.0 * RoomScale, 0, r\z, 270, r)
-    r\doors[3] = CreateDoor(r\zone, r\x + 264.0 * RoomScale, 0, r\z, 270, r)
-    r\doors[4] = CreateDoor(r\zone, r\x + 760.0 * RoomScale, 0, r\z, 270, r)
-    r\doors[5] = CreateDoor(r\zone, r\x + 1288.0 * RoomScale, 0, r\z, 270, r)
+    r\doors[0] = CreateDoor(r\x - 1288.0 * RoomScale, 0, r\z, 270, r)
+    r\doors[1] = CreateDoor(r\x - 760.0 * RoomScale, 0, r\z, 270, r)
+    r\doors[2] = CreateDoor(r\x - 264.0 * RoomScale, 0, r\z, 270, r)
+    r\doors[3] = CreateDoor(r\x + 264.0 * RoomScale, 0, r\z, 270, r)
+    r\doors[4] = CreateDoor(r\x + 760.0 * RoomScale, 0, r\z, 270, r)
+    r\doors[5] = CreateDoor(r\x + 1288.0 * RoomScale, 0, r\z, 270, r)
 
     For i = 0 To 5
         MoveEntity(r\doors[i]\buttons[0], 0,0,-8.0)

@@ -35,7 +35,7 @@ Function FillRoom_off_2level_2(r.Room)
         EntityParent(it\collider, r\obj)
     EndIf
 
-    r\doors[0] = CreateDoor(r\zone, r\x - 1056.0 * RoomScale, 384.0*RoomScale, r\z + 290.0 * RoomScale, 90, r, True)
+    r\doors[0] = CreateDoor(r\x - 1056.0 * RoomScale, 384.0*RoomScale, r\z + 290.0 * RoomScale, 90, r, True)
     r\doors[0]\autoClose = False : r\doors[0]\open = True
     PositionEntity(r\doors[0]\buttons[0], EntityX(r\doors[0]\buttons[0],True),EntityY(r\doors[0]\buttons[0],True),r\z + 161.0 * RoomScale,True)
     PositionEntity(r\doors[0]\buttons[1], EntityX(r\doors[0]\buttons[1],True),EntityY(r\doors[0]\buttons[1],True),r\z + 161.0 * RoomScale,True)

@@ -11,13 +11,13 @@ Function FillRoom_cont_106_1(r.Room)
     it = CreatePaper("docRecall", r\x + 268.0 * RoomScale, r\y - 576 * RoomScale, r\z + 2593.0 * RoomScale)
     EntityParent(it\collider, r\obj)
 
-    d = CreateDoor(r\zone, r\x - 968.0 * RoomScale, -764.0 * RoomScale, r\z + 1392.0 * RoomScale, 0, r, False, False, 4)
+    d = CreateDoor(r\x - 968.0 * RoomScale, -764.0 * RoomScale, r\z + 1392.0 * RoomScale, 0, r, False, DOOR_TYPE_DEF, r\roomTemplate\name)
     d\autoClose = False : d\open = False
 
-    d = CreateDoor(r\zone, r\x, 0, r\z - 464.0 * RoomScale, 0, r, False, False, 3)
+    d = CreateDoor(r\x, 0, r\z - 464.0 * RoomScale, 0, r, False, DOOR_TYPE_DEF, r\roomTemplate\name)
     d\autoClose = False : d\open = False
 
-    d = CreateDoor(r\zone, r\x - 624.0 * RoomScale, -1280.0 * RoomScale, r\z, 90, r, False, False, 4)
+    d = CreateDoor(r\x - 624.0 * RoomScale, -1280.0 * RoomScale, r\z, 90, r, False, DOOR_TYPE_DEF, r\roomTemplate\name)
     d\autoClose = False : d\open = False
 
     r\objects[6] = LoadMesh("GFX/Map/room1062.b3d")
@@ -187,7 +187,7 @@ Function UpdateEvent_cont_106_1(e.Event)
 				PlaySound2(e\sounds[2])
 			EndIf
 		EndIf
-		
+
 		If ((e\eventState3>3200) Or (e\eventState3<2500)) Or (e\eventState<>1) Then
 			SoundTransmission = e\room\levers[1]\succ
 		EndIf

@@ -5,12 +5,12 @@ Function FillRoom_off_l_conf_2(r.Room)
 
 	Local t1%;, Bump
 
-    d = CreateDoor(r\zone, r\x + 240.0 * RoomScale, 0.0, r\z + 48.0 * RoomScale, 270, r, False, False, 3)
+    d = CreateDoor(r\x + 240.0 * RoomScale, 0.0, r\z + 48.0 * RoomScale, 270, r, False, DOOR_TYPE_DEF, r\roomTemplate\name)
     PositionEntity(d\buttons[0], r\x + 224.0 * RoomScale, EntityY(d\buttons[0],True), r\z + 176.0 * RoomScale,True)
     PositionEntity(d\buttons[1], r\x + 256.0 * RoomScale, EntityY(d\buttons[1],True), EntityZ(d\buttons[1],True),True)
     d\autoClose = False : d\open = False
 
-    r\doors[0] = CreateDoor(r\zone, r\x - 432.0 * RoomScale, 0.0, r\z, 90, r, False, False, 0, "1234")
+    r\doors[0] = CreateDoor(r\x - 432.0 * RoomScale, 0.0, r\z, 90, r, False, DOOR_TYPE_DEF, "", "1234")
     PositionEntity(r\doors[0]\buttons[0], r\x - 416.0 * RoomScale, EntityY(r\doors[0]\buttons[0],True), r\z + 176.0 * RoomScale,True)
     FreeEntity(r\doors[0]\buttons[1])
 	r\doors[0]\buttons[1] = 0

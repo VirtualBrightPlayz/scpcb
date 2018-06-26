@@ -56,22 +56,22 @@ Function FillRoom_cont_049_2(r.Room)
     Next
 
 
-    r\doors[0] = CreateDoor(r\zone, r\x + 328.0 * RoomScale, 0.0, r\z + 656.0 * RoomScale, 90, r, True)
+    r\doors[0] = CreateDoor(r\x + 328.0 * RoomScale, 0.0, r\z + 656.0 * RoomScale, 90, r, True)
     r\doors[0]\autoClose = False : r\doors[0]\open = True
     PositionEntity(r\doors[0]\buttons[1], r\x + 288.0 * RoomScale, 0.7, r\z + 512.0 * RoomScale, True)
     PositionEntity(r\doors[0]\buttons[0], r\x + 368.0 * RoomScale, 0.7, r\z + 840.0 * RoomScale, True)
 
-    r\doors[1] = CreateDoor(r\zone, r\x - 2328.0 * RoomScale, -3520.0 * RoomScale, r\z - 656.0 * RoomScale, 90, r, False)
+    r\doors[1] = CreateDoor(r\x - 2328.0 * RoomScale, -3520.0 * RoomScale, r\z - 656.0 * RoomScale, 90, r, False)
     r\doors[1]\autoClose = False : r\doors[1]\open = False
     PositionEntity(r\doors[1]\buttons[1], r\x - 2432.0 * RoomScale, EntityY(r\doors[1]\buttons[1],True), r\z - 816.0 * RoomScale, True)
     PositionEntity(r\doors[1]\buttons[0], r\x - 2304.0 * RoomScale, EntityY(r\doors[1]\buttons[0],True), r\z - 472.0 * RoomScale, True)
 
-    r\doors[2] = CreateDoor(r\zone, r\x - 328.0 * RoomScale, 0.0, r\z - 656.0 * RoomScale, 90, r, True)
+    r\doors[2] = CreateDoor(r\x - 328.0 * RoomScale, 0.0, r\z - 656.0 * RoomScale, 90, r, True)
     r\doors[2]\autoClose = False : r\doors[2]\open = True
     PositionEntity(r\doors[2]\buttons[0], r\x - 288.0 * RoomScale, 0.7, r\z - 512.0 * RoomScale, True)
     PositionEntity(r\doors[2]\buttons[1], r\x - 368.0 * RoomScale, 0.7, r\z - 840.0 * RoomScale, True)
 
-    r\doors[3] = CreateDoor(r\zone, r\x + 2360.0 * RoomScale, -3520.0 * RoomScale, r\z + 656.0 * RoomScale, 90, r, False)
+    r\doors[3] = CreateDoor(r\x + 2360.0 * RoomScale, -3520.0 * RoomScale, r\z + 656.0 * RoomScale, 90, r, False)
     r\doors[3]\autoClose = False : r\doors[3]\open = False
     PositionEntity(r\doors[3]\buttons[0], r\x + 2432.0 * RoomScale, EntityY(r\doors[3]\buttons[0],True), r\z + 816.0 * RoomScale, True)
     PositionEntity(r\doors[3]\buttons[1], r\x + 2312.0 * RoomScale, EntityY(r\doors[3]\buttons[1],True), r\z + 472.0 * RoomScale, True)
@@ -85,10 +85,10 @@ Function FillRoom_cont_049_2(r.Room)
     Next
 
     ;storage room door
-    r\doors[4] = CreateDoor(r\zone, r\x + 272.0 * RoomScale, -3552.0 * RoomScale, r\z + 104.0 * RoomScale, 90, r, False)
+    r\doors[4] = CreateDoor(r\x + 272.0 * RoomScale, -3552.0 * RoomScale, r\z + 104.0 * RoomScale, 90, r, False)
     r\doors[4]\autoClose = False : r\doors[4]\open = False : r\doors[4]\locked = True
 
-    d = CreateDoor(0, r\x,0,r\z, 0, r, False, 2, -2)
+    d = CreateDoor(r\x,0,r\z, 0, r, False, DOOR_TYPE_HCZ, r\roomTemplate\name)
 
     it = CreatePaper("doc049", r\x - 608.0 * RoomScale, r\y - 3332.0 * RoomScale, r\z + 876.0 * RoomScale)
     EntityParent(it\collider, r\obj)

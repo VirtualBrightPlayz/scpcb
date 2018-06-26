@@ -5,19 +5,16 @@ Global DoorTempID%
 Type Door
 	Field obj%, obj2%, frameobj%, buttons%[2]
 	Field locked%, open%, angle#, openstate#, fastopen%
-	Field dir%
+	Field type%
 	Field timer%, timerstate#
-	Field keyCard%
 	Field room.Room
 
 	Field dist#
 
 	Field code$
 
+	Field tag%
 	Field id%
-
-	Field level%
-	Field levelDest%
 
 	Field autoClose%
 
@@ -33,7 +30,10 @@ End Type
 Dim BigDoorOBJ.MarkedForRemoval(2) ;yo yeye alright
 Dim HeavyDoorObj.MarkedForRemoval(2)
 
-Function CreateDoor.Door(lvl%, x#, y#, z#, angle#, room.Room, dopen% = False,  big% = False, keycard% = False, code$="")
+Const DOOR_TYPE_DEF% = 0
+Const DOOR_TYPE_HCZ% = 1
+Const DOOR_TYPE_CONT% = 2
+Function CreateDoor.Door(x#, y#, z#, angle#, room.Room, open% = False,  doorType% = DOOR_TYPE_DEF, tag$ = "" code$ = "")
 	Local d.Door, parent%, i%
 	If (room <> Null) Then parent = room\obj
 
@@ -53,75 +53,68 @@ Function CreateDoor.Door(lvl%, x#, y#, z#, angle#, room.Room, dopen% = False,  b
 	Local buttonCodeObj%
 	Local buttonKeyObj%
 	Local buttonScannerOBJ%
-	
+
 	d = New Door
-	If (big=1) Then
-		d\obj = CopyEntity(contDoorLeft)
-		ScaleEntity(d\obj, 55 * RoomScale, 55 * RoomScale, 55 * RoomScale)
-		d\obj2 = CopyEntity(contDoorRight)
-		ScaleEntity(d\obj2, 55 * RoomScale, 55 * RoomScale, 55 * RoomScale)
+	d\type = doorType
+	Select (d\type)
+		Case DOOR_TYPE_CONT
+			d\obj = CopyEntity(contDoorLeft)
+			ScaleEntity(d\obj, 55 * RoomScale, 55 * RoomScale, 55 * RoomScale)
+			d\obj2 = CopyEntity(contDoorRight)
+			ScaleEntity(d\obj2, 55 * RoomScale, 55 * RoomScale, 55 * RoomScale)
 
-		d\frameobj = CopyEntity(doorColl)
-		ScaleEntity(d\frameobj, RoomScale, RoomScale, RoomScale)
-		EntityType(d\frameobj, HIT_MAP)
-		EntityAlpha(d\frameobj, 0.0)
-	ElseIf (big=2) Then
-		d\obj = CopyEntity(hczDoorObj[0])
-		ScaleEntity(d\obj, RoomScale, RoomScale, RoomScale)
-		d\obj2 = CopyEntity(hczDoorObj[1])
-		ScaleEntity(d\obj2, RoomScale, RoomScale, RoomScale)
+			d\frameobj = CopyEntity(doorColl)
+			ScaleEntity(d\frameobj, RoomScale, RoomScale, RoomScale)
+			EntityType(d\frameobj, HIT_MAP)
+			EntityAlpha(d\frameobj, 0.0)
+		Case DOOR_TYPE_HCZ
+			d\obj = CopyEntity(hczDoorObj[0])
+			ScaleEntity(d\obj, RoomScale, RoomScale, RoomScale)
+			d\obj2 = CopyEntity(hczDoorObj[1])
+			ScaleEntity(d\obj2, RoomScale, RoomScale, RoomScale)
 
-		d\frameobj = CopyEntity(doorFrameObj)
-	Else
-		d\obj = CopyEntity(doorObj)
-		ScaleEntity(d\obj, (204.0 * RoomScale) / MeshWidth(d\obj), 312.0 * RoomScale / MeshHeight(d\obj), 16.0 * RoomScale / MeshDepth(d\obj))
+			d\frameobj = CopyEntity(doorFrameObj)
+		Default
+			d\obj = CopyEntity(doorObj)
+			ScaleEntity(d\obj, (204.0 * RoomScale) / MeshWidth(d\obj), 312.0 * RoomScale / MeshHeight(d\obj), 16.0 * RoomScale / MeshDepth(d\obj))
 
-		d\frameobj = CopyEntity(doorFrameObj)
-		d\obj2 = CopyEntity(doorObj)
+			d\frameobj = CopyEntity(doorFrameObj)
+			d\obj2 = CopyEntity(doorObj)
 
-		ScaleEntity(d\obj2, (204.0 * RoomScale) / MeshWidth(d\obj), 312.0 * RoomScale / MeshHeight(d\obj), 16.0 * RoomScale / MeshDepth(d\obj))
-		;entityType d\obj2, HIT_MAP
-	EndIf
+			ScaleEntity(d\obj2, (204.0 * RoomScale) / MeshWidth(d\obj), 312.0 * RoomScale / MeshHeight(d\obj), 16.0 * RoomScale / MeshDepth(d\obj))
+			;entityType d\obj2, HIT_MAP
+		EndIf
+	End Select
 
-	;scaleentity(d\obj, 0.1, 0.1, 0.1)
 	PositionEntity(d\frameobj, x, y, z)
-	ScaleEntity(d\frameobj, (8.0 / 2048.0), (8.0 / 2048.0), (8.0 / 2048.0))
+	ScaleEntity(d\frameobj, RoomScale, RoomScale, RoomScale)
 	EntityType(d\obj, HIT_MAP)
 	EntityType(d\obj2, HIT_MAP)
 
 	d\id = DoorTempID
 	DoorTempID=DoorTempID+1
 
-	d\keyCard = keycard
+	d\tag = tag
 	d\code = code
 
-	d\level = lvl
-	d\levelDest = 66
-
 	For i = 0 To 1
-		If (code <> "") Then
+		If (tag <> "") Then
+			buttonKeyObj = GrabMesh("GFX/Map/Meshes/ButtonKeycard.b3d")
+			d\buttons[i]= CopyEntity(buttonKeyObj)
+			DropAsset(buttonKeyObj)
+		ElseIf (code <> "") Then
 			buttonCodeObj = GrabMesh("GFX/Map/Meshes/ButtonCode.b3d")
 			d\buttons[i] = CopyEntity(buttonCodeObj)
 			EntityFX(d\buttons[i], 1)
 			DropAsset(buttonCodeObj)
 		Else
-			If (keycard>0) Then
-				buttonKeyObj = GrabMesh("GFX/Map/Meshes/ButtonKeycard.b3d")
-				d\buttons[i]= CopyEntity(buttonKeyObj)
-				DropAsset(buttonKeyObj)
-			ElseIf (keycard<0) Then
-				buttonScannerOBJ = GrabMesh("GFX/Map/Meshes/ButtonScanner.b3d")
-				d\buttons[i]= CopyEntity(buttonScannerOBJ)
-				DropAsset(buttonScannerOBJ)
-			Else
-				d\buttons[i] = CopyEntity(buttonObj)
-			EndIf
+			d\buttons[i] = CopyEntity(buttonObj)
 		EndIf
 
 		ScaleEntity(d\buttons[i], 0.03, 0.03, 0.03)
 	Next
 
-	If (big=1) Then
+	If (d\type = DOOR_TYPE_CONT) Then
 		PositionEntity(d\buttons[0], x - 432.0 * RoomScale, y + 0.7, z + 192.0 * RoomScale)
 		PositionEntity(d\buttons[1], x + 432.0 * RoomScale, y + 0.7, z - 192.0 * RoomScale)
 		RotateEntity(d\buttons[0], 0, 90, 0)
@@ -143,7 +136,7 @@ Function CreateDoor.Door(lvl%, x#, y#, z#, angle#, room.Room, dopen% = False,  b
 
 	If (d\obj2 <> 0) Then
 		PositionEntity(d\obj2, x, y, z)
-		If (big=1) Then
+		If (d\type = DOOR_TYPE_CONT) Then
 			RotateEntity(d\obj2, 0, angle, 0)
 		Else
 			RotateEntity(d\obj2, 0, angle + 180, 0)
@@ -166,9 +159,7 @@ Function CreateDoor.Door(lvl%, x#, y#, z#, angle#, room.Room, dopen% = False,  b
 
 	EntityPickMode(d\frameobj,2)
 
-	If (d\open And big = False And Rand(8) = 1) Then d\autoClose = True
-	d\dir=big
-	d\room=room
+	d\room = room
 
 	d\mtfClose = True
 
@@ -260,19 +251,19 @@ Function UpdateDoors()
 
 			If (d\open) Then
 				If (d\openstate < 180) Then
-					Select d\dir
-						Case 0
-							d\openstate = Min(180, d\openstate + timing\tickDuration * 2 * (d\fastopen+1))
-							MoveEntity(d\obj, Sin(d\openstate) * (d\fastopen*2+1) * timing\tickDuration / 80.0, 0, 0)
-							If (d\obj2 <> 0) Then MoveEntity(d\obj2, Sin(d\openstate)* (d\fastopen+1) * timing\tickDuration / 80.0, 0, 0)
-						Case 1
+					Select d\type
+						Case DOOR_TYPE_CONT
 							d\openstate = Min(180, d\openstate + timing\tickDuration * 0.8)
 							MoveEntity(d\obj, Sin(d\openstate) * timing\tickDuration / 180.0, 0, 0)
 							If (d\obj2 <> 0) Then MoveEntity(d\obj2, -Sin(d\openstate) * timing\tickDuration / 180.0, 0, 0)
-						Case 2
+						Case DOOR_TYPE_HCZ
 							d\openstate = Min(180, d\openstate + timing\tickDuration * 2 * (d\fastopen+1))
 							MoveEntity(d\obj, Sin(d\openstate) * (d\fastopen+1) * timing\tickDuration / 85.0, 0, 0)
-							If (d\obj2 <> 0) Then MoveEntity(d\obj2, Sin(d\openstate)* (d\fastopen*2+1) * timing\tickDuration / 120.0, 0, 0)
+							If (d\obj2 <> 0) Then MoveEntity(d\obj2, Sin(d\openstate) * (d\fastopen*2+1) * timing\tickDuration / 120.0, 0, 0)
+						Default
+							d\openstate = Min(180, d\openstate + timing\tickDuration * 2 * (d\fastopen+1))
+							MoveEntity(d\obj, Sin(d\openstate) * (d\fastopen*2+1) * timing\tickDuration / 80.0, 0, 0)
+							If (d\obj2 <> 0) Then MoveEntity(d\obj2, Sin(d\openstate) * (d\fastopen+1) * timing\tickDuration / 80.0, 0, 0)
 					End Select
 				Else
 					d\fastopen = 0
@@ -284,10 +275,10 @@ Function UpdateDoors()
 
 						If (d\timerstate = 0) Then
 							d\open = (Not d\open)
-							Select (d\dir)
-								Case 1
+							Select (d\type)
+								Case DOOR_TYPE_CONT
 									PlayRangedSound_SM(sndManager\closeBigDoor[Rand(0, 1)], mainPlayer\cam, d\obj)
-								Case 2
+								Case DOOR_TYPE_HCZ
 									PlayRangedSound_SM(sndManager\closeHCZDoor[Rand(0, 2)], mainPlayer\cam, d\obj)
 								Default
 									PlayRangedSound_SM(sndManager\closeDoor[Rand(0, 2)], mainPlayer\cam, d\obj)
@@ -296,12 +287,12 @@ Function UpdateDoors()
 					EndIf
 					If (d\autoClose And RemoteDoorOn = True) Then
 						If (EntityDistance(mainPlayer\cam, d\obj) < 2.1) Then
-							;PlaySound2(HorrorSFX(7) ;TODO: fix)
+							;PlaySound2(HorrorSFX(7))) ;TODO: fix
 							d\open = False
-							Select (d\dir)
-								Case 1
+							Select (d\type)
+								Case DOOR_TYPE_CONT
 									PlayRangedSound_SM(sndManager\closeBigDoor[Rand(0, 1)], mainPlayer\cam, d\obj)
-								Case 2
+								Case DOOR_TYPE_HCZ
 									PlayRangedSound_SM(sndManager\closeHCZDoor[Rand(0, 2)], mainPlayer\cam, d\obj)
 								Default
 									PlayRangedSound_SM(sndManager\closeDoor[Rand(0, 2)], mainPlayer\cam, d\obj)
@@ -312,12 +303,8 @@ Function UpdateDoors()
 				EndIf
 			Else
 				If (d\openstate > 0) Then
-					Select d\dir
-						Case 0
-							d\openstate = Max(0, d\openstate - timing\tickDuration * 2 * (d\fastopen+1))
-							MoveEntity(d\obj, Sin(d\openstate) * -timing\tickDuration * (d\fastopen+1) / 80.0, 0, 0)
-							If (d\obj2 <> 0) Then MoveEntity(d\obj2, Sin(d\openstate) * (d\fastopen+1) * -timing\tickDuration / 80.0, 0, 0)
-						Case 1
+					Select d\Type
+						Case DOOR_TYPE_CONT
 							d\openstate = Max(0, d\openstate - timing\tickDuration*0.8)
 							MoveEntity(d\obj, Sin(d\openstate) * -timing\tickDuration / 180.0, 0, 0)
 							If (d\obj2 <> 0) Then MoveEntity(d\obj2, Sin(d\openstate) * timing\tickDuration / 180.0, 0, 0)
@@ -342,22 +329,26 @@ Function UpdateDoors()
 									FreeEntity(pvt)
 								Next
 							EndIf
-						Case 2
+						Case DOOR_TYPE_HCZ
 							d\openstate = Max(0, d\openstate - timing\tickDuration * 2 * (d\fastopen+1))
 							MoveEntity(d\obj, Sin(d\openstate) * -timing\tickDuration * (d\fastopen+1) / 85.0, 0, 0)
 							If (d\obj2 <> 0) Then MoveEntity(d\obj2, Sin(d\openstate) * (d\fastopen+1) * -timing\tickDuration / 120.0, 0, 0)
+						Default
+							d\openstate = Max(0, d\openstate - timing\tickDuration * 2 * (d\fastopen+1))
+							MoveEntity(d\obj, Sin(d\openstate) * -timing\tickDuration * (d\fastopen+1) / 80.0, 0, 0)
+							If (d\obj2 <> 0) Then MoveEntity(d\obj2, Sin(d\openstate) * (d\fastopen+1) * -timing\tickDuration / 80.0, 0, 0)
 					End Select
 
 					If (d\angle = 0 Or d\angle=180) Then
 						If (Abs(EntityZ(d\frameobj, True)-EntityZ(mainPlayer\collider))<0.15) Then
-							If (Abs(EntityX(d\frameobj, True)-EntityX(mainPlayer\collider))<0.7*(d\dir*2+1)) Then
+							If (Abs(EntityX(d\frameobj, True)-EntityX(mainPlayer\collider))<0.7*(d\type*2+1)) Then
 								z = CurveValue(EntityZ(d\frameobj,True)+0.15*Sgn(EntityZ(mainPlayer\collider)-EntityZ(d\frameobj, True)), EntityZ(mainPlayer\collider), 5)
 								PositionEntity(mainPlayer\collider, EntityX(mainPlayer\collider), EntityY(mainPlayer\collider), z)
 							EndIf
 						EndIf
 					Else
 						If (Abs(EntityX(d\frameobj, True)-EntityX(mainPlayer\collider))<0.15) Then
-							If (Abs(EntityZ(d\frameobj, True)-EntityZ(mainPlayer\collider))<0.7*(d\dir*2+1)) Then
+							If (Abs(EntityZ(d\frameobj, True)-EntityZ(mainPlayer\collider))<0.7*(d\type*2+1)) Then
 								x = CurveValue(EntityX(d\frameobj,True)+0.15*Sgn(EntityX(mainPlayer\collider)-EntityX(d\frameobj, True)), EntityX(mainPlayer\collider), 5)
 								PositionEntity(mainPlayer\collider, x, EntityY(mainPlayer\collider), EntityZ(mainPlayer\collider))
 							EndIf
@@ -368,92 +359,57 @@ Function UpdateDoors()
 					d\fastopen = 0
 					PositionEntity(d\obj, EntityX(d\frameobj, True), EntityY(d\frameobj, True), EntityZ(d\frameobj, True))
 					If (d\obj2 <> 0) Then PositionEntity(d\obj2, EntityX(d\frameobj, True), EntityY(d\frameobj, True), EntityZ(d\frameobj, True))
-					If (d\obj2 <> 0 And d\dir = 0) Then
+					If (d\obj2 <> 0 And d\type = DOOR_TYPE_DEF) Then
 						MoveEntity(d\obj, 0, 0, 8.0 * RoomScale)
 						MoveEntity(d\obj2, 0, 0, 8.0 * RoomScale)
 					EndIf
 				EndIf
 			EndIf
-
 		EndIf
-
 	Next
 End Function
 
-Function UseDoor(d.Door, showmsg%=True)
-	Local temp% = 0
-	If (d\keyCard > 0) Then
-		If (mainPlayer\selectedItem = Null) Then
-			If (showmsg = True) Then
-				Msg = "A keycard is required to operate this door."
-				MsgTimer = 70 * 5
-			EndIf
-			Return
-		Else
-			Select mainPlayer\selectedItem\template\name
-				Case "key1"
-					temp = 1
-				Case "key2"
-					temp = 2
-				Case "key3"
-					temp = 3
-				Case "key4"
-					temp = 4
-				Case "key5"
-					temp = 5
-				Default
-					temp = -1
-			End Select
+Function UseDoor(d.Door, showmsg% = True)
+	Local i%, item.Item
+	Local playerHasKeycard% = False
+	Local playerHasRightKeycard% = False
 
-			If (temp =-1) Then
-				If (showmsg = True) Then
-					Msg = "A keycard is required to operate this door."
-					MsgTimer = 70 * 5
-				EndIf
-				Return
-			ElseIf (temp >= d\keyCard) Then
-				mainPlayer\selectedItem = Null
-				If (showmsg = True) Then
+	;Does the door require a keycard?
+	If (d\tag <> "") Then
+		;Does the player have the right keycard?
+		For i=0 To mainPlayer\inventory\size-1
+			item = mainPlayer\inventory\items[i]
+			If (item <> Null) Then
+				If (item\template\name = "keycard") Then
 					If (d\locked) Then
 						PlaySound_SM(sndManager\keycardErr)
 						Msg = "The keycard was inserted into the slot but nothing happened."
 						MsgTimer = 70 * 5
 						Return
-					Else
-						PlaySound_SM(sndManager\keycardUse)
-						Msg = "The keycard was inserted into the slot."
-						MsgTimer = 70 * 5
+					EndIf
+
+					playerHasKeycard = True
+					If (HasTag(item, d\tag) Or HasTag(item, "omni")) Then
+						playerHasRightKeycard = True
+						Exit
 					EndIf
 				EndIf
-			Else
-				mainPlayer\selectedItem = Null
-				If (showmsg = True) Then
-					PlaySound_SM(sndManager\keycardErr)
-					If (d\locked) Then
-						Msg = "The keycard was inserted into the slot but nothing happened."
-					Else
-						Msg = "A keycard with a higher security clearance is required to operate this door."
-					EndIf
-					MsgTimer = 70 * 5
-				EndIf
-				Return
 			EndIf
-		EndIf
-	ElseIf (d\keyCard < 0) Then
-		;I can't find any way to produce short circuited boolean expressions so work around this by using a temporary variable - risingstar64
-		If (mainPlayer\selectedItem <> Null) Then
-			temp = (mainPlayer\selectedItem\template\name = "hand" And d\keyCard=-1) Or (mainPlayer\selectedItem\template\name = "hand2" And d\keyCard=-2)
-		EndIf
-		If (temp <> 0) Then
-			PlaySound_SM(sndManager\scannerUse)
-			Msg = "You place the palm of the hand onto the scanner. The scanner reads: "+Chr(34)+"DNA verified. Access granted."+Chr(34)
-			MsgTimer = 70 * 10
+		Next
+
+		If (playerHasRightKeycard) Then
+			PlaySound_SM(sndManager\keycardUse)
+			If (showmsg) Then
+				Msg = "The keycard was inserted into the slot."
+				MsgTimer = 70 * 5
+			EndIf
+		ElseIf (playerHasKeycard) Then
+			Msg = "A keycard with a higher security clearance is required to operate this door."
+			MsgTimer = 70 * 5
+			Return
 		Else
-			If (showmsg = True) Then
-				PlaySound_SM(sndManager\scannerErr)
-				Msg = "You placed your palm onto the scanner. The scanner reads: "+Chr(34)+"DNA does not match known sample. Access denied."+Chr(34)
-				MsgTimer = 70 * 10
-			EndIf
+			Msg = "A keycard is required to operate this door."
+			MsgTimer = 70 * 5
 			Return
 		EndIf
 	Else
@@ -501,19 +457,19 @@ Function UseDoor(d.Door, showmsg%=True)
 	If (d\open) Then
 		If (d\linkedDoor <> Null) Then d\linkedDoor\timerstate = d\linkedDoor\timer
 		d\timerstate = d\timer
-		Select (d\dir)
-			Case 1
+		Select (d\type)
+			Case DOOR_TYPE_CONT
 				PlayRangedSound_SM(sndManager\openBigDoor[Rand(0, 1)], mainPlayer\cam, d\obj)
-			Case 2
+			Case DOOR_TYPE_HCZ
 				PlayRangedSound_SM(sndManager\openHCZDoor[Rand(0, 2)], mainPlayer\cam, d\obj)
 			Default
 				PlayRangedSound_SM(sndManager\openDoor[Rand(0, 2)], mainPlayer\cam, d\obj)
 		End Select
 	Else
-		Select (d\dir)
-			Case 1
+		Select (d\type)
+			Case DOOR_TYPE_CONT
 				PlayRangedSound_SM(sndManager\closeBigDoor[Rand(0, 1)], mainPlayer\cam, d\obj)
-			Case 2
+			Case DOOR_TYPE_HCZ
 				PlayRangedSound_SM(sndManager\closeHCZDoor[Rand(0, 2)], mainPlayer\cam, d\obj)
 			Default
 				PlayRangedSound_SM(sndManager\closeDoor[Rand(0, 2)], mainPlayer\cam, d\obj)

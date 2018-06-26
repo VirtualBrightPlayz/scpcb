@@ -5,7 +5,7 @@ Function FillRoom_off_rosewood_2(r.Room)
 
 	Local t1%;, Bump
 
-    d = CreateDoor(r\zone, r\x + 1440.0 * RoomScale, 224.0 * RoomScale, r\z + 32.0 * RoomScale, 90, r, False, False, 4)
+    d = CreateDoor(r\x + 1440.0 * RoomScale, 224.0 * RoomScale, r\z + 32.0 * RoomScale, 90, r, False, DOOR_TYPE_DEF, r\roomTemplate\name)
     d\autoClose = False : d\open = False
 
     it = CreateItem("scp420j", r\x + 1776.0 * RoomScale, r\y + 400.0 * RoomScale, r\z + 427.0 * RoomScale)

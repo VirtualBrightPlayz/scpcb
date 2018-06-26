@@ -29,15 +29,13 @@ Function FillRoom_test_smallwindow_2(r.Room)
 
     FreeTexture(Glasstex)
 
-    ;d = CreateDoor(r\zone, r\x - 240.0 * RoomScale, 0.0, r\z + 640.0 * RoomScale, 90, r, False, False, 1)
-    ;d\autoClose = False : d\open = False
-    r\doors[0] = CreateDoor(r\zone, r\x - 240.0 * RoomScale, 0.0, r\z + 640.0 * RoomScale, 90, r, False, False, 1)
+    r\doors[0] = CreateDoor(r\x - 240.0 * RoomScale, 0.0, r\z + 640.0 * RoomScale, 90, r, False, DOOR_TYPE_DEF, r\roomTemplate\name)
     r\doors[0]\autoClose = False : r\doors[0]\open = False
 
-    d = CreateDoor(r\zone, r\x - 512.0 * RoomScale, 0.0, r\z + 384.0 * RoomScale, 0, r, False, False)
+    d = CreateDoor(r\x - 512.0 * RoomScale, 0.0, r\z + 384.0 * RoomScale, 0, r)
     d\autoClose = False : d\open = False
 
-    d = CreateDoor(r\zone, r\x - 816.0 * RoomScale, 0.0, r\z - 208.0 * RoomScale, 0, r, False, False)
+    d = CreateDoor(r\x - 816.0 * RoomScale, 0.0, r\z - 208.0 * RoomScale, 0, r)
     d\autoClose = False : d\open = False
     FreeEntity(d\buttons[0]) : d\buttons[0]=0
     FreeEntity(d\buttons[1]) : d\buttons[1]=0

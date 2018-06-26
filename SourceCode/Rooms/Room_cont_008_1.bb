@@ -44,7 +44,7 @@ Function FillRoom_cont_008_1(r.Room)
     EntityParent(r\objects[5], r\obj)
     HideEntity(r\objects[5])
 
-    d = CreateDoor(r\zone, r\x + 296.0 * RoomScale, 0, r\z - 672.0 * RoomScale, 180, r, True, 0, 4)
+    d = CreateDoor(r\x + 296.0 * RoomScale, 0, r\z - 672.0 * RoomScale, 180, r, True, DOOR_TYPE_DEF, r\roomTemplate\name)
     d\autoClose = False
     PositionEntity(d\buttons[1], r\x + 164.0 * RoomScale, EntityY(d\buttons[1],True), EntityZ(d\buttons[1],True), True)
     FreeEntity(d\buttons[0])
@@ -53,7 +53,7 @@ Function FillRoom_cont_008_1(r.Room)
 	d\obj2=0
     r\doors[0] = d
 
-    d2 = CreateDoor(r\zone, r\x + 296.0 * RoomScale, 0, r\z - 144.0 * RoomScale, 0, r, False)
+    d2 = CreateDoor(r\x + 296.0 * RoomScale, 0, r\z - 144.0 * RoomScale, 0, r, False)
     d2\autoClose = False
     PositionEntity(d2\buttons[0], r\x + 432.0 * RoomScale, EntityY(d2\buttons[0],True), r\z - 480.0 * RoomScale, True)
     RotateEntity(d2\buttons[0], 0, -90, 0, True)
@@ -65,7 +65,7 @@ Function FillRoom_cont_008_1(r.Room)
     d\linkedDoor = d2
     d2\linkedDoor = d
 
-    d = CreateDoor(r\zone, r\x - 384.0 * RoomScale, 0, r\z - 672.0 * RoomScale, 0, r, False, 0, 4)
+    d = CreateDoor(r\x - 384.0 * RoomScale, 0, r\z - 672.0 * RoomScale, 0, r, False, DOOR_TYPE_DEF, r\roomTemplate\name)
     d\autoClose = False : d\locked = True : r\doors[2]=d
 
 

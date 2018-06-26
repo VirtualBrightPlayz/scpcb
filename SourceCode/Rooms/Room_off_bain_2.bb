@@ -5,7 +5,7 @@ Function FillRoom_off_bain_2(r.Room)
 
     Local t1%;, Bump
 
-    d = CreateDoor(0, r\x - 240.0 * RoomScale, 0.0, r\z, 90, r, False)
+    d = CreateDoor(r\x - 240.0 * RoomScale, 0.0, r\z, 90, r, False)
     d\open = False : d\autoClose = False
 End Function
 

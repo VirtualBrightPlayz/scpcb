@@ -6,25 +6,25 @@ Function FillRoom_tnnl_nuke_2(r.Room)
 	Local t1%;, Bump
 
     ;"tuulikaapin" ovi
-    d = CreateDoor(r\zone, r\x + 576.0 * RoomScale, 0.0, r\z - 152.0 * RoomScale, 90, r, False, False, 5)
+    d = CreateDoor(r\x + 576.0 * RoomScale, 0.0, r\z - 152.0 * RoomScale, 90, r, False, DOOR_TYPE_DEF, r\roomTemplate\name)
     d\autoClose = False : d\open = False
     PositionEntity(d\buttons[0], r\x + 608.0 * RoomScale, EntityY(d\buttons[0],True), r\z - 284.0 * RoomScale,True)
     PositionEntity(d\buttons[1], r\x + 544.0 * RoomScale, EntityY(d\buttons[1],True), r\z - 284.0 * RoomScale,True)
 
-    d = CreateDoor(r\zone, r\x - 544.0 * RoomScale, 1504.0*RoomScale, r\z + 738.0 * RoomScale, 90, r, False, False, 5)
+    d = CreateDoor(r\x - 544.0 * RoomScale, 1504.0*RoomScale, r\z + 738.0 * RoomScale, 90, r, False, DOOR_TYPE_DEF, r\roomTemplate\name)
     d\autoClose = False : d\open = False
     PositionEntity(d\buttons[0], EntityX(d\buttons[0],True), EntityY(d\buttons[0],True), r\z + 608.0 * RoomScale,True)
     PositionEntity(d\buttons[1], EntityX(d\buttons[1],True), EntityY(d\buttons[1],True), r\z + 608.0 * RoomScale,True)
 
     ;yl�kerran hissin ovi
-    r\doors[0] = CreateDoor(r\zone, r\x + 1192.0 * RoomScale, 0.0, r\z, 90, r, True)
+    r\doors[0] = CreateDoor(r\x + 1192.0 * RoomScale, 0.0, r\z, 90, r, True)
     r\doors[0]\autoClose = False : r\doors[0]\open = True
     ;yl�kerran hissi
     r\objects[4] = CreatePivot()
     PositionEntity(r\objects[4], r\x + 1496.0 * RoomScale, 240.0 * RoomScale, r\z)
     EntityParent(r\objects[4], r\obj)
     ;alakerran hissin ovi
-    r\doors[1] = CreateDoor(r\zone, r\x + 680.0 * RoomScale, 1504.0 * RoomScale, r\z, 90, r, False)
+    r\doors[1] = CreateDoor(r\x + 680.0 * RoomScale, 1504.0 * RoomScale, r\z, 90, r)
     r\doors[1]\autoClose = False : r\doors[1]\open = False
     ;alakerran hissi
     r\objects[5] = CreatePivot()

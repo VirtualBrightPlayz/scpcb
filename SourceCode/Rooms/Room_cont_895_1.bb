@@ -5,7 +5,7 @@ Function FillRoom_cont_895_1(r.Room)
 
     Local t1%;, Bump
 
-    d = CreateDoor(r\zone, r\x, 0, r\z - 448.0 * RoomScale, 0, r, False, True, 2)
+    d = CreateDoor(r\x, 0, r\z - 448.0 * RoomScale, 0, r, False, DOOR_TYPE_CONT, r\roomTemplate\name)
     d\autoClose = False : d\open = False
     PositionEntity(d\buttons[0], r\x - 384.0 * RoomScale, 0.7, r\z - 280.0 * RoomScale, True)
 

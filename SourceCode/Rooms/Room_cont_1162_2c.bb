@@ -5,7 +5,7 @@ Function FillRoom_cont_1162_2c(r.Room)
 
     Local t1%;, Bump
 
-    d = CreateDoor(r\zone, r\x + 248.0*RoomScale, 0.0, r\z - 736.0*RoomScale, 90, r, False, False, 2)
+    d = CreateDoor(r\x + 248.0*RoomScale, 0.0, r\z - 736.0*RoomScale, 90, r, False, DOOR_TYPE_DEF, r\roomTemplate\name)
     r\objects[0] = CreatePivot()
     PositionEntity(r\objects[0],r\x+1012.0*RoomScale,r\y+128.0*RoomScale,r\z-640.0*RoomScale)
     EntityParent(r\objects[0],r\obj)
@@ -55,7 +55,7 @@ Function UpdateEvent_cont_1162_2c(e.Event)
 		pick1162 = True
 		pp = CreatePivot(e\room\obj)
 		PositionEntity(pp,976,128,-640,False)
-		
+
 		For it = Each Item
 			If (Not it\picked) Then
 				If (EntityDistance(it\collider,e\room\objects[0])<0.75) Then
@@ -108,7 +108,7 @@ Function UpdateEvent_cont_1162_2c(e.Event)
 							Case 5
 								itemName = "Old Badge"
 						End Select
-						
+
 						itemExists = False
 						For it = Each Item
 							If (it\name = itemName) Then
@@ -136,7 +136,7 @@ Function UpdateEvent_cont_1162_2c(e.Event)
 		;trade successful
 		If (e\eventState3 = 1.0) Then
 			shouldCreateItem = False
-			
+
 			For itt = Each ItemTemplate
 				If (IsItemGoodFor1162(itt)) Then
 					Select mainPlayer\inventory\items[Int(e\eventState2)]\template\name
@@ -269,7 +269,7 @@ End Function
 
 Function IsItemGoodFor1162%(itt.ItemTemplate)
 	Local IN$ = itt\name$
-	
+
 	;TODO: remember which items the player has collected instead of just picking random shit
 	Select itt\name
 		Case "key1", "key2", "key3"

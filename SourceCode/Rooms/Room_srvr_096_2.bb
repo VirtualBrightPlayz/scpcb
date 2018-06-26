@@ -5,15 +5,15 @@ Function FillRoom_srvr_096_2(r.Room)
 
 	Local t1%;, Bump
 
-    d = CreateDoor(0, r\x,0,r\z, 0, r, False, 2, False)
+    d = CreateDoor(0, r\x,0,r\z, 0, r, False, DOOR_TYPE_HCZ)
     d\locked = True
 
-    r\doors[0] = CreateDoor(r\zone, r\x - 208.0 * RoomScale, 0.0, r\z - 736.0 * RoomScale, 90, r, True, False)
+    r\doors[0] = CreateDoor(r\x - 208.0 * RoomScale, 0.0, r\z - 736.0 * RoomScale, 90, r, True)
     r\doors[0]\autoClose=False
-    r\doors[1] = CreateDoor(r\zone, r\x - 208.0 * RoomScale, 0.0, r\z + 736.0 * RoomScale, 90, r, True, False)
+    r\doors[1] = CreateDoor(r\x - 208.0 * RoomScale, 0.0, r\z + 736.0 * RoomScale, 90, r, True)
     r\doors[1]\autoClose=False
 
-    r\doors[2] = CreateDoor(r\zone, r\x - 672.0 * RoomScale, 0.0, r\z - 1024.0 * RoomScale, 0, r, False, False, False, "GEAR")
+    r\doors[2] = CreateDoor(r\x - 672.0 * RoomScale, 0.0, r\z - 1024.0 * RoomScale, 0, r, False, DOOR_TYPE_DEF, "", "GEAR")
     r\doors[2]\autoClose=False
     FreeEntity(r\doors[2]\buttons[0]) : r\doors[2]\buttons[0]=0
     FreeEntity(r\doors[2]\buttons[1]) : r\doors[2]\buttons[1]=0

@@ -5,10 +5,10 @@ Function FillRoom_cont_500_1499_2(r.Room)
 
     Local t1%;, Bump
 
-    r\doors[0] = CreateDoor(r\zone, r\x + 288.0*RoomScale, r\y, r\z + 576.0*RoomScale, 90, r, False, False, 3)
+    r\doors[0] = CreateDoor(r\x + 288.0*RoomScale, r\y, r\z + 576.0*RoomScale, 90, r, False, DOOR_TYPE_DEF, r\roomTemplate\name)
     r\doors[0]\open = False : r\doors[0]\locked = True
-    d = CreateDoor(r\zone, r\x + 777.0*RoomScale, r\y, r\z + 671.0*RoomScale, 90, r, False, False)
-    d = CreateDoor(r\zone, r\x + 556.0*RoomScale, r\y, r\z + 296.0*RoomScale, 0, r, False, False)
+    d = CreateDoor(r\x + 777.0*RoomScale, r\y, r\z + 671.0*RoomScale, 90, r)
+    d = CreateDoor(r\x + 556.0*RoomScale, r\y, r\z + 296.0*RoomScale, 0, r)
     r\objects[0] = CreatePivot()
     PositionEntity(r\objects[0],r\x + 576.0*RoomScale,r\y+160.0*RoomScale,r\z+632.0*RoomScale)
     EntityParent(r\objects[0],r\obj)

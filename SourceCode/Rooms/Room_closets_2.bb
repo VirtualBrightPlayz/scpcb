@@ -29,7 +29,7 @@ Function FillRoom_closets_2(r.Room)
     r\objects[1]=CreatePivot(r\obj)
     PositionEntity(r\objects[1], r\x-1232*RoomScale, -256*RoomScale, r\z-160*RoomScale, True)
 
-    d = CreateDoor(0, r\x - 240.0 * RoomScale, 0.0, r\z, 90, r, False)
+    d = CreateDoor(r\x - 240.0 * RoomScale, 0.0, r\z, 90, r, False)
     d\open = False : d\autoClose = False
     MoveEntity(d\buttons[0], 0.0, 0.0, 22.0 * RoomScale)
     MoveEntity(d\buttons[1], 0.0, 0.0, 22.0 * RoomScale)

@@ -109,7 +109,7 @@ Function DrawConsole()
 
 		DrawInputBox(x, y + height, width, Int(30.0*MenuScale), ConsoleInput, 2)
 
-		
+
 	EndIf
 End Function
 
@@ -559,7 +559,7 @@ Function UpdateConsole()
 					Next
 
 					If (mainPlayer\currRoom\roomTemplate\name <> StrTemp) Then CreateConsoleMsg("Room not found.",255,150,0)
-					
+
 				Case "guh"
 					For r = Each Room
 						If (r\roomTemplate\name = "cont_914_1") Then
@@ -590,6 +590,11 @@ Function UpdateConsole()
 				Case "spawndoc"
 					StrTemp = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 					CreatePaper(StrTemp, EntityX(mainPlayer\collider), EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider))
+
+				Case "op"
+					StrTemp = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
+					it = CreateItem("keycard", EntityX(mainPlayer\collider), EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider))
+					AssignTag(it, "omni")
 
 				Case "wireframe"
 					StrTemp = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))

@@ -17,16 +17,16 @@ Function FillRoom_lck_air_2(r.Room)
         EntityParent(de\obj, r\obj)
     EndIf
 
-    r\doors[0] = CreateDoor(r\zone, r\x + 336.0 * RoomScale, 0.0, r\z - 382.0 * RoomScale, 0, r, False, False)
+    r\doors[0] = CreateDoor(r\x + 336.0 * RoomScale, 0.0, r\z - 382.0 * RoomScale, 0, r)
     PositionEntity(r\doors[0]\buttons[0], r\x + 580.822 * RoomScale, EntityY(r\doors[0]\buttons[0],True), r\z - 606.679 * RoomScale, True)
     PositionEntity(r\doors[0]\buttons[1], r\x + 580.822 * RoomScale, EntityY(r\doors[0]\buttons[1],True), r\z - 606.679 * RoomScale, True)
-    r\doors[0]\dir = 0 : r\doors[0]\autoClose = False	: r\doors[0]\open = True  : r\doors[0]\locked = True
+	r\doors[0]\locked = True
     r\doors[0]\mtfClose = False
 
-    r\doors[1] = CreateDoor(r\zone, r\x + 336.0 * RoomScale, 0.0, r\z + 462.0 * RoomScale, 180, r, False, False)
+    r\doors[1] = CreateDoor(r\x + 336.0 * RoomScale, 0.0, r\z + 462.0 * RoomScale, 180, r)
     PositionEntity(r\doors[1]\buttons[0], r\x + 580.822 * RoomScale, EntityY(r\doors[1]\buttons[0],True), r\z - 606.679 * RoomScale, True)
     PositionEntity(r\doors[1]\buttons[1], r\x + 580.822 * RoomScale, EntityY(r\doors[1]\buttons[1],True), r\z - 606.679 * RoomScale, True)
-    r\doors[1]\dir = 0 : r\doors[1]\autoClose = False	: r\doors[1]\open = True  : r\doors[1]\locked = True
+    r\doors[1]\locked = True
     r\doors[1]\mtfClose = False
 
     For r2 = Each Room

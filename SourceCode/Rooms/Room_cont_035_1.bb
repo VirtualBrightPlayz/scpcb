@@ -5,7 +5,7 @@ Function FillRoom_cont_035_1(r.Room)
 
 	Local t1%;, Bump
 
-    d = CreateDoor(r\zone, r\x - 296.0 * RoomScale, 0, r\z - 672.0 * RoomScale, 180, r, True, 0, 5)
+    d = CreateDoor(r\x - 296.0 * RoomScale, 0, r\z - 672.0 * RoomScale, 180, r, True, DOOR_TYPE_DEF, r\roomTemplate\name)
     d\autoClose = False : d\locked = True : r\doors[0]=d
     PositionEntity(d\buttons[1], r\x - 164.0 * RoomScale, EntityY(d\buttons[1],True), EntityZ(d\buttons[1],True), True)
     FreeEntity(d\buttons[0])
@@ -13,7 +13,7 @@ Function FillRoom_cont_035_1(r.Room)
     FreeEntity(d\obj2)
 	d\obj2=0
 
-    d2 = CreateDoor(r\zone, r\x - 296.0 * RoomScale, 0, r\z - 144.0 * RoomScale, 0, r, False)
+    d2 = CreateDoor(r\x - 296.0 * RoomScale, 0, r\z - 144.0 * RoomScale, 0, r, False)
     d2\autoClose = False : d2\locked = True : r\doors[1]=d2
     PositionEntity(d2\buttons[0], r\x - 432.0 * RoomScale, EntityY(d2\buttons[0],True), r\z - 480.0 * RoomScale, True)
     RotateEntity(d2\buttons[0], 0, 90, 0, True)
@@ -23,11 +23,11 @@ Function FillRoom_cont_035_1(r.Room)
 	d2\obj2=0
 
     ;door to the control room
-    r\doors[2] = CreateDoor(r\zone, r\x + 384.0 * RoomScale, 0, r\z - 672.0 * RoomScale, 180, r, False, 0, 5)
+    r\doors[2] = CreateDoor(r\x + 384.0 * RoomScale, 0, r\z - 672.0 * RoomScale, 180, r, False, DOOR_TYPE_DEF, r\roomTemplate\name)
     r\doors[2]\autoClose = False
 
     ;door to the storage room
-    r\doors[3] = CreateDoor(0, r\x + 768.0 * RoomScale, 0, r\z +512.0 * RoomScale, 90, r, False, 0, 0, "5731")
+    r\doors[3] = CreateDoor(r\x + 768.0 * RoomScale, 0, r\z +512.0 * RoomScale, 90, r, False, DOOR_TYPE_DEF, "", "5731")
     r\doors[3]\autoClose = False
 
     d\linkedDoor = d2 : d2\linkedDoor = d
@@ -453,7 +453,7 @@ Function UpdateEvent_cont_035_1(e.Event)
 							e\room\doors[2]\locked = False
 							UseDoor(e\room\doors[1],False)
 							For do = Each Door
-								If (do\dir = 2) Then
+								If (do\type = DOOR_TYPE_HCZ) Then
 									If (Abs(EntityX(e\room\obj)-EntityX(do\frameobj,True))<4.5) Then
 										If (Abs(EntityZ(e\room\obj)-EntityZ(do\frameobj,True))<4.5) Then
 											UseDoor(do,False)

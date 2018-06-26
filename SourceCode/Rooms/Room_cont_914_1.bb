@@ -5,12 +5,7 @@ Function FillRoom_cont_914_1(r.Room)
 
     Local t1%;, Bump
 
-    ;d = CreateDoor(r\zone, r\x, 0, r\z - 368.0 * RoomScale, 0, r, False, True, 2)
-    ;d\dir = 1 : d\autoClose = False : d\open = False
-    ;PositionEntity(d\buttons[0], r\x - 496.0 * RoomScale, 0.7, r\z - 272.0 * RoomScale, True)
-    ;TurnEntity(d\buttons[0], 0, 90, 0)
-    r\doors[2] = CreateDoor(r\zone,r\x,0,r\z-368.0*RoomScale,0,r,False,True,2)
-    r\doors[2]\dir=1 : r\doors[2]\autoClose=False : r\doors[2]\open=False
+    r\doors[2] = CreateDoor(r\x, 0, r\z-368.0*RoomScale, 0, r, False, DOOR_TYPE_CONT, r\roomTemplate\name)
     PositionEntity(r\doors[2]\buttons[0], r\x - 496.0 * RoomScale, 0.7, r\z - 272.0 * RoomScale, True)
     TurnEntity(r\doors[2]\buttons[0], 0, 90, 0)
 
@@ -27,7 +22,7 @@ Function FillRoom_cont_914_1(r.Room)
     EntityParent(r\objects[0], r\obj)
     EntityParent(r\objects[1], r\obj)
 
-    d = CreateDoor(r\zone, r\x - 624.0 * RoomScale, 0.0, r\z + 528.0 * RoomScale, 180, r, True)
+    d = CreateDoor(r\x - 624.0 * RoomScale, 0.0, r\z + 528.0 * RoomScale, 180, r, True)
     FreeEntity(d\obj2)
 	d\obj2 = 0
     FreeEntity(d\buttons[0])
@@ -36,7 +31,7 @@ Function FillRoom_cont_914_1(r.Room)
 	d\buttons[1] = 0
     r\doors[0] = d: d\autoClose = False
 
-    d = CreateDoor(r\zone, r\x + 816.0 * RoomScale, 0.0, r\z + 528.0 * RoomScale, 180, r, True)
+    d = CreateDoor(r\x + 816.0 * RoomScale, 0.0, r\z + 528.0 * RoomScale, 180, r, True)
     FreeEntity(d\obj2)
 	d\obj2 = 0
     FreeEntity(d\buttons[0])

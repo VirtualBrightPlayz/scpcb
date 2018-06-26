@@ -5,7 +5,7 @@ Function FillRoom_strg_elec_2c(r.Room)
 
     Local t1%;, Bump
 
-    d = CreateDoor(r\zone, r\x + 64.0 * RoomScale, 0.0, r\z + 368.0 * RoomScale, 180, r, False, False, 2)
+    d = CreateDoor(r\x + 64.0 * RoomScale, 0.0, r\z + 368.0 * RoomScale, 180, r, False, DOOR_TYPE_DEF, r\roomTemplate\name)
     d\autoClose = False : d\open = False
 
     it = CreatePaper("docdan", r\x-400.0*RoomScale,1040.0*RoomScale,r\z+115.0*RoomScale)

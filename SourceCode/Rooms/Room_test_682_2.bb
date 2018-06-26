@@ -20,9 +20,9 @@
     sc = CreateSecurityCam(r\x + 744.0 * RoomScale, r\y - 856.0 * RoomScale, r\z + 236.0 * RoomScale, r)
     sc\followPlayer = True
 
-    CreateDoor(0, r\x + 720.0 * RoomScale, 0, r\z, 0, r, False, 2, -1)
+    CreateDoor(r\x + 720.0 * RoomScale, 0, r\z, 0, r, False, DOOR_TYPE_HCZ, r\roomTemplate\name)
 
-    CreateDoor(0, r\x - 624.0 * RoomScale, -1280.0 * RoomScale, r\z, 90, r, True)
+    CreateDoor(r\x - 624.0 * RoomScale, -1280.0 * RoomScale, r\z, 90, r, True, DOOR_TYPE_HCZ)
 
     it = CreatePaper("doc682", r\x + 656.0 * RoomScale, r\y - 1200.0 * RoomScale, r\z - 16.0 * RoomScale)
     EntityParent(it\collider, r\obj)

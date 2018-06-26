@@ -5,13 +5,13 @@ Function FillRoom_lck_tshape_2(r.Room)
 
     Local t1%;, Bump
 
-    d = CreateDoor(r\zone, r\x, 0, r\z + 528.0 * RoomScale, 0, r, True)
+    d = CreateDoor(r\x, 0, r\z + 528.0 * RoomScale, 0, r, True)
     d\autoClose = False ;: d\buttons[0] = False
     PositionEntity(d\buttons[0], r\x - 832.0 * RoomScale, 0.7, r\z + 160.0 * RoomScale, True)
     PositionEntity(d\buttons[1], r\x + 160.0 * RoomScale, 0.7, r\z + 536.0 * RoomScale, True)
     ;RotateEntity(d\buttons[1], 0, 90, 0, True)
 
-    d2 = CreateDoor(r\zone, r\x, 0, r\z - 528.0 * RoomScale, 180, r, True)
+    d2 = CreateDoor(r\x, 0, r\z - 528.0 * RoomScale, 180, r, True)
     d2\autoClose = False
 	FreeEntity(d2\buttons[0])
 	d2\buttons[0] = 0

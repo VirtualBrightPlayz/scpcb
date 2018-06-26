@@ -11,16 +11,16 @@ Function FillRoom_cont_1123_2(r.Room)
     it = CreateItem("gasmask", r\x + 457.0 * RoomScale, r\y + 150.0 * RoomScale, r\z + 960.0 * RoomScale)
     EntityParent(it\collider, r\obj)
 
-    d = CreateDoor(r\zone, r\x + 832.0 * RoomScale, 0.0, r\z + 367.0 * RoomScale, 0, r, False, False, 3)
+    d = CreateDoor(r\x + 832.0 * RoomScale, 0.0, r\z + 367.0 * RoomScale, 0, r, False, DOOR_TYPE_DEF, r\roomTemplate\name)
     PositionEntity(d\buttons[0], r\x + 956.0 * RoomScale, EntityY(d\buttons[0],True), r\z + 352.0 * RoomScale, True)
     PositionEntity(d\buttons[1], r\x + 713.0 * RoomScale, EntityY(d\buttons[1],True), r\z + 384.0 * RoomScale, True)
     FreeEntity(d\obj2)
 	d\obj2 = 0
-    d = CreateDoor(r\zone, r\x + 280.0 * RoomScale, 0.0, r\z - 607.0 * RoomScale, 90, r, False, False)
+    d = CreateDoor(r\x + 280.0 * RoomScale, 0.0, r\z - 607.0 * RoomScale, 90, r, False)
     PositionEntity(d\buttons[0], EntityX(d\buttons[0],True), EntityY(d\buttons[0],True), EntityZ(d\buttons[0],True), True)
     PositionEntity(d\buttons[1], EntityX(d\buttons[1],True), EntityY(d\buttons[1],True), EntityZ(d\buttons[1],True), True)
 
-    d = CreateDoor(r\zone, r\x + 280.0 * RoomScale, 512.0 * RoomScale, r\z - 607.0 * RoomScale, 90, r, False, False)
+    d = CreateDoor(r\x + 280.0 * RoomScale, 512.0 * RoomScale, r\z - 607.0 * RoomScale, 90, r, False)
     PositionEntity(d\buttons[0], EntityX(d\buttons[0],True), EntityY(d\buttons[0],True), EntityZ(d\buttons[0],True), True)
     FreeEntity(d\buttons[1])
 	d\buttons[1]=0

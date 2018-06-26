@@ -5,7 +5,7 @@ Function FillRoom_cont_513_3(r.Room)
 
 	Local t1%;, Bump
 
-    d = CreateDoor(r\zone, r\x - 704.0 * RoomScale, 0, r\z + 304.0 * RoomScale, 0, r, False, 0, 2)
+    d = CreateDoor(r\x - 704.0 * RoomScale, 0, r\z + 304.0 * RoomScale, 0, r, False, DOOR_TYPE_DEF, r\roomTemplate\name)
     d\autoClose = False ;: d\buttons[0] = False
     PositionEntity(d\buttons[0], EntityX(d\buttons[0],True), EntityY(d\buttons[0],True), r\z + 288.0 * RoomScale, True)
     PositionEntity(d\buttons[1], EntityX(d\buttons[1],True), EntityY(d\buttons[1],True), r\z + 320.0 * RoomScale, True)

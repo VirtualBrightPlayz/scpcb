@@ -5,13 +5,13 @@ Function FillRoom_extend_gatea_1(r.Room)
 
 	Local t1%;, Bump
 
-    r\doors[2] = CreateDoor(r\zone, r\x - 4064.0 * RoomScale, (-1280.0+12000.0)*RoomScale, r\z + 3952.0 * RoomScale, 0, r, False)
+    r\doors[2] = CreateDoor(r\x - 4064.0 * RoomScale, (-1280.0+12000.0)*RoomScale, r\z + 3952.0 * RoomScale, 0, r, False)
     r\doors[2]\autoClose = False : r\doors[2]\open = False
 
-    d2 = CreateDoor(r\zone, r\x, 12000.0*RoomScale, r\z - 1024.0 * RoomScale, 0, r, False)
+    d2 = CreateDoor(r\x, 12000.0*RoomScale, r\z - 1024.0 * RoomScale, 0, r, False)
     d2\autoClose = False : d2\open = False : d2\locked = True
 
-    d2 = CreateDoor(r\zone, r\x-1440*RoomScale, (12000.0-480.0)*RoomScale, r\z + 2328.0 * RoomScale, 0, r, False, False, 2)
+    d2 = CreateDoor(r\x-1440*RoomScale, (12000.0-480.0)*RoomScale, r\z + 2328.0 * RoomScale, 0, r, False, DOOR_TYPE_DEF, r\roomTemplate\name)
     ;TODO: fix
 	;If (SelectedEnding = "A2") Then
     ;    d2\autoClose = False : d2\open = True : d2\locked = True
@@ -22,7 +22,7 @@ Function FillRoom_extend_gatea_1(r.Room)
     PositionEntity(d2\buttons[1], r\x-1584*RoomScale, EntityY(d2\buttons[0],True), r\z + 2488.0*RoomScale, True)
     RotateEntity(d2\buttons[1], 0, 90, 0, True)
 
-    d2 = CreateDoor(r\zone, r\x-1440*RoomScale, (12000.0-480.0)*RoomScale, r\z + 4352.0 * RoomScale, 0, r, False, False, 2)
+    d2 = CreateDoor(r\x-1440*RoomScale, (12000.0-480.0)*RoomScale, r\z + 4352.0 * RoomScale, 0, r, False, DOOR_TYPE_DEF, r\roomTemplate\name)
     ;TODO: fix
 	;If (SelectedEnding = "A2") Then
     ;    d2\autoClose = False : d2\open = True : d2\locked = True

@@ -5,21 +5,19 @@ Function FillRoom_cont_079_1(r.Room)
 
 	Local t1%;, Bump
 
-    d = CreateDoor(r\zone, r\x, -448.0*RoomScale, r\z + 1136.0 * RoomScale, 0, r, False,True, 4)
-    d\dir = 1 : d\autoClose = False : d\open = False
+    d = CreateDoor(r\x, -448.0*RoomScale, r\z + 1136.0 * RoomScale, 0, r, False, DOOR_TYPE_CONT, r\roomTemplate\name)
     PositionEntity(d\buttons[1], r\x + 224.0 * RoomScale, -250*RoomScale, r\z + 918.0 * RoomScale, True)
     ;TurnEntity(d\buttons[0],0,-90,0,True)
     PositionEntity(d\buttons[0], r\x - 240.0 * RoomScale, -250*RoomScale, r\z + 1366.0 * RoomScale, True)
     ;TurnEntity(d\buttons[1],0, 90,0,True)
 
-    r\doors[0] = CreateDoor(r\zone, r\x + 1456.0*RoomScale, -448.0*RoomScale, r\z + 976.0 * RoomScale, 0, r, False, True, 3)
-    r\doors[0]\dir = 1 : r\doors[0]\autoClose = False : r\doors[0]\open = False
+    r\doors[0] = CreateDoor(r\x + 1456.0*RoomScale, -448.0*RoomScale, r\z + 976.0 * RoomScale, 0, r, False, DOOR_TYPE_CONT, r\roomTemplate\name)
     PositionEntity(r\doors[0]\buttons[1], r\x + 1760.0 * RoomScale, -250*RoomScale, r\z + 1236.0 * RoomScale, True)
     TurnEntity(r\doors[0]\buttons[0],0,-90-90,0,True)
     PositionEntity(r\doors[0]\buttons[0], r\x + 1760.0 * RoomScale, -240*RoomScale, r\z + 740.0 * RoomScale, True)
     TurnEntity(r\doors[0]\buttons[1],0, 90-90,0,True)
 
-    CreateDoor(0, r\x + 1144.0*RoomScale, -448.0*RoomScale, r\z + 704.0 * RoomScale, 90, r, False, False, -1)
+    CreateDoor(r\x + 1144.0*RoomScale, -448.0*RoomScale, r\z + 704.0 * RoomScale, 90, r, False, DOOR_TYPE_DEF, r\roomTemplate\name)
 
     r\objects[0] = LoadAnimMesh("GFX/Map/079.b3d")
     ScaleEntity(r\objects[0], 1.3, 1.3, 1.3, True)

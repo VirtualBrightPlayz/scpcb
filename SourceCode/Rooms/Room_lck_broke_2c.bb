@@ -5,7 +5,7 @@ Function FillRoom_lck_broke_2c(r.Room)
 
     Local t1%;, Bump
 
-    d = CreateDoor(r\zone, r\x - 736.0 * RoomScale, 0, r\z - 104.0 * RoomScale, 0, r, True)
+    d = CreateDoor(r\x - 736.0 * RoomScale, 0, r\z - 104.0 * RoomScale, 0, r, True)
     d\timer = 70 * 5 : d\autoClose = False : d\open = False : d\locked = True
 
     EntityParent(d\buttons[0], 0)
@@ -14,7 +14,7 @@ Function FillRoom_lck_broke_2c(r.Room)
 
     FreeEntity(d\buttons[1]) : d\buttons[1] = 0
 
-    d2 = CreateDoor(r\zone, r\x + 104.0 * RoomScale, 0, r\z + 736.0 * RoomScale, 270, r, True)
+    d2 = CreateDoor(r\x + 104.0 * RoomScale, 0, r\z + 736.0 * RoomScale, 270, r, True)
     d2\timer = 70 * 5 : d2\autoClose = False: d2\open = False : d2\locked = True
     EntityParent(d2\buttons[0], 0)
     PositionEntity(d2\buttons[0], r\x + 640.0 * RoomScale, 0.7, r\z + 288.0 * RoomScale)

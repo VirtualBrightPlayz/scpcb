@@ -5,8 +5,8 @@ Function FillRoom_cont_966_3(r.Room)
 
 	Local t1%;, Bump
 
-    d = CreateDoor(r\zone, r\x - 400.0 * RoomScale, 0, r\z, -90, r, False, False, 3)
-    d = CreateDoor(r\zone, r\x, 0, r\z - 480.0 * RoomScale, 180, r, False, False, 3);: d\buttons[0] = False
+    d = CreateDoor(r\x - 400.0 * RoomScale, 0, r\z, -90, r, False, DOOR_TYPE_DEF, r\roomTemplate\name)
+    d = CreateDoor(r\x, 0, r\z - 480.0 * RoomScale, 180, r, False, DOOR_TYPE_DEF, r\roomTemplate\name);: d\buttons[0] = False
 
     ;PositionEntity(d\buttons[0], EntityX(d\buttons[0],True), EntityY(d\buttons[0],True), r\z + 288.0 * RoomScale, True)
     ;PositionEntity(d\buttons[1], EntityX(d\buttons[1],True), EntityY(d\buttons[1],True), r\z + 320.0 * RoomScale, True)

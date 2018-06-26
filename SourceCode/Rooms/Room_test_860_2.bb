@@ -25,13 +25,13 @@ Function FillRoom_test_860_2(r.Room)
     EntityParent(r\objects[4],r\obj)
 
     ;doors to observation booth
-    d = CreateDoor(r\zone, r\x + 928.0 * RoomScale,0,r\z + 640.0 * RoomScale,0,r,False,False,False,"ABCD")
-    d = CreateDoor(r\zone, r\x + 928.0 * RoomScale,0,r\z - 640.0 * RoomScale,0,r,True,False,False,"ABCD")
+    d = CreateDoor(r\x + 928.0 * RoomScale,0,r\z + 640.0 * RoomScale,0,r,False, DOOR_TYPE_DEF, "", "ABCD")
+    d = CreateDoor(r\x + 928.0 * RoomScale,0,r\z - 640.0 * RoomScale,0,r,True, DOOR_TYPE_DEF, "","ABCD")
     d\autoClose = False
 
     ;doors to the room itself
-    d = CreateDoor(r\zone, r\x+416.0*RoomScale,0,r\z - 640.0 * RoomScale,0,r,False,False,1)
-    d = CreateDoor(r\zone, r\x+416.0*RoomScale,0,r\z + 640.0 * RoomScale,0,r,False,False,1)
+    d = CreateDoor(r\x+416.0*RoomScale,0,r\z - 640.0 * RoomScale,0,r,False, DOOR_TYPE_DEF, r\roomTemplate\name)
+    d = CreateDoor(r\x+416.0*RoomScale,0,r\z + 640.0 * RoomScale,0,r,False, DOOR_TYPE_DEF, r\roomTemplate\name)
 
     ;the forest
     Local fr.Forest = New Forest
@@ -589,7 +589,7 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Room)
 
 	tempf3=MeshWidth(fr\tileMesh[ROOM1])
 	tempf1=tile_size/tempf3
-	
+
 	For tx=1 To gridsize-1
 		For ty=1 To gridsize-1
 			If (fr\grid[(ty*gridsize)+tx]=1) Then
@@ -865,30 +865,30 @@ Function load_terrain%(hmap%,yscale#=0.7,t1%,t2%,mask%)
 	Local RGB1%
 	Local r%
 	Local alpha#
-	
+
 	DebugLog("load_terrain: "+Str(hmap))
-	
+
 	; load the heightmap
 	If (hmap = 0) Then RuntimeError("Heightmap image "+Str(hmap)+" does not exist.")
-	
+
 	; store heightmap dimensions
 	Local x% = ImageWidth(hmap)-1, y% = ImageHeight(hmap)-1
 	Local lx%, ly%, index%
-	
+
 	; load texture and lightmaps
 	If (t1 = 0) Then RuntimeError("load_terrain error: invalid texture 1")
 	If (t2 = 0) Then RuntimeError("load_terrain error: invalid texture 2")
 	If (mask = 0) Then RuntimeError("load_terrain error: invalid texture mask")
-	
+
 	; auto scale the textures to the right size
 	If (t1) Then ScaleTexture(t1,x/4,y/4)
 	If (t2) Then ScaleTexture(t2,x/4,y/4)
 	If (mask) Then ScaleTexture(mask,x,y)
-	
+
 	; start building the terrain
 	Local mesh% = CreateMesh()
 	Local surf% = CreateSurface(mesh)
-	
+
 	; create some verts for the terrain
 	For ly = 0 To y
 		For lx = 0 To x
@@ -896,7 +896,7 @@ Function load_terrain%(hmap%,yscale#=0.7,t1%,t2%,mask%)
 		Next
 	Next
 	RenderWorld()
-	
+
 	; connect the verts with faces
 	For ly = 0 To y-1
 		For lx = 0 To x-1
@@ -904,13 +904,13 @@ Function load_terrain%(hmap%,yscale#=0.7,t1%,t2%,mask%)
 			AddTriangle(surf,(lx+1)+((x+1)*ly),lx+((x+1)*ly)+(x+1),(lx+1)+((x+1)*ly)+(x+1))
 		Next
 	Next
-	
+
 	; position the terrain to center 0,0,0
 	Local mesh2% = CopyMesh(mesh,mesh)
 	Local surf2% = GetSurface(mesh2,1)
 	PositionMesh(mesh, -x/2.0,0,-y/2.0)
 	PositionMesh(mesh2, -x/2.0,0.01,-y/2.0)
-	
+
 	; alter vertice height to match the heightmap red channel
 	LockBuffer(ImageBuffer(hmap))
 	LockBuffer(TextureBuffer(mask))
@@ -930,7 +930,7 @@ Function load_terrain%(hmap%,yscale#=0.7,t1%,t2%,mask%)
 			alpha=alpha+(((ReadPixelFast(Int(Min(maskX+5,TextureWidth(mask)-5)),Int(Max(maskY-5,5)),TextureBuffer(mask)) And $FF000000) Shr 24)/$FF)
 			alpha=alpha*0.25
 			alpha=Sqr(alpha)
-			
+
 			index = lx + ((x+1)*ly)
 			VertexCoords(surf, index , VertexX(surf,index), r*yscale,VertexZ(surf,index))
 			VertexCoords(surf2, index , VertexX(surf2,index), r*yscale,VertexZ(surf2,index))
@@ -942,17 +942,17 @@ Function load_terrain%(hmap%,yscale#=0.7,t1%,t2%,mask%)
 	Next
 	UnlockBuffer(TextureBuffer(mask))
 	UnlockBuffer(ImageBuffer(hmap))
-	
+
 	UpdateNormals(mesh)
 	UpdateNormals(mesh2)
-	
+
 	EntityTexture(mesh,t1,0,0)
 	;EntityTexture(mesh,mask,0,1)
 	EntityTexture(mesh2,t2,0,0);2
-	
+
 	EntityFX(mesh, 1)
 	EntityFX(mesh2, 1+2+32)
-	
+
 	Return mesh
 End Function
 

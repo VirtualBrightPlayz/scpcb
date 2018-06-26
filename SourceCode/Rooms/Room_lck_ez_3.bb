@@ -5,22 +5,20 @@ Function FillRoom_lck_ez_3(r.Room)
 
     Local t1%;, Bump
 
-    d = CreateDoor(r\zone, r\x - 728.0 * RoomScale, 0.0, r\z - 458.0 * RoomScale, 0, r, False, False, 3)
-    d\autoClose = False	: d\open = False  : d\locked = False
+    d = CreateDoor(r\x - 728.0 * RoomScale, 0.0, r\z - 458.0 * RoomScale, 0, r, False, DOOR_TYPE_DEF, r\roomTemplate\name
 
-    d = CreateDoor(r\zone, r\x - 223.0 * RoomScale, 0.0, r\z - 736.0 * RoomScale, -90, r, False, False, 3)
-    d\autoClose = False	: d\open = False  : d\locked = False
+    d = CreateDoor(r\x - 223.0 * RoomScale, 0.0, r\z - 736.0 * RoomScale, -90, r, False, DOOR_TYPE_DEF, r\roomTemplate\name)
 
-    r\doors[0] = CreateDoor(r\zone, r\x - 459.0 * RoomScale, 0.0, r\z + 339.0 * RoomScale, 90, r, False, False)
+    r\doors[0] = CreateDoor(r\x - 459.0 * RoomScale, 0.0, r\z + 339.0 * RoomScale, 90, r)
     PositionEntity(r\doors[0]\buttons[0], r\x + 580.822 * RoomScale, EntityY(r\doors[0]\buttons[0],True), r\z - 606.679 * RoomScale, True)
     PositionEntity(r\doors[0]\buttons[1], r\x + 580.822 * RoomScale, EntityY(r\doors[0]\buttons[1],True), r\z - 606.679 * RoomScale, True)
-    r\doors[0]\dir = 0 : r\doors[0]\autoClose = False	: r\doors[0]\open = True  : r\doors[0]\locked = True
+    r\doors[0]\locked = True
     r\doors[0]\mtfClose = False
 
-    r\doors[1] = CreateDoor(r\zone, r\x + 385.0 * RoomScale, 0.0, r\z + 339.0 * RoomScale, 270, r, False, False)
+    r\doors[1] = CreateDoor(r\x + 385.0 * RoomScale, 0.0, r\z + 339.0 * RoomScale, 270, r)
     PositionEntity(r\doors[1]\buttons[0], r\x + 580.822 * RoomScale, EntityY(r\doors[1]\buttons[0],True), r\z - 606.679 * RoomScale, True)
     PositionEntity(r\doors[1]\buttons[1], r\x + 580.822 * RoomScale, EntityY(r\doors[1]\buttons[1],True), r\z - 606.679 * RoomScale, True)
-    r\doors[1]\dir = 0 : r\doors[1]\autoClose = False	: r\doors[1]\open = True  : r\doors[1]\locked = True
+    r\doors[1]\locked = True
     r\doors[1]\mtfClose = False
     FreeEntity(r\doors[1]\obj2)
 	r\doors[1]\obj2 = 0
