@@ -151,7 +151,7 @@ Function CreateItemTemplate(file$, section$)
 			EndIf
 		EndIf
 	Next
-	
+
 	Local scale# = GetINIFloat(file, section, "scale", 1.0)
 	it\scale = scale
 	ScaleEntity(it\obj, scale * RoomScale, scale * RoomScale, scale * RoomScale, True)
@@ -209,7 +209,7 @@ Type Item
 
 	Field picked%
 	Field dropped%
-	
+
 	Field invImage%
 
 	Field wontColl% = False
@@ -336,8 +336,6 @@ Function RemoveItem(i.Item)
 		FreeImage(i\img)
 	EndIf
 
-	DropItem(i,False)
-
 	FreeEntity(i\model) : FreeEntity(i\collider) : i\collider = 0
 
 	Delete i
@@ -351,7 +349,7 @@ Function UpdateItems()
 
 	Local HideDist# = HideDistance*0.5
 	Local deletedItem% = False
-	
+
 	Local ed#
 
 	mainPlayer\closestItem = Null
@@ -424,7 +422,7 @@ Function UpdateItems()
 			EndIf
 		EndIf
 	Next
-	
+
 	Local canSeePlayer% = True
 	If (mainPlayer\closestItem <> Null) Then
 		;Can the player see this? (TODO: fix)
@@ -492,10 +490,12 @@ Function PickItem(item.Item)
 	EndIf
 End Function
 
-Function DropItem(item.Item,playDropSound%=True)
-	Local player.Player
-	For player = Each Player
-		DeEquipItem(player,item)
+Function DropItem(item.Item, inv.Inventory)
+	Local i%
+	For i=0 to inv\size-1
+		If (inv\items[i] = item) Then
+			inv\items[i] = Null
+		Next
 	Next
 
 	If (playDropSound) Then
@@ -588,37 +588,6 @@ Function IsPlayerWearingItem%(player.Player,item.Item)
 	Return (player\wornItems[slot] = item)
 End Function
 
-Function EquipItem(player.Player, item.Item)
-	If (item=Null) Then Return
-	If (item\template\wornSlot = WORNITEM_SLOT_NONE) Then Return
-
-	player\wornItems[item\template\wornSlot] = item
-End Function
-
-Function DeEquipItem(player.Player,item.Item)
-	If (item = Null) Then
-		Return
-	EndIf
-
-	If (player\wornItems[item\template\wornSlot]<>item) Then
-		Return
-	EndIf
-
-	player\wornItems[item\template\wornSlot] = Null
-	If (item\template\wornSlot = WORNITEM_SLOT_HAND) Then
-		Return
-	EndIf
-
-	;Check if this item can be put back into the inventory.
-	If (item\template\wornOnly) Then
-		DropItem(item)
-	ElseIf (CountItemsInInventory(mainPlayer\inventory) >= mainPlayer\inventory\size) Then
-		DropItem(item)
-	Else
-		PickItem(item)
-	EndIf
-End Function
-
 Const ITEM_CELL_SIZE% = 70
 Const ITEM_CELL_SPACING% = 35
 Const ITEMS_PER_ROW% = 3
@@ -626,8 +595,9 @@ Function UpdateInventory(player.Player)
 	;TODO: cleanup
 	Local prevInvOpen% = (CurrGameState=GAMESTATE_INVENTORY)
 	Local mouseSlot% = 66
+	Local mouseOnWornItemSlot% = False
 
-	Local np.NPC, e.Event, it.Item
+	Local it.Item
 
 	Local x%, y%, isMouseOn%, i%
 
@@ -648,7 +618,10 @@ Function UpdateInventory(player.Player)
 
 			If (isMouseOn) Then
 				mouseSlot = slotIndex
-				
+				If (slotIndex < WORNITEM_SLOT_COUNT) Then
+					mouseOnWornItemSlot = True
+				EndIf
+
 				If (MouseHit1) Then
 					;Selecting an item.
 					If (player\selectedItem = Null) Then
@@ -656,16 +629,32 @@ Function UpdateInventory(player.Player)
 							player\selectedItem = player\openInventory\items[slotIndex]
 						EndIf
 					EndIf
-					
+
 					MouseHit1 = False
 					If (DoubleClick) Then
-						;Using the item.
-						;UseItem(player\openInventory\items[slotIndex])
+						If (mouseOnWornItemSlot) Then
+							item = player\openInventory[slotIndex]
+							UnEquipItem(item)
+
+							;Check if this item can be put back into the inventory.
+							If (item\template\wornOnly) Then
+								DropItem(item, player\openInventory)
+							ElseIf (CountItemsInInventory(mainPlayer\inventory) >= mainPlayer\inventory\size) Then
+								DropItem(item, player\openInventory)
+							Else
+								PickItem(item)
+							EndIf
+						Else
+							;Using the item.
+							UseItem(player\openInventory, slotIndex)
+						EndIf
+
+						player\selectedItem = Null
 						DoubleClick = False
 					EndIf
 				ElseIf (MouseUp1 And player\selectedItem <> Null) Then
 					;Item already selected and mouse release.
-					
+
 					;Hovering over empty slot. Move the item to the empty slot.
 					If (player\openInventory\items[slotIndex] = Null) Then
 						;Remove the item from its previous slot.
@@ -675,7 +664,7 @@ Function UpdateInventory(player.Player)
 								Exit
 							EndIf
 						Next
-						
+
 						player\openInventory\items[slotIndex] = player\selectedItem
 						player\selectedItem = Null
 					ElseIf (player\openInventory\items[slotIndex] <> player\selectedItem) Then
@@ -702,7 +691,7 @@ Function UpdateInventory(player.Player)
 		If (MouseUp1 And player\selectedItem <> Null) Then
 			;Mouse release outside a slot, drop the item.
 			If (mouseSlot = 66) Then
-				DropItem(player\selectedItem)
+				DropItem(player\selectedItem, player\openInventory)
 				player\selectedItem = Null
 			EndIf
 		EndIf
@@ -725,24 +714,6 @@ Function UpdateInventory(player.Player)
 	EndIf
 End Function
 
-Function ToggleInventory(player.Player)
-	If (CurrGameState = GAMESTATE_INVENTORY) Then
-		If (mainPlayer\openInventory = mainPlayer\inventory) Then
-			CurrGameState = GAMESTATE_PLAYING
-			ResumeSounds()
-			MouseXSpeed() : MouseYSpeed() : MouseZSpeed() : mouse_x_speed_1 = 0.0 : mouse_y_speed_1 = 0.0
-		Else
-			mainPlayer\openInventory = mainPlayer\inventory
-		EndIf
-	Else
-		CurrGameState = GAMESTATE_INVENTORY
-		mainPlayer\openInventory = mainPlayer\inventory
-		PauseSounds()
-	EndIf
-
-	mainPlayer\selectedItem = Null
-End Function
-
 Function DrawInventory(player.Player)
 	Local MouseSlot% = 66
 
@@ -751,15 +722,15 @@ Function DrawInventory(player.Player)
 	Local strtemp$
 
 	Local x%, y%, i%, yawvalue#, x1#, x2#, x3#, y1#, y2#, y3#, xtemp%, ytemp%
-	
+
 	Local n%
-	
+
 	Local tempCamera%, tempLight%, tempObj%
-	
+
 	If (CurrGameState = GAMESTATE_INVENTORY) Then
 		x = userOptions\screenWidth / 2 - (ITEM_CELL_SIZE * ITEMS_PER_ROW + ITEM_CELL_SPACING * (ITEMS_PER_ROW - 1)) / 2
 		y = userOptions\screenHeight / 2 - ITEM_CELL_SIZE * (player\openInventory\size / ITEMS_PER_ROW) + ITEM_CELL_SIZE / 2
-		
+
 		For  n = 0 To player\openInventory\size - 1
 			isMouseOn = False
 			If (MouseX() > x And MouseX() < x + ITEM_CELL_SIZE) Then
@@ -783,7 +754,7 @@ Function DrawInventory(player.Player)
 					Rect(x - 3, y - 3, ITEM_CELL_SIZE + 6, ITEM_CELL_SIZE + 6)
 				EndIf
 				Color(255, 255, 255)
-				
+
 				;Render icon.
 				If (player\openInventory\items[n]\invImage = 0) Then
 					player\openInventory\items[n]\invImage = CreateImage(64,64)
@@ -792,9 +763,9 @@ Function DrawInventory(player.Player)
 					CameraZoom(tempCamera,1.2)
 					tempLight = CreateLight(1)
 					AmbientLight(40,40,40)
-					
+
 					RotateEntity(tempObj,0,0,0,True)
-					
+
 					CameraRange(tempCamera,0.01,512.0*RoomScale)
 					CameraViewport(tempCamera,0,0,64,64)
 					CameraClsColor(tempCamera,255,0,255)
@@ -806,19 +777,19 @@ Function DrawInventory(player.Player)
 					PointEntity(tempLight,tempObj)
 					PositionEntity(tempObj,10000.0,10000.0+12.0*RoomScale,10000.0,True)
 					HideEntity(mainPlayer\cam)
-					
+
 					SetBuffer(BackBuffer())
 					RenderWorld()
 					CopyRect(0,0,64,64,0,0,BackBuffer(),ImageBuffer(player\openInventory\items[n]\invImage))
 					MaskImage(player\openInventory\items[n]\invImage,255,0,255)
-					
+
 					HideEntity(tempObj)
 					ShowEntity(mainPlayer\cam)
 					FreeEntity(tempCamera)
 					FreeEntity(tempLight)
 					AmbientLight(Brightness, Brightness, Brightness)
 				EndIf
-				
+
 				If (player\selectedItem <> player\openInventory\items[n] Or isMouseOn) Then
 					DrawImage(player\openInventory\items[n]\invImage, x + ITEM_CELL_SIZE / 2 - 32, y + ITEM_CELL_SIZE / 2 - 32)
 				EndIf
@@ -842,7 +813,7 @@ Function DrawInventory(player.Player)
 				x = userOptions\screenWidth / 2 - (ITEM_CELL_SIZE * ITEMS_PER_ROW + ITEM_CELL_SPACING * (ITEMS_PER_ROW - 1)) / 2
 			EndIf
 		Next
-		
+
 		;Only re-draw the item under the cursor once it has left the item's original slot.
 		If (player\selectedItem <> Null) Then
 			If (MouseDown1) Then
@@ -859,7 +830,59 @@ Function DrawInventory(player.Player)
 			;TODO: Draw firstaid, nav, radio, docs.
 		EndIf
 	EndIf
+End Function
 
+Function ToggleInventory(player.Player)
+	If (CurrGameState = GAMESTATE_INVENTORY) Then
+		If (mainPlayer\openInventory = mainPlayer\inventory) Then
+			CurrGameState = GAMESTATE_PLAYING
+			ResumeSounds()
+			MouseXSpeed() : MouseYSpeed() : MouseZSpeed() : mouse_x_speed_1 = 0.0 : mouse_y_speed_1 = 0.0
+		Else
+			mainPlayer\openInventory = mainPlayer\inventory
+		EndIf
+	Else
+		CurrGameState = GAMESTATE_INVENTORY
+		mainPlayer\openInventory = mainPlayer\inventory
+		PauseSounds()
+	EndIf
+
+	mainPlayer\selectedItem = Null
+End Function
+
+Function UseItem(inv.Inventory, index%)
+	Local item.Item = inv\items[index]
+
+	If (item\template\wornSlot <> WORNITEM_SLOT_NONE) Then
+		;If the equip slot is already filled then swap the items.
+		If (mainPlayer\inventory\items[item\template\wornSlot] <> Null) Then
+			inv\items[index] = mainPlayer\inventory\items[item\template\wornSlot]
+			mainPlayer\inventory\items[item\template\wornSlot] = item
+		Else
+			mainPlayer\inventory\items[item\template\wornSlot] = item
+			inv\items[index] = Null
+		EndIf
+
+		EquipItem(item)
+		Return
+	EndIf
+
+	Local item.Item = inv\items[index]
+	;TODO: Non-equippable items here.
+End Function
+
+Function EquipItem(item.Item)
+	Select item\template\name
+		Case "gasmask"
+			ShowEntity(mainPlayer\overlays[OVERLAY_GASMASK])
+	End Select
+End Function
+
+Function UnEquipItem(item.Item)
+	Select item\template\name
+		Case "gasmask"
+			HideEntity(mainPlayer\overlays[OVERLAY_GASMASK])
+	End Select
 End Function
 
 Const RADIO_CHANNEL_COUNT% = 5

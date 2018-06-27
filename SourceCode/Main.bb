@@ -553,8 +553,6 @@ Function UpdateGame()
 		Else
 			If (Not MouseDown1) And (Not MouseHit1) Then mainPlayer\grabbedEntity = 0
 
-			;ShouldPlay = 0 ;TODO: FIX ;Min(PlayerZone,2)
-
 			DrawHandIcon = False
 
 			If (timing\tickDuration > 0) Then UpdateSecurityCams()
@@ -562,58 +560,6 @@ Function UpdateGame()
 			If (KeyHit(keyBinds\inv)) Then
 				ToggleInventory(mainPlayer)
 			EndIf
-
-			If (mainPlayer\currRoom\roomTemplate\name <> "pocketdimension" And mainPlayer\currRoom\roomTemplate\name <> "gatea" And mainPlayer\currRoom\roomTemplate\name <> "exit1" And (Not IsPaused())) Then
-
-				If (Rand(1500) = 1) Then
-					;TODO: reimplement
-;					For i = 0 To 5
-;						If (AmbientSFX(i,CurrAmbientSFX) <> 0) Then
-;							If (IsChannelPlaying(AmbientSFXCHN) = 0) Then FreeSound(AmbientSFX(i,CurrAmbientSFX) : AmbientSFX(i,CurrAmbientSFX) = 0)
-;						EndIf
-;					Next
-;
-;					PositionEntity(SoundEmitter, EntityX(mainPlayer\cam) + Rnd(-1.0, 1.0), 0.0, EntityZ(mainPlayer\cam) + Rnd(-1.0, 1.0))
-;
-;					If mainPlayer\currRoom\roomTemplate\name = "room860"
-;						For e = Each Event
-;							If e\name = "room860"
-;								If (e\eventState = 1.0) Then
-;									PositionEntity(SoundEmitter, EntityX(mainPlayer\cam) + Rnd(-1.0, 1.0), 30.0, EntityZ(mainPlayer\cam) + Rnd(-1.0, 1.0))
-;								EndIf
-;
-;								Exit
-;							EndIf
-;						Next
-;					EndIf
-
-					;CurrAmbientSFX = Rand(0,AmbientSFXAmount(PlayerZone)-1) ;TODO: fix
-
-					;Select PlayerZone
-					;	Case 0,1,2
-					;		If (AmbientSFX(PlayerZone,CurrAmbientSFX)=0) Then AmbientSFX(PlayerZone,CurrAmbientSFX)=LoadSound("SFX/Ambient/Zone"+(PlayerZone+1)+"/ambient"+(CurrAmbientSFX+1)+".ogg")
-					;	Case 3
-					;		If (AmbientSFX(PlayerZone,CurrAmbientSFX)=0) Then AmbientSFX(PlayerZone,CurrAmbientSFX)=LoadSound("SFX/Ambient/General/ambient"+(CurrAmbientSFX+1)+".ogg")
-					;	Case 4
-					;		If (AmbientSFX(PlayerZone,CurrAmbientSFX)=0) Then AmbientSFX(PlayerZone,CurrAmbientSFX)=LoadSound("SFX/Ambient/Pre-breach/ambient"+(CurrAmbientSFX+1)+".ogg")
-					;	Case 5
-					;		If (AmbientSFX(PlayerZone,CurrAmbientSFX)=0) Then AmbientSFX(PlayerZone,CurrAmbientSFX)=LoadSound("SFX/Ambient/Forest/ambient"+(CurrAmbientSFX+1)+".ogg")
-					;End Select
-
-					;AmbientSFXCHN = PlayRangedSound(AmbientSFX(PlayerZone,CurrAmbientSFX), mainPlayer\cam, SoundEmitter)
-				EndIf
-
-				If (Rand(50000) = 3) Then
-					rn = mainPlayer\currRoom\roomTemplate\name$
-					If (rn <> "room860" And rn <> "room1123" And rn <> "173" And rn <> "dimension1499") Then
-						;If (timing\tickDuration > 0) Then LightBlink = Rnd(1.0,2.0)
-						PlaySound2( LoadTempSound("SFX/SCP/079/Broadcast" + Str(Rand(1,7)) + ".ogg"))
-					EndIf
-				EndIf
-			EndIf
-
-			;UpdateCheckpoint1 = False
-			;UpdateCheckpoint2 = False
 
 			If (Not IsPaused()) Then
 				;LightVolume = CurveValue(TempLightVolume, LightVolume, 50.0)
@@ -659,7 +605,7 @@ Function UpdateGame()
 			;[Block]
 
 			darkA = 0.0
-			If (Not IsPaused() ) Then
+			If (Not IsPaused()) Then
 				If (mainPlayer\sanity895 < 0) Then
 					mainPlayer\sanity895 = Min(mainPlayer\sanity895 + timing\tickDuration, 0.0)
 					If (mainPlayer\sanity895 < (-200)) Then
@@ -1062,7 +1008,7 @@ End Function
 ;
 ;	EndIf
 ;
-;	
+;
 ;
 ;	SetFont(uiAssets\font[0])
 ;End Function
@@ -1439,7 +1385,7 @@ Function DrawGUI()
 				Text(userOptions\screenWidth/2, Int(y+124*scale), KeypadInput,True,True)
 			EndIf
 
-			
+
 		EndIf
 	EndIf
 
@@ -1514,7 +1460,7 @@ Function DrawPauseMenu()
 		If (mainPlayer\dead) Then RowText(DeathMSG, x, Int(y + 80*MenuScale), Int(390*MenuScale), Int(600*MenuScale))
 		;EndIf
 
-		
+
 	EndIf
 
 	SetFont(uiAssets\font[0])

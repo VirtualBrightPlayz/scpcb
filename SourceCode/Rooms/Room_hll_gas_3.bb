@@ -79,17 +79,17 @@ Function UpdateEventRoom3pit1048(e.Event)
 	Local x#, y#, z#
 
 	Local angle#, imgPath$, sf%, b%, t%, texname$
-	
+
 	;[Block]
 	If (mainPlayer\currRoom = e\room) Then
 		If (e\room\objects[2] = 0) Then
 			e\room\objects[2] =	LoadAnimMesh("GFX/npcs/scp-1048pp.b3d")
 			ScaleEntity(e\room\objects[2], 0.05,0.05,0.05)
 			SetAnimTime(e\room\objects[2], 414)
-			
+
 			;TODO: Redo.
 ;			imgPath = "GFX/items/1048/1048_"+Str(Rand(1,20))+".jpg"
-;			
+;
 ;			For itt = Each ItemTemplate
 ;				If (itt\name = "Drawing") Then
 ;					If (itt\img<>0) Then FreeImage(itt\img)
@@ -145,7 +145,7 @@ Function UpdateEventRoom3pit1048(e.Event)
 					If (MouseHit1) Then
 						mainPlayer\selectedItem = CreateItem("paper", 0.0, 0.0, 0.0)
 
-						If (CountItemsInInventory(mainPlayer\inventory) >= mainPlayer\inventory\size) Then DropItem(mainPlayer\inventory\items[0])
+						If (CountItemsInInventory(mainPlayer\inventory) >= mainPlayer\inventory\size) Then DropItem(mainPlayer\inventory\items[WORNITEM_SLOT_COUNT], mainPlayer\inventory)
 
 						PickItem(mainPlayer\selectedItem)
 

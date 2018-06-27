@@ -5,7 +5,6 @@ Const WORNITEM_SLOT_BODY%  = 1
 Const WORNITEM_SLOT_HAND%  = 2
 
 Const PLAYER_INV_COUNT% = 6
-Global WORNITEM_INV_OFFSET% = WORNITEM_SLOT_COUNT-1
 
 Const OVERLAY_COUNT%       = 6
 Const OVERLAY_BLACK%       = 0
@@ -588,30 +587,6 @@ Global mouse_x_speed_1#, mouse_y_speed_1#
 Function MouseLook()
 	Local i%, up#, roll#, the_yaw#, the_pitch#, collidedFloor%, pvt%, p.Particle
 
-	Local wearingGasMask%
-	wearingGasMask = IsPlayerWearingTempName(mainPlayer,"gasmask")
-	If (Not wearingGasMask) Then
-		wearingGasMask = IsPlayerWearingTempName(mainPlayer,"supergasmask")*2
-	EndIf
-
-	Local wearingHazmat%
-	wearingHazmat = IsPlayerWearingTempName(mainPlayer,"hazmatsuit")
-	If (Not wearingHazmat) Then
-		wearingHazmat = IsPlayerWearingTempName(mainPlayer,"hazmatsuit2")*2
-	EndIf
-
-	Local wearing1499%
-	wearing1499 = IsPlayerWearingTempName(mainPlayer,"scp1499")
-	If (Not wearing1499) Then
-		wearing1499 = IsPlayerWearingTempName(mainPlayer,"super1499")*2
-	EndIf
-
-	Local wearingNightVision%
-	wearingNightVision = IsPlayerWearingTempName(mainPlayer,"nvgoggles")
-	If (Not wearingNightVision) Then
-		wearingNightVision = IsPlayerWearingTempName(mainPlayer,"supernv")*2
-	EndIf
-
 	mainPlayer\camShake = Max(mainPlayer\camShake - (timing\tickDuration / 10), 0)
 
 	;CameraZoomTemp = CurveValue(mainPlayer\camZoom,CameraZoomTemp, 5.0)
@@ -725,46 +700,39 @@ Function MouseLook()
 		MoveMouse(viewport_center_x, viewport_center_y)
 	EndIf
 
-	If (wearingGasMask Or wearingHazmat Or wearing1499) Then
-		If (wearingGasMask = 2) Then mainPlayer\stamina = Min(100, mainPlayer\stamina + (100.0-mainPlayer\stamina)*0.01*timing\tickDuration)
-		If (wearing1499 = 2) Then mainPlayer\stamina = Min(100, mainPlayer\stamina + (100.0-mainPlayer\stamina)*0.01*timing\tickDuration)
-		If (wearingHazmat = 2) Then
-			mainPlayer\stamina = Min(100, mainPlayer\stamina + (100.0-mainPlayer\stamina)*0.01*timing\tickDuration)
-		ElseIf (wearingHazmat=1) Then
-			mainPlayer\stamina = Min(60, mainPlayer\stamina)
-		EndIf
+	;TODO: Move this to MovePlayer().
+	;If (wearingGasMask Or wearingHazmat Or wearing1499) Then
+	;	If (wearingGasMask = 2) Then mainPlayer\stamina = Min(100, mainPlayer\stamina + (100.0-mainPlayer\stamina)*0.01*timing\tickDuration)
+	;	If (wearing1499 = 2) Then mainPlayer\stamina = Min(100, mainPlayer\stamina + (100.0-mainPlayer\stamina)*0.01*timing\tickDuration)
+	;	If (wearingHazmat = 2) Then
+	;		mainPlayer\stamina = Min(100, mainPlayer\stamina + (100.0-mainPlayer\stamina)*0.01*timing\tickDuration)
+	;	ElseIf (wearingHazmat=1) Then
+	;		mainPlayer\stamina = Min(60, mainPlayer\stamina)
+	;	EndIf
+	;
+	;	ShowEntity(mainPlayer\overlays[OVERLAY_GASMASK])
+	;Else
+	;	HideEntity(mainPlayer\overlays[OVERLAY_GASMASK])
+	;EndIf
 
-		ShowEntity(mainPlayer\overlays[OVERLAY_GASMASK])
-	Else
-		HideEntity(mainPlayer\overlays[OVERLAY_GASMASK])
-	EndIf
-
-	If (Not wearingNightVision=0) Then
-		ShowEntity(mainPlayer\overlays[OVERLAY_NIGHTVISION])
-		If (wearingNightVision=2) Then
-			EntityColor(mainPlayer\overlays[OVERLAY_NIGHTVISION], 0,100,255)
-			AmbientLightRooms(15)
-		ElseIf (wearingNightVision=3) Then
-			EntityColor(mainPlayer\overlays[OVERLAY_NIGHTVISION], 255,0,0)
-			AmbientLightRooms(15)
-		Else
-			EntityColor(mainPlayer\overlays[OVERLAY_NIGHTVISION], 0,255,0)
-			AmbientLightRooms(15)
-		EndIf
-		;EntityTexture(Fog, FogNVTexture)
-	Else
-		AmbientLightRooms(0)
-		HideEntity(mainPlayer\overlays[OVERLAY_NIGHTVISION])
-		;EntityTexture(Fog, FogTexture)
-	EndIf
-End Function
-
-Function DeEquipSlot(player.Player,invSlot%)
-	If (player\wornItems[invSlot] = Null) Then
-		Return
-	EndIf
-
-	DeEquipItem(player,player\wornItems[invSlot])
+	;If (Not wearingNightVision=0) Then
+	;	ShowEntity(mainPlayer\overlays[OVERLAY_NIGHTVISION])
+	;	If (wearingNightVision=2) Then
+	;		EntityColor(mainPlayer\overlays[OVERLAY_NIGHTVISION], 0,100,255)
+	;		AmbientLightRooms(15)
+	;	ElseIf (wearingNightVision=3) Then
+	;		EntityColor(mainPlayer\overlays[OVERLAY_NIGHTVISION], 255,0,0)
+	;		AmbientLightRooms(15)
+	;	Else
+	;		EntityColor(mainPlayer\overlays[OVERLAY_NIGHTVISION], 0,255,0)
+	;		AmbientLightRooms(15)
+	;	EndIf
+	;	;EntityTexture(Fog, FogNVTexture)
+	;Else
+	;	AmbientLightRooms(0)
+	;	HideEntity(mainPlayer\overlays[OVERLAY_NIGHTVISION])
+	;	;EntityTexture(Fog, FogTexture)
+	;EndIf
 End Function
 
 Function Kill(player.Player)
