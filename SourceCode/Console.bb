@@ -569,6 +569,7 @@ Function UpdateConsole()
 							UpdateDoors()
 							UpdateRooms()
 							mainPlayer\currRoom = r
+							CreateItem("gasmask", r\x, r\y+2, r\z)
 							Exit
 						EndIf
 					Next

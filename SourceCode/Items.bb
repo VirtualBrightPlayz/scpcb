@@ -464,16 +464,10 @@ Function PickItem(item.Item)
 
 				Return
 			EndIf
-		Case "hazmatsuit"
-			Msg = "You put on the hazmat suit."
-			MsgTimer = 70 * 5
-			mainPlayer\wornItems[WORNITEM_SLOT_BODY] = item
-
-			Return
 	End Select
 
 	If (CountItemsInInventory(mainPlayer\inventory) < mainPlayer\inventory\size) Then
-		For n = 0 To mainPlayer\inventory\size - 1
+		For n = WORNITEM_SLOT_COUNT To mainPlayer\inventory\size - 1
 			If (mainPlayer\inventory\items[n] = Null) Then
 				PlaySound_SM(sndManager\itemPick[item\template\sound])
 				item\picked = True
@@ -492,15 +486,13 @@ End Function
 
 Function DropItem(item.Item, inv.Inventory)
 	Local i%
-	For i=0 to inv\size-1
+	For i=0 To inv\size-1
 		If (inv\items[i] = item) Then
 			inv\items[i] = Null
-		Next
+		EndIf
 	Next
-
-	If (playDropSound) Then
-		PlaySound_SM(sndManager\itemPick[item\template\sound])
-	EndIf
+	
+	PlaySound_SM(sndManager\itemPick[item\template\sound])
 
 	item\dropped = 1
 
@@ -513,13 +505,6 @@ Function DropItem(item.Item, inv.Inventory)
 	ResetEntity(item\collider)
 
 	item\picked = False
-	Local inv.Inventory
-	Local j%
-	For inv = Each Inventory
-		For j=0 To inv\size-1
-			If (inv\items[j]=item) Then inv\items[j]=Null
-		Next
-	Next
 End Function
 
 Function AssignTag(item.Item, tag$)
@@ -597,7 +582,7 @@ Function UpdateInventory(player.Player)
 	Local mouseSlot% = 66
 	Local mouseOnWornItemSlot% = False
 
-	Local it.Item
+	Local item.Item
 
 	Local x%, y%, isMouseOn%, i%
 
@@ -622,18 +607,16 @@ Function UpdateInventory(player.Player)
 					mouseOnWornItemSlot = True
 				EndIf
 
-				If (MouseHit1) Then
+				If (MouseHit1 And player\openInventory\items[slotIndex] <> Null) Then
 					;Selecting an item.
 					If (player\selectedItem = Null) Then
-						If (player\openInventory\items[slotIndex] <> Null) Then
-							player\selectedItem = player\openInventory\items[slotIndex]
-						EndIf
+						player\selectedItem = player\openInventory\items[slotIndex]
 					EndIf
 
 					MouseHit1 = False
 					If (DoubleClick) Then
 						If (mouseOnWornItemSlot) Then
-							item = player\openInventory[slotIndex]
+							item = player\openInventory\items[slotIndex]
 							UnEquipItem(item)
 
 							;Check if this item can be put back into the inventory.
@@ -642,6 +625,8 @@ Function UpdateInventory(player.Player)
 							ElseIf (CountItemsInInventory(mainPlayer\inventory) >= mainPlayer\inventory\size) Then
 								DropItem(item, player\openInventory)
 							Else
+								PlaySound_SM(sndManager\itemPick[item\template\sound])
+								player\openInventory\items[slotIndex] = Null
 								PickItem(item)
 							EndIf
 						Else
@@ -654,17 +639,32 @@ Function UpdateInventory(player.Player)
 					EndIf
 				ElseIf (MouseUp1 And player\selectedItem <> Null) Then
 					;Item already selected and mouse release.
-
+					
 					;Hovering over empty slot. Move the item to the empty slot.
 					If (player\openInventory\items[slotIndex] = Null) Then
+						;If the empty slot is an equip slot then check if the slots match.
+						If (mouseOnWornItemSlot) Then
+							If (slotIndex <> player\selectedItem\template\wornSlot) Then
+								player\selectedItem = Null
+								Return
+							Else
+								PlaySound_SM(sndManager\itemPick[player\selectedItem\template\sound])
+								EquipItem(player\selectedItem)
+							EndIf
+						EndIf
+							
 						;Remove the item from its previous slot.
 						For i=0 To player\openInventory\size - 1
 							If (player\openInventory\items[i] = player\selectedItem) Then
+								If (i < WORNITEM_SLOT_COUNT) Then
+									PlaySound_SM(sndManager\itemPick[player\selectedItem\template\sound])
+									UnEquipItem(player\selectedItem)
+								EndIf
 								player\openInventory\items[i] = Null
 								Exit
 							EndIf
 						Next
-
+						
 						player\openInventory\items[slotIndex] = player\selectedItem
 						player\selectedItem = Null
 					ElseIf (player\openInventory\items[slotIndex] <> player\selectedItem) Then
@@ -852,7 +852,8 @@ End Function
 
 Function UseItem(inv.Inventory, index%)
 	Local item.Item = inv\items[index]
-
+	PlaySound_SM(sndManager\itemPick[item\template\sound])
+	
 	If (item\template\wornSlot <> WORNITEM_SLOT_NONE) Then
 		;If the equip slot is already filled then swap the items.
 		If (mainPlayer\inventory\items[item\template\wornSlot] <> Null) Then
@@ -866,8 +867,7 @@ Function UseItem(inv.Inventory, index%)
 		EquipItem(item)
 		Return
 	EndIf
-
-	Local item.Item = inv\items[index]
+	
 	;TODO: Non-equippable items here.
 End Function
 

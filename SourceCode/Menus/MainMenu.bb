@@ -180,29 +180,28 @@ Function UpdateMainMenu()
 				EndIf
 
 				If (UpdateUIButton(x + Int(420.0 * MenuScale), y + height + Int(20.0 * MenuScale), Int(160.0 * MenuScale), Int(70.0 * MenuScale), "START")) Then
-					If (CurrSave <> "") Then
-						If (RandomSeed = "") Then
-							RandomSeed = Str(Abs(MilliSecs()))
-						EndIf
-						strtemp = ""
-						SeedRnd(SeedStringToInt(RandomSeed))
-
-						SameFound = False
-						For i = 1 To SaveGameAmount
-							If (SaveGames(i - 1) = CurrSave) Then SameFound=SameFound+1
-						Next
-
-						If (SameFound > 0) Then CurrSave = CurrSave + " (" + Str(SameFound + 1) + ")"
-
-						LoadEntities()
-						InitNewGame()
-						CurrGameState = GAMESTATE_PLAYING
-						FlushKeys()
-						FlushMouse()
-
-						PutINIValue(OptionFile, "general", "intro enabled", Str(userOptions\introEnabled))
+					If (CurrSave <> "") Then CurrSave = "untitled"
+					
+					If (RandomSeed = "") Then
+						RandomSeed = Str(Abs(MilliSecs()))
 					EndIf
+					strtemp = ""
+					SeedRnd(SeedStringToInt(RandomSeed))
 
+					SameFound = False
+					For i = 1 To SaveGameAmount
+						If (SaveGames(i - 1) = CurrSave) Then SameFound=SameFound+1
+					Next
+
+					If (SameFound > 0) Then CurrSave = CurrSave + " (" + Str(SameFound + 1) + ")"
+
+					LoadEntities()
+					InitNewGame()
+					CurrGameState = GAMESTATE_PLAYING
+					FlushKeys()
+					FlushMouse()
+
+					PutINIValue(OptionFile, "general", "intro enabled", Str(userOptions\introEnabled))
 				EndIf
 
 				;[End Block]
