@@ -636,7 +636,7 @@ Function UpdateInventory(player.Player)
 		mainPlayer\selectedDoor = Null
 
 		x = userOptions\screenWidth / 2 - (ITEM_CELL_SIZE * ITEMS_PER_ROW + ITEM_CELL_SPACING * (ITEMS_PER_ROW - 1)) / 2
-		y = userOptions\screenHeight / 2 - ITEM_CELL_SIZE * (player\openInventory\size / ITEMS_PER_ROW) + ITEM_CELL_SIZE / 2
+		y = userOptions\screenHeight / 2 - (ITEM_CELL_SIZE + ITEM_CELL_SPACING) * (player\openInventory\size / ITEMS_PER_ROW) / 2 + ITEM_CELL_SPACING/2
 
 		For slotIndex = 0 To player\openInventory\size - 1
 			isMouseOn = False
@@ -694,7 +694,7 @@ Function UpdateInventory(player.Player)
 			;Move x and y coords to point to next item.
 			x = x + ITEM_CELL_SIZE + ITEM_CELL_SPACING
 			If (slotIndex Mod ITEMS_PER_ROW = ITEMS_PER_ROW-1) Then
-				y = y + ITEM_CELL_SIZE * 2
+				y = y + ITEM_CELL_SIZE + ITEM_CELL_SPACING
 				x = userOptions\screenWidth / 2 - (ITEM_CELL_SIZE * ITEMS_PER_ROW + ITEM_CELL_SPACING * (ITEMS_PER_ROW - 1)) / 2
 			EndIf
 		Next
@@ -758,7 +758,7 @@ Function DrawInventory(player.Player)
 	
 	If (CurrGameState = GAMESTATE_INVENTORY) Then
 		x = userOptions\screenWidth / 2 - (ITEM_CELL_SIZE * ITEMS_PER_ROW + ITEM_CELL_SPACING * (ITEMS_PER_ROW - 1)) / 2
-		y = userOptions\screenHeight / 2 - ITEM_CELL_SIZE * (player\openInventory\size / ITEMS_PER_ROW) + ITEM_CELL_SIZE / 2
+		y = userOptions\screenHeight / 2 - (ITEM_CELL_SIZE + ITEM_CELL_SPACING) * (player\openInventory\size / ITEMS_PER_ROW) / 2 + ITEM_CELL_SPACING/2
 		
 		For  n = 0 To player\openInventory\size - 1
 			isMouseOn = False
@@ -838,7 +838,7 @@ Function DrawInventory(player.Player)
 
 			x = x + ITEM_CELL_SIZE + ITEM_CELL_SPACING
 			If (n Mod ITEMS_PER_ROW = ITEMS_PER_ROW-1) Then
-				y = y + ITEM_CELL_SIZE * 2
+				y = y + ITEM_CELL_SIZE + ITEM_CELL_SPACING
 				x = userOptions\screenWidth / 2 - (ITEM_CELL_SIZE * ITEMS_PER_ROW + ITEM_CELL_SPACING * (ITEMS_PER_ROW - 1)) / 2
 			EndIf
 		Next
