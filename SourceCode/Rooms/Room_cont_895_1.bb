@@ -127,7 +127,7 @@ Function UpdateEventCoffin(e.Event)
 			hasBatteryFor895 = 0
 			For i = 0 To mainPlayer\inventory\size - 1
 				If (mainPlayer\inventory\items[i] <> Null) Then
-					If (mainPlayer\inventory\items[i]\template\name = "nvgoggles" Or mainPlayer\inventory\items[i]\template\name = "supernv" And IsPlayerWearingItem(mainPlayer,mainPlayer\inventory\items[i])) Then
+					If (mainPlayer\inventory\items[i]\template\name = "nvgoggles" Or mainPlayer\inventory\items[i]\template\name = "supernv") Then
 						If (mainPlayer\inventory\items[i]\state > 0.0) Then
 							hasBatteryFor895 = 1
 							Exit

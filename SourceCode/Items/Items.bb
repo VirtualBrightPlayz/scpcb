@@ -543,14 +543,18 @@ Function HasTag%(item.Item, tag$)
 	Return False
 End Function
 
-Function IsPlayerWearingItem%(player.Player,item.Item)
-	If (item = Null) Then
-		Return False
-	EndIf
-
-	Local slot% = item\template\wornSlot
-	If (slot = WORNITEM_SLOT_NONE) Then Return False
-	Return (player\inventory\items[slot] = item)
+Function IsPlayerWearingItem%(player.Player, itemName$)
+	Local item.Item
+	Local i%
+	For i=0 To WORNITEM_SLOT_COUNT-1
+		If (player\inventory\items[i] <> Null) Then
+			If (player\inventory\items[i]\template\name = itemName) Then
+				Return True
+			EndIf
+		EndIf
+	Next
+	
+	Return False
 End Function
 
 Function UseItem(inv.Inventory, index%)
@@ -569,13 +573,10 @@ Function UseItem(inv.Inventory, index%)
 End Function
 
 Function DeEquipItem(item.Item)
-	Local i%
-
+	DropItem(item, mainPlayer\openInventory)
+	
 	;Check if this item can be put back into the inventory.
-	If (item\template\wornOnly) Then
-		DropItem(item, player\openInventory)
-	Else
-		player\openInventory\items[slotIndex] = Null
+	If (Not item\template\wornOnly) Then
 		PickItem(item)
 	EndIf
 End Function
@@ -623,7 +624,7 @@ Function UpdateInventory(player.Player)
 					MouseHit1 = False
 					If (DoubleClick) Then
 						If (mouseOnWornItemSlot) Then
-							DeEquipItem(item)
+							DeEquipItem(player\openInventory\items[slotIndex])
 						Else
 							;Using the item.
 							UseItem(player\openInventory, slotIndex)
@@ -742,10 +743,11 @@ Function DrawInventory(player.Player)
 			DrawFrame(x, y, ITEM_CELL_SIZE, ITEM_CELL_SIZE, (x Mod 64), (x Mod 64))
 
 			If (player\openInventory\items[n] <> Null) Then
-				Color(200, 200, 200)
-				If (IsPlayerWearingItem(player,player\openInventory\items[n])) Then
-					Rect(x - 3, y - 3, ITEM_CELL_SIZE + 6, ITEM_CELL_SIZE + 6)
-				EndIf
+				;TODO: Re-implement.
+;				Color(200, 200, 200)
+;				If (IsPlayerWearingItem(player,player\openInventory\items[n])) Then
+;					Rect(x - 3, y - 3, ITEM_CELL_SIZE + 6, ITEM_CELL_SIZE + 6)
+;				EndIf
 				Color(255, 255, 255)
 
 				;Render icon.

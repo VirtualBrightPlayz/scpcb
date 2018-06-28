@@ -528,7 +528,7 @@ Function UpdateGame()
 		DoubleClick = False
 		MouseHit1 = MouseHit(1)
 		If (MouseHit1) Then
-			If (TimeInPosMilliSecs() - LastMouseHit1 < 800) Then DoubleClick = True
+			If (TimeInPosMilliSecs() - LastMouseHit1 < 400) Then DoubleClick = True
 			LastMouseHit1 = TimeInPosMilliSecs()
 		EndIf
 
@@ -594,7 +594,6 @@ Function UpdateGame()
 
 			UpdateWorld()
 			ManipulateNPCBones()
-			UpdateNVG()
 
 			mainPlayer\blurTimer = Min(CurveValue(0.0, mainPlayer\blurTimer, 20.0),1000.0)
 			;If (mainPlayer\blurTimer > 0.0) Then
@@ -1878,21 +1877,6 @@ Function Graphics3DExt%(width%,height%,depth%=32,mode%=2)
 	;InitExt()
 End Function
 
-Function UpdateNVG()
-	Local wornItem.Item = mainPlayer\wornItems[WORNITEM_SLOT_HEAD]
-
-	If (wornItem <> Null) Then
-		If (wornItem\template\name <> "nvgoggles" And wornItem\template\name <> "supernv") Then
-			wornItem = Null
-		EndIf
-	EndIf
-
-	Local decayMultiplier# = 0.0 ;TODO: idfk
-    If (wornItem<>Null) Then
-        wornItem\state = Max(-1.0,wornItem\state - (timing\tickDuration * (0.02 * decayMultiplier)))
-    EndIf
-End Function
-
 Function RenderWorld2()
 	Local k%, l%, decayMultiplier# = 1.0, temp%, temp2%, dist#, yawvalue#, pitchvalue#, xvalue#, yvalue#
 	Local np.NPC
@@ -1917,7 +1901,7 @@ Function RenderWorld2()
 	Local hasBattery% = 2
 	Local power% = 0
 
-	Local wornItem.Item = mainPlayer\wornItems[WORNITEM_SLOT_HEAD]
+	Local wornItem.Item = Null
 
     If (wornItem<>Null) Then
 		If (wornItem\template\name <> "nvgoggles" And wornItem\template\name <> "supernv") Then
