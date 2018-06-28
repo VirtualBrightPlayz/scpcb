@@ -499,13 +499,13 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 
 		If (Rnd(1.0) =< hitProb) Then
 			TurnEntity(mainPlayer\cam, Rnd(-3,3), Rnd(-3,3), 0)
-			
+
 			wearingVest = False
-			wearingVest = wearingVest Or IsPlayerWearingTempName(mainPlayer,"vest")
-			wearingVest = wearingVest Or IsPlayerWearingTempName(mainPlayer,"finevest")
-			wearingVest = wearingVest Or IsPlayerWearingTempName(mainPlayer,"veryfinevest")
+			wearingVest = wearingVest Or IsPlayerWearingItem(mainPlayer,"vest")
+			wearingVest = wearingVest Or IsPlayerWearingItem(mainPlayer,"finevest")
+			wearingVest = wearingVest Or IsPlayerWearingItem(mainPlayer,"veryfinevest")
 			If (wearingVest) Then
-				If (IsPlayerWearingTempName(mainPlayer,"vest")) Then
+				If (IsPlayerWearingItem(mainPlayer,"vest")) Then
 					Select Rand(8)
 						Case 1,2,3,4,5
 							mainPlayer\blurTimer = 500

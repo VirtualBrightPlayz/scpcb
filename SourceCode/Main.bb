@@ -88,7 +88,7 @@ Include "SourceCode/Difficulty.bb"
 Include "SourceCode/Menus/Menu.bb"
 Include "SourceCode/Console.bb"
 Include "SourceCode/Dreamfilter.bb"
-Include "SourceCode/Items.bb"
+Include "SourceCode/Items/Items.bb"
 Include "SourceCode/Particles.bb"
 Include "SourceCode/Doors.bb"
 Include "SourceCode/Objects.bb"
@@ -574,7 +574,7 @@ Function UpdateGame()
 				CanSave = True
 				UpdateEmitters()
 				MouseLook()
-				MovePlayer()
+				UpdatePlayer()
 				InFacility = CheckForPlayerInFacility()
 				UpdateDoors()
 				UpdateLevers()
@@ -676,7 +676,7 @@ Function UpdateGame()
 
 				If (CurrGameState=GAMESTATE_SCP294) Then darkA=1.0
 
-				If (Not IsPlayerWearingTempName(mainPlayer,"nvgoggles")) Then darkA = Max((1.0-SecondaryLightOn)*0.9, darkA)
+				If (Not IsPlayerWearingItem(mainPlayer,"nvgoggles")) Then darkA = Max((1.0-SecondaryLightOn)*0.9, darkA)
 
 				If (mainPlayer\dead) Then
 					CurrGameState = GAMESTATE_PLAYING
@@ -1951,7 +1951,7 @@ Function RenderWorld2()
 	;EndIf
 
 	If (mainPlayer\blinkTimer < - 16 Or mainPlayer\blinkTimer > - 6) Then
-		If (IsPlayerWearingTempName(mainPlayer,"supernv") And hasBattery<>0) Then ;show a HUD
+		If (IsPlayerWearingItem(mainPlayer,"supernv") And hasBattery<>0) Then ;show a HUD
 			;NVTimer=NVTimer-timing\tickDuration
 
 			;If (NVTimer<=0.0) Then
@@ -2029,7 +2029,7 @@ Function RenderWorld2()
 			;DrawImage(NVGImages,40,userOptions\screenHeight*0.5+30,1)
 
 			Color(255,255,255)
-		ElseIf (IsPlayerWearingTempName(mainPlayer,"nvgoggles") And hasBattery<>0) Then
+		ElseIf (IsPlayerWearingItem(mainPlayer,"nvgoggles") And hasBattery<>0) Then
 			Color(0,55,0)
 			For k=0 To 10
 				Rect(45, Int(userOptions\screenHeight*0.5-(k*20)), 54, 10, True)

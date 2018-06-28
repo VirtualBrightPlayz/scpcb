@@ -109,7 +109,7 @@ Function UpdateEvent_cont_012_2(e.Event)
 				EndIf
 			EndIf
 
-			If (Not IsPlayerWearingTempName(mainPlayer,"hazmatsuit3")) And (Not IsPlayerWearingTempName(mainPlayer,"gasmask3")) And (Not IsPlayerWearingTempName(mainPlayer,"nvgoggles")) Then
+			If (Not IsPlayerWearingItem(mainPlayer,"hazmatsuit3")) And (Not IsPlayerWearingItem(mainPlayer,"gasmask3")) And (Not IsPlayerWearingItem(mainPlayer,"nvgoggles")) Then
 				temp = False
 				If (EntityVisible(e\room\objects[2],mainPlayer\cam)) Then temp = True
 

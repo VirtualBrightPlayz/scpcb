@@ -144,8 +144,8 @@ Function UpdateEventRoom3pit1048(e.Event)
 
 					If (MouseHit1) Then
 						mainPlayer\selectedItem = CreateItem("paper", 0.0, 0.0, 0.0)
-
-						If (CountItemsInInventory(mainPlayer\inventory) >= mainPlayer\inventory\size) Then DropItem(mainPlayer\inventory\items[WORNITEM_SLOT_COUNT], mainPlayer\inventory)
+						;TODO: Maybe not have it automatically eject the first item from your inventory?
+						If (Not SpaceInInventory(mainPlayer)) Then DropItem(mainPlayer\inventory\items[WORNITEM_SLOT_COUNT], mainPlayer\inventory)
 
 						PickItem(mainPlayer\selectedItem)
 

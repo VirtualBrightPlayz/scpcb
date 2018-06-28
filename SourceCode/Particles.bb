@@ -105,7 +105,7 @@ Function UpdateEmitters()
 	Local e.Emitter
 	Local p.Particle
 	Local dist#
-	
+
 	For e = Each Emitter
 		If (timing\tickDuration > 0 And (mainPlayer\currRoom = e\room Or e\room\dist < 8)) Then
 			;If (EntityDistance(mainPlayer\cam, e\obj) < 6.0) Then
@@ -123,7 +123,7 @@ Function UpdateEmitters()
 			e\soundCHN = LoopRangedSound_SM(sndManager\hiss, e\soundCHN, mainPlayer\cam, e\obj)
 
 			If (InSmoke = False) Then
-				If (IsPlayerWearingTempName(mainPlayer,"gasmask") And IsPlayerWearingTempName(mainPlayer,"hazmatsuit")) Then
+				If (IsPlayerWearingItem(mainPlayer,"gasmask") And IsPlayerWearingItem(mainPlayer,"hazmatsuit")) Then
 					dist = Distance(EntityX(mainPlayer\cam, True), EntityZ(mainPlayer\cam, True), EntityX(e\obj, True), EntityZ(e\obj, True))
 					If (dist < 0.8) Then
 						If (Abs(EntityY(mainPlayer\cam, True)-EntityY(e\obj,True))<5.0) Then InSmoke = True

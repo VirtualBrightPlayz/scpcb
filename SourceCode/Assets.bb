@@ -479,7 +479,7 @@ Function InitNewGame()
 
 	For i = 0 To 70
 		FlushKeys()
-		MovePlayer()
+		UpdatePlayer()
 		UpdateRooms()
 		UpdateDoors()
 		UpdateNPCs()

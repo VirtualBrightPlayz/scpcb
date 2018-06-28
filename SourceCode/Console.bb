@@ -591,7 +591,7 @@ Function UpdateConsole()
 				Case "spawndoc"
 					StrTemp = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 					CreatePaper(StrTemp, EntityX(mainPlayer\collider), EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider))
-					
+
 				Case "test914key"
 					it = CreateItem("keycard", EntityX(mainPlayer\collider), EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider))
 					AssignTag(it, "cont_914_1")
@@ -797,7 +797,7 @@ Function UpdateConsole()
 					EndIf
 
 				Case "stopsound", "stfu"
-					RuntimeError("TODO: reimplement")
+					StopSounds()
 
 				Case "camerafog"
 					RuntimeError("TODO: reimplement?")

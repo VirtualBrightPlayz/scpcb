@@ -133,7 +133,7 @@ Function UpdateEvent_cont_008_1(e.Event)
 
 							HideEntity(e\room\objects[2])
 
-							If (Not IsPlayerWearingTempName(mainPlayer,"hazmatsuit")) Then
+							If (Not IsPlayerWearingItem(mainPlayer,"hazmatsuit")) Then
 								mainPlayer\injuries=mainPlayer\injuries+0.1
 								mainPlayer\infect008=1
 								Msg = "The window shattered and a piece of glass cut your arm."

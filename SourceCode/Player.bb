@@ -90,8 +90,6 @@ Type Player
 	;items
 	Field inventory.Inventory
 	Field openInventory.Inventory
-
-	Field wornItems.Item[WORNITEM_SLOT_COUNT]
 	;------
 
 	;sounds
@@ -262,7 +260,7 @@ Function DeletePlayer(player.Player)
 	Delete player
 End Function
 
-Function MovePlayer()
+Function UpdatePlayer()
 	Local Sprint# = 1.0, Speed# = 0.018, i%, angle#, temp#, tempchn%, collidedFloor%, pvt%, de.Decal
 
 	If (mainPlayer\superMan>0.0) Then
@@ -302,14 +300,14 @@ Function MovePlayer()
 		If (mainPlayer\currRoom\roomTemplate\name <> "pocketdimension") Then
 			If (KeyDown(keyBinds\sprint)) Then
 				If (mainPlayer\stamina < 5) Then ;out of breath
-					If (Not IsChannelPlaying(mainPlayer\breathChn)) Then mainPlayer\breathChn = PlaySound(GetIntArrayElem(mainPlayer\breathingSFX, IsPlayerWearingTempName(mainPlayer,"gasmask"), 0))
+					If (Not IsChannelPlaying(mainPlayer\breathChn)) Then mainPlayer\breathChn = PlaySound(GetIntArrayElem(mainPlayer\breathingSFX, IsPlayerWearingItem(mainPlayer,"gasmask"), 0))
 				ElseIf (mainPlayer\stamina < 50) Then ;panting
 					If (mainPlayer\breathChn = 0) Then
-						mainPlayer\breathChn = PlaySound(GetIntArrayElem(mainPlayer\breathingSFX, IsPlayerWearingTempName(mainPlayer,"gasmask"), Rand(1, 3)))
+						mainPlayer\breathChn = PlaySound(GetIntArrayElem(mainPlayer\breathingSFX, IsPlayerWearingItem(mainPlayer,"gasmask"), Rand(1, 3)))
 						ChannelVolume(mainPlayer\breathChn, Min((70.0-mainPlayer\stamina)/70.0,1.0)*userOptions\sndVolume)
 					Else
 						If (Not IsChannelPlaying(mainPlayer\breathChn)) Then
-							mainPlayer\breathChn = PlaySound(GetIntArrayElem(mainPlayer\breathingSFX, IsPlayerWearingTempName(mainPlayer,"gasmask"), Rand(1, 3)))
+							mainPlayer\breathChn = PlaySound(GetIntArrayElem(mainPlayer\breathingSFX, IsPlayerWearingItem(mainPlayer,"gasmask"), Rand(1, 3)))
 							ChannelVolume(mainPlayer\breathChn, Min((70.0-mainPlayer\stamina)/70.0,1.0)*userOptions\sndVolume)
 						EndIf
 					EndIf
@@ -502,9 +500,9 @@ Function MovePlayer()
 				EndIf
 				mainPlayer\loudness = Max(3.0,mainPlayer\loudness)
 			EndIf
-			mainPlayer\dropSpeed# = 0
+			mainPlayer\dropSpeed = 0
 		Else
-			mainPlayer\dropSpeed# = Min(Max(mainPlayer\dropSpeed - 0.006 * timing\tickDuration, -2.0), 0.0)
+			mainPlayer\dropSpeed = Min(Max(mainPlayer\dropSpeed - 0.006 * timing\tickDuration, -2.0), 0.0)
 		EndIf
 
 		If (Not mainPlayer\disableControls) Then TranslateEntity(mainPlayer\collider, 0, mainPlayer\dropSpeed * timing\tickDuration, 0)
@@ -566,6 +564,13 @@ Function MovePlayer()
 		mainPlayer\heartbeatIntensity = mainPlayer\heartbeatIntensity - timing\tickDuration
 	EndIf
 
+	; Equipped items.
+	If (IsPlayerWearingItem(mainPlayer, "gasmask")) Then
+		ShowEntity(mainPlayer\overlays[OVERLAY_GASMASK])
+	Else ;TODO: Add ElseIfs here for hazmat and nvgoggles.
+		HideEntity(mainPlayer\overlays[OVERLAY_GASMASK])
+	EndIf
+
 End Function
 
 ;TODO: these variable names are awful
@@ -623,8 +628,8 @@ Function MouseLook()
 		If (Int(mouse_y_speed_1) = Int(Nan1)) Then mouse_y_speed_1 = 0
 
 		;TODO: CHANGE THESE NAMES
-		the_yaw = ((mouse_x_speed_1)) * mouselook_x_inc / (1.0+IsPlayerWearingTempName(mainPlayer,"vest"))
-		the_pitch = ((mouse_y_speed_1)) * mouselook_y_inc / (1.0+IsPlayerWearingTempName(mainPlayer,"vest"))
+		the_yaw = ((mouse_x_speed_1)) * mouselook_x_inc / (1.0+IsPlayerWearingItem(mainPlayer,"vest"))
+		the_pitch = ((mouse_y_speed_1)) * mouselook_y_inc / (1.0+IsPlayerWearingItem(mainPlayer,"vest"))
 
 		TurnEntity(mainPlayer\collider, 0.0, -the_yaw, 0.0) ; Turn the user on the Y (yaw) axis.)
 		mainPlayer\headPitch = mainPlayer\headPitch + the_pitch
@@ -733,6 +738,20 @@ Function MouseLook()
 	;	HideEntity(mainPlayer\overlays[OVERLAY_NIGHTVISION])
 	;	;EntityTexture(Fog, FogTexture)
 	;EndIf
+End Function
+
+Function SpaceInInventory%(player.Player)
+	Local itemCount%
+	Local i%
+	For i=WORNITEM_SLOT_COUNT To player\inventory\size-1
+		If (player\inventory\items[i] <> Null) Then itemCount = itemCount + 1
+	Next
+
+	If (itemCount < player\inventory\size-WORNITEM_SLOT_COUNT) Then
+		Return True
+	EndIf
+
+	Return False
 End Function
 
 Function Kill(player.Player)

@@ -1,3 +1,5 @@
+Include "SourceCode/Items/Radio.bb"
+
 Global BurntNote.MarkedForRemoval
 
 ;TODO: remove, use Inventory type instead
@@ -157,19 +159,6 @@ Function CreateItemTemplate(file$, section$)
 	ScaleEntity(it\obj, scale * RoomScale, scale * RoomScale, scale * RoomScale, True)
 
 	HideEntity(it\obj)
-End Function
-
-Function FindItemTemplate.ItemTemplate(tempname$)
-	Local it.ItemTemplate = Null
-	Local candidate.ItemTemplate = Null
-	For it = Each ItemTemplate
-		If (it\name = tempname) Then
-			candidate = it
-			Exit
-		EndIf
-	Next
-
-	Return candidate
 End Function
 
 Function LoadItemTemplates(file$)
@@ -466,7 +455,7 @@ Function PickItem(item.Item)
 			EndIf
 	End Select
 
-	If (CountItemsInInventory(mainPlayer\inventory) < mainPlayer\inventory\size) Then
+	If (SpaceInInventory(mainPlayer)) Then
 		For n = WORNITEM_SLOT_COUNT To mainPlayer\inventory\size - 1
 			If (mainPlayer\inventory\items[n] = Null) Then
 				PlaySound_SM(sndManager\itemPick[item\template\sound])
@@ -491,7 +480,7 @@ Function DropItem(item.Item, inv.Inventory)
 			inv\items[i] = Null
 		EndIf
 	Next
-	
+
 	PlaySound_SM(sndManager\itemPick[item\template\sound])
 
 	item\dropped = 1
@@ -554,23 +543,41 @@ Function HasTag%(item.Item, tag$)
 	Return False
 End Function
 
-Function IsPlayerWearingTempName%(player.Player,templateName$)
-	Local it.ItemTemplate = FindItemTemplate(templateName)
-	If (it=Null) Then Return False
-	Local slot% = it\wornSlot
-	If (slot=WORNITEM_SLOT_NONE) Then Return False
-	If (player\wornItems[slot]=Null) Then Return False
-	Return (player\wornItems[slot]\template\name=templateName)
-End Function
-
 Function IsPlayerWearingItem%(player.Player,item.Item)
 	If (item = Null) Then
 		Return False
 	EndIf
+
 	Local slot% = item\template\wornSlot
-	If (slot=WORNITEM_SLOT_NONE) Then Return False
-	If (player\wornItems[slot]=Null) Then Return False
-	Return (player\wornItems[slot] = item)
+	If (slot = WORNITEM_SLOT_NONE) Then Return False
+	Return (player\inventory\items[slot] = item)
+End Function
+
+Function UseItem(inv.Inventory, index%)
+	Local item.Item = inv\items[index]
+	PlaySound_SM(sndManager\itemPick[item\template\sound])
+
+	If (item\template\wornSlot <> WORNITEM_SLOT_NONE) Then
+		;If the equip slot is already filled then swap the items.
+		inv\items[index] = mainPlayer\inventory\items[item\template\wornSlot]
+		mainPlayer\inventory\items[item\template\wornSlot] = item
+
+		Return
+	EndIf
+
+	;TODO: Non-equippable items here.
+End Function
+
+Function DeEquipItem(item.Item)
+	Local i%
+
+	;Check if this item can be put back into the inventory.
+	If (item\template\wornOnly) Then
+		DropItem(item, player\openInventory)
+	Else
+		player\openInventory\items[slotIndex] = Null
+		PickItem(item)
+	EndIf
 End Function
 
 Const ITEM_CELL_SIZE% = 70
@@ -616,19 +623,7 @@ Function UpdateInventory(player.Player)
 					MouseHit1 = False
 					If (DoubleClick) Then
 						If (mouseOnWornItemSlot) Then
-							item = player\openInventory\items[slotIndex]
-							UnEquipItem(item)
-
-							;Check if this item can be put back into the inventory.
-							If (item\template\wornOnly) Then
-								DropItem(item, player\openInventory)
-							ElseIf (CountItemsInInventory(mainPlayer\inventory) >= mainPlayer\inventory\size) Then
-								DropItem(item, player\openInventory)
-							Else
-								PlaySound_SM(sndManager\itemPick[item\template\sound])
-								player\openInventory\items[slotIndex] = Null
-								PickItem(item)
-							EndIf
+							DeEquipItem(item)
 						Else
 							;Using the item.
 							UseItem(player\openInventory, slotIndex)
@@ -639,7 +634,7 @@ Function UpdateInventory(player.Player)
 					EndIf
 				ElseIf (MouseUp1 And player\selectedItem <> Null) Then
 					;Item already selected and mouse release.
-					
+
 					;Hovering over empty slot. Move the item to the empty slot.
 					If (player\openInventory\items[slotIndex] = Null) Then
 						;If the empty slot is an equip slot then check if the slots match.
@@ -649,22 +644,20 @@ Function UpdateInventory(player.Player)
 								Return
 							Else
 								PlaySound_SM(sndManager\itemPick[player\selectedItem\template\sound])
-								EquipItem(player\selectedItem)
 							EndIf
 						EndIf
-							
+
 						;Remove the item from its previous slot.
 						For i=0 To player\openInventory\size - 1
 							If (player\openInventory\items[i] = player\selectedItem) Then
 								If (i < WORNITEM_SLOT_COUNT) Then
 									PlaySound_SM(sndManager\itemPick[player\selectedItem\template\sound])
-									UnEquipItem(player\selectedItem)
 								EndIf
 								player\openInventory\items[i] = Null
 								Exit
 							EndIf
 						Next
-						
+
 						player\openInventory\items[slotIndex] = player\selectedItem
 						player\selectedItem = Null
 					ElseIf (player\openInventory\items[slotIndex] <> player\selectedItem) Then
@@ -721,7 +714,7 @@ Function DrawInventory(player.Player)
 
 	Local strtemp$
 
-	Local x%, y%, i%, yawvalue#, x1#, x2#, x3#, y1#, y2#, y3#, xtemp%, ytemp%
+	Local x%, y%, i%
 
 	Local n%
 
@@ -848,92 +841,6 @@ Function ToggleInventory(player.Player)
 	EndIf
 
 	mainPlayer\selectedItem = Null
-End Function
-
-Function UseItem(inv.Inventory, index%)
-	Local item.Item = inv\items[index]
-	PlaySound_SM(sndManager\itemPick[item\template\sound])
-	
-	If (item\template\wornSlot <> WORNITEM_SLOT_NONE) Then
-		;If the equip slot is already filled then swap the items.
-		If (mainPlayer\inventory\items[item\template\wornSlot] <> Null) Then
-			inv\items[index] = mainPlayer\inventory\items[item\template\wornSlot]
-			mainPlayer\inventory\items[item\template\wornSlot] = item
-		Else
-			mainPlayer\inventory\items[item\template\wornSlot] = item
-			inv\items[index] = Null
-		EndIf
-
-		EquipItem(item)
-		Return
-	EndIf
-	
-	;TODO: Non-equippable items here.
-End Function
-
-Function EquipItem(item.Item)
-	Select item\template\name
-		Case "gasmask"
-			ShowEntity(mainPlayer\overlays[OVERLAY_GASMASK])
-	End Select
-End Function
-
-Function UnEquipItem(item.Item)
-	Select item\template\name
-		Case "gasmask"
-			HideEntity(mainPlayer\overlays[OVERLAY_GASMASK])
-	End Select
-End Function
-
-Const RADIO_CHANNEL_COUNT% = 5
-Type Radio
-	Field currChn%
-
-	;How long each channel has been played for.
-	Field airTime#[RADIO_CHANNEL_COUNT]
-
-	Field channels%[RADIO_CHANNEL_COUNT]
-
-	;Sounds
-	Field sndStatic%
-End Type
-Global radio.Radio = Null
-
-Function CreateRadio.Radio()
-	Local rad.Radio = New Radio
-
-	Return rad
-End Function
-
-Function ChangeRadioChannel(newChn%)
-	If (IsChannelPlaying(radio\channels[radio\currChn])) Then
-		PauseChannel(radio\channels[radio\currChn])
-	EndIf
-
-	If (Not IsChannelPlaying(radio\channels[newChn])) Then
-		radio\channels[newChn] = PlaySound(radio\sndStatic)
-	Else
-		ResumeChannel(radio\channels[newChn])
-	EndIf
-
-	radio\currChn = newChn
-End Function
-
-
-Function UpdateRadio(i.Item)
-	Select radio\currChn
-		Case 0 ;-nothing
-			;TODO: something?
-		Case 1 ;-alarms and alert messages
-
-		Case 2 ;-scp on-site radio
-
-		Case 3 ;-MTF broadcasts
-
-		Case 4 ;-idfk
-	End Select
-
-	radio\airTime[radio\currChn] = radio\airTime[radio\currChn] + (timing\tickDuration/70)
 End Function
 
 ;~IDEal Editor Parameters:

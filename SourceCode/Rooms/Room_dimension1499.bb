@@ -107,7 +107,7 @@ End Function
 Function UpdateLeave1499()
 	Local r.Room, it.Item
 
-	If ((Not (IsPlayerWearingTempName(mainPlayer,"scp1499") Or IsPlayerWearingTempName(mainPlayer,"super1499"))) And mainPlayer\currRoom\roomTemplate\name$ = "dimension1499") Then
+	If ((Not (IsPlayerWearingItem(mainPlayer,"scp1499") Or IsPlayerWearingItem(mainPlayer,"super1499"))) And mainPlayer\currRoom\roomTemplate\name$ = "dimension1499") Then
 		For r = Each Room
 			If (r = NTF_1499PrevRoom) Then
 				mainPlayer\blinkTimer = -1

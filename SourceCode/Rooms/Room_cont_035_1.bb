@@ -514,12 +514,12 @@ Function UpdateEvent_cont_035_1(e.Event)
 							e\eventState2 = Min(e\eventState2+(timing\tickDuration/6000),1.0)
 							e\eventState3 = CurveValue(e\eventState2, e\eventState3, 50)
 
-							If (Not IsPlayerWearingTempName(mainPlayer,"hazmatsuit3")) And (Not IsPlayerWearingTempName(mainPlayer,"gasmask3")) Then
+							If (Not IsPlayerWearingItem(mainPlayer,"hazmatsuit3")) And (Not IsPlayerWearingItem(mainPlayer,"gasmask3")) Then
 								mainPlayer\sanity895=mainPlayer\sanity895-timing\tickDuration*1.1
 								mainPlayer\blurTimer = Sin(TimeInPosMilliSecs()/10)*Abs(mainPlayer\sanity895)
 							EndIf
 
-							If (Not IsPlayerWearingTempName(mainPlayer,"hazmatsuit3")) Then
+							If (Not IsPlayerWearingItem(mainPlayer,"hazmatsuit3")) Then
 								mainPlayer\injuries = mainPlayer\injuries + (timing\tickDuration/5000)
 							Else
 								mainPlayer\injuries = mainPlayer\injuries + (timing\tickDuration/10000)
@@ -553,7 +553,7 @@ Function UpdateEvent_cont_035_1(e.Event)
 				e\eventState3 = Max(e\eventState3-(timing\tickDuration/100),0)
 			EndIf
 
-			If (e\eventState3 > 0 And (Not IsPlayerWearingTempName(mainPlayer,"hazmatsuit3")) And (Not IsPlayerWearingTempName(mainPlayer,"gasmask3"))) Then
+			If (e\eventState3 > 0 And (Not IsPlayerWearingItem(mainPlayer,"hazmatsuit3")) And (Not IsPlayerWearingItem(mainPlayer,"gasmask3"))) Then
 				e\soundChannels[0] = LoopRangedSound(e\sounds[0], e\soundChannels[0], mainPlayer\cam, e\room\obj, 10, e\eventState3)
 				e\soundChannels[1] = LoopRangedSound(e\sounds[1], e\soundChannels[1], mainPlayer\cam, e\room\obj, 10, (e\eventState3-0.5)*2)
 			EndIf

@@ -386,7 +386,7 @@ Function LoadEventSound%(e.Event, file$, i%=0)
 
 	Return e\sounds[i]
 End Function
-; TODO: Rooms
+
 Function PauseSounds()
 	Local chn.SoundChannel, sc.SecurityCam, r.Room, e.Event, n.NPC, em.Emitter, i%
 
@@ -406,6 +406,12 @@ Function PauseSounds()
 		If (IsChannelPlaying(r\soundCHN)) Then
 			PauseChannel(r\soundCHN)
 		EndIf
+
+		For i=0 To MaxRoomEmitters-1
+			If (IsChannelPlaying(r\soundEmitterCHN[i])) Then
+				PauseChannel(r\soundEmitterCHN[i])
+			EndIf
+		Next
 	Next
 
 	For e = Each Event
@@ -454,6 +460,12 @@ Function ResumeSounds()
 		If (IsChannelPlaying(r\soundCHN)) Then
 			ResumeChannel(r\soundCHN)
 		EndIf
+
+		For i=0 To MaxRoomEmitters-1
+			If (IsChannelPlaying(r\soundEmitterCHN[i])) Then
+				ResumeChannel(r\soundEmitterCHN[i])
+			EndIf
+		Next
 	Next
 
 	For e = Each Event
@@ -480,6 +492,60 @@ Function ResumeSounds()
 
 	If (IsChannelPlaying(mainPlayer\breathChn)) Then
 		ResumeChannel(mainPlayer\breathChn)
+	EndIf
+End Function
+
+Function StopSounds()
+	Local chn.SoundChannel, sc.SecurityCam, r.Room, e.Event, n.NPC, em.Emitter, i%
+
+	For chn = Each SoundChannel
+		If (IsChannelPlaying(chn\internal)) Then
+			StopChannel(chn\internal)
+		EndIf
+	Next
+
+	For sc = Each SecurityCam
+		If (IsChannelPlaying(sc\soundCHN)) Then
+			StopChannel(sc\soundCHN)
+		EndIf
+	Next
+
+	For r = Each Room
+		If (IsChannelPlaying(r\soundCHN)) Then
+			StopChannel(r\soundCHN)
+		EndIf
+
+		For i=0 To MaxRoomEmitters-1
+			If (IsChannelPlaying(r\soundEmitterCHN[i])) Then
+				StopChannel(r\soundEmitterCHN[i])
+			EndIf
+		Next
+	Next
+
+	For e = Each Event
+		For i = 0 To EVENT_CHANNEL_COUNT-1
+			If (IsChannelPlaying(e\soundChannels[i])) Then
+				StopChannel(e\soundChannels[i])
+			EndIf
+		Next
+	Next
+
+	For n = Each NPC
+		For i = 0 To NPC_CHANNEL_COUNT-1
+			If (IsChannelPlaying(n\soundChannels[i])) Then
+				StopChannel(n\soundChannels[i])
+			EndIf
+		Next
+	Next
+
+	For em = Each Emitter
+		If (IsChannelPlaying(em\soundCHN)) Then
+			StopChannel(em\soundCHN)
+		EndIf
+	Next
+
+	If (IsChannelPlaying(mainPlayer\breathChn)) Then
+		StopChannel(mainPlayer\breathChn)
 	EndIf
 End Function
 

@@ -59,7 +59,7 @@ Function UpdateNPCtype966(n.NPC)
         PositionEntity(n\obj,EntityX(n\collider,True),EntityY(n\collider,True)-0.2,EntityZ(n\collider,True))
         RotateEntity(n\obj,-90.0,EntityYaw(n\collider),0.0)
 
-        If (Not IsPlayerWearingTempName(mainPlayer,"nvgoggles")) Then
+        If (Not IsPlayerWearingItem(mainPlayer,"nvgoggles")) Then
             HideEntity(n\obj)
             If (n\playerDistance<1 And n\reload <= 0 And MsgTimer <= 0) Then
                 Select Rand(6)

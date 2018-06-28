@@ -123,7 +123,7 @@ Function UpdateEventCoffin(e.Event)
 		EndIf
 
 		;TODO: cleanup
-		If (IsPlayerWearingTempName(mainPlayer,"nvgoggles")) Then
+		If (IsPlayerWearingItem(mainPlayer,"nvgoggles")) Then
 			hasBatteryFor895 = 0
 			For i = 0 To mainPlayer\inventory\size - 1
 				If (mainPlayer\inventory\items[i] <> Null) Then
@@ -162,7 +162,7 @@ Function UpdateEventCoffin(e.Event)
 					;	EntityColor(mainPlayer\overlays[OVERLAY_NIGHTVISION], 255,255,255)
 					;EndIf
 					If (mainPlayer\sanity895 < (-1000)) Then
-						If (IsPlayerWearingTempName(mainPlayer,"supernv")) Then
+						If (IsPlayerWearingItem(mainPlayer,"supernv")) Then
 							DeathMSG = Chr(34)+"Class D viewed SCP-895 through a pair of digital night vision goggles, presumably enhanced by SCP-914. It might be possible that the subject"
 							DeathMSG = DeathMSG + "was able to resist the memetic effects partially through these goggles. The goggles have been stored for further study."+Chr(34)
 						Else
@@ -179,9 +179,9 @@ Function UpdateEventCoffin(e.Event)
 			e\eventState3=-1.0
 			;TODO: fix
 			;EntityTexture(mainPlayer\overlays[OVERLAY_NIGHTVISION], NVTexture)
-			If (IsPlayerWearingTempName(mainPlayer,"nvgoggles")) Then
+			If (IsPlayerWearingItem(mainPlayer,"nvgoggles")) Then
 				EntityColor(mainPlayer\overlays[OVERLAY_NIGHTVISION], 0,255,0)
-			ElseIf (IsPlayerWearingTempName(mainPlayer,"supernv")) Then
+			ElseIf (IsPlayerWearingItem(mainPlayer,"supernv")) Then
 				EntityColor(mainPlayer\overlays[OVERLAY_NIGHTVISION], 0,100,255)
 			EndIf
 		EndIf

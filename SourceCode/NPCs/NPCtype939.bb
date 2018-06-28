@@ -147,7 +147,7 @@ Function UpdateNPCtype939(n.NPC)
                         If (temp) Then
                             If (Distance(n\enemyX, n\enemyZ, EntityX(n\collider), EntityZ(n\collider))<1.5) Then
                                 PlaySound2(n\sounds[1])
-                                mainPlayer\injuries = mainPlayer\injuries + Rnd(1.5, 2.5)-IsPlayerWearingTempName(mainPlayer,"vest")*0.5
+                                mainPlayer\injuries = mainPlayer\injuries + Rnd(1.5, 2.5)-IsPlayerWearingItem(mainPlayer,"vest")*0.5
                                 mainPlayer\blurTimer = 500
                             Else
                                 n\frame	 = 449
