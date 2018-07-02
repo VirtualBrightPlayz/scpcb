@@ -1,14 +1,18 @@
 # Contianment Breach
-Saves/*
+[Ss]aves/*
 error_log_*
 
 # Blitz3D
 *FastExt.bb
 *FastText_Unicode.bb
 *FastImage.bb
-MapSystem.bb.rej
-UpdateEvents.bb.rej
+*.bb.rej
 *.bb_bak*
+
+# C-Sharp
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
 
 # IDEal
 *.ipf

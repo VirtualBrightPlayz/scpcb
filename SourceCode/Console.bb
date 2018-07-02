@@ -598,7 +598,7 @@ Function UpdateConsole()
 
 				Case "spawnomni"
 					it = CreateItem("keycard", EntityX(mainPlayer\collider), EntityY(mainPlayer\cam,True), EntityZ(mainPlayer\collider))
-					AssignTag(it, "omni")
+					AssignTag(it, ITEM_TAG_OMNI)
 					CreateConsoleMsg("Nerd.",255,150,0)
 
 				Case "wireframe"

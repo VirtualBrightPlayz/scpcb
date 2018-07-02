@@ -1,4 +1,5 @@
 Include "SourceCode/Items/Radio.bb"
+Include "SourceCode/Items/NVG.bb"
 
 Global BurntNote.MarkedForRemoval
 
@@ -10,9 +11,9 @@ Global InvSelect.MarkedForRemoval, SelectedItem.MarkedForRemoval
 
 Global ClosestItem.MarkedForRemoval
 
-Const ITEM_TAG_914F$   = "914_fine"
-Const ITEM_TAG_914VF$  = "914_veryfine"
-Const ITEM_TAG_ALTINV$ = "alt_inv"
+Const ITEM_TAG_914F$  = "914_fine"
+Const ITEM_TAG_914VF$ = "914_veryfine"
+Const ITEM_TAG_OMNI$  = "omni"
 
 Const ITEMPICK_SOUND_PAPER%  = 0
 Const ITEMPICK_SOUND_MEDIUM% = 1
@@ -553,7 +554,7 @@ Function IsPlayerWearingItem%(player.Player, itemName$)
 			EndIf
 		EndIf
 	Next
-	
+
 	Return False
 End Function
 
@@ -574,7 +575,7 @@ End Function
 
 Function DeEquipItem(item.Item)
 	DropItem(item, mainPlayer\openInventory)
-	
+
 	;Check if this item can be put back into the inventory.
 	If (Not item\template\wornOnly) Then
 		PickItem(item)

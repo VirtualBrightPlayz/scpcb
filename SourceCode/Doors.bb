@@ -388,7 +388,7 @@ Function UseDoor(d.Door, showmsg% = True)
 					EndIf
 
 					playerHasKeycard = True
-					If (HasTag(item, d\tag) Or HasTag(item, "omni")) Then
+					If (HasTag(item, d\tag) Or HasTag(item, ITEM_TAG_OMNI)) Then
 						playerHasRightKeycard = True
 						Exit
 					EndIf
