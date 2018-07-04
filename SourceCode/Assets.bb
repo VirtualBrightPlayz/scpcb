@@ -62,7 +62,7 @@ Function GrabAsset%(filePath$, asType%, flag%=1)
 		If (filePath = as\file) Then
 			as\decayTimer = ASSET_DECAY_TIMER
 			as\grabCount = as\grabCount + 1
-			DebugLog("GRABBED ASSET: " + filePath + ", " + Str(as\grabCount))
+			;DebugLog("GRABBED ASSET: " + filePath + ", " + Str(as\grabCount))
 			Return as\intVal
 		EndIf
 	Next
@@ -70,7 +70,7 @@ Function GrabAsset%(filePath$, asType%, flag%=1)
 	;Asset doesn't exist, create it.
 	as = CreateAsset(filePath, asType, flag)
 	as\grabCount = 1
-	DebugLog("GRABBED ASSET: " + filePath + ", " + Str(as\grabCount))
+	;DebugLog("GRABBED ASSET: " + filePath + ", " + Str(as\grabCount))
 
 	Return as\intVal
 End Function
@@ -92,7 +92,7 @@ Function DropAsset(obj%)
 	For as = Each AssetWrap
 		If (obj = as\intVal) Then
 			as\grabCount = as\grabCount - 1
-			DebugLog("DROPPED ASSET: " + as\file + ", " + Str(as\grabCount))
+			;DebugLog("DROPPED ASSET: " + as\file + ", " + Str(as\grabCount))
 			Return
 		EndIf
 	Next
@@ -106,7 +106,7 @@ Function UpdateAssets()
 	For as = Each AssetWrap
 		If (as\grabCount < 1) Then
 			as\decayTimer = as\decayTimer - timing\tickDuration
-			DebugLog("ASSET DECAYING: " + as\file + ", " + Str(as\decayTimer))
+			;DebugLog("ASSET DECAYING: " + as\file + ", " + Str(as\decayTimer))
 			If (as\decayTimer < 0) Then
 				FreeAsset(as)
 			EndIf
