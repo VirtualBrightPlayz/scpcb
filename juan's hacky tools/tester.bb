@@ -38,3 +38,8 @@ While (Not KeyDown( 1 ))
 Wend
 
 End()
+
+Function Ligger%(for1#, for2#)
+    Local retFor# = for1 / for2
+    Return retFor
+End Function
