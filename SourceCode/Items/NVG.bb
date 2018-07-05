@@ -1,5 +1,5 @@
 Function UpdateNVG()
-    Local wornItem.Item = mainPlayer\wornItems[WORNITEM_SLOT_HEAD]
+    Local wornItem.Item = mainPlayer\inventory\items[WORNITEM_SLOT_HEAD]
 
     If (wornItem <> Null) Then
         If (wornItem\template\name <> "nvgoggles" And wornItem\template\name <> "supernv") Then
@@ -12,3 +12,6 @@ Function UpdateNVG()
         wornItem\state = Max(-1.0,wornItem\state - (timing\tickDuration * decayMultiplier))
     EndIf
 End Function
+
+;~IDEal Editor Parameters:
+;~C#Blitz3D
