@@ -73,6 +73,7 @@ namespace Blitz2CPP
             if (info.StartsWith("Global "))
             {
                 string[] split = info.Substring(7).Split('=');
+                headerFile.Write("extern " + ParseGlobal(split[0]));
                 srcFile.Write(ParseGlobal(split[0]));
                 if (split.Length > 1) { srcFile.Write(" = " + ParseArithmetic(split[1])); }
 
@@ -134,7 +135,7 @@ namespace Blitz2CPP
             throw new Exception("Unable to parse variable type. File: " + filePath + " Line: " + bbFile);
         }
 
-        private string ParseGlobal(string info) => "public static " + ParseVar(info);
+        private string ParseGlobal(string info) => ParseVar(info);
 
         private string ParseConst(string info) => "const " + ParseVar(info);
 
@@ -186,13 +187,20 @@ namespace Blitz2CPP
 
         private void ParseFunctionDef(string info)
         {
-            string pattern = @"Function (\w+)([%#$]|\.\w+)\((.)\)";
+            string pattern = @"Function (\w+)([%#$]|\.\w+|)\((.)\)";
             MatchCollection matches = Regex.Matches(info, pattern);
             if (matches.Count > 0 && matches[0].Groups.Count > 1)
             {
                 string funcName = matches[0].Groups[0].Value;
                 string type = matches[0].Groups[1].Value;
-                type = ParseVar(type);
+                if (string.IsNullOrWhiteSpace(type))
+                {
+                    type = "void";
+                }
+                else
+                {
+                    type = ParseVar(type);
+                }
 
                 string args = matches[0].Groups[2].Value;
                 string[] argsArr = args.Split(',');
@@ -202,9 +210,9 @@ namespace Blitz2CPP
                 }
                 args = string.Join(", ", argsArr);
 
-                headerFile.WriteLine("public " + type + funcName + "(" + args + ");");
+                headerFile.WriteLine(type + funcName + "(" + args + ");");
                 headerFile.WriteLine();
-                srcFile.WriteLine("public " + type + funcName + "(" + args + ");");
+                srcFile.WriteLine(type + funcName + "(" + args + ") {");
 
                 currScope++;
                 return;
