@@ -4,11 +4,11 @@ namespace Blitz2CPP.Statements
 {
     public class Variable : Statement
     {
-        private string type;
+        public string type;
 
-        private string name;
+        public string name;
 
-        private Statement assignment;
+        public Statement assignment;
 
         public override string Parse2CPP()
         {

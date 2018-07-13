@@ -17,6 +17,10 @@ namespace Blitz2CPP.Statements
         /// </summary>
         private int scope;
 
+        public Statement(string raw) => this.raw = raw;
+
+        protected Statement() { }
+
         public virtual string Parse2CPP()
         {
             throw new NotImplementedException();

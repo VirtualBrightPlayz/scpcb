@@ -67,78 +67,6 @@ namespace Blitz2CPP
             }
         }
 
-        private void ParseLine(string info)
-        {
-            // Global scope stuff.
-            if (info.StartsWith("Global "))
-            {
-                string[] split = info.Substring(7).Split('=');
-                headerFile.Write("extern " + ParseGlobal(split[0]));
-                srcFile.Write(ParseGlobal(split[0]));
-                if (split.Length > 1) { srcFile.Write(" = " + ParseArithmetic(split[1])); }
-
-                srcFile.WriteLine();
-                return;
-            }
-
-            if (info.StartsWith("Const "))
-            {
-                string[] split = info.Substring(6).Split('=');
-                srcFile.Write(ParseConst(split[0]));
-                if (split.Length > 1) { srcFile.Write(" = " + ParseArithmetic(split[1])); }
-
-                srcFile.WriteLine();
-                return;
-            }
-
-            if (info.StartsWith("Function "))
-            {
-                ParseFunctionDef(info);
-            }
-
-            // If not anything above then it's probably arithmetic.
-            srcFile.WriteLine(GetIndents() + ParseArithmetic(info) + ";");
-        }
-
-        /// <summary>
-        /// Figures out the type of the declared BB var.
-        /// '%' -> int
-        /// '#' -> float
-        /// '$' -> String
-        /// '.Type' -> Type
-        /// </summary>
-        public string ParseVar(string info)
-        {
-            if (info.EndsWith('%'))
-            {
-                return "int " + info.Substring(0, info.Length - 1);
-            }
-
-            if (info.EndsWith('#'))
-            {
-                return "float " + info.Substring(0, info.Length - 1);
-            }
-
-            if (info.EndsWith('$'))
-            {
-                return "String " + info.Substring(0, info.Length - 1);
-            }
-
-            int index = info.IndexOf('.');
-            if (index > 0)
-            {
-                string type = info.Substring(index+1, info.Length - index - 1);
-                string varName = info.Substring(0, info.Length - index - 1);
-                return type + " " + varName;
-            }
-
-            throw new Exception("Unable to parse variable type. File: " + filePath + " Line: " + bbFile);
-        }
-
-        private string ParseGlobal(string info) => ParseVar(info);
-
-        private string ParseConst(string info) => "const " + ParseVar(info);
-
         private string ParseArithmetic(string info)
         {
             // TODO: Get this working.
@@ -160,29 +88,6 @@ namespace Blitz2CPP
             info = ReplaceNotInStr(info, "Xor", "^");
 
             return info;
-        }
-
-        /// <summary>
-        /// Replaces all occurences of something so long as it is not in a string.
-        /// </summary>
-        private string ReplaceNotInStr(string str, string needle, string replacement)
-        {
-            string ret = "";
-            string[] arr = str.Split(needle);
-            foreach (string hay in arr)
-            {
-                // If there's an even number of quotation marks before it then it is not in a string.
-                if (hay.Count(x => x == '"') % 2 == 0)
-                {
-                    ret = hay + replacement;
-                }
-                else
-                {
-                    ret = hay + needle;
-                }
-            }
-
-            return ret;
         }
 
         private void ParseFunctionDef(string info)
