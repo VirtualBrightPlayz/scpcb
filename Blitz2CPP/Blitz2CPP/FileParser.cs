@@ -38,58 +38,6 @@ namespace Blitz2CPP
             // headerFile = new StreamWriter(new FileStream(dest + ".h", FileMode.Create));
         }
 
-        public void ParseFile()
-        {
-            while (!bbFile.EndOfStream)
-            {
-                string line = bbFile.ReadLine();
-
-                if (string.IsNullOrWhiteSpace(line))
-                {
-                    srcFile.WriteLine();
-                }
-                // Type declaration?
-                else if (line.Trim().StartsWith("Type "))
-                {
-
-                }
-                else
-                {
-                    // Multi-line?
-                    string[] multi = line.Split(" : ", StringSplitOptions.RemoveEmptyEntries);
-                    foreach (string statement in multi)
-                    {
-                        ParseLine(statement.Trim());
-                    }
-                }
-
-                currLine++;
-            }
-        }
-
-        private string ParseArithmetic(string info)
-        {
-            // TODO: Get this working.
-            // Parse functions.
-            // string pattern = @"[\W](\w+)";
-            // MatchCollection matches = Regex.Matches(info, pattern);
-            // foreach (Group big in matches)
-            // {
-            //     if (Constants.BB_FUNC.Contains(big[0]))
-            //     {
-
-            //     }
-            // }
-
-            // This probably breaks boolean logic.
-            info = ReplaceNotInStr(info, "Not", "!");
-            info = ReplaceNotInStr(info, "And", "&&");
-            info = ReplaceNotInStr(info, "Or", "||");
-            info = ReplaceNotInStr(info, "Xor", "^");
-
-            return info;
-        }
-
         private void ParseFunctionDef(string info)
         {
             string pattern = @"Function (\w+)([%#$]|\.\w+|)\((.)\)";

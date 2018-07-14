@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace Blitz2CPP.Statements
 {
     public class File : IDisposable
     {
         private string filePath;
+        private int currLine;
 
         /// <summary>
         /// The .bb file being parsed.
@@ -24,8 +26,6 @@ namespace Blitz2CPP.Statements
         private StreamWriter headerFile;
 
         private Stack<ScopeStatement> scopes;
-
-        private int currScope;
 
         private List<TypeDecl> typeDecls;
 
@@ -48,6 +48,11 @@ namespace Blitz2CPP.Statements
             functions = new List<Function>();
         }
 
+        private int GetScopeSize()
+        {
+            return scopes.Count;
+        }
+
         public void Dispose()
         {
             bbFile?.Dispose();
@@ -55,67 +60,69 @@ namespace Blitz2CPP.Statements
             headerFile?.Dispose();
         }
 
+        public void ParseFile()
+        {
+            while (!bbFile.EndOfStream)
+            {
+                string line = bbFile.ReadLine();
+
+                if (string.IsNullOrWhiteSpace(line))
+                {
+                    continue;
+                }
+                // Type declaration?
+                else if (line.Trim().StartsWith("Type "))
+                {
+
+                }
+                else
+                {
+                    // Multi-line?
+                    string[] multi = line.Split(" : ", StringSplitOptions.RemoveEmptyEntries);
+                    foreach (string statement in multi)
+                    {
+                        ParseLine(statement.Trim());
+                    }
+                }
+
+                currLine++;
+            }
+        }
+
         private void ParseLine(string info)
         {
             // Global scope stuff.
-            if (currScope <= 0)
+            if (GetScopeSize() <= 0)
             {
                 if (info.StartsWith("Global "))
                 {
-                    string[] split = info.Substring(7).Split('=');
-
-                    Variable var = new Variable();
-                    (string type, string name) tup = ParseVar(split[0]);
-                    var.type = tup.type;
-                    var.name = tup.name;
-
-                    if (split.Length > 1)
-                    {
-                        var.assignment = new Statement(ParseArithmetic(split[1]));
-                    }
+                    AddGlobal(info, "Global ".Length);
                 }
 
                 else if (info.StartsWith("Const "))
                 {
-                    string[] split = info.Substring(6).Split('=');
-
-                    Variable var = new Variable();
-                    (string type, string name) tup = ParseVar(split[0]);
-                    var.type = tup.type;
-                    var.name = tup.name;
-
-                    if (split.Length > 1)
-                    {
-                        var.assignment = new Statement(ParseArithmetic(split[1]));
-                    }
+                    AddGlobal(info, "Const ".Length, "const ");
                 }
 
                 // FIXME
                 else if (info.StartsWith("Function "))
                 {
-                    ParseFunctionDef(info);
+                    // ParseFunctionDef(info);
                 }
             }
-
-            // If not anything above then it's probably arithmetic.
-            srcFile.WriteLine(GetIndents() + ParseArithmetic(info) + ";");
         }
 
         private string ParseArithmetic(string info)
         {
-            // TODO: Get this working.
             // Parse functions.
-            // string pattern = @"[\W](\w+)";
-            // MatchCollection matches = Regex.Matches(info, pattern);
-            // foreach (Group big in matches)
-            // {
-            //     if (Constants.BB_FUNC.Contains(big[0]))
-            //     {
+            foreach (string funcName in Constants.BB_FUNCS)
+            {
+                string pattern = @"\b(" + funcName + @")\b";
+                string replacement = @"bb$1";
+                Regex.Replace(info, pattern, replacement);
+            }
 
-            //     }
-            // }
-
-            // This probably breaks boolean logic.
+            // Operators.
             info = Toolbox.ReplaceNotInStr(info, "Not", "!");
             info = Toolbox.ReplaceNotInStr(info, "And", "&");
             info = Toolbox.ReplaceNotInStr(info, "Or", "|");
@@ -131,7 +138,7 @@ namespace Blitz2CPP.Statements
         /// '$' -> String
         /// '.Type' -> Type
         /// </summary>
-        public (string type, string name) ParseVar(string info)
+        private (string type, string name) ParseVar(string info)
         {
             if (info.EndsWith('%'))
             {
@@ -157,6 +164,21 @@ namespace Blitz2CPP.Statements
             }
 
             throw new Exception("Unable to parse variable type. File: " + filePath + " Line: " + bbFile);
+        }
+
+        private void AddGlobal(string decl, int startIndex, string prefix = "")
+        {
+            string[] split = decl.Substring(prefix.Length).Split('=');
+
+            Variable var = new Variable();
+            (string type, string name) tup = ParseVar(split[0]);
+            var.type = tup.type;
+            var.name = tup.name;
+
+            if (split.Length > 1)
+            {
+                var.assignment = new Statement(ParseArithmetic(split[1]));
+            }
         }
     }
 }
