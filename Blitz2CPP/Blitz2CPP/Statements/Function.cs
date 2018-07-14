@@ -5,11 +5,11 @@ namespace Blitz2CPP.Statements
 {
     public class Function : ScopeStatement
     {
-        private string name;
+        public string name;
 
-        private string returnType;
+        public string returnType;
 
-        private List<Variable> parameters;
+        public List<Variable> parameters;
 
         public Function()
         {
@@ -19,14 +19,14 @@ namespace Blitz2CPP.Statements
         private string GetSignature()
         {
             string retVal = returnType + " " + name + "(";
-            // TODO: wtf
-            List<string> params = new List<string>();
+            List<string> paramsArr = new List<string>();
 
-            foreach (Variable var in parameters)
+            foreach (Variable var in this.parameters)
             {
+                paramsArr.Add(var.Parse2CPP());
             }
 
-            retVal += ")";
+            retVal += string.Join(", ", paramsArr) + ")";
             return retVal;
         }
 

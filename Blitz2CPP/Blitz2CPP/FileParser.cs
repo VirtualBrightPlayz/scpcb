@@ -38,42 +38,6 @@ namespace Blitz2CPP
             // headerFile = new StreamWriter(new FileStream(dest + ".h", FileMode.Create));
         }
 
-        private void ParseFunctionDef(string info)
-        {
-            string pattern = @"Function (\w+)([%#$]|\.\w+|)\((.)\)";
-            MatchCollection matches = Regex.Matches(info, pattern);
-            if (matches.Count > 0 && matches[0].Groups.Count > 1)
-            {
-                string funcName = matches[0].Groups[0].Value;
-                string type = matches[0].Groups[1].Value;
-                if (string.IsNullOrWhiteSpace(type))
-                {
-                    type = "void";
-                }
-                else
-                {
-                    type = ParseVar(type);
-                }
-
-                string args = matches[0].Groups[2].Value;
-                string[] argsArr = args.Split(',');
-                for (int i = 0; i < argsArr.Length; i++)
-                {
-                    argsArr[i] = ParseVar(argsArr[i].Trim());
-                }
-                args = string.Join(", ", argsArr);
-
-                headerFile.WriteLine(type + funcName + "(" + args + ");");
-                headerFile.WriteLine();
-                srcFile.WriteLine(type + funcName + "(" + args + ") {");
-
-                currScope++;
-                return;
-            }
-
-            throw new Exception("Unable to parse function declaration. File: " + filePath + " Line: " + bbFile);
-        }
-
         private string ParseIf(string info)
         {
             throw new NotImplementedException();

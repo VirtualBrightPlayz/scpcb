@@ -30,6 +30,7 @@ namespace Blitz2CPP.Statements
         private List<TypeDecl> typeDecls;
 
         private List<Variable> globals;
+        private List<Variable> constants;
 
         private List<Function> functions;
 
@@ -45,6 +46,7 @@ namespace Blitz2CPP.Statements
             scopes = new Stack<ScopeStatement>();
             typeDecls = new List<TypeDecl>();
             globals = new List<Variable>();
+            constants = new List<Variable>();
             functions = new List<Function>();
         }
 
@@ -96,18 +98,18 @@ namespace Blitz2CPP.Statements
             {
                 if (info.StartsWith("Global "))
                 {
-                    AddGlobal(info, "Global ".Length);
+                    AddGlobal(info);
                 }
 
                 else if (info.StartsWith("Const "))
                 {
-                    AddGlobal(info, "Const ".Length, "const ");
+                    AddConstant(info);
                 }
 
                 // FIXME
                 else if (info.StartsWith("Function "))
                 {
-                    // ParseFunctionDef(info);
+                    AddFunction(info);
                 }
             }
         }
@@ -166,19 +168,61 @@ namespace Blitz2CPP.Statements
             throw new Exception("Unable to parse variable type. File: " + filePath + " Line: " + bbFile);
         }
 
-        private void AddGlobal(string decl, int startIndex, string prefix = "")
+        private void AddGlobal(string decl)
         {
-            string[] split = decl.Substring(prefix.Length).Split('=');
+            string[] split = decl.Substring("Global ".Length).Split('=');
 
-            Variable var = new Variable();
-            (string type, string name) tup = ParseVar(split[0]);
-            var.type = tup.type;
-            var.name = tup.name;
-
+            Variable var = new Variable(ParseVar(split[0]));
             if (split.Length > 1)
             {
                 var.assignment = new Statement(ParseArithmetic(split[1]));
             }
+
+            globals.Add(var);
+        }
+
+        private void AddConstant(string decl)
+        {
+            string[] split = decl.Substring("Const ".Length).Split('=');
+
+            Variable var = new Variable(ParseVar(split[0]));
+            if (split.Length > 1)
+            {
+                var.assignment = new Statement(ParseArithmetic(split[1]));
+            }
+
+            constants.Add(var);
+        }
+
+        private void AddFunction(string info)
+        {
+            string pattern = @"Function (\w+)([%#$]|\.\w+|)\((.*|)\)";
+            MatchCollection matches = Regex.Matches(info, pattern);
+            if (matches.Count > 0 && matches[0].Groups.Count > 1)
+            {
+                Function func = new Function();
+                func.name = matches[0].Groups[0].Value;
+                string type = matches[0].Groups[1].Value;
+                if (string.IsNullOrWhiteSpace(type))
+                {
+                    func.returnType = "void";
+                }
+                else
+                {
+                    func.returnType = ParseVar(type).type;
+                }
+
+                string[] args = matches[0].Groups[2].Value.Split(',');
+                foreach (string arg in args)
+                {
+                    func.parameters.Add(new Variable(ParseVar(arg.Trim())));
+                }
+
+                functions.Add(func);
+                return;
+            }
+
+            throw new Exception("Unable to parse function declaration. File: " + filePath + " Line: " + bbFile);
         }
     }
 }
