@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 
 namespace Blitz2CPP.Statements
 {
-    public class File : IDisposable
+    public class BlitzFile : IDisposable
     {
         private string filePath;
         private int currLine;
@@ -26,15 +26,17 @@ namespace Blitz2CPP.Statements
         private StreamWriter headerFile;
 
         private Stack<ScopeStatement> scopes;
+        private int GetScopeSize => scopes.Count;
+        private ScopeStatement GetCurrScope => scopes.Peek();
 
-        private List<TypeDecl> typeDecls;
+        public List<TypeDecl> typeDecls;
 
         private List<Variable> globals;
         private List<Variable> constants;
 
         private List<Function> functions;
 
-        public File(string path)
+        public BlitzFile(string path)
         {
             filePath = path;
             bbFile = new StreamReader(new FileStream(path, FileMode.Open));
@@ -50,11 +52,6 @@ namespace Blitz2CPP.Statements
             functions = new List<Function>();
         }
 
-        private int GetScopeSize()
-        {
-            return scopes.Count;
-        }
-
         public void Dispose()
         {
             bbFile?.Dispose();
@@ -64,37 +61,62 @@ namespace Blitz2CPP.Statements
 
         public void ParseFile()
         {
-            while (!bbFile.EndOfStream)
+            try
             {
-                string line = bbFile.ReadLine();
-
-                if (string.IsNullOrWhiteSpace(line))
+                currLine = 1;
+                for (string line = bbFile.ReadLine().Trim(); !bbFile.EndOfStream; line = bbFile.ReadLine()?.Trim(), currLine++)
                 {
-                    continue;
-                }
-                // Type declaration?
-                else if (line.Trim().StartsWith("Type "))
-                {
-
-                }
-                else
-                {
-                    // Multi-line?
-                    string[] multi = line.Split(" : ", StringSplitOptions.RemoveEmptyEntries);
-                    foreach (string statement in multi)
+                    if (string.IsNullOrWhiteSpace(line))
                     {
-                        ParseLine(statement.Trim());
+                        continue;
+                    }
+                    // Type declaration?
+                    else if (line.StartsWith("Type "))
+                    {
+                        TypeDecl typ = new TypeDecl();
+                        typ.name = line.Substring("Type ".Length);
+                        while (!line.StartsWith("End Type"))
+                        {
+                            if (bbFile.EndOfStream)
+                            {
+                                throw new EndOfStreamException("Type was declared without an End statement.");
+                            }
+
+                            line = bbFile.ReadLine().Trim();
+                            currLine++;
+
+                            if (string.IsNullOrWhiteSpace(line)) { continue; }
+                            else if (line.StartsWith(';')) { continue; }
+                            else if (line.StartsWith("Field "))
+                            {
+                                typ.fields.Add(Variable.Parse(line.Substring("Field ".Length)));
+                            }
+                        }
+
+                        typeDecls.Add(typ);
+                    }
+                    else
+                    {
+                        // Multi-line?
+                        string[] multi = line.Split(" : ", StringSplitOptions.RemoveEmptyEntries);
+                        foreach (string statement in multi)
+                        {
+                            ParseLine(statement.Trim());
+                        }
                     }
                 }
-
-                currLine++;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("CurrFile: " + filePath + ", CurrLine: " + currLine + "\n"
+                    + e.ToString());
             }
         }
 
         private void ParseLine(string info)
         {
             // Global scope stuff.
-            if (GetScopeSize() <= 0)
+            if (GetScopeSize <= 0)
             {
                 if (info.StartsWith("Global "))
                 {
@@ -112,84 +134,24 @@ namespace Blitz2CPP.Statements
                     AddFunction(info);
                 }
             }
-        }
-
-        private string ParseArithmetic(string info)
-        {
-            // Parse functions.
-            foreach (string funcName in Constants.BB_FUNCS)
+            else
             {
-                string pattern = @"\b(" + funcName + @")\b";
-                string replacement = @"bb$1";
-                Regex.Replace(info, pattern, replacement);
+
             }
-
-            // Operators.
-            info = Toolbox.ReplaceNotInStr(info, "Not", "!");
-            info = Toolbox.ReplaceNotInStr(info, "And", "&");
-            info = Toolbox.ReplaceNotInStr(info, "Or", "|");
-            info = Toolbox.ReplaceNotInStr(info, "Xor", "^");
-
-            return info;
-        }
-
-        /// <summary>
-        /// Figures out the type of the declared BB var.
-        /// '%' -> int
-        /// '#' -> float
-        /// '$' -> String
-        /// '.Type' -> Type
-        /// </summary>
-        private (string type, string name) ParseVar(string info)
-        {
-            if (info.EndsWith('%'))
-            {
-                return ("int", info.Substring(0, info.Length - 1));
-            }
-
-            if (info.EndsWith('#'))
-            {
-                return ("float", info.Substring(0, info.Length - 1));
-            }
-
-            if (info.EndsWith('$'))
-            {
-                return ("String ", info.Substring(0, info.Length - 1));
-            }
-
-            int index = info.IndexOf('.');
-            if (index > 0)
-            {
-                string type = info.Substring(index+1, info.Length - index - 1);
-                string varName = info.Substring(0, info.Length - index - 1);
-                return (type, varName);
-            }
-
-            throw new Exception("Unable to parse variable type. File: " + filePath + " Line: " + bbFile);
         }
 
         private void AddGlobal(string decl)
         {
-            string[] split = decl.Substring("Global ".Length).Split('=');
-
-            Variable var = new Variable(ParseVar(split[0]));
-            if (split.Length > 1)
-            {
-                var.assignment = new Statement(ParseArithmetic(split[1]));
-            }
+            decl = decl.Substring("Global ".Length);
+            Variable var = Variable.Parse(decl);
 
             globals.Add(var);
         }
 
         private void AddConstant(string decl)
         {
-            string[] split = decl.Substring("Const ".Length).Split('=');
-
-            Variable var = new Variable(ParseVar(split[0]));
-            if (split.Length > 1)
-            {
-                var.assignment = new Statement(ParseArithmetic(split[1]));
-            }
+            decl = decl.Substring("Const ".Length);
+            Variable var = Variable.Parse(decl);
 
             constants.Add(var);
         }
@@ -209,16 +171,17 @@ namespace Blitz2CPP.Statements
                 }
                 else
                 {
-                    func.returnType = ParseVar(type).type;
+                    func.returnType = Variable.Parse(type).type;
                 }
 
                 string[] args = matches[0].Groups[2].Value.Split(',');
                 foreach (string arg in args)
                 {
-                    func.parameters.Add(new Variable(ParseVar(arg.Trim())));
+                    func.parameters.Add(Variable.Parse(arg.Trim()));
                 }
 
                 functions.Add(func);
+                scopes.Push(func);
                 return;
             }
 

@@ -2,6 +2,9 @@
 [Ss]aves/*
 error_log_*
 
+# Parser
+Blitz2CPP/Result/*
+
 # Blitz3D
 *FastExt.bb
 *FastText_Unicode.bb

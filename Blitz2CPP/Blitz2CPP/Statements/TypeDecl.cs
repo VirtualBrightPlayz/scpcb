@@ -5,13 +5,29 @@ namespace Blitz2CPP.Statements
 {
     public class TypeDecl
     {
-        private string name;
+        public string name;
 
-        private List<Variable> fields;
+        public List<Variable> fields;
+
+        public TypeDecl()
+        {
+            fields = new List<Variable>();
+        }
 
         public string Parse2CPP()
         {
             throw new NotImplementedException();
+        }
+
+        public override string ToString()
+        {
+            string retVal = "Type " + name;
+            foreach (Variable var in fields)
+            {
+                retVal += "\n" + Toolbox.GetIndents(1) +  var.ToString();
+            }
+
+            return retVal;
         }
     }
 }
