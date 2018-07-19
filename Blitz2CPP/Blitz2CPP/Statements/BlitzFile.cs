@@ -127,8 +127,7 @@ namespace Blitz2CPP.Statements
                 {
                     AddConstant(info);
                 }
-
-                // FIXME
+                
                 else if (info.StartsWith("Function "))
                 {
                     AddFunction(info);
@@ -156,36 +155,60 @@ namespace Blitz2CPP.Statements
             constants.Add(var);
         }
 
-        private void AddFunction(string info)
+        private void AddFunction(string decl)
         {
-            string pattern = @"Function (\w+)([%#$]|\.\w+|)\((.*|)\)";
-            MatchCollection matches = Regex.Matches(info, pattern);
-            if (matches.Count > 0 && matches[0].Groups.Count > 1)
+            decl = decl.Substring("Function ".Length);
+            Console.WriteLine(decl);
+
+            Function func = new Function();
+
+            int paramOpenIndex = decl.IndexOf('(');
+            int paramCloseIndex = decl.IndexOf(')');
+
+            string nameAndType = decl.Substring(0,paramOpenIndex).Trim();
+            string type = "";
+            string name = "";
+            if (nameAndType.EndsWith('%'))
             {
-                Function func = new Function();
-                func.name = matches[0].Groups[0].Value;
-                string type = matches[0].Groups[1].Value;
-                if (string.IsNullOrWhiteSpace(type))
-                {
-                    func.returnType = "void";
-                }
-                else
-                {
-                    func.returnType = Variable.Parse(type).type;
-                }
+                type = "int";
+                name = nameAndType.Substring(0, nameAndType.Length - 1);
+            }
+            else if (nameAndType.EndsWith('#'))
+            {
+                type = "float";
+                name = nameAndType.Substring(0, nameAndType.Length - 1);
+            }
+            else if (nameAndType.EndsWith('$'))
+            {
+                type = "String";
+                name = nameAndType.Substring(0, nameAndType.Length - 1);
+            }
+            else if (nameAndType.IndexOf('.') > 0)
+            {
+                string[] splitOnType = nameAndType.Split('.');
+                type = splitOnType[1];
+                name = splitOnType[0];
+            }
+            else
+            {
+                type = "void";
+                name = nameAndType;
+            }
+            
+            string[] args = decl.Substring(paramOpenIndex+1,paramCloseIndex-paramOpenIndex-1).Trim().Split(',',StringSplitOptions.RemoveEmptyEntries);
 
-                string[] args = matches[0].Groups[2].Value.Split(',');
-                foreach (string arg in args)
-                {
-                    func.parameters.Add(Variable.Parse(arg.Trim()));
-                }
-
-                functions.Add(func);
-                scopes.Push(func);
-                return;
+            foreach (string arg in args)
+            {
+                Console.WriteLine(arg);
             }
 
-            throw new Exception("Unable to parse function declaration. File: " + filePath + " Line: " + bbFile);
+            foreach (string arg in args)
+            {
+                func.parameters.Add(Variable.Parse(arg.Trim()));
+            }
+
+            functions.Add(func);
+            scopes.Push(func);
         }
     }
 }

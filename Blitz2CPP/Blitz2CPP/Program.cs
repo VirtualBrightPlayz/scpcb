@@ -6,7 +6,7 @@ namespace Blitz2CPP
 {
     class Program
     {
-        private const string TEST_INPUT = "type.bb";
+        private const string TEST_INPUT = "Player.bb";
 
         private static void Main(string[] args)
         {
@@ -19,6 +19,7 @@ namespace Blitz2CPP
                     Console.WriteLine(type.ToString());
                 }
             }
+            Console.ReadLine();
         }
     }
 }

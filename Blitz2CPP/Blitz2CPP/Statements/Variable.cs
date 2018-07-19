@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 
 namespace Blitz2CPP.Statements
 {
@@ -25,7 +26,7 @@ namespace Blitz2CPP.Statements
         /// </summary>
         private static (string type, string name) ParseDecl(string info)
         {
-            string[] split = info.Split('[', StringSplitOptions.RemoveEmptyEntries);
+            string[] split = info.Split('[', StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray();
             string type = "";
             string varName = "";
             if (split[0].EndsWith('%'))
@@ -53,7 +54,7 @@ namespace Blitz2CPP.Statements
 
             if (string.IsNullOrWhiteSpace(type) || string.IsNullOrWhiteSpace(varName))
             {
-                throw new Exception("Unable to parse variable type. Declaration: " + info);
+                throw new Exception("Unable to parse variable type. Declaration: \"" + info + "\"");
             }
 
             if (split.Length > 1)
