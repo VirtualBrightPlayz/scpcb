@@ -21,6 +21,9 @@ Blitz2CPP/Result/*
 *.ipf
 *.iws
 
+# Visual Studio
+.vs
+
 # Visual Studio Code
 .vscode
 
