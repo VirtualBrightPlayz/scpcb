@@ -8,7 +8,18 @@ namespace Blitz2CPP.Statements
     /// </summary>
     public abstract class ScopeStatement : Statement
     {
-        private List<Statement> scopeStatements;
+        protected List<Statement> scopeStatements;
+
+        public ScopeStatement()
+        {
+            scopeStatements = new List<Statement>();
+        }
+
+        public virtual void AddToScope(Statement stat)
+        {
+            scopeStatements.Add(stat);
+        }
+
         public abstract override string Parse2CPP();
     }
 }

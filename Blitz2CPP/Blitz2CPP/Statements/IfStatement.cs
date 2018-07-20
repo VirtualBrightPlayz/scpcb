@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Blitz2CPP.Statements
 {
@@ -7,14 +8,36 @@ namespace Blitz2CPP.Statements
     {
         private Statement condition;
 
-        private Dictionary<Statement, List<Statement>> elseIfStatements;
+        public Dictionary<Statement, List<Statement>> elseIfStatements;
 
-        private List<Statement> elseStatements;
+        public List<Statement> elseStatements;
 
         public IfStatement()
         {
             elseIfStatements = new Dictionary<Statement, List<Statement>>();
-            elseStatements =  new List<Statement>();
+        }
+
+        public override void AddToScope(Statement stat)
+        {
+            if (elseStatements != null)
+            {
+                elseStatements.Add(stat);
+            }
+            else if (elseIfStatements.Any())
+            {
+                elseIfStatements.Last().Value.Add(stat);
+            }
+            else
+            {
+                scopeStatements.Add(stat);
+            }
+        }
+
+        public static IfStatement Parse(string decl)
+        {
+            IfStatement iStat = new IfStatement();
+            iStat.condition = Statement.ParseArithmetic(decl.JavaSubString("If (".Length, decl.IndexOf(") Then")));
+            return iStat;
         }
 
         public override string Parse2CPP()

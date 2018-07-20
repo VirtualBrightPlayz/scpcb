@@ -26,7 +26,6 @@ namespace Blitz2CPP.Statements
         private StreamWriter headerFile;
 
         private Stack<ScopeStatement> scopes;
-        private int GetScopeSize => scopes.Count;
         private ScopeStatement GetCurrScope => scopes.Peek();
 
         public List<TypeDecl> typeDecls;
@@ -116,26 +115,96 @@ namespace Blitz2CPP.Statements
         private void ParseLine(string info)
         {
             // Global scope stuff.
-            if (GetScopeSize <= 0)
+            if (info.StartsWith("Global "))
             {
-                if (info.StartsWith("Global "))
-                {
-                    AddGlobal(info);
-                }
+                AddGlobal(info);
+            }
 
-                else if (info.StartsWith("Const "))
+            else if (info.StartsWith("Const "))
+            {
+                AddConstant(info);
+            }
+
+            else if (info.StartsWith("Function "))
+            {
+                AddFunction(info);
+            }
+
+            // If statements.
+            else if (info.StartsWith("If "))
+            {
+                AddIf(info);
+            }
+
+            else if (info.StartsWith("Else If "))
+            {
+                if (GetCurrScope is IfStatement iStat)
                 {
-                    AddConstant(info);
+                    Statement condition = Statement.ParseArithmetic(info.JavaSubString("Else If (".Length, info.IndexOf(") Then")));
+                    iStat.elseIfStatements.Add(condition, new List<Statement>());
                 }
-                
-                else if (info.StartsWith("Function "))
+                else
                 {
-                    AddFunction(info);
+                    throw new Exception("\"Else If\" without If statement.");
                 }
             }
-            else
+
+            else if (info.StartsWith("Else"))
+            {
+                if (GetCurrScope is IfStatement iStat)
+                {
+                    iStat.elseStatements = new List<Statement>();
+                }
+                else
+                {
+                    throw new Exception("\"Else\" without If statement.");
+                }
+            }
+
+            // TODO:
+            // Locals.
+            else if (info.StartsWith("Local "))
             {
 
+            }
+
+            // Switches.
+            else if (info.StartsWith("Select "))
+            {
+
+            }
+
+            else if (info.StartsWith("Case "))
+            {
+
+            }
+
+            else if (info.StartsWith("Default"))
+            {
+
+            }
+
+            // Loops.
+            else if (info.StartsWith("For "))
+            {
+
+            }
+
+            else if (info.StartsWith("While "))
+            {
+
+            }
+
+            // TODO: Missing some end statements.
+            else if (info.StartsWith("EndIf") || info.StartsWith("End If") || info.StartsWith("End Select") || info.StartsWith("Wend") || info.StartsWith("Next"))
+            {
+                scopes.Pop();
+            }
+
+            // Normal statement.
+            else
+            {
+                GetCurrScope.AddToScope(Statement.ParseArithmetic(info));
             }
         }
 
@@ -194,21 +263,34 @@ namespace Blitz2CPP.Statements
                 type = "void";
                 name = nameAndType;
             }
-            
+
             string[] args = decl.Substring(paramOpenIndex+1,paramCloseIndex-paramOpenIndex-1).Trim().Split(',',StringSplitOptions.RemoveEmptyEntries);
 
             foreach (string arg in args)
             {
                 Console.WriteLine(arg);
-            }
-
-            foreach (string arg in args)
-            {
                 func.parameters.Add(Variable.Parse(arg.Trim()));
             }
 
             functions.Add(func);
             scopes.Push(func);
+        }
+
+        private void AddIf(string tuch)
+        {
+            IfStatement iStat = IfStatement.Parse(tuch);
+            GetCurrScope.AddToScope(iStat);
+
+            // One line statement?
+            if (tuch.EndsWith("Then"))
+            {
+                scopes.Push(iStat);
+            }
+            else
+            {
+                string statement = tuch.Substring(tuch.IndexOf("Then") + "Then".Length).Trim();
+                iStat.AddToScope(Statement.ParseArithmetic(statement));
+            }
         }
     }
 }

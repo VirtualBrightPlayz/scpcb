@@ -5,16 +5,16 @@
 Graphics3D(640,480)
 SetBuffer(BackBuffer())
 
-Local camera% = CreateCamera()
+Global camera% = CreateCamera()
 
-Local light%=CreateLight()
+Global light%=CreateLight()
 RotateEntity(light,90,0,0)
 
-Local cube%=CreateCube()
+Global cube%=CreateCube()
 PositionEntity(cube,0,0,5)
 
 ; Load texture
-Local tex% = LoadTexture( "media/b3dlogo.jpg" )
+Global tex% = LoadTexture( "media/b3dlogo.jpg" )
 
 ; Texture cube with texture
 EntityTexture(cube,tex)
