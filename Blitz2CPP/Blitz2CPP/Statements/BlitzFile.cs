@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace Blitz2CPP.Statements
@@ -94,8 +95,19 @@ namespace Blitz2CPP.Statements
 
                         typeDecls.Add(typ);
                     }
+                    // Functions.
+                    else if (line.StartsWith("Function "))
+                    {
+                        AddFunction(line);
+                    }
+                    // End of function, clear scope stack.
+                    else if (line.StartsWith("End Function"))
+                    {
+                        scopes.Clear();
+                    }
                     else
                     {
+                        // TODO: This might break for ' : ' usages in strings or comments.
                         // Multi-line?
                         string[] multi = line.Split(" : ", StringSplitOptions.RemoveEmptyEntries);
                         foreach (string statement in multi)
@@ -115,20 +127,20 @@ namespace Blitz2CPP.Statements
         private void ParseLine(string info)
         {
             // Global scope stuff.
-            if (info.StartsWith("Global "))
+            if (!scopes.Any())
             {
-                AddGlobal(info);
+                if (info.StartsWith("Global "))
+                {
+                    AddGlobal(info);
+                }
+
+                else if (info.StartsWith("Const "))
+                {
+                    AddConstant(info);
+                }
             }
 
-            else if (info.StartsWith("Const "))
-            {
-                AddConstant(info);
-            }
-
-            else if (info.StartsWith("Function "))
-            {
-                AddFunction(info);
-            }
+            // Block statements.
 
             // If statements.
             else if (info.StartsWith("If "))
@@ -136,16 +148,16 @@ namespace Blitz2CPP.Statements
                 AddIf(info);
             }
 
-            else if (info.StartsWith("Else If "))
+            else if (info.StartsWith("ElseIf "))
             {
                 if (GetCurrScope is IfStatement iStat)
                 {
-                    Statement condition = Statement.ParseArithmetic(info.JavaSubString("Else If (".Length, info.IndexOf(") Then")));
+                    Statement condition = Statement.ParseArithmetic(info.JavaSubString("ElseIf (".Length, info.IndexOf(") Then")));
                     iStat.elseIfStatements.Add(condition, new List<Statement>());
                 }
                 else
                 {
-                    throw new Exception("\"Else If\" without If statement.");
+                    throw new Exception("\"ElseIf\" without If statement.");
                 }
             }
 
@@ -161,11 +173,11 @@ namespace Blitz2CPP.Statements
                 }
             }
 
-            // TODO:
             // Locals.
             else if (info.StartsWith("Local "))
             {
-
+                Variable var = Variable.Parse(info.Substring("Local ".Length));
+                GetCurrScope.AddToScope(var);
             }
 
             // Switches.
@@ -196,7 +208,7 @@ namespace Blitz2CPP.Statements
             }
 
             // TODO: Missing some end statements.
-            else if (info.StartsWith("EndIf") || info.StartsWith("End If") || info.StartsWith("End Select") || info.StartsWith("Wend") || info.StartsWith("Next"))
+            else if (info.StartsWith("EndIf") || info.StartsWith("End Select") || info.StartsWith("Wend") || info.StartsWith("Next"))
             {
                 scopes.Pop();
             }
@@ -226,52 +238,7 @@ namespace Blitz2CPP.Statements
 
         private void AddFunction(string decl)
         {
-            decl = decl.Substring("Function ".Length);
-            Console.WriteLine(decl);
-
-            Function func = new Function();
-
-            int paramOpenIndex = decl.IndexOf('(');
-            int paramCloseIndex = decl.IndexOf(')');
-
-            string nameAndType = decl.Substring(0,paramOpenIndex).Trim();
-            string type = "";
-            string name = "";
-            if (nameAndType.EndsWith('%'))
-            {
-                type = "int";
-                name = nameAndType.Substring(0, nameAndType.Length - 1);
-            }
-            else if (nameAndType.EndsWith('#'))
-            {
-                type = "float";
-                name = nameAndType.Substring(0, nameAndType.Length - 1);
-            }
-            else if (nameAndType.EndsWith('$'))
-            {
-                type = "String";
-                name = nameAndType.Substring(0, nameAndType.Length - 1);
-            }
-            else if (nameAndType.IndexOf('.') > 0)
-            {
-                string[] splitOnType = nameAndType.Split('.');
-                type = splitOnType[1];
-                name = splitOnType[0];
-            }
-            else
-            {
-                type = "void";
-                name = nameAndType;
-            }
-
-            string[] args = decl.Substring(paramOpenIndex+1,paramCloseIndex-paramOpenIndex-1).Trim().Split(',',StringSplitOptions.RemoveEmptyEntries);
-
-            foreach (string arg in args)
-            {
-                Console.WriteLine(arg);
-                func.parameters.Add(Variable.Parse(arg.Trim()));
-            }
-
+            Function func = Function.Parse(decl);
             functions.Add(func);
             scopes.Push(func);
         }
