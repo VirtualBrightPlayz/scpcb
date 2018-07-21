@@ -36,7 +36,7 @@ namespace Blitz2CPP.Statements
         public static IfStatement Parse(string decl)
         {
             IfStatement iStat = new IfStatement();
-            iStat.condition = Statement.ParseArithmetic(decl.JavaSubString("If (".Length, decl.IndexOf(") Then")));
+            iStat.condition = Statement.ParseArithmetic(decl.JavaSubstring("If (".Length, decl.IndexOf(") Then")));
             return iStat;
         }
 

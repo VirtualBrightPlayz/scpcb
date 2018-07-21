@@ -5,11 +5,11 @@ namespace Blitz2CPP.Statements
 {
     public class Variable : Statement
     {
-        public string type;
+        private string type;
 
-        public string name;
+        private string name;
 
-        public Statement assignment;
+        private Statement assignment;
 
         public Variable((string type, string name) tuple)
         {

@@ -16,7 +16,7 @@ namespace Blitz2CPP.Statements
         /// <summary>
         /// At which scope level is this statement.
         /// </summary>
-        public int scope;
+        private int scope;
 
         public Statement(string raw) => this.raw = raw;
 

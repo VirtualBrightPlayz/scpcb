@@ -119,8 +119,7 @@ namespace Blitz2CPP.Statements
             }
             catch (Exception e)
             {
-                Console.WriteLine("CurrFile: " + filePath + ", CurrLine: " + currLine + "\n"
-                    + e.ToString());
+                Console.WriteLine("CurrFile: " + filePath + ", CurrLine: " + currLine + "\n" + e.ToString());
             }
         }
 
@@ -152,7 +151,7 @@ namespace Blitz2CPP.Statements
             {
                 if (GetCurrScope is IfStatement iStat)
                 {
-                    Statement condition = Statement.ParseArithmetic(info.JavaSubString("ElseIf (".Length, info.IndexOf(") Then")));
+                    Statement condition = Statement.ParseArithmetic(info.JavaSubstring("ElseIf (".Length, info.IndexOf(") Then")));
                     iStat.elseIfStatements.Add(condition, new List<Statement>());
                 }
                 else
@@ -199,12 +198,14 @@ namespace Blitz2CPP.Statements
             // Loops.
             else if (info.StartsWith("For "))
             {
-
+                ForLoop fl = ForLoop.Parse(info);
+                AddScope(fl);
             }
 
             else if (info.StartsWith("While "))
             {
-
+                WhileLoop wl = WhileLoop.Parse(info);
+                AddScope(wl);
             }
 
             // TODO: Missing some end statements.
@@ -258,6 +259,12 @@ namespace Blitz2CPP.Statements
                 string statement = tuch.Substring(tuch.IndexOf("Then") + "Then".Length).Trim();
                 iStat.AddToScope(Statement.ParseArithmetic(statement));
             }
+        }
+
+        private void AddScope(ScopeStatement scope)
+        {
+            GetCurrScope.AddToScope(scope);
+            scopes.Push(scope);
         }
     }
 }
