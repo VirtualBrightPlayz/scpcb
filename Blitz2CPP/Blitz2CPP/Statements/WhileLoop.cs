@@ -10,13 +10,15 @@ namespace Blitz2CPP.Statements
         public static WhileLoop Parse(string decl)
         {
             WhileLoop wl = new WhileLoop();
-            wl.condition = Statement.ParseArithmetic(decl.JavaSubstring(decl.IndexOf("While ("), decl.IndexOf(')')));
+            wl.condition = Statement.ParseArithmetic(decl.JavaSubstring(decl.IndexOf("While (") + "While (".Length, decl.LastIndexOf(')')));
             return wl;
         }
 
         public override string Parse2CPP(string indents)
         {
-            throw new NotImplementedException();
+            string retVal = indents + "while (" + condition.Parse2CPP(false) + ") ";
+            retVal += base.Parse2CPP(indents);
+            return retVal;
         }
     }
 }

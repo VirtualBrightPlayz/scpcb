@@ -31,7 +31,16 @@ namespace Blitz2CPP.Statements
 
         public override string Parse2CPP(string indents)
         {
-            throw new NotImplementedException();
+            // Get the control variable's name.
+            string varName = controlVar.Parse2CPP();
+            varName = varName.JavaSubstring(0, varName.IndexOf('=')).Trim();
+
+            string retVal = indents + "for (" + controlVar.Parse2CPP(false) + "; ";
+            retVal += varName + " <= " + destValue.Parse2CPP(false) + "; ";
+            retVal += (stepValue.Parse2CPP() == "1" ? varName + "++" : varName + " += " + stepValue.Parse2CPP(false));
+            retVal += ") ";
+            retVal += base.Parse2CPP(indents);
+            return retVal;
         }
     }
 }

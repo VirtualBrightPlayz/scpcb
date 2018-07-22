@@ -3,6 +3,7 @@ using System.Linq;
 
 namespace Blitz2CPP.Statements
 {
+    // TODO: Local a%,b%,c#,d$
     public class Variable : Statement
     {
         private string type;
@@ -72,7 +73,7 @@ namespace Blitz2CPP.Statements
 
             if (split > 0)
             {
-                tup = (decl.Substring(0, split), decl.Substring(split, decl.Length - 1 - split));
+                tup = (decl.Substring(0, split), decl.Substring(split+1, decl.Length - 1 - split).Trim());
             }
             else
             {
@@ -88,12 +89,14 @@ namespace Blitz2CPP.Statements
             return var;
         }
 
-        public override string Parse2CPP(string indents)
+        public override string Parse2CPP(string indents) => Parse2CPP(indents, true);
+
+        public override string Parse2CPP(string indents, bool semicolon)
         {
             string retVal = indents + type + " " + name;
             if (assignment != null)
             {
-                retVal += " = " + assignment.Parse2CPP();
+                retVal += " = " + assignment.Parse2CPP(semicolon);
             }
             return retVal;
         }

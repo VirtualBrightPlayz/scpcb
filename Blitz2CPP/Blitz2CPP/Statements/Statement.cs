@@ -11,7 +11,7 @@ namespace Blitz2CPP.Statements
         /// <summary>
         /// The raw statement.
         /// </summary>
-        private string raw;
+        protected string raw;
 
         public Statement(string raw) => this.raw = raw;
 
@@ -24,7 +24,7 @@ namespace Blitz2CPP.Statements
             {
                 string pattern = @"\b(" + funcName + @")\b";
                 string replacement = @"bb$1";
-                Regex.Replace(info, pattern, replacement);
+                info = Regex.Replace(info, pattern, replacement);
             }
 
             // Operators.
@@ -38,7 +38,9 @@ namespace Blitz2CPP.Statements
 
 
         public string Parse2CPP() => Parse2CPP("");
-        public virtual string Parse2CPP(string indents) => indents + raw;
+        public string Parse2CPP(bool semicolon) => Parse2CPP("", semicolon);
+        public virtual string Parse2CPP(string indents) => Parse2CPP(indents, true);
+        public virtual string Parse2CPP(string indents, bool semicolon) => indents + raw + (semicolon ? ";" : "");
         public override string ToString() => raw;
     }
 }

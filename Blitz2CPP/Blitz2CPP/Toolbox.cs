@@ -9,18 +9,29 @@ namespace Blitz2CPP
         /// </summary>
         public static string ReplaceNotInStr(string str, string needle, string replacement)
         {
+            if (!str.Contains(needle)) { return str; }
+
             string ret = "";
             string[] arr = str.Split(needle);
-            foreach (string hay in arr)
+            for (int i = 0; i < arr.Length; i++)
             {
-                // If there's an even number of quotation marks before it then it is not in a string.
-                if (hay.Count(x => x == '"') % 2 == 0)
+                if (i == arr.Length-1)
                 {
-                    ret = hay + replacement;
+                    ret += arr[i];
+                    continue;
+                }
+
+                string hay = arr[i];
+                int quoteCount = hay.Count(x => x == '"');
+
+                // If there's an even number of quotation marks before it then it is not in a string.
+                if (quoteCount % 2 == 0)
+                {
+                    ret += hay + replacement;
                 }
                 else
                 {
-                    ret = hay + needle;
+                    ret += hay + needle;
                 }
             }
 

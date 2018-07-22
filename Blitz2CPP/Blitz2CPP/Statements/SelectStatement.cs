@@ -27,7 +27,7 @@ namespace Blitz2CPP.Statements
             }
         }
 
-        public override string Parse2CPP()
+        public override string Parse2CPP(string indents)
         {
             throw new NotImplementedException();
         }

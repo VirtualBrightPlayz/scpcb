@@ -6,20 +6,16 @@ namespace Blitz2CPP
 {
     class Program
     {
-        private const string TEST_INPUT = "Player.bb";
+        private const string TEST_INPUT = "tester.bb";
 
         private static void Main(string[] args)
         {
             using (BlitzFile file = new BlitzFile(TEST_INPUT))
             {
                 file.ParseFile();
-
-                foreach (TypeDecl type in file.typeDecls)
-                {
-                    Console.WriteLine(type.ToString());
-                }
+                file.WriteCPPFile();
             }
-            Console.ReadLine();
+            // Console.ReadLine();
         }
     }
 }

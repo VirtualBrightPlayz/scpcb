@@ -29,7 +29,7 @@ namespace Blitz2CPP.Statements
         private Stack<ScopeStatement> scopes;
         private ScopeStatement GetCurrScope => scopes.Peek();
 
-        public List<TypeDecl> typeDecls;
+        private List<TypeDecl> typeDecls;
 
         private List<Variable> globals;
         private List<Variable> constants;
@@ -66,12 +66,8 @@ namespace Blitz2CPP.Statements
                 currLine = 1;
                 for (string line = bbFile.ReadLine().Trim(); !bbFile.EndOfStream; line = bbFile.ReadLine()?.Trim(), currLine++)
                 {
-                    if (string.IsNullOrWhiteSpace(line))
-                    {
-                        continue;
-                    }
                     // Type declaration?
-                    else if (line.StartsWith("Type "))
+                    if (line.StartsWith("Type "))
                     {
                         TypeDecl typ = new TypeDecl();
                         typ.name = line.Substring("Type ".Length);
@@ -109,7 +105,7 @@ namespace Blitz2CPP.Statements
                     {
                         // TODO: This might break for ' : ' usages in strings or comments.
                         // Multi-line?
-                        string[] multi = line.Split(" : ", StringSplitOptions.RemoveEmptyEntries);
+                        string[] multi = line.Split(" : ");
                         foreach (string statement in multi)
                         {
                             ParseLine(statement.Trim());
@@ -208,15 +204,27 @@ namespace Blitz2CPP.Statements
                 AddScope(wl);
             }
 
-            // TODO: Missing some end statements.
             else if (info.StartsWith("EndIf") || info.StartsWith("End Select") || info.StartsWith("Wend") || info.StartsWith("Next"))
             {
                 scopes.Pop();
             }
 
             // Normal statement.
+            else if (info.StartsWith(';'))
+            {
+                Comment comm = Comment.Parse(info);
+                GetCurrScope.AddToScope(comm);
+            }
+            else if (string.IsNullOrWhiteSpace(info))
+            {
+                GetCurrScope.AddToScope(new NewLine());
+            }
             else
             {
+                if (info.StartsWith("Return "))
+                {
+                    info = "r" + info.Substring(1);
+                }
                 GetCurrScope.AddToScope(Statement.ParseArithmetic(info));
             }
         }
@@ -265,6 +273,35 @@ namespace Blitz2CPP.Statements
         {
             GetCurrScope.AddToScope(scope);
             scopes.Push(scope);
+        }
+
+        public void WriteHeaderFile()
+        {
+
+        }
+
+        public void WriteCPPFile()
+        {
+            srcFile.WriteLine("// Constants.");
+            foreach(Variable constant in constants)
+            {
+                srcFile.WriteLine(constant.Parse2CPP());
+            }
+
+            srcFile.WriteLine();
+            srcFile.WriteLine("// Globals.");
+            foreach (Variable global in globals)
+            {
+                srcFile.WriteLine(global.Parse2CPP());
+            }
+
+            srcFile.WriteLine();
+            srcFile.WriteLine("// Functions.");
+            foreach (Function func in functions)
+            {
+                srcFile.WriteLine(func.Parse2CPP());
+                srcFile.WriteLine();
+            }
         }
     }
 }

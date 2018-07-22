@@ -42,11 +42,11 @@ namespace Blitz2CPP.Statements
 
         public override string Parse2CPP(string indents)
         {
-            string retVal = indents + "if (" + condition.Parse2CPP() + ") " + base.Parse2CPP(indents);
+            string retVal = indents + "if (" + condition.Parse2CPP(false) + ") " + base.Parse2CPP(indents);
             // else if statements.
             foreach (KeyValuePair<Statement, List<Statement>> elseIf in elseIfStatements)
             {
-                retVal += " else if (" + elseIf.Key + ") {";
+                retVal += " else if (" + elseIf.Key.Parse2CPP(false) + ") {";
                 foreach (Statement stat in elseIf.Value)
                 {
                     retVal += "\n" + stat.Parse2CPP(indents + Constants.INDENTS);

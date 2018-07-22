@@ -63,6 +63,8 @@ namespace Blitz2CPP.Statements
                 Console.WriteLine(arg);
                 func.parameters.Add(Variable.Parse(arg.Trim()));
             }
+            func.name = name;
+            func.returnType = type;
 
             return func;
         }
@@ -74,16 +76,16 @@ namespace Blitz2CPP.Statements
 
             foreach (Variable var in this.parameters)
             {
-                paramsArr.Add(var.Parse2CPP());
+                paramsArr.Add(var.Parse2CPP(false));
             }
 
             retVal += string.Join(", ", paramsArr) + ")";
             return retVal;
         }
 
-        public override string Parse2CPP()
+        public override string Parse2CPP(string indents)
         {
-            throw new NotImplementedException();
+            return GetSignature() + " " + base.Parse2CPP(indents);
         }
     }
 }
