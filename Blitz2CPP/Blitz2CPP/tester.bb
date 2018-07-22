@@ -21,10 +21,11 @@ Function run()
     ; Texture cube with texture
     EntityTexture(cube,tex)
 
-    While (Not KeyDown(1))
+    While (Not KeyDown(1)) ;This comment was originally inline right next to the while loop. It should be above now.
         Local pitch#=0
         Local yaw#=0
         Local roll#=0
+        Local test$="this is a test string to make sure that boolean operators aren't parsed inside literals. Not Or And Xor ; "
 
         If (KeyDown(208)) Then pitch=-1
         If (KeyDown(200)) Then pitch=1

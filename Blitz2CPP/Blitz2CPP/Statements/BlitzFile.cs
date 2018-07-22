@@ -103,6 +103,27 @@ namespace Blitz2CPP.Statements
                     }
                     else
                     {
+                        // Check for inline comments on statements. Place them right before the statement intended on being parsed.
+                        if (line.Contains(';') && !line.StartsWith(';'))
+                        {
+                            // Make sure the semicolon is not inside of a string.
+                            List<int> indexes = line.AllIndexesOf(";");
+                            foreach (int index in indexes)
+                            {
+                                string str = line.JavaSubstring(0, index);
+                                if (str.Count(x => x == '"') % 2 == 0)
+                                {
+                                    // If it's not in a string then remove the comment and write it in above the statement.
+                                    Comment comment = Comment.Parse(line.Substring(index));
+
+                                    // This isn't going to work for global-scope stuff but whatever.
+                                    GetCurrScope?.AddToScope(comment);
+
+                                    line = line.JavaSubstring(0, index);
+                                }
+                            }
+                        }
+
                         // TODO: This might break for ' : ' usages in strings or comments.
                         // Multi-line?
                         string[] multi = line.Split(" : ");

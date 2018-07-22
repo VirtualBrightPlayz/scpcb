@@ -28,7 +28,7 @@ namespace Blitz2CPP.Statements
             }
 
             // Operators.
-            info = Toolbox.ReplaceNotInStr(info, "Not", "!");
+            info = Toolbox.ReplaceNotInStr(info, "Not ", "!");
             info = Toolbox.ReplaceNotInStr(info, "And", "&");
             info = Toolbox.ReplaceNotInStr(info, "Or", "|");
             info = Toolbox.ReplaceNotInStr(info, "Xor", "^");

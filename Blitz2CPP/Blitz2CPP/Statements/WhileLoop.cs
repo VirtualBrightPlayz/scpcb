@@ -10,7 +10,7 @@ namespace Blitz2CPP.Statements
         public static WhileLoop Parse(string decl)
         {
             WhileLoop wl = new WhileLoop();
-            wl.condition = Statement.ParseArithmetic(decl.JavaSubstring(decl.IndexOf("While (") + "While (".Length, decl.LastIndexOf(')')));
+            wl.condition = Statement.ParseArithmetic(decl.JavaSubstring("While (".Length, decl.LastIndexOf(')')));
             return wl;
         }
 
