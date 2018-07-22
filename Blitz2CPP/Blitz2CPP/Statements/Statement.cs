@@ -13,11 +13,6 @@ namespace Blitz2CPP.Statements
         /// </summary>
         private string raw;
 
-        /// <summary>
-        /// At which scope level is this statement.
-        /// </summary>
-        private int scope;
-
         public Statement(string raw) => this.raw = raw;
 
         protected Statement() { }
@@ -41,11 +36,9 @@ namespace Blitz2CPP.Statements
             return new Statement(info);
         }
 
-        public virtual string Parse2CPP()
-        {
-            return raw;
-        }
 
+        public string Parse2CPP() => Parse2CPP("");
+        public virtual string Parse2CPP(string indents) => indents + raw;
         public override string ToString() => raw;
     }
 }

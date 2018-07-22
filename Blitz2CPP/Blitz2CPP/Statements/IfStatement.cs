@@ -40,9 +40,31 @@ namespace Blitz2CPP.Statements
             return iStat;
         }
 
-        public override string Parse2CPP()
+        public override string Parse2CPP(string indents)
         {
-            throw new NotImplementedException();
+            string retVal = indents + "if (" + condition.Parse2CPP() + ") " + base.Parse2CPP(indents);
+            // else if statements.
+            foreach (KeyValuePair<Statement, List<Statement>> elseIf in elseIfStatements)
+            {
+                retVal += " else if (" + elseIf.Key + ") {";
+                foreach (Statement stat in elseIf.Value)
+                {
+                    retVal += "\n" + stat.Parse2CPP(indents + Constants.INDENTS);
+                }
+                retVal += "\n" + indents + "}";
+            }
+            // else statement.
+            if (elseStatements != null)
+            {
+                retVal += " else {";
+                foreach (Statement stat in elseStatements)
+                {
+                    retVal += "\n" + stat.Parse2CPP(indents + Constants.INDENTS);
+                }
+                retVal += "\n" + indents + "}";
+            }
+
+            return retVal;
         }
     }
 }

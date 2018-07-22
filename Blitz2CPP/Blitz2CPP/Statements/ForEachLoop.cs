@@ -8,7 +8,7 @@ namespace Blitz2CPP.Statements
         private string controlVarName;
         private string type;
 
-        public override string Parse2CPP()
+        public override string Parse2CPP(string indents)
         {
             throw new NotImplementedException();
         }

@@ -88,9 +88,14 @@ namespace Blitz2CPP.Statements
             return var;
         }
 
-        public override string Parse2CPP()
+        public override string Parse2CPP(string indents)
         {
-            throw new NotImplementedException();
+            string retVal = indents + type + " " + name;
+            if (assignment != null)
+            {
+                retVal += " = " + assignment.Parse2CPP();
+            }
+            return retVal;
         }
 
         public override string ToString() => type + " " + name + (assignment != null ? " = " + assignment.ToString() : "");

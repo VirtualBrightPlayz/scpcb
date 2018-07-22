@@ -15,11 +15,17 @@ namespace Blitz2CPP.Statements
             scopeStatements = new List<Statement>();
         }
 
-        public virtual void AddToScope(Statement stat)
-        {
-            scopeStatements.Add(stat);
-        }
+        public virtual void AddToScope(Statement stat) => scopeStatements.Add(stat);
 
-        public abstract override string Parse2CPP();
+        public override string Parse2CPP(string indents)
+        {
+            string retVal = "{\n";
+            foreach (Statement stat in scopeStatements)
+            {
+                retVal += stat.Parse2CPP(indents + Constants.INDENTS) + "\n";
+            }
+            retVal += indents + "}";
+            return retVal;
+        }
     }
 }

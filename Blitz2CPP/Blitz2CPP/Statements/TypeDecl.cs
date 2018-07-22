@@ -24,7 +24,7 @@ namespace Blitz2CPP.Statements
             string retVal = "Type " + name;
             foreach (Variable var in fields)
             {
-                retVal += "\n" + Toolbox.GetIndents(1) +  var.ToString();
+                retVal += "\n" + Constants.INDENTS +  var.ToString();
             }
 
             return retVal;
