@@ -36,17 +36,18 @@ namespace Blitz2CPP.Statements
         public static IfStatement Parse(string decl)
         {
             IfStatement iStat = new IfStatement();
-            iStat.condition = Statement.ParseArithmetic(decl.JavaSubstring("If (".Length, decl.IndexOf(") Then")));
+            iStat.condition = ParseArithmetic(decl.JavaSubstring("If (".Length, decl.IndexOf(") Then")));
+            iStat.condition.semicolon = false;
             return iStat;
         }
 
         public override string Parse2CPP(string indents)
         {
-            string retVal = indents + "if (" + condition.Parse2CPP(false) + ") " + base.Parse2CPP(indents);
+            string retVal = indents + "if (" + condition.Parse2CPP() + ") " + base.Parse2CPP(indents);
             // else if statements.
             foreach (KeyValuePair<Statement, List<Statement>> elseIf in elseIfStatements)
             {
-                retVal += " else if (" + elseIf.Key.Parse2CPP(false) + ") {";
+                retVal += " else if (" + elseIf.Key.Parse2CPP() + ") {";
                 foreach (Statement stat in elseIf.Value)
                 {
                     retVal += "\n" + stat.Parse2CPP(indents + Constants.INDENTS);

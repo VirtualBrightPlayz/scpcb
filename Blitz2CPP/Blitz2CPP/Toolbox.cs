@@ -1,3 +1,4 @@
+using System.IO;
 using System.Linq;
 
 namespace Blitz2CPP
@@ -36,6 +37,16 @@ namespace Blitz2CPP
             }
 
             return ret;
+        }
+
+        /// <summary>
+        /// Gets the directory of the Blitz2CPP project.
+        /// </summary>
+        /// <returns></returns>
+        public static string GetProjectDirectory()
+        {
+            string dir = Directory.GetCurrentDirectory();
+            return dir.JavaSubstring(0, dir.LastIndexOf("Blitz2CPP") + "Blitz2CPP\\".Length);
         }
     }
 }

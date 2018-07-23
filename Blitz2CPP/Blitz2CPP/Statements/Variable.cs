@@ -83,20 +83,23 @@ namespace Blitz2CPP.Statements
             Variable var = new Variable(ParseDecl(tup.decl));
             if (!string.IsNullOrEmpty(tup.assignment))
             {
-                var.assignment = Statement.ParseArithmetic(tup.assignment);
+                var.assignment = ParseArithmetic(tup.assignment);
+                var.assignment.semicolon = false;
             }
 
             return var;
         }
 
-        public override string Parse2CPP(string indents) => Parse2CPP(indents, true);
-
-        public override string Parse2CPP(string indents, bool semicolon)
+        public override string Parse2CPP(string indents)
         {
             string retVal = indents + type + " " + name;
             if (assignment != null)
             {
-                retVal += " = " + assignment.Parse2CPP(semicolon);
+                retVal += " = " + assignment.Parse2CPP();
+            }
+            if (semicolon)
+            {
+                retVal += ";";
             }
             return retVal;
         }

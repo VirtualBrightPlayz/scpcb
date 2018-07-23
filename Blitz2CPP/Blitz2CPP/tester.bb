@@ -39,13 +39,24 @@ Function run()
         If (KeyDown(200)) Then pitch=1
         If (KeyDown(203)) Then yaw=-1
         If (KeyDown(205)) Then yaw=1
+        If (KeyDown(45)) Then roll=-1
+        If (KeyDown(44)) Then roll=1
+
+        ; If statement testing.
         If (someBoolean) Then
             If (someOtherBoolean) Then
                 ; nested ifs work!
             EndIf
+        ElseIf (test <> True) Then
+            If (uh) Then
+                ;test
+            Else
+                ;more test
+            EndIf
+        Else
+            ;test everything
         EndIf
-        If (KeyDown(45)) Then roll=-1
-        If (KeyDown(44)) Then roll=1
+
         ;Test comment.
         TurnEntity(cube, pitch, yaw, roll)
 

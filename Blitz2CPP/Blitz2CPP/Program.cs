@@ -1,12 +1,11 @@
-﻿using System;
-using System.IO;
-using Blitz2CPP.Statements;
+﻿using Blitz2CPP.Statements;
+using System;
 
 namespace Blitz2CPP
 {
     class Program
     {
-        private const string TEST_INPUT = "tester.bb";
+        private static readonly string TEST_INPUT = Toolbox.GetProjectDirectory() + "tester.bb";
 
         private static void Main(string[] args)
         {

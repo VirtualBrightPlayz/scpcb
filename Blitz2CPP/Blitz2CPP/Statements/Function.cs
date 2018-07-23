@@ -60,8 +60,9 @@ namespace Blitz2CPP.Statements
 
             foreach (string arg in args)
             {
-                Console.WriteLine(arg);
-                func.parameters.Add(Variable.Parse(arg.Trim()));
+                Variable var = Variable.Parse(arg.Trim());
+                var.semicolon = false;
+                func.parameters.Add(var);
             }
             func.name = name;
             func.returnType = type;
@@ -76,7 +77,7 @@ namespace Blitz2CPP.Statements
 
             foreach (Variable var in this.parameters)
             {
-                paramsArr.Add(var.Parse2CPP(false));
+                paramsArr.Add(var.Parse2CPP());
             }
 
             retVal += string.Join(", ", paramsArr) + ")";

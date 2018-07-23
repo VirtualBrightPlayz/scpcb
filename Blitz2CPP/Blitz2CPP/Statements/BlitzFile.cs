@@ -41,7 +41,7 @@ namespace Blitz2CPP.Statements
             filePath = path;
             bbFile = new StreamReader(new FileStream(path, FileMode.Open));
 
-            string dest = Constants.DIR_OUTPUT + Path.GetFileNameWithoutExtension(path);
+            string dest = Toolbox.GetProjectDirectory() + Constants.DIR_OUTPUT + Path.GetFileNameWithoutExtension(path);
             srcFile = new StreamWriter(new FileStream(dest + ".cpp", FileMode.Create));
             headerFile = new StreamWriter(new FileStream(dest + ".h", FileMode.Create));
 
@@ -169,6 +169,7 @@ namespace Blitz2CPP.Statements
                 if (GetCurrScope is IfStatement iStat)
                 {
                     Statement condition = Statement.ParseArithmetic(info.JavaSubstring("ElseIf (".Length, info.IndexOf(") Then")));
+                    condition.semicolon = false;
                     iStat.elseIfStatements.Add(condition, new List<Statement>());
                 }
                 else
@@ -303,25 +304,34 @@ namespace Blitz2CPP.Statements
 
         public void WriteCPPFile()
         {
-            srcFile.WriteLine("// Constants.");
-            foreach(Variable constant in constants)
+            if (constants.Any())
             {
-                srcFile.WriteLine(constant.Parse2CPP());
-            }
-
-            srcFile.WriteLine();
-            srcFile.WriteLine("// Globals.");
-            foreach (Variable global in globals)
-            {
-                srcFile.WriteLine(global.Parse2CPP());
-            }
-
-            srcFile.WriteLine();
-            srcFile.WriteLine("// Functions.");
-            foreach (Function func in functions)
-            {
-                srcFile.WriteLine(func.Parse2CPP());
+                srcFile.WriteLine("// Constants.");
+                foreach (Variable constant in constants)
+                {
+                    srcFile.WriteLine(constant.Parse2CPP());
+                }
                 srcFile.WriteLine();
+            }
+
+            if (globals.Any())
+            {
+                srcFile.WriteLine("// Globals.");
+                foreach (Variable global in globals)
+                {
+                    srcFile.WriteLine(global.Parse2CPP());
+                }
+                srcFile.WriteLine();
+            }
+
+            if (functions.Any())
+            {
+                srcFile.WriteLine("// Functions.");
+                foreach (Function func in functions)
+                {
+                    srcFile.WriteLine(func.Parse2CPP());
+                    srcFile.WriteLine();
+                }
             }
         }
     }
