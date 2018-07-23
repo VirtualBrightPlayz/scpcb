@@ -21,6 +21,14 @@ Function run()
     ; Texture cube with texture
     EntityTexture(cube,tex)
 
+    For i=2 To 32
+        Local test$="Test For Loop"
+    Next
+
+    For i=0 To 5 Step MyJuss()
+        Local test$="Test For Loop with Step"
+    Next
+
     While (Not KeyDown(1)) ;This comment was originally inline right next to the while loop. It should be above now.
         Local pitch#=0
         Local yaw#=0
