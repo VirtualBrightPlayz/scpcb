@@ -248,11 +248,7 @@ namespace Blitz2CPP.Statements
             }
             else
             {
-                if (info.StartsWith("Return "))
-                {
-                    info = "r" + info.Substring(1);
-                }
-                GetCurrScope.AddToScope(Statement.ParseArithmetic(info));
+                GetCurrScope.AddToScope(Statement.ParseArithmetic(info, true));
             }
         }
 
@@ -290,7 +286,7 @@ namespace Blitz2CPP.Statements
             IfStatement iStat = IfStatement.Parse(tuch);
             GetCurrScope.AddToScope(iStat);
 
-            // One line statement?
+            // One line if statement?
             if (tuch.EndsWith("Then"))
             {
                 scopes.Push(iStat);
@@ -298,7 +294,7 @@ namespace Blitz2CPP.Statements
             else
             {
                 string statement = tuch.Substring(tuch.IndexOf("Then") + "Then".Length).Trim();
-                iStat.AddToScope(Statement.ParseArithmetic(statement));
+                iStat.AddToScope(Statement.ParseArithmetic(statement, true));
             }
         }
 
@@ -314,7 +310,9 @@ namespace Blitz2CPP.Statements
             headerFile.WriteLine("#ifndef " + headerInclude);
             headerFile.WriteLine("#define " + headerInclude);
             headerFile.WriteLine();
- 
+            headerFile.WriteLine("namespace " + Constants.CPP_NAMESPACE + " {");
+            headerFile.WriteLine();
+
             if (constants.Any())
             {
                 headerFile.WriteLine("// Constants.");
@@ -344,7 +342,7 @@ namespace Blitz2CPP.Statements
                     headerFile.WriteLine();
                 }
             }
-
+            headerFile.WriteLine("}");
             headerFile.WriteLine("#endif // " + headerInclude);
         }
 

@@ -48,7 +48,7 @@ namespace Blitz2CPP
         {
             string assemb = Assembly.GetAssembly(typeof(Toolbox)).GetName().Name;
             string dir = Directory.GetCurrentDirectory();
-            return dir.JavaSubstring(0, dir.LastIndexOf(assemb) + (assemb + "\\").Length);
+            return dir.JavaSubstring(0, dir.LastIndexOf(assemb) + assemb.Length) + "/";
         }
     }
 }

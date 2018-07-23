@@ -3,7 +3,6 @@ using System.Linq;
 
 namespace Blitz2CPP.Statements
 {
-    // TODO: Local a%,b%,c#,d$
     public class Variable : Statement
     {
         private string type;

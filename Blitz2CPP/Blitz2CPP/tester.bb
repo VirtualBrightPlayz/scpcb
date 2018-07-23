@@ -39,12 +39,12 @@ Function run()
         If (KeyDown(44)) Then roll=1
 
         ; If statement testing.
-        If (someBoolean) Then
-            If (someOtherBoolean) Then
+        If (someBoolean Or someOtherBoolean) Then
+            If (moreBooleans And uhuh) Then
                 ; nested ifs work!
             EndIf
         ElseIf (test <> True) Then
-            If (uh) Then
+            If (uh = False) Then
                 ;test
             Else
                 ;more test

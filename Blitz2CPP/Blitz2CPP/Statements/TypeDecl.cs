@@ -16,6 +16,7 @@ namespace Blitz2CPP.Statements
 
         public string Parse2CPP()
         {
+
             throw new NotImplementedException();
         }
 
