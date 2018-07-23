@@ -1,5 +1,6 @@
 using System.IO;
 using System.Linq;
+using System.Reflection;
 
 namespace Blitz2CPP
 {
@@ -40,13 +41,14 @@ namespace Blitz2CPP
         }
 
         /// <summary>
-        /// Gets the directory of the Blitz2CPP project.
+        /// Gets the directory of the current project.
         /// </summary>
         /// <returns></returns>
         public static string GetProjectDirectory()
         {
+            string assemb = Assembly.GetAssembly(typeof(Toolbox)).GetName().Name;
             string dir = Directory.GetCurrentDirectory();
-            return dir.JavaSubstring(0, dir.LastIndexOf("Blitz2CPP") + "Blitz2CPP\\".Length);
+            return dir.JavaSubstring(0, dir.LastIndexOf(assemb) + (assemb + "\\").Length);
         }
     }
 }

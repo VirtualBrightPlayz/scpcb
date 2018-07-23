@@ -70,7 +70,7 @@ namespace Blitz2CPP.Statements
             return func;
         }
 
-        private string GetSignature()
+        public string GetSignature()
         {
             string retVal = returnType + " " + name + "(";
             List<string> paramsArr = new List<string>();

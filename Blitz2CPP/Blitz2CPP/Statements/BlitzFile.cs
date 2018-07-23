@@ -193,8 +193,13 @@ namespace Blitz2CPP.Statements
             // Locals.
             else if (info.StartsWith("Local "))
             {
-                Variable var = Variable.Parse(info.Substring("Local ".Length));
-                GetCurrScope.AddToScope(var);
+                info = info.Substring("Local ".Length);
+                string[] decls = info.Split(',', StringSplitOptions.RemoveEmptyEntries);
+                foreach (string decl in decls)
+                {
+                    Variable var = Variable.Parse(decl);
+                    GetCurrScope.AddToScope(var);
+                }
             }
 
             // Switches.
@@ -254,17 +259,23 @@ namespace Blitz2CPP.Statements
         private void AddGlobal(string decl)
         {
             decl = decl.Substring("Global ".Length);
-            Variable var = Variable.Parse(decl);
-
-            globals.Add(var);
+            string[] decls = decl.Split(',', StringSplitOptions.RemoveEmptyEntries);
+            foreach (string glob in decls)
+            {
+                Variable var = Variable.Parse(glob);
+                globals.Add(var);
+            }
         }
 
         private void AddConstant(string decl)
         {
             decl = decl.Substring("Const ".Length);
-            Variable var = Variable.Parse(decl);
-
-            constants.Add(var);
+            string[] decls = decl.Split(',', StringSplitOptions.RemoveEmptyEntries);
+            foreach (string glob in decls)
+            {
+                Variable var = Variable.Parse(glob);
+                constants.Add(var);
+            }
         }
 
         private void AddFunction(string decl)
@@ -299,11 +310,53 @@ namespace Blitz2CPP.Statements
 
         public void WriteHeaderFile()
         {
+            string headerInclude = Path.GetFileNameWithoutExtension(filePath).ToUpper() + "_H_INCLUDED";
+            headerFile.WriteLine("#ifndef " + headerInclude);
+            headerFile.WriteLine("#define " + headerInclude);
+            headerFile.WriteLine();
+ 
+            if (constants.Any())
+            {
+                headerFile.WriteLine("// Constants.");
+                foreach (Variable constant in constants)
+                {
+                    headerFile.WriteLine("extern const " + constant.GetDefinition());
+                }
+                headerFile.WriteLine();
+            }
 
+            if (globals.Any())
+            {
+                headerFile.WriteLine("// Globals.");
+                foreach (Variable global in globals)
+                {
+                    headerFile.WriteLine("extern " + global.GetDefinition());
+                }
+                headerFile.WriteLine();
+            }
+
+            if (functions.Any())
+            {
+                headerFile.WriteLine("// Functions.");
+                foreach (Function func in functions)
+                {
+                    headerFile.WriteLine(func.GetSignature() + ";");
+                    headerFile.WriteLine();
+                }
+            }
+
+            headerFile.WriteLine("#endif // " + headerInclude);
         }
 
         public void WriteCPPFile()
         {
+            string headerFileName = Path.GetFileNameWithoutExtension(filePath) + ".h";
+            srcFile.WriteLine("#include <" + headerFileName + ">");
+            srcFile.WriteLine();
+
+            srcFile.WriteLine("namespace " + Constants.CPP_NAMESPACE + " {");
+            srcFile.WriteLine();
+
             if (constants.Any())
             {
                 srcFile.WriteLine("// Constants.");
@@ -333,6 +386,7 @@ namespace Blitz2CPP.Statements
                     srcFile.WriteLine();
                 }
             }
+            srcFile.WriteLine("}");
         }
     }
 }

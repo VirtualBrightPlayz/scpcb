@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace Blitz2CPP.Statements
 {
     public class Comment : Statement

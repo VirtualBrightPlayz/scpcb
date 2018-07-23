@@ -12,9 +12,10 @@ namespace Blitz2CPP
             using (BlitzFile file = new BlitzFile(TEST_INPUT))
             {
                 file.ParseFile();
+                file.WriteHeaderFile();
                 file.WriteCPPFile();
             }
-            // Console.ReadLine();
+            //Console.ReadLine();
         }
     }
 }

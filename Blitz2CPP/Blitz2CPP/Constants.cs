@@ -8,6 +8,6 @@ namespace Blitz2CPP
 
         public const string INDENTS = "    ";
 
-        public const string NAMESPACE = "CBN";
+        public const string CPP_NAMESPACE = "CBN";
     }
 }

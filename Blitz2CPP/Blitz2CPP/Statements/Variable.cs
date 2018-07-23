@@ -90,6 +90,8 @@ namespace Blitz2CPP.Statements
             return var;
         }
 
+        public string GetDefinition() => type + " " + name + ";";
+
         public override string Parse2CPP(string indents)
         {
             string retVal = indents + type + " " + name;
