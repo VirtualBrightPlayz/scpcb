@@ -11,7 +11,7 @@ namespace Blitz2CPP.Statements
         {
             WhileLoop wl = new WhileLoop();
             wl.condition = ParseArithmetic(decl.JavaSubstring("While (".Length, decl.LastIndexOf(')')));
-            wl.condition.semicolon = false;
+            wl.condition.Semicolon = false;
             return wl;
         }
 

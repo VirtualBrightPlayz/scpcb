@@ -14,13 +14,13 @@ namespace Blitz2CPP.Statements
         protected string raw;
 
         /// <summary>
-        /// Determines whether or not the parsing of this statement should end with a semicolon.
+        /// Determines whether or not the parsing of this statement should end with a Semicolon.
         /// </summary>
-        public bool semicolon;
+        public bool Semicolon;
 
         public Statement(string raw) : this() => this.raw = raw;
 
-        protected Statement() => semicolon = true;
+        protected Statement() => Semicolon = true;
 
         /// <summary>
         /// Parses an arithmetic-based statement.
@@ -61,12 +61,12 @@ namespace Blitz2CPP.Statements
             info = Regex.Replace(info, @"\bFalse\b", "false");
 
             // Operators.
-            info = Toolbox.ReplaceNotInStr(info, @"\bNot ", "!");
-            info = Toolbox.ReplaceNotInStr(info, @"\bAnd\b", "&");
-            info = Toolbox.ReplaceNotInStr(info, @"\bOr\b", "|");
-            info = Toolbox.ReplaceNotInStr(info, @"=", "==");
-            info = Toolbox.ReplaceNotInStr(info, @"<>", "!=");
-            info = Toolbox.ReplaceNotInStr(info, @"\bXor\b", "^");
+            info = Toolbox.ReplaceNotInStr(info, "Not ", "!", @"\b$1");
+            info = Toolbox.ReplaceNotInStr(info, "And", "&", @"\b$1\b");
+            info = Toolbox.ReplaceNotInStr(info, "Or", "|", @"\b$1\b");
+            info = Toolbox.ReplaceNotInStr(info, "Xor", "^", @"\b$1\b");
+            info = Toolbox.ReplaceNotInStr(info, "=", "==");
+            info = Toolbox.ReplaceNotInStr(info, "<>", "!=");
 
             // Struct members.
             info = Toolbox.ReplaceNotInStr(info, @"\\", "->");
@@ -75,6 +75,6 @@ namespace Blitz2CPP.Statements
         }
 
         public string Parse2CPP() => Parse2CPP(string.Empty);
-        public virtual string Parse2CPP(string indents) => indents + raw + (semicolon ? ";" : "");
+        public virtual string Parse2CPP(string indents) => indents + raw + (Semicolon ? ";" : "");
     }
 }

@@ -5,11 +5,11 @@ namespace Blitz2CPP.Statements
 {
     public class Function : ScopeStatement
     {
-        public string name;
+        private string name;
 
-        public string returnType;
+        private string returnType;
 
-        public List<Variable> parameters;
+        private List<Variable> parameters;
 
         public Function()
         {
@@ -60,7 +60,7 @@ namespace Blitz2CPP.Statements
             foreach (string arg in args)
             {
                 Variable var = Variable.Parse(arg.Trim());
-                var.semicolon = false;
+                var.Semicolon = false;
                 func.parameters.Add(var);
             }
             func.name = name;

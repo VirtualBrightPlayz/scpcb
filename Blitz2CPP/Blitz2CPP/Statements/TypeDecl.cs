@@ -5,26 +5,26 @@ namespace Blitz2CPP.Statements
 {
     public class TypeDecl
     {
-        public string name;
+        public string Name;
 
-        public List<Variable> fields;
+        public List<Statement> Fields;
 
         public TypeDecl()
         {
-            fields = new List<Variable>();
+            Fields = new List<Statement>();
         }
 
-        public string GetVectorList() => "std::vector<" + name + "*>";
+        public string GetVectorList() => "std::vector<" + Name + "*>";
 
         public string Parse2CPP() => Parse2CPP(string.Empty);
         public string Parse2CPP(string indents)
         {
-            string retVal = indents + "struct " + name + " {";
+            string retVal = indents + "struct " + Name + " {";
             retVal += "\n" + indents + "public:";
             retVal += "\n" + indents + Constants.INDENTS + "static " + GetVectorList() + " list;\n";
-            foreach (Variable var in fields)
+            foreach (Statement stat in Fields)
             {
-                retVal += "\n" + var.Parse2CPP(indents + Constants.INDENTS);
+                retVal += "\n" + stat.Parse2CPP(indents + Constants.INDENTS);
             }
             retVal += "\n" + indents + "}";
             return retVal;
@@ -32,8 +32,8 @@ namespace Blitz2CPP.Statements
 
         public override string ToString()
         {
-            string retVal = "Type " + name;
-            foreach (Variable var in fields)
+            string retVal = "Type " + Name;
+            foreach (Variable var in Fields)
             {
                 retVal += "\n" + Constants.INDENTS +  var.ToString();
             }

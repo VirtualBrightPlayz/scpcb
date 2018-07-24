@@ -4,7 +4,7 @@ Global cube%=CreateCube()
 ; Load texture
 Global tex% = LoadTexture( "media/b3dlogo.jpg" )
 
-Function run()
+Function ligger%(for1#, plyr.Player, for2#=3)
     ; -------------------
     ; LoadTexture Example
     ; -------------------
@@ -18,6 +18,8 @@ Function run()
     ; Texture cube with texture
     EntityTexture(cube,tex)
 
+	; For loops.
+	Local i%
     For i=2 To 32
         Local test$="Test For Loop"
     Next
@@ -26,6 +28,16 @@ Function run()
         Local test$="Test For Loop with Step"
     Next
 
+	; For Each loops.
+	For p = Each Player
+		; Test accessing data members.
+		p\loudness = 2.0
+		For p = Each Player
+			; Unique iterator name.
+		Next
+	Next
+
+	; While loop.
     While (Not KeyDown(1)) ;This comment was originally inline right next to the while loop. It should be above now.
         Local pitch#=0, yaw#=0
         Local roll#=0, test$
@@ -59,13 +71,8 @@ Function run()
         RenderWorld()
         Flip()
     Wend
-End Function
 
-
-Function Ligger%(for1#, plyr.Player, for2#=3)
-    Local retFor# = for1 / for2
-    plyr\loudness = 2.0
-    Return retFor
+	Return i
 End Function
 
 Type Player

@@ -10,12 +10,22 @@ namespace Blitz2CPP
         /// <summary>
         /// Replaces all occurences of something so long as it is not in a string.
         /// </summary>
-        public static string ReplaceNotInStr(string str, string needle, string replacement)
+        /// <param name="str">The string to be searched.</param>
+        /// <param name="needle">The substring to find.</param>
+        /// <param name="replacement">What to replaced the needle with.</param>
+        /// <param name="pattern">An optionial regex pattern that can be used for searching.
+        /// Write '$1' somewhere in the pattern to represent the value you put in the needle param.</param>
+        /// <returns></returns>
+        public static string ReplaceNotInStr(string str, string needle, string replacement, string pattern = "")
         {
-            if (!Regex.IsMatch(str, needle)) { return str; }
+            Regex regex = string.IsNullOrEmpty(pattern)
+                ? new Regex(needle)
+                : new Regex(pattern.Replace("$1", needle));
+
+            if (!regex.IsMatch(str)) { return str; }
 
             string ret = "";
-            string[] arr = Regex.Split(str, needle);
+            string[] arr = regex.Split(str);
             for (int i = 0; i < arr.Length; i++)
             {
                 if (i == arr.Length-1)

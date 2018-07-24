@@ -37,7 +37,7 @@ namespace Blitz2CPP.Statements
         {
             IfStatement iStat = new IfStatement();
             iStat.condition = ParseArithmetic(decl.JavaSubstring("If (".Length, decl.IndexOf(") Then")));
-            iStat.condition.semicolon = false;
+            iStat.condition.Semicolon = false;
             return iStat;
         }
 

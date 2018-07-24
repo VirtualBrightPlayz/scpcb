@@ -5,16 +5,16 @@ namespace Blitz2CPP.Statements
 {
     public class Variable : Statement
     {
-        private string type;
+        public string Type;
 
-        private string name;
+        public string Name;
 
         private Statement assignment;
 
         public Variable((string type, string name) tuple)
         {
-            this.type = tuple.type;
-            this.name = tuple.name;
+            this.Type = tuple.type;
+            this.Name = tuple.name;
         }
 
         /// <summary>
@@ -48,8 +48,8 @@ namespace Blitz2CPP.Statements
             else if (split[0].IndexOf('.') > 0)
             {
                 string[] splitOnType = split[0].Split('.');
-                type = splitOnType[1] + "*";
-                varName = splitOnType[0];
+                type = splitOnType[1].Trim() + "*";
+                varName = splitOnType[0].Trim();
             }
 
             if (string.IsNullOrWhiteSpace(type) || string.IsNullOrWhiteSpace(varName))
@@ -72,39 +72,39 @@ namespace Blitz2CPP.Statements
 
             if (split > 0)
             {
-                tup = (decl.Substring(0, split), decl.Substring(split+1, decl.Length - 1 - split).Trim());
+                tup = (decl.Substring(0, split), decl.Substring(split+1, decl.Length - 1 - split));
             }
             else
             {
                 tup = (decl, null);
             }
 
-            Variable var = new Variable(ParseDecl(tup.decl));
+            Variable var = new Variable(ParseDecl(tup.decl.Trim()));
             if (!string.IsNullOrEmpty(tup.assignment))
             {
-                var.assignment = ParseArithmetic(tup.assignment);
-                var.assignment.semicolon = false;
+                var.assignment = ParseArithmetic(tup.assignment.Trim());
+                var.assignment.Semicolon = false;
             }
 
             return var;
         }
 
-        public string GetDefinition() => type + " " + name + ";";
+        public string GetDefinition() => Type + " " + Name + ";";
 
         public override string Parse2CPP(string indents)
         {
-            string retVal = indents + type + " " + name;
+            string retVal = indents + Type + " " + Name;
             if (assignment != null)
             {
                 retVal += " = " + assignment.Parse2CPP();
             }
-            if (semicolon)
+            if (Semicolon)
             {
                 retVal += ";";
             }
             return retVal;
         }
 
-        public override string ToString() => type + " " + name + (assignment != null ? " = " + assignment.ToString() : "");
+        public override string ToString() => Name + " " + Name + (assignment != null ? " = " + assignment.ToString() : "");
     }
 }

@@ -14,7 +14,7 @@ namespace Blitz2CPP.Statements
         public static ForLoop Parse(string decl)
         {
             ForLoop fl = new ForLoop();
-            fl.controlVar = ParseArithmetic(decl.JavaSubstring("For ".Length, decl.IndexOf("To ")).Trim());
+            fl.controlVar = ParseArithmetic(decl.JavaSubstring("For ".Length, decl.IndexOf("To ")).Trim(), true);
 
             int step = decl.IndexOf("Step ");
             if (step > 0)
@@ -27,7 +27,7 @@ namespace Blitz2CPP.Statements
                 fl.destValue = ParseArithmetic(decl.Substring(decl.IndexOf("To ") + "To ".Length).Trim());
             }
 
-            fl.stepValue.semicolon = false;
+            fl.stepValue.Semicolon = false;
             return fl;
         }
 

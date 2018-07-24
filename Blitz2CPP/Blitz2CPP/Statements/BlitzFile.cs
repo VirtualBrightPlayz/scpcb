@@ -70,7 +70,7 @@ namespace Blitz2CPP.Statements
                     if (line.StartsWith("Type "))
                     {
                         TypeDecl typ = new TypeDecl();
-                        typ.name = line.Substring("Type ".Length);
+                        typ.Name = line.Substring("Type ".Length);
                         while (!line.StartsWith("End Type"))
                         {
                             if (bbFile.EndOfStream)
@@ -81,11 +81,11 @@ namespace Blitz2CPP.Statements
                             line = bbFile.ReadLine().Trim();
                             currLine++;
 
-                            if (string.IsNullOrWhiteSpace(line)) { continue; }
-                            else if (line.StartsWith(';')) { continue; }
+                            if (string.IsNullOrWhiteSpace(line)) { typ.Fields.Add(new NewLine()); }
+                            else if (line.StartsWith(';')) { typ.Fields.Add(Comment.Parse(line)); }
                             else if (line.StartsWith("Field "))
                             {
-                                typ.fields.Add(Variable.Parse(line.Substring("Field ".Length)));
+                                typ.Fields.Add(Variable.Parse(line.Substring("Field ".Length)));
                             }
                         }
 
@@ -169,7 +169,7 @@ namespace Blitz2CPP.Statements
                 if (GetCurrScope is IfStatement iStat)
                 {
                     Statement condition = Statement.ParseArithmetic(info.JavaSubstring("ElseIf (".Length, info.IndexOf(") Then")));
-                    condition.semicolon = false;
+                    condition.Semicolon = false;
                     iStat.elseIfStatements.Add(condition, new List<Statement>());
                 }
                 else
@@ -219,6 +219,12 @@ namespace Blitz2CPP.Statements
             }
 
             // Loops.
+            else if (info.StartsWith("For ") && info.Contains(" Each "))
+            {
+                ForEachLoop fel = ForEachLoop.Parse(info);
+                AddScope(fel);
+            }
+
             else if (info.StartsWith("For "))
             {
                 ForLoop fl = ForLoop.Parse(info);
@@ -370,7 +376,7 @@ namespace Blitz2CPP.Statements
                 srcFile.WriteLine("// Structs.");
                 foreach (TypeDecl type in structs)
                 {
-                    srcFile.WriteLine(type.GetVectorList() + " " + type.name + "::list();");
+                    srcFile.WriteLine(type.GetVectorList() + " " + type.Name + "::list();");
                 }
                 srcFile.WriteLine();
             }

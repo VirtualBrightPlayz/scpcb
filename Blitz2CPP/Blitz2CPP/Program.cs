@@ -16,7 +16,6 @@ namespace Blitz2CPP
                 file.WriteHeaderFile();
                 file.WriteCPPFile();
             }
-            // Console.WriteLine(Regex.IsMatch("plyr\\loudness = 2.0", @"\\"));
             //Console.ReadLine();
         }
     }
