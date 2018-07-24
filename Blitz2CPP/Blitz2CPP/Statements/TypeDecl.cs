@@ -14,10 +14,20 @@ namespace Blitz2CPP.Statements
             fields = new List<Variable>();
         }
 
-        public string Parse2CPP()
-        {
+        public string GetVectorList() => "std::vector<" + name + "*>";
 
-            throw new NotImplementedException();
+        public string Parse2CPP() => Parse2CPP(string.Empty);
+        public string Parse2CPP(string indents)
+        {
+            string retVal = indents + "struct " + name + " {";
+            retVal += "\n" + indents + "public:";
+            retVal += "\n" + indents + Constants.INDENTS + "static " + GetVectorList() + " list;\n";
+            foreach (Variable var in fields)
+            {
+                retVal += "\n" + var.Parse2CPP(indents + Constants.INDENTS);
+            }
+            retVal += "\n" + indents + "}";
+            return retVal;
         }
 
         public override string ToString()

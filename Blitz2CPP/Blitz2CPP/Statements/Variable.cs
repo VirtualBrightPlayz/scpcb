@@ -48,7 +48,7 @@ namespace Blitz2CPP.Statements
             else if (split[0].IndexOf('.') > 0)
             {
                 string[] splitOnType = split[0].Split('.');
-                type = splitOnType[1];
+                type = splitOnType[1] + "*";
                 varName = splitOnType[0];
             }
 

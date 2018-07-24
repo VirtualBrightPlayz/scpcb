@@ -1,5 +1,6 @@
 ﻿using Blitz2CPP.Statements;
 using System;
+using System.Text.RegularExpressions;
 
 namespace Blitz2CPP
 {
@@ -15,6 +16,7 @@ namespace Blitz2CPP
                 file.WriteHeaderFile();
                 file.WriteCPPFile();
             }
+            // Console.WriteLine(Regex.IsMatch("plyr\\loudness = 2.0", @"\\"));
             //Console.ReadLine();
         }
     }

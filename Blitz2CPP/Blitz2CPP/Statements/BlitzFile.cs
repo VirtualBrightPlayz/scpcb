@@ -29,7 +29,7 @@ namespace Blitz2CPP.Statements
         private Stack<ScopeStatement> scopes;
         private ScopeStatement GetCurrScope => scopes.Peek();
 
-        private List<TypeDecl> typeDecls;
+        private List<TypeDecl> structs;
 
         private List<Variable> globals;
         private List<Variable> constants;
@@ -46,7 +46,7 @@ namespace Blitz2CPP.Statements
             headerFile = new StreamWriter(new FileStream(dest + ".h", FileMode.Create));
 
             scopes = new Stack<ScopeStatement>();
-            typeDecls = new List<TypeDecl>();
+            structs = new List<TypeDecl>();
             globals = new List<Variable>();
             constants = new List<Variable>();
             functions = new List<Function>();
@@ -89,7 +89,7 @@ namespace Blitz2CPP.Statements
                             }
                         }
 
-                        typeDecls.Add(typ);
+                        structs.Add(typ);
                     }
                     // Functions.
                     else if (line.StartsWith("Function "))
@@ -313,6 +313,16 @@ namespace Blitz2CPP.Statements
             headerFile.WriteLine("namespace " + Constants.CPP_NAMESPACE + " {");
             headerFile.WriteLine();
 
+            if (structs.Any())
+            {
+                headerFile.WriteLine("// Structs.");
+                foreach (TypeDecl type in structs)
+                {
+                    headerFile.WriteLine(type.Parse2CPP());
+                }
+                headerFile.WriteLine();
+            }
+
             if (constants.Any())
             {
                 headerFile.WriteLine("// Constants.");
@@ -354,6 +364,16 @@ namespace Blitz2CPP.Statements
 
             srcFile.WriteLine("namespace " + Constants.CPP_NAMESPACE + " {");
             srcFile.WriteLine();
+
+            if (structs.Any())
+            {
+                srcFile.WriteLine("// Structs.");
+                foreach (TypeDecl type in structs)
+                {
+                    srcFile.WriteLine(type.GetVectorList() + " " + type.name + "::list();");
+                }
+                srcFile.WriteLine();
+            }
 
             if (constants.Any())
             {

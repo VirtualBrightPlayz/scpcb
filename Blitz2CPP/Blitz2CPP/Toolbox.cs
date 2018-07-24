@@ -1,6 +1,7 @@
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 
 namespace Blitz2CPP
 {
@@ -11,10 +12,10 @@ namespace Blitz2CPP
         /// </summary>
         public static string ReplaceNotInStr(string str, string needle, string replacement)
         {
-            if (!str.Contains(needle)) { return str; }
+            if (!Regex.IsMatch(str, needle)) { return str; }
 
             string ret = "";
-            string[] arr = str.Split(needle);
+            string[] arr = Regex.Split(str, needle);
             for (int i = 0; i < arr.Length; i++)
             {
                 if (i == arr.Length-1)

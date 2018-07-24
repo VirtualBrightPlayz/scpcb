@@ -32,6 +32,7 @@ namespace Blitz2CPP.Statements
             if (assignment && info.Contains("="))
             {
                 string name = info.JavaSubstring(0, info.IndexOf('='));
+                name = Toolbox.ReplaceNotInStr(name, @"\\", "->");
                 string value = info.JavaSubstring(info.IndexOf('=')+1, info.Length);
 
                 Statement stat = ParseArithmetic(value);
@@ -56,16 +57,19 @@ namespace Blitz2CPP.Statements
             info = Regex.Replace(info, @"\bReturn\b", "return");
 
             // Boolean constants.
-            info = Regex.Replace(info, @"\b(True)\b", "true");
-            info = Regex.Replace(info, @"\b(False)\b", @"false");
+            info = Regex.Replace(info, @"\bTrue\b", "true");
+            info = Regex.Replace(info, @"\bFalse\b", "false");
 
             // Operators.
-            info = Toolbox.ReplaceNotInStr(info, "Not ", "!");
-            info = Toolbox.ReplaceNotInStr(info, " And ", " & ");
-            info = Toolbox.ReplaceNotInStr(info, " Or ", " | ");
-            info = Toolbox.ReplaceNotInStr(info, "=", "==");
-            info = Toolbox.ReplaceNotInStr(info, "<>", "!=");
-            info = Toolbox.ReplaceNotInStr(info, "Xor", "^");
+            info = Toolbox.ReplaceNotInStr(info, @"\bNot ", "!");
+            info = Toolbox.ReplaceNotInStr(info, @"\bAnd\b", "&");
+            info = Toolbox.ReplaceNotInStr(info, @"\bOr\b", "|");
+            info = Toolbox.ReplaceNotInStr(info, @"=", "==");
+            info = Toolbox.ReplaceNotInStr(info, @"<>", "!=");
+            info = Toolbox.ReplaceNotInStr(info, @"\bXor\b", "^");
+
+            // Struct members.
+            info = Toolbox.ReplaceNotInStr(info, @"\\", "->");
 
             return new Statement(info);
         }

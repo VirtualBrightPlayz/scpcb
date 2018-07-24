@@ -19,7 +19,6 @@ namespace Blitz2CPP.Statements
         public static Function Parse(string decl)
         {
             decl = decl.Substring("Function ".Length);
-            Console.WriteLine(decl);
 
             Function func = new Function();
 
