@@ -38,6 +38,7 @@ Function ligger%(for1#, plyr.Player, for2#=3)
 	Next
 
 	; While loop.
+
     While (Not KeyDown(1)) ;This comment was originally inline right next to the while loop. It should be above now.
         Local pitch#=0, yaw#=0
         Local roll#=0, test$

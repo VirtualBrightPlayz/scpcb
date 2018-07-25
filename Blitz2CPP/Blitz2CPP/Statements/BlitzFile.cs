@@ -326,8 +326,8 @@ namespace Blitz2CPP.Statements
                 foreach (TypeDecl type in structs)
                 {
                     headerFile.WriteLine(type.Parse2CPP());
+                    headerFile.WriteLine();
                 }
-                headerFile.WriteLine();
             }
 
             if (constants.Any())
@@ -378,8 +378,10 @@ namespace Blitz2CPP.Statements
                 foreach (TypeDecl type in structs)
                 {
                     srcFile.WriteLine(type.GetVectorList() + " " + type.Name + "::list;");
+                    srcFile.WriteLine(type.GetConstructor());
+                    srcFile.WriteLine(type.GetDestructor());
+                    srcFile.WriteLine();
                 }
-                srcFile.WriteLine();
             }
 
             if (constants.Any())
