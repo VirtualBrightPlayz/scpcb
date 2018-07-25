@@ -15,6 +15,8 @@ namespace Blitz2CPP.Statements
         }
 
         public string GetVectorList() => "std::vector<" + Name + "*>";
+        public string GetConstructor() => Name + "::" + Name + "()";
+        public string GetDestructor() =>  Name + "::~" + Name + "()";
 
         public string Parse2CPP() => Parse2CPP(string.Empty);
         public string Parse2CPP(string indents)

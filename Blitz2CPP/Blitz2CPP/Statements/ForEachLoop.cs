@@ -28,7 +28,6 @@ namespace Blitz2CPP.Statements
 
         public override string Parse2CPP(string indents)
         {
-            Console.WriteLine(accessVar.Name);
             string iterVar = iterName + Iteration;
             string iterType = accessVar.Type.Substring(0, accessVar.Type.Length-1); // Remove pointer.
 

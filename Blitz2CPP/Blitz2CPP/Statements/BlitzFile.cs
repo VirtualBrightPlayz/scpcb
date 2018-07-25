@@ -315,6 +315,7 @@ namespace Blitz2CPP.Statements
             string headerInclude = Path.GetFileNameWithoutExtension(filePath).ToUpper() + "_H_INCLUDED";
             headerFile.WriteLine("#ifndef " + headerInclude);
             headerFile.WriteLine("#define " + headerInclude);
+            headerFile.WriteLine("#include <vector>");
             headerFile.WriteLine();
             headerFile.WriteLine("namespace " + Constants.CPP_NAMESPACE + " {");
             headerFile.WriteLine();
@@ -365,7 +366,7 @@ namespace Blitz2CPP.Statements
         public void WriteCPPFile()
         {
             string headerFileName = Path.GetFileNameWithoutExtension(filePath) + ".h";
-            srcFile.WriteLine("#include <" + headerFileName + ">");
+            srcFile.WriteLine("#include \"" + headerFileName + "\"");
             srcFile.WriteLine();
 
             srcFile.WriteLine("namespace " + Constants.CPP_NAMESPACE + " {");
@@ -376,7 +377,7 @@ namespace Blitz2CPP.Statements
                 srcFile.WriteLine("// Structs.");
                 foreach (TypeDecl type in structs)
                 {
-                    srcFile.WriteLine(type.GetVectorList() + " " + type.Name + "::list();");
+                    srcFile.WriteLine(type.GetVectorList() + " " + type.Name + "::list;");
                 }
                 srcFile.WriteLine();
             }

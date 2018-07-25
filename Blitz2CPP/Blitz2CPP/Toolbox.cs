@@ -12,7 +12,7 @@ namespace Blitz2CPP
         /// </summary>
         /// <param name="str">The string to be searched.</param>
         /// <param name="needle">The substring to find.</param>
-        /// <param name="replacement">What to replaced the needle with.</param>
+        /// <param name="replacement">What to replace the needle with.</param>
         /// <param name="pattern">An optionial regex pattern that can be used for searching.
         /// Write '$1' somewhere in the pattern to represent the value you put in the needle param.</param>
         /// <returns></returns>
