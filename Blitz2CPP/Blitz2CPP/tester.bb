@@ -18,6 +18,42 @@ Function ligger%(for1#, plyr.Player, for2#=3)
     ; Texture cube with texture
     EntityTexture(cube,tex)
 
+	; While loop.
+
+    While (Not KeyDown(1)) ;This comment was originally inline right next to the while loop. It should be above now.
+        Local pitch#=0, yaw#=0
+        Local roll#=0, test$
+        test ="this is a test string to make sure that boolean operators aren't parsed inside literals. Not Or And Xor ; "
+
+        If (KeyDown(208)) Then pitch=-1
+        If (KeyDown(200)) Then pitch=1
+        If (KeyDown(203)) Then yaw=-1
+        If (KeyDown(205)) Then yaw=1
+        If (KeyDown(45)) Then roll=-1
+        If (KeyDown(44)) Then roll=1
+
+        ;Test comment.
+        TurnEntity(cube, pitch, yaw, roll)
+
+        RenderWorld()
+        Flip()
+    Wend
+
+	; If statement testing.
+	If (someBoolean Or someOtherBoolean) Then
+		If ((moreBooleans)And(uhuh)) Then
+			; nested ifs work!
+		EndIf
+	ElseIf (test <> True) Then
+		If (uh = False) Then
+			;test
+		Else
+			;more test
+		EndIf
+	Else
+		;test everything
+	EndIf
+
 	; For loops.
 	Local i%
     For i=2 To 32
@@ -40,41 +76,17 @@ Function ligger%(for1#, plyr.Player, for2#=3)
 	Next
 	Delete plyr
 
-	; While loop.
-
-    While (Not KeyDown(1)) ;This comment was originally inline right next to the while loop. It should be above now.
-        Local pitch#=0, yaw#=0
-        Local roll#=0, test$
-        test ="this is a test string to make sure that boolean operators aren't parsed inside literals. Not Or And Xor ; "
-
-        If (KeyDown(208)) Then pitch=-1
-        If (KeyDown(200)) Then pitch=1
-        If (KeyDown(203)) Then yaw=-1
-        If (KeyDown(205)) Then yaw=1
-        If (KeyDown(45)) Then roll=-1
-        If (KeyDown(44)) Then roll=1
-
-        ; If statement testing.
-        If (someBoolean Or someOtherBoolean) Then
-            If ((moreBooleans)And(uhuh)) Then
-                ; nested ifs work!
-            EndIf
-        ElseIf (test <> True) Then
-            If (uh = False) Then
-                ;test
-            Else
-                ;more test
-            EndIf
-        Else
-            ;test everything
-        EndIf
-
-        ;Test comment.
-        TurnEntity(cube, pitch, yaw, roll)
-
-        RenderWorld()
-        Flip()
-    Wend
+	; Switches.
+	Select (i)
+		Case 5
+			If (something) Then
+				;Testing nested scopes.
+			EndIf
+		Case 32
+			;More scope checking.
+		Default
+			;Default scope
+	End Select
 
 	Return i
 End Function
