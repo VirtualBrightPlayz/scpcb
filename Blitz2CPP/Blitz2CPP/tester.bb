@@ -2,7 +2,7 @@ Global camera% = CreateCamera(), light%=CreateLight()
 Global cube%=CreateCube()
 
 ; Load texture
-Global tex% = LoadTexture( "media/b3dlogo.jpg" )
+Global tex% = LoadTexture("media/b3dlogo.jpg")
 
 Function ligger%(for1#, plyr.Player, for2#=3)
     ; -------------------
@@ -21,7 +21,7 @@ Function ligger%(for1#, plyr.Player, for2#=3)
 	; For loops.
 	Local i%
     For i=2 To 32
-        Local test$="Test For Loop"
+        Local test$="Test For Loop" ;this comment was next to the line below
     Next
 
     For i=0 To 5 Step MyJuss()
@@ -29,13 +29,16 @@ Function ligger%(for1#, plyr.Player, for2#=3)
     Next
 
 	; For Each loops.
-	For p = Each Player
+	For plyr = Each Player
 		; Test accessing data members.
-		p\loudness = 2.0
-		For p = Each Player
-			; Unique iterator name.
+		plyr\loudness = 2.0
+
+		plyr = New Player
+		; Nested For Each with unique iterator name.
+		For plyr = Each Player
 		Next
 	Next
+	Delete plyr
 
 	; While loop.
 

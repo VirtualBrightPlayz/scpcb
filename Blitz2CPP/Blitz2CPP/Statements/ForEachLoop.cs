@@ -34,7 +34,7 @@ namespace Blitz2CPP.Statements
             string retVal = indents + $"for (int {iterVar} = 0; {iterVar} < {iterType}::list.size(); {iterVar}++) ";
             retVal += base.Parse2CPP(indents);
 
-            // Since this was a For Each loop, insert the original variable of whichever type this loop is iterating through.
+            // Since this was a For Each loop, insert the original control variable of whichever type this loop is iterating through.
             string decl = $"\n{indents}{Constants.INDENTS}{accessVar.Name} = {iterType}::list[{iterVar}];\n";
             retVal = retVal.Insert(retVal.IndexOf('{')+1, decl);
             return retVal;

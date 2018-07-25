@@ -6,24 +6,33 @@ namespace Blitz2CPP.Statements
 {
     public class SelectStatement : ScopeStatement
     {
-        public Dictionary<string, List<Statement>> cases;
+        private Statement controlVar;
 
-        private List<Statement> defaultCase;
+        public Dictionary<string, List<Statement>> Cases;
+
+        public List<Statement> DefaultCase;
 
         public SelectStatement()
         {
-            cases = new Dictionary<string, List<Statement>>();
+            Cases = new Dictionary<string, List<Statement>>();
+        }
+
+        public static SelectStatement Parse(string decl)
+        {
+            SelectStatement sStat = new SelectStatement();
+            sStat.controlVar = ParseArithmetic(decl.JavaSubstring("Select ".Length, decl.LastIndexOf(")")));
+            return sStat;
         }
 
         public override void AddToScope(Statement stat)
         {
-            if (defaultCase != null)
+            if (DefaultCase != null)
             {
-                defaultCase.Add(stat);
+                DefaultCase.Add(stat);
             }
             else
             {
-                cases.Last().Value.Add(stat);
+                Cases.Last().Value.Add(stat);
             }
         }
 

@@ -40,7 +40,7 @@ namespace Blitz2CPP.Statements
             }
             else if (nameAndType.EndsWith('$'))
             {
-                type = "String";
+                type = Constants.CPP_STR;
                 name = nameAndType.Substring(0, nameAndType.Length - 1);
             }
             else if (nameAndType.IndexOf('.') > 0)

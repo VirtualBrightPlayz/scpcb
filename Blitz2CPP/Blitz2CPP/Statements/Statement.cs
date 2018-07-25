@@ -53,12 +53,20 @@ namespace Blitz2CPP.Statements
                 info = Regex.Replace(info, pattern, replacement);
             }
 
-            // Return statement.
-            info = Regex.Replace(info, @"\bReturn\b", "return");
+            // Keywords.
+            info = Toolbox.ReplaceNotInStr(info, "Return", "return", @"\b$1\b");
+            info = Toolbox.ReplaceNotInStr(info, "Delete", "delete", @"\b$1\b");
+
+            // New Type keyword.
+            if (Regex.IsMatch(info, @"\bNew \w+$"))
+            {
+                info = Toolbox.ReplaceNotInStr(info, "New", "new", @"\b$1\b");
+                info += "()";
+            }
 
             // Boolean constants.
-            info = Regex.Replace(info, @"\bTrue\b", "true");
-            info = Regex.Replace(info, @"\bFalse\b", "false");
+            info = Toolbox.ReplaceNotInStr(info, "True", "true", @"\b$1\b");
+            info = Toolbox.ReplaceNotInStr(info, "False", "false", @"\b$1\b");
 
             // Operators.
             info = Toolbox.ReplaceNotInStr(info, "Not ", "!", @"\b$1");

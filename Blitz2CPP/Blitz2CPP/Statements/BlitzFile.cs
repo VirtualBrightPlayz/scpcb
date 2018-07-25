@@ -170,7 +170,7 @@ namespace Blitz2CPP.Statements
                 {
                     Statement condition = Statement.ParseArithmetic(info.JavaSubstring("ElseIf (".Length, info.IndexOf(") Then")));
                     condition.Semicolon = false;
-                    iStat.elseIfStatements.Add(condition, new List<Statement>());
+                    iStat.ElseIfStatements.Add(condition, new List<Statement>());
                 }
                 else
                 {
@@ -182,7 +182,7 @@ namespace Blitz2CPP.Statements
             {
                 if (GetCurrScope is IfStatement iStat)
                 {
-                    iStat.elseStatements = new List<Statement>();
+                    iStat.ElseStatements = new List<Statement>();
                 }
                 else
                 {
@@ -205,17 +205,33 @@ namespace Blitz2CPP.Statements
             // Switches.
             else if (info.StartsWith("Select "))
             {
-
+                SelectStatement sStat = SelectStatement.Parse(info);
+                AddScope(sStat);
             }
 
             else if (info.StartsWith("Case "))
             {
-
+                string selectCase = info.Substring("Case ".Length).Trim();
+                if (GetCurrScope is SelectStatement sStat)
+                {
+                    sStat.Cases.Add(selectCase, new List<Statement>());
+                }
+                else
+                {
+                    throw new Exception("\"Case\" without Select statement.");
+                }
             }
 
             else if (info.StartsWith("Default"))
             {
-
+                if (GetCurrScope is SelectStatement sStat)
+                {
+                    sStat.DefaultCase = new List<Statement>();
+                }
+                else
+                {
+                    throw new Exception("\"Default\" without Select statement.");
+                }
             }
 
             // Loops.

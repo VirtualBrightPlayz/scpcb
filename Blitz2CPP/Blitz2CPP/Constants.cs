@@ -9,5 +9,6 @@ namespace Blitz2CPP
         public const string INDENTS = "    ";
 
         public const string CPP_NAMESPACE = "CBN";
+        public const string CPP_STR = "String";
     }
 }

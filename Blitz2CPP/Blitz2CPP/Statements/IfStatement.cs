@@ -8,24 +8,24 @@ namespace Blitz2CPP.Statements
     {
         private Statement condition;
 
-        public Dictionary<Statement, List<Statement>> elseIfStatements;
+        public Dictionary<Statement, List<Statement>> ElseIfStatements;
 
-        public List<Statement> elseStatements;
+        public List<Statement> ElseStatements;
 
         public IfStatement()
         {
-            elseIfStatements = new Dictionary<Statement, List<Statement>>();
+            ElseIfStatements = new Dictionary<Statement, List<Statement>>();
         }
 
         public override void AddToScope(Statement stat)
         {
-            if (elseStatements != null)
+            if (ElseStatements != null)
             {
-                elseStatements.Add(stat);
+                ElseStatements.Add(stat);
             }
-            else if (elseIfStatements.Any())
+            else if (ElseIfStatements.Any())
             {
-                elseIfStatements.Last().Value.Add(stat);
+                ElseIfStatements.Last().Value.Add(stat);
             }
             else
             {
@@ -45,7 +45,7 @@ namespace Blitz2CPP.Statements
         {
             string retVal = indents + "if (" + condition.Parse2CPP() + ") " + base.Parse2CPP(indents);
             // else if statements.
-            foreach (KeyValuePair<Statement, List<Statement>> elseIf in elseIfStatements)
+            foreach (KeyValuePair<Statement, List<Statement>> elseIf in ElseIfStatements)
             {
                 retVal += " else if (" + elseIf.Key.Parse2CPP() + ") {";
                 foreach (Statement stat in elseIf.Value)
@@ -55,10 +55,10 @@ namespace Blitz2CPP.Statements
                 retVal += "\n" + indents + "}";
             }
             // else statement.
-            if (elseStatements != null)
+            if (ElseStatements != null)
             {
                 retVal += " else {";
-                foreach (Statement stat in elseStatements)
+                foreach (Statement stat in ElseStatements)
                 {
                     retVal += "\n" + stat.Parse2CPP(indents + Constants.INDENTS);
                 }

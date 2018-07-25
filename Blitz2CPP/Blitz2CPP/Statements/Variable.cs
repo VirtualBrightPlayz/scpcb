@@ -41,7 +41,7 @@ namespace Blitz2CPP.Statements
             }
             else if (split[0].EndsWith('$'))
             {
-                type = "String";
+                type = Constants.CPP_STR;
                 varName = split[0].Substring(0, split[0].Length - 1);
             }
 

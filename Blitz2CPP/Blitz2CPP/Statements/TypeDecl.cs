@@ -30,7 +30,7 @@ namespace Blitz2CPP.Statements
             return GetDestructorSignature() + " {\n"
                 + Constants.INDENTS + "for (int i = 0; i < list.size(); i++) {\n"
                 + Constants.INDENTS + Constants.INDENTS + "if (list[i] == this) {\n"
-                + Constants.INDENTS + Constants.INDENTS + Constants.INDENTS + "list.erase(list.begin() + i)\n"
+                + Constants.INDENTS + Constants.INDENTS + Constants.INDENTS + "list.erase(list.begin() + i);\n"
                 + Constants.INDENTS + Constants.INDENTS + Constants.INDENTS + "break;\n"
                 + Constants.INDENTS + Constants.INDENTS + "}\n"
                 + Constants.INDENTS + "}\n"
