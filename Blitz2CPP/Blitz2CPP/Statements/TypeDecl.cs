@@ -15,8 +15,8 @@ namespace Blitz2CPP.Statements
         }
 
         public string GetVectorList() => "std::vector<" + Name + "*>";
-        private string GetConstructorSignature() => Name + "::" + Name + "()";
-        private string GetDestructorSignature() =>  Name + "::~" + Name + "()";
+        private string GetConstructorSignature() => Name + "()";
+        private string GetDestructorSignature() =>  "~" + Name + "()";
 
         public string GetConstructor()
         {
@@ -49,7 +49,7 @@ namespace Blitz2CPP.Statements
             {
                 retVal += "\n" + stat.Parse2CPP(indents + Constants.INDENTS);
             }
-            retVal += "\n" + indents + "}";
+            retVal += "\n" + indents + "};";
             return retVal;
         }
 

@@ -6,7 +6,7 @@ namespace Blitz2CPP
 {
     class Program
     {
-        private static readonly string TEST_INPUT = Toolbox.GetProjectDirectory() + "tester.bb";
+        private static readonly string TEST_INPUT = Toolbox.GetProjectDirectory() + "../../SourceCode/Player.bb";
 
         private static readonly StreamWriter includefile;
 

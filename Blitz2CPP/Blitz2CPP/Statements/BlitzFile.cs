@@ -117,9 +117,10 @@ namespace Blitz2CPP.Statements
                                     Comment comment = Comment.Parse(line.Substring(index));
 
                                     // This isn't going to work for global-scope stuff but whatever.
-                                    GetCurrScope?.AddToScope(comment);
+                                    if (scopes.Any()) { GetCurrScope.AddToScope(comment); }
 
                                     line = line.JavaSubstring(0, index);
+                                    break;
                                 }
                             }
                         }
@@ -194,10 +195,20 @@ namespace Blitz2CPP.Statements
             else if (info.StartsWith("Local "))
             {
                 info = info.Substring("Local ".Length);
-                string[] decls = info.Split(',', StringSplitOptions.RemoveEmptyEntries);
-                foreach (string decl in decls)
+
+                // In the event of multiple decls (using ','), split them up.
+                if (info.Contains(','))
                 {
-                    Variable var = Variable.Parse(decl);
+                    string[] decls = Statement.SplitMultiDecl(info);
+                    foreach (string decl in decls)
+                    {
+                        Variable var = Variable.Parse(decl);
+                        GetCurrScope.AddToScope(var);
+                    }
+                }
+                else
+                {
+                    Variable var = Variable.Parse(info);
                     GetCurrScope.AddToScope(var);
                 }
             }
@@ -277,10 +288,18 @@ namespace Blitz2CPP.Statements
         private void AddGlobal(string decl)
         {
             decl = decl.Substring("Global ".Length);
-            string[] decls = decl.Split(',', StringSplitOptions.RemoveEmptyEntries);
-            foreach (string glob in decls)
+            if (decl.Contains(','))
             {
-                Variable var = Variable.Parse(glob);
+                string[] decls = Statement.SplitMultiDecl(decl);
+                foreach (string glob in decls)
+                {
+                    Variable var = Variable.Parse(glob);
+                    globals.Add(var);
+                }
+            }
+            else
+            {
+                Variable var = Variable.Parse(decl);
                 globals.Add(var);
             }
         }
@@ -288,10 +307,18 @@ namespace Blitz2CPP.Statements
         private void AddConstant(string decl)
         {
             decl = decl.Substring("Const ".Length);
-            string[] decls = decl.Split(',', StringSplitOptions.RemoveEmptyEntries);
-            foreach (string glob in decls)
+            if (decl.Contains(','))
             {
-                Variable var = Variable.Parse(glob);
+                string[] decls = Statement.SplitMultiDecl(decl);
+                foreach (string glob in decls)
+                {
+                    Variable var = Variable.Parse(glob);
+                    constants.Add(var);
+                }
+            }
+            else
+            {
+                Variable var = Variable.Parse(decl);
                 constants.Add(var);
             }
         }
@@ -351,7 +378,7 @@ namespace Blitz2CPP.Statements
                 headerFile.WriteLine("// Constants.");
                 foreach (Variable constant in constants)
                 {
-                    headerFile.WriteLine("extern const " + constant.GetDefinition());
+                    headerFile.WriteLine("extern const " + constant.GetDeclaration());
                 }
                 headerFile.WriteLine();
             }
@@ -361,7 +388,7 @@ namespace Blitz2CPP.Statements
                 headerFile.WriteLine("// Globals.");
                 foreach (Variable global in globals)
                 {
-                    headerFile.WriteLine("extern " + global.GetDefinition());
+                    headerFile.WriteLine("extern " + global.GetDeclaration());
                 }
                 headerFile.WriteLine();
             }
@@ -394,8 +421,8 @@ namespace Blitz2CPP.Statements
                 foreach (TypeDecl type in structs)
                 {
                     srcFile.WriteLine(type.GetVectorList() + " " + type.Name + "::list;");
-                    srcFile.WriteLine(type.GetConstructor());
-                    srcFile.WriteLine(type.GetDestructor());
+                    srcFile.WriteLine(type.Name + "::" + type.GetConstructor());
+                    srcFile.WriteLine(type.Name + "::" + type.GetDestructor());
                     srcFile.WriteLine();
                 }
             }
@@ -405,7 +432,7 @@ namespace Blitz2CPP.Statements
                 srcFile.WriteLine("// Constants.");
                 foreach (Variable constant in constants)
                 {
-                    srcFile.WriteLine(constant.Parse2CPP());
+                    srcFile.WriteLine("const " + constant.Parse2CPP());
                 }
                 srcFile.WriteLine();
             }

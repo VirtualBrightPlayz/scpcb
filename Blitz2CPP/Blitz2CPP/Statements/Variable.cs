@@ -89,7 +89,7 @@ namespace Blitz2CPP.Statements
             return var;
         }
 
-        public string GetDefinition() => Type + " " + Name + ";";
+        public string GetDeclaration() => Type + " " + Name + ";";
 
         public override string Parse2CPP(string indents)
         {

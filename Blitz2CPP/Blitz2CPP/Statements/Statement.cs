@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace Blitz2CPP.Statements
@@ -68,18 +70,48 @@ namespace Blitz2CPP.Statements
             info = Toolbox.ReplaceNotInStr(info, "True", "true", @"\b$1\b");
             info = Toolbox.ReplaceNotInStr(info, "False", "false", @"\b$1\b");
 
+            // Null constant.
+            info = Toolbox.ReplaceNotInStr(info, "Null", "nullptr", @"\b$1\b");
+
             // Operators.
             info = Toolbox.ReplaceNotInStr(info, "Not ", "!", @"\b$1");
             info = Toolbox.ReplaceNotInStr(info, "And", "&", @"\b$1\b");
             info = Toolbox.ReplaceNotInStr(info, "Or", "|", @"\b$1\b");
             info = Toolbox.ReplaceNotInStr(info, "Xor", "^", @"\b$1\b");
-            info = Toolbox.ReplaceNotInStr(info, "=", "==");
+            info = Toolbox.ReplaceNotInStr(info, "Mod", "%", @"\b$1\b");
+            info = Toolbox.ReplaceNotInStr(info, "=", "==", "(?<=[^<>])$1");
             info = Toolbox.ReplaceNotInStr(info, "<>", "!=");
 
             // Struct members.
             info = Toolbox.ReplaceNotInStr(info, @"\\", "->");
 
             return new Statement(info);
+        }
+
+        public static string[] SplitMultiDecl(string info)
+        {
+            List<int> splitIndexes = new List<int>();
+            int scopes = 0;
+            for (int i = 0; i < info.Length; i++)
+            {
+                switch (info[i])
+                {
+                    case '(':
+                    case '[':
+                        scopes++;
+                        break;
+                    case ')':
+                    case ']':
+                        scopes--;
+                        break;
+                    case ',':
+                        if (scopes == 0)
+                            splitIndexes.Add(i);
+                        break;
+                }
+            }
+
+            return info.SplitAt(splitIndexes.ToArray());
         }
 
         public string Parse2CPP() => Parse2CPP(string.Empty);
