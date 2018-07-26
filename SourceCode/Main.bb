@@ -423,6 +423,9 @@ Function InitializeMainGame()
 
 	FlushKeys()
 	FlushMouse()
+	
+	MenuBlinkTimer[0] = 1
+	MenuBlinkDuration[0] = 1
 
 	DrawLoading(100, True)
 End Function

@@ -400,8 +400,6 @@ Function DrawMainMenu()
 	If (TimeInPosMilliSecs() Mod Int(MenuBlinkTimer[0]) >= Rand(Int(MenuBlinkDuration[0]))) Then
 		DrawImage(uiAssets\scp173, userOptions\screenWidth - ImageWidth(uiAssets\scp173), userOptions\screenHeight - ImageHeight(uiAssets\scp173))
 	EndIf
-	
-	DebugLog("DrawMainMenu() 407")
 
 	If (Rand(300) = 1) Then
 		MenuBlinkTimer[0] = Rand(4000, 8000)
@@ -881,7 +879,6 @@ Function DrawMainMenu()
 
 
 	SetFont(uiAssets\font[0])
-	DebugLog("DrawMainMenu() Stopped")
 End Function
 
 ;~IDEal Editor Parameters:
