@@ -17,54 +17,11 @@ Dim OldAiPics%(5)
 ;TODO: Assets.bb
 Dim LightSpriteTex%(10)
 
-;TODO: Use struct of file paths.
-Dim Music.MarkedForRemoval(40)
+;TODO: Audio.bb
+Dim IntroSFX.MarkedForRemoval(20)
 
 ;TODO: Audio.bb
-Dim OpenDoorSFX.MarkedForRemoval(3,3), CloseDoorSFX.MarkedForRemoval(3,3)
-
-Dim DripSFX.MarkedForRemoval(4)
-
-;TODO: Radio struct.
-Dim RadioSFX%(5,10)
-
-Dim PickSFX.MarkedForRemoval(10)
-
-Dim AmbientSFXAmount.MarkedForRemoval(6)
-
-Dim AmbientSFX.MarkedForRemoval(6, 15)
-
-;TODO: Move to NPCData106.
-Dim OldManSFX.MarkedForRemoval(6)
-;For i = 0 To 2
-;	OldManSFX(i) = LoadSound("SFX/SCP/106/Corrosion" + (i + 1) + ".ogg")
-;Next
-;OldManSFX(3) = LoadSound("SFX/SCP/106/Laugh.ogg")
-;OldManSFX(4) = LoadSound("SFX/SCP/106/Breathing.ogg")
-;OldManSFX(5) = LoadSound("SFX/Room/PocketDimension/Enter.ogg")
-
-;TODO: Most of these sounds are NPC-specific anyway. Divide this up.
-Dim HorrorSFX.MarkedForRemoval(20)
-;For i = 0 To 10
-;	HorrorSFX(i) = LoadSound("SFX/Horror/Horror" + i + ".ogg")
-;Next
-;For i = 14 To 15
-;	HorrorSFX(i) = LoadSound("SFX/Horror/Horror" + i + ".ogg")
-;Next
-
-;TODO: Audio.bb
-Dim IntroSFX%(20)
-
-;TODO: Audio.bb
-Dim AlarmSFX%(5)
-
-Dim CommotionState%(23)
-
-;TODO: Move to NPCData173.
-Dim NeckSnapSFX.MarkedForRemoval(3)
-;For i = 0 To 2
-;	NeckSnapSFX(i) =  LoadSound("SFX/SCP/173/NeckSnap"+(i+1)+".ogg")
-;Next
+Dim AlarmSFX.MarkedForRemoval(5)
 
 ;TODO: Player struct.
 Dim DamageSFX%(9)
@@ -418,16 +375,6 @@ Function InitializeMainGame()
 	RadioBuzz = LoadSound("SFX/Radio/buzz.ogg")
 
 	DrawLoading(25, True)
-	;TODO: Audio.bb
-	For i = 7 To 9
-		IntroSFX(i) = LoadSound("SFX/Room/Intro/Bang" + Str(i - 6) + ".ogg")
-	Next
-	For i = 10 To 12
-		IntroSFX(i) = LoadSound("SFX/Room/Intro/Light" + Str(i - 9) + ".ogg")
-	Next
-	;IntroSFX(13) = LoadSound("SFX/intro/shoot1.ogg")
-	;IntroSFX(14) = LoadSound("SFX/intro/shoot2.ogg")
-	IntroSFX(15) = LoadSound("SFX/Room/Intro/173Vent.ogg")
 
 	;TODO: Audio.bb
 	AlarmSFX(0) = LoadSound("SFX/Alarm/Alarm.ogg")
@@ -1223,7 +1170,7 @@ Function DrawGUI()
 
 	If (DrawHandIcon) Then DrawImage(uiAssets\handIcon[HAND_ICON_TOUCH], userOptions\screenWidth / 2 - 32, userOptions\screenHeight / 2 - 32)
 	For i = 0 To 3
-		If (DrawArrowIcon(i)) Then
+		If (mainPlayer\drawDirectionialArrow[i]) Then
 			x = userOptions\screenWidth / 2 - 32
 			y = userOptions\screenHeight / 2 - 32
 			Select i
@@ -1240,7 +1187,7 @@ Function DrawGUI()
 			Color(0, 0, 0)
 			Rect(x + 4, y + 4, 64 - 8, 64 - 8)
 			DrawImage(uiAssets\arrow[i], x + 21, y + 21)
-			DrawArrowIcon(i) = False
+			mainPlayer\drawDirectionialArrow[i] = False
 		EndIf
 	Next
 

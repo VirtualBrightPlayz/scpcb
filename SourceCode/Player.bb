@@ -40,6 +40,8 @@ Type Player
 	Field closestButton%
 	Field closestDoor.Door
 	Field selectedDoor.Door
+
+	Field drawDirectionialArrow%[4]
 	;------------
 
 	;movement states
@@ -767,7 +769,6 @@ Function Kill(player.Player)
 		If (SelectedDifficulty\permaDeath) Then
 			DeleteFile(CurrentDir() + SavePath + CurrSave+"/save.txt")
 			DeleteDir(SavePath + CurrSave)
-			LoadSaveGames()
 		EndIf
 
 		player\dead = True

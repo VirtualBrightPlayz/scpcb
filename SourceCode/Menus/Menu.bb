@@ -35,7 +35,7 @@ Global DrawHandIcon%
 Global MenuScale#
 
 ;TODO: Assets.bb
-Dim DrawArrowIcon%(4)
+Dim DrawArrowIcon.MarkedForRemoval(4)
 
 Global QuickLoadIcon.MarkedForRemoval
 
@@ -47,9 +47,8 @@ Global MenuBlack.MarkedForRemoval
 
 Global RandomSeed$
 
-Dim MenuBlinkTimer#(2), MenuBlinkDuration#(2)
-MenuBlinkTimer(0) = 1
-MenuBlinkTimer(1) = 1
+Global MenuBlinkTimer#[2]
+Global MenuBlinkDuration#[2]
 
 Global MenuStr$, MenuStrX%, MenuStrY%
 
@@ -61,16 +60,16 @@ Global SavePath$ = "Saves/"
 Global SaveMSG$
 
 ;nykyisen tallennuksen nimi ja samalla missä kansiossa tallennustiedosto sijaitsee saves-kansiossa
-Global CurrSave$
+Global CurrSave.MarkedForRemoval
 
-Global SaveGameAmount%
-Dim SaveGames$(SaveGameAmount+1)
-Dim SaveGameTime$(SaveGameAmount + 1)
-Dim SaveGameDate$(SaveGameAmount + 1)
+Global SaveGameAmount.MarkedForRemoval
+Dim SaveGames.MarkedForRemoval(SaveGameAmount+1)
+Dim SaveGameTime.MarkedForRemoval(SaveGameAmount + 1)
+Dim SaveGameDate>MarkedForRemoval(SaveGameAmount + 1)
 
-Const MAXSAVEDMAPS% = 20
-Dim SavedMaps$(MAXSAVEDMAPS)
-Global SelectedMap$
+Const MAXSAVEDMAPS.MarkedForRemoval
+Dim SavedMaps.MarkedForRemoval(MAXSAVEDMAPS)
+Global SelectedMap.MarkedForRemoval
 
 Include "SourceCode/Menus/Launcher.bb"
 Include "SourceCode/Menus/MainMenu.bb"
@@ -373,7 +372,7 @@ Function DrawPointer()
 		HidePointer()
 		Return
 	EndIf
-	
+
 	ShowPointer()
 	If (userOptions\fullscreen) Then
 		DrawImage(uiAssets\cursorIMG, MouseX(), MouseY())

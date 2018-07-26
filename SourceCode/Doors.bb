@@ -27,9 +27,6 @@ Type Door
 	Field npcCalledElevator% = False
 End Type
 
-Dim BigDoorOBJ.MarkedForRemoval(2) ;yo yeye alright
-Dim HeavyDoorObj.MarkedForRemoval(2)
-
 Const DOOR_TYPE_DEF% = 0
 Const DOOR_TYPE_HCZ% = 1
 Const DOOR_TYPE_CONT% = 2

@@ -93,7 +93,8 @@ Function UpdateEvent_closets_2(e.Event)
 			RotateEntity(e\room\npc[1]\collider,0,CurveAngle(e\room\angle+90,EntityYaw(e\room\npc[1]\collider),100.0),0,True)
 
 			e\room\npc[0]\state=1
-			If (e\eventState > 70*3.2 And e\eventState-timing\tickDuration =< 70*3.2) Then PlayRangedSound(IntroSFX(15),mainPlayer\cam,e\room\obj,15.0)
+			;TODO: 173Vent
+			;If (e\eventState > 70*3.2 And e\eventState-timing\tickDuration =< 70*3.2) Then PlayRangedSound(IntroSFX(15),mainPlayer\cam,e\room\obj,15.0)
 		ElseIf (e\eventState < 70*6.5) Then
 			If (e\eventState-timing\tickDuration < 70*3.5) Then
 				e\room\npc[0]\state=0

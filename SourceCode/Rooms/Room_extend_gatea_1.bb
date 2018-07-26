@@ -591,7 +591,7 @@ Function UpdateEvent_extend_gatea_1(e.Event)
 							;ShouldPlay = 0
 							mainPlayer\moveSpeed = 0
 							If (IsChannelPlaying(e\soundChannels[0])=False) Then
-								PlaySound2(IntroSFX(9))
+								;PlaySound2(IntroSFX(9)) ;Bang3
 								;SelectedEnding = "A2"
 								mainPlayer\godMode = 0
 								mainPlayer\noclip = 0

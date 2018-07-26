@@ -25,6 +25,7 @@ Function InitializeNPCtypeApache(n.NPC)
 	EntityParent(n\obj3, n\obj)
 
 	n\sounds[0] = LoadSound("SFX/Character/Apache/Propeller.ogg")
+    n\sounds[1] = LoadSound("SFX/Character/Apache/Alarm.ogg")
 
 	Local i%, rotor2%
     For i = -1 To 1 Step 2
@@ -85,7 +86,7 @@ Function UpdateNPCtypeApache(n.NPC)
                             If (Rand(20)=1) Then
                                 If (EntityVisible(mainPlayer\collider, n\collider)) Then
                                     n\state = 2
-                                    PlayRangedSound(AlarmSFX(2), mainPlayer\cam, n\collider, 50, 1.0)
+                                    PlayRangedSound(n\sounds[1], mainPlayer\cam, n\collider, 50, 1.0)
                                 EndIf
                             EndIf
                         EndIf

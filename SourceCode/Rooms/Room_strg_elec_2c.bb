@@ -77,8 +77,8 @@ Function UpdateEvent_strg_elec_2c(e.Event)
 						TurnEntity(e\room\objects[i], mouse_y_speed_1 * 2.5, 0, 0)
 						RotateEntity(mainPlayer\grabbedEntity, Max(Min(EntityPitch(e\room\objects[i]), 85), -85), EntityYaw(e\room\objects[i]), 0)
 
-						DrawArrowIcon(0) = True
-						DrawArrowIcon(2) = True
+						mainPlayer\drawDirectionialArrow[0] = True
+						mainPlayer\drawDirectionialArrow[2] = True
 
 					EndIf
 				EndIf

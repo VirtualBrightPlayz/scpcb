@@ -97,8 +97,8 @@ Function UpdateEvent_cont_914_1(e.Event)
 						TurnEntity(mainPlayer\grabbedEntity, 0, 0, -mouse_x_speed_1 * 2.5)
 
 						angle = WrapAngle(EntityRoll(e\room\objects[0]))
-						If (angle > 181) Then DrawArrowIcon(3) = True
-						DrawArrowIcon(1) = True
+						If (angle > 181) Then mainPlayer\drawDirectionialArrow[3] = True
+						mainPlayer\drawDirectionialArrow[1] = True
 
 						If (angle < 90) Then
 							RotateEntity(mainPlayer\grabbedEntity, 0, 0, 361.0)
@@ -126,8 +126,8 @@ Function UpdateEvent_cont_914_1(e.Event)
 						TurnEntity(mainPlayer\grabbedEntity, 0, 0, -mouse_x_speed_1 * 2.5)
 
 						angle = WrapAngle(EntityRoll(e\room\objects[1]))
-						DrawArrowIcon(3) = True
-						DrawArrowIcon(1) = True
+						mainPlayer\drawDirectionialArrow[3] = True
+						mainPlayer\drawDirectionialArrow[1] = True
 
 						If (angle > 90) Then
 							If (angle < 180) Then

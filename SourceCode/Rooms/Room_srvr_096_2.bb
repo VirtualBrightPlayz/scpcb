@@ -107,8 +107,9 @@ Function UpdateEvent_srvr_096_2(e.Event)
 		EndIf
 	ElseIf (e\eventState < 70*45) Then
 		If (Rand(200)<5 And mainPlayer\currRoom = e\room) Then
+			;TODO: Light 1-3
 			;LightBlink = Rnd(1.0,2.0)
-			If (Rand(5)=1) Then PlayRangedSound(IntroSFX(Rand(10,12)), mainPlayer\cam, e\room\obj, 8.0, Rnd(0.1,0.3))
+			;If (Rand(5)=1) Then PlayRangedSound(IntroSFX(Rand(10,12)), mainPlayer\cam, e\room\obj, 8.0, Rnd(0.1,0.3))
 		EndIf
 
 		e\eventState=Min(e\eventState+timing\tickDuration,70*43)
@@ -218,6 +219,7 @@ Function UpdateEvent_srvr_096_2(e.Event)
 			If (mainPlayer\currRoom = e\room) Then
 				If (e\soundChannels[0]<>0) Then
 					If (IsChannelPlaying(e\soundChannels[0])) Then
+						;TODO: Light 1-3
 						;LightBlink = Rnd(0.5,6.0)
 						If (Rand(50)=1) Then PlayRangedSound(IntroSFX(Rand(10,12)), mainPlayer\cam, e\room\obj, 8.0, Rnd(0.1,0.3))
 					EndIf

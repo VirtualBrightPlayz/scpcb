@@ -83,8 +83,8 @@ Function UpdateLevers()
 								;TurnEntity(lever\obj, , 0, 0)
 								RotateEntity(mainPlayer\grabbedEntity, Max(Min(EntityPitch(lever\obj)+Max(Min(mouse_y_speed_1 * 8,30.0),-30), 80), -80), EntityYaw(lever\obj), 0)
 
-								DrawArrowIcon(0) = True
-								DrawArrowIcon(2) = True
+								mainPlayer\drawDirectionialArrow[0] = True
+								mainPlayer\drawDirectionialArrow[2] = True
 
 							EndIf
 						EndIf

@@ -10,5 +10,6 @@ namespace Blitz2CPP
 
         public const string CPP_NAMESPACE = "CBN";
         public const string CPP_STR = "String";
+        public const string CPP_INCLUDE_FILE = "include.h";
     }
 }

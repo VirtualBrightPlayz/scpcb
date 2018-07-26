@@ -14,7 +14,6 @@ Global radio.Radio = Null
 
 Function CreateRadio.Radio()
 	Local rad.Radio = New Radio
-
 	Return rad
 End Function
 

@@ -181,7 +181,7 @@ Function UpdateMainMenu()
 
 				If (UpdateUIButton(x + Int(420.0 * MenuScale), y + height + Int(20.0 * MenuScale), Int(160.0 * MenuScale), Int(70.0 * MenuScale), "START")) Then
 					If (CurrSave <> "") Then CurrSave = "untitled"
-					
+
 					If (RandomSeed = "") Then
 						RandomSeed = Str(Abs(MilliSecs()))
 					EndIf
@@ -468,24 +468,24 @@ Function DrawMainMenu()
 
 	DrawImage(uiAssets\back, 0, 0)
 
-	If (TimeInPosMilliSecs() Mod Int(MenuBlinkTimer(0))) >= Rand(Int(MenuBlinkDuration(0))) Then
+	If (TimeInPosMilliSecs() Mod Int(MenuBlinkTimer[0])) >= Rand(Int(MenuBlinkDuration[0])) Then
 		DrawImage(uiAssets\scp173, userOptions\screenWidth - ImageWidth(uiAssets\scp173), userOptions\screenHeight - ImageHeight(uiAssets\scp173))
 	EndIf
 
 	If (Rand(300) = 1) Then
-		MenuBlinkTimer(0) = Rand(4000, 8000)
-		MenuBlinkDuration(0) = Rand(200, 500)
+		MenuBlinkTimer[0] = Rand(4000, 8000)
+		MenuBlinkDuration[0] = Rand(200, 500)
 	EndIf
 
 	SetFont(uiAssets\font[0])
 
-	MenuBlinkTimer(1)=MenuBlinkTimer(1)-timing\tickDuration
-	If (MenuBlinkTimer(1) < MenuBlinkDuration(1)) Then
+	MenuBlinkTimer[1]=MenuBlinkTimer[1]-timing\tickDuration
+	If (MenuBlinkTimer[1] < MenuBlinkDuration[1]) Then
 		Color(50, 50, 50)
 		Text(MenuStrX + Rand(-5, 5), MenuStrY + Rand(-5, 5), MenuStr, True)
-		If (MenuBlinkTimer(1) < 0) Then
-			MenuBlinkTimer(1) = Rand(700, 800)
-			MenuBlinkDuration(1) = Rand(10, 35)
+		If (MenuBlinkTimer[1] < 0) Then
+			MenuBlinkTimer[1] = Rand(700, 800)
+			MenuBlinkDuration[1] = Rand(10, 35)
 			MenuStrX = Int(Rand(700, 1000) * MenuScale)
 			MenuStrY = Int(Rand(100, 600) * MenuScale)
 
@@ -947,7 +947,7 @@ Function DrawMainMenu()
 
 	;DrawTiledImageRect(MenuBack, 985 * MenuScale, 860 * MenuScale, 200 * MenuScale, 20 * MenuScale, 1200 * MenuScale, 866 * MenuScale, 300, 20 * MenuScale)
 
-	
+
 
 	SetFont(uiAssets\font[0])
 End Function

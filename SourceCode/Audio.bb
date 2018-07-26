@@ -53,6 +53,7 @@ Type SoundManager
 	Field bulletHit.Sound
 	Field bulletMiss.Sound
 
+	Field alarm.Sound
 	Field caution.Sound
 	Field hiss.Sound
 	Field lightSwitch.Sound
@@ -66,7 +67,6 @@ Global sndManager.SoundManager
 Function CreateSoundManager.SoundManager()
 	Local sndMan.SoundManager = New SoundManager
 	sndMan\button = LoadSound_SM("SFX/Interact/Button.ogg")
-
 	Return sndMan
 End Function
 
@@ -121,6 +121,7 @@ Function LoadInGameSounds(sndMan.SoundManager)
 	sndMan\bulletHit = InitializeSound_SM("SFX/General/BulletHit.ogg")
 	sndMan\bulletMiss = InitializeSound_SM("SFX/General/BulletMiss.ogg")
 
+	sndMan\alarm = InitializeSound_SM("SFX/General/Alarm.ogg")
 	sndMan\caution = InitializeSound_SM("SFX/Room/LockroomSiren.ogg")
 	sndMan\hiss = InitializeSound_SM("SFX/General/Hiss.ogg")
 	sndMan\lightSwitch = InitializeSound_SM("SFX/General/LightSwitch.ogg")
@@ -173,11 +174,13 @@ Function DeloadInGameSounds(sndMan.SoundManager)
 	FreeSound_SM(sndMan\teslaPowerUp)
 	FreeSound_SM(sndMan\teslaShock)
 
-	FreeSound_SM(sndMan\gunshot[0])
-	FreeSound_SM(sndMan\gunshot[1])
+	For i = 0 To 1
+		FreeSound_SM(sndMan\gunshot[i])
+	Next
 	FreeSound_SM(sndMan\bulletHit)
 	FreeSound_SM(sndMan\bulletMiss)
 
+	FreeSound_SM(sndMan\alarm)
 	FreeSound_SM(sndMan\caution)
 	FreeSound_SM(sndMan\hiss)
 	FreeSound_SM(sndMan\lightSwitch)

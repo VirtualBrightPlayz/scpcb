@@ -358,6 +358,7 @@ namespace Blitz2CPP.Statements
             string headerInclude = Path.GetFileNameWithoutExtension(filePath).ToUpper() + "_H_INCLUDED";
             headerFile.WriteLine("#ifndef " + headerInclude);
             headerFile.WriteLine("#define " + headerInclude);
+            headerFile.WriteLine("#include \"" + Constants.CPP_INCLUDE_FILE + "\"");
             headerFile.WriteLine("#include <vector>");
             headerFile.WriteLine();
             headerFile.WriteLine("namespace " + Constants.CPP_NAMESPACE + " {");
