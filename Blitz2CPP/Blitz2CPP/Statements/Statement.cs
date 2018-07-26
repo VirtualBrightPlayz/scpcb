@@ -79,6 +79,8 @@ namespace Blitz2CPP.Statements
             info = Toolbox.ReplaceNotInStr(info, "Or", "|", @"\b$1\b");
             info = Toolbox.ReplaceNotInStr(info, "Xor", "^", @"\b$1\b");
             info = Toolbox.ReplaceNotInStr(info, "Mod", "%", @"\b$1\b");
+            info = Toolbox.ReplaceNotInStr(info, "=>", ">=");
+            info = Toolbox.ReplaceNotInStr(info, "=<", "<=");
             info = Toolbox.ReplaceNotInStr(info, "=", "==", "(?<=[^<>])$1");
             info = Toolbox.ReplaceNotInStr(info, "<>", "!=");
 
