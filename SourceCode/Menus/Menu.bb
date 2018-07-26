@@ -60,15 +60,15 @@ Global SavePath$ = "Saves/"
 Global SaveMSG$
 
 ;nykyisen tallennuksen nimi ja samalla missä kansiossa tallennustiedosto sijaitsee saves-kansiossa
-Global CurrSave.MarkedForRemoval
+Global CurrSave$
 
 Global SaveGameAmount.MarkedForRemoval
-Dim SaveGames.MarkedForRemoval(SaveGameAmount+1)
-Dim SaveGameTime.MarkedForRemoval(SaveGameAmount + 1)
-Dim SaveGameDate>MarkedForRemoval(SaveGameAmount + 1)
+Dim SaveGames.MarkedForRemoval(1)
+Dim SaveGameTime.MarkedForRemoval(1)
+Dim SaveGameDate.MarkedForRemoval(1)
 
-Const MAXSAVEDMAPS.MarkedForRemoval
-Dim SavedMaps.MarkedForRemoval(MAXSAVEDMAPS)
+Global MAXSAVEDMAPS.MarkedForRemoval
+Dim SavedMaps.MarkedForRemoval(6)
 Global SelectedMap.MarkedForRemoval
 
 Include "SourceCode/Menus/Launcher.bb"

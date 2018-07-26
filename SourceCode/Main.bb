@@ -363,23 +363,12 @@ Function InitializeMainGame()
 
 	DrawLoading(20, True)
 
-	RadioSFX(1,0) = LoadSound("SFX/Radio/RadioAlarm.ogg")
-	RadioSFX(1,1) = LoadSound("SFX/Radio/RadioAlarm2.ogg")
-
 	Local i%
-	For i = 0 To 8
-		RadioSFX(2,i) = LoadSound("SFX/Radio/scpradio" + Str(i) + ".ogg")
-	Next
 	RadioSquelch = LoadSound("SFX/Radio/squelch.ogg")
 	RadioStatic = LoadSound("SFX/Radio/static.ogg")
 	RadioBuzz = LoadSound("SFX/Radio/buzz.ogg")
 
 	DrawLoading(25, True)
-
-	;TODO: Audio.bb
-	AlarmSFX(0) = LoadSound("SFX/Alarm/Alarm.ogg")
-	;AlarmSFX(1) = LoadSound("SFX/Alarm/Alarm2.ogg")
-	AlarmSFX(2) = LoadSound("SFX/Alarm/Alarm3.ogg")
 
 	For i = 0 To 8
 		DamageSFX(i) = LoadSound("SFX/Character/D9341/Damage" + Str(i + 1) + ".ogg")
@@ -432,8 +421,6 @@ Function InitializeMainGame()
 
 	DrawLoading(90, True)
 
-	LoadSaveGames()
-
 	FlushKeys()
 	FlushMouse()
 
@@ -454,9 +441,9 @@ Function UpdateGame()
 	;If (userOptions\framelimit > 0) Then
 	;    ;Framelimit
 	;	Local WaitingTime% = (1000.0 / userOptions\framelimit) - (MilliSecs() - LoopDelay)
-	;	Delay(WaitingTime%)
+	;	Delay(WaitingTime)
 	;
-	;   LoopDelay(= MilliSecs())
+	;   LoopDelay= MilliSecs()
 	;EndIf
 
 	;Counting the fps

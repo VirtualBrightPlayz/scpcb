@@ -349,12 +349,13 @@ Function InitNewGame()
 	For i = 0 To 3
 		AccessCode = AccessCode + Int(Rand(1,9)*(10^i))
 	Next
-
-	If (SelectedMap = "") Then
+	
+	;TODO:
+	;If (SelectedMap = "") Then
 		CreateMap()
-	Else
-		LoadMap("Map Creator/Maps/"+SelectedMap)
-	EndIf
+	;Else
+	;	LoadMap("Map Creator/Maps/"+SelectedMap)
+	;EndIf
 	InitWayPoints()
 
 	DrawLoading(79)
@@ -448,8 +449,8 @@ Function InitNewGame()
 	TurnEntity(mainPlayer\collider, 0, Rand(160, 200), 0)
 
 	ResetEntity(mainPlayer\collider)
-
-	If (SelectedMap = "") Then InitEvents()
+	
+	InitEvents()
 
 	;TODO: fix
 ;	For e = Each Event
@@ -618,8 +619,6 @@ Function NullGame()
 	DeletePlayer(mainPlayer) : mainPlayer = Null
 
 	DeathMSG = ""
-
-	SelectedMap = ""
 
 	DoorTempID = 0
 

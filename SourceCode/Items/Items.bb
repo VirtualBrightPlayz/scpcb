@@ -440,7 +440,8 @@ Function PickItem(item.Item)
 			If (HasTag(item, ITEM_TAG_914VF)) Then
 				ShowEntity(mainPlayer\overlays[OVERLAY_WHITE])
 				mainPlayer\lightFlash = 1.0
-				PlaySound2(IntroSFX(11))
+				;TODO: Light
+				;PlaySound2(IntroSFX(11))
 				DeathMSG = "Subject D-9341 found dead inside SCP-914's output booth next to what appears to be an ordinary nine-volt battery. The subject is covered in severe "
 				DeathMSG = DeathMSG + "electrical burns, and assumed to be killed via an electrical shock caused by the battery. The battery has been stored for further study."
 				Kill(mainPlayer)

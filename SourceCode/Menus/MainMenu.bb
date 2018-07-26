@@ -16,7 +16,6 @@ Function UpdateMainMenu()
 	Local n%
 	Local i%
 	Local strtemp$
-	Local SameFound%
 
 	Local mouseHitButton%
 	If (CurrGameSubstate = GAMESUBSTATE_MAINMENU_MAIN) Then
@@ -81,7 +80,6 @@ Function UpdateMainMenu()
 					EndIf
 				Case MAINMENU_BUTTON_LOADGAME
 					If (mouseHitButton) Then
-						LoadSaveGames()
 						CurrGameSubstate = GAMESUBSTATE_MAINMENU_LOADGAME
 					EndIf
 				Case MAINMENU_BUTTON_OPTIONS
@@ -136,18 +134,10 @@ Function UpdateMainMenu()
 				CurrSave = UpdateInputBox(x + Int(150.0 * MenuScale), y + Int(15.0 * MenuScale), Int(200.0 * MenuScale), Int(30.0 * MenuScale), CurrSave, 1)
 				CurrSave = Left(CurrSave, 15)
 
-				If (SelectedMap = "") Then
-					RandomSeed = Left(UpdateInputBox(x+Int(150.0*MenuScale), y+Int(55.0*MenuScale), Int(200.0*MenuScale), Int(30.0*MenuScale), RandomSeed, 3),15)
-				Else
-					If (UpdateUIButton(x+Int(370.0*MenuScale), y+Int(55.0*MenuScale), Int(120.0*MenuScale), Int(30.0*MenuScale), "Deselect")) Then
-						SelectedMap=""
-					EndIf
-				EndIf
-
 				userOptions\introEnabled = UpdateUITick(x + Int(280.0 * MenuScale), y + Int(110.0 * MenuScale), userOptions\introEnabled)
 
 				For i = SAFE To CUSTOM
-					If (UpdateUITick(x + Int(20.0 * MenuScale), y + Int((180.0+30.0*i) * MenuScale), (SelectedDifficulty = difficulties(i)))) Then SelectedDifficulty = difficulties(i)
+					If (UpdateUITick(x + Int(20.0 * MenuScale), y + Int((180.0+30.0*i) * MenuScale), (SelectedDifficulty = difficulties[i]))) Then SelectedDifficulty = difficulties[i]
 				Next
 
 				If (SelectedDifficulty\customizable) Then
@@ -188,12 +178,12 @@ Function UpdateMainMenu()
 					strtemp = ""
 					SeedRnd(SeedStringToInt(RandomSeed))
 
-					SameFound = False
-					For i = 1 To SaveGameAmount
-						If (SaveGames(i - 1) = CurrSave) Then SameFound=SameFound+1
-					Next
-
-					If (SameFound > 0) Then CurrSave = CurrSave + " (" + Str(SameFound + 1) + ")"
+;					SameFound = False
+;					For i = 1 To SaveGameAmount
+;						If (SaveGames(i - 1) = CurrSave) Then SameFound=SameFound+1
+;					Next
+;
+;					If (SameFound > 0) Then CurrSave = CurrSave + " (" + Str(SameFound + 1) + ")"
 
 					LoadEntities()
 					InitNewGame()
@@ -222,45 +212,6 @@ Function UpdateMainMenu()
 				y = y + height + Int(20.0 * MenuScale)
 				width = Int(580.0 * MenuScale)
 				height = Int(296.0 * MenuScale)
-
-				If (SaveGameAmount <>0) Then
-					x = x + Int(20.0 * MenuScale)
-					y = y + Int(20.0 * MenuScale)
-					For i = 1 To SaveGameAmount
-						If (SaveMSG = "") Then
-							If (UpdateUIButton(x + Int(280.0 * MenuScale), y + Int(20.0 * MenuScale), Int(100.0 * MenuScale), Int(30.0 * MenuScale), "Load")) Then
-								LoadEntities()
-								LoadGame(SavePath + SaveGames(i - 1) + "/")
-								CurrSave = SaveGames(i - 1)
-								InitLoadGame()
-								CurrGameState = GAMESTATE_PLAYING
-							EndIf
-
-							If (UpdateUIButton(x + Int(400.0 * MenuScale), y + Int(20.0 * MenuScale), Int(100.0 * MenuScale), Int(30.0 * MenuScale), "Delete")) Then
-								SaveMSG = SaveGames(i - 1)
-								DebugLog(SaveMSG)
-								Exit
-							EndIf
-						EndIf
-
-						y = y + Int(80.0 * MenuScale)
-
-					Next
-
-					If (SaveMSG <> "") Then
-						x = userOptions\screenWidth / 2
-						y = userOptions\screenHeight / 2
-						If (UpdateUIButton(x + Int(250.0 * MenuScale), y + Int(150.0 * MenuScale), Int(100.0 * MenuScale), Int(30.0 * MenuScale), "Yes")) Then
-							DeleteFile(CurrentDir() + SavePath + SaveMSG + "/save.txt")
-							DeleteDir(CurrentDir() + SavePath + SaveMSG)
-							SaveMSG = ""
-							LoadSaveGames()
-						EndIf
-						If (UpdateUIButton(x + Int(50.0 * MenuScale), y + Int(150.0 * MenuScale), Int(100.0 * MenuScale), Int(30.0 * MenuScale), "No")) Then
-							SaveMSG = ""
-						EndIf
-					EndIf
-				EndIf
 
 				;[End Block]
 			Case GAMESUBSTATE_MAINMENU_OPTIONS ;options
@@ -431,28 +382,6 @@ Function UpdateMainMenu()
 				width = Int(580.0 * MenuScale)
 				height = Int(350.0 * MenuScale)
 
-				If (SavedMaps(0)<>"") Then
-					x = x + Int(20.0 * MenuScale)
-					y = y + Int(20.0 * MenuScale)
-					For i = 0 To MAXSAVEDMAPS-1
-						If (SavedMaps(i)<>"") Then
-
-							If (UpdateUIButton(x + Int(20.0 * MenuScale), y + Int(20.0 * MenuScale), Int(170.0 * MenuScale), Int(25.0 * MenuScale), SavedMaps(i))) Then
-								SelectedMap=SavedMaps(i)
-								CurrGameSubstate = GAMESUBSTATE_MAINMENU_NEWGAME
-							EndIf
-
-							y=y+Int(30.0*MenuScale)
-							If (y > (286+230) * MenuScale) Then
-								y = Int(286.0*MenuScale + 2.0*MenuScale)
-								x = x+Int(175.0*MenuScale)
-							EndIf
-						Else
-							Exit
-						EndIf
-					Next
-				EndIf
-
 				;[End Block]
 		End Select
 
@@ -467,10 +396,12 @@ Function DrawMainMenu()
 	Rect(0,0,userOptions\screenWidth,userOptions\screenHeight,True)
 
 	DrawImage(uiAssets\back, 0, 0)
-
-	If (TimeInPosMilliSecs() Mod Int(MenuBlinkTimer[0])) >= Rand(Int(MenuBlinkDuration[0])) Then
+	
+	If (TimeInPosMilliSecs() Mod Int(MenuBlinkTimer[0]) >= Rand(Int(MenuBlinkDuration[0]))) Then
 		DrawImage(uiAssets\scp173, userOptions\screenWidth - ImageWidth(uiAssets\scp173), userOptions\screenHeight - ImageHeight(uiAssets\scp173))
 	EndIf
+	
+	DebugLog("DrawMainMenu() 407")
 
 	If (Rand(300) = 1) Then
 		MenuBlinkTimer[0] = Rand(4000, 8000)
@@ -590,21 +521,21 @@ Function DrawMainMenu()
 				DrawInputBox(x + Int(150.0 * MenuScale), y + Int(15.0 * MenuScale), Int(200.0 * MenuScale), Int(30.0 * MenuScale), CurrSave, 1)
 
 				Color(255,255,255)
-				If (SelectedMap = "") Then
-					Text(x + Int(20.0 * MenuScale), y + Int(60.0 * MenuScale), "Map seed:")
-					DrawInputBox(x+Int(150.0*MenuScale), y+Int(55.0*MenuScale), Int(200.0*MenuScale), Int(30.0*MenuScale), RandomSeed, 3)
-				Else
-					Text(x + Int(20.0 * MenuScale), y + Int(60.0 * MenuScale), "Selected map:")
-					Color(255, 255, 255)
-					Rect(x+Int(150.0*MenuScale), y+Int(55.0*MenuScale), Int(200.0*MenuScale), Int(30.0*MenuScale))
-					Color(0, 0, 0)
-					Rect(x+Int(150.0*MenuScale)+2, y+Int(55.0*MenuScale)+2, Int(200.0*MenuScale)-4, Int(30.0*MenuScale)-4)
-
-					Color(255, 0,0)
-					Text(x+Int(150.0*MenuScale + 100.0*MenuScale), y+Int(55.0*MenuScale + 15.0*MenuScale), SelectedMap, True, True)
-
-					DrawUIButton(x+Int(370.0*MenuScale), y+Int(55.0*MenuScale), Int(120.0*MenuScale), Int(30.0*MenuScale), "Deselect", False)
-				EndIf
+;				If (SelectedMap = "") Then
+				Text(x + Int(20.0 * MenuScale), y + Int(60.0 * MenuScale), "Map seed:")
+				DrawInputBox(x+Int(150.0*MenuScale), y+Int(55.0*MenuScale), Int(200.0*MenuScale), Int(30.0*MenuScale), RandomSeed, 3)
+;				Else
+;					Text(x + Int(20.0 * MenuScale), y + Int(60.0 * MenuScale), "Selected map:")
+;					Color(255, 255, 255)
+;					Rect(x+Int(150.0*MenuScale), y+Int(55.0*MenuScale), Int(200.0*MenuScale), Int(30.0*MenuScale))
+;					Color(0, 0, 0)
+;					Rect(x+Int(150.0*MenuScale)+2, y+Int(55.0*MenuScale)+2, Int(200.0*MenuScale)-4, Int(30.0*MenuScale)-4)
+;
+;					Color(255, 0,0)
+;					Text(x+Int(150.0*MenuScale + 100.0*MenuScale), y+Int(55.0*MenuScale + 15.0*MenuScale), SelectedMap, True, True)
+;
+;					DrawUIButton(x+Int(370.0*MenuScale), y+Int(55.0*MenuScale), Int(120.0*MenuScale), Int(30.0*MenuScale), "Deselect", False)
+;				EndIf
 
 				Text(x + Int(20.0 * MenuScale), y + Int(110.0 * MenuScale), "Enable intro sequence:")
 				DrawUITick(x + Int(280.0 * MenuScale), y + Int(110.0 * MenuScale), userOptions\introEnabled)
@@ -612,9 +543,9 @@ Function DrawMainMenu()
 				;Local modeName$, modeDescription$, selectedDescription$
 				Text(x + Int(20.0 * MenuScale), y + Int(150.0 * MenuScale), "Difficulty:")
 				For i = SAFE To CUSTOM
-					DrawUITick(x + Int(20.0 * MenuScale), y + Int((180.0+30.0*i) * MenuScale), (SelectedDifficulty = difficulties(i)))
+					DrawUITick(x + Int(20.0 * MenuScale), y + Int((180.0+30.0*i) * MenuScale), (SelectedDifficulty = difficulties[i]))
 
-					Text(x + Int(60.0 * MenuScale), y + Int((180.0+30.0*i) * MenuScale), difficulties(i)\name)
+					Text(x + Int(60.0 * MenuScale), y + Int((180.0+30.0*i) * MenuScale), difficulties[i]\name)
 				Next
 
 				Color(255, 255, 255)
@@ -680,46 +611,46 @@ Function DrawMainMenu()
 
 				SetFont(uiAssets\font[0])
 
-				If (SaveGameAmount = 0) Then
-					Text(x + Int(20.0 * MenuScale), y + Int(20.0 * MenuScale), "No saved games.")
-				Else
-					x = x + Int(20.0 * MenuScale)
-					y = y + Int(20.0 * MenuScale)
-					For i = 1 To SaveGameAmount
-						DrawFrame(x,y,Int(540.0*MenuScale), Int(70.0*MenuScale))
-
-						Text(x + Int(20.0 * MenuScale), y + Int(10.0 * MenuScale), SaveGames(i - 1))
-						Text(x + Int(20.0 * MenuScale), y + Int((10.0+23.0) * MenuScale), SaveGameTime(i - 1))
-						Text(x + Int(120.0 * MenuScale), y + Int((10.0+23.0) * MenuScale), SaveGameDate(i - 1))
-
-						If (SaveMSG = "") Then
-							DrawUIButton(x + Int(280.0 * MenuScale), y + Int(20.0 * MenuScale), Int(100.0 * MenuScale), Int(30.0 * MenuScale), "Load", False)
-
-							DrawUIButton(x + Int(400.0 * MenuScale), y + Int(20.0 * MenuScale), Int(100.0 * MenuScale), Int(30.0 * MenuScale), "Delete", False)
-
-						Else
-							DrawFrame(x + Int(280.0 * MenuScale), y + Int(20.0 * MenuScale), Int(100.0 * MenuScale), Int(30.0 * MenuScale))
-							Color(100, 100, 100)
-							Text(x + Int(330.0 * MenuScale), y + Int(35.0 * MenuScale), "Load", True, True)
-
-							DrawFrame(x + Int(400.0 * MenuScale), y + Int(20.0 * MenuScale), Int(100.0 * MenuScale), Int(30.0 * MenuScale))
-							Color(100, 100, 100)
-							Text(x + Int(450.0 * MenuScale), y + Int(35.0 * MenuScale), "Delete", True, True)
-						EndIf
-
-						y = y + Int(80.0 * MenuScale)
-
-					Next
-
-					If (SaveMSG <> "") Then
-						x = userOptions\screenWidth / 2
-						y = userOptions\screenHeight / 2
-						DrawFrame(x, y, Int(400.0 * MenuScale), Int(200.0 * MenuScale))
-						Text(x + Int(20.0 * MenuScale), y + Int(15.0 * MenuScale), "Are you sure you want to delete this save?")
-						DrawUIButton(x + Int(250.0 * MenuScale), y + Int(150.0 * MenuScale), Int(100.0 * MenuScale), Int(30.0 * MenuScale), "Yes", False)
-						DrawUIButton(x + Int(50.0 * MenuScale), y + Int(150.0 * MenuScale), Int(100.0 * MenuScale), Int(30.0 * MenuScale), "No", False)
-					EndIf
-				EndIf
+;				If (SaveGameAmount = 0) Then
+				Text(x + Int(20.0 * MenuScale), y + Int(20.0 * MenuScale), "No saved games.")
+;				Else
+;					x = x + Int(20.0 * MenuScale)
+;					y = y + Int(20.0 * MenuScale)
+;					For i = 1 To SaveGameAmount
+;						DrawFrame(x,y,Int(540.0*MenuScale), Int(70.0*MenuScale))
+;
+;						Text(x + Int(20.0 * MenuScale), y + Int(10.0 * MenuScale), SaveGames(i - 1))
+;						Text(x + Int(20.0 * MenuScale), y + Int((10.0+23.0) * MenuScale), SaveGameTime(i - 1))
+;						Text(x + Int(120.0 * MenuScale), y + Int((10.0+23.0) * MenuScale), SaveGameDate(i - 1))
+;
+;						If (SaveMSG = "") Then
+;							DrawUIButton(x + Int(280.0 * MenuScale), y + Int(20.0 * MenuScale), Int(100.0 * MenuScale), Int(30.0 * MenuScale), "Load", False)
+;
+;							DrawUIButton(x + Int(400.0 * MenuScale), y + Int(20.0 * MenuScale), Int(100.0 * MenuScale), Int(30.0 * MenuScale), "Delete", False)
+;
+;						Else
+;							DrawFrame(x + Int(280.0 * MenuScale), y + Int(20.0 * MenuScale), Int(100.0 * MenuScale), Int(30.0 * MenuScale))
+;							Color(100, 100, 100)
+;							Text(x + Int(330.0 * MenuScale), y + Int(35.0 * MenuScale), "Load", True, True)
+;
+;							DrawFrame(x + Int(400.0 * MenuScale), y + Int(20.0 * MenuScale), Int(100.0 * MenuScale), Int(30.0 * MenuScale))
+;							Color(100, 100, 100)
+;							Text(x + Int(450.0 * MenuScale), y + Int(35.0 * MenuScale), "Delete", True, True)
+;						EndIf
+;
+;						y = y + Int(80.0 * MenuScale)
+;
+;					Next
+;
+;					If (SaveMSG <> "") Then
+;						x = userOptions\screenWidth / 2
+;						y = userOptions\screenHeight / 2
+;						DrawFrame(x, y, Int(400.0 * MenuScale), Int(200.0 * MenuScale))
+;						Text(x + Int(20.0 * MenuScale), y + Int(15.0 * MenuScale), "Are you sure you want to delete this save?")
+;						DrawUIButton(x + Int(250.0 * MenuScale), y + Int(150.0 * MenuScale), Int(100.0 * MenuScale), Int(30.0 * MenuScale), "Yes", False)
+;						DrawUIButton(x + Int(50.0 * MenuScale), y + Int(150.0 * MenuScale), Int(100.0 * MenuScale), Int(30.0 * MenuScale), "No", False)
+;					EndIf
+;				EndIf
 
 				;[End Block]
 			Case GAMESUBSTATE_MAINMENU_OPTIONS ;options
@@ -920,26 +851,26 @@ Function DrawMainMenu()
 
 				SetFont(uiAssets\font[0])
 
-				If (SavedMaps(0)="") Then
-					Text(x + Int(20.0 * MenuScale), y + Int(20.0 * MenuScale), "No saved maps. Use the Map Creator to create new maps.")
-				Else
-					x = x + Int(20.0 * MenuScale)
-					y = y + Int(20.0 * MenuScale)
-					For i = 0 To MAXSAVEDMAPS-1
-						If (SavedMaps(i)<>"") Then
-
-							DrawUIButton(x + Int(20.0 * MenuScale), y + Int(20.0 * MenuScale), Int(170.0 * MenuScale), Int(25.0 * MenuScale), SavedMaps(i), False)
-
-							y=y+Int(30.0*MenuScale)
-							If (y > Int((286.0+230.0) * MenuScale)) Then
-								y = Int(286.0*MenuScale + 2.0*MenuScale)
-								x = x+Int(175.0*MenuScale)
-							EndIf
-						Else
-							Exit
-						EndIf
-					Next
-				EndIf
+;				If (SavedMaps(0)="") Then
+				Text(x + Int(20.0 * MenuScale), y + Int(20.0 * MenuScale), "No saved maps. Use the Map Creator to create new maps.")
+;				Else
+;					x = x + Int(20.0 * MenuScale)
+;					y = y + Int(20.0 * MenuScale)
+;					For i = 0 To MAXSAVEDMAPS-1
+;						If (SavedMaps(i)<>"") Then
+;
+;							DrawUIButton(x + Int(20.0 * MenuScale), y + Int(20.0 * MenuScale), Int(170.0 * MenuScale), Int(25.0 * MenuScale), SavedMaps(i), False)
+;
+;							y=y+Int(30.0*MenuScale)
+;							If (y > Int((286.0+230.0) * MenuScale)) Then
+;								y = Int(286.0*MenuScale + 2.0*MenuScale)
+;								x = x+Int(175.0*MenuScale)
+;							EndIf
+;						Else
+;							Exit
+;						EndIf
+;					Next
+;				EndIf
 
 				;[End Block]
 		End Select
@@ -950,6 +881,7 @@ Function DrawMainMenu()
 
 
 	SetFont(uiAssets\font[0])
+	DebugLog("DrawMainMenu() Stopped")
 End Function
 
 ;~IDEal Editor Parameters:
