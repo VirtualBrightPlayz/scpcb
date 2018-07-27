@@ -28,15 +28,16 @@ Function InitializeNPCtypeMTF(n.NPC)
 
     MeshCullBox(n\obj, -MeshWidth(n\obj), -MeshHeight(n\obj), -MeshDepth(n\obj), MeshWidth(n\obj)*2, MeshHeight(n\obj)*2, MeshDepth(n\obj)*2)
 
-    If (MTFSFX(0)=0) Then
-        MTFSFX(0)=LoadSound("SFX/Character/MTF/ClassD1.ogg")
-        MTFSFX(1)=LoadSound("SFX/Character/MTF/ClassD2.ogg")
-        MTFSFX(2)=LoadSound("SFX/Character/MTF/ClassD3.ogg")
-        MTFSFX(3)=LoadSound("SFX/Character/MTF/ClassD4.ogg")
-        ;MTFSFX(4)=LoadSound("SFX/Character/MTF/Tesla0.ogg")
-        MTFSFX(5)=LoadSound("SFX/Character/MTF/Beep.ogg")
-        MTFSFX(6)=LoadSound("SFX/Character/MTF/Breath.ogg")
-    EndIf
+	;TODO; Re-implement with MTF struct.
+    ;If (MTFSFX(0)=0) Then
+    ;    MTFSFX(0)=LoadSound("SFX/Character/MTF/ClassD1.ogg")
+    ;    MTFSFX(1)=LoadSound("SFX/Character/MTF/ClassD2.ogg")
+    ;    MTFSFX(2)=LoadSound("SFX/Character/MTF/ClassD3.ogg")
+    ;    MTFSFX(3)=LoadSound("SFX/Character/MTF/ClassD4.ogg")
+    ;    MTFSFX(4)=LoadSound("SFX/Character/MTF/Tesla0.ogg")
+    ;    MTFSFX(5)=LoadSound("SFX/Character/MTF/Beep.ogg")
+    ;    MTFSFX(6)=LoadSound("SFX/Character/MTF/Breath.ogg")
+    ;EndIf
 
 	Local r.Room
     If (MTFrooms[6]=Null) Then
@@ -338,7 +339,7 @@ Function UpdateNPCtypeMTF(n.NPC)
 							;If (n\sounds[0] <> 0) Then FreeSound(n\sounds[0] : n\sounds[0] = 0)
 							;n\sounds[0] = MTFSFX(Rand(0,3))
 							;PlayMTFSound(n\sounds[0], n)
-							PlayMTFSound(MTFSFX(Rand(0,3)),n)
+							;PlayMTFSound(MTFSFX(Rand(0,3)),n)
 						EndIf
 					EndIf
 

@@ -188,7 +188,6 @@ Const ROOM0%=0, ROOM1% = 1, ROOM2% = 2, ROOM2C% = 3, ROOM3% = 4, ROOM4% = 5
 
 Const ZONE_LCZ% = 1, ZONE_HCZ% = 2, ZONE_EZ% = 4
 
-Global RoomTempID.MarkedForRemoval
 Type RoomTemplate
 	Field name$
 	Field shape%
@@ -345,10 +344,6 @@ End Function
 
 Const MAP_SIZE% = 19
 Global RoomScale# = 8.0 / 2048.0
-Global ZONEAMOUNT.MarkedForRemoval
-
-Global MapWidth.MarkedForRemoval
-Global MapHeight.MarkedForRemoval
 
 Global RoomAmbience%[20]
 
@@ -402,22 +397,11 @@ Type Room
 	Field adjacent.Room[4]
 	Field adjDoor.Door[4]
 
-	Field nonFreeAble%[10]
-	Field textures%[10]
-
 	;TODO: what the fuck
-	Field maxLights% = 0
-	Field lightSpriteHidden%[MaxRoomLights]
 	Field lightSpritesPivot%[MaxRoomLights]
-	Field lightSprites2%[MaxRoomLights]
-	Field lightHidden%[MaxRoomLights]
-	Field lightFlicker%[MaxRoomLights]
-	Field alarmRotor%[1]
-	Field alarmRotorLight%[1]
 	Field triggerboxAmount%
 	Field triggerbox%[128]
 	Field triggerboxName$[128]
-	Field maxWayPointY#
 End Type
 
 Const gridsz%=20
@@ -891,10 +875,11 @@ End Function
 
 ;-------------------------------------------------------------------------------------------------------
 
-Global LightVolume.MarkedForRemoval, TempLightVolume.MarkedForRemoval
 Function AddLight%(room.Room, x#, y#, z#, ltype%, range#, r%, g%, b%)
 	Local i%
-	Local light%,sprite%
+	;TODO: These names suck.
+	Local light%, sprite%
+	Local lightSpriteTex% = GrabTexture("GFX/Sprites/light_flare.jpg", 1)
 
 	If (room<>Null) Then
 		For i = 0 To MaxRoomLights-1
@@ -911,7 +896,7 @@ Function AddLight%(room.Room, x#, y#, z#, ltype%, range#, r%, g%, b%)
 				room\lightSprites[i]= CreateSprite()
 				PositionEntity(room\lightSprites[i], x, y, z)
 				ScaleSprite(room\lightSprites[i], 0.13 , 0.13)
-				EntityTexture(room\lightSprites[i], LightSpriteTex(0))
+				EntityTexture(room\lightSprites[i], lightSpriteTex)
 				EntityBlend(room\lightSprites[i], 3)
 
 				EntityParent(room\lightSprites[i], room\obj)
@@ -920,21 +905,6 @@ Function AddLight%(room.Room, x#, y#, z#, ltype%, range#, r%, g%, b%)
 				EntityRadius(room\lightSpritesPivot[i],0.05)
 				PositionEntity(room\lightSpritesPivot[i], x, y, z)
 				EntityParent(room\lightSpritesPivot[i], room\obj)
-
-				room\lightSprites2[i] = CreateSprite()
-				PositionEntity(room\lightSprites2[i], x, y, z)
-				ScaleSprite(room\lightSprites2[i], 0.6, 0.6)
-				EntityTexture(room\lightSprites2[i], LightSpriteTex(2))
-				EntityBlend(room\lightSprites2[i], 3)
-				EntityOrder(room\lightSprites2[i], -1)
-				EntityColor(room\lightSprites2[i], r, g, b)
-				EntityParent(room\lightSprites2[i], room\obj)
-				EntityFX(room\lightSprites2[i],1)
-				RotateEntity(room\lightSprites2[i],0,0,Rand(360))
-				SpriteViewMode(room\lightSprites2[i],1)
-				room\lightSpriteHidden%[i] = True
-				HideEntity(room\lightSprites2[i])
-				room\lightFlicker%[i] = Rand(1,10)
 
 				HideEntity(room\lights[i])
 
@@ -951,10 +921,11 @@ Function AddLight%(room.Room, x#, y#, z#, ltype%, range#, r%, g%, b%)
 		sprite=CreateSprite()
 		PositionEntity(sprite, x, y, z)
 		ScaleSprite(sprite, 0.13 , 0.13)
-		EntityTexture(sprite, LightSpriteTex(0))
+		EntityTexture(sprite, lightSpriteTex)
 		EntityBlend(sprite, 3)
 		Return light
 	EndIf
+	DropAsset(lightSprite)
 End Function
 
 Type LightTemplate
@@ -1372,8 +1343,6 @@ End Function
 
 ;-------------------------------------------------------------------------------------------------------
 
-
-Dim GorePics%(10)
 Global SelectedMonitor.SecurityCam
 Global CoffinCam.SecurityCam
 Type SecurityCam
@@ -1464,6 +1433,7 @@ End Function
 Function UpdateSecurityCams()
 	Local sc.SecurityCam
 	Local close%, temp#, pvt%
+	Local i%
 
 	PlayerDetected = False
 
@@ -1655,10 +1625,15 @@ Function UpdateSecurityCams()
 							FreeEntity(pvt)
 						;EndIf
 							If (sc\coffinEffect=1 Or sc\coffinEffect=3) Then
+								Local GORE_PIC_COUNT% = 6
+								Local gorePics%[GORE_PIC_COUNT]
+								For i=0 To GORE_PIC_COUNT-1
+									gorePics[i] = GrabTexture("GFX/895pics/pic" + Str(i + 1) + ".jpg")
+								Next
 								If (mainPlayer\sanity895 < - 800) Then
 									If (Rand(3) = 1) Then EntityTexture(sc\scrOverlay, MonitorTexture)
 									If (Rand(6) < 5) Then
-										EntityTexture(sc\scrOverlay, GorePics(Rand(0, 5)))
+										EntityTexture(sc\scrOverlay, gorePics[Rand(0, GORE_PIC_COUNT-1)])
 										;If (sc\playerState = 1) Then PlaySound(HorrorSFX(1)) ;TODO: fix
 										sc\playerState = 2
 										If (sc\soundCHN = 0) Then
@@ -1674,7 +1649,7 @@ Function UpdateSecurityCams()
 								ElseIf (mainPlayer\sanity895 < - 500) Then
 									If (Rand(7) = 1) Then EntityTexture(sc\scrOverlay, MonitorTexture)
 									If (Rand(50) = 1) Then
-										EntityTexture(sc\scrOverlay, GorePics(Rand(0, 5)))
+										EntityTexture(sc\scrOverlay, gorePics[Rand(0, GORE_PIC_COUNT-1)])
 										;If (sc\playerState = 0) Then PlaySound(HorrorSFX(0)) ;TODO: fix
 										sc\playerState = Int(Max(sc\playerState, 1))
 										If (sc\coffinEffect=3 And Rand(100)=1) Then
@@ -1684,17 +1659,21 @@ Function UpdateSecurityCams()
 								Else
 									EntityTexture(sc\scrOverlay, MonitorTexture)
 								EndIf
+								For i=0 To GORE_PIC_COUNT-1
+									FreeAsset(gorePics[i])
+								Next
 							EndIf
 						EndIf
 					EndIf
 
 					If (sc\inSight And sc\coffinEffect=0 Or sc\coffinEffect=2) Then
+						Local aiPic% = GrabTexture("GFX/079pics/face.jpg")
 						If (sc\playerState = 0) Then
 							sc\playerState = Rand(60000, 65000)
 						EndIf
 
 						If (Rand(500) = 1) Then
-							EntityTexture(sc\scrOverlay, OldAiPics(0))
+							EntityTexture(sc\scrOverlay, aiPic)
 						EndIf
 
 						If (TimeInPosMilliSecs() Mod sc\playerState) >= Rand(600) Then
@@ -1711,9 +1690,9 @@ Function UpdateSecurityCams()
 									sc\coffinEffect=3 : sc\playerState = 0
 								EndIf
 							EndIf
-							EntityTexture(sc\scrOverlay, OldAiPics(0))
+							EntityTexture(sc\scrOverlay, aiPic)
 						EndIf
-
+						DropAsset(aiPic)
 					EndIf
 
 				EndIf ;if screen=true

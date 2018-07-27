@@ -25,13 +25,15 @@ Function FillRoom_cont_079_1(r.Room)
     EntityParent(r\objects[0], r\obj)
     TurnEntity(r\objects[0],0,180,0,True)
 
+	Local aiPic% = GrabTexture("GFX/079pics/face.jpg")
     r\objects[1] = CreateSprite(r\objects[0])
     SpriteViewMode(r\objects[1],2)
     PositionEntity(r\objects[1], 0.082, 0.119, 0.010)
     ScaleSprite(r\objects[1],0.18*0.5,0.145*0.5)
     TurnEntity(r\objects[1],0,13.0,0)
     MoveEntity(r\objects[1], 0,0,-0.022)
-    EntityTexture(r\objects[1],OldAiPics(0))
+    EntityTexture(r\objects[1],aiPic)
+	DropAsset(aiPic)
 
     HideEntity(r\objects[1])
 
@@ -95,7 +97,8 @@ Function UpdateEvent_cont_079_1(e.Event)
 				If (e\eventState < 3500) Then
 					If (IsChannelPlaying(e\soundChannels[0])) Then
 						If (Rand(3) = 1) Then
-							EntityTexture(e\room\objects[1], OldAiPics(0))
+							; TODO: Make the texture members of the struct.
+							;EntityTexture(e\room\objects[1], OldAiPics(0))
 							ShowEntity(e\room\objects[1])
 						ElseIf (Rand(10) = 1) Then
 							HideEntity(e\room\objects[1])
@@ -105,7 +108,7 @@ Function UpdateEvent_cont_079_1(e.Event)
 							FreeSound(e\sounds[0])
 							e\sounds[0] = 0
 						EndIf
-						EntityTexture(e\room\objects[1], OldAiPics(1))
+						;EntityTexture(e\room\objects[1], OldAiPics(1))
 						ShowEntity(e\room\objects[1])
 					EndIf
 				Else
@@ -114,7 +117,7 @@ Function UpdateEvent_cont_079_1(e.Event)
 						;e\sounds[0] = LoadSound("SFX/SCP/079/Refuse.ogg")
 						LoadEventSound(e,"SFX/SCP/079/Refuse.ogg")
 						e\soundChannels[0] = PlaySound(e\sounds[0])
-						EntityTexture(e\room\objects[1], OldAiPics(1))
+						;EntityTexture(e\room\objects[1], OldAiPics(1))
 						ShowEntity(e\room\objects[1])
 					EndIf
 				EndIf

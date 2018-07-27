@@ -39,22 +39,6 @@ Function InitializeNPCtypeApache(n.NPC)
     EntityType(n\collider, HIT_APACHE)
     EntityRadius(n\collider, 3.0)
 
-	Local light1%, lightsprite%
-    For i = -1 To 1 Step 2
-        light1 = CreateLight(2,n\obj)
-        ;room\lightDist[i] = range
-        LightRange(light1,2.0)
-        LightColor(light1,255,255,255)
-        PositionEntity(light1, 1.65*i, 1.17, -0.25)
-
-        lightsprite = CreateSprite(n\obj)
-        PositionEntity(lightsprite, 1.65*i, 1.17, 0);, -0.25) ;TODO: what the actual fuck
-        ScaleSprite(lightsprite, 0.13, 0.13)
-        EntityTexture(lightsprite, LightSpriteTex(0))
-        EntityBlend(lightsprite, 3)
-        EntityFX(lightsprite, 1+8)
-    Next
-
     Local temp# = 0.6
     ScaleEntity(n\obj, temp, temp, temp)
 End Function

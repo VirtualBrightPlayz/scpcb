@@ -12,7 +12,7 @@ Const MAINMENU_BUTTON_QUIT% = 3
 Const MAINMENU_BUTTON_COUNT% = 4
 
 Function UpdateMainMenu()
-	Local x%, y%, width%, height%, temp.MarkedForRemoval
+	Local x%, y%, width%, height%
 	Local n%
 	Local i%
 	Local strtemp$
@@ -389,14 +389,14 @@ Function UpdateMainMenu()
 End Function
 
 Function DrawMainMenu()
-	Local x%, y%, width%, height%, temp.MarkedForRemoval
+	Local x%, y%, width%, height%
 	Local i%
 
 	Color(0,0,0)
 	Rect(0,0,userOptions\screenWidth,userOptions\screenHeight,True)
 
 	DrawImage(uiAssets\back, 0, 0)
-	
+
 	If (TimeInPosMilliSecs() Mod Int(MenuBlinkTimer[0]) >= Rand(Int(MenuBlinkDuration[0]))) Then
 		DrawImage(uiAssets\scp173, userOptions\screenWidth - ImageWidth(uiAssets\scp173), userOptions\screenHeight - ImageHeight(uiAssets\scp173))
 	EndIf

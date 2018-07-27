@@ -35,13 +35,15 @@ Function FillRoom_hll_tsl(r.Room)
     ;w\connected[0] = w2 : w\dist[0] = EntityDistance(w\obj, w2\obj)
     ;w2\connected[0] = w : w2\dist[0] = w\dist[0]
 
+	Local lightSpriteRed% = LoadTexture("GFX/Sprites/light_flare_red.jpg", 1)
     r\objects[4] = CreateSprite()
     PositionEntity(r\objects[4], r\x - 32 * RoomScale, 568 * RoomScale, r\z)
     ScaleSprite(r\objects[4], 0.03, 0.03)
-    EntityTexture(r\objects[4], LightSpriteTex(1))
+    EntityTexture(r\objects[4], lightSpriteRed)
     EntityBlend(r\objects[4], 3)
     EntityParent(r\objects[4], r\obj)
     HideEntity(r\objects[4])
+	FreeTexture(lightSpriteRed)
 
     r\objects[5] = CreatePivot()
     PositionEntity(r\objects[5],r\x,0,r\z-800*RoomScale)

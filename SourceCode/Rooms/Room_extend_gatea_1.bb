@@ -134,11 +134,12 @@ Function UpdateEvent_extend_gatea_1(e.Event)
 
 			DrawLoading(30)
 
-			For i = 0 To e\room\maxLights
-				If (e\room\lightSprites[i]<>0) Then
-					EntityFX(e\room\lightSprites[i], 1+8)
-				EndIf
-			Next
+			; TODO: Re-implement whatever the fuck this is.
+			;For i = 0 To e\room\maxLights
+			;	If (e\room\lightSprites[i]<>0) Then
+			;		EntityFX(e\room\lightSprites[i], 1+8)
+			;	EndIf
+			;Next
 
 			CameraFogMode(mainPlayer\cam, 0)
 			SecondaryLightOn = True

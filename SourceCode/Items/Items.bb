@@ -1,16 +1,6 @@
 Include "SourceCode/Items/Radio.bb"
 Include "SourceCode/Items/NVG.bb"
 
-Global BurntNote.MarkedForRemoval
-
-;TODO: remove, use Inventory type instead
-Global MaxItemAmount.MarkedForRemoval
-Global ItemAmount.MarkedForRemoval
-Dim Inventory.MarkedForRemoval(10)
-Global InvSelect.MarkedForRemoval, SelectedItem.MarkedForRemoval
-
-Global ClosestItem.MarkedForRemoval
-
 Const ITEM_TAG_914F$  = "914_fine"
 Const ITEM_TAG_914VF$ = "914_veryfine"
 Const ITEM_TAG_OMNI$  = "omni"

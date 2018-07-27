@@ -17,16 +17,16 @@ Function FillRoom_cont_008_1(r.Room)
 
     RotateEntity(r\objects[1],89,0,0,True)
 
-    Local Glasstex% = LoadTexture("GFX/Map/Textures/glass.png",1+2)
+    Local glassTex% = LoadTexture("GFX/Map/Textures/glass.png",1+2)
     r\objects[2] = CreateSprite()
-    EntityTexture(r\objects[2],Glasstex)
+    EntityTexture(r\objects[2],glassTex)
     SpriteViewMode(r\objects[2],2)
     ScaleSprite(r\objects[2],256.0*RoomScale*0.5, 194.0*RoomScale*0.5)
     PositionEntity(r\objects[2], r\x - 176.0 * RoomScale, 224.0*RoomScale, r\z + 448.0 * RoomScale)
     TurnEntity(r\objects[2],0,90,0)
     EntityParent(r\objects[2], r\obj)
 
-    FreeTexture(Glasstex)
+    FreeTexture(glassTex)
 
     ;scp-173 spawnpoint
     r\objects[3] = CreatePivot(r\obj)
@@ -36,13 +36,15 @@ Function FillRoom_cont_008_1(r.Room)
     r\objects[4] = CreatePivot(r\obj)
     PositionEntity(r\objects[4], r\x + 67.0 * RoomScale, 120.0*RoomScale, r\z + 464.0 * RoomScale, True)
 
+	Local lightSpriteRed% = LoadTexture("GFX/Sprites/light_flare_red.jpg", 1)
     r\objects[5] = CreateSprite()
     PositionEntity(r\objects[5], r\x - 158 * RoomScale, 368 * RoomScale, r\z + 298.0 * RoomScale)
     ScaleSprite(r\objects[5], 0.02, 0.02)
-    EntityTexture(r\objects[5], LightSpriteTex(1))
+    EntityTexture(r\objects[5], lightSpriteRed)
     EntityBlend(r\objects[5], 3)
     EntityParent(r\objects[5], r\obj)
     HideEntity(r\objects[5])
+	FreeTexture(lightSpriteRed)
 
     d = CreateDoor(r\x + 296.0 * RoomScale, 0, r\z - 672.0 * RoomScale, 180, r, True, DOOR_TYPE_DEF, r\roomTemplate\name)
     d\autoClose = False

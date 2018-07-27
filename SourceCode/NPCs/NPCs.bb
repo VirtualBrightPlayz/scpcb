@@ -631,15 +631,16 @@ Function PlayMTFSound(sound%, n.NPC)
 		n\soundChannels[0] = PlayRangedSound(sound, mainPlayer\cam, n\collider, 8.0)
 	EndIf
 
-	If (mainPlayer\selectedItem <> Null) Then
-		If (mainPlayer\selectedItem\state2 = 3 And mainPlayer\selectedItem\state > 0) Then
-			Select mainPlayer\selectedItem\template\name
-				Case "radio","fineradio","18vradio"
-					If (RadioCHN(3)<> 0) Then StopChannel(RadioCHN(3))
-					RadioCHN(3) = PlaySound(sound)
-			End Select
-		EndIf
-	EndIf
+	;TODO: Re-implement.
+	;If (mainPlayer\selectedItem <> Null) Then
+	;	If (mainPlayer\selectedItem\state2 = 3 And mainPlayer\selectedItem\state > 0) Then
+	;		Select mainPlayer\selectedItem\template\name
+	;			Case "radio","fineradio","18vradio"
+	;				If (RadioCHN(3)<> 0) Then StopChannel(RadioCHN(3))
+	;				RadioCHN(3) = PlaySound(sound)
+	;		End Select
+	;	EndIf
+	;EndIf
 End Function
 
 ;TODO: Does this even have anything to do with NPCs? Move to Player file whenever that's made?

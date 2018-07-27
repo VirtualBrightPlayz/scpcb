@@ -80,7 +80,6 @@ Function RemoveParticle(p.Particle)
 End Function
 
 Global InSmoke%
-Global HissSFX.MarkedForRemoval
 
 Type Emitter
 	Field obj%

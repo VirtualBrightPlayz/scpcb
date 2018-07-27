@@ -1,38 +1,13 @@
-Include "SourceCode/MarkedForRemoval.bb"
-
 ;TODO: kill all the dims
 ;I have to place them up here because the includes depend
 ;on them being declared before they are used
 ;[Block]
 
-;TODO: Radio struct.
-Dim RadioState#(10)
-Dim RadioState3%(3)
-Dim RadioState4%(9)
-Dim RadioCHN%(8)
-
-;TODO: Assets.bb
-Dim OldAiPics%(5)
-
-;TODO: Assets.bb
-Dim LightSpriteTex%(10)
-
-;TODO: Audio.bb
-Dim IntroSFX.MarkedForRemoval(20)
-
-;TODO: Audio.bb
-Dim AlarmSFX.MarkedForRemoval(5)
-
 ;TODO: Player struct.
 Dim DamageSFX%(9)
 
-;TODO: NPCDataMTF.
-Dim MTFSFX%(8)
-
 ;TODO: Player struct.
 Dim CoughSFX%(3)
-
-Dim LightSpriteTex%(5)
 
 Dim DecalTextures%(20)
 ;[End Block]
@@ -61,15 +36,9 @@ Include "SourceCode/INI.bb"
 
 Const VERSION$ = "1.CBN"
 
-Global Depth.MarkedForRemoval
-
 ;TODO: Move somewhere more relevant.
 Global WireframeState%
 Global HalloweenTex%
-
-Global RealGraphicWidth.MarkedForRemoval
-Global RealGraphicHeight.MarkedForRemoval
-Global AspectRatioRatio.MarkedForRemoval
 
 Function VerifyResolution%()
 	Local selectedMode% = 1
@@ -89,9 +58,6 @@ Function VerifyResolution%()
 
 	Return selectedMode-1
 End Function
-
-Global Font1.MarkedForRemoval, Font2.MarkedForRemoval, Font3.MarkedForRemoval, Font4.MarkedForRemoval, Font5.MarkedForRemoval
-Global ConsoleFont.MarkedForRemoval
 
 ;TODO: cleanup
 Type Timing
@@ -130,18 +96,13 @@ Global GameSaved%
 ;TODO: Player.bb
 Global CanSave%
 
-;TODO: Assets.bb
-Global CursorIMG.MarkedForRemoval
-
-Global BlinkMeterIMG.MarkedForRemoval
-
 Global MouseHit1%, MouseDown1%, MouseHit2%, DoubleClick%, LastMouseHit1%, MouseUp1%
 
 ;TODO: Make this not global.
 Global CoffinDistance#
 
 ;TODO: Move somewhere?
-Global ExplosionTimer#, ExplosionSFX.MarkedForRemoval
+Global ExplosionTimer#
 
 Global LightsOn% = True ;secondary lighting on
 
@@ -156,69 +117,10 @@ Global SoundEmitter%
 Global TempSounds%[10]
 Global TempSoundIndex% = 0
 
-;TODO: Audio.bb
-Global KeyCardSFX1.MarkedForRemoval
-Global KeyCardSFX2.MarkedForRemoval
-Global ButtonSFX2.MarkedForRemoval
-Global ScannerSFX1.MarkedForRemoval
-Global ScannerSFX2.MarkedForRemoval
-
-Global OpenDoorFastSFX.MarkedForRemoval
-Global CautionSFX.MarkedForRemoval
-
-Global NuclearSirenSFX.MarkedForRemoval
-
-Global CameraSFX.MarkedForRemoval
-
-Global GunshotSFX.MarkedForRemoval
-Global Gunshot2SFX.MarkedForRemoval
-Global Gunshot3SFX.MarkedForRemoval
-Global BullethitSFX.MarkedForRemoval
-
-Global TeslaIdleSFX.MarkedForRemoval
-Global TeslaActivateSFX.MarkedForRemoval
-Global TeslaPowerUpSFX.MarkedForRemoval
-
-Global MagnetUpSFX.MarkedForRemoval
-Global MagnetDownSFX.MarkedForRemoval
-Global FemurBreakerSFX.MarkedForRemoval
-
-Global BurstSFX.MarkedForRemoval
-
-Global Death914SFX.MarkedForRemoval
-Global Use914SFX.MarkedForRemoval
-
-Global LeverSFX.MarkedForRemoval
-Global LightSFX.MarkedForRemoval
-
-Global ButtGhostSFX.MarkedForRemoval
-
+;TODO: Radio Type
 Global RadioSquelch%
 Global RadioStatic%
 Global RadioBuzz%
-
-Global ElevatorBeepSFX.MarkedForRemoval
-Global ElevatorMoveSFX.MarkedForRemoval
-
-;TODO: More Audio.bb
-Global AmbientSFXCHN.MarkedForRemoval, CurrAmbientSFX.MarkedForRemoval
-
-Global HeartBeatSFX.MarkedForRemoval
-
-;TODO: Why the fuck is this a global?
-Global MachineSFX.MarkedForRemoval
-
-;TODO: WHY IS THIS A GLOBAL???
-Global ApacheSFX.MarkedForRemoval
-
-;TODO: Die forever.
-Global NTF_1499EnterSFX.MarkedForRemoval
-Global NTF_1499LeaveSFX.MarkedForRemoval
-
-;TODO: Not be globals.
-Global Monitor2.MarkedForRemoval, Monitor3.MarkedForRemoval, MonitorTexture2.MarkedForRemoval, MonitorTexture3.MarkedForRemoval, MonitorTexture4.MarkedForRemoval, MonitorTextureOff.MarkedForRemoval
-Global MonitorTimer.MarkedForRemoval, MonitorTimer2.MarkedForRemoval
-Global UpdateCheckpoint1.MarkedForRemoval, UpdateCheckpoint2.MarkedForRemoval
 
 ;TODO: die
 ;This variable is for when a camera detected the player
@@ -227,9 +129,6 @@ Global UpdateCheckpoint1.MarkedForRemoval, UpdateCheckpoint2.MarkedForRemoval
 Global PlayerDetected%
 Global PrevInjuries#,PrevBloodloss#
 Global NoTarget%
-
-;TODO: Assets.bb
-Global NVGImages.MarkedForRemoval
 
 Global AmbientLightRoomTex%, AmbientLightRoomVal%
 
@@ -245,10 +144,6 @@ Global NTF_1499Y#
 Global NTF_1499Z#
 Global NTF_1499Sky%
 
-;TODO: Redo using CurrGameSubstate
-Global OptionsMenu.MarkedForRemoval
-Global QuitMSG.MarkedForRemoval
-
 ;TODO: Die.
 Global InFacility%
 
@@ -260,42 +155,14 @@ Global room2gw_brokendoor%
 Global room2gw_x#
 Global room2gw_z#
 
-;TODO: Assets.bb
-Global PauseMenuIMG.MarkedForRemoval
-
-;TODO: Assets.bb
-Global SprintIcon.MarkedForRemoval
-Global BlinkIcon.MarkedForRemoval
-Global CrouchIcon.MarkedForRemoval
-Global HandIcon.MarkedForRemoval
-Global HandIcon2.MarkedForRemoval
-
-Global StaminaMeterIMG.MarkedForRemoval
-
-Global KeypadHUD.MarkedForRemoval
-
 ;TODO: cleanup
-Global Panel294.MarkedForRemoval
-Global Using294.MarkedForRemoval
 Global Input294$
 
 ;TODO: Assets.bb
 Global TeslaTexture%
 
-Global DoorOBJ.MarkedForRemoval, DoorFrameOBJ.MarkedForRemoval
-
-Global LeverOBJ.MarkedForRemoval, LeverBaseOBJ.MarkedForRemoval
-
-Global DoorColl.MarkedForRemoval
-Global ButtonOBJ.MarkedForRemoval, ButtonKeyOBJ.MarkedForRemoval, ButtonCodeOBJ.MarkedForRemoval, ButtonScannerOBJ.MarkedForRemoval
-
 Global Monitor%, MonitorTexture%
 Global CamBaseOBJ%, CamOBJ%
-
-Global LiquidObj.MarkedForRemoval, MTFObj.MarkedForRemoval, ClassDObj.MarkedForRemoval
-Global ApacheObj.MarkedForRemoval, ApacheRotorObj.MarkedForRemoval
-
-Global UnableToMove.MarkedForRemoval
 
 Function Main%()
 	keyBinds = New KeyBinds
@@ -423,7 +290,7 @@ Function InitializeMainGame()
 
 	FlushKeys()
 	FlushMouse()
-	
+
 	MenuBlinkTimer[0] = 1
 	MenuBlinkDuration[0] = 1
 

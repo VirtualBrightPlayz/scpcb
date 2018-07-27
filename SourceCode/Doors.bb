@@ -1,6 +1,4 @@
-
-Global ClosestButton.MarkedForRemoval, ClosestDoor.MarkedForRemoval
-Global SelectedDoor.MarkedForRemoval, UpdateDoorsTimer#
+Global UpdateDoorsTimer#
 Global DoorTempID%
 Type Door
 	Field obj%, obj2%, frameobj%, buttons%[2]

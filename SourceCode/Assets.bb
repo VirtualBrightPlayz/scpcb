@@ -265,21 +265,6 @@ Function LoadEntities()
 	DrawLoading(5)
 	TeslaTexture = LoadTexture("GFX/Map/Textures/tesla.jpg", 1+2)
 
-	LightSpriteTex(0) = LoadTexture("GFX/Sprites/light1.jpg", 1)
-	LightSpriteTex(1) = LoadTexture("GFX/Sprites/light2.jpg", 1)
-	LightSpriteTex(2) = LoadTexture("GFX/Sprites/lightsprite.jpg",1)
-
-	DrawLoading(10)
-
-	DrawLoading(15)
-
-	For i = 0 To 5
-		GorePics(i) = LoadTexture("GFX/895pics/pic" + Str(i + 1) + ".jpg")
-	Next
-
-	OldAiPics(0) = LoadTexture("GFX/079pics/AIface.jpg")
-	OldAiPics(1) = LoadTexture("GFX/079pics/AIface2.jpg")
-
 	DrawLoading(20)
 
 	;TODO: replace DecalTextures with a 2D array?
@@ -349,7 +334,7 @@ Function InitNewGame()
 	For i = 0 To 3
 		AccessCode = AccessCode + Int(Rand(1,9)*(10^i))
 	Next
-	
+
 	;TODO:
 	;If (SelectedMap = "") Then
 		CreateMap()
@@ -449,7 +434,7 @@ Function InitNewGame()
 	TurnEntity(mainPlayer\collider, 0, Rand(160, 200), 0)
 
 	ResetEntity(mainPlayer\collider)
-	
+
 	InitEvents()
 
 	;TODO: fix
@@ -700,10 +685,6 @@ Function NullGame()
 	Delete Each Emitter
 
 	Delete Each Particle
-
-	For i = 0 To 5
-		If (IsChannelPlaying(RadioCHN(i))) Then StopChannel(RadioCHN(i))
-	Next
 
 	NTF_1499PrevX = 0.0
 	NTF_1499PrevY = 0.0

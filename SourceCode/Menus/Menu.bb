@@ -1,8 +1,6 @@
 ;menus, GUI ---------------------------------------------------------------------------------------------------------
-Global MainMenuOpen.MarkedForRemoval, MenuOpen.MarkedForRemoval, InvOpen.MarkedForRemoval ;TODO: REMOVE
 ;Global OtherOpen.Item = Null
 Global SelectedEnding$ ;TODO: REMOVE
-Global EndingScreen.MarkedForRemoval, EndingTimer.MarkedForRemoval
 
 Const GAMESTATE_MAINMENU% = 0
 Const GAMESTATE_PLAYING% = 1
@@ -34,17 +32,6 @@ Global DrawHandIcon%
 
 Global MenuScale#
 
-;TODO: Assets.bb
-Dim DrawArrowIcon.MarkedForRemoval(4)
-
-Global QuickLoadIcon.MarkedForRemoval
-
-Global MenuBack.MarkedForRemoval
-Global MenuText.MarkedForRemoval
-Global Menu173.MarkedForRemoval
-Global MenuWhite.MarkedForRemoval
-Global MenuBlack.MarkedForRemoval
-
 Global RandomSeed$
 
 Global MenuBlinkTimer#[2]
@@ -52,31 +39,19 @@ Global MenuBlinkDuration#[2]
 
 Global MenuStr$, MenuStrX%, MenuStrY%
 
-Global MainMenuTab.MarkedForRemoval
-
 Global SelectedInputBox%
 
 Global SavePath$ = "Saves/"
 Global SaveMSG$
 
-;nykyisen tallennuksen nimi ja samalla missä kansiossa tallennustiedosto sijaitsee saves-kansiossa
+; Current save.
 Global CurrSave$
-
-Global SaveGameAmount.MarkedForRemoval
-Dim SaveGames.MarkedForRemoval(1)
-Dim SaveGameTime.MarkedForRemoval(1)
-Dim SaveGameDate.MarkedForRemoval(1)
-
-Global MAXSAVEDMAPS.MarkedForRemoval
-Dim SavedMaps.MarkedForRemoval(6)
-Global SelectedMap.MarkedForRemoval
 
 Include "SourceCode/Menus/Launcher.bb"
 Include "SourceCode/Menus/MainMenu.bb"
 Include "SourceCode/Menus/LoadingScreen.bb"
 
 Function DrawTiledImageRect(img%, srcX%, srcY%, srcwidth%, srcheight%, x%, y%, width%, height%)
-
 	Local x2% = x
 	Local y2%
 	While x2 < x+width
@@ -378,9 +353,6 @@ Function DrawPointer()
 		DrawImage(uiAssets\cursorIMG, MouseX(), MouseY())
 	EndIf
 End Function
-
-Global QuickLoadPercent.MarkedForRemoval
-Global QuickLoadPercent_DisplayTimer.MarkedForRemoval
 
 
 ;~IDEal Editor Parameters:
