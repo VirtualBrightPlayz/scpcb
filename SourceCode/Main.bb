@@ -520,7 +520,7 @@ Function UpdateGame()
 						Msg = "Saving is only permitted on clickable monitors scattered throughout the facility."
 						MsgTimer = 70 * 4
 					Else
-						rn = mainPlayer\currRoom\roomTemplate\name$
+						rn = mainPlayer\currRoom\roomTemplate\name
 						If (rn = "173" Or rn = "exit1" Or rn = "gatea") Then
 							Msg = "You cannot save in this location."
 							MsgTimer = 70 * 4
@@ -1750,9 +1750,9 @@ End Function
 ;	For snd.Sound = Each Sound
 ;		For i=0 To 31
 ;			;If (snd\channels[i]<>0) Then
-;			;	ChannelVolume(snd\channels[i],userOptions\soundVolume#)
+;			;	ChannelVolume(snd\channels[i],userOptions\soundVolume)
 ;			;Else
-;				ChannelVolume(snd\channels[i],userOptions\soundVolume#)
+;				ChannelVolume(snd\channels[i],userOptions\soundVolume)
 ;			;EndIf
 ;		Next
 ;	Next

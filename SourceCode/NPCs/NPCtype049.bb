@@ -57,7 +57,7 @@ Function UpdateNPCtype049(n.NPC)
 			EndIf
 
 			n\pathStatus = 0
-			n\pathTimer# = 0.0
+			n\pathTimer = 0.0
 			n\pathLocation = 0
 
 			PointEntity(n\obj, mainPlayer\collider)
@@ -69,7 +69,7 @@ Function UpdateNPCtype049(n.NPC)
 				mainPlayer\blurTimer = 500.0
 
 				If (Not mainPlayer\godMode) Then
-					If (mainPlayer\currRoom\roomTemplate\name$ = "room049") Then
+					If (mainPlayer\currRoom\roomTemplate\name = "room049") Then
 						DeathMSG = "Three (3) active instances of SCP-049-2 discovered in the tunnel outside SCP-049's containment chamber. Terminated by Nine-Tailed Fox."
 
 						For e = Each Event
@@ -159,7 +159,7 @@ Function UpdateNPCtype049(n.NPC)
 							ElseIf (dist2<0.5 And (Not temp)) Then
 								;Breaking up the path because the door cannot be operated by SCP-049
 								n\pathStatus = 0
-								n\pathTimer# = 0.0
+								n\pathTimer = 0.0
 							EndIf
 						EndIf
 
@@ -187,23 +187,23 @@ Function UpdateNPCtype049(n.NPC)
 						If (dist2 < 0.7) Then
 							n\pathStatus = 0
 							n\pathLocation = 0
-							n\pathTimer# = 0.0
+							n\pathTimer = 0.0
 						EndIf
 					EndIf
 				Else ;No Path to the player found - stands still and tries to find a path
 					If (n\currElevator = Null) Then
 						If (n\pathStatus = 2) Then ;Updating path faster
-							n\pathTimer# = n\pathTimer# + 2*timing\tickDuration
+							n\pathTimer = n\pathTimer + 2*timing\tickDuration
 						Else
-							n\pathTimer# = n\pathTimer# + timing\tickDuration
+							n\pathTimer = n\pathTimer + timing\tickDuration
 						EndIf
-						If (n\pathTimer# > 70*5-(2*SelectedDifficulty\aggressiveNPCs)) Then
+						If (n\pathTimer > 70*5-(2*SelectedDifficulty\aggressiveNPCs)) Then
 							If (n\inFacility = InFacility) Then
 								n\pathStatus = FindPath(n, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider))
 							Else
 								FindNextElevator(n)
 							EndIf
-							n\pathTimer# = 0.0
+							n\pathTimer = 0.0
 						EndIf
 						AnimateNPC(n, 269, 345, 0.2)
 						;n\prevState = 0
@@ -268,7 +268,7 @@ Function UpdateNPCtype049(n.NPC)
 							ElseIf (dist2<0.5 And (Not temp)) Then
 								;Breaking up the path because the door cannot be operated by SCP-049
 								n\pathStatus = 0
-								n\pathTimer# = 0.0
+								n\pathTimer = 0.0
 							EndIf
 						EndIf
 
@@ -280,7 +280,7 @@ Function UpdateNPCtype049(n.NPC)
 							If (n\state3 > 70*14) Then ;Breaking the path after 14 seconds
 								n\pathStatus = 0
 								n\pathLocation = 0
-								n\pathTimer# = 0.0
+								n\pathTimer = 0.0
 								n\state3 = 0.0
 							EndIf
 						EndIf
@@ -298,8 +298,8 @@ Function UpdateNPCtype049(n.NPC)
 					If (n\currElevator = Null) Then
 						n\currSpeed = 0
 						AnimateNPC(n, 269, 345, 0.2)
-						If (n\pathTimer# < 300+Rand(100,300)) Then
-							n\pathTimer# = n\pathTimer# + timing\tickDuration
+						If (n\pathTimer < 300+Rand(100,300)) Then
+							n\pathTimer = n\pathTimer + timing\tickDuration
 						Else
 							If (n\inFacility = True) Then
 								If (Rand(2)=1) Then
@@ -313,7 +313,7 @@ Function UpdateNPCtype049(n.NPC)
 							Else
 								FindNextElevator(n)
 							EndIf
-							n\pathTimer# = 0.0
+							n\pathTimer = 0.0
 						EndIf
 					Else
 						;n\currSpeed = CurveValue(n\speed, n\currSpeed, 20.0)

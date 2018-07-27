@@ -1170,7 +1170,7 @@ Function FindPath%(n.NPC, x#, y#, z#)
 								w\connected[i]\parent = w
 							EndIf
 						Else
-							w\connected[i]\hCost# = Abs(EntityX(w\connected[i]\obj,True)-EntityX(EndPoint\obj,True))+Abs(EntityZ(w\connected[i]\obj,True)-EntityZ(EndPoint\obj,True))
+							w\connected[i]\hCost = Abs(EntityX(w\connected[i]\obj,True)-EntityX(EndPoint\obj,True))+Abs(EntityZ(w\connected[i]\obj,True)-EntityZ(EndPoint\obj,True))
 							gtemp = w\gCost+w\dist[i]
 							;TODO: fix?
 							;If (n\npcType = NPCtypeMTF) Then

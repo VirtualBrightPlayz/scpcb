@@ -156,7 +156,7 @@ Function UpdateEvent_lck_air_2(e.Event)
 				ElseIf (e\floatState[EVENT_LCKA2_TIMER] > 70*3 And e\floatState[EVENT_LCKA2_TIMER] < 70*5.5) Then
 					pvt = CreatePivot(e\room\obj)
 					For i = 0 To 1
-						If (e\room\roomTemplate\name$ = "lck_ez_3") Then
+						If (e\room\roomTemplate\name = "lck_ez_3") Then
 							If (i = 0) Then
 								PositionEntity(pvt,-288.0*RoomScale,416.0*RoomScale,320.0*RoomScale,False)
 							Else

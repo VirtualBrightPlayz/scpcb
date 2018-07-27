@@ -55,7 +55,7 @@ Function UpdateNPCtypeZombie(n.NPC)
                         EndIf
                     EndIf
                 Case 1 ;stands up
-                    If (n\frame=>682) Then
+                    If (n\frame>=682) Then
                         AnimateNPC(n, 926, 935, 0.3, False)
                         If (n\frame = 935) Then n\state = 2
 
@@ -143,7 +143,7 @@ Function UpdateNPCtypeZombie(n.NPC)
                         AnimateNPC(n, 2, 65, 0.7, False)
 
                         ;Animate2(n\obj, AnimTime(n\obj), 2, 65, 0.7, False)
-                        If (prevFrame < 23 And n\frame=>23) Then
+                        If (prevFrame < 23 And n\frame>=23) Then
                             PlaySound2(mainPlayer\damageSFX[Rand(5,8)])
                             mainPlayer\injuries = mainPlayer\injuries+Rnd(0.4,1.0)
                             DeathMSG = "Subject D-9341. Cause of death: multiple lacerations and severe blunt force trauma caused by an instance of SCP-049-2."
@@ -153,7 +153,7 @@ Function UpdateNPCtypeZombie(n.NPC)
                     Else
                         AnimateNPC(n, 66, 132, 0.7, False)
                         ;Animate2(n\obj, AnimTime(n\obj), 66, 132, 0.7, False)
-                        If (prevFrame < 90 And n\frame=>90) Then
+                        If (prevFrame < 90 And n\frame>=90) Then
                             PlaySound2(mainPlayer\damageSFX[Rand(5,8)])
                             mainPlayer\injuries = mainPlayer\injuries+Rnd(0.4,1.0)
                             DeathMSG = "Subject D-9341. Cause of death: multiple lacerations and severe blunt force trauma caused by an instance of SCP-049-2."

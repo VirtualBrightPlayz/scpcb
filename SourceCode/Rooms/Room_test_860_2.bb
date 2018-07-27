@@ -596,10 +596,10 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Room)
 
 				tile_type = 0
 				If (tx+1<gridsize) Then tile_type = (fr\grid[(ty*gridsize)+tx+1]>0)
-				If (tx-1=>0) Then tile_type = tile_type+(fr\grid[(ty*gridsize)+tx-1]>0)
+				If (tx-1>=0) Then tile_type = tile_type+(fr\grid[(ty*gridsize)+tx-1]>0)
 
 				If (ty+1<gridsize) Then tile_type = tile_type+(fr\grid[((ty+1)*gridsize)+tx]>0)
-				If (ty-1=>0) Then tile_type = tile_type+(fr\grid[((ty-1)*gridsize)+tx]>0)
+				If (ty-1>=0) Then tile_type = tile_type+(fr\grid[((ty-1)*gridsize)+tx]>0)
 
 				;fr\grid[(ty*gridsize)+tx]=tile_type
 

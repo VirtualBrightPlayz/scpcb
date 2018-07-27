@@ -183,7 +183,7 @@ Function UpdateEvent_cont_035_1(e.Event)
 
 						If (e\eventState3 >-30*70) Then
 							e\eventState3=Abs(e\eventState3)+timing\tickDuration
-							If (e\eventState3 > 1 And e\eventState3-timing\tickDuration=<1) Then
+							If (e\eventState3 > 1 And e\eventState3-timing\tickDuration<=1) Then
 								e\room\npc[0]\state = 0
 								If (e\room\npc[0]\sounds[0]<>0) Then
 									FreeSound(e\room\npc[0]\sounds[0]) : e\room\npc[0]\sounds[0] = 0
@@ -191,7 +191,7 @@ Function UpdateEvent_cont_035_1(e.Event)
 								e\room\npc[0]\sounds[0] = LoadSound("SFX/SCP/035/Gased1.ogg")
 								e\room\npc[0]\soundChannels[0] = PlaySound(e\room\npc[0]\sounds[0])
 							ElseIf (e\eventState3>15*70 And e\eventState3<25*70) Then
-								If (e\eventState3-timing\tickDuration=<15*70) Then
+								If (e\eventState3-timing\tickDuration<=15*70) Then
 									If (e\room\npc[0]\sounds[0]<>0) Then
 										FreeSound(e\room\npc[0]\sounds[0]) : e\room\npc[0]\sounds[0] = 0
 									EndIf
@@ -212,7 +212,7 @@ Function UpdateEvent_cont_035_1(e.Event)
 									If (e\room\npc[0]\frame=553) Then e\room\npc[0]\state = 0
 								EndIf
 
-								If (e\eventState3-timing\tickDuration=<35*70) Then
+								If (e\eventState3-timing\tickDuration<=35*70) Then
 									If (e\room\npc[0]\sounds[0]<>0) Then
 										FreeSound(e\room\npc[0]\sounds[0]) : e\room\npc[0]\sounds[0] = 0
 									EndIf

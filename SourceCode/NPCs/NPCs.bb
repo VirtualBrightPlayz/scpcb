@@ -777,7 +777,7 @@ Function ManipulateNPCBones()
 			If (bone = 0) Then RuntimeError("ERROR: NPC bone "+Chr(34)+bonename+Chr(34)+" does not exist.")
 			If (n\boneToManipulate2<>"") Then
 				bonename2 = GetNPCManipulationValue(n\npcNameInSection,n\boneToManipulate,"navbone",0)
-				bone2 = FindChild(n\obj,n\boneToManipulate2$)
+				bone2 = FindChild(n\obj,n\boneToManipulate2)
 				If (bone2 = 0) Then RuntimeError("ERROR: NPC bone "+Chr(34)+bonename2+Chr(34)+" does not exist.")
 			EndIf
 			PositionEntity(pvt,EntityX(bone,True),EntityY(bone,True),EntityZ(bone,True))
@@ -839,7 +839,7 @@ Function ManipulateNPCBones()
 					PointEntity(bone,Curr096\obj)
 					Select TransformNPCManipulationData(n\npcNameInSection,n\boneToManipulate,"yaw")
 						Case 0
-							n\boneYaw = CurveAngle(EntityPitch(bone),n\boneYaw#,10.0)
+							n\boneYaw = CurveAngle(EntityPitch(bone),n\boneYaw,10.0)
 							pitchvalue = -n\boneYaw
 						Case 1
 							n\boneYaw = CurveAngle(EntityYaw(bone),n\boneYaw,10.0)
@@ -949,7 +949,7 @@ Function NPCSpeedChange(n.NPC)
 End Function
 
 Function PlayerInReachableRoom%()
-	Local RN$ = mainPlayer\currRoom\roomTemplate\name$
+	Local RN$ = mainPlayer\currRoom\roomTemplate\name
 	Local e.Event, temp%
 
 	;Player is in these rooms, returning false
@@ -963,7 +963,7 @@ Function PlayerInReachableRoom%()
 	;Player is in 860's test room and inside the forest, returning false
 	temp = False
 	For e = Each Event
-		If (e\name$ = "room860" And e\eventState = 1.0) Then
+		If (e\name = "room860" And e\eventState = 1.0) Then
 			temp = True
 			Exit
 		EndIf

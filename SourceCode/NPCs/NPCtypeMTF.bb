@@ -136,7 +136,7 @@ Function UpdateNPCtypeMTF(n.NPC)
 
 							If (Not tmp) Then
 								For r = Each Room
-									If (r\roomTemplate\name$ = "start") Then
+									If (r\roomTemplate\name = "start") Then
 										foundChamber = False
 										pvt = CreatePivot()
 										PositionEntity(pvt,EntityX(r\obj,True)+4736*RoomScale,0.5,EntityZ(r\obj,True)+1692*RoomScale)
@@ -266,9 +266,9 @@ Function UpdateNPCtypeMTF(n.NPC)
 							EndIf
 						EndIf
 						n\pathTimer=n\pathTimer-timing\tickDuration ;timer goes down slow
-					ElseIf (n\pathX#<>0.0) Then
+					ElseIf (n\pathX<>0.0) Then
 						pvt = CreatePivot()
-						PositionEntity(pvt,n\pathX#,0.5,n\pathZ#)
+						PositionEntity(pvt,n\pathX,0.5,n\pathZ)
 
 						PointEntity(n\collider,pvt)
 						RotateEntity(n\collider,0.0,EntityYaw(n\collider,True),0.0,True)
@@ -279,9 +279,9 @@ Function UpdateNPCtypeMTF(n.NPC)
 						TranslateEntity(n\collider, Cos(EntityYaw(n\collider,True)+90.0)*n\currSpeed * timing\tickDuration, 0, Sin(EntityYaw(n\collider,True)+90.0)*n\currSpeed * timing\tickDuration, True)
 						AnimateNPC(n,488, 522, n\currSpeed*26)
 
-						If (Distance(EntityX(n\collider),EntityZ(n\collider),n\pathX#,n\pathZ#)<0.2) Then
-							n\pathX# = 0.0
-							n\pathZ# = 0.0
+						If (Distance(EntityX(n\collider),EntityZ(n\collider),n\pathX,n\pathZ)<0.2) Then
+							n\pathX = 0.0
+							n\pathZ = 0.0
 							n\pathTimer = 70.0 * Rnd(6.0,10.0)
 						EndIf
 
@@ -684,7 +684,7 @@ Function UpdateNPCtypeMTF(n.NPC)
 						EndIf
 					EndIf
 
-					If (n\mtfLeader=Null And n\lastSeen<70*30 And n\lastSeen+timing\tickDuration=>70*30) Then
+					If (n\mtfLeader=Null And n\lastSeen<70*30 And n\lastSeen+timing\tickDuration>=70*30) Then
 						If (Rand(2)=1) Then
 							PlayMTFSound(LoadTempSound("SFX/Character/MTF/Searching"+Str(Rand(1,6))+".ogg"),n)
 						EndIf
@@ -1562,7 +1562,7 @@ Function UpdateNPCtypeMTF(n.NPC)
 		If (n\currSpeed > 0.01) Then
 			If (prevFrame > 500 And n\frame<495) Then
 				PlayRangedSound(sndManager\footstepMetal[Rand(0,7)]\internal, mainPlayer\cam, n\collider, 8.0, Rnd(0.5,0.7))
-			ElseIf (prevFrame < 505 And n\frame=>505) Then
+			ElseIf (prevFrame < 505 And n\frame>=505) Then
 				PlayRangedSound(sndManager\footstepMetal[Rand(0,7)]\internal, mainPlayer\cam, n\collider, 8.0, Rnd(0.5,0.7))
 			EndIf
 		EndIf
@@ -1614,7 +1614,7 @@ Function UpdateMTF()
 
 	;mtf ei vielä spawnannut, spawnataan jos pelaaja menee tarpeeksi lähelle gate b:tä
 	If (MTFtimer = 0) Then
-		If (Rand(30)=1 And mainPlayer\currRoom\roomTemplate\name$ <> "dimension1499") Then
+		If (Rand(30)=1 And mainPlayer\currRoom\roomTemplate\name <> "dimension1499") Then
 
 			entrance = Null
 			For r = Each Room

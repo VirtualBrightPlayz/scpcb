@@ -253,7 +253,7 @@ Function UpdateEvent_extend_gatea_1(e.Event)
 
 			UpdateSky()
 
-			If (e\eventState=>350) Then
+			If (e\eventState>=350) Then
 				If (Contained106=False) Then
 					If (e\eventState-timing\tickDuration < 350) Then
 						Curr106\state = -0.1
@@ -507,7 +507,7 @@ Function UpdateEvent_extend_gatea_1(e.Event)
 							Next
 						EndIf
 
-						If (e\eventState3=>230.0) Then
+						If (e\eventState3>=230.0) Then
 							If (e\eventState3-timing\tickDuration<230.0) Then
 								e\soundChannels[0] = PlaySound(LoadTempSound("SFX/Ending/GateA/CI.ogg"))
 							EndIf
@@ -566,7 +566,7 @@ Function UpdateEvent_extend_gatea_1(e.Event)
 							EndIf
 						Next
 
-						If (e\eventState2=<1) Then
+						If (e\eventState2<=1) Then
 							For i = 5 To 8
 								If (e\room\npc[i]\state = 5) Then
 									For temp = 5 To 8

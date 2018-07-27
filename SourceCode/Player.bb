@@ -500,7 +500,7 @@ Function UpdatePlayer()
 		Next
 
 		If (collidedFloor = True) Then
-			If (mainPlayer\dropSpeed# < - 0.07) Then
+			If (mainPlayer\dropSpeed < - 0.07) Then
 				If (mainPlayer\footstepOverride=0) Then
 					If (GetMaterialStepSound(mainPlayer\collider) = 1) Then
 						PlaySound_SM(sndManager\footstepMetal[Rand(0, 7)])

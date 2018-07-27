@@ -56,18 +56,18 @@ Function UpdateNPCtype939(n.NPC)
                 ;Animate2(n\obj,AnimTime(n\obj),290,405,0.1)
             Case 1
 
-                If (n\frame=>644 And n\frame<683) Then ;finish the walking animation
+                If (n\frame>=644 And n\frame<683) Then ;finish the walking animation
                     ;n\currSpeed = CurveValue(n\speed*0.2, n\currSpeed, 10.0)
                     n\currSpeed = CurveValue(n\speed*0.05, n\currSpeed, 10.0)
                     AnimateNPC(n, 644,683,28*n\currSpeed*4,False)
-                    If (n\frame=>682) Then n\frame =175
+                    If (n\frame>=682) Then n\frame =175
 
                     ;Animate2(n\obj,AnimTime(n\obj),644,683,28*n\currSpeed,False)
                     ;If (AnimTime(n\obj)=683) Then SetAnimTime(n\obj,175)
                 Else
                     n\currSpeed = CurveValue(0, n\currSpeed, 5.0)
                     AnimateNPC(n, 175,297,0.22,False)
-                    If (n\frame=>296) Then n\state = 2
+                    If (n\frame>=296) Then n\state = 2
 
                     ;Animate2(n\obj,AnimTime(n\obj),175,297,0.22,False)
                     ;If (AnimTime(n\obj)=297) Then n\state = 2
@@ -91,7 +91,7 @@ Function UpdateNPCtype939(n.NPC)
                 ;prevFrame = AnimTime(n\obj)
                 ;Animate2(n\obj,AnimTime(n\obj),644,683,28*n\currSpeed) ;walk
 
-                If (prevFrame<664 And n\frame=>664) Or (prevFrame>673 And n\frame<654) Then
+                If (prevFrame<664 And n\frame>=664) Or (prevFrame>673 And n\frame<654) Then
                     PlayRangedSound(sndManager\footstepMetal[Rand(0,7)]\internal, mainPlayer\cam, n\collider, 12.0)
                     If (Rand(10)=1) Then
                         temp = False
@@ -130,7 +130,7 @@ Function UpdateNPCtype939(n.NPC)
                 If (n\lastSeen > 0 And (Not NoTarget)) Then
                     prevFrame = Int(n\frame)
 
-                    If (n\frame=>18.0 And n\frame<68.0) Then
+                    If (n\frame>=18.0 And n\frame<68.0) Then
                         n\currSpeed = CurveValue(0, n\currSpeed, 5.0)
                         AnimateNPC(n, 18,68,0.5,True)
                         ;Animate2(n\obj,AnimTime(n\obj),18,68,0.5,True)
@@ -168,7 +168,7 @@ Function UpdateNPCtype939(n.NPC)
                             AnimateNPC(n, 449,464,6*n\currSpeed) ;run
                             ;Animate2(n\obj,AnimTime(n\obj),449,464,6*n\currSpeed) ;run
 
-                            If (prevFrame<452 And n\frame=>452) Or (prevFrame<459 And n\frame=>459) Then
+                            If (prevFrame<452 And n\frame>=452) Or (prevFrame<459 And n\frame>=459) Then
                                 PlayRangedSound(sndManager\footstepMetalRun[Rand(0,7)]\internal, mainPlayer\cam, n\collider, 12.0)
                             EndIf
 

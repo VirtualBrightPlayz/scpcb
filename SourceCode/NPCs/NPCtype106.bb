@@ -55,7 +55,7 @@ Function UpdateNPCtype106(n.NPC)
 
     Select n\state
         Case STATE106_RISE
-            If (mainPlayer\currRoom\roomTemplate\name$ = "dimension1499") Then
+            If (mainPlayer\currRoom\roomTemplate\name = "dimension1499") Then
                 Return
             EndIf
 
@@ -140,7 +140,7 @@ Function UpdateNPCtype106(n.NPC)
                 AnimateNPC(n, 284, 333, n\currSpeed * 43)
 
                 ;Footstep sounds.
-                If (prevFrame =< 286 And n\frame > 286) Or (prevFrame=<311 And n\frame > 311.0) Then
+                If (prevFrame =< 286 And n\frame > 286) Or (prevFrame<=311 And n\frame > 311.0) Then
                     PlayRangedSound(sndManager\footstepPD[Rand(0, 2)]\internal, mainPlayer\cam, n\collider, 6.0, Rnd(0.8,1.0))
                 EndIf
 

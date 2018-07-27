@@ -175,7 +175,7 @@ Function UpdateNPCtype1499(n.NPC)
                 n\currSpeed = CurveValue(0.0,n\currSpeed,5.0)
                 If (n\state2 = 1) Then
                     AnimateNPC(n,63,100,0.6,False)
-                    If (prevFrame < 89 And n\frame=>89) Then
+                    If (prevFrame < 89 And n\frame>=89) Then
                         If (n\playerDistance > 0.85 Or Abs(DeltaYaw(n\collider,mainPlayer\collider))>60.0) Then
                             ;Miss
                         Else
@@ -183,7 +183,7 @@ Function UpdateNPCtype1499(n.NPC)
                             PlayRangedSound(LoadTempSound("SFX/General/Slash"+Str(Rand(1,2))+".ogg"), mainPlayer\cam, n\collider)
                             If (mainPlayer\injuries > 10.0) Then
                                 Kill(mainPlayer)
-                                If (mainPlayer\currRoom\roomTemplate\name$ = "dimension1499") Then
+                                If (mainPlayer\currRoom\roomTemplate\name = "dimension1499") Then
                                     DeathMSG = "All personnel situated within Evacuation Shelter LC-2 during the breach have been administered "
                                     DeathMSG = DeathMSG + "Class-B amnestics due to Incident 1499-E. The Class D subject involved in the event "
                                     DeathMSG = DeathMSG + "died shortly after being shot by Agent [REDACTED]."
@@ -200,7 +200,7 @@ Function UpdateNPCtype1499(n.NPC)
                     EndIf
                 Else
                     AnimateNPC(n,168,202,0.6,False)
-                    If (prevFrame < 189 And n\frame=>189) Then
+                    If (prevFrame < 189 And n\frame>=189) Then
                         If (n\playerDistance > 0.85 Or Abs(DeltaYaw(n\collider,mainPlayer\collider))>60.0) Then
                             ;Miss
                         Else
@@ -208,7 +208,7 @@ Function UpdateNPCtype1499(n.NPC)
                             PlayRangedSound(LoadTempSound("SFX/General/Slash"+Str(Rand(1,2))+".ogg"), mainPlayer\cam, n\collider)
                             If (mainPlayer\injuries > 10.0) Then
                                 Kill(mainPlayer)
-                                If (mainPlayer\currRoom\roomTemplate\name$ = "dimension1499") Then
+                                If (mainPlayer\currRoom\roomTemplate\name = "dimension1499") Then
                                     DeathMSG = "All personnel situated within Evacuation Shelter LC-2 during the breach have been administered "
                                     DeathMSG = DeathMSG + "Class-B amnestics due to Incident 1499-E. The Class D subject involved in the event "
                                     DeathMSG = DeathMSG + "died shortly after being shot by Agent [REDACTED]."

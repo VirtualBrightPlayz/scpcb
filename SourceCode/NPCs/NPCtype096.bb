@@ -207,7 +207,7 @@ Function UpdateNPCtype096(n.NPC)
                         ;Animate2(n\obj, AnimTime(n\obj),892,972, 0.2)
 
                         n\pathTimer = Max(0, n\pathTimer-timing\tickDuration)
-                        If (n\pathTimer=<0) Then
+                        If (n\pathTimer<=0) Then
                             If (n\target<>Null) Then
                                 n\pathStatus = FindPath(n, EntityX(n\target\collider),EntityY(n\target\collider)+0.2,EntityZ(n\target\collider))
                             Else
@@ -256,7 +256,7 @@ Function UpdateNPCtype096(n.NPC)
                 AnimateNPC(n, 833, 972, 0.3, False)
 
                 ;Animate2(n\obj, AnimTime(n\obj),833,972, 0.3, False)
-                If (n\frame=>972) Then
+                If (n\frame>=972) Then
 					n\state = 3 : n\state2=0
 				EndIf
             ElseIf (n\state=3) Then

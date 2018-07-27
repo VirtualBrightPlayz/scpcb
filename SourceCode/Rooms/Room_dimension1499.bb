@@ -107,7 +107,7 @@ End Function
 Function UpdateLeave1499()
 	Local r.Room, it.Item
 
-	If ((Not (IsPlayerWearingItem(mainPlayer,"scp1499") Or IsPlayerWearingItem(mainPlayer,"super1499"))) And mainPlayer\currRoom\roomTemplate\name$ = "dimension1499") Then
+	If ((Not (IsPlayerWearingItem(mainPlayer,"scp1499") Or IsPlayerWearingItem(mainPlayer,"super1499"))) And mainPlayer\currRoom\roomTemplate\name = "dimension1499") Then
 		For r = Each Room
 			If (r = NTF_1499PrevRoom) Then
 				mainPlayer\blinkTimer = -1
@@ -211,17 +211,17 @@ Function CreateChunk.Chunk(obj%,x#,y#,z#,spawnNPCs%=True)
 	Local chp.ChunkPart,i%,n.NPC
 
 	;If obj%<>0
-	;	ch\obj% = CopyEntity(obj%)
-	;	PositionEntity(ch\obj%,x,y,z)
-	;	ScaleEntity(ch\obj%,RoomScale,RoomScale,RoomScale)
-	;	EntityType(ch\obj%,HIT_MAP)
+	;	ch\obj = CopyEntity(obj%)
+	;	PositionEntity(ch\obj,x,y,z)
+	;	ScaleEntity(ch\obj,RoomScale,RoomScale,RoomScale)
+	;	EntityType(ch\obj,HIT_MAP)
 	;EndIf
 
-	;ch\debugobj% = CreateCube()
-	;ScaleEntity(ch\debugobj%,20,20,20)
-	;PositionEntity(ch\debugobj%,x#,y#+20,z#)
-	;EntityColor(ch\debugobj%,Rand(0,255),Rand(0,255),Rand(0,255))
-	;EntityFX(ch\debugobj%,1+FE_WIRE)
+	;ch\debugobj = CreateCube()
+	;ScaleEntity(ch\debugobj,20,20,20)
+	;PositionEntity(ch\debugobj,x#,y#+20,z#)
+	;EntityColor(ch\debugobj,Rand(0,255),Rand(0,255),Rand(0,255))
+	;EntityFX(ch\debugobj,1+FE_WIRE)
 
 	If (obj > -1) Then
 		For chp = Each ChunkPart

@@ -268,7 +268,7 @@ End Function
 
 
 Function IsItemGoodFor1162%(itt.ItemTemplate)
-	Local IN$ = itt\name$
+	Local IN$ = itt\name
 
 	;TODO: remember which items the player has collected instead of just picking random shit
 	Select itt\name

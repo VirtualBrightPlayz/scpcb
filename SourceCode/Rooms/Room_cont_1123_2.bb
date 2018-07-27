@@ -141,7 +141,7 @@ Function UpdateEvent_cont_1123_2(e.Event)
 			PointEntity(e\room\npc[0]\collider, mainPlayer\collider)
 			mainPlayer\blurTimer = Max(mainPlayer\blurTimer, 100)
 
-			If (e\eventState2>200 And e\eventState2-timing\tickDuration=<200) Then
+			If (e\eventState2>200 And e\eventState2-timing\tickDuration<=200) Then
 				;e\sounds[0] = LoadSound("SFX/Music/1123.ogg");TODO: fix
 				e\soundChannels[0] = PlaySound(e\sounds[0])
 			EndIf
@@ -154,9 +154,9 @@ Function UpdateEvent_cont_1123_2(e.Event)
 				EndIf
 				RotateEntity(e\room\objects[11], 0, CurveAngle(10, EntityYaw(e\room\objects[11],0), 40), 0)
 
-				If (e\eventState2=>1040 And e\eventState2-timing\tickDuration<1040) Then
+				If (e\eventState2>=1040 And e\eventState2-timing\tickDuration<1040) Then
 					PlayRangedSound(LoadTempSound("SFX/SCP/1123/Officer1.ogg"), mainPlayer\cam, e\room\npc[0]\obj)
-				ElseIf (e\eventState2=>1400 And e\eventState2-timing\tickDuration<1400) Then
+				ElseIf (e\eventState2>=1400 And e\eventState2-timing\tickDuration<1400) Then
 					PlayRangedSound(LoadTempSound("SFX/SCP/1123/Officer2.ogg"), mainPlayer\cam, e\room\npc[0]\obj)
 				EndIf
 

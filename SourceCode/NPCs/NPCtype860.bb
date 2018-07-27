@@ -233,7 +233,7 @@ Function UpdateNPCtype860(n.NPC)
                 EndIf
 
                 ;535, 568
-                If (prevFrame < 533 And n\frame=>533) Or (prevFrame > 568 And n\frame<2) Then
+                If (prevFrame < 533 And n\frame>=533) Or (prevFrame > 568 And n\frame<2) Then
                     PlayRangedSound(sndManager\footstep8601[Rand(0, 2)]\internal, mainPlayer\cam, n\collider, 15.0, 0.6)
                 EndIf
 
@@ -256,7 +256,7 @@ Function UpdateNPCtype860(n.NPC)
                     AnimateNPC(n, 298, 316, n\currSpeed*10)
                     ;Animate2(n\obj, AnimTime(n\obj), 298, 316, n\currSpeed*10)
 
-                    If (prevFrame < 307 And n\frame=>307) Then
+                    If (prevFrame < 307 And n\frame>=307) Then
                         PlayRangedSound(sndManager\footstep8601[Rand(0, 2)]\internal, mainPlayer\cam, n\collider, 10.0)
                     EndIf
                 Else
@@ -269,12 +269,12 @@ Function UpdateNPCtype860(n.NPC)
                     AnimateNPC(n, 451,493, 0.5, False)
 
                     ;Animate2(n\obj, AnimTime(n\obj), 451,493, 0.5, False)
-                    If (prevFrame < 461 And n\frame=>461) Then
+                    If (prevFrame < 461 And n\frame>=461) Then
                         If (Not mainPlayer\dead) Then Kill(mainPlayer)
                         PlaySound2(n\sounds[0])
                     EndIf
-                    If (prevFrame < 476 And n\frame=>476) Then PlaySound2(n\sounds[1])
-                    If (prevFrame < 486 And n\frame=>486) Then PlaySound2(n\sounds[1])
+                    If (prevFrame < 476 And n\frame>=476) Then PlaySound2(n\sounds[1])
+                    If (prevFrame < 486 And n\frame>=486) Then PlaySound2(n\sounds[1])
 
                 EndIf
 
@@ -315,24 +315,24 @@ Function Find860Angle#(n.NPC, fr.Forest)
 	TFormPoint(EntityX(mainPlayer\collider),EntityY(mainPlayer\collider),EntityZ(mainPlayer\collider),0,mainPlayer\currRoom\obj)
 	Local playerx% = Int(Floor((TFormedX()*RoomScale+6.0)/12.0))
 	Local playerz% = Int(Floor((TFormedZ()*RoomScale+6.0)/12.0))
-	
+
 	TFormPoint(EntityX(n\collider),EntityY(n\collider),EntityZ(n\collider),0,mainPlayer\currRoom\obj)
 	Local x# = (TFormedX()*RoomScale+6.0)/12.0
 	Local z# = (TFormedZ()*RoomScale+6.0)/12.0
-	
+
 	Local xt% = Int(Floor(x)), zt% = Int(Floor(z))
-	
+
 	Local x2%, z2%
 	If (xt<>playerx Or zt<>playerz) Then ;the monster is not on the same tile as the player
 		For x2 = Int(Max(xt-1,0)) To Int(Min(xt+1,gridsize-1))
 			For z2 = Int(Max(zt-1,0)) To Int(Min(zt+1,gridsize-1))
 				If (fr\grid[(z2*gridsize)+x2]>0 And (x2<>xt Or z2<>zt) And (x2=xt Or z2=zt)) Then
-					
+
 					;tile (x2,z2) is closer to the player than the monsters current tile
 					If ((Abs(playerx-x2)+Abs(playerz-z2))<(Abs(playerx-xt)+Abs(playerz-zt))) Then
 						Return GetAngle(x-0.5,z-0.5,x2,z2)+EntityYaw(mainPlayer\currRoom\obj)+180
 					EndIf
-					
+
 				EndIf
 			Next
 		Next
