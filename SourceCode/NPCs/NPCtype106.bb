@@ -203,7 +203,7 @@ Function UpdateNPCtype106(n.NPC)
 
                     ;TODO: Teleport to pocket dimension.
                     If (Ceil(n\frame) = 110 And (Not mainPlayer\godMode)) Then
-                        PlaySound2(DamageSFX(1))
+                        PlaySound2(mainPlayer\damageSFX[1])
                         PlaySound2(n\sounds[7])
 
                         PlaySound2(n\sounds[6])

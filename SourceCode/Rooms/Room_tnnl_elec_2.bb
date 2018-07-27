@@ -39,7 +39,7 @@ Function UpdateEventTunnel2smoke(e.Event)
 				;EntityParent(em\obj, e\room\obj)
 
 				For z = 0 To 10
-					p = CreateParticle(EntityX(em\obj, True), 448*RoomScale, EntityZ(em\obj, True), Rand(em\minImage, em\maxImage), em\size, em\gravity, em\lifeTime)
+					p = CreateParticle(EntityX(em\obj, True), 448*RoomScale, EntityZ(em\obj, True), PARTICLE_SMOKE_WHITE, em\size, em\gravity, em\lifeTime)
 					p\speed = em\speed
 					RotateEntity(p\pvt, Rnd(360), Rnd(360), 0, True)
 					p\size = 0.05

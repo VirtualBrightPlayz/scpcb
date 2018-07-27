@@ -1292,7 +1292,7 @@ Function UpdateNPCtypeMTF(n.NPC)
 					PositionEntity(pvt, EntityX(n\obj), EntityY(n\obj), EntityZ(n\obj))
 					MoveEntity(pvt,0.8*0.079, 10.75*0.079, 6.9*0.079)
 
-					p = CreateParticle(EntityX(pvt), EntityY(pvt), EntityZ(pvt), 1, Rnd(0.08,0.1), 0.0, 5)
+					p = CreateParticle(EntityX(pvt), EntityY(pvt), EntityZ(pvt), PARTICLE_FLASH, Rnd(0.08,0.1), 0.0, 5)
 					TurnEntity(p\obj, 0,0,Rnd(360))
 					p\aChange = -0.15
 
@@ -1469,7 +1469,7 @@ Function UpdateNPCtypeMTF(n.NPC)
 							PositionEntity(pvt, EntityX(n\obj), EntityY(n\obj), EntityZ(n\obj))
 							MoveEntity(pvt,0.8*0.079, 10.75*0.079, 6.9*0.079)
 
-							p = CreateParticle(EntityX(pvt), EntityY(pvt), EntityZ(pvt), 1, Rnd(0.08,0.1), 0.0, 5)
+							p = CreateParticle(EntityX(pvt), EntityY(pvt), EntityZ(pvt), PARTICLE_FLASH, Rnd(0.08,0.1), 0.0, 5)
 							TurnEntity(p\obj, 0,0,Rnd(360))
 							p\aChange = -0.15
 							If (n\target\hp > 0) Then

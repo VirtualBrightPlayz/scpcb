@@ -137,7 +137,7 @@ Function UpdateEvent_lck_air_2(e.Event)
 						MoveEntity(pvt,0,0,0.2)
 
 						For i = 0 To 3
-							p = CreateParticle(EntityX(pvt), EntityY(pvt), EntityZ(pvt), 7, 0.002, 0, 25)
+							p = CreateParticle(EntityX(pvt), EntityY(pvt), EntityZ(pvt), PARTICLE_SPARK, 0.002, 0, 25)
 							p\speed = Rnd(0.01,0.05)
 							;RotateEntity(p\pvt, Rnd(-20, 20), Rnd(360), 0)
 							RotateEntity(p\pvt, Rnd(-45,0), EntityYaw(pvt)+Rnd(-10.0,10.0), 0)
@@ -170,7 +170,7 @@ Function UpdateEvent_lck_air_2(e.Event)
 							EndIf
 						EndIf
 
-						p = CreateParticle(EntityX(pvt,True), EntityY(pvt,True), EntityZ(pvt,True), 6, 0.8, 0, 50)
+						p = CreateParticle(EntityX(pvt,True), EntityY(pvt,True), EntityZ(pvt,True), PARTICLE_SMOKE_WHITE, 0.8, 0, 50)
 						p\speed = 0.025
 						RotateEntity(p\pvt, 90, 0, 0)
 

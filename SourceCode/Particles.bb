@@ -1,4 +1,26 @@
-Dim ParticleTextures%(10)
+Const PARTICLE_COUNT% = 8
+Const PARTICLE_DUST%        = 0
+Const PARTICLE_SMOKE_BLACK% = 1
+Const PARTICLE_SMOKE_WHITE% = 2
+Const PARTICLE_FLASH%       = 3
+Const PARTICLE_SPARK%       = 4
+Const PARTICLE_BLOOD%       = 5
+Const PARTICLE_SUN%         = 6
+Const PARTICLE_HG%          = 7
+
+Global particleList$[PARTICLE_COUNT]
+
+Function LoadParticles()
+	particleList[PARTICLE_DUST] = "Sprites/dust.jpg"
+	particleList[PARTICLE_SMOKE_BLACK] = "Sprites/smoke_black.png"
+	particleList[PARTICLE_SMOKE_WHITE] = "Sprites/smoke_white.png"
+	particleList[PARTICLE_FLASH] = "Sprites/flash.jpg"
+	particleList[PARTICLE_SMOKE_WHITE] = "Sprites/smoke_white.png"
+	particleList[PARTICLE_SPARK] = "Sprites/spark.jpg"
+	particleList[PARTICLE_BLOOD] = "Sprites/blood.png"
+	particleList[PARTICLE_SUN] = "Map/Textures/sun.jpg"
+	particleList[PARTICLE_HG] = "General/hg.jpg"
+End Function
 
 Type Particle
 	Field obj%, pvt%
@@ -13,14 +35,16 @@ Type Particle
 End Type
 
 Function CreateParticle.Particle(x#, y#, z#, image%, size#, gravity# = 1.0, lifetime% = 200)
+	Local tex% = GrabTexture("GFX/" + particleList[image], 1+2)
 	Local p.Particle = New Particle
 	p\lifetime = lifetime
 
 	p\obj = CreateSprite()
 	PositionEntity(p\obj, x, y, z, True)
-	EntityTexture(p\obj, ParticleTextures(image))
+	EntityTexture(p\obj, tex)
 	RotateEntity(p\obj, 0, 0, Rnd(360))
 	EntityFX(p\obj, 1 + 8)
+	DropAsset(tex)
 
 	SpriteViewMode(p\obj, 3)
 
@@ -85,7 +109,6 @@ Type Emitter
 	Field obj%
 
 	Field size#
-	Field minImage%, maxImage%
 	Field gravity#
 	Field lifeTime%
 
@@ -108,7 +131,7 @@ Function UpdateEmitters()
 	For e = Each Emitter
 		If (timing\tickDuration > 0 And (mainPlayer\currRoom = e\room Or e\room\dist < 8)) Then
 			;If (EntityDistance(mainPlayer\cam, e\obj) < 6.0) Then
-			p = CreateParticle(EntityX(e\obj, True), EntityY(e\obj, True), EntityZ(e\obj, True), Rand(e\minImage, e\maxImage), e\size, e\gravity, e\lifeTime)
+			p = CreateParticle(EntityX(e\obj, True), EntityY(e\obj, True), EntityZ(e\obj, True), PARTICLE_SMOKE_WHITE, e\size, e\gravity, e\lifeTime)
 			p\speed = e\speed
 			RotateEntity(p\pvt, EntityPitch(e\obj, True), EntityYaw(e\obj, True), EntityRoll(e\obj, True), True)
 			TurnEntity(p\pvt, Rnd(-e\randAngle, e\randAngle), Rnd(-e\randAngle, e\randAngle), 0)
@@ -142,7 +165,7 @@ Function UpdateEmitters()
 
 		If (Not mainPlayer\dead) Then
 			If (Rand(150) = 1) Then
-				;If (Not IsChannelPlaying(CoughCHN)) Then CoughCHN = PlaySound2(CoughSFX(Rand(0, 2))) ;TODO: fix by not using a dim
+				;If (Not IsChannelPlaying(CoughCHN)) Then CoughCHN = PlaySound2(mainPlayer\coughSFX[Rand(0, 2)))
 			EndIf
 		EndIf
 
@@ -174,8 +197,6 @@ Function CreateEmitter.Emitter(x#, y#, z#, emittertype%)
 			e\speed = 0.004
 			e\randAngle = 40
 			e\aChange = -0.01
-
-			e\minImage = 6 : e\maxImage = 6
 	End Select
 
 	Local r.Room

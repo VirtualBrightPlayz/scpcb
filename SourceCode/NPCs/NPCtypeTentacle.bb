@@ -82,7 +82,7 @@ Function UpdateNPCtypeTentacle(n.NPC)
                                 Else
                                     mainPlayer\blurTimer = 100
                                     mainPlayer\injuries = mainPlayer\injuries+Rnd(1.0,1.5)
-                                    PlaySound2(DamageSFX(Rand(3,4)))
+                                    PlaySound2(mainPlayer\damageSFX[Rand(3,4)])
 
                                     If (mainPlayer\injuries > 3.0) Then
                                         DeathMSG = Chr(34)+"We will need more than the regular cleaning team to care of this. "

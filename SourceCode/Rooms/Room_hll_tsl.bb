@@ -146,7 +146,7 @@ Function UpdateEvent_tesla(e.Event)
 								ShowEntity(mainPlayer\overlays[OVERLAY_WHITE])
 								mainPlayer\lightFlash = 0.3
 								For i = 0 To 10
-									p = CreateParticle(EntityX(Curr106\collider, True), EntityY(Curr106\collider, True), EntityZ(Curr106\collider, True), 0, 0.015, -0.2, 250)
+									p = CreateParticle(EntityX(Curr106\collider, True), EntityY(Curr106\collider, True), EntityZ(Curr106\collider, True), PARTICLE_SMOKE_BLACK, 0.015, -0.2, 250)
 									p\size = 0.03
 									p\gravity = -0.2
 									p\lifetime = 200

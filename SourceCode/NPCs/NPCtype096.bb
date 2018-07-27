@@ -112,7 +112,7 @@ Function UpdateNPCtype096(n.NPC)
 
                             If (n\target=Null) Then
                                 If (Not mainPlayer\godMode) Then
-                                    PlaySound2(DamageSFX(4))
+                                    PlaySound2(mainPlayer\damageSFX[4])
 
                                     pvt = CreatePivot()
                                     mainPlayer\camShake = 30

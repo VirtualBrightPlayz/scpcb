@@ -308,7 +308,7 @@ Function UpdateDoors()
 									PositionEntity(pvt, EntityX(d\frameobj,True)+Rnd(-0.2,0.2), EntityY(d\frameobj,True)+Rnd(0.0,1.2), EntityZ(d\frameobj,True)+Rnd(-0.2,0.2))
 									RotateEntity(pvt, 0, Rnd(360), 0)
 
-									p = CreateParticle(EntityX(pvt), EntityY(pvt), EntityZ(pvt), 2, 0.002, 0, 300)
+									p = CreateParticle(EntityX(pvt), EntityY(pvt), EntityZ(pvt), PARTICLE_DUST, 0.002, 0, 300)
 									p\speed = 0.005
 									RotateEntity(p\pvt, Rnd(-20, 20), Rnd(360), 0)
 

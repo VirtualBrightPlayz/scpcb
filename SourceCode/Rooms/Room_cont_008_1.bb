@@ -163,7 +163,7 @@ Function UpdateEvent_cont_008_1(e.Event)
 					e\eventState = 2
 					PlaySound_SM(sndManager\lever)
 				Else
-					p = CreateParticle(EntityX(e\room\objects[0],True),EntityY(e\room\objects[0],True),EntityZ(e\room\objects[0],True), 6, 0.02, -0.12)
+					p = CreateParticle(EntityX(e\room\objects[0],True),EntityY(e\room\objects[0],True),EntityZ(e\room\objects[0],True), PARTICLE_SMOKE_WHITE, 0.02, -0.12)
 					RotateEntity(p\pvt,-90,0,0,True)
 					TurnEntity(p\pvt, Rnd(-26,26), Rnd(-26,26), Rnd(360))
 
@@ -183,7 +183,7 @@ Function UpdateEvent_cont_008_1(e.Event)
 				EndIf
 			EndIf
 		Else
-			p = CreateParticle(EntityX(e\room\objects[0],True),EntityY(e\room\objects[0],True),EntityZ(e\room\objects[0],True), 6, 0.02, -0.12)
+			p = CreateParticle(EntityX(e\room\objects[0],True),EntityY(e\room\objects[0],True),EntityZ(e\room\objects[0],True), PARTICLE_SMOKE_WHITE, 0.02, -0.12)
 			RotateEntity(p\pvt,-90,0,0,True)
 			TurnEntity(p\pvt, Rnd(-26,26), Rnd(-26,26), Rnd(360))
 		EndIf

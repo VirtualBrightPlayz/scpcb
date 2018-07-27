@@ -483,7 +483,7 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 	Local shotMessageUpdate$, wearingVest%, pvt%, i%, de.Decal
 
 	;muzzle flash
-	Local p.Particle = CreateParticle(x,y,z, 1, Rnd(0.08,0.1), 0.0, 5)
+	Local p.Particle = CreateParticle(x,y,z, PARTICLE_FLASH, Rnd(0.08,0.1), 0.0, 5)
 	TurnEntity(p\obj, 0,0,Rnd(360))
 	p\aChange = -0.15
 
@@ -591,7 +591,7 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 
 				If (particles) Then
 					;dust/smoke particles
-					p = CreateParticle(PickedX(),PickedY(),PickedZ(), 0, 0.03, 0, 80)
+					p = CreateParticle(PickedX(),PickedY(),PickedZ(), PARTICLE_SMOKE_BLACK, 0.03, 0, 80)
 					p\speed = 0.001
 					p\sizeChange = 0.003
 					p\a = 0.8
@@ -599,7 +599,7 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 					RotateEntity(p\pvt, EntityPitch(pvt)-180, EntityYaw(pvt),0)
 
 					For i = 0 To Rand(2,3)
-						p = CreateParticle(PickedX(),PickedY(),PickedZ(), 0, 0.006, 0.003, 80)
+						p = CreateParticle(PickedX(),PickedY(),PickedZ(), PARTICLE_SMOKE_BLACK, 0.006, 0.003, 80)
 						p\speed = 0.02
 						p\a = 0.8
 						p\aChange = -0.01

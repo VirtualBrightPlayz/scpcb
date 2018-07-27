@@ -280,15 +280,6 @@ Function LoadEntities()
 
 	LoadItemTemplates("Data/Items/templates.ini")
 
-	ParticleTextures(0) = LoadTexture("GFX/Sprites/smoke.png", 1 + 2)
-	ParticleTextures(1) = LoadTexture("GFX/Sprites/flash.jpg", 1 + 2)
-	ParticleTextures(2) = LoadTexture("GFX/Sprites/dust.jpg", 1 + 2)
-	ParticleTextures(3) = LoadTexture("GFX/General/hg.jpg", 1 + 2)
-	ParticleTextures(4) = LoadTexture("GFX/Map/Textures/sun.jpg", 1 + 2)
-	ParticleTextures(5) = LoadTexture("GFX/Decals/bloodsprite.png", 1 + 2)
-	ParticleTextures(6) = LoadTexture("GFX/Sprites/smoke2.png", 1 + 2)
-	ParticleTextures(7) = LoadTexture("GFX/Sprites/spark.jpg", 1 + 2)
-
 	LoadMaterials("Data/materials.ini")
 
 	;TextureLodBias TextureFloat#

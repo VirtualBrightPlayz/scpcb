@@ -96,8 +96,10 @@ Type Player
 
 	;sounds
 	Field breathingSFX.IntArray
-	Field heartbeat%
-	Field bloodDrip%[4]
+	Field bloodDripSFX%[4]
+	Field damageSFX%[9]
+	Field coughSFX%[3]
+	Field heartbeatSFX%
 
 	Field breathChn%
 	;------
@@ -234,9 +236,15 @@ Function CreatePlayer.Player()
 		SetIntArrayElem(player\breathingSFX, LoadSound("SFX/Character/D9341/breath"+Str(i)+"gas.ogg"), 1, i)
 	Next
 	For i = 0 To 3
-		player\bloodDrip[i] = LoadSound("SFX/Character/D9341/BloodDrip" + Str(i) + ".ogg")
+		player\bloodDripSFX[i] = LoadSound("SFX/Character/D9341/BloodDrip" + Str(i) + ".ogg")
 	Next
-	player\heartbeat = LoadSound("SFX/Character/D9341/Heartbeat.ogg")
+	For i = 0 To 8
+		player\damageSFX[i] = LoadSound("SFX/Character/D9341/Damage" + Str(i + 1) + ".ogg")
+	Next
+	For i = 0 To 2
+		player\coughSFX[i] = LoadSound("SFX/Character/D9341/Cough" + Str(i + 1) + ".ogg")
+	Next
+	player\heartbeatSFX = LoadSound("SFX/Character/D9341/Heartbeat.ogg")
 
 	Return player
 End Function
@@ -255,9 +263,15 @@ Function DeletePlayer(player.Player)
 		FreeSound(GetIntArrayElem(player\breathingSFX, 1, i))
 	Next
 	For i = 0 To 3
-		FreeSound(player\bloodDrip[i])
+		FreeSound(player\bloodDripSFX[i])
 	Next
-	FreeSound(player\heartbeat)
+	For i = 0 To 8
+		FreeSound(player\damageSFX[i])
+	Next
+	For i = 0 To 2
+		FreeSound(player\coughSFX[i])
+	Next
+	FreeSound(player\heartbeatSFX)
 
 	Delete player
 End Function
@@ -533,7 +547,7 @@ Function UpdatePlayer()
 			EntityPick(pvt,0.3)
 			de = CreateDecal(Rand(DECAL_BLOOD_DROP1, DECAL_BLOOD_DROP2), PickedX(), PickedY()+0.005, PickedZ(), 90, Rand(360), 0)
 			de\size = Rnd(0.03,0.08)*Min(mainPlayer\injuries,3.0) : EntityAlpha(de\obj, 1.0) : ScaleSprite(de\obj, de\size, de\size)
-			tempchn = PlaySound2(mainPlayer\bloodDrip[Rand(0,3)])
+			tempchn = PlaySound2(mainPlayer\bloodDripSFX[Rand(0,3)])
 			ChannelVolume(tempchn, Rnd(0.0,0.8)*userOptions\sndVolume)
 			ChannelPitch(tempchn, Rand(20000,30000))
 
@@ -560,7 +574,7 @@ Function UpdatePlayer()
 
 
 	If (mainPlayer\heartbeatIntensity > 0) Then
-		tempchn = PlaySound2(mainPlayer\heartbeat)
+		tempchn = PlaySound2(mainPlayer\heartbeatSFX)
 		ChannelVolume(tempchn, Max(Min((mainPlayer\heartbeatIntensity-80.0)/60.0,1.0),0.0)*userOptions\sndVolume)
 
 		mainPlayer\heartbeatIntensity = mainPlayer\heartbeatIntensity - timing\tickDuration
@@ -693,7 +707,7 @@ Function MouseLook()
 			MoveEntity(pvt, 0, Rnd(-0.5, 0.5), Rnd(0.5, 1.0))
 		EndIf
 
-		p = CreateParticle(EntityX(pvt), EntityY(pvt), EntityZ(pvt), 2, 0.002, 0, 300)
+		p = CreateParticle(EntityX(pvt), EntityY(pvt), EntityZ(pvt), PARTICLE_DUST, 0.002, 0, 300)
 		p\speed = 0.001
 		RotateEntity(p\pvt, Rnd(-20, 20), Rnd(360), 0)
 
@@ -765,7 +779,7 @@ Function Kill(player.Player)
 
 	If (Not player\dead) Then
 		;KillAnim = Rand(0,1)
-		PlaySound2(DamageSFX(0))
+		PlaySound2(mainPlayer\damageSFX[0])
 		If (SelectedDifficulty\permaDeath) Then
 			DeleteFile(CurrentDir() + SavePath + CurrSave+"/save.txt")
 			DeleteDir(SavePath + CurrSave)

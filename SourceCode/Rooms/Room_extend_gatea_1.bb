@@ -375,12 +375,13 @@ Function UpdateEvent_extend_gatea_1(e.Event)
 										e\eventState2=e\eventState2+timing\tickDuration
 										If (e\eventState2=> 7.5*70) Then
 											If (e\eventState2-timing\tickDuration < 7.5*70) Then
-												p = CreateParticle(EntityX(Curr106\obj,True),EntityY(Curr106\obj,True)+0.4, EntityZ(Curr106\obj,True), 4, 7.0, 0, Int(6.7*70))
+												;TODO: Not use the sun sprite here.
+												p = CreateParticle(EntityX(Curr106\obj,True),EntityY(Curr106\obj,True)+0.4, EntityZ(Curr106\obj,True), PARTICLE_SUN, 7.0, 0, Int(6.7*70))
 												p\speed = 0.0
 												p\a = 1.0
 												EntityParent(p\pvt, Curr106\collider, True)
 
-												p = CreateParticle(EntityX(e\room\objects[10],True),EntityY(e\room\objects[10],True),EntityZ(e\room\objects[10],True), 4, 2.0, 0, Int(6.7*70))
+												p = CreateParticle(EntityX(e\room\objects[10],True),EntityY(e\room\objects[10],True),EntityZ(e\room\objects[10],True), PARTICLE_SUN, 2.0, 0, Int(6.7*70))
 												RotateEntity(p\pvt, EntityPitch(e\room\objects[10],True),EntityYaw(e\room\objects[10],True),0,True)
 												MoveEntity(p\pvt, 0, 92.0*RoomScale, 512.0*RoomScale)
 												p\speed = 0.0
@@ -394,7 +395,7 @@ Function UpdateEvent_extend_gatea_1(e.Event)
 									EndIf
 
 									For i = 0 To Rand(2,8)-Int(dist)
-										p = CreateParticle(EntityX(Curr106\obj,True),EntityY(Curr106\obj,True)+Rnd(0.4,0.9), EntityZ(Curr106\obj), 0, 0.006, -0.002, 40)
+										p = CreateParticle(EntityX(Curr106\obj,True),EntityY(Curr106\obj,True)+Rnd(0.4,0.9), EntityZ(Curr106\obj), PARTICLE_SMOKE_BLACK, 0.006, -0.002, 40)
 										p\speed = 0.005
 										p\a = 0.8
 										p\aChange = -0.01
@@ -461,10 +462,11 @@ Function UpdateEvent_extend_gatea_1(e.Event)
 
 								e\soundChannels[0] = PlayRangedSound(LoadTempSound("SFX/Ending/GateA/Bell1.ogg"), mainPlayer\cam, e\room\objects[12])
 
-								p = CreateParticle(EntityX(e\room\objects[11],True),EntityY(mainPlayer\cam,True), EntityZ(e\room\objects[11],True), 4, 8.0, 0, 50)
+								;TODO: Not the sun sprite.
+								p = CreateParticle(EntityX(e\room\objects[11],True),EntityY(mainPlayer\cam,True), EntityZ(e\room\objects[11],True), PARTICLE_SUN, 8.0, 0, 50)
 								p\speed = 0.15
 								p\a = 0.5
-								p = CreateParticle(EntityX(e\room\objects[11],True),EntityY(mainPlayer\cam,True), EntityZ(e\room\objects[11],True), 4, 8.0, 0, 50)
+								p = CreateParticle(EntityX(e\room\objects[11],True),EntityY(mainPlayer\cam,True), EntityZ(e\room\objects[11],True), PARTICLE_SUN, 8.0, 0, 50)
 								p\speed = 0.25
 								p\a = 0.5
 								PointEntity(p\pvt, mainPlayer\collider)
@@ -513,10 +515,10 @@ Function UpdateEvent_extend_gatea_1(e.Event)
 							If (IsChannelPlaying(e\soundChannels[0])=False) Then; And SelectedEnding="" Then
 								PlaySound2(LoadTempSound("SFX/Ending/GateA/Bell2.ogg"))
 
-								p = CreateParticle(EntityX(e\room\objects[11],True),EntityY(mainPlayer\cam,True), EntityZ(e\room\objects[11],True), 4, 8.0, 0, 50)
+								p = CreateParticle(EntityX(e\room\objects[11],True),EntityY(mainPlayer\cam,True), EntityZ(e\room\objects[11],True), PARTICLE_SUN, 8.0, 0, 50)
 								p\speed = 0.15
 								p\a = 0.5
-								p = CreateParticle(EntityX(e\room\objects[11],True),EntityY(mainPlayer\cam,True), EntityZ(e\room\objects[11],True), 4, 8.0, 0, 50)
+								p = CreateParticle(EntityX(e\room\objects[11],True),EntityY(mainPlayer\cam,True), EntityZ(e\room\objects[11],True), PARTICLE_SUN, 8.0, 0, 50)
 								p\speed = 0.25
 								p\a = 0.5
 

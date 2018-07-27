@@ -591,8 +591,9 @@ Function UpdateEvent_pocketdimension(e.Event)
 			CameraClsColor(mainPlayer\cam, 38*0.5, 55*0.5, 47*0.5)
 
 			If (Rand(800)=1) Then
+				;TODO: Not a particle.
 				angle = EntityYaw(mainPlayer\cam,True)+Rnd(150,210)
-				p = CreateParticle(EntityX(mainPlayer\collider)+Cos(angle)*7.5, 0.0, EntityZ(mainPlayer\collider)+Sin(angle)*7.5, 3, 4.0, 0.0, 2500)
+				p = CreateParticle(EntityX(mainPlayer\collider)+Cos(angle)*7.5, 0.0, EntityZ(mainPlayer\collider)+Sin(angle)*7.5, PARTICLE_HG, 4.0, 0.0, 2500)
 				EntityBlend(p\obj, 2)
 				;EntityFX(p\obj, 1)
 				p\speed = 0.01

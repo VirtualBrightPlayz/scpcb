@@ -1,13 +1,3 @@
-;TODO: kill all the dims
-;I have to place them up here because the includes depend
-;on them being declared before they are used
-
-;TODO: Player struct.
-Dim DamageSFX%(9)
-
-;TODO: Player struct.
-Dim CoughSFX%(3)
-
 Include "SourceCode/KeyName.bb"
 Include "SourceCode/Options.bb"
 Include "SourceCode/FastResize.bb"
@@ -232,20 +222,10 @@ Function InitializeMainGame()
 	RadioStatic = LoadSound("SFX/Radio/static.ogg")
 	RadioBuzz = LoadSound("SFX/Radio/buzz.ogg")
 
-	DrawLoading(25, True)
-
-	For i = 0 To 8
-		DamageSFX(i) = LoadSound("SFX/Character/D9341/Damage" + Str(i + 1) + ".ogg")
-	Next
-
-	;TODO: Player struct.
-	For i = 0 To 2
-		CoughSFX(i) = LoadSound("SFX/Character/D9341/Cough" + Str(i + 1) + ".ogg")
-	Next
-
 	DrawLoading(30, True)
 
 	LoadDecals()
+	LoadParticles()
 
 	;TODO: Die.
 	InFacility = True
@@ -1552,7 +1532,7 @@ Function UpdateInfect()
 				EndIf
 
 				If (Rand(50)=1) Then
-					p = CreateParticle(EntityX(mainPlayer\currRoom\npc[0]\collider),EntityY(mainPlayer\currRoom\npc[0]\collider),EntityZ(mainPlayer\currRoom\npc[0]\collider), 5, Rnd(0.05,0.1), 0.15, 200)
+					p = CreateParticle(EntityX(mainPlayer\currRoom\npc[0]\collider),EntityY(mainPlayer\currRoom\npc[0]\collider),EntityZ(mainPlayer\currRoom\npc[0]\collider), PARTICLE_BLOOD, Rnd(0.05,0.1), 0.15, 200)
 					p\speed = 0.01
 					p\sizeChange = 0.01
 					p\a = 0.5

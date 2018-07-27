@@ -6,7 +6,7 @@ Type Event
 	Field room.Room
 
 	Field eventState#, eventState2#, eventState3# ;TODO: deprecated
-	
+
 	Field intState%[EVENT_MAX_STATE_COUNT]
 	Field floatState#[EVENT_MAX_STATE_COUNT]
 
@@ -418,7 +418,7 @@ Function UpdateEvents()
 				mainPlayer\blinkTimer = 1.0
 				PlaySound2(LoadTempSound("SFX/Ending/GateB/Nuke2.ogg"))
 				For i = 0 To 40
-					p = CreateParticle(EntityX(mainPlayer\collider)+Rnd(-0.5,0.5),EntityY(mainPlayer\collider)-Rnd(0.2,1.5),EntityZ(mainPlayer\collider)+Rnd(-0.5,0.5),0, Rnd(0.2,0.6), 0.0, 350)
+					p = CreateParticle(EntityX(mainPlayer\collider)+Rnd(-0.5,0.5),EntityY(mainPlayer\collider)-Rnd(0.2,1.5),EntityZ(mainPlayer\collider)+Rnd(-0.5,0.5), PARTICLE_SMOKE_BLACK, Rnd(0.2,0.6), 0.0, 350)
 					RotateEntity(p\pvt,-90,0,0,True)
 					p\speed = Rnd(0.05,0.07)
 				Next
