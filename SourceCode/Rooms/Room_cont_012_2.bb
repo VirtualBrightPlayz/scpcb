@@ -57,7 +57,7 @@ Function FillRoom_cont_012_2(r.Room)
     it = CreatePaper("doc012", r\x - 56.0 * RoomScale, r\y - 576.0 * RoomScale, r\z - 408.0 * RoomScale)
     EntityParent(it\collider, r\obj)
 
-    de = CreateDecal(3,  r\x - 784*RoomScale, -768*RoomScale+0.01, r\z+640*RoomScale,90,Rnd(360),0)
+    de = CreateDecal(DECAL_BLOOD_SPLATTER,  r\x - 784*RoomScale, -768*RoomScale+0.01, r\z+640*RoomScale,90,Rnd(360),0)
     de\size = 0.5
     ScaleSprite(de\obj, de\size,de\size)
     EntityParent(de\obj, r\obj)
@@ -199,7 +199,7 @@ Function UpdateEvent_cont_012_2(e.Event)
 							PlaySound2(LoadTempSound("SFX/SCP/012/Speech7.ogg"))
 							mainPlayer\crouching = True
 
-							de = CreateDecal(17,  EntityX(mainPlayer\collider), -768*RoomScale+0.01, EntityZ(mainPlayer\collider),90,Rnd(360),0)
+							de = CreateDecal(DECAL_BLOOD_POOL,  EntityX(mainPlayer\collider), -768*RoomScale+0.01, EntityZ(mainPlayer\collider),90,Rnd(360),0)
 							de\size = 0.1 : de\maxSize = 0.45 : de\sizeChange = 0.0002 : UpdateDecals()
 						ElseIf (e\eventState3>85*70 And e\eventState3-timing\tickDuration=<85*70) Then
 							DeathMSG = "Subject D-9341 found in a pool of blood next to SCP-012. Subject seems to have ripped open his wrists and written three extra "

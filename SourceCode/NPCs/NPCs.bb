@@ -607,7 +607,7 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 					Next
 
 					;bullet hole decal
-					de = CreateDecal(Rand(13,14), PickedX(),PickedY(),PickedZ(), 0,0,0)
+					de = CreateDecal(Rand(DECAL_BULLET_HOLE1, DECAL_BULLET_HOLE2), PickedX(),PickedY(),PickedZ(), 0,0,0)
 					AlignToVector(de\obj,-PickedNX(),-PickedNY(),-PickedNZ(),3)
 					MoveEntity(de\obj, 0,0,-0.001)
 					EntityFX(de\obj, 1)

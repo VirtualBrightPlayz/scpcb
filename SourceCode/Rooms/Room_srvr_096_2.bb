@@ -181,17 +181,17 @@ Function UpdateEvent_srvr_096_2(e.Event)
 
 				For i = 0 To 6
 					If (e\room\angle = 0 Or e\room\angle = 180) Then
-						de = CreateDecal(Rand(2,3), e\room\x-Rnd(197,199)*Cos(e\room\angle)*RoomScale, 1.0, e\room\z+(140.0*(i-3))*RoomScale,0,e\room\angle+90,Rnd(360))
+						de = CreateDecal(Rand(DECAL_BLOOD_SPREAD, DECAL_BLOOD_SPLATTER), e\room\x-Rnd(197,199)*Cos(e\room\angle)*RoomScale, 1.0, e\room\z+(140.0*(i-3))*RoomScale,0,e\room\angle+90,Rnd(360))
 						de\size = Rnd(0.8,0.85) : de\sizeChange = 0.001
-						de = CreateDecal(Rand(2,3), e\room\x-Rnd(197,199)*Cos(e\room\angle)*RoomScale, 1.0, e\room\z+(140.0*(i-3))*RoomScale,0,e\room\angle-90,Rnd(360))
+						de = CreateDecal(Rand(DECAL_BLOOD_SPREAD, DECAL_BLOOD_SPLATTER), e\room\x-Rnd(197,199)*Cos(e\room\angle)*RoomScale, 1.0, e\room\z+(140.0*(i-3))*RoomScale,0,e\room\angle-90,Rnd(360))
 						de\size = Rnd(0.8,0.85) : de\sizeChange = 0.001
 					Else
-						de = CreateDecal(Rand(2,3), e\room\x+(140.0*(i-3))*RoomScale, 1.0, e\room\z-Rnd(197,199)*Sin(e\room\angle)*RoomScale-Rnd(0.001,0.003),0,e\room\angle+90,Rnd(360))
+						de = CreateDecal(Rand(DECAL_BLOOD_SPREAD, DECAL_BLOOD_SPLATTER), e\room\x+(140.0*(i-3))*RoomScale, 1.0, e\room\z-Rnd(197,199)*Sin(e\room\angle)*RoomScale-Rnd(0.001,0.003),0,e\room\angle+90,Rnd(360))
 						de\size = Rnd(0.8,0.85) : de\sizeChange = 0.001
-						de = CreateDecal(Rand(2,3), e\room\x+(140.0*(i-3))*RoomScale, 1.0, e\room\z-Rnd(197,199)*Sin(e\room\angle)*RoomScale-Rnd(0.001,0.003),0,e\room\angle-90,Rnd(360))
+						de = CreateDecal(Rand(DECAL_BLOOD_SPREAD, DECAL_BLOOD_SPLATTER), e\room\x+(140.0*(i-3))*RoomScale, 1.0, e\room\z-Rnd(197,199)*Sin(e\room\angle)*RoomScale-Rnd(0.001,0.003),0,e\room\angle-90,Rnd(360))
 						de\size = Rnd(0.8,0.85) : de\sizeChange = 0.001
 					EndIf
-					de = CreateDecal(Rand(2,3), EntityX(e\room\npc[0]\collider)+Rnd(-2,2),Rnd(0.001,0.003),EntityZ(e\room\npc[0]\collider)+Rnd(-2,2),90,Rnd(360),0)
+					de = CreateDecal(Rand(DECAL_BLOOD_SPREAD, DECAL_BLOOD_SPLATTER), EntityX(e\room\npc[0]\collider)+Rnd(-2,2),Rnd(0.001,0.003),EntityZ(e\room\npc[0]\collider)+Rnd(-2,2),90,Rnd(360),0)
 
 				Next
 				de\size = Rnd(0.5,0.7)

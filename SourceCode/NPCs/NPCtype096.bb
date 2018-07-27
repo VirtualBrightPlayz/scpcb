@@ -125,7 +125,7 @@ Function UpdateNPCtype096(n.NPC)
                                         TurnEntity(pvt, 90, 0, 0)
                                         EntityPick(pvt,0.3)
 
-                                        de = CreateDecal(Rand(15,16), PickedX(), PickedY()+0.005, PickedZ(), 90, Rand(360), 0)
+                                        de = CreateDecal(Rand(DECAL_BLOOD_DROP1, DECAL_BLOOD_DROP2), PickedX(), PickedY()+0.005, PickedZ(), 90, Rand(360), 0)
                                         de\size = Rnd(0.2,0.6) : EntityAlpha(de\obj, 1.0) : ScaleSprite(de\obj, de\size, de\size)
                                     Next
                                     FreeEntity(pvt)

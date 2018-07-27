@@ -100,7 +100,7 @@ Function UpdateNPCtype066(n.NPC)
                             Case 4
                                 If (mainPlayer\currRoom\roomTemplate\disableDecals = False) Then
                                     mainPlayer\camShake = 5.0
-                                    de = CreateDecal(1, EntityX(n\collider), 0.01, EntityZ(n\collider), 90, Rand(360), 0)
+                                    de = CreateDecal(DECAL_CRACKS, EntityX(n\collider), 0.01, EntityZ(n\collider), 90, Rand(360), 0)
                                     de\size = 0.3 : UpdateDecals()
                                     PlaySound2(LoadTempSound("SFX/General/BodyFall.ogg"))
                                     If (Distance(EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider),EntityX(n\collider),EntityZ(n\collider))<0.8) Then

@@ -1,16 +1,12 @@
 ;TODO: kill all the dims
 ;I have to place them up here because the includes depend
 ;on them being declared before they are used
-;[Block]
 
 ;TODO: Player struct.
 Dim DamageSFX%(9)
 
 ;TODO: Player struct.
 Dim CoughSFX%(3)
-
-Dim DecalTextures%(20)
-;[End Block]
 
 Include "SourceCode/KeyName.bb"
 Include "SourceCode/Options.bb"
@@ -24,6 +20,7 @@ Include "SourceCode/Items/Items.bb"
 Include "SourceCode/Particles.bb"
 Include "SourceCode/Doors.bb"
 Include "SourceCode/Objects.bb"
+Include "SourceCode/Decals.bb"
 Include "SourceCode/MapSystem.bb"
 Include "SourceCode/NPCs/NPCs.bb"
 Include "SourceCode/Player.bb"
@@ -248,9 +245,7 @@ Function InitializeMainGame()
 
 	DrawLoading(30, True)
 
-	;TODO: Assets.bb
-	;NVGImages = LoadAnimImage("GFX/battery.png",64,64,0,2)
-	;MaskImage(NVGImages,255,0,255)
+	LoadDecals()
 
 	;TODO: Die.
 	InFacility = True
@@ -882,7 +877,7 @@ Function UpdateGUI()
 				If ((KeypadTimer Mod 70) < 35) Then Text(userOptions\screenWidth/2, Int(y+124*scale), KeypadMSG, True,True)
 				If (KeypadTimer =<0) Then
 					KeypadMSG = ""
-					SelectedDoor = Null
+					mainPlayer\selectedDoor = Null
 					MouseXSpeed() : MouseYSpeed() : MouseZSpeed() : mouse_x_speed_1=0.0 : mouse_y_speed_1=0.0
 				EndIf
 			EndIf
@@ -1537,7 +1532,7 @@ Function UpdateInfect()
 					DeathMSG = DeathMSG + "SCP-008 infection was confirmed, after which the body was incinerated."
 
 					Kill(mainPlayer)
-					de = CreateDecal(3, EntityX(mainPlayer\currRoom\npc[0]\collider), 544*RoomScale + 0.01, EntityZ(mainPlayer\currRoom\npc[0]\collider),90,Rnd(360),0)
+					de = CreateDecal(DECAL_BLOOD_SPLATTER, EntityX(mainPlayer\currRoom\npc[0]\collider), 544*RoomScale + 0.01, EntityZ(mainPlayer\currRoom\npc[0]\collider),90,Rnd(360),0)
 					de\size = 0.8
 					ScaleSprite(de\obj, de\size,de\size)
 				ElseIf (mainPlayer\overlays[OVERLAY_008] > 96) Then
@@ -1576,102 +1571,6 @@ Function UpdateInfect()
 	Else
 		HideEntity(mainPlayer\overlays[OVERLAY_008])
 	EndIf
-End Function
-
-;--------------------------------------- decals -------------------------------------------------------
-;TODO: Move to their own file?
-Type Decal
-	Field obj%
-	Field sizeChange#, size#, maxSize#
-	Field alphaChange#, alpha#
-	Field blendmode%
-	Field fx%
-	Field id%
-	Field timer#
-
-	Field lifetime#
-
-	Field x#, y#, z#
-	Field pitch#, yaw#, roll#
-End Type
-
-Function CreateDecal.Decal(id%, x#, y#, z#, pitch#, yaw#, roll#)
-	Local d.Decal = New Decal
-
-	d\x = x
-	d\y = y
-	d\z = z
-	d\pitch = pitch
-	d\yaw = yaw
-	d\roll = roll
-
-	d\maxSize = 1.0
-
-	d\alpha = 1.0
-	d\size = 1.0
-	d\obj = CreateSprite()
-	d\blendmode = 1
-
-	EntityTexture(d\obj, DecalTextures(id))
-	EntityFX(d\obj, 0)
-	SpriteViewMode(d\obj, 2)
-	PositionEntity(d\obj, x, y, z)
-	RotateEntity(d\obj, pitch, yaw, roll)
-
-	d\id = id
-
-	If (DecalTextures(id) = 0 Or d\obj = 0) Then Return Null
-
-	Return d
-End Function
-
-Function UpdateDecals()
-	Local angle#, temp#
-
-	Local d.Decal, d2.Decal
-	For d = Each Decal
-		If (d\sizeChange <> 0) Then
-			d\size=d\size + d\sizeChange * timing\tickDuration
-			ScaleSprite(d\obj, d\size, d\size)
-
-			Select d\id
-				Case 0
-					If (d\timer <= 0) Then
-						angle = Rand(360)
-						temp = Rnd(d\size)
-						d2 = CreateDecal(1, EntityX(d\obj) + Cos(angle) * temp, EntityY(d\obj) - 0.0005, EntityZ(d\obj) + Sin(angle) * temp, EntityPitch(d\obj), Rnd(360), EntityRoll(d\obj))
-						d2\size = Rnd(0.1, 0.5) : ScaleSprite(d2\obj, d2\size, d2\size)
-						;TODO: fix
-						;PlayRangedSound(DecaySFX(Rand(1, 3)), mainPlayer\cam, d2\obj, 10.0, Rnd(0.1, 0.5))
-						;d\timer = d\timer + Rand(50,150)
-						d\timer = Rand(50, 100)
-					Else
-						d\timer= d\timer-timing\tickDuration
-					EndIf
-				;Case 6
-				;	EntityBlend(d\obj, 2)
-			End Select
-
-			If (d\size >= d\maxSize) Then
-				d\sizeChange = 0
-				d\size = d\maxSize
-			EndIf
-		EndIf
-
-		If (d\alphaChange <> 0) Then
-			d\alpha = Min(d\alpha + timing\tickDuration * d\alphaChange, 1.0)
-			EntityAlpha(d\obj, d\alpha)
-		EndIf
-
-		If (d\lifetime > 0) Then
-			d\lifetime=Max(d\lifetime-timing\tickDuration,5)
-		EndIf
-
-		If (d\size <= 0 Or d\alpha <= 0 Or d\lifetime=5.0 ) Then
-			FreeEntity(d\obj)
-			Delete d
-		EndIf
-	Next
 End Function
 
 Function Graphics3DExt%(width%,height%,depth%=32,mode%=2)

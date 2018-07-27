@@ -248,7 +248,7 @@ Function UpdateEvent_cont_1123_2(e.Event)
 
 				mainPlayer\blinkTimer = -10
 
-				de = CreateDecal(3, EntityX(mainPlayer\collider), 512*RoomScale + 0.0005, EntityZ(mainPlayer\collider),90,Rnd(360),0)
+				de = CreateDecal(DECAL_BLOOD_SPLATTER, EntityX(mainPlayer\collider), 512*RoomScale + 0.0005, EntityZ(mainPlayer\collider),90,Rnd(360),0)
 				de\size = 0.5 : ScaleSprite(de\obj, de\size, de\size)
 
 				e\room\npc[0]\sounds[0] = LoadSound("SFX/SCP/1123/Officer3.ogg")

@@ -31,9 +31,9 @@ Function UpdateEventRoom2elevator2(e.Event)
 	;[Block]
 	If (e\room\dist < 8.0 And e\room\dist > 0) Then
 
-		de = CreateDecal(3, EntityX(e\room\objects[0],True), 0.0005, EntityZ(e\room\objects[0],True),90,Rnd(360),0)
+		de = CreateDecal(DECAL_BLOOD_SPLATTER, EntityX(e\room\objects[0],True), 0.0005, EntityZ(e\room\objects[0],True),90,Rnd(360),0)
 
-		de = CreateDecal(17, EntityX(e\room\objects[0],True), 0.002, EntityZ(e\room\objects[0],True),90,Rnd(360),0)
+		de = CreateDecal(DECAL_BLOOD_POOL, EntityX(e\room\objects[0],True), 0.002, EntityZ(e\room\objects[0],True),90,Rnd(360),0)
 		de\size = 0.5
 
 		e\room\npc[0]=CreateNPC(NPCtypeD, EntityX(e\room\objects[0],True), 0.5, EntityZ(e\room\objects[0],True))
@@ -107,12 +107,12 @@ Function UpdateEvent_hll_ele_2(e.Event)
 					RemoveNPC(e\room\npc[0])
 					e\room\npc[0]=Null
 
-					de = CreateDecal(3, EntityX(e\room\objects[0],True), 0.0005, EntityZ(e\room\objects[0],True),90,Rnd(360),0)
+					de = CreateDecal(DECAL_BLOOD_SPLATTER, EntityX(e\room\objects[0],True), 0.0005, EntityZ(e\room\objects[0],True),90,Rnd(360),0)
 
-					de = CreateDecal(17, EntityX(e\room\objects[0],True), 0.002, EntityZ(e\room\objects[0],True),90,Rnd(360),0)
+					de = CreateDecal(DECAL_BLOOD_POOL, EntityX(e\room\objects[0],True), 0.002, EntityZ(e\room\objects[0],True),90,Rnd(360),0)
 					de\size = 0.5
 
-					de = CreateDecal(3, EntityX(e\room\objects[1],True), EntityY(e\room\objects[1],True), EntityZ(e\room\objects[1],True),0,e\room\angle+270,0)
+					de = CreateDecal(DECAL_BLOOD_SPLATTER, EntityX(e\room\objects[1],True), EntityY(e\room\objects[1],True), EntityZ(e\room\objects[1],True),0,e\room\angle+270,0)
 					de\size = 0.9
 				EndIf
 				e\room\doors[0]\locked = False

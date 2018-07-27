@@ -82,7 +82,7 @@ Function FillRoom_pocketdimension(r.Room)
     r\doors[0] = CreateDoor(r\x,2048*RoomScale,r\z+32.0-1024*RoomScale,0,r)
     r\doors[1] = CreateDoor(r\x,2048*RoomScale,r\z+32.0+1024*RoomScale,180,r)
 
-    de = CreateDecal(18, r\x-(1536*RoomScale), 0.02,r\z+608*RoomScale+32.0, 90,0,0)
+    de = CreateDecal(DECAL_PD6, r\x-(1536*RoomScale), 0.02,r\z+608*RoomScale+32.0, 90,0,0)
     EntityParent(de\obj, r\obj)
     de\size = Rnd(0.8, 0.8)
     de\blendmode = 2
@@ -94,20 +94,20 @@ Function FillRoom_pocketdimension(r.Room)
     ScaleEntity(r\objects[10],RoomScale*1.5,RoomScale*2.0,RoomScale*1.5,True)
     PositionEntity(r\objects[11],r\x,r\y,r\z+64.0,True)
 
-    For i = 1 To 8
-        r\objects[i-1] = CopyEntity(hallway) ;CopyMesh
-        ScaleEntity(r\objects[i-1],RoomScale,RoomScale,RoomScale)
-        angle = (i-1) * (360.0/8.0)
+    For i = 0 To 7
+        r\objects[i] = CopyEntity(hallway) ;CopyMesh
+        ScaleEntity(r\objects[i],RoomScale,RoomScale,RoomScale)
+        angle = i * (360.0/8.0)
 
-        EntityType(r\objects[i-1], HIT_MAP)
-        EntityPickMode(r\objects[i-1], 3)
+        EntityType(r\objects[i], HIT_MAP)
+        EntityPickMode(r\objects[i], 3)
 
-        RotateEntity(r\objects[i-1],0,angle-90,0)
-        PositionEntity(r\objects[i-1],r\x+Cos(angle)*(512.0*RoomScale),0.0,r\z+Sin(angle)*(512.0*RoomScale))
-        EntityParent(r\objects[i-1], r\obj)
+        RotateEntity(r\objects[i],0,angle-90,0)
+        PositionEntity(r\objects[i],r\x+Cos(angle)*(512.0*RoomScale),0.0,r\z+Sin(angle)*(512.0*RoomScale))
+        EntityParent(r\objects[i], r\obj)
 
-        If (i < 6) Then
-            de = CreateDecal(i+7, r\x+Cos(angle)*(512.0*RoomScale)*3.0, 0.02,r\z+Sin(angle)*(512.0*RoomScale)*3.0, 90,angle-90,0)
+        If (i < 5) Then
+            de = CreateDecal(i+DECAL_PD1, r\x+Cos(angle)*(512.0*RoomScale)*3.0, 0.02,r\z+Sin(angle)*(512.0*RoomScale)*3.0, 90,angle-90,0)
             de\size = Rnd(0.5, 0.5)
             de\blendmode = 2
             de\fx = 1+8
@@ -452,7 +452,7 @@ Function UpdateEvent_pocketdimension(e.Event)
 
 										PlaySound2(LoadTempSound("SFX/Room/PocketDimension/Exit.ogg"))
 
-										de = CreateDecal(0, EntityX(r\obj), 381*RoomScale, EntityZ(r\obj), 270, Rand(360), 0)
+										de = CreateDecal(DECAL_CORROSION, EntityX(r\obj), 381*RoomScale, EntityZ(r\obj), 270, Rand(360), 0)
 
 										PositionEntity(mainPlayer\collider, EntityX(r\obj), 0.4, EntityZ(r\obj))
 										ResetEntity(mainPlayer\collider)

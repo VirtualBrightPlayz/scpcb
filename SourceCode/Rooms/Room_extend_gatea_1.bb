@@ -261,7 +261,7 @@ Function UpdateEvent_extend_gatea_1(e.Event)
 						SetNPCFrame(Curr106, 110.0)
 						PositionEntity(Curr106\collider, EntityX(e\room\objects[3],True),EntityY(mainPlayer\collider)-50.0,EntityZ(e\room\objects[3],True),True)
 						PositionEntity(Curr106\obj, EntityX(e\room\objects[3],True),EntityY(mainPlayer\collider)-50.0,EntityZ(e\room\objects[3],True),True)
-						de = CreateDecal(0, EntityX(e\room\objects[3],True),EntityY(e\room\objects[3],True)+0.01,EntityZ(e\room\objects[3],True), 90, Rand(360), 0)
+						de = CreateDecal(DECAL_CORROSION, EntityX(e\room\objects[3],True),EntityY(e\room\objects[3],True)+0.01,EntityZ(e\room\objects[3],True), 90, Rand(360), 0)
 						de\size = 0.05 : de\sizeChange = 0.001 : EntityAlpha(de\obj, 0.8) : UpdateDecals()
 						;TODO: fix audio
 						;PlaySound2((HorrorSFX(5)))
@@ -316,7 +316,7 @@ Function UpdateEvent_extend_gatea_1(e.Event)
 
 								If (timing\tickDuration > 0) Then ;decals under 106
 									If (((e\eventState-timing\tickDuration) Mod 100.0)=<50.0 And (e\eventState Mod 100.0)>50.0) Then
-										de = CreateDecal(0, EntityX(Curr106\collider,True),EntityY(e\room\objects[3],True)+0.01,EntityZ(Curr106\collider,True), 90, Rand(360), 0)
+										de = CreateDecal(DECAL_CORROSION, EntityX(Curr106\collider,True),EntityY(e\room\objects[3],True)+0.01,EntityZ(Curr106\collider,True), 90, Rand(360), 0)
 										de\size = 0.2 : de\sizeChange = 0.004 : de\timer = 90000 : EntityAlpha(de\obj, 0.8) : UpdateDecals()
 									EndIf
 								EndIf
@@ -346,7 +346,7 @@ Function UpdateEvent_extend_gatea_1(e.Event)
 
 								If (timing\tickDuration > 0) Then ;106:n alle ilmestyy decaleita
 									If (((e\eventState-timing\tickDuration) Mod 160.0)=<50.0 And (e\eventState Mod 160.0)>50.0) Then
-										de = CreateDecal(0, EntityX(Curr106\collider,True),EntityY(e\room\objects[3],True)+0.01,EntityZ(Curr106\collider,True), 90, Rand(360), 0)
+										de = CreateDecal(DECAL_CORROSION, EntityX(Curr106\collider,True),EntityY(e\room\objects[3],True)+0.01,EntityZ(Curr106\collider,True), 90, Rand(360), 0)
 										de\size = 0.05 : de\sizeChange = 0.004 : de\timer = 90000 : EntityAlpha(de\obj, 0.8) : UpdateDecals()
 									EndIf
 								EndIf

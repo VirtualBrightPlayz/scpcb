@@ -879,7 +879,7 @@ Function AddLight%(room.Room, x#, y#, z#, ltype%, range#, r%, g%, b%)
 	Local i%
 	;TODO: These names suck.
 	Local light%, sprite%
-	Local lightSpriteTex% = GrabTexture("GFX/Sprites/light_flare.jpg", 1)
+	Local lightSpriteTex% = GrabTexture("GFX/Sprites/light_flare.jpg")
 
 	If (room<>Null) Then
 		For i = 0 To MaxRoomLights-1
@@ -908,8 +908,6 @@ Function AddLight%(room.Room, x#, y#, z#, ltype%, range#, r%, g%, b%)
 
 				HideEntity(room\lights[i])
 
-				room\maxLights% = room\maxLights% + 1
-
 				Return room\lights[i]
 			EndIf
 		Next
@@ -925,7 +923,7 @@ Function AddLight%(room.Room, x#, y#, z#, ltype%, range#, r%, g%, b%)
 		EntityBlend(sprite, 3)
 		Return light
 	EndIf
-	DropAsset(lightSprite)
+	DropAsset(lightSpriteTex)
 End Function
 
 Type LightTemplate
@@ -1317,7 +1315,7 @@ End Function
 
 Function UpdateScreens()
 	If (SelectedScreen <> Null) Then Return
-	If (SelectedDoor <> Null) Then Return
+	If (mainPlayer\selectedDoor <> Null) Then Return
 
 	Local s.Screen
 	For s = Each Screen
@@ -1434,6 +1432,8 @@ Function UpdateSecurityCams()
 	Local sc.SecurityCam
 	Local close%, temp#, pvt%
 	Local i%
+	Local gorePics%[GORE_PIC_COUNT]
+	Local aiPic%
 
 	PlayerDetected = False
 
@@ -1625,8 +1625,6 @@ Function UpdateSecurityCams()
 							FreeEntity(pvt)
 						;EndIf
 							If (sc\coffinEffect=1 Or sc\coffinEffect=3) Then
-								Local GORE_PIC_COUNT% = 6
-								Local gorePics%[GORE_PIC_COUNT]
 								For i=0 To GORE_PIC_COUNT-1
 									gorePics[i] = GrabTexture("GFX/895pics/pic" + Str(i + 1) + ".jpg")
 								Next
@@ -1660,14 +1658,14 @@ Function UpdateSecurityCams()
 									EntityTexture(sc\scrOverlay, MonitorTexture)
 								EndIf
 								For i=0 To GORE_PIC_COUNT-1
-									FreeAsset(gorePics[i])
+									DropAsset(gorePics[i])
 								Next
 							EndIf
 						EndIf
 					EndIf
 
 					If (sc\inSight And sc\coffinEffect=0 Or sc\coffinEffect=2) Then
-						Local aiPic% = GrabTexture("GFX/079pics/face.jpg")
+						aiPic = GrabTexture("GFX/079pics/face.jpg")
 						If (sc\playerState = 0) Then
 							sc\playerState = Rand(60000, 65000)
 						EndIf

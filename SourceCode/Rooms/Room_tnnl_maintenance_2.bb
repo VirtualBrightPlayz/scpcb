@@ -40,7 +40,7 @@ Function FillRoom_tnnl_maintenance_2(r.Room)
     PositionEntity(d\buttons[1], r\x - 224.0 * RoomScale, r\y + 0.7, r\z + 384.0 * RoomScale, True)
     RotateEntity(d\buttons[1], 0,90,0,True)
 
-    de = CreateDecal(0, r\x + 64.0 * RoomScale, 0.005, r\z + 144.0 * RoomScale, 90, Rand(360), 0)
+    de = CreateDecal(DECAL_CORROSION, r\x + 64.0 * RoomScale, 0.005, r\z + 144.0 * RoomScale, 90, Rand(360), 0)
     EntityParent(de\obj, r\obj)
     it = CreatePaper("drL6", r\x + 64.0 * RoomScale, r\y +144.0 * RoomScale, r\z - 384.0 * RoomScale)
     EntityParent(it\collider, r\obj)

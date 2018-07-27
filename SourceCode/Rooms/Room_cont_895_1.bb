@@ -51,7 +51,7 @@ Function FillRoom_cont_895_1(r.Room)
     r\objects[1] = CreatePivot(r\obj)
     PositionEntity(r\objects[1], r\x + 96.0*RoomScale, -1532.0 * RoomScale, r\z + 2016.0 * RoomScale,True)
 
-    ;de.Decal = CreateDecal(0, r\x + 96.0*RoomScale, -1535.0 * RoomScale, r\z + 32.0 * RoomScale, 90, Rand(360), 0)
+    ;de.Decal = CreateDecal(DECAL_CORROSION, r\x + 96.0*RoomScale, -1535.0 * RoomScale, r\z + 32.0 * RoomScale, 90, Rand(360), 0)
     ;EntityParent(de\obj, r\obj)
 End Function
 
@@ -110,7 +110,7 @@ Function UpdateEventCoffin(e.Event)
 		CoffinDistance = EntityDistance(mainPlayer\collider, e\room\objects[1])
 		If (CoffinDistance < 1.5) Then
 			If ((Not Contained106) And e\name="coffin106" And e\eventState2 = 0) Then
-				de = CreateDecal(0, EntityX(e\room\objects[1],True), -1531.0*RoomScale, EntityZ(e\room\objects[1],True), 90, Rand(360), 0)
+				de = CreateDecal(DECAL_CORROSION, EntityX(e\room\objects[1],True), -1531.0*RoomScale, EntityZ(e\room\objects[1],True), 90, Rand(360), 0)
 				de\size = 0.05 : de\sizeChange = 0.001 : EntityAlpha(de\obj, 0.8) : UpdateDecals()
 
 				If (Curr106\state > 0) Then

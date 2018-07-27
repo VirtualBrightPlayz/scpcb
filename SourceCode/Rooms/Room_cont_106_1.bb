@@ -252,7 +252,7 @@ Function UpdateEvent_cont_106_1(e.Event)
 				Curr106\idle = True
 
 				If (e\eventState3-timing\tickDuration < 2500) Then
-					d = CreateDecal(0, EntityX(e\room\objects[5], True), 936.0*RoomScale, EntityZ(e\room\objects[5], True), 90, 0, Rnd(360))
+					d = CreateDecal(DECAL_CORROSION, EntityX(e\room\objects[5], True), 936.0*RoomScale, EntityZ(e\room\objects[5], True), 90, 0, Rnd(360))
 					d\timer = 90000
 					d\alpha = 0.01 : d\alphaChange = 0.005
 					d\size = 0.1 : d\sizeChange = 0.003
@@ -262,7 +262,7 @@ Function UpdateEvent_cont_106_1(e.Event)
 					LoadEventSound(e,"SFX/Character/LureSubject/106Bait.ogg",1)
 					e\soundChannels[1]=PlaySound(e\sounds[1])
 				ElseIf (e\eventState3-timing\tickDuration < 2900 And e\eventState3 => 2900) Then
-					d = CreateDecal(0, EntityX(e\room\objects[7], True), EntityY(e\room\objects[7], True) , EntityZ(e\room\objects[7], True), 0, 0, 0)
+					d = CreateDecal(DECAL_CORROSION, EntityX(e\room\objects[7], True), EntityY(e\room\objects[7], True) , EntityZ(e\room\objects[7], True), 0, 0, 0)
 					RotateEntity(d\obj, EntityPitch(e\room\objects[7], True)+Rand(10,20), EntityYaw(e\room\objects[7], True)+30, EntityRoll(d\obj))
 					MoveEntity(d\obj, 0,0,0.15)
 					RotateEntity(d\obj, EntityPitch(e\room\objects[7], True), EntityYaw(e\room\objects[7], True), EntityRoll(d\obj))

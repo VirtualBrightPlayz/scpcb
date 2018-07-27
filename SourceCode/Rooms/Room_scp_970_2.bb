@@ -153,7 +153,7 @@ Function UpdateEvent_scp_970_2(e.Event)
 				Case 5
 					mainPlayer\injuries = mainPlayer\injuries + 0.3
 				Case 10
-					de = CreateDecal(3, EntityX(e\room\obj)+Cos(e\room\angle-90)*760*RoomScale, 0.0005, EntityZ(e\room\obj)+Sin(e\room\angle-90)*760*RoomScale,90,Rnd(360),0)
+					de = CreateDecal(DECAL_BLOOD_SPLATTER, EntityX(e\room\obj)+Cos(e\room\angle-90)*760*RoomScale, 0.0005, EntityZ(e\room\obj)+Sin(e\room\angle-90)*760*RoomScale,90,Rnd(360),0)
 				Case 14
 					For i = 0 To mainPlayer\inventory\size-1
 						If (mainPlayer\inventory\items[i]<> Null) Then
@@ -192,7 +192,7 @@ Function UpdateEvent_scp_970_2(e.Event)
 					mainPlayer\inventory\items[i]\picked = True
 				Case 35
 					For i = 0 To 3
-						de = CreateDecal(17, e\room\x+Rnd(-2,2), 700*RoomScale, e\room\z+Rnd(-2,2), 270, Rand(360), 0)
+						de = CreateDecal(DECAL_BLOOD_POOL, e\room\x+Rnd(-2,2), 700*RoomScale, e\room\z+Rnd(-2,2), 270, Rand(360), 0)
 						de\size = 0.05 : de\sizeChange = 0.0005 : EntityAlpha(de\obj, 0.8) : UpdateDecals()
 					Next
 				Case 40

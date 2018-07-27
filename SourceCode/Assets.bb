@@ -8,6 +8,8 @@ Const ASSET_DECAY_TIMER% = 10 * 70
 
 Const BLEND_ADD% = 3
 
+Const GORE_PIC_COUNT% = 6
+
 Type AssetWrap
 	Field asType%
 	Field grabCount%
@@ -33,7 +35,7 @@ Function CreateAsset.AssetWrap(filePath$, asType%, flag%=1)
 			as\intVal = LoadAnimMesh(as\file)
 	End Select
 
-	If (as\intVal <> 0) Then
+	If (as\intVal <> 0 And as\asType <> ASSET_TEXTURE And as\asType <> ASSET_IMAGE) Then
 		HideEntity(as\intVal)
 	EndIf
 
@@ -265,25 +267,6 @@ Function LoadEntities()
 	DrawLoading(5)
 	TeslaTexture = LoadTexture("GFX/Map/Textures/tesla.jpg", 1+2)
 
-	DrawLoading(20)
-
-	;TODO: replace DecalTextures with a 2D array?
-	For i = 0 To 6
-		DecalTextures(i) = LoadTexture("GFX/Decals/decal" + Str(i + 1) + ".png", 1 + 2)
-	Next
-	;DecalTextures(7) = LoadTexture("GFX/items/INVpaperstrips.jpg", 1 + 2)
-	For i = 8 To 12
-		DecalTextures(i) = LoadTexture("GFX/Decals/decalpd"+Str(i-7)+".jpg", 1 + 2)
-	Next
-	For i = 13 To 14
-		DecalTextures(i) = LoadTexture("GFX/Decals/bullethole"+Str(i-12)+".jpg", 1 + 2)
-	Next
-	For i = 15 To 16
-		DecalTextures(i) = LoadTexture("GFX/Decals/blooddrop"+Str(i-14)+".png", 1 + 2)
-	Next
-	DecalTextures(17) = LoadTexture("GFX/Decals/decal8.png", 1 + 2)
-	DecalTextures(18) = LoadTexture("GFX/Decals/decalpd6.jpg", 1 + 2)
-
 	DrawLoading(25)
 
 	Monitor = LoadMesh("GFX/Map/monitor.b3d")
@@ -380,13 +363,13 @@ Function InitNewGame()
 
 		If (Not r\roomTemplate\disableDecals) Then
 			If (Rand(4) = 1) Then
-				de = CreateDecal(Rand(2, 3), EntityX(r\obj)+Rnd(- 2,2), 0.003, EntityZ(r\obj)+Rnd(-2,2), 90, Rand(360), 0)
+				de = CreateDecal(Rand(DECAL_BLOOD_SPREAD, DECAL_BLOOD_SPLATTER), EntityX(r\obj)+Rnd(- 2,2), 0.003, EntityZ(r\obj)+Rnd(-2,2), 90, Rand(360), 0)
 				de\size = Rnd(0.1, 0.4) : ScaleSprite(de\obj, de\size, de\size)
 				EntityAlpha(de\obj, Rnd(0.85, 0.95))
 			EndIf
 
 			If (Rand(4) = 1) Then
-				de = CreateDecal(0, EntityX(r\obj)+Rnd(- 2,2), 0.003, EntityZ(r\obj)+Rnd(-2,2), 90, Rand(360), 0)
+				de = CreateDecal(DECAL_CORROSION, EntityX(r\obj)+Rnd(- 2,2), 0.003, EntityZ(r\obj)+Rnd(-2,2), 90, Rand(360), 0)
 				de\size = Rnd(0.5, 0.7) : EntityAlpha(de\obj, 0.7) : de\id = 1 : ScaleSprite(de\obj, de\size, de\size)
 				EntityAlpha(de\obj, Rnd(0.7, 0.85))
 			EndIf

@@ -40,7 +40,7 @@ Function FillRoom_cont_079_1(r.Room)
     r\objects[2] = CreatePivot(r\obj)
     PositionEntity(r\objects[2], r\x + 1184.0*RoomScale, -448.0*RoomScale, r\z+1792.0*RoomScale, True)
 
-    de = CreateDecal(3,  r\x + 1184.0*RoomScale, -448.0*RoomScale+0.01, r\z+1792.0*RoomScale,90,Rnd(360),0)
+    de = CreateDecal(DECAL_BLOOD_SPLATTER,  r\x + 1184.0*RoomScale, -448.0*RoomScale+0.01, r\z+1792.0*RoomScale,90,Rnd(360),0)
     de\size = 0.5
     ScaleSprite(de\obj, de\size,de\size)
     EntityParent(de\obj, r\obj)

@@ -7,13 +7,13 @@ Function FillRoom_lck_096_2c(r.Room)
 	Local t1%;, Bump
 
     For i = 0 To 5
-        de = CreateDecal(Rand(2,3), r\x+Rnd(-392,520)*RoomScale, 3.0*RoomScale+Rnd(0,0.001), r\z+Rnd(-392,520)*RoomScale,90,Rnd(360),0)
+        de = CreateDecal(Rand(DECAL_BLOOD_SPREAD, DECAL_BLOOD_SPLATTER), r\x+Rnd(-392,520)*RoomScale, 3.0*RoomScale+Rnd(0,0.001), r\z+Rnd(-392,520)*RoomScale,90,Rnd(360),0)
         de\size = Rnd(0.3,0.6)
         ScaleSprite(de\obj, de\size,de\size)
-        CreateDecal(Rand(15,16), r\x+Rnd(-392,520)*RoomScale, 3.0*RoomScale+Rnd(0,0.001), r\z+Rnd(-392,520)*RoomScale,90,Rnd(360),0)
+        CreateDecal(Rand(DECAL_BLOOD_DROP1, DECAL_BLOOD_DROP2), r\x+Rnd(-392,520)*RoomScale, 3.0*RoomScale+Rnd(0,0.001), r\z+Rnd(-392,520)*RoomScale,90,Rnd(360),0)
         de\size = Rnd(0.1,0.6)
         ScaleSprite(de\obj, de\size,de\size)
-        CreateDecal(Rand(15,16), r\x+Rnd(-0.5,0.5), 3.0*RoomScale+Rnd(0,0.001), r\z+Rnd(-0.5,0.5),90,Rnd(360),0)
+        CreateDecal(Rand(DECAL_BLOOD_DROP1, DECAL_BLOOD_DROP2), r\x+Rnd(-0.5,0.5), 3.0*RoomScale+Rnd(0,0.001), r\z+Rnd(-0.5,0.5),90,Rnd(360),0)
         de\size = Rnd(0.1,0.6)
         ScaleSprite(de\obj, de\size,de\size)
     Next

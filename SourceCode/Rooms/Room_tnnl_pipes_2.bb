@@ -82,14 +82,14 @@ Function UpdateEventRoom2pipes106(e.Event)
 			If ((e\eventState / 250.0) > 0.3 And ((e\eventState - timing\tickDuration*0.7) / 250.0) <= 0.3) Then
 				;e\soundChannels[0] = PlaySound2(HorrorSFX(6))
 				mainPlayer\blurTimer = 800
-				d = CreateDecal(0, EntityX(e\room\objects[2], True), EntityY(e\room\objects[2], True), EntityZ(e\room\objects[2], True), 0, e\room\angle - 90, Rnd(360)) ;90, Rnd(360), 0
+				d = CreateDecal(DECAL_CORROSION, EntityX(e\room\objects[2], True), EntityY(e\room\objects[2], True), EntityZ(e\room\objects[2], True), 0, e\room\angle - 90, Rnd(360)) ;90, Rnd(360), 0
 				d\timer = 90000
 				d\alpha = 0.01 : d\alphaChange = 0.005
 				d\size = 0.1 : d\sizeChange = 0.003
 			EndIf
 
 			If ((e\eventState / 250.0) > 0.65 And ((e\eventState - timing\tickDuration*0.7) / 250.0) <= 0.65) Then
-				d = CreateDecal(0, EntityX(e\room\objects[3], True), EntityY(e\room\objects[3], True), EntityZ(e\room\objects[3], True), 0, e\room\angle + 90, Rnd(360))
+				d = CreateDecal(DECAL_CORROSION, EntityX(e\room\objects[3], True), EntityY(e\room\objects[3], True), EntityZ(e\room\objects[3], True), 0, e\room\angle + 90, Rnd(360))
 				d\timer = 90000
 				d\alpha = 0.01 : d\alphaChange = 0.005
 				d\size = 0.1 : d\sizeChange = 0.003

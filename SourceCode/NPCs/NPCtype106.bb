@@ -70,7 +70,7 @@ Function UpdateNPCtype106(n.NPC)
             ElseIf (n\timer >= -10) Then
                 If (EntityY(n\collider) < EntityY(mainPlayer\collider) - 20.0 - 0.55) Then
                     If (Not mainPlayer\currRoom\roomTemplate\disableDecals) Then
-                        de = CreateDecal(0, EntityX(mainPlayer\collider), 0.01, EntityZ(mainPlayer\collider), 90, Rand(360), 0)
+                        de = CreateDecal(DECAL_CORROSION, EntityX(mainPlayer\collider), 0.01, EntityZ(mainPlayer\collider), 90, Rand(360), 0)
                         de\size = 0.05 : de\sizeChange = 0.001 : EntityAlpha(de\obj, 0.8) : UpdateDecals()
                     EndIf
 

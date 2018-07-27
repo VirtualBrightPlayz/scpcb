@@ -13,7 +13,7 @@ Function UpdateEvent106victim(e.Event)
 	If (Not Contained106) Then
 		If (mainPlayer\currRoom = e\room) Then
 			If (e\eventState = 0) Then
-				de = CreateDecal(0, EntityX(e\room\obj), 799.0*RoomScale, EntityZ(e\room\obj), -90, Rand(360), 0)
+				de = CreateDecal(DECAL_CORROSION, EntityX(e\room\obj), 799.0*RoomScale, EntityZ(e\room\obj), -90, Rand(360), 0)
 				de\size = 0.05 : de\sizeChange = 0.0015 : EntityAlpha(de\obj, 0.8) : UpdateDecals()
 				;TODO: fix
 				;PlayRangedSound(DecaySFX(3), mainPlayer\cam, de\obj, 15.0)
@@ -58,7 +58,7 @@ Function UpdateEvent106victim(e.Event)
 						LoadEventSound(e,"SFX/General/BodyFall.ogg")
 						PlaySound2(e\sounds[0])
 
-						de = CreateDecal(0, EntityX(e\room\obj), 0.001, EntityZ(e\room\obj), 90, Rand(360), 0)
+						de = CreateDecal(DECAL_CORROSION, EntityX(e\room\obj), 0.001, EntityZ(e\room\obj), 90, Rand(360), 0)
 						de\size = 0.4 : EntityAlpha(de\obj, 0.8) : UpdateDecals()
 					EndIf
 

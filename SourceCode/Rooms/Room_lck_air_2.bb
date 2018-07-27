@@ -15,7 +15,7 @@ Function FillRoom_lck_air_2(r.Room)
         r\objects[ROOM_LCKA2_CORPSESPAWN] = CreatePivot(r\obj)
         PositionEntity(r\objects[ROOM_LCKA2_CORPSESPAWN], r\x - 156.825*RoomScale, -37.3458*RoomScale, r\z+121.364*RoomScale, True)
 
-        de = CreateDecal(3,  r\x - 156.825*RoomScale, -37.3458*RoomScale, r\z+121.364*RoomScale,90,Rnd(360),0)
+        de = CreateDecal(DECAL_BLOOD_SPLATTER,  r\x - 156.825*RoomScale, -37.3458*RoomScale, r\z+121.364*RoomScale,90,Rnd(360),0)
         de\size = 0.5
         ScaleSprite(de\obj, de\size,de\size)
         EntityParent(de\obj, r\obj)

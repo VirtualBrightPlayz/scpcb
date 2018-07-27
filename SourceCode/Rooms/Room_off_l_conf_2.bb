@@ -16,12 +16,12 @@ Function FillRoom_off_l_conf_2(r.Room)
 	r\doors[0]\buttons[1] = 0
     r\doors[0]\autoClose = False : r\doors[0]\open = False : r\doors[0]\locked = True
 
-    de = CreateDecal(0, r\x - 808.0 * RoomScale, 0.005, r\z - 72.0 * RoomScale, 90, Rand(360), 0)
+    de = CreateDecal(DECAL_CORROSION, r\x - 808.0 * RoomScale, 0.005, r\z - 72.0 * RoomScale, 90, Rand(360), 0)
     EntityParent(de\obj, r\obj)
-    de = CreateDecal(2, r\x - 808.0 * RoomScale, 0.01, r\z - 72.0 * RoomScale, 90, Rand(360), 0)
+    de = CreateDecal(DECAL_BLOOD_SPREAD, r\x - 808.0 * RoomScale, 0.01, r\z - 72.0 * RoomScale, 90, Rand(360), 0)
     de\size = 0.3 : ScaleSprite(de\obj, de\size, de\size) : EntityParent(de\obj, r\obj)
 
-    de = CreateDecal(0, r\x - 432.0 * RoomScale, 0.01, r\z, 90, Rand(360), 0)
+    de = CreateDecal(DECAL_CORROSION, r\x - 432.0 * RoomScale, 0.01, r\z, 90, Rand(360), 0)
     EntityParent(de\obj, r\obj)
 
     r\objects[0] = CreatePivot(r\obj)

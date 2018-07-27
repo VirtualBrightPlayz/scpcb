@@ -109,7 +109,7 @@ Function FillRoom_strg_939_3(r.Room)
     it = CreateItem("nvgoggles", r\x + 1936.0 * RoomScale, r\y - 5496.0 * RoomScale, r\z - 944.0 * RoomScale)
     EntityParent(it\collider, r\obj)
 
-    de = CreateDecal(3,  r\x + x*RoomScale, -5632.0*RoomScale+0.01, r\z+z*RoomScale,90,Rnd(360),0)
+    de = CreateDecal(DECAL_BLOOD_SPLATTER,  r\x + x*RoomScale, -5632.0*RoomScale+0.01, r\z+z*RoomScale,90,Rnd(360),0)
     de\size = 0.5
     ScaleSprite(de\obj, de\size,de\size)
     EntityParent(de\obj, r\obj)
