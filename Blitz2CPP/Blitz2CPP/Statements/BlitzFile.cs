@@ -424,6 +424,8 @@ namespace Blitz2CPP.Statements
                     srcFile.WriteLine(type.GetVectorList() + " " + type.Name + "::list;");
                     srcFile.WriteLine(type.Name + "::" + type.GetConstructor());
                     srcFile.WriteLine(type.Name + "::" + type.GetDestructor());
+                    srcFile.WriteLine(type.GetListSize().Insert("int ".Length, type.Name + "::")); // Insert struct name after 'int' return type.
+                    srcFile.WriteLine(type.GetListIndex().Insert(type.Name.Length + 2, type.Name + "::")); // Insert struct name after 'Name*' return type.
                     srcFile.WriteLine();
                 }
             }

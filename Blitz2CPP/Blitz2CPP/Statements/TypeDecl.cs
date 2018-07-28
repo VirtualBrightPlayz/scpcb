@@ -15,9 +15,9 @@ namespace Blitz2CPP.Statements
         }
 
         public string GetVectorList() => "std::vector<" + Name + "*>";
-        private string GetConstructorSignature() => Name + "()";
-        private string GetDestructorSignature() =>  "~" + Name + "()";
 
+
+        private string GetConstructorSignature() => Name + "()";
         public string GetConstructor()
         {
             return GetConstructorSignature() + " {\n"
@@ -25,6 +25,7 @@ namespace Blitz2CPP.Statements
                 + "}";
         }
 
+        private string GetDestructorSignature() =>  "~" + Name + "()";
         public string GetDestructor()
         {
             return GetDestructorSignature() + " {\n"
@@ -37,14 +38,35 @@ namespace Blitz2CPP.Statements
                 + "}";
         }
 
+        private string GetListSizeSignature() => "int getListSize()";
+        public string GetListSize()
+        {
+            return GetListSizeSignature() + " {\n"
+                + Constants.INDENTS + "return list.size();\n"
+                + "}";
+        }
+
+        private string GetListIndexSignature() => Name + "* getObject(int index)"; // Pointer.
+        public string GetListIndex()
+        {
+            return GetListIndexSignature() + " {\n"
+                + Constants.INDENTS + "return list[index];\n"
+                + "}";
+        }
+
         public string Parse2CPP() => Parse2CPP(string.Empty);
         public string Parse2CPP(string indents)
         {
             string retVal = indents + "struct " + Name + " {";
-            retVal += "\n" + indents + "public:";
+            retVal += "\n" + indents + "private:";
             retVal += "\n" + indents + Constants.INDENTS + "static " + GetVectorList() + " list;";
+            retVal += "\n";
+            retVal += "\n" + indents + "public:";
             retVal += "\n" + indents + Constants.INDENTS + GetConstructorSignature() + ";";
-            retVal += "\n" + indents + Constants.INDENTS + GetDestructorSignature() + ";\n";
+            retVal += "\n" + indents + Constants.INDENTS + GetDestructorSignature() + ";";
+            retVal += "\n" + indents + Constants.INDENTS + "static " + GetListSizeSignature() + ";";
+            retVal += "\n" + indents + Constants.INDENTS + "static " + GetListIndexSignature() + ";";
+            retVal += "\n";
             foreach (Statement stat in Fields)
             {
                 retVal += "\n" + stat.Parse2CPP(indents + Constants.INDENTS);

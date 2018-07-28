@@ -31,11 +31,11 @@ namespace Blitz2CPP.Statements
             string iterVar = iterName + Iteration;
             string iterType = accessVar.Type.Substring(0, accessVar.Type.Length-1); // Remove pointer.
 
-            string retVal = indents + $"for (int {iterVar} = 0; {iterVar} < {iterType}::list.size(); {iterVar}++) ";
+            string retVal = indents + $"for (int {iterVar} = 0; {iterVar} < {iterType}::getListSize(); {iterVar}++) ";
             retVal += base.Parse2CPP(indents);
 
             // Since this was a For Each loop, insert the original control variable of whichever type this loop is iterating through.
-            string decl = $"\n{indents}{Constants.INDENTS}{accessVar.Name} = {iterType}::list[{iterVar}];\n";
+            string decl = $"\n{indents}{Constants.INDENTS}{accessVar.Name} = {iterType}::getObject({iterVar});\n";
             retVal = retVal.Insert(retVal.IndexOf('{')+1, decl);
             return retVal;
         }

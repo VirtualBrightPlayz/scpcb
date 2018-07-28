@@ -471,10 +471,5 @@ Function AssignElevatorObj.ElevatorObj(obj%,door.Door,in_facility%)
 	Return eo
 End Function
 
-Function DeleteElevatorObjects()
-
-	Delete Each ElevatorObj
-
-End Function
 ;~IDEal Editor Parameters:
 ;~C#Blitz3D

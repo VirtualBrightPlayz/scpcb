@@ -607,24 +607,12 @@ Function NullGame()
 	Msg = ""
 	MsgTimer = 0
 
-	Delete Each Door
-
-	Delete Each LightTemplate
-
-	Delete Each Material
-
-	Delete Each WayPoint
-
-	Delete Each TempWayPoint
-
 	For r = Each Room
 		DeleteIntArray(r\collisionObjs)
 		If (r\props<>Null) Then DeleteIntArray(r\props)
 		Delete r
 	Next
 	DeleteIntArray(MapRooms)
-
-	Delete Each RoomTemplate
 
 	For itt = Each ItemTemplate
 		Delete itt
@@ -633,10 +621,6 @@ Function NullGame()
 	For it = Each Item
 		Delete it
 	Next
-
-	Delete Each Prop
-
-	Delete Each Decal
 
 	Local n.NPC
 	For n = Each NPC
@@ -654,12 +638,6 @@ Function NullGame()
 		RemoveEvent(e)
 	Next
 
-	Delete Each SecurityCam
-
-	Delete Each Emitter
-
-	Delete Each Particle
-
 	NTF_1499PrevX = 0.0
 	NTF_1499PrevY = 0.0
 	NTF_1499PrevZ = 0.0
@@ -667,9 +645,6 @@ Function NullGame()
 	NTF_1499X = 0.0
 	NTF_1499Y = 0.0
 	NTF_1499Z = 0.0
-	DeleteChunks()
-
-	DeleteElevatorObjects()
 
 	NoTarget = False
 

@@ -341,12 +341,5 @@ Function HideChunks()
 
 End Function
 
-Function DeleteChunks()
-
-	Delete Each Chunk
-	Delete Each ChunkPart
-
-End Function
-
 ;~IDEal Editor Parameters:
 ;~C#Blitz3D
