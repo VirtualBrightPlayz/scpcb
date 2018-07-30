@@ -16,7 +16,6 @@ namespace Blitz2CPP.Statements
 
         public string GetVectorList() => "std::vector<" + Name + "*>";
 
-
         private string GetConstructorSignature() => Name + "()";
         public string GetConstructor()
         {

@@ -13,14 +13,14 @@ namespace Blitz2CPP.Statements
         /// <summary>
         /// The raw statement.
         /// </summary>
-        protected string raw;
+        public string Raw;
 
         /// <summary>
         /// Determines whether or not the parsing of this statement should end with a Semicolon.
         /// </summary>
         public bool Semicolon;
 
-        public Statement(string raw) : this() => this.raw = raw;
+        public Statement(string raw) : this() => this.Raw = raw;
 
         protected Statement() => Semicolon = true;
 
@@ -38,7 +38,7 @@ namespace Blitz2CPP.Statements
                 string value = info.JavaSubstring(info.IndexOf('=')+1, info.Length);
 
                 Statement stat = ParseArithmetic(value);
-                stat.raw = name.Trim() + " = " + stat.raw.Trim();
+                stat.Raw = name.Trim() + " = " + stat.Raw.Trim();
                 return stat;
             }
 
@@ -115,6 +115,6 @@ namespace Blitz2CPP.Statements
         }
 
         public string Parse2CPP() => Parse2CPP(string.Empty);
-        public virtual string Parse2CPP(string indents) => indents + raw + (Semicolon ? ";" : "");
+        public virtual string Parse2CPP(string indents) => indents + Raw + (Semicolon ? ";" : "");
     }
 }

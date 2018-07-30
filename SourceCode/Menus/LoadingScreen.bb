@@ -18,7 +18,7 @@ Function InitLoadingScreens(file$)
 
 	Local f% = OpenFile(file)
 
-	While Not Eof(f)
+	While (Not Eof(f))
 		TemporaryString = Trim(ReadLine(f))
 		If (Left(TemporaryString,1) = "[") Then
 			TemporaryString = Mid(TemporaryString, 2, Len(TemporaryString) - 2)
@@ -37,7 +37,7 @@ Function InitLoadingScreens(file$)
 
 			ls\disablebackground = GetINIInt(file, TemporaryString, "disablebackground")
 
-			Select Lower(GetINIString(file, TemporaryString, "align x"))
+			Select (Lower(GetINIString(file, TemporaryString, "align x")))
 				Case "left"
 					ls\alignx = -1
 				Case "middle", "center"
@@ -46,7 +46,7 @@ Function InitLoadingScreens(file$)
 					ls\alignx = 1
 			End Select
 
-			Select Lower(GetINIString(file, TemporaryString, "align y"))
+			Select (Lower(GetINIString(file, TemporaryString, "align y")))
 				Case "top", "up"
 					ls\aligny = -1
 				Case "middle", "center"
@@ -157,14 +157,14 @@ Function DrawLoading(percent%, shortloading%=False)
 
 			If (percent = 0) Then
 				If (Rand(5)=1) Then
-					Select Rand(2)
+					Select (Rand(2))
 						Case 1
 							SelectedLoadingScreen\txt[0] = "It will happen on " + CurrentDate() + "."
 						Case 2
 							SelectedLoadingScreen\txt[0] = CurrentTime()
 					End Select
 				Else
-					Select Rand(13)
+					Select (Rand(13))
 						Case 1
 							SelectedLoadingScreen\txt[0] = "A very fine radio might prove to be useful."
 						Case 2

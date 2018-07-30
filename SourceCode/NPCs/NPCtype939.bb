@@ -49,7 +49,7 @@ Function UpdateNPCtype939(n.NPC)
 
     ;state is set to 66 in the room3storage-event if player isn't inside the room
     If (n\state < 66) Then
-        Select n\state
+        Select (n\state)
             Case 0
                 AnimateNPC(n, 290,405,0.1)
 

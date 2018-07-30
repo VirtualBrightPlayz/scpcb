@@ -195,7 +195,7 @@ Function UpdateConsole()
 
 			Else
 				cm = First ConsoleMsg
-				While cm<>Null
+				While (cm <> Null)
 					If (cm=ConsoleReissue) Then Exit
 					reissuePos = reissuePos-Int(15.0*MenuScale)
 					cm = After cm
@@ -203,7 +203,7 @@ Function UpdateConsole()
 				ConsoleReissue = After ConsoleReissue
 				reissuePos = reissuePos-Int(15.0*MenuScale)
 
-				While True
+				While (True)
 					If (ConsoleReissue=Null) Then
 						ConsoleReissue=First ConsoleMsg
 						reissuePos = 0
@@ -238,7 +238,7 @@ Function UpdateConsole()
 
 			Else
 				cm = Last ConsoleMsg
-				While cm<>Null
+				While (cm<>Null)
 					If (cm=ConsoleReissue) Then Exit
 					reissuePos = reissuePos+Int(15.0*MenuScale)
 					cm = Before cm
@@ -246,7 +246,7 @@ Function UpdateConsole()
 				ConsoleReissue = Before ConsoleReissue
 				reissuePos = reissuePos+Int(15.0*MenuScale)
 
-				While True
+				While (True)
 					If (ConsoleReissue=Null) Then
 						ConsoleReissue=Last ConsoleMsg
 						reissuePos=-consoleHeight+Int(15.0*MenuScale)
@@ -288,7 +288,7 @@ Function UpdateConsole()
 			EndIf
 
 			;TODO: Overhaul this. Move all of the argument stuff to dedicated functions so this is actually readable/maintainable.
-			Select Lower(StrTemp)
+			Select (Lower(StrTemp))
 				Case "help"
 					If (Instr(ConsoleInput, " ")<>0) Then
 						StrTemp = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
@@ -297,7 +297,7 @@ Function UpdateConsole()
 					EndIf
 					ConsoleR = 0 : ConsoleG = 255 : ConsoleB = 255
 
-					Select Lower(StrTemp)
+					Select (Lower(StrTemp))
 						Case "1",""
 							CreateConsoleMsg("LIST OF COMMANDS - PAGE 1/3")
 							CreateConsoleMsg("******************************")
@@ -603,7 +603,7 @@ Function UpdateConsole()
 				Case "wireframe"
 					StrTemp = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 
-					Select StrTemp
+					Select (StrTemp)
 						Case "on", "1", "true"
 							WireframeState = True
 						Case "off", "0", "false"
@@ -702,7 +702,7 @@ Function UpdateConsole()
 				Case "godmode"
 					StrTemp = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 
-					Select StrTemp
+					Select (StrTemp)
 						Case "on", "1", "true"
 							mainPlayer\godMode = True
 						Case "off", "0", "false"
@@ -738,7 +738,7 @@ Function UpdateConsole()
 				Case "noclip","fly"
 					StrTemp = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 
-					Select StrTemp
+					Select (StrTemp)
 						Case "on", "1", "true"
 							mainPlayer\noclip = True
 							mainPlayer\disableControls = False
@@ -780,7 +780,7 @@ Function UpdateConsole()
 
 				Case "debughud"
 					StrTemp = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
-					Select StrTemp
+					Select (StrTemp)
 						Case "on", "1", "true"
 							DebugHUD = True
 						Case "off", "0", "false"
@@ -819,7 +819,7 @@ Function UpdateConsole()
 
 					;StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 
-					;Select StrTemp
+					;Select (StrTemp)
 					;	Case "on", "1", "true"
 					;		InfiniteStamina% = True
 					;	Case "off", "0", "false"
@@ -851,7 +851,7 @@ Function UpdateConsole()
 				Case "unlockexits"
 					StrTemp = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 
-					Select StrTemp
+					Select (StrTemp)
 						Case "a"
 							For ev = Each Event
 								If (ev\name = "gateaentrance") Then
@@ -888,7 +888,7 @@ Function UpdateConsole()
 				Case "kill","suicide"
 					Kill(mainPlayer)
 
-					Select Rand(4)
+					Select (Rand(4))
 						Case 1
 							DeathMSG = "[REDACTED]"
 						Case 2
@@ -926,7 +926,7 @@ Function UpdateConsole()
 				Case "notarget"
 					StrTemp = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 
-					Select StrTemp
+					Select (StrTemp)
 						Case "on", "1", "true"
 							NoTarget = True
 						Case "off", "0", "false"

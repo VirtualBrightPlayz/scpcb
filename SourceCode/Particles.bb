@@ -48,7 +48,7 @@ Function CreateParticle.Particle(x#, y#, z#, image%, size#, gravity# = 1.0, life
 
 	SpriteViewMode(p\obj, 3)
 
-	Select image
+	Select (image)
 		Case 0,5,6
 			EntityBlend(p\obj, 1)
 		Case 1,2,3,4,7
@@ -180,7 +180,7 @@ Function CreateEmitter.Emitter(x#, y#, z#, emittertype%)
 	e\obj = CreatePivot()
 	PositionEntity(e\obj, x, y, z, True)
 
-	Select emittertype
+	Select (emittertype)
 		Case 0 ;savu
 			e\size = 0.03
 			e\gravity = -0.2

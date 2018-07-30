@@ -92,7 +92,7 @@ Function UpdateDecals()
 			d\size=d\size + d\sizeChange * timing\tickDuration
 			ScaleSprite(d\obj, d\size, d\size)
 
-			Select d\id
+			Select (d\id)
 				Case DECAL_CORROSION
 					If (d\timer <= 0) Then
 						angle = Rand(360)

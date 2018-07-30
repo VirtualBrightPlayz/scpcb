@@ -69,7 +69,7 @@ Function CreateItemTemplate(file$, section$)
 	EndIf
 
 	Local slot$ = Lower(GetINIString(file, section, "slot"))
-	Select slot
+	Select (slot)
 		Case "head"
 			it\wornSlot = WORNITEM_SLOT_HEAD
 		Case "body"
@@ -81,7 +81,7 @@ Function CreateItemTemplate(file$, section$)
 	it\wornOnly = (GetINIInt(file, section, "wornonly") = 1)
 
 	Local sound$ = Lower(GetINIString(file, section, "sound"))
-	Select sound
+	Select (sound)
 		Case "medium"
 			it\sound = ITEMPICK_SOUND_MEDIUM
 		Case "large"
@@ -157,7 +157,7 @@ Function LoadItemTemplates(file$)
 	Local it.ItemTemplate
 	Local section$
 
-	While Not Eof(f)
+	While (Not Eof(f))
 		section = Trim(ReadLine(f))
 		If (Left(section,1) = "[") Then
 			section = Mid(section, 2, Len(section) - 2)
@@ -381,7 +381,7 @@ Function UpdateItems()
 								xtemp = xtemp*(0.07-ed)
 								ztemp = ztemp*(0.07-ed)
 
-								While Abs(xtemp)+Abs(ztemp)<0.001
+								While (Abs(xtemp)+Abs(ztemp)<0.001)
 									xtemp = xtemp+Rnd(-0.002,0.002)
 									ztemp = ztemp+Rnd(-0.002,0.002)
 								Wend
@@ -425,7 +425,7 @@ Function PickItem(item.Item)
 	Local e.Event
 	Local z%
 
-	Select item\template\name
+	Select (item\template\name)
 		Case "battery"
 			If (HasTag(item, ITEM_TAG_914VF)) Then
 				ShowEntity(mainPlayer\overlays[OVERLAY_WHITE])

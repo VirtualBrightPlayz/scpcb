@@ -245,7 +245,7 @@ Function UpdateDoors()
 
 			If (d\open) Then
 				If (d\openstate < 180) Then
-					Select d\typ
+					Select (d\typ)
 						Case DOOR_TYPE_CONT
 							d\openstate = Min(180, d\openstate + timing\tickDuration * 0.8)
 							MoveEntity(d\obj, Sin(d\openstate) * timing\tickDuration / 180.0, 0, 0)
@@ -297,7 +297,7 @@ Function UpdateDoors()
 				EndIf
 			Else
 				If (d\openstate > 0) Then
-					Select d\typ
+					Select (d\typ)
 						Case DOOR_TYPE_CONT
 							d\openstate = Max(0, d\openstate - timing\tickDuration*0.8)
 							MoveEntity(d\obj, Sin(d\openstate) * -timing\tickDuration / 180.0, 0, 0)
@@ -420,7 +420,7 @@ Function UseDoor(d.Door, showmsg% = True)
 						MsgTimer = 70 * 5
 					ElseIf (Msg<>"You called the elevator.") Then
 						If (Msg="You already called the elevator.") Or (MsgTimer<70*3) Then
-							Select Rand(10)
+							Select (Rand(10))
 								Case 1
 									Msg = "Stop spamming the button."
 									MsgTimer = 70 * 7

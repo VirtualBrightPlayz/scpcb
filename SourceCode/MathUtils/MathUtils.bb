@@ -32,10 +32,10 @@ End Function
 
 Function WrapAngle#(angle#)
 	If (angle = INFINITY) Then Return 0.0
-	While angle < 0
+	While (angle < 0)
 		angle = angle + 360
 	Wend
-	While angle >= 360
+	While (angle >= 360)
 		angle = angle - 360
 	Wend
 	Return angle

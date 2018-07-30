@@ -54,9 +54,9 @@ Include "SourceCode/Menus/LoadingScreen.bb"
 Function DrawTiledImageRect(img%, srcX%, srcY%, srcwidth%, srcheight%, x%, y%, width%, height%)
 	Local x2% = x
 	Local y2%
-	While x2 < x+width
+	While (x2 < x+width)
 		y2 = y
-		While y2 < y+height
+		While (y2 < y+height)
 			If (x2 + srcwidth > x + width) Then srcwidth = srcwidth - Int(Max((x2 + srcwidth) - (x + width), 1))
 			If (y2 + srcheight > y + height) Then srcheight = srcheight - Int(Max((y2 + srcheight) - (y + height), 1))
 			DrawImageRect(img, x2, y2, srcX, srcY, srcwidth, srcheight)
@@ -262,7 +262,7 @@ Function RowText(A$, X%, Y%, W%, H%, align% = 0, Leading#=1)
 	Local temp$,trimmed$
 	Local extra%
 
-	While Len(A) > 0
+	While (Len(A) > 0)
 		space = Instr(A, " ")
 		If (space = 0) Then space = Len(A)
 		temp = Left(A, space)

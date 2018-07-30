@@ -36,12 +36,12 @@ namespace Blitz2CPP.Statements
 
         private List<Function> functions;
 
-        public BlitzFile(string path)
+        public BlitzFile(string path, string outputDir)
         {
             filePath = path;
             bbFile = new StreamReader(new FileStream(path, FileMode.Open));
 
-            string dest = Toolbox.GetProjectDirectory() + Constants.DIR_OUTPUT + Path.GetFileNameWithoutExtension(path);
+            string dest = outputDir + Path.GetFileNameWithoutExtension(path);
             srcFile = new StreamWriter(new FileStream(dest + ".cpp", FileMode.Create));
             headerFile = new StreamWriter(new FileStream(dest + ".h", FileMode.Create));
 
@@ -85,7 +85,16 @@ namespace Blitz2CPP.Statements
                             else if (line.StartsWith(';')) { typ.Fields.Add(Comment.Parse(line)); }
                             else if (line.StartsWith("Field "))
                             {
-                                typ.Fields.Add(Variable.Parse(line.Substring("Field ".Length)));
+                                if (line.Contains(';'))
+                                {
+                                    Variable uh = Variable.Parse(line.JavaSubstring("Field ".Length, line.IndexOf(';')));
+                                    uh.Raw += " // " + line.Substring(line.IndexOf(';')+1);
+                                    typ.Fields.Add(uh);
+                                }
+                                else
+                                {
+                                    typ.Fields.Add(Variable.Parse(line.Substring("Field ".Length)));
+                                }
                             }
                         }
 
@@ -154,6 +163,11 @@ namespace Blitz2CPP.Statements
                 else if (info.StartsWith("Const "))
                 {
                     AddConstant(info);
+                }
+
+                else if (!string.IsNullOrWhiteSpace(info))
+                {
+                    Console.WriteLine("Dropped Global Scope Statement: " + info + "\nFile: " + filePath + "\nLine: " + currLine + "\n");
                 }
             }
 

@@ -32,7 +32,7 @@ Function UpdateNPCtypeGuard(n.NPC)
 
     Local prevFrame# = n\frame
 
-    Select n\state
+    Select (n\state)
 		Case STATEGUARD_LOOK
 			head = FindChild(n\obj,"head")
 			headangle = EntityYaw(head)

@@ -357,7 +357,7 @@ Function GenForestGrid(fr.Forest)
 
 	Local deviated%
 
-	While pathy < gridsize -4
+	While (pathy < gridsize -4)
 		If (dir = 1) Then ;determine whether to go forward or to the side
 			If (chance(deviation_chance)) Then
 				;pick a branch direction
@@ -392,7 +392,7 @@ Function GenForestGrid(fr.Forest)
 	Wend
 	;finally, bring the path back to the door now that we have reached the end
 	dir = 1
-	While pathy < gridsize-2
+	While (pathy < gridsize-2)
 		pathx=move_forward(dir,pathx,pathy)
 		pathy=move_forward(dir,pathx,pathy,1)
 		fr\grid[((gridsize-1-pathy)*gridsize)+pathx]=1
@@ -401,7 +401,7 @@ Function GenForestGrid(fr.Forest)
 	If (pathx<>door1_pos) Then
 		dir=0
 		If (door1_pos>pathx) Then dir=2
-		While pathx<>door1_pos
+		While (pathx<>door1_pos)
 			pathx=move_forward(dir,pathx,pathy)
 			pathy=move_forward(dir,pathx,pathy,1)
 			fr\grid[((gridsize-1-pathy)*gridsize)+pathx]=1
@@ -413,7 +413,7 @@ Function GenForestGrid(fr.Forest)
 	Local branch_type%,branch_pos%
 	Local leftmost%, rightmost%
 	new_y=-3 ;used for counting off; branches will only be considered once every 4 units so as to avoid potentially too many branches
-	While new_y<gridsize-6
+	While (new_y<gridsize-6)
 		new_y=new_y+4
 		temp_y=new_y
 		new_x=0
@@ -451,7 +451,7 @@ Function GenForestGrid(fr.Forest)
 			EndIf
 			fr\grid[((gridsize-1-temp_y)*gridsize)+new_x]=branch_type ;branch out twice to avoid creating an unwanted 2x2 path with the real path
 			i = 2
-			While i<branch_max_life
+			While (i<branch_max_life)
 				i=i+1
 				If (chance(branch_die_chance)) Then
 					Exit
@@ -604,7 +604,7 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Room)
 				;fr\grid[(ty*gridsize)+tx]=tile_type
 
 				angle=0
-				Select tile_type
+				Select (tile_type)
 					Case 1
 						tile_entity = CopyEntity(fr\tileMesh[ROOM1])
 
@@ -678,7 +678,7 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Room)
 							GetColor(lx,width-ly)
 
 							If (ColorRed()>Rand(100,260)) Then
-								Select Rand(0,7)
+								Select (Rand(0,7))
 									Case 0,1,2,3,4,5,6 ;create a tree
 										detail_entity=CopyEntity(fr\detailMesh[1])
 										;EntityType(detail_entity,HIT_MAP)

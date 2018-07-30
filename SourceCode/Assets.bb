@@ -24,7 +24,7 @@ Function CreateAsset.AssetWrap(filePath$, asType%, flag%=1)
 	as\file = filePath
 	as\decayTimer = ASSET_DECAY_TIMER
 
-	Select as\asType
+	Select (as\asType)
 		Case ASSET_TEXTURE
 			as\intVal = LoadTexture(as\file, flag)
 		Case ASSET_IMAGE
@@ -44,7 +44,7 @@ Function CreateAsset.AssetWrap(filePath$, asType%, flag%=1)
 End Function
 
 Function FreeAsset(as.AssetWrap)
-	Select as\asType
+	Select (as\asType)
 		Case ASSET_TEXTURE
 			FreeTexture(as\intVal)
 		Case ASSET_IMAGE

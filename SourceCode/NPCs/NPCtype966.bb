@@ -62,7 +62,7 @@ Function UpdateNPCtype966(n.NPC)
         If (Not IsPlayerWearingItem(mainPlayer,"nvgoggles")) Then
             HideEntity(n\obj)
             If (n\playerDistance<1 And n\reload <= 0 And MsgTimer <= 0) Then
-                Select Rand(6)
+                Select (Rand(6))
                     Case 1
                         Msg="You feel something breathing right next to you."
                     Case 2
@@ -108,7 +108,7 @@ Function UpdateNPCtype966(n.NPC)
             n\lastSeen = 0
         EndIf
 
-        Select n\state
+        Select (n\state)
             Case 0 ;idle, standing
                 If (n\frame>2300.0) Then
                     AnimateNPC(n, 2391, 2416, 1.0, False)
@@ -162,7 +162,7 @@ Function UpdateNPCtype966(n.NPC)
                         ;StaminaEffectTimer = 1000
 
                         If (MsgTimer<=0 And mainPlayer\staminaEffect<1.5) Then
-                            Select Rand(4)
+                            Select (Rand(4))
                                 Case 1
                                     Msg = "You feel exhausted."
                                 Case 2
@@ -279,7 +279,7 @@ Function UpdateNPCtype966(n.NPC)
                 If (n\frame>2300.0) Then
                     AnimateNPC(n, 2391, 2416, 1.0, False)
                     If (n\frame>2415.0) Then
-                        Select Rand(3)
+                        Select (Rand(3))
                             Case 1
                                 SetNPCFrame(n, 2160)
                             Case 2

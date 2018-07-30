@@ -39,12 +39,12 @@ Function UpdateINIFile(filename$)
 	If (file\bank<>0) Then FreeBank(file\bank)
 	Local f% = ReadFile(file\name)
 	Local fleSize% = 1
-	While fleSize<FileSize(file\name)
+	While (fleSize<FileSize(file\name))
 		fleSize=fleSize*2
 	Wend
 	file\bank = CreateBank(fleSize)
 	file\size = 0
-	While Not Eof(f)
+	While (Not Eof(f))
 		PokeByte(file\bank,file\size,ReadByte(f))
 		file\size=file\size+1
 	Wend
@@ -76,8 +76,8 @@ Function GetINIString$(file$, section$, parameter$, defaultvalue$="")
 
 	section = Lower(section)
 
-	;While Not Eof(f)
-	While lfile\bankOffset<lfile\size
+	;While (Not Eof(f))
+	While (lfile\bankOffset<lfile\size)
 		strtemp = ReadINILine(lfile)
 		If (Left(strtemp,1) = "[") Then
 			strtemp = Lower(strtemp)
@@ -121,7 +121,7 @@ Function GetINIString2$(file$, start%, parameter$, defaultvalue$="")
 	Local f% = ReadFile(file)
 
 	Local n%=0
-	While Not Eof(f)
+	While (Not Eof(f))
 		strTemp = ReadLine(f)
 		n=n+1
 		If (n=start) Then
@@ -161,7 +161,7 @@ Function GetINISectionLocation%(file$, section$)
 	section = Lower(section)
 
 	Local n%=0
-	While Not Eof(f)
+	While (Not Eof(f))
 		strTemp = ReadLine(f)
 		n=n+1
 		If (Left(strTemp,1) = "[") Then
@@ -269,7 +269,7 @@ Function INI_FileToString$(INI_sFilename$)
 	Local INI_sString$ = ""
 	Local INI_lFileHandle%= ReadFile(INI_sFilename)
 	If (INI_lFileHandle <> 0) Then
-		While Not(Eof(INI_lFileHandle))
+		While (Not(Eof(INI_lFileHandle)))
 			INI_sString = INI_sString + ReadLine$(INI_lFileHandle) + Chr$(0)
 		Wend
 		CloseFile(INI_lFileHandle)

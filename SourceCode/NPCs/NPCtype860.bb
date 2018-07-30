@@ -35,7 +35,7 @@ Function UpdateNPCtype860(n.NPC)
     If (mainPlayer\currRoom\roomTemplate\name = "room860") Then
         fr=mainPlayer\currRoom\fr;Object.Forest(e\room\objects[1])
 
-        Select n\state
+        Select (n\state)
             Case 0 ;idle (hidden)
 
                 HideEntity(n\collider)
@@ -77,7 +77,7 @@ Function UpdateNPCtype860(n.NPC)
                     If (EntityY(n\collider)> -100) Then
                         PlayRangedSound(sndManager\footstep8601[Rand(0, 2)]\internal, mainPlayer\cam, n\collider, 15.0, 0.5)
 
-                        Select Rand(3)
+                        Select (Rand(3))
                             Case 1
                                 PointEntity(n\collider,mainPlayer\collider)
                                 n\frame = 2

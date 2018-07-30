@@ -36,7 +36,7 @@ Function UpdateNPCtypeZombie(n.NPC)
 
     If (Abs(EntityY(mainPlayer\collider)-EntityY(n\collider))<4.0) Then
         If (Not n\isDead) Then
-            Select n\state
+            Select (n\state)
                 Case 0
                     AnimateNPC(n, 719, 777, 0.2, False)
 

@@ -94,7 +94,7 @@ Function FillRoom_strg_939_3(r.Room)
     em\sizeChange = 0.01 : em\aChange = -0.006
     em\gravity = -0.2
 
-    Select Rand(3)
+    Select (Rand(3))
         Case 1
             x = 2312
             z = -952
@@ -264,7 +264,7 @@ Function UpdateEvent_strg_939_3(e.Event)
 
 				CurrTrigger = CheckTriggers()
 
-				Select CurrTrigger
+				Select (CurrTrigger)
 					Case "939-1_fix"
 						e\room\npc[0]\ignorePlayer = True
 					Case "939-3_fix"

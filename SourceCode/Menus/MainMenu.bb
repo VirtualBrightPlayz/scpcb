@@ -29,12 +29,12 @@ Function UpdateMainMenu()
 
 			mouseHitButton = UpdateUIButton(x, y, width, height)
 
-			Select i
+			Select (i)
 				Case MAINMENU_BUTTON_NEWGAME
 					RandomSeed = ""
 					If (mouseHitButton) Then
 						If (Rand(15)=1) Then
-							Select Rand(14)
+							Select (Rand(14))
 								Case 1
 									RandomSeed = "NIL"
 								Case 2
@@ -100,7 +100,7 @@ Function UpdateMainMenu()
 		height = Int(70.0 * MenuScale)
 
 		If (UpdateUIButton(x + width + Int(20.0 * MenuScale), y, Int(580.0 * MenuScale - width - 20.0 * MenuScale), height, "BACK")) Then
-			Select CurrGameSubstate
+			Select (CurrGameSubstate)
 				Case GAMESUBSTATE_MAINMENU_NEWGAME
 					PutINIValue(OptionFile, "general", "intro enabled", Str(userOptions\introEnabled))
 					CurrGameSubstate = GAMESUBSTATE_MAINMENU_MAIN
@@ -116,7 +116,7 @@ Function UpdateMainMenu()
 			End Select
 		EndIf
 
-		Select CurrGameSubstate
+		Select (CurrGameSubstate)
 			Case GAMESUBSTATE_MAINMENU_NEWGAME
 				;[Block]
 
@@ -310,7 +310,7 @@ Function UpdateMainMenu()
 ;						If (KeyHit(i)) Then key = i : Exit
 ;					Next
 ;					If (key<>0) Then
-;						Select SelectedInputBox
+;						Select (SelectedInputBox)
 ;							Case 3
 ;								keyBinds\lft = key
 ;							Case 4
@@ -418,7 +418,7 @@ Function DrawMainMenu()
 			MenuStrX = Int(Rand(700, 1000) * MenuScale)
 			MenuStrY = Int(Rand(100, 600) * MenuScale)
 
-			Select Rand(0, 22)
+			Select (Rand(0, 22))
 				Case 0, 2, 3
 					MenuStr = "DON'T BLINK"
 				Case 4, 5
@@ -468,7 +468,7 @@ Function DrawMainMenu()
 			width = Int(400.0 * MenuScale)
 			height = Int(70.0 * MenuScale)
 
-			Select i
+			Select (i)
 				Case MAINMENU_BUTTON_NEWGAME ;new game
 					txt = "NEW GAME"
 				Case MAINMENU_BUTTON_LOADGAME ;load game
@@ -492,7 +492,7 @@ Function DrawMainMenu()
 
 		DrawUIButton(x + width + Int(20.0 * MenuScale), y, Int(580.0 * MenuScale) - width - Int(20.0 * MenuScale), height, "BACK", False)
 
-		Select CurrGameSubstate
+		Select (CurrGameSubstate)
 			Case GAMESUBSTATE_MAINMENU_NEWGAME ; New game
 				;[Block]
 
@@ -565,7 +565,7 @@ Function DrawMainMenu()
 					DrawImage(uiAssets\arrow[1],x + Int(155.0 * MenuScale), y+Int(251.0*MenuScale))
 
 					Color(255,255,255)
-					Select SelectedDifficulty\otherFactors
+					Select (SelectedDifficulty\otherFactors)
 						Case EASY
 							Text(x + Int(200.0 * MenuScale), y + Int(255.0 * MenuScale), "Other difficulty factors: Easy")
 						Case NORMAL

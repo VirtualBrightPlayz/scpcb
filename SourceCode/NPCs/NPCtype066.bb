@@ -15,7 +15,7 @@ Function UpdateNPCtype066(n.NPC)
 	Local w.WayPoint, de.Decal, d.Door
 	Local angle#
 
-    Select n\state
+    Select (n\state)
         Case 0
             ;idle: moves around randomly from waypoint to another if the player is far enough
             ;starts staring at the player when the player is close enough
@@ -80,7 +80,7 @@ Function UpdateNPCtype066(n.NPC)
                             PlayRangedSound(LoadTempSound("SFX/SCP/066/Notes"+Str(Rand(1,6))+".ogg"), mainPlayer\cam, n\collider, 8.0)
                         EndIf
 
-                        Select Rand(1,6)
+                        Select (Rand(1,6))
                             Case 1
                                 If (n\sounds[1]=0) Then n\sounds[1]=LoadSound("SFX/SCP/066/Beethoven.ogg")
                                 n\soundChannels[1] = PlayRangedSound(n\sounds[1], mainPlayer\cam, n\collider)

@@ -158,7 +158,7 @@ Function InitEvents()
 	CreateEvent("evt_hll_plain_4","hll_plain_4", 0)
 
 	If (Rand(5)<5) Then
-		Select Rand(3)
+		Select (Rand(3))
 			Case 1
 				CreateEvent("evnt_roar_682", "tnnl_plain_2", Rand(0,2), 0)
 			Case 2
@@ -273,7 +273,7 @@ Function UpdateEvents()
 			EndIf
 		EndIf
 
-		Select e\name
+		Select (e\name)
 			Case "evt_intro"
 				UpdateEvent173(e)
 			Case "evt_cont_173"

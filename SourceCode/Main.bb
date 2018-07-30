@@ -298,7 +298,7 @@ Function UpdateGame()
 	Local prevmousedown1%, rn$, darkA#, temp%
 
 	;[Block]
-	While timing\accumulator>0.0
+	While (timing\accumulator>0.0)
 		timing\accumulator = timing\accumulator-timing\tickDuration
 		If (timing\accumulator<=0.0) Then CaptureWorld()
 
@@ -419,7 +419,7 @@ Function UpdateGame()
 
 					If (mainPlayer\blinkTimer <= - 20) Then
 						;Randomizes the frequency of blinking. Scales with difficulty.
-						Select SelectedDifficulty\otherFactors
+						Select (SelectedDifficulty\otherFactors)
 							Case EASY
 								mainPlayer\blinkFreq = Rnd(490,700)
 							Case NORMAL
@@ -668,7 +668,7 @@ End Function
 ;	Local x,y,width,height, temp
 ;	Local itt.ItemTemplate, r.Room
 ;
-;	Select Lower(SelectedEnding)
+;	Select (Lower(SelectedEnding))
 ;		Case "b2", "a1"
 ;			ClsColor(Max(255+(EndingTimer)*2.8,0), Max(255+(EndingTimer)*2.8,0), Max(255+(EndingTimer)*2.8,0))
 ;		Default
@@ -712,7 +712,7 @@ End Function
 ;			EndIf
 ;
 ;			If (EndingTimer+timing\tickDuration2 > -450 And EndingTimer <= -450) Then
-;				Select Lower(SelectedEnding)
+;				Select (Lower(SelectedEnding))
 ;					Case "a1", "a2"
 ;						PlaySound2(LoadTempSound("SFX/Ending/GateA/Ending"+SelectedEnding+".ogg"))
 ;					Case "b1", "b2", "b3"
@@ -875,7 +875,7 @@ Function UpdateGUI()
 						If (MouseUp1) Then
 							PlaySound_SM(sndManager\button)
 
-							Select (n+1)+(i*4)
+							Select ((n+1)+(i*4))
 								Case 1,2,3
 									KeypadInput=KeypadInput + Str((n+1)+(i*4))
 								Case 4
@@ -1005,7 +1005,7 @@ Function DrawGUI()
 		If (mainPlayer\drawDirectionialArrow[i]) Then
 			x = userOptions\screenWidth / 2 - 32
 			y = userOptions\screenHeight / 2 - 32
-			Select i
+			Select (i)
 				Case 0
 					y = y - 64 - 5
 				Case 1

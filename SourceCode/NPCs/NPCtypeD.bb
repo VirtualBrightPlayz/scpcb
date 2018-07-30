@@ -29,7 +29,7 @@ Function UpdateNPCtypeD(n.NPC)
 
     Local prevFrame# = AnimTime(n\obj)
 
-    Select n\state
+    Select (n\state)
         Case 0 ;idle
             n\currSpeed = CurveValue(0.0, n\currSpeed, 5.0)
             Animate2(n\obj, AnimTime(n\obj), 210, 235, 0.1)

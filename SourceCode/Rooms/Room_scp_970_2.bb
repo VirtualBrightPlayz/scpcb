@@ -146,7 +146,7 @@ Function UpdateEvent_scp_970_2(e.Event)
 				EndIf
 			Next
 
-			Select e\eventState
+			Select (e\eventState)
 				Case 2
 					i = Rand(mainPlayer\inventory\size)
 					If (mainPlayer\inventory\items[i]<>Null) Then RemoveItem(mainPlayer\inventory\items[i])

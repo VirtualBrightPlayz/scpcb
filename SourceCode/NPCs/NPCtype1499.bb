@@ -44,7 +44,7 @@ Function UpdateNPCtype1499(n.NPC)
             Next
         EndIf
 
-        Select n\state
+        Select (n\state)
             Case 0
                 If (n\currSpeed = 0.0) Then
                     If (n\state2 < 500.0*Rnd(1,3)) Then

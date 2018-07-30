@@ -116,7 +116,7 @@ Function UpdateEvent_cont_205_1(e.Event)
 			EndIf
 
 
-			Select e\eventState
+			Select (e\eventState)
 				Case 1
 					;sitting
 					Animate2(e\room\objects[6], AnimTime(e\room\objects[6]), 526, 530, 0.2)

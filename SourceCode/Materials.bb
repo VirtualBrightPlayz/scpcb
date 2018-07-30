@@ -16,7 +16,7 @@ End Function
 
 Function GetTextureFromCache%(name$)
 	Local tc.Material
-	For tc=Each Material
+	For tc = Each Material
 		If (Lower(tc\name) = Lower(name)) Then Return tc\diff
 	Next
 	Return 0
@@ -24,7 +24,7 @@ End Function
 
 Function GetCache.Material(name$)
 	Local tc.Material
-	For tc=Each Material
+	For tc = Each Material
 		If (Lower(tc\name) = Lower(name)) Then Return tc
 	Next
 	Return Null
@@ -43,7 +43,7 @@ End Function
 
 Function ClearTextureCache()
 	Local tc.Material
-	For tc=Each Material
+	For tc = Each Material
 		If (tc\diff<>0) Then FreeTexture(tc\diff)
 		;If (tc\bump<>0) Then FreeTexture(tc\bump)
 		Delete tc
@@ -52,7 +52,7 @@ End Function
 
 Function FreeTextureCache()
 	Local tc.Material
-	For tc=Each Material
+	For tc = Each Material
 		If (tc\diff<>0) Then FreeTexture(tc\diff)
 		;If (tc\bump<>0) Then FreeTexture(tc\bump)
 		tc\diff = 0; : tc\bump = 0

@@ -193,7 +193,7 @@ Function UpdateEvent_cont_914_1(e.Event)
 				EndIf
 
 				If (e\eventState > 70 * 3) Then
-					Select setting
+					Select (setting)
 						Case "rough"
 							Kill(mainPlayer)
 							mainPlayer\blinkTimer = -10
@@ -231,7 +231,7 @@ Function UpdateEvent_cont_914_1(e.Event)
 				Next
 
 				If (Distance(EntityX(mainPlayer\collider), EntityZ(mainPlayer\collider), EntityX(e\room\objects[2], True), EntityZ(e\room\objects[2], True)) < (160.0 * RoomScale)) Then
-					Select setting
+					Select (setting)
 						Case "coarse"
 							mainPlayer\injuries = 4.0
 							Msg = "You notice countless small incisions all around your body. They are bleeding heavily."

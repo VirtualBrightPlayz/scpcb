@@ -33,7 +33,7 @@ End Function
 
 
 Function UpdateRadio(i.Item)
-	Select radio\currChn
+	Select (radio\currChn)
 		Case 0 ;-nothing
 			;TODO: something?
 		Case 1 ;-alarms and alert messages

@@ -6,11 +6,11 @@ Function sky_CreateSky%(filename$,parent%=0)
 	Local x#,y#,z#,u#,v#
 	Local b%,s%
 	Local vert%
-	
+
 	sky = CreateMesh(parent)
 	Local face%
 	For face = 1 To 6
-		Select face
+		Select (face)
 			Case 1
 				direction = "_back"
 			Case 2
@@ -28,21 +28,21 @@ Function sky_CreateSky%(filename$,parent%=0)
 		If (FileType(fname)=1) Then
 			b = LoadBrush(fname,%110001)
 			s = CreateSurface(sky,b)
-			
+
 			;TODO: finish and remove Data
-			Select face
+			Select (face)
 				Case 1
-					
+
 				Case 2
-					
+
 				Case 3
-					
+
 				Case 4
-					
+
 				Case 5
-					
+
 				Case 6
-					
+
 			End Select
 			AddTriangle(s,0,1,2)
 			AddTriangle(s,0,2,3)

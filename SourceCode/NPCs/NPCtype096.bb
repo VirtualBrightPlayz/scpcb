@@ -18,7 +18,7 @@ Function UpdateNPCtype096(n.NPC)
 	Local angle#, i%, pvt%, de.Decal
 	Local dist2#
 
-    Select n\state
+    Select (n\state)
         Case 0
             If (n\playerDistance < 8.0) Then
                 If (n\sounds[0] = 0) Then

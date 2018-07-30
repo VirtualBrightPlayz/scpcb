@@ -2,7 +2,7 @@
 Const RM2_HEADER$ = ".RM2"
 
 ;should you need any extra features, add a constant to this list
-;and add a case to the select in LoadRM2
+;and add a case to the Select (in LoadRM2)
 Const RM2_TEXTURES% = 1
 Const RM2_OPAQUE% = 2
 Const RM2_ALPHA% = 3
@@ -118,10 +118,10 @@ Function LoadRM2(rt.RoomTemplate)
     Local prop.Prop
 
 	Local prevType%
-	While Not Eof(file)
+	While (Not Eof(file))
 		prevType = partType
 		partType = ReadByte(file)
-		Select partType
+		Select (partType)
 			Case RM2_TEXTURES
 				;[Block]
 				count = ReadByte(file)

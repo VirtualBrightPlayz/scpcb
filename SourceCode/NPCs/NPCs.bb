@@ -161,7 +161,7 @@ Function CreateNPC.NPC(NPCtype%, x#, y#, z#)
 	n\npcType = NPCtype
 	n\gravityMult = 1.0
 	n\maxGravity = 0.2
-	Select NPCtype
+	Select (NPCtype)
 		Case NPCtype173
 			InitializeNPCtype173(n)
 		Case NPCtype106
@@ -285,7 +285,7 @@ Function UpdateNPCs()
 			Return
 		EndIf
 
-		Select n\npcType
+		Select (n\npcType)
 			Case NPCtype173
 				UpdateNPCtype173(n)
 			Case NPCtype106
@@ -382,7 +382,7 @@ Function TeleportCloser(n.NPC)
 			ztemp = Abs(EntityZ(w\obj,True)-EntityZ(n\collider,True))
 			If (ztemp < 10.0 And ztemp > 1.0) Then
 				If (EntityDistance(mainPlayer\collider, w\obj)>8) Then
-					If (SelectedDifficulty\aggressiveNPCs)Then
+					If (SelectedDifficulty\aggressiveNPCs) Then
 						;teleports to the nearby waypoint that takes it closest to the player
 						newDist = EntityDistance(mainPlayer\collider, w\obj)
 						If (newDist < closestDist Or closestWaypoint = Null) Then
@@ -506,7 +506,7 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 			wearingVest = wearingVest Or IsPlayerWearingItem(mainPlayer,"veryfinevest")
 			If (wearingVest) Then
 				If (IsPlayerWearingItem(mainPlayer,"vest")) Then
-					Select Rand(8)
+					Select (Rand(8))
 						Case 1,2,3,4,5
 							mainPlayer\blurTimer = 500
 							mainPlayer\stamina = 0
@@ -542,7 +542,7 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 					If (Rand(3) = 1) Then Kill(mainPlayer)
 				EndIf
 			Else
-				Select Rand(6)
+				Select (Rand(6))
 					Case 1
 						Kill(mainPlayer)
 					Case 2
@@ -634,7 +634,7 @@ Function PlayMTFSound(sound%, n.NPC)
 	;TODO: Re-implement.
 	;If (mainPlayer\selectedItem <> Null) Then
 	;	If (mainPlayer\selectedItem\state2 = 3 And mainPlayer\selectedItem\state > 0) Then
-	;		Select mainPlayer\selectedItem\template\name
+	;		Select (mainPlayer\selectedItem\template\name)
 	;			Case "radio","fineradio","18vradio"
 	;				If (RadioCHN(3)<> 0) Then StopChannel(RadioCHN(3))
 	;				RadioCHN(3) = PlaySound(sound)
@@ -674,7 +674,7 @@ Function FindFreeNPCID%()
 	Local taken%, n2.NPC
 	Local id% = 1
 
-	While (True)
+	While ((True))
 		taken = False
 		For n2 = Each NPC
 			If (n2\id = id) Then
@@ -705,7 +705,7 @@ End Function
 Function Console_SpawnNPC(c_input$,state%=-9999)
 	Local n.NPC
 
-	Select c_input
+	Select (c_input)
 		Case "mtf"
 			n = CreateNPC(NPCtypeMTF, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)+0.2,EntityZ(mainPlayer\collider))
 		Case "173","scp173","scp-173"
@@ -781,12 +781,12 @@ Function ManipulateNPCBones()
 				If (bone2 = 0) Then RuntimeError("ERROR: NPC bone "+Chr(34)+bonename2+Chr(34)+" does not exist.")
 			EndIf
 			PositionEntity(pvt,EntityX(bone,True),EntityY(bone,True),EntityZ(bone,True))
-			Select n\manipulationType
+			Select (n\manipulationType)
 				Case 0 ;<--- looking at player
 					PointEntity(bone,mainPlayer\cam)
 					PointEntity(pvt,mainPlayer\cam)
 					n\bonePitch = CurveAngle(EntityPitch(pvt),n\bonePitch,10.0)
-					Select TransformNPCManipulationData(n\npcNameInSection,n\boneToManipulate,"yaw")
+					Select (TransformNPCManipulationData(n\npcNameInSection,n\boneToManipulate,"yaw"))
 						Case 0
 							n\boneYaw = CurveAngle(EntityPitch(bone),n\boneYaw,10.0)
 							pitchvalue = n\boneYaw
@@ -797,7 +797,7 @@ Function ManipulateNPCBones()
 							n\boneYaw = CurveAngle(EntityRoll(bone),n\boneYaw,10.0)
 							rollvalue = n\boneYaw
 					End Select
-					Select TransformNPCManipulationData(n\npcNameInSection,n\boneToManipulate,"pitch")
+					Select (TransformNPCManipulationData(n\npcNameInSection,n\boneToManipulate,"pitch"))
 						Case 0
 							pitchvalue = n\bonePitch
 						Case 1
@@ -817,7 +817,7 @@ Function ManipulateNPCBones()
 					RotateEntity(bone,pitchvalue+pitchoffset,yawvalue+yawoffset,rollvalue+rolloffset)
 				Case 1 ;<--- looking at player #2
 					n\bonePitch = CurveAngle(DeltaPitch(bone2,mainPlayer\cam),n\bonePitch,10.0)
-					Select TransformNPCManipulationData(n\npcNameInSection,n\boneToManipulate,"pitch")
+					Select (TransformNPCManipulationData(n\npcNameInSection,n\boneToManipulate,"pitch"))
 						Case 0
 							pitchvalue = n\bonePitch
 						Case 1
@@ -837,7 +837,7 @@ Function ManipulateNPCBones()
 					RotateEntity(bone,pitchvalue+pitchoffset,yawvalue+yawoffset,rollvalue+rolloffset)
 				Case 2 ;<--- looking away from SCP-096
 					PointEntity(bone,Curr096\obj)
-					Select TransformNPCManipulationData(n\npcNameInSection,n\boneToManipulate,"yaw")
+					Select (TransformNPCManipulationData(n\npcNameInSection,n\boneToManipulate,"yaw"))
 						Case 0
 							n\boneYaw = CurveAngle(EntityPitch(bone),n\boneYaw,10.0)
 							pitchvalue = -n\boneYaw
@@ -861,7 +861,7 @@ Function ManipulateNPCBones()
 				Case 3 ;<-- looking and pitching towards the player
 					PointEntity(pvt,mainPlayer\cam)
 					n\boneYaw = CurveAngle(EntityPitch(pvt),n\boneYaw,10.0)
-					Select TransformNPCManipulationData(n\npcNameInSection,n\boneToManipulate,"yaw")
+					Select (TransformNPCManipulationData(n\npcNameInSection,n\boneToManipulate,"yaw"))
 						Case 0
 							pitchvalue = n\boneYaw
 						Case 1
@@ -895,7 +895,7 @@ Function GetNPCManipulationValue$(NPC$,bone$,section$,valuetype%=0)
 	;3 - Boolean
 
 	Local value$ = GetINIString("Data/NPCBones.ini",NPC,bone+"_"+section)
-	Select valuetype
+	Select (valuetype)
 		Case 0,1,2
 			Return value
 		Case 3
@@ -918,9 +918,9 @@ Function TransformNPCManipulationData#(NPC$,bone$,section$)
 	;	- simply return the offset degree value using a "return Float"
 
 	Local value$ = GetNPCManipulationValue(NPC,bone,section)
-	Select section
+	Select (section)
 		Case "pitch","yaw","roll"
-			Select value
+			Select (value)
 				Case "realpitch"
 					Return 0
 				Case "realyaw"
@@ -936,9 +936,9 @@ End Function
 
 Function NPCSpeedChange(n.NPC)
 
-	Select n\npcType
+	Select (n\npcType)
 		Case NPCtype173,NPCtype106,NPCtype096,NPCtype049,NPCtype939,NPCtypeMTF
-			Select SelectedDifficulty\otherFactors
+			Select (SelectedDifficulty\otherFactors)
 				Case NORMAL
 					n\speed = n\speed * 1.1
 				Case HARD

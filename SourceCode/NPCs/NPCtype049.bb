@@ -44,7 +44,7 @@ Function UpdateNPCtype049(n.NPC)
 		EndIf
 	EndIf
 
-	Select n\state
+	Select (n\state)
 		Case STATE049_IDLE
 			;Idle animation.
 			AnimateNPC(n, 231, 344, 0.31, True)

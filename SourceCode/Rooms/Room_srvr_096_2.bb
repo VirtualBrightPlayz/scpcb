@@ -25,7 +25,7 @@ Function FillRoom_srvr_096_2(r.Room)
 		ScaleEntity(r\levers[n]\obj, 0.03, 0.03, 0.03)
 		ScaleEntity(r\levers[n]\baseObj, 0.03, 0.03, 0.03)
 
-		Select n
+		Select (n)
 			Case 0 ;power switch
 				PositionEntity(r\levers[n]\obj, r\x - 1260.0 * RoomScale, r\y + 234.0 * RoomScale, r\z + 750 * RoomScale, True)
 				PositionEntity(r\levers[n]\baseObj, r\x - 1260.0 * RoomScale, r\y + 234.0 * RoomScale, r\z + 750 * RoomScale, True)

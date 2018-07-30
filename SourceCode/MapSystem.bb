@@ -93,7 +93,7 @@ Function LoadMaterials(file$)
 
 	Local stepSound$ = ""
 
-	While Not Eof(f)
+	While (Not Eof(f))
 		TemporaryString = Trim(ReadLine(f))
 		If (Left(TemporaryString,1) = "[") Then
 			TemporaryString = Mid(TemporaryString, 2, Len(TemporaryString) - 2)
@@ -133,7 +133,7 @@ End Function
 Function Piece$(s$,entry%,char$=" ")
 	Local a$, p%
 
-	While Instr(s,char+char)
+	While (Instr(s,char+char))
 		s=Replace(s,char+char,char)
 	Wend
 	Local n%
@@ -239,7 +239,7 @@ Function LoadRoomTemplates(file$)
 
 	Local f% = OpenFile(file)
 
-	While Not Eof(f)
+	While (Not Eof(f))
 		TemporaryString = Trim(ReadLine(f))
 		If (Left(TemporaryString,1) = "[") Then
 			DebugLog(TemporaryString)
@@ -252,7 +252,7 @@ Function LoadRoomTemplates(file$)
 
 				StrTemp = Lower(GetINIString(file, TemporaryString, "shape", "0"))
 
-				Select StrTemp
+				Select (StrTemp)
 					Case "room0", "0"
 						rt\shape = ROOM0
 					Case "room1", "1"
@@ -509,7 +509,7 @@ Function CreateRoom.Room(rt.RoomTemplate, x#, y#, z#)
 End Function
 
 Function FillRoom(r.Room)
-	Select r\roomTemplate\name
+	Select (r\roomTemplate\name)
 		Case "test_860_2"
 			FillRoom_test_860_2(r)
 		Case "lck_cam_2c"
@@ -1216,7 +1216,7 @@ Function FindPath%(n.NPC, x#, y#, z#)
 		Until currpoint = Null
 
 		currpoint = EndPoint
-		While twentiethpoint<>Null
+		While (twentiethpoint<>Null)
 			length=Int(Min(length-1,19))
              ;DebugLog("LENGTH "+length)
 			twentiethpoint = twentiethpoint\parent
@@ -2013,7 +2013,7 @@ Function CreateMap()
 			r = Object.Room(GetIntArrayElem(MapRooms,x,y))
 			If (r<>Null) Then
 				For i = 0 To 3
-					Select i
+					Select (i)
 						Case 0
 							tempX = 1
 							tempY = 0
@@ -2136,7 +2136,7 @@ Function DetermineRoomTypes(layout.IntArray,mapDim%)
 End Function
 
 Function DetermineRotation%(layout.IntArray,x%,y%)
-	Select GetIntArrayElem(layout,x,y)
+	Select (GetIntArrayElem(layout,x,y))
 		Case ROOM1
 			If (x>0) And (GetIntArrayElem(layout,x-1,y)<>0) Then
 				Return 270

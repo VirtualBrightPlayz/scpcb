@@ -26,7 +26,7 @@ End Function
 Function UpdateNPCtypeTentacle(n.NPC)
     If (n\playerDistance < 8.0) Then
 
-        Select n\state
+        Select (n\state)
             Case 0 ;spawn
 
                 If (n\frame>283) Then

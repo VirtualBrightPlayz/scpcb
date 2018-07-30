@@ -139,7 +139,7 @@ Function UpdateEvent_cont_1162_2c(e.Event)
 
 			For itt = Each ItemTemplate
 				If (IsItemGoodFor1162(itt)) Then
-					Select mainPlayer\inventory\items[Int(e\eventState2)]\template\name
+					Select (mainPlayer\inventory\items[Int(e\eventState2)]\template\name)
 						Case "key"
 							If (itt\name = "key1" Or itt\name = "key2" And Rand(2)=1) Then
 								shouldCreateItem = True
@@ -245,7 +245,7 @@ Function UpdateEvent_cont_1162_2c(e.Event)
 				EndIf
 				e\eventState2 = 0.0
 			EndIf
-			Select e\eventState
+			Select (e\eventState)
 				Case 1
 					it = CreateItem("key",EntityX(pp,True),EntityY(pp,True),EntityZ(pp,True))
 				Case 2
@@ -271,7 +271,7 @@ Function IsItemGoodFor1162%(itt.ItemTemplate)
 	Local IN$ = itt\name
 
 	;TODO: remember which items the player has collected instead of just picking random shit
-	Select itt\name
+	Select (itt\name)
 		Case "key1", "key2", "key3"
 			Return True
 		Case "misc", "420", "cigarette"

@@ -53,7 +53,7 @@ Function UpdateNPCtype106(n.NPC)
 
 	Local de.Decal
 
-    Select n\state
+    Select (n\state)
         Case STATE106_RISE
             If (mainPlayer\currRoom\roomTemplate\name = "dimension1499") Then
                 Return

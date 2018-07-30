@@ -31,9 +31,13 @@ namespace Blitz2CPP.Statements
             {
                 DefaultCase.Add(stat);
             }
-            else
+            else if (Cases.Any())
             {
                 Cases.Last().Value.Add(stat);
+            }
+            else
+            {
+                Console.WriteLine("Statement in case dropped: " + stat.ToString());
             }
         }
 

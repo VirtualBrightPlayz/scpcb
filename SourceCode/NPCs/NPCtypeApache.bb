@@ -58,7 +58,7 @@ Function UpdateNPCtypeApache(n.NPC)
 
     n\dropSpeed = 0
 
-    Select n\state
+    Select (n\state)
         Case 0,1
             TurnEntity(n\obj2,0,20.0*timing\tickDuration,0)
             TurnEntity(n\obj3,20.0*timing\tickDuration,0,0)

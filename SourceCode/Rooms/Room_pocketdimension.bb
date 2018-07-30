@@ -24,7 +24,7 @@ Function FillRoom_pocketdimension(r.Room)
 
 	Local n%, entity%
     For n = 0 To -1;4 ;TODO: wut
-        Select n
+        Select (n)
             Case 0
                 entity = hallway
             Case 1
@@ -119,7 +119,7 @@ Function FillRoom_pocketdimension(r.Room)
 
     For i = 12 To 16
         r\objects[i] = CreatePivot(r\objects[11])
-        Select i
+        Select (i)
             Case 12
                 PositionEntity(r\objects[i],r\x,r\y+200*RoomScale,r\z+64.0,True)
             Case 13
@@ -288,7 +288,7 @@ Function UpdateEvent_pocketdimension(e.Event)
 					;check if the plane can see the player
 					safe=False
 					For i = 0 To 2
-						Select i
+						Select (i)
 							Case 0
 								x = -1452*RoomScale
 								z = -37*RoomScale
@@ -515,7 +515,7 @@ Function UpdateEvent_pocketdimension(e.Event)
 			If (dist > 1700*RoomScale) Then
 				mainPlayer\blinkTimer = -10
 
-				Select Rand(25)
+				Select (Rand(25))
 					Case 1,2,3,4
 						;TODO: fix
 						;PlaySound2(OldManSFX(3))

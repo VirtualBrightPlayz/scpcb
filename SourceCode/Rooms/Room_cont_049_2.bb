@@ -35,7 +35,7 @@ Function FillRoom_cont_049_2(r.Room)
 		ScaleEntity(r\levers[n]\obj, 0.03, 0.03, 0.03)
 		ScaleEntity(r\levers[n]\baseObj, 0.03, 0.03, 0.03)
 
-		Select n
+		Select (n)
 			Case 0 ;power feed
 				PositionEntity(r\levers[n]\obj, r\x - 328.0 * RoomScale, r\y - 3374.0 * RoomScale, r\z + 916 * RoomScale, True)
 				PositionEntity(r\levers[n]\baseObj, r\x - 328.0 * RoomScale, r\y - 3374.0 * RoomScale, r\z + 916 * RoomScale, True)

@@ -35,7 +35,7 @@ Function Draw294()
 
 	Text(x+907, y+185, Input294, True,True)
 
-	
+
 End Function
 
 Function Update294()
@@ -72,11 +72,11 @@ Function Update294()
 
 			temp = False
 
-			Select ytemp
+			Select (ytemp)
 				Case 0
 					strtemp = Str((xtemp + 1) Mod 10)
 				Case 1
-					Select xtemp
+					Select (xtemp)
 						Case 0
 							strtemp = "Q"
 						Case 1
@@ -99,7 +99,7 @@ Function Update294()
 							strtemp = "P"
 					End Select
 				Case 2
-					Select xtemp
+					Select (xtemp)
 						Case 0
 							strtemp = "A"
 						Case 1
@@ -122,7 +122,7 @@ Function Update294()
 							temp = True
 					End Select
 				Case 3
-					Select xtemp
+					Select (xtemp)
 						Case 0
 							strtemp = "Z"
 						Case 1

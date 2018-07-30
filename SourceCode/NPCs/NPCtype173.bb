@@ -62,7 +62,7 @@ Function UpdateNPCtype173(n.NPC)
 	EndIf
 
 	Local dist#
-	Select n\state
+	Select (n\state)
 		Case STATE173_ATTACK
 			dist = EntityDistance(n\collider, mainPlayer\collider)
 			PositionEntity(n\obj, EntityX(n\collider), EntityY(n\collider) - 0.32, EntityZ(n\collider))
@@ -175,7 +175,7 @@ Function UpdateNPCtype173(n.NPC)
 						If (dist < 0.65) Then
 							If (Not mainPlayer\dead) And (Not mainPlayer\godMode) Then
 
-								Select mainPlayer\currRoom\roomTemplate\name
+								Select (mainPlayer\currRoom\roomTemplate\name)
 									Case "lockroom", "room2closets", "coffin"
 										DeathMSG = "Subject D-9341. Cause of death: Fatal cervical fracture. The surveillance tapes confirm that the subject was killed by SCP-173."
 									Case "173"

@@ -42,7 +42,7 @@ Function InitializeNPCtypeMTF(n.NPC)
 	Local r.Room
     If (MTFrooms[6]=Null) Then
         For r = Each Room
-            Select Lower(r\roomTemplate\name)
+            Select (Lower(r\roomTemplate\name))
                 Case "room106"
                     MTFrooms[0]=r
                 Case "roompj"
@@ -108,7 +108,7 @@ Function UpdateNPCtypeMTF(n.NPC)
 		n\idle=n\idle-timing\tickDuration
 		If (n\idle<=0.0) Then n\idle = 0.0
 	Else
-		Select Int(n\state) ;what is this MTF doing
+		Select (Int(n\state) ;what is this MTF doing)
 			Case 0 ;wandering around
                 ;[Block]
                 n\speed = 0.015
@@ -188,7 +188,7 @@ Function UpdateNPCtypeMTF(n.NPC)
 						If (n\pathX=0) Then n\pathStatus = FindPath(n,x,y,z) ;we're going to this room for no particular reason
 					EndIf
 					If (n\pathStatus = 1) Then
-						While n\path[n\pathLocation]=Null
+						While (n\path[n\pathLocation]=Null)
 							If (n\pathLocation>19) Then Exit
 							n\pathLocation=n\pathLocation+1
 						Wend
@@ -1124,7 +1124,7 @@ Function UpdateNPCtypeMTF(n.NPC)
 							n\pathStatus = FindPath(n,x,y,z)
 						EndIf
 						If (n\pathStatus = 1) Then
-							While n\path[n\pathLocation]=Null
+							While (n\path[n\pathLocation]=Null)
 								If (n\pathLocation>19) Then Exit
 								n\pathLocation=n\pathLocation+1
 							Wend
@@ -1322,7 +1322,7 @@ Function UpdateNPCtypeMTF(n.NPC)
 						n\pathStatus = FindPath(n,x,y,z) ;we're going to this room for no particular reason
 					EndIf
 					If (n\pathStatus = 1) Then
-						While n\path[n\pathLocation]=Null
+						While (n\path[n\pathLocation]=Null)
 							If (n\pathLocation>19) Then Exit
 							n\pathLocation=n\pathLocation+1
 						Wend
@@ -1497,7 +1497,7 @@ Function UpdateNPCtypeMTF(n.NPC)
 					If (n\pathTimer<=0.0) Then
 						n\pathStatus = FindPath(n,EntityX(n\target\collider),EntityY(n\target\collider),EntityZ(n\target\collider))
 						If (n\pathStatus = 1) Then
-							While n\path[n\pathLocation]=Null
+							While (n\path[n\pathLocation]=Null)
 								If (n\pathLocation>19) Then Exit
 								n\pathLocation=n\pathLocation+1
 							Wend

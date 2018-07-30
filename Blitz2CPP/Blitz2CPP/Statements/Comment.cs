@@ -9,6 +9,6 @@ namespace Blitz2CPP.Statements
             return new Comment(comm.Substring(comm.IndexOf(';')+1));
         }
 
-        public override string Parse2CPP(string indents) => indents + "//" + raw;
+        public override string Parse2CPP(string indents) => indents + "//" + Raw;
     }
 }
