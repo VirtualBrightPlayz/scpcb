@@ -19,7 +19,8 @@ End Type
 
 Function CreateConsoleMsg(txt$,r%=-1,g%=-1,b%=-1,isCommand%=False)
 	Local c.ConsoleMsg = New ConsoleMsg
-	Insert c Before First ConsoleMsg
+	;TODO: Re-implement.
+	;Insert c Before First ConsoleMsg
 
 	c\txt = txt
 	c\isCommand = isCommand
