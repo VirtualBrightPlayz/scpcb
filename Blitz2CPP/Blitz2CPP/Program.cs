@@ -28,10 +28,10 @@ namespace Blitz2CPP
             foreach (string fileStr in files)
             {
                 // Get the folder structure inside of the SourceCode folder.
-                string dir = Path.GetDirectoryName(fileStr.Substring(fileStr.IndexOf("SourceCode") + "SourceCode".Length + 1));
+                string dir = Path.GetDirectoryName(fileStr.Substring(fileStr.IndexOf("SourceCode") + "SourceCode".Length + 1)) + "/";
                 dir = Path.Combine(Constants.DIR_OUTPUT + dir);
                 // Re-create the directories.
-                Directory.CreateDirectory(dir);
+                if (!Directory.Exists(dir)) { Directory.CreateDirectory(dir); }
                 using (BlitzFile file = new BlitzFile(fileStr, dir))
                 {
                     file.ParseFile();

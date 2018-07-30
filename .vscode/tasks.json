@@ -1,0 +1,25 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "buildParser",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/Blitz2CPP/Blitz2CPP/Blitz2CPP.csproj"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "buildBot",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/CBN-Bot/CBN-Bot/CBN-Bot.csproj"
+            ],
+            "problemMatcher": "$msCompile"
+        }
+    ]
+}

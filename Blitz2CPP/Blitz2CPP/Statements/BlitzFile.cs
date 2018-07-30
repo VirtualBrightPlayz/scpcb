@@ -38,8 +38,8 @@ namespace Blitz2CPP.Statements
 
         public BlitzFile(string path, string outputDir)
         {
-            filePath = path;
             bbFile = new StreamReader(new FileStream(path, FileMode.Open));
+            filePath = path.Substring(path.IndexOf("SourceCode") + "SourceCode".Length + 1);
 
             string dest = outputDir + Path.GetFileNameWithoutExtension(path);
             srcFile = new StreamWriter(new FileStream(dest + ".cpp", FileMode.Create));

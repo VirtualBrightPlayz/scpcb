@@ -37,7 +37,7 @@ namespace Blitz2CPP.Statements
             }
             else
             {
-                Console.WriteLine("Statement in case dropped: " + stat.ToString());
+                Console.WriteLine("Statement in case dropped: " + stat.Raw);
             }
         }
 

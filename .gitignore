@@ -24,9 +24,6 @@ Blitz2CPP/Result/*
 # Visual Studio
 .vs
 
-# Visual Studio Code
-.vscode
-
 # Windows
 Thumbs.db
 
