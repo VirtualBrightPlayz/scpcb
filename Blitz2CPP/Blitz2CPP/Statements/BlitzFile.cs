@@ -85,15 +85,11 @@ namespace Blitz2CPP.Statements
                             else if (line.StartsWith(';')) { typ.Fields.Add(Comment.Parse(line)); }
                             else if (line.StartsWith("Field "))
                             {
-                                if (line.Contains(';'))
+                                line = line.Substring("Field ".Length);
+                                string[] args = line.Split(',');
+                                foreach (string arg in args)
                                 {
-                                    Variable uh = Variable.Parse(line.JavaSubstring("Field ".Length, line.IndexOf(';')));
-                                    uh.Raw += " // " + line.Substring(line.IndexOf(';')+1);
-                                    typ.Fields.Add(uh);
-                                }
-                                else
-                                {
-                                    typ.Fields.Add(Variable.Parse(line.Substring("Field ".Length)));
+                                    typ.Fields.Add(Variable.Parse(arg.Trim()));
                                 }
                             }
                         }

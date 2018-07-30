@@ -48,8 +48,10 @@ End Function
 
 ;TODO: cleanup
 Type Timing
-	Field tickDuration# ;tick duration (1 = 1/70th of a second) TODO: change this value to be relative to a second
-	Field accumulator# ;accumulated steps
+	;tick duration (1 = 1/70th of a second) TODO: change this value to be relative to a second
+	Field tickDuration#
+	;accumulated steps
+	Field accumulator#
 
 	Field prevTime%
 	Field currTime%

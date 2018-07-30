@@ -1,8 +1,9 @@
 Const OptionFile$ = "options.ini"
 
 Type KeyBinds
-    Field rght% ;can't call it right because blitz
-    Field lft% ;can't call it left because blitz
+    ;TODO: an't call it right/left because blitz
+    Field rght%
+    Field lft%
     Field up%
     Field down%
 

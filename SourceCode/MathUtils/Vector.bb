@@ -1,6 +1,7 @@
 Type Vector3f
 	Field x#, y#, z#
-	Field persistent% = False ;TODO: hacky shit, remove once we move to C++
+	;TODO: hacky shit, remove once we move to C++
+	Field persistent% = False
 End Type
 
 Function NewVector3f.Vector3f(x#,y#,z#)

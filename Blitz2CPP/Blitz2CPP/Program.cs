@@ -20,15 +20,15 @@ namespace Blitz2CPP
             include.WriteLine("#ifndef " + includeGuard);
             include.WriteLine("#define " + includeGuard);
             include.WriteLine();
-            include.WriteLine("namespace " + Constants.CPP_NAMESPACE + " {");
-            include.WriteLine();
 
             // Get .bb files.
             IEnumerable<string> files = Directory.GetFiles(FOLDER, "*.bb", SearchOption.AllDirectories);
             foreach (string fileStr in files)
             {
                 // Get the folder structure inside of the SourceCode folder.
-                string dir = Path.GetDirectoryName(fileStr.Substring(fileStr.IndexOf("SourceCode") + "SourceCode".Length + 1)) + "/";
+                string dir = fileStr.Substring(fileStr.IndexOf("SourceCode") + "SourceCode".Length + 1);
+                include.WriteLine("#include \"" + Path.ChangeExtension(dir, "h") + "\"");
+                dir = Path.GetDirectoryName(dir) + "/";
                 dir = Path.Combine(Constants.DIR_OUTPUT + dir);
                 // Re-create the directories.
                 if (!Directory.Exists(dir)) { Directory.CreateDirectory(dir); }
@@ -40,7 +40,6 @@ namespace Blitz2CPP
                 }
             }
 
-            include.WriteLine("}");
             include.WriteLine("#endif // " + includeGuard);
             include.Dispose();
         }

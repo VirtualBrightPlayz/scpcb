@@ -5,7 +5,8 @@ Type Event
 	Field name$
 	Field room.Room
 
-	Field eventState#, eventState2#, eventState3# ;TODO: deprecated
+	;TODO: deprecated
+	Field eventState#, eventState2#, eventState3#
 
 	Field intState%[EVENT_MAX_STATE_COUNT]
 	Field floatState#[EVENT_MAX_STATE_COUNT]

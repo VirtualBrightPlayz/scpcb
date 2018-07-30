@@ -191,7 +191,8 @@ Const ZONE_LCZ% = 1, ZONE_HCZ% = 2, ZONE_EZ% = 4
 Type RoomTemplate
 	Field name$
 	Field shape%
-	Field large% ;TODO: might not be needed?
+	;TODO: might not be needed?
+	Field large%
 
 	Field objPath$
 	Field loaded%
@@ -365,7 +366,8 @@ Type Room
 	Field angle%
 	Field roomTemplate.RoomTemplate
 
-	Field obj% ;TODO: rename
+	;TODO: rename
+	Field obj%
 	Field opaqueMesh%
 	Field alphaMesh%
 	Field collisionObjs.IntArray
