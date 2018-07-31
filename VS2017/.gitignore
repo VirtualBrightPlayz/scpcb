@@ -1,0 +1,7 @@
+Debug
+Release
+*.exe
+*.dll
+*.pdb
+*.ilk
+.vs
