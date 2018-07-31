@@ -186,7 +186,7 @@ Function UpdateEvent_cont_1162_2c(e.Event)
 				EndIf
 			Next
 		;trade not sucessful (player got in return to injuries a new item)
-		ElseIf (e\eventState3 = 2.0) Then
+		ElseIf ((e\eventState3 = 2.0)) Then
 			mainPlayer\injuries = mainPlayer\injuries + 5.0
 			pvt = CreatePivot()
 			PositionEntity(pvt, EntityX(mainPlayer\collider),EntityY(mainPlayer\collider)-0.05,EntityZ(mainPlayer\collider))
@@ -217,7 +217,7 @@ Function UpdateEvent_cont_1162_2c(e.Event)
 				EndIf
 			Next
 		;trade with nostalgia item
-		ElseIf (e\eventState3 >= 3.0) Then
+		ElseIf ((e\eventState3 >= 3.0)) Then
 			If (e\eventState3 < 3.1) Then
 				PlaySound2(LoadTempSound("SFX/SCP/1162/Exchange"+Str(Rand(0,4))+".ogg"))
 				RemoveItem(mainPlayer\inventory\items[Int(e\eventState2)])
@@ -285,7 +285,7 @@ Function IsItemGoodFor1162%(itt.ItemTemplate)
 		Default
 			If (itt\name <> "paper") Then
 				Return False
-			ElseIf (Instr(itt\name, "Leaflet")) Then
+			ElseIf ((Instr(itt\name, "Leaflet"))) Then
 				Return False
 			Else
 				;if the item is a paper, only allow spawning it if the name contains the word "note" or "log"

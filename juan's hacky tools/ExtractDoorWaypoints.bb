@@ -19,7 +19,7 @@ While Left(file,1)<>"." And Len(file)>0
 				ln = Replace(ln,"(r.Room)",Chr(34))
 				WriteLine(w,ln)
 			EndIf
-		ElseIf Instr(ln,"CreateDoor")<>0 Then
+		ElseIf (Instr(ln,"CreateDoor")<>0) Then
 			aln$ = ""
 			comma% = 0
 			For i = 1 To Len(ln)
@@ -43,7 +43,7 @@ While Left(file,1)<>"." And Len(file)>0
 			ln = Replace(ln,"+-","-")
 			ln = Replace(ln,"*RoomScale","")
 			;WriteLine(w,"    "+ln)
-		ElseIf Instr(ln,"_hb")<>0 Then
+		ElseIf (Instr(ln,"_hb")<>0) Then
 			WriteLine(w,ln)
 		EndIf
 	Wend

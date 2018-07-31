@@ -92,7 +92,7 @@ Function UpdateLevers()
 
 					If (EntityPitch(lever\obj,True) > 75) Then
 						If (prevpitch =< 75) Then PlayRangedSound_SM(sndManager\lever, mainPlayer\cam, lever\obj, 1.0)
-					ElseIf (EntityPitch(lever\obj,True) < -75) Then
+					ElseIf ((EntityPitch(lever\obj,True) < -75)) Then
 						If (prevpitch => -75) Then PlayRangedSound_SM(sndManager\lever, mainPlayer\cam, lever\obj, 1.0)
 					EndIf
 				EndIf
@@ -134,7 +134,7 @@ Function UpdateElevators#(state#, door1.Door, door2.Door, room1%, room2%, event.
 			UseDoor(door1,False)
 			door2\npcCalledElevator = 2
 		EndIf
-	ElseIf (door2\open = True And door1\open = False) Then
+	ElseIf ((door2\open = True And door1\open = False)) Then
 		state = 1
 		If ((mainPlayer\closestButton = door1\buttons[0] Or mainPlayer\closestButton = door1\buttons[1]) And MouseHit1) Then
 			UseDoor(door2,False)
@@ -143,7 +143,7 @@ Function UpdateElevators#(state#, door1.Door, door2.Door, room1%, room2%, event.
 			UseDoor(door2,False)
 			door1\npcCalledElevator = 2
 		EndIf
-	ElseIf (Abs(door1\openstate-door2\openstate)<0.2) Then
+	ElseIf ((Abs(door1\openstate-door2\openstate)<0.2)) Then
 		door1\isElevatorDoor = 2
 		door2\isElevatorDoor = 2
 	EndIf
@@ -188,7 +188,7 @@ Function UpdateElevators#(state#, door1.Door, door2.Door, room1%, room2%, event.
 
 			If (NPC_inside <> Null And (Not inside)) Then
 				NPC_inside\idle = True
-			ElseIf (NPC_inside <> Null And inside) Then
+			ElseIf ((NPC_inside <> Null And inside)) Then
 				NPC_inside\idle = False
 			EndIf
 
@@ -260,7 +260,7 @@ Function UpdateElevators#(state#, door1.Door, door2.Door, room1%, room2%, event.
 
 			If (NPC_inside <> Null And (Not inside)) Then
 				NPC_inside\idle = True
-			ElseIf (NPC_inside <> Null And inside) Then
+			ElseIf ((NPC_inside <> Null And inside)) Then
 				NPC_inside\idle = False
 			EndIf
 
@@ -321,13 +321,13 @@ Function UpdateElevators2#(State#, door1.Door, door2.Door, room1%, room2%, event
 		If ((mainPlayer\closestButton = door2\buttons[0] Or mainPlayer\closestButton = door2\buttons[1]) And MouseHit1) Then
 			UseDoor(door1,False)
 		EndIf
-	ElseIf (door2\open = True And door1\open = False) Then
+	ElseIf ((door2\open = True And door1\open = False)) Then
 		State = 1
 		door1\isElevatorDoor = 2
 		If ((mainPlayer\closestButton = door1\buttons[0] Or mainPlayer\closestButton = door1\buttons[1]) And MouseHit1) Then
 			UseDoor(door2,False)
 		EndIf
-	ElseIf (Abs(door1\openstate-door2\openstate)<0.2) Then
+	ElseIf ((Abs(door1\openstate-door2\openstate)<0.2)) Then
 		door1\isElevatorDoor = 2
 		door2\isElevatorDoor = 2
 	EndIf

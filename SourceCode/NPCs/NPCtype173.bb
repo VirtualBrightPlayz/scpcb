@@ -137,7 +137,7 @@ Function UpdateNPCtype173(n.NPC)
 							Next
 						EndIf
 					EndIf
-				ElseIf (dist > HideDistance*0.8) Then ;3-6 rooms away from the player -> move randomly from waypoint to another
+				ElseIf ((dist > HideDistance*0.8)) Then ;3-6 rooms away from the player -> move randomly from waypoint to another
 					If (Rand(70)=1) Then TeleportCloser(n)
 				Else ;less than 3 rooms away -> actively move towards the player
 

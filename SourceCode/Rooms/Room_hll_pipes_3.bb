@@ -17,7 +17,7 @@ Function UpdateEvent106sinkhole(e.Event)
 		de\size = 2.5 : ScaleSprite(de\obj, de\size, de\size);
 
 		e\eventState=1
-	ElseIf (mainPlayer\currRoom = e\room) Then
+	ElseIf ((mainPlayer\currRoom = e\room)) Then
 		If (e\sounds[0]=0) Then
 			e\sounds[0]=LoadSound("SFX/Room/Sinkhole.ogg")
 		Else

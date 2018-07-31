@@ -156,7 +156,7 @@ Function Update294()
 				Input294 = Trim(Lower(Input294))
 				If (Left(Input294, Int(Min(7,Len(Input294)))) = "cup of ") Then
 					Input294 = Right(Input294, Len(Input294)-7)
-				ElseIf (Left(Input294, Int(Min(9,Len(Input294)))) = "a cup of " ) Then
+				ElseIf ((Left(Input294, Int(Min(9,Len(Input294)))) = "a cup of " )) Then
 					Input294 = Right(Input294, Len(Input294)-9)
 				EndIf
 

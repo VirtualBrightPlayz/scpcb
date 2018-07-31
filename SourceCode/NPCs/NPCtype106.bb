@@ -67,7 +67,7 @@ Function UpdateNPCtype106(n.NPC)
                 MoveEntity(n\collider, 0, ((EntityY(mainPlayer\collider) - 30) - EntityY(n\collider)) / 200.0, 0)
                 n\frame = 110
             ;Otherwise begin spawning 106.
-            ElseIf (n\timer >= -10) Then
+            ElseIf ((n\timer >= -10)) Then
                 If (EntityY(n\collider) < EntityY(mainPlayer\collider) - 20.0 - 0.55) Then
                     If (Not mainPlayer\currRoom\roomTemplate\disableDecals) Then
                         de = CreateDecal(DECAL_CORROSION, EntityX(mainPlayer\collider), 0.01, EntityZ(mainPlayer\collider), 90, Rand(360), 0)
@@ -165,7 +165,7 @@ Function UpdateNPCtype106(n.NPC)
 
                         If (n\pathStatus = 2) Then
                             n\currSpeed = 0
-                        ElseIf (n\pathStatus = 1) Then
+                        ElseIf ((n\pathStatus = 1)) Then
                             If (n\path[n\pathLocation]=Null) Then
                                 If (n\pathLocation > 19) Then
                                     n\pathLocation = 0 : n\pathStatus = 0
@@ -183,7 +183,7 @@ Function UpdateNPCtype106(n.NPC)
 
                                 If (dist2 < 0.2) Then n\pathLocation = n\pathLocation + 1
                             EndIf
-                        ElseIf (n\pathStatus = 0) Then
+                        ElseIf ((n\pathStatus = 0)) Then
                             If (n\state3=0) Then AnimateNPC(n, 334, 494, 0.3)
                         EndIf
                     EndIf

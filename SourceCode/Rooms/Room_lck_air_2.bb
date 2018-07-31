@@ -119,7 +119,7 @@ Function UpdateEvent_lck_air_2(e.Event)
 				e\room\doors[1]\locked = False
 				UseDoor(e\room\doors[0])
 				UseDoor(e\room\doors[1])
-			ElseIf (EntityDistance(e\room\objects[ROOM_LCKA2_TRIGGERPIVOT],mainPlayer\collider)>2.4) Then
+			ElseIf ((EntityDistance(e\room\objects[ROOM_LCKA2_TRIGGERPIVOT],mainPlayer\collider)>2.4)) Then
 				e\intState[EVENT_LCKA2_LEAVING] = False
 			EndIf
 		Else
@@ -153,7 +153,7 @@ Function UpdateEvent_lck_air_2(e.Event)
 						FreeEntity(pvt)
 					EndIf
 
-				ElseIf (e\floatState[EVENT_LCKA2_TIMER] > 70*3 And e\floatState[EVENT_LCKA2_TIMER] < 70*5.5) Then
+				ElseIf ((e\floatState[EVENT_LCKA2_TIMER] > 70*3 And e\floatState[EVENT_LCKA2_TIMER] < 70*5.5)) Then
 					pvt = CreatePivot(e\room\obj)
 					For i = 0 To 1
 						If (e\room\roomTemplate\name = "lck_ez_3") Then

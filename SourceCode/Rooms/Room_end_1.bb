@@ -51,7 +51,7 @@ Function UpdateEventEndroom106(e.Event)
 					e\eventState = 1
 				EndIf
 			EndIf
-		ElseIf (e\eventState = 1) Then
+		ElseIf ((e\eventState = 1)) Then
 			If (mainPlayer\currRoom = e\room) Then
 				;PlaySound2(CloseDoorSFX(1,0))
 				;PlaySound2(DecaySFX(0))
@@ -63,11 +63,11 @@ Function UpdateEventEndroom106(e.Event)
 				PlaySound2(e\sounds[0])
 
 				If (e\soundChannels[0]<>0) Then StopChannel(e\soundChannels[0])
-			ElseIf (e\room\dist < 8) Then
+			ElseIf ((e\room\dist < 8)) Then
 				If (e\sounds[0] = 0) Then e\sounds[0] = LoadSound("SFX/Character/Janitor/Idle.ogg")
 				e\soundChannels[0] = LoopRangedSound(e\sounds[0], e\soundChannels[0], mainPlayer\cam, e\room\npc[0]\obj, 15.0)
 			EndIf
-		ElseIf (e\eventState = 2) Then
+		ElseIf ((e\eventState = 2)) Then
 			dist = EntityDistance(e\room\npc[0]\collider, e\room\obj)
 			If (dist<1.5) Then
 				de = CreateDecal(DECAL_CORROSION, EntityX(e\room\obj), 0.01, EntityZ(e\room\obj), 90, Rand(360), 0)

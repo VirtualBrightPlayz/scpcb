@@ -75,7 +75,7 @@ Function UpdateEventTestroom173(e.Event)
 				If (dist<1.0) Then
 					;if close, increase the timer so that 173 is ready to attack
 					e\floatState[EVENT_TSW2_173JUMPTIMER] = Max(e\floatState[EVENT_TSW2_173JUMPTIMER], 70*12)
-				ElseIf (dist > 1.4) Then
+				ElseIf ((dist > 1.4)) Then
 					;if the player moves a bit further and blinks, 173 attacks
 					If (e\floatState[EVENT_TSW2_173JUMPTIMER] > 70*12 And mainPlayer\blinkTimer =< -10) Then
 						If (EntityDistance(Curr173\collider, e\room\objects[ROOM_TSW2_173SPAWN]) > 5.0) Then

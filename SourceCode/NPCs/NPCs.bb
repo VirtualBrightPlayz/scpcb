@@ -437,7 +437,7 @@ Function MeNPCSeesPlayer%(me.NPC,disableSoundOnCrouch%=False)
 		If (mainPlayer\loudness>1.0) Then
 			If (Abs(DeltaYaw(me\collider,mainPlayer\collider))>60.0) And EntityVisible(me\collider,mainPlayer\collider) Then
 				Return 1
-			ElseIf (Not EntityVisible(me\collider,mainPlayer\collider)) Then
+			ElseIf ((Not EntityVisible(me\collider,mainPlayer\collider))) Then
 				If (disableSoundOnCrouch And mainPlayer\crouching) Then
 					Return False
 				Else
@@ -578,7 +578,7 @@ Function Shoot(x#, y#, z#, hitProb# = 1.0, particles% = True, instaKill% = False
 
 			;Kill(mainPlayer)
 			PlaySound_SM(sndManager\bulletHit)
-		ElseIf (particles) Then
+		ElseIf ((particles)) Then
 			pvt = CreatePivot()
 			PositionEntity(pvt, EntityX(mainPlayer\collider),(EntityY(mainPlayer\collider)+EntityY(mainPlayer\cam))/2,EntityZ(mainPlayer\collider))
 			PointEntity(pvt, p\obj)
@@ -1126,7 +1126,7 @@ Function AnimateNPC(n.NPC, start#, quit#, speed#, loop%=True)
 
 			If (newTime < quit) Then
 				newTime = start
-			ElseIf (newTime > start) Then
+			ElseIf ((newTime > start)) Then
 				newTime = quit
 			EndIf
 		Else

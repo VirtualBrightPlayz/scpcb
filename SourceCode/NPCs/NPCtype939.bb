@@ -140,7 +140,7 @@ Function UpdateNPCtype939(n.NPC)
 
                         If (prevFrame < 24 And n\frame>=24) Then
                             temp = True
-                        ElseIf (prevFrame < 57 And n\frame>=57) Then
+                        ElseIf ((prevFrame < 57 And n\frame>=57)) Then
                             temp = True
                         EndIf
 
@@ -226,7 +226,7 @@ Function UpdateNPCtype939(n.NPC)
                 EndIf
 
                 n\state = 3
-            ElseIf (mainPlayer\loudness*1.6>dist) Then
+            ElseIf ((mainPlayer\loudness*1.6>dist)) Then
                 If (n\state<>1 And n\reload <= 0) Then
                     If (n\sounds[0] <> 0) Then
 						FreeSound(n\sounds[0])

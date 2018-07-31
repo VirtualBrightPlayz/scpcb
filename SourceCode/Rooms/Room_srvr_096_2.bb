@@ -105,7 +105,7 @@ Function UpdateEvent_srvr_096_2(e.Event)
 
 			e\eventState=1
 		EndIf
-	ElseIf (e\eventState < 70*45) Then
+	ElseIf ((e\eventState < 70*45)) Then
 		If (Rand(200)<5 And mainPlayer\currRoom = e\room) Then
 			;TODO: Light 1-3
 			;LightBlink = Rnd(1.0,2.0)
@@ -134,13 +134,13 @@ Function UpdateEvent_srvr_096_2(e.Event)
 				e\room\npc[0]\state=8
 				SetAnimTime(e\room\npc[0]\obj, 115)
 				PointEntity(e\room\npc[0]\collider, Curr096\collider)
-			ElseIf (e\eventState-timing\tickDuration =< 70*15) Then ;walk to the doorway
+			ElseIf ((e\eventState-timing\tickDuration =< 70*15)) Then ;walk to the doorway
 				If (e\eventState > 70*15) Then
 					e\room\npc[0]\state=3
 					e\room\npc[0]\pathStatus = FindPath(e\room\npc[0], EntityX(e\room\objects[8],True),0.5,EntityZ(e\room\objects[8],True))
 					e\room\npc[0]\pathTimer=300
 				EndIf
-			ElseIf (e\eventState<70*20) Then
+			ElseIf ((e\eventState<70*20)) Then
 				If (e\room\npc[0]\pathStatus=0) Then
 					e\room\doors[2]\open = False
 
@@ -240,7 +240,7 @@ Function UpdateEvent_srvr_096_2(e.Event)
 
 		EndIf
 
-	ElseIf (mainPlayer\currRoom = e\room) Then
+	ElseIf ((mainPlayer\currRoom = e\room)) Then
 		temp = e\room\levers[0]\succ ;power switch
 		x = e\room\levers[1]\succ ;fuel pump
 		z = e\room\levers[2]\succ ;generator

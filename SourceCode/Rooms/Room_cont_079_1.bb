@@ -82,10 +82,10 @@ Function UpdateEvent_cont_079_1(e.Event)
 					PlaySound2((LoadTempSound("SFX/Door/DoorError.ogg")))
 				EndIf
 			EndIf
-		ElseIf (e\eventState < 10000) Then
+		ElseIf ((e\eventState < 10000)) Then
 			If (e\eventState = 1) Then
 				e\eventState = 2
-			ElseIf (e\eventState = 2) Then
+			ElseIf ((e\eventState = 2)) Then
 				If (EntityDistance(e\room\objects[0], mainPlayer\collider)<3.0) Then
 					e\eventState = 3
 					e\eventState2 = 1
@@ -93,14 +93,14 @@ Function UpdateEvent_cont_079_1(e.Event)
 					LoadEventSound(e,"SFX/SCP/079/Speech.ogg")
 					e\soundChannels[0] = PlaySound(e\sounds[0])
 				EndIf
-			ElseIf (e\eventState = 3) Then
+			ElseIf ((e\eventState = 3)) Then
 				If (e\eventState < 3500) Then
 					If (IsChannelPlaying(e\soundChannels[0])) Then
 						If (Rand(3) = 1) Then
 							; TODO: Make the texture members of the struct.
 							;EntityTexture(e\room\objects[1], OldAiPics(0))
 							ShowEntity(e\room\objects[1])
-						ElseIf (Rand(10) = 1) Then
+						ElseIf ((Rand(10) = 1)) Then
 							HideEntity(e\room\objects[1])
 						EndIf
 					Else

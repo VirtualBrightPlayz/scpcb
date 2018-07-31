@@ -349,7 +349,7 @@ Function UpdateItems()
 						If (EntityInView(i\model, mainPlayer\cam)) Then
 							mainPlayer\closestItem = i
 						EndIf
-					ElseIf (i\dist < EntityDistance(mainPlayer\collider, mainPlayer\closestItem\collider)) Then
+					ElseIf ((i\dist < EntityDistance(mainPlayer\collider, mainPlayer\closestItem\collider))) Then
 						If (EntityInView(i\model, mainPlayer\cam)) Then
 							mainPlayer\closestItem = i
 						EndIf
@@ -625,7 +625,7 @@ Function UpdateInventory(player.Player)
 						player\selectedItem = Null
 						DoubleClick = False
 					EndIf
-				ElseIf (MouseUp1 And player\selectedItem <> Null) Then
+				ElseIf ((MouseUp1 And player\selectedItem <> Null)) Then
 					;Item already selected and mouse release.
 
 					;Hovering over empty slot. Move the item to the empty slot.
@@ -653,7 +653,7 @@ Function UpdateInventory(player.Player)
 
 						player\openInventory\items[slotIndex] = player\selectedItem
 						player\selectedItem = Null
-					ElseIf (player\openInventory\items[slotIndex] <> player\selectedItem) Then
+					ElseIf ((player\openInventory\items[slotIndex] <> player\selectedItem)) Then
 						;Hovering over another item. Attempt to combine the items.
 						;CombineItems(player\selectedItem, player\openInventory\items[slotIndex])
 					Else
@@ -807,7 +807,7 @@ Function DrawInventory(player.Player)
 				;TODO: Short-circuit eval in C.
 				If (MouseSlot = 66) Then
 					DrawImage(player\selectedItem\invImage, MouseX() - ImageWidth(player\selectedItem\invImage) / 2, MouseY() - ImageHeight(player\selectedItem\invImage) / 2)
-				ElseIf (player\selectedItem <> player\openInventory\items[MouseSlot]) Then
+				ElseIf ((player\selectedItem <> player\openInventory\items[MouseSlot])) Then
 					DrawImage(player\selectedItem\invImage, MouseX() - ImageWidth(player\selectedItem\invImage) / 2, MouseY() - ImageHeight(player\selectedItem\invImage) / 2)
 				EndIf
 			EndIf

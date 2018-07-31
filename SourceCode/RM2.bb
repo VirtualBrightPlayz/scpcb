@@ -135,16 +135,16 @@ Function LoadRM2(rt.RoomTemplate)
 					mat = GetCache(texName)
 					If (mat=Null) Then
 						shouldLoadTexture=True
-					ElseIf (mat\diff=0) Then
+					ElseIf ((mat\diff=0)) Then
 						shouldLoadTexture=True
 					EndIf
 
 					If (shouldLoadTexture) Then
 						If (blendFlags=RM2_BLENDFLAG_NORMAL) Then
 							blendFlags = 2
-						ElseIf (blendFlags=RM2_BLENDFLAG_DIFFUSE) Then
+						ElseIf ((blendFlags=RM2_BLENDFLAG_DIFFUSE)) Then
 							blendFlags = 5
-						ElseIf (blendFlags=RM2_BLENDFLAG_LM) Then
+						ElseIf ((blendFlags=RM2_BLENDFLAG_LM)) Then
 							blendFlags = 3
 						EndIf
 
@@ -215,7 +215,7 @@ Function LoadRM2(rt.RoomTemplate)
 
 				If (partType=RM2_OPAQUE) Then
 					AddMesh(mesh,opaqueMesh)
-				ElseIf (partType=RM2_ALPHA) Then
+				ElseIf ((partType=RM2_ALPHA)) Then
 					If (alphaMesh=0) Then alphaMesh = CreateMesh()
 					AddMesh(mesh,alphaMesh)
 				EndIf

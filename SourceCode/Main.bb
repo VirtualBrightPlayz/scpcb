@@ -329,7 +329,7 @@ Function UpdateGame()
 
 		If (CurrGameState=GAMESTATE_LAUNCHER) Then
 			UpdateLauncher()
-		ElseIf (CurrGameState=GAMESTATE_MAINMENU) Then
+		ElseIf ((CurrGameState=GAMESTATE_MAINMENU)) Then
 			UpdateMainMenu()
 		Else
 			If (Not MouseDown1) And (Not MouseHit1) Then mainPlayer\grabbedEntity = 0
@@ -413,7 +413,7 @@ Function UpdateGame()
 				If (mainPlayer\blinkTimer < 0) Then
 					If (mainPlayer\blinkTimer > - 5) Then
 						darkA = Max(darkA, Sin(Abs(mainPlayer\blinkTimer * 18.0)))
-					ElseIf (mainPlayer\blinkTimer > - 15) Then
+					ElseIf ((mainPlayer\blinkTimer > - 15)) Then
 						darkA = 1.0
 					Else
 						darkA = Max(darkA, Abs(Sin(mainPlayer\blinkTimer * 18.0)))
@@ -511,13 +511,13 @@ Function UpdateGame()
 					If (rn = "173" Or rn = "exit1" Or rn = "gatea") Then
 						Msg = "You cannot save in this location."
 						MsgTimer = 70 * 4
-					ElseIf (Not CanSave) Then
+					ElseIf ((Not CanSave)) Then
 						Msg = "You cannot save at this moment."
 						MsgTimer = 70 * 4
 					Else
 						SaveGame(SavePath + CurrSave + "/")
 					EndIf
-				ElseIf (SelectedDifficulty\saveType = SAVEONSCREENS) Then
+				ElseIf ((SelectedDifficulty\saveType = SAVEONSCREENS)) Then
 					If (SelectedScreen=Null And SelectedMonitor=Null) Then
 						Msg = "Saving is only permitted on clickable monitors scattered throughout the facility."
 						MsgTimer = 70 * 4
@@ -526,7 +526,7 @@ Function UpdateGame()
 						If (rn = "173" Or rn = "exit1" Or rn = "gatea") Then
 							Msg = "You cannot save in this location."
 							MsgTimer = 70 * 4
-						ElseIf (Not CanSave) Then
+						ElseIf ((Not CanSave)) Then
 							Msg = "You cannot save at this moment."
 							MsgTimer = 70 * 4
 						Else
@@ -537,7 +537,7 @@ Function UpdateGame()
 					Msg = "Quick saving is disabled."
 					MsgTimer = 70 * 4
 				EndIf
-			ElseIf (SelectedDifficulty\saveType = SAVEONSCREENS And (SelectedScreen<>Null Or SelectedMonitor<>Null)) Then
+			ElseIf ((SelectedDifficulty\saveType = SAVEONSCREENS And (SelectedScreen<>Null Or SelectedMonitor<>Null))) Then
 				If ((Msg<>"Game progress saved." And Msg<>"You cannot save in this location."And Msg<>"You cannot save at this moment.") Or MsgTimer<=0) Then
 					Msg = "Press "+KeyName[keyBinds\save]+" to save."
 					MsgTimer = 70*4
@@ -597,7 +597,7 @@ Function UpdateGame()
 
 	If (CurrGameState=GAMESTATE_LAUNCHER) Then
 		If (launcher<>Null) Then DrawLauncher()
-	ElseIf (CurrGameState=GAMESTATE_MAINMENU) Then
+	ElseIf ((CurrGameState=GAMESTATE_MAINMENU)) Then
 		DrawMainMenu()
 	Else
 		RenderWorld2()
@@ -629,7 +629,7 @@ Function UpdateGame()
 		EntityBlend(fresize_image,3)
 		EntityAlpha(fresize_image,userOptions\screenGamma-1.0)
 		ScaleRender(-1.0/Float(userOptions\screenWidth),1.0/Float(userOptions\screenWidth),2048.0 / Float(userOptions\screenWidth),2048.0 / Float(userOptions\screenWidth))
-	ElseIf (userOptions\screenGamma<1.0) Then ;todo: maybe optimize this if it's too slow, alternatively give players the option to disable gamma
+	ElseIf ((userOptions\screenGamma<1.0)) Then ;todo: maybe optimize this if it's too slow, alternatively give players the option to disable gamma
 		CopyRect(0,0,userOptions\screenWidth,userOptions\screenHeight,1024-userOptions\screenWidth/2,1024-userOptions\screenHeight/2,BackBuffer(),TextureBuffer(fresize_texture))
 		EntityBlend(fresize_image,1)
 		ClsColor(0,0,0)
@@ -807,7 +807,7 @@ Function UpdateGUI()
 			If (mainPlayer\closestDoor <> Null) Then
 				If (mainPlayer\closestDoor\code <> "") Then
 					mainPlayer\selectedDoor = mainPlayer\closestDoor
-				ElseIf (Not mainPlayer\disableControls) Then
+				ElseIf ((Not mainPlayer\disableControls)) Then
 					PlayRangedSound_SM(sndManager\button, mainPlayer\cam, mainPlayer\closestButton)
 					UseDoor(mainPlayer\closestDoor,True)
 				EndIf
@@ -1456,16 +1456,16 @@ Function UpdateInfect()
 			If (mainPlayer\infect008 > 20 And temp =< 20.0) Then
 				Msg = "You feel kinda feverish."
 				MsgTimer = 70*6
-			ElseIf (mainPlayer\infect008 > 40 And temp =< 40.0) Then
+			ElseIf ((mainPlayer\infect008 > 40 And temp =< 40.0)) Then
 				Msg = "You feel nauseated."
 				MsgTimer = 70*6
-			ElseIf (mainPlayer\infect008 > 60 And temp =< 60.0) Then
+			ElseIf ((mainPlayer\infect008 > 60 And temp =< 60.0)) Then
 				Msg = "The nausea's getting worse."
 				MsgTimer = 70*6
-			ElseIf (mainPlayer\infect008 > 80 And temp =< 80.0) Then
+			ElseIf ((mainPlayer\infect008 > 80 And temp =< 80.0)) Then
 				Msg = "You feel very faint."
 				MsgTimer = 70*6
-			ElseIf (mainPlayer\infect008 =>91.5) Then
+			ElseIf ((mainPlayer\infect008 =>91.5)) Then
 				mainPlayer\blinkTimer = Max(Min(-10*(mainPlayer\infect008-91.5),mainPlayer\blinkTimer),-10)
 				If (mainPlayer\infect008 >= 92.7 And temp < 92.7) Then
 					For r = Each Room
@@ -1501,7 +1501,7 @@ Function UpdateInfect()
 				mainPlayer\bloodloss = 0
 
 				Animate2(mainPlayer\currRoom\npc[0]\obj, AnimTime(mainPlayer\currRoom\npc[0]\obj), 357, 381, 0.3)
-			ElseIf (mainPlayer\infect008 < 98.5) Then
+			ElseIf ((mainPlayer\infect008 < 98.5)) Then
 
 				EntityAlpha(mainPlayer\overlays[OVERLAY_008], 0.5 * (Sin(TimeInPosMilliSecs()/5.0)+2.0))
 				mainPlayer\blurTimer = 950
@@ -1517,7 +1517,7 @@ Function UpdateInfect()
 					de = CreateDecal(DECAL_BLOOD_SPLATTER, EntityX(mainPlayer\currRoom\npc[0]\collider), 544*RoomScale + 0.01, EntityZ(mainPlayer\currRoom\npc[0]\collider),90,Rnd(360),0)
 					de\size = 0.8
 					ScaleSprite(de\obj, de\size,de\size)
-				ElseIf (mainPlayer\overlays[OVERLAY_008] > 96) Then
+				ElseIf ((mainPlayer\overlays[OVERLAY_008] > 96)) Then
 					mainPlayer\blinkTimer = Max(Min(-10*(mainPlayer\infect008-96),mainPlayer\blinkTimer),-10)
 				Else
 					;TODO: wtf??????
@@ -1603,7 +1603,7 @@ Function RenderWorld2()
 			Msg = "The batteries in these night vision goggles died."
 			mainPlayer\blinkTimer = -1.0
 			MsgTimer = 350
-		ElseIf (wornItem\state <= 100.0) Then
+		ElseIf ((wornItem\state <= 100.0)) Then
 			hasBattery = 1
 		EndIf
 
@@ -1661,7 +1661,7 @@ Function RenderWorld2()
 						xvalue = 0.0
 						If (yawvalue > 90 And yawvalue <= 180) Then
 							xvalue = Sin(90)/90*yawvalue
-						ElseIf (yawvalue > 180 And yawvalue < 270) Then
+						ElseIf ((yawvalue > 180 And yawvalue < 270)) Then
 							xvalue = Sin(270)/yawvalue*270
 						Else
 							xvalue = Sin(yawvalue)
@@ -1671,7 +1671,7 @@ Function RenderWorld2()
 						yvalue = 0.0
 						If (pitchvalue > 90 And pitchvalue <= 180) Then
 							yvalue = Sin(90)/90*pitchvalue
-						ElseIf (pitchvalue > 180 And pitchvalue < 270) Then
+						ElseIf ((pitchvalue > 180 And pitchvalue < 270)) Then
 							yvalue = Sin(270)/pitchvalue*270
 						Else
 							yvalue = Sin(pitchvalue)
@@ -1698,7 +1698,7 @@ Function RenderWorld2()
 			;DrawImage(NVGImages,40,userOptions\screenHeight*0.5+30,1)
 
 			Color(255,255,255)
-		ElseIf (IsPlayerWearingItem(mainPlayer,"nvgoggles") And hasBattery<>0) Then
+		ElseIf ((IsPlayerWearingItem(mainPlayer,"nvgoggles") And hasBattery<>0)) Then
 			Color(0,55,0)
 			For k=0 To 10
 				Rect(45, Int(userOptions\screenHeight*0.5-(k*20)), 54, 10, True)

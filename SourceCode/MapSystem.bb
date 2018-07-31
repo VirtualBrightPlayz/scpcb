@@ -289,7 +289,7 @@ Function LoadRoomTemplates(file$)
 					If (AmountRange="") Then
 						rt\minAmount = -1
 						rt\maxAmount = -1
-					ElseIf (Instr(AmountRange,"-")>0) Then
+					ElseIf ((Instr(AmountRange,"-")>0)) Then
 						rt\minAmount = Int(Left(AmountRange,Instr(AmountRange,"-")))
 						rt\maxAmount = Int(Mid(AmountRange,Instr(AmountRange,"-")+1))
 					Else
@@ -848,7 +848,7 @@ Function UpdateRooms()
 				z = Abs(EntityZ(mainPlayer\collider,True)-EntityZ(mainPlayer\currRoom\adjDoor[i]\frameobj,True))
 				If (mainPlayer\currRoom\adjDoor[i]\openstate = 0) Then
 					SetRoomVisibility(mainPlayer\currRoom\adjacent[i],False)
-				ElseIf (Not EntityInView(mainPlayer\currRoom\adjDoor[i]\frameobj,mainPlayer\cam)) Then
+				ElseIf ((Not EntityInView(mainPlayer\currRoom\adjDoor[i]\frameobj,mainPlayer\cam))) Then
 					SetRoomVisibility(mainPlayer\currRoom\adjacent[i],False)
 				Else
 					SetRoomVisibility(mainPlayer\currRoom\adjacent[i],True)
@@ -1452,9 +1452,9 @@ Function UpdateSecurityCams()
 			If (Not sc\specialCam) Then
 				If (sc\room\dist < 6.0 Or mainPlayer\currRoom=sc\room) Then
 					close = True
-				ElseIf (sc\isRoom2slCam) Then
+				ElseIf ((sc\isRoom2slCam)) Then
 					close = True
-				ElseIf (sc\cam<>0) Then
+				ElseIf ((sc\cam<>0)) Then
 					HideEntity(sc\cam)
 				EndIf
 			EndIf
@@ -1521,7 +1521,7 @@ Function UpdateSecurityCams()
 						If (SelectedDifficulty\saveType = SAVEONSCREENS And EntityDistance(mainPlayer\cam, sc\scrObj)<1.0) Then
 							DrawHandIcon = True
 							If (MouseHit1) Then SelectedMonitor = sc
-						ElseIf (SelectedMonitor = sc) Then
+						ElseIf ((SelectedMonitor = sc)) Then
 							SelectedMonitor = Null
 						EndIf
 					Else
@@ -1646,7 +1646,7 @@ Function UpdateSecurityCams()
 										EndIf
 									EndIf
 									mainPlayer\blurTimer = 1000
-								ElseIf (mainPlayer\sanity895 < - 500) Then
+								ElseIf ((mainPlayer\sanity895 < - 500)) Then
 									If (Rand(7) = 1) Then EntityTexture(sc\scrOverlay, MonitorTexture)
 									If (Rand(50) = 1) Then
 										EntityTexture(sc\scrOverlay, gorePics[Rand(0, GORE_PIC_COUNT-1)])
@@ -1684,7 +1684,7 @@ Function UpdateSecurityCams()
 								If (sc\coffinEffect=2) Then
 									sc\coffinEffect=3 : sc\playerState = 0
 								EndIf
-							ElseIf (Not IsChannelPlaying(sc\soundCHN)) Then
+							ElseIf ((Not IsChannelPlaying(sc\soundCHN))) Then
 								sc\soundCHN = PlaySound(LoadTempSound("SFX/SCP/079/Broadcast"+Str(Rand(1,3))+".ogg"))
 								If (sc\coffinEffect=2) Then
 									sc\coffinEffect=3 : sc\playerState = 0
@@ -2044,7 +2044,7 @@ Function CreateMap()
 										If (tempWaypoint\room = r) Then
 											If (roomAWaypoint = Null) Then
 												roomAWaypoint = tempWaypoint
-											ElseIf (EntityDistance(roomAWaypoint\obj,newWaypoint\obj)>EntityDistance(tempWaypoint\obj,newWaypoint\obj)) Then
+											ElseIf ((EntityDistance(roomAWaypoint\obj,newWaypoint\obj)>EntityDistance(tempWaypoint\obj,newWaypoint\obj))) Then
 												roomAWaypoint = tempWaypoint
 											EndIf
 										EndIf
@@ -2052,7 +2052,7 @@ Function CreateMap()
 										If (tempWaypoint\room = r\adjacent[i]) Then
 											If (roomBWaypoint = Null) Then
 												roomBWaypoint = tempWaypoint
-											ElseIf (EntityDistance(roomBWaypoint\obj,newWaypoint\obj)>EntityDistance(tempWaypoint\obj,newWaypoint\obj)) Then
+											ElseIf ((EntityDistance(roomBWaypoint\obj,newWaypoint\obj)>EntityDistance(tempWaypoint\obj,newWaypoint\obj))) Then
 												roomBWaypoint = tempWaypoint
 											EndIf
 										EndIf
@@ -2121,13 +2121,13 @@ Function DetermineRoomTypes(layout.IntArray,mapDim%)
 
 				If (horNeighborCount+vertNeighborCount = 1) Then
 					SetIntArrayElem(layout,ROOM1,x,y)
-				ElseIf (horNeighborCount+vertNeighborCount = 3) Then
+				ElseIf ((horNeighborCount+vertNeighborCount = 3)) Then
 					SetIntArrayElem(layout,ROOM3,x,y)
-				ElseIf (horNeighborCount+vertNeighborCount = 4) Then
+				ElseIf ((horNeighborCount+vertNeighborCount = 4)) Then
 					SetIntArrayElem(layout,ROOM4,x,y)
-				ElseIf (horNeighborCount = 1) And (vertNeighborCount = 1) Then
+				ElseIf ((horNeighborCount = 1) And (vertNeighborCount = 1)) Then
 					SetIntArrayElem(layout,ROOM2C,x,y)
-				ElseIf (horNeighborCount = 2) Xor (vertNeighborCount = 2) Then
+				ElseIf ((horNeighborCount = 2) Xor (vertNeighborCount = 2)) Then
 					SetIntArrayElem(layout,ROOM2,x,y)
 				Else
 					SetIntArrayElem(layout,0,x,y)
@@ -2142,9 +2142,9 @@ Function DetermineRotation%(layout.IntArray,x%,y%)
 		Case ROOM1
 			If (x>0) And (GetIntArrayElem(layout,x-1,y)<>0) Then
 				Return 270
-			ElseIf (x<layout\xDim-1) And (GetIntArrayElem(layout,x+1,y)<>0) Then
+			ElseIf ((x<layout\xDim-1) And (GetIntArrayElem(layout,x+1,y)<>0)) Then
 				Return 90
-			ElseIf (y>0) And (GetIntArrayElem(layout,x,y-1)<>0) Then
+			ElseIf ((y>0) And (GetIntArrayElem(layout,x,y-1)<>0)) Then
 				Return 0
 			Else
 				Return 180
@@ -2172,9 +2172,9 @@ Function DetermineRotation%(layout.IntArray,x%,y%)
 		Case ROOM3
 			If (x>0) And (GetIntArrayElem(layout,x-1,y)=0) Then
 				Return 90
-			ElseIf (y>0) And (GetIntArrayElem(layout,x,y-1)=0) Then
+			ElseIf ((y>0) And (GetIntArrayElem(layout,x,y-1)=0)) Then
 				Return 180
-			ElseIf (x<layout\xDim-1) And (GetIntArrayElem(layout,x+1,y)=0) Then
+			ElseIf ((x<layout\xDim-1) And (GetIntArrayElem(layout,x+1,y)=0)) Then
 				Return 270
 			Else
 				Return 0

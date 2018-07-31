@@ -81,7 +81,7 @@ Function UpdateNPCtypeApache(n.NPC)
 
             If (n\state = 2) Then
                 target = mainPlayer\collider
-            ElseIf (n\state = 3) Then
+            ElseIf ((n\state = 3)) Then
                 target=CreatePivot()
                 PositionEntity(target, n\enemyX, n\enemyY, n\enemyZ, True)
             EndIf

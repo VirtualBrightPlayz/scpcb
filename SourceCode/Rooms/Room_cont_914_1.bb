@@ -84,7 +84,7 @@ Function UpdateEvent_cont_914_1(e.Event)
 		If (PickedEntity() = e\room\objects[0]) Then
 			DrawHandIcon = True
 			If (MouseHit1) Then mainPlayer\grabbedEntity = e\room\objects[0]
-		ElseIf (PickedEntity() = e\room\objects[1]) Then
+		ElseIf ((PickedEntity() = e\room\objects[1])) Then
 			DrawHandIcon = True
 			If (MouseHit1) Then mainPlayer\grabbedEntity = e\room\objects[1]
 		EndIf
@@ -102,7 +102,7 @@ Function UpdateEvent_cont_914_1(e.Event)
 
 						If (angle < 90) Then
 							RotateEntity(mainPlayer\grabbedEntity, 0, 0, 361.0)
-						ElseIf (angle < 180) Then
+						ElseIf ((angle < 180)) Then
 							RotateEntity(mainPlayer\grabbedEntity, 0, 0, 180)
 						EndIf
 
@@ -120,7 +120,7 @@ Function UpdateEvent_cont_914_1(e.Event)
 							Next
 						EndIf
 					EndIf
-				ElseIf (mainPlayer\grabbedEntity = e\room\objects[1]) Then
+				ElseIf ((mainPlayer\grabbedEntity = e\room\objects[1])) Then
 					If (e\eventState = 0) Then
 						DrawHandIcon = True
 						TurnEntity(mainPlayer\grabbedEntity, 0, 0, -mouse_x_speed_1 * 2.5)
@@ -132,7 +132,7 @@ Function UpdateEvent_cont_914_1(e.Event)
 						If (angle > 90) Then
 							If (angle < 180) Then
 								RotateEntity(mainPlayer\grabbedEntity, 0, 0, 90.0)
-							ElseIf (angle < 270) Then
+							ElseIf ((angle < 270)) Then
 								RotateEntity(mainPlayer\grabbedEntity, 0, 0, 270)
 							EndIf
 						EndIf
@@ -149,16 +149,16 @@ Function UpdateEvent_cont_914_1(e.Event)
 			If (angle < 22.5) Then
 				angle = 0
 				setting = "1:1"
-			ElseIf (angle < 67.5) Then
+			ElseIf ((angle < 67.5)) Then
 				angle = 40
 				setting = "coarse"
-			ElseIf (angle < 180) Then
+			ElseIf ((angle < 180)) Then
 				angle = 90
 				setting = "rough"
-			ElseIf (angle > 337.5) Then
+			ElseIf ((angle > 337.5)) Then
 				angle = 359 - 360
 				setting = "1:1"
-			ElseIf (angle > 292.5) Then
+			ElseIf ((angle > 292.5)) Then
 				angle = 320 - 360
 				setting = "fine"
 			Else
@@ -172,7 +172,7 @@ Function UpdateEvent_cont_914_1(e.Event)
 			If (mainPlayer\grabbedEntity = e\room\objects[i]) Then
 				If (Not EntityInView(e\room\objects[i], mainPlayer\cam)) Then
 					mainPlayer\grabbedEntity = 0
-				ElseIf (EntityDistance(e\room\objects[i], mainPlayer\cam) > 1.0) Then
+				ElseIf ((EntityDistance(e\room\objects[i], mainPlayer\cam) > 1.0)) Then
 					mainPlayer\grabbedEntity = 0
 				EndIf
 			EndIf

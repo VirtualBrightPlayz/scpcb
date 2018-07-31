@@ -44,7 +44,7 @@ Function ligger%(for1#, plyr.Player, for2#=3)
 		If ((moreBooleans)And(uhuh)) Then
 			; nested ifs work!
 		EndIf
-	ElseIf (test <> True) Then
+	ElseIf ((test <> True)) Then
 		If (uh = False) Then
 			;test
 		Else

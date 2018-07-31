@@ -103,7 +103,7 @@ Function GetINIInt%(file$, section$, parameter$, defaultvalue% = 0)
 	Local txt$ = GetINIString(file, section, parameter, Str(defaultvalue))
 	If (Lower(txt) = "true") Then
 		Return 1
-	ElseIf (Lower(txt) = "false") Then
+	ElseIf ((Lower(txt) = "false")) Then
 		Return 0
 	Else
 		Return Int(txt)
@@ -146,7 +146,7 @@ Function GetINIInt2%(file$, start%, parameter$, defaultvalue$="")
 	Local txt$ = GetINIString2(file, start, parameter, Str(defaultvalue))
 	If (Lower(txt) = "true") Then
 		Return 1
-	ElseIf (Lower(txt) = "false") Then
+	ElseIf ((Lower(txt) = "false")) Then
 		Return 0
 	EndIf
 	Return Int(txt)

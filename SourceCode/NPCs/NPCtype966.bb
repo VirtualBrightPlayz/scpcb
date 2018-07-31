@@ -100,7 +100,7 @@ Function UpdateNPCtype966(n.NPC)
 
         If (mainPlayer\stamina<10) Then
             n\state3=n\state3+timing\tickDuration
-        ElseIf (n\state3 < 900.0) Then
+        ElseIf ((n\state3 < 900.0)) Then
             n\state3=Max(n\state3-timing\tickDuration*0.2,0.0)
         EndIf
 
@@ -215,7 +215,7 @@ Function UpdateNPCtype966(n.NPC)
                                 n\currSpeed = 0
                                 SetNPCFrame(n,201)
                             ;SetAnimTime(n\obj,15)
-                            ElseIf (n\pathStatus = 1) Then
+                            ElseIf ((n\pathStatus = 1)) Then
                                 If (n\path[n\pathLocation]=Null) Then
                                     If (n\pathLocation > 19) Then
                                         n\pathLocation = 0 : n\pathStatus = 0
@@ -237,7 +237,7 @@ Function UpdateNPCtype966(n.NPC)
                                     EndIf
 
                                 EndIf
-                            ElseIf (n\pathStatus = 0) Then
+                            ElseIf ((n\pathStatus = 0)) Then
                                 n\currSpeed = CurveValue(0,n\currSpeed,10.0)
                             EndIf
                         Else
@@ -293,10 +293,10 @@ Function UpdateNPCtype966(n.NPC)
                     If (n\frame <= 2191) Then
                         AnimateNPC(n, 2160, 2191, 0.3, False)
                         If (n\frame > 2190) Then n\state = 8
-                    ElseIf (n\frame <= 2220) Then
+                    ElseIf ((n\frame <= 2220)) Then
                         AnimateNPC(n, 2192, 2220, 0.3, False)
                         If (n\frame > 2219) Then n\state = 8
-                    ElseIf (n\frame <= 2260) Then
+                    ElseIf ((n\frame <= 2260)) Then
                         AnimateNPC(n, 2221, 2260, 0.3, False)
                         If (n\frame > 2259) Then n\state = 8
                     EndIf

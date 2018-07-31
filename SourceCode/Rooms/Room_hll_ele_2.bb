@@ -84,7 +84,7 @@ Function UpdateEvent_hll_ele_2(e.Event)
 				e\room\npc[0]\enemyY = EntityY(e\room\objects[1],True)
 				e\room\npc[0]\enemyZ = EntityZ(e\room\objects[1],True)
 			EndIf
-		ElseIf (e\eventState = 2) Then
+		ElseIf ((e\eventState = 2)) Then
 			If (EntityDistance(e\room\npc[0]\collider,e\room\objects[1])<2.0) Then
 				e\room\doors[0]\open = False
 				;PlayRangedSound(CloseDoorSFX(0, 0), mainPlayer\cam, e\room\doors[0]\obj, 8.0)
@@ -93,15 +93,15 @@ Function UpdateEvent_hll_ele_2(e.Event)
 
 				e\eventState = 2.05
 			EndIf
-		ElseIf (e\eventState < 13*70) Then
+		ElseIf ((e\eventState < 13*70)) Then
 			e\eventState = e\eventState+timing\tickDuration
 			;6.7 - 7.4
 			;8.6 - 10
 			If (e\eventState > 6.7*70 And e\eventState < 7.4*70) Then
 				mainPlayer\camShake = 7.4-(e\eventState/70.0)
-			ElseIf (e\eventState > 8.6*70 And e\eventState < 10.6*70) Then
+			ElseIf ((e\eventState > 8.6*70 And e\eventState < 10.6*70)) Then
 				mainPlayer\camShake = 10.6-(e\eventState/70.0)
-			ElseIf (e\eventState > 12.6*70) Then
+			ElseIf ((e\eventState > 12.6*70)) Then
 				mainPlayer\camShake = 0
 				If (e\eventState-timing\tickDuration < 12.6*70 And e\room\npc[0]<>Null) Then
 					RemoveNPC(e\room\npc[0])

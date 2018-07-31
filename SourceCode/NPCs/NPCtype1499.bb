@@ -194,7 +194,7 @@ Function UpdateNPCtype1499(n.NPC)
                                 EndIf
                             EndIf
                         EndIf
-                    ElseIf (n\frame => 99) Then
+                    ElseIf ((n\frame => 99)) Then
                         n\state2 = 0.0
                         n\state = 1
                     EndIf
@@ -219,7 +219,7 @@ Function UpdateNPCtype1499(n.NPC)
                                 EndIf
                             EndIf
                         EndIf
-                    ElseIf (n\frame => 201) Then
+                    ElseIf ((n\frame => 201)) Then
                         n\state2 = 0.0
                         n\state = 1
                     EndIf

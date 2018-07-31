@@ -370,7 +370,7 @@ Function InitNewGame()
 			PositionEntity(mainPlayer\collider, EntityX(r\obj)+3584*RoomScale, 714*RoomScale, EntityZ(r\obj)+1024*RoomScale)
 			ResetEntity(mainPlayer\collider)
 			mainPlayer\currRoom = r
-		ElseIf (r\roomTemplate\name = "intro" And userOptions\introEnabled) Then
+		ElseIf ((r\roomTemplate\name = "intro" And userOptions\introEnabled)) Then
 			PositionEntity(mainPlayer\collider, EntityX(r\obj), 1.0, EntityZ(r\obj))
 			ResetEntity(mainPlayer\collider)
 			mainPlayer\currRoom = r

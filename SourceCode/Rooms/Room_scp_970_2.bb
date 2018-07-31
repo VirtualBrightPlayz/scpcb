@@ -96,7 +96,7 @@ Function UpdateEvent_scp_970_2(e.Event)
 			DebugLog("tformedx()>720")
 			temp = True
 
-		ElseIf (TFormedX()<-730) Then
+		ElseIf ((TFormedX()<-730)) Then
 			UpdateWorld()
 			TFormPoint(EntityX(mainPlayer\collider),EntityY(mainPlayer\collider),EntityZ(mainPlayer\collider),0,e\room\obj)
 
@@ -137,7 +137,7 @@ Function UpdateEvent_scp_970_2(e.Event)
 						TFormPoint(x-1024,y,z,e\room\obj,0)
 						PositionEntity(it\collider, TFormedX(), TFormedY(), TFormedZ())
 						ResetEntity(it\collider)
-					ElseIf (TFormedX()<-264) Then
+					ElseIf ((TFormedX()<-264)) Then
 						TFormPoint(x+1024,y,z,e\room\obj,0)
 						PositionEntity(it\collider, TFormedX(), TFormedY(), TFormedZ())
 						ResetEntity(it\collider)
@@ -281,7 +281,7 @@ Function UpdateEvent_scp_970_2(e.Event)
 				e\soundChannels[0] = LoopRangedSound(e\sounds[0], e\soundChannels[0], mainPlayer\cam, e\room\npc[0]\obj);
 				If (e\eventState < 30) Then
 					;LightVolume = TempLightVolume*0.4
-				ElseIf (e\eventState > 60) Then
+				ElseIf ((e\eventState > 60)) Then
 					AnimateNPC(e\room\npc[0], 80, 61, -0.02, False)
 
 					e\room\npc[0]\dropSpeed = 0

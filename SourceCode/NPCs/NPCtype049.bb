@@ -156,7 +156,7 @@ Function UpdateNPCtype049(n.NPC)
 							;EndIf
 							If (dist2<0.2 And temp) Then
 								n\pathLocation = n\pathLocation + 1
-							ElseIf (dist2<0.5 And (Not temp)) Then
+							ElseIf ((dist2<0.5 And (Not temp))) Then
 								;Breaking up the path because the door cannot be operated by SCP-049
 								n\pathStatus = 0
 								n\pathTimer = 0.0
@@ -265,7 +265,7 @@ Function UpdateNPCtype049(n.NPC)
 							;EndIf
 							If (dist2<0.2 And temp) Then
 								n\pathLocation = n\pathLocation + 1
-							ElseIf (dist2<0.5 And (Not temp)) Then
+							ElseIf ((dist2<0.5 And (Not temp))) Then
 								;Breaking up the path because the door cannot be operated by SCP-049
 								n\pathStatus = 0
 								n\pathTimer = 0.0

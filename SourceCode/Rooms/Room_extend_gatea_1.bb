@@ -38,7 +38,7 @@ Function FillRoom_extend_gatea_1(r.Room)
         If (r2\roomTemplate\name = "exit1") Then
             r\objects[1]=r2\objects[1]
             r\objects[2]=r2\objects[2]
-        ElseIf (r2\roomTemplate\name = "gateaentrance") Then
+        ElseIf ((r2\roomTemplate\name = "gateaentrance")) Then
             ;ylempi hissi
             r\doors[1] = CreateDoor(r\x+1544.0*RoomScale,12000.0*RoomScale, r\z-64.0*RoomScale, 90, r, False)
             r\doors[1]\autoClose = False : r\doors[1]\open = False
@@ -266,7 +266,7 @@ Function UpdateEvent_extend_gatea_1(e.Event)
 						;TODO: fix audio
 						;PlaySound2((HorrorSFX(5)))
 						;PlaySound2(DecaySFX(0))
-					ElseIf (Curr106\state < 0) Then
+					ElseIf ((Curr106\state < 0)) Then
 						HideEntity(Curr106\obj2)
 						Curr106\pathTimer = 70*100
 
@@ -371,7 +371,7 @@ Function UpdateEvent_extend_gatea_1(e.Event)
 									If (e\eventState2=0) Then ;IsChannelPlaying(e\soundChannels[1]) = 0) Then
 										e\soundChannels[1] = PlaySound(LoadTempSound("SFX/Ending/GateA/HIDTurret.ogg"))
 										e\eventState2 = 1
-									ElseIf (e\eventState2>0) Then
+									ElseIf ((e\eventState2>0)) Then
 										e\eventState2=e\eventState2+timing\tickDuration
 										If (e\eventState2=> 7.5*70) Then
 											If (e\eventState2-timing\tickDuration < 7.5*70) Then
@@ -387,7 +387,7 @@ Function UpdateEvent_extend_gatea_1(e.Event)
 												p\speed = 0.0
 												p\a = 1.0
 												EntityParent(p\pvt, e\room\objects[10], True)
-											ElseIf (e\eventState2 < 14.3*70) Then
+											ElseIf ((e\eventState2 < 14.3*70)) Then
 												mainPlayer\camShake = 0.5
 												mainPlayer\lightFlash = 0.3+EntityInView(e\room\objects[10],mainPlayer\cam)*0.5
 											EndIf
@@ -437,7 +437,7 @@ Function UpdateEvent_extend_gatea_1(e.Event)
 								e\eventState3 = 1.0
 							EndIf
 						EndIf
-					ElseIf (e\eventState3 = 1.0) Then
+					ElseIf ((e\eventState3 = 1.0)) Then
 
 						For i = 5 To 8
 							If (EntityDistance(e\room\npc[i]\collider,mainPlayer\collider)> 4.0) Then e\room\npc[i]\state = 3

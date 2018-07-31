@@ -32,7 +32,7 @@ Function UpdateEventToiletguard(e.Event)
 	;[Block]
 	If (e\eventState = 0) Then
 		If (e\room\dist < 8.0  And e\room\dist > 0) Then e\eventState = 1
-	ElseIf (e\eventState = 1) Then
+	ElseIf ((e\eventState = 1)) Then
 		e\room\npc[0]=CreateNPC(NPCtypeGuard, EntityX(e\room\objects[1],True), EntityY(e\room\objects[1],True)+0.5, EntityZ(e\room\objects[1],True))
 		PointEntity(e\room\npc[0]\collider, e\room\obj)
 		RotateEntity(e\room\npc[0]\collider, 0, EntityYaw(e\room\npc[0]\collider)-20,0, True)
@@ -46,7 +46,7 @@ Function UpdateEventToiletguard(e.Event)
 		If (e\room\dist < 15.0 And e\room\dist >= 4.0) Then
 			e\soundChannels[0] = LoopRangedSound(e\sounds[0], e\soundChannels[0], mainPlayer\cam, e\room\npc[0]\collider, 15.0)
 
-		ElseIf (e\room\dist<4.0 And mainPlayer\loudness > 1.0) Then
+		ElseIf ((e\room\dist<4.0 And mainPlayer\loudness > 1.0)) Then
 			de = CreateDecal(DECAL_BLOOD_SPLATTER,  EntityX(e\room\objects[2],True), 0.01, EntityZ(e\room\objects[2],True),90,Rnd(360),0)
 			de\size = 0.3 : ScaleSprite(de\obj, de\size, de\size)
 

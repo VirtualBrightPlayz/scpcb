@@ -15,10 +15,10 @@ Function UpdateEventTunnel106(e.Event)
 	If (e\eventState = 0) Then
 		If (e\room\dist < 5.0 And e\room\dist > 0) Then
 			If (Curr106\state >= 0) Then e\eventState = 1
-		ElseIf (Contained106) Then
+		ElseIf ((Contained106)) Then
 			RemoveEvent(e)
 		EndIf
-	ElseIf (e\eventState = 1) Then
+	ElseIf ((e\eventState = 1)) Then
 
 		If (e\room\dist < 3.0 Or Rand(7000)=1) Then
 			e\eventState = 2
@@ -27,7 +27,7 @@ Function UpdateEventTunnel106(e.Event)
 			EntityAlpha(d\obj, Rnd(0.7, 0.85))
 
 			;PlaySound2(HorrorSFX(10))
-		ElseIf (e\room\dist > 8.0) Then
+		ElseIf ((e\room\dist > 8.0)) Then
 			If (Rand(5) = 1) Then
 				Curr106\idle = False
 				RemoveEvent(e)
@@ -76,7 +76,7 @@ Function UpdateEvent682roar(e.Event)
 	;[Block]
 	If (e\eventState = 0) Then
 		If (mainPlayer\currRoom = e\room) Then e\eventState = 70 * Rand(300,1000)
-	ElseIf (mainPlayer\currRoom\roomTemplate\name <> "pocketdimension" And mainPlayer\currRoom\roomTemplate\name <> "room860" And mainPlayer\currRoom\roomTemplate\name <> "room1123" And mainPlayer\currRoom\roomTemplate\name <> "dimension1499") Then
+	ElseIf ((mainPlayer\currRoom\roomTemplate\name <> "pocketdimension" And mainPlayer\currRoom\roomTemplate\name <> "room860" And mainPlayer\currRoom\roomTemplate\name <> "room1123" And mainPlayer\currRoom\roomTemplate\name <> "dimension1499")) Then
 		e\eventState = e\eventState-timing\tickDuration
 
 		If (e\eventState < 17*70) Then

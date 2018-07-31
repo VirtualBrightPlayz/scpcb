@@ -179,7 +179,7 @@ Function DrawLauncher()
 
     ;If (GfxModeWidths(SelectedGFXMode)<G_viewport_width) Then
     ;	Text(40+ 260 + 65, 262 - 55 + 160, "(upscaled to")
-    ;ElseIf (GfxModeWidths(SelectedGFXMode)>G_viewport_width) Then
+    ;ElseIf ((GfxModeWidths(SelectedGFXMode)>G_viewport_width)) Then
     ;	Text(40+ 260 + 65, 262 - 55 + 160, "(downscaled to")
     ;EndIf
 

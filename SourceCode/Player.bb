@@ -317,7 +317,7 @@ Function UpdatePlayer()
 			If (KeyDown(keyBinds\sprint)) Then
 				If (mainPlayer\stamina < 5) Then ;out of breath
 					If (Not IsChannelPlaying(mainPlayer\breathChn)) Then mainPlayer\breathChn = PlaySound(GetIntArrayElem(mainPlayer\breathingSFX, IsPlayerWearingItem(mainPlayer,"gasmask"), 0))
-				ElseIf (mainPlayer\stamina < 50) Then ;panting
+				ElseIf ((mainPlayer\stamina < 50)) Then ;panting
 					If (mainPlayer\breathChn = 0) Then
 						mainPlayer\breathChn = PlaySound(GetIntArrayElem(mainPlayer\breathingSFX, IsPlayerWearingItem(mainPlayer,"gasmask"), Rand(1, 3)))
 						ChannelVolume(mainPlayer\breathChn, Min((70.0-mainPlayer\stamina)/70.0,1.0)*userOptions\sndVolume)
@@ -399,13 +399,13 @@ Function UpdatePlayer()
 
 						ChannelVolume(tempchn, (1.0-(mainPlayer\crouching*0.6))*userOptions\sndVolume)
 					EndIf
-				ElseIf (mainPlayer\footstepOverride=1) Then
+				ElseIf ((mainPlayer\footstepOverride=1)) Then
 					tempchn = PlaySound_SM(sndManager\footstepPD[Rand(0, 2)])
 					ChannelVolume(tempchn, (1.0-(mainPlayer\crouching*0.4))*userOptions\sndVolume)
-				ElseIf (mainPlayer\footstepOverride=2) Then
+				ElseIf ((mainPlayer\footstepOverride=2)) Then
 					tempchn = PlaySound_SM(sndManager\footstep8601[Rand(0, 2)])
 					ChannelVolume(tempchn, (1.0-(mainPlayer\crouching*0.4))*userOptions\sndVolume)
-				ElseIf (mainPlayer\footstepOverride=3) Then
+				ElseIf ((mainPlayer\footstepOverride=3)) Then
 					If (Sprint = 1.0) Then
 						mainPlayer\loudness = Max(4.0,mainPlayer\loudness)
 						tempchn = PlaySound_SM(sndManager\footstep[Rand(0, 7)])
@@ -422,7 +422,7 @@ Function UpdatePlayer()
 	Else ;noclip on
 		If (KeyDown(keyBinds\sprint)) Then
 			Sprint = 2.5
-		ElseIf (KeyDown(keyBinds\crouch)) Then
+		ElseIf ((KeyDown(keyBinds\crouch))) Then
 			Sprint = 0.5
 		EndIf
 	EndIf
@@ -461,15 +461,15 @@ Function UpdatePlayer()
 			angle = 180
 			If (KeyDown(keyBinds\lft)) Then angle = 135
 			If (KeyDown(keyBinds\rght)) Then angle = -135
-		ElseIf (KeyDown(keyBinds\up) And (Not mainPlayer\disableControls)) Then; Or ForceMove>0
+		ElseIf ((KeyDown(keyBinds\up) And (Not mainPlayer\disableControls))) Then; Or ForceMove>0
 			temp = True
 			angle = 0
 			If (KeyDown(keyBinds\lft)) Then angle = 45
 			If (KeyDown(keyBinds\rght)) Then angle = -45
-		ElseIf (mainPlayer\forceMove>0) Then
+		ElseIf ((mainPlayer\forceMove>0)) Then
 			temp=True
 			angle = mainPlayer\forceAngle
-		ElseIf (Not mainPlayer\disableControls) Then
+		ElseIf ((Not mainPlayer\disableControls)) Then
 			If (KeyDown(keyBinds\lft)) Then
 				angle = 90 : temp = True
 			EndIf
@@ -507,9 +507,9 @@ Function UpdatePlayer()
 					Else
 						PlaySound_SM(sndManager\footstep[Rand(0, 7)])
 					EndIf
-				ElseIf (mainPlayer\footstepOverride=1) Then
+				ElseIf ((mainPlayer\footstepOverride=1)) Then
 					PlaySound_SM(sndManager\footstepPD[Rand(0, 2)])
-				ElseIf (mainPlayer\footstepOverride=2) Then
+				ElseIf ((mainPlayer\footstepOverride=2)) Then
 					PlaySound_SM(sndManager\footstep8601[Rand(0, 2)])
 				Else
 					PlaySound_SM(sndManager\footstep[Rand(0, 7)])
@@ -560,9 +560,9 @@ Function UpdatePlayer()
 		If (mainPlayer\bloodloss => 100) Then
 			Kill(mainPlayer)
 			mainPlayer\heartbeatIntensity = 0.0
-		ElseIf (mainPlayer\bloodloss > 80.0) Then
+		ElseIf ((mainPlayer\bloodloss > 80.0)) Then
 			mainPlayer\heartbeatIntensity = Max(150-(mainPlayer\bloodloss-80)*5,mainPlayer\heartbeatIntensity)
-		ElseIf (mainPlayer\bloodloss > 35.0) Then
+		ElseIf ((mainPlayer\bloodloss > 35.0)) Then
 			mainPlayer\heartbeatIntensity = Max(70+mainPlayer\bloodloss,mainPlayer\heartbeatIntensity)
 		EndIf
 	EndIf
@@ -727,7 +727,7 @@ Function MouseLook()
 	;	If (wearing1499 = 2) Then mainPlayer\stamina = Min(100, mainPlayer\stamina + (100.0-mainPlayer\stamina)*0.01*timing\tickDuration)
 	;	If (wearingHazmat = 2) Then
 	;		mainPlayer\stamina = Min(100, mainPlayer\stamina + (100.0-mainPlayer\stamina)*0.01*timing\tickDuration)
-	;	ElseIf (wearingHazmat=1) Then
+	;	ElseIf ((wearingHazmat=1)) Then
 	;		mainPlayer\stamina = Min(60, mainPlayer\stamina)
 	;	EndIf
 	;
@@ -741,7 +741,7 @@ Function MouseLook()
 	;	If (wearingNightVision=2) Then
 	;		EntityColor(mainPlayer\overlays[OVERLAY_NIGHTVISION], 0,100,255)
 	;		AmbientLightRooms(15)
-	;	ElseIf (wearingNightVision=3) Then
+	;	ElseIf ((wearingNightVision=3)) Then
 	;		EntityColor(mainPlayer\overlays[OVERLAY_NIGHTVISION], 255,0,0)
 	;		AmbientLightRooms(15)
 	;	Else

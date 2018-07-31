@@ -157,7 +157,7 @@ Function UpdateConsole()
 
 		If (Not MouseDown(1)) Then
 			ConsoleScrollDragging=False
-		ElseIf (ConsoleScrollDragging) Then
+		ElseIf ((ConsoleScrollDragging)) Then
 			ConsoleScroll = ConsoleScroll+((MouseY()-ConsoleMouseMem)*height/scrollbarHeight)
 			ConsoleMouseMem = MouseY()
 		EndIf
@@ -167,7 +167,7 @@ Function UpdateConsole()
 				If (inBox) Then
 					ConsoleScrollDragging=True
 					ConsoleMouseMem = MouseY()
-				ElseIf (inBar) Then
+				ElseIf ((inBar)) Then
 					ConsoleScroll = ConsoleScroll+((MouseY()-(y+height))*consoleHeight/height+(height/2))
 					ConsoleScroll = ConsoleScroll/2
 				EndIf
@@ -177,7 +177,7 @@ Function UpdateConsole()
 		mouseScroll = MouseZSpeed()
 		If (mouseScroll=1) Then
 			ConsoleScroll = ConsoleScroll - 15*MenuScale
-		ElseIf (mouseScroll=-1) Then
+		ElseIf ((mouseScroll=-1)) Then
 			ConsoleScroll = ConsoleScroll + 15*MenuScale
 		EndIf
 
@@ -876,7 +876,7 @@ Function UpdateConsole()
 								If (ev\name = "gateaentrance") Then
 									ev\eventState3 = 1
 									ev\room\doors[1]\open = True
-								ElseIf (ev\name = "exit1") Then
+								ElseIf ((ev\name = "exit1")) Then
 									ev\eventState3 = 1
 									ev\room\doors[4]\open = True
 								EndIf

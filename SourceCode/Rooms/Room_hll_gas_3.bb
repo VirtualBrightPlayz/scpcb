@@ -134,10 +134,10 @@ Function UpdateEventRoom3pit1048(e.Event)
 						e\eventState = 1
 					EndIf
 				EndIf
-			ElseIf (e\eventState=1) Then
+			ElseIf ((e\eventState=1)) Then
 				Animate2(e\room\objects[2], AnimTime(e\room\objects[2]), 414, 543, 0.5, False)
 				If (AnimTime(e\room\objects[2])=543) Then e\eventState=2
-			ElseIf (e\eventState = 2) Then
+			ElseIf ((e\eventState = 2)) Then
 				Animate2(e\room\objects[2], AnimTime(e\room\objects[2]), 543, 692, 1.0)
 				If (EntityDistance(mainPlayer\collider, e\room\objects[2])<1.5) Then
 					DrawHandIcon = True

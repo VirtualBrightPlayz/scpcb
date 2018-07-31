@@ -103,7 +103,7 @@ Function UpdateEvent_test_860_2(e.Event)
 			If (EntityY(mainPlayer\collider)<=28.5) Then
 				Kill(mainPlayer)
 				mainPlayer\blinkTimer=-2
-			ElseIf (EntityY(mainPlayer\collider)>EntityY(fr\forest_Pivot,True)+0.5) Then
+			ElseIf ((EntityY(mainPlayer\collider)>EntityY(fr\forest_Pivot,True)+0.5)) Then
 				MoveEntity(mainPlayer\collider, 0, ((EntityY(fr\forest_Pivot,True)+0.5) - EntityY(mainPlayer\collider))*timing\tickDuration, 0)
 			EndIf
 
@@ -202,7 +202,7 @@ Function UpdateEvent_test_860_2(e.Event)
 							Msg = "The door will not budge."
 							MsgTimer = 5*70
 						EndIf
-					ElseIf (mainPlayer\selectedItem\template\name="scp860") Then
+					ElseIf ((mainPlayer\selectedItem\template\name="scp860")) Then
 						If (MouseHit1) Then
 							PlaySound2(LoadTempSound("SFX/Door/WoodenDoorOpen.ogg"))
 							ShowEntity(fr\forest_Pivot)
@@ -490,7 +490,7 @@ Function GenForestGrid(fr.Forest)
 		For j=0 To gridsize-1
 			If (fr\grid[(i*gridsize)+j]=-1) Then
 				fr\grid[(i*gridsize)+j]=1
-			ElseIf (fr\grid[(i*gridsize)+j]=-2) Then
+			ElseIf ((fr\grid[(i*gridsize)+j]=-2)) Then
 				fr\grid[(i*gridsize)+j]=1
 			;ElseIf fr\grid[(i*gridsize)+j]=0
 
@@ -610,9 +610,9 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Room)
 
 						If (fr\grid[((ty+1)*gridsize)+tx]>0) Then
 							angle = 180
-						ElseIf (fr\grid[(ty*gridsize)+tx-1]>0) Then
+						ElseIf ((fr\grid[(ty*gridsize)+tx-1]>0)) Then
 							angle = 270
-						ElseIf (fr\grid[(ty*gridsize)+tx+1]>0) Then
+						ElseIf ((fr\grid[(ty*gridsize)+tx+1]>0)) Then
 							angle = 90
 						EndIf
 
@@ -621,7 +621,7 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Room)
 						If (fr\grid[((ty-1)*gridsize)+tx]>0 And fr\grid[((ty+1)*gridsize)+tx]>0) Then
 							tile_entity = CopyEntity(fr\tileMesh[ROOM2])
 							tile_type = ROOM2
-						ElseIf (fr\grid[(ty*gridsize)+tx+1]>0 And fr\grid[(ty*gridsize)+tx-1]>0) Then
+						ElseIf ((fr\grid[(ty*gridsize)+tx+1]>0 And fr\grid[(ty*gridsize)+tx-1]>0)) Then
 							tile_entity = CopyEntity(fr\tileMesh[ROOM2])
 							angle = 90
 							tile_type = ROOM2
@@ -629,9 +629,9 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Room)
 							tile_entity = CopyEntity(fr\tileMesh[ROOM2C])
 							If (fr\grid[(ty*gridsize)+tx-1]>0 And fr\grid[((ty+1)*gridsize)+tx]>0) Then
 								angle = 180
-							ElseIf (fr\grid[(ty*gridsize)+tx+1]>0 And fr\grid[((ty-1)*gridsize)+tx]>0) Then
+							ElseIf ((fr\grid[(ty*gridsize)+tx+1]>0 And fr\grid[((ty-1)*gridsize)+tx]>0)) Then
 
-							ElseIf (fr\grid[(ty*gridsize)+tx-1]>0 And fr\grid[((ty-1)*gridsize)+tx]>0) Then
+							ElseIf ((fr\grid[(ty*gridsize)+tx-1]>0 And fr\grid[((ty-1)*gridsize)+tx]>0)) Then
 								angle = 270
 							Else
 								angle = 90
@@ -643,9 +643,9 @@ Function PlaceForest(fr.Forest,x#,y#,z#,r.Room)
 
 						If (fr\grid[((ty-1)*gridsize)+tx]=0) Then
 							angle = 180
-						ElseIf (fr\grid[(ty*gridsize)+tx-1]=0) Then
+						ElseIf ((fr\grid[(ty*gridsize)+tx-1]=0)) Then
 							angle = 90
-						ElseIf (fr\grid[(ty*gridsize)+tx+1]=0) Then
+						ElseIf ((fr\grid[(ty*gridsize)+tx+1]=0)) Then
 							angle = 270
 						EndIf
 

@@ -220,7 +220,7 @@ Function UpdateChannelList()
 		If (Not IsChannelPlaying(chn\internal)) Then
 			FreeEntity(chn\point)
 			Delete chn
-		ElseIf (chn\camera <> 0) Then
+		ElseIf ((chn\camera <> 0)) Then
 			UpdateRangedSoundOrigin_SM(chn)
 		EndIf
 	Next
@@ -702,7 +702,7 @@ Function UpdateMusic()
 			musicManager\fadeOut = False
 			musicManager\currMusicVolume = userOptions\musicVolume
 		EndIf
-	ElseIf (musicManager\currMusicVolume <> userOptions\musicVolume) Then
+	ElseIf ((musicManager\currMusicVolume <> userOptions\musicVolume)) Then
 		musicManager\currMusicVolume = userOptions\musicVolume
 	EndIf
 

@@ -45,7 +45,7 @@ Function UpdateEventRoom2pipes106(e.Event)
 				PointEntity(Curr106\collider, e\room\objects[1])
 				MoveEntity(Curr106\collider, 0, 0, EntityDistance(e\room\objects[0], e\room\objects[1])*0.5 * (e\eventState / 50.0))
 				AnimateNPC(Curr106, 284, 333, 0.02*35)
-			ElseIf (e\eventState < 200) Then
+			ElseIf ((e\eventState < 200)) Then
 				Curr106\idle = True
 				AnimateNPC(Curr106, 334, 494, 0.2)
 
@@ -64,7 +64,7 @@ Function UpdateEventRoom2pipes106(e.Event)
 					EndIf
 					FreeEntity(pvt)
 				EndIf
-			ElseIf (e\eventState < 250) Then
+			ElseIf ((e\eventState < 250)) Then
 				Curr106\idle = True
 				PositionEntity(Curr106\collider, EntityX(e\room\objects[0], True), EntityY(mainPlayer\collider) - 0.15, EntityZ(e\room\objects[0], True))
 				PointEntity(Curr106\collider, e\room\objects[1])

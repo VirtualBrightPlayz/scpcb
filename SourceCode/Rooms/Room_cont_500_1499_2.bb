@@ -47,7 +47,7 @@ Function UpdateEvent_cont_500_1499_2(e.Event)
 				de\size = 0.5 : EntityAlpha(de\obj, 0.8)
 				EntityFX(de\obj,1)
 				e\eventState = 1.0
-			ElseIf (e\eventState = 1.0) Then
+			ElseIf ((e\eventState = 1.0)) Then
 				If (Not IsChannelPlaying(e\soundChannels[0])) Then
 					e\eventState = 2.0
 					e\room\doors[0]\locked = False

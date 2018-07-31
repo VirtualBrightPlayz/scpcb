@@ -135,7 +135,7 @@ Function UpdateEvent_cont_1123_2(e.Event)
 			mainPlayer\injuries = 1.0
 			e\eventState = 2
 
-		ElseIf (e\eventState = 2) Then
+		ElseIf ((e\eventState = 2)) Then
 			e\eventState2 = e\eventState2 + timing\tickDuration
 
 			PointEntity(e\room\npc[0]\collider, mainPlayer\collider)
@@ -156,7 +156,7 @@ Function UpdateEvent_cont_1123_2(e.Event)
 
 				If (e\eventState2>=1040 And e\eventState2-timing\tickDuration<1040) Then
 					PlayRangedSound(LoadTempSound("SFX/SCP/1123/Officer1.ogg"), mainPlayer\cam, e\room\npc[0]\obj)
-				ElseIf (e\eventState2>=1400 And e\eventState2-timing\tickDuration<1400) Then
+				ElseIf ((e\eventState2>=1400 And e\eventState2-timing\tickDuration<1400)) Then
 					PlayRangedSound(LoadTempSound("SFX/SCP/1123/Officer2.ogg"), mainPlayer\cam, e\room\npc[0]\obj)
 				EndIf
 
@@ -171,7 +171,7 @@ Function UpdateEvent_cont_1123_2(e.Event)
 				EndIf
 
 			EndIf
-		ElseIf (e\eventState=3) Then
+		ElseIf ((e\eventState=3)) Then
 			If (e\room\doors[0]\openstate>160) Then
 				If (e\sounds[0]=0) Then e\sounds[0] = LoadSound("SFX/Music/1123.ogg")
 				e\soundChannels[0] = PlaySound(e\sounds[0])
@@ -181,7 +181,7 @@ Function UpdateEvent_cont_1123_2(e.Event)
 
 				e\eventState=4
 			EndIf
-		ElseIf (e\eventState=4) Then
+		ElseIf ((e\eventState=4)) Then
 
 			;PointEntity(e\room\npc[1]\collider, mainPlayer\collider)
 
@@ -225,7 +225,7 @@ Function UpdateEvent_cont_1123_2(e.Event)
 			;RemoveNPC(e\room\npc[0])
 			;RemoveNPC(e\room\npc[1])
 			;RemoveEvent(e)
-		ElseIf (e\eventState = 5) Then
+		ElseIf ((e\eventState = 5)) Then
 			e\eventState2 = e\eventState2 + timing\tickDuration
 			If (e\eventState2 > 500) Then
 				RotateEntity(e\room\objects[9],0,90,0,False)
@@ -255,7 +255,7 @@ Function UpdateEvent_cont_1123_2(e.Event)
 
 				e\eventState = 6
 			EndIf
-		ElseIf (e\eventState = 6) Then
+		ElseIf ((e\eventState = 6)) Then
 			PointEntity(e\room\npc[0]\collider, mainPlayer\collider)
 
 			If (e\room\npc[0]\sounds[0]<>0) Then
@@ -270,7 +270,7 @@ Function UpdateEvent_cont_1123_2(e.Event)
 
 				If (e\room\npc[0]\sounds[0]<>0) Then e\room\npc[0]\soundChannels[0] = LoopRangedSound(e\room\npc[0]\sounds[0], e\room\npc[0]\soundChannels[0], mainPlayer\cam, e\room\npc[0]\collider, 7.0)
 			EndIf
-		ElseIf (e\eventState=7) Then
+		ElseIf ((e\eventState=7)) Then
 			PositionEntity(mainPlayer\collider, EntityX(e\room\obj,True),0.3,EntityZ(e\room\obj,True),True)
 			ResetEntity(mainPlayer\collider)
 			ShowEntity(mainPlayer\overlays[OVERLAY_WHITE])

@@ -218,7 +218,7 @@ Function UpdateEvent_cont_106_1(e.Event)
 					e\soundChannels[1] = PlaySound(e\sounds[4])
 				EndIf
 			EndIf
-		ElseIf (e\eventState = 1) Then ;nut BUSTED
+		ElseIf ((e\eventState = 1)) Then ;nut BUSTED
 			If (SoundTransmission And e\eventState3 < 2000) Then
 				If (e\soundChannels[1] = 0) Then
 					LoadEventSound(e,"SFX/Character/LureSubject/Sniffling.ogg",1)
@@ -261,7 +261,7 @@ Function UpdateEvent_cont_106_1(e.Event)
 
 					LoadEventSound(e,"SFX/Character/LureSubject/106Bait.ogg",1)
 					e\soundChannels[1]=PlaySound(e\sounds[1])
-				ElseIf (e\eventState3-timing\tickDuration < 2900 And e\eventState3 => 2900) Then
+				ElseIf ((e\eventState3-timing\tickDuration < 2900 And e\eventState3 => 2900)) Then
 					d = CreateDecal(DECAL_CORROSION, EntityX(e\room\objects[7], True), EntityY(e\room\objects[7], True) , EntityZ(e\room\objects[7], True), 0, 0, 0)
 					RotateEntity(d\obj, EntityPitch(e\room\objects[7], True)+Rand(10,20), EntityYaw(e\room\objects[7], True)+30, EntityRoll(d\obj))
 					MoveEntity(d\obj, 0,0,0.15)
@@ -273,7 +273,7 @@ Function UpdateEvent_cont_106_1(e.Event)
 					d\timer = 90000
 					d\alpha = 0.01 : d\alphaChange = 0.005
 					d\size = 0.05 : d\sizeChange = 0.002
-				ElseIf (e\eventState3 > 3200) Then
+				ElseIf ((e\eventState3 > 3200)) Then
 					PositionEntity(e\room\objects[8], 0, 1000.0, 0, True)
 					PositionEntity(e\room\objects[7], 0, 1000.0, 0, True)
 

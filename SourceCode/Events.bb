@@ -267,7 +267,7 @@ Function UpdateEvents()
 		; Does the event have music to play?
 		If (e\overwriteMusic) Then
 			SetNextMusicTrack(e\musicTrack)
-		ElseIf (Not musicManager\useDefault) Then
+		ElseIf ((Not musicManager\useDefault)) Then
 			; If the event was previously playing music then go back to the default.
 			If (e\musicTrack = musicManager\nowPlaying) Then
 				RestoreDefaultMusic()

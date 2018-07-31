@@ -155,7 +155,7 @@ Function UpdateEvent_cont_049_2(e.Event)
 					e\loaded = True
 					e\eventState=1
 				EndIf
-			ElseIf (e\eventState > 0) Then
+			ElseIf ((e\eventState > 0)) Then
 
 				temp = (Not e\room\levers[0]\succ) ;power feed
 				x = e\room\levers[1]\succ ;generator
@@ -180,7 +180,7 @@ Function UpdateEvent_cont_049_2(e.Event)
 							i = 0
 							If (EntityDistance(mainPlayer\collider,e\room\doors[1]\frameobj)<3.0) Then
 								i = 1
-							ElseIf (EntityDistance(mainPlayer\collider,e\room\doors[3]\frameobj)<3.0) Then
+							ElseIf ((EntityDistance(mainPlayer\collider,e\room\doors[3]\frameobj)<3.0)) Then
 								i = 3
 							EndIf
 							If (i > 0) Then
@@ -223,7 +223,7 @@ Function UpdateEvent_cont_049_2(e.Event)
 
 						e\eventState= 70*190
 					EndIf
-				ElseIf (e\eventState < 70*240) Then
+				ElseIf ((e\eventState < 70*240)) Then
 
 					;If (e\room\npc[0]=Null) Then
 					;	For n.NPC = Each NPC
@@ -272,7 +272,7 @@ Function UpdateEvent_cont_049_2(e.Event)
 				PositionEntity(mainPlayer\head, EntityX(mainPlayer\cam, True), EntityY(mainPlayer\cam, True), EntityZ(mainPlayer\cam, True), True)
 				ResetEntity(mainPlayer\head)
 				RotateEntity(mainPlayer\head, 0, EntityYaw(mainPlayer\cam) + Rand(-45, 45), 0)
-			ElseIf (mainPlayer\fallTimer < -230) Then
+			ElseIf ((mainPlayer\fallTimer < -230)) Then
 				mainPlayer\fallTimer = -231
 				mainPlayer\blinkTimer = 0
 				e\eventState = e\eventState-timing\tickDuration
@@ -347,7 +347,7 @@ Function UpdateEvent_cont_049_2(e.Event)
 					e\room\npc[2]\state = 6
 					e\room\npc[2]\reload = e\room\npc[1]\reload+Rnd(5,10)
 				EndIf
-			ElseIf (e\room\npc[2]\state = 6 And e\room\npc[2]\reload > 70*4) Then
+			ElseIf ((e\room\npc[2]\state = 6 And e\room\npc[2]\reload > 70*4)) Then
 				If (e\room\npc[2]\state3 > -(70*4)) Then
 					e\room\npc[2]\state3 = e\room\npc[2]\state3 - timing\tickDuration
 				Else

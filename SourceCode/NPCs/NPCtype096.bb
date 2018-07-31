@@ -252,14 +252,14 @@ Function UpdateNPCtype096(n.NPC)
                     ;Animate2(n\obj, AnimTime(n\obj),307,424, 0.3, False)
                     ;If (AnimTime(n\obj)=424) Then n\state = 2 : SetAnimTime(n\obj, 892)
                 EndIf
-            ElseIf (n\state=2) Then
+            ElseIf ((n\state=2)) Then
                 AnimateNPC(n, 833, 972, 0.3, False)
 
                 ;Animate2(n\obj, AnimTime(n\obj),833,972, 0.3, False)
                 If (n\frame>=972) Then
 					n\state = 3 : n\state2=0
 				EndIf
-            ElseIf (n\state=3) Then
+            ElseIf ((n\state=3)) Then
                 n\state2 = n\state2+timing\tickDuration
                 If (n\state2 > 70*18) Then
                     AnimateNPC(n, 973, 1001, 0.5, False)

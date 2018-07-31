@@ -80,7 +80,7 @@ Function rInput$(aString$)
 
 	If (value = 13 Or value = 0) Then
 		Return aString
-	ElseIf (value > 0 And value < 7 Or value > 26 And value < 32 Or value = 9) Then
+	ElseIf ((value > 0 And value < 7 Or value > 26 And value < 32 Or value = 9)) Then
 		Return aString
 	Else
 		aString = aString + Chr(value)

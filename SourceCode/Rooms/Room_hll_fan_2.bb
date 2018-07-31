@@ -52,7 +52,7 @@ Function UpdateEventRoom2fan(e.Event)
 			Else
 				If (temp = 0 And e\eventState2 = 1.0) Then ;turn on the fan
 					PlayRangedSound (LoadTempSound("SFX/ambient/Room ambience/FanOn.ogg"), mainPlayer\cam, e\room\objects[0], 8.0)
-				ElseIf (temp = 1 And e\eventState2 = 0.0) Then ;turn off the fan
+				ElseIf ((temp = 1 And e\eventState2 = 0.0)) Then ;turn off the fan
 					PlayRangedSound (LoadTempSound("SFX/ambient/Room ambience/FanOff.ogg"), mainPlayer\cam, e\room\objects[0], 8.0)
 				EndIf
 			EndIf

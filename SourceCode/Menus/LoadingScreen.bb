@@ -111,7 +111,7 @@ Function DrawLoading(percent%, shortloading%=False)
 
 		If (SelectedLoadingScreen\alignx = 0) Then
 			x = userOptions\screenWidth/2 - ImageWidth(SelectedLoadingScreen\img)/2
-		ElseIf ( SelectedLoadingScreen\alignx = 1) Then
+		ElseIf (( SelectedLoadingScreen\alignx = 1)) Then
 			x = userOptions\screenWidth - ImageWidth(SelectedLoadingScreen\img)
 		Else
 			x = 0
@@ -119,7 +119,7 @@ Function DrawLoading(percent%, shortloading%=False)
 
 		If (SelectedLoadingScreen\aligny = 0) Then
 			y = userOptions\screenHeight/2 - ImageHeight(SelectedLoadingScreen\img)/2
-		ElseIf ( SelectedLoadingScreen\aligny = 1) Then
+		ElseIf (( SelectedLoadingScreen\aligny = 1)) Then
 			y = userOptions\screenHeight - ImageHeight(SelectedLoadingScreen\img)
 		Else
 			y = 0
@@ -142,7 +142,7 @@ Function DrawLoading(percent%, shortloading%=False)
 				If (firstloop) Then
 					If (percent = 0) Then
 						PlaySound2(LoadTempSound("SFX/SCP/990/cwm1.cwm"))
-					ElseIf (percent = 100) Then
+					ElseIf ((percent = 100)) Then
 						PlaySound2(LoadTempSound("SFX/SCP/990/cwm2.cwm"))
 					EndIf
 				EndIf
@@ -242,7 +242,7 @@ Function DrawLoading(percent%, shortloading%=False)
 			EntityBlend(fresize_image,3)
 			EntityAlpha(fresize_image,userOptions\screenGamma-1.0)
 			ScaleRender(-1.0/Float(userOptions\screenWidth),1.0/Float(userOptions\screenWidth),2048.0 / Float(userOptions\screenWidth),2048.0 / Float(userOptions\screenWidth))
-		ElseIf (userOptions\screenGamma<1.0) Then ;todo: maybe optimize this if it's too slow, alternatively give players the option to disable gamma
+		ElseIf ((userOptions\screenGamma<1.0)) Then ;todo: maybe optimize this if it's too slow, alternatively give players the option to disable gamma
 			CopyRect(0,0,userOptions\screenWidth,userOptions\screenHeight,1024-userOptions\screenWidth/2,1024-userOptions\screenHeight/2,BackBuffer(),TextureBuffer(fresize_texture))
 			EntityBlend(fresize_image,1)
 			ClsColor(0,0,0)

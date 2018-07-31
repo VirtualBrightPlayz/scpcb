@@ -96,7 +96,7 @@ Function CreateDoor.Door(x#, y#, z#, angle#, room.Room, open% = False,  doorType
 			buttonKeyObj = GrabMesh("GFX/Map/Meshes/ButtonKeycard.b3d")
 			d\buttons[i]= CopyEntity(buttonKeyObj)
 			DropAsset(buttonKeyObj)
-		ElseIf (code <> "") Then
+		ElseIf ((code <> "")) Then
 			buttonCodeObj = GrabMesh("GFX/Map/Meshes/ButtonCode.b3d")
 			d\buttons[i] = CopyEntity(buttonCodeObj)
 			EntityFX(d\buttons[i], 1)
@@ -397,7 +397,7 @@ Function UseDoor(d.Door, showmsg% = True)
 				Msg = "The keycard was inserted into the slot."
 				MsgTimer = 70 * 5
 			EndIf
-		ElseIf (playerHasKeycard) Then
+		ElseIf ((playerHasKeycard)) Then
 			PlaySound_SM(sndManager\keycardErr)
 			Msg = "A keycard with a higher security clearance is required to operate this door."
 			MsgTimer = 70 * 5
@@ -418,7 +418,7 @@ Function UseDoor(d.Door, showmsg% = True)
 					If (d\isElevatorDoor = 1) Then
 						Msg = "You called the elevator."
 						MsgTimer = 70 * 5
-					ElseIf (Msg<>"You called the elevator.") Then
+					ElseIf ((Msg<>"You called the elevator.")) Then
 						If (Msg="You already called the elevator.") Or (MsgTimer<70*3) Then
 							Select (Rand(10))
 								Case 1

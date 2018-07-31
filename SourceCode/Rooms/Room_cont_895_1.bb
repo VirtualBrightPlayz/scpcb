@@ -181,7 +181,7 @@ Function UpdateEventCoffin(e.Event)
 			;EntityTexture(mainPlayer\overlays[OVERLAY_NIGHTVISION], NVTexture)
 			If (IsPlayerWearingItem(mainPlayer,"nvgoggles")) Then
 				EntityColor(mainPlayer\overlays[OVERLAY_NIGHTVISION], 0,255,0)
-			ElseIf (IsPlayerWearingItem(mainPlayer,"supernv")) Then
+			ElseIf ((IsPlayerWearingItem(mainPlayer,"supernv"))) Then
 				EntityColor(mainPlayer\overlays[OVERLAY_NIGHTVISION], 0,100,255)
 			EndIf
 		EndIf

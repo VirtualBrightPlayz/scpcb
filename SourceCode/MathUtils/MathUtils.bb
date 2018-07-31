@@ -80,7 +80,7 @@ Function CircleToLineSegIsect% (cx#, cy#, r#, l1x#, l1y#, l2x#, l2y#)
 	;Checks whether the value of another point is 0
 	;tai molempien merkki sama
 	If (dp1 = 0 Or dp2 = 0) Then
-	ElseIf (dp1 > 0 And dp2 > 0) Or (dp1 < 0 And dp2 < 0) Then
+	ElseIf ((dp1 > 0 And dp2 > 0) Or (dp1 < 0 And dp2 < 0)) Then
 	Else
 		;Neither -> no cutting
 		Return False
@@ -125,7 +125,7 @@ Function angleDist#(a0#,a1#)
 	Local bb#
 	If (b<-180.0) Then
 		bb = b+360.0
-	ElseIf (b>180.0) Then
+	ElseIf ((b>180.0)) Then
 		bb = b-360.0
 	Else
 		bb = b

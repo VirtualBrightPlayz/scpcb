@@ -209,13 +209,13 @@ Function UpdateEvent_strg_939_3(e.Event)
 			If (e\room\npc[2]=Null Or e\eventState = 3) Then
 				If (e\eventState = 0) Then
 					e\eventState = 1
-				ElseIf (e\eventState = 1) Then
+				ElseIf ((e\eventState = 1)) Then
 					e\room\npc[0]=CreateNPC(NPCtype939, 0,0,0)
 					e\eventState = 2
-				ElseIf (e\eventState = 2) Then
+				ElseIf ((e\eventState = 2)) Then
 					e\room\npc[1]=CreateNPC(NPCtype939, 0,0,0)
 					e\eventState = 3
-				ElseIf (e\eventState = 3) Then
+				ElseIf ((e\eventState = 3)) Then
 					e\room\npc[2]=CreateNPC(NPCtype939, 0,0,0)
 					e\eventState = 0
 				EndIf

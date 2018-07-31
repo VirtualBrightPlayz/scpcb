@@ -38,7 +38,7 @@ Function UpdateNPCtype066(n.NPC)
                     Next
                     n\state2 = TimeInPosMilliSecs()+5000
                 EndIf
-            ElseIf (n\playerDistance < 8.0) Then
+            ElseIf ((n\playerDistance < 8.0)) Then
                 n\lastDist = Rnd(1.0, 2.5)
                 n\state = 1
             EndIf

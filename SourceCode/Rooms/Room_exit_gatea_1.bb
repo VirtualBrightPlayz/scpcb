@@ -35,7 +35,7 @@ Function UpdateEvent_exit_gatea_1(e.Event)
 	If (mainPlayer\currRoom = e\room) Then
 		If (RemoteDoorOn=False) Then
 			e\room\doors[1]\locked=True
-		ElseIf (RemoteDoorOn And e\eventState3=0) Then
+		ElseIf ((RemoteDoorOn And e\eventState3=0)) Then
 			e\room\doors[1]\locked=False
 			If (e\room\doors[1]\open) Then
 				If (e\room\doors[1]\openstate > 50 Or EntityDistance(mainPlayer\collider, e\room\doors[1]\frameobj)<0.5) Then

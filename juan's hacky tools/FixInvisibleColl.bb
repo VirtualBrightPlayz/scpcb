@@ -18,7 +18,7 @@ Type Material
 	Field blendflags%
 	Field uvSet%
 	Field diff%
-	
+
 	Field StepSound%
 End Type
 
@@ -34,7 +34,7 @@ Function StripFilename$(file$)
 			EndIf
 		Next
 	EndIf
-	
+
 	Return Left(file,lastSlash)
 End Function
 
@@ -43,21 +43,21 @@ Function StripPath$(file$)
 	Local i%, mi$
 	If (Len(file)>0) Then
 		For i=Len(file) To 1 Step -1
-			
+
 			mi = Mid$(file,i,1)
 			If (mi="\" Or mi="/") Then Return name
-			
+
 			name=mi+name
 		Next
-		
+
 	EndIf
-	
+
 	Return name
 End Function
 
 Function Piece$(s$,entry%,char$=" ")
 	Local a$, p%
-	
+
 	While Instr(s,char+char)
 		s=Replace(s,char+char,char)
 	Wend
@@ -72,7 +72,7 @@ Function Piece$(s$,entry%,char$=" ")
 	Else
 		a=Left(s,p-1)
 	EndIf
-	
+
 	Return a
 End Function
 
@@ -80,7 +80,7 @@ Function KeyValue$(entity%,key$,defaultvalue$="")
 	Local test$, testkey$, value$
 	Local properties$ = EntityName(entity)
 	Local p%
-	
+
 	properties=Replace(properties,Chr(13),"")
 	key=Lower(key)
 	Repeat
@@ -201,16 +201,16 @@ End Function
 
 Function Fix(filename$)
 	Local rmeshFile$ = Replace(Replace(filename,"GFX/Map/Rooms/","angery/"),".rm2",".rmesh")
-	
+
 	Local f%=ReadFile(rmeshFile)
 	Local i%,j%,k%,x#,y#,z#,yaw#
 	Local vertex%
 	Local temp1i%,temp2i%,temp3i%
 	Local temp1#,temp2#,temp3#
 	Local temp1s$, temp2s$
-	
+
 	Local hasTriggerBox% = False
-	
+
 	For i=0 To 3 ;reattempt up to 3 times
 		If (f=0) Then
 			f=ReadFile(rmeshFile)
@@ -222,28 +222,28 @@ Function Fix(filename$)
 	Local isRMesh$ = ReadString(f)
 	If (isRMesh="RoomMesh") Then
 		;Continue
-	ElseIf (isRMesh="RoomMesh.HasTriggerBox") Then
+	ElseIf ((isRMesh="RoomMesh.HasTriggerBox")) Then
 		hasTriggerBox = True
 	Else
 		RuntimeError(Chr(34)+rmeshFile+Chr(34)+" is Not RMESH ("+isRMesh+")")
 	EndIf
-	
+
 	Local count%,count2%
-	
+
 	;drawn meshes
 	Local Opaque%,Alpha%
-	
+
 	Opaque=CreateMesh()
 	Alpha=CreateMesh()
-	
+
 	count = ReadInt(f)
 	Local childMesh%
 	Local surf%,tex%[2],brush%
-	
+
 	Local isAlpha%
-	
+
 	Local u#,v#
-	
+
 	For i=1 To count ;drawn mesh
 		For j=0 To 1
 			temp1i=ReadByte(f)
@@ -251,38 +251,38 @@ Function Fix(filename$)
 				temp1s=ReadString(f)
 			EndIf
 		Next
-		
+
 		count2=ReadInt(f) ;vertices
-		
+
 		For j=1 To count2
 			;world coords
 			x=ReadFloat(f) : y=ReadFloat(f) : z=ReadFloat(f)
-			
+
 			;texture coords
 			For k=0 To 1
 				u=ReadFloat(f) : v=ReadFloat(f)
 			Next
-			
+
 			;colors
 			temp1i=ReadByte(f)
 			temp2i=ReadByte(f)
 			temp3i=ReadByte(f)
 		Next
-		
+
 		count2=ReadInt(f) ;polys
 		For j=1 To count2
 			temp1i = ReadInt(f) : temp2i = ReadInt(f) : temp3i = ReadInt(f)
 		Next
-		
+
 	Next
-	
+
 	Local hiddenMesh% = 0
 	Local hbMesh% = 0
 	Local hbSurf% = 0
-	
+
 	Local totalVerts% = 0
 	Local totalTris% = 0
-	
+
 	Select Replace(StripPath(rmeshFile),".rmesh","")
 		Case "cont_049_2"
 			hbMesh = LoadMesh("angery/room049_hb.b3d")
@@ -297,27 +297,27 @@ Function Fix(filename$)
 		Case "strg_939_2"
 			hbMesh = LoadMesh("angery/room3storage_hb.b3d")
 	End Select
-	
+
 	If (hbMesh<>0) Then
 		hiddenMesh = CreateMesh()
 		surf = CreateSurface(hiddenMesh)
-		
+
 		For i = 1 To CountSurfaces(hbMesh)
 			hbSurf = GetSurface(hbMesh,i)
 			For j = 0 To CountVertices(hbSurf)-1
 				AddVertex(surf,VertexX(hbSurf,j),VertexY(hbSurf,j),VertexZ(hbSurf,j))
 			Next
-			
+
 			For j = 0 To CountTriangles(hbSurf)-1
 				AddTriangle(surf,TriangleVertex(hbSurf,j,0)+totalVerts,TriangleVertex(hbSurf,j,1)+totalVerts,TriangleVertex(hbSurf,j,2)+totalVerts)
 			Next
-			
+
 			totalVerts=totalVerts+CountVertices(hbSurf)
 			totalTris=totalTris+CountTriangles(hbSurf)
 		Next
 		FreeEntity(hbMesh)
 	EndIf
-	
+
 	Local surfVertCount% = 0
 	count=ReadInt(f) ;invisible collision mesh
 	If (count>0) Then
@@ -330,15 +330,15 @@ Function Fix(filename$)
 		For i=1 To count
 			count2=ReadInt(f) ;vertices
 			surfVertCount = count2
-			
+
 			For j=1 To count2
 				;world coords
 				x=ReadFloat(f) : y=ReadFloat(f) : z=ReadFloat(f)
 				vertex=AddVertex(surf,x,y,z)
 			Next
-			
+
 			count2=ReadInt(f) ;polys
-			
+
 			For j=1 To count2
 				temp1i = ReadInt(f) : temp2i = ReadInt(f) : temp3i = ReadInt(f)
 				AddTriangle(surf,totalVerts+temp1i,totalVerts+temp2i,totalVerts+temp3i)
@@ -348,32 +348,32 @@ Function Fix(filename$)
 		Next
 	EndIf
 	CloseFile(f)
-	
+
 	Local rm2File$ = filename
-	
+
 	Local file% = ReadFile(rm2File)
 	Local fixedFile% = WriteFile(rm2File+"_boyo")
-	
+
 	If (file=0) Then
 		RuntimeError("Failed to read "+rm2File)
 	EndIf
 	If (fixedFile=0) Then RuntimeError("AAA")
-	
+
 	Local cuboid%
-	
+
 	Local header$ = ""
 	For i = 0 To 3
 		cuboid = ReadByte(file)
 		header=header+Chr(cuboid)
 		WriteByte(fixedFile,cuboid)
 	Next
-	
+
 	If (header<>".RM2") Then
 		RuntimeError("Error while loading "+rm2File+": expected .RM2, found "+header)
 	EndIf
-	
+
 	Local partType%
-	
+
 	Local texName$
 	Local flags%
 	Local loadFlags%
@@ -381,7 +381,7 @@ Function Fix(filename$)
 	Local uvSet%
 	Local texture%
 	Local shouldLoadTexture%
-	
+
 	Local mesh%
 	Local clonedMesh%
 	Local textureIndex%[2]
@@ -390,26 +390,26 @@ Function Fix(filename$)
 	Local vert1%
 	Local vert2%
 	Local vert3%
-	
+
 	Local range#
 	Local intensity#
-	
+
 	Local pitch#
 	Local roll#
-	
+
 	Local innerConeAngle#
 	Local outerConeAngle#
-	
-	
+
+
 	Local ambienceInd%
-	
+
 	Local propName$
 	Local xScale#
 	Local yScale#
 	Local zScale#
-    
+
 	Local r%,g%,b%
-	
+
 	Local prevType%
 	While Not Eof(file)
 		prevType = partType
@@ -439,23 +439,23 @@ Function Fix(filename$)
 					WriteByte(fixedFile,textureIndex[i])
 					If (textureIndex[i]>0) Then layerCount=layerCount+1
 				Next
-				
+
 				;vertices
 				count = ReadShort(file)
 				WriteShort(fixedFile,count)
 				For i=0 To count-1
 					x = ReadFloat(file) : y = ReadFloat(file) : z = ReadFloat(file)
 					WriteFloat(fixedFile,x) : WriteFloat(fixedFile,y) : WriteFloat(fixedFile,z)
-					
+
 					r = ReadByte(file) : g = ReadByte(file) : b = ReadByte(file)
 					WriteByte(fixedFile,r) : WriteByte(fixedFile,g) : WriteByte(fixedFile,b)
-					
+
 					For j=0 To 1
 						u = ReadFloat(file) : v = ReadFloat(file)
 						WriteFloat(fixedFile,u) : WriteFloat(fixedFile,v)
 					Next
 				Next
-				
+
 				;triangles
 				count = ReadShort(file)
 				WriteShort(fixedFile,count)
@@ -469,14 +469,14 @@ Function Fix(filename$)
 				;[Block]
 				;vertices
 				count = ReadShort(file)
-				
+
 				For i=0 To count-1
 					x = ReadFloat(file) : y = ReadFloat(file) : z = ReadFloat(file)
 				Next
-				
+
 				;triangles
 				count = ReadShort(file)
-				
+
 				For i=0 To count-1
 					vert1 = ReadShort(file)
 					vert2 = ReadShort(file)
@@ -506,9 +506,9 @@ Function Fix(filename$)
 				WriteFloat(fixedFile,ReadFloat(file))
 				WriteFloat(fixedFile,ReadFloat(file))
 				WriteFloat(fixedFile,ReadFloat(file))
-				
+
 				WriteFloat(fixedFile,ReadFloat(file))
-				
+
 				WriteByte(fixedFile,ReadByte(file))
 				WriteByte(fixedFile,ReadByte(file))
 				WriteByte(fixedFile,ReadByte(file))
@@ -519,17 +519,17 @@ Function Fix(filename$)
 				WriteFloat(fixedFile,ReadFloat(file))
 				WriteFloat(fixedFile,ReadFloat(file))
 				WriteFloat(fixedFile,ReadFloat(file))
-				
+
 				WriteFloat(fixedFile,ReadFloat(file))
-				
+
 				WriteByte(fixedFile,ReadByte(file))
 				WriteByte(fixedFile,ReadByte(file))
 				WriteByte(fixedFile,ReadByte(file))
 				WriteByte(fixedFile,ReadByte(file))
-				
+
 				WriteFloat(fixedFile,ReadFloat(file))
 				WriteFloat(fixedFile,ReadFloat(file))
-				
+
 				WriteFloat(fixedFile,ReadFloat(file))
 				WriteFloat(fixedFile,ReadFloat(file))
 				;[End Block]
@@ -538,23 +538,23 @@ Function Fix(filename$)
 				WriteFloat(fixedFile,ReadFloat(file))
 				WriteFloat(fixedFile,ReadFloat(file))
 				WriteFloat(fixedFile,ReadFloat(file))
-				
+
 				WriteByte(fixedFile,ReadByte(file))
-				
+
 				WriteFloat(fixedFile,ReadFloat(file))
 				;[End Block]
 			Case RM2_PROP
 				;[Block]
 				WriteByteString(fixedFile,ReadByteString(file))
-				
+
 				WriteFloat(fixedFile,ReadFloat(file))
 				WriteFloat(fixedFile,ReadFloat(file))
 				WriteFloat(fixedFile,ReadFloat(file))
-				
+
 				WriteFloat(fixedFile,ReadFloat(file))
 				WriteFloat(fixedFile,ReadFloat(file))
 				WriteFloat(fixedFile,ReadFloat(file))
-				
+
 				WriteFloat(fixedFile,ReadFloat(file))
 				WriteFloat(fixedFile,ReadFloat(file))
 				WriteFloat(fixedFile,ReadFloat(file))
@@ -563,7 +563,7 @@ Function Fix(filename$)
 				RuntimeError("Error after reading type "+Str(prevType))
 		End Select
 	Wend
-	
+
 	If (hiddenMesh<>0) Then
 		WriteByte(fixedFile,RM2_INVISIBLE)
 		surf = GetSurface(hiddenMesh,1)
@@ -573,7 +573,7 @@ Function Fix(filename$)
 			WriteFloat(fixedFile,VertexY(surf,i-1))
 			WriteFloat(fixedFile,VertexZ(surf,i-1))
 		Next
-		
+
 		WriteShort(fixedFile,CountTriangles(surf))
 		For i = 1 To CountTriangles(surf)
 			WriteShort(fixedFile,TriangleVertex(surf,i-1,0))
@@ -582,7 +582,7 @@ Function Fix(filename$)
 		Next
 		FreeEntity(hiddenMesh)
 	EndIf
-	
+
 	CloseFile(fixedFile)
 End Function
 
@@ -599,15 +599,15 @@ Function LoadRoomTemplates(file$)
 					DebugLog("CONVERTING: "+meshpath)
 					Fix(meshpath)
 					;mesh% = LoadRMesh(meshpath)
-					
+
 					;For wpt.WayPointTemp = Each WaypointTemp
 					;	FreeEntity(wpt\pivot)
 					;	Delete wpt
 					;Next
-					
+
 					;FreeEntity(mesh)
 					;DeleteFile(meshpath)
-					
+
 					ClearTextureCache()
 				EndIf
 			EndIf

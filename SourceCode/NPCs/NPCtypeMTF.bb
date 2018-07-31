@@ -158,7 +158,7 @@ Function UpdateNPCtypeMTF(n.NPC)
 											z = EntityZ(r\obj,True)+1692*RoomScale
 											DebugLog("Move to 173's chamber")
 											Exit
-										ElseIf (Distance(EntityX(n\collider),EntityZ(n\collider),EntityX(r\obj,True)+4736*RoomScale,EntityZ(r\obj,True)+1692*RoomScale)>1.6 And foundChamber) Then
+										ElseIf ((Distance(EntityX(n\collider),EntityZ(n\collider),EntityX(r\obj,True)+4736*RoomScale,EntityZ(r\obj,True)+1692*RoomScale)>1.6 And foundChamber)) Then
 											n\pathX = EntityX(r\obj,True)+4736*RoomScale
 											n\pathZ = EntityZ(r\obj,True)+1692*RoomScale
 											DebugLog("Move inside 173's chamber")
@@ -203,7 +203,7 @@ Function UpdateNPCtypeMTF(n.NPC)
 						EndIf
 					EndIf
 					n\pathTimer = 70.0 * Rnd(6.0,10.0) ;search again after 6-10 seconds
-                ElseIf (n\pathTimer<=70.0 * 2.5) And (n\mtfLeader=Null) Then
+                ElseIf ((n\pathTimer<=70.0 * 2.5) And (n\mtfLeader=Null)) Then
 					n\pathTimer=n\pathTimer-timing\tickDuration
 					n\currSpeed = 0.0
 					If (Rand(1,35)=1) Then
@@ -222,7 +222,7 @@ Function UpdateNPCtypeMTF(n.NPC)
 						FinishWalking(n,488,522,n\speed*26)
 						n\angle = CurveAngle(EntityYaw(n\collider,True),n\angle,20.0)
 						RotateEntity(n\obj,-90.0,n\angle,0.0,True)
-					ElseIf (n\pathStatus=1) Then
+					ElseIf ((n\pathStatus=1)) Then
 						If (n\path[n\pathLocation]=Null) Then
 							If (n\pathLocation > 19) Then
 								n\pathLocation = 0 : n\pathStatus = 0
@@ -266,7 +266,7 @@ Function UpdateNPCtypeMTF(n.NPC)
 							EndIf
 						EndIf
 						n\pathTimer=n\pathTimer-timing\tickDuration ;timer goes down slow
-					ElseIf (n\pathX<>0.0) Then
+					ElseIf ((n\pathX<>0.0)) Then
 						pvt = CreatePivot()
 						PositionEntity(pvt,n\pathX,0.5,n\pathZ)
 
@@ -294,7 +294,7 @@ Function UpdateNPCtypeMTF(n.NPC)
 							EndIf
 							FinishWalking(n,488,522,n\speed*26)
 							n\currSpeed = 0.0
-						ElseIf (EntityDistance(n\collider,n\mtfLeader\collider)>1.0) Then
+						ElseIf ((EntityDistance(n\collider,n\mtfLeader\collider)>1.0)) Then
 							PointEntity(n\collider,n\mtfLeader\collider)
 							RotateEntity(n\collider,0.0,EntityYaw(n\collider,True),0.0,True)
 
@@ -335,7 +335,7 @@ Function UpdateNPCtypeMTF(n.NPC)
 							EndIf
 							n\sounds[0] = LoadSound("SFX/Character/MTF/Stop"+Str(Rand(1,6))+".ogg")
 							PlayMTFSound(n\sounds[0], n)
-						ElseIf (temp = 2) Then
+						ElseIf ((temp = 2)) Then
 							;If (n\sounds[0] <> 0) Then FreeSound(n\sounds[0] : n\sounds[0] = 0)
 							;n\sounds[0] = MTFSFX(Rand(0,3))
 							;PlayMTFSound(n\sounds[0], n)
@@ -456,7 +456,7 @@ Function UpdateNPCtypeMTF(n.NPC)
 								Exit
 							EndIf
 						EndIf
-					ElseIf (n2\npcType = NPCtypeZombie And n2\isDead = False) Then
+					ElseIf ((n2\npcType = NPCtypeZombie And n2\isDead = False)) Then
 						If (OtherNPCSeesMeNPC(n2,n)) Then
 							If (EntityVisible(n\collider,n2\collider)) Then
 								n\state = 9
@@ -551,7 +551,7 @@ Function UpdateNPCtypeMTF(n.NPC)
 						If (n\prevState = 1) Then
 							SetNPCFrame(n,423)
 							n\prevState = 2
-						ElseIf (n\prevState=2) Then
+						ElseIf ((n\prevState=2)) Then
 							If (n\frame>200) Then
 								n\currSpeed = CurveValue(0, n\currSpeed, 20.0)
 								AnimateNPC(n, 423, 463, 0.4, False)
@@ -589,7 +589,7 @@ Function UpdateNPCtypeMTF(n.NPC)
 					If (n\pathTimer<=0.0) Then ;update path
 						n\pathStatus = FindPath(n,n\enemyX,n\enemyY+0.1,n\enemyZ)
 						n\pathTimer = 70.0 * Rnd(6.0,10.0) ;search again after 6 seconds
-					ElseIf (n\pathTimer<=70.0 * 2.5) Then
+					ElseIf ((n\pathTimer<=70.0 * 2.5)) Then
 						n\pathTimer=n\pathTimer-timing\tickDuration
 						n\currSpeed = 0.0
 						If (Rand(1,35)=1) Then
@@ -608,7 +608,7 @@ Function UpdateNPCtypeMTF(n.NPC)
 							FinishWalking(n,488,522,n\speed*26)
 							n\angle = CurveAngle(EntityYaw(n\collider,True),n\angle,20.0)
 							RotateEntity(n\obj,-90.0,n\angle,0.0,True)
-						ElseIf (n\pathStatus=1) Then
+						ElseIf ((n\pathStatus=1)) Then
 							If (n\path[n\pathLocation]=Null) Then
 								If (n\pathLocation > 19) Then
 									n\pathLocation = 0 : n\pathStatus = 0
@@ -798,7 +798,7 @@ Function UpdateNPCtypeMTF(n.NPC)
 								Exit
 							EndIf
 						EndIf
-					ElseIf (n2\npcType = NPCtypeZombie And n2\isDead = False) Then
+					ElseIf ((n2\npcType = NPCtypeZombie And n2\isDead = False)) Then
 						If (OtherNPCSeesMeNPC(n2,n)) Then
 							If (EntityVisible(n\collider,n2\collider)) Then
 								n\state = 9
@@ -888,7 +888,7 @@ Function UpdateNPCtypeMTF(n.NPC)
 						If (n\pathTimer<=0.0) Then ;update path
 							n\pathStatus = FindPath(n,EntityX(Curr173\collider,True),EntityY(Curr173\collider,True)+0.1,EntityZ(Curr173\collider,True))
 							n\pathTimer = 70.0 * Rnd(6.0,10.0) ;search again after 6 seconds
-						ElseIf (n\pathTimer<=70.0 * 2.5) Then
+						ElseIf ((n\pathTimer<=70.0 * 2.5)) Then
 							n\pathTimer=n\pathTimer-timing\tickDuration
 							n\currSpeed = 0.0
 							If (Rand(1,35)=1) Then
@@ -907,7 +907,7 @@ Function UpdateNPCtypeMTF(n.NPC)
 								FinishWalking(n,488,522,n\speed*26)
 								n\angle = CurveAngle(EntityYaw(n\collider,True),n\angle,20.0)
 								RotateEntity(n\obj,-90.0,n\angle,0.0,True)
-							ElseIf (n\pathStatus=1) Then
+							ElseIf ((n\pathStatus=1)) Then
 								If (n\path[n\pathLocation]=Null) Then
 									If (n\pathLocation > 19) Then
 										n\pathLocation = 0 : n\pathStatus = 0
@@ -971,7 +971,7 @@ Function UpdateNPCtypeMTF(n.NPC)
 				If (n\pathStatus = 2) Then
 					n\state = 5
 					n\currSpeed = 0
-				ElseIf (n\pathStatus = 1) Then
+				ElseIf ((n\pathStatus = 1)) Then
 					If (n\path[n\pathLocation]=Null) Then
 						If (n\pathLocation > 19) Then
 							n\pathLocation = 0
@@ -1102,7 +1102,7 @@ Function UpdateNPCtypeMTF(n.NPC)
 						EndIf
 						ShowEntity(n\collider)
 						TurnEntity(n\collider,0,180,0)
-					ElseIf (n\state3 < 0.0) Then
+					ElseIf ((n\state3 < 0.0)) Then
 						n\state3 = Min(n\state3+timing\tickDuration,0)
 					EndIf
 
@@ -1337,7 +1337,7 @@ Function UpdateNPCtypeMTF(n.NPC)
 						EndIf
 					EndIf
 					n\pathTimer = 70.0 * Rnd(6.0,10.0) ;search again after 6-10 seconds
-                ElseIf (n\pathTimer<=70.0 * 2.5) And (n\mtfLeader=Null) Then
+                ElseIf ((n\pathTimer<=70.0 * 2.5) And (n\mtfLeader=Null)) Then
 					n\pathTimer=n\pathTimer-timing\tickDuration
 					n\currSpeed = 0.0
 					;If (Rand(1,35)=1) Then
@@ -1356,7 +1356,7 @@ Function UpdateNPCtypeMTF(n.NPC)
 						FinishWalking(n,488,522,n\speed*26)
 						n\angle = CurveAngle(EntityYaw(n\collider,True),n\angle,20.0)
 						RotateEntity(n\obj,-90.0,n\angle,0.0,True)
-					ElseIf (n\pathStatus=1) Then
+					ElseIf ((n\pathStatus=1)) Then
 						If (n\path[n\pathLocation]=Null) Then
 							If (n\pathLocation > 19) Then
 								n\pathLocation = 0 : n\pathStatus = 0
@@ -1406,7 +1406,7 @@ Function UpdateNPCtypeMTF(n.NPC)
 							;EndIf
 							FinishWalking(n,488,522,n\speed*26)
 							n\currSpeed = 0.0
-						ElseIf (EntityDistance(n\collider,n\mtfLeader\collider)>1.0) Then
+						ElseIf ((EntityDistance(n\collider,n\mtfLeader\collider)>1.0)) Then
 							PointEntity(n\collider,n\mtfLeader\collider)
 							RotateEntity(n\collider,0.0,EntityYaw(n\collider,True),0.0,True)
 
@@ -1562,7 +1562,7 @@ Function UpdateNPCtypeMTF(n.NPC)
 		If (n\currSpeed > 0.01) Then
 			If (prevFrame > 500 And n\frame<495) Then
 				PlayRangedSound(sndManager\footstepMetal[Rand(0,7)]\internal, mainPlayer\cam, n\collider, 8.0, Rnd(0.5,0.7))
-			ElseIf (prevFrame < 505 And n\frame>=505) Then
+			ElseIf ((prevFrame < 505 And n\frame>=505)) Then
 				PlayRangedSound(sndManager\footstepMetal[Rand(0,7)]\internal, mainPlayer\cam, n\collider, 8.0, Rnd(0.5,0.7))
 			EndIf
 		EndIf
