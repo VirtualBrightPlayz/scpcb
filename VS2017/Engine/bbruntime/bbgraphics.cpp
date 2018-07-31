@@ -367,7 +367,6 @@ static void graphics( int w,int h,int d,int flags ){
 	freeGraphics();
 	gx_runtime->closeGraphics( gx_graphics );
 	gx_graphics=gx_runtime->openGraphics( w,h,d,gx_driver,flags );
-	if( !gx_runtime->idle() ) RTEX( 0 );
 	if( !gx_graphics ){
 		RTEX( "Unable to set graphics mode" );
 	}
@@ -413,7 +412,6 @@ void bbEndGraphics(){
 	freeGraphics();
 	gx_runtime->closeGraphics( gx_graphics );
 	gx_graphics=gx_runtime->openGraphics( 400,300,0,0,gxGraphics::GRAPHICS_WINDOWED );
-	if( !gx_runtime->idle() ) RTEX( 0 );
 	if( gx_graphics ){
 		curr_clsColor=0;
 		curr_color=0xffffffff;
@@ -510,12 +508,10 @@ int bbScanLine(){
 
 void bbVWait( int n ){
 	gx_graphics->vwait();
-	if( !gx_runtime->idle() ) RTEX( 0 );
 }
 
 void bbFlip( int vwait ){
 	gx_graphics->flip( vwait ? true : false );
-	if( !gx_runtime->idle() ) RTEX( 0 );
 }
 
 int bbGraphicsWidth(){
@@ -645,7 +641,6 @@ int bbDrawMovie( gxMovie *movie,int x,int y,int w,int h ){
 	if( w<0 ) w=movie->getWidth();
 	if( h<0 ) h=movie->getHeight();
 	int playing=movie->draw( gx_canvas,x,y,w,h );
-	if( !gx_runtime->idle() ) RTEX( 0 );
 	return playing;
 }
 
@@ -1014,7 +1009,6 @@ static void endPrinting( gxCanvas *c ){
 	c->setHandle( p_hx,p_hy );
 	c->setOrigin( p_ox,p_oy );
 	if( c==gx_canvas ) c->setColor( curr_color );
-	if( !gx_runtime->idle() ) RTEX( 0 );
 }
 
 void bbWrite( BBStr *str ){

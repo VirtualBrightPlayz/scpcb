@@ -515,7 +515,6 @@ bool gxRuntime::idle(){
 bool gxRuntime::delay( int ms ){
 	int t=timeGetTime()+ms;
 	for(;;){
-		if( !idle() ) return false;
 		int d=t-timeGetTime();	//how long left to wait
 		if( d<=0 ) return true;
 		if( d>100 ) d=100;

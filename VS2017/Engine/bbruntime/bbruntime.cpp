@@ -8,7 +8,6 @@ void  bbEnd(){
 }
 void  bbStop(){
 	gx_runtime->debugStop();
-	if( !gx_runtime->idle() ) RTEX( 0 );
 }
 
 void  bbAppTitle( BBStr *ti,BBStr *cp ){
@@ -27,12 +26,11 @@ void  bbRuntimeError( BBStr *str ){
 int   bbExecFile( BBStr *f ){
 	string t=*f;delete f;
 	int n=gx_runtime->execute( t );
-	if( !gx_runtime->idle() ) RTEX( 0 );
 	return n;
 }
 
 void  bbDelay( int ms ){
-	if( !gx_runtime->delay( ms ) ) RTEX( 0 );
+	!gx_runtime->delay( ms );
 }
 
 int  bbMilliSecs(){
@@ -69,7 +67,6 @@ gxTimer * bbCreateTimer( int hertz ){
 
 int   bbWaitTimer( gxTimer *t ){
 	int n=t->wait();
-	if( !gx_runtime->idle() ) RTEX( 0 );
 	return n;
 }
 
@@ -84,7 +81,6 @@ void  bbDebugLog( BBStr *t ){
 
 void  _bbDebugStmt( int pos,const char *file ){
 	gx_runtime->debugStmt( pos,file );
-	if( !gx_runtime->idle() ) RTEX( 0 );
 }
 
 void  _bbDebugEnter( void *frame,void *env,const char *func ){

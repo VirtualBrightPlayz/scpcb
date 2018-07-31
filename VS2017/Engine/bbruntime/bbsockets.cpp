@@ -440,7 +440,6 @@ void  bbCloseTCPServer( TCPServer *p ){
 
 TCPStream *  bbAcceptTCPStream( TCPServer *server ){
 	debugTCPServer( server );
-	if( !gx_runtime->idle() ) RTEX( 0 );
 	if( TCPStream *tcp=server->accept() ){
 		tcp_set.insert( tcp );
 		return tcp;

@@ -50,7 +50,6 @@ int bbGetKey(){
 
 int bbWaitKey(){
 	for(;;){
-		if( !gx_runtime->idle() ) RTEX( 0 );
 		if( int key=gx_keyboard->getKey( ) ){
 			if( key=gx_input->toAscii( key ) ) return key;
 		}
@@ -76,7 +75,6 @@ int bbGetMouse(){
 
 int bbWaitMouse(){
 	for(;;){
-		if( !gx_runtime->idle() ) RTEX( 0 );
 		if( int key=gx_mouse->getKey() ) return key;
 		gx_runtime->delay( 20 );
 	}
@@ -146,7 +144,6 @@ int bbGetJoy( int port ){
 int bbWaitJoy( int port ){
 	if( port<0 || port>=gx_joysticks.size() ) return 0;
 	for(;;){
-		if( !gx_runtime->idle() ) RTEX( 0 );
 		if( int key=gx_joysticks[port]->getKey() ) return key;
 		gx_runtime->delay( 20 );
 	}
