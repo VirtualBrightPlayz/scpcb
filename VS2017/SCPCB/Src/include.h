@@ -1,6 +1,8 @@
 #ifndef include_h_INCLUDED
 #define include_h_INCLUDED
 
+#include <StringType.h>
+
 #include "Array.h"
 #include "Assets.h"
 #include "Audio.h"

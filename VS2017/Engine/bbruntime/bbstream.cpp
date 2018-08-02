@@ -58,11 +58,11 @@ float bbReadFloat( bbStream *s ){
 String bbReadString( bbStream *s ){
 	if( debug ) debugStream( s );
 	int len;
-	String str=d_new BBStr();
+	String str="";
 	if( s->read( (char*)&len,4 ) ){
 		char *buff=d_new char[len];
 		if( s->read( buff,len ) ){
-			*str=string( buff,len );
+			str=string( buff,len );
 		}
 		delete[] buff;
 	}
@@ -72,7 +72,7 @@ String bbReadString( bbStream *s ){
 String bbReadLine( bbStream *s ){
 	if( debug ) debugStream( s );
 	unsigned char c;
-	String str=d_new BBStr();
+	String str="";
 	for(;;){
 		if( s->read( (char*)&c,1 )!=1 ) break;
 		if( c=='\n' ) break;
