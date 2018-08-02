@@ -1,0 +1,15 @@
+#include "Room_cont_173_1.h"
+#include "include.h"
+
+namespace CBN {
+
+// Functions.
+void FillRoom_cont_173_1(Room* r) {
+    //TODO: redo
+}
+
+void UpdateEventAlarm(Event* e) {
+    //TODO: redo
+}
+
+}

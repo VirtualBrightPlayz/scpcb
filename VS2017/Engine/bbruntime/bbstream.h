@@ -28,4 +28,19 @@ public:
 
 void debugStream( bbStream *s );
 
+int bbEof(class bbStream* s);
+int bbReadAvail(class bbStream* s);
+int bbReadByte(class bbStream* s);
+int bbReadShort(class bbStream* s);
+int bbReadInt(class bbStream* s);
+float bbReadFloat(class bbStream* s);
+class BBStr* bbReadString(class bbStream* s);
+class BBStr* bbReadLine(class bbStream* s);
+void bbWriteByte(class bbStream* s, int n);
+void bbWriteShort(class bbStream* s, int n);
+void bbWriteInt(class bbStream* s, int n);
+void bbWriteFloat(class bbStream* s, float n);
+void bbWriteString(class bbStream* s, class BBStr* t);
+void bbWriteLine(class bbStream* s, class BBStr* t);
+
 #endif

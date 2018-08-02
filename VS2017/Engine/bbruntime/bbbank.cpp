@@ -3,34 +3,6 @@
 #include "bbbank.h"
 #include "bbstream.h"
 
-struct bbBank{
-	char *data;
-	int size,capacity;
-
-	bbBank( int sz ):size(sz){
-		capacity=(size+15)&~15;
-		data=d_new char[capacity];
-		memset( data,0,size );
-	}
-	virtual ~bbBank(){
-		delete[] data;
-	}
-	void resize( int n ){
-		if( n>size ){
-			if( n>capacity ){
-				capacity=capacity*3/2;
-				if( n>capacity ) capacity=n;
-				capacity=(capacity+15)&~15;
-				char *p=d_new char[capacity];
-				memcpy( p,data,size );
-				delete[] data;
-				data=p;
-			}else memset( data+size,0,n-size );
-		}
-		size=n;
-	}
-};
-
 static set<bbBank*> bank_set;
 
 static inline void debugBank( bbBank *b ){

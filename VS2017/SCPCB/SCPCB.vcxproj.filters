@@ -13,10 +13,753 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\Src">
+      <UniqueIdentifier>{1af7e02b-0cb1-4fb2-93f0-fe77170c35af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Src\Rooms">
+      <UniqueIdentifier>{dfabffff-8ec7-4b8e-8dbc-b07de7af4830}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Src\NPCs">
+      <UniqueIdentifier>{7f924205-55aa-4bb6-a540-f3a1a1f748a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Src\Menus">
+      <UniqueIdentifier>{35f581d3-e4a7-4b89-b9f0-0a96d7b6d635}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Src\MathUtils">
+      <UniqueIdentifier>{e641b006-51ba-4abb-9057-f4d9adc0b9b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Src\Items">
+      <UniqueIdentifier>{8befc413-9c4d-4372-b12b-b81fc0128e93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Src">
+      <UniqueIdentifier>{6d7e7a9f-fde1-4773-96fb-db4db1c22418}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Src\Menus">
+      <UniqueIdentifier>{ae2b822b-b0c9-4567-9fcb-40bf98e88a83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Src\MathUtils">
+      <UniqueIdentifier>{008bee99-2a4f-4150-a61b-810ef5eee52d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Src\Items">
+      <UniqueIdentifier>{ef546876-d7c7-40c0-8c3e-3ee9980356c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Src\NPCs">
+      <UniqueIdentifier>{b8c0a1cf-49e8-41d2-9e01-6ae53196a8d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Src\Rooms">
+      <UniqueIdentifier>{b13bb164-8d67-43e0-8b5c-2d37f8804d2d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Src\Array.cpp">
+      <Filter>Source Files\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Assets.cpp">
+      <Filter>Source Files\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Audio.cpp">
+      <Filter>Source Files\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Console.cpp">
+      <Filter>Source Files\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Decals.cpp">
+      <Filter>Source Files\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Difficulty.cpp">
+      <Filter>Source Files\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Doors.cpp">
+      <Filter>Source Files\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Dreamfilter.cpp">
+      <Filter>Source Files\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Events.cpp">
+      <Filter>Source Files\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\FastResize.cpp">
+      <Filter>Source Files\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\GameMain.cpp">
+      <Filter>Source Files\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\INI.cpp">
+      <Filter>Source Files\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\KeyName.cpp">
+      <Filter>Source Files\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\MapSystem.cpp">
+      <Filter>Source Files\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Materials.cpp">
+      <Filter>Source Files\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Objects.cpp">
+      <Filter>Source Files\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Options.cpp">
+      <Filter>Source Files\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Particles.cpp">
+      <Filter>Source Files\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Player.cpp">
+      <Filter>Source Files\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\RM2.cpp">
+      <Filter>Source Files\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Save.cpp">
+      <Filter>Source Files\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Skybox.cpp">
+      <Filter>Source Files\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Menus\LoadingScreen.cpp">
+      <Filter>Source Files\Src\Menus</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Menus\MainMenu.cpp">
+      <Filter>Source Files\Src\Menus</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Menus\Menu.cpp">
+      <Filter>Source Files\Src\Menus</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Menus\Launcher.cpp">
+      <Filter>Source Files\Src\Menus</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\MathUtils\MathUtils.cpp">
+      <Filter>Source Files\Src\MathUtils</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Items\NVG.cpp">
+      <Filter>Source Files\Src\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Items\Radio.cpp">
+      <Filter>Source Files\Src\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Items\Items.cpp">
+      <Filter>Source Files\Src\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\NPCs\NPCtypeD.cpp">
+      <Filter>Source Files\Src\NPCs</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\NPCs\NPCtypeGuard.cpp">
+      <Filter>Source Files\Src\NPCs</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\NPCs\NPCtypeMTF.cpp">
+      <Filter>Source Files\Src\NPCs</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\NPCs\NPCtypeTentacle.cpp">
+      <Filter>Source Files\Src\NPCs</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\NPCs\NPCtypeZombie.cpp">
+      <Filter>Source Files\Src\NPCs</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\NPCs\NPCs.cpp">
+      <Filter>Source Files\Src\NPCs</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\NPCs\NPCtype049.cpp">
+      <Filter>Source Files\Src\NPCs</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\NPCs\NPCtype066.cpp">
+      <Filter>Source Files\Src\NPCs</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\NPCs\NPCtype096.cpp">
+      <Filter>Source Files\Src\NPCs</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\NPCs\NPCtype106.cpp">
+      <Filter>Source Files\Src\NPCs</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\NPCs\NPCtype173.cpp">
+      <Filter>Source Files\Src\NPCs</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\NPCs\NPCtype860.cpp">
+      <Filter>Source Files\Src\NPCs</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\NPCs\NPCtype939.cpp">
+      <Filter>Source Files\Src\NPCs</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\NPCs\NPCtype966.cpp">
+      <Filter>Source Files\Src\NPCs</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\NPCs\NPCtype1499.cpp">
+      <Filter>Source Files\Src\NPCs</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\NPCs\NPCtypeApache.cpp">
+      <Filter>Source Files\Src\NPCs</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_tnnl_pipes_2.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_tnnl_plain_2.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_tnnl_plain_3.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_tnnl_plain_4.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_closets_2.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_cont_008_1.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_cont_012_2.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_cont_035_1.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_cont_049_2.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_cont_079_1.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_cont_106_1.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_cont_173_1.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_cont_205_1.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_cont_500_1499_2.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_cont_513_3.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_cont_714_860_1025_2.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_cont_895_1.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_cont_914_1.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_cont_966_3.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_cont_1123_2.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_cont_1162_2c.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_dimension1499.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_end_1.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_exit_gatea_1.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_exit_gateb_1.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_extend_gatea_1.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_hll_bench_3.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_hll_caf_2.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_hll_dirty_3.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_hll_ele_2.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_hll_fan_2.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_hll_gas_2.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_hll_gas_3.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_hll_lshape_2.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_hll_pipes_3.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_hll_plain_2.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_hll_plain_3.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_hll_plain_4.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_hll_sl_2.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_hll_toilets_2.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_hll_tsl.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_intro.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_lck_096_2c.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_lck_air_2.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_lck_broke_2c.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_lck_cam_2c.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_lck_ez_3.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_lck_tshape_2.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_lifts_1.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_off_2level_2.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_off_bain_2.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_off_gears_may_har_2.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_off_glss_3.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_off_l_conf_2.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_off_lower_2.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_off_plain_2.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_off_rosewood_2.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_pocketdimension.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_scp_970_2.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_srvr_096_2.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_srvr_farm_3.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_srvr_lshape_3.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_srvr_pc_2.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_strg_939_3.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_strg_elec_2c.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_test_682_2.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_test_860_2.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_test_smallwindow_2.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_tnnl_elec_2.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_tnnl_maintenance_2.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rooms\Room_tnnl_nuke_2.cpp">
+      <Filter>Source Files\Src\Rooms</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Src\Rooms\Room_lifts_1.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_off_2level_2.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_off_bain_2.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_off_gears_may_har_2.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_off_glss_3.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_off_l_conf_2.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_off_lower_2.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_off_plain_2.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_off_rosewood_2.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_pocketdimension.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_scp_970_2.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_srvr_096_2.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_srvr_farm_3.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_srvr_lshape_3.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_srvr_pc_2.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_strg_939_3.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_strg_elec_2c.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_test_682_2.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_test_860_2.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_test_smallwindow_2.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_tnnl_elec_2.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_tnnl_maintenance_2.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_tnnl_nuke_2.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_tnnl_pipes_2.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_tnnl_plain_2.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_tnnl_plain_3.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_tnnl_plain_4.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_closets_2.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_cont_008_1.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_cont_012_2.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_cont_035_1.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_cont_049_2.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_cont_079_1.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_cont_106_1.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_cont_173_1.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_cont_205_1.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_cont_500_1499_2.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_cont_513_3.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_cont_714_860_1025_2.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_cont_895_1.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_cont_914_1.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_cont_966_3.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_cont_1123_2.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_cont_1162_2c.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_dimension1499.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_end_1.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_exit_gatea_1.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_exit_gateb_1.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_extend_gatea_1.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_hll_bench_3.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_hll_caf_2.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_hll_dirty_3.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_hll_ele_2.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_hll_fan_2.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_hll_gas_2.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_hll_gas_3.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_hll_lshape_2.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_hll_pipes_3.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_hll_plain_2.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_hll_plain_3.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_hll_plain_4.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_hll_sl_2.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_hll_toilets_2.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_hll_tsl.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_intro.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_lck_096_2c.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_lck_air_2.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_lck_broke_2c.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_lck_cam_2c.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_lck_ez_3.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Rooms\Room_lck_tshape_2.h">
+      <Filter>Header Files\Src\Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\NPCs\NPCtype860.h">
+      <Filter>Header Files\Src\NPCs</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\NPCs\NPCtype939.h">
+      <Filter>Header Files\Src\NPCs</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\NPCs\NPCtype966.h">
+      <Filter>Header Files\Src\NPCs</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\NPCs\NPCtype1499.h">
+      <Filter>Header Files\Src\NPCs</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\NPCs\NPCtypeApache.h">
+      <Filter>Header Files\Src\NPCs</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\NPCs\NPCtypeD.h">
+      <Filter>Header Files\Src\NPCs</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\NPCs\NPCtypeGuard.h">
+      <Filter>Header Files\Src\NPCs</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\NPCs\NPCtypeMTF.h">
+      <Filter>Header Files\Src\NPCs</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\NPCs\NPCtypeTentacle.h">
+      <Filter>Header Files\Src\NPCs</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\NPCs\NPCtypeZombie.h">
+      <Filter>Header Files\Src\NPCs</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\NPCs\NPCs.h">
+      <Filter>Header Files\Src\NPCs</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\NPCs\NPCtype049.h">
+      <Filter>Header Files\Src\NPCs</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\NPCs\NPCtype066.h">
+      <Filter>Header Files\Src\NPCs</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\NPCs\NPCtype096.h">
+      <Filter>Header Files\Src\NPCs</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\NPCs\NPCtype106.h">
+      <Filter>Header Files\Src\NPCs</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\NPCs\NPCtype173.h">
+      <Filter>Header Files\Src\NPCs</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Items\Items.h">
+      <Filter>Header Files\Src\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Items\NVG.h">
+      <Filter>Header Files\Src\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Items\Radio.h">
+      <Filter>Header Files\Src\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\MathUtils\MathUtils.h">
+      <Filter>Header Files\Src\MathUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Menus\Launcher.h">
+      <Filter>Header Files\Src\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Menus\LoadingScreen.h">
+      <Filter>Header Files\Src\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Menus\MainMenu.h">
+      <Filter>Header Files\Src\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Menus\Menu.h">
+      <Filter>Header Files\Src\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Materials.h">
+      <Filter>Header Files\Src</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Objects.h">
+      <Filter>Header Files\Src</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Options.h">
+      <Filter>Header Files\Src</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Particles.h">
+      <Filter>Header Files\Src</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Player.h">
+      <Filter>Header Files\Src</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\RM2.h">
+      <Filter>Header Files\Src</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Save.h">
+      <Filter>Header Files\Src</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Skybox.h">
+      <Filter>Header Files\Src</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Array.h">
+      <Filter>Header Files\Src</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Assets.h">
+      <Filter>Header Files\Src</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Audio.h">
+      <Filter>Header Files\Src</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Console.h">
+      <Filter>Header Files\Src</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Decals.h">
+      <Filter>Header Files\Src</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Difficulty.h">
+      <Filter>Header Files\Src</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Doors.h">
+      <Filter>Header Files\Src</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Dreamfilter.h">
+      <Filter>Header Files\Src</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Events.h">
+      <Filter>Header Files\Src</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\FastResize.h">
+      <Filter>Header Files\Src</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\GameMain.h">
+      <Filter>Header Files\Src</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\include.h">
+      <Filter>Header Files\Src</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\INI.h">
+      <Filter>Header Files\Src</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\KeyName.h">
+      <Filter>Header Files\Src</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\MapSystem.h">
+      <Filter>Header Files\Src</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
