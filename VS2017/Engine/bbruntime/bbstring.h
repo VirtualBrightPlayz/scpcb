@@ -4,23 +4,23 @@
 
 #include "basic.h"
 
-BBStr *  bbString( BBStr *s,int n );
-BBStr *	 bbLeft( BBStr *s,int n );
-BBStr *	 bbRight( BBStr *s,int n );
-BBStr *  bbReplace( BBStr *s,BBStr *from,BBStr *to );
-int		 bbInstr( BBStr *s,BBStr *t,int from );
-BBStr *	 bbMid( BBStr *s,int o,int n );
-BBStr *  bbUpper( BBStr *s );
-BBStr *	 bbLower( BBStr *s );
-BBStr *  bbTrim( BBStr *s );
-BBStr *  bbLSet( BBStr *s,int n );
-BBStr *  bbRSet( BBStr *s,int n );
-BBStr *  bbChr( int n );
-int		 bbAsc( BBStr *s );
-int		 bbLen( BBStr *s );
-BBStr *	 bbHex( int n );
-BBStr *  bbBin( int n );
-BBStr *  bbCurrentDate();
-BBStr *  bbCurrentTime();
+String   bbString( String s,int n );
+String 	 bbLeft( String s,int n );
+String 	 bbRight( String s,int n );
+String   bbReplace( String s,String from,String to );
+int		 bbInstr( String s,String t,int from );
+String 	 bbMid( String s,int o,int n );
+String   bbUpper( String s );
+String 	 bbLower( String s );
+String   bbTrim( String s );
+String   bbLSet( String s,int n );
+String   bbRSet( String s,int n );
+String   bbChr( int n );
+int		 bbAsc( String s );
+int		 bbLen( String s );
+String 	 bbHex( int n );
+String   bbBin( int n );
+String   bbCurrentDate();
+String   bbCurrentTime();
 
 #endif

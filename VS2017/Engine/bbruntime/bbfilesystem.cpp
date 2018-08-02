@@ -41,10 +41,9 @@ static inline void debugDir( gxDir *d ){
 	}
 }
 
-static bbFile *open( BBStr *f,int n ){
-	string t=*f;
+static bbFile *open( String t,int n ){
 	filebuf *buf=d_new filebuf();
-	if( buf->open( t.c_str(),n|ios_base::binary ) ){
+	if( buf->open( t.cstr(),n|ios_base::binary ) ){
 		bbFile *f=d_new bbFile( buf );
 		file_set.insert( f );
 		return f;
@@ -53,15 +52,15 @@ static bbFile *open( BBStr *f,int n ){
 	return 0;
 }
 
-bbFile *bbReadFile( BBStr *f ){
+bbFile *bbReadFile( String f ){
 	return open( f,ios_base::in );
 }
 
-bbFile *bbWriteFile( BBStr *f ){
+bbFile *bbWriteFile( String f ){
 	return open( f,ios_base::out|ios_base::trunc );
 }
 
-bbFile *bbOpenFile( BBStr *f ){
+bbFile *bbOpenFile( String f ){
 	return open( f,ios_base::in|ios_base::out );
 }
 
@@ -79,59 +78,50 @@ int bbSeekFile( bbFile *f,int pos ){
 	return f->buf->pubseekoff( pos,ios_base::beg );
 }
 
-gxDir *bbReadDir( BBStr *d ){
-	string t=*d;delete d;
-	return gx_filesys->openDir( t,0 );
+gxDir *bbReadDir( String d ){
+	return gx_filesys->openDir( d,0 );
 }
 
 void bbCloseDir( gxDir *d ){
 	gx_filesys->closeDir( d );
 }
 
-BBStr *bbNextFile( gxDir *d ){
+String bbNextFile( gxDir *d ){
 	debugDir( d );
-	return d_new BBStr( d->getNextFile() );
+	return d->getNextFile();
 }
 
-BBStr *bbCurrentDir(){
-	return d_new BBStr( gx_filesys->getCurrentDir() );
+String bbCurrentDir(){
+	return gx_filesys->getCurrentDir();
 }
 
-void bbChangeDir( BBStr *d ){
-	gx_filesys->setCurrentDir( *d );
-	delete d;
+void bbChangeDir( String d ){
+	gx_filesys->setCurrentDir( d );
 }
 
-void bbCreateDir( BBStr *d ){
-	gx_filesys->createDir( *d );
-	delete d;
+void bbCreateDir( String d ){
+	gx_filesys->createDir( d );
 }
 
-void bbDeleteDir( BBStr *d ){
-	gx_filesys->deleteDir( *d );
-	delete d;
+void bbDeleteDir( String d ){
+	gx_filesys->deleteDir( d );
 }
 
-int bbFileType( BBStr *f ){
-	string t=*f;delete f;
-	int n=gx_filesys->getFileType( t );
+int bbFileType( String f ){
+	int n=gx_filesys->getFileType( f );
 	return n==gxFileSystem::FILE_TYPE_FILE ? 1 : (n==gxFileSystem::FILE_TYPE_DIR ? 2 : 0);
 }
 
-int	bbFileSize( BBStr *f ){
-	string t=*f;delete f;
-	return gx_filesys->getFileSize( t );
+int	bbFileSize( String f ){
+	return gx_filesys->getFileSize( f );
 }
 
-void bbCopyFile( BBStr *f,BBStr *to ){
-	string src=*f,dest=*to;
-	delete f;delete to;
+void bbCopyFile( String src,String dest ){
 	gx_filesys->copyFile( src,dest );
 }
 
-void bbDeleteFile( BBStr *f ){
-	gx_filesys->deleteFile( *f );
-	delete f;
+void bbDeleteFile( String f ){
+	gx_filesys->deleteFile( f );
 }
 
 bool filesystem_create(){

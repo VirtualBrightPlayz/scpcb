@@ -5,12 +5,13 @@
 #include "cachedtexture.h"
 
 #include "../gxruntime/gxcanvas.h"
+#include "../gxruntime/StringType.h"
 
 class Texture{
 public:
 	Texture();
-	Texture( const std::string &file,int flags );
-	Texture( const std::string &file,int flags,int w,int h,int first,int cnt );
+	Texture( String file,int flags );
+	Texture( String file,int flags,int w,int h,int first,int cnt );
 	Texture( int width,int height,int flags,int cnt );
 	Texture( const Texture &texture );
 	~Texture();
@@ -34,7 +35,7 @@ public:
 	bool operator<( const Texture &t )const;
 
 	static void clearFilters();
-	static void addFilter( const std::string &filter,int flags );
+	static void addFilter( String filter,int flags );
 
 private:
 	struct Rep;

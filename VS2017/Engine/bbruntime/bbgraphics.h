@@ -4,6 +4,7 @@
 
 #include "bbsys.h"
 #include "../gxruntime/gxgraphics.h"
+#include "../gxruntime/StringType.h"
 
 extern gxGraphics *gx_graphics;
 extern gxCanvas *gx_canvas;
@@ -15,8 +16,8 @@ void bbFlip(int vwait);
 
 //general graphics functions
 int		 bbCountGfxDrivers();
-BBStr *	 bbGfxDriverName( int n );
-BBStr *	 bbGfxDriverDesc( int n );
+String	 bbGfxDriverName( int n );
+String	 bbGfxDriverDesc( int n );
 void	 bbSetGfxDriver( int n );
 int		 bbGfxModeExists( int w,int h,int d );
 int		 bbCountGfxModes();
@@ -43,8 +44,8 @@ void	 bbFlip( int vwait );
 //graphics buffer functions
 void	 bbSetBuffer( gxCanvas *buff );
 gxCanvas * bbGraphicsBuffer();
-int		 bbLoadBuffer( gxCanvas *surf,BBStr *str );
-int		 bbSaveBuffer( gxCanvas *surf,BBStr *str );
+int		 bbLoadBuffer( gxCanvas *surf,String str );
+int		 bbSaveBuffer( gxCanvas *surf,String str );
 
 //fast read/write operations...
 void	 bbLockBuffer( gxCanvas *buff );
@@ -65,28 +66,28 @@ void	 bbPlot( int x,int y );
 void	 bbLine( int x1,int y1,int x2,int y2 );
 void	 bbRect( int x,int y,int w,int h,int solid );
 void	 bbOval( int x,int y,int w,int h,int solid );
-void	 bbText( int x,int y,BBStr *str,int centre_x,int centre_y );
+void	 bbText( int x,int y,String str,int centre_x,int centre_y );
 void	 bbGetColor( int x,int y );
 int		 bbColorRed();
 int		 bbColorGreen();
 int		 bbColorBlue();
 
 //font functions
-gxFont * bbLoadFont( BBStr *name,int height,int bold,int italic,int underline );
+gxFont * bbLoadFont( String name,int height,int bold,int italic,int underline );
 void	 bbFreeFont( gxFont *f );
 void	 bbSetFont( gxFont *f );
 int		 bbFontWidth();
 int		 bbFontHeight();
-int		 bbStringWidth( BBStr *str );
-int		 bbStringHeight( BBStr *str );
+int		 bbStringWidth( String str );
+int		 bbStringHeight( String str );
 
 //image functions
-bbImage* bbLoadImage( BBStr *s );
+bbImage* bbLoadImage( String s );
 bbImage* bbCopyImage( bbImage *i );
 bbImage* bbCreateImage( int w,int h,int n );
-bbImage* bbLoadAnimImage( BBStr *s,int w,int h,int first,int cnt );
+bbImage* bbLoadAnimImage( String s,int w,int h,int first,int cnt );
 void	 bbFreeImage( bbImage *i );
-int		 bbSaveImage( bbImage *i,BBStr *filename,int frame );
+int		 bbSaveImage( bbImage *i,String filename,int frame );
 void	 bbGrabImage( bbImage *i,int x,int y,int n );
 gxCanvas * bbImageBuffer( bbImage *i,int n );
 void	 bbDrawImage( bbImage *i,int x,int y,int frame );
@@ -115,9 +116,9 @@ int		 bbImageRectOverlap( bbImage *i,int x,int y,int r_x,int r_y,int r_w,int r_h
 int		 bbImageRectCollide( bbImage *i,int x,int y,int f,int r_x,int r_y,int r_w,int r_h );
 
 //simple print functions
-void	 bbWrite( BBStr *str );
-void	 bbPrint( BBStr *str );
-BBStr *	 bbInput( BBStr *prompt );
+void	 bbWrite( String str );
+void	 bbPrint( String str );
+String 	 bbInput( String prompt );
 void	 bbLocate( int x,int y );
 
 #endif

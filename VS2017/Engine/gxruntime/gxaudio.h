@@ -2,6 +2,7 @@
 #ifndef GXAUDIO_H
 #define GXAUDIO_H
 
+#include "StringType.h"
 #include "gxsound.h"
 
 class gxRuntime;
@@ -28,7 +29,7 @@ public:
 		CD_MODE_ONCE=1,CD_MODE_LOOP,CD_MODE_ALL
 	};
 
-	gxSound *loadSound( const std::string &filename,bool use_3d );
+	gxSound *loadSound( String filename,bool use_3d );
 	gxSound *verifySound( gxSound *sound );
 	void freeSound( gxSound *sound );
 
@@ -38,9 +39,6 @@ public:
 	void set3dOptions( float roll,float dopp,float dist );
 
 	void set3dListener( const float pos[3],const float vel[3],const float forward[3],const float up[3] );
-
-	gxChannel *playCDTrack( int track,int mode );
-	gxChannel *playFile( const std::string &filename,bool use_3d );
 };
 
 #endif

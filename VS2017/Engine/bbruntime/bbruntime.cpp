@@ -10,20 +10,18 @@ void  bbStop(){
 	gx_runtime->debugStop();
 }
 
-void  bbAppTitle( BBStr *ti,BBStr *cp ){
-	gx_runtime->setTitle( *ti,*cp );
-	delete ti;delete cp;
+void  bbAppTitle( String ti,String cp ){
+	gx_runtime->setTitle( ti,cp );
 }
 
-void  bbRuntimeError( BBStr *str ){
-	string t=*str;delete str;
-	if( t.size()>255 ) t[255]=0;
+void  bbRuntimeError( String str ){
+	if( str.size()>255 ) str = str.substr(0,255);
 	static char err[256];
-	strcpy( err,t.c_str() );
+	strcpy( err,str.cstr() );
 	RTEX( err );
 }
 
-int   bbExecFile( BBStr *f ){
+int   bbExecFile( String f ){
 	string t=*f;delete f;
 	int n=gx_runtime->execute( t );
 	return n;
@@ -37,23 +35,22 @@ int  bbMilliSecs(){
 	return gx_runtime->getMilliSecs();
 }
 
-BBStr * bbCommandLine(){
-	return d_new BBStr( gx_runtime->commandLine() );
+String  bbCommandLine(){
+	return gx_runtime->commandLine();
 }
 
-BBStr * bbSystemProperty( BBStr *p ){
-	string t=gx_runtime->systemProperty( *p );
-	delete p;return d_new BBStr( t );
+String  bbSystemProperty( String p ){
+	string t=gx_runtime->systemProperty( p );
+	return t;
 }
 
-BBStr *  bbGetEnv( BBStr *env_var ){
-	char *p=getenv( env_var->c_str() );
-	BBStr *val=d_new BBStr( p ? p : "" );
-	delete env_var;
+String   bbGetEnv( String env_var ){
+	char *p=getenv( env_var->cstr() );
+	String val=p ? p : "";
 	return val;
 }
 
-void  bbSetEnv( BBStr *env_var,BBStr *val ){
+void  bbSetEnv( String env_var,String val ){
 	string t=*env_var+"="+*val;
 	putenv( t.c_str() );
 	delete env_var;
@@ -74,7 +71,7 @@ void  bbFreeTimer( gxTimer *t ){
 	gx_runtime->freeTimer( t );
 }
 
-void  bbDebugLog( BBStr *t ){
+void  bbDebugLog( String t ){
 	gx_runtime->debugLog( t->c_str() );
 	delete t;
 }

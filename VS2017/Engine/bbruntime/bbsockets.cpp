@@ -291,7 +291,7 @@ static inline void debugTCPServer( TCPServer *p ){
 
 static vector<int> host_ips;
 
-int bbCountHostIPs( BBStr *host ){
+int bbCountHostIPs( String host ){
 	host_ips.clear();
 	HOSTENT *h=gethostbyname( host->c_str() );
 	delete host;if( !h ) return 0;
@@ -364,8 +364,8 @@ void bbUDPTimeouts( int rt ){
 	recv_timeout=rt;
 }
 
-BBStr *bbDottedIP( int ip ){
-	return d_new BBStr(
+String bbDottedIP( int ip ){
+	return String(
 		itoa((ip>>24)&255)+"."+itoa((ip>>16)&255)+"."+
 		itoa((ip>>8)&255)+"."+itoa(ip&255) );
 }
@@ -382,7 +382,7 @@ static int findHostIP( const string &t ){
 	return 0;
 }
 
-TCPStream *bbOpenTCPStream( BBStr *server,int port,int local_port ){
+TCPStream *bbOpenTCPStream( String server,int port,int local_port ){
 	if( !socks_ok ){
 		delete server;
 		return 0;

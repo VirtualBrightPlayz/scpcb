@@ -99,18 +99,6 @@ int   bbWriteBytes( bbBank *b,bbStream *s,int offset,int count ){
 	return s->write( b->data+offset,count );
 }
 
-int  bbCallDLL( BBStr *dll,BBStr *fun,bbBank *in,bbBank *out ){
-	if( debug ){
-		if( in ) debugBank( in );
-		if( out ) debugBank( out );
-	}
-	int t=gx_runtime->callDll( *dll,*fun,
-		in ? in->data : 0,in ? in->size : 0,
-		out ? out->data : 0,out ? out->size : 0 );
-	delete dll;delete fun;
-	return t;
-}
-
 bool bank_create(){
 	return true;
 }

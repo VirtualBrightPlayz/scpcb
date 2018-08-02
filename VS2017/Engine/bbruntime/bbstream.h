@@ -34,13 +34,13 @@ int bbReadByte(class bbStream* s);
 int bbReadShort(class bbStream* s);
 int bbReadInt(class bbStream* s);
 float bbReadFloat(class bbStream* s);
-struct BBStr* bbReadString(class bbStream* s);
-struct BBStr* bbReadLine(class bbStream* s);
+String bbReadString(class bbStream* s);
+String bbReadLine(class bbStream* s);
 void bbWriteByte(class bbStream* s, int n);
 void bbWriteShort(class bbStream* s, int n);
 void bbWriteInt(class bbStream* s, int n);
 void bbWriteFloat(class bbStream* s, float n);
-void bbWriteString(class bbStream* s, struct BBStr* t);
-void bbWriteLine(class bbStream* s, struct BBStr* t);
+void bbWriteString(class bbStream* s, String t);
+void bbWriteLine(class bbStream* s, String t);
 
 #endif

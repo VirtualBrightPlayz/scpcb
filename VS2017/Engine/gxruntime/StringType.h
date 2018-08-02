@@ -1,7 +1,7 @@
 #ifndef STRING_H_INCLUDED
 #define STRING_H_INCLUDED
 
-//#include <string>
+#include <string>
 
 #ifdef __APPLE__
 #include <Carbon/Carbon.h>
@@ -17,9 +17,9 @@ struct String {
         String();
         String(const String& a);
         String(const char* cstr);
-        //String(const std::string& cppstr);
+        String(const std::string& cppstr);
         String(const wchar* wstr);
-        //String(const std::wstring& cppwstr);
+        String(const std::wstring& cppwstr);
         String(const String& a,const String& b);
         String(char c);
         String(wchar w);
@@ -42,6 +42,7 @@ struct String {
         String resourcePath() const;
 
         String& operator=(const String& other);
+        static String operator+(const String& a,const String& b);
 
         bool equals(const String& other) const;
     protected:

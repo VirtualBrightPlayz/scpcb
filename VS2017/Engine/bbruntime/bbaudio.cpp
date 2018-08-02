@@ -10,17 +10,11 @@ static inline void debugSound( gxSound *s ){
 	}
 }
 
-static gxSound *loadSound( BBStr *f,bool use_3d ){
-	string t=*f;delete f;
-	return gx_audio ? gx_audio->loadSound( t,use_3d ) : 0;
+static gxSound *loadSound( String f,bool use_3d ){
+	return gx_audio ? gx_audio->loadSound( f,use_3d ) : 0;
 }
 
-static gxChannel *playMusic( BBStr *f,bool use_3d ){
-	string t=*f;delete f;
-	return gx_audio ? gx_audio->playFile( t,use_3d ) : 0;
-}
-
-gxSound *bbLoadSound( BBStr *f ){
+gxSound *bbLoadSound( String f ){
 	return loadSound( f,false );
 }
 
@@ -60,14 +54,6 @@ gxChannel *bbPlaySound( gxSound *sound ){
 	return sound->play();
 }
 
-gxChannel *bbPlayMusic( BBStr *f ){
-	return playMusic( f,false );
-}
-
-gxChannel *bbPlayCDTrack( int track,int mode ){
-	return gx_audio ? gx_audio->playCDTrack( track,mode ) : 0;
-}
-
 void bbStopChannel( gxChannel *channel ){
 	if( !channel ) return;
 	channel->stop();
@@ -102,7 +88,7 @@ int bbChannelPlaying( gxChannel *channel ){
 	return channel ? channel->isPlaying() : 0;
 }
 
-gxSound *bbLoad3DSound( BBStr *f ){
+gxSound *bbLoad3DSound( String f ){
 	return loadSound( f,true );
 }
 

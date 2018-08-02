@@ -208,10 +208,11 @@ static Entity *findChild( Entity *e,const string &t ){
 ///////////////////////////
 // GLOBAL WORLD COMMANDS //
 ///////////////////////////
-void  bbLoaderMatrix( BBStr *ext,float xx,float xy,float xz,float yx,float yy,float yz,float zx,float zy,float zz ){
-	loader_mat_map.erase( *ext );
-	loader_mat_map[*ext]=Transform(Matrix(Vector(xx,xy,xz),Vector(yx,yy,yz),Vector(zx,zy,zz)));
-	delete ext;
+void  bbLoaderMatrix( String ext,float xx,float xy,float xz,float yx,float yy,float yz,float zx,float zy,float zz ){
+    //TODO: do we even need this?
+    std::string cppStr = std::string(ext.cstr());
+	loader_mat_map.erase( cppStr );
+	loader_mat_map[cppStr]=Transform(Matrix(Vector(xx,xy,xz),Vector(yx,yy,yz),Vector(zx,zy,zz)));
 }
 
 int   bbHWTexUnits(){
@@ -308,8 +309,8 @@ void  bbRenderWorld( float tween ){
 	}
 	if( bbKeyHit( 0x58 ) ){
 		static int n;
-		string t="screenshot"+itoa(++n)+".bmp";
-		bbSaveBuffer( bbBackBuffer(),d_new BBStr(t) );
+		String t="screenshot"+itoa(++n)+".bmp";
+		bbSaveBuffer( bbBackBuffer(),t );
 	}
 
 	if( !stats_mode ) return;
@@ -324,14 +325,14 @@ void  bbRenderWorld( float tween ){
 	int ups=update_ms ? 1000/update_ms : 1000;
 	int rps=render_ms ? 1000/render_ms : 1000;
 
-	string t_fps="000"+itoa(fps);t_fps=t_fps.substr( t_fps.size()-4 );
-	string t_ups="000"+itoa(ups);t_ups=t_ups.substr( t_ups.size()-4 );
-	string t_rps="000"+itoa(rps);t_rps=t_rps.substr( t_rps.size()-4 );
-	string t_tris="00000"+itoa(tris);t_tris=t_tris.substr( t_tris.size()-6 );
+	String t_fps="000"+itoa(fps);t_fps=t_fps.substr( t_fps.size()-4 );
+	String t_ups="000"+itoa(ups);t_ups=t_ups.substr( t_ups.size()-4 );
+	String t_rps="000"+itoa(rps);t_rps=t_rps.substr( t_rps.size()-4 );
+	String t_tris="00000"+itoa(tris);t_tris=t_tris.substr( t_tris.size()-6 );
 
-	string t="FPS:"+t_fps+" UPS:"+t_ups+" RPS:"+t_rps+" TRIS:"+t_tris;
+	String t="FPS:"+t_fps+" UPS:"+t_ups+" RPS:"+t_rps+" TRIS:"+t_tris;
 
-	bbText( 0,bbGraphicsHeight()-bbFontHeight(),d_new BBStr(t),0,0 );
+	bbText( 0,bbGraphicsHeight()-bbFontHeight(),t,0,0 );
 }
 
 int  bbTrisRendered(){
@@ -348,18 +349,17 @@ float  bbStats3D( int n ){
 
 //Note: modify canvas->backup() to NOT release backup image!
 //
-Texture *  bbLoadTexture( BBStr *file,int flags ){
+Texture *  bbLoadTexture( String file,int flags ){
 	debug3d();
-	Texture *t=d_new Texture( *file,flags );delete file;
+	Texture *t=d_new Texture( file,flags );
 	if( !t->getCanvas(0) ){ delete t;return 0; }
 	texture_set.insert( t );
 	return t;
 }
 
-Texture *  bbLoadAnimTexture( BBStr *file,int flags,int w,int h,int first,int cnt ){
+Texture *  bbLoadAnimTexture( String file,int flags,int w,int h,int first,int cnt ){
 	debug3d();
-	Texture *t=d_new Texture( *file,flags,w,h,first,cnt );
-	delete file;
+	Texture *t=d_new Texture( file,flags,w,h,first,cnt );
 	if( !t->getCanvas(0) ){
 		delete t;
 		return 0; 
@@ -421,10 +421,10 @@ int  bbTextureHeight( Texture *t ){
 	return t->getCanvas(0)->getHeight();
 }
 
-BBStr *bbTextureName( Texture *t ){
+String bbTextureName( Texture *t ){
 	debugTexture(t);
 	CachedTexture *c=t->getCachedTexture();
-	return c ? d_new BBStr( c->getName().c_str() ) : d_new BBStr("");
+	return c ? c->getName() : String("");
 }
 
 void bbSetCubeFace( Texture *t,int face ){
@@ -462,10 +462,9 @@ void  bbClearTextureFilters(){
 	Texture::clearFilters();
 }
 
-void  bbTextureFilter( BBStr *t,int flags ){
+void  bbTextureFilter( String t,int flags ){
 	debug3d();
-	Texture::addFilter( *t,flags );
-	delete t;
+	Texture::addFilter( t,flags );
 }
 
 ////////////////////
@@ -479,14 +478,13 @@ Brush *  bbCreateBrush( float r,float g,float b ){
 	return br;
 }
 
-Brush *  bbLoadBrush( BBStr *file,int flags,float u_scale,float v_scale ){
+Brush *  bbLoadBrush( String file,int flags,float u_scale,float v_scale ){
 	debug3d();
-	Texture t( *file,flags );
-	delete file;if( !t.getCanvas(0) ) return 0;
+	Texture t( file,flags );
+	if( !t.getCanvas(0) ) return 0;
 	if( u_scale!=1 || v_scale!=1 ) t.setScale( 1/u_scale,1/v_scale );
 	Brush *br=bbCreateBrush( 255,255,255 );
 	br->setTexture( 0,t,0 );
-	delete file;
 	return br;
 }
 
@@ -543,9 +541,9 @@ Entity *  bbCreateMesh( Entity *p ){
 	return insertEntity( m,p );
 }
 
-Entity *  bbLoadMesh( BBStr *f,Entity *p ){
+Entity *  bbLoadMesh( String f,Entity *p ){
 	debugParent(p);
-	Entity *e=loadEntity( f->c_str(),MeshLoader::HINT_COLLAPSE );
+	Entity *e=loadEntity( f,MeshLoader::HINT_COLLAPSE );
 	delete f;
 
 	if( !e ) return 0;
@@ -554,10 +552,9 @@ Entity *  bbLoadMesh( BBStr *f,Entity *p ){
 	return insertEntity( m,p );
 }
 
-Entity *  bbLoadAnimMesh( BBStr *f,Entity *p ){
+Entity *  bbLoadAnimMesh( String f,Entity *p ){
 	debugParent(p);
-	Entity *e=loadEntity( f->c_str(),0 );
-	delete f;
+	Entity *e=loadEntity( f,0 );
 
 	if( !e ) return 0;
 	if( Animator *anim=e->getObject()->getAnimator() ){
@@ -1107,10 +1104,10 @@ Entity *  bbCreateSprite( Entity *p ){
 	return insertEntity( s,p );
 }
 
-Entity *  bbLoadSprite( BBStr *file,int flags,Entity *p ){
+Entity *  bbLoadSprite( String file,int flags,Entity *p ){
 	debugParent(p);
-	Texture t( *file,flags );
-	delete file;if( !t.getCanvas(0) ) return 0;
+	Texture t( file,flags );
+	if( !t.getCanvas(0) ) return 0;
 	Sprite *s=d_new Sprite();
 	s->setTexture( 0,t,0 );
 	s->setFX( gxScene::FX_FULLBRIGHT );
@@ -1166,9 +1163,9 @@ Entity *  bbCreatePlane( int segs,Entity *p ){
 //////////////////
 // MD2 COMMANDS //
 //////////////////
-Entity *  bbLoadMD2( BBStr *file,Entity *p ){
+Entity *  bbLoadMD2( String file,Entity *p ){
 	debugParent(p);
-	MD2Model *t=d_new MD2Model( *file );delete file;
+	MD2Model *t=d_new MD2Model( file );
 	if( !t->getValid() ){ delete t;return 0; }
 	return insertEntity( t,p );
 }
@@ -1196,10 +1193,10 @@ int  bbMD2Animating( MD2Model *m ){
 //////////////////
 // BSP Commands //
 //////////////////
-Entity *  bbLoadBSP( BBStr *file,float gam,Entity *p ){
+Entity *  bbLoadBSP( String file,float gam,Entity *p ){
 	debugParent(p);
-	CachedTexture::setPath( filenamepath( *file ) );
-	Q3BSPModel *t=d_new Q3BSPModel( *file,gam );delete file;
+	CachedTexture::setPath( filenamepath( file ) );
+	Q3BSPModel *t=d_new Q3BSPModel( file,gam );
 	CachedTexture::setPath( "" );
 
 	if( !t->isValid() ){ delete t;return 0; }
@@ -1247,9 +1244,9 @@ Entity *  bbCreateTerrain( int n,Entity *p ){
 	return insertEntity( t,p );
 }
 
-Entity *  bbLoadTerrain( BBStr *file,Entity *p ){
+Entity *  bbLoadTerrain( String file,Entity *p ){
 	debugParent(p);
-	gxCanvas *c=gx_graphics->loadCanvas( *file,gxCanvas::CANVAS_HIGHCOLOR );
+	gxCanvas *c=gx_graphics->loadCanvas( file,gxCanvas::CANVAS_HIGHCOLOR );
 	if( !c ) RTEX( "Unable to load heightmap image" );
 	int w=c->getWidth(),h=c->getHeight();
 	if( w!=h ) RTEX( "Terrain must be square" );
@@ -1405,20 +1402,19 @@ Entity *  bbGetChild( Entity *e,int index ){
 	return p;
 }
 
-Entity *  bbFindChild( Entity *e,BBStr *t ){
+Entity *  bbFindChild( Entity *e,String t ){
 	debugEntity(e);
-	e=findChild( e,*t );
-	delete t;
+	e=findChild( e,t );
 	return e;
 }
 
 ////////////////////////
 // ANIMATION COMMANDS //
 ////////////////////////
-int  bbLoadAnimSeq( Object *o,BBStr *f ){
+int  bbLoadAnimSeq( Object *o,String f ){
 	debugObject( o );
 	if( Animator *anim=o->getAnimator() ){
-		Entity *t=loadEntity( f->c_str(),MeshLoader::HINT_ANIMONLY );
+		Entity *t=loadEntity( f,MeshLoader::HINT_ANIMONLY );
 		delete f;
 		if( t ){
 			if( Animator *p=t->getObject()->getAnimator() ){
@@ -1875,18 +1871,18 @@ void  bbAlignToVector( Entity *e,float nx,float ny,float nz,int axis,float rate 
 //////////////////////////
 // ENTITY MISC COMMANDS //
 //////////////////////////
-void  bbNameEntity( Entity *e,BBStr *t ){
+void  bbNameEntity( Entity *e,String t ){
 	debugEntity(e);
-	e->setName( *t );
+	e->setName( t );
 	delete t;
 }
 
-BBStr *  bbEntityName( Entity *e ){
+String bbEntityName( Entity *e ){
 	debugEntity(e);
-	return d_new BBStr( e->getName() );
+	return e->getName();
 }
 
-BBStr *bbEntityClass( Entity *e ){
+String bbEntityClass( Entity *e ){
 	debugEntity(e);
 	const char *p="Pivot";
 	if( e->getLight() ) p="Light";
@@ -1901,7 +1897,7 @@ BBStr *bbEntityClass( Entity *e ){
 		else if( t->getMD2Model() ) p="MD2";
 		else if( t->getBSPModel() ) p="BSP";
 	}
-	return new BBStr(p);
+	return String(p);
 }
 
 void  bbClearWorld( int e,int b,int t ){

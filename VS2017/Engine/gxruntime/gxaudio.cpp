@@ -212,7 +212,7 @@ void gxAudio::pause(){
 void gxAudio::resume(){
 }
 
-gxSound *gxAudio::loadSound( const string &f,bool use3d ){
+gxSound *gxAudio::loadSound( String f,bool use3d ){
 
 	int flags=FSOUND_NORMAL | (use3d ? FSOUND_FORCEMONO : FSOUND_2D);
 

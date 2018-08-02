@@ -158,6 +158,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">std.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="StringType.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="asmcoder.h" />
@@ -179,6 +180,7 @@
     <ClInclude Include="gxsound.h" />
     <ClInclude Include="gxtimer.h" />
     <ClInclude Include="std.h" />
+    <ClInclude Include="StringType.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

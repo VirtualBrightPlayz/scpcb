@@ -224,11 +224,11 @@ int bbCountGfxDrivers(){
 	return gx_runtime->numGraphicsDrivers();
 }
 
-BBStr *	bbGfxDriverName( int n ){
+String bbGfxDriverName( int n ){
 	debugDriver( n );
-	string t;int caps;
+	String t;int caps;
 	gx_runtime->graphicsDriverInfo( n-1,&t,&caps );
-	return d_new BBStr( t );
+	return t;
 }
 
 void  bbSetGfxDriver( int n ){
@@ -334,9 +334,8 @@ gxCanvas *bbGraphicsBuffer(){
 	return gx_canvas;
 }
 
-int bbLoadBuffer( gxCanvas *c,BBStr *str ){
+int bbLoadBuffer( gxCanvas *c,String s ){
 	debugCanvas( c );
-	string s=*str;delete str;
 	gxCanvas *t=gx_graphics->loadCanvas( s,0 );
 	if( !t ) return 0;
 	float m[2][2];
@@ -352,9 +351,8 @@ int bbLoadBuffer( gxCanvas *c,BBStr *str ){
 	return 1;
 }
 
-int bbSaveBuffer( gxCanvas *c,BBStr *str ){
+int bbSaveBuffer( gxCanvas *c,String t ){
 	debugCanvas( c );
-	string t=*str;delete str;
 	return saveCanvas( c,t ) ? 1 : 0;
 }
 
@@ -583,11 +581,10 @@ void bbOval( int x,int y,int w,int h,int solid ){
 	gx_canvas->oval( x,y,w,h,solid ? true : false );
 }
 
-void bbText( int x,int y,BBStr *str,int centre_x,int centre_y ){
-	if( centre_x ) x-=curr_font->getWidth( *str )/2;
+void bbText( int x,int y,String str,int centre_x,int centre_y ){
+	if( centre_x ) x-=curr_font->getWidth( str )/2;
 	if( centre_y ) y-=curr_font->getHeight()/2;
-	gx_canvas->text( x,y,*str );
-	delete str;
+	gx_canvas->text( x,y,str );
 }
 
 void bbCopyRect( int sx,int sy,int w,int h,int dx,int dy,gxCanvas *src,gxCanvas *dest ){
@@ -598,13 +595,12 @@ void bbCopyRect( int sx,int sy,int w,int h,int dx,int dy,gxCanvas *src,gxCanvas 
 	dest->blit( dx,dy,src,sx,sy,w,h,true );
 }
 
-gxFont *bbLoadFont( BBStr *name,int height,int bold,int italic,int underline ){
+gxFont *bbLoadFont( String name,int height,int bold,int italic,int underline ){
 	int flags=
 		(bold ? gxFont::FONT_BOLD : 0 ) |
 		(italic ? gxFont::FONT_ITALIC : 0 ) |
 		(underline ? gxFont::FONT_UNDERLINE : 0 );
-	gxFont *font=gx_graphics->loadFont( *name,height,flags );
-	delete name;
+	gxFont *font=gx_graphics->loadFont( name,height,flags );
 	return font;
 }
 
@@ -622,18 +618,16 @@ int bbFontHeight(){
 	return curr_font->getHeight();
 }
 
-int bbStringWidth( BBStr *str ){
-	string t=*str;delete str;
-	return curr_font->getWidth( t );
+int bbStringWidth( String str ){
+	return curr_font->getWidth( str );
 }
 
-int bbStringHeight( BBStr *str ){
-	delete str;
+int bbStringHeight( String str ){
 	return curr_font->getHeight();
 }
 
-gxMovie *bbOpenMovie( BBStr *s ){
-	gxMovie *movie=gx_graphics->openMovie( *s,0 );delete s;
+gxMovie *bbOpenMovie( String s ){
+	gxMovie *movie=gx_graphics->openMovie( s,0 );
 	return movie;
 }
 
@@ -660,8 +654,7 @@ void bbCloseMovie( gxMovie *movie ){
 	gx_graphics->closeMovie( movie );
 }
 
-bbImage *bbLoadImage( BBStr *s ){
-	string t=*s;delete s;
+bbImage *bbLoadImage( String t ){
 	gxCanvas *c=gx_graphics->loadCanvas( t,0 );
 	if( !c ) return 0;
 	if( auto_dirty ) c->backup();
@@ -673,10 +666,7 @@ bbImage *bbLoadImage( BBStr *s ){
 	return i;
 }
 
-bbImage *bbLoadAnimImage( BBStr *s,int w,int h,int first,int cnt ){
-
-	string t=*s;delete s;
-
+bbImage *bbLoadAnimImage( String t,int w,int h,int first,int cnt ){
 	if( cnt<1 ) RTEX( "Illegal frame count" );
 	if( first<0 ) RTEX( "Illegal first frame" );
 
@@ -768,11 +758,10 @@ void bbFreeImage( bbImage *i ){
 	delete i;
 }
 
-int bbSaveImage( bbImage *i,BBStr *str,int n ){
+int bbSaveImage( bbImage *i,String str,int n ){
 	debugImage( i,n );
-	string t=*str;delete str;
 	gxCanvas *c=i->getFrames()[n];
-	return saveCanvas( c,t ) ? 1 : 0;
+	return saveCanvas( c,str ) ? 1 : 0;
 }
 
 void bbGrabImage( bbImage *i,int x,int y,int n ){
@@ -1011,26 +1000,23 @@ static void endPrinting( gxCanvas *c ){
 	if( c==gx_canvas ) c->setColor( curr_color );
 }
 
-void bbWrite( BBStr *str ){
+void bbWrite( String str ){
 	gxCanvas *c=startPrinting();
-	c->text( curs_x,curs_y,*str );
-	curs_x+=curr_font->getWidth( *str );
+	c->text( curs_x,curs_y,str );
+	curs_x+=curr_font->getWidth( str );
 	endPrinting( c );
-	delete str;
 }
 
-void bbPrint( BBStr *str ){
+void bbPrint( String str ){
 	gxCanvas *c=startPrinting();
-	c->text( curs_x,curs_y,*str );
+	c->text( curs_x,curs_y,str );
 	curs_x=0;
 	curs_y+=curr_font->getHeight();
 	endPrinting( c );
-	delete str;
 }
 
-BBStr *bbInput( BBStr *prompt ){
+String bbInput( String prompt ){
 	gxCanvas *c=startPrinting();
-	string t=*prompt;delete prompt;
 
 	//get temp canvas
 	if( !p_canvas || p_canvas->getWidth()<c->getWidth() || p_canvas->getHeight()<curr_font->getHeight()*2 ){
@@ -1038,12 +1024,12 @@ BBStr *bbInput( BBStr *prompt ){
 		p_canvas=gx_graphics->createCanvas( c->getWidth(),curr_font->getHeight()*2,0 );
 		if( !p_canvas ){
 			endPrinting(c);
-			return d_new BBStr();
+			return "";
 		}
 	}
 	//draw prompt
-	c->text( curs_x,curs_y,t );
-	curs_x+=curr_font->getWidth( t );
+	c->text( curs_x,curs_y,prompt );
+	curs_x+=curr_font->getWidth(prompt);
 
 	p_canvas->setFont( curr_font );
 	p_canvas->setColor( curr_color );
@@ -1148,7 +1134,7 @@ BBStr *bbInput( BBStr *prompt ){
 	curs_x=0;
 	curs_y+=curr_font->getHeight();
 	endPrinting( c );
-	return d_new BBStr( str );
+	return str;
 }
 
 void bbLocate( int x,int y ){

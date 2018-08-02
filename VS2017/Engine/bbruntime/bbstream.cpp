@@ -55,10 +55,10 @@ float bbReadFloat( bbStream *s ){
 	return n;
 }
 
-BBStr *bbReadString( bbStream *s ){
+String bbReadString( bbStream *s ){
 	if( debug ) debugStream( s );
 	int len;
-	BBStr *str=d_new BBStr();
+	String str=d_new BBStr();
 	if( s->read( (char*)&len,4 ) ){
 		char *buff=d_new char[len];
 		if( s->read( buff,len ) ){
@@ -69,10 +69,10 @@ BBStr *bbReadString( bbStream *s ){
 	return str;
 }
 
-BBStr *bbReadLine( bbStream *s ){
+String bbReadLine( bbStream *s ){
 	if( debug ) debugStream( s );
 	unsigned char c;
-	BBStr *str=d_new BBStr();
+	String str=d_new BBStr();
 	for(;;){
 		if( s->read( (char*)&c,1 )!=1 ) break;
 		if( c=='\n' ) break;
@@ -101,7 +101,7 @@ void bbWriteFloat( bbStream *s,float n ){
 	s->write( (char*)&n,4 );
 }
 
-void bbWriteString( bbStream *s,BBStr *t ){
+void bbWriteString( bbStream *s,String t ){
 	if( debug ) debugStream( s );
 	int n=t->size();
 	s->write( (char*)&n,4 );
@@ -109,7 +109,7 @@ void bbWriteString( bbStream *s,BBStr *t ){
 	delete t;
 }
 
-void bbWriteLine( bbStream *s,BBStr *t ){
+void bbWriteLine( bbStream *s,String t ){
 	if( debug ) debugStream( s );
 	s->write( t->data(),t->size() );
 	s->write( "\r\n",2 );

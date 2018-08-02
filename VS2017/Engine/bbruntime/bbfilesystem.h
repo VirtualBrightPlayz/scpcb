@@ -7,19 +7,19 @@
 
 extern gxFileSystem *gx_filesys;
 
-class bbFile* bbOpenFile(struct BBStr* f);
-class bbFile* bbReadFile(struct BBStr* f);
-class bbFile* bbWriteFile(struct BBStr* f);
-class gxDir* bbReadDir(struct BBStr* d);
+class bbFile* bbOpenFile(String f);
+class bbFile* bbReadFile(String f);
+class bbFile* bbWriteFile(String f);
+class gxDir* bbReadDir(String d);
 void bbCloseDir(class gxDir* d);
-struct BBStr* bbNextFile(class gxDir* d);
-struct BBStr* bbCurrentDir();
-void bbChangeDir(struct BBStr* d);
-void bbCreateDir(struct BBStr* d);
-void bbDeleteDir(struct BBStr* d);
-int bbFileSize(struct BBStr* f);
-int bbFileType(struct BBStr* f);
-void bbCopyFile(struct BBStr* f, struct BBStr* to);
-void bbDeleteFile(struct BBStr* f);
+String bbNextFile(class gxDir* d);
+String bbCurrentDir();
+void bbChangeDir(String d);
+void bbCreateDir(String d);
+void bbDeleteDir(String d);
+int bbFileSize(String f);
+int bbFileType(String f);
+void bbCopyFile(String f, String to);
+void bbDeleteFile(String f);
 
 #endif

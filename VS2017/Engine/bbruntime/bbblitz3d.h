@@ -4,6 +4,7 @@
 
 #include "bbsys.h"
 #include "../gxruntime/gxscene.h"
+#include "../gxruntime/StringType.h"
 
 extern gxScene *gx_scene;
 
@@ -23,15 +24,15 @@ int bbActiveTextures();
 int bbTrisRendered();
 float bbStats3D(int n);
 class Texture* bbCreateTexture(int w, int h, int flags, int frames);
-class Texture* bbLoadTexture(struct BBStr* file, int flags);
-class Texture* bbLoadAnimTexture(struct BBStr* file, int flags, int w, int h, int first, int cnt);
+class Texture* bbLoadTexture(String file, int flags);
+class Texture* bbLoadAnimTexture(String file, int flags, int w, int h, int first, int cnt);
 void bbFreeTexture(class Texture* t);
 void bbTextureBlend(class Texture* t, int blend);
 void bbTextureCoords(class Texture* t, int flags);
 void bbRotateTexture(class Texture* t, float angle);
 int bbTextureWidth(class Texture* t);
 int bbTextureHeight(class Texture* t);
-struct BBStr* bbTextureName(class Texture* t);
+String bbTextureName(class Texture* t);
 void bbSetCubeFace(class Texture* t, int face);
 void bbSetCubeMode(class Texture* t, int mode);
 class gxCanvas* bbTextureBuffer(class Texture* t, int frame);
@@ -45,9 +46,9 @@ void bbBrushTexture(class Brush* b, Texture* t, int frame, int index);
 class Texture* bbGetBrushTexture(class Brush* b, int index);
 void bbBrushBlend(class Brush* b, int blend);
 void bbBrushFX(class Brush* b, int fx);
-class Entity* bbLoadMesh(struct BBStr* f, Entity* p);
-class Entity* bbLoadAnimMesh(struct BBStr* f, Entity* p);
-int bbLoadAnimSeq(class Object* o, BBStr* f);
+class Entity* bbLoadMesh(String f, Entity* p);
+class Entity* bbLoadAnimMesh(String f, Entity* p);
+int bbLoadAnimSeq(class Object* o, String f);
 class Entity* bbCreateMesh(class Entity* p);
 class Entity* bbCreateCube(class Entity* p);
 class Entity* bbCreateSphere(int segs, Entity* p);
@@ -122,7 +123,7 @@ void bbLightRange(class Light* light, float range);
 class Entity* bbCreatePivot(class Entity* p);
 class Entity* bbCreateSprite(class Entity* p);
 void bbRotateSprite(class Sprite* s, float angle);
-class Entity* bbLoadMD2(struct BBStr* file, Entity* p);
+class Entity* bbLoadMD2(String file, Entity* p);
 float bbMD2AnimTime(class MD2Model* m);
 int bbMD2AnimLength(class MD2Model* m);
 int bbMD2Animating(class MD2Model* m);
@@ -168,7 +169,7 @@ int bbAnimating(class Object* o);
 void bbEntityParent(class Entity* e, Entity* p, int global);
 int bbCountChildren(class Entity* e);
 class Entity* bbGetChild(class Entity* e, int index);
-class Entity* bbFindChild(class Entity* e, BBStr* t);
+class Entity* bbFindChild(class Entity* e, String t);
 void bbPaintEntity(class Model* m, Brush* b);
 void bbEntityColor(class Model* m, float r, float g, float b);
 void bbEntityAlpha(class Model* m, float alpha);
@@ -181,8 +182,8 @@ void bbEntityOrder(class Object* o, int n);
 void bbHideEntity(class Entity* e);
 void bbShowEntity(class Entity* e);
 void bbFreeEntity(class Entity* e);
-void bbNameEntity(class Entity* e, struct BBStr* t);
-struct BBStr* bbEntityName(class Entity* e);
-struct BBStr* bbEntityClass(class Entity* e);
+void bbNameEntity(class Entity* e, String t);
+String bbEntityName(class Entity* e);
+String bbEntityClass(class Entity* e);
 
 #endif
