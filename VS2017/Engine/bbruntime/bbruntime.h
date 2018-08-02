@@ -20,17 +20,18 @@ void bbDelay(int ms);
 
 void bbruntime_panic( const char *err );
 
+void bbAppTitle(struct BBStr *ti, struct BBStr *cp);
 void bbEnd();
 void bbStop();
-void bbRuntimeError(class BBStr* str);
-int bbExecFile(class BBStr* f);
+void bbRuntimeError(struct BBStr* str);
+int bbExecFile(struct BBStr* f);
 void bbDelay(int ms);
 int bbMilliSecs();
-class BBStr* bbCommandLine();
-class BBStr* bbSystemProperty(class BBStr* p);
+struct BBStr* bbCommandLine();
+struct BBStr* bbSystemProperty(struct BBStr* p);
 class gxTimer* bbCreateTimer(int hertz);
 int bbWaitTimer(class gxTimer* t);
 void bbFreeTimer(class gxTimer* t);
-void bbDebugLog(class BBStr* t);
+void bbDebugLog(struct BBStr* t);
 
 #endif

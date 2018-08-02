@@ -2,7 +2,6 @@
 #ifndef GXDIR_H
 #define GXDIR_H
 
-#include <string>
 #include <windows.h>
 
 class gxDir{

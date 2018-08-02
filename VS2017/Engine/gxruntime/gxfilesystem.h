@@ -2,8 +2,6 @@
 #ifndef GXFILESYSTEM_H
 #define GXFILESYSTEM_H
 
-#include <string>
-
 #include "gxdir.h"
 
 class gxFileSystem{

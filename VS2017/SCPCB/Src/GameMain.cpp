@@ -1,6 +1,10 @@
 #include "GameMain.h"
 #include "include.h"
 
+#include <bbgraphics.h>
+#include <bbblitz3d.h>
+#include <StringType.h>
+
 namespace CBN {
 
 // Structs.
@@ -88,9 +92,9 @@ int VerifyResolution() {
     int i;
     for (i = 1; i <= bbCountGfxModes3D(); i++) {
         if (bbGfxModeDepth(i) == 32) {
-            if (userOptions->screenWidth == bbGfxModeWidth(i)) & (userOptions->screenHeight == bbGfxModeHeight(i)) {
+            if ((userOptions->screenWidth == bbGfxModeWidth(i)) & (userOptions->screenHeight == bbGfxModeHeight(i))) {
                 selectedMode = i;
-                Exit;
+                break;
             }
         }
     }
@@ -102,7 +106,7 @@ int VerifyResolution() {
 }
 
 void SetTickrate(int tickrate) {
-    timing->tickDuration = 70.0/Float(tickrate);
+    timing->tickDuration = 70.0/(float)(tickrate);
 }
 
 void AddToTimingAccumulator(int milliseconds) {
@@ -110,7 +114,7 @@ void AddToTimingAccumulator(int milliseconds) {
         //DebugLog(milliseconds)
         return;
     }
-    timing->accumulator = timing->accumulator+Max(0,Float(milliseconds)*70.0/1000.0);
+    timing->accumulator = timing->accumulator+Max(0,(float)(milliseconds)*70.0/1000.0);
 }
 
 void ResetTimingAccumulator() {

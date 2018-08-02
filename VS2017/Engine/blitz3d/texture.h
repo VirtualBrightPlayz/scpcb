@@ -2,8 +2,6 @@
 #ifndef TEXTURE_H
 #define TEXTURE_H
 
-#include <string>
-
 #include "cachedtexture.h"
 
 #include "../gxruntime/gxcanvas.h"

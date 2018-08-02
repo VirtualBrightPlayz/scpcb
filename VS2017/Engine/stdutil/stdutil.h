@@ -4,26 +4,10 @@
 
 #pragma warning(disable:4786)
 
-#include <string>
 #include <iostream>
 
-#ifdef MEMDEBUG
-
-void * _cdecl operator new( size_t size );
-void * _cdecl operator new[]( size_t size );
-void * _cdecl operator new( size_t size,const char *file,int line );
-void * _cdecl operator new[]( size_t size,const char *file,int line );
-void _cdecl operator delete( void *q );
-void _cdecl operator delete[]( void *q );
-void _cdecl operator delete( void *q,const char *file,int line );
-void _cdecl operator delete[]( void *q,const char *file,int line );
-#define d_new new( __FILE__,__LINE__ )
-
-#else
-
+//TODO: remove this
 #define d_new new
-
-#endif
 
 void trackmem( bool enable );
 void checkmem( std::ostream &out );

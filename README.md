@@ -1,7 +1,7 @@
 # CBN
 
 Requirements:
-•	Blitz3D v1.108
+•	Visual Studio 2017
 
 # License
 

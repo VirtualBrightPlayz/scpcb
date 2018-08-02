@@ -3,7 +3,6 @@
 #define GXRUNTIME_H
 
 #include <windows.h>
-#include <string>
 #include <vector>
 
 #include "gxaudio.h"

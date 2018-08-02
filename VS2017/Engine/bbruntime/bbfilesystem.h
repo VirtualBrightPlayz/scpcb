@@ -7,19 +7,19 @@
 
 extern gxFileSystem *gx_filesys;
 
-class bbFile* bbOpenFile(class BBStr* f);
-class bbFile* bbReadFile(class BBStr* f);
-class bbFile* bbWriteFile(class BBStr* f);
-class gxDir* bbReadDir(class BBStr* d);
+class bbFile* bbOpenFile(struct BBStr* f);
+class bbFile* bbReadFile(struct BBStr* f);
+class bbFile* bbWriteFile(struct BBStr* f);
+class gxDir* bbReadDir(struct BBStr* d);
 void bbCloseDir(class gxDir* d);
-class BBStr* bbNextFile(class gxDir* d);
-class BBStr* bbCurrentDir();
-void bbChangeDir(class BBStr* d);
-void bbCreateDir(class BBStr* d);
-void bbDeleteDir(class BBStr* d);
-int bbFileSize(class BBStr* f);
-int bbFileType(class BBStr* f);
-void bbCopyFile(class BBStr* f, class BBStr* to);
-void bbDeleteFile(class BBStr* f);
+struct BBStr* bbNextFile(class gxDir* d);
+struct BBStr* bbCurrentDir();
+void bbChangeDir(struct BBStr* d);
+void bbCreateDir(struct BBStr* d);
+void bbDeleteDir(struct BBStr* d);
+int bbFileSize(struct BBStr* f);
+int bbFileType(struct BBStr* f);
+void bbCopyFile(struct BBStr* f, struct BBStr* to);
+void bbDeleteFile(struct BBStr* f);
 
 #endif

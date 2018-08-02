@@ -3,7 +3,6 @@
 #define GXGRAPHICS_H
 
 #include <set>
-#include <string>
 #include <d3d.h>
 
 #include "ddutil.h"

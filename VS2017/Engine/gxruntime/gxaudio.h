@@ -2,8 +2,6 @@
 #ifndef GXAUDIO_H
 #define GXAUDIO_H
 
-#include <string>
-
 #include "gxsound.h"
 
 class gxRuntime;
