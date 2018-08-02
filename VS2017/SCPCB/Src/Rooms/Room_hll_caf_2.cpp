@@ -104,7 +104,7 @@ void Update294() {
 
             switch (ytemp) {
                 case 0: {
-                    strtemp = Str((xtemp + 1) % 10);
+                    strtemp = String((xtemp + 1) % 10);
                 }
                 case 1: {
                     switch (xtemp) {
@@ -339,7 +339,7 @@ void UpdateEvent_hll_caf_2(Event* e) {
                                 if (bbEntityX(it->collider)-bbEntityX(e->room->objects[1],true)==0) {
                                     if (bbEntityZ(it->collider)-bbEntityZ(e->room->objects[1],true)==0) {
                                         temp = false;
-                                        Exit;
+                                        break;
                                     }
                                 }
                             }

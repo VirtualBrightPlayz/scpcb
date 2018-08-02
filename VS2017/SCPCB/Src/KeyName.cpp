@@ -11,7 +11,7 @@ void InitializeKeyName() {
     KeyName[1] = "Esc";
     int i;
     for (i = 2; i <= 10; i++) {
-        KeyName[i] = Str(i-1);
+        KeyName[i] = String(i-1);
     }
     KeyName[11] = "0";
     KeyName[12] = "-";

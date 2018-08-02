@@ -113,7 +113,7 @@ int GrabAsset(String filePath, int asType, int flag = 1) {
         if (filePath == as->file) {
             as->decayTimer = ASSET_DECAY_TIMER;
             as->grabCount = as->grabCount + 1;
-            //DebugLog("GRABBED ASSET: " + filePath + ", " + Str(as\grabCount))
+            //DebugLog("GRABBED ASSET: " + filePath + ", " + String(as\grabCount))
             return as->intVal;
         }
     }
@@ -121,7 +121,7 @@ int GrabAsset(String filePath, int asType, int flag = 1) {
     //Asset doesn't exist, create it.
     as = CreateAsset(filePath, asType, flag);
     as->grabCount = 1;
-    //DebugLog("GRABBED ASSET: " + filePath + ", " + Str(as\grabCount))
+    //DebugLog("GRABBED ASSET: " + filePath + ", " + String(as\grabCount))
 
     return as->intVal;
 }
@@ -145,7 +145,7 @@ void DropAsset(int obj) {
 
         if (obj == as->intVal) {
             as->grabCount = as->grabCount - 1;
-            //DebugLog("DROPPED ASSET: " + as\file + ", " + Str(as\grabCount))
+            //DebugLog("DROPPED ASSET: " + as\file + ", " + String(as\grabCount))
             return;
         }
     }
@@ -161,7 +161,7 @@ void UpdateAssets() {
 
         if (as->grabCount < 1) {
             as->decayTimer = as->decayTimer - timing->tickDuration;
-            //DebugLog("ASSET DECAYING: " + as\file + ", " + Str(as\decayTimer))
+            //DebugLog("ASSET DECAYING: " + as\file + ", " + String(as\decayTimer))
             if (as->decayTimer < 0) {
                 FreeAsset(as);
             }
@@ -623,7 +623,7 @@ void InitLoadGame() {
                 NTF_1499Sky = sky_CreateSky("GFX/Map/sky/1499sky");
                 DrawLoading(93);
                 for (i = 1; i <= 15; i++) {
-                    e->room->objects[i] = bbLoadMesh("GFX/Map/Rooms/dimension1499/1499object" + Str(i) + ".b3d");
+                    e->room->objects[i] = bbLoadMesh("GFX/Map/Rooms/dimension1499/1499object" + String(i) + ".b3d");
                     bbHideEntity(e->room->objects[i]);
                 }
                 DrawLoading(96);
@@ -642,7 +642,7 @@ void InitLoadGame() {
 
                 bbDebugLog("Loaded dimension1499 successful");
 
-                Exit;
+                break;
                 //[End Block]
             }
         }

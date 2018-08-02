@@ -500,7 +500,7 @@ void GenForestGrid(Forest* fr) {
             //before creating a branch make sure there are no 1's above or below
             if ((temp_y!=0 & fr->grid[((gridsize-1-temp_y+1)*gridsize)+new_x]==1) | fr->grid[((gridsize-1-temp_y-1)*gridsize)+new_x]==1) {
                 //break simply to stop creating the branch
-                Exit;
+                break;
             }
             //make 4s so you don't confuse your branch for a path; will be changed later
             fr->grid[((gridsize-1-temp_y)*gridsize)+new_x] = branch_type;
@@ -515,7 +515,7 @@ void GenForestGrid(Forest* fr) {
             while (i<branch_max_life) {
                 i = i+1;
                 if (chance(branch_die_chance)) {
-                    Exit;
+                    break;
                 }
                 //have a higher chance to go up to confuse the player
                 if (bbRand(0,3)==0) {
@@ -532,13 +532,13 @@ void GenForestGrid(Forest* fr) {
                 n = ((gridsize - 1 - temp_y + 1)*gridsize)+new_x;
                 if (n < gridsize-1) {
                     if (temp_y != 0 & fr->grid[n]==1) {
-                        Exit;
+                        break;
                     }
                 }
                 n = ((gridsize - 1 - temp_y - 1)*gridsize)+new_x;
                 if (n>0) {
                     if (fr->grid[n]==1) {
-                        Exit;
+                        break;
                     }
                 }
 
@@ -548,7 +548,7 @@ void GenForestGrid(Forest* fr) {
                 //make 4s so you don't confuse your branch for a path; will be changed later
                 fr->grid[((gridsize-1-temp_y)*gridsize)+new_x] = branch_type;
                 if (temp_y>=gridsize-2) {
-                    Exit;
+                    break;
                 }
             }
         }
@@ -745,7 +745,7 @@ void PlaceForest(Forest* fr, float x, float y, float z, Room* r) {
                         tile_type = ROOM4;
                     }
                     default: {
-                        bbDebugLog("tile_type: "+Str(tile_type));
+                        bbDebugLog("tile_type: "+String(tile_type));
                     }
                 }
 
@@ -840,7 +840,7 @@ void PlaceForest(Forest* fr, float x, float y, float z, Room* r) {
 
                     fr->tileEntities[tx+(ty*gridsize)] = tile_entity;
                 } else {
-                    bbDebugLog("INVALID TILE @ ("+Str(tx)+", "+Str(ty)+ "): "+Str(tile_type));
+                    bbDebugLog("INVALID TILE @ ("+String(tx)+", "+String(ty)+ "): "+String(tile_type));
                 }
             }
 
@@ -967,11 +967,11 @@ int load_terrain(int hmap, float yscale = 0.7, int t1, int t2, int mask) {
     int r;
     float alpha;
 
-    bbDebugLog("load_terrain: "+Str(hmap));
+    bbDebugLog("load_terrain: "+String(hmap));
 
     // load the heightmap
     if (hmap == 0) {
-        bbRuntimeError("Heightmap image "+Str(hmap)+" does not exist.");
+        bbRuntimeError("Heightmap image "+String(hmap)+" does not exist.");
     }
 
     // store heightmap dimensions

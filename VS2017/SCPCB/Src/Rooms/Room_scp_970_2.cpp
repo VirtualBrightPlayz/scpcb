@@ -93,7 +93,7 @@ void UpdateEvent_scp_970_2(Event* e) {
                         if (bbEntityDistance(mainPlayer->collider, Curr173->obj)<8.0) {
                             e->room->doors[1]->locked = true;
                             e->room->doors[4]->locked = true;
-                            Exit;
+                            break;
                         }
                     }
                 }
@@ -213,10 +213,10 @@ void UpdateEvent_scp_970_2(Event* e) {
                                         mainPlayer->inventory->items[i] = CreateItem(itt->name, 1,1,1);
                                         bbHideEntity(mainPlayer->inventory->items[i]->collider);
                                         mainPlayer->inventory->items[i]->picked = true;
-                                        Exit;
+                                        break;
                                     }
                                 }
-                                Exit;
+                                break;
                             }
                         }
                     }
@@ -333,7 +333,7 @@ void UpdateEvent_scp_970_2(Event* e) {
                         }
                     }
 
-                    Exit;
+                    break;
                 }
             }
             //EndIf

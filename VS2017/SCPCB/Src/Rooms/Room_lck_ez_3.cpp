@@ -49,7 +49,7 @@ void FillRoom_lck_ez_3(Room* r) {
             if (r2->roomTemplate->name == "room3gw") {
                 //don't load the mesh again
                 r->objects[3] = bbCopyEntity(r2->objects[3],r->obj);
-                Exit;
+                break;
             }
         }
     }

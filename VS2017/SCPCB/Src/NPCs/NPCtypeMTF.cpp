@@ -23,7 +23,7 @@ void InitializeNPCtypeMTF(NPC* n) {
 
         if (n2->npcType == n->npcType & n2->obj != 0) {
             n->obj = bbCopyEntity(n2->obj);
-            Exit;
+            break;
         }
     }
 
@@ -168,7 +168,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                                     y = 0.1;
                                     z = r->z;
                                     bbDebugLog(r->roomTemplate->name);
-                                    Exit;
+                                    break;
                                 }
                             }
                         } else {
@@ -190,7 +190,7 @@ void UpdateNPCtypeMTF(NPC* n) {
 
                                         if (Distance(bbEntityX(pvt),bbEntityZ(pvt),bbEntityX(n->collider),bbEntityZ(n->collider))<3.5) {
                                             foundChamber = true;
-                                            bbDebugLog(Str(Distance(bbEntityX(pvt),bbEntityZ(pvt),bbEntityX(n->collider),bbEntityZ(n->collider))));
+                                            bbDebugLog(String(Distance(bbEntityX(pvt),bbEntityZ(pvt),bbEntityX(n->collider),bbEntityZ(n->collider))));
                                         }
 
                                         if (Curr173->idle == 3 & Distance(bbEntityX(pvt),bbEntityZ(pvt),bbEntityX(n->collider),bbEntityZ(n->collider)) > 4.0) {
@@ -206,12 +206,12 @@ void UpdateNPCtypeMTF(NPC* n) {
                                             y = 0.1;
                                             z = bbEntityZ(r->obj,true)+1692*RoomScale;
                                             bbDebugLog("Move to 173's chamber");
-                                            Exit;
+                                            break;
                                         } else if ((Distance(bbEntityX(n->collider),bbEntityZ(n->collider),bbEntityX(r->obj,true)+4736*RoomScale,bbEntityZ(r->obj,true)+1692*RoomScale)>1.6 & foundChamber)) {
                                             n->pathX = bbEntityX(r->obj,true)+4736*RoomScale;
                                             n->pathZ = bbEntityZ(r->obj,true)+1692*RoomScale;
                                             bbDebugLog("Move inside 173's chamber");
-                                            Exit;
+                                            break;
                                         } else {
                                             Curr173->idle = 3;
                                             Curr173->target = nullptr;
@@ -220,10 +220,10 @@ void UpdateNPCtypeMTF(NPC* n) {
                                                 bbFreeSound(n->sounds[0]);
                                                 n->sounds[0] = 0;
                                             }
-                                            n->sounds[0] = bbLoadSound("SFX/Character/MTF/173/Cont"+Str(bbRand(1,4))+".ogg");
+                                            n->sounds[0] = bbLoadSound("SFX/Character/MTF/173/Cont"+String(bbRand(1,4))+".ogg");
                                             PlayMTFSound(n->sounds[0], n);
                                             bbDebugLog("173 contained");
-                                            Exit;
+                                            break;
                                         }
                                     }
                                 }
@@ -242,7 +242,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                     if (n->pathStatus == 1) {
                         while (n->path[n->pathLocation]==nullptr) {
                             if (n->pathLocation>19) {
-                                Exit;
+                                break;
                             }
                             n->pathLocation = n->pathLocation+1;
                         }
@@ -385,7 +385,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                                 bbFreeSound(n->sounds[0]);
                                 n->sounds[0] = 0;
                             }
-                            n->sounds[0] = bbLoadSound("SFX/Character/MTF/ThereHeIs"+Str(bbRand(1,6))+".ogg");
+                            n->sounds[0] = bbLoadSound("SFX/Character/MTF/ThereHeIs"+String(bbRand(1,6))+".ogg");
                             PlayMTFSound(n->sounds[0], n);
                         }
                     } else {
@@ -394,7 +394,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                                 bbFreeSound(n->sounds[0]);
                                 n->sounds[0] = 0;
                             }
-                            n->sounds[0] = bbLoadSound("SFX/Character/MTF/bbStop"+Str(bbRand(1,6))+".ogg");
+                            n->sounds[0] = bbLoadSound("SFX/Character/MTF/bbStop"+String(bbRand(1,6))+".ogg");
                             PlayMTFSound(n->sounds[0], n);
                         } else if ((temp == 2)) {
                             //If (n\sounds[0] <> 0) Then FreeSound(n\sounds[0]
@@ -414,7 +414,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                     n->enemyZ = bbEntityZ(mainPlayer->collider,true);
                     //give up after 15 seconds (30 seconds if detected by loud noise, over camera: 45)
                     n->state2 = 70.0*(15.0*temp);
-                    bbDebugLog("player spotted :"+Str(n->state2));
+                    bbDebugLog("player spotted :"+String(n->state2));
                     n->pathTimer = 0.0;
                     n->pathStatus = 0;
                     n->reload = 200-(100*SelectedDifficulty->aggressiveNPCs);
@@ -438,12 +438,12 @@ void UpdateNPCtypeMTF(NPC* n) {
                             n->state3 = 0.0;
                             n->pathTimer = 0.0;
                             n->pathStatus = 0;
-                            bbDebugLog("173 spotted :"+Str(n->state2));
+                            bbDebugLog("173 spotted :"+String(n->state2));
                             if (n->sounds[0] != 0) {
                                 bbFreeSound(n->sounds[0]);
                                 n->sounds[0] = 0;
                             }
-                            n->sounds[0] = bbLoadSound("SFX/Character/MTF/173/Spotted"+Str(bbRand(1,2))+".ogg");
+                            n->sounds[0] = bbLoadSound("SFX/Character/MTF/173/Spotted"+String(bbRand(1,2))+".ogg");
                             PlayMTFSound(n->sounds[0], n);
                         }
                     }
@@ -461,13 +461,13 @@ void UpdateNPCtypeMTF(NPC* n) {
                             n->pathTimer = 0.0;
                             n->pathStatus = 0;
                             n->target = Curr106;
-                            bbDebugLog("106 spotted :"+Str(n->state2));
+                            bbDebugLog("106 spotted :"+String(n->state2));
                             //If n\mtfLeader=Null
                             if (n->sounds[0] != 0) {
                                 bbFreeSound(n->sounds[0]);
                                 n->sounds[0] = 0;
                             }
-                            n->sounds[0] = bbLoadSound("SFX/Character/MTF/106/Spotted"+Str(bbRand(1,3))+".ogg");
+                            n->sounds[0] = bbLoadSound("SFX/Character/MTF/106/Spotted"+String(bbRand(1,3))+".ogg");
                             PlayMTFSound(n->sounds[0], n);
                             //EndIf
                         }
@@ -485,13 +485,13 @@ void UpdateNPCtypeMTF(NPC* n) {
                             n->state3 = 0.0;
                             n->pathTimer = 0.0;
                             n->pathStatus = 0;
-                            bbDebugLog("096 spotted :"+Str(n->state2));
+                            bbDebugLog("096 spotted :"+String(n->state2));
                             //If n\mtfLeader=Null
                             if (n->sounds[0] != 0) {
                                 bbFreeSound(n->sounds[0]);
                                 n->sounds[0] = 0;
                             }
-                            n->sounds[0] = bbLoadSound("SFX/Character/MTF/096/Spotted"+Str(bbRand(1,2))+".ogg");
+                            n->sounds[0] = bbLoadSound("SFX/Character/MTF/096/Spotted"+String(bbRand(1,2))+".ogg");
                             PlayMTFSound(n->sounds[0], n);
                             //EndIf
                         }
@@ -513,14 +513,14 @@ void UpdateNPCtypeMTF(NPC* n) {
                                 n->pathTimer = 0.0;
                                 n->pathStatus = 0;
                                 n->target = n2;
-                                bbDebugLog("049 spotted :"+Str(n->state2));
+                                bbDebugLog("049 spotted :"+String(n->state2));
                                 //If n\mtfLeader=Null
                                 //	If (n\sounds[0] <> 0) Then FreeSound(n\sounds[0]
                                 n->sounds[0] = 0);
                                 //	n\sounds[0] = LoadSound("SFX/Character/MTF/"
                                 //	PlayMTFSound(n\sounds[0], n)
                                 //EndIf
-                                Exit;
+                                break;
                             }
                         }
                     } else if ((n2->npcType == NPCtypeZombie & n2->isDead == false)) {
@@ -536,14 +536,14 @@ void UpdateNPCtypeMTF(NPC* n) {
                                 n->pathStatus = 0;
                                 n->target = n2;
                                 n->reload = 70*5;
-                                bbDebugLog("049-2 spotted :"+Str(n->state2));
+                                bbDebugLog("049-2 spotted :"+String(n->state2));
                                 if (n->sounds[0] != 0) {
                                     bbFreeSound(n->sounds[0]);
                                     n->sounds[0] = 0;
                                 }
                                 n->sounds[0] = bbLoadSound("SFX/Character/MTF/049/Player0492_1.ogg");
                                 PlayMTFSound(n->sounds[0], n);
-                                Exit;
+                                break;
                             }
                         }
                     }
@@ -589,7 +589,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                                     //player killed -> "target terminated"
                                     if ((!prev) & mainPlayer->dead) {
                                         DeathMSG = "Subject D-9341. Terminated by Nine-Tailed Fox.";
-                                        PlayMTFSound(LoadTempSound("SFX/Character/MTF/Targetterminated"+Str(bbRand(1,4))+".ogg"),n);
+                                        PlayMTFSound(LoadTempSound("SFX/Character/MTF/Targetterminated"+String(bbRand(1,4))+".ogg"),n);
                                     }
                                 }
                             }
@@ -747,7 +747,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                                                 n->enemyY = bbEntityY(wp->obj,true);
                                                 n->enemyZ = bbEntityZ(wp->obj,true);
                                                 n->pathTimer = 0.0;
-                                                Exit;
+                                                break;
                                             }
                                         }
                                     }
@@ -769,7 +769,7 @@ void UpdateNPCtypeMTF(NPC* n) {
 
                     if (n->mtfLeader==nullptr & n->lastSeen<70*30 & n->lastSeen+timing->tickDuration>=70*30) {
                         if (bbRand(2)==1) {
-                            PlayMTFSound(LoadTempSound("SFX/Character/MTF/Searching"+Str(bbRand(1,6))+".ogg"),n);
+                            PlayMTFSound(LoadTempSound("SFX/Character/MTF/Searching"+String(bbRand(1,6))+".ogg"),n);
                         }
                     }
 
@@ -780,8 +780,8 @@ void UpdateNPCtypeMTF(NPC* n) {
 
                 if (n->state2<=0.0 & n->state2+timing->tickDuration >0.0) {
                     if (n->mtfLeader == nullptr) {
-                        bbDebugLog("targetlost: "+Str(n->state2));
-                        PlayMTFSound(LoadTempSound("SFX/Character/MTF/Targetlost"+Str(bbRand(1,3))+".ogg"),n);
+                        bbDebugLog("targetlost: "+String(n->state2));
+                        PlayMTFSound(LoadTempSound("SFX/Character/MTF/Targetlost"+String(bbRand(1,3))+".ogg"),n);
                     }
                     n->state = 0;
                 }
@@ -797,7 +797,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                             n->enemyZ = bbEntityZ(Curr173->collider,true);
                             //give up after 15 seconds
                             n->state2 = 70.0*15.0;
-                            bbDebugLog("173 spotted :"+Str(n->state2));
+                            bbDebugLog("173 spotted :"+String(n->state2));
                             if (n->sounds[0] != 0) {
                                 bbFreeSound(n->sounds[0]);
                                 n->sounds[0] = 0;
@@ -823,7 +823,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                             n->pathTimer = 0.0;
                             n->pathStatus = 0;
                             n->target = Curr106;
-                            bbDebugLog("106 spotted :"+Str(n->state2));
+                            bbDebugLog("106 spotted :"+String(n->state2));
                             if (n->mtfLeader==nullptr) {
                                 if (n->sounds[0] != 0) {
                                     bbFreeSound(n->sounds[0]);
@@ -847,13 +847,13 @@ void UpdateNPCtypeMTF(NPC* n) {
                             n->state3 = 0.0;
                             n->pathTimer = 0.0;
                             n->pathStatus = 0;
-                            bbDebugLog("096 spotted :"+Str(n->state2));
+                            bbDebugLog("096 spotted :"+String(n->state2));
                             if (n->mtfLeader==nullptr) {
                                 if (n->sounds[0] != 0) {
                                     bbFreeSound(n->sounds[0]);
                                     n->sounds[0] = 0;
                                 }
-                                n->sounds[0] = bbLoadSound("SFX/Character/MTF/096/Spotted"+Str(bbRand(1,2))+".ogg");
+                                n->sounds[0] = bbLoadSound("SFX/Character/MTF/096/Spotted"+String(bbRand(1,2))+".ogg");
                                 PlayMTFSound(n->sounds[0], n);
                             }
                         }
@@ -875,14 +875,14 @@ void UpdateNPCtypeMTF(NPC* n) {
                                 n->pathTimer = 0.0;
                                 n->pathStatus = 0;
                                 n->target = n2;
-                                bbDebugLog("049 spotted :"+Str(n->state2));
+                                bbDebugLog("049 spotted :"+String(n->state2));
                                 //If n\mtfLeader=Null
                                 //	If (n\sounds[0] <> 0) Then FreeSound(n\sounds[0]
                                 n->sounds[0] = 0);
                                 //	n\sounds[0] = LoadSound("SFX/Character/MTF/"
                                 //	PlayMTFSound(n\sounds[0], n)
                                 //EndIf
-                                Exit;
+                                break;
                             }
                         }
                     } else if ((n2->npcType == NPCtypeZombie & n2->isDead == false)) {
@@ -898,7 +898,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                                 n->pathStatus = 0;
                                 n->target = n2;
                                 n->reload = 70*5;
-                                bbDebugLog("049-2 spotted :"+Str(n->state2));
+                                bbDebugLog("049-2 spotted :"+String(n->state2));
                                 //If n\mtfLeader=Null
                                 if (n->sounds[0] != 0) {
                                     bbFreeSound(n->sounds[0]);
@@ -907,7 +907,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                                 n->sounds[0] = bbLoadSound("SFX/Character/MTF/049/Player0492_1.ogg");
                                 PlayMTFSound(n->sounds[0], n);
                                 //EndIf
-                                Exit;
+                                break;
                             }
                         }
                     }
@@ -948,7 +948,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                         if (curr173Dist<tempDist) {
                             if (n->mtfLeader == nullptr) {
                                 n->state3 = n->state3+timing->tickDuration;
-                                bbDebugLog("CONTAINING 173: "+Str(n->state3));
+                                bbDebugLog("CONTAINING 173: "+String(n->state3));
                                 //If (n\state3>=70.0*10.0) Then
                                 if (n->state3>=70.0*15.0) {
                                     Curr173->idle = 2;
@@ -959,7 +959,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                                         bbFreeSound(n->sounds[0]);
                                         n->sounds[0] = 0;
                                     }
-                                    n->sounds[0] = bbLoadSound("SFX/Character/MTF/173/Box"+Str(bbRand(1,3))+".ogg");
+                                    n->sounds[0] = bbLoadSound("SFX/Character/MTF/173/Box"+String(bbRand(1,3))+".ogg");
                                     PlayMTFSound(n->sounds[0], n);
                                 }
                             }
@@ -1236,7 +1236,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                                         y = 0.1;
                                         z = r->z;
                                         bbDebugLog(r->roomTemplate->name);
-                                        Exit;
+                                        break;
                                     }
                                 }
                             }
@@ -1245,7 +1245,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                         if (n->pathStatus == 1) {
                             while (n->path[n->pathLocation]==nullptr) {
                                 if (n->pathLocation>19) {
-                                    Exit;
+                                    break;
                                 }
                                 n->pathLocation = n->pathLocation+1;
                             }
@@ -1453,7 +1453,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                                 y = 0.1;
                                 z = r->z;
                                 bbDebugLog(r->roomTemplate->name);
-                                Exit;
+                                break;
                             }
                         }
                         //we're going to this room for no particular reason
@@ -1462,7 +1462,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                     if (n->pathStatus == 1) {
                         while (n->path[n->pathLocation]==nullptr) {
                             if (n->pathLocation>19) {
-                                Exit;
+                                break;
                             }
                             n->pathLocation = n->pathLocation+1;
                         }
@@ -1646,7 +1646,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                         if (n->pathStatus == 1) {
                             while (n->path[n->pathLocation]==nullptr) {
                                 if (n->pathLocation>19) {
-                                    Exit;
+                                    break;
                                 }
                                 n->pathLocation = n->pathLocation+1;
                             }
@@ -1782,7 +1782,7 @@ void UpdateMTF() {
 
                 if (bbLower(r->roomTemplate->name) == "gateaentrance") {
                     entrance = r;
-                    Exit;
+                    break;
                 }
             }
 

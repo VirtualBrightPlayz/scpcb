@@ -41,7 +41,7 @@ void UpdateNPCtype066(NPC* n) {
                             if (Abs(bbEntityZ(w->obj,true)-bbEntityZ(n->collider))<4.0) {
                                 bbPositionEntity(n->collider, bbEntityX(w->obj,true), bbEntityY(w->obj,true)+0.3, bbEntityZ(w->obj,true));
                                 bbResetEntity(n->collider);
-                                Exit;
+                                break;
                             }
                         }
                         //EndIf
@@ -72,7 +72,7 @@ void UpdateNPCtype066(NPC* n) {
             }
 
             if (bbRand(700)==1) {
-                PlayRangedSound(LoadTempSound("SFX/SCP/066/Eric"+Str(bbRand(1,3))+".ogg"),mainPlayer->cam, n->collider, 8.0);
+                PlayRangedSound(LoadTempSound("SFX/SCP/066/Eric"+String(bbRand(1,3))+".ogg"),mainPlayer->cam, n->collider, 8.0);
             }
 
             if (n->playerDistance < 1.0+n->lastDist) {
@@ -95,9 +95,9 @@ void UpdateNPCtype066(NPC* n) {
                 if (n->frame==683) {
                     if (n->state2 == 0) {
                         if (bbRand(2)==1) {
-                            PlayRangedSound(LoadTempSound("SFX/SCP/066/Eric"+Str(bbRand(1,3))+".ogg"),mainPlayer->cam, n->collider, 8.0);
+                            PlayRangedSound(LoadTempSound("SFX/SCP/066/Eric"+String(bbRand(1,3))+".ogg"),mainPlayer->cam, n->collider, 8.0);
                         } else {
-                            PlayRangedSound(LoadTempSound("SFX/SCP/066/Notes"+Str(bbRand(1,6))+".ogg"), mainPlayer->cam, n->collider, 8.0);
+                            PlayRangedSound(LoadTempSound("SFX/SCP/066/Notes"+String(bbRand(1,6))+".ogg"), mainPlayer->cam, n->collider, 8.0);
                         }
 
                         switch (bbRand(1,6)) {

@@ -14,7 +14,7 @@ void InitializeNPCtype939(NPC* n) {
             i = i + bbRand(12, 36);
         }
     }
-    n->nvName = "SCP-939-"+Str(i);
+    n->nvName = "SCP-939-"+String(i);
     int amount939 = 0;
 
     for (int iterator131 = 0; iterator131 < NPC::getListSize(); iterator131++) {
@@ -33,7 +33,7 @@ void InitializeNPCtype939(NPC* n) {
     if (amount939 == 2) {
         i = 96;
     }
-    n->nvName = "SCP-939-"+Str(i);
+    n->nvName = "SCP-939-"+String(i);
 
     n->collider = bbCreatePivot();
     bbEntityRadius(n->collider, 0.3);
@@ -43,7 +43,7 @@ void InitializeNPCtype939(NPC* n) {
 
         if (n->npcType == n2->npcType & n!=n2) {
             n->obj = bbCopyEntity(n2->obj);
-            Exit;
+            break;
         }
     }
 
@@ -132,7 +132,7 @@ void UpdateNPCtype939(NPC* n) {
                                 bbFreeSound(n->sounds[0]);
                                 n->sounds[0] = 0;
                             }
-                            n->sounds[0] = bbLoadSound("SFX/SCP/939/"+Str(n->id % 3)+"Lure"+Str(bbRand(1,10))+".ogg");
+                            n->sounds[0] = bbLoadSound("SFX/SCP/939/"+String(n->id % 3)+"Lure"+String(bbRand(1,10))+".ogg");
                             n->soundChannels[0] = PlayRangedSound(n->sounds[0], mainPlayer->cam, n->collider);
                         }
                     }
@@ -262,7 +262,7 @@ void UpdateNPCtype939(NPC* n) {
                         bbFreeSound(n->sounds[0]);
                         n->sounds[0] = 0;
                     }
-                    n->sounds[0] = bbLoadSound("SFX/SCP/939/"+Str(n->id % 3)+"Attack"+Str(bbRand(1,3))+".ogg");
+                    n->sounds[0] = bbLoadSound("SFX/SCP/939/"+String(n->id % 3)+"Attack"+String(bbRand(1,3))+".ogg");
                     n->soundChannels[0] = PlayRangedSound(n->sounds[0], mainPlayer->cam, n->collider);
 
                     PlaySound2(LoadTempSound("SFX/SCP/939/attack.ogg"));
@@ -276,7 +276,7 @@ void UpdateNPCtype939(NPC* n) {
                         bbFreeSound(n->sounds[0]);
                         n->sounds[0] = 0;
                     }
-                    n->sounds[0] = bbLoadSound("SFX/SCP/939/"+Str(n->id % 3)+"Alert"+Str(bbRand(1,3))+".ogg");
+                    n->sounds[0] = bbLoadSound("SFX/SCP/939/"+String(n->id % 3)+"Alert"+String(bbRand(1,3))+".ogg");
                     n->soundChannels[0] = PlayRangedSound(n->sounds[0], mainPlayer->cam, n->collider);
 
                     n->frame = 175;

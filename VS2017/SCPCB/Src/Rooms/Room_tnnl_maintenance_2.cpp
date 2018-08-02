@@ -53,7 +53,7 @@ void FillRoom_tnnl_maintenance_2(Room* r) {
     if (temp < 1000) {
         temp = temp+1000;
     }
-    d = CreateDoor(r->x,r->y,r->z,0, r, false, DOOR_TYPE_CONT, "", Str(temp));
+    d = CreateDoor(r->x,r->y,r->z,0, r, false, DOOR_TYPE_CONT, "", String(temp));
     bbPositionEntity(d->buttons[0], r->x + 224.0 * RoomScale, r->y + 0.7, r->z - 384.0 * RoomScale, true);
     bbRotateEntity(d->buttons[0], 0,-90,0,true);
     bbPositionEntity(d->buttons[1], r->x - 224.0 * RoomScale, r->y + 0.7, r->z + 384.0 * RoomScale, true);

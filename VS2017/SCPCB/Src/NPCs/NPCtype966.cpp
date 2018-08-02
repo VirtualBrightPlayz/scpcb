@@ -14,7 +14,7 @@ void InitializeNPCtype966(NPC* n) {
             i = i + bbRand(1,3);
         }
     }
-    n->nvName = "SCP-966-"+Str(i);
+    n->nvName = "SCP-966-"+String(i);
 
     n->collider = bbCreatePivot();
     bbEntityRadius(n->collider,0.2);
@@ -24,7 +24,7 @@ void InitializeNPCtype966(NPC* n) {
 
         if ((n->npcType == n2->npcType) & (n!=n2)) {
             n->obj = bbCopyEntity(n2->obj);
-            Exit;
+            break;
         }
     }
 
@@ -178,7 +178,7 @@ void UpdateNPCtype966(NPC* n) {
                 }
 
                 if (n->frame>1029.0 & prevFrame<=1029.0 | n->frame>1203.0 & prevFrame<=1203.0) {
-                    PlayRangedSound(LoadTempSound("SFX/SCP/966/Echo"+Str(bbRand(1,3))+".ogg"), mainPlayer->cam, n->collider);
+                    PlayRangedSound(LoadTempSound("SFX/SCP/966/Echo"+String(bbRand(1,3))+".ogg"), mainPlayer->cam, n->collider);
                 }
 
                 angle = bbVectorYaw(bbEntityX(mainPlayer->collider)-bbEntityX(n->collider),0,bbEntityZ(mainPlayer->collider)-bbEntityZ(n->collider));
@@ -233,7 +233,7 @@ void UpdateNPCtype966(NPC* n) {
                 }
 
                 if (n->frame>1393.0 & prevFrame<=1393.0 | n->frame>1589.0 & prevFrame<=1589.0 | n->frame>2000.0 & prevFrame<=2000.0) {
-                    PlayRangedSound(LoadTempSound("SFX/SCP/966/Idle"+Str(bbRand(1,3))+".ogg"), mainPlayer->cam, n->collider);
+                    PlayRangedSound(LoadTempSound("SFX/SCP/966/Idle"+String(bbRand(1,3))+".ogg"), mainPlayer->cam, n->collider);
                 }
 
                 angle = bbVectorYaw(bbEntityX(mainPlayer->collider)-bbEntityX(n->collider),0,bbEntityZ(mainPlayer->collider)-bbEntityZ(n->collider));
@@ -327,7 +327,7 @@ void UpdateNPCtype966(NPC* n) {
             }
             case 10: {
                 if (n->lastSeen==0) {
-                    PlayRangedSound(LoadTempSound("SFX/SCP/966/Echo"+Str(bbRand(1,3))+".ogg"), mainPlayer->cam, n->collider);
+                    PlayRangedSound(LoadTempSound("SFX/SCP/966/Echo"+String(bbRand(1,3))+".ogg"), mainPlayer->cam, n->collider);
                     n->lastSeen = 1;
                 }
 
@@ -368,7 +368,7 @@ void UpdateNPCtype966(NPC* n) {
 
                 if (n->playerDistance<1.0) {
                     if (n->frame>2173.0 & prevFrame<=2173.0 | n->frame>2203.0 & prevFrame<=2203.0 | n->frame>2227.0 & prevFrame<=2227.0) {
-                        PlayRangedSound(LoadTempSound("SFX/General/Slash"+Str(bbRand(1,2))+".ogg"), mainPlayer->cam, n->collider);
+                        PlayRangedSound(LoadTempSound("SFX/General/Slash"+String(bbRand(1,2))+".ogg"), mainPlayer->cam, n->collider);
                         mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.5,1.0);
                     }
                 }

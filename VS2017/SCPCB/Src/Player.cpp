@@ -172,17 +172,17 @@ Player* CreatePlayer() {
 
     int i;
     for (i = 0; i <= 4; i++) {
-        SetIntArrayElem(player->breathingSFX, bbLoadSound("SFX/Character/D9341/breath"+Str(i)+".ogg"), 0, i);
-        SetIntArrayElem(player->breathingSFX, bbLoadSound("SFX/Character/D9341/breath"+Str(i)+"gas.ogg"), 1, i);
+        SetIntArrayElem(player->breathingSFX, bbLoadSound("SFX/Character/D9341/breath"+String(i)+".ogg"), 0, i);
+        SetIntArrayElem(player->breathingSFX, bbLoadSound("SFX/Character/D9341/breath"+String(i)+"gas.ogg"), 1, i);
     }
     for (i = 0; i <= 3; i++) {
-        player->bloodDripSFX[i] = bbLoadSound("SFX/Character/D9341/BloodDrip" + Str(i) + ".ogg");
+        player->bloodDripSFX[i] = bbLoadSound("SFX/Character/D9341/BloodDrip" + String(i) + ".ogg");
     }
     for (i = 0; i <= 8; i++) {
-        player->damageSFX[i] = bbLoadSound("SFX/Character/D9341/Damage" + Str(i + 1) + ".ogg");
+        player->damageSFX[i] = bbLoadSound("SFX/Character/D9341/Damage" + String(i + 1) + ".ogg");
     }
     for (i = 0; i <= 2; i++) {
-        player->coughSFX[i] = bbLoadSound("SFX/Character/D9341/Cough" + Str(i + 1) + ".ogg");
+        player->coughSFX[i] = bbLoadSound("SFX/Character/D9341/Cough" + String(i + 1) + ".ogg");
     }
     player->heartbeatSFX = bbLoadSound("SFX/Character/D9341/Heartbeat.ogg");
 

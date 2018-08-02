@@ -125,7 +125,7 @@ void UpdateEvent_tesla(Event* e) {
                         bbStopChannel(e->soundChannels[0]);
                         e->soundChannels[0] = PlayRangedSound_SM(sndManager->teslaActive, mainPlayer->cam, e->room->objects[3],4.0,0.5);
                         e->eventState = 1;
-                        Exit;
+                        break;
                     }
                 }
             }
@@ -140,7 +140,7 @@ void UpdateEvent_tesla(Event* e) {
                             bbHideEntity(e->room->objects[4]);
                             e->eventState = 1;
                             Curr106->state = 70 * 60 * bbRand(10,13);
-                            Exit;
+                            break;
                         }
                     }
                 }

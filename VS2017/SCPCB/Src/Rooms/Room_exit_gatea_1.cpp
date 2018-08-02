@@ -84,7 +84,7 @@ void UpdateEvent_exit_gatea_1(Event* e) {
 
                 if (r->roomTemplate->name == "gatea") {
                     gatea = r;
-                    Exit;
+                    break;
                 }
             }
 

@@ -153,7 +153,7 @@ void DrawLauncher() {
                 bbRect(x - 1, y - 1, 100, 20, false);
             }
 
-            bbText(x, y, (Str(GetIntArrayElem(launcher->resWidths, i - 1)) + "x" + Str(GetIntArrayElem(launcher->resHeights, i - 1))));
+            bbText(x, y, (String(GetIntArrayElem(launcher->resWidths, i - 1)) + "x" + String(GetIntArrayElem(launcher->resHeights, i - 1))));
             if (MouseOn(x - 1, y - 1, 100, 20)) {
                 bbColor(100, 100, 100);
                 bbRect(x - 1, y - 1, 100, 20, false);
@@ -200,7 +200,7 @@ void DrawLauncher() {
     DrawUITick(40 + 430 - 15, 260 - 55 + 95 + 8, userOptions->launcher);
     bbText(40 + 430 + 15,       262 - 55 + 95 + 8, "Use launcher");
 
-    bbText(40+ 260 + 15, 262 - 55 + 140, "Current Resolution: "+Str(GetIntArrayElem(launcher->resWidths, launcher->selectedGFXMode)) + "x" + Str(GetIntArrayElem(launcher->resHeights, launcher->selectedGFXMode)));
+    bbText(40+ 260 + 15, 262 - 55 + 140, "Current Resolution: "+String(GetIntArrayElem(launcher->resWidths, launcher->selectedGFXMode)) + "x" + String(GetIntArrayElem(launcher->resHeights, launcher->selectedGFXMode)));
 
     //If (GfxModeWidths(SelectedGFXMode)<G_viewport_width) Then
     //	Text(40+ 260 + 65, 262 - 55 + 160, "(upscaled to")

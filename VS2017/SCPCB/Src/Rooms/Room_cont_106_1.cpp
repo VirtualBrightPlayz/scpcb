@@ -250,11 +250,11 @@ void UpdateEvent_cont_106_1(Event* e) {
         if (e->eventState == 0) {
             if (SoundTransmission & bbRand(100)==1) {
                 if (e->soundChannels[1] == 0) {
-                    LoadEventSound(e,"SFX/Character/LureSubject/Idle"+Str(bbRand(1,6))+".ogg",1);
+                    LoadEventSound(e,"SFX/Character/LureSubject/Idle"+String(bbRand(1,6))+".ogg",1);
                     e->soundChannels[1] = bbPlaySound(e->sounds[1]);
                 }
                 if (IsChannelPlaying(e->soundChannels[1]) == false) {
-                    LoadEventSound(e,"SFX/Character/LureSubject/Idle"+Str(bbRand(1,6))+".ogg",1);
+                    LoadEventSound(e,"SFX/Character/LureSubject/Idle"+String(bbRand(1,6))+".ogg",1);
                     e->soundChannels[1] = bbPlaySound(e->sounds[1]);
                 }
             }

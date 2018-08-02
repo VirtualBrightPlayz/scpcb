@@ -300,7 +300,7 @@ void RowText(String A, int X, int Y, int W, int H, int align = 0, float Leading 
 
         //the Next Line(would be too tall, so leave)
         if (((LinesShown + 1) * Height) > H) {
-            Exit;
+            break;
         }
     }
 

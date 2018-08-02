@@ -90,7 +90,7 @@ void UpdateMainMenu() {
                             n = bbRand(4,8);
                             for (i = 1; i <= n; i++) {
                                 if (bbRand(3)==1) {
-                                    RandomSeed = RandomSeed + Str(bbRand(0,9));
+                                    RandomSeed = RandomSeed + String(bbRand(0,9));
                                 } else {
                                     RandomSeed = RandomSeed + bbChr(bbRand(97,122));
                                 }
@@ -130,7 +130,7 @@ void UpdateMainMenu() {
         if (UpdateUIButton(x + width + Int(20.0 * MenuScale), y, Int(580.0 * MenuScale - width - 20.0 * MenuScale), height, "BACK")) {
             switch (CurrGameSubstate) {
                 case GAMESUBSTATE_MAINMENU_NEWGAME: {
-                    PutINIValue(OptionFile, "general", "intro enabled", Str(userOptions->introEnabled));
+                    PutINIValue(OptionFile, "general", "intro enabled", String(userOptions->introEnabled));
                     CurrGameSubstate = GAMESUBSTATE_MAINMENU_MAIN;
                     //save the options
                 }
@@ -211,7 +211,7 @@ void UpdateMainMenu() {
                     }
 
                     if (RandomSeed == "") {
-                        RandomSeed = Str(Abs(bbMilliSecs()));
+                        RandomSeed = String(Abs(bbMilliSecs()));
                     }
                     strtemp = "";
                     bbSeedRnd(SeedStringToInt(RandomSeed));
@@ -221,7 +221,7 @@ void UpdateMainMenu() {
                     //						If (SaveGames(i - 1) = CurrSave) Then SameFound=SameFound+1
                     //					Next
                     //
-                    //					If (SameFound > 0) Then CurrSave = CurrSave + " (" + Str(SameFound + 1) + ")"
+                    //					If (SameFound > 0) Then CurrSave = CurrSave + " (" + String(SameFound + 1) + ")"
 
                     LoadEntities();
                     InitNewGame();
@@ -229,7 +229,7 @@ void UpdateMainMenu() {
                     bbFlushKeys();
                     bbFlushMouse();
 
-                    PutINIValue(OptionFile, "general", "intro enabled", Str(userOptions->introEnabled));
+                    PutINIValue(OptionFile, "general", "intro enabled", String(userOptions->introEnabled));
                 }
 
                 //[End Block]
@@ -350,7 +350,7 @@ void UpdateMainMenu() {
                 //
                 //					For i = 0 To 227
                 //						If (KeyHit(i)) Then key = i
-                Exit;
+                break;
                 //					Next
                 //					If (key<>0) Then
                 //						Select (SelectedInputBox)

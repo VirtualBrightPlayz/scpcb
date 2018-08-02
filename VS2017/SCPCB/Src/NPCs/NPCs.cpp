@@ -121,7 +121,7 @@ NPC* CreateNPC(int NPCtype, float x, float y, float z) {
     n->id = 0;
     n->id = FindFreeNPCID();
 
-    bbDebugLog("Created NPC "+Str(n->nvName)+" (ID: "+Str(n->id)+")");
+    bbDebugLog("Created NPC "+String(n->nvName)+" (ID: "+String(n->id)+")");
 
     NPCSpeedChange(n);
 
@@ -277,7 +277,7 @@ void UpdateNPCs() {
                 for (i = 1; i <= bbCountCollisions(n->collider); i++) {
                     if (bbCollisionY(n->collider, i) < bbEntityY(n->collider) - 0.01) {
                         collidedFloor = true;
-                        Exit;
+                        break;
                     }
                 }
 
@@ -333,7 +333,7 @@ void TeleportCloser(NPC* n) {
                     } else {
                         //just teleports to the first nearby waypoint it finds
                         closestWaypoint = w;
-                        Exit;
+                        break;
                     }
                 }
             }
@@ -434,7 +434,7 @@ void TeleportMTFGroup(NPC* n) {
         }
     }
 
-    bbDebugLog("Teleported MTF Group (dist:"+Str(bbEntityDistance(n->collider,mainPlayer->collider))+")");
+    bbDebugLog("Teleported MTF Group (dist:"+String(bbEntityDistance(n->collider,mainPlayer->collider))+")");
 
 }
 
@@ -657,7 +657,7 @@ int FindFreeNPCID() {
 
             if (n2->id == id) {
                 taken = true;
-                Exit;
+                break;
             }
         }
         if (!taken) {
@@ -1018,7 +1018,7 @@ int PlayerInReachableRoom() {
 
         if (e->name == "room860" & e->eventState == 1.0) {
             temp = true;
-            Exit;
+            break;
         }
     }
     if (RN == "room860" & temp) {
@@ -1065,8 +1065,8 @@ void FindNextElevator(NPC* n) {
                                 if (bbEntityDistance(eo2->obj,n->collider)<bbEntityDistance(eo->obj,n->collider)) {
                                     n->pathStatus = FindPath(n, bbEntityX(eo2->obj,true),bbEntityY(eo2->obj,true),bbEntityZ(eo2->obj,true));
                                     n->currElevator = eo2;
-                                    bbDebugLog("eo2 found for "+Str(n->npcType));
-                                    Exit;
+                                    bbDebugLog("eo2 found for "+String(n->npcType));
+                                    break;
                                 }
                             }
                         }
@@ -1075,13 +1075,13 @@ void FindNextElevator(NPC* n) {
                 if (n->currElevator == nullptr) {
                     n->pathStatus = FindPath(n, bbEntityX(eo->obj,true),bbEntityY(eo->obj,true),bbEntityZ(eo->obj,true));
                     n->currElevator = eo;
-                    bbDebugLog("eo found for "+Str(n->npcType));
+                    bbDebugLog("eo found for "+String(n->npcType));
                 }
                 if (n->pathStatus != 1) {
                     n->currElevator = nullptr;
                     bbDebugLog("Unable to find elevator path: Resetting CurrElevator");
                 }
-                Exit;
+                break;
             }
         }
     }
@@ -1109,14 +1109,14 @@ void GoToElevator(NPC* n) {
         if (n->currElevator->door->open) {
             if ((dist > 0.4 & dist < 0.7) & inside) {
                 UseDoor(n->currElevator->door,false);
-                bbDebugLog(Str(n->npcType)+" used elevator");
+                bbDebugLog(String(n->npcType)+" used elevator");
             }
         } else {
             if (dist < 0.7) {
                 n->currSpeed = 0.0;
                 if (n->currElevator->door->npcCalledElevator==false) {
                     n->currElevator->door->npcCalledElevator = true;
-                    bbDebugLog(Str(n->npcType)+" called elevator");
+                    bbDebugLog(String(n->npcType)+" called elevator");
                 }
             }
         }

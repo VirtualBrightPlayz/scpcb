@@ -325,7 +325,7 @@ void UpdateEvent_cont_1123_2(Event* e) {
                     if (mainPlayer->inventory->items[i]->template->name == "Leaflet") {
                         mainPlayer->inventory->items[i] = nullptr;
                         RemoveItem(mainPlayer->inventory->items[i]);
-                        Exit;
+                        break;
                     }
                 }
             }

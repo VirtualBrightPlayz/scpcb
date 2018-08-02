@@ -87,7 +87,7 @@ void UpdateNPCtype049(NPC* n) {
 
                             if (e->name == "room049") {
                                 e->eventState = -1;
-                                Exit;
+                                break;
                             }
                         }
                     } else {
@@ -334,7 +334,7 @@ void UpdateNPCtype049(NPC* n) {
 
                                         if (bbEntityDistance(r->obj,n->collider)<12.0 & bbEntityDistance(r->obj,n->collider)>4.0) {
                                             n->pathStatus = FindPath(n,bbEntityX(r->obj),bbEntityY(r->obj),bbEntityZ(r->obj));
-                                            Exit;
+                                            break;
                                         }
                                     }
                                 }

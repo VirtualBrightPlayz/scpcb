@@ -16,7 +16,7 @@ void InitializeNPCtypeD(NPC* n) {
 
         if (n2->npcType == n->npcType & n2->obj != 0) {
             n->obj = bbCopyEntity(n2->obj);
-            Exit;
+            break;
         }
     }
 

@@ -16,7 +16,7 @@ void InitializeNPCtypeZombie(NPC* n) {
 
         if (n->npcType == n2->npcType & n!=n2) {
             n->obj = bbCopyEntity(n2->obj);
-            Exit;
+            break;
         }
     }
 

@@ -57,7 +57,7 @@ Event* CreateEvent(String eventname, String roomname, int id, float prob = 0.0) 
 
                     if (e2->room == r) {
                         temp = true;
-                        Exit;
+                        break;
                     }
                 }
 
@@ -81,7 +81,7 @@ Event* CreateEvent(String eventname, String roomname, int id, float prob = 0.0) 
 
                     if (e2->room == r) {
                         temp = true;
-                        Exit;
+                        break;
                     }
                 }
 

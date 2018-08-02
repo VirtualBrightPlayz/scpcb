@@ -20,7 +20,7 @@ void FillRoom_off_gears_may_har_2(Room* r) {
     //, Bump
     int t1;
 
-    d = CreateDoor(r->x + 240.0 * RoomScale, 0.0, r->z + 448.0 * RoomScale, 90, r, false, DOOR_TYPE_DEF, "", Str(AccessCode));
+    d = CreateDoor(r->x + 240.0 * RoomScale, 0.0, r->z + 448.0 * RoomScale, 90, r, false, DOOR_TYPE_DEF, "", String(AccessCode));
     bbPositionEntity(d->buttons[0], r->x + 248.0 * RoomScale, bbEntityY(d->buttons[0],true), bbEntityZ(d->buttons[0],true),true);
     bbPositionEntity(d->buttons[1], r->x + 232.0 * RoomScale, bbEntityY(d->buttons[1],true), bbEntityZ(d->buttons[1],true),true);
     d->autoClose = false;

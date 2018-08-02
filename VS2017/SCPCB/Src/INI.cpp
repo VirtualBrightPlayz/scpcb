@@ -109,13 +109,13 @@ String GetINIString(String file, String section, String parameter, String defaul
         if (bbLeft(strtemp,1) == "[") {
             strtemp = bbLower(strtemp);
             if (bbMid(strtemp, 2, bbLen(strtemp)-2)==section) {
-                Repeat;
-                TemporaryString = ReadINILine(lfile);
-                if (bbLower(bbTrim(bbLeft(TemporaryString, Int(Max(bbInstr(TemporaryString, "=") - 1, 0))))) = bbLower(parameter)) {
-                    //CloseFile(f)
-                    Return Trim( Right(TemporaryString,Len(TemporaryString)-Instr(TemporaryString," = ")) );
-                }
-                Until (Left(TemporaryString, 1) = "[") | (lfile->bankOffset>=lfile->size);
+                do {
+                    TemporaryString = ReadINILine(lfile);
+                    if (bbLower(bbTrim(bbLeft(TemporaryString, Int(Max(bbInstr(TemporaryString, "=") - 1, 0))))) = bbLower(parameter)) {
+                        //CloseFile(f)
+                        Return Trim( Right(TemporaryString,Len(TemporaryString)-Instr(TemporaryString," = ")) );
+                    }
+                } while (Left(TemporaryString, 1) = "[" | (lfile->bankOffset>=lfile->size));
 
                 //CloseFile(f)
                 return defaultvalue;
@@ -127,7 +127,7 @@ String GetINIString(String file, String section, String parameter, String defaul
 }
 
 int GetINIInt(String file, String section, String parameter, int defaultvalue = 0) {
-    String txt = GetINIString(file, section, parameter, Str(defaultvalue));
+    String txt = GetINIString(file, section, parameter, String(defaultvalue));
     if (bbLower(txt) == "true") {
         return 1;
     } else if ((bbLower(txt) == "false")) {
@@ -138,7 +138,7 @@ int GetINIInt(String file, String section, String parameter, int defaultvalue = 
 }
 
 float GetINIFloat(String file, String section, String parameter, float defaultvalue = 0.0) {
-    return Float(GetINIString(file, section, parameter, Str(defaultvalue)));
+    return Float(GetINIString(file, section, parameter, String(defaultvalue)));
 }
 
 String GetINIString2(String file, int start, String parameter, String defaultvalue = "") {
@@ -149,15 +149,15 @@ String GetINIString2(String file, int start, String parameter, String defaultval
     int n = 0;
     while (!bbEof(f)) {
         strTemp = bbReadLine(f);
-        n = n+1;
+        n++;
         if (n==start) {
-            Repeat;
-            TemporaryString = bbReadLine(f);
-            if (bbLower(bbTrim(bbLeft(TemporaryString, Int(Max(bbInstr(TemporaryString, "=") - 1, 0))))) = bbLower(parameter)) {
-                bbCloseFile(f);
-                Return Trim( Right(TemporaryString,Len(TemporaryString)-Instr(TemporaryString," = ")) );
-            }
-            Until Left(TemporaryString, 1) = "[" | bbEof(f);
+            do {
+                TemporaryString = bbReadLine(f);
+                if (bbLower(bbTrim(bbLeft(TemporaryString, Int(Max(bbInstr(TemporaryString, "=") - 1, 0))))) = bbLower(parameter)) {
+                    bbCloseFile(f);
+                    Return Trim( Right(TemporaryString,Len(TemporaryString)-Instr(TemporaryString," = ")) );
+                }
+            } while (Left(TemporaryString, 1) = "[" | bbEof(f));
             bbCloseFile(f);
             return defaultvalue;
         }
@@ -169,7 +169,7 @@ String GetINIString2(String file, int start, String parameter, String defaultval
 }
 
 int GetINIInt2(String file, int start, String parameter, String defaultvalue = "") {
-    String txt = GetINIString2(file, start, parameter, Str(defaultvalue));
+    String txt = GetINIString2(file, start, parameter, String(defaultvalue));
     if (bbLower(txt) == "true") {
         return 1;
     } else if ((bbLower(txt) == "false")) {
