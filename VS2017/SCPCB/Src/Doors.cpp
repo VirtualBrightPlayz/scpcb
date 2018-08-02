@@ -51,7 +51,7 @@ Door* CreateDoor(float x, float y, float z, float angle, Room* room, int open = 
 
     int hczDoorObj[2];
     for (i = 0; i <= 1; i++) {
-        hczDoorObj[i] = GrabMesh("GFX/Map/Meshes/heavydoor" + Str(i + 1) + ".b3d");
+        hczDoorObj[i] = GrabMesh("GFX/Map/Meshes/heavydoor" + String(i + 1) + ".b3d");
     }
 
     int buttonCodeObj;
@@ -466,7 +466,7 @@ void UseDoor(Door* d, int showmsg = true) {
                     playerHasKeycard = true;
                     if (HasTag(item, d->tag) | HasTag(item, ITEM_TAG_OMNI)) {
                         playerHasRightKeycard = true;
-                        Exit;
+                        break;
                     }
                 }
             }

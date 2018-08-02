@@ -195,7 +195,7 @@ void UpdateEventCoffin(Event* e) {
                     if (mainPlayer->inventory->items[i]->template->name == "nvgoggles" | mainPlayer->inventory->items[i]->template->name == "supernv") {
                         if (mainPlayer->inventory->items[i]->state > 0.0) {
                             hasBatteryFor895 = 1;
-                            Exit;
+                            break;
                         }
                     }
                 }

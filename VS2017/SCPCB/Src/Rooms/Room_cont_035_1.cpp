@@ -181,7 +181,7 @@ void UpdateEvent_cont_035_1(Event* e) {
 
                         bbRotateEntity(n->collider, 0, e->room->angle+270, 0, true);
 
-                        Exit;
+                        break;
                     }
                 }
             }
@@ -539,7 +539,7 @@ void UpdateEvent_cont_035_1(Event* e) {
                                     if (Abs(bbEntityX(e->room->obj)-bbEntityX(do->frameobj,true))<4.5) {
                                         if (Abs(bbEntityZ(e->room->obj)-bbEntityZ(do->frameobj,true))<4.5) {
                                             UseDoor(do,false);
-                                            Exit;
+                                            break;
                                         }
                                     }
                                 }

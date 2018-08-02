@@ -16,7 +16,7 @@ void InitializeNPCtype1499(NPC* n) {
 
         if ((n->npcType == n2->npcType) & (n!=n2)) {
             n->obj = bbCopyEntity(n2->obj);
-            Exit;
+            break;
         }
     }
 
@@ -48,7 +48,7 @@ void UpdateNPCtype1499(NPC* n) {
                     if (n2->state != 0 & n2->state != 2) {
                         n->state = 1;
                         n->state2 = 0;
-                        Exit;
+                        break;
                     }
                 }
             }
@@ -108,7 +108,7 @@ void UpdateNPCtype1499(NPC* n) {
                                 bbFreeSound(n->sounds[0]);
                                 n->sounds[0] = 0;
                             }
-                            n->sounds[0] = bbLoadSound("SFX/SCP/1499/Idle"+Str(bbRand(1,4))+".ogg");
+                            n->sounds[0] = bbLoadSound("SFX/SCP/1499/Idle"+String(bbRand(1,4))+".ogg");
                             n->soundChannels[0] = PlayRangedSound(n->sounds[0], mainPlayer->cam, n->collider, 20.0);
                         }
                     }
@@ -206,7 +206,7 @@ void UpdateNPCtype1499(NPC* n) {
                             //Miss
                         } else {
                             mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.75,1.5);
-                            PlayRangedSound(LoadTempSound("SFX/General/Slash"+Str(bbRand(1,2))+".ogg"), mainPlayer->cam, n->collider);
+                            PlayRangedSound(LoadTempSound("SFX/General/Slash"+String(bbRand(1,2))+".ogg"), mainPlayer->cam, n->collider);
                             if (mainPlayer->injuries > 10.0) {
                                 Kill(mainPlayer);
                                 if (mainPlayer->currRoom->roomTemplate->name == "dimension1499") {
@@ -231,7 +231,7 @@ void UpdateNPCtype1499(NPC* n) {
                             //Miss
                         } else {
                             mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.75,1.5);
-                            PlayRangedSound(LoadTempSound("SFX/General/Slash"+Str(bbRand(1,2))+".ogg"), mainPlayer->cam, n->collider);
+                            PlayRangedSound(LoadTempSound("SFX/General/Slash"+String(bbRand(1,2))+".ogg"), mainPlayer->cam, n->collider);
                             if (mainPlayer->injuries > 10.0) {
                                 Kill(mainPlayer);
                                 if (mainPlayer->currRoom->roomTemplate->name == "dimension1499") {

@@ -25,7 +25,7 @@ void FillRoom_hll_dirty_3(Room* r) {
 
         if (r2->roomTemplate->name == r->roomTemplate->name & r2 != r) {
             r->objects[0] = bbCopyEntity(r2->objects[0],r->obj);
-            Exit;
+            break;
         }
     }
     //If (r\objects[0]=0) Then r\objects[0] = LoadMesh("GFX/Map/room3z2_hb.b3d",r\obj)

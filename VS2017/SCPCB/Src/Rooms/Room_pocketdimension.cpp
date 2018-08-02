@@ -372,7 +372,7 @@ void UpdateEvent_pocketdimension(Event* e) {
 
                         if (Distance(bbEntityX(mainPlayer->collider), bbEntityZ(mainPlayer->collider), x, z) < 200*RoomScale) {
                             safe = true;
-                            Exit;
+                            break;
                         }
                     }
 
@@ -529,7 +529,7 @@ void UpdateEvent_pocketdimension(Event* e) {
                                         bbPositionEntity(mainPlayer->collider, bbEntityX(r->obj), 0.4, bbEntityZ(r->obj));
                                         bbResetEntity(mainPlayer->collider);
                                         Curr106->idle = false;
-                                        Exit;
+                                        break;
                                     }
                                 }
                             }
@@ -559,7 +559,7 @@ void UpdateEvent_pocketdimension(Event* e) {
 
                             Curr106->state = 10000;
                             Curr106->idle = false;
-                            Exit;
+                            break;
                         }
                     }
                     bbResetEntity(mainPlayer->collider);
@@ -646,7 +646,7 @@ void UpdateEvent_pocketdimension(Event* e) {
                                 bbPositionEntity(mainPlayer->collider, bbEntityX(r->obj), 0.4, bbEntityZ(r->obj));
                                 bbResetEntity(mainPlayer->collider);
                                 Curr106->idle = false;
-                                Exit;
+                                break;
                             }
                         }
                         //the tower room

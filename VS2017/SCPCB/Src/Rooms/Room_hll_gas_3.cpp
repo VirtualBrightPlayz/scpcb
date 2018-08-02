@@ -142,7 +142,7 @@ void UpdateEventRoom3pit1048(Event* e) {
             bbSetAnimTime(e->room->objects[2], 414);
 
             //TODO: Redo.
-            //			imgPath = "GFX/items/1048/1048_"+Str(Rand(1,20))+".jpg"
+            //			imgPath = "GFX/items/1048/1048_"+String(Rand(1,20))+".jpg"
             //
             //			For itt = Each ItemTemplate
             //				If (itt\name = "Drawing") Then

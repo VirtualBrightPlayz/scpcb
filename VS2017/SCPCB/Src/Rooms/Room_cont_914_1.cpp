@@ -153,7 +153,7 @@ void UpdateEvent_cont_914_1(Event* e) {
                                         if (Abs(bbEntityY(it->collider) - (e->room->y + 648.0 * RoomScale)) < 104.0) {
                                             e->eventState = 1;
                                             e->soundChannels[0] = PlayRangedSound(e->sounds[0], mainPlayer->cam, e->room->objects[1]);
-                                            Exit;
+                                            break;
                                         }
                                     }
                                 }

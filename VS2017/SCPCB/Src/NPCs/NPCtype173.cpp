@@ -149,7 +149,7 @@ void UpdateNPCtype173(NPC* n) {
                                             bbDebugLog("MOVING 173 TO " + w->room->roomTemplate->name);
                                             bbPositionEntity(n->collider, bbEntityX(w->obj,true), bbEntityY(w->obj,true)+0.25,bbEntityZ(w->obj,true));
                                             bbResetEntity(n->collider);
-                                            Exit;
+                                            break;
                                         }
                                     }
                                 }

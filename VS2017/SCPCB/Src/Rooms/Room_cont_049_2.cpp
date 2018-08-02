@@ -180,7 +180,7 @@ void UpdateEvent_cont_049_2(Event* e) {
                             e->room->npc[0]->idle = 1;
                             bbPositionEntity(e->room->npc[0]->collider,bbEntityX(e->room->objects[4],true),bbEntityY(e->room->objects[4],true)+3,bbEntityZ(e->room->objects[4],true));
                             bbResetEntity(e->room->npc[0]->collider);
-                            Exit;
+                            break;
                         }
                     }
                     if (e->room->npc[0]==nullptr) {
@@ -237,7 +237,7 @@ void UpdateEvent_cont_049_2(Event* e) {
                                 e->room->doors[i-1]->open = false;
                                 e->room->doors[i]->open = true;
                                 e->room->npc[0]->pathStatus = FindPath(e->room->npc[0],bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider),bbEntityZ(mainPlayer->collider));
-                                PlayRangedSound(LoadTempSound("SFX/SCP/049/Greeting"+Str(bbRand(1,2))+".ogg"),mainPlayer->cam, e->room->npc[0]->collider);
+                                PlayRangedSound(LoadTempSound("SFX/SCP/049/Greeting"+String(bbRand(1,2))+".ogg"),mainPlayer->cam, e->room->npc[0]->collider);
                                 e->room->npc[0]->idle = 0;
                                 //EndIf
                             }
@@ -253,7 +253,7 @@ void UpdateEvent_cont_049_2(Event* e) {
                         //If (e\room\npc[0]=Null) Then
                         //	For n.NPC = Each NPC
                         //		If (n\npcType=NPCtype049) Then e\room\npc[0]=n
-                        Exit;
+                        break;
                         //	Next
                         //EndIf
                         //e\room\npc[0]\state = 1
@@ -274,7 +274,7 @@ void UpdateEvent_cont_049_2(Event* e) {
                     //If (e\room\npc[0]=Null) Then
                     //	For n.NPC = Each NPC
                     //		If (n\npcType=NPCtype049) Then e\room\npc[0]=n
-                    Exit;
+                    break;
                     //	Next
                     //Else
                     //If (EntityDistance(e\room\npc[0]\collider,mainPlayer\collider)<4.0) Then

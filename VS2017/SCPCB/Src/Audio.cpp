@@ -122,27 +122,27 @@ void LoadInGameSounds(SoundManager* sndMan) {
     sndMan->buttonErr = InitializeSound_SM("SFX/Interact/Button2.ogg");
 
     for (i = 0; i <= 7; i++) {
-        sndMan->footstep[i] = LoadSound_SM("SFX/Step/Step" + Str(i + 1) + ".ogg");
-        sndMan->footstepRun[i] = LoadSound_SM("SFX/Step/Run" + Str(i + 1) + ".ogg");
-        sndMan->footstepMetal[i] = LoadSound_SM("SFX/Step/StepMetal" + Str(i + 1) + ".ogg");
-        sndMan->footstepMetalRun[i] = LoadSound_SM("SFX/Step/RunMetal" + Str(i + 1) + ".ogg");
+        sndMan->footstep[i] = LoadSound_SM("SFX/Step/Step" + String(i + 1) + ".ogg");
+        sndMan->footstepRun[i] = LoadSound_SM("SFX/Step/Run" + String(i + 1) + ".ogg");
+        sndMan->footstepMetal[i] = LoadSound_SM("SFX/Step/StepMetal" + String(i + 1) + ".ogg");
+        sndMan->footstepMetalRun[i] = LoadSound_SM("SFX/Step/RunMetal" + String(i + 1) + ".ogg");
     }
 
     for (i = 0; i <= 2; i++) {
-        sndMan->footstepPD[i] = InitializeSound_SM("SFX/Step/StepPD" + Str(i + 1) + ".ogg");
-        sndMan->footstep8601[i] = InitializeSound_SM("SFX/Step/StepForest" + Str(i + 1) + ".ogg");
+        sndMan->footstepPD[i] = InitializeSound_SM("SFX/Step/StepPD" + String(i + 1) + ".ogg");
+        sndMan->footstep8601[i] = InitializeSound_SM("SFX/Step/StepForest" + String(i + 1) + ".ogg");
     }
 
     for (i = 0; i <= 2; i++) {
-        sndMan->openDoor[i] = LoadSound_SM("SFX/Door/DoorOpen" + Str(i + 1) + ".ogg");
-        sndMan->closeDoor[i] = LoadSound_SM("SFX/Door/DoorClose" + Str(i + 1) + ".ogg");
-        sndMan->openHCZDoor[i] = LoadSound_SM("SFX/Door/Door2Open" + Str(i + 1) + ".ogg");
-        sndMan->closeHCZDoor[i] = LoadSound_SM("SFX/Door/Door2Close" + Str(i + 1) + ".ogg");
+        sndMan->openDoor[i] = LoadSound_SM("SFX/Door/DoorOpen" + String(i + 1) + ".ogg");
+        sndMan->closeDoor[i] = LoadSound_SM("SFX/Door/DoorClose" + String(i + 1) + ".ogg");
+        sndMan->openHCZDoor[i] = LoadSound_SM("SFX/Door/Door2Open" + String(i + 1) + ".ogg");
+        sndMan->closeHCZDoor[i] = LoadSound_SM("SFX/Door/Door2Close" + String(i + 1) + ".ogg");
     }
 
     for (i = 0; i <= 1; i++) {
-        sndMan->openBigDoor[i] = InitializeSound_SM("SFX/Door/BigDoorOpen" + Str(i + 1) + ".ogg");
-        sndMan->closeBigDoor[i] = InitializeSound_SM("SFX/Door/BigDoorClose" + Str(i + 1) + ".ogg");
+        sndMan->openBigDoor[i] = InitializeSound_SM("SFX/Door/BigDoorOpen" + String(i + 1) + ".ogg");
+        sndMan->closeBigDoor[i] = InitializeSound_SM("SFX/Door/BigDoorClose" + String(i + 1) + ".ogg");
     }
 
     sndMan->keycardUse = InitializeSound_SM("SFX/Interact/KeyCardUse1.ogg");
@@ -151,7 +151,7 @@ void LoadInGameSounds(SoundManager* sndMan) {
     sndMan->scannerErr = InitializeSound_SM("SFX/Interact/ScannerUse2.ogg");
 
     for (i = 0; i <= 3; i++) {
-        sndMan->itemPick[i] = LoadSound_SM("SFX/Interact/PickItem" + Str(i) + ".ogg");
+        sndMan->itemPick[i] = LoadSound_SM("SFX/Interact/PickItem" + String(i) + ".ogg");
     }
 
     sndMan->elevatorBeep = InitializeSound_SM("SFX/General/Elevator/Beep.ogg");
@@ -673,7 +673,7 @@ int GetMaterialStepSound(int entity) {
                             bbFreeBrush(brush);
                             return mat->stepSound;
                         }
-                        Exit;
+                        break;
                     }
                 }
             }
@@ -691,7 +691,7 @@ int GetMaterialStepSound(int entity) {
                         if (mat->stepSound > 0) {
                             return mat->stepSound;
                         }
-                        Exit;
+                        break;
                     }
                 }
             }

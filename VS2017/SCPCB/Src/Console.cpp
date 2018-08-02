@@ -253,7 +253,7 @@ void UpdateConsole() {
 
                 while (ConsoleReissue!=nullptr) {
                     if (ConsoleReissue->isCommand) {
-                        Exit;
+                        break;
                     }
                     reissuePos = reissuePos - Int(15.0*MenuScale);
                     ConsoleReissue = After ConsoleReissue;
@@ -263,7 +263,7 @@ void UpdateConsole() {
                 cm = First ConsoleMsg;
                 while (cm != nullptr) {
                     if (cm==ConsoleReissue) {
-                        Exit;
+                        break;
                     }
                     reissuePos = reissuePos-Int(15.0*MenuScale);
                     cm = After cm;
@@ -278,7 +278,7 @@ void UpdateConsole() {
                     }
 
                     if (ConsoleReissue->isCommand) {
-                        Exit;
+                        break;
                     }
                     reissuePos = reissuePos - Int(15.0*MenuScale);
                     ConsoleReissue = After ConsoleReissue;
@@ -298,7 +298,7 @@ void UpdateConsole() {
 
                 while (ConsoleReissue!=nullptr) {
                     if (ConsoleReissue->isCommand) {
-                        Exit;
+                        break;
                     }
                     reissuePos = reissuePos + Int(15.0*MenuScale);
                     ConsoleReissue = Before ConsoleReissue;
@@ -308,7 +308,7 @@ void UpdateConsole() {
                 cm = Last ConsoleMsg;
                 while (cm!=nullptr) {
                     if (cm==ConsoleReissue) {
-                        Exit;
+                        break;
                     }
                     reissuePos = reissuePos+Int(15.0*MenuScale);
                     cm = Before cm;
@@ -323,7 +323,7 @@ void UpdateConsole() {
                     }
 
                     if (ConsoleReissue->isCommand) {
-                        Exit;
+                        break;
                     }
                     reissuePos = reissuePos + Int(15.0*MenuScale);
                     ConsoleReissue = Before ConsoleReissue;
@@ -563,12 +563,12 @@ void UpdateConsole() {
                     CreateConsoleMsg("******************************");
                     CreateConsoleMsg("Status: ");
                     CreateConsoleMsg("Coordinates: ");
-                    CreateConsoleMsg("    - collider: "+Str(bbEntityX(mainPlayer->collider))+", "+Str(bbEntityY(mainPlayer->collider))+", "+Str(bbEntityZ(mainPlayer->collider)));
-                    CreateConsoleMsg("    - camera: "+Str(bbEntityX(mainPlayer->cam))+", "+Str(bbEntityY(mainPlayer->cam))+", "+Str(bbEntityZ(mainPlayer->cam)));
+                    CreateConsoleMsg("    - collider: "+String(bbEntityX(mainPlayer->collider))+", "+String(bbEntityY(mainPlayer->collider))+", "+String(bbEntityZ(mainPlayer->collider)));
+                    CreateConsoleMsg("    - camera: "+String(bbEntityX(mainPlayer->cam))+", "+String(bbEntityY(mainPlayer->cam))+", "+String(bbEntityZ(mainPlayer->cam)));
 
                     CreateConsoleMsg("Rotation: ");
-                    CreateConsoleMsg("    - collider: "+Str(bbEntityPitch(mainPlayer->collider))+", "+Str(bbEntityYaw(mainPlayer->collider))+", "+Str(bbEntityRoll(mainPlayer->collider)));
-                    CreateConsoleMsg("    - camera: "+Str(bbEntityPitch(mainPlayer->cam))+", "+Str(bbEntityYaw(mainPlayer->cam))+", "+Str(bbEntityRoll(mainPlayer->cam)));
+                    CreateConsoleMsg("    - collider: "+String(bbEntityPitch(mainPlayer->collider))+", "+String(bbEntityYaw(mainPlayer->collider))+", "+String(bbEntityRoll(mainPlayer->collider)));
+                    CreateConsoleMsg("    - camera: "+String(bbEntityPitch(mainPlayer->cam))+", "+String(bbEntityYaw(mainPlayer->cam))+", "+String(bbEntityRoll(mainPlayer->cam)));
 
                     CreateConsoleMsg("Room: "+mainPlayer->currRoom->roomTemplate->name);
                     for (int iterator43 = 0; iterator43 < Event::getListSize(); iterator43++) {
@@ -576,19 +576,19 @@ void UpdateConsole() {
 
                         if (ev->room == mainPlayer->currRoom) {
                             CreateConsoleMsg("Room event: "+ev->name);
-                            CreateConsoleMsg("-    state: "+Str(ev->eventState));
-                            CreateConsoleMsg("-    state2: "+Str(ev->eventState2));
-                            CreateConsoleMsg("-    state3: "+Str(ev->eventState3));
-                            Exit;
+                            CreateConsoleMsg("-    state: "+String(ev->eventState));
+                            CreateConsoleMsg("-    state2: "+String(ev->eventState2));
+                            CreateConsoleMsg("-    state3: "+String(ev->eventState3));
+                            break;
                         }
                     }
 
-                    CreateConsoleMsg("Room coordinates: "+Str(bbFloor(bbEntityX(mainPlayer->currRoom->obj) / 8.0 + 0.5))+", "+Str(bbFloor(bbEntityZ(mainPlayer->currRoom->obj) / 8.0 + 0.5)));
-                    CreateConsoleMsg("Stamina: "+Str(mainPlayer->stamina));
+                    CreateConsoleMsg("Room coordinates: "+String(bbFloor(bbEntityX(mainPlayer->currRoom->obj) / 8.0 + 0.5))+", "+String(bbFloor(bbEntityZ(mainPlayer->currRoom->obj) / 8.0 + 0.5)));
+                    CreateConsoleMsg("Stamina: "+String(mainPlayer->stamina));
                     //CreateConsoleMsg("Dead: "+mainPlayer\dead)
-                    CreateConsoleMsg("Blinktimer: "+Str(mainPlayer->blinkTimer));
-                    CreateConsoleMsg("Injuries: "+Str(mainPlayer->injuries));
-                    CreateConsoleMsg("Bloodloss: "+Str(mainPlayer->bloodloss));
+                    CreateConsoleMsg("Blinktimer: "+String(mainPlayer->blinkTimer));
+                    CreateConsoleMsg("Injuries: "+String(mainPlayer->injuries));
+                    CreateConsoleMsg("Bloodloss: "+String(mainPlayer->bloodloss));
                     CreateConsoleMsg("******************************");
 
                 }
@@ -609,7 +609,7 @@ void UpdateConsole() {
                         t = bbGetBrushTexture(b,0);
                         texname = StripPath(bbTextureName(t));
                         CreateConsoleMsg("Texture name: "+texname);
-                        CreateConsoleMsg("Coordinates: "+Str(bbEntityX(c))+", "+Str(bbEntityY(c))+", "+Str(bbEntityZ(c)));
+                        CreateConsoleMsg("Coordinates: "+String(bbEntityX(c))+", "+String(bbEntityY(c))+", "+String(bbEntityZ(c)));
                         CreateConsoleMsg("******************************");
                         bbFreeTexture(t);
                         bbFreeBrush(b);
@@ -618,7 +618,7 @@ void UpdateConsole() {
                 }
                 case "hidedistance": {
                     HideDistance = Float(bbRight(ConsoleInput, bbLen(ConsoleInput) - bbInstr(ConsoleInput, " ")));
-                    CreateConsoleMsg("Hidedistance set to "+Str(HideDistance));
+                    CreateConsoleMsg("Hidedistance set to "+String(HideDistance));
 
                 }
                 case "ending": {
@@ -665,7 +665,7 @@ void UpdateConsole() {
                             UpdateDoors();
                             UpdateRooms();
                             mainPlayer->currRoom = r;
-                            Exit;
+                            break;
                         }
                     }
 
@@ -686,7 +686,7 @@ void UpdateConsole() {
                             UpdateRooms();
                             mainPlayer->currRoom = r;
                             CreateItem("gasmask", r->x, r->y+2, r->z);
-                            Exit;
+                            break;
                         }
                     }
 
@@ -701,7 +701,7 @@ void UpdateConsole() {
                             temp = true;
                             CreateConsoleMsg(itt->name + " spawned.");
                             it = CreateItem(itt->name, bbEntityX(mainPlayer->collider), bbEntityY(mainPlayer->cam,true), bbEntityZ(mainPlayer->collider));
-                            Exit;
+                            break;
                         }
                     }
 
@@ -764,16 +764,16 @@ void UpdateConsole() {
                 }
                 case "173state": {
                     CreateConsoleMsg("SCP-173");
-                    CreateConsoleMsg("Position: " + Str(bbEntityX(Curr173->obj)) + ", " + Str(bbEntityY(Curr173->obj)) + ", " + Str(bbEntityZ(Curr173->obj)));
-                    CreateConsoleMsg("Idle: " + Str(Curr173->idle));
-                    CreateConsoleMsg("State: " + Str(Curr173->state));
+                    CreateConsoleMsg("Position: " + String(bbEntityX(Curr173->obj)) + ", " + String(bbEntityY(Curr173->obj)) + ", " + String(bbEntityZ(Curr173->obj)));
+                    CreateConsoleMsg("Idle: " + String(Curr173->idle));
+                    CreateConsoleMsg("State: " + String(Curr173->state));
 
                 }
                 case "106state": {
                     CreateConsoleMsg("SCP-106");
-                    CreateConsoleMsg("Position: " + Str(bbEntityX(Curr106->obj)) + ", " + Str(bbEntityY(Curr106->obj)) + ", " + Str(bbEntityZ(Curr106->obj)));
-                    CreateConsoleMsg("Idle: " + Str(Curr106->idle));
-                    CreateConsoleMsg("State: " + Str(Curr106->state));
+                    CreateConsoleMsg("Position: " + String(bbEntityX(Curr106->obj)) + ", " + String(bbEntityY(Curr106->obj)) + ", " + String(bbEntityZ(Curr106->obj)));
+                    CreateConsoleMsg("Idle: " + String(Curr106->idle));
+                    CreateConsoleMsg("State: " + String(Curr106->state));
 
                 }
                 case "spawn513-1": {
@@ -791,7 +791,7 @@ void UpdateConsole() {
 
                         if (n->npcType == NPCtype096) {
                             n->state = 0;
-                            Exit;
+                            break;
                         }
                     }
 
@@ -919,7 +919,7 @@ void UpdateConsole() {
                 }
                 case "showfps": {
                     userOptions->showFPS = !userOptions->showFPS;
-                    CreateConsoleMsg("ShowFPS: " + Str(userOptions->showFPS));
+                    CreateConsoleMsg("ShowFPS: " + String(userOptions->showFPS));
 
                 }
                 case "096state": {
@@ -928,10 +928,10 @@ void UpdateConsole() {
 
                         if (n->npcType == NPCtype096) {
                             CreateConsoleMsg("SCP-096");
-                            CreateConsoleMsg("Position: " + Str(bbEntityX(n->obj)) + ", " + Str(bbEntityY(n->obj)) + ", " + Str(bbEntityZ(n->obj)));
-                            CreateConsoleMsg("Idle: " + Str(n->idle));
-                            CreateConsoleMsg("State: " + Str(n->state));
-                            Exit;
+                            CreateConsoleMsg("Position: " + String(bbEntityX(n->obj)) + ", " + String(bbEntityY(n->obj)) + ", " + String(bbEntityZ(n->obj)));
+                            CreateConsoleMsg("Idle: " + String(n->idle));
+                            CreateConsoleMsg("State: " + String(n->state));
+                            break;
                         }
                     }
                     CreateConsoleMsg("SCP-096 has not spawned.");
@@ -973,7 +973,7 @@ void UpdateConsole() {
                 case "gamma": {
                     StrTemp = bbLower(bbRight(ConsoleInput, bbLen(ConsoleInput) - bbInstr(ConsoleInput, " ")));
                     userOptions->screenGamma = Float(StrTemp);
-                    CreateConsoleMsg("Gamma set to " + Str(userOptions->screenGamma));
+                    CreateConsoleMsg("Gamma set to " + String(userOptions->screenGamma));
 
                 }
                 case "spawn": {
@@ -1015,7 +1015,7 @@ void UpdateConsole() {
 
                         if (ev->name == "room2nuke") {
                             ev->eventState = (!ev->eventState);
-                            Exit;
+                            break;
                         }
                     }
 
@@ -1031,7 +1031,7 @@ void UpdateConsole() {
                                 if (ev->name == "gateaentrance") {
                                     ev->eventState3 = 1;
                                     ev->room->doors[1]->open = true;
-                                    Exit;
+                                    break;
                                 }
                             }
                             CreateConsoleMsg("Gate A is now unlocked.");
@@ -1043,7 +1043,7 @@ void UpdateConsole() {
                                 if (ev->name == "exit1") {
                                     ev->eventState3 = 1;
                                     ev->room->doors[4]->open = true;
-                                    Exit;
+                                    break;
                                 }
                             }
                             CreateConsoleMsg("Gate B is now unlocked.");
@@ -1098,7 +1098,7 @@ void UpdateConsole() {
                             if (n->mtfLeader == nullptr) {
                                 bbPositionEntity(mainPlayer->collider,bbEntityX(n->collider),bbEntityY(n->collider)+5,bbEntityZ(n->collider));
                                 bbResetEntity(mainPlayer->collider);
-                                Exit;
+                                break;
                             }
                         }
                     }
@@ -1111,7 +1111,7 @@ void UpdateConsole() {
                     StrTemp3 = Piece$(args,3," ");
                     bbPositionEntity(mainPlayer->collider,Float(StrTemp),Float(StrTemp2),Float(StrTemp3));
                     bbPositionEntity(mainPlayer->cam,Float(StrTemp),Float(StrTemp2),Float(StrTemp3));
-                    CreateConsoleMsg("Teleported to coordinates (X|Y|Z): "+Str(bbEntityX(mainPlayer->collider))+"|"+Str(bbEntityY(mainPlayer->collider))+"|"+Str(bbEntityZ(mainPlayer->collider)));
+                    CreateConsoleMsg("Teleported to coordinates (X|Y|Z): "+String(bbEntityX(mainPlayer->collider))+"|"+String(bbEntityY(mainPlayer->collider))+"|"+String(bbEntityZ(mainPlayer->collider)));
 
                 }
                 case "notarget": {

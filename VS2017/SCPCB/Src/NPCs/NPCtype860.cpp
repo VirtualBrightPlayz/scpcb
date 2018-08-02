@@ -83,7 +83,7 @@ void UpdateNPCtype860(NPC* n) {
                                     //only spawn the monster outside the player's field of view
                                 } else {
                                     x2 = Int(Min(x+1,gridsize));
-                                    Exit;
+                                    break;
                                 }
 
                             }
@@ -126,7 +126,7 @@ void UpdateNPCtype860(NPC* n) {
                         if (bbEntityInView(n->collider, mainPlayer->cam)) {
                             n->state2 = 1;
                             if (bbRand(8)==1) {
-                                PlayRangedSound(LoadTempSound("SFX/SCP/860/Cancer"+Str(bbRand(0,2))+".ogg"), mainPlayer->cam, n->collider, 20.0);
+                                PlayRangedSound(LoadTempSound("SFX/SCP/860/Cancer"+String(bbRand(0,2))+".ogg"), mainPlayer->cam, n->collider, 20.0);
                             }
                         }
                     } else {
@@ -197,13 +197,13 @@ void UpdateNPCtype860(NPC* n) {
 
                                 //PositionEntity(n\collider, TFormedX(), EntityY(fr\forest_Pivot,True)+0.5, TFormedZ())
                                 bbPositionEntity(n->collider, bbTFormedX(), bbEntityY(fr->forest_Pivot,true)+1.0, bbTFormedZ());
-                                bbDebugLog(Str(bbEntityY(fr->forest_Pivot,true)));
+                                bbDebugLog(String(bbEntityY(fr->forest_Pivot,true)));
 
                                 if (bbEntityInView(n->collider, mainPlayer->cam)) {
                                     mainPlayer->blinkTimer = -10;
                                 } else {
                                     x2 = Int(Min(x+1,gridsize));
-                                    Exit;
+                                    break;
                                 }
                             }
                         }
@@ -224,9 +224,9 @@ void UpdateNPCtype860(NPC* n) {
                     if (n->state2 == 0) {
                         if (n->playerDistance<8.0) {
                             if (bbEntityInView(n->collider,mainPlayer->cam)) {
-                                PlaySound2(LoadTempSound("SFX/SCP/860/Chase"+Str(bbRand(1,2))+".ogg"));
+                                PlaySound2(LoadTempSound("SFX/SCP/860/Chase"+String(bbRand(1,2))+".ogg"));
 
-                                PlayRangedSound(LoadTempSound("SFX/SCP/860/Cancer"+Str(bbRand(0,2))+".ogg"), mainPlayer->cam, n->collider);
+                                PlayRangedSound(LoadTempSound("SFX/SCP/860/Cancer"+String(bbRand(0,2))+".ogg"), mainPlayer->cam, n->collider);
                                 n->state2 = 1;
                             }
                         }
@@ -243,7 +243,7 @@ void UpdateNPCtype860(NPC* n) {
                                 }
                             }
                             if (temp) {
-                                n->soundChannels[0] = PlayRangedSound(LoadTempSound("SFX/SCP/860/Cancer"+Str(bbRand(0,2))+".ogg"), mainPlayer->cam, n->collider);
+                                n->soundChannels[0] = PlayRangedSound(LoadTempSound("SFX/SCP/860/Cancer"+String(bbRand(0,2))+".ogg"), mainPlayer->cam, n->collider);
                             }
                         }
                     } else {
@@ -251,7 +251,7 @@ void UpdateNPCtype860(NPC* n) {
                     }
 
                     if (n->playerDistance<4.5 | n->state3 > bbRnd(200,250)) {
-                        n->soundChannels[0] = PlayRangedSound(LoadTempSound("SFX/SCP/860/Cancer"+Str(bbRand(3,5))+".ogg"), mainPlayer->cam, n->collider);
+                        n->soundChannels[0] = PlayRangedSound(LoadTempSound("SFX/SCP/860/Cancer"+String(bbRand(3,5))+".ogg"), mainPlayer->cam, n->collider);
                         n->state = 3;
                     }
 

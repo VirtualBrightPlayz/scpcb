@@ -138,9 +138,9 @@ int EntryPoint() {
         InitializeMainGame();
     }
 
-    Repeat;
-    UpdateGame();
-    Forever;
+    while (true) {
+        UpdateGame();
+    }
 }
 
 void InitializeMainGame() {
@@ -615,7 +615,7 @@ void UpdateGame() {
         bbColor(255, 255, 255);
         if (userOptions->showFPS) {
             bbSetFont(uiAssets->consoleFont);
-            bbText(20, 20, "FPS: " + Str(Int(timing->fps)));
+            bbText(20, 20, "FPS: " + String(Int(timing->fps)));
             bbSetFont(uiAssets->font[0]);
         }
     }
@@ -765,13 +765,13 @@ void UpdateGUI() {
 
                             switch ((n+1)+(i*4)) {
                                 case 1,2,3: {
-                                    KeypadInput = KeypadInput + Str((n+1)+(i*4));
+                                    KeypadInput = KeypadInput + String((n+1)+(i*4));
                                 }
                                 case 4: {
                                     KeypadInput = KeypadInput + "0";
                                 }
                                 case 5,6,7: {
-                                    KeypadInput = KeypadInput + Str((n+1)+(i*4)-1);
+                                    KeypadInput = KeypadInput + String((n+1)+(i*4)-1);
                                     //enter
                                 }
                                 case 8: {
@@ -794,7 +794,7 @@ void UpdateGUI() {
                                     }
                                 }
                                 case 9,10,11: {
-                                    KeypadInput = KeypadInput + Str((n+1)+(i*4)-2);
+                                    KeypadInput = KeypadInput + String((n+1)+(i*4)-2);
                                 }
                                 case 12: {
                                     KeypadInput = "";
@@ -1042,25 +1042,25 @@ void DrawGUI() {
 
                 if (ev->room == mainPlayer->currRoom) {
                     bbText(x - 50, 170, "Room event: " + ev->name);
-                    bbText(x - 50, 190, "state: " + Str(ev->eventState));
-                    bbText(x - 50, 210, "state2: " + Str(ev->eventState2));
-                    bbText(x - 50, 230, "state3: " + Str(ev->eventState3));
-                    Exit;
+                    bbText(x - 50, 190, "state: " + String(ev->eventState));
+                    bbText(x - 50, 210, "state2: " + String(ev->eventState2));
+                    bbText(x - 50, 230, "state3: " + String(ev->eventState3));
+                    break;
                 }
             }
-            bbText(x - 50, 250, "Room coordinates: (" + Str(bbFloor(bbEntityX(mainPlayer->currRoom->obj) / 8.0 + 0.5)) + ", " + Str(bbFloor(bbEntityZ(mainPlayer->currRoom->obj) / 8.0 + 0.5)) + ")");
+            bbText(x - 50, 250, "Room coordinates: (" + String(bbFloor(bbEntityX(mainPlayer->currRoom->obj) / 8.0 + 0.5)) + ", " + String(bbFloor(bbEntityZ(mainPlayer->currRoom->obj) / 8.0 + 0.5)) + ")");
             bbText(x - 50, 280, "Stamina: " + f2s(mainPlayer->stamina, 3));
-            bbText(x - 50, 300, "Dead: " + Str(mainPlayer->dead));
+            bbText(x - 50, 300, "Dead: " + String(mainPlayer->dead));
             bbText(x - 50, 320, "Blink timer: " + f2s(mainPlayer->blinkTimer, 3));
-            bbText(x - 50, 340, "Injuries: " + Str(mainPlayer->injuries));
-            bbText(x - 50, 360, "Bloodloss: " + Str(mainPlayer->bloodloss));
+            bbText(x - 50, 340, "Injuries: " + String(mainPlayer->injuries));
+            bbText(x - 50, 360, "Bloodloss: " + String(mainPlayer->bloodloss));
             bbText(x - 50, 390, "SCP - 173 Position (collider): (" + f2s(bbEntityX(Curr173->collider), 3) + ", " + f2s(bbEntityY(Curr173->collider), 3) + ", " + f2s(bbEntityZ(Curr173->collider), 3) + ")");
             bbText(x - 50, 410, "SCP - 173 Position (obj): (" + f2s(bbEntityX(Curr173->obj), 3) + ", " + f2s(bbEntityY(Curr173->obj), 3) + ", " + f2s(bbEntityZ(Curr173->obj), 3) + ")");
             //Text(x - 50, 410, "SCP - 173 Idle: " + Curr173\idle)
-            bbText(x - 50, 430, "SCP - 173 State: " + Str(Curr173->state));
+            bbText(x - 50, 430, "SCP - 173 State: " + String(Curr173->state));
             bbText(x - 50, 450, "SCP - 106 Position: (" + f2s(bbEntityX(Curr106->obj), 3) + ", " + f2s(bbEntityY(Curr106->obj), 3) + ", " + f2s(bbEntityZ(Curr106->obj), 3) + ")");
-            bbText(x - 50, 470, "SCP - 106 Idle: " + Str(Curr106->idle));
-            bbText(x - 50, 490, "SCP - 106 State: " + Str(Curr106->state));
+            bbText(x - 50, 470, "SCP - 106 Idle: " + String(Curr106->idle));
+            bbText(x - 50, 490, "SCP - 106 State: " + String(Curr106->state));
             offset = 0;
 
             for (int iterator65 = 0; iterator65 < NPC::getListSize(); iterator65++) {
@@ -1068,14 +1068,14 @@ void DrawGUI() {
 
                 if (npc->npcType == NPCtype096) {
                     bbText(x - 50, 510, "SCP - 096 Position: (" + f2s(bbEntityX(npc->obj), 3) + ", " + f2s(bbEntityY(npc->obj), 3) + ", " + f2s(bbEntityZ(npc->obj), 3) + ")");
-                    bbText(x - 50, 530, "SCP - 096 Idle: " + Str(npc->idle));
-                    bbText(x - 50, 550, "SCP - 096 State: " + Str(npc->state));
+                    bbText(x - 50, 530, "SCP - 096 Idle: " + String(npc->idle));
+                    bbText(x - 50, 550, "SCP - 096 State: " + String(npc->state));
                     bbText(x - 50, 570, "SCP - 096 Speed: " + f2s(npc->currSpeed, 5));
                 }
                 if (npc->npcType == NPCtypeMTF) {
-                    bbText(x - 50, 600 + 60 * offset, "MTF " + Str(offset) + " Position: (" + f2s(bbEntityX(npc->obj), 3) + ", " + f2s(bbEntityY(npc->obj), 3) + ", " + f2s(bbEntityZ(npc->obj), 3) + ")");
-                    bbText(x - 50, 640 + 60 * offset, "MTF " + Str(offset) + " State: " + Str(npc->state));
-                    bbText(x - 50, 620 + 60 * offset, "MTF " + Str(offset) + " LastSeen: " + Str(npc->lastSeen));
+                    bbText(x - 50, 600 + 60 * offset, "MTF " + String(offset) + " Position: (" + f2s(bbEntityX(npc->obj), 3) + ", " + f2s(bbEntityY(npc->obj), 3) + ", " + f2s(bbEntityZ(npc->obj), 3) + ")");
+                    bbText(x - 50, 640 + 60 * offset, "MTF " + String(offset) + " State: " + String(npc->state));
+                    bbText(x - 50, 620 + 60 * offset, "MTF " + String(offset) + " LastSeen: " + String(npc->lastSeen));
                     offset = offset + 1;
                 }
             }
@@ -1364,7 +1364,7 @@ void UpdatePauseMenu() {
 }
 
 String f2s(float n, int count) {
-    return bbLeft(Str(n), bbLen(Str(Int(n)))+count+1);
+    return bbLeft(String(n), bbLen(String(Int(n)))+count+1);
 }
 
 float Animate2(int entity, float curr, int start, int quit, float speed, int loop = true) {
@@ -1438,7 +1438,7 @@ void UpdateInfect() {
 
             for (i = 0; i <= 6; i++) {
                 if (mainPlayer->infect008>i*15+10 & temp ==< i*15+10) {
-                    PlaySound2(LoadTempSound("SFX/SCP/008/Voices" + Str(i) + ".ogg"));
+                    PlaySound2(LoadTempSound("SFX/SCP/008/Voices" + String(i) + ".ogg"));
                 }
             }
 
@@ -1471,7 +1471,7 @@ void UpdateInfect() {
                             bbFreeTexture(tex);
                             r->npc[0]->state = 6;
                             mainPlayer->currRoom = r;
-                            Exit;
+                            break;
                         }
                     }
                 }
@@ -1785,7 +1785,7 @@ String CheckTriggers() {
                 if (bbEntityY(mainPlayer->collider)>((sy*Mesh_MinY)+mainPlayer->currRoom->y) & bbEntityY(mainPlayer->collider)<((sy*Mesh_MaxY)+mainPlayer->currRoom->y)) {
                     if (bbEntityZ(mainPlayer->collider)>((sz*Mesh_MinZ)+mainPlayer->currRoom->z) & bbEntityZ(mainPlayer->collider)<((sz*Mesh_MaxZ)+mainPlayer->currRoom->z)) {
                         inside = i;
-                        Exit;
+                        break;
                     }
                 }
             }

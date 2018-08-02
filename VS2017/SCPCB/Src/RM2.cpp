@@ -302,7 +302,7 @@ void LoadRM2(RoomTemplate* rt) {
                 for (i = 0; i <= 16; i++) {
                     waypointTemp->connectedTo[i] = bbReadByte(file);
                     if (waypointTemp->connectedTo[i]==0) {
-                        Exit;
+                        break;
                     }
                 }
                 waypointTemp->roomtemplate = rt;
@@ -387,7 +387,7 @@ void LoadRM2(RoomTemplate* rt) {
 
                         rt->tempSoundEmitterRange[j] = range;
                         //temp1i=1
-                        Exit;
+                        break;
                     }
                 }
                 //[End Block]
@@ -417,7 +417,7 @@ void LoadRM2(RoomTemplate* rt) {
                 //[End Block]
             }
             default: {
-                bbRuntimeError("Error after reading type "+Str(prevType));
+                bbRuntimeError("Error after reading type "+String(prevType));
             }
         }
     }

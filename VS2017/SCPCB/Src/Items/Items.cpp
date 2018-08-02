@@ -158,7 +158,7 @@ void CreateItemTemplate(String file, String section) {
 
         if (it2->objPath == it->objPath & it2->obj != 0) {
             it->obj = bbCopyEntity(it2->obj);
-            Exit;
+            break;
         }
     }
 
@@ -177,7 +177,7 @@ void CreateItemTemplate(String file, String section) {
 
             if (it2->texPath == it->texPath & it2->tex != 0) {
                 it->tex = it2->tex;
-                Exit;
+                break;
             }
         }
 
@@ -197,7 +197,7 @@ void CreateItemTemplate(String file, String section) {
 
                 if (it2->invImagePath[i] == it->invImagePath[i] & it2->invImage[i] != 0) {
                     it->invImage[i] = it2->invImage[i];
-                    Exit;
+                    break;
                 }
             }
 
@@ -276,7 +276,7 @@ Item* CreateItem(String name, float x, float y, float z, int invSlots = 0) {
             bbShowEntity(i->collider);
             bbShowEntity(i->model);
 
-            Exit;
+            break;
         }
     }
 
@@ -498,7 +498,7 @@ void PickItem(Item* item) {
 
                 mainPlayer->inventory->items[n] = item;
                 bbHideEntity(item->collider);
-                Exit;
+                break;
             }
         }
     } else {
@@ -689,7 +689,7 @@ void UpdateInventory(Player* player) {
                                     PlaySound_SM(sndManager->itemPick[player->selectedItem->template->sound]);
                                 }
                                 player->openInventory->items[i] = nullptr;
-                                Exit;
+                                break;
                             }
                         }
 
@@ -705,7 +705,7 @@ void UpdateInventory(Player* player) {
                 }
 
                 //If the mouse was hovering over this slot then don't bother iterating through the rest of the inventory.
-                Exit;
+                break;
             }
 
             //Move x and y coords to point to next item.

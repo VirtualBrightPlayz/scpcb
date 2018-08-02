@@ -164,19 +164,19 @@ void UpdateEvent_cont_1162_2c(Event* e) {
                                 itemExists = true;
                                 e->eventState3 = 1.0;
                                 e->eventState = 0.0;
-                                Exit;
+                                break;
                             }
                         }
 
                         if ((!itemExists) & (!isSlotEmpty)) {
-                            Exit;
+                            break;
                         }
                     } else {
                         if (isSlotEmpty) {
                             e->eventState3 = 2.0;
                         } else {
                             e->eventState3 = 1.0;
-                            Exit;
+                            break;
                         }
                     }
                 }
@@ -237,11 +237,11 @@ void UpdateEvent_cont_1162_2c(Event* e) {
                     //RemoveItem(mainPlayer\inventory\items[e\eventState2])
                     it = CreateItem(itt->name,bbEntityX(pp,true),bbEntityY(pp,true),bbEntityZ(pp,true));
                     bbEntityType(it->collider, HIT_ITEM);
-                    PlaySound2(LoadTempSound("SFX/SCP/1162/Exchange"+Str(bbRand(0,4))+".ogg"));
+                    PlaySound2(LoadTempSound("SFX/SCP/1162/Exchange"+String(bbRand(0,4))+".ogg"));
                     e->eventState3 = 0.0;
 
                     MouseHit1 = false;
-                    Exit;
+                    break;
                 }
             }
             //trade not sucessful (player got in return to injuries a new item)
@@ -266,22 +266,22 @@ void UpdateEvent_cont_1162_2c(Event* e) {
                         DeathMSG = "A dead Class D subject was discovered within the containment chamber of SCP-1162.";
                         DeathMSG = DeathMSG + " An autopsy revealed that his right lung was missing, which suggests";
                         DeathMSG = DeathMSG + " interaction with SCP-1162.";
-                        PlaySound2(LoadTempSound("SFX/SCP/1162/BodyHorrorExchange"+Str(bbRand(1,4))+".ogg"));
+                        PlaySound2(LoadTempSound("SFX/SCP/1162/BodyHorrorExchange"+String(bbRand(1,4))+".ogg"));
                         mainPlayer->lightFlash = 5.0;
                         Kill(mainPlayer);
                     } else {
-                        PlaySound2(LoadTempSound("SFX/SCP/1162/BodyHorrorExchange"+Str(bbRand(1,4))+".ogg"));
+                        PlaySound2(LoadTempSound("SFX/SCP/1162/BodyHorrorExchange"+String(bbRand(1,4))+".ogg"));
                         mainPlayer->lightFlash = 5.0;
                         Msg = "You feel a sudden overwhelming pain in your chest.";
                         MsgTimer = 70*5;
                     }
-                    Exit;
+                    break;
                 }
             }
             //trade with nostalgia item
         } else if ((e->eventState3 >= 3.0)) {
             if (e->eventState3 < 3.1) {
-                PlaySound2(LoadTempSound("SFX/SCP/1162/Exchange"+Str(bbRand(0,4))+".ogg"));
+                PlaySound2(LoadTempSound("SFX/SCP/1162/Exchange"+String(bbRand(0,4))+".ogg"));
                 RemoveItem(mainPlayer->inventory->items[Int(e->eventState2)]);
             } else {
                 mainPlayer->injuries = mainPlayer->injuries + 5.0;
@@ -297,11 +297,11 @@ void UpdateEvent_cont_1162_2c(Event* e) {
                     DeathMSG = "A dead Class D subject was discovered within the containment chamber of SCP-1162.";
                     DeathMSG = DeathMSG + " An autopsy revealed that his right lung was missing, which suggests";
                     DeathMSG = DeathMSG + " interaction with SCP-1162.";
-                    PlaySound2(LoadTempSound("SFX/SCP/1162/BodyHorrorExchange"+Str(bbRand(1,4))+".ogg"));
+                    PlaySound2(LoadTempSound("SFX/SCP/1162/BodyHorrorExchange"+String(bbRand(1,4))+".ogg"));
                     mainPlayer->lightFlash = 5.0;
                     Kill(mainPlayer);
                 } else {
-                    PlaySound2(LoadTempSound("SFX/SCP/1162/BodyHorrorExchange"+Str(bbRand(1,4))+".ogg"));
+                    PlaySound2(LoadTempSound("SFX/SCP/1162/BodyHorrorExchange"+String(bbRand(1,4))+".ogg"));
                     mainPlayer->lightFlash = 5.0;
                     Msg = "You notice something moving in your pockets and a sudden pain in your chest.";
                     MsgTimer = 70*5;

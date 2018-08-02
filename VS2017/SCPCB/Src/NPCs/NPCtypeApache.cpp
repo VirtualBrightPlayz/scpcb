@@ -19,7 +19,7 @@ void InitializeNPCtypeApache(NPC* n) {
             n->obj = bbCopyEntity(n2->obj);
             n->obj2 = bbCopyEntity(n2->obj2);
             n->obj3 = bbCopyEntity(n2->obj3);
-            Exit;
+            break;
         }
     }
 

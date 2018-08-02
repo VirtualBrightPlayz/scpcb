@@ -328,28 +328,28 @@ String KeyValue(int entity, String key, String defaultvalue = "") {
 
     properties = bbReplace(properties,bbChr(13),"");
     key = bbLower(key);
-    Repeat;
-    p = bbInstr(properties,bbChr(10));
-    if (p) {
-        test = (bbLeft(properties,p-1));
-    } else {
-        test = properties;
+    while (true) {
+        p = bbInstr(properties,bbChr(10));
+        if (p) {
+            test = (bbLeft(properties,p-1));
+        } else {
+            test = properties;
+        }
+        testkey = Piece(test,1,"=");
+        testkey = bbTrim(testkey);
+        testkey = bbReplace(testkey,bbChr(34),"");
+        testkey = bbLower(testkey);
+        if (testkey==key) {
+            value = Piece(test,2,"=");
+            value = bbTrim(value);
+            value = bbReplace(value,bbChr(34),"");
+            return value;
+        }
+        if (!p) {
+            return defaultvalue;
+        }
+        properties = bbRight(properties,bbLen(properties)-p);
     }
-    testkey = Piece(test,1,"=");
-    testkey = bbTrim(testkey);
-    testkey = bbReplace(testkey,bbChr(34),"");
-    testkey = bbLower(testkey);
-    if (testkey==key) {
-        value = Piece(test,2,"=");
-        value = bbTrim(value);
-        value = bbReplace(value,bbChr(34),"");
-        return value;
-    }
-    if (!p) {
-        return defaultvalue;
-    }
-    properties = bbRight(properties,bbLen(properties)-p);
-    Forever;
 }
 
 RoomTemplate* CreateRoomTemplate(String meshpath) {
@@ -467,15 +467,15 @@ void LoadRoomTemplates(String file) {
     }
 
     i = 1;
-    Repeat;
-    StrTemp = GetINIString(file, "room ambience", "ambience"+Str(i));
-    if (StrTemp == "") {
-        Exit;
-    }
+    while (true) {
+        StrTemp = GetINIString(file, "room ambience", "ambience"+String(i));
+        if (StrTemp == "") {
+            break;
+        }
 
-    RoomAmbience[i] = bbLoadSound(StrTemp);
-    i = i+1;
-    Forever;
+        RoomAmbience[i] = bbLoadSound(StrTemp);
+        i++;
+    }
 
     bbCloseFile(f);
 
@@ -493,7 +493,7 @@ void UpdateGrid(Grid* grid) {
         for (ty = 0; ty <= gridsz-1; ty++) {
             if (grid->entities[tx+(ty*gridsz)]!=0) {
                 if (Abs(bbEntityY(mainPlayer->collider,true)-bbEntityY(grid->entities[tx+(ty*gridsz)],true))>4.0) {
-                    Exit;
+                    break;
                 }
                 if (Abs(bbEntityX(mainPlayer->collider,true)-bbEntityX(grid->entities[tx+(ty*gridsz)],true))<HideDistance) {
                     if (Abs(bbEntityZ(mainPlayer->collider,true)-bbEntityZ(grid->entities[tx+(ty*gridsz)],true))<HideDistance) {
@@ -839,7 +839,7 @@ void FillRoom(Room* r) {
             waypoint = Object.WayPoint(GetIntArrayListElem(waypoints,i));
             for (j = 0; j <= 15; j++) {
                 if (tw->connectedTo[j]==0) {
-                    Exit;
+                    break;
                 }
                 waypoint->connected[j] = Object.WayPoint(GetIntArrayListElem(waypoints,tw->connectedTo[j]-1));
                 waypoint->dist[j] = bbEntityDistance(waypoint->obj,waypoint->connected[j]->obj);
@@ -923,7 +923,7 @@ void UpdateRooms() {
                             if (z < 4.0) {
                                 foundPlayerRoom = true;
                                 mainPlayer->currRoom = mainPlayer->currRoom->adjacent[i];
-                                Exit;
+                                break;
                             }
                         }
                     }
@@ -994,7 +994,7 @@ void UpdateRooms() {
             for (i = 0; i <= 3; i++) {
                 if (IsRoomAdjacent(mainPlayer->currRoom->adjacent[i],r)) {
                     hide = false;
-                    Exit;
+                    break;
                 }
             }
         }
@@ -1011,7 +1011,7 @@ void UpdateRooms() {
                         //ShowEntity(r\lights[i])
                     }
                 } else {
-                    Exit;
+                    break;
                 }
             }
         }
@@ -1179,7 +1179,7 @@ void InitWayPoints(int loadingstart = 45) {
         }
     }
 
-    bbDebugLog("InitWaypoints() - "+Str(TimeInPosMilliSecs()-temper));
+    bbDebugLog("InitWaypoints() - "+String(TimeInPosMilliSecs()-temper));
 
 }
 
@@ -1190,7 +1190,7 @@ void RemoveWaypoint(WayPoint* w) {
 
 int FindPath(NPC* n, float x, float y, float z) {
 
-    bbDebugLog("findpath: "+Str(n->npcType));
+    bbDebugLog("findpath: "+String(n->npcType));
 
     int temp;
     float dist;
@@ -1273,7 +1273,7 @@ int FindPath(NPC* n, float x, float y, float z) {
         //EndIf
         //EndIf
     }
-    bbDebugLog("DIST: "+Str(dist));
+    bbDebugLog("DIST: "+String(dist));
 
     bbFreeEntity(temp);
 
@@ -1322,77 +1322,76 @@ int FindPath(NPC* n, float x, float y, float z) {
     //aloitus- ja lopetuspisteet l�ydetty, aletaan etsi� reitti�
 
     WayPoint* smallest;
-    Repeat;
+    do {
+        temp = false;
+        smallest = nullptr;
+        dist = 10000.0;
+        for (int iterator83 = 0; iterator83 < WayPoint::getListSize(); iterator83++) {
+            w = WayPoint::getObject(iterator83);
 
-    temp = false;
-    smallest = nullptr;
-    dist = 10000.0;
-    for (int iterator83 = 0; iterator83 < WayPoint::getListSize(); iterator83++) {
-        w = WayPoint::getObject(iterator83);
-
-        if (w->state == 1) {
-            temp = true;
-            if ((w->fCost) < dist) {
-                dist = w->fCost;
-                smallest = w;
-            }
-        }
-    }
-
-    if (smallest != nullptr) {
-
-        w = smallest;
-        w->state = 2;
-
-        for (i = 0; i <= 15; i++) {
-            if (w->connected[i]!=nullptr) {
-                if (w->connected[i]->state < 2) {
-
-                    //open list
-                    if (w->connected[i]->state==1) {
-                        gtemp = w->gCost+w->dist[i];
-                        //TODO: fix?
-                        //If (n\npcType = NPCtypeMTF) Then
-                        //	If (w\connected[i]\door = Null) Then gtemp = gtemp + 0.5
-                        //EndIf
-                        //parempi reitti -> overwrite
-                        if (gtemp < w->connected[i]->gCost) {
-                            w->connected[i]->gCost = gtemp;
-                            w->connected[i]->fCost = w->connected[i]->gCost + w->connected[i]->hCost;
-                            w->connected[i]->parent = w;
-                        }
-                    } else {
-                        w->connected[i]->hCost = Abs(bbEntityX(w->connected[i]->obj,true)-bbEntityX(EndPoint->obj,true))+Abs(bbEntityZ(w->connected[i]->obj,true)-bbEntityZ(EndPoint->obj,true));
-                        gtemp = w->gCost+w->dist[i];
-                        //TODO: fix?
-                        //If (n\npcType = NPCtypeMTF) Then
-                        //	If (w\connected[i]\door = Null) Then gtemp = gtemp + 0.5
-                        //EndIf
-                        w->connected[i]->gCost = gtemp;
-                        w->connected[i]->fCost = w->gCost+w->hCost;
-                        w->connected[i]->parent = w;
-                        w->connected[i]->state = 1;
-                    }
+            if (w->state == 1) {
+                temp = true;
+                if ((w->fCost) < dist) {
+                    dist = w->fCost;
+                    smallest = w;
                 }
-
             }
         }
-        //open listilt� ei l�ytynyt mit��n
-    } else {
+
+        if (smallest != nullptr) {
+
+            w = smallest;
+            w->state = 2;
+
+            for (i = 0; i <= 15; i++) {
+                if (w->connected[i]!=nullptr) {
+                    if (w->connected[i]->state < 2) {
+
+                        //open list
+                        if (w->connected[i]->state==1) {
+                            gtemp = w->gCost+w->dist[i];
+                            //TODO: fix?
+                            //If (n\npcType = NPCtypeMTF) Then
+                            //	If (w\connected[i]\door = Null) Then gtemp = gtemp + 0.5
+                            //EndIf
+                            //parempi reitti -> overwrite
+                            if (gtemp < w->connected[i]->gCost) {
+                                w->connected[i]->gCost = gtemp;
+                                w->connected[i]->fCost = w->connected[i]->gCost + w->connected[i]->hCost;
+                                w->connected[i]->parent = w;
+                            }
+                        } else {
+                            w->connected[i]->hCost = Abs(bbEntityX(w->connected[i]->obj,true)-bbEntityX(EndPoint->obj,true))+Abs(bbEntityZ(w->connected[i]->obj,true)-bbEntityZ(EndPoint->obj,true));
+                            gtemp = w->gCost+w->dist[i];
+                            //TODO: fix?
+                            //If (n\npcType = NPCtypeMTF) Then
+                            //	If (w\connected[i]\door = Null) Then gtemp = gtemp + 0.5
+                            //EndIf
+                            w->connected[i]->gCost = gtemp;
+                            w->connected[i]->fCost = w->gCost+w->hCost;
+                            w->connected[i]->parent = w;
+                            w->connected[i]->state = 1;
+                        }
+                    }
+
+                }
+            }
+            //open listilt� ei l�ytynyt mit��n
+        } else {
+            if (EndPoint->state > 0) {
+                StartPoint->parent = nullptr;
+                EndPoint->state = 2;
+                break;
+            }
+        }
+
         if (EndPoint->state > 0) {
             StartPoint->parent = nullptr;
             EndPoint->state = 2;
-            Exit;
+            break;
         }
-    }
 
-    if (EndPoint->state > 0) {
-        StartPoint->parent = nullptr;
-        EndPoint->state = 2;
-        Exit;
-    }
-
-    Until temp = false;
+    } while (temp = false);
 
     if (EndPoint->state > 0) {
 
@@ -1400,13 +1399,13 @@ int FindPath(NPC* n, float x, float y, float z) {
         twentiethpoint = EndPoint;
 
         length = 0;
-        Repeat;
-        length = length +1;
-        currpoint = currpoint->parent;
-        if (length>20) {
-            twentiethpoint = twentiethpoint->parent;
-        }
-        Until currpoint = nullptr;
+        do {
+            length = length +1;
+            currpoint = currpoint->parent;
+            if (length>20) {
+                twentiethpoint = twentiethpoint->parent;
+            }
+        } while (currpoint = nullptr);
 
         currpoint = EndPoint;
         while (twentiethpoint!=nullptr) {
@@ -1784,21 +1783,21 @@ void UpdateSecurityCams() {
                             bbPositionEntity(pvt, bbEntityX(mainPlayer->cam), bbEntityY(mainPlayer->cam), bbEntityZ(mainPlayer->cam));
                             bbPointEntity(pvt, sc->scrObj);
 
-                            bbDebugLog("curvea: "+Str(CurveAngle(bbEntityYaw(pvt), bbEntityYaw(mainPlayer->collider), Min(Max(15000.0 / (-mainPlayer->sanity895), 20.0), 200.0))));
+                            bbDebugLog("curvea: "+String(CurveAngle(bbEntityYaw(pvt), bbEntityYaw(mainPlayer->collider), Min(Max(15000.0 / (-mainPlayer->sanity895), 20.0), 200.0))));
                             bbRotateEntity(mainPlayer->collider, bbEntityPitch(mainPlayer->collider), CurveAngle(bbEntityYaw(pvt), bbEntityYaw(mainPlayer->collider), Min(Max(15000.0 / (-mainPlayer->sanity895), 20.0), 200.0)), 0);
 
                             bbTurnEntity(pvt, 90, 0, 0);
                             mainPlayer->headPitch = CurveAngle(bbEntityPitch(pvt), mainPlayer->headPitch + 90.0, Min(Max(15000.0 / (-mainPlayer->sanity895), 20.0), 200.0));
                             mainPlayer->headPitch = mainPlayer->headPitch-90;
 
-                            bbDebugLog("pvt: "+Str(bbEntityYaw(pvt))+"   - coll: "+Str(bbEntityYaw(mainPlayer->collider)));
+                            bbDebugLog("pvt: "+String(bbEntityYaw(pvt))+"   - coll: "+String(bbEntityYaw(mainPlayer->collider)));
 
 
                             bbFreeEntity(pvt);
                             //EndIf
                             if (sc->coffinEffect==1 | sc->coffinEffect==3) {
                                 for (i = 0; i <= GORE_PIC_COUNT-1; i++) {
-                                    gorePics[i] = GrabTexture("GFX/895pics/pic" + Str(i + 1) + ".jpg");
+                                    gorePics[i] = GrabTexture("GFX/895pics/pic" + String(i + 1) + ".jpg");
                                 }
                                 if (mainPlayer->sanity895 < - 800) {
                                     if (bbRand(3) == 1) {
@@ -1856,13 +1855,13 @@ void UpdateSecurityCams() {
                             bbEntityTexture(sc->scrOverlay, MonitorTexture);
                         } else {
                             if (sc->soundCHN == 0) {
-                                sc->soundCHN = bbPlaySound(LoadTempSound("SFX/SCP/079/Broadcast"+Str(bbRand(1,3))+".ogg"));
+                                sc->soundCHN = bbPlaySound(LoadTempSound("SFX/SCP/079/Broadcast"+String(bbRand(1,3))+".ogg"));
                                 if (sc->coffinEffect==2) {
                                     sc->coffinEffect = 3;
                                     sc->playerState = 0;
                                 }
                             } else if ((!IsChannelPlaying(sc->soundCHN))) {
-                                sc->soundCHN = bbPlaySound(LoadTempSound("SFX/SCP/079/Broadcast"+Str(bbRand(1,3))+".ogg"));
+                                sc->soundCHN = bbPlaySound(LoadTempSound("SFX/SCP/079/Broadcast"+String(bbRand(1,3))+".ogg"));
                                 if (sc->coffinEffect==2) {
                                     sc->coffinEffect = 3;
                                     sc->playerState = 0;
@@ -1912,7 +1911,7 @@ Prop* LoadProp(String file, float x, float y, float z, float pitch, float yaw, f
 
         if ((p!=p2) & (p2->file == file)) {
             p->obj = bbCopyEntity(p2->obj);
-            Exit;
+            break;
         }
     }
 
@@ -2047,7 +2046,7 @@ void CreateMap() {
                         SetIntArrayElem(prioritizedTemplates,0,i+1,0);
                     }
                     SetIntArrayElem(prioritizedTemplates,Handle(tempTemplate),i,0);
-                    Exit;
+                    break;
                 } else {
                     tempTemplate2 = Object.RoomTemplate(GetIntArrayElem(prioritizedTemplates,i,0));
                     if (tempTemplate2->maxAmount>tempTemplate->maxAmount) {
@@ -2069,7 +2068,7 @@ void CreateMap() {
         }
     }
     for (i = 1; i <= ROOM4; i++) {
-        bbDebugLog("Type"+Str(i)+" count: "+Str(RoomCount[i]));
+        bbDebugLog("Type"+String(i)+" count: "+String(RoomCount[i]));
     }
 
     Room* r;
@@ -2091,7 +2090,7 @@ void CreateMap() {
 
         placementCount = bbRand(rt->minAmount,rt->maxAmount);
 
-        bbDebugLog("trying to place "+Str(placementCount)+" "+rt->name);
+        bbDebugLog("trying to place "+String(placementCount)+" "+rt->name);
 
         for (c = 1; c <= placementCount; c++) {
             loopStartX = Int(Min(bbFloor(Float(mapDim)*rt->xRangeStart),mapDim-1));
@@ -2123,15 +2122,15 @@ void CreateMap() {
                     }
 
                     if (placed) {
-                        Exit;
+                        break;
                     }
                 }
                 if (placed) {
-                    Exit;
+                    break;
                 }
             }
             if (!placed) {
-                bbRuntimeError("(seed: "+RandomSeed+") Failed To place "+rt->name+" around ("+Str(loopStartX)+","+Str(loopStartY)+","+Str(loopEndX)+","+Str(loopEndY)+")");
+                bbRuntimeError("(seed: "+RandomSeed+") Failed To place "+rt->name+" around ("+String(loopStartX)+","+String(loopStartY)+","+String(loopEndX)+","+String(loopEndY)+")");
             }
         }
     }
@@ -2196,7 +2195,7 @@ void CreateMap() {
                             SetIntArrayElem(layout,-1,x,y);
                             //add to the MapRooms array
                             SetIntArrayElem(MapRooms,Handle(r),x,y);
-                            Exit;
+                            break;
                         }
                     }
                 }
@@ -2275,14 +2274,14 @@ void CreateMap() {
                                     for (j = 0; j <= 15; j++) {
                                         if (roomAWaypoint->connected[j]==nullptr) {
                                             roomAWaypoint->connected[j] = newWaypoint;
-                                            Exit;
+                                            break;
                                         }
                                     }
 
                                     for (j = 0; j <= 15; j++) {
                                         if (roomBWaypoint->connected[j]==nullptr) {
                                             roomBWaypoint->connected[j] = newWaypoint;
-                                            Exit;
+                                            break;
                                         }
                                     }
 
@@ -2290,7 +2289,7 @@ void CreateMap() {
                                         if (newWaypoint->connected[j]==nullptr) {
                                             newWaypoint->connected[j] = roomAWaypoint;
                                             newWaypoint->connected[j+1] = roomBWaypoint;
-                                            Exit;
+                                            break;
                                         }
                                     }
                                 }
@@ -2447,8 +2446,8 @@ void FindAndDeleteFakeMonitor(Room* r, float x, float y, float z, int Amount) {
                     if (bbEntityZ(r->objects[i],true) == z) {
                         bbFreeEntity(r->objects[i]);
                         r->objects[i] = 0;
-                        bbDebugLog("Deleted Fake Monitor: "+Str(i));
-                        Exit;
+                        bbDebugLog("Deleted Fake Monitor: "+String(i));
+                        break;
                     }
                 }
             }

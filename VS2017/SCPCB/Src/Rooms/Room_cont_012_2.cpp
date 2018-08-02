@@ -218,7 +218,7 @@ void UpdateEvent_cont_012_2(Event* e) {
                             Msg = "You tear open your left wrist and start writing on the composition with your blood.";
                             MsgTimer = 7*70;
                             mainPlayer->injuries = Max(mainPlayer->injuries,1.5);
-                            PlaySound2(LoadTempSound("SFX/SCP/012/Speech"+Str(bbRand(3,4))+".ogg"));
+                            PlaySound2(LoadTempSound("SFX/SCP/012/Speech"+String(bbRand(3,4))+".ogg"));
                         } else if ((e->eventState3>49*70 & e->eventState3-timing->tickDuration<=49*70)) {
                             Msg = "You push your fingers deeper into the wound.";
                             MsgTimer = 8*70;

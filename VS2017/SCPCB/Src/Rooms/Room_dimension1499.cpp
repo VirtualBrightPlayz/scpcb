@@ -209,7 +209,7 @@ void UpdateLeave1499() {
                 NTF_1499PrevZ = 0.0;
                 NTF_1499PrevRoom = nullptr;
                 //Brightness = StoredBrightness
-                Exit;
+                break;
             }
         }
     }
@@ -234,17 +234,17 @@ void CreateChunkParts(Room* r) {
     bbSeedRnd(SeedStringToInt(RandomSeed));
 
     for (i = 0; i <= ChunkAmount; i++) {
-        loc = GetINISectionLocation(File,"chunk"+Str(i));
+        loc = GetINISectionLocation(File,"chunk"+String(i));
         if (loc > 0) {
             StrTemp = GetINIString2(File,loc,"count");
             chp = new ChunkPart();
             chp->amount = Int(StrTemp);
             bbDebugLog("------------------");
             for (j = 0; j <= Int(StrTemp); j++) {
-                objID = Int(GetINIString2(File,loc,"obj"+Str(j)));
-                x = GetINIString2(File,loc,"obj"+Str(j)+"-x");
-                z = GetINIString2(File,loc,"obj"+Str(j)+"-z");
-                yaw = GetINIString2(File,loc,"obj"+Str(j)+"-yaw");
+                objID = Int(GetINIString2(File,loc,"obj"+String(j)));
+                x = GetINIString2(File,loc,"obj"+String(j)+"-x");
+                z = GetINIString2(File,loc,"obj"+String(j)+"-z");
+                yaw = GetINIString2(File,loc,"obj"+String(j)+"-yaw");
                 bbDebugLog("1499 chunk X/Z/Yaw: "+x+"|"+z+"|"+yaw);
                 chp->obj[j] = bbCopyEntity(r->objects[objID]);
                 if (bbLower(yaw) == "random") {
@@ -264,7 +264,7 @@ void CreateChunkParts(Room* r) {
                 chp->id = chp2->id+1;
             }
             bbDebugLog("<<<<<<<<<<<<<<<<");
-            bbDebugLog("Generated 1499 chunk "+Str(chp->id)+" sucessfully");
+            bbDebugLog("Generated 1499 chunk "+String(chp->id)+" sucessfully");
         }
     }
 
@@ -303,7 +303,7 @@ Chunk* CreateChunk(int obj, float x, float y, float z, int spawnNPCs = true) {
                     //ScaleEntity(ch\obj[i],RoomScale,RoomScale,RoomScale)
                     bbMoveEntity(ch->obj[i],bbEntityX(chp->obj[i]),0,bbEntityZ(chp->obj[i]));
                 }
-                Exit;
+                break;
             }
         }
         if (spawnNPCs) {
@@ -381,43 +381,40 @@ void UpdateChunks(Room* r, int ChunkPartAmount, int spawnNPCs = true) {
     String StrTemp = "";
     bbSeedRnd(SeedStringToInt(RandomSeed));
 
-    Repeat;
-    temp2 = false;
-    for (int iterator176 = 0; iterator176 < Chunk::getListSize(); iterator176++) {
-        ch = Chunk::getObject(iterator176);
+    while (true) {
+        temp2 = false;
+        for (int i = 0; i < Chunk::getListSize(); i++) {
+            ch = Chunk::getObject(i);
 
-        if ((ch->x==x) & (ch->z==z)) {
-            temp2 = true;
-            Exit;
+            if ((ch->x==x) & (ch->z==z)) {
+                temp2 = true;
+                break;
+            }
         }
-    }
-    if (!temp2) {
-        //ch2 = CreateChunk(r\objects[Rand(1,ChunkPartAmount%)],x#,y#,z#)
-        ChunkPartAmount2 = GetINIInt("Data/1499chunks.INI","general","count");
-        ch2 = CreateChunk(bbRand(0,ChunkPartAmount2),x,y,z,spawnNPCs);
-    }
-    if (x < (ChunkHideDistance+(CurrChunkX))) {
-        x = x + 40;
-    } else {
-        if (z < (ChunkHideDistance+(CurrChunkZ))) {
-            x = -(ChunkHideDistance+(CurrChunkX));
-            z = z + 40;
+        if (!temp2) {
+            //ch2 = CreateChunk(r\objects[Rand(1,ChunkPartAmount%)],x#,y#,z#)
+            ChunkPartAmount2 = GetINIInt("Data/1499chunks.INI","general","count");
+            ch2 = CreateChunk(bbRand(0,ChunkPartAmount2),x,y,z,spawnNPCs);
+        }
+        if (x < (ChunkHideDistance+(CurrChunkX))) {
+            x = x + 40;
         } else {
-            Exit;
+            if (z < (ChunkHideDistance+(CurrChunkZ))) {
+                x = -(ChunkHideDistance+(CurrChunkX));
+                z = z + 40;
+            } else {
+                break;
+            }
         }
     }
-    Forever;
 
     bbSeedRnd(bbMilliSecs());
-
 }
 
 void HideChunks() {
     Chunk* ch;
-    int i;
-
-    for (int iterator177 = 0; iterator177 < Chunk::getListSize(); iterator177++) {
-        ch = Chunk::getObject(iterator177);
+    for (int i = 0; i < Chunk::getListSize(); i++) {
+        ch = Chunk::getObject(i);
 
         //If (ch\obj <> 0) Then HideEntity(ch\obj)
         if (ch->obj[0]!=0) {
@@ -426,7 +423,6 @@ void HideChunks() {
             }
         }
     }
-
 }
 
 }
