@@ -831,13 +831,13 @@ void ManipulateNPCBones() {
                             rollvalue = n->bonePitch;
                         }
                     }
-                    if (Int(GetNPCManipulationValue(n->npcNameInSection,n->boneToManipulate,"pitchinverse",3))==true) {
+                    if ((int)(GetNPCManipulationValue(n->npcNameInSection,n->boneToManipulate,"pitchinverse",3))==true) {
                         pitchvalue = -pitchvalue;
                     }
-                    if (Int(GetNPCManipulationValue(n->npcNameInSection,n->boneToManipulate,"yawinverse",3))==true) {
+                    if ((int)(GetNPCManipulationValue(n->npcNameInSection,n->boneToManipulate,"yawinverse",3))==true) {
                         yawvalue = -yawvalue;
                     }
-                    if (Int(GetNPCManipulationValue(n->npcNameInSection,n->boneToManipulate,"rollinverse",3))==true) {
+                    if ((int)(GetNPCManipulationValue(n->npcNameInSection,n->boneToManipulate,"rollinverse",3))==true) {
                         rollvalue = -rollvalue;
                     }
                     bbRotateEntity(bone,pitchvalue+pitchoffset,yawvalue+yawoffset,rollvalue+rolloffset);
@@ -856,13 +856,13 @@ void ManipulateNPCBones() {
                             rollvalue = n->bonePitch;
                         }
                     }
-                    if (Int(GetNPCManipulationValue(n->npcNameInSection,n->boneToManipulate,"pitchinverse",3))==true) {
+                    if ((int)(GetNPCManipulationValue(n->npcNameInSection,n->boneToManipulate,"pitchinverse",3))==true) {
                         pitchvalue = -pitchvalue;
                     }
-                    if (Int(GetNPCManipulationValue(n->npcNameInSection,n->boneToManipulate,"yawinverse",3))==true) {
+                    if ((int)(GetNPCManipulationValue(n->npcNameInSection,n->boneToManipulate,"yawinverse",3))==true) {
                         yawvalue = -yawvalue;
                     }
-                    if (Int(GetNPCManipulationValue(n->npcNameInSection,n->boneToManipulate,"rollinverse",3))==true) {
+                    if ((int)(GetNPCManipulationValue(n->npcNameInSection,n->boneToManipulate,"rollinverse",3))==true) {
                         rollvalue = -rollvalue;
                     }
                     bbRotateEntity(bone,pitchvalue+pitchoffset,yawvalue+yawoffset,rollvalue+rolloffset);
@@ -884,13 +884,13 @@ void ManipulateNPCBones() {
                             rollvalue = -n->boneYaw;
                         }
                     }
-                    if (Int(GetNPCManipulationValue(n->npcNameInSection,n->boneToManipulate,"pitchinverse",3))==true) {
+                    if ((int)(GetNPCManipulationValue(n->npcNameInSection,n->boneToManipulate,"pitchinverse",3))==true) {
                         pitchvalue = -pitchvalue;
                     }
-                    if (Int(GetNPCManipulationValue(n->npcNameInSection,n->boneToManipulate,"yawinverse",3))==true) {
+                    if ((int)(GetNPCManipulationValue(n->npcNameInSection,n->boneToManipulate,"yawinverse",3))==true) {
                         yawvalue = -yawvalue;
                     }
-                    if (Int(GetNPCManipulationValue(n->npcNameInSection,n->boneToManipulate,"rollinverse",3))==true) {
+                    if ((int)(GetNPCManipulationValue(n->npcNameInSection,n->boneToManipulate,"rollinverse",3))==true) {
                         rollvalue = -rollvalue;
                     }
                     bbRotateEntity(bone,pitchvalue+pitchoffset,yawvalue+yawoffset,rollvalue+rolloffset);
@@ -910,13 +910,13 @@ void ManipulateNPCBones() {
                             rollvalue = n->boneYaw;
                         }
                     }
-                    if (Int(GetNPCManipulationValue(n->npcNameInSection,n->boneToManipulate,"pitchinverse",3))==true) {
+                    if ((int)(GetNPCManipulationValue(n->npcNameInSection,n->boneToManipulate,"pitchinverse",3))==true) {
                         pitchvalue = -pitchvalue;
                     }
-                    if (Int(GetNPCManipulationValue(n->npcNameInSection,n->boneToManipulate,"yawinverse",3))==true) {
+                    if ((int)(GetNPCManipulationValue(n->npcNameInSection,n->boneToManipulate,"yawinverse",3))==true) {
                         yawvalue = -yawvalue;
                     }
-                    if (Int(GetNPCManipulationValue(n->npcNameInSection,n->boneToManipulate,"rollinverse",3))==true) {
+                    if ((int)(GetNPCManipulationValue(n->npcNameInSection,n->boneToManipulate,"rollinverse",3))==true) {
                         rollvalue = -rollvalue;
                     }
                     bbRotateEntity(bone,pitchvalue+pitchoffset,yawvalue+yawoffset,rollvalue+rolloffset);
@@ -975,7 +975,7 @@ float TransformNPCManipulationData(String NPC, String bone, String section) {
             }
         }
         case "pitchoffset","yawoffset","rolloffset": {
-            return Float(value);
+            return (float)(value);
         }
     }
 

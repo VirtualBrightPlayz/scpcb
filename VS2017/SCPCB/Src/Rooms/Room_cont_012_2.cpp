@@ -192,8 +192,8 @@ void UpdateEvent_cont_012_2(Event* e) {
 
                     mainPlayer->heartbeatIntensity = 150;
                     //HeartBeatVolume = Max(3.0-dist,0.0)/3.0
-                    mainPlayer->blurTimer = Max((2.0-dist)*(e->eventState3/800.0)*(bbSin(Float(TimeInPosMilliSecs()) / 20.0 + 1.0)),mainPlayer->blurTimer);
-                    mainPlayer->camZoom = Max(mainPlayer->camZoom, (bbSin(Float(TimeInPosMilliSecs()) / 20.0)+1.0)*8.0*Max((3.0-dist),0.0));
+                    mainPlayer->blurTimer = Max((2.0-dist)*(e->eventState3/800.0)*(bbSin((float)(TimeInPosMilliSecs()) / 20.0 + 1.0)),mainPlayer->blurTimer);
+                    mainPlayer->camZoom = Max(mainPlayer->camZoom, (bbSin((float)(TimeInPosMilliSecs()) / 20.0)+1.0)*8.0*Max((3.0-dist),0.0));
 
                     if (mainPlayer->breathChn != 0) {
                         if (IsChannelPlaying(mainPlayer->breathChn)) {

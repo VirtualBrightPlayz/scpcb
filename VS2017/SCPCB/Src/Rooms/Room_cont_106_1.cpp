@@ -215,7 +215,7 @@ void UpdateEvent_cont_106_1(Event* e) {
         bbRotateEntity(e->room->npc[0]->collider,bbEntityPitch(e->room->objects[5],true),bbEntityYaw(e->room->objects[5],true),0,true);
         bbResetEntity(e->room->npc[0]->collider);
 
-        temp = Int(e->eventState2);
+        temp = (int)(e->eventState2);
 
         if ((bbEntityY(e->room->objects[6],true)<-990*RoomScale) & (bbEntityY(e->room->objects[6],true)>-1275.0*RoomScale)) {
             e->room->levers[0]->locked = true;
@@ -359,9 +359,9 @@ void UpdateEvent_cont_106_1(Event* e) {
 
         }
 
-        if (Int(e->eventState2)) {
-            bbPositionEntity(e->room->objects[6],bbEntityX(e->room->objects[6],true),CurveValue(-980.0*RoomScale + bbSin(Float(TimeInPosMilliSecs())*0.04)*0.07,bbEntityY(e->room->objects[6],true),200.0),bbEntityZ(e->room->objects[6],true),true);
-            bbRotateEntity(e->room->objects[6], bbSin(Float(TimeInPosMilliSecs())*0.03), bbEntityYaw(e->room->objects[6],true), -bbSin(Float(TimeInPosMilliSecs())*0.025), true);
+        if ((int)(e->eventState2)) {
+            bbPositionEntity(e->room->objects[6],bbEntityX(e->room->objects[6],true),CurveValue(-980.0*RoomScale + bbSin((float)(TimeInPosMilliSecs())*0.04)*0.07,bbEntityY(e->room->objects[6],true),200.0),bbEntityZ(e->room->objects[6],true),true);
+            bbRotateEntity(e->room->objects[6], bbSin((float)(TimeInPosMilliSecs())*0.03), bbEntityYaw(e->room->objects[6],true), -bbSin((float)(TimeInPosMilliSecs())*0.025), true);
         } else {
             bbPositionEntity(e->room->objects[6],bbEntityX(e->room->objects[6],true),CurveValue(-1280.0*RoomScale,bbEntityY(e->room->objects[6],true),200.0),bbEntityZ(e->room->objects[6],true),true);
             bbRotateEntity(e->room->objects[6], 0, bbEntityYaw(e->room->objects[6],true), 0, true);

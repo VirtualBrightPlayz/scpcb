@@ -162,7 +162,7 @@ float angleDist(float a0, float a1) {
 
 float Inverse(float number) {
 
-    return Float(1.0 - number);
+    return (float)(1.0 - number);
 
 }
 

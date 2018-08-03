@@ -95,14 +95,14 @@ void UpdateEvent_dimension1499(Event* e) {
             //					NTF_1499Sky = sky_CreateSky("GFX/Map/sky/1499sky")
             //					e\eventStr = 1
             //				Else
-            //					If Int(e\eventStr)<16
-            //						e\room\objects[Int(e\eventStr)] = LoadMesh("GFX/Map/Rooms/dimension1499/1499object"+(Int(e/EventStr))+".b3d")
-            //						HideEntity(e\room\objects[Int(e\eventStr)])
-            //						e\eventStr = Int(e\eventStr)+1
-            //					ElseIf Int(e\eventStr)=16
+            //					If (int)(e\eventStr)<16
+            //						e\room\objects[(int)(e\eventStr)] = LoadMesh("GFX/Map/Rooms/dimension1499/1499object"+((int)(e/EventStr))+".b3d")
+            //						HideEntity(e\room\objects[(int)(e\eventStr)])
+            //						e\eventStr = (int)(e\eventStr)+1
+            //					ElseIf (int)(e\eventStr)=16
             //						CreateChunkParts(e\room)
             //						e\eventStr = 17
-            //					ElseIf Int(e\eventStr) = 17
+            //					ElseIf (int)(e\eventStr) = 17
             //						x# = EntityX(e\room\obj)
             //						z# = EntityZ(e\room\obj)
             //						Local ch.Chunk
@@ -238,10 +238,10 @@ void CreateChunkParts(Room* r) {
         if (loc > 0) {
             StrTemp = GetINIString2(File,loc,"count");
             chp = new ChunkPart();
-            chp->amount = Int(StrTemp);
+            chp->amount = (int)(StrTemp);
             bbDebugLog("------------------");
-            for (j = 0; j <= Int(StrTemp); j++) {
-                objID = Int(GetINIString2(File,loc,"obj"+String(j)));
+            for (j = 0; j <= (int)(StrTemp); j++) {
+                objID = (int)(GetINIString2(File,loc,"obj"+String(j)));
                 x = GetINIString2(File,loc,"obj"+String(j)+"-x");
                 z = GetINIString2(File,loc,"obj"+String(j)+"-z");
                 yaw = GetINIString2(File,loc,"obj"+String(j)+"-yaw");
@@ -251,9 +251,9 @@ void CreateChunkParts(Room* r) {
                     chp->randomYaw[j] = bbRnd(360);
                     bbRotateEntity(chp->obj[j],0,chp->randomYaw[j],0);
                 } else {
-                    bbRotateEntity(chp->obj[j],0,Float(yaw),0);
+                    bbRotateEntity(chp->obj[j],0,(float)(yaw),0);
                 }
-                bbPositionEntity(chp->obj[j],Float(x),0,Float(z));
+                bbPositionEntity(chp->obj[j],(float)(x),0,(float)(z));
                 bbScaleEntity(chp->obj[j],RoomScale,RoomScale,RoomScale);
                 bbEntityType(chp->obj[j],HIT_MAP);
                 bbEntityPickMode(chp->obj[j],2);
@@ -372,8 +372,8 @@ void UpdateChunks(Room* r, int ChunkPartAmount, int spawnNPCs = true) {
         }
     }
 
-    //CurrChunkX# = Int(EntityX(mainPlayer\collider)/40)*40
-    //CurrChunkZ# = Int(EntityZ(mainPlayer\collider)/40)*40
+    //CurrChunkX# = (int)(EntityX(mainPlayer\collider)/40)*40
+    //CurrChunkZ# = (int)(EntityZ(mainPlayer\collider)/40)*40
 
     x = -(ChunkHideDistance+(CurrChunkX));
     z = -(ChunkHideDistance+(CurrChunkZ));

@@ -752,10 +752,10 @@ void PlaceForest(Forest* fr, float x, float y, float z, Room* r) {
                 if (tile_type > 0) {
                     //2, 5, 8
                     it = nullptr;
-                    if ((ty % 3)==2 & itemPlaced[Int(bbFloor(ty/3))]==false) {
-                        itemPlaced[Int(Floor(ty/3))] = true;
+                    if ((ty % 3)==2 & itemPlaced[(int)(bbFloor(ty/3))]==false) {
+                        itemPlaced[(int)(Floor(ty/3))] = true;
                         //TODO: Rename the files.
-                        //it.Item = CreateItem("Log #"+Int(Floor(ty/3)+1), "paper", 0,0.5,0)
+                        //it.Item = CreateItem("Log #"+(int)(Floor(ty/3)+1), "paper", 0,0.5,0)
                         bbEntityType(it->collider, HIT_ITEM);
                         bbEntityParent(it->collider, tile_entity);
                     }
@@ -764,7 +764,7 @@ void PlaceForest(Forest* fr, float x, float y, float z, Room* r) {
                     //only placed on spots where the value of the heightmap is above 100
                     bbSetBuffer(bbImageBuffer(hmap[tile_type]));
                     width = bbImageWidth(hmap[tile_type]);
-                    tempf4 = (tempf3/Float(width));
+                    tempf4 = (tempf3/(float)(width));
                     for (lx = 3; lx <= width-2; lx++) {
                         for (ly = 3; ly <= width-2; ly++) {
                             bbGetColor(lx,width-ly);
@@ -1038,15 +1038,15 @@ int load_terrain(int hmap, float yscale = 0.7, int t1, int t2, int mask) {
             //using vertex alpha and two meshes instead of FE_ALPHAWHATEVER
             //it doesn't look perfect but it does the job
             //you might get better results by downscaling the mask to the same size as the heightmap
-            maskX = Min(lx*Float(bbTextureWidth(mask))/Float(bbImageWidth(hmap)),bbTextureWidth(mask)-1);
-            maskY = bbTextureHeight(mask)-Min(ly*Float(bbTextureHeight(mask))/Float(bbImageHeight(hmap)),bbTextureHeight(mask)-1);
-            RGB1 = bbReadPixelFast(Int(Min(lx,x-1)),Int(y-Min(ly,y-1)),bbImageBuffer(hmap));
+            maskX = Min(lx*(float)(bbTextureWidth(mask))/(float)(bbImageWidth(hmap)),bbTextureWidth(mask)-1);
+            maskY = bbTextureHeight(mask)-Min(ly*(float)(bbTextureHeight(mask))/(float)(bbImageHeight(hmap)),bbTextureHeight(mask)-1);
+            RGB1 = bbReadPixelFast((int)(Min(lx,x-1)),(int)(y-Min(ly,y-1)),bbImageBuffer(hmap));
             //separate out the red
             r = (RGB1 & $FF0000)Shr 16;
-            alpha = (((bbReadPixelFast(Int(Max(maskX-5,5)),Int(Max(maskY-5,5)),bbTextureBuffer(mask)) & $FF000000) Shr 24)/$FF);
-            alpha = alpha+(((bbReadPixelFast(Int(Min(maskX+5,bbTextureWidth(mask)-5)),Int(Min(maskY+5,bbTextureHeight(mask)-5)),bbTextureBuffer(mask)) & $FF000000) Shr 24)/$FF);
-            alpha = alpha+(((bbReadPixelFast(Int(Max(maskX-5,5)),Int(Min(maskY+5,bbTextureHeight(mask)-5)),bbTextureBuffer(mask)) & $FF000000) Shr 24)/$FF);
-            alpha = alpha+(((bbReadPixelFast(Int(Min(maskX+5,bbTextureWidth(mask)-5)),Int(Max(maskY-5,5)),bbTextureBuffer(mask)) & $FF000000) Shr 24)/$FF);
+            alpha = (((bbReadPixelFast((int)(Max(maskX-5,5)),(int)(Max(maskY-5,5)),bbTextureBuffer(mask)) & $FF000000) Shr 24)/$FF);
+            alpha = alpha+(((bbReadPixelFast((int)(Min(maskX+5,bbTextureWidth(mask)-5)),(int)(Min(maskY+5,bbTextureHeight(mask)-5)),bbTextureBuffer(mask)) & $FF000000) Shr 24)/$FF);
+            alpha = alpha+(((bbReadPixelFast((int)(Max(maskX-5,5)),(int)(Min(maskY+5,bbTextureHeight(mask)-5)),bbTextureBuffer(mask)) & $FF000000) Shr 24)/$FF);
+            alpha = alpha+(((bbReadPixelFast((int)(Min(maskX+5,bbTextureWidth(mask)-5)),(int)(Max(maskY-5,5)),bbTextureBuffer(mask)) & $FF000000) Shr 24)/$FF);
             alpha = alpha*0.25;
             alpha = bbSqr(alpha);
 

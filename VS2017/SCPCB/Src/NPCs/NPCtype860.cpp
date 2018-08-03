@@ -65,13 +65,13 @@ void UpdateNPCtype860(NPC* n) {
                 if (bbEntityY(n->collider)<= -100) {
                     bbTFormPoint(bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider),bbEntityZ(mainPlayer->collider),0,mainPlayer->currRoom->obj);
 
-                    x = Int(bbFloor((bbTFormedX()*RoomScale+6.0)/12.0));
-                    z = Int(bbFloor((bbTFormedZ()*RoomScale+6.0)/12.0));
+                    x = (int)(bbFloor((bbTFormedX()*RoomScale+6.0)/12.0));
+                    z = (int)(bbFloor((bbTFormedZ()*RoomScale+6.0)/12.0));
 
                     bbTFormPoint(x/RoomScale*12.0,0,z/RoomScale*12.0,fr->forest_Pivot,0);
 
-                    for (x2 = Int(Max(x-1,0)); x2 <= Int(Min(x+1,gridsize)); x2 += 2) {
-                        for (z2 = Int(Max(z-1,0)); z2 <= Int(Min(z+1,gridsize)); z2 += 2) {
+                    for (x2 = (int)(Max(x-1,0)); x2 <= (int)(Min(x+1,gridsize)); x2 += 2) {
+                        for (z2 = (int)(Max(z-1,0)); z2 <= (int)(Min(z+1,gridsize)); z2 += 2) {
                             if (fr->grid[(z2*gridsize)+x2]==0) {
 
                                 bbTFormPoint((x*12 + (x2-x)*6)/RoomScale,0,(z*12 + (z2-z)*6)/RoomScale,mainPlayer->currRoom->obj,0);
@@ -82,7 +82,7 @@ void UpdateNPCtype860(NPC* n) {
                                     bbPositionEntity(n->collider, 0, -110, 0);
                                     //only spawn the monster outside the player's field of view
                                 } else {
-                                    x2 = Int(Min(x+1,gridsize));
+                                    x2 = (int)(Min(x+1,gridsize));
                                     break;
                                 }
 
@@ -182,15 +182,15 @@ void UpdateNPCtype860(NPC* n) {
                 bbShowEntity(n->obj);
                 bbShowEntity(n->collider);
 
-                prevFrame = Int(n->frame);
+                prevFrame = (int)(n->frame);
 
                 if (bbEntityY(n->collider)<= -100) {
                     bbTFormPoint(bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider),bbEntityZ(mainPlayer->collider),0,mainPlayer->currRoom->obj);
-                    x = Int(bbFloor((bbTFormedX()*RoomScale+6.0)/12.0));
-                    z = Int(bbFloor((bbTFormedZ()*RoomScale+6.0)/12.0));
+                    x = (int)(bbFloor((bbTFormedX()*RoomScale+6.0)/12.0));
+                    z = (int)(bbFloor((bbTFormedZ()*RoomScale+6.0)/12.0));
 
-                    for (x2 = Int(Max(x-1,0)); x2 <= Int(Min(x+1,gridsize)); x2++) {
-                        for (z2 = Int(Max(z-1,0)); z2 <= Int(Min(z+1,gridsize)); z2++) {
+                    for (x2 = (int)(Max(x-1,0)); x2 <= (int)(Min(x+1,gridsize)); x2++) {
+                        for (z2 = (int)(Max(z-1,0)); z2 <= (int)(Min(z+1,gridsize)); z2++) {
                             if (fr->grid[(z2*gridsize)+x2]>0 & (x2!=x | z2!=z) & (x2==x | z2==z)) {
 
                                 bbTFormPoint((x2*12)/RoomScale,0,(z2*12)/RoomScale,mainPlayer->currRoom->obj,0);
@@ -202,7 +202,7 @@ void UpdateNPCtype860(NPC* n) {
                                 if (bbEntityInView(n->collider, mainPlayer->cam)) {
                                     mainPlayer->blinkTimer = -10;
                                 } else {
-                                    x2 = Int(Min(x+1,gridsize));
+                                    x2 = (int)(Min(x+1,gridsize));
                                     break;
                                 }
                             }
@@ -273,7 +273,7 @@ void UpdateNPCtype860(NPC* n) {
                 bbShowEntity(n->obj);
                 bbShowEntity(n->collider);
 
-                prevFrame = Int(n->frame);
+                prevFrame = (int)(n->frame);
 
                 angle = CurveAngle(Find860Angle(n, fr),bbEntityYaw(n->collider)+90,40.0);
 
@@ -355,22 +355,22 @@ void UpdateNPCtype860(NPC* n) {
 
 float Find860Angle(NPC* n, Forest* fr) {
     bbTFormPoint(bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider),bbEntityZ(mainPlayer->collider),0,mainPlayer->currRoom->obj);
-    int playerx = Int(bbFloor((bbTFormedX()*RoomScale+6.0)/12.0));
-    int playerz = Int(bbFloor((bbTFormedZ()*RoomScale+6.0)/12.0));
+    int playerx = (int)(bbFloor((bbTFormedX()*RoomScale+6.0)/12.0));
+    int playerz = (int)(bbFloor((bbTFormedZ()*RoomScale+6.0)/12.0));
 
     bbTFormPoint(bbEntityX(n->collider),bbEntityY(n->collider),bbEntityZ(n->collider),0,mainPlayer->currRoom->obj);
     float x = (bbTFormedX()*RoomScale+6.0)/12.0;
     float z = (bbTFormedZ()*RoomScale+6.0)/12.0;
 
-    int xt = Int(bbFloor(x));
-    int zt = Int(bbFloor(z));
+    int xt = (int)(bbFloor(x));
+    int zt = (int)(bbFloor(z));
 
     int x2;
     int z2;
     //the monster is not on the same tile as the player
     if (xt!=playerx | zt!=playerz) {
-        for (x2 = Int(Max(xt-1,0)); x2 <= Int(Min(xt+1,gridsize-1)); x2++) {
-            for (z2 = Int(Max(zt-1,0)); z2 <= Int(Min(zt+1,gridsize-1)); z2++) {
+        for (x2 = (int)(Max(xt-1,0)); x2 <= (int)(Min(xt+1,gridsize-1)); x2++) {
+            for (z2 = (int)(Max(zt-1,0)); z2 <= (int)(Min(zt+1,gridsize-1)); z2++) {
                 if (fr->grid[(z2*gridsize)+x2]>0 & (x2!=xt | z2!=zt) & (x2==xt | z2==zt)) {
 
                     //tile (x2,z2) is closer to the player than the monsters current tile

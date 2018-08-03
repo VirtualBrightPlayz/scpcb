@@ -72,7 +72,7 @@ void UpdateNPCtype096(NPC* n) {
             }
         }
         case 4: {
-            mainPlayer->camZoom = CurveValue(Max(mainPlayer->camZoom, (bbSin(Float(TimeInPosMilliSecs())/20.0)+1.0) * 10.0),mainPlayer->camZoom,8.0);
+            mainPlayer->camZoom = CurveValue(Max(mainPlayer->camZoom, (bbSin((float)(TimeInPosMilliSecs())/20.0)+1.0) * 10.0),mainPlayer->camZoom,8.0);
 
             if (n->target == nullptr) {
                 if (n->sounds[0] == 0) {

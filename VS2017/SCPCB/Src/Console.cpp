@@ -80,11 +80,11 @@ void DrawConsole() {
         bbSetFont(uiAssets->consoleFont);
 
         x = 0;
-        y = userOptions->screenHeight-Int(300.0*MenuScale);
+        y = userOptions->screenHeight-(int)(300.0*MenuScale);
         width = userOptions->screenWidth;
-        height = Int(300.0*MenuScale-30.0*MenuScale);
+        height = (int)(300.0*MenuScale-30.0*MenuScale);
 
-        DrawFrame(x,y,width,height+Int(30.0*MenuScale));
+        DrawFrame(x,y,width,height+(int)(30.0*MenuScale));
 
         consoleHeight = 0;
         scrollbarHeight = 0;
@@ -92,9 +92,9 @@ void DrawConsole() {
         for (int iterator40 = 0; iterator40 < ConsoleMsg::getListSize(); iterator40++) {
             cm = ConsoleMsg::getObject(iterator40);
 
-            consoleHeight = consoleHeight + Int(15.0*MenuScale);
+            consoleHeight = consoleHeight + (int)(15.0*MenuScale);
         }
-        scrollbarHeight = Int((Float(height)/Float(consoleHeight))*height);
+        scrollbarHeight = (int)(((float)(height)/(float)(consoleHeight))*height);
         if (scrollbarHeight>height) {
             scrollbarHeight = height;
         }
@@ -103,26 +103,26 @@ void DrawConsole() {
         }
 
         bbColor(50,50,50);
-        inBar = MouseOn(x+width-Int(26.0*MenuScale),y,Int(26.0*MenuScale),height);
+        inBar = MouseOn(x+width-(int)(26.0*MenuScale),y,(int)(26.0*MenuScale),height);
         if (inBar) {
             bbColor(70,70,70);
         }
-        bbRect(x+width-Int(26.0*MenuScale),y,Int(26.0*MenuScale),height,true);
+        bbRect(x+width-(int)(26.0*MenuScale),y,(int)(26.0*MenuScale),height,true);
 
 
         bbColor(120,120,120);
-        inBox = MouseOn(x+width-Int(23.0*MenuScale),y+height-scrollbarHeight+Int(ConsoleScroll*scrollbarHeight/height),Int(20.0*MenuScale),scrollbarHeight);
+        inBox = MouseOn(x+width-(int)(23.0*MenuScale),y+height-scrollbarHeight+(int)(ConsoleScroll*scrollbarHeight/height),(int)(20.0*MenuScale),scrollbarHeight);
         if (inBox) {
             bbColor(200,200,200);
         }
         if (ConsoleScrollDragging) {
             bbColor(255,255,255);
         }
-        bbRect(x+width-Int(23.0*MenuScale),y+height-scrollbarHeight+Int(ConsoleScroll*scrollbarHeight/height),Int(20.0*MenuScale),scrollbarHeight,true);
+        bbRect(x+width-(int)(23.0*MenuScale),y+height-scrollbarHeight+(int)(ConsoleScroll*scrollbarHeight/height),(int)(20.0*MenuScale),scrollbarHeight,true);
 
         bbColor(255, 255, 255);
 
-        TempY = y + height - Int(25.0*MenuScale) - Int(ConsoleScroll);
+        TempY = y + height - (int)(25.0*MenuScale) - (int)(ConsoleScroll);
         count = 0;
         for (int iterator41 = 0; iterator41 < ConsoleMsg::getListSize(); iterator41++) {
             cm = ConsoleMsg::getObject(iterator41);
@@ -131,26 +131,26 @@ void DrawConsole() {
             if (count>1000) {
                 delete cm;
             } else {
-                if (TempY >= y & TempY < y + height - Int(20.0*MenuScale)) {
+                if (TempY >= y & TempY < y + height - (int)(20.0*MenuScale)) {
                     if (cm==ConsoleReissue) {
                         bbColor(cm->r/4,cm->g/4,cm->b/4);
-                        bbRect(x,TempY-Int(2.0*MenuScale),width-Int(30.0*MenuScale),Int(24.0*MenuScale),true);
+                        bbRect(x,TempY-(int)(2.0*MenuScale),width-(int)(30.0*MenuScale),(int)(24.0*MenuScale),true);
                     }
                     bbColor(cm->r,cm->g,cm->b);
                     if (cm->isCommand) {
-                        bbText(x + Int(20.0*MenuScale), TempY, "> "+cm->txt);
+                        bbText(x + (int)(20.0*MenuScale), TempY, "> "+cm->txt);
                     } else {
-                        bbText(x + Int(20.0*MenuScale), TempY, cm->txt);
+                        bbText(x + (int)(20.0*MenuScale), TempY, cm->txt);
                     }
                 }
-                TempY = TempY - Int(15.0*MenuScale);
+                TempY = TempY - (int)(15.0*MenuScale);
             }
 
         }
 
         bbColor(255,255,255);
 
-        DrawInputBox(x, y + height, width, Int(30.0*MenuScale), ConsoleInput, 2);
+        DrawInputBox(x, y + height, width, (int)(30.0*MenuScale), ConsoleInput, 2);
 
 
     }
@@ -197,18 +197,18 @@ void UpdateConsole() {
         ConsoleB = 255;
 
         x = 0;
-        y = userOptions->screenHeight-Int(300.0*MenuScale);
+        y = userOptions->screenHeight-(int)(300.0*MenuScale);
         width = userOptions->screenWidth;
-        height = Int(300.0*MenuScale-30.0*MenuScale);
+        height = (int)(300.0*MenuScale-30.0*MenuScale);
 
         consoleHeight = 0;
         scrollbarHeight = 0;
         for (int iterator42 = 0; iterator42 < ConsoleMsg::getListSize(); iterator42++) {
             cm = ConsoleMsg::getObject(iterator42);
 
-            consoleHeight = consoleHeight + Int(15.0*MenuScale);
+            consoleHeight = consoleHeight + (int)(15.0*MenuScale);
         }
-        scrollbarHeight = Int((Float(height)/Float(consoleHeight))*height);
+        scrollbarHeight = (int)(((float)(height)/(float)(consoleHeight))*height);
         if (scrollbarHeight>height) {
             scrollbarHeight = height;
         }
@@ -216,9 +216,9 @@ void UpdateConsole() {
             consoleHeight = height;
         }
 
-        inBar = MouseOn(x+width-Int(26.0*MenuScale),y,Int(26.0*MenuScale),height);
+        inBar = MouseOn(x+width-(int)(26.0*MenuScale),y,(int)(26.0*MenuScale),height);
 
-        inBox = MouseOn(x+width-Int(23.0*MenuScale),y+height-scrollbarHeight+Int(ConsoleScroll*scrollbarHeight/height),Int(20.0*MenuScale),scrollbarHeight);
+        inBox = MouseOn(x+width-(int)(23.0*MenuScale),y+height-scrollbarHeight+(int)(ConsoleScroll*scrollbarHeight/height),(int)(20.0*MenuScale),scrollbarHeight);
 
         if (!bbMouseDown(1)) {
             ConsoleScrollDragging = false;
@@ -255,7 +255,7 @@ void UpdateConsole() {
                     if (ConsoleReissue->isCommand) {
                         break;
                     }
-                    reissuePos = reissuePos - Int(15.0*MenuScale);
+                    reissuePos = reissuePos - (int)(15.0*MenuScale);
                     ConsoleReissue = After ConsoleReissue;
                 }
 
@@ -265,11 +265,11 @@ void UpdateConsole() {
                     if (cm==ConsoleReissue) {
                         break;
                     }
-                    reissuePos = reissuePos-Int(15.0*MenuScale);
+                    reissuePos = reissuePos-(int)(15.0*MenuScale);
                     cm = After cm;
                 }
                 ConsoleReissue = After ConsoleReissue;
-                reissuePos = reissuePos-Int(15.0*MenuScale);
+                reissuePos = reissuePos-(int)(15.0*MenuScale);
 
                 while (true) {
                     if (ConsoleReissue==nullptr) {
@@ -280,7 +280,7 @@ void UpdateConsole() {
                     if (ConsoleReissue->isCommand) {
                         break;
                     }
-                    reissuePos = reissuePos - Int(15.0*MenuScale);
+                    reissuePos = reissuePos - (int)(15.0*MenuScale);
                     ConsoleReissue = After ConsoleReissue;
                 }
             }
@@ -292,7 +292,7 @@ void UpdateConsole() {
         }
 
         if (bbKeyHit(208)) {
-            reissuePos = -consoleHeight+Int(15.0*MenuScale);
+            reissuePos = -consoleHeight+(int)(15.0*MenuScale);
             if (ConsoleReissue==nullptr) {
                 ConsoleReissue = Last ConsoleMsg;
 
@@ -300,7 +300,7 @@ void UpdateConsole() {
                     if (ConsoleReissue->isCommand) {
                         break;
                     }
-                    reissuePos = reissuePos + Int(15.0*MenuScale);
+                    reissuePos = reissuePos + (int)(15.0*MenuScale);
                     ConsoleReissue = Before ConsoleReissue;
                 }
 
@@ -310,22 +310,22 @@ void UpdateConsole() {
                     if (cm==ConsoleReissue) {
                         break;
                     }
-                    reissuePos = reissuePos+Int(15.0*MenuScale);
+                    reissuePos = reissuePos+(int)(15.0*MenuScale);
                     cm = Before cm;
                 }
                 ConsoleReissue = Before ConsoleReissue;
-                reissuePos = reissuePos+Int(15.0*MenuScale);
+                reissuePos = reissuePos+(int)(15.0*MenuScale);
 
                 while (true) {
                     if (ConsoleReissue==nullptr) {
                         ConsoleReissue = Last ConsoleMsg;
-                        reissuePos = -consoleHeight+Int(15.0*MenuScale);
+                        reissuePos = -consoleHeight+(int)(15.0*MenuScale);
                     }
 
                     if (ConsoleReissue->isCommand) {
                         break;
                     }
-                    reissuePos = reissuePos + Int(15.0*MenuScale);
+                    reissuePos = reissuePos + (int)(15.0*MenuScale);
                     ConsoleReissue = Before ConsoleReissue;
                 }
             }
@@ -345,7 +345,7 @@ void UpdateConsole() {
 
         SelectedInputBox = 2;
         oldConsoleInput = ConsoleInput;
-        ConsoleInput = UpdateInputBox(x, y + height, width, Int(30.0*MenuScale), ConsoleInput, 2);
+        ConsoleInput = UpdateInputBox(x, y + height, width, (int)(30.0*MenuScale), ConsoleInput, 2);
         if (oldConsoleInput!=ConsoleInput) {
             ConsoleReissue = nullptr;
         }
@@ -617,7 +617,7 @@ void UpdateConsole() {
 
                 }
                 case "hidedistance": {
-                    HideDistance = Float(bbRight(ConsoleInput, bbLen(ConsoleInput) - bbInstr(ConsoleInput, " ")));
+                    HideDistance = (float)(bbRight(ConsoleInput, bbLen(ConsoleInput) - bbInstr(ConsoleInput, " ")));
                     CreateConsoleMsg("Hidedistance set to "+String(HideDistance));
 
                 }
@@ -632,19 +632,19 @@ void UpdateConsole() {
                     bbRuntimeError("TODO: reimplement?");
                     //StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 
-                    //NoClipSpeed = Float(StrTemp)
+                    //NoClipSpeed = (float)(StrTemp)
 
                 }
                 case "injure": {
                     StrTemp = bbLower(bbRight(ConsoleInput, bbLen(ConsoleInput) - bbInstr(ConsoleInput, " ")));
 
-                    mainPlayer->injuries = Float(StrTemp);
+                    mainPlayer->injuries = (float)(StrTemp);
 
                 }
                 case "infect": {
                     StrTemp = bbLower(bbRight(ConsoleInput, bbLen(ConsoleInput) - bbInstr(ConsoleInput, " ")));
 
-                    mainPlayer->infect008 = Float(StrTemp);
+                    mainPlayer->infect008 = (float)(StrTemp);
 
                 }
                 case "heal": {
@@ -752,13 +752,13 @@ void UpdateConsole() {
                 }
                 case "173speed": {
                     StrTemp = bbLower(bbRight(ConsoleInput, bbLen(ConsoleInput) - bbInstr(ConsoleInput, " ")));
-                    Curr173->speed = Float(StrTemp);
+                    Curr173->speed = (float)(StrTemp);
                     CreateConsoleMsg("173's speed set to " + StrTemp);
 
                 }
                 case "106speed": {
                     StrTemp = bbLower(bbRight(ConsoleInput, bbLen(ConsoleInput) - bbInstr(ConsoleInput, " ")));
-                    Curr106->speed = Float(StrTemp);
+                    Curr106->speed = (float)(StrTemp);
                     CreateConsoleMsg("106's speed set to " + StrTemp);
 
                 }
@@ -965,14 +965,14 @@ void UpdateConsole() {
                 case "camerafog": {
                     bbRuntimeError("TODO: reimplement?");
                     //args$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
-                    //CameraFogNear = Float(Left(args, Len(args) - Instr(args, " ")))
-                    //CameraFogFar = Float(Right(args, Len(args) - Instr(args, " ")))
+                    //CameraFogNear = (float)(Left(args, Len(args) - Instr(args, " ")))
+                    //CameraFogFar = (float)(Right(args, Len(args) - Instr(args, " ")))
                     //CreateConsoleMsg("Near set to: " + CameraFogNear + ", far set to: " + CameraFogFar)
 
                 }
                 case "gamma": {
                     StrTemp = bbLower(bbRight(ConsoleInput, bbLen(ConsoleInput) - bbInstr(ConsoleInput, " ")));
-                    userOptions->screenGamma = Float(StrTemp);
+                    userOptions->screenGamma = (float)(StrTemp);
                     CreateConsoleMsg("Gamma set to " + String(userOptions->screenGamma));
 
                 }
@@ -1006,7 +1006,7 @@ void UpdateConsole() {
                     args = bbLower(bbRight(ConsoleInput, bbLen(ConsoleInput) - bbInstr(ConsoleInput, " ")));
                     StrTemp = Piece$(args,1," ");
                     StrTemp2 = Piece$(args,2," ");
-                    Console_SpawnNPC(StrTemp,Int(StrTemp2));
+                    Console_SpawnNPC(StrTemp,(int)(StrTemp2));
 
                 }
                 case "toggle_warhead_lever": {
@@ -1109,8 +1109,8 @@ void UpdateConsole() {
                     StrTemp = Piece$(args,1," ");
                     StrTemp2 = Piece$(args,2," ");
                     StrTemp3 = Piece$(args,3," ");
-                    bbPositionEntity(mainPlayer->collider,Float(StrTemp),Float(StrTemp2),Float(StrTemp3));
-                    bbPositionEntity(mainPlayer->cam,Float(StrTemp),Float(StrTemp2),Float(StrTemp3));
+                    bbPositionEntity(mainPlayer->collider,(float)(StrTemp),(float)(StrTemp2),(float)(StrTemp3));
+                    bbPositionEntity(mainPlayer->cam,(float)(StrTemp),(float)(StrTemp2),(float)(StrTemp3));
                     CreateConsoleMsg("Teleported to coordinates (X|Y|Z): "+String(bbEntityX(mainPlayer->collider))+"|"+String(bbEntityY(mainPlayer->collider))+"|"+String(bbEntityZ(mainPlayer->collider)));
 
                 }

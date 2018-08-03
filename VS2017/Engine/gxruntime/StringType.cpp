@@ -81,6 +81,20 @@ String::String(const String& a, const String& b) {
     syncBuffers();
 }
 
+String::String(bool b) {
+    if (b) {
+        cbuffer = "true";
+        capacity = 5;
+        strSize = 4;
+    } else {
+        cbuffer = "false";
+        capacity = 6;
+        strSize = 5;
+    }
+    dominantBuffer = DOMINANT_BUFFER::C;
+    syncBuffers();
+}
+
 String::String(char c) {
     cbuffer = new char[2];
     capacity = 2;
@@ -139,6 +153,10 @@ String operator+(const char* a, const String& b) {
 
 bool String::equals(const String& other) const {
     return strcmp(cbuffer, other.cstr()) == 0;
+}
+
+bool String::isEmpty() const {
+    return strSize == 0;
 }
 
 void String::syncBuffers() {

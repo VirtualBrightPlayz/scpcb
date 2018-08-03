@@ -430,10 +430,10 @@ void LoadRoomTemplates(String file) {
                         rt->minAmount = -1;
                         rt->maxAmount = -1;
                     } else if ((bbInstr(AmountRange,"-")>0)) {
-                        rt->minAmount = Int(bbLeft(AmountRange,bbInstr(AmountRange,"-")));
-                        rt->maxAmount = Int(bbMid(AmountRange,bbInstr(AmountRange,"-")+1));
+                        rt->minAmount = (int)(bbLeft(AmountRange,bbInstr(AmountRange,"-")));
+                        rt->maxAmount = (int)(bbMid(AmountRange,bbInstr(AmountRange,"-")+1));
                     } else {
-                        rt->minAmount = Int(AmountRange);
+                        rt->minAmount = (int)(AmountRange);
                         rt->maxAmount = rt->minAmount;
                     }
 
@@ -450,11 +450,11 @@ void LoadRoomTemplates(String file) {
                         yRange = "0-1";
                     }
 
-                    rt->xRangeStart = Float(bbLeft(xRange,bbInstr(xRange,"-")));
-                    rt->xRangeEnd = Float(bbMid(xRange,bbInstr(xRange,"-")+1));
+                    rt->xRangeStart = (float)(bbLeft(xRange,bbInstr(xRange,"-")));
+                    rt->xRangeEnd = (float)(bbMid(xRange,bbInstr(xRange,"-")+1));
 
-                    rt->yRangeStart = Float(bbLeft(yRange,bbInstr(yRange,"-")));
-                    rt->yrangeEnd = Float(bbMid(yRange,bbInstr(yRange,"-")+1));
+                    rt->yRangeStart = (float)(bbLeft(yRange,bbInstr(yRange,"-")));
+                    rt->yrangeEnd = (float)(bbMid(yRange,bbInstr(yRange,"-")+1));
                 } else {
                     rt->minAmount = 0;
                     rt->maxAmount = 0;
@@ -968,7 +968,7 @@ void UpdateRooms() {
                 }
             }
 
-            if (!foundPlayerRoom) & (mainPlayer->currRoom!=r) {
+            if ((!foundPlayerRoom) & (mainPlayer->currRoom!=r)) {
                 if (x < 4.0) {
                     if (z < 4.0) {
                         if (Abs(bbEntityY(mainPlayer->collider) - bbEntityY(r->obj)) < 1.5) {
@@ -1049,16 +1049,15 @@ void UpdateRooms() {
 
 }
 
-int IsRoomAdjacent(Room* this, Room* that) {
-    if (this==nullptr) {
+int IsRoomAdjacent(Room* thisRoom, Room* that) {
+    if (thisRoom==nullptr) {
         return false;
     }
-    if (this==that) {
+    if (thisRoom==that) {
         return true;
     }
-    int i;
-    for (i = 0; i <= 3; i++) {
-        if (that==this->adjacent[i]) {
+    for (int i = 0; i <= 3; i++) {
+        if (that==thisRoom->adjacent[i]) {
             return true;
         }
     }
@@ -1208,13 +1207,13 @@ int FindPath(NPC* n, float x, float y, float z) {
 
     int length = 0;
 
-    int StartX = Int(bbFloor(bbEntityX(n->collider,true) / 8.0 + 0.5));
-    int StartZ = Int(bbFloor(bbEntityZ(n->collider,true) / 8.0 + 0.5));
+    int StartX = (int)(bbFloor(bbEntityX(n->collider,true) / 8.0 + 0.5));
+    int StartZ = (int)(bbFloor(bbEntityZ(n->collider,true) / 8.0 + 0.5));
     //If (StartX < 0 Or StartX > MapWidth) Then Return 2
     //If (StartZ < 0 Or StartZ > MapWidth) Then Return 2
 
-    int EndX = Int(bbFloor(x / 8.0 + 0.5));
-    int EndZ = Int(bbFloor(z / 8.0 + 0.5));
+    int EndX = (int)(bbFloor(x / 8.0 + 0.5));
+    int EndZ = (int)(bbFloor(z / 8.0 + 0.5));
     //If (EndX < 0 Or EndX > MapWidth) Then Return 2
     //If (EndZ < 0 Or EndZ > MapWidth) Then Return 2
 
@@ -1400,7 +1399,7 @@ int FindPath(NPC* n, float x, float y, float z) {
 
         length = 0;
         do {
-            length = length +1;
+            length++;
             currpoint = currpoint->parent;
             if (length>20) {
                 twentiethpoint = twentiethpoint->parent;
@@ -1409,7 +1408,7 @@ int FindPath(NPC* n, float x, float y, float z) {
 
         currpoint = EndPoint;
         while (twentiethpoint!=nullptr) {
-            length = Int(Min(length-1,19));
+            length = (int)(Min(length-1,19));
             //DebugLog("LENGTH "+length)
             twentiethpoint = twentiethpoint->parent;
             n->path[length] = twentiethpoint;
@@ -1440,11 +1439,9 @@ int FindPath(NPC* n, float x, float y, float z) {
         //      Next
 
     } else {
-
         bbDebugLog("FUNCTION FindPath() - reitti� ei l�ytynyt");
         //reitti� m��r�np��h�n ei l�ytynyt
         return 2;
-
     }
 
 }
@@ -1511,7 +1508,7 @@ void UpdateScreens() {
                     if (MouseUp1) {
                         SelectedScreen = s;
                         s->img = bbLoadImage("GFX/screens/"+s->imgpath);
-                        s->img = ResizeImage2(s->img, Int(bbImageWidth(s->img) * MenuScale), Int(bbImageHeight(s->img) * MenuScale));
+                        s->img = ResizeImage2(s->img, (int)(bbImageWidth(s->img) * MenuScale), (int)(bbImageHeight(s->img) * MenuScale));
                         bbMaskImage(s->img, 255,0,255);
                         PlaySound_SM(sndManager->button);
                         MouseUp1 = false;
@@ -1825,7 +1822,7 @@ void UpdateSecurityCams() {
                                     if (bbRand(50) == 1) {
                                         bbEntityTexture(sc->scrOverlay, gorePics[bbRand(0, GORE_PIC_COUNT-1)]);
                                         //If (sc\playerState = 0) Then PlaySound(HorrorSFX(0)) ;TODO: fix
-                                        sc->playerState = Int(Max(sc->playerState, 1));
+                                        sc->playerState = (int)(Max(sc->playerState, 1));
                                         if (sc->coffinEffect==3 & bbRand(100)==1) {
                                             sc->coffinEffect = 2;
                                             sc->playerState = bbRand(10000, 20000);
@@ -2093,10 +2090,10 @@ void CreateMap() {
         bbDebugLog("trying to place "+String(placementCount)+" "+rt->name);
 
         for (c = 1; c <= placementCount; c++) {
-            loopStartX = Int(Min(bbFloor(Float(mapDim)*rt->xRangeStart),mapDim-1));
-            loopStartY = Int(Min(bbFloor(Float(mapDim)*rt->yRangeStart),mapDim-1));
-            loopEndX = Int(Min(bbFloor(Float(mapDim)*rt->xRangeEnd),mapDim-1));
-            loopEndY = Int(Min(bbFloor(Float(mapDim)*rt->yrangeEnd),mapDim-1));
+            loopStartX = (int)(Min(bbFloor((float)(mapDim)*rt->xRangeStart),mapDim-1));
+            loopStartY = (int)(Min(bbFloor((float)(mapDim)*rt->yRangeStart),mapDim-1));
+            loopEndX = (int)(Min(bbFloor((float)(mapDim)*rt->xRangeEnd),mapDim-1));
+            loopEndY = (int)(Min(bbFloor((float)(mapDim)*rt->yrangeEnd),mapDim-1));
 
             loopX = loopEndX-loopStartX;
             loopY = loopEndY-loopStartY;
@@ -2147,7 +2144,7 @@ void CreateMap() {
 
         if (((rt->zones & zone)!=0) & (rt->maxAmount<0) & (rt->shape!=ROOM0)) {
             randomTemplateCount = randomTemplateCount+1;
-            totalCommonness[rt->shape] = totalCommonness[rt->shape]+Int(rt->commonness);
+            totalCommonness[rt->shape] = totalCommonness[rt->shape]+(int)(rt->commonness);
         }
     }
     IntArray* randomTemplates = CreateIntArray(randomTemplateCount,1);
@@ -2186,7 +2183,7 @@ void CreateMap() {
                 for (i = 0; i <= randomTemplateCount-1; i++) {
                     tempTemplate = Object.RoomTemplate(GetIntArrayElem(randomTemplates,i,0));
                     if (tempTemplate->shape == currType) {
-                        commonnessAccumulator = commonnessAccumulator+Int(tempTemplate->commonness);
+                        commonnessAccumulator = commonnessAccumulator+(int)(tempTemplate->commonness);
                         if (commonnessAccumulator>=targetCommonness) {
                             r = CreateRoom(tempTemplate,x*8.0,0.0,y*8.0);
                             r->angle = DetermineRotation(layout,x,y);

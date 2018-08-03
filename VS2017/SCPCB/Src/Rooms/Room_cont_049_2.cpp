@@ -206,11 +206,11 @@ void UpdateEvent_cont_049_2(Event* e) {
                 e->room->doors[3]->locked = true;
 
                 //TODO: really
-                if (temp | Int(x)) {
+                if (temp | (int)(x)) {
                     //049 appears when either of the levers is turned
                     e->eventState = Max(e->eventState,70*180);
 
-                    if (temp & Int(x)) {
+                    if (temp & (int)(x)) {
                         e->room->doors[1]->locked = false;
                         e->room->doors[3]->locked = false;
                         e->eventState2 = UpdateElevators(e->eventState2, e->room->doors[0], e->room->doors[1],e->room->objects[0],e->room->objects[1], e);

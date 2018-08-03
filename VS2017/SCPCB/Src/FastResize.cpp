@@ -17,8 +17,8 @@ int ResizeImage2(int image, int width, int height) {
     int oldHeight = bbImageHeight(image);
     bbCopyRect(0,0,oldWidth,oldHeight,1024-oldWidth/2,1024-oldHeight/2,bbImageBuffer(image),bbTextureBuffer(fresize_texture));
     bbSetBuffer(bbBackBuffer());
-    ScaleRender(0,0,2048.0 / Float(userOptions->screenWidth) * Float(width) / Float(oldWidth), 2048.0 / Float(userOptions->screenWidth) * Float(height) / Float(oldHeight));
-    //might want to replace Float(userOptions\screenWidth) with Max(userOptions\screenWidth,userOptions\screenHeight) if portrait sizes cause issues
+    ScaleRender(0,0,2048.0 / (float)(userOptions->screenWidth) * (float)(width) / (float)(oldWidth), 2048.0 / (float)(userOptions->screenWidth) * (float)(height) / (float)(oldHeight));
+    //might want to replace (float)(userOptions\screenWidth) with Max(userOptions\screenWidth,userOptions\screenHeight) if portrait sizes cause issues
     //everyone uses landscape so it's probably a non-issue
     bbCopyRect(userOptions->screenWidth/2-width/2,userOptions->screenHeight/2-height/2,width,height,0,0,bbBackBuffer(),bbImageBuffer(img));
 
@@ -68,7 +68,7 @@ void InitFastResize() {
     bbAddTriangle(sf, 0, 1, 2);
     bbAddTriangle(sf, 3, 2, 1);
     bbEntityFX(spr, 17);
-    bbScaleEntity(spr, 2048.0 / Float(userOptions->screenWidth), 2048.0 / Float(userOptions->screenHeight), 1);
+    bbScaleEntity(spr, 2048.0 / (float)(userOptions->screenWidth), 2048.0 / (float)(userOptions->screenHeight), 1);
     bbPositionEntity(spr, 0, 0, 1.0001);
     bbEntityOrder(spr, -100001);
     bbEntityBlend(spr, 1);

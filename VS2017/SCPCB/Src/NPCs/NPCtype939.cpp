@@ -108,12 +108,12 @@ void UpdateNPCtype939(NPC* n) {
             case 2: {
                 n->state2 = Max(n->state2, (n->prevState-3));
 
-                dist = bbEntityDistance(n->collider, mainPlayer->currRoom->objects[Int(n->state2)]);
+                dist = bbEntityDistance(n->collider, mainPlayer->currRoom->objects[(int)(n->state2)]);
 
                 n->currSpeed = CurveValue(n->speed*0.3*Min(dist,1.0), n->currSpeed, 10.0);
                 bbMoveEntity(n->collider, 0,0,n->currSpeed*timing->tickDuration);
 
-                prevFrame = Int(n->frame);
+                prevFrame = (int)(n->frame);
                 //walk
                 AnimateNPC(n, 644,683,28*n->currSpeed);
 
@@ -138,7 +138,7 @@ void UpdateNPCtype939(NPC* n) {
                     }
                 }
 
-                bbPointEntity(n->obj, mainPlayer->currRoom->objects[Int(n->state2)]);
+                bbPointEntity(n->obj, mainPlayer->currRoom->objects[(int)(n->state2)]);
                 bbRotateEntity(n->collider, 0, CurveAngle(bbEntityYaw(n->obj),bbEntityYaw(n->collider),20.0), 0);
 
                 if (dist<0.4) {
@@ -162,7 +162,7 @@ void UpdateNPCtype939(NPC* n) {
                 }
 
                 if (n->lastSeen > 0 & (!NoTarget)) {
-                    prevFrame = Int(n->frame);
+                    prevFrame = (int)(n->frame);
 
                     if (n->frame>=18.0 & n->frame<68.0) {
                         n->currSpeed = CurveValue(0, n->currSpeed, 5.0);
@@ -227,7 +227,7 @@ void UpdateNPCtype939(NPC* n) {
 
                     bbMoveEntity(n->collider, 0,0,n->currSpeed*timing->tickDuration);
 
-                    n->lastSeen = Int(n->lastSeen - timing->tickDuration);
+                    n->lastSeen = (int)(n->lastSeen - timing->tickDuration);
                 } else {
                     n->state = 2;
                 }

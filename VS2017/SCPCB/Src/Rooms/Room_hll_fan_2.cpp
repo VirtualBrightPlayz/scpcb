@@ -79,7 +79,7 @@ void UpdateEventRoom2fan(Event* e) {
     if (e->room->dist < 16.0) {
         if (e->eventState < 0) {
             e->eventState = bbRand(15,30)*70;
-            temp = Int(e->eventState2);
+            temp = (int)(e->eventState2);
             e->eventState2 = bbRand(0,1);
             if (mainPlayer->currRoom!=e->room) {
                 e->eventState3 = e->eventState2*5;

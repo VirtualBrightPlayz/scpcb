@@ -1,5 +1,10 @@
 #include "Launcher.h"
-#include "include.h"
+#include "../include.h"
+
+#include <bbruntime.h>
+#include <bbgraphics.h>
+#include <bbblitz3d.h>
+#include <StringType.h>
 
 namespace CBN {
 
@@ -30,8 +35,8 @@ Launcher* launcher = nullptr;
 Launcher* CreateLauncher() {
     Launcher* launch = new Launcher();
 
-    launch->width = Int(Min(GetINIInt(OptionFile, "launcher", "launcher width"), 1024));
-    launch->height = Int(Min(GetINIInt(OptionFile, "launcher", "launcher height"), 768));
+    launch->width = (int)(Min(GetINIInt(OptionFile, "launcher", "launcher width"), 1024));
+    launch->height = (int)(Min(GetINIInt(OptionFile, "launcher", "launcher height"), 768));
 
     launch->resWidths = CreateIntArray(bbCountGfxModes3D());
     launch->resHeights = CreateIntArray(bbCountGfxModes3D());

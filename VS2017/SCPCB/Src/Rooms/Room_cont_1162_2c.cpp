@@ -113,14 +113,14 @@ void UpdateEvent_cont_1162_2c(Event* e) {
 
         if (mainPlayer->grabbedEntity != 0) {
             e->eventState2 = bbRand(0,mainPlayer->inventory->size-1);
-            if (mainPlayer->inventory->items[Int(e->eventState2)]!=nullptr) {
+            if (mainPlayer->inventory->items[(int)(e->eventState2)]!=nullptr) {
                 //randomly picked item slot has an item in it, using this slot
                 e->eventState3 = 1.0;
                 bbDebugLog("pick1");
             } else {
                 //randomly picked item slot is empty, getting the first available slot
                 for (i = 0; i <= mainPlayer->inventory->size-1; i++) {
-                    isSlotEmpty = (mainPlayer->inventory->items[Int(i+e->eventState2) % mainPlayer->inventory->size] == nullptr);
+                    isSlotEmpty = (mainPlayer->inventory->items[(int)(i+e->eventState2) % mainPlayer->inventory->size] == nullptr);
 
                     if (!isSlotEmpty) {
                         //successful
@@ -192,7 +192,7 @@ void UpdateEvent_cont_1162_2c(Event* e) {
                 itt = ItemTemplate::getObject(iterator161);
 
                 if (IsItemGoodFor1162(itt)) {
-                    switch (mainPlayer->inventory->items[Int(e->eventState2)]->template->name) {
+                    switch (mainPlayer->inventory->items[(int)(e->eventState2)]->template->name) {
                         case "key": {
                             if (itt->name == "key1" | itt->name == "key2" & bbRand(2)==1) {
                                 shouldCreateItem = true;
@@ -282,7 +282,7 @@ void UpdateEvent_cont_1162_2c(Event* e) {
         } else if ((e->eventState3 >= 3.0)) {
             if (e->eventState3 < 3.1) {
                 PlaySound2(LoadTempSound("SFX/SCP/1162/Exchange"+String(bbRand(0,4))+".ogg"));
-                RemoveItem(mainPlayer->inventory->items[Int(e->eventState2)]);
+                RemoveItem(mainPlayer->inventory->items[(int)(e->eventState2)]);
             } else {
                 mainPlayer->injuries = mainPlayer->injuries + 5.0;
                 pvt = bbCreatePivot();

@@ -111,7 +111,7 @@ String GetINIString(String file, String section, String parameter, String defaul
             if (bbMid(strtemp, 2, bbLen(strtemp)-2)==section) {
                 do {
                     TemporaryString = ReadINILine(lfile);
-                    if (bbLower(bbTrim(bbLeft(TemporaryString, Int(Max(bbInstr(TemporaryString, "=") - 1, 0))))) = bbLower(parameter)) {
+                    if (bbLower(bbTrim(bbLeft(TemporaryString, (int)(Max(bbInstr(TemporaryString, "=") - 1, 0))))) = bbLower(parameter)) {
                         //CloseFile(f)
                         Return Trim( Right(TemporaryString,Len(TemporaryString)-Instr(TemporaryString," = ")) );
                     }
@@ -133,12 +133,12 @@ int GetINIInt(String file, String section, String parameter, int defaultvalue = 
     } else if ((bbLower(txt) == "false")) {
         return 0;
     } else {
-        return Int(txt);
+        return (int)(txt);
     }
 }
 
 float GetINIFloat(String file, String section, String parameter, float defaultvalue = 0.0) {
-    return Float(GetINIString(file, section, parameter, String(defaultvalue)));
+    return (float)(GetINIString(file, section, parameter, String(defaultvalue)));
 }
 
 String GetINIString2(String file, int start, String parameter, String defaultvalue = "") {
@@ -153,7 +153,7 @@ String GetINIString2(String file, int start, String parameter, String defaultval
         if (n==start) {
             do {
                 TemporaryString = bbReadLine(f);
-                if (bbLower(bbTrim(bbLeft(TemporaryString, Int(Max(bbInstr(TemporaryString, "=") - 1, 0))))) = bbLower(parameter)) {
+                if (bbLower(bbTrim(bbLeft(TemporaryString, (int)(Max(bbInstr(TemporaryString, "=") - 1, 0))))) = bbLower(parameter)) {
                     bbCloseFile(f);
                     Return Trim( Right(TemporaryString,Len(TemporaryString)-Instr(TemporaryString," = ")) );
                 }
@@ -175,7 +175,7 @@ int GetINIInt2(String file, int start, String parameter, String defaultvalue = "
     } else if ((bbLower(txt) == "false")) {
         return 0;
     }
-    return Int(txt);
+    return (int)(txt);
 }
 
 int GetINISectionLocation(String file, String section) {

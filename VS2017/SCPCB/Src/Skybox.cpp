@@ -42,7 +42,7 @@ int sky_CreateSky(String filename, int parent = 0) {
         }
         fname = filename + direction + ".jpg";
         if (bbFileType(fname)==1) {
-            b = bbLoadBrush(fname,%110001);
+            b = bbLoadBrush(fname,0b110001);
             s = bbCreateSurface(sky,b);
 
             //TODO: finish and remove Data

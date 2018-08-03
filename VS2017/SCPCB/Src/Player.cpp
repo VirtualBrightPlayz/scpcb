@@ -468,7 +468,7 @@ void UpdatePlayer() {
 
         angle = WrapAngle(bbEntityYaw(mainPlayer->collider,true)+angle+90.0);
 
-        if (Int(temp)) {
+        if ((int)(temp)) {
             mainPlayer->moveSpeed = CurveValue(temp2, mainPlayer->moveSpeed, 20.0);
         } else {
             mainPlayer->moveSpeed = Max(CurveValue(0.0, mainPlayer->moveSpeed-0.1, 1.0),0.0);
@@ -544,7 +544,7 @@ void UpdatePlayer() {
             bbFreeEntity(pvt);
         }
 
-        mainPlayer->camZoom = Max(mainPlayer->camZoom, (bbSin(Float(TimeInPosMilliSecs())/20.0)+1.0)*mainPlayer->bloodloss*0.2);
+        mainPlayer->camZoom = Max(mainPlayer->camZoom, (bbSin((float)(TimeInPosMilliSecs())/20.0)+1.0)*mainPlayer->bloodloss*0.2);
 
         if (mainPlayer->bloodloss > 60) {
             mainPlayer->crouching = true;
@@ -622,7 +622,7 @@ void MouseLook() {
         //moveentity player, side, up, 0
         // -- Update the smoothing que To smooth the movement of the mouse.
         mouse_x_speed_1 = CurveValue(bbMouseXSpeed() * (userOptions->mouseSensitivity + 0.6) , mouse_x_speed_1, 6.0 / (userOptions->mouseSensitivity + 1.0));
-        if (Int(mouse_x_speed_1) == Int(Nan1)) {
+        if ((int)(mouse_x_speed_1) == (int)(Nan1)) {
             mouse_x_speed_1 = 0;
         }
 
@@ -631,7 +631,7 @@ void MouseLook() {
         } else {
             mouse_y_speed_1 = CurveValue(bbMouseYSpeed() * (userOptions->mouseSensitivity + 0.6), mouse_y_speed_1, 6.0/(userOptions->mouseSensitivity+1.0));
         }
-        if (Int(mouse_y_speed_1) == Int(Nan1)) {
+        if ((int)(mouse_y_speed_1) == (int)(Nan1)) {
             mouse_y_speed_1 = 0;
         }
 

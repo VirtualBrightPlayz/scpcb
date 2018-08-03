@@ -110,7 +110,7 @@ void UpdateNPCtype173(NPC* n) {
             if (!canMove) {
                 //Blur and zoom camera slightly when looking at 173.
                 mainPlayer->blurTimer = Max(Max(Min((4.0 - dist) / 6.0, 0.9), 0.1), mainPlayer->blurTimer);
-                mainPlayer->camZoom = Max(mainPlayer->camZoom, (bbSin(Float(TimeInPosMilliSecs())/20.0)+1.0)*15.0*Max((3.5-dist)/3.5,0.0));
+                mainPlayer->camZoom = Max(mainPlayer->camZoom, (bbSin((float)(TimeInPosMilliSecs())/20.0)+1.0)*15.0*Max((3.5-dist)/3.5,0.0));
 
                 //If it's close spoopy horror sound.
                 if (dist < 3.5 & TimeInPosMilliSecs() - n->lastSeen > 60000 & playerVisible) {

@@ -449,12 +449,12 @@ void UpdateEvent_extend_gatea_1(Event* e) {
                                         if (e->eventState2==> 7.5*70) {
                                             if (e->eventState2-timing->tickDuration < 7.5*70) {
                                                 //TODO: Not use the sun sprite here.
-                                                p = CreateParticle(bbEntityX(Curr106->obj,true),bbEntityY(Curr106->obj,true)+0.4, bbEntityZ(Curr106->obj,true), PARTICLE_SUN, 7.0, 0, Int(6.7*70));
+                                                p = CreateParticle(bbEntityX(Curr106->obj,true),bbEntityY(Curr106->obj,true)+0.4, bbEntityZ(Curr106->obj,true), PARTICLE_SUN, 7.0, 0, (int)(6.7*70));
                                                 p->speed = 0.0;
                                                 p->a = 1.0;
                                                 bbEntityParent(p->pvt, Curr106->collider, true);
 
-                                                p = CreateParticle(bbEntityX(e->room->objects[10],true),bbEntityY(e->room->objects[10],true),bbEntityZ(e->room->objects[10],true), PARTICLE_SUN, 2.0, 0, Int(6.7*70));
+                                                p = CreateParticle(bbEntityX(e->room->objects[10],true),bbEntityY(e->room->objects[10],true),bbEntityZ(e->room->objects[10],true), PARTICLE_SUN, 2.0, 0, (int)(6.7*70));
                                                 bbRotateEntity(p->pvt, bbEntityPitch(e->room->objects[10],true),bbEntityYaw(e->room->objects[10],true),0,true);
                                                 bbMoveEntity(p->pvt, 0, 92.0*RoomScale, 512.0*RoomScale);
                                                 p->speed = 0.0;
@@ -467,7 +467,7 @@ void UpdateEvent_extend_gatea_1(Event* e) {
                                         }
                                     }
 
-                                    for (i = 0; i <= bbRand(2,8)-Int(dist); i++) {
+                                    for (i = 0; i <= bbRand(2,8)-(int)(dist); i++) {
                                         p = CreateParticle(bbEntityX(Curr106->obj,true),bbEntityY(Curr106->obj,true)+bbRnd(0.4,0.9), bbEntityZ(Curr106->obj), PARTICLE_SMOKE_BLACK, 0.006, -0.002, 40);
                                         p->speed = 0.005;
                                         p->a = 0.8;

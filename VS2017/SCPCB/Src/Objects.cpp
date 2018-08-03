@@ -268,7 +268,7 @@ float UpdateElevators(float state, Door* door1, Door* door2, int room1, int room
                     bbResetEntity(NPC_inside->collider);
                     UpdateDoorsTimer = 0;
                     NPC_inside->dropSpeed = 0;
-                    if (Int(NPC_inside->idle)) {
+                    if ((int)(NPC_inside->idle)) {
                         bbTurnEntity(NPC_inside->obj,0,180,0);
                         bbTurnEntity(NPC_inside->collider,0,180,0);
                         NPC_inside->idle = false;
@@ -344,7 +344,7 @@ float UpdateElevators(float state, Door* door1, Door* door2, int room1, int room
                     bbResetEntity(NPC_inside->collider);
                     UpdateDoorsTimer = 0;
                     NPC_inside->dropSpeed = 0;
-                    if (Int(NPC_inside->idle)) {
+                    if ((int)(NPC_inside->idle)) {
                         bbTurnEntity(NPC_inside->obj,0,180,0);
                         bbTurnEntity(NPC_inside->collider,0,180,0);
                         NPC_inside->idle = false;

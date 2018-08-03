@@ -80,7 +80,7 @@ void UpdateEvent_test_682_2(Event* e) {
                 if (bbTFormedZ()==0) {
                     temp = -1;
                 } else {
-                    temp = Int(-Sgn(bbTFormedZ()));
+                    temp = (int)(-Sgn(bbTFormedZ()));
                 }
                 bbTFormPoint(-720,0,816*temp,e->room->obj,0);
                 bbPositionEntity(e->room->objects[7],bbTFormedX(),0,bbTFormedZ());

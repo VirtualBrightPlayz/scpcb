@@ -221,7 +221,7 @@ void UpdateEventCoffin(Event* e) {
                 mainPlayer->headPitch = (mainPlayer->headPitch * 0.8)+(tempF2 * 0.2);
 
                 //TODO: fix
-                //If (Rand(Int(Max(tempF*100.0,1.0)))=1) And (e\eventState3<0.0) Then
+                //If (Rand((int)(Max(tempF*100.0,1.0)))=1) And (e\eventState3<0.0) Then
                 //	EntityTexture(mainPlayer\overlays[OVERLAY_NIGHTVISION], GorePics(Rand(0, 5)))
                 //	;PlaySound2(HorrorSFX(1))
                 //	e\eventState3 = 10.0

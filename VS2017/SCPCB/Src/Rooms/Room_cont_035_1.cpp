@@ -168,7 +168,7 @@ void UpdateEvent_cont_035_1(Event* e) {
                     if (n->texture == "GFX/NPCs/035victim.jpg") {
                         e->room->npc[0] = n;
 
-                        temp = Int(e->room->npc[0]->frame);
+                        temp = (int)(e->room->npc[0]->frame);
 
                         bbFreeEntity(e->room->npc[0]->obj);
                         e->room->npc[0]->obj = bbLoadAnimMesh("GFX/NPCs/035.b3d");
@@ -379,7 +379,7 @@ void UpdateEvent_cont_035_1(Event* e) {
                                 e->room->npc[0]->soundChannels[0] = bbPlaySound(e->room->npc[0]->sounds[0]);
                             } else if ((e->eventState > 80*70 & e->eventState-timing->tickDuration ==<80*70)) {
                                 //skip the closet part if player has already opened it
-                                if (Int(e->eventState2)) {
+                                if ((int)(e->eventState2)) {
                                     e->eventState = 130*70;
                                 } else {
                                     //the host is dead
@@ -409,11 +409,11 @@ void UpdateEvent_cont_035_1(Event* e) {
                                     }
                                 }
                             } else if ((e->eventState > 80*70)) {
-                                if (Int(e->eventState2)) {
+                                if ((int)(e->eventState2)) {
                                     e->eventState = Max(e->eventState,100*70);
                                 }
                                 if (e->eventState>110*70 & e->eventState-timing->tickDuration ==<110*70) {
-                                    if (Int(e->eventState2)) {
+                                    if ((int)(e->eventState2)) {
                                         if (e->room->npc[0]->sounds[0]!=0) {
                                             bbFreeSound(e->room->npc[0]->sounds[0]);
                                             e->room->npc[0]->sounds[0] = 0;
@@ -430,7 +430,7 @@ void UpdateEvent_cont_035_1(Event* e) {
                                         e->room->npc[0]->soundChannels[0] = bbPlaySound(e->room->npc[0]->sounds[0]);
                                     }
                                 } else if ((e->eventState>125*70 & e->eventState-timing->tickDuration ==<125*70)) {
-                                    if (Int(e->eventState2)) {
+                                    if ((int)(e->eventState2)) {
                                         if (e->room->npc[0]->sounds[0]!=0) {
                                             bbFreeSound(e->room->npc[0]->sounds[0]);
                                             e->room->npc[0]->sounds[0] = 0;

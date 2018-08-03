@@ -336,7 +336,7 @@ void LoadRM2(RoomTemplate* rt) {
                 r = bbReadByte(file);
                 g = bbReadByte(file);
                 b = bbReadByte(file);
-                intensity = Float(bbReadByte(file))/255.0;
+                intensity = (float)(bbReadByte(file))/255.0;
 
                 AddTempLight(rt, x,y,z, LIGHTTYPE_POINT, range, r,g,b);
                 //[End Block]
@@ -352,7 +352,7 @@ void LoadRM2(RoomTemplate* rt) {
                 r = bbReadByte(file);
                 g = bbReadByte(file);
                 b = bbReadByte(file);
-                intensity = Float(bbReadByte(file))/255.0;
+                intensity = (float)(bbReadByte(file))/255.0;
 
                 pitch = bbReadFloat(file);
                 yaw = bbReadFloat(file);
@@ -360,7 +360,7 @@ void LoadRM2(RoomTemplate* rt) {
                 innerConeAngle = bbReadFloat(file);
                 outerConeAngle = bbReadFloat(file);
 
-                lightTemplate = AddTempLight(rt, x,y,z, LIGHTTYPE_SPOT, range, Int(r*intensity),Int(g*intensity),Int(b*intensity));
+                lightTemplate = AddTempLight(rt, x,y,z, LIGHTTYPE_SPOT, range, (int)(r*intensity),(int)(g*intensity),(int)(b*intensity));
 
                 lightTemplate->pitch = pitch;
                 lightTemplate->yaw = yaw;

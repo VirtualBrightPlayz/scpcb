@@ -297,11 +297,11 @@ void UpdateEvent_srvr_096_2(Event* e) {
         z = e->room->levers[2]->succ;
 
         //fuel pump on
-        if (Int(x)) {
+        if ((int)(x)) {
             e->eventState2 = Min(1.0, e->eventState2+timing->tickDuration/350);
 
             //generator on
-            if (Int(z)) {
+            if ((int)(z)) {
                 if (e->sounds[1]==0) {
                     LoadEventSound(e,"SFX/General/GeneratorOn.ogg",1);
                 }
@@ -321,7 +321,7 @@ void UpdateEvent_srvr_096_2(Event* e) {
             e->soundChannels[1] = LoopRangedSound(e->sounds[1], e->soundChannels[1], mainPlayer->cam, e->room->levers[2]->obj, 6.0, e->eventState3);
         }
 
-        if (temp==0 & Int(x) & Int(z)) {
+        if (temp==0 & (int)(x) & (int)(z)) {
             e->room->doors[0]->locked = false;
             e->room->doors[1]->locked = false;
         } else {

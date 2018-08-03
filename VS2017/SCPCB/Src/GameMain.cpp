@@ -90,10 +90,9 @@ int CamOBJ;
 int VerifyResolution() {
     int selectedMode = 1;
 
-    int i;
-    for (i = 1; i <= bbCountGfxModes3D(); i++) {
+    for (int i = 1; i <= bbCountGfxModes3D(); i++) {
         if (bbGfxModeDepth(i) == 32) {
-            if ((userOptions->screenWidth == bbGfxModeWidth(i)) & (userOptions->screenHeight == bbGfxModeHeight(i))) {
+            if ((userOptions->screenWidth == bbGfxModeWidth(i)) && (userOptions->screenHeight == bbGfxModeHeight(i))) {
                 selectedMode = i;
                 break;
             }
@@ -590,11 +589,11 @@ void UpdateGame() {
                 } else {
                     bbColor(0,0,0);
                     //, Min(MsgTimer / 2, 255)/255.0)
-                    bbText((userOptions->screenWidth / 2)+1, Int((userOptions->screenHeight * 0.94) + 1), Msg, true, false);
+                    bbText((userOptions->screenWidth / 2)+1, (int)((userOptions->screenHeight * 0.94) + 1), Msg, true, false);
                     //Min(MsgTimer / 2, 255), Min(MsgTimer / 2, 255), Min(MsgTimer / 2, 255))
                     bbColor(255,255,255);
                     //, Min(MsgTimer / 2, 255)/255.0)
-                    bbText((userOptions->screenWidth / 2), Int((userOptions->screenHeight * 0.94)), Msg, true, false);
+                    bbText((userOptions->screenWidth / 2), (int)((userOptions->screenHeight * 0.94)), Msg, true, false);
                 }
                 MsgTimer = MsgTimer-timing->tickDuration;
             }
@@ -619,7 +618,7 @@ void UpdateGame() {
         bbColor(255, 255, 255);
         if (userOptions->showFPS) {
             bbSetFont(uiAssets->consoleFont);
-            bbText(20, 20, "FPS: " + String(Int(timing->fps)));
+            bbText(20, 20, "FPS: " + String((int)(timing->fps)));
             bbSetFont(uiAssets->font[0]);
         }
     }
@@ -632,26 +631,26 @@ void UpdateGame() {
         bbEntityBlend(fresize_image,1);
         bbClsColor(0,0,0);
         bbCls();
-        ScaleRender(-1.0/Float(userOptions->screenWidth),1.0/Float(userOptions->screenWidth),2048.0 / Float(userOptions->screenWidth),2048.0 / Float(userOptions->screenWidth));
+        ScaleRender(-1.0/(float)(userOptions->screenWidth),1.0/(float)(userOptions->screenWidth),2048.0 / (float)(userOptions->screenWidth),2048.0 / (float)(userOptions->screenWidth));
         bbEntityFX(fresize_image,1+32);
         bbEntityBlend(fresize_image,3);
         bbEntityAlpha(fresize_image,userOptions->screenGamma-1.0);
-        ScaleRender(-1.0/Float(userOptions->screenWidth),1.0/Float(userOptions->screenWidth),2048.0 / Float(userOptions->screenWidth),2048.0 / Float(userOptions->screenWidth));
+        ScaleRender(-1.0/(float)(userOptions->screenWidth),1.0/(float)(userOptions->screenWidth),2048.0 / (float)(userOptions->screenWidth),2048.0 / (float)(userOptions->screenWidth));
         //todo: maybe optimize this if it's too slow, alternatively give players the option to disable gamma
     } else if ((userOptions->screenGamma<1.0)) {
         bbCopyRect(0,0,userOptions->screenWidth,userOptions->screenHeight,1024-userOptions->screenWidth/2,1024-userOptions->screenHeight/2,bbBackBuffer(),bbTextureBuffer(fresize_texture));
         bbEntityBlend(fresize_image,1);
         bbClsColor(0,0,0);
         bbCls();
-        ScaleRender(-1.0/Float(userOptions->screenWidth),1.0/Float(userOptions->screenWidth),2048.0 / Float(userOptions->screenWidth),2048.0 / Float(userOptions->screenWidth));
+        ScaleRender(-1.0/(float)(userOptions->screenWidth),1.0/(float)(userOptions->screenWidth),2048.0 / (float)(userOptions->screenWidth),2048.0 / (float)(userOptions->screenWidth));
         bbEntityFX(fresize_image,1+32);
         bbEntityBlend(fresize_image,2);
         bbEntityAlpha(fresize_image,1.0);
         bbSetBuffer(bbTextureBuffer(fresize_texture2));
-        bbClsColor(Int(255*userOptions->screenGamma), Int(255*userOptions->screenGamma), Int(255*userOptions->screenGamma));
+        bbClsColor((int)(255*userOptions->screenGamma), (int)(255*userOptions->screenGamma), (int)(255*userOptions->screenGamma));
         bbCls();
         bbSetBuffer(bbBackBuffer());
-        ScaleRender(-1.0/Float(userOptions->screenWidth),1.0/Float(userOptions->screenWidth),2048.0 / Float(userOptions->screenWidth),2048.0 / Float(userOptions->screenWidth));
+        ScaleRender(-1.0/(float)(userOptions->screenWidth),1.0/(float)(userOptions->screenWidth),2048.0 / (float)(userOptions->screenWidth),2048.0 / (float)(userOptions->screenWidth));
         bbSetBuffer(bbTextureBuffer(fresize_texture2));
         bbClsColor(0,0,0);
         bbCls();
@@ -731,8 +730,8 @@ void UpdateGUI() {
             bbCameraProject(mainPlayer->cam, bbEntityX(mainPlayer->closestButton,true),bbEntityY(mainPlayer->closestButton,true)-bbMeshHeight(buttonObj)*0.015,bbEntityZ(mainPlayer->closestButton,true));
             scale = (bbProjectedY()-projY)/462.0;
 
-            x = Int(userOptions->screenWidth/2-bbImageWidth(uiAssets->keypadHUD)*scale/2);
-            y = Int(userOptions->screenHeight/2-bbImageHeight(uiAssets->keypadHUD)*scale/2);
+            x = (int)(userOptions->screenWidth/2-bbImageWidth(uiAssets->keypadHUD)*scale/2);
+            y = (int)(userOptions->screenHeight/2-bbImageHeight(uiAssets->keypadHUD)*scale/2);
 
             DropAsset(buttonObj);
 
@@ -741,7 +740,7 @@ void UpdateGUI() {
                 KeypadTimer = KeypadTimer-timing->tickDuration;
 
                 if ((KeypadTimer % 70) < 35) {
-                    bbText(userOptions->screenWidth/2, Int(y+124*scale), KeypadMSG, true,true);
+                    bbText(userOptions->screenWidth/2, (int)(y+124*scale), KeypadMSG, true,true);
                 }
                 if (KeypadTimer ==<0) {
                     KeypadMSG = "";
@@ -754,16 +753,16 @@ void UpdateGUI() {
                 }
             }
 
-            x = Int(x+44*scale);
-            y = Int(y+249*scale);
+            x = (int)(x+44*scale);
+            y = (int)(y+249*scale);
 
             for (n = 0; n <= 3; n++) {
                 for (i = 0; i <= 2; i++) {
-                    xtemp = x + Int(58.5*scale*n);
-                    ytemp = y + Int((67*scale)*i);
+                    xtemp = x + (int)(58.5*scale*n);
+                    ytemp = y + (int)((67*scale)*i);
 
                     temp = false;
-                    if (MouseOn(xtemp, ytemp, Int(54*scale), Int(65*scale)) & KeypadMSG == "") {
+                    if (MouseOn(xtemp, ytemp, (int)(54*scale), (int)(65*scale)) & KeypadMSG == "") {
                         if (MouseUp1) {
                             PlaySound_SM(sndManager->button);
 
@@ -930,7 +929,7 @@ void DrawGUI() {
             pitchvalue = 270;
         }
 
-        bbDrawImage(uiAssets->handIcon[HAND_ICON_TOUCH], Int(userOptions->screenWidth / 2 + bbSin(yawvalue) * (userOptions->screenWidth / 3) - 32), Int(userOptions->screenHeight / 2 - bbSin(pitchvalue) * (userOptions->screenHeight / 3) - 32));
+        bbDrawImage(uiAssets->handIcon[HAND_ICON_TOUCH], (int)(userOptions->screenWidth / 2 + bbSin(yawvalue) * (userOptions->screenWidth / 3) - 32), (int)(userOptions->screenHeight / 2 - bbSin(pitchvalue) * (userOptions->screenHeight / 3) - 32));
     }
 
     if (mainPlayer->closestItem != nullptr) {
@@ -949,7 +948,7 @@ void DrawGUI() {
             pitchvalue = 270;
         }
 
-        bbDrawImage(uiAssets->handIcon[HAND_ICON_GRAB], Int(userOptions->screenWidth / 2 + bbSin(yawvalue) * (userOptions->screenWidth / 3) - 32), Int(userOptions->screenHeight / 2 - bbSin(pitchvalue) * (userOptions->screenHeight / 3) - 32));
+        bbDrawImage(uiAssets->handIcon[HAND_ICON_GRAB], (int)(userOptions->screenWidth / 2 + bbSin(yawvalue) * (userOptions->screenWidth / 3) - 32), (int)(userOptions->screenHeight / 2 - bbSin(pitchvalue) * (userOptions->screenHeight / 3) - 32));
     }
 
     if (DrawHandIcon) {
@@ -994,7 +993,7 @@ void DrawGUI() {
 
         bbColor(255, 255, 255);
         bbRect(x, y, width, height, false);
-        for (i = 1; i <= Int(((width - 2) * (mainPlayer->blinkTimer / (mainPlayer->blinkFreq))) / 10); i++) {
+        for (i = 1; i <= (int)(((width - 2) * (mainPlayer->blinkTimer / (mainPlayer->blinkFreq))) / 10); i++) {
             bbDrawImage(uiAssets->blinkBar, x + 3 + 10 * (i - 1), y + 3);
         }
         bbColor(0, 0, 0);
@@ -1014,7 +1013,7 @@ void DrawGUI() {
         y = userOptions->screenHeight - 55;
         bbColor(255, 255, 255);
         bbRect(x, y, width, height, false);
-        for (i = 1; i <= Int(((width - 2) * (mainPlayer->stamina / 100.0)) / 10); i++) {
+        for (i = 1; i <= (int)(((width - 2) * (mainPlayer->stamina / 100.0)) / 10); i++) {
             bbDrawImage(uiAssets->staminaBar, x + 3 + 10 * (i - 1), y + 3);
         }
 
@@ -1113,16 +1112,16 @@ void DrawGUI() {
             bbCameraProject(mainPlayer->cam, bbEntityX(mainPlayer->closestButton,true),bbEntityY(mainPlayer->closestButton,true)-bbMeshHeight(buttonObj)*0.015,bbEntityZ(mainPlayer->closestButton,true));
             scale = (bbProjectedY()-projY)/462.0;
 
-            x = Int(userOptions->screenWidth/2-bbImageWidth(uiAssets->keypadHUD)*scale/2);
-            y = Int(userOptions->screenHeight/2-bbImageHeight(uiAssets->keypadHUD)*scale/2);
+            x = (int)(userOptions->screenWidth/2-bbImageWidth(uiAssets->keypadHUD)*scale/2);
+            y = (int)(userOptions->screenHeight/2-bbImageHeight(uiAssets->keypadHUD)*scale/2);
 
             DropAsset(buttonObj);
 
             bbSetFont(uiAssets->font[2]);
             if (KeypadMSG == "") {
-                bbText(userOptions->screenWidth/2, Int(y+70*scale), "ACCESS CODE: ",true,true);
+                bbText(userOptions->screenWidth/2, (int)(y+70*scale), "ACCESS CODE: ",true,true);
                 bbSetFont(uiAssets->font[3]);
-                bbText(userOptions->screenWidth/2, Int(y+124*scale), KeypadInput,true,true);
+                bbText(userOptions->screenWidth/2, (int)(y+124*scale), KeypadInput,true,true);
             }
 
 
@@ -1149,59 +1148,59 @@ void DrawPauseMenu() {
 
         bbColor(255, 255, 255);
 
-        x = Int(x+132*MenuScale);
-        y = Int(y+122*MenuScale);
+        x = (int)(x+132*MenuScale);
+        y = (int)(y+122*MenuScale);
 
         if (mainPlayer->dead) {
             titleText = "YOU DIED";
         }
         bbSetFont(uiAssets->font[1]);
-        bbText(x, Int(y-(122-45)*MenuScale), titleText,false,true);
+        bbText(x, (int)(y-(122-45)*MenuScale), titleText,false,true);
 
         bbSetFont(uiAssets->font[0]);
         bbText(x, y, "Difficulty: "+SelectedDifficulty->name);
-        bbText(x, Int(y+20*MenuScale), "Save: "+CurrSave);
-        bbText(x, Int(y+40*MenuScale), "Map seed: "+RandomSeed);
+        bbText(x, (int)(y+20*MenuScale), "Save: "+CurrSave);
+        bbText(x, (int)(y+40*MenuScale), "Map seed: "+RandomSeed);
 
         y = y+10;
 
         if (!mainPlayer->dead) {
-            y = Int(y+72*MenuScale);
+            y = (int)(y+72*MenuScale);
 
-            DrawUIButton(x, y, Int(390*MenuScale), Int(60*MenuScale), "Resume", true);
-            y = y + Int(75*MenuScale);
+            DrawUIButton(x, y, (int)(390*MenuScale), (int)(60*MenuScale), "Resume", true);
+            y = y + (int)(75*MenuScale);
             if (!SelectedDifficulty->permaDeath) {
                 if (GameSaved) {
-                    DrawUIButton(x, y, Int(390*MenuScale), Int(60*MenuScale), "Load Game");
+                    DrawUIButton(x, y, (int)(390*MenuScale), (int)(60*MenuScale), "Load Game");
                 } else {
-                    DrawFrame(x,y,Int(390*MenuScale), Int(60*MenuScale));
+                    DrawFrame(x,y,(int)(390*MenuScale), (int)(60*MenuScale));
                     bbColor(100, 100, 100);
                     bbSetFont(uiAssets->font[1]);
-                    bbText(Int(x + (390*MenuScale) / 2), Int(y + (60*MenuScale) / 2), "Load Game", true, true);
+                    bbText((int)(x + (390*MenuScale) / 2), (int)(y + (60*MenuScale) / 2), "Load Game", true, true);
                 }
-                y = Int(y + 75*MenuScale);
+                y = (int)(y + 75*MenuScale);
             }
 
-            DrawUIButton(x, y, Int(390*MenuScale), Int(60*MenuScale), "Options");
-            y = Int(y + 75*MenuScale);
+            DrawUIButton(x, y, (int)(390*MenuScale), (int)(60*MenuScale), "Options");
+            y = (int)(y + 75*MenuScale);
 
-            DrawUIButton(x, y, Int(390*MenuScale), Int(60*MenuScale), "Quit");
+            DrawUIButton(x, y, (int)(390*MenuScale), (int)(60*MenuScale), "Quit");
         } else {
-            y = Int(y+104*MenuScale);
+            y = (int)(y+104*MenuScale);
             if (GameSaved & (!SelectedDifficulty->permaDeath)) {
-                DrawUIButton(x, y, Int(390*MenuScale), Int(60*MenuScale), "Load Game");
+                DrawUIButton(x, y, (int)(390*MenuScale), (int)(60*MenuScale), "Load Game");
             } else {
-                DrawUIButton(x, y, Int(390*MenuScale), Int(60*MenuScale), "");
+                DrawUIButton(x, y, (int)(390*MenuScale), (int)(60*MenuScale), "");
                 bbColor(50,50,50);
-                bbText(Int(x + 185*MenuScale), Int(y + 30*MenuScale), "Load Game", true, true);
+                bbText((int)(x + 185*MenuScale), (int)(y + 30*MenuScale), "Load Game", true, true);
             }
-            DrawUIButton(x, Int(y + 80*MenuScale), Int(390*MenuScale), Int(60*MenuScale), "Quit to Menu");
-            y = Int(y + 80*MenuScale);
+            DrawUIButton(x, (int)(y + 80*MenuScale), (int)(390*MenuScale), (int)(60*MenuScale), "Quit to Menu");
+            y = (int)(y + 80*MenuScale);
         }
 
         bbSetFont(uiAssets->font[0]);
         if (mainPlayer->dead) {
-            RowText(DeathMSG, x, Int(y + 80*MenuScale), Int(390*MenuScale), Int(600*MenuScale));
+            RowText(DeathMSG, x, (int)(y + 80*MenuScale), (int)(390*MenuScale), (int)(600*MenuScale));
         }
         //EndIf
 
@@ -1230,20 +1229,20 @@ void UpdatePauseMenu() {
         x = userOptions->screenWidth / 2 - width / 2;
         y = userOptions->screenHeight / 2 - height / 2;
 
-        x = Int(x+132*MenuScale);
-        y = Int(y+122*MenuScale);
+        x = (int)(x+132*MenuScale);
+        y = (int)(y+122*MenuScale);
 
-        achvXImg = Int(x + (22*MenuScale));
+        achvXImg = (int)(x + (22*MenuScale));
         scale = userOptions->screenHeight/768.0;
-        separationConst = Int(76*scale);
+        separationConst = (int)(76*scale);
         imgSize = 64;
 
         y = y+10;
 
         if (!mainPlayer->dead) {
-            y = Int(y+72*MenuScale);
+            y = (int)(y+72*MenuScale);
 
-            if (UpdateUIButton(x, y, Int(390*MenuScale), Int(60*MenuScale), "Resume", true)) {
+            if (UpdateUIButton(x, y, (int)(390*MenuScale), (int)(60*MenuScale), "Resume", true)) {
                 CurrGameState = GAMESTATE_PLAYING;
                 ResumeSounds();
                 bbMouseXSpeed();
@@ -1253,10 +1252,10 @@ void UpdatePauseMenu() {
                 mouse_y_speed_1 = 0.0;
             }
 
-            y = Int(y + 75*MenuScale);
+            y = (int)(y + 75*MenuScale);
             if (!SelectedDifficulty->permaDeath) {
                 if (GameSaved) {
-                    if (UpdateUIButton(x, y, Int(390*MenuScale), Int(60*MenuScale), "Load Game")) {
+                    if (UpdateUIButton(x, y, (int)(390*MenuScale), (int)(60*MenuScale), "Load Game")) {
                         DrawLoading(0);
 
                         CurrGameState = GAMESTATE_PLAYING;
@@ -1275,8 +1274,8 @@ void UpdatePauseMenu() {
                         for (int iterator66 = 0; iterator66 < Room::getListSize(); iterator66++) {
                             r = Room::getObject(iterator66);
 
-                            x = Int(Abs(bbEntityX(mainPlayer->collider) - bbEntityX(r->obj)));
-                            z = Int(Abs(bbEntityZ(mainPlayer->collider) - bbEntityZ(r->obj)));
+                            x = (int)(Abs(bbEntityX(mainPlayer->collider) - bbEntityX(r->obj)));
+                            z = (int)(Abs(bbEntityZ(mainPlayer->collider) - bbEntityZ(r->obj)));
 
                             if (x < 12.0 & z < 12.0) {
                                 //MapFound(Floor(EntityX(r\obj) / 8.0), Floor(EntityZ(r\obj) / 8.0)) = Max(MapFound(Floor(EntityX(r\obj) / 8.0), Floor(EntityZ(r\obj) / 8.0)), 1)
@@ -1296,12 +1295,12 @@ void UpdatePauseMenu() {
                         bbUpdateWorld(0.0);
                     }
                 }
-                y = Int(y + 75*MenuScale);
+                y = (int)(y + 75*MenuScale);
             }
 
-            //If (UpdateUIButton(x, y, Int(390*MenuScale), Int(60*MenuScale), "Options")) Then OptionsMenu = 1 ;TODO: fix
-            y = Int(y + 75*MenuScale);
-            if (UpdateUIButton(x, y, Int(390*MenuScale), Int(60*MenuScale), "Quit")) {
+            //If (UpdateUIButton(x, y, (int)(390*MenuScale), (int)(60*MenuScale), "Options")) Then OptionsMenu = 1 ;TODO: fix
+            y = (int)(y + 75*MenuScale);
+            if (UpdateUIButton(x, y, (int)(390*MenuScale), (int)(60*MenuScale), "Quit")) {
                 //TODO: ask for saving
                 NullGame();
                 CurrGameState = GAMESTATE_MAINMENU;
@@ -1310,9 +1309,9 @@ void UpdatePauseMenu() {
                 bbFlushKeys();
             }
         } else {
-            y = Int(y+104*MenuScale);
+            y = (int)(y+104*MenuScale);
             if (GameSaved & (!SelectedDifficulty->permaDeath)) {
-                if (UpdateUIButton(x, y, Int(390*MenuScale), Int(60*MenuScale), "Load Game")) {
+                if (UpdateUIButton(x, y, (int)(390*MenuScale), (int)(60*MenuScale), "Load Game")) {
                     DrawLoading(0);
 
                     CurrGameState = GAMESTATE_PLAYING;
@@ -1331,8 +1330,8 @@ void UpdatePauseMenu() {
                     for (int iterator67 = 0; iterator67 < Room::getListSize(); iterator67++) {
                         r = Room::getObject(iterator67);
 
-                        x = Int(Abs(bbEntityX(mainPlayer->collider) - bbEntityX(r->obj)));
-                        z = Int(Abs(bbEntityZ(mainPlayer->collider) - bbEntityZ(r->obj)));
+                        x = (int)(Abs(bbEntityX(mainPlayer->collider) - bbEntityX(r->obj)));
+                        z = (int)(Abs(bbEntityZ(mainPlayer->collider) - bbEntityZ(r->obj)));
 
                         if (x < 12.0 & z < 12.0) {
                             //MapFound(Floor(EntityX(r\obj) / 8.0), Floor(EntityZ(r\obj) / 8.0)) = Max(MapFound(Floor(EntityX(r\obj) / 8.0), Floor(EntityZ(r\obj) / 8.0)), 1)
@@ -1352,14 +1351,14 @@ void UpdatePauseMenu() {
                     bbUpdateWorld(0.0);
                 }
             }
-            if (UpdateUIButton(x, Int(y + 80*MenuScale), Int(390*MenuScale), Int(60*MenuScale), "Quit to Menu")) {
+            if (UpdateUIButton(x, (int)(y + 80*MenuScale), (int)(390*MenuScale), (int)(60*MenuScale), "Quit to Menu")) {
                 NullGame();
                 CurrGameState = GAMESTATE_MAINMENU;
                 CurrGameSubstate = GAMESUBSTATE_MAINMENU_MAIN;
                 CurrSave = "";
                 bbFlushKeys();
             }
-            y = Int(y + 80*MenuScale);
+            y = (int)(y + 80*MenuScale);
         }
     }
 
@@ -1368,7 +1367,7 @@ void UpdatePauseMenu() {
 }
 
 String f2s(float n, int count) {
-    return bbLeft(String(n), bbLen(String(Int(n)))+count+1);
+    return bbLeft(String(n), bbLen(String((int)(n)))+count+1);
 }
 
 float Animate2(int entity, float curr, int start, int quit, float speed, int loop = true) {
@@ -1609,7 +1608,7 @@ void RenderWorld2() {
             decayMultiplier = 2.0;
         }
 
-        power = Int(wornItem->state);
+        power = (int)(wornItem->state);
         //this nvg can't be used
         if (wornItem->state <= 0.0) {
             hasBattery = 0;
@@ -1656,10 +1655,10 @@ void RenderWorld2() {
 
             bbSetFont(uiAssets->font[2]);
 
-            bbText(userOptions->screenWidth/2,Int(20*MenuScale),"REFRESHING DATA IN",true,false);
+            bbText(userOptions->screenWidth/2,(int)(20*MenuScale),"REFRESHING DATA IN",true,false);
 
-            //Text(userOptions\screenWidth/2,Int(60*MenuScale),Max(f2s(NVTimer/60.0,1),0.0),True,False)
-            bbText(userOptions->screenWidth/2,Int(100*MenuScale),"SECONDS",true,false);
+            //Text(userOptions\screenWidth/2,(int)(60*MenuScale),Max(f2s(NVTimer/60.0,1),0.0),True,False)
+            bbText(userOptions->screenWidth/2,(int)(100*MenuScale),"SECONDS",true,false);
 
             temp = bbCreatePivot();
             temp2 = bbCreatePivot();
@@ -1699,8 +1698,8 @@ void RenderWorld2() {
                         }
 
                         //If (Not IsNVGBlinking%) Then
-                        bbText(Int(userOptions->screenWidth / 2 + xvalue * (userOptions->screenWidth / 2)), Int(userOptions->screenHeight / 2 - yvalue * (userOptions->screenHeight / 2)), np->nvName,true,true);
-                        bbText(Int(userOptions->screenWidth / 2 + xvalue * (userOptions->screenWidth / 2)), Int(userOptions->screenHeight / 2 - yvalue * (userOptions->screenHeight / 2) + 30.0 * MenuScale), f2s(dist,1)+" m",true,true);
+                        bbText((int)(userOptions->screenWidth / 2 + xvalue * (userOptions->screenWidth / 2)), (int)(userOptions->screenHeight / 2 - yvalue * (userOptions->screenHeight / 2)), np->nvName,true,true);
+                        bbText((int)(userOptions->screenWidth / 2 + xvalue * (userOptions->screenWidth / 2)), (int)(userOptions->screenHeight / 2 - yvalue * (userOptions->screenHeight / 2) + 30.0 * MenuScale), f2s(dist,1)+" m",true,true);
                         //EndIf
                     }
                 }
@@ -1711,11 +1710,11 @@ void RenderWorld2() {
 
             bbColor(0,0,55);
             for (k = 0; k <= 10; k++) {
-                bbRect(45, Int(userOptions->screenHeight*0.5-(k*20)), 54, 10, true);
+                bbRect(45, (int)(userOptions->screenHeight*0.5-(k*20)), 54, 10, true);
             }
             bbColor(0,0,255);
-            for (l = 0; l <= Int(bbFloor((power+50)*0.01)); l++) {
-                bbRect(45, Int(userOptions->screenHeight*0.5-(l*20)), 54, 10, true);
+            for (l = 0; l <= (int)(bbFloor((power+50)*0.01)); l++) {
+                bbRect(45, (int)(userOptions->screenHeight*0.5-(l*20)), 54, 10, true);
             }
             //DrawImage(NVGImages,40,userOptions\screenHeight*0.5+30,1)
 
@@ -1723,11 +1722,11 @@ void RenderWorld2() {
         } else if ((IsPlayerWearingItem(mainPlayer,"nvgoggles") & hasBattery!=0)) {
             bbColor(0,55,0);
             for (k = 0; k <= 10; k++) {
-                bbRect(45, Int(userOptions->screenHeight*0.5-(k*20)), 54, 10, true);
+                bbRect(45, (int)(userOptions->screenHeight*0.5-(k*20)), 54, 10, true);
             }
             bbColor(0,255,0);
-            for (l = 0; l <= Int(bbFloor((power+50)*0.01)); l++) {
-                bbRect(45, Int(userOptions->screenHeight*0.5-(l*20)), 54, 10, true);
+            for (l = 0; l <= (int)(bbFloor((power+50)*0.01)); l++) {
+                bbRect(45, (int)(userOptions->screenHeight*0.5-(l*20)), 54, 10, true);
             }
             //DrawImage(NVGImages,40,userOptions\screenHeight*0.5+30,0)
         }
@@ -1744,7 +1743,7 @@ void RenderWorld2() {
             bbColor(255,0,0);
             bbSetFont(uiAssets->font[2]);
 
-            bbText(userOptions->screenWidth/2, Int(20*MenuScale), "WARNING: LOW BATTERY", true, false);
+            bbText(userOptions->screenWidth/2, (int)(20*MenuScale), "WARNING: LOW BATTERY", true, false);
             bbColor(255,255,255);
         }
     }

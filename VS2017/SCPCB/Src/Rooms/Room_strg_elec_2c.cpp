@@ -148,8 +148,8 @@ void UpdateEvent_strg_elec_2c(Event* e) {
                             r = Room::getObject(iterator197);
 
                             for (z = 0; z <= 19; z++) {
-                                if (r->lightSprites[Int(z)] != 0) {
-                                    bbHideEntity(r->lightSprites[Int(z)]);
+                                if (r->lightSprites[(int)(z)] != 0) {
+                                    bbHideEntity(r->lightSprites[(int)(z)]);
                                 }
                             }
                         }

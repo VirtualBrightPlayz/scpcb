@@ -58,7 +58,7 @@ void UpdateNPCtype966(NPC* n) {
         //n\state = the "general" state (idle/wander/attack/echo etc)
         //n\state2 = timer for doing raycasts
 
-        prevFrame = Int(n->frame);
+        prevFrame = (int)(n->frame);
 
         if (n->sounds[0] > 0) {
             temp = 0.5;

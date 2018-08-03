@@ -3,12 +3,6 @@
 
 #include <string>
 
-#ifdef __APPLE__
-#include <Carbon/Carbon.h>
-#include <CoreFoundation/CFBundle.h>
-#include <CoreFoundation/CFString.h>
-#endif
-
 typedef wchar_t wchar;
 
 struct String {
@@ -21,6 +15,7 @@ struct String {
         String(const wchar* wstr);
         String(const std::wstring& cppwstr);
         String(const String& a,const String& b);
+        String(bool b);
         String(char c);
         String(wchar w);
         String(int i);
@@ -44,6 +39,7 @@ struct String {
         String& operator=(const String& other);
 
         bool equals(const String& other) const;
+        bool isEmpty() const;
     protected:
         enum class DOMINANT_BUFFER {
             C, W

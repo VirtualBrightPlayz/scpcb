@@ -49,7 +49,7 @@ void FillRoom_tnnl_maintenance_2(Room* r) {
     bbPositionEntity(r->doors[2]->buttons[0], r->x - 224.0 * RoomScale, 0.7, r->z - 480.0 * RoomScale, true);
     bbPositionEntity(r->doors[2]->buttons[1], r->x - 304.0 * RoomScale, 0.7, r->z - 832.0 * RoomScale, true);
     //
-    int temp = ((Int(AccessCode)*3) % 10000);
+    int temp = (((int)(AccessCode)*3) % 10000);
     if (temp < 1000) {
         temp = temp+1000;
     }

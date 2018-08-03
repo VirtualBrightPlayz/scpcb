@@ -285,7 +285,7 @@ void UpdateEvent_scp_970_2(Event* e) {
             if (e->room->npc[0] != nullptr) {
                 if (bbEntityDistance(mainPlayer->collider, e->room->npc[0]->collider)<3.0) {
                     if (bbEntityInView(e->room->npc[0]->obj, mainPlayer->cam)) {
-                        mainPlayer->camZoom = (bbSin(Float(TimeInPosMilliSecs())/20.0)+1.0)*15.0;
+                        mainPlayer->camZoom = (bbSin((float)(TimeInPosMilliSecs())/20.0)+1.0)*15.0;
                         //HeartBeatVolume = Max(CurveValue(0.3, HeartBeatVolume, 2.0), HeartBeatVolume)
                         mainPlayer->heartbeatIntensity = Max(mainPlayer->heartbeatIntensity, 120);
                     }
@@ -356,7 +356,7 @@ void UpdateEvent_scp_970_2(Event* e) {
                     AnimateNPC(e->room->npc[0], 80, 61, -0.02, false);
 
                     e->room->npc[0]->dropSpeed = 0;
-                    y = CurveValue(1.5+bbSin(Float(TimeInPosMilliSecs())/20.0)*0.1,bbEntityY(e->room->npc[0]->collider),50.0);
+                    y = CurveValue(1.5+bbSin((float)(TimeInPosMilliSecs())/20.0)*0.1,bbEntityY(e->room->npc[0]->collider),50.0);
 
                     bbPositionEntity(e->room->npc[0]->collider,bbEntityX(e->room->npc[0]->collider),y,bbEntityZ(e->room->npc[0]->collider));
                     bbTurnEntity(e->room->npc[0]->collider,0,0.1*timing->tickDuration,0);

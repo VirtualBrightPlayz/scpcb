@@ -89,8 +89,8 @@ void Update294() {
 
     if (temp) {
         if (MouseHit1) {
-            xtemp = Int(bbFloor((bbMouseX()-x-228) / 35.5));
-            ytemp = Int(bbFloor((bbMouseY()-y-342) / 36.5));
+            xtemp = (int)(bbFloor((bbMouseX()-x-228) / 35.5));
+            ytemp = (int)(bbFloor((bbMouseY()-y-342) / 36.5));
 
             if (ytemp ==> 0 & ytemp < 5) {
                 if (xtemp ==> 0 & xtemp < 10) {
@@ -205,7 +205,7 @@ void Update294() {
                             strtemp = " ";
                         }
                         case 9: {
-                            Input294 = bbLeft(Input294, Int(Max(bbLen(Input294)-1,0)));
+                            Input294 = bbLeft(Input294, (int)(Max(bbLen(Input294)-1,0)));
                         }
                     }
                 }
@@ -216,14 +216,14 @@ void Update294() {
 
             Input294 = Input294 + strtemp;
 
-            Input294 = bbLeft(Input294, Int(Min(bbLen(Input294),15)));
+            Input294 = bbLeft(Input294, (int)(Min(bbLen(Input294),15)));
 
             //dispense
             if (temp & Input294 != "") {
                 Input294 = bbTrim(bbLower(Input294));
-                if (bbLeft(Input294, Int(Min(7,bbLen(Input294)))) == "cup of ") {
+                if (bbLeft(Input294, (int)(Min(7,bbLen(Input294)))) == "cup of ") {
                     Input294 = bbRight(Input294, bbLen(Input294)-7);
-                } else if ((bbLeft(Input294, Int(Min(9,bbLen(Input294)))) == "a cup of " )) {
+                } else if ((bbLeft(Input294, (int)(Min(9,bbLen(Input294)))) == "a cup of " )) {
                     Input294 = bbRight(Input294, bbLen(Input294)-9);
                 }
 
@@ -246,11 +246,11 @@ void Update294() {
 
                     sep1 = bbInstr(strtemp, ",", 1);
                     sep2 = bbInstr(strtemp, ",", sep1+1);
-                    r = Int(bbTrim(bbLeft(strtemp, sep1-1)));
-                    g = Int(bbTrim(bbMid(strtemp, sep1+1, sep2-sep1-1)));
-                    b = Int(bbTrim(bbRight(strtemp, bbLen(strtemp)-sep2)));
+                    r = (int)(bbTrim(bbLeft(strtemp, sep1-1)));
+                    g = (int)(bbTrim(bbMid(strtemp, sep1+1, sep2-sep1-1)));
+                    b = (int)(bbTrim(bbRight(strtemp, bbLen(strtemp)-sep2)));
 
-                    alpha = Float(GetINIString2("Data/SCP-294.ini", loc, "alpha"));
+                    alpha = (float)(GetINIString2("Data/SCP-294.ini", loc, "alpha"));
                     glow = GetINIInt2("Data/SCP-294.ini", loc, "glow");
                     if (alpha == 0) {
                         alpha = 1.0;

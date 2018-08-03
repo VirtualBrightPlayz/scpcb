@@ -152,7 +152,7 @@ void UpdateNPCtype106(NPC* n) {
             if (visible) {
                 if (bbEntityInView(n->collider, mainPlayer->cam)) {
                     mainPlayer->blurTimer = Max(Max(Min((4.0 - dist) / 6.0, 0.9), 0.1), mainPlayer->blurTimer);
-                    mainPlayer->camZoom = Max(mainPlayer->camZoom, (bbSin(Float(TimeInPosMilliSecs())/20.0)+1.0) * 20.0 * Max((4.0-dist)/4.0,0));
+                    mainPlayer->camZoom = Max(mainPlayer->camZoom, (bbSin((float)(TimeInPosMilliSecs())/20.0)+1.0) * 20.0 * Max((4.0-dist)/4.0,0));
 
                     if (TimeInPosMilliSecs() - n->lastSeen > 60000) {
                         mainPlayer->camZoom = 40;

@@ -53,10 +53,10 @@ void DrawTiledImageRect(int img, int srcX, int srcY, int srcwidth, int srcheight
         y2 = y;
         while (y2 < y+height) {
             if (x2 + srcwidth > x + width) {
-                srcwidth = srcwidth - Int(Max((x2 + srcwidth) - (x + width), 1));
+                srcwidth = srcwidth - (int)(Max((x2 + srcwidth) - (x + width), 1));
             }
             if (y2 + srcheight > y + height) {
-                srcheight = srcheight - Int(Max((y2 + srcheight) - (y + height), 1));
+                srcheight = srcheight - (int)(Max((y2 + srcheight) - (y + height), 1));
             }
             bbDrawImageRect(img, x2, y2, srcX, srcY, srcwidth, srcheight);
             y2 = y2 + srcheight;
@@ -146,7 +146,7 @@ void DrawFrame(int x, int y, int width, int height, int xoffset = 0, int yoffset
     bbColor(255, 255, 255);
     DrawTiledImageRect(uiAssets->tileWhite, xoffset, (y % 256), 512, 512, x, y, width, height);
 
-    DrawTiledImageRect(uiAssets->tileBlack, yoffset, (y % 256), 512, 512, x+Int(3*MenuScale), y+Int(3*MenuScale), width-Int(6*MenuScale), height-Int(6*MenuScale));
+    DrawTiledImageRect(uiAssets->tileBlack, yoffset, (y % 256), 512, 512, x+(int)(3*MenuScale), y+(int)(3*MenuScale), width-(int)(6*MenuScale), height-(int)(6*MenuScale));
 }
 
 void DrawUIButton(int x, int y, int width, int height, String txt, int bigfont = true) {
@@ -183,8 +183,8 @@ int UpdateUIButton(int x, int y, int width, int height, String txt = "", int wai
 }
 
 void DrawUITick(int x, int y, int selected, int locked = false) {
-    int width = Int(20.0 * MenuScale);
-    int height = Int(20 * MenuScale);
+    int width = (int)(20.0 * MenuScale);
+    int height = (int)(20 * MenuScale);
 
     bbColor(255, 255, 255);
     DrawTiledImageRect(uiAssets->tileWhite, (x % 256), (y % 256), 512, 512, x, y, width, height);
@@ -214,8 +214,8 @@ void DrawUITick(int x, int y, int selected, int locked = false) {
 }
 
 int UpdateUITick(int x, int y, int selected, int locked = false) {
-    int width = Int(20.0 * MenuScale);
-    int height = Int(20.0 * MenuScale);
+    int width = (int)(20.0 * MenuScale);
+    int height = (int)(20.0 * MenuScale);
 
     int Highlight = MouseOn(x, y, width, height) & (!locked);
 
@@ -243,11 +243,11 @@ void DrawSlideBar(int x, int y, int width, float value) {
     bbColor(255,255,255);
     bbRect(x, y, width + 14, 20,false);
 
-    bbDrawImage(uiAssets->blinkBar, x + Int(width * value / 100.0)+3, y+3);
+    bbDrawImage(uiAssets->blinkBar, x + (int)(width * value / 100.0)+3, y+3);
 
     bbColor(170,170,170);
-    bbText(x - Int(50.0 * MenuScale), y + Int(4.0*MenuScale), "LOW");
-    bbText(x + width + Int(38.0 * MenuScale), y+Int(4.0*MenuScale), "HIGH");
+    bbText(x - (int)(50.0 * MenuScale), y + (int)(4.0*MenuScale), "LOW");
+    bbText(x + width + (int)(38.0 * MenuScale), y+(int)(4.0*MenuScale), "HIGH");
 }
 
 void RowText(String A, int X, int Y, int W, int H, int align = 0, float Leading = 1) {
@@ -259,7 +259,7 @@ void RowText(String A, int X, int Y, int W, int H, int align = 0, float Leading 
     }
 
     int LinesShown = 0;
-    int Height = bbStringHeight(A) + Int(Leading);
+    int Height = bbStringHeight(A) + (int)(Leading);
     String b;
     int space;
     String temp;
@@ -332,7 +332,7 @@ int LimitText(String txt, int x, int y, int width, int usingAA = true) {
         } else {
             LetterWidth = TextLength / bbLen(txt);
 
-            bbText(x, y, bbLeft(txt, Int(Max(bbLen(txt) - UnFitting / LetterWidth - 4, 1))) + "...");
+            bbText(x, y, bbLeft(txt, (int)(Max(bbLen(txt) - UnFitting / LetterWidth - 4, 1))) + "...");
         }
     } else {
         if (txt == "" | width == 0) {
@@ -347,7 +347,7 @@ int LimitText(String txt, int x, int y, int width, int usingAA = true) {
         } else {
             LetterWidth = TextLength / bbLen(txt);
 
-            bbText(x, y, bbLeft(txt, Int(Max(bbLen(txt) - UnFitting / LetterWidth - 4, 1))) + "...");
+            bbText(x, y, bbLeft(txt, (int)(Max(bbLen(txt) - UnFitting / LetterWidth - 4, 1))) + "...");
         }
     }
 }
@@ -355,14 +355,14 @@ int LimitText(String txt, int x, int y, int width, int usingAA = true) {
 void DrawTooltip(String message) {
     float scale = userOptions->screenHeight/768.0;
 
-    int width = (bbStringWidth(message))+Int(20.0*MenuScale);
+    int width = (bbStringWidth(message))+(int)(20.0*MenuScale);
 
     bbColor(25,25,25);
-    bbRect(bbMouseX()+20,bbMouseY(),width,Int(19.0*scale),true);
+    bbRect(bbMouseX()+20,bbMouseY(),width,(int)(19.0*scale),true);
     bbColor(150,150,150);
-    bbRect(bbMouseX()+20,bbMouseY(),width,Int(19.0*scale),false);
+    bbRect(bbMouseX()+20,bbMouseY(),width,(int)(19.0*scale),false);
     bbSetFont(uiAssets->font[0]);
-    bbText(bbMouseX()+Int(20.0*MenuScale)+(width/2),bbMouseY()+Int(12.0*MenuScale), message, true, true);
+    bbText(bbMouseX()+(int)(20.0*MenuScale)+(width/2),bbMouseY()+(int)(12.0*MenuScale), message, true, true);
 }
 
 void DrawPointer() {

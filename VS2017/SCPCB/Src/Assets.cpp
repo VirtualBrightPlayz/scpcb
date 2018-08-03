@@ -200,11 +200,11 @@ void InitializeUIAssets() {
     //don't match their "internal name" (i.e. their display name in applications
     //like Word and such). As a workaround, I moved the files and renamed them so they
     //can load without FastText.
-    uiAssets->font[0] = bbLoadFont("GFX/font/cour/Courier New.ttf", Int(18 * MenuScale), 0,0,0);
-    uiAssets->font[1] = bbLoadFont("GFX/font/courbd/Courier New.ttf", Int(58 * MenuScale), 0,0,0);
-    uiAssets->font[2] = bbLoadFont("GFX/font/DS-DIGI/DS-Digital.ttf", Int(22 * MenuScale), 0,0,0);
-    uiAssets->font[3] = bbLoadFont("GFX/font/DS-DIGI/DS-Digital.ttf", Int(60 * MenuScale), 0,0,0);
-    uiAssets->consoleFont = bbLoadFont("Blitz", Int(20 * MenuScale), 0,0,0);
+    uiAssets->font[0] = bbLoadFont("GFX/font/cour/Courier New.ttf", (int)(18 * MenuScale), 0,0,0);
+    uiAssets->font[1] = bbLoadFont("GFX/font/courbd/Courier New.ttf", (int)(58 * MenuScale), 0,0,0);
+    uiAssets->font[2] = bbLoadFont("GFX/font/DS-DIGI/DS-Digital.ttf", (int)(22 * MenuScale), 0,0,0);
+    uiAssets->font[3] = bbLoadFont("GFX/font/DS-DIGI/DS-Digital.ttf", (int)(60 * MenuScale), 0,0,0);
+    uiAssets->consoleFont = bbLoadFont("Blitz", (int)(20 * MenuScale), 0,0,0);
 
     uiAssets->sprintIcon = bbLoadImage("GFX/HUD/sprinticon.png");
     uiAssets->blinkIcon = bbLoadImage("GFX/HUD/blinkicon.png");
@@ -335,7 +335,7 @@ void InitNewGame() {
 
     AccessCode = 0;
     for (i = 0; i <= 3; i++) {
-        AccessCode = AccessCode + Int(bbRand(1,9)*(10^i));
+        AccessCode = AccessCode + (int)(bbRand(1,9)*(10^i));
     }
 
     //TODO:
@@ -505,8 +505,8 @@ void InitNewGame() {
         UpdateNPCs();
         bbUpdateWorld();
         //Cls()
-        if (Int(Float(i)*0.27)!=Int(Float(i-1)*0.27)) {
-            DrawLoading(80+Int(Float(i)*0.27));
+        if ((int)((float)(i)*0.27)!=(int)((float)(i-1)*0.27)) {
+            DrawLoading(80+(int)((float)(i)*0.27));
         }
     }
 

@@ -365,13 +365,13 @@ void UpdateNPCtype049(NPC* n) {
 
     bbRotateEntity(n->obj, 0, bbEntityYaw(n->collider), 0);
 
-    n->lastSeen = Int(Max(n->lastSeen-timing->tickDuration,0));
+    n->lastSeen = (int)(Max(n->lastSeen-timing->tickDuration,0));
 
     if (n->soundTimer >= 0) {
         n->soundTimer = n->soundTimer - timing->tickDuration;
     }
 
-    n->prevState = Int(n->state);
+    n->prevState = (int)(n->state);
 }
 
 }

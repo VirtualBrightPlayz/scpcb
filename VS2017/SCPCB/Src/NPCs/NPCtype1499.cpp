@@ -37,7 +37,7 @@ void UpdateNPCtype1499(NPC* n) {
     //n\state2: A second state variable (dependend on the current NPC's n\state)
 
     NPC* n2;
-    int prevFrame = Int(n->frame);
+    int prevFrame = (int)(n->frame);
 
     if ((!n->idle) & bbEntityDistance(n->collider,mainPlayer->collider)<HideDistance*2) {
         if (n->state == 0 | n->state == 2) {

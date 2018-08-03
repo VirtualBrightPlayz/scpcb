@@ -429,7 +429,7 @@ void UpdateEvent_pocketdimension(Event* e) {
                                 bbPositionEntity(pvt, bbEntityX(e->room->objects[i],true),bbEntityY(mainPlayer->collider),bbEntityZ(e->room->objects[i],true));
 
                                 bbPointEntity(pvt, mainPlayer->collider);
-                                bbRotateEntity(pvt, 0, Int(bbEntityYaw(pvt)/90)*90,0,true);
+                                bbRotateEntity(pvt, 0, (int)(bbEntityYaw(pvt)/90)*90,0,true);
                                 bbMoveEntity(pvt, 0,0,100*RoomScale);
                                 bbPositionEntity(mainPlayer->collider, bbEntityX(pvt),bbEntityY(mainPlayer->collider),bbEntityZ(pvt));
 
@@ -460,7 +460,7 @@ void UpdateEvent_pocketdimension(Event* e) {
                     bbPointEntity(e->room->objects[17], mainPlayer->collider);
                     bbTurnEntity(e->room->objects[17], 0, 180, 0);
 
-                    temp = Int(bbEntityDistance(mainPlayer->collider, e->room->objects[17]));
+                    temp = (int)(bbEntityDistance(mainPlayer->collider, e->room->objects[17]));
                     if (temp < 2000*RoomScale) {
                         mainPlayer->injuries = mainPlayer->injuries + (timing->tickDuration/4000);
 
@@ -475,7 +475,7 @@ void UpdateEvent_pocketdimension(Event* e) {
                         //TODO: fix
                         //e\soundChannels[0] = LoopRangedSound(OldManSFX(4), e\soundChannels[0], mainPlayer\cam, e\room\objects[17], 5.0, 0.6)
 
-                        mainPlayer->camZoom = Max(mainPlayer->camZoom, (bbSin(Float(TimeInPosMilliSecs()) / 20.0)+1.0)*15.0*Max((6.0-temp)/6.0,0.0));
+                        mainPlayer->camZoom = Max(mainPlayer->camZoom, (bbSin((float)(TimeInPosMilliSecs()) / 20.0)+1.0)*15.0*Max((6.0-temp)/6.0,0.0));
 
                         pvt = bbCreatePivot();
                         bbPositionEntity(pvt, bbEntityX(mainPlayer->cam), bbEntityY(mainPlayer->cam), bbEntityZ(mainPlayer->cam));
@@ -500,7 +500,7 @@ void UpdateEvent_pocketdimension(Event* e) {
                         }
                         //the "exit room"
                     } else if ((bbEntityY(mainPlayer->collider)<-180*RoomScale)) {
-                        temp = Int(Distance(bbEntityX(mainPlayer->collider),bbEntityZ(mainPlayer->collider),bbEntityX(e->room->objects[8],true)+1024*RoomScale,bbEntityZ(e->room->objects[8],true)));
+                        temp = (int)(Distance(bbEntityX(mainPlayer->collider),bbEntityZ(mainPlayer->collider),bbEntityX(e->room->objects[8],true)+1024*RoomScale,bbEntityZ(e->room->objects[8],true)));
                         if (temp<640*RoomScale) {
                             mainPlayer->blurTimer = (640*RoomScale-temp)*3000;
 
@@ -695,7 +695,7 @@ void UpdateEvent_pocketdimension(Event* e) {
 
             if (e->eventState2 > 12) {
                 Curr106->idle = true;
-                bbPositionEntity(Curr106->collider, bbEntityX(e->room->objects[Int(e->eventState2)],true),0.27, bbEntityZ(e->room->objects[Int(e->eventState2)],true));
+                bbPositionEntity(Curr106->collider, bbEntityX(e->room->objects[(int)(e->eventState2)],true),0.27, bbEntityZ(e->room->objects[(int)(e->eventState2)],true));
 
                 bbPointEntity(Curr106->collider, mainPlayer->cam);
                 bbTurnEntity(Curr106->collider, 0, bbSin(TimeInPosMilliSecs() / 20) * 6.0, 0, true);
@@ -709,7 +709,7 @@ void UpdateEvent_pocketdimension(Event* e) {
 
                 if (e->eventState2 == 12) {
                     mainPlayer->camShake = 1.0;
-                    bbPositionEntity(Curr106->collider, bbEntityX(e->room->objects[Int(e->eventState2)],true),-1.0, bbEntityZ(e->room->objects[Int(e->eventState2)],true));
+                    bbPositionEntity(Curr106->collider, bbEntityX(e->room->objects[(int)(e->eventState2)],true),-1.0, bbEntityZ(e->room->objects[(int)(e->eventState2)],true));
                     Curr106->state = -11;
                     bbResetEntity(Curr106->collider);
                 }
