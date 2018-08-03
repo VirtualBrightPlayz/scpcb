@@ -62,9 +62,9 @@ Inventory* Inventory::getObject(int index) {
 }
 
 // Constants.
-const String ITEM_TAG_914F = "914_fine";
-const String ITEM_TAG_914VF = "914_veryfine";
-const String ITEM_TAG_OMNI = "omni";
+const String ITEM_TAG_914F("914_fine");
+const String ITEM_TAG_914VF("914_veryfine");
+const String ITEM_TAG_OMNI("omni");
 const int ITEMPICK_SOUND_PAPER = 0;
 const int ITEMPICK_SOUND_MEDIUM = 1;
 const int ITEMPICK_SOUND_LARGE = 2;

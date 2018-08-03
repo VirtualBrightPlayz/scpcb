@@ -129,8 +129,12 @@ String& String::operator=(const String& other) {
     return *this;
 }
 
-String String::operator+(const String& a,const String& b) {
-    return String(a,b);
+String operator+(const String& a, const String& b) {
+    return String(a, b);
+}
+
+String operator+(const char* a, const String& b) {
+    return String(String(a), b);
 }
 
 bool String::equals(const String& other) const {

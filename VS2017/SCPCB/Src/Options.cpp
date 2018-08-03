@@ -43,7 +43,7 @@ Options* Options::getObject(int index) {
 }
 
 // Constants.
-const String OptionFile = "options.ini";
+const String OptionFile("options.ini");
 
 // Globals.
 KeyBinds* keyBinds;

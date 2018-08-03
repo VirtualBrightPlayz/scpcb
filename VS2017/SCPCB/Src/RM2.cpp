@@ -4,7 +4,7 @@
 namespace CBN {
 
 // Constants.
-const String RM2_HEADER = ".RM2";
+const String RM2_HEADER(".RM2");
 const int RM2_TEXTURES = 1;
 const int RM2_OPAQUE = 2;
 const int RM2_ALPHA = 3;

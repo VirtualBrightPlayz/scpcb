@@ -83,27 +83,27 @@ MusicManager* MusicManager::getObject(int index) {
 // Constants.
 const int STEPSOUND_DEFAULT = 0;
 const int STEPSOUND_METAL = 1;
-const String MUS_MENU = "SFX/Music/Menu.ogg";
-const String MUS_INTRO = "SFX/Music/Intro.ogg";
-const String MUS_LCZ = "SFX/Music/The Dread.ogg";
-const String MUS_EZ = "SFX/Music/EntranceZone.ogg";
-const String MUS_HCZ = "SFX/Music/HeavyContainment.ogg";
-const String MUS_049 = "SFX/Music/Room049.ogg";
-const String MUS_079 = "SFX/Music/079.ogg";
-const String MUS_106 = "SFX/Music/106.ogg";
-const String MUS_205 = "SFX/Music/205.ogg";
-const String MUS_939 = "SFX/Music/Room939.ogg";
-const String MUS_8601 = "SFX/Music/8601.ogg";
-const String MUS_8602 = "SFX/Music/8601Cancer.ogg";
-const String MUS_14991 = "SFX/Music/1499.ogg";
-const String MUS_14992 = "SFX/Music/1499Danger.ogg";
-const String MUS_PD = "SFX/Music/PD.ogg";
-const String MUS_TRENCH = "SFX/Music/PDTrench.ogg";
-const String MUS_GATEA = "SFX/Music/GateA.ogg";
-const String MUS_GATEB1 = "SFX/Music/GateB1.ogg";
-const String MUS_GATEB2 = "SFX/Music/GateB2.ogg";
-const String MUS_END = "SFX/Music/Ending.ogg";
-const String MUS_BREATH = "SFX/Music/Breath.ogg";
+const String MUS_MENU("SFX/Music/Menu.ogg");
+const String MUS_INTRO("SFX/Music/Intro.ogg");
+const String MUS_LCZ("SFX/Music/The Dread.ogg");
+const String MUS_EZ("SFX/Music/EntranceZone.ogg");
+const String MUS_HCZ("SFX/Music/HeavyContainment.ogg");
+const String MUS_049("SFX/Music/Room049.ogg");
+const String MUS_079("SFX/Music/079.ogg");
+const String MUS_106("SFX/Music/106.ogg");
+const String MUS_205("SFX/Music/205.ogg");
+const String MUS_939("SFX/Music/Room939.ogg");
+const String MUS_8601("SFX/Music/8601.ogg");
+const String MUS_8602("SFX/Music/8601Cancer.ogg");
+const String MUS_14991("SFX/Music/1499.ogg");
+const String MUS_14992("SFX/Music/1499Danger.ogg");
+const String MUS_PD("SFX/Music/PD.ogg");
+const String MUS_TRENCH("SFX/Music/PDTrench.ogg");
+const String MUS_GATEA("SFX/Music/GateA.ogg");
+const String MUS_GATEB1("SFX/Music/GateB1.ogg");
+const String MUS_GATEB2("SFX/Music/GateB2.ogg");
+const String MUS_END("SFX/Music/Ending.ogg");
+const String MUS_BREATH("SFX/Music/Breath.ogg");
 
 // Globals.
 SoundManager* sndManager;

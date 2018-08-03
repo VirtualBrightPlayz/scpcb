@@ -42,7 +42,6 @@ struct String {
         String resourcePath() const;
 
         String& operator=(const String& other);
-        static String operator+(const String& a,const String& b);
 
         bool equals(const String& other) const;
     protected:
@@ -57,5 +56,8 @@ struct String {
 
         void syncBuffers();
 };
+
+String operator+(const String& a, const String& b);
+String operator+(const char* a, const String& b);
 
 #endif

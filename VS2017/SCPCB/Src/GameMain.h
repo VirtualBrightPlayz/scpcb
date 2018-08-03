@@ -1,5 +1,7 @@
 #ifndef GAMEMAIN_H_INCLUDED
 #define GAMEMAIN_H_INCLUDED
+
+#include <StringType.h>
 #include <vector>
 
 namespace CBN {

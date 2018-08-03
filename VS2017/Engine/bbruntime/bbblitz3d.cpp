@@ -142,7 +142,8 @@ static inline void debugVertex( Surface *s,int n,int t ){
 	}
 }
 
-static Entity *loadEntity( string t,int hint ){
+static Entity *loadEntity( String str,int hint ){
+    string t = str.cstr();
 	t=tolower(t);
 	int n=t.rfind( "." );if( n==string::npos ) return 0;
 	string ext=t.substr( n+1 );
@@ -544,7 +545,6 @@ Entity *  bbCreateMesh( Entity *p ){
 Entity *  bbLoadMesh( String f,Entity *p ){
 	debugParent(p);
 	Entity *e=loadEntity( f,MeshLoader::HINT_COLLAPSE );
-	delete f;
 
 	if( !e ) return 0;
 	MeshModel *m=d_new MeshModel();

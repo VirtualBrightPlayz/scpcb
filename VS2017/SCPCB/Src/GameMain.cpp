@@ -1,6 +1,7 @@
 #include "GameMain.h"
 #include "include.h"
 
+#include <bbruntime.h>
 #include <bbgraphics.h>
 #include <bbblitz3d.h>
 #include <StringType.h>
@@ -28,7 +29,7 @@ Timing* Timing::getObject(int index) {
 }
 
 // Constants.
-const String VERSION = "1.CBN";
+const String VERSION("1.CBN");
 const int HIT_MAP = 1;
 const int HIT_PLAYER = 2;
 const int HIT_ITEM = 3;
@@ -149,6 +150,9 @@ void InitializeMainGame() {
 
     Graphics3DExt(userOptions->screenWidth, userOptions->screenHeight, 0, (1 + (!userOptions->fullscreen)));
     bbAppTitle("SCP - Containment Breach v"+VERSION);
+
+    const String aaaa("SCP - DICKS");
+    String bbbb; bbbb = "AAA"+aaaa;
 
     MenuScale = (userOptions->screenHeight / 1024.0);
 

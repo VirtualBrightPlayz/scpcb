@@ -216,7 +216,7 @@ gxSound *gxAudio::loadSound( String f,bool use3d ){
 
 	int flags=FSOUND_NORMAL | (use3d ? FSOUND_FORCEMONO : FSOUND_2D);
 
-	FSOUND_SAMPLE *sample=FSOUND_Sample_Load( FSOUND_FREE,f.c_str(),flags,0,0 );
+	FSOUND_SAMPLE *sample=FSOUND_Sample_Load( FSOUND_FREE,f.cstr(),flags,0,0 );
 	if( !sample ) return 0;
 
 	gxSound *sound=d_new gxSound( this,sample );
@@ -248,38 +248,4 @@ void gxAudio::set3dOptions( float roll,float dopp,float dist ){
 void gxAudio::set3dListener( const float pos[3],const float vel[3],const float forward[3],const float up[3] ){
 	FSOUND_3D_Listener_SetAttributes( (float*)pos,(float*)vel,forward[0],forward[1],forward[2],up[0],up[1],up[2] );
 	FSOUND_Update();
-}
-
-gxChannel *gxAudio::playFile( const string &t,bool use_3d ){
-	string f=tolower( t );
-	StaticChannel *chan=0;
-	map<string,StaticChannel*>::iterator it=songs.find(f);
-	if( it!=songs.end() ){
-		chan=it->second;
-		chan->play();
-		return chan;
-	}else if( 
-		f.find( ".raw" )!=string::npos ||
-		f.find( ".wav" )!=string::npos ||
-		f.find( ".mp2" )!=string::npos ||
-		f.find( ".mp3" )!=string::npos ||
-		f.find( ".ogg" )!=string::npos ||
-		f.find( ".wma" )!=string::npos ||
-		f.find( ".asf" )!=string::npos ){
-		FSOUND_STREAM *stream=FSOUND_Stream_Open( f.c_str(),use_3d,0,0 );
-		if( !stream ) return 0;
-		chan=d_new StreamChannel( stream );
-	}else{
-		FMUSIC_MODULE *module=FMUSIC_LoadSong( f.c_str() );
-		if( !module ) return 0;
-		chan=d_new MusicChannel( module );
-	}
-	channels.push_back( chan );
-	songs[f]=chan;
-	return chan;
-}
-
-gxChannel *gxAudio::playCDTrack( int track,int mode ){
-	cdChannel->play( track,mode );
-	return cdChannel;
 }
