@@ -118,7 +118,7 @@ void CreateItemTemplate(String file, String section) {
         it->invImagePath[1] = invImgPath2;
     }
 
-    String slot = bbLower(GetINIString(file, section, "slot"));
+    String slot = GetINIString(file, section, "slot").toLower();
     if (slot.equals("head")) {
         it->wornSlot = WORNITEM_SLOT_HEAD;
     } else if (slot.equals("body")) {
@@ -129,7 +129,7 @@ void CreateItemTemplate(String file, String section) {
 
     it->wornOnly = (GetINIInt(file, section, "wornonly") == 1);
 
-    String sound = bbLower(GetINIString(file, section, "sound"));
+    String sound = GetINIString(file, section, "sound").toLower();
     if (sound.equals("medium")) {
         it->sound = ITEMPICK_SOUND_MEDIUM;
     } else if (sound.equals("large")) {
@@ -211,9 +211,9 @@ void LoadItemTemplates(String file) {
     String section;
 
     while (!bbEof(f)) {
-        section = bbTrim(bbReadLine(f));
+        section = bbReadLine(f).trim();
         if (bbLeft(section,1) == "[") {
-            section = bbMid(section, 2, bbLen(section) - 2);
+            section = bbMid(section, 2, section.size() - 2);
 
             CreateItemTemplate(file, section);
         }

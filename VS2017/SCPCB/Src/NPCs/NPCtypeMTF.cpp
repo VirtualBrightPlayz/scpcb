@@ -55,7 +55,7 @@ void InitializeNPCtypeMTF(NPC* n) {
         for (int iterator139 = 0; iterator139 < Room::getListSize(); iterator139++) {
             r = Room::getObject(iterator139);
 
-            switch (bbLower(r->roomTemplate->name)) {
+            switch (r->roomTemplate->name.toLower()) {
                 case "room106": {
                     MTFrooms[0] = r;
                 }
@@ -1779,8 +1779,8 @@ void UpdateMTF() {
             entrance = nullptr;
             for (int iterator150 = 0; iterator150 < Room::getListSize(); iterator150++) {
                 r = Room::getObject(iterator150);
-
-                if (bbLower(r->roomTemplate->name) == "gateaentrance") {
+                // TODO: Probably isn't 'gateaentrance'. Infact why is there code here for gate a?
+                if (r->roomTemplate->name.toLower().equals("gateaentrance")) {
                     entrance = r;
                     break;
                 }

@@ -357,16 +357,16 @@ void UpdateConsole() {
             ConsoleScroll = 0;
             CreateConsoleMsg(ConsoleInput,255,255,0,true);
             if (bbInstr(ConsoleInput, " ") > 0) {
-                StrTemp = bbLower(bbLeft(ConsoleInput, bbInstr(ConsoleInput, " ") - 1));
+                StrTemp = bbLeft(ConsoleInput, bbInstr(ConsoleInput, " ") - 1).toLower();
             } else {
-                StrTemp = bbLower(ConsoleInput);
+                StrTemp = ConsoleInput.toLower();
             }
 
             //TODO: Overhaul this. Move all of the argument stuff to dedicated functions so this is actually readable/maintainable.
-            switch (bbLower(StrTemp)) {
+            switch (StrTemp.toLower()) {
                 case "help": {
                     if (bbInstr(ConsoleInput, " ")!=0) {
-                        StrTemp = bbLower(bbRight(ConsoleInput, bbLen(ConsoleInput) - bbInstr(ConsoleInput, " ")));
+                        StrTemp = bbRight(ConsoleInput, ConsoleInput.size() - bbInstr(ConsoleInput, " ")).toLower();
                     } else {
                         StrTemp = "";
                     }
@@ -374,7 +374,7 @@ void UpdateConsole() {
                     ConsoleG = 255;
                     ConsoleB = 255;
 
-                    switch (bbLower(StrTemp)) {
+                    switch (StrTemp.toLower()) {
                         case "1","": {
                             CreateConsoleMsg("LIST OF COMMANDS - PAGE 1/3");
                             CreateConsoleMsg("******************************");
@@ -618,13 +618,13 @@ void UpdateConsole() {
 
                 }
                 case "hidedistance": {
-                    HideDistance = (float)(bbRight(ConsoleInput, bbLen(ConsoleInput) - bbInstr(ConsoleInput, " ")));
+                    HideDistance = (float)(bbRight(ConsoleInput, ConsoleInput.size() - bbInstr(ConsoleInput, " ")));
                     CreateConsoleMsg("Hidedistance set to "+String(HideDistance));
 
                 }
                 case "ending": {
                     CurrGameState = GAMESTATE_ENDING;
-                    StrTemp = bbLower(bbRight(ConsoleInput, bbLen(ConsoleInput) - bbInstr(ConsoleInput, " ")));
+                    StrTemp = bbRight(ConsoleInput, ConsoleInput.size() - bbInstr(ConsoleInput, " ")).toLower();
 
                     Kill(mainPlayer);
 
@@ -637,13 +637,13 @@ void UpdateConsole() {
 
                 }
                 case "injure": {
-                    StrTemp = bbLower(bbRight(ConsoleInput, bbLen(ConsoleInput) - bbInstr(ConsoleInput, " ")));
+                    StrTemp = bbRight(ConsoleInput, ConsoleInput.size() - bbInstr(ConsoleInput, " ")).toLower();
 
                     mainPlayer->injuries = (float)(StrTemp);
 
                 }
                 case "infect": {
-                    StrTemp = bbLower(bbRight(ConsoleInput, bbLen(ConsoleInput) - bbInstr(ConsoleInput, " ")));
+                    StrTemp = bbRight(ConsoleInput, ConsoleInput.size() - bbInstr(ConsoleInput, " ")).toLower();
 
                     mainPlayer->infect008 = (float)(StrTemp);
 
@@ -654,7 +654,7 @@ void UpdateConsole() {
 
                 }
                 case "teleport": {
-                    StrTemp = bbLower(bbRight(ConsoleInput, bbLen(ConsoleInput) - bbInstr(ConsoleInput, " ")));
+                    StrTemp = bbRight(ConsoleInput, ConsoleInput.size() - bbInstr(ConsoleInput, " ")).toLower();
 
                     for (int iterator44 = 0; iterator44 < Room::getListSize(); iterator44++) {
                         r = Room::getObject(iterator44);
@@ -693,12 +693,12 @@ void UpdateConsole() {
 
                 }
                 case "spawnitem": {
-                    StrTemp = bbLower(bbRight(ConsoleInput, bbLen(ConsoleInput) - bbInstr(ConsoleInput, " ")));
+                    StrTemp = bbRight(ConsoleInput, ConsoleInput.size() - bbInstr(ConsoleInput, " ")).toLower();
                     temp = false;
                     for (int iterator46 = 0; iterator46 < ItemTemplate::getListSize(); iterator46++) {
                         itt = ItemTemplate::getObject(iterator46);
 
-                        if (bbLower(itt->name) == StrTemp) {
+                        if (itt->name.toLower().equals(StrTemp)) {
                             temp = true;
                             CreateConsoleMsg(itt->name + " spawned.");
                             it = CreateItem(itt->name, bbEntityX(mainPlayer->collider), bbEntityY(mainPlayer->cam,true), bbEntityZ(mainPlayer->collider));
@@ -712,7 +712,7 @@ void UpdateConsole() {
 
                 }
                 case "spawndoc": {
-                    StrTemp = bbLower(bbRight(ConsoleInput, bbLen(ConsoleInput) - bbInstr(ConsoleInput, " ")));
+                    StrTemp = bbRight(ConsoleInput, ConsoleInput.size() - bbInstr(ConsoleInput, " ")).toLower();
                     CreatePaper(StrTemp, bbEntityX(mainPlayer->collider), bbEntityY(mainPlayer->cam,true), bbEntityZ(mainPlayer->collider));
 
                 }
@@ -728,7 +728,7 @@ void UpdateConsole() {
 
                 }
                 case "wireframe": {
-                    StrTemp = bbLower(bbRight(ConsoleInput, bbLen(ConsoleInput) - bbInstr(ConsoleInput, " ")));
+                    StrTemp = bbRight(ConsoleInput, ConsoleInput.size() - bbInstr(ConsoleInput, " ")).toLower();
 
                     switch (StrTemp) {
                         case "on", "1", "true": {
@@ -752,13 +752,13 @@ void UpdateConsole() {
 
                 }
                 case "173speed": {
-                    StrTemp = bbLower(bbRight(ConsoleInput, bbLen(ConsoleInput) - bbInstr(ConsoleInput, " ")));
+                    StrTemp = bbRight(ConsoleInput, ConsoleInput.size() - bbInstr(ConsoleInput, " ")).toLower();
                     Curr173->speed = StrTemp.toFloat();
                     CreateConsoleMsg("173's speed set to " + StrTemp);
 
                 }
                 case "106speed": {
-                    StrTemp = bbLower(bbRight(ConsoleInput, bbLen(ConsoleInput) - bbInstr(ConsoleInput, " ")));
+                    StrTemp = bbRight(ConsoleInput, ConsoleInput.size() - bbInstr(ConsoleInput, " ")).toLower();
                     Curr106->speed = StrTemp.toFloat();
                     CreateConsoleMsg("106's speed set to " + StrTemp);
 
@@ -847,7 +847,7 @@ void UpdateConsole() {
                     }
                 }
                 case "godmode": {
-                    StrTemp = bbLower(bbRight(ConsoleInput, bbLen(ConsoleInput) - bbInstr(ConsoleInput, " ")));
+                    StrTemp = bbRight(ConsoleInput, ConsoleInput.size() - bbInstr(ConsoleInput, " ")).toLower();
 
                     switch (StrTemp) {
                         case "on", "1", "true": {
@@ -888,7 +888,7 @@ void UpdateConsole() {
 
                 }
                 case "noclip","fly": {
-                    StrTemp = bbLower(bbRight(ConsoleInput, bbLen(ConsoleInput) - bbInstr(ConsoleInput, " ")));
+                    StrTemp = bbRight(ConsoleInput, ConsoleInput.size() - bbInstr(ConsoleInput, " ")).toLower();
 
                     switch (StrTemp) {
                         case "on", "1", "true": {
@@ -939,7 +939,7 @@ void UpdateConsole() {
 
                 }
                 case "debughud": {
-                    StrTemp = bbLower(bbRight(ConsoleInput, bbLen(ConsoleInput) - bbInstr(ConsoleInput, " ")));
+                    StrTemp = bbRight(ConsoleInput, ConsoleInput.size() - bbInstr(ConsoleInput, " ")).toLower();
                     switch (StrTemp) {
                         case "on", "1", "true": {
                             DebugHUD = true;
@@ -972,13 +972,13 @@ void UpdateConsole() {
 
                 }
                 case "gamma": {
-                    StrTemp = bbLower(bbRight(ConsoleInput, bbLen(ConsoleInput) - bbInstr(ConsoleInput, " ")));
+                    StrTemp = bbRight(ConsoleInput, ConsoleInput.size() - bbInstr(ConsoleInput, " ")).toLower();
                     userOptions->screenGamma = (float)(StrTemp);
                     CreateConsoleMsg("Gamma set to " + String(userOptions->screenGamma));
 
                 }
                 case "spawn": {
-                    StrTemp = bbLower(bbRight(ConsoleInput, bbLen(ConsoleInput) - bbInstr(ConsoleInput, " ")));
+                    StrTemp = bbRight(ConsoleInput, ConsoleInput.size() - bbInstr(ConsoleInput, " ")).toLower();
                     Console_SpawnNPC(StrTemp);
 
                 }
@@ -1004,7 +1004,7 @@ void UpdateConsole() {
 
                 }
                 case "spawnnpcstate": {
-                    args = bbLower(bbRight(ConsoleInput, bbLen(ConsoleInput) - bbInstr(ConsoleInput, " ")));
+                    args = bbRight(ConsoleInput, ConsoleInput.size() - bbInstr(ConsoleInput, " ")).toLower();
                     StrTemp = Piece(args,1," ");
                     StrTemp2 = Piece(args,2," ");
                     Console_SpawnNPC(StrTemp, StrTemp2.toInt());
@@ -1022,7 +1022,7 @@ void UpdateConsole() {
 
                 }
                 case "unlockexits": {
-                    StrTemp = bbLower(bbRight(ConsoleInput, bbLen(ConsoleInput) - bbInstr(ConsoleInput, " ")));
+                    StrTemp = bbRight(ConsoleInput, ConsoleInput.size() - bbInstr(ConsoleInput, " ")).toLower();
 
                     switch (StrTemp) {
                         case "a": {
@@ -1106,7 +1106,7 @@ void UpdateConsole() {
 
                 }
                 case "tele": {
-                    args = bbLower(bbRight(ConsoleInput, bbLen(ConsoleInput) - bbInstr(ConsoleInput, " ")));
+                    args = bbRight(ConsoleInput, ConsoleInput.size() - bbInstr(ConsoleInput, " ")).toLower();
                     StrTemp = Piece(args,1," ");
                     StrTemp2 = Piece(args,2," ");
                     StrTemp3 = Piece(args,3," ");
@@ -1116,7 +1116,7 @@ void UpdateConsole() {
 
                 }
                 case "notarget": {
-                    StrTemp = bbLower(bbRight(ConsoleInput, bbLen(ConsoleInput) - bbInstr(ConsoleInput, " ")));
+                    StrTemp = bbRight(ConsoleInput, ConsoleInput.size() - bbInstr(ConsoleInput, " ")).toLower();
 
                     switch (StrTemp) {
                         case "on", "1", "true": {

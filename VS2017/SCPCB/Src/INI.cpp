@@ -31,11 +31,11 @@ String ReadINILine(INIFile* file) {
     int bank = file->bank;
     String retStr = "";
     rdbyte = bbPeekByte(bank,offset);
-    while ((firstbyte) | ((rdbyte!=13) & (rdbyte!=10))) & (offset<file->size) {
+    while (firstbyte || ((rdbyte!=13) && (rdbyte!=10)) && (offset < file->size)) {
         rdbyte = bbPeekByte(bank,offset);
-        if ((rdbyte!=13) & (rdbyte!=10)) {
+        if ((rdbyte!=13) && (rdbyte!=10)) {
             firstbyte = false;
-            retStr = retStr+bbChr(rdbyte);
+            retStr = retStr+((char)rdbyte);
         }
         offset = offset+1;
     }
@@ -50,7 +50,7 @@ void UpdateINIFile(String filename) {
     for (int iterator62 = 0; iterator62 < INIFile::getListSize(); iterator62++) {
         k = INIFile::getObject(iterator62);
 
-        if (k->name == bbLower(filename)) {
+        if (k->name == filename.toLower()) {
             file = k;
         }
     }
@@ -86,7 +86,7 @@ String GetINIString(String file, String section, String parameter, String defaul
     for (int iterator63 = 0; iterator63 < INIFile::getListSize(); iterator63++) {
         k = INIFile::getObject(iterator63);
 
-        if (k->name == bbLower(file)) {
+        if (k->name == file.toLower()) {
             lfile = k;
         }
     }
@@ -94,26 +94,26 @@ String GetINIString(String file, String section, String parameter, String defaul
     if (lfile == nullptr) {
         bbDebugLog("CREATE BANK FOR "+file);
         lfile = new INIFile();
-        lfile->name = bbLower(file);
+        lfile->name = file.toLower();
         lfile->bank = 0;
         UpdateINIFile(lfile->name);
     }
 
     lfile->bankOffset = 0;
 
-    section = bbLower(section);
+    section = section.toLower();
 
     //While (Not Eof(f))
     while (lfile->bankOffset<lfile->size) {
         strtemp = ReadINILine(lfile);
         if (bbLeft(strtemp,1) == "[") {
-            strtemp = bbLower(strtemp);
-            if (bbMid(strtemp, 2, bbLen(strtemp)-2)==section) {
+            strtemp = strtemp.toLower();
+            if (bbMid(strtemp, 2, strtemp.size()-2)==section) {
                 do {
                     TemporaryString = ReadINILine(lfile);
-                    if (bbLower(bbTrim(bbLeft(TemporaryString, (int)(Max(bbInstr(TemporaryString, "=") - 1, 0))))) = bbLower(parameter)) {
+                    if (bbLeft(TemporaryString, (int)(Max(bbInstr(TemporaryString, "=") - 1, 0))).trim().toLower().equals(parameter.toLower())) {
                         //CloseFile(f)
-                        return bbTrim(bbRight(TemporaryString, bbLen(TemporaryString)-bbInstr(TemporaryString, " = ")));
+                        return bbRight(TemporaryString, TemporaryString.size()-bbInstr(TemporaryString, " = ")).trim();
                     }
                 } while (bbLeft(TemporaryString, 1) == "[" || lfile->bankOffset >= lfile->size);
 
@@ -153,9 +153,9 @@ String GetINIString2(String file, int start, String parameter, String defaultval
         if (n==start) {
             do {
                 TemporaryString = bbReadLine(f);
-                if (bbLower(bbTrim(bbLeft(TemporaryString, (int)(Max(bbInstr(TemporaryString, "=") - 1, 0))))) = bbLower(parameter)) {
+                if (bbLeft(TemporaryString, (int)(Max(bbInstr(TemporaryString, "=") - 1, 0))).trim().toLower().equals(parameter.toLower())) {
                     bbCloseFile(f);
-                    return bbTrim(bbRight(TemporaryString, bbLen(TemporaryString)-bbInstr(TemporaryString, " = ")));
+                    return bbRight(TemporaryString, TemporaryString.size()-bbInstr(TemporaryString, " = ")).trim();
                 }
             } while (bbLeft(TemporaryString, 1) == "[" || bbEof(f));
             bbCloseFile(f);
@@ -184,14 +184,14 @@ int GetINISectionLocation(String file, String section) {
     String strTemp;
     int f = bbReadFile(file);
 
-    section = bbLower(section);
+    section = section.toLower();
 
     int n = 0;
     while (!bbEof(f)) {
         strTemp = bbReadLine(f);
         n = n+1;
         if (bbLeft(strTemp,1) == "[") {
-            strTemp = bbLower(strTemp);
+            strTemp = strTemp.toLower();
             Temp = bbInstr(strTemp, section);
             if (Temp>0) {
                 if (bbMid(strTemp, Temp-1, 1)=="[" | bbMid(strTemp, Temp-1, 1)=="|") {
@@ -209,10 +209,10 @@ int PutINIValue(String file, String INI_sSection, String INI_sKey, String INI_sV
 
     // Returns: True (Success) Or False (Failed)
 
-    INI_sSection = "[" + bbTrim$(INI_sSection) + "]";
-    String INI_sUpperSection = bbUpper$(INI_sSection);
-    INI_sKey = bbTrim$(INI_sKey);
-    INI_sValue = bbTrim$(INI_sValue);
+    INI_sSection = "[" + INI_sSection.trim() + "]";
+    String INI_sUpperSection = INI_sSection.toUpper();
+    INI_sKey = INI_sKey.trim();
+    INI_sValue = INI_sValue.trim();
     String INI_sFilename = file;
 
     // Retrieve the INI Data (If it exists)
@@ -242,26 +242,26 @@ int PutINIValue(String file, String INI_sSection, String INI_sKey, String INI_sV
 
         if (!INI_sTemp.isEmpty()) {
 
-            if (bbLeft(INI_sTemp, 1) == "[" && bbRight(INI_sTemp, 1) == "]") {
+            if (bbLeft(INI_sTemp, 1).equals('[') && bbRight(INI_sTemp, 1).equals(']')) {
 
                 // Process SECTION
 
                 if (INI_sCurrentSection.equals(INI_sUpperSection) && INI_bWrittenKey == false) {
                     INI_bWrittenKey = INI_CreateKey(INI_lFileHandle, INI_sKey, INI_sValue);
                 }
-                INI_sCurrentSection = bbUpper$(INI_CreateSection(INI_lFileHandle, INI_sTemp));
+                INI_sCurrentSection = INI_CreateSection(INI_lFileHandle, INI_sTemp).toUpper();
                 if (INI_sCurrentSection.equals(INI_sUpperSection)) {
                     INI_bSectionFound = true;
                 }
 
             } else {
-                if (bbLeft(INI_sTemp, 1).equals(":") || bbLeft(INI_sTemp, 1).equals(";")) {
+                if (bbLeft(INI_sTemp, 1).equals(':') || bbLeft(INI_sTemp, 1).equals(';')) {
                     bbWriteLine(INI_lFileHandle, INI_sTemp);
                 } else {
                     // KEY=VALUE
                     lEqualsPos = bbInstr(INI_sTemp, "=");
                     if (lEqualsPos != 0) {
-                        if (INI_sCurrentSection.equals(INI_sUpperSection) && bbUpper$(bbTrim$(bbLeft$(INI_sTemp, (lEqualsPos - 1)))).equals(bbUpper$(INI_sKey))) {
+                        if (INI_sCurrentSection.equals(INI_sUpperSection) && bbLeft(INI_sTemp, (lEqualsPos - 1)).trim().toUpper().equals(INI_sKey.toUpper())) {
                             if (!INI_sValue.isEmpty()) {
                                 INI_CreateKey(INI_lFileHandle, INI_sKey, INI_sValue);
                             }
@@ -279,7 +279,7 @@ int PutINIValue(String file, String INI_sSection, String INI_sKey, String INI_sV
         // Move through the INI file...
 
         INI_lOldPos = INI_lPos + 1;
-        INI_lPos = bbInstr(INI_sContents, bbChr$(0), INI_lOldPos);
+        INI_lPos = bbInstr(INI_sContents, bbChr(0), INI_lOldPos);
 
     }
 

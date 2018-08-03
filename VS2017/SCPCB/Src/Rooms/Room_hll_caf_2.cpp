@@ -205,7 +205,7 @@ void Update294() {
                             strtemp = " ";
                         }
                         case 9: {
-                            Input294 = bbLeft(Input294, (int)(Max(bbLen(Input294)-1,0)));
+                            Input294 = bbLeft(Input294, (int)(Max(Input294.size()-1,0)));
                         }
                     }
                 }
@@ -216,15 +216,15 @@ void Update294() {
 
             Input294 = Input294 + strtemp;
 
-            Input294 = bbLeft(Input294, (int)(Min(bbLen(Input294),15)));
+            Input294 = bbLeft(Input294, (int)(Min(Input294.size(),15)));
 
             //dispense
             if (temp && !Input294.isEmpty()) {
-                Input294 = bbTrim(bbLower(Input294));
-                if (bbLeft(Input294, (int)(Min(7,bbLen(Input294)))) == "cup of ") {
-                    Input294 = bbRight(Input294, bbLen(Input294)-7);
-                } else if ((bbLeft(Input294, (int)(Min(9,bbLen(Input294)))) == "a cup of " )) {
-                    Input294 = bbRight(Input294, bbLen(Input294)-9);
+                Input294 = Input294.toLower().trim();
+                if (bbLeft(Input294, (int)(Min(7,Input294.size()))) == "cup of ") {
+                    Input294 = bbRight(Input294, Input294.size()-7);
+                } else if ((bbLeft(Input294, (int)(Min(9,Input294.size()))) == "a cup of " )) {
+                    Input294 = bbRight(Input294, Input294.size()-9);
                 }
 
                 loc = GetINISectionLocation("Data/SCP-294.ini", Input294);
@@ -246,12 +246,13 @@ void Update294() {
 
                     sep1 = bbInstr(strtemp, ",", 1);
                     sep2 = bbInstr(strtemp, ",", sep1+1);
-                    r = (int)(bbTrim(bbLeft(strtemp, sep1-1)));
-                    g = (int)(bbTrim(bbMid(strtemp, sep1+1, sep2-sep1-1)));
-                    b = (int)(bbTrim(bbRight(strtemp, bbLen(strtemp)-sep2)));
+                    r = (int)(bbLeft(strtemp, sep1-1).trim());
+                    g = (int)(bbMid(strtemp, sep1+1, sep2-sep1-1).trim());
+                    b = (int)(bbRight(strtemp, strtemp.size()-sep2).trim());
 
                     alpha = (float)(GetINIString2("Data/SCP-294.ini", loc, "alpha"));
                     glow = GetINIInt2("Data/SCP-294.ini", loc, "glow");
+                    // FIXME: Float equality.
                     if (alpha == 0) {
                         alpha = 1.0;
                     }
@@ -273,7 +274,7 @@ void Update294() {
             //if mousehit1
         }
 
-        if (MouseHit2 & CurrGameState==GAMESTATE_SCP294) {
+        if (MouseHit2 && CurrGameState==GAMESTATE_SCP294) {
             bbHidePointer();
             CurrGameState = GAMESTATE_PLAYING;
             Input294 = "";
@@ -283,7 +284,6 @@ void Update294() {
     } else {
         if (Input294 != "OUT OF RANGE") {
             Input294 = "DISPENSING...";
-            bbDebugLog("cringe");
         }
 
         if (!IsChannelPlaying(mainPlayer->currRoom->soundCHN)) {

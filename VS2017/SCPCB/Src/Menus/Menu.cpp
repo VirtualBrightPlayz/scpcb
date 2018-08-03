@@ -68,7 +68,7 @@ void DrawTiledImageRect(int img, int srcX, int srcY, int srcwidth, int srcheight
 
 String rInput(String aString) {
     int value = bbGetKey();
-    int length = bbLen(aString);
+    int length = aString.size();
 
     if (value == 8) {
         value = 0;
@@ -266,14 +266,14 @@ void RowText(String A, int X, int Y, int W, int H, int align = 0, float Leading 
     String trimmed;
     int extra;
 
-    while (bbLen(A) > 0) {
+    while (A.size() > 0) {
         space = bbInstr(A, " ");
         if (space == 0) {
-            space = bbLen(A);
+            space = A.size();
         }
         temp = bbLeft(A, space);
         //we might ignore a final space
-        trimmed = bbTrim(temp);
+        trimmed = temp.trim();
         //we haven't ignored it yet
         extra = 0;
         //ignore final space If doing so would make a word fit at End of Line:
@@ -295,7 +295,7 @@ void RowText(String A, int X, int Y, int W, int H, int align = 0, float Leading 
             //append it To b$ (which will eventually be printed) And remove it from A$
         } else {
             b = b + temp;
-            A = bbRight(A, bbLen(A) - (bbLen(temp) + extra));
+            A = bbRight(A, A.size() - (temp.size() + extra));
         }
 
         //the Next Line(would be too tall, so leave)
@@ -330,9 +330,9 @@ int LimitText(String txt, int x, int y, int width, int usingAA = true) {
             bbText(x, y, txt);
             //ei mahdu
         } else {
-            LetterWidth = TextLength / bbLen(txt);
+            LetterWidth = TextLength / txt.size();
 
-            bbText(x, y, bbLeft(txt, (int)(Max(bbLen(txt) - UnFitting / LetterWidth - 4, 1))) + "...");
+            bbText(x, y, bbLeft(txt, (int)(Max(txt.size() - UnFitting / LetterWidth - 4, 1))) + "...");
         }
     } else {
         if (txt.isEmpty() || width == 0) {
@@ -345,9 +345,9 @@ int LimitText(String txt, int x, int y, int width, int usingAA = true) {
             bbText(x, y, txt);
             //ei mahdu
         } else {
-            LetterWidth = TextLength / bbLen(txt);
+            LetterWidth = TextLength / txt.size();
 
-            bbText(x, y, bbLeft(txt, (int)(Max(bbLen(txt) - UnFitting / LetterWidth - 4, 1))) + "...");
+            bbText(x, y, bbLeft(txt, (int)(Max(txt.size() - UnFitting / LetterWidth - 4, 1))) + "...");
         }
     }
 }

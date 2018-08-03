@@ -247,7 +247,7 @@ void CreateChunkParts(Room* r) {
                 yaw = GetINIString2(File,loc,"obj"+String(j)+"-yaw");
                 bbDebugLog("1499 chunk X/Z/Yaw: "+x+"|"+z+"|"+yaw);
                 chp->obj[j] = bbCopyEntity(r->objects[objID]);
-                if (bbLower(yaw) == "random") {
+                if (yaw.toLower() == "random") {
                     chp->randomYaw[j] = bbRnd(360);
                     bbRotateEntity(chp->obj[j],0,chp->randomYaw[j],0);
                 } else {
@@ -418,8 +418,8 @@ void HideChunks() {
 
         //If (ch\obj <> 0) Then HideEntity(ch\obj)
         if (ch->obj[0]!=0) {
-            for (i = 0; i <= ch->amount; i++) {
-                bbHideEntity(ch->obj[i]);
+            for (int j = 0; j < ch->amount; j++) {
+                bbHideEntity(ch->obj[j]);
             }
         }
     }

@@ -43,9 +43,9 @@ void InitLoadingScreens(String file) {
     int f = bbOpenFile(file);
 
     while (!bbEof(f)) {
-        TemporaryString = bbTrim(bbReadLine(f));
+        TemporaryString = bbReadLine(f).trim();
         if (bbLeft(TemporaryString,1) == "[") {
-            TemporaryString = bbMid(TemporaryString, 2, bbLen(TemporaryString) - 2);
+            TemporaryString = bbMid(TemporaryString, 2, TemporaryString.size() - 2);
 
             ls = new LoadingScreen();
             LoadingScreenAmount = LoadingScreenAmount+1;
@@ -63,7 +63,7 @@ void InitLoadingScreens(String file) {
 
             ls->disablebackground = GetINIInt(file, TemporaryString, "disablebackground");
 
-            switch (bbLower(GetINIString(file, TemporaryString, "align x"))) {
+            switch (GetINIString(file, TemporaryString, "align x").toLower()) {
                 case "left": {
                     ls->alignx = -1;
                 }
@@ -75,7 +75,7 @@ void InitLoadingScreens(String file) {
                 }
             }
 
-            switch (bbLower(GetINIString(file, TemporaryString, "align y"))) {
+            switch (GetINIString(file, TemporaryString, "align y").toLower()) {
                 case "top", "up": {
                     ls->aligny = -1;
                 }
@@ -244,10 +244,10 @@ void DrawLoading(int percent, int shortloading = false) {
             }
 
             strtemp = SelectedLoadingScreen->txt[0];
-            temp = (int)(bbLen(SelectedLoadingScreen->txt[0])-bbRand(5));
+            temp = (int)(SelectedLoadingScreen->txt[0].size()-bbRand(5));
             //temp
             for (i = 0; i <= bbRand(10,15); i++) {
-                strtemp = bbReplace(SelectedLoadingScreen->txt[0],bbMid(SelectedLoadingScreen->txt[0],bbRand(1,bbLen(strtemp)-1),1),bbChr(bbRand(130,250)));
+                strtemp = bbReplace(SelectedLoadingScreen->txt[0],bbMid(SelectedLoadingScreen->txt[0],bbRand(1,strtemp.size()-1),1),bbChr(bbRand(130,250)));
             }
             bbSetFont(uiAssets->font[0]);
             RowText(strtemp, userOptions->screenWidth / 2-200, userOptions->screenHeight / 2 +120,400,300,true);

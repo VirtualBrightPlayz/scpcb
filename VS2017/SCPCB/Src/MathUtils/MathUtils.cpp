@@ -285,7 +285,7 @@ int SeedStringToInt(String seed) {
     int retVal = 0;
 
     int i;
-    for (i = 1; i <= bbLen(seed); i++) {
+    for (i = 1; i <= seed.size(); i++) {
         char = bbAsc(bbMid(seed,i,1));
         retVal = (retVal Shl 1) + char;
     }

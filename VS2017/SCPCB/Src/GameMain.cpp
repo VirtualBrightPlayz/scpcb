@@ -804,7 +804,7 @@ void UpdateGUI() {
                                 }
                             }
 
-                            if (bbLen(KeypadInput)> 4) {
+                            if (KeypadInput.size()> 4) {
                                 KeypadInput = bbLeft(KeypadInput,4);
                             }
                         }
@@ -1367,7 +1367,7 @@ void UpdatePauseMenu() {
 }
 
 String f2s(float n, int count) {
-    return bbLeft(String(n), bbLen(String((int)(n)))+count+1);
+    return bbLeft(String(n), String((int)(n)).size()+count+1);
 }
 
 float Animate2(int entity, float curr, int start, int quit, float speed, int loop = true) {

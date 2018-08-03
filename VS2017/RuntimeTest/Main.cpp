@@ -11,7 +11,7 @@ int main() {
 
     bbGraphics3D(1280, 720, 0, 2);
 
-    bbAppTitle(bbTrim("     Test  thing     "),"");
+    bbAppTitle(String("     Test  thing     ").trim(),"");
 
     Entity* cube = bbCreateCube(nullptr);
     Entity* camera = bbCreateCamera(nullptr);

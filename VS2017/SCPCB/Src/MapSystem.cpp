@@ -256,18 +256,18 @@ void LoadMaterials(String file) {
     String stepSound = "";
 
     while (!bbEof(f)) {
-        TemporaryString = bbTrim(bbReadLine(f));
+        TemporaryString = bbReadLine(f).trim();
         if (bbLeft(TemporaryString,1) == "[") {
-            TemporaryString = bbMid(TemporaryString, 2, bbLen(TemporaryString) - 2);
+            TemporaryString = bbMid(TemporaryString, 2, TemporaryString.size() - 2);
 
             mat = new Material();
 
-            mat->name = bbLower(TemporaryString);
+            mat->name = TemporaryString.toLower();
 
             mat->diff = 0;
 
             stepSound = GetINIString(file, TemporaryString, "stepsound");
-            if (bbLower(stepSound)=="metal") {
+            if (stepSound.toLower()=="metal") {
                 mat->stepSound = STEPSOUND_METAL;
             }
         }
@@ -302,7 +302,7 @@ String Piece(String s, int entry, String chr = " ") {
     }
     for (int n = 1; n < entry; n++) {
         p = bbInstr(s, chr);
-        s = bbRight(s, bbLen(s) - p);
+        s = bbRight(s, s.size() - p);
     }
     p = bbInstr(s, chr);
     if (p<1) {
@@ -322,7 +322,7 @@ String KeyValue(int entity, String key, String defaultvalue = "") {
     int p;
 
     properties = bbReplace(properties,bbChr(13),"");
-    key = bbLower(key);
+    key = key.toLower();
     while (true) {
         p = bbInstr(properties,bbChr(10));
         if (p) {
@@ -331,19 +331,19 @@ String KeyValue(int entity, String key, String defaultvalue = "") {
             test = properties;
         }
         testkey = Piece(test,1,"=");
-        testkey = bbTrim(testkey);
+        testkey = testkey.trim();
         testkey = bbReplace(testkey,"\"","");
-        testkey = bbLower(testkey);
+        testkey = testkey.toLower();
         if (testkey.equals(key)) {
             value = Piece(test,2,"=");
-            value = bbTrim(value);
+            value = value.trim();
             value = bbReplace(value,"\"","");
             return value;
         }
         if (!p) {
             return defaultvalue;
         }
-        properties = bbRight(properties, bbLen(properties)-p);
+        properties = bbRight(properties, properties.size()-p);
     }
 }
 
@@ -369,17 +369,18 @@ void LoadRoomTemplates(String file) {
     int f = bbOpenFile(file);
 
     while (!bbEof(f)) {
-        TemporaryString = bbTrim(bbReadLine(f));
+        TemporaryString = bbReadLine(f).trim();
         if (bbLeft(TemporaryString,1) == "[") {
             bbDebugLog(TemporaryString);
-            TemporaryString = bbMid(TemporaryString, 2, bbLen(TemporaryString) - 2);
-            if (!(bbLower(TemporaryString)=="room ambience")) {
+            TemporaryString = bbMid(TemporaryString, 2, TemporaryString.size() - 2);
+            // TODO: Remove room ambience.
+            if (!TemporaryString.toLower().equals("room ambience")) {
                 StrTemp = GetINIString(file, TemporaryString, "meshpath");
 
                 rt = CreateRoomTemplate(StrTemp);
-                rt->name = bbLower(TemporaryString);
+                rt->name = TemporaryString.toLower();
 
-                StrTemp = bbLower(GetINIString(file, TemporaryString, "shape", "0"));
+                StrTemp = GetINIString(file, TemporaryString, "shape", "0").toLower();
 
                 switch (StrTemp) {
                     case "room0", "0": {
@@ -405,7 +406,7 @@ void LoadRoomTemplates(String file) {
                     }
                 }
 
-                Zones = bbLower(GetINIString(file, TemporaryString, "zones"));
+                Zones = GetINIString(file, TemporaryString, "zones").toLower();
                 rt->zones = 0;
                 if (bbInstr(Zones,"lcz")>0) {
                     rt->zones = rt->zones | ZONE_LCZ;
@@ -505,7 +506,7 @@ void UpdateGrid(Grid* grid) {
 }
 
 RoomTemplate* GetRoomTemplate(String name) {
-    name = bbLower(name);
+    name = name.toLower();
 
     RoomTemplate* rt;
     for (int iterator71 = 0; iterator71 < RoomTemplate::getListSize(); iterator71++) {

@@ -8,8 +8,8 @@ String StripFilename(String file) {
     String mi = "";
     int lastSlash = 0;
     int i;
-    if (bbLen(file)>0) {
-        for (i = 1; i <= bbLen(file); i++) {
+    if (file.size()>0) {
+        for (i = 1; i <= file.size(); i++) {
             mi = bbMid(file,i,1);
             if (mi=="\\" | mi=="/") {
                 lastSlash = i;
@@ -25,7 +25,7 @@ int GetTextureFromCache(String name) {
     for (int iterator92 = 0; iterator92 < Material::getListSize(); iterator92++) {
         tc = Material::getObject(iterator92);
 
-        if (bbLower(tc->name) == bbLower(name)) {
+        if (tc->name.toLower().equals(name.toLower())) {
             return tc->diff;
         }
     }
@@ -37,7 +37,7 @@ Material* GetCache(String name) {
     for (int iterator93 = 0; iterator93 < Material::getListSize(); iterator93++) {
         tc = Material::getObject(iterator93);
 
-        if (bbLower(tc->name) == bbLower(name)) {
+        if (tc->name.toLower().equals(name.toLower())) {
             return tc;
         }
     }
@@ -48,7 +48,7 @@ void AddTextureToCache(String name, int texture) {
     Material* tc = GetCache(name);
     if (tc==nullptr) {
         tc = new Material();
-        tc->name = bbLower(name);
+        tc->name = name.toLower();
 
         tc->diff = 0;
     }
