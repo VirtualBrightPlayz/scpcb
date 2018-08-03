@@ -185,7 +185,7 @@ int String::findFirst(const String& fnd, int from) const {
     if (fnd.size() == 0) { return -1; }
     if (from<0) { from = 0; }
     for (int i = from; i < size()-fnd.size(); i++) {
-        if (memcmp(fnd.wstr(), wstr() + i, fnd.size()) == 0) { return i; }
+        if (memcmp(fnd.wstr(), wstr() + i, fnd.size() * sizeof(wchar)) == 0) { return i; }
     }
     return -1;
 }
@@ -194,7 +194,7 @@ int String::findLast(const String& fnd, int from) const {
     if (fnd.size() == 0) { return -1; }
     if (from<0) { from = size(); }
     for (int i = from - fnd.size(); i >= 0; i--) {
-        if (memcmp(fnd.wstr(), wstr() + i, fnd.size()) == 0) { return i; }
+        if (memcmp(fnd.wstr(), wstr() + i, fnd.size() * sizeof(wchar)) == 0) { return i; }
     }
     return -1;
 }

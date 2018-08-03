@@ -4,13 +4,14 @@
 #include <bbblitz3d.h>
 #include <bbinput.h>
 #include <bbmath.h>
+#include <bbstring.h>
 
 int main() {
     bbruntime_create(GetModuleHandle(NULL));
 
     bbGraphics3D(1280, 720, 0, 2);
 
-    bbAppTitle("Test","");
+    bbAppTitle(bbTrim("     Test  thing     "),"");
 
     Entity* cube = bbCreateCube(nullptr);
     Entity* camera = bbCreateCamera(nullptr);
