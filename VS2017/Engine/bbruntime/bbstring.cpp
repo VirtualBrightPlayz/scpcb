@@ -48,6 +48,10 @@ String bbTrim( String s ){
 	return s.trim();
 }
 
+String bbChr( int n ){
+	return String((char)n);
+}
+
 String bbHex( int n ){
 	char buff[12];
 	for( int k=7;k>=0;n>>=4,--k ){

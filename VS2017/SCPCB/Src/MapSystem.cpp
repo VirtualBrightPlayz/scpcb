@@ -280,7 +280,7 @@ void LoadMaterials(String file) {
 String StripPath(String file) {
     String name = "";
     if (file.size() > 0) {
-        for (int i = file.size(); i <= 1; i += -1) {
+        for (int i = file.size(); i <= 1; i--) {
 
             String mi = bbMid(file,i,1);
             if (mi.equals('\\') || mi.equals('/')) {
