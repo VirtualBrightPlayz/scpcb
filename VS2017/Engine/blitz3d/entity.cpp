@@ -104,7 +104,7 @@ void Entity::setParent( Entity *p ){
 	invalidateWorld();
 }
 
-void Entity::setName( const string &t ){
+void Entity::setName( String t ){
 	_name=t;
 }
 

@@ -3,6 +3,7 @@
 #define DDUTIL_H
 
 #include <ddraw.h>
+#include "StringType.h"
 
 class gxGraphics;
 typedef IDirectDrawSurface7 ddSurf;
@@ -11,7 +12,7 @@ struct ddUtil{
 
 	static void buildMipMaps( ddSurf *surf );
 	static void copy( ddSurf *dest,int dx,int dy,int dw,int dh,ddSurf *src,int sx,int sy,int sw,int sh );
-	static ddSurf *loadSurface( const std::string &f,int flags,gxGraphics *gfx );
+	static ddSurf *loadSurface( String f,int flags,gxGraphics *gfx );
 	static ddSurf *createSurface( int width,int height,int flags,gxGraphics *gfx );
 };
 

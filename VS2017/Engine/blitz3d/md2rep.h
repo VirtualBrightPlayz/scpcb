@@ -10,7 +10,7 @@ public:
 		Vector coords,normal;
 	};
 
-	MD2Rep( const string &f );
+	MD2Rep( String f );
 	virtual ~MD2Rep();
 
 	void render( Vert *verts,int frame );

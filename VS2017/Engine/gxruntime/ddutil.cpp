@@ -454,8 +454,8 @@ IDirectDrawSurface7 *loadDXTC(const char* filename,gxGraphics *gfx)
 	return newSurf;
 }
 
-ddSurf *ddUtil::loadSurface( const std::string &f,int flags,gxGraphics *gfx ){
-
+ddSurf *ddUtil::loadSurface( String fi,int flags,gxGraphics *gfx ){
+    string f = fi.cstr();
 	int i=f.find( ".dds" );
 	if( i!=string::npos && i+4==f.size() ){
 		//dds file!
