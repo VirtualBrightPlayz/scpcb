@@ -12,8 +12,6 @@ extern gxScene *gx_scene;
 
 class bbImage;
 
-void bbFlip(int vwait);
-
 //general graphics functions
 int		 bbCountGfxDrivers();
 String	 bbGfxDriverName( int n );

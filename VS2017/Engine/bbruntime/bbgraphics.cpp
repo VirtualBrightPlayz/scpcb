@@ -510,6 +510,7 @@ void bbVWait( int n ){
 
 void bbFlip( int vwait ){
 	gx_graphics->flip( vwait ? true : false );
+    gx_runtime->idle();
 }
 
 int bbGraphicsWidth(){
