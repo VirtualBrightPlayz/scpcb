@@ -3,6 +3,7 @@
 #define BBSTRING_H
 
 #include "basic.h"
+#include "../gxruntime/StringType.h"
 
 String   bbString( String s,int n );
 String 	 bbLeft( String s,int n );
@@ -13,8 +14,6 @@ String 	 bbMid( String s,int o,int n );
 String   bbUpper( String s );
 String 	 bbLower( String s );
 String   bbTrim( String s );
-String   bbLSet( String s,int n );
-String   bbRSet( String s,int n );
 String   bbChr( int n );
 int		 bbAsc( String s );
 int		 bbLen( String s );

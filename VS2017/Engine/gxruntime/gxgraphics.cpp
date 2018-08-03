@@ -234,13 +234,13 @@ gxFont *gxGraphics::loadFont( String f,int height,int flags ){
 	int strikeout=0;
 
 	string t;
-	int n=f.find('.');
+	int n=f.findFirst('.');
 	if( n!=string::npos ){
-		t=fullfilename(f);
+		t=fullfilename(f.cstr());
 		if( !font_res.count(t) && AddFontResource( t.c_str() ) ) font_res.insert( t );
-		t=filenamefile( f.substr(0,n) );
+		t=filenamefile( f.substr(0,n).cstr() );
 	}else{
-		t=f;
+		t=f.cstr();
 	}
 
 	//save and turn off font smoothing....

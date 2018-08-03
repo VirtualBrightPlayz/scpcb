@@ -461,7 +461,7 @@ void gxCanvas::blit( int x,int y,gxCanvas *src,int src_x,int src_y,int src_w,int
 	damage( dest_r );
 }
 
-void gxCanvas::text( int x,int y,const string &t ){
+void gxCanvas::text( int x,int y,String t ){
 
 	int ty=y+origin_y;
 	if( ty>=viewport.bottom ) return;
@@ -471,12 +471,12 @@ void gxCanvas::text( int x,int y,const string &t ){
 	if( tx>=viewport.right ) return;
 
 	int b=0,w;
-	while( b<t.size() && tx+(w=font->charWidth( t[b] ))<=viewport.left ){
+	while( b<t.size() && tx+(w=font->charWidth( t.charAt(b) ))<=viewport.left ){
 		tx+=w;x+=w;++b;
 	}
 	int e=b;
 	while( e<t.size() && tx<viewport.right ){
-		tx+=font->charWidth( t[e] );++e;
+		tx+=font->charWidth( t.charAt(e) );++e;
 	}
 
 	if( e>b ) font->render( this,format.toARGB( color_surf ),x,y,t.substr( b,e-b ) );

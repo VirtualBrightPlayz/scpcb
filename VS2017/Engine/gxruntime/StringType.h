@@ -28,11 +28,15 @@ struct String {
 
         int size() const;
 
+        int findFirst(const String& fnd,int from=-1) const;
         int findLast(const String& fnd,int from=-1) const;
 
         String substr(int start,int cnt=-1) const;
+        char charAt(int pos) const;
         String replace(const String& fnd,const String& rplace) const;
+        String toUpper() const;
         String toLower() const;
+        String trim() const;
         String unHex() const;
         String resourcePath() const;
 
