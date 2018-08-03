@@ -88,7 +88,7 @@ void CreateItemTemplate(String file, String section) {
 
     //The model and inv image are in the specified directory.
     String dataPath = GetINIString(file, section, "datapath");
-    if (dataPath != "") {
+    if (!dataPath.isEmpty()) {
         if (bbFileType(dataPath) != 2) {
             bbRuntimeError("Item template directory not found ("+section+", "+dataPath+")");
         }
@@ -99,54 +99,45 @@ void CreateItemTemplate(String file, String section) {
 
     //Otherwise the obj, tex and inv paths are specified in the INI.
     String objPath = GetINIString(file, section, "objpath");
-    if (objPath != "") {
+    if (!objPath.isEmpty()) {
         it->objPath = objPath;
     }
 
     String texPath = GetINIString(file, section, "texpath");
-    if (texPath != "") {
+    if (!texPath.isEmpty()) {
         it->texPath = texPath;
     }
 
     String invImgPath = GetINIString(file, section, "invimgpath");
-    if (invImgPath != "") {
+    if (!invImgPath.isEmpty()) {
         it->invImagePath[0] = invImgPath;
     }
 
     String invImgPath2 = GetINIString(file, section, "invimgpath2");
-    if (invImgPath2 != "") {
+    if (!invImgPath2.isEmpty()) {
         it->invImagePath[1] = invImgPath2;
     }
 
     String slot = bbLower(GetINIString(file, section, "slot"));
-    switch (slot) {
-        case "head": {
-            it->wornSlot = WORNITEM_SLOT_HEAD;
-        }
-        case "body": {
-            it->wornSlot = WORNITEM_SLOT_BODY;
-        }
-        default: {
-            it->wornSlot = WORNITEM_SLOT_NONE;
-        }
+    if (slot.equals("head")) {
+        it->wornSlot = WORNITEM_SLOT_HEAD;
+    } else if (slot.equals("body")) {
+        it->wornSlot = WORNITEM_SLOT_BODY;
+    } else {
+        it->wornSlot = WORNITEM_SLOT_NONE;
     }
 
     it->wornOnly = (GetINIInt(file, section, "wornonly") == 1);
 
     String sound = bbLower(GetINIString(file, section, "sound"));
-    switch (sound) {
-        case "medium": {
-            it->sound = ITEMPICK_SOUND_MEDIUM;
-        }
-        case "large": {
-            it->sound = ITEMPICK_SOUND_LARGE;
-        }
-        case "small": {
-            it->sound = ITEMPICK_SOUND_SMALL;
-        }
-        default: {
-            it->sound = ITEMPICK_SOUND_PAPER;
-        }
+    if (sound.equals("medium")) {
+        it->sound = ITEMPICK_SOUND_MEDIUM;
+    } else if (sound.equals("large")) {
+        it->sound = ITEMPICK_SOUND_LARGE;
+    } else if (sound.equals("small")) {
+        it->sound = ITEMPICK_SOUND_SMALL;
+    } else {
+        it->sound = ITEMPICK_SOUND_PAPER;
     }
 
     //Start loading the assets needed.
@@ -156,7 +147,7 @@ void CreateItemTemplate(String file, String section) {
     for (int iterator102 = 0; iterator102 < ItemTemplate::getListSize(); iterator102++) {
         it2 = ItemTemplate::getObject(iterator102);
 
-        if (it2->objPath == it->objPath & it2->obj != 0) {
+        if (it2->objPath.equals(it->objPath) && it2->obj != 0) {
             it->obj = bbCopyEntity(it2->obj);
             break;
         }
@@ -171,11 +162,11 @@ void CreateItemTemplate(String file, String section) {
         }
     }
 
-    if (it->texPath != "") {
-        for (int iterator103 = 0; iterator103 < ItemTemplate::getListSize(); iterator103++) {
-            it2 = ItemTemplate::getObject(iterator103);
+    if (!it->texPath.isEmpty()) {
+        for (int i = 0; i < ItemTemplate::getListSize(); i++) {
+            it2 = ItemTemplate::getObject(i);
 
-            if (it2->texPath == it->texPath & it2->tex != 0) {
+            if (it2->texPath.equals(it->texPath) && it2->tex != 0) {
                 it->tex = it2->tex;
                 break;
             }
@@ -189,13 +180,12 @@ void CreateItemTemplate(String file, String section) {
         bbEntityTexture(it->obj, it->tex);
     }
 
-    int i;
-    for (i = 0; i <= 1; i++) {
-        if (it->invImagePath[i] != "") {
-            for (int iterator104 = 0; iterator104 < ItemTemplate::getListSize(); iterator104++) {
-                it2 = ItemTemplate::getObject(iterator104);
+    for (int i = 0; i < 2; i++) {
+        if (!it->invImagePath[i].isEmpty()) {
+            for (int j = 0; j < ItemTemplate::getListSize(); j++) {
+                it2 = ItemTemplate::getObject(j);
 
-                if (it2->invImagePath[i] == it->invImagePath[i] & it2->invImage[i] != 0) {
+                if (it2->invImagePath[i].equals(it->invImagePath[i]) && it2->invImage[i] != 0) {
                     it->invImage[i] = it2->invImage[i];
                     break;
                 }
@@ -538,7 +528,7 @@ void AssignTag(Item* item, String tag) {
     int space = false;
     int i;
     for (i = 0; i <= 4; i++) {
-        if (item->tags[i] == "") {
+        if (item->tags[i].isEmpty()) {
             space = true;
             item->tags[i] = tag;
             return;

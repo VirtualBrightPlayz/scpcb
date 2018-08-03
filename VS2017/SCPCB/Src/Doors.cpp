@@ -104,11 +104,11 @@ Door* CreateDoor(float x, float y, float z, float angle, Room* room, int open = 
     d->code = code;
 
     for (i = 0; i <= 1; i++) {
-        if (tag != "") {
+        if (!tag.isEmpty()) {
             buttonKeyObj = GrabMesh("GFX/Map/Meshes/ButtonKeycard.b3d");
             d->buttons[i] = bbCopyEntity(buttonKeyObj);
             DropAsset(buttonKeyObj);
-        } else if ((code != "")) {
+        } else if (!code.isEmpty()) {
             buttonCodeObj = GrabMesh("GFX/Map/Meshes/ButtonCode.b3d");
             d->buttons[i] = bbCopyEntity(buttonCodeObj);
             bbEntityFX(d->buttons[i], 1);
@@ -450,12 +450,12 @@ void UseDoor(Door* d, int showmsg = true) {
     int playerHasRightKeycard = false;
 
     //Does the door require a keycard?
-    if (d->tag != "") {
+    if (!d->tag.isEmpty()) {
         //Does the player have the right keycard?
         for (i = 0; i <= mainPlayer->inventory->size-1; i++) {
             item = mainPlayer->inventory->items[i];
             if (item != nullptr) {
-                if (item->template->name == "keycard") {
+                if (item->template->name.equals("keycard")) {
                     if (d->locked) {
                         PlaySound_SM(sndManager->keycardErr);
                         Msg = "The keycard was inserted into the slot but nothing happened.";

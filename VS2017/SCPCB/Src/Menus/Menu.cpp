@@ -77,9 +77,9 @@ String rInput(String aString) {
         }
     }
 
-    if (value == 13 | value == 0) {
+    if (value == 13 || value == 0) {
         return aString;
-    } else if ((value > 0 & value < 7 | value > 26 & value < 32 | value == 9)) {
+    } else if (value > 0 & value < 7 || value > 26 & value < 32 || value == 9) {
         return aString;
     } else {
         aString = aString + bbChr(value);
@@ -88,8 +88,8 @@ String rInput(String aString) {
 }
 
 int MouseOn(int x, int y, int width, int height) {
-    if (bbMouseX() > x & bbMouseX() < x + width) {
-        if (bbMouseY() > y & bbMouseY() < y + height) {
+    if (bbMouseX() > x && bbMouseX() < x + width) {
+        if (bbMouseY() > y && bbMouseY() < y + height) {
             return true;
         }
     }
@@ -173,7 +173,7 @@ int UpdateUIButton(int x, int y, int width, int height, String txt = "", int wai
     int clicked = false;
 
     if (MouseOn(x, y, width, height)) {
-        if (MouseHit1 & (!waitForMouseUp)) | (MouseUp1 & waitForMouseUp) {
+        if ((MouseHit1 && (!waitForMouseUp)) || (MouseUp1 && waitForMouseUp)) {
             clicked = true;
             PlaySound_SM(sndManager->button);
         }
@@ -304,7 +304,7 @@ void RowText(String A, int X, int Y, int W, int H, int align = 0, float Leading 
         }
     }
 
-    if (b != "") &((LinesShown + 1) <= H) {
+    if (!b.isEmpty() && (LinesShown + 1) <= H) {
         if (align) {
             //Print(any remaining Text If it'll fit vertically)
             bbText(X + W / 2 - (bbStringWidth(b) / 2), LinesShown * Height + Y, b);
@@ -320,7 +320,7 @@ int LimitText(String txt, int x, int y, int width, int usingAA = true) {
     int UnFitting;
     int LetterWidth;
     if (usingAA) {
-        if (txt == "" | width == 0) {
+        if (txt.isEmpty() || width == 0) {
             return 0;
         }
         TextLength = bbStringWidth(txt);
@@ -335,7 +335,7 @@ int LimitText(String txt, int x, int y, int width, int usingAA = true) {
             bbText(x, y, bbLeft(txt, (int)(Max(bbLen(txt) - UnFitting / LetterWidth - 4, 1))) + "...");
         }
     } else {
-        if (txt == "" | width == 0) {
+        if (txt.isEmpty() || width == 0) {
             return 0;
         }
         TextLength = bbStringWidth(txt);

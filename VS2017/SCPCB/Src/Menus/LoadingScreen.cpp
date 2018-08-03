@@ -56,7 +56,7 @@ void InitLoadingScreens(String file) {
 
             for (i = 0; i <= 4; i++) {
                 ls->txt[i] = GetINIString(file, TemporaryString, "text"+String(i+1));
-                if (ls->txt[i]!= "") {
+                if (!ls->txt[i].isEmpty()) {
                     ls->txtamount = ls->txtamount+1;
                 }
             }

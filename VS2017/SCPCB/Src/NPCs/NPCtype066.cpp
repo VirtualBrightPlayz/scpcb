@@ -48,7 +48,7 @@ void UpdateNPCtype066(NPC* n) {
                     }
                     n->state2 = TimeInPosMilliSecs()+5000;
                 }
-            } else if ((n->playerDistance < 8.0)) {
+            } else if (n->playerDistance < 8.0) {
                 n->lastDist = bbRnd(1.0, 2.5);
                 n->state = 1;
             }
@@ -115,7 +115,7 @@ void UpdateNPCtype066(NPC* n) {
                                 for (int iterator124 = 0; iterator124 < Door::getListSize(); iterator124++) {
                                     d = Door::getObject(iterator124);
 
-                                    if (d->locked == false & d->tag == "" & d->code == "") {
+                                    if (d->locked == false && d->tag.isEmpty() && d->code.isEmpty()) {
                                         if (Abs(bbEntityX(d->frameobj)-bbEntityX(n->collider))<16.0) {
                                             if (Abs(bbEntityZ(d->frameobj)-bbEntityZ(n->collider))<16.0) {
                                                 UseDoor(d, false);

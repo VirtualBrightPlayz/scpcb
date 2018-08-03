@@ -688,7 +688,7 @@ void UpdateGUI() {
         if (MouseUp1) {
             MouseUp1 = false;
             if (mainPlayer->closestDoor != nullptr) {
-                if (mainPlayer->closestDoor->code != "") {
+                if (!mainPlayer->closestDoor->code.isEmpty()) {
                     mainPlayer->selectedDoor = mainPlayer->closestDoor;
                 } else if ((!mainPlayer->disableControls)) {
                     PlayRangedSound_SM(sndManager->button, mainPlayer->cam, mainPlayer->closestButton);
@@ -736,7 +736,7 @@ void UpdateGUI() {
             DropAsset(buttonObj);
 
             bbSetFont(uiAssets->font[2]);
-            if (KeypadMSG != "") {
+            if (!KeypadMSG.isEmpty()) {
                 KeypadTimer = KeypadTimer-timing->tickDuration;
 
                 if ((KeypadTimer % 70) < 35) {
@@ -762,7 +762,7 @@ void UpdateGUI() {
                     ytemp = y + (int)((67*scale)*i);
 
                     temp = false;
-                    if (MouseOn(xtemp, ytemp, (int)(54*scale), (int)(65*scale)) & KeypadMSG == "") {
+                    if (MouseOn(xtemp, ytemp, (int)(54*scale), (int)(65*scale)) & KeypadMSG.isEmpty()) {
                         if (MouseUp1) {
                             PlaySound_SM(sndManager->button);
 
@@ -1118,7 +1118,7 @@ void DrawGUI() {
             DropAsset(buttonObj);
 
             bbSetFont(uiAssets->font[2]);
-            if (KeypadMSG == "") {
+            if (KeypadMSG.isEmpty()) {
                 bbText(userOptions->screenWidth/2, (int)(y+70*scale), "ACCESS CODE: ",true,true);
                 bbSetFont(uiAssets->font[3]);
                 bbText(userOptions->screenWidth/2, (int)(y+124*scale), KeypadInput,true,true);
@@ -1593,7 +1593,6 @@ void RenderWorld2() {
     //HideEntity(NVBlink)
 
     int hasBattery = 2;
-    int power = 0;
 
     Item* wornItem = nullptr;
 
@@ -1608,7 +1607,6 @@ void RenderWorld2() {
             decayMultiplier = 2.0;
         }
 
-        power = (int)(wornItem->state);
         //this nvg can't be used
         if (wornItem->state <= 0.0) {
             hasBattery = 0;

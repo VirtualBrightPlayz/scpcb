@@ -352,7 +352,7 @@ void UpdateConsole() {
         }
         ConsoleInput = bbLeft(ConsoleInput, 100);
 
-        if (bbKeyHit(28) & ConsoleInput!= "") {
+        if (bbKeyHit(28) && !ConsoleInput.isEmpty()) {
             ConsoleReissue = nullptr;
             ConsoleScroll = 0;
             CreateConsoleMsg(ConsoleInput,255,255,0,true);
@@ -1005,9 +1005,9 @@ void UpdateConsole() {
                 }
                 case "spawnnpcstate": {
                     args = bbLower(bbRight(ConsoleInput, bbLen(ConsoleInput) - bbInstr(ConsoleInput, " ")));
-                    StrTemp = Piece$(args,1," ");
-                    StrTemp2 = Piece$(args,2," ");
-                    Console_SpawnNPC(StrTemp,(int)(StrTemp2));
+                    StrTemp = bbPiece(args,1," ");
+                    StrTemp2 = bbPiece$(args,2," ");
+                    Console_SpawnNPC(StrTemp, StrTemp2.toInt());
 
                 }
                 case "toggle_warhead_lever": {

@@ -420,9 +420,9 @@ int LoadTempSound(String file) {
 }
 
 int LoadEventSound(Event* e, String file, int i = 0) {
-    if (e->sounds[i] != 0) {
+    if (event->sounds[i] != 0) {
         bbFreeSound(e->sounds[i]);
-        e->sounds[i] = 0;
+        event->sounds[i] = 0;
     }
     e->sounds[i] = bbLoadSound(file);
 
@@ -646,7 +646,7 @@ void StopSounds() {
 }
 
 int GetMaterialStepSound(int entity) {
-    int picker = bbLinePick(bbEntityX(entity),bbEntityY(entity),bbEntityZ(entity),0,-1,0);
+    int picker = bbLinePick(bbEntityX(entity), bbEntityY(entity), bbEntityZ(entity), 0, -1, 0);
     int brush;
     int texture;
     String name;
@@ -656,19 +656,19 @@ int GetMaterialStepSound(int entity) {
         if (bbGetEntityType(picker) != HIT_MAP) {
             return 0;
         }
-        brush = bbGetSurfaceBrush(bbGetSurface(picker,bbCountSurfaces(picker)));
+        brush = bbGetSurfaceBrush(bbGetSurface(picker, bbCountSurfaces(picker)));
         if (brush != 0) {
-            texture = bbGetBrushTexture(brush,2);
+            texture = bbGetBrushTexture(brush, 2);
 
             if (texture != 0) {
                 name = StripPath(bbTextureName(texture));
-                if (name != "") {
+                if (!name.isEmpty()) {
                     bbFreeTexture(texture);
                 }
-                for (int iterator38 = 0; iterator38 < Material::getListSize(); iterator38++) {
-                    mat = Material::getObject(iterator38);
+                for (int i = 0; i < Material::getListSize(); i++) {
+                    mat = Material::getObject(i);
 
-                    if (mat->name == name) {
+                    if (mat->name.equals(name)) {
                         if (mat->stepSound > 0) {
                             bbFreeBrush(brush);
                             return mat->stepSound;
@@ -677,17 +677,17 @@ int GetMaterialStepSound(int entity) {
                     }
                 }
             }
-            texture = bbGetBrushTexture(brush,1);
+            texture = bbGetBrushTexture(brush, 1);
             if (texture != 0) {
                 name = StripPath(bbTextureName(texture));
-                if (name != "") {
+                if (!name.isEmpty()) {
                     bbFreeTexture(texture);
                 }
                 bbFreeBrush(brush);
-                for (int iterator39 = 0; iterator39 < Material::getListSize(); iterator39++) {
-                    mat = Material::getObject(iterator39);
+                for (int i = 0; i < Material::getListSize(); id_t++) {
+                    mat = Material::getObject(i);
 
-                    if (mat->name == name) {
+                    if (mat->name.equals(name)) {
                         if (mat->stepSound > 0) {
                             return mat->stepSound;
                         }

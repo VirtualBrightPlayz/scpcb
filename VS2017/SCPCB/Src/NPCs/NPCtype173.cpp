@@ -113,13 +113,13 @@ void UpdateNPCtype173(NPC* n) {
                 mainPlayer->camZoom = Max(mainPlayer->camZoom, (bbSin((float)(TimeInPosMilliSecs())/20.0)+1.0)*15.0*Max((3.5-dist)/3.5,0.0));
 
                 //If it's close spoopy horror sound.
-                if (dist < 3.5 & TimeInPosMilliSecs() - n->lastSeen > 60000 & playerVisible) {
+                if (dist < 3.5 && TimeInPosMilliSecs() - n->lastSeen > 60000 && playerVisible) {
                     PlaySound2(n->sounds[bbRand(1,3)]);
 
                     n->lastSeen = TimeInPosMilliSecs();
                 }
 
-                if (dist < 1.5 & n->lastDist > 2.0 & playerVisible) {
+                if (dist < 1.5 && n->lastDist > 2.0 && playerVisible) {
                     mainPlayer->camZoom = 40.0;
                     mainPlayer->heartbeatIntensity = Max(mainPlayer->heartbeatIntensity, 140);
                     //HeartBeatVolume = 0.5
@@ -136,16 +136,16 @@ void UpdateNPCtype173(NPC* n) {
                 //more than 6 room lengths away from the player -> teleport to a room closer to the player
                 if (dist > 50) {
                     if (bbRand(70)==1) {
-                        if (mainPlayer->currRoom->roomTemplate->name != "exit1" & mainPlayer->currRoom->roomTemplate->name != "gatea" & mainPlayer->currRoom->roomTemplate->name != "pocketdimension") {
+                        if (!mainPlayer->currRoom->roomTemplate->name.equals("exit1") && !mainPlayer->currRoom->roomTemplate->name.equals("gatea") && !mainPlayer->currRoom->roomTemplate->name.equals("pocketdimension")) {
                             for (int iterator128 = 0; iterator128 < WayPoint::getListSize(); iterator128++) {
                                 w = WayPoint::getObject(iterator128);
 
                                 //w\door=Null And (TODO: fix?)
                                 if (bbRand(5)==1) {
                                     x = Abs(bbEntityX(mainPlayer->collider) - bbEntityX(w->obj, true));
-                                    if (x < 25.0 & x > 15.0) {
+                                    if (x < 25.0 && x > 15.0) {
                                         z = Abs(bbEntityZ(mainPlayer->collider)-bbEntityZ(w->obj,true));
-                                        if (z < 25 & z > 15.0) {
+                                        if (z < 25 && z > 15.0) {
                                             bbDebugLog("MOVING 173 TO " + w->room->roomTemplate->name);
                                             bbPositionEntity(n->collider, bbEntityX(w->obj,true), bbEntityY(w->obj,true)+0.25,bbEntityZ(w->obj,true));
                                             bbResetEntity(n->collider);
@@ -169,13 +169,13 @@ void UpdateNPCtype173(NPC* n) {
                         for (int iterator129 = 0; iterator129 < Door::getListSize(); iterator129++) {
                             d = Door::getObject(iterator129);
 
-                            if ((!d->locked) & d->open == false & d->code == "" & d->tag == "") {
+                            if ((!d->locked) && d->open == false && d->code.isEmpty() && d->tag.isEmpty()) {
                                 for (i = 0; i <= 1; i++) {
                                     if (d->buttons[i] != 0) {
                                         if (Abs(bbEntityX(n->collider) - bbEntityX(d->buttons[i])) < 0.5) {
                                             if (Abs(bbEntityZ(n->collider) - bbEntityZ(d->buttons[i])) < 0.5) {
                                                 if (d->openstate >= 180 | d->openstate <= 0) {
-                                                    if (bbDeltaYaw(n->collider, d->buttons[i]) < 60 & bbDeltaYaw(d->buttons[i], n->collider) < 60) {
+                                                    if (bbDeltaYaw(n->collider, d->buttons[i]) < 60 && bbDeltaYaw(d->buttons[i], n->collider) < 60) {
                                                         PlaySound2(LoadTempSound("SFX/Door/DoorOpen173.ogg"));
                                                         UseDoor(d,false);
                                                     }
@@ -198,7 +198,7 @@ void UpdateNPCtype173(NPC* n) {
                     //player is not looking and is visible from 173's position -> attack
                     if (playerVisible) {
                         if (dist < 0.65) {
-                            if (!mainPlayer->dead) & (!mainPlayer->godMode) {
+                            if ((!mainPlayer->dead) && (!mainPlayer->godMode)) {
 
                                 switch (mainPlayer->currRoom->roomTemplate->name) {
                                     case "lockroom", "room2closets", "coffin": {

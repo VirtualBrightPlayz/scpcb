@@ -113,9 +113,9 @@ String GetINIString(String file, String section, String parameter, String defaul
                     TemporaryString = ReadINILine(lfile);
                     if (bbLower(bbTrim(bbLeft(TemporaryString, (int)(Max(bbInstr(TemporaryString, "=") - 1, 0))))) = bbLower(parameter)) {
                         //CloseFile(f)
-                        Return Trim( Right(TemporaryString,Len(TemporaryString)-Instr(TemporaryString," = ")) );
+                        return bbTrim(bbRight(TemporaryString, bbLen(TemporaryString)-bbInstr(TemporaryString, " = ")));
                     }
-                } while (Left(TemporaryString, 1) = "[" | (lfile->bankOffset>=lfile->size));
+                } while (bbLeft(TemporaryString, 1) == "[" || lfile->bankOffset >= lfile->size);
 
                 //CloseFile(f)
                 return defaultvalue;
@@ -155,9 +155,9 @@ String GetINIString2(String file, int start, String parameter, String defaultval
                 TemporaryString = bbReadLine(f);
                 if (bbLower(bbTrim(bbLeft(TemporaryString, (int)(Max(bbInstr(TemporaryString, "=") - 1, 0))))) = bbLower(parameter)) {
                     bbCloseFile(f);
-                    Return Trim( Right(TemporaryString,Len(TemporaryString)-Instr(TemporaryString," = ")) );
+                    return bbTrim(bbRight(TemporaryString, bbLen(TemporaryString)-bbInstr(TemporaryString, " = ")));
                 }
-            } while (Left(TemporaryString, 1) = "[" | bbEof(f));
+            } while (bbLeft(TemporaryString, 1) == "[" || bbEof(f));
             bbCloseFile(f);
             return defaultvalue;
         }
@@ -232,17 +232,17 @@ int PutINIValue(String file, String INI_sSection, String INI_sKey, String INI_sV
     }
 
     int INI_lOldPos = 1;
-    int INI_lPos = bbInstr(INI_sContents, bbChr$(0));
+    int INI_lPos = bbInstr(INI_sContents, bbChr(0));
     String INI_sTemp;
     int lEqualsPos;
 
     while (INI_lPos != 0) {
 
-        INI_sTemp = bbMid$(INI_sContents, INI_lOldPos, (INI_lPos - INI_lOldPos));
+        INI_sTemp = bbMid(INI_sContents, INI_lOldPos, (INI_lPos - INI_lOldPos));
 
-        if (INI_sTemp != "") {
+        if (!INI_sTemp.isEmpty()) {
 
-            if (bbLeft$(INI_sTemp, 1) == "[" & bbRight$(INI_sTemp, 1) == "]") {
+            if (bbLeft(INI_sTemp, 1) == "[" && bbRight(INI_sTemp, 1) == "]") {
 
                 // Process SECTION
 
