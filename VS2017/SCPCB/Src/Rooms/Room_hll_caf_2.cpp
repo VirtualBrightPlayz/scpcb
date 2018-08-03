@@ -219,7 +219,7 @@ void Update294() {
             Input294 = bbLeft(Input294, (int)(Min(bbLen(Input294),15)));
 
             //dispense
-            if (temp & Input294 != "") {
+            if (temp && !Input294.isEmpty()) {
                 Input294 = bbTrim(bbLower(Input294));
                 if (bbLeft(Input294, (int)(Min(7,bbLen(Input294)))) == "cup of ") {
                     Input294 = bbRight(Input294, bbLen(Input294)-7);
@@ -231,7 +231,7 @@ void Update294() {
 
                 if (loc > 0) {
                     strtemp = GetINIString2("Data/SCP-294.ini", loc, "dispensesound");
-                    if (strtemp == "") {
+                    if (strtemp.isEmpty()) {
                         mainPlayer->currRoom->soundCHN = bbPlaySound(LoadTempSound("SFX/SCP/294/dispense1.ogg"));
                     } else {
                         mainPlayer->currRoom->soundCHN = bbPlaySound(LoadTempSound(strtemp));

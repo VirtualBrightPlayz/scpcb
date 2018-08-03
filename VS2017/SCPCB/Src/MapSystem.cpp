@@ -426,14 +426,14 @@ void LoadRoomTemplates(String file) {
                     rt->commonness = Max(Min(GetINIFloat(file, TemporaryString, "commonness"), 100), 0);
 
                     AmountRange = GetINIString(file, TemporaryString, "amount", "");
-                    if (AmountRange=="") {
+                    if (AmountRange.isEmpty()) {
                         rt->minAmount = -1;
                         rt->maxAmount = -1;
                     } else if ((bbInstr(AmountRange,"-")>0)) {
                         rt->minAmount = (int)(bbLeft(AmountRange,bbInstr(AmountRange,"-")));
                         rt->maxAmount = (int)(bbMid(AmountRange,bbInstr(AmountRange,"-")+1));
                     } else {
-                        rt->minAmount = (int)(AmountRange);
+                        rt->minAmount = AmountRange.toInt();
                         rt->maxAmount = rt->minAmount;
                     }
 
@@ -443,10 +443,10 @@ void LoadRoomTemplates(String file) {
                     xRange = GetINIString(file, TemporaryString, "xrange");
                     yRange = GetINIString(file, TemporaryString, "yrange");
 
-                    if (xRange == "") {
+                    if (xRange.isEmpty()) {
                         xRange = "0-1";
                     }
-                    if (yRange == "") {
+                    if (yRange.isEmpty()) {
                         yRange = "0-1";
                     }
 
@@ -469,7 +469,7 @@ void LoadRoomTemplates(String file) {
     i = 1;
     while (true) {
         StrTemp = GetINIString(file, "room ambience", "ambience"+String(i));
-        if (StrTemp == "") {
+        if (StrTemp.isEmpty()) {
             break;
         }
 

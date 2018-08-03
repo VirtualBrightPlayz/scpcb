@@ -50,7 +50,7 @@ Event* CreateEvent(String eventname, String roomname, int id, float prob = 0.0) 
         for (int iterator57 = 0; iterator57 < Room::getListSize(); iterator57++) {
             r = Room::getObject(iterator57);
 
-            if (roomname == "" | roomname == r->roomTemplate->name) {
+            if (roomname.isEmpty() || roomname.equals(r->roomTemplate->name)) {
                 temp = false;
                 for (int iterator58 = 0; iterator58 < Event::getListSize(); iterator58++) {
                     e2 = Event::getObject(iterator58);
@@ -74,7 +74,7 @@ Event* CreateEvent(String eventname, String roomname, int id, float prob = 0.0) 
         for (int iterator59 = 0; iterator59 < Room::getListSize(); iterator59++) {
             r = Room::getObject(iterator59);
 
-            if (roomname == "" | roomname == r->roomTemplate->name) {
+            if (roomname.isEmpty() || roomname.equals(r->roomTemplate->name)) {
                 temp = false;
                 for (int iterator60 = 0; iterator60 < Event::getListSize(); iterator60++) {
                     e2 = Event::getObject(iterator60);
