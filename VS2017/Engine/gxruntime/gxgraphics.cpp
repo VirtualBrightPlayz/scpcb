@@ -150,7 +150,7 @@ int gxGraphics::getAvailVidmem()const{
 	return caps.dwVidMemFree;
 }
 
-gxMovie *gxGraphics::openMovie( const string &file,int flags ){
+gxMovie *gxGraphics::openMovie( String file,int flags ){
 
 	IAMMultiMediaStream *iam_stream;
 
@@ -165,7 +165,7 @@ gxMovie *gxGraphics::openMovie( const string &file,int flags ){
 				iam_stream->AddMediaStream( NULL,&MSPID_PrimaryAudio,AMMSF_ADDDEFAULTRENDERER,NULL );
 
 				WCHAR *path=new WCHAR[ file.size()+1 ];
-				MultiByteToWideChar( CP_ACP,0,file.c_str(),-1,path,sizeof(WCHAR)*(file.size()+1) );
+				MultiByteToWideChar( CP_ACP,0,file.cstr(),-1,path,sizeof(WCHAR)*(file.size()+1) );
 				int n=iam_stream->OpenFile( path,0 );
 				delete path;
 
@@ -198,7 +198,7 @@ gxCanvas *gxGraphics::createCanvas( int w,int h,int flags ){
 	return c;
 }
 
-gxCanvas *gxGraphics::loadCanvas( const string &f,int flags ){
+gxCanvas *gxGraphics::loadCanvas( String f,int flags ){
 	ddSurf *s=ddUtil::loadSurface( f,flags,this );
 	if( !s ) return 0;
 	gxCanvas *c=d_new gxCanvas( this,s,flags );
@@ -226,7 +226,7 @@ int gxGraphics::getDepth()const{
 	return front_canvas->getDepth();
 }
 
-gxFont *gxGraphics::loadFont( const string &f,int height,int flags ){
+gxFont *gxGraphics::loadFont( String f,int height,int flags ){
 
 	int bold=flags & gxFont::FONT_BOLD ? FW_BOLD : FW_REGULAR;
 	int italic=flags & gxFont::FONT_ITALIC ? 1 : 0;

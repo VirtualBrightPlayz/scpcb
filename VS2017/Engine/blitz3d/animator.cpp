@@ -57,7 +57,7 @@ void Animator::addSeqs( Animator *t ){
 		for( int k=0;k<_objs.size();++k ){
 			int j;
 			for( j=0;j<t->_objs.size();++j ){
-				if( _objs[k]->getName()==t->_objs[j]->getName() ) break;
+				if( _objs[k]->getName().equals(t->_objs[j]->getName()) ) break;
 			}
 			if( j==t->_objs.size() ){
 				_anims[k].keys.push_back( Animation() );

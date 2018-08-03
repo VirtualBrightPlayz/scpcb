@@ -198,8 +198,8 @@ static void erase( Entity *e ){
 	if( debug ) entity_set.erase( e );
 }
 
-static Entity *findChild( Entity *e,const string &t ){
-	if( e->getName()==t ) return e;
+static Entity *findChild( Entity *e,String t ){
+	if( e->getName().equals(t) ) return e;
 	for( Entity *p=e->children();p;p=p->successor() ){
 		if( Entity *q=findChild(p,t) ) return q;
 	}
@@ -1195,7 +1195,7 @@ int  bbMD2Animating( MD2Model *m ){
 //////////////////
 Entity *  bbLoadBSP( String file,float gam,Entity *p ){
 	debugParent(p);
-	CachedTexture::setPath( filenamepath( file ) );
+	CachedTexture::setPath( filenamepath( file.cstr() ) );
 	Q3BSPModel *t=d_new Q3BSPModel( file,gam );
 	CachedTexture::setPath( "" );
 

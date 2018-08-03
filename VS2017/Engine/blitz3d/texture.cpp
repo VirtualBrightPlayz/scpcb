@@ -76,16 +76,16 @@ struct Texture::Rep{
 Texture::Texture():rep(0){
 }
 
-Texture::Texture( const string &f,int flags ){
-	flags=filterFile( f,flags )|gxCanvas::CANVAS_TEXTURE;
+Texture::Texture( String f,int flags ){
+	flags=filterFile( f.cstr(),flags )|gxCanvas::CANVAS_TEXTURE;
 	if( flags & gxCanvas::CANVAS_TEX_MASK ) flags|=gxCanvas::CANVAS_TEX_RGB|gxCanvas::CANVAS_TEX_ALPHA;
-	rep=d_new Rep( f,flags,0,0,0,1 );
+	rep=d_new Rep( f.cstr(),flags,0,0,0,1 );
 }
 
-Texture::Texture( const string &f,int flags,int w,int h,int first,int cnt ){
-	flags=filterFile( f,flags )|gxCanvas::CANVAS_TEXTURE;
+Texture::Texture( String f,int flags,int w,int h,int first,int cnt ){
+	flags=filterFile( f.cstr(),flags )|gxCanvas::CANVAS_TEXTURE;
 	if( flags & gxCanvas::CANVAS_TEX_MASK ) flags|=gxCanvas::CANVAS_TEX_RGB|gxCanvas::CANVAS_TEX_ALPHA;
-	rep=d_new Rep( f,flags,w,h,first,cnt );
+	rep=d_new Rep( f.cstr(),flags,w,h,first,cnt );
 }
 
 Texture::Texture( int w,int h,int flags,int cnt ){
@@ -190,6 +190,6 @@ void Texture::clearFilters(){
 	filters.clear();
 }
 
-void Texture::addFilter( const string &t,int flags ){
-	filters.push_back( Filter( tolower(t),flags ) );
+void Texture::addFilter( String t,int flags ){
+	filters.push_back( Filter( tolower(t.cstr()),flags ) );
 }

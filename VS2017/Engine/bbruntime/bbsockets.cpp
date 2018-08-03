@@ -293,8 +293,8 @@ static vector<int> host_ips;
 
 int bbCountHostIPs( String host ){
 	host_ips.clear();
-	HOSTENT *h=gethostbyname( host->c_str() );
-	delete host;if( !h ) return 0;
+	HOSTENT *h=gethostbyname( host.cstr() );
+	if( !h ) return 0;
 	char **p=h->h_addr_list;
 	while( char *t=*p++ ) host_ips.push_back( ntohl(*(int*)t) );
 	return host_ips.size();
@@ -370,10 +370,10 @@ String bbDottedIP( int ip ){
 		itoa((ip>>8)&255)+"."+itoa(ip&255) );
 }
 
-static int findHostIP( const string &t ){
-	int ip=inet_addr( t.c_str() );
+static int findHostIP( String t ){
+	int ip=inet_addr( t.cstr() );
 	if( ip!=INADDR_NONE ) return ip;
-	HOSTENT *h=gethostbyname( t.c_str() );
+	HOSTENT *h=gethostbyname( t.cstr() );
 	if( !h ) return -1;
 	char *p;
 	for( char **list=h->h_addr_list;p=*list;++list ){
@@ -384,10 +384,9 @@ static int findHostIP( const string &t ){
 
 TCPStream *bbOpenTCPStream( String server,int port,int local_port ){
 	if( !socks_ok ){
-		delete server;
 		return 0;
 	}
-	int ip=findHostIP( *server );delete server;
+	int ip=findHostIP( server );
 	if( ip==-1 ) return 0;
 	SOCKET s=::socket( AF_INET,SOCK_STREAM,0 );
 	if( s!=INVALID_SOCKET ){

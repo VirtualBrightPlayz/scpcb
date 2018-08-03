@@ -570,11 +570,11 @@ Q3BSPNode *Q3BSPRep::createNode( int n ){
 	return node;
 }
 
-Q3BSPRep::Q3BSPRep( const string &f,float gam ):root_node(0),vis_sz(0),vis_data(0),use_lmap(true){
+Q3BSPRep::Q3BSPRep( String f,float gam ):root_node(0),vis_sz(0),vis_data(0),use_lmap(true){
 
 	gamma_adj=1-gam;
 
-	FILE *buf=fopen( f.c_str(),"rb" );if( !buf ) return;
+	FILE *buf=fopen( f.cstr(),"rb" );if( !buf ) return;
 
 	fread( &header,sizeof(header),1,buf );
 	if( header.magic!='PSBI' || header.version!=0x2e ){

@@ -178,9 +178,9 @@ static gxCanvas *tformCanvas( gxCanvas *c,float m[2][2],int x_handle,int y_handl
 	return t;
 }
 
-static bool saveCanvas( gxCanvas *c,const string &f ){
+static bool saveCanvas( gxCanvas *c,String f ){
 
-	ofstream out( f.c_str(),ios::binary );
+	ofstream out( f.cstr(),ios::binary );
 	if( !out.good() ) return false;
 
 	int tempsize=(c->getWidth()*3+3)&~3;

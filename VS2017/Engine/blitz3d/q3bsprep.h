@@ -13,7 +13,7 @@ struct Q3BSPNode;
 class Q3BSPRep{
 public:
 	//constructor
-	Q3BSPRep( const string &f,float gamma_adj );
+	Q3BSPRep( String f,float gamma_adj );
 	~Q3BSPRep();
 
 	void render( Model *model,const RenderContext &rc );

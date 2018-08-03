@@ -33,7 +33,7 @@ public:
 	virtual Mirror *getMirror(){ return 0; }
 	virtual Listener *getListener(){ return 0; }
 
-	void setName( const std::string &t );
+	void setName( String t );
 	void setParent( Entity *parent );
 
 	void setVisible( bool vis );
@@ -48,7 +48,7 @@ public:
 	Entity *children()const{ return _children; }
 	Entity *successor()const{ return _succ; }
 
-	std::string getName()const{ return _name; }
+	String getName()const{ return _name; }
 	Entity *getParent()const{ return _parent; }
 
 	void setLocalPosition( const Vector &v );
@@ -80,7 +80,7 @@ private:
 
 	bool _visible,_enabled;
 
-	std::string _name;
+	String _name;
 
 	mutable int invalid;
 

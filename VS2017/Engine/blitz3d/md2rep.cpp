@@ -56,13 +56,13 @@ struct t_tri{
 	unsigned short verts[3];
 };
 
-MD2Rep::MD2Rep( const string &f ):
+MD2Rep::MD2Rep( String f ):
 mesh(0),n_verts(0),n_tris(0),n_frames(0){
 
 	filebuf in;
 	md2_header header;
 
-	if( !in.open( f.c_str(),ios_base::in|ios_base::binary ) ) return;
+	if( !in.open( f.cstr(),ios_base::in|ios_base::binary ) ) return;
 	if( in.sgetn( (char*)&header,sizeof(header) )!=sizeof(header) ) return;
 	if( header.magic!='2PDI' || header.version!=8 ) return;
 
