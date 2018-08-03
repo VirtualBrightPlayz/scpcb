@@ -395,8 +395,8 @@ void UpdateConsole() {
                             CreateConsoleMsg("- 173state");
                             CreateConsoleMsg("- 106state");
                             CreateConsoleMsg("******************************");
-                            CreateConsoleMsg("Use "+bbChr(34)+"help 2/3"+bbChr(34)+" to find more commands.");
-                            CreateConsoleMsg("Use "+bbChr(34)+"help [command name]"+bbChr(34)+" to get more information about a command.");
+                            CreateConsoleMsg("Use \"help 2/3\" to find more commands.");
+                            CreateConsoleMsg("Use \"help [command name]\" to get more information about a command.");
                             CreateConsoleMsg("******************************");
                         }
                         case "2": {
@@ -421,7 +421,7 @@ void UpdateConsole() {
                             CreateConsoleMsg("- camerafog [near] [far]");
                             CreateConsoleMsg("- gamma [value]");
                             CreateConsoleMsg("******************************");
-                            CreateConsoleMsg("Use "+bbChr(34)+"help [command name]"+bbChr(34)+" to get more information about a command.");
+                            CreateConsoleMsg("Use \"help [command name]\" to get more information about a command.");
                             CreateConsoleMsg("******************************");
                         }
                         case "3": {
@@ -1005,8 +1005,8 @@ void UpdateConsole() {
                 }
                 case "spawnnpcstate": {
                     args = bbLower(bbRight(ConsoleInput, bbLen(ConsoleInput) - bbInstr(ConsoleInput, " ")));
-                    StrTemp = bbPiece(args,1," ");
-                    StrTemp2 = bbPiece$(args,2," ");
+                    StrTemp = Piece(args,1," ");
+                    StrTemp2 = Piece(args,2," ");
                     Console_SpawnNPC(StrTemp, StrTemp2.toInt());
 
                 }
@@ -1085,7 +1085,7 @@ void UpdateConsole() {
                         }
                         case 4: {
                             DeathMSG = "Subject D-9341 found dead in Sector [REDACTED]. ";
-                            DeathMSG = DeathMSG + "The subject appears to have scribbled the letters "+bbChr(34)+"kys"+bbChr(34)+" in his own blood beside him. ";
+                            DeathMSG = DeathMSG + "The subject appears to have scribbled the letters \"kys\" in his own blood beside him. ";
                             DeathMSG = DeathMSG + "No other signs of physical trauma or struggle can be observed. Body was sent for autopsy.";
                         }
                     }
@@ -1107,9 +1107,9 @@ void UpdateConsole() {
                 }
                 case "tele": {
                     args = bbLower(bbRight(ConsoleInput, bbLen(ConsoleInput) - bbInstr(ConsoleInput, " ")));
-                    StrTemp = Piece$(args,1," ");
-                    StrTemp2 = Piece$(args,2," ");
-                    StrTemp3 = Piece$(args,3," ");
+                    StrTemp = Piece(args,1," ");
+                    StrTemp2 = Piece(args,2," ");
+                    StrTemp3 = Piece(args,3," ");
                     bbPositionEntity(mainPlayer->collider,(float)(StrTemp),(float)(StrTemp2),(float)(StrTemp3));
                     bbPositionEntity(mainPlayer->cam,(float)(StrTemp),(float)(StrTemp2),(float)(StrTemp3));
                     CreateConsoleMsg("Teleported to coordinates (X|Y|Z): "+String(bbEntityX(mainPlayer->collider))+"|"+String(bbEntityY(mainPlayer->collider))+"|"+String(bbEntityZ(mainPlayer->collider)));

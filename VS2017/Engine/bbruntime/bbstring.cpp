@@ -6,6 +6,7 @@
 #define CHKPOS(x) if( (x)<0 ) RTEX( "parameter must be positive" );
 #define CHKOFF(x) if( (x)<=0 ) RTEX( "parameter must be greater than 0" );
 
+// TODO: Move all these functions to the new string type?
 String bbString( String s,int n ){
 	String t="";
 	while( n-- > 0 ) t=String(t,s);
@@ -80,11 +81,6 @@ String bbRSet( String s,int n ){
 		while( s->size()<n ) *s=' '+*s;
 	}
 	return s;
-}
-
-String bbChr( int n ){
-	String t=d_new "";
-	*t+=(char)n;return t;
 }
 
 String bbHex( int n ){

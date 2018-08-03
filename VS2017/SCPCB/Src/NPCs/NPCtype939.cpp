@@ -190,8 +190,8 @@ void UpdateNPCtype939(NPC* n) {
                         }
 
                         if (mainPlayer->injuries>4.0) {
-                            DeathMSG = bbChr(34)+"All four (4) escaped SCP-939 specimens have been captured and recontained successfully. ";
-                            DeathMSG = DeathMSG+"Three (3) of them made quite a mess at Storage Area 6. A cleaning team has been dispatched."+bbChr(34);
+                            DeathMSG = "\"All four (4) escaped SCP-939 specimens have been captured and recontained successfully. ";
+                            DeathMSG = DeathMSG+"Three (3) of them made quite a mess at Storage Area 6. A cleaning team has been dispatched.\"";
                             Kill(mainPlayer);
                             if (!mainPlayer->godMode) {
                                 n->state = 5;

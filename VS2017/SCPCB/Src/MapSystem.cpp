@@ -279,37 +279,32 @@ void LoadMaterials(String file) {
 
 String StripPath(String file) {
     String name = "";
-    int i;
-    String mi;
-    if (bbLen(file)>0) {
-        for (i = bbLen(file); i <= 1; i += -1) {
+    if (file.size() > 0) {
+        for (int i = file.size(); i <= 1; i += -1) {
 
-            mi = bbMid$(file,i,1);
-            if (mi=="\\" | mi=="/") {
+            String mi = bbMid(file,i,1);
+            if (mi.equals('\\') || mi.equals('/')) {
                 return name;
             }
 
             name = mi+name;
         }
-
     }
-
     return name;
 }
 
-String Piece(String s, int entry, String char = " ") {
+String Piece(String s, int entry, String chr = " ") {
     String a;
     int p;
 
-    while (bbInstr(s,char+char)) {
-        s = bbReplace(s,char+char,char);
+    while (bbInstr(s, chr+chr)) {
+        s = bbReplace(s, chr+chr, chr);
     }
-    int n;
-    for (n = 1; n <= entry-1; n++) {
-        p = bbInstr(s,char);
-        s = bbRight(s,bbLen(s) - p);
+    for (int n = 1; n < entry; n++) {
+        p = bbInstr(s, chr);
+        s = bbRight(s, bbLen(s) - p);
     }
-    p = bbInstr(s,char);
+    p = bbInstr(s, chr);
     if (p<1) {
         a = s;
     } else {
@@ -337,18 +332,18 @@ String KeyValue(int entity, String key, String defaultvalue = "") {
         }
         testkey = Piece(test,1,"=");
         testkey = bbTrim(testkey);
-        testkey = bbReplace(testkey,bbChr(34),"");
+        testkey = bbReplace(testkey,"\"","");
         testkey = bbLower(testkey);
-        if (testkey==key) {
+        if (testkey.equals(key)) {
             value = Piece(test,2,"=");
             value = bbTrim(value);
-            value = bbReplace(value,bbChr(34),"");
+            value = bbReplace(value,"\"","");
             return value;
         }
         if (!p) {
             return defaultvalue;
         }
-        properties = bbRight(properties,bbLen(properties)-p);
+        properties = bbRight(properties, bbLen(properties)-p);
     }
 }
 
@@ -1704,8 +1699,8 @@ void UpdateSecurityCams() {
                                     }
 
                                     if (mainPlayer->sanity895 < (-1000)) {
-                                        DeathMSG = bbChr(34)+"What we know is that he died of cardiac arrest. My guess is that it was caused by SCP-895, although it has never been observed affecting video equipment from this far before. ";
-                                        DeathMSG = DeathMSG + "Further testing is needed to determine whether SCP-895's "+bbChr(34)+"Red Zone"+bbChr(34)+" is increasing."+bbChr(34);
+                                        DeathMSG = "\"What we know is that he died of cardiac arrest. My guess is that it was caused by SCP-895, although it has never been observed affecting video equipment from this far before. ";
+                                        DeathMSG = DeathMSG + "Further testing is needed to determine whether SCP-895's \"Red Zone\" is increasing.\"";
 
                                         Kill(mainPlayer);
                                     }

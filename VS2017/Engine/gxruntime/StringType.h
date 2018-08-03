@@ -39,6 +39,7 @@ struct String {
         String& operator=(const String& other);
 
         bool equals(const String& other) const;
+        bool equals(const char other) const;
         bool isEmpty() const;
     protected:
         enum class DOMINANT_BUFFER {

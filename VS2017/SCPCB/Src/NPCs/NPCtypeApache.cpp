@@ -150,7 +150,7 @@ void UpdateNPCtypeApache(NPC* n) {
                                     if (WrapAngle(bbEntityYaw(pvt)-bbEntityYaw(n->collider))<10) {
                                         PlayRangedSound_SM(sndManager->gunshot[1], mainPlayer->cam, n->collider, 20);
 
-                                        DeathMSG = bbChr(34)+"CH-2 to control. Shot down a runaway Class D at Gate B."+bbChr(34);
+                                        DeathMSG = "\"CH-2 to control. Shot down a runaway Class D at Gate B.\"";
 
                                         Shoot( EntityX(pvt),EntityY(pvt), EntityZ(pvt),((10/dist)*(1/dist))*(n->state = 2),(n->state==2));
 

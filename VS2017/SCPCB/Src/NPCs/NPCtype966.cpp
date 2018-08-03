@@ -82,13 +82,13 @@ void UpdateNPCtype966(NPC* n) {
                         Msg = "You feel something breathing right next to you.";
                     }
                     case 2: {
-                        Msg = bbChr(34)+"It feels like something's in this room with me."+bbChr(34);
+                        Msg = "\"It feels like something's in this room with me.\"";
                     }
                     case 3: {
                         Msg = "You feel like something is here with you, but you do not see anything.";
                     }
                     case 4: {
-                        Msg = bbChr(34)+"Is my mind playing tricks on me or is there someone else here?"+bbChr(34);
+                        Msg = "\"Is my mind playing tricks on me or is there someone else here?\"";
                     }
                     case 5: {
                         Msg = "You feel like something is following you.";
@@ -200,10 +200,10 @@ void UpdateNPCtype966(NPC* n) {
                                     Msg = "You feel exhausted.";
                                 }
                                 case 2: {
-                                    Msg = bbChr(34)+"Could really go for a nap now..."+bbChr(34);
+                                    Msg = "\"Could really go for a nap now...\"";
                                 }
                                 case 3: {
-                                    Msg = bbChr(34)+"If I wasn't in this situation I would take a nap somewhere."+bbChr(34);
+                                    Msg = "\"If I wasn't in this situation I would take a nap somewhere.\"";
                                 }
                                 case 4: {
                                     Msg = "You feel restless.";

@@ -360,7 +360,7 @@ void LoadMaterials(String file);
 
 String StripPath(String file);
 
-String Piece(String s, int entry, String char = " ");
+String Piece(String s, int entry, String chr = " ");
 
 String KeyValue(int entity, String key, String defaultvalue = "");
 

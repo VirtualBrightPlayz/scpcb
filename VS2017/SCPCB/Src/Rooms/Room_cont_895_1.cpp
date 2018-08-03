@@ -229,10 +229,10 @@ void UpdateEventCoffin(Event* e) {
                 //EndIf
                 if (mainPlayer->sanity895 < (-1000)) {
                     if (IsPlayerWearingItem(mainPlayer,"supernv")) {
-                        DeathMSG = bbChr(34)+"Class D viewed SCP-895 through a pair of digital night vision goggles, presumably enhanced by SCP-914. It might be possible that the subject";
-                        DeathMSG = DeathMSG + "was able to resist the memetic effects partially through these goggles. The goggles have been stored for further study."+bbChr(34);
+                        DeathMSG = "\"Class D viewed SCP-895 through a pair of digital night vision goggles, presumably enhanced by SCP-914. It might be possible that the subject";
+                        DeathMSG = DeathMSG + "was able to resist the memetic effects partially through these goggles. The goggles have been stored for further study.\"";
                     } else {
-                        DeathMSG = bbChr(34)+"Class D viewed SCP-895 through a pair of digital night vision goggles, killing him."+bbChr(34);
+                        DeathMSG = "\"Class D viewed SCP-895 through a pair of digital night vision goggles, killing him.\"";
                     }
                     Kill(mainPlayer);
                 }

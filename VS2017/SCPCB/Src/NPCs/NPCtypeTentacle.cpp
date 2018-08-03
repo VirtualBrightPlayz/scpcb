@@ -98,11 +98,11 @@ void UpdateNPCtypeTentacle(NPC* n) {
                                     PlaySound2(mainPlayer->damageSFX[bbRand(3,4)]);
 
                                     if (mainPlayer->injuries > 3.0) {
-                                        DeathMSG = bbChr(34)+"We will need more than the regular cleaning team to care of this. ";
+                                        DeathMSG = "\"We will need more than the regular cleaning team to care of this. ";
                                         DeathMSG = DeathMSG + "Two large and highly active tentacle-like appendages seem ";
                                         DeathMSG = DeathMSG + "to have formed inside the chamber. Their level of aggression is ";
                                         DeathMSG = DeathMSG + "unlike anything we've seen before - it looks like they have ";
-                                        DeathMSG = DeathMSG + "beaten some unfortunate Class D to death at some point during the breach."+bbChr(34);
+                                        DeathMSG = DeathMSG + "beaten some unfortunate Class D to death at some point during the breach.\"";
                                         Kill(mainPlayer);
                                     }
                                 }

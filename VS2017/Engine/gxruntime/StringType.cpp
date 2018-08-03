@@ -155,6 +155,10 @@ bool String::equals(const String& other) const {
     return strcmp(cbuffer, other.cstr()) == 0;
 }
 
+bool String::equals(const char other) const {
+    return strSize == 1 && cbuffer[0] == other;
+}
+
 bool String::isEmpty() const {
     return strSize == 0;
 }

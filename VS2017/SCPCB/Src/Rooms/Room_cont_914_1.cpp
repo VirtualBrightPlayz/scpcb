@@ -242,9 +242,9 @@ void UpdateEvent_cont_914_1(Event* e) {
                             if (e->soundChannels[0] != 0) {
                                 bbStopChannel(e->soundChannels[0]);
                             }
-                            DeathMSG = bbChr(34)+"A heavily mutilated corpse found inside the output booth of SCP-914. DNA testing identified the corpse as Class D Subject D-9341. ";
-                            DeathMSG = DeathMSG + "The subject had obviously been "+bbChr(34)+"refined"+bbChr(34)+" by SCP-914 on the "+bbChr(34)+"Rough"+bbChr(34)+" setting, but we are still confused as to how he ";
-                            DeathMSG = DeathMSG + "ended up inside the intake booth and who or what wound the key."+bbChr(34);
+                            DeathMSG = "\"A heavily mutilated corpse found inside the output booth of SCP-914. DNA testing identified the corpse as Class D Subject D-9341. ";
+                            DeathMSG = DeathMSG + "The subject had obviously been \"refined\" by SCP-914 on the \"Rough\" setting, but we are still confused as to how he ";
+                            DeathMSG = DeathMSG + "ended up inside the intake booth and who or what wound the key.\"";
                         }
                         case "coarse": {
                             mainPlayer->blinkTimer = -10;
