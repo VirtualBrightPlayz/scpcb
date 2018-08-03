@@ -128,17 +128,17 @@ String GetINIString(String file, String section, String parameter, String defaul
 
 int GetINIInt(String file, String section, String parameter, int defaultvalue = 0) {
     String txt = GetINIString(file, section, parameter, String(defaultvalue));
-    if (bbLower(txt) == "true") {
+    if (txt.toLower().equals("true")) {
         return 1;
-    } else if ((bbLower(txt) == "false")) {
+    } else if (txt.toLower().equals("false")) {
         return 0;
     } else {
-        return (int)(txt);
+        return txt.toInt();
     }
 }
 
 float GetINIFloat(String file, String section, String parameter, float defaultvalue = 0.0) {
-    return (float)(GetINIString(file, section, parameter, String(defaultvalue)));
+    return GetINIString(file, section, parameter, String(defaultvalue)).toFloat();
 }
 
 String GetINIString2(String file, int start, String parameter, String defaultvalue = "") {
@@ -170,12 +170,13 @@ String GetINIString2(String file, int start, String parameter, String defaultval
 
 int GetINIInt2(String file, int start, String parameter, String defaultvalue = "") {
     String txt = GetINIString2(file, start, parameter, String(defaultvalue));
-    if (bbLower(txt) == "true") {
+    if (txt.toLower().equals("true")) {
         return 1;
-    } else if ((bbLower(txt) == "false")) {
+    } else if (txt.toLower().equals("false")) {
         return 0;
+    } else {
+        return txt.toInt();
     }
-    return (int)(txt);
 }
 
 int GetINISectionLocation(String file, String section) {
@@ -245,23 +246,23 @@ int PutINIValue(String file, String INI_sSection, String INI_sKey, String INI_sV
 
                 // Process SECTION
 
-                if (INI_sCurrentSection == INI_sUpperSection) & (INI_bWrittenKey == false) {
+                if (INI_sCurrentSection.equals(INI_sUpperSection) && INI_bWrittenKey == false) {
                     INI_bWrittenKey = INI_CreateKey(INI_lFileHandle, INI_sKey, INI_sValue);
                 }
                 INI_sCurrentSection = bbUpper$(INI_CreateSection(INI_lFileHandle, INI_sTemp));
-                if (INI_sCurrentSection == INI_sUpperSection) {
+                if (INI_sCurrentSection.equals(INI_sUpperSection)) {
                     INI_bSectionFound = true;
                 }
 
             } else {
-                if (bbLeft(INI_sTemp, 1) == ":") | (bbLeft(INI_sTemp, 1) == ";") {
+                if (bbLeft(INI_sTemp, 1).equals(":") || bbLeft(INI_sTemp, 1).equals(";")) {
                     bbWriteLine(INI_lFileHandle, INI_sTemp);
                 } else {
                     // KEY=VALUE
                     lEqualsPos = bbInstr(INI_sTemp, "=");
                     if (lEqualsPos != 0) {
-                        if (INI_sCurrentSection == INI_sUpperSection) & (bbUpper$(bbTrim$(bbLeft$(INI_sTemp, (lEqualsPos - 1)))) == bbUpper$(INI_sKey)) {
-                            if (INI_sValue != "") {
+                        if (INI_sCurrentSection.equals(INI_sUpperSection) && bbUpper$(bbTrim$(bbLeft$(INI_sTemp, (lEqualsPos - 1)))).equals(bbUpper$(INI_sKey))) {
+                            if (!INI_sValue.isEmpty()) {
                                 INI_CreateKey(INI_lFileHandle, INI_sKey, INI_sValue);
                             }
                             INI_bWrittenKey = true;

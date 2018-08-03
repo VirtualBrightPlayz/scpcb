@@ -260,6 +260,7 @@ void UpdateConsole() {
                 }
 
             } else {
+                // FIXME
                 cm = First ConsoleMsg;
                 while (cm != nullptr) {
                     if (cm==ConsoleReissue) {
@@ -752,13 +753,13 @@ void UpdateConsole() {
                 }
                 case "173speed": {
                     StrTemp = bbLower(bbRight(ConsoleInput, bbLen(ConsoleInput) - bbInstr(ConsoleInput, " ")));
-                    Curr173->speed = (float)(StrTemp);
+                    Curr173->speed = StrTemp.toFloat();
                     CreateConsoleMsg("173's speed set to " + StrTemp);
 
                 }
                 case "106speed": {
                     StrTemp = bbLower(bbRight(ConsoleInput, bbLen(ConsoleInput) - bbInstr(ConsoleInput, " ")));
-                    Curr106->speed = (float)(StrTemp);
+                    Curr106->speed = StrTemp.toFloat();
                     CreateConsoleMsg("106's speed set to " + StrTemp);
 
                 }
