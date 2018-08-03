@@ -1,9 +1,5 @@
-# Contianment Breach
+# Containment Breach
 [Ss]aves/*
-error_log_*
-
-# Parser
-Blitz2CPP/Result/*
 
 # Blitz3D
 *FastExt.bb
@@ -32,4 +28,3 @@ Thumbs.db
 
 # macOS
 *.DS_Store
-juan's hacky tools/BlitzFuncFix/
