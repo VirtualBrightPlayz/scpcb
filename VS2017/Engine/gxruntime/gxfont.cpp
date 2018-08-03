@@ -24,7 +24,7 @@ int gxFont::charWidth( int c )const{
 	return widths[c-begin_char];
 }
 
-void gxFont::render( gxCanvas *dest,unsigned color_argb,int x,int y,const string &t ){
+void gxFont::render( gxCanvas *dest,unsigned color_argb,int x,int y,String t ){
 	int width=getWidth( t );
 	if( width>t_canvas->getWidth() ){
 		graphics->freeCanvas( t_canvas );
@@ -37,7 +37,7 @@ void gxFont::render( gxCanvas *dest,unsigned color_argb,int x,int y,const string
 
 	int t_x=0;
 	for( int k=0;k<t.size();++k ){
-		int c=t[k]&0xff;
+		int c=t.charAt(k)&0xff;
 		if( c<begin_char || c>=end_char ) c=def_char;
 		c-=begin_char;
 		int sx=(offs[c]>>16)&0xffff,sy=offs[c]&0xffff;
@@ -56,10 +56,10 @@ int gxFont::getHeight()const{
 	return height;
 }
 
-int gxFont::getWidth( const string &t )const{
+int gxFont::getWidth( String t )const{
 	int w=0;
 	for( int k=0;k<t.size();++k ){
-		int c=t[k]&0xff;
+		int c=t.charAt(k)&0xff;
 		if( c<begin_char || c>=end_char ) c=def_char;
 		w+=widths[c-begin_char];
 	}

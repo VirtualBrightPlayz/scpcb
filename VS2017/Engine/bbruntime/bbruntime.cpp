@@ -21,9 +21,8 @@ void  bbRuntimeError( String str ){
 	RTEX( err );
 }
 
-int   bbExecFile( String f ){
-	string t=*f;delete f;
-	int n=gx_runtime->execute( t );
+int bbExecFile( String f ){
+	int n=gx_runtime->execute( f );
 	return n;
 }
 
@@ -40,21 +39,19 @@ String  bbCommandLine(){
 }
 
 String  bbSystemProperty( String p ){
-	string t=gx_runtime->systemProperty( p );
+	String t=gx_runtime->systemProperty( p );
 	return t;
 }
 
 String   bbGetEnv( String env_var ){
-	char *p=getenv( env_var->cstr() );
+	char *p=getenv( env_var.cstr() );
 	String val=p ? p : "";
 	return val;
 }
 
 void  bbSetEnv( String env_var,String val ){
-	string t=*env_var+"="+*val;
-	putenv( t.c_str() );
-	delete env_var;
-	delete val;
+	String t=env_var+"="+val;
+	putenv( t.cstr() );
 }
 
 gxTimer * bbCreateTimer( int hertz ){
@@ -72,8 +69,7 @@ void  bbFreeTimer( gxTimer *t ){
 }
 
 void  bbDebugLog( String t ){
-	gx_runtime->debugLog( t->c_str() );
-	delete t;
+	gx_runtime->debugLog( t.cstr() );
 }
 
 void  _bbDebugStmt( int pos,const char *file ){

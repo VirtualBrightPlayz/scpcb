@@ -8,6 +8,8 @@ int main() {
 
     bbGraphics3D(1280, 720, 0, 2);
 
+    bbAppTitle("Test","");
+
     Entity* cube = bbCreateCube(nullptr);
     Entity* camera = bbCreateCamera(nullptr);
     bbPositionEntity(camera, 5.0f, 2.0f, -3.0f, false);
@@ -16,7 +18,7 @@ int main() {
     bbRenderWorld(1.0f);
     bbFlip(0);
 
-    bbDelay(10000);
+    bbDelay(1000);
 
     bbEndGraphics();
 

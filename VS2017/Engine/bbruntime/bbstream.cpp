@@ -76,7 +76,7 @@ String bbReadLine( bbStream *s ){
 	for(;;){
 		if( s->read( (char*)&c,1 )!=1 ) break;
 		if( c=='\n' ) break;
-		if( c!='\r' ) *str+=c;
+		if( c!='\r' ) str=str+c;
 	}
 	return str;
 }
@@ -103,17 +103,15 @@ void bbWriteFloat( bbStream *s,float n ){
 
 void bbWriteString( bbStream *s,String t ){
 	if( debug ) debugStream( s );
-	int n=t->size();
+	int n=t.size();
 	s->write( (char*)&n,4 );
-	s->write( t->data(),t->size() );
-	delete t;
+	s->write( t.cstr(),t.size() );
 }
 
 void bbWriteLine( bbStream *s,String t ){
 	if( debug ) debugStream( s );
-	s->write( t->data(),t->size() );
-	s->write( "\r\n",2 );
-	delete t;
+	s->write( t.cstr(),t.size() );
+	s->write( "\r\n",2 ); //TODO: change to lf only?
 }
 
 void bbCopyStream( bbStream *s,bbStream *d,int buff_size ){

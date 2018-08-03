@@ -181,6 +181,15 @@ int String::size() const {
     return strSize;
 }
 
+int String::findFirst(const String& fnd, int from) const {
+    if (fnd.size() == 0) { return -1; }
+    if (from<0) { from = 0; }
+    for (int i = from; i < size()-fnd.size(); i++) {
+        if (memcmp(fnd.wstr(), wstr() + i, fnd.size()) == 0) { return i; }
+    }
+    return -1;
+}
+
 int String::findLast(const String& fnd, int from) const {
     if (fnd.size() == 0) { return -1; }
     if (from<0) { from = size(); }
@@ -220,6 +229,10 @@ String String::substr(int start, int cnt) const {
     return retVal;
 }
 
+char String::charAt(int pos) const {
+    return (char)(wstr()[pos]);
+}
+
 String String::replace(const String& fnd, const String& rplace) const {
     if (fnd.size() == 0) { return *this; }
 
@@ -257,6 +270,18 @@ String String::replace(const String& fnd, const String& rplace) const {
     return retVal;
 }
 
+String String::toUpper() const {
+    wchar* newBuf = new wchar[capacity];
+    for (int i = 0; i<strSize; i++) {
+        newBuf[i] = towupper(wbuffer[i]);
+    }
+    newBuf[strSize] = L'\0';
+
+    String retVal(newBuf);
+    delete[] newBuf;
+    return retVal;
+}
+
 String String::toLower() const {
     wchar* newBuf = new wchar[capacity];
     for (int i = 0; i<strSize; i++) {
@@ -266,6 +291,20 @@ String String::toLower() const {
 
     String retVal(newBuf);
     delete[] newBuf;
+    return retVal;
+}
+
+String String::trim() const {
+    String retVal = String(wstr());
+    while (retVal.findFirst(" ") == 0 || retVal.findFirst("\t") == 0) {
+        retVal = retVal.substr(1);
+    }
+    while (retVal.findLast(" ") == retVal.size()-1 || retVal.findLast("\t") == retVal.size()-1) {
+        retVal = retVal.substr(0,retVal.size()-1);
+    }
+    while (retVal.findFirst("  ") != -1) {
+        retVal = retVal.replace("  "," ");
+    }
     return retVal;
 }
 

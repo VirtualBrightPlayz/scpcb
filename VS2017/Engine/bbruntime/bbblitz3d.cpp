@@ -1415,7 +1415,6 @@ int  bbLoadAnimSeq( Object *o,String f ){
 	debugObject( o );
 	if( Animator *anim=o->getAnimator() ){
 		Entity *t=loadEntity( f,MeshLoader::HINT_ANIMONLY );
-		delete f;
 		if( t ){
 			if( Animator *p=t->getObject()->getAnimator() ){
 				anim->addSeqs( p );
@@ -1423,8 +1422,6 @@ int  bbLoadAnimSeq( Object *o,String f ){
 			delete t;
 		}
 		return anim->numSeqs()-1;
-	}else{
-		delete f;
 	}
 	return -1;
 }
@@ -1874,7 +1871,6 @@ void  bbAlignToVector( Entity *e,float nx,float ny,float nz,int axis,float rate 
 void  bbNameEntity( Entity *e,String t ){
 	debugEntity(e);
 	e->setName( t );
-	delete t;
 }
 
 String bbEntityName( Entity *e ){

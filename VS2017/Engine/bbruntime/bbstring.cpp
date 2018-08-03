@@ -24,67 +24,31 @@ String bbRight( String s,int n ){
 }
 
 String bbReplace( String s,String from,String to ){
-	int n=0,from_sz=from->size(),to_sz=to->size();
-	while( n<s->size() && (n=s->find( *from,n ))!=string::npos ){
-		s->replace( n,from_sz,*to );
-		n+=to_sz;
-	}
-	delete from;delete to;return s;
+	return s.replace(from,to);
 }
 
 int bbInstr( String s,String t,int from ){
-	CHKOFF( from );--from;
-	int n=s->find( *t,from );
-	delete s;delete t;
-	return n==string::npos ? 0 : n+1;
+	return s.findFirst(t,from)+1;
 }
 
 String bbMid( String s,int o,int n ){
-	CHKOFF( o );--o;
-	if( o>s->size() ) o=s->size();
-	if( n>=0 ) *s=s->substr( o,n );
-	else *s=s->substr( o );
-	return s;
+	return s.substr(o-1,n);
 }
 
 String bbUpper( String s ){
-	for( int k=0;k<s->size();++k ) (*s)[k]=toupper( (*s)[k] );
-	return s;
+	return s.toUpper();
 }
 
 String bbLower( String s ){
-	for( int k=0;k<s->size();++k ) (*s)[k]=tolower( (*s)[k] );
-	return s;
+	return s.toLower();
 }
 
 String bbTrim( String s ){
-	int n=0,p=s->size();
-	while( n<s->size() && !isgraph( (*s)[n] ) ) ++n;
-	while( p>n && !isgraph( (*s)[p-1] ) ) --p;
-	*s=s->substr( n,p-n );return s;
-}
-
-String bbLSet( String s,int n ){
-	CHKPOS(n);
-	if( s->size()>n ) *s=s->substr( 0,n );
-	else{
-		while( s->size()<n ) *s+=' ';
-	}
-	return s;
-}
-
-String bbRSet( String s,int n ){
-	CHKPOS(n);
-	if( s->size()>n ) *s=s->substr( s->size()-n );
-	else{
-		while( s->size()<n ) *s=' '+*s;
-	}
-	return s;
+	return s.trim();
 }
 
 String bbChr( int n ){
-	String t=d_new "";
-	*t+=(char)n;return t;
+	return String((char)n);
 }
 
 String bbHex( int n ){
@@ -107,13 +71,13 @@ String bbBin( int n ){
 }
 
 int bbAsc( String s ){
-	int n=s->size() ? (*s)[0] & 255 : -1;
-	delete s;return n;
+	int n=s.size() ? s.charAt(0) & 255 : -1;
+	return n;
 }
 
 int bbLen( String s ){
-	int n=s->size();
-	delete s;return n;
+	int n=s.size();
+	return n;
 }
 
 String bbCurrentDate(){

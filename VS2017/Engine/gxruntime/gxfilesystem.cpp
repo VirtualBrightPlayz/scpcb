@@ -1,6 +1,7 @@
 
 #include "std.h"
 #include "gxfilesystem.h"
+#include "StringType.h"
 
 static set<gxDir*> dir_set;
 
@@ -12,32 +13,32 @@ gxFileSystem::~gxFileSystem(){
 	while( dir_set.size() ) closeDir( *dir_set.begin() );
 }
 
-bool gxFileSystem::createDir( const std::string &dir ){
-	return CreateDirectory( dir.c_str(),0 ) ? true : false;
+bool gxFileSystem::createDir( String dir ){
+	return CreateDirectory( dir.cstr(),0 ) ? true : false;
 }
 
-bool gxFileSystem::deleteDir( const std::string &dir ){
-	return RemoveDirectory( dir.c_str() ) ? true : false;
+bool gxFileSystem::deleteDir( String dir ){
+	return RemoveDirectory( dir.cstr() ) ? true : false;
 }
 
-bool gxFileSystem::createFile( const std::string &file ){
+bool gxFileSystem::createFile( String file ){
 	return false;
 }
 
-bool gxFileSystem::deleteFile( const std::string &file ){
-	return DeleteFile( file.c_str() ) ? true : false;
+bool gxFileSystem::deleteFile( String file ){
+	return DeleteFile( file.cstr() ) ? true : false;
 }
 
-bool gxFileSystem::copyFile( const std::string &src,const string &dest ){
-	return CopyFile( src.c_str(),dest.c_str(),false ) ? true : false;
+bool gxFileSystem::copyFile( String src,String dest ){
+	return CopyFile( src.cstr(),dest.cstr(),false ) ? true : false;
 }
 
-bool gxFileSystem::renameFile( const std::string &src,const std::string &dest ){
-	return MoveFile( src.c_str(),dest.c_str() ) ? true : false;
+bool gxFileSystem::renameFile( String src,String dest ){
+	return MoveFile( src.cstr(),dest.cstr() ) ? true : false;
 }
 
-bool gxFileSystem::setCurrentDir( const std::string &dir ){
-	return SetCurrentDirectory( dir.c_str()) ? true : false;
+bool gxFileSystem::setCurrentDir( String dir ){
+	return SetCurrentDirectory( dir.cstr()) ? true : false;
 }
 
 string gxFileSystem::getCurrentDir()const{
@@ -47,22 +48,22 @@ string gxFileSystem::getCurrentDir()const{
 	return t;
 }
 
-int gxFileSystem::getFileSize( const std::string &name )const{
+int gxFileSystem::getFileSize( String name )const{
 	WIN32_FIND_DATA findData;
-	HANDLE h=FindFirstFile( name.c_str(),&findData );
+	HANDLE h=FindFirstFile( name.cstr(),&findData );
 	if( h==INVALID_HANDLE_VALUE ) return 0;
 	int n=findData.dwFileAttributes,sz=findData.nFileSizeLow;
 	FindClose( h );return n & FILE_ATTRIBUTE_DIRECTORY ? 0 : sz;
 }
 
-int gxFileSystem::getFileType( const std::string &name )const{
-	DWORD t=GetFileAttributes( name.c_str() );
+int gxFileSystem::getFileType( String name )const{
+	DWORD t=GetFileAttributes( name.cstr() );
 	return t==-1 ? FILE_TYPE_NONE :
 	(t & FILE_ATTRIBUTE_DIRECTORY ? FILE_TYPE_DIR : FILE_TYPE_FILE);
 }
 
-gxDir *gxFileSystem::openDir( const std::string &name,int flags ){
-	string t=name;
+gxDir *gxFileSystem::openDir( String name,int flags ){
+	string t=name.cstr();
 	if( t[t.size()-1]=='\\' ) t+="*";
 	else t+="\\*";
 	WIN32_FIND_DATA f;

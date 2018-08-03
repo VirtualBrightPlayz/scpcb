@@ -62,7 +62,7 @@ enum{
 ////////////////////
 // STATIC STARTUP //
 ////////////////////
-gxRuntime *gxRuntime::openRuntime( HINSTANCE hinst,const string &cmd_line ){
+gxRuntime *gxRuntime::openRuntime( HINSTANCE hinst,String cmd_line ){
 	if( runtime ) return 0;
 
 	//create WNDCLASS
@@ -111,7 +111,7 @@ void gxRuntime::closeRuntime( gxRuntime *r ){
 //////////////////////////
 typedef int (_stdcall *SetAppCompatDataFunc)( int x,int y );
 
-gxRuntime::gxRuntime( HINSTANCE hi,const string &cl,HWND hw ):
+gxRuntime::gxRuntime( HINSTANCE hi,String cl,HWND hw ):
 hinst(hi),cmd_line(cl),hwnd(hw),curr_driver(0),enum_all(false),
 pointer_visible(true),audio(0),input(0),graphics(0),fileSystem(0),use_di(false){
 
@@ -351,7 +351,7 @@ LRESULT gxRuntime::windowProc( HWND hwnd,UINT msg,WPARAM wparam,LPARAM lparam ){
 		return gfx_mode ? 1 : DefWindowProc( hwnd,msg,wparam,lparam );
 	case WM_CLOSE:
 		if( app_close.size() ){
-			int n=MessageBox( hwnd,app_close.c_str(),app_title.c_str(),MB_OKCANCEL|MB_ICONWARNING|MB_SETFOREGROUND|MB_TOPMOST );
+			int n=MessageBox( hwnd,app_close.cstr(),app_title.cstr(),MB_OKCANCEL|MB_ICONWARNING|MB_SETFOREGROUND|MB_TOPMOST );
 			if( n!=IDOK ) return 0;
 		}
 		asyncEnd();
@@ -576,19 +576,19 @@ void gxRuntime::debugLog( const char *t ){
 /////////////////////////
 // RETURN COMMAND LINE //
 /////////////////////////
-string gxRuntime::commandLine(){
+String gxRuntime::commandLine(){
 	return cmd_line;
 }
 
 /////////////
 // EXECUTE //
 /////////////
-bool gxRuntime::execute( const string &cmd_line ){
+bool gxRuntime::execute( String cmd_line ){
 
 	if( !cmd_line.size() ) return false;
 
 	//convert cmd_line to cmd and params
-	string cmd=cmd_line,params;
+	string cmd=cmd_line.cstr(),params;
 	while( cmd.size() && cmd[0]==' ' ) cmd=cmd.substr( 1 );
 	if( cmd.find( '\"' )==0 ){
 		int n=cmd.find( '\"',1 );
@@ -614,10 +614,10 @@ bool gxRuntime::execute( const string &cmd_line ){
 ///////////////
 // APP TITLE //
 ///////////////
-void gxRuntime::setTitle( const string &t,const string &e ){
+void gxRuntime::setTitle( String t,String e ){
 	app_title=t;
 	app_close=e;
-	SetWindowText( hwnd,app_title.c_str() );
+	SetWindowText( hwnd,app_title.cstr() );
 }
 
 //////////////////
@@ -1037,7 +1037,7 @@ int gxRuntime::numGraphicsDrivers(){
 	return drivers.size();
 }
 
-void gxRuntime::graphicsDriverInfo( int driver,string *name,int *c ){
+void gxRuntime::graphicsDriverInfo( int driver,String* name,int *c ){
 	GfxDriver *g=drivers[driver];
 	int caps=0;
 	if( g->d3d_desc.dwDeviceRenderBitDepth ) caps|=GFXMODECAPS_3D;
@@ -1095,12 +1095,12 @@ static string toDir( string t ){
 	return t;
 }
 
-string gxRuntime::systemProperty( const std::string &p ){
+String gxRuntime::systemProperty( String p ){
 	char buff[MAX_PATH+1];
-	string t=tolower(p);
-	if( t=="cpu" ){
-		return "Intel";
-	}else if( t=="os" ){
+	String t=p.toLower();
+	if( t.equals("cpu") ){
+		return "Intel"; //TODO: what
+	}else if( t.equals("os") ){
 		switch( osinfo.dwMajorVersion ){
 		case 3:
 			switch( osinfo.dwMinorVersion ){
@@ -1128,30 +1128,30 @@ string gxRuntime::systemProperty( const std::string &p ){
 			}
 			break;
 		}
-	}else if( t=="appdir" ){
+	}else if( t.equals("appdir") ){
 		if( GetModuleFileName( 0,buff,MAX_PATH ) ){
 			string t=buff;
 			int n=t.find_last_of( '\\' );
 			if( n!=string::npos ) t=t.substr( 0,n );
 			return toDir( t );
 		}
-	}else if( t=="apphwnd" ){
+	}else if( t.equals("apphwnd") ){
 		return itoa( (int)hwnd );
-	}else if( t=="apphinstance" ){
+	}else if( t.equals("apphinstance") ){
 		return itoa( (int)hinst );
-	}else if( t=="windowsdir" ){
+	}else if( t.equals("windowsdir") ){
 		if( GetWindowsDirectory( buff,MAX_PATH ) ) return toDir( buff );
-	}else if( t=="systemdir" ){
+	}else if( t.equals("systemdir") ){
 		if( GetSystemDirectory( buff,MAX_PATH ) ) return toDir( buff );
-	}else if( t=="tempdir" ){
+	}else if( t.equals("tempdir") ){
 		if( GetTempPath( MAX_PATH,buff ) ) return toDir( buff );
-	}else if( t=="direct3d7" ){
+	}else if( t.equals("direct3d7") ){
 		if( graphics ) return itoa( (int)graphics->dir3d );
-	}else if( t=="direct3ddevice7" ){
+	}else if( t.equals("direct3ddevice7") ){
 		if( graphics ) return itoa( (int)graphics->dir3dDev );
-	}else if( t=="directdraw7" ){
+	}else if( t.equals("directdraw7") ){
 		if( graphics ) return itoa( (int)graphics->dirDraw );
-	}else if( t=="directinput7" ){
+	}else if( t.equals("directinput7") ){
 		if( input ) return itoa( (int)input->dirInput );
 	}
 	return "";
@@ -1163,40 +1163,4 @@ void gxRuntime::enableDirectInput( bool enable ){
 	}else{
 		unacquireInput();
 	}
-}
-
-int gxRuntime::callDll( const std::string &dll,const std::string &func,const void *in,int in_sz,void *out,int out_sz ){
-
-	map<string,gxDll*>::const_iterator lib_it=libs.find( dll );
-
-	if( lib_it==libs.end() ){
-		HINSTANCE h=LoadLibrary( dll.c_str() );
-		if( !h ) return 0;
-		gxDll *t=d_new gxDll;
-		t->hinst=h;
-		lib_it=libs.insert( make_pair( dll,t ) ).first;
-	}
-
-	gxDll *t=lib_it->second;
-	map<string,LibFunc>::const_iterator fun_it=t->funcs.find( func );
-
-	if( fun_it==t->funcs.end() ){
-		LibFunc f=(LibFunc)GetProcAddress( t->hinst,func.c_str() );
-		if( !f ) return 0;
-		fun_it=t->funcs.insert( make_pair( func,f ) ).first;
-	}
-
-	static void *save_esp;
-
-	_asm{
-		mov	[save_esp],esp
-	};
-
-	int n=fun_it->second( in,in_sz,out,out_sz );
-
-	_asm{
-		mov esp,[save_esp]
-	};
-
-	return n;
 }

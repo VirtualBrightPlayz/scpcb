@@ -280,7 +280,7 @@ int  bbGfxModeExists( int w,int h,int d ){
 
 int  bbGfxDriver3D( int n ){
 	debugDriver( n );
-	string t;int caps;
+	String t;int caps;
 	gx_runtime->graphicsDriverInfo( n-1,&t,&caps );
 	return (caps & gxRuntime::GFXMODECAPS_3D) ? 1 : 0;
 }

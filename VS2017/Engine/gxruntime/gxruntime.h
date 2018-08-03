@@ -11,6 +11,8 @@
 #include "gxfilesystem.h"
 #include "gxtimer.h"
 
+#include "StringType.h"
+
 class gxRuntime{
 	/***** INTERNAL INTERFACE *****/
 public:
@@ -32,7 +34,7 @@ public:
 	struct GfxDriver;
 
 private:
-	gxRuntime( HINSTANCE hinst,const std::string &cmd_line,HWND hwnd );
+	gxRuntime( HINSTANCE hinst,String cmd_line,HWND hwnd );
 	~gxRuntime();
 
 	void paint();
@@ -45,10 +47,10 @@ private:
 
 	RECT t_rect;
 	int t_style;
-	std::string cmd_line;
+	String cmd_line;
 	bool pointer_visible;
-	std::string app_title;
-	std::string app_close;
+	String app_title;
+	String app_close;
 
 	bool setDisplayMode( int w,int h,int d,bool d3d,IDirectDraw7 *dd );
 	gxGraphics *openWindowedGraphics( int w,int h,int d,bool d3d );
@@ -72,7 +74,7 @@ private:
 
 	/***** APP INTERFACE *****/
 public:
-	static gxRuntime *openRuntime( HINSTANCE hinst,const std::string &cmd_line );
+	static gxRuntime *openRuntime( HINSTANCE hinst,String cmd_line );
 	static void closeRuntime( gxRuntime *runtime );
 
 	void asyncStop();
@@ -89,14 +91,14 @@ public:
 	bool idle();
 	bool delay( int ms );
 
-	bool execute( const std::string &cmd );
-	void setTitle( const std::string &title,const std::string &close );
+	bool execute( String cmd );
+	void setTitle( String title,String close );
 	int  getMilliSecs();
 	void setPointerVisible( bool vis );
 
-	std::string commandLine();
+	String commandLine();
 
-	std::string systemProperty( const std::string &t );
+	String systemProperty( String t );
 
 	void debugStop();
 	void debugProfile( int per );
@@ -108,7 +110,7 @@ public:
 	void debugLog( const char *t );
 
 	int numGraphicsDrivers();
-	void graphicsDriverInfo( int driver,std::string *name,int *caps );
+	void graphicsDriverInfo( int driver,String* name,int *caps );
 
 	int numGraphicsModes( int driver );
 	void graphicsModeInfo( int driver,int mode,int *w,int *h,int *d,int *caps );
@@ -133,8 +135,6 @@ public:
 
 	void enableDirectInput( bool use );
 	int  directInputEnabled(){ return use_di; }
-
-	int callDll( const std::string &dll,const std::string &func,const void *in,int in_sz,void *out,int out_sz );
 
 	OSVERSIONINFO osinfo;
 };
