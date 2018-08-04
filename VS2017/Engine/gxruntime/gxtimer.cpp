@@ -14,7 +14,11 @@ gxTimer::~gxTimer(){
 	CloseHandle( event );
 }
 
+#ifdef _WIN64
 void _cdecl gxTimer::timerCallback( UINT id,UINT msg,DWORD_PTR user,DWORD_PTR dw1,DWORD_PTR dw2 ){
+#else
+void CALLBACK gxTimer::timerCallback(UINT id, UINT msg, DWORD_PTR user, DWORD_PTR dw1, DWORD_PTR dw2) {
+#endif
 	gxTimer *t=(gxTimer*)user;
 	++t->ticks_put;
 	SetEvent( t->event );
