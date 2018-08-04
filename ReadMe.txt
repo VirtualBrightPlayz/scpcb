@@ -8,7 +8,7 @@
 
 				 www.scpcbgame.com
 
-				    VERSION 1.4
+				  VERSION 1.4.0.0
 								
 
 
