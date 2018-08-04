@@ -694,7 +694,7 @@ void gxRuntime::closeInput( gxInput *i ){
 /////////////////////////////////////////////////////
 // TIMER CALLBACK FOR AUTOREFRESH OF WINDOWED MODE //
 /////////////////////////////////////////////////////
-static void CALLBACK timerCallback( UINT id,UINT msg,DWORD user,DWORD dw1,DWORD dw2 ){
+static void _cdecl timerCallback( UINT id,UINT msg,DWORD_PTR user,DWORD_PTR dw1,DWORD_PTR dw2 ){
 	if( gfx_mode ){
 		gxCanvas *f=runtime->graphics->getFrontCanvas();
 		if( f->getModify()!=mod_cnt ){

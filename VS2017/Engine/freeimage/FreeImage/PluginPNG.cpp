@@ -45,12 +45,12 @@ static fi_handle s_handle;
 // 
 
 static void
-_ReadProc(struct png_struct_def *, unsigned char *data, unsigned int size) {
+_ReadProc(struct png_struct_def *, unsigned char *data, size_t size) {
 	s_io->read_proc(data, size, 1, s_handle);
 }
 
 static void
-_WriteProc(struct png_struct_def *, unsigned char *data, unsigned int size) {
+_WriteProc(struct png_struct_def *, unsigned char *data, size_t size) {
 	s_io->write_proc(data, size, 1, s_handle);
 }
 
