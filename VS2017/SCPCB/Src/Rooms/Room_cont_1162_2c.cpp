@@ -1,5 +1,6 @@
 #include "Room_cont_1162_2c.h"
 #include "include.h"
+#include <iostream>
 
 namespace CBN {
 
@@ -116,7 +117,7 @@ void UpdateEvent_cont_1162_2c(Event* e) {
             if (mainPlayer->inventory->items[(int)(e->eventState2)]!=nullptr) {
                 //randomly picked item slot has an item in it, using this slot
                 e->eventState3 = 1.0;
-                bbDebugLog("pick1");
+                std::cout << "pick1";
             } else {
                 //randomly picked item slot is empty, getting the first available slot
                 for (i = 0; i <= mainPlayer->inventory->size-1; i++) {
@@ -196,37 +197,37 @@ void UpdateEvent_cont_1162_2c(Event* e) {
                         case "key": {
                             if (itt->name == "key1" | itt->name == "key2" & bbRand(2)==1) {
                                 shouldCreateItem = true;
-                                bbDebugLog("lostkey");
+                                std::cout << "lostkey";
                             }
                         }
                         case "paper","oldpaper": {
                             if (itt->name == "paper" & bbRand(12)==1) {
                                 shouldCreateItem = true;
-                                bbDebugLog("paper");
+                                std::cout << "paper";
                             }
                         }
                         case "gasmask","gasmask3","supergasmask","hazmatsuit","hazmatsuit2","hazmatsuit3": {
                             if (itt->name == "gasmask" | itt->name == "gasmask3" | itt->name == "supergasmask" | itt->name == "hazmatsuit" | itt->name == "hazmatsuit2" | itt->name == "hazmatsuit3" & bbRand(2)==1) {
                                 shouldCreateItem = true;
-                                bbDebugLog("gasmask hazmat");
+                                std::cout << "gasmask hazmat";
                             }
                         }
                         case "key1","key2","key3": {
                             if (itt->name == "key1" | itt->name == "key2" | itt->name == "key3" | itt->name == "misc" & bbRand(6)==1) {
                                 shouldCreateItem = true;
-                                bbDebugLog("key");
+                                std::cout << "key";
                             }
                         }
                         case "vest","finevest": {
                             if (itt->name == "vest" | itt->name == "finevest" & bbRand(1)==1) {
                                 shouldCreateItem = true;
-                                bbDebugLog("vest");
+                                std::cout << "vest";
                             }
                         }
                         default: {
                             if (itt->name == "misc" & bbRand(6)==1) {
                                 shouldCreateItem = true;
-                                bbDebugLog("default");
+                                std::cout << "default";
                             }
                         }
                     }

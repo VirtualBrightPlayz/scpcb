@@ -1,5 +1,6 @@
 #include "Materials.h"
 #include "include.h"
+#include <iostream>
 
 namespace CBN {
 
@@ -11,19 +12,19 @@ String StripFilename(String file) {
     if (file.size()>0) {
         for (i = 1; i <= file.size(); i++) {
             mi = bbMid(file,i,1);
-            if (mi=="\\" | mi=="/") {
+            if (mi.equals('\\') || mi.equals('/')) {
                 lastSlash = i;
             }
         }
     }
 
-    return bbLeft(file,lastSlash);
+    return file.substr(0,lastSlash);
 }
 
 int GetTextureFromCache(String name) {
     Material* tc;
-    for (int iterator92 = 0; iterator92 < Material::getListSize(); iterator92++) {
-        tc = Material::getObject(iterator92);
+    for (int i = 0; i < Material::getListSize(); i++) {
+        tc = Material::getObject(i);
 
         if (tc->name.toLower().equals(name.toLower())) {
             return tc->diff;
@@ -34,8 +35,8 @@ int GetTextureFromCache(String name) {
 
 Material* GetCache(String name) {
     Material* tc;
-    for (int iterator93 = 0; iterator93 < Material::getListSize(); iterator93++) {
-        tc = Material::getObject(iterator93);
+    for (int i = 0; i < Material::getListSize(); i++) {
+        tc = Material::getObject(i);
 
         if (tc->name.toLower().equals(name.toLower())) {
             return tc;
@@ -59,8 +60,8 @@ void AddTextureToCache(String name, int texture) {
 
 void ClearTextureCache() {
     Material* tc;
-    for (int iterator94 = 0; iterator94 < Material::getListSize(); iterator94++) {
-        tc = Material::getObject(iterator94);
+    for (int i = 0; i < Material::getListSize(); i++) {
+        tc = Material::getObject(i);
 
         if (tc->diff!=0) {
             bbFreeTexture(tc->diff);
@@ -72,8 +73,8 @@ void ClearTextureCache() {
 
 void FreeTextureCache() {
     Material* tc;
-    for (int iterator95 = 0; iterator95 < Material::getListSize(); iterator95++) {
-        tc = Material::getObject(iterator95);
+    for (int i = 0; i < Material::getListSize(); i++) {
+        tc = Material::getObject(i);
 
         if (tc->diff!=0) {
             bbFreeTexture(tc->diff);
@@ -93,7 +94,7 @@ int LoadRMeshTexture(String roompath, String name, int flags) {
         texture = bbLoadTexture(GetImagePath("GFX/map/Textures/"+name),flags);
     }
     if (texture != 0) {
-        bbDebugLog(bbTextureName(texture));
+        std::cout << bbTextureName(texture);
     } else {
         //RuntimeError(name)
         texture = bbLoadTexture("GFX/Map/Textures/dirtymetal.jpg",flags);

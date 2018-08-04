@@ -285,7 +285,7 @@ void UpdateEvent_cont_106_1(Event* e) {
                 }
             }
 
-            if (e->eventState3 ==> 2500) {
+            if (e->eventState3 >= 2500) {
 
                 if (e->eventState2 == 1 & e->eventState3-timing->tickDuration < 2500) {
                     bbPositionEntity(Curr106->collider, bbEntityX(e->room->objects[6], true), bbEntityY(e->room->objects[6], true), bbEntityZ(e->room->objects[6], true));
@@ -320,7 +320,7 @@ void UpdateEvent_cont_106_1(Event* e) {
 
                     LoadEventSound(e,"SFX/Character/LureSubject/106Bait.ogg",1);
                     e->soundChannels[1] = bbPlaySound(e->sounds[1]);
-                } else if ((e->eventState3-timing->tickDuration < 2900 & e->eventState3 ==> 2900)) {
+                } else if ((e->eventState3-timing->tickDuration < 2900 & e->eventState3 >= 2900)) {
                     d = CreateDecal(DECAL_CORROSION, bbEntityX(e->room->objects[7], true), bbEntityY(e->room->objects[7], true) , bbEntityZ(e->room->objects[7], true), 0, 0, 0);
                     bbRotateEntity(d->obj, bbEntityPitch(e->room->objects[7], true)+bbRand(10,20), bbEntityYaw(e->room->objects[7], true)+30, bbEntityRoll(d->obj));
                     bbMoveEntity(d->obj, 0,0,0.15);

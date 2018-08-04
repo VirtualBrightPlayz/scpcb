@@ -1,5 +1,6 @@
 #include "Items.h"
 #include "include.h"
+#include <iostream>
 
 namespace CBN {
 
@@ -212,7 +213,7 @@ void LoadItemTemplates(String file) {
 
     while (!bbEof(f)) {
         section = bbReadLine(f).trim();
-        if (bbLeft(section,1) == "[") {
+        if (section.charAt(0) == '[') {
             section = bbMid(section, 2, section.size() - 2);
 
             CreateItemTemplate(file, section);
@@ -424,7 +425,7 @@ void UpdateItems() {
                 }
 
                 if (bbEntityY(i->collider) < - 35.0) {
-                    bbDebugLog("remove: " + i->name);
+                    std::cout << "remove: " + i->name;
                     RemoveItem(i);
                 }
             } else {

@@ -152,7 +152,7 @@ void UpdateNPCtypeZombie(NPC* n) {
                             //Animate2(n\obj, AnimTime(n\obj), 778, 926, 0.1)
 
                             n->pathTimer = n->pathTimer-timing->tickDuration;
-                            if (n->pathTimer ==< 0) {
+                            if (n->pathTimer <= 0) {
                                 n->pathStatus = FindPath(n, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.1,bbEntityZ(mainPlayer->collider));
                                 n->pathTimer = n->pathTimer+70*5;
                             }

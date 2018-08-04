@@ -1,5 +1,6 @@
 #include "Room_cont_049_2.h"
 #include "include.h"
+#include <iostream>
 
 namespace CBN {
 
@@ -317,7 +318,7 @@ void UpdateEvent_cont_049_2(Event* e) {
 
     if (e->eventState < 0) {
         if (e->eventState > -70*4) {
-            if (mainPlayer->fallTimer ==> 0) {
+            if (mainPlayer->fallTimer >= 0) {
                 mainPlayer->fallTimer = Min(-1, mainPlayer->fallTimer);
                 bbPositionEntity(mainPlayer->head, bbEntityX(mainPlayer->cam, true), bbEntityY(mainPlayer->cam, true), bbEntityZ(mainPlayer->cam, true), true);
                 bbResetEntity(mainPlayer->head);
@@ -327,7 +328,7 @@ void UpdateEvent_cont_049_2(Event* e) {
                 mainPlayer->blinkTimer = 0;
                 e->eventState = e->eventState-timing->tickDuration;
 
-                if (e->eventState ==< -70*4) {
+                if (e->eventState <= -70*4) {
                     UpdateDoorsTimer = 0;
                     UpdateDoors();
                     UpdateRooms();
@@ -348,7 +349,7 @@ void UpdateEvent_cont_049_2(Event* e) {
                             bbPositionEntity(n->collider, bbEntityX(e->room->objects[4],true),bbEntityY(e->room->objects[4],true),bbEntityZ(e->room->objects[4],true),true);
                             bbResetEntity(n->collider);
                             n->state = 4;
-                            bbDebugLog("moving zombie");
+                            std::cout << "moving zombie";
                         }
                     }
 

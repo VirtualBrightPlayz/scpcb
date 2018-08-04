@@ -120,7 +120,7 @@ void UpdateEvent682roar(Event* e) {
         e->eventState = e->eventState-timing->tickDuration;
 
         if (e->eventState < 17*70) {
-            if (e->eventState+timing->tickDuration ==> 17*70) {
+            if (e->eventState+timing->tickDuration >= 17*70) {
                 //e\sounds[0] = LoadSound("SFX/SCP/682/Roar.ogg")
                 LoadEventSound(e,"SFX/SCP/682/Roar.ogg");
                 e->soundChannels[0] = bbPlaySound(e->sounds[0]);

@@ -220,7 +220,7 @@ void UpdateNPCtype1499(NPC* n) {
                                 }
                             }
                         }
-                    } else if ((n->frame ==> 99)) {
+                    } else if ((n->frame >= 99)) {
                         n->state2 = 0.0;
                         n->state = 1;
                     }
@@ -245,7 +245,7 @@ void UpdateNPCtype1499(NPC* n) {
                                 }
                             }
                         }
-                    } else if ((n->frame ==> 201)) {
+                    } else if ((n->frame >= 201)) {
                         n->state2 = 0.0;
                         n->state = 1;
                     }

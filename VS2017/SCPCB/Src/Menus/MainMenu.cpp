@@ -166,7 +166,7 @@ void UpdateMainMenu() {
                 height = (int)(330.0 * MenuScale);
 
                 CurrSave = UpdateInputBox(x + (int)(150.0 * MenuScale), y + (int)(15.0 * MenuScale), (int)(200.0 * MenuScale), (int)(30.0 * MenuScale), CurrSave, 1);
-                CurrSave = bbLeft(CurrSave, 15);
+                CurrSave = CurrSave.substr(0, 15);
 
                 userOptions->introEnabled = UpdateUITick(x + (int)(280.0 * MenuScale), y + (int)(110.0 * MenuScale), userOptions->introEnabled);
 

@@ -1,5 +1,6 @@
 #include "Room_scp_970_2.h"
 #include "include.h"
+#include <iostream>
 
 namespace CBN {
 
@@ -130,7 +131,7 @@ void UpdateEvent_scp_970_2(Event* e) {
             bbHideEntity(mainPlayer->collider);
             bbPositionEntity(mainPlayer->collider, bbTFormedX(), bbEntityY(mainPlayer->collider), bbTFormedZ(), true);
             bbShowEntity(mainPlayer->collider);
-            bbDebugLog("tformedx()>720");
+            std::cout << "tformedx()>720";
             temp = true;
 
         } else if ((bbTFormedX()<-730)) {
@@ -156,7 +157,7 @@ void UpdateEvent_scp_970_2(Event* e) {
             bbPositionEntity(mainPlayer->collider, bbTFormedX(), bbEntityY(mainPlayer->collider), bbTFormedZ(), true);
             bbShowEntity(mainPlayer->collider);
 
-            bbDebugLog("tformedx()<720");
+            std::cout << "tformedx()<720";
 
             temp = true;
         }
@@ -327,7 +328,7 @@ void UpdateEvent_scp_970_2(Event* e) {
 
                                 if (bbTFormedZ()==z) {
                                     RemoveItem(it2);
-                                    bbDebugLog("item removed");
+                                    std::cout << "item removed";
                                 }
                             }
                         }

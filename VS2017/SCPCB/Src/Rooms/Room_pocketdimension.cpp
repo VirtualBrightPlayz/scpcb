@@ -278,7 +278,7 @@ void UpdateEvent_pocketdimension(Event* e) {
             e->room->doors[1]->open = false;
 
             if (e->eventState > 65*70) {
-                if (bbRand(800)==1 & Curr106->state ==>0) {
+                if (bbRand(800)==1 & Curr106->state >=0) {
                     //PlaySound2(HorrorSFX(8))
                     Curr106->state = -0.1;
                     e->eventState = 601;
@@ -465,7 +465,7 @@ void UpdateEvent_pocketdimension(Event* e) {
                         mainPlayer->injuries = mainPlayer->injuries + (timing->tickDuration/4000);
 
                         if (mainPlayer->injuries > 1.0) {
-                            if (mainPlayer->injuries - (timing->tickDuration/4000)==< 1.0) {
+                            if (mainPlayer->injuries - (timing->tickDuration/4000)<= 1.0) {
                                 PlaySound2(LoadTempSound("SFX/Room/PocketDimension/Kneel.ogg"));
                             }
                         }

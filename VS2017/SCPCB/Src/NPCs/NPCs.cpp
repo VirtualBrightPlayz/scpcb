@@ -1,5 +1,6 @@
 #include "NPCs.h"
 #include "include.h"
+#include <iostream>
 
 namespace CBN {
 
@@ -121,7 +122,7 @@ NPC* CreateNPC(int NPCtype, float x, float y, float z) {
     n->id = 0;
     n->id = FindFreeNPCID();
 
-    bbDebugLog("Created NPC "+String(n->nvName)+" (ID: "+String(n->id)+")");
+    std::cout << "Created NPC "+String(n->nvName)+" (ID: "+String(n->id)+")";
 
     NPCSpeedChange(n);
 
@@ -434,7 +435,7 @@ void TeleportMTFGroup(NPC* n) {
         }
     }
 
-    bbDebugLog("Teleported MTF Group (dist:"+String(bbEntityDistance(n->collider,mainPlayer->collider))+")");
+    std::cout << "Teleported MTF Group (dist:"+String(bbEntityDistance(n->collider,mainPlayer->collider))+")";
 
 }
 
@@ -460,7 +461,7 @@ void Shoot(float x, float y, float z, float hitProb = 1.0, int particles = true,
             return;
         }
 
-        if (bbRnd(1.0) ==< hitProb) {
+        if (bbRnd(1.0) <= hitProb) {
             bbTurnEntity(mainPlayer->cam, bbRnd(-3,3), bbRnd(-3,3), 0);
 
             wearingVest = false;
@@ -1065,7 +1066,7 @@ void FindNextElevator(NPC* n) {
                                 if (bbEntityDistance(eo2->obj,n->collider)<bbEntityDistance(eo->obj,n->collider)) {
                                     n->pathStatus = FindPath(n, bbEntityX(eo2->obj,true),bbEntityY(eo2->obj,true),bbEntityZ(eo2->obj,true));
                                     n->currElevator = eo2;
-                                    bbDebugLog("eo2 found for "+String(n->npcType));
+                                    std::cout << "eo2 found for "+String(n->npcType);
                                     break;
                                 }
                             }
@@ -1075,11 +1076,11 @@ void FindNextElevator(NPC* n) {
                 if (n->currElevator == nullptr) {
                     n->pathStatus = FindPath(n, bbEntityX(eo->obj,true),bbEntityY(eo->obj,true),bbEntityZ(eo->obj,true));
                     n->currElevator = eo;
-                    bbDebugLog("eo found for "+String(n->npcType));
+                    std::cout << "eo found for "+String(n->npcType);
                 }
                 if (n->pathStatus != 1) {
                     n->currElevator = nullptr;
-                    bbDebugLog("Unable to find elevator path: Resetting CurrElevator");
+                    std::cout << "Unable to find elevator path: Resetting CurrElevator";
                 }
                 break;
             }
@@ -1109,14 +1110,14 @@ void GoToElevator(NPC* n) {
         if (n->currElevator->door->open) {
             if ((dist > 0.4 & dist < 0.7) & inside) {
                 UseDoor(n->currElevator->door,false);
-                bbDebugLog(String(n->npcType)+" used elevator");
+                std::cout << String(n->npcType)+" used elevator";
             }
         } else {
             if (dist < 0.7) {
                 n->currSpeed = 0.0;
                 if (n->currElevator->door->npcCalledElevator==false) {
                     n->currElevator->door->npcCalledElevator = true;
-                    bbDebugLog(String(n->npcType)+" called elevator");
+                    std::cout << String(n->npcType)+" called elevator";
                 }
             }
         }
@@ -1168,7 +1169,7 @@ void AnimateNPC(NPC* n, float start, float quit, float speed, int loop = true) {
     if (speed > 0.0) {
         newTime = Max(Min(n->frame + speed * timing->tickDuration, quit), start);
 
-        if (loop & newTime ==> quit) {
+        if (loop & newTime >= quit) {
             newTime = start;
         }
     } else {

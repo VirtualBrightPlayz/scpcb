@@ -126,11 +126,11 @@ void UpdateEvent_tnnl_elec_2(Event* e) {
                 mainPlayer->blinkTimer = -10;
                 if (e->eventState > 30) {
                     //LightBlink = 1.0
-                    if (e->eventState-timing->tickDuration ==< 30) {
+                    if (e->eventState-timing->tickDuration <= 30) {
                         PlaySound2(LoadTempSound("SFX/ambient/general/ambient3.ogg"));
                     }
                 }
-                if (e->eventState-timing->tickDuration ==< 100 & e->eventState > 100) {
+                if (e->eventState-timing->tickDuration <= 100 & e->eventState > 100) {
                     PlaySound2(LoadTempSound("SFX/ambient/general/ambient6.ogg"));
                     bbPositionEntity(Curr173->collider, bbEntityX(e->room->obj), 0.6, bbEntityZ(e->room->obj));
                     bbResetEntity(Curr173->collider);

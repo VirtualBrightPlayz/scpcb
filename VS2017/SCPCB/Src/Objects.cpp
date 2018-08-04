@@ -135,11 +135,11 @@ void UpdateLevers() {
                     }
 
                     if (bbEntityPitch(lever->obj,true) > 75) {
-                        if (prevpitch ==< 75) {
+                        if (prevpitch <= 75) {
                             PlayRangedSound_SM(sndManager->lever, mainPlayer->cam, lever->obj, 1.0);
                         }
                     } else if ((bbEntityPitch(lever->obj,true) < -75)) {
-                        if (prevpitch ==> -75) {
+                        if (prevpitch >= -75) {
                             PlayRangedSound_SM(sndManager->lever, mainPlayer->cam, lever->obj, 1.0);
                         }
                     }

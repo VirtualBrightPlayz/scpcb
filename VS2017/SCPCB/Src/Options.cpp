@@ -77,8 +77,8 @@ void LoadOptionsINI() {
     userOptions->hudEnabled = GetINIInt(OptionFile, optHud, "HUD enabled");
     userOptions->showFPS = GetINIInt(OptionFile, optHud, "show FPS");
 
-    keyBinds->rght = GetINIInt(OptionFile, optBin, "bbRight key");
-    keyBinds->lft = GetINIInt(OptionFile, optBin, "bbLeft key");
+    keyBinds->rght = GetINIInt(OptionFile, optBin, "Right key");
+    keyBinds->lft = GetINIInt(OptionFile, optBin, "Left key");
     keyBinds->up = GetINIInt(OptionFile, optBin, "Up key");
     keyBinds->down = GetINIInt(OptionFile, optBin, "Down key");
 
@@ -118,8 +118,8 @@ void SaveOptionsINI() {
     PutINIValue(OptionFile, optHud, "HUD enabled", String(userOptions->hudEnabled));
     PutINIValue(OptionFile, optHud, "show FPS", String(userOptions->showFPS));
 
-    PutINIValue(OptionFile, optBin, "bbRight key", String(keyBinds->rght));
-    PutINIValue(OptionFile, optBin, "bbLeft key", String(keyBinds->lft));
+    PutINIValue(OptionFile, optBin, "Right key", String(keyBinds->rght));
+    PutINIValue(OptionFile, optBin, "Left key", String(keyBinds->lft));
     PutINIValue(OptionFile, optBin, "Up key", String(keyBinds->up));
     PutINIValue(OptionFile, optBin, "Down key", String(keyBinds->down));
 

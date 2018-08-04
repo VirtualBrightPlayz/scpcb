@@ -333,7 +333,7 @@ void UpdateEvent_extend_gatea_1(Event* e) {
                         if (Curr106->state3 == 0) {
                             if (Curr106->pathStatus != 1) {
                                 bbPositionEntity(Curr106->collider,bbEntityX(e->room->objects[3],true),bbEntityY(Curr106->collider),bbEntityZ(e->room->objects[3],true),true);
-                                if (Curr106->state ==< -10) {
+                                if (Curr106->state <= -10) {
                                     dist = bbEntityY(Curr106->collider);
                                     bbPositionEntity(Curr106->collider,bbEntityX(Curr106->collider),bbEntityY(e->room->objects[3],true),bbEntityZ(Curr106->collider),true);
                                     //Curr106\pathStatus = FindPath(Curr106, EntityX(e\room\objects[4],True),EntityY(e\room\objects[4],True),EntityZ(e\room\objects[4],True))
@@ -377,7 +377,7 @@ void UpdateEvent_extend_gatea_1(Event* e) {
 
                                 //decals under 106
                                 if (timing->tickDuration > 0) {
-                                    if (((e->eventState-timing->tickDuration) % 100.0)==<50.0 & (e->eventState % 100.0)>50.0) {
+                                    if (((e->eventState-timing->tickDuration) % 100.0)<=50.0 & (e->eventState % 100.0)>50.0) {
                                         de = CreateDecal(DECAL_CORROSION, bbEntityX(Curr106->collider,true),bbEntityY(e->room->objects[3],true)+0.01,bbEntityZ(Curr106->collider,true), 90, bbRand(360), 0);
                                         de->size = 0.2;
                                         de->sizeChange = 0.004;
@@ -412,7 +412,7 @@ void UpdateEvent_extend_gatea_1(Event* e) {
 
                                 //106:n alle ilmestyy decaleita
                                 if (timing->tickDuration > 0) {
-                                    if (((e->eventState-timing->tickDuration) % 160.0)==<50.0 & (e->eventState % 160.0)>50.0) {
+                                    if (((e->eventState-timing->tickDuration) % 160.0)<=50.0 & (e->eventState % 160.0)>50.0) {
                                         de = CreateDecal(DECAL_CORROSION, bbEntityX(Curr106->collider,true),bbEntityY(e->room->objects[3],true)+0.01,bbEntityZ(Curr106->collider,true), 90, bbRand(360), 0);
                                         de->size = 0.05;
                                         de->sizeChange = 0.004;
@@ -446,7 +446,7 @@ void UpdateEvent_extend_gatea_1(Event* e) {
                                         e->eventState2 = 1;
                                     } else if ((e->eventState2>0)) {
                                         e->eventState2 = e->eventState2+timing->tickDuration;
-                                        if (e->eventState2==> 7.5*70) {
+                                        if (e->eventState2>= 7.5*70) {
                                             if (e->eventState2-timing->tickDuration < 7.5*70) {
                                                 //TODO: Not use the sun sprite here.
                                                 p = CreateParticle(bbEntityX(Curr106->obj,true),bbEntityY(Curr106->obj,true)+0.4, bbEntityZ(Curr106->obj,true), PARTICLE_SUN, 7.0, 0, (int)(6.7*70));

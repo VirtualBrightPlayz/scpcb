@@ -201,7 +201,7 @@ void UpdateDoors() {
     float xdist;
     float zdist;
 
-    if (UpdateDoorsTimer ==< 0) {
+    if (UpdateDoorsTimer <= 0) {
         for (int iterator55 = 0; iterator55 < Door::getListSize(); iterator55++) {
             d = Door::getObject(iterator55);
 
@@ -373,7 +373,7 @@ void UpdateDoors() {
                             if (d->obj2 != 0) {
                                 bbMoveEntity(d->obj2, bbSin(d->openstate) * timing->tickDuration / 180.0, 0, 0);
                             }
-                            if (d->openstate < 15 & d->openstate+timing->tickDuration ==> 15) {
+                            if (d->openstate < 15 & d->openstate+timing->tickDuration >= 15) {
                                 for (i = 0; i <= bbRand(75,99); i++) {
                                     pvt = bbCreatePivot();
                                     bbPositionEntity(pvt, bbEntityX(d->frameobj,true)+bbRnd(-0.2,0.2), bbEntityY(d->frameobj,true)+bbRnd(0.0,1.2), bbEntityZ(d->frameobj,true)+bbRnd(-0.2,0.2));

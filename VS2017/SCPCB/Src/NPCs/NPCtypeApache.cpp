@@ -137,7 +137,7 @@ void UpdateNPCtypeApache(NPC* n) {
                         if (n->pathStatus == 1) {
                             bbRotateEntity(n->collider, bbEntityPitch(n->collider), bbEntityYaw(n->collider), CurveAngle(0, bbEntityRoll(n->collider),40), true);
 
-                            if (n->reload ==< 0) {
+                            if (n->reload <= 0) {
                                 if (dist<20.0) {
                                     pvt = bbCreatePivot();
 

@@ -32,6 +32,5 @@ String bbSystemProperty(String p);
 class gxTimer* bbCreateTimer(int hertz);
 int bbWaitTimer(class gxTimer* t);
 void bbFreeTimer(class gxTimer* t);
-void bbDebugLog(String t);
 
 #endif

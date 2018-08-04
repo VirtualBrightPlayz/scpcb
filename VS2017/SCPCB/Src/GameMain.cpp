@@ -742,7 +742,7 @@ void UpdateGUI() {
                 if ((KeypadTimer % 70) < 35) {
                     bbText(userOptions->screenWidth/2, (int)(y+124*scale), KeypadMSG, true,true);
                 }
-                if (KeypadTimer ==<0) {
+                if (KeypadTimer <=0) {
                     KeypadMSG = "";
                     mainPlayer->selectedDoor = nullptr;
                     bbMouseXSpeed();
@@ -805,7 +805,7 @@ void UpdateGUI() {
                             }
 
                             if (KeypadInput.size()> 4) {
-                                KeypadInput = bbLeft(KeypadInput,4);
+                                KeypadInput = KeypadInput.substr(0,4);
                             }
                         }
 
@@ -1367,7 +1367,7 @@ void UpdatePauseMenu() {
 }
 
 String f2s(float n, int count) {
-    return bbLeft(String(n), String((int)(n)).size()+count+1);
+    return String(n).substr(0, String((int)(n)).size()+count+1);
 }
 
 float Animate2(int entity, float curr, int start, int quit, float speed, int loop = true) {
@@ -1379,7 +1379,7 @@ float Animate2(int entity, float curr, int start, int quit, float speed, int loo
         newTime = Max(Min(curr + speed * timing->tickDuration,quit),start);
 
         if (loop) {
-            if (newTime ==> quit) {
+            if (newTime >= quit) {
                 //SetAnimTime(entity, start)
                 newTime = start;
             } else {
@@ -1440,24 +1440,24 @@ void UpdateInfect() {
             bbEntityAlpha(mainPlayer->overlays[OVERLAY_008], Min(((mainPlayer->infect008*0.2)^2)/1000.0,0.5) * (bbSin(TimeInPosMilliSecs()/8.0)+2.0));
 
             for (i = 0; i <= 6; i++) {
-                if (mainPlayer->infect008>i*15+10 & temp ==< i*15+10) {
+                if (mainPlayer->infect008>i*15+10 & temp <= i*15+10) {
                     PlaySound2(LoadTempSound("SFX/SCP/008/Voices" + String(i) + ".ogg"));
                 }
             }
 
-            if (mainPlayer->infect008 > 20 & temp ==< 20.0) {
+            if (mainPlayer->infect008 > 20 & temp <= 20.0) {
                 Msg = "You feel kinda feverish.";
                 MsgTimer = 70*6;
-            } else if ((mainPlayer->infect008 > 40 & temp ==< 40.0)) {
+            } else if ((mainPlayer->infect008 > 40 & temp <= 40.0)) {
                 Msg = "You feel nauseated.";
                 MsgTimer = 70*6;
-            } else if ((mainPlayer->infect008 > 60 & temp ==< 60.0)) {
+            } else if ((mainPlayer->infect008 > 60 & temp <= 60.0)) {
                 Msg = "The nausea's getting worse.";
                 MsgTimer = 70*6;
-            } else if ((mainPlayer->infect008 > 80 & temp ==< 80.0)) {
+            } else if ((mainPlayer->infect008 > 80 & temp <= 80.0)) {
                 Msg = "You feel very faint.";
                 MsgTimer = 70*6;
-            } else if ((mainPlayer->infect008 ==>91.5)) {
+            } else if ((mainPlayer->infect008 >=91.5)) {
                 mainPlayer->blinkTimer = Max(Min(-10*(mainPlayer->infect008-91.5),mainPlayer->blinkTimer),-10);
                 if (mainPlayer->infect008 >= 92.7 & temp < 92.7) {
                     for (int iterator68 = 0; iterator68 < Room::getListSize(); iterator68++) {
@@ -1523,12 +1523,12 @@ void UpdateInfect() {
                 //TODO: this could break
                 if (mainPlayer->currRoom->npc[0]->state2==0) {
                     Animate2(mainPlayer->currRoom->npc[0]->obj, bbAnimTime(mainPlayer->currRoom->npc[0]->obj), 13, 19, 0.3,false);
-                    if (bbAnimTime(mainPlayer->currRoom->npc[0]->obj) ==> 19) {
+                    if (bbAnimTime(mainPlayer->currRoom->npc[0]->obj) >= 19) {
                         mainPlayer->currRoom->npc[0]->state2 = 1;
                     }
                 } else {
                     Animate2(mainPlayer->currRoom->npc[0]->obj, bbAnimTime(mainPlayer->currRoom->npc[0]->obj), 19, 13, -0.3);
-                    if (bbAnimTime(mainPlayer->currRoom->npc[0]->obj) ==< 13) {
+                    if (bbAnimTime(mainPlayer->currRoom->npc[0]->obj) <= 13) {
                         mainPlayer->currRoom->npc[0]->state2 = 0;
                     }
                 }

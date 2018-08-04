@@ -1,5 +1,6 @@
 #include "Room_test_860_2.h"
 #include "include.h"
+#include <iostream>
 
 namespace CBN {
 
@@ -182,11 +183,11 @@ void UpdateEvent_test_860_2(Event* e) {
                             bbPositionEntity(e->room->npc[0]->collider, 0,-110,0);
                             //e\eventState3=e\eventState3-Rnd(2000,3000)
                             e->eventState3 = e->eventState3-bbRnd(1000,2000-(500*SelectedDifficulty->aggressiveNPCs));
-                            bbDebugLog("attack");
+                            std::cout << "attack";
                         } else {
                             e->room->npc[0]->state = 1;
                             bbPositionEntity(e->room->npc[0]->collider, 0,-110,0);
-                            bbDebugLog("spawn");
+                            std::cout << "spawn";
                         }
                     }
                 }
@@ -745,7 +746,7 @@ void PlaceForest(Forest* fr, float x, float y, float z, Room* r) {
                         tile_type = ROOM4;
                     }
                     default: {
-                        bbDebugLog("tile_type: "+String(tile_type));
+                        std::cout << "tile_type: "+String(tile_type);
                     }
                 }
 
@@ -840,7 +841,7 @@ void PlaceForest(Forest* fr, float x, float y, float z, Room* r) {
 
                     fr->tileEntities[tx+(ty*gridsize)] = tile_entity;
                 } else {
-                    bbDebugLog("INVALID TILE @ ("+String(tx)+", "+String(ty)+ "): "+String(tile_type));
+                    std::cout << "INVALID TILE @ ("+String(tx)+", "+String(ty)+ "): "+String(tile_type);
                 }
             }
 
@@ -967,7 +968,7 @@ int load_terrain(int hmap, float yscale = 0.7, int t1, int t2, int mask) {
     int r;
     float alpha;
 
-    bbDebugLog("load_terrain: "+String(hmap));
+    std::cout << "load_terrain: "+String(hmap);
 
     // load the heightmap
     if (hmap == 0) {

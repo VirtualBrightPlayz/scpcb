@@ -348,7 +348,7 @@ void UpdateEvent_cont_035_1(Event* e) {
                         } else {
 
                             e->eventState = e->eventState+timing->tickDuration;
-                            if (e->eventState > 4*70 & e->eventState-timing->tickDuration ==<4*70) {
+                            if (e->eventState > 4*70 & e->eventState-timing->tickDuration <=4*70) {
                                 if (e->room->npc[0]->sounds[0]!=0) {
                                     bbFreeSound(e->room->npc[0]->sounds[0]);
                                     e->room->npc[0]->sounds[0] = 0;
@@ -356,28 +356,28 @@ void UpdateEvent_cont_035_1(Event* e) {
                                 e->room->npc[0]->sounds[0] = bbLoadSound("SFX/SCP/035/Help1.ogg");
                                 e->room->npc[0]->soundChannels[0] = bbPlaySound(e->room->npc[0]->sounds[0]);
                                 e->eventState = 10*70;
-                            } else if ((e->eventState > 20*70 & e->eventState-timing->tickDuration ==<20*70)) {
+                            } else if ((e->eventState > 20*70 & e->eventState-timing->tickDuration <=20*70)) {
                                 if (e->room->npc[0]->sounds[0]!=0) {
                                     bbFreeSound(e->room->npc[0]->sounds[0]);
                                     e->room->npc[0]->sounds[0] = 0;
                                 }
                                 e->room->npc[0]->sounds[0] = bbLoadSound("SFX/SCP/035/Help2.ogg");
                                 e->room->npc[0]->soundChannels[0] = bbPlaySound(e->room->npc[0]->sounds[0]);
-                            } else if ((e->eventState > 40*70 & e->eventState-timing->tickDuration ==<40*70)) {
+                            } else if ((e->eventState > 40*70 & e->eventState-timing->tickDuration <=40*70)) {
                                 if (e->room->npc[0]->sounds[0]!=0) {
                                     bbFreeSound(e->room->npc[0]->sounds[0]);
                                     e->room->npc[0]->sounds[0] = 0;
                                 }
                                 e->room->npc[0]->sounds[0] = bbLoadSound("SFX/SCP/035/Idle1.ogg");
                                 e->room->npc[0]->soundChannels[0] = bbPlaySound(e->room->npc[0]->sounds[0]);
-                            } else if ((e->eventState > 50*70 & e->eventState-timing->tickDuration ==<50*70)) {
+                            } else if ((e->eventState > 50*70 & e->eventState-timing->tickDuration <=50*70)) {
                                 if (e->room->npc[0]->sounds[0]!=0) {
                                     bbFreeSound(e->room->npc[0]->sounds[0]);
                                     e->room->npc[0]->sounds[0] = 0;
                                 }
                                 e->room->npc[0]->sounds[0] = bbLoadSound("SFX/SCP/035/Idle2.ogg");
                                 e->room->npc[0]->soundChannels[0] = bbPlaySound(e->room->npc[0]->sounds[0]);
-                            } else if ((e->eventState > 80*70 & e->eventState-timing->tickDuration ==<80*70)) {
+                            } else if ((e->eventState > 80*70 & e->eventState-timing->tickDuration <=80*70)) {
                                 //skip the closet part if player has already opened it
                                 if ((int)(e->eventState2)) {
                                     e->eventState = 130*70;
@@ -412,7 +412,7 @@ void UpdateEvent_cont_035_1(Event* e) {
                                 if ((int)(e->eventState2)) {
                                     e->eventState = Max(e->eventState,100*70);
                                 }
-                                if (e->eventState>110*70 & e->eventState-timing->tickDuration ==<110*70) {
+                                if (e->eventState>110*70 & e->eventState-timing->tickDuration <=110*70) {
                                     if ((int)(e->eventState2)) {
                                         if (e->room->npc[0]->sounds[0]!=0) {
                                             bbFreeSound(e->room->npc[0]->sounds[0]);
@@ -429,7 +429,7 @@ void UpdateEvent_cont_035_1(Event* e) {
                                         e->room->npc[0]->sounds[0] = bbLoadSound("SFX/SCP/035/Idle3.ogg");
                                         e->room->npc[0]->soundChannels[0] = bbPlaySound(e->room->npc[0]->sounds[0]);
                                     }
-                                } else if ((e->eventState>125*70 & e->eventState-timing->tickDuration ==<125*70)) {
+                                } else if ((e->eventState>125*70 & e->eventState-timing->tickDuration <=125*70)) {
                                     if ((int)(e->eventState2)) {
                                         if (e->room->npc[0]->sounds[0]!=0) {
                                             bbFreeSound(e->room->npc[0]->sounds[0]);
@@ -445,14 +445,14 @@ void UpdateEvent_cont_035_1(Event* e) {
                                         e->room->npc[0]->sounds[0] = bbLoadSound("SFX/SCP/035/Idle4.ogg");
                                         e->room->npc[0]->soundChannels[0] = bbPlaySound(e->room->npc[0]->sounds[0]);
                                     }
-                                } else if ((e->eventState>150*70 & e->eventState-timing->tickDuration ==<150*70)) {
+                                } else if ((e->eventState>150*70 & e->eventState-timing->tickDuration <=150*70)) {
                                     if (e->room->npc[0]->sounds[0]!=0) {
                                         bbFreeSound(e->room->npc[0]->sounds[0]);
                                         e->room->npc[0]->sounds[0] = 0;
                                     }
                                     e->room->npc[0]->sounds[0] = bbLoadSound("SFX/SCP/035/Idle5.ogg");
                                     e->room->npc[0]->soundChannels[0] = bbPlaySound(e->room->npc[0]->sounds[0]);
-                                } else if ((e->eventState>200*70 & e->eventState-timing->tickDuration ==<200*70)) {
+                                } else if ((e->eventState>200*70 & e->eventState-timing->tickDuration <=200*70)) {
                                     if (e->room->npc[0]->sounds[0]!=0) {
                                         bbFreeSound(e->room->npc[0]->sounds[0]);
                                         e->room->npc[0]->sounds[0] = 0;
@@ -617,7 +617,7 @@ void UpdateEvent_cont_035_1(Event* e) {
                                 mainPlayer->injuries = mainPlayer->injuries + (timing->tickDuration/10000);
                             }
 
-                            if (mainPlayer->dead == true & mainPlayer->bloodloss ==>100) {
+                            if (mainPlayer->dead == true & mainPlayer->bloodloss >=100) {
                                 DeathMSG = "Class D Subject D-9341 found dead inside SCP-035's containment chamber. ";
                                 DeathMSG = DeathMSG + "The subject exhibits heavy hemorrhaging of blood vessels around the eyes and inside the mouth and nose. ";
                                 DeathMSG = DeathMSG + "Sent for autopsy.";

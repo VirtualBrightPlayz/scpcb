@@ -112,7 +112,7 @@ void UpdateEventTestroom173(Event* e) {
                     e->floatState[EVENT_TSW2_173JUMPTIMER] = Max(e->floatState[EVENT_TSW2_173JUMPTIMER], 70*12);
                 } else if ((dist > 1.4)) {
                     //if the player moves a bit further and blinks, 173 attacks
-                    if (e->floatState[EVENT_TSW2_173JUMPTIMER] > 70*12 & mainPlayer->blinkTimer ==< -10) {
+                    if (e->floatState[EVENT_TSW2_173JUMPTIMER] > 70*12 & mainPlayer->blinkTimer <= -10) {
                         if (bbEntityDistance(Curr173->collider, e->room->objects[ROOM_TSW2_173SPAWN]) > 5.0) {
                             //if 173 is far away from the room (perhaps because the player
                             //left and 173 moved to some other room?) -> disable the event

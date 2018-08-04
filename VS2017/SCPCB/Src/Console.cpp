@@ -350,14 +350,14 @@ void UpdateConsole() {
         if (oldConsoleInput!=ConsoleInput) {
             ConsoleReissue = nullptr;
         }
-        ConsoleInput = bbLeft(ConsoleInput, 100);
+        ConsoleInput = ConsoleInput.substr(0, 100);
 
         if (bbKeyHit(28) && !ConsoleInput.isEmpty()) {
             ConsoleReissue = nullptr;
             ConsoleScroll = 0;
             CreateConsoleMsg(ConsoleInput,255,255,0,true);
             if (bbInstr(ConsoleInput, " ") > 0) {
-                StrTemp = bbLeft(ConsoleInput, bbInstr(ConsoleInput, " ") - 1).toLower();
+                StrTemp = ConsoleInput.substr(0, ConsoleInput.findFirst(" ")).toLower();
             } else {
                 StrTemp = ConsoleInput.toLower();
             }
@@ -1005,8 +1005,8 @@ void UpdateConsole() {
                 }
                 case "spawnnpcstate": {
                     args = bbRight(ConsoleInput, ConsoleInput.size() - bbInstr(ConsoleInput, " ")).toLower();
-                    StrTemp = Piece(args,1," ");
-                    StrTemp2 = Piece(args,2," ");
+                    // StrTemp = Piece(args,1," ");
+                    // StrTemp2 = Piece(args,2," ");
                     Console_SpawnNPC(StrTemp, StrTemp2.toInt());
 
                 }
@@ -1107,9 +1107,9 @@ void UpdateConsole() {
                 }
                 case "tele": {
                     args = bbRight(ConsoleInput, ConsoleInput.size() - bbInstr(ConsoleInput, " ")).toLower();
-                    StrTemp = Piece(args,1," ");
-                    StrTemp2 = Piece(args,2," ");
-                    StrTemp3 = Piece(args,3," ");
+                    // StrTemp = Piece(args,1," ");
+                    // StrTemp2 = Piece(args,2," ");
+                    // StrTemp3 = Piece(args,3," ");
                     bbPositionEntity(mainPlayer->collider,(float)(StrTemp),(float)(StrTemp2),(float)(StrTemp3));
                     bbPositionEntity(mainPlayer->cam,(float)(StrTemp),(float)(StrTemp2),(float)(StrTemp3));
                     CreateConsoleMsg("Teleported to coordinates (X|Y|Z): "+String(bbEntityX(mainPlayer->collider))+"|"+String(bbEntityY(mainPlayer->collider))+"|"+String(bbEntityZ(mainPlayer->collider)));

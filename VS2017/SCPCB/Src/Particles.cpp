@@ -136,7 +136,7 @@ void UpdateParticles() {
         bbEntityAlpha(p->obj,1.0);
 
         p->lifetime = p->lifetime-timing->tickDuration;
-        if (p->lifetime <= 0 | p->size < 0.00001 | p->a ==< 0) {
+        if (p->lifetime <= 0 | p->size < 0.00001 | p->a <= 0) {
             RemoveParticle(p);
         }
     }
