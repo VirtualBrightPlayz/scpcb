@@ -50,7 +50,7 @@ SCP-1499 is based on "SCP-1499 - The Gas Mask" by "Trasknari" (http://www.scp-wi
 The Anomalous Ducks are based on "Log of Anomalous Ducks" by "Skara Brae" (http://www.scp-wiki.net/log-of-anomalous-ducks)
 
 Created By
-    Joonas Rikkonen ("Regalis")
+    Joonas Rikkonen ("Regalis") of Undertow Games
 
 Contributors
 
@@ -92,6 +92,9 @@ Contributors
 
     FireFox
         Music.
+
+    Gage Allen ("Lotims")
+        Writing.
 
     GamerEntitlement
         Modelling.
@@ -240,9 +243,6 @@ Version 1.3.X Testers
     Zadrakos
 
 Special Thanks to
-
-    Gage Allen ("Lotims")
-        The official trailers for the game.
 
     Haversine
         Without his SCP-087 game, SCP-CB would not exist.
