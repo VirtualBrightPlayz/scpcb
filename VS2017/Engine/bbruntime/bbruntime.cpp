@@ -68,10 +68,6 @@ void  bbFreeTimer( gxTimer *t ){
 	gx_runtime->freeTimer( t );
 }
 
-void  bbDebugLog( String t ){
-	gx_runtime->debugLog( t.cstr() );
-}
-
 void  _bbDebugStmt( int pos,const char *file ){
 	gx_runtime->debugStmt( pos,file );
 }

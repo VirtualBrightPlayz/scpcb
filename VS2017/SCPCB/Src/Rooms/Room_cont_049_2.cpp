@@ -1,5 +1,6 @@
 #include "Room_cont_049_2.h"
 #include "include.h"
+#include <iostream>
 
 namespace CBN {
 
@@ -348,7 +349,7 @@ void UpdateEvent_cont_049_2(Event* e) {
                             bbPositionEntity(n->collider, bbEntityX(e->room->objects[4],true),bbEntityY(e->room->objects[4],true),bbEntityZ(e->room->objects[4],true),true);
                             bbResetEntity(n->collider);
                             n->state = 4;
-                            bbDebugLog("moving zombie");
+                            std::cout << "moving zombie";
                         }
                     }
 

@@ -1,5 +1,6 @@
 #include "Room_cont_500_1499_2.h"
 #include "include.h"
+#include <iostream>
 
 namespace CBN {
 
@@ -92,7 +93,7 @@ void UpdateEvent_cont_500_1499_2(Event* e) {
                 }
             }
         } else {
-            bbDebugLog("Removed 'room2scps2' event");
+            std::cout << "Removed 'room2scps2' event";
             e->room->doors[0]->locked = false;
             de = CreateDecal(DECAL_CORROSION, bbEntityX(e->room->objects[0],true), e->room->y+2.0*RoomScale, bbEntityZ(e->room->objects[0],true), 90, bbRand(360), 0);
             de->size = 0.5;

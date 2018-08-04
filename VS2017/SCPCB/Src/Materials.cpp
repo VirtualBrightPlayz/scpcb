@@ -1,5 +1,6 @@
 #include "Materials.h"
 #include "include.h"
+#include <iostream>
 
 namespace CBN {
 
@@ -93,7 +94,7 @@ int LoadRMeshTexture(String roompath, String name, int flags) {
         texture = bbLoadTexture(GetImagePath("GFX/map/Textures/"+name),flags);
     }
     if (texture != 0) {
-        bbDebugLog(bbTextureName(texture));
+        std::cout << bbTextureName(texture);
     } else {
         //RuntimeError(name)
         texture = bbLoadTexture("GFX/Map/Textures/dirtymetal.jpg",flags);

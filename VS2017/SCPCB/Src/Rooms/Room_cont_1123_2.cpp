@@ -1,5 +1,6 @@
 #include "Room_cont_1123_2.h"
 #include "include.h"
+#include <iostream>
 
 namespace CBN {
 
@@ -226,7 +227,7 @@ void UpdateEvent_cont_1123_2(Event* e) {
             }
 
             if (bbEntityYaw(e->room->objects[13],false)==0) {
-                bbDebugLog("aaaaaaaa");
+                std::cout << "aaaaaaaa";
                 if (bbEntityDistance(mainPlayer->collider, e->room->objects[12])<1.0) {
                     DrawHandIcon = true;
                     if (MouseHit1) {
@@ -235,7 +236,7 @@ void UpdateEvent_cont_1123_2(Event* e) {
                     }
                 }
             } else {
-                bbDebugLog("bbbbbbb");
+                std::cout << "bbbbbbb";
                 bbRotateEntity(e->room->objects[13], 0, CurveAngle(90, bbEntityYaw(e->room->objects[13], false), 40), 0);
                 if (bbEntityYaw(e->room->objects[13], false)>30) {
                     e->room->npc[0]->state = 3;

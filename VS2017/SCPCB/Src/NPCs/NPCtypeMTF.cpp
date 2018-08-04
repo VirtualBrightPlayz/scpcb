@@ -1,5 +1,6 @@
 #include "NPCtypeMTF.h"
 #include "include.h"
+#include <iostream>
 
 namespace CBN {
 
@@ -167,7 +168,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                                     x = r->x;
                                     y = 0.1;
                                     z = r->z;
-                                    bbDebugLog(r->roomTemplate->name);
+                                    std::cout << r->roomTemplate->name;
                                     break;
                                 }
                             }
@@ -190,7 +191,7 @@ void UpdateNPCtypeMTF(NPC* n) {
 
                                         if (Distance(bbEntityX(pvt),bbEntityZ(pvt),bbEntityX(n->collider),bbEntityZ(n->collider))<3.5) {
                                             foundChamber = true;
-                                            bbDebugLog(String(Distance(bbEntityX(pvt),bbEntityZ(pvt),bbEntityX(n->collider),bbEntityZ(n->collider))));
+                                            std::cout << String(Distance(bbEntityX(pvt),bbEntityZ(pvt),bbEntityX(n->collider),bbEntityZ(n->collider)));
                                         }
 
                                         if (Curr173->idle == 3 & Distance(bbEntityX(pvt),bbEntityZ(pvt),bbEntityX(n->collider),bbEntityZ(n->collider)) > 4.0) {
@@ -205,12 +206,12 @@ void UpdateNPCtypeMTF(NPC* n) {
                                             x = bbEntityX(r->obj,true)+4736*RoomScale;
                                             y = 0.1;
                                             z = bbEntityZ(r->obj,true)+1692*RoomScale;
-                                            bbDebugLog("Move to 173's chamber");
+                                            std::cout << "Move to 173's chamber";
                                             break;
                                         } else if ((Distance(bbEntityX(n->collider),bbEntityZ(n->collider),bbEntityX(r->obj,true)+4736*RoomScale,bbEntityZ(r->obj,true)+1692*RoomScale)>1.6 & foundChamber)) {
                                             n->pathX = bbEntityX(r->obj,true)+4736*RoomScale;
                                             n->pathZ = bbEntityZ(r->obj,true)+1692*RoomScale;
-                                            bbDebugLog("Move inside 173's chamber");
+                                            std::cout << "Move inside 173's chamber";
                                             break;
                                         } else {
                                             Curr173->idle = 3;
@@ -222,7 +223,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                                             }
                                             n->sounds[0] = bbLoadSound("SFX/Character/MTF/173/Cont"+String(bbRand(1,4))+".ogg");
                                             PlayMTFSound(n->sounds[0], n);
-                                            bbDebugLog("173 contained");
+                                            std::cout << "173 contained";
                                             break;
                                         }
                                     }
@@ -231,7 +232,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                                 x = bbEntityX(Curr173->collider);
                                 y = 0.1;
                                 z = bbEntityZ(Curr173->collider);
-                                bbDebugLog("Going back to 173's cage");
+                                std::cout << "Going back to 173's cage";
                             }
                         }
                         //we're going to this room for no particular reason
@@ -414,7 +415,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                     n->enemyZ = bbEntityZ(mainPlayer->collider,true);
                     //give up after 15 seconds (30 seconds if detected by loud noise, over camera: 45)
                     n->state2 = 70.0*(15.0*temp);
-                    bbDebugLog("player spotted :"+String(n->state2));
+                    std::cout << "player spotted :"+String(n->state2);
                     n->pathTimer = 0.0;
                     n->pathStatus = 0;
                     n->reload = 200-(100*SelectedDifficulty->aggressiveNPCs);
@@ -438,7 +439,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                             n->state3 = 0.0;
                             n->pathTimer = 0.0;
                             n->pathStatus = 0;
-                            bbDebugLog("173 spotted :"+String(n->state2));
+                            std::cout << "173 spotted :"+String(n->state2);
                             if (n->sounds[0] != 0) {
                                 bbFreeSound(n->sounds[0]);
                                 n->sounds[0] = 0;
@@ -461,7 +462,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                             n->pathTimer = 0.0;
                             n->pathStatus = 0;
                             n->target = Curr106;
-                            bbDebugLog("106 spotted :"+String(n->state2));
+                            std::cout << "106 spotted :"+String(n->state2);
                             //If n\mtfLeader=Null
                             if (n->sounds[0] != 0) {
                                 bbFreeSound(n->sounds[0]);
@@ -485,7 +486,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                             n->state3 = 0.0;
                             n->pathTimer = 0.0;
                             n->pathStatus = 0;
-                            bbDebugLog("096 spotted :"+String(n->state2));
+                            std::cout << "096 spotted :"+String(n->state2);
                             //If n\mtfLeader=Null
                             if (n->sounds[0] != 0) {
                                 bbFreeSound(n->sounds[0]);
@@ -513,7 +514,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                                 n->pathTimer = 0.0;
                                 n->pathStatus = 0;
                                 n->target = n2;
-                                bbDebugLog("049 spotted :"+String(n->state2));
+                                std::cout << "049 spotted :"+String(n->state2);
                                 //If n\mtfLeader=Null
                                 //	If (n\sounds[0] <> 0) Then FreeSound(n\sounds[0]
                                 n->sounds[0] = 0);
@@ -536,7 +537,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                                 n->pathStatus = 0;
                                 n->target = n2;
                                 n->reload = 70*5;
-                                bbDebugLog("049-2 spotted :"+String(n->state2));
+                                std::cout << "049-2 spotted :"+String(n->state2);
                                 if (n->sounds[0] != 0) {
                                     bbFreeSound(n->sounds[0]);
                                     n->sounds[0] = 0;
@@ -780,7 +781,7 @@ void UpdateNPCtypeMTF(NPC* n) {
 
                 if (n->state2<=0.0 & n->state2+timing->tickDuration >0.0) {
                     if (n->mtfLeader == nullptr) {
-                        bbDebugLog("targetlost: "+String(n->state2));
+                        std::cout << "targetlost: "+String(n->state2);
                         PlayMTFSound(LoadTempSound("SFX/Character/MTF/Targetlost"+String(bbRand(1,3))+".ogg"),n);
                     }
                     n->state = 0;
@@ -797,7 +798,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                             n->enemyZ = bbEntityZ(Curr173->collider,true);
                             //give up after 15 seconds
                             n->state2 = 70.0*15.0;
-                            bbDebugLog("173 spotted :"+String(n->state2));
+                            std::cout << "173 spotted :"+String(n->state2);
                             if (n->sounds[0] != 0) {
                                 bbFreeSound(n->sounds[0]);
                                 n->sounds[0] = 0;
@@ -823,7 +824,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                             n->pathTimer = 0.0;
                             n->pathStatus = 0;
                             n->target = Curr106;
-                            bbDebugLog("106 spotted :"+String(n->state2));
+                            std::cout << "106 spotted :"+String(n->state2);
                             if (n->mtfLeader==nullptr) {
                                 if (n->sounds[0] != 0) {
                                     bbFreeSound(n->sounds[0]);
@@ -847,7 +848,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                             n->state3 = 0.0;
                             n->pathTimer = 0.0;
                             n->pathStatus = 0;
-                            bbDebugLog("096 spotted :"+String(n->state2));
+                            std::cout << "096 spotted :"+String(n->state2);
                             if (n->mtfLeader==nullptr) {
                                 if (n->sounds[0] != 0) {
                                     bbFreeSound(n->sounds[0]);
@@ -875,7 +876,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                                 n->pathTimer = 0.0;
                                 n->pathStatus = 0;
                                 n->target = n2;
-                                bbDebugLog("049 spotted :"+String(n->state2));
+                                std::cout << "049 spotted :"+String(n->state2);
                                 //If n\mtfLeader=Null
                                 //	If (n\sounds[0] <> 0) Then FreeSound(n\sounds[0]
                                 n->sounds[0] = 0);
@@ -898,7 +899,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                                 n->pathStatus = 0;
                                 n->target = n2;
                                 n->reload = 70*5;
-                                bbDebugLog("049-2 spotted :"+String(n->state2));
+                                std::cout << "049-2 spotted :"+String(n->state2);
                                 //If n\mtfLeader=Null
                                 if (n->sounds[0] != 0) {
                                     bbFreeSound(n->sounds[0]);
@@ -948,7 +949,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                         if (curr173Dist<tempDist) {
                             if (n->mtfLeader == nullptr) {
                                 n->state3 = n->state3+timing->tickDuration;
-                                bbDebugLog("CONTAINING 173: "+String(n->state3));
+                                std::cout << "CONTAINING 173: "+String(n->state3);
                                 //If (n\state3>=70.0*10.0) Then
                                 if (n->state3>=70.0*15.0) {
                                     Curr173->idle = 2;
@@ -1235,7 +1236,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                                         x = r->x;
                                         y = 0.1;
                                         z = r->z;
-                                        bbDebugLog(r->roomTemplate->name);
+                                        std::cout << r->roomTemplate->name;
                                         break;
                                     }
                                 }
@@ -1452,7 +1453,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                                 x = r->x;
                                 y = 0.1;
                                 z = r->z;
-                                bbDebugLog(r->roomTemplate->name);
+                                std::cout << r->roomTemplate->name;
                                 break;
                             }
                         }

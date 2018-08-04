@@ -1,5 +1,6 @@
 #include "MapSystem.h"
 #include "include.h"
+#include <iostream>
 
 namespace CBN {
 
@@ -317,7 +318,7 @@ void LoadRoomTemplates(String file) {
     while (!bbEof(f)) {
         TemporaryString = bbReadLine(f).trim();
         if (TemporaryString.charAt(0) == '[') {
-            bbDebugLog(TemporaryString);
+            std::cout << TemporaryString;
             TemporaryString = bbMid(TemporaryString, 2, TemporaryString.size() - 2);
             // TODO: Remove room ambience.
             if (!TemporaryString.toLower().equals("room ambience")) {
@@ -481,7 +482,7 @@ int CountRooms(RoomTemplate* rt) {
 Room* CreateRoom(RoomTemplate* rt, float x, float y, float z) {
     Room* r = new Room();
 
-    bbDebugLog("Placing "+rt->name);
+    std::cout << "Placing "+rt->name;
 
     // TODO: do we still need this?
     r->zone = rt->zones;
@@ -1120,7 +1121,7 @@ void InitWayPoints(int loadingstart = 45) {
         }
     }
 
-    bbDebugLog("InitWaypoints() - "+String(TimeInPosMilliSecs()-temper));
+    std::cout << "InitWaypoints() - "+String(TimeInPosMilliSecs()-temper);
 
 }
 
@@ -1131,7 +1132,7 @@ void RemoveWaypoint(WayPoint* w) {
 
 int FindPath(NPC* n, float x, float y, float z) {
 
-    bbDebugLog("findpath: "+String(n->npcType));
+    std::cout << "findpath: "+String(n->npcType);
 
     int temp;
     float dist;
@@ -1214,7 +1215,7 @@ int FindPath(NPC* n, float x, float y, float z) {
         //EndIf
         //EndIf
     }
-    bbDebugLog("DIST: "+String(dist));
+    std::cout << "DIST: "+String(dist);
 
     bbFreeEntity(temp);
 
@@ -1381,7 +1382,7 @@ int FindPath(NPC* n, float x, float y, float z) {
         //      Next
 
     } else {
-        bbDebugLog("FUNCTION FindPath() - reitti� ei l�ytynyt");
+        std::cout << "FUNCTION FindPath() - reitti� ei l�ytynyt";
         //reitti� m��r�np��h�n ei l�ytynyt
         return 2;
     }
@@ -1722,14 +1723,14 @@ void UpdateSecurityCams() {
                             bbPositionEntity(pvt, bbEntityX(mainPlayer->cam), bbEntityY(mainPlayer->cam), bbEntityZ(mainPlayer->cam));
                             bbPointEntity(pvt, sc->scrObj);
 
-                            bbDebugLog("curvea: "+String(CurveAngle(bbEntityYaw(pvt), bbEntityYaw(mainPlayer->collider), Min(Max(15000.0 / (-mainPlayer->sanity895), 20.0), 200.0))));
+                            std::cout << "curvea: "+String(CurveAngle(bbEntityYaw(pvt), bbEntityYaw(mainPlayer->collider), Min(Max(15000.0 / (-mainPlayer->sanity895), 20.0), 200.0)));
                             bbRotateEntity(mainPlayer->collider, bbEntityPitch(mainPlayer->collider), CurveAngle(bbEntityYaw(pvt), bbEntityYaw(mainPlayer->collider), Min(Max(15000.0 / (-mainPlayer->sanity895), 20.0), 200.0)), 0);
 
                             bbTurnEntity(pvt, 90, 0, 0);
                             mainPlayer->headPitch = CurveAngle(bbEntityPitch(pvt), mainPlayer->headPitch + 90.0, Min(Max(15000.0 / (-mainPlayer->sanity895), 20.0), 200.0));
                             mainPlayer->headPitch = mainPlayer->headPitch-90;
 
-                            bbDebugLog("pvt: "+String(bbEntityYaw(pvt))+"   - coll: "+String(bbEntityYaw(mainPlayer->collider)));
+                            std::cout << "pvt: "+String(bbEntityYaw(pvt))+"   - coll: "+String(bbEntityYaw(mainPlayer->collider));
 
 
                             bbFreeEntity(pvt);
@@ -1869,7 +1870,7 @@ void CreateMap() {
     int c;
     int j;
 
-    bbDebugLog("Generating a map using the seed "+RandomSeed);
+    std::cout << "Generating a map using the seed "+RandomSeed;
 
     bbSeedRnd(SeedStringToInt(RandomSeed));
 
@@ -1978,7 +1979,7 @@ void CreateMap() {
 
         if (((rt->zones & zone)!=0) & (rt->maxAmount>0) & (rt->shape!=ROOM0)) {
             tempTemplate = rt;
-            bbDebugLog("queueing up "+rt->name);
+            std::cout << "queueing up "+rt->name;
             for (i = 0; i <= prioritizedTemplateCount-1; i++) {
                 if (GetIntArrayElem(prioritizedTemplates,i,0)==0) {
                     if (i<prioritizedTemplateCount-1) {
@@ -2007,7 +2008,7 @@ void CreateMap() {
         }
     }
     for (i = 1; i <= ROOM4; i++) {
-        bbDebugLog("Type"+String(i)+" count: "+String(RoomCount[i]));
+        std::cout << "Type"+String(i)+" count: "+String(RoomCount[i]);
     }
 
     Room* r;
@@ -2029,7 +2030,7 @@ void CreateMap() {
 
         placementCount = bbRand(rt->minAmount,rt->maxAmount);
 
-        bbDebugLog("trying to place "+String(placementCount)+" "+rt->name);
+        std::cout << "trying to place "+String(placementCount)+" "+rt->name;
 
         for (c = 1; c <= placementCount; c++) {
             loopStartX = (int)(Min(bbFloor((float)(mapDim)*rt->xRangeStart),mapDim-1));
@@ -2183,7 +2184,7 @@ void CreateMap() {
                                 r->adjDoor[i] = CreateDoor(r->x+4.0*tempX, 0.0,r->z+4.0*tempY, 90.0*((i+1) % 2), nullptr);
                                 newWaypoint = CreateWaypoint(r->x+4.0*tempX,50.0*RoomScale,r->z+4.0*tempY,r);
 
-                                bbDebugLog("step1");
+                                std::cout << "step1";
                                 roomAWaypoint = nullptr;
                                 roomBWaypoint = nullptr;
                                 for (int iterator91 = 0; iterator91 < WayPoint::getListSize(); iterator91++) {
@@ -2208,7 +2209,7 @@ void CreateMap() {
                                     }
                                 }
 
-                                bbDebugLog("step2");
+                                std::cout << "step2";
                                 if (roomAWaypoint!=nullptr & roomBWaypoint!=nullptr) {
                                     for (j = 0; j <= 15; j++) {
                                         if (roomAWaypoint->connected[j]==nullptr) {
@@ -2233,7 +2234,7 @@ void CreateMap() {
                                     }
                                 }
 
-                                bbDebugLog("step3");
+                                std::cout << "step3";
                             } else {
                                 r->adjDoor[i] = r->adjacent[i]->adjDoor[(i+2) % 4];
                             }
@@ -2385,7 +2386,7 @@ void FindAndDeleteFakeMonitor(Room* r, float x, float y, float z, int Amount) {
                     if (bbEntityZ(r->objects[i],true) == z) {
                         bbFreeEntity(r->objects[i]);
                         r->objects[i] = 0;
-                        bbDebugLog("Deleted Fake Monitor: "+String(i));
+                        std::cout << "Deleted Fake Monitor: "+String(i);
                         break;
                     }
                 }

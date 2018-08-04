@@ -1,5 +1,6 @@
 #include "Room_hll_plain_4.h"
 #include "include.h"
+#include <iostream>
 
 namespace CBN {
 
@@ -41,7 +42,7 @@ void UpdateEvent_hll_plain_4(Event* e) {
                         if (n->state == 2 & bbEntityDistance(mainPlayer->collider,n->collider)>16.0) {
                             bbTFormVector(368, 528, 176, e->room->obj, 0);
                             bbPositionEntity(n->collider, bbEntityX(e->room->obj)+bbTFormedX(), bbTFormedY(), bbEntityZ(e->room->obj)+bbTFormedZ());
-                            bbDebugLog(String(bbTFormedX())+", "+String(bbTFormedY())+", "+String(bbTFormedZ()));
+                            std::cout << String(bbTFormedX())+", "+String(bbTFormedY())+", "+String(bbTFormedZ());
                             bbResetEntity(n->collider);
                             n->pathStatus = 0;
                             n->state = 4;

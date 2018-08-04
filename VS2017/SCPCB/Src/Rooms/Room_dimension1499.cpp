@@ -1,5 +1,6 @@
 #include "Room_dimension1499.h"
 #include "include.h"
+#include <iostream>
 
 namespace CBN {
 
@@ -239,13 +240,13 @@ void CreateChunkParts(Room* r) {
             StrTemp = GetINIString2(File,loc,"count");
             chp = new ChunkPart();
             chp->amount = (int)(StrTemp);
-            bbDebugLog("------------------");
+            std::cout << "------------------";
             for (j = 0; j <= (int)(StrTemp); j++) {
                 objID = (int)(GetINIString2(File,loc,"obj"+String(j)));
                 x = GetINIString2(File,loc,"obj"+String(j)+"-x");
                 z = GetINIString2(File,loc,"obj"+String(j)+"-z");
                 yaw = GetINIString2(File,loc,"obj"+String(j)+"-yaw");
-                bbDebugLog("1499 chunk X/Z/Yaw: "+x+"|"+z+"|"+yaw);
+                std::cout << "1499 chunk X/Z/Yaw: "+x+"|"+z+"|"+yaw;
                 chp->obj[j] = bbCopyEntity(r->objects[objID]);
                 if (yaw.toLower() == "random") {
                     chp->randomYaw[j] = bbRnd(360);
@@ -263,8 +264,8 @@ void CreateChunkParts(Room* r) {
             if (chp2 != nullptr) {
                 chp->id = chp2->id+1;
             }
-            bbDebugLog("<<<<<<<<<<<<<<<<");
-            bbDebugLog("Generated 1499 chunk "+String(chp->id)+" sucessfully");
+            std::cout << "<<<<<<<<<<<<<<<<";
+            std::cout << "Generated 1499 chunk "+String(chp->id)+" sucessfully";
         }
     }
 

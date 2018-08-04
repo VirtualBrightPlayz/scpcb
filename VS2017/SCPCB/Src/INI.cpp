@@ -1,5 +1,6 @@
 #include "INI.h"
 #include "include.h"
+#include <iostream>
 
 namespace CBN {
 // TODO: Replace this with simpleini.
@@ -92,7 +93,7 @@ String GetINIString(String file, String section, String parameter, String defaul
     }
 
     if (lfile == nullptr) {
-        bbDebugLog("CREATE BANK FOR "+file);
+        std::cout << "CREATE BANK FOR "+file;
         lfile = new INIFile();
         lfile->name = file.toLower();
         lfile->bank = 0;

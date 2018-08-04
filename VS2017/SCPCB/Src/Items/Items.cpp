@@ -1,5 +1,6 @@
 #include "Items.h"
 #include "include.h"
+#include <iostream>
 
 namespace CBN {
 
@@ -424,7 +425,7 @@ void UpdateItems() {
                 }
 
                 if (bbEntityY(i->collider) < - 35.0) {
-                    bbDebugLog("remove: " + i->name);
+                    std::cout << "remove: " + i->name;
                     RemoveItem(i);
                 }
             } else {

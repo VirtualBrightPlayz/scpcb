@@ -1,5 +1,6 @@
 #include "Assets.h"
 #include "include.h"
+#include <iostream>
 
 namespace CBN {
 
@@ -83,7 +84,7 @@ AssetWrap* CreateAsset(String filePath, int asType, int flag = 1) {
         bbHideEntity(as->intVal);
     }
 
-    bbDebugLog("CREATED ASSET: " + filePath);
+    std::cout << "CREATED ASSET: " + filePath;
     return as;
 }
 
@@ -102,7 +103,7 @@ void FreeAsset(AssetWrap* as) {
 
     String strng = as->file;
     delete as;
-    bbDebugLog("ASSET Removed: " + strng);
+    std::cout << "ASSET Removed: " + strng;
 }
 
 int GrabAsset(String filePath, int asType, int flag = 1) {
@@ -640,7 +641,7 @@ void InitLoadGame() {
                 //MoveEntity(mainPlayer\collider,0,10,0)
                 //ResetEntity(mainPlayer\collider)
 
-                bbDebugLog("Loaded dimension1499 successful");
+                std::cout << "Loaded dimension1499 successful";
 
                 break;
                 //[End Block]

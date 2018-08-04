@@ -1,5 +1,6 @@
 #include "NPCtype860.h"
 #include "include.h"
+#include <iostream>
 
 namespace CBN {
 
@@ -197,7 +198,7 @@ void UpdateNPCtype860(NPC* n) {
 
                                 //PositionEntity(n\collider, TFormedX(), EntityY(fr\forest_Pivot,True)+0.5, TFormedZ())
                                 bbPositionEntity(n->collider, bbTFormedX(), bbEntityY(fr->forest_Pivot,true)+1.0, bbTFormedZ());
-                                bbDebugLog(String(bbEntityY(fr->forest_Pivot,true)));
+                                std::cout << String(bbEntityY(fr->forest_Pivot,true));
 
                                 if (bbEntityInView(n->collider, mainPlayer->cam)) {
                                     mainPlayer->blinkTimer = -10;

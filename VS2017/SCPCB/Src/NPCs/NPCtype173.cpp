@@ -1,5 +1,6 @@
 #include "NPCtype173.h"
 #include "include.h"
+#include <iostream>
 
 namespace CBN {
 
@@ -146,7 +147,7 @@ void UpdateNPCtype173(NPC* n) {
                                     if (x < 25.0 && x > 15.0) {
                                         z = Abs(bbEntityZ(mainPlayer->collider)-bbEntityZ(w->obj,true));
                                         if (z < 25 && z > 15.0) {
-                                            bbDebugLog("MOVING 173 TO " + w->room->roomTemplate->name);
+                                            std::cout << "MOVING 173 TO " + w->room->roomTemplate->name;
                                             bbPositionEntity(n->collider, bbEntityX(w->obj,true), bbEntityY(w->obj,true)+0.25,bbEntityZ(w->obj,true));
                                             bbResetEntity(n->collider);
                                             break;
