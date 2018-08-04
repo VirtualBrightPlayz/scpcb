@@ -317,7 +317,7 @@ void UpdateEvent_cont_049_2(Event* e) {
 
     if (e->eventState < 0) {
         if (e->eventState > -70*4) {
-            if (mainPlayer->fallTimer ==> 0) {
+            if (mainPlayer->fallTimer >= 0) {
                 mainPlayer->fallTimer = Min(-1, mainPlayer->fallTimer);
                 bbPositionEntity(mainPlayer->head, bbEntityX(mainPlayer->cam, true), bbEntityY(mainPlayer->cam, true), bbEntityZ(mainPlayer->cam, true), true);
                 bbResetEntity(mainPlayer->head);
@@ -327,7 +327,7 @@ void UpdateEvent_cont_049_2(Event* e) {
                 mainPlayer->blinkTimer = 0;
                 e->eventState = e->eventState-timing->tickDuration;
 
-                if (e->eventState ==< -70*4) {
+                if (e->eventState <= -70*4) {
                     UpdateDoorsTimer = 0;
                     UpdateDoors();
                     UpdateRooms();

@@ -241,7 +241,7 @@ void UpdateEvent_cont_1123_2(Event* e) {
                     e->room->npc[0]->state = 3;
                     bbPointEntity(e->room->npc[0]->collider, mainPlayer->collider);
                     AnimateNPC(e->room->npc[0], 570, 596, 0.5, false);
-                    if (e->room->npc[0]->frame ==> 596) {
+                    if (e->room->npc[0]->frame >= 596) {
                         e->eventState = 5;
                         e->eventState2 = 0;
                         bbPositionEntity(mainPlayer->collider, bbEntityX(e->room->obj,true),0.3,bbEntityZ(e->room->obj,true),true);

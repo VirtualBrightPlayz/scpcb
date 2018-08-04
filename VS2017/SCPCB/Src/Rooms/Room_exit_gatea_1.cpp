@@ -90,7 +90,7 @@ void UpdateEvent_exit_gatea_1(Event* e) {
 
             e->eventState = UpdateElevators(e->eventState, e->room->doors[0], gatea->doors[1], e->room->objects[0], e->room->objects[1], e);
             if (Contained106 == false) {
-                if (e->eventState < -1.5 & e->eventState+timing->tickDuration==> -1.5) {
+                if (e->eventState < -1.5 & e->eventState+timing->tickDuration>= -1.5) {
                     //PlaySound2(OldManSFX(3)) ;TODO: fix
                 }
             }

@@ -212,7 +212,7 @@ void LoadItemTemplates(String file) {
 
     while (!bbEof(f)) {
         section = bbReadLine(f).trim();
-        if (bbLeft(section,1) == "[") {
+        if (section.charAt(0) == '[') {
             section = bbMid(section, 2, section.size() - 2);
 
             CreateItemTemplate(file, section);

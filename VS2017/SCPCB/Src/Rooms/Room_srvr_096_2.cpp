@@ -172,7 +172,7 @@ void UpdateEvent_srvr_096_2(Event* e) {
                 bbSetAnimTime(e->room->npc[0]->obj, 115);
                 bbPointEntity(e->room->npc[0]->collider, Curr096->collider);
                 //walk to the doorway
-            } else if ((e->eventState-timing->tickDuration ==< 70*15)) {
+            } else if ((e->eventState-timing->tickDuration <= 70*15)) {
                 if (e->eventState > 70*15) {
                     e->room->npc[0]->state = 3;
                     e->room->npc[0]->pathStatus = FindPath(e->room->npc[0], bbEntityX(e->room->objects[8],true),0.5,bbEntityZ(e->room->objects[8],true));

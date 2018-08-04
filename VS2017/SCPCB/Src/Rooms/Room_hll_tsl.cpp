@@ -147,7 +147,7 @@ void UpdateEvent_tesla(Event* e) {
             }
         } else {
             e->eventState = e->eventState+timing->tickDuration;
-            if (e->eventState ==< 40) {
+            if (e->eventState <= 40) {
                 if ((TimeInPosMilliSecs() % 100) < 50) {
                     bbShowEntity(e->room->objects[4]);
                 } else {
@@ -155,11 +155,11 @@ void UpdateEvent_tesla(Event* e) {
                 }
             } else {
                 if (e->room->dist < 2) {
-                    if (e->eventState-timing->tickDuration ==< 40) {
+                    if (e->eventState-timing->tickDuration <= 40) {
                         PlaySound_SM(sndManager->teslaShock);
                     }
                 } else {
-                    if (e->eventState-timing->tickDuration ==< 40) {
+                    if (e->eventState-timing->tickDuration <= 40) {
                         PlayRangedSound_SM(sndManager->teslaShock,mainPlayer->cam,e->room->objects[2]);
                     }
                 }

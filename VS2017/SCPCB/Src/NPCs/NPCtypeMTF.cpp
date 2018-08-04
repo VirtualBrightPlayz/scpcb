@@ -565,7 +565,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                         bbRotateEntity(n->collider, 0, CurveAngle(angle, bbEntityYaw(n->collider), 10.0), 0, true);
                         n->angle = bbEntityYaw(n->collider);
 
-                        if (n->reload ==< 0 & (!mainPlayer->dead)) {
+                        if (n->reload <= 0 & (!mainPlayer->dead)) {
                             if (bbEntityVisible(n->collider, mainPlayer->cam)) {
                                 angle = WrapAngle(angle - bbEntityYaw(n->collider));
                                 if (angle < 5 | angle > 355) {
@@ -1334,7 +1334,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                         n->pathTimer = Min(n->pathTimer-timing->tickDuration,0.0);
                     }
 
-                    if (n->pathStatus == 1 & n->reload ==< 0) {
+                    if (n->pathStatus == 1 & n->reload <= 0) {
                         dist = Distance(bbEntityX(target),bbEntityZ(target),bbEntityX(n->collider),bbEntityZ(n->collider));
 
                         //If (dist<20.0) Then
@@ -1373,7 +1373,7 @@ void UpdateNPCtypeMTF(NPC* n) {
 
                 AnimateNPC(n, 346, 351, 0.2, false);
 
-                if (n->reload ==< 0 & (!mainPlayer->dead)) {
+                if (n->reload <= 0 & (!mainPlayer->dead)) {
                     if (bbEntityVisible(n->collider, mainPlayer->collider)) {
                         //angle# = WrapAngle(angle - EntityYaw(n\collider))
                         //If (angle < 5 Or angle > 355) Then
@@ -1411,7 +1411,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                 bbRotateEntity(n->collider,0,CurveAngle(n->state2,bbEntityYaw(n->collider),20),0);
                 n->angle = bbEntityYaw(n->collider);
 
-                if (n->reload ==< 0) {
+                if (n->reload <= 0) {
                     //LightVolume = TempLightVolume*1.2
                     PlayRangedSound_SM(sndManager->gunshot[0], mainPlayer->cam, n->collider, 20);
 
@@ -1602,7 +1602,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                         n->state3 = 0;
                         AnimateNPC(n, 346, 351, 0.2, false);
                     }
-                    if (n->reload ==< 0 & n->target->isDead == false) {
+                    if (n->reload <= 0 & n->target->isDead == false) {
                         //angle# = WrapAngle(angle - EntityYaw(n\collider))
                         //If (angle < 5 Or angle > 355) Then
                         if (Abs(bbDeltaYaw(n->collider,n->target->collider))<50.0) {

@@ -350,14 +350,14 @@ void UpdateConsole() {
         if (oldConsoleInput!=ConsoleInput) {
             ConsoleReissue = nullptr;
         }
-        ConsoleInput = bbLeft(ConsoleInput, 100);
+        ConsoleInput = ConsoleInput.substr(0, 100);
 
         if (bbKeyHit(28) && !ConsoleInput.isEmpty()) {
             ConsoleReissue = nullptr;
             ConsoleScroll = 0;
             CreateConsoleMsg(ConsoleInput,255,255,0,true);
             if (bbInstr(ConsoleInput, " ") > 0) {
-                StrTemp = bbLeft(ConsoleInput, bbInstr(ConsoleInput, " ") - 1).toLower();
+                StrTemp = ConsoleInput.substr(0, ConsoleInput.findFirst(" ")).toLower();
             } else {
                 StrTemp = ConsoleInput.toLower();
             }

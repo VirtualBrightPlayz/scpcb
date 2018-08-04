@@ -44,7 +44,7 @@ void InitLoadingScreens(String file) {
 
     while (!bbEof(f)) {
         TemporaryString = bbReadLine(f).trim();
-        if (bbLeft(TemporaryString,1) == "[") {
+        if (TemporaryString.charAt(0) == '[') {
             TemporaryString = bbMid(TemporaryString, 2, TemporaryString.size() - 2);
 
             ls = new LoadingScreen();

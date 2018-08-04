@@ -210,7 +210,7 @@ void UpdateEvent_cont_008_1(Event* e) {
 
                 bbRotateEntity(e->room->objects[1],CurveAngle(1,bbEntityPitch(e->room->objects[1],true),15.0),bbEntityYaw(e->room->objects[1],true),0,true);
 
-                if (bbEntityPitch(e->room->objects[1],true)==<1.0) {
+                if (bbEntityPitch(e->room->objects[1],true)<=1.0) {
                     RemoveEvent(e);
                 }
             }

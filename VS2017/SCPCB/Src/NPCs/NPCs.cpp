@@ -460,7 +460,7 @@ void Shoot(float x, float y, float z, float hitProb = 1.0, int particles = true,
             return;
         }
 
-        if (bbRnd(1.0) ==< hitProb) {
+        if (bbRnd(1.0) <= hitProb) {
             bbTurnEntity(mainPlayer->cam, bbRnd(-3,3), bbRnd(-3,3), 0);
 
             wearingVest = false;
@@ -1168,7 +1168,7 @@ void AnimateNPC(NPC* n, float start, float quit, float speed, int loop = true) {
     if (speed > 0.0) {
         newTime = Max(Min(n->frame + speed * timing->tickDuration, quit), start);
 
-        if (loop & newTime ==> quit) {
+        if (loop & newTime >= quit) {
             newTime = start;
         }
     } else {

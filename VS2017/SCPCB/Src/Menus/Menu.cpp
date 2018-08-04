@@ -73,7 +73,7 @@ String rInput(String aString) {
     if (value == 8) {
         value = 0;
         if (length > 0) {
-            aString = bbLeft(aString, length - 1);
+            aString = aString.substr(0, length - 1);
         }
     }
 
@@ -271,7 +271,7 @@ void RowText(String A, int X, int Y, int W, int H, int align = 0, float Leading 
         if (space == 0) {
             space = A.size();
         }
-        temp = bbLeft(A, space);
+        temp = A.substr(0, space);
         //we might ignore a final space
         trimmed = temp.trim();
         //we haven't ignored it yet
@@ -332,7 +332,7 @@ int LimitText(String txt, int x, int y, int width, int usingAA = true) {
         } else {
             LetterWidth = TextLength / txt.size();
 
-            bbText(x, y, bbLeft(txt, (int)(Max(txt.size() - UnFitting / LetterWidth - 4, 1))) + "...");
+            bbText(x, y, txt.substr(0, (int)(Max(txt.size() - UnFitting / LetterWidth - 4, 1))) + "...");
         }
     } else {
         if (txt.isEmpty() || width == 0) {
@@ -347,7 +347,7 @@ int LimitText(String txt, int x, int y, int width, int usingAA = true) {
         } else {
             LetterWidth = TextLength / txt.size();
 
-            bbText(x, y, bbLeft(txt, (int)(Max(txt.size() - UnFitting / LetterWidth - 4, 1))) + "...");
+            bbText(x, y, txt.substr(0, (int)(Max(txt.size() - UnFitting / LetterWidth - 4, 1))) + "...");
         }
     }
 }

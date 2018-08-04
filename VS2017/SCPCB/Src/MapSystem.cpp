@@ -257,7 +257,7 @@ void LoadMaterials(String file) {
 
     while (!bbEof(f)) {
         TemporaryString = bbReadLine(f).trim();
-        if (bbLeft(TemporaryString,1) == "[") {
+        if (TemporaryString.charAt(0) == '[') {
             TemporaryString = bbMid(TemporaryString, 2, TemporaryString.size() - 2);
 
             mat = new Material();
@@ -308,7 +308,7 @@ String Piece(String s, int entry, String chr = " ") {
     if (p<1) {
         a = s;
     } else {
-        a = bbLeft(s,p-1);
+        a = s.substr(0,p-1);
     }
 
     return a;
@@ -326,7 +326,7 @@ String KeyValue(int entity, String key, String defaultvalue = "") {
     while (true) {
         p = bbInstr(properties,bbChr(10));
         if (p) {
-            test = (bbLeft(properties,p-1));
+            test = (properties.substr(0,p-1));
         } else {
             test = properties;
         }
@@ -370,7 +370,7 @@ void LoadRoomTemplates(String file) {
 
     while (!bbEof(f)) {
         TemporaryString = bbReadLine(f).trim();
-        if (bbLeft(TemporaryString,1) == "[") {
+        if (TemporaryString.charAt(0) == '[') {
             bbDebugLog(TemporaryString);
             TemporaryString = bbMid(TemporaryString, 2, TemporaryString.size() - 2);
             // TODO: Remove room ambience.
@@ -426,8 +426,8 @@ void LoadRoomTemplates(String file) {
                         rt->minAmount = -1;
                         rt->maxAmount = -1;
                     } else if ((bbInstr(AmountRange,"-")>0)) {
-                        rt->minAmount = (int)(bbLeft(AmountRange,bbInstr(AmountRange,"-")));
-                        rt->maxAmount = (int)(bbMid(AmountRange,bbInstr(AmountRange,"-")+1));
+                        rt->minAmount = AmountRange.substr(0,AmountRange.findFirst("-")).toInt();
+                        rt->maxAmount = (int)(bbMid(AmountRange,AmountRange.findFirst("-")+1));
                     } else {
                         rt->minAmount = AmountRange.toInt();
                         rt->maxAmount = rt->minAmount;
@@ -446,10 +446,10 @@ void LoadRoomTemplates(String file) {
                         yRange = "0-1";
                     }
 
-                    rt->xRangeStart = (float)(bbLeft(xRange,bbInstr(xRange,"-")));
+                    rt->xRangeStart = xRange.substr(0,bbInstr(xRange,"-")).toFloat();
                     rt->xRangeEnd = (float)(bbMid(xRange,bbInstr(xRange,"-")+1));
 
-                    rt->yRangeStart = (float)(bbLeft(yRange,bbInstr(yRange,"-")));
+                    rt->yRangeStart = yRange.substr(0,bbInstr(yRange,"-")).toFloat();
                     rt->yrangeEnd = (float)(bbMid(yRange,bbInstr(yRange,"-")+1));
                 } else {
                     rt->minAmount = 0;

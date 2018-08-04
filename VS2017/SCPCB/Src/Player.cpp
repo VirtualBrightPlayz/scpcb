@@ -549,7 +549,7 @@ void UpdatePlayer() {
         if (mainPlayer->bloodloss > 60) {
             mainPlayer->crouching = true;
         }
-        if (mainPlayer->bloodloss ==> 100) {
+        if (mainPlayer->bloodloss >= 100) {
             Kill(mainPlayer);
             mainPlayer->heartbeatIntensity = 0.0;
         } else if ((mainPlayer->bloodloss > 80.0)) {

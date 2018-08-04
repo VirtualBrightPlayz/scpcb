@@ -31,7 +31,7 @@ void InitializeKeyName() {
     KeyName[26] = "[";
     KeyName[27] = "]";
     KeyName[28] = "Enter";
-    KeyName[29] = "bbLeft Ctrl";
+    KeyName[29] = "Left Ctrl";
     KeyName[30] = "A";
     KeyName[31] = "S";
     KeyName[32] = "D";
@@ -43,7 +43,7 @@ void InitializeKeyName() {
     KeyName[38] = "L";
     KeyName[39] = ";";
     KeyName[40] = "'";
-    KeyName[42] = "bbLeft Shift";
+    KeyName[42] = "Left Shift";
     KeyName[43] = "\\";
     KeyName[44] = "Z";
     KeyName[45] = "X";
@@ -54,8 +54,8 @@ void InitializeKeyName() {
     KeyName[50] = "M";
     KeyName[51] = ",";
     KeyName[52] = ".";
-    KeyName[54] = "bbRight Shift";
-    KeyName[56] = "bbLeft Alt";
+    KeyName[54] = "Right Shift";
+    KeyName[56] = "Left Alt";
     KeyName[57] = "Space";
     KeyName[58] = "Caps Lock";
     KeyName[59] = "F1";
@@ -68,11 +68,11 @@ void InitializeKeyName() {
     KeyName[66] = "F8";
     KeyName[67] = "F9";
     KeyName[68] = "F10";
-    KeyName[157] = "bbRight Control";
-    KeyName[184] = "bbRight Alt";
+    KeyName[157] = "Right Control";
+    KeyName[184] = "Right Alt";
     KeyName[200] = "Up";
-    KeyName[203] = "bbLeft";
-    KeyName[205] = "bbRight";
+    KeyName[203] = "Left";
+    KeyName[205] = "Right";
     KeyName[208] = "Down";
 }
 
