@@ -34,14 +34,14 @@ public:
 
     int grabbedEntity;
 
-    Item* closestItem;
-    Item* selectedItem;
+    struct Item* closestItem;
+    struct Item* selectedItem;
 
     int closestButton;
-    Door* closestDoor;
-    Door* selectedDoor;
+    struct Door* closestDoor;
+    struct Door* selectedDoor;
 
-    int drawDirectionialArrow[4];
+    int drawDirectionalArrow[4];
     //------------
 
     //movement states
@@ -90,12 +90,12 @@ public:
     //------
 
     //items
-    Inventory* inventory;
-    Inventory* openInventory;
+    struct Inventory* inventory;
+    struct Inventory* openInventory;
     //------
 
     //sounds
-    IntArray* breathingSFX;
+    struct IntArray* breathingSFX;
     int bloodDripSFX[4];
     int damageSFX[9];
     int coughSFX[3];
@@ -105,7 +105,7 @@ public:
     //------
 
     //other states
-    Room* currRoom;
+    struct Room* currRoom;
 
     int godMode;
     int noclip;

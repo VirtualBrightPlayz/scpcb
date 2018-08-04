@@ -87,20 +87,20 @@ public:
     float y;
     float z;
     int angle;
-    RoomTemplate* roomTemplate;
+    struct RoomTemplate* roomTemplate;
 
     //TODO: rename
     int obj;
     int opaqueMesh;
     int alphaMesh;
-    IntArray* collisionObjs;
-    IntArray* props;
+    struct IntArray* collisionObjs;
+    struct IntArray* props;
 
     float dist;
 
     int soundCHN;
 
-    Forest* fr;
+    struct Forest* fr;
 
     //TODO: use arraylists for all this stuff?
     int soundEmitter[MaxRoomEmitters];
@@ -114,13 +114,13 @@ public:
     int lightSprites[MaxRoomLights];
 
     int objects[MaxRoomObjects];
-    Lever* levers[11];
-    Door* doors[7];
-    NPC* npc[12];
-    Grid* grid;
+    struct Lever* levers[11];
+    struct Door* doors[7];
+    struct NPC* npc[12];
+    struct Grid* grid;
 
-    Room* adjacent[4];
-    Door* adjDoor[4];
+    struct Room* adjacent[4];
+    struct Door* adjDoor[4];
 
     //TODO: what the fuck
     int lightSpritesPivot[MaxRoomLights];
@@ -143,7 +143,7 @@ public:
     int angles[gridsz*gridsz];
     int meshes[7];
     int entities[gridsz*gridsz];
-    WayPoint* waypoints[gridsz*gridsz];
+    struct WayPoint* waypoints[gridsz*gridsz];
 };
 
 struct LightTemplate {
@@ -156,7 +156,7 @@ public:
     static int getListSize();
     static LightTemplate* getObject(int index);
 
-    RoomTemplate* roomtemplate;
+    struct RoomTemplate* roomtemplate;
     int ltype;
     float x;
     float y;
@@ -186,7 +186,7 @@ public:
     float y;
     float z;
     int connectedTo[32];
-    RoomTemplate* roomtemplate;
+    struct RoomTemplate* roomtemplate;
 };
 
 struct WayPoint {
@@ -200,18 +200,18 @@ public:
     static WayPoint* getObject(int index);
 
     int obj;
-    Room* room;
+    struct Room* room;
     int state;
     //Field tempDist#
     //Field tempSteps%
-    WayPoint* connected[16];
+    struct WayPoint* connected[16];
     float dist[16];
 
     float fCost;
     float gCost;
     float hCost;
 
-    WayPoint* parent;
+    struct WayPoint* parent;
 };
 
 struct Screen {
@@ -227,7 +227,7 @@ public:
     int obj;
     String imgpath;
     int img;
-    Room* room;
+    struct Room* room;
 };
 
 struct TempScreen {
@@ -244,7 +244,7 @@ public:
     float x;
     float y;
     float z;
-    RoomTemplate* roomtemplate;
+    struct RoomTemplate* roomtemplate;
 };
 
 struct SecurityCam {
@@ -282,7 +282,7 @@ public:
 
     float renderInterval;
 
-    Room* room;
+    struct Room* room;
 
     int followPlayer;
     int coffinEffect;
@@ -380,7 +380,7 @@ void SetRoomVisibility(Room* r, int on);
 
 void UpdateRooms();
 
-int IsRoomAdjacent(Room* this, Room* that);
+int IsRoomAdjacent(Room* ths, Room* that);
 
 int AddLight(Room* room, float x, float y, float z, int ltype, float range, int r, int g, int b);
 

@@ -54,7 +54,7 @@ public:
 
     int disable;
 
-    Room* room;
+    struct Room* room;
 
     int soundCHN;
 

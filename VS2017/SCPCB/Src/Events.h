@@ -4,6 +4,11 @@
 
 namespace CBN {
 
+// Constants.
+extern const int EVENT_MAX_STATE_COUNT;
+extern const int EVENT_SOUND_COUNT;
+extern const int EVENT_CHANNEL_COUNT;
+
 // Structs.
 struct Event {
 private:
@@ -16,7 +21,7 @@ public:
     static Event* getObject(int index);
 
     String name;
-    Room* room;
+    struct Room* room;
 
     //TODO: deprecated
     float eventState;
@@ -36,11 +41,6 @@ public:
     String musicTrack;
     int overwriteMusic;
 };
-
-// Constants.
-extern const int EVENT_MAX_STATE_COUNT;
-extern const int EVENT_SOUND_COUNT;
-extern const int EVENT_CHANNEL_COUNT;
 
 // Functions.
 Event* CreateEvent(String eventname, String roomname, int id, float prob = 0.0);

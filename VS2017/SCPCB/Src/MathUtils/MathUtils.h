@@ -4,10 +4,6 @@
 
 namespace CBN {
 
-// Constants.
-extern const float INFINITY;
-extern const float NAN;
-
 // Globals.
 extern float Mesh_MinX;
 extern float Mesh_MinY;

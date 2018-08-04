@@ -194,7 +194,7 @@ void UpdateRangedSoundOrigin_SM(SoundChannel* chn);
 
 int LoadTempSound(String file);
 
-int LoadEventSound(Event* e, String file, int i = 0);
+int LoadEventSound(struct Event* e, String file, int i = 0);
 
 void PauseSounds();
 

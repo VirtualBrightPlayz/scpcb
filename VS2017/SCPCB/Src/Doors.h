@@ -27,7 +27,7 @@ public:
     int typ;
     int timer;
     float timerstate;
-    Room* room;
+    struct Room* room;
 
     float dist;
 

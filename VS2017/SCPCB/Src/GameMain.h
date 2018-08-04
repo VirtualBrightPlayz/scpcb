@@ -69,7 +69,7 @@ extern int AmbientLightRoomVal;
 extern float NTF_1499PrevX;
 extern float NTF_1499PrevY;
 extern float NTF_1499PrevZ;
-extern Room* NTF_1499PrevRoom;
+extern struct Room* NTF_1499PrevRoom;
 extern float NTF_1499X;
 extern float NTF_1499Y;
 extern float NTF_1499Z;

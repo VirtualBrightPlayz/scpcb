@@ -48,7 +48,7 @@ public:
     String name;
     int collider;
     int model;
-    ItemTemplate* template;
+    struct ItemTemplate* itemTemplate;
     int img;
     int id;
 
@@ -74,7 +74,7 @@ public:
     float dropSpeed;
 
     String tags[5];
-    Inventory* subInventory = nullptr;
+    struct Inventory* subInventory = nullptr;
 };
 
 struct Inventory {
@@ -87,7 +87,7 @@ public:
     static int getListSize();
     static Inventory* getObject(int index);
 
-    Item* items[MAX_ITEM_COUNT];
+    struct Item* items[MAX_ITEM_COUNT];
     int size = 10;
     Inventory* parent = nullptr;
 };
