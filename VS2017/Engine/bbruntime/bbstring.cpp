@@ -13,19 +13,10 @@ String bbString( String s,int n ){
 	return t;
 }
 
-String bbLeft( String s,int n ){
-	CHKPOS( n );
-	s=s.substr( 0,n );return s;
-}
-
 String bbRight( String s,int n ){
 	CHKPOS( n );
 	n=s.size()-n;if( n<0 ) n=0;
 	s=s.substr( n );return s;
-}
-
-String bbReplace( String s,String from,String to ){
-	return s.replace(from,to);
 }
 
 int bbInstr( String s,String t,int from ){
@@ -34,18 +25,6 @@ int bbInstr( String s,String t,int from ){
 
 String bbMid( String s,int o,int n ){
 	return s.substr(o-1,n);
-}
-
-String bbUpper( String s ){
-	return s.toUpper();
-}
-
-String bbLower( String s ){
-	return s.toLower();
-}
-
-String bbTrim( String s ){
-	return s.trim();
 }
 
 String bbChr( int n ){
@@ -73,11 +52,6 @@ String bbBin( int n ){
 
 int bbAsc( String s ){
 	int n=s.size() ? s.charAt(0) & 255 : -1;
-	return n;
-}
-
-int bbLen( String s ){
-	int n=s.size();
 	return n;
 }
 

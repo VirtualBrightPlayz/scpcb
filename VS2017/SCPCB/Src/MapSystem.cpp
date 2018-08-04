@@ -293,60 +293,6 @@ String StripPath(String file) {
     return name;
 }
 
-String Piece(String s, int entry, String chr = " ") {
-    String a;
-    int p;
-
-    while (bbInstr(s, chr+chr)) {
-        s = bbReplace(s, chr+chr, chr);
-    }
-    for (int n = 1; n < entry; n++) {
-        p = bbInstr(s, chr);
-        s = bbRight(s, s.size() - p);
-    }
-    p = bbInstr(s, chr);
-    if (p<1) {
-        a = s;
-    } else {
-        a = s.substr(0,p-1);
-    }
-
-    return a;
-}
-
-String KeyValue(int entity, String key, String defaultvalue = "") {
-    String test;
-    String testkey;
-    String value;
-    String properties = bbEntityName(entity);
-    int p;
-
-    properties = bbReplace(properties,bbChr(13),"");
-    key = key.toLower();
-    while (true) {
-        p = bbInstr(properties,bbChr(10));
-        if (p) {
-            test = (properties.substr(0,p-1));
-        } else {
-            test = properties;
-        }
-        testkey = Piece(test,1,"=");
-        testkey = testkey.trim();
-        testkey = bbReplace(testkey,"\"","");
-        testkey = testkey.toLower();
-        if (testkey.equals(key)) {
-            value = Piece(test,2,"=");
-            value = value.trim();
-            value = bbReplace(value,"\"","");
-            return value;
-        }
-        if (!p) {
-            return defaultvalue;
-        }
-        properties = bbRight(properties, properties.size()-p);
-    }
-}
-
 RoomTemplate* CreateRoomTemplate(String meshpath) {
     RoomTemplate* rt = new RoomTemplate();
 

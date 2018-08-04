@@ -29,13 +29,13 @@ void FillRoom_hll_caf_2(Room* r) {
 
     //it = CreateItem("cup", "cup", r\x-508.0*RoomScale, -187*RoomScale, r\z+284.0*RoomScale, 240,175,70)
     //EntityParent(it\collider, r\obj)
-    it->name = "Cup of Orange Juice";
+    // it->name = "Cup of Orange Juice";
 
     //it = CreateItem("cup", "cup", r\x+1412 * RoomScale, -187*RoomScale, r\z-716.0 * RoomScale, 87,62,45)
     //EntityParent(it\collider, r\obj)
-    it->name = "Cup of Coffee";
+    // it->name = "Cup of Coffee";
 
-    it = CreateItem("cup", r->x-540*RoomScale, -187*RoomScale, r->z+124.0*RoomScale);
+    // it = CreateItem("cup", r->x-540*RoomScale, -187*RoomScale, r->z+124.0*RoomScale);
     bbEntityParent(it->collider, r->obj);
 }
 
@@ -92,8 +92,8 @@ void Update294() {
             xtemp = (int)(bbFloor((bbMouseX()-x-228) / 35.5));
             ytemp = (int)(bbFloor((bbMouseY()-y-342) / 36.5));
 
-            if (ytemp >= 0 & ytemp < 5) {
-                if (xtemp >= 0 & xtemp < 10) {
+            if (ytemp >= 0 && ytemp < 5) {
+                if (xtemp >= 0 && xtemp < 10) {
                     PlaySound_SM(sndManager->button);
                 }
             }

@@ -247,7 +247,7 @@ void DrawLoading(int percent, int shortloading = false) {
             temp = (int)(SelectedLoadingScreen->txt[0].size()-bbRand(5));
             //temp
             for (i = 0; i <= bbRand(10,15); i++) {
-                strtemp = bbReplace(SelectedLoadingScreen->txt[0],bbMid(SelectedLoadingScreen->txt[0],bbRand(1,strtemp.size()-1),1),bbChr(bbRand(130,250)));
+                strtemp = SelectedLoadingScreen->txt[0].replace(bbMid(SelectedLoadingScreen->txt[0],bbRand(1,strtemp.size()-1),1),bbChr(bbRand(130,250)));
             }
             bbSetFont(uiAssets->font[0]);
             RowText(strtemp, userOptions->screenWidth / 2-200, userOptions->screenHeight / 2 +120,400,300,true);

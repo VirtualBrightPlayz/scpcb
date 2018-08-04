@@ -1005,8 +1005,8 @@ void UpdateConsole() {
                 }
                 case "spawnnpcstate": {
                     args = bbRight(ConsoleInput, ConsoleInput.size() - bbInstr(ConsoleInput, " ")).toLower();
-                    StrTemp = Piece(args,1," ");
-                    StrTemp2 = Piece(args,2," ");
+                    // StrTemp = Piece(args,1," ");
+                    // StrTemp2 = Piece(args,2," ");
                     Console_SpawnNPC(StrTemp, StrTemp2.toInt());
 
                 }
@@ -1107,9 +1107,9 @@ void UpdateConsole() {
                 }
                 case "tele": {
                     args = bbRight(ConsoleInput, ConsoleInput.size() - bbInstr(ConsoleInput, " ")).toLower();
-                    StrTemp = Piece(args,1," ");
-                    StrTemp2 = Piece(args,2," ");
-                    StrTemp3 = Piece(args,3," ");
+                    // StrTemp = Piece(args,1," ");
+                    // StrTemp2 = Piece(args,2," ");
+                    // StrTemp3 = Piece(args,3," ");
                     bbPositionEntity(mainPlayer->collider,(float)(StrTemp),(float)(StrTemp2),(float)(StrTemp3));
                     bbPositionEntity(mainPlayer->cam,(float)(StrTemp),(float)(StrTemp2),(float)(StrTemp3));
                     CreateConsoleMsg("Teleported to coordinates (X|Y|Z): "+String(bbEntityX(mainPlayer->collider))+"|"+String(bbEntityY(mainPlayer->collider))+"|"+String(bbEntityZ(mainPlayer->collider)));
