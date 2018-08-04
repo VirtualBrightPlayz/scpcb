@@ -1,23 +1,17 @@
 # Containment Breach
 [Ss]aves/*
 
-# Blitz3D
-*FastExt.bb
-*FastText_Unicode.bb
-*FastImage.bb
-*.bb.rej
-*.bb_bak*
-
-# C-Sharp
-[Bb]in/
-[Oo]bj/
-[Dd]ebug/
-
 # IDEal
 *.ipf
 *.iws
 
 # Visual Studio
+[Dd]ebug
+[Rr]elease
+*.exe
+*.dll
+*.pdb
+*.ilk
 .vs
 
 # Visual Studio Code
