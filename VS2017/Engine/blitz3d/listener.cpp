@@ -7,7 +7,7 @@ extern gxAudio *gx_audio;
 Listener::Listener( float roll,float dopp,float dist ){
 	if( !gx_audio ) return;
 
-	gx_audio->set3dOptions( roll,dopp,dist );
+	//gx_audio->set3dOptions( roll,dopp,dist );
 	renderListener();
 }
 
@@ -19,7 +19,7 @@ Listener::~Listener(){
 	if( !gx_audio ) return;
 
 	Vector pos,vel,up(0,1,1),forward(0,0,1);
-	gx_audio->set3dListener( &pos.x,&vel.x,&forward.x,&up.x );
+	//gx_audio->set3dListener( &pos.x,&vel.x,&forward.x,&up.x );
 }
 
 void Listener::renderListener(){
@@ -30,5 +30,5 @@ void Listener::renderListener(){
 	const Vector &forward=getWorldTform().m.k.normalized();
 	const Vector &up=getWorldTform().m.j.normalized();
 
-	gx_audio->set3dListener( &pos.x,&vel.x,&forward.x,&up.x );
+	//gx_audio->set3dListener( &pos.x,&vel.x,&forward.x,&up.x );
 }

@@ -5,13 +5,14 @@
 gxAudio *gx_audio;
 
 static inline void debugSound( gxSound *s ){
-	if( debug ){
-		if( !gx_audio->verifySound( s ) ) RTEX( "Sound does not exist" );
+	return;
+    if( debug ){
+		//if( !gx_audio->verifySound( s ) ) RTEX( "Sound does not exist" );
 	}
 }
 
 static gxSound *loadSound( String f,bool use_3d ){
-	return gx_audio ? gx_audio->loadSound( f,use_3d ) : 0;
+	return 0;//return gx_audio ? gx_audio->loadSound( f,use_3d ) : 0;
 }
 
 gxSound *bbLoadSound( String f ){
@@ -19,39 +20,45 @@ gxSound *bbLoadSound( String f ){
 }
 
 void bbFreeSound( gxSound *sound ){
-	if( !sound ) return;
+	return;
+    if( !sound ) return;
 	debugSound( sound );
-	gx_audio->freeSound( sound );
+	//gx_audio->freeSound( sound );
 }
 
 void bbLoopSound( gxSound *sound ){
-	if( !sound ) return;
+	return;
+    if( !sound ) return;
 	debugSound( sound );
-	sound->setLoop( true );
+	//sound->setLoop( true );
 }
 
 void bbSoundPitch( gxSound *sound,int pitch ){
-	if( !sound ) return;
+	return;
+    if( !sound ) return;
 	debugSound( sound );
-	sound->setPitch( pitch );
+	//sound->setPitch( pitch );
 }
 
 void bbSoundVolume( gxSound *sound,float volume ){
-	if( !sound ) return;
+	return;
+    if( !sound ) return;
 	debugSound( sound );
-	sound->setVolume( volume );
+	//sound->setVolume( volume );
 }
 
 void bbSoundPan( gxSound *sound,float pan ){
-	if( !sound ) return;
+	return;
+    if( !sound ) return;
 	debugSound( sound );
-	sound->setPan( pan );
+	//sound->setPan( pan );
 }
 
 gxChannel *bbPlaySound( gxSound *sound ){
-	if( !sound ) return 0;
+	return 0;
+    if( !sound ) return 0;
 	debugSound( sound );
-	return sound->play();
+	//return sound->play();
 }
 
 void bbStopChannel( gxChannel *channel ){

@@ -150,11 +150,11 @@ gxRuntime::~gxRuntime(){
 }
 
 void gxRuntime::pauseAudio(){
-	if( audio ) audio->pause();
+	//if( audio ) audio->pause();
 }
 
 void gxRuntime::resumeAudio(){
-	if( audio ) audio->resume();
+	//if( audio ) audio->resume();
 }
 
 void gxRuntime::backupGraphics(){
@@ -646,25 +646,18 @@ void gxRuntime::setPointerVisible( bool vis ){
 // AUDIO SETUP //
 /////////////////
 gxAudio *gxRuntime::openAudio( int flags ){
-	if( audio ) return 0;
+	return 0;
+    //if( audio ) return 0;
 
-	int f_flags=
-		FSOUND_INIT_GLOBALFOCUS|
-		FSOUND_INIT_USEDEFAULTMIDISYNTH;
-
-	FSOUND_SetHWND( hwnd );
-	if( !FSOUND_Init( 44100,1024,f_flags ) ){
-		return 0;
-	}
-
-	audio=d_new gxAudio( this );
-	return audio;
+	//audio=d_new gxAudio( this );
+	//return audio;
 }
 
 void gxRuntime::closeAudio( gxAudio *a ){
-	if( !audio || audio!=a ) return;
-	delete audio;
-	audio=0;
+	return;
+    //if( !audio || audio!=a ) return;
+	//delete audio;
+	//audio=0;
 }
 
 /////////////////
@@ -694,7 +687,11 @@ void gxRuntime::closeInput( gxInput *i ){
 /////////////////////////////////////////////////////
 // TIMER CALLBACK FOR AUTOREFRESH OF WINDOWED MODE //
 /////////////////////////////////////////////////////
-static void _cdecl timerCallback( UINT id,UINT msg,DWORD_PTR user,DWORD_PTR dw1,DWORD_PTR dw2 ){
+#ifdef _WIN64
+static void _cdecl timerCallback(UINT id, UINT msg, DWORD_PTR user, DWORD_PTR dw1, DWORD_PTR dw2) {
+#else
+static void CALLBACK timerCallback(UINT id, UINT msg, DWORD user, DWORD dw1, DWORD dw2) {
+#endif
 	if( gfx_mode ){
 		gxCanvas *f=runtime->graphics->getFrontCanvas();
 		if( f->getModify()!=mod_cnt ){

@@ -113,16 +113,27 @@ static void sue( const char *t ){
 bool bbruntime_create(HINSTANCE hinst){
     gx_runtime = gxRuntime::openRuntime(hinst, "");
 	if( basic_create() ){
+        printf("basic_create()\n");
 		if( math_create() ){
+            printf("math_create()\n");
 			if( string_create() ){
+                printf("string_create()\n");
 				if( stream_create() ){
+                    printf("stream_create()\n");
 					if( sockets_create() ){
+                        printf("sockets_create()\n");
 						if( filesystem_create() ){
+                            printf("filesystem_create()\n");
 							if( bank_create() ){
+                                printf("bank_create()\n");
 								if( graphics_create() ){
+                                    printf("graphics_create()\n");
 									if( input_create() ){
+                                        printf("input_create()\n");
 										if( audio_create() ){
+                                            printf("audio_create()\n");
 											if( blitz3d_create() ){
+                                                printf("blitz3d_create()\n");
 												return true;
 											}else sue( "blitz3d_create failed" );
 											audio_destroy();
