@@ -296,7 +296,7 @@ void LoadEntities() {
     bbHideEntity(Monitor);
     MonitorTexture = bbLoadTexture("GFX/General/monitortexture.jpg");
 
-    CamBaseOBJ = bbLoadMesh("GFX/Map/cambase.x");
+    CamBaseOBJ = bbLoadMesh("GFX/Map/cambase.b3d");
     bbHideEntity(CamBaseOBJ);
     CamOBJ = bbLoadMesh("GFX/Map/CamHead.b3d");
     bbHideEntity(CamOBJ);

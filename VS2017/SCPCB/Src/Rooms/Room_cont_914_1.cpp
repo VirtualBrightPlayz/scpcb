@@ -24,8 +24,8 @@ void FillRoom_cont_914_1(Room* r) {
     bbPositionEntity(r->doors[2]->buttons[0], r->x - 496.0 * RoomScale, 0.7, r->z - 272.0 * RoomScale, true);
     bbTurnEntity(r->doors[2]->buttons[0], 0, 90, 0);
 
-    r->objects[0] = bbLoadMesh("GFX/Map/914key.x");
-    r->objects[1] = bbLoadMesh("GFX/Map/914knob.x");
+    r->objects[0] = bbLoadMesh("GFX/Map/914key.b3d");
+    r->objects[1] = bbLoadMesh("GFX/Map/914knob.b3d");
 
     for (i = 0; i <= 1; i++) {
         bbScaleEntity(r->objects[i], RoomScale, RoomScale, RoomScale);
