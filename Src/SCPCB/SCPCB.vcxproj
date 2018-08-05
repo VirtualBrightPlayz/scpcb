@@ -274,6 +274,7 @@
     <ClCompile Include="Src\Skybox.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Src\Array.h" />
     <ClInclude Include="Src\Assets.h" />
     <ClInclude Include="Src\Audio.h" />
@@ -392,6 +393,12 @@
     <ClInclude Include="Src\Rooms\Room_tnnl_plain_4.h" />
     <ClInclude Include="Src\Save.h" />
     <ClInclude Include="Src\Skybox.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="SCPCB.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\Resources\logo.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
