@@ -70,14 +70,14 @@ public:
 
     class Entity* getMesh();
 
-    static ImageAssetWrap* grab(String filePath, bool isAnimated = true);
+    static MeshAssetWrap* grab(String filePath, bool isAnimated = true);
 private:
     static std::vector<MeshAssetWrap*> list;
     
     bool animated;
     class Entity* mesh;
 
-    MeshAssetWrap(String filePath);
+    MeshAssetWrap(String filePath, bool isAnimated = true);
     ~MeshAssetWrap();
 };
 

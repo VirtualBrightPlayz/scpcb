@@ -110,58 +110,117 @@ UIAssets* uiAssets;
 
 // Functions.
 TextureAssetWrap::TextureAssetWrap(String filePath, int flag) {
-    texture = bbLoadTexture(filePath,flag);
+    texture = bbLoadTexture(filePath, flag);
+    grabCount = 1;
 
     list.push_back(this);
 }
 
-TextureAssetWrap* TextureAssetWrap::grab(String filePath, int flag) {
+TextureAssetWrap::~TextureAssetWrap() {
     for (int i=0;i<list.size();i++) {
+        if (list[i]==this) {
+            list.erase(list.begin()+i);
+            break;
+        }
+    }
+    bbFreeTexture(texture);
+}
+
+TextureAssetWrap* TextureAssetWrap::grab(String filePath, int flag) {
+    for (int i = 0; i<list.size(); i++) {
         if (list[i]->file.equals(filePath)) {
+            list[i]->grabCount++;
             return list[i];
         }
     }
 
-    return new TextureAssetWrap(filePath,flag);
+    return new TextureAssetWrap(filePath, flag);
 }
 
-int GrabImage(String filePath) {
-    return GrabAsset(filePath, ASSET_IMAGE);
+void TextureAssetWrap::drop() {
+    grabCount--;
+    if (grabCount<0) {
+        grabCount = 0;
+    }
 }
 
-int GrabMesh(String filePath) {
-    return GrabAsset(filePath, ASSET_MESH);
+ImageAssetWrap::ImageAssetWrap(String filePath) {
+    image = bbLoadImage(filePath);
+    grabCount = 1;
+
+    list.push_back(this);
 }
 
-void DropAsset(int obj) {
-    AssetWrap* as;
-    for (int iterator1 = 0; iterator1 < AssetWrap::getListSize(); iterator1++) {
-        as = AssetWrap::getObject(iterator1);
+ImageAssetWrap::~ImageAssetWrap() {
+    for (int i = 0; i<list.size(); i++) {
+        if (list[i] == this) {
+            list.erase(list.begin() + i);
+            break;
+        }
+    }
+    bbFreeImage(image);
+}
 
-        if (obj == as->intVal) {
-            as->grabCount = as->grabCount - 1;
-            //DebugLog("DROPPED ASSET: " + as\file + ", " + String(as\grabCount))
-            return;
+ImageAssetWrap* ImageAssetWrap::grab(String filePath) {
+    for (int i = 0; i<list.size(); i++) {
+        if (list[i]->file.equals(filePath)) {
+            list[i]->grabCount++;
+            return list[i];
         }
     }
 
-    //TODO: Maybe not make this crash the game later?
-    throw Exception("Attempted to drop non-existant asset.");
+    return new ImageAssetWrap(filePath);
 }
 
-void UpdateAssets() {
-    AssetWrap* as;
-    for (int iterator2 = 0; iterator2 < AssetWrap::getListSize(); iterator2++) {
-        as = AssetWrap::getObject(iterator2);
+void ImageAssetWrap::drop() {
+    grabCount--;
+    if (grabCount<0) {
+        grabCount = 0;
+    }
+}
 
-        if (as->grabCount < 1) {
-            as->decayTimer = as->decayTimer - timing->tickDuration;
-            //DebugLog("ASSET DECAYING: " + as\file + ", " + String(as\decayTimer))
-            if (as->decayTimer < 0) {
-                FreeAsset(as);
-            }
+MeshAssetWrap::MeshAssetWrap(String filePath, bool isAnimated) {
+    if (isAnimated) {
+        mesh = bbLoadAnimMesh(filePath);
+    }
+    else {
+        mesh = bbLoadMesh(filePath);
+    }
+    grabCount = 1;
+
+    list.push_back(this);
+}
+
+MeshAssetWrap::~MeshAssetWrap() {
+    for (int i = 0; i<list.size(); i++) {
+        if (list[i] == this) {
+            list.erase(list.begin() + i);
+            break;
         }
     }
+    bbFreeEntity(mesh);
+}
+
+MeshAssetWrap* MeshAssetWrap::grab(String filePath, bool isAnimated) {
+    for (int i = 0; i<list.size(); i++) {
+        if (list[i]->file.equals(filePath) && list[i]->animated == isAnimated) {
+            list[i]->grabCount++;
+            return list[i];
+        }
+    }
+
+    return new MeshAssetWrap(filePath, isAnimated);
+}
+
+void MeshAssetWrap::drop() {
+    grabCount--;
+    if (grabCount<0) {
+        grabCount = 0;
+    }
+}
+
+void AssetWrap::update() {
+    
 }
 
 void LoadEntities() {
