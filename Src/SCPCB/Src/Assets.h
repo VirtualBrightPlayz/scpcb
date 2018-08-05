@@ -17,30 +17,28 @@ public:
     };
 
     virtual TYPE getType() =0;
+    virtual void drop() =0;
 
     static void update();
 protected:
-    static std::vector<AssetWrap*> list;
-
     int grabCount;
 
     String file;
 
     float decayTimer;
-
-    static AssetWrap* grab(String filePath, TYPE asType, int flag = 1);
-    static AssetWrap* create(String filePath, TYPE asType, int flag = 1);
-    static void drop(AssetWrap* asset);
 };
 
 class TextureAssetWrap : public AssetWrap {
 public:
     virtual TYPE getType();
+    virtual void drop();
 
     class Texture* getTexture();
 
     static TextureAssetWrap* grab(String filePath, int flag = 1);
 private:
+    static std::vector<TextureAssetWrap*> list;
+    
     int flags;
     class Texture* texture;
 
@@ -51,11 +49,14 @@ private:
 class ImageAssetWrap : public AssetWrap {
 public:
     virtual TYPE getType();
+    virtual void drop();
 
     class bbImage* getImage();
 
     static ImageAssetWrap* grab(String filePath);
 private:
+    static std::vector<ImageAssetWrap*> list;
+    
     class bbImage* image;
 
     ImageAssetWrap(String filePath);
@@ -65,11 +66,14 @@ private:
 class MeshAssetWrap : public AssetWrap {
 public:
     virtual TYPE getType();
+    virtual void drop();
 
     class Entity* getMesh();
 
     static ImageAssetWrap* grab(String filePath, bool isAnimated = true);
 private:
+    static std::vector<MeshAssetWrap*> list;
+    
     bool animated;
     class Entity* mesh;
 

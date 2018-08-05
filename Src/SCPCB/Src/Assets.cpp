@@ -15,24 +15,9 @@
 namespace CBN {
 
 // Structs.
-std::vector<AssetWrap*> AssetWrap::list;
-AssetWrap::AssetWrap() {
-    list.push_back(this);
-}
-AssetWrap::~AssetWrap() {
-    for (int i = 0; i < list.size(); i++) {
-        if (list[i] == this) {
-            list.erase(list.begin() + i);
-            break;
-        }
-    }
-}
-int AssetWrap::getListSize() {
-    return list.size();
-}
-AssetWrap* AssetWrap::getObject(int index) {
-    return list[index];
-}
+std::vector<TextureAssetWrap*> TextureAssetWrap::list;
+std::vector<ImageAssetWrap*> ImageAssetWrap::list;
+std::vector<MeshAssetWrap*> MeshAssetWrap::list;
 
 UIAssets::UIAssets() {
 	back = bbLoadImage("GFX/menu/back.jpg");
@@ -114,11 +99,6 @@ UIAssets::~UIAssets() {
 }
 
 // Constants.
-const int ASSET_NONE = 0;
-const int ASSET_TEXTURE = 1;
-const int ASSET_IMAGE = 2;
-const int ASSET_MESH = 3;
-const int ASSET_ANIM_MESH = 4;
 const int ASSET_DECAY_TIMER = 10 * 70;
 const int BLEND_ADD = 3;
 const int GORE_PIC_COUNT = 6;
@@ -129,77 +109,20 @@ const int HAND_ICON_GRAB = 1;
 UIAssets* uiAssets;
 
 // Functions.
-AssetWrap* CreateAsset(String filePath, int asType, int flag = 1) {
-    AssetWrap* as = new AssetWrap();
-    as->asType = asType;
-    as->file = filePath;
-    as->decayTimer = ASSET_DECAY_TIMER;
+TextureAssetWrap::TextureAssetWrap(String filePath, int flag) {
+    texture = bbLoadTexture(filePath,flag);
 
-    switch (as->asType) {
-        case ASSET_TEXTURE: {
-            as->intVal = bbLoadTexture(as->file, flag);
-        }
-        case ASSET_IMAGE: {
-            as->intVal = bbLoadImage(as->file);
-        }
-        case ASSET_MESH: {
-            as->intVal = bbLoadMesh(as->file);
-        }
-        case ASSET_ANIM_MESH: {
-            as->intVal = bbLoadAnimMesh(as->file);
-        }
-    }
-
-    if (as->intVal != 0 & as->asType != ASSET_TEXTURE & as->asType != ASSET_IMAGE) {
-        bbHideEntity(as->intVal);
-    }
-
-    std::cout << "CREATED ASSET: " + filePath;
-    return as;
+    list.push_back(this);
 }
 
-void FreeAsset(AssetWrap* as) {
-    switch (as->asType) {
-        case ASSET_TEXTURE: {
-            bbFreeTexture(as->intVal);
-        }
-        case ASSET_IMAGE: {
-            bbFreeImage(as->intVal);
-        }
-		case ASSET_MESH:
-		case ASSET_ANIM_MESH: {
-            bbFreeEntity(as->intVal);
+TextureAssetWrap* TextureAssetWrap::grab(String filePath, int flag) {
+    for (int i=0;i<list.size();i++) {
+        if (list[i]->file.equals(filePath)) {
+            return list[i];
         }
     }
 
-    String strng = as->file;
-    delete as;
-    std::cout << "ASSET Removed: " + strng;
-}
-
-int GrabAsset(String filePath, int asType, int flag = 1) {
-    AssetWrap* as;
-    for (int i = 0; i < AssetWrap::getListSize(); i++) {
-        as = AssetWrap::getObject(i);
-
-        if (filePath.equals(as->file)) {
-            as->decayTimer = ASSET_DECAY_TIMER;
-            as->grabCount = as->grabCount + 1;
-            //DebugLog("GRABBED ASSET: " + filePath + ", " + String(as\grabCount))
-            return as->intVal;
-        }
-    }
-
-    //Asset doesn't exist, create it.
-    as = CreateAsset(filePath, asType, flag);
-    as->grabCount = 1;
-    //DebugLog("GRABBED ASSET: " + filePath + ", " + String(as\grabCount))
-
-    return as->intVal;
-}
-
-int GrabTexture(String filePath, int flag = 1) {
-    return GrabAsset(filePath, ASSET_TEXTURE, flag);
+    return new TextureAssetWrap(filePath,flag);
 }
 
 int GrabImage(String filePath) {

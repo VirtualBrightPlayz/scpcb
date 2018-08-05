@@ -28,8 +28,16 @@ public:
     float fps;
 };
 
+struct Version {
+    int major;
+    int minor;
+    int build;
+    int revision;
+
+    String getVersionString();
+};
+
 // Constants.
-extern const String VERSION;
 extern const int HIT_MAP;
 extern const int HIT_PLAYER;
 extern const int HIT_ITEM;
