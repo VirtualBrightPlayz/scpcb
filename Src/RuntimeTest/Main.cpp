@@ -17,23 +17,28 @@ int main() {
 
 	String test = "this is a test";
 	std::vector<String> list = test.split(" "); // Exception here.
-	//for (int i = 0; i < list.size(); i++) {
-	//	std::cout << list[i];
-	//}
+	for (int i = 0; i < list.size(); i++) {
+		std::cout << list[i];
+    }
+
     Object* cube = bbCreateCube(nullptr);
     Object* camera = bbCreateCamera(nullptr);
+    Object* light = bbCreateLight(1,nullptr);
+
+    bbLightColor((Light*)light,100,100,255);
 
     bbImage* cursor = bbLoadImage("cursor.png");
-
-    bbPositionEntity(camera, 5.0f, 2.0f, -3.0f, false);
-    bbPointEntity(camera, cube, 0.0f);
 
     bbSetBuffer(bbBackBuffer());
     float cnt = 0;
     while (!bbKeyHit(1)) {
         cnt+=0.01f;
-        bbPositionEntity(camera,bbSin(cnt)*6.0f,2.0,bbCos(cnt)*6.0f,true);
-        bbPointEntity(camera,cube,0.0f);
+        bbPositionEntity(camera, bbSin(cnt)*6.0f, 2.0, bbCos(cnt)*6.0f, true);
+        bbPointEntity(camera, cube, 0.0f);
+
+        bbPositionEntity(light, bbSin(cnt*10.0f)*6.0f, bbSin(cnt*30.0f)*6.0f, bbCos(cnt*10.0f)*6.0f, true);
+        bbPointEntity(light, cube, 0.0f);
+
         bbRenderWorld(1.0f);
         bbDrawImage(cursor, bbMouseX(), bbMouseY(), 0);
         bbFlip(0);
