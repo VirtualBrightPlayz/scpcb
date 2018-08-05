@@ -21,6 +21,7 @@ class Light;
 class Model;
 class Mirror;
 class Listener;
+class Pivot;
 
 class Object {
 public:
@@ -77,11 +78,12 @@ public:
 	Object *getLastCopy()const{ return last_copy; }
 
     //ugly casts!
-    virtual Camera *getCamera() { return 0; }
-    virtual Light *getLight() { return 0; }
-    virtual Model *getModel() { return 0; }
-    virtual Mirror *getMirror() { return 0; }
-    virtual Listener *getListener() { return 0; }
+    virtual Camera* getCamera() { return 0; }
+    virtual Light* getLight() { return 0; }
+    virtual Model* getModel() { return 0; }
+    virtual Mirror* getMirror() { return 0; }
+    virtual Listener* getListener() { return 0; }
+    virtual Pivot* getPivot() { return 0; }
 
     void setName(String t);
     void setParent(Object *parent);

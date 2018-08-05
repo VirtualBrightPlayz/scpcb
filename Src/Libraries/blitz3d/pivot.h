@@ -11,6 +11,7 @@ public:
 
 	//Entity interface
     virtual Object* clone(){ return d_new Pivot( *this ); }
+    virtual Pivot* getPivot() { return this; }
 };
 
 #endif

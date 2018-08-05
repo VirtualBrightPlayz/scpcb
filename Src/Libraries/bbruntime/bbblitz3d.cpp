@@ -563,37 +563,37 @@ Object *  bbLoadAnimMesh( String f,Object *p ){
 	return insertEntity( e,p );
 }
 
-Object *  bbCreateCube( Object *p ){
+MeshModel*  bbCreateCube( Object *p ){
 	debugParent(p);
-	Object *e=MeshUtil::createCube( Brush() );
-	return insertEntity( e,p );
+    MeshModel *e=MeshUtil::createCube( Brush() );
+	return insertEntity( e,p )->getModel()->getMeshModel();
 }
 
-Object *  bbCreateSphere( int segs,Object *p ){
+MeshModel*  bbCreateSphere( int segs,Object *p ){
 	if( debug ){ debugParent(p);if( segs<2 || segs>100 ) RTEX( "Illegal number of segments" ); }
-	Object *e=MeshUtil::createSphere( Brush(),segs );
-	return insertEntity( e,p );
+    MeshModel *e=MeshUtil::createSphere( Brush(),segs );
+	return insertEntity( e,p )->getModel()->getMeshModel();
 }
 
-Object *  bbCreateCylinder( int segs,int solid,Object *p ){
+MeshModel*  bbCreateCylinder( int segs,int solid,Object *p ){
 	if( debug ){ debugParent(p);if( segs<3 || segs>100 ) RTEX( "Illegal number of segments" ); }
-	Object *e=MeshUtil::createCylinder( Brush(),segs,!!solid );
-	return insertEntity( e,p );
+    MeshModel *e=MeshUtil::createCylinder( Brush(),segs,!!solid );
+	return insertEntity( e,p )->getModel()->getMeshModel();
 }
 
-Object *  bbCreateCone( int segs,int solid,Object *p ){
+MeshModel*  bbCreateCone( int segs,int solid,Object *p ){
 	if( debug ){ debugParent(p);if( segs<3 || segs>100 ) RTEX( "Illegal number of segments" ); }
-	Object *e=MeshUtil::createCone( Brush(),segs,!!solid );
-	return insertEntity( e,p );
+    MeshModel *e=MeshUtil::createCone( Brush(),segs,!!solid );
+	return insertEntity( e,p )->getModel()->getMeshModel();
 }
 
-Object *  bbCopyMesh( MeshModel *m,Object *p ){
+MeshModel*  bbDeepCopyMesh( MeshModel *m,Object *p ){
 	debugMesh(m);
 	debugParent(p);
 
 	MeshModel *t=d_new MeshModel();
 	t->add( *m );
-	return insertEntity( t,p );
+	return insertEntity( t,p )->getModel()->getMeshModel();
 }
 
 void  bbScaleMesh( MeshModel *m,float x,float y,float z ){
@@ -1331,14 +1331,34 @@ gxChannel *  bbEmitSound( gxSound *sound,Object *o ){
 /////////////////////
 // ENTITY COMMANDS //
 /////////////////////
-Object *  bbCopyEntity( Object *e,Object *p ){
-	if( debug ){
-		debugEntity(e);
-		debugParent(p);
-	}
-	Object *t=e->copy();
-	if( !t ) return 0;
-	return insertEntity( t,p );
+Model* bbCopyModelEntity(Model* e, Object* p) {
+    if (debug) {
+        debugEntity(e);
+        debugParent(p);
+    }
+    Object *t = e->copy();
+    if (!t) return 0;
+    return insertEntity(t, p)->getModel();
+}
+
+MeshModel* bbCopyMeshModelEntity(MeshModel* e, Object* p) {
+    if (debug) {
+        debugEntity(e);
+        debugParent(p);
+    }
+    Object *t = e->copy();
+    if (!t) return 0;
+    return insertEntity(t, p)->getModel()->getMeshModel();
+}
+
+Pivot* bbCopyPivot(Pivot* e, Object* p) {
+    if (debug) {
+        debugEntity(e);
+        debugParent(p);
+    }
+    Object *t = e->copy();
+    if (!t) return 0;
+    return insertEntity(t, p)->getPivot();
 }
 
 void  bbFreeEntity( Object *e ){
