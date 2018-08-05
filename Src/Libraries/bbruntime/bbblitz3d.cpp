@@ -287,7 +287,7 @@ void  bbCaptureWorld(){
 	world->capture();
 }
 
-void  bbRenderWorld( float tween=1 ){
+void  bbRenderWorld( float tween ){
 	debug3d();
 
 #ifndef BETA
@@ -350,7 +350,7 @@ float  bbStats3D( int n ){
 
 //Note: modify canvas->backup() to NOT release backup image!
 //
-Texture *  bbLoadTexture( String file,int flags=1 ){
+Texture *  bbLoadTexture( String file,int flags ){
 	debug3d();
 	Texture *t=d_new Texture( file,flags );
 	if( !t->getCanvas(0) ){ delete t;return 0; }
@@ -369,7 +369,7 @@ Texture *  bbLoadAnimTexture( String file,int flags,int w,int h,int first,int cn
 	return t;
 }
 
-Texture *  bbCreateTexture( int w,int h,int flags=1,int frames=1 ){
+Texture *  bbCreateTexture( int w,int h,int flags,int frames ){
 	if( debug ){
 		debug3d();
 		if( frames<=0 ){
@@ -848,7 +848,7 @@ int  bbTriangleVertex( Surface *s,int n,int v ){
 /////////////////////
 // CAMERA COMMANDS //
 /////////////////////
-Entity *  bbCreateCamera( Entity *p=nullptr ){
+Entity *  bbCreateCamera( Entity *p ){
 	debugParent(p);
 	int x,y,w,h;
 	gx_canvas->getViewport( &x,&y,&w,&h );
@@ -1088,7 +1088,7 @@ void  bbLightConeAngles( Light *light,float inner,float outer ){
 ////////////////////
 // PIVOT COMMANDS //
 ////////////////////
-Entity *  bbCreatePivot( Entity *p=nullptr ){
+Entity *  bbCreatePivot( Entity *p ){
 	debugParent(p);
 	Pivot *t=d_new Pivot();
 	return insertEntity( t,p );

@@ -1,6 +1,7 @@
+#include <bbblitz3d.h>
+#include <entity.h>
+
 #include "Dreamfilter.h"
-#include "bbblitz3d.h"
-#include "entity.h"
 
 namespace CBN {
 

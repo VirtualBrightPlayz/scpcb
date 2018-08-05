@@ -1,13 +1,16 @@
+//library includes
+#include <StringType.h>
+#include <bbblitz3d.h>
+#include <bbgraphics.h>
+#include <iostream>
+
+//project includes
 #include "Assets.h"
-#include "StringType.h"
-#include "bbblitz3d.h"
-#include "bbgraphics.h"
 #include "GameMain.h"
 #include "Player.h"
 #include "Dreamfilter.h"
 #include "Menus/Menu.h"
 #include "Menus/LoadingScreen.h"
-#include <iostream>
 
 namespace CBN {
 

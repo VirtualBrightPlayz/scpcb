@@ -1,6 +1,6 @@
 #ifndef ASSETS_H_INCLUDED
 #define ASSETS_H_INCLUDED
-#include "StringType.h"
+#include <StringType.h>
 #include <vector>
 
 namespace CBN {

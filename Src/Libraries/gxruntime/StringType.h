@@ -42,8 +42,7 @@ struct String {
         String resourcePath() const;
 
         String& operator=(const String& other);
-		std::ostream& operator<<(std::ostream& os);
-
+		
         bool equals(const String& other) const;
         bool equals(const char other) const;
         bool isEmpty() const;
