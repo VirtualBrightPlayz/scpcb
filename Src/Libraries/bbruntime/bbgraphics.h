@@ -119,4 +119,8 @@ void	 bbPrint( String str );
 String 	 bbInput( String prompt );
 void	 bbLocate( int x,int y );
 
+//mouse pointer functions
+void bbShowPointer();
+void bbHidePointer();
+
 #endif

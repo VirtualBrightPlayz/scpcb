@@ -15,10 +15,10 @@ public:
     static int getListSize();
     static Door* getObject(int index);
 
-    int obj;
-    int obj2;
-    int frameobj;
-    int buttons[2];
+    class Entity* obj;
+	class Entity* obj2;
+	class Entity* frameobj;
+    class Entity* buttons[2];
     int locked;
     int open;
     float angle;

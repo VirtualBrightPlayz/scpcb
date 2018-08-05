@@ -41,7 +41,7 @@ public:
     static Options* getObject(int index);
 
     //General
-    int introEnabled;
+    bool introEnabled;
     float mouseSensitivity;
     int invertMouseY;
     int consoleOpenOnError;

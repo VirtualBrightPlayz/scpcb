@@ -542,7 +542,7 @@ Entity *  bbCreateMesh( Entity *p ){
 	return insertEntity( m,p );
 }
 
-Entity *  bbLoadMesh( String f,Entity *p=nullptr ){
+Entity *  bbLoadMesh( String f,Entity *p ){
 	debugParent(p);
 	Entity *e=loadEntity( f,MeshLoader::HINT_COLLAPSE );
 
@@ -848,7 +848,7 @@ int  bbTriangleVertex( Surface *s,int n,int v ){
 /////////////////////
 // CAMERA COMMANDS //
 /////////////////////
-Entity *  bbCreateCamera( Entity *p=nullptr ){
+Entity *  bbCreateCamera( Entity *p ){
 	debugParent(p);
 	int x,y,w,h;
 	gx_canvas->getViewport( &x,&y,&w,&h );
@@ -1088,7 +1088,7 @@ void  bbLightConeAngles( Light *light,float inner,float outer ){
 ////////////////////
 // PIVOT COMMANDS //
 ////////////////////
-Entity *  bbCreatePivot( Entity *p=nullptr ){
+Entity *  bbCreatePivot( Entity *p ){
 	debugParent(p);
 	Pivot *t=d_new Pivot();
 	return insertEntity( t,p );
@@ -1363,7 +1363,7 @@ void  bbShowEntity( Entity *e ){
 	e->getObject()->reset();
 }
 
-void  bbEntityParent( Entity *e,Entity *p,int global ){
+void  bbEntityParent( Entity *e,Entity *p,int global){
 	if( debug ){
 		debugEntity(e);
 		debugParent(p);

@@ -2,6 +2,7 @@
 #include <StringType.h>
 #include <bbblitz3d.h>
 #include <bbgraphics.h>
+#include <bbinput.h>
 #include <iostream>
 
 //project includes
@@ -9,8 +10,11 @@
 #include "GameMain.h"
 #include "Player.h"
 #include "Dreamfilter.h"
-#include "Items\Items.h"
+#include "Items/Items.h"
 #include "MapSystem.h"
+#include "Materials.h"
+#include "Doors.h"
+#include "Decals.h"
 #include "Menus/Menu.h"
 #include "Menus/LoadingScreen.h"
 
@@ -287,14 +291,6 @@ void LoadEntities() {
 }
 
 void InitNewGame() {
-    Decal* de;
-    Door* d;
-    Item* it;
-    Room* r;
-    SecurityCam* sc;
-    Event* e;
-    Prop* prop;
-
     DrawLoading(45);
 
     LoadInGameSounds(sndManager);
@@ -324,7 +320,7 @@ void InitNewGame() {
     Curr106->state = 70 * 60 * bbRand(12,17);
 
     for (int i = 0; i < Door::getListSize(); i++) {
-        d = Door::getObject(i);
+        Door* d = Door::getObject(i);
 
         bbEntityParent(d->obj, 0);
         if (d->obj2 > 0) {
@@ -346,40 +342,40 @@ void InitNewGame() {
         }
     }
 
-    for (int iterator4 = 0; iterator4 < Item::getListSize(); iterator4++) {
-        it = Item::getObject(iterator4);
+    for (int i = 0; i < Item::getListSize(); i++) {
+        Item* it = Item::getObject(i);
 
         bbEntityType(it->collider, HIT_ITEM);
         bbEntityParent(it->collider, 0);
     }
 
     DrawLoading(80);
-    for (int iterator5 = 0; iterator5 < SecurityCam::getListSize(); iterator5++) {
-        sc = SecurityCam::getObject(iterator5);
+    for (int i = 0; i < SecurityCam::getListSize(); i++) {
+		SecurityCam* sc = SecurityCam::getObject(i);
 
         sc->angle = bbEntityYaw(sc->obj) + sc->angle;
         bbEntityParent(sc->obj, 0);
     }
 
-    for (int iterator6 = 0; iterator6 < Room::getListSize(); iterator6++) {
-        r = Room::getObject(iterator6);
+    for (int i = 0; i < Room::getListSize(); i++) {
+        Room* r = Room::getObject(i);
 
-        for (i = 0; i <= MaxRoomLights; i++) {
-            if (r->lights[i]!=0) {
-                bbEntityParent(r->lights[i],0);
+        for (int j = 0; j <= MaxRoomLights; j++) {
+            if (r->lights[j]!=0) {
+                bbEntityParent(r->lights[j],0);
             }
         }
 
         if (!r->roomTemplate->disableDecals) {
             if (bbRand(4) == 1) {
-                de = CreateDecal(bbRand(DECAL_BLOOD_SPREAD, DECAL_BLOOD_SPLATTER), bbEntityX(r->obj)+bbRnd(- 2,2), 0.003, bbEntityZ(r->obj)+bbRnd(-2,2), 90, bbRand(360), 0);
+                Decal* de = CreateDecal(bbRand(DECAL_BLOOD_SPREAD, DECAL_BLOOD_SPLATTER), bbEntityX(r->obj)+bbRnd(- 2,2), 0.003, bbEntityZ(r->obj)+bbRnd(-2,2), 90, bbRand(360), 0);
                 de->size = bbRnd(0.1, 0.4);
                 bbScaleSprite(de->obj, de->size, de->size);
                 bbEntityAlpha(de->obj, bbRnd(0.85, 0.95));
             }
 
             if (bbRand(4) == 1) {
-                de = CreateDecal(DECAL_CORROSION, bbEntityX(r->obj)+bbRnd(- 2,2), 0.003, bbEntityZ(r->obj)+bbRnd(-2,2), 90, bbRand(360), 0);
+                Decal* de = CreateDecal(DECAL_CORROSION, bbEntityX(r->obj)+bbRnd(- 2,2), 0.003, bbEntityZ(r->obj)+bbRnd(-2,2), 90, bbRand(360), 0);
                 de->size = bbRnd(0.5, 0.7);
                 bbEntityAlpha(de->obj, 0.7);
                 de->id = 1;
@@ -388,11 +384,11 @@ void InitNewGame() {
             }
         }
 
-        if (r->roomTemplate->name == "cont_173_1" & (userOptions->introEnabled == false)) {
+        if (r->roomTemplate->name.equals("cont_173_1") && !userOptions->introEnabled) {
             bbPositionEntity(mainPlayer->collider, bbEntityX(r->obj)+3584*RoomScale, 714*RoomScale, bbEntityZ(r->obj)+1024*RoomScale);
             bbResetEntity(mainPlayer->collider);
             mainPlayer->currRoom = r;
-        } else if ((r->roomTemplate->name == "intro" & userOptions->introEnabled)) {
+        } else if (r->roomTemplate->name.equals("intro") && userOptions->introEnabled) {
             bbPositionEntity(mainPlayer->collider, bbEntityX(r->obj), 1.0, bbEntityZ(r->obj));
             bbResetEntity(mainPlayer->collider);
             mainPlayer->currRoom = r;
@@ -400,37 +396,29 @@ void InitNewGame() {
 
     }
 
-    RoomTemplate* rt;
-    for (int iterator7 = 0; iterator7 < RoomTemplate::getListSize(); iterator7++) {
-        rt = RoomTemplate::getObject(iterator7);
+    for (int i = 0; i < RoomTemplate::getListSize(); i++) {
+		RoomTemplate* rt = RoomTemplate::getObject(i);
 
-        if (rt->collisionObjs!=nullptr) {
-            for (i = 0; i <= rt->collisionObjs->size-1; i++) {
-                bbFreeEntity(GetIntArrayListElem(rt->collisionObjs,i));
-            }
-            DeleteIntArrayList(rt->collisionObjs);
-            rt->collisionObjs = nullptr;
+        for (int j = 0; j < rt->collisionObjs.size(); j++) {
+            bbFreeEntity(rt->collisionObjs[j]);
         }
+        rt->collisionObjs.clear();
 
         bbFreeEntity(rt->opaqueMesh);
-        if (rt->alphaMesh!=0) {
+        if (rt->alphaMesh!=nullptr) {
             bbFreeEntity(rt->alphaMesh);
         }
 
-        if (rt->props!=nullptr) {
-            for (i = 0; i <= rt->props->size-1; i++) {
-                prop = Object.Prop(GetIntArrayListElem(rt->props,i));
-                bbFreeEntity(prop->obj);
-                delete prop;
-            }
-            DeleteIntArrayList(rt->props);
-            rt->props = nullptr;
+        for (int j = 0; j < rt->props.size(); j++) {
+            Prop* prop = rt->props[j];
+            bbFreeEntity(prop->obj);
+            delete prop;
         }
+        rt->props.clear();
     }
 
-    TempWayPoint* tw;
-    for (int iterator8 = 0; iterator8 < TempWayPoint::getListSize(); iterator8++) {
-        tw = TempWayPoint::getObject(iterator8);
+    for (int i = 0; i < TempWayPoint::getListSize(); i++) {
+		TempWayPoint* tw = TempWayPoint::getObject(i);
 
         delete tw;
     }
@@ -468,7 +456,7 @@ void InitNewGame() {
     mainPlayer->blurTimer = 100;
     mainPlayer->stamina = 100;
 
-    for (i = 0; i <= 70; i++) {
+    for (int i = 0; i < 70; i++) {
         bbFlushKeys();
         UpdatePlayer();
         UpdateRooms();
@@ -491,7 +479,6 @@ void InitNewGame() {
 }
 
 void InitLoadGame() {
-    Door* d;
     SecurityCam* sc;
     RoomTemplate* rt;
     Event* e;
@@ -501,8 +488,8 @@ void InitLoadGame() {
 
     DrawLoading(80);
 
-    for (int iterator9 = 0; iterator9 < Door::getListSize(); iterator9++) {
-        d = Door::getObject(iterator9);
+    for (int i = 0; i < Door::getListSize(); i++) {
+        Door* d = Door::getObject(i);
 
         bbEntityParent(d->obj, 0);
         if (d->obj2 > 0) {

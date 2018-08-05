@@ -46,7 +46,7 @@ public:
     static Item* getObject(int index);
 
     String name;
-    int collider;
+    class Entity* collider;
     int model;
     struct ItemTemplate* itemTemplate;
     int img;

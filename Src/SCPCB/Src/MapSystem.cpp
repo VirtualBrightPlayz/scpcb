@@ -243,7 +243,7 @@ int Contained106;
 Screen* SelectedScreen;
 SecurityCam* SelectedMonitor;
 SecurityCam* CoffinCam;
-int ScreenTexs[2];
+Texture* ScreenTexs[2];
 IntArray* MapRooms = nullptr;
 
 // Functions.

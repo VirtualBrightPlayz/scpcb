@@ -40,10 +40,10 @@ public:
     String objPath;
     int loaded;
 
-    int opaqueMesh;
-    int alphaMesh;
-    IntArrayList* collisionObjs;
-    IntArrayList* props;
+    class Entity* opaqueMesh;
+    class Entity* alphaMesh;
+    std::vector<class Entity*> collisionObjs;
+	std::vector<class Prop*> props;
 
     int zones;
 
@@ -90,9 +90,9 @@ public:
     struct RoomTemplate* roomTemplate;
 
     //TODO: rename
-    int obj;
-    int opaqueMesh;
-    int alphaMesh;
+    class Entity* obj;
+	class Entity* opaqueMesh;
+	class Entity* alphaMesh;
     struct IntArray* collisionObjs;
     struct IntArray* props;
 
@@ -257,7 +257,7 @@ public:
     static int getListSize();
     static SecurityCam* getObject(int index);
 
-    int obj;
+    class Entity* obj;
     int monitorObj;
 
     int baseObj;
@@ -310,7 +310,7 @@ public:
     static Prop* getObject(int index);
 
     String file;
-    int obj;
+    class Entity* obj;
 
     float x;
     float y;
@@ -352,7 +352,7 @@ extern int Contained106;
 extern Screen* SelectedScreen;
 extern SecurityCam* SelectedMonitor;
 extern SecurityCam* CoffinCam;
-extern int ScreenTexs[2];
+extern class Texture* ScreenTexs[2];
 extern IntArray* MapRooms;
 
 // Functions.
