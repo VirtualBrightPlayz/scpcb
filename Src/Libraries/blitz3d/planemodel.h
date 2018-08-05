@@ -10,7 +10,7 @@ public:
 	PlaneModel( int sub_divs );
 	PlaneModel( const PlaneModel &t );
 	~PlaneModel();
-	Entity *clone(){ return d_new PlaneModel( *this ); }
+    virtual Object* clone(){ return d_new PlaneModel( *this ); }
 
 	//model interface
 	bool render( const RenderContext &rc );

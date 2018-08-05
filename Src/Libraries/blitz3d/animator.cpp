@@ -35,8 +35,8 @@ void Animator::reset(){
 
 void Animator::addObjs( Object *obj ){
 	_objs.push_back( obj );
-	for( Entity *e=obj->children();e;e=e->successor() ){
-		addObjs( e->getObject() );
+	for( Object* e=obj->children();e;e=e->successor() ){
+		addObjs( e );
 	}
 }
 

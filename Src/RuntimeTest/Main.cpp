@@ -16,13 +16,12 @@ int main() {
     bbAppTitle(String("     Test  thing     ").trim(),"");
 
 	String test = "this is a test";
-	std::vector<String> list = test.split(" ");
+	std::vector<String> list = test.split(" "); // Exception here.
 	//for (int i = 0; i < list.size(); i++) {
 	//	std::cout << list[i];
 	//}
-
-    Entity* cube = bbCreateCube(nullptr);
-    Entity* camera = bbCreateCamera(nullptr);
+    Object* cube = bbCreateCube(nullptr);
+    Object* camera = bbCreateCamera(nullptr);
 
     bbImage* cursor = bbLoadImage("cursor.png");
 

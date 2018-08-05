@@ -14,14 +14,14 @@ static vector<Object*> _enabled,_visible;
 
 static void enumEnabled(){
 	_enabled.clear();
-	for( Entity *e=Entity::orphans();e;e=e->successor() ){
+	for( Object* e=Object::orphans();e;e=e->successor() ){
 		e->enumEnabled( _enabled );
 	}
 }
 
 static void enumVisible(){
 	_visible.clear();
-	for( Entity *e=Entity::orphans();e;e=e->successor() ){
+	for( Object* e=Object::orphans();e;e=e->successor() ){
 		e->enumVisible( _visible );
 	}
 }

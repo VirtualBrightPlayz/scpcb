@@ -28,7 +28,7 @@ void CreateBlurImage() {
     bbCameraViewport(cam,0,0,ark_sw,ark_sh);
 
     //Create sprite
-    Entity* spr = bbCreateMesh(cam);
+    Object* spr = bbCreateMesh(cam);
     Surface* sf = bbCreateSurface(spr);
     bbAddVertex(sf, -1, 1, 0, 0, 0);
     bbAddVertex(sf, 1, 1, 0, 1, 0);

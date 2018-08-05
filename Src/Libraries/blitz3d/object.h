@@ -4,7 +4,6 @@
 
 #include <vector>
 
-#include "entity.h"
 #include "animator.h"
 #include "collision.h"
 
@@ -16,17 +15,23 @@ struct ObjCollision{
 	Collision collision;
 };
 
-class Object : public Entity{
+class Object;
+class Camera;
+class Light;
+class Model;
+class Mirror;
+class Listener;
+
+class Object {
 public:
-	typedef std::vector<const ObjCollision*> Collisions;
+    Object();
+    Object(const Object &object);
+    ~Object();
 
-	Object();
-	Object( const Object &object );
-	~Object();
+    typedef std::vector<const ObjCollision*> Collisions;
 
-	//Entity interface
-	Object *getObject(){ return this; }
-	Entity *clone(){ return d_new Object( *this ); }
+	//Object interface
+	virtual Object* clone() =0;
 
 	//deep object copy!
 	Object *copy();
@@ -71,7 +76,77 @@ public:
 	Animator *getAnimator()const{ return animator; }
 	Object *getLastCopy()const{ return last_copy; }
 
-private:
+    //ugly casts!
+    virtual Camera *getCamera() { return 0; }
+    virtual Light *getLight() { return 0; }
+    virtual Model *getModel() { return 0; }
+    virtual Mirror *getMirror() { return 0; }
+    virtual Listener *getListener() { return 0; }
+
+    void setName(String t);
+    void setParent(Object *parent);
+
+    void setVisible(bool vis);
+    void setEnabled(bool ena);
+
+    bool visible()const { return _visible; }
+    bool enabled()const { return _enabled; }
+
+    void enumVisible(vector<Object*> &out);
+    void enumEnabled(vector<Object*> &out);
+
+    Object *children()const { return _children; }
+    Object *successor()const { return _succ; }
+
+    String getName()const { return _name; }
+    Object *getParent()const { return _parent; }
+
+    void setLocalPosition(const Vector &v);
+    void setLocalScale(const Vector & v);
+    void setLocalRotation(const Quat &q);
+    void setLocalTform(const Transform &t);
+
+    void setWorldPosition(const Vector &v);
+    void setWorldScale(const Vector &v);
+    void setWorldRotation(const Quat &q);
+    void setWorldTform(const Transform &t);
+
+    const Vector &getLocalPosition()const;
+    const Vector &getLocalScale()const;
+    const Quat &getLocalRotation()const;
+    const Transform &getLocalTform()const;
+
+    const Vector &getWorldPosition()const;
+    const Vector &getWorldScale()const;
+    const Quat &getWorldRotation()const;
+    const Transform &getWorldTform()const;
+
+    static Object *orphans() { return _orphans; }
+
+protected:
+    Object * _succ, *_pred, *_parent, *_children, *_last_child;
+
+    static Object *_orphans, *_last_orphan;
+
+    bool _visible, _enabled;
+
+    String _name;
+
+    mutable int invalid;
+
+    Quat local_rot;
+    Vector local_pos, local_scl;
+    mutable Transform local_tform;
+
+    mutable Quat world_rot;
+    mutable Vector world_pos, world_scl;
+    mutable Transform world_tform;
+
+    void insert();
+    void remove();
+    void invalidateLocal();
+    void invalidateWorld();
+
 	int coll_type;
 	int order;
 	Vector coll_radii;

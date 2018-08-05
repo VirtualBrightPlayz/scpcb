@@ -13,6 +13,7 @@ public:
 	};
 
 	Camera();
+    virtual Object* clone(){ return d_new Camera(*this); }
 	Camera *getCamera(){ return this; }
 
 	//called by user

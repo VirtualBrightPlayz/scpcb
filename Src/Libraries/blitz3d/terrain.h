@@ -11,6 +11,7 @@ public:
 	Terrain( int size_shift );
 	~Terrain();
 
+    virtual Object* clone(){ return d_new Terrain(*this); }
 	Terrain *getTerrain(){ return this; }
 
 	void setDetail( int n,bool morph );

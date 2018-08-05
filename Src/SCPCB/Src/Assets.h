@@ -36,6 +36,8 @@ public:
     class Texture* getTexture();
 
     static TextureAssetWrap* grab(String filePath, int flag = 1);
+
+    static void update();
 private:
     static std::vector<TextureAssetWrap*> list;
     
@@ -54,6 +56,8 @@ public:
     class bbImage* getImage();
 
     static ImageAssetWrap* grab(String filePath);
+
+    static void update();
 private:
     static std::vector<ImageAssetWrap*> list;
     
@@ -68,14 +72,16 @@ public:
     virtual TYPE getType();
     virtual void drop();
 
-    class Entity* getMesh();
+    class Object* getMesh();
 
     static MeshAssetWrap* grab(String filePath, bool isAnimated = true);
+
+    static void update();
 private:
     static std::vector<MeshAssetWrap*> list;
     
     bool animated;
-    class Entity* mesh;
+    class Object* mesh;
 
     MeshAssetWrap(String filePath, bool isAnimated = true);
     ~MeshAssetWrap();

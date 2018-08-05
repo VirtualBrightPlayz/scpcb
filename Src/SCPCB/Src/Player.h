@@ -16,7 +16,7 @@ public:
     static Player* getObject(int index);
 
     //entities
-    class Entity* collider;
+    class Object* collider;
 
     int head;
     float headPitch;
