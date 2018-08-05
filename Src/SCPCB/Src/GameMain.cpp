@@ -80,11 +80,11 @@ int room2gw_brokendoor;
 float room2gw_x;
 float room2gw_z;
 String Input294;
-int TeslaTexture;
-int Monitor;
-int MonitorTexture;
-int CamBaseOBJ;
-int CamOBJ;
+Texture* TeslaTexture;
+Entity* Monitor;
+Texture* MonitorTexture;
+Entity* CamBaseOBJ;
+Entity* CamOBJ;
 
 // Functions.
 int VerifyResolution() {

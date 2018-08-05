@@ -80,11 +80,11 @@ extern int room2gw_brokendoor;
 extern float room2gw_x;
 extern float room2gw_z;
 extern String Input294;
-extern int TeslaTexture;
-extern int Monitor;
-extern int MonitorTexture;
-extern int CamBaseOBJ;
-extern int CamOBJ;
+extern class Texture* TeslaTexture;
+extern class Entity* Monitor;
+extern class Texture* MonitorTexture;
+extern class Entity* CamBaseOBJ;
+extern class Entity* CamOBJ;
 
 // Functions.
 int VerifyResolution();

@@ -5,6 +5,8 @@
 #include "GameMain.h"
 #include "Player.h"
 #include "Dreamfilter.h"
+#include "Items\Items.h"
+#include "MapSystem.h"
 #include "Menus/Menu.h"
 #include "Menus/LoadingScreen.h"
 #include <iostream>
@@ -300,7 +302,6 @@ void LoadEntities() {
 }
 
 void InitNewGame() {
-    int i;
     Decal* de;
     Door* d;
     Item* it;
@@ -319,7 +320,7 @@ void InitNewGame() {
     //HeartBeatRate = 70
 
     AccessCode = 0;
-    for (i = 0; i <= 3; i++) {
+    for (int i = 0; i < 4; i++) {
         AccessCode = AccessCode + (int)(bbRand(1,9)*(10^i));
     }
 
@@ -337,8 +338,8 @@ void InitNewGame() {
     Curr106 = CreateNPC(NPCtype106, 0, -30.0, 0);
     Curr106->state = 70 * 60 * bbRand(12,17);
 
-    for (int iterator3 = 0; iterator3 < Door::getListSize(); iterator3++) {
-        d = Door::getObject(iterator3);
+    for (int i = 0; i < Door::getListSize(); i++) {
+        d = Door::getObject(i);
 
         bbEntityParent(d->obj, 0);
         if (d->obj2 > 0) {

@@ -542,7 +542,7 @@ Entity *  bbCreateMesh( Entity *p ){
 	return insertEntity( m,p );
 }
 
-Entity *  bbLoadMesh( String f,Entity *p ){
+Entity *  bbLoadMesh( String f,Entity *p=nullptr ){
 	debugParent(p);
 	Entity *e=loadEntity( f,MeshLoader::HINT_COLLAPSE );
 
