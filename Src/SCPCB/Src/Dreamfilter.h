@@ -1,15 +1,17 @@
 #ifndef DREAMFILTER_H_INCLUDED
 #define DREAMFILTER_H_INCLUDED
+#include "entity.h"
+#include "camera.h"
 #include <vector>
 
 namespace CBN {
 
 // Globals.
 extern int ark_blur_image;
-extern int ark_blur_texture;
+extern class Texture* ark_blur_texture;
 extern int ark_sw;
 extern int ark_sh;
-extern int ark_blur_cam;
+extern class Camera* ark_blur_cam;
 
 // Functions.
 void CreateBlurImage();

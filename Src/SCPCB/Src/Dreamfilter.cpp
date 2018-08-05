@@ -1,19 +1,20 @@
 #include "Dreamfilter.h"
-#include "include.h"
+#include "bbblitz3d.h"
+#include "entity.h"
 
 namespace CBN {
 
 // Globals.
 int ark_blur_image;
-int ark_blur_texture;
+Texture* ark_blur_texture;
 int ark_sw;
 int ark_sh;
-int ark_blur_cam;
+Camera* ark_blur_cam;
 
 // Functions.
 void CreateBlurImage() {
     //Create blur mainPlayer\cam
-    int cam = bbCreateCamera();
+	Camera* cam = bbCreateCamera();
     bbCameraProjMode(cam,2);
     bbCameraZoom(cam,0.1);
     bbCameraClsMode(cam, 0, 0);
@@ -26,8 +27,8 @@ void CreateBlurImage() {
     bbCameraViewport(cam,0,0,ark_sw,ark_sh);
 
     //Create sprite
-    int spr = bbCreateMesh(cam);
-    int sf = bbCreateSurface(spr);
+    Entity* spr = bbCreateMesh(cam);
+    Surface* sf = bbCreateSurface(spr);
     bbAddVertex(sf, -1, 1, 0, 0, 0);
     bbAddVertex(sf, 1, 1, 0, 1, 0);
     bbAddVertex(sf, -1, -1, 0, 0, 1);

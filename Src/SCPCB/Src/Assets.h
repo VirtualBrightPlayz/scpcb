@@ -1,5 +1,6 @@
 #ifndef ASSETS_H_INCLUDED
 #define ASSETS_H_INCLUDED
+#include "StringType.h"
 #include <vector>
 
 namespace CBN {
@@ -23,38 +24,33 @@ public:
 };
 
 struct UIAssets {
-private:
-    static std::vector<UIAssets*> list;
-
 public:
-    UIAssets();
-    ~UIAssets();
-    static int getListSize();
-    static UIAssets* getObject(int index);
+	UIAssets();
+	~UIAssets();
 
     //Misc. Interface
-    int back;
-    int scpText;
-    int tileWhite;
-    int tileBlack;
-    int scp173;
+    class bbImage* back;
+	class bbImage* scpText;
+	class bbImage* tileWhite;
+	class bbImage* tileBlack;
+	class bbImage* scp173;
 
-    int pauseMenuBG;
+	class bbImage* pauseMenuBG;
 
-    int cursorIMG;
-    int arrow[4];
+	class bbImage* cursorIMG;
+	class bbImage* arrow[4];
 
-    int font[4];
-    int consoleFont;
+	class gxFont* font[4];
+	class gxFont* consoleFont;
 
     //HUD
-    int sprintIcon;
-    int blinkIcon;
-    int crouchIcon;
-    int handIcon[2];
-    int blinkBar;
-    int staminaBar;
-    int keypadHUD;
+	class bbImage* sprintIcon;
+	class bbImage* blinkIcon;
+	class bbImage* crouchIcon;
+	class bbImage* handIcon[2];
+	class bbImage* blinkBar;
+	class bbImage* staminaBar;
+	class bbImage* keypadHUD;
 
 };
 
@@ -89,10 +85,6 @@ int GrabMesh(String filePath);
 void DropAsset(int obj);
 
 void UpdateAssets();
-
-void InitializeUIAssets();
-
-void ReleaseUIAssets();
 
 void LoadEntities();
 

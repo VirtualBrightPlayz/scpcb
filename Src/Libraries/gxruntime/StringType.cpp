@@ -151,6 +151,10 @@ String operator+(const char* a, const String& b) {
     return String(String(a), b);
 }
 
+std::ostream& operator<<(std::ostream& os, const String& s) {
+	return os << s.cstr();
+}
+
 bool String::equals(const String& other) const {
     return strcmp(cbuffer, other.cstr()) == 0;
 }

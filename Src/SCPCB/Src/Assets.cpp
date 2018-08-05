@@ -1,5 +1,12 @@
 #include "Assets.h"
-#include "include.h"
+#include "StringType.h"
+#include "bbblitz3d.h"
+#include "bbgraphics.h"
+#include "GameMain.h"
+#include "Player.h"
+#include "Dreamfilter.h"
+#include "Menus/Menu.h"
+#include "Menus/LoadingScreen.h"
 #include <iostream>
 
 namespace CBN {
@@ -24,23 +31,83 @@ AssetWrap* AssetWrap::getObject(int index) {
     return list[index];
 }
 
-std::vector<UIAssets*> UIAssets::list;
 UIAssets::UIAssets() {
-    list.push_back(this);
+	uiAssets->back = bbLoadImage("GFX/menu/back.jpg");
+	uiAssets->scpText = bbLoadImage("GFX/menu/scptext.jpg");
+	uiAssets->scp173 = bbLoadImage("GFX/menu/173back.jpg");
+	uiAssets->tileWhite = bbLoadImage("GFX/menu/menuwhite.jpg");
+	uiAssets->tileBlack = bbLoadImage("GFX/menu/menublack.jpg");
+	bbMaskImage(uiAssets->tileBlack, 255, 255, 0);
+
+	bbResizeImage(uiAssets->back, bbImageWidth(uiAssets->back) * MenuScale, bbImageHeight(uiAssets->back) * MenuScale);
+	bbResizeImage(uiAssets->scpText, bbImageWidth(uiAssets->scpText) * MenuScale, bbImageHeight(uiAssets->scpText) * MenuScale);
+	bbResizeImage(uiAssets->scp173, bbImageWidth(uiAssets->scp173) * MenuScale, bbImageHeight(uiAssets->scp173) * MenuScale);
+
+	uiAssets->pauseMenuBG = bbLoadImage("GFX/menu/pausemenu.jpg");
+	bbMaskImage(uiAssets->pauseMenuBG, 255, 255, 0);
+	bbScaleImage(uiAssets->pauseMenuBG, MenuScale, MenuScale);
+
+	uiAssets->cursorIMG = bbLoadImage("GFX/cursor.png");
+
+	int i;
+	for (i = 0; i <= 3; i++) {
+		uiAssets->arrow[i] = bbLoadImage("GFX/menu/arrow.png");
+		bbRotateImage(uiAssets->arrow[i], 90 * i);
+		bbHandleImage(uiAssets->arrow[i], 0, 0);
+	}
+
+	// TODO: Change this now?
+	//For some reason, Blitz3D doesn't load fonts that have filenames that
+	//don't match their "internal name" (i.e. their display name in applications
+	//like Word and such). As a workaround, I moved the files and renamed them so they
+	//can load without FastText.
+	uiAssets->font[0] = bbLoadFont("GFX/font/cour/Courier New.ttf", (int)(18 * MenuScale), 0, 0, 0);
+	uiAssets->font[1] = bbLoadFont("GFX/font/courbd/Courier New.ttf", (int)(58 * MenuScale), 0, 0, 0);
+	uiAssets->font[2] = bbLoadFont("GFX/font/DS-DIGI/DS-Digital.ttf", (int)(22 * MenuScale), 0, 0, 0);
+	uiAssets->font[3] = bbLoadFont("GFX/font/DS-DIGI/DS-Digital.ttf", (int)(60 * MenuScale), 0, 0, 0);
+	uiAssets->consoleFont = bbLoadFont("Blitz", (int)(20 * MenuScale), 0, 0, 0);
+
+	uiAssets->sprintIcon = bbLoadImage("GFX/HUD/sprinticon.png");
+	uiAssets->blinkIcon = bbLoadImage("GFX/HUD/blinkicon.png");
+	uiAssets->crouchIcon = bbLoadImage("GFX/HUD/sneakicon.png");
+	uiAssets->handIcon[HAND_ICON_TOUCH] = bbLoadImage("GFX/HUD/handsymbol.png");
+	uiAssets->handIcon[HAND_ICON_GRAB] = bbLoadImage("GFX/HUD/handsymbol2.png");
+	uiAssets->blinkBar = bbLoadImage("GFX/HUD/blinkmeter.jpg");
+	uiAssets->staminaBar = bbLoadImage("GFX/HUD/staminameter.jpg");
+	uiAssets->keypadHUD = bbLoadImage("GFX/HUD/keypadhud.jpg");
+	bbMaskImage(uiAssets->keypadHUD, 255, 0, 255);
 }
+
 UIAssets::~UIAssets() {
-    for (int i = 0; i < list.size(); i++) {
-        if (list[i] == this) {
-            list.erase(list.begin() + i);
-            break;
-        }
-    }
-}
-int UIAssets::getListSize() {
-    return list.size();
-}
-UIAssets* UIAssets::getObject(int index) {
-    return list[index];
+	bbFreeImage(uiAssets->back);
+	bbFreeImage(uiAssets->scpText);
+	bbFreeImage(uiAssets->scp173);
+	bbFreeImage(uiAssets->tileWhite);
+	bbFreeImage(uiAssets->tileBlack);
+
+	bbFreeImage(uiAssets->pauseMenuBG);
+
+	bbFreeImage(uiAssets->cursorIMG);
+
+	int i;
+	for (i = 0; i < 4; i++) {
+		bbFreeImage(uiAssets->arrow[i]);
+	}
+
+	for (i = 0; i < 4; i++) {
+		bbFreeFont(uiAssets->font[i]);
+	}
+	bbFreeFont(uiAssets->consoleFont);
+
+	bbFreeImage(uiAssets->sprintIcon);
+	bbFreeImage(uiAssets->blinkIcon);
+	bbFreeImage(uiAssets->crouchIcon);
+	for (i = 0; i < 2; i++) {
+		bbFreeImage(uiAssets->handIcon[i]);
+	}
+	bbFreeImage(uiAssets->blinkBar);
+	bbFreeImage(uiAssets->staminaBar);
+	bbFreeImage(uiAssets->keypadHUD);
 }
 
 // Constants.
@@ -96,7 +163,8 @@ void FreeAsset(AssetWrap* as) {
         case ASSET_IMAGE: {
             bbFreeImage(as->intVal);
         }
-        case ASSET_MESH, ASSET_ANIM_MESH: {
+		case ASSET_MESH:
+		case ASSET_ANIM_MESH: {
             bbFreeEntity(as->intVal);
         }
     }
@@ -108,10 +176,10 @@ void FreeAsset(AssetWrap* as) {
 
 int GrabAsset(String filePath, int asType, int flag = 1) {
     AssetWrap* as;
-    for (int iterator0 = 0; iterator0 < AssetWrap::getListSize(); iterator0++) {
-        as = AssetWrap::getObject(iterator0);
+    for (int i = 0; i < AssetWrap::getListSize(); i++) {
+        as = AssetWrap::getObject(i);
 
-        if (filePath == as->file) {
+        if (filePath.equals(as->file)) {
             as->decayTimer = ASSET_DECAY_TIMER;
             as->grabCount = as->grabCount + 1;
             //DebugLog("GRABBED ASSET: " + filePath + ", " + String(as\grabCount))
@@ -152,7 +220,7 @@ void DropAsset(int obj) {
     }
 
     //TODO: Maybe not make this crash the game later?
-    bbRuntimeError("Attempted to drop non-existant asset.");
+    throw Exception("Attempted to drop non-existant asset.");
 }
 
 void UpdateAssets() {
@@ -170,96 +238,12 @@ void UpdateAssets() {
     }
 }
 
-void InitializeUIAssets() {
-    uiAssets = new UIAssets();
-
-    uiAssets->back = bbLoadImage("GFX/menu/back.jpg");
-    uiAssets->scpText = bbLoadImage("GFX/menu/scptext.jpg");
-    uiAssets->scp173 = bbLoadImage("GFX/menu/173back.jpg");
-    uiAssets->tileWhite = bbLoadImage("GFX/menu/menuwhite.jpg");
-    uiAssets->tileBlack = bbLoadImage("GFX/menu/menublack.jpg");
-    bbMaskImage(uiAssets->tileBlack, 255,255,0);
-
-    bbResizeImage(uiAssets->back, bbImageWidth(uiAssets->back) * MenuScale, bbImageHeight(uiAssets->back) * MenuScale);
-    bbResizeImage(uiAssets->scpText, bbImageWidth(uiAssets->scpText) * MenuScale, bbImageHeight(uiAssets->scpText) * MenuScale);
-    bbResizeImage(uiAssets->scp173, bbImageWidth(uiAssets->scp173) * MenuScale, bbImageHeight(uiAssets->scp173) * MenuScale);
-
-    uiAssets->pauseMenuBG = bbLoadImage("GFX/menu/pausemenu.jpg");
-    bbMaskImage(uiAssets->pauseMenuBG, 255,255,0);
-    bbScaleImage(uiAssets->pauseMenuBG, MenuScale, MenuScale);
-
-    uiAssets->cursorIMG = bbLoadImage("GFX/cursor.png");
-
-    int i;
-    for (i = 0; i <= 3; i++) {
-        uiAssets->arrow[i] = bbLoadImage("GFX/menu/arrow.png");
-        bbRotateImage(uiAssets->arrow[i], 90 * i);
-        bbHandleImage(uiAssets->arrow[i], 0, 0);
-    }
-
-    //For some reason, Blitz3D doesn't load fonts that have filenames that
-    //don't match their "internal name" (i.e. their display name in applications
-    //like Word and such). As a workaround, I moved the files and renamed them so they
-    //can load without FastText.
-    uiAssets->font[0] = bbLoadFont("GFX/font/cour/Courier New.ttf", (int)(18 * MenuScale), 0,0,0);
-    uiAssets->font[1] = bbLoadFont("GFX/font/courbd/Courier New.ttf", (int)(58 * MenuScale), 0,0,0);
-    uiAssets->font[2] = bbLoadFont("GFX/font/DS-DIGI/DS-Digital.ttf", (int)(22 * MenuScale), 0,0,0);
-    uiAssets->font[3] = bbLoadFont("GFX/font/DS-DIGI/DS-Digital.ttf", (int)(60 * MenuScale), 0,0,0);
-    uiAssets->consoleFont = bbLoadFont("Blitz", (int)(20 * MenuScale), 0,0,0);
-
-    uiAssets->sprintIcon = bbLoadImage("GFX/HUD/sprinticon.png");
-    uiAssets->blinkIcon = bbLoadImage("GFX/HUD/blinkicon.png");
-    uiAssets->crouchIcon = bbLoadImage("GFX/HUD/sneakicon.png");
-    uiAssets->handIcon[HAND_ICON_TOUCH] = bbLoadImage("GFX/HUD/handsymbol.png");
-    uiAssets->handIcon[HAND_ICON_GRAB] = bbLoadImage("GFX/HUD/handsymbol2.png");
-    uiAssets->blinkBar = bbLoadImage("GFX/HUD/blinkmeter.jpg");
-    uiAssets->staminaBar = bbLoadImage("GFX/HUD/staminameter.jpg");
-    uiAssets->keypadHUD = bbLoadImage("GFX/HUD/keypadhud.jpg");
-    bbMaskImage(uiAssets->keypadHUD, 255,0,255);
-}
-
-void ReleaseUIAssets() {
-    bbFreeImage(uiAssets->back);
-    bbFreeImage(uiAssets->scpText);
-    bbFreeImage(uiAssets->scp173);
-    bbFreeImage(uiAssets->tileWhite);
-    bbFreeImage(uiAssets->tileBlack);
-
-    bbFreeImage(uiAssets->pauseMenuBG);
-
-    bbFreeImage(uiAssets->cursorIMG);
-
-    int i;
-    for (i = 0; i <= 3; i++) {
-        bbFreeImage(uiAssets->arrow[i]);
-    }
-
-    for (i = 0; i <= 3; i++) {
-        bbFreeFont(uiAssets->font[i]);
-    }
-    bbFreeFont(uiAssets->consoleFont);
-
-    bbFreeImage(uiAssets->sprintIcon);
-    bbFreeImage(uiAssets->blinkIcon);
-    bbFreeImage(uiAssets->crouchIcon);
-    for (i = 0; i <= 1; i++) {
-        bbFreeImage(uiAssets->handIcon[i]);
-    }
-    bbFreeImage(uiAssets->blinkBar);
-    bbFreeImage(uiAssets->staminaBar);
-    bbFreeImage(uiAssets->keypadHUD);
-
-    delete uiAssets;
-}
-
 void LoadEntities() {
     DrawLoading(0);
 
-    int i;
-
     //TODO: there may be a memory leak here,
     //probably gonna have to rework the tempsound system
-    for (i = 0; i <= 9; i++) {
+    for (int i = 0; i < 10; i++) {
         TempSounds[i] = 0;
     }
 

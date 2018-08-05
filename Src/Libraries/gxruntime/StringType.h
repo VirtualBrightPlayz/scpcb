@@ -2,6 +2,7 @@
 #define STRING_H_INCLUDED
 
 #include <string>
+#include <iostream>
 
 typedef wchar_t wchar;
 
@@ -41,6 +42,7 @@ struct String {
         String resourcePath() const;
 
         String& operator=(const String& other);
+		std::ostream& operator<<(std::ostream& os);
 
         bool equals(const String& other) const;
         bool equals(const char other) const;
@@ -60,5 +62,6 @@ struct String {
 
 String operator+(const String& a, const String& b);
 String operator+(const char* a, const String& b);
+std::ostream& operator<<(std::ostream &os, const String& s);
 
 #endif
