@@ -9,6 +9,8 @@
 class Sprite;
 class Terrain;
 class PlaneModel;
+class MeshModel;
+class MD2Model;
 class Q3BSPModel;
 
 class Model : public Object{

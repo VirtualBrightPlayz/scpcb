@@ -3,6 +3,7 @@
 #include <bbblitz3d.h>
 #include <bbgraphics.h>
 #include <bbinput.h>
+#include <bbmath.h>
 #include <iostream>
 
 //project includes
@@ -15,6 +16,8 @@
 #include "Materials.h"
 #include "Doors.h"
 #include "Decals.h"
+#include "Audio.h"
+#include "NPCs/NPCs.h"
 #include "Menus/Menu.h"
 #include "Menus/LoadingScreen.h"
 
@@ -150,6 +153,15 @@ void TextureAssetWrap::drop() {
     }
 }
 
+void TextureAssetWrap::update() {
+    for (int i = 0; i<list.size(); i++) {
+        if (list[i]->grabCount <= 0) {
+            delete list[i];
+            i--;
+        }
+    }
+}
+
 ImageAssetWrap::ImageAssetWrap(String filePath) {
     image = bbLoadImage(filePath);
     grabCount = 1;
@@ -182,6 +194,15 @@ void ImageAssetWrap::drop() {
     grabCount--;
     if (grabCount<0) {
         grabCount = 0;
+    }
+}
+
+void ImageAssetWrap::update() {
+    for (int i = 0; i<list.size(); i++) {
+        if (list[i]->grabCount <= 0) {
+            delete list[i];
+            i--;
+        }
     }
 }
 
@@ -225,8 +246,19 @@ void MeshAssetWrap::drop() {
     }
 }
 
+void MeshAssetWrap::update() {
+    for (int i = 0; i<list.size(); i++) {
+        if (list[i]->grabCount <= 0) {
+            delete list[i];
+            i--;
+        }
+    }
+}
+
 void AssetWrap::update() {
-    
+    TextureAssetWrap::update();
+    ImageAssetWrap::update();
+    MeshAssetWrap::update();
 }
 
 void LoadEntities() {

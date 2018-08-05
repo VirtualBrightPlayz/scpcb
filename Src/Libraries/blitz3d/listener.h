@@ -11,7 +11,7 @@ public:
 	~Listener();
 
 	//Entity interface
-	Entity *clone(){ return d_new Listener( *this ); }
+    virtual Object* clone(){ return d_new Listener( *this ); }
 	Listener *getListener(){ return this; }
 
 	//Listener interface

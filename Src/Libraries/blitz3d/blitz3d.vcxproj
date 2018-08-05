@@ -255,7 +255,6 @@
     <ClCompile Include="cachedtexture.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="collision.cpp" />
-    <ClCompile Include="entity.cpp" />
     <ClCompile Include="frustum.cpp" />
     <ClCompile Include="geom.cpp" />
     <ClCompile Include="light.cpp" />
@@ -297,7 +296,6 @@
     <ClInclude Include="cachedtexture.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="collision.h" />
-    <ClInclude Include="entity.h" />
     <ClInclude Include="frustum.h" />
     <ClInclude Include="geom.h" />
     <ClInclude Include="light.h" />

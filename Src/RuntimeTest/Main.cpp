@@ -13,8 +13,8 @@ int main() {
 
     bbAppTitle(String("     Test  thing     ").trim(),"");
 
-    Entity* cube = bbCreateCube(nullptr);
-    Entity* camera = bbCreateCamera(nullptr);
+    Object* cube = bbCreateCube(nullptr);
+    Object* camera = bbCreateCamera(nullptr);
 
     bbImage* cursor = bbLoadImage("cursor.png");
 

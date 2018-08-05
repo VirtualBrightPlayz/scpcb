@@ -29,7 +29,7 @@ static World *world;
 
 static set<Brush*> brush_set;
 static set<Texture*> texture_set;
-static set<Entity*> entity_set;
+static set<Object*> entity_set;
 
 static Listener *listener;
 
@@ -62,10 +62,10 @@ static inline void debugTexture( Texture *t ){
 static inline void debugBrush( Brush *b ){
 	if( debug && !brush_set.count( b ) ) RTEX( "Brush does not exist" );
 }
-static inline void debugEntity( Entity *e ){
-	if( debug && !entity_set.count(e) ) RTEX( "Entity does not exist" );
+static inline void debugEntity( Object *e ){
+	if( debug && !entity_set.count(e) ) RTEX( "Object does not exist" );
 }
-static inline void debugParent( Entity *e ){
+static inline void debugParent( Object *e ){
 	if( debug ){
 		debug3d();
 		if( e && !entity_set.count(e) ) RTEX( "Parent entity does not exist" );
@@ -73,12 +73,12 @@ static inline void debugParent( Entity *e ){
 }
 static inline void debugMesh( MeshModel *m ){
 	if( debug ){
-		debugEntity(m);if( !m->getMeshModel() ) RTEX( "Entity is not a mesh" );
+		debugEntity(m);if( !m->getMeshModel() ) RTEX( "Object is not a mesh" );
 	}
 }
 static inline void debugObject( Object *o ){
 	if( debug ){
-		debugEntity(o);if( !o->getObject() ) RTEX( "Entity is not an object" );
+		debugEntity(o);
 	}
 }
 static inline void debugColl( Object *o,int index ){
@@ -89,37 +89,37 @@ static inline void debugColl( Object *o,int index ){
 }
 static inline void debugCamera( Camera *c ){
 	if( debug ){
-		debugEntity(c);if( !c->getCamera() ) RTEX( "Entity is not a camera" );
+		debugEntity(c);if( !c->getCamera() ) RTEX( "Object is not a camera" );
 	}
 }
 static inline void debugLight( Light *l ){
 	if( debug ){
-		debugEntity(l);if( !l->getLight() ) RTEX( "Entity is not a light" );
+		debugEntity(l);if( !l->getLight() ) RTEX( "Object is not a light" );
 	}
 }
 static inline void debugModel( Model *m ){
 	if( debug ){
-		debugEntity(m);if( !m->getModel() ) RTEX( "Entity is not a model" );
+		debugEntity(m);if( !m->getModel() ) RTEX( "Object is not a model" );
 	}
 }
 static inline void debugSprite( Sprite *s ){
 	if( debug ){
-		debugModel(s);if( !s->getSprite() ) RTEX( "Entity is not a sprite" );
+		debugModel(s);if( !s->getSprite() ) RTEX( "Object is not a sprite" );
 	}
 }
 static inline void debugMD2( MD2Model *m ){
 	if( debug ){
-		debugModel(m);if( !m->getMD2Model() ) RTEX( "Entity is not an MD2 Model" );
+		debugModel(m);if( !m->getMD2Model() ) RTEX( "Object is not an MD2 Model" );
 	}
 }
 static inline void debugBSP( Q3BSPModel *m ){
 	if( debug ){
-		debugModel(m);if( !m->getBSPModel() ) RTEX( "Entity is not a BSP Model" );
+		debugModel(m);if( !m->getBSPModel() ) RTEX( "Object is not a BSP Model" );
 	}
 }
 static inline void debugTerrain( Terrain *t ){
 	if( debug ){
-		debugModel(t);if( !t->getTerrain() ) RTEX( "Entity is not a terrain" );
+		debugModel(t);if( !t->getTerrain() ) RTEX( "Object is not a terrain" );
 	}
 }
 static inline void debugSegs( int n ){
@@ -142,7 +142,7 @@ static inline void debugVertex( Surface *s,int n,int t ){
 	}
 }
 
-static Entity *loadEntity( String str,int hint ){
+static Object *loadEntity( String str,int hint ){
     string t = str.cstr();
 	t=tolower(t);
 	int n=t.rfind( "." );if( n==string::npos ) return 0;
@@ -156,12 +156,12 @@ static Entity *loadEntity( String str,int hint ){
 	const Transform &conv=loader_mat_map[ext];
 
 	CachedTexture::setPath( filenamepath( t ) );
-	Entity *e=l->load( t,conv,hint );
+	Object *e=l->load( t,conv,hint );
 	CachedTexture::setPath( "" );
 	return e;
 }
 
-static void collapseMesh( MeshModel *mesh,Entity *e ){
+static void collapseMesh( MeshModel *mesh,Object *e ){
 	while( e->children() ){
 		collapseMesh( mesh,e->children() );
 	}
@@ -174,34 +174,34 @@ static void collapseMesh( MeshModel *mesh,Entity *e ){
 	delete e;
 }
 
-static void insert( Entity *e ){
+static void insert( Object *e ){
 	if( debug ) entity_set.insert( e );
 	e->setVisible(true);
 	e->setEnabled(true);
-	e->getObject()->reset();
-	for( Entity *p=e->children();p;p=p->successor() ){
+	e->reset();
+	for( Object *p=e->children();p;p=p->successor() ){
 		insert( p );
 	}
 }
 
-static Entity *insertEntity( Entity *e,Entity *p ){
+static Object *insertEntity( Object *e,Object *p ){
 	e->setParent( p );
 	insert( e );
 	return e;
 }
 
-static void erase( Entity *e ){
-	for( Entity *p=e->children();p;p=p->successor() ){
+static void erase( Object *e ){
+	for( Object *p=e->children();p;p=p->successor() ){
 		erase( p );
 	}
 	if( e->getListener() ) listener=0;
 	if( debug ) entity_set.erase( e );
 }
 
-static Entity *findChild( Entity *e,String t ){
+static Object *findChild( Object *e,String t ){
 	if( e->getName().equals(t) ) return e;
-	for( Entity *p=e->children();p;p=p->successor() ){
-		if( Entity *q=findChild(p,t) ) return q;
+	for( Object *p=e->children();p;p=p->successor() ){
+		if( Object *q=findChild(p,t) ) return q;
 	}
 	return 0;
 }
@@ -350,7 +350,7 @@ float  bbStats3D( int n ){
 
 //Note: modify canvas->backup() to NOT release backup image!
 //
-Texture *  bbLoadTexture( String file,int flags=1 ){
+Texture *  bbLoadTexture( String file,int flags ){
 	debug3d();
 	Texture *t=d_new Texture( file,flags );
 	if( !t->getCanvas(0) ){ delete t;return 0; }
@@ -369,7 +369,7 @@ Texture *  bbLoadAnimTexture( String file,int flags,int w,int h,int first,int cn
 	return t;
 }
 
-Texture *  bbCreateTexture( int w,int h,int flags=1,int frames=1 ){
+Texture *  bbCreateTexture( int w,int h,int flags,int frames ){
 	if( debug ){
 		debug3d();
 		if( frames<=0 ){
@@ -442,7 +442,7 @@ void bbSetCubeMode( Texture *t,int mode ){
 	}
 }
 
-gxCanvas *bbTextureBuffer( Texture *t,int frame=0 ){
+gxCanvas *bbTextureBuffer( Texture *t,int frame ){
 	//v1.04
 	debugTexture(t);
 	if( gxCanvas *c=t->getCanvas( frame ) ){
@@ -536,15 +536,15 @@ void  bbBrushFX( Brush *b,int fx ){
 ///////////////////
 // MESH COMMANDS //
 ///////////////////
-Entity *  bbCreateMesh( Entity *p ){
+Object *  bbCreateMesh( Object *p ){
 	debugParent(p);
 	MeshModel *m=d_new MeshModel();
 	return insertEntity( m,p );
 }
 
-Entity *  bbLoadMesh( String f,Entity *p ){
+Object *  bbLoadMesh( String f,Object *p ){
 	debugParent(p);
-	Entity *e=loadEntity( f,MeshLoader::HINT_COLLAPSE );
+	Object *e=loadEntity( f,MeshLoader::HINT_COLLAPSE );
 
 	if( !e ) return 0;
 	MeshModel *m=d_new MeshModel();
@@ -552,42 +552,42 @@ Entity *  bbLoadMesh( String f,Entity *p ){
 	return insertEntity( m,p );
 }
 
-Entity *  bbLoadAnimMesh( String f,Entity *p ){
+Object *  bbLoadAnimMesh( String f,Object *p ){
 	debugParent(p);
-	Entity *e=loadEntity( f,0 );
+	Object *e=loadEntity( f,0 );
 
 	if( !e ) return 0;
-	if( Animator *anim=e->getObject()->getAnimator() ){
+	if( Animator *anim=e->getAnimator() ){
 		anim->animate( 1,0,0,0 );
 	}
 	return insertEntity( e,p );
 }
 
-Entity *  bbCreateCube( Entity *p ){
+Object *  bbCreateCube( Object *p ){
 	debugParent(p);
-	Entity *e=MeshUtil::createCube( Brush() );
+	Object *e=MeshUtil::createCube( Brush() );
 	return insertEntity( e,p );
 }
 
-Entity *  bbCreateSphere( int segs,Entity *p ){
+Object *  bbCreateSphere( int segs,Object *p ){
 	if( debug ){ debugParent(p);if( segs<2 || segs>100 ) RTEX( "Illegal number of segments" ); }
-	Entity *e=MeshUtil::createSphere( Brush(),segs );
+	Object *e=MeshUtil::createSphere( Brush(),segs );
 	return insertEntity( e,p );
 }
 
-Entity *  bbCreateCylinder( int segs,int solid,Entity *p ){
+Object *  bbCreateCylinder( int segs,int solid,Object *p ){
 	if( debug ){ debugParent(p);if( segs<3 || segs>100 ) RTEX( "Illegal number of segments" ); }
-	Entity *e=MeshUtil::createCylinder( Brush(),segs,!!solid );
+	Object *e=MeshUtil::createCylinder( Brush(),segs,!!solid );
 	return insertEntity( e,p );
 }
 
-Entity *  bbCreateCone( int segs,int solid,Entity *p ){
+Object *  bbCreateCone( int segs,int solid,Object *p ){
 	if( debug ){ debugParent(p);if( segs<3 || segs>100 ) RTEX( "Illegal number of segments" ); }
-	Entity *e=MeshUtil::createCone( Brush(),segs,!!solid );
+	Object *e=MeshUtil::createCone( Brush(),segs,!!solid );
 	return insertEntity( e,p );
 }
 
-Entity *  bbCopyMesh( MeshModel *m,Entity *p ){
+Object *  bbCopyMesh( MeshModel *m,Object *p ){
 	debugMesh(m);
 	debugParent(p);
 
@@ -848,7 +848,7 @@ int  bbTriangleVertex( Surface *s,int n,int v ){
 /////////////////////
 // CAMERA COMMANDS //
 /////////////////////
-Entity *  bbCreateCamera( Entity *p ){
+Object *  bbCreateCamera( Object *p ){
 	debugParent(p);
 	int x,y,w,h;
 	gx_canvas->getViewport( &x,&y,&w,&h );
@@ -952,7 +952,7 @@ static Object *doPick( const Line &l,float radius ){
 	return world->traceRay( l,radius,&picked );
 }
 
-Entity *  bbCameraPick( Camera *c,float x,float y ){
+Object *  bbCameraPick( Camera *c,float x,float y ){
 	debugCamera(c);
 
 	int vp_x,vp_y,vp_w,vp_h;
@@ -976,7 +976,7 @@ Entity *  bbCameraPick( Camera *c,float x,float y ){
 	return doPick( l,0 );
 }
 
-Entity *  bbLinePick( float x,float y,float z,float dx,float dy,float dz,float radius ){
+Object *  bbLinePick( float x,float y,float z,float dx,float dy,float dz,float radius ){
 	debug3d();
 
 	Line l( Vector( x,y,z ),Vector( dx,dy,dz ) );
@@ -984,7 +984,7 @@ Entity *  bbLinePick( float x,float y,float z,float dx,float dy,float dz,float r
 	return doPick( l,radius );
 }
 
-Entity *  bbEntityPick( Object *src,float range ){
+Object *  bbEntityPick( Object *src,float range ){
 	debugEntity(src);
 
 	Line l( src->getWorldPosition(),src->getWorldTform().m.k * range );
@@ -998,7 +998,7 @@ int  bbEntityVisible( Object *src,Object *dest ){
 	return world->checkLOS( src,dest ) ? 1 : 0;
 }
 
-int  bbEntityInView( Entity *e,Camera *c ){
+int  bbEntityInView( Object *e,Camera *c ){
 	if( debug ){ debugEntity(e);debugCamera(c); }
 	if( Model *p=e->getModel() ){
 		if( MeshModel *m=p->getMeshModel() ){
@@ -1058,7 +1058,7 @@ int  bbPickedTriangle(){
 ////////////////////
 // LIGHT COMMANDS //
 ////////////////////
-Entity *  bbCreateLight( int type,Entity *p ){
+Object *  bbCreateLight( int type,Object *p ){
 	debugParent(p);
 	Light *t=d_new Light( type );
 	return insertEntity( t,p );
@@ -1088,7 +1088,7 @@ void  bbLightConeAngles( Light *light,float inner,float outer ){
 ////////////////////
 // PIVOT COMMANDS //
 ////////////////////
-Entity *  bbCreatePivot( Entity *p ){
+Object *  bbCreatePivot( Object *p ){
 	debugParent(p);
 	Pivot *t=d_new Pivot();
 	return insertEntity( t,p );
@@ -1097,14 +1097,14 @@ Entity *  bbCreatePivot( Entity *p ){
 /////////////////////
 // SPRITE COMMANDS //
 /////////////////////
-Entity *  bbCreateSprite( Entity *p ){
+Object *  bbCreateSprite( Object *p ){
 	debugParent(p);
 	Sprite *s=d_new Sprite();
 	s->setFX( gxScene::FX_FULLBRIGHT );
 	return insertEntity( s,p );
 }
 
-Entity *  bbLoadSprite( String file,int flags,Entity *p ){
+Object *  bbLoadSprite( String file,int flags,Object *p ){
 	debugParent(p);
 	Texture t( file,flags );
 	if( !t.getCanvas(0) ) return 0;
@@ -1142,7 +1142,7 @@ void  bbSpriteViewMode( Sprite *s,int mode ){
 /////////////////////
 // MIRROR COMMANDS //
 /////////////////////
-Entity *  bbCreateMirror( Entity *p ){
+Object *  bbCreateMirror( Object *p ){
 	debugParent(p);
 	Mirror *t=d_new Mirror();
 	return insertEntity( t,p );
@@ -1151,7 +1151,7 @@ Entity *  bbCreateMirror( Entity *p ){
 ////////////////////
 // PLANE COMMANDS //
 ////////////////////
-Entity *  bbCreatePlane( int segs,Entity *p ){
+Object *  bbCreatePlane( int segs,Object *p ){
 	if( debug ){
 		debugParent(p);
 		if( segs<1 || segs>20 ) RTEX( "Illegal number of segments" );
@@ -1163,7 +1163,7 @@ Entity *  bbCreatePlane( int segs,Entity *p ){
 //////////////////
 // MD2 COMMANDS //
 //////////////////
-Entity *  bbLoadMD2( String file,Entity *p ){
+Object *  bbLoadMD2( String file,Object *p ){
 	debugParent(p);
 	MD2Model *t=d_new MD2Model( file );
 	if( !t->getValid() ){ delete t;return 0; }
@@ -1193,7 +1193,7 @@ int  bbMD2Animating( MD2Model *m ){
 //////////////////
 // BSP Commands //
 //////////////////
-Entity *  bbLoadBSP( String file,float gam,Entity *p ){
+Object *  bbLoadBSP( String file,float gam,Object *p ){
 	debugParent(p);
 	CachedTexture::setPath( filenamepath( file.cstr() ) );
 	Q3BSPModel *t=d_new Q3BSPModel( file,gam );
@@ -1235,7 +1235,7 @@ static Vector terrainVector( Terrain *t,float x,float y,float z ){
 	return t->getWorldTform() * Vector( v.x,terrainHeight( t,v.x,v.z ),v.z );
 }
 
-Entity *  bbCreateTerrain( int n,Entity *p ){
+Object *  bbCreateTerrain( int n,Object *p ){
 	debugParent(p);
 	int shift=0;
 	while( (1<<shift)<n ) ++shift;
@@ -1244,7 +1244,7 @@ Entity *  bbCreateTerrain( int n,Entity *p ){
 	return insertEntity( t,p );
 }
 
-Entity *  bbLoadTerrain( String file,Entity *p ){
+Object *  bbLoadTerrain( String file,Object *p ){
 	debugParent(p);
 	gxCanvas *c=gx_graphics->loadCanvas( file,gxCanvas::CANVAS_HIGHCOLOR );
 	if( !c ) RTEX( "Unable to load heightmap image" );
@@ -1311,7 +1311,7 @@ void  bbModifyTerrain( Terrain *t,int x,int z,float h,int realtime ){
 ////////////////////
 // AUDIO COMMANDS //
 ////////////////////
-Entity *  bbCreateListener( Entity *p,float roll,float dopp,float dist ){
+Object *  bbCreateListener( Object *p,float roll,float dopp,float dist ){
 	if( debug ){
 		debugParent(p);
 		if( listener ) RTEX( "Listener already created" );
@@ -1331,17 +1331,17 @@ gxChannel *  bbEmitSound( gxSound *sound,Object *o ){
 /////////////////////
 // ENTITY COMMANDS //
 /////////////////////
-Entity *  bbCopyEntity( Entity *e,Entity *p ){
+Object *  bbCopyEntity( Object *e,Object *p ){
 	if( debug ){
 		debugEntity(e);
 		debugParent(p); 
 	}
-	Entity *t=e->getObject()->copy();
+	Object *t=e->copy();
 	if( !t ) return 0;
 	return insertEntity( t,p );
 }
 
-void  bbFreeEntity( Entity *e ){
+void  bbFreeEntity( Object *e ){
 	if( !e ) return;
 	if( debug ){
 		debugEntity(e);
@@ -1350,27 +1350,27 @@ void  bbFreeEntity( Entity *e ){
 	delete e;
 }
 
-void  bbHideEntity( Entity *e ){
+void  bbHideEntity( Object *e ){
 	debugEntity(e);
 	e->setEnabled(false);
 	e->setVisible(false);
 }
 
-void  bbShowEntity( Entity *e ){
+void  bbShowEntity( Object *e ){
 	debugEntity(e);
 	e->setVisible(true);
 	e->setEnabled(true);
-	e->getObject()->reset();
+	e->reset();
 }
 
-void  bbEntityParent( Entity *e,Entity *p,int global){
+void  bbEntityParent( Object *e,Object *p,int global){
 	if( debug ){
 		debugEntity(e);
 		debugParent(p);
-		Entity *t=p;
+		Object *t=p;
 		while( t ){
 			if( t==e ){
-				RTEX( "Entity cannot be parented to itself!" );
+				RTEX( "Object cannot be parented to itself!" );
 			}
 			t=t->getParent();
 		}
@@ -1384,25 +1384,25 @@ void  bbEntityParent( Entity *e,Entity *p,int global){
 		e->setWorldTform( t );
 	}else{
 		e->setParent( p );
-		e->getObject()->reset();
+		e->reset();
 	}
 }
 
-int  bbCountChildren( Entity *e ){
+int  bbCountChildren( Object *e ){
 	debugEntity(e);
 	int n=0;
-	for( Entity *p=e->children();p;p=p->successor() ) ++n;
+	for( Object *p=e->children();p;p=p->successor() ) ++n;
 	return n;
 }
 
-Entity *  bbGetChild( Entity *e,int index ){
+Object *  bbGetChild( Object *e,int index ){
 	debugEntity(e);
-	Entity *p=e->children();
+	Object *p=e->children();
 	while( --index && p ) p=p->successor();
 	return p;
 }
 
-Entity *  bbFindChild( Entity *e,String t ){
+Object *  bbFindChild( Object *e,String t ){
 	debugEntity(e);
 	e=findChild( e,t );
 	return e;
@@ -1414,9 +1414,9 @@ Entity *  bbFindChild( Entity *e,String t ){
 int  bbLoadAnimSeq( Object *o,String f ){
 	debugObject( o );
 	if( Animator *anim=o->getAnimator() ){
-		Entity *t=loadEntity( f,MeshLoader::HINT_ANIMONLY );
+		Object *t=loadEntity( f,MeshLoader::HINT_ANIMONLY );
 		if( t ){
-			if( Animator *p=t->getObject()->getAnimator() ){
+			if( Animator *p=t->getAnimator() ){
 				anim->addSeqs( p );
 			}
 			delete t;
@@ -1431,7 +1431,7 @@ void  bbSetAnimTime( Object *o,float time,int seq ){
 	if( Animator *anim=o->getAnimator() ){
 		anim->setAnimTime( time,seq );
 	}else{
-		RTEX( "Entity has not animation" );
+		RTEX( "Object has not animation" );
 	}
 }
 
@@ -1440,7 +1440,7 @@ void  bbAnimate( Object *o,int mode,float speed,int seq,float trans ){
 	if( Animator *anim=o->getAnimator() ){
 		anim->animate( mode,speed,seq,trans );
 	}else{
-		RTEX( "Entity has no animation" );
+		RTEX( "Object has no animation" );
 	}
 }
 
@@ -1549,7 +1549,7 @@ void  bbEntityOrder( Object *o,int n ){
 	if( debug ){
 		debugEntity(o);
 		if( !o->getModel() && !o->getCamera() ){
-			RTEX( "Entity is not a model or camera" );
+			RTEX( "Object is not a model or camera" );
 		}
 	}
 	o->setOrder( n );
@@ -1558,42 +1558,42 @@ void  bbEntityOrder( Object *o,int n ){
 //////////////////////////////
 // ENTITY PROPERTY COMMANDS //
 //////////////////////////////
-float  bbEntityX( Entity *e,int global ){
+float  bbEntityX( Object *e,int global ){
 	debugEntity(e);
 	return global ? e->getWorldPosition().x : e->getLocalPosition().x;
 }
 
-float  bbEntityY( Entity *e,int global ){
+float  bbEntityY( Object *e,int global ){
 	debugEntity(e);
 	return global ? e->getWorldPosition().y : e->getLocalPosition().y;
 }
 
-float  bbEntityZ( Entity *e,int global ){
+float  bbEntityZ( Object *e,int global ){
 	debugEntity(e);
 	return global ? e->getWorldPosition().z : e->getLocalPosition().z;
 }
 
-float  bbEntityPitch( Entity *e,int global ){
+float  bbEntityPitch( Object *e,int global ){
 	debugEntity(e);
 	return quatPitch( global ? e->getWorldRotation() : e->getLocalRotation() ) * rtod;
 }
 
-float  bbEntityYaw( Entity *e,int global ){
+float  bbEntityYaw( Object *e,int global ){
 	debugEntity(e);
 	return quatYaw( global ? e->getWorldRotation() : e->getLocalRotation() ) * rtod;
 }
 
-float  bbEntityRoll( Entity *e,int global ){
+float  bbEntityRoll( Object *e,int global ){
 	debugEntity(e);
 	return quatRoll( global ? e->getWorldRotation() : e->getLocalRotation() ) * rtod;
 }
 
-float  bbGetMatElement( Entity *e,int row,int col ){
+float  bbGetMatElement( Object *e,int row,int col ){
 	debugEntity(e);
 	return row<3 ? e->getWorldTform().m[row][col] : e->getWorldTform().v[col];
 }
 
-void  bbTFormPoint( float x,float y,float z,Entity *src,Entity *dest ){
+void  bbTFormPoint( float x,float y,float z,Object *src,Object *dest ){
 	if( debug ){
 		if( src ) debugEntity(src);
 		if( dest ) debugEntity(dest);
@@ -1603,7 +1603,7 @@ void  bbTFormPoint( float x,float y,float z,Entity *src,Entity *dest ){
 	if( dest ) tformed=-dest->getWorldTform() * tformed;
 }
 
-void  bbTFormVector( float x,float y,float z,Entity *src,Entity *dest ){
+void  bbTFormVector( float x,float y,float z,Object *src,Object *dest ){
 	if( debug ){
 		if( src ) debugEntity(src);
 		if( dest ) debugEntity(dest);
@@ -1613,7 +1613,7 @@ void  bbTFormVector( float x,float y,float z,Entity *src,Entity *dest ){
 	if( dest ) tformed=-dest->getWorldTform().m * tformed;
 }
 
-void  bbTFormNormal( float x,float y,float z,Entity *src,Entity *dest ){
+void  bbTFormNormal( float x,float y,float z,Object *src,Object *dest ){
 	if( debug ){
 		if( src ) debugEntity(src);
 		if( dest ) debugEntity(dest);
@@ -1644,7 +1644,7 @@ float  bbVectorPitch( float x,float y,float z ){
 	return Vector(x,y,z).pitch() * rtod;
 }
 
-float  bbDeltaYaw( Entity *src,Entity *dest ){
+float  bbDeltaYaw( Object *src,Object *dest ){
 	float x=src->getWorldTform().m.k.yaw();
 	float y=(dest->getWorldTform().v-src->getWorldTform().v).yaw();
 	float d=y-x;
@@ -1653,7 +1653,7 @@ float  bbDeltaYaw( Entity *src,Entity *dest ){
 	return d*rtod;
 }
 
-float  bbDeltaPitch( Entity *src,Entity *dest ){
+float  bbDeltaPitch( Object *src,Object *dest ){
 	float x=src->getWorldTform().m.k.pitch();
 	float y=(dest->getWorldTform().v-src->getWorldTform().v).pitch();
 	float d=y-x;
@@ -1670,10 +1670,10 @@ void  bbResetEntity( Object *o ){
 	o->reset();
 }
 
-static void entityType( Entity *e,int type ){
-	e->getObject()->setCollisionType(type);
-	e->getObject()->reset();
-	for( Entity *p=e->children();p;p=p->successor() ){
+static void entityType( Object *e,int type ){
+	e->setCollisionType(type);
+	e->reset();
+	for( Object *p=e->children();p;p=p->successor() ){
 		entityType( p,type );
 	}
 }
@@ -1696,7 +1696,7 @@ void  bbEntityPickMode( Object *o,int mode,int obs ){
 	o->setObscurer( !!obs );
 }
 
-Entity *  bbGetParent( Entity *e ){
+Object *  bbGetParent( Object *e ){
 	debugEntity(e);
 	return e->getParent();
 }
@@ -1785,7 +1785,7 @@ int  bbCollisionTriangle( Object *o,int index ){
 	return o->getCollisions()[index-1]->collision.index;
 }
 
-float  bbEntityDistance( Entity *src,Entity *dest ){
+float  bbEntityDistance( Object *src,Object *dest ){
 	debugEntity(src);
 	debugEntity(dest);
 	return src->getWorldPosition().distance( dest->getWorldPosition() );
@@ -1794,53 +1794,53 @@ float  bbEntityDistance( Entity *src,Entity *dest ){
 ////////////////////////////////////
 // ENTITY TRANSFORMATION COMMANDS //
 ////////////////////////////////////
-void  bbMoveEntity( Entity *e,float x,float y,float z ){
+void  bbMoveEntity( Object *e,float x,float y,float z ){
 	debugEntity(e);
 	e->setLocalPosition( e->getLocalPosition()+e->getLocalRotation()*Vector(x,y,z) );
 }
 
-void  bbTurnEntity( Entity *e,float p,float y,float r,int global ){
+void  bbTurnEntity( Object *e,float p,float y,float r,int global ){
 	debugEntity(e);
 	global?
 	e->setWorldRotation( rotationQuat( p*dtor,y*dtor,r*dtor )*e->getWorldRotation() ):
 	e->setLocalRotation( e->getLocalRotation()*rotationQuat( p*dtor,y*dtor,r*dtor ) );
 }
 
-void  bbTranslateEntity( Entity *e,float x,float y,float z,int global ){
+void  bbTranslateEntity( Object *e,float x,float y,float z,int global ){
 	debugEntity(e);
 	global?
 	e->setWorldPosition( e->getWorldPosition()+Vector( x,y,z ) ):
 	e->setLocalPosition( e->getLocalPosition()+Vector( x,y,z ) );
 }
 
-void  bbPositionEntity( Entity *e,float x,float y,float z,int global ){
+void  bbPositionEntity( Object *e,float x,float y,float z,int global ){
 	debugEntity(e);
 	global?
 	e->setWorldPosition(Vector(x,y,z)):
 	e->setLocalPosition(Vector(x,y,z));
 }
 
-void  bbScaleEntity( Entity *e,float x,float y,float z,int global ){
+void  bbScaleEntity( Object *e,float x,float y,float z,int global ){
 	debugEntity(e);
 	global?
 	e->setWorldScale(Vector(x,y,z)):
 	e->setLocalScale(Vector(x,y,z));
 }
 
-void  bbRotateEntity( Entity *e,float p,float y,float r,int global ){
+void  bbRotateEntity( Object *e,float p,float y,float r,int global ){
 	debugEntity(e);
 	global?
 	e->setWorldRotation( rotationQuat( p*dtor,y*dtor,r*dtor ) ):
 	e->setLocalRotation( rotationQuat( p*dtor,y*dtor,r*dtor ) );
 }
 
-void  bbPointEntity( Entity *e,Entity *t,float roll ){
+void  bbPointEntity( Object *e,Object *t,float roll ){
 	if( debug ){ debugEntity(e);debugEntity(t); }
 	Vector v=t->getWorldTform().v-e->getWorldTform().v;
 	e->setWorldRotation( rotationQuat( v.pitch(),v.yaw(),roll*dtor ) );
 }
 
-void  bbAlignToVector( Entity *e,float nx,float ny,float nz,int axis,float rate ){
+void  bbAlignToVector( Object *e,float nx,float ny,float nz,int axis,float rate ){
 	Vector ax( nx,ny,nz );
 	float l=ax.length();
 	if( l<=EPSILON ) return;
@@ -1868,17 +1868,17 @@ void  bbAlignToVector( Entity *e,float nx,float ny,float nz,int axis,float rate 
 //////////////////////////
 // ENTITY MISC COMMANDS //
 //////////////////////////
-void  bbNameEntity( Entity *e,String t ){
+void  bbNameEntity( Object *e,String t ){
 	debugEntity(e);
 	e->setName( t );
 }
 
-String bbEntityName( Entity *e ){
+String bbEntityName( Object *e ){
 	debugEntity(e);
 	return e->getName();
 }
 
-String bbEntityClass( Entity *e ){
+String bbEntityClass( Object *e ){
 	debugEntity(e);
 	const char *p="Pivot";
 	if( e->getLight() ) p="Light";
@@ -1898,7 +1898,7 @@ String bbEntityClass( Entity *e ){
 
 void  bbClearWorld( int e,int b,int t ){
 	if( e ){
-		while( Entity::orphans() ) bbFreeEntity( Entity::orphans() );
+		while( Object::orphans() ) bbFreeEntity( Object::orphans() );
 	}
 	if( b ){
 		while( brush_set.size() ) bbFreeBrush( *brush_set.begin() );

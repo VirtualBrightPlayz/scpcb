@@ -54,7 +54,7 @@ float ExplosionTimer;
 int LightsOn = true;
 int SoundTransmission;
 int Brightness;
-Entity* SoundEmitter;
+Object* SoundEmitter;
 int TempSounds[10];
 int TempSoundIndex = 0;
 int RadioSquelch;
@@ -81,10 +81,10 @@ float room2gw_x;
 float room2gw_z;
 String Input294;
 Texture* TeslaTexture;
-Entity* Monitor;
+Object* Monitor;
 Texture* MonitorTexture;
-Entity* CamBaseOBJ;
-Entity* CamOBJ;
+Object* CamBaseOBJ;
+Object* CamOBJ;
 
 // Functions.
 int VerifyResolution() {

@@ -21,7 +21,7 @@ public:
 
 	Sprite *getSprite(){ return this; }
 
-	Entity *clone(){ return d_new Sprite( *this ); }
+    virtual Object* clone(){ return d_new Sprite( *this ); }
 
 	void capture();
 	bool beginRender( float tween );

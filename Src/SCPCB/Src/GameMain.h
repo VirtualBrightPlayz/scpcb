@@ -62,7 +62,7 @@ extern float ExplosionTimer;
 extern int LightsOn;
 extern int SoundTransmission;
 extern int Brightness;
-extern class Entity* SoundEmitter;
+extern class Object* SoundEmitter;
 extern int TempSounds[10];
 extern int TempSoundIndex;
 extern int RadioSquelch;
@@ -89,10 +89,10 @@ extern float room2gw_x;
 extern float room2gw_z;
 extern String Input294;
 extern class Texture* TeslaTexture;
-extern class Entity* Monitor;
+extern class Object* Monitor;
 extern class Texture* MonitorTexture;
-extern class Entity* CamBaseOBJ;
-extern class Entity* CamOBJ;
+extern class Object* CamBaseOBJ;
+extern class Object* CamOBJ;
 
 // Functions.
 int VerifyResolution();
