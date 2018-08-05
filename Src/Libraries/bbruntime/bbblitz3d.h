@@ -47,7 +47,7 @@ class Texture* bbGetBrushTexture(class Brush* b, int index);
 void bbBrushBlend(class Brush* b, int blend);
 void bbBrushFX(class Brush* b, int fx);
 class Entity* bbLoadMesh(String f, Entity* p=nullptr);
-class Entity* bbLoadAnimMesh(String f, Entity* p);
+class Entity* bbLoadAnimMesh(String f, Entity* p=nullptr);
 int bbLoadAnimSeq(class Object* o, String f);
 class Entity* bbCreateMesh(class Entity* p);
 class Entity* bbCreateCube(class Entity* p);

@@ -1,7 +1,11 @@
+//library includes
+#include <StringType.h>
+#include <bbblitz3d.h>
+#include <bbgraphics.h>
+#include <iostream>
+
+//project includes
 #include "Assets.h"
-#include "StringType.h"
-#include "bbblitz3d.h"
-#include "bbgraphics.h"
 #include "GameMain.h"
 #include "Player.h"
 #include "Dreamfilter.h"
@@ -9,53 +13,37 @@
 #include "MapSystem.h"
 #include "Menus/Menu.h"
 #include "Menus/LoadingScreen.h"
-#include <iostream>
 
 namespace CBN {
 
 // Structs.
-std::vector<AssetWrap*> AssetWrap::list;
-AssetWrap::AssetWrap() {
-    list.push_back(this);
-}
-AssetWrap::~AssetWrap() {
-    for (int i = 0; i < list.size(); i++) {
-        if (list[i] == this) {
-            list.erase(list.begin() + i);
-            break;
-        }
-    }
-}
-int AssetWrap::getListSize() {
-    return list.size();
-}
-AssetWrap* AssetWrap::getObject(int index) {
-    return list[index];
-}
+std::vector<TextureAssetWrap*> TextureAssetWrap::list;
+std::vector<ImageAssetWrap*> ImageAssetWrap::list;
+std::vector<MeshAssetWrap*> MeshAssetWrap::list;
 
 UIAssets::UIAssets() {
-	uiAssets->back = bbLoadImage("GFX/menu/back.jpg");
-	uiAssets->scpText = bbLoadImage("GFX/menu/scptext.jpg");
-	uiAssets->scp173 = bbLoadImage("GFX/menu/173back.jpg");
-	uiAssets->tileWhite = bbLoadImage("GFX/menu/menuwhite.jpg");
-	uiAssets->tileBlack = bbLoadImage("GFX/menu/menublack.jpg");
-	bbMaskImage(uiAssets->tileBlack, 255, 255, 0);
+	back = bbLoadImage("GFX/menu/back.jpg");
+	scpText = bbLoadImage("GFX/menu/scptext.jpg");
+	scp173 = bbLoadImage("GFX/menu/173back.jpg");
+	tileWhite = bbLoadImage("GFX/menu/menuwhite.jpg");
+	tileBlack = bbLoadImage("GFX/menu/menublack.jpg");
+	bbMaskImage(tileBlack, 255, 255, 0);
 
-	bbResizeImage(uiAssets->back, bbImageWidth(uiAssets->back) * MenuScale, bbImageHeight(uiAssets->back) * MenuScale);
-	bbResizeImage(uiAssets->scpText, bbImageWidth(uiAssets->scpText) * MenuScale, bbImageHeight(uiAssets->scpText) * MenuScale);
-	bbResizeImage(uiAssets->scp173, bbImageWidth(uiAssets->scp173) * MenuScale, bbImageHeight(uiAssets->scp173) * MenuScale);
+	bbResizeImage(back, bbImageWidth(back) * MenuScale, bbImageHeight(back) * MenuScale);
+	bbResizeImage(scpText, bbImageWidth(scpText) * MenuScale, bbImageHeight(scpText) * MenuScale);
+	bbResizeImage(scp173, bbImageWidth(scp173) * MenuScale, bbImageHeight(scp173) * MenuScale);
 
-	uiAssets->pauseMenuBG = bbLoadImage("GFX/menu/pausemenu.jpg");
-	bbMaskImage(uiAssets->pauseMenuBG, 255, 255, 0);
-	bbScaleImage(uiAssets->pauseMenuBG, MenuScale, MenuScale);
+	pauseMenuBG = bbLoadImage("GFX/menu/pausemenu.jpg");
+	bbMaskImage(pauseMenuBG, 255, 255, 0);
+	bbScaleImage(pauseMenuBG, MenuScale, MenuScale);
 
-	uiAssets->cursorIMG = bbLoadImage("GFX/cursor.png");
+	cursorIMG = bbLoadImage("GFX/cursor.png");
 
 	int i;
 	for (i = 0; i <= 3; i++) {
-		uiAssets->arrow[i] = bbLoadImage("GFX/menu/arrow.png");
-		bbRotateImage(uiAssets->arrow[i], 90 * i);
-		bbHandleImage(uiAssets->arrow[i], 0, 0);
+		arrow[i] = bbLoadImage("GFX/menu/arrow.png");
+		bbRotateImage(arrow[i], 90 * i);
+		bbHandleImage(arrow[i], 0, 0);
 	}
 
 	// TODO: Change this now?
@@ -63,61 +51,56 @@ UIAssets::UIAssets() {
 	//don't match their "internal name" (i.e. their display name in applications
 	//like Word and such). As a workaround, I moved the files and renamed them so they
 	//can load without FastText.
-	uiAssets->font[0] = bbLoadFont("GFX/font/cour/Courier New.ttf", (int)(18 * MenuScale), 0, 0, 0);
-	uiAssets->font[1] = bbLoadFont("GFX/font/courbd/Courier New.ttf", (int)(58 * MenuScale), 0, 0, 0);
-	uiAssets->font[2] = bbLoadFont("GFX/font/DS-DIGI/DS-Digital.ttf", (int)(22 * MenuScale), 0, 0, 0);
-	uiAssets->font[3] = bbLoadFont("GFX/font/DS-DIGI/DS-Digital.ttf", (int)(60 * MenuScale), 0, 0, 0);
-	uiAssets->consoleFont = bbLoadFont("Blitz", (int)(20 * MenuScale), 0, 0, 0);
+	font[0] = bbLoadFont("GFX/font/cour/Courier New.ttf", (int)(18 * MenuScale), 0, 0, 0);
+	font[1] = bbLoadFont("GFX/font/courbd/Courier New.ttf", (int)(58 * MenuScale), 0, 0, 0);
+	font[2] = bbLoadFont("GFX/font/DS-DIGI/DS-Digital.ttf", (int)(22 * MenuScale), 0, 0, 0);
+	font[3] = bbLoadFont("GFX/font/DS-DIGI/DS-Digital.ttf", (int)(60 * MenuScale), 0, 0, 0);
+	consoleFont = bbLoadFont("Blitz", (int)(20 * MenuScale), 0, 0, 0);
 
-	uiAssets->sprintIcon = bbLoadImage("GFX/HUD/sprinticon.png");
-	uiAssets->blinkIcon = bbLoadImage("GFX/HUD/blinkicon.png");
-	uiAssets->crouchIcon = bbLoadImage("GFX/HUD/sneakicon.png");
-	uiAssets->handIcon[HAND_ICON_TOUCH] = bbLoadImage("GFX/HUD/handsymbol.png");
-	uiAssets->handIcon[HAND_ICON_GRAB] = bbLoadImage("GFX/HUD/handsymbol2.png");
-	uiAssets->blinkBar = bbLoadImage("GFX/HUD/blinkmeter.jpg");
-	uiAssets->staminaBar = bbLoadImage("GFX/HUD/staminameter.jpg");
-	uiAssets->keypadHUD = bbLoadImage("GFX/HUD/keypadhud.jpg");
-	bbMaskImage(uiAssets->keypadHUD, 255, 0, 255);
+	sprintIcon = bbLoadImage("GFX/HUD/sprinticon.png");
+	blinkIcon = bbLoadImage("GFX/HUD/blinkicon.png");
+	crouchIcon = bbLoadImage("GFX/HUD/sneakicon.png");
+	handIcon[HAND_ICON_TOUCH] = bbLoadImage("GFX/HUD/handsymbol.png");
+	handIcon[HAND_ICON_GRAB] = bbLoadImage("GFX/HUD/handsymbol2.png");
+	blinkBar = bbLoadImage("GFX/HUD/blinkmeter.jpg");
+	staminaBar = bbLoadImage("GFX/HUD/staminameter.jpg");
+	keypadHUD = bbLoadImage("GFX/HUD/keypadhud.jpg");
+	bbMaskImage(keypadHUD, 255, 0, 255);
 }
 
 UIAssets::~UIAssets() {
-	bbFreeImage(uiAssets->back);
-	bbFreeImage(uiAssets->scpText);
-	bbFreeImage(uiAssets->scp173);
-	bbFreeImage(uiAssets->tileWhite);
-	bbFreeImage(uiAssets->tileBlack);
+	bbFreeImage(back);
+	bbFreeImage(scpText);
+	bbFreeImage(scp173);
+	bbFreeImage(tileWhite);
+	bbFreeImage(tileBlack);
 
-	bbFreeImage(uiAssets->pauseMenuBG);
+	bbFreeImage(pauseMenuBG);
 
-	bbFreeImage(uiAssets->cursorIMG);
+	bbFreeImage(cursorIMG);
 
 	int i;
 	for (i = 0; i < 4; i++) {
-		bbFreeImage(uiAssets->arrow[i]);
+		bbFreeImage(arrow[i]);
 	}
 
 	for (i = 0; i < 4; i++) {
-		bbFreeFont(uiAssets->font[i]);
+		bbFreeFont(font[i]);
 	}
-	bbFreeFont(uiAssets->consoleFont);
+	bbFreeFont(consoleFont);
 
-	bbFreeImage(uiAssets->sprintIcon);
-	bbFreeImage(uiAssets->blinkIcon);
-	bbFreeImage(uiAssets->crouchIcon);
+	bbFreeImage(sprintIcon);
+	bbFreeImage(blinkIcon);
+	bbFreeImage(crouchIcon);
 	for (i = 0; i < 2; i++) {
-		bbFreeImage(uiAssets->handIcon[i]);
+		bbFreeImage(handIcon[i]);
 	}
-	bbFreeImage(uiAssets->blinkBar);
-	bbFreeImage(uiAssets->staminaBar);
-	bbFreeImage(uiAssets->keypadHUD);
+	bbFreeImage(blinkBar);
+	bbFreeImage(staminaBar);
+	bbFreeImage(keypadHUD);
 }
 
 // Constants.
-const int ASSET_NONE = 0;
-const int ASSET_TEXTURE = 1;
-const int ASSET_IMAGE = 2;
-const int ASSET_MESH = 3;
-const int ASSET_ANIM_MESH = 4;
 const int ASSET_DECAY_TIMER = 10 * 70;
 const int BLEND_ADD = 3;
 const int GORE_PIC_COUNT = 6;
@@ -128,116 +111,118 @@ const int HAND_ICON_GRAB = 1;
 UIAssets* uiAssets;
 
 // Functions.
-AssetWrap* CreateAsset(String filePath, int asType, int flag = 1) {
-    AssetWrap* as = new AssetWrap();
-    as->asType = asType;
-    as->file = filePath;
-    as->decayTimer = ASSET_DECAY_TIMER;
+TextureAssetWrap::TextureAssetWrap(String filePath, int flag) {
+    texture = bbLoadTexture(filePath, flag);
+    grabCount = 1;
 
-    switch (as->asType) {
-        case ASSET_TEXTURE: {
-            as->intVal = bbLoadTexture(as->file, flag);
+    list.push_back(this);
+}
+
+TextureAssetWrap::~TextureAssetWrap() {
+    for (int i=0;i<list.size();i++) {
+        if (list[i]==this) {
+            list.erase(list.begin()+i);
+            break;
         }
-        case ASSET_IMAGE: {
-            as->intVal = bbLoadImage(as->file);
-        }
-        case ASSET_MESH: {
-            as->intVal = bbLoadMesh(as->file);
-        }
-        case ASSET_ANIM_MESH: {
-            as->intVal = bbLoadAnimMesh(as->file);
+    }
+    bbFreeTexture(texture);
+}
+
+TextureAssetWrap* TextureAssetWrap::grab(String filePath, int flag) {
+    for (int i = 0; i<list.size(); i++) {
+        if (list[i]->file.equals(filePath)) {
+            list[i]->grabCount++;
+            return list[i];
         }
     }
 
-    if (as->intVal != 0 & as->asType != ASSET_TEXTURE & as->asType != ASSET_IMAGE) {
-        bbHideEntity(as->intVal);
-    }
-
-    std::cout << "CREATED ASSET: " + filePath;
-    return as;
+    return new TextureAssetWrap(filePath, flag);
 }
 
-void FreeAsset(AssetWrap* as) {
-    switch (as->asType) {
-        case ASSET_TEXTURE: {
-            bbFreeTexture(as->intVal);
-        }
-        case ASSET_IMAGE: {
-            bbFreeImage(as->intVal);
-        }
-		case ASSET_MESH:
-		case ASSET_ANIM_MESH: {
-            bbFreeEntity(as->intVal);
-        }
+void TextureAssetWrap::drop() {
+    grabCount--;
+    if (grabCount<0) {
+        grabCount = 0;
     }
-
-    String strng = as->file;
-    delete as;
-    std::cout << "ASSET Removed: " + strng;
 }
 
-int GrabAsset(String filePath, int asType, int flag = 1) {
-    AssetWrap* as;
-    for (int i = 0; i < AssetWrap::getListSize(); i++) {
-        as = AssetWrap::getObject(i);
+ImageAssetWrap::ImageAssetWrap(String filePath) {
+    image = bbLoadImage(filePath);
+    grabCount = 1;
 
-        if (filePath.equals(as->file)) {
-            as->decayTimer = ASSET_DECAY_TIMER;
-            as->grabCount = as->grabCount + 1;
-            //DebugLog("GRABBED ASSET: " + filePath + ", " + String(as\grabCount))
-            return as->intVal;
+    list.push_back(this);
+}
+
+ImageAssetWrap::~ImageAssetWrap() {
+    for (int i = 0; i<list.size(); i++) {
+        if (list[i] == this) {
+            list.erase(list.begin() + i);
+            break;
+        }
+    }
+    bbFreeImage(image);
+}
+
+ImageAssetWrap* ImageAssetWrap::grab(String filePath) {
+    for (int i = 0; i<list.size(); i++) {
+        if (list[i]->file.equals(filePath)) {
+            list[i]->grabCount++;
+            return list[i];
         }
     }
 
-    //Asset doesn't exist, create it.
-    as = CreateAsset(filePath, asType, flag);
-    as->grabCount = 1;
-    //DebugLog("GRABBED ASSET: " + filePath + ", " + String(as\grabCount))
-
-    return as->intVal;
+    return new ImageAssetWrap(filePath);
 }
 
-int GrabTexture(String filePath, int flag = 1) {
-    return GrabAsset(filePath, ASSET_TEXTURE, flag);
+void ImageAssetWrap::drop() {
+    grabCount--;
+    if (grabCount<0) {
+        grabCount = 0;
+    }
 }
 
-int GrabImage(String filePath) {
-    return GrabAsset(filePath, ASSET_IMAGE);
+MeshAssetWrap::MeshAssetWrap(String filePath, bool isAnimated) {
+    if (isAnimated) {
+        mesh = bbLoadAnimMesh(filePath);
+    }
+    else {
+        mesh = bbLoadMesh(filePath);
+    }
+    grabCount = 1;
+
+    list.push_back(this);
 }
 
-int GrabMesh(String filePath) {
-    return GrabAsset(filePath, ASSET_MESH);
+MeshAssetWrap::~MeshAssetWrap() {
+    for (int i = 0; i<list.size(); i++) {
+        if (list[i] == this) {
+            list.erase(list.begin() + i);
+            break;
+        }
+    }
+    bbFreeEntity(mesh);
 }
 
-void DropAsset(int obj) {
-    AssetWrap* as;
-    for (int iterator1 = 0; iterator1 < AssetWrap::getListSize(); iterator1++) {
-        as = AssetWrap::getObject(iterator1);
-
-        if (obj == as->intVal) {
-            as->grabCount = as->grabCount - 1;
-            //DebugLog("DROPPED ASSET: " + as\file + ", " + String(as\grabCount))
-            return;
+MeshAssetWrap* MeshAssetWrap::grab(String filePath, bool isAnimated) {
+    for (int i = 0; i<list.size(); i++) {
+        if (list[i]->file.equals(filePath) && list[i]->animated == isAnimated) {
+            list[i]->grabCount++;
+            return list[i];
         }
     }
 
-    //TODO: Maybe not make this crash the game later?
-    throw Exception("Attempted to drop non-existant asset.");
+    return new MeshAssetWrap(filePath, isAnimated);
 }
 
-void UpdateAssets() {
-    AssetWrap* as;
-    for (int iterator2 = 0; iterator2 < AssetWrap::getListSize(); iterator2++) {
-        as = AssetWrap::getObject(iterator2);
-
-        if (as->grabCount < 1) {
-            as->decayTimer = as->decayTimer - timing->tickDuration;
-            //DebugLog("ASSET DECAYING: " + as\file + ", " + String(as\decayTimer))
-            if (as->decayTimer < 0) {
-                FreeAsset(as);
-            }
-        }
+void MeshAssetWrap::drop() {
+    grabCount--;
+    if (grabCount<0) {
+        grabCount = 0;
     }
+}
+
+void AssetWrap::update() {
+    
 }
 
 void LoadEntities() {

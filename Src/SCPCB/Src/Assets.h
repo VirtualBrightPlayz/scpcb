@@ -1,26 +1,84 @@
 #ifndef ASSETS_H_INCLUDED
 #define ASSETS_H_INCLUDED
-#include "StringType.h"
+#include <StringType.h>
 #include <vector>
 
 namespace CBN {
 
 // Structs.
-struct AssetWrap {
-private:
-    static std::vector<AssetWrap*> list;
-
+class AssetWrap {
 public:
-    AssetWrap();
-    ~AssetWrap();
-    static int getListSize();
-    static AssetWrap* getObject(int index);
+    enum class TYPE {
+        ASSET_NONE,
+        ASSET_TEXTURE,
+        ASSET_IMAGE,
+        ASSET_MESH,
+        ASSET_ANIM_MESH
+    };
 
-    int asType;
+    virtual TYPE getType() =0;
+    virtual void drop() =0;
+
+    static void update();
+protected:
     int grabCount;
+
     String file;
+
     float decayTimer;
-    int intVal;
+};
+
+class TextureAssetWrap : public AssetWrap {
+public:
+    virtual TYPE getType();
+    virtual void drop();
+
+    class Texture* getTexture();
+
+    static TextureAssetWrap* grab(String filePath, int flag = 1);
+private:
+    static std::vector<TextureAssetWrap*> list;
+    
+    int flags;
+    class Texture* texture;
+
+    TextureAssetWrap(String filePath, int flag = 1);
+    ~TextureAssetWrap();
+};
+
+class ImageAssetWrap : public AssetWrap {
+public:
+    virtual TYPE getType();
+    virtual void drop();
+
+    class bbImage* getImage();
+
+    static ImageAssetWrap* grab(String filePath);
+private:
+    static std::vector<ImageAssetWrap*> list;
+    
+    class bbImage* image;
+
+    ImageAssetWrap(String filePath);
+    ~ImageAssetWrap();
+};
+
+class MeshAssetWrap : public AssetWrap {
+public:
+    virtual TYPE getType();
+    virtual void drop();
+
+    class Entity* getMesh();
+
+    static MeshAssetWrap* grab(String filePath, bool isAnimated = true);
+private:
+    static std::vector<MeshAssetWrap*> list;
+    
+    bool animated;
+    class Entity* mesh;
+
+    MeshAssetWrap(String filePath, bool isAnimated = true);
+    ~MeshAssetWrap();
 };
 
 struct UIAssets {
@@ -55,11 +113,6 @@ public:
 };
 
 // Constants.
-extern const int ASSET_NONE;
-extern const int ASSET_TEXTURE;
-extern const int ASSET_IMAGE;
-extern const int ASSET_MESH;
-extern const int ASSET_ANIM_MESH;
 extern const int ASSET_DECAY_TIMER;
 extern const int BLEND_ADD;
 extern const int GORE_PIC_COUNT;
@@ -70,22 +123,6 @@ extern const int HAND_ICON_GRAB;
 extern UIAssets* uiAssets;
 
 // Functions.
-AssetWrap* CreateAsset(String filePath, int asType, int flag = 1);
-
-void FreeAsset(AssetWrap* as);
-
-int GrabAsset(String filePath, int asType, int flag = 1);
-
-int GrabTexture(String filePath, int flag = 1);
-
-int GrabImage(String filePath);
-
-int GrabMesh(String filePath);
-
-void DropAsset(int obj);
-
-void UpdateAssets();
-
 void LoadEntities();
 
 void InitNewGame();

@@ -1,7 +1,7 @@
 #ifndef DREAMFILTER_H_INCLUDED
 #define DREAMFILTER_H_INCLUDED
-#include "entity.h"
-#include "camera.h"
+#include <entity.h>
+#include <camera.h>
 #include <vector>
 
 namespace CBN {
