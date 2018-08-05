@@ -35,28 +35,28 @@ AssetWrap* AssetWrap::getObject(int index) {
 }
 
 UIAssets::UIAssets() {
-	uiAssets->back = bbLoadImage("GFX/menu/back.jpg");
-	uiAssets->scpText = bbLoadImage("GFX/menu/scptext.jpg");
-	uiAssets->scp173 = bbLoadImage("GFX/menu/173back.jpg");
-	uiAssets->tileWhite = bbLoadImage("GFX/menu/menuwhite.jpg");
-	uiAssets->tileBlack = bbLoadImage("GFX/menu/menublack.jpg");
-	bbMaskImage(uiAssets->tileBlack, 255, 255, 0);
+	back = bbLoadImage("GFX/menu/back.jpg");
+	scpText = bbLoadImage("GFX/menu/scptext.jpg");
+	scp173 = bbLoadImage("GFX/menu/173back.jpg");
+	tileWhite = bbLoadImage("GFX/menu/menuwhite.jpg");
+	tileBlack = bbLoadImage("GFX/menu/menublack.jpg");
+	bbMaskImage(tileBlack, 255, 255, 0);
 
-	bbResizeImage(uiAssets->back, bbImageWidth(uiAssets->back) * MenuScale, bbImageHeight(uiAssets->back) * MenuScale);
-	bbResizeImage(uiAssets->scpText, bbImageWidth(uiAssets->scpText) * MenuScale, bbImageHeight(uiAssets->scpText) * MenuScale);
-	bbResizeImage(uiAssets->scp173, bbImageWidth(uiAssets->scp173) * MenuScale, bbImageHeight(uiAssets->scp173) * MenuScale);
+	bbResizeImage(back, bbImageWidth(back) * MenuScale, bbImageHeight(back) * MenuScale);
+	bbResizeImage(scpText, bbImageWidth(scpText) * MenuScale, bbImageHeight(scpText) * MenuScale);
+	bbResizeImage(scp173, bbImageWidth(scp173) * MenuScale, bbImageHeight(scp173) * MenuScale);
 
-	uiAssets->pauseMenuBG = bbLoadImage("GFX/menu/pausemenu.jpg");
-	bbMaskImage(uiAssets->pauseMenuBG, 255, 255, 0);
-	bbScaleImage(uiAssets->pauseMenuBG, MenuScale, MenuScale);
+	pauseMenuBG = bbLoadImage("GFX/menu/pausemenu.jpg");
+	bbMaskImage(pauseMenuBG, 255, 255, 0);
+	bbScaleImage(pauseMenuBG, MenuScale, MenuScale);
 
-	uiAssets->cursorIMG = bbLoadImage("GFX/cursor.png");
+	cursorIMG = bbLoadImage("GFX/cursor.png");
 
 	int i;
 	for (i = 0; i <= 3; i++) {
-		uiAssets->arrow[i] = bbLoadImage("GFX/menu/arrow.png");
-		bbRotateImage(uiAssets->arrow[i], 90 * i);
-		bbHandleImage(uiAssets->arrow[i], 0, 0);
+		arrow[i] = bbLoadImage("GFX/menu/arrow.png");
+		bbRotateImage(arrow[i], 90 * i);
+		bbHandleImage(arrow[i], 0, 0);
 	}
 
 	// TODO: Change this now?
@@ -64,53 +64,53 @@ UIAssets::UIAssets() {
 	//don't match their "internal name" (i.e. their display name in applications
 	//like Word and such). As a workaround, I moved the files and renamed them so they
 	//can load without FastText.
-	uiAssets->font[0] = bbLoadFont("GFX/font/cour/Courier New.ttf", (int)(18 * MenuScale), 0, 0, 0);
-	uiAssets->font[1] = bbLoadFont("GFX/font/courbd/Courier New.ttf", (int)(58 * MenuScale), 0, 0, 0);
-	uiAssets->font[2] = bbLoadFont("GFX/font/DS-DIGI/DS-Digital.ttf", (int)(22 * MenuScale), 0, 0, 0);
-	uiAssets->font[3] = bbLoadFont("GFX/font/DS-DIGI/DS-Digital.ttf", (int)(60 * MenuScale), 0, 0, 0);
-	uiAssets->consoleFont = bbLoadFont("Blitz", (int)(20 * MenuScale), 0, 0, 0);
+	font[0] = bbLoadFont("GFX/font/cour/Courier New.ttf", (int)(18 * MenuScale), 0, 0, 0);
+	font[1] = bbLoadFont("GFX/font/courbd/Courier New.ttf", (int)(58 * MenuScale), 0, 0, 0);
+	font[2] = bbLoadFont("GFX/font/DS-DIGI/DS-Digital.ttf", (int)(22 * MenuScale), 0, 0, 0);
+	font[3] = bbLoadFont("GFX/font/DS-DIGI/DS-Digital.ttf", (int)(60 * MenuScale), 0, 0, 0);
+	consoleFont = bbLoadFont("Blitz", (int)(20 * MenuScale), 0, 0, 0);
 
-	uiAssets->sprintIcon = bbLoadImage("GFX/HUD/sprinticon.png");
-	uiAssets->blinkIcon = bbLoadImage("GFX/HUD/blinkicon.png");
-	uiAssets->crouchIcon = bbLoadImage("GFX/HUD/sneakicon.png");
-	uiAssets->handIcon[HAND_ICON_TOUCH] = bbLoadImage("GFX/HUD/handsymbol.png");
-	uiAssets->handIcon[HAND_ICON_GRAB] = bbLoadImage("GFX/HUD/handsymbol2.png");
-	uiAssets->blinkBar = bbLoadImage("GFX/HUD/blinkmeter.jpg");
-	uiAssets->staminaBar = bbLoadImage("GFX/HUD/staminameter.jpg");
-	uiAssets->keypadHUD = bbLoadImage("GFX/HUD/keypadhud.jpg");
-	bbMaskImage(uiAssets->keypadHUD, 255, 0, 255);
+	sprintIcon = bbLoadImage("GFX/HUD/sprinticon.png");
+	blinkIcon = bbLoadImage("GFX/HUD/blinkicon.png");
+	crouchIcon = bbLoadImage("GFX/HUD/sneakicon.png");
+	handIcon[HAND_ICON_TOUCH] = bbLoadImage("GFX/HUD/handsymbol.png");
+	handIcon[HAND_ICON_GRAB] = bbLoadImage("GFX/HUD/handsymbol2.png");
+	blinkBar = bbLoadImage("GFX/HUD/blinkmeter.jpg");
+	staminaBar = bbLoadImage("GFX/HUD/staminameter.jpg");
+	keypadHUD = bbLoadImage("GFX/HUD/keypadhud.jpg");
+	bbMaskImage(keypadHUD, 255, 0, 255);
 }
 
 UIAssets::~UIAssets() {
-	bbFreeImage(uiAssets->back);
-	bbFreeImage(uiAssets->scpText);
-	bbFreeImage(uiAssets->scp173);
-	bbFreeImage(uiAssets->tileWhite);
-	bbFreeImage(uiAssets->tileBlack);
+	bbFreeImage(back);
+	bbFreeImage(scpText);
+	bbFreeImage(scp173);
+	bbFreeImage(tileWhite);
+	bbFreeImage(tileBlack);
 
-	bbFreeImage(uiAssets->pauseMenuBG);
+	bbFreeImage(pauseMenuBG);
 
-	bbFreeImage(uiAssets->cursorIMG);
+	bbFreeImage(cursorIMG);
 
 	int i;
 	for (i = 0; i < 4; i++) {
-		bbFreeImage(uiAssets->arrow[i]);
+		bbFreeImage(arrow[i]);
 	}
 
 	for (i = 0; i < 4; i++) {
-		bbFreeFont(uiAssets->font[i]);
+		bbFreeFont(font[i]);
 	}
-	bbFreeFont(uiAssets->consoleFont);
+	bbFreeFont(consoleFont);
 
-	bbFreeImage(uiAssets->sprintIcon);
-	bbFreeImage(uiAssets->blinkIcon);
-	bbFreeImage(uiAssets->crouchIcon);
+	bbFreeImage(sprintIcon);
+	bbFreeImage(blinkIcon);
+	bbFreeImage(crouchIcon);
 	for (i = 0; i < 2; i++) {
-		bbFreeImage(uiAssets->handIcon[i]);
+		bbFreeImage(handIcon[i]);
 	}
-	bbFreeImage(uiAssets->blinkBar);
-	bbFreeImage(uiAssets->staminaBar);
-	bbFreeImage(uiAssets->keypadHUD);
+	bbFreeImage(blinkBar);
+	bbFreeImage(staminaBar);
+	bbFreeImage(keypadHUD);
 }
 
 // Constants.
