@@ -26,8 +26,10 @@ int   bbGetMouse();
 int   bbWaitMouse();
 int   bbMouseX();
 int   bbMouseY();
+int   bbMouseZ();
 int   bbMouseXSpeed();
 int   bbMouseYSpeed();
+int   bbMouseZSpeed();
 void  bbMoveMouse( int x,int y );
 void  bbFlushMouse();
 

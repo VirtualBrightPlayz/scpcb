@@ -3,6 +3,7 @@
 
 #include <string>
 #include <iostream>
+#include <vector>
 
 typedef wchar_t wchar;
 
@@ -46,6 +47,8 @@ struct String {
         bool equals(const String& other) const;
         bool equals(const char other) const;
         bool isEmpty() const;
+
+		std::vector<String> split(const String& needle) const;
     protected:
         enum class DOMINANT_BUFFER {
             C, W

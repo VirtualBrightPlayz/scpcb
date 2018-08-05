@@ -154,6 +154,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ConsoleCommands.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Src\Assets.cpp" />
     <ClCompile Include="Src\Audio.cpp" />

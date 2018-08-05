@@ -5,6 +5,8 @@
 #include <bbinput.h>
 #include <bbmath.h>
 #include <bbstring.h>
+#include <iostream>
+#include <vector>
 
 int main() {
     bbruntime_create(GetModuleHandle(NULL));
@@ -12,6 +14,12 @@ int main() {
     bbGraphics3D(1280, 720, 0, 2);
 
     bbAppTitle(String("     Test  thing     ").trim(),"");
+
+	String test = "this is a test";
+	std::vector<String> list = test.split(" ");
+	//for (int i = 0; i < list.size(); i++) {
+	//	std::cout << list[i];
+	//}
 
     Entity* cube = bbCreateCube(nullptr);
     Entity* camera = bbCreateCamera(nullptr);

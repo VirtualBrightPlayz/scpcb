@@ -64,7 +64,7 @@ void	 bbPlot( int x,int y );
 void	 bbLine( int x1,int y1,int x2,int y2 );
 void	 bbRect( int x,int y,int w,int h,int solid );
 void	 bbOval( int x,int y,int w,int h,int solid );
-void	 bbText( int x,int y,String str,int centre_x,int centre_y );
+void	 bbText( int x,int y,String str,int centre_x=0,int centre_y=0 );
 void	 bbGetColor( int x,int y );
 int		 bbColorRed();
 int		 bbColorGreen();

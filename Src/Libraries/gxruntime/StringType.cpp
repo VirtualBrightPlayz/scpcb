@@ -381,3 +381,17 @@ String String::unHex() const {
     resultBuffer[resultSize] = '\0';
     return String(resultBuffer);
 }
+
+std::vector<String> String::split(const String& needle) const {
+	std::vector<String> retVal;
+	String haystack = this;
+	while (haystack.findFirst(needle) > -1) {
+		String adder = haystack.substr(0, haystack.findFirst(needle));
+		retVal.insert(retVal.begin() + retVal.size(), adder);
+		haystack = haystack.substr(0, adder.size());
+	}
+	// Add the rest of the string to the vector.
+	retVal.insert(retVal.begin() + retVal.size(), haystack);
+
+	return retVal;
+}

@@ -350,7 +350,7 @@ float  bbStats3D( int n ){
 
 //Note: modify canvas->backup() to NOT release backup image!
 //
-Texture *  bbLoadTexture( String file,int flags=1 ){
+Texture *  bbLoadTexture( String file,int flags){
 	debug3d();
 	Texture *t=d_new Texture( file,flags );
 	if( !t->getCanvas(0) ){ delete t;return 0; }
@@ -369,7 +369,7 @@ Texture *  bbLoadAnimTexture( String file,int flags,int w,int h,int first,int cn
 	return t;
 }
 
-Texture *  bbCreateTexture( int w,int h,int flags=1,int frames=1 ){
+Texture *  bbCreateTexture( int w,int h,int flags,int frames ){
 	if( debug ){
 		debug3d();
 		if( frames<=0 ){
@@ -442,7 +442,7 @@ void bbSetCubeMode( Texture *t,int mode ){
 	}
 }
 
-gxCanvas *bbTextureBuffer( Texture *t,int frame=0 ){
+gxCanvas *bbTextureBuffer( Texture *t,int frame ){
 	//v1.04
 	debugTexture(t);
 	if( gxCanvas *c=t->getCanvas( frame ) ){
