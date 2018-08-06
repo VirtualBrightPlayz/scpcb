@@ -3,8 +3,23 @@
 #define BBBLITZ3D_H
 
 #include "bbsys.h"
-#include "../gxruntime/gxscene.h"
-#include "../gxruntime/StringType.h"
+#include "../blitz3d/blitz3d.h"
+#include "../blitz3d/world.h"
+#include "../blitz3d/texture.h"
+#include "../blitz3d/brush.h"
+#include "../blitz3d/camera.h"
+#include "../blitz3d/sprite.h"
+#include "../blitz3d/meshmodel.h"
+#include "../blitz3d/loader_3ds.h"
+#include "../blitz3d/loader_b3d.h"
+#include "../blitz3d/md2model.h"
+#include "../blitz3d/q3bspmodel.h"
+#include "../blitz3d/meshutil.h"
+#include "../blitz3d/pivot.h"
+#include "../blitz3d/planemodel.h"
+#include "../blitz3d/terrain.h"
+#include "../blitz3d/listener.h"
+#include "../blitz3d/cachedtexture.h"
 
 extern gxScene *gx_scene;
 
@@ -47,15 +62,15 @@ void bbBrushTexture(class Brush* b, Texture* t, int frame, int index);
 class Texture* bbGetBrushTexture(class Brush* b, int index);
 void bbBrushBlend(class Brush* b, int blend);
 void bbBrushFX(class Brush* b, int fx);
-class Object* bbLoadMesh(String f, Object* p=nullptr);
-class Object* bbLoadAnimMesh(String f, Object* p=nullptr);
+class MeshModel* bbLoadMesh(String f, class Object* p=nullptr);
+class MeshModel* bbLoadAnimMesh(String f, class Object* p=nullptr);
 int bbLoadAnimSeq(class Object* o, String f);
 class MeshModel* bbCreateMesh(class Object* p=nullptr);
-class MeshModel* bbCreateCube(class Object* p = nullptr);
-class MeshModel* bbCreateSphere(int segs, Object* p = nullptr);
-class MeshModel* bbCreateCylinder(int segs, int solid, Object* p = nullptr);
-class MeshModel* bbCreateCone(int segs, int solid, Object* p = nullptr);
-class MeshModel* bbDeepCopyMesh(class MeshModel* m, Object* p = nullptr);
+class MeshModel* bbCreateCube(class Object* p=nullptr);
+class MeshModel* bbCreateSphere(int segs, class Object* p=nullptr);
+class MeshModel* bbCreateCylinder(int segs, int solid, class Object* p=nullptr);
+class MeshModel* bbCreateCone(int segs, int solid, class Object* p=nullptr);
+class MeshModel* bbDeepCopyMesh(class MeshModel* m, class Object* p=nullptr);
 void bbRotateMesh(class MeshModel* m, float x, float y, float z);
 void bbPositionMesh(class MeshModel* m, float x, float y, float z);
 void bbFitMesh(class MeshModel* m, float x, float y, float z, float w, float h, float d, int uniform);
@@ -91,7 +106,7 @@ float bbVertexGreen(class Surface* s, int n);
 float bbVertexBlue(class Surface* s, int n);
 float bbVertexAlpha(class Surface* s, int n);
 int bbTriangleVertex(class Surface* s, int n, int v);
-class Object* bbCreateCamera(class Object* p = nullptr);
+class Camera* bbCreateCamera(class Object* p = nullptr);
 void bbCameraZoom(class Camera* c, float zoom);
 void bbCameraRange(class Camera* c, float nr, float fr);
 void bbCameraClsColor(class Camera* c, float r, float g, float b);
@@ -119,26 +134,26 @@ float bbPickedTime();
 class Object* bbPickedEntity();
 void* bbPickedSurface();
 int bbPickedTriangle();
-class Object* bbCreateLight(int type, Object* p);
+class Light* bbCreateLight(int type, class Object* p);
 void bbLightColor(class Light* light, float r, float g, float b);
 void bbLightRange(class Light* light, float range);
 class Object* bbCreatePivot(class Object* p=nullptr);
 class Object* bbCreateSprite(class Object* p);
 void bbRotateSprite(class Sprite* s, float angle);
-class Object* bbLoadMD2(String file, Object* p);
+class Object* bbLoadMD2(String file, class Object* p);
 float bbMD2AnimTime(class MD2Model* m);
 int bbMD2AnimLength(class MD2Model* m);
 int bbMD2Animating(class MD2Model* m);
 void bbBSPAmbientLight(class Q3BSPModel* t, float r, float g, float b);
 void bbScaleSprite(class Sprite *s, float x, float y);
 class Object* bbCreateMirror(class Object* p);
-class Object* bbCreatePlane(int segs, Object* p);
+class Object* bbCreatePlane(int segs, class Object* p);
 void bbTerrainShading(class Terrain* t, int enable);
 int bbTerrainSize(class Terrain* t);
-class gxChannel* bbEmitSound(class gxSound* sound, Object* o);
-class Model* bbCopyModelEntity(class Model* e, Object* p = nullptr);
-class MeshModel* bbCopyMeshModelEntity(class MeshModel* e, Object* p = nullptr);
-class Pivot* bbCopyPivot(class Pivot* e, Object* p = nullptr);
+class gxChannel* bbEmitSound(class gxSound* sound, class Object* o);
+class Model* bbCopyModelEntity(class Model* e, class Object* p = nullptr);
+class MeshModel* bbCopyMeshModelEntity(class MeshModel* e, class Object* p = nullptr);
+class Pivot* bbCopyPivot(class Pivot* e, class Object* p = nullptr);
 float bbEntityX(class Object* e, int global=1);
 float bbEntityY(class Object* e, int global=1);
 float bbEntityZ(class Object* e, int global=1);
@@ -162,7 +177,7 @@ void bbTurnEntity(class Object* e, float p, float y, float r, int global=0);
 void bbTranslateEntity(class Object* e, float x, float y, float z, int global=0);
 void bbPositionEntity(class Object* e, float x, float y, float z, int global=0);
 void bbRotateEntity(class Object* e, float p, float y, float r, int global=0);
-void bbPointEntity(class Object* e, Object* t, float roll=0.f);
+void bbPointEntity(class Object* e, class Object* t, float roll=0.f);
 void bbAnimateMD2(class MD2Model* m, int mode, float speed, int first, int last, float trans);
 void bbAnimate(class Object* o, int mode, float speed, int seq, float trans);
 int bbAddAnimSeq(class Object* o, int length);
@@ -170,7 +185,7 @@ int bbAnimSeq(class Object* o);
 float bbAnimTime(class Object* o);
 int bbAnimLength(class Object* o);
 int bbAnimating(class Object* o);
-void bbEntityParent(class Object* e, Object* p, int global=1);
+void bbEntityParent(class Object* e, class Object* p, int global=1);
 int bbCountChildren(class Object* e);
 class Object* bbGetChild(class Object* e, int index);
 class Object* bbFindChild(class Object* e, String t);

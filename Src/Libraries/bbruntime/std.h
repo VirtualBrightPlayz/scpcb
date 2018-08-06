@@ -19,6 +19,6 @@
 
 #include <math.h>
 
-using namespace std;
+using namespace std; //TODO: REMOVE
 
 #endif

@@ -22,6 +22,6 @@
 //#include <dinput.h>
 #include <d3d.h>
 
-using namespace std;
+using namespace std; //TODO: REMOVE
 
 #endif

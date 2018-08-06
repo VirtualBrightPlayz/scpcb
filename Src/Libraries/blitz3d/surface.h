@@ -2,6 +2,9 @@
 #ifndef SURFACE_H
 #define SURFACE_H
 
+#include <string>
+#include <vector>
+
 #include "model.h"
 
 #define MAX_SURFACE_BONES 4
@@ -43,7 +46,7 @@ public:
 	Surface( Monitor *mon );
 	~Surface();
 
-	void setName( const string &t );
+	void setName( const std::string &t );
 	void setBrush( const Brush &b );
 
 	void clear( bool verts,bool tris );
@@ -87,15 +90,15 @@ public:
 
 	Vector getColor( int index )const;
 	void setColor( int index,const Vector &v );
-	void addVertices( const vector<Vertex> &verts );
-	void addTriangles( const vector<Triangle> &tris );
+	void addVertices( const std::vector<Vertex> &verts );
+	void addTriangles( const std::vector<Triangle> &tris );
 
 	void updateNormals();
 
 	gxMesh *getMesh();
-	gxMesh *getMesh( const vector<Bone> &bones );
+	gxMesh *getMesh( const std::vector<Bone> &bones );
 
-	string getName()const{ return name; }
+    std::string getName()const{ return name; }
 	const Brush &getBrush()const{ return brush; }
 	int numVertices()const{ return vertices.size(); }
 	int numTriangles()const{ return triangles.size(); }
@@ -104,10 +107,10 @@ public:
 
 private:
 	Brush brush;
-	string name;
+    std::string name;
 	gxMesh *mesh;
-	vector<Vertex> vertices;
-	vector<Triangle> triangles;
+    std::vector<Vertex> vertices;
+    std::vector<Triangle> triangles;
 	int mesh_vs,mesh_ts;
 	int valid_vs,valid_ts;
 	Monitor *mon;

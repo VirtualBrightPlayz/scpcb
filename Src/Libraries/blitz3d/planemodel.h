@@ -2,6 +2,8 @@
 #ifndef PLANEMODEL_H
 #define PLANEMODEL_H
 
+#include "../stdutil/stdutil.h"
+
 #include "model.h"
 #include "brush.h"
 
