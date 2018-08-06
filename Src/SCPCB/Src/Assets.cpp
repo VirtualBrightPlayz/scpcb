@@ -53,7 +53,7 @@ UIAssets::UIAssets() {
 		bbHandleImage(arrow[i], 0, 0);
 	}
 
-	// TODO: Change this now?
+	// TODO: Change this once we move to FreeType
 	//For some reason, Blitz3D doesn't load fonts that have filenames that
 	//don't match their "internal name" (i.e. their display name in applications
 	//like Word and such). As a workaround, I moved the files and renamed them so they
