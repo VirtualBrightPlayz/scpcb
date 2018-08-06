@@ -261,9 +261,6 @@
     <ClCompile Include="listener.cpp" />
     <ClCompile Include="loader_3ds.cpp" />
     <ClCompile Include="loader_b3d.cpp" />
-    <ClCompile Include="md2model.cpp" />
-    <ClCompile Include="md2norms.cpp" />
-    <ClCompile Include="md2rep.cpp" />
     <ClCompile Include="meshcollider.cpp" />
     <ClCompile Include="meshloader.cpp" />
     <ClCompile Include="meshmodel.cpp" />
@@ -273,15 +270,7 @@
     <ClCompile Include="object.cpp" />
     <ClCompile Include="pivot.cpp" />
     <ClCompile Include="planemodel.cpp" />
-    <ClCompile Include="q3bspmodel.cpp" />
-    <ClCompile Include="q3bsprep.cpp" />
     <ClCompile Include="sprite.cpp" />
-    <ClCompile Include="std.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">std.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">std.h</PrecompiledHeaderFile>
-    </ClCompile>
     <ClCompile Include="surface.cpp" />
     <ClCompile Include="terrain.cpp" />
     <ClCompile Include="terrainrep.cpp" />
@@ -302,9 +291,6 @@
     <ClInclude Include="listener.h" />
     <ClInclude Include="loader_3ds.h" />
     <ClInclude Include="loader_b3d.h" />
-    <ClInclude Include="md2model.h" />
-    <ClInclude Include="md2norms.h" />
-    <ClInclude Include="md2rep.h" />
     <ClInclude Include="meshcollider.h" />
     <ClInclude Include="meshloader.h" />
     <ClInclude Include="meshmodel.h" />
@@ -314,11 +300,8 @@
     <ClInclude Include="object.h" />
     <ClInclude Include="pivot.h" />
     <ClInclude Include="planemodel.h" />
-    <ClInclude Include="q3bspmodel.h" />
-    <ClInclude Include="q3bsprep.h" />
     <ClInclude Include="rendercontext.h" />
     <ClInclude Include="sprite.h" />
-    <ClInclude Include="std.h" />
     <ClInclude Include="surface.h" />
     <ClInclude Include="terrain.h" />
     <ClInclude Include="terrainrep.h" />
