@@ -1,5 +1,3 @@
-
-#include "std.h"
 #include "meshmodel.h"
 #include "meshcollider.h"
 
@@ -26,7 +24,7 @@ struct MeshModel::Rep : public Surface::Monitor{
 	}
 
 	Surface *createSurface( const Brush &b ){
-		Surface *t=d_new Surface( this );
+		Surface *t=new Surface( this );
 		surfaces.push_back( t );
 		t->setBrush( b );
 		return t;
@@ -153,7 +151,7 @@ struct MeshModel::Rep : public Surface::Monitor{
 					verts.push_back( q );
 				}
 			}
-			collider=d_new MeshCollider( verts,tris );
+			collider=new MeshCollider( verts,tris );
 			coll_valid=geom_changes;
 		}
 		return collider;
@@ -161,7 +159,7 @@ struct MeshModel::Rep : public Surface::Monitor{
 };
 
 MeshModel::MeshModel():
-rep( d_new Rep() ),brush_changes(0){
+rep( new Rep() ),brush_changes(0){
 }
 
 MeshModel::MeshModel( const MeshModel &t ):Model( t ),

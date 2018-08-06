@@ -1,5 +1,3 @@
-
-#include "std.h"
 #include "bbsockets.h"
 
 static bool socks_ok;
@@ -262,7 +260,7 @@ TCPStream *TCPServer::accept(){
 	if( n!=1 ){ e=-1;return 0; }
 	SOCKET t=::accept( sock,0,0 );
 	if( t==INVALID_SOCKET ){ e=-1;return 0; }
-	TCPStream *s=d_new TCPStream( t,this );
+	TCPStream *s=new TCPStream( t,this );
 	accepted_set.insert( s );
 	return s;
 }
@@ -315,7 +313,7 @@ UDPStream *bbCreateUDPStream( int port ){
 	if( s!=INVALID_SOCKET ){
 		sockaddr_in addr={AF_INET,htons(port)};
 		if( !::bind( s,(sockaddr*)&addr,sizeof(addr) ) ){
-			UDPStream *p=d_new UDPStream( s );
+			UDPStream *p=new UDPStream( s );
 			udp_set.insert( p );
 			return p;
 		}
@@ -400,7 +398,7 @@ TCPStream *bbOpenTCPStream( String server,int port,int local_port ){
 		sockaddr_in addr={AF_INET,htons(port)};
 		addr.sin_addr.S_un.S_addr=ip;
 		if( !::connect( s,(sockaddr*)&addr,sizeof(addr) ) ){
-			TCPStream *p=d_new TCPStream( s,0 );
+			TCPStream *p=new TCPStream( s,0 );
 			tcp_set.insert( p );
 			return p;
 		}
@@ -421,7 +419,7 @@ TCPServer *  bbCreateTCPServer( int port ){
 		sockaddr_in addr={AF_INET,htons(port)};
 		if( !::bind( s,(sockaddr*)&addr,sizeof(addr) ) ){
 			if( !::listen( s,SOMAXCONN ) ){
-				TCPServer *p=d_new TCPServer( s );
+				TCPServer *p=new TCPServer( s );
 				server_set.insert( p );
 				return p;
 			}

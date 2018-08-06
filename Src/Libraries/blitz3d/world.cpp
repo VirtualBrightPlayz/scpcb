@@ -1,5 +1,3 @@
-
-#include "std.h"
 #include <queue>
 #include "world.h"
 

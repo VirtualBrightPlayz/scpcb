@@ -1,5 +1,3 @@
-
-#include "std.h"
 #include "bbmath.h"
 
 static int rnd_state;

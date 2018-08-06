@@ -1,9 +1,9 @@
+#include <set>
 
-#include "std.h"
 #include "gxfilesystem.h"
 #include "StringType.h"
 
-static set<gxDir*> dir_set;
+static std::set<gxDir*> dir_set;
 
 gxFileSystem::gxFileSystem(){
 	dir_set.clear();
@@ -41,10 +41,10 @@ bool gxFileSystem::setCurrentDir( String dir ){
 	return SetCurrentDirectory( dir.cstr()) ? true : false;
 }
 
-string gxFileSystem::getCurrentDir()const{
+String gxFileSystem::getCurrentDir()const{
 	char buff[MAX_PATH];
 	if( !GetCurrentDirectory( MAX_PATH,buff ) ) return "";
-	string t=buff;if( t.size() && t[t.size()-1]!='\\' ) t+='\\';
+	String t=buff;if( t.size() && t.charAt(t.size()-1)!='\\' ) t=String(t,"\\");
 	return t;
 }
 
@@ -63,13 +63,13 @@ int gxFileSystem::getFileType( String name )const{
 }
 
 gxDir *gxFileSystem::openDir( String name,int flags ){
-	string t=name.cstr();
-	if( t[t.size()-1]=='\\' ) t+="*";
-	else t+="\\*";
+	String t=name.cstr();
+	if( t.charAt(t.size()-1)=='\\' ) t=String(t,"*");
+	else t=String(t,"\\*");
 	WIN32_FIND_DATA f;
-	HANDLE h=FindFirstFile( t.c_str(),&f );
+	HANDLE h=FindFirstFile( t.cstr(),&f );
 	if( h!=INVALID_HANDLE_VALUE ){
-		gxDir *d=d_new gxDir( h,f );
+		gxDir *d=new gxDir( h,f );
 		dir_set.insert( d );
 		return d;
 	}

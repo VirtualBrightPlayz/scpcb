@@ -1,5 +1,3 @@
-
-#include "std.h"
 #include "surface.h"
 
 extern gxGraphics *gx_graphics;

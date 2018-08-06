@@ -2,6 +2,8 @@
 #ifndef GXTIMER_H
 #define GXTIMER_H
 
+#include <Windows.h>
+
 class gxRuntime;
 
 class gxTimer{

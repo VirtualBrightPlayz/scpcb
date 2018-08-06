@@ -1,5 +1,3 @@
-
-#include "std.h"
 #include "loader_3ds.h"
 #include "meshmodel.h"
 #include "animation.h"
@@ -242,7 +240,7 @@ static void parseObject( MeshModel *root ){
 	while( int id=nextChunk() ){
 		switch( id ){
 		case CHUNK_TRIMESH:
-			mesh=d_new MeshModel();
+			mesh=new MeshModel();
 			mesh->setName( name );
 			mesh->setParent( root );
 			name_map[name]=mesh;
@@ -417,7 +415,7 @@ static void parseMeshInfo( MeshModel *root,float curr_time ){
 	}
 	MeshModel *mesh=0;
 	if( name=="$$$DUMMY" ){
-		mesh=d_new MeshModel();
+		mesh=new MeshModel();
 		mesh->setName( inst );
 		mesh->setParent( p );
 	}else{
@@ -463,7 +461,7 @@ static void parseKeyFramer( MeshModel *root ){
 	}
 
 	if( !collapse ){
-		root->setAnimator( d_new Animator( root,anim_len ) );
+		root->setAnimator( new Animator( root,anim_len ) );
 	}
 
 	leaveChunk();
@@ -477,7 +475,7 @@ static MeshModel *parseFile(){
 	chunk_end=(int)in.pubseekoff( 0,ios_base::cur )+len-6;
 
 	enterChunk();
-	MeshModel *root=d_new MeshModel();
+	MeshModel *root=new MeshModel();
 	while( int id=nextChunk() ){
 		switch( id ){
 		case CHUNK_SCENE:

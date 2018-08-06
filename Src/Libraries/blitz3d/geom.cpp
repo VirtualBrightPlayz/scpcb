@@ -1,5 +1,3 @@
-
-#include "std.h"
 #include "geom.h"
 
 Matrix Matrix::tmps[64];

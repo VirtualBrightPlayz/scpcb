@@ -1,8 +1,6 @@
 
-#ifndef STDUTIL_H
-#define STDUTIL_H
-
-#include <iostream>
+#ifndef GXUTIL_H
+#define GXUTIL_H
 
 #include "StringType.h"
 

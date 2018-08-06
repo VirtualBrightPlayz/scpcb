@@ -1,5 +1,3 @@
-
-#include "std.h"
 #include "model.h"
 
 extern gxScene *gx_scene;

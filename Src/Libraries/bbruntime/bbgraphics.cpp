@@ -1,5 +1,3 @@
-
-#include "std.h"
 #include "bbgraphics.h"
 #include "bbinput.h"
 
@@ -199,7 +197,7 @@ static bool saveCanvas( gxCanvas *c,String f ){
 	out.write( (char*)&bf,sizeof(bf) );
 	out.write( (char*)&bi,sizeof(bi) );
 
-	unsigned char *temp=d_new unsigned char[ tempsize ];
+	unsigned char *temp=new unsigned char[ tempsize ];
 	memset( temp,0,tempsize );
 
 	c->lock();
@@ -662,7 +660,7 @@ bbImage *bbLoadImage( String t ){
 	if( auto_midhandle ) c->setHandle( c->getWidth()/2,c->getHeight()/2 );
 	vector<gxCanvas*> frames;
 	frames.push_back( c );
-	bbImage *i=d_new bbImage( frames );
+	bbImage *i=new bbImage( frames );
 	image_set.insert( i );
 	return i;
 }
@@ -699,7 +697,7 @@ bbImage *bbLoadAnimImage( String t,int w,int h,int first,int cnt ){
 		src_x+=w;if( src_x+w>pic->getWidth() ){ src_x=0;src_y+=h; }
 	}
 	gx_graphics->freeCanvas( pic );
-	bbImage *i=d_new bbImage( frames );
+	bbImage *i=new bbImage( frames );
 	image_set.insert( i );
 	return i;
 }
@@ -725,7 +723,7 @@ bbImage *bbCopyImage( bbImage *i ){
 		c->setMask( t->getMask() );
 		frames.push_back( c );
 	}
-	bbImage *t=d_new bbImage( frames );
+	bbImage *t=new bbImage( frames );
 	image_set.insert( t );
 	return t;
 }
@@ -742,7 +740,7 @@ bbImage *bbCreateImage( int w,int h,int n ){
 		if( auto_midhandle ) c->setHandle( c->getWidth()/2,c->getHeight()/2 );
 		frames.push_back( c );
 	}
-	bbImage *i=d_new bbImage( frames );
+	bbImage *i=new bbImage( frames );
 	image_set.insert( i );
 	return i;
 }

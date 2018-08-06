@@ -1,9 +1,9 @@
-
-#include "std.h"
-#include "gxinput.h"
-#include "gxruntime.h"
+#include <vector>
 
 #include <dinput.h>
+
+#include "gxinput.h"
+#include "gxruntime.h"
 
 static const int QUE_SIZE=32;
 
@@ -134,11 +134,11 @@ public:
 
 static Keyboard *keyboard;
 static Mouse *mouse;
-static vector<Joystick*> joysticks;
+static std::vector<Joystick*> joysticks;
 					  
 static Keyboard *createKeyboard( gxInput *input ){
 
-	return d_new Keyboard(input, 0);
+	return new Keyboard(input, 0);
 
 	IDirectInputDevice8 *dev;
 	if( input->dirInput->CreateDevice( GUID_SysKeyboard,(IDirectInputDevice8**)&dev,0 )>=0 ){
@@ -154,7 +154,7 @@ static Keyboard *createKeyboard( gxInput *input ){
 				dword.diph.dwHow=DIPH_DEVICE;
 				dword.dwData=32;
 				if( dev->SetProperty( DIPROP_BUFFERSIZE,&dword.diph )>=0 ){
-					return d_new Keyboard( input,dev );
+					return new Keyboard( input,dev );
 				}else{
 //					input->runtime->debugInfo( "keyboard: SetProperty failed" );
 				}
@@ -162,7 +162,7 @@ static Keyboard *createKeyboard( gxInput *input ){
 //				input->runtime->debugInfo( "keyboard: SetDataFormat failed" );
 			}
 
-			return d_new Keyboard( input,dev );
+			return new Keyboard( input,dev );
 
 		}else{
 			input->runtime->debugInfo( "keyboard: SetCooperativeLevel failed" );
@@ -176,22 +176,22 @@ static Keyboard *createKeyboard( gxInput *input ){
 
 static Mouse *createMouse( gxInput *input ){
 
-	return d_new Mouse(input, 0);
+	return new Mouse(input, 0);
 
 	IDirectInputDevice8 *dev;
 	if( input->dirInput->CreateDevice( GUID_SysMouse,(IDirectInputDevice8**)dev,0 )>=0 ){
 
 		if( dev->SetCooperativeLevel( input->runtime->hwnd,DISCL_FOREGROUND|DISCL_EXCLUSIVE )>=0 ){	//crashes on dinput8!
 
-			return d_new Mouse(input, dev);
+			return new Mouse(input, dev);
 
 			if( dev->SetDataFormat( &c_dfDIMouse )>=0 ){
-				return d_new Mouse( input,dev );
+				return new Mouse( input,dev );
 			}else{
 //				input->runtime->debugInfo( "mouse: SetDataFormat failed" );
 			}
 
-			return d_new Mouse( input,dev );
+			return new Mouse( input,dev );
 
 		}else{
 			input->runtime->debugInfo( "mouse: SetCooperativeLevel failed" );
@@ -209,7 +209,7 @@ static Joystick *createJoystick( gxInput *input,LPCDIDEVICEINSTANCE devinst ){
 		if( dev->SetCooperativeLevel( input->runtime->hwnd,DISCL_FOREGROUND|DISCL_EXCLUSIVE )>=0 ){
 			if( dev->SetDataFormat( &c_dfDIJoystick )>=0 ){
 				int t=((devinst->dwDevType>>8)&0xff)==DI8DEVTYPE_GAMEPAD ? 1 : 2;
-				return d_new Joystick( input,dev,t );
+				return new Joystick( input,dev,t );
 			}
 		}
 		dev->Release();

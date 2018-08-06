@@ -16,7 +16,7 @@ String itoa( int n ){
 }
 
 String ftoa( float n ){
-    String(n);
+    return String(n);
 }
 
 String tolower( String s ){

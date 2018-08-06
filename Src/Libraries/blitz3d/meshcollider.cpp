@@ -1,5 +1,3 @@
-
-#include "std.h"
 #include "meshcollider.h"
 
 static const int MAX_COLL_TRIS=16;
@@ -111,7 +109,7 @@ Box MeshCollider::nodeBox( const vector<int> &tris ){
 
 MeshCollider::Node *MeshCollider::createLeaf( const vector<int> &tris ){
 
-	Node *c=d_new Node;
+	Node *c=new Node;
 	c->box=nodeBox( tris );
 	c->triangles=tris;
 	leaves.push_back( c );
@@ -122,7 +120,7 @@ MeshCollider::Node *MeshCollider::createNode( const vector<int> &tris ){
 
 	if( tris.size()<=MAX_COLL_TRIS ) return createLeaf( tris );
 
-	Node *c=d_new Node;
+	Node *c=new Node;
 	c->box=nodeBox( tris );
 
 	//find longest axis

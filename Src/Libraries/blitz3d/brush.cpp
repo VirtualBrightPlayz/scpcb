@@ -1,5 +1,3 @@
-
-#include "std.h"
 #include "brush.h"
 
 #include "../gxruntime/gxgraphics.h"

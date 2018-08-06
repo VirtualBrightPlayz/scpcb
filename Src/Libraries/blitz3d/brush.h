@@ -2,6 +2,7 @@
 #ifndef BRUSH_H
 #define BRUSH_H
 
+#include "../gxruntime/gxscene.h"
 #include "geom.h"
 #include "texture.h"
 

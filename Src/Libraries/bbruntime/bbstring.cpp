@@ -1,5 +1,3 @@
-
-#include "std.h"
 #include "bbsys.h"
 #include <time.h>
 

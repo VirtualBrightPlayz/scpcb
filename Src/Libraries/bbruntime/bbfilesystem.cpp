@@ -1,5 +1,3 @@
-
-#include "std.h"
 #include "bbfilesystem.h"
 #include "bbstream.h"
 #include <fstream>
@@ -42,9 +40,9 @@ static inline void debugDir( gxDir *d ){
 }
 
 static bbFile *open( String t,int n ){
-	filebuf *buf=d_new filebuf();
+	filebuf *buf=new filebuf();
 	if( buf->open( t.cstr(),n|ios_base::binary ) ){
-		bbFile *f=d_new bbFile( buf );
+		bbFile *f=new bbFile( buf );
 		file_set.insert( f );
 		return f;
 	}

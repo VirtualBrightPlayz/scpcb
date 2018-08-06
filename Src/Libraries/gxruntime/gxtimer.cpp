@@ -1,5 +1,3 @@
-
-#include "std.h"
 #include "gxtimer.h"
 #include "gxruntime.h"
 

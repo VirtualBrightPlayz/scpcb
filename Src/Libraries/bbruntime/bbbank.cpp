@@ -1,5 +1,4 @@
 
-#include "std.h"
 #include "bbbank.h"
 #include "bbstream.h"
 
@@ -19,7 +18,7 @@ static inline void debugBank( bbBank *b,int offset ){
 }
 
 bbBank *bbCreateBank( int size ){
-	bbBank *b=d_new bbBank( size );
+	bbBank *b=new bbBank( size );
 	bank_set.insert( b );
 	return b;
 }

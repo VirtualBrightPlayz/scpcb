@@ -12,7 +12,7 @@ public:
 	Pivot( const Object &t );
 
 	//Entity interface
-    virtual Object* clone(){ return d_new Pivot( *this ); }
+    virtual Object* clone(){ return new Pivot( *this ); }
     virtual Pivot* getPivot() { return this; }
 };
 

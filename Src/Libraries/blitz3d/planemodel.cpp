@@ -1,5 +1,3 @@
-
-#include "std.h"
 #include "planemodel.h"
 #include "frustum.h"
 #include "camera.h"
@@ -100,7 +98,7 @@ struct PlaneModel::Rep{
 };
 
 PlaneModel::PlaneModel( int sub_divs ):
-rep( d_new Rep(sub_divs) ){
+rep( new Rep(sub_divs) ){
 }
 
 PlaneModel::PlaneModel( const PlaneModel &t ):

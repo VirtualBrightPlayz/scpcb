@@ -1,6 +1,3 @@
-
-#include "std.h"
-
 #include "bbblitz3d.h"
 #include "bbgraphics.h"
 
@@ -335,7 +332,7 @@ float  bbStats3D( int n ){
 //
 Texture *  bbLoadTexture( String file,int flags ){
 	debug3d();
-	Texture *t=d_new Texture( file,flags );
+	Texture *t=new Texture( file,flags );
 	if( !t->getCanvas(0) ){ delete t;return 0; }
 	texture_set.insert( t );
 	return t;
@@ -343,7 +340,7 @@ Texture *  bbLoadTexture( String file,int flags ){
 
 Texture *  bbLoadAnimTexture( String file,int flags,int w,int h,int first,int cnt ){
 	debug3d();
-	Texture *t=d_new Texture( file,flags,w,h,first,cnt );
+	Texture *t=new Texture( file,flags,w,h,first,cnt );
 	if( !t->getCanvas(0) ){
 		delete t;
 		return 0;
@@ -359,7 +356,7 @@ Texture *  bbCreateTexture( int w,int h,int flags,int frames ){
 			RTEX( "Illegal number of texture frames" );
 		}
 	}
-	Texture *t=d_new Texture( w,h,flags,frames );
+	Texture *t=new Texture( w,h,flags,frames );
 	texture_set.insert( t );
 	return t;
 }
@@ -456,7 +453,7 @@ void  bbTextureFilter( String t,int flags ){
 ////////////////////
 Brush *  bbCreateBrush( float r,float g,float b ){
 	debug3d();
-	Brush *br=d_new Brush();
+	Brush *br=new Brush();
 	br->setColor( Vector( r*ctof,g*ctof,b*ctof ) );
 	brush_set.insert( br );
 	return br;
@@ -501,7 +498,7 @@ void  bbBrushTexture( Brush *b,Texture *t,int frame,int index ){
 
 Texture *bbGetBrushTexture( Brush *b,int index ){
 	debugBrush(b);
-	Texture *tex=d_new Texture(b->getTexture(index));
+	Texture *tex=new Texture(b->getTexture(index));
 	texture_set.insert( tex );
 	return tex;
 }
@@ -521,7 +518,7 @@ void  bbBrushFX( Brush *b,int fx ){
 ///////////////////
 MeshModel* bbCreateMesh( Object *p ){
 	debugParent(p);
-	MeshModel *m=d_new MeshModel();
+	MeshModel *m=new MeshModel();
 	return insertEntity( m,p )->getModel()->getMeshModel();
 }
 
@@ -530,7 +527,7 @@ MeshModel* bbLoadMesh( String f,Object *p ){
 	MeshModel* e=loadEntity( f,MeshLoader::HINT_COLLAPSE );
 
 	if( !e ) return 0;
-	MeshModel *m=d_new MeshModel();
+	MeshModel *m=new MeshModel();
 	collapseMesh( m,e );
 	return insertEntity( m,p )->getModel()->getMeshModel();
 }
@@ -574,7 +571,7 @@ MeshModel*  bbDeepCopyMesh( MeshModel *m,Object *p ){
 	debugMesh(m);
 	debugParent(p);
 
-	MeshModel *t=d_new MeshModel();
+	MeshModel *t=new MeshModel();
 	t->add( *m );
 	return insertEntity( t,p )->getModel()->getMeshModel();
 }
@@ -706,14 +703,14 @@ Surface *  bbCreateSurface( MeshModel *m,Brush *b ){
 }
 
 Brush *bbGetSurfaceBrush( Surface *s ){
-	Brush *br=d_new Brush( s->getBrush() );
+	Brush *br=new Brush( s->getBrush() );
 	brush_set.insert( br );
 	return br;
 }
 
 Brush *bbGetEntityBrush( Model *m ){
 	debugModel(m);
-	Brush *br=d_new Brush( m->getBrush() );
+	Brush *br=new Brush( m->getBrush() );
 	brush_set.insert( br );
 	return br;
 }
@@ -835,7 +832,7 @@ Camera* bbCreateCamera( Object *p ){
 	debugParent(p);
 	int x,y,w,h;
 	gx_canvas->getViewport( &x,&y,&w,&h );
-	Camera *c=d_new Camera();
+	Camera *c=new Camera();
 	c->setViewport( x,y,w,h );
 	return insertEntity( c,p )->getCamera();
 }
@@ -1043,7 +1040,7 @@ int  bbPickedTriangle(){
 ////////////////////
 Light* bbCreateLight( int type,Object *p ){
 	debugParent(p);
-	Light *t=d_new Light( type );
+	Light *t=new Light( type );
 	return insertEntity( t,p )->getLight();
 }
 
@@ -1073,7 +1070,7 @@ void  bbLightConeAngles( Light *light,float inner,float outer ){
 ////////////////////
 Object *  bbCreatePivot( Object *p ){
 	debugParent(p);
-	Pivot *t=d_new Pivot();
+	Pivot *t=new Pivot();
 	return insertEntity( t,p );
 }
 
@@ -1082,7 +1079,7 @@ Object *  bbCreatePivot( Object *p ){
 /////////////////////
 Object *  bbCreateSprite( Object *p ){
 	debugParent(p);
-	Sprite *s=d_new Sprite();
+	Sprite *s=new Sprite();
 	s->setFX( gxScene::FX_FULLBRIGHT );
 	return insertEntity( s,p );
 }
@@ -1091,7 +1088,7 @@ Object *  bbLoadSprite( String file,int flags,Object *p ){
 	debugParent(p);
 	Texture t( file,flags );
 	if( !t.getCanvas(0) ) return 0;
-	Sprite *s=d_new Sprite();
+	Sprite *s=new Sprite();
 	s->setTexture( 0,t,0 );
 	s->setFX( gxScene::FX_FULLBRIGHT );
 
@@ -1127,7 +1124,7 @@ void  bbSpriteViewMode( Sprite *s,int mode ){
 /////////////////////
 Object *  bbCreateMirror( Object *p ){
 	debugParent(p);
-	Mirror *t=d_new Mirror();
+	Mirror *t=new Mirror();
 	return insertEntity( t,p );
 }
 
@@ -1139,7 +1136,7 @@ Object *  bbCreatePlane( int segs,Object *p ){
 		debugParent(p);
 		if( segs<1 || segs>20 ) RTEX( "Illegal number of segments" );
 	}
-	PlaneModel *t=d_new PlaneModel( segs );
+	PlaneModel *t=new PlaneModel( segs );
 	return insertEntity( t,p );
 }
 
@@ -1148,7 +1145,7 @@ Object *  bbCreatePlane( int segs,Object *p ){
 //////////////////
 Object *  bbLoadMD2( String file,Object *p ){
 	debugParent(p);
-	MD2Model *t=d_new MD2Model( file );
+	MD2Model *t=new MD2Model( file );
 	if( !t->getValid() ){ delete t;return 0; }
 	return insertEntity( t,p );
 }
@@ -1179,7 +1176,7 @@ int  bbMD2Animating( MD2Model *m ){
 Object *  bbLoadBSP( String file,float gam,Object *p ){
 	debugParent(p);
 	CachedTexture::setPath( filenamepath( file.cstr() ) );
-	Q3BSPModel *t=d_new Q3BSPModel( file,gam );
+	Q3BSPModel *t=new Q3BSPModel( file,gam );
 	CachedTexture::setPath( "" );
 
 	if( !t->isValid() ){ delete t;return 0; }
@@ -1223,7 +1220,7 @@ Object *  bbCreateTerrain( int n,Object *p ){
 	int shift=0;
 	while( (1<<shift)<n ) ++shift;
 	if( (1<<shift)!=n ) RTEX( "Illegal terrain size" );
-	Terrain *t=d_new Terrain( shift );
+	Terrain *t=new Terrain( shift );
 	return insertEntity( t,p );
 }
 
@@ -1236,7 +1233,7 @@ Object *  bbLoadTerrain( String file,Object *p ){
 	int shift=0;
 	while( (1<<shift)<w ) ++shift;
 	if( (1<<shift)!=w ) RTEX( "Illegal terrain size" );
-	Terrain *t=d_new Terrain( shift );
+	Terrain *t=new Terrain( shift );
 	c->lock();
 	for( int y=0;y<h;++y ){
 		for( int x=0;x<w;++x ){
@@ -1299,7 +1296,7 @@ Object *  bbCreateListener( Object *p,float roll,float dopp,float dist ){
 		debugParent(p);
 		if( listener ) RTEX( "Listener already created" );
 	}
-	listener=d_new Listener( roll,dopp,dist );
+	listener=new Listener( roll,dopp,dist );
 	return insertEntity( listener,p );
 }
 
@@ -1471,7 +1468,7 @@ int  bbAddAnimSeq( Object *o,int length ){
 	if( anim ){
 		anim->addSeq( length );
 	}else{
-		anim=d_new Animator( o,length );
+		anim=new Animator( o,length );
 		o->setAnimator( anim );
 	}
 	return anim->numSeqs()-1;
@@ -1920,7 +1917,7 @@ int  bbActiveTextures(){
 void blitz3d_open(){
 	gx_scene=gx_graphics->createScene( 0 );
 	if( !gx_scene ) RTEX( "Unable to create 3D Scene" );
-	world=d_new World();
+	world=new World();
 	projected=Vector();
 	picked.collision=Collision();
 	picked.with=0;picked.coords=Vector();

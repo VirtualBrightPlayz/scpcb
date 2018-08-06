@@ -1,5 +1,3 @@
-
-#include "std.h"
 #include "object.h"
 
 extern gxRuntime *gx_runtime;
@@ -50,7 +48,7 @@ Object *Object::copy(){
 		Object *cpy=e->copy();
 		cpy->setParent( last_copy );
 	}
-	if( animator ) last_copy->setAnimator( d_new Animator( animator ) );
+	if( animator ) last_copy->setAnimator( new Animator( animator ) );
 	return last_copy;
 }
 

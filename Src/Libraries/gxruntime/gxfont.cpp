@@ -1,5 +1,3 @@
-
-#include "std.h"
 #include "gxfont.h"
 #include "gxcanvas.h"
 #include "gxgraphics.h"

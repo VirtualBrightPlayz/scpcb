@@ -1,10 +1,11 @@
-
 #ifndef OBJECT_H
 #define OBJECT_H
 
 #include <vector>
 
-#include "../stdutil/stdutil.h"
+#include "../gxruntime/gxchannel.h"
+
+#include "../gxruntime/StringType.h"
 
 #include "animator.h"
 #include "collision.h"

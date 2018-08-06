@@ -1,5 +1,3 @@
-
-#include "std.h"
 #include "sprite.h"
 
 extern float stats3d[];
