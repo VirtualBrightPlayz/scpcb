@@ -9,6 +9,7 @@
 #include <vector>
 #include <fstream>
 
+#ifndef _WIN64
 static bool isUsing4GBPatch() {
     char filename[128];
     GetModuleFileNameA(GetModuleHandle(NULL),filename,128);
@@ -40,12 +41,15 @@ static bool isUsing4GBPatch() {
     }
     return false;
 }
+#endif
 
 int main() {
+#ifndef _WIN64
     if (isUsing4GBPatch()) {
         MessageBoxA(NULL,"Running 4GB patch - closing","Error",0);
         return 0;
     }
+#endif
 
     bbruntime_create(GetModuleHandle(NULL));
 

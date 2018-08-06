@@ -4,6 +4,24 @@
 
 namespace CBN {
 
+// Constants.
+const String ITEM_TAG_914F("914_fine");
+const String ITEM_TAG_914VF("914_veryfine");
+const String ITEM_TAG_OMNI("omni");
+
+enum class ITEMPICK_SOUND {
+    PAPER,
+    SMALL,
+    MEDIUM,
+    LARGE
+};
+
+const int MAX_ITEM_COUNT = 20;
+const int ITEM_CELL_SIZE = 70;
+const int ITEM_CELL_SPACING = 35;
+const int ITEMS_PER_ROW = 3;
+
+
 // Structs.
 struct ItemTemplate {
 private:
@@ -91,19 +109,6 @@ public:
     int size = 10;
     Inventory* parent = nullptr;
 };
-
-// Constants.
-extern const String ITEM_TAG_914F;
-extern const String ITEM_TAG_914VF;
-extern const String ITEM_TAG_OMNI;
-extern const int ITEMPICK_SOUND_PAPER;
-extern const int ITEMPICK_SOUND_MEDIUM;
-extern const int ITEMPICK_SOUND_LARGE;
-extern const int ITEMPICK_SOUND_SMALL;
-extern const int MAX_ITEM_COUNT;
-extern const int ITEM_CELL_SIZE;
-extern const int ITEM_CELL_SPACING;
-extern const int ITEMS_PER_ROW;
 
 // Globals.
 extern int LastItemID;

@@ -1076,23 +1076,23 @@ void  bbLightConeAngles( Light *light,float inner,float outer ){
 ////////////////////
 // PIVOT COMMANDS //
 ////////////////////
-Object *  bbCreatePivot( Object *p ){
+Pivot* bbCreatePivot( Object *p ){
 	debugParent(p);
 	Pivot *t=new Pivot();
-	return insertEntity( t,p );
+	return insertEntity( t,p )->getPivot();
 }
 
 /////////////////////
 // SPRITE COMMANDS //
 /////////////////////
-Object *  bbCreateSprite( Object *p ){
+Sprite* bbCreateSprite( Object *p ){
 	debugParent(p);
 	Sprite *s=new Sprite();
 	s->setFX( gxScene::FX_FULLBRIGHT );
-	return insertEntity( s,p );
+	return insertEntity( s,p )->getModel()->getSprite();
 }
 
-Object *  bbLoadSprite( String file,int flags,Object *p ){
+Sprite* bbLoadSprite( String file,int flags,Object *p ){
 	debugParent(p);
 	Texture t( file,flags );
 	if( !t.getCanvas(0) ) return 0;
@@ -1104,15 +1104,15 @@ Object *  bbLoadSprite( String file,int flags,Object *p ){
 	else if( flags & gxCanvas::CANVAS_TEX_ALPHA ) s->setBlend( gxScene::BLEND_ALPHA );
 	else s->setBlend( gxScene::BLEND_ADD );
 
-	return insertEntity( s,p );
+	return insertEntity( s,p )->getModel()->getSprite();
 }
 
-void  bbRotateSprite( Sprite *s,float angle ){
+void bbRotateSprite( Sprite *s,float angle ){
 	debugSprite(s);
 	s->setRotation( angle*dtor );
 }
 
-void  bbScaleSprite( Sprite *s,float x,float y ){
+void bbScaleSprite( Sprite *s,float x,float y ){
 	debugSprite(s);
 	s->setScale( x,y );
 }

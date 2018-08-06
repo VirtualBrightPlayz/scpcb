@@ -1,5 +1,7 @@
 #ifndef MAPSYSTEM_H_INCLUDED
 #define MAPSYSTEM_H_INCLUDED
+
+#include <StringType.h>
 #include <vector>
 
 namespace CBN {
@@ -40,12 +42,16 @@ public:
     String objPath;
     int loaded;
 
-    class Object* opaqueMesh;
-    class Object* alphaMesh;
-    std::vector<class Object*> collisionObjs;
+    class MeshModel* opaqueMesh;
+    class MeshModel* alphaMesh;
+    std::vector<class MeshModel*> collisionObjs;
 	std::vector<class Prop*> props;
 
     int zones;
+
+    static const int MaxRoomLights = 32;
+    static const int MaxRoomEmitters = 8;
+    static const int MaxRoomObjects = 30;
 
     //TODO: cleanup?
     int tempSoundEmitter[MaxRoomEmitters];
@@ -90,17 +96,22 @@ public:
     struct RoomTemplate* roomTemplate;
 
     //TODO: rename
-    class Object* obj;
-	class Object* opaqueMesh;
-	class Object* alphaMesh;
-    struct IntArray* collisionObjs;
-    struct IntArray* props;
+    class Pivot* obj;
+	class MeshModel* opaqueMesh;
+	class MeshModel* alphaMesh;
+    std::vector<class MeshModel*> collisionObjs;
+    std::vector<struct Prop*> props;
 
     float dist;
 
     int soundCHN;
 
     struct Forest* fr;
+
+    //TODO: remove duplicates and rename
+    static const int MaxRoomLights = 32;
+    static const int MaxRoomEmitters = 8;
+    static const int MaxRoomObjects = 30;
 
     //TODO: use arraylists for all this stuff?
     int soundEmitter[MaxRoomEmitters];
@@ -134,12 +145,14 @@ private:
     static std::vector<Grid*> list;
 
 public:
+    static const int SIZE = 20;
+
     Grid();
     ~Grid();
     static int getListSize();
     static Grid* getObject(int index);
 
-    int grid[gridsz*gridsz];
+    int grid[SIZE][SIZE];
     int angles[gridsz*gridsz];
     int meshes[7];
     int entities[gridsz*gridsz];
@@ -310,7 +323,7 @@ public:
     static Prop* getObject(int index);
 
     String file;
-    class Object* obj;
+    class MeshModel* obj;
 
     float x;
     float y;
@@ -343,7 +356,7 @@ extern const int LIGHTTYPE_SPOT;
 
 // Globals.
 extern float RoomScale;
-extern int RoomAmbience[20];
+extern class gxSound* RoomAmbience[20];
 extern int Sky;
 extern float HideDistance;
 extern float SecondaryLightOn;
@@ -353,7 +366,7 @@ extern Screen* SelectedScreen;
 extern SecurityCam* SelectedMonitor;
 extern SecurityCam* CoffinCam;
 extern class Texture* ScreenTexs[2];
-extern IntArray* MapRooms;
+extern Room* MapRooms[MAP_SIZE][MAP_SIZE];
 
 // Functions.
 void LoadMaterials(String file);
@@ -382,7 +395,7 @@ void UpdateRooms();
 
 int IsRoomAdjacent(Room* ths, Room* that);
 
-int AddLight(Room* room, float x, float y, float z, int ltype, float range, int r, int g, int b);
+Light* AddLight(Room* room, float x, float y, float z, int ltype, float range, int r, int g, int b);
 
 LightTemplate* AddTempLight(RoomTemplate* rt, float x, float y, float z, int ltype, float range, int r, int g, int b);
 

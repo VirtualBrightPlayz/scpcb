@@ -6,27 +6,6 @@
 
 gxFileSystem *gx_filesys;
 
-struct bbFile : public bbStream{
-    std::filebuf *buf;
-	bbFile(std::filebuf *f):buf(f){
-	}
-	~bbFile(){
-		delete buf;
-	}
-	int read( char *buff,int size ){
-		return buf->sgetn( (char*)buff,size );
-	}
-	int write( const char *buff,int size ){
-		return buf->sputn( (char*)buff,size );
-	}
-	int avail(){
-		return buf->in_avail();
-	}
-	int eof(){
-		return buf->sgetc()==EOF;
-	}
-};
-
 static std::set<bbFile*> file_set;
 
 static inline void debugFile( bbFile *f ){
@@ -60,7 +39,7 @@ bbFile *bbWriteFile( String f ){
 	return open( f, std::ios_base::out| std::ios_base::trunc );
 }
 
-bbFile *bbOpenFile( String f ){
+bbFile *bbOpenFile(String f) {
 	return open( f, std::ios_base::in| std::ios_base::out );
 }
 

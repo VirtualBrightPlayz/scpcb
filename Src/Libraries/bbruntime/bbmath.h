@@ -21,6 +21,6 @@ float	 bbLog10( float n );
 float	 bbRnd( float from,float to );
 void	 bbSeedRnd( int seed );
 int      bbRndSeed();
-int      bbRand(int from, int to);
+int      bbRand(int from, int to=1);
 
 #endif

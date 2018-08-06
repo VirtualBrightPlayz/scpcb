@@ -1,6 +1,88 @@
-#include "MapSystem.h"
-#include "include.h"
 #include <iostream>
+#include <bbstream.h>
+#include <bbfilesystem.h>
+#include <bbaudio.h>
+#include <bbblitz3d.h>
+#include <cstdlib>
+
+#include "MapSystem.h"
+#include "Audio.h"
+#include "INI.h"
+#include "MathUtils/MathUtils.h"
+#include "RM2.h"
+#include "Player.h"
+
+#include "Rooms/Room_closets_2.h"
+#include "Rooms/Room_cont_008_1.h"
+#include "Rooms/Room_cont_012_2.h"
+#include "Rooms/Room_cont_035_1.h"
+#include "Rooms/Room_cont_049_2.h"
+#include "Rooms/Room_cont_079_1.h"
+#include "Rooms/Room_cont_106_1.h"
+#include "Rooms/Room_cont_1123_2.h"
+#include "Rooms/Room_cont_1162_2c.h"
+#include "Rooms/Room_cont_173_1.h"
+#include "Rooms/Room_cont_205_1.h"
+#include "Rooms/Room_cont_500_1499_2.h"
+#include "Rooms/Room_cont_513_3.h"
+#include "Rooms/Room_cont_714_860_1025_2.h"
+#include "Rooms/Room_cont_895_1.h"
+#include "Rooms/Room_cont_914_1.h"
+#include "Rooms/Room_cont_966_3.h"
+#include "Rooms/Room_dimension1499.h"
+#include "Rooms/Room_end_1.h"
+#include "Rooms/Room_exit_gatea_1.h"
+#include "Rooms/Room_exit_gateb_1.h"
+#include "Rooms/Room_extend_gatea_1.h"
+#include "Rooms/Room_hll_bench_3.h"
+#include "Rooms/Room_hll_caf_2.h"
+#include "Rooms/Room_hll_dirty_3.h"
+#include "Rooms/Room_hll_ele_2.h"
+#include "Rooms/Room_hll_fan_2.h"
+#include "Rooms/Room_hll_gas_2.h"
+#include "Rooms/Room_hll_gas_3.h"
+#include "Rooms/Room_hll_lshape_2.h"
+#include "Rooms/Room_hll_pipes_3.h"
+#include "Rooms/Room_hll_plain_2.h"
+#include "Rooms/Room_hll_plain_3.h"
+#include "Rooms/Room_hll_plain_4.h"
+#include "Rooms/Room_hll_sl_2.h"
+#include "Rooms/Room_hll_toilets_2.h"
+#include "Rooms/Room_intro.h"
+#include "Rooms/Room_lck_096_2c.h"
+#include "Rooms/Room_lck_air_2.h"
+#include "Rooms/Room_lck_broke_2c.h"
+#include "Rooms/Room_lck_cam_2c.h"
+#include "Rooms/Room_lck_ez_3.h"
+#include "Rooms/Room_lck_tshape_2.h"
+#include "Rooms/Room_lifts_1.h"
+#include "Rooms/Room_off_2level_2.h"
+#include "Rooms/Room_off_bain_2.h"
+#include "Rooms/Room_off_gears_may_har_2.h"
+#include "Rooms/Room_off_glss_3.h"
+#include "Rooms/Room_off_lower_2.h"
+#include "Rooms/Room_off_l_conf_2.h"
+#include "Rooms/Room_off_plain_2.h"
+#include "Rooms/Room_off_rosewood_2.h"
+#include "Rooms/Room_pocketdimension.h"
+#include "Rooms/Room_scp_970_2.h"
+#include "Rooms/Room_srvr_096_2.h"
+#include "Rooms/Room_srvr_farm_3.h"
+#include "Rooms/Room_srvr_lshape_3.h"
+#include "Rooms/Room_srvr_pc_2.h"
+#include "Rooms/Room_strg_939_3.h"
+#include "Rooms/Room_strg_elec_2c.h"
+#include "Rooms/Room_test_682_2.h"
+#include "Rooms/Room_test_860_2.h"
+#include "Rooms/Room_test_smallwindow_2.h"
+#include "Rooms/Room_tnnl_elec_2.h"
+#include "Rooms/Room_tnnl_maintenance_2.h"
+#include "Rooms/Room_tnnl_pipes_2.h"
+#include "Rooms/Room_tnnl_plain_2.h"
+#include "Rooms/Room_tnnl_plain_3.h"
+#include "Rooms/Room_tnnl_plain_4.h"
+#include "Rooms/Room_hll_tsl.h"
+#include "Rooms/Room_tnnl_nuke_2.h"
 
 namespace CBN {
 
@@ -228,13 +310,12 @@ const int ZONE_LCZ = 1;
 const int ZONE_HCZ = 2;
 const int ZONE_EZ = 4;
 const int MAP_SIZE = 19;
-const int gridsz = 20;
 const int LIGHTTYPE_POINT = 2;
 const int LIGHTTYPE_SPOT = 3;
 
 // Globals.
 float RoomScale = 8.0 / 2048.0;
-int RoomAmbience[20];
+gxSound* RoomAmbience[20];
 int Sky;
 float HideDistance = 15.0;
 float SecondaryLightOn;
@@ -244,7 +325,7 @@ Screen* SelectedScreen;
 SecurityCam* SelectedMonitor;
 SecurityCam* CoffinCam;
 Texture* ScreenTexs[2];
-IntArray* MapRooms = nullptr;
+Room* MapRooms[MAP_SIZE][MAP_SIZE];
 
 // Functions.
 void LoadMaterials(String file) {
@@ -252,14 +333,14 @@ void LoadMaterials(String file) {
     Material* mat = nullptr;
     String StrTemp = "";
 
-    int f = bbOpenFile(file);
+    bbFile* f = bbOpenFile(file);
 
     String stepSound = "";
 
     while (!bbEof(f)) {
         TemporaryString = bbReadLine(f).trim();
         if (TemporaryString.charAt(0) == '[') {
-            TemporaryString = bbMid(TemporaryString, 2, TemporaryString.size() - 2);
+            TemporaryString = TemporaryString.substr(1, TemporaryString.size() - 2);
 
             mat = new Material();
 
@@ -268,7 +349,7 @@ void LoadMaterials(String file) {
             mat->diff = 0;
 
             stepSound = GetINIString(file, TemporaryString, "stepsound");
-            if (stepSound.toLower()=="metal") {
+            if (stepSound.toLower().equals("metal")) {
                 mat->stepSound = STEPSOUND_METAL;
             }
         }
@@ -281,9 +362,9 @@ void LoadMaterials(String file) {
 String StripPath(String file) {
     String name = "";
     if (file.size() > 0) {
-        for (int i = file.size(); i <= 1; i--) {
+        for (int i = file.size()-1; i >= 0; i--) {
 
-            String mi = bbMid(file,i,1);
+            String mi = file.charAt(i);
             if (mi.equals('\\') || mi.equals('/')) {
                 return name;
             }
@@ -313,13 +394,13 @@ void LoadRoomTemplates(String file) {
     String xRange;
     String yRange;
 
-    int f = bbOpenFile(file);
+    bbFile* f = bbOpenFile(file);
 
     while (!bbEof(f)) {
         TemporaryString = bbReadLine(f).trim();
         if (TemporaryString.charAt(0) == '[') {
             std::cout << TemporaryString;
-            TemporaryString = bbMid(TemporaryString, 2, TemporaryString.size() - 2);
+            TemporaryString = TemporaryString.substr(1, TemporaryString.size() - 2);
             // TODO: Remove room ambience.
             if (!TemporaryString.toLower().equals("room ambience")) {
                 StrTemp = GetINIString(file, TemporaryString, "meshpath");
@@ -329,39 +410,34 @@ void LoadRoomTemplates(String file) {
 
                 StrTemp = GetINIString(file, TemporaryString, "shape", "0").toLower();
 
-                switch (StrTemp) {
-                    case "room0", "0": {
-                        rt->shape = ROOM0;
-                    }
-                    case "room1", "1": {
-                        rt->shape = ROOM1;
-                    }
-                    case "room2", "2": {
-                        rt->shape = ROOM2;
-                    }
-                    case "room2c", "2c": {
-                        rt->shape = ROOM2C;
-                    }
-                    case "room3", "3": {
-                        rt->shape = ROOM3;
-                    }
-                    case "room4", "4": {
-                        rt->shape = ROOM4;
-                    }
-                    default: {
-                        rt->shape = ROOM0;
-                    }
+                if (StrTemp.equals("room1") && StrTemp.equals("1")) {
+                    rt->shape = ROOM1;
+                }
+                else if (StrTemp.equals("room2") && StrTemp.equals("2")) {
+                    rt->shape = ROOM2;
+                }
+                else if (StrTemp.equals("room2c") && StrTemp.equals("2c")) {
+                    rt->shape = ROOM2C;
+                }
+                else if (StrTemp.equals("room3") && StrTemp.equals("3")) {
+                    rt->shape = ROOM3;
+                }
+                else if (StrTemp.equals("room4") && StrTemp.equals("4")) {
+                    rt->shape = ROOM2;
+                }
+                else {
+                    rt->shape = ROOM0;
                 }
 
                 Zones = GetINIString(file, TemporaryString, "zones").toLower();
                 rt->zones = 0;
-                if (bbInstr(Zones,"lcz")>0) {
+                if (Zones.findFirst("lcz")!=-1) {
                     rt->zones = rt->zones | ZONE_LCZ;
                 }
-                if (bbInstr(Zones,"hcz")>0) {
+                if (Zones.findFirst("hcz") != -1) {
                     rt->zones = rt->zones | ZONE_HCZ;
                 }
-                if (bbInstr(Zones,"ez")>0) {
+                if (Zones.findFirst("ez") != -1) {
                     rt->zones = rt->zones | ZONE_EZ;
                 }
 
@@ -372,9 +448,9 @@ void LoadRoomTemplates(String file) {
                     if (AmountRange.isEmpty()) {
                         rt->minAmount = -1;
                         rt->maxAmount = -1;
-                    } else if ((bbInstr(AmountRange,"-")>0)) {
+                    } else if (AmountRange.findFirst("-")!=-1) {
                         rt->minAmount = AmountRange.substr(0,AmountRange.findFirst("-")).toInt();
-                        rt->maxAmount = (int)(bbMid(AmountRange,AmountRange.findFirst("-")+1));
+                        rt->maxAmount = AmountRange.substr(AmountRange.findFirst("-")+1).toInt();
                     } else {
                         rt->minAmount = AmountRange.toInt();
                         rt->maxAmount = rt->minAmount;
@@ -393,11 +469,11 @@ void LoadRoomTemplates(String file) {
                         yRange = "0-1";
                     }
 
-                    rt->xRangeStart = xRange.substr(0,bbInstr(xRange,"-")).toFloat();
-                    rt->xRangeEnd = (float)(bbMid(xRange,bbInstr(xRange,"-")+1));
+                    rt->xRangeStart = xRange.substr(0,xRange.findFirst("-")).toFloat();
+                    rt->xRangeEnd = xRange.substr(xRange.findFirst("-")+1).toFloat();
 
-                    rt->yRangeStart = yRange.substr(0,bbInstr(yRange,"-")).toFloat();
-                    rt->yrangeEnd = (float)(bbMid(yRange,bbInstr(yRange,"-")+1));
+                    rt->yRangeStart = yRange.substr(0, yRange.findFirst("-")).toFloat();
+                    rt->yrangeEnd = yRange.substr(yRange.findFirst("-") + 1).toFloat();
                 } else {
                     rt->minAmount = 0;
                     rt->maxAmount = 0;
@@ -435,11 +511,11 @@ void UpdateGrid(Grid* grid) {
     for (tx = 0; tx <= gridsz-1; tx++) {
         for (ty = 0; ty <= gridsz-1; ty++) {
             if (grid->entities[tx+(ty*gridsz)]!=0) {
-                if (Abs(bbEntityY(mainPlayer->collider,true)-bbEntityY(grid->entities[tx+(ty*gridsz)],true))>4.0) {
+                if (std::abs(bbEntityY(mainPlayer->collider,true)-bbEntityY(grid->entities[tx+(ty*gridsz)],true))>4.0) {
                     break;
                 }
-                if (Abs(bbEntityX(mainPlayer->collider,true)-bbEntityX(grid->entities[tx+(ty*gridsz)],true))<HideDistance) {
-                    if (Abs(bbEntityZ(mainPlayer->collider,true)-bbEntityZ(grid->entities[tx+(ty*gridsz)],true))<HideDistance) {
+                if (std::abs(bbEntityX(mainPlayer->collider,true)-bbEntityX(grid->entities[tx+(ty*gridsz)],true))<HideDistance) {
+                    if (std::abs(bbEntityZ(mainPlayer->collider,true)-bbEntityZ(grid->entities[tx+(ty*gridsz)],true))<HideDistance) {
                         bbShowEntity(grid->entities[tx+(ty*gridsz)]);
                     } else {
                         bbHideEntity(grid->entities[tx+(ty*gridsz)]);
@@ -459,7 +535,7 @@ RoomTemplate* GetRoomTemplate(String name) {
     for (int iterator71 = 0; iterator71 < RoomTemplate::getListSize(); iterator71++) {
         rt = RoomTemplate::getObject(iterator71);
 
-        if (rt->name == name) {
+        if (rt->name.equals(name)) {
             return rt;
         }
     }
@@ -496,42 +572,40 @@ Room* CreateRoom(RoomTemplate* rt, float x, float y, float z) {
         LoadRoomMesh(rt);
     }
 
-    int tempObj;
+    MeshModel* tempObj;
     Prop* tempProp;
 
     r->obj = bbCreatePivot();
-    r->opaqueMesh = bbCopyEntity(rt->opaqueMesh);
+    r->opaqueMesh = bbCopyMeshModelEntity(rt->opaqueMesh);
     bbScaleEntity(r->opaqueMesh, RoomScale, RoomScale, RoomScale);
     bbEntityParent(r->opaqueMesh,r->obj);
     bbShowEntity(r->opaqueMesh);
     if (rt->alphaMesh!=0) {
-        r->alphaMesh = bbCopyEntity(rt->alphaMesh);
+        r->alphaMesh = bbCopyMeshModelEntity(rt->alphaMesh);
         bbScaleEntity(r->alphaMesh, RoomScale, RoomScale, RoomScale);
         bbShowEntity(r->alphaMesh);
         bbEntityParent(r->alphaMesh,r->obj);
     }
-    r->collisionObjs = CreateIntArray(rt->collisionObjs->size);
+    r->collisionObjs.clear();
     int i;
-    for (i = 0; i <= rt->collisionObjs->size-1; i++) {
-        tempObj = bbCopyEntity(GetIntArrayListElem(rt->collisionObjs,i));
+    for (i = 0; i < rt->collisionObjs.size(); i++) {
+        tempObj = bbCopyMeshModelEntity(rt->collisionObjs[i]);
         bbScaleEntity(tempObj, RoomScale, RoomScale, RoomScale);
         SetIntArrayElem(r->collisionObjs,tempObj,i);
         bbShowEntity(tempObj);
         bbEntityAlpha(tempObj,0.0);
         bbEntityParent(tempObj,r->obj);
     }
-    if (rt->props!=nullptr) {
-        r->props = CreateIntArray(rt->props->size);
-        for (i = 0; i <= rt->props->size-1; i++) {
-            tempProp = Object.Prop(GetIntArrayListElem(rt->props,i));
-            tempObj = bbCopyEntity(tempProp->obj);
-            SetIntArrayElem(r->props,tempObj,i);
-            bbPositionEntity(tempObj,tempProp->x*RoomScale,tempProp->y*RoomScale,tempProp->z*RoomScale);
-            bbRotateEntity(tempObj,tempProp->pitch,tempProp->yaw,tempProp->roll);
-            bbScaleEntity(tempObj,tempProp->xScale*RoomScale,tempProp->yScale*RoomScale,tempProp->zScale*RoomScale);
-            bbShowEntity(tempObj);
-            bbEntityParent(tempObj,r->obj);
-        }
+    r->props.clear();
+    for (i = 0; i < rt->props.size(); i++) {
+        tempProp = rt->props[i];
+        tempObj = bbCopyMeshModelEntity(tempProp->obj);
+        SetIntArrayElem(r->props,tempObj,i);
+        bbPositionEntity(tempObj,tempProp->x*RoomScale,tempProp->y*RoomScale,tempProp->z*RoomScale);
+        bbRotateEntity(tempObj,tempProp->pitch,tempProp->yaw,tempProp->roll);
+        bbScaleEntity(tempObj,tempProp->xScale*RoomScale,tempProp->yScale*RoomScale,tempProp->zScale*RoomScale);
+        bbShowEntity(tempObj);
+        bbEntityParent(tempObj,r->obj);
     }
 
     bbPositionEntity(r->obj, x, y, z);
@@ -541,203 +615,202 @@ Room* CreateRoom(RoomTemplate* rt, float x, float y, float z) {
 }
 
 void FillRoom(Room* r) {
-    switch (r->roomTemplate->name) {
-        case "test_860_2": {
-            FillRoom_test_860_2(r);
-        }
-        case "lck_cam_2c": {
-            FillRoom_lck_cam_2c(r);
-        }
-        case "lck_096_2c": {
-            FillRoom_lck_096_2c(r);
-        }
-        case "extend_gatea_1": {
-            FillRoom_extend_gatea_1(r);
-        }
-        case "exit_gatea_1": {
-            FillRoom_exit_gatea_1(r);
-        }
-        case "exit1": {
-            FillRoom_exit_gateb_1(r);
-        }
-        case "cont_079_1": {
-            FillRoom_cont_079_1(r);
-        }
-        case "hll_gas_2": {
-            FillRoom_hll_gas_2(r);
-        }
-        case "test_smallwindow_2": {
-            FillRoom_test_smallwindow_2(r);
-        }
-        case "tnnl_plain_3": {
-            FillRoom_tnnl_plain_3(r);
-        }
-        case "hll_toilets_2": {
-            FillRoom_hll_toilets_2(r);
-        }
-        case "scp_970_2": {
-            FillRoom_scp_970_2(r);
-        }
-        case "off_rosewood_2": {
-            FillRoom_off_rosewood_2(r);
-        }
-        case "off_gears_may_har_2": {
-            FillRoom_off_gears_may_har_2(r);
-        }
-        case "off_l_conf_2": {
-            FillRoom_off_l_conf_2(r);
-        }
-        case "hll_ele_2": {
-            FillRoom_hll_ele_2(r);
-        }
-        case "hll_caf_2": {
-            FillRoom_hll_caf_2(r);
-        }
-        case "tnnl_nuke_2": {
-            FillRoom_tnnl_nuke_2(r);
-        }
-        case "tnnl_maintenance_2": {
-            FillRoom_tnnl_maintenance_2(r);
-        }
-        case "cont_008_1": {
-            FillRoom_cont_008_1(r);
-        }
-        case "cont_035_1": {
-            FillRoom_cont_035_1(r);
-        }
-        case "cont_513_3": {
-            FillRoom_cont_513_3(r);
-        }
-        case "cont_966_3": {
-            FillRoom_cont_966_3(r);
-        }
-        case "strg_939_3": {
-            FillRoom_strg_939_3(r);
-        }
-        case "cont_049_2": {
-            FillRoom_cont_049_2(r);
-        }
-        case "hll_fan_2": {
-            FillRoom_hll_fan_2(r);
-        }
-        case "cont_012_2": {
-            FillRoom_cont_012_2(r);
-        }
-        case "tnnl_elec_2": {
-            FillRoom_tnnl_elec_2(r);
-        }
-        case "tnnl_pipes_2": {
-            FillRoom_tnnl_pipes_2(r);
-        }
-        case "hll_gas_3": {
-            FillRoom_hll_gas_3(r);
-        }
-        case "srvr_096_2": {
-            FillRoom_srvr_096_2(r);
-        }
-        case "srvr_farm_3": {
-            FillRoom_srvr_farm_3(r);
-        }
-        case "srvr_lshape_3": {
-            FillRoom_srvr_lshape_3(r);
-        }
-        case "test_682_2": {
-            FillRoom_test_682_2(r);
-        }
-        case "closets_2": {
-            FillRoom_closets_2(r);
-        }
-        case "off_plain_2": {
-            FillRoom_off_plain_2(r);
-        }
-        case "off_lower_2": {
-            FillRoom_off_lower_2(r);
-        }
-        case "off_2level_2": {
-            FillRoom_off_2level_2(r);
-        }
-        case "cont_173_1": {
-            FillRoom_cont_173_1(r);
-        }
-        case "cont_714_860_1025_2": {
-            FillRoom_cont_714_860_1025_2(r);
-        }
-        case "cont_205_1": {
-            FillRoom_cont_205_1(r);
-        }
-        case "end_1": {
-            FillRoom_end_1(r);
-        }
-        case "coffin": {
-            FillRoom_cont_895_1(r);
-        }
-        case "tsl_ez_2","tsl_lcz_2","tsl_hcz_2": {
-            FillRoom_hll_tsl(r);
-        }
-        case "lck_tshape_2": {
-            FillRoom_lck_tshape_2(r);
-        }
-        case "cont_914_1": {
-            FillRoom_cont_914_1(r);
-        }
-        case "roomintro": {
-            FillRoom_intro(r);
-        }
-        case "strg_elec_2c": {
-            FillRoom_strg_elec_2c(r);
-        }
-        case "cont_106_1": {
-            FillRoom_cont_106_1(r);
-        }
-        case "cont_1123_2": {
-            FillRoom_cont_1123_2(r);
-        }
-        case "pocketdimension": {
-            FillRoom_pocketdimension(r);
-        }
-        case "hll_bench_3": {
-            FillRoom_hll_bench_3(r);
-        }
-        case "lifts_1": {
-            FillRoom_lifts_1(r);
-        }
-        case "srvr_pc_2": {
-            FillRoom_srvr_pc_2(r);
-        }
-        case "lck_air_2","lck_air_broke_2": {
-            FillRoom_lck_air_2(r);
-        }
-        case "lck_ez_3": {
-            FillRoom_lck_ez_3(r);
-        }
-        case "cont_1162_2c": {
-            FillRoom_cont_1162_2c(r);
-        }
-        case "cont_500_1499_2": {
-            FillRoom_cont_500_1499_2(r);
-        }
-        case "off_glss_3": {
-            FillRoom_off_glss_3(r);
-        }
-        case "off_bain_2": {
-            FillRoom_off_bain_2(r);
-        }
-        case "hll_sl_2": {
-            FillRoom_hll_sl_2(r);
-        }
-        case "hll_lshape_2": {
-            FillRoom_hll_lshape_2(r);
-        }
-        case "hll_dirty_3": {
-            FillRoom_hll_dirty_3(r);
-        }
-        case "lck_broke_2c": {
-            FillRoom_lck_broke_2c(r);
-        }
+    if (r->roomTemplate->name.equals("test_860_2")) {
+        FillRoom_test_860_2(r);
+    }
+    else if (r->roomTemplate->name.equals("lck_cam_2c")) {
+        FillRoom_lck_cam_2c(r);
+    }
+    else if (r->roomTemplate->name.equals("lck_096_2c")) {
+        FillRoom_lck_096_2c(r);
+    }
+    else if (r->roomTemplate->name.equals("extend_gatea_1")) {
+        FillRoom_extend_gatea_1(r);
+    }
+    else if (r->roomTemplate->name.equals("exit_gatea_1")) {
+        FillRoom_exit_gatea_1(r);
+    }
+    else if (r->roomTemplate->name.equals("exit1")) {
+        FillRoom_exit_gateb_1(r);
+    }
+    else if (r->roomTemplate->name.equals("cont_079_1")) {
+        FillRoom_cont_079_1(r);
+    }
+    else if (r->roomTemplate->name.equals("hll_gas_2")) {
+        FillRoom_hll_gas_2(r);
+    }
+    else if (r->roomTemplate->name.equals("test_smallwindow_2")) {
+        FillRoom_test_smallwindow_2(r);
+    }
+    else if (r->roomTemplate->name.equals("tnnl_plain_3")) {
+        FillRoom_tnnl_plain_3(r);
+    }
+    else if (r->roomTemplate->name.equals("hll_toilets_2")) {
+        FillRoom_hll_toilets_2(r);
+    }
+    else if (r->roomTemplate->name.equals("scp_970_2")) {
+        FillRoom_scp_970_2(r);
+    }
+    else if (r->roomTemplate->name.equals("off_rosewood_2")) {
+        FillRoom_off_rosewood_2(r);
+    }
+    else if (r->roomTemplate->name.equals("off_gears_may_har_2")) {
+        FillRoom_off_gears_may_har_2(r);
+    }
+    else if (r->roomTemplate->name.equals("off_l_conf_2")) {
+        FillRoom_off_l_conf_2(r);
+    }
+    else if (r->roomTemplate->name.equals("hll_ele_2")) {
+        FillRoom_hll_ele_2(r);
+    }
+    else if (r->roomTemplate->name.equals("hll_caf_2")) {
+        FillRoom_hll_caf_2(r);
+    }
+    else if (r->roomTemplate->name.equals("tnnl_nuke_2")) {
+        FillRoom_tnnl_nuke_2(r);
+    }
+    else if (r->roomTemplate->name.equals("tnnl_maintenance_2")) {
+        FillRoom_tnnl_maintenance_2(r);
+    }
+    else if (r->roomTemplate->name.equals("cont_008_1")) {
+        FillRoom_cont_008_1(r);
+    }
+    else if (r->roomTemplate->name.equals("cont_035_1")) {
+        FillRoom_cont_035_1(r);
+    }
+    else if (r->roomTemplate->name.equals("cont_513_3")) {
+        FillRoom_cont_513_3(r);
+    }
+    else if (r->roomTemplate->name.equals("cont_966_3")) {
+        FillRoom_cont_966_3(r);
+    }
+    else if (r->roomTemplate->name.equals("strg_939_3")) {
+        FillRoom_strg_939_3(r);
+    }
+    else if (r->roomTemplate->name.equals("cont_049_2")) {
+        FillRoom_cont_049_2(r);
+    }
+    else if (r->roomTemplate->name.equals("hll_fan_2")) {
+        FillRoom_hll_fan_2(r);
+    }
+    else if (r->roomTemplate->name.equals("cont_012_2")) {
+        FillRoom_cont_012_2(r);
+    }
+    else if (r->roomTemplate->name.equals("tnnl_elec_2")) {
+        FillRoom_tnnl_elec_2(r);
+    }
+    else if (r->roomTemplate->name.equals("tnnl_pipes_2")) {
+        FillRoom_tnnl_pipes_2(r);
+    }
+    else if (r->roomTemplate->name.equals("hll_gas_3")) {
+        FillRoom_hll_gas_3(r);
+    }
+    else if (r->roomTemplate->name.equals("srvr_096_2")) {
+        FillRoom_srvr_096_2(r);
+    }
+    else if (r->roomTemplate->name.equals("srvr_farm_3")) {
+        FillRoom_srvr_farm_3(r);
+    }
+    else if (r->roomTemplate->name.equals("srvr_lshape_3")) {
+        FillRoom_srvr_lshape_3(r);
+    }
+    else if (r->roomTemplate->name.equals("test_682_2")) {
+        FillRoom_test_682_2(r);
+    }
+    else if (r->roomTemplate->name.equals("closets_2")) {
+        FillRoom_closets_2(r);
+    }
+    else if (r->roomTemplate->name.equals("off_plain_2")) {
+        FillRoom_off_plain_2(r);
+    }
+    else if (r->roomTemplate->name.equals("off_lower_2")) {
+        FillRoom_off_lower_2(r);
+    }
+    else if (r->roomTemplate->name.equals("off_2level_2")) {
+        FillRoom_off_2level_2(r);
+    }
+    else if (r->roomTemplate->name.equals("cont_173_1")) {
+        FillRoom_cont_173_1(r);
+    }
+    else if (r->roomTemplate->name.equals("cont_714_860_1025_2")) {
+        FillRoom_cont_714_860_1025_2(r);
+    }
+    else if (r->roomTemplate->name.equals("cont_205_1")) {
+        FillRoom_cont_205_1(r);
+    }
+    else if (r->roomTemplate->name.equals("end_1")) {
+        FillRoom_end_1(r);
+    }
+    else if (r->roomTemplate->name.equals("coffin")) {
+        FillRoom_cont_895_1(r);
+    }
+    else if (r->roomTemplate->name.equals("tsl_ez_2", "tsl_lcz_2", "tsl_hcz_2")) {
+        FillRoom_hll_tsl(r);
+    }
+    else if (r->roomTemplate->name.equals("lck_tshape_2")) {
+        FillRoom_lck_tshape_2(r);
+    }
+    else if (r->roomTemplate->name.equals("cont_914_1")) {
+        FillRoom_cont_914_1(r);
+    }
+    else if (r->roomTemplate->name.equals("roomintro")) {
+        FillRoom_intro(r);
+    }
+    else if (r->roomTemplate->name.equals("strg_elec_2c")) {
+        FillRoom_strg_elec_2c(r);
+    }
+    else if (r->roomTemplate->name.equals("cont_106_1")) {
+        FillRoom_cont_106_1(r);
+    }
+    else if (r->roomTemplate->name.equals("cont_1123_2")) {
+        FillRoom_cont_1123_2(r);
+    }
+    else if (r->roomTemplate->name.equals("pocketdimension")) {
+        FillRoom_pocketdimension(r);
+    }
+    else if (r->roomTemplate->name.equals("hll_bench_3")) {
+        FillRoom_hll_bench_3(r);
+    }
+    else if (r->roomTemplate->name.equals("lifts_1")) {
+        FillRoom_lifts_1(r);
+    }
+    else if (r->roomTemplate->name.equals("srvr_pc_2")) {
+        FillRoom_srvr_pc_2(r);
+    }
+    else if (r->roomTemplate->name.equals("lck_air_2") ||
+             r->roomTemplate->name.equals("lck_air_broke_2")) {
+        FillRoom_lck_air_2(r);
+    }
+    else if (r->roomTemplate->name.equals("lck_ez_3")) {
+        FillRoom_lck_ez_3(r);
+    }
+    else if (r->roomTemplate->name.equals("cont_1162_2c")) {
+        FillRoom_cont_1162_2c(r);
+    }
+    else if (r->roomTemplate->name.equals("cont_500_1499_2")) {
+        FillRoom_cont_500_1499_2(r);
+    }
+    else if (r->roomTemplate->name.equals("off_glss_3")) {
+        FillRoom_off_glss_3(r);
+    }
+    else if (r->roomTemplate->name.equals("off_bain_2")) {
+        FillRoom_off_bain_2(r);
+    }
+    else if (r->roomTemplate->name.equals("hll_sl_2")) {
+        FillRoom_hll_sl_2(r);
+    }
+    else if (r->roomTemplate->name.equals("hll_lshape_2")) {
+        FillRoom_hll_lshape_2(r);
+    }
+    else if (r->roomTemplate->name.equals("hll_dirty_3")) {
+        FillRoom_hll_dirty_3(r);
+    }
+    else if (r->roomTemplate->name.equals("lck_broke_2c")) {
+        FillRoom_lck_broke_2c(r);
     }
 
     LightTemplate* lt;
-    int newlt;
+    Light* newlt;
     for (int iterator73 = 0; iterator73 < LightTemplate::getListSize(); iterator73++) {
         lt = LightTemplate::getObject(iterator73);
 
@@ -847,10 +920,10 @@ void UpdateRooms() {
     //TempLightVolume=0
     int foundPlayerRoom = false;
     if (mainPlayer->currRoom!=nullptr) {
-        if (Abs(bbEntityY(mainPlayer->collider) - bbEntityY(mainPlayer->currRoom->obj)) < 1.5) {
-            x = Abs(mainPlayer->currRoom->x-bbEntityX(mainPlayer->collider,true));
+        if (std::abs(bbEntityY(mainPlayer->collider) - bbEntityY(mainPlayer->currRoom->obj)) < 1.5) {
+            x = std::abs(mainPlayer->currRoom->x-bbEntityX(mainPlayer->collider,true));
             if (x < 4.0) {
-                z = Abs(mainPlayer->currRoom->z-bbEntityZ(mainPlayer->collider,true));
+                z = std::abs(mainPlayer->currRoom->z-bbEntityZ(mainPlayer->collider,true));
                 if (z < 4.0) {
                     foundPlayerRoom = true;
                 }
@@ -860,9 +933,9 @@ void UpdateRooms() {
             if (foundPlayerRoom == false) {
                 for (i = 0; i <= 3; i++) {
                     if (mainPlayer->currRoom->adjacent[i]!=nullptr) {
-                        x = Abs(mainPlayer->currRoom->adjacent[i]->x-bbEntityX(mainPlayer->collider,true));
+                        x = std::abs(mainPlayer->currRoom->adjacent[i]->x-bbEntityX(mainPlayer->collider,true));
                         if (x < 4.0) {
-                            z = Abs(mainPlayer->currRoom->adjacent[i]->z-bbEntityZ(mainPlayer->collider,true));
+                            z = std::abs(mainPlayer->currRoom->adjacent[i]->z-bbEntityZ(mainPlayer->collider,true));
                             if (z < 4.0) {
                                 foundPlayerRoom = true;
                                 mainPlayer->currRoom = mainPlayer->currRoom->adjacent[i];
@@ -881,8 +954,8 @@ void UpdateRooms() {
         for (int iterator77 = 0; iterator77 < Room::getListSize(); iterator77++) {
             r = Room::getObject(iterator77);
 
-            x = Abs(r->x-bbEntityX(mainPlayer->collider,true));
-            z = Abs(r->z-bbEntityZ(mainPlayer->collider,true));
+            x = std::abs(r->x-bbEntityX(mainPlayer->collider,true));
+            z = std::abs(r->z-bbEntityZ(mainPlayer->collider,true));
             r->dist = Max(x,z);
 
             if (r->dist<minDist) {
@@ -896,8 +969,8 @@ void UpdateRooms() {
     for (int iterator78 = 0; iterator78 < Room::getListSize(); iterator78++) {
         r = Room::getObject(iterator78);
 
-        x = Abs(r->x-bbEntityX(mainPlayer->collider,true));
-        z = Abs(r->z-bbEntityZ(mainPlayer->collider,true));
+        x = std::abs(r->x-bbEntityX(mainPlayer->collider,true));
+        z = std::abs(r->z-bbEntityZ(mainPlayer->collider,true));
         r->dist = Max(x,z);
 
 
@@ -914,7 +987,7 @@ void UpdateRooms() {
             if ((!foundPlayerRoom) & (mainPlayer->currRoom!=r)) {
                 if (x < 4.0) {
                     if (z < 4.0) {
-                        if (Abs(bbEntityY(mainPlayer->collider) - bbEntityY(r->obj)) < 1.5) {
+                        if (std::abs(bbEntityY(mainPlayer->collider) - bbEntityY(r->obj)) < 1.5) {
                             mainPlayer->currRoom = r;
                         }
                         foundPlayerRoom = true;
@@ -969,8 +1042,8 @@ void UpdateRooms() {
         SetRoomVisibility(mainPlayer->currRoom,true);
         for (i = 0; i <= 3; i++) {
             if (mainPlayer->currRoom->adjacent[i]!=nullptr) {
-                x = Abs(bbEntityX(mainPlayer->collider,true)-bbEntityX(mainPlayer->currRoom->adjDoor[i]->frameobj,true));
-                z = Abs(bbEntityZ(mainPlayer->collider,true)-bbEntityZ(mainPlayer->currRoom->adjDoor[i]->frameobj,true));
+                x = std::abs(bbEntityX(mainPlayer->collider,true)-bbEntityX(mainPlayer->currRoom->adjDoor[i]->frameobj,true));
+                z = std::abs(bbEntityZ(mainPlayer->collider,true)-bbEntityZ(mainPlayer->currRoom->adjDoor[i]->frameobj,true));
                 if (mainPlayer->currRoom->adjDoor[i]->openstate == 0) {
                     SetRoomVisibility(mainPlayer->currRoom->adjacent[i],false);
                 } else if ((!bbEntityInView(mainPlayer->currRoom->adjDoor[i]->frameobj,mainPlayer->cam))) {
@@ -1007,7 +1080,7 @@ int IsRoomAdjacent(Room* thisRoom, Room* that) {
     return false;
 }
 
-int AddLight(Room* room, float x, float y, float z, int ltype, float range, int r, int g, int b) {
+Light* AddLight(Room* room, float x, float y, float z, int ltype, float range, int r, int g, int b) {
     int i;
     //TODO: These names suck.
     int light;
@@ -1184,7 +1257,7 @@ int FindPath(NPC* n, float x, float y, float z) {
         n->path[i] = nullptr;
     }
 
-    int pvt = bbCreatePivot();
+    Pivot* pvt = bbCreatePivot();
     bbPositionEntity(pvt, x,y,z, true);
 
     temp = bbCreatePivot();
@@ -1303,7 +1376,7 @@ int FindPath(NPC* n, float x, float y, float z) {
                                 w->connected[i]->parent = w;
                             }
                         } else {
-                            w->connected[i]->hCost = Abs(bbEntityX(w->connected[i]->obj,true)-bbEntityX(EndPoint->obj,true))+Abs(bbEntityZ(w->connected[i]->obj,true)-bbEntityZ(EndPoint->obj,true));
+                            w->connected[i]->hCost = std::abs(bbEntityX(w->connected[i]->obj,true)-bbEntityX(EndPoint->obj,true))+std::abs(bbEntityZ(w->connected[i]->obj,true)-bbEntityZ(EndPoint->obj,true));
                             gtemp = w->gCost+w->dist[i];
                             //TODO: fix?
                             //If (n\npcType = NPCtypeMTF) Then
@@ -1609,7 +1682,7 @@ void UpdateSecurityCams() {
                     }
 
                     if (sc!=CoffinCam) {
-                        if (Abs(bbDeltaYaw(sc->cameraObj,mainPlayer->cam))<60.0) {
+                        if (std::abs(bbDeltaYaw(sc->cameraObj,mainPlayer->cam))<60.0) {
                             if (bbEntityVisible(sc->cameraObj,mainPlayer->cam)) {
                                 PlayerDetected = true;
                             }
