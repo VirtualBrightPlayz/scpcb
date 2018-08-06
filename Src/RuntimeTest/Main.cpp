@@ -23,11 +23,11 @@ int main() {
 
     bbAmbientLight(0,0,0);
 
-    Object* cube = bbCreateCube(nullptr);
-    Object* camera = bbCreateCamera(nullptr);
-    Object* light = bbCreateLight(1,nullptr);
+    MeshModel* cube = bbCreateCube();
+    Camera* camera = bbCreateCamera();
+    Light* light = bbCreateLight(1);
 
-    bbLightColor((Light*)light,100,255,100);
+    bbLightColor(light,100,255,100);
 
     bbImage* cursor = bbLoadImage("cursor.png");
 

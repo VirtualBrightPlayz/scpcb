@@ -134,7 +134,7 @@ float bbPickedTime();
 class Object* bbPickedEntity();
 void* bbPickedSurface();
 int bbPickedTriangle();
-class Light* bbCreateLight(int type, class Object* p);
+class Light* bbCreateLight(int type, class Object* p=nullptr);
 void bbLightColor(class Light* light, float r, float g, float b);
 void bbLightRange(class Light* light, float range);
 class Object* bbCreatePivot(class Object* p=nullptr);

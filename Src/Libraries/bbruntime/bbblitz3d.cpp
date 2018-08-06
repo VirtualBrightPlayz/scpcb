@@ -270,7 +270,7 @@ void  bbCaptureWorld(){
 	world->capture();
 }
 
-void  bbRenderWorld( float tween=1 ){
+void  bbRenderWorld( float tween ){
 	debug3d();
 
 #ifndef BETA
