@@ -21,11 +21,14 @@ int main() {
 		std::cout << list[i];
     }
 
-    bbAmbientLight(0,0,0);
+    bbAmbientLight(20,20,50);
 
-    MeshModel* cube = bbCreateCube();
+    MeshModel* model = bbLoadMesh("173_2.b3d");
+    bbScaleEntity(model,0.1,0.1,0.1,true);
     Camera* camera = bbCreateCamera();
     Light* light = bbCreateLight(1);
+
+    bbHidePointer();
 
     bbLightColor(light,100,255,100);
 
@@ -36,17 +39,20 @@ int main() {
     while (!bbKeyHit(1)) {
         cnt+=0.01f;
         bbPositionEntity(camera, bbSin(cnt)*6.0f, 2.0, bbCos(cnt)*6.0f, true);
-        bbPointEntity(camera, cube, 0.0f);
+        bbPointEntity(camera, model, 0.0f);
 
         bbPositionEntity(light, bbSin(cnt*10.0f)*6.0f, bbSin(cnt*30.0f)*6.0f, bbCos(cnt*10.0f)*6.0f, true);
-        bbPointEntity(light, cube, 0.0f);
+        bbPointEntity(light, model, 0.0f);
 
         bbRenderWorld(1.0f);
         bbDrawImage(cursor, bbMouseX(), bbMouseY(), 0);
         bbFlip(0);
     }
 
-    bbFreeEntity(camera); bbFreeEntity(cube);
+    bbFreeEntity(camera);
+    bbFreeEntity(model);
+    bbFreeEntity(light);
+
     bbFreeImage(cursor);
 
     bbEndGraphics();

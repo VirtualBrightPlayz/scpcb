@@ -173,10 +173,11 @@ void bbEntityBox(class Object* o, float x, float y, float z, float w, float h, f
 class Object* bbEntityCollided(class Object* o, int type);
 int bbCountCollisions(class Object* o);
 void bbMoveEntity(class Object* e, float x, float y, float z);
-void bbTurnEntity(class Object* e, float p, float y, float r, int global=0);
-void bbTranslateEntity(class Object* e, float x, float y, float z, int global=0);
-void bbPositionEntity(class Object* e, float x, float y, float z, int global=0);
-void bbRotateEntity(class Object* e, float p, float y, float r, int global=0);
+void bbTurnEntity(class Object* e, float p, float y, float r, int global=1);
+void bbTranslateEntity(class Object* e, float x, float y, float z, int global=1);
+void bbScaleEntity(class Object *e, float x, float y, float z, int global=1);
+void bbPositionEntity(class Object* e, float x, float y, float z, int global=1);
+void bbRotateEntity(class Object* e, float p, float y, float r, int global=1);
 void bbPointEntity(class Object* e, class Object* t, float roll=0.f);
 void bbAnimateMD2(class MD2Model* m, int mode, float speed, int first, int last, float trans);
 void bbAnimate(class Object* o, int mode, float speed, int seq, float trans);
