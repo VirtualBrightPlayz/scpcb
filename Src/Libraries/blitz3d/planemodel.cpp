@@ -1,3 +1,5 @@
+#include "../gxruntime/gxgraphics.h"
+
 #include "planemodel.h"
 #include "frustum.h"
 #include "camera.h"

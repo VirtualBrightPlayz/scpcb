@@ -2,8 +2,6 @@
 #ifndef PIVOT_H
 #define PIVOT_H
 
-#include "../stdutil/stdutil.h"
-
 #include "object.h"
 
 class Pivot : public Object{

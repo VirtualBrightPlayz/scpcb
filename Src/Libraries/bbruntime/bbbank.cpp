@@ -1,8 +1,9 @@
+#include <set>
 
 #include "bbbank.h"
 #include "bbstream.h"
 
-static set<bbBank*> bank_set;
+static std::set<bbBank*> bank_set;
 
 static inline void debugBank( bbBank *b ){
 	if( debug ){

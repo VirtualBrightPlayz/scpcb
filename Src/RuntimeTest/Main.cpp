@@ -44,6 +44,8 @@ int main() {
         bbPositionEntity(light, bbSin(cnt*10.0f)*6.0f, bbSin(cnt*30.0f)*6.0f, bbCos(cnt*10.0f)*6.0f, true);
         bbPointEntity(light, model, 0.0f);
 
+        bbCameraZoom(camera, 1.0f+bbSin(cnt*6.0f)*0.5f);
+
         bbRenderWorld(1.0f);
         bbDrawImage(cursor, bbMouseX(), bbMouseY(), 0);
         bbFlip(0);

@@ -1,3 +1,10 @@
+#include <set>
+#include <vector>
+#include <utility>
+
+#include "../gxruntime/gxutil.h"
+#include "../gxruntime/StringType.h"
+
 #include "bbblitz3d.h"
 #include "bbgraphics.h"
 
@@ -7,9 +14,9 @@ extern gxFileSystem *gx_filesys;
 static int tri_count;
 static World *world;
 
-static set<Brush*> brush_set;
-static set<Texture*> texture_set;
-static set<Object*> entity_set;
+static std::set<Brush*> brush_set;
+static std::set<Texture*> texture_set;
+static std::set<Object*> entity_set;
 
 static Listener *listener;
 
@@ -31,7 +38,7 @@ extern float stats3d[10];
 static Loader_3DS loader_3ds;
 static Loader_B3D loader_b3d;
 
-static map<string,Transform> loader_mat_map;
+static std::vector<std::pair<String,Transform>> loader_mat_map;
 
 static inline void debug3d(){
 	if( debug && !gx_scene ) RTEX( "3D Graphics mode not set" );
@@ -87,16 +94,6 @@ static inline void debugSprite( Sprite *s ){
 		debugModel(s);if( !s->getSprite() ) RTEX( "Object is not a sprite" );
 	}
 }
-static inline void debugMD2( MD2Model *m ){
-	if( debug ){
-		debugModel(m);if( !m->getMD2Model() ) RTEX( "Object is not an MD2 Model" );
-	}
-}
-static inline void debugBSP( Q3BSPModel *m ){
-	if( debug ){
-		debugModel(m);if( !m->getBSPModel() ) RTEX( "Object is not a BSP Model" );
-	}
-}
 static inline void debugTerrain( Terrain *t ){
 	if( debug ){
 		debugModel(t);if( !t->getTerrain() ) RTEX( "Object is not a terrain" );
@@ -123,17 +120,25 @@ static inline void debugVertex( Surface *s,int n,int t ){
 }
 
 static MeshModel* loadEntity( String str,int hint ){
-    string t = str.cstr();
+    String t = str;
 	t=tolower(t);
-	int n=t.rfind( "." );if( n==string::npos ) return 0;
-	string ext=t.substr( n+1 );
+	int n=t.findLast( "." );if( n==-1 ) return 0;
+	String ext=t.substr( n+1 );
 	MeshLoader *l;
 
-	if( ext=="3ds" ) l=&loader_3ds;
-	else if( ext=="b3d" ) l=&loader_b3d;
+	if( ext.equals("3ds") ) l=&loader_3ds;
+	else if( ext.equals("b3d") ) l=&loader_b3d;
 	else return 0;
 
-	const Transform &conv=loader_mat_map[ext];
+    int ind = -1;
+    for (int i=0;i<loader_mat_map.size();i++){
+        if (loader_mat_map[i].first.equals(ext)) {
+            ind = i;
+            break;
+        }
+    }
+
+	const Transform &conv=loader_mat_map[ind].second;
 
 	CachedTexture::setPath( filenamepath( t ) );
 	MeshModel* e=l->load( t,conv,hint );
@@ -191,9 +196,12 @@ static Object *findChild( Object *e,String t ){
 ///////////////////////////
 void  bbLoaderMatrix( String ext,float xx,float xy,float xz,float yx,float yy,float yz,float zx,float zy,float zz ){
     //TODO: do we even need this?
-    std::string cppStr = std::string(ext.cstr());
-	loader_mat_map.erase( cppStr );
-	loader_mat_map[cppStr]=Transform(Matrix(Vector(xx,xy,xz),Vector(yx,yy,yz),Vector(zx,zy,zz)));
+    for (int i=0;i<loader_mat_map.size();i++) {
+        if (loader_mat_map[i].first.equals(ext)){
+            loader_mat_map.erase(loader_mat_map.begin()+i); break;
+        }
+    }
+	loader_mat_map.push_back(std::pair<String,Transform>(ext,Transform(Matrix(Vector(xx,xy,xz),Vector(yx,yy,yz),Vector(zx,zy,zz)))));
 }
 
 int   bbHWTexUnits(){
@@ -290,7 +298,7 @@ void  bbRenderWorld( float tween ){
 	}
 	if( bbKeyHit( 0x58 ) ){
 		static int n;
-		String t="screenshot"+itoa(++n)+".bmp";
+		String t="screenshot"+String(itoa(++n))+".bmp";
 		bbSaveBuffer( bbBackBuffer(),t );
 	}
 
@@ -1140,59 +1148,6 @@ Object *  bbCreatePlane( int segs,Object *p ){
 	return insertEntity( t,p );
 }
 
-//////////////////
-// MD2 COMMANDS //
-//////////////////
-Object *  bbLoadMD2( String file,Object *p ){
-	debugParent(p);
-	MD2Model *t=new MD2Model( file );
-	if( !t->getValid() ){ delete t;return 0; }
-	return insertEntity( t,p );
-}
-
-void  bbAnimateMD2( MD2Model *m,int mode,float speed,int first,int last,float trans ){
-	debugMD2(m);
-	m->startMD2Anim( first,last,mode,speed,trans );
-}
-
-float  bbMD2AnimTime( MD2Model *m ){
-	debugMD2(m);
-	return m->getMD2AnimTime();
-}
-
-int  bbMD2AnimLength( MD2Model *m ){
-	debugMD2(m);
-	return m->getMD2AnimLength();
-}
-
-int  bbMD2Animating( MD2Model *m ){
-	debugMD2(m);
-	return m->getMD2Animating();
-}
-
-//////////////////
-// BSP Commands //
-//////////////////
-Object *  bbLoadBSP( String file,float gam,Object *p ){
-	debugParent(p);
-	CachedTexture::setPath( filenamepath( file.cstr() ) );
-	Q3BSPModel *t=new Q3BSPModel( file,gam );
-	CachedTexture::setPath( "" );
-
-	if( !t->isValid() ){ delete t;return 0; }
-
-	return insertEntity( t,p );
-}
-
-void  bbBSPAmbientLight( Q3BSPModel *t,float r,float g,float b ){
-	debugBSP(t);
-	t->setAmbient( Vector( r*ctof,g*ctof,b*ctof ) );
-}
-
-void  bbBSPLighting( Q3BSPModel *t,int lmap ){
-	debugBSP(t);
-	t->setLighting( !!lmap );
-}
 
 //////////////////////
 // TERRAIN COMMANDS //
@@ -1924,8 +1879,7 @@ void blitz3d_open(){
 	Texture::clearFilters();
 	Texture::addFilter( "",gxCanvas::CANVAS_TEX_RGB|gxCanvas::CANVAS_TEX_MIPMAP );
 	loader_mat_map.clear();
-	loader_mat_map["x"]=Transform();
-	loader_mat_map["3ds"]=Transform(Matrix(Vector(1,0,0),Vector(0,0,1),Vector(0,1,0)));
+	loader_mat_map.push_back(std::pair<String,Transform>("3ds",Transform(Matrix(Vector(1,0,0),Vector(0,0,1),Vector(0,1,0)))));
 	listener=0;
 	stats_mode=false;
 }

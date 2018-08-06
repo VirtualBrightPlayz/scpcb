@@ -1,3 +1,5 @@
+#include <vector>
+
 #include "loader_b3d.h"
 #include "meshmodel.h"
 #include "pivot.h"
@@ -6,10 +8,10 @@
 //#define SHOW_BONES
 
 static FILE *in;
-static vector<int> chunk_stack;
-static vector<Texture> textures;
-static vector<Brush> brushes;
-static vector<Object*> bones;
+static std::vector<int> chunk_stack;
+static std::vector<Texture> textures;
+static std::vector<Brush> brushes;
+static std::vector<Object*> bones;
 
 static bool collapse;
 static bool animonly;
@@ -77,19 +79,19 @@ static void readColor( unsigned *t ){
 	*t=(int(a*255)<<24)|(int(r*255)<<16)|(int(g*255)<<8)|int(b*255);
 }
 
-static string readString(){
-	string t;
+static String readString(){
+	String t;
 	for(;;){
 		char c;
 		read( &c,1 );
 		if( !c ) return t;
-		t+=c;
+		t=String(t,c);
 	}
 }
 
 static void readTextures(){
 	while( chunkSize() ){
-		string name=readString();
+		String name=readString();
 		int flags=readInt();
 		int blend=readInt();
 		float pos[2],scl[2];
@@ -117,7 +119,7 @@ static void readBrushes(){
 	int tex_id[8]={-1,-1,-1,-1,-1,-1,-1,-1};
 
 	while( chunkSize() ){
-		string name=readString();
+		String name=readString();
 		float col[4];
 		readFloatArray( col,4 );
 		float shi=readFloat();
@@ -247,7 +249,7 @@ static Object *readObject( Object *parent ){
 
 	Object *obj=0;
 
-	string name=readString();
+	String name=readString();
 	float pos[3],scl[3],rot[4];
 	readFloatArray( pos,3 );
 	readFloatArray( scl,3 );
@@ -313,12 +315,12 @@ static Object *readObject( Object *parent ){
 	return obj;
 }
 
-MeshModel *Loader_B3D::load( const string &f,const Transform &conv,int hint ){
+MeshModel *Loader_B3D::load( String f,const Transform &conv,int hint ){
 
 	collapse=!!(hint&MeshLoader::HINT_COLLAPSE);
 	animonly=!!(hint&MeshLoader::HINT_ANIMONLY);
 
-	in=fopen( f.c_str(),"rb" );
+	in=fopen( f.cstr(),"rb" );
 	if( !in ) return 0;
 
 	::clear();

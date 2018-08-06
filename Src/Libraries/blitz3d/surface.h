@@ -2,8 +2,9 @@
 #ifndef SURFACE_H
 #define SURFACE_H
 
-#include <string>
 #include <vector>
+
+#include "../gxruntime/StringType.h"
 
 #include "model.h"
 
@@ -46,7 +47,7 @@ public:
 	Surface( Monitor *mon );
 	~Surface();
 
-	void setName( const std::string &t );
+	void setName( String t );
 	void setBrush( const Brush &b );
 
 	void clear( bool verts,bool tris );
@@ -98,7 +99,7 @@ public:
 	gxMesh *getMesh();
 	gxMesh *getMesh( const std::vector<Bone> &bones );
 
-    std::string getName()const{ return name; }
+    String getName()const{ return name; }
 	const Brush &getBrush()const{ return brush; }
 	int numVertices()const{ return vertices.size(); }
 	int numTriangles()const{ return triangles.size(); }
@@ -107,7 +108,7 @@ public:
 
 private:
 	Brush brush;
-    std::string name;
+    String name;
 	gxMesh *mesh;
     std::vector<Vertex> vertices;
     std::vector<Triangle> triangles;

@@ -1,3 +1,6 @@
+#include <math.h>
+#include <algorithm>
+
 #include "bbmath.h"
 
 static int rnd_state;

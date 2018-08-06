@@ -12,8 +12,6 @@
 #include "../blitz3d/meshmodel.h"
 #include "../blitz3d/loader_3ds.h"
 #include "../blitz3d/loader_b3d.h"
-#include "../blitz3d/md2model.h"
-#include "../blitz3d/q3bspmodel.h"
 #include "../blitz3d/meshutil.h"
 #include "../blitz3d/pivot.h"
 #include "../blitz3d/planemodel.h"
