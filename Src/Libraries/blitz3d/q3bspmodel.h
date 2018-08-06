@@ -2,6 +2,8 @@
 #ifndef Q3BSPMODEL_H
 #define Q3BSPMODEL_H
 
+#include "../stdutil/stdutil.h"
+
 #include "model.h"
 
 class Q3BSPModel : public Model{

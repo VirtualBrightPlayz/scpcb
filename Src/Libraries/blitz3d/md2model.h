@@ -2,6 +2,8 @@
 #ifndef MD2MODEL_H
 #define MD2MODEL_H
 
+#include "../stdutil/stdutil.h"
+
 #include "model.h"
 #include "md2rep.h"
 

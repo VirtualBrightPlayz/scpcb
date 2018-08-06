@@ -4,6 +4,8 @@
 
 #include <vector>
 
+#include "../stdutil/stdutil.h"
+
 #include "animator.h"
 #include "collision.h"
 
@@ -94,8 +96,8 @@ public:
     bool visible()const { return _visible; }
     bool enabled()const { return _enabled; }
 
-    void enumVisible(vector<Object*> &out);
-    void enumEnabled(vector<Object*> &out);
+    void enumVisible(std::vector<Object*> &out);
+    void enumEnabled(std::vector<Object*> &out);
 
     Object *children()const { return _children; }
     Object *successor()const { return _succ; }
@@ -159,7 +161,7 @@ protected:
 	bool obscurer;
 	float elapsed;
 	Vector velocity;
-	vector<gxChannel*> channels;
+    std::vector<gxChannel*> channels;
 	Vector capt_pos,capt_scl;
 	Quat capt_rot;
 	mutable Object *last_copy;

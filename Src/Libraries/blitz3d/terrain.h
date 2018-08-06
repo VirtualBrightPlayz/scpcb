@@ -2,6 +2,8 @@
 #ifndef TERRAIN_H
 #define TERRAIN_H
 
+#include "../stdutil/stdutil.h"
+
 #include "model.h"
 
 struct TerrainRep;

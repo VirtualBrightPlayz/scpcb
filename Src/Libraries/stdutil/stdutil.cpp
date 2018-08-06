@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <windows.h>
 
-using namespace std;
+using namespace std; //TODO: FFS
 
 #ifdef MEMDEBUG
 

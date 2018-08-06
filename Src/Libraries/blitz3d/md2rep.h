@@ -2,6 +2,8 @@
 #ifndef MD2REP_H
 #define MD2REP_H
 
+#include <vector>
+
 #include "model.h"
 
 class MD2Rep{
@@ -37,15 +39,15 @@ private:
 
 	struct Frame{
 		Vector scale,trans;
-		vector<Vertex> verts;
+        std::vector<Vertex> verts;
 	};
 
 	Box box;
 	gxMesh *mesh;
 	int n_frames;
 	int n_verts,n_tris;
-	vector<Frame> frames;
-	vector<VertexUV> uvs;
+    std::vector<Frame> frames;
+    std::vector<VertexUV> uvs;
 };
 
 #endif

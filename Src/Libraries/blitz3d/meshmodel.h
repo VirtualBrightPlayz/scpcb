@@ -2,6 +2,8 @@
 #ifndef MESHMODEL_H
 #define MESHMODEL_H
 
+#include <vector>
+
 #include "model.h"
 #include "surface.h"
 
@@ -9,7 +11,7 @@ class MeshCollider;
 
 class MeshModel : public Model{
 public:
-	typedef vector<Surface*> SurfaceList;
+	typedef std::vector<Surface*> SurfaceList;
 
 	MeshModel();
 	MeshModel( const MeshModel &t );
@@ -53,9 +55,9 @@ private:
 	Rep *rep;
 	int brush_changes;
 	Brush render_brush;
-	vector<Brush> brushes;
+    std::vector<Brush> brushes;
 
-	vector<Surface::Bone> surf_bones;
+    std::vector<Surface::Bone> surf_bones;
 
 	MeshModel &operator=(const MeshModel &);
 };

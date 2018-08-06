@@ -3,23 +3,6 @@
 
 #include "bbblitz3d.h"
 #include "bbgraphics.h"
-#include "../blitz3d/blitz3d.h"
-#include "../blitz3d/world.h"
-#include "../blitz3d/texture.h"
-#include "../blitz3d/brush.h"
-#include "../blitz3d/camera.h"
-#include "../blitz3d/sprite.h"
-#include "../blitz3d/meshmodel.h"
-#include "../blitz3d/loader_3ds.h"
-#include "../blitz3d/loader_b3d.h"
-#include "../blitz3d/md2model.h"
-#include "../blitz3d/q3bspmodel.h"
-#include "../blitz3d/meshutil.h"
-#include "../blitz3d/pivot.h"
-#include "../blitz3d/planemodel.h"
-#include "../blitz3d/terrain.h"
-#include "../blitz3d/listener.h"
-#include "../blitz3d/cachedtexture.h"
 
 gxScene *gx_scene;
 extern gxFileSystem *gx_filesys;
@@ -142,7 +125,7 @@ static inline void debugVertex( Surface *s,int n,int t ){
 	}
 }
 
-static Object *loadEntity( String str,int hint ){
+static MeshModel* loadEntity( String str,int hint ){
     string t = str.cstr();
 	t=tolower(t);
 	int n=t.rfind( "." );if( n==string::npos ) return 0;
@@ -156,7 +139,7 @@ static Object *loadEntity( String str,int hint ){
 	const Transform &conv=loader_mat_map[ext];
 
 	CachedTexture::setPath( filenamepath( t ) );
-	Object *e=l->load( t,conv,hint );
+	MeshModel* e=l->load( t,conv,hint );
 	CachedTexture::setPath( "" );
 	return e;
 }
@@ -536,31 +519,31 @@ void  bbBrushFX( Brush *b,int fx ){
 ///////////////////
 // MESH COMMANDS //
 ///////////////////
-Object *  bbCreateMesh( Object *p ){
+MeshModel* bbCreateMesh( Object *p ){
 	debugParent(p);
 	MeshModel *m=d_new MeshModel();
-	return insertEntity( m,p );
+	return insertEntity( m,p )->getModel()->getMeshModel();
 }
 
-Object *  bbLoadMesh( String f,Object *p ){
+MeshModel* bbLoadMesh( String f,Object *p ){
 	debugParent(p);
-	Object *e=loadEntity( f,MeshLoader::HINT_COLLAPSE );
+	MeshModel* e=loadEntity( f,MeshLoader::HINT_COLLAPSE );
 
 	if( !e ) return 0;
 	MeshModel *m=d_new MeshModel();
 	collapseMesh( m,e );
-	return insertEntity( m,p );
+	return insertEntity( m,p )->getModel()->getMeshModel();
 }
 
-Object *  bbLoadAnimMesh( String f,Object *p ){
+MeshModel* bbLoadAnimMesh( String f,Object *p ){
 	debugParent(p);
-	Object *e=loadEntity( f,0 );
+	MeshModel* e=loadEntity( f,0 );
 
 	if( !e ) return 0;
 	if( Animator *anim=e->getAnimator() ){
 		anim->animate( 1,0,0,0 );
 	}
-	return insertEntity( e,p );
+	return insertEntity( e,p )->getModel()->getMeshModel();
 }
 
 MeshModel*  bbCreateCube( Object *p ){
@@ -848,13 +831,13 @@ int  bbTriangleVertex( Surface *s,int n,int v ){
 /////////////////////
 // CAMERA COMMANDS //
 /////////////////////
-Object *  bbCreateCamera( Object *p ){
+Camera* bbCreateCamera( Object *p ){
 	debugParent(p);
 	int x,y,w,h;
 	gx_canvas->getViewport( &x,&y,&w,&h );
 	Camera *c=d_new Camera();
 	c->setViewport( x,y,w,h );
-	return insertEntity( c,p );
+	return insertEntity( c,p )->getCamera();
 }
 
 void  bbCameraZoom( Camera *c,float zoom ){
@@ -1058,10 +1041,10 @@ int  bbPickedTriangle(){
 ////////////////////
 // LIGHT COMMANDS //
 ////////////////////
-Object *  bbCreateLight( int type,Object *p ){
+Light* bbCreateLight( int type,Object *p ){
 	debugParent(p);
 	Light *t=d_new Light( type );
-	return insertEntity( t,p );
+	return insertEntity( t,p )->getLight();
 }
 
 void  bbLightColor( Light *light,float r,float g,float b ){
