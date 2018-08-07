@@ -323,7 +323,7 @@ void UpdateEvent_cont_1123_2(Event* e) {
 
             for (i = 0; i <= mainPlayer->inventory->size-1; i++) {
                 if (mainPlayer->inventory->items[i] != nullptr) {
-                    if (mainPlayer->inventory->items[i]->template->name == "Leaflet") {
+                    if (mainPlayer->inventory->items[i]->itemTemplate->name == "Leaflet") {
                         mainPlayer->inventory->items[i] = nullptr;
                         RemoveItem(mainPlayer->inventory->items[i]);
                         break;

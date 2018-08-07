@@ -1,6 +1,23 @@
-#include "Items.h"
-#include "include.h"
+#include <bbfilesystem.h>
+#include <bbblitz3d.h>
+#include <bbstring.h>
+#include <bbmath.h>
+#include <bbgraphics.h>
 #include <iostream>
+#include <StringType.h>
+#include <bbinput.h>
+
+#include "Items.h"
+#include "../Assets.h"
+#include "../INI.h"
+#include "../Player.h"
+#include "../MapSystem.h"
+#include "../FastResize.h"
+#include "../GameMain.h"
+#include "../MathUtils/MathUtils.h"
+#include "../Menus/Menu.h"
+#include "../Audio.h"
+#include "../Options.h"
 
 namespace CBN {
 
@@ -63,13 +80,6 @@ Inventory* Inventory::getObject(int index) {
 }
 
 // Constants.
-const String ITEM_TAG_914F("914_fine");
-const String ITEM_TAG_914VF("914_veryfine");
-const String ITEM_TAG_OMNI("omni");
-const int ITEMPICK_SOUND_PAPER = 0;
-const int ITEMPICK_SOUND_MEDIUM = 1;
-const int ITEMPICK_SOUND_LARGE = 2;
-const int ITEMPICK_SOUND_SMALL = 3;
 const int MAX_ITEM_COUNT = 20;
 const int ITEM_CELL_SIZE = 70;
 const int ITEM_CELL_SPACING = 35;
@@ -91,7 +101,7 @@ void CreateItemTemplate(String file, String section) {
     String dataPath = GetINIString(file, section, "datapath");
     if (!dataPath.isEmpty()) {
         if (bbFileType(dataPath) != 2) {
-            bbRuntimeError("Item template directory not found ("+section+", "+dataPath+")");
+            throw "Item template directory not found ("+section+", "+dataPath+")";
         }
 
         it->objPath = dataPath + it->name + ".b3d";
@@ -132,30 +142,29 @@ void CreateItemTemplate(String file, String section) {
 
     String sound = GetINIString(file, section, "sound").toLower();
     if (sound.equals("medium")) {
-        it->sound = ITEMPICK_SOUND_MEDIUM;
+        it->sound = ITEMPICK_SOUND::MEDIUM;
     } else if (sound.equals("large")) {
-        it->sound = ITEMPICK_SOUND_LARGE;
+        it->sound = ITEMPICK_SOUND::LARGE;
     } else if (sound.equals("small")) {
-        it->sound = ITEMPICK_SOUND_SMALL;
+        it->sound = ITEMPICK_SOUND::SMALL;
     } else {
-        it->sound = ITEMPICK_SOUND_PAPER;
+        it->sound = ITEMPICK_SOUND::PAPER;
     }
 
     //Start loading the assets needed.
 
     //Does another item already use that model?
-    ItemTemplate* it2;
-    for (int iterator102 = 0; iterator102 < ItemTemplate::getListSize(); iterator102++) {
-        it2 = ItemTemplate::getObject(iterator102);
+    for (int i = 0; i < ItemTemplate::getListSize(); i++) {
+        ItemTemplate* it2 = ItemTemplate::getObject(i);
 
         if (it2->objPath.equals(it->objPath) && it2->obj != 0) {
-            it->obj = bbCopyEntity(it2->obj);
+            it->obj = bbCopyMeshModelEntity(it2->obj);
             break;
         }
     }
 
     //Otherwise load the model.
-    if (it->obj == 0) {
+    if (it->obj == nullptr) {
         if (GetINIInt(file, section, "animated") == 1) {
             it->obj = bbLoadAnimMesh(it->objPath);
         } else {
@@ -165,7 +174,7 @@ void CreateItemTemplate(String file, String section) {
 
     if (!it->texPath.isEmpty()) {
         for (int i = 0; i < ItemTemplate::getListSize(); i++) {
-            it2 = ItemTemplate::getObject(i);
+            ItemTemplate* it2 = ItemTemplate::getObject(i);
 
             if (it2->texPath.equals(it->texPath) && it2->tex != 0) {
                 it->tex = it2->tex;
@@ -173,7 +182,7 @@ void CreateItemTemplate(String file, String section) {
             }
         }
 
-        if (it->tex == 0) {
+        if (it->tex == nullptr) {
             flags = GetINIInt(file, section, "textureflags", 1+8);
             it->tex = bbLoadTexture(it->texPath, flags);
         }
@@ -184,7 +193,7 @@ void CreateItemTemplate(String file, String section) {
     for (int i = 0; i < 2; i++) {
         if (!it->invImagePath[i].isEmpty()) {
             for (int j = 0; j < ItemTemplate::getListSize(); j++) {
-                it2 = ItemTemplate::getObject(j);
+                ItemTemplate* it2 = ItemTemplate::getObject(j);
 
                 if (it2->invImagePath[i].equals(it->invImagePath[i]) && it2->invImage[i] != 0) {
                     it->invImage[i] = it2->invImage[i];
@@ -207,7 +216,7 @@ void CreateItemTemplate(String file, String section) {
 }
 
 void LoadItemTemplates(String file) {
-    int f = bbOpenFile(file);
+    bbFile* f = bbOpenFile(file);
     ItemTemplate* it;
     String section;
 
@@ -257,12 +266,12 @@ Item* CreateItem(String name, float x, float y, float z, int invSlots = 0) {
     for (int iterator105 = 0; iterator105 < ItemTemplate::getListSize(); iterator105++) {
         it = ItemTemplate::getObject(iterator105);
 
-        if (it->name == name) {
-            i->template = it;
+        if (it->name.equals(name)) {
+            i->itemTemplate = it;
             i->collider = bbCreatePivot();
             bbEntityRadius(i->collider, 0.01);
             bbEntityPickMode(i->collider, 1, false);
-            i->model = bbCopyEntity(it->obj, i->collider);
+            i->model = bbCopyMeshModelEntity(it->obj, i->collider);
             i->name = it->invName;
             bbShowEntity(i->collider);
             bbShowEntity(i->model);
@@ -271,8 +280,8 @@ Item* CreateItem(String name, float x, float y, float z, int invSlots = 0) {
         }
     }
 
-    if (i->template == nullptr) {
-        bbRuntimeError("Item template not found ("+name+")");
+    if (i->itemTemplate == nullptr) {
+        throw ("Item template not found ("+name+")");
     }
 
     bbResetEntity(i->collider);
@@ -314,10 +323,10 @@ Item* CreatePaper(String name, float x, float y, float z) {
 
     //Make a resized copy to texture the model with.
     int texDim = 256;
-    int img = bbCopyImage(i->img);
+    bbImage* img = bbCopyImage(i->img);
     img = ResizeImage2(img, texDim, texDim);
 
-    int tex = bbCreateTexture(texDim, texDim, 1+8);
+    Texture* tex = bbCreateTexture(texDim, texDim, 1+8);
     bbCopyRect(0, 0, texDim, texDim, 0, 0, bbImageBuffer(img), bbTextureBuffer(tex));
     bbEntityTexture(i->model, tex);
     bbFreeImage(img);
@@ -451,39 +460,33 @@ void UpdateItems() {
     }
 }
 
+// TODO: Make all of these instance methods.
 void PickItem(Item* item) {
-    int n = 0;
-    Event* e;
-    int z;
+    if (item->itemTemplate->name.equals("battery")) {
+        if (HasTag(item, ITEM_TAG_914VF)) {
+            bbShowEntity(mainPlayer->overlays[OVERLAY_WHITE]);
+            mainPlayer->lightFlash = 1.0;
+            //TODO: Light
+            //PlaySound2(IntroSFX(11))
+            DeathMSG = "Subject D-9341 found dead inside SCP-914's output booth next to what appears to be an ordinary nine-volt battery. The subject is covered in severe ";
+            DeathMSG = DeathMSG + "electrical burns, and assumed to be killed via an electrical shock caused by the battery. The battery has been stored for further study.";
+            Kill(mainPlayer);
 
-    switch (item->template->name) {
-        case "battery": {
-            if (HasTag(item, ITEM_TAG_914VF)) {
-                bbShowEntity(mainPlayer->overlays[OVERLAY_WHITE]);
-                mainPlayer->lightFlash = 1.0;
-                //TODO: Light
-                //PlaySound2(IntroSFX(11))
-                DeathMSG = "Subject D-9341 found dead inside SCP-914's output booth next to what appears to be an ordinary nine-volt battery. The subject is covered in severe ";
-                DeathMSG = DeathMSG + "electrical burns, and assumed to be killed via an electrical shock caused by the battery. The battery has been stored for further study.";
-                Kill(mainPlayer);
-
-                return;
-            }
+            return;
         }
-        case "vest": {
-            if (HasTag(item, ITEM_TAG_914VF)) {
-                Msg = "The vest is too heavy to pick up.";
-                MsgTimer = 70*6;
+    } else if (item->itemTemplate->name.equals("vest")) {
+        if (HasTag(item, ITEM_TAG_914VF)) {
+            Msg = "The vest is too heavy to pick up.";
+            MsgTimer = 70*6;
 
-                return;
-            }
+            return;
         }
     }
 
     if (SpaceInInventory(mainPlayer)) {
-        for (n = WORNITEM_SLOT_COUNT; n <= mainPlayer->inventory->size - 1; n++) {
+        for (int n = WORNITEM_SLOT_COUNT; n <= mainPlayer->inventory->size - 1; n++) {
             if (mainPlayer->inventory->items[n] == nullptr) {
-                PlaySound_SM(sndManager->itemPick[item->template->sound]);
+                PlaySound_SM(sndManager->itemPick[(int)item->itemTemplate->sound]);
                 item->picked = true;
                 item->dropped = -1;
 
@@ -506,7 +509,7 @@ void DropItem(Item* item, Inventory* inv) {
         }
     }
 
-    PlaySound_SM(sndManager->itemPick[item->template->sound]);
+    PlaySound_SM(sndManager->itemPick[(int)item->itemTemplate->sound]);
 
     item->dropped = 1;
 
@@ -537,7 +540,7 @@ void AssignTag(Item* item, String tag) {
     }
 
     if (!space) {
-        bbRuntimeError("Assigned tag without space: " + item->name + ", tag: " + tag);
+        throw ("Assigned tag without space: " + item->name + ", tag: " + tag);
     }
 }
 
@@ -545,7 +548,7 @@ void RemoveTag(Item* item, String tag) {
     int found = false;
     int i;
     for (i = 0; i <= 4; i++) {
-        if (item->tags[i] == tag) {
+        if (item->tags[i].equals(tag)) {
             found = true;
             item->tags[i] = "";
             return;
@@ -553,14 +556,14 @@ void RemoveTag(Item* item, String tag) {
     }
 
     if (!found) {
-        bbRuntimeError("Removed non-existant tag: " + item->name + ", tag: " + tag);
+        throw ("Removed non-existant tag: " + item->name + ", tag: " + tag);
     }
 }
 
 int HasTag(Item* item, String tag) {
     int i;
     for (i = 0; i <= 4; i++) {
-        if (item->tags[i] == tag) {
+        if (item->tags[i].equals(tag)) {
             return true;
         }
     }
@@ -569,11 +572,9 @@ int HasTag(Item* item, String tag) {
 }
 
 int IsPlayerWearingItem(Player* player, String itemName) {
-    Item* item;
-    int i;
-    for (i = 0; i <= WORNITEM_SLOT_COUNT-1; i++) {
+    for (int i = 0; i <= WORNITEM_SLOT_COUNT-1; i++) {
         if (player->inventory->items[i] != nullptr) {
-            if (player->inventory->items[i]->template->name == itemName) {
+            if (player->inventory->items[i]->itemTemplate->name.equals(itemName)) {
                 return true;
             }
         }
@@ -584,12 +585,12 @@ int IsPlayerWearingItem(Player* player, String itemName) {
 
 void UseItem(Inventory* inv, int index) {
     Item* item = inv->items[index];
-    PlaySound_SM(sndManager->itemPick[item->template->sound]);
+    PlaySound_SM(sndManager->itemPick[(int)item->itemTemplate->sound]);
 
-    if (item->template->wornSlot != WORNITEM_SLOT_NONE) {
+    if (item->itemTemplate->wornSlot != WORNITEM_SLOT_NONE) {
         //If the equip slot is already filled then swap the items.
-        inv->items[index] = mainPlayer->inventory->items[item->template->wornSlot];
-        mainPlayer->inventory->items[item->template->wornSlot] = item;
+        inv->items[index] = mainPlayer->inventory->items[item->itemTemplate->wornSlot];
+        mainPlayer->inventory->items[item->itemTemplate->wornSlot] = item;
 
         return;
     }
@@ -601,7 +602,7 @@ void DeEquipItem(Item* item) {
     DropItem(item, mainPlayer->openInventory);
 
     //Check if this item can be put back into the inventory.
-    if (!item->template->wornOnly) {
+    if (!item->itemTemplate->wornOnly) {
         PickItem(item);
     }
 }
@@ -665,11 +666,11 @@ void UpdateInventory(Player* player) {
                     if (player->openInventory->items[slotIndex] == nullptr) {
                         //If the empty slot is an equip slot then check if the slots match.
                         if (mouseOnWornItemSlot) {
-                            if (slotIndex != player->selectedItem->template->wornSlot) {
+                            if (slotIndex != player->selectedItem->itemTemplate->wornSlot) {
                                 player->selectedItem = nullptr;
                                 return;
                             } else {
-                                PlaySound_SM(sndManager->itemPick[player->selectedItem->template->sound]);
+                                PlaySound_SM(sndManager->itemPick[(int)player->selectedItem->itemTemplate->sound]);
                             }
                         }
 
@@ -677,7 +678,7 @@ void UpdateInventory(Player* player) {
                         for (i = 0; i <= player->openInventory->size - 1; i++) {
                             if (player->openInventory->items[i] == player->selectedItem) {
                                 if (i < WORNITEM_SLOT_COUNT) {
-                                    PlaySound_SM(sndManager->itemPick[player->selectedItem->template->sound]);
+                                    PlaySound_SM(sndManager->itemPick[(int)player->selectedItem->itemTemplate->sound]);
                                 }
                                 player->openInventory->items[i] = nullptr;
                                 break;
@@ -722,7 +723,7 @@ void UpdateInventory(Player* player) {
                 //TODO: Move to de-equip function.
                 bbEntityAlpha(player->overlays[OVERLAY_BLACK], 0.0);
 
-                PlaySound_SM(sndManager->itemPick[player->selectedItem->template->sound]);
+                PlaySound_SM(sndManager->itemPick[(int)player->selectedItem->itemTemplate->sound]);
                 player->selectedItem = nullptr;
             }
         }
@@ -746,9 +747,9 @@ void DrawInventory(Player* player) {
 
     int n;
 
-    int tempCamera;
-    int tempLight;
-    int tempObj;
+    Camera* tempCamera;
+    Light* tempLight;
+    Object* tempObj;
 
     if (CurrGameState == GAMESTATE_INVENTORY) {
         x = userOptions->screenWidth / 2 - (ITEM_CELL_SIZE * ITEMS_PER_ROW + ITEM_CELL_SPACING * (ITEMS_PER_ROW - 1)) / 2;

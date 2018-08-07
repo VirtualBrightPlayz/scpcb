@@ -10,9 +10,10 @@
 #include "GameMain.h"
 #include "Items/Items.h"
 #include "MathUtils/MathUtils.h"
+#include "MapSystem.h"
 #include "Menus/Menu.h"
 #include "Options.h"
-#include "MapSystem.h"
+#include "Particles.h"
 
 namespace CBN {
 
@@ -255,7 +256,7 @@ void UpdatePlayer() {
 
     for (i = 0; i <= mainPlayer->inventory->size-1; i++) {
         if (mainPlayer->inventory->items[i]!=nullptr) {
-            if (mainPlayer->inventory->items[i]->template->name=="finevest") {
+            if (mainPlayer->inventory->items[i]->itemTemplate->name=="finevest") {
                 mainPlayer->stamina = Min(mainPlayer->stamina,60.0);
             }
         }
@@ -294,7 +295,7 @@ void UpdatePlayer() {
             }
 
             if (mainPlayer->selectedItem!=nullptr) {
-                if (mainPlayer->selectedItem->template->name == "firstaid" | mainPlayer->selectedItem->template->name == "finefirstaid" | mainPlayer->selectedItem->template->name == "firstaid2") {
+                if (mainPlayer->selectedItem->itemTemplate->name == "firstaid" | mainPlayer->selectedItem->itemTemplate->name == "finefirstaid" | mainPlayer->selectedItem->itemTemplate->name == "firstaid2") {
                     Sprint = 0;
                 }
             }

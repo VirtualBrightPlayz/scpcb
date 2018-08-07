@@ -270,7 +270,7 @@ void UpdateEvent_test_860_2(Event* e) {
                             Msg = "The door will not budge.";
                             MsgTimer = 5*70;
                         }
-                    } else if ((mainPlayer->selectedItem->template->name=="scp860")) {
+                    } else if ((mainPlayer->selectedItem->itemTemplate->name=="scp860")) {
                         if (MouseHit1) {
                             PlaySound2(LoadTempSound("SFX/Door/WoodenDoorOpen.ogg"));
                             bbShowEntity(fr->forest_Pivot);

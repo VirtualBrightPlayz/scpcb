@@ -205,7 +205,7 @@ void UpdateEvent_scp_970_2(Event* e) {
                 case 14: {
                     for (i = 0; i <= mainPlayer->inventory->size-1; i++) {
                         if (mainPlayer->inventory->items[i]!= nullptr) {
-                            if (mainPlayer->inventory->items[i]->template->name == "paper") {
+                            if (mainPlayer->inventory->items[i]->itemTemplate->name == "paper") {
                                 RemoveItem(mainPlayer->inventory->items[i]);
                                 for (int iterator194 = 0; iterator194 < ItemTemplate::getListSize(); iterator194++) {
                                     itt = ItemTemplate::getObject(iterator194);
@@ -313,7 +313,7 @@ void UpdateEvent_scp_970_2(Event* e) {
                     if (it->dropped==1) {
                         for (i = - 1; i <= 1; i += 2) {
                             bbTFormPoint(x+1024*i,y,z,e->room->obj,0);
-                            it2 = CreateItem(it->template->name, bbTFormedX(), bbEntityY(it->collider), bbTFormedZ());
+                            it2 = CreateItem(it->itemTemplate->name, bbTFormedX(), bbEntityY(it->collider), bbTFormedZ());
                             bbRotateEntity(it2->collider, bbEntityPitch(it->collider),bbEntityYaw(it->collider),0);
                             bbEntityType(it2->collider, HIT_ITEM);
                         }

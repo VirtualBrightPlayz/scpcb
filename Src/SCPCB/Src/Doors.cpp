@@ -455,7 +455,7 @@ void UseDoor(Door* d, int showmsg = true) {
         for (i = 0; i <= mainPlayer->inventory->size-1; i++) {
             item = mainPlayer->inventory->items[i];
             if (item != nullptr) {
-                if (item->template->name.equals("keycard")) {
+                if (item->itemTemplate->name.equals("keycard")) {
                     if (d->locked) {
                         PlaySound_SM(sndManager->keycardErr);
                         Msg = "The keycard was inserted into the slot but nothing happened.";

@@ -192,7 +192,7 @@ void UpdateEventCoffin(Event* e) {
             hasBatteryFor895 = 0;
             for (i = 0; i <= mainPlayer->inventory->size - 1; i++) {
                 if (mainPlayer->inventory->items[i] != nullptr) {
-                    if (mainPlayer->inventory->items[i]->template->name == "nvgoggles" | mainPlayer->inventory->items[i]->template->name == "supernv") {
+                    if (mainPlayer->inventory->items[i]->itemTemplate->name == "nvgoggles" | mainPlayer->inventory->items[i]->itemTemplate->name == "supernv") {
                         if (mainPlayer->inventory->items[i]->state > 0.0) {
                             hasBatteryFor895 = 1;
                             break;

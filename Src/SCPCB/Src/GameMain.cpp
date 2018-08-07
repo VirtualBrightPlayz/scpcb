@@ -473,7 +473,7 @@ void UpdateGame() {
                 }
 
                 if (mainPlayer->selectedItem != nullptr) {
-                    if (mainPlayer->selectedItem->template->name == "navigator" | mainPlayer->selectedItem->template->name == "nav") {
+                    if (mainPlayer->selectedItem->itemTemplate->name == "navigator" | mainPlayer->selectedItem->itemTemplate->name == "nav") {
                         darkA = Max(darkA, 0.5);
                     }
                 }
@@ -572,7 +572,7 @@ void UpdateGame() {
                 temp = false;
                 if (CurrGameState!=GAMESTATE_INVENTORY) {
                     if (mainPlayer->selectedItem != nullptr) {
-                        if (mainPlayer->selectedItem->template->name == "paper" | mainPlayer->selectedItem->template->name == "oldpaper") {
+                        if (mainPlayer->selectedItem->itemTemplate->name == "paper" | mainPlayer->selectedItem->itemTemplate->name == "oldpaper") {
                             temp = true;
                         }
                     }
@@ -1601,13 +1601,13 @@ void RenderWorld2() {
     Item* wornItem = nullptr;
 
     if (wornItem!=nullptr) {
-        if (wornItem->template->name != "nvgoggles" & wornItem->template->name != "supernv") {
+        if (wornItem->itemTemplate->name != "nvgoggles" & wornItem->itemTemplate->name != "supernv") {
             wornItem = nullptr;
         }
     }
 
     if (wornItem!=nullptr) {
-        if (wornItem->template->name == "supernv") {
+        if (wornItem->itemTemplate->name == "supernv") {
             decayMultiplier = 2.0;
         }
 

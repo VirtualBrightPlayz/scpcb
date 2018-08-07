@@ -9,11 +9,12 @@ const String ITEM_TAG_914F("914_fine");
 const String ITEM_TAG_914VF("914_veryfine");
 const String ITEM_TAG_OMNI("omni");
 
+// TODO: Rename these.
 enum class ITEMPICK_SOUND {
-    PAPER,
-    SMALL,
-    MEDIUM,
-    LARGE
+    PAPER = 0,
+    SMALL = 2,
+    MEDIUM = 1,
+    LARGE = 2
 };
 
 const int MAX_ITEM_COUNT = 20;
@@ -36,19 +37,19 @@ public:
     String name;
     String invName;
 
-    int obj;
+    class MeshModel* obj;
     String objPath;
 
-    int invImage[2];
+    class bbImage* invImage[2];
     String invImagePath[2];
 
-    int tex;
+    class Texture* tex;
     String texPath;
 
-    int sound;
+    ITEMPICK_SOUND sound;
 
     int wornSlot;
-    int wornOnly;
+    bool wornOnly;
 
     float scale;
 };
@@ -65,9 +66,9 @@ public:
 
     String name;
     class Object* collider;
-    int model;
+    class MeshModel* model;
     struct ItemTemplate* itemTemplate;
-    int img;
+    class bbImage* img;
     int id;
 
     int r;
@@ -84,7 +85,7 @@ public:
     int picked;
     int dropped;
 
-    int invImage;
+    class bbImage* invImage;
 
     int wontColl = false;
     float xspeed;
@@ -143,7 +144,7 @@ void RemoveTag(Item* item, String tag);
 
 int HasTag(Item* item, String tag);
 
-int IsPlayerWearingItem(Player* player, String itemName);
+int IsPlayerWearingItem(struct Player* player, String itemName);
 
 void UseItem(Inventory* inv, int index);
 

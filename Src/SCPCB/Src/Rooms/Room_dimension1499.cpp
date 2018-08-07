@@ -196,7 +196,7 @@ void UpdateLeave1499() {
                     it = Item::getObject(iterator173);
 
                     //it\disttimer = 0
-                    if (it->template->name == "scp1499" | it->template->name == "super1499") {
+                    if (it->itemTemplate->name == "scp1499" | it->itemTemplate->name == "super1499") {
                         if (bbEntityY(it->collider) >= bbEntityY(mainPlayer->currRoom->obj)-5) {
                             bbPositionEntity(it->collider,NTF_1499PrevX,NTF_1499PrevY+(bbEntityY(it->collider)-bbEntityY(mainPlayer->currRoom->obj)),NTF_1499PrevZ);
                             bbResetEntity(it->collider);

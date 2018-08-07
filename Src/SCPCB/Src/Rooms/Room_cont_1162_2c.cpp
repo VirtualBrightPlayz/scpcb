@@ -193,7 +193,7 @@ void UpdateEvent_cont_1162_2c(Event* e) {
                 itt = ItemTemplate::getObject(iterator161);
 
                 if (IsItemGoodFor1162(itt)) {
-                    switch (mainPlayer->inventory->items[(int)(e->eventState2)]->template->name) {
+                    switch (mainPlayer->inventory->items[(int)(e->eventState2)]->itemTemplate->name) {
                         case "key": {
                             if (itt->name == "key1" | itt->name == "key2" & bbRand(2)==1) {
                                 shouldCreateItem = true;
