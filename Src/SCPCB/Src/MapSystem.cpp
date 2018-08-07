@@ -144,25 +144,6 @@ Room* Room::getObject(int index) {
     return list[index];
 }
 
-std::vector<Grid*> Grid::list;
-Grid::Grid() {
-    list.push_back(this);
-}
-Grid::~Grid() {
-    for (int i = 0; i < list.size(); i++) {
-        if (list[i] == this) {
-            list.erase(list.begin() + i);
-            break;
-        }
-    }
-}
-int Grid::getListSize() {
-    return list.size();
-}
-Grid* Grid::getObject(int index) {
-    return list[index];
-}
-
 std::vector<LightTemplate*> LightTemplate::list;
 LightTemplate::LightTemplate() {
     list.push_back(this);
@@ -296,23 +277,6 @@ Prop* Prop::getObject(int index) {
     return list[index];
 }
 
-// Constants.
-const int MaxRoomLights = 32;
-const int MaxRoomEmitters = 8;
-const int MaxRoomObjects = 30;
-const int ROOM0 = 0;
-const int ROOM1 = 1;
-const int ROOM2 = 2;
-const int ROOM2C = 3;
-const int ROOM3 = 4;
-const int ROOM4 = 5;
-const int ZONE_LCZ = 1;
-const int ZONE_HCZ = 2;
-const int ZONE_EZ = 4;
-const int MAP_SIZE = 19;
-const int LIGHTTYPE_POINT = 2;
-const int LIGHTTYPE_SPOT = 3;
-
 // Globals.
 float RoomScale = 8.0 / 2048.0;
 gxSound* RoomAmbience[20];
@@ -325,7 +289,7 @@ Screen* SelectedScreen;
 SecurityCam* SelectedMonitor;
 SecurityCam* CoffinCam;
 Texture* ScreenTexs[2];
-Room* MapRooms[MAP_SIZE][MAP_SIZE];
+Room** MapRooms;
 
 // Functions.
 void LoadMaterials(String file) {
@@ -504,30 +468,6 @@ void LoadRoomMesh(RoomTemplate* rt) {
     LoadRM2(rt);
 }
 
-void UpdateGrid(Grid* grid) {
-    //local variables
-    int tx;
-    int ty;
-    for (tx = 0; tx <= gridsz-1; tx++) {
-        for (ty = 0; ty <= gridsz-1; ty++) {
-            if (grid->entities[tx+(ty*gridsz)]!=0) {
-                if (std::abs(bbEntityY(mainPlayer->collider,true)-bbEntityY(grid->entities[tx+(ty*gridsz)],true))>4.0) {
-                    break;
-                }
-                if (std::abs(bbEntityX(mainPlayer->collider,true)-bbEntityX(grid->entities[tx+(ty*gridsz)],true))<HideDistance) {
-                    if (std::abs(bbEntityZ(mainPlayer->collider,true)-bbEntityZ(grid->entities[tx+(ty*gridsz)],true))<HideDistance) {
-                        bbShowEntity(grid->entities[tx+(ty*gridsz)]);
-                    } else {
-                        bbHideEntity(grid->entities[tx+(ty*gridsz)]);
-                    }
-                } else {
-                    bbHideEntity(grid->entities[tx+(ty*gridsz)]);
-                }
-            }
-        }
-    }
-}
-
 RoomTemplate* GetRoomTemplate(String name) {
     name = name.toLower();
 
@@ -591,7 +531,7 @@ Room* CreateRoom(RoomTemplate* rt, float x, float y, float z) {
     for (i = 0; i < rt->collisionObjs.size(); i++) {
         tempObj = bbCopyMeshModelEntity(rt->collisionObjs[i]);
         bbScaleEntity(tempObj, RoomScale, RoomScale, RoomScale);
-        SetIntArrayElem(r->collisionObjs,tempObj,i);
+        r->collisionObjs[i]=tempObj;
         bbShowEntity(tempObj);
         bbEntityAlpha(tempObj,0.0);
         bbEntityParent(tempObj,r->obj);
@@ -600,7 +540,7 @@ Room* CreateRoom(RoomTemplate* rt, float x, float y, float z) {
     for (i = 0; i < rt->props.size(); i++) {
         tempProp = rt->props[i];
         tempObj = bbCopyMeshModelEntity(tempProp->obj);
-        SetIntArrayElem(r->props,tempObj,i);
+        r->props[i]=tempObj;
         bbPositionEntity(tempObj,tempProp->x*RoomScale,tempProp->y*RoomScale,tempProp->z*RoomScale);
         bbRotateEntity(tempObj,tempProp->pitch,tempProp->yaw,tempProp->roll);
         bbScaleEntity(tempObj,tempProp->xScale*RoomScale,tempProp->yScale*RoomScale,tempProp->zScale*RoomScale);
@@ -744,7 +684,9 @@ void FillRoom(Room* r) {
     else if (r->roomTemplate->name.equals("coffin")) {
         FillRoom_cont_895_1(r);
     }
-    else if (r->roomTemplate->name.equals("tsl_ez_2", "tsl_lcz_2", "tsl_hcz_2")) {
+    else if (r->roomTemplate->name.equals("tsl_ez_2") ||
+             r->roomTemplate->name.equals("tsl_lcz_2") ||
+             r->roomTemplate->name.equals("tsl_hcz_2")) {
         FillRoom_hll_tsl(r);
     }
     else if (r->roomTemplate->name.equals("lck_tshape_2")) {
@@ -834,7 +776,7 @@ void FillRoom(Room* r) {
         }
     }
 
-    IntArrayList* waypoints = CreateIntArrayList();
+    std::vector<WayPoint*> waypoints;
     WayPoint* waypoint;
     TempWayPoint* tw;
     for (int iterator75 = 0; iterator75 < TempWayPoint::getListSize(); iterator75++) {
@@ -842,7 +784,7 @@ void FillRoom(Room* r) {
 
         if (tw->roomtemplate == r->roomTemplate) {
             waypoint = CreateWaypoint(r->x+tw->x*RoomScale, r->y+tw->y*RoomScale, r->z+tw->z*RoomScale, r);
-            PushIntArrayListElem(waypoints,Handle(waypoint));
+            waypoints.push_back(waypoint);
         }
     }
 
@@ -852,31 +794,20 @@ void FillRoom(Room* r) {
         tw = TempWayPoint::getObject(iterator76);
 
         if (tw->roomtemplate == r->roomTemplate) {
-            waypoint = Object.WayPoint(GetIntArrayListElem(waypoints,i));
+            waypoint = waypoints[i];
             for (j = 0; j <= 15; j++) {
                 if (tw->connectedTo[j]==0) {
                     break;
                 }
-                waypoint->connected[j] = Object.WayPoint(GetIntArrayListElem(waypoints,tw->connectedTo[j]-1));
+                waypoint->connected[j] = waypoints[tw->connectedTo[j]-1];
                 waypoint->dist[j] = bbEntityDistance(waypoint->obj,waypoint->connected[j]->obj);
             }
             i = i+1;
         }
     }
 
-    DeleteIntArrayList(waypoints);
-
-    //	If r\roomTemplate\tempTriggerboxAmount > 0
-    //		r\triggerboxAmount = r\roomTemplate\tempTriggerboxAmount
-    //		For i = 0 To r\triggerboxAmount-1
-    //			r\triggerbox[i] = CopyEntity(r\roomTemplate\tempTriggerbox[i],r\obj)
-    //			EntityAlpha(r\triggerbox[i],0.0)
-    //			r\triggerboxName[i] = r\roomTemplate\tempTriggerboxName[i]
-    //			DebugLog("Triggerbox found: "+i)
-    //			DebugLog("Triggerbox "+i+" name: "+r\triggerboxName[i])
-    //		Next
-    //	EndIf
-
+    waypoints.clear();
+    
     for (i = 0; i <= MaxRoomEmitters-1; i++) {
         if (r->roomTemplate->tempSoundEmitter[i]!=0) {
             r->soundEmitterObj[i] = bbCreatePivot(r->obj);
@@ -1943,7 +1874,7 @@ void CreateMap() {
     int c;
     int j;
 
-    std::cout << "Generating a map using the seed "+RandomSeed;
+    std::cout << "Generating a map using the seed "<<RandomSeed;
 
     bbSeedRnd(SeedStringToInt(RandomSeed));
 

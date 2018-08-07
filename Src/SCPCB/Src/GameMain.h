@@ -63,7 +63,7 @@ extern int LightsOn;
 extern int SoundTransmission;
 extern int Brightness;
 extern class Object* SoundEmitter;
-extern int TempSounds[10];
+extern class gxSound* TempSounds[10];
 extern int TempSoundIndex;
 extern int RadioSquelch;
 extern int RadioStatic;

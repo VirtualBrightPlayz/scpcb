@@ -1599,7 +1599,7 @@ float  bbVectorPitch( float x,float y,float z ){
 	return Vector(x,y,z).pitch() * rtod;
 }
 
-float  bbDeltaYaw( Object *src,Object *dest ){
+float  bbDeltaYaw(Object *src, Object *dest) {
 	float x=src->getWorldTform().m.k.yaw();
 	float y=(dest->getWorldTform().v-src->getWorldTform().v).yaw();
 	float d=y-x;
