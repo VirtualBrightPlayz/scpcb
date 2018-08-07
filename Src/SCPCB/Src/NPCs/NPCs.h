@@ -19,7 +19,7 @@ public:
     int obj2;
     int obj3;
     int obj4;
-    int collider;
+    class Pivot* collider;
 
     int npcType;
     int id;

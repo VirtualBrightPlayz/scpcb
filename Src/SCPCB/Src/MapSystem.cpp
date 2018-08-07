@@ -1,8 +1,11 @@
 #include <iostream>
+#include <bbruntime.h>
 #include <bbstream.h>
 #include <bbfilesystem.h>
 #include <bbaudio.h>
 #include <bbblitz3d.h>
+#include <bbmath.h>
+#include <bbgraphics.h>
 #include <cstdlib>
 
 #include "MapSystem.h"
@@ -11,6 +14,14 @@
 #include "MathUtils/MathUtils.h"
 #include "RM2.h"
 #include "Player.h"
+#include "Doors.h"
+#include "Assets.h"
+#include "NPCs/NPCs.h"
+#include "Menus/Menu.h"
+#include "GameMain.h"
+#include "FastResize.h"
+#include "Difficulty.h"
+#include "Options.h"
 
 #include "Rooms/Room_closets_2.h"
 #include "Rooms/Room_cont_008_1.h"
@@ -289,7 +300,7 @@ Screen* SelectedScreen;
 SecurityCam* SelectedMonitor;
 SecurityCam* CoffinCam;
 Texture* ScreenTexs[2];
-Room** MapRooms;
+Room*** MapRooms;
 
 // Functions.
 void LoadMaterials(String file) {
@@ -1014,9 +1025,10 @@ int IsRoomAdjacent(Room* thisRoom, Room* that) {
 Light* AddLight(Room* room, float x, float y, float z, int ltype, float range, int r, int g, int b) {
     int i;
     //TODO: These names suck.
-    int light;
-    int sprite;
-    int lightSpriteTex = GrabTexture("GFX/Sprites/light_flare.jpg");
+    Light* light;
+    Sprite* sprite;
+    TextureAssetWrap* textureAsset = TextureAssetWrap::grab("GFX/Sprites/light_flare.jpg");
+    Texture* lightSpriteTex = textureAsset->getTexture();
 
     if (room!=nullptr) {
         for (i = 0; i <= MaxRoomLights-1; i++) {
@@ -1060,7 +1072,7 @@ Light* AddLight(Room* room, float x, float y, float z, int ltype, float range, i
         bbEntityBlend(sprite, 3);
         return light;
     }
-    DropAsset(lightSpriteTex);
+    textureAsset->drop();
 }
 
 LightTemplate* AddTempLight(RoomTemplate* rt, float x, float y, float z, int ltype, float range, int r, int g, int b) {
@@ -1103,7 +1115,7 @@ void InitWayPoints(int loadingstart = 45) {
     float y;
     float z;
     int i;
-    int tline;
+    MeshModel* tline;
 
     int temper = bbMilliSecs();
 
@@ -1139,6 +1151,7 @@ int FindPath(NPC* n, float x, float y, float z) {
     std::cout << "findpath: "+String(n->npcType);
 
     int temp;
+    Pivot* tempPivot;
     float dist;
     float dist2;
     float xtemp;
@@ -1191,23 +1204,23 @@ int FindPath(NPC* n, float x, float y, float z) {
     Pivot* pvt = bbCreatePivot();
     bbPositionEntity(pvt, x,y,z, true);
 
-    temp = bbCreatePivot();
-    bbPositionEntity(temp, bbEntityX(n->collider,true), bbEntityY(n->collider,true)+0.15, bbEntityZ(n->collider,true));
+    tempPivot = bbCreatePivot();
+    bbPositionEntity(tempPivot, bbEntityX(n->collider,true), bbEntityY(n->collider,true)+0.15, bbEntityZ(n->collider,true));
 
     dist = 350.0;
     for (int iterator81 = 0; iterator81 < WayPoint::getListSize(); iterator81++) {
         w = WayPoint::getObject(iterator81);
 
-        xtemp = bbEntityX(w->obj,true)-bbEntityX(temp,true);
+        xtemp = bbEntityX(w->obj,true)-bbEntityX(tempPivot,true);
         //If (xtemp < 8.0) Then
-        ztemp = bbEntityZ(w->obj,true)-bbEntityZ(temp,true);
+        ztemp = bbEntityZ(w->obj,true)-bbEntityZ(tempPivot,true);
         //If (ztemp < 8.0) Then
-        ytemp = bbEntityY(w->obj,true)-bbEntityY(temp,true);
+        ytemp = bbEntityY(w->obj,true)-bbEntityY(tempPivot,true);
         //If (ytemp < 8.0) Then
         dist2 = (xtemp*xtemp)+(ytemp*ytemp)+(ztemp*ztemp);
         if (dist2 < dist) {
             //prefer waypoints that are visible
-            if (!bbEntityVisible(w->obj, temp)) {
+            if (!bbEntityVisible(w->obj, tempPivot)) {
                 dist2 = dist2*3;
             }
             if (dist2 < dist) {
@@ -1221,7 +1234,7 @@ int FindPath(NPC* n, float x, float y, float z) {
     }
     std::cout << "DIST: "+String(dist);
 
-    bbFreeEntity(temp);
+    bbFreeEntity(tempPivot);
 
     if (StartPoint == nullptr) {
         return 2;
@@ -1393,8 +1406,8 @@ int FindPath(NPC* n, float x, float y, float z) {
 
 }
 
-int CreateLine(float x1, float y1, float z1, float x2, float y2, float z2, int mesh = 0) {
-    int surf;
+MeshModel* CreateLine(float x1, float y1, float z1, float x2, float y2, float z2, MeshModel* mesh) {
+    Surface* surf;
     int verts;
 
     if (mesh == 0) {
@@ -1450,7 +1463,7 @@ void UpdateScreens() {
         if (s->room == mainPlayer->currRoom) {
             if (bbEntityDistance(mainPlayer->collider,s->obj)<1.2) {
                 bbEntityPick(mainPlayer->cam, 1.2);
-                if (bbPickedEntity()==s->obj & s->imgpath!="") {
+                if (bbPickedEntity()==s->obj & !s->imgpath.equals("")) {
                     DrawHandIcon = true;
                     if (MouseUp1) {
                         SelectedScreen = s;
@@ -1471,9 +1484,9 @@ SecurityCam* CreateSecurityCam(float x, float y, float z, Room* r, int screen = 
     SecurityCam* sc = new SecurityCam();
     float scale;
 
-    sc->obj = bbCopyEntity(CamBaseOBJ);
+    sc->obj = bbCopyMeshModelEntity(CamBaseOBJ);
     bbScaleEntity(sc->obj, 0.0015, 0.0015, 0.0015);
-    sc->cameraObj = bbCopyEntity(CamOBJ);
+    sc->cameraObj = bbCopyMeshModelEntity(CamOBJ);
     bbScaleEntity(sc->cameraObj, 0.01, 0.01, 0.01);
 
     sc->room = r;
@@ -1501,7 +1514,7 @@ SecurityCam* CreateSecurityCam(float x, float y, float z, Room* r, int screen = 
         bbSpriteViewMode(sc->scrOverlay, 2);
         bbEntityBlend(sc->scrOverlay , 3);
 
-        sc->monitorObj = bbCopyEntity(Monitor, sc->scrObj);
+        sc->monitorObj = bbCopyMeshModelEntity(Monitor, sc->scrObj);
 
         bbScaleEntity(sc->monitorObj, scale, scale, scale);
 
@@ -1525,10 +1538,10 @@ void UpdateSecurityCams() {
     SecurityCam* sc;
     int close;
     float temp;
-    int pvt;
+    Pivot* pvt;
     int i;
-    int gorePics[GORE_PIC_COUNT];
-    int aiPic;
+    TextureAssetWrap* gorePics[GORE_PIC_COUNT];
+    TextureAssetWrap* aiPic;
 
     PlayerDetected = false;
 
@@ -1558,7 +1571,7 @@ void UpdateSecurityCams() {
                 sc->coffinEffect = 0;
             }
             if (sc->room != nullptr) {
-                if (sc->room->roomTemplate->name == "hll_sl_2") {
+                if (sc->room->roomTemplate->name.equals("hll_sl_2")) {
                     sc->coffinEffect = 0;
                 }
             }
@@ -1741,14 +1754,14 @@ void UpdateSecurityCams() {
                             //EndIf
                             if (sc->coffinEffect==1 | sc->coffinEffect==3) {
                                 for (i = 0; i <= GORE_PIC_COUNT-1; i++) {
-                                    gorePics[i] = GrabTexture("GFX/895pics/pic" + String(i + 1) + ".jpg");
+                                    gorePics[i] = TextureAssetWrap::grab("GFX/895pics/pic" + String(i + 1) + ".jpg");
                                 }
                                 if (mainPlayer->sanity895 < - 800) {
                                     if (bbRand(3) == 1) {
                                         bbEntityTexture(sc->scrOverlay, MonitorTexture);
                                     }
                                     if (bbRand(6) < 5) {
-                                        bbEntityTexture(sc->scrOverlay, gorePics[bbRand(0, GORE_PIC_COUNT-1)]);
+                                        bbEntityTexture(sc->scrOverlay, gorePics[bbRand(0, GORE_PIC_COUNT-1)]->getTexture());
                                         //If (sc\playerState = 1) Then PlaySound(HorrorSFX(1)) ;TODO: fix
                                         sc->playerState = 2;
                                         if (sc->soundCHN == 0) {
@@ -1767,7 +1780,7 @@ void UpdateSecurityCams() {
                                         bbEntityTexture(sc->scrOverlay, MonitorTexture);
                                     }
                                     if (bbRand(50) == 1) {
-                                        bbEntityTexture(sc->scrOverlay, gorePics[bbRand(0, GORE_PIC_COUNT-1)]);
+                                        bbEntityTexture(sc->scrOverlay, gorePics[bbRand(0, GORE_PIC_COUNT-1)]->getTexture());
                                         //If (sc\playerState = 0) Then PlaySound(HorrorSFX(0)) ;TODO: fix
                                         sc->playerState = (int)(Max(sc->playerState, 1));
                                         if (sc->coffinEffect==3 & bbRand(100)==1) {
@@ -1779,23 +1792,23 @@ void UpdateSecurityCams() {
                                     bbEntityTexture(sc->scrOverlay, MonitorTexture);
                                 }
                                 for (i = 0; i <= GORE_PIC_COUNT-1; i++) {
-                                    DropAsset(gorePics[i]);
+                                    gorePics[i]->drop();
                                 }
                             }
                         }
                     }
 
                     if (sc->inSight & sc->coffinEffect==0 | sc->coffinEffect==2) {
-                        aiPic = GrabTexture("GFX/079pics/face.jpg");
+                        aiPic = TextureAssetWrap::grab("GFX/079pics/face.jpg");
                         if (sc->playerState == 0) {
                             sc->playerState = bbRand(60000, 65000);
                         }
 
                         if (bbRand(500) == 1) {
-                            bbEntityTexture(sc->scrOverlay, aiPic);
+                            bbEntityTexture(sc->scrOverlay, aiPic->getTexture());
                         }
 
-                        if (TimeInPosMilliSecs() % sc->playerState) >= bbRand(600) {
+                        if ((TimeInPosMilliSecs() % sc->playerState) >= bbRand(600)) {
                             bbEntityTexture(sc->scrOverlay, MonitorTexture);
                         } else {
                             if (sc->soundCHN == 0) {
@@ -1811,9 +1824,9 @@ void UpdateSecurityCams() {
                                     sc->playerState = 0;
                                 }
                             }
-                            bbEntityTexture(sc->scrOverlay, aiPic);
+                            bbEntityTexture(sc->scrOverlay, aiPic->getTexture());
                         }
-                        DropAsset(aiPic);
+                        aiPic->drop();
                     }
 
                     //if screen=true
@@ -1831,8 +1844,6 @@ void UpdateSecurityCams() {
     }
 
     bbCls();
-
-
 }
 
 Prop* LoadProp(String file, float x, float y, float z, float pitch, float yaw, float roll, float xScale, float yScale, float zScale) {
@@ -1853,8 +1864,8 @@ Prop* LoadProp(String file, float x, float y, float z, float pitch, float yaw, f
     for (int iterator86 = 0; iterator86 < Prop::getListSize(); iterator86++) {
         p2 = Prop::getObject(iterator86);
 
-        if ((p!=p2) & (p2->file == file)) {
-            p->obj = bbCopyEntity(p2->obj);
+        if ((p!=p2) & (p2->file.equals(file))) {
+            p->obj = bbCopyMeshModelEntity(p2->obj);
             break;
         }
     }
@@ -1879,16 +1890,20 @@ void CreateMap() {
     bbSeedRnd(SeedStringToInt(RandomSeed));
 
     int mapDim = MAP_SIZE;
-    IntArray* layout = CreateIntArray(mapDim,mapDim);
-    MapRooms = CreateIntArray(mapDim,mapDim);
 
+    //TODO: this might be too much
+    int** layout = new int*[mapDim];
+    MapRooms = new Room**[mapDim];
+    
     //clear the grid
     int y;
     int x;
-    for (y = 0; y <= mapDim-1; y++) {
-        for (x = 0; x <= mapDim-1; x++) {
-            SetIntArrayElem(layout,0,x,y);
-            SetIntArrayElem(MapRooms,0,x,y);
+    for (x = 0; x <= mapDim-1; x++) {
+        layout[x] = new int[mapDim];
+        MapRooms[x] = new Room*[mapDim];
+        for (y = 0; y <= mapDim-1; y++) {
+            layout[x][y]=0;
+            MapRooms[x][y]=nullptr;
         }
     }
 
@@ -1900,7 +1915,7 @@ void CreateMap() {
         for (x = 0; x <= mapDim-1; x++) {
             if ((x % rectWidth==1) | (y % rectHeight==1)) {
                 if ((x>=rectWidth & x<mapDim-rectWidth) | (y>=rectHeight & y<mapDim-rectHeight)) {
-                    SetIntArrayElem(layout,1,x,y);
+                    layout[x][y]=1;
                 }
             }
         }
@@ -1914,7 +1929,7 @@ void CreateMap() {
     for (y = 1; y <= mapDim-2; y++) {
         for (x = 0; x <= mapDim-2; x++) {
             if (y>6 | x>6) {
-                if ((y % rectHeight==1) & GetIntArrayElem(layout,x,y)==ROOM2) {
+                if ((y % rectHeight==1) & layout[x][y]==ROOM2) {
                     shift = bbRand(0,1);
                     if (nonShiftStreak==0) {
                         shift = 0;
@@ -1927,8 +1942,8 @@ void CreateMap() {
                     }
                     if (shift!=0) {
                         for (i = 0; i <= rectWidth-2; i++) {
-                            SetIntArrayElem(layout,0,x+i,y);
-                            SetIntArrayElem(layout,ROOM2,x+i,y+shift);
+                            layout[x+i][y]=0;
+                            layout[x+i][y+shift]=ROOM2;
                         }
                         nonShiftStreak = 0;
                     } else {
@@ -1948,11 +1963,11 @@ void CreateMap() {
     int roomBelow;
     for (y = 2; y <= mapDim-4; y++) {
         for (x = 0; x <= mapDim-1; x++) {
-            if ((((x/rectWidth) % 2)==punchOffset) & (GetIntArrayElem(layout,x,y)==ROOM2)) {
-                roomAbove = GetIntArrayElem(layout,x,y-1);
-                roomBelow = GetIntArrayElem(layout,x,y+1);
-                if ((roomAbove>=ROOM2) & (roomBelow>=ROOM2)) & ((roomAbove+roomBelow)>(ROOM2+ROOM3)) {
-                    SetIntArrayElem(layout,0,x,y);
+            if ((((x/rectWidth) % 2)==punchOffset) & (layout[x][y]==ROOM2)) {
+                roomAbove = layout[x][y-1];
+                roomBelow = layout[x][y+1];
+                if (((roomAbove>=ROOM2) & (roomBelow>=ROOM2)) & ((roomAbove+roomBelow)>(ROOM2+ROOM3))) {
+                    layout[x][y]=0;
                 }
             }
         }
@@ -1963,14 +1978,14 @@ void CreateMap() {
     int zone = ZONE_LCZ;
 
     //start off by placing rooms that ask to be placed a certain amount of times
-    int prioritizedTemplateCount = 0;
     RoomTemplate* rt;
 
+    std::vector<RoomTemplate*> prioritizedTemplates;
     for (int iterator87 = 0; iterator87 < RoomTemplate::getListSize(); iterator87++) {
         rt = RoomTemplate::getObject(iterator87);
 
         if (((rt->zones & zone)!=0) & (rt->maxAmount>0) & (rt->shape!=ROOM0)) {
-            prioritizedTemplateCount = prioritizedTemplateCount+1;
+            prioritizedTemplates.push_back(rt);
         }
     }
     //TODO: replace with an array of the right type once we move to C++
@@ -2250,7 +2265,7 @@ void CreateMap() {
     }
 }
 
-void DetermineRoomTypes(IntArray* layout, int mapDim) {
+void DetermineRoomTypes(int** layout, int mapDim) {
     int horNeighborCount = 0;
     int vertNeighborCount = 0;
 

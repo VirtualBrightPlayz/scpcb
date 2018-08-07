@@ -112,13 +112,6 @@ UIAssets::~UIAssets() {
 	bbFreeImage(keypadHUD);
 }
 
-// Constants.
-const int ASSET_DECAY_TIMER = 10 * 70;
-const int BLEND_ADD = 3;
-const int GORE_PIC_COUNT = 6;
-const int HAND_ICON_TOUCH = 0;
-const int HAND_ICON_GRAB = 1;
-
 // Globals.
 UIAssets* uiAssets;
 

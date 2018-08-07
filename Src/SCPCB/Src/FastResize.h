@@ -5,13 +5,13 @@
 namespace CBN {
 
 // Globals.
-extern int fresize_image;
-extern int fresize_texture;
-extern int fresize_texture2;
-extern int fresize_cam;
+extern class MeshModel* fresize_image;
+extern class Texture* fresize_texture;
+extern class Texture* fresize_texture2;
+extern class Camera* fresize_cam;
 
 // Functions.
-int ResizeImage2(int image, int width, int height);
+class bbImage* ResizeImage2(class bbImage* image, int width, int height);
 
 void ScaleRender(float x, float y, float hscale = 1.0, float vscale = 1.0);
 

@@ -89,10 +89,10 @@ extern float room2gw_x;
 extern float room2gw_z;
 extern String Input294;
 extern class Texture* TeslaTexture;
-extern class Object* Monitor;
+extern class MeshModel* Monitor;
 extern class Texture* MonitorTexture;
-extern class Object* CamBaseOBJ;
-extern class Object* CamOBJ;
+extern class MeshModel* CamBaseOBJ;
+extern class MeshModel* CamOBJ;
 
 // Functions.
 int VerifyResolution();

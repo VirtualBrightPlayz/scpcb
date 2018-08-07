@@ -81,10 +81,10 @@ float room2gw_x;
 float room2gw_z;
 String Input294;
 Texture* TeslaTexture;
-Object* Monitor;
+MeshModel* Monitor;
 Texture* MonitorTexture;
-Object* CamBaseOBJ;
-Object* CamOBJ;
+MeshModel* CamBaseOBJ;
+MeshModel* CamOBJ;
 
 // Functions.
 int VerifyResolution() {

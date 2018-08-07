@@ -1,17 +1,22 @@
+#include <bbgraphics.h>
+#include <bbblitz3d.h>
+
 #include "FastResize.h"
-#include "include.h"
+#include "Options.h"
+#include "Player.h"
+#include "GameMain.h"
 
 namespace CBN {
 
 // Globals.
-int fresize_image;
-int fresize_texture;
-int fresize_texture2;
-int fresize_cam;
+MeshModel* fresize_image;
+Texture* fresize_texture;
+Texture* fresize_texture2;
+Camera* fresize_cam;
 
 // Functions.
-int ResizeImage2(int image, int width, int height) {
-    int img = bbCreateImage(width,height);
+bbImage* ResizeImage2(bbImage* image, int width, int height) {
+    bbImage* img = bbCreateImage(width,height);
 
     int oldWidth = bbImageWidth(image);
     int oldHeight = bbImageHeight(image);
@@ -46,7 +51,7 @@ void ScaleRender(float x, float y, float hscale = 1.0, float vscale = 1.0) {
 
 void InitFastResize() {
     //Create Camera
-    int cam = bbCreateCamera();
+    Camera* cam = bbCreateCamera();
     bbCameraProjMode(cam, 2);
     bbCameraZoom(cam, 0.1);
     bbCameraClsMode(cam, 0, 0);
@@ -59,8 +64,8 @@ void InitFastResize() {
     //ark_sh = GraphicsHeight()
 
     //Create sprite
-    int spr = bbCreateMesh(cam);
-    int sf = bbCreateSurface(spr);
+    MeshModel* spr = bbCreateMesh(cam);
+    Surface* sf = bbCreateSurface(spr);
     bbAddVertex(sf, -1, 1, 0, 0, 0);
     bbAddVertex(sf, 1, 1, 0, 1, 0);
     bbAddVertex(sf, -1, -1, 0, 0, 1);

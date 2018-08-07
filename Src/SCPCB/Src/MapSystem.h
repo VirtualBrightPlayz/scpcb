@@ -141,10 +141,10 @@ public:
     float soundEmitterRange[MaxRoomEmitters];
     class gxChannel* soundEmitterCHN[MaxRoomEmitters];
 
-    int lights[MaxRoomLights];
+    class Light* lights[MaxRoomLights];
     float lightIntensity[MaxRoomLights];
 
-    int lightSprites[MaxRoomLights];
+    class Sprite* lightSprites[MaxRoomLights];
 
     int objects[MaxRoomObjects];
     struct Lever* levers[11];
@@ -155,7 +155,7 @@ public:
     struct Door* adjDoor[4];
 
     //TODO: what the fuck
-    int lightSpritesPivot[MaxRoomLights];
+    class Pivot* lightSpritesPivot[MaxRoomLights];
     int triggerboxAmount;
     int triggerbox[128];
     String triggerboxName[128];
@@ -239,9 +239,9 @@ public:
     static int getListSize();
     static Screen* getObject(int index);
 
-    int obj;
+    class Pivot* obj;
     String imgpath;
-    int img;
+    class bbImage* img;
     struct Room* room;
 };
 
@@ -272,19 +272,19 @@ public:
     static int getListSize();
     static SecurityCam* getObject(int index);
 
-    class Object* obj;
-    int monitorObj;
+    class MeshModel* obj;
+    class MeshModel* monitorObj;
 
-    int baseObj;
-    int cameraObj;
+    //class MeshModel* baseObj;
+    class MeshModel* cameraObj;
 
-    int scrObj;
+    class Sprite* scrObj;
     float scrWidth;
     float scrHeight;
     int screen;
-    int cam;
-    int scrTexture;
-    int scrOverlay;
+    class Camera* cam;
+    int scrTexture; //TODO: rename
+    class Sprite* scrOverlay;
     float angle;
     float turn;
     float currAngle;
@@ -309,7 +309,7 @@ public:
     int dir;
 
     int isRoom2slCam = false;
-    int room2slTexs[2];
+    class Texture* room2slTexs[2]; //TODO: kill
     int specialCam = false;
     int id = -1;
 };
@@ -350,7 +350,7 @@ extern Screen* SelectedScreen;
 extern SecurityCam* SelectedMonitor;
 extern SecurityCam* CoffinCam;
 extern class Texture* ScreenTexs[2];
-extern Room** MapRooms;
+extern Room*** MapRooms;
 
 // Functions.
 void LoadMaterials(String file);
@@ -389,7 +389,7 @@ void RemoveWaypoint(WayPoint* w);
 
 int FindPath(struct NPC* n, float x, float y, float z); //TODO: move to NPCs.h?
 
-int CreateLine(float x1, float y1, float z1, float x2, float y2, float z2, int mesh = 0);
+class MeshModel* CreateLine(float x1, float y1, float z1, float x2, float y2, float z2, class MeshModel* mesh = nullptr);
 
 Screen* CreateScreen(float x, float y, float z, String imgpath, Room* r);
 
@@ -403,7 +403,7 @@ Prop* LoadProp(String file, float x, float y, float z, float pitch, float yaw, f
 
 void CreateMap();
 
-void DetermineRoomTypes(Room** layout, int mapDim);
+void DetermineRoomTypes(int** layout, int mapDim);
 
 int DetermineRotation(Room** layout, int x, int y);
 
