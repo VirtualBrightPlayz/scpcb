@@ -419,7 +419,7 @@ void UpdateEvent_cont_049_2(Event* e) {
             bbFreeEntity(pvt);
 
             if (mainPlayer->dead == true) {
-                if (IsChannelPlaying(e->room->npc[1]->soundChannels[0])) {
+                if (bbChannelPlaying(e->room->npc[1]->soundChannels[0])) {
                     bbStopChannel(e->room->npc[1]->soundChannels[0]);
                 }
                 PlaySound2(LoadTempSound("SFX/Character/MTF/049/Player0492_2.ogg"));
@@ -428,7 +428,7 @@ void UpdateEvent_cont_049_2(Event* e) {
                 if (e->soundChannels[0] == 0) {
                     e->soundChannels[0] = bbPlaySound(e->sounds[0]);
                 } else {
-                    if (!IsChannelPlaying(e->soundChannels[0])) {
+                    if (!bbChannelPlaying(e->soundChannels[0])) {
                         e->soundChannels[0] = bbPlaySound(e->sounds[0]);
                     }
                 }

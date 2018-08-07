@@ -211,7 +211,7 @@ void UpdateMainMenu() {
                     }
 
                     if (RandomSeed.isEmpty()) {
-                        RandomSeed = String(Abs(bbMilliSecs()));
+                        RandomSeed = String(abs(bbMilliSecs()));
                     }
                     strtemp = "";
                     bbSeedRnd(SeedStringToInt(RandomSeed));

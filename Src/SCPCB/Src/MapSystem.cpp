@@ -818,7 +818,7 @@ void FillRoom(Room* r) {
     }
 
     waypoints.clear();
-    
+
     for (i = 0; i <= MaxRoomEmitters-1; i++) {
         if (r->roomTemplate->tempSoundEmitter[i]!=0) {
             r->soundEmitterObj[i] = bbCreatePivot(r->obj);
@@ -1767,7 +1767,7 @@ void UpdateSecurityCams() {
                                         if (sc->soundCHN == 0) {
                                             //sc\soundCHN = PlaySound(HorrorSFX(4)) ;TODO: fix
                                         } else {
-                                            //If (Not IsChannelPlaying(sc\soundCHN)) Then sc\soundCHN = PlaySound(HorrorSFX(4)) ;TODO: fix
+                                            //If (Not bbChannelPlaying(sc\soundCHN)) Then sc\soundCHN = PlaySound(HorrorSFX(4)) ;TODO: fix
                                         }
                                         if (sc->coffinEffect==3 & bbRand(200)==1) {
                                             sc->coffinEffect = 2;
@@ -1817,7 +1817,7 @@ void UpdateSecurityCams() {
                                     sc->coffinEffect = 3;
                                     sc->playerState = 0;
                                 }
-                            } else if ((!IsChannelPlaying(sc->soundCHN))) {
+                            } else if ((!bbChannelPlaying(sc->soundCHN))) {
                                 sc->soundCHN = bbPlaySound(LoadTempSound("SFX/SCP/079/Broadcast"+String(bbRand(1,3))+".ogg"));
                                 if (sc->coffinEffect==2) {
                                     sc->coffinEffect = 3;
@@ -1894,7 +1894,7 @@ void CreateMap() {
     //TODO: this might be too much
     int** layout = new int*[mapDim];
     MapRooms = new Room**[mapDim];
-    
+
     //clear the grid
     int y;
     int x;
@@ -1988,7 +1988,7 @@ void CreateMap() {
             prioritizedTemplates.insert(prioritizedTemplates.begin()+bbRand(0,prioritizedTemplates.size()-1),rt);
         }
     }
-    
+
     int RoomCount[ROOM4+1];
     for (y = 0; y <= mapDim-1; y++) {
         for (x = 0; x <= mapDim-1; x++) {
@@ -2080,7 +2080,7 @@ void CreateMap() {
             totalCommonness[rt->shape] = totalCommonness[rt->shape]+(int)(rt->commonness);
         }
     }
-    
+
     int targetCommonness = 0;
     int commonnessAccumulator = 0;
     int currType;

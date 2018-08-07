@@ -164,7 +164,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                             for (int iterator140 = 0; iterator140 < Room::getListSize(); iterator140++) {
                                 r = Room::getObject(iterator140);
 
-                                if (((Abs(r->x-bbEntityX(n->collider,true))>12.0) | (Abs(r->z-bbEntityZ(n->collider,true))>12.0)) & (bbRand(1,(int)(Max(4-(int)(Abs(r->z-bbEntityZ(n->collider,true)/8.0)),2)))==1)) {
+                                if (((abs(r->x-bbEntityX(n->collider,true))>12.0) | (abs(r->z-bbEntityZ(n->collider,true))>12.0)) & (bbRand(1,(int)(Max(4-(int)(abs(r->z-bbEntityZ(n->collider,true)/8.0)),2)))==1)) {
                                     x = r->x;
                                     y = 0.1;
                                     z = r->z;
@@ -250,7 +250,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                         if (n->pathLocation<19) {
                             if (n->path[n->pathLocation]!=nullptr) & (n->path[n->pathLocation+1]!=nullptr) {
                                 //If (n\path[n\pathLocation]\door=Null) Then ;TODO: fix?
-                                if (Abs(bbDeltaYaw(n->collider,n->path[n->pathLocation]->obj))>Abs(bbDeltaYaw(n->collider,n->path[n->pathLocation+1]->obj))) {
+                                if (abs(bbDeltaYaw(n->collider,n->path[n->pathLocation]->obj))>abs(bbDeltaYaw(n->collider,n->path[n->pathLocation+1]->obj))) {
                                     n->pathLocation = n->pathLocation+1;
                                 }
                                 //EndIf
@@ -1231,7 +1231,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                             for (int iterator147 = 0; iterator147 < Room::getListSize(); iterator147++) {
                                 r = Room::getObject(iterator147);
 
-                                if (((Abs(r->x-bbEntityX(n->collider,true))>12.0) | (Abs(r->z-bbEntityZ(n->collider,true))>12.0)) & (bbRand(1,(int)(Max(4-(int)(Abs(r->z-bbEntityZ(n->collider,true)/8.0)),2)))==1)) {
+                                if (((abs(r->x-bbEntityX(n->collider,true))>12.0) | (abs(r->z-bbEntityZ(n->collider,true))>12.0)) & (bbRand(1,(int)(Max(4-(int)(abs(r->z-bbEntityZ(n->collider,true)/8.0)),2)))==1)) {
                                     if (bbEntityDistance(r->obj,n->target->collider)>6.0) {
                                         x = r->x;
                                         y = 0.1;
@@ -1253,7 +1253,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                             if (n->pathLocation<19) {
                                 if (n->path[n->pathLocation]!=nullptr) & (n->path[n->pathLocation+1]!=nullptr) {
                                     //If (n\path[n\pathLocation]\door=Null) Then ;TODO: fix?
-                                    if (Abs(bbDeltaYaw(n->collider,n->path[n->pathLocation]->obj))>Abs(bbDeltaYaw(n->collider,n->path[n->pathLocation+1]->obj))) {
+                                    if (abs(bbDeltaYaw(n->collider,n->path[n->pathLocation]->obj))>abs(bbDeltaYaw(n->collider,n->path[n->pathLocation+1]->obj))) {
                                         n->pathLocation = n->pathLocation+1;
                                     }
                                     //EndIf
@@ -1323,7 +1323,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                     AnimateNPC(n, 346, 351, 0.2, false);
                 }
 
-                if (Abs(bbEntityX(target)-bbEntityX(n->collider)) < 55.0 & Abs(bbEntityZ(target)-bbEntityZ(n->collider)) < 55.0 & Abs(bbEntityY(target)-bbEntityY(n->collider))< 20.0) {
+                if (abs(bbEntityX(target)-bbEntityX(n->collider)) < 55.0 & abs(bbEntityZ(target)-bbEntityZ(n->collider)) < 55.0 & abs(bbEntityY(target)-bbEntityY(n->collider))< 20.0) {
 
                     bbPointEntity(n->obj, target);
                     bbRotateEntity(n->collider, 0, CurveAngle(bbEntityYaw(n->obj),bbEntityYaw(n->collider),30.0), 0, true);
@@ -1378,7 +1378,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                     if (bbEntityVisible(n->collider, mainPlayer->collider)) {
                         //angle# = WrapAngle(angle - EntityYaw(n\collider))
                         //If (angle < 5 Or angle > 355) Then
-                        if (Abs(bbDeltaYaw(n->collider,mainPlayer->collider))<50.0) {
+                        if (abs(bbDeltaYaw(n->collider,mainPlayer->collider))<50.0) {
                             //prev% = KillTimer
 
                             PlayRangedSound_SM(sndManager->gunshot[0], mainPlayer->cam, n->collider, 15);
@@ -1449,7 +1449,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                         for (int iterator148 = 0; iterator148 < Room::getListSize(); iterator148++) {
                             r = Room::getObject(iterator148);
 
-                            if (((Abs(r->x-bbEntityX(n->collider,true))>12.0) | (Abs(r->z-bbEntityZ(n->collider,true))>12.0)) & (bbRand(1,(int)(Max(4-(int)(Abs(r->z-bbEntityZ(n->collider,true)/8.0)),2)))==1)) {
+                            if (((abs(r->x-bbEntityX(n->collider,true))>12.0) | (abs(r->z-bbEntityZ(n->collider,true))>12.0)) & (bbRand(1,(int)(Max(4-(int)(abs(r->z-bbEntityZ(n->collider,true)/8.0)),2)))==1)) {
                                 x = r->x;
                                 y = 0.1;
                                 z = r->z;
@@ -1470,7 +1470,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                         if (n->pathLocation<19) {
                             if (n->path[n->pathLocation]!=nullptr) & (n->path[n->pathLocation+1]!=nullptr) {
                                 //If (n\path[n\pathLocation]\door=Null) Then ;TODO: fix?
-                                if (Abs(bbDeltaYaw(n->collider,n->path[n->pathLocation]->obj))>Abs(bbDeltaYaw(n->collider,n->path[n->pathLocation+1]->obj))) {
+                                if (abs(bbDeltaYaw(n->collider,n->path[n->pathLocation]->obj))>abs(bbDeltaYaw(n->collider,n->path[n->pathLocation+1]->obj))) {
                                     n->pathLocation = n->pathLocation+1;
                                 }
                                 //EndIf
@@ -1606,7 +1606,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                     if (n->reload <= 0 & n->target->isDead == false) {
                         //angle# = WrapAngle(angle - EntityYaw(n\collider))
                         //If (angle < 5 Or angle > 355) Then
-                        if (Abs(bbDeltaYaw(n->collider,n->target->collider))<50.0) {
+                        if (abs(bbDeltaYaw(n->collider,n->target->collider))<50.0) {
                             //prev% = KillTimer
 
                             PlayRangedSound_SM(sndManager->gunshot[0], mainPlayer->cam, n->collider, 15);
@@ -1654,7 +1654,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                             if (n->pathLocation<19) {
                                 if (n->path[n->pathLocation]!=nullptr) & (n->path[n->pathLocation+1]!=nullptr) {
                                     //If (n\path[n\pathLocation]\door=Null) Then ;TODO: fix
-                                    if (Abs(bbDeltaYaw(n->collider,n->path[n->pathLocation]->obj))>Abs(bbDeltaYaw(n->collider,n->path[n->pathLocation+1]->obj))) {
+                                    if (abs(bbDeltaYaw(n->collider,n->path[n->pathLocation]->obj))>abs(bbDeltaYaw(n->collider,n->path[n->pathLocation+1]->obj))) {
                                         n->pathLocation = n->pathLocation+1;
                                     }
                                     //EndIf
@@ -1737,7 +1737,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                     n2 = NPC::getObject(iterator149);
 
                     if (n2!=n & n2->isDead==false) {
-                        if (Abs(bbDeltaYaw(n->collider,n2->collider))<80.0) {
+                        if (abs(bbDeltaYaw(n->collider,n2->collider))<80.0) {
                             if (bbEntityDistance(n->collider,n2->collider)<0.7) {
                                 bbTranslateEntity(n2->collider, bbCos(bbEntityYaw(n->collider,true)+90)* 0.01 * timing->tickDuration, 0, bbSin(bbEntityYaw(n->collider,true)+90)* 0.01 * timing->tickDuration, true);
                             }
@@ -1788,7 +1788,7 @@ void UpdateMTF() {
             }
 
             if (entrance != nullptr) {
-                if (Abs(bbEntityZ(entrance->obj)-bbEntityZ(mainPlayer->collider))<30.0) {
+                if (abs(bbEntityZ(entrance->obj)-bbEntityZ(mainPlayer->collider))<30.0) {
                     //If (mainPlayer\currRoom\roomTemplate\name<>"room860" And mainPlayer/currRoom/RoomTemplate/Name<>"pocketdimension") Then
                     if (PlayerInReachableRoom()) {
                         PlaySound2(LoadTempSound("SFX/Character/MTF/Announc.ogg"));

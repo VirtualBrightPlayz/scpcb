@@ -298,11 +298,11 @@ void UpdateEvent_scp_970_2(Event* e) {
                 bbRotateEntity(e->room->npc[1]->collider, 0, CurveAngle(bbEntityYaw(e->room->npc[1]->obj),bbEntityYaw(e->room->npc[1]->collider),35),0);
             }
 
-            //If (Abs(TFormedX())<264) Then
+            //If (abs(TFormedX())<264) Then
             for (int iterator195 = 0; iterator195 < Item::getListSize(); iterator195++) {
                 it = Item::getObject(iterator195);
 
-                if ((it->dropped==1 & Abs(bbTFormedX())<264) | it->dropped==-1) {
+                if ((it->dropped==1 & abs(bbTFormedX())<264) | it->dropped==-1) {
                     //DebugLog("dropping/picking: "+it\dropped+" - "+EntityX(it\collider)+", "+EntityY(it\collider)+", "+EntityZ(it\collider))
 
                     bbTFormPoint(bbEntityX(it->collider),bbEntityY(it->collider),bbEntityZ(it->collider),0,e->room->obj);
@@ -344,8 +344,8 @@ void UpdateEvent_scp_970_2(Event* e) {
 
 
     if (e->eventState > 26) {
-        if (Abs(bbEntityX(mainPlayer->collider)-e->room->x)<8.0) {
-            if (Abs(bbEntityZ(mainPlayer->collider)-e->room->z)<8.0) {
+        if (abs(bbEntityX(mainPlayer->collider)-e->room->x)<8.0) {
+            if (abs(bbEntityZ(mainPlayer->collider)-e->room->z)<8.0) {
                 if (e->sounds[0] == 0) {
                     e->sounds[0] = bbLoadSound("SFX/SCP/970/Corpse.ogg");
                 }

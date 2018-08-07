@@ -318,7 +318,7 @@ void UpdateEvent_strg_939_3(Event* e) {
                     }
                 }
 
-                if (IsChannelPlaying(e->soundChannels[1])) {
+                if (bbChannelPlaying(e->soundChannels[1])) {
                     UpdateRangedSoundOrigin(e->soundChannels[1],mainPlayer->cam,e->room->doors[4]->obj,400);
                 }
 

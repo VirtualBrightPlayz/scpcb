@@ -365,8 +365,8 @@ void UpdateChunks(Room* r, int ChunkPartAmount, int spawnNPCs = true) {
             }
         }
         y = ch->y;
-        if (Abs(bbEntityX(mainPlayer->collider)-ch->x)<20) {
-            if (Abs(bbEntityZ(mainPlayer->collider)-ch->z)<20) {
+        if (abs(bbEntityX(mainPlayer->collider)-ch->x)<20) {
+            if (abs(bbEntityZ(mainPlayer->collider)-ch->z)<20) {
                 CurrChunkX = ch->x;
                 CurrChunkZ = ch->z;
             }

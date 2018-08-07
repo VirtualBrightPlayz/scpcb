@@ -1,14 +1,18 @@
-#include <bbblitz3d.h>
 #include <bbaudio.h>
+#include <bbblitz3d.h>
 #include <bbgraphics.h>
+#include <bbinput.h>
+#include <bbmath.h>
 
 #include "Player.h"
 #include "Dreamfilter.h"
+#include "Decals.h"
 #include "GameMain.h"
 #include "Items/Items.h"
 #include "MathUtils/MathUtils.h"
 #include "Menus/Menu.h"
 #include "Options.h"
+#include "MapSystem.h"
 
 namespace CBN {
 
@@ -226,21 +230,21 @@ void UpdatePlayer() {
     }
 
     if (mainPlayer->currRoom!=nullptr) {
-        if (mainPlayer->currRoom->roomTemplate->name != "pocketdimension") {
+        if (!mainPlayer->currRoom->roomTemplate->name.equals("pocketdimension")) {
             if (bbKeyDown(keyBinds->sprint)) {
                 //out of breath
                 if (mainPlayer->stamina < 5) {
-                    if (!IsChannelPlaying(mainPlayer->breathChn)) {
-                        mainPlayer->breathChn = bbPlaySound(GetIntArrayElem(mainPlayer->breathingSFX, IsPlayerWearingItem(mainPlayer,"gasmask"), 0));
+                    if (!bbChannelPlaying(mainPlayer->breathChn)) {
+                        mainPlayer->breathChn = bbPlaySound(mainPlayer->breathingSFX[IsPlayerWearingItem(mainPlayer,"gasmask")][0]);
                     }
                     //panting
                 } else if ((mainPlayer->stamina < 50)) {
                     if (mainPlayer->breathChn == 0) {
-                        mainPlayer->breathChn = bbPlaySound(GetIntArrayElem(mainPlayer->breathingSFX, IsPlayerWearingItem(mainPlayer,"gasmask"), bbRand(1, 3)));
+                        mainPlayer->breathChn = bbPlaySound(mainPlayer->breathingSFX[IsPlayerWearingItem(mainPlayer,"gasmask")][bbRand(1, 3)]);
                         bbChannelVolume(mainPlayer->breathChn, Min((70.0-mainPlayer->stamina)/70.0,1.0)*userOptions->sndVolume);
                     } else {
-                        if (!IsChannelPlaying(mainPlayer->breathChn)) {
-                            mainPlayer->breathChn = bbPlaySound(GetIntArrayElem(mainPlayer->breathingSFX, IsPlayerWearingItem(mainPlayer,"gasmask"), bbRand(1, 3)));
+                        if (!bbChannelPlaying(mainPlayer->breathChn)) {
+                            mainPlayer->breathChn = bbPlaySound(mainPlayer->breathingSFX[IsPlayerWearingItem(mainPlayer,"gasmask")][bbRand(1, 3)]);
                             bbChannelVolume(mainPlayer->breathChn, Min((70.0-mainPlayer->stamina)/70.0,1.0)*userOptions->sndVolume);
                         }
                     }
@@ -259,7 +263,7 @@ void UpdatePlayer() {
 
     //If (IsZombie) Then Crouch = False
 
-    if (Abs(mainPlayer->crouchState-mainPlayer->crouching)<0.001) {
+    if (std::abs(mainPlayer->crouchState-mainPlayer->crouching)<0.001) {
         mainPlayer->crouchState = mainPlayer->crouching;
     } else {
         mainPlayer->crouchState = CurveValue(mainPlayer->crouching, mainPlayer->crouchState, 10.0);
@@ -295,11 +299,11 @@ void UpdatePlayer() {
                 }
             }
 
-            temp = (mainPlayer->camAnimState % 360);
+            temp = modFloat(mainPlayer->camAnimState, 360);
             if (!mainPlayer->disableControls) {
-                mainPlayer->camAnimState = (mainPlayer->camAnimState + timing->tickDuration * Min(Sprint, 1.5) * 7) % 720;
+                mainPlayer->camAnimState = modFloat(mainPlayer->camAnimState + timing->tickDuration * Min(Sprint, 1.5) * 7, 720);
             }
-            if (temp < 180 & (mainPlayer->camAnimState % 360) >= 180 & (!mainPlayer->dead)) {
+            if (temp < 180 && modFloat(mainPlayer->camAnimState, 360) >= 180 && !mainPlayer->dead) {
                 //TODO: define constants for each override state
                 if (mainPlayer->footstepOverride==0) {
                     temp = GetMaterialStepSound(mainPlayer->collider);
@@ -445,7 +449,7 @@ void UpdatePlayer() {
 
         collidedFloor = false;
         for (i = 1; i <= bbCountCollisions(mainPlayer->collider); i++) {
-            if (bbCollisionY(mainPlayer->collider, i) < bbEntityY(mainPlayer->collider,true)) & (Abs(bbCollisionNY(mainPlayer->collider, i))>0.8) {
+            if (bbCollisionY(mainPlayer->collider, i) < bbEntityY(mainPlayer->collider,true)) & (abs(bbCollisionNY(mainPlayer->collider, i))>0.8) {
                 collidedFloor = true;
             }
         }
@@ -744,7 +748,7 @@ void Kill(Player* player) {
     }
 
     if (player->breathChn != 0) {
-        if (IsChannelPlaying(player->breathChn)) {
+        if (bbChannelPlaying(player->breathChn)) {
             bbStopChannel(player->breathChn);
         }
     }

@@ -137,7 +137,7 @@ void UpdateEvent_cont_1123_2(Event* e) {
             //If (e\soundChannels[0] = 0) Then
             //	e\soundChannels[0] =
             //Else
-            //	If (Not IsChannelPlaying(e\soundChannels[0])) Then e\soundChannels[0] = PlaySound2(moddedambience)
+            //	If (Not bbChannelPlaying(e\soundChannels[0])) Then e\soundChannels[0] = PlaySound2(moddedambience)
             //EndIf
 
             //Saving injuries and bloodloss, so that the player won't be healed automatically
@@ -296,7 +296,7 @@ void UpdateEvent_cont_1123_2(Event* e) {
 
             if (e->room->npc[0]->sounds[0]!=0) {
                 if (e->room->npc[0]->soundChannels[0]!=0) {
-                    if (!IsChannelPlaying(e->room->npc[0]->soundChannels[0])) {
+                    if (!bbChannelPlaying(e->room->npc[0]->soundChannels[0])) {
                         PlaySound2(LoadTempSound("SFX/SCP/1123/Gunshot.ogg"));
                         e->eventState = 7;
                         bbFreeSound(e->room->npc[0]->sounds[0]);

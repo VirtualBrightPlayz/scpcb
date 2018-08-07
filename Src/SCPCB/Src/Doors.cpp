@@ -205,8 +205,8 @@ void UpdateDoors() {
         for (int iterator55 = 0; iterator55 < Door::getListSize(); iterator55++) {
             d = Door::getObject(iterator55);
 
-            xdist = Abs(bbEntityX(mainPlayer->collider)-bbEntityX(d->obj,true));
-            zdist = Abs(bbEntityZ(mainPlayer->collider)-bbEntityZ(d->obj,true));
+            xdist = abs(bbEntityX(mainPlayer->collider)-bbEntityX(d->obj,true));
+            zdist = abs(bbEntityZ(mainPlayer->collider)-bbEntityZ(d->obj,true));
 
             d->dist = xdist+zdist;
 
@@ -261,8 +261,8 @@ void UpdateDoors() {
             if ((d->openstate >= 180 | d->openstate <= 0) & mainPlayer->grabbedEntity == 0) {
                 for (i = 0; i <= 1; i++) {
                     if (d->buttons[i] != 0) {
-                        if (Abs(bbEntityX(mainPlayer->collider)-bbEntityX(d->buttons[i],true)) < 1.0) {
-                            if (Abs(bbEntityZ(mainPlayer->collider)-bbEntityZ(d->buttons[i],true)) < 1.0) {
+                        if (abs(bbEntityX(mainPlayer->collider)-bbEntityX(d->buttons[i],true)) < 1.0) {
+                            if (abs(bbEntityZ(mainPlayer->collider)-bbEntityZ(d->buttons[i],true)) < 1.0) {
                                 //entityDistance(collider, d\buttons[i])
                                 dist = Distance(bbEntityX(mainPlayer->collider, true), bbEntityZ(mainPlayer->collider, true), bbEntityX(d->buttons[i], true), bbEntityZ(d->buttons[i], true));
                                 if (dist < 0.7) {
@@ -412,15 +412,15 @@ void UpdateDoors() {
                     }
 
                     if (d->angle == 0 | d->angle==180) {
-                        if (Abs(bbEntityZ(d->frameobj, true)-bbEntityZ(mainPlayer->collider))<0.15) {
-                            if (Abs(bbEntityX(d->frameobj, true)-bbEntityX(mainPlayer->collider))<0.7*(d->typ*2+1)) {
+                        if (abs(bbEntityZ(d->frameobj, true)-bbEntityZ(mainPlayer->collider))<0.15) {
+                            if (abs(bbEntityX(d->frameobj, true)-bbEntityX(mainPlayer->collider))<0.7*(d->typ*2+1)) {
                                 z = CurveValue(bbEntityZ(d->frameobj,true)+0.15*Sgn(bbEntityZ(mainPlayer->collider)-bbEntityZ(d->frameobj, true)), bbEntityZ(mainPlayer->collider), 5);
                                 bbPositionEntity(mainPlayer->collider, bbEntityX(mainPlayer->collider), bbEntityY(mainPlayer->collider), z);
                             }
                         }
                     } else {
-                        if (Abs(bbEntityX(d->frameobj, true)-bbEntityX(mainPlayer->collider))<0.15) {
-                            if (Abs(bbEntityZ(d->frameobj, true)-bbEntityZ(mainPlayer->collider))<0.7*(d->typ*2+1)) {
+                        if (abs(bbEntityX(d->frameobj, true)-bbEntityX(mainPlayer->collider))<0.15) {
+                            if (abs(bbEntityZ(d->frameobj, true)-bbEntityZ(mainPlayer->collider))<0.7*(d->typ*2+1)) {
                                 x = CurveValue(bbEntityX(d->frameobj,true)+0.15*Sgn(bbEntityX(mainPlayer->collider)-bbEntityX(d->frameobj, true)), bbEntityX(mainPlayer->collider), 5);
                                 bbPositionEntity(mainPlayer->collider, x, bbEntityY(mainPlayer->collider), bbEntityZ(mainPlayer->collider));
                             }

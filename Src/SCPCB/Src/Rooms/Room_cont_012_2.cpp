@@ -171,7 +171,7 @@ void UpdateEvent_cont_012_2(Event* e) {
                         if (angle<40.0) {
                             mainPlayer->forceMove = (40.0-angle)*0.008;
                         } else if ((angle > 310.0)) {
-                            mainPlayer->forceMove = (40.0-Abs(360.0-angle))*0.008;
+                            mainPlayer->forceMove = (40.0-abs(360.0-angle))*0.008;
                         }
 
                         bbFreeEntity(pvt);
@@ -196,7 +196,7 @@ void UpdateEvent_cont_012_2(Event* e) {
                     mainPlayer->camZoom = Max(mainPlayer->camZoom, (bbSin((float)(TimeInPosMilliSecs()) / 20.0)+1.0)*8.0*Max((3.0-dist),0.0));
 
                     if (mainPlayer->breathChn != 0) {
-                        if (IsChannelPlaying(mainPlayer->breathChn)) {
+                        if (bbChannelPlaying(mainPlayer->breathChn)) {
                             bbStopChannel(mainPlayer->breathChn);
                         }
                     }
@@ -260,7 +260,7 @@ void UpdateEvent_cont_012_2(Event* e) {
                         if (angle<40.0) {
                             mainPlayer->forceMove = (40.0-angle)*0.02;
                         } else if ((angle > 310.0)) {
-                            mainPlayer->forceMove = (40.0-Abs(360.0-angle))*0.02;
+                            mainPlayer->forceMove = (40.0-abs(360.0-angle))*0.02;
                         }
                     }
 

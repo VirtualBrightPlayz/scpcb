@@ -286,7 +286,7 @@ void Update294() {
             Input294 = "DISPENSING...";
         }
 
-        if (!IsChannelPlaying(mainPlayer->currRoom->soundCHN)) {
+        if (!bbChannelPlaying(mainPlayer->currRoom->soundCHN)) {
             if (Input294 != "OUT OF RANGE") {
                 bbHidePointer();
                 CurrGameState = GAMESTATE_SCP294;

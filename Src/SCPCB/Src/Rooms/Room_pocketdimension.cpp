@@ -267,9 +267,9 @@ void UpdateEvent_pocketdimension(Event* e) {
 
         bbScaleEntity(e->room->obj,RoomScale, RoomScale*(1.0 + bbSin(e->eventState/14.0)*0.2), RoomScale);
         for (i = 0; i <= 7; i++) {
-            bbScaleEntity(e->room->objects[i],RoomScale*(1.0 + Abs(bbSin(e->eventState/21.0+i*45.0)*0.1)),RoomScale*(1.0 + bbSin(e->eventState/14.0+i*20.0)*0.1), RoomScale,true);
+            bbScaleEntity(e->room->objects[i],RoomScale*(1.0 + abs(bbSin(e->eventState/21.0+i*45.0)*0.1)),RoomScale*(1.0 + bbSin(e->eventState/14.0+i*20.0)*0.1), RoomScale,true);
         }
-        bbScaleEntity(e->room->objects[9],RoomScale*(1.5 + Abs(bbSin(e->eventState/21.0+i*45.0)*0.1)),RoomScale*(1.0 + bbSin(e->eventState/14.0+i*20.0)*0.1), RoomScale,true);
+        bbScaleEntity(e->room->objects[9],RoomScale*(1.5 + abs(bbSin(e->eventState/21.0+i*45.0)*0.1)),RoomScale*(1.0 + bbSin(e->eventState/14.0+i*20.0)*0.1), RoomScale,true);
 
         e->eventState = e->eventState + timing->tickDuration;
 
@@ -343,7 +343,7 @@ void UpdateEvent_pocketdimension(Event* e) {
                     bbMoveEntity(mainPlayer->collider, 0, Min((12.0 - bbEntityY(mainPlayer->collider)),0.0)*timing->tickDuration, 0);
 
                     x = -timing->tickDuration*RoomScale*4.0;
-                    y = (17.0-Abs(bbEntityX(mainPlayer->collider)-bbEntityX(e->room->objects[20]))*0.5)-bbEntityY(e->room->objects[20]);
+                    y = (17.0-abs(bbEntityX(mainPlayer->collider)-bbEntityX(e->room->objects[20]))*0.5)-bbEntityY(e->room->objects[20]);
                     z = bbEntityZ(mainPlayer->collider,true)-bbEntityZ(e->room->objects[20]);
                     bbTranslateEntity(e->room->objects[20], x, y, z,true);
                     bbRotateEntity(e->room->objects[20], -90-(bbEntityX(mainPlayer->collider)-bbEntityX(e->room->objects[20]))*1.5, -90.0, 0.0, true);
@@ -378,7 +378,7 @@ void UpdateEvent_pocketdimension(Event* e) {
 
                     dist = bbEntityDistance(mainPlayer->collider, e->room->objects[20]);
 
-                    if (e->soundChannels[1]!=0 & IsChannelPlaying(e->soundChannels[1])) {
+                    if (e->soundChannels[1]!=0 & bbChannelPlaying(e->soundChannels[1])) {
                         e->soundChannels[1] = LoopRangedSound(e->sounds[1], e->soundChannels[1], mainPlayer->cam, mainPlayer->cam, 10.0, 0.3+(!safe)*0.6);
                     }
 
@@ -505,7 +505,7 @@ void UpdateEvent_pocketdimension(Event* e) {
                             mainPlayer->blurTimer = (640*RoomScale-temp)*3000;
 
                             //TODO: fix
-                            //e\soundChannels[1] = LoopRangedSound(DecaySFX(Rand(1, 3)), e\soundChannels[1], mainPlayer\cam, mainPlayer\collider, 2.0, (640*RoomScale-temp)*Abs(mainPlayer\moveSpeed)*100)
+                            //e\soundChannels[1] = LoopRangedSound(DecaySFX(Rand(1, 3)), e\soundChannels[1], mainPlayer\cam, mainPlayer\collider, 2.0, (640*RoomScale-temp)*abs(mainPlayer\moveSpeed)*100)
                             mainPlayer->moveSpeed = CurveValue(0.0, mainPlayer->moveSpeed, temp*10);
 
                             if (temp < 130*RoomScale) {

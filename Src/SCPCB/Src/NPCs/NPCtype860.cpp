@@ -239,7 +239,7 @@ void UpdateNPCtype860(NPC* n) {
                         if (bbRnd(5000)<n->state3) {
                             temp = true;
                             if (n->soundChannels[0] != 0) {
-                                if (IsChannelPlaying(n->soundChannels[0])) {
+                                if (bbChannelPlaying(n->soundChannels[0])) {
                                     temp = false;
                                 }
                             }
@@ -375,7 +375,7 @@ float Find860Angle(NPC* n, Forest* fr) {
                 if (fr->grid[(z2*gridsize)+x2]>0 & (x2!=xt | z2!=zt) & (x2==xt | z2==zt)) {
 
                     //tile (x2,z2) is closer to the player than the monsters current tile
-                    if ((Abs(playerx-x2)+Abs(playerz-z2))<(Abs(playerx-xt)+Abs(playerz-zt))) {
+                    if ((abs(playerx-x2)+abs(playerz-z2))<(abs(playerx-xt)+abs(playerz-zt))) {
                         return GetAngle(x-0.5,z-0.5,x2,z2)+bbEntityYaw(mainPlayer->currRoom->obj)+180;
                     }
 

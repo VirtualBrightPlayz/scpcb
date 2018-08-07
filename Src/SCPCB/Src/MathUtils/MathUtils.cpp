@@ -1,11 +1,12 @@
+#include <bbblitz3d.h>
+#include <bbmath.h>
+#include <bbruntime.h>
+#include <bbstring.h>
+
 #include "MathUtils.h"
-#include "include.h"
+#include "../GameMain.h"
 
 namespace CBN {
-
-// Constants.
-const float INFINITY = (999.0) ^ (99999.0);
-const float NAN = (-1.0) ^ (0.5);
 
 // Globals.
 float Mesh_MinX;
@@ -27,10 +28,6 @@ float Distance(float x1, float y1, float x2, float y2) {
 }
 
 float CurveValue(float number, float old, float smooth) {
-    if (timing->tickDuration == 0) {
-        return old;
-    }
-
     if (number < old) {
         return Max(old + (number - old) * (1.0 / smooth * timing->tickDuration), number);
     } else {
@@ -39,10 +36,6 @@ float CurveValue(float number, float old, float smooth) {
 }
 
 float CurveAngle(float val, float old, float smooth) {
-    if (timing->tickDuration == 0) {
-        return old;
-    }
-
     float diff = WrapAngle(val) - WrapAngle(old);
     if (diff > 180) {
         diff = diff - 360;
@@ -105,7 +98,7 @@ int CircleToLineSegIsect(float cx, float cy, float r, float l1x, float l1y, floa
     //Checks whether the value of another point is 0
     //tai molempien merkki sama
     if (dp1 == 0 | dp2 == 0) {
-    } else if ((dp1 > 0 & dp2 > 0) | (dp1 < 0 & dp2 < 0)) {
+    } else if ((dp1 > 0 & dp2 > 0) || (dp1 < 0 & dp2 < 0)) { // TODO: wtf
     } else {
         //Neither -> no cutting
         return false;
@@ -117,7 +110,7 @@ int CircleToLineSegIsect(float cx, float cy, float r, float l1x, float l1y, floa
     float c = -(l2y - l1y) / (l2x - l1x) * l1x + l1y;
 
     //Distance from the center of the circle
-    float d = Abs(a * cx + b * cy + c) / bbSqr(a * a + b * b);
+    float d = abs(a * cx + b * cy + c) / bbSqr(a * a + b * b);
 
     //The circle is too far away
     //-> not cutting
@@ -185,7 +178,7 @@ int TimeInPosMilliSecs() {
     return retVal;
 }
 
-void MakeCollBox(int mesh) {
+void MakeCollBox(class MeshModel* mesh) {
     float sx = EntityScaleX(mesh, 1);
     float sy = Max(EntityScaleY(mesh, 1), 0.001);
     float sz = EntityScaleZ(mesh, 1);
@@ -193,15 +186,7 @@ void MakeCollBox(int mesh) {
     bbEntityBox(mesh, Mesh_MinX * sx, Mesh_MinY * sy, Mesh_MinZ * sz, Mesh_MagX * sx, Mesh_MagY * sy, Mesh_MagZ * sz);
 }
 
-void GetMeshExtents(int Mesh) {
-    int s;
-    int surf;
-    int surfs;
-    int v;
-    int verts;
-    float x;
-    float y;
-    float z;
+void GetMeshExtents(MeshModel* mesh) {
     float minx = INFINITY;
     float miny = INFINITY;
     float minz = INFINITY;
@@ -209,16 +194,16 @@ void GetMeshExtents(int Mesh) {
     float maxy = -INFINITY;
     float maxz = -INFINITY;
 
-    surfs = bbCountSurfaces(Mesh);
+    int surfs = bbCountSurfaces(mesh);
 
-    for (s = 1; s <= surfs; s++) {
-        surf = bbGetSurface(Mesh, s);
-        verts = bbCountVertices(surf);
+    for (int s = 1; s <= surfs; s++) {
+        Surface* surf = bbGetSurface(mesh, s);
+        int verts = bbCountVertices(surf);
 
-        for (v = 0; v <= verts - 1; v++) {
-            x = bbVertexX(surf, v);
-            y = bbVertexY(surf, v);
-            z = bbVertexZ(surf, v);
+        for (int v = 0; v < verts; v++) {
+            float x = bbVertexX(surf, v);
+            float y = bbVertexY(surf, v);
+            float z = bbVertexZ(surf, v);
 
             if (x < minx) {
                 minx = x;
@@ -253,7 +238,7 @@ void GetMeshExtents(int Mesh) {
 
 }
 
-float EntityScaleX(int entity, int globl = false) {
+float EntityScaleX(Object* entity, int globl = false) {
     if (globl) {
         bbTFormVector(1, 0, 0, entity, 0);
     } else {
@@ -262,7 +247,7 @@ float EntityScaleX(int entity, int globl = false) {
     return bbSqr(bbTFormedX() * bbTFormedX() + bbTFormedY() * bbTFormedY() + bbTFormedZ() * bbTFormedZ());
 }
 
-float EntityScaleY(int entity, int globl = false) {
+float EntityScaleY(Object* entity, int globl = false) {
     if (globl) {
         bbTFormVector(0, 1, 0, entity, 0);
     } else {
@@ -271,7 +256,7 @@ float EntityScaleY(int entity, int globl = false) {
     return bbSqr(bbTFormedX() * bbTFormedX() + bbTFormedY() * bbTFormedY() + bbTFormedZ() * bbTFormedZ());
 }
 
-float EntityScaleZ(int entity, int globl = false) {
+float EntityScaleZ(Object* entity, int globl = false) {
     if (globl) {
         bbTFormVector(0, 0, 1, entity, 0);
     } else {
@@ -281,19 +266,25 @@ float EntityScaleZ(int entity, int globl = false) {
 }
 
 int SeedStringToInt(String seed) {
-    int char;
     int retVal = 0;
 
-    int i;
-    for (i = 1; i <= seed.size(); i++) {
-        char = bbAsc(bbMid(seed,i,1));
-        retVal = (retVal Shl 1) + char;
+    for (int i = 1; i <= seed.size(); i++) {
+        int chr = bbAsc(bbMid(seed,i,1));
+        retVal = (retVal << 1) + chr;
     }
 
     if (retVal==0) {
         retVal = 1;
     }
-    return Abs(retVal);
+    return abs(retVal);
+}
+
+float modFloat(float num, float divide) {
+    float retVal = num;
+    while (retVal > divide) {
+        retVal -= divide;
+    }
+    return retVal;
 }
 
 }

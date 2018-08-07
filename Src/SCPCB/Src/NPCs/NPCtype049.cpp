@@ -62,7 +62,7 @@ void UpdateNPCtype049(NPC* n) {
         case STATE049_ATTACK: {
             //[Block]
             //Playing a sound after detecting the player
-            if (n->prevState == STATE049_ROAMING & (!IsChannelPlaying(n->soundChannels[0]))) {
+            if (n->prevState == STATE049_ROAMING & (!bbChannelPlaying(n->soundChannels[0]))) {
                 n->soundChannels[0] = LoopRangedSound(n->sounds[bbRand(1,2)], n->soundChannels[0], mainPlayer->cam, n->obj);
             }
 
@@ -186,7 +186,7 @@ void UpdateNPCtype049(NPC* n) {
                         AnimateNPC(n, Max(Min(bbAnimTime(n->obj),358.0),346), 393.0, n->currSpeed*38);
 
                         //Playing a sound if he hears the player
-                        if (n->soundTimer < 0 & (!IsChannelPlaying(n->soundChannels[0]))) {
+                        if (n->soundTimer < 0 & (!bbChannelPlaying(n->soundChannels[0]))) {
                             n->soundTimer = bbRand(10, 20) * 70;
 
                             if (bbRand(8)==3) {

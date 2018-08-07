@@ -149,8 +149,8 @@ void UpdateEvent_cont_914_1(Event* e) {
                                 it = Item::getObject(iterator167);
 
                                 if (it->collider != 0 & it->picked == false) {
-                                    if (Abs(bbEntityX(it->collider) - (e->room->x - 712.0 * RoomScale)) < 200.0) {
-                                        if (Abs(bbEntityY(it->collider) - (e->room->y + 648.0 * RoomScale)) < 104.0) {
+                                    if (abs(bbEntityX(it->collider) - (e->room->x - 712.0 * RoomScale)) < 200.0) {
+                                        if (abs(bbEntityY(it->collider) - (e->room->y + 648.0 * RoomScale)) < 104.0) {
                                             e->eventState = 1;
                                             e->soundChannels[0] = PlayRangedSound(e->sounds[0], mainPlayer->cam, e->room->objects[1]);
                                             break;

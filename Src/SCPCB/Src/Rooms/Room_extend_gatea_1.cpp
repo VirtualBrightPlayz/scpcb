@@ -440,7 +440,7 @@ void UpdateEvent_extend_gatea_1(Event* e) {
                                 }
                             } else {
                                 if (dist < 8.5) {
-                                    //IsChannelPlaying(e\soundChannels[1]) = 0) Then
+                                    //bbChannelPlaying(e\soundChannels[1]) = 0) Then
                                     if (e->eventState2==0) {
                                         e->soundChannels[1] = bbPlaySound(LoadTempSound("SFX/Ending/GateA/HIDTurret.ogg"));
                                         e->eventState2 = 1;
@@ -482,7 +482,7 @@ void UpdateEvent_extend_gatea_1(Event* e) {
                     }
 
                     if (e->eventState3 == 0.0) {
-                        if (Abs(bbEntityY(mainPlayer->collider)-bbEntityY(e->room->objects[11],true))<1.0) {
+                        if (abs(bbEntityY(mainPlayer->collider)-bbEntityY(e->room->objects[11],true))<1.0) {
                             if (Distance(bbEntityX(mainPlayer->collider),bbEntityZ(mainPlayer->collider),bbEntityX(e->room->objects[11],true),bbEntityZ(e->room->objects[11],true)) < 12.0) {
                                 Curr106->state = 100000;
                                 bbHideEntity(Curr106->obj);
@@ -518,7 +518,7 @@ void UpdateEvent_extend_gatea_1(Event* e) {
                             }
                         }
 
-                        if (Abs(bbEntityY(mainPlayer->collider)-bbEntityY(e->room->objects[11],true))<1.0) {
+                        if (abs(bbEntityY(mainPlayer->collider)-bbEntityY(e->room->objects[11],true))<1.0) {
                             if (Distance(bbEntityX(mainPlayer->collider),bbEntityZ(mainPlayer->collider),bbEntityX(e->room->objects[11],true),bbEntityZ(e->room->objects[11],true)) < 7.0) {
                                 e->room->objects[12] = bbLoadMesh("GFX/npcs/CI/CI.b3d");
                                 bbEntityColor(e->room->objects[12], 0,0,0);
@@ -588,7 +588,7 @@ void UpdateEvent_extend_gatea_1(Event* e) {
                             }
 
                             // And SelectedEnding="" Then
-                            if (IsChannelPlaying(e->soundChannels[0])==false) {
+                            if (bbChannelPlaying(e->soundChannels[0])==false) {
                                 PlaySound2(LoadTempSound("SFX/Ending/GateA/Bell2.ogg"));
 
                                 p = CreateParticle(bbEntityX(e->room->objects[11],true),bbEntityY(mainPlayer->cam,true), bbEntityZ(e->room->objects[11],true), PARTICLE_SUN, 8.0, 0, 50);
@@ -670,7 +670,7 @@ void UpdateEvent_extend_gatea_1(Event* e) {
                             //TODO?
                             //ShouldPlay = 0
                             mainPlayer->moveSpeed = 0;
-                            if (IsChannelPlaying(e->soundChannels[0])==false) {
+                            if (bbChannelPlaying(e->soundChannels[0])==false) {
                                 //PlaySound2(IntroSFX(9)) ;Bang3
                                 //SelectedEnding = "A2"
                                 mainPlayer->godMode = 0;

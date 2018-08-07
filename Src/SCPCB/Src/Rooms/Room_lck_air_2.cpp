@@ -238,11 +238,11 @@ void UpdateEvent_lck_air_2(Event* e) {
         }
 
         if (brokendoor) {
-            if (IsChannelPlaying(e->soundChannels[1])) {
+            if (bbChannelPlaying(e->soundChannels[1])) {
                 UpdateRangedSoundOrigin(e->soundChannels[1],mainPlayer->cam,e->room->objects[ROOM_LCKA2_BROKENDOOR],5);
             }
         }
-        if (IsChannelPlaying(e->soundChannels[0])) {
+        if (bbChannelPlaying(e->soundChannels[0])) {
             UpdateRangedSoundOrigin(e->soundChannels[0],mainPlayer->cam,e->room->objects[ROOM_LCKA2_TRIGGERPIVOT],5);
         }
     } else {

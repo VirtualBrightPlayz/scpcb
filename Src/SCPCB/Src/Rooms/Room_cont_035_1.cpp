@@ -186,7 +186,7 @@ void UpdateEvent_cont_035_1(Event* e) {
                 }
             }
 
-            if (IsChannelPlaying(e->room->npc[0]->soundChannels[0])) {
+            if (bbChannelPlaying(e->room->npc[0]->soundChannels[0])) {
                 e->room->npc[0]->soundChannels[0] = LoopRangedSound(e->room->npc[0]->sounds[0], e->room->npc[0]->soundChannels[0], mainPlayer->cam, e->room->obj, 6.0);
             }
 
@@ -222,7 +222,7 @@ void UpdateEvent_cont_035_1(Event* e) {
                         }
 
                         if (e->eventState3 >-30*70) {
-                            e->eventState3 = Abs(e->eventState3)+timing->tickDuration;
+                            e->eventState3 = abs(e->eventState3)+timing->tickDuration;
                             if (e->eventState3 > 1 & e->eventState3-timing->tickDuration<=1) {
                                 e->room->npc[0]->state = 0;
                                 if (e->room->npc[0]->sounds[0]!=0) {
@@ -488,7 +488,7 @@ void UpdateEvent_cont_035_1(Event* e) {
                             }
                             e->room->npc[0]->sounds[0] = bbLoadSound("SFX/SCP/035/Escape.ogg");
                             e->room->npc[0]->soundChannels[0] = bbPlaySound(e->room->npc[0]->sounds[0]);
-                        } else if ((Abs(e->eventState3)>35*70)) {
+                        } else if (abs(e->eventState3)>35*70) {
                             if (e->room->npc[0]->sounds[0]!=0) {
                                 bbFreeSound(e->room->npc[0]->sounds[0]);
                                 e->room->npc[0]->sounds[0] = 0;
@@ -514,7 +514,7 @@ void UpdateEvent_cont_035_1(Event* e) {
                             bbPointEntity(e->room->npc[0]->obj, e->room->doors[1]->frameobj);
                             bbRotateEntity(e->room->npc[0]->collider, 0, CurveAngle(bbEntityYaw(e->room->npc[0]->obj), bbEntityYaw(e->room->npc[0]->collider), 15.0), 0);
                         } else if ((dist > 0.7)) {
-                            if (IsChannelPlaying(e->room->npc[0]->soundChannels[0])) {
+                            if (bbChannelPlaying(e->room->npc[0]->soundChannels[0])) {
                                 e->room->npc[0]->state = 0;
                                 bbPointEntity(e->room->npc[0]->obj, mainPlayer->collider);
                                 bbRotateEntity(e->room->npc[0]->collider, 0, CurveAngle(bbEntityYaw(e->room->npc[0]->obj), bbEntityYaw(e->room->npc[0]->collider), 15.0), 0);
@@ -536,8 +536,8 @@ void UpdateEvent_cont_035_1(Event* e) {
                                 do = Door::getObject(iterator154);
 
                                 if (do->typ == DOOR_TYPE_HCZ) {
-                                    if (Abs(bbEntityX(e->room->obj)-bbEntityX(do->frameobj,true))<4.5) {
-                                        if (Abs(bbEntityZ(e->room->obj)-bbEntityZ(do->frameobj,true))<4.5) {
+                                    if (abs(bbEntityX(e->room->obj)-bbEntityX(do->frameobj,true))<4.5) {
+                                        if (abs(bbEntityZ(e->room->obj)-bbEntityZ(do->frameobj,true))<4.5) {
                                             UseDoor(do,false);
                                             break;
                                         }
@@ -608,7 +608,7 @@ void UpdateEvent_cont_035_1(Event* e) {
 
                             if (!IsPlayerWearingItem(mainPlayer,"hazmatsuit3")) & (!IsPlayerWearingItem(mainPlayer,"gasmask3")) {
                                 mainPlayer->sanity895 = mainPlayer->sanity895-timing->tickDuration*1.1;
-                                mainPlayer->blurTimer = bbSin(TimeInPosMilliSecs()/10)*Abs(mainPlayer->sanity895);
+                                mainPlayer->blurTimer = bbSin(TimeInPosMilliSecs()/10)*abs(mainPlayer->sanity895);
                             }
 
                             if (!IsPlayerWearingItem(mainPlayer,"hazmatsuit3")) {

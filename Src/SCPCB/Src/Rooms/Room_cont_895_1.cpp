@@ -207,7 +207,7 @@ void UpdateEventCoffin(Event* e) {
 
                 ///WearingNightVision)
                 mainPlayer->sanity895 = mainPlayer->sanity895-(timing->tickDuration*1.1);
-                mainPlayer->blurTimer = bbSin(TimeInPosMilliSecs()/10)*Abs(mainPlayer->sanity895);
+                mainPlayer->blurTimer = bbSin(TimeInPosMilliSecs()/10)*abs(mainPlayer->sanity895);
 
                 tempF = GetAngle(bbEntityX(mainPlayer->collider,true),bbEntityZ(mainPlayer->collider,true),bbEntityX(e->room->objects[1],true),bbEntityZ(e->room->objects[1],true));
                 tempF2 = bbEntityYaw(mainPlayer->collider);
@@ -215,7 +215,7 @@ void UpdateEventCoffin(Event* e) {
 
                 bbTurnEntity(mainPlayer->collider, 0,tempF3/4,0,true);
 
-                tempF = Abs(Distance(bbEntityX(mainPlayer->collider,true),bbEntityZ(mainPlayer->collider,true),bbEntityX(e->room->objects[1],true),bbEntityZ(e->room->objects[1],true)));
+                tempF = abs(Distance(bbEntityX(mainPlayer->collider,true),bbEntityZ(mainPlayer->collider,true),bbEntityX(e->room->objects[1],true),bbEntityZ(e->room->objects[1],true)));
                 tempF2 = -60.0 * Min(Max((2.0-tempF)/2.0,0.0),1.0);
 
                 mainPlayer->headPitch = (mainPlayer->headPitch * 0.8)+(tempF2 * 0.2);

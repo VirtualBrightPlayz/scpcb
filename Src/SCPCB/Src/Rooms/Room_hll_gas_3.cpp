@@ -90,7 +90,7 @@ void UpdateEventRoom3pitduck(Event* e) {
                 }
             } else {
                 if (e->soundChannels[0] != 0) {
-                    if (IsChannelPlaying(e->soundChannels[0])) {
+                    if (bbChannelPlaying(e->soundChannels[0])) {
                         bbStopChannel(e->soundChannels[0]);
                     }
                 }

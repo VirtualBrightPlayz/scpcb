@@ -264,7 +264,7 @@ void UpdateChannelList() {
     for (int iterator19 = 0; iterator19 < SoundChannel::getListSize(); iterator19++) {
         chn = SoundChannel::getObject(iterator19);
 
-        if (!IsChannelPlaying(chn->internal)) {
+        if (!bbChannelPlaying(chn->internal)) {
             bbFreeEntity(chn->point);
             delete chn;
         } else if ((chn->camera != 0)) {
@@ -315,14 +315,6 @@ void FreeSound_SM(Sound* snd) {
     delete snd;
 }
 
-int IsChannelPlaying(gxChannel* chn) {
-    if (chn == nullptr) {
-        return false;
-    }
-
-    return bbChannelPlaying(chn);
-}
-
 gxChannel* PlayRangedSound(gxSound* soundHandle, Camera* cam, Object* entity, float range, float volume) {
     float dist;
     float panvalue;
@@ -358,7 +350,7 @@ gxChannel* PlayRangedSound_SM(Sound* snd, Camera* cam, Object* entity, float ran
 gxChannel* LoopRangedSound(gxSound* soundHandle, gxChannel* chn, Camera* cam, Object* entity, float range, float volume) {
     range = Max(range,1.0);
 
-    if (!IsChannelPlaying(chn)) {
+    if (!bbChannelPlaying(chn)) {
         chn = bbPlaySound(soundHandle);
     }
 
@@ -450,7 +442,7 @@ void PauseSounds() {
     for (int iterator20 = 0; iterator20 < SoundChannel::getListSize(); iterator20++) {
         chn = SoundChannel::getObject(iterator20);
 
-        if (IsChannelPlaying(chn->internal)) {
+        if (bbChannelPlaying(chn->internal)) {
             bbPauseChannel(chn->internal);
         }
     }
@@ -458,7 +450,7 @@ void PauseSounds() {
     for (int iterator21 = 0; iterator21 < SecurityCam::getListSize(); iterator21++) {
         sc = SecurityCam::getObject(iterator21);
 
-        if (IsChannelPlaying(sc->soundCHN)) {
+        if (bbChannelPlaying(sc->soundCHN)) {
             bbPauseChannel(sc->soundCHN);
         }
     }
@@ -466,12 +458,12 @@ void PauseSounds() {
     for (int iterator22 = 0; iterator22 < Room::getListSize(); iterator22++) {
         r = Room::getObject(iterator22);
 
-        if (IsChannelPlaying(r->soundCHN)) {
+        if (bbChannelPlaying(r->soundCHN)) {
             bbPauseChannel(r->soundCHN);
         }
 
         for (i = 0; i <= MaxRoomEmitters-1; i++) {
-            if (IsChannelPlaying(r->soundEmitterCHN[i])) {
+            if (bbChannelPlaying(r->soundEmitterCHN[i])) {
                 bbPauseChannel(r->soundEmitterCHN[i]);
             }
         }
@@ -481,7 +473,7 @@ void PauseSounds() {
         e = Event::getObject(iterator23);
 
         for (i = 0; i <= EVENT_CHANNEL_COUNT-1; i++) {
-            if (IsChannelPlaying(e->soundChannels[i])) {
+            if (bbChannelPlaying(e->soundChannels[i])) {
                 bbPauseChannel(e->soundChannels[i]);
             }
         }
@@ -491,7 +483,7 @@ void PauseSounds() {
         n = NPC::getObject(iterator24);
 
         for (i = 0; i <= NPC_CHANNEL_COUNT-1; i++) {
-            if (IsChannelPlaying(n->soundChannels[i])) {
+            if (bbChannelPlaying(n->soundChannels[i])) {
                 bbPauseChannel(n->soundChannels[i]);
             }
         }
@@ -500,12 +492,12 @@ void PauseSounds() {
     for (int iterator25 = 0; iterator25 < Emitter::getListSize(); iterator25++) {
         em = Emitter::getObject(iterator25);
 
-        if (IsChannelPlaying(em->soundCHN)) {
+        if (bbChannelPlaying(em->soundCHN)) {
             bbPauseChannel(em->soundCHN);
         }
     }
 
-    if (IsChannelPlaying(mainPlayer->breathChn)) {
+    if (bbChannelPlaying(mainPlayer->breathChn)) {
         bbPauseChannel(mainPlayer->breathChn);
     }
 }
@@ -522,7 +514,7 @@ void ResumeSounds() {
     for (int iterator26 = 0; iterator26 < SoundChannel::getListSize(); iterator26++) {
         chn = SoundChannel::getObject(iterator26);
 
-        if (IsChannelPlaying(chn->internal)) {
+        if (bbChannelPlaying(chn->internal)) {
             bbResumeChannel(chn->internal);
         }
     }
@@ -530,7 +522,7 @@ void ResumeSounds() {
     for (int iterator27 = 0; iterator27 < SecurityCam::getListSize(); iterator27++) {
         sc = SecurityCam::getObject(iterator27);
 
-        if (IsChannelPlaying(sc->soundCHN)) {
+        if (bbChannelPlaying(sc->soundCHN)) {
             bbResumeChannel(sc->soundCHN);
         }
     }
@@ -538,12 +530,12 @@ void ResumeSounds() {
     for (int iterator28 = 0; iterator28 < Room::getListSize(); iterator28++) {
         r = Room::getObject(iterator28);
 
-        if (IsChannelPlaying(r->soundCHN)) {
+        if (bbChannelPlaying(r->soundCHN)) {
             bbResumeChannel(r->soundCHN);
         }
 
         for (i = 0; i <= MaxRoomEmitters-1; i++) {
-            if (IsChannelPlaying(r->soundEmitterCHN[i])) {
+            if (bbChannelPlaying(r->soundEmitterCHN[i])) {
                 bbResumeChannel(r->soundEmitterCHN[i]);
             }
         }
@@ -553,7 +545,7 @@ void ResumeSounds() {
         e = Event::getObject(iterator29);
 
         for (i = 0; i <= EVENT_CHANNEL_COUNT-1; i++) {
-            if (IsChannelPlaying(e->soundChannels[i])) {
+            if (bbChannelPlaying(e->soundChannels[i])) {
                 bbResumeChannel(e->soundChannels[i]);
             }
         }
@@ -563,7 +555,7 @@ void ResumeSounds() {
         n = NPC::getObject(iterator30);
 
         for (i = 0; i <= NPC_CHANNEL_COUNT-1; i++) {
-            if (IsChannelPlaying(n->soundChannels[i])) {
+            if (bbChannelPlaying(n->soundChannels[i])) {
                 bbResumeChannel(n->soundChannels[i]);
             }
         }
@@ -572,12 +564,12 @@ void ResumeSounds() {
     for (int iterator31 = 0; iterator31 < Emitter::getListSize(); iterator31++) {
         em = Emitter::getObject(iterator31);
 
-        if (IsChannelPlaying(em->soundCHN)) {
+        if (bbChannelPlaying(em->soundCHN)) {
             bbResumeChannel(em->soundCHN);
         }
     }
 
-    if (IsChannelPlaying(mainPlayer->breathChn)) {
+    if (bbChannelPlaying(mainPlayer->breathChn)) {
         bbResumeChannel(mainPlayer->breathChn);
     }
 }
@@ -594,7 +586,7 @@ void StopSounds() {
     for (int iterator32 = 0; iterator32 < SoundChannel::getListSize(); iterator32++) {
         chn = SoundChannel::getObject(iterator32);
 
-        if (IsChannelPlaying(chn->internal)) {
+        if (bbChannelPlaying(chn->internal)) {
             bbStopChannel(chn->internal);
         }
     }
@@ -602,7 +594,7 @@ void StopSounds() {
     for (int iterator33 = 0; iterator33 < SecurityCam::getListSize(); iterator33++) {
         sc = SecurityCam::getObject(iterator33);
 
-        if (IsChannelPlaying(sc->soundCHN)) {
+        if (bbChannelPlaying(sc->soundCHN)) {
             bbStopChannel(sc->soundCHN);
         }
     }
@@ -610,12 +602,12 @@ void StopSounds() {
     for (int iterator34 = 0; iterator34 < Room::getListSize(); iterator34++) {
         r = Room::getObject(iterator34);
 
-        if (IsChannelPlaying(r->soundCHN)) {
+        if (bbChannelPlaying(r->soundCHN)) {
             bbStopChannel(r->soundCHN);
         }
 
         for (i = 0; i <= MaxRoomEmitters-1; i++) {
-            if (IsChannelPlaying(r->soundEmitterCHN[i])) {
+            if (bbChannelPlaying(r->soundEmitterCHN[i])) {
                 bbStopChannel(r->soundEmitterCHN[i]);
             }
         }
@@ -625,7 +617,7 @@ void StopSounds() {
         e = Event::getObject(iterator35);
 
         for (i = 0; i <= EVENT_CHANNEL_COUNT-1; i++) {
-            if (IsChannelPlaying(e->soundChannels[i])) {
+            if (bbChannelPlaying(e->soundChannels[i])) {
                 bbStopChannel(e->soundChannels[i]);
             }
         }
@@ -635,7 +627,7 @@ void StopSounds() {
         n = NPC::getObject(iterator36);
 
         for (i = 0; i <= NPC_CHANNEL_COUNT-1; i++) {
-            if (IsChannelPlaying(n->soundChannels[i])) {
+            if (bbChannelPlaying(n->soundChannels[i])) {
                 bbStopChannel(n->soundChannels[i]);
             }
         }
@@ -644,12 +636,12 @@ void StopSounds() {
     for (int iterator37 = 0; iterator37 < Emitter::getListSize(); iterator37++) {
         em = Emitter::getObject(iterator37);
 
-        if (IsChannelPlaying(em->soundCHN)) {
+        if (bbChannelPlaying(em->soundCHN)) {
             bbStopChannel(em->soundCHN);
         }
     }
 
-    if (IsChannelPlaying(mainPlayer->breathChn)) {
+    if (bbChannelPlaying(mainPlayer->breathChn)) {
         bbStopChannel(mainPlayer->breathChn);
     }
 }
@@ -778,7 +770,7 @@ void UpdateMusic() {
         musicManager->currMusicVolume = userOptions->musicVolume;
     }
 
-    if (!IsChannelPlaying(musicManager->channel)) {
+    if (!bbChannelPlaying(musicManager->channel)) {
         musicManager->channel = bbPlaySound(musicManager->currMusic);
     }
 

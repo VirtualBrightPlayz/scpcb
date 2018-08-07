@@ -372,8 +372,8 @@ void UpdateGame() {
                     if (mainPlayer->sanity895 < (-200)) {
                         darkA = Max(Min((-mainPlayer->sanity895 - 200) / 700.0, 0.6), darkA);
                         if (!mainPlayer->dead) {
-                            //HeartBeatVolume = Min(Abs(mainPlayer\sanity895+200)/500.0,1.0)
-                            mainPlayer->heartbeatIntensity = Max(70 + Abs(mainPlayer->sanity895+200)/6.0,mainPlayer->heartbeatIntensity);
+                            //HeartBeatVolume = Min(abs(mainPlayer\sanity895+200)/500.0,1.0)
+                            mainPlayer->heartbeatIntensity = Max(70 + abs(mainPlayer->sanity895+200)/6.0,mainPlayer->heartbeatIntensity);
                         }
                     }
                 }
@@ -393,11 +393,11 @@ void UpdateGame() {
 
                 if (mainPlayer->blinkTimer < 0) {
                     if (mainPlayer->blinkTimer > - 5) {
-                        darkA = Max(darkA, bbSin(Abs(mainPlayer->blinkTimer * 18.0)));
+                        darkA = Max(darkA, bbSin(abs(mainPlayer->blinkTimer * 18.0)));
                     } else if ((mainPlayer->blinkTimer > - 15)) {
                         darkA = 1.0;
                     } else {
-                        darkA = Max(darkA, Abs(bbSin(mainPlayer->blinkTimer * 18.0)));
+                        darkA = Max(darkA, abs(bbSin(mainPlayer->blinkTimer * 18.0)));
                     }
 
                     if (mainPlayer->blinkTimer <= - 20) {
@@ -452,14 +452,14 @@ void UpdateGame() {
                     mainPlayer->selectedItem = nullptr;
                     SelectedScreen = nullptr;
                     SelectedMonitor = nullptr;
-                    //mainPlayer\blurTimer = Abs(mainPlayer\fallTimer*5)
+                    //mainPlayer\blurTimer = abs(mainPlayer\fallTimer*5)
                     //mainPlayer\fallTimer=mainPlayer\fallTimer-(timing\tickDuration*0.8)
                     if (mainPlayer->fallTimer < - 360) {
                         CurrGameState = GAMESTATE_PAUSED;
                         //TODO: fix
                         //If (SelectedEnding <> "") Then EndingTimer = Min(mainPlayer\fallTimer,-0.1)
                     }
-                    darkA = Max(darkA, Min(Abs(mainPlayer->fallTimer / 400.0), 1.0));
+                    darkA = Max(darkA, Min(abs(mainPlayer->fallTimer / 400.0), 1.0));
                 }
 
                 if (mainPlayer->fallTimer < 0) {
@@ -467,9 +467,9 @@ void UpdateGame() {
                     mainPlayer->selectedItem = nullptr;
                     SelectedScreen = nullptr;
                     SelectedMonitor = nullptr;
-                    mainPlayer->blurTimer = Abs(mainPlayer->fallTimer*10);
+                    mainPlayer->blurTimer = abs(mainPlayer->fallTimer*10);
                     mainPlayer->fallTimer = mainPlayer->fallTimer-timing->tickDuration;
-                    darkA = Max(darkA, Min(Abs(mainPlayer->fallTimer / 400.0), 1.0));
+                    darkA = Max(darkA, Min(abs(mainPlayer->fallTimer / 400.0), 1.0));
                 }
 
                 if (mainPlayer->selectedItem != nullptr) {
@@ -1278,13 +1278,13 @@ void UpdatePauseMenu() {
                         for (int iterator66 = 0; iterator66 < Room::getListSize(); iterator66++) {
                             r = Room::getObject(iterator66);
 
-                            x = (int)(Abs(bbEntityX(mainPlayer->collider) - bbEntityX(r->obj)));
-                            z = (int)(Abs(bbEntityZ(mainPlayer->collider) - bbEntityZ(r->obj)));
+                            x = (int)(abs(bbEntityX(mainPlayer->collider) - bbEntityX(r->obj)));
+                            z = (int)(abs(bbEntityZ(mainPlayer->collider) - bbEntityZ(r->obj)));
 
                             if (x < 12.0 & z < 12.0) {
                                 //MapFound(Floor(EntityX(r\obj) / 8.0), Floor(EntityZ(r\obj) / 8.0)) = Max(MapFound(Floor(EntityX(r\obj) / 8.0), Floor(EntityZ(r\obj) / 8.0)), 1)
                                 if (x < 4.0 & z < 4.0) {
-                                    if (Abs(bbEntityY(mainPlayer->collider) - bbEntityY(r->obj)) < 1.5) {
+                                    if (abs(bbEntityY(mainPlayer->collider) - bbEntityY(r->obj)) < 1.5) {
                                         mainPlayer->currRoom = r;
                                     }
                                     //MapFound(Floor(EntityX(r\obj) / 8.0), Floor(EntityZ(r\obj) / 8.0)) = 1
@@ -1334,13 +1334,13 @@ void UpdatePauseMenu() {
                     for (int iterator67 = 0; iterator67 < Room::getListSize(); iterator67++) {
                         r = Room::getObject(iterator67);
 
-                        x = (int)(Abs(bbEntityX(mainPlayer->collider) - bbEntityX(r->obj)));
-                        z = (int)(Abs(bbEntityZ(mainPlayer->collider) - bbEntityZ(r->obj)));
+                        x = (int)(abs(bbEntityX(mainPlayer->collider) - bbEntityX(r->obj)));
+                        z = (int)(abs(bbEntityZ(mainPlayer->collider) - bbEntityZ(r->obj)));
 
                         if (x < 12.0 & z < 12.0) {
                             //MapFound(Floor(EntityX(r\obj) / 8.0), Floor(EntityZ(r\obj) / 8.0)) = Max(MapFound(Floor(EntityX(r\obj) / 8.0), Floor(EntityZ(r\obj) / 8.0)), 1)
                             if (x < 4.0 & z < 4.0) {
-                                if (Abs(bbEntityY(mainPlayer->collider) - bbEntityY(r->obj)) < 1.5) {
+                                if (abs(bbEntityY(mainPlayer->collider) - bbEntityY(r->obj)) < 1.5) {
                                     mainPlayer->currRoom = r;
                                 }
                                 //MapFound(Floor(EntityX(r\obj) / 8.0), Floor(EntityZ(r\obj) / 8.0)) = 1

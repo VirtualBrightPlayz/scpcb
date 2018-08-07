@@ -102,7 +102,7 @@ void UpdateEventToiletguard(Event* e) {
                 e->soundChannels[1] = PlayRangedSound(e->room->npc[0]->sounds[0], mainPlayer->cam, e->room->npc[0]->collider, 15.0);
             }
             UpdateRangedSoundOrigin(e->soundChannels[1],mainPlayer->cam,e->room->npc[0]->collider,15.0);
-            if (!IsChannelPlaying(e->soundChannels[1])) {
+            if (!bbChannelPlaying(e->soundChannels[1])) {
                 RemoveEvent(e);
             }
         }
@@ -144,7 +144,7 @@ void UpdateEventButtghost(Event* e) {
                 e->soundChannels[0] = PlayRangedSound(LoadTempSound("SFX/SCP/Joke/789J.ogg"), mainPlayer->cam,e->room->objects[0]);
                 e->eventState = 1;
             } else {
-                if (!IsChannelPlaying(e->soundChannels[0])) {
+                if (!bbChannelPlaying(e->soundChannels[0])) {
                     RemoveEvent(e);
                 }
             }

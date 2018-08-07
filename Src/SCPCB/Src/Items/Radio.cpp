@@ -36,11 +36,11 @@ Radio* CreateRadio() {
 }
 
 void ChangeRadioChannel(int newChn) {
-    if (IsChannelPlaying(radio->channels[radio->currChn])) {
+    if (bbChannelPlaying(radio->channels[radio->currChn])) {
         bbPauseChannel(radio->channels[radio->currChn]);
     }
 
-    if (!IsChannelPlaying(radio->channels[newChn])) {
+    if (!bbChannelPlaying(radio->channels[newChn])) {
         radio->channels[newChn] = bbPlaySound(radio->sndStatic);
     } else {
         bbResumeChannel(radio->channels[newChn]);

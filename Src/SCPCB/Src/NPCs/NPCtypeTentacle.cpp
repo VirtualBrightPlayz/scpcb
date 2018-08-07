@@ -88,7 +88,7 @@ void UpdateNPCtypeTentacle(NPC* n) {
 
                     if (n->frame>=5 & n->frame<6) {
                         if (n->playerDistance < 1.8) {
-                            if (Abs(bbDeltaYaw(n->collider, mainPlayer->collider))<20) {
+                            if (abs(bbDeltaYaw(n->collider, mainPlayer->collider))<20) {
                                 if (IsPlayerWearingItem(mainPlayer,"hazmatsuit")) {
                                     mainPlayer->injuries = mainPlayer->injuries+bbRnd(0.5);
                                     PlaySound2(LoadTempSound("SFX/General/BodyFall.ogg"));

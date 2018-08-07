@@ -124,7 +124,7 @@ void UpdateNPCtype939(NPC* n) {
                     PlayRangedSound(sndManager->footstepMetal[bbRand(0,7)]->internal, mainPlayer->cam, n->collider, 12.0);
                     if (bbRand(10)==1) {
                         temp = false;
-                        if (!IsChannelPlaying(n->soundChannels[0])) {
+                        if (!bbChannelPlaying(n->soundChannels[0])) {
                             temp = true;
                         }
                         if (temp) {

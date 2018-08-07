@@ -76,9 +76,9 @@ void UpdateNPCtypeApache(NPC* n) {
             bbTurnEntity(n->obj3,20.0*timing->tickDuration,0,0);
 
             if (n->state==1 & (!NoTarget)) {
-                if (Abs(bbEntityX(mainPlayer->collider)-bbEntityX(n->collider))< 30.0) {
-                    if (Abs(bbEntityZ(mainPlayer->collider)-bbEntityZ(n->collider))<30.0) {
-                        if (Abs(bbEntityY(mainPlayer->collider)-bbEntityY(n->collider))<20.0) {
+                if (abs(bbEntityX(mainPlayer->collider)-bbEntityX(n->collider))< 30.0) {
+                    if (abs(bbEntityZ(mainPlayer->collider)-bbEntityZ(n->collider))<30.0) {
+                        if (abs(bbEntityY(mainPlayer->collider)-bbEntityY(n->collider))<20.0) {
                             if (bbRand(20)==1) {
                                 if (bbEntityVisible(mainPlayer->collider, n->collider)) {
                                     n->state = 2;
@@ -107,9 +107,9 @@ void UpdateNPCtypeApache(NPC* n) {
             bbTurnEntity(n->obj2,0,20.0*timing->tickDuration,0);
             bbTurnEntity(n->obj3,20.0*timing->tickDuration,0,0);
 
-            if (Abs(bbEntityX(target)-bbEntityX(n->collider)) < 55.0) {
-                if (Abs(bbEntityZ(target)-bbEntityZ(n->collider)) < 55.0) {
-                    if (Abs(bbEntityY(target)-bbEntityY(n->collider))< 20.0) {
+            if (abs(bbEntityX(target)-bbEntityX(n->collider)) < 55.0) {
+                if (abs(bbEntityZ(target)-bbEntityZ(n->collider)) < 55.0) {
+                    if (abs(bbEntityY(target)-bbEntityY(n->collider))< 20.0) {
                         bbPointEntity(n->obj, target);
                         bbRotateEntity(n->collider, CurveAngle(Min(WrapAngle(bbEntityPitch(n->obj)),40.0),bbEntityPitch(n->collider),40.0), CurveAngle(bbEntityYaw(n->obj),bbEntityYaw(n->collider),90.0), bbEntityRoll(n->collider), true);
                         bbPositionEntity(n->collider, bbEntityX(n->collider), CurveValue(bbEntityY(target)+8.0,bbEntityY(n->collider),70.0), bbEntityZ(n->collider));

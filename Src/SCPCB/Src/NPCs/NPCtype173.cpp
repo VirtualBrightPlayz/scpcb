@@ -143,9 +143,9 @@ void UpdateNPCtype173(NPC* n) {
 
                                 //w\door=Null And (TODO: fix?)
                                 if (bbRand(5)==1) {
-                                    x = Abs(bbEntityX(mainPlayer->collider) - bbEntityX(w->obj, true));
+                                    x = abs(bbEntityX(mainPlayer->collider) - bbEntityX(w->obj, true));
                                     if (x < 25.0 && x > 15.0) {
-                                        z = Abs(bbEntityZ(mainPlayer->collider)-bbEntityZ(w->obj,true));
+                                        z = abs(bbEntityZ(mainPlayer->collider)-bbEntityZ(w->obj,true));
                                         if (z < 25 && z > 15.0) {
                                             std::cout << "MOVING 173 TO " + w->room->roomTemplate->name;
                                             bbPositionEntity(n->collider, bbEntityX(w->obj,true), bbEntityY(w->obj,true)+0.25,bbEntityZ(w->obj,true));
@@ -173,8 +173,8 @@ void UpdateNPCtype173(NPC* n) {
                             if ((!d->locked) && d->open == false && d->code.isEmpty() && d->tag.isEmpty()) {
                                 for (i = 0; i <= 1; i++) {
                                     if (d->buttons[i] != 0) {
-                                        if (Abs(bbEntityX(n->collider) - bbEntityX(d->buttons[i])) < 0.5) {
-                                            if (Abs(bbEntityZ(n->collider) - bbEntityZ(d->buttons[i])) < 0.5) {
+                                        if (abs(bbEntityX(n->collider) - bbEntityX(d->buttons[i])) < 0.5) {
+                                            if (abs(bbEntityZ(n->collider) - bbEntityZ(d->buttons[i])) < 0.5) {
                                                 if (d->openstate >= 180 | d->openstate <= 0) {
                                                     if (bbDeltaYaw(n->collider, d->buttons[i]) < 60 && bbDeltaYaw(d->buttons[i], n->collider) < 60) {
                                                         PlaySound2(LoadTempSound("SFX/Door/DoorOpen173.ogg"));

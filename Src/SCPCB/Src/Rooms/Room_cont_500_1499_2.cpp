@@ -85,7 +85,7 @@ void UpdateEvent_cont_500_1499_2(Event* e) {
                 bbEntityFX(de->obj,1);
                 e->eventState = 1.0;
             } else if ((e->eventState == 1.0)) {
-                if (!IsChannelPlaying(e->soundChannels[0])) {
+                if (!bbChannelPlaying(e->soundChannels[0])) {
                     e->eventState = 2.0;
                     e->room->doors[0]->locked = false;
                 } else {

@@ -406,13 +406,13 @@ void UpdateItems() {
                             ztemp = (bbEntityZ(i2->collider,true)-bbEntityZ(i->collider,true));
 
                             ed = (xtemp*xtemp+ztemp*ztemp);
-                            if (ed<0.07 & Abs(ytemp)<0.25) {
+                            if (ed<0.07 & abs(ytemp)<0.25) {
                                 //items are too close together, push away
 
                                 xtemp = xtemp*(0.07-ed);
                                 ztemp = ztemp*(0.07-ed);
 
-                                while (Abs(xtemp)+Abs(ztemp)<0.001) {
+                                while (abs(xtemp)+abs(ztemp)<0.001) {
                                     xtemp = xtemp+bbRnd(-0.002,0.002);
                                     ztemp = ztemp+bbRnd(-0.002,0.002);
                                 }

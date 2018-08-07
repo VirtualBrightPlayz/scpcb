@@ -102,7 +102,7 @@ void UpdateNPCtype1499(NPC* n) {
                     n->state = 2;
                     n->state2 = 0;
 
-                    if (!IsChannelPlaying(n->soundChannels[0])) {
+                    if (!bbChannelPlaying(n->soundChannels[0])) {
                         if (n->playerDistance < 20.0) {
                             if (n->sounds[0] != 0) {
                                 bbFreeSound(n->sounds[0]);
@@ -202,7 +202,7 @@ void UpdateNPCtype1499(NPC* n) {
                 if (n->state2 == 1) {
                     AnimateNPC(n,63,100,0.6,false);
                     if (prevFrame < 89 & n->frame>=89) {
-                        if (n->playerDistance > 0.85 | Abs(bbDeltaYaw(n->collider,mainPlayer->collider))>60.0) {
+                        if (n->playerDistance > 0.85 | abs(bbDeltaYaw(n->collider,mainPlayer->collider))>60.0) {
                             //Miss
                         } else {
                             mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.75,1.5);
@@ -227,7 +227,7 @@ void UpdateNPCtype1499(NPC* n) {
                 } else {
                     AnimateNPC(n,168,202,0.6,false);
                     if (prevFrame < 189 & n->frame>=189) {
-                        if (n->playerDistance > 0.85 | Abs(bbDeltaYaw(n->collider,mainPlayer->collider))>60.0) {
+                        if (n->playerDistance > 0.85 | abs(bbDeltaYaw(n->collider,mainPlayer->collider))>60.0) {
                             //Miss
                         } else {
                             mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.75,1.5);
@@ -265,7 +265,7 @@ void UpdateNPCtype1499(NPC* n) {
             }
         }
 
-        if (n->soundChannels[0] != 0 & IsChannelPlaying(n->soundChannels[0])) {
+        if (n->soundChannels[0] != 0 & bbChannelPlaying(n->soundChannels[0])) {
             UpdateRangedSoundOrigin(n->soundChannels[0],mainPlayer->cam,n->collider,20.0);
         }
 

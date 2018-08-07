@@ -107,7 +107,7 @@ void UpdateEvent_test_682_2(Event* e) {
                 bbMoveEntity(e->room->objects[7],0,-0.008*timing->tickDuration,0);
                 bbTFormPoint(bbEntityX(e->room->objects[7]),bbEntityY(e->room->objects[7]),bbEntityZ(e->room->objects[7]),0,e->room->obj);
 
-                if (Abs(bbTFormedX())>725) {
+                if (abs(bbTFormedX())>725) {
                     bbFreeEntity(e->room->objects[7]);
                     e->room->objects[7] = 0;
                     e->eventState = e->eventState *2;

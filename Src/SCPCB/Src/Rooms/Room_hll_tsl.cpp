@@ -112,7 +112,7 @@ void UpdateEvent_tesla(Event* e) {
             }
 
             if (e->room->dist < 8) {
-                if (!IsChannelPlaying(e->soundChannels[0])) {
+                if (!bbChannelPlaying(e->soundChannels[0])) {
                     e->soundChannels[0] = PlayRangedSound_SM(sndManager->teslaIdle, mainPlayer->cam, e->room->objects[3],4.0,0.5);
                 }
             }
@@ -227,8 +227,8 @@ void UpdateEvent_tesla(Event* e) {
                     n = NPC::getObject(iterator186);
 
                     if (n->npcType == NPCtypeMTF) {
-                        if (Abs(bbEntityX(n->collider)-bbEntityX(e->room->obj,true))<4.0) {
-                            if (Abs(bbEntityZ(n->collider)-bbEntityZ(e->room->obj,true))<4.0) {
+                        if (abs(bbEntityX(n->collider)-bbEntityX(e->room->obj,true))<4.0) {
+                            if (abs(bbEntityZ(n->collider)-bbEntityZ(e->room->obj,true))<4.0) {
                                 temp = true;
                                 if (e->eventState2 == 0) {
                                     n->sounds[0] = bbLoadSound("SFX/Character/MTF/Tesla0.ogg");

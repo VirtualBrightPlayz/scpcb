@@ -87,7 +87,7 @@ void UpdateNPCtype096(NPC* n) {
                     if (n->soundChannels[1] == 0) {
                         n->soundChannels[1] = bbPlaySound(n->sounds[1]);
                     } else {
-                        if (!IsChannelPlaying(n->soundChannels[1])) {
+                        if (!bbChannelPlaying(n->soundChannels[1])) {
                             n->soundChannels[1] = bbPlaySound(n->sounds[1]);
                         }
                         bbChannelVolume(n->soundChannels[1], Min(Max(8.0-n->playerDistance,0.6),1.0)*userOptions->sndVolume);

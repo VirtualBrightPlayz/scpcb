@@ -261,7 +261,7 @@ void UpdateEvent_test_860_2(Event* e) {
 
             if (bbEntityYaw(e->room->objects[3])==0.0) {
                 bbHideEntity(fr->forest_Pivot);
-                if (Abs(Distance(bbEntityX(e->room->objects[3],true),bbEntityZ(e->room->objects[3],true),bbEntityX(mainPlayer->collider,true),bbEntityZ(mainPlayer->collider,true)))<1.0) {
+                if (abs(Distance(bbEntityX(e->room->objects[3],true),bbEntityZ(e->room->objects[3],true),bbEntityX(mainPlayer->collider,true),bbEntityZ(mainPlayer->collider,true)))<1.0) {
                     DrawHandIcon = true;
 
                     if (mainPlayer->selectedItem == nullptr) {
@@ -942,12 +942,12 @@ void UpdateForest(Forest* fr, int ent) {
     //local variables
     int tx;
     int ty;
-    if (Abs(bbEntityY(ent,true)-bbEntityY(fr->forest_Pivot,true))<12.0) {
+    if (abs(bbEntityY(ent,true)-bbEntityY(fr->forest_Pivot,true))<12.0) {
         for (tx = 0; tx <= gridsize-1; tx++) {
             for (ty = 0; ty <= gridsize-1; ty++) {
                 if (fr->tileEntities[tx+(ty*gridsize)]!=0) {
-                    if (Abs(bbEntityX(ent,true)-bbEntityX(fr->tileEntities[tx+(ty*gridsize)],true))<20.0) {
-                        if (Abs(bbEntityZ(ent,true)-bbEntityZ(fr->tileEntities[tx+(ty*gridsize)],true))<20.0) {
+                    if (abs(bbEntityX(ent,true)-bbEntityX(fr->tileEntities[tx+(ty*gridsize)],true))<20.0) {
+                        if (abs(bbEntityZ(ent,true)-bbEntityZ(fr->tileEntities[tx+(ty*gridsize)],true))<20.0) {
                             bbShowEntity(fr->tileEntities[tx+(ty*gridsize)]);
                         } else {
                             bbHideEntity(fr->tileEntities[tx+(ty*gridsize)]);

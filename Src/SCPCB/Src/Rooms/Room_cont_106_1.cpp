@@ -175,7 +175,7 @@ void UpdateEvent_cont_106_1(Event* e) {
         if (e->eventState == 1) {
             e->eventState3 = Min(e->eventState3+timing->tickDuration,4000);
         }
-        if (!IsChannelPlaying(e->soundChannels[0])) {
+        if (!bbChannelPlaying(e->soundChannels[0])) {
             e->soundChannels[0] = bbPlaySound(RadioStatic);
         }
     }
@@ -238,11 +238,11 @@ void UpdateEvent_cont_106_1(Event* e) {
             SoundTransmission = e->room->levers[1]->succ;
         }
         if (!SoundTransmission) {
-            if (IsChannelPlaying(e->soundChannels[1])) {
+            if (bbChannelPlaying(e->soundChannels[1])) {
                 bbStopChannel(e->soundChannels[1]);
             }
 
-            if (IsChannelPlaying(e->soundChannels[0])) {
+            if (bbChannelPlaying(e->soundChannels[0])) {
                 bbStopChannel(e->soundChannels[0]);
             }
         }
@@ -253,7 +253,7 @@ void UpdateEvent_cont_106_1(Event* e) {
                     LoadEventSound(e,"SFX/Character/LureSubject/Idle"+String(bbRand(1,6))+".ogg",1);
                     e->soundChannels[1] = bbPlaySound(e->sounds[1]);
                 }
-                if (IsChannelPlaying(e->soundChannels[1]) == false) {
+                if (bbChannelPlaying(e->soundChannels[1]) == false) {
                     LoadEventSound(e,"SFX/Character/LureSubject/Idle"+String(bbRand(1,6))+".ogg",1);
                     e->soundChannels[1] = bbPlaySound(e->sounds[1]);
                 }
@@ -265,7 +265,7 @@ void UpdateEvent_cont_106_1(Event* e) {
                 e->eventState = 1;
                 //only play sounds if transmission is on
                 if (SoundTransmission == true) {
-                    if (IsChannelPlaying(e->soundChannels[1])) {
+                    if (bbChannelPlaying(e->soundChannels[1])) {
                         bbStopChannel(e->soundChannels[1]);
                     }
 
@@ -279,7 +279,7 @@ void UpdateEvent_cont_106_1(Event* e) {
                     LoadEventSound(e,"SFX/Character/LureSubject/Sniffling.ogg",1);
                     e->soundChannels[1] = bbPlaySound(e->sounds[1]);
                 }
-                if (IsChannelPlaying(e->soundChannels[1]) == false) {
+                if (bbChannelPlaying(e->soundChannels[1]) == false) {
                     LoadEventSound(e,"SFX/Character/LureSubject/Sniffling.ogg",1);
                     e->soundChannels[1] = bbPlaySound(e->sounds[1]);
                 }
@@ -314,7 +314,7 @@ void UpdateEvent_cont_106_1(Event* e) {
                     d->size = 0.1;
                     d->sizeChange = 0.003;
 
-                    if (IsChannelPlaying(e->soundChannels[1])) {
+                    if (bbChannelPlaying(e->soundChannels[1])) {
                         bbStopChannel(e->soundChannels[1]);
                     }
 

@@ -181,8 +181,6 @@ class gxChannel* PlaySound_SM(Sound* snd);
 
 void FreeSound_SM(Sound* snd);
 
-int IsChannelPlaying(class gxChannel* chn);
-
 class gxChannel* PlayRangedSound(class gxSound* soundHandle, class Camera* cam, class Object* entity, float range = 10.0f, float volume = 1.0f);
 
 class gxChannel* PlayRangedSound_SM(Sound* snd, class Camera* cam, class Object* entity, float range = 10, float volume = 1.0);

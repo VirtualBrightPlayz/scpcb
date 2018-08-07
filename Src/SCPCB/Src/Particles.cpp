@@ -176,7 +176,7 @@ void UpdateEmitters() {
                 if (IsPlayerWearingItem(mainPlayer,"gasmask") & IsPlayerWearingItem(mainPlayer,"hazmatsuit")) {
                     dist = Distance(bbEntityX(mainPlayer->cam, true), bbEntityZ(mainPlayer->cam, true), bbEntityX(e->obj, true), bbEntityZ(e->obj, true));
                     if (dist < 0.8) {
-                        if (Abs(bbEntityY(mainPlayer->cam, true)-bbEntityY(e->obj,true))<5.0) {
+                        if (abs(bbEntityY(mainPlayer->cam, true)-bbEntityY(e->obj,true))<5.0) {
                             InSmoke = true;
                         }
                     }
@@ -197,7 +197,7 @@ void UpdateEmitters() {
 
         if (!mainPlayer->dead) {
             if (bbRand(150) == 1) {
-                //If (Not IsChannelPlaying(CoughCHN)) Then CoughCHN = PlaySound2(mainPlayer\coughSFX[Rand(0, 2)))
+                //If (Not bbChannelPlaying(CoughCHN)) Then CoughCHN = PlaySound2(mainPlayer\coughSFX[Rand(0, 2)))
             }
         }
 
@@ -236,7 +236,7 @@ Emitter* CreateEmitter(float x, float y, float z, int emittertype) {
     for (int iterator101 = 0; iterator101 < Room::getListSize(); iterator101++) {
         r = Room::getObject(iterator101);
 
-        if (Abs(bbEntityX(e->obj) - bbEntityX(r->obj)) < 4.0 & Abs(bbEntityZ(e->obj) - bbEntityZ(r->obj)) < 4.0) {
+        if (abs(bbEntityX(e->obj) - bbEntityX(r->obj)) < 4.0 & abs(bbEntityZ(e->obj) - bbEntityZ(r->obj)) < 4.0) {
             e->room = r;
         }
     }

@@ -125,7 +125,7 @@ void UpdateEvent_cont_079_1(Event* e) {
                 }
             } else if ((e->eventState == 3)) {
                 if (e->eventState < 3500) {
-                    if (IsChannelPlaying(e->soundChannels[0])) {
+                    if (bbChannelPlaying(e->soundChannels[0])) {
                         if (bbRand(3) == 1) {
                             // TODO: Make the texture members of the struct.
                             //EntityTexture(e\room\objects[1], OldAiPics(0))

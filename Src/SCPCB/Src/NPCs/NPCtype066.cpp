@@ -37,8 +37,8 @@ void UpdateNPCtype066(NPC* n) {
                         w = WayPoint::getObject(iterator123);
 
                         //If (w\door = Null) Then ;TODO: fix?
-                        if (Abs(bbEntityX(w->obj,true)-bbEntityX(n->collider))<4.0) {
-                            if (Abs(bbEntityZ(w->obj,true)-bbEntityZ(n->collider))<4.0) {
+                        if (abs(bbEntityX(w->obj,true)-bbEntityX(n->collider))<4.0) {
+                            if (abs(bbEntityZ(w->obj,true)-bbEntityZ(n->collider))<4.0) {
                                 bbPositionEntity(n->collider, bbEntityX(w->obj,true), bbEntityY(w->obj,true)+0.3, bbEntityZ(w->obj,true));
                                 bbResetEntity(n->collider);
                                 break;
@@ -116,8 +116,8 @@ void UpdateNPCtype066(NPC* n) {
                                     d = Door::getObject(iterator124);
 
                                     if (d->locked == false && d->tag.isEmpty() && d->code.isEmpty()) {
-                                        if (Abs(bbEntityX(d->frameobj)-bbEntityX(n->collider))<16.0) {
-                                            if (Abs(bbEntityZ(d->frameobj)-bbEntityZ(n->collider))<16.0) {
+                                        if (abs(bbEntityX(d->frameobj)-bbEntityX(n->collider))<16.0) {
+                                            if (abs(bbEntityZ(d->frameobj)-bbEntityZ(n->collider))<16.0) {
                                                 UseDoor(d, false);
                                             }
                                         }
@@ -195,7 +195,7 @@ void UpdateNPCtype066(NPC* n) {
             n->sounds[0] = bbLoadSound("SFX/SCP/066/Rolling.ogg");
         }
         if (n->soundChannels[0]!=0) {
-            if (IsChannelPlaying(n->soundChannels[0])) {
+            if (bbChannelPlaying(n->soundChannels[0])) {
                 n->soundChannels[0] = LoopRangedSound(n->sounds[0], n->soundChannels[0], mainPlayer->cam, n->collider, 20);
             }
         } else {
@@ -204,7 +204,7 @@ void UpdateNPCtype066(NPC* n) {
     }
 
     //If (n\soundChannels[1]<>0) Then
-    //	If (IsChannelPlaying(n\soundChannels[1])) Then
+    //	If (bbChannelPlaying(n\soundChannels[1])) Then
     //		n\soundChannels[1] = LoopRangedSound(n\sounds[1], n\soundChannels[1], mainPlayer\cam, n\collider, 20)
     //		mainPlayer\blurTimer = Max((5.0-dist)*300,0)
     //	EndIf
@@ -218,7 +218,7 @@ void UpdateNPCtype066(NPC* n) {
         //HeartBeatVolume = Max(HeartBeatVolume,Min(n\state3/1000,1.0))
     }
 
-    if (IsChannelPlaying(n->soundChannels[1])) {
+    if (bbChannelPlaying(n->soundChannels[1])) {
         mainPlayer->blurTimer = Max((5.0-n->playerDistance)*300,0);
     }
 

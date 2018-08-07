@@ -107,7 +107,7 @@ void RemoveEvent(Event* e) {
 
     for (i = 0; i <= EVENT_CHANNEL_COUNT-1; i++) {
         if (e->soundChannels[i] != 0) {
-            if (IsChannelPlaying(e->soundChannels[i])) {
+            if (bbChannelPlaying(e->soundChannels[i])) {
                 bbStopChannel(e->soundChannels[i]);
             }
         }

@@ -40,17 +40,19 @@ float Rnd_Array(float numb1, float numb2, float Array1, float Array2);
 
 int TimeInPosMilliSecs();
 
-void MakeCollBox(int mesh);
+void MakeCollBox(class MeshModel* mesh);
 
-void GetMeshExtents(int Mesh);
+void GetMeshExtents(class MeshModel* mesh);
 
-float EntityScaleX(int entity, int globl = false);
+float EntityScaleX(Object* entity, int globl = false);
 
-float EntityScaleY(int entity, int globl = false);
+float EntityScaleY(Object* entity, int globl = false);
 
-float EntityScaleZ(int entity, int globl = false);
+float EntityScaleZ(Object* entity, int globl = false);
 
-int SeedStringToInt(String seed);
+int SeedStringToInt(class String seed);
+
+float modFloat(float num, float divide);
 
 }
 #endif // MATHUTILS_H_INCLUDED

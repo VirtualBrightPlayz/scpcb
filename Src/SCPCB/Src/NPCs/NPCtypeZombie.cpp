@@ -42,7 +42,7 @@ void InitializeNPCtypeZombie(NPC* n) {
 void UpdateNPCtypeZombie(NPC* n) {
     float prevFrame = n->frame;
 
-    if (Abs(bbEntityY(mainPlayer->collider)-bbEntityY(n->collider))<4.0) {
+    if (abs(bbEntityY(mainPlayer->collider)-bbEntityY(n->collider))<4.0) {
         if (!n->isDead) {
             switch (n->state) {
                 case 0: {

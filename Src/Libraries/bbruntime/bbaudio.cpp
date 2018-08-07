@@ -90,8 +90,8 @@ void bbChannelPan( gxChannel *channel,float pan ){
 	channel->setPan( pan );
 }
 
-int bbChannelPlaying( gxChannel *channel ){
-	return channel ? channel->isPlaying() : 0;
+bool bbChannelPlaying( gxChannel *channel ){
+	return channel ? channel->isPlaying() : false;
 }
 
 gxSound *bbLoad3DSound( String f ){

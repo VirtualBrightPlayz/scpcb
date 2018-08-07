@@ -265,7 +265,7 @@ void UpdateEvent_srvr_096_2(Event* e) {
 
             if (mainPlayer->currRoom == e->room) {
                 if (e->soundChannels[0]!=0) {
-                    if (IsChannelPlaying(e->soundChannels[0])) {
+                    if (bbChannelPlaying(e->soundChannels[0])) {
                         //TODO: Light 1-3
                         //LightBlink = Rnd(0.5,6.0)
                         //If (Rand(50)=1) Then PlayRangedSound(IntroSFX(Rand(10,12)), mainPlayer\cam, e\room\obj, 8.0, Rnd(0.1,0.3))
@@ -274,12 +274,12 @@ void UpdateEvent_srvr_096_2(Event* e) {
 
                 //lock the player inside
                 if (e->room->angle == 0 | e->room->angle == 180) {
-                    if (Abs(bbEntityX(mainPlayer->collider)-bbEntityX(e->room->obj,true))> 1.3) {
+                    if (abs(bbEntityX(mainPlayer->collider)-bbEntityX(e->room->obj,true))> 1.3) {
                         e->eventState = 70*50;
                         e->sounds[0] = 0;
                     }
                 } else {
-                    if (Abs(bbEntityZ(mainPlayer->collider)-bbEntityZ(e->room->obj,true))> 1.3) {
+                    if (abs(bbEntityZ(mainPlayer->collider)-bbEntityZ(e->room->obj,true))> 1.3) {
                         e->eventState = 70*50;
                         e->sounds[0] = 0;
                     }

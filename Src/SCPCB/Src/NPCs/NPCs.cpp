@@ -262,7 +262,7 @@ void UpdateNPCs() {
 
         //Update sound locations.
         for (i = 0; i <= 2; i++) {
-            if (IsChannelPlaying(n->soundChannels[i])) {
+            if (bbChannelPlaying(n->soundChannels[i])) {
                 UpdateRangedSoundOrigin(n->soundChannels[i], mainPlayer->cam, n->obj);
             }
         }
@@ -300,7 +300,7 @@ void UpdateNPCs() {
 void NPCStopAllChannels(NPC* n) {
     int i;
     for (i = 0; i <= NPC_CHANNEL_COUNT-1; i++) {
-        if (IsChannelPlaying(n->soundChannels[i])) {
+        if (bbChannelPlaying(n->soundChannels[i])) {
             bbStopChannel(n->soundChannels[i]);
         }
     }
@@ -319,9 +319,9 @@ void TeleportCloser(NPC* n) {
         w = WayPoint::getObject(iterator112);
 
         //If (w\door = Null) Then ;TODO: fix?
-        xtemp = Abs(bbEntityX(w->obj,true)-bbEntityX(n->collider,true));
+        xtemp = abs(bbEntityX(w->obj,true)-bbEntityX(n->collider,true));
         if (xtemp < 10.0 & xtemp > 1.0) {
-            ztemp = Abs(bbEntityZ(w->obj,true)-bbEntityZ(n->collider,true));
+            ztemp = abs(bbEntityZ(w->obj,true)-bbEntityZ(n->collider,true));
             if (ztemp < 10.0 & ztemp > 1.0) {
                 if (bbEntityDistance(mainPlayer->collider, w->obj)>8) {
                     if (SelectedDifficulty->aggressiveNPCs) {
@@ -355,7 +355,7 @@ int OtherNPCSeesMeNPC(NPC* me, NPC* other) {
     }
 
     if (bbEntityDistance(other->collider,me->collider)<6.0) {
-        if (Abs(bbDeltaYaw(other->collider,me->collider))<60.0) {
+        if (abs(bbDeltaYaw(other->collider,me->collider))<60.0) {
             return true;
         }
     }
@@ -384,7 +384,7 @@ int MeNPCSeesPlayer(NPC* me, int disableSoundOnCrouch = false) {
 
         //spots the player if he's either in view or making a loud sound
         if (mainPlayer->loudness>1.0) {
-            if (Abs(bbDeltaYaw(me->collider,mainPlayer->collider))>60.0) & bbEntityVisible(me->collider,mainPlayer->collider) {
+            if (abs(bbDeltaYaw(me->collider,mainPlayer->collider))>60.0) & bbEntityVisible(me->collider,mainPlayer->collider) {
                 return 1;
             } else if ((!bbEntityVisible(me->collider,mainPlayer->collider))) {
                 if (disableSoundOnCrouch & mainPlayer->crouching) {
@@ -394,7 +394,7 @@ int MeNPCSeesPlayer(NPC* me, int disableSoundOnCrouch = false) {
                 }
             }
         } else {
-            if (Abs(bbDeltaYaw(me->collider,mainPlayer->collider))>60.0) {
+            if (abs(bbDeltaYaw(me->collider,mainPlayer->collider))>60.0) {
                 return false;
             }
         }
@@ -1056,13 +1056,13 @@ void FindNextElevator(NPC* n) {
         eo = ElevatorObj::getObject(iterator119);
 
         if (eo->inFacility == n->inFacility) {
-            if (Abs(bbEntityY(eo->obj,true)-bbEntityY(n->collider))<10.0) {
+            if (abs(bbEntityY(eo->obj,true)-bbEntityY(n->collider))<10.0) {
                 for (int iterator120 = 0; iterator120 < ElevatorObj::getListSize(); iterator120++) {
                     eo2 = ElevatorObj::getObject(iterator120);
 
                     if (eo2 != eo) {
                         if (eo2->inFacility == n->inFacility) {
-                            if (Abs(bbEntityY(eo2->obj,true)-bbEntityY(n->collider))<10.0) {
+                            if (abs(bbEntityY(eo2->obj,true)-bbEntityY(n->collider))<10.0) {
                                 if (bbEntityDistance(eo2->obj,n->collider)<bbEntityDistance(eo->obj,n->collider)) {
                                     n->pathStatus = FindPath(n, bbEntityX(eo2->obj,true),bbEntityY(eo2->obj,true),bbEntityZ(eo2->obj,true));
                                     n->currElevator = eo2;
@@ -1098,9 +1098,9 @@ void GoToElevator(NPC* n) {
         bbRotateEntity(n->collider,0,CurveAngle(bbEntityYaw(n->obj),bbEntityYaw(n->collider),20.0),0);
 
         inside = false;
-        if (Abs(bbEntityX(n->collider)-bbEntityX(n->currElevator->obj,true))<280.0*RoomScale) {
-            if (Abs(bbEntityZ(n->collider)-bbEntityZ(n->currElevator->obj,true))<280.0*RoomScale) {
-                if (Abs(bbEntityY(n->collider)-bbEntityY(n->currElevator->obj,true))<280.0*RoomScale) {
+        if (abs(bbEntityX(n->collider)-bbEntityX(n->currElevator->obj,true))<280.0*RoomScale) {
+            if (abs(bbEntityZ(n->collider)-bbEntityZ(n->currElevator->obj,true))<280.0*RoomScale) {
+                if (abs(bbEntityY(n->collider)-bbEntityY(n->currElevator->obj,true))<280.0*RoomScale) {
                     inside = true;
                 }
             }
@@ -1196,7 +1196,7 @@ void AnimateNPC(NPC* n, float start, float quit, float speed, int loop = true) {
 }
 
 void SetNPCFrame(NPC* n, float frame) {
-    if (Abs(n->frame-frame)<0.001) {
+    if (abs(n->frame-frame)<0.001) {
         return;
     }
 
