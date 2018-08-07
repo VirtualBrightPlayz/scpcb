@@ -2,8 +2,6 @@
 #ifndef PIVOT_H
 #define PIVOT_H
 
-#include "../stdutil/stdutil.h"
-
 #include "object.h"
 
 class Pivot : public Object{
@@ -12,7 +10,7 @@ public:
 	Pivot( const Object &t );
 
 	//Entity interface
-    virtual Object* clone(){ return d_new Pivot( *this ); }
+    virtual Object* clone(){ return new Pivot( *this ); }
     virtual Pivot* getPivot() { return this; }
 };
 

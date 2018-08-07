@@ -1,5 +1,3 @@
-
-#include "std.h"
 #include "gxscene.h"
 #include "gxgraphics.h"
 #include "gxruntime.h"
@@ -519,7 +517,7 @@ void gxScene::setRenderState( const RenderState &rs ){
 	}
 }
 
-bool gxScene::begin( const vector<gxLight*> &lights ){
+bool gxScene::begin( const std::vector<gxLight*> &lights ){
 
 	if( dir3dDev->BeginScene()!=D3D_OK ) return false;
 
@@ -604,7 +602,7 @@ void gxScene::end(){
 }
 
 gxLight *gxScene::createLight( int flags ){
-	gxLight *l=d_new gxLight( this,flags );
+	gxLight *l=new gxLight( this,flags );
 	_allLights.insert(l);
 	return l;
 }

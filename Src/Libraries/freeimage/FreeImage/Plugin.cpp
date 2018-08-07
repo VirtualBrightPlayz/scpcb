@@ -38,10 +38,6 @@
 #include "Plugin.h"
 
 // =====================================================================
-
-using namespace std; //TODO: NOT YOU TOO OH NO
-
-// =====================================================================
 // Plugin search list
 // =====================================================================
 
@@ -110,7 +106,7 @@ public :
 	BOOL IsEmpty() const;
 
 private :
-	map<int, PluginNode *> m_plugin_map;
+	std::map<int, PluginNode *> m_plugin_map;
 	int m_node_count;
 };
 
@@ -173,7 +169,7 @@ PluginNode *
 PluginList::FindNodeFromFormat(const char *format) {
 	int count = 0;
 
-	for (map<int, PluginNode *>::iterator i = m_plugin_map.begin(); i != m_plugin_map.end(); ++i) {
+	for (std::map<int, PluginNode *>::iterator i = m_plugin_map.begin(); i != m_plugin_map.end(); ++i) {
 		const char *the_format = ((*i).second->m_format != NULL) ? (*i).second->m_format : (*i).second->m_plugin->format_proc();
 
 		if (strcmp(the_format, format) == 0)
@@ -189,7 +185,7 @@ PluginNode *
 PluginList::FindNodeFromMime(const char *mime) {
 	int count = 0;
 
-	for (map<int, PluginNode *>::iterator i = m_plugin_map.begin(); i != m_plugin_map.end(); ++i) {
+	for (std::map<int, PluginNode *>::iterator i = m_plugin_map.begin(); i != m_plugin_map.end(); ++i) {
 		const char *the_mime = ((*i).second->m_plugin->mime_proc != NULL) ? (*i).second->m_plugin->mime_proc() : "";
 
 		if (strcmp(the_mime, mime) == 0)
@@ -203,7 +199,7 @@ PluginList::FindNodeFromMime(const char *mime) {
 
 PluginNode *
 PluginList::FindNodeFromFIF(int node_id) {
-	map<int, PluginNode *>::iterator i = m_plugin_map.find(node_id);
+	std::map<int, PluginNode *>::iterator i = m_plugin_map.find(node_id);
 
 	if (i != m_plugin_map.end())
 		return (*i).second;
@@ -222,7 +218,7 @@ PluginList::IsEmpty() const {
 }
 
 PluginList::~PluginList() {
-	for (map<int, PluginNode *>::iterator i = m_plugin_map.begin(); i != m_plugin_map.end(); ++i) {
+	for (std::map<int, PluginNode *>::iterator i = m_plugin_map.begin(); i != m_plugin_map.end(); ++i) {
 #ifdef WIN32
 		if ((*i).second->m_instance != NULL)
 			FreeLibrary((HINSTANCE)(*i).second->m_instance);

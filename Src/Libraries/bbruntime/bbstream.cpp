@@ -1,8 +1,10 @@
+#include <set>
 
-#include "std.h"
+#include "../gxruntime/StringType.h"
+
 #include "bbstream.h"
 
-static set<bbStream*> stream_set;
+static std::set<bbStream*> stream_set;
 
 void debugStream( bbStream *s ){
 	if( stream_set.count(s) ) return;
@@ -60,9 +62,9 @@ String bbReadString( bbStream *s ){
 	int len;
 	String str="";
 	if( s->read( (char*)&len,4 ) ){
-		char *buff=d_new char[len];
+		char *buff=new char[len];
 		if( s->read( buff,len ) ){
-			str=string( buff,len );
+			str=String( buff,len );
 		}
 		delete[] buff;
 	}
@@ -119,7 +121,7 @@ void bbCopyStream( bbStream *s,bbStream *d,int buff_size ){
 		debugStream( s );debugStream( d ); 
 		if( buff_size<1 || buff_size>1024*1024 ) RTEX( "Illegal buffer size" );
 	}
-	char *buff=d_new char[buff_size];
+	char *buff=new char[buff_size];
 	while( s->eof()==0 && d->eof()==0 ){
 		int n=s->read( buff,buff_size );
 		d->write( buff,n );

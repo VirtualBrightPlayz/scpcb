@@ -1,5 +1,14 @@
+#include <bbaudio.h>
+#include <bbblitz3d.h>
+#include <bbmath.h>
+
 #include "Audio.h"
-#include "include.h"
+#include "MathUtils/MathUtils.h"
+#include "Options.h"
+#include "GameMain.h"
+#include "Events.h"
+#include "MapSystem.h"
+#include "Particles.h"
 
 namespace CBN {
 
@@ -236,8 +245,8 @@ void DeloadInGameSounds(SoundManager* sndMan) {
     FreeSound_SM(sndMan->heartbeat);
 }
 
-void AddPositionalChannel(int ref, int cam, int ent, float range = 10, float vol = 1.0) {
-    if (ref == 0) {
+void AddPositionalChannel(gxChannel* ref, Camera* cam, Object* ent, float range = 10, float vol = 1.0) {
+    if (ref == nullptr) {
         return;
     }
 
@@ -278,8 +287,8 @@ Sound* LoadSound_SM(String fileName) {
     return snd;
 }
 
-int PlaySound2(int snd) {
-    int chn = bbPlaySound(snd);
+gxChannel* PlaySound2(gxSound* snd) {
+    gxChannel* chn = bbPlaySound(snd);
 
     SoundChannel* sc = new SoundChannel();
     sc->internal = chn;
@@ -287,9 +296,9 @@ int PlaySound2(int snd) {
     return chn;
 }
 
-int PlaySound_SM(Sound* snd) {
+gxChannel* PlaySound_SM(Sound* snd) {
     //If the sound hasn't been loaded yet then do that.
-    if (snd->internal == 0) {
+    if (snd->internal == nullptr) {
         snd->internal = bbLoadSound(snd->file);
     }
 
@@ -306,20 +315,20 @@ void FreeSound_SM(Sound* snd) {
     delete snd;
 }
 
-int IsChannelPlaying(int chn) {
-    if (chn == 0) {
+int IsChannelPlaying(gxChannel* chn) {
+    if (chn == nullptr) {
         return false;
     }
 
     return bbChannelPlaying(chn);
 }
 
-int PlayRangedSound(int soundHandle, int cam, int entity, float range = 10, float volume = 1.0) {
+gxChannel* PlayRangedSound(gxSound* soundHandle, Camera* cam, Object* entity, float range, float volume) {
     float dist;
     float panvalue;
 
     range = Max(range, 1.0);
-    int soundChn = 0;
+    gxChannel* soundChn = nullptr;
 
     if (volume > 0) {
         dist = bbEntityDistance(cam, entity) / range;
@@ -337,16 +346,16 @@ int PlayRangedSound(int soundHandle, int cam, int entity, float range = 10, floa
     return soundChn;
 }
 
-int PlayRangedSound_SM(Sound* snd, int cam, int entity, float range = 10, float volume = 1.0) {
+gxChannel* PlayRangedSound_SM(Sound* snd, Camera* cam, Object* entity, float range, float volume) {
     //If the sound hasn't been loaded yet then do that.
-    if (snd->internal == 0) {
+    if (snd->internal == nullptr) {
         snd->internal = bbLoadSound(snd->file);
     }
 
     return PlayRangedSound(snd->internal, cam, entity, range, volume);
 }
 
-int LoopRangedSound(int soundHandle, int chn, int cam, int entity, float range = 10, float volume = 1.0) {
+gxChannel* LoopRangedSound(gxSound* soundHandle, gxChannel* chn, Camera* cam, Object* entity, float range, float volume) {
     range = Max(range,1.0);
 
     if (!IsChannelPlaying(chn)) {
@@ -358,7 +367,7 @@ int LoopRangedSound(int soundHandle, int chn, int cam, int entity, float range =
     return chn;
 }
 
-int LoopRangedSound_SM(Sound* snd, int chn, int cam, int entity, float range = 10, float volume = 1.0) {
+gxChannel* LoopRangedSound_SM(Sound* snd, gxChannel* chn, Camera* cam, Object* entity, float range, float volume) {
     //If the sound hasn't been loaded yet then do that.
     if (snd->internal == 0) {
         snd->internal = bbLoadSound(snd->file);
@@ -367,7 +376,7 @@ int LoopRangedSound_SM(Sound* snd, int chn, int cam, int entity, float range = 1
     return LoopRangedSound(snd->internal, chn, cam, entity, range, volume);
 }
 
-void UpdateRangedSoundOrigin(int chn, int cam, int entity, float range = 10, float volume = 1.0) {
+void UpdateRangedSoundOrigin(gxChannel* chn, Camera* cam, Object* entity, float range, float volume) {
     float dist;
     float panvalue;
 
@@ -406,12 +415,12 @@ void UpdateRangedSoundOrigin_SM(SoundChannel* chn) {
     }
 }
 
-int LoadTempSound(String file) {
+gxSound* LoadTempSound(String file) {
     if (TempSounds[TempSoundIndex] != 0) {
         bbFreeSound(TempSounds[TempSoundIndex]);
     }
 
-    int TempSound = bbLoadSound(file);
+    gxSound* TempSound = bbLoadSound(file);
     TempSounds[TempSoundIndex] = TempSound;
 
     TempSoundIndex = (TempSoundIndex + 1) % 10;
@@ -419,10 +428,10 @@ int LoadTempSound(String file) {
     return TempSound;
 }
 
-int LoadEventSound(Event* e, String file, int i = 0) {
-    if (event->sounds[i] != 0) {
+gxSound* LoadEventSound(Event* e, String file, int i = 0) {
+    if (e->sounds[i] != 0) {
         bbFreeSound(e->sounds[i]);
-        event->sounds[i] = 0;
+        e->sounds[i] = 0;
     }
     e->sounds[i] = bbLoadSound(file);
 

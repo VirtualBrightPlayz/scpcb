@@ -19,7 +19,7 @@ public:
 
 	//Entity interface
 	virtual MeshModel *getMeshModel(){ return this; }
-	virtual Object* clone(){ return d_new MeshModel( *this ); }
+	virtual Object* clone(){ return new MeshModel( *this ); }
 
 	//Object interface
 	virtual bool collide( const Line &line,float radius,Collision *curr_coll,const Transform &t );

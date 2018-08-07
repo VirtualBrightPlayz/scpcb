@@ -2,6 +2,9 @@
 #ifndef GXFONT_H
 #define GXFONT_H
 
+#include <ddraw.h>
+#include <d3d.h>
+
 #include "StringType.h"
 
 class gxCanvas;

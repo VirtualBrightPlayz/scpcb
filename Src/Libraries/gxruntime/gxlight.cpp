@@ -1,5 +1,3 @@
-
-#include "std.h"
 #include "gxlight.h"
 #include "gxscene.h"
 #include "gxgraphics.h"

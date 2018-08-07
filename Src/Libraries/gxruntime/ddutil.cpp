@@ -1,5 +1,5 @@
+#include "StringType.h"
 
-#include "std.h"
 #include "ddutil.h"
 #include "asmcoder.h"
 #include "gxcanvas.h"
@@ -455,22 +455,22 @@ IDirectDrawSurface7 *loadDXTC(const char* filename,gxGraphics *gfx)
 }
 
 ddSurf *ddUtil::loadSurface( String fi,int flags,gxGraphics *gfx ){
-    string f = fi.cstr();
-	int i=f.find( ".dds" );
-	if( i!=string::npos && i+4==f.size() ){
+    String f = fi.cstr();
+	int i=f.findFirst( ".dds" );
+	if( i!=-1 && i+4==f.size() ){
 		//dds file!
-		ddSurf *surf=loadDXTC( f.c_str(),gfx );
+		ddSurf *surf=loadDXTC( f.cstr(),gfx );
 		return surf;
 	}
 
 	FreeImage_Initialise();
-	FREE_IMAGE_FORMAT fmt=FreeImage_GetFileType( f.c_str(),f.size() );
+	FREE_IMAGE_FORMAT fmt=FreeImage_GetFileType( f.cstr(),f.size() );
 	if( fmt==FIF_UNKNOWN ){
-		int n=f.find( "." );if( n==string::npos ) return 0;
-		fmt=FreeImage_GetFileTypeFromExt( f.substr(n+1).c_str() );
+		int n=f.findFirst( "." );if( n==-1 ) return 0;
+		fmt=FreeImage_GetFileTypeFromExt( f.substr(n+1).cstr() );
 		if( fmt==FIF_UNKNOWN ) return 0;
 	}
-	FIBITMAP *t_dib=FreeImage_Load( fmt,f.c_str(),0 );
+	FIBITMAP *t_dib=FreeImage_Load( fmt,f.cstr(),0 );
 	if( !t_dib ) return 0;
 
 	bool trans=FreeImage_GetBPP( t_dib )==32 ||	FreeImage_IsTransparent( t_dib );

@@ -1,5 +1,4 @@
 
-#include "std.h"
 #include "bbaudio.h"
 
 gxAudio *gx_audio;

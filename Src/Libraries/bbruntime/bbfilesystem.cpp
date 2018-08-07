@@ -1,33 +1,12 @@
+#include <fstream>
+#include <set>
 
-#include "std.h"
 #include "bbfilesystem.h"
 #include "bbstream.h"
-#include <fstream>
 
 gxFileSystem *gx_filesys;
 
-struct bbFile : public bbStream{
-	filebuf *buf;
-	bbFile( filebuf *f ):buf(f){
-	}
-	~bbFile(){
-		delete buf;
-	}
-	int read( char *buff,int size ){
-		return buf->sgetn( (char*)buff,size );
-	}
-	int write( const char *buff,int size ){
-		return buf->sputn( (char*)buff,size );
-	}
-	int avail(){
-		return buf->in_avail();
-	}
-	int eof(){
-		return buf->sgetc()==EOF;
-	}
-};
-
-static set<bbFile*> file_set;
+static std::set<bbFile*> file_set;
 
 static inline void debugFile( bbFile *f ){
 	if( debug ){
@@ -42,9 +21,9 @@ static inline void debugDir( gxDir *d ){
 }
 
 static bbFile *open( String t,int n ){
-	filebuf *buf=d_new filebuf();
-	if( buf->open( t.cstr(),n|ios_base::binary ) ){
-		bbFile *f=d_new bbFile( buf );
+    std::filebuf *buf=new std::filebuf();
+	if( buf->open( t.cstr(),n|std::ios_base::binary ) ){
+		bbFile *f=new bbFile( buf );
 		file_set.insert( f );
 		return f;
 	}
@@ -53,15 +32,15 @@ static bbFile *open( String t,int n ){
 }
 
 bbFile *bbReadFile( String f ){
-	return open( f,ios_base::in );
+	return open( f, std::ios_base::in );
 }
 
 bbFile *bbWriteFile( String f ){
-	return open( f,ios_base::out|ios_base::trunc );
+	return open( f, std::ios_base::out| std::ios_base::trunc );
 }
 
-bbFile *bbOpenFile( String f ){
-	return open( f,ios_base::in|ios_base::out );
+bbFile *bbOpenFile(String f) {
+	return open( f, std::ios_base::in| std::ios_base::out );
 }
 
 void bbCloseFile( bbFile *f ){
@@ -71,11 +50,11 @@ void bbCloseFile( bbFile *f ){
 }
 
 int bbFilePos( bbFile *f ){
-	return f->buf->pubseekoff( 0,ios_base::cur );
+	return f->buf->pubseekoff( 0, std::ios_base::cur );
 }
 
 int bbSeekFile( bbFile *f,int pos ){
-	return f->buf->pubseekoff( pos,ios_base::beg );
+	return f->buf->pubseekoff( pos, std::ios_base::beg );
 }
 
 gxDir *bbReadDir( String d ){

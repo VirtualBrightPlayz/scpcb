@@ -25,7 +25,6 @@ void bbEnd();
 void bbStop();
 void bbRuntimeError(String str);
 int bbExecFile(String f);
-void bbDelay(int ms);
 int bbMilliSecs();
 String bbCommandLine();
 String bbSystemProperty(String p);

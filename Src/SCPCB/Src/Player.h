@@ -4,6 +4,22 @@
 
 namespace CBN {
 
+// Constants.
+const int WORNITEM_SLOT_COUNT = 3;
+const int WORNITEM_SLOT_NONE = WORNITEM_SLOT_COUNT;
+const int WORNITEM_SLOT_HEAD = 0;
+const int WORNITEM_SLOT_BODY = 1;
+const int WORNITEM_SLOT_HAND = 2;
+const int PLAYER_INV_COUNT = 6;
+const int OVERLAY_COUNT = 6;
+const int OVERLAY_BLACK = 0;
+const int OVERLAY_WHITE = 1;
+const int OVERLAY_FOG = 2;
+const int OVERLAY_GASMASK = 3;
+const int OVERLAY_NIGHTVISION = 4;
+const int OVERLAY_008 = 5;
+
+
 // Structs.
 struct Player {
 private:
@@ -22,7 +38,7 @@ public:
     float headPitch;
     float headYaw;
 
-    int cam;
+    class Camera* cam;
     float camShake;
     float camAnimState;
     float camZoom;
@@ -30,7 +46,7 @@ public:
     float camFogNear;
     float camFogFar;
 
-    int overlays[OVERLAY_COUNT];
+    class Sprite* overlays[OVERLAY_COUNT];
 
     int grabbedEntity;
 
@@ -111,21 +127,6 @@ public:
     int noclip;
     //------
 };
-
-// Constants.
-extern const int WORNITEM_SLOT_COUNT;
-extern const int WORNITEM_SLOT_NONE;
-extern const int WORNITEM_SLOT_HEAD;
-extern const int WORNITEM_SLOT_BODY;
-extern const int WORNITEM_SLOT_HAND;
-extern const int PLAYER_INV_COUNT;
-extern const int OVERLAY_COUNT;
-extern const int OVERLAY_BLACK;
-extern const int OVERLAY_WHITE;
-extern const int OVERLAY_FOG;
-extern const int OVERLAY_GASMASK;
-extern const int OVERLAY_NIGHTVISION;
-extern const int OVERLAY_008;
 
 // Globals.
 extern Player* mainPlayer;

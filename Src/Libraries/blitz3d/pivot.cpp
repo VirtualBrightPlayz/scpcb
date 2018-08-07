@@ -1,5 +1,3 @@
-
-#include "std.h"
 #include "pivot.h"
 
 Pivot::Pivot(){

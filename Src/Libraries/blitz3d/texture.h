@@ -4,6 +4,7 @@
 
 #include "cachedtexture.h"
 
+#include "../gxruntime/gxscene.h"
 #include "../gxruntime/gxcanvas.h"
 #include "../gxruntime/StringType.h"
 

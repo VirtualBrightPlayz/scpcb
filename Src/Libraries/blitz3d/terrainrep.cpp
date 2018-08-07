@@ -1,5 +1,6 @@
+#include "../gxruntime/gxruntime.h"
+#include "../gxruntime/gxgraphics.h"
 
-#include "std.h"
 #include "terrainrep.h"
 #include <queue>
 
@@ -10,8 +11,8 @@ extern float stats3d[10];
 static Vector eye_vec;
 static Plane eye_plane;
 static const Vector up_normal( 0,1,0 );
-static TerrainRep::Tri *tri_pool;
-static const TerrainRep *curr;
+static TerrainRep::Tri* tri_pool;
+static const TerrainRep* curr;
 static Frustum frustum;
 static int out_cnt,proc_cnt,clip_cnt;
 
@@ -67,16 +68,16 @@ struct TerrainRep::Tri{
 	void *operator new( size_t sz ){
 		static const int GROW=64;
 		if( !tri_pool ){
-			tri_pool=new Tri[GROW];
+			tri_pool=new TerrainRep::Tri[GROW];
 			for( int k=0;k<GROW-1;++k ) tri_pool[k].e0=&tri_pool[k+1];
 			tri_pool[GROW-1].e0=0;
 		}
-		Tri *t=tri_pool;
+		TerrainRep::Tri *t=tri_pool;
 		tri_pool=t->e0;
 		return t;
 	}
 	void operator delete( void *q ){
-		Tri *t=(Tri*)q;
+        TerrainRep::Tri *t=(TerrainRep::Tri*)q;
 		t->e0=tri_pool;
 		tri_pool=t;
 	}
@@ -103,13 +104,13 @@ struct TriComp{
 	bool operator()( TerrainRep::Tri *a,TerrainRep::Tri *b )const{ return a->proj_err<b->proj_err; }
 };
 
-struct TriQue : public priority_queue<TerrainRep::Tri*,vector<TerrainRep::Tri*>,TriComp>{
-	vector<TerrainRep::Tri*> &getVector(){ return c; }
-	const vector<TerrainRep::Tri*> &getVector()const{ return c; }
+struct TriQue : public std::priority_queue<TerrainRep::Tri*,std::vector<TerrainRep::Tri*>,TriComp>{
+	std::vector<TerrainRep::Tri*> &getVector(){ return c; }
+	const std::vector<TerrainRep::Tri*> &getVector()const{ return c; }
 };
 
 static TriQue tri_que;
-static vector<TerrainRep::Tri*> tris;
+static std::vector<TerrainRep::Tri*> tris;
 
 static bool clip( const Line &l,const Box &box ){
 	static const Vector normals[]={
@@ -139,8 +140,8 @@ TerrainRep::TerrainRep( int n ):
 cell_shift(n),cell_size(1<<n),cell_mask((1<<n)-1),
 end_tri_id( (1<<n)*(1<<n)*2 ),
 shading(false),mesh(0),detail(0),morph(true){
-	cells=d_new Cell[cell_size*cell_size];
-	errors=d_new Error[end_tri_id];
+	cells=new Cell[cell_size*cell_size];
+	errors=new Error[end_tri_id];
 	setDetail( 2000,false );
 	clear();
 }
@@ -279,7 +280,7 @@ void TerrainRep::split( Tri *t ){
 	if( tv>=max_verts ){
 		max_verts+=max_verts/2+32;
 		Vert *t=verts;
-		verts=d_new Vert[max_verts];
+		verts=new Vert[max_verts];
 		memcpy( verts,t,sizeof(Vert)*tv );
 		next_vert=verts+tv;
 	}
@@ -439,7 +440,7 @@ void TerrainRep::render( Model *model,const RenderContext &rc ){
 	}
 
 	int k;
-	const vector<Tri*> &q_tris=tri_que.getVector();
+	const std::vector<Tri*> &q_tris=tri_que.getVector();
 
 	if( !mesh ) out_cnt=0;
 

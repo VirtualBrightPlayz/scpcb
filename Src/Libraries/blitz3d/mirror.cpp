@@ -1,5 +1,3 @@
-
-#include "std.h"
 #include "mirror.h"
 
 Mirror::Mirror(){

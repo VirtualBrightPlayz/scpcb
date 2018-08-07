@@ -1,9 +1,9 @@
+#include <set>
 
-#include "std.h"
 #include "bbbank.h"
 #include "bbstream.h"
 
-static set<bbBank*> bank_set;
+static std::set<bbBank*> bank_set;
 
 static inline void debugBank( bbBank *b ){
 	if( debug ){
@@ -19,7 +19,7 @@ static inline void debugBank( bbBank *b,int offset ){
 }
 
 bbBank *bbCreateBank( int size ){
-	bbBank *b=d_new bbBank( size );
+	bbBank *b=new bbBank( size );
 	bank_set.insert( b );
 	return b;
 }

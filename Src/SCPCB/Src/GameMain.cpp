@@ -1,9 +1,9 @@
 #include "GameMain.h"
-#include "include.h"
 
 #include <bbruntime.h>
 #include <bbgraphics.h>
 #include <bbblitz3d.h>
+#include <bbaudio.h>
 #include <StringType.h>
 
 namespace CBN {
@@ -55,7 +55,7 @@ int LightsOn = true;
 int SoundTransmission;
 int Brightness;
 Object* SoundEmitter;
-int TempSounds[10];
+gxSound* TempSounds[10];
 int TempSoundIndex = 0;
 int RadioSquelch;
 int RadioStatic;
@@ -81,10 +81,10 @@ float room2gw_x;
 float room2gw_z;
 String Input294;
 Texture* TeslaTexture;
-Object* Monitor;
+MeshModel* Monitor;
 Texture* MonitorTexture;
-Object* CamBaseOBJ;
-Object* CamOBJ;
+MeshModel* CamBaseOBJ;
+MeshModel* CamOBJ;
 
 // Functions.
 int VerifyResolution() {

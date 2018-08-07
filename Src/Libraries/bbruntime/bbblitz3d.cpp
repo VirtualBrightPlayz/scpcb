@@ -1,5 +1,9 @@
+#include <set>
+#include <vector>
+#include <utility>
 
-#include "std.h"
+#include "../gxruntime/gxutil.h"
+#include "../gxruntime/StringType.h"
 
 #include "bbblitz3d.h"
 #include "bbgraphics.h"
@@ -10,9 +14,9 @@ extern gxFileSystem *gx_filesys;
 static int tri_count;
 static World *world;
 
-static set<Brush*> brush_set;
-static set<Texture*> texture_set;
-static set<Object*> entity_set;
+static std::set<Brush*> brush_set;
+static std::set<Texture*> texture_set;
+static std::set<Object*> entity_set;
 
 static Listener *listener;
 
@@ -34,7 +38,7 @@ extern float stats3d[10];
 static Loader_3DS loader_3ds;
 static Loader_B3D loader_b3d;
 
-static map<string,Transform> loader_mat_map;
+static std::vector<std::pair<String,Transform>> loader_mat_map;
 
 static inline void debug3d(){
 	if( debug && !gx_scene ) RTEX( "3D Graphics mode not set" );
@@ -90,16 +94,6 @@ static inline void debugSprite( Sprite *s ){
 		debugModel(s);if( !s->getSprite() ) RTEX( "Object is not a sprite" );
 	}
 }
-static inline void debugMD2( MD2Model *m ){
-	if( debug ){
-		debugModel(m);if( !m->getMD2Model() ) RTEX( "Object is not an MD2 Model" );
-	}
-}
-static inline void debugBSP( Q3BSPModel *m ){
-	if( debug ){
-		debugModel(m);if( !m->getBSPModel() ) RTEX( "Object is not a BSP Model" );
-	}
-}
 static inline void debugTerrain( Terrain *t ){
 	if( debug ){
 		debugModel(t);if( !t->getTerrain() ) RTEX( "Object is not a terrain" );
@@ -126,17 +120,25 @@ static inline void debugVertex( Surface *s,int n,int t ){
 }
 
 static MeshModel* loadEntity( String str,int hint ){
-    string t = str.cstr();
+    String t = str;
 	t=tolower(t);
-	int n=t.rfind( "." );if( n==string::npos ) return 0;
-	string ext=t.substr( n+1 );
+	int n=t.findLast( "." );if( n==-1 ) return 0;
+	String ext=t.substr( n+1 );
 	MeshLoader *l;
 
-	if( ext=="3ds" ) l=&loader_3ds;
-	else if( ext=="b3d" ) l=&loader_b3d;
+	if( ext.equals("3ds") ) l=&loader_3ds;
+	else if( ext.equals("b3d") ) l=&loader_b3d;
 	else return 0;
 
-	const Transform &conv=loader_mat_map[ext];
+    int ind = -1;
+    for (int i=0;i<loader_mat_map.size();i++){
+        if (loader_mat_map[i].first.equals(ext)) {
+            ind = i;
+            break;
+        }
+    }
+
+	const Transform &conv=loader_mat_map[ind].second;
 
 	CachedTexture::setPath( filenamepath( t ) );
 	MeshModel* e=l->load( t,conv,hint );
@@ -194,9 +196,12 @@ static Object *findChild( Object *e,String t ){
 ///////////////////////////
 void  bbLoaderMatrix( String ext,float xx,float xy,float xz,float yx,float yy,float yz,float zx,float zy,float zz ){
     //TODO: do we even need this?
-    std::string cppStr = std::string(ext.cstr());
-	loader_mat_map.erase( cppStr );
-	loader_mat_map[cppStr]=Transform(Matrix(Vector(xx,xy,xz),Vector(yx,yy,yz),Vector(zx,zy,zz)));
+    for (int i=0;i<loader_mat_map.size();i++) {
+        if (loader_mat_map[i].first.equals(ext)){
+            loader_mat_map.erase(loader_mat_map.begin()+i); break;
+        }
+    }
+	loader_mat_map.push_back(std::pair<String,Transform>(ext,Transform(Matrix(Vector(xx,xy,xz),Vector(yx,yy,yz),Vector(zx,zy,zz)))));
 }
 
 int   bbHWTexUnits(){
@@ -293,7 +298,7 @@ void  bbRenderWorld( float tween ){
 	}
 	if( bbKeyHit( 0x58 ) ){
 		static int n;
-		String t="screenshot"+itoa(++n)+".bmp";
+		String t="screenshot"+String(itoa(++n))+".bmp";
 		bbSaveBuffer( bbBackBuffer(),t );
 	}
 
@@ -335,7 +340,7 @@ float  bbStats3D( int n ){
 //
 Texture *  bbLoadTexture( String file,int flags ){
 	debug3d();
-	Texture *t=d_new Texture( file,flags );
+	Texture *t=new Texture( file,flags );
 	if( !t->getCanvas(0) ){ delete t;return 0; }
 	texture_set.insert( t );
 	return t;
@@ -343,7 +348,7 @@ Texture *  bbLoadTexture( String file,int flags ){
 
 Texture *  bbLoadAnimTexture( String file,int flags,int w,int h,int first,int cnt ){
 	debug3d();
-	Texture *t=d_new Texture( file,flags,w,h,first,cnt );
+	Texture *t=new Texture( file,flags,w,h,first,cnt );
 	if( !t->getCanvas(0) ){
 		delete t;
 		return 0;
@@ -359,7 +364,7 @@ Texture *  bbCreateTexture( int w,int h,int flags,int frames ){
 			RTEX( "Illegal number of texture frames" );
 		}
 	}
-	Texture *t=d_new Texture( w,h,flags,frames );
+	Texture *t=new Texture( w,h,flags,frames );
 	texture_set.insert( t );
 	return t;
 }
@@ -456,7 +461,7 @@ void  bbTextureFilter( String t,int flags ){
 ////////////////////
 Brush *  bbCreateBrush( float r,float g,float b ){
 	debug3d();
-	Brush *br=d_new Brush();
+	Brush *br=new Brush();
 	br->setColor( Vector( r*ctof,g*ctof,b*ctof ) );
 	brush_set.insert( br );
 	return br;
@@ -501,7 +506,7 @@ void  bbBrushTexture( Brush *b,Texture *t,int frame,int index ){
 
 Texture *bbGetBrushTexture( Brush *b,int index ){
 	debugBrush(b);
-	Texture *tex=d_new Texture(b->getTexture(index));
+	Texture *tex=new Texture(b->getTexture(index));
 	texture_set.insert( tex );
 	return tex;
 }
@@ -521,7 +526,7 @@ void  bbBrushFX( Brush *b,int fx ){
 ///////////////////
 MeshModel* bbCreateMesh( Object *p ){
 	debugParent(p);
-	MeshModel *m=d_new MeshModel();
+	MeshModel *m=new MeshModel();
 	return insertEntity( m,p )->getModel()->getMeshModel();
 }
 
@@ -530,7 +535,7 @@ MeshModel* bbLoadMesh( String f,Object *p ){
 	MeshModel* e=loadEntity( f,MeshLoader::HINT_COLLAPSE );
 
 	if( !e ) return 0;
-	MeshModel *m=d_new MeshModel();
+	MeshModel *m=new MeshModel();
 	collapseMesh( m,e );
 	return insertEntity( m,p )->getModel()->getMeshModel();
 }
@@ -574,7 +579,7 @@ MeshModel*  bbDeepCopyMesh( MeshModel *m,Object *p ){
 	debugMesh(m);
 	debugParent(p);
 
-	MeshModel *t=d_new MeshModel();
+	MeshModel *t=new MeshModel();
 	t->add( *m );
 	return insertEntity( t,p )->getModel()->getMeshModel();
 }
@@ -706,14 +711,14 @@ Surface *  bbCreateSurface( MeshModel *m,Brush *b ){
 }
 
 Brush *bbGetSurfaceBrush( Surface *s ){
-	Brush *br=d_new Brush( s->getBrush() );
+	Brush *br=new Brush( s->getBrush() );
 	brush_set.insert( br );
 	return br;
 }
 
 Brush *bbGetEntityBrush( Model *m ){
 	debugModel(m);
-	Brush *br=d_new Brush( m->getBrush() );
+	Brush *br=new Brush( m->getBrush() );
 	brush_set.insert( br );
 	return br;
 }
@@ -835,7 +840,7 @@ Camera* bbCreateCamera( Object *p ){
 	debugParent(p);
 	int x,y,w,h;
 	gx_canvas->getViewport( &x,&y,&w,&h );
-	Camera *c=d_new Camera();
+	Camera *c=new Camera();
 	c->setViewport( x,y,w,h );
 	return insertEntity( c,p )->getCamera();
 }
@@ -1043,7 +1048,7 @@ int  bbPickedTriangle(){
 ////////////////////
 Light* bbCreateLight( int type,Object *p ){
 	debugParent(p);
-	Light *t=d_new Light( type );
+	Light *t=new Light( type );
 	return insertEntity( t,p )->getLight();
 }
 
@@ -1071,27 +1076,27 @@ void  bbLightConeAngles( Light *light,float inner,float outer ){
 ////////////////////
 // PIVOT COMMANDS //
 ////////////////////
-Object *  bbCreatePivot( Object *p ){
+Pivot* bbCreatePivot( Object *p ){
 	debugParent(p);
-	Pivot *t=d_new Pivot();
-	return insertEntity( t,p );
+	Pivot *t=new Pivot();
+	return insertEntity( t,p )->getPivot();
 }
 
 /////////////////////
 // SPRITE COMMANDS //
 /////////////////////
-Object *  bbCreateSprite( Object *p ){
+Sprite* bbCreateSprite( Object *p ){
 	debugParent(p);
-	Sprite *s=d_new Sprite();
+	Sprite *s=new Sprite();
 	s->setFX( gxScene::FX_FULLBRIGHT );
-	return insertEntity( s,p );
+	return insertEntity( s,p )->getModel()->getSprite();
 }
 
-Object *  bbLoadSprite( String file,int flags,Object *p ){
+Sprite* bbLoadSprite( String file,int flags,Object *p ){
 	debugParent(p);
 	Texture t( file,flags );
 	if( !t.getCanvas(0) ) return 0;
-	Sprite *s=d_new Sprite();
+	Sprite *s=new Sprite();
 	s->setTexture( 0,t,0 );
 	s->setFX( gxScene::FX_FULLBRIGHT );
 
@@ -1099,15 +1104,15 @@ Object *  bbLoadSprite( String file,int flags,Object *p ){
 	else if( flags & gxCanvas::CANVAS_TEX_ALPHA ) s->setBlend( gxScene::BLEND_ALPHA );
 	else s->setBlend( gxScene::BLEND_ADD );
 
-	return insertEntity( s,p );
+	return insertEntity( s,p )->getModel()->getSprite();
 }
 
-void  bbRotateSprite( Sprite *s,float angle ){
+void bbRotateSprite( Sprite *s,float angle ){
 	debugSprite(s);
 	s->setRotation( angle*dtor );
 }
 
-void  bbScaleSprite( Sprite *s,float x,float y ){
+void bbScaleSprite( Sprite *s,float x,float y ){
 	debugSprite(s);
 	s->setScale( x,y );
 }
@@ -1127,7 +1132,7 @@ void  bbSpriteViewMode( Sprite *s,int mode ){
 /////////////////////
 Object *  bbCreateMirror( Object *p ){
 	debugParent(p);
-	Mirror *t=d_new Mirror();
+	Mirror *t=new Mirror();
 	return insertEntity( t,p );
 }
 
@@ -1139,63 +1144,10 @@ Object *  bbCreatePlane( int segs,Object *p ){
 		debugParent(p);
 		if( segs<1 || segs>20 ) RTEX( "Illegal number of segments" );
 	}
-	PlaneModel *t=d_new PlaneModel( segs );
+	PlaneModel *t=new PlaneModel( segs );
 	return insertEntity( t,p );
 }
 
-//////////////////
-// MD2 COMMANDS //
-//////////////////
-Object *  bbLoadMD2( String file,Object *p ){
-	debugParent(p);
-	MD2Model *t=d_new MD2Model( file );
-	if( !t->getValid() ){ delete t;return 0; }
-	return insertEntity( t,p );
-}
-
-void  bbAnimateMD2( MD2Model *m,int mode,float speed,int first,int last,float trans ){
-	debugMD2(m);
-	m->startMD2Anim( first,last,mode,speed,trans );
-}
-
-float  bbMD2AnimTime( MD2Model *m ){
-	debugMD2(m);
-	return m->getMD2AnimTime();
-}
-
-int  bbMD2AnimLength( MD2Model *m ){
-	debugMD2(m);
-	return m->getMD2AnimLength();
-}
-
-int  bbMD2Animating( MD2Model *m ){
-	debugMD2(m);
-	return m->getMD2Animating();
-}
-
-//////////////////
-// BSP Commands //
-//////////////////
-Object *  bbLoadBSP( String file,float gam,Object *p ){
-	debugParent(p);
-	CachedTexture::setPath( filenamepath( file.cstr() ) );
-	Q3BSPModel *t=d_new Q3BSPModel( file,gam );
-	CachedTexture::setPath( "" );
-
-	if( !t->isValid() ){ delete t;return 0; }
-
-	return insertEntity( t,p );
-}
-
-void  bbBSPAmbientLight( Q3BSPModel *t,float r,float g,float b ){
-	debugBSP(t);
-	t->setAmbient( Vector( r*ctof,g*ctof,b*ctof ) );
-}
-
-void  bbBSPLighting( Q3BSPModel *t,int lmap ){
-	debugBSP(t);
-	t->setLighting( !!lmap );
-}
 
 //////////////////////
 // TERRAIN COMMANDS //
@@ -1223,7 +1175,7 @@ Object *  bbCreateTerrain( int n,Object *p ){
 	int shift=0;
 	while( (1<<shift)<n ) ++shift;
 	if( (1<<shift)!=n ) RTEX( "Illegal terrain size" );
-	Terrain *t=d_new Terrain( shift );
+	Terrain *t=new Terrain( shift );
 	return insertEntity( t,p );
 }
 
@@ -1236,7 +1188,7 @@ Object *  bbLoadTerrain( String file,Object *p ){
 	int shift=0;
 	while( (1<<shift)<w ) ++shift;
 	if( (1<<shift)!=w ) RTEX( "Illegal terrain size" );
-	Terrain *t=d_new Terrain( shift );
+	Terrain *t=new Terrain( shift );
 	c->lock();
 	for( int y=0;y<h;++y ){
 		for( int x=0;x<w;++x ){
@@ -1299,7 +1251,7 @@ Object *  bbCreateListener( Object *p,float roll,float dopp,float dist ){
 		debugParent(p);
 		if( listener ) RTEX( "Listener already created" );
 	}
-	listener=d_new Listener( roll,dopp,dist );
+	listener=new Listener( roll,dopp,dist );
 	return insertEntity( listener,p );
 }
 
@@ -1471,7 +1423,7 @@ int  bbAddAnimSeq( Object *o,int length ){
 	if( anim ){
 		anim->addSeq( length );
 	}else{
-		anim=d_new Animator( o,length );
+		anim=new Animator( o,length );
 		o->setAnimator( anim );
 	}
 	return anim->numSeqs()-1;
@@ -1647,7 +1599,7 @@ float  bbVectorPitch( float x,float y,float z ){
 	return Vector(x,y,z).pitch() * rtod;
 }
 
-float  bbDeltaYaw( Object *src,Object *dest ){
+float  bbDeltaYaw(Object *src, Object *dest) {
 	float x=src->getWorldTform().m.k.yaw();
 	float y=(dest->getWorldTform().v-src->getWorldTform().v).yaw();
 	float d=y-x;
@@ -1920,15 +1872,14 @@ int  bbActiveTextures(){
 void blitz3d_open(){
 	gx_scene=gx_graphics->createScene( 0 );
 	if( !gx_scene ) RTEX( "Unable to create 3D Scene" );
-	world=d_new World();
+	world=new World();
 	projected=Vector();
 	picked.collision=Collision();
 	picked.with=0;picked.coords=Vector();
 	Texture::clearFilters();
 	Texture::addFilter( "",gxCanvas::CANVAS_TEX_RGB|gxCanvas::CANVAS_TEX_MIPMAP );
 	loader_mat_map.clear();
-	loader_mat_map["x"]=Transform();
-	loader_mat_map["3ds"]=Transform(Matrix(Vector(1,0,0),Vector(0,0,1),Vector(0,1,0)));
+	loader_mat_map.push_back(std::pair<String,Transform>("3ds",Transform(Matrix(Vector(1,0,0),Vector(0,0,1),Vector(0,1,0)))));
 	listener=0;
 	stats_mode=false;
 }

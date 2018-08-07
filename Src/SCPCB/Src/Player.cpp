@@ -1,5 +1,4 @@
 #include "Player.h"
-#include "include.h"
 
 namespace CBN {
 
@@ -22,21 +21,6 @@ int Player::getListSize() {
 Player* Player::getObject(int index) {
     return list[index];
 }
-
-// Constants.
-const int WORNITEM_SLOT_COUNT = 3;
-const int WORNITEM_SLOT_NONE = WORNITEM_SLOT_COUNT;
-const int WORNITEM_SLOT_HEAD = 0;
-const int WORNITEM_SLOT_BODY = 1;
-const int WORNITEM_SLOT_HAND = 2;
-const int PLAYER_INV_COUNT = 6;
-const int OVERLAY_COUNT = 6;
-const int OVERLAY_BLACK = 0;
-const int OVERLAY_WHITE = 1;
-const int OVERLAY_FOG = 2;
-const int OVERLAY_GASMASK = 3;
-const int OVERLAY_NIGHTVISION = 4;
-const int OVERLAY_008 = 5;
 
 // Globals.
 Player* mainPlayer = nullptr;

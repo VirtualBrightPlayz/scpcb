@@ -1,5 +1,5 @@
+#include <vector>
 
-#include "std.h"
 #include "loader_b3d.h"
 #include "meshmodel.h"
 #include "pivot.h"
@@ -8,10 +8,10 @@
 //#define SHOW_BONES
 
 static FILE *in;
-static vector<int> chunk_stack;
-static vector<Texture> textures;
-static vector<Brush> brushes;
-static vector<Object*> bones;
+static std::vector<int> chunk_stack;
+static std::vector<Texture> textures;
+static std::vector<Brush> brushes;
+static std::vector<Object*> bones;
 
 static bool collapse;
 static bool animonly;
@@ -79,19 +79,19 @@ static void readColor( unsigned *t ){
 	*t=(int(a*255)<<24)|(int(r*255)<<16)|(int(g*255)<<8)|int(b*255);
 }
 
-static string readString(){
-	string t;
+static String readString(){
+	String t;
 	for(;;){
 		char c;
 		read( &c,1 );
 		if( !c ) return t;
-		t+=c;
+		t=String(t,c);
 	}
 }
 
 static void readTextures(){
 	while( chunkSize() ){
-		string name=readString();
+		String name=readString();
 		int flags=readInt();
 		int blend=readInt();
 		float pos[2],scl[2];
@@ -119,7 +119,7 @@ static void readBrushes(){
 	int tex_id[8]={-1,-1,-1,-1,-1,-1,-1,-1};
 
 	while( chunkSize() ){
-		string name=readString();
+		String name=readString();
 		float col[4];
 		readFloatArray( col,4 );
 		float shi=readFloat();
@@ -210,7 +210,7 @@ static Object *readBone(){
 	t.m.k.z=.1f;
 	bone->transform( t );
 #else
-	Pivot *bone=d_new Pivot();
+	Pivot *bone=new Pivot();
 #endif
 
 	bones.push_back( bone );
@@ -249,7 +249,7 @@ static Object *readObject( Object *parent ){
 
 	Object *obj=0;
 
-	string name=readString();
+	String name=readString();
 	float pos[3],scl[3],rot[4];
 	readFloatArray( pos,3 );
 	readFloatArray( scl,3 );
@@ -264,7 +264,7 @@ static Object *readObject( Object *parent ){
 		switch( readChunk() ){
 		case 'MESH':
 			MeshLoader::beginMesh();
-			obj=mesh=d_new MeshModel();
+			obj=mesh=new MeshModel();
 			mesh_brush=readInt();
 			mesh_flags=readMesh();
 			break;
@@ -280,14 +280,14 @@ static Object *readObject( Object *parent ){
 			readFloat();
 			break;
 		case 'NODE':
-			if( !obj ) obj=d_new MeshModel();
+			if( !obj ) obj=new MeshModel();
 			readObject( obj );
 			break;
 		}
 		exitChunk();
 	}
 
-	if( !obj ) obj=d_new MeshModel();
+	if( !obj ) obj=new MeshModel();
 
 	obj->setName( name );
 	obj->setLocalPosition( Vector( pos[0],pos[1],pos[2] ) );
@@ -303,11 +303,11 @@ static Object *readObject( Object *parent ){
 
 	if( mesh && bones.size() ){
 		bones.insert( bones.begin(),mesh );
-		mesh->setAnimator( d_new Animator( bones,anim_len ) );
+		mesh->setAnimator( new Animator( bones,anim_len ) );
 		mesh->createBones();
 		bones.clear();
 	}else if( anim_len ){
-		obj->setAnimator( d_new Animator( obj,anim_len ) );
+		obj->setAnimator( new Animator( obj,anim_len ) );
 	}
 
 	if( parent ) obj->setParent( parent );
@@ -315,12 +315,12 @@ static Object *readObject( Object *parent ){
 	return obj;
 }
 
-MeshModel *Loader_B3D::load( const string &f,const Transform &conv,int hint ){
+MeshModel *Loader_B3D::load( String f,const Transform &conv,int hint ){
 
 	collapse=!!(hint&MeshLoader::HINT_COLLAPSE);
 	animonly=!!(hint&MeshLoader::HINT_ANIMONLY);
 
-	in=fopen( f.c_str(),"rb" );
+	in=fopen( f.cstr(),"rb" );
 	if( !in ) return 0;
 
 	::clear();

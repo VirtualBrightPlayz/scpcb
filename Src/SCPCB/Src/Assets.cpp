@@ -20,6 +20,11 @@
 #include "NPCs/NPCs.h"
 #include "Menus/Menu.h"
 #include "Menus/LoadingScreen.h"
+#include "Options.h"
+#include "Events.h"
+#include "Skybox.h"
+
+#include "Rooms/Room_dimension1499.h" //TODO: AAAAAA
 
 namespace CBN {
 
@@ -53,7 +58,7 @@ UIAssets::UIAssets() {
 		bbHandleImage(arrow[i], 0, 0);
 	}
 
-	// TODO: Change this now?
+	// TODO: Change this once we move to FreeType
 	//For some reason, Blitz3D doesn't load fonts that have filenames that
 	//don't match their "internal name" (i.e. their display name in applications
 	//like Word and such). As a workaround, I moved the files and renamed them so they
@@ -106,13 +111,6 @@ UIAssets::~UIAssets() {
 	bbFreeImage(staminaBar);
 	bbFreeImage(keypadHUD);
 }
-
-// Constants.
-const int ASSET_DECAY_TIMER = 10 * 70;
-const int BLEND_ADD = 3;
-const int GORE_PIC_COUNT = 6;
-const int HAND_ICON_TOUCH = 0;
-const int HAND_ICON_GRAB = 1;
 
 // Globals.
 UIAssets* uiAssets;
@@ -515,7 +513,7 @@ void InitLoadGame() {
     RoomTemplate* rt;
     Event* e;
     Prop* prop;
-    int planetex;
+    Texture* planetex;
     Chunk* ch;
 
     DrawLoading(80);
@@ -567,28 +565,21 @@ void InitLoadGame() {
     for (int iterator11 = 0; iterator11 < RoomTemplate::getListSize(); iterator11++) {
         rt = RoomTemplate::getObject(iterator11);
 
-        if (rt->collisionObjs!=nullptr) {
-            for (i = 0; i <= rt->collisionObjs->size-1; i++) {
-                bbFreeEntity(GetIntArrayListElem(rt->collisionObjs,i));
-            }
-            DeleteIntArrayList(rt->collisionObjs);
-            rt->collisionObjs = nullptr;
+        for (i=0;i<rt->collisionObjs.size();i++) {
+            bbFreeEntity(rt->collisionObjs[i]);
         }
-
+        rt->collisionObjs.clear();
+        
         bbFreeEntity(rt->opaqueMesh);
         if (rt->alphaMesh!=0) {
             bbFreeEntity(rt->alphaMesh);
         }
 
-        if (rt->props!=nullptr) {
-            for (i = 0; i <= rt->props->size-1; i++) {
-                prop = Object.Prop(GetIntArrayListElem(rt->props,i));
-                bbFreeEntity(prop->obj);
-                delete prop;
-            }
-            DeleteIntArrayList(rt->props);
-            rt->props = nullptr;
+        for (i=0;i<rt->props.size();i++) {
+            bbFreeEntity(rt->props[i]->obj);
+            delete rt->props[i];
         }
+        rt->props.clear();
     }
 
     mainPlayer->dropSpeed = 0.0;
@@ -598,7 +589,7 @@ void InitLoadGame() {
         e = Event::getObject(iterator12);
 
         //Loading the necessary stuff for dimension1499, but this will only be done if the player is in this dimension already
-        if (e->name == "dimension1499") {
+        if (e->name.equals("dimension1499")) {
             if (e->eventState == 2) {
                 //[Block]
                 DrawLoading(91);

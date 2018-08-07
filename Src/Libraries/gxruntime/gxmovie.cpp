@@ -1,5 +1,3 @@
-
-#include "std.h"
 #include "gxmovie.h"
 #include "gxgraphics.h"
 

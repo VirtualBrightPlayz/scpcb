@@ -13,7 +13,7 @@ public:
 	Light( int type );
 	~Light();
 
-    virtual Object* clone(){ return d_new Light(*this); }
+    virtual Object* clone(){ return new Light(*this); }
 	Light *getLight(){ return this; }
 
 	void setRange( float r );

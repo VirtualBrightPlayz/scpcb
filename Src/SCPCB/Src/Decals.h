@@ -15,7 +15,7 @@ public:
     static int getListSize();
     static Decal* getObject(int index);
 
-    int obj;
+    class Sprite* obj;
     float sizeChange;
     float size;
     float maxSize;

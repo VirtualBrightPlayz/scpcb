@@ -24,7 +24,7 @@ public:
 	bool renameFile( String src,String dest );
 	bool setCurrentDir( String dir );
 
-	std::string getCurrentDir()const;
+	String getCurrentDir()const;
 	int getFileSize( String name )const;
 	int getFileType( String name )const;
 

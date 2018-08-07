@@ -1,5 +1,7 @@
+#include <vector>
 
-#include "std.h"
+#include "../gxruntime/gxruntime.h"
+
 #include "object.h"
 
 extern gxRuntime *gx_runtime;
@@ -50,7 +52,7 @@ Object *Object::copy(){
 		Object *cpy=e->copy();
 		cpy->setParent( last_copy );
 	}
-	if( animator ) last_copy->setAnimator( d_new Animator( animator ) );
+	if( animator ) last_copy->setAnimator( new Animator( animator ) );
 	return last_copy;
 }
 
@@ -266,7 +268,7 @@ void Object::setEnabled(bool enabled) {
     _enabled = enabled;
 }
 
-void Object::enumVisible(vector<Object*> &out) {
+void Object::enumVisible(std::vector<Object*> &out) {
     if (!_visible) return;
     if (Object *o = this) out.push_back(o);
     for (Object *e = _children; e; e = e->_succ) {
@@ -274,7 +276,7 @@ void Object::enumVisible(vector<Object*> &out) {
     }
 }
 
-void Object::enumEnabled(vector<Object*> &out) {
+void Object::enumEnabled(std::vector<Object*> &out) {
     if (!_enabled) return;
     if (Object *o = this) out.push_back(o);
     for (Object *e = _children; e; e = e->_succ) {

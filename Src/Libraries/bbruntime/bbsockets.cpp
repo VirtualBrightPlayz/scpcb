@@ -1,5 +1,8 @@
+#include <set>
+#include <vector>
 
-#include "std.h"
+#include "../gxruntime/gxutil.h"
+
 #include "bbsockets.h"
 
 static bool socks_ok;
@@ -20,9 +23,9 @@ class UDPStream;
 class TCPStream;
 class TCPServer;
 
-static set<UDPStream*> udp_set;
-static set<TCPStream*> tcp_set;
-static set<TCPServer*> server_set;
+static std::set<UDPStream*> udp_set;
+static std::set<TCPStream*> tcp_set;
+static std::set<TCPServer*> server_set;
 
 class UDPStream : public bbStream{
 public:
@@ -43,7 +46,7 @@ public:
 
 private:
 	SOCKET sock;
-	vector<char> in_buf,out_buf;
+	std::vector<char> in_buf,out_buf;
 	sockaddr_in addr,in_addr,out_addr;
 	int in_get,e;
 };
@@ -169,7 +172,7 @@ public:
 private:
 	int e;
 	SOCKET sock;
-	set<TCPStream*> accepted_set;
+	std::set<TCPStream*> accepted_set;
 };
 
 TCPStream::TCPStream( SOCKET s,TCPServer *t ):sock(s),server(t),e(0){
@@ -262,7 +265,7 @@ TCPStream *TCPServer::accept(){
 	if( n!=1 ){ e=-1;return 0; }
 	SOCKET t=::accept( sock,0,0 );
 	if( t==INVALID_SOCKET ){ e=-1;return 0; }
-	TCPStream *s=d_new TCPStream( t,this );
+	TCPStream *s=new TCPStream( t,this );
 	accepted_set.insert( s );
 	return s;
 }
@@ -289,7 +292,7 @@ static inline void debugTCPServer( TCPServer *p ){
 	}
 }
 
-static vector<int> host_ips;
+static std::vector<int> host_ips;
 
 int bbCountHostIPs( String host ){
 	host_ips.clear();
@@ -315,7 +318,7 @@ UDPStream *bbCreateUDPStream( int port ){
 	if( s!=INVALID_SOCKET ){
 		sockaddr_in addr={AF_INET,htons(port)};
 		if( !::bind( s,(sockaddr*)&addr,sizeof(addr) ) ){
-			UDPStream *p=d_new UDPStream( s );
+			UDPStream *p=new UDPStream( s );
 			udp_set.insert( p );
 			return p;
 		}
@@ -366,8 +369,8 @@ void bbUDPTimeouts( int rt ){
 
 String bbDottedIP( int ip ){
 	return String(
-		itoa((ip>>24)&255)+"."+itoa((ip>>16)&255)+"."+
-		itoa((ip>>8)&255)+"."+itoa(ip&255) );
+		itoa((char)((ip>>24)&255))+"."+itoa((char)((ip>>16)&255))+"."+
+		itoa((char)((ip>>8)&255))+"."+itoa((char)(ip&255)) );
 }
 
 static int findHostIP( String t ){
@@ -400,7 +403,7 @@ TCPStream *bbOpenTCPStream( String server,int port,int local_port ){
 		sockaddr_in addr={AF_INET,htons(port)};
 		addr.sin_addr.S_un.S_addr=ip;
 		if( !::connect( s,(sockaddr*)&addr,sizeof(addr) ) ){
-			TCPStream *p=d_new TCPStream( s,0 );
+			TCPStream *p=new TCPStream( s,0 );
 			tcp_set.insert( p );
 			return p;
 		}
@@ -421,7 +424,7 @@ TCPServer *  bbCreateTCPServer( int port ){
 		sockaddr_in addr={AF_INET,htons(port)};
 		if( !::bind( s,(sockaddr*)&addr,sizeof(addr) ) ){
 			if( !::listen( s,SOMAXCONN ) ){
-				TCPServer *p=d_new TCPServer( s );
+				TCPServer *p=new TCPServer( s );
 				server_set.insert( p );
 				return p;
 			}

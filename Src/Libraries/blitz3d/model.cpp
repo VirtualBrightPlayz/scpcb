@@ -1,5 +1,7 @@
+#include <vector>
 
-#include "std.h"
+#include "../gxruntime/gxscene.h"
+
 #include "model.h"
 
 extern gxScene *gx_scene;
@@ -120,7 +122,7 @@ void Model::enqueue( gxMesh *mesh,int fv,int vc,int ft,int tc,const Brush &brush
 }
 
 void Model::renderQueue( int type ){
-	vector<MeshQueue*> *que=&queues[type];
+	std::vector<MeshQueue*> *que=&queues[type];
 	for( ;que->size();que->pop_back() ){
 		MeshQueue *q=que->back();
 		q->render();

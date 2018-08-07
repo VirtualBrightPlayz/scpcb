@@ -1,7 +1,10 @@
+#include <set>
 
-#include "std.h"
+#include "gxutil.h"
+
 #include "gxgraphics.h"
 #include "gxruntime.h"
+#include "gxcanvas.h"
 
 extern gxRuntime *gx_runtime;
 
@@ -10,8 +13,8 @@ runtime(rt),dirDraw(dd),dir3d(0),dir3dDev(0),def_font(0),gfx_lost(false),dummy_m
 
 	dirDraw->QueryInterface( IID_IDirectDraw,(void**)&ds_dirDraw );
 
-	front_canvas=d_new gxCanvas( this,fs,0 );
-	back_canvas=d_new gxCanvas( this,bs,0 );
+	front_canvas=new gxCanvas( this,fs,0 );
+	back_canvas=new gxCanvas( this,bs,0 );
 
 	front_canvas->cls();
 	back_canvas->cls();
@@ -44,8 +47,7 @@ gxGraphics::~gxGraphics(){
 	while( font_set.size() ) freeFont( *font_set.begin() );
 	while( canvas_set.size() ) freeCanvas( *canvas_set.begin() );
 
-	set<string>::iterator it;
-	for( it=font_res.begin();it!=font_res.end();++it ) RemoveFontResource( (*it).c_str() );
+	for( int i=0;i<font_res.size();++i ) RemoveFontResource( font_res[i].cstr() );
 	font_res.clear();
 
 	delete back_canvas;
@@ -91,13 +93,13 @@ bool gxGraphics::restore(){
 	dirDraw->RestoreAllSurfaces();
 
 	//restore all canvases
-	set<gxCanvas*>::iterator it;
+	std::set<gxCanvas*>::iterator it;
 	for( it=canvas_set.begin();it!=canvas_set.end();++it ){
 		(*it)->restore();
 	}
 
 	//restore all meshes (b3d surfaces)
-	set<gxMesh*>::iterator mesh_it;
+	std::set<gxMesh*>::iterator mesh_it;
 	for( mesh_it=mesh_set.begin();mesh_it!=mesh_set.end();++mesh_it ){
 		(*mesh_it)->restore();
 	}
@@ -170,7 +172,7 @@ gxMovie *gxGraphics::openMovie( String file,int flags ){
 				delete path;
 
 				if( n==S_OK ){
-					gxMovie *movie=d_new gxMovie( this,iam_stream );
+					gxMovie *movie=new gxMovie( this,iam_stream );
 					movie_set.insert( movie );
 					return movie;
 				}
@@ -192,7 +194,7 @@ void gxGraphics::closeMovie( gxMovie *m ){
 gxCanvas *gxGraphics::createCanvas( int w,int h,int flags ){
 	ddSurf *s=ddUtil::createSurface( w,h,flags,this );
 	if( !s ) return 0;
-	gxCanvas *c=d_new gxCanvas( this,s,flags );
+	gxCanvas *c=new gxCanvas( this,s,flags );
 	canvas_set.insert( c );
 	c->cls();
 	return c;
@@ -201,7 +203,7 @@ gxCanvas *gxGraphics::createCanvas( int w,int h,int flags ){
 gxCanvas *gxGraphics::loadCanvas( String f,int flags ){
 	ddSurf *s=ddUtil::loadSurface( f,flags,this );
 	if( !s ) return 0;
-	gxCanvas *c=d_new gxCanvas( this,s,flags );
+	gxCanvas *c=new gxCanvas( this,s,flags );
 	canvas_set.insert( c );
 	return c;
 }
@@ -233,11 +235,17 @@ gxFont *gxGraphics::loadFont( String f,int height,int flags ){
 	int underline=flags & gxFont::FONT_UNDERLINE ? 1 : 0;
 	int strikeout=0;
 
-	string t;
+	String t;
 	int n=f.findFirst('.');
-	if( n!=string::npos ){
+	if( n!=-1 ){
 		t=fullfilename(f.cstr());
-		if( !font_res.count(t) && AddFontResource( t.c_str() ) ) font_res.insert( t );
+        std::vector<String>::iterator it = font_res.end();
+        for (int i=0;i<font_res.size();i++){
+            if (font_res[i].equals(t)){
+                it = font_res.begin()+i; break;
+            }
+        }
+        if( it!=font_res.end() && AddFontResource( t.cstr() ) ) font_res.push_back( t );
 		t=filenamefile( f.substr(0,n).cstr() );
 	}else{
 		t=f.cstr();
@@ -252,7 +260,7 @@ gxFont *gxGraphics::loadFont( String f,int height,int flags ){
 		height,0,0,0,
 		bold,italic,underline,strikeout,
 		ANSI_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,DEFAULT_QUALITY,
-		DEFAULT_PITCH|FF_DONTCARE,t.c_str() );
+		DEFAULT_PITCH|FF_DONTCARE,t.cstr() );
 
 	if( !hfont ){
 		//restore font smoothing
@@ -275,9 +283,9 @@ gxFont *gxGraphics::loadFont( String f,int height,int flags ){
 
 	int first=tm.tmFirstChar,last=tm.tmLastChar;
 	int sz=last-first+1;
-	int *offs=d_new int[sz];
-	int *widths=d_new int[sz];
-	int *as=d_new int[sz];
+	int *offs=new int[sz];
+	int *widths=new int[sz];
+	int *as=new int[sz];
 
 	//calc size of canvas to hold font.
 	int x=0,y=0,max_x=0;
@@ -333,7 +341,7 @@ gxFont *gxGraphics::loadFont( String f,int height,int flags ){
 			delete[] as;
 
 			c->backup();
-			gxFont *font=d_new gxFont( this,c,tm.tmMaxCharWidth,height,first,last+1,tm.tmDefaultChar,offs,widths );
+			gxFont *font=new gxFont( this,c,tm.tmMaxCharWidth,height,first,last+1,tm.tmDefaultChar,offs,widths );
 			font_set.insert( font );
 
 			//restore font smoothing
@@ -409,7 +417,7 @@ static int cntBits( int mask ){
 	return n;
 }
 
-static vector<TexFmt> tex_fmts;
+static std::vector<TexFmt> tex_fmts;
 
 static HRESULT CALLBACK enumTextureFormat( DDPIXELFORMAT *fmt,void *p ){
 	TexFmt t;
@@ -423,26 +431,26 @@ static HRESULT CALLBACK enumTextureFormat( DDPIXELFORMAT *fmt,void *p ){
 	return D3DENUMRET_OK;
 }
 
-static string itobin( int n ){
-	string t;
+static String itobin( int n ){
+	String t;
 	for( int k=0;k<32;n<<=1,++k ){
-		t+=(n&0x80000000) ? '1' : '0';
+		t=String(t,(n&0x80000000) ? '1' : '0');
 	}
 	return t;
 }
 
 static void debugPF( const DDPIXELFORMAT &pf ){
-	string t;
+	String t;
 	t="Bits:"+itoa( pf.dwRGBBitCount );
-	gx_runtime->debugLog( t.c_str() );
+	gx_runtime->debugLog( t.cstr() );
 	t="R Mask:"+itobin( pf.dwRBitMask );
-	gx_runtime->debugLog( t.c_str() );
+	gx_runtime->debugLog( t.cstr() );
 	t="G Mask:"+itobin( pf.dwGBitMask );
-	gx_runtime->debugLog( t.c_str() );
+	gx_runtime->debugLog( t.cstr() );
 	t="B Mask:"+itobin( pf.dwBBitMask );
-	gx_runtime->debugLog( t.c_str() );
+	gx_runtime->debugLog( t.cstr() );
 	t="A Mask:"+itobin( pf.dwRGBAlphaBitMask );
-	gx_runtime->debugLog( t.c_str() );
+	gx_runtime->debugLog( t.cstr() );
 }
 
 static void pickTexFmts( gxGraphics *g,int hi ){
@@ -545,7 +553,7 @@ gxScene *gxGraphics::createScene( int flags ){
 							string ts="ZBuffer Bit Depth:"+itoa( zbuffFmt.dwZBufferBitDepth );
 							gx_runtime->debugLog( ts.c_str() );
 #endif
-							gxScene *scene=d_new gxScene( this,back_canvas );
+							gxScene *scene=new gxScene( this,back_canvas );
 							scene_set.insert( scene );
 
 							dummy_mesh=createMesh( 8,12,0 );
@@ -596,8 +604,8 @@ gxMesh *gxGraphics::createMesh( int max_verts,int max_tris,int flags ){
 
 	IDirect3DVertexBuffer7 *buff;
 	if( dir3d->CreateVertexBuffer( &desc,&buff,0 )<0 ) return 0;
-	WORD *indices=d_new WORD[max_tris*3];
-	gxMesh *mesh=d_new gxMesh( this,buff,indices,max_verts,max_tris );
+	WORD *indices=new WORD[max_tris*3];
+	gxMesh *mesh=new gxMesh( this,buff,indices,max_verts,max_tris );
 	mesh_set.insert( mesh );
 	return mesh;
 }

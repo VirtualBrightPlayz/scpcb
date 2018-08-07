@@ -1,5 +1,8 @@
+#include <d3d.h>
+#include <set>
 
-#include "std.h"
+#include "StringType.h"
+#include "gxutil.h"
 #include "gxruntime.h"
 #include "zmouse.h"
 
@@ -18,21 +21,12 @@ struct gxRuntime::GfxDriver{
 static const int static_ws=WS_VISIBLE|WS_CAPTION|WS_SYSMENU|WS_MINIMIZEBOX;
 static const int scaled_ws=WS_VISIBLE|WS_CAPTION|WS_SYSMENU|WS_SIZEBOX|WS_MINIMIZEBOX|WS_MAXIMIZEBOX;
 
-static string app_title;
-static string app_close;
+static String app_title;
+static String app_close;
 static gxRuntime *runtime;
 static bool busy,suspended;
 static volatile bool run_flag;
 static DDSURFACEDESC2 desktop_desc;
-
-typedef int (_stdcall *LibFunc)( const void *in,int in_sz,void *out,int out_sz );
-
-struct gxDll{
-	HINSTANCE hinst;
-	map<string,LibFunc> funcs;
-};
-
-static map<string,gxDll*> libs;
 
 static LRESULT CALLBACK windowProc( HWND hwnd,UINT msg,WPARAM wparam,LPARAM lparam );
 
@@ -53,7 +47,7 @@ static MMRESULT timerID;
 static IDirectDrawClipper *clipper;
 static IDirectDrawSurface7 *primSurf;
 
-static set<gxTimer*> timers;
+static std::set<gxTimer*> timers;
 
 enum{
 	WM_STOP=WM_APP+1,WM_RUN,WM_END
@@ -88,22 +82,15 @@ gxRuntime *gxRuntime::openRuntime( HINSTANCE hinst,String cmd_line ){
 
 	UpdateWindow( hwnd );
 
-	runtime=d_new gxRuntime( hinst,cmd_line,hwnd );
+	runtime=new gxRuntime( hinst,cmd_line,hwnd );
 	return runtime;
 }
 
 void gxRuntime::closeRuntime( gxRuntime *r ){
 	if( !runtime || runtime!=r ) return;
 
-	map<string,gxDll*>::const_iterator it;
-	for( it=libs.begin();it!=libs.end();++it ){
-		FreeLibrary( it->second->hinst );
-	}
-	libs.clear();
-
 	delete runtime;
 	runtime=0;
-
 }
 
 //////////////////////////
@@ -297,8 +284,8 @@ void gxRuntime::flip( bool vwait ){
 			n=f->getSurface()->Flip( 0,DDFLIP_NOVSYNC|DDFLIP_WAIT );
 		}
 		if( n>=0 ) return;
-		string t="Flip Failed! Return code:"+itoa(n&0x7fff);
-		debugLog( t.c_str() );
+		String t="Flip Failed! Return code:"+itoa(n&0x7fff);
+		debugLog( t.cstr() );
 		break;
 	}
 }
@@ -588,27 +575,27 @@ bool gxRuntime::execute( String cmd_line ){
 	if( !cmd_line.size() ) return false;
 
 	//convert cmd_line to cmd and params
-	string cmd=cmd_line.cstr(),params;
-	while( cmd.size() && cmd[0]==' ' ) cmd=cmd.substr( 1 );
-	if( cmd.find( '\"' )==0 ){
-		int n=cmd.find( '\"',1 );
-		if( n!=string::npos ){
+	String cmd=cmd_line.cstr(),params;
+	while( cmd.size() && cmd.charAt(0)==' ' ) cmd=cmd.substr( 1 );
+	if( cmd.findFirst( '\"' )==0 ){
+		int n=cmd.findFirst( '\"',1 );
+		if( n!=-1 ){
 			params=cmd.substr( n+1 );
 			cmd=cmd.substr( 1,n-1 );
 		}
 	}else{
-		int n=cmd.find( ' ' );
-		if( n!=string::npos ){
+		int n=cmd.findFirst( ' ' );
+		if( n!=-1 ){
 			params=cmd.substr( n+1 );
 			cmd=cmd.substr( 0,n );
 		}
 	}
-	while( params.size() && params[0]==' ' ) params=params.substr( 1 );
-	while( params.size() && params[params.size()-1]==' ' ) params=params.substr( 0,params.size()-1 );
+	while( params.size() && params.charAt(0)==' ' ) params=params.substr( 1 );
+	while( params.size() && params.charAt(params.size()-1)==' ' ) params=params.substr( 0,params.size()-1 );
 
 	SetForegroundWindow( GetDesktopWindow() );
 
-	return (int)ShellExecute( GetDesktopWindow(),0,cmd.c_str(),params.size() ? params.c_str() : 0,0,SW_SHOW )>32;
+	return (int)ShellExecute( GetDesktopWindow(),0,cmd.cstr(),params.size() ? params.cstr() : 0,0,SW_SHOW )>32;
 }
 
 ///////////////
@@ -649,7 +636,7 @@ gxAudio *gxRuntime::openAudio( int flags ){
 	return 0;
     //if( audio ) return 0;
 
-	//audio=d_new gxAudio( this );
+	//audio=new gxAudio( this );
 	//return audio;
 }
 
@@ -669,7 +656,7 @@ gxInput *gxRuntime::openInput( int flags ){
 	IDirectInput8 *di;
 //	if (DirectInputCreateEx(hinst, DIRECTINPUT_VERSION, IID_IDirectInput7, (void**)&di, 0) >= 0) {
 	if (DirectInput8Create(hinst, DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)&di, 0) >= 0) {
-			input=d_new gxInput( this,di );
+			input=new gxInput( this,di );
 		acquireInput();
 	}else{
 		debugInfo( "Create DirectInput failed" );
@@ -786,7 +773,7 @@ gxGraphics *gxRuntime::openWindowedGraphics( int w,int h,int d,bool d3d ){
 								primSurf=ps;
 								mod_cnt=0;
 								fs->AddRef();
-								return d_new gxGraphics( this,dd,fs,fs,d3d );
+								return new gxGraphics( this,dd,fs,fs,d3d );
 							}
 							fs->Release();
 						}
@@ -825,7 +812,7 @@ gxGraphics *gxRuntime::openExclusiveGraphics( int w,int h,int d,bool d3d ){
 				DDSCAPS2 caps={sizeof caps};
 				caps.dwCaps=DDSCAPS_BACKBUFFER;
 				if( ps->GetAttachedSurface( &caps,&bs )>=0 ){
-					return d_new gxGraphics( this,dd,ps,bs,d3d );
+					return new gxGraphics( this,dd,ps,bs,d3d );
 				}
 				ps->Release();
 			}
@@ -939,7 +926,7 @@ bool gxRuntime::graphicsLost(){
 gxFileSystem *gxRuntime::openFileSystem( int flags ){
 	if( fileSystem ) return 0;
 
-	fileSystem=d_new gxFileSystem();
+	fileSystem=new gxFileSystem();
 	return fileSystem;
 }
 
@@ -956,7 +943,7 @@ void gxRuntime::closeFileSystem( gxFileSystem *f ){
 static HRESULT WINAPI enumMode( DDSURFACEDESC2 *desc,void *context ){
 	int dp=desc->ddpfPixelFormat.dwRGBBitCount;
 	if( dp==16 || dp==24 || dp==32 ){
-		gxRuntime::GfxMode *m=d_new gxRuntime::GfxMode;
+		gxRuntime::GfxMode *m=new gxRuntime::GfxMode;
 		m->desc=*desc;
 		gxRuntime::GfxDriver *d=(gxRuntime::GfxDriver*)context;
 		d->modes.push_back( m );
@@ -988,9 +975,9 @@ static BOOL WINAPI enumDriver( GUID FAR *guid,LPSTR desc,LPSTR name,LPVOID conte
 		dd->GetDisplayMode( &desktop_desc );
 	}
 
-	gxRuntime::GfxDriver *d=d_new gxRuntime::GfxDriver;
+	gxRuntime::GfxDriver *d=new gxRuntime::GfxDriver;
 
-	d->guid=guid ? d_new GUID( *guid ) : 0;
+	d->guid=guid ? new GUID( *guid ) : 0;
 	d->name=desc;//string( name )+" "+string( desc );
 
 	memset( &d->d3d_desc,0,sizeof(d->d3d_desc) );
@@ -1000,7 +987,7 @@ static BOOL WINAPI enumDriver( GUID FAR *guid,LPSTR desc,LPSTR name,LPVOID conte
 		dir3d->EnumDevices( enumDevice,d );
 		dir3d->Release();
 	}
-	vector<gxRuntime::GfxDriver*> *drivers=(vector<gxRuntime::GfxDriver*>*)context;
+	std::vector<gxRuntime::GfxDriver*> *drivers=(std::vector<gxRuntime::GfxDriver*>*)context; //TODO: what even
 	drivers->push_back( d );
 	dd->EnumDisplayModes( 0,0,d,enumMode );
 	dd->Release();
@@ -1076,7 +1063,7 @@ void gxRuntime::windowedModeInfo( int *c ){
 }
 
 gxTimer *gxRuntime::createTimer( int hertz ){
-	gxTimer *t=d_new gxTimer( this,hertz );
+	gxTimer *t=new gxTimer( this,hertz );
 	timers.insert( t );
 	return t;
 }
@@ -1087,8 +1074,8 @@ void gxRuntime::freeTimer( gxTimer *t ){
 	delete t;
 }
 
-static string toDir( string t ){
-	if( t.size() && t[t.size()-1]!='\\' ) t+='\\';
+static String toDir( String t ){
+	if( t.size() && t.charAt(t.size()-1)!='\\' ) t=String(t,"\\");
 	return t;
 }
 
@@ -1127,9 +1114,9 @@ String gxRuntime::systemProperty( String p ){
 		}
 	}else if( t.equals("appdir") ){
 		if( GetModuleFileName( 0,buff,MAX_PATH ) ){
-			string t=buff;
-			int n=t.find_last_of( '\\' );
-			if( n!=string::npos ) t=t.substr( 0,n );
+			String t=buff;
+			int n=t.findLast( '\\' );
+			if( n!=-1 ) t=t.substr( 0,n );
 			return toDir( t );
 		}
 	}else if( t.equals("apphwnd") ){

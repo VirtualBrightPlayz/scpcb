@@ -1,6 +1,7 @@
-
 #ifndef ANIMATOR_H
 #define ANIMATOR_H
+
+#include <vector>
 
 #include "animation.h"
 

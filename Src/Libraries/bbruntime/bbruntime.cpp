@@ -1,5 +1,5 @@
+#include "../gxruntime/StringType.h"
 
-#include "std.h"
 #include "bbsys.h"
 #include "bbruntime.h"
 
@@ -106,8 +106,8 @@ bool blitz3d_destroy();
 
 //start up error
 static void sue( const char *t ){
-	string p=string( "Startup Error: " )+t;
-	gx_runtime->debugInfo( p.c_str() );
+	String p=String( "Startup Error: " )+t;
+	gx_runtime->debugInfo( p.cstr() );
 }
 
 bool bbruntime_create(HINSTANCE hinst){

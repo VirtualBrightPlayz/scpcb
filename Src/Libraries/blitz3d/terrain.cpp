@@ -1,10 +1,8 @@
-
-#include "std.h"
 #include "terrain.h"
 #include "terrainrep.h"
 
 Terrain::Terrain( int size_shift ):
-rep( d_new TerrainRep( size_shift ) ){
+rep( new TerrainRep( size_shift ) ){
 }
 
 Terrain::~Terrain(){

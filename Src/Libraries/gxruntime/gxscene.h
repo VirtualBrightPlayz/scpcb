@@ -2,7 +2,8 @@
 #ifndef GXSCENE_H
 #define GXSCENE_H
 
-#include <map>
+#include <set>
+#include <vector>
 #include <d3d.h>
 
 #include "gxlight.h"

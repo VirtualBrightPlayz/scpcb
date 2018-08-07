@@ -1,5 +1,5 @@
+#include "../gxruntime/gxaudio.h"
 
-#include "std.h"
 #include "listener.h"
 
 extern gxAudio *gx_audio;

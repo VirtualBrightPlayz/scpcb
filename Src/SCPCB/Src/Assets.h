@@ -5,6 +5,13 @@
 
 namespace CBN {
 
+// Constants.
+const int ASSET_DECAY_TIMER = 10 * 70;
+const int BLEND_ADD = 3;
+const int GORE_PIC_COUNT = 6;
+const int HAND_ICON_TOUCH = 0;
+const int HAND_ICON_GRAB = 1;
+
 // Structs.
 class AssetWrap {
 public:
@@ -117,13 +124,6 @@ public:
 	class bbImage* keypadHUD;
 
 };
-
-// Constants.
-extern const int ASSET_DECAY_TIMER;
-extern const int BLEND_ADD;
-extern const int GORE_PIC_COUNT;
-extern const int HAND_ICON_TOUCH;
-extern const int HAND_ICON_GRAB;
 
 // Globals.
 extern UIAssets* uiAssets;

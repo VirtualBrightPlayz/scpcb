@@ -1,28 +1,30 @@
+#include <vector>
 
-#include "std.h"
+#include "../gxruntime/gxutil.h"
+#include "../gxruntime/StringType.h"
+#include "../gxruntime/gxgraphics.h"
+
 #include "geom.h"
 #include "texture.h"
 #include "cachedtexture.h"
-
-#include "../gxruntime/gxgraphics.h"
 
 extern gxScene *gx_scene;
 extern gxGraphics *gx_graphics;
 
 struct Filter{
-	string t;
+	String t;
 	int flags;
-	Filter( const string &t,int flags ):t(t),flags(flags){
+	Filter( String t,int flags ):t(t),flags(flags){
 	}
 };
 
-static vector<Filter> filters;
+static std::vector<Filter> filters;
 
-static int filterFile( const string &t,int flags ){
+static int filterFile( String t,int flags ){
 	//check filters...
-	string l=tolower(t);
+	String l=tolower(t);
 	for( int k=0;k<filters.size();++k ){
-		if( l.find( filters[k].t )!=string::npos ){
+		if( l.findFirst( filters[k].t )!=-1 ){
 			flags|=filters[k].flags;
 		}
 	}
@@ -33,7 +35,7 @@ struct Texture::Rep{
 
 	int ref_cnt;
 	CachedTexture cached_tex;
-	vector<gxCanvas*> tex_frames;
+	std::vector<gxCanvas*> tex_frames;
 
 	int tex_blend,tex_flags;
 	bool transparent;
@@ -53,7 +55,7 @@ struct Texture::Rep{
 		memset( &matrix,0,sizeof( matrix ) );
 	}
 
-	Rep( const string &f,int flags,int w,int h,int first,int cnt ):
+	Rep( String f,int flags,int w,int h,int first,int cnt ):
 	ref_cnt(1),cached_tex( f,flags,w,h,first,cnt ),
 	tex_blend(gxScene::BLEND_MULTIPLY),tex_flags(0),
 	sx(1),sy(1),tx(0),ty(0),rot(0),mat_used(false){
@@ -79,19 +81,19 @@ Texture::Texture():rep(0){
 Texture::Texture( String f,int flags ){
 	flags=filterFile( f.cstr(),flags )|gxCanvas::CANVAS_TEXTURE;
 	if( flags & gxCanvas::CANVAS_TEX_MASK ) flags|=gxCanvas::CANVAS_TEX_RGB|gxCanvas::CANVAS_TEX_ALPHA;
-	rep=d_new Rep( f.cstr(),flags,0,0,0,1 );
+	rep=new Rep( f.cstr(),flags,0,0,0,1 );
 }
 
 Texture::Texture( String f,int flags,int w,int h,int first,int cnt ){
 	flags=filterFile( f.cstr(),flags )|gxCanvas::CANVAS_TEXTURE;
 	if( flags & gxCanvas::CANVAS_TEX_MASK ) flags|=gxCanvas::CANVAS_TEX_RGB|gxCanvas::CANVAS_TEX_ALPHA;
-	rep=d_new Rep( f.cstr(),flags,w,h,first,cnt );
+	rep=new Rep( f.cstr(),flags,w,h,first,cnt );
 }
 
 Texture::Texture( int w,int h,int flags,int cnt ){
 	flags|=gxCanvas::CANVAS_TEXTURE;
 	if( flags & gxCanvas::CANVAS_TEX_MASK ) flags|=gxCanvas::CANVAS_TEX_RGB|gxCanvas::CANVAS_TEX_ALPHA;
-	rep=d_new Rep( w,h,flags,cnt );
+	rep=new Rep( w,h,flags,cnt );
 }
 
 Texture::Texture( const Texture &t ):

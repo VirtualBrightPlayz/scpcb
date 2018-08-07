@@ -1,5 +1,5 @@
+#include "../gxruntime/gxruntime.h"
 
-#include "std.h"
 #include "collision.h"
 
 const float COLLISION_EPSILON=.001f;

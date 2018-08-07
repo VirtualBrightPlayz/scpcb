@@ -1,8 +1,32 @@
 #ifndef MAPSYSTEM_H_INCLUDED
 #define MAPSYSTEM_H_INCLUDED
+
+#include <StringType.h>
 #include <vector>
 
 namespace CBN {
+
+// Constants.
+const int MaxRoomLights = 32;
+const int MaxRoomEmitters = 8;
+const int MaxRoomObjects = 30;
+
+//TODO: use enum classes
+const int ROOM0 = 0;
+const int ROOM1 = 1;
+const int ROOM2 = 2;
+const int ROOM2C = 3;
+const int ROOM3 = 4;
+const int ROOM4 = 5;
+
+const int ZONE_LCZ = 1;
+const int ZONE_HCZ = 2;
+const int ZONE_EZ = 4;
+
+const int MAP_SIZE = 19;
+
+const int LIGHTTYPE_POINT = 2;
+const int LIGHTTYPE_SPOT = 3;
 
 // Structs.
 struct Material {
@@ -40,12 +64,16 @@ public:
     String objPath;
     int loaded;
 
-    class Object* opaqueMesh;
-    class Object* alphaMesh;
-    std::vector<class Object*> collisionObjs;
+    class MeshModel* opaqueMesh;
+    class MeshModel* alphaMesh;
+    std::vector<class MeshModel*> collisionObjs;
 	std::vector<class Prop*> props;
 
     int zones;
+
+    static const int MaxRoomLights = 32;
+    static const int MaxRoomEmitters = 8;
+    static const int MaxRoomObjects = 30;
 
     //TODO: cleanup?
     int tempSoundEmitter[MaxRoomEmitters];
@@ -90,60 +118,47 @@ public:
     struct RoomTemplate* roomTemplate;
 
     //TODO: rename
-    class Object* obj;
-	class Object* opaqueMesh;
-	class Object* alphaMesh;
-    struct IntArray* collisionObjs;
-    struct IntArray* props;
+    class Pivot* obj;
+	class MeshModel* opaqueMesh;
+	class MeshModel* alphaMesh;
+    std::vector<class MeshModel*> collisionObjs;
+    std::vector<class MeshModel*> props;
 
     float dist;
 
-    int soundCHN;
+    gxChannel* soundCHN;
 
     struct Forest* fr;
 
+    //TODO: remove duplicates and rename
+    static const int MaxRoomLights = 32;
+    static const int MaxRoomEmitters = 8;
+    static const int MaxRoomObjects = 30;
+
     //TODO: use arraylists for all this stuff?
     int soundEmitter[MaxRoomEmitters];
-    int soundEmitterObj[MaxRoomEmitters];
+    class Pivot* soundEmitterObj[MaxRoomEmitters];
     float soundEmitterRange[MaxRoomEmitters];
-    int soundEmitterCHN[MaxRoomEmitters];
+    class gxChannel* soundEmitterCHN[MaxRoomEmitters];
 
-    int lights[MaxRoomLights];
+    class Light* lights[MaxRoomLights];
     float lightIntensity[MaxRoomLights];
 
-    int lightSprites[MaxRoomLights];
+    class Sprite* lightSprites[MaxRoomLights];
 
     int objects[MaxRoomObjects];
     struct Lever* levers[11];
     struct Door* doors[7];
     struct NPC* npc[12];
-    struct Grid* grid;
 
     struct Room* adjacent[4];
     struct Door* adjDoor[4];
 
     //TODO: what the fuck
-    int lightSpritesPivot[MaxRoomLights];
+    class Pivot* lightSpritesPivot[MaxRoomLights];
     int triggerboxAmount;
     int triggerbox[128];
     String triggerboxName[128];
-};
-
-struct Grid {
-private:
-    static std::vector<Grid*> list;
-
-public:
-    Grid();
-    ~Grid();
-    static int getListSize();
-    static Grid* getObject(int index);
-
-    int grid[gridsz*gridsz];
-    int angles[gridsz*gridsz];
-    int meshes[7];
-    int entities[gridsz*gridsz];
-    struct WayPoint* waypoints[gridsz*gridsz];
 };
 
 struct LightTemplate {
@@ -199,7 +214,7 @@ public:
     static int getListSize();
     static WayPoint* getObject(int index);
 
-    int obj;
+    class Pivot* obj;
     struct Room* room;
     int state;
     //Field tempDist#
@@ -224,9 +239,9 @@ public:
     static int getListSize();
     static Screen* getObject(int index);
 
-    int obj;
+    class Pivot* obj;
     String imgpath;
-    int img;
+    class bbImage* img;
     struct Room* room;
 };
 
@@ -257,26 +272,26 @@ public:
     static int getListSize();
     static SecurityCam* getObject(int index);
 
-    class Object* obj;
-    int monitorObj;
+    class MeshModel* obj;
+    class MeshModel* monitorObj;
 
-    int baseObj;
-    int cameraObj;
+    //class MeshModel* baseObj;
+    class MeshModel* cameraObj;
 
-    int scrObj;
+    class Sprite* scrObj;
     float scrWidth;
     float scrHeight;
     int screen;
-    int cam;
-    int scrTexture;
-    int scrOverlay;
+    class Camera* cam;
+    int scrTexture; //TODO: rename
+    class Sprite* scrOverlay;
     float angle;
     float turn;
     float currAngle;
     float state;
     int playerState;
 
-    int soundCHN;
+    class gxChannel* soundCHN;
 
     int inSight;
 
@@ -294,7 +309,7 @@ public:
     int dir;
 
     int isRoom2slCam = false;
-    int room2slTexs[2];
+    class Texture* room2slTexs[2]; //TODO: kill
     int specialCam = false;
     int id = -1;
 };
@@ -310,7 +325,7 @@ public:
     static Prop* getObject(int index);
 
     String file;
-    class Object* obj;
+    class MeshModel* obj;
 
     float x;
     float y;
@@ -323,27 +338,9 @@ public:
     float zScale;
 };
 
-// Constants.
-extern const int MaxRoomLights;
-extern const int MaxRoomEmitters;
-extern const int MaxRoomObjects;
-extern const int ROOM0;
-extern const int ROOM1;
-extern const int ROOM2;
-extern const int ROOM2C;
-extern const int ROOM3;
-extern const int ROOM4;
-extern const int ZONE_LCZ;
-extern const int ZONE_HCZ;
-extern const int ZONE_EZ;
-extern const int MAP_SIZE;
-extern const int gridsz;
-extern const int LIGHTTYPE_POINT;
-extern const int LIGHTTYPE_SPOT;
-
 // Globals.
 extern float RoomScale;
-extern int RoomAmbience[20];
+extern class gxSound* RoomAmbience[20];
 extern int Sky;
 extern float HideDistance;
 extern float SecondaryLightOn;
@@ -353,7 +350,7 @@ extern Screen* SelectedScreen;
 extern SecurityCam* SelectedMonitor;
 extern SecurityCam* CoffinCam;
 extern class Texture* ScreenTexs[2];
-extern IntArray* MapRooms;
+extern Room*** MapRooms;
 
 // Functions.
 void LoadMaterials(String file);
@@ -365,8 +362,6 @@ RoomTemplate* CreateRoomTemplate(String meshpath);
 void LoadRoomTemplates(String file);
 
 void LoadRoomMesh(RoomTemplate* rt);
-
-void UpdateGrid(Grid* grid);
 
 RoomTemplate* GetRoomTemplate(String name);
 
@@ -382,7 +377,7 @@ void UpdateRooms();
 
 int IsRoomAdjacent(Room* ths, Room* that);
 
-int AddLight(Room* room, float x, float y, float z, int ltype, float range, int r, int g, int b);
+class Light* AddLight(Room* room, float x, float y, float z, int ltype, float range, int r, int g, int b);
 
 LightTemplate* AddTempLight(RoomTemplate* rt, float x, float y, float z, int ltype, float range, int r, int g, int b);
 
@@ -392,9 +387,9 @@ void InitWayPoints(int loadingstart = 45);
 
 void RemoveWaypoint(WayPoint* w);
 
-int FindPath(NPC* n, float x, float y, float z);
+int FindPath(struct NPC* n, float x, float y, float z); //TODO: move to NPCs.h?
 
-int CreateLine(float x1, float y1, float z1, float x2, float y2, float z2, int mesh = 0);
+class MeshModel* CreateLine(float x1, float y1, float z1, float x2, float y2, float z2, class MeshModel* mesh = nullptr);
 
 Screen* CreateScreen(float x, float y, float z, String imgpath, Room* r);
 
@@ -408,9 +403,9 @@ Prop* LoadProp(String file, float x, float y, float z, float pitch, float yaw, f
 
 void CreateMap();
 
-void DetermineRoomTypes(IntArray* layout, int mapDim);
+void DetermineRoomTypes(int** layout, int mapDim);
 
-int DetermineRotation(IntArray* layout, int x, int y);
+int DetermineRotation(Room** layout, int x, int y);
 
 int CheckRoomOverlap(String roomname, int x, int y);
 

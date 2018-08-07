@@ -1,5 +1,8 @@
+#include <vector>
 
-#include "std.h"
+#include "../gxruntime/gxruntime.h"
+#include "../gxruntime/gxgraphics.h"
+
 #include "meshmodel.h"
 #include "meshcollider.h"
 
@@ -13,7 +16,7 @@ struct MeshModel::Rep : public Surface::Monitor{
 	mutable int box_valid,coll_valid,norms_valid;
 
 	SurfaceList surfaces;
-	vector<Transform> bone_tforms;
+	std::vector<Transform> bone_tforms;
 
 	Rep():
 	ref_cnt(1),collider(0),box_valid(-1),coll_valid(-1),norms_valid(-1){
@@ -26,7 +29,7 @@ struct MeshModel::Rep : public Surface::Monitor{
 	}
 
 	Surface *createSurface( const Brush &b ){
-		Surface *t=d_new Surface( this );
+		Surface *t=new Surface( this );
 		surfaces.push_back( t );
 		t->setBrush( b );
 		return t;
@@ -133,8 +136,8 @@ struct MeshModel::Rep : public Surface::Monitor{
 	MeshCollider *getCollider()const{
 		if( coll_valid!=geom_changes ){
 			delete collider;
-			vector<MeshCollider::Vertex> verts;
-			vector<MeshCollider::Triangle> tris;
+			std::vector<MeshCollider::Vertex> verts;
+			std::vector<MeshCollider::Triangle> tris;
 			for( int k=0;k<surfaces.size();++k ){
 				Surface *s=surfaces[k];
 				int j;
@@ -153,7 +156,7 @@ struct MeshModel::Rep : public Surface::Monitor{
 					verts.push_back( q );
 				}
 			}
-			collider=d_new MeshCollider( verts,tris );
+			collider=new MeshCollider( verts,tris );
 			coll_valid=geom_changes;
 		}
 		return collider;
@@ -161,7 +164,7 @@ struct MeshModel::Rep : public Surface::Monitor{
 };
 
 MeshModel::MeshModel():
-rep( d_new Rep() ),brush_changes(0){
+rep( new Rep() ),brush_changes(0){
 }
 
 MeshModel::MeshModel( const MeshModel &t ):Model( t ),
@@ -197,7 +200,7 @@ void MeshModel::setRenderBrush( const Brush &b ){
 
 void MeshModel::createBones(){
 	setRenderSpace( RENDER_SPACE_WORLD );
-	const vector<Object*> &bones=getAnimator()->getObjects();
+	const std::vector<Object*> &bones=getAnimator()->getObjects();
 
 	surf_bones.resize( bones.size() );
 
@@ -237,7 +240,7 @@ bool MeshModel::render( const RenderContext &rc ){
 	}
 
 	//OK, its boned!
-	const vector<Object*> &bones=getAnimator()->getObjects();
+	const std::vector<Object*> &bones=getAnimator()->getObjects();
 
 	int k;
 	for( k=0;k<bones.size();++k ){

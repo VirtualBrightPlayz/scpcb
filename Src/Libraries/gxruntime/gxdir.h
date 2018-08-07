@@ -2,6 +2,8 @@
 #ifndef GXDIR_H
 #define GXDIR_H
 
+#include "StringType.h"
+
 #include <windows.h>
 
 class gxDir{
@@ -15,7 +17,7 @@ private:
 
 	/***** GX INTERFACE *****/
 public:
-	std::string getNextFile();
+	String getNextFile();
 };
 
 #endif

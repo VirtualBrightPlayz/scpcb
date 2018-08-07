@@ -3,6 +3,7 @@
 #define GXGRAPHICS_H
 
 #include <set>
+#include <vector>
 #include <d3d.h>
 
 #include "ddutil.h"
@@ -51,7 +52,7 @@ private:
 	std::set<gxMesh*> mesh_set;
 	std::set<gxScene*> scene_set;
 	std::set<gxMovie*> movie_set;
-	std::set<std::string> font_res;
+	std::vector<String> font_res;
 
 	DDGAMMARAMP _gammaRamp;
 	IDirectDrawGammaControl *_gamma;

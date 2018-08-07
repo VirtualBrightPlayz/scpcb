@@ -1,5 +1,7 @@
+#include <vector>
+#include <map>
+#include <utility>
 
-#include "std.h"
 #include "meshloader.h"
 #include "meshmodel.h"
 
@@ -8,18 +10,18 @@ struct Tri{
 };
 
 struct Surf{
-	vector<Tri> tris;
+	std::vector<Tri> tris;
 };
 
 struct MLMesh{
-	map<Brush,Surf*> brush_map;
-	vector<Surface::Vertex> verts;
+	std::map<Brush,Surf*> brush_map;
+	std::vector<Surface::Vertex> verts;
 
 	MLMesh(){
 	}
 
 	~MLMesh(){
-		map<Brush,Surf*>::const_iterator it;
+		std::map<Brush,Surf*>::const_iterator it;
 		for( it=brush_map.begin();it!=brush_map.end();++it ){
 			delete it->second;
 		}
@@ -27,11 +29,11 @@ struct MLMesh{
 };
 
 static MLMesh *ml_mesh;
-static vector<MLMesh*> mesh_stack;
+static std::vector<MLMesh*> mesh_stack;
 
 void MeshLoader::beginMesh(){
 	mesh_stack.push_back( ml_mesh );
-	ml_mesh=d_new MLMesh();
+	ml_mesh=new MLMesh();
 }
 
 int MeshLoader::numVertices(){
@@ -68,11 +70,11 @@ Surface::Vertex &MeshLoader::refVertex( int n ){
 void MeshLoader::addTriangle( int v0,int v1,int v2,const Brush &b ){
 	//find surface
 	Surf *surf;
-	map<Brush,Surf*>::const_iterator it=ml_mesh->brush_map.find( b );
+	std::map<Brush,Surf*>::const_iterator it=ml_mesh->brush_map.find( b );
 	if( it!=ml_mesh->brush_map.end() ) surf=it->second;
 	else{
-		surf=d_new Surf;
-		ml_mesh->brush_map.insert( make_pair( b,surf ) );
+		surf=new Surf;
+		ml_mesh->brush_map.insert( std::make_pair( b,surf ) );
 	}
 
 	Tri tri;
@@ -99,8 +101,8 @@ void MeshLoader::endMesh( MeshModel *mesh ){
 				v.bone_weights[j]*=t;
 			}
 		}
-		map<int,int> vert_map;
-		map<Brush,Surf*>::iterator it;
+		std::map<int,int> vert_map;
+		std::map<Brush,Surf*>::iterator it;
 		for( it=ml_mesh->brush_map.begin();it!=ml_mesh->brush_map.end();++it ){
 			vert_map.clear();
 			Brush b=it->first;
@@ -111,12 +113,12 @@ void MeshLoader::endMesh( MeshModel *mesh ){
 				Surface::Triangle tri;
 				for( int j=0;j<3;++j ){
 					int n=t->tris[k].verts[j],id;
-					map<int,int>::const_iterator it=vert_map.find( n );
+					std::map<int,int>::const_iterator it=vert_map.find( n );
 					if( it!=vert_map.end() ) id=it->second;
 					else{
 						id=surf->numVertices();
 						surf->addVertex( ml_mesh->verts[n] );
-						vert_map.insert( make_pair( n,id ) );
+						vert_map.insert( std::make_pair( n,id ) );
 					}
 					tri.verts[j]=id;
 				}

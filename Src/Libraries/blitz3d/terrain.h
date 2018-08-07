@@ -2,8 +2,6 @@
 #ifndef TERRAIN_H
 #define TERRAIN_H
 
-#include "../stdutil/stdutil.h"
-
 #include "model.h"
 
 struct TerrainRep;
@@ -13,7 +11,7 @@ public:
 	Terrain( int size_shift );
 	~Terrain();
 
-    virtual Object* clone(){ return d_new Terrain(*this); }
+    virtual Object* clone(){ return new Terrain(*this); }
 	Terrain *getTerrain(){ return this; }
 
 	void setDetail( int n,bool morph );
