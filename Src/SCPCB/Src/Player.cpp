@@ -1,25 +1,170 @@
+#include <bbblitz3d.h>
+#include <bbaudio.h>
+#include <bbgraphics.h>
+
 #include "Player.h"
+#include "Dreamfilter.h"
+#include "GameMain.h"
+#include "Items/Items.h"
+#include "MathUtils/MathUtils.h"
+#include "Menus/Menu.h"
+#include "Options.h"
 
 namespace CBN {
 
 // Structs.
-std::vector<Player*> Player::list;
 Player::Player() {
-    list.push_back(this);
-}
-Player::~Player() {
-    for (int i = 0; i < list.size(); i++) {
-        if (list[i] == this) {
-            list.erase(list.begin() + i);
-            break;
-        }
+    this->inventory = CreateInventory(PLAYER_INV_COUNT + WORNITEM_SLOT_COUNT);
+
+    this->cam = bbCreateCamera();
+    bbCameraViewport(this->cam, 0, 0, userOptions->screenWidth, userOptions->screenHeight);
+    bbCameraRange(this->cam, 0.05, 60);
+    bbCameraFogMode(this->cam, 1);
+    //TODO: use constants
+    bbCameraFogRange(this->cam, 0.05, 60);
+    //TODO: Change tint based on zone?
+    bbCameraFogColor(this->cam, 0, 0, 0);
+
+    Texture* fogTexture = bbLoadTexture("GFX/Overlays/fog.jpg", 1);
+    //FogNVTexture = LoadTexture("GFX/fogNV.jpg", 1)
+
+    float scaleWidth = userOptions->screenWidth / 1024.0;
+    float scaleHeight = MenuScale * 0.8;
+
+    //TODO: take ownership of ark_blur_cam
+    Texture* gasMaskTexture = bbLoadTexture("GFX/Overlays/GasmaskOverlay.jpg", 1);
+    this->overlays[OVERLAY_GASMASK] = bbCreateSprite(ark_blur_cam);
+    bbScaleSprite(this->overlays[OVERLAY_GASMASK], Max(scaleWidth, 1.0), Max(scaleHeight, 0.8));
+    bbEntityTexture(this->overlays[OVERLAY_GASMASK], gasMaskTexture);
+    bbEntityBlend(this->overlays[OVERLAY_GASMASK], 2);
+    bbEntityFX(this->overlays[OVERLAY_GASMASK], 1);
+    bbEntityOrder(this->overlays[OVERLAY_GASMASK], -1003);
+    bbMoveEntity(this->overlays[OVERLAY_GASMASK], 0, 0, 1.0);
+    bbHideEntity(this->overlays[OVERLAY_GASMASK]);
+
+    Texture* infectTexture = bbLoadTexture("GFX/Overlays/InfectOverlay.jpg", 1);
+    this->overlays[OVERLAY_008] = bbCreateSprite(ark_blur_cam);
+    bbScaleSprite(this->overlays[OVERLAY_008], Max(scaleWidth, 1.0), Max(scaleHeight, 0.8));
+    bbEntityTexture(this->overlays[OVERLAY_008], infectTexture);
+    bbEntityBlend(this->overlays[OVERLAY_008], 3);
+    bbEntityFX(this->overlays[OVERLAY_008], 1);
+    bbEntityOrder(this->overlays[OVERLAY_008], -1003);
+    bbMoveEntity(this->overlays[OVERLAY_008], 0, 0, 1.0);
+    //EntityAlpha(InfectOverlay, 255.0)
+    bbHideEntity(this->overlays[OVERLAY_008]);
+
+    Texture* nvTexture = bbLoadTexture("GFX/Overlays/NightVisionOverlay.jpg", 1);
+    this->overlays[OVERLAY_NIGHTVISION] = bbCreateSprite(ark_blur_cam);
+    bbScaleSprite(this->overlays[OVERLAY_NIGHTVISION], Max(scaleWidth, 1.0), Max(scaleHeight, 0.8));
+    bbEntityTexture(this->overlays[OVERLAY_NIGHTVISION], nvTexture);
+    bbEntityBlend(this->overlays[OVERLAY_NIGHTVISION], 2);
+    bbEntityFX(this->overlays[OVERLAY_NIGHTVISION], 1);
+    bbEntityOrder(this->overlays[OVERLAY_NIGHTVISION], -1003);
+    bbMoveEntity(this->overlays[OVERLAY_NIGHTVISION], 0, 0, 1.0);
+    bbHideEntity(this->overlays[OVERLAY_NIGHTVISION]);
+
+    //TODO: do we need this?
+    //NVBlink = CreateSprite(ark_blur_cam)
+    //ScaleSprite(NVBlink, Max(scaleWidth, 1.0), Max(scaleHeight, 0.8))
+    //EntityColor(NVBlink,0,0,0)
+    //EntityFX(NVBlink, 1)
+    //EntityOrder(NVBlink, -1005)
+    //MoveEntity(NVBlink, 0, 0, 1.0)
+    //HideEntity(NVBlink)
+
+    Texture* darkTexture = bbCreateTexture(1024, 1024, 1 + 2);
+    bbSetBuffer(bbTextureBuffer(darkTexture));
+    bbCls();
+    bbSetBuffer(bbBackBuffer());
+
+    scaleWidth = userOptions->screenWidth / 1240.0;
+    scaleHeight = userOptions->screenHeight / 960.0 * 0.8;
+
+    this->overlays[OVERLAY_FOG] = bbCreateSprite(ark_blur_cam);
+    bbScaleSprite(this->overlays[OVERLAY_FOG], Max(scaleWidth, 1.0), Max(scaleHeight, 0.8));
+    bbEntityTexture(this->overlays[OVERLAY_FOG], fogTexture);
+    bbEntityBlend(this->overlays[OVERLAY_FOG], 2);
+    bbEntityOrder(this->overlays[OVERLAY_FOG], -1000);
+    bbMoveEntity(this->overlays[OVERLAY_FOG], 0, 0, 1.0);
+
+    this->overlays[OVERLAY_BLACK] = bbCreateSprite(this->cam);
+    bbScaleSprite(this->overlays[OVERLAY_BLACK], Max(scaleWidth, 1.0), Max(scaleHeight, 0.8));
+    bbEntityTexture(this->overlays[OVERLAY_BLACK], darkTexture);
+    bbEntityBlend(this->overlays[OVERLAY_BLACK], 1);
+    bbEntityOrder(this->overlays[OVERLAY_BLACK], -1002);
+    bbMoveEntity(this->overlays[OVERLAY_BLACK], 0, 0, 1.0);
+    bbEntityAlpha(this->overlays[OVERLAY_BLACK], 0.0);
+
+    Texture* lightTexture = bbCreateTexture(1024, 1024, 1 + 2);
+    bbSetBuffer(bbTextureBuffer(lightTexture));
+    bbClsColor(255, 255, 255);
+    bbCls();
+    bbClsColor(0, 0, 0);
+    bbSetBuffer(bbBackBuffer());
+
+    this->overlays[OVERLAY_WHITE] = bbCreateSprite(this->cam);
+    bbScaleSprite(this->overlays[OVERLAY_WHITE], Max(scaleWidth, 1.0), Max(scaleHeight, 0.8));
+    bbEntityTexture(this->overlays[OVERLAY_WHITE], lightTexture);
+    bbEntityBlend(this->overlays[OVERLAY_WHITE], 1);
+    bbEntityOrder(this->overlays[OVERLAY_WHITE], -1002);
+    bbMoveEntity(this->overlays[OVERLAY_WHITE], 0, 0, 1.0);
+    bbHideEntity(this->overlays[OVERLAY_WHITE]);
+
+    bbFreeTexture(gasMaskTexture);
+    bbFreeTexture(infectTexture);
+    bbFreeTexture(nvTexture);
+    bbFreeTexture(fogTexture);
+    bbFreeTexture(darkTexture);
+    bbFreeTexture(lightTexture);
+
+    this->collider = bbCreatePivot();
+    bbEntityRadius(this->collider, 0.15, 0.30);
+    bbEntityPickMode(this->collider, 1);
+    bbEntityType(this->collider, HIT_PLAYER);
+
+    this->head = bbCreatePivot();
+    bbEntityRadius(this->head, 0.15);
+    bbEntityType(this->head, HIT_PLAYER);
+
+    //Sounds
+    for (int i = 0; i < 5; i++) {
+        this->breathingSFX[0][i] = bbLoadSound("SFX/Character/D9341/breath" + String(i) + ".ogg");
+        this->breathingSFX[1][i] = bbLoadSound("SFX/Character/D9341/breath" + String(i) + "gas.ogg");
     }
+    for (int i = 0; i < 4; i++) {
+        this->bloodDripSFX[i] = bbLoadSound("SFX/Character/D9341/BloodDrip" + String(i) + ".ogg");
+    }
+    for (int i = 0; i < 9; i++) {
+        this->damageSFX[i] = bbLoadSound("SFX/Character/D9341/Damage" + String(i + 1) + ".ogg");
+    }
+    for (int i = 0; i < 3; i++) {
+        this->coughSFX[i] = bbLoadSound("SFX/Character/D9341/Cough" + String(i + 1) + ".ogg");
+    }
+    this->heartbeatSFX = bbLoadSound("SFX/Character/D9341/Heartbeat.ogg");
 }
-int Player::getListSize() {
-    return list.size();
-}
-Player* Player::getObject(int index) {
-    return list[index];
+
+Player::~Player() {
+    //TODO: delete/drop worn items, delete inventory
+    DeleteInventory(this->inventory);
+
+    for (int i = 0; i < OVERLAY_COUNT; i++) {
+        bbFreeEntity(this->overlays[i]);
+    }
+
+    for (int i = 0; i < 5; i++) {
+        bbFreeSound(this->breathingSFX[0][i]);
+        bbFreeSound(this->breathingSFX[1][i]);
+    }
+    for (int i = 0; i < 4; i++) {
+        bbFreeSound(this->bloodDripSFX[i]);
+    }
+    for (int i = 0; i < 9; i++) {
+        bbFreeSound(this->damageSFX[i]);
+    }
+    for (int i = 0; i < 3; i++) {
+        bbFreeSound(this->coughSFX[i]);
+    }
+    bbFreeSound(this->heartbeatSFX);
 }
 
 // Globals.
@@ -36,170 +181,6 @@ float mouse_x_speed_1;
 float mouse_y_speed_1;
 
 // Functions.
-Player* CreatePlayer() {
-    Player* player = new Player();
-
-    player->inventory = CreateInventory(PLAYER_INV_COUNT + WORNITEM_SLOT_COUNT);
-
-    player->cam = bbCreateCamera();
-    bbCameraViewport(player->cam, 0, 0, userOptions->screenWidth, userOptions->screenHeight);
-    bbCameraRange(player->cam, 0.05, 60);
-    bbCameraFogMode(player->cam, 1);
-    //TODO: use constants
-    bbCameraFogRange(player->cam, 0.05, 60);
-    //TODO: Change tint based on zone?
-    bbCameraFogColor(player->cam, 0, 0, 0);
-
-    int fogTexture = bbLoadTexture("GFX/Overlays/fog.jpg", 1);
-    //FogNVTexture = LoadTexture("GFX/fogNV.jpg", 1)
-
-    float scaleWidth = userOptions->screenWidth / 1024.0;
-    float scaleHeight = MenuScale * 0.8;
-
-    //TODO: take ownership of ark_blur_cam
-    int gasMaskTexture = bbLoadTexture("GFX/Overlays/GasmaskOverlay.jpg", 1);
-    player->overlays[OVERLAY_GASMASK] = bbCreateSprite(ark_blur_cam);
-    bbScaleSprite(player->overlays[OVERLAY_GASMASK], Max(scaleWidth, 1.0), Max(scaleHeight, 0.8));
-    bbEntityTexture(player->overlays[OVERLAY_GASMASK], gasMaskTexture);
-    bbEntityBlend(player->overlays[OVERLAY_GASMASK], 2);
-    bbEntityFX(player->overlays[OVERLAY_GASMASK], 1);
-    bbEntityOrder(player->overlays[OVERLAY_GASMASK], -1003);
-    bbMoveEntity(player->overlays[OVERLAY_GASMASK], 0, 0, 1.0);
-    bbHideEntity(player->overlays[OVERLAY_GASMASK]);
-
-    int infectTexture = bbLoadTexture("GFX/Overlays/InfectOverlay.jpg", 1);
-    player->overlays[OVERLAY_008] = bbCreateSprite(ark_blur_cam);
-    bbScaleSprite(player->overlays[OVERLAY_008], Max(scaleWidth, 1.0), Max(scaleHeight, 0.8));
-    bbEntityTexture(player->overlays[OVERLAY_008], infectTexture);
-    bbEntityBlend(player->overlays[OVERLAY_008], 3);
-    bbEntityFX(player->overlays[OVERLAY_008], 1);
-    bbEntityOrder(player->overlays[OVERLAY_008], -1003);
-    bbMoveEntity(player->overlays[OVERLAY_008], 0, 0, 1.0);
-    //EntityAlpha(InfectOverlay, 255.0)
-    bbHideEntity(player->overlays[OVERLAY_008]);
-
-    int nvTexture = bbLoadTexture("GFX/Overlays/NightVisionOverlay.jpg", 1);
-    player->overlays[OVERLAY_NIGHTVISION] = bbCreateSprite(ark_blur_cam);
-    bbScaleSprite(player->overlays[OVERLAY_NIGHTVISION], Max(scaleWidth, 1.0), Max(scaleHeight, 0.8));
-    bbEntityTexture(player->overlays[OVERLAY_NIGHTVISION], nvTexture);
-    bbEntityBlend(player->overlays[OVERLAY_NIGHTVISION], 2);
-    bbEntityFX(player->overlays[OVERLAY_NIGHTVISION], 1);
-    bbEntityOrder(player->overlays[OVERLAY_NIGHTVISION], -1003);
-    bbMoveEntity(player->overlays[OVERLAY_NIGHTVISION], 0, 0, 1.0);
-    bbHideEntity(player->overlays[OVERLAY_NIGHTVISION]);
-
-    //TODO: do we need this?
-    //NVBlink = CreateSprite(ark_blur_cam)
-    //ScaleSprite(NVBlink, Max(scaleWidth, 1.0), Max(scaleHeight, 0.8))
-    //EntityColor(NVBlink,0,0,0)
-    //EntityFX(NVBlink, 1)
-    //EntityOrder(NVBlink, -1005)
-    //MoveEntity(NVBlink, 0, 0, 1.0)
-    //HideEntity(NVBlink)
-
-    int darkTexture = bbCreateTexture(1024, 1024, 1 + 2);
-    bbSetBuffer(bbTextureBuffer(darkTexture));
-    bbCls();
-    bbSetBuffer(bbBackBuffer());
-
-    scaleWidth = userOptions->screenWidth / 1240.0;
-    scaleHeight = userOptions->screenHeight / 960.0 * 0.8;
-
-    player->overlays[OVERLAY_FOG] = bbCreateSprite(ark_blur_cam);
-    bbScaleSprite(player->overlays[OVERLAY_FOG], Max(scaleWidth, 1.0), Max(scaleHeight, 0.8));
-    bbEntityTexture(player->overlays[OVERLAY_FOG], fogTexture);
-    bbEntityBlend(player->overlays[OVERLAY_FOG], 2);
-    bbEntityOrder(player->overlays[OVERLAY_FOG], -1000);
-    bbMoveEntity(player->overlays[OVERLAY_FOG], 0, 0, 1.0);
-
-    player->overlays[OVERLAY_BLACK] = bbCreateSprite(player->cam);
-    bbScaleSprite(player->overlays[OVERLAY_BLACK], Max(scaleWidth, 1.0), Max(scaleHeight, 0.8));
-    bbEntityTexture(player->overlays[OVERLAY_BLACK], darkTexture);
-    bbEntityBlend(player->overlays[OVERLAY_BLACK], 1);
-    bbEntityOrder(player->overlays[OVERLAY_BLACK], -1002);
-    bbMoveEntity(player->overlays[OVERLAY_BLACK], 0, 0, 1.0);
-    bbEntityAlpha(player->overlays[OVERLAY_BLACK], 0.0);
-
-    int lightTexture = bbCreateTexture(1024, 1024, 1 + 2);
-    bbSetBuffer(bbTextureBuffer(lightTexture));
-    bbClsColor(255, 255, 255);
-    bbCls();
-    bbClsColor(0, 0, 0);
-    bbSetBuffer(bbBackBuffer());
-
-    player->overlays[OVERLAY_WHITE] = bbCreateSprite(player->cam);
-    bbScaleSprite(player->overlays[OVERLAY_WHITE], Max(scaleWidth, 1.0), Max(scaleHeight, 0.8));
-    bbEntityTexture(player->overlays[OVERLAY_WHITE], lightTexture);
-    bbEntityBlend(player->overlays[OVERLAY_WHITE], 1);
-    bbEntityOrder(player->overlays[OVERLAY_WHITE], -1002);
-    bbMoveEntity(player->overlays[OVERLAY_WHITE], 0, 0, 1.0);
-    bbHideEntity(player->overlays[OVERLAY_WHITE]);
-
-    bbFreeTexture(gasMaskTexture);
-    bbFreeTexture(infectTexture);
-    bbFreeTexture(nvTexture);
-    bbFreeTexture(fogTexture);
-    bbFreeTexture(darkTexture);
-    bbFreeTexture(lightTexture);
-
-    player->collider = bbCreatePivot();
-    bbEntityRadius(player->collider, 0.15, 0.30);
-    bbEntityPickMode(player->collider, 1);
-    bbEntityType(player->collider, HIT_PLAYER);
-
-    player->head = bbCreatePivot();
-    bbEntityRadius(player->head, 0.15);
-    bbEntityType(player->head, HIT_PLAYER);
-
-    //Sounds
-    player->breathingSFX = CreateIntArray(2, 5);
-
-    int i;
-    for (i = 0; i <= 4; i++) {
-        SetIntArrayElem(player->breathingSFX, bbLoadSound("SFX/Character/D9341/breath"+String(i)+".ogg"), 0, i);
-        SetIntArrayElem(player->breathingSFX, bbLoadSound("SFX/Character/D9341/breath"+String(i)+"gas.ogg"), 1, i);
-    }
-    for (i = 0; i <= 3; i++) {
-        player->bloodDripSFX[i] = bbLoadSound("SFX/Character/D9341/BloodDrip" + String(i) + ".ogg");
-    }
-    for (i = 0; i <= 8; i++) {
-        player->damageSFX[i] = bbLoadSound("SFX/Character/D9341/Damage" + String(i + 1) + ".ogg");
-    }
-    for (i = 0; i <= 2; i++) {
-        player->coughSFX[i] = bbLoadSound("SFX/Character/D9341/Cough" + String(i + 1) + ".ogg");
-    }
-    player->heartbeatSFX = bbLoadSound("SFX/Character/D9341/Heartbeat.ogg");
-
-    return player;
-}
-
-void DeletePlayer(Player* player) {
-    //TODO: delete/drop worn items, delete inventory
-    DeleteInventory(player->inventory);
-
-    int i;
-    for (i = 0; i <= OVERLAY_COUNT-1; i++) {
-        bbFreeEntity(player->overlays[i]);
-    }
-
-    for (i = 0; i <= 4; i++) {
-        bbFreeSound(GetIntArrayElem(player->breathingSFX, 0, i));
-        bbFreeSound(GetIntArrayElem(player->breathingSFX, 1, i));
-    }
-    for (i = 0; i <= 3; i++) {
-        bbFreeSound(player->bloodDripSFX[i]);
-    }
-    for (i = 0; i <= 8; i++) {
-        bbFreeSound(player->damageSFX[i]);
-    }
-    for (i = 0; i <= 2; i++) {
-        bbFreeSound(player->coughSFX[i]);
-    }
-    bbFreeSound(player->heartbeatSFX);
-
-    delete player;
-}
-
 void UpdatePlayer() {
     float Sprint = 1.0;
     float Speed = 0.018;
@@ -296,8 +277,8 @@ void UpdatePlayer() {
                 }
             }
 
-            if (mainPlayer->currRoom->roomTemplate->name == "pocketdimension") {
-                if (bbEntityY(mainPlayer->collider)<2000*RoomScale | bbEntityY(mainPlayer->collider)>2608*RoomScale) {
+            if (mainPlayer->currRoom->roomTemplate->name.equals("pocketdimension")) {
+                if (bbEntityY(mainPlayer->collider)<2000*RoomScale || bbEntityY(mainPlayer->collider)>2608*RoomScale) {
                     mainPlayer->stamina = 0;
                     Speed = 0.015;
                     Sprint = 1.0;

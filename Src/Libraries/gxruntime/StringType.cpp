@@ -81,20 +81,6 @@ String::String(const String& a, const String& b) {
     syncBuffers();
 }
 
-String::String(bool b) {
-    if (b) {
-        cbuffer = "true";
-        capacity = 5;
-        strSize = 4;
-    } else {
-        cbuffer = "false";
-        capacity = 6;
-        strSize = 5;
-    }
-    dominantBuffer = DOMINANT_BUFFER::C;
-    syncBuffers();
-}
-
 String::String(char c) {
     cbuffer = new char[2];
     capacity = 2;

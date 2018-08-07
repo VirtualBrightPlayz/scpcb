@@ -22,19 +22,14 @@ const int OVERLAY_008 = 5;
 
 // Structs.
 struct Player {
-private:
-    static std::vector<Player*> list;
-
 public:
     Player();
     ~Player();
-    static int getListSize();
-    static Player* getObject(int index);
 
     //entities
     class Object* collider;
 
-    int head;
+    class Pivot* head;
     float headPitch;
     float headYaw;
 
@@ -48,7 +43,7 @@ public:
 
     class Sprite* overlays[OVERLAY_COUNT];
 
-    int grabbedEntity;
+    Object* grabbedEntity;
 
     struct Item* closestItem;
     struct Item* selectedItem;
@@ -61,7 +56,7 @@ public:
     //------------
 
     //movement states
-    int crouching;
+    bool crouching;
     float crouchState;
 
     float moveSpeed;
@@ -92,7 +87,7 @@ public:
     float forceMove;
     float forceAngle;
 
-    int disableControls;
+    bool disableControls;
 
     float blinkEffect;
     float blinkEffectTimer;
@@ -111,13 +106,13 @@ public:
     //------
 
     //sounds
-    struct IntArray* breathingSFX;
-    int bloodDripSFX[4];
-    int damageSFX[9];
-    int coughSFX[3];
-    int heartbeatSFX;
+    class gxSound* breathingSFX[2][5];
+    class gxSound* bloodDripSFX[4];
+    class gxSound* damageSFX[9];
+    class gxSound* coughSFX[3];
+    class gxSound* heartbeatSFX;
 
-    int breathChn;
+    class gxChannel* breathChn;
     //------
 
     //other states
