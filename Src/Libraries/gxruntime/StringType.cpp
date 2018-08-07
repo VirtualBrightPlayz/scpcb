@@ -382,7 +382,7 @@ String String::unHex() const {
     return String(resultBuffer);
 }
 
-std::vector<String> String::split(const String& needle) const {
+std::vector<String> String::split(const String& needle, bool removeEmptyEntries) const {
 	std::vector<String> retVal;
 	String haystack = String(*this);
 	while (haystack.findFirst(needle) > -1) {
@@ -392,6 +392,14 @@ std::vector<String> String::split(const String& needle) const {
 	}
 	// Add the rest of the string to the vector.
 	retVal.push_back(haystack);
+
+    if (removeEmptyEntries) {
+        for (int i = 0; i < retVal.size(); i++) {
+            if (retVal[i].isEmpty()) {
+                retVal.erase(retVal.begin() + i);
+            }
+        }
+    }
 
 	return retVal;
 }

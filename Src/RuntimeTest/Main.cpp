@@ -15,10 +15,10 @@ int main() {
 
     bbAppTitle(String("     Test  thing     ").trim(),"");
 
-	String test = "this is a test";
-	std::vector<String> list = test.split(" "); // Exception here.
-	for (int i = 0; i < list.size(); i++) {
-		std::cout << list[i];
+    String test = "this is a  test";
+    std::vector<String> list = test.split(" ", true); // Exception here.
+    for (int i = 0; i < list.size(); i++) {
+	    std::cout << list[i] << "\n";
     }
 
     bbAmbientLight(0,0,0);

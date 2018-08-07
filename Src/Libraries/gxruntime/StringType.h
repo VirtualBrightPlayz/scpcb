@@ -48,7 +48,7 @@ struct String {
         bool equals(const char other) const;
         bool isEmpty() const;
 
-		std::vector<String> split(const String& needle) const;
+		std::vector<String> split(const String& needle, bool removeEmptyEntries = false) const;
     protected:
         enum class DOMINANT_BUFFER {
             C, W
