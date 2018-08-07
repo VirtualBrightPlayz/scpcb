@@ -17,7 +17,6 @@ struct String {
         String(const wchar* wstr);
         String(const std::wstring& cppwstr);
         String(const String& a,const String& b);
-        String(bool b);
         String(char c);
         String(wchar w);
         String(int i);

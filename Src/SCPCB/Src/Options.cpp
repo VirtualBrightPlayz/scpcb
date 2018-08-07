@@ -1,49 +1,11 @@
 #include "Options.h"
-#include "include.h"
+
+#include <StringType.h>
+
+#include "INI.h"
+#include "MathUtils/MathUtils.h"
 
 namespace CBN {
-
-// Structs.
-std::vector<KeyBinds*> KeyBinds::list;
-KeyBinds::KeyBinds() {
-    list.push_back(this);
-}
-KeyBinds::~KeyBinds() {
-    for (int i = 0; i < list.size(); i++) {
-        if (list[i] == this) {
-            list.erase(list.begin() + i);
-            break;
-        }
-    }
-}
-int KeyBinds::getListSize() {
-    return list.size();
-}
-KeyBinds* KeyBinds::getObject(int index) {
-    return list[index];
-}
-
-std::vector<Options*> Options::list;
-Options::Options() {
-    list.push_back(this);
-}
-Options::~Options() {
-    for (int i = 0; i < list.size(); i++) {
-        if (list[i] == this) {
-            list.erase(list.begin() + i);
-            break;
-        }
-    }
-}
-int Options::getListSize() {
-    return list.size();
-}
-Options* Options::getObject(int index) {
-    return list[index];
-}
-
-// Constants.
-const String OptionFile("options.ini");
 
 // Globals.
 KeyBinds* keyBinds;
@@ -77,8 +39,8 @@ void LoadOptionsINI() {
     userOptions->hudEnabled = GetINIInt(OptionFile, optHud, "HUD enabled");
     userOptions->showFPS = GetINIInt(OptionFile, optHud, "show FPS");
 
-    keyBinds->rght = GetINIInt(OptionFile, optBin, "Right key");
-    keyBinds->lft = GetINIInt(OptionFile, optBin, "Left key");
+    keyBinds->right = GetINIInt(OptionFile, optBin, "Right key");
+    keyBinds->left = GetINIInt(OptionFile, optBin, "Left key");
     keyBinds->up = GetINIInt(OptionFile, optBin, "Up key");
     keyBinds->down = GetINIInt(OptionFile, optBin, "Down key");
 
@@ -118,8 +80,8 @@ void SaveOptionsINI() {
     PutINIValue(OptionFile, optHud, "HUD enabled", String(userOptions->hudEnabled));
     PutINIValue(OptionFile, optHud, "show FPS", String(userOptions->showFPS));
 
-    PutINIValue(OptionFile, optBin, "Right key", String(keyBinds->rght));
-    PutINIValue(OptionFile, optBin, "Left key", String(keyBinds->lft));
+    PutINIValue(OptionFile, optBin, "Right key", String(keyBinds->right));
+    PutINIValue(OptionFile, optBin, "Left key", String(keyBinds->left));
     PutINIValue(OptionFile, optBin, "Up key", String(keyBinds->up));
     PutINIValue(OptionFile, optBin, "Down key", String(keyBinds->down));
 

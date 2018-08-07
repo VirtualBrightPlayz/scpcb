@@ -6,18 +6,9 @@ namespace CBN {
 
 // Structs.
 struct KeyBinds {
-private:
-    static std::vector<KeyBinds*> list;
-
 public:
-    KeyBinds();
-    ~KeyBinds();
-    static int getListSize();
-    static KeyBinds* getObject(int index);
-
-    //TODO: an't call it right/left because blitz
-    int rght;
-    int lft;
+    int right;
+    int left;
     int up;
     int down;
 
@@ -31,44 +22,37 @@ public:
 };
 
 struct Options {
-private:
-    static std::vector<Options*> list;
-
 public:
-    Options();
-    ~Options();
-    static int getListSize();
-    static Options* getObject(int index);
 
     //General
     bool introEnabled;
     float mouseSensitivity;
-    int invertMouseY;
-    int consoleOpenOnError;
+    bool invertMouseY;
+    bool consoleOpenOnError; // TODO: Remove?
 
     //Graphics
     int screenWidth;
     int screenHeight;
-    int fullscreen;
+    bool fullscreen;
     int gfxDriver;
     float screenGamma;
     int framelimit;
-    int vsync;
+    bool vsync;
 
     //Audio
     float musicVolume;
     float sndVolume;
 
     //HUD
-    int hudEnabled;
-    int showFPS;
+    bool hudEnabled;
+    bool showFPS;
 
-    int launcher;
+    bool launcher;
 
 };
 
 // Constants.
-extern const String OptionFile;
+const String OptionFile("options.ini");
 
 // Globals.
 extern KeyBinds* keyBinds;
