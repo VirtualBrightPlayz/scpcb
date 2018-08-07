@@ -185,13 +185,13 @@ void InitEvents() {
         switch (bbRand(3)) {
             case 1: {
                 CreateEvent("evnt_roar_682", "tnnl_plain_2", bbRand(0,2), 0);
-            }
+            } break;
             case 2: {
                 CreateEvent("evnt_roar_682", "hll_gas_3", bbRand(0,2), 0);
-            }
+            } break;
             case 3: {
                 CreateEvent("evnt_roar_682", "off_plain_2", 0, 0);
-            }
+            } break;
         }
     }
 

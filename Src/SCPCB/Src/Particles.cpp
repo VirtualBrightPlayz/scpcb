@@ -87,10 +87,10 @@ Particle* CreateParticle(float x, float y, float z, int image, float size, float
     switch (image) {
         case 0,5,6: {
             bbEntityBlend(p->obj, 1);
-        }
+        } break;
         case 1,2,3,4,7: {
             bbEntityBlend(p->obj, BLEND_ADD);
-        }
+        } break;
     }
 
     p->pvt = bbCreatePivot();
@@ -220,7 +220,7 @@ Emitter* CreateEmitter(float x, float y, float z, int emittertype) {
             e->speed = 0.004;
             e->randAngle = 20;
             e->aChange = -0.008;
-        }
+        } break;
         case 1: {
             e->size = 0.03;
             e->gravity = -0.2;
@@ -229,7 +229,7 @@ Emitter* CreateEmitter(float x, float y, float z, int emittertype) {
             e->speed = 0.004;
             e->randAngle = 40;
             e->aChange = -0.01;
-        }
+        } break;
     }
 
     Room* r;

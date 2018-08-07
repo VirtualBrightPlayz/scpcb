@@ -146,7 +146,7 @@ public:
 
     class Sprite* lightSprites[MaxRoomLights];
 
-    int objects[MaxRoomObjects];
+    class Object* objects[MaxRoomObjects];
     struct Lever* levers[11];
     struct Door* doors[7];
     struct NPC* npc[12];
@@ -405,7 +405,7 @@ void CreateMap();
 
 void DetermineRoomTypes(int** layout, int mapDim);
 
-int DetermineRotation(Room** layout, int x, int y);
+int DetermineRotation(int** layout, int layoutDims, int x, int y);
 
 int CheckRoomOverlap(String roomname, int x, int y);
 

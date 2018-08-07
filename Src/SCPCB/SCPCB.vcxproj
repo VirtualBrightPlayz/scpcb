@@ -93,7 +93,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>../Libraries/bbruntime/;../Libraries/blitz3d/;../Libraries/fmod375/include/;../Libraries/freeimage/;../Libraries/gxruntime/;../Libraries/stdutil/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../Libraries/bbruntime/;../Libraries/blitz3d/;../Libraries/freeimage/;../Libraries/gxruntime/</AdditionalIncludeDirectories>
       <AssemblerListingLocation>.\obj\$(Platform)\$(Configuration)\</AssemblerListingLocation>
       <ObjectFileName>.\obj\$(Platform)\$(Configuration)\</ObjectFileName>
       <ProgramDataBaseFileName>.\obj\$(Platform)\$(Configuration)\</ProgramDataBaseFileName>
@@ -114,6 +114,7 @@
       <AssemblerListingLocation>.\obj\$(Platform)\$(Configuration)\</AssemblerListingLocation>
       <ObjectFileName>.\obj\$(Platform)\$(Configuration)\</ObjectFileName>
       <ProgramDataBaseFileName>.\obj\$(Platform)\$(Configuration)\</ProgramDataBaseFileName>
+      <AdditionalIncludeDirectories>../Libraries/bbruntime/;../Libraries/blitz3d/;../Libraries/freeimage/;../Libraries/gxruntime/</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies>wsock32.lib;amstrmid.lib;winmm.lib;dxguid.lib;ddraw.lib;dsound.lib;dinput8.lib;odbc32.lib;odbccp32.lib;../Libraries/bbruntime/lib/$(Platform)/$(Configuration)/bbruntime.lib;../Libraries/blitz3d/lib/$(Platform)/$(Configuration)/blitz3d.lib;../Libraries/freeimage/ZLib/lib/$(Platform)/$(Configuration)/ZLib.lib;../Libraries/freeimage/LibJPEG/lib/$(Platform)/$(Configuration)/LibJPEG.lib;../Libraries/freeimage/LibPNG/lib/$(Platform)/$(Configuration)/LibPNG.lib;../Libraries/freeimage/FreeImageLib/lib/$(Platform)/$(Configuration)/FreeImage.lib;../Libraries/gxruntime/lib/$(Platform)/$(Configuration)/gxruntime.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -129,6 +130,7 @@
       <AssemblerListingLocation>.\obj\$(Platform)\$(Configuration)\</AssemblerListingLocation>
       <ObjectFileName>.\obj\$(Platform)\$(Configuration)\</ObjectFileName>
       <ProgramDataBaseFileName>.\obj\$(Platform)\$(Configuration)\</ProgramDataBaseFileName>
+      <AdditionalIncludeDirectories>../Libraries/bbruntime/;../Libraries/blitz3d/;../Libraries/freeimage/;../Libraries/gxruntime/</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies>wsock32.lib;amstrmid.lib;winmm.lib;dxguid.lib;ddraw.lib;dsound.lib;dinput8.lib;odbc32.lib;odbccp32.lib;../Libraries/bbruntime/lib/$(Platform)/$(Configuration)/bbruntime.lib;../Libraries/blitz3d/lib/$(Platform)/$(Configuration)/blitz3d.lib;../Libraries/freeimage/ZLib/lib/$(Platform)/$(Configuration)/ZLib.lib;../Libraries/freeimage/LibJPEG/lib/$(Platform)/$(Configuration)/LibJPEG.lib;../Libraries/freeimage/LibPNG/lib/$(Platform)/$(Configuration)/LibPNG.lib;../Libraries/freeimage/FreeImageLib/lib/$(Platform)/$(Configuration)/FreeImage.lib;../Libraries/gxruntime/lib/$(Platform)/$(Configuration)/gxruntime.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -142,7 +144,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>../Libraries/bbruntime/;../Libraries/blitz3d/;../Libraries/fmod375/include/;../Libraries/freeimage/;../Libraries/gxruntime/;../Libraries/stdutil/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../Libraries/bbruntime/;../Libraries/blitz3d/;../Libraries/freeimage/;../Libraries/gxruntime/</AdditionalIncludeDirectories>
       <AssemblerListingLocation>.\obj\$(Platform)\$(Configuration)\</AssemblerListingLocation>
       <ObjectFileName>.\obj\$(Platform)\$(Configuration)\</ObjectFileName>
       <ProgramDataBaseFileName>.\obj\$(Platform)\$(Configuration)\</ProgramDataBaseFileName>

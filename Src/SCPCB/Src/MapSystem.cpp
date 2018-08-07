@@ -1985,44 +1985,15 @@ void CreateMap() {
         rt = RoomTemplate::getObject(iterator87);
 
         if (((rt->zones & zone)!=0) & (rt->maxAmount>0) & (rt->shape!=ROOM0)) {
-            prioritizedTemplates.push_back(rt);
+            prioritizedTemplates.insert(prioritizedTemplates.begin()+bbRand(0,prioritizedTemplates.size()-1),rt);
         }
     }
-    //TODO: replace with an array of the right type once we move to C++
-    IntArray* prioritizedTemplates = CreateIntArray(prioritizedTemplateCount,1);
-    RoomTemplate* tempTemplate;
-    RoomTemplate* tempTemplate2;
-    SetIntArrayElem(prioritizedTemplates,0,0,0);
-    for (int iterator88 = 0; iterator88 < RoomTemplate::getListSize(); iterator88++) {
-        rt = RoomTemplate::getObject(iterator88);
-
-        if (((rt->zones & zone)!=0) & (rt->maxAmount>0) & (rt->shape!=ROOM0)) {
-            tempTemplate = rt;
-            std::cout << "queueing up "+rt->name;
-            for (i = 0; i <= prioritizedTemplateCount-1; i++) {
-                if (GetIntArrayElem(prioritizedTemplates,i,0)==0) {
-                    if (i<prioritizedTemplateCount-1) {
-                        SetIntArrayElem(prioritizedTemplates,0,i+1,0);
-                    }
-                    SetIntArrayElem(prioritizedTemplates,Handle(tempTemplate),i,0);
-                    break;
-                } else {
-                    tempTemplate2 = Object.RoomTemplate(GetIntArrayElem(prioritizedTemplates,i,0));
-                    if (tempTemplate2->maxAmount>tempTemplate->maxAmount) {
-                        SetIntArrayElem(prioritizedTemplates,Handle(tempTemplate),i,0);
-                        //DebugLog("swapping "+tempTemplate2\name+" for "+tempTemplate\name)
-                        tempTemplate = tempTemplate2;
-                    }
-                }
-            }
-        }
-    }
-
+    
     int RoomCount[ROOM4+1];
     for (y = 0; y <= mapDim-1; y++) {
         for (x = 0; x <= mapDim-1; x++) {
-            if (GetIntArrayElem(layout,x,y)!=ROOM0) {
-                RoomCount[GetIntArrayElem(layout,x,y)] = RoomCount[GetIntArrayElem(layout,x,y)]+1;
+            if (layout[x][y]!=ROOM0) {
+                RoomCount[layout[x][y]]++;
             }
         }
     }
@@ -2044,8 +2015,8 @@ void CreateMap() {
     int placed;
 
     int k;
-    for (k = 0; k <= prioritizedTemplateCount-1; k++) {
-        rt = Object.RoomTemplate(GetIntArrayElem(prioritizedTemplates,k,0));
+    for (k = 0; k < prioritizedTemplates.size(); k++) {
+        rt = prioritizedTemplates[k];
 
         placementCount = bbRand(rt->minAmount,rt->maxAmount);
 
@@ -2069,14 +2040,14 @@ void CreateMap() {
                 for (i = 0; i <= loopX; i++) {
                     x = ((i+offsetX) % (loopX+1)) + loopStartX;
                     y = ((j+offsetY) % (loopY+1)) + loopStartY;
-                    if (GetIntArrayElem(layout,x,y)>0) & (GetIntArrayElem(layout,x,y)==rt->shape) {
+                    if ((layout[x][y]>0) & (layout[x][y]==rt->shape)) {
                         r = CreateRoom(rt,x*8.0,0.0,y*8.0);
-                        r->angle = DetermineRotation(layout,x,y);
+                        r->angle = DetermineRotation(layout,mapDim,x,y);
                         bbTurnEntity(r->obj,0,r->angle,0);
                         //mark as used
-                        SetIntArrayElem(layout,-1,x,y);
+                        layout[x][y]=-1;
                         //add to the MapRooms array
-                        SetIntArrayElem(MapRooms,Handle(r),x,y);
+                        MapRooms[x][y]=r;
                         placed = true;
                     }
 
@@ -2094,9 +2065,9 @@ void CreateMap() {
         }
     }
 
-    DeleteIntArray(prioritizedTemplates);
+    prioritizedTemplates.clear();
 
-    int randomTemplateCount;
+    std::vector<RoomTemplate*> randomTemplates;
     int totalCommonness[ROOM4+1];
     for (i = 1; i <= ROOM4; i++) {
         totalCommonness[i] = 0;
@@ -2105,55 +2076,36 @@ void CreateMap() {
         rt = RoomTemplate::getObject(iterator89);
 
         if (((rt->zones & zone)!=0) & (rt->maxAmount<0) & (rt->shape!=ROOM0)) {
-            randomTemplateCount = randomTemplateCount+1;
+            randomTemplates.insert(randomTemplates.begin()+bbRand(0,randomTemplates.size()-1),rt);
             totalCommonness[rt->shape] = totalCommonness[rt->shape]+(int)(rt->commonness);
         }
     }
-    IntArray* randomTemplates = CreateIntArray(randomTemplateCount,1);
-    int index = 0;
-    int tempHandle1;
-    int tempHandle2;
-
-    for (int iterator90 = 0; iterator90 < RoomTemplate::getListSize(); iterator90++) {
-        rt = RoomTemplate::getObject(iterator90);
-
-        if (((rt->zones & zone)!=0) & (rt->maxAmount<0) & (rt->shape!=ROOM0)) {
-            SetIntArrayElem(randomTemplates,Handle(rt),index,0);
-            index = index+1;
-        }
-    }
-
-    //shuffle the templates
-    for (i = 0; i <= randomTemplateCount-1; i++) {
-        index = bbRand(0,randomTemplateCount-1);
-        tempHandle1 = GetIntArrayElem(randomTemplates,i,0);
-        tempHandle2 = GetIntArrayElem(randomTemplates,index,0);
-        SetIntArrayElem(randomTemplates,tempHandle2,i,0);
-        SetIntArrayElem(randomTemplates,tempHandle1,index,0);
-    }
-
+    
     int targetCommonness = 0;
     int commonnessAccumulator = 0;
     int currType;
+
+    RoomTemplate* tempTemplate;
+
     for (y = 0; y <= mapDim-1; y++) {
         for (x = 0; x <= mapDim-1; x++) {
             commonnessAccumulator = 0;
-            currType = GetIntArrayElem(layout,x,y);
+            currType = layout[x][y];
             if (currType>0) {
                 targetCommonness = bbRand(0,totalCommonness[currType]);
 
-                for (i = 0; i <= randomTemplateCount-1; i++) {
-                    tempTemplate = Object.RoomTemplate(GetIntArrayElem(randomTemplates,i,0));
+                for (i = 0; i < randomTemplates.size(); i++) {
+                    tempTemplate = randomTemplates[i];
                     if (tempTemplate->shape == currType) {
                         commonnessAccumulator = commonnessAccumulator+(int)(tempTemplate->commonness);
                         if (commonnessAccumulator>=targetCommonness) {
                             r = CreateRoom(tempTemplate,x*8.0,0.0,y*8.0);
-                            r->angle = DetermineRotation(layout,x,y);
+                            r->angle = DetermineRotation(layout,mapDim,x,y);
                             bbTurnEntity(r->obj,0,r->angle,0);
                             //mark as used
-                            SetIntArrayElem(layout,-1,x,y);
+                            layout[x][y]=-1;
                             //add to the MapRooms array
-                            SetIntArrayElem(MapRooms,Handle(r),x,y);
+                            MapRooms[x][y]=r;
                             break;
                         }
                     }
@@ -2162,8 +2114,12 @@ void CreateMap() {
         }
     }
 
-    DeleteIntArray(randomTemplates);
-    DeleteIntArray(layout);
+    randomTemplates.clear();
+
+    for (int i=0;i<mapDim;i++) {
+        delete[] layout[i];
+    }
+    delete[] layout;
 
     //finally, let rooms know who their neighbors are
     int tempX;
@@ -2174,30 +2130,30 @@ void CreateMap() {
     WayPoint* roomBWaypoint;
     for (y = 0; y <= mapDim-1; y++) {
         for (x = 0; x <= mapDim-1; x++) {
-            r = Object.Room(GetIntArrayElem(MapRooms,x,y));
+            r = MapRooms[x][y];
             if (r!=nullptr) {
                 for (i = 0; i <= 3; i++) {
                     switch (i) {
                         case 0: {
                             tempX = 1;
                             tempY = 0;
-                        }
+                        } break;
                         case 1: {
                             tempX = 0;
                             tempY = -1;
-                        }
+                        } break;
                         case 2: {
                             tempX = -1;
                             tempY = 0;
-                        }
+                        } break;
                         case 3: {
                             tempX = 0;
                             tempY = 1;
-                        }
+                        } break;
                     }
 
-                    if (x+tempX>=0) & (x+tempX<mapDim) & (y+tempY>=0) & (y+tempY<mapDim) {
-                        r->adjacent[i] = Object.Room(GetIntArrayElem(MapRooms,x+tempX,y+tempY));
+                    if ((x+tempX>=0) & (x+tempX<mapDim) & (y+tempY>=0) & (y+tempY<mapDim)) {
+                        r->adjacent[i] = MapRooms[x+tempX][y+tempY];
                         if (r->adjacent[i]!=nullptr) {
                             if (r->adjacent[i]->adjDoor[(i+2) % 4]==nullptr) {
                                 r->adjDoor[i] = CreateDoor(r->x+4.0*tempX, 0.0,r->z+4.0*tempY, 90.0*((i+1) % 2), nullptr);
@@ -2273,92 +2229,92 @@ void DetermineRoomTypes(int** layout, int mapDim) {
     int x;
     for (y = 0; y <= mapDim-1; y++) {
         for (x = 0; x <= mapDim-1; x++) {
-            if (GetIntArrayElem(layout,x,y)!=0) {
+            if (layout[x][y]!=0) {
                 horNeighborCount = 0;
                 if (x>0) {
-                    horNeighborCount = horNeighborCount+(GetIntArrayElem(layout,x-1,y)!=0);
+                    horNeighborCount = horNeighborCount+(layout[x-1][y]!=0);
                 }
                 if (x<mapDim-1) {
-                    horNeighborCount = horNeighborCount+(GetIntArrayElem(layout,x+1,y)!=0);
+                    horNeighborCount = horNeighborCount+(layout[x+1][y]!=0);
                 }
                 vertNeighborCount = 0;
                 if (y>0) {
-                    vertNeighborCount = vertNeighborCount+(GetIntArrayElem(layout,x,y-1)!=0);
+                    vertNeighborCount = vertNeighborCount+(layout[x][y-1]!=0);
                 }
                 if (y<mapDim-1) {
-                    vertNeighborCount = vertNeighborCount+(GetIntArrayElem(layout,x,y+1)!=0);
+                    vertNeighborCount = vertNeighborCount+(layout[x][y+1]!=0);
                 }
 
                 if (horNeighborCount+vertNeighborCount == 1) {
-                    SetIntArrayElem(layout,ROOM1,x,y);
+                    layout[x][y]=ROOM1;
                 } else if ((horNeighborCount+vertNeighborCount == 3)) {
-                    SetIntArrayElem(layout,ROOM3,x,y);
+                    layout[x][y]=ROOM3;
                 } else if ((horNeighborCount+vertNeighborCount == 4)) {
-                    SetIntArrayElem(layout,ROOM4,x,y);
+                    layout[x][y]=ROOM4;
                 } else if ((horNeighborCount == 1) & (vertNeighborCount == 1)) {
-                    SetIntArrayElem(layout,ROOM2C,x,y);
+                    layout[x][y]=ROOM2C;
                 } else if ((horNeighborCount == 2) ^ (vertNeighborCount == 2)) {
-                    SetIntArrayElem(layout,ROOM2,x,y);
+                    layout[x][y]=ROOM2;
                 } else {
-                    SetIntArrayElem(layout,0,x,y);
+                    layout[x][y]=0;
                 }
             }
         }
     }
 }
 
-int DetermineRotation(IntArray* layout, int x, int y) {
-    switch (GetIntArrayElem(layout,x,y)) {
+int DetermineRotation(int** layout, int layoutDims, int x, int y) {
+    switch (layout[x][y]) {
         case ROOM1: {
-            if (x>0) & (GetIntArrayElem(layout,x-1,y)!=0) {
+            if ((x>0) & (layout[x-1][y]!=0)) {
                 return 270;
-            } else if ((x<layout->xDim-1) & (GetIntArrayElem(layout,x+1,y)!=0)) {
+            } else if ((x<layoutDims-1) & (layout[x+1][y]!=0)) {
                 return 90;
-            } else if ((y>0) & (GetIntArrayElem(layout,x,y-1)!=0)) {
+            } else if ((y>0) & (layout[x][y-1]!=0)) {
                 return 0;
             } else {
                 return 180;
             }
-        }
+        } break;
         case ROOM2: {
-            if (GetIntArrayElem(layout,x-1,y)!=0) {
+            if (layout[x-1][y]!=0) {
                 return 90+bbRand(0,1)*180;
             } else {
                 return (bbRand(0,1)*180);
             }
-        }
+        } break;
         case ROOM2C: {
-            if (x>0) & (GetIntArrayElem(layout,x-1,y)!=0) {
-                if (y>0) & (GetIntArrayElem(layout,x,y-1)!=0) {
+            if ((x>0) & (layout[x-1][y]!=0)) {
+                if ((y>0) & (layout[x][y-1]!=0)) {
                     return 270;
                 } else {
                     return 180;
                 }
             } else {
-                if (y>0) & (GetIntArrayElem(layout,x,y-1)!=0) {
+                if ((y>0) & (layout[x][y-1]!=0)) {
                     return 0;
                 } else {
                     return 90;
                 }
             }
-        }
+        } break;
         case ROOM3: {
-            if (x>0) & (GetIntArrayElem(layout,x-1,y)==0) {
+            if ((x>0) & (layout[x-1][y]==0)) {
                 return 90;
-            } else if ((y>0) & (GetIntArrayElem(layout,x,y-1)==0)) {
+            } else if ((y>0) & (layout[x][y-1]==0)) {
                 return 180;
-            } else if ((x<layout->xDim-1) & (GetIntArrayElem(layout,x+1,y)==0)) {
+            } else if ((x<layoutDims-1) & (layout[x+1][y]==0)) {
                 return 270;
             } else {
                 return 0;
             }
-        }
+        } break;
         case ROOM4: {
             return bbRand(0,3)*90;
-        }
+        } break;
         default: {
             return -1;
-        }
+        } break;
     }
 }
 
@@ -2373,18 +2329,13 @@ int GetZone(int y) {
 }
 
 void AmbientLightRooms(int value = 0) {
-    int mesh;
-    int surf;
-    int brush;
-    int tex0;
-
     if (value==AmbientLightRoomVal) {
         return;
     }
     AmbientLightRoomVal = value;
 
     //probably shouldn't make assumptions here but who cares, why wouldn't it use the backbuffer ;GetBuffer()
-    int oldbuffer = bbBackBuffer();
+    gxCanvas* oldbuffer = bbBackBuffer();
 
     bbSetBuffer(bbTextureBuffer(AmbientLightRoomTex));
 

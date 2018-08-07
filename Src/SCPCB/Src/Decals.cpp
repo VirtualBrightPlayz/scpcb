@@ -127,7 +127,7 @@ void UpdateDecals() {
                     }
                     //Case 6
                     //	EntityBlend(d\obj, 2)
-                }
+                } break;
             }
 
             if (d->size >= d->maxSize) {

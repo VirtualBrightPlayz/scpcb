@@ -155,7 +155,7 @@ void LoadRM2(RoomTemplate* rt) {
                     PushIntArrayListElem(usedTextures,Handle(GetCache(texName)));
                 }
                 //[End Block]
-            }
+            } break;
             case RM2_OPAQUE,RM2_ALPHA: {
                 //[Block]
                 mesh = bbCreateMesh();
@@ -245,7 +245,7 @@ void LoadRM2(RoomTemplate* rt) {
                 PushIntArrayListElem(collisionObjs,mesh);
                 bbHideEntity(mesh);
                 //[End Block]
-            }
+            } break;
             case RM2_INVISIBLE: {
                 //[Block]
                 mesh = bbCreateMesh();
@@ -282,7 +282,7 @@ void LoadRM2(RoomTemplate* rt) {
                 PushIntArrayListElem(collisionObjs,mesh);
                 bbHideEntity(mesh);
                 //[End Block]
-            }
+            } break;
             case RM2_SCREEN: {
                 //[Block]
                 tempScreen = new TempScreen();
@@ -292,7 +292,7 @@ void LoadRM2(RoomTemplate* rt) {
                 tempScreen->imgpath = ReadByteString(file);
                 tempScreen->roomtemplate = rt;
                 //[End Block]
-            }
+            } break;
             case RM2_WAYPOINT: {
                 //[Block]
                 waypointTemp = new TempWayPoint();
@@ -324,7 +324,7 @@ void LoadRM2(RoomTemplate* rt) {
                 //         v
                 //   THE OCTAHEDRON
                 //[End Block]
-            }
+            } break;
             case RM2_POINTLIGHT: {
                 //[Block]
                 x = bbReadFloat(file);
@@ -340,7 +340,7 @@ void LoadRM2(RoomTemplate* rt) {
 
                 AddTempLight(rt, x,y,z, LIGHTTYPE_POINT, range, r,g,b);
                 //[End Block]
-            }
+            } break;
             case RM2_SPOTLIGHT: {
                 //[Block]
                 x = bbReadFloat(file);
@@ -367,7 +367,7 @@ void LoadRM2(RoomTemplate* rt) {
                 lightTemplate->innerconeangle = innerConeAngle;
                 lightTemplate->innerconeangle = outerConeAngle;
                 //[End Block]
-            }
+            } break;
             case RM2_SOUNDEMITTER: {
                 //[Block]
                 x = bbReadFloat(file);
@@ -391,7 +391,7 @@ void LoadRM2(RoomTemplate* rt) {
                     }
                 }
                 //[End Block]
-            }
+            } break;
             case RM2_PROP: {
                 //[Block]
                 propName = ReadByteString(file);
@@ -415,10 +415,10 @@ void LoadRM2(RoomTemplate* rt) {
                 }
                 PushIntArrayListElem(props,Handle(prop));
                 //[End Block]
-            }
+            } break;
             default: {
                 bbRuntimeError("Error after reading type "+String(prevType));
-            }
+            } break;
         }
     }
 

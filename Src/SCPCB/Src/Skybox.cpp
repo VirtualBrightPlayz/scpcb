@@ -23,22 +23,22 @@ int sky_CreateSky(String filename, int parent = 0) {
         switch (face) {
             case 1: {
                 direction = "_back";
-            }
+            } break;
             case 2: {
                 direction = "_left";
-            }
+            } break;
             case 3: {
                 direction = "_front";
-            }
+            } break;
             case 4: {
                 direction = "_right";
-            }
+            } break;
             case 5: {
                 direction = "_up";
-            }
+            } break;
             case 6: {
                 direction = "_down";
-            }
+            } break;
         }
         fname = filename + direction + ".jpg";
         if (bbFileType(fname)==1) {

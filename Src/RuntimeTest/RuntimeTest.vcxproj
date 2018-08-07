@@ -93,7 +93,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>../Libraries/bbruntime/;../Libraries/blitz3d/;../Libraries/freeimage/;../Libraries/gxruntime/;../Libraries/stdutil/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../Libraries/bbruntime/;../Libraries/blitz3d/;../Libraries/freeimage/;../Libraries/gxruntime/</AdditionalIncludeDirectories>
       <AssemblerListingLocation>.\obj\$(Platform)\$(Configuration)\</AssemblerListingLocation>
       <ObjectFileName>.\obj\$(Platform)\$(Configuration)\</ObjectFileName>
       <ProgramDataBaseFileName>.\obj\$(Platform)\$(Configuration)\</ProgramDataBaseFileName>
@@ -110,7 +110,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>../Libraries/bbruntime/;../Libraries/blitz3d/;../Libraries/freeimage/;../Libraries/gxruntime/;../Libraries/stdutil/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../Libraries/bbruntime/;../Libraries/blitz3d/;../Libraries/freeimage/;../Libraries/gxruntime/</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <AssemblerListingLocation>.\obj\$(Platform)\$(Configuration)\</AssemblerListingLocation>
       <ObjectFileName>.\obj\$(Platform)\$(Configuration)\</ObjectFileName>
@@ -126,7 +126,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>../Libraries/bbruntime/;../Libraries/blitz3d/;../Libraries/freeimage/;../Libraries/gxruntime/;../Libraries/stdutil/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../Libraries/bbruntime/;../Libraries/blitz3d/;../Libraries/freeimage/;../Libraries/gxruntime/</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <AssemblerListingLocation>.\obj\$(Platform)\$(Configuration)\</AssemblerListingLocation>
       <ObjectFileName>.\obj\$(Platform)\$(Configuration)\</ObjectFileName>
@@ -144,7 +144,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>../Libraries/bbruntime/;../Libraries/blitz3d/;../Libraries/freeimage/;../Libraries/gxruntime/;../Libraries/stdutil/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../Libraries/bbruntime/;../Libraries/blitz3d/;../Libraries/freeimage/;../Libraries/gxruntime/</AdditionalIncludeDirectories>
       <AssemblerListingLocation>.\obj\$(Platform)\$(Configuration)\</AssemblerListingLocation>
       <ObjectFileName>.\obj\$(Platform)\$(Configuration)\</ObjectFileName>
       <ProgramDataBaseFileName>.\obj\$(Platform)\$(Configuration)\</ProgramDataBaseFileName>

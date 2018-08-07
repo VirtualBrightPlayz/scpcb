@@ -71,7 +71,7 @@ Door* CreateDoor(float x, float y, float z, float angle, Room* room, int open = 
             bbScaleEntity(d->frameobj, RoomScale, RoomScale, RoomScale);
             bbEntityType(d->frameobj, HIT_MAP);
             bbEntityAlpha(d->frameobj, 0.0);
-        }
+        } break;
         case DOOR_TYPE_HCZ: {
             d->obj = bbCopyEntity(hczDoorObj[0]);
             bbScaleEntity(d->obj, RoomScale, RoomScale, RoomScale);
@@ -79,7 +79,7 @@ Door* CreateDoor(float x, float y, float z, float angle, Room* room, int open = 
             bbScaleEntity(d->obj2, RoomScale, RoomScale, RoomScale);
 
             d->frameobj = bbCopyEntity(doorFrameObj);
-        }
+        } break;
         default: {
             d->obj = bbCopyEntity(doorObj);
             bbScaleEntity(d->obj, (204.0 * RoomScale) / bbMeshWidth(d->obj), 312.0 * RoomScale / bbMeshHeight(d->obj), 16.0 * RoomScale / bbMeshDepth(d->obj));
@@ -89,7 +89,7 @@ Door* CreateDoor(float x, float y, float z, float angle, Room* room, int open = 
 
             bbScaleEntity(d->obj2, (204.0 * RoomScale) / bbMeshWidth(d->obj), 312.0 * RoomScale / bbMeshHeight(d->obj), 16.0 * RoomScale / bbMeshDepth(d->obj));
             //entityType d\obj2, HIT_MAP
-        }
+        } break;
     }
 
     bbPositionEntity(d->frameobj, x, y, z);
@@ -302,21 +302,21 @@ void UpdateDoors() {
                             if (d->obj2 != 0) {
                                 bbMoveEntity(d->obj2, -bbSin(d->openstate) * timing->tickDuration / 180.0, 0, 0);
                             }
-                        }
+                        } break;
                         case DOOR_TYPE_HCZ: {
                             d->openstate = Min(180, d->openstate + timing->tickDuration * 2 * (d->fastopen+1));
                             bbMoveEntity(d->obj, bbSin(d->openstate) * (d->fastopen+1) * timing->tickDuration / 85.0, 0, 0);
                             if (d->obj2 != 0) {
                                 bbMoveEntity(d->obj2, bbSin(d->openstate) * (d->fastopen*2+1) * timing->tickDuration / 120.0, 0, 0);
                             }
-                        }
+                        } break;
                         default: {
                             d->openstate = Min(180, d->openstate + timing->tickDuration * 2 * (d->fastopen+1));
                             bbMoveEntity(d->obj, bbSin(d->openstate) * (d->fastopen*2+1) * timing->tickDuration / 80.0, 0, 0);
                             if (d->obj2 != 0) {
                                 bbMoveEntity(d->obj2, bbSin(d->openstate) * (d->fastopen+1) * timing->tickDuration / 80.0, 0, 0);
                             }
-                        }
+                        } break;
                     }
                 } else {
                     d->fastopen = 0;
@@ -335,13 +335,13 @@ void UpdateDoors() {
                             switch (d->typ) {
                                 case DOOR_TYPE_CONT: {
                                     PlayRangedSound_SM(sndManager->closeBigDoor[bbRand(0, 1)], mainPlayer->cam, d->obj);
-                                }
+                                } break;
                                 case DOOR_TYPE_HCZ: {
                                     PlayRangedSound_SM(sndManager->closeHCZDoor[bbRand(0, 2)], mainPlayer->cam, d->obj);
-                                }
+                                } break;
                                 default: {
                                     PlayRangedSound_SM(sndManager->closeDoor[bbRand(0, 2)], mainPlayer->cam, d->obj);
-                                }
+                                } break;
                             }
                         }
                     }
@@ -352,13 +352,13 @@ void UpdateDoors() {
                             switch (d->typ) {
                                 case DOOR_TYPE_CONT: {
                                     PlayRangedSound_SM(sndManager->closeBigDoor[bbRand(0, 1)], mainPlayer->cam, d->obj);
-                                }
+                                } break;
                                 case DOOR_TYPE_HCZ: {
                                     PlayRangedSound_SM(sndManager->closeHCZDoor[bbRand(0, 2)], mainPlayer->cam, d->obj);
-                                }
+                                } break;
                                 default: {
                                     PlayRangedSound_SM(sndManager->closeDoor[bbRand(0, 2)], mainPlayer->cam, d->obj);
-                                }
+                                } break;
                             }
                             d->autoClose = false;
                         }
@@ -394,21 +394,21 @@ void UpdateDoors() {
                                     bbFreeEntity(pvt);
                                 }
                             }
-                        }
+                        } break;
                         case DOOR_TYPE_HCZ: {
                             d->openstate = Max(0, d->openstate - timing->tickDuration * 2 * (d->fastopen+1));
                             bbMoveEntity(d->obj, bbSin(d->openstate) * -timing->tickDuration * (d->fastopen+1) / 85.0, 0, 0);
                             if (d->obj2 != 0) {
                                 bbMoveEntity(d->obj2, bbSin(d->openstate) * (d->fastopen+1) * -timing->tickDuration / 120.0, 0, 0);
                             }
-                        }
+                        } break;
                         default: {
                             d->openstate = Max(0, d->openstate - timing->tickDuration * 2 * (d->fastopen+1));
                             bbMoveEntity(d->obj, bbSin(d->openstate) * -timing->tickDuration * (d->fastopen+1) / 80.0, 0, 0);
                             if (d->obj2 != 0) {
                                 bbMoveEntity(d->obj2, bbSin(d->openstate) * (d->fastopen+1) * -timing->tickDuration / 80.0, 0, 0);
                             }
-                        }
+                        } break;
                     }
 
                     if (d->angle == 0 | d->angle==180) {
@@ -503,21 +503,21 @@ void UseDoor(Door* d, int showmsg = true) {
                         if (Msg=="You already called the elevator.") | (MsgTimer<70*3) {
                             switch (bbRand(10)) {
                                 case 1: {
-                                    Msg = "bbStop spamming the button.";
+                                    Msg = "Stop spamming the button.";
                                     MsgTimer = 70 * 7;
-                                }
+                                } break;
                                 case 2: {
                                     Msg = "Pressing it harder does not make the elevator come faster.";
                                     MsgTimer = 70 * 7;
-                                }
+                                } break;
                                 case 3: {
                                     Msg = "If you continue pressing this button I will generate a Memory Access Violation.";
                                     MsgTimer = 70 * 7;
-                                }
+                                } break;
                                 default: {
                                     Msg = "You already called the elevator.";
                                     MsgTimer = 70 * 7;
-                                }
+                                } break;
                             }
                         }
                     } else {
@@ -544,25 +544,25 @@ void UseDoor(Door* d, int showmsg = true) {
         switch (d->typ) {
             case DOOR_TYPE_CONT: {
                 PlayRangedSound_SM(sndManager->openBigDoor[bbRand(0, 1)], mainPlayer->cam, d->obj);
-            }
+            } break;
             case DOOR_TYPE_HCZ: {
                 PlayRangedSound_SM(sndManager->openHCZDoor[bbRand(0, 2)], mainPlayer->cam, d->obj);
-            }
+            } break;
             default: {
                 PlayRangedSound_SM(sndManager->openDoor[bbRand(0, 2)], mainPlayer->cam, d->obj);
-            }
+            } break;
         }
     } else {
         switch (d->typ) {
             case DOOR_TYPE_CONT: {
                 PlayRangedSound_SM(sndManager->closeBigDoor[bbRand(0, 1)], mainPlayer->cam, d->obj);
-            }
+            } break;
             case DOOR_TYPE_HCZ: {
                 PlayRangedSound_SM(sndManager->closeHCZDoor[bbRand(0, 2)], mainPlayer->cam, d->obj);
-            }
+            } break;
             default: {
                 PlayRangedSound_SM(sndManager->closeDoor[bbRand(0, 2)], mainPlayer->cam, d->obj);
-            }
+            } break;
         }
     }
 }

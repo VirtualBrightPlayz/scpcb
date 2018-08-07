@@ -405,13 +405,13 @@ void UpdateGame() {
                         switch (SelectedDifficulty->otherFactors) {
                             case EASY: {
                                 mainPlayer->blinkFreq = bbRnd(490,700);
-                            }
+                            } break;
                             case NORMAL: {
                                 mainPlayer->blinkFreq = bbRnd(455,665);
-                            }
+                            } break;
                             case HARD: {
                                 mainPlayer->blinkFreq = bbRnd(420,630);
-                            }
+                            } break;
                         }
                         mainPlayer->blinkTimer = mainPlayer->blinkFreq;
                     }
@@ -767,16 +767,20 @@ void UpdateGUI() {
                             PlaySound_SM(sndManager->button);
 
                             switch ((n+1)+(i*4)) {
-                                case 1,2,3: {
+                                case 1:
+                                case 2:
+                                case 3: {
                                     KeypadInput = KeypadInput + String((n+1)+(i*4));
-                                }
+                                } break;
                                 case 4: {
                                     KeypadInput = KeypadInput + "0";
-                                }
-                                case 5,6,7: {
+                                } break;
+                                case 5:
+                                case 6:
+                                case 7: {
                                     KeypadInput = KeypadInput + String((n+1)+(i*4)-1);
                                     //enter
-                                }
+                                } break;
                                 case 8: {
                                     if (KeypadInput == mainPlayer->selectedDoor->code) {
                                         PlaySound_SM(sndManager->scannerUse);
@@ -795,13 +799,13 @@ void UpdateGUI() {
                                         KeypadTimer = 210;
                                         KeypadInput = "";
                                     }
-                                }
+                                } break;
                                 case 9,10,11: {
                                     KeypadInput = KeypadInput + String((n+1)+(i*4)-2);
-                                }
+                                } break;
                                 case 12: {
                                     KeypadInput = "";
-                                }
+                                } break;
                             }
 
                             if (KeypadInput.size()> 4) {
@@ -961,16 +965,16 @@ void DrawGUI() {
             switch (i) {
                 case 0: {
                     y = y - 64 - 5;
-                }
+                } break;
                 case 1: {
                     x = x + 64 + 5;
-                }
+                } break;
                 case 2: {
                     y = y + 64 + 5;
-                }
+                } break;
                 case 3: {
                     x = x - 5 - 64;
-                }
+                } break;
             }
             bbDrawImage(uiAssets->handIcon[HAND_ICON_TOUCH], x, y);
             bbColor(0, 0, 0);
