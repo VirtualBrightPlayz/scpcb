@@ -3,6 +3,8 @@
 #include <bbblitz3d.h>
 #include <bbgraphics.h>
 #include <bbinput.h>
+#include <bbaudio.h>
+#include <bbfilesystem.h>
 #include <bbmath.h>
 #include <iostream>
 
@@ -23,6 +25,9 @@
 #include "Options.h"
 #include "Events.h"
 #include "Skybox.h"
+#include "NPCs/NPCtypeMTF.h"
+#include "Console.h"
+#include "FastResize.h"
 
 #include "Rooms/Room_dimension1499.h" //TODO: AAAAAA
 
@@ -595,7 +600,7 @@ void InitLoadGame() {
                 DrawLoading(91);
                 e->room->objects[0] = bbCreatePlane();
                 planetex = bbLoadTexture("GFX/Map/Rooms/dimension1499/grit3.jpg");
-                bbEntityTexture(e->room->objects[0],planetex);
+                bbEntityTexture((Model*)e->room->objects[0],planetex);
                 bbFreeTexture(planetex);
                 bbPositionEntity(e->room->objects[0],0,bbEntityY(e->room->obj),0);
                 bbEntityType(e->room->objects[0],HIT_MAP);
@@ -691,13 +696,14 @@ void NullGame() {
     for (int iterator14 = 0; iterator14 < Room::getListSize(); iterator14++) {
         r = Room::getObject(iterator14);
 
-        DeleteIntArray(r->collisionObjs);
-        if (r->props!=nullptr) {
-            DeleteIntArray(r->props);
-        }
+        r->collisionObjs.clear();
+        r->props.clear();
         delete r;
     }
-    DeleteIntArray(MapRooms);
+    for (int i=0;i<MAP_SIZE;i++) {
+        delete[] MapRooms[i];
+    }
+    delete[] MapRooms;
 
     for (int iterator15 = 0; iterator15 < ItemTemplate::getListSize(); iterator15++) {
         itt = ItemTemplate::getObject(iterator15);
