@@ -48,7 +48,7 @@ public:
     struct Item* closestItem;
     struct Item* selectedItem;
 
-    int closestButton;
+    class MeshModel* closestButton;
     struct Door* closestDoor;
     struct Door* selectedDoor;
 

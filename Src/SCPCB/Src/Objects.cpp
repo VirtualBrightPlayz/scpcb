@@ -46,7 +46,7 @@ ElevatorObj* ElevatorObj::getObject(int index) {
 int CreateButton(float x, float y, float z, float pitch, float yaw, float roll = 0) {
     int buttonObj = GrabMesh("GFX/Map/Meshes/button.b3d");
     int obj = bbCopyMesh(buttonObj);
-    DropAsset(buttonObj);
+    buttonObj->drop();
 
     bbScaleEntity(obj, 0.03, 0.03, 0.03);
 
@@ -87,10 +87,10 @@ Lever* CreateLever() {
     int leverBaseObj = GrabMesh("GFX/Map/Meshes/leverbase.b3d");
 
     Lever* lever = new Lever();
-    lever->obj = bbCopyEntity(leverObj);
-    lever->baseObj = bbCopyEntity(leverBaseObj);
-    DropAsset(leverObj);
-    DropAsset(leverBaseObj);
+    lever->obj = bbCopyMeshModelEntity(leverObj);
+    lever->baseObj = bbCopyMeshModelEntity(leverBaseObj);
+    leverObj->drop();
+    leverBaseObj->drop();
 
     return lever;
 }

@@ -80,7 +80,7 @@ Particle* CreateParticle(float x, float y, float z, int image, float size, float
     bbEntityTexture(p->obj, tex);
     bbRotateEntity(p->obj, 0, 0, bbRnd(360));
     bbEntityFX(p->obj, 1 + 8);
-    DropAsset(tex);
+    tex->drop();
 
     bbSpriteViewMode(p->obj, 3);
 

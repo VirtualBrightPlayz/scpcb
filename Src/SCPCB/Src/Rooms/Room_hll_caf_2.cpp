@@ -53,7 +53,7 @@ void Draw294() {
 
     bbMaskImage(panel294, 255, 0, 255);
     bbDrawImage(panel294, x, y);
-    DropAsset(panel294);
+    panel294->drop();
 
     bbText(x+907, y+185, Input294, true,true);
 
@@ -80,7 +80,7 @@ void Update294() {
     int panel294 = bbGrabImage("GFX/HUD/294panel.jpg");
     x = userOptions->screenWidth/2 - (bbImageWidth(panel294)/2);
     y = userOptions->screenHeight/2 - (bbImageHeight(panel294)/2);
-    DropAsset(panel294);
+    panel294->drop();
 
     temp = true;
     if (mainPlayer->currRoom->soundCHN!=0) {

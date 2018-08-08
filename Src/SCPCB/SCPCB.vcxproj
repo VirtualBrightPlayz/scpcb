@@ -162,7 +162,6 @@
     <ClCompile Include="Src\Audio.cpp" />
     <ClCompile Include="Src\Console.cpp" />
     <ClCompile Include="Src\Decals.cpp" />
-    <ClCompile Include="Src\Difficulty.cpp" />
     <ClCompile Include="Src\Doors.cpp" />
     <ClCompile Include="Src\Dreamfilter.cpp" />
     <ClCompile Include="Src\Events.cpp" />
@@ -281,7 +280,6 @@
     <ClInclude Include="Src\Audio.h" />
     <ClInclude Include="Src\Console.h" />
     <ClInclude Include="Src\Decals.h" />
-    <ClInclude Include="Src\Difficulty.h" />
     <ClInclude Include="Src\Doors.h" />
     <ClInclude Include="Src\Dreamfilter.h" />
     <ClInclude Include="Src\Events.h" />

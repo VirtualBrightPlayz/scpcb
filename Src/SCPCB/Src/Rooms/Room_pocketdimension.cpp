@@ -28,7 +28,7 @@ void FillRoom_pocketdimension(Room* r) {
     r->objects[8] = bbLoadMesh("GFX/Map/pocketdimension3.b3d");
     //the flying pillar
     r->objects[9] = bbLoadMesh("GFX/Map/pocketdimension4.b3d");
-    r->objects[10] = bbCopyEntity(r->objects[9]);
+    r->objects[10] = bbCopyMeshModelEntity(r->objects[9]);
 
     //the pillar room
     r->objects[11] = bbLoadMesh("GFX/Map/pocketdimension5.b3d");
@@ -127,7 +127,7 @@ void FillRoom_pocketdimension(Room* r) {
 
     for (i = 0; i <= 7; i++) {
         //CopyMesh
-        r->objects[i] = bbCopyEntity(hallway);
+        r->objects[i] = bbCopyMeshModelEntity(hallway);
         bbScaleEntity(r->objects[i],RoomScale,RoomScale,RoomScale);
         angle = i * (360.0/8.0);
 

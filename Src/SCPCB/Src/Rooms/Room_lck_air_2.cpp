@@ -59,7 +59,7 @@ void FillRoom_lck_air_2(Room* r) {
         if (r2!=r) {
             if (r2->roomTemplate->name == "lck_air_2" | r2->roomTemplate->name == "lck_air_broke_2") {
                 //don't load the mesh again
-                r->objects[ROOM_LCKA2_PIPES] = bbCopyEntity(r2->objects[ROOM_LCKA2_PIPES],r->obj);
+                r->objects[ROOM_LCKA2_PIPES] = bbCopyMeshModelEntity(r2->objects[ROOM_LCKA2_PIPES],r->obj);
                 break;
             }
         }

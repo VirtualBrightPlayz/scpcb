@@ -48,7 +48,7 @@ void FillRoom_cont_079_1(Room* r) {
     bbTurnEntity(r->objects[1],0,13.0,0);
     bbMoveEntity(r->objects[1], 0,0,-0.022);
     bbEntityTexture(r->objects[1],aiPic);
-    DropAsset(aiPic);
+    aiPic->drop();
 
     bbHideEntity(r->objects[1]);
 

@@ -108,7 +108,7 @@ public:
 
 // TODO: Add the ability to have no music playing.
 // Make it possible to play a track then swap to default when said track is done (breath.ogg)
-struct MusicManager {
+class MusicManager {
 public:
     MusicManager();
     ~MusicManager();

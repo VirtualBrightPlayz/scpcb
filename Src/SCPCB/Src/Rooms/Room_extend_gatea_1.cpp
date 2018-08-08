@@ -526,13 +526,13 @@ void UpdateEvent_extend_gatea_1(Event* e) {
                                 bbPositionEntity(e->room->objects[12], bbEntityX(e->room->objects[11],true), bbEntityY(e->room->objects[11],true), bbEntityZ(e->room->objects[11],true));
 
                                 // TODO: Isn't this a memory leak?
-                                obj = bbCopyEntity(e->room->objects[12]);
+                                obj = bbCopyMeshModelEntity(e->room->objects[12]);
                                 bbPositionEntity(obj, bbEntityX(e->room->obj,true)-3968*RoomScale, bbEntityY(e->room->objects[11],true), bbEntityZ(e->room->obj,true)-1920*RoomScale);
 
-                                obj = bbCopyEntity(e->room->objects[12]);
+                                obj = bbCopyMeshModelEntity(e->room->objects[12]);
                                 bbPositionEntity(obj, bbEntityX(e->room->obj,true)-4160*RoomScale, bbEntityY(e->room->objects[11],true), bbEntityZ(e->room->obj,true)-1920*RoomScale);
 
-                                obj = bbCopyEntity(e->room->objects[12]);
+                                obj = bbCopyMeshModelEntity(e->room->objects[12]);
                                 bbPositionEntity(obj, bbEntityX(e->room->obj,true)-4064*RoomScale, bbEntityY(e->room->objects[11],true), bbEntityZ(e->room->obj,true)-2112*RoomScale);
 
                                 e->soundChannels[0] = PlayRangedSound(LoadTempSound("SFX/Ending/GateA/Bell1.ogg"), mainPlayer->cam, e->room->objects[12]);

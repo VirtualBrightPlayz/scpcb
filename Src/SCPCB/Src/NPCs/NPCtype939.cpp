@@ -42,7 +42,7 @@ void InitializeNPCtype939(NPC* n) {
         n2 = NPC::getObject(iterator132);
 
         if (n->npcType == n2->npcType & n!=n2) {
-            n->obj = bbCopyEntity(n2->obj);
+            n->obj = bbCopyMeshModelEntity(n2->obj);
             break;
         }
     }

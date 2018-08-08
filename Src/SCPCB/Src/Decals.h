@@ -4,6 +4,24 @@
 
 namespace CBN {
 
+// Constants.
+const int DECAL_COUNT = 15;
+const int DECAL_CORROSION = 0;
+const int DECAL_CRACKS = 1;
+const int DECAL_BLOOD_SPREAD = 2;
+const int DECAL_BLOOD_SPLATTER = 3;
+const int DECAL_BLOOD_POOL = 4;
+const int DECAL_PD1 = 5;
+const int DECAL_PD2 = 6;
+const int DECAL_PD3 = 7;
+const int DECAL_PD4 = 8;
+const int DECAL_PD5 = 9;
+const int DECAL_PD6 = 10;
+const int DECAL_BULLET_HOLE1 = 11;
+const int DECAL_BULLET_HOLE2 = 12;
+const int DECAL_BLOOD_DROP1 = 13;
+const int DECAL_BLOOD_DROP2 = 14;
+
 // Structs.
 struct Decal {
 private:
@@ -35,24 +53,6 @@ public:
     float yaw;
     float roll;
 };
-
-// Constants.
-extern const int DECAL_COUNT;
-extern const int DECAL_CORROSION;
-extern const int DECAL_CRACKS;
-extern const int DECAL_BLOOD_SPREAD;
-extern const int DECAL_BLOOD_SPLATTER;
-extern const int DECAL_BLOOD_POOL;
-extern const int DECAL_PD1;
-extern const int DECAL_PD2;
-extern const int DECAL_PD3;
-extern const int DECAL_PD4;
-extern const int DECAL_PD5;
-extern const int DECAL_PD6;
-extern const int DECAL_BULLET_HOLE1;
-extern const int DECAL_BULLET_HOLE2;
-extern const int DECAL_BLOOD_DROP1;
-extern const int DECAL_BLOOD_DROP2;
 
 // Globals.
 extern String decalList[DECAL_COUNT];

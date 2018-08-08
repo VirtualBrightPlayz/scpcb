@@ -247,7 +247,7 @@ void CreateChunkParts(Room* r) {
                 z = GetINIString2(File,loc,"obj"+String(j)+"-z");
                 yaw = GetINIString2(File,loc,"obj"+String(j)+"-yaw");
                 std::cout << "1499 chunk X/Z/Yaw: "+x+"|"+z+"|"+yaw;
-                chp->obj[j] = bbCopyEntity(r->objects[objID]);
+                chp->obj[j] = bbCopyMeshModelEntity(r->objects[objID]);
                 if (yaw.toLower() == "random") {
                     chp->randomYaw[j] = bbRnd(360);
                     bbRotateEntity(chp->obj[j],0,chp->randomYaw[j],0);
@@ -299,7 +299,7 @@ Chunk* CreateChunk(int obj, float x, float y, float z, int spawnNPCs = true) {
             if (chp->id == obj) {
                 ch->amount = chp->amount;
                 for (i = 0; i <= chp->amount; i++) {
-                    ch->obj[i] = bbCopyEntity(chp->obj[i]);
+                    ch->obj[i] = bbCopyMeshModelEntity(chp->obj[i]);
                     bbPositionEntity(ch->obj[i],x,y,z);
                     //ScaleEntity(ch\obj[i],RoomScale,RoomScale,RoomScale)
                     bbMoveEntity(ch->obj[i],bbEntityX(chp->obj[i]),0,bbEntityZ(chp->obj[i]));

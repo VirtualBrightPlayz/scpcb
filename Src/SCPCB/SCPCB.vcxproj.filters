@@ -66,9 +66,6 @@
     <ClCompile Include="Src\Decals.cpp">
       <Filter>Source Files\Src</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Difficulty.cpp">
-      <Filter>Source Files\Src</Filter>
-    </ClCompile>
     <ClCompile Include="Src\Doors.cpp">
       <Filter>Source Files\Src</Filter>
     </ClCompile>
@@ -726,9 +723,6 @@
       <Filter>Header Files\Src</Filter>
     </ClInclude>
     <ClInclude Include="Src\Decals.h">
-      <Filter>Header Files\Src</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\Difficulty.h">
       <Filter>Header Files\Src</Filter>
     </ClInclude>
     <ClInclude Include="Src\Doors.h">

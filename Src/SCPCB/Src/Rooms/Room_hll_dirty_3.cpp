@@ -24,7 +24,7 @@ void FillRoom_hll_dirty_3(Room* r) {
         r2 = Room::getObject(iterator183);
 
         if (r2->roomTemplate->name == r->roomTemplate->name & r2 != r) {
-            r->objects[0] = bbCopyEntity(r2->objects[0],r->obj);
+            r->objects[0] = bbCopyMeshModelEntity(r2->objects[0],r->obj);
             break;
         }
     }

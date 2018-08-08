@@ -1,5 +1,17 @@
+#include <StringType.h>
+#include <bbblitz3d.h>
+#include <bbmath.h>
+
 #include "Doors.h"
-#include "include.h"
+#include "MapSystem.h"
+#include "Assets.h"
+#include "GameMain.h"
+#include "MathUtils/MathUtils.h"
+#include "Items/Items.h"
+#include "Particles.h"
+#include "Player.h"
+#include "Audio.h"
+#include "Menus/Menu.h"
 
 namespace CBN {
 
@@ -23,69 +35,62 @@ Door* Door::getObject(int index) {
     return list[index];
 }
 
-// Constants.
-const int DOOR_TYPE_DEF = 0;
-const int DOOR_TYPE_HCZ = 1;
-const int DOOR_TYPE_CONT = 2;
-
 // Globals.
 float UpdateDoorsTimer;
 int DoorTempID;
 
 // Functions.
 Door* CreateDoor(float x, float y, float z, float angle, Room* room, int open = false, int doorType = DOOR_TYPE_DEF, String tag = "", String code = "") {
-    Door* d;
-    int parent;
-    int i;
+    Pivot* parent;
     if (room != nullptr) {
         parent = room->obj;
     }
 
-    int doorObj = GrabMesh("GFX/Map/Meshes/door.b3d");
-    int doorFrameObj = GrabMesh("GFX/Map/Meshes/doorframe.b3d");
-    int doorColl = GrabMesh("GFX/Map/Meshes/doorcoll.b3d");
-    int buttonObj = GrabMesh("GFX/Map/Meshes/button.b3d");
+    MeshAssetWrap* doorObj = MeshAssetWrap::grab("GFX/Map/Meshes/door.b3d");
+    MeshAssetWrap* doorFrameObj = MeshAssetWrap::grab("GFX/Map/Meshes/doorframe.b3d");
+    MeshAssetWrap* doorColl = MeshAssetWrap::grab("GFX/Map/Meshes/doorcoll.b3d");
+    MeshAssetWrap* buttonObj = MeshAssetWrap::grab("GFX/Map/Meshes/button.b3d");
 
-    int contDoorLeft = GrabMesh("GFX/Map/Meshes/ContDoorLeft.b3d");
-    int contDoorRight = GrabMesh("GFX/Map/Meshes/ContDoorRight.b3d");
+    MeshAssetWrap* contDoorLeft = MeshAssetWrap::grab("GFX/Map/Meshes/ContDoorLeft.b3d");
+    MeshAssetWrap* contDoorRight = MeshAssetWrap::grab("GFX/Map/Meshes/ContDoorRight.b3d");
 
-    int hczDoorObj[2];
-    for (i = 0; i <= 1; i++) {
-        hczDoorObj[i] = GrabMesh("GFX/Map/Meshes/heavydoor" + String(i + 1) + ".b3d");
+    MeshAssetWrap* hczDoorObj[2];
+    for (int i = 0; i < 2; i++) {
+        hczDoorObj[i] = MeshAssetWrap::grab("GFX/Map/Meshes/heavydoor" + String(i + 1) + ".b3d");
     }
 
     int buttonCodeObj;
     int buttonKeyObj;
     int buttonScannerOBJ;
 
-    d = new Door();
+    Door* d = new Door();
     d->typ = doorType;
     switch (d->typ) {
         case DOOR_TYPE_CONT: {
-            d->obj = bbCopyEntity(contDoorRight);
+            d->obj = bbCopyMeshModelEntity(contDoorRight->getMesh());
             bbScaleEntity(d->obj, 55 * RoomScale, 55 * RoomScale, 55 * RoomScale);
-            d->obj2 = bbCopyEntity(contDoorLeft);
+            d->obj2 = bbCopyMeshModelEntity(contDoorLeft->getMesh());
             bbScaleEntity(d->obj2, 55 * RoomScale, 55 * RoomScale, 55 * RoomScale);
 
-            d->frameobj = bbCopyEntity(doorColl);
+            d->frameobj = bbCopyMeshModelEntity(doorColl->getMesh());
             bbScaleEntity(d->frameobj, RoomScale, RoomScale, RoomScale);
             bbEntityType(d->frameobj, HIT_MAP);
             bbEntityAlpha(d->frameobj, 0.0);
         } break;
         case DOOR_TYPE_HCZ: {
-            d->obj = bbCopyEntity(hczDoorObj[0]);
+            d->obj = bbCopyMeshModelEntity(hczDoorObj[0]->getMesh());
             bbScaleEntity(d->obj, RoomScale, RoomScale, RoomScale);
-            d->obj2 = bbCopyEntity(hczDoorObj[1]);
+            d->obj2 = bbCopyMeshModelEntity(hczDoorObj[1]->getMesh());
             bbScaleEntity(d->obj2, RoomScale, RoomScale, RoomScale);
 
-            d->frameobj = bbCopyEntity(doorFrameObj);
+            d->frameobj = bbCopyMeshModelEntity(doorFrameObj->getMesh());
         } break;
         default: {
-            d->obj = bbCopyEntity(doorObj);
+            d->obj = bbCopyMeshModelEntity(doorObj->getMesh());
             bbScaleEntity(d->obj, (204.0 * RoomScale) / bbMeshWidth(d->obj), 312.0 * RoomScale / bbMeshHeight(d->obj), 16.0 * RoomScale / bbMeshDepth(d->obj));
 
-            d->frameobj = bbCopyEntity(doorFrameObj);
-            d->obj2 = bbCopyEntity(doorObj);
+            d->frameobj = bbCopyMeshModelEntity(doorFrameObj->getMesh());
+            d->obj2 = bbCopyMeshModelEntity(doorObj->getMesh());
 
             bbScaleEntity(d->obj2, (204.0 * RoomScale) / bbMeshWidth(d->obj), 312.0 * RoomScale / bbMeshHeight(d->obj), 16.0 * RoomScale / bbMeshDepth(d->obj));
             //entityType d\obj2, HIT_MAP
@@ -103,18 +108,18 @@ Door* CreateDoor(float x, float y, float z, float angle, Room* room, int open = 
     d->tag = tag;
     d->code = code;
 
-    for (i = 0; i <= 1; i++) {
+    for (int i = 0; i < 2; i++) {
         if (!tag.isEmpty()) {
-            buttonKeyObj = GrabMesh("GFX/Map/Meshes/ButtonKeycard.b3d");
-            d->buttons[i] = bbCopyEntity(buttonKeyObj);
-            DropAsset(buttonKeyObj);
+            MeshAssetWrap* buttonKeyObj = MeshAssetWrap::grab("GFX/Map/Meshes/ButtonKeycard.b3d");
+            d->buttons[i] = bbCopyMeshModelEntity(buttonKeyObj->getMesh());
+            buttonKeyObj->drop();
         } else if (!code.isEmpty()) {
-            buttonCodeObj = GrabMesh("GFX/Map/Meshes/ButtonCode.b3d");
-            d->buttons[i] = bbCopyEntity(buttonCodeObj);
+            MeshAssetWrap* buttonCodeObj = MeshAssetWrap::grab("GFX/Map/Meshes/ButtonCode.b3d");
+            d->buttons[i] = bbCopyMeshModelEntity(buttonCodeObj->getMesh());
             bbEntityFX(d->buttons[i], 1);
-            DropAsset(buttonCodeObj);
+            buttonCodeObj->drop();
         } else {
-            d->buttons[i] = bbCopyEntity(buttonObj);
+            d->buttons[i] = bbCopyMeshModelEntity(buttonObj->getMesh());
         }
 
         bbScaleEntity(d->buttons[i], 0.03, 0.03, 0.03);
@@ -170,43 +175,31 @@ Door* CreateDoor(float x, float y, float z, float angle, Room* room, int open = 
     d->mtfClose = true;
 
     //Bust his nut.
-    DropAsset(doorObj);
+    doorObj->drop();
     //Bust his nut!!!
-    DropAsset(doorFrameObj);
+    doorFrameObj->drop();
     //BUST HIS NUT!!!
-    DropAsset(doorColl);
+    doorColl->drop();
     //B U S T  H I S  N U T  ! ! !
-    DropAsset(buttonObj);
+    buttonObj->drop();
 
-    DropAsset(contDoorLeft);
-    DropAsset(contDoorRight);
+    contDoorLeft->drop();
+    contDoorRight->drop();
 
-    for (i = 0; i <= 1; i++) {
-        DropAsset(hczDoorObj[i]);
+    for (int i = 0; i <= 1; i++) {
+        hczDoorObj[i]->drop();
     }
 
     return d;
 }
 
 void UpdateDoors() {
-    int i;
-    Door* d;
-    Particle* p;
-    int pvt;
-    float x;
-    float z;
-    int temp;
-
-    float dist;
-    float xdist;
-    float zdist;
-
     if (UpdateDoorsTimer <= 0) {
-        for (int iterator55 = 0; iterator55 < Door::getListSize(); iterator55++) {
-            d = Door::getObject(iterator55);
+        for (int i = 0; i < Door::getListSize(); i++) {
+            Door* d = Door::getObject(i);
 
-            xdist = abs(bbEntityX(mainPlayer->collider)-bbEntityX(d->obj,true));
-            zdist = abs(bbEntityZ(mainPlayer->collider)-bbEntityZ(d->obj,true));
+            float xdist = abs(bbEntityX(mainPlayer->collider)-bbEntityX(d->obj,true));
+            float zdist = abs(bbEntityZ(mainPlayer->collider)-bbEntityZ(d->obj,true));
 
             d->dist = xdist+zdist;
 
@@ -253,38 +246,36 @@ void UpdateDoors() {
     mainPlayer->closestButton = 0;
     mainPlayer->closestDoor = nullptr;
 
-    for (int iterator56 = 0; iterator56 < Door::getListSize(); iterator56++) {
-        d = Door::getObject(iterator56);
+    for (int i = 0; i < Door::getListSize(); i++) {
+        Door* d = Door::getObject(i);
 
         if (d->dist < HideDistance*2) {
 
             if ((d->openstate >= 180 | d->openstate <= 0) & mainPlayer->grabbedEntity == 0) {
-                for (i = 0; i <= 1; i++) {
-                    if (d->buttons[i] != 0) {
-                        if (abs(bbEntityX(mainPlayer->collider)-bbEntityX(d->buttons[i],true)) < 1.0) {
-                            if (abs(bbEntityZ(mainPlayer->collider)-bbEntityZ(d->buttons[i],true)) < 1.0) {
+                for (int j = 0; j < 2; j++) {
+                    if (d->buttons[j] != 0) {
+                        if (abs(bbEntityX(mainPlayer->collider)-bbEntityX(d->buttons[j],true)) < 1.0) {
+                            if (abs(bbEntityZ(mainPlayer->collider)-bbEntityZ(d->buttons[j],true)) < 1.0) {
                                 //entityDistance(collider, d\buttons[i])
-                                dist = Distance(bbEntityX(mainPlayer->collider, true), bbEntityZ(mainPlayer->collider, true), bbEntityX(d->buttons[i], true), bbEntityZ(d->buttons[i], true));
+                                float dist = Distance(bbEntityX(mainPlayer->collider, true), bbEntityZ(mainPlayer->collider, true), bbEntityX(d->buttons[j], true), bbEntityZ(d->buttons[j], true));
                                 if (dist < 0.7) {
                                     //TODO: use deltayaw as faster way to determine whether the player can press the button or not
-                                    temp = bbCreatePivot();
-                                    bbPositionEntity(temp, bbEntityX(mainPlayer->cam), bbEntityY(mainPlayer->cam), bbEntityZ(mainPlayer->cam));
-                                    bbPointEntity(temp,d->buttons[i]);
+                                    Pivot* tempPvt = bbCreatePivot();
+                                    bbPositionEntity(tempPvt, bbEntityX(mainPlayer->cam), bbEntityY(mainPlayer->cam), bbEntityZ(mainPlayer->cam));
+                                    bbPointEntity(tempPvt,d->buttons[j]);
 
-                                    if (bbEntityPick(temp, 0.6) == d->buttons[i]) {
+                                    if (bbEntityPick(tempPvt, 0.6) == d->buttons[j]) {
                                         if (mainPlayer->closestButton == 0) {
-                                            mainPlayer->closestButton = d->buttons[i];
+                                            mainPlayer->closestButton = d->buttons[j];
                                             mainPlayer->closestDoor = d;
                                         } else {
                                             if (dist < bbEntityDistance(mainPlayer->collider, mainPlayer->closestButton)) {
-                                                mainPlayer->closestButton = d->buttons[i];
+                                                mainPlayer->closestButton = d->buttons[j];
                                                 mainPlayer->closestDoor = d;
                                             }
                                         }
                                     }
-
-                                    bbFreeEntity(temp);
-
+                                    bbFreeEntity(tempPvt);
                                 }
                             }
                         }
@@ -321,12 +312,12 @@ void UpdateDoors() {
                 } else {
                     d->fastopen = 0;
                     bbResetEntity(d->obj);
-                    if (d->obj2 != 0) {
+                    if (d->obj2 != nullptr) {
                         bbResetEntity(d->obj2);
                     }
                     if (d->timerstate > 0) {
                         d->timerstate = Max(0, d->timerstate - timing->tickDuration);
-                        if (d->timerstate + timing->tickDuration > 110 & d->timerstate <= 110) {
+                        if (d->timerstate + timing->tickDuration > 110 && d->timerstate <= 110) {
                             PlayRangedSound_SM(sndManager->caution, mainPlayer->cam, d->obj);
                         }
 
@@ -373,13 +364,13 @@ void UpdateDoors() {
                             if (d->obj2 != 0) {
                                 bbMoveEntity(d->obj2, bbSin(d->openstate) * timing->tickDuration / 180.0, 0, 0);
                             }
-                            if (d->openstate < 15 & d->openstate+timing->tickDuration >= 15) {
-                                for (i = 0; i <= bbRand(75,99); i++) {
-                                    pvt = bbCreatePivot();
-                                    bbPositionEntity(pvt, bbEntityX(d->frameobj,true)+bbRnd(-0.2,0.2), bbEntityY(d->frameobj,true)+bbRnd(0.0,1.2), bbEntityZ(d->frameobj,true)+bbRnd(-0.2,0.2));
-                                    bbRotateEntity(pvt, 0, bbRnd(360), 0);
+                            if (d->openstate < 15 && d->openstate+timing->tickDuration >= 15) {
+                                for (int j = 0; j < bbRand(75,99); j++) {
+                                    Pivot* tempPvt = bbCreatePivot();
+                                    bbPositionEntity(tempPvt, bbEntityX(d->frameobj,true)+bbRnd(-0.2,0.2), bbEntityY(d->frameobj,true)+bbRnd(0.0,1.2), bbEntityZ(d->frameobj,true)+bbRnd(-0.2,0.2));
+                                    bbRotateEntity(tempPvt, 0, bbRnd(360), 0);
 
-                                    p = CreateParticle(bbEntityX(pvt), bbEntityY(pvt), bbEntityZ(pvt), PARTICLE_DUST, 0.002, 0, 300);
+                                    Particle* p = CreateParticle(bbEntityX(tempPvt), bbEntityY(tempPvt), bbEntityZ(tempPvt), PARTICLE_DUST, 0.002, 0, 300);
                                     p->speed = 0.005;
                                     bbRotateEntity(p->pvt, bbRnd(-20, 20), bbRnd(360), 0);
 
@@ -391,7 +382,7 @@ void UpdateDoors() {
 
                                     bbEntityOrder(p->obj,-1);
 
-                                    bbFreeEntity(pvt);
+                                    bbFreeEntity(tempPvt);
                                 }
                             }
                         } break;
@@ -414,14 +405,14 @@ void UpdateDoors() {
                     if (d->angle == 0 | d->angle==180) {
                         if (abs(bbEntityZ(d->frameobj, true)-bbEntityZ(mainPlayer->collider))<0.15) {
                             if (abs(bbEntityX(d->frameobj, true)-bbEntityX(mainPlayer->collider))<0.7*(d->typ*2+1)) {
-                                z = CurveValue(bbEntityZ(d->frameobj,true)+0.15*Sgn(bbEntityZ(mainPlayer->collider)-bbEntityZ(d->frameobj, true)), bbEntityZ(mainPlayer->collider), 5);
+                                float z = CurveValue(bbEntityZ(d->frameobj,true)+0.15*Sgn(bbEntityZ(mainPlayer->collider)-bbEntityZ(d->frameobj, true)), bbEntityZ(mainPlayer->collider), 5);
                                 bbPositionEntity(mainPlayer->collider, bbEntityX(mainPlayer->collider), bbEntityY(mainPlayer->collider), z);
                             }
                         }
                     } else {
                         if (abs(bbEntityX(d->frameobj, true)-bbEntityX(mainPlayer->collider))<0.15) {
                             if (abs(bbEntityZ(d->frameobj, true)-bbEntityZ(mainPlayer->collider))<0.7*(d->typ*2+1)) {
-                                x = CurveValue(bbEntityX(d->frameobj,true)+0.15*Sgn(bbEntityX(mainPlayer->collider)-bbEntityX(d->frameobj, true)), bbEntityX(mainPlayer->collider), 5);
+                                float x = CurveValue(bbEntityX(d->frameobj,true)+0.15*Sgn(bbEntityX(mainPlayer->collider)-bbEntityX(d->frameobj, true)), bbEntityX(mainPlayer->collider), 5);
                                 bbPositionEntity(mainPlayer->collider, x, bbEntityY(mainPlayer->collider), bbEntityZ(mainPlayer->collider));
                             }
                         }
@@ -499,8 +490,8 @@ void UseDoor(Door* d, int showmsg = true) {
                     if (d->isElevatorDoor == 1) {
                         Msg = "You called the elevator.";
                         MsgTimer = 70 * 5;
-                    } else if ((Msg!="You called the elevator.")) {
-                        if (Msg=="You already called the elevator.") | (MsgTimer<70*3) {
+                    } else if (!Msg.equals("You called the elevator.")) {
+                        if (Msg.equals("You already called the elevator.") || MsgTimer<70*3) {
                             switch (bbRand(10)) {
                                 case 1: {
                                     Msg = "Stop spamming the button.";
@@ -568,27 +559,21 @@ void UseDoor(Door* d, int showmsg = true) {
 }
 
 void RemoveDoor(Door* d) {
-    if (d->buttons[0] != 0) {
-        bbEntityParent(d->buttons[0], 0);
-    }
-    if (d->buttons[1] != 0) {
-        bbEntityParent(d->buttons[1], 0);
+    for (int i = 0; i < 2; i++) {
+        if (d->buttons[i] != nullptr) {
+            bbEntityParent(d->buttons[i], 0);
+            bbFreeEntity(d->buttons[i]);
+        }
     }
 
-    if (d->obj != 0) {
+    if (d->obj != nullptr) {
         bbFreeEntity(d->obj);
     }
-    if (d->obj2 != 0) {
+    if (d->obj2 != nullptr) {
         bbFreeEntity(d->obj2);
     }
-    if (d->frameobj != 0) {
+    if (d->frameobj != nullptr) {
         bbFreeEntity(d->frameobj);
-    }
-    if (d->buttons[0] != 0) {
-        bbFreeEntity(d->buttons[0]);
-    }
-    if (d->buttons[1] != 0) {
-        bbFreeEntity(d->buttons[1]);
     }
 
     delete d;

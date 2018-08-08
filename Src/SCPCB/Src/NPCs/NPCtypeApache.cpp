@@ -16,9 +16,9 @@ void InitializeNPCtypeApache(NPC* n) {
         n2 = NPC::getObject(iterator136);
 
         if (n->npcType == n2->npcType) & (n != n2) {
-            n->obj = bbCopyEntity(n2->obj);
-            n->obj2 = bbCopyEntity(n2->obj2);
-            n->obj3 = bbCopyEntity(n2->obj3);
+            n->obj = bbCopyMeshModelEntity(n2->obj);
+            n->obj2 = bbCopyMeshModelEntity(n2->obj2);
+            n->obj3 = bbCopyMeshModelEntity(n2->obj3);
             break;
         }
     }
@@ -38,7 +38,7 @@ void InitializeNPCtypeApache(NPC* n) {
     int i;
     int rotor2;
     for (i = -1; i <= 1; i += 2) {
-        rotor2 = bbCopyEntity(n->obj2,n->obj2);
+        rotor2 = bbCopyMeshModelEntity(n->obj2,n->obj2);
         bbRotateEntity(rotor2,0,4.0*i,0);
         bbEntityAlpha(rotor2, 0.5);
     }

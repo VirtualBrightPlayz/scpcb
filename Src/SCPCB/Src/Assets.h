@@ -79,7 +79,7 @@ public:
     virtual TYPE getType();
     virtual void drop();
 
-    class Object* getMesh();
+    class MeshModel* getMesh();
 
     static MeshAssetWrap* grab(String filePath, bool isAnimated = true);
 

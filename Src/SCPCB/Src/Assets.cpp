@@ -96,12 +96,11 @@ UIAssets::~UIAssets() {
 
 	bbFreeImage(cursorIMG);
 
-	int i;
-	for (i = 0; i < 4; i++) {
+	for (int i = 0; i < 4; i++) {
 		bbFreeImage(arrow[i]);
 	}
 
-	for (i = 0; i < 4; i++) {
+	for (int i = 0; i < 4; i++) {
 		bbFreeFont(font[i]);
 	}
 	bbFreeFont(consoleFont);
@@ -109,7 +108,7 @@ UIAssets::~UIAssets() {
 	bbFreeImage(sprintIcon);
 	bbFreeImage(blinkIcon);
 	bbFreeImage(crouchIcon);
-	for (i = 0; i < 2; i++) {
+	for (int i = 0; i < 2; i++) {
 		bbFreeImage(handIcon[i]);
 	}
 	bbFreeImage(blinkBar);

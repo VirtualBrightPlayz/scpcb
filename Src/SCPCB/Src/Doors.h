@@ -4,6 +4,11 @@
 
 namespace CBN {
 
+// Constants.
+const int DOOR_TYPE_DEF = 0;
+const int DOOR_TYPE_HCZ = 1;
+const int DOOR_TYPE_CONT = 2;
+
 // Structs.
 struct Door {
 private:
@@ -15,10 +20,10 @@ public:
     static int getListSize();
     static Door* getObject(int index);
 
-    class Object* obj;
-	class Object* obj2;
-	class Object* frameobj;
-    class Object* buttons[2];
+    class MeshModel* obj;
+	class MeshModel* obj2;
+	class MeshModel* frameobj;
+    class MeshModel* buttons[2];
     int locked;
     int open;
     float angle;
@@ -46,11 +51,6 @@ public:
     //TODO: Not needed?
     int npcCalledElevator = false;
 };
-
-// Constants.
-extern const int DOOR_TYPE_DEF;
-extern const int DOOR_TYPE_HCZ;
-extern const int DOOR_TYPE_CONT;
 
 // Globals.
 extern float UpdateDoorsTimer;

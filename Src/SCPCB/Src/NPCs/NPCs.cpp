@@ -136,7 +136,7 @@ void LoadOrCopyMesh(NPC* n, String filePath) {
 
         if (n->npcType == n2->npcType & n != n2) {
             if ((n2->obj != 0)) {
-                n->obj = bbCopyEntity(n2->obj);
+                n->obj = bbCopyMeshModelEntity(n2->obj);
                 return;
             }
         }

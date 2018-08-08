@@ -25,7 +25,7 @@ void FillRoom_hll_fan_2(Room* r) {
         if (r2!=r) {
             if (r2->roomTemplate->name == "room2_2") {
                 //don't load the mesh again
-                r->objects[0] = bbCopyEntity(r2->objects[0]);
+                r->objects[0] = bbCopyMeshModelEntity(r2->objects[0]);
                 break;
             }
         }

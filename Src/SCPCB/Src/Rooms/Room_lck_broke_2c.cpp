@@ -50,13 +50,13 @@ void FillRoom_lck_broke_2c(Room* r) {
 
     float scale = RoomScale * 4.5 * 0.4;
 
-    r->objects[0] = bbCopyEntity(Monitor);
+    r->objects[0] = bbCopyMeshModelEntity(Monitor);
     bbScaleEntity(r->objects[0],scale,scale,scale);
     bbPositionEntity(r->objects[0],r->x+668*RoomScale,1.1,r->z-96.0*RoomScale,true);
     bbRotateEntity(r->objects[0],0,90,0);
     bbEntityParent(r->objects[0],r->obj);
 
-    r->objects[1] = bbCopyEntity(Monitor);
+    r->objects[1] = bbCopyMeshModelEntity(Monitor);
     bbScaleEntity(r->objects[1],scale,scale,scale);
     bbPositionEntity(r->objects[1],r->x+96.0*RoomScale,1.1,r->z-668.0*RoomScale,true);
     bbEntityParent(r->objects[1],r->obj);

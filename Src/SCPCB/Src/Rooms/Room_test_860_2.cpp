@@ -67,7 +67,7 @@ void FillRoom_test_860_2(Room* r) {
     bbScaleEntity(r->objects[3],46.0*RoomScale,45.0*RoomScale,46.0*RoomScale,true);
     bbEntityParent(r->objects[3],r->obj);
 
-    r->objects[4] = bbCopyEntity(r->objects[3]);
+    r->objects[4] = bbCopyMeshModelEntity(r->objects[3]);
     bbPositionEntity(r->objects[4],r->x + 256.0 * RoomScale,0,r->z-0.05,true);
     bbRotateEntity(r->objects[4], 0,180,0);
     bbScaleEntity(r->objects[4],46.0*RoomScale,45.0*RoomScale,46.0*RoomScale,true);
@@ -694,7 +694,7 @@ void PlaceForest(Forest* fr, float x, float y, float z, Room* r) {
                 angle = 0;
                 switch (tile_type) {
                     case 1: {
-                        tile_entity = bbCopyEntity(fr->tileMesh[ROOM1]);
+                        tile_entity = bbCopyMeshModelEntity(fr->tileMesh[ROOM1]);
 
                         if (fr->grid[((ty+1)*gridsize)+tx]>0) {
                             angle = 180;
@@ -708,14 +708,14 @@ void PlaceForest(Forest* fr, float x, float y, float z, Room* r) {
                     }
                     case 2: {
                         if (fr->grid[((ty-1)*gridsize)+tx]>0 & fr->grid[((ty+1)*gridsize)+tx]>0) {
-                            tile_entity = bbCopyEntity(fr->tileMesh[ROOM2]);
+                            tile_entity = bbCopyMeshModelEntity(fr->tileMesh[ROOM2]);
                             tile_type = ROOM2;
                         } else if ((fr->grid[(ty*gridsize)+tx+1]>0 & fr->grid[(ty*gridsize)+tx-1]>0)) {
-                            tile_entity = bbCopyEntity(fr->tileMesh[ROOM2]);
+                            tile_entity = bbCopyMeshModelEntity(fr->tileMesh[ROOM2]);
                             angle = 90;
                             tile_type = ROOM2;
                         } else {
-                            tile_entity = bbCopyEntity(fr->tileMesh[ROOM2C]);
+                            tile_entity = bbCopyMeshModelEntity(fr->tileMesh[ROOM2C]);
                             if (fr->grid[(ty*gridsize)+tx-1]>0 & fr->grid[((ty+1)*gridsize)+tx]>0) {
                                 angle = 180;
                             } else if ((fr->grid[(ty*gridsize)+tx+1]>0 & fr->grid[((ty-1)*gridsize)+tx]>0)) {
@@ -729,7 +729,7 @@ void PlaceForest(Forest* fr, float x, float y, float z, Room* r) {
                         }
                     }
                     case 3: {
-                        tile_entity = bbCopyEntity(fr->tileMesh[ROOM3]);
+                        tile_entity = bbCopyMeshModelEntity(fr->tileMesh[ROOM3]);
 
                         if (fr->grid[((ty-1)*gridsize)+tx]==0) {
                             angle = 180;
@@ -742,7 +742,7 @@ void PlaceForest(Forest* fr, float x, float y, float z, Room* r) {
                         tile_type = ROOM3;
                     }
                     case 4: {
-                        tile_entity = bbCopyEntity(fr->tileMesh[ROOM4]);
+                        tile_entity = bbCopyMeshModelEntity(fr->tileMesh[ROOM4]);
                         tile_type = ROOM4;
                     }
                     default: {
@@ -773,12 +773,12 @@ void PlaceForest(Forest* fr, float x, float y, float z, Room* r) {
                             if (bbColorRed()>bbRand(100,260)) {
                                 switch (bbRand(0,7)) {
                                     case 0,1,2,3,4,5,6: {
-                                        detail_entity = bbCopyEntity(fr->detailMesh[1]);
+                                        detail_entity = bbCopyMeshModelEntity(fr->detailMesh[1]);
                                         //EntityType(detail_entity,HIT_MAP)
                                         tempf2 = bbRnd(0.25,0.4);
 
                                         for (i = 0; i <= 3; i++) {
-                                            d = bbCopyEntity(fr->detailMesh[4]);
+                                            d = bbCopyMeshModelEntity(fr->detailMesh[4]);
                                             //ScaleEntity(d,tempf2*1.1,tempf2,tempf2*1.1,True)
                                             bbRotateEntity(d, 0, 90*i+bbRnd(-20,20), 0);
                                             bbEntityParent(d,detail_entity);
@@ -796,7 +796,7 @@ void PlaceForest(Forest* fr, float x, float y, float z, Room* r) {
                                         //add a rock
                                     }
                                     case 7: {
-                                        detail_entity = bbCopyEntity(fr->detailMesh[2]);
+                                        detail_entity = bbCopyMeshModelEntity(fr->detailMesh[2]);
                                         //EntityType(detail_entity,HIT_MAP)
                                         tempf2 = bbRnd(0.01,0.012);
                                         //ScaleEntity(detail_entity,tempf2,tempf2*Rnd(1.0,2.0),tempf2,True)
@@ -809,7 +809,7 @@ void PlaceForest(Forest* fr, float x, float y, float z, Room* r) {
                                         //add a stump
                                     }
                                     case 6: {
-                                        detail_entity = bbCopyEntity(fr->detailMesh[4]);
+                                        detail_entity = bbCopyMeshModelEntity(fr->detailMesh[4]);
                                         //EntityType(detail_entity,HIT_MAP)
                                         tempf2 = bbRnd(0.1,0.12);
                                         bbScaleEntity(detail_entity,tempf2,tempf2,tempf2,true);
@@ -854,17 +854,17 @@ void PlaceForest(Forest* fr, float x, float y, float z, Room* r) {
 
         for (tx = 1; tx <= gridsize-1; tx++) {
             if (fr->grid[(ty*gridsize)+tx]==3) {
-                fr->detailEntities[i] = bbCopyEntity(fr->detailMesh[5]);
+                fr->detailEntities[i] = bbCopyMeshModelEntity(fr->detailMesh[5]);
                 bbScaleEntity(fr->detailEntities[i],RoomScale,RoomScale,RoomScale);
 
-                fr->door[i] = bbCopyEntity(r->objects[3]);
+                fr->door[i] = bbCopyMeshModelEntity(r->objects[3]);
                 bbPositionEntity(fr->door[i],72*RoomScale,32.0*RoomScale,0,true);
                 bbRotateEntity(fr->door[i], 0,180,0);
                 bbScaleEntity(fr->door[i],48*RoomScale,45*RoomScale,48*RoomScale,true);
                 bbEntityParent(fr->door[i],fr->detailEntities[i]);
                 //SetAnimTime(fr\door[i], 0)
 
-                frame = bbCopyEntity(r->objects[2],fr->door[i]);
+                frame = bbCopyMeshModelEntity(r->objects[2],fr->door[i]);
                 bbPositionEntity(frame,0,32.0*RoomScale,0,true);
                 bbScaleEntity(frame,48*RoomScale,45*RoomScale,48*RoomScale,true);
                 bbEntityParent(frame,fr->detailEntities[i]);

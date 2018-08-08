@@ -733,7 +733,7 @@ void UpdateGUI() {
             x = (int)(userOptions->screenWidth/2-bbImageWidth(uiAssets->keypadHUD)*scale/2);
             y = (int)(userOptions->screenHeight/2-bbImageHeight(uiAssets->keypadHUD)*scale/2);
 
-            DropAsset(buttonObj);
+            buttonObj->drop();
 
             bbSetFont(uiAssets->font[2]);
             if (!KeypadMSG.isEmpty()) {
@@ -1119,7 +1119,7 @@ void DrawGUI() {
             x = (int)(userOptions->screenWidth/2-bbImageWidth(uiAssets->keypadHUD)*scale/2);
             y = (int)(userOptions->screenHeight/2-bbImageHeight(uiAssets->keypadHUD)*scale/2);
 
-            DropAsset(buttonObj);
+            buttonObj->drop();
 
             bbSetFont(uiAssets->font[2]);
             if (KeypadMSG.isEmpty()) {
