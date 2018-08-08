@@ -1,5 +1,6 @@
+#include <StringType.h>
+
 #include "KeyName.h"
-#include "include.h"
 
 namespace CBN {
 

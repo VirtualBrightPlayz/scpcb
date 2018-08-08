@@ -716,7 +716,7 @@ void UpdateGUI() {
         mainPlayer->selectedItem = nullptr;
 
         if (shouldDrawHUD) {
-            buttonObj = GrabMesh("GFX/Map/Meshes/Button.b3d");
+            buttonObj = MeshAssetWrap::grab("GFX/Map/Meshes/Button.b3d");
             pvt = bbCreatePivot();
             bbPositionEntity(pvt, bbEntityX(mainPlayer->closestButton,true),bbEntityY(mainPlayer->closestButton,true),bbEntityZ(mainPlayer->closestButton,true));
             bbRotateEntity(pvt, 0, bbEntityYaw(mainPlayer->closestButton,true)-180,0);
@@ -959,7 +959,7 @@ void DrawGUI() {
         bbDrawImage(uiAssets->handIcon[HAND_ICON_TOUCH], userOptions->screenWidth / 2 - 32, userOptions->screenHeight / 2 - 32);
     }
     for (i = 0; i <= 3; i++) {
-        if (mainPlayer->drawDirectionialArrow[i]) {
+        if (mainPlayer->drawDirectionalArrow[i]) {
             x = userOptions->screenWidth / 2 - 32;
             y = userOptions->screenHeight / 2 - 32;
             switch (i) {
@@ -980,7 +980,7 @@ void DrawGUI() {
             bbColor(0, 0, 0);
             bbRect(x + 4, y + 4, 64 - 8, 64 - 8);
             bbDrawImage(uiAssets->arrow[i], x + 21, y + 21);
-            mainPlayer->drawDirectionialArrow[i] = false;
+            mainPlayer->drawDirectionalArrow[i] = false;
         }
     }
 
@@ -1102,7 +1102,7 @@ void DrawGUI() {
         mainPlayer->selectedItem = nullptr;
 
         if (shouldDrawHUD) {
-            buttonObj = GrabMesh("GFX/Map/Meshes/Button.b3d");
+            buttonObj = MeshAssetWrap::grab("GFX/Map/Meshes/Button.b3d");
             pvt = bbCreatePivot();
             bbPositionEntity(pvt, bbEntityX(mainPlayer->closestButton,true),bbEntityY(mainPlayer->closestButton,true),bbEntityZ(mainPlayer->closestButton,true));
             bbRotateEntity(pvt, 0, bbEntityYaw(mainPlayer->closestButton,true)-180,0);

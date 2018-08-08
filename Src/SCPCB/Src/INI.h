@@ -16,7 +16,7 @@ public:
     static INIFile* getObject(int index);
 
     String name;
-    int bank;
+    class bbBank* bank;
     int bankOffset = 0;
     int size;
 };
@@ -42,9 +42,9 @@ int PutINIValue(String file, String INI_sSection, String INI_sKey, String INI_sV
 
 String INI_FileToString(String INI_sFilename);
 
-String INI_CreateSection(int INI_lFileHandle, String INI_sNewSection);
+String INI_CreateSection(class bbFile* INI_lFileHandle, String INI_sNewSection);
 
-int INI_CreateKey(int INI_lFileHandle, String INI_sKey, String INI_sValue);
+int INI_CreateKey(class bbFile* INI_lFileHandle, String INI_sKey, String INI_sValue);
 
 }
 #endif // INI_H_INCLUDED

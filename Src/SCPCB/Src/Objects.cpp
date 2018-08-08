@@ -1,5 +1,18 @@
+#include <bbblitz3d.h>
+#include <bbaudio.h>
+#include <bbmath.h>
+
 #include "Objects.h"
-#include "include.h"
+#include "Assets.h"
+#include "Player.h"
+#include "GameMain.h"
+#include "Menus/Menu.h"
+#include "MathUtils/MathUtils.h"
+#include "Audio.h"
+#include "Doors.h"
+#include "NPCs/NPCs.h"
+#include "Events.h"
+#include "MapSystem.h"
 
 namespace CBN {
 
@@ -43,9 +56,9 @@ ElevatorObj* ElevatorObj::getObject(int index) {
 }
 
 // Functions.
-int CreateButton(float x, float y, float z, float pitch, float yaw, float roll = 0) {
-    int buttonObj = GrabMesh("GFX/Map/Meshes/button.b3d");
-    int obj = bbCopyMesh(buttonObj);
+MeshModel* CreateButton(float x, float y, float z, float pitch, float yaw, float roll) {
+    MeshAssetWrap* buttonObj = MeshAssetWrap::grab("GFX/Map/Meshes/button.b3d");
+    MeshModel* obj = bbDeepCopyMesh(buttonObj->getMesh());
     buttonObj->drop();
 
     bbScaleEntity(obj, 0.03, 0.03, 0.03);
@@ -58,17 +71,16 @@ int CreateButton(float x, float y, float z, float pitch, float yaw, float roll =
     return obj;
 }
 
-void UpdateButton(int obj) {
+void UpdateButton(MeshModel* obj) {
     //entityDistance(collider, d\buttons[i])
     float dist = bbEntityDistance(mainPlayer->collider, obj);
-    int temp;
 
     if (dist < 0.8) {
-        temp = bbCreatePivot();
-        bbPositionEntity(temp, bbEntityX(mainPlayer->cam), bbEntityY(mainPlayer->cam), bbEntityZ(mainPlayer->cam));
-        bbPointEntity(temp,obj);
+        Pivot* tempPvt = bbCreatePivot();
+        bbPositionEntity(tempPvt, bbEntityX(mainPlayer->cam), bbEntityY(mainPlayer->cam), bbEntityZ(mainPlayer->cam));
+        bbPointEntity(tempPvt,obj);
 
-        if (bbEntityPick(temp, 0.65) == obj) {
+        if (bbEntityPick(tempPvt, 0.65) == obj) {
             if (mainPlayer->closestButton == 0) {
                 mainPlayer->closestButton = obj;
             } else {
@@ -78,17 +90,17 @@ void UpdateButton(int obj) {
             }
         }
 
-        bbFreeEntity(temp);
+        bbFreeEntity(tempPvt);
     }
 }
 
 Lever* CreateLever() {
-    int leverObj = GrabMesh("GFX/Map/Meshes/leverhandle.b3d");
-    int leverBaseObj = GrabMesh("GFX/Map/Meshes/leverbase.b3d");
+    MeshAssetWrap* leverObj = MeshAssetWrap::grab("GFX/Map/Meshes/leverhandle.b3d");
+    MeshAssetWrap* leverBaseObj = MeshAssetWrap::grab("GFX/Map/Meshes/leverbase.b3d");
 
     Lever* lever = new Lever();
-    lever->obj = bbCopyMeshModelEntity(leverObj);
-    lever->baseObj = bbCopyMeshModelEntity(leverBaseObj);
+    lever->obj = bbCopyMeshModelEntity(leverObj->getMesh());
+    lever->baseObj = bbCopyMeshModelEntity(leverBaseObj->getMesh());
     leverObj->drop();
     leverBaseObj->drop();
 
@@ -96,14 +108,10 @@ Lever* CreateLever() {
 }
 
 void UpdateLevers() {
-    Lever* lever;
-    float dist;
-    float prevpitch;
+    for (int i = 0; i < Lever::getListSize(); i++) {
+        Lever* lever = Lever::getObject(i);
 
-    for (int iterator96 = 0; iterator96 < Lever::getListSize(); iterator96++) {
-        lever = Lever::getObject(iterator96);
-
-        dist = bbEntityDistance(mainPlayer->cam, lever->obj);
+        float dist = bbEntityDistance(mainPlayer->cam, lever->obj);
 
         if (dist < 8.0) {
             if (dist < 0.8 & (!lever->locked)) {
@@ -118,7 +126,7 @@ void UpdateLevers() {
                         }
                     }
 
-                    prevpitch = bbEntityPitch(lever->obj);
+                    float prevpitch = bbEntityPitch(lever->obj);
 
                     if (MouseDown1 | MouseHit1) {
                         if (mainPlayer->grabbedEntity != 0) {
@@ -127,8 +135,8 @@ void UpdateLevers() {
                                 //TurnEntity(lever\obj, , 0, 0)
                                 bbRotateEntity(mainPlayer->grabbedEntity, Max(Min(bbEntityPitch(lever->obj)+Max(Min(mouse_y_speed_1 * 8,30.0),-30), 80), -80), bbEntityYaw(lever->obj), 0);
 
-                                mainPlayer->drawDirectionialArrow[0] = true;
-                                mainPlayer->drawDirectionialArrow[2] = true;
+                                mainPlayer->drawDirectionalArrow[0] = true;
+                                mainPlayer->drawDirectionalArrow[2] = true;
 
                             }
                         }
@@ -166,11 +174,6 @@ void UpdateLevers() {
 }
 
 float UpdateElevators(float state, Door* door1, Door* door2, int room1, int room2, Event* event) {
-    float x;
-    float z;
-    NPC* n;
-    NPC* NPC_inside;
-
     door1->isElevatorDoor = 1;
     door2->isElevatorDoor = 1;
     if (door1->open == true & door2->open == false) {
@@ -197,7 +200,7 @@ float UpdateElevators(float state, Door* door1, Door* door2, int room1, int room
     }
 
     int inside = false;
-    NPC_inside = nullptr;
+    NPC* NPC_inside = nullptr;
 
     //molemmat ovet kiinni = hissi liikkuu
     if (door1->open == false & door2->open == false) {
@@ -223,8 +226,8 @@ float UpdateElevators(float state, Door* door1, Door* door2, int room1, int room
                 }
             }
 
-            for (int iterator97 = 0; iterator97 < NPC::getListSize(); iterator97++) {
-                n = NPC::getObject(iterator97);
+            for (int i = 0; i < NPC::getListSize(); i++) {
+                NPC* n = NPC::getObject(i);
 
                 if (n->canUseElevator) {
                     if (abs(bbEntityX(n->collider)-bbEntityX(room1,true))<280.0*RoomScale) {
@@ -251,8 +254,8 @@ float UpdateElevators(float state, Door* door1, Door* door2, int room1, int room
                 state = 0;
 
                 if (inside) {
-                    x = Max(Min((bbEntityX(mainPlayer->collider)-bbEntityX(room1,true)),280*RoomScale-0.17),-280*RoomScale+0.17);
-                    z = Max(Min((bbEntityZ(mainPlayer->collider)-bbEntityZ(room1,true)),280*RoomScale-0.17),-280*RoomScale+0.17);
+                    float x = Max(Min((bbEntityX(mainPlayer->collider)-bbEntityX(room1,true)),280*RoomScale-0.17),-280*RoomScale+0.17);
+                    float z = Max(Min((bbEntityZ(mainPlayer->collider)-bbEntityZ(room1,true)),280*RoomScale-0.17),-280*RoomScale+0.17);
                     bbPositionEntity(mainPlayer->collider, bbEntityX(room2,true)+x,0.1+bbEntityY(room2,true)+(bbEntityY(mainPlayer->collider)-bbEntityY(room1,true)),bbEntityZ(room2,true)+z,true);
                     bbResetEntity(mainPlayer->collider);
                     UpdateDoorsTimer = 0;
@@ -262,8 +265,8 @@ float UpdateElevators(float state, Door* door1, Door* door2, int room1, int room
                 }
 
                 if (NPC_inside != nullptr) {
-                    x = Max(Min((bbEntityX(NPC_inside->collider)-bbEntityX(room1,true)),280*RoomScale-0.17),-280*RoomScale+0.17);
-                    z = Max(Min((bbEntityZ(NPC_inside->collider)-bbEntityZ(room1,true)),280*RoomScale-0.17),-280*RoomScale+0.17);
+                    float x = Max(Min((bbEntityX(NPC_inside->collider)-bbEntityX(room1,true)),280*RoomScale-0.17),-280*RoomScale+0.17);
+                    float z = Max(Min((bbEntityZ(NPC_inside->collider)-bbEntityZ(room1,true)),280*RoomScale-0.17),-280*RoomScale+0.17);
                     bbPositionEntity(NPC_inside->collider, bbEntityX(room2,true)+x,0.1+bbEntityY(room2,true)+(bbEntityY(NPC_inside->collider)-bbEntityY(room1,true)),bbEntityZ(room2,true)+z,true);
                     bbResetEntity(NPC_inside->collider);
                     UpdateDoorsTimer = 0;
@@ -298,8 +301,8 @@ float UpdateElevators(float state, Door* door1, Door* door2, int room1, int room
                 }
             }
 
-            for (int iterator98 = 0; iterator98 < NPC::getListSize(); iterator98++) {
-                n = NPC::getObject(iterator98);
+            for (int i = 0; i < NPC::getListSize(); i++) {
+                NPC* n = NPC::getObject(i);
 
                 if (n->canUseElevator) {
                     if (abs(bbEntityX(n->collider)-bbEntityX(room2,true))<280.0*RoomScale) {
@@ -327,8 +330,8 @@ float UpdateElevators(float state, Door* door1, Door* door2, int room1, int room
 
                 //pelaaja hissin sis�ll�, siirret��n
                 if (inside) {
-                    x = Max(Min((bbEntityX(mainPlayer->collider)-bbEntityX(room2,true)),280*RoomScale-0.17),-280*RoomScale+0.17);
-                    z = Max(Min((bbEntityZ(mainPlayer->collider)-bbEntityZ(room2,true)),280*RoomScale-0.17),-280*RoomScale+0.17);
+                    float x = Max(Min((bbEntityX(mainPlayer->collider)-bbEntityX(room2,true)),280*RoomScale-0.17),-280*RoomScale+0.17);
+                    float z = Max(Min((bbEntityZ(mainPlayer->collider)-bbEntityZ(room2,true)),280*RoomScale-0.17),-280*RoomScale+0.17);
                     bbPositionEntity(mainPlayer->collider, bbEntityX(room1,true)+x,0.1+bbEntityY(room1,true)+(bbEntityY(mainPlayer->collider)-bbEntityY(room2,true)),bbEntityZ(room1,true)+z,true);
                     bbResetEntity(mainPlayer->collider);
                     UpdateDoorsTimer = 0;
@@ -338,8 +341,8 @@ float UpdateElevators(float state, Door* door1, Door* door2, int room1, int room
                 }
 
                 if (NPC_inside != nullptr) {
-                    x = Max(Min((bbEntityX(NPC_inside->collider)-bbEntityX(room2,true)),280*RoomScale-0.17),-280*RoomScale+0.17);
-                    z = Max(Min((bbEntityZ(NPC_inside->collider)-bbEntityZ(room2,true)),280*RoomScale-0.17),-280*RoomScale+0.17);
+                    float x = Max(Min((bbEntityX(NPC_inside->collider)-bbEntityX(room2,true)),280*RoomScale-0.17),-280*RoomScale+0.17);
+                    float z = Max(Min((bbEntityZ(NPC_inside->collider)-bbEntityZ(room2,true)),280*RoomScale-0.17),-280*RoomScale+0.17);
                     bbPositionEntity(NPC_inside->collider, bbEntityX(room1,true)+x,0.1+bbEntityY(room1,true)+(bbEntityY(NPC_inside->collider)-bbEntityY(room2,true)),bbEntityZ(room1,true)+z,true);
                     bbResetEntity(NPC_inside->collider);
                     UpdateDoorsTimer = 0;

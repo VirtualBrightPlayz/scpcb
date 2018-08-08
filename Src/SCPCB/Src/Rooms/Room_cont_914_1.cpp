@@ -134,9 +134,9 @@ void UpdateEvent_cont_914_1(Event* e) {
 
                         angle = WrapAngle(bbEntityRoll(e->room->objects[0]));
                         if (angle > 181) {
-                            mainPlayer->drawDirectionialArrow[3] = true;
+                            mainPlayer->drawDirectionalArrow[3] = true;
                         }
-                        mainPlayer->drawDirectionialArrow[1] = true;
+                        mainPlayer->drawDirectionalArrow[1] = true;
 
                         if (angle < 90) {
                             bbRotateEntity(mainPlayer->grabbedEntity, 0, 0, 361.0);
@@ -166,8 +166,8 @@ void UpdateEvent_cont_914_1(Event* e) {
                         bbTurnEntity(mainPlayer->grabbedEntity, 0, 0, -mouse_x_speed_1 * 2.5);
 
                         angle = WrapAngle(bbEntityRoll(e->room->objects[1]));
-                        mainPlayer->drawDirectionialArrow[3] = true;
-                        mainPlayer->drawDirectionialArrow[1] = true;
+                        mainPlayer->drawDirectionalArrow[3] = true;
+                        mainPlayer->drawDirectionalArrow[1] = true;
 
                         if (angle > 90) {
                             if (angle < 180) {

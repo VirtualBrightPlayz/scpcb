@@ -20,7 +20,6 @@
 #include "Menus/Menu.h"
 #include "GameMain.h"
 #include "FastResize.h"
-#include "Difficulty.h"
 #include "Options.h"
 
 #include "Rooms/Room_closets_2.h"
@@ -862,10 +861,10 @@ void UpdateRooms() {
     //TempLightVolume=0
     int foundPlayerRoom = false;
     if (mainPlayer->currRoom!=nullptr) {
-        if (std::abs(bbEntityY(mainPlayer->collider) - bbEntityY(mainPlayer->currRoom->obj)) < 1.5) {
-            x = std::abs(mainPlayer->currRoom->x-bbEntityX(mainPlayer->collider,true));
+        if (abs(bbEntityY(mainPlayer->collider) - bbEntityY(mainPlayer->currRoom->obj)) < 1.5) {
+            x = abs(mainPlayer->currRoom->x-bbEntityX(mainPlayer->collider,true));
             if (x < 4.0) {
-                z = std::abs(mainPlayer->currRoom->z-bbEntityZ(mainPlayer->collider,true));
+                z = abs(mainPlayer->currRoom->z-bbEntityZ(mainPlayer->collider,true));
                 if (z < 4.0) {
                     foundPlayerRoom = true;
                 }
@@ -875,9 +874,9 @@ void UpdateRooms() {
             if (foundPlayerRoom == false) {
                 for (i = 0; i <= 3; i++) {
                     if (mainPlayer->currRoom->adjacent[i]!=nullptr) {
-                        x = std::abs(mainPlayer->currRoom->adjacent[i]->x-bbEntityX(mainPlayer->collider,true));
+                        x = abs(mainPlayer->currRoom->adjacent[i]->x-bbEntityX(mainPlayer->collider,true));
                         if (x < 4.0) {
-                            z = std::abs(mainPlayer->currRoom->adjacent[i]->z-bbEntityZ(mainPlayer->collider,true));
+                            z = abs(mainPlayer->currRoom->adjacent[i]->z-bbEntityZ(mainPlayer->collider,true));
                             if (z < 4.0) {
                                 foundPlayerRoom = true;
                                 mainPlayer->currRoom = mainPlayer->currRoom->adjacent[i];
@@ -896,8 +895,8 @@ void UpdateRooms() {
         for (int iterator77 = 0; iterator77 < Room::getListSize(); iterator77++) {
             r = Room::getObject(iterator77);
 
-            x = std::abs(r->x-bbEntityX(mainPlayer->collider,true));
-            z = std::abs(r->z-bbEntityZ(mainPlayer->collider,true));
+            x = abs(r->x-bbEntityX(mainPlayer->collider,true));
+            z = abs(r->z-bbEntityZ(mainPlayer->collider,true));
             r->dist = Max(x,z);
 
             if (r->dist<minDist) {
@@ -911,8 +910,8 @@ void UpdateRooms() {
     for (int iterator78 = 0; iterator78 < Room::getListSize(); iterator78++) {
         r = Room::getObject(iterator78);
 
-        x = std::abs(r->x-bbEntityX(mainPlayer->collider,true));
-        z = std::abs(r->z-bbEntityZ(mainPlayer->collider,true));
+        x = abs(r->x-bbEntityX(mainPlayer->collider,true));
+        z = abs(r->z-bbEntityZ(mainPlayer->collider,true));
         r->dist = Max(x,z);
 
 
@@ -929,7 +928,7 @@ void UpdateRooms() {
             if ((!foundPlayerRoom) & (mainPlayer->currRoom!=r)) {
                 if (x < 4.0) {
                     if (z < 4.0) {
-                        if (std::abs(bbEntityY(mainPlayer->collider) - bbEntityY(r->obj)) < 1.5) {
+                        if (abs(bbEntityY(mainPlayer->collider) - bbEntityY(r->obj)) < 1.5) {
                             mainPlayer->currRoom = r;
                         }
                         foundPlayerRoom = true;
@@ -984,8 +983,8 @@ void UpdateRooms() {
         SetRoomVisibility(mainPlayer->currRoom,true);
         for (i = 0; i <= 3; i++) {
             if (mainPlayer->currRoom->adjacent[i]!=nullptr) {
-                x = std::abs(bbEntityX(mainPlayer->collider,true)-bbEntityX(mainPlayer->currRoom->adjDoor[i]->frameobj,true));
-                z = std::abs(bbEntityZ(mainPlayer->collider,true)-bbEntityZ(mainPlayer->currRoom->adjDoor[i]->frameobj,true));
+                x = abs(bbEntityX(mainPlayer->collider,true)-bbEntityX(mainPlayer->currRoom->adjDoor[i]->frameobj,true));
+                z = abs(bbEntityZ(mainPlayer->collider,true)-bbEntityZ(mainPlayer->currRoom->adjDoor[i]->frameobj,true));
                 if (mainPlayer->currRoom->adjDoor[i]->openstate == 0) {
                     SetRoomVisibility(mainPlayer->currRoom->adjacent[i],false);
                 } else if ((!bbEntityInView(mainPlayer->currRoom->adjDoor[i]->frameobj,mainPlayer->cam))) {
@@ -1320,7 +1319,7 @@ int FindPath(NPC* n, float x, float y, float z) {
                                 w->connected[i]->parent = w;
                             }
                         } else {
-                            w->connected[i]->hCost = std::abs(bbEntityX(w->connected[i]->obj,true)-bbEntityX(EndPoint->obj,true))+std::abs(bbEntityZ(w->connected[i]->obj,true)-bbEntityZ(EndPoint->obj,true));
+                            w->connected[i]->hCost = abs(bbEntityX(w->connected[i]->obj,true)-bbEntityX(EndPoint->obj,true))+abs(bbEntityZ(w->connected[i]->obj,true)-bbEntityZ(EndPoint->obj,true));
                             gtemp = w->gCost+w->dist[i];
                             //TODO: fix?
                             //If (n\npcType = NPCtypeMTF) Then
@@ -1626,7 +1625,7 @@ void UpdateSecurityCams() {
                     }
 
                     if (sc!=CoffinCam) {
-                        if (std::abs(bbDeltaYaw(sc->cameraObj,mainPlayer->cam))<60.0) {
+                        if (abs(bbDeltaYaw(sc->cameraObj,mainPlayer->cam))<60.0) {
                             if (bbEntityVisible(sc->cameraObj,mainPlayer->cam)) {
                                 PlayerDetected = true;
                             }
@@ -1640,12 +1639,13 @@ void UpdateSecurityCams() {
                     sc->state = sc->state+timing->tickDuration;
 
                     if (sc->inSight & sc->allowSaving) {
-                        if (SelectedDifficulty->saveType == SAVEONSCREENS & bbEntityDistance(mainPlayer->cam, sc->scrObj)<1.0) {
+                        // TODO: Fix.
+                        if (/*SelectedDifficulty->saveType == SAVEONSCREENS && */bbEntityDistance(mainPlayer->cam, sc->scrObj)<1.0) {
                             DrawHandIcon = true;
                             if (MouseHit1) {
                                 SelectedMonitor = sc;
                             }
-                        } else if ((SelectedMonitor == sc)) {
+                        } else if (SelectedMonitor == sc) {
                             SelectedMonitor = nullptr;
                         }
                     } else {

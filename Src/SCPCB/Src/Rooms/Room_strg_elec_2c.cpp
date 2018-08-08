@@ -110,8 +110,8 @@ void UpdateEvent_strg_elec_2c(Event* e) {
                         bbTurnEntity(e->room->objects[i], mouse_y_speed_1 * 2.5, 0, 0);
                         bbRotateEntity(mainPlayer->grabbedEntity, Max(Min(bbEntityPitch(e->room->objects[i]), 85), -85), bbEntityYaw(e->room->objects[i]), 0);
 
-                        mainPlayer->drawDirectionialArrow[0] = true;
-                        mainPlayer->drawDirectionialArrow[2] = true;
+                        mainPlayer->drawDirectionalArrow[0] = true;
+                        mainPlayer->drawDirectionalArrow[2] = true;
 
                     }
                 }

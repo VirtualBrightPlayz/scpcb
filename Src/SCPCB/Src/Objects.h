@@ -15,10 +15,10 @@ public:
     static int getListSize();
     static Lever* getObject(int index);
 
-    int succ = false;
-    int locked = false;
-    int obj;
-    int baseObj;
+    bool succ = false;
+    bool locked = false;
+    class MeshModel* obj;
+    class MeshModel* baseObj;
 };
 
 struct ElevatorObj {
@@ -33,23 +33,23 @@ public:
 
     int obj;
     int inFacility;
-    Door* door;
+    struct Door* door;
 };
 
 // Functions.
-int CreateButton(float x, float y, float z, float pitch, float yaw, float roll = 0);
+class MeshModel* CreateButton(float x, float y, float z, float pitch, float yaw, float roll = 0);
 
-void UpdateButton(int obj);
+void UpdateButton(class MeshModel* obj);
 
 Lever* CreateLever();
 
 void UpdateLevers();
 
-float UpdateElevators(float state, Door* door1, Door* door2, int room1, int room2, Event* event);
+float UpdateElevators(float state, struct Door* door1, struct Door* door2, int room1, int room2, struct Event* event);
 
-float UpdateElevators2(float State, Door* door1, Door* door2, int room1, int room2, Event* event);
+float UpdateElevators2(float State, struct Door* door1, struct Door* door2, int room1, int room2, struct Event* event);
 
-ElevatorObj* AssignElevatorObj(int obj, Door* door, int in_facility);
+ElevatorObj* AssignElevatorObj(int obj, struct Door* door, int in_facility);
 
 }
 #endif // OBJECTS_H_INCLUDED
