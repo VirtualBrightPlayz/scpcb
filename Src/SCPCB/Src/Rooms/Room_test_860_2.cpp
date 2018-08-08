@@ -961,7 +961,7 @@ void UpdateForest(Forest* fr, Object* ent) {
     }
 }
 
-MeshModel* load_terrain(bbImage* hmap, float yscale = 0.7, Texture* t1, Texture* t2, int mask) {
+MeshModel* load_terrain(bbImage* hmap, float yscale, Texture* t1, Texture* t2, int mask) {
     float maskX;
     float maskY;
     int RGB1;

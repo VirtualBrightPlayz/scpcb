@@ -1,7 +1,6 @@
 #ifndef ROOM_TEST_860_2_H_INCLUDED
 #define ROOM_TEST_860_2_H_INCLUDED
 #include <vector>
-#include <object.h>
 
 namespace CBN {
 
@@ -60,7 +59,7 @@ void DestroyForest(Forest* fr);
 
 void UpdateForest(Forest* fr, class Object* ent);
 
-class MeshModel* load_terrain(class bbImage* hmap, float yscale = 0.7, class Texture* t1, class Texture* t2, int mask);
+class MeshModel* load_terrain(class bbImage* hmap, float yscale, class Texture* t1, class Texture* t2, int mask);
 
 }
 #endif // ROOM_TEST_860_2_H_INCLUDED
