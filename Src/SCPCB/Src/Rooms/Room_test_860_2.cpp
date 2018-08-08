@@ -1,6 +1,21 @@
 #include "Room_test_860_2.h"
-#include "include.h"
 #include <iostream>
+#include <bbblitz3d.h>
+#include <bbmath.h>
+#include <bbgraphics.h>
+
+#include "../GameMain.h"
+#include "../MapSystem.h"
+#include "../Doors.h"
+#include "../Items/Items.h"
+#include "../Decals.h"
+#include "../Particles.h"
+#include "../Events.h"
+#include "../Player.h"
+#include "../NPCs/NPCs.h"
+#include "../Audio.h"
+#include "../MathUtils/MathUtils.h"
+#include "../Menus/Menu.h"
 
 namespace CBN {
 
@@ -23,16 +38,6 @@ int Forest::getListSize() {
 Forest* Forest::getObject(int index) {
     return list[index];
 }
-
-// Constants.
-const int gridsize = 10;
-const int deviation_chance = 40;
-const int branch_chance = 65;
-const int branch_max_life = 4;
-const int branch_die_chance = 18;
-const int max_deviation_distance = 3;
-const int return_chance = 27;
-const int center = 5;
 
 // Globals.
 int LastForestID = 0;
@@ -102,7 +107,7 @@ void UpdateEvent_test_860_2(Event* e) {
     float dist;
     int i;
     int temp;
-    int pvt;
+    Pivot* pvt;
     String strtemp;
     int j;
     int k;
@@ -134,6 +139,7 @@ void UpdateEvent_test_860_2(Event* e) {
         //Local dp.DrawPortal
 
         //the player is in the forest
+        // FIXME
         if (e->eventState==1.0) {
             mainPlayer->footstepOverride = 2;
             e->overwriteMusic = true;
@@ -143,7 +149,7 @@ void UpdateEvent_test_860_2(Event* e) {
             //ShowEntity(fr\detailEntities[0])
             //ShowEntity(fr\detailEntities[1])
 
-            UpdateForest(fr,mainPlayer->collider);
+            UpdateForest(fr, mainPlayer->collider);
 
             if (!e->loaded) {
                 e->musicTrack = MUS_8601;
@@ -159,7 +165,7 @@ void UpdateEvent_test_860_2(Event* e) {
                 //the monster is chasing the player
                 if (e->room->npc[0]->state2 == 1 & e->room->npc[0]->state>1) {
                     e->overwriteMusic = false;
-                    SetNextMusicTrack(MUS_8602, false);
+                    musicManager->setNextMusicTrack(MUS_8602, false);
                 } else {
                     e->overwriteMusic = true;
                 }
@@ -176,13 +182,13 @@ void UpdateEvent_test_860_2(Event* e) {
             if (e->room->npc[0]!=nullptr) {
                 if (e->room->npc[0]->state == 0 | bbEntityDistance(mainPlayer->collider, e->room->npc[0]->collider)>12.0) {
                     e->eventState3 = e->eventState3 + (1+mainPlayer->moveSpeed)* timing->tickDuration;
-                    if ((e->eventState3 % 500) < 10.0 & ((e->eventState3-timing->tickDuration) % 500) > 490.0) {
+                    if (modFloat(e->eventState3, 500) < 10.0 && modFloat(e->eventState3-timing->tickDuration, 500) > 490.0) {
                         //If (e\eventState3 > 3500 And Rnd(10000)<e\eventState3) Then
-                        if (e->eventState3 > 3000-(500*SelectedDifficulty->aggressiveNPCs) & bbRnd(10000+(500*SelectedDifficulty->aggressiveNPCs)) < e->eventState3) {
+                        if (e->eventState3 > 3000 && bbRnd(10000) < e->eventState3) {
                             e->room->npc[0]->state = 2;
                             bbPositionEntity(e->room->npc[0]->collider, 0,-110,0);
                             //e\eventState3=e\eventState3-Rnd(2000,3000)
-                            e->eventState3 = e->eventState3-bbRnd(1000,2000-(500*SelectedDifficulty->aggressiveNPCs));
+                            e->eventState3 = e->eventState3-bbRnd(1000,2000);
                             std::cout << "attack";
                         } else {
                             e->room->npc[0]->state = 1;
@@ -270,7 +276,7 @@ void UpdateEvent_test_860_2(Event* e) {
                             Msg = "The door will not budge.";
                             MsgTimer = 5*70;
                         }
-                    } else if ((mainPlayer->selectedItem->itemTemplate->name=="scp860")) {
+                    } else if (mainPlayer->selectedItem->itemTemplate->name.equals("scp860")) {
                         if (MouseHit1) {
                             PlaySound2(LoadTempSound("SFX/Door/WoodenDoorOpen.ogg"));
                             bbShowEntity(fr->forest_Pivot);
@@ -346,14 +352,14 @@ int move_forward(int dir, int pathx, int pathy, int retval = 0) {
 
 int chance(int chanc) {
     //perform a chance given a probability
-    Return (Rand(0,100)< = chanc);
+    return bbRand(0,100) <= chanc;
 }
 
 int turn_if_deviating(int max_deviation_distance_, int pathx, int center_, int dir, int retval = 0) {
     //check if deviating and return the answer. if deviating, turn around
     int current_deviation = center_ - pathx;
     int deviated = false;
-    if (dir == 0 & current_deviation >= max_deviation_distance_) | (dir == 2 & current_deviation <= -max_deviation_distance_) {
+    if ((dir == 0 && current_deviation >= max_deviation_distance_) || (dir == 2 && current_deviation <= -max_deviation_distance_)) {
         dir = (dir + 2) % 4;
         deviated = true;
     }
@@ -377,8 +383,8 @@ void GenForestGrid(Forest* fr) {
     door2_pos = bbRand(3,7);
 
     //clear the grid
-    for (i = 0; i <= gridsize-1; i++) {
-        for (j = 0; j <= gridsize-1; j++) {
+    for (i = 0; i < gridsize; i++) {
+        for (j = 0; j < gridsize; j++) {
             fr->grid[(j*gridsize)+i] = 0;
         }
     }
@@ -576,8 +582,8 @@ void PlaceForest(Forest* fr, float x, float y, float z, Room* r) {
     int ty;
     float tile_size = 12.0;
     int tile_type;
-    int tile_entity;
-    int detail_entity;
+    MeshModel* tile_entity;
+    MeshModel* detail_entity;
 
     float tempf1;
     float tempf2;
@@ -590,29 +596,23 @@ void PlaceForest(Forest* fr, float x, float y, float z, Room* r) {
     float tempf4;
     int lx;
     int ly;
-    int d;
+    MeshModel* d;
     int frame;
 
     if (fr->forest_Pivot!=0) {
         bbFreeEntity(fr->forest_Pivot);
         fr->forest_Pivot = 0;
     }
-    for (i = 0; i <= 3; i++) {
+    for (i = 0; i < 4; i++) {
         if (fr->tileMesh[i]!=0) {
             bbFreeEntity(fr->tileMesh[i]);
             fr->tileMesh[i] = 0;
         }
     }
-    for (i = 0; i <= 4; i++) {
+    for (i = 0; i < 5; i++) {
         if (fr->detailMesh[i]!=0) {
             bbFreeEntity(fr->detailMesh[i]);
             fr->detailMesh[i] = 0;
-        }
-    }
-    for (i = 0; i <= 9; i++) {
-        if (fr->tileTexture[i]!=0) {
-            bbFreeEntity(fr->tileTexture[i]);
-            fr->tileTexture[i] = 0;
         }
     }
 
@@ -621,11 +621,11 @@ void PlaceForest(Forest* fr, float x, float y, float z, Room* r) {
 
     //load assets
 
-    int hmap[ROOM4];
-    int mask[ROOM4];
-    int GroundTexture = bbLoadTexture("GFX/Map/forest/forestfloor.jpg");
+    bbImage* hmap[ROOM4];
+    Texture* mask[ROOM4];
+    Texture* GroundTexture = bbLoadTexture("GFX/Map/forest/forestfloor.jpg");
     //TextureBlend(GroundTexture, FE_ALPHACURRENT)
-    int PathTexture = bbLoadTexture("GFX/Map/forest/forestpath.jpg");
+    Texture* PathTexture = bbLoadTexture("GFX/Map/forest/forestpath.jpg");
     //TextureBlend(PathTexture, FE_ALPHACURRENT)
 
     hmap[ROOM1] = bbLoadImage("GFX/Map/forest/forest1h.png");
@@ -754,7 +754,7 @@ void PlaceForest(Forest* fr, float x, float y, float z, Room* r) {
                     //2, 5, 8
                     it = nullptr;
                     if ((ty % 3)==2 & itemPlaced[(int)(bbFloor(ty/3))]==false) {
-                        itemPlaced[(int)(Floor(ty/3))] = true;
+                        itemPlaced[(int)(bbFloor(ty/3))] = true;
                         //TODO: Rename the files.
                         //it.Item = CreateItem("Log #"+(int)(Floor(ty/3)+1), "paper", 0,0.5,0)
                         bbEntityType(it->collider, HIT_ITEM);
@@ -772,7 +772,13 @@ void PlaceForest(Forest* fr, float x, float y, float z, Room* r) {
 
                             if (bbColorRed()>bbRand(100,260)) {
                                 switch (bbRand(0,7)) {
-                                    case 0,1,2,3,4,5,6: {
+                                    case 0:
+                                    case 1:
+                                    case 2:
+                                    case 3:
+                                    case 4:
+                                    case 5:
+                                    case 6: {
                                         detail_entity = bbCopyMeshModelEntity(fr->detailMesh[1]);
                                         //EntityType(detail_entity,HIT_MAP)
                                         tempf2 = bbRnd(0.25,0.4);
@@ -928,17 +934,11 @@ void DestroyForest(Forest* fr) {
             fr->detailMesh[i] = 0;
         }
     }
-    for (i = 0; i <= 9; i++) {
-        if (fr->tileTexture[i]!=0) {
-            bbFreeEntity(fr->tileTexture[i]);
-            fr->tileTexture[i] = 0;
-        }
-    }
 
     //Delete fr
 }
 
-void UpdateForest(Forest* fr, int ent) {
+void UpdateForest(Forest* fr, Object* ent) {
     //local variables
     int tx;
     int ty;
@@ -961,7 +961,7 @@ void UpdateForest(Forest* fr, int ent) {
     }
 }
 
-int load_terrain(int hmap, float yscale = 0.7, int t1, int t2, int mask) {
+MeshModel* load_terrain(bbImage* hmap, float yscale = 0.7, Texture* t1, Texture* t2, int mask) {
     float maskX;
     float maskY;
     int RGB1;
@@ -1005,8 +1005,8 @@ int load_terrain(int hmap, float yscale = 0.7, int t1, int t2, int mask) {
     }
 
     // start building the terrain
-    int mesh = bbCreateMesh();
-    int surf = bbCreateSurface(mesh);
+    MeshModel* mesh = bbCreateMesh();
+    Surface* surf = bbCreateSurface(mesh);
 
     // create some verts for the terrain
     for (ly = 0; ly <= y; ly++) {
@@ -1025,8 +1025,8 @@ int load_terrain(int hmap, float yscale = 0.7, int t1, int t2, int mask) {
     }
 
     // position the terrain to center 0,0,0
-    int mesh2 = bbCopyMesh(mesh,mesh);
-    int surf2 = bbGetSurface(mesh2,1);
+    MeshModel* mesh2 = bbDeepCopyMesh(mesh,mesh);
+    Surface* surf2 = bbGetSurface(mesh2,1);
     bbPositionMesh(mesh, -x/2.0,0,-y/2.0);
     bbPositionMesh(mesh2, -x/2.0,0.01,-y/2.0);
 
@@ -1043,7 +1043,7 @@ int load_terrain(int hmap, float yscale = 0.7, int t1, int t2, int mask) {
             maskY = bbTextureHeight(mask)-Min(ly*(float)(bbTextureHeight(mask))/(float)(bbImageHeight(hmap)),bbTextureHeight(mask)-1);
             RGB1 = bbReadPixelFast((int)(Min(lx,x-1)),(int)(y-Min(ly,y-1)),bbImageBuffer(hmap));
             //separate out the red
-            r = (RGB1 & $FF0000)>>  16;
+            r = (RGB1 & 0xFF0000) >> 16;
             alpha = (((bbReadPixelFast((int)(Max(maskX-5,5)),(int)(Max(maskY-5,5)),bbTextureBuffer(mask)) & $FF000000) >>  24)/$FF);
             alpha = alpha+(((bbReadPixelFast((int)(Min(maskX+5,bbTextureWidth(mask)-5)),(int)(Min(maskY+5,bbTextureHeight(mask)-5)),bbTextureBuffer(mask)) & $FF000000) >>  24)/$FF);
             alpha = alpha+(((bbReadPixelFast((int)(Max(maskX-5,5)),(int)(Min(maskY+5,bbTextureHeight(mask)-5)),bbTextureBuffer(mask)) & $FF000000) >>  24)/$FF);

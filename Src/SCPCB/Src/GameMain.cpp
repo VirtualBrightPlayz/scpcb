@@ -169,7 +169,7 @@ void InitializeMainGame() {
     InitializeUIAssets();
 
     musicManager = CreateMusicManager();
-    SetNextMusicTrack(MUS_EZ, false);
+    musicManager->setNextMusicTrack(MUS_EZ, false);
 
     bbSetFont(uiAssets->font[1]);
 

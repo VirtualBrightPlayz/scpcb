@@ -12,9 +12,9 @@ extern const int EVENT_TSW2_173SPAWNED;
 extern const int EVENT_TSW2_173JUMPTIMER;
 
 // Functions.
-void FillRoom_test_smallwindow_2(Room* r);
+void FillRoom_test_smallwindow_2(struct Room* r);
 
-void UpdateEventTestroom173(Event* e);
+void UpdateEventTestroom173(struct Event* e);
 
 }
 #endif // ROOM_TEST_SMALLWINDOW_2_H_INCLUDED

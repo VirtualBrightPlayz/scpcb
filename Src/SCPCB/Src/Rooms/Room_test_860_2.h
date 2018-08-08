@@ -1,8 +1,19 @@
 #ifndef ROOM_TEST_860_2_H_INCLUDED
 #define ROOM_TEST_860_2_H_INCLUDED
 #include <vector>
+#include <object.h>
 
 namespace CBN {
+
+// Constants.
+const int gridsize = 10;
+const int deviation_chance = 40;
+const int branch_chance = 65;
+const int branch_max_life = 4;
+const int branch_die_chance = 18;
+const int max_deviation_distance = 3;
+const int return_chance = 27;
+const int center = 5;
 
 // Structs.
 struct Forest {
@@ -15,36 +26,25 @@ public:
     static int getListSize();
     static Forest* getObject(int index);
 
-    int tileMesh[6];
-    int detailMesh[6];
-    int tileTexture[10];
+    class MeshModel* tileMesh[6];
+    class MeshModel* detailMesh[6];
     int grid[(gridsize*gridsize)+11];
-    int tileEntities[(gridsize*gridsize)+1];
-    int forest_Pivot;
+    class MeshModel* tileEntities[(gridsize*gridsize)+1];
+    class Pivot* forest_Pivot;
 
-    int door[2];
-    int detailEntities[2];
+    class MeshModel* door[2];
+    class MeshModel* detailEntities[2];
 
     int id;
 };
-
-// Constants.
-extern const int gridsize;
-extern const int deviation_chance;
-extern const int branch_chance;
-extern const int branch_max_life;
-extern const int branch_die_chance;
-extern const int max_deviation_distance;
-extern const int return_chance;
-extern const int center;
 
 // Globals.
 extern int LastForestID;
 
 // Functions.
-void FillRoom_test_860_2(Room* r);
+void FillRoom_test_860_2(struct Room* r);
 
-void UpdateEvent_test_860_2(Event* e);
+void UpdateEvent_test_860_2(struct Event* e);
 
 int move_forward(int dir, int pathx, int pathy, int retval = 0);
 
@@ -58,9 +58,9 @@ void PlaceForest(Forest* fr, float x, float y, float z, Room* r);
 
 void DestroyForest(Forest* fr);
 
-void UpdateForest(Forest* fr, int ent);
+void UpdateForest(Forest* fr, class Object* ent);
 
-int load_terrain(int hmap, float yscale = 0.7, int t1, int t2, int mask);
+class MeshModel* load_terrain(class bbImage* hmap, float yscale = 0.7, class Texture* t1, class Texture* t2, int mask);
 
 }
 #endif // ROOM_TEST_860_2_H_INCLUDED

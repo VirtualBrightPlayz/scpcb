@@ -65,7 +65,7 @@ public:
     static Item* getObject(int index);
 
     String name;
-    class Object* collider;
+    class Pivot* collider;
     class MeshModel* model;
     struct ItemTemplate* itemTemplate;
     class bbImage* img;

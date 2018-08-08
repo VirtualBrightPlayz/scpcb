@@ -5,9 +5,9 @@
 namespace CBN {
 
 // Functions.
-void FillRoom_tnnl_nuke_2(Room* r);
+void FillRoom_tnnl_nuke_2(struct Room* r);
 
-void UpdateEvent_tnnl_nuke_2(Event* e);
+void UpdateEvent_tnnl_nuke_2(struct Event* e);
 
 }
 #endif // ROOM_TNNL_NUKE_2_H_INCLUDED

@@ -146,7 +146,7 @@ public:
 
     class Sprite* lightSprites[MaxRoomLights];
 
-    class Object* objects[MaxRoomObjects];
+    class MeshModel* objects[MaxRoomObjects];
     struct Lever* levers[11];
     struct Door* doors[7];
     struct NPC* npc[12];
