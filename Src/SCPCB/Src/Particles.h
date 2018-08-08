@@ -56,7 +56,7 @@ public:
 
     struct Room* room;
 
-    int soundCHN;
+    class gxChannel* soundCHN;
 
     float speed;
     float randAngle;

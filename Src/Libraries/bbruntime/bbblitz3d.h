@@ -124,7 +124,7 @@ class Object* bbEntityPick(class Object* src, float range);
 int bbEntityVisible(class Object *src,class Object *dest);
 void bbEntityType(Object *o, int type, int recurs=0);
 void bbEntityPickMode(class Object* o, int mode, int obs=1);
-class Object* bbLinePick(float x, float y, float z, float dx, float dy, float dz, float radius);
+class Object* bbLinePick(float x, float y, float z, float dx, float dy, float dz, float radius=0);
 float bbPickedX();
 float bbPickedY();
 float bbPickedZ();

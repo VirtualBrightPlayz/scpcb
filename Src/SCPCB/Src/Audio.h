@@ -118,13 +118,13 @@ public:
 
     // When set to true the music manager just plays whichever track
     // is appropriate to the current zone/menu.
-    int useDefault;
+    bool useDefault;
 
     String nowPlaying;
     String shouldPlay;
 
     // Used for fading out tracks.
-    int fadeOut;
+    bool fadeOut;
     float currMusicVolume;
 
     void restoreDefaultMusic();
