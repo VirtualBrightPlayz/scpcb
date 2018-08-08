@@ -4,7 +4,10 @@
 
 #include "Audio.h"
 #include "MathUtils/MathUtils.h"
+#include "Menus/Menu.h"
 #include "Options.h"
+#include "NPCs/NPCs.h"
+#include "Player.h"
 #include "GameMain.h"
 #include "Events.h"
 #include "MapSystem.h"
@@ -67,25 +70,6 @@ int SoundChannel::getListSize() {
     return list.size();
 }
 SoundChannel* SoundChannel::getObject(int index) {
-    return list[index];
-}
-
-std::vector<MusicManager*> MusicManager::list;
-MusicManager::MusicManager() {
-    list.push_back(this);
-}
-MusicManager::~MusicManager() {
-    for (int i = 0; i < list.size(); i++) {
-        if (list[i] == this) {
-            list.erase(list.begin() + i);
-            break;
-        }
-    }
-}
-int MusicManager::getListSize() {
-    return list.size();
-}
-MusicManager* MusicManager::getObject(int index) {
     return list[index];
 }
 
@@ -431,66 +415,58 @@ gxSound* LoadEventSound(Event* e, String file, int i = 0) {
 }
 
 void PauseSounds() {
-    SoundChannel* chn;
-    SecurityCam* sc;
-    Room* r;
-    Event* e;
-    NPC* n;
-    Emitter* em;
-    int i;
-
-    for (int iterator20 = 0; iterator20 < SoundChannel::getListSize(); iterator20++) {
-        chn = SoundChannel::getObject(iterator20);
+    for (int i = 0; i < SoundChannel::getListSize(); i++) {
+        SoundChannel* chn = SoundChannel::getObject(i);
 
         if (bbChannelPlaying(chn->internal)) {
             bbPauseChannel(chn->internal);
         }
     }
 
-    for (int iterator21 = 0; iterator21 < SecurityCam::getListSize(); iterator21++) {
-        sc = SecurityCam::getObject(iterator21);
+    for (int i = 0; i < SecurityCam::getListSize(); i++) {
+        SecurityCam* sc = SecurityCam::getObject(i);
 
         if (bbChannelPlaying(sc->soundCHN)) {
             bbPauseChannel(sc->soundCHN);
         }
     }
 
-    for (int iterator22 = 0; iterator22 < Room::getListSize(); iterator22++) {
-        r = Room::getObject(iterator22);
+    for (int i = 0; i < Room::getListSize(); i++) {
+        Room* r = Room::getObject(i);
 
         if (bbChannelPlaying(r->soundCHN)) {
             bbPauseChannel(r->soundCHN);
         }
 
-        for (i = 0; i <= MaxRoomEmitters-1; i++) {
-            if (bbChannelPlaying(r->soundEmitterCHN[i])) {
-                bbPauseChannel(r->soundEmitterCHN[i]);
+        for (int j = 0; j < MaxRoomEmitters; j++) {
+            if (bbChannelPlaying(r->soundEmitterCHN[j])) {
+                bbPauseChannel(r->soundEmitterCHN[j]);
             }
         }
     }
 
-    for (int iterator23 = 0; iterator23 < Event::getListSize(); iterator23++) {
-        e = Event::getObject(iterator23);
+    for (int i = 0; i < Event::getListSize(); i++) {
+        Event* e = Event::getObject(i);
 
-        for (i = 0; i <= EVENT_CHANNEL_COUNT-1; i++) {
-            if (bbChannelPlaying(e->soundChannels[i])) {
-                bbPauseChannel(e->soundChannels[i]);
+        for (int j = 0; j < EVENT_CHANNEL_COUNT; j++) {
+            if (bbChannelPlaying(e->soundChannels[j])) {
+                bbPauseChannel(e->soundChannels[j]);
             }
         }
     }
 
-    for (int iterator24 = 0; iterator24 < NPC::getListSize(); iterator24++) {
-        n = NPC::getObject(iterator24);
+    for (int i = 0; i < NPC::getListSize(); i++) {
+        NPC* n = NPC::getObject(i);
 
-        for (i = 0; i <= NPC_CHANNEL_COUNT-1; i++) {
-            if (bbChannelPlaying(n->soundChannels[i])) {
-                bbPauseChannel(n->soundChannels[i]);
+        for (int j = 0; j < NPC_CHANNEL_COUNT; j++) {
+            if (bbChannelPlaying(n->soundChannels[j])) {
+                bbPauseChannel(n->soundChannels[j]);
             }
         }
     }
 
     for (int iterator25 = 0; iterator25 < Emitter::getListSize(); iterator25++) {
-        em = Emitter::getObject(iterator25);
+        Emitter* em = Emitter::getObject(iterator25);
 
         if (bbChannelPlaying(em->soundCHN)) {
             bbPauseChannel(em->soundCHN);
@@ -503,66 +479,58 @@ void PauseSounds() {
 }
 
 void ResumeSounds() {
-    SoundChannel* chn;
-    SecurityCam* sc;
-    Room* r;
-    Event* e;
-    NPC* n;
-    Emitter* em;
-    int i;
-
-    for (int iterator26 = 0; iterator26 < SoundChannel::getListSize(); iterator26++) {
-        chn = SoundChannel::getObject(iterator26);
+    for (int i = 0; i < SoundChannel::getListSize(); i++) {
+        SoundChannel* chn = SoundChannel::getObject(i);
 
         if (bbChannelPlaying(chn->internal)) {
             bbResumeChannel(chn->internal);
         }
     }
 
-    for (int iterator27 = 0; iterator27 < SecurityCam::getListSize(); iterator27++) {
-        sc = SecurityCam::getObject(iterator27);
+    for (int i = 0; i < SecurityCam::getListSize(); i++) {
+        SecurityCam* sc = SecurityCam::getObject(i);
 
         if (bbChannelPlaying(sc->soundCHN)) {
             bbResumeChannel(sc->soundCHN);
         }
     }
 
-    for (int iterator28 = 0; iterator28 < Room::getListSize(); iterator28++) {
-        r = Room::getObject(iterator28);
+    for (int i = 0; i < Room::getListSize(); i++) {
+        Room* r = Room::getObject(i);
 
         if (bbChannelPlaying(r->soundCHN)) {
             bbResumeChannel(r->soundCHN);
         }
 
-        for (i = 0; i <= MaxRoomEmitters-1; i++) {
-            if (bbChannelPlaying(r->soundEmitterCHN[i])) {
-                bbResumeChannel(r->soundEmitterCHN[i]);
+        for (int j = 0; j < MaxRoomEmitters; j++) {
+            if (bbChannelPlaying(r->soundEmitterCHN[j])) {
+                bbResumeChannel(r->soundEmitterCHN[j]);
             }
         }
     }
 
-    for (int iterator29 = 0; iterator29 < Event::getListSize(); iterator29++) {
-        e = Event::getObject(iterator29);
+    for (int i = 0; i < Event::getListSize(); i++) {
+        Event* e = Event::getObject(i);
 
-        for (i = 0; i <= EVENT_CHANNEL_COUNT-1; i++) {
-            if (bbChannelPlaying(e->soundChannels[i])) {
-                bbResumeChannel(e->soundChannels[i]);
+        for (int j = 0; j < EVENT_CHANNEL_COUNT; j++) {
+            if (bbChannelPlaying(e->soundChannels[j])) {
+                bbResumeChannel(e->soundChannels[j]);
             }
         }
     }
 
-    for (int iterator30 = 0; iterator30 < NPC::getListSize(); iterator30++) {
-        n = NPC::getObject(iterator30);
+    for (int i = 0; i < NPC::getListSize(); i++) {
+        NPC* n = NPC::getObject(i);
 
-        for (i = 0; i <= NPC_CHANNEL_COUNT-1; i++) {
-            if (bbChannelPlaying(n->soundChannels[i])) {
-                bbResumeChannel(n->soundChannels[i]);
+        for (int j = 0; j < NPC_CHANNEL_COUNT; j++) {
+            if (bbChannelPlaying(n->soundChannels[j])) {
+                bbResumeChannel(n->soundChannels[j]);
             }
         }
     }
 
-    for (int iterator31 = 0; iterator31 < Emitter::getListSize(); iterator31++) {
-        em = Emitter::getObject(iterator31);
+    for (int i = 0; i < Emitter::getListSize(); i++) {
+        Emitter* em = Emitter::getObject(i);
 
         if (bbChannelPlaying(em->soundCHN)) {
             bbResumeChannel(em->soundCHN);
@@ -646,28 +614,24 @@ void StopSounds() {
     }
 }
 
-int GetMaterialStepSound(int entity) {
-    int picker = bbLinePick(bbEntityX(entity), bbEntityY(entity), bbEntityZ(entity), 0, -1, 0);
-    int brush;
-    int texture;
-    String name;
-    Material* mat;
+int GetMaterialStepSound(Object* entity) {
+    Object* picker = bbLinePick(bbEntityX(entity), bbEntityY(entity), bbEntityZ(entity), 0, -1, 0);
 
-    if (picker != 0) {
+    if (picker != nullptr) {
         if (bbGetEntityType(picker) != HIT_MAP) {
             return 0;
         }
-        brush = bbGetSurfaceBrush(bbGetSurface(picker, bbCountSurfaces(picker)));
-        if (brush != 0) {
-            texture = bbGetBrushTexture(brush, 2);
+        Brush* brush = bbGetSurfaceBrush(bbGetSurface((MeshModel*)picker, bbCountSurfaces((MeshModel*)picker)));
+        if (brush != nullptr) {
+            Texture* texture = bbGetBrushTexture(brush, 2);
 
-            if (texture != 0) {
-                name = StripPath(bbTextureName(texture));
+            if (texture != nullptr) {
+                String name = StripPath(bbTextureName(texture));
                 if (!name.isEmpty()) {
                     bbFreeTexture(texture);
                 }
                 for (int i = 0; i < Material::getListSize(); i++) {
-                    mat = Material::getObject(i);
+                    Material* mat = Material::getObject(i);
 
                     if (mat->name.equals(name)) {
                         if (mat->stepSound > 0) {
@@ -679,14 +643,14 @@ int GetMaterialStepSound(int entity) {
                 }
             }
             texture = bbGetBrushTexture(brush, 1);
-            if (texture != 0) {
-                name = StripPath(bbTextureName(texture));
+            if (texture != nullptr) {
+                String name = StripPath(bbTextureName(texture));
                 if (!name.isEmpty()) {
                     bbFreeTexture(texture);
                 }
                 bbFreeBrush(brush);
-                for (int i = 0; i < Material::getListSize(); id_t++) {
-                    mat = Material::getObject(i);
+                for (int i = 0; i < Material::getListSize(); i++) {
+                    Material* mat = Material::getObject(i);
 
                     if (mat->name.equals(name)) {
                         if (mat->stepSound > 0) {
@@ -702,79 +666,81 @@ int GetMaterialStepSound(int entity) {
     return 0;
 }
 
-MusicManager* CreateMusicManager() {
-    MusicManager* musMan = new MusicManager();
-    musMan->useDefault = true;
-
-    return musMan;
+MusicManager::MusicManager() {
+    this->useDefault = true;
 }
 
-void RestoreDefaultMusic() {
-    musicManager->fadeOut = true;
-    musicManager->useDefault = true;
+MusicManager::~MusicManager() {
+    bbStopChannel(this->channel);
+    this->freeMusic();
 }
 
-void SetNextMusicTrack(String trackName, int fadeOut = true) {
-    if (musicManager->shouldPlay == trackName) {
+void MusicManager::restoreDefaultMusic() {
+    this->fadeOut = true;
+    this->useDefault = true;
+}
+
+void MusicManager::setNextMusicTrack(String trackName, int fadeOut) {
+    if (this->shouldPlay.equals(trackName)) {
         return;
     }
 
     //If the track's already being overwritten then don't let anything else change it.
-    if (!musicManager->useDefault) {
+    if (!this->useDefault) {
         return;
     }
 
-    musicManager->useDefault = false;
-    musicManager->shouldPlay = trackName;
-    musicManager->fadeOut = fadeOut;
+    this->useDefault = false;
+    this->shouldPlay = trackName;
+    this->fadeOut = fadeOut;
 }
 
-void FreeMusic() {
-    if (musicManager->currMusic != 0) {
-        bbFreeSound(musicManager->currMusic);
-        musicManager->currMusic = 0;
+void MusicManager::freeMusic() {
+    if (this->currMusic != nullptr) {
+        bbFreeSound(this->currMusic);
+        this->currMusic = 0;
     }
 }
 
-void UpdateMusic() {
+void MusicManager::update() {
     if (userOptions->musicVolume <= 0) {
         return;
     }
 
-    if (musicManager->useDefault) {
+    if (this->useDefault) {
         if (CurrGameState == GAMESTATE_MAINMENU) {
-            musicManager->shouldPlay = MUS_MENU;
+            this->shouldPlay = MUS_MENU;
         } else {
-            musicManager->shouldPlay = MUS_LCZ;
+            this->shouldPlay = MUS_LCZ;
         }
         //TODO: Play zone track here depending on game's current state.
     }
 
-    if (musicManager->nowPlaying != musicManager->shouldPlay) {
-        if (musicManager->fadeOut & musicManager->currMusicVolume > 0) {
-            musicManager->currMusicVolume = musicManager->currMusicVolume - (timing->tickDuration / 250.0);
+    if (!this->nowPlaying.equals(this->shouldPlay)) {
+        if (this->fadeOut && this->currMusicVolume > 0) {
+            this->currMusicVolume -= timing->tickDuration / 250.0;
         } else {
-            if (musicManager->channel != 0) {
-                bbStopChannel(musicManager->channel);
-                musicManager->channel = 0;
+            if (this->channel != 0) {
+                bbStopChannel(this->channel);
+                this->channel = nullptr;
             }
 
-            FreeMusic();
-            musicManager->nowPlaying = musicManager->shouldPlay;
-            musicManager->currMusic = bbLoadSound(musicManager->nowPlaying);
+            this->freeMusic();
+            this->nowPlaying = this->shouldPlay;
+            this->currMusic = bbLoadSound(this->nowPlaying);
 
-            musicManager->fadeOut = false;
-            musicManager->currMusicVolume = userOptions->musicVolume;
+            this->fadeOut = false;
+            this->currMusicVolume = userOptions->musicVolume;
         }
-    } else if ((musicManager->currMusicVolume != userOptions->musicVolume)) {
-        musicManager->currMusicVolume = userOptions->musicVolume;
+    } else if (this->currMusicVolume != userOptions->musicVolume) {
+        this->currMusicVolume = userOptions->musicVolume;
     }
 
-    if (!bbChannelPlaying(musicManager->channel)) {
-        musicManager->channel = bbPlaySound(musicManager->currMusic);
+    if (!bbChannelPlaying(this->channel)) {
+        this->channel = bbPlaySound(this->currMusic);
     }
 
-    bbChannelVolume(musicManager->channel, musicManager->currMusicVolume);
+    bbChannelVolume(this->channel, this->currMusicVolume);
 }
 
 }

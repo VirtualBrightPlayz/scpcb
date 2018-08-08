@@ -329,11 +329,11 @@ void UpdateMainMenu() {
                 //
                 //					UpdateInputBox(x + 160 * MenuScale, y + 20 * MenuScale,100*MenuScale,20*MenuScale,KeyName[Min(keyBinds\up,210)],5)
                 //
-                //					UpdateInputBox(x + 160 * MenuScale, y + 40 * MenuScale,100*MenuScale,20*MenuScale,KeyName[Min(keyBinds\lft,210)],3)
+                //					UpdateInputBox(x + 160 * MenuScale, y + 40 * MenuScale,100*MenuScale,20*MenuScale,KeyName[Min(keyBinds\left,210)],3)
                 //
                 //					UpdateInputBox(x + 160 * MenuScale, y + 60 * MenuScale,100*MenuScale,20*MenuScale,KeyName[Min(keyBinds\down,210)],6)
                 //
-                //					UpdateInputBox(x + 160 * MenuScale, y + 80 * MenuScale,100*MenuScale,20*MenuScale,KeyName[Min(keyBinds\rght,210)],4)
+                //					UpdateInputBox(x + 160 * MenuScale, y + 80 * MenuScale,100*MenuScale,20*MenuScale,KeyName[Min(keyBinds\right,210)],4)
                 //
                 //					UpdateInputBox(x + 160 * MenuScale, y + 100 * MenuScale,100*MenuScale,20*MenuScale,KeyName[Min(keyBinds\save,210)],11)
                 //
@@ -355,9 +355,9 @@ void UpdateMainMenu() {
                 //					If (key<>0) Then
                 //						Select (SelectedInputBox)
                 //							Case 3
-                //								keyBinds\lft = key
+                //								keyBinds\left = key
                 //							Case 4
-                //								keyBinds\rght = key
+                //								keyBinds\right = key
                 //							Case 5
                 //								keyBinds\up = key
                 //							Case 6
@@ -857,11 +857,11 @@ void DrawMainMenu() {
                 //					Text(x + 20 * MenuScale, y + 20 * MenuScale, "Move Forward")
                 //					DrawInputBox(x + 160 * MenuScale, y + 20 * MenuScale,100*MenuScale,20*MenuScale,KeyName[Min(keyBinds\up,210)],5)
                 //					Text(x + 20 * MenuScale, y + 40 * MenuScale, "Strafe Left")
-                //					DrawInputBox(x + 160 * MenuScale, y + 40 * MenuScale,100*MenuScale,20*MenuScale,KeyName[Min(keyBinds\lft,210)],3)
+                //					DrawInputBox(x + 160 * MenuScale, y + 40 * MenuScale,100*MenuScale,20*MenuScale,KeyName[Min(keyBinds\left,210)],3)
                 //					Text(x + 20 * MenuScale, y + 60 * MenuScale, "Move Backward")
                 //					DrawInputBox(x + 160 * MenuScale, y + 60 * MenuScale,100*MenuScale,20*MenuScale,KeyName[Min(keyBinds\down,210)],6)
                 //					Text(x + 20 * MenuScale, y + 80 * MenuScale, "Strafe Right")
-                //					DrawInputBox(x + 160 * MenuScale, y + 80 * MenuScale,100*MenuScale,20*MenuScale,KeyName[Min(keyBinds\rght,210)],4)
+                //					DrawInputBox(x + 160 * MenuScale, y + 80 * MenuScale,100*MenuScale,20*MenuScale,KeyName[Min(keyBinds\right,210)],4)
                 //					Text(x + 20 * MenuScale, y + 100 * MenuScale, "Quick Save")
                 //					DrawInputBox(x + 160 * MenuScale, y + 100 * MenuScale,100*MenuScale,20*MenuScale,KeyName[Min(keyBinds\save,210)],11)
                 //

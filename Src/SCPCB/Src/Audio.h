@@ -106,29 +106,31 @@ public:
     float volume;
 };
 
+// TODO: Add the ability to have no music playing.
+// Make it possible to play a track then swap to default when said track is done (breath.ogg)
 struct MusicManager {
-private:
-    static std::vector<MusicManager*> list;
-
 public:
     MusicManager();
     ~MusicManager();
-    static int getListSize();
-    static MusicManager* getObject(int index);
 
-    int currMusic;
-    int channel;
+    gxSound* currMusic;
+    gxChannel* channel;
 
     // When set to true the music manager just plays whichever track
     // is appropriate to the current zone/menu.
-    int useDefault;
+    bool useDefault;
 
     String nowPlaying;
     String shouldPlay;
 
     // Used for fading out tracks.
-    int fadeOut;
+    bool fadeOut;
     float currMusicVolume;
+
+    void restoreDefaultMusic();
+    void setNextMusicTrack(String trackName, int fadeOut = true);
+    void freeMusic();
+    void update();
 };
 
 // Constants.
@@ -203,17 +205,7 @@ void ResumeSounds();
 
 void StopSounds();
 
-int GetMaterialStepSound(int entity);
-
-MusicManager* CreateMusicManager();
-
-void RestoreDefaultMusic();
-
-void SetNextMusicTrack(String trackName, int fadeOut = true);
-
-void FreeMusic();
-
-void UpdateMusic();
+int GetMaterialStepSound(Object* entity);
 
 }
 #endif // AUDIO_H_INCLUDED
