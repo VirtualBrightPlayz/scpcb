@@ -27,7 +27,7 @@ extern String ConsoleInput;
 extern float ConsoleScroll;
 extern int ConsoleScrollDragging;
 extern int ConsoleMouseMem;
-extern ConsoleMsg* ConsoleReissue;
+extern int ConsoleReissue;
 extern int ConsoleR;
 extern int ConsoleG;
 extern int ConsoleB;
