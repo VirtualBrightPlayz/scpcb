@@ -37,7 +37,7 @@ String ConsoleInput;
 float ConsoleScroll;
 int ConsoleScrollDragging;
 int ConsoleMouseMem;
-ConsoleMsg* ConsoleReissue = nullptr;
+int ConsoleReissue = -1;
 int ConsoleR = 255;
 int ConsoleG = 255;
 int ConsoleB = 255;
@@ -127,7 +127,7 @@ void DrawConsole() {
                 delete cm;
             } else {
                 if (tempY >= y && tempY < y + height - (int)(20.0*MenuScale)) {
-                    if (cm==ConsoleReissue) {
+                    if (i==ConsoleReissue) {
                         bbColor(cm->r/4,cm->g/4,cm->b/4);
                         bbRect(x, tempY -(int)(2.0*MenuScale),width-(int)(30.0*MenuScale),(int)(24.0*MenuScale),true);
                     }
@@ -206,97 +206,48 @@ void UpdateConsole() {
         }
 
         if (bbKeyHit(200)) {
-            int reissuePos = 0;
-            if (ConsoleReissue==nullptr) {
-				// FIXME
-                ConsoleReissue = First ConsoleMsg;
-
-                while (ConsoleReissue!=nullptr) {
-                    if (ConsoleReissue->isCommand) {
-                        break;
-                    }
-                    reissuePos = reissuePos - (int)(15.0*MenuScale);
-                    ConsoleReissue = After ConsoleReissue;
-                }
-
-            } else {
-                // FIXME
-                cm = First ConsoleMsg;
-                while (cm != nullptr) {
-                    if (cm==ConsoleReissue) {
-                        break;
-                    }
-                    reissuePos = reissuePos-(int)(15.0*MenuScale);
-                    cm = After cm;
-                }
-                ConsoleReissue = After ConsoleReissue;
-                reissuePos = reissuePos-(int)(15.0*MenuScale);
-
-                while (true) {
-                    if (ConsoleReissue==nullptr) {
-                        ConsoleReissue = First ConsoleMsg;
-                        reissuePos = 0;
-                    }
-
-                    if (ConsoleReissue->isCommand) {
-                        break;
-                    }
-                    reissuePos = reissuePos - (int)(15.0*MenuScale);
-                    ConsoleReissue = After ConsoleReissue;
-                }
+            int initIndex = ConsoleReissue;
+            if (initIndex<0 || initIndex >= ConsoleMsg::getListSize()) {
+                initIndex = 0;
             }
+            int index = ConsoleReissue + 1;
 
-            if (ConsoleReissue!=nullptr) {
-                ConsoleInput = ConsoleReissue->txt;
-                ConsoleScroll = reissuePos+(height/2);
+            while (index != ConsoleReissue) {
+                index %= ConsoleMsg::getListSize();
+                if (ConsoleMsg::getObject(index)->isCommand) {
+                    break;
+                }
+                index++;
+            }
+            if (ConsoleMsg::getObject(index)->isCommand) {
+                ConsoleReissue = index;
+                ConsoleInput = ConsoleMsg::getObject(index)->txt;
+                ConsoleScroll = -ConsoleReissue * (15.0f*MenuScale) + (height / 2);
             }
         }
 
         if (bbKeyHit(208)) {
-            reissuePos = -consoleHeight+(int)(15.0*MenuScale);
-            if (ConsoleReissue==nullptr) {
-                ConsoleReissue = Last ConsoleMsg;
-
-                while (ConsoleReissue!=nullptr) {
-                    if (ConsoleReissue->isCommand) {
-                        break;
-                    }
-                    reissuePos = reissuePos + (int)(15.0*MenuScale);
-                    ConsoleReissue = Before ConsoleReissue;
-                }
-
-            } else {
-                cm = Last ConsoleMsg;
-                while (cm!=nullptr) {
-                    if (cm==ConsoleReissue) {
-                        break;
-                    }
-                    reissuePos = reissuePos+(int)(15.0*MenuScale);
-                    cm = Before cm;
-                }
-                ConsoleReissue = Before ConsoleReissue;
-                reissuePos = reissuePos+(int)(15.0*MenuScale);
-
-                while (true) {
-                    if (ConsoleReissue==nullptr) {
-                        ConsoleReissue = Last ConsoleMsg;
-                        reissuePos = -consoleHeight+(int)(15.0*MenuScale);
-                    }
-
-                    if (ConsoleReissue->isCommand) {
-                        break;
-                    }
-                    reissuePos = reissuePos + (int)(15.0*MenuScale);
-                    ConsoleReissue = Before ConsoleReissue;
-                }
+            int initIndex = ConsoleReissue;
+            if (initIndex<0 || initIndex >= ConsoleMsg::getListSize()) {
+                initIndex = 0;
             }
+            int index = ConsoleReissue - 1;
 
-            if (ConsoleReissue!=nullptr) {
-                ConsoleInput = ConsoleReissue->txt;
-                ConsoleScroll = reissuePos+(height/2);
+            while (index != initIndex) {
+                if (index<0) { index += ConsoleMsg::getListSize(); }
+                if (ConsoleMsg::getObject(index)->isCommand) {
+                    break;
+                }
+                index--;
+            }
+            if (ConsoleMsg::getObject(index)->isCommand) {
+                ConsoleReissue = index;
+                ConsoleInput = ConsoleMsg::getObject(index)->txt;
+                ConsoleScroll = -ConsoleReissue * (15.0f*MenuScale) + (height / 2);
             }
         }
 
+        
         if (ConsoleScroll<-consoleHeight+height) {
             ConsoleScroll = -consoleHeight+height;
         }
@@ -308,12 +259,12 @@ void UpdateConsole() {
         String oldConsoleInput = ConsoleInput;
         ConsoleInput = UpdateInputBox(x, y + height, width, (int)(30.0*MenuScale), ConsoleInput, 2);
         if (!oldConsoleInput.equals(ConsoleInput)) {
-            ConsoleReissue = nullptr;
+            ConsoleReissue = -1;
         }
         ConsoleInput = ConsoleInput.substr(0, 100);
 
         if (bbKeyHit(28) && !ConsoleInput.isEmpty()) {
-            ConsoleReissue = nullptr;
+            ConsoleReissue = -1;
             ConsoleScroll = 0;
             CreateConsoleMsg(ConsoleInput,255,255,0,true);
 
