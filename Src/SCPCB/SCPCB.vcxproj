@@ -280,6 +280,7 @@
     <ClInclude Include="Src\Audio.h" />
     <ClInclude Include="Src\Console.h" />
     <ClInclude Include="Src\Decals.h" />
+    <ClInclude Include="Src\Difficulty.h" />
     <ClInclude Include="Src\Doors.h" />
     <ClInclude Include="Src\Dreamfilter.h" />
     <ClInclude Include="Src\Events.h" />

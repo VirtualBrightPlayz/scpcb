@@ -1,10 +1,41 @@
-#include "GameMain.h"
-
 #include <bbruntime.h>
 #include <bbgraphics.h>
 #include <bbblitz3d.h>
 #include <bbaudio.h>
+#include <bbinput.h>
+#include <bbmath.h>
+#include <gxaudio.h>
+#include <gxsound.h>
 #include <StringType.h>
+
+#include "GameMain.h"
+#include "Options.h"
+#include "Audio.h"
+#include "Menus/Menu.h"
+#include "Menus/LoadingScreen.h"
+#include "Menus/Launcher.h"
+#include "Menus/MainMenu.h"
+#include "MathUtils/MathUtils.h"
+#include "Player.h"
+#include "Assets.h"
+#include "Decals.h"
+#include "Particles.h"
+#include "MapSystem.h"
+#include "Items/Items.h"
+#include "Doors.h"
+#include "Objects.h"
+#include "Events.h"
+#include "NPCs/NPCs.h"
+#include "NPCs/NPCtypeMTF.h"
+#include "Difficulty.h"
+#include "Save.h"
+#include "KeyName.h"
+#include "Console.h"
+#include "Dreamfilter.h"
+#include "FastResize.h"
+
+#include "Rooms/Room_dimension1499.h"
+#include "Rooms/Room_hll_caf_2.h"
 
 namespace CBN {
 
@@ -57,9 +88,9 @@ int Brightness;
 Object* SoundEmitter;
 gxSound* TempSounds[10];
 int TempSoundIndex = 0;
-int RadioSquelch;
-int RadioStatic;
-int RadioBuzz;
+gxSound* RadioSquelch;
+gxSound* RadioStatic;
+gxSound* RadioBuzz;
 int PlayerDetected;
 float PrevInjuries;
 float PrevBloodloss;
@@ -129,6 +160,8 @@ int EntryPoint() {
     timing = new Timing();
     SetTickrate(60);
 
+    InitializeKeyName();
+
     sndManager = CreateSoundManager();
 
     if (userOptions->launcher) {
@@ -150,9 +183,6 @@ void InitializeMainGame() {
     Graphics3DExt(userOptions->screenWidth, userOptions->screenHeight, 0, (1 + (!userOptions->fullscreen)));
     bbAppTitle("SCP - Containment Breach v"+VERSION);
 
-    const String aaaa("SCP - DICKS");
-    String bbbb; bbbb = "AAA"+aaaa;
-
     MenuScale = (userOptions->screenHeight / 1024.0);
 
     CurrFrameLimit = userOptions->framelimit;
@@ -166,9 +196,9 @@ void InitializeMainGame() {
     LoadingBack = bbLoadImage("Loadingscreens/loadingback.jpg");
     InitLoadingScreens("Loadingscreens/loadingscreens.ini");
 
-    InitializeUIAssets();
+    uiAssets = new UIAssets();
 
-    musicManager = CreateMusicManager();
+    musicManager = new MusicManager();
     musicManager->setNextMusicTrack(MUS_EZ, false);
 
     bbSetFont(uiAssets->font[1]);
@@ -182,11 +212,11 @@ void InitializeMainGame() {
     //TODO: doesn't need to be hardcoded
     //0 = light containment, 1 = heavy containment, 2 = entrance
     //AmbientSFXAmount(0)=8
-    AmbientSFXAmount(1) = 11;
-    AmbientSFXAmount(2) = 12;
+    //AmbientSFXAmount(1) = 11;
+    //AmbientSFXAmount(2) = 12;
     //3 = general, 4 = pre-breach
     //AmbientSFXAmount(3)=15
-    AmbientSFXAmount(4) = 5;
+    //AmbientSFXAmount(4) = 5;
     //5 = forest
     //AmbientSFXAmount(5)=10
 
@@ -301,7 +331,7 @@ void UpdateGame() {
         MouseHit2 = bbMouseHit(2);
         //TODO: A better way?
         if (CurrGameState != GAMESTATE_LAUNCHER) {
-            UpdateMusic();
+            musicManager->update();
         }
 
         if (CurrGameState==GAMESTATE_LAUNCHER) {
@@ -309,7 +339,7 @@ void UpdateGame() {
         } else if ((CurrGameState==GAMESTATE_MAINMENU)) {
             UpdateMainMenu();
         } else {
-            if (!MouseDown1) & (!MouseHit1) {
+            if ((!MouseDown1) && (!MouseHit1)) {
                 mainPlayer->grabbedEntity = 0;
             }
 
@@ -340,7 +370,7 @@ void UpdateGame() {
                 InFacility = CheckForPlayerInFacility();
                 UpdateDoors();
                 UpdateLevers();
-                UpdateAssets();
+                AssetWrap::update();
                 UpdateEvents();
                 UpdateDecals();
                 UpdateMTF();
@@ -473,7 +503,7 @@ void UpdateGame() {
                 }
 
                 if (mainPlayer->selectedItem != nullptr) {
-                    if (mainPlayer->selectedItem->itemTemplate->name == "navigator" | mainPlayer->selectedItem->itemTemplate->name == "nav") {
+                    if (mainPlayer->selectedItem->itemTemplate->name.equals("navigator") || mainPlayer->selectedItem->itemTemplate->name.equals("nav")) {
                         darkA = Max(darkA, 0.5);
                     }
                 }
@@ -500,7 +530,7 @@ void UpdateGame() {
             if (bbKeyHit(keyBinds->save)) {
                 if (SelectedDifficulty->saveType == SAVEANYWHERE) {
                     rn = mainPlayer->currRoom->roomTemplate->name;
-                    if (rn == "173" | rn == "exit1" | rn == "gatea") {
+                    if (rn.equals("173") || rn.equals("exit1") || rn.equals("gatea")) { //TODO: make CanSave a member of roomtemplate
                         Msg = "You cannot save in this location.";
                         MsgTimer = 70 * 4;
                     } else if ((!CanSave)) {
@@ -515,7 +545,7 @@ void UpdateGame() {
                         MsgTimer = 70 * 4;
                     } else {
                         rn = mainPlayer->currRoom->roomTemplate->name;
-                        if (rn == "173" | rn == "exit1" | rn == "gatea") {
+                        if (rn.equals("173") || rn.equals("exit1") || rn.equals("gatea")) { //TODO: make CanSave a member of roomtemplate
                             Msg = "You cannot save in this location.";
                             MsgTimer = 70 * 4;
                         } else if ((!CanSave)) {
@@ -530,7 +560,7 @@ void UpdateGame() {
                     MsgTimer = 70 * 4;
                 }
             } else if ((SelectedDifficulty->saveType == SAVEONSCREENS & (SelectedScreen!=nullptr | SelectedMonitor!=nullptr))) {
-                if ((Msg!="Game progress saved." & Msg!="You cannot save in this location."& Msg!="You cannot save at this moment.") | MsgTimer<=0) {
+                if ((!Msg.equals("Game progress saved.") && !Msg.equals("You cannot save in this location.") && !Msg.equals("You cannot save at this moment.")) || MsgTimer<=0) {
                     Msg = "Press "+KeyName[keyBinds->save]+" to save.";
                     MsgTimer = 70*4;
                 }
@@ -572,7 +602,7 @@ void UpdateGame() {
                 temp = false;
                 if (CurrGameState!=GAMESTATE_INVENTORY) {
                     if (mainPlayer->selectedItem != nullptr) {
-                        if (mainPlayer->selectedItem->itemTemplate->name == "paper" | mainPlayer->selectedItem->itemTemplate->name == "oldpaper") {
+                        if (mainPlayer->selectedItem->itemTemplate->name.equals("paper") || mainPlayer->selectedItem->itemTemplate->name.equals("oldpaper")) {
                             temp = true;
                         }
                     }
@@ -679,8 +709,8 @@ void UpdateGUI() {
     int xtemp;
     int ytemp;
     String strtemp;
-    int buttonObj;
-    int pvt;
+    MeshAssetWrap* buttonObj;
+    Pivot* pvt;
     float projY;
     float scale;
 
@@ -725,9 +755,9 @@ void UpdateGUI() {
             bbPointEntity(mainPlayer->head, mainPlayer->closestButton);
             bbFreeEntity(pvt);
 
-            bbCameraProject(mainPlayer->cam, bbEntityX(mainPlayer->closestButton,true),bbEntityY(mainPlayer->closestButton,true)+bbMeshHeight(buttonObj)*0.015,bbEntityZ(mainPlayer->closestButton,true));
+            bbCameraProject(mainPlayer->cam, bbEntityX(mainPlayer->closestButton,true),bbEntityY(mainPlayer->closestButton,true)+bbMeshHeight(buttonObj->getMesh())*0.015,bbEntityZ(mainPlayer->closestButton,true));
             projY = bbProjectedY();
-            bbCameraProject(mainPlayer->cam, bbEntityX(mainPlayer->closestButton,true),bbEntityY(mainPlayer->closestButton,true)-bbMeshHeight(buttonObj)*0.015,bbEntityZ(mainPlayer->closestButton,true));
+            bbCameraProject(mainPlayer->cam, bbEntityX(mainPlayer->closestButton,true),bbEntityY(mainPlayer->closestButton,true)-bbMeshHeight(buttonObj->getMesh())*0.015,bbEntityZ(mainPlayer->closestButton,true));
             scale = (bbProjectedY()-projY)/462.0;
 
             x = (int)(userOptions->screenWidth/2-bbImageWidth(uiAssets->keypadHUD)*scale/2);
@@ -739,7 +769,7 @@ void UpdateGUI() {
             if (!KeypadMSG.isEmpty()) {
                 KeypadTimer = KeypadTimer-timing->tickDuration;
 
-                if ((KeypadTimer % 70) < 35) {
+                if (Modf(KeypadTimer,70) < 35) {
                     bbText(userOptions->screenWidth/2, (int)(y+124*scale), KeypadMSG, true,true);
                 }
                 if (KeypadTimer <=0) {
@@ -782,7 +812,7 @@ void UpdateGUI() {
                                     //enter
                                 } break;
                                 case 8: {
-                                    if (KeypadInput == mainPlayer->selectedDoor->code) {
+                                    if (KeypadInput.equals(mainPlayer->selectedDoor->code)) {
                                         PlaySound_SM(sndManager->scannerUse);
 
                                         mainPlayer->selectedDoor->locked = 0;
@@ -800,7 +830,9 @@ void UpdateGUI() {
                                         KeypadInput = "";
                                     }
                                 } break;
-                                case 9,10,11: {
+                                case 9:
+                                case 10:
+                                case 11: {
                                     KeypadInput = KeypadInput + String((n+1)+(i*4)-2);
                                 } break;
                                 case 12: {
@@ -890,8 +922,8 @@ void DrawGUI() {
     Item* it;
     NPC* npc;
     int offset;
-    int buttonObj;
-    int pvt;
+    MeshAssetWrap* buttonObj;
+    Pivot* pvt;
     float projY;
     float scale;
 
@@ -909,7 +941,7 @@ void DrawGUI() {
     //					EndIf
     //				Else
     //					If (e\img <> 0) Then FreeImage(e\img
-    e->img = 0);
+    //                  e->img = 0);
     //				EndIf
     //
     //				Exit
@@ -1111,9 +1143,9 @@ void DrawGUI() {
             bbPointEntity(mainPlayer->head, mainPlayer->closestButton);
             bbFreeEntity(pvt);
 
-            bbCameraProject(mainPlayer->cam, bbEntityX(mainPlayer->closestButton,true),bbEntityY(mainPlayer->closestButton,true)+bbMeshHeight(buttonObj)*0.015,bbEntityZ(mainPlayer->closestButton,true));
+            bbCameraProject(mainPlayer->cam, bbEntityX(mainPlayer->closestButton,true),bbEntityY(mainPlayer->closestButton,true)+bbMeshHeight(buttonObj->getMesh())*0.015,bbEntityZ(mainPlayer->closestButton,true));
             projY = bbProjectedY();
-            bbCameraProject(mainPlayer->cam, bbEntityX(mainPlayer->closestButton,true),bbEntityY(mainPlayer->closestButton,true)-bbMeshHeight(buttonObj)*0.015,bbEntityZ(mainPlayer->closestButton,true));
+            bbCameraProject(mainPlayer->cam, bbEntityX(mainPlayer->closestButton,true),bbEntityY(mainPlayer->closestButton,true)-bbMeshHeight(buttonObj->getMesh())*0.015,bbEntityZ(mainPlayer->closestButton,true));
             scale = (bbProjectedY()-projY)/462.0;
 
             x = (int)(userOptions->screenWidth/2-bbImageWidth(uiAssets->keypadHUD)*scale/2);
@@ -1127,8 +1159,6 @@ void DrawGUI() {
                 bbSetFont(uiAssets->font[3]);
                 bbText(userOptions->screenWidth/2, (int)(y+124*scale), KeypadInput,true,true);
             }
-
-
         }
     }
 
@@ -1374,7 +1404,7 @@ String f2s(float n, int count) {
     return String(n).substr(0, String((int)(n)).size()+count+1);
 }
 
-float Animate2(int entity, float curr, int start, int quit, float speed, int loop = true) {
+float Animate2(MeshModel* entity, float curr, int start, int quit, float speed, int loop = true) {
 
     float newTime;
     int temp;
@@ -1425,7 +1455,7 @@ void UpdateInfect() {
     float temp;
     int i;
     Room* r;
-    int tex;
+    Texture* tex;
     Decal* de;
     Particle* p;
 
@@ -1441,7 +1471,7 @@ void UpdateInfect() {
             //HeartBeatRate = Max(HeartBeatRate, 100)
             mainPlayer->heartbeatIntensity = Max(100, mainPlayer->infect008/120.0);
 
-            bbEntityAlpha(mainPlayer->overlays[OVERLAY_008], Min(((mainPlayer->infect008*0.2)^2)/1000.0,0.5) * (bbSin(TimeInPosMilliSecs()/8.0)+2.0));
+            bbEntityAlpha(mainPlayer->overlays[OVERLAY_008], Min((pow((mainPlayer->infect008*0.2),2))/1000.0,0.5) * (bbSin(TimeInPosMilliSecs()/8.0)+2.0));
 
             for (i = 0; i <= 6; i++) {
                 if (mainPlayer->infect008>i*15+10 & temp <= i*15+10) {
@@ -1449,25 +1479,25 @@ void UpdateInfect() {
                 }
             }
 
-            if (mainPlayer->infect008 > 20 & temp <= 20.0) {
+            if (mainPlayer->infect008 > 20 && temp <= 20.0) {
                 Msg = "You feel kinda feverish.";
                 MsgTimer = 70*6;
-            } else if ((mainPlayer->infect008 > 40 & temp <= 40.0)) {
+            } else if ((mainPlayer->infect008 > 40 && temp <= 40.0)) {
                 Msg = "You feel nauseated.";
                 MsgTimer = 70*6;
-            } else if ((mainPlayer->infect008 > 60 & temp <= 60.0)) {
+            } else if ((mainPlayer->infect008 > 60 && temp <= 60.0)) {
                 Msg = "The nausea's getting worse.";
                 MsgTimer = 70*6;
-            } else if ((mainPlayer->infect008 > 80 & temp <= 80.0)) {
+            } else if ((mainPlayer->infect008 > 80 && temp <= 80.0)) {
                 Msg = "You feel very faint.";
                 MsgTimer = 70*6;
-            } else if ((mainPlayer->infect008 >=91.5)) {
+            } else if (mainPlayer->infect008 >= 91.5) {
                 mainPlayer->blinkTimer = Max(Min(-10*(mainPlayer->infect008-91.5),mainPlayer->blinkTimer),-10);
                 if (mainPlayer->infect008 >= 92.7 & temp < 92.7) {
                     for (int iterator68 = 0; iterator68 < Room::getListSize(); iterator68++) {
                         r = Room::getObject(iterator68);
 
-                        if (r->roomTemplate->name=="008") {
+                        if (r->roomTemplate->name.equals("008")) {
                             bbPositionEntity(mainPlayer->collider, bbEntityX(r->objects[7],true),bbEntityY(r->objects[7],true),bbEntityZ(r->objects[7],true),true);
                             bbResetEntity(mainPlayer->collider);
                             r->npc[0] = CreateNPC(NPCtypeD, bbEntityX(r->objects[6],true),bbEntityY(r->objects[6],true)+0.2,bbEntityZ(r->objects[6],true));
@@ -1517,7 +1547,7 @@ void UpdateInfect() {
                     de = CreateDecal(DECAL_BLOOD_SPLATTER, bbEntityX(mainPlayer->currRoom->npc[0]->collider), 544*RoomScale + 0.01, bbEntityZ(mainPlayer->currRoom->npc[0]->collider),90,bbRnd(360),0);
                     de->size = 0.8;
                     bbScaleSprite(de->obj, de->size,de->size);
-                } else if ((mainPlayer->overlays[OVERLAY_008] > 96)) {
+                } else if (mainPlayer->infect008 > 96) {
                     mainPlayer->blinkTimer = Max(Min(-10*(mainPlayer->infect008-96),mainPlayer->blinkTimer),-10);
                 } else {
                     //TODO: wtf??????
@@ -1570,14 +1600,16 @@ void RenderWorld2() {
     int k;
     int l;
     float decayMultiplier = 1.0;
-    int temp;
-    int temp2;
+    Pivot* temp;
+    Pivot* temp2;
     float dist;
     float yawvalue;
     float pitchvalue;
     float xvalue;
     float yvalue;
     NPC* np;
+
+    int power = 0; //TODO: figure this out, idk what's going on here
 
     bbCameraProjMode(ark_blur_cam,0);
     bbCameraProjMode(mainPlayer->cam,1);
@@ -1601,13 +1633,13 @@ void RenderWorld2() {
     Item* wornItem = nullptr;
 
     if (wornItem!=nullptr) {
-        if (wornItem->itemTemplate->name != "nvgoggles" & wornItem->itemTemplate->name != "supernv") {
+        if (!wornItem->itemTemplate->name.equals("nvgoggles") && !wornItem->itemTemplate->name.equals("supernv")) {
             wornItem = nullptr;
         }
     }
 
     if (wornItem!=nullptr) {
-        if (wornItem->itemTemplate->name == "supernv") {
+        if (wornItem->itemTemplate->name.equals("supernv")) {
             decayMultiplier = 2.0;
         }
 
@@ -1673,7 +1705,7 @@ void RenderWorld2() {
                 np = NPC::getObject(iterator70);
 
                 //don't waste your time if the string is empty
-                if (np->nvName!="") {
+                if (np->nvName.equals("")) {
                     bbPositionEntity(temp2,np->nvX,np->nvY,np->nvZ);
                     dist = bbEntityDistance(temp2,mainPlayer->collider);
                     //don't draw text if the NPC is too far away
@@ -1708,7 +1740,7 @@ void RenderWorld2() {
             }
 
             bbFreeEntity(temp);
-            bbFreeEntity (temp2);
+            bbFreeEntity(temp2);
 
             bbColor(0,0,55);
             for (k = 0; k <= 10; k++) {
@@ -1741,7 +1773,7 @@ void RenderWorld2() {
     bbCameraProjMode(ark_blur_cam,0);
 
     if (mainPlayer->blinkTimer < - 16 | mainPlayer->blinkTimer > - 6) {
-        if (wornItem!=nullptr) & (hasBattery==1) & ((TimeInPosMilliSecs() % 800) < 400) {
+        if ((wornItem!=nullptr) && (hasBattery==1) && ((TimeInPosMilliSecs() % 800) < 400)) {
             bbColor(255,0,0);
             bbSetFont(uiAssets->font[2]);
 
@@ -1770,37 +1802,7 @@ int CheckForPlayerInFacility() {
 }
 
 String CheckTriggers() {
-    int i;
-    float sx;
-    float sy;
-    float sz;
-    int inside = -1;
-
-    if (mainPlayer->currRoom->triggerboxAmount == 0) {
-        return "";
-    } else {
-        for (i = 0; i <= mainPlayer->currRoom->triggerboxAmount-1; i++) {
-            bbEntityAlpha(mainPlayer->currRoom->triggerbox[i],1.0);
-            sx = EntityScaleX(mainPlayer->currRoom->triggerbox[i], 1);
-            sy = Max(EntityScaleY(mainPlayer->currRoom->triggerbox[i], 1), 0.001);
-            sz = EntityScaleZ(mainPlayer->currRoom->triggerbox[i], 1);
-            GetMeshExtents(mainPlayer->currRoom->triggerbox[i]);
-            bbEntityAlpha(mainPlayer->currRoom->triggerbox[i],0.0);
-            if (bbEntityX(mainPlayer->collider)>((sx*Mesh_MinX)+mainPlayer->currRoom->x) & bbEntityX(mainPlayer->collider)<((sx*Mesh_MaxX)+mainPlayer->currRoom->x)) {
-                if (bbEntityY(mainPlayer->collider)>((sy*Mesh_MinY)+mainPlayer->currRoom->y) & bbEntityY(mainPlayer->collider)<((sy*Mesh_MaxY)+mainPlayer->currRoom->y)) {
-                    if (bbEntityZ(mainPlayer->collider)>((sz*Mesh_MinZ)+mainPlayer->currRoom->z) & bbEntityZ(mainPlayer->collider)<((sz*Mesh_MaxZ)+mainPlayer->currRoom->z)) {
-                        inside = i;
-                        break;
-                    }
-                }
-            }
-        }
-
-        if (inside > -1) {
-            return mainPlayer->currRoom->triggerboxName[inside];
-        }
-    }
-
+    return ""; //TODO: kill
 }
 
 }

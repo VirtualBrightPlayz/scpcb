@@ -24,26 +24,6 @@ NPC* NPC::getObject(int index) {
     return list[index];
 }
 
-// Constants.
-const int NPCtype173 = 1;
-const int NPCtype106 = 2;
-const int NPCtype049 = 3;
-const int NPCtype096 = 4;
-const int NPCtype966 = 5;
-const int NPCtype860 = 6;
-const int NPCtype939 = 7;
-const int NPCtype5131 = 8;
-const int NPCtype066 = 10;
-const int NPCtypeD = 11;
-const int NPCtypeGuard = 12;
-const int NPCtypeMTF = 13;
-const int NPCtypeApache = 14;
-const int NPCtypeZombie = 15;
-const int NPCtypeTentacle = 16;
-const int NPCtype1499 = 17;
-const int NPCtypePdPlane = 18;
-const int NPC_SOUND_COUNT = 12;
-const int NPC_CHANNEL_COUNT = 3;
 
 // Globals.
 NPC* Curr173;

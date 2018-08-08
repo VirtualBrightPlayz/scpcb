@@ -140,6 +140,23 @@ float Max(float a, float b) {
     }
 }
 
+float Sgn(float f) {
+    if (f>0.0f) {
+        return 1.0f;
+    } else if (f<0.0f) {
+        return -1.0f;
+    } else {
+        return 0.0f;
+    }
+}
+
+float Modf(float a,float div) {
+    while (a>div) {
+        a-=div;
+    }
+    return a;
+}
+
 float angleDist(float a0, float a1) {
     float b = a0-a1;
     float bb;

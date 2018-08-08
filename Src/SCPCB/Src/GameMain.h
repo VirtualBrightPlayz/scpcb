@@ -65,9 +65,9 @@ extern int Brightness;
 extern class Object* SoundEmitter;
 extern class gxSound* TempSounds[10];
 extern int TempSoundIndex;
-extern int RadioSquelch;
-extern int RadioStatic;
-extern int RadioBuzz;
+extern class gxSound* RadioSquelch;
+extern class gxSound* RadioStatic;
+extern class gxSound* RadioBuzz;
 extern int PlayerDetected;
 extern float PrevInjuries;
 extern float PrevBloodloss;
@@ -119,7 +119,7 @@ void UpdatePauseMenu();
 
 String f2s(float n, int count);
 
-float Animate2(int entity, float curr, int start, int quit, float speed, int loop = true);
+float Animate2(class MeshModel* entity, float curr, int start, int quit, float speed, int loop = true);
 
 void UpdateInfect();
 

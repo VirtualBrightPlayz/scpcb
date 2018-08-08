@@ -19,6 +19,7 @@ String	 bbGfxDriverDesc( int n );
 void	 bbSetGfxDriver( int n );
 int		 bbGfxModeExists( int w,int h,int d );
 int		 bbCountGfxModes();
+int		 bbCountGfxModes3D();
 int		 bbGfxModeWidth( int n );
 int		 bbGfxModeHeight( int n );
 int		 bbGfxModeDepth( int n );

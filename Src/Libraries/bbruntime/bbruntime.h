@@ -20,7 +20,7 @@ void bbDelay(int ms);
 
 void bbruntime_panic( const char *err );
 
-void bbAppTitle(String ti, String cp);
+void bbAppTitle(String ti, String cp="");
 void bbEnd();
 void bbStop();
 void bbRuntimeError(String str);

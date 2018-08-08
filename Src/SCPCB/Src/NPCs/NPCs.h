@@ -1,8 +1,32 @@
 #ifndef NPCS_H_INCLUDED
 #define NPCS_H_INCLUDED
+
+#include <StringType.h>
 #include <vector>
 
 namespace CBN {
+
+// Constants.
+const int NPCtype173 = 1;
+const int NPCtype106 = 2;
+const int NPCtype049 = 3;
+const int NPCtype096 = 4;
+const int NPCtype966 = 5;
+const int NPCtype860 = 6;
+const int NPCtype939 = 7;
+const int NPCtype5131 = 8;
+const int NPCtype066 = 10;
+const int NPCtypeD = 11;
+const int NPCtypeGuard = 12;
+const int NPCtypeMTF = 13;
+const int NPCtypeApache = 14;
+const int NPCtypeZombie = 15;
+const int NPCtypeTentacle = 16;
+const int NPCtype1499 = 17;
+const int NPCtypePdPlane = 18;
+const int NPC_SOUND_COUNT = 12;
+const int NPC_CHANNEL_COUNT = 3;
+
 
 // Structs.
 struct NPC {
@@ -15,10 +39,11 @@ public:
     static int getListSize();
     static NPC* getObject(int index);
 
-    int obj;
-    int obj2;
-    int obj3;
-    int obj4;
+    //TODO: USE INHERITANCE
+    class MeshModel* obj;
+    class MeshModel* obj2;
+    class MeshModel* obj3;
+    class MeshModel* obj4;
     class Pivot* collider;
 
     int npcType;
@@ -38,8 +63,8 @@ public:
     float frame;
     float angle;
 
-    int sounds[NPC_SOUND_COUNT];
-    int soundChannels[NPC_CHANNEL_COUNT];
+    class gxSound* sounds[NPC_SOUND_COUNT];
+    class gxChannel* soundChannels[NPC_CHANNEL_COUNT];
 
     float playerDistance;
 
@@ -78,7 +103,7 @@ public:
     float targetY;
     float targetZ;
 
-    WayPoint* path[20];
+    struct WayPoint* path[20];
     int pathStatus;
     float pathTimer;
     int pathLocation;
@@ -124,7 +149,7 @@ public:
     //TODO: Burn this stuff in hell.
     int inFacility = true;
     int canUseElevator = false;
-    ElevatorObj* currElevator;
+    struct ElevatorObj* currElevator;
     int hp;
     String model;
     float modelScaleX;
@@ -132,26 +157,6 @@ public:
     float modelScaleZ;
 };
 
-// Constants.
-extern const int NPCtype173;
-extern const int NPCtype106;
-extern const int NPCtype049;
-extern const int NPCtype096;
-extern const int NPCtype966;
-extern const int NPCtype860;
-extern const int NPCtype939;
-extern const int NPCtype5131;
-extern const int NPCtype066;
-extern const int NPCtypeD;
-extern const int NPCtypeGuard;
-extern const int NPCtypeMTF;
-extern const int NPCtypeApache;
-extern const int NPCtypeZombie;
-extern const int NPCtypeTentacle;
-extern const int NPCtype1499;
-extern const int NPCtypePdPlane;
-extern const int NPC_SOUND_COUNT;
-extern const int NPC_CHANNEL_COUNT;
 
 // Globals.
 extern NPC* Curr173;

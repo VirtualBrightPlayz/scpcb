@@ -16,7 +16,7 @@ public:
     static LoadingScreen* getObject(int index);
 
     String imgpath;
-    int img;
+    class bbImage* img;
     int id;
     String title;
     int alignx;
@@ -30,7 +30,7 @@ public:
 extern LoadingScreen* SelectedLoadingScreen;
 extern int LoadingScreenAmount;
 extern int LoadingScreenText;
-extern int LoadingBack;
+extern class bbImage* LoadingBack;
 
 // Functions.
 void InitLoadingScreens(String file);
