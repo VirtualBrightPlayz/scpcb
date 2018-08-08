@@ -1,10 +1,27 @@
-#include "GameMain.h"
-
 #include <bbruntime.h>
 #include <bbgraphics.h>
 #include <bbblitz3d.h>
 #include <bbaudio.h>
+#include <bbinput.h>
+#include <bbmath.h>
+#include <gxaudio.h>
+#include <gxsound.h>
 #include <StringType.h>
+
+#include "GameMain.h"
+#include "Options.h"
+#include "Audio.h"
+#include "Menus/Menu.h"
+#include "Menus/LoadingScreen.h"
+#include "Menus/Launcher.h"
+#include "Menus/MainMenu.h"
+#include "MathUtils/MathUtils.h"
+#include "Player.h"
+#include "Assets.h"
+#include "Decals.h"
+#include "Particles.h"
+#include "MapSystem.h"
+#include "Items/Items.h"
 
 namespace CBN {
 
@@ -57,9 +74,9 @@ int Brightness;
 Object* SoundEmitter;
 gxSound* TempSounds[10];
 int TempSoundIndex = 0;
-int RadioSquelch;
-int RadioStatic;
-int RadioBuzz;
+gxSound* RadioSquelch;
+gxSound* RadioStatic;
+gxSound* RadioBuzz;
 int PlayerDetected;
 float PrevInjuries;
 float PrevBloodloss;
@@ -150,9 +167,6 @@ void InitializeMainGame() {
     Graphics3DExt(userOptions->screenWidth, userOptions->screenHeight, 0, (1 + (!userOptions->fullscreen)));
     bbAppTitle("SCP - Containment Breach v"+VERSION);
 
-    const String aaaa("SCP - DICKS");
-    String bbbb; bbbb = "AAA"+aaaa;
-
     MenuScale = (userOptions->screenHeight / 1024.0);
 
     CurrFrameLimit = userOptions->framelimit;
@@ -166,10 +180,10 @@ void InitializeMainGame() {
     LoadingBack = bbLoadImage("Loadingscreens/loadingback.jpg");
     InitLoadingScreens("Loadingscreens/loadingscreens.ini");
 
-    InitializeUIAssets();
+    uiAssets = new UIAssets();
 
-    musicManager = CreateMusicManager();
-    SetNextMusicTrack(MUS_EZ, false);
+    musicManager = new MusicManager();
+    musicManager->setNextMusicTrack(MUS_EZ, false);
 
     bbSetFont(uiAssets->font[1]);
 
@@ -182,11 +196,11 @@ void InitializeMainGame() {
     //TODO: doesn't need to be hardcoded
     //0 = light containment, 1 = heavy containment, 2 = entrance
     //AmbientSFXAmount(0)=8
-    AmbientSFXAmount(1) = 11;
-    AmbientSFXAmount(2) = 12;
+    //AmbientSFXAmount(1) = 11;
+    //AmbientSFXAmount(2) = 12;
     //3 = general, 4 = pre-breach
     //AmbientSFXAmount(3)=15
-    AmbientSFXAmount(4) = 5;
+    //AmbientSFXAmount(4) = 5;
     //5 = forest
     //AmbientSFXAmount(5)=10
 
@@ -301,7 +315,7 @@ void UpdateGame() {
         MouseHit2 = bbMouseHit(2);
         //TODO: A better way?
         if (CurrGameState != GAMESTATE_LAUNCHER) {
-            UpdateMusic();
+            musicManager->update();
         }
 
         if (CurrGameState==GAMESTATE_LAUNCHER) {
@@ -309,7 +323,7 @@ void UpdateGame() {
         } else if ((CurrGameState==GAMESTATE_MAINMENU)) {
             UpdateMainMenu();
         } else {
-            if (!MouseDown1) & (!MouseHit1) {
+            if ((!MouseDown1) && (!MouseHit1)) {
                 mainPlayer->grabbedEntity = 0;
             }
 

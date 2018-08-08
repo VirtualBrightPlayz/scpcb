@@ -376,11 +376,11 @@ void UpdateDoors() {
 
                                     p->sizeChange = -0.00001;
                                     p->size = 0.01;
-                                    bbScaleSprite(p->obj,p->size,p->size);
+                                    bbScaleSprite(p->sprite,p->size,p->size);
 
                                     p->aChange = -0.01;
 
-                                    bbEntityOrder(p->obj,-1);
+                                    bbEntityOrder(p->sprite,-1);
 
                                     bbFreeEntity(tempPvt);
                                 }

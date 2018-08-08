@@ -1,10 +1,20 @@
-#include "LoadingScreen.h"
-#include "include.h"
-
 #include <bbruntime.h>
 #include <bbgraphics.h>
 #include <bbblitz3d.h>
+#include <bbfilesystem.h>
+#include <bbinput.h>
+#include <bbmath.h>
+#include <bbstring.h>
 #include <StringType.h>
+
+#include "LoadingScreen.h"
+#include "../GameMain.h"
+#include "../INI.h"
+#include "../Audio.h"
+#include "../Options.h"
+#include "../Assets.h"
+#include "../Menus/Menu.h"
+#include "../FastResize.h"
 
 namespace CBN {
 
@@ -32,7 +42,7 @@ LoadingScreen* LoadingScreen::getObject(int index) {
 LoadingScreen* SelectedLoadingScreen;
 int LoadingScreenAmount;
 int LoadingScreenText;
-int LoadingBack;
+bbImage* LoadingBack;
 
 // Functions.
 void InitLoadingScreens(String file) {
@@ -40,12 +50,12 @@ void InitLoadingScreens(String file) {
     int i;
     LoadingScreen* ls;
 
-    int f = bbOpenFile(file);
+    bbFile* f = bbOpenFile(file);
 
     while (!bbEof(f)) {
         TemporaryString = bbReadLine(f).trim();
         if (TemporaryString.charAt(0) == '[') {
-            TemporaryString = bbMid(TemporaryString, 2, TemporaryString.size() - 2);
+            TemporaryString = TemporaryString.substr(1, TemporaryString.size() - 2);
 
             ls = new LoadingScreen();
             LoadingScreenAmount = LoadingScreenAmount+1;
@@ -63,30 +73,23 @@ void InitLoadingScreens(String file) {
 
             ls->disablebackground = GetINIInt(file, TemporaryString, "disablebackground");
 
-            switch (GetINIString(file, TemporaryString, "align x").toLower()) {
-                case "left": {
-                    ls->alignx = -1;
-                }
-                case "middle", "center": {
-                    ls->alignx = 0;
-                }
-                case "right": {
-                    ls->alignx = 1;
-                }
+            String alignmentX = GetINIString(file, TemporaryString, "align x").toLower();
+            if (alignmentX.equals("left")) {
+                ls->alignx = -1;
+            } else if (alignmentX.equals("middle") || alignmentX.equals("center")) {
+                ls->alignx = 0;
+            } else if (alignmentX.equals("right")) {
+                ls->alignx = 1;
             }
 
-            switch (GetINIString(file, TemporaryString, "align y").toLower()) {
-                case "top", "up": {
-                    ls->aligny = -1;
-                }
-                case "middle", "center": {
-                    ls->aligny = 0;
-                }
-                case "bottom", "down": {
-                    ls->aligny = 1;
-                }
+            String alignmentY = GetINIString(file, TemporaryString, "align y").toLower();
+            if (alignmentY.equals("top") || alignmentY.equals("up")) {
+                ls->aligny = -1;
+            } else if (alignmentY.equals("middle") || alignmentY.equals("center")) {
+                ls->aligny = 0;
+            } else if (alignmentY.equals("bottom") || alignmentY.equals("down")) {
+                ls->aligny = 1;
             }
-
         }
     }
 
@@ -111,7 +114,7 @@ void DrawLoading(int percent, int shortloading = false) {
             ls = LoadingScreen::getObject(iterator109);
 
             if (ls->id == temp) {
-                if (ls->img==0) {
+                if (ls->img==nullptr) {
                     ls->img = bbLoadImage("Loadingscreens/"+ls->imgpath);
                 }
                 SelectedLoadingScreen = ls;
@@ -131,7 +134,7 @@ void DrawLoading(int percent, int shortloading = false) {
         //Cls(True,False)
 
         if (percent > 24) {
-            UpdateMusic();
+            musicManager->update();
         }
 
         if (shortloading == false) {
@@ -172,7 +175,7 @@ void DrawLoading(int percent, int shortloading = false) {
             bbDrawImage(uiAssets->blinkBar, x + 3 + 10 * (i - 1), y + 3);
         }
 
-        if (SelectedLoadingScreen->title == "CWM") {
+        if (SelectedLoadingScreen->title.equals("CWM")) {
 
             if (!shortloading) {
                 if (firstloop) {
@@ -205,40 +208,41 @@ void DrawLoading(int percent, int shortloading = false) {
                     switch (bbRand(13)) {
                         case 1: {
                             SelectedLoadingScreen->txt[0] = "A very fine radio might prove to be useful.";
-                        }
+                        } break;
                         case 2: {
                             SelectedLoadingScreen->txt[0] = "ThIS PLaCE WiLL BUrN";
-                        }
+                        } break;
                         case 3: {
                             SelectedLoadingScreen->txt[0] = "You cannot control it.";
-                        }
+                        } break;
                         case 4: {
                             SelectedLoadingScreen->txt[0] = "eof9nsd3jue4iwe1fgj";
-                        }
+                        } break;
                         case 5: {
                             SelectedLoadingScreen->txt[0] = "YOU NEED TO TRUST IT";
-                        }
+                        } break;
                         case 6: {
                             SelectedLoadingScreen->txt[0] = "Look my friend in the eye when you address him, isn't that the way of the gentleman?";
-                        }
+                        } break;
                         case 7: {
                             SelectedLoadingScreen->txt[0] = "???____??_???__????n?";
-                        }
-                        case 8, 9: {
+                        } break;
+                        case 8:
+                        case 9: {
                             SelectedLoadingScreen->txt[0] = "Jorge has been expecting you.";
-                        }
+                        } break;
                         case 10: {
                             SelectedLoadingScreen->txt[0] = "???????????";
-                        }
+                        } break;
                         case 11: {
                             SelectedLoadingScreen->txt[0] = "Make her a member of the midnight crew.";
-                        }
+                        } break;
                         case 12: {
                             SelectedLoadingScreen->txt[0] = "oncluded that coming here was a mistake. We have to turn back.";
-                        }
+                        } break;
                         case 13: {
                             SelectedLoadingScreen->txt[0] = "This alloy contains the essence of my life.";
-                        }
+                        } break;
                     }
                 }
             }
@@ -327,7 +331,7 @@ void DrawLoading(int percent, int shortloading = false) {
     } while(bbGetKey()!=0 | bbMouseHit(1));
 
     if (percent >= 100) {
-        RestoreDefaultMusic();
+        musicManager->restoreDefaultMusic();
     }
 }
 

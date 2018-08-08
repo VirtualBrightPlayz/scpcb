@@ -30,6 +30,7 @@ void bbAntiAlias(int enable);
 void bbWireFrame(int enable);
 void bbAmbientLight(float r, float g, float b);
 void bbClearCollisions();
+void bbCollisions(int src_type, int dest_type, int method, int response);
 void bbUpdateWorld (float eslapsed=1.f);
 void bbCaptureWorld ();
 void bbRenderWorld(float tween=1.f);
