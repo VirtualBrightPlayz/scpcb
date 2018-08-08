@@ -150,6 +150,13 @@ float Sgn(float f) {
     }
 }
 
+float Modf(float a,float div) {
+    while (a>div) {
+        a-=div;
+    }
+    return a;
+}
+
 float angleDist(float a0, float a1) {
     float b = a0-a1;
     float bb;

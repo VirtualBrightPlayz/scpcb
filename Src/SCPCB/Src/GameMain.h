@@ -119,7 +119,7 @@ void UpdatePauseMenu();
 
 String f2s(float n, int count);
 
-float Animate2(int entity, float curr, int start, int quit, float speed, int loop = true);
+float Animate2(class MeshModel* entity, float curr, int start, int quit, float speed, int loop = true);
 
 void UpdateInfect();
 

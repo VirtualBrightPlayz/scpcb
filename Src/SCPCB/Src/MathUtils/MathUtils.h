@@ -34,6 +34,8 @@ float Max(float a, float b);
 
 float Sgn(float f);
 
+float Modf(float a,float div);
+
 float angleDist(float a0, float a1);
 
 float Inverse(float number);

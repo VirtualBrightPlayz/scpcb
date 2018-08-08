@@ -191,6 +191,7 @@ void bbScaleEntity(class Object *e, float x, float y, float z, int global=1);
 void bbPositionEntity(class Object* e, float x, float y, float z, int global=1);
 void bbRotateEntity(class Object* e, float p, float y, float r, int global=1);
 void bbPointEntity(class Object* e, class Object* t, float roll=0.f);
+void bbSetAnimTime(Object *o, float time, int seq=0);
 void bbAnimate(class Object* o, int mode, float speed, int seq, float trans);
 int bbAddAnimSeq(class Object* o, int length);
 int bbAnimSeq(class Object* o);
