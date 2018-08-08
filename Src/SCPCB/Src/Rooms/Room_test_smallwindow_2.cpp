@@ -1,5 +1,22 @@
+#include <bbblitz3d.h>
+#include <bbmath.h>
+#include <bbgraphics.h>
+#include <bbaudio.h>
+
+#include "../GameMain.h"
+#include "../MapSystem.h"
+#include "../Doors.h"
+#include "../Items/Items.h"
+#include "../Decals.h"
+#include "../Particles.h"
+#include "../Events.h"
+#include "../Player.h"
+#include "../NPCs/NPCs.h"
+#include "../Audio.h"
+#include "../MathUtils/MathUtils.h"
+#include "../Menus/Menu.h"
+#include "../Objects.h"
 #include "Room_test_smallwindow_2.h"
-#include "include.h"
 
 namespace CBN {
 
@@ -35,7 +52,7 @@ void FillRoom_test_smallwindow_2(Room* r) {
     bbPositionEntity(r->objects[1], r->x - 632.0 * RoomScale, 0.5, r->z - 16.0 * RoomScale);
     bbEntityParent(r->objects[1], r->obj);
 
-    int Glasstex = bbLoadTexture("GFX/Map/Textures/glass.png",1+2);
+    Texture* Glasstex = bbLoadTexture("GFX/Map/Textures/glass.png",1+2);
     r->objects[ROOM_TSW2_GLASS] = bbCreateSprite();
     bbEntityTexture(r->objects[ROOM_TSW2_GLASS],Glasstex);
     bbSpriteViewMode(r->objects[ROOM_TSW2_GLASS],2);

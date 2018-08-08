@@ -1,5 +1,22 @@
+#include <bbblitz3d.h>
+#include <bbmath.h>
+#include <bbgraphics.h>
+#include <bbaudio.h>
+
+#include "../GameMain.h"
+#include "../MapSystem.h"
+#include "../Doors.h"
+#include "../Items/Items.h"
+#include "../Decals.h"
+#include "../Particles.h"
+#include "../Events.h"
+#include "../Player.h"
+#include "../NPCs/NPCs.h"
+#include "../Audio.h"
+#include "../MathUtils/MathUtils.h"
+#include "../Menus/Menu.h"
+#include "../Objects.h"
 #include "Room_test_682_2.h"
-#include "include.h"
 
 namespace CBN {
 
@@ -103,7 +120,7 @@ void UpdateEvent_test_682_2(Event* e) {
                 e->eventState = e->eventState * -1;
             }
             if (e->room->objects[7]!=0) {
-                Animate2(e->room->objects[7],bbAnimTime(e->room->objects[7]),284,308,0.3);
+                Animate2((MeshModel*)e->room->objects[7],bbAnimTime(e->room->objects[7]),284,308,0.3);
                 bbMoveEntity(e->room->objects[7],0,-0.008*timing->tickDuration,0);
                 bbTFormPoint(bbEntityX(e->room->objects[7]),bbEntityY(e->room->objects[7]),bbEntityZ(e->room->objects[7]),0,e->room->obj);
 

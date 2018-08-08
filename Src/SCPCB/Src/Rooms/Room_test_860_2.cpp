@@ -1,9 +1,9 @@
-#include "Room_test_860_2.h"
 #include <iostream>
 #include <bbblitz3d.h>
 #include <bbmath.h>
 #include <bbgraphics.h>
 
+#include "Room_test_860_2.h"
 #include "../GameMain.h"
 #include "../MapSystem.h"
 #include "../Doors.h"
@@ -597,7 +597,7 @@ void PlaceForest(Forest* fr, float x, float y, float z, Room* r) {
     int lx;
     int ly;
     MeshModel* d;
-    int frame;
+    MeshModel* frame;
 
     if (fr->forest_Pivot!=0) {
         bbFreeEntity(fr->forest_Pivot);
@@ -906,7 +906,7 @@ void DestroyForest(Forest* fr) {
     }
     if (fr->door[1]!=0) {
         bbFreeEntity(fr->door[1]);
-        fr->door[0] = 1;
+        fr->door[1] = 0;
     }
     if (fr->detailEntities[0]!=0) {
         bbFreeEntity(fr->detailEntities[0]);
@@ -961,19 +961,12 @@ void UpdateForest(Forest* fr, Object* ent) {
     }
 }
 
-MeshModel* load_terrain(bbImage* hmap, float yscale, Texture* t1, Texture* t2, int mask) {
+MeshModel* load_terrain(bbImage* hmap, float yscale, Texture* t1, Texture* t2, Texture* mask) {
     float maskX;
     float maskY;
     int RGB1;
     int r;
     float alpha;
-
-    std::cout << "load_terrain: "+String(hmap);
-
-    // load the heightmap
-    if (hmap == 0) {
-        throw ("Heightmap image "+String(hmap)+" does not exist.");
-    }
 
     // store heightmap dimensions
     int x = bbImageWidth(hmap)-1;
@@ -1044,10 +1037,10 @@ MeshModel* load_terrain(bbImage* hmap, float yscale, Texture* t1, Texture* t2, i
             RGB1 = bbReadPixelFast((int)(Min(lx,x-1)),(int)(y-Min(ly,y-1)),bbImageBuffer(hmap));
             //separate out the red
             r = (RGB1 & 0xFF0000) >> 16;
-            alpha = (((bbReadPixelFast((int)(Max(maskX-5,5)),(int)(Max(maskY-5,5)),bbTextureBuffer(mask)) & $FF000000) >>  24)/$FF);
-            alpha = alpha+(((bbReadPixelFast((int)(Min(maskX+5,bbTextureWidth(mask)-5)),(int)(Min(maskY+5,bbTextureHeight(mask)-5)),bbTextureBuffer(mask)) & $FF000000) >>  24)/$FF);
-            alpha = alpha+(((bbReadPixelFast((int)(Max(maskX-5,5)),(int)(Min(maskY+5,bbTextureHeight(mask)-5)),bbTextureBuffer(mask)) & $FF000000) >>  24)/$FF);
-            alpha = alpha+(((bbReadPixelFast((int)(Min(maskX+5,bbTextureWidth(mask)-5)),(int)(Max(maskY-5,5)),bbTextureBuffer(mask)) & $FF000000) >>  24)/$FF);
+            alpha = (((bbReadPixelFast((int)(Max(maskX-5,5)),(int)(Max(maskY-5,5)),bbTextureBuffer(mask)) & 0xFF000000) >>  24)/0xFF);
+            alpha = alpha+(((bbReadPixelFast((int)(Min(maskX+5,bbTextureWidth(mask)-5)),(int)(Min(maskY+5,bbTextureHeight(mask)-5)),bbTextureBuffer(mask)) & 0xFF000000) >> 24)/0xFF);
+            alpha = alpha+(((bbReadPixelFast((int)(Max(maskX-5,5)),(int)(Min(maskY+5,bbTextureHeight(mask)-5)),bbTextureBuffer(mask)) & 0xFF000000) >> 24)/0xFF);
+            alpha = alpha+(((bbReadPixelFast((int)(Min(maskX+5,bbTextureWidth(mask)-5)),(int)(Max(maskY-5,5)),bbTextureBuffer(mask)) & 0xFF000000) >> 24)/0xFF);
             alpha = alpha*0.25;
             alpha = bbSqr(alpha);
 

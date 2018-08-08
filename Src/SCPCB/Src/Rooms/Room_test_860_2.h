@@ -59,7 +59,7 @@ void DestroyForest(Forest* fr);
 
 void UpdateForest(Forest* fr, class Object* ent);
 
-class MeshModel* load_terrain(class bbImage* hmap, float yscale, class Texture* t1, class Texture* t2, int mask);
+class MeshModel* load_terrain(class bbImage* hmap, float yscale, class Texture* t1, class Texture* t2, class Texture* mask);
 
 }
 #endif // ROOM_TEST_860_2_H_INCLUDED

@@ -1,5 +1,20 @@
+#include <bbblitz3d.h>
+#include <bbmath.h>
+#include <bbgraphics.h>
+
+#include "../GameMain.h"
+#include "../MapSystem.h"
+#include "../Doors.h"
+#include "../Items/Items.h"
+#include "../Decals.h"
+#include "../Particles.h"
+#include "../Events.h"
+#include "../Player.h"
+#include "../NPCs/NPCs.h"
+#include "../Audio.h"
+#include "../MathUtils/MathUtils.h"
+#include "../Menus/Menu.h"
 #include "Room_tnnl_plain_4.h"
-#include "include.h"
 
 namespace CBN {
 
@@ -12,7 +27,7 @@ void UpdateEvent_tnnl_plain_4(Event* e) {
     String strtemp;
     int j;
     int k;
-    int tex;
+    Texture* tex;
 
     Particle* p;
     NPC* n;

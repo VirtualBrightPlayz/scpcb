@@ -164,6 +164,7 @@ float bbEntityPitch(class Object* e, int global=1);
 float bbEntityYaw(class Object* e, int global=1);
 float bbEntityRoll(class Object* e, int global=1);
 float bbGetMatElement(class Object* e, int row, int col);
+void  bbTFormPoint(float x, float y, float z, Object *src, Object *dest);
 void  bbTFormVector(float x, float y, float z, Object *src, Object *dest);
 float bbTFormedX();
 float bbTFormedY();

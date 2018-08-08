@@ -1,5 +1,21 @@
+#include <bbblitz3d.h>
+#include <bbmath.h>
+#include <bbgraphics.h>
+#include <bbaudio.h>
+
+#include "../GameMain.h"
+#include "../MapSystem.h"
+#include "../Doors.h"
+#include "../Items/Items.h"
+#include "../Decals.h"
+#include "../Particles.h"
+#include "../Events.h"
+#include "../Player.h"
+#include "../NPCs/NPCs.h"
+#include "../Audio.h"
+#include "../MathUtils/MathUtils.h"
+#include "../Menus/Menu.h"
 #include "Room_tnnl_pipes_2.h"
-#include "include.h"
 
 namespace CBN {
 
@@ -37,7 +53,7 @@ void UpdateEventRoom2pipes106(Event* e) {
     float dist;
     int i;
     int temp;
-    int pvt;
+    Pivot* pvt;
     String strtemp;
     int j;
     int k;
