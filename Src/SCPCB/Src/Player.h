@@ -27,7 +27,7 @@ public:
     ~Player();
 
     //entities
-    class Object* collider;
+    class Pivot* collider;
 
     class Pivot* head;
     float headPitch;

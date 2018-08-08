@@ -70,25 +70,6 @@ SoundChannel* SoundChannel::getObject(int index) {
     return list[index];
 }
 
-std::vector<MusicManager*> MusicManager::list;
-MusicManager::MusicManager() {
-    list.push_back(this);
-}
-MusicManager::~MusicManager() {
-    for (int i = 0; i < list.size(); i++) {
-        if (list[i] == this) {
-            list.erase(list.begin() + i);
-            break;
-        }
-    }
-}
-int MusicManager::getListSize() {
-    return list.size();
-}
-MusicManager* MusicManager::getObject(int index) {
-    return list[index];
-}
-
 // Constants.
 const int STEPSOUND_DEFAULT = 0;
 const int STEPSOUND_METAL = 1;
@@ -646,28 +627,24 @@ void StopSounds() {
     }
 }
 
-int GetMaterialStepSound(int entity) {
-    int picker = bbLinePick(bbEntityX(entity), bbEntityY(entity), bbEntityZ(entity), 0, -1, 0);
-    int brush;
-    int texture;
-    String name;
-    Material* mat;
+int GetMaterialStepSound(Object* entity) {
+    Object* picker = bbLinePick(bbEntityX(entity), bbEntityY(entity), bbEntityZ(entity), 0, -1, 0);
 
-    if (picker != 0) {
+    if (picker != nullptr) {
         if (bbGetEntityType(picker) != HIT_MAP) {
             return 0;
         }
-        brush = bbGetSurfaceBrush(bbGetSurface(picker, bbCountSurfaces(picker)));
-        if (brush != 0) {
-            texture = bbGetBrushTexture(brush, 2);
+        Brush* brush = bbGetSurfaceBrush(bbGetSurface((MeshModel*)picker, bbCountSurfaces((MeshModel*)picker)));
+        if (brush != nullptr) {
+            Texture* texture = bbGetBrushTexture(brush, 2);
 
-            if (texture != 0) {
-                name = StripPath(bbTextureName(texture));
+            if (texture != nullptr) {
+                String name = StripPath(bbTextureName(texture));
                 if (!name.isEmpty()) {
                     bbFreeTexture(texture);
                 }
                 for (int i = 0; i < Material::getListSize(); i++) {
-                    mat = Material::getObject(i);
+                    Material* mat = Material::getObject(i);
 
                     if (mat->name.equals(name)) {
                         if (mat->stepSound > 0) {
@@ -679,14 +656,14 @@ int GetMaterialStepSound(int entity) {
                 }
             }
             texture = bbGetBrushTexture(brush, 1);
-            if (texture != 0) {
-                name = StripPath(bbTextureName(texture));
+            if (texture != nullptr) {
+                String name = StripPath(bbTextureName(texture));
                 if (!name.isEmpty()) {
                     bbFreeTexture(texture);
                 }
                 bbFreeBrush(brush);
-                for (int i = 0; i < Material::getListSize(); id_t++) {
-                    mat = Material::getObject(i);
+                for (int i = 0; i < Material::getListSize(); i++) {
+                    Material* mat = Material::getObject(i);
 
                     if (mat->name.equals(name)) {
                         if (mat->stepSound > 0) {
@@ -702,41 +679,43 @@ int GetMaterialStepSound(int entity) {
     return 0;
 }
 
-MusicManager* CreateMusicManager() {
-    MusicManager* musMan = new MusicManager();
-    musMan->useDefault = true;
-
-    return musMan;
+MusicManager::MusicManager() {
+    this->useDefault = true;
 }
 
-void RestoreDefaultMusic() {
-    musicManager->fadeOut = true;
-    musicManager->useDefault = true;
+MusicManager::~MusicManager() {
+    bbStopChannel(this->channel);
+    this->freeMusic();
 }
 
-void SetNextMusicTrack(String trackName, int fadeOut = true) {
-    if (musicManager->shouldPlay == trackName) {
+void MusicManager::restoreDefaultMusic() {
+    this->fadeOut = true;
+    this->useDefault = true;
+}
+
+void MusicManager::setNextMusicTrack(String trackName, int fadeOut) {
+    if (this->shouldPlay.equals(trackName)) {
         return;
     }
 
     //If the track's already being overwritten then don't let anything else change it.
-    if (!musicManager->useDefault) {
+    if (!this->useDefault) {
         return;
     }
 
-    musicManager->useDefault = false;
-    musicManager->shouldPlay = trackName;
-    musicManager->fadeOut = fadeOut;
+    this->useDefault = false;
+    this->shouldPlay = trackName;
+    this->fadeOut = fadeOut;
 }
 
-void FreeMusic() {
-    if (musicManager->currMusic != 0) {
-        bbFreeSound(musicManager->currMusic);
-        musicManager->currMusic = 0;
+void MusicManager::freeMusic() {
+    if (this->currMusic != nullptr) {
+        bbFreeSound(this->currMusic);
+        this->currMusic = 0;
     }
 }
 
-void UpdateMusic() {
+void MusicManager::update() {
     if (userOptions->musicVolume <= 0) {
         return;
     }

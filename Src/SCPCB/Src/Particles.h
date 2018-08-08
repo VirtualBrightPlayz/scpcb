@@ -15,9 +15,9 @@ public:
     static int getListSize();
     static Particle* getObject(int index);
 
-    int obj;
-    int pvt;
-    int image;
+    class MeshModel* obj;
+    class Pivot* pvt;
+    class gxImage* image;
 
     float r;
     float g;
