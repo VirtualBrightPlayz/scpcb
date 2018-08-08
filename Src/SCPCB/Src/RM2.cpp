@@ -1,33 +1,20 @@
+#include <StringType.h>
+#include <bbstream.h>
+#include <bbblitz3d.h>
+#include <bbfilesystem.h>
+
 #include "RM2.h"
-#include "include.h"
+#include "MapSystem.h"
+#include "Materials.h"
 
 namespace CBN {
 
-// Constants.
-const String RM2_HEADER(".RM2");
-const int RM2_TEXTURES = 1;
-const int RM2_OPAQUE = 2;
-const int RM2_ALPHA = 3;
-const int RM2_INVISIBLE = 4;
-const int RM2_SCREEN = 5;
-const int RM2_WAYPOINT = 6;
-const int RM2_POINTLIGHT = 7;
-const int RM2_SPOTLIGHT = 8;
-const int RM2_SOUNDEMITTER = 9;
-const int RM2_PROP = 10;
-const int RM2_LOADFLAG_COLOR = 1;
-const int RM2_LOADFLAG_ALPHA = 2;
-const int RM2_BLENDFLAG_NORMAL = 0;
-const int RM2_BLENDFLAG_DIFFUSE = 1;
-const int RM2_BLENDFLAG_LM = 2;
-
 // Functions.
-String ReadByteString(int stream) {
+String ReadByteString(bbStream* stream) {
     String retVal = "";
     int length = bbReadByte(stream);
-    int i;
-    for (i = 1; i <= length; i++) {
-        retVal = retVal+bbChr(bbReadByte(stream));
+    for (int i = 1; i <= length; i++) {
+        retVal = retVal+((char)bbReadByte(stream));
     }
     return retVal;
 }
@@ -35,31 +22,31 @@ String ReadByteString(int stream) {
 void LoadRM2(RoomTemplate* rt) {
     String fullFilename = rt->objPath;
 
-    int opaqueMesh = bbCreateMesh();
-    int alphaMesh = 0;
+    MeshModel* opaqueMesh = bbCreateMesh();
+    MeshModel* alphaMesh;
 
-    IntArrayList* usedTextures = CreateIntArrayList();
+    std::vector<int> usedTextures;
 
-    IntArrayList* collisionObjs = CreateIntArrayList();
-    IntArrayList* props = nullptr;
+    std::vector<int> collisionObjs;
+    std::vector<int>;
 
     String filename = StripPath(fullFilename);
     String filepath = StripFilename(fullFilename);
 
-    int file = bbReadFile(fullFilename);
+    bbFile* file = bbReadFile(fullFilename);
 
-    if (file==0) {
-        bbRuntimeError("Failed to read "+fullFilename);
+    if (file==nullptr) {
+        throw ("Failed to read "+fullFilename);
     }
 
     String header = "";
     int i;
-    for (i = 0; i <= 3; i++) {
-        header = header+bbChr(bbReadByte(file));
+    for (int i = 0; i < 4; i++) {
+        header = header+((char)bbReadByte(file));
     }
 
-    if (header!=RM2_HEADER) {
-        bbRuntimeError("Error while loading "+fullFilename+": expected "+RM2_HEADER+", found "+header);
+    if (!header.equals(RM2_HEADER)) {
+        throw ("Error while loading "+fullFilename+": expected "+RM2_HEADER+", found "+header);
     }
 
     int partType;
@@ -70,12 +57,12 @@ void LoadRM2(RoomTemplate* rt) {
     int loadFlags;
     int blendFlags;
     int uvSet;
-    int texture;
+    Texture* texture;
     int shouldLoadTexture;
 
-    int mesh;
-    int clonedMesh;
-    int brush;
+    ModelModel* mesh;
+    ModelModel* clonedMesh;
+    Brush* brush;
     int textureIndex[2];
     int layerCount;
     Material* mat;
@@ -124,11 +111,11 @@ void LoadRM2(RoomTemplate* rt) {
             case RM2_TEXTURES: {
                 //[Block]
                 count = bbReadByte(file);
-                for (i = 0; i <= count-1; i++) {
+                for (i = 0; i < count; i++) {
                     texName = ReadByteString(file);
                     flags = bbReadByte(file);
-                    loadFlags = flags Shr 4;
-                    blendFlags = flags & $0F;
+                    loadFlags = flags >> 4;
+                    blendFlags = flags & 0x0F;
                     uvSet = bbReadByte(file);
 
                     mat = GetCache(texName);
@@ -417,7 +404,7 @@ void LoadRM2(RoomTemplate* rt) {
                 //[End Block]
             } break;
             default: {
-                bbRuntimeError("Error after reading type "+String(prevType));
+                throw ("Error after reading type "+String(prevType));
             } break;
         }
     }

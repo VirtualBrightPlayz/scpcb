@@ -268,7 +268,7 @@ case "ending": {
 
 }
 case "noclipspeed": {
-	bbRuntimeError("TODO: reimplement?");
+	throw ("TODO: reimplement?");
 	//StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 
 	//NoClipSpeed = (float)(StrTemp)
@@ -609,7 +609,7 @@ case "stopsound", "stfu": {
 
 }
 case "camerafog": {
-	bbRuntimeError("TODO: reimplement?");
+	throw ("TODO: reimplement?");
 	//args$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 	//CameraFogNear = (float)(Left(args, Len(args) - Instr(args, " ")))
 	//CameraFogFar = (float)(Right(args, Len(args) - Instr(args, " ")))
@@ -628,7 +628,7 @@ case "spawn": {
 
 }
 case "infinitestamina", "infstam": {
-	bbRuntimeError("TODO: reimplement?");
+	throw ("TODO: reimplement?");
 
 	//StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 
@@ -789,7 +789,7 @@ case "teleport173": {
 	//TODO
 }
 case Chr($6A) + Chr($6F) + Chr($72) + Chr($67) + Chr($65): {
-	bbRuntimeError("Implement");
+	throw ("Implement");
 }
 default: {
 	CreateConsoleMsg("Command not found.", 255, 0, 0);

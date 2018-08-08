@@ -792,13 +792,13 @@ void ManipulateNPCBones() {
             bonename = GetNPCManipulationValue(n->npcNameInSection,n->boneToManipulate,"bonename",0);
             bone = bbFindChild(n->obj,bonename);
             if (bone == 0) {
-                bbRuntimeError("ERROR: NPC bone \""+bonename+"\" does not exist.");
+                throw ("ERROR: NPC bone \""+bonename+"\" does not exist.");
             }
             if (n->boneToManipulate2!="") {
                 bonename2 = GetNPCManipulationValue(n->npcNameInSection,n->boneToManipulate,"navbone",0);
                 bone2 = bbFindChild(n->obj,n->boneToManipulate2);
                 if (bone2 == 0) {
-                    bbRuntimeError("ERROR: NPC bone \""+bonename2+"\" does not exist.");
+                    throw ("ERROR: NPC bone \""+bonename2+"\" does not exist.");
                 }
             }
             bbPositionEntity(pvt,bbEntityX(bone,true),bbEntityY(bone,true),bbEntityZ(bone,true));

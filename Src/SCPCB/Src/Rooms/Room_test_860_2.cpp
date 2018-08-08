@@ -972,7 +972,7 @@ int load_terrain(int hmap, float yscale = 0.7, int t1, int t2, int mask) {
 
     // load the heightmap
     if (hmap == 0) {
-        bbRuntimeError("Heightmap image "+String(hmap)+" does not exist.");
+        throw ("Heightmap image "+String(hmap)+" does not exist.");
     }
 
     // store heightmap dimensions
@@ -984,13 +984,13 @@ int load_terrain(int hmap, float yscale = 0.7, int t1, int t2, int mask) {
 
     // load texture and lightmaps
     if (t1 == 0) {
-        bbRuntimeError("load_terrain error: invalid texture 1");
+        throw ("load_terrain error: invalid texture 1");
     }
     if (t2 == 0) {
-        bbRuntimeError("load_terrain error: invalid texture 2");
+        throw ("load_terrain error: invalid texture 2");
     }
     if (mask == 0) {
-        bbRuntimeError("load_terrain error: invalid texture mask");
+        throw ("load_terrain error: invalid texture mask");
     }
 
     // auto scale the textures to the right size
@@ -1043,11 +1043,11 @@ int load_terrain(int hmap, float yscale = 0.7, int t1, int t2, int mask) {
             maskY = bbTextureHeight(mask)-Min(ly*(float)(bbTextureHeight(mask))/(float)(bbImageHeight(hmap)),bbTextureHeight(mask)-1);
             RGB1 = bbReadPixelFast((int)(Min(lx,x-1)),(int)(y-Min(ly,y-1)),bbImageBuffer(hmap));
             //separate out the red
-            r = (RGB1 & $FF0000)Shr 16;
-            alpha = (((bbReadPixelFast((int)(Max(maskX-5,5)),(int)(Max(maskY-5,5)),bbTextureBuffer(mask)) & $FF000000) Shr 24)/$FF);
-            alpha = alpha+(((bbReadPixelFast((int)(Min(maskX+5,bbTextureWidth(mask)-5)),(int)(Min(maskY+5,bbTextureHeight(mask)-5)),bbTextureBuffer(mask)) & $FF000000) Shr 24)/$FF);
-            alpha = alpha+(((bbReadPixelFast((int)(Max(maskX-5,5)),(int)(Min(maskY+5,bbTextureHeight(mask)-5)),bbTextureBuffer(mask)) & $FF000000) Shr 24)/$FF);
-            alpha = alpha+(((bbReadPixelFast((int)(Min(maskX+5,bbTextureWidth(mask)-5)),(int)(Max(maskY-5,5)),bbTextureBuffer(mask)) & $FF000000) Shr 24)/$FF);
+            r = (RGB1 & $FF0000)>>  16;
+            alpha = (((bbReadPixelFast((int)(Max(maskX-5,5)),(int)(Max(maskY-5,5)),bbTextureBuffer(mask)) & $FF000000) >>  24)/$FF);
+            alpha = alpha+(((bbReadPixelFast((int)(Min(maskX+5,bbTextureWidth(mask)-5)),(int)(Min(maskY+5,bbTextureHeight(mask)-5)),bbTextureBuffer(mask)) & $FF000000) >>  24)/$FF);
+            alpha = alpha+(((bbReadPixelFast((int)(Max(maskX-5,5)),(int)(Min(maskY+5,bbTextureHeight(mask)-5)),bbTextureBuffer(mask)) & $FF000000) >>  24)/$FF);
+            alpha = alpha+(((bbReadPixelFast((int)(Min(maskX+5,bbTextureWidth(mask)-5)),(int)(Max(maskY-5,5)),bbTextureBuffer(mask)) & $FF000000) >>  24)/$FF);
             alpha = alpha*0.25;
             alpha = bbSqr(alpha);
 

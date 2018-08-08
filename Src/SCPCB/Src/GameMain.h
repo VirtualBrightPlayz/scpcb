@@ -81,7 +81,7 @@ extern struct Room* NTF_1499PrevRoom;
 extern float NTF_1499X;
 extern float NTF_1499Y;
 extern float NTF_1499Z;
-extern int NTF_1499Sky;
+extern class MeshModel* NTF_1499Sky;
 extern int InFacility;
 extern int IsZombie;
 extern int room2gw_brokendoor;

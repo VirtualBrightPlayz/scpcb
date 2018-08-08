@@ -73,7 +73,7 @@ Room* NTF_1499PrevRoom;
 float NTF_1499X;
 float NTF_1499Y;
 float NTF_1499Z;
-int NTF_1499Sky;
+MeshModel* NTF_1499Sky;
 int InFacility;
 int IsZombie;
 int room2gw_brokendoor;

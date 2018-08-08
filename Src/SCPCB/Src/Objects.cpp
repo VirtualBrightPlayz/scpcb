@@ -173,7 +173,7 @@ void UpdateLevers() {
     }
 }
 
-float UpdateElevators(float state, Door* door1, Door* door2, int room1, int room2, Event* event) {
+float UpdateElevators(float state, Door* door1, Door* door2, class Object* room1, class Object* room2, Event* event) {
     door1->isElevatorDoor = 1;
     door2->isElevatorDoor = 1;
     if (door1->open == true & door2->open == false) {
@@ -367,7 +367,7 @@ float UpdateElevators(float state, Door* door1, Door* door2, int room1, int room
 
 }
 
-float UpdateElevators2(float State, Door* door1, Door* door2, int room1, int room2, Event* event) {
+float UpdateElevators2(float State, Door* door1, Door* door2, class Object* room1, class Object* room2, Event* event) {
     float x;
     float z;
 
@@ -520,7 +520,7 @@ float UpdateElevators2(float State, Door* door1, Door* door2, int room1, int roo
 
 }
 
-ElevatorObj* AssignElevatorObj(int obj, Door* door, int in_facility) {
+ElevatorObj* AssignElevatorObj(MeshModel* obj, Door* door, int in_facility) {
     ElevatorObj* eo = new ElevatorObj();
 
     eo->obj = obj;

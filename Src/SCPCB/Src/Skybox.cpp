@@ -1,11 +1,16 @@
+#include <StringType.h>
+#include <bbblitz3d.h>
+#include <bbfilesystem.h>
+
 #include "Skybox.h"
-#include "include.h"
+#include "MapSystem.h"
+#include "Player.h"
+#include "GameMain.h"
 
 namespace CBN {
 
 // Functions.
-int sky_CreateSky(String filename, int parent = 0) {
-    int sky;
+MeshModel* sky_CreateSky(String filename, Object* parent) {
     String fname;
     String direction;
     float x;
@@ -13,13 +18,10 @@ int sky_CreateSky(String filename, int parent = 0) {
     float z;
     float u;
     float v;
-    int b;
-    int s;
     int vert;
 
-    sky = bbCreateMesh(parent);
-    int face;
-    for (face = 1; face <= 6; face++) {
+    MeshModel* sky = bbCreateMesh(parent);
+    for (int face = 1; face <= 6; face++) {
         switch (face) {
             case 1: {
                 direction = "_back";
@@ -42,8 +44,8 @@ int sky_CreateSky(String filename, int parent = 0) {
         }
         fname = filename + direction + ".jpg";
         if (bbFileType(fname)==1) {
-            b = bbLoadBrush(fname,0b110001);
-            s = bbCreateSurface(sky,b);
+            Brush* b = bbLoadBrush(fname,0b110001);
+            Surface* s = bbCreateSurface(sky,b);
 
             //TODO: finish and remove Data
             switch (face) {

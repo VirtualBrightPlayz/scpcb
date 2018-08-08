@@ -290,7 +290,7 @@ Prop* Prop::getObject(int index) {
 // Globals.
 float RoomScale = 8.0 / 2048.0;
 gxSound* RoomAmbience[20];
-int Sky;
+MeshModel* Sky;
 float HideDistance = 15.0;
 float SecondaryLightOn;
 int RemoteDoorOn;
@@ -1874,7 +1874,7 @@ Prop* LoadProp(String file, float x, float y, float z, float pitch, float yaw, f
         p->obj = bbLoadMesh("GFX/Map/Props/"+file+".b3d");
     }
     if (p->obj==0) {
-        bbRuntimeError(file);
+        throw (file);
     }
     bbHideEntity(p->obj);
     return p;
@@ -2060,7 +2060,7 @@ void CreateMap() {
                 }
             }
             if (!placed) {
-                bbRuntimeError("(seed: "+RandomSeed+") Failed To place "+rt->name+" around ("+String(loopStartX)+","+String(loopStartY)+","+String(loopEndX)+","+String(loopEndY)+")");
+                throw ("(seed: "+RandomSeed+") Failed To place "+rt->name+" around ("+String(loopStartX)+","+String(loopStartY)+","+String(loopEndX)+","+String(loopEndY)+")");
             }
         }
     }

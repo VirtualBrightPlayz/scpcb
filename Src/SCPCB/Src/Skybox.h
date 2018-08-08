@@ -5,7 +5,7 @@
 namespace CBN {
 
 // Functions.
-int sky_CreateSky(String filename, int parent = 0);
+class MeshModel* sky_CreateSky(String filename, class Object* parent = nullptr);
 
 void UpdateSky();
 

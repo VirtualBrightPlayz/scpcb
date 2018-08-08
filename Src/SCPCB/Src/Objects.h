@@ -31,7 +31,7 @@ public:
     static int getListSize();
     static ElevatorObj* getObject(int index);
 
-    int obj;
+    class MeshModel* obj;
     int inFacility;
     struct Door* door;
 };
@@ -45,9 +45,9 @@ Lever* CreateLever();
 
 void UpdateLevers();
 
-float UpdateElevators(float state, struct Door* door1, struct Door* door2, int room1, int room2, struct Event* event);
+float UpdateElevators(float state, struct Door* door1, struct Door* door2, class Object* room1, class Object* room2, struct Event* event);
 
-float UpdateElevators2(float State, struct Door* door1, struct Door* door2, int room1, int room2, struct Event* event);
+float UpdateElevators2(float State, struct Door* door1, struct Door* door2, class Object* room1, class Object* room2, struct Event* event);
 
 ElevatorObj* AssignElevatorObj(int obj, struct Door* door, int in_facility);
 

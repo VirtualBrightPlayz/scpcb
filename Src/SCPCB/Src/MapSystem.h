@@ -341,7 +341,7 @@ public:
 // Globals.
 extern float RoomScale;
 extern class gxSound* RoomAmbience[20];
-extern int Sky;
+extern class MeshModel* Sky;
 extern float HideDistance;
 extern float SecondaryLightOn;
 extern int RemoteDoorOn;

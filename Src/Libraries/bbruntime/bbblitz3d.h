@@ -52,6 +52,7 @@ void bbSetCubeMode(class Texture* t, int mode);
 class gxCanvas* bbTextureBuffer(class Texture* t, int frame=0);
 void bbClearTextureFilters();
 class Brush* bbCreateBrush(float r=255.f, float g=255.f, float b=255.f);
+class Brush* bbLoadBrush(String file, int flags=1, float u_scale=1.f, float v_scale=1.f);
 void bbFreeBrush(class Brush* b);
 void bbBrushColor(class Brush* br, float r, float g, float b);
 void bbBrushAlpha(class Brush* b, float alpha);
