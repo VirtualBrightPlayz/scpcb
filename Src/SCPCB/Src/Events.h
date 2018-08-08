@@ -1,13 +1,14 @@
 #ifndef EVENTS_H_INCLUDED
 #define EVENTS_H_INCLUDED
 #include <vector>
+#include <StringType.h>
 
 namespace CBN {
 
 // Constants.
-extern const int EVENT_MAX_STATE_COUNT;
-extern const int EVENT_SOUND_COUNT;
-extern const int EVENT_CHANNEL_COUNT;
+const int EVENT_MAX_STATE_COUNT = 5;
+const int EVENT_SOUND_COUNT = 5;
+const int EVENT_CHANNEL_COUNT = 2;
 
 // Structs.
 struct Event {
@@ -31,15 +32,15 @@ public:
     int intState[EVENT_MAX_STATE_COUNT];
     float floatState[EVENT_MAX_STATE_COUNT];
 
-    int loaded;
+    bool loaded;
 
     //Field img% ;???
 
-    int soundChannels[EVENT_CHANNEL_COUNT];
-    int sounds[EVENT_SOUND_COUNT];
+    class gxChannel* soundChannels[EVENT_CHANNEL_COUNT];
+    class gxSound* sounds[EVENT_SOUND_COUNT];
 
     String musicTrack;
-    int overwriteMusic;
+    bool overwriteMusic;
 };
 
 // Functions.

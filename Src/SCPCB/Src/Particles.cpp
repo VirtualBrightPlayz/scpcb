@@ -1,5 +1,15 @@
+#include <bbblitz3d.h>
+#include <bbmath.h>
+
 #include "Particles.h"
-#include "include.h"
+#include "Assets.h"
+#include "GameMain.h"
+#include "MathUtils/MathUtils.h"
+#include "Audio.h"
+#include "MapSystem.h"
+#include "Player.h"
+#include "Menus/Menu.h"
+#include "Items/Items.h"
 
 namespace CBN {
 
@@ -42,17 +52,6 @@ Emitter* Emitter::getObject(int index) {
     return list[index];
 }
 
-// Constants.
-const int PARTICLE_COUNT = 8;
-const int PARTICLE_DUST = 0;
-const int PARTICLE_SMOKE_BLACK = 1;
-const int PARTICLE_SMOKE_WHITE = 2;
-const int PARTICLE_FLASH = 3;
-const int PARTICLE_SPARK = 4;
-const int PARTICLE_BLOOD = 5;
-const int PARTICLE_SUN = 6;
-const int PARTICLE_HG = 7;
-
 // Globals.
 String particleList[PARTICLE_COUNT];
 int InSmoke;
@@ -71,25 +70,31 @@ void LoadParticles() {
 }
 
 Particle* CreateParticle(float x, float y, float z, int image, float size, float gravity = 1.0, int lifetime = 200) {
-    int tex = GrabTexture("GFX/" + particleList[image], 1+2);
+    TextureAssetWrap* tex = TextureAssetWrap::grab("GFX/" + particleList[image], 1+2);
     Particle* p = new Particle();
     p->lifetime = lifetime;
 
-    p->obj = bbCreateSprite();
-    bbPositionEntity(p->obj, x, y, z, true);
-    bbEntityTexture(p->obj, tex);
-    bbRotateEntity(p->obj, 0, 0, bbRnd(360));
-    bbEntityFX(p->obj, 1 + 8);
+    p->sprite = bbCreateSprite();
+    bbPositionEntity(p->sprite, x, y, z, true);
+    bbEntityTexture(p->sprite, tex->getTexture());
+    bbRotateEntity(p->sprite, 0, 0, bbRnd(360));
+    bbEntityFX(p->sprite, 1 + 8);
     tex->drop();
 
-    bbSpriteViewMode(p->obj, 3);
+    bbSpriteViewMode(p->sprite, 3);
 
     switch (image) {
-        case 0,5,6: {
-            bbEntityBlend(p->obj, 1);
+        case 0:
+        case 5:
+        case 6: {
+            bbEntityBlend(p->sprite, 1);
         } break;
-        case 1,2,3,4,7: {
-            bbEntityBlend(p->obj, BLEND_ADD);
+        case 1:
+        case 2:
+        case 3:
+        case 4:
+        case 7: {
+            bbEntityBlend(p->sprite, BLEND_ADD);
         } break;
     }
 
@@ -103,14 +108,13 @@ Particle* CreateParticle(float x, float y, float z, int image, float size, float
     p->b = 255;
     p->a = 1.0;
     p->size = size;
-    bbScaleSprite(p->obj, p->size, p->size);
+    bbScaleSprite(p->sprite, p->size, p->size);
     return p;
 }
 
 void UpdateParticles() {
-    Particle* p;
-    for (int iterator99 = 0; iterator99 < Particle::getListSize(); iterator99++) {
-        p = Particle::getObject(iterator99);
+    for (int i = 0; i < Particle::getListSize(); i++) {
+        Particle* p = Particle::getObject(i);
 
         bbMoveEntity(p->pvt, 0, 0, p->speed * timing->tickDuration);
         if (p->gravity != 0) {
@@ -118,22 +122,22 @@ void UpdateParticles() {
         }
         bbTranslateEntity(p->pvt, 0, p->yspeed * timing->tickDuration, 0, true);
 
-        bbPositionEntity(p->obj, bbEntityX(p->pvt,true), bbEntityY(p->pvt,true), bbEntityZ(p->pvt,true), true);
+        bbPositionEntity(p->sprite, bbEntityX(p->pvt,true), bbEntityY(p->pvt,true), bbEntityZ(p->pvt,true), true);
 
         //TurnEntity(p\obj, 0, 0, timing\tickDuration)
 
         if (p->aChange != 0) {
             p->a = Min(Max(p->a+p->aChange * timing->tickDuration,0.0),1.0);
-            bbEntityAlpha(p->obj, p->a);
+            bbEntityAlpha(p->sprite, p->a);
         }
 
         if (p->sizeChange != 0) {
             p->size = p->size+p->sizeChange * timing->tickDuration;
-            bbScaleSprite(p->obj, p->size, p->size);
+            bbScaleSprite(p->sprite, p->size, p->size);
         }
 
-        bbShowEntity(p->obj);
-        bbEntityAlpha(p->obj,1.0);
+        bbShowEntity(p->sprite);
+        bbEntityAlpha(p->sprite,1.0);
 
         p->lifetime = p->lifetime-timing->tickDuration;
         if (p->lifetime <= 0 | p->size < 0.00001 | p->a <= 0) {
@@ -143,28 +147,27 @@ void UpdateParticles() {
 }
 
 void RemoveParticle(Particle* p) {
-    bbFreeEntity(p->obj);
+    bbFreeEntity(p->sprite);
     bbFreeEntity(p->pvt);
     delete p;
 }
 
 void UpdateEmitters() {
     InSmoke = false;
-    Emitter* e;
     Particle* p;
     float dist;
 
-    for (int iterator100 = 0; iterator100 < Emitter::getListSize(); iterator100++) {
-        e = Emitter::getObject(iterator100);
+    for (int i = 0; i < Emitter::getListSize(); i++) {
+        Emitter* e = Emitter::getObject(i);
 
-        if (timing->tickDuration > 0 & (mainPlayer->currRoom == e->room | e->room->dist < 8)) {
+        if (timing->tickDuration > 0 && (mainPlayer->currRoom == e->room || e->room->dist < 8)) {
             //If (EntityDistance(mainPlayer\cam, e\obj) < 6.0) Then
             p = CreateParticle(bbEntityX(e->obj, true), bbEntityY(e->obj, true), bbEntityZ(e->obj, true), PARTICLE_SMOKE_WHITE, e->size, e->gravity, e->lifeTime);
             p->speed = e->speed;
             bbRotateEntity(p->pvt, bbEntityPitch(e->obj, true), bbEntityYaw(e->obj, true), bbEntityRoll(e->obj, true), true);
             bbTurnEntity(p->pvt, bbRnd(-e->randAngle, e->randAngle), bbRnd(-e->randAngle, e->randAngle), 0);
 
-            bbTurnEntity(p->obj, 0,0,bbRnd(360));
+            bbTurnEntity(p->sprite, 0,0,bbRnd(360));
 
             p->sizeChange = e->sizeChange;
 
@@ -232,9 +235,8 @@ Emitter* CreateEmitter(float x, float y, float z, int emittertype) {
         } break;
     }
 
-    Room* r;
-    for (int iterator101 = 0; iterator101 < Room::getListSize(); iterator101++) {
-        r = Room::getObject(iterator101);
+    for (int i = 0; i < Room::getListSize(); i++) {
+        Room* r = Room::getObject(i);
 
         if (abs(bbEntityX(e->obj) - bbEntityX(r->obj)) < 4.0 & abs(bbEntityZ(e->obj) - bbEntityZ(r->obj)) < 4.0) {
             e->room = r;

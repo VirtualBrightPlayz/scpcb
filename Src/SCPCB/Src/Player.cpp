@@ -8,7 +8,6 @@
 #include "Player.h"
 #include "Audio.h"
 #include "Dreamfilter.h"
-#include "Difficulty.h"
 #include "Decals.h"
 #include "GameMain.h"
 #include "Items/Items.h"
@@ -262,7 +261,7 @@ void UpdatePlayer() {
 
     //If (IsZombie) Then Crouch = False
 
-    if (std::abs(mainPlayer->crouchState-mainPlayer->crouching)<0.001) {
+    if (abs(mainPlayer->crouchState-mainPlayer->crouching)<0.001) {
         mainPlayer->crouchState = mainPlayer->crouching;
     } else {
         mainPlayer->crouchState = CurveValue(mainPlayer->crouching, mainPlayer->crouchState, 10.0);
@@ -742,10 +741,11 @@ void Kill(Player* player) {
     if (!player->dead) {
         //KillAnim = Rand(0,1)
         PlaySound2(mainPlayer->damageSFX[0]);
-        if (SelectedDifficulty->permaDeath) {
-            bbDeleteFile(bbCurrentDir() + SavePath + CurrSave+"/save.txt");
-            bbDeleteDir(SavePath + CurrSave);
-        }
+        // TODO: Fix.
+        // if (SelectedDifficulty->permaDeath) {
+        //     bbDeleteFile(bbCurrentDir() + SavePath + CurrSave+"/save.txt");
+        //     bbDeleteDir(SavePath + CurrSave);
+        // }
 
         player->dead = true;
         player->fallTimer = Min(-1,player->fallTimer);

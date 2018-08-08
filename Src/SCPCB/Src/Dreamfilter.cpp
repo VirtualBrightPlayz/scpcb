@@ -1,12 +1,13 @@
 #include <bbblitz3d.h>
-#include <entity.h>
+#include <bbgraphics.h>
 
 #include "Dreamfilter.h"
+#include "Options.h"
 
 namespace CBN {
 
 // Globals.
-int ark_blur_image;
+MeshModel* ark_blur_image;
 Texture* ark_blur_texture;
 int ark_sw;
 int ark_sh;
@@ -28,7 +29,7 @@ void CreateBlurImage() {
     bbCameraViewport(cam,0,0,ark_sw,ark_sh);
 
     //Create sprite
-    Object* spr = bbCreateMesh(cam);
+    MeshModel* spr = bbCreateMesh(cam);
     Surface* sf = bbCreateSurface(spr);
     bbAddVertex(sf, -1, 1, 0, 0, 0);
     bbAddVertex(sf, 1, 1, 0, 1, 0);

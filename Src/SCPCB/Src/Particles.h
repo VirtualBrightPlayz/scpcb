@@ -4,6 +4,17 @@
 
 namespace CBN {
 
+// Constants.
+const int PARTICLE_COUNT = 8;
+const int PARTICLE_DUST = 0;
+const int PARTICLE_SMOKE_BLACK = 1;
+const int PARTICLE_SMOKE_WHITE = 2;
+const int PARTICLE_FLASH = 3;
+const int PARTICLE_SPARK = 4;
+const int PARTICLE_BLOOD = 5;
+const int PARTICLE_SUN = 6;
+const int PARTICLE_HG = 7;
+
 // Structs.
 struct Particle {
 private:
@@ -15,9 +26,9 @@ public:
     static int getListSize();
     static Particle* getObject(int index);
 
-    class MeshModel* obj;
+    class Sprite* sprite;
     class Pivot* pvt;
-    class gxImage* image;
+    int image;
 
     float r;
     float g;
@@ -46,13 +57,13 @@ public:
     static int getListSize();
     static Emitter* getObject(int index);
 
-    int obj;
+    class Pivot* obj;
 
     float size;
     float gravity;
     int lifeTime;
 
-    int disable;
+    bool disable;
 
     struct Room* room;
 
@@ -63,17 +74,6 @@ public:
     float sizeChange;
     float aChange;
 };
-
-// Constants.
-extern const int PARTICLE_COUNT;
-extern const int PARTICLE_DUST;
-extern const int PARTICLE_SMOKE_BLACK;
-extern const int PARTICLE_SMOKE_WHITE;
-extern const int PARTICLE_FLASH;
-extern const int PARTICLE_SPARK;
-extern const int PARTICLE_BLOOD;
-extern const int PARTICLE_SUN;
-extern const int PARTICLE_HG;
 
 // Globals.
 extern String particleList[PARTICLE_COUNT];
