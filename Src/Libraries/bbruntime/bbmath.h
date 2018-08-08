@@ -18,7 +18,7 @@ float	 bbCeil( float n );
 float	 bbExp( float n );
 float	 bbLog( float n );
 float	 bbLog10( float n );
-float	 bbRnd( float from,float t=0 );
+float	 bbRnd( float from,float to=0 );
 void	 bbSeedRnd( int seed );
 int      bbRndSeed();
 int      bbRand(int from, int to=1);
