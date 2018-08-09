@@ -3,6 +3,12 @@
 #include <StringType.h>
 #include <vector>
 
+class Texture;
+class bbImage;
+class MeshModel;
+class Object;
+class gxFont;
+
 namespace CBN {
 
 // Constants.
@@ -40,7 +46,7 @@ public:
     virtual TYPE getType();
     virtual void drop();
 
-    class Texture* getTexture();
+    Texture* getTexture();
 
     static TextureAssetWrap* grab(String filePath, int flag = 1);
 
@@ -49,7 +55,7 @@ private:
     static std::vector<TextureAssetWrap*> list;
     
     int flags;
-    class Texture* texture;
+    Texture* texture;
 
     TextureAssetWrap(String filePath, int flag = 1);
     ~TextureAssetWrap();
@@ -60,7 +66,7 @@ public:
     virtual TYPE getType();
     virtual void drop();
 
-    class bbImage* getImage();
+    bbImage* getImage();
 
     static ImageAssetWrap* grab(String filePath);
 
@@ -68,7 +74,7 @@ public:
 private:
     static std::vector<ImageAssetWrap*> list;
     
-    class bbImage* image;
+    bbImage* image;
 
     ImageAssetWrap(String filePath);
     ~ImageAssetWrap();
@@ -79,7 +85,7 @@ public:
     virtual TYPE getType();
     virtual void drop();
 
-    class MeshModel* getMesh();
+    MeshModel* getMesh();
 
     static MeshAssetWrap* grab(String filePath, bool isAnimated = true);
 
@@ -88,7 +94,7 @@ private:
     static std::vector<MeshAssetWrap*> list;
     
     bool animated;
-    class Object* mesh;
+    Object* mesh;
 
     MeshAssetWrap(String filePath, bool isAnimated = true);
     ~MeshAssetWrap();
@@ -100,29 +106,28 @@ public:
 	~UIAssets();
 
     //Misc. Interface
-    class bbImage* back;
-	class bbImage* scpText;
-	class bbImage* tileWhite;
-	class bbImage* tileBlack;
-	class bbImage* scp173;
+    bbImage* back;
+	bbImage* scpText;
+	bbImage* tileWhite;
+	bbImage* tileBlack;
+	bbImage* scp173;
 
-	class bbImage* pauseMenuBG;
+	bbImage* pauseMenuBG;
 
-	class bbImage* cursorIMG;
-	class bbImage* arrow[4];
+	bbImage* cursorIMG;
+	bbImage* arrow[4];
 
-	class gxFont* font[4];
-	class gxFont* consoleFont;
+	gxFont* font[4];
+	gxFont* consoleFont;
 
     //HUD
-	class bbImage* sprintIcon;
-	class bbImage* blinkIcon;
-	class bbImage* crouchIcon;
-	class bbImage* handIcon[2];
-	class bbImage* blinkBar;
-	class bbImage* staminaBar;
-	class bbImage* keypadHUD;
-
+	bbImage* sprintIcon;
+	bbImage* blinkIcon;
+	bbImage* crouchIcon;
+	bbImage* handIcon[2];
+	bbImage* blinkBar;
+	bbImage* staminaBar;
+	bbImage* keypadHUD;
 };
 
 // Globals.
