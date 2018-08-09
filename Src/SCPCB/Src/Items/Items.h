@@ -1,5 +1,6 @@
 #ifndef ITEMS_H_INCLUDED
 #define ITEMS_H_INCLUDED
+#include <StringType.h>
 #include <vector>
 #include <StringType.h>
 
