@@ -91,7 +91,7 @@ int MouseOn(int x, int y, int width, int height) {
     return false;
 }
 
-String UpdateInputBox(int x, int y, int width, int height, String Txt, int ID = 0) {
+String UpdateInputBox(int x, int y, int width, int height, String Txt, int ID) {
     int MouseOnBox = false;
     if (MouseOn(x, y, width, height)) {
         MouseOnBox = true;
@@ -112,7 +112,7 @@ String UpdateInputBox(int x, int y, int width, int height, String Txt, int ID = 
     return Txt;
 }
 
-String DrawInputBox(int x, int y, int width, int height, String Txt, int ID = 0) {
+String DrawInputBox(int x, int y, int width, int height, String Txt, int ID) {
     //TextBox(x,y,width,height,Txt$)
     bbColor(255, 255, 255);
     DrawTiledImageRect(uiAssets->tileWhite, (x % 256), (y % 256), 512, 512, x, y, width, height);
@@ -137,14 +137,14 @@ String DrawInputBox(int x, int y, int width, int height, String Txt, int ID = 0)
     bbText(x + width / 2, y + height / 2, Txt, true, true);
 }
 
-void DrawFrame(int x, int y, int width, int height, int xoffset = 0, int yoffset = 0) {
+void DrawFrame(int x, int y, int width, int height, int xoffset, int yoffset) {
     bbColor(255, 255, 255);
     DrawTiledImageRect(uiAssets->tileWhite, xoffset, (y % 256), 512, 512, x, y, width, height);
 
     DrawTiledImageRect(uiAssets->tileBlack, yoffset, (y % 256), 512, 512, x+(int)(3*MenuScale), y+(int)(3*MenuScale), width-(int)(6*MenuScale), height-(int)(6*MenuScale));
 }
 
-void DrawUIButton(int x, int y, int width, int height, String txt, int bigfont = true) {
+void DrawUIButton(int x, int y, int width, int height, String txt, int bigfont) {
 
     DrawFrame (x, y, width, height);
     if (MouseOn(x, y, width, height)) {
@@ -164,7 +164,7 @@ void DrawUIButton(int x, int y, int width, int height, String txt, int bigfont =
     bbText(x + width / 2, y + height / 2, txt, true, true);
 }
 
-int UpdateUIButton(int x, int y, int width, int height, String txt = "", int waitForMouseUp = false) {
+int UpdateUIButton(int x, int y, int width, int height, String txt, int waitForMouseUp) {
     int clicked = false;
 
     if (MouseOn(x, y, width, height)) {
@@ -177,7 +177,7 @@ int UpdateUIButton(int x, int y, int width, int height, String txt = "", int wai
     return clicked;
 }
 
-void DrawUITick(int x, int y, int selected, int locked = false) {
+void DrawUITick(int x, int y, int selected, int locked) {
     int width = (int)(20.0 * MenuScale);
     int height = (int)(20 * MenuScale);
 
@@ -208,7 +208,7 @@ void DrawUITick(int x, int y, int selected, int locked = false) {
     bbColor(255, 255, 255);
 }
 
-int UpdateUITick(int x, int y, int selected, int locked = false) {
+int UpdateUITick(int x, int y, int selected, int locked) {
     int width = (int)(20.0 * MenuScale);
     int height = (int)(20.0 * MenuScale);
 
@@ -245,7 +245,7 @@ void DrawSlideBar(int x, int y, int width, float value) {
     bbText(x + width + (int)(38.0 * MenuScale), y+(int)(4.0*MenuScale), "HIGH");
 }
 
-void RowText(String A, int X, int Y, int W, int H, int align = 0, float Leading = 1) {
+void RowText(String A, int X, int Y, int W, int H, int align, float Leading) {
     //Display A$ starting at X,Y - no wider than W And no taller than H (all in pixels).
     //Leading is optional extra vertical spacing in pixels
 
@@ -310,7 +310,7 @@ void RowText(String A, int X, int Y, int W, int H, int align = 0, float Leading 
     }
 }
 
-int LimitText(String txt, int x, int y, int width, int usingAA = true) {
+int LimitText(String txt, int x, int y, int width, int usingAA) {
     int TextLength;
     int UnFitting;
     int LetterWidth;

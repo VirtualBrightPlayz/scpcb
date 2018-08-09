@@ -9,6 +9,8 @@ namespace CBN {
 
 struct Item;
 
+const int RADIO_CHANNEL_COUNT = 5;
+
 // Structs.
 struct Radio {
 private:
@@ -30,9 +32,6 @@ public:
     //Sounds
     gxSound* sndStatic;
 };
-
-// Constants.
-extern const int RADIO_CHANNEL_COUNT;
 
 // Globals.
 extern Radio* radio;

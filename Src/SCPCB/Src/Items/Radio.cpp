@@ -25,9 +25,6 @@ Radio* Radio::getObject(int index) {
     return list[index];
 }
 
-// Constants.
-const int RADIO_CHANNEL_COUNT = 5;
-
 // Globals.
 Radio* radio = nullptr;
 

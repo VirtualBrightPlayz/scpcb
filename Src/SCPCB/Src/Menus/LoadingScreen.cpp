@@ -96,7 +96,7 @@ void InitLoadingScreens(String file) {
     bbCloseFile(f);
 }
 
-void DrawLoading(int percent, int shortloading = false) {
+void DrawLoading(int percent, int shortloading) {
     int x;
     int y;
     int i;

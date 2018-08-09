@@ -4,6 +4,11 @@
 #include <vector>
 #include <StringType.h>
 
+class MeshModel;
+class bbImage;
+class Texture;
+class Pivot;
+
 namespace CBN {
 
 // Constants.

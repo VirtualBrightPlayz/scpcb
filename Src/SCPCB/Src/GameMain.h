@@ -130,7 +130,7 @@ float Animate2(MeshModel* entity, float curr, int start, int quit, float speed, 
 
 void UpdateInfect();
 
-int Graphics3DExt(int width, int height, int depth = 32, int mode = 2);
+void Graphics3DExt(int width, int height, int depth = 32, int mode = 2);
 
 void RenderWorld2();
 

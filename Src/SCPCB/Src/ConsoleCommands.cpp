@@ -11,7 +11,7 @@ namespace CBN {
 std::vector<ConsoleCmd*> commandList;
 
 void executeConsoleCommand(String name, std::vector<String> args) {
-    ConsoleCmd* foundCmd;
+    ConsoleCmd* foundCmd = nullptr;
     for (int i = 0; i < commandList.size(); i++) {
         if (commandList[i]->name.equals(name)) {
             foundCmd = commandList[i];

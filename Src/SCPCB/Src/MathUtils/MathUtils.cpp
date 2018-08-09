@@ -255,7 +255,7 @@ void GetMeshExtents(MeshModel* mesh) {
 
 }
 
-float EntityScaleX(Object* entity, int globl = false) {
+float EntityScaleX(Object* entity, int globl) {
     if (globl) {
         bbTFormVector(1, 0, 0, entity, 0);
     } else {
@@ -264,7 +264,7 @@ float EntityScaleX(Object* entity, int globl = false) {
     return bbSqr(bbTFormedX() * bbTFormedX() + bbTFormedY() * bbTFormedY() + bbTFormedZ() * bbTFormedZ());
 }
 
-float EntityScaleY(Object* entity, int globl = false) {
+float EntityScaleY(Object* entity, int globl) {
     if (globl) {
         bbTFormVector(0, 1, 0, entity, 0);
     } else {
@@ -273,7 +273,7 @@ float EntityScaleY(Object* entity, int globl = false) {
     return bbSqr(bbTFormedX() * bbTFormedX() + bbTFormedY() * bbTFormedY() + bbTFormedZ() * bbTFormedZ());
 }
 
-float EntityScaleZ(Object* entity, int globl = false) {
+float EntityScaleZ(Object* entity, int globl) {
     if (globl) {
         bbTFormVector(0, 0, 1, entity, 0);
     } else {

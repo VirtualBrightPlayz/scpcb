@@ -1103,7 +1103,7 @@ WayPoint* CreateWaypoint(float x, float y, float z, Room* room) {
     return w;
 }
 
-void InitWayPoints(int loadingstart = 45) {
+void InitWayPoints(int loadingstart) {
 
     Door* d;
     WayPoint* w;
@@ -1480,7 +1480,7 @@ void UpdateScreens() {
 
 }
 
-SecurityCam* CreateSecurityCam(float x, float y, float z, Room* r, int screen = false) {
+SecurityCam* CreateSecurityCam(float x, float y, float z, Room* r, int screen) {
     SecurityCam* sc = new SecurityCam();
     float scale;
 
@@ -2329,7 +2329,7 @@ int GetZone(int y) {
     return -1;
 }
 
-void AmbientLightRooms(int value = 0) {
+void AmbientLightRooms(int value) {
     if (value==AmbientLightRoomVal) {
         return;
     }

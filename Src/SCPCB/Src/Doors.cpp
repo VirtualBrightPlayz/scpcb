@@ -434,7 +434,7 @@ void UpdateDoors() {
     }
 }
 
-void UseDoor(Door* d, int showmsg = true) {
+void UseDoor(Door* d, int showmsg) {
     int i;
     Item* item;
     int playerHasKeycard = false;

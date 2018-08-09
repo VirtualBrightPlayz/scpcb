@@ -3,6 +3,7 @@
 #include <vector>
 
 class bbBank;
+class bbFile;
 
 namespace CBN {
 

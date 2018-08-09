@@ -9,6 +9,7 @@ class gxChannel;
 class MeshModel;
 class Texture;
 class Object;
+class Sprite;
 
 namespace CBN {
 

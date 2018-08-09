@@ -1589,7 +1589,7 @@ void UpdateInfect() {
     }
 }
 
-int Graphics3DExt(int width, int height, int depth, int mode) {
+void Graphics3DExt(int width, int height, int depth, int mode) {
     //If (FE_InitExtFlag = 1) Then DeInitExt() ;prevent FastExt from breaking itself
     bbGraphics3D(width,height,depth,mode);
     InitFastResize();

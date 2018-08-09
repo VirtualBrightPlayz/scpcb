@@ -41,7 +41,7 @@ void InitializeNPCtypeGuard(NPC* n) {
     float temp = (GetINIFloat("Data/NPCs.ini", "Guard", "scale") / 2.5);
     bbScaleEntity(n->obj, temp, temp, temp);
 
-    MeshCullBox(n->obj, -bbMeshWidth(n->obj), -bbMeshHeight(n->obj), -bbMeshDepth(n->obj), bbMeshWidth(n->obj)*2, bbMeshHeight(n->obj)*2, bbMeshDepth(n->obj)*2);
+    bbMeshCullBox(n->obj, -bbMeshWidth(n->obj), -bbMeshHeight(n->obj), -bbMeshDepth(n->obj), bbMeshWidth(n->obj)*2, bbMeshHeight(n->obj)*2, bbMeshDepth(n->obj)*2);
 }
 
 void UpdateNPCtypeGuard(NPC* n) {

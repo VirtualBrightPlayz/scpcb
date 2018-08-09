@@ -373,7 +373,7 @@ int OtherNPCSeesMeNPC(NPC* me, NPC* other) {
     return false;
 }
 
-int MeNPCSeesPlayer(NPC* me, int disableSoundOnCrouch = false) {
+int MeNPCSeesPlayer(NPC* me, int disableSoundOnCrouch) {
     //Return values:
     //False (=0): Player is not detected anyhow
     //True (=1): Player is detected by vision
@@ -450,7 +450,7 @@ void TeleportMTFGroup(NPC* n) {
 
 }
 
-void Shoot(float x, float y, float z, float hitProb = 1.0, int particles = true, int instaKill = false) {
+void Shoot(float x, float y, float z, float hitProb, int particles, int instaKill) {
     String shotMessageUpdate;
     int wearingVest;
     Pivot* pvt;
@@ -946,7 +946,7 @@ void ManipulateNPCBones() {
 
 }
 
-String GetNPCManipulationValue(String NPC, String bone, String section, int valuetype = 0) {
+String GetNPCManipulationValue(String NPC, String bone, String section, int valuetype) {
     //valuetype determines what type of variable should the Output be returned
     //0 - String
     //1 - Int

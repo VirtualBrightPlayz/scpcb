@@ -56,7 +56,7 @@ void UpdateEvent_cont_1162_2c(Event* e) {
     float dist;
     int i;
     int temp;
-    int pvt;
+    Pivot* pvt;
     String strtemp;
     int j;
     int k;
@@ -80,7 +80,7 @@ void UpdateEvent_cont_1162_2c(Event* e) {
 
     float angle;
     int pick1162;
-    int pp;
+    Pivot* pp;
     int isSlotEmpty;
     int itemExists;
     String itemName;
@@ -141,7 +141,7 @@ void UpdateEvent_cont_1162_2c(Event* e) {
 
                     if (!isSlotEmpty) {
                         //successful
-                        e->eventState2 = (i+e->eventState2) % mainPlayer->inventory->size;
+                        e->eventState2 = modFloat(i+e->eventState2, mainPlayer->inventory->size);
                     }
 
                     if (bbRand(8)==1) {
@@ -155,7 +155,7 @@ void UpdateEvent_cont_1162_2c(Event* e) {
 
                         //Checking if the selected nostalgia item already exists or not
                         itemName = "";
-                        switch (e->eventState) {
+                        switch ((int)e->eventState) {
                             case 1: {
                                 itemName = "Lost Key";
                             }
@@ -177,7 +177,7 @@ void UpdateEvent_cont_1162_2c(Event* e) {
                         for (int iterator160 = 0; iterator160 < Item::getListSize(); iterator160++) {
                             it = Item::getObject(iterator160);
 
-                            if (it->name == itemName) {
+                            if (it->name.equals(itemName)) {
                                 itemExists = true;
                                 e->eventState3 = 1.0;
                                 e->eventState = 0.0;
@@ -209,44 +209,45 @@ void UpdateEvent_cont_1162_2c(Event* e) {
                 itt = ItemTemplate::getObject(iterator161);
 
                 if (IsItemGoodFor1162(itt)) {
-                    switch (mainPlayer->inventory->items[(int)(e->eventState2)]->itemTemplate->name) {
-                        case "key": {
-                            if (itt->name.equals("key1") | itt->name.equals("key2") & bbRand(2)==1) {
-                                shouldCreateItem = true;
-                                std::cout << "lostkey";
-                            }
-                        }
-                        case "paper","oldpaper": {
-                            if (itt->name.equals("paper") & bbRand(12)==1) {
-                                shouldCreateItem = true;
-                                std::cout << "paper";
-                            }
-                        }
-                        case "gasmask","gasmask3","supergasmask","hazmatsuit","hazmatsuit2","hazmatsuit3": {
-                            if (itt->name.equals("gasmask") | itt->name.equals("gasmask3") | itt->name.equals("supergasmask") | itt->name.equals("hazmatsuit") | itt->name.equals("hazmatsuit2") | itt->name.equals("hazmatsuit3") & bbRand(2)==1) {
-                                shouldCreateItem = true;
-                                std::cout << "gasmask hazmat";
-                            }
-                        }
-                        case "key1","key2","key3": {
-                            if (itt->name.equals("key1") | itt->name.equals("key2") | itt->name.equals("key3") | itt->name.equals("misc") & bbRand(6)==1) {
-                                shouldCreateItem = true;
-                                std::cout << "key";
-                            }
-                        }
-                        case "vest","finevest": {
-                            if (itt->name.equals("vest") | itt->name.equals("finevest") & bbRand(1)==1) {
-                                shouldCreateItem = true;
-                                std::cout << "vest";
-                            }
-                        }
-                        default: {
-                            if (itt->name.equals("misc") & bbRand(6)==1) {
-                                shouldCreateItem = true;
-                                std::cout << "default";
-                            }
-                        }
-                    }
+                    // TODO: No.
+                    //switch (mainPlayer->inventory->items[(int)(e->eventState2)]->itemTemplate->name) {
+                    //    case "key": {
+                    //        if (itt->name.equals("key1") | itt->name.equals("key2") & bbRand(2)==1) {
+                    //            shouldCreateItem = true;
+                    //            std::cout << "lostkey";
+                    //        }
+                    //    }
+                    //    case "paper","oldpaper": {
+                    //        if (itt->name.equals("paper") & bbRand(12)==1) {
+                    //            shouldCreateItem = true;
+                    //            std::cout << "paper";
+                    //        }
+                    //    }
+                    //    case "gasmask","gasmask3","supergasmask","hazmatsuit","hazmatsuit2","hazmatsuit3": {
+                    //        if (itt->name.equals("gasmask") | itt->name.equals("gasmask3") | itt->name.equals("supergasmask") | itt->name.equals("hazmatsuit") | itt->name.equals("hazmatsuit2") | itt->name.equals("hazmatsuit3") & bbRand(2)==1) {
+                    //            shouldCreateItem = true;
+                    //            std::cout << "gasmask hazmat";
+                    //        }
+                    //    }
+                    //    case "key1","key2","key3": {
+                    //        if (itt->name.equals("key1") | itt->name.equals("key2") | itt->name.equals("key3") | itt->name.equals("misc") & bbRand(6)==1) {
+                    //            shouldCreateItem = true;
+                    //            std::cout << "key";
+                    //        }
+                    //    }
+                    //    case "vest","finevest": {
+                    //        if (itt->name.equals("vest") | itt->name.equals("finevest") & bbRand(1)==1) {
+                    //            shouldCreateItem = true;
+                    //            std::cout << "vest";
+                    //        }
+                    //    }
+                    //    default: {
+                    //        if (itt->name.equals("misc") & bbRand(6)==1) {
+                    //            shouldCreateItem = true;
+                    //            std::cout << "default";
+                    //        }
+                    //    }
+                    //}
                 }
 
                 if (shouldCreateItem) {
@@ -325,7 +326,7 @@ void UpdateEvent_cont_1162_2c(Event* e) {
                 }
                 e->eventState2 = 0.0;
             }
-            switch (e->eventState) {
+            switch ((int)e->eventState) {
                 case 1: {
                     it = CreateItem("key",bbEntityX(pp,true),bbEntityY(pp,true),bbEntityZ(pp,true));
                 }
@@ -352,37 +353,37 @@ void UpdateEvent_cont_1162_2c(Event* e) {
 }
 
 int IsItemGoodFor1162(ItemTemplate* itt) {
-    String IN = itt->name;
+    String in = itt->name;
 
     //TODO: remember which items the player has collected instead of just picking random shit
-    switch (itt->name) {
-        case "key1", "key2", "key3": {
-            return true;
-        }
-        case "misc", "420", "cigarette": {
-            return true;
-        }
-        case "vest", "finevest","gasmask": {
-            return true;
-        }
-        case "radio","18vradio": {
-            return true;
-        }
-        case "clipboard","eyedrops","nvgoggles": {
-            return true;
-        }
-        default: {
-            if (itt->name != "paper") {
-                return false;
-            } else if ((bbInstr(itt->name, "Leaflet"))) {
-                return false;
-            } else {
-                //if the item is a paper, only allow spawning it if the name contains the word "note" or "log"
-                //(because those are items created recently, which D-9341 has most likely never seen)
-                return ((!bbInstr(itt->name, "Note")) & (!bbInstr(itt->name, "bbLog")));
-            }
-        }
-    }
+    //switch (itt->name) {
+    //    case "key1", "key2", "key3": {
+    //        return true;
+    //    }
+    //    case "misc", "420", "cigarette": {
+    //        return true;
+    //    }
+    //    case "vest", "finevest","gasmask": {
+    //        return true;
+    //    }
+    //    case "radio","18vradio": {
+    //        return true;
+    //    }
+    //    case "clipboard","eyedrops","nvgoggles": {
+    //        return true;
+    //    }
+    //    default: {
+    //        if (itt->name != "paper") {
+    //            return false;
+    //        } else if ((bbInstr(itt->name, "Leaflet"))) {
+    //            return false;
+    //        } else {
+    //            //if the item is a paper, only allow spawning it if the name contains the word "note" or "log"
+    //            //(because those are items created recently, which D-9341 has most likely never seen)
+    //            return ((!bbInstr(itt->name, "Note")) & (!bbInstr(itt->name, "bbLog")));
+    //        }
+    //    }
+    //}
 }
 
 }
