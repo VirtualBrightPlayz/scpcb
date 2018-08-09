@@ -37,8 +37,8 @@ gxCanvas * bbBackBuffer();
 void	 bbEndGraphics();
 int		 bbGraphicsLost();
 int		 bbScanLine();
-void	 bbVWait( int n );
-void	 bbFlip( int vwait );
+void	 bbVWait( int n=1 );
+void	 bbFlip( int vwait=1 );
 
 //graphics buffer functions
 void	 bbSetBuffer( gxCanvas *buff );

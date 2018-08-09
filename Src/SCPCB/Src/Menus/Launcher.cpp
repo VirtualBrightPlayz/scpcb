@@ -1,81 +1,55 @@
-#include "Launcher.h"
-#include "../include.h"
-
 #include <bbruntime.h>
 #include <bbgraphics.h>
 #include <bbblitz3d.h>
 #include <StringType.h>
 
-namespace CBN {
+#include "Launcher.h"
+#include "../MathUtils/MathUtils.h"
+#include "../INI.h"
+#include "../Options.h"
+#include "../GameMain.h"
+#include "../Menus/Menu.h"
+#include "../Assets.h"
 
-// Structs.
-std::vector<Launcher*> Launcher::list;
-Launcher::Launcher() {
-    list.push_back(this);
-}
-Launcher::~Launcher() {
-    for (int i = 0; i < list.size(); i++) {
-        if (list[i] == this) {
-            list.erase(list.begin() + i);
-            break;
-        }
-    }
-}
-int Launcher::getListSize() {
-    return list.size();
-}
-Launcher* Launcher::getObject(int index) {
-    return list[index];
-}
+namespace CBN {
 
 // Globals.
 Launcher* launcher = nullptr;
 
-// Functions.
-Launcher* CreateLauncher() {
-    Launcher* launch = new Launcher();
-
-    launch->width = (int)(Min(GetINIInt(OptionFile, "launcher", "launcher width"), 1024));
-    launch->height = (int)(Min(GetINIInt(OptionFile, "launcher", "launcher height"), 768));
-
-    launch->resWidths = CreateIntArray(bbCountGfxModes3D());
-    launch->resHeights = CreateIntArray(bbCountGfxModes3D());
+Launcher::Launcher() {
+    this->width = (int)(Min(GetINIInt(OptionFile, "launcher", "launcher width"), 1024));
+    this->height = (int)(Min(GetINIInt(OptionFile, "launcher", "launcher height"), 768));
 
     int i;
     for (i = 1; i <= bbCountGfxModes3D(); i++) {
         if (bbGfxModeDepth(i) == 32) {
-            SetIntArrayElem(launch->resWidths, bbGfxModeWidth(i), i - 1);
-            SetIntArrayElem(launch->resHeights, bbGfxModeHeight(i), i - 1);
+            this->resWidths.push_back(bbGfxModeWidth(i));
+            this->resHeights.push_back(bbGfxModeHeight(i));
         }
     }
 
-    launch->selectedGFXMode = VerifyResolution();
+    this->selectedGFXMode = VerifyResolution();
 
-    Graphics3DExt(launch->width, launch->height, 0, 2);
+    Graphics3DExt(this->width, this->height, 0, 2);
     bbAppTitle("SCP - Containment Breach Launcher");
 
     MenuScale = 1;
 
-    launch->background = bbLoadImage("GFX/menu/launcher.jpg");
+    this->background = bbLoadImage("GFX/menu/launcher.jpg");
 
-    InitializeUIAssets();
+    uiAssets = new UIAssets();
 
     bbSetBuffer(bbBackBuffer());
 
     bbSetFont(uiAssets->font[0]);
-
-    return launch;
 }
 
-void DestroyLauncher(Launcher* launch) {
-    bbFreeImage(launch->background);
-
-    ReleaseUIAssets();
-
-    delete launch;
+Launcher::~Launcher() {
+    bbFreeImage(this->background);
+    delete uiAssets;
 }
 
-void UpdateLauncher() {
+void Launcher::update() {
     int x = 40;
     int y = 280 - 65;
 
@@ -84,12 +58,12 @@ void UpdateLauncher() {
         if (bbGfxModeDepth(i) == 32) {
             if (MouseOn(x - 1, y - 1, 100, 20)) {
                 if (MouseHit1) {
-                    launcher->selectedGFXMode = i-1;
+                    this->selectedGFXMode = i-1;
                 }
             }
 
             y = y+20;
-            if (y >= 240 - 65 + (launcher->height - 80 - 260)) {
+            if (y >= 240 - 65 + (this->height - 80 - 260)) {
                 y = 280 - 65;
                 x = x + 100;
             }
@@ -115,27 +89,25 @@ void UpdateLauncher() {
 
     userOptions->launcher = UpdateUITick(40 + 430 - 15, 260 - 55 + 95 + 8, userOptions->launcher);
 
-    if (UpdateUIButton(launcher->width - 30 - 90, launcher->height - 50 - 55, 100, 30, "LAUNCH", false)) {
-        userOptions->screenWidth = GetIntArrayElem(launcher->resWidths, launcher->selectedGFXMode);
-        userOptions->screenHeight = GetIntArrayElem(launcher->resHeights, launcher->selectedGFXMode);
+    if (UpdateUIButton(this->width - 30 - 90, this->height - 50 - 55, 100, 30, "LAUNCH", false)) {
+        userOptions->screenWidth = this->resWidths[this->selectedGFXMode];
+        userOptions->screenHeight = this->resHeights[this->selectedGFXMode];
 
         userOptions->gfxDriver = userOptions->gfxDriver;
 
         SaveOptionsINI();
-        DestroyLauncher(launcher);
-        launcher = nullptr;
-
         InitializeMainGame();
+        delete this; // TODO: Might crash.
 
         return;
     }
 
-    if (UpdateUIButton(launcher->width - 30 - 90, launcher->height - 50, 100, 30, "EXIT", false)) {
-        End();
+    if (UpdateUIButton(this->width - 30 - 90, this->height - 50, 100, 30, "EXIT", false)) {
+        //End(); TODO: Re-implement.
     }
 }
 
-void DrawLauncher() {
+void Launcher::draw() {
     bbSetFont(uiAssets->font[0]);
 
     bbColor(0,0,0);
@@ -154,18 +126,18 @@ void DrawLauncher() {
         if (bbGfxModeDepth(i) == 32) {
             bbColor(0, 0, 0);
 
-            if (launcher->selectedGFXMode == (i-1)) {
+            if (this->selectedGFXMode == (i-1)) {
                 bbRect(x - 1, y - 1, 100, 20, false);
             }
 
-            bbText(x, y, (String(GetIntArrayElem(launcher->resWidths, i - 1)) + "x" + String(GetIntArrayElem(launcher->resHeights, i - 1))));
+            bbText(x, y, (String(this->resWidths[i - 1]) + "x" + String(this->resHeights[i - 1])));
             if (MouseOn(x - 1, y - 1, 100, 20)) {
                 bbColor(100, 100, 100);
                 bbRect(x - 1, y - 1, 100, 20, false);
             }
 
             y = y+20;
-            if (y >= 240 - 65 + (launcher->height - 80 - 260)) {
+            if (y >= 240 - 65 + (this->height - 80 - 260)) {
                 y = 280 - 65;
                 x = x + 100;
             }
@@ -205,7 +177,7 @@ void DrawLauncher() {
     DrawUITick(40 + 430 - 15, 260 - 55 + 95 + 8, userOptions->launcher);
     bbText(40 + 430 + 15,       262 - 55 + 95 + 8, "Use launcher");
 
-    bbText(40+ 260 + 15, 262 - 55 + 140, "Current Resolution: "+String(GetIntArrayElem(launcher->resWidths, launcher->selectedGFXMode)) + "x" + String(GetIntArrayElem(launcher->resHeights, launcher->selectedGFXMode)));
+    bbText(40+ 260 + 15, 262 - 55 + 140, "Current Resolution: "+String(this->resWidths[launcher->selectedGFXMode]) + "x" + String(this->resHeights[launcher->selectedGFXMode]));
 
     //If (GfxModeWidths(SelectedGFXMode)<G_viewport_width) Then
     //	Text(40+ 260 + 65, 262 - 55 + 160, "(upscaled to")

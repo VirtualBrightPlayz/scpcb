@@ -12,31 +12,22 @@ private:
 public:
     Launcher();
     ~Launcher();
-    static int getListSize();
-    static Launcher* getObject(int index);
+    void update();
+    void draw();
 
     int width;
     int height;
 
-    int background;
+    class bbImage* background;
 
-    IntArray* resWidths;
-    IntArray* resHeights;
+    std::vector<int> resWidths;
+    std::vector<int> resHeights;
 
     int selectedGFXMode;
 };
 
 // Globals.
 extern Launcher* launcher;
-
-// Functions.
-Launcher* CreateLauncher();
-
-void DestroyLauncher(Launcher* launch);
-
-void UpdateLauncher();
-
-void DrawLauncher();
 
 }
 #endif // LAUNCHER_H_INCLUDED
