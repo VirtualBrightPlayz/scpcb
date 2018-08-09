@@ -54,9 +54,9 @@ void FillRoom_test_smallwindow_2(Room* r) {
 
     Texture* Glasstex = bbLoadTexture("GFX/Map/Textures/glass.png",1+2);
     r->objects[ROOM_TSW2_GLASS] = bbCreateSprite();
-    bbEntityTexture(r->objects[ROOM_TSW2_GLASS],Glasstex);
-    bbSpriteViewMode(r->objects[ROOM_TSW2_GLASS],2);
-    bbScaleSprite(r->objects[ROOM_TSW2_GLASS],182.0*RoomScale*0.5, 192.0*RoomScale*0.5);
+    bbEntityTexture((Sprite*)r->objects[ROOM_TSW2_GLASS],Glasstex);
+    bbSpriteViewMode((Sprite*)r->objects[ROOM_TSW2_GLASS],2);
+    bbScaleSprite((Sprite*)r->objects[ROOM_TSW2_GLASS],182.0*RoomScale*0.5, 192.0*RoomScale*0.5);
     bbPositionEntity(r->objects[ROOM_TSW2_GLASS], r->x - 595.0 * RoomScale, 224.0*RoomScale, r->z - 208.0 * RoomScale);
     bbTurnEntity(r->objects[ROOM_TSW2_GLASS],0,180,0);
     bbEntityParent(r->objects[ROOM_TSW2_GLASS], r->obj);

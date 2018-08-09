@@ -24,7 +24,7 @@ void LoadRM2(RoomTemplate* rt) {
     String fullFilename = rt->objPath;
 
     MeshModel* opaqueMesh = bbCreateMesh();
-    MeshModel* alphaMesh;
+    MeshModel* alphaMesh = nullptr;
 
     std::vector<Material*> usedTextures;
 
@@ -51,7 +51,7 @@ void LoadRM2(RoomTemplate* rt) {
         throw ("Error while loading "+fullFilename+": expected "+RM2_HEADER+", found "+header);
     }
 
-    int partType;
+    int partType = 0;
 
     int count;
     String texName;

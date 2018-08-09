@@ -65,7 +65,7 @@ void UpdateEvent_cont_1162_2c(Event* e) {
     NPC* n;
     Room* r;
     Event* e2;
-    Item* it;
+    Item* it = nullptr;
     ItemTemplate* itt;
     Emitter* em;
     SecurityCam* sc;
@@ -80,7 +80,7 @@ void UpdateEvent_cont_1162_2c(Event* e) {
 
     float angle;
     int pick1162;
-    Pivot* pp;
+    Pivot* pp = nullptr;
     int isSlotEmpty;
     int itemExists;
     String itemName;
@@ -384,6 +384,7 @@ int IsItemGoodFor1162(ItemTemplate* itt) {
     //        }
     //    }
     //}
+    return 0;
 }
 
 }

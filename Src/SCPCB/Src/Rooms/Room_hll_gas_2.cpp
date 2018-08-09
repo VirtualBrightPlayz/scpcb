@@ -96,7 +96,7 @@ void UpdateEvent_hll_gas_2(Event* e) {
     //[Block]
     if (Curr173->idle == 0) {
         if (e->room->dist < 8.0  & e->room->dist > 0) {
-            if (!bbEntityVisible(Curr173->collider, mainPlayer->cam)) & (!bbEntityVisible(e->room->objects[6], mainPlayer->cam)) {
+            if (!bbEntityVisible(Curr173->collider, mainPlayer->cam) && !bbEntityVisible(e->room->objects[6], mainPlayer->cam)) {
                 bbPositionEntity(Curr173->collider, bbEntityX(e->room->objects[6], true), 0.5, bbEntityZ(e->room->objects[6], true));
                 bbResetEntity(Curr173->collider);
                 RemoveEvent(e);

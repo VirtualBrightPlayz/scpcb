@@ -66,7 +66,7 @@ void UpdateEventRoom3pitduck(Event* e) {
     String strtemp;
     int j;
     int k;
-    int tex;
+    Texture* tex;
 
     Particle* p;
     NPC* n;
@@ -91,7 +91,7 @@ void UpdateEventRoom3pitduck(Event* e) {
             e->room->objects[2] = bbLoadMesh("GFX/npcs/duck_low_res.b3d");
             bbScaleEntity(e->room->objects[2], 0.07, 0.07, 0.07);
             tex = bbLoadTexture("GFX/npcs/duck1.png");
-            bbEntityTexture(e->room->objects[2], tex);
+            bbEntityTexture((MeshModel*)e->room->objects[2], tex);
             bbFreeTexture(tex);
             bbPositionEntity(e->room->objects[2], bbEntityX(e->room->objects[0],true), bbEntityY(e->room->objects[0],true), bbEntityZ(e->room->objects[0],true));
             bbPointEntity(e->room->objects[2], e->room->obj);
@@ -206,12 +206,12 @@ void UpdateEventRoom3pit1048(Event* e) {
                     }
                 }
             } else if ((e->eventState==1)) {
-                Animate2(e->room->objects[2], bbAnimTime(e->room->objects[2]), 414, 543, 0.5, false);
+                Animate2((MeshModel*)e->room->objects[2], bbAnimTime(e->room->objects[2]), 414, 543, 0.5, false);
                 if (bbAnimTime(e->room->objects[2])==543) {
                     e->eventState = 2;
                 }
             } else if ((e->eventState == 2)) {
-                Animate2(e->room->objects[2], bbAnimTime(e->room->objects[2]), 543, 692, 1.0);
+                Animate2((MeshModel*)e->room->objects[2], bbAnimTime(e->room->objects[2]), 543, 692, 1.0);
                 if (bbEntityDistance(mainPlayer->collider, e->room->objects[2])<1.5) {
                     DrawHandIcon = true;
 

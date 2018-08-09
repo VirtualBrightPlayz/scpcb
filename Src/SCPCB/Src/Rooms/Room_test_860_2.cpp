@@ -72,7 +72,7 @@ void FillRoom_test_860_2(Room* r) {
     bbScaleEntity(r->objects[3],46.0*RoomScale,45.0*RoomScale,46.0*RoomScale,true);
     bbEntityParent(r->objects[3],r->obj);
 
-    r->objects[4] = bbCopyMeshModelEntity(r->objects[3]);
+    r->objects[4] = bbCopyMeshModelEntity((MeshModel*)r->objects[3]);
     bbPositionEntity(r->objects[4],r->x + 256.0 * RoomScale,0,r->z-0.05,true);
     bbRotateEntity(r->objects[4], 0,180,0);
     bbScaleEntity(r->objects[4],46.0*RoomScale,45.0*RoomScale,46.0*RoomScale,true);
@@ -334,7 +334,7 @@ void UpdateEvent_test_860_2(Event* e) {
 
 }
 
-int move_forward(int dir, int pathx, int pathy, int retval = 0) {
+int move_forward(int dir, int pathx, int pathy, int retval) {
     //move 1 unit along the grid in the designated direction
     if (dir == 1) {
         if (retval==0) {
@@ -355,7 +355,7 @@ int chance(int chanc) {
     return bbRand(0,100) <= chanc;
 }
 
-int turn_if_deviating(int max_deviation_distance_, int pathx, int center_, int dir, int retval = 0) {
+int turn_if_deviating(int max_deviation_distance_, int pathx, int center_, int dir, int retval) {
     //check if deviating and return the answer. if deviating, turn around
     int current_deviation = center_ - pathx;
     int deviated = false;
@@ -863,14 +863,14 @@ void PlaceForest(Forest* fr, float x, float y, float z, Room* r) {
                 fr->detailEntities[i] = bbCopyMeshModelEntity(fr->detailMesh[5]);
                 bbScaleEntity(fr->detailEntities[i],RoomScale,RoomScale,RoomScale);
 
-                fr->door[i] = bbCopyMeshModelEntity(r->objects[3]);
+                fr->door[i] = bbCopyMeshModelEntity((MeshModel*)r->objects[3]);
                 bbPositionEntity(fr->door[i],72*RoomScale,32.0*RoomScale,0,true);
                 bbRotateEntity(fr->door[i], 0,180,0);
                 bbScaleEntity(fr->door[i],48*RoomScale,45*RoomScale,48*RoomScale,true);
                 bbEntityParent(fr->door[i],fr->detailEntities[i]);
                 //SetAnimTime(fr\door[i], 0)
 
-                frame = bbCopyMeshModelEntity(r->objects[2],fr->door[i]);
+                frame = bbCopyMeshModelEntity((MeshModel*)r->objects[2],fr->door[i]);
                 bbPositionEntity(frame,0,32.0*RoomScale,0,true);
                 bbScaleEntity(frame,48*RoomScale,45*RoomScale,48*RoomScale,true);
                 bbEntityParent(frame,fr->detailEntities[i]);

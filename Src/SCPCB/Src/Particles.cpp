@@ -69,7 +69,7 @@ void LoadParticles() {
     particleList[PARTICLE_HG] = "General/hg.jpg";
 }
 
-Particle* CreateParticle(float x, float y, float z, int image, float size, float gravity = 1.0, int lifetime = 200) {
+Particle* CreateParticle(float x, float y, float z, int image, float size, float gravity, int lifetime) {
     TextureAssetWrap* tex = TextureAssetWrap::grab("GFX/" + particleList[image], 1+2);
     Particle* p = new Particle();
     p->lifetime = lifetime;

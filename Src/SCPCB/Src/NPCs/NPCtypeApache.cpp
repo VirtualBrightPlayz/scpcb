@@ -72,8 +72,8 @@ void InitializeNPCtypeApache(NPC* n) {
 void UpdateNPCtypeApache(NPC* n) {
     float dist2;
     float dist;
-    Pivot* target;
-    Pivot* pvt;
+    Pivot* target = nullptr;
+    Pivot* pvt = nullptr;
 
     if (n->playerDistance<60.0) {
         if (mainPlayer->currRoom->roomTemplate->name.equals("exit1")) {

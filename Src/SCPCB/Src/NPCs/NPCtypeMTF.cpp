@@ -105,19 +105,19 @@ void UpdateNPCtypeMTF(NPC* n) {
     float y;
     float z;
     int tmp;
-    Room* r;
+    Room* r = nullptr;
     float prevDist;
     float newDist;
     int prev;
-    NPC* n2;
+    NPC* n2 = nullptr;
 
-    Particle* p;
-    Pivot* target;
+    Particle* p = nullptr;
+    Pivot* target = nullptr;
     float dist;
     float dist2;
-    WayPoint* wp;
+    WayPoint* wp = nullptr;
     int foundChamber;
-    Pivot* pvt;
+    Pivot* pvt = nullptr;
     int temp;
     float soundVol173;
     float angle;

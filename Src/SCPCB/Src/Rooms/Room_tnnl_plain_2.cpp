@@ -132,7 +132,7 @@ void UpdateEvent682roar(Event* e) {
         if (mainPlayer->currRoom == e->room) {
             e->eventState = 70 * bbRand(300,1000);
         }
-    } else if ((mainPlayer->currRoom->roomTemplate->name != "pocketdimension" & mainPlayer->currRoom->roomTemplate->name != "room860" & mainPlayer->currRoom->roomTemplate->name != "room1123" & mainPlayer->currRoom->roomTemplate->name != "dimension1499")) {
+    } else if (!mainPlayer->currRoom->roomTemplate->name.equals("pocketdimension") && !mainPlayer->currRoom->roomTemplate->name.equals("room860") && !mainPlayer->currRoom->roomTemplate->name.equals("room1123") && !mainPlayer->currRoom->roomTemplate->name.equals("dimension1499")) {
         e->eventState = e->eventState-timing->tickDuration;
 
         if (e->eventState < 17*70) {

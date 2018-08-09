@@ -33,7 +33,7 @@ void FillRoom_hll_caf_2(Room* r) {
     Decal* de;
     Room* r2;
     SecurityCam* sc2;
-    Item* it;
+    Item* it = nullptr;
     int i;
     int xtemp;
     int ytemp;

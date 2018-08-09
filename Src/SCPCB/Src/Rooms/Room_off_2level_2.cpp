@@ -106,7 +106,6 @@ void UpdateEvent_off_2level_2(Event* e) {
         if (e->eventState > 700) {
             if (bbEntityDistance(e->room->doors[0]->obj, mainPlayer->collider)>0.5) {
                 if (bbEntityInView(e->room->doors[0]->obj, mainPlayer->cam)==false) {
-                    DebugLog("%@@ = / {2E6C2==FD gi`h]c");
                     e->room->doors[0]->open = false;
                     RemoveEvent(e);
                 }

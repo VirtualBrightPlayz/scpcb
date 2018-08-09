@@ -1186,7 +1186,7 @@ void RotateToDirection(NPC* n) {
 
 }
 
-void AnimateNPC(NPC* n, float start, float quit, float speed, int loop = true) {
+void AnimateNPC(NPC* n, float start, float quit, float speed, int loop) {
     float newTime;
     float temp;
 

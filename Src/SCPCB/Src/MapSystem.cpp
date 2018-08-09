@@ -1151,7 +1151,7 @@ int FindPath(NPC* n, float x, float y, float z) {
     std::cout << "findpath: "+String(n->npcType);
 
     int temp;
-    Pivot* tempPivot;
+    Pivot* tempPivot = nullptr;
     float dist;
     float dist2;
     float xtemp;
@@ -1159,11 +1159,11 @@ int FindPath(NPC* n, float x, float y, float z) {
     float ztemp;
     float gtemp;
 
-    WayPoint* w;
-    WayPoint* StartPoint;
-    WayPoint* EndPoint;
-    WayPoint* currpoint;
-    WayPoint* twentiethpoint;
+    WayPoint* w = nullptr;
+    WayPoint* StartPoint = nullptr;
+    WayPoint* EndPoint = nullptr;
+    WayPoint* currpoint = nullptr;
+    WayPoint* twentiethpoint = nullptr;
 
     int length = 0;
 

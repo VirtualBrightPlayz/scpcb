@@ -126,7 +126,7 @@ void UpdateEvent_off_l_conf_2(Event* e) {
                     //PlaySound2(HorrorSFX(5))
                 }
             } else {
-                if (bbEntityDistance(mainPlayer->collider, e->room->doors[0]->obj)<1.5) & (RemoteDoorOn) {
+                if (bbEntityDistance(mainPlayer->collider, e->room->doors[0]->obj)<1.5 && RemoteDoorOn) {
                     e->room->doors[0]->open = true;
                 }
             }
