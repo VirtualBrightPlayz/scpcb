@@ -712,9 +712,8 @@ void MouseLook() {
 }
 
 int SpaceInInventory(Player* player) {
-    int itemCount;
-    int i;
-    for (i = WORNITEM_SLOT_COUNT; i <= player->inventory->size-1; i++) {
+    int itemCount = 0;
+    for (int i = WORNITEM_SLOT_COUNT; i <= player->inventory->size-1; i++) {
         if (player->inventory->items[i] != nullptr) {
             itemCount = itemCount + 1;
         }

@@ -113,7 +113,7 @@ void UpdateNPCtypeMTF(NPC* n) {
 
     Particle* p = nullptr;
     Pivot* target = nullptr;
-    float dist;
+    float dist = 0.f;
     float dist2;
     WayPoint* wp = nullptr;
     int foundChamber;
@@ -1785,7 +1785,7 @@ void UpdateMTF() {
 
     Room* r;
     NPC* n;
-    NPC* leader;
+    NPC* leader = nullptr;
     float dist;
     int i;
     Room* entrance;

@@ -319,7 +319,7 @@ void NPCStopAllChannels(NPC* n) {
 
 void TeleportCloser(NPC* n) {
     float closestDist = 0;
-    WayPoint* closestWaypoint;
+    WayPoint* closestWaypoint = nullptr;
     WayPoint* w;
 
     float xtemp;
@@ -780,8 +780,8 @@ void Console_SpawnNPC(String npcName, int state) {
 // TODO: Remove all this.
 void ManipulateNPCBones() {
     NPC* n;
-    Object* bone;
-    Object* bone2;
+    Object* bone = nullptr;
+    Object* bone2 = nullptr;
     Pivot* pvt;
     float pitch;
     float yaw;
@@ -999,7 +999,7 @@ float TransformNPCManipulationData(String NPC, String bone, String section) {
     //         return (float)(value);
     //     }
     // }
-
+    return 0.f;
 }
 
 void NPCSpeedChange(NPC* n) {
