@@ -1,5 +1,13 @@
+#include <bbgraphics.h>
+#include <bbinput.h>
+#include <bbstring.h>
+
 #include "Menu.h"
 #include "../MathUtils/MathUtils.h"
+#include "../GameMain.h"
+#include "../Assets.h"
+#include "../Audio.h"
+#include "../Options.h"
 
 namespace CBN {
 
@@ -69,7 +77,7 @@ String rInput(String aString) {
     } else if (value > 0 & value < 7 || value > 26 & value < 32 || value == 9) {
         return aString;
     } else {
-        aString = aString + bbChr(value);
+        aString = aString + (char)value;
         return aString;
     }
 }
@@ -264,7 +272,7 @@ void RowText(String A, int X, int Y, int W, int H, int align = 0, float Leading 
         //we haven't ignored it yet
         extra = 0;
         //ignore final space If doing so would make a word fit at End of Line:
-        if (bbStringWidth(b + temp) > W) & (bbStringWidth(b + trimmed) <= W) {
+        if (bbStringWidth(b + temp) > W & bbStringWidth(b + trimmed) <= W) {
             temp = trimmed;
             extra = 1;
         }
