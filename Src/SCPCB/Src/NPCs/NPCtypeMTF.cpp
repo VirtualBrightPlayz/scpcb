@@ -1,6 +1,22 @@
+#include <bbblitz3d.h>
+#include <bbaudio.h>
+#include <bbmath.h>
+
+#include "NPCs.h"
+#include "../INI.h"
+#include "../GameMain.h"
+#include "../Events.h"
+#include "../Menus/Menu.h"
+#include "../Audio.h"
+#include "../MapSystem.h"
+#include "../Player.h"
+#include "../MathUtils/MathUtils.h"
+#include "../Difficulty.h"
+#include "../Objects.h"
+#include "../Doors.h"
+#include "../Decals.h"
+#include "../Particles.h"
 #include "NPCtypeMTF.h"
-#include "include.h"
-#include <iostream>
 
 namespace CBN {
 
@@ -38,7 +54,7 @@ void InitializeNPCtypeMTF(NPC* n) {
 
     bbScaleEntity(n->obj, temp, temp, temp);
 
-    MeshCullBox(n->obj, -bbMeshWidth(n->obj), -bbMeshHeight(n->obj), -bbMeshDepth(n->obj), bbMeshWidth(n->obj)*2, bbMeshHeight(n->obj)*2, bbMeshDepth(n->obj)*2);
+    bbMeshCullBox(n->obj, -bbMeshWidth(n->obj), -bbMeshHeight(n->obj), -bbMeshDepth(n->obj), bbMeshWidth(n->obj)*2, bbMeshHeight(n->obj)*2, bbMeshDepth(n->obj)*2);
 
     //TODO; Re-implement with MTF struct.
     //If (MTFSFX(0)=0) Then
@@ -56,29 +72,30 @@ void InitializeNPCtypeMTF(NPC* n) {
         for (int iterator139 = 0; iterator139 < Room::getListSize(); iterator139++) {
             r = Room::getObject(iterator139);
 
-            switch (r->roomTemplate->name.toLower()) {
-                case "room106": {
-                    MTFrooms[0] = r;
-                }
-                case "roompj": {
-                    MTFrooms[1] = r;
-                }
-                case "room079": {
-                    MTFrooms[2] = r;
-                }
-                case "room2poffices": {
-                    MTFrooms[3] = r;
-                }
-                case "914": {
-                    MTFrooms[4] = r;
-                }
-                case "coffin": {
-                    MTFrooms[5] = r;
-                }
-                case "start": {
-                    MTFrooms[6] = r;
-                }
-            }
+            // TODO: Fix
+            // switch (r->roomTemplate->name.toLower()) {
+            //     case "room106": {
+            //         MTFrooms[0] = r;
+            //     }
+            //     case "roompj": {
+            //         MTFrooms[1] = r;
+            //     }
+            //     case "room079": {
+            //         MTFrooms[2] = r;
+            //     }
+            //     case "room2poffices": {
+            //         MTFrooms[3] = r;
+            //     }
+            //     case "914": {
+            //         MTFrooms[4] = r;
+            //     }
+            //     case "coffin": {
+            //         MTFrooms[5] = r;
+            //     }
+            //     case "start": {
+            //         MTFrooms[6] = r;
+            //     }
+            // }
         }
     }
 }
@@ -95,12 +112,12 @@ void UpdateNPCtypeMTF(NPC* n) {
     NPC* n2;
 
     Particle* p;
-    int target;
+    Pivot* target;
     float dist;
     float dist2;
     WayPoint* wp;
     int foundChamber;
-    int pvt;
+    Pivot* pvt;
     int temp;
     float soundVol173;
     float angle;
@@ -148,7 +165,7 @@ void UpdateNPCtypeMTF(NPC* n) {
         }
     } else {
         //what is this MTF doing)
-        switch ((int)(n->state) {
+        switch ((int)(n->state)) {
             case 0: {
                 //[Block]
                 n->speed = 0.015;
@@ -248,7 +265,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                             n->pathLocation = n->pathLocation+1;
                         }
                         if (n->pathLocation<19) {
-                            if (n->path[n->pathLocation]!=nullptr) & (n->path[n->pathLocation+1]!=nullptr) {
+                            if (n->path[n->pathLocation]!=nullptr & n->path[n->pathLocation+1]!=nullptr) {
                                 //If (n\path[n\pathLocation]\door=Null) Then ;TODO: fix?
                                 if (abs(bbDeltaYaw(n->collider,n->path[n->pathLocation]->obj))>abs(bbDeltaYaw(n->collider,n->path[n->pathLocation+1]->obj))) {
                                     n->pathLocation = n->pathLocation+1;
@@ -319,7 +336,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                             //	EndIf
                             //EndIf
 
-                            if (newDist<0.2) | ((prevDist<newDist) & (prevDist<1.0)) {
+                            if (newDist<0.2 | (prevDist<newDist & prevDist<1.0)) {
                                 n->pathLocation = n->pathLocation+1;
                             }
                         }
@@ -399,7 +416,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                             PlayMTFSound(n->sounds[0], n);
                         } else if ((temp == 2)) {
                             //If (n\sounds[0] <> 0) Then FreeSound(n\sounds[0]
-                            n->sounds[0] = 0);
+                            //n->sounds[0] = 0);
                             //n\sounds[0] = MTFSFX(Rand(0,3))
                             //PlayMTFSound(n\sounds[0], n)
                             //PlayMTFSound(MTFSFX(Rand(0,3)),n)
@@ -517,7 +534,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                                 std::cout << "049 spotted :"+String(n->state2);
                                 //If n\mtfLeader=Null
                                 //	If (n\sounds[0] <> 0) Then FreeSound(n\sounds[0]
-                                n->sounds[0] = 0);
+                                //n->sounds[0] = 0);
                                 //	n\sounds[0] = LoadSound("SFX/Character/MTF/"
                                 //	PlayMTFSound(n\sounds[0], n)
                                 //EndIf
@@ -725,7 +742,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                                 //	EndIf
                                 //EndIf
 
-                                if (newDist<0.2) | ((prevDist<newDist) & (prevDist<1.0)) {
+                                if (newDist<0.2 | (prevDist<newDist & prevDist<1.0)) {
                                     n->pathLocation = n->pathLocation+1;
                                 }
                             }
@@ -733,7 +750,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                             n->pathTimer = n->pathTimer-timing->tickDuration;
                         } else {
                             bbPositionEntity(n->obj,n->enemyX,n->enemyY,n->enemyZ,true);
-                            if (Distance(bbEntityX(n->collider,true),bbEntityZ(n->collider,true),n->enemyX,n->enemyZ)<0.2) | (!bbEntityVisible(n->obj,n->collider)) {
+                            if (Distance(bbEntityX(n->collider,true),bbEntityZ(n->collider,true),n->enemyX,n->enemyZ)<0.2 | !bbEntityVisible(n->obj,n->collider)) {
                                 if (bbRand(1,35)==1) {
                                     bbRotateEntity(n->collider,0.0,bbRnd(360.0),0.0,true);
                                 }
@@ -879,7 +896,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                                 std::cout << "049 spotted :"+String(n->state2);
                                 //If n\mtfLeader=Null
                                 //	If (n\sounds[0] <> 0) Then FreeSound(n\sounds[0]
-                                n->sounds[0] = 0);
+                                //n->sounds[0] = 0);
                                 //	n\sounds[0] = LoadSound("SFX/Character/MTF/"
                                 //	PlayMTFSound(n\sounds[0], n)
                                 //EndIf
@@ -1048,7 +1065,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                                     //	EndIf
                                     //EndIf
 
-                                    if (newDist<0.2) | ((prevDist<newDist) & (prevDist<1.0)) {
+                                    if (newDist<0.2 | (prevDist<newDist & prevDist<1.0)) {
                                         n->pathLocation = n->pathLocation+1;
                                     }
                                 }
@@ -1251,7 +1268,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                                 n->pathLocation = n->pathLocation+1;
                             }
                             if (n->pathLocation<19) {
-                                if (n->path[n->pathLocation]!=nullptr) & (n->path[n->pathLocation+1]!=nullptr) {
+                                if (n->path[n->pathLocation]!=nullptr & n->path[n->pathLocation+1]!=nullptr) {
                                     //If (n\path[n\pathLocation]\door=Null) Then ;TODO: fix?
                                     if (abs(bbDeltaYaw(n->collider,n->path[n->pathLocation]->obj))>abs(bbDeltaYaw(n->collider,n->path[n->pathLocation+1]->obj))) {
                                         n->pathLocation = n->pathLocation+1;
@@ -1299,7 +1316,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                                 //	EndIf
                                 //EndIf
 
-                                if (newDist<0.2) | ((prevDist<newDist) & (prevDist<1.0)) {
+                                if (newDist<0.2 | (prevDist<newDist & prevDist<1.0)) {
                                     n->pathLocation = n->pathLocation+1;
                                 }
                             }
@@ -1423,7 +1440,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                     bbMoveEntity(pvt,0.8*0.079, 10.75*0.079, 6.9*0.079);
 
                     p = CreateParticle(bbEntityX(pvt), bbEntityY(pvt), bbEntityZ(pvt), PARTICLE_FLASH, bbRnd(0.08,0.1), 0.0, 5);
-                    bbTurnEntity(p->obj, 0,0,bbRnd(360));
+                    bbTurnEntity(p->sprite, 0,0,bbRnd(360));
                     p->aChange = -0.15;
 
                     bbFreeEntity(pvt);
@@ -1468,7 +1485,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                             n->pathLocation = n->pathLocation+1;
                         }
                         if (n->pathLocation<19) {
-                            if (n->path[n->pathLocation]!=nullptr) & (n->path[n->pathLocation+1]!=nullptr) {
+                            if (n->path[n->pathLocation]!=nullptr & n->path[n->pathLocation+1]!=nullptr) {
                                 //If (n\path[n\pathLocation]\door=Null) Then ;TODO: fix?
                                 if (abs(bbDeltaYaw(n->collider,n->path[n->pathLocation]->obj))>abs(bbDeltaYaw(n->collider,n->path[n->pathLocation+1]->obj))) {
                                     n->pathLocation = n->pathLocation+1;
@@ -1537,7 +1554,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                             //	EndIf
                             //EndIf
 
-                            if (newDist<0.2) | ((prevDist<newDist) & (prevDist<1.0)) {
+                            if (newDist<0.2 | (prevDist<newDist & prevDist<1.0)) {
                                 n->pathLocation = n->pathLocation+1;
                             }
                         }
@@ -1618,7 +1635,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                             bbMoveEntity(pvt,0.8*0.079, 10.75*0.079, 6.9*0.079);
 
                             p = CreateParticle(bbEntityX(pvt), bbEntityY(pvt), bbEntityZ(pvt), PARTICLE_FLASH, bbRnd(0.08,0.1), 0.0, 5);
-                            bbTurnEntity(p->obj, 0,0,bbRnd(360));
+                            bbTurnEntity(p->sprite, 0,0,bbRnd(360));
                             p->aChange = -0.15;
                             if (n->target->hp > 0) {
                                 n->target->hp = (int)(Max(n->target->hp-bbRand(5,10),0));
@@ -1652,7 +1669,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                                 n->pathLocation = n->pathLocation+1;
                             }
                             if (n->pathLocation<19) {
-                                if (n->path[n->pathLocation]!=nullptr) & (n->path[n->pathLocation+1]!=nullptr) {
+                                if (n->path[n->pathLocation]!=nullptr & n->path[n->pathLocation+1]!=nullptr) {
                                     //If (n\path[n\pathLocation]\door=Null) Then ;TODO: fix
                                     if (abs(bbDeltaYaw(n->collider,n->path[n->pathLocation]->obj))>abs(bbDeltaYaw(n->collider,n->path[n->pathLocation+1]->obj))) {
                                         n->pathLocation = n->pathLocation+1;
@@ -1696,7 +1713,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                                 //	EndIf
                                 //EndIf
 
-                                if (newDist<0.2) | ((prevDist<newDist) & (prevDist<1.0)) {
+                                if (newDist<0.2 | (prevDist<newDist & prevDist<1.0)) {
                                     n->pathLocation = n->pathLocation+1;
                                 }
                             }
@@ -1775,7 +1792,7 @@ void UpdateMTF() {
 
     //mtf ei vielä spawnannut, spawnataan jos pelaaja menee tarpeeksi lähelle gate b:tä
     if (MTFtimer == 0) {
-        if (bbRand(30)==1 & mainPlayer->currRoom->roomTemplate->name != "dimension1499") {
+        if (bbRand(30)==1 & !mainPlayer->currRoom->roomTemplate->name.equals("dimension1499")) {
 
             entrance = nullptr;
             for (int iterator150 = 0; iterator150 < Room::getListSize(); iterator150++) {

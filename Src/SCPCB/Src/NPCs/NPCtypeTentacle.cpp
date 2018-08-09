@@ -1,5 +1,22 @@
+#include <bbblitz3d.h>
+#include <bbaudio.h>
+#include <bbmath.h>
+
+#include "NPCs.h"
+#include "../INI.h"
+#include "../GameMain.h"
+#include "../Events.h"
+#include "../Menus/Menu.h"
+#include "../Audio.h"
+#include "../MapSystem.h"
+#include "../Player.h"
+#include "../Items/Items.h"
+#include "../MathUtils/MathUtils.h"
+#include "../Difficulty.h"
+#include "../Objects.h"
+#include "../Doors.h"
+#include "../Decals.h"
 #include "NPCtypeTentacle.h"
-#include "include.h"
 
 namespace CBN {
 
@@ -34,7 +51,7 @@ void InitializeNPCtypeTentacle(NPC* n) {
 void UpdateNPCtypeTentacle(NPC* n) {
     if (n->playerDistance < 8.0) {
 
-        switch (n->state) {
+        switch ((int)n->state) {
             case 0: {
 
                 if (n->frame>283) {

@@ -1,5 +1,20 @@
+#include <bbblitz3d.h>
+#include <bbaudio.h>
+#include <bbmath.h>
+
+#include "NPCs.h"
+#include "../INI.h"
+#include "../GameMain.h"
+#include "../Events.h"
+#include "../Menus/Menu.h"
+#include "../Audio.h"
+#include "../MapSystem.h"
+#include "../Player.h"
+#include "../MathUtils/MathUtils.h"
+#include "../Difficulty.h"
+#include "../Objects.h"
+#include "../Doors.h"
 #include "NPCtype049.h"
-#include "include.h"
 
 namespace CBN {
 
@@ -53,7 +68,7 @@ void UpdateNPCtype049(NPC* n) {
         }
     }
 
-    switch (n->state) {
+    switch ((int)n->state) {
         case STATE049_IDLE: {
             //Idle animation.
             AnimateNPC(n, 231, 344, 0.31, true);

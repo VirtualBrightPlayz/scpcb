@@ -1,6 +1,23 @@
+#include <bbblitz3d.h>
+#include <bbaudio.h>
+#include <bbmath.h>
+#include <bbstring.h>
+
+#include "NPCs.h"
+#include "../INI.h"
+#include "../GameMain.h"
+#include "../Events.h"
+#include "../Menus/Menu.h"
+#include "../Audio.h"
+#include "../MapSystem.h"
+#include "../Player.h"
+#include "../MathUtils/MathUtils.h"
+#include "../Difficulty.h"
+#include "../Objects.h"
+#include "../Doors.h"
+#include "../Decals.h"
+#include "../Particles.h"
 #include "NPCtype173.h"
-#include "include.h"
-#include <iostream>
 
 namespace CBN {
 
@@ -24,7 +41,7 @@ void InitializeNPCtype173(NPC* n) {
     n->obj = bbLoadMesh("GFX/NPCs/scp173/173.b3d");
 
     //On Halloween set jack-o-latern texture.
-    int texFestive;
+    Texture* texFestive;
     if (bbCurrentDate().substr(0, 6).equals("31 Oct")) {
         HalloweenTex = true;
         texFestive = bbLoadTexture("GFX/NPCs/scp173/173h.png", 1);
@@ -75,7 +92,7 @@ void UpdateNPCtype173(NPC* n) {
     }
 
     float dist;
-    switch (n->state) {
+    switch ((int)n->state) {
         case STATE173_ATTACK: {
             dist = bbEntityDistance(n->collider, mainPlayer->collider);
             bbPositionEntity(n->obj, bbEntityX(n->collider), bbEntityY(n->collider) - 0.32, bbEntityZ(n->collider));
@@ -200,23 +217,23 @@ void UpdateNPCtype173(NPC* n) {
                     if (playerVisible) {
                         if (dist < 0.65) {
                             if ((!mainPlayer->dead) && (!mainPlayer->godMode)) {
-
-                                switch (mainPlayer->currRoom->roomTemplate->name) {
-                                    case "lockroom", "room2closets", "coffin": {
-                                        DeathMSG = "Subject D-9341. Cause of death: Fatal cervical fracture. The surveillance tapes confirm that the subject was killed by SCP-173.";
-                                    }
-                                    case "173": {
-                                        DeathMSG = "Subject D-9341. Cause of death: Fatal cervical fracture. According to Security Chief Franklin who was present at SCP-173's containment ";
-                                        DeathMSG = DeathMSG + "chamber during the breach, the subject was killed by SCP-173 as soon as the disruptions in the electrical network started.";
-                                    }
-                                    case "room2doors": {
-                                        DeathMSG = "\"If I'm not mistaken, one of the main purposes of these rooms was to stop SCP-173 from moving further in the event of a containment breach. ";
-                                        DeathMSG = DeathMSG + "So, who's brilliant idea was it to put A GODDAMN MAN-SIZED VENTILATION DUCT in there?\"";
-                                    }
-                                    default: {
-                                        DeathMSG = "Subject D-9341. Cause of death: Fatal cervical fracture. Assumed to be attacked by SCP-173.";
-                                    }
-                                }
+                                // TODO: Fix.
+                                // switch (mainPlayer->currRoom->roomTemplate->name) {
+                                //     case "lockroom", "room2closets", "coffin": {
+                                //         DeathMSG = "Subject D-9341. Cause of death: Fatal cervical fracture. The surveillance tapes confirm that the subject was killed by SCP-173.";
+                                //     }
+                                //     case "173": {
+                                //         DeathMSG = "Subject D-9341. Cause of death: Fatal cervical fracture. According to Security Chief Franklin who was present at SCP-173's containment ";
+                                //         DeathMSG = DeathMSG + "chamber during the breach, the subject was killed by SCP-173 as soon as the disruptions in the electrical network started.";
+                                //     }
+                                //     case "room2doors": {
+                                //         DeathMSG = "\"If I'm not mistaken, one of the main purposes of these rooms was to stop SCP-173 from moving further in the event of a containment breach. ";
+                                //         DeathMSG = DeathMSG + "So, who's brilliant idea was it to put A GODDAMN MAN-SIZED VENTILATION DUCT in there?\"";
+                                //     }
+                                //     default: {
+                                //         DeathMSG = "Subject D-9341. Cause of death: Fatal cervical fracture. Assumed to be attacked by SCP-173.";
+                                //     }
+                                // }
 
                                 n->state = STATE173_IDLE;
 

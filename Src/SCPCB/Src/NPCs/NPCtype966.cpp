@@ -1,5 +1,23 @@
+#include <bbblitz3d.h>
+#include <bbaudio.h>
+#include <bbmath.h>
+
+#include "NPCs.h"
+#include "../INI.h"
+#include "../GameMain.h"
+#include "../Events.h"
+#include "../Menus/Menu.h"
+#include "../Audio.h"
+#include "../MapSystem.h"
+#include "../Player.h"
+#include "../MathUtils/MathUtils.h"
+#include "../Difficulty.h"
+#include "../Objects.h"
+#include "../Doors.h"
+#include "../Decals.h"
+#include "../Particles.h"
+#include "../Items/Items.h"
 #include "NPCtype966.h"
-#include "include.h"
 
 namespace CBN {
 
@@ -133,7 +151,7 @@ void UpdateNPCtype966(NPC* n) {
             n->lastSeen = 0;
         }
 
-        switch (n->state) {
+        switch ((int)n->state) {
             case 0: {
                 if (n->frame>2300.0) {
                     AnimateNPC(n, 2391, 2416, 1.0, false);
@@ -164,7 +182,8 @@ void UpdateNPCtype966(NPC* n) {
 
                 //echo
             }
-            case 1,2: {
+            case 1:
+            case 2: {
                 if (n->state==1) {
                     AnimateNPC(n, 1015, 1180, 1.0, false);
                     if (n->frame > 1179.0) {
@@ -217,7 +236,8 @@ void UpdateNPCtype966(NPC* n) {
 
                 //stare at player
             }
-            case 3,4: {
+            case 3:
+            case 4: {
                 if (n->state==3) {
                     AnimateNPC(n, 1379.0, 1692.0, 1.0, false);
 
@@ -240,7 +260,9 @@ void UpdateNPCtype966(NPC* n) {
                 bbRotateEntity(n->collider,0.0,CurveAngle(angle,bbEntityYaw(n->collider),20.0),0.0);
                 //walking or chasing
             }
-            case 5,6,8: {
+            case 5:
+            case 6:
+            case 8: {
                 //start walking
                 if (n->frame<2343.0) {
                     AnimateNPC(n, 2319, 2343, 0.5, false);

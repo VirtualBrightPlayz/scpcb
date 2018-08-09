@@ -1,5 +1,21 @@
+#include <bbblitz3d.h>
+#include <bbaudio.h>
+#include <bbmath.h>
+
+#include "NPCs.h"
+#include "../INI.h"
+#include "../GameMain.h"
+#include "../Events.h"
+#include "../Menus/Menu.h"
+#include "../Audio.h"
+#include "../MapSystem.h"
+#include "../Player.h"
+#include "../MathUtils/MathUtils.h"
+#include "../Difficulty.h"
+#include "../Objects.h"
+#include "../Doors.h"
+#include "../Decals.h"
 #include "NPCtype066.h"
-#include "include.h"
 
 namespace CBN {
 
@@ -23,7 +39,7 @@ void UpdateNPCtype066(NPC* n) {
     Door* d;
     float angle;
 
-    switch (n->state) {
+    switch ((int)n->state) {
         case 0: {
             //idle: moves around randomly from waypoint to another if the player is far enough
             //starts staring at the player when the player is close enough

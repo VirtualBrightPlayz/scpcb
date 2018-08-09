@@ -1,5 +1,21 @@
+#include <bbblitz3d.h>
+#include <bbaudio.h>
+#include <bbmath.h>
+
+#include "NPCs.h"
+#include "../INI.h"
+#include "../GameMain.h"
+#include "../Events.h"
+#include "../Menus/Menu.h"
+#include "../Audio.h"
+#include "../MapSystem.h"
+#include "../Player.h"
+#include "../MathUtils/MathUtils.h"
+#include "../Difficulty.h"
+#include "../Objects.h"
+#include "../Doors.h"
+#include "../Decals.h"
 #include "NPCtypeZombie.h"
-#include "include.h"
 
 namespace CBN {
 
@@ -27,7 +43,7 @@ void InitializeNPCtypeZombie(NPC* n) {
         temp = (GetINIFloat("Data/NPCs.ini", "SCP-049-2", "scale") / 2.5);
         bbScaleEntity(n->obj, temp, temp, temp);
 
-        MeshCullBox (n->obj, -bbMeshWidth(n->obj), -bbMeshHeight(n->obj), -bbMeshDepth(n->obj), bbMeshWidth(n->obj)*2, bbMeshHeight(n->obj)*2, bbMeshDepth(n->obj)*2);
+        bbMeshCullBox(n->obj, -bbMeshWidth(n->obj), -bbMeshHeight(n->obj), -bbMeshDepth(n->obj), bbMeshWidth(n->obj)*2, bbMeshHeight(n->obj)*2, bbMeshDepth(n->obj)*2);
     }
 
     n->speed = (GetINIFloat("Data/NPCs.ini", "SCP-049-2", "speed") / 100.0);
@@ -44,7 +60,7 @@ void UpdateNPCtypeZombie(NPC* n) {
 
     if (abs(bbEntityY(mainPlayer->collider)-bbEntityY(n->collider))<4.0) {
         if (!n->isDead) {
-            switch (n->state) {
+            switch ((int)n->state) {
                 case 0: {
                     AnimateNPC(n, 719, 777, 0.2, false);
 

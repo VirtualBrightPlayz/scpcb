@@ -1,5 +1,22 @@
+#include <bbblitz3d.h>
+#include <bbaudio.h>
+#include <bbmath.h>
+
+#include "NPCs.h"
+#include "../INI.h"
+#include "../GameMain.h"
+#include "../Events.h"
+#include "../Menus/Menu.h"
+#include "../Audio.h"
+#include "../MapSystem.h"
+#include "../Player.h"
+#include "../MathUtils/MathUtils.h"
+#include "../Difficulty.h"
+#include "../Objects.h"
+#include "../Doors.h"
+#include "../Decals.h"
+#include "../Particles.h"
 #include "NPCtypeGuard.h"
-#include "include.h"
 
 namespace CBN {
 
@@ -30,14 +47,14 @@ void InitializeNPCtypeGuard(NPC* n) {
 void UpdateNPCtypeGuard(NPC* n) {
     float dist;
 
-    int head;
+    Object* head;
     float headangle;
-    int pvt;
+    Pivot* pvt;
     Particle* p;
 
     float prevFrame = n->frame;
 
-    switch (n->state) {
+    switch ((int)n->state) {
         case STATEGUARD_LOOK: {
             head = bbFindChild(n->obj,"head");
             headangle = bbEntityYaw(head);

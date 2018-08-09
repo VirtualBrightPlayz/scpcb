@@ -1,6 +1,24 @@
+#include <bbblitz3d.h>
+#include <bbaudio.h>
+#include <bbmath.h>
+
+#include "NPCs.h"
+#include "../INI.h"
+#include "../GameMain.h"
+#include "../Events.h"
+#include "../Menus/Menu.h"
+#include "../Audio.h"
+#include "../MapSystem.h"
+#include "../Player.h"
+#include "../MathUtils/MathUtils.h"
+#include "../Difficulty.h"
+#include "../Objects.h"
+#include "../Doors.h"
+#include "../Decals.h"
+#include "../Particles.h"
+#include "../Assets.h"
+#include "../Rooms/Room_test_860_2.h"
 #include "NPCtype860.h"
-#include "include.h"
-#include <iostream>
 
 namespace CBN {
 
@@ -15,23 +33,24 @@ void InitializeNPCtype860(NPC* n) {
 
     bbEntityFX(n->obj, 1);
 
-    int tex = bbLoadTexture("GFX/NPCs/scp860/860_eyes.png",1+2);
+    // TODO: Re-implement.
+    // Texture* tex = bbLoadTexture("GFX/NPCs/scp860/860_eyes.png",1+2);
 
-    n->obj2 = bbCreateSprite();
-    bbScaleSprite(n->obj2, 0.1, 0.1);
-    bbEntityTexture(n->obj2, tex);
-    bbFreeTexture(tex);
+    // n->obj2 = bbCreateSprite();
+    // bbScaleSprite(n->obj2, 0.1, 0.1);
+    // bbEntityTexture(n->obj2, tex);
+    // bbFreeTexture(tex);
 
     bbEntityFX(n->obj2, 1 + 8);
     bbEntityBlend(n->obj2, BLEND_ADD);
-    bbSpriteViewMode(n->obj2, 2);
+    //bbSpriteViewMode(n->obj2, 2);
 
     n->speed = (GetINIFloat("Data/NPCs.ini", "forestmonster", "speed") / 100.0);
 
     float temp = (GetINIFloat("Data/NPCs.ini", "forestmonster", "scale") / 20.0);
     bbScaleEntity(n->obj, temp, temp, temp);
 
-    MeshCullBox (n->obj, -bbMeshWidth(n->obj)*2, -bbMeshHeight(n->obj)*2, -bbMeshDepth(n->obj)*2, bbMeshWidth(n->obj)*2, bbMeshHeight(n->obj)*4, bbMeshDepth(n->obj)*4);
+    bbMeshCullBox(n->obj, -bbMeshWidth(n->obj)*2, -bbMeshHeight(n->obj)*2, -bbMeshDepth(n->obj)*2, bbMeshWidth(n->obj)*2, bbMeshHeight(n->obj)*4, bbMeshDepth(n->obj)*4);
 }
 
 void UpdateNPCtype860(NPC* n) {
@@ -39,7 +58,7 @@ void UpdateNPCtype860(NPC* n) {
     int z;
     int x2;
     int z2;
-    int pvt;
+    Pivot* pvt;
     int prevFrame;
     float angle;
     int temp;
@@ -49,7 +68,7 @@ void UpdateNPCtype860(NPC* n) {
         //Object.Forest(e\room\objects[1])
         fr = mainPlayer->currRoom->fr;
 
-        switch (n->state) {
+        switch ((int)n->state) {
             case 0: {
 
                 bbHideEntity(n->collider);
@@ -264,7 +283,7 @@ void UpdateNPCtype860(NPC* n) {
                 }
 
                 //535, 568
-                if (prevFrame < 533 & n->frame>=533) | (prevFrame > 568 & n->frame<2) {
+                if (prevFrame < 533 & n->frame>=533 | prevFrame > 568 & n->frame<2) {
                     PlayRangedSound(sndManager->footstep8601[bbRand(0, 2)]->internal, mainPlayer->cam, n->collider, 15.0, 0.6);
                 }
 

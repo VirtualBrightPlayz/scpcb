@@ -1,5 +1,23 @@
+#include <bbblitz3d.h>
+#include <bbaudio.h>
+#include <bbmath.h>
+
+#include "NPCs.h"
+#include "../INI.h"
+#include "../GameMain.h"
+#include "../Events.h"
+#include "../Menus/Menu.h"
+#include "../Audio.h"
+#include "../MapSystem.h"
+#include "../Player.h"
+#include "../MathUtils/MathUtils.h"
+#include "../Difficulty.h"
+#include "../Objects.h"
+#include "../Doors.h"
+#include "../Decals.h"
+#include "../Particles.h"
+#include "../Items/Items.h"
 #include "NPCtype939.h"
-#include "include.h"
 
 namespace CBN {
 
@@ -64,13 +82,13 @@ void UpdateNPCtype939(NPC* n) {
     int temp;
     float angle;
 
-    if (mainPlayer->currRoom->roomTemplate->name != "room3storage") {
+    if (!mainPlayer->currRoom->roomTemplate->name.equals("room3storage")) {
         n->state = 66;
     }
 
     //state is set to 66 in the room3storage-event if player isn't inside the room
     if (n->state < 66) {
-        switch (n->state) {
+        switch ((int)n->state) {
             case 0: {
                 AnimateNPC(n, 290,405,0.1);
 
@@ -120,7 +138,7 @@ void UpdateNPCtype939(NPC* n) {
                 //prevFrame = AnimTime(n\obj)
                 //Animate2(n\obj,AnimTime(n\obj),644,683,28*n\currSpeed) ;walk
 
-                if (prevFrame<664 & n->frame>=664) | (prevFrame>673 & n->frame<654) {
+                if (prevFrame<664 & n->frame>=664 | prevFrame>673 & n->frame<654) {
                     PlayRangedSound(sndManager->footstepMetal[bbRand(0,7)]->internal, mainPlayer->cam, n->collider, 12.0);
                     if (bbRand(10)==1) {
                         temp = false;
@@ -205,7 +223,7 @@ void UpdateNPCtype939(NPC* n) {
                             AnimateNPC(n, 449,464,6*n->currSpeed);
                             //Animate2(n\obj,AnimTime(n\obj),449,464,6*n\currSpeed) ;run
 
-                            if (prevFrame<452 & n->frame>=452) | (prevFrame<459 & n->frame>=459) {
+                            if (prevFrame<452 & n->frame>=452 | prevFrame<459 & n->frame>=459) {
                                 PlayRangedSound(sndManager->footstepMetalRun[bbRand(0,7)]->internal, mainPlayer->cam, n->collider, 12.0);
                             }
 

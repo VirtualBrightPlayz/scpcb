@@ -1,5 +1,22 @@
+#include <bbblitz3d.h>
+#include <bbaudio.h>
+#include <bbmath.h>
+
+#include "NPCs.h"
+#include "../INI.h"
+#include "../GameMain.h"
+#include "../Events.h"
+#include "../Menus/Menu.h"
+#include "../Audio.h"
+#include "../MapSystem.h"
+#include "../Player.h"
+#include "../MathUtils/MathUtils.h"
+#include "../Difficulty.h"
+#include "../Objects.h"
+#include "../Doors.h"
+#include "../Decals.h"
+#include "../Particles.h"
 #include "NPCtypeApache.h"
-#include "include.h"
 
 namespace CBN {
 
@@ -15,7 +32,7 @@ void InitializeNPCtypeApache(NPC* n) {
     for (int iterator136 = 0; iterator136 < NPC::getListSize(); iterator136++) {
         n2 = NPC::getObject(iterator136);
 
-        if (n->npcType == n2->npcType) & (n != n2) {
+        if (n->npcType == n2->npcType & n != n2) {
             n->obj = bbCopyMeshModelEntity(n2->obj);
             n->obj2 = bbCopyMeshModelEntity(n2->obj2);
             n->obj3 = bbCopyMeshModelEntity(n2->obj3);
@@ -36,7 +53,7 @@ void InitializeNPCtypeApache(NPC* n) {
     n->sounds[1] = bbLoadSound("SFX/Character/Apache/Alarm.ogg");
 
     int i;
-    int rotor2;
+    MeshModel* rotor2;
     for (i = -1; i <= 1; i += 2) {
         rotor2 = bbCopyMeshModelEntity(n->obj2,n->obj2);
         bbRotateEntity(rotor2,0,4.0*i,0);
@@ -55,8 +72,8 @@ void InitializeNPCtypeApache(NPC* n) {
 void UpdateNPCtypeApache(NPC* n) {
     float dist2;
     float dist;
-    int target;
-    int pvt;
+    Pivot* target;
+    Pivot* pvt;
 
     if (n->playerDistance<60.0) {
         if (mainPlayer->currRoom->roomTemplate->name.equals("exit1")) {
@@ -70,8 +87,9 @@ void UpdateNPCtypeApache(NPC* n) {
 
     n->dropSpeed = 0;
 
-    switch (n->state) {
-        case 0,1: {
+    switch ((int)n->state) {
+        case 0:
+        case 1: {
             bbTurnEntity(n->obj2,0,20.0*timing->tickDuration,0);
             bbTurnEntity(n->obj3,20.0*timing->tickDuration,0,0);
 
@@ -91,7 +109,8 @@ void UpdateNPCtypeApache(NPC* n) {
             }
             //player located -> attack
         }
-        case 2,3: {
+        case 2:
+        case 3: {
 
             if (n->state == 2) {
                 target = mainPlayer->collider;
@@ -152,7 +171,7 @@ void UpdateNPCtypeApache(NPC* n) {
 
                                         DeathMSG = "\"CH-2 to control. Shot down a runaway Class D at Gate B.\"";
 
-                                        Shoot( EntityX(pvt),EntityY(pvt), EntityZ(pvt),((10/dist)*(1/dist))*(n->state = 2),(n->state==2));
+                                        Shoot(bbEntityX(pvt),bbEntityY(pvt), bbEntityZ(pvt),((10/dist)*(1/dist))*(n->state = 2),(n->state==2));
 
                                         n->reload = 5;
                                     }
@@ -197,7 +216,7 @@ void UpdateNPCtypeApache(NPC* n) {
                 if (bbEntityDistance(n->obj, target) <0.3) {
                     //TODO:
                     //                    If (TempSound2 <> 0) Then FreeSound(TempSound2
-                    TempSound2 = 0);
+                    //TempSound2 = 0);
                     //                    TempSound2 = LoadSound("SFX/Character/Apache/Crash"+Rand(1,2)+".ogg")
                     //                    mainPlayer\camShake = Max(mainPlayer\camShake, 3.0)
                     //                    PlaySound2(TempSound2)

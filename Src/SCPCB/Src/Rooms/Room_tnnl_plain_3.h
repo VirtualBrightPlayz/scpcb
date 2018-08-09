@@ -5,7 +5,7 @@
 namespace CBN {
 
 // Functions.
-void FillRoom_tnnl_plain_3(struct Event* r);
+void FillRoom_tnnl_plain_3(struct Room* r);
 
 void UpdateEvent_tnnl_plain_3(struct Event* e);
 

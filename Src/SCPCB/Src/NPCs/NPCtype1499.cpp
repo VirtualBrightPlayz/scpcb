@@ -1,5 +1,22 @@
+#include <bbblitz3d.h>
+#include <bbaudio.h>
+#include <bbmath.h>
+
+#include "NPCs.h"
+#include "../INI.h"
+#include "../GameMain.h"
+#include "../Events.h"
+#include "../Menus/Menu.h"
+#include "../Audio.h"
+#include "../MapSystem.h"
+#include "../Player.h"
+#include "../MathUtils/MathUtils.h"
+#include "../Difficulty.h"
+#include "../Objects.h"
+#include "../Doors.h"
+#include "../Decals.h"
+#include "../Particles.h"
 #include "NPCtype1499.h"
-#include "include.h"
 
 namespace CBN {
 
@@ -54,7 +71,7 @@ void UpdateNPCtype1499(NPC* n) {
             }
         }
 
-        switch (n->state) {
+        switch ((int)n->state) {
             case 0: {
                 if (n->currSpeed == 0.0) {
                     if (n->state2 < 500.0*bbRnd(1,3)) {
@@ -114,7 +131,7 @@ void UpdateNPCtype1499(NPC* n) {
                     }
                 }
 
-                if (n->id % 2 == 0) & (!NoTarget) {
+                if (n->id % 2 == 0 & !NoTarget) {
                     if (n->playerDistance < 10.0) {
                         if (bbEntityVisible(n->collider,mainPlayer->collider)) {
                             //play the "screaming animation"

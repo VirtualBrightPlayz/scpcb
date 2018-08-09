@@ -1,5 +1,22 @@
+#include <bbblitz3d.h>
+#include <bbaudio.h>
+#include <bbmath.h>
+
+#include "NPCs.h"
+#include "../INI.h"
+#include "../GameMain.h"
+#include "../Events.h"
+#include "../Menus/Menu.h"
+#include "../Audio.h"
+#include "../MapSystem.h"
+#include "../Player.h"
+#include "../MathUtils/MathUtils.h"
+#include "../Difficulty.h"
+#include "../Objects.h"
+#include "../Doors.h"
+#include "../Decals.h"
+#include "../Particles.h"
 #include "NPCtype106.h"
-#include "include.h"
 
 namespace CBN {
 
@@ -44,19 +61,20 @@ void InitializeNPCtype106(NPC* n) {
     float temp = (GetINIFloat("Data/NPCs.ini", "SCP-106", "scale") / 2.2);
     bbScaleEntity(n->obj, temp, temp, temp);
 
-    int oldManEyes = bbLoadTexture("GFX/NPCs/scp106/oldmaneyes.jpg");
+    // TODO: Re-implement.
+    // Texture* oldManEyes = bbLoadTexture("GFX/NPCs/scp106/oldmaneyes.jpg");
 
-    n->speed = (GetINIFloat("Data/NPCs.ini", "SCP-106", "speed") / 100.0);
+    // n->speed = (GetINIFloat("Data/NPCs.ini", "SCP-106", "speed") / 100.0);
 
-    n->obj2 = bbCreateSprite();
-    bbScaleSprite(n->obj2, 0.03, 0.03);
-    bbEntityTexture(n->obj2, oldManEyes);
-    bbEntityBlend(n->obj2, BLEND_ADD);
-    //Full-bright + no fog.
-    bbEntityFX(n->obj2, 1 + 8);
-    bbSpriteViewMode(n->obj2, 2);
+    // n->obj2 = bbCreateSprite();
+    // bbScaleSprite(n->obj2, 0.03, 0.03);
+    // bbEntityTexture(n->obj2, oldManEyes);
+    // bbEntityBlend(n->obj2, BLEND_ADD);
+    // //Full-bright + no fog.
+    // bbEntityFX(n->obj2, 1 + 8);
+    // bbSpriteViewMode(n->obj2, 2);
 
-    bbFreeTexture(oldManEyes);
+    // bbFreeTexture(oldManEyes);
 
     n->sounds[0] = bbLoadSound("SFX/SCP/106/Spawn.ogg");
     n->sounds[1] = bbLoadSound("SFX/SCP/106/Breathing.ogg");
@@ -78,7 +96,7 @@ void UpdateNPCtype106(NPC* n) {
 
     Decal* de;
 
-    switch (n->state) {
+    switch ((int)n->state) {
         case STATE106_RISE: {
             if (mainPlayer->currRoom->roomTemplate->name.equals("dimension1499")) {
                 return;
@@ -171,7 +189,7 @@ void UpdateNPCtype106(NPC* n) {
                 AnimateNPC(n, 284, 333, n->currSpeed * 43);
 
                 //Footstep sounds.
-                if (prevFrame <= 286 & n->frame > 286) | (prevFrame<=311 & n->frame > 311.0) {
+                if (prevFrame <= 286 & n->frame > 286 | prevFrame<=311 & n->frame > 311.0) {
                     PlayRangedSound(sndManager->footstepPD[bbRand(0, 2)]->internal, mainPlayer->cam, n->collider, 6.0, bbRnd(0.8,1.0));
                 }
 

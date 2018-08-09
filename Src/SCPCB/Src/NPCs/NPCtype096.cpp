@@ -1,5 +1,23 @@
+#include <bbblitz3d.h>
+#include <bbaudio.h>
+#include <bbmath.h>
+
+#include "NPCs.h"
+#include "../INI.h"
+#include "../GameMain.h"
+#include "../Events.h"
+#include "../Menus/Menu.h"
+#include "../Audio.h"
+#include "../MapSystem.h"
+#include "../Player.h"
+#include "../MathUtils/MathUtils.h"
+#include "../Difficulty.h"
+#include "../Objects.h"
+#include "../Doors.h"
+#include "../Decals.h"
+#include "../Particles.h"
+#include "../Options.h"
 #include "NPCtype096.h"
-#include "include.h"
 
 namespace CBN {
 
@@ -17,17 +35,17 @@ void InitializeNPCtype096(NPC* n) {
     float temp = (GetINIFloat("Data/NPCs.ini", "SCP-096", "scale") / 3.0);
     bbScaleEntity(n->obj, temp, temp, temp);
 
-    MeshCullBox (n->obj, -bbMeshWidth(n->obj)*2, -bbMeshHeight(n->obj)*2, -bbMeshDepth(n->obj)*2, bbMeshWidth(n->obj)*2, bbMeshHeight(n->obj)*4, bbMeshDepth(n->obj)*4);
+    bbMeshCullBox(n->obj, -bbMeshWidth(n->obj)*2, -bbMeshHeight(n->obj)*2, -bbMeshDepth(n->obj)*2, bbMeshWidth(n->obj)*2, bbMeshHeight(n->obj)*4, bbMeshDepth(n->obj)*4);
 }
 
 void UpdateNPCtype096(NPC* n) {
     float angle;
     int i;
-    int pvt;
+    Pivot* pvt;
     Decal* de;
     float dist2;
 
-    switch (n->state) {
+    switch ((int)n->state) {
         case 0: {
             if (n->playerDistance < 8.0) {
                 if (n->sounds[0] == 0) {
@@ -264,7 +282,9 @@ void UpdateNPCtype096(NPC* n) {
 
 
         }
-        case 1,2,3: {
+        case 1:
+        case 2:
+        case 3: {
             if (n->sounds[0] == 0) {
                 n->sounds[0] = bbLoadSound("SFX/Music/096Angered.ogg");
             } else {
