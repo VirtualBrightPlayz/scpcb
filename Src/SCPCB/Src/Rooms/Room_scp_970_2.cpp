@@ -1,6 +1,22 @@
+#include <bbblitz3d.h>
+#include <bbmath.h>
+#include <bbgraphics.h>
+#include <bbaudio.h>
+
+#include "../GameMain.h"
+#include "../MapSystem.h"
+#include "../Doors.h"
+#include "../Items/Items.h"
+#include "../Decals.h"
+#include "../Particles.h"
+#include "../Events.h"
+#include "../Player.h"
+#include "../NPCs/NPCs.h"
+#include "../Audio.h"
+#include "../MathUtils/MathUtils.h"
+#include "../Menus/Menu.h"
+#include "../Objects.h"
 #include "Room_scp_970_2.h"
-#include "include.h"
-#include <iostream>
 
 namespace CBN {
 
@@ -189,7 +205,8 @@ void UpdateEvent_scp_970_2(Event* e) {
                 }
             }
 
-            switch (e->eventState) {
+            // FIXME
+            switch ((int)e->eventState) {
                 case 2: {
                     i = bbRand(mainPlayer->inventory->size);
                     if (mainPlayer->inventory->items[i]!=nullptr) {
@@ -205,12 +222,12 @@ void UpdateEvent_scp_970_2(Event* e) {
                 case 14: {
                     for (i = 0; i <= mainPlayer->inventory->size-1; i++) {
                         if (mainPlayer->inventory->items[i]!= nullptr) {
-                            if (mainPlayer->inventory->items[i]->itemTemplate->name == "paper") {
+                            if (mainPlayer->inventory->items[i]->itemTemplate->name.equals("paper")) {
                                 RemoveItem(mainPlayer->inventory->items[i]);
                                 for (int iterator194 = 0; iterator194 < ItemTemplate::getListSize(); iterator194++) {
                                     itt = ItemTemplate::getObject(iterator194);
 
-                                    if (itt->name == "paper" & bbRand(6)==1) {
+                                    if (itt->name.equals("paper") && bbRand(6)==1) {
                                         mainPlayer->inventory->items[i] = CreateItem(itt->name, 1,1,1);
                                         bbHideEntity(mainPlayer->inventory->items[i]->collider);
                                         mainPlayer->inventory->items[i]->picked = true;
@@ -230,7 +247,7 @@ void UpdateEvent_scp_970_2(Event* e) {
                 case 25: {
                     e->room->npc[0] = CreateNPC(NPCtypeD, bbEntityX(e->room->obj)+bbCos(e->room->angle-90)*760*RoomScale, 0.35, bbEntityZ(e->room->obj)+bbSin(e->room->angle-90)*760*RoomScale);
                     bbRotateEntity(e->room->npc[0]->collider, 0, e->room->angle-200, 0, true);
-                    tex = bbLoadTexture("GFX/NPCs/corpse.jpg");
+                    Texture* tex = bbLoadTexture("GFX/NPCs/corpse.jpg");
                     e->room->npc[0]->texture = "GFX/NPCs/corpse.jpg";
                     bbEntityTexture(e->room->npc[0]->obj, tex);
                     bbFreeTexture(tex);
@@ -270,7 +287,7 @@ void UpdateEvent_scp_970_2(Event* e) {
                 }
                 case 60: {
                     if (!HalloweenTex) {
-                        tex970 = bbLoadTexture("GFX/npcs/173h.pt", 1);
+                        Texture* tex970 = bbLoadTexture("GFX/npcs/173h.pt", 1);
                         bbEntityTexture(Curr173->obj, tex970, 0, 0);
                         bbFreeTexture(tex970);
                     }

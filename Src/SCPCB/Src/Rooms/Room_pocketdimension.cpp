@@ -1,5 +1,22 @@
+#include <bbblitz3d.h>
+#include <bbmath.h>
+#include <bbgraphics.h>
+#include <bbaudio.h>
+
+#include "../GameMain.h"
+#include "../MapSystem.h"
+#include "../Doors.h"
+#include "../Items/Items.h"
+#include "../Decals.h"
+#include "../Particles.h"
+#include "../Events.h"
+#include "../Player.h"
+#include "../NPCs/NPCs.h"
+#include "../Audio.h"
+#include "../MathUtils/MathUtils.h"
+#include "../Menus/Menu.h"
+#include "../Objects.h"
 #include "Room_pocketdimension.h"
-#include "include.h"
 
 namespace CBN {
 
@@ -23,18 +40,18 @@ void FillRoom_pocketdimension(Room* r) {
     int t1;
 
     //the tunnels in the first room
-    int hallway = bbLoadMesh("GFX/Map/pocketdimension2.b3d");
+    MeshModel* hallway = bbLoadMesh("GFX/Map/pocketdimension2.b3d");
     //the room with the throne, moving pillars etc
     r->objects[8] = bbLoadMesh("GFX/Map/pocketdimension3.b3d");
     //the flying pillar
     r->objects[9] = bbLoadMesh("GFX/Map/pocketdimension4.b3d");
-    r->objects[10] = bbCopyMeshModelEntity(r->objects[9]);
+    r->objects[10] = bbCopyMeshModelEntity((MeshModel*)r->objects[9]);
 
     //the pillar room
     r->objects[11] = bbLoadMesh("GFX/Map/pocketdimension5.b3d");
 
 
-    int terrain = bbLoadMesh("GFX/Map/pocketdimensionterrain.b3d");
+    MeshModel* terrain = bbLoadMesh("GFX/Map/pocketdimensionterrain.b3d");
     bbScaleEntity(terrain,RoomScale,RoomScale,RoomScale,true);
     //RotateEntity(terrain,0,e\room\angle,0,True)
     bbPositionEntity(terrain, 0, 2944, 0, true);
@@ -44,7 +61,7 @@ void FillRoom_pocketdimension(Room* r) {
     CreatePaper("docBurn", bbEntityX(r->obj),0.5,bbEntityZ(r->obj)+3.5);
 
     int n;
-    int entity;
+    Object* entity;
     //4 ;TODO: wut
     for (n = 0; n <= -1; n++) {
         switch (n) {
@@ -84,14 +101,14 @@ void FillRoom_pocketdimension(Room* r) {
         //				PaintSurface(sf,b)
         //
         //				If (t1<>0) Then FreeTexture(t1
-        t1 = 0);
+        //t1 = 0);
         //			EndIf
         //		EndIf
         //
         //		If (t<>0) Then FreeTexture(t
-        t = 0);
+        //t = 0);
         //		If (b<>0) Then FreeBrush(b
-        b = 0);
+       // b = 0);
         //	Next
         //
         //EndIf
@@ -171,24 +188,25 @@ void FillRoom_pocketdimension(Room* r) {
 
     }
 
-    int OldManEyes = bbLoadTexture("GFX/npcs/oldmaneyes.jpg");
-    r->objects[17] = bbCreateSprite();
-    bbScaleSprite(r->objects[17], 0.03, 0.03);
-    bbEntityTexture(r->objects[17], OldManEyes);
-    bbEntityBlend(r->objects[17], 3);
-    bbEntityFX(r->objects[17], 1 + 8);
-    bbSpriteViewMode(r->objects[17], 2);
+    // TODO: Fix.
+    //Texture* OldManEyes = bbLoadTexture("GFX/npcs/oldmaneyes.jpg");
+    //r->objects[17] = bbCreateSprite();
+    //bbScaleSprite(r->objects[17], 0.03, 0.03);
+    //bbEntityTexture(r->objects[17], OldManEyes);
+    //bbEntityBlend(r->objects[17], 3);
+    //bbEntityFX(r->objects[17], 1 + 8);
+    //bbSpriteViewMode(r->objects[17], 2);
 
-    r->objects[18] = bbLoadTexture("GFX/npcs/pdplane.png", 1+2);
-    r->objects[19] = bbLoadTexture("GFX/npcs/pdplaneeye.png", 1+2);
+    //r->objects[18] = bbLoadTexture("GFX/npcs/pdplane.png", 1+2);
+    //r->objects[19] = bbLoadTexture("GFX/npcs/pdplaneeye.png", 1+2);
 
-    r->objects[20] = bbCreateSprite();
-    bbScaleSprite(r->objects[20], 8.0, 8.0);
-    bbEntityTexture(r->objects[20], r->objects[18]);
-    bbEntityOrder(r->objects[20], 100);
-    bbEntityBlend(r->objects[20], 2);
-    bbEntityFX(r->objects[20], 1 + 8);
-    bbSpriteViewMode(r->objects[20], 2);
+    //r->objects[20] = bbCreateSprite();
+    //bbScaleSprite(r->objects[20], 8.0, 8.0);
+    //bbEntityTexture(r->objects[20], r->objects[18]);
+    //bbEntityOrder(r->objects[20], 100);
+    //bbEntityBlend(r->objects[20], 2);
+    //bbEntityFX(r->objects[20], 1 + 8);
+    //bbSpriteViewMode(r->objects[20], 2);
 
     //FreeTexture(t)
     bbFreeEntity(hallway);
@@ -198,7 +216,7 @@ void UpdateEvent_pocketdimension(Event* e) {
     float dist;
     int i;
     int temp;
-    int pvt;
+    Pivot* pvt;
     String strtemp;
     int j;
     int k;
@@ -285,7 +303,7 @@ void UpdateEvent_pocketdimension(Event* e) {
                 }
                 //106 circles around the starting room
             } else if ((Curr106->state > 0)) {
-                angle = (e->eventState/10 % 360);
+                angle = modFloat(e->eventState/10, 360);
                 bbPositionEntity(Curr106->collider, bbEntityX(e->room->obj), 0.2+0.35+bbSin(e->eventState/14.0+i*20.0)*0.4, bbEntityX(e->room->obj));
                 bbRotateEntity(Curr106->collider, 0,angle,0);
                 bbMoveEntity(Curr106->collider,0,0,6.0-bbSin(e->eventState/10.0));
@@ -381,25 +399,25 @@ void UpdateEvent_pocketdimension(Event* e) {
                     if (e->soundChannels[1]!=0 & bbChannelPlaying(e->soundChannels[1])) {
                         e->soundChannels[1] = LoopRangedSound(e->sounds[1], e->soundChannels[1], mainPlayer->cam, mainPlayer->cam, 10.0, 0.3+(!safe)*0.6);
                     }
+                    // TODO: Fix.
+                    //if (safe) {
+                    //    bbEntityTexture(e->room->objects[20], e->room->objects[18]);
+                    //} else if (dist < 8.0) {
+                    //    e->soundChannels[0] = LoopRangedSound(e->sounds[0], e->soundChannels[0], mainPlayer->cam, e->room->objects[20], 8.0);
+                    //    bbEntityTexture(e->room->objects[20], e->room->objects[19]);
+                    //    mainPlayer->injuries = mainPlayer->injuries+(8.0-dist)*timing->tickDuration*0.001;
 
-                    if (safe) {
-                        bbEntityTexture(e->room->objects[20], e->room->objects[18]);
-                    } else if ((dist < 8.0)) {
-                        e->soundChannels[0] = LoopRangedSound(e->sounds[0], e->soundChannels[0], mainPlayer->cam, e->room->objects[20], 8.0);
-                        bbEntityTexture(e->room->objects[20], e->room->objects[19]);
-                        mainPlayer->injuries = mainPlayer->injuries+(8.0-dist)*timing->tickDuration*0.001;
-
-                        if (dist<7.0) {
-                            pvt = bbCreatePivot();
-                            bbPositionEntity(pvt, bbEntityX(mainPlayer->cam), bbEntityY(mainPlayer->cam), bbEntityZ(mainPlayer->cam));
-                            bbPointEntity(pvt, e->room->objects[20]);
-                            bbTurnEntity(pvt, 90, 0, 0);
-                            mainPlayer->headPitch = CurveAngle(bbEntityPitch(pvt), mainPlayer->headPitch + 90.0, 10.0);
-                            mainPlayer->headPitch = mainPlayer->headPitch-90;
-                            bbRotateEntity(mainPlayer->collider, bbEntityPitch(mainPlayer->collider), CurveAngle(bbEntityYaw(pvt), bbEntityYaw(mainPlayer->collider), 10), 0);
-                            bbFreeEntity(pvt);
-                        }
-                    }
+                    //    if (dist<7.0) {
+                    //        pvt = bbCreatePivot();
+                    //        bbPositionEntity(pvt, bbEntityX(mainPlayer->cam), bbEntityY(mainPlayer->cam), bbEntityZ(mainPlayer->cam));
+                    //        bbPointEntity(pvt, e->room->objects[20]);
+                    //        bbTurnEntity(pvt, 90, 0, 0);
+                    //        mainPlayer->headPitch = CurveAngle(bbEntityPitch(pvt), mainPlayer->headPitch + 90.0, 10.0);
+                    //        mainPlayer->headPitch = mainPlayer->headPitch-90;
+                    //        bbRotateEntity(mainPlayer->collider, bbEntityPitch(mainPlayer->collider), CurveAngle(bbEntityYaw(pvt), bbEntityYaw(mainPlayer->collider), 10), 0);
+                    //        bbFreeEntity(pvt);
+                    //    }
+                    //}
 
                     mainPlayer->camShake = Max(4.0+((!safe) * 4.0) - dist, 0.0);
 
@@ -513,11 +531,10 @@ void UpdateEvent_pocketdimension(Event* e) {
                                 for (int iterator189 = 0; iterator189 < Room::getListSize(); iterator189++) {
                                     r = Room::getObject(iterator189);
 
-                                    if (r->roomTemplate->name == "room2_3") {
+                                    if (r->roomTemplate->name.equals("room2_3")) {
                                         e->eventState = 0;
                                         e->eventState2 = 0;
-                                        //FreeSound(Music(3)
-                                        Music(3) = 0 ;TODO: fix);
+                                        //FreeSound(Music(3) Music(3) = 0 ;TODO: fix);
 
                                         mainPlayer->blinkTimer = -10;
                                         //LightBlink = 5
@@ -550,11 +567,10 @@ void UpdateEvent_pocketdimension(Event* e) {
                     for (int iterator190 = 0; iterator190 < Room::getListSize(); iterator190++) {
                         r = Room::getObject(iterator190);
 
-                        if (r->roomTemplate->name == "room106") {
+                        if (r->roomTemplate->name.equals("room106")) {
                             e->eventState = 0;
                             e->eventState2 = 0;
-                            //FreeSound(Music(3)
-                            Music(3) = 0 ;TODO: fix);
+                            //FreeSound(Music(3) Music(3) = 0 ;TODO: fix);
                             bbPositionEntity(mainPlayer->collider, bbEntityX(r->obj,true), 0.4, bbEntityX(r->obj,true));
 
                             Curr106->state = 10000;
@@ -592,7 +608,10 @@ void UpdateEvent_pocketdimension(Event* e) {
                 mainPlayer->blinkTimer = -10;
 
                 switch (bbRand(25)) {
-                    case 1,2,3,4: {
+                    case 1:
+                    case 2:
+                    case 3:
+                    case 4: {
                         //TODO: fix
                         //PlaySound2(OldManSFX(3))
 
@@ -610,7 +629,12 @@ void UpdateEvent_pocketdimension(Event* e) {
 
                         bbFreeEntity(pvt);
                     }
-                    case 5,6,7,8,9,10: {
+                    case 5:
+                    case 6:
+                    case 7:
+                    case 8:
+                    case 9:
+                    case 10: {
                         e->eventState2 = 1;
                         mainPlayer->blinkTimer = -10;
                         //TODO: fix
@@ -620,12 +644,15 @@ void UpdateEvent_pocketdimension(Event* e) {
                         bbResetEntity(mainPlayer->collider);
                         //middle of the large starting room
                     }
-                    case 11,12: {
+                    case 11:
+                    case 12: {
                         mainPlayer->blurTimer = 500;
                         bbPositionEntity(mainPlayer->collider,bbEntityX(e->room->obj), 0.5, bbEntityZ(e->room->obj));
                         //"exit room"
                     }
-                    case 13,14,15: {
+                    case 13:
+                    case 14:
+                    case 15: {
                         mainPlayer->blurTimer = 1500;
                         e->eventState2 = 1;
                         mainPlayer->blinkTimer = -10;
@@ -633,16 +660,18 @@ void UpdateEvent_pocketdimension(Event* e) {
                         bbPositionEntity(mainPlayer->collider, bbEntityX(e->room->objects[8],true)-400*RoomScale, -304*RoomScale, bbEntityZ(e->room->objects[8],true));
                         bbResetEntity(mainPlayer->collider);
                     }
-                    case 16,17,18,19: {
+                    case 16:
+                    case 17:
+                    case 18:
+                    case 19: {
                         mainPlayer->blurTimer = 1500;
                         for (int iterator191 = 0; iterator191 < Room::getListSize(); iterator191++) {
                             r = Room::getObject(iterator191);
 
-                            if (r->roomTemplate->name == "tunnel") {
+                            if (r->roomTemplate->name.equals("tunnel")) {
                                 e->eventState = 0;
                                 e->eventState2 = 0;
-                                //FreeSound(Music(3)
-                                Music(3) = 0 ;TODO: fix);
+                                //FreeSound(Music(3) Music(3) = 0 ;TODO: fix);
                                 bbPositionEntity(mainPlayer->collider, bbEntityX(r->obj), 0.4, bbEntityZ(r->obj));
                                 bbResetEntity(mainPlayer->collider);
                                 Curr106->idle = false;
@@ -651,13 +680,17 @@ void UpdateEvent_pocketdimension(Event* e) {
                         }
                         //the tower room
                     }
-                    case 20,21,22: {
+                    case 20:
+                    case 21:
+                    case 22: {
                         mainPlayer->blinkTimer = -10;
                         bbPositionEntity(mainPlayer->collider, bbEntityX(e->room->objects[12],true), 0.6, bbEntityZ(e->room->objects[12],true));
                         bbResetEntity(mainPlayer->collider);
                         e->eventState2 = 15;
                     }
-                    case 23,24,25: {
+                    case 23:
+                    case 24:
+                    case 25: {
                         mainPlayer->blurTimer = 1500;
                         e->eventState2 = 1;
                         e->eventState3 = 1;
@@ -684,7 +717,7 @@ void UpdateEvent_pocketdimension(Event* e) {
                 //TODO: Not a particle.
                 angle = bbEntityYaw(mainPlayer->cam,true)+bbRnd(150,210);
                 p = CreateParticle(bbEntityX(mainPlayer->collider)+bbCos(angle)*7.5, 0.0, bbEntityZ(mainPlayer->collider)+bbSin(angle)*7.5, PARTICLE_HG, 4.0, 0.0, 2500);
-                bbEntityBlend(p->obj, 2);
+                bbEntityBlend(p->sprite, 2);
                 //EntityFX(p\obj, 1)
                 p->speed = 0.01;
                 p->sizeChange = 0;

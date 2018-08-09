@@ -1,5 +1,22 @@
+#include <bbblitz3d.h>
+#include <bbmath.h>
+#include <bbgraphics.h>
+#include <bbaudio.h>
+
+#include "../GameMain.h"
+#include "../MapSystem.h"
+#include "../Doors.h"
+#include "../Items/Items.h"
+#include "../Decals.h"
+#include "../Particles.h"
+#include "../Events.h"
+#include "../Player.h"
+#include "../NPCs/NPCs.h"
+#include "../Audio.h"
+#include "../MathUtils/MathUtils.h"
+#include "../Menus/Menu.h"
+#include "../Objects.h"
 #include "Room_srvr_farm_3.h"
-#include "include.h"
 
 namespace CBN {
 
@@ -43,11 +60,12 @@ void FillRoom_srvr_farm_3(Room* r) {
 
     r->objects[3] = bbLoadMesh("GFX/npcs/duck_low_res.b3d");
     bbScaleEntity(r->objects[3], 0.07, 0.07, 0.07);
-    int tex = bbLoadTexture("GFX/npcs/duck2.png");
-    bbEntityTexture(r->objects[3], tex);
+    Texture* tex = bbLoadTexture("GFX/npcs/duck2.png");
+    bbEntityTexture((Model*)r->objects[3], tex);
     bbPositionEntity(r->objects[3], r->x + 928.0 * RoomScale, -640*RoomScale, r->z + 704.0 * RoomScale);
 
     bbEntityParent(r->objects[3], r->obj);
+    bbFreeTexture(tex);
 }
 
 void UpdateEvent_srvr_farm_3(Event* e) {
