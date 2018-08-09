@@ -4,6 +4,9 @@
 
 namespace CBN {
 
+struct NPC;
+struct Room;
+
 // Globals.
 extern float MTFtimer;
 extern Room* MTFrooms[10];

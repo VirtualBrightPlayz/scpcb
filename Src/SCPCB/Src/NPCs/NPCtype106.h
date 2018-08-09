@@ -4,6 +4,8 @@
 
 namespace CBN {
 
+struct NPC;
+
 // Structs.
 struct Data106 {
 private:

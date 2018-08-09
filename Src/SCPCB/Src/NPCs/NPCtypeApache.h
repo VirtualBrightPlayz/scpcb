@@ -4,6 +4,8 @@
 
 namespace CBN {
 
+struct NPC;
+
 // Functions.
 void InitializeNPCtypeApache(NPC* n);
 

@@ -4,6 +4,8 @@
 
 namespace CBN {
 
+struct NPC;
+
 // Constants.
 extern const int STATEGUARD_IDLE;
 extern const int STATEGUARD_LOOK;

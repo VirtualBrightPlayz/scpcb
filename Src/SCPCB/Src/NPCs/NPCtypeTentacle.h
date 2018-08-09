@@ -4,6 +4,8 @@
 
 namespace CBN {
 
+struct NPC;
+
 // Functions.
 void InitializeNPCtypeTentacle(NPC* n);
 

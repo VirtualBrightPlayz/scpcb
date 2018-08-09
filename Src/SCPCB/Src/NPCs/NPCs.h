@@ -4,6 +4,8 @@
 #include <StringType.h>
 #include <vector>
 
+class gxSound*;
+
 namespace CBN {
 
 // Constants.
@@ -184,7 +186,7 @@ void TeleportMTFGroup(NPC* n);
 
 void Shoot(float x, float y, float z, float hitProb = 1.0, int particles = true, int instaKill = false);
 
-void PlayMTFSound(int sound, NPC* n);
+void PlayMTFSound(gxSound* sound, NPC* n);
 
 void MoveToPocketDimension();
 

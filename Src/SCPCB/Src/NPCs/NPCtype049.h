@@ -4,6 +4,8 @@
 
 namespace CBN {
 
+struct NPC;
+
 // Constants.
 extern const int STATE049_IDLE;
 extern const int STATE049_ATTACK;

@@ -1,6 +1,34 @@
+#include <bbblitz3d.h>
+#include <bbaudio.h>
+#include <bbmath.h>
+
 #include "NPCs.h"
-#include "include.h"
-#include <iostream>
+#include "NPCtype049.h"
+#include "NPCtype066.h"
+#include "NPCtype096.h"
+#include "NPCtype106.h"
+#include "NPCtype1499.h"
+#include "NPCtype173.h"
+#include "NPCtype860.h"
+#include "NPCtype939.h"
+#include "NPCtype966.h"
+#include "NPCtypeApache.h"
+#include "NPCtypeD.h"
+#include "NPCtypeGuard.h"
+#include "NPCtypeMTF.h"
+#include "NPCtypeTentacle.h"
+#include "NPCtypeZombie.h"
+#include "../Player.h"
+#include "../GameMain.h"
+#include "../MapSystem.h"
+#include "../Audio.h"
+#include "../MathUtils/MathUtils.h"
+#include "../Difficulty.h"
+#include "../Decals.h"
+#include "../Particles.h"
+#include "../Items/Items.h"
+#include "../Menus/Menu.h"
+#include "../Doors.h"
 
 namespace CBN {
 
@@ -364,7 +392,7 @@ int MeNPCSeesPlayer(NPC* me, int disableSoundOnCrouch = false) {
 
         //spots the player if he's either in view or making a loud sound
         if (mainPlayer->loudness>1.0) {
-            if (abs(bbDeltaYaw(me->collider,mainPlayer->collider))>60.0) & bbEntityVisible(me->collider,mainPlayer->collider) {
+            if (abs(bbDeltaYaw(me->collider,mainPlayer->collider))>60.0 && bbEntityVisible(me->collider,mainPlayer->collider)) {
                 return 1;
             } else if ((!bbEntityVisible(me->collider,mainPlayer->collider))) {
                 if (disableSoundOnCrouch & mainPlayer->crouching) {
@@ -422,13 +450,13 @@ void TeleportMTFGroup(NPC* n) {
 void Shoot(float x, float y, float z, float hitProb = 1.0, int particles = true, int instaKill = false) {
     String shotMessageUpdate;
     int wearingVest;
-    int pvt;
+    Pivot* pvt;
     int i;
     Decal* de;
 
     //muzzle flash
     Particle* p = CreateParticle(x,y,z, PARTICLE_FLASH, bbRnd(0.08,0.1), 0.0, 5);
-    bbTurnEntity(p->obj, 0,0,bbRnd(360));
+    bbTurnEntity(p->sprite, 0,0,bbRnd(360));
     p->aChange = -0.15;
 
     //LightVolume = TempLightVolume*1.2
@@ -445,13 +473,17 @@ void Shoot(float x, float y, float z, float hitProb = 1.0, int particles = true,
             bbTurnEntity(mainPlayer->cam, bbRnd(-3,3), bbRnd(-3,3), 0);
 
             wearingVest = false;
-            wearingVest = wearingVest | IsPlayerWearingItem(mainPlayer,"vest");
-            wearingVest = wearingVest | IsPlayerWearingItem(mainPlayer,"finevest");
-            wearingVest = wearingVest | IsPlayerWearingItem(mainPlayer,"veryfinevest");
+            wearingVest |= IsPlayerWearingItem(mainPlayer,"vest");
+            wearingVest |= IsPlayerWearingItem(mainPlayer,"finevest");
+            wearingVest |= IsPlayerWearingItem(mainPlayer,"veryfinevest");
             if (wearingVest) {
                 if (IsPlayerWearingItem(mainPlayer,"vest")) {
                     switch (bbRand(8)) {
-                        case 1,2,3,4,5: {
+                        case 1:
+                        case 2:
+                        case 3:
+                        case 4:
+                        case 5: {
                             mainPlayer->blurTimer = 500;
                             mainPlayer->stamina = 0;
                             shotMessageUpdate = "A bullet penetrated your vest, making you gasp.";
@@ -537,7 +569,7 @@ void Shoot(float x, float y, float z, float hitProb = 1.0, int particles = true,
         } else if ((particles)) {
             pvt = bbCreatePivot();
             bbPositionEntity(pvt, bbEntityX(mainPlayer->collider),(bbEntityY(mainPlayer->collider)+bbEntityY(mainPlayer->cam))/2,bbEntityZ(mainPlayer->collider));
-            bbPointEntity(pvt, p->obj);
+            bbPointEntity(pvt, p->sprite);
             bbTurnEntity(pvt, 0, 180, 0);
 
             bbEntityPick(pvt, 2.5);
@@ -581,7 +613,7 @@ void Shoot(float x, float y, float z, float hitProb = 1.0, int particles = true,
 
 }
 
-void PlayMTFSound(int sound, NPC* n) {
+void PlayMTFSound(gxSound* sound, NPC* n) {
     if (n != nullptr) {
         n->soundChannels[0] = PlayRangedSound(sound, mainPlayer->cam, n->collider, 8.0);
     }
