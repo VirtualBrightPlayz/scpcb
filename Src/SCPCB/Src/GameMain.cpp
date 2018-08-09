@@ -166,7 +166,7 @@ int EntryPoint() {
 
     if (userOptions->launcher) {
         CurrGameState = GAMESTATE_LAUNCHER;
-        launcher = CreateLauncher();
+        launcher = new Launcher();
     } else {
         InitializeMainGame();
     }
@@ -335,11 +335,11 @@ void UpdateGame() {
         }
 
         if (CurrGameState==GAMESTATE_LAUNCHER) {
-            UpdateLauncher();
-        } else if ((CurrGameState==GAMESTATE_MAINMENU)) {
+            launcher->update();
+        } else if (CurrGameState==GAMESTATE_MAINMENU) {
             UpdateMainMenu();
         } else {
-            if ((!MouseDown1) && (!MouseHit1)) {
+            if (!MouseDown1 && !MouseHit1) {
                 mainPlayer->grabbedEntity = 0;
             }
 
@@ -632,7 +632,7 @@ void UpdateGame() {
 
     if (CurrGameState==GAMESTATE_LAUNCHER) {
         if (launcher!=nullptr) {
-            DrawLauncher();
+            launcher->draw();
         }
     } else if ((CurrGameState==GAMESTATE_MAINMENU)) {
         DrawMainMenu();
