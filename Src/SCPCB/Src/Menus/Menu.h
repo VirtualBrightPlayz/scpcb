@@ -1,21 +1,24 @@
 #ifndef MENU_H_INCLUDED
 #define MENU_H_INCLUDED
 #include <vector>
+#include <StringType.h>
+
+class bbImage;
 
 namespace CBN {
 
 // Constants.
-extern const int GAMESTATE_MAINMENU;
-extern const int GAMESTATE_PLAYING;
-extern const int GAMESTATE_PAUSED;
-extern const int GAMESTATE_CONSOLE;
-extern const int GAMESTATE_INVENTORY;
-extern const int GAMESTATE_SCP294;
-extern const int GAMESTATE_ENDING;
-extern const int GAMESTATE_LAUNCHER;
-extern const int GAMESUBSTATE_PAUSED_MAIN;
-extern const int GAMESUBSTATE_PAUSED_DEAD;
-extern const int GAMESUBSTATE_PAUSED_OPTIONS;
+const int GAMESTATE_MAINMENU = 0;
+const int GAMESTATE_PLAYING = 1;
+const int GAMESTATE_PAUSED = 2;
+const int GAMESTATE_CONSOLE = 3;
+const int GAMESTATE_INVENTORY = 4;
+const int GAMESTATE_SCP294 = 5;
+const int GAMESTATE_ENDING = 6;
+const int GAMESTATE_LAUNCHER = 7;
+const int GAMESUBSTATE_PAUSED_MAIN = 0;
+const int GAMESUBSTATE_PAUSED_DEAD = 1;
+const int GAMESUBSTATE_PAUSED_OPTIONS = 2;
 
 // Globals.
 extern String SelectedEnding;
@@ -45,7 +48,7 @@ extern String CurrSave;
 // Functions.
 int IsPaused();
 
-void DrawTiledImageRect(int img, int srcX, int srcY, int srcwidth, int srcheight, int x, int y, int width, int height);
+void DrawTiledImageRect(bbImage* img, int srcX, int srcY, int srcwidth, int srcheight, int x, int y, int width, int height);
 
 String rInput(String aString);
 

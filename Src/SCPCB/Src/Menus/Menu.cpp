@@ -1,20 +1,7 @@
 #include "Menu.h"
-#include "include.h"
+#include "../MathUtils/MathUtils.h"
 
 namespace CBN {
-
-// Constants.
-const int GAMESTATE_MAINMENU = 0;
-const int GAMESTATE_PLAYING = 1;
-const int GAMESTATE_PAUSED = 2;
-const int GAMESTATE_CONSOLE = 3;
-const int GAMESTATE_INVENTORY = 4;
-const int GAMESTATE_SCP294 = 5;
-const int GAMESTATE_ENDING = 6;
-const int GAMESTATE_LAUNCHER = 7;
-const int GAMESUBSTATE_PAUSED_MAIN = 0;
-const int GAMESUBSTATE_PAUSED_DEAD = 1;
-const int GAMESUBSTATE_PAUSED_OPTIONS = 2;
 
 // Globals.
 String SelectedEnding;
@@ -46,7 +33,7 @@ int IsPaused() {
     return CurrGameState != GAMESTATE_PLAYING;
 }
 
-void DrawTiledImageRect(int img, int srcX, int srcY, int srcwidth, int srcheight, int x, int y, int width, int height) {
+void DrawTiledImageRect(bbImage* img, int srcX, int srcY, int srcwidth, int srcheight, int x, int y, int width, int height) {
     int x2 = x;
     int y2;
     while (x2 < x+width) {
