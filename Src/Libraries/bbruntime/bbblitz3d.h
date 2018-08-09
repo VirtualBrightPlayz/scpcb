@@ -73,6 +73,7 @@ class MeshModel* bbCreateSphere(int segs, class Object* p=nullptr);
 class MeshModel* bbCreateCylinder(int segs, int solid, class Object* p=nullptr);
 class MeshModel* bbCreateCone(int segs, int solid, class Object* p=nullptr);
 class MeshModel* bbDeepCopyMesh(class MeshModel* m, class Object* p=nullptr);
+void bbScaleMesh(class MeshModel* m, float x, float y, float z);
 void bbRotateMesh(class MeshModel* m, float x, float y, float z);
 void bbPositionMesh(class MeshModel* m, float x, float y, float z);
 void bbFitMesh(class MeshModel* m, float x, float y, float z, float w, float h, float d, int uniform);

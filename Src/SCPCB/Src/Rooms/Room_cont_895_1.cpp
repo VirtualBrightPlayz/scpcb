@@ -171,7 +171,7 @@ void UpdateEventCoffin(Event* e) {
     if (mainPlayer->currRoom == e->room) {
         CoffinDistance = bbEntityDistance(mainPlayer->collider, e->room->objects[1]);
         if (CoffinDistance < 1.5) {
-            if ((!Contained106) & e->name=="coffin106" & e->eventState2 == 0) {
+            if ((!Contained106) & e->name.equals("coffin106") & e->eventState2 == 0) {
                 de = CreateDecal(DECAL_CORROSION, bbEntityX(e->room->objects[1],true), -1531.0*RoomScale, bbEntityZ(e->room->objects[1],true), 90, bbRand(360), 0);
                 de->size = 0.05;
                 de->sizeChange = 0.001;

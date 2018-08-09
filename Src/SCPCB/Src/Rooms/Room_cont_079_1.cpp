@@ -168,7 +168,7 @@ void UpdateEvent_cont_079_1(Event* e) {
             for (int iterator158 = 0; iterator158 < Event::getListSize(); iterator158++) {
                 e2 = Event::getObject(iterator158);
 
-                if (e2->name=="exit1" | e2->name=="gateaentrance") {
+                if (e2->name.equals("exit1") | e2->name.equals("gateaentrance")) {
                     e2->eventState3 = 1;
                 }
             }
