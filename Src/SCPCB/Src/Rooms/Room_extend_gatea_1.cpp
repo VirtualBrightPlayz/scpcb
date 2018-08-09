@@ -1,5 +1,22 @@
+#include <bbblitz3d.h>
+#include <bbmath.h>
+#include <bbgraphics.h>
+#include <bbaudio.h>
+
+#include "../GameMain.h"
+#include "../MapSystem.h"
+#include "../Doors.h"
+#include "../Items/Items.h"
+#include "../Decals.h"
+#include "../Particles.h"
+#include "../Events.h"
+#include "../Player.h"
+#include "../NPCs/NPCs.h"
+#include "../Audio.h"
+#include "../MathUtils/MathUtils.h"
+#include "../Menus/Menu.h"
+#include "../Objects.h"
 #include "Room_extend_gatea_1.h"
-#include "include.h"
 
 namespace CBN {
 
@@ -63,10 +80,10 @@ void FillRoom_extend_gatea_1(Room* r) {
     for (int iterator179 = 0; iterator179 < Room::getListSize(); iterator179++) {
         r2 = Room::getObject(iterator179);
 
-        if (r2->roomTemplate->name == "exit1") {
+        if (r2->roomTemplate->name.equals("exit1")) {
             r->objects[1] = r2->objects[1];
             r->objects[2] = r2->objects[2];
-        } else if ((r2->roomTemplate->name == "gateaentrance")) {
+        } else if ((r2->roomTemplate->name.equals("gateaentrance"))) {
             //ylempi hissi
             r->doors[1] = CreateDoor(r->x+1544.0*RoomScale,12000.0*RoomScale, r->z-64.0*RoomScale, 90, r, false);
             r->doors[1]->autoClose = false;

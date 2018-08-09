@@ -45,7 +45,7 @@ void UpdateNPCtype860(NPC* n) {
     int temp;
     Forest* fr;
 
-    if (mainPlayer->currRoom->roomTemplate->name == "room860") {
+    if (mainPlayer->currRoom->roomTemplate->name.equals("room860")) {
         //Object.Forest(e\room\objects[1])
         fr = mainPlayer->currRoom->fr;
 

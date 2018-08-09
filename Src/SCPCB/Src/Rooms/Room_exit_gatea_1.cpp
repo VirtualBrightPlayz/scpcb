@@ -82,7 +82,7 @@ void UpdateEvent_exit_gatea_1(Event* e) {
             for (int iterator178 = 0; iterator178 < Room::getListSize(); iterator178++) {
                 r = Room::getObject(iterator178);
 
-                if (r->roomTemplate->name == "gatea") {
+                if (r->roomTemplate->name.equals("gatea")) {
                     gatea = r;
                     break;
                 }

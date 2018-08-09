@@ -46,6 +46,7 @@ void bbFreeTexture(class Texture* t);
 void bbTextureBlend(class Texture* t, int blend);
 void bbTextureCoords(class Texture* t, int flags);
 void bbRotateTexture(class Texture* t, float angle);
+void bbPositionTexture(class Texture* t, float u_pos, float v_pos);
 int bbTextureWidth(class Texture* t);
 int bbTextureHeight(class Texture* t);
 String bbTextureName(class Texture* t);

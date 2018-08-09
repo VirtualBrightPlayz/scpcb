@@ -165,7 +165,7 @@ void UpdateEvent_cont_035_1(Event* e) {
                 for (int iterator153 = 0; iterator153 < NPC::getListSize(); iterator153++) {
                     n = NPC::getObject(iterator153);
 
-                    if (n->texture == "GFX/NPCs/035victim.jpg") {
+                    if (n->texture.equals("GFX/NPCs/035victim.jpg")) {
                         e->room->npc[0] = n;
 
                         temp = (int)(e->room->npc[0]->frame);

@@ -228,7 +228,7 @@ void UpdateEvent_cont_914_1(Event* e) {
 
             if (Distance(bbEntityX(mainPlayer->collider), bbEntityZ(mainPlayer->collider), bbEntityX(e->room->objects[2], true), bbEntityZ(e->room->objects[2], true)) < (170.0 * RoomScale)) {
 
-                if (setting == "rough" | setting == "coarse") {
+                if (setting.equals("rough") | setting.equals("coarse")) {
                     if (e->eventState > 70 * 2.6 & e->eventState - timing->tickDuration < 70 * 2.6) {
                         PlaySound2(e->sounds[2]);
                     }

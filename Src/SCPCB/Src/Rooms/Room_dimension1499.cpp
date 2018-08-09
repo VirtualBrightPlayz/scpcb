@@ -177,7 +177,7 @@ void UpdateLeave1499() {
     Room* r;
     Item* it;
 
-    if ((!(IsPlayerWearingItem(mainPlayer,"scp1499") | IsPlayerWearingItem(mainPlayer,"super1499"))) & mainPlayer->currRoom->roomTemplate->name == "dimension1499") {
+    if ((!(IsPlayerWearingItem(mainPlayer,"scp1499") | IsPlayerWearingItem(mainPlayer,"super1499"))) & mainPlayer->currRoom->roomTemplate->name.equals("dimension1499")) {
         for (int iterator172 = 0; iterator172 < Room::getListSize(); iterator172++) {
             r = Room::getObject(iterator172);
 
@@ -196,7 +196,7 @@ void UpdateLeave1499() {
                     it = Item::getObject(iterator173);
 
                     //it\disttimer = 0
-                    if (it->itemTemplate->name == "scp1499" | it->itemTemplate->name == "super1499") {
+                    if (it->itemTemplate->name.equals("scp1499") | it->itemTemplate->name.equals("super1499")) {
                         if (bbEntityY(it->collider) >= bbEntityY(mainPlayer->currRoom->obj)-5) {
                             bbPositionEntity(it->collider,NTF_1499PrevX,NTF_1499PrevY+(bbEntityY(it->collider)-bbEntityY(mainPlayer->currRoom->obj)),NTF_1499PrevZ);
                             bbResetEntity(it->collider);
@@ -248,7 +248,7 @@ void CreateChunkParts(Room* r) {
                 yaw = GetINIString2(File,loc,"obj"+String(j)+"-yaw");
                 std::cout << "1499 chunk X/Z/Yaw: "+x+"|"+z+"|"+yaw;
                 chp->obj[j] = bbCopyMeshModelEntity(r->objects[objID]);
-                if (yaw.toLower() == "random") {
+                if (yaw.toLower().equals("random")) {
                     chp->randomYaw[j] = bbRnd(360);
                     bbRotateEntity(chp->obj[j],0,chp->randomYaw[j],0);
                 } else {

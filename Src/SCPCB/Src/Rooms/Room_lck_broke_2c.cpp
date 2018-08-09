@@ -1,5 +1,22 @@
+#include <bbblitz3d.h>
+#include <bbmath.h>
+#include <bbgraphics.h>
+#include <bbaudio.h>
+
+#include "../GameMain.h"
+#include "../MapSystem.h"
+#include "../Doors.h"
+#include "../Items/Items.h"
+#include "../Decals.h"
+#include "../Particles.h"
+#include "../Events.h"
+#include "../Player.h"
+#include "../NPCs/NPCs.h"
+#include "../Audio.h"
+#include "../MathUtils/MathUtils.h"
+#include "../Menus/Menu.h"
+#include "../Objects.h"
 #include "Room_lck_broke_2c.h"
-#include "include.h"
 
 namespace CBN {
 
@@ -35,7 +52,8 @@ void FillRoom_lck_broke_2c(Room* r) {
 
     d2 = CreateDoor(r->x + 104.0 * RoomScale, 0, r->z + 736.0 * RoomScale, 270, r, true);
     d2->timer = 70 * 5;
-    d2->autoClose = false: d2->open == false;
+    d2->autoClose = false;
+    d2->open = false;
     d2->locked = true;
     bbEntityParent(d2->buttons[0], 0);
     bbPositionEntity(d2->buttons[0], r->x + 640.0 * RoomScale, 0.7, r->z + 288.0 * RoomScale);

@@ -604,7 +604,7 @@ void MoveToPocketDimension() {
     for (int iterator114 = 0; iterator114 < Room::getListSize(); iterator114++) {
         r = Room::getObject(iterator114);
 
-        if (r->roomTemplate->name == "pocketdimension") {
+        if (r->roomTemplate->name.equals("pocketdimension")) {
             mainPlayer->fallTimer = 0;
             UpdateDoors();
             UpdateRooms();
@@ -922,7 +922,7 @@ String GetNPCManipulationValue(String NPC, String bone, String section, int valu
             return value;
         }
         case 3: {
-            if (value == "true" | value == "1") {
+            if (value.equals("true") | value.equals("1")) {
                 return "1";
             } else {
                 return "0";
@@ -985,11 +985,11 @@ int PlayerInReachableRoom() {
     int temp;
 
     //Player is in these rooms, returning false
-    if (RN == "pocketdimension" | RN == "gatea" | RN == "dimension1499" | RN == "173") {
+    if (RN.equals("pocketdimension") | RN.equals("gatea") | RN.equals("dimension1499") | RN.equals("173")) {
         return false;
     }
     //Player is at GateB and is at the surface, returning false
-    if (RN == "exit1" & bbEntityY(mainPlayer->collider)>1040.0*RoomScale) {
+    if (RN.equals("exit1") & bbEntityY(mainPlayer->collider)>1040.0*RoomScale) {
         return false;
     }
     //Player is in 860's test room and inside the forest, returning false
@@ -997,12 +997,12 @@ int PlayerInReachableRoom() {
     for (int iterator118 = 0; iterator118 < Event::getListSize(); iterator118++) {
         e = Event::getObject(iterator118);
 
-        if (e->name == "room860" & e->eventState == 1.0) {
+        if (e->name.equals("room860") & e->eventState == 1.0) {
             temp = true;
             break;
         }
     }
-    if (RN == "room860" & temp) {
+    if (RN.equals("room860") & temp) {
         return false;
     }
     //Return true, this means player is in reachable room

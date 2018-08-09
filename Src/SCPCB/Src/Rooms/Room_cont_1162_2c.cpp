@@ -195,37 +195,37 @@ void UpdateEvent_cont_1162_2c(Event* e) {
                 if (IsItemGoodFor1162(itt)) {
                     switch (mainPlayer->inventory->items[(int)(e->eventState2)]->itemTemplate->name) {
                         case "key": {
-                            if (itt->name == "key1" | itt->name == "key2" & bbRand(2)==1) {
+                            if (itt->name.equals("key1") | itt->name.equals("key2") & bbRand(2)==1) {
                                 shouldCreateItem = true;
                                 std::cout << "lostkey";
                             }
                         }
                         case "paper","oldpaper": {
-                            if (itt->name == "paper" & bbRand(12)==1) {
+                            if (itt->name.equals("paper") & bbRand(12)==1) {
                                 shouldCreateItem = true;
                                 std::cout << "paper";
                             }
                         }
                         case "gasmask","gasmask3","supergasmask","hazmatsuit","hazmatsuit2","hazmatsuit3": {
-                            if (itt->name == "gasmask" | itt->name == "gasmask3" | itt->name == "supergasmask" | itt->name == "hazmatsuit" | itt->name == "hazmatsuit2" | itt->name == "hazmatsuit3" & bbRand(2)==1) {
+                            if (itt->name.equals("gasmask") | itt->name.equals("gasmask3") | itt->name.equals("supergasmask") | itt->name.equals("hazmatsuit") | itt->name.equals("hazmatsuit2") | itt->name.equals("hazmatsuit3") & bbRand(2)==1) {
                                 shouldCreateItem = true;
                                 std::cout << "gasmask hazmat";
                             }
                         }
                         case "key1","key2","key3": {
-                            if (itt->name == "key1" | itt->name == "key2" | itt->name == "key3" | itt->name == "misc" & bbRand(6)==1) {
+                            if (itt->name.equals("key1") | itt->name.equals("key2") | itt->name.equals("key3") | itt->name.equals("misc") & bbRand(6)==1) {
                                 shouldCreateItem = true;
                                 std::cout << "key";
                             }
                         }
                         case "vest","finevest": {
-                            if (itt->name == "vest" | itt->name == "finevest" & bbRand(1)==1) {
+                            if (itt->name.equals("vest") | itt->name.equals("finevest") & bbRand(1)==1) {
                                 shouldCreateItem = true;
                                 std::cout << "vest";
                             }
                         }
                         default: {
-                            if (itt->name == "misc" & bbRand(6)==1) {
+                            if (itt->name.equals("misc") & bbRand(6)==1) {
                                 shouldCreateItem = true;
                                 std::cout << "default";
                             }

@@ -1,5 +1,22 @@
+#include <bbblitz3d.h>
+#include <bbmath.h>
+#include <bbgraphics.h>
+#include <bbaudio.h>
+
+#include "../GameMain.h"
+#include "../MapSystem.h"
+#include "../Doors.h"
+#include "../Items/Items.h"
+#include "../Decals.h"
+#include "../Particles.h"
+#include "../Events.h"
+#include "../Player.h"
+#include "../NPCs/NPCs.h"
+#include "../Audio.h"
+#include "../MathUtils/MathUtils.h"
+#include "../Menus/Menu.h"
+#include "../Objects.h"
 #include "Room_lck_air_2.h"
-#include "include.h"
 
 namespace CBN {
 
@@ -31,7 +48,7 @@ void FillRoom_lck_air_2(Room* r) {
     int t1;
     int bd_temp;
 
-    if (r->roomTemplate->name == "lck_air_broke_2") {
+    if (r->roomTemplate->name.equals("lck_air_broke_2")) {
         r->objects[ROOM_LCKA2_CORPSESPAWN] = bbCreatePivot(r->obj);
         bbPositionEntity(r->objects[ROOM_LCKA2_CORPSESPAWN], r->x - 156.825*RoomScale, -37.3458*RoomScale, r->z+121.364*RoomScale, true);
 
@@ -57,9 +74,9 @@ void FillRoom_lck_air_2(Room* r) {
         r2 = Room::getObject(iterator187);
 
         if (r2!=r) {
-            if (r2->roomTemplate->name == "lck_air_2" | r2->roomTemplate->name == "lck_air_broke_2") {
+            if (r2->roomTemplate->name.equals("lck_air_2") || r2->roomTemplate->name.equals("lck_air_broke_2")) {
                 //don't load the mesh again
-                r->objects[ROOM_LCKA2_PIPES] = bbCopyMeshModelEntity(r2->objects[ROOM_LCKA2_PIPES],r->obj);
+                r->objects[ROOM_LCKA2_PIPES] = bbCopyMeshModelEntity((MeshModel*)r2->objects[ROOM_LCKA2_PIPES],r->obj);
                 break;
             }
         }
@@ -69,7 +86,7 @@ void FillRoom_lck_air_2(Room* r) {
     }
     bbEntityPickMode(r->objects[ROOM_LCKA2_PIPES],2);
 
-    if (r->roomTemplate->name == "lck_air_2") {
+    if (r->roomTemplate->name.equals("lck_air_2")) {
         r->objects[ROOM_LCKA2_TRIGGERPIVOT] = bbCreatePivot();
         //PositionEntity(r\objects[ROOM_LCKA2_TRIGGERPIVOT],r\x-48.0*RoomScale,128.0*RoomScale,r\z+320.0*RoomScale)
         bbPositionEntity(r->objects[ROOM_LCKA2_TRIGGERPIVOT],r->x+344.0*RoomScale,128.0*RoomScale,r->z);
@@ -84,10 +101,10 @@ void FillRoom_lck_air_2(Room* r) {
             }
         }
 
-        if ((room2gw_brokendoor == 0 & bbRand(1,2)==1) | bd_temp) {
+        if ((room2gw_brokendoor == 0 && bbRand(1,2)==1) || bd_temp) {
             //TODO: Not this.
             r->objects[ROOM_LCKA2_BROKENDOOR] = bbLoadMesh("GFX/Map/Meshes/door.b3d");
-            bbScaleEntity(r->objects[ROOM_LCKA2_BROKENDOOR], (204.0 * RoomScale) / bbMeshWidth(r->objects[ROOM_LCKA2_BROKENDOOR]), 312.0 * RoomScale / bbMeshHeight(r->objects[ROOM_LCKA2_BROKENDOOR]), 16.0 * RoomScale / bbMeshDepth(r->objects[ROOM_LCKA2_BROKENDOOR]));
+            bbScaleEntity(r->objects[ROOM_LCKA2_BROKENDOOR], (204.0 * RoomScale) / bbMeshWidth((MeshModel*)r->objects[ROOM_LCKA2_BROKENDOOR]), 312.0 * RoomScale / bbMeshHeight((MeshModel*)r->objects[ROOM_LCKA2_BROKENDOOR]), 16.0 * RoomScale / bbMeshDepth((MeshModel*)r->objects[ROOM_LCKA2_BROKENDOOR]));
             bbEntityType(r->objects[ROOM_LCKA2_BROKENDOOR], HIT_MAP);
             bbPositionEntity(r->objects[ROOM_LCKA2_BROKENDOOR], r->x + 336.0 * RoomScale, 0.0, r->z + 462.0 * RoomScale);
             bbRotateEntity(r->objects[ROOM_LCKA2_BROKENDOOR], 0, 180 + 180, 0);
@@ -106,7 +123,7 @@ void UpdateEvent_lck_air_2(Event* e) {
     float dist;
     int i;
     int temp;
-    int pvt;
+    Pivot* pvt;
     String strtemp;
     int j;
     int k;
@@ -127,7 +144,7 @@ void UpdateEvent_lck_air_2(Event* e) {
     float z;
 
     float angle;
-    int d_ent;
+    MeshModel* d_ent;
 
     //[Block]
     e->room->doors[0]->locked = true;
@@ -173,7 +190,7 @@ void UpdateEvent_lck_air_2(Event* e) {
 
                     if (brokendoor) {
                         pvt = bbCreatePivot();
-                        d_ent = e->room->objects[ROOM_LCKA2_BROKENDOOR];
+                        d_ent = (MeshModel*)e->room->objects[ROOM_LCKA2_BROKENDOOR];
                         bbPositionEntity(pvt, bbEntityX(d_ent,true), bbEntityY(d_ent,true)+bbRnd(0.0,0.05), bbEntityZ(d_ent,true));
                         bbRotateEntity(pvt, 0, bbEntityYaw(d_ent,true)+90, 0);
                         bbMoveEntity(pvt,0,0,0.2);
@@ -185,7 +202,7 @@ void UpdateEvent_lck_air_2(Event* e) {
                             bbRotateEntity(p->pvt, bbRnd(-45,0), bbEntityYaw(pvt)+bbRnd(-10.0,10.0), 0);
 
                             p->size = 0.0075;
-                            bbScaleSprite(p->obj,p->size,p->size);
+                            bbScaleSprite(p->sprite,p->size,p->size);
 
                             //EntityOrder(p\obj,-1)
 
@@ -198,7 +215,7 @@ void UpdateEvent_lck_air_2(Event* e) {
                 } else if ((e->floatState[EVENT_LCKA2_TIMER] > 70*3 & e->floatState[EVENT_LCKA2_TIMER] < 70*5.5)) {
                     pvt = bbCreatePivot(e->room->obj);
                     for (i = 0; i <= 1; i++) {
-                        if (e->room->roomTemplate->name == "lck_ez_3") {
+                        if (e->room->roomTemplate->name.equals("lck_ez_3")) {
                             if (i == 0) {
                                 bbPositionEntity(pvt,-288.0*RoomScale,416.0*RoomScale,320.0*RoomScale,false);
                             } else {
