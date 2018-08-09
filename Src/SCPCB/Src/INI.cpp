@@ -147,7 +147,7 @@ float GetINIFloat(String file, String section, String parameter, float defaultva
     return GetINIString(file, section, parameter, String(defaultvalue)).toFloat();
 }
 
-String GetINIString2(String file, int start, String parameter, String defaultvalue = "") {
+String GetINIString2(String file, int start, String parameter, String defaultvalue) {
     String temporaryString = "";
     String strTemp;
     bbFile* f = bbReadFile(file);

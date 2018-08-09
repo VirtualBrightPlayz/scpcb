@@ -1,6 +1,7 @@
 #ifndef ITEMS_H_INCLUDED
 #define ITEMS_H_INCLUDED
 #include <vector>
+#include <StringType.h>
 
 namespace CBN {
 

@@ -40,7 +40,7 @@ float UpdateDoorsTimer;
 int DoorTempID;
 
 // Functions.
-Door* CreateDoor(float x, float y, float z, float angle, Room* room, int open = false, int doorType = DOOR_TYPE_DEF, String tag = "", String code = "") {
+Door* CreateDoor(float x, float y, float z, float angle, Room* room, int open, int doorType, String tag, String code) {
     Pivot* parent;
     if (room != nullptr) {
         parent = room->obj;

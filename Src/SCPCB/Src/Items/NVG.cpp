@@ -11,7 +11,7 @@ void UpdateNVG() {
     Item* wornItem = mainPlayer->inventory->items[WORNITEM_SLOT_HEAD];
 
     if (wornItem != nullptr) {
-        if (wornItem->itemTemplate->name != "nvgoggles" & wornItem->itemTemplate->name != "supernv") {
+        if (!wornItem->itemTemplate->name.equals("nvgoggles") && !wornItem->itemTemplate->name.equals("supernv")) {
             wornItem = nullptr;
         }
     }

@@ -12,6 +12,7 @@
 #include "Events.h"
 #include "MapSystem.h"
 #include "Particles.h"
+#include "Materials.h"
 
 namespace CBN {
 
@@ -229,7 +230,7 @@ void DeloadInGameSounds(SoundManager* sndMan) {
     FreeSound_SM(sndMan->heartbeat);
 }
 
-void AddPositionalChannel(gxChannel* ref, Camera* cam, Object* ent, float range = 10, float vol = 1.0) {
+void AddPositionalChannel(gxChannel* ref, Camera* cam, Object* ent, float range, float vol) {
     if (ref == nullptr) {
         return;
     }
@@ -404,7 +405,7 @@ gxSound* LoadTempSound(String file) {
     return TempSound;
 }
 
-gxSound* LoadEventSound(Event* e, String file, int i = 0) {
+gxSound* LoadEventSound(Event* e, String file, int i) {
     if (e->sounds[i] != 0) {
         bbFreeSound(e->sounds[i]);
         e->sounds[i] = 0;

@@ -21,6 +21,7 @@
 #include "GameMain.h"
 #include "FastResize.h"
 #include "Options.h"
+#include "Materials.h"
 
 #include "Rooms/Room_closets_2.h"
 #include "Rooms/Room_cont_008_1.h"

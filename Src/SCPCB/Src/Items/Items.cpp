@@ -253,7 +253,7 @@ int CountItemsInInventory(Inventory* inv) {
     return retVal;
 }
 
-Item* CreateItem(String name, float x, float y, float z, int invSlots = 0) {
+Item* CreateItem(String name, float x, float y, float z, int invSlots) {
     Item* i = new Item();
     ItemTemplate* it;
 

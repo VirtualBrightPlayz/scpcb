@@ -4,6 +4,7 @@
 #include <StringType.h>
 #include <vector>
 
+class Object;
 class MeshModel;
 class Pivot;
 class Texture;
