@@ -2,7 +2,12 @@
 #define RADIO_H_INCLUDED
 #include <vector>
 
+class gxSound;
+class gxChannel;
+
 namespace CBN {
+
+struct Item;
 
 // Structs.
 struct Radio {
@@ -20,10 +25,10 @@ public:
     //How long each channel has been played for.
     float airTime[RADIO_CHANNEL_COUNT];
 
-    int channels[RADIO_CHANNEL_COUNT];
+    gxChannel* channels[RADIO_CHANNEL_COUNT];
 
     //Sounds
-    int sndStatic;
+    gxSound* sndStatic;
 };
 
 // Constants.

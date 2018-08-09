@@ -1,5 +1,8 @@
 #include "NVG.h"
-#include "include.h"
+#include "Items.h"
+#include "../Player.h"
+#include "../MathUtils/MathUtils.h"
+#include "../GameMain.h"
 
 namespace CBN {
 
