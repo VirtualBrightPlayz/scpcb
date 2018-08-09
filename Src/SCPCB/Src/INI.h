@@ -2,6 +2,8 @@
 #define INI_H_INCLUDED
 #include <vector>
 
+class bbBank;
+
 namespace CBN {
 
 // Structs.
@@ -16,7 +18,7 @@ public:
     static INIFile* getObject(int index);
 
     String name;
-    class bbBank* bank;
+    bbBank* bank;
     int bankOffset = 0;
     int size;
 };
@@ -42,9 +44,9 @@ int PutINIValue(String file, String INI_sSection, String INI_sKey, String INI_sV
 
 String INI_FileToString(String INI_sFilename);
 
-String INI_CreateSection(class bbFile* INI_lFileHandle, String INI_sNewSection);
+String INI_CreateSection(bbFile* INI_lFileHandle, String INI_sNewSection);
 
-int INI_CreateKey(class bbFile* INI_lFileHandle, String INI_sKey, String INI_sValue);
+int INI_CreateKey(bbFile* INI_lFileHandle, String INI_sKey, String INI_sValue);
 
 }
 #endif // INI_H_INCLUDED

@@ -2,7 +2,11 @@
 #define DOORS_H_INCLUDED
 #include <vector>
 
+class MeshModel;
+
 namespace CBN {
+
+struct Room;
 
 // Constants.
 const int DOOR_TYPE_DEF = 0;
@@ -20,10 +24,10 @@ public:
     static int getListSize();
     static Door* getObject(int index);
 
-    class MeshModel* obj;
-	class MeshModel* obj2;
-	class MeshModel* frameobj;
-    class MeshModel* buttons[2];
+    MeshModel* obj;
+	MeshModel* obj2;
+	MeshModel* frameobj;
+    MeshModel* buttons[2];
     int locked;
     int open;
     float angle;
@@ -32,7 +36,7 @@ public:
     int typ;
     int timer;
     float timerstate;
-    struct Room* room;
+    Room* room;
 
     float dist;
 

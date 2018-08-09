@@ -2,10 +2,12 @@
 #define SKYBOX_H_INCLUDED
 #include <vector>
 
+class Object;
+
 namespace CBN {
 
 // Functions.
-class MeshModel* sky_CreateSky(String filename, class Object* parent = nullptr);
+MeshModel* sky_CreateSky(String filename, Object* parent = nullptr);
 
 void UpdateSky();
 

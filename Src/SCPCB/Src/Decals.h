@@ -2,6 +2,8 @@
 #define DECALS_H_INCLUDED
 #include <vector>
 
+class Sprite;
+
 namespace CBN {
 
 // Constants.
@@ -33,7 +35,7 @@ public:
     static int getListSize();
     static Decal* getObject(int index);
 
-    class Sprite* obj;
+    Sprite* obj;
     float sizeChange;
     float size;
     float maxSize;

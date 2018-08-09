@@ -25,14 +25,14 @@ public:
     static int getListSize();
     static Forest* getObject(int index);
 
-    class MeshModel* tileMesh[6];
-    class MeshModel* detailMesh[6];
+    MeshModel* tileMesh[6];
+    MeshModel* detailMesh[6];
     int grid[(gridsize*gridsize)+11];
-    class MeshModel* tileEntities[(gridsize*gridsize)+1];
-    class Pivot* forest_Pivot;
+    MeshModel* tileEntities[(gridsize*gridsize)+1];
+    Pivot* forest_Pivot;
 
-    class MeshModel* door[2];
-    class MeshModel* detailEntities[2];
+    MeshModel* door[2];
+    MeshModel* detailEntities[2];
 
     int id;
 };
@@ -57,9 +57,9 @@ void PlaceForest(Forest* fr, float x, float y, float z, Room* r);
 
 void DestroyForest(Forest* fr);
 
-void UpdateForest(Forest* fr, class Object* ent);
+void UpdateForest(Forest* fr, Object* ent);
 
-class MeshModel* load_terrain(class bbImage* hmap, float yscale, class Texture* t1, class Texture* t2, class Texture* mask);
+MeshModel* load_terrain(bbImage* hmap, float yscale, Texture* t1, Texture* t2, Texture* mask);
 
 }
 #endif // ROOM_TEST_860_2_H_INCLUDED

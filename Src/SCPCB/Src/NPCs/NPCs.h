@@ -40,11 +40,11 @@ public:
     static NPC* getObject(int index);
 
     //TODO: USE INHERITANCE
-    class MeshModel* obj;
-    class MeshModel* obj2;
-    class MeshModel* obj3;
-    class MeshModel* obj4;
-    class Pivot* collider;
+    MeshModel* obj;
+    MeshModel* obj2;
+    MeshModel* obj3;
+    MeshModel* obj4;
+    Pivot* collider;
 
     int npcType;
     int id;
@@ -63,8 +63,8 @@ public:
     float frame;
     float angle;
 
-    class gxSound* sounds[NPC_SOUND_COUNT];
-    class gxChannel* soundChannels[NPC_CHANNEL_COUNT];
+    gxSound* sounds[NPC_SOUND_COUNT];
+    gxChannel* soundChannels[NPC_CHANNEL_COUNT];
 
     float playerDistance;
 

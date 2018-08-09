@@ -2,6 +2,10 @@
 #define PARTICLES_H_INCLUDED
 #include <vector>
 
+class Sprite;
+class Pivot;
+class gxChannel;
+
 namespace CBN {
 
 // Constants.
@@ -26,8 +30,8 @@ public:
     static int getListSize();
     static Particle* getObject(int index);
 
-    class Sprite* sprite;
-    class Pivot* pvt;
+    Sprite* sprite;
+    Pivot* pvt;
     int image;
 
     float r;
@@ -57,7 +61,7 @@ public:
     static int getListSize();
     static Emitter* getObject(int index);
 
-    class Pivot* obj;
+    Pivot* obj;
 
     float size;
     float gravity;
@@ -67,7 +71,7 @@ public:
 
     struct Room* room;
 
-    class gxChannel* soundCHN;
+    gxChannel* soundCHN;
 
     float speed;
     float randAngle;

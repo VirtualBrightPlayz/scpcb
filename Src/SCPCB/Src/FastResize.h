@@ -2,16 +2,21 @@
 #define FASTRESIZE_H_INCLUDED
 #include <vector>
 
+class MeshModel;
+class Texture;
+class Camera;
+class bbImage;
+
 namespace CBN {
 
 // Globals.
-extern class MeshModel* fresize_image;
-extern class Texture* fresize_texture;
-extern class Texture* fresize_texture2;
-extern class Camera* fresize_cam;
+extern MeshModel* fresize_image;
+extern Texture* fresize_texture;
+extern Texture* fresize_texture2;
+extern Camera* fresize_cam;
 
 // Functions.
-class bbImage* ResizeImage2(class bbImage* image, int width, int height);
+bbImage* ResizeImage2(bbImage* image, int width, int height);
 
 void ScaleRender(float x, float y, float hscale = 1.0, float vscale = 1.0);
 

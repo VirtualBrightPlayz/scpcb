@@ -2,14 +2,18 @@
 #define DREAMFILTER_H_INCLUDED
 #include <vector>
 
+class MeshModel;
+class Texture;
+class Camera;
+
 namespace CBN {
 
 // Globals.
-extern class MeshModel* ark_blur_image;
-extern class Texture* ark_blur_texture;
+extern MeshModel* ark_blur_image;
+extern Texture* ark_blur_texture;
 extern int ark_sw;
 extern int ark_sh;
-extern class Camera* ark_blur_cam;
+extern Camera* ark_blur_cam;
 
 // Functions.
 void CreateBlurImage();

@@ -4,6 +4,15 @@
 #include <StringType.h>
 #include <vector>
 
+class MeshModel;
+class Pivot;
+class Texture;
+class Camera;
+class Sprite;
+class Light;
+class bbImage;
+class gxChannel;
+
 namespace CBN {
 
 // Constants.
@@ -64,10 +73,10 @@ public:
     String objPath;
     int loaded;
 
-    class MeshModel* opaqueMesh;
-    class MeshModel* alphaMesh;
-    std::vector<class MeshModel*> collisionObjs;
-	std::vector<class Prop*> props;
+    MeshModel* opaqueMesh;
+    MeshModel* alphaMesh;
+    std::vector<MeshModel*> collisionObjs;
+	std::vector<Prop*> props;
 
     int zones;
 
@@ -118,11 +127,11 @@ public:
     struct RoomTemplate* roomTemplate;
 
     //TODO: rename
-    class Pivot* obj;
-	class MeshModel* opaqueMesh;
-	class MeshModel* alphaMesh;
-    std::vector<class MeshModel*> collisionObjs;
-    std::vector<class MeshModel*> props;
+    Pivot* obj;
+	MeshModel* opaqueMesh;
+	MeshModel* alphaMesh;
+    std::vector<MeshModel*> collisionObjs;
+    std::vector<MeshModel*> props;
 
     float dist;
 
@@ -137,16 +146,16 @@ public:
 
     //TODO: use arraylists for all this stuff?
     int soundEmitter[MaxRoomEmitters];
-    class Pivot* soundEmitterObj[MaxRoomEmitters];
+    Pivot* soundEmitterObj[MaxRoomEmitters];
     float soundEmitterRange[MaxRoomEmitters];
-    class gxChannel* soundEmitterCHN[MaxRoomEmitters];
+    gxChannel* soundEmitterCHN[MaxRoomEmitters];
 
-    class Light* lights[MaxRoomLights];
+    Light* lights[MaxRoomLights];
     float lightIntensity[MaxRoomLights];
 
-    class Sprite* lightSprites[MaxRoomLights];
+    Sprite* lightSprites[MaxRoomLights];
 
-    class Object* objects[MaxRoomObjects];
+    Object* objects[MaxRoomObjects];
     struct Lever* levers[11];
     struct Door* doors[7];
     struct NPC* npc[12];
@@ -155,7 +164,7 @@ public:
     struct Door* adjDoor[4];
 
     //TODO: what the fuck
-    class Pivot* lightSpritesPivot[MaxRoomLights];
+    Pivot* lightSpritesPivot[MaxRoomLights];
     int triggerboxAmount;
     int triggerbox[128];
     String triggerboxName[128];
@@ -214,7 +223,7 @@ public:
     static int getListSize();
     static WayPoint* getObject(int index);
 
-    class Pivot* obj;
+    Pivot* obj;
     struct Room* room;
     int state;
     //Field tempDist#
@@ -239,9 +248,9 @@ public:
     static int getListSize();
     static Screen* getObject(int index);
 
-    class Pivot* obj;
+    Pivot* obj;
     String imgpath;
-    class bbImage* img;
+    bbImage* img;
     struct Room* room;
 };
 
@@ -272,26 +281,26 @@ public:
     static int getListSize();
     static SecurityCam* getObject(int index);
 
-    class MeshModel* obj;
-    class MeshModel* monitorObj;
+    MeshModel* obj;
+    MeshModel* monitorObj;
 
-    //class MeshModel* baseObj;
-    class MeshModel* cameraObj;
+    //MeshModel* baseObj;
+    MeshModel* cameraObj;
 
-    class Sprite* scrObj;
+    Sprite* scrObj;
     float scrWidth;
     float scrHeight;
     int screen;
-    class Camera* cam;
+    Camera* cam;
     int scrTexture; //TODO: rename
-    class Sprite* scrOverlay;
+    Sprite* scrOverlay;
     float angle;
     float turn;
     float currAngle;
     float state;
     int playerState;
 
-    class gxChannel* soundCHN;
+    gxChannel* soundCHN;
 
     int inSight;
 
@@ -309,7 +318,7 @@ public:
     int dir;
 
     int isRoom2slCam = false;
-    class Texture* room2slTexs[2]; //TODO: kill
+    Texture* room2slTexs[2]; //TODO: kill
     int specialCam = false;
     int id = -1;
 };
@@ -325,7 +334,7 @@ public:
     static Prop* getObject(int index);
 
     String file;
-    class MeshModel* obj;
+    MeshModel* obj;
 
     float x;
     float y;
@@ -340,8 +349,8 @@ public:
 
 // Globals.
 extern float RoomScale;
-extern class gxSound* RoomAmbience[20];
-extern class MeshModel* Sky;
+extern gxSound* RoomAmbience[20];
+extern MeshModel* Sky;
 extern float HideDistance;
 extern float SecondaryLightOn;
 extern int RemoteDoorOn;
@@ -349,7 +358,7 @@ extern int Contained106;
 extern Screen* SelectedScreen;
 extern SecurityCam* SelectedMonitor;
 extern SecurityCam* CoffinCam;
-extern class Texture* ScreenTexs[2];
+extern Texture* ScreenTexs[2];
 extern Room*** MapRooms;
 
 // Functions.
@@ -377,7 +386,7 @@ void UpdateRooms();
 
 int IsRoomAdjacent(Room* ths, Room* that);
 
-class Light* AddLight(Room* room, float x, float y, float z, int ltype, float range, int r, int g, int b);
+Light* AddLight(Room* room, float x, float y, float z, int ltype, float range, int r, int g, int b);
 
 LightTemplate* AddTempLight(RoomTemplate* rt, float x, float y, float z, int ltype, float range, int r, int g, int b);
 
@@ -389,7 +398,7 @@ void RemoveWaypoint(WayPoint* w);
 
 int FindPath(struct NPC* n, float x, float y, float z); //TODO: move to NPCs.h?
 
-class MeshModel* CreateLine(float x1, float y1, float z1, float x2, float y2, float z2, class MeshModel* mesh = nullptr);
+MeshModel* CreateLine(float x1, float y1, float z1, float x2, float y2, float z2, MeshModel* mesh = nullptr);
 
 Screen* CreateScreen(float x, float y, float z, String imgpath, Room* r);
 

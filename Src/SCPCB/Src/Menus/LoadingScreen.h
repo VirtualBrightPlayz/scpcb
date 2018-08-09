@@ -2,6 +2,8 @@
 #define LOADINGSCREEN_H_INCLUDED
 #include <vector>
 
+class bbImage;
+
 namespace CBN {
 
 // Structs.
@@ -16,7 +18,7 @@ public:
     static LoadingScreen* getObject(int index);
 
     String imgpath;
-    class bbImage* img;
+    bbImage* img;
     int id;
     String title;
     int alignx;
@@ -30,7 +32,7 @@ public:
 extern LoadingScreen* SelectedLoadingScreen;
 extern int LoadingScreenAmount;
 extern int LoadingScreenText;
-extern class bbImage* LoadingBack;
+extern bbImage* LoadingBack;
 
 // Functions.
 void InitLoadingScreens(String file);

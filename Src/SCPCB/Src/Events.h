@@ -3,7 +3,12 @@
 #include <vector>
 #include <StringType.h>
 
+class gxSound;
+class gxChannel;
+
 namespace CBN {
+
+struct Room;
 
 // Constants.
 const int EVENT_MAX_STATE_COUNT = 5;
@@ -22,7 +27,7 @@ public:
     static Event* getObject(int index);
 
     String name;
-    struct Room* room;
+    Room* room;
 
     //TODO: deprecated
     float eventState;
@@ -36,8 +41,8 @@ public:
 
     //Field img% ;???
 
-    class gxChannel* soundChannels[EVENT_CHANNEL_COUNT];
-    class gxSound* sounds[EVENT_SOUND_COUNT];
+    gxChannel* soundChannels[EVENT_CHANNEL_COUNT];
+    gxSound* sounds[EVENT_SOUND_COUNT];
 
     String musicTrack;
     bool overwriteMusic;

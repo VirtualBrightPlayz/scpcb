@@ -2,6 +2,14 @@
 #define PLAYER_H_INCLUDED
 #include <vector>
 
+class Pivot;
+class Camera;
+class gxSound;
+class gxChannel;
+class MeshModel;
+class Texture;
+class Object;
+
 namespace CBN {
 
 // Constants.
@@ -27,13 +35,13 @@ public:
     ~Player();
 
     //entities
-    class Pivot* collider;
+    Pivot* collider;
 
-    class Pivot* head;
+    Pivot* head;
     float headPitch;
     float headYaw;
 
-    class Camera* cam;
+    Camera* cam;
     float camShake;
     float camAnimState;
     float camZoom;
@@ -41,14 +49,14 @@ public:
     float camFogNear;
     float camFogFar;
 
-    class Sprite* overlays[OVERLAY_COUNT];
+    Sprite* overlays[OVERLAY_COUNT];
 
     Object* grabbedEntity;
 
     struct Item* closestItem;
     struct Item* selectedItem;
 
-    class MeshModel* closestButton;
+    MeshModel* closestButton;
     struct Door* closestDoor;
     struct Door* selectedDoor;
 
@@ -106,13 +114,13 @@ public:
     //------
 
     //sounds
-    class gxSound* breathingSFX[2][5];
-    class gxSound* bloodDripSFX[4];
-    class gxSound* damageSFX[9];
-    class gxSound* coughSFX[3];
-    class gxSound* heartbeatSFX;
+    gxSound* breathingSFX[2][5];
+    gxSound* bloodDripSFX[4];
+    gxSound* damageSFX[9];
+    gxSound* coughSFX[3];
+    gxSound* heartbeatSFX;
 
-    class gxChannel* breathChn;
+    gxChannel* breathChn;
     //------
 
     //other states

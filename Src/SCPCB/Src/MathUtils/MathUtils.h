@@ -44,9 +44,9 @@ float Rnd_Array(float numb1, float numb2, float Array1, float Array2);
 
 int TimeInPosMilliSecs();
 
-void MakeCollBox(class MeshModel* mesh);
+void MakeCollBox(MeshModel* mesh);
 
-void GetMeshExtents(class MeshModel* mesh);
+void GetMeshExtents(MeshModel* mesh);
 
 float EntityScaleX(Object* entity, int globl = false);
 

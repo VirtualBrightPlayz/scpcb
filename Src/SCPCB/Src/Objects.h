@@ -2,6 +2,8 @@
 #define OBJECTS_H_INCLUDED
 #include <vector>
 
+class MeshModel;
+
 namespace CBN {
 
 // Structs.
@@ -17,8 +19,8 @@ public:
 
     bool succ = false;
     bool locked = false;
-    class MeshModel* obj;
-    class MeshModel* baseObj;
+    MeshModel* obj;
+    MeshModel* baseObj;
 };
 
 struct ElevatorObj {
@@ -31,23 +33,23 @@ public:
     static int getListSize();
     static ElevatorObj* getObject(int index);
 
-    class MeshModel* obj;
+    MeshModel* obj;
     int inFacility;
     struct Door* door;
 };
 
 // Functions.
-class MeshModel* CreateButton(float x, float y, float z, float pitch, float yaw, float roll = 0);
+MeshModel* CreateButton(float x, float y, float z, float pitch, float yaw, float roll = 0);
 
-void UpdateButton(class MeshModel* obj);
+void UpdateButton(MeshModel* obj);
 
 Lever* CreateLever();
 
 void UpdateLevers();
 
-float UpdateElevators(float state, struct Door* door1, struct Door* door2, class Object* room1, class Object* room2, struct Event* event);
+float UpdateElevators(float state, struct Door* door1, struct Door* door2, Object* room1, Object* room2, struct Event* event);
 
-float UpdateElevators2(float State, struct Door* door1, struct Door* door2, class Object* room1, class Object* room2, struct Event* event);
+float UpdateElevators2(float State, struct Door* door1, struct Door* door2, Object* room1, Object* room2, struct Event* event);
 
 ElevatorObj* AssignElevatorObj(int obj, struct Door* door, int in_facility);
 

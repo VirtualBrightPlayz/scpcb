@@ -4,7 +4,14 @@
 #include <StringType.h>
 #include <vector>
 
+class Object;
+class gxSound;
+class Texture;
+class MeshModel;
+
 namespace CBN {
+
+struct Room;
 
 // Structs.
 struct Timing {
@@ -62,37 +69,37 @@ extern float ExplosionTimer;
 extern int LightsOn;
 extern int SoundTransmission;
 extern int Brightness;
-extern class Object* SoundEmitter;
-extern class gxSound* TempSounds[10];
+extern Object* SoundEmitter;
+extern gxSound* TempSounds[10];
 extern int TempSoundIndex;
-extern class gxSound* RadioSquelch;
-extern class gxSound* RadioStatic;
-extern class gxSound* RadioBuzz;
+extern gxSound* RadioSquelch;
+extern gxSound* RadioStatic;
+extern gxSound* RadioBuzz;
 extern int PlayerDetected;
 extern float PrevInjuries;
 extern float PrevBloodloss;
 extern int NoTarget;
-extern class Texture* AmbientLightRoomTex;
+extern Texture* AmbientLightRoomTex;
 extern int AmbientLightRoomVal;
 extern float NTF_1499PrevX;
 extern float NTF_1499PrevY;
 extern float NTF_1499PrevZ;
-extern struct Room* NTF_1499PrevRoom;
+extern Room* NTF_1499PrevRoom;
 extern float NTF_1499X;
 extern float NTF_1499Y;
 extern float NTF_1499Z;
-extern class MeshModel* NTF_1499Sky;
+extern MeshModel* NTF_1499Sky;
 extern int InFacility;
 extern int IsZombie;
 extern int room2gw_brokendoor;
 extern float room2gw_x;
 extern float room2gw_z;
 extern String Input294;
-extern class Texture* TeslaTexture;
-extern class MeshModel* Monitor;
-extern class Texture* MonitorTexture;
-extern class MeshModel* CamBaseOBJ;
-extern class MeshModel* CamOBJ;
+extern Texture* TeslaTexture;
+extern MeshModel* Monitor;
+extern Texture* MonitorTexture;
+extern MeshModel* CamBaseOBJ;
+extern MeshModel* CamOBJ;
 
 // Functions.
 int VerifyResolution();
@@ -119,7 +126,7 @@ void UpdatePauseMenu();
 
 String f2s(float n, int count);
 
-float Animate2(class MeshModel* entity, float curr, int start, int quit, float speed, int loop = true);
+float Animate2(MeshModel* entity, float curr, int start, int quit, float speed, int loop = true);
 
 void UpdateInfect();
 

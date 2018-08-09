@@ -37,13 +37,13 @@ public:
     String name;
     String invName;
 
-    class MeshModel* obj;
+    MeshModel* obj;
     String objPath;
 
-    class bbImage* invImage[2];
+    bbImage* invImage[2];
     String invImagePath[2];
 
-    class Texture* tex;
+    Texture* tex;
     String texPath;
 
     ITEMPICK_SOUND sound;
@@ -65,10 +65,10 @@ public:
     static Item* getObject(int index);
 
     String name;
-    class Pivot* collider;
-    class MeshModel* model;
+    Pivot* collider;
+    MeshModel* model;
     struct ItemTemplate* itemTemplate;
-    class bbImage* img;
+    bbImage* img;
     int id;
 
     int r;
@@ -85,7 +85,7 @@ public:
     int picked;
     int dropped;
 
-    class bbImage* invImage;
+    bbImage* invImage;
 
     int wontColl = false;
     float xspeed;

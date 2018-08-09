@@ -2,8 +2,13 @@
 #define AUDIO_H_INCLUDED
 
 #include <StringType.h>
-
 #include <vector>
+
+class gxSound;
+class gxChannel;
+class Camera;
+class Pivot;
+class Object;
 
 namespace CBN {
 
@@ -18,7 +23,7 @@ public:
     static int getListSize();
     static Sound* getObject(int index);
 
-    class gxSound* internal;
+    gxSound* internal;
     String file;
 };
 
@@ -97,10 +102,10 @@ public:
     static int getListSize();
     static SoundChannel* getObject(int index);
 
-    class gxChannel* internal;
+    gxChannel* internal;
 
-    class Camera* camera;
-    class Pivot* point;
+    Camera* camera;
+    Pivot* point;
 
     float range;
     float volume;
@@ -169,7 +174,7 @@ void LoadInGameSounds(SoundManager* sndMan);
 
 void DeloadInGameSounds(SoundManager* sndMan);
 
-void AddPositionalChannel(class gxChannel* ref, class Camera* cam, class Object* ent, float range = 10.0f, float vol = 1.0f);
+void AddPositionalChannel(gxChannel* ref, Camera* cam, Object* ent, float range = 10.0f, float vol = 1.0f);
 
 void UpdateChannelList();
 
@@ -177,27 +182,27 @@ Sound* InitializeSound_SM(String fileName);
 
 Sound* LoadSound_SM(String fileName);
 
-class gxChannel* PlaySound2(class gxSound* snd);
+gxChannel* PlaySound2(gxSound* snd);
 
-class gxChannel* PlaySound_SM(Sound* snd);
+gxChannel* PlaySound_SM(Sound* snd);
 
 void FreeSound_SM(Sound* snd);
 
-class gxChannel* PlayRangedSound(class gxSound* soundHandle, class Camera* cam, class Object* entity, float range = 10.0f, float volume = 1.0f);
+gxChannel* PlayRangedSound(gxSound* soundHandle, Camera* cam, Object* entity, float range = 10.0f, float volume = 1.0f);
 
-class gxChannel* PlayRangedSound_SM(Sound* snd, class Camera* cam, class Object* entity, float range = 10, float volume = 1.0);
+gxChannel* PlayRangedSound_SM(Sound* snd, Camera* cam, Object* entity, float range = 10, float volume = 1.0);
 
-class gxChannel* LoopRangedSound(class gxSound* soundHandle, class gxChannel* chn, class Camera* cam, class Object* entity, float range = 10, float volume = 1.0);
+gxChannel* LoopRangedSound(gxSound* soundHandle, gxChannel* chn, Camera* cam, Object* entity, float range = 10, float volume = 1.0);
 
-class gxChannel* LoopRangedSound_SM(Sound* snd, class gxChannel* chn, class Camera* cam, class Object* entity, float range = 10, float volume = 1.0);
+gxChannel* LoopRangedSound_SM(Sound* snd, gxChannel* chn, Camera* cam, Object* entity, float range = 10, float volume = 1.0);
 
-void UpdateRangedSoundOrigin(class gxChannel* chn, class Camera* cam, class Object* entity, float range = 10.0f, float volume = 1.0f);
+void UpdateRangedSoundOrigin(gxChannel* chn, Camera* cam, Object* entity, float range = 10.0f, float volume = 1.0f);
 
 void UpdateRangedSoundOrigin_SM(SoundChannel* chn);
 
-class gxSound* LoadTempSound(String file);
+gxSound* LoadTempSound(String file);
 
-class gxSound* LoadEventSound(struct Event* e, String file, int i = 0);
+gxSound* LoadEventSound(struct Event* e, String file, int i = 0);
 
 void PauseSounds();
 
