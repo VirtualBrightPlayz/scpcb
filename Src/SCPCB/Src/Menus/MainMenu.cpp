@@ -1,19 +1,20 @@
+#include <StringType.h>
+#include <bbmath.h>
+#include <bbinput.h>
+#include <bbgraphics.h>
+
 #include "MainMenu.h"
-#include "include.h"
+#include "Menu.h"
+#include "../INI.h"
+#include "../Options.h"
+#include "../GameMain.h"
+#include "../Audio.h"
+#include "../Save.h"
+#include "../Difficulty.h"
+#include "../MathUtils/MathUtils.h"
+#include "../Assets.h"
 
 namespace CBN {
-
-// Constants.
-const int GAMESUBSTATE_MAINMENU_MAIN = 0;
-const int GAMESUBSTATE_MAINMENU_NEWGAME = 1;
-const int GAMESUBSTATE_MAINMENU_CUSTOMMAP = 2;
-const int GAMESUBSTATE_MAINMENU_LOADGAME = 3;
-const int GAMESUBSTATE_MAINMENU_OPTIONS = 4;
-const int MAINMENU_BUTTON_NEWGAME = 0;
-const int MAINMENU_BUTTON_LOADGAME = 1;
-const int MAINMENU_BUTTON_OPTIONS = 2;
-const int MAINMENU_BUTTON_QUIT = 3;
-const int MAINMENU_BUTTON_COUNT = 4;
 
 // Functions.
 void UpdateMainMenu() {
@@ -88,11 +89,11 @@ void UpdateMainMenu() {
                             }
                         } else {
                             n = bbRand(4,8);
-                            for (i = 1; i <= n; i++) {
+                            for (i = 0; i < n; i++) {
                                 if (bbRand(3)==1) {
                                     RandomSeed = RandomSeed + String(bbRand(0,9));
                                 } else {
-                                    RandomSeed = RandomSeed + bbChr(bbRand(97,122));
+                                    RandomSeed = RandomSeed + (char)bbRand(97,122);
                                 }
                             }
                         }
@@ -113,7 +114,7 @@ void UpdateMainMenu() {
                 }
                 case MAINMENU_BUTTON_QUIT: {
                     if (mouseHitButton) {
-                        End();
+                        //End(); // TODO: Fix.
                     }
                 }
             }
@@ -211,7 +212,7 @@ void UpdateMainMenu() {
                     }
 
                     if (RandomSeed.isEmpty()) {
-                        RandomSeed = String(abs(bbMilliSecs()));
+                        RandomSeed = String(TimeInPosMilliSecs());
                     }
                     strtemp = "";
                     bbSeedRnd(SeedStringToInt(RandomSeed));
@@ -619,7 +620,7 @@ void DrawMainMenu() {
                 //Local modeName$, modeDescription$, selectedDescription$
                 bbText(x + (int)(20.0 * MenuScale), y + (int)(150.0 * MenuScale), "Difficulty:");
                 for (i = SAFE; i <= CUSTOM; i++) {
-                    DrawUITick(x + (int)(20.0 * MenuScale), y + (int)((180.0+30.0*i) * MenuScale), (SelectedDifficulty = difficulties[i]));
+                    DrawUITick(x + (int)(20.0 * MenuScale), y + (int)((180.0+30.0*i) * MenuScale), SelectedDifficulty == difficulties[i]);
 
                     bbText(x + (int)(60.0 * MenuScale), y + (int)((180.0+30.0*i) * MenuScale), difficulties[i]->name);
                 }
