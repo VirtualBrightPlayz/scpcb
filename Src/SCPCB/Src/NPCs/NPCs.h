@@ -4,7 +4,7 @@
 #include <StringType.h>
 #include <vector>
 
-class gxSound*;
+class gxSound;
 
 namespace CBN {
 
@@ -194,7 +194,7 @@ int FindFreeNPCID();
 
 void ForceSetNPCID(NPC* n, int newID);
 
-void Console_SpawnNPC(String c_input, int state = -9999);
+void Console_SpawnNPC(String npcName, int state = -1);
 
 void ManipulateNPCBones();
 

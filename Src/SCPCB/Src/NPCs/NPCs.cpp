@@ -29,6 +29,9 @@
 #include "../Items/Items.h"
 #include "../Menus/Menu.h"
 #include "../Doors.h"
+#include "../INI.h"
+#include "../Events.h"
+#include "../Objects.h"
 
 namespace CBN {
 
@@ -630,6 +633,7 @@ void PlayMTFSound(gxSound* sound, NPC* n) {
     //EndIf
 }
 
+// TODO: Move somewhere relevant.
 void MoveToPocketDimension() {
     Room* r;
 
@@ -693,91 +697,92 @@ void ForceSetNPCID(NPC* n, int newID) {
     }
 }
 
-void Console_SpawnNPC(String c_input, int state = -9999) {
-    NPC* n;
+void Console_SpawnNPC(String npcName, int state) {
+    //NPC* n;
 
-    switch (c_input) {
-        case "mtf": {
-            n = CreateNPC(NPCtypeMTF, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2,bbEntityZ(mainPlayer->collider));
-        }
-        case "173","scp173","scp-173": {
-            n = CreateNPC(NPCtype173, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2,bbEntityZ(mainPlayer->collider));
-        }
-        case "106","scp106","scp-106","larry": {
-            n = CreateNPC(NPCtype106, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2,bbEntityZ(mainPlayer->collider));
-        }
-        case "guard": {
-            n = CreateNPC(NPCtypeGuard, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2,bbEntityZ(mainPlayer->collider));
-        }
-        case "096","scp096","scp-096": {
-            n = CreateNPC(NPCtype096, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2,bbEntityZ(mainPlayer->collider));
-            if (Curr096 == nullptr) {
-                Curr096 = n;
-            }
-        }
-        case "049","scp049","scp-049": {
-            n = CreateNPC(NPCtype049, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2,bbEntityZ(mainPlayer->collider));
-            if (state==-9999) {
-                n->state = 2;
-            }
-        }
-        case "zombie","scp-049-2": {
-            n = CreateNPC(NPCtypeZombie, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2,bbEntityZ(mainPlayer->collider));
-            if (state==-9999) {
-                n->state = 1;
-            }
-        }
-        case "966", "scp966", "scp-966": {
-            n = CreateNPC(NPCtype966, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2,bbEntityZ(mainPlayer->collider));
-        }
-        case "class-d","classd","d": {
-            n = CreateNPC(NPCtypeD, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2,bbEntityZ(mainPlayer->collider));
-        }
-        case "apache": {
-            n = CreateNPC(NPCtypeApache, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2,bbEntityZ(mainPlayer->collider));
-        }
-        case "513-1","scp513-1","scp-513-1": {
-            n = CreateNPC(NPCtype5131, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2,bbEntityZ(mainPlayer->collider));
-        }
-        case "tentacle": {
-            n = CreateNPC(NPCtypeTentacle, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider),bbEntityZ(mainPlayer->collider));
-        }
-        case "860-2","scp860-2","scp-860-2": {
-            n = CreateNPC(NPCtype860, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2,bbEntityZ(mainPlayer->collider));
-        }
-        case "939","scp939","scp-939": {
-            n = CreateNPC(NPCtype939, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2,bbEntityZ(mainPlayer->collider));
-            if (state==-9999) {
-                n->state = 1;
-            }
-        }
-        case "066","scp066","scp-066": {
-            n = CreateNPC(NPCtype066, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2,bbEntityZ(mainPlayer->collider));
-        }
-        case "pdplane": {
-            n = CreateNPC(NPCtypePdPlane, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2,bbEntityZ(mainPlayer->collider));
-        }
-        case "scp-1499-1","scp1499-1","1499-1": {
-            n = CreateNPC(NPCtype1499, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2,bbEntityZ(mainPlayer->collider));
-        }
-        default: {
-            CreateConsoleMsg("NPC type not found.");
-        }
-    }
+    // switch (c_input) {
+    //     case "mtf": {
+    //         n = CreateNPC(NPCtypeMTF, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2,bbEntityZ(mainPlayer->collider));
+    //     }
+    //     case "173","scp173","scp-173": {
+    //         n = CreateNPC(NPCtype173, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2,bbEntityZ(mainPlayer->collider));
+    //     }
+    //     case "106","scp106","scp-106","larry": {
+    //         n = CreateNPC(NPCtype106, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2,bbEntityZ(mainPlayer->collider));
+    //     }
+    //     case "guard": {
+    //         n = CreateNPC(NPCtypeGuard, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2,bbEntityZ(mainPlayer->collider));
+    //     }
+    //     case "096","scp096","scp-096": {
+    //         n = CreateNPC(NPCtype096, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2,bbEntityZ(mainPlayer->collider));
+    //         if (Curr096 == nullptr) {
+    //             Curr096 = n;
+    //         }
+    //     }
+    //     case "049","scp049","scp-049": {
+    //         n = CreateNPC(NPCtype049, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2,bbEntityZ(mainPlayer->collider));
+    //         if (state==-9999) {
+    //             n->state = 2;
+    //         }
+    //     }
+    //     case "zombie","scp-049-2": {
+    //         n = CreateNPC(NPCtypeZombie, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2,bbEntityZ(mainPlayer->collider));
+    //         if (state==-9999) {
+    //             n->state = 1;
+    //         }
+    //     }
+    //     case "966", "scp966", "scp-966": {
+    //         n = CreateNPC(NPCtype966, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2,bbEntityZ(mainPlayer->collider));
+    //     }
+    //     case "class-d","classd","d": {
+    //         n = CreateNPC(NPCtypeD, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2,bbEntityZ(mainPlayer->collider));
+    //     }
+    //     case "apache": {
+    //         n = CreateNPC(NPCtypeApache, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2,bbEntityZ(mainPlayer->collider));
+    //     }
+    //     case "513-1","scp513-1","scp-513-1": {
+    //         n = CreateNPC(NPCtype5131, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2,bbEntityZ(mainPlayer->collider));
+    //     }
+    //     case "tentacle": {
+    //         n = CreateNPC(NPCtypeTentacle, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider),bbEntityZ(mainPlayer->collider));
+    //     }
+    //     case "860-2","scp860-2","scp-860-2": {
+    //         n = CreateNPC(NPCtype860, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2,bbEntityZ(mainPlayer->collider));
+    //     }
+    //     case "939","scp939","scp-939": {
+    //         n = CreateNPC(NPCtype939, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2,bbEntityZ(mainPlayer->collider));
+    //         if (state==-9999) {
+    //             n->state = 1;
+    //         }
+    //     }
+    //     case "066","scp066","scp-066": {
+    //         n = CreateNPC(NPCtype066, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2,bbEntityZ(mainPlayer->collider));
+    //     }
+    //     case "pdplane": {
+    //         n = CreateNPC(NPCtypePdPlane, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2,bbEntityZ(mainPlayer->collider));
+    //     }
+    //     case "scp-1499-1","scp1499-1","1499-1": {
+    //         n = CreateNPC(NPCtype1499, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2,bbEntityZ(mainPlayer->collider));
+    //     }
+    //     default: {
+    //         CreateConsoleMsg("NPC type not found.");
+    //     }
+    // }
 
-    if (n != nullptr) {
-        if (state!=-9999) {
-            n->state = state;
-        }
-    }
+    // if (n != nullptr) {
+    //     if (state!=-9999) {
+    //         n->state = state;
+    //     }
+    // }
 
 }
 
+// TODO: Remove all this.
 void ManipulateNPCBones() {
     NPC* n;
-    int bone;
-    int bone2;
-    int pvt;
+    Object* bone;
+    Object* bone2;
+    Pivot* pvt;
     float pitch;
     float yaw;
     float roll;
@@ -806,7 +811,7 @@ void ManipulateNPCBones() {
             if (bone == 0) {
                 throw ("ERROR: NPC bone \""+bonename+"\" does not exist.");
             }
-            if (n->boneToManipulate2!="") {
+            if (!n->boneToManipulate2.isEmpty()) {
                 bonename2 = GetNPCManipulationValue(n->npcNameInSection,n->boneToManipulate,"navbone",0);
                 bone2 = bbFindChild(n->obj,n->boneToManipulate2);
                 if (bone2 == 0) {
@@ -819,7 +824,7 @@ void ManipulateNPCBones() {
                     bbPointEntity(bone,mainPlayer->cam);
                     bbPointEntity(pvt,mainPlayer->cam);
                     n->bonePitch = CurveAngle(bbEntityPitch(pvt),n->bonePitch,10.0);
-                    switch (TransformNPCManipulationData(n->npcNameInSection,n->boneToManipulate,"yaw")) {
+                    switch ((int)TransformNPCManipulationData(n->npcNameInSection,n->boneToManipulate,"yaw")) {
                         case 0: {
                             n->boneYaw = CurveAngle(bbEntityPitch(bone),n->boneYaw,10.0);
                             pitchvalue = n->boneYaw;
@@ -833,7 +838,7 @@ void ManipulateNPCBones() {
                             rollvalue = n->boneYaw;
                         }
                     }
-                    switch (TransformNPCManipulationData(n->npcNameInSection,n->boneToManipulate,"pitch")) {
+                    switch ((int)TransformNPCManipulationData(n->npcNameInSection,n->boneToManipulate,"pitch")) {
                         case 0: {
                             pitchvalue = n->bonePitch;
                         }
@@ -844,13 +849,13 @@ void ManipulateNPCBones() {
                             rollvalue = n->bonePitch;
                         }
                     }
-                    if ((int)(GetNPCManipulationValue(n->npcNameInSection,n->boneToManipulate,"pitchinverse",3))==true) {
+                    if (GetNPCManipulationValue(n->npcNameInSection,n->boneToManipulate,"pitchinverse",3).toInt()==true) {
                         pitchvalue = -pitchvalue;
                     }
-                    if ((int)(GetNPCManipulationValue(n->npcNameInSection,n->boneToManipulate,"yawinverse",3))==true) {
+                    if (GetNPCManipulationValue(n->npcNameInSection,n->boneToManipulate,"yawinverse",3).toInt()==true) {
                         yawvalue = -yawvalue;
                     }
-                    if ((int)(GetNPCManipulationValue(n->npcNameInSection,n->boneToManipulate,"rollinverse",3))==true) {
+                    if (GetNPCManipulationValue(n->npcNameInSection,n->boneToManipulate,"rollinverse",3).toInt()==true) {
                         rollvalue = -rollvalue;
                     }
                     bbRotateEntity(bone,pitchvalue+pitchoffset,yawvalue+yawoffset,rollvalue+rolloffset);
@@ -858,7 +863,7 @@ void ManipulateNPCBones() {
                 }
                 case 1: {
                     n->bonePitch = CurveAngle(bbDeltaPitch(bone2,mainPlayer->cam),n->bonePitch,10.0);
-                    switch (TransformNPCManipulationData(n->npcNameInSection,n->boneToManipulate,"pitch")) {
+                    switch ((int)TransformNPCManipulationData(n->npcNameInSection,n->boneToManipulate,"pitch")) {
                         case 0: {
                             pitchvalue = n->bonePitch;
                         }
@@ -869,13 +874,13 @@ void ManipulateNPCBones() {
                             rollvalue = n->bonePitch;
                         }
                     }
-                    if ((int)(GetNPCManipulationValue(n->npcNameInSection,n->boneToManipulate,"pitchinverse",3))==true) {
+                    if (GetNPCManipulationValue(n->npcNameInSection,n->boneToManipulate,"pitchinverse",3).toInt()==true) {
                         pitchvalue = -pitchvalue;
                     }
-                    if ((int)(GetNPCManipulationValue(n->npcNameInSection,n->boneToManipulate,"yawinverse",3))==true) {
+                    if (GetNPCManipulationValue(n->npcNameInSection,n->boneToManipulate,"yawinverse",3).toInt()==true) {
                         yawvalue = -yawvalue;
                     }
-                    if ((int)(GetNPCManipulationValue(n->npcNameInSection,n->boneToManipulate,"rollinverse",3))==true) {
+                    if (GetNPCManipulationValue(n->npcNameInSection,n->boneToManipulate,"rollinverse",3).toInt()==true) {
                         rollvalue = -rollvalue;
                     }
                     bbRotateEntity(bone,pitchvalue+pitchoffset,yawvalue+yawoffset,rollvalue+rolloffset);
@@ -883,7 +888,7 @@ void ManipulateNPCBones() {
                 }
                 case 2: {
                     bbPointEntity(bone,Curr096->obj);
-                    switch (TransformNPCManipulationData(n->npcNameInSection,n->boneToManipulate,"yaw")) {
+                    switch ((int)TransformNPCManipulationData(n->npcNameInSection,n->boneToManipulate,"yaw")) {
                         case 0: {
                             n->boneYaw = CurveAngle(bbEntityPitch(bone),n->boneYaw,10.0);
                             pitchvalue = -n->boneYaw;
@@ -897,13 +902,13 @@ void ManipulateNPCBones() {
                             rollvalue = -n->boneYaw;
                         }
                     }
-                    if ((int)(GetNPCManipulationValue(n->npcNameInSection,n->boneToManipulate,"pitchinverse",3))==true) {
+                    if (GetNPCManipulationValue(n->npcNameInSection,n->boneToManipulate,"pitchinverse",3).toInt()==true) {
                         pitchvalue = -pitchvalue;
                     }
-                    if ((int)(GetNPCManipulationValue(n->npcNameInSection,n->boneToManipulate,"yawinverse",3))==true) {
+                    if (GetNPCManipulationValue(n->npcNameInSection,n->boneToManipulate,"yawinverse",3).toInt()==true) {
                         yawvalue = -yawvalue;
                     }
-                    if ((int)(GetNPCManipulationValue(n->npcNameInSection,n->boneToManipulate,"rollinverse",3))==true) {
+                    if (GetNPCManipulationValue(n->npcNameInSection,n->boneToManipulate,"rollinverse",3).toInt()==true) {
                         rollvalue = -rollvalue;
                     }
                     bbRotateEntity(bone,pitchvalue+pitchoffset,yawvalue+yawoffset,rollvalue+rolloffset);
@@ -912,7 +917,7 @@ void ManipulateNPCBones() {
                 case 3: {
                     bbPointEntity(pvt,mainPlayer->cam);
                     n->boneYaw = CurveAngle(bbEntityPitch(pvt),n->boneYaw,10.0);
-                    switch (TransformNPCManipulationData(n->npcNameInSection,n->boneToManipulate,"yaw")) {
+                    switch ((int)TransformNPCManipulationData(n->npcNameInSection,n->boneToManipulate,"yaw")) {
                         case 0: {
                             pitchvalue = n->boneYaw;
                         }
@@ -923,13 +928,13 @@ void ManipulateNPCBones() {
                             rollvalue = n->boneYaw;
                         }
                     }
-                    if ((int)(GetNPCManipulationValue(n->npcNameInSection,n->boneToManipulate,"pitchinverse",3))==true) {
+                    if (GetNPCManipulationValue(n->npcNameInSection,n->boneToManipulate,"pitchinverse",3).toInt()==true) {
                         pitchvalue = -pitchvalue;
                     }
-                    if ((int)(GetNPCManipulationValue(n->npcNameInSection,n->boneToManipulate,"yawinverse",3))==true) {
+                    if (GetNPCManipulationValue(n->npcNameInSection,n->boneToManipulate,"yawinverse",3).toInt()==true) {
                         yawvalue = -yawvalue;
                     }
-                    if ((int)(GetNPCManipulationValue(n->npcNameInSection,n->boneToManipulate,"rollinverse",3))==true) {
+                    if (GetNPCManipulationValue(n->npcNameInSection,n->boneToManipulate,"rollinverse",3).toInt()==true) {
                         rollvalue = -rollvalue;
                     }
                     bbRotateEntity(bone,pitchvalue+pitchoffset,yawvalue+yawoffset,rollvalue+rolloffset);
@@ -950,7 +955,9 @@ String GetNPCManipulationValue(String NPC, String bone, String section, int valu
 
     String value = GetINIString("Data/NPCBones.ini",NPC,bone+"_"+section);
     switch (valuetype) {
-        case 0,1,2: {
+        case 0:
+        case 1:
+        case 2: {
             return value;
         }
         case 3: {
@@ -964,6 +971,7 @@ String GetNPCManipulationValue(String NPC, String bone, String section, int valu
 
 }
 
+// TODO: This is the biggest load of shit ever. Why would you create a function that sometimes returns a float and sometimes returns an integer?
 float TransformNPCManipulationData(String NPC, String bone, String section) {
     //If "section$" = "pitch","yaw" or "roll":
     //	- 0 means "realpitch" value has detected
@@ -972,32 +980,37 @@ float TransformNPCManipulationData(String NPC, String bone, String section) {
     //If "section$" = "pitchoffset","yawoffset","rolloffset":
     //	- simply return the offset degree value using a "return Float"
 
-    String value = GetNPCManipulationValue(NPC,bone,section);
-    switch (section) {
-        case "pitch","yaw","roll": {
-            switch (value) {
-                case "realpitch": {
-                    return 0;
-                }
-                case "realyaw": {
-                    return 1;
-                }
-                case "realroll": {
-                    return 2;
-                }
-            }
-        }
-        case "pitchoffset","yawoffset","rolloffset": {
-            return (float)(value);
-        }
-    }
+    // String value = GetNPCManipulationValue(NPC,bone,section);
+    // switch (section) {
+    //     case "pitch","yaw","roll": {
+    //         switch (value) {
+    //             case "realpitch": {
+    //                 return 0;
+    //             }
+    //             case "realyaw": {
+    //                 return 1;
+    //             }
+    //             case "realroll": {
+    //                 return 2;
+    //             }
+    //         }
+    //     }
+    //     case "pitchoffset","yawoffset","rolloffset": {
+    //         return (float)(value);
+    //     }
+    // }
 
 }
 
 void NPCSpeedChange(NPC* n) {
 
     switch (n->npcType) {
-        case NPCtype173,NPCtype106,NPCtype096,NPCtype049,NPCtype939,NPCtypeMTF: {
+        case NPCtype173:
+        case NPCtype106:
+        case NPCtype096:
+        case NPCtype049:
+        case NPCtype939:
+        case NPCtypeMTF: {
             switch (SelectedDifficulty->otherFactors) {
                 case NORMAL: {
                     n->speed = n->speed * 1.1;
@@ -1013,7 +1026,6 @@ void NPCSpeedChange(NPC* n) {
 
 int PlayerInReachableRoom() {
     String RN = mainPlayer->currRoom->roomTemplate->name;
-    Event* e;
     int temp;
 
     //Player is in these rooms, returning false
@@ -1027,7 +1039,7 @@ int PlayerInReachableRoom() {
     //Player is in 860's test room and inside the forest, returning false
     temp = false;
     for (int iterator118 = 0; iterator118 < Event::getListSize(); iterator118++) {
-        e = Event::getObject(iterator118);
+        Event* e = Event::getObject(iterator118);
 
         if (e->name.equals("room860") & e->eventState == 1.0) {
             temp = true;
