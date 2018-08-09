@@ -15,6 +15,8 @@ class gxChannel;
 
 namespace CBN {
 
+struct Prop;
+
 // Constants.
 const int MaxRoomLights = 32;
 const int MaxRoomEmitters = 8;
