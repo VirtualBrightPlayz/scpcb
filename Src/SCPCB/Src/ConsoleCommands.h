@@ -19,6 +19,7 @@ public:
 extern std::vector<ConsoleCmd*> commandList;
 
 void generateConsoleCommands();
+void clearConsoleCommands();
 void executeConsoleCommand(String name, std::vector<String> args);
 
 class Cmd_Status : public ConsoleCmd {

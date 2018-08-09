@@ -16,8 +16,7 @@ void executeConsoleCommand(String name, std::vector<String> args) {
         if (commandList[i]->name.equals(name)) {
             foundCmd = commandList[i];
             break;
-        }
-        else {
+        } else {
             for (int j = 0; j < commandList[i]->aliases.size(); j++) {
                 if (commandList[i]->aliases[j].equals(name)) {
                     foundCmd = commandList[i];
@@ -35,6 +34,9 @@ void executeConsoleCommand(String name, std::vector<String> args) {
 }
 void generateConsoleCommands() {
     commandList.push_back(new Cmd_Status());
+}
+void clearConsoleCommands() {
+    commandList.clear();
 }
 
 // Command execute definitions.
