@@ -31,7 +31,7 @@ bbImage* ResizeImage2(bbImage* image, int width, int height) {
     return img;
 }
 
-void ScaleRender(float x, float y, float hscale = 1.0, float vscale = 1.0) {
+void ScaleRender(float x, float y, float hscale, float vscale) {
     if (mainPlayer!=nullptr) {
         bbHideEntity(mainPlayer->cam);
     }

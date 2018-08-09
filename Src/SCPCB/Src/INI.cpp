@@ -82,7 +82,7 @@ void UpdateINIFile(String filename) {
     bbCloseFile(f);
 }
 
-String GetINIString(String file, String section, String parameter, String defaultvalue = "") {
+String GetINIString(String file, String section, String parameter, String defaultvalue) {
     String temporaryString = "";
     String strtemp;
 
@@ -132,7 +132,7 @@ String GetINIString(String file, String section, String parameter, String defaul
     return defaultvalue;
 }
 
-int GetINIInt(String file, String section, String parameter, int defaultvalue = 0) {
+int GetINIInt(String file, String section, String parameter, int defaultvalue) {
     String txt = GetINIString(file, section, parameter, String(defaultvalue));
     if (txt.toLower().equals("true")) {
         return 1;
@@ -143,7 +143,7 @@ int GetINIInt(String file, String section, String parameter, int defaultvalue = 
     }
 }
 
-float GetINIFloat(String file, String section, String parameter, float defaultvalue = 0.0) {
+float GetINIFloat(String file, String section, String parameter, float defaultvalue) {
     return GetINIString(file, section, parameter, String(defaultvalue)).toFloat();
 }
 
@@ -174,7 +174,7 @@ String GetINIString2(String file, int start, String parameter, String defaultval
     return defaultvalue;
 }
 
-int GetINIInt2(String file, int start, String parameter, String defaultvalue = "") {
+int GetINIInt2(String file, int start, String parameter, String defaultvalue) {
     String txt = GetINIString2(file, start, parameter, String(defaultvalue));
     if (txt.toLower().equals("true")) {
         return 1;

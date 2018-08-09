@@ -2,6 +2,9 @@
 #define MATHUTILS_H_INCLUDED
 #include <vector>
 
+class MeshModel;
+class Object;
+
 namespace CBN {
 
 // Globals.

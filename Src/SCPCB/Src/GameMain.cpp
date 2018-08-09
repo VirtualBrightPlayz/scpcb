@@ -1404,7 +1404,7 @@ String f2s(float n, int count) {
     return String(n).substr(0, String((int)(n)).size()+count+1);
 }
 
-float Animate2(MeshModel* entity, float curr, int start, int quit, float speed, int loop = true) {
+float Animate2(MeshModel* entity, float curr, int start, int quit, float speed, int loop) {
 
     float newTime;
     int temp;
@@ -1589,7 +1589,7 @@ void UpdateInfect() {
     }
 }
 
-int Graphics3DExt(int width, int height, int depth = 32, int mode = 2) {
+int Graphics3DExt(int width, int height, int depth, int mode) {
     //If (FE_InitExtFlag = 1) Then DeInitExt() ;prevent FastExt from breaking itself
     bbGraphics3D(width,height,depth,mode);
     InitFastResize();

@@ -79,12 +79,6 @@ Inventory* Inventory::getObject(int index) {
     return list[index];
 }
 
-// Constants.
-const int MAX_ITEM_COUNT = 20;
-const int ITEM_CELL_SIZE = 70;
-const int ITEM_CELL_SPACING = 35;
-const int ITEMS_PER_ROW = 3;
-
 // Globals.
 int LastItemID;
 int itemDistanceTimer = 0;

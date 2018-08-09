@@ -47,7 +47,7 @@ int ConsoleMusFlush = 0;
 int DebugHUD;
 
 // Functions.
-void CreateConsoleMsg(String txt, int r = -1, int g = -1, int b = -1, int isCommand = false) {
+void CreateConsoleMsg(String txt, int r, int g, int b, int isCommand) {
     ConsoleMsg* c = new ConsoleMsg();
     //TODO: Re-implement.
     //Insert c Before First ConsoleMsg
