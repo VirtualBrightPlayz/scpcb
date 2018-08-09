@@ -1,5 +1,22 @@
+#include <bbblitz3d.h>
+#include <bbmath.h>
+#include <bbgraphics.h>
+#include <bbaudio.h>
+
+#include "../GameMain.h"
+#include "../MapSystem.h"
+#include "../Doors.h"
+#include "../Items/Items.h"
+#include "../Decals.h"
+#include "../Particles.h"
+#include "../Events.h"
+#include "../Player.h"
+#include "../NPCs/NPCs.h"
+#include "../Audio.h"
+#include "../MathUtils/MathUtils.h"
+#include "../Menus/Menu.h"
+#include "../Objects.h"
 #include "Room_hll_tsl.h"
-#include "include.h"
 
 namespace CBN {
 
@@ -32,12 +49,13 @@ void FillRoom_hll_tsl(Room* r) {
     bbPositionEntity(r->objects[2], r->x, 0.0, r->z);
     bbEntityParent(r->objects[2], r->obj);
 
-    r->objects[3] = bbCreateSprite();
-    bbEntityTexture(r->objects[3], TeslaTexture);
-    bbSpriteViewMode(r->objects[3],2);
-    //ScaleSprite(r\objects[3],((512.0 * RoomScale)/2.0),((512.0 * RoomScale)/2.0))
-    bbEntityBlend(r->objects[3], 3);
-    bbEntityFX(r->objects[3], 1 + 8 + 16);
+    // TODO: Fix.
+    //r->objects[3] = bbCreateSprite();
+    //bbEntityTexture(r->objects[3], TeslaTexture);
+    //bbSpriteViewMode(r->objects[3],2);
+    ////ScaleSprite(r\objects[3],((512.0 * RoomScale)/2.0),((512.0 * RoomScale)/2.0))
+    //bbEntityBlend(r->objects[3], 3);
+    //bbEntityFX(r->objects[3], 1 + 8 + 16);
 
     bbPositionEntity(r->objects[3], r->x, 0.8, r->z);
 
@@ -48,19 +66,20 @@ void FillRoom_hll_tsl(Room* r) {
     //w.waypoints = CreateWaypoint(r\x, r\y + 66.0 * RoomScale, r\z + 292.0 * RoomScale, Null, r)
     //w2.waypoints = CreateWaypoint(r\x, r\y + 66.0 * RoomScale, r\z - 284.0 * RoomScale, Null, r)
     //w\connected[0] = w2
-    w->dist[0] = bbEntityDistance(w->obj, w2->obj);
+    // w->dist[0] = bbEntityDistance(w->obj, w2->obj);
     //w2\connected[0] = w
-    w2->dist[0] = w->dist[0];
+    // w2->dist[0] = w->dist[0];
 
-    int lightSpriteRed = bbLoadTexture("GFX/Sprites/light_flare_red.jpg", 1);
-    r->objects[4] = bbCreateSprite();
-    bbPositionEntity(r->objects[4], r->x - 32 * RoomScale, 568 * RoomScale, r->z);
-    bbScaleSprite(r->objects[4], 0.03, 0.03);
-    bbEntityTexture(r->objects[4], lightSpriteRed);
-    bbEntityBlend(r->objects[4], 3);
-    bbEntityParent(r->objects[4], r->obj);
-    bbHideEntity(r->objects[4]);
-    bbFreeTexture(lightSpriteRed);
+    // TODO: Fix.
+    //Texture* lightSpriteRed = bbLoadTexture("GFX/Sprites/light_flare_red.jpg", 1);
+    //r->objects[4] = bbCreateSprite();
+    //bbPositionEntity(r->objects[4], r->x - 32 * RoomScale, 568 * RoomScale, r->z);
+    //bbScaleSprite(r->objects[4], 0.03, 0.03);
+    //bbEntityTexture(r->objects[4], lightSpriteRed);
+    //bbEntityBlend(r->objects[4], 3);
+    //bbEntityParent(r->objects[4], r->obj);
+    //bbHideEntity(r->objects[4]);
+    //bbFreeTexture(lightSpriteRed);
 
     r->objects[5] = bbCreatePivot();
     bbPositionEntity(r->objects[5],r->x,0,r->z-800*RoomScale);
@@ -219,7 +238,7 @@ void UpdateEvent_tesla(Event* e) {
         }
     }
 
-    if (mainPlayer->currRoom->roomTemplate->name != "pocketdimension" & mainPlayer->currRoom->roomTemplate->name != "room860") {
+    if (!mainPlayer->currRoom->roomTemplate->name.equals("pocketdimension") && !mainPlayer->currRoom->roomTemplate->name.equals("room860")) {
         if (e->eventState2 == 0) {
             if (e->eventState3 <=0) {
                 temp = false;

@@ -1,5 +1,22 @@
+#include <bbblitz3d.h>
+#include <bbmath.h>
+#include <bbgraphics.h>
+#include <bbaudio.h>
+
+#include "../GameMain.h"
+#include "../MapSystem.h"
+#include "../Doors.h"
+#include "../Items/Items.h"
+#include "../Decals.h"
+#include "../Particles.h"
+#include "../Events.h"
+#include "../Player.h"
+#include "../NPCs/NPCs.h"
+#include "../Audio.h"
+#include "../MathUtils/MathUtils.h"
+#include "../Menus/Menu.h"
+#include "../Objects.h"
 #include "Room_lck_ez_3.h"
-#include "include.h"
 
 namespace CBN {
 
@@ -46,9 +63,9 @@ void FillRoom_lck_ez_3(Room* r) {
         r2 = Room::getObject(iterator188);
 
         if (r2!=r) {
-            if (r2->roomTemplate->name == "room3gw") {
+            if (r2->roomTemplate->name.equals("room3gw")) {
                 //don't load the mesh again
-                r->objects[3] = bbCopyMeshModelEntity(r2->objects[3],r->obj);
+                r->objects[3] = bbCopyMeshModelEntity((MeshModel*)r2->objects[3],r->obj);
                 break;
             }
         }

@@ -80,7 +80,7 @@ void UpdateNPCtype106(NPC* n) {
 
     switch (n->state) {
         case STATE106_RISE: {
-            if (mainPlayer->currRoom->roomTemplate->name == "dimension1499") {
+            if (mainPlayer->currRoom->roomTemplate->name.equals("dimension1499")) {
                 return;
             }
 

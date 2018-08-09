@@ -1,5 +1,23 @@
+#include <bbblitz3d.h>
+#include <bbmath.h>
+#include <bbgraphics.h>
+#include <bbaudio.h>
+
+#include "../GameMain.h"
+#include "../MapSystem.h"
+#include "../Doors.h"
+#include "../Assets.h"
+#include "../Items/Items.h"
+#include "../Decals.h"
+#include "../Particles.h"
+#include "../Events.h"
+#include "../Player.h"
+#include "../NPCs/NPCs.h"
+#include "../Audio.h"
+#include "../MathUtils/MathUtils.h"
+#include "../Menus/Menu.h"
+#include "../Objects.h"
 #include "Room_cont_079_1.h"
-#include "include.h"
 
 namespace CBN {
 
@@ -40,14 +58,14 @@ void FillRoom_cont_079_1(Room* r) {
     bbEntityParent(r->objects[0], r->obj);
     bbTurnEntity(r->objects[0],0,180,0,true);
 
-    int aiPic = GrabTexture("GFX/079pics/face.jpg");
+    TextureAssetWrap* aiPic = TextureAssetWrap::grab("GFX/079pics/face.jpg");
     r->objects[1] = bbCreateSprite(r->objects[0]);
-    bbSpriteViewMode(r->objects[1],2);
+    bbSpriteViewMode((Sprite*)r->objects[1],2);
     bbPositionEntity(r->objects[1], 0.082, 0.119, 0.010);
-    bbScaleSprite(r->objects[1],0.18*0.5,0.145*0.5);
-    bbTurnEntity(r->objects[1],0,13.0,0);
+    bbScaleSprite((Sprite*)r->objects[1],0.18*0.5,0.145*0.5);
+    bbTurnEntity((Sprite*)r->objects[1],0,13.0,0);
     bbMoveEntity(r->objects[1], 0,0,-0.022);
-    bbEntityTexture(r->objects[1],aiPic);
+    bbEntityTexture((Sprite*)r->objects[1],aiPic->getTexture());
     aiPic->drop();
 
     bbHideEntity(r->objects[1]);
@@ -168,7 +186,7 @@ void UpdateEvent_cont_079_1(Event* e) {
             for (int iterator158 = 0; iterator158 < Event::getListSize(); iterator158++) {
                 e2 = Event::getObject(iterator158);
 
-                if (e2->name=="exit1" | e2->name=="gateaentrance") {
+                if (e2->name.equals("exit1") | e2->name.equals("gateaentrance")) {
                     e2->eventState3 = 1;
                 }
             }

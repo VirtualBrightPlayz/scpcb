@@ -1,5 +1,22 @@
+#include <bbblitz3d.h>
+#include <bbmath.h>
+#include <bbgraphics.h>
+#include <bbaudio.h>
+
+#include "../GameMain.h"
+#include "../MapSystem.h"
+#include "../Doors.h"
+#include "../Items/Items.h"
+#include "../Decals.h"
+#include "../Particles.h"
+#include "../Events.h"
+#include "../Player.h"
+#include "../NPCs/NPCs.h"
+#include "../Audio.h"
+#include "../MathUtils/MathUtils.h"
+#include "../Menus/Menu.h"
+#include "../Objects.h"
 #include "Room_hll_dirty_3.h"
-#include "include.h"
 
 namespace CBN {
 
@@ -23,8 +40,8 @@ void FillRoom_hll_dirty_3(Room* r) {
     for (int iterator183 = 0; iterator183 < Room::getListSize(); iterator183++) {
         r2 = Room::getObject(iterator183);
 
-        if (r2->roomTemplate->name == r->roomTemplate->name & r2 != r) {
-            r->objects[0] = bbCopyMeshModelEntity(r2->objects[0],r->obj);
+        if (r2->roomTemplate->name.equals(r->roomTemplate->name) && r2 != r) {
+            r->objects[0] = bbCopyMeshModelEntity((MeshModel*)r2->objects[0],r->obj);
             break;
         }
     }

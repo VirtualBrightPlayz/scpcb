@@ -59,7 +59,7 @@ void UpdateNPCtypeApache(NPC* n) {
     int pvt;
 
     if (n->playerDistance<60.0) {
-        if (mainPlayer->currRoom->roomTemplate->name == "exit1") {
+        if (mainPlayer->currRoom->roomTemplate->name.equals("exit1")) {
             dist2 = Max(Min(bbEntityDistance(n->collider, mainPlayer->currRoom->objects[3])/(8000.0*RoomScale),1.0),0.0);
         } else {
             dist2 = 1.0;

@@ -1,5 +1,24 @@
+#include <bbblitz3d.h>
+#include <bbmath.h>
+#include <bbgraphics.h>
+#include <bbaudio.h>
+
+#include "../GameMain.h"
+#include "../MapSystem.h"
+#include "../Doors.h"
+#include "../Items/Items.h"
+#include "../Decals.h"
+#include "../Particles.h"
+#include "../Events.h"
+#include "../Player.h"
+#include "../Skybox.h"
+#include "../NPCs/NPCs.h"
+#include "../Audio.h"
+#include "../MathUtils/MathUtils.h"
+#include "../Menus/Menu.h"
+#include "../Menus/LoadingScreen.h"
+#include "../Objects.h"
 #include "Room_extend_gatea_1.h"
-#include "include.h"
 
 namespace CBN {
 
@@ -63,10 +82,10 @@ void FillRoom_extend_gatea_1(Room* r) {
     for (int iterator179 = 0; iterator179 < Room::getListSize(); iterator179++) {
         r2 = Room::getObject(iterator179);
 
-        if (r2->roomTemplate->name == "exit1") {
+        if (r2->roomTemplate->name.equals("exit1")) {
             r->objects[1] = r2->objects[1];
             r->objects[2] = r2->objects[2];
-        } else if ((r2->roomTemplate->name == "gateaentrance")) {
+        } else if ((r2->roomTemplate->name.equals("gateaentrance"))) {
             //ylempi hissi
             r->doors[1] = CreateDoor(r->x+1544.0*RoomScale,12000.0*RoomScale, r->z-64.0*RoomScale, 90, r, false);
             r->doors[1]->autoClose = false;
@@ -122,12 +141,12 @@ void FillRoom_extend_gatea_1(Room* r) {
 
     r->objects[13] = bbLoadMesh("GFX/Map/gateawall1.b3d",r->obj);
     bbPositionEntity(r->objects[13], r->x-4308.0*RoomScale, -1045.0*RoomScale, r->z+544.0*RoomScale, true);
-    bbEntityColor(r->objects[13], 25,25,25);
+    bbEntityColor((MeshModel*)r->objects[13], 25,25,25);
     //EntityFX(r\objects[13],1)
 
     r->objects[14] = bbLoadMesh("GFX/Map/gateawall2.b3d",r->obj);
     bbPositionEntity(r->objects[14], r->x-3820.0*RoomScale, -1045.0*RoomScale, r->z+544.0*RoomScale, true);
-    bbEntityColor(r->objects[14], 25,25,25);
+    bbEntityColor((MeshModel*)r->objects[14], 25,25,25);
     //EntityFX(r\objects[14],1)
 
     r->objects[15] = bbCreatePivot(r->obj);
@@ -138,7 +157,7 @@ void UpdateEvent_extend_gatea_1(Event* e) {
     float dist;
     int i;
     int temp;
-    int pvt;
+    Pivot* pvt;
     String strtemp;
     int j;
     int k;
@@ -163,7 +182,7 @@ void UpdateEvent_extend_gatea_1(Event* e) {
     float xtemp;
     float ytemp;
     float ztemp;
-    int obj;
+    MeshModel* obj;
 
     //[Block]
     if (mainPlayer->currRoom == e->room) {
@@ -204,12 +223,10 @@ void UpdateEvent_extend_gatea_1(Event* e) {
 
             //Music(5) = LoadSound("SFX/Music/GateA.ogg") ;TODO: fix
 
-            CreateConsoleMsg("WARNING! Teleporting away from this area may cause bugs or crashing.");
-
             bbTranslateEntity(e->room->obj, 0,12000.0*RoomScale,0);
             bbTranslateEntity(mainPlayer->collider, 0,12000.0*RoomScale,0);
 
-            Sky = sky_CreateSky("GFX/Map/sky/sky");
+            Sky = sky_CreateSky("GFX/Map/sky.jpg");
             bbRotateEntity(Sky,0,e->room->angle,0);
 
             DrawLoading(60);
@@ -256,10 +273,10 @@ void UpdateEvent_extend_gatea_1(Event* e) {
 
             e->room->objects[9] = bbLoadMesh("GFX/Map/lightgunbase.b3d");
             bbScaleEntity(e->room->objects[9], RoomScale,RoomScale,RoomScale);
-            bbEntityFX(e->room->objects[9],0);
+            bbEntityFX((MeshModel*)e->room->objects[9],0);
             bbPositionEntity(e->room->objects[9], xtemp, (992.0+12000.0)*RoomScale, ztemp);
             e->room->objects[10] = bbLoadMesh("GFX/Map/lightgun.b3d");
-            bbEntityFX(e->room->objects[10],0);
+            bbEntityFX((MeshModel*)e->room->objects[10],0);
             bbScaleEntity(e->room->objects[10], RoomScale,RoomScale,RoomScale);
             bbPositionEntity(e->room->objects[10], xtemp, (992.0+12000.0+288.0)*RoomScale, ztemp-176.0*RoomScale,true);
             bbEntityParent(e->room->objects[10],e->room->objects[9]);
@@ -377,7 +394,7 @@ void UpdateEvent_extend_gatea_1(Event* e) {
 
                                 //decals under 106
                                 if (timing->tickDuration > 0) {
-                                    if (((e->eventState-timing->tickDuration) % 100.0)<=50.0 & (e->eventState % 100.0)>50.0) {
+                                    if (modFloat(e->eventState-timing->tickDuration, 100.0)<=50.0 && modFloat(e->eventState, 100.0)>50.0) {
                                         de = CreateDecal(DECAL_CORROSION, bbEntityX(Curr106->collider,true),bbEntityY(e->room->objects[3],true)+0.01,bbEntityZ(Curr106->collider,true), 90, bbRand(360), 0);
                                         de->size = 0.2;
                                         de->sizeChange = 0.004;
@@ -412,7 +429,7 @@ void UpdateEvent_extend_gatea_1(Event* e) {
 
                                 //106:n alle ilmestyy decaleita
                                 if (timing->tickDuration > 0) {
-                                    if (((e->eventState-timing->tickDuration) % 160.0)<=50.0 & (e->eventState % 160.0)>50.0) {
+                                    if (modFloat(e->eventState-timing->tickDuration, 160.0)<=50.0 && modFloat(e->eventState, 160.0)>50.0) {
                                         de = CreateDecal(DECAL_CORROSION, bbEntityX(Curr106->collider,true),bbEntityY(e->room->objects[3],true)+0.01,bbEntityZ(Curr106->collider,true), 90, bbRand(360), 0);
                                         de->size = 0.05;
                                         de->sizeChange = 0.004;
@@ -521,18 +538,18 @@ void UpdateEvent_extend_gatea_1(Event* e) {
                         if (abs(bbEntityY(mainPlayer->collider)-bbEntityY(e->room->objects[11],true))<1.0) {
                             if (Distance(bbEntityX(mainPlayer->collider),bbEntityZ(mainPlayer->collider),bbEntityX(e->room->objects[11],true),bbEntityZ(e->room->objects[11],true)) < 7.0) {
                                 e->room->objects[12] = bbLoadMesh("GFX/npcs/CI/CI.b3d");
-                                bbEntityColor(e->room->objects[12], 0,0,0);
-                                bbScaleMesh(e->room->objects[12], 0.32/21.3, 0.32/21.3, 0.32/21.3);
+                                bbEntityColor((MeshModel*)e->room->objects[12], 0,0,0);
+                                bbScaleMesh((MeshModel*)e->room->objects[12], 0.32/21.3, 0.32/21.3, 0.32/21.3);
                                 bbPositionEntity(e->room->objects[12], bbEntityX(e->room->objects[11],true), bbEntityY(e->room->objects[11],true), bbEntityZ(e->room->objects[11],true));
 
                                 // TODO: Isn't this a memory leak?
-                                obj = bbCopyMeshModelEntity(e->room->objects[12]);
+                                obj = bbCopyMeshModelEntity((MeshModel*)e->room->objects[12]);
                                 bbPositionEntity(obj, bbEntityX(e->room->obj,true)-3968*RoomScale, bbEntityY(e->room->objects[11],true), bbEntityZ(e->room->obj,true)-1920*RoomScale);
 
-                                obj = bbCopyMeshModelEntity(e->room->objects[12]);
+                                obj = bbCopyMeshModelEntity((MeshModel*)e->room->objects[12]);
                                 bbPositionEntity(obj, bbEntityX(e->room->obj,true)-4160*RoomScale, bbEntityY(e->room->objects[11],true), bbEntityZ(e->room->obj,true)-1920*RoomScale);
 
-                                obj = bbCopyMeshModelEntity(e->room->objects[12]);
+                                obj = bbCopyMeshModelEntity((MeshModel*)e->room->objects[12]);
                                 bbPositionEntity(obj, bbEntityX(e->room->obj,true)-4064*RoomScale, bbEntityY(e->room->objects[11],true), bbEntityZ(e->room->obj,true)-2112*RoomScale);
 
                                 e->soundChannels[0] = PlayRangedSound(LoadTempSound("SFX/Ending/GateA/Bell1.ogg"), mainPlayer->cam, e->room->objects[12]);

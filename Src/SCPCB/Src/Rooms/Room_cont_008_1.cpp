@@ -1,5 +1,22 @@
+#include <bbblitz3d.h>
+#include <bbmath.h>
+#include <bbgraphics.h>
+#include <bbaudio.h>
+
+#include "../GameMain.h"
+#include "../MapSystem.h"
+#include "../Doors.h"
+#include "../Items/Items.h"
+#include "../Decals.h"
+#include "../Particles.h"
+#include "../Events.h"
+#include "../Player.h"
+#include "../NPCs/NPCs.h"
+#include "../Audio.h"
+#include "../MathUtils/MathUtils.h"
+#include "../Menus/Menu.h"
+#include "../Objects.h"
 #include "Room_cont_008_1.h"
-#include "include.h"
 
 namespace CBN {
 
@@ -32,11 +49,11 @@ void FillRoom_cont_008_1(Room* r) {
 
     bbRotateEntity(r->objects[1],89,0,0,true);
 
-    int glassTex = bbLoadTexture("GFX/Map/Textures/glass.png",1+2);
+    Texture* glassTex = bbLoadTexture("GFX/Map/Textures/glass.png",1+2);
     r->objects[2] = bbCreateSprite();
-    bbEntityTexture(r->objects[2],glassTex);
-    bbSpriteViewMode(r->objects[2],2);
-    bbScaleSprite(r->objects[2],256.0*RoomScale*0.5, 194.0*RoomScale*0.5);
+    bbEntityTexture((Sprite*)r->objects[2],glassTex);
+    bbSpriteViewMode((Sprite*)r->objects[2],2);
+    bbScaleSprite((Sprite*)r->objects[2],256.0*RoomScale*0.5, 194.0*RoomScale*0.5);
     bbPositionEntity(r->objects[2], r->x - 176.0 * RoomScale, 224.0*RoomScale, r->z + 448.0 * RoomScale);
     bbTurnEntity(r->objects[2],0,90,0);
     bbEntityParent(r->objects[2], r->obj);
@@ -51,12 +68,12 @@ void FillRoom_cont_008_1(Room* r) {
     r->objects[4] = bbCreatePivot(r->obj);
     bbPositionEntity(r->objects[4], r->x + 67.0 * RoomScale, 120.0*RoomScale, r->z + 464.0 * RoomScale, true);
 
-    int lightSpriteRed = bbLoadTexture("GFX/Sprites/light_flare_red.jpg", 1);
+    Texture* lightSpriteRed = bbLoadTexture("GFX/Sprites/light_flare_red.jpg", 1);
     r->objects[5] = bbCreateSprite();
     bbPositionEntity(r->objects[5], r->x - 158 * RoomScale, 368 * RoomScale, r->z + 298.0 * RoomScale);
-    bbScaleSprite(r->objects[5], 0.02, 0.02);
-    bbEntityTexture(r->objects[5], lightSpriteRed);
-    bbEntityBlend(r->objects[5], 3);
+    bbScaleSprite((Sprite*)r->objects[5], 0.02, 0.02);
+    bbEntityTexture((Sprite*)r->objects[5], lightSpriteRed);
+    bbEntityBlend((Sprite*)r->objects[5], 3);
     bbEntityParent(r->objects[5], r->obj);
     bbHideEntity(r->objects[5]);
     bbFreeTexture(lightSpriteRed);

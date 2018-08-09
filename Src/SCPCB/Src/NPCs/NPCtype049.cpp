@@ -79,13 +79,13 @@ void UpdateNPCtype049(NPC* n) {
                 mainPlayer->blurTimer = 500.0;
 
                 if (!mainPlayer->godMode) {
-                    if (mainPlayer->currRoom->roomTemplate->name == "room049") {
+                    if (mainPlayer->currRoom->roomTemplate->name.equals("room049")) {
                         DeathMSG = "Three (3) active instances of SCP-049-2 discovered in the tunnel outside SCP-049's containment chamber. Terminated by Nine-Tailed Fox.";
 
                         for (int iterator121 = 0; iterator121 < Event::getListSize(); iterator121++) {
                             e = Event::getObject(iterator121);
 
-                            if (e->name == "room049") {
+                            if (e->name.equals("room049")) {
                                 e->eventState = -1;
                                 break;
                             }

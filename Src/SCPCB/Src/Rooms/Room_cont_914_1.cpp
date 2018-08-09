@@ -1,5 +1,23 @@
+#include <bbblitz3d.h>
+#include <bbmath.h>
+#include <bbgraphics.h>
+#include <bbaudio.h>
+
+#include "../GameMain.h"
+#include "../MapSystem.h"
+#include "../Doors.h"
+#include "../Items/Items.h"
+#include "../Decals.h"
+#include "../Particles.h"
+#include "../Events.h"
+#include "../Options.h"
+#include "../Player.h"
+#include "../NPCs/NPCs.h"
+#include "../Audio.h"
+#include "../MathUtils/MathUtils.h"
+#include "../Menus/Menu.h"
+#include "../Objects.h"
 #include "Room_cont_914_1.h"
-#include "include.h"
 
 namespace CBN {
 
@@ -44,7 +62,8 @@ void FillRoom_cont_914_1(Room* r) {
     d->buttons[0] = 0;
     bbFreeEntity(d->buttons[1]);
     d->buttons[1] = 0;
-    r->doors[0] = d: d->autoClose == false;
+    r->doors[0] = d;
+    d->autoClose = false;
 
     d = CreateDoor(r->x + 816.0 * RoomScale, 0.0, r->z + 528.0 * RoomScale, 180, r, true);
     bbFreeEntity(d->obj2);
@@ -228,41 +247,36 @@ void UpdateEvent_cont_914_1(Event* e) {
 
             if (Distance(bbEntityX(mainPlayer->collider), bbEntityZ(mainPlayer->collider), bbEntityX(e->room->objects[2], true), bbEntityZ(e->room->objects[2], true)) < (170.0 * RoomScale)) {
 
-                if (setting == "rough" | setting == "coarse") {
+                if (setting.equals("rough") | setting.equals("coarse")) {
                     if (e->eventState > 70 * 2.6 & e->eventState - timing->tickDuration < 70 * 2.6) {
                         PlaySound2(e->sounds[2]);
                     }
                 }
 
                 if (e->eventState > 70 * 3) {
-                    switch (setting) {
-                        case "rough": {
-                            Kill(mainPlayer);
-                            mainPlayer->blinkTimer = -10;
-                            if (e->soundChannels[0] != 0) {
-                                bbStopChannel(e->soundChannels[0]);
-                            }
-                            DeathMSG = "\"A heavily mutilated corpse found inside the output booth of SCP-914. DNA testing identified the corpse as Class D Subject D-9341. ";
-                            DeathMSG = DeathMSG + "The subject had obviously been \"refined\" by SCP-914 on the \"Rough\" setting, but we are still confused as to how he ";
-                            DeathMSG = DeathMSG + "ended up inside the intake booth and who or what wound the key.\"";
+                    if (setting.equals("rough")) {
+                        Kill(mainPlayer);
+                        mainPlayer->blinkTimer = -10;
+                        if (e->soundChannels[0] != 0) {
+                            bbStopChannel(e->soundChannels[0]);
                         }
-                        case "coarse": {
-                            mainPlayer->blinkTimer = -10;
-                            if (e->eventState - timing->tickDuration < 70 * 3) {
-                                PlaySound2(e->sounds[1]);
-                            }
+                        DeathMSG = "\"A heavily mutilated corpse found inside the output booth of SCP-914. DNA testing identified the corpse as Class D Subject D-9341. ";
+                        DeathMSG = DeathMSG + "The subject had obviously been \"refined\" by SCP-914 on the \"Rough\" setting, but we are still confused as to how he ";
+                        DeathMSG = DeathMSG + "ended up inside the intake booth and who or what wound the key.\"";
+                    } else if (setting.equals("coarse")) {
+                        mainPlayer->blinkTimer = -10;
+                        if (e->eventState - timing->tickDuration < 70 * 3) {
+                            PlaySound2(e->sounds[1]);
                         }
-                        case "1:1": {
-                            mainPlayer->blinkTimer = -10;
-                            if (e->eventState - timing->tickDuration < 70 * 3) {
-                                PlaySound2(e->sounds[1]);
-                            }
+                    } else if (setting.equals("1:1")) {
+                        mainPlayer->blinkTimer = -10;
+                        if (e->eventState - timing->tickDuration < 70 * 3) {
+                            PlaySound2(e->sounds[1]);
                         }
-                        case "fine", "very fine": {
-                            mainPlayer->blinkTimer = -10;
-                            if (e->eventState - timing->tickDuration < 70 * 3) {
-                                PlaySound2(e->sounds[1]);
-                            }
+                    } else if (setting.equals("fine") || setting.equals("very fine")) {
+                        mainPlayer->blinkTimer = -10;
+                        if (e->eventState - timing->tickDuration < 70 * 3) {
+                            PlaySound2(e->sounds[1]);
                         }
                     }
                 }
@@ -287,18 +301,14 @@ void UpdateEvent_cont_914_1(Event* e) {
                 }
 
                 if (Distance(bbEntityX(mainPlayer->collider), bbEntityZ(mainPlayer->collider), bbEntityX(e->room->objects[2], true), bbEntityZ(e->room->objects[2], true)) < (160.0 * RoomScale)) {
-                    switch (setting) {
-                        case "coarse": {
-                            mainPlayer->injuries = 4.0;
-                            Msg = "You notice countless small incisions all around your body. They are bleeding heavily.";
-                            MsgTimer = 70*8;
-                        }
-                        case "1:1": {
-                            userOptions->invertMouseY = (!userOptions->invertMouseY);
-                        }
-                        case "fine", "very fine": {
-                            mainPlayer->superMan = 1.0;
-                        }
+                    if (setting.equals("coarse")) {
+                        mainPlayer->injuries = 4.0;
+                        Msg = "You notice countless small incisions all around your body. They are bleeding heavily.";
+                        MsgTimer = 70*8;
+                    } else if (setting.equals("1:1")) {
+                        userOptions->invertMouseY = (!userOptions->invertMouseY);
+                    } else if (setting.equals("fine") || setting.equals("very fine")) {
+                        mainPlayer->superMan = 1.0;
                     }
                     mainPlayer->blurTimer = 1000;
                     bbPositionEntity(mainPlayer->collider, bbEntityX(e->room->objects[3], true), bbEntityY(e->room->objects[3], true) + 1.0, bbEntityZ(e->room->objects[3], true));

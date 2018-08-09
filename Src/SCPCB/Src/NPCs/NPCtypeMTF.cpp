@@ -184,7 +184,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                                 for (int iterator141 = 0; iterator141 < Room::getListSize(); iterator141++) {
                                     r = Room::getObject(iterator141);
 
-                                    if (r->roomTemplate->name == "start") {
+                                    if (r->roomTemplate->name.equals("start")) {
                                         foundChamber = false;
                                         pvt = bbCreatePivot();
                                         bbPositionEntity(pvt,bbEntityX(r->obj,true)+4736*RoomScale,0.5,bbEntityZ(r->obj,true)+1692*RoomScale);
@@ -1762,7 +1762,7 @@ void UpdateNPCtypeMTF(NPC* n) {
 }
 
 void UpdateMTF() {
-    if (mainPlayer->currRoom->roomTemplate->name == "gateaentrance") {
+    if (mainPlayer->currRoom->roomTemplate->name.equals("gateaentrance")) {
         return;
     }
 

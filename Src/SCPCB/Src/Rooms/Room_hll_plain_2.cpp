@@ -1,5 +1,22 @@
+#include <bbblitz3d.h>
+#include <bbmath.h>
+#include <bbgraphics.h>
+#include <bbaudio.h>
+
+#include "../GameMain.h"
+#include "../MapSystem.h"
+#include "../Doors.h"
+#include "../Items/Items.h"
+#include "../Decals.h"
+#include "../Particles.h"
+#include "../Events.h"
+#include "../Player.h"
+#include "../NPCs/NPCs.h"
+#include "../Audio.h"
+#include "../MathUtils/MathUtils.h"
+#include "../Menus/Menu.h"
+#include "../Objects.h"
 #include "Room_hll_plain_2.h"
-#include "include.h"
 
 namespace CBN {
 
@@ -8,7 +25,7 @@ void UpdateEventRoom2trick(Event* e) {
     float dist;
     int i;
     int temp;
-    int pvt;
+    Pivot* pvt;
     String strtemp;
     int j;
     int k;
@@ -36,8 +53,6 @@ void UpdateEventRoom2trick(Event* e) {
             if (bbEntityDistance(mainPlayer->collider, Curr173->obj)<6.0 | bbEntityDistance(mainPlayer->collider, Curr106->obj)<6.0) {
                 RemoveEvent(e);
             } else {
-                DebugLog("%@@ = / {2E6C2==FD gi`h]c");
-
                 pvt = bbCreatePivot();
                 bbPositionEntity(pvt, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider),bbEntityZ(mainPlayer->collider));
                 bbPointEntity(pvt, e->room->obj);

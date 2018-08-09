@@ -1,5 +1,22 @@
+#include <bbblitz3d.h>
+#include <bbmath.h>
+#include <bbgraphics.h>
+#include <bbaudio.h>
+
+#include "../GameMain.h"
+#include "../MapSystem.h"
+#include "../Doors.h"
+#include "../Items/Items.h"
+#include "../Decals.h"
+#include "../Particles.h"
+#include "../Events.h"
+#include "../Player.h"
+#include "../NPCs/NPCs.h"
+#include "../Audio.h"
+#include "../MathUtils/MathUtils.h"
+#include "../Menus/Menu.h"
+#include "../Objects.h"
 #include "Room_hll_fan_2.h"
-#include "include.h"
 
 namespace CBN {
 
@@ -23,9 +40,9 @@ void FillRoom_hll_fan_2(Room* r) {
         r2 = Room::getObject(iterator184);
 
         if (r2!=r) {
-            if (r2->roomTemplate->name == "room2_2") {
+            if (r2->roomTemplate->name.equals("room2_2")) {
                 //don't load the mesh again
-                r->objects[0] = bbCopyMeshModelEntity(r2->objects[0]);
+                r->objects[0] = bbCopyMeshModelEntity((MeshModel*)r2->objects[0]);
                 break;
             }
         }

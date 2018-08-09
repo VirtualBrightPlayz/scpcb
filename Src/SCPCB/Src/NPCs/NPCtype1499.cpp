@@ -155,7 +155,7 @@ void UpdateNPCtype1499(NPC* n) {
                     n->state = 0;
                 }
 
-                if (mainPlayer->currRoom->roomTemplate->name == "dimension1499") {
+                if (mainPlayer->currRoom->roomTemplate->name.equals("dimension1499")) {
                     //If (Music(19)=0) Then Music(19) = LoadSound("SFX/Music/1499Danger.ogg") ;TODO: fix
                     //ShouldPlay = 19
                 }
@@ -209,7 +209,7 @@ void UpdateNPCtype1499(NPC* n) {
                             PlayRangedSound(LoadTempSound("SFX/General/Slash"+String(bbRand(1,2))+".ogg"), mainPlayer->cam, n->collider);
                             if (mainPlayer->injuries > 10.0) {
                                 Kill(mainPlayer);
-                                if (mainPlayer->currRoom->roomTemplate->name == "dimension1499") {
+                                if (mainPlayer->currRoom->roomTemplate->name.equals("dimension1499")) {
                                     DeathMSG = "All personnel situated within Evacuation Shelter LC-2 during the breach have been administered ";
                                     DeathMSG = DeathMSG + "Class-B amnestics due to Incident 1499-E. The Class D subject involved in the event ";
                                     DeathMSG = DeathMSG + "died shortly after being shot by Agent [REDACTED].";
@@ -234,7 +234,7 @@ void UpdateNPCtype1499(NPC* n) {
                             PlayRangedSound(LoadTempSound("SFX/General/Slash"+String(bbRand(1,2))+".ogg"), mainPlayer->cam, n->collider);
                             if (mainPlayer->injuries > 10.0) {
                                 Kill(mainPlayer);
-                                if (mainPlayer->currRoom->roomTemplate->name == "dimension1499") {
+                                if (mainPlayer->currRoom->roomTemplate->name.equals("dimension1499")) {
                                     DeathMSG = "All personnel situated within Evacuation Shelter LC-2 during the breach have been administered ";
                                     DeathMSG = DeathMSG + "Class-B amnestics due to Incident 1499-E. The Class D subject involved in the event ";
                                     DeathMSG = DeathMSG + "died shortly after being shot by Agent [REDACTED].";

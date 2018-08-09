@@ -1,5 +1,22 @@
+#include <bbblitz3d.h>
+#include <bbmath.h>
+#include <bbgraphics.h>
+#include <bbaudio.h>
+
+#include "../GameMain.h"
+#include "../MapSystem.h"
+#include "../Doors.h"
+#include "../Items/Items.h"
+#include "../Decals.h"
+#include "../Particles.h"
+#include "../Events.h"
+#include "../Player.h"
+#include "../NPCs/NPCs.h"
+#include "../Audio.h"
+#include "../MathUtils/MathUtils.h"
+#include "../Menus/Menu.h"
+#include "../Objects.h"
 #include "Room_strg_939_3.h"
-#include "include.h"
 
 namespace CBN {
 
@@ -307,16 +324,17 @@ void UpdateEvent_strg_939_3(Event* e) {
                 e->room->npc[0]->ignorePlayer = false;
                 e->room->npc[2]->ignorePlayer = false;
 
-                CurrTrigger = CheckTriggers();
+                // TODO: No bad.
+                //CurrTrigger = CheckTriggers();
 
-                switch (CurrTrigger) {
-                    case "939-1_fix": {
-                        e->room->npc[0]->ignorePlayer = true;
-                    }
-                    case "939-3_fix": {
-                        e->room->npc[2]->ignorePlayer = true;
-                    }
-                }
+                //switch (CurrTrigger) {
+                //    case "939-1_fix": {
+                //        e->room->npc[0]->ignorePlayer = true;
+                //    }
+                //    case "939-3_fix": {
+                //        e->room->npc[2]->ignorePlayer = true;
+                //    }
+                //}
 
                 if (bbChannelPlaying(e->soundChannels[1])) {
                     UpdateRangedSoundOrigin(e->soundChannels[1],mainPlayer->cam,e->room->doors[4]->obj,400);

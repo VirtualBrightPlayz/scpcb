@@ -1,5 +1,27 @@
+#include <bbblitz3d.h>
+#include <bbmath.h>
+#include <bbgraphics.h>
+#include <bbaudio.h>
+#include <bbinput.h>
+#include <bbstring.h>
+
+#include "../GameMain.h"
+#include "../Assets.h"
+#include "../MapSystem.h"
+#include "../Doors.h"
+#include "../Items/Items.h"
+#include "../Decals.h"
+#include "../Particles.h"
+#include "../Events.h"
+#include "../Player.h"
+#include "../NPCs/NPCs.h"
+#include "../Audio.h"
+#include "../INI.h"
+#include "../MathUtils/MathUtils.h"
+#include "../Menus/Menu.h"
+#include "../Objects.h"
+#include "../Options.h"
 #include "Room_hll_caf_2.h"
-#include "include.h"
 
 namespace CBN {
 
@@ -47,12 +69,12 @@ void Draw294() {
     String strtemp;
     int temp;
 
-    int panel294 = bbGrabImage("GFX/HUD/294panel.jpg");
-    x = userOptions->screenWidth/2 - (bbImageWidth(panel294)/2);
-    y = userOptions->screenHeight/2 - (bbImageHeight(panel294)/2);
+    ImageAssetWrap* panel294 = ImageAssetWrap::grab("GFX/HUD/294panel.jpg");
+    x = userOptions->screenWidth/2 - (bbImageWidth(panel294->getImage())/2);
+    y = userOptions->screenHeight/2 - (bbImageHeight(panel294->getImage())/2);
 
-    bbMaskImage(panel294, 255, 0, 255);
-    bbDrawImage(panel294, x, y);
+    bbMaskImage(panel294->getImage(), 255, 0, 255);
+    bbDrawImage(panel294->getImage(), x, y);
     panel294->drop();
 
     bbText(x+907, y+185, Input294, true,true);
@@ -77,9 +99,9 @@ void Update294() {
     float alpha;
     int glow;
 
-    int panel294 = bbGrabImage("GFX/HUD/294panel.jpg");
-    x = userOptions->screenWidth/2 - (bbImageWidth(panel294)/2);
-    y = userOptions->screenHeight/2 - (bbImageHeight(panel294)/2);
+    ImageAssetWrap* panel294 = ImageAssetWrap::grab("GFX/HUD/294panel.jpg");
+    x = userOptions->screenWidth/2 - (bbImageWidth(panel294->getImage())/2);
+    y = userOptions->screenHeight/2 - (bbImageHeight(panel294->getImage())/2);
     panel294->drop();
 
     temp = true;
@@ -221,9 +243,9 @@ void Update294() {
             //dispense
             if (temp && !Input294.isEmpty()) {
                 Input294 = Input294.toLower().trim();
-                if (Input294.substr(0, (int)(Min(7,Input294.size()))) == "cup of ") {
+                if (Input294.substr(0, (int)(Min(7,Input294.size()))).equals("cup of ")) {
                     Input294 = bbRight(Input294, Input294.size()-7);
-                } else if ((Input294.substr(0, (int)(Min(9,Input294.size()))) == "a cup of " )) {
+                } else if ((Input294.substr(0, (int)(Min(9,Input294.size()))).equals("a cup of " ))) {
                     Input294 = bbRight(Input294, Input294.size()-9);
                 }
 
@@ -247,10 +269,10 @@ void Update294() {
                     sep1 = bbInstr(strtemp, ",", 1);
                     sep2 = bbInstr(strtemp, ",", sep1+1);
                     r = strtemp.substr(0, sep1-1).trim().toInt();
-                    g = (int)(bbMid(strtemp, sep1+1, sep2-sep1-1).trim());
-                    b = (int)(bbRight(strtemp, strtemp.size()-sep2).trim());
+                    g = bbMid(strtemp, sep1+1, sep2-sep1-1).trim().toInt();
+                    b = bbRight(strtemp, strtemp.size()-sep2).trim().toInt();
 
-                    alpha = (float)(GetINIString2("Data/SCP-294.ini", loc, "alpha"));
+                    alpha = GetINIString2("Data/SCP-294.ini", loc, "alpha").toFloat();
                     glow = GetINIInt2("Data/SCP-294.ini", loc, "glow");
                     // FIXME: Float equality.
                     if (alpha == 0) {
@@ -282,12 +304,12 @@ void Update294() {
 
         //playing a dispensing sound
     } else {
-        if (Input294 != "OUT OF RANGE") {
+        if (!Input294.equals("OUT OF RANGE")) {
             Input294 = "DISPENSING...";
         }
 
         if (!bbChannelPlaying(mainPlayer->currRoom->soundCHN)) {
-            if (Input294 != "OUT OF RANGE") {
+            if (!Input294.equals("OUT OF RANGE")) {
                 bbHidePointer();
                 CurrGameState = GAMESTATE_SCP294;
             }

@@ -277,7 +277,7 @@ case "guh": {
     for (int iterator45 = 0; iterator45 < Room::getListSize(); iterator45++) {
         r = Room::getObject(iterator45);
 
-        if (r->roomTemplate->name == "cont_914_1") {
+        if (r->roomTemplate->name.equals("cont_914_1")) {
             //PositionEntity(mainPlayer\collider, EntityX(r\obj), 0.7, EntityZ(r\obj))
             bbPositionEntity(mainPlayer->collider, r->x, r->y + 0.7, r->z);
             bbResetEntity(mainPlayer->collider);
@@ -619,7 +619,7 @@ case "toggle_warhead_lever": {
     for (int iterator49 = 0; iterator49 < Event::getListSize(); iterator49++) {
         ev = Event::getObject(iterator49);
 
-        if (ev->name == "room2nuke") {
+        if (ev->name.equals("room2nuke")) {
             ev->eventState = (!ev->eventState);
             break;
         }
@@ -634,7 +634,7 @@ case "unlockexits": {
         for (int iterator50 = 0; iterator50 < Event::getListSize(); iterator50++) {
             ev = Event::getObject(iterator50);
 
-            if (ev->name == "gateaentrance") {
+            if (ev->name.equals("gateaentrance")) {
                 ev->eventState3 = 1;
                 ev->room->doors[1]->open = true;
                 break;
@@ -646,7 +646,7 @@ case "unlockexits": {
         for (int iterator51 = 0; iterator51 < Event::getListSize(); iterator51++) {
             ev = Event::getObject(iterator51);
 
-            if (ev->name == "exit1") {
+            if (ev->name.equals("exit1")) {
                 ev->eventState3 = 1;
                 ev->room->doors[4]->open = true;
                 break;
@@ -658,11 +658,11 @@ case "unlockexits": {
         for (int iterator52 = 0; iterator52 < Event::getListSize(); iterator52++) {
             ev = Event::getObject(iterator52);
 
-            if (ev->name == "gateaentrance") {
+            if (ev->name.equals("gateaentrance")) {
                 ev->eventState3 = 1;
                 ev->room->doors[1]->open = true;
             }
-            else if ((ev->name == "exit1")) {
+            else if ((ev->name.equals("exit1"))) {
                 ev->eventState3 = 1;
                 ev->room->doors[4]->open = true;
             }

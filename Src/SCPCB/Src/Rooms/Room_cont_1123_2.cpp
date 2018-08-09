@@ -1,6 +1,22 @@
+#include <bbblitz3d.h>
+#include <bbmath.h>
+#include <bbgraphics.h>
+#include <bbaudio.h>
+
+#include "../GameMain.h"
+#include "../MapSystem.h"
+#include "../Doors.h"
+#include "../Items/Items.h"
+#include "../Decals.h"
+#include "../Particles.h"
+#include "../Events.h"
+#include "../Player.h"
+#include "../NPCs/NPCs.h"
+#include "../Audio.h"
+#include "../MathUtils/MathUtils.h"
+#include "../Menus/Menu.h"
+#include "../Objects.h"
 #include "Room_cont_1123_2.h"
-#include "include.h"
-#include <iostream>
 
 namespace CBN {
 
@@ -68,26 +84,26 @@ void FillRoom_cont_1123_2(Room* r) {
     bbScaleEntity(r->objects[9],46.0*RoomScale,45.0*RoomScale,46.0*RoomScale,true);
     bbEntityParent(r->objects[9],r->obj);
 
-    r->objects[10] = bbCopyMeshModelEntity(r->objects[8]);
+    r->objects[10] = bbCopyMeshModelEntity((MeshModel*)r->objects[8]);
     bbPositionEntity(r->objects[10], r->x - 272.0 * RoomScale, 512.0 * RoomScale, r->z + 736.0 * RoomScale,true);
     bbRotateEntity(r->objects[10],0,90,0,true);
     bbScaleEntity(r->objects[10],45.0*RoomScale,45.0*RoomScale,80.0*RoomScale,true);
     bbEntityParent(r->objects[10],r->obj);
 
-    r->objects[11] = bbCopyMeshModelEntity(r->objects[9]);
+    r->objects[11] = bbCopyMeshModelEntity((MeshModel*)r->objects[9]);
     bbPositionEntity(r->objects[11],r->x - 272.0 * RoomScale, 512.0 * RoomScale, r->z + (736.0-70) * RoomScale,true);
     bbRotateEntity(r->objects[11],0,90,0,true);
     bbEntityType(r->objects[11], HIT_MAP);
     bbScaleEntity(r->objects[11],46.0*RoomScale,45.0*RoomScale,46.0*RoomScale,true);
     bbEntityParent(r->objects[11],r->obj);
 
-    r->objects[12] = bbCopyMeshModelEntity(r->objects[8]);
+    r->objects[12] = bbCopyMeshModelEntity((MeshModel*)r->objects[8]);
     bbPositionEntity(r->objects[12], r->x - 592.0 * RoomScale, 512.0 * RoomScale, r->z - 704.0 * RoomScale,true);
     bbRotateEntity(r->objects[12],0,0,0,true);
     bbScaleEntity(r->objects[12],45.0*RoomScale,45.0*RoomScale,80.0*RoomScale,true);
     bbEntityParent(r->objects[12],r->obj);
 
-    r->objects[13] = bbCopyMeshModelEntity(r->objects[9]);
+    r->objects[13] = bbCopyMeshModelEntity((MeshModel*)r->objects[9]);
     bbPositionEntity(r->objects[13],r->x - (592.0+70.0) * RoomScale, 512.0 * RoomScale, r->z - 704.0 * RoomScale,true);
     bbRotateEntity(r->objects[13],0,0,0,true);
     bbEntityType(r->objects[13], HIT_MAP);
@@ -126,7 +142,7 @@ void UpdateEvent_cont_1123_2(Event* e) {
     float z;
 
     float angle;
-    int nazi;
+    MeshModel* nazi;
     float scale;
 
     //[Block]
@@ -323,7 +339,7 @@ void UpdateEvent_cont_1123_2(Event* e) {
 
             for (i = 0; i <= mainPlayer->inventory->size-1; i++) {
                 if (mainPlayer->inventory->items[i] != nullptr) {
-                    if (mainPlayer->inventory->items[i]->itemTemplate->name == "Leaflet") {
+                    if (mainPlayer->inventory->items[i]->itemTemplate->name.equals("Leaflet")) {
                         mainPlayer->inventory->items[i] = nullptr;
                         RemoveItem(mainPlayer->inventory->items[i]);
                         break;

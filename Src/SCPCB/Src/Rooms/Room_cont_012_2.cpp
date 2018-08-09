@@ -1,5 +1,22 @@
+#include <bbblitz3d.h>
+#include <bbmath.h>
+#include <bbgraphics.h>
+#include <bbaudio.h>
+
+#include "../GameMain.h"
+#include "../MapSystem.h"
+#include "../Doors.h"
+#include "../Items/Items.h"
+#include "../Decals.h"
+#include "../Particles.h"
+#include "../Events.h"
+#include "../Player.h"
+#include "../NPCs/NPCs.h"
+#include "../Audio.h"
+#include "../MathUtils/MathUtils.h"
+#include "../Menus/Menu.h"
+#include "../Objects.h"
 #include "Room_cont_012_2.h"
-#include "include.h"
 
 namespace CBN {
 
@@ -54,19 +71,19 @@ void FillRoom_cont_012_2(Room* r) {
     bbPositionEntity(r->objects[2], r->x - 360 * RoomScale, - 130 * RoomScale, r->z + 456.0 * RoomScale, 0);
     bbEntityParent(r->objects[2], r->obj);
 
-    int lightSpriteRed = bbLoadTexture("GFX/Sprites/light_flare_red.jpg", 1);
+    Texture* lightSpriteRed = bbLoadTexture("GFX/Sprites/light_flare_red.jpg", 1);
     r->objects[3] = bbCreateSprite();
     bbPositionEntity(r->objects[3], r->x - 43.5 * RoomScale, - 574 * RoomScale, r->z - 362.0 * RoomScale);
-    bbScaleSprite(r->objects[3], 0.015, 0.015);
-    bbEntityTexture(r->objects[3], lightSpriteRed);
-    bbEntityBlend(r->objects[3], 3);
+    bbScaleSprite((Sprite*)r->objects[3], 0.015, 0.015);
+    bbEntityTexture((Sprite*)r->objects[3], lightSpriteRed);
+    bbEntityBlend((Sprite*)r->objects[3], 3);
     bbEntityParent(r->objects[3], r->obj);
     bbHideEntity(r->objects[3]);
     bbFreeTexture(lightSpriteRed);
 
     r->objects[4] = bbLoadMesh("GFX/Map/room012_3.b3d");
-    int tex = bbLoadTexture("GFX/Map/Textures/scp-012_0.jpg");
-    bbEntityTexture(r->objects[4],tex, 0,1);
+    Texture* tex = bbLoadTexture("GFX/Map/Textures/scp-012_0.jpg");
+    bbEntityTexture((MeshModel*)r->objects[4],tex, 0,1);
     bbScaleEntity(r->objects[4], RoomScale, RoomScale, RoomScale);
     bbPositionEntity(r->objects[4], r->x - 360 * RoomScale, - 130 * RoomScale, r->z + 456.0 * RoomScale, 0);
     bbEntityParent(r->objects[4], r->objects[2]);
@@ -84,11 +101,11 @@ void UpdateEvent_cont_012_2(Event* e) {
     float dist;
     int i;
     int temp;
-    int pvt;
+    Pivot* pvt;
     String strtemp;
     int j;
     int k;
-    int tex;
+    Texture* tex;
 
     Particle* p;
     NPC* n;
@@ -150,7 +167,7 @@ void UpdateEvent_cont_012_2(Event* e) {
                 }
             }
 
-            if (!IsPlayerWearingItem(mainPlayer,"hazmatsuit3")) & (!IsPlayerWearingItem(mainPlayer,"gasmask3")) & (!IsPlayerWearingItem(mainPlayer,"nvgoggles")) {
+            if (!IsPlayerWearingItem(mainPlayer,"hazmatsuit3") & !IsPlayerWearingItem(mainPlayer,"gasmask3") & !IsPlayerWearingItem(mainPlayer,"nvgoggles")) {
                 temp = false;
                 if (bbEntityVisible(e->room->objects[2],mainPlayer->cam)) {
                     temp = true;
@@ -212,7 +229,7 @@ void UpdateEvent_cont_012_2(Event* e) {
                             PlaySound2(LoadTempSound("SFX/SCP/012/Speech2.ogg"));
                         } else if ((e->eventState3>31*70 & e->eventState3-timing->tickDuration<=31*70)) {
                             tex = bbLoadTexture("GFX/Map/Textures/scp-012_1.jpg");
-                            bbEntityTexture(e->room->objects[4], tex,0,1);
+                            bbEntityTexture((MeshModel*)e->room->objects[4], tex,0,1);
                             bbFreeTexture(tex);
 
                             Msg = "You tear open your left wrist and start writing on the composition with your blood.";
@@ -226,14 +243,14 @@ void UpdateEvent_cont_012_2(Event* e) {
                             PlaySound2(LoadTempSound("SFX/SCP/012/Speech5.ogg"));
                         } else if ((e->eventState3>63*70 & e->eventState3-timing->tickDuration<=63*70)) {
                             tex = bbLoadTexture("GFX/Map/Textures/scp-012_2.jpg");
-                            bbEntityTexture(e->room->objects[4], tex,0,1);
+                            bbEntityTexture((MeshModel*)e->room->objects[4], tex,0,1);
                             bbFreeTexture(tex);
 
                             mainPlayer->injuries = mainPlayer->injuries+0.5;
                             PlaySound2(LoadTempSound("SFX/SCP/012/Speech6.ogg"));
                         } else if ((e->eventState3>74*70 & e->eventState3-timing->tickDuration<=74*70)) {
                             tex = bbLoadTexture("GFX/Map/Textures/scp-012_3.jpg");
-                            bbEntityTexture(e->room->objects[4], tex,0,1);
+                            bbEntityTexture((MeshModel*)e->room->objects[4], tex,0,1);
                             bbFreeTexture(tex);
 
                             Msg = "You rip the wound wide open. Grabbing scoops of blood pouring out.";
