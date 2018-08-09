@@ -399,7 +399,7 @@
     <ClCompile Include="Src\Rooms\Room_tnnl_nuke_2.cpp">
       <Filter>Source Files\Src\Rooms</Filter>
     </ClCompile>
-    <ClCompile Include="ConsoleCommands.cpp">
+    <ClCompile Include="Src\ConsoleCommands.cpp">
       <Filter>Source Files\Src</Filter>
     </ClCompile>
   </ItemGroup>
@@ -753,6 +753,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Src\Difficulty.h">
+      <Filter>Header Files\Src</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\ConsoleCommands.h">
       <Filter>Header Files\Src</Filter>
     </ClInclude>
   </ItemGroup>
