@@ -1,3 +1,70 @@
+#include <bbblitz3d.h>
+#include <bbmath.h>
+
+#include "ConsoleCommands.h"
+#include "Console.h"
+#include "Player.h"
+#include "MapSystem.h"
+
+namespace CBN {
+
+std::vector<ConsoleCmd*> commandList;
+
+void executeConsoleCommand(String name, std::vector<String> args) {
+	ConsoleCmd* foundCmd;
+	for (int i = 0; i < commandList.size(); i++) {
+		if (commandList[i]->name.equals(name)) {
+			foundCmd = commandList[i];
+			break;
+		}
+		else {
+			for (int j = 0; j < commandList[i]->aliases.size(); j++) {
+				if (commandList[i]->aliases[j].equals(name)) {
+					foundCmd = commandList[i];
+					break;
+				}
+			}
+		}
+	}
+
+	if (foundCmd != nullptr) {
+		foundCmd->execute(args);
+	} else {
+		CreateConsoleMsg("Command not found.", 255, 0, 0);
+	}
+}
+void generateConsoleCommands() {
+	commandList.push_back(new Cmd_Status());
+}
+
+// Command execute definitions.
+void Cmd_Status::execute(std::vector<String> args) {
+	ConsoleR = 0;
+	ConsoleG = 255;
+	ConsoleB = 0;
+	CreateConsoleMsg("******************************");
+	CreateConsoleMsg("Status: ");
+	CreateConsoleMsg("Coordinates: ");
+	CreateConsoleMsg("    - collider: " + String(bbEntityX(mainPlayer->collider)) + ", " + String(bbEntityY(mainPlayer->collider)) + ", " + String(bbEntityZ(mainPlayer->collider)));
+	CreateConsoleMsg("    - camera: " + String(bbEntityX(mainPlayer->cam)) + ", " + String(bbEntityY(mainPlayer->cam)) + ", " + String(bbEntityZ(mainPlayer->cam)));
+
+	CreateConsoleMsg("Rotation: ");
+	CreateConsoleMsg("    - collider: " + String(bbEntityPitch(mainPlayer->collider)) + ", " + String(bbEntityYaw(mainPlayer->collider)) + ", " + String(bbEntityRoll(mainPlayer->collider)));
+	CreateConsoleMsg("    - camera: " + String(bbEntityPitch(mainPlayer->cam)) + ", " + String(bbEntityYaw(mainPlayer->cam)) + ", " + String(bbEntityRoll(mainPlayer->cam)));
+
+	CreateConsoleMsg("Room: " + mainPlayer->currRoom->roomTemplate->name);
+
+	CreateConsoleMsg("Room coordinates: " + String(bbFloor(bbEntityX(mainPlayer->currRoom->obj) / 8.0 + 0.5)) + ", " + String(bbFloor(bbEntityZ(mainPlayer->currRoom->obj) / 8.0 + 0.5)));
+	CreateConsoleMsg("Stamina: " + String(mainPlayer->stamina));
+	//CreateConsoleMsg("Dead: "+mainPlayer\dead)
+	CreateConsoleMsg("Blinktimer: " + String(mainPlayer->blinkTimer));
+	CreateConsoleMsg("Injuries: " + String(mainPlayer->injuries));
+	CreateConsoleMsg("Bloodloss: " + String(mainPlayer->bloodloss));
+	CreateConsoleMsg("******************************");
+}
+
+}
+
 //TODO: Overhaul this. Move all of the argument stuff to dedicated functions so this is actually readable/maintainable.
 switch (StrTemp.toLower()) {
 case "help": {
@@ -12,69 +79,6 @@ case "help": {
 	ConsoleB = 255;
 
 	switch (StrTemp.toLower()) {
-	case "1", "": {
-		CreateConsoleMsg("LIST OF COMMANDS - PAGE 1/3");
-		CreateConsoleMsg("******************************");
-		CreateConsoleMsg("- asd");
-		CreateConsoleMsg("- status");
-		CreateConsoleMsg("- camerapick");
-		CreateConsoleMsg("- ending");
-		CreateConsoleMsg("- noclipspeed");
-		CreateConsoleMsg("- noclip");
-		CreateConsoleMsg("- injure [value]");
-		CreateConsoleMsg("- infect [value]");
-		CreateConsoleMsg("- heal");
-		CreateConsoleMsg("- teleport [room name]");
-		CreateConsoleMsg("- spawnitem [item name]");
-		CreateConsoleMsg("- wireframe");
-		CreateConsoleMsg("- 173speed");
-		CreateConsoleMsg("- 106speed");
-		CreateConsoleMsg("- 173state");
-		CreateConsoleMsg("- 106state");
-		CreateConsoleMsg("******************************");
-		CreateConsoleMsg("Use \"help 2/3\" to find more commands.");
-		CreateConsoleMsg("Use \"help [command name]\" to get more information about a command.");
-		CreateConsoleMsg("******************************");
-	}
-	case "2": {
-		CreateConsoleMsg("LIST OF COMMANDS - PAGE 2/3");
-		CreateConsoleMsg("******************************");
-		CreateConsoleMsg("- spawn513-1");
-		CreateConsoleMsg("- spawn106");
-		CreateConsoleMsg("- reset096");
-		CreateConsoleMsg("- disable173");
-		CreateConsoleMsg("- enable173");
-		CreateConsoleMsg("- disable106");
-		CreateConsoleMsg("- enable106");
-		CreateConsoleMsg("- halloween");
-		CreateConsoleMsg("- sanic");
-		CreateConsoleMsg("- scp-420-j");
-		CreateConsoleMsg("- godmode");
-		CreateConsoleMsg("- revive");
-		CreateConsoleMsg("- noclip");
-		CreateConsoleMsg("- showfps");
-		CreateConsoleMsg("- 096state");
-		CreateConsoleMsg("- debughud");
-		CreateConsoleMsg("- camerafog [near] [far]");
-		CreateConsoleMsg("- gamma [value]");
-		CreateConsoleMsg("******************************");
-		CreateConsoleMsg("Use \"help [command name]\" to get more information about a command.");
-		CreateConsoleMsg("******************************");
-	}
-	case "3": {
-		CreateConsoleMsg("- spawn [npc type]");
-		CreateConsoleMsg("- infinitestamina");
-		CreateConsoleMsg("- notarget");
-		CreateConsoleMsg("- spawnnpcstate [npc type] [state]");
-		CreateConsoleMsg("- unlockexits");
-	}
-	case "asd": {
-		CreateConsoleMsg("HELP - asd");
-		CreateConsoleMsg("******************************");
-		CreateConsoleMsg("Actives godmode, noclip, wireframe and");
-		CreateConsoleMsg("sets fog distance to 20 near, 30 far");
-		CreateConsoleMsg("******************************");
-	}
 	case "camerafog": {
 		CreateConsoleMsg("HELP - camerafog");
 		CreateConsoleMsg("******************************");
@@ -167,12 +171,6 @@ case "help": {
 		CreateConsoleMsg("the model the camera is pointing at.");
 		CreateConsoleMsg("******************************");
 	}
-	case "status": {
-		CreateConsoleMsg("HELP - status");
-		CreateConsoleMsg("******************************");
-		CreateConsoleMsg("Prints player, camera, and room information.");
-		CreateConsoleMsg("******************************");
-	}
 	case "weed", "scp-420-j", "420": {
 		CreateConsoleMsg("HELP - 420");
 		CreateConsoleMsg("******************************");
@@ -186,48 +184,8 @@ case "help": {
 	}
 
 }
-case "asd": {
-	bbWireFrame(1);
-	WireframeState = 1;
-	mainPlayer->godMode = true;
-	mainPlayer->noclip = true;
-	//CameraFogNear = 15
-	//CameraFogFar = 20
-}
 case "status": {
-	ConsoleR = 0;
-	ConsoleG = 255;
-	ConsoleB = 0;
-	CreateConsoleMsg("******************************");
-	CreateConsoleMsg("Status: ");
-	CreateConsoleMsg("Coordinates: ");
-	CreateConsoleMsg("    - collider: " + String(bbEntityX(mainPlayer->collider)) + ", " + String(bbEntityY(mainPlayer->collider)) + ", " + String(bbEntityZ(mainPlayer->collider)));
-	CreateConsoleMsg("    - camera: " + String(bbEntityX(mainPlayer->cam)) + ", " + String(bbEntityY(mainPlayer->cam)) + ", " + String(bbEntityZ(mainPlayer->cam)));
 
-	CreateConsoleMsg("Rotation: ");
-	CreateConsoleMsg("    - collider: " + String(bbEntityPitch(mainPlayer->collider)) + ", " + String(bbEntityYaw(mainPlayer->collider)) + ", " + String(bbEntityRoll(mainPlayer->collider)));
-	CreateConsoleMsg("    - camera: " + String(bbEntityPitch(mainPlayer->cam)) + ", " + String(bbEntityYaw(mainPlayer->cam)) + ", " + String(bbEntityRoll(mainPlayer->cam)));
-
-	CreateConsoleMsg("Room: " + mainPlayer->currRoom->roomTemplate->name);
-	for (int iterator43 = 0; iterator43 < Event::getListSize(); iterator43++) {
-		ev = Event::getObject(iterator43);
-
-		if (ev->room == mainPlayer->currRoom) {
-			CreateConsoleMsg("Room event: " + ev->name);
-			CreateConsoleMsg("-    state: " + String(ev->eventState));
-			CreateConsoleMsg("-    state2: " + String(ev->eventState2));
-			CreateConsoleMsg("-    state3: " + String(ev->eventState3));
-			break;
-		}
-	}
-
-	CreateConsoleMsg("Room coordinates: " + String(bbFloor(bbEntityX(mainPlayer->currRoom->obj) / 8.0 + 0.5)) + ", " + String(bbFloor(bbEntityZ(mainPlayer->currRoom->obj) / 8.0 + 0.5)));
-	CreateConsoleMsg("Stamina: " + String(mainPlayer->stamina));
-	//CreateConsoleMsg("Dead: "+mainPlayer\dead)
-	CreateConsoleMsg("Blinktimer: " + String(mainPlayer->blinkTimer));
-	CreateConsoleMsg("Injuries: " + String(mainPlayer->injuries));
-	CreateConsoleMsg("Bloodloss: " + String(mainPlayer->bloodloss));
-	CreateConsoleMsg("******************************");
 
 }
 case "camerapick": {
