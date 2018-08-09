@@ -35,7 +35,7 @@ class bbFile* bbOpenFile(String f);
 class bbFile* bbReadFile(String f);
 class bbFile* bbWriteFile(String f);
 void bbCloseFile(bbFile* f);
-int bbFilePos(bbFile* f)
+int bbFilePos(bbFile* f);
 class gxDir* bbReadDir(String d);
 void bbCloseDir(class gxDir* d);
 String bbNextFile(class gxDir* d);

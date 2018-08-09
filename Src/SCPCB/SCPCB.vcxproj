@@ -156,11 +156,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ConsoleCommands.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Src\Assets.cpp" />
     <ClCompile Include="Src\Audio.cpp" />
     <ClCompile Include="Src\Console.cpp" />
+    <ClCompile Include="Src\ConsoleCommands.cpp" />
     <ClCompile Include="Src\Decals.cpp" />
     <ClCompile Include="Src\Doors.cpp" />
     <ClCompile Include="Src\Dreamfilter.cpp" />
@@ -279,6 +279,7 @@
     <ClInclude Include="Src\Assets.h" />
     <ClInclude Include="Src\Audio.h" />
     <ClInclude Include="Src\Console.h" />
+    <ClInclude Include="Src\ConsoleCommands.h" />
     <ClInclude Include="Src\Decals.h" />
     <ClInclude Include="Src\Difficulty.h" />
     <ClInclude Include="Src\Doors.h" />
