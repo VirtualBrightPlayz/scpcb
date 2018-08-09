@@ -1,23 +1,45 @@
 #ifndef MATERIALS_H_INCLUDED
 #define MATERIALS_H_INCLUDED
+#include <StringType.h>
 #include <vector>
 
+class Texture;
+
 namespace CBN {
+
+// Structs.
+struct Material {
+private:
+    static std::vector<Material*> list;
+
+public:
+    Material();
+    ~Material();
+    static int getListSize();
+    static Material* getObject(int index);
+
+    String name;
+    Texture* diff;
+    //Field Bump
+
+    int stepSound;
+};
+
 
 // Functions.
 String StripFilename(String file);
 
-int GetTextureFromCache(String name);
+Texture* GetTextureFromCache(String name);
 
-Material* GetCache(String name);
+struct Material* GetCache(String name);
 
-void AddTextureToCache(String name, int texture);
+void AddTextureToCache(String name, Texture* texture);
 
 void ClearTextureCache();
 
 void FreeTextureCache();
 
-int LoadRMeshTexture(String roompath, String name, int flags);
+Texture* LoadRMeshTexture(String roompath, String name, int flags);
 
 }
 #endif // MATERIALS_H_INCLUDED

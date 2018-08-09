@@ -6,6 +6,7 @@
 #include "RM2.h"
 #include "MapSystem.h"
 #include "Materials.h"
+#include "GameMain.h"
 
 namespace CBN {
 
@@ -25,11 +26,12 @@ void LoadRM2(RoomTemplate* rt) {
     MeshModel* opaqueMesh = bbCreateMesh();
     MeshModel* alphaMesh;
 
-    std::vector<int> usedTextures;
+    std::vector<Material*> usedTextures;
 
-    std::vector<int> collisionObjs;
-    std::vector<int>;
+    std::vector<MeshModel*> collisionObjs;
 
+    std::vector<Prop*> props;
+    
     String filename = StripPath(fullFilename);
     String filepath = StripFilename(fullFilename);
 
@@ -60,13 +62,13 @@ void LoadRM2(RoomTemplate* rt) {
     Texture* texture;
     int shouldLoadTexture;
 
-    ModelModel* mesh;
-    ModelModel* clonedMesh;
+    MeshModel* mesh;
+    MeshModel* clonedMesh;
     Brush* brush;
     int textureIndex[2];
     int layerCount;
     Material* mat;
-    int surf;
+    Surface* surf;
     float x;
     float y;
     float z;
@@ -139,11 +141,12 @@ void LoadRM2(RoomTemplate* rt) {
                         bbTextureCoords(texture,uvSet);
                         AddTextureToCache(texName,texture);
                     }
-                    PushIntArrayListElem(usedTextures,Handle(GetCache(texName)));
+                    usedTextures.push_back(GetCache(texName));
                 }
                 //[End Block]
             } break;
-            case RM2_OPAQUE,RM2_ALPHA: {
+            case RM2_OPAQUE:
+            case RM2_ALPHA: {
                 //[Block]
                 mesh = bbCreateMesh();
                 brush = 0;
@@ -159,14 +162,14 @@ void LoadRM2(RoomTemplate* rt) {
                 for (i = 0; i <= 1; i++) {
                     mat = nullptr;
                     if (textureIndex[i]>0) {
-                        mat = Object.Material(GetIntArrayListElem(usedTextures,textureIndex[i]-1));
+                        mat = usedTextures[textureIndex[i]-1];
                     }
                     if (mat!=nullptr) {
                         if (brush==0) {
                             brush = bbCreateBrush(255,255,255);
                         }
                         //TODO: replace this hack once we can start using shaders
-                        BrushTexture(brush,mat->diff,0,i+(layerCount = 2));
+                        bbBrushTexture(brush,mat->diff,0,i+(layerCount == 2));
                     }
                 }
 
@@ -175,14 +178,14 @@ void LoadRM2(RoomTemplate* rt) {
                 }
 
                 surf = bbCreateSurface(mesh);
-                if (brush!=0) {
+                if (brush!=nullptr) {
                     bbPaintSurface(surf,brush);
                     bbFreeBrush(brush);
                 }
 
                 //vertices
                 count = bbReadShort(file);
-                for (i = 0; i <= count-1; i++) {
+                for (i = 0; i < count; i++) {
                     x = bbReadFloat(file);
                     y = bbReadFloat(file);
                     z = bbReadFloat(file);
@@ -202,7 +205,7 @@ void LoadRM2(RoomTemplate* rt) {
 
                 //triangles
                 count = bbReadShort(file);
-                for (i = 0; i <= count-1; i++) {
+                for (i = 0; i < count; i++) {
                     vert1 = bbReadShort(file);
                     vert2 = bbReadShort(file);
                     vert3 = bbReadShort(file);
@@ -221,7 +224,7 @@ void LoadRM2(RoomTemplate* rt) {
                 bbEntityPickMode(mesh,2,true);
 
                 //double-sided collision bois
-                clonedMesh = bbCopyMesh(mesh);
+                clonedMesh = bbDeepCopyMesh(mesh);
                 bbFlipMesh(clonedMesh);
                 bbAddMesh(clonedMesh,mesh);
                 bbFreeEntity(clonedMesh);
@@ -229,7 +232,7 @@ void LoadRM2(RoomTemplate* rt) {
                 bbEntityAlpha(mesh,0.0);
 
                 bbEntityType(mesh,HIT_MAP);
-                PushIntArrayListElem(collisionObjs,mesh);
+                collisionObjs.push_back(mesh);
                 bbHideEntity(mesh);
                 //[End Block]
             } break;
@@ -266,7 +269,7 @@ void LoadRM2(RoomTemplate* rt) {
                 bbEntityAlpha(mesh,1.0);
                 bbEntityType(mesh,HIT_MAP);
                 bbAddMesh(mesh,opaqueMesh);
-                PushIntArrayListElem(collisionObjs,mesh);
+                collisionObjs.push_back(mesh);
                 bbHideEntity(mesh);
                 //[End Block]
             } break;
@@ -397,10 +400,7 @@ void LoadRM2(RoomTemplate* rt) {
 
                 prop = LoadProp(propName,x,y,z,pitch,yaw,roll,xScale,yScale,zScale);
 
-                if (props==nullptr) {
-                    props = CreateIntArrayList();
-                }
-                PushIntArrayListElem(props,Handle(prop));
+                props.push_back(prop);
                 //[End Block]
             } break;
             default: {
@@ -409,7 +409,7 @@ void LoadRM2(RoomTemplate* rt) {
         }
     }
 
-    DeleteIntArrayList(usedTextures);
+    usedTextures.clear();
 
     bbEntityFX(opaqueMesh,1+2);
     if (alphaMesh!=0) {

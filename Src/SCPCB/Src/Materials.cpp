@@ -1,6 +1,8 @@
-#include "Materials.h"
-#include "include.h"
 #include <iostream>
+#include <bbblitz3d.h>
+
+#include "Materials.h"
+#include "Assets.h"
 
 namespace CBN {
 
@@ -10,8 +12,8 @@ String StripFilename(String file) {
     int lastSlash = 0;
     int i;
     if (file.size()>0) {
-        for (i = 1; i <= file.size(); i++) {
-            mi = bbMid(file,i,1);
+        for (i = 0; i < file.size(); i++) {
+            mi = String(file.charAt(i));
             if (mi.equals('\\') || mi.equals('/')) {
                 lastSlash = i;
             }
@@ -21,7 +23,7 @@ String StripFilename(String file) {
     return file.substr(0,lastSlash);
 }
 
-int GetTextureFromCache(String name) {
+Texture* GetTextureFromCache(String name) {
     Material* tc;
     for (int i = 0; i < Material::getListSize(); i++) {
         tc = Material::getObject(i);
@@ -45,7 +47,7 @@ Material* GetCache(String name) {
     return nullptr;
 }
 
-void AddTextureToCache(String name, int texture) {
+void AddTextureToCache(String name, Texture* texture) {
     Material* tc = GetCache(name);
     if (tc==nullptr) {
         tc = new Material();
@@ -85,12 +87,12 @@ void FreeTextureCache() {
     }
 }
 
-int LoadRMeshTexture(String roompath, String name, int flags) {
-    int texture = 0;
-    if (texture == 0) {
+Texture* LoadRMeshTexture(String roompath, String name, int flags) {
+    Texture* texture = nullptr;
+    if (texture == nullptr) {
         texture = bbLoadTexture(GetImagePath(roompath+name),flags);
     }
-    if (texture == 0) {
+    if (texture == nullptr) {
         texture = bbLoadTexture(GetImagePath("GFX/map/Textures/"+name),flags);
     }
     if (texture != 0) {

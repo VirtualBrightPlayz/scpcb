@@ -1,6 +1,9 @@
 #ifndef RM2_H_INCLUDED
 #define RM2_H_INCLUDED
+#include <StringType.h>
 #include <vector>
+
+class bbStream;
 
 namespace CBN {
 

@@ -67,6 +67,7 @@ void Cmd_Status::execute(std::vector<String> args) {
 
 }
 
+#if 0
 //TODO: Overhaul this. Move all of the argument stuff to dedicated functions so this is actually readable/maintainable.
 switch (StrTemp.toLower()) {
 case "help": {
@@ -755,3 +756,4 @@ default: {
     CreateConsoleMsg("Command not found.", 255, 0, 0);
 }
 }
+#endif

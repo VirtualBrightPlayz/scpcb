@@ -38,23 +38,6 @@ const int LIGHTTYPE_POINT = 2;
 const int LIGHTTYPE_SPOT = 3;
 
 // Structs.
-struct Material {
-private:
-    static std::vector<Material*> list;
-
-public:
-    Material();
-    ~Material();
-    static int getListSize();
-    static Material* getObject(int index);
-
-    String name;
-    int diff;
-    //Field Bump
-
-    int stepSound;
-};
-
 struct RoomTemplate {
 private:
     static std::vector<RoomTemplate*> list;
