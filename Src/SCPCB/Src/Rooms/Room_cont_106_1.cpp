@@ -1,5 +1,22 @@
+#include <bbblitz3d.h>
+#include <bbmath.h>
+#include <bbgraphics.h>
+#include <bbaudio.h>
+
+#include "../GameMain.h"
+#include "../MapSystem.h"
+#include "../Doors.h"
+#include "../Items/Items.h"
+#include "../Decals.h"
+#include "../Particles.h"
+#include "../Events.h"
+#include "../Player.h"
+#include "../NPCs/NPCs.h"
+#include "../Audio.h"
+#include "../MathUtils/MathUtils.h"
+#include "../Menus/Menu.h"
+#include "../Objects.h"
 #include "Room_cont_106_1.h"
-#include "include.h"
 
 namespace CBN {
 
@@ -65,14 +82,14 @@ void FillRoom_cont_106_1(Room* r) {
     //				PaintSurface(sf,b)
     //
     //				If (t1<>0) Then FreeTexture(t1
-    t1 = 0);
+    //t1 = 0);
     //			EndIf
     //		EndIf
     //
     //		If (t<>0) Then FreeTexture(t
-    t = 0);
+    //t = 0);
     //		If (b<>0) Then FreeBrush(b
-    b = 0);
+    //b = 0);
     //	Next
     //
     //EndIf
@@ -234,7 +251,7 @@ void UpdateEvent_cont_106_1(Event* e) {
             }
         }
 
-        if ((e->eventState3>3200) | (e->eventState3<2500)) | (e->eventState!=1) {
+        if (e->eventState3>3200 | e->eventState3<2500 | e->eventState!=1) {
             SoundTransmission = e->room->levers[1]->succ;
         }
         if (!SoundTransmission) {
@@ -259,7 +276,7 @@ void UpdateEvent_cont_106_1(Event* e) {
                 }
             }
 
-            UpdateButton(e->room->objects[4]);
+            UpdateButton((MeshModel*)e->room->objects[4]);
             if (mainPlayer->closestButton == e->room->objects[4] & MouseHit1) {
                 //start the femur breaker
                 e->eventState = 1;

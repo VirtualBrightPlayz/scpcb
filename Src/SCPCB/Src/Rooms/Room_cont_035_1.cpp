@@ -1,5 +1,22 @@
+#include <bbblitz3d.h>
+#include <bbmath.h>
+#include <bbgraphics.h>
+#include <bbaudio.h>
+
+#include "../GameMain.h"
+#include "../MapSystem.h"
+#include "../Doors.h"
+#include "../Items/Items.h"
+#include "../Decals.h"
+#include "../Particles.h"
+#include "../Events.h"
+#include "../Player.h"
+#include "../NPCs/NPCs.h"
+#include "../Audio.h"
+#include "../MathUtils/MathUtils.h"
+#include "../Menus/Menu.h"
+#include "../Objects.h"
 #include "Room_cont_035_1.h"
-#include "include.h"
 
 namespace CBN {
 
@@ -130,7 +147,7 @@ void UpdateEvent_cont_035_1(Event* e) {
     Emitter* em;
     SecurityCam* sc;
     SecurityCam* sc2;
-    Door* do;
+    Door* dor;
 
     String CurrTrigger = "";
 
@@ -533,12 +550,12 @@ void UpdateEvent_cont_035_1(Event* e) {
                             e->room->doors[2]->locked = false;
                             UseDoor(e->room->doors[1],false);
                             for (int iterator154 = 0; iterator154 < Door::getListSize(); iterator154++) {
-                                do = Door::getObject(iterator154);
+                                dor = Door::getObject(iterator154);
 
-                                if (do->typ == DOOR_TYPE_HCZ) {
-                                    if (abs(bbEntityX(e->room->obj)-bbEntityX(do->frameobj,true))<4.5) {
-                                        if (abs(bbEntityZ(e->room->obj)-bbEntityZ(do->frameobj,true))<4.5) {
-                                            UseDoor(do,false);
+                                if (dor->typ == DOOR_TYPE_HCZ) {
+                                    if (abs(bbEntityX(e->room->obj)-bbEntityX(dor->frameobj,true))<4.5) {
+                                        if (abs(bbEntityZ(e->room->obj)-bbEntityZ(dor->frameobj,true))<4.5) {
+                                            UseDoor(dor,false);
                                             break;
                                         }
                                     }
@@ -606,7 +623,7 @@ void UpdateEvent_cont_035_1(Event* e) {
                             e->eventState2 = Min(e->eventState2+(timing->tickDuration/6000),1.0);
                             e->eventState3 = CurveValue(e->eventState2, e->eventState3, 50);
 
-                            if (!IsPlayerWearingItem(mainPlayer,"hazmatsuit3")) & (!IsPlayerWearingItem(mainPlayer,"gasmask3")) {
+                            if (!IsPlayerWearingItem(mainPlayer,"hazmatsuit3") & !IsPlayerWearingItem(mainPlayer,"gasmask3")) {
                                 mainPlayer->sanity895 = mainPlayer->sanity895-timing->tickDuration*1.1;
                                 mainPlayer->blurTimer = bbSin(TimeInPosMilliSecs()/10)*abs(mainPlayer->sanity895);
                             }

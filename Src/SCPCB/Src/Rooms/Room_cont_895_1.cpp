@@ -1,5 +1,22 @@
+#include <bbblitz3d.h>
+#include <bbmath.h>
+#include <bbgraphics.h>
+#include <bbaudio.h>
+
+#include "../GameMain.h"
+#include "../MapSystem.h"
+#include "../Doors.h"
+#include "../Items/Items.h"
+#include "../Decals.h"
+#include "../Particles.h"
+#include "../Events.h"
+#include "../Player.h"
+#include "../NPCs/NPCs.h"
+#include "../Audio.h"
+#include "../MathUtils/MathUtils.h"
+#include "../Menus/Menu.h"
+#include "../Objects.h"
 #include "Room_cont_895_1.h"
-#include "include.h"
 
 namespace CBN {
 
@@ -141,7 +158,7 @@ void UpdateEventCoffin(Event* e) {
                 sc = SecurityCam::getObject(iterator163);
 
                 if (!sc->specialCam) {
-                    if (sc->coffinEffect==0 & sc->room->roomTemplate->name!="room106" & sc->room->roomTemplate->name!="room205") {
+                    if (!sc->coffinEffect==0 & sc->room->roomTemplate->name.equals("room106") && !sc->room->roomTemplate->name.equals("room205")) {
                         sc->coffinEffect = 2;
                     }
                     if (sc->room == e->room) {
@@ -203,7 +220,7 @@ void UpdateEventCoffin(Event* e) {
             //If (EntityVisible(mainPlayer\cam,e\room\levers[0]\baseObj)) Then
             //If (EntityInView(e\room\levers[0]\baseObj, mainPlayer\cam)) Then
             //If EntityVisible(mainPlayer\cam,e\room\objects[1])
-            if (CoffinDistance < 4.0) & (hasBatteryFor895) {
+            if (CoffinDistance < 4.0 && hasBatteryFor895) {
 
                 ///WearingNightVision)
                 mainPlayer->sanity895 = mainPlayer->sanity895-(timing->tickDuration*1.1);
@@ -262,7 +279,7 @@ void UpdateEventCoffin(Event* e) {
                 sc = SecurityCam::getObject(iterator165);
 
                 if (!sc->specialCam) {
-                    if (sc->coffinEffect==0 & sc->room->roomTemplate->name!="room106") {
+                    if (sc->coffinEffect==0 && !sc->room->roomTemplate->name.equals("room106")) {
                         sc->coffinEffect = 2;
                     }
                     if (sc->coffinEffect == 1) {

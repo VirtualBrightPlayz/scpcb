@@ -51,7 +51,7 @@ float UpdateElevators(float state, struct Door* door1, struct Door* door2, Objec
 
 float UpdateElevators2(float State, struct Door* door1, struct Door* door2, Object* room1, Object* room2, struct Event* event);
 
-ElevatorObj* AssignElevatorObj(int obj, struct Door* door, int in_facility);
+ElevatorObj* AssignElevatorObj(MeshModel* obj, struct Door* door, int in_facility);
 
 }
 #endif // OBJECTS_H_INCLUDED

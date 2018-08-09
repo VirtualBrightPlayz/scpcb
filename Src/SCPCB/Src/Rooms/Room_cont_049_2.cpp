@@ -1,6 +1,22 @@
+#include <bbblitz3d.h>
+#include <bbmath.h>
+#include <bbgraphics.h>
+#include <bbaudio.h>
+
+#include "../GameMain.h"
+#include "../MapSystem.h"
+#include "../Doors.h"
+#include "../Items/Items.h"
+#include "../Decals.h"
+#include "../Particles.h"
+#include "../Events.h"
+#include "../Player.h"
+#include "../NPCs/NPCs.h"
+#include "../Audio.h"
+#include "../MathUtils/MathUtils.h"
+#include "../Menus/Menu.h"
+#include "../Objects.h"
 #include "Room_cont_049_2.h"
-#include "include.h"
-#include <iostream>
 
 namespace CBN {
 
@@ -101,9 +117,9 @@ void FillRoom_cont_049_2(Room* r) {
 
     for (i = 0; i <= 3; i++) {
         if ((i % 2) == 1) {
-            AssignElevatorObj(r->objects[i],r->doors[i],2);
+            AssignElevatorObj((MeshModel*)r->objects[i],r->doors[i],2);
         } else {
-            AssignElevatorObj(r->objects[i],r->doors[i],true);
+            AssignElevatorObj((MeshModel*)r->objects[i],r->doors[i],true);
         }
     }
 
@@ -131,7 +147,7 @@ void UpdateEvent_cont_049_2(Event* e) {
     float dist;
     int i;
     int temp;
-    int pvt;
+    Pivot* pvt;
     String strtemp;
     int j;
     int k;
@@ -254,7 +270,7 @@ void UpdateEvent_cont_049_2(Event* e) {
                         //If (e\room\npc[0]=Null) Then
                         //	For n.NPC = Each NPC
                         //		If (n\npcType=NPCtype049) Then e\room\npc[0]=n
-                        break;
+                        //break;
                         //	Next
                         //EndIf
                         //e\room\npc[0]\state = 1
@@ -275,7 +291,7 @@ void UpdateEvent_cont_049_2(Event* e) {
                     //If (e\room\npc[0]=Null) Then
                     //	For n.NPC = Each NPC
                     //		If (n\npcType=NPCtype049) Then e\room\npc[0]=n
-                    break;
+                    //break;
                     //	Next
                     //Else
                     //If (EntityDistance(e\room\npc[0]\collider,mainPlayer\collider)<4.0) Then

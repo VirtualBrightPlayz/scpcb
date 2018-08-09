@@ -1,5 +1,22 @@
+#include <bbblitz3d.h>
+#include <bbmath.h>
+#include <bbgraphics.h>
+#include <bbaudio.h>
+
+#include "../GameMain.h"
+#include "../MapSystem.h"
+#include "../Doors.h"
+#include "../Items/Items.h"
+#include "../Decals.h"
+#include "../Particles.h"
+#include "../Events.h"
+#include "../Player.h"
+#include "../NPCs/NPCs.h"
+#include "../Audio.h"
+#include "../MathUtils/MathUtils.h"
+#include "../Menus/Menu.h"
+#include "../Objects.h"
 #include "Room_cont_205_1.h"
-#include "include.h"
 
 namespace CBN {
 
@@ -149,24 +166,24 @@ void UpdateEvent_cont_205_1(Event* e) {
             }
 
 
-            switch (e->eventState) {
+            switch ((int)e->eventState) {
                 case 1: {
                     //sitting
-                    Animate2(e->room->objects[6], bbAnimTime(e->room->objects[6]), 526, 530, 0.2);
+                    Animate2((MeshModel*)e->room->objects[6], bbAnimTime(e->room->objects[6]), 526, 530, 0.2);
                     if (e->eventState2 > 20*70) {
                         e->eventState = e->eventState+1;
                     }
                 }
                 case 3: {
                     //laying down
-                    Animate2(e->room->objects[6], bbAnimTime(e->room->objects[6]), 377, 525, 0.2);
+                    Animate2((MeshModel*)e->room->objects[6], bbAnimTime(e->room->objects[6]), 377, 525, 0.2);
                     if (e->eventState2 > 30*70) {
                         e->eventState = e->eventState+1;
                     }
                 }
                 case 5: {
                     //standing
-                    Animate2(e->room->objects[6], bbAnimTime(e->room->objects[6]), 228, 376, 0.2);
+                    Animate2((MeshModel*)e->room->objects[6], bbAnimTime(e->room->objects[6]), 228, 376, 0.2);
                     if (e->eventState2 > 40*70) {
                         e->eventState = e->eventState+1;
                         PlayRangedSound(LoadTempSound("SFX/SCP/205/Horror.ogg"), mainPlayer->cam, e->room->objects[6], 10, 0.3);
@@ -176,7 +193,7 @@ void UpdateEvent_cont_205_1(Event* e) {
                     //first demon appears
                     bbShowEntity(e->room->objects[5]);
                     //le sexy demon pose
-                    Animate2(e->room->objects[5], bbAnimTime(e->room->objects[5]), 500, 648, 0.2);
+                    Animate2((MeshModel*)e->room->objects[5], bbAnimTime(e->room->objects[5]), 500, 648, 0.2);
                     //TurnEntity(e\room\objects[6], 0.0, DeltaYaw(e\room\objects[6], e\room\objects[5])*0.01, 0.0, True)
                     if (e->eventState2 > 60*70) {
                         e->eventState = e->eventState+1;
@@ -187,8 +204,8 @@ void UpdateEvent_cont_205_1(Event* e) {
                     //second demon appears
                     bbShowEntity(e->room->objects[4]);
                     //idle
-                    Animate2(e->room->objects[4], bbAnimTime(e->room->objects[4]), 2, 200, 0.2);
-                    Animate2(e->room->objects[5], bbAnimTime(e->room->objects[5]), 4, 125, 0.2);
+                    Animate2((MeshModel*)e->room->objects[4], bbAnimTime(e->room->objects[4]), 2, 200, 0.2);
+                    Animate2((MeshModel*)e->room->objects[5], bbAnimTime(e->room->objects[5]), 4, 125, 0.2);
 
                     //TurnEntity(e\room\objects[6], 0.0, DeltaYaw(e\room\objects[6], e\room\objects[4])*0.01, 0.0, True)
 
@@ -201,9 +218,9 @@ void UpdateEvent_cont_205_1(Event* e) {
                     //third demon
                     bbShowEntity(e->room->objects[3]);
                     //idle
-                    Animate2(e->room->objects[3], bbAnimTime(e->room->objects[3]), 2, 226, 0.2);
-                    Animate2(e->room->objects[4], bbAnimTime(e->room->objects[4]), 2, 200, 0.2);
-                    Animate2(e->room->objects[5], bbAnimTime(e->room->objects[5]), 4, 125, 0.2);
+                    Animate2((MeshModel*)e->room->objects[3], bbAnimTime(e->room->objects[3]), 2, 226, 0.2);
+                    Animate2((MeshModel*)e->room->objects[4], bbAnimTime(e->room->objects[4]), 2, 200, 0.2);
+                    Animate2((MeshModel*)e->room->objects[5], bbAnimTime(e->room->objects[5]), 4, 125, 0.2);
 
                     //TurnEntity(e\room\objects[6], 0.0, DeltaYaw(e\room\objects[5], e\room\objects[4])*0.01, 0.0, True)
 
@@ -216,14 +233,14 @@ void UpdateEvent_cont_205_1(Event* e) {
                         bbSetAnimTime(e->room->objects[6], 227);
                     }
 
-                    Animate2(e->room->objects[3], bbAnimTime(e->room->objects[3]), 2, 491, 0.05);
-                    Animate2(e->room->objects[4], bbAnimTime(e->room->objects[4]), 197, 433, 0.05);
-                    Animate2(e->room->objects[5], bbAnimTime(e->room->objects[5]), 2, 433, 0.05);
+                    Animate2((MeshModel*)e->room->objects[3], bbAnimTime(e->room->objects[3]), 2, 491, 0.05);
+                    Animate2((MeshModel*)e->room->objects[4], bbAnimTime(e->room->objects[4]), 197, 433, 0.05);
+                    Animate2((MeshModel*)e->room->objects[5], bbAnimTime(e->room->objects[5]), 2, 433, 0.05);
                 }
                 case 66: {
-                    Animate2(e->room->objects[3], bbAnimTime(e->room->objects[3]), 492, 534, 0.1, false);
-                    Animate2(e->room->objects[4], bbAnimTime(e->room->objects[4]), 434, 466, 0.1, false);
-                    Animate2(e->room->objects[5], bbAnimTime(e->room->objects[5]), 434, 494, 0.1, false);
+                    Animate2((MeshModel*)e->room->objects[3], bbAnimTime(e->room->objects[3]), 492, 534, 0.1, false);
+                    Animate2((MeshModel*)e->room->objects[4], bbAnimTime(e->room->objects[4]), 434, 466, 0.1, false);
+                    Animate2((MeshModel*)e->room->objects[5], bbAnimTime(e->room->objects[5]), 434, 494, 0.1, false);
 
                     if (bbAnimTime(e->room->objects[3])>515) {
                         //MoveEntity(e\room\objects[3], 0,-timing\tickDuration*0.001,0)
