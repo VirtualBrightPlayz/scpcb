@@ -5,7 +5,7 @@
 namespace CBN {
 
 // Functions.
-void FillRoom_off_glss_3(Room* r);
+void FillRoom_off_glss_3(struct Room* r);
 
 }
 #endif // ROOM_OFF_GLSS_3_H_INCLUDED

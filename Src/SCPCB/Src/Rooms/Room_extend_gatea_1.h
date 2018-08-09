@@ -5,9 +5,9 @@
 namespace CBN {
 
 // Functions.
-void FillRoom_extend_gatea_1(Room* r);
+void FillRoom_extend_gatea_1(struct Room* r);
 
-void UpdateEvent_extend_gatea_1(Event* e);
+void UpdateEvent_extend_gatea_1(struct Event* e);
 
 }
 #endif // ROOM_EXTEND_GATEA_1_H_INCLUDED

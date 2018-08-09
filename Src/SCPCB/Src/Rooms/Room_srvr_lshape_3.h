@@ -5,7 +5,7 @@
 namespace CBN {
 
 // Functions.
-void FillRoom_srvr_lshape_3(Room* r);
+void FillRoom_srvr_lshape_3(struct Room* r);
 
 }
 #endif // ROOM_SRVR_LSHAPE_3_H_INCLUDED

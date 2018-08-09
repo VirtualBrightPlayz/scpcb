@@ -5,7 +5,7 @@
 namespace CBN {
 
 // Functions.
-void FillRoom_lck_broke_2c(Room* r);
+void FillRoom_lck_broke_2c(struct Room* r);
 
 }
 #endif // ROOM_LCK_BROKE_2C_H_INCLUDED

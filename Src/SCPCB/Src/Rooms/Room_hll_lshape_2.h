@@ -5,7 +5,7 @@
 namespace CBN {
 
 // Functions.
-void FillRoom_hll_lshape_2(Room* r);
+void FillRoom_hll_lshape_2(struct Room* r);
 
 }
 #endif // ROOM_HLL_LSHAPE_2_H_INCLUDED

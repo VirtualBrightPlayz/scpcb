@@ -5,7 +5,7 @@
 namespace CBN {
 
 // Functions.
-void FillRoom_lifts_1(Room* r);
+void FillRoom_lifts_1(struct Room* r);
 
 }
 #endif // ROOM_LIFTS_1_H_INCLUDED

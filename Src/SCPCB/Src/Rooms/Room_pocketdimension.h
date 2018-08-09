@@ -5,9 +5,9 @@
 namespace CBN {
 
 // Functions.
-void FillRoom_pocketdimension(Room* r);
+void FillRoom_pocketdimension(struct Room* r);
 
-void UpdateEvent_pocketdimension(Event* e);
+void UpdateEvent_pocketdimension(struct Event* e);
 
 }
 #endif // ROOM_POCKETDIMENSION_H_INCLUDED

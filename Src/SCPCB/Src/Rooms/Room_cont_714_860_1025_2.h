@@ -5,7 +5,7 @@
 namespace CBN {
 
 // Functions.
-void FillRoom_cont_714_860_1025_2(Room* r);
+void FillRoom_cont_714_860_1025_2(struct Room* r);
 
 }
 #endif // ROOM_CONT_714_860_1025_2_H_INCLUDED

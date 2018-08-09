@@ -5,7 +5,7 @@
 namespace CBN {
 
 // Functions.
-void UpdateEvent106sinkhole(Event* e);
+void UpdateEvent106sinkhole(struct Event* e);
 
 }
 #endif // ROOM_HLL_PIPES_3_H_INCLUDED

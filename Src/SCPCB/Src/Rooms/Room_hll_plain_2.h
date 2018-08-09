@@ -5,7 +5,7 @@
 namespace CBN {
 
 // Functions.
-void UpdateEventRoom2trick(Event* e);
+void UpdateEventRoom2trick(struct Event* e);
 
 }
 #endif // ROOM_HLL_PLAIN_2_H_INCLUDED

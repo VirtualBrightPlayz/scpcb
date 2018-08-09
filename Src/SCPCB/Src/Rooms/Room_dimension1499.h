@@ -40,11 +40,11 @@ public:
 };
 
 // Functions.
-void UpdateEvent_dimension1499(Event* e);
+void UpdateEvent_dimension1499(struct Event* e);
 
 void UpdateLeave1499();
 
-void CreateChunkParts(Room* r);
+void CreateChunkParts(struct Room* r);
 
 Chunk* CreateChunk(int obj, float x, float y, float z, int spawnNPCs = true);
 

@@ -5,9 +5,9 @@
 namespace CBN {
 
 // Functions.
-void FillRoom_hll_fan_2(Room* r);
+void FillRoom_hll_fan_2(struct Room* r);
 
-void UpdateEventRoom2fan(Event* e);
+void UpdateEventRoom2fan(struct Event* e);
 
 }
 #endif // ROOM_HLL_FAN_2_H_INCLUDED

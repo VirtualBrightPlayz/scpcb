@@ -5,7 +5,7 @@
 namespace CBN {
 
 // Functions.
-void FillRoom_off_rosewood_2(Room* r);
+void FillRoom_off_rosewood_2(struct Room* r);
 
 }
 #endif // ROOM_OFF_ROSEWOOD_2_H_INCLUDED

@@ -5,7 +5,7 @@
 namespace CBN {
 
 // Functions.
-void FillRoom_lck_ez_3(Room* r);
+void FillRoom_lck_ez_3(struct Room* r);
 
 }
 #endif // ROOM_LCK_EZ_3_H_INCLUDED

@@ -5,9 +5,9 @@
 namespace CBN {
 
 // Functions.
-void FillRoom_cont_1162_2c(Room* r);
+void FillRoom_cont_1162_2c(struct Room* r);
 
-void UpdateEvent_cont_1162_2c(Event* e);
+void UpdateEvent_cont_1162_2c(struct Event* e);
 
 int IsItemGoodFor1162(ItemTemplate* itt);
 

@@ -5,11 +5,11 @@
 namespace CBN {
 
 // Functions.
-void FillRoom_hll_gas_3(Room* r);
+void FillRoom_hll_gas_3(struct Room* r);
 
-void UpdateEventRoom3pitduck(Event* e);
+void UpdateEventRoom3pitduck(struct Event* e);
 
-void UpdateEventRoom3pit1048(Event* e);
+void UpdateEventRoom3pit1048(struct Event* e);
 
 }
 #endif // ROOM_HLL_GAS_3_H_INCLUDED

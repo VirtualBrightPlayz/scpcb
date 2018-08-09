@@ -5,7 +5,7 @@
 namespace CBN {
 
 // Functions.
-void FillRoom_hll_dirty_3(Room* r);
+void FillRoom_hll_dirty_3(struct Room* r);
 
 }
 #endif // ROOM_HLL_DIRTY_3_H_INCLUDED

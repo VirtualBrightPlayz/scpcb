@@ -15,11 +15,11 @@ extern const int EVENT_LCKA2_TIMER;
 extern const int EVENT_LCKA2_SPAWNEDCORPSE;
 
 // Functions.
-void FillRoom_lck_air_2(Room* r);
+void FillRoom_lck_air_2(struct Room* r);
 
-void UpdateEvent_lck_air_2(Event* e);
+void UpdateEvent_lck_air_2(struct Event* e);
 
-void UpdateEvent_lck_air_broke_2(Event* e);
+void UpdateEvent_lck_air_broke_2(struct Event* e);
 
 }
 #endif // ROOM_LCK_AIR_2_H_INCLUDED

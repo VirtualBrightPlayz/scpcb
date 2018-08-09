@@ -5,7 +5,7 @@
 namespace CBN {
 
 // Functions.
-void FillRoom_srvr_pc_2(Room* r);
+void FillRoom_srvr_pc_2(struct Room* r);
 
 }
 #endif // ROOM_SRVR_PC_2_H_INCLUDED

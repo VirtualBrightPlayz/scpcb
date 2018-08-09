@@ -5,13 +5,13 @@
 namespace CBN {
 
 // Functions.
-void FillRoom_hll_caf_2(Room* r);
+void FillRoom_hll_caf_2(struct Room* r);
 
 void Draw294();
 
 void Update294();
 
-void UpdateEvent_hll_caf_2(Event* e);
+void UpdateEvent_hll_caf_2(struct Event* e);
 
 }
 #endif // ROOM_HLL_CAF_2_H_INCLUDED

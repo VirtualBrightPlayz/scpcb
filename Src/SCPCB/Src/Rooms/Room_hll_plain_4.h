@@ -5,7 +5,7 @@
 namespace CBN {
 
 // Functions.
-void UpdateEvent_hll_plain_4(Event* e);
+void UpdateEvent_hll_plain_4(struct Event* e);
 
 }
 #endif // ROOM_HLL_PLAIN_4_H_INCLUDED
