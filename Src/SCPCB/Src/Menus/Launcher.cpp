@@ -1,6 +1,7 @@
 #include <bbruntime.h>
 #include <bbgraphics.h>
 #include <bbblitz3d.h>
+#include <bbmath.h>
 #include <StringType.h>
 
 #include "Launcher.h"
@@ -124,12 +125,13 @@ void Launcher::draw() {
     int i;
     for (i = 1; i <= bbCountGfxModes3D(); i++) {
         if (bbGfxModeDepth(i) == 32) {
-            bbColor(0, 0, 0);
+            bbColor(0, (bbSin(bbMilliSecs() / 10)+1)*45, (bbSin(bbMilliSecs() / 10) + 1)*95);
 
             if (this->selectedGFXMode == (i-1)) {
                 bbRect(x - 1, y - 1, 100, 20, false);
             }
 
+            bbColor(0, 0, 0);
             bbText(x, y, (String(this->resWidths[i - 1]) + "x" + String(this->resHeights[i - 1])));
             if (MouseOn(x - 1, y - 1, 100, 20)) {
                 bbColor(100, 100, 100);
