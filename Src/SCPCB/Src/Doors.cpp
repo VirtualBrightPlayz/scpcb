@@ -1,6 +1,7 @@
 #include <StringType.h>
 #include <bbblitz3d.h>
 #include <bbmath.h>
+#include <string.h>
 
 #include "Doors.h"
 #include "MapSystem.h"
@@ -18,6 +19,8 @@ namespace CBN {
 // Structs.
 std::vector<Door*> Door::list;
 Door::Door() {
+    memset(this,0,sizeof(Door));
+
     list.push_back(this);
 }
 Door::~Door() {
@@ -502,7 +505,7 @@ void UseDoor(Door* d, int showmsg) {
                                     MsgTimer = 70 * 7;
                                 } break;
                                 case 3: {
-                                    Msg = "If you continue pressing this button I will generate a Memory Access Violation.";
+                                    Msg = "If you continue pressing this button I will generate a Memory Access- oh wait I can't do that anymore.";
                                     MsgTimer = 70 * 7;
                                 } break;
                                 default: {

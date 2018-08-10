@@ -2175,7 +2175,7 @@ void CreateMap() {
                                 r->adjDoor[i] = CreateDoor(r->x+4.0*tempX, 0.0,r->z+4.0*tempY, 90.0*((i+1) % 2), nullptr);
                                 newWaypoint = CreateWaypoint(r->x+4.0*tempX,50.0*RoomScale,r->z+4.0*tempY,r);
 
-                                std::cout << "step1";
+                                //std::cout << "step1";
                                 roomAWaypoint = nullptr;
                                 roomBWaypoint = nullptr;
                                 for (int iterator91 = 0; iterator91 < WayPoint::getListSize(); iterator91++) {
@@ -2200,7 +2200,7 @@ void CreateMap() {
                                     }
                                 }
 
-                                std::cout << "step2";
+                                //std::cout << "step2";
                                 if (roomAWaypoint!=nullptr & roomBWaypoint!=nullptr) {
                                     for (j = 0; j <= 15; j++) {
                                         if (roomAWaypoint->connected[j]==nullptr) {
@@ -2225,7 +2225,7 @@ void CreateMap() {
                                     }
                                 }
 
-                                std::cout << "step3";
+                                //std::cout << "step3";
                             } else {
                                 r->adjDoor[i] = r->adjacent[i]->adjDoor[(i+2) % 4];
                             }
