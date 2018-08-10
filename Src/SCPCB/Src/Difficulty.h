@@ -42,5 +42,8 @@ public:
 extern Difficulty* difficulties[4];
 extern Difficulty* SelectedDifficulty;
 
+// Functions.
+void InitializeDifficulties();
+
 }
 #endif // DIFFICULTY_H_INCLUDED

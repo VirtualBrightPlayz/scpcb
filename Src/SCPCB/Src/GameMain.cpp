@@ -205,6 +205,8 @@ void InitializeMainGame() {
 
     bbSetFont(uiAssets->font[1]);
 
+    InitializeDifficulties();
+
     DrawLoading(0, true);
 
     Brightness = 50;

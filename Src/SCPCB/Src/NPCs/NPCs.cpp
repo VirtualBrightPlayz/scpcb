@@ -74,55 +74,60 @@ NPC* CreateNPC(int NPCtype, float x, float y, float z) {
     int b;
     int t1;
 
+    n->obj = nullptr;
+    n->obj2 = nullptr;
+    n->obj3 = nullptr;
+    n->target = nullptr;
+
     n->npcType = NPCtype;
     n->gravityMult = 1.0;
     n->maxGravity = 0.2;
     switch (NPCtype) {
         case NPCtype173: {
             InitializeNPCtype173(n);
-        }
+        } break;
         case NPCtype106: {
             InitializeNPCtype106(n);
-        }
+        } break;
         case NPCtypeGuard: {
             InitializeNPCtypeGuard(n);
-        }
+        } break;
         case NPCtypeMTF: {
             InitializeNPCtypeMTF(n);
-        }
+        } break;
         case NPCtypeD: {
             InitializeNPCtypeD(n);
-        }
+        } break;
         case NPCtype096: {
             InitializeNPCtype096(n);
-        }
+        } break;
         case NPCtype049: {
             InitializeNPCtype049(n);
-        }
+        } break;
         case NPCtypeZombie: {
             InitializeNPCtypeZombie(n);
-        }
+        } break;
         case NPCtypeApache: {
             InitializeNPCtypeApache(n);
-        }
+        } break;
         case NPCtypeTentacle: {
             InitializeNPCtypeTentacle(n);
-        }
+        } break;
         case NPCtype860: {
             InitializeNPCtype860(n);
-        }
+        } break;
         case NPCtype939: {
             InitializeNPCtype939(n);
-        }
+        } break;
         case NPCtype066: {
             InitializeNPCtype066(n);
-        }
+        } break;
         case NPCtype966: {
             InitializeNPCtype966(n);
-        }
+        } break;
         case NPCtype1499: {
             InitializeNPCtype1499(n);
-        }
+        } break;
     }
 
     bbPositionEntity(n->collider, x, y, z, true);

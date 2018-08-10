@@ -15,6 +15,7 @@
 #include "../Assets.h"
 #include "../Menus/Menu.h"
 #include "../FastResize.h"
+#include "../MathUtils/MathUtils.h"
 
 namespace CBN {
 
@@ -63,6 +64,9 @@ void InitLoadingScreens(String file) {
 
             ls->title = TemporaryString;
             ls->imgpath = GetINIString(file, TemporaryString, "image path");
+            std::cout<<ls->imgpath<<"\n";
+
+            ls->img = nullptr;
 
             for (i = 0; i <= 4; i++) {
                 ls->txt[i] = GetINIString(file, TemporaryString, "text"+String(i+1));
@@ -102,7 +106,7 @@ void DrawLoading(int percent, int shortloading) {
     int i;
     String strtemp;
     int temp;
-    LoadingScreen* ls;
+    LoadingScreen* ls = nullptr;
     int width;
     int height;
 
@@ -142,6 +146,7 @@ void DrawLoading(int percent, int shortloading) {
                 LoadingScreenText = LoadingScreenText+1;
             }
         }
+        LoadingScreenText = (int)Min(LoadingScreenText,4);
 
         if (!SelectedLoadingScreen->disablebackground) {
             bbDrawImage(LoadingBack, userOptions->screenWidth/2 - bbImageWidth(LoadingBack)/2, userOptions->screenHeight/2 - bbImageHeight(LoadingBack)/2);

@@ -119,6 +119,9 @@ Material* Material::getObject(int index) {
 
 std::vector<RoomTemplate*> RoomTemplate::list;
 RoomTemplate::RoomTemplate() {
+    opaqueMesh = nullptr;
+    alphaMesh = nullptr;
+
     list.push_back(this);
 }
 RoomTemplate::~RoomTemplate() {

@@ -450,7 +450,9 @@ void InitNewGame() {
         }
         rt->collisionObjs.clear();
 
-        bbFreeEntity(rt->opaqueMesh);
+        if (rt->opaqueMesh!=nullptr) {
+            bbFreeEntity(rt->opaqueMesh);
+        }
         if (rt->alphaMesh!=nullptr) {
             bbFreeEntity(rt->alphaMesh);
         }

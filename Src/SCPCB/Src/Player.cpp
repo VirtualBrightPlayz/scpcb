@@ -23,6 +23,12 @@ namespace CBN {
 Player::Player() {
     this->inventory = CreateInventory(PLAYER_INV_COUNT + WORNITEM_SLOT_COUNT);
 
+    this->currRoom = nullptr;
+    this->closestButton = nullptr;
+    this->closestDoor = nullptr;
+    this->closestItem = nullptr;
+    this->selectedDoor = nullptr;
+
     this->cam = bbCreateCamera();
     bbCameraViewport(this->cam, 0, 0, userOptions->screenWidth, userOptions->screenHeight);
     bbCameraRange(this->cam, 0.05, 60);

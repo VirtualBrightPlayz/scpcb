@@ -46,46 +46,46 @@ void UpdateMainMenu() {
                             switch (bbRand(14)) {
                                 case 1: {
                                     RandomSeed = "NIL";
-                                }
+                                } break;
                                 case 2: {
                                     RandomSeed = "NO";
-                                }
+                                } break;
                                 case 3: {
                                     RandomSeed = "d9341";
-                                }
+                                } break;
                                 case 4: {
                                     RandomSeed = "5CP_I73";
-                                }
+                                } break;
                                 case 5: {
                                     RandomSeed = "DONTBLINK";
-                                }
+                                } break;
                                 case 6: {
                                     RandomSeed = "CRUNCH";
-                                }
+                                } break;
                                 case 7: {
                                     RandomSeed = "die";
-                                }
+                                } break;
                                 case 8: {
                                     RandomSeed = "HTAED";
-                                }
+                                } break;
                                 case 9: {
                                     RandomSeed = "rustledjim";
-                                }
+                                } break;
                                 case 10: {
                                     RandomSeed = "larry";
-                                }
+                                } break;
                                 case 11: {
                                     RandomSeed = "JORGE";
-                                }
+                                } break;
                                 case 12: {
                                     RandomSeed = "dirtymetal";
-                                }
+                                } break;
                                 case 13: {
                                     RandomSeed = "whatpumpkin";
-                                }
+                                } break;
                                 case 14: {
                                     RandomSeed = "BOYO";
-                                }
+                                } break;
                             }
                         } else {
                             n = bbRand(4,8);
@@ -101,22 +101,22 @@ void UpdateMainMenu() {
                         //RandomSeed = MilliSecs()
                         CurrGameSubstate = GAMESUBSTATE_MAINMENU_NEWGAME;
                     }
-                }
+                } break;
                 case MAINMENU_BUTTON_LOADGAME: {
                     if (mouseHitButton) {
                         CurrGameSubstate = GAMESUBSTATE_MAINMENU_LOADGAME;
                     }
-                }
+                } break;
                 case MAINMENU_BUTTON_OPTIONS: {
                     if (mouseHitButton) {
                         CurrGameSubstate = GAMESUBSTATE_MAINMENU_OPTIONS;
                     }
-                }
+                } break;
                 case MAINMENU_BUTTON_QUIT: {
                     if (mouseHitButton) {
                         //End(); // TODO: Fix.
                     }
-                }
+                } break;
             }
         }
 
@@ -133,21 +133,19 @@ void UpdateMainMenu() {
                 case GAMESUBSTATE_MAINMENU_NEWGAME: {
                     PutINIValue(OptionFile, "general", "intro enabled", String(userOptions->introEnabled));
                     CurrGameSubstate = GAMESUBSTATE_MAINMENU_MAIN;
-                    //save the options
-                }
+                } break;
                 case GAMESUBSTATE_MAINMENU_OPTIONS: {
                     SaveOptionsINI();
 
                     CurrGameSubstate = GAMESUBSTATE_MAINMENU_MAIN;
-                    //move back to the "new game" tab
-                }
+                } break;
                 case GAMESUBSTATE_MAINMENU_CUSTOMMAP: {
                     CurrGameSubstate = GAMESUBSTATE_MAINMENU_NEWGAME;
                     MouseHit1 = false;
-                }
+                } break;
                 default: {
                     CurrGameSubstate = GAMESUBSTATE_MAINMENU_MAIN;
-                }
+                } break;
             }
         }
 
@@ -235,7 +233,7 @@ void UpdateMainMenu() {
 
                 //[End Block]
                 //load game
-            }
+            } break;
             case GAMESUBSTATE_MAINMENU_LOADGAME: {
                 //[Block]
 
@@ -256,7 +254,7 @@ void UpdateMainMenu() {
 
                 //[End Block]
                 //options
-            }
+            } break;
             case GAMESUBSTATE_MAINMENU_OPTIONS: {
                 //[Block]
 
@@ -351,7 +349,7 @@ void UpdateMainMenu() {
                 //
                 //					For i = 0 To 227
                 //						If (KeyHit(i)) Then key = i
-                break;
+                //break;
                 //					Next
                 //					If (key<>0) Then
                 //						Select (SelectedInputBox)
@@ -410,7 +408,7 @@ void UpdateMainMenu() {
                 //				EndIf
                 //[End Block]
                 // load map
-            }
+            } break;
             case GAMESUBSTATE_MAINMENU_CUSTOMMAP: {
                 //[Block]
                 y = y + height + (int)(20.0 * MenuScale);
@@ -429,7 +427,7 @@ void UpdateMainMenu() {
                 height = (int)(350.0 * MenuScale);
 
                 //[End Block]
-            }
+            } break;
         }
 
     }
@@ -473,52 +471,52 @@ void DrawMainMenu() {
                 case 2:
                 case 3: {
                     MenuStr = "DON'T BLINK";
-                }
+                } break;
                 case 4:
                 case 5: {
                     MenuStr = "Secure. Contain. Protect.";
-                }
+                } break;
                 case 6:
                 case 7:
                 case 8: {
                     MenuStr = "You want happy endings? Fuck you.";
-                }
+                } break;
                 case 9:
                 case 10:
                 case 11: {
                     MenuStr = "Sometimes we would have had time to scream.";
-                }
+                } break;
                 case 12:
                 case 19: {
                     MenuStr = "NIL";
-                }
+                } break;
                 case 13: {
                     MenuStr = "NO";
-                }
+                } break;
                 case 14: {
                     MenuStr = "black white black white black white gray";
-                }
+                } break;
                 case 15: {
                     MenuStr = "Stone does not care";
-                }
+                } break;
                 case 16: {
                     MenuStr = "9341";
-                }
+                } break;
                 case 17: {
                     MenuStr = "It controls the doors";
-                }
+                } break;
                 case 18: {
                     MenuStr = "e8m106]af173o+079m895w914";
-                }
+                } break;
                 case 20: {
                     MenuStr = "It has taken over everything";
-                }
+                } break;
                 case 21: {
                     MenuStr = "The spiral is growing";
-                }
+                } break;
                 case 22: {
                     MenuStr = "\"Some kind of gestalt effect due to massive reality damage.\"";
-                }
+                } break;
             }
         }
     }
@@ -543,19 +541,16 @@ void DrawMainMenu() {
             switch (i) {
                 case MAINMENU_BUTTON_NEWGAME: {
                     txt = "NEW GAME";
-                    //load game
-                }
+                } break;
                 case MAINMENU_BUTTON_LOADGAME: {
                     txt = "LOAD GAME";
-                    //options
-                }
+                } break;
                 case MAINMENU_BUTTON_OPTIONS: {
                     txt = "OPTIONS";
-                    //quit
-                }
+                } break;
                 case MAINMENU_BUTTON_QUIT: {
                     txt = "QUIT";
-                }
+                } break;
             }
 
             DrawUIButton(x, y, width, height, txt);
@@ -647,13 +642,13 @@ void DrawMainMenu() {
                     switch (SelectedDifficulty->otherFactors) {
                         case EASY: {
                             bbText(x + (int)(200.0 * MenuScale), y + (int)(255.0 * MenuScale), "Other difficulty factors: Easy");
-                        }
+                        } break;
                         case NORMAL: {
                             bbText(x + (int)(200.0 * MenuScale), y + (int)(255.0 * MenuScale), "Other difficulty factors: Normal");
-                        }
+                        } break;
                         case HARD: {
                             bbText(x + (int)(200.0 * MenuScale), y + (int)(255.0 * MenuScale), "Other difficulty factors: Hard");
-                        }
+                        } break;
                     }
                 } else {
                     RowText(SelectedDifficulty->description, x+(int)(160.0*MenuScale), y+(int)(160.0*MenuScale), (int)((410.0-20.0)*MenuScale), (int)(200.0*MenuScale));
@@ -666,7 +661,7 @@ void DrawMainMenu() {
                 DrawUIButton(x + (int)(420.0 * MenuScale), y + height + (int)(20.0 * MenuScale), (int)(160.0 * MenuScale), (int)(70.0 * MenuScale), "START", false);
                 //[End Block]
                 //load game
-            }
+            } break;
             case GAMESUBSTATE_MAINMENU_LOADGAME: {
                 //[Block]
 
@@ -736,7 +731,7 @@ void DrawMainMenu() {
 
                 //[End Block]
                 //options
-            }
+            } break;
             case GAMESUBSTATE_MAINMENU_OPTIONS: {
                 //[Block]
 
@@ -910,7 +905,7 @@ void DrawMainMenu() {
                 //				EndIf
                 //[End Block]
                 // load map
-            }
+            } break;
             case GAMESUBSTATE_MAINMENU_CUSTOMMAP: {
                 //[Block]
                 y = y + height + (int)(20.0 * MenuScale);
@@ -959,7 +954,7 @@ void DrawMainMenu() {
                 //				EndIf
 
                 //[End Block]
-            }
+            } break;
         }
     }
 

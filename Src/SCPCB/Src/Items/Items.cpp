@@ -62,6 +62,10 @@ Item* Item::getObject(int index) {
 
 std::vector<Inventory*> Inventory::list;
 Inventory::Inventory() {
+    for (int i=0;i<MAX_ITEM_COUNT;i++) {
+        items[i]=nullptr;
+    }
+
     list.push_back(this);
 }
 Inventory::~Inventory() {
@@ -148,10 +152,11 @@ void CreateItemTemplate(String file, String section) {
     //Start loading the assets needed.
 
     //Does another item already use that model?
+    it->obj = nullptr;
     for (int i = 0; i < ItemTemplate::getListSize(); i++) {
         ItemTemplate* it2 = ItemTemplate::getObject(i);
 
-        if (it2->objPath.equals(it->objPath) && it2->obj != 0) {
+        if (it2->objPath.equals(it->objPath) && it2->obj != nullptr) {
             it->obj = bbCopyMeshModelEntity(it2->obj);
             break;
         }
@@ -166,6 +171,7 @@ void CreateItemTemplate(String file, String section) {
         }
     }
 
+    it->tex = nullptr;
     if (!it->texPath.isEmpty()) {
         for (int i = 0; i < ItemTemplate::getListSize(); i++) {
             ItemTemplate* it2 = ItemTemplate::getObject(i);

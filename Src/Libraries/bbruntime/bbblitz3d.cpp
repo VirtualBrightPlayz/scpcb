@@ -138,7 +138,10 @@ static MeshModel* loadEntity( String str,int hint ){
         }
     }
 
-	const Transform &conv=loader_mat_map[ind].second;
+    Transform conv = Transform();
+    if (ind >= 0) {
+	    conv=loader_mat_map[ind].second;
+    }
 
 	CachedTexture::setPath( filenamepath( t ) );
 	MeshModel* e=l->load( t,conv,hint );

@@ -73,7 +73,7 @@ String INIFile::getName() {
 String INIFile::getValue(String section, String key, String defaultValue) {
     for (int i = 0; i<sections.size(); i++) {
         for (int j = 0; j<sections[i]->names.size(); j++) {
-            if (section.toLower().equals(sections[i]->names[j])) {
+            if (section.toLower().equals(sections[i]->names[j].toLower())) {
                 for (int k = 0; k<sections[i]->keys.size(); k++) {
                     if (sections[i]->keys[k].toLower().equals(key.toLower())) {
                         return sections[i]->values[k];

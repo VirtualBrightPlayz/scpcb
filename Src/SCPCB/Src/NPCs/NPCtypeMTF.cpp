@@ -1779,6 +1779,9 @@ void UpdateNPCtypeMTF(NPC* n) {
 }
 
 void UpdateMTF() {
+    if (mainPlayer->currRoom == nullptr) {
+        return;
+    }
     if (mainPlayer->currRoom->roomTemplate->name.equals("gateaentrance")) {
         return;
     }
