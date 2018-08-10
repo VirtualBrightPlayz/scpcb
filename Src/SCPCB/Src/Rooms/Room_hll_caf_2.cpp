@@ -89,7 +89,6 @@ void Update294() {
     int ytemp;
     String strtemp;
     int temp;
-    int loc;
     int sep1;
     int sep2;
     int r;
@@ -127,113 +126,113 @@ void Update294() {
             switch (ytemp) {
                 case 0: {
                     strtemp = String((xtemp + 1) % 10);
-                }
+                } break;
                 case 1: {
                     switch (xtemp) {
                         case 0: {
                             strtemp = "Q";
-                        }
+                        } break;
                         case 1: {
                             strtemp = "W";
-                        }
+                        } break;
                         case 2: {
                             strtemp = "E";
-                        }
+                        } break;
                         case 3: {
                             strtemp = "R";
-                        }
+                        } break;
                         case 4: {
                             strtemp = "T";
-                        }
+                        } break;
                         case 5: {
                             strtemp = "Y";
-                        }
+                        } break;
                         case 6: {
                             strtemp = "U";
-                        }
+                        } break;
                         case 7: {
                             strtemp = "I";
-                        }
+                        } break;
                         case 8: {
                             strtemp = "O";
-                        }
+                        } break;
                         case 9: {
                             strtemp = "P";
-                        }
+                        } break;
                     }
-                }
+                } break;
                 case 2: {
                     switch (xtemp) {
                         case 0: {
                             strtemp = "A";
-                        }
+                        } break;
                         case 1: {
                             strtemp = "S";
-                        }
+                        } break;
                         case 2: {
                             strtemp = "D";
-                        }
+                        } break;
                         case 3: {
                             strtemp = "F";
-                        }
+                        } break;
                         case 4: {
                             strtemp = "G";
-                        }
+                        } break;
                         case 5: {
                             strtemp = "H";
-                        }
+                        } break;
                         case 6: {
                             strtemp = "J";
-                        }
+                        } break;
                         case 7: {
                             strtemp = "K";
-                        }
+                        } break;
                         case 8: {
                             strtemp = "L";
                             //dispense
-                        }
+                        } break;
                         case 9: {
                             temp = true;
-                        }
+                        } break;
                     }
-                }
+                } break;
                 case 3: {
                     switch (xtemp) {
                         case 0: {
                             strtemp = "Z";
-                        }
+                        } break;
                         case 1: {
                             strtemp = "X";
-                        }
+                        } break;
                         case 2: {
                             strtemp = "C";
-                        }
+                        } break;
                         case 3: {
                             strtemp = "V";
-                        }
+                        } break;
                         case 4: {
                             strtemp = "B";
-                        }
+                        } break;
                         case 5: {
                             strtemp = "N";
-                        }
+                        } break;
                         case 6: {
                             strtemp = "M";
-                        }
+                        } break;
                         case 7: {
                             strtemp = "-";
-                        }
+                        } break;
                         case 8: {
                             strtemp = " ";
-                        }
+                        } break;
                         case 9: {
                             Input294 = Input294.substr(0, (int)(Max(Input294.size()-1,0)));
-                        }
+                        } break;
                     }
-                }
+                } break;
                 case 4: {
                     strtemp = " ";
-                }
+                } break;
             }
 
             Input294 = Input294 + strtemp;
@@ -249,31 +248,29 @@ void Update294() {
                     Input294 = bbRight(Input294, Input294.size()-9);
                 }
 
-                loc = GetINISectionLocation("Data/SCP-294.ini", Input294);
+                strtemp = GetINIString("Data/SCP-294.ini", Input294, "color", "N/A");
 
-                if (loc > 0) {
-                    strtemp = GetINIString2("Data/SCP-294.ini", loc, "dispensesound");
+                if (!strtemp.equals("N/A")) {
+                    sep1 = bbInstr(strtemp, ",", 1);
+                    sep2 = bbInstr(strtemp, ",", sep1 + 1);
+                    r = strtemp.substr(0, sep1 - 1).trim().toInt();
+                    g = bbMid(strtemp, sep1 + 1, sep2 - sep1 - 1).trim().toInt();
+                    b = bbRight(strtemp, strtemp.size() - sep2).trim().toInt();
+                    
+                    strtemp = GetINIString("Data/SCP-294.ini", Input294, "dispensesound");
                     if (strtemp.isEmpty()) {
                         mainPlayer->currRoom->soundCHN = bbPlaySound(LoadTempSound("SFX/SCP/294/dispense1.ogg"));
                     } else {
                         mainPlayer->currRoom->soundCHN = bbPlaySound(LoadTempSound(strtemp));
                     }
 
-                    if (GetINIInt2("Data/SCP-294.ini", loc, "explosion")==true) {
+                    if (GetINIInt("Data/SCP-294.ini", Input294, "explosion")==true) {
                         ExplosionTimer = 135;
-                        DeathMSG = GetINIString2("Data/SCP-294.ini", loc, "deathmessage");
+                        DeathMSG = GetINIString("Data/SCP-294.ini", Input294, "deathmessage");
                     }
 
-                    strtemp = GetINIString2("Data/SCP-294.ini", loc, "color");
-
-                    sep1 = bbInstr(strtemp, ",", 1);
-                    sep2 = bbInstr(strtemp, ",", sep1+1);
-                    r = strtemp.substr(0, sep1-1).trim().toInt();
-                    g = bbMid(strtemp, sep1+1, sep2-sep1-1).trim().toInt();
-                    b = bbRight(strtemp, strtemp.size()-sep2).trim().toInt();
-
-                    alpha = GetINIString2("Data/SCP-294.ini", loc, "alpha").toFloat();
-                    glow = GetINIInt2("Data/SCP-294.ini", loc, "glow");
+                    alpha = GetINIString("Data/SCP-294.ini", Input294, "alpha").toFloat();
+                    glow = GetINIInt("Data/SCP-294.ini", Input294, "glow");
                     // FIXME: Float equality.
                     if (alpha == 0) {
                         alpha = 1.0;

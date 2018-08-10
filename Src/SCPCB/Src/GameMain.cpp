@@ -42,6 +42,8 @@ namespace CBN {
 // Structs.
 std::vector<Timing*> Timing::list;
 Timing::Timing() {
+    accumulator = 0.0f;
+
     list.push_back(this);
 }
 Timing::~Timing() {

@@ -289,16 +289,23 @@ String String::toLower() const {
 }
 
 String String::trim() const {
-    String retVal = String(wstr());
-    while (retVal.findFirst(" ") == 0 || retVal.findFirst("\t") == 0) {
-        retVal = retVal.substr(1);
+    if (size()==0) { return ""; }
+
+    String temp = String(wstr());
+    while (temp.findFirst(" ") == 0 || temp.findFirst("\t") == 0) {
+        temp = temp.substr(1);
     }
-    while (retVal.findLast(" ") == retVal.size()-1 || retVal.findLast("\t") == retVal.size()-1) {
-        retVal = retVal.substr(0,retVal.size()-1);
+    while (temp.findLast(" ") == temp.size()-1 || temp.findLast("\t") == temp.size()-1) {
+        temp = temp.substr(0,temp.size()-1);
     }
-    while (retVal.findFirst("  ") != -1) {
-        retVal = retVal.replace("  "," ");
+
+    String retVal = temp.charAt(0);
+    for (int i=1;i<temp.size();i++) {
+        if (temp.charAt(i-1)!=' ' || temp.charAt(i)!=' ') {
+            retVal = retVal+temp.charAt(i);
+        }
     }
+
     return retVal;
 }
 

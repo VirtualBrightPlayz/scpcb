@@ -78,7 +78,7 @@ String bbReadLine( bbStream *s ){
 	for(;;){
 		if( s->read( (char*)&c,1 )!=1 ) break;
 		if( c=='\n' ) break;
-		if( c!='\r' ) str=str+c;
+		if( c!='\r' ) str=str+String((char)c);
 	}
 	return str;
 }
