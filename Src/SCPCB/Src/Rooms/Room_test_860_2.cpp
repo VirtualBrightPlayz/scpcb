@@ -582,8 +582,8 @@ void PlaceForest(Forest* fr, float x, float y, float z, Room* r) {
     int ty;
     float tile_size = 12.0;
     int tile_type;
-    MeshModel* tile_entity;
-    MeshModel* detail_entity;
+    MeshModel* tile_entity = nullptr;
+    MeshModel* detail_entity = nullptr;
 
     float tempf1;
     float tempf2;
@@ -800,7 +800,7 @@ void PlaceForest(Forest* fr, float x, float y, float z, Room* r) {
 
                                         //EntityAutoFade(detail_entity,4.0,6.0)
                                         //add a rock
-                                    }
+                                    } break;
                                     case 7: {
                                         detail_entity = bbCopyMeshModelEntity(fr->detailMesh[2]);
                                         //EntityType(detail_entity,HIT_MAP)
@@ -813,15 +813,15 @@ void PlaceForest(Forest* fr, float x, float y, float z, Room* r) {
 
                                         bbRotateEntity(detail_entity,0.0,bbRnd(360.0),0.0,true);
                                         //add a stump
-                                    }
-                                    case 6: {
+                                    } break;
+                                    /*case 6: {
                                         detail_entity = bbCopyMeshModelEntity(fr->detailMesh[4]);
                                         //EntityType(detail_entity,HIT_MAP)
                                         tempf2 = bbRnd(0.1,0.12);
                                         bbScaleEntity(detail_entity,tempf2,tempf2,tempf2,true);
 
                                         bbPositionEntity(detail_entity,lx*tempf4-(tempf3/2.0),bbColorRed()*0.03-1.3,ly*tempf4-(tempf3/2.0),true);
-                                    }
+                                    }*/
                                 }
 
                                 bbEntityFX(detail_entity, 1);

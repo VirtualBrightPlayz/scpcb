@@ -3,6 +3,7 @@
 #include <bbstring.h>
 
 #include "Menu.h"
+#include "MainMenu.h"
 #include "../MathUtils/MathUtils.h"
 #include "../GameMain.h"
 #include "../Assets.h"
@@ -112,7 +113,7 @@ String UpdateInputBox(int x, int y, int width, int height, String Txt, int ID) {
     return Txt;
 }
 
-String DrawInputBox(int x, int y, int width, int height, String Txt, int ID) {
+void DrawInputBox(int x, int y, int width, int height, String Txt, int ID) {
     //TextBox(x,y,width,height,Txt$)
     bbColor(255, 255, 255);
     DrawTiledImageRect(uiAssets->tileWhite, (x % 256), (y % 256), 512, 512, x, y, width, height);

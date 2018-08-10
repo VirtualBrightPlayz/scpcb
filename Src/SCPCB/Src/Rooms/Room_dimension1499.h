@@ -39,18 +39,5 @@ public:
     //Field debugobj%
 };
 
-// Functions.
-void UpdateEvent_dimension1499(struct Event* e);
-
-void UpdateLeave1499();
-
-void CreateChunkParts(struct Room* r);
-
-Chunk* CreateChunk(int obj, float x, float y, float z, int spawnNPCs = true);
-
-void UpdateChunks(Room* r, int ChunkPartAmount, int spawnNPCs = true);
-
-void HideChunks();
-
 }
 #endif // ROOM_DIMENSION1499_H_INCLUDED

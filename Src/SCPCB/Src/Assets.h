@@ -29,7 +29,6 @@ public:
         ASSET_ANIM_MESH
     };
 
-    virtual TYPE getType() =0;
     virtual void drop() =0;
 
     static void update();
@@ -43,7 +42,6 @@ protected:
 
 class TextureAssetWrap : public AssetWrap {
 public:
-    virtual TYPE getType();
     virtual void drop();
 
     Texture* getTexture();
@@ -63,7 +61,6 @@ private:
 
 class ImageAssetWrap : public AssetWrap {
 public:
-    virtual TYPE getType();
     virtual void drop();
 
     bbImage* getImage();
@@ -82,7 +79,6 @@ private:
 
 class MeshAssetWrap : public AssetWrap {
 public:
-    virtual TYPE getType();
     virtual void drop();
 
     MeshModel* getMesh();
@@ -94,7 +90,7 @@ private:
     static std::vector<MeshAssetWrap*> list;
     
     bool animated;
-    Object* mesh;
+    MeshModel* mesh;
 
     MeshAssetWrap(String filePath, bool isAnimated = true);
     ~MeshAssetWrap();

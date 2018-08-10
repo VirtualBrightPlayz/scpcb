@@ -524,7 +524,7 @@ void UpdateEvents() {
             UpdateEvent_cont_1123_2(e);
         }
         else if (e->name.equals("evt_1499")) {
-            UpdateEvent_dimension1499(e);
+            //TODO: fix
         }
         else if (e->name.equals("evt_cont_1162")) {
             UpdateEvent_cont_1162_2c(e);

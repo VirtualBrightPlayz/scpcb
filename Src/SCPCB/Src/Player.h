@@ -146,10 +146,6 @@ extern float mouse_x_speed_1;
 extern float mouse_y_speed_1;
 
 // Functions.
-Player* CreatePlayer();
-
-void DeletePlayer(Player* player);
-
 void UpdatePlayer();
 
 void MouseLook();

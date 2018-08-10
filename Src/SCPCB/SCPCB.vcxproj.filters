@@ -402,6 +402,9 @@
     <ClCompile Include="Src\ConsoleCommands.cpp">
       <Filter>Source Files\Src</Filter>
     </ClCompile>
+    <ClCompile Include="Src\Difficulty.cpp">
+      <Filter>Source Files\Src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\Rooms\Room_lifts_1.h">

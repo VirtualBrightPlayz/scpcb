@@ -379,7 +379,6 @@ void UpdateGame() {
                 UpdateParticles();
                 UpdateScreens();
                 //TimeCheckpointMonitors()
-                UpdateLeave1499();
             }
 
             //If (InfiniteStamina) Then mainPlayer\stamina = Min(100, mainPlayer\stamina + (100.0-mainPlayer\stamina)*0.01*timing\tickDuration)

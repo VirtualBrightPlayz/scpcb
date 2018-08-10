@@ -155,6 +155,10 @@ void TextureAssetWrap::drop() {
     }
 }
 
+Texture* TextureAssetWrap::getTexture() {
+    return texture;
+}
+
 void TextureAssetWrap::update() {
     for (int i = 0; i<list.size(); i++) {
         if (list[i]->grabCount <= 0) {
@@ -197,6 +201,10 @@ void ImageAssetWrap::drop() {
     if (grabCount<0) {
         grabCount = 0;
     }
+}
+
+bbImage* ImageAssetWrap::getImage() {
+    return image;
 }
 
 void ImageAssetWrap::update() {
@@ -248,6 +256,10 @@ void MeshAssetWrap::drop() {
     }
 }
 
+MeshModel* MeshAssetWrap::getMesh() {
+    return mesh;
+}
+
 void MeshAssetWrap::update() {
     for (int i = 0; i<list.size(); i++) {
         if (list[i]->grabCount <= 0) {
@@ -287,7 +299,7 @@ void LoadEntities() {
     CreateBlurImage();
     bbCameraProjMode(ark_blur_cam,0);
 
-    mainPlayer = CreatePlayer();
+    mainPlayer = new Player();
 
     bbAmbientLight(Brightness, Brightness, Brightness);
 
@@ -588,51 +600,6 @@ void InitLoadGame() {
 
     mainPlayer->dropSpeed = 0.0;
 
-    //TODO: Not load this at the start of the game jesus.
-    for (int iterator12 = 0; iterator12 < Event::getListSize(); iterator12++) {
-        e = Event::getObject(iterator12);
-
-        //Loading the necessary stuff for dimension1499, but this will only be done if the player is in this dimension already
-        if (e->name.equals("dimension1499")) {
-            if (e->eventState == 2) {
-                //[Block]
-                DrawLoading(91);
-                e->room->objects[0] = bbCreatePlane();
-                planetex = bbLoadTexture("GFX/Map/Rooms/dimension1499/grit3.jpg");
-                bbEntityTexture((Model*)e->room->objects[0],planetex);
-                bbFreeTexture(planetex);
-                bbPositionEntity(e->room->objects[0],0,bbEntityY(e->room->obj),0);
-                bbEntityType(e->room->objects[0],HIT_MAP);
-                //EntityParent(e\room\objects[0],e\room\obj)
-                DrawLoading(92);
-                NTF_1499Sky = sky_CreateSky("GFX/Map/sky/1499sky");
-                DrawLoading(93);
-                for (i = 1; i <= 15; i++) {
-                    e->room->objects[i] = bbLoadMesh("GFX/Map/Rooms/dimension1499/1499object" + String(i) + ".b3d");
-                    bbHideEntity(e->room->objects[i]);
-                }
-                DrawLoading(96);
-                CreateChunkParts(e->room);
-                DrawLoading(97);
-                x = bbEntityX(e->room->obj);
-                z = bbEntityZ(e->room->obj);
-                for (i = -2; i <= 2; i += 2) {
-                    ch = CreateChunk(-1, x * (i * 2.5), bbEntityY(e->room->obj),z);
-                }
-                //If (Music(18)=0) Then Music(18) = LoadSound("SFX/Music/1499.ogg") ;TODO: fix
-                DrawLoading(98);
-                UpdateChunks(e->room,15,false);
-                //MoveEntity(mainPlayer\collider,0,10,0)
-                //ResetEntity(mainPlayer\collider)
-
-                std::cout << "Loaded dimension1499 successful";
-
-                break;
-                //[End Block]
-            }
-        }
-    }
-
     FreeTextureCache();
 
     DrawLoading(100);
@@ -657,7 +624,7 @@ void NullGame() {
 
     ClearTextureCache();
 
-    DeletePlayer(mainPlayer);
+    delete mainPlayer;
     mainPlayer = nullptr;
 
     DeathMSG = "";

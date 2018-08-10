@@ -56,7 +56,7 @@ int MouseOn(int x, int y, int width, int height);
 
 String UpdateInputBox(int x, int y, int width, int height, String Txt, int ID = 0);
 
-String DrawInputBox(int x, int y, int width, int height, String Txt, int ID = 0);
+void DrawInputBox(int x, int y, int width, int height, String Txt, int ID = 0);
 
 void DrawFrame(int x, int y, int width, int height, int xoffset = 0, int yoffset = 0);
 

@@ -41,7 +41,7 @@ int DoorTempID;
 
 // Functions.
 Door* CreateDoor(float x, float y, float z, float angle, Room* room, int open, int doorType, String tag, String code) {
-    Pivot* parent;
+    Pivot* parent = nullptr;
     if (room != nullptr) {
         parent = room->obj;
     }
