@@ -109,19 +109,21 @@ String GetINIString(String file, String section, String parameter, String defaul
 
     section = section.toLower();
 
+    std::cout<<"INISTR\n";
     //While (Not Eof(f))
     while (lfile->bankOffset<lfile->size) {
         strtemp = ReadINILine(lfile);
         if (strtemp.charAt(0) == '[') {
             strtemp = strtemp.toLower();
-            if (bbMid(strtemp, 2, strtemp.size()-2).equals(section)) {
+            if (strtemp.substr(1, strtemp.size()-2).toLower().equals(section)) {
                 do {
                     temporaryString = ReadINILine(lfile);
-                    if (temporaryString.substr(0, (int)(Max(temporaryString.findFirst("="), 0))).trim().toLower().equals(parameter.toLower())) {
+                    String leftPart = temporaryString.substr(0, (int)(Max(temporaryString.findFirst("="), 0)));
+                    if (leftPart.trim().toLower().equals(parameter.toLower())) {
                         //CloseFile(f)
-                        return bbRight(temporaryString, temporaryString.size()-temporaryString.findFirst(" = ")+1).trim();
+                        return temporaryString.substr(leftPart.size()+1).trim();
                     }
-                } while (temporaryString.charAt(0) == '[' || lfile->bankOffset >= lfile->size);
+                } while (temporaryString.charAt(0) != '[' && lfile->bankOffset < lfile->size);
 
                 //CloseFile(f)
                 return defaultvalue;
