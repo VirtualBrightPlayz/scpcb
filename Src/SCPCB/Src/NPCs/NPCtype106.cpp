@@ -91,7 +91,7 @@ void InitializeNPCtype106(NPC* n) {
 void UpdateNPCtype106(NPC* n) {
     float dist = bbEntityDistance(n->collider, mainPlayer->collider);
     float dist2;
-    int visible;
+    bool visible = false;
     float prevFrame;
 
     Decal* de;

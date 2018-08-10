@@ -82,7 +82,7 @@ void FillRoom_cont_012_2(Room* r) {
     bbFreeTexture(lightSpriteRed);
 
     r->objects[4] = bbLoadMesh("GFX/Map/room012_3.b3d");
-    Texture* tex = bbLoadTexture("GFX/Map/Textures/scp-012_0.jpg");
+    Texture* tex = bbLoadTexture("GFX/Map/Rooms/cont_012_2/scp-012_0.jpg");
     bbEntityTexture((MeshModel*)r->objects[4],tex, 0,1);
     bbScaleEntity(r->objects[4], RoomScale, RoomScale, RoomScale);
     bbPositionEntity(r->objects[4], r->x - 360 * RoomScale, - 130 * RoomScale, r->z + 456.0 * RoomScale, 0);

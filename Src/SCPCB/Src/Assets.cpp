@@ -339,6 +339,8 @@ void LoadEntities() {
 void InitNewGame() {
     DrawLoading(45);
 
+    DebugHUD = true;
+
     LoadInGameSounds(sndManager);
 
     HideDistance = 15.0;
@@ -403,10 +405,12 @@ void InitNewGame() {
         bbEntityParent(sc->obj, 0);
     }
 
+    std::cout<<"ROOM COUNT: "<<Room::getListSize()<<"\n";
     for (int i = 0; i < Room::getListSize(); i++) {
         Room* r = Room::getObject(i);
+        std::cout << "NAME: " << r->roomTemplate->name << "\n";
 
-        for (int j = 0; j <= MaxRoomLights; j++) {
+        for (int j = 0; j < MaxRoomLights; j++) {
             if (r->lights[j]!=0) {
                 bbEntityParent(r->lights[j],0);
             }
@@ -430,8 +434,9 @@ void InitNewGame() {
             }
         }
 
-        if (r->roomTemplate->name.equals("cont_173_1") && !userOptions->introEnabled) {
-            bbPositionEntity(mainPlayer->collider, bbEntityX(r->obj)+3584*RoomScale, 714*RoomScale, bbEntityZ(r->obj)+1024*RoomScale);
+        if (r->roomTemplate->name.equals("end_1") && !userOptions->introEnabled) {
+            std::cout<<"914_TELEPORT\n";
+            bbPositionEntity(mainPlayer->collider, bbEntityX(r->obj), 1.0f, bbEntityZ(r->obj));
             bbResetEntity(mainPlayer->collider);
             mainPlayer->currRoom = r;
         } else if (r->roomTemplate->name.equals("intro") && userOptions->introEnabled) {

@@ -7,6 +7,7 @@
 #include <bbmath.h>
 #include <bbgraphics.h>
 #include <cstdlib>
+#include <string.h>
 
 #include "MapSystem.h"
 #include "Audio.h"
@@ -141,6 +142,8 @@ RoomTemplate* RoomTemplate::getObject(int index) {
 
 std::vector<Room*> Room::list;
 Room::Room() {
+    memset(this,0,sizeof(Room));
+
     list.push_back(this);
 }
 Room::~Room() {
@@ -198,6 +201,8 @@ TempWayPoint* TempWayPoint::getObject(int index) {
 
 std::vector<WayPoint*> WayPoint::list;
 WayPoint::WayPoint() {
+    memset(this,0,sizeof(WayPoint));
+
     list.push_back(this);
 }
 WayPoint::~WayPoint() {
@@ -255,6 +260,8 @@ TempScreen* TempScreen::getObject(int index) {
 
 std::vector<SecurityCam*> SecurityCam::list;
 SecurityCam::SecurityCam() {
+    memset(this,0,sizeof(SecurityCam));
+
     list.push_back(this);
 }
 SecurityCam::~SecurityCam() {
@@ -377,7 +384,7 @@ void LoadRoomTemplates(String file) {
     while (!bbEof(f)) {
         TemporaryString = bbReadLine(f).trim();
         if (TemporaryString.charAt(0) == '[') {
-            std::cout << TemporaryString;
+            std::cout << TemporaryString << "\n";
             TemporaryString = TemporaryString.substr(1, TemporaryString.size() - 2);
             // TODO: Remove room ambience.
             if (!TemporaryString.toLower().equals("room ambience")) {
@@ -388,19 +395,19 @@ void LoadRoomTemplates(String file) {
 
                 StrTemp = GetINIString(file, TemporaryString, "shape", "0").toLower();
 
-                if (StrTemp.equals("room1") && StrTemp.equals("1")) {
+                if (StrTemp.equals("room1") || StrTemp.equals("1")) {
                     rt->shape = ROOM1;
                 }
-                else if (StrTemp.equals("room2") && StrTemp.equals("2")) {
+                else if (StrTemp.equals("room2") || StrTemp.equals("2")) {
                     rt->shape = ROOM2;
                 }
-                else if (StrTemp.equals("room2c") && StrTemp.equals("2c")) {
+                else if (StrTemp.equals("room2c") || StrTemp.equals("2c")) {
                     rt->shape = ROOM2C;
                 }
-                else if (StrTemp.equals("room3") && StrTemp.equals("3")) {
+                else if (StrTemp.equals("room3") || StrTemp.equals("3")) {
                     rt->shape = ROOM3;
                 }
-                else if (StrTemp.equals("room4") && StrTemp.equals("4")) {
+                else if (StrTemp.equals("room4") || StrTemp.equals("4")) {
                     rt->shape = ROOM2;
                 }
                 else {
@@ -545,7 +552,7 @@ Room* CreateRoom(RoomTemplate* rt, float x, float y, float z) {
     for (i = 0; i < rt->collisionObjs.size(); i++) {
         tempObj = bbCopyMeshModelEntity(rt->collisionObjs[i]);
         bbScaleEntity(tempObj, RoomScale, RoomScale, RoomScale);
-        r->collisionObjs[i]=tempObj;
+        r->collisionObjs.push_back(tempObj);
         bbShowEntity(tempObj);
         bbEntityAlpha(tempObj,0.0);
         bbEntityParent(tempObj,r->obj);
@@ -554,7 +561,7 @@ Room* CreateRoom(RoomTemplate* rt, float x, float y, float z) {
     for (i = 0; i < rt->props.size(); i++) {
         tempProp = rt->props[i];
         tempObj = bbCopyMeshModelEntity(tempProp->obj);
-        r->props[i]=tempObj;
+        r->props.push_back(tempObj);
         bbPositionEntity(tempObj,tempProp->x*RoomScale,tempProp->y*RoomScale,tempProp->z*RoomScale);
         bbRotateEntity(tempObj,tempProp->pitch,tempProp->yaw,tempProp->roll);
         bbScaleEntity(tempObj,tempProp->xScale*RoomScale,tempProp->yScale*RoomScale,tempProp->zScale*RoomScale);
@@ -1864,6 +1871,7 @@ Prop* LoadProp(String file, float x, float y, float z, float pitch, float yaw, f
     p->yScale = yScale;
     p->zScale = zScale;
 
+    p->obj = nullptr;
     Prop* p2;
     for (int iterator86 = 0; iterator86 < Prop::getListSize(); iterator86++) {
         p2 = Prop::getObject(iterator86);
@@ -1928,7 +1936,7 @@ void CreateMap() {
     DetermineRoomTypes(layout,mapDim);
 
     //shift some horizontal corridors
-    int shift;
+    int shift = 0;
     int nonShiftStreak = bbRand(0,5);
     for (y = 1; y <= mapDim-2; y++) {
         for (x = 0; x <= mapDim-2; x++) {
@@ -1963,8 +1971,8 @@ void CreateMap() {
 
     //punch out some holes to get room2c's
     int punchOffset = bbRand(0,1);
-    int roomAbove;
-    int roomBelow;
+    int roomAbove = 0;
+    int roomBelow = 0;
     for (y = 2; y <= mapDim-4; y++) {
         for (x = 0; x <= mapDim-1; x++) {
             if ((((x/rectWidth) % 2)==punchOffset) & (layout[x][y]==ROOM2)) {
@@ -1988,12 +1996,16 @@ void CreateMap() {
     for (int iterator87 = 0; iterator87 < RoomTemplate::getListSize(); iterator87++) {
         rt = RoomTemplate::getObject(iterator87);
 
-        if (((rt->zones & zone)!=0) & (rt->maxAmount>0) & (rt->shape!=ROOM0)) {
-            prioritizedTemplates.insert(prioritizedTemplates.begin()+bbRand(0,prioritizedTemplates.size()-1),rt);
+        if (((rt->zones & zone)!=0) && (rt->maxAmount>0) && (rt->shape!=ROOM0)) {
+            std::cout<<"PRIORITIZING "<<rt->name<<"\n";
+            prioritizedTemplates.insert(prioritizedTemplates.begin()+bbRand(0,prioritizedTemplates.size()),rt);
         }
     }
 
     int RoomCount[ROOM4+1];
+    for (i=1;i<=ROOM4;i++) {
+        RoomCount[i] = 0;
+    }
     for (y = 0; y <= mapDim-1; y++) {
         for (x = 0; x <= mapDim-1; x++) {
             if (layout[x][y]!=ROOM0) {
@@ -2007,16 +2019,16 @@ void CreateMap() {
 
     Room* r;
 
-    int placementCount;
-    int loopStartX;
-    int loopStartY;
-    int loopEndX;
-    int loopEndY;
-    int loopX;
-    int loopY;
-    int offsetX;
-    int offsetY;
-    int placed;
+    int placementCount = 0;
+    int loopStartX = 0;
+    int loopStartY = 0;
+    int loopEndX = 0;
+    int loopEndY = 0;
+    int loopX = 0;
+    int loopY = 0;
+    int offsetX = 0;
+    int offsetY = 0;
+    int placed = 0;
 
     int k;
     for (k = 0; k < prioritizedTemplates.size(); k++) {
@@ -2080,7 +2092,7 @@ void CreateMap() {
         rt = RoomTemplate::getObject(iterator89);
 
         if (((rt->zones & zone)!=0) & (rt->maxAmount<0) & (rt->shape!=ROOM0)) {
-            randomTemplates.insert(randomTemplates.begin()+bbRand(0,randomTemplates.size()-1),rt);
+            randomTemplates.insert(randomTemplates.begin()+bbRand(0,randomTemplates.size()),rt);
             totalCommonness[rt->shape] = totalCommonness[rt->shape]+(int)(rt->commonness);
         }
     }
@@ -2268,34 +2280,38 @@ void DetermineRoomTypes(int** layout, int mapDim) {
 }
 
 int DetermineRotation(int** layout, int layoutDims, int x, int y) {
+    int adjLeft = x>0 ? x - 1 : 0;
+    int adjRight = x<layoutDims - 1 ? x + 1 : layoutDims - 1;
+    int adjUp = y>0 ? y - 1 : 0;
+    int adjDown = y<layoutDims - 1 ? y + 1 : layoutDims - 1;
     switch (layout[x][y]) {
         case ROOM1: {
-            if ((x>0) & (layout[x-1][y]!=0)) {
+            if ((x>0) && (layout[adjLeft][y]!=0)) {
                 return 270;
-            } else if ((x<layoutDims-1) & (layout[x+1][y]!=0)) {
+            } else if ((x<layoutDims-1) && (layout[adjRight][y]!=0)) {
                 return 90;
-            } else if ((y>0) & (layout[x][y-1]!=0)) {
+            } else if ((y>0) && (layout[x][adjUp]!=0)) {
                 return 0;
             } else {
                 return 180;
             }
         } break;
         case ROOM2: {
-            if (layout[x-1][y]!=0) {
+            if (x>0 && layout[adjLeft][y]!=0) {
                 return 90+bbRand(0,1)*180;
             } else {
                 return (bbRand(0,1)*180);
             }
         } break;
         case ROOM2C: {
-            if ((x>0) & (layout[x-1][y]!=0)) {
-                if ((y>0) & (layout[x][y-1]!=0)) {
+            if ((x>0) && (layout[adjLeft][y]!=0)) {
+                if ((y>0) && (layout[x][adjUp]!=0)) {
                     return 270;
                 } else {
                     return 180;
                 }
             } else {
-                if ((y>0) & (layout[x][y-1]!=0)) {
+                if ((y>0) && (layout[x][adjUp]!=0)) {
                     return 0;
                 } else {
                     return 90;
@@ -2303,11 +2319,11 @@ int DetermineRotation(int** layout, int layoutDims, int x, int y) {
             }
         } break;
         case ROOM3: {
-            if ((x>0) & (layout[x-1][y]==0)) {
+            if ((x>0) && (layout[adjLeft][y]==0)) {
                 return 90;
-            } else if ((y>0) & (layout[x][y-1]==0)) {
+            } else if ((y>0) && (layout[x][adjUp]==0)) {
                 return 180;
-            } else if ((x<layoutDims-1) & (layout[x+1][y]==0)) {
+            } else if ((x<layoutDims-1) && (layout[adjRight][y]==0)) {
                 return 270;
             } else {
                 return 0;

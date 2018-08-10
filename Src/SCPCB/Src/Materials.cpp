@@ -89,6 +89,9 @@ void FreeTextureCache() {
 
 Texture* LoadRMeshTexture(String roompath, String name, int flags) {
     Texture* texture = nullptr;
+    if (roompath.charAt(roompath.size()-1)!='/') {
+        roompath = roompath+"/";
+    }
     if (texture == nullptr) {
         texture = bbLoadTexture(GetImagePath(roompath+name),flags);
     }
@@ -96,9 +99,10 @@ Texture* LoadRMeshTexture(String roompath, String name, int flags) {
         texture = bbLoadTexture(GetImagePath("GFX/map/Textures/"+name),flags);
     }
     if (texture != 0) {
-        std::cout << bbTextureName(texture);
+        std::cout << bbTextureName(texture) <<"\n";
     } else {
         //RuntimeError(name)
+        std::cout << "ERROR " << roompath << "\n";
         texture = bbLoadTexture("GFX/Map/Textures/dirtymetal.jpg",flags);
     }
     return texture;

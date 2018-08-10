@@ -49,13 +49,12 @@ void FillRoom_hll_tsl(Room* r) {
     bbPositionEntity(r->objects[2], r->x, 0.0, r->z);
     bbEntityParent(r->objects[2], r->obj);
 
-    // TODO: Fix.
-    //r->objects[3] = bbCreateSprite();
-    //bbEntityTexture(r->objects[3], TeslaTexture);
-    //bbSpriteViewMode(r->objects[3],2);
-    ////ScaleSprite(r\objects[3],((512.0 * RoomScale)/2.0),((512.0 * RoomScale)/2.0))
-    //bbEntityBlend(r->objects[3], 3);
-    //bbEntityFX(r->objects[3], 1 + 8 + 16);
+    r->objects[3] = bbCreateSprite();
+    bbEntityTexture((Sprite*)r->objects[3], TeslaTexture);
+    bbSpriteViewMode((Sprite*)r->objects[3],2);
+    //ScaleSprite(r\objects[3],((512.0 * RoomScale)/2.0),((512.0 * RoomScale)/2.0))
+    bbEntityBlend((Sprite*)r->objects[3], 3);
+    bbEntityFX((Sprite*)r->objects[3], 1 + 8 + 16);
 
     bbPositionEntity(r->objects[3], r->x, 0.8, r->z);
 
@@ -70,16 +69,15 @@ void FillRoom_hll_tsl(Room* r) {
     //w2\connected[0] = w
     // w2->dist[0] = w->dist[0];
 
-    // TODO: Fix.
-    //Texture* lightSpriteRed = bbLoadTexture("GFX/Sprites/light_flare_red.jpg", 1);
-    //r->objects[4] = bbCreateSprite();
-    //bbPositionEntity(r->objects[4], r->x - 32 * RoomScale, 568 * RoomScale, r->z);
-    //bbScaleSprite(r->objects[4], 0.03, 0.03);
-    //bbEntityTexture(r->objects[4], lightSpriteRed);
-    //bbEntityBlend(r->objects[4], 3);
-    //bbEntityParent(r->objects[4], r->obj);
-    //bbHideEntity(r->objects[4]);
-    //bbFreeTexture(lightSpriteRed);
+    Texture* lightSpriteRed = bbLoadTexture("GFX/Sprites/light_flare_red.jpg", 1);
+    r->objects[4] = bbCreateSprite();
+    bbPositionEntity(r->objects[4], r->x - 32 * RoomScale, 568 * RoomScale, r->z);
+    bbScaleSprite((Sprite*)r->objects[4], 0.03, 0.03);
+    bbEntityTexture((Sprite*)r->objects[4], lightSpriteRed);
+    bbEntityBlend((Sprite*)r->objects[4], 3);
+    bbEntityParent(r->objects[4], r->obj);
+    bbHideEntity(r->objects[4]);
+    bbFreeTexture(lightSpriteRed);
 
     r->objects[5] = bbCreatePivot();
     bbPositionEntity(r->objects[5],r->x,0,r->z-800*RoomScale);

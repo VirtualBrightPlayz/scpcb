@@ -35,6 +35,8 @@ Particle* Particle::getObject(int index) {
 
 std::vector<Emitter*> Emitter::list;
 Emitter::Emitter() {
+    soundCHN = nullptr;
+
     list.push_back(this);
 }
 Emitter::~Emitter() {

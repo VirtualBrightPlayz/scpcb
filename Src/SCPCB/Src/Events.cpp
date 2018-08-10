@@ -1,5 +1,6 @@
 #include <bbmath.h>
 #include <bbaudio.h>
+#include <string.h>
 
 #include "Events.h"
 #include "MapSystem.h"
@@ -83,6 +84,8 @@ namespace CBN {
 // Structs.
 std::vector<Event*> Event::list;
 Event::Event() {
+    memset(this, 0, sizeof(Event));
+
     list.push_back(this);
 }
 Event::~Event() {

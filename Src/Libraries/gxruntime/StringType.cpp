@@ -178,7 +178,7 @@ int String::size() const {
 int String::findFirst(const String& fnd, int from) const {
     if (fnd.size() == 0) { return -1; }
     if (from<0) { from = 0; }
-    for (int i = from; i < size()-fnd.size(); i++) {
+    for (int i = from; i <= size()-fnd.size(); i++) {
         if (memcmp(fnd.wstr(), wstr() + i, fnd.size() * sizeof(wchar)) == 0) { return i; }
     }
     return -1;

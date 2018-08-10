@@ -38,6 +38,11 @@ namespace CBN {
 // Structs.
 std::vector<NPC*> NPC::list;
 NPC::NPC() {
+    manipulateBone = false;
+    for (int i=0;i<NPC_CHANNEL_COUNT;i++) {
+        soundChannels[i] = nullptr;
+    }
+
     list.push_back(this);
 }
 NPC::~NPC() {
@@ -77,6 +82,7 @@ NPC* CreateNPC(int NPCtype, float x, float y, float z) {
     n->obj = nullptr;
     n->obj2 = nullptr;
     n->obj3 = nullptr;
+    n->obj4 = nullptr;
     n->target = nullptr;
 
     n->npcType = NPCtype;
@@ -227,49 +233,49 @@ void UpdateNPCs() {
         switch (n->npcType) {
             case NPCtype173: {
                 UpdateNPCtype173(n);
-            }
+            } break;
             case NPCtype106: {
                 UpdateNPCtype106(n);
-            }
+            } break;
             case NPCtype096: {
                 UpdateNPCtype096(n);
-            }
+            } break;
             case NPCtype049: {
                 UpdateNPCtype049(n);
-            }
+            } break;
             case NPCtypeZombie: {
                 UpdateNPCtypeZombie(n);
-            }
+            } break;
             case NPCtypeGuard: {
                 UpdateNPCtypeGuard(n);
-            }
+            } break;
             case NPCtypeMTF: {
                 UpdateNPCtypeMTF(n);
-            }
+            } break;
             case NPCtypeD: {
                 UpdateNPCtypeD(n);
-            }
+            } break;
             case NPCtypeApache: {
                 UpdateNPCtypeApache(n);
-            }
+            } break;
             case NPCtypeTentacle: {
                 UpdateNPCtypeTentacle(n);
-            }
+            } break;
             case NPCtype860: {
                 UpdateNPCtype860(n);
-            }
+            } break;
             case NPCtype939: {
                 UpdateNPCtype939(n);
-            }
+            } break;
             case NPCtype066: {
                 UpdateNPCtype066(n);
-            }
+            } break;
             case NPCtype966: {
                 UpdateNPCtype966(n);
-            }
+            } break;
             case NPCtype1499: {
                 UpdateNPCtype1499(n);
-            }
+            } break;
         }
 
         if (n->isDead) {
@@ -496,23 +502,23 @@ void Shoot(float x, float y, float z, float hitProb, int particles, int instaKil
                             mainPlayer->stamina = 0;
                             shotMessageUpdate = "A bullet penetrated your vest, making you gasp.";
                             mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.1,0.5);
-                        }
+                        } break;
                         case 6: {
                             mainPlayer->blurTimer = 500;
                             shotMessageUpdate = "A bullet hit your left leg.";
                             mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.8,1.2);
-                        }
+                        } break;
                         case 7: {
                             mainPlayer->blurTimer = 500;
                             shotMessageUpdate = "A bullet hit your right leg.";
                             mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.8,1.2);
-                        }
+                        } break;
                         case 8: {
                             mainPlayer->blurTimer = 500;
                             mainPlayer->stamina = 0;
                             shotMessageUpdate = "A bullet struck your neck, making you gasp.";
                             mainPlayer->injuries = mainPlayer->injuries + bbRnd(1.2,1.6);
-                        }
+                        } break;
                     }
                 } else {
                     if (bbRand(10)==1) {
@@ -535,32 +541,32 @@ void Shoot(float x, float y, float z, float hitProb, int particles, int instaKil
                 switch (bbRand(6)) {
                     case 1: {
                         Kill(mainPlayer);
-                    }
+                    } break;
                     case 2: {
                         mainPlayer->blurTimer = 500;
                         shotMessageUpdate = "A bullet hit your left leg.";
                         mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.8,1.2);
-                    }
+                    } break;
                     case 3: {
                         mainPlayer->blurTimer = 500;
                         shotMessageUpdate = "A bullet hit your right leg.";
                         mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.8,1.2);
-                    }
+                    } break;
                     case 4: {
                         mainPlayer->blurTimer = 500;
                         shotMessageUpdate = "A bullet hit your right shoulder.";
                         mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.8,1.2);
-                    }
+                    } break;
                     case 5: {
                         mainPlayer->blurTimer = 500;
                         shotMessageUpdate = "A bullet hit your left shoulder.";
                         mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.8,1.2);
-                    }
+                    } break;
                     case 6: {
                         mainPlayer->blurTimer = 500;
                         shotMessageUpdate = "A bullet hit your right shoulder.";
                         mainPlayer->injuries = mainPlayer->injuries + bbRnd(2.5,4.0);
-                    }
+                    } break;
                 }
             }
 
@@ -833,26 +839,26 @@ void ManipulateNPCBones() {
                         case 0: {
                             n->boneYaw = CurveAngle(bbEntityPitch(bone),n->boneYaw,10.0);
                             pitchvalue = n->boneYaw;
-                        }
+                        } break;
                         case 1: {
                             n->boneYaw = CurveAngle(bbEntityYaw(bone),n->boneYaw,10.0);
                             yawvalue = n->boneYaw;
-                        }
+                        } break;
                         case 2: {
                             n->boneYaw = CurveAngle(bbEntityRoll(bone),n->boneYaw,10.0);
                             rollvalue = n->boneYaw;
-                        }
+                        } break;
                     }
                     switch ((int)TransformNPCManipulationData(n->npcNameInSection,n->boneToManipulate,"pitch")) {
                         case 0: {
                             pitchvalue = n->bonePitch;
-                        }
+                        } break;
                         case 1: {
                             yawvalue = n->bonePitch;
-                        }
+                        } break;
                         case 2: {
                             rollvalue = n->bonePitch;
-                        }
+                        } break;
                     }
                     if (GetNPCManipulationValue(n->npcNameInSection,n->boneToManipulate,"pitchinverse",3).toInt()==true) {
                         pitchvalue = -pitchvalue;
@@ -865,7 +871,7 @@ void ManipulateNPCBones() {
                     }
                     bbRotateEntity(bone,pitchvalue+pitchoffset,yawvalue+yawoffset,rollvalue+rolloffset);
                     //<--- looking at player #2
-                }
+                } break;
                 case 1: {
                     n->bonePitch = CurveAngle(bbDeltaPitch(bone2,mainPlayer->cam),n->bonePitch,10.0);
                     switch ((int)TransformNPCManipulationData(n->npcNameInSection,n->boneToManipulate,"pitch")) {
@@ -890,7 +896,7 @@ void ManipulateNPCBones() {
                     }
                     bbRotateEntity(bone,pitchvalue+pitchoffset,yawvalue+yawoffset,rollvalue+rolloffset);
                     //<--- looking away from SCP-096
-                }
+                } break;
                 case 2: {
                     bbPointEntity(bone,Curr096->obj);
                     switch ((int)TransformNPCManipulationData(n->npcNameInSection,n->boneToManipulate,"yaw")) {
@@ -918,20 +924,20 @@ void ManipulateNPCBones() {
                     }
                     bbRotateEntity(bone,pitchvalue+pitchoffset,yawvalue+yawoffset,rollvalue+rolloffset);
                     //<-- looking and pitching towards the player
-                }
+                } break;
                 case 3: {
                     bbPointEntity(pvt,mainPlayer->cam);
                     n->boneYaw = CurveAngle(bbEntityPitch(pvt),n->boneYaw,10.0);
                     switch ((int)TransformNPCManipulationData(n->npcNameInSection,n->boneToManipulate,"yaw")) {
                         case 0: {
                             pitchvalue = n->boneYaw;
-                        }
+                        } break;
                         case 1: {
                             yawvalue = n->boneYaw;
-                        }
+                        } break;
                         case 2: {
                             rollvalue = n->boneYaw;
-                        }
+                        } break;
                     }
                     if (GetNPCManipulationValue(n->npcNameInSection,n->boneToManipulate,"pitchinverse",3).toInt()==true) {
                         pitchvalue = -pitchvalue;
@@ -946,7 +952,7 @@ void ManipulateNPCBones() {
                 }
             }
             bbFreeEntity(pvt);
-        }
+        } break;
     }
 
 }
@@ -964,14 +970,14 @@ String GetNPCManipulationValue(String NPC, String bone, String section, int valu
         case 1:
         case 2: {
             return value;
-        }
+        } break;
         case 3: {
             if (value.equals("true") | value.equals("1")) {
                 return "1";
             } else {
                 return "0";
             }
-        }
+        } break;
     }
 
 }
@@ -1019,12 +1025,12 @@ void NPCSpeedChange(NPC* n) {
             switch (SelectedDifficulty->otherFactors) {
                 case NORMAL: {
                     n->speed = n->speed * 1.1;
-                }
+                } break;
                 case HARD: {
                     n->speed = n->speed * 1.2;
-                }
+                } break;
             }
-        }
+        } break;
     }
 
 }

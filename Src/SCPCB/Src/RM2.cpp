@@ -2,6 +2,7 @@
 #include <bbstream.h>
 #include <bbblitz3d.h>
 #include <bbfilesystem.h>
+#include <iostream>
 
 #include "RM2.h"
 #include "MapSystem.h"
@@ -60,7 +61,7 @@ void LoadRM2(RoomTemplate* rt) {
     int blendFlags;
     int uvSet;
     Texture* texture;
-    int shouldLoadTexture;
+    int shouldLoadTexture = false;
 
     MeshModel* mesh;
     MeshModel* clonedMesh;
@@ -142,6 +143,7 @@ void LoadRM2(RoomTemplate* rt) {
                         AddTextureToCache(texName,texture);
                     }
                     usedTextures.push_back(GetCache(texName));
+                    std::cout<<"TEXTURE: "<<texName<<"\n";
                 }
                 //[End Block]
             } break;
@@ -173,7 +175,7 @@ void LoadRM2(RoomTemplate* rt) {
                     }
                 }
 
-                if (brush!=0 & (layerCount==2)) {
+                if (brush!=0 && (layerCount==2)) {
                     bbBrushTexture(brush,AmbientLightRoomTex,0,0);
                 }
 

@@ -4,6 +4,7 @@
 #include <bbinput.h>
 #include <bbmath.h>
 #include <bbfilesystem.h>
+#include <string.h>
 
 #include "Player.h"
 #include "Audio.h"
@@ -21,13 +22,9 @@ namespace CBN {
 
 // Structs.
 Player::Player() {
+    memset(this, 0, sizeof(Player));
+    
     this->inventory = CreateInventory(PLAYER_INV_COUNT + WORNITEM_SLOT_COUNT);
-
-    this->currRoom = nullptr;
-    this->closestButton = nullptr;
-    this->closestDoor = nullptr;
-    this->closestItem = nullptr;
-    this->selectedDoor = nullptr;
 
     this->cam = bbCreateCamera();
     bbCameraViewport(this->cam, 0, 0, userOptions->screenWidth, userOptions->screenHeight);
@@ -395,7 +392,7 @@ void UpdatePlayer() {
         }
 
         bool temp = false;
-        float angle;
+        float angle = 0.0f;
         //If (Not IsZombie%)
         if (bbKeyDown(keyBinds->down) & (!mainPlayer->disableControls)) {
             temp = true;
