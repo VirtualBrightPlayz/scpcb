@@ -119,18 +119,18 @@ public:
 
     float dropSpeed;
     int gravity;
-    float gravityMult = 1.0;
+    float gravityMult = 1.0f;
 
     //TODO: Deprecate in favor of terminalVelocity.
-    float maxGravity = 0.2;
+    float maxGravity = 0.2f;
 
-    float terminalVelocity = 0.2;
+    float terminalVelocity = 0.2f;
 
     //TODO: Move this to DataMTF
     int mtfVariant;
     NPC* mtfLeader;
     int isDead;
-    float blinkTimer = 1.0;
+    float blinkTimer = 1.0f;
     int ignorePlayer;
 
     //TODO: Deprecate.
