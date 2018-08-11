@@ -188,8 +188,6 @@ void RemoveEvent(Event* e) {
 }
 
 void InitEvents() {
-    Event* e;
-
     CreateEvent("evt_intro", "roomintro", 0);
     CreateEvent("evt_cont_173", "cont_173_1", 0);
 

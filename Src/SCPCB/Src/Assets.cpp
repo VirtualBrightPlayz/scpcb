@@ -384,9 +384,9 @@ void InitNewGame() {
             bbEntityParent(d->buttons[1], 0);
         }
 
-        if (d->obj2 != 0 & d->typ == DOOR_TYPE_DEF) {
-            bbMoveEntity(d->obj, 0, 0, 8.0 * RoomScale);
-            bbMoveEntity(d->obj2, 0, 0, 8.0 * RoomScale);
+        if (d->obj2 != 0 && d->typ == DOOR_TYPE_DEF) {
+            bbMoveEntity(d->obj, 0.f, 0.f, 8.0 * RoomScale);
+            bbMoveEntity(d->obj2, 0.f, 0.f, 8.0 * RoomScale);
         }
     }
 
@@ -418,14 +418,14 @@ void InitNewGame() {
 
         if (!r->roomTemplate->disableDecals) {
             if (bbRand(4) == 1) {
-                Decal* de = CreateDecal(bbRand(DECAL_BLOOD_SPREAD, DECAL_BLOOD_SPLATTER), bbEntityX(r->obj)+bbRnd(- 2,2), 0.003, bbEntityZ(r->obj)+bbRnd(-2,2), 90, bbRand(360), 0);
+                Decal* de = CreateDecal(bbRand(DECAL_BLOOD_SPREAD, DECAL_BLOOD_SPLATTER), bbEntityX(r->obj)+bbRnd(- 2,2), 0.003f, bbEntityZ(r->obj)+bbRnd(-2,2), 90, bbRand(360), 0);
                 de->size = bbRnd(0.1, 0.4);
                 bbScaleSprite(de->obj, de->size, de->size);
                 bbEntityAlpha(de->obj, bbRnd(0.85, 0.95));
             }
 
             if (bbRand(4) == 1) {
-                Decal* de = CreateDecal(DECAL_CORROSION, bbEntityX(r->obj)+bbRnd(- 2,2), 0.003, bbEntityZ(r->obj)+bbRnd(-2,2), 90, bbRand(360), 0);
+                Decal* de = CreateDecal(DECAL_CORROSION, bbEntityX(r->obj)+bbRnd(- 2,2), 0.003f, bbEntityZ(r->obj)+bbRnd(-2,2), 90, bbRand(360), 0);
                 de->size = bbRnd(0.5, 0.7);
                 bbEntityAlpha(de->obj, 0.7);
                 de->id = 1;
@@ -534,10 +534,8 @@ void InitNewGame() {
 void InitLoadGame() {
     SecurityCam* sc;
     RoomTemplate* rt;
-    Event* e;
     Prop* prop;
     Texture* planetex;
-    Chunk* ch;
 
     DrawLoading(80);
 
@@ -621,11 +619,7 @@ void NullGame() {
     int lvl;
     ItemTemplate* itt;
     Screen* s;
-    LightTemplate* lt;
-    Door* d;
     Material* m;
-    WayPoint* wp;
-    TempWayPoint* twp;
     Room* r;
     Item* it;
 

@@ -189,11 +189,11 @@ void UpdateNPCtype106(NPC* n) {
                 AnimateNPC(n, 284, 333, n->currSpeed * 43);
 
                 //Footstep sounds.
-                if (prevFrame <= 286 & n->frame > 286 | prevFrame<=311 & n->frame > 311.0) {
+                if (prevFrame <= 286 & n->frame > 286 || prevFrame<=311 && n->frame > 311.0) {
                     PlayRangedSound(sndManager->footstepPD[bbRand(0, 2)]->internal, mainPlayer->cam, n->collider, 6.0, bbRnd(0.8,1.0));
                 }
 
-                if (dist > 25.0 | visible | n->pathStatus == 2) {
+                if (dist > 25.0 || visible || n->pathStatus == 2) {
 
                     bbPointEntity(n->obj, mainPlayer->collider);
                     bbRotateEntity(n->collider, 0, CurveAngle(bbEntityYaw(n->obj), bbEntityYaw(n->collider), 10.0), 0);

@@ -7,6 +7,7 @@
 #include "bbsys.h"
 #include "bbstream.h"
 #include "../gxruntime/gxfilesystem.h"
+#include "../gxruntime/StringType.h"
 
 struct bbFile : public bbStream {
     std::filebuf *buf;
@@ -31,9 +32,9 @@ struct bbFile : public bbStream {
 
 extern gxFileSystem *gx_filesys;
 
-class bbFile* bbOpenFile(const String& f);
-class bbFile* bbReadFile(const String& f);
-class bbFile* bbWriteFile(const String& f);
+bbFile* bbOpenFile(const String& f);
+bbFile* bbReadFile(const String& f);
+bbFile* bbWriteFile(const String& f);
 void bbCloseFile(bbFile* f);
 int bbFilePos(bbFile* f);
 class gxDir* bbReadDir(const String& d);

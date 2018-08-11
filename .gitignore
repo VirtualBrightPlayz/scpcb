@@ -1,10 +1,6 @@
 # Containment Breach
 [Ss]aves/*
 
-# IDEal
-*.ipf
-*.iws
-
 # Visual Studio
 [Dd]ebug
 [Rr]elease
@@ -16,6 +12,9 @@
 
 # Visual Studio Code
 .vscode
+
+# VS Line Ending Unifier
+.leu
 
 # Windows
 Thumbs.db
