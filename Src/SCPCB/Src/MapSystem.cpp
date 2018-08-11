@@ -408,7 +408,7 @@ void LoadRoomTemplates(const String& file) {
                     rt->shape = ROOM3;
                 }
                 else if (StrTemp.equals("room4") || StrTemp.equals("4")) {
-                    rt->shape = ROOM2;
+                    rt->shape = ROOM4;
                 }
                 else {
                     rt->shape = ROOM0;
@@ -2055,7 +2055,7 @@ void CreateMap() {
                 for (i = 0; i <= loopX; i++) {
                     x = ((i+offsetX) % (loopX+1)) + loopStartX;
                     y = ((j+offsetY) % (loopY+1)) + loopStartY;
-                    if ((layout[x][y]>0) & (layout[x][y]==rt->shape)) {
+                    if ((layout[x][y]>0) && (layout[x][y]==rt->shape)) {
                         r = CreateRoom(rt,x*8.0,0.0,y*8.0);
                         r->angle = DetermineRotation(layout,mapDim,x,y);
                         bbTurnEntity(r->obj,0,r->angle,0);
@@ -2090,7 +2090,7 @@ void CreateMap() {
     for (int iterator89 = 0; iterator89 < RoomTemplate::getListSize(); iterator89++) {
         rt = RoomTemplate::getObject(iterator89);
 
-        if (((rt->zones & zone)!=0) & (rt->maxAmount<0) & (rt->shape!=ROOM0)) {
+        if (((rt->zones & zone)!=0) && (rt->maxAmount<0) && (rt->shape!=ROOM0)) {
             randomTemplates.insert(randomTemplates.begin()+bbRand(0,randomTemplates.size()),rt);
             totalCommonness[rt->shape] = totalCommonness[rt->shape]+(int)(rt->commonness);
         }
@@ -2102,8 +2102,8 @@ void CreateMap() {
 
     RoomTemplate* tempTemplate;
 
-    for (y = 0; y <= mapDim-1; y++) {
-        for (x = 0; x <= mapDim-1; x++) {
+    for (y = 0; y <= mapDim - 1; y++) {
+        for (x = 0; x <= mapDim - 1; x++) {
             commonnessAccumulator = 0;
             currType = layout[x][y];
             if (currType>0) {
@@ -2125,6 +2125,14 @@ void CreateMap() {
                         }
                     }
                 }
+            }
+        }
+    }
+
+    for (y = 0; y <= mapDim - 1; y++) {
+        for (x = 0; x <= mapDim - 1; x++) {
+            if (layout[x][y]!=0 && MapRooms[x][y]==nullptr) {
+                std::cout<<layout[x][y]<<"\n";
             }
         }
     }

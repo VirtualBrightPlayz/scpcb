@@ -88,7 +88,7 @@ void UpdateEventRoom2elevator2(Event* e) {
         de->size = 0.5;
 
         e->room->npc[0] = CreateNPC(NPCtypeD, bbEntityX(e->room->objects[0],true), 0.5, bbEntityZ(e->room->objects[0],true));
-        e->room->npc[0]->texture = "GFX/NPCs/gonzales.jpg";
+        e->room->npc[0]->texture = "GFX/NPCs/classd/gonzales.jpg";
         tex = bbLoadTexture(e->room->npc[0]->texture);
         bbEntityTexture(e->room->npc[0]->obj, tex);
         bbFreeTexture(tex);

@@ -38,7 +38,7 @@ void FillRoom_cont_914_1(Room* r) {
     //, Bump
     int t1;
 
-    r->doors[2] = CreateDoor(r->x, 0, r->z-368.0*RoomScale, 0, r, false, DOOR_TYPE_CONT, r->roomTemplate->name);
+    r->doors[2] = CreateDoor(r->x, 0, r->z-368.0*RoomScale, 0, r, true, DOOR_TYPE_CONT, r->roomTemplate->name);
     bbPositionEntity(r->doors[2]->buttons[0], r->x - 496.0 * RoomScale, 0.7, r->z - 272.0 * RoomScale, true);
     bbTurnEntity(r->doors[2]->buttons[0], 0, 90, 0);
 
