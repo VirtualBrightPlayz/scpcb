@@ -256,7 +256,7 @@ void Update294() {
                     r = strtemp.substr(0, sep1 - 1).trim().toInt();
                     g = bbMid(strtemp, sep1 + 1, sep2 - sep1 - 1).trim().toInt();
                     b = bbRight(strtemp, strtemp.size() - sep2).trim().toInt();
-                    
+
                     strtemp = GetINIString("Data/SCP-294.ini", Input294, "dispensesound");
                     if (strtemp.isEmpty()) {
                         mainPlayer->currRoom->soundCHN = bbPlaySound(LoadTempSound("SFX/SCP/294/dispense1.ogg"));

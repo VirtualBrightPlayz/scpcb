@@ -32,7 +32,7 @@ void LoadRM2(RoomTemplate* rt) {
     std::vector<MeshModel*> collisionObjs;
 
     std::vector<Prop*> props;
-    
+
     String filename = StripPath(fullFilename);
     String filepath = StripFilename(fullFilename);
 

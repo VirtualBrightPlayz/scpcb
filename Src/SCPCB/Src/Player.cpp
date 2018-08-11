@@ -23,7 +23,7 @@ namespace CBN {
 // Structs.
 Player::Player() {
     memset(this, 0, sizeof(Player));
-    
+
     this->inventory = CreateInventory(PLAYER_INV_COUNT + WORNITEM_SLOT_COUNT);
 
     this->cam = bbCreateCamera();
