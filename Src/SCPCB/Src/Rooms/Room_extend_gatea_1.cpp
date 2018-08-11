@@ -24,7 +24,6 @@ namespace CBN {
 
 // Functions.
 void FillRoom_extend_gatea_1(Room* r) {
-    Door* d;
     Door* d2;
     SecurityCam* sc;
     Decal* de;

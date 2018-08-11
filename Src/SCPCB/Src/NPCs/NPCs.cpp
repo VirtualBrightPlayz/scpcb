@@ -73,7 +73,6 @@ NPC* CreateNPC(int NPCtype, float x, float y, float z) {
     float temp;
     int i;
     int diff1;
-    int bump1;
     int spec1;
     int sf;
     int b;
@@ -978,6 +977,9 @@ String GetNPCManipulationValue(const String& NPC, String bone, String section, i
                 return "0";
             }
         } break;
+        default: {
+            return "0";
+        }
     }
 
 }

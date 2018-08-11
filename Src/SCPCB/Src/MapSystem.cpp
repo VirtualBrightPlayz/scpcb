@@ -499,6 +499,7 @@ RoomTemplate* GetRoomTemplate(const String& name) {
             return rt;
         }
     }
+    return nullptr;
 }
 
 int CountRooms(RoomTemplate* rt) {
@@ -1038,6 +1039,7 @@ Light* AddLight(Room* room, float x, float y, float z, int ltype, float range, i
     Sprite* sprite;
     TextureAssetWrap* textureAsset = TextureAssetWrap::grab("GFX/Sprites/light_flare.jpg");
     Texture* lightSpriteTex = textureAsset->getTexture();
+    textureAsset->drop();
 
     if (room!=nullptr) {
         for (i = 0; i <= MaxRoomLights-1; i++) {
@@ -1081,7 +1083,6 @@ Light* AddLight(Room* room, float x, float y, float z, int ltype, float range, i
         bbEntityBlend(sprite, 3);
         return light;
     }
-    textureAsset->drop();
 }
 
 LightTemplate* AddTempLight(RoomTemplate* rt, float x, float y, float z, int ltype, float range, int r, int g, int b) {
@@ -1113,12 +1114,9 @@ WayPoint* CreateWaypoint(float x, float y, float z, Room* room) {
 }
 
 void InitWayPoints(int loadingstart) {
-
-    Door* d;
     WayPoint* w;
     WayPoint* w2;
     Room* r;
-    Room* ClosestRoom;
 
     float x;
     float y;
@@ -1185,9 +1183,6 @@ int FindPath(NPC* n, float x, float y, float z) {
     int EndZ = (int)(bbFloor(z / 8.0 + 0.5));
     //If (EndX < 0 Or EndX > MapWidth) Then Return 2
     //If (EndZ < 0 Or EndZ > MapWidth) Then Return 2
-
-    int CurrX;
-    int CurrZ;
 
     //pathstatus = 0, ei ole etsitty reitti�
     //pathstatus = 1, reitti l�ydetty

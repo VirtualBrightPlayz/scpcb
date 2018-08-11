@@ -89,7 +89,6 @@ void UpdateEvent_closets_2(Event* e) {
     Particle* p;
     NPC* n;
     Room* r;
-    Event* e2;
     Item* it;
     Emitter* em;
     SecurityCam* sc;

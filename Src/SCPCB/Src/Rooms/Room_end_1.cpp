@@ -22,7 +22,6 @@ namespace CBN {
 
 // Functions.
 void FillRoom_end_1(Room* r) {
-    Door* d;
     Door* d2;
     SecurityCam* sc;
     Decal* de;

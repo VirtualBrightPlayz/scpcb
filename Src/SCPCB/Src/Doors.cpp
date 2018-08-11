@@ -62,10 +62,6 @@ Door* CreateDoor(float x, float y, float z, float angle, Room* room, int open, i
         hczDoorObj[i] = MeshAssetWrap::grab("GFX/Map/Meshes/heavydoor" + String(i + 1) + ".b3d");
     }
 
-    int buttonCodeObj;
-    int buttonKeyObj;
-    int buttonScannerOBJ;
-
     Door* d = new Door();
     d->typ = doorType;
     switch (d->typ) {

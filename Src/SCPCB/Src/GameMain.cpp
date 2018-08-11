@@ -920,7 +920,6 @@ void DrawGUI() {
     int width;
     int height;
 
-    Event* e;
     Event* ev;
     Item* it;
     NPC* npc;

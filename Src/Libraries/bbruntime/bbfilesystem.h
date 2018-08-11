@@ -31,9 +31,9 @@ struct bbFile : public bbStream {
 
 extern gxFileSystem *gx_filesys;
 
-class bbFile* bbOpenFile(String f);
-class bbFile* bbReadFile(String f);
-class bbFile* bbWriteFile(String f);
+bbFile* bbOpenFile(String f);
+bbFile* bbReadFile(String f);
+bbFile* bbWriteFile(String f);
 void bbCloseFile(bbFile* f);
 int bbFilePos(bbFile* f);
 class gxDir* bbReadDir(String d);

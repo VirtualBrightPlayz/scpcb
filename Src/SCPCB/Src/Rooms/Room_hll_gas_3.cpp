@@ -126,7 +126,6 @@ void UpdateEventRoom3pit1048(Event* e) {
     int j;
     int k;
     int tex;
-    int brush;
 
     Particle* p;
     NPC* n;
