@@ -313,7 +313,7 @@ Texture* ScreenTexs[2];
 Room*** MapRooms;
 
 // Functions.
-void LoadMaterials(String file) {
+void LoadMaterials(const String& file) {
     String TemporaryString;
     Material* mat = nullptr;
     String StrTemp = "";
@@ -344,7 +344,7 @@ void LoadMaterials(String file) {
 
 }
 
-String StripPath(String file) {
+String StripPath(const String& file) {
     String name = "";
     if (file.size() > 0) {
         for (int i = file.size()-1; i >= 0; i--) {
@@ -360,7 +360,7 @@ String StripPath(String file) {
     return name;
 }
 
-RoomTemplate* CreateRoomTemplate(String meshpath) {
+RoomTemplate* CreateRoomTemplate(const String& meshpath) {
     RoomTemplate* rt = new RoomTemplate();
 
     rt->objPath = meshpath;
@@ -369,7 +369,7 @@ RoomTemplate* CreateRoomTemplate(String meshpath) {
     return rt;
 }
 
-void LoadRoomTemplates(String file) {
+void LoadRoomTemplates(const String& file) {
     String TemporaryString;
     int i;
     RoomTemplate* rt = nullptr;
@@ -408,7 +408,7 @@ void LoadRoomTemplates(String file) {
                     rt->shape = ROOM3;
                 }
                 else if (StrTemp.equals("room4") || StrTemp.equals("4")) {
-                    rt->shape = ROOM2;
+                    rt->shape = ROOM4;
                 }
                 else {
                     rt->shape = ROOM0;
@@ -489,14 +489,13 @@ void LoadRoomMesh(RoomTemplate* rt) {
     LoadRM2(rt);
 }
 
-RoomTemplate* GetRoomTemplate(String name) {
-    name = name.toLower();
+RoomTemplate* GetRoomTemplate(const String& name) {
+    String nameL = name.toLower();
 
-    RoomTemplate* rt;
-    for (int iterator71 = 0; iterator71 < RoomTemplate::getListSize(); iterator71++) {
-        rt = RoomTemplate::getObject(iterator71);
+    for (int i = 0; i < RoomTemplate::getListSize(); i++) {
+        RoomTemplate* rt = RoomTemplate::getObject(i);
 
-        if (rt->name.equals(name)) {
+        if (rt->name.equals(nameL)) {
             return rt;
         }
     }
@@ -1857,7 +1856,7 @@ void UpdateSecurityCams() {
     bbCls();
 }
 
-Prop* LoadProp(String file, float x, float y, float z, float pitch, float yaw, float roll, float xScale, float yScale, float zScale) {
+Prop* LoadProp(const String& file, float x, float y, float z, float pitch, float yaw, float roll, float xScale, float yScale, float zScale) {
     Prop* p;
     p = new Prop();
     p->file = file;
@@ -2056,7 +2055,7 @@ void CreateMap() {
                 for (i = 0; i <= loopX; i++) {
                     x = ((i+offsetX) % (loopX+1)) + loopStartX;
                     y = ((j+offsetY) % (loopY+1)) + loopStartY;
-                    if ((layout[x][y]>0) & (layout[x][y]==rt->shape)) {
+                    if ((layout[x][y]>0) && (layout[x][y]==rt->shape)) {
                         r = CreateRoom(rt,x*8.0,0.0,y*8.0);
                         r->angle = DetermineRotation(layout,mapDim,x,y);
                         bbTurnEntity(r->obj,0,r->angle,0);
@@ -2091,7 +2090,7 @@ void CreateMap() {
     for (int iterator89 = 0; iterator89 < RoomTemplate::getListSize(); iterator89++) {
         rt = RoomTemplate::getObject(iterator89);
 
-        if (((rt->zones & zone)!=0) & (rt->maxAmount<0) & (rt->shape!=ROOM0)) {
+        if (((rt->zones & zone)!=0) && (rt->maxAmount<0) && (rt->shape!=ROOM0)) {
             randomTemplates.insert(randomTemplates.begin()+bbRand(0,randomTemplates.size()),rt);
             totalCommonness[rt->shape] = totalCommonness[rt->shape]+(int)(rt->commonness);
         }
@@ -2103,8 +2102,8 @@ void CreateMap() {
 
     RoomTemplate* tempTemplate;
 
-    for (y = 0; y <= mapDim-1; y++) {
-        for (x = 0; x <= mapDim-1; x++) {
+    for (y = 0; y <= mapDim - 1; y++) {
+        for (x = 0; x <= mapDim - 1; x++) {
             commonnessAccumulator = 0;
             currType = layout[x][y];
             if (currType>0) {
@@ -2126,6 +2125,14 @@ void CreateMap() {
                         }
                     }
                 }
+            }
+        }
+    }
+
+    for (y = 0; y <= mapDim - 1; y++) {
+        for (x = 0; x <= mapDim - 1; x++) {
+            if (layout[x][y]!=0 && MapRooms[x][y]==nullptr) {
+                std::cout<<layout[x][y]<<"\n";
             }
         }
     }
@@ -2338,7 +2345,7 @@ int DetermineRotation(int** layout, int layoutDims, int x, int y) {
     }
 }
 
-int CheckRoomOverlap(String roomname, int x, int y) {
+int CheckRoomOverlap(const String& roomname, int x, int y) {
     //TODO: reimplement?
     return false;
 }

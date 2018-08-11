@@ -258,14 +258,14 @@ void UpdateChannelList() {
     }
 }
 
-Sound* InitializeSound_SM(String fileName) {
+Sound* InitializeSound_SM(const String& fileName) {
     Sound* snd = new Sound();
     snd->file = fileName;
 
     return snd;
 }
 
-Sound* LoadSound_SM(String fileName) {
+Sound* LoadSound_SM(const String& fileName) {
     Sound* snd = InitializeSound_SM(fileName);
     snd->internal = bbLoadSound(fileName);
 
@@ -392,7 +392,7 @@ void UpdateRangedSoundOrigin_SM(SoundChannel* chn) {
     }
 }
 
-gxSound* LoadTempSound(String file) {
+gxSound* LoadTempSound(const String& file) {
     if (TempSounds[TempSoundIndex] != 0) {
         bbFreeSound(TempSounds[TempSoundIndex]);
     }
@@ -681,7 +681,7 @@ void MusicManager::restoreDefaultMusic() {
     this->useDefault = true;
 }
 
-void MusicManager::setNextMusicTrack(String trackName, int fadeOut) {
+void MusicManager::setNextMusicTrack(const String& trackName, int fadeOut) {
     if (this->shouldPlay.equals(trackName)) {
         return;
     }

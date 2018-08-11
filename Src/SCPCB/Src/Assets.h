@@ -46,16 +46,16 @@ public:
 
     Texture* getTexture();
 
-    static TextureAssetWrap* grab(String filePath, int flag = 1);
+    static TextureAssetWrap* grab(const String& filePath, int flag = 1);
 
     static void update();
 private:
     static std::vector<TextureAssetWrap*> list;
-    
+
     int flags;
     Texture* texture;
 
-    TextureAssetWrap(String filePath, int flag = 1);
+    TextureAssetWrap(const String& filePath, int flag = 1);
     ~TextureAssetWrap();
 };
 
@@ -65,15 +65,15 @@ public:
 
     bbImage* getImage();
 
-    static ImageAssetWrap* grab(String filePath);
+    static ImageAssetWrap* grab(const String& filePath);
 
     static void update();
 private:
     static std::vector<ImageAssetWrap*> list;
-    
+
     bbImage* image;
 
-    ImageAssetWrap(String filePath);
+    ImageAssetWrap(const String& filePath);
     ~ImageAssetWrap();
 };
 
@@ -83,16 +83,16 @@ public:
 
     MeshModel* getMesh();
 
-    static MeshAssetWrap* grab(String filePath, bool isAnimated = true);
+    static MeshAssetWrap* grab(const String& filePath, bool isAnimated = true);
 
     static void update();
 private:
     static std::vector<MeshAssetWrap*> list;
-    
+
     bool animated;
     MeshModel* mesh;
 
-    MeshAssetWrap(String filePath, bool isAnimated = true);
+    MeshAssetWrap(const String& filePath, bool isAnimated = true);
     ~MeshAssetWrap();
 };
 
@@ -138,7 +138,7 @@ void InitLoadGame();
 
 void NullGame();
 
-String GetImagePath(String path);
+String GetImagePath(const String& path);
 
 }
 #endif // ASSETS_H_INCLUDED

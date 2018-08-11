@@ -47,7 +47,7 @@ int ConsoleMusFlush = 0;
 int DebugHUD;
 
 // Functions.
-void CreateConsoleMsg(String txt, int r, int g, int b, int isCommand) {
+void CreateConsoleMsg(const String& txt, int r, int g, int b, int isCommand) {
     ConsoleMsg* c = new ConsoleMsg();
     //TODO: Re-implement.
     //Insert c Before First ConsoleMsg
@@ -247,7 +247,7 @@ void UpdateConsole() {
             }
         }
 
-        
+
         if (ConsoleScroll<-consoleHeight+height) {
             ConsoleScroll = -consoleHeight+height;
         }

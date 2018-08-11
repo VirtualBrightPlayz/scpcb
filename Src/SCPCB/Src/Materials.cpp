@@ -7,7 +7,7 @@
 namespace CBN {
 
 // Functions.
-String StripFilename(String file) {
+String StripFilename(const String& file) {
     String mi = "";
     int lastSlash = 0;
     int i;
@@ -23,7 +23,7 @@ String StripFilename(String file) {
     return file.substr(0,lastSlash);
 }
 
-Texture* GetTextureFromCache(String name) {
+Texture* GetTextureFromCache(const String& name) {
     Material* tc;
     for (int i = 0; i < Material::getListSize(); i++) {
         tc = Material::getObject(i);
@@ -35,7 +35,7 @@ Texture* GetTextureFromCache(String name) {
     return 0;
 }
 
-Material* GetCache(String name) {
+Material* GetCache(const String& name) {
     Material* tc;
     for (int i = 0; i < Material::getListSize(); i++) {
         tc = Material::getObject(i);
@@ -47,7 +47,7 @@ Material* GetCache(String name) {
     return nullptr;
 }
 
-void AddTextureToCache(String name, Texture* texture) {
+void AddTextureToCache(const String& name, Texture* texture) {
     Material* tc = GetCache(name);
     if (tc==nullptr) {
         tc = new Material();
@@ -87,22 +87,26 @@ void FreeTextureCache() {
     }
 }
 
-Texture* LoadRMeshTexture(String roompath, String name, int flags) {
+Texture* LoadRMeshTexture(const String& roompath, String name, int flags) {
     Texture* texture = nullptr;
-    if (roompath.charAt(roompath.size()-1)!='/') {
-        roompath = roompath+"/";
+
+    String path = roompath;
+    if (path.charAt(path.size()-1)!='/') {
+        path = path+"/";
     }
     if (texture == nullptr) {
-        texture = bbLoadTexture(GetImagePath(roompath+name),flags);
+        texture = bbLoadTexture(GetImagePath(path+name),flags);
     }
     if (texture == nullptr) {
         texture = bbLoadTexture(GetImagePath("GFX/map/Textures/"+name),flags);
     }
-    if (texture != 0) {
+    if (texture != nullptr) {
         std::cout << bbTextureName(texture) <<"\n";
     } else {
         //RuntimeError(name)
-        std::cout << "ERROR " << roompath << "\n";
+        std::cout << "ERROR " << path
+         << "\n";
+        // TODO: Use dev texture.
         texture = bbLoadTexture("GFX/Map/Textures/dirtymetal.jpg",flags);
     }
     return texture;

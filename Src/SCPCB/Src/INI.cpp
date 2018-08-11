@@ -11,13 +11,13 @@ namespace CBN {
 
 // Structs.
 std::vector<INIFile*> INIFile::list;
-INIFile::INIFile(String filename) {
+INIFile::INIFile(const String& filename) {
     list.push_back(this);
 
     name = filename;
 
     Section* currSection = nullptr;
-    
+
     bbFile* file = bbReadFile(filename);
     String currLine;
     while (!bbEof(file)) {
@@ -70,7 +70,7 @@ String INIFile::getName() {
     return name;
 }
 
-String INIFile::getValue(String section, String key, String defaultValue) {
+String INIFile::getValue(const String& section, String key, String defaultValue) {
     for (int i = 0; i<sections.size(); i++) {
         for (int j = 0; j<sections[i]->names.size(); j++) {
             if (section.toLower().equals(sections[i]->names[j].toLower())) {
@@ -86,7 +86,7 @@ String INIFile::getValue(String section, String key, String defaultValue) {
     return defaultValue;
 }
 
-void INIFile::setValue(String section, String key, String value) {
+void INIFile::setValue(const String& section, String key, String value) {
     for (int i = 0; i<sections.size(); i++) {
         for (int j = 0; j<sections[i]->names.size(); j++) {
             if (section.toLower().equals(sections[i]->names[j])) {
@@ -118,7 +118,7 @@ void INIFile::save() {
     bbCloseFile(f);
 }
 // Functions.
-String GetINIString(String file, String section, String parameter, String defaultValue) {
+String GetINIString(const String& file, String section, String parameter, String defaultValue) {
     for (int i=0;i<INIFile::getListSize();i++) {
         INIFile* iniFile = INIFile::getObject(i);
 
@@ -130,7 +130,7 @@ String GetINIString(String file, String section, String parameter, String defaul
     return newFile->getValue(section, parameter, defaultValue);
 }
 
-int GetINIInt(String file, String section, String parameter, int defaultvalue) {
+int GetINIInt(const String& file, String section, String parameter, int defaultvalue) {
     String txt = GetINIString(file, section, parameter, String(defaultvalue));
     if (txt.toLower().equals("true")) {
         return 1;
@@ -141,11 +141,11 @@ int GetINIInt(String file, String section, String parameter, int defaultvalue) {
     }
 }
 
-float GetINIFloat(String file, String section, String parameter, float defaultvalue) {
+float GetINIFloat(const String& file, String section, String parameter, float defaultvalue) {
     return GetINIString(file, section, parameter, String(defaultvalue)).toFloat();
 }
 
-void PutINIValue(String file, String section, String key, String value) {
+void PutINIValue(const String& file, String section, String key, String value) {
     INIFile* targetFile = nullptr;
     for (int i = 0; i<INIFile::getListSize(); i++) {
         INIFile* iniFile = INIFile::getObject(i);

@@ -348,17 +348,17 @@ extern Texture* ScreenTexs[2];
 extern Room*** MapRooms;
 
 // Functions.
-void LoadMaterials(String file);
+void LoadMaterials(const String& file);
 
-String StripPath(String file);
+String StripPath(const String& file);
 
-RoomTemplate* CreateRoomTemplate(String meshpath);
+RoomTemplate* CreateRoomTemplate(const String& meshpath);
 
-void LoadRoomTemplates(String file);
+void LoadRoomTemplates(const String& file);
 
 void LoadRoomMesh(RoomTemplate* rt);
 
-RoomTemplate* GetRoomTemplate(String name);
+RoomTemplate* GetRoomTemplate(const String& name);
 
 int CountRooms(RoomTemplate* rt);
 
@@ -394,7 +394,7 @@ SecurityCam* CreateSecurityCam(float x, float y, float z, Room* r, int screen = 
 
 void UpdateSecurityCams();
 
-Prop* LoadProp(String file, float x, float y, float z, float pitch, float yaw, float roll, float xScale, float yScale, float zScale);
+Prop* LoadProp(const String& file, float x, float y, float z, float pitch, float yaw, float roll, float xScale, float yScale, float zScale);
 
 void CreateMap();
 
@@ -402,7 +402,7 @@ void DetermineRoomTypes(int** layout, int mapDim);
 
 int DetermineRotation(int** layout, int layoutDims, int x, int y);
 
-int CheckRoomOverlap(String roomname, int x, int y);
+int CheckRoomOverlap(const String& roomname, int x, int y);
 
 int GetZone(int y);
 

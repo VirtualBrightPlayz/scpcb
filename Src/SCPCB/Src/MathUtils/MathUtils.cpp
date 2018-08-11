@@ -282,7 +282,7 @@ float EntityScaleZ(Object* entity, int globl) {
     return bbSqr(bbTFormedX() * bbTFormedX() + bbTFormedY() * bbTFormedY() + bbTFormedZ() * bbTFormedZ());
 }
 
-int SeedStringToInt(String seed) {
+int SeedStringToInt(const String& seed) {
     int retVal = 0;
 
     for (int i = 1; i <= seed.size(); i++) {

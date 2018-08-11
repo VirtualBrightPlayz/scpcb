@@ -708,7 +708,7 @@ void ForceSetNPCID(NPC* n, int newID) {
     }
 }
 
-void Console_SpawnNPC(String npcName, int state) {
+void Console_SpawnNPC(const String& npcName, int state) {
     //NPC* n;
 
     // switch (c_input) {
@@ -957,7 +957,7 @@ void ManipulateNPCBones() {
 
 }
 
-String GetNPCManipulationValue(String NPC, String bone, String section, int valuetype) {
+String GetNPCManipulationValue(const String& NPC, String bone, String section, int valuetype) {
     //valuetype determines what type of variable should the Output be returned
     //0 - String
     //1 - Int
@@ -983,7 +983,7 @@ String GetNPCManipulationValue(String NPC, String bone, String section, int valu
 }
 
 // TODO: This is the biggest load of shit ever. Why would you create a function that sometimes returns a float and sometimes returns an integer?
-float TransformNPCManipulationData(String NPC, String bone, String section) {
+float TransformNPCManipulationData(const String& NPC, String bone, String section) {
     //If "section$" = "pitch","yaw" or "roll":
     //	- 0 means "realpitch" value has detected
     //	- 1 means "realyaw" value has detected

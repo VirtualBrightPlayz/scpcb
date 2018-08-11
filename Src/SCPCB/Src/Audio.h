@@ -133,7 +133,7 @@ public:
     float currMusicVolume;
 
     void restoreDefaultMusic();
-    void setNextMusicTrack(String trackName, int fadeOut = true);
+    void setNextMusicTrack(const String& trackName, int fadeOut = true);
     void freeMusic();
     void update();
 };
@@ -178,9 +178,9 @@ void AddPositionalChannel(gxChannel* ref, Camera* cam, Object* ent, float range 
 
 void UpdateChannelList();
 
-Sound* InitializeSound_SM(String fileName);
+Sound* InitializeSound_SM(const String& fileName);
 
-Sound* LoadSound_SM(String fileName);
+Sound* LoadSound_SM(const String& fileName);
 
 gxChannel* PlaySound2(gxSound* snd);
 
@@ -200,7 +200,7 @@ void UpdateRangedSoundOrigin(gxChannel* chn, Camera* cam, Object* entity, float 
 
 void UpdateRangedSoundOrigin_SM(SoundChannel* chn);
 
-gxSound* LoadTempSound(String file);
+gxSound* LoadTempSound(const String& file);
 
 gxSound* LoadEventSound(struct Event* e, String file, int i = 0);
 

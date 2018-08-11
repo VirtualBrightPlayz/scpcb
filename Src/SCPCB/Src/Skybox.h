@@ -7,7 +7,7 @@ class Object;
 namespace CBN {
 
 // Functions.
-MeshModel* sky_CreateSky(String filename, Object* parent = nullptr);
+MeshModel* sky_CreateSky(const String& filename, Object* parent = nullptr);
 
 void UpdateSky();
 

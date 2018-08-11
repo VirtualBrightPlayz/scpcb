@@ -35,7 +35,7 @@ extern int LoadingScreenText;
 extern bbImage* LoadingBack;
 
 // Functions.
-void InitLoadingScreens(String file);
+void InitLoadingScreens(const String& file);
 
 void DrawLoading(int percent, int shortloading = false);
 

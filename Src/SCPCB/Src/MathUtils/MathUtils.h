@@ -1,6 +1,7 @@
 #ifndef MATHUTILS_H_INCLUDED
 #define MATHUTILS_H_INCLUDED
 #include <vector>
+#include <StringType.h>
 
 class MeshModel;
 class Object;
@@ -57,7 +58,7 @@ float EntityScaleY(Object* entity, int globl = false);
 
 float EntityScaleZ(Object* entity, int globl = false);
 
-int SeedStringToInt(class String seed);
+int SeedStringToInt(const String& seed);
 
 float modFloat(float num, float divide);
 

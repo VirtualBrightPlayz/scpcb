@@ -194,13 +194,13 @@ int FindFreeNPCID();
 
 void ForceSetNPCID(NPC* n, int newID);
 
-void Console_SpawnNPC(String npcName, int state = -1);
+void Console_SpawnNPC(const String& npcName, int state = -1);
 
 void ManipulateNPCBones();
 
-String GetNPCManipulationValue(String NPC, String bone, String section, int valuetype = 0);
+String GetNPCManipulationValue(const String& NPC, String bone, String section, int valuetype = 0);
 
-float TransformNPCManipulationData(String NPC, String bone, String section);
+float TransformNPCManipulationData(const String& NPC, String bone, String section);
 
 void NPCSpeedChange(NPC* n);
 

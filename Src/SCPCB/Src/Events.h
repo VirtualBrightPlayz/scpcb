@@ -49,7 +49,7 @@ public:
 };
 
 // Functions.
-Event* CreateEvent(String eventname, String roomname, int id, float prob = 0.0);
+Event* CreateEvent(const String& eventname, String roomname, int id, float prob = 0.0);
 
 void RemoveEvent(Event* e);
 
