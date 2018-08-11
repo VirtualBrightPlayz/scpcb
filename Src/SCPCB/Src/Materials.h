@@ -27,19 +27,19 @@ public:
 
 
 // Functions.
-String StripFilename(String file);
+String StripFilename(const String& file);
 
-Texture* GetTextureFromCache(String name);
+Texture* GetTextureFromCache(const String& name);
 
-struct Material* GetCache(String name);
+struct Material* GetCache(const String& name);
 
-void AddTextureToCache(String name, Texture* texture);
+void AddTextureToCache(const String& name, Texture* texture);
 
 void ClearTextureCache();
 
 void FreeTextureCache();
 
-Texture* LoadRMeshTexture(String roompath, String name, int flags);
+Texture* LoadRMeshTexture(const String& roompath, String name, int flags);
 
 }
 #endif // MATERIALS_H_INCLUDED

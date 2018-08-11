@@ -50,7 +50,7 @@ int IsPaused();
 
 void DrawTiledImageRect(bbImage* img, int srcX, int srcY, int srcwidth, int srcheight, int x, int y, int width, int height);
 
-String rInput(String aString);
+String rInput(const String& aString);
 
 int MouseOn(int x, int y, int width, int height);
 
@@ -72,11 +72,11 @@ float UpdateSlideBar(int x, int y, int width, float value);
 
 void DrawSlideBar(int x, int y, int width, float value);
 
-void RowText(String A, int X, int Y, int W, int H, int align = 0, float Leading = 1);
+void RowText(const String& A, int X, int Y, int W, int H, int align = 0, float Leading = 1);
 
-int LimitText(String txt, int x, int y, int width, int usingAA = true);
+int LimitText(const String& txt, int x, int y, int width, int usingAA = true);
 
-void DrawTooltip(String message);
+void DrawTooltip(const String& message);
 
 void DrawPointer();
 

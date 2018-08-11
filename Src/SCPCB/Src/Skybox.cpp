@@ -10,7 +10,7 @@
 namespace CBN {
 
 // Functions.
-MeshModel* sky_CreateSky(String filename, Object* parent) {
+MeshModel* sky_CreateSky(const String& filename, Object* parent) {
     String fname;
     String direction;
     float x;

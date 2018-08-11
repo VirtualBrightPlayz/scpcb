@@ -37,7 +37,7 @@ extern int ConsoleMusFlush;
 extern int DebugHUD;
 
 // Functions.
-void CreateConsoleMsg(String txt, int r = -1, int g = -1, int b = -1, int isCommand = false);
+void CreateConsoleMsg(const String& txt, int r = -1, int g = -1, int b = -1, int isCommand = false);
 
 void DrawConsole();
 

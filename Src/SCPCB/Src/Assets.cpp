@@ -120,7 +120,7 @@ UIAssets::~UIAssets() {
 UIAssets* uiAssets;
 
 // Functions.
-TextureAssetWrap::TextureAssetWrap(String filePath, int flag) {
+TextureAssetWrap::TextureAssetWrap(const String& filePath, int flag) {
     texture = bbLoadTexture(filePath, flag);
     grabCount = 1;
 
@@ -137,7 +137,7 @@ TextureAssetWrap::~TextureAssetWrap() {
     bbFreeTexture(texture);
 }
 
-TextureAssetWrap* TextureAssetWrap::grab(String filePath, int flag) {
+TextureAssetWrap* TextureAssetWrap::grab(const String& filePath, int flag) {
     for (int i = 0; i<list.size(); i++) {
         if (list[i]->file.equals(filePath)) {
             list[i]->grabCount++;
@@ -168,7 +168,7 @@ void TextureAssetWrap::update() {
     }
 }
 
-ImageAssetWrap::ImageAssetWrap(String filePath) {
+ImageAssetWrap::ImageAssetWrap(const String& filePath) {
     image = bbLoadImage(filePath);
     grabCount = 1;
 
@@ -185,7 +185,7 @@ ImageAssetWrap::~ImageAssetWrap() {
     bbFreeImage(image);
 }
 
-ImageAssetWrap* ImageAssetWrap::grab(String filePath) {
+ImageAssetWrap* ImageAssetWrap::grab(const String& filePath) {
     for (int i = 0; i<list.size(); i++) {
         if (list[i]->file.equals(filePath)) {
             list[i]->grabCount++;
@@ -216,7 +216,7 @@ void ImageAssetWrap::update() {
     }
 }
 
-MeshAssetWrap::MeshAssetWrap(String filePath, bool isAnimated) {
+MeshAssetWrap::MeshAssetWrap(const String& filePath, bool isAnimated) {
     if (isAnimated) {
         mesh = bbLoadAnimMesh(filePath);
     }
@@ -238,7 +238,7 @@ MeshAssetWrap::~MeshAssetWrap() {
     bbFreeEntity(mesh);
 }
 
-MeshAssetWrap* MeshAssetWrap::grab(String filePath, bool isAnimated) {
+MeshAssetWrap* MeshAssetWrap::grab(const String& filePath, bool isAnimated) {
     for (int i = 0; i<list.size(); i++) {
         if (list[i]->file.equals(filePath) && list[i]->animated == isAnimated) {
             list[i]->grabCount++;
@@ -592,7 +592,7 @@ void InitLoadGame() {
             bbFreeEntity(rt->collisionObjs[i]);
         }
         rt->collisionObjs.clear();
-        
+
         bbFreeEntity(rt->opaqueMesh);
         if (rt->alphaMesh!=0) {
             bbFreeEntity(rt->alphaMesh);
@@ -740,7 +740,7 @@ void NullGame() {
 
 }
 
-String GetImagePath(String path) {
+String GetImagePath(const String& path) {
     if (bbFileType(path + ".png") == 1) {
         return path + ".png";
     }

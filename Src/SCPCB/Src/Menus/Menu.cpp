@@ -62,23 +62,24 @@ void DrawTiledImageRect(bbImage* img, int srcX, int srcY, int srcwidth, int srch
 
 }
 
-String rInput(String aString) {
+String rInput(const String& aString) {
     int value = bbGetKey();
     int length = aString.size();
 
+    String retVal = aString;
     if (value == 8) {
         value = 0;
         if (length > 0) {
-            aString = aString.substr(0, length - 1);
+            retVal = retVal.substr(0, length - 1);
         }
     }
 
     if (value == 13 || value == 0) {
-        return aString;
+        return retVal;
     } else if (value > 0 & value < 7 || value > 26 & value < 32 || value == 9) {
-        return aString;
+        return retVal;
     } else {
-        aString = aString + (char)value;
+        retVal = retVal + (char)value;
         return aString;
     }
 }
@@ -246,7 +247,7 @@ void DrawSlideBar(int x, int y, int width, float value) {
     bbText(x + width + (int)(38.0 * MenuScale), y+(int)(4.0*MenuScale), "HIGH");
 }
 
-void RowText(String A, int X, int Y, int W, int H, int align, float Leading) {
+void RowText(const String& A, int X, int Y, int W, int H, int align, float Leading) {
     //Display A$ starting at X,Y - no wider than W And no taller than H (all in pixels).
     //Leading is optional extra vertical spacing in pixels
 
@@ -262,12 +263,13 @@ void RowText(String A, int X, int Y, int W, int H, int align, float Leading) {
     String trimmed;
     int extra;
 
-    while (A.size() > 0) {
-        space = bbInstr(A, " ");
+    String txt = A;
+    while (txt.size() > 0) {
+        space = bbInstr(txt, " ");
         if (space == 0) {
-            space = A.size();
+            space = txt.size();
         }
-        temp = A.substr(0, space);
+        temp = txt.substr(0, space);
         //we might ignore a final space
         trimmed = temp.trim();
         //we haven't ignored it yet
@@ -291,7 +293,7 @@ void RowText(String A, int X, int Y, int W, int H, int align, float Leading) {
             //append it To b$ (which will eventually be printed) And remove it from A$
         } else {
             b = b + temp;
-            A = bbRight(A, A.size() - (temp.size() + extra));
+            txt = bbRight(txt, txt.size() - (temp.size() + extra));
         }
 
         //the Next Line(would be too tall, so leave)
@@ -311,7 +313,7 @@ void RowText(String A, int X, int Y, int W, int H, int align, float Leading) {
     }
 }
 
-int LimitText(String txt, int x, int y, int width, int usingAA) {
+int LimitText(const String& txt, int x, int y, int width, int usingAA) {
     int TextLength;
     int UnFitting;
     int LetterWidth;
@@ -348,7 +350,7 @@ int LimitText(String txt, int x, int y, int width, int usingAA) {
     }
 }
 
-void DrawTooltip(String message) {
+void DrawTooltip(const String& message) {
     float scale = userOptions->screenHeight/768.0;
 
     int width = (bbStringWidth(message))+(int)(20.0*MenuScale);
