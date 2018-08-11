@@ -80,7 +80,7 @@ String rInput(const String& aString) {
         return retVal;
     } else {
         retVal = retVal + (char)value;
-        return aString;
+        return retVal;
     }
 }
 
