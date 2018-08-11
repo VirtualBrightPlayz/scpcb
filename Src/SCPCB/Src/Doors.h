@@ -61,7 +61,7 @@ extern float UpdateDoorsTimer;
 extern int DoorTempID;
 
 // Functions.
-Door* CreateDoor(float x, float y, float z, float angle, Room* room, int open = false, int doorType = DOOR_TYPE_DEF, String tag = "", String code = "");
+Door* CreateDoor(float x, float y, float z, float angle, Room* room, int open = false, int doorType = DOOR_TYPE_DEF, const String& tag = "", const String& code = "");
 
 void UpdateDoors();
 

@@ -87,7 +87,7 @@ void FreeTextureCache() {
     }
 }
 
-Texture* LoadRMeshTexture(const String& roompath, String name, int flags) {
+Texture* LoadRMeshTexture(const String& roompath, const String& name, int flags) {
     Texture* texture = nullptr;
 
     String path = roompath;

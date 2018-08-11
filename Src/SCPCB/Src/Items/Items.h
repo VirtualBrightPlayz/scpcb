@@ -123,7 +123,7 @@ extern int LastItemID;
 extern int itemDistanceTimer;
 
 // Functions.
-void CreateItemTemplate(const String& file, String section);
+void CreateItemTemplate(const String& file, const String& section);
 
 void LoadItemTemplates(const String& file);
 
@@ -145,13 +145,13 @@ void PickItem(Item* item);
 
 void DropItem(Item* item, Inventory* inv);
 
-void AssignTag(Item* item, String tag);
+void AssignTag(Item* item, const String& tag);
 
-void RemoveTag(Item* item, String tag);
+void RemoveTag(Item* item, const String& tag);
 
-int HasTag(Item* item, String tag);
+int HasTag(Item* item, const String& tag);
 
-int IsPlayerWearingItem(struct Player* player, String itemName);
+int IsPlayerWearingItem(struct Player* player, const String& itemName);
 
 void UseItem(Inventory* inv, int index);
 

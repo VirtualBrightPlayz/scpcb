@@ -88,7 +88,7 @@ int LastItemID;
 int itemDistanceTimer = 0;
 
 // Functions.
-void CreateItemTemplate(const String& file, String section) {
+void CreateItemTemplate(const String& file, const String& section) {
     ItemTemplate* it = new ItemTemplate();
     int flags;
 
@@ -524,7 +524,7 @@ void DropItem(Item* item, Inventory* inv) {
     item->picked = false;
 }
 
-void AssignTag(Item* item, String tag) {
+void AssignTag(Item* item, const String& tag) {
     if (HasTag(item, tag)) {
         return;
     }
@@ -544,7 +544,7 @@ void AssignTag(Item* item, String tag) {
     }
 }
 
-void RemoveTag(Item* item, String tag) {
+void RemoveTag(Item* item, const String& tag) {
     int found = false;
     int i;
     for (i = 0; i <= 4; i++) {
@@ -560,7 +560,7 @@ void RemoveTag(Item* item, String tag) {
     }
 }
 
-int HasTag(Item* item, String tag) {
+int HasTag(Item* item, const String& tag) {
     int i;
     for (i = 0; i <= 4; i++) {
         if (item->tags[i].equals(tag)) {
@@ -571,7 +571,7 @@ int HasTag(Item* item, String tag) {
     return false;
 }
 
-int IsPlayerWearingItem(Player* player, String itemName) {
+int IsPlayerWearingItem(Player* player, const String& itemName) {
     for (int i = 0; i <= WORNITEM_SLOT_COUNT-1; i++) {
         if (player->inventory->items[i] != nullptr) {
             if (player->inventory->items[i]->itemTemplate->name.equals(itemName)) {

@@ -405,7 +405,7 @@ gxSound* LoadTempSound(const String& file) {
     return TempSound;
 }
 
-gxSound* LoadEventSound(Event* e, String file, int i) {
+gxSound* LoadEventSound(Event* e, const String& file, int i) {
     if (e->sounds[i] != 0) {
         bbFreeSound(e->sounds[i]);
         e->sounds[i] = 0;

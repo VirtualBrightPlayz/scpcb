@@ -150,7 +150,7 @@ NPC* CreateNPC(int NPCtype, float x, float y, float z) {
     return n;
 }
 
-void LoadOrCopyMesh(NPC* n, String filePath) {
+void LoadOrCopyMesh(NPC* n, const String& filePath) {
     NPC* n2;
     for (int iterator110 = 0; iterator110 < NPC::getListSize(); iterator110++) {
         n2 = NPC::getObject(iterator110);
@@ -956,7 +956,7 @@ void ManipulateNPCBones() {
 
 }
 
-String GetNPCManipulationValue(const String& NPC, String bone, String section, int valuetype) {
+String GetNPCManipulationValue(const String& NPC, const String& bone, const String& section, int valuetype) {
     //valuetype determines what type of variable should the Output be returned
     //0 - String
     //1 - Int
@@ -985,7 +985,7 @@ String GetNPCManipulationValue(const String& NPC, String bone, String section, i
 }
 
 // TODO: This is the biggest load of shit ever. Why would you create a function that sometimes returns a float and sometimes returns an integer?
-float TransformNPCManipulationData(const String& NPC, String bone, String section) {
+float TransformNPCManipulationData(const String& NPC, const String& bone, const String& section) {
     //If "section$" = "pitch","yaw" or "roll":
     //	- 0 means "realpitch" value has detected
     //	- 1 means "realyaw" value has detected
