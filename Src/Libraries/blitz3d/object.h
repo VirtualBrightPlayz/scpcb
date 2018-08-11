@@ -73,6 +73,7 @@ public:
 	const Vector &getVelocity()const;
 	const Collisions &getCollisions()const;
 	virtual const Transform &getRenderTform()const;
+    const Transform &getBaseRenderTform()const;
 	const Transform &getPrevWorldTform()const;
 	int getPickGeometry()const{ return pick_geom; }
 	int getObscurer()const{ return obscurer; }

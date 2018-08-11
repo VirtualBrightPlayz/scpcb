@@ -35,12 +35,11 @@ public:
 	bool render( const RenderContext &rc );
 
 private:
-    bool setMesh = false;
     Transform renderTForm;
 	float xhandle,yhandle;
 	float rot,xscale,yscale;
 	float r_rot,r_xscale,r_yscale;
-	int view_mode,mesh_index;
+	int view_mode;//,mesh_index;
 	bool captured;
 };
 

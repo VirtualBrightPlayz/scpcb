@@ -147,11 +147,15 @@ const Object::Collisions &Object::getCollisions()const{
 	return colls;
 }
 
-const Transform &Object::getRenderTform()const{
+const Transform &Object::getRenderTform()const {
+    return getBaseRenderTform();
+}
+
+const Transform &Object::getBaseRenderTform()const{
 	if( render_tform_valid ) return render_tform;
 
 	Object *parent=(Object*)getParent();
-	render_tform=parent ? parent->getRenderTform() * tween_tform : tween_tform;
+	render_tform=parent ? parent->getBaseRenderTform() * tween_tform : tween_tform;
 	render_tform_valid=true;
 
 	return render_tform;
