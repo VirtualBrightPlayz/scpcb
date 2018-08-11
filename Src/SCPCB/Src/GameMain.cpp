@@ -70,7 +70,7 @@ const int HIT_APACHE = 4;
 const int HIT_DEAD = 5;
 
 // Globals.
-int WireframeState = 1;
+int WireframeState = 0;
 int HalloweenTex;
 Timing* timing;
 float CurrFrameLimit;
@@ -375,6 +375,7 @@ void UpdateGame() {
                 UpdateDoors();
                 UpdateLevers();
                 AssetWrap::update();
+                UpdateRooms();
                 UpdateEvents();
                 UpdateDecals();
                 UpdateMTF();
@@ -749,7 +750,7 @@ void UpdateGUI() {
         mainPlayer->selectedItem = nullptr;
 
         if (shouldDrawHUD) {
-            buttonObj = MeshAssetWrap::grab("GFX/Map/Meshes/Button.b3d");
+            buttonObj = MeshAssetWrap::grab("GFX/Map/Meshes/Button.b3d", false);
             pvt = bbCreatePivot();
             bbPositionEntity(pvt, bbEntityX(mainPlayer->closestButton,true),bbEntityY(mainPlayer->closestButton,true),bbEntityZ(mainPlayer->closestButton,true));
             bbRotateEntity(pvt, 0, bbEntityYaw(mainPlayer->closestButton,true)-180,0);
@@ -1136,7 +1137,7 @@ void DrawGUI() {
         mainPlayer->selectedItem = nullptr;
 
         if (shouldDrawHUD) {
-            buttonObj = MeshAssetWrap::grab("GFX/Map/Meshes/Button.b3d");
+            buttonObj = MeshAssetWrap::grab("GFX/Map/Meshes/Button.b3d", false);
             pvt = bbCreatePivot();
             bbPositionEntity(pvt, bbEntityX(mainPlayer->closestButton,true),bbEntityY(mainPlayer->closestButton,true),bbEntityZ(mainPlayer->closestButton,true));
             bbRotateEntity(pvt, 0, bbEntityYaw(mainPlayer->closestButton,true)-180,0);

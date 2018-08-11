@@ -344,8 +344,6 @@ void InitEvents() {
 void UpdateEvents() {
     mainPlayer->footstepOverride = 0;
 
-    UpdateRooms();
-
     for (int i = 0; i < Event::getListSize(); i++) {
         Event* e = Event::getObject(i);
 

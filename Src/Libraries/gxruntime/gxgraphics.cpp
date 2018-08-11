@@ -246,7 +246,7 @@ gxFont *gxGraphics::loadFont( const String& f,int height,int flags ){
             }
         }
         if( it!=font_res.end() && AddFontResource( t.cstr() ) ) font_res.push_back( t );
-		t=filenamefile( f.substr(0,n).cstr() );
+		t=filenamefile( f.substr(0,n) );
 	}else{
 		t=f.cstr();
 	}

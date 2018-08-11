@@ -122,6 +122,8 @@ UIAssets* uiAssets;
 // Functions.
 TextureAssetWrap::TextureAssetWrap(const String& filePath, int flag) {
     texture = bbLoadTexture(filePath, flag);
+    file = filePath;
+    flags = flag;
     grabCount = 1;
 
     list.push_back(this);
@@ -170,6 +172,7 @@ void TextureAssetWrap::update() {
 
 ImageAssetWrap::ImageAssetWrap(const String& filePath) {
     image = bbLoadImage(filePath);
+    file = filePath;
     grabCount = 1;
 
     list.push_back(this);
@@ -223,6 +226,9 @@ MeshAssetWrap::MeshAssetWrap(const String& filePath, bool isAnimated) {
     else {
         mesh = bbLoadMesh(filePath);
     }
+    bbHideEntity(mesh);
+    file = filePath;
+    animated = isAnimated;
     grabCount = 1;
 
     list.push_back(this);
@@ -609,7 +615,7 @@ void InitLoadGame() {
 
     DrawLoading(100);
 
-    bbWireFrame(true);
+    bbWireFrame(WireframeState);
 }
 
 void NullGame() {

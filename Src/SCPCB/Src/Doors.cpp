@@ -49,17 +49,17 @@ Door* CreateDoor(float x, float y, float z, float angle, Room* room, int open, i
         parent = room->obj;
     }
 
-    MeshAssetWrap* doorObj = MeshAssetWrap::grab("GFX/Map/Meshes/door.b3d");
-    MeshAssetWrap* doorFrameObj = MeshAssetWrap::grab("GFX/Map/Meshes/doorframe.b3d");
-    MeshAssetWrap* doorColl = MeshAssetWrap::grab("GFX/Map/Meshes/doorcoll.b3d");
-    MeshAssetWrap* buttonObj = MeshAssetWrap::grab("GFX/Map/Meshes/button.b3d");
+    MeshAssetWrap* doorObj = MeshAssetWrap::grab("GFX/Map/Meshes/door.b3d", false);
+    MeshAssetWrap* doorFrameObj = MeshAssetWrap::grab("GFX/Map/Meshes/doorframe.b3d", false);
+    MeshAssetWrap* doorColl = MeshAssetWrap::grab("GFX/Map/Meshes/doorcoll.b3d", false);
+    MeshAssetWrap* buttonObj = MeshAssetWrap::grab("GFX/Map/Meshes/button.b3d", false);
 
-    MeshAssetWrap* contDoorLeft = MeshAssetWrap::grab("GFX/Map/Meshes/ContDoorLeft.b3d");
-    MeshAssetWrap* contDoorRight = MeshAssetWrap::grab("GFX/Map/Meshes/ContDoorRight.b3d");
+    MeshAssetWrap* contDoorLeft = MeshAssetWrap::grab("GFX/Map/Meshes/ContDoorLeft.b3d", false);
+    MeshAssetWrap* contDoorRight = MeshAssetWrap::grab("GFX/Map/Meshes/ContDoorRight.b3d", false);
 
     MeshAssetWrap* hczDoorObj[2];
     for (int i = 0; i < 2; i++) {
-        hczDoorObj[i] = MeshAssetWrap::grab("GFX/Map/Meshes/heavydoor" + String(i + 1) + ".b3d");
+        hczDoorObj[i] = MeshAssetWrap::grab("GFX/Map/Meshes/heavydoor" + String(i + 1) + ".b3d", false);
     }
 
     Door* d = new Door();
@@ -109,11 +109,11 @@ Door* CreateDoor(float x, float y, float z, float angle, Room* room, int open, i
 
     for (int i = 0; i < 2; i++) {
         if (!tag.isEmpty()) {
-            MeshAssetWrap* buttonKeyObj = MeshAssetWrap::grab("GFX/Map/Meshes/ButtonKeycard.b3d");
+            MeshAssetWrap* buttonKeyObj = MeshAssetWrap::grab("GFX/Map/Meshes/ButtonKeycard.b3d", false);
             d->buttons[i] = bbCopyMeshModelEntity(buttonKeyObj->getMesh());
             buttonKeyObj->drop();
         } else if (!code.isEmpty()) {
-            MeshAssetWrap* buttonCodeObj = MeshAssetWrap::grab("GFX/Map/Meshes/ButtonCode.b3d");
+            MeshAssetWrap* buttonCodeObj = MeshAssetWrap::grab("GFX/Map/Meshes/ButtonCode.b3d", false);
             d->buttons[i] = bbCopyMeshModelEntity(buttonCodeObj->getMesh());
             bbEntityFX(d->buttons[i], 1);
             buttonCodeObj->drop();

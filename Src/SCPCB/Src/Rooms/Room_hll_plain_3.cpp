@@ -73,8 +73,8 @@ void UpdateEvent106victim(Event* e) {
                 if (e->room->npc[0]==nullptr) {
                     e->room->npc[0] = CreateNPC(NPCtypeD, bbEntityX(e->room->obj), 900.0*RoomScale, bbEntityZ(e->room->obj));
                     bbRotateEntity(e->room->npc[0]->collider, 0, bbRnd(360), 0, true);
-                    tex = bbLoadTexture("GFX/NPCs/106victim.jpg");
-                    e->room->npc[0]->texture = "GFX/NPCs/106victim.jpg";
+                    tex = bbLoadTexture("GFX/NPCs/classd/106victim.jpg");
+                    e->room->npc[0]->texture = "GFX/NPCs/classd/106victim.jpg";
                     bbEntityTexture(e->room->npc[0]->obj, tex);
                     bbFreeTexture(tex);
                     e->room->npc[0]->state = 6;

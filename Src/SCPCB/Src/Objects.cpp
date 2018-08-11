@@ -57,7 +57,7 @@ ElevatorObj* ElevatorObj::getObject(int index) {
 
 // Functions.
 MeshModel* CreateButton(float x, float y, float z, float pitch, float yaw, float roll) {
-    MeshAssetWrap* buttonObj = MeshAssetWrap::grab("GFX/Map/Meshes/button.b3d");
+    MeshAssetWrap* buttonObj = MeshAssetWrap::grab("GFX/Map/Meshes/button.b3d", false);
     MeshModel* obj = bbDeepCopyMesh(buttonObj->getMesh());
     buttonObj->drop();
 
@@ -95,8 +95,8 @@ void UpdateButton(MeshModel* obj) {
 }
 
 Lever* CreateLever() {
-    MeshAssetWrap* leverObj = MeshAssetWrap::grab("GFX/Map/Meshes/leverhandle.b3d");
-    MeshAssetWrap* leverBaseObj = MeshAssetWrap::grab("GFX/Map/Meshes/leverbase.b3d");
+    MeshAssetWrap* leverObj = MeshAssetWrap::grab("GFX/Map/Meshes/leverhandle.b3d", false);
+    MeshAssetWrap* leverBaseObj = MeshAssetWrap::grab("GFX/Map/Meshes/leverbase.b3d", false);
 
     Lever* lever = new Lever();
     lever->obj = bbCopyMeshModelEntity(leverObj->getMesh());
