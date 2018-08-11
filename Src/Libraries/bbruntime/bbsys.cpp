@@ -1,4 +1,4 @@
 #include "bbsys.h"
 
-bool debug;
+bool debug = false;
 gxRuntime *gx_runtime;

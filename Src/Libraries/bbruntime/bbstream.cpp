@@ -62,9 +62,10 @@ String bbReadString( bbStream *s ){
 	int len;
 	String str="";
 	if( s->read( (char*)&len,4 ) ){
-		char *buff=new char[len];
+		char *buff=new char[len+1];
 		if( s->read( buff,len ) ){
-			str=String( buff,len );
+            buff[len]='\0';
+			str=String( buff );
 		}
 		delete[] buff;
 	}
@@ -74,13 +75,14 @@ String bbReadString( bbStream *s ){
 String bbReadLine( bbStream *s ){
 	if( debug ) debugStream( s );
 	unsigned char c;
-	String str="";
+	std::vector<char> str;
 	for(;;){
 		if( s->read( (char*)&c,1 )!=1 ) break;
 		if( c=='\n' ) break;
-		if( c!='\r' ) str=str+String((char)c);
+		if( c!='\r' ) str.push_back((char)c);
 	}
-	return str;
+    str.push_back('\0');
+	return String(str.data());
 }
 
 void bbWriteByte( bbStream *s,int n ){

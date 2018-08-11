@@ -238,7 +238,7 @@ gxFont *gxGraphics::loadFont( const String& f,int height,int flags ){
 	String t;
 	int n=f.findFirst('.');
 	if( n!=-1 ){
-		t=fullfilename(f.cstr());
+		t=fullfilename(f);
         std::vector<String>::iterator it = font_res.end();
         for (int i=0;i<font_res.size();i++){
             if (font_res[i].equals(t)){

@@ -117,7 +117,7 @@ CachedTexture::CachedTexture( const String& f_,int flags,int w,int h,int first,i
 	String f=f_;
 	if( f.substr(0,2).equals(".\\") ) f=f.substr(2);
 	if( path.size() ){
-		String t=path+tolower( filenamefile( f ) );
+		String t=path+filenamefile( f ).toLower();
 		if( rep=findRep( t,flags,w,h,first,cnt ) ) return;
 		rep=new Rep( t,flags,w,h,first,cnt );
 		if( rep->frames.size() ){
@@ -126,7 +126,7 @@ CachedTexture::CachedTexture( const String& f_,int flags,int w,int h,int first,i
 		}
 		delete rep;
 	}
-	String t=tolower( fullfilename( f ) );
+	String t=fullfilename( f ).toLower();
 	if( rep=findRep( t,flags,w,h,first,cnt ) ) return;
 	rep=new Rep( t,flags,w,h,first,cnt );
 	rep_set.insert( rep );

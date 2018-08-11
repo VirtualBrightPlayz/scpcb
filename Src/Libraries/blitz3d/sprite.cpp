@@ -46,7 +46,7 @@ Sprite::Sprite():
 view_mode(VIEW_MODE_FREE),
 xhandle(0),yhandle(0),
 rot(0),xscale(1),yscale(1),captured(false){
-	setRenderSpace( RENDER_SPACE_WORLD );
+	setRenderSpace( RENDER_SPACE_LOCAL );
 	mesh_index=allocIndex();
 }
 
@@ -100,9 +100,14 @@ bool Sprite::beginRender( float tween ){
 	return true;
 }
 
+const Transform &Sprite::getRenderTform()const {
+    return renderTForm;
+}
+
 bool Sprite::render( const RenderContext &rc ){
 
-	Transform t=getRenderTform();
+	Transform& t=renderTForm;
+    t=Object::getRenderTform();
 
 	if( view_mode==VIEW_MODE_FREE ){
 		t.m=rc.getCameraTform().m;
@@ -112,30 +117,37 @@ bool Sprite::render( const RenderContext &rc ){
 		t.m=yawMatrix( matrixYaw( rc.getCameraTform().m ) ) * t.m;
 	}
 
-	t.m=t.m * rollMatrix( r_rot ) * scaleMatrix( r_xscale,r_yscale,1 );
+    t.m=t.m * rollMatrix( r_rot ) * scaleMatrix( r_xscale,r_yscale,1 );
+    t.v += t.m*Vector(-xhandle, -yhandle, 0.0f);
 
 	static Vector verts[4];
-	verts[0]=t * Vector( -1-xhandle, 1-yhandle,0 );
-	verts[1]=t * Vector(  1-xhandle, 1-yhandle,0 );
-	verts[2]=t * Vector(  1-xhandle,-1-yhandle,0 );
-	verts[3]=t * Vector( -1-xhandle,-1-yhandle,0 );
+	verts[0]=t * Vector( -1, 1,0 );
+	verts[1]=t * Vector(  1, 1,0 );
+	verts[2]=t * Vector(  1,-1,0 );
+	verts[3]=t * Vector( -1,-1,0 );
 
 	if( !rc.getWorldFrustum().cull( verts,4 ) ) return false;
-
-	mesh->lock( false );
-	int fv=mesh_index*4,ft=mesh_index*2;
-	mesh->setVertex( fv+0,&verts[0].x,null,tex_coords0 );
-	mesh->setVertex( fv+1,&verts[1].x,null,tex_coords1 );
-	mesh->setVertex( fv+2,&verts[2].x,null,tex_coords2 );
-	mesh->setVertex( fv+3,&verts[3].x,null,tex_coords3 );
-	if( rc.isReflected() ){
-		mesh->setTriangle( ft+0,0,2,1 );
-		mesh->setTriangle( ft+1,0,3,2 );
-	}else{
-		mesh->setTriangle( ft+0,0,1,2 );
-		mesh->setTriangle( ft+1,0,2,3 );
-	}
-	mesh->unlock();
+    int fv = mesh_index * 4, ft = mesh_index * 2;
+    if (!setMesh) {
+        verts[0] = Vector(-1, 1, 0);
+        verts[1] = Vector(1, 1, 0);
+        verts[2] = Vector(1, -1, 0);
+        verts[3] = Vector(-1, -1, 0);
+        setMesh = true;
+	    mesh->lock( false );
+	    mesh->setVertex( fv+0,&verts[0].x,null,tex_coords0 );
+	    mesh->setVertex( fv+1,&verts[1].x,null,tex_coords1 );
+	    mesh->setVertex( fv+2,&verts[2].x,null,tex_coords2 );
+	    mesh->setVertex( fv+3,&verts[3].x,null,tex_coords3 );
+	    if( rc.isReflected() ){
+		    mesh->setTriangle( ft+0,0,2,1 );
+		    mesh->setTriangle( ft+1,0,3,2 );
+	    }else{
+		    mesh->setTriangle( ft+0,0,1,2 );
+		    mesh->setTriangle( ft+1,0,2,3 );
+	    }
+	    mesh->unlock();
+    }
 
 	enqueue( mesh,fv,4,ft,2 );
 	return false;

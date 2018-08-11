@@ -173,14 +173,14 @@ void UpdateEvent_cont_205_1(Event* e) {
                     if (e->eventState2 > 20*70) {
                         e->eventState = e->eventState+1;
                     }
-                }
+                } break;
                 case 3: {
                     //laying down
                     Animate2((MeshModel*)e->room->objects[6], bbAnimTime(e->room->objects[6]), 377, 525, 0.2);
                     if (e->eventState2 > 30*70) {
                         e->eventState = e->eventState+1;
                     }
-                }
+                } break;
                 case 5: {
                     //standing
                     Animate2((MeshModel*)e->room->objects[6], bbAnimTime(e->room->objects[6]), 228, 376, 0.2);
@@ -188,7 +188,7 @@ void UpdateEvent_cont_205_1(Event* e) {
                         e->eventState = e->eventState+1;
                         PlayRangedSound(LoadTempSound("SFX/SCP/205/Horror.ogg"), mainPlayer->cam, e->room->objects[6], 10, 0.3);
                     }
-                }
+                } break;
                 case 7: {
                     //first demon appears
                     bbShowEntity(e->room->objects[5]);
@@ -199,7 +199,7 @@ void UpdateEvent_cont_205_1(Event* e) {
                         e->eventState = e->eventState+1;
                         PlayRangedSound(LoadTempSound("SFX/SCP/205/Horror.ogg"), mainPlayer->cam, e->room->objects[6], 10, 0.5);
                     }
-                }
+                } break;
                 case 9: {
                     //second demon appears
                     bbShowEntity(e->room->objects[4]);
@@ -213,7 +213,7 @@ void UpdateEvent_cont_205_1(Event* e) {
                         e->eventState = e->eventState+1;
                         PlaySound2(LoadTempSound("SFX/SCP/205/Horror.ogg"));
                     }
-                }
+                } break;
                 case 11: {
                     //third demon
                     bbShowEntity(e->room->objects[3]);
@@ -227,7 +227,7 @@ void UpdateEvent_cont_205_1(Event* e) {
                     if (e->eventState2 > 85*70) {
                         e->eventState = e->eventState+1;
                     }
-                }
+                } break;
                 case 13: {
                     if (bbAnimTime(e->room->objects[6])!=227) {
                         bbSetAnimTime(e->room->objects[6], 227);
@@ -236,7 +236,7 @@ void UpdateEvent_cont_205_1(Event* e) {
                     Animate2((MeshModel*)e->room->objects[3], bbAnimTime(e->room->objects[3]), 2, 491, 0.05);
                     Animate2((MeshModel*)e->room->objects[4], bbAnimTime(e->room->objects[4]), 197, 433, 0.05);
                     Animate2((MeshModel*)e->room->objects[5], bbAnimTime(e->room->objects[5]), 2, 433, 0.05);
-                }
+                } break;
                 case 66: {
                     Animate2((MeshModel*)e->room->objects[3], bbAnimTime(e->room->objects[3]), 492, 534, 0.1, false);
                     Animate2((MeshModel*)e->room->objects[4], bbAnimTime(e->room->objects[4]), 434, 466, 0.1, false);
@@ -253,7 +253,7 @@ void UpdateEvent_cont_205_1(Event* e) {
                             bbHideEntity(e->room->objects[1]);
                         }
                     }
-                }
+                } break;
                 case 67: {
                     if (bbRand(150)==1) {
                         DeathMSG = "The SCP-205 cycle seems to have resumed its normal course after the anomalies observed during ";
@@ -276,7 +276,7 @@ void UpdateEvent_cont_205_1(Event* e) {
                     bbTranslateEntity(mainPlayer->collider, e->eventState2,0,e->eventState3);
                     e->eventState2 = CurveValue(e->eventState2, 0, 10.0);
                     e->eventState3 = CurveValue(e->eventState3, 0, 10.0);
-                }
+                } break;
                 default: {
                     if (bbRand(3)==1) {
                         bbHideEntity(e->room->objects[1]);
@@ -290,7 +290,7 @@ void UpdateEvent_cont_205_1(Event* e) {
                         e->eventState = e->eventState+1;
                         e->eventState3 = 0;
                     }
-                }
+                } break;
             }
         }
     } else {

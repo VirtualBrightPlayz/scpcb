@@ -51,22 +51,22 @@ MeshModel* sky_CreateSky(const String& filename, Object* parent) {
             switch (face) {
                 case 1: {
 
-                }
+                } break;
                 case 2: {
 
-                }
+                } break;
                 case 3: {
 
-                }
+                } break;
                 case 4: {
 
-                }
+                } break;
                 case 5: {
 
-                }
+                } break;
                 case 6: {
 
-                }
+                } break;
             }
             bbAddTriangle(s,0,1,2);
             bbAddTriangle(s,0,2,3);

@@ -67,19 +67,19 @@ void FillRoom_pocketdimension(Room* r) {
         switch (n) {
             case 0: {
                 entity = hallway;
-            }
+            } break;
             case 1: {
                 entity = r->objects[8];
-            }
+            } break;
             case 2: {
                 entity = r->objects[9];
-            }
+            } break;
             case 3: {
                 entity = r->objects[10];
-            }
+            } break;
             case 4: {
                 entity = r->objects[11];
-            }
+            } break;
         }
 
         //If (BumpEnabled) Then
@@ -171,19 +171,19 @@ void FillRoom_pocketdimension(Room* r) {
         switch (i) {
             case 12: {
                 bbPositionEntity(r->objects[i],r->x,r->y+200*RoomScale,r->z+64.0,true);
-            }
+            } break;
             case 13: {
                 bbPositionEntity(r->objects[i],r->x+390*RoomScale,r->y+200*RoomScale,r->z+64.0+272*RoomScale,true);
-            }
+            } break;
             case 14: {
                 bbPositionEntity(r->objects[i],r->x+838*RoomScale,r->y+200*RoomScale,r->z+64.0-551*RoomScale,true);
-            }
+            } break;
             case 15: {
                 bbPositionEntity(r->objects[i],r->x-139*RoomScale,r->y+200*RoomScale,r->z+64.0+1201*RoomScale,true);
-            }
+            } break;
             case 16: {
                 bbPositionEntity(r->objects[i],r->x-1238*RoomScale,r->y-1664*RoomScale,r->z+64.0+381*RoomScale,true);
-            }
+            } break;
         }
 
     }
@@ -374,15 +374,15 @@ void UpdateEvent_pocketdimension(Event* e) {
                             case 0: {
                                 x = -1452*RoomScale;
                                 z = -37*RoomScale;
-                            }
+                            } break;
                             case 1: {
                                 x = -121*RoomScale;
                                 z = 188*RoomScale;
-                            }
+                            } break;
                             case 2: {
                                 x = 1223*RoomScale;
                                 z = -196*RoomScale;
-                            }
+                            } break;
                         }
 
                         x = x + bbEntityX(e->room->objects[8],true);
@@ -628,7 +628,7 @@ void UpdateEvent_pocketdimension(Event* e) {
                         bbRotateEntity(e->room->objects[10], 0, bbEntityYaw(pvt), 0, true);
 
                         bbFreeEntity(pvt);
-                    }
+                    } break;
                     case 5:
                     case 6:
                     case 7:
@@ -643,13 +643,13 @@ void UpdateEvent_pocketdimension(Event* e) {
                         bbPositionEntity(mainPlayer->collider, bbEntityX(e->room->objects[8],true), 0.5, bbEntityZ(e->room->objects[8],true));
                         bbResetEntity(mainPlayer->collider);
                         //middle of the large starting room
-                    }
+                    } break;
                     case 11:
                     case 12: {
                         mainPlayer->blurTimer = 500;
                         bbPositionEntity(mainPlayer->collider,bbEntityX(e->room->obj), 0.5, bbEntityZ(e->room->obj));
                         //"exit room"
-                    }
+                    } break;
                     case 13:
                     case 14:
                     case 15: {
@@ -659,7 +659,7 @@ void UpdateEvent_pocketdimension(Event* e) {
 
                         bbPositionEntity(mainPlayer->collider, bbEntityX(e->room->objects[8],true)-400*RoomScale, -304*RoomScale, bbEntityZ(e->room->objects[8],true));
                         bbResetEntity(mainPlayer->collider);
-                    }
+                    } break;
                     case 16:
                     case 17:
                     case 18:
@@ -679,7 +679,7 @@ void UpdateEvent_pocketdimension(Event* e) {
                             }
                         }
                         //the tower room
-                    }
+                    } break;
                     case 20:
                     case 21:
                     case 22: {
@@ -687,7 +687,7 @@ void UpdateEvent_pocketdimension(Event* e) {
                         bbPositionEntity(mainPlayer->collider, bbEntityX(e->room->objects[12],true), 0.6, bbEntityZ(e->room->objects[12],true));
                         bbResetEntity(mainPlayer->collider);
                         e->eventState2 = 15;
-                    }
+                    } break;
                     case 23:
                     case 24:
                     case 25: {
@@ -701,7 +701,7 @@ void UpdateEvent_pocketdimension(Event* e) {
 
                         bbPositionEntity(mainPlayer->collider, bbEntityX(e->room->objects[8],true), 2288*RoomScale, bbEntityZ(e->room->objects[8],true));
                         bbResetEntity(mainPlayer->collider);
-                    }
+                    } break;
                 }
 
                 UpdateDoorsTimer = 0;

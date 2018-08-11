@@ -204,10 +204,10 @@ void DrawLoading(int percent, int shortloading) {
                     switch (bbRand(2)) {
                         case 1: {
                             SelectedLoadingScreen->txt[0] = "It will happen on " + bbCurrentDate() + ".";
-                        }
+                        } break;
                         case 2: {
                             SelectedLoadingScreen->txt[0] = bbCurrentTime();
-                        }
+                        } break;
                     }
                 } else {
                     switch (bbRand(13)) {

@@ -120,8 +120,7 @@ static inline void debugVertex( Surface *s,int n,int t ){
 }
 
 static MeshModel* loadEntity( const String& str,int hint ){
-    String t = str;
-	t=tolower(t);
+    String t = str.toLower();
 	int n=t.findLast( "." );if( n==-1 ) return 0;
 	String ext=t.substr( n+1 );
 	MeshLoader *l;
@@ -291,7 +290,7 @@ void  bbRenderWorld( float tween ){
 	int tris=gx_scene->getTrianglesDrawn();
 	int render_ms=gx_runtime->getMilliSecs();
 	world->render( tween );
-	render_ms=gx_runtime->getMilliSecs()-render_ms;
+	/*render_ms=gx_runtime->getMilliSecs()-render_ms;
 
 	extern int bbKeyHit(int);
 	extern void bbDelay(int);
@@ -324,7 +323,7 @@ void  bbRenderWorld( float tween ){
 
 	String t="FPS:"+t_fps+" UPS:"+t_ups+" RPS:"+t_rps+" TRIS:"+t_tris;
 
-	bbText( 0,bbGraphicsHeight()-bbFontHeight(),t,0,0 );
+	bbText( 0,bbGraphicsHeight()-bbFontHeight(),t,0,0 );*/
 }
 
 int  bbTrisRendered(){

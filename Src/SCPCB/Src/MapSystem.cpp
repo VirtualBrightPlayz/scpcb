@@ -120,8 +120,7 @@ Material* Material::getObject(int index) {
 
 std::vector<RoomTemplate*> RoomTemplate::list;
 RoomTemplate::RoomTemplate() {
-    opaqueMesh = nullptr;
-    alphaMesh = nullptr;
+    memset(this,0,sizeof(RoomTemplate));
 
     list.push_back(this);
 }
@@ -928,6 +927,7 @@ void UpdateRooms() {
 
         if (x<16 & z < 16) {
             for (i = 0; i <= MaxRoomEmitters-1; i++) {
+                std::cout<<i<<"\n";
                 if (r->soundEmitter[i]!=0) {
                     dist = bbEntityDistance(r->soundEmitterObj[i],mainPlayer->collider);
                     if (dist < r->soundEmitterRange[i]) {

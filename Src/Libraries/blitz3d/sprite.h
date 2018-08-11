@@ -31,9 +31,12 @@ public:
 	void setHandle( float x,float y );
 	void setViewmode( int mode );
 
+    const Transform &getRenderTform()const;
 	bool render( const RenderContext &rc );
 
 private:
+    bool setMesh = false;
+    Transform renderTForm;
 	float xhandle,yhandle;
 	float rot,xscale,yscale;
 	float r_rot,r_xscale,r_yscale;

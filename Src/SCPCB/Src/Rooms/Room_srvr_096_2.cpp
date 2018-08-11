@@ -64,16 +64,16 @@ void FillRoom_srvr_096_2(Room* r) {
                 bbPositionEntity(r->levers[n]->obj, r->x - 1260.0 * RoomScale, r->y + 234.0 * RoomScale, r->z + 750 * RoomScale, true);
                 bbPositionEntity(r->levers[n]->baseObj, r->x - 1260.0 * RoomScale, r->y + 234.0 * RoomScale, r->z + 750 * RoomScale, true);
                 //generator fuel pump
-            }
+            } break;
             case 1: {
                 bbPositionEntity(r->levers[n]->obj, r->x - 920.0 * RoomScale, r->y + 164.0 * RoomScale, r->z + 898 * RoomScale, true);
                 bbPositionEntity(r->levers[n]->baseObj, r->x - 920.0 * RoomScale, r->y + 164.0 * RoomScale, r->z + 898 * RoomScale, true);
                 //generator on/off
-            }
+            } break;
             case 2: {
                 bbPositionEntity(r->levers[n]->obj, r->x - 837.0 * RoomScale, r->y + 152.0 * RoomScale, r->z + 886 * RoomScale, true);
                 bbPositionEntity(r->levers[n]->baseObj, r->x - 837.0 * RoomScale, r->y + 152.0 * RoomScale, r->z + 886 * RoomScale, true);
-            }
+            } break;
         }
 
         bbEntityParent(r->levers[n]->obj, r->obj);

@@ -73,11 +73,11 @@ void FillRoom_cont_049_2(Room* r) {
                 bbPositionEntity(r->levers[n]->baseObj, r->x - 328.0 * RoomScale, r->y - 3374.0 * RoomScale, r->z + 916 * RoomScale, true);
 
                 //generator
-            }
+            } break;
             case 1: {
                 bbPositionEntity(r->levers[n]->obj, r->x - 370.0 * RoomScale, r->y - 3400.0 * RoomScale, r->z - 799 * RoomScale, true);
                 bbPositionEntity(r->levers[n]->baseObj, r->x - 370.0 * RoomScale, r->y - 3400.0 * RoomScale, r->z - 799 * RoomScale, true);
-            }
+            } break;
         }
 
         bbEntityParent(r->levers[n]->obj, r->obj);

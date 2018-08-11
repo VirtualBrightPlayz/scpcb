@@ -158,19 +158,19 @@ void UpdateEvent_cont_1162_2c(Event* e) {
                         switch ((int)e->eventState) {
                             case 1: {
                                 itemName = "Lost Key";
-                            }
+                            } break;
                             case 2: {
                                 itemName = "Disciplinary Hearing DH-S-4137-17092";
-                            }
+                            } break;
                             case 3: {
                                 itemName = "Coin";
-                            }
+                            } break;
                             case 4: {
                                 itemName = "Movie Ticket";
-                            }
+                            } break;
                             case 5: {
                                 itemName = "Old Badge";
-                            }
+                            } break;
                         }
 
                         itemExists = false;
@@ -329,19 +329,19 @@ void UpdateEvent_cont_1162_2c(Event* e) {
             switch ((int)e->eventState) {
                 case 1: {
                     it = CreateItem("key",bbEntityX(pp,true),bbEntityY(pp,true),bbEntityZ(pp,true));
-                }
+                } break;
                 case 2: {
                     it = CreateItem("docDH",bbEntityX(pp,true),bbEntityY(pp,true),bbEntityZ(pp,true));
-                }
+                } break;
                 case 3: {
                     it = CreateItem("coin",bbEntityX(pp,true),bbEntityY(pp,true),bbEntityZ(pp,true));
-                }
+                } break;
                 case 4: {
                     it = CreateItem("ticket",bbEntityX(pp,true),bbEntityY(pp,true),bbEntityZ(pp,true));
-                }
+                } break;
                 case 5: {
                     it = CreateItem("badge9341",bbEntityX(pp,true),bbEntityY(pp,true),bbEntityZ(pp,true));
-                }
+                } break;
             }
             bbEntityType(it->collider, HIT_ITEM);
             MouseHit1 = false;

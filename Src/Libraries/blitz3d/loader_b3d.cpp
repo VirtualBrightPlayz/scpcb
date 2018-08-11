@@ -80,12 +80,12 @@ static void readColor( unsigned *t ){
 }
 
 static String readString(){
-	String t;
+	std::vector<char> str;
 	for(;;){
 		char c;
 		read( &c,1 );
-		if( !c ) return t;
-		t=String(t,c);
+		str.push_back(c);
+        if (!c) return String(str.data());
 	}
 }
 

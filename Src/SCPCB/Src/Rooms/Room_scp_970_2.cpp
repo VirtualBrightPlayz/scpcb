@@ -212,13 +212,13 @@ void UpdateEvent_scp_970_2(Event* e) {
                     if (mainPlayer->inventory->items[i]!=nullptr) {
                         RemoveItem(mainPlayer->inventory->items[i]);
                     }
-                }
+                } break;
                 case 5: {
                     mainPlayer->injuries = mainPlayer->injuries + 0.3;
-                }
+                } break;
                 case 10: {
                     de = CreateDecal(DECAL_BLOOD_SPLATTER, bbEntityX(e->room->obj)+bbCos(e->room->angle-90)*760*RoomScale, 0.0005, bbEntityZ(e->room->obj)+bbSin(e->room->angle-90)*760*RoomScale,90,bbRnd(360),0);
-                }
+                } break;
                 case 14: {
                     for (i = 0; i <= mainPlayer->inventory->size-1; i++) {
                         if (mainPlayer->inventory->items[i]!= nullptr) {
@@ -238,12 +238,12 @@ void UpdateEvent_scp_970_2(Event* e) {
                             }
                         }
                     }
-                }
+                } break;
                 case 18: {
                     bbTFormPoint(-344,176, 272, e->room->obj,0);
                     it = CreatePaper("docStrange", bbTFormedX(), bbTFormedY(), bbTFormedZ());
                     bbEntityType(it->collider, HIT_ITEM);
-                }
+                } break;
                 case 25: {
                     e->room->npc[0] = CreateNPC(NPCtypeD, bbEntityX(e->room->obj)+bbCos(e->room->angle-90)*760*RoomScale, 0.35, bbEntityZ(e->room->obj)+bbSin(e->room->angle-90)*760*RoomScale);
                     bbRotateEntity(e->room->npc[0]->collider, 0, e->room->angle-200, 0, true);
@@ -253,7 +253,7 @@ void UpdateEvent_scp_970_2(Event* e) {
                     bbFreeTexture(tex);
                     bbSetAnimTime(e->room->npc[0]->obj,80);
                     e->room->npc[0]->state = 10;
-                }
+                } break;
                 case 30: {
                     i = bbRand(0,mainPlayer->inventory->size);
                     if (mainPlayer->inventory->items[i]!=nullptr) {
@@ -262,7 +262,7 @@ void UpdateEvent_scp_970_2(Event* e) {
                     mainPlayer->inventory->items[i] = CreatePaper("docStrange", 1,1,1);
                     bbHideEntity(mainPlayer->inventory->items[i]->collider);
                     mainPlayer->inventory->items[i]->picked = true;
-                }
+                } break;
                 case 35: {
                     for (i = 0; i <= 3; i++) {
                         de = CreateDecal(DECAL_BLOOD_POOL, e->room->x+bbRnd(-2,2), 700*RoomScale, e->room->z+bbRnd(-2,2), 270, bbRand(360), 0);
@@ -271,27 +271,27 @@ void UpdateEvent_scp_970_2(Event* e) {
                         bbEntityAlpha(de->obj, 0.8);
                         UpdateDecals();
                     }
-                }
+                } break;
                 case 40: {
                     PlaySound2(LoadTempSound("SFX/radio/franklin4.ogg"));
-                }
+                } break;
                 case 50: {
                     e->room->npc[1] = CreateNPC(NPCtypeGuard, bbEntityX(e->room->obj)+bbCos(e->room->angle+90)*600*RoomScale, 0.35, bbEntityZ(e->room->obj)+bbSin(e->room->angle+90)*600*RoomScale);
                     e->room->npc[1]->state = 7;
-                }
+                } break;
                 case 52: {
                     if (e->room->npc[1] != nullptr) {
                         RemoveNPC(e->room->npc[1]);
                         e->room->npc[1] = nullptr;
                     }
-                }
+                } break;
                 case 60: {
                     if (!HalloweenTex) {
                         Texture* tex970 = bbLoadTexture("GFX/npcs/173h.pt", 1);
                         bbEntityTexture(Curr173->obj, tex970, 0, 0);
                         bbFreeTexture(tex970);
                     }
-                }
+                } break;
             }
 
             //TODO: Reimplement

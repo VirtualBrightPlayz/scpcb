@@ -705,7 +705,7 @@ void PlaceForest(Forest* fr, float x, float y, float z, Room* r) {
                         }
 
                         tile_type = ROOM1;
-                    }
+                    } break;
                     case 2: {
                         if (fr->grid[((ty-1)*gridsize)+tx]>0 & fr->grid[((ty+1)*gridsize)+tx]>0) {
                             tile_entity = bbCopyMeshModelEntity(fr->tileMesh[ROOM2]);
@@ -727,7 +727,7 @@ void PlaceForest(Forest* fr, float x, float y, float z, Room* r) {
                             }
                             tile_type = ROOM2C;
                         }
-                    }
+                    } break;
                     case 3: {
                         tile_entity = bbCopyMeshModelEntity(fr->tileMesh[ROOM3]);
 
@@ -740,14 +740,14 @@ void PlaceForest(Forest* fr, float x, float y, float z, Room* r) {
                         }
 
                         tile_type = ROOM3;
-                    }
+                    } break;
                     case 4: {
                         tile_entity = bbCopyMeshModelEntity(fr->tileMesh[ROOM4]);
                         tile_type = ROOM4;
-                    }
+                    } break;
                     default: {
                         std::cout << "tile_type: "+String(tile_type);
-                    }
+                    } break;
                 }
 
                 if (tile_type > 0) {

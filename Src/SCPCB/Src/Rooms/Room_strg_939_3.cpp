@@ -136,15 +136,15 @@ void FillRoom_strg_939_3(Room* r) {
         case 1: {
             x = 2312;
             z = -952;
-        }
+        } break;
         case 2: {
             x = 3032;
             z = 1288;
-        }
+        } break;
         case 3: {
             x = 2824;
             z = 2808;
-        }
+        } break;
     }
 
     it = CreateItem("nvgoggles", r->x + 1936.0 * RoomScale, r->y - 5496.0 * RoomScale, r->z - 944.0 * RoomScale);

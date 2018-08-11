@@ -255,7 +255,7 @@ bool MeshModel::render( const RenderContext &rc ){
 		Surface *s=rep->surfaces[k];
 		if( brushes[k].getBlend()==gxScene::BLEND_REPLACE ){
 			if( gxMesh *mesh=s->getMesh( surf_bones ) ){
-				enqueue( mesh,0,s->numVertices(),0,s->numTriangles(),brushes[k] );
+                enqueue( mesh,0,s->numVertices(),0,s->numTriangles(),brushes[k] );
 			}
 		}else{
 			trans=true;

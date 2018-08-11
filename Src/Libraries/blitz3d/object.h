@@ -72,7 +72,7 @@ public:
 	int getOrder()const{ return order; }
 	const Vector &getVelocity()const;
 	const Collisions &getCollisions()const;
-	const Transform &getRenderTform()const;
+	virtual const Transform &getRenderTform()const;
 	const Transform &getPrevWorldTform()const;
 	int getPickGeometry()const{ return pick_geom; }
 	int getObscurer()const{ return obscurer; }
