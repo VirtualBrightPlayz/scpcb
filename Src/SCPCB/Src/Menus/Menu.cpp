@@ -93,38 +93,37 @@ int MouseOn(int x, int y, int width, int height) {
     return false;
 }
 
-String UpdateInputBox(int x, int y, int width, int height, String Txt, int ID) {
-    int MouseOnBox = false;
+String UpdateInputBox(int x, int y, int width, int height, const String& txt, int ID) {
+    bool mouseOnBox = false;
     if (MouseOn(x, y, width, height)) {
-        MouseOnBox = true;
+        mouseOnBox = true;
         if (MouseHit1) {
             SelectedInputBox = ID;
             bbFlushKeys();
         }
     }
 
-    if ((!MouseOnBox) & MouseHit1 & SelectedInputBox == ID) {
+    if (!mouseOnBox && MouseHit1 && SelectedInputBox == ID) {
         SelectedInputBox = 0;
     }
 
+    String retVal = txt;
     if (SelectedInputBox == ID) {
-        Txt = rInput(Txt);
+        retVal = rInput(txt);
     }
 
-    return Txt;
+    return retVal;
 }
 
-void DrawInputBox(int x, int y, int width, int height, String Txt, int ID) {
+void DrawInputBox(int x, int y, int width, int height, const String& txt, int ID) {
     //TextBox(x,y,width,height,Txt$)
     bbColor(255, 255, 255);
     DrawTiledImageRect(uiAssets->tileWhite, (x % 256), (y % 256), 512, 512, x, y, width, height);
     //Rect(x, y, width, height)
     bbColor(0, 0, 0);
 
-    int MouseOnBox = false;
     if (MouseOn(x, y, width, height)) {
         bbColor(50, 50, 50);
-        MouseOnBox = true;
     }
 
     bbRect(x + 2, y + 2, width - 4, height - 4);
@@ -132,11 +131,11 @@ void DrawInputBox(int x, int y, int width, int height, String Txt, int ID) {
 
     if (SelectedInputBox == ID) {
         if ((TimeInPosMilliSecs() % 800) < 400) {
-            bbRect(x + width / 2 + bbStringWidth(Txt) / 2 + 2, y + height / 2 - 5, 2, 12);
+            bbRect(x + width / 2 + bbStringWidth(txt) / 2 + 2, y + height / 2 - 5, 2, 12);
         }
     }
 
-    bbText(x + width / 2, y + height / 2, Txt, true, true);
+    bbText(x + width / 2, y + height / 2, txt, true, true);
 }
 
 void DrawFrame(int x, int y, int width, int height, int xoffset, int yoffset) {
@@ -146,7 +145,7 @@ void DrawFrame(int x, int y, int width, int height, int xoffset, int yoffset) {
     DrawTiledImageRect(uiAssets->tileBlack, yoffset, (y % 256), 512, 512, x+(int)(3*MenuScale), y+(int)(3*MenuScale), width-(int)(6*MenuScale), height-(int)(6*MenuScale));
 }
 
-void DrawUIButton(int x, int y, int width, int height, String txt, int bigfont) {
+void DrawUIButton(int x, int y, int width, int height, const String& txt, int bigfont) {
 
     DrawFrame (x, y, width, height);
     if (MouseOn(x, y, width, height)) {
@@ -166,7 +165,7 @@ void DrawUIButton(int x, int y, int width, int height, String txt, int bigfont) 
     bbText(x + width / 2, y + height / 2, txt, true, true);
 }
 
-int UpdateUIButton(int x, int y, int width, int height, String txt, int waitForMouseUp) {
+int UpdateUIButton(int x, int y, int width, int height, const String& txt, int waitForMouseUp) {
     int clicked = false;
 
     if (MouseOn(x, y, width, height)) {

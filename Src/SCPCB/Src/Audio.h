@@ -202,7 +202,7 @@ void UpdateRangedSoundOrigin_SM(SoundChannel* chn);
 
 gxSound* LoadTempSound(const String& file);
 
-gxSound* LoadEventSound(struct Event* e, String file, int i = 0);
+gxSound* LoadEventSound(struct Event* e, const String& file, int i = 0);
 
 void PauseSounds();
 

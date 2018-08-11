@@ -1438,7 +1438,7 @@ MeshModel* CreateLine(float x1, float y1, float z1, float x2, float y2, float z2
     return mesh;
 }
 
-Screen* CreateScreen(float x, float y, float z, String imgpath, Room* r) {
+Screen* CreateScreen(float x, float y, float z, const String& imgpath, Room* r) {
     Screen* s = new Screen();
     s->obj = bbCreatePivot();
     bbEntityPickMode(s->obj, 1);

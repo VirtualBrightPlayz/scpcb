@@ -386,7 +386,7 @@ int FindPath(struct NPC* n, float x, float y, float z); //TODO: move to NPCs.h?
 
 MeshModel* CreateLine(float x1, float y1, float z1, float x2, float y2, float z2, MeshModel* mesh = nullptr);
 
-Screen* CreateScreen(float x, float y, float z, String imgpath, Room* r);
+Screen* CreateScreen(float x, float y, float z, const String& imgpath, Room* r);
 
 void UpdateScreens();
 

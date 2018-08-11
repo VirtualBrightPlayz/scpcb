@@ -168,7 +168,7 @@ extern NPC* Curr096;
 // Functions.
 NPC* CreateNPC(int NPCtype, float x, float y, float z);
 
-void LoadOrCopyMesh(NPC* n, String filePath);
+void LoadOrCopyMesh(NPC* n, const String& filePath);
 
 void RemoveNPC(NPC* n);
 
@@ -198,9 +198,9 @@ void Console_SpawnNPC(const String& npcName, int state = -1);
 
 void ManipulateNPCBones();
 
-String GetNPCManipulationValue(const String& NPC, String bone, String section, int valuetype = 0);
+String GetNPCManipulationValue(const String& NPC, const String& bone, const String& section, int valuetype = 0);
 
-float TransformNPCManipulationData(const String& NPC, String bone, String section);
+float TransformNPCManipulationData(const String& NPC, const String& bone, const String& section);
 
 void NPCSpeedChange(NPC* n);
 
