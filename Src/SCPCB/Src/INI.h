@@ -24,15 +24,15 @@ private:
 
     String name;
 public:
-    INIFile(String filename);
+    INIFile(const String& filename);
     ~INIFile();
     static int getListSize();
     static INIFile* getObject(int index);
 
     String getName();
 
-    String getValue(String section, String key, String defaultValue);
-    void setValue(String section, String key, String value);
+    String getValue(const String& section, String key, String defaultValue);
+    void setValue(const String& section, String key, String value);
 
     void save();
 
@@ -41,13 +41,13 @@ public:
 };
 
 // Functions.
-String GetINIString(String file, String section, String parameter, String defaultValue = "");
+String GetINIString(const String& file, String section, String parameter, String defaultValue = "");
 
-int GetINIInt(String file, String section, String parameter, int defaultvalue = 0);
+int GetINIInt(const String& file, String section, String parameter, int defaultvalue = 0);
 
-float GetINIFloat(String file, String section, String parameter, float defaultvalue = 0.0);
+float GetINIFloat(const String& file, String section, String parameter, float defaultvalue = 0.0);
 
-void PutINIValue(String file, String INI_sSection, String INI_sKey, String INI_sValue);
+void PutINIValue(const String& file, String INI_sSection, String INI_sKey, String INI_sValue);
 
 }
 #endif // INI_H_INCLUDED

@@ -46,7 +46,7 @@ int LoadingScreenText;
 bbImage* LoadingBack;
 
 // Functions.
-void InitLoadingScreens(String file) {
+void InitLoadingScreens(const String& file) {
     String TemporaryString;
     int i;
     LoadingScreen* ls;

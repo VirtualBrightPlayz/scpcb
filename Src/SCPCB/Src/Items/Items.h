@@ -123,9 +123,9 @@ extern int LastItemID;
 extern int itemDistanceTimer;
 
 // Functions.
-void CreateItemTemplate(String file, String section);
+void CreateItemTemplate(const String& file, String section);
 
-void LoadItemTemplates(String file);
+void LoadItemTemplates(const String& file);
 
 Inventory* CreateInventory(int size);
 
@@ -133,9 +133,9 @@ void DeleteInventory(Inventory* inv);
 
 int CountItemsInInventory(Inventory* inv);
 
-Item* CreateItem(String name, float x, float y, float z, int invSlots = 0);
+Item* CreateItem(const String& name, float x, float y, float z, int invSlots = 0);
 
-Item* CreatePaper(String name, float x, float y, float z);
+Item* CreatePaper(const String& name, float x, float y, float z);
 
 void RemoveItem(Item* i);
 

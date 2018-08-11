@@ -88,7 +88,7 @@ int LastItemID;
 int itemDistanceTimer = 0;
 
 // Functions.
-void CreateItemTemplate(String file, String section) {
+void CreateItemTemplate(const String& file, String section) {
     ItemTemplate* it = new ItemTemplate();
     int flags;
 
@@ -215,7 +215,7 @@ void CreateItemTemplate(String file, String section) {
     bbHideEntity(it->obj);
 }
 
-void LoadItemTemplates(String file) {
+void LoadItemTemplates(const String& file) {
     bbFile* f = bbOpenFile(file);
     ItemTemplate* it;
     String section;
@@ -259,7 +259,7 @@ int CountItemsInInventory(Inventory* inv) {
     return retVal;
 }
 
-Item* CreateItem(String name, float x, float y, float z, int invSlots) {
+Item* CreateItem(const String& name, float x, float y, float z, int invSlots) {
     Item* i = new Item();
     ItemTemplate* it;
 
@@ -308,7 +308,7 @@ Item* CreateItem(String name, float x, float y, float z, int invSlots) {
     return i;
 }
 
-Item* CreatePaper(String name, float x, float y, float z) {
+Item* CreatePaper(const String& name, float x, float y, float z) {
     Item* i = CreateItem("paper", x, y, z, 0);
     i->name = GetINIString("Data/Items/paper.ini", name, "name");
 

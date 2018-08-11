@@ -104,7 +104,7 @@ Event* Event::getObject(int index) {
 }
 
 // Functions.
-Event* CreateEvent(String eventname, String roomname, int id, float prob) {
+Event* CreateEvent(const String& eventname, String roomname, int id, float prob) {
     //roomname = the name of the room(s) you want the event to be assigned to
 
     //the id-variable determines which of the rooms the event is assigned to,

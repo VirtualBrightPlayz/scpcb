@@ -5,11 +5,11 @@
 namespace CBN {
 
 // Functions.
-void SaveGame(String file) {
+void SaveGame(const String& file) {
     throw ("TODO: reimplement");
 }
 
-void LoadGame(String file, int quick) {
+void LoadGame(const String& file, int quick) {
     throw ("TODO: reimplement");
 }
 
@@ -21,7 +21,7 @@ void LoadSavedMaps() {
     throw ("TODO: reimplement");
 }
 
-void LoadMap(String file) {
+void LoadMap(const String& file) {
     throw ("TODO: reimplement");
 }
 

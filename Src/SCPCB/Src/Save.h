@@ -5,15 +5,15 @@
 namespace CBN {
 
 // Functions.
-void SaveGame(String file);
+void SaveGame(const String& file);
 
-void LoadGame(String file, int quick = false);
+void LoadGame(const String& file, int quick = false);
 
 void LoadSaveGames();
 
 void LoadSavedMaps();
 
-void LoadMap(String file);
+void LoadMap(const String& file);
 
 }
 #endif // SAVE_H_INCLUDED

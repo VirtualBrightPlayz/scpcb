@@ -132,7 +132,7 @@ void Launcher::draw() {
             }
 
             bbColor(0, 0, 0);
-            bbText(x, y, (String(this->resWidths[i - 1]) + "x" + String(this->resHeights[i - 1])));
+            bbText(x, y, String(this->resWidths[i - 1]) + "x" + String(this->resHeights[i - 1]));
             if (MouseOn(x - 1, y - 1, 100, 20)) {
                 bbColor(100, 100, 100);
                 bbRect(x - 1, y - 1, 100, 20, false);

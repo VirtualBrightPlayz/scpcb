@@ -119,18 +119,18 @@ public:
 
     float dropSpeed;
     int gravity;
-    float gravityMult = 1.0;
+    float gravityMult = 1.0f;
 
     //TODO: Deprecate in favor of terminalVelocity.
-    float maxGravity = 0.2;
+    float maxGravity = 0.2f;
 
-    float terminalVelocity = 0.2;
+    float terminalVelocity = 0.2f;
 
     //TODO: Move this to DataMTF
     int mtfVariant;
     NPC* mtfLeader;
     int isDead;
-    float blinkTimer = 1.0;
+    float blinkTimer = 1.0f;
     int ignorePlayer;
 
     //TODO: Deprecate.
@@ -194,13 +194,13 @@ int FindFreeNPCID();
 
 void ForceSetNPCID(NPC* n, int newID);
 
-void Console_SpawnNPC(String npcName, int state = -1);
+void Console_SpawnNPC(const String& npcName, int state = -1);
 
 void ManipulateNPCBones();
 
-String GetNPCManipulationValue(String NPC, String bone, String section, int valuetype = 0);
+String GetNPCManipulationValue(const String& NPC, String bone, String section, int valuetype = 0);
 
-float TransformNPCManipulationData(String NPC, String bone, String section);
+float TransformNPCManipulationData(const String& NPC, String bone, String section);
 
 void NPCSpeedChange(NPC* n);
 
