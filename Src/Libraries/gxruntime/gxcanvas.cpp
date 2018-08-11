@@ -313,7 +313,7 @@ void gxCanvas::line( int x0,int y0,int x1,int y1 ){
 
 	while( true ){
 		clip0=0;clip1=0;
-		
+
 		if(y0>cy1)clip0|=1;else if(y0<cy0)clip0|=2;
 		if(x0>cx1)clip0|=4;else if(x0<cx0)clip0|=8;
 		if(y1>cy1)clip1|=1;else if(y1<cy0)clip1|=2;
@@ -355,7 +355,7 @@ void gxCanvas::line( int x0,int y0,int x1,int y1 ){
 			setPixelFast( x0,y0,color_argb );
 			y0+=sy;ddf+=padj;if( ddf>=0 ){ x0+=sx;ddf-=sadj; }
 		}
-	
+
 	}
 	unlock();
 }

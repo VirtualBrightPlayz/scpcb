@@ -3,7 +3,7 @@
 //
 // Design and implementation by
 // - Floris van den Berg (flvdberg@wxs.nl)
-// 
+//
 // Based on pascal code developed by Alex Kwak
 //
 // This file is part of FreeImage 2
@@ -24,7 +24,7 @@
 #pragma warning (disable : 4244)
 
 #include <stdlib.h>
-#include <memory.h> 
+#include <memory.h>
 
 #include "FreeImage.h"
 #include "Utilities.h"
@@ -109,7 +109,7 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 	int start_scan_line = 0;
 
 	// to make absolute seeks possible we store the current position in the file
-	
+
 	long offset_in_file = io.tell_proc(handle);
 	long seek;
 
@@ -142,12 +142,12 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 	// allocate the dib and write out the header
 
 	FIBITMAP *dib = freeimage.allocate_proc(width, height, bpp, 0xFF, 0xFF00, 0xFF0000);
-	
+
 	// check if the PCD is bottom-up
 
 	if (VerticalOrientation(io, handle)) {
 		scan_line_add = -1;
-		start_scan_line = height - 1;		
+		start_scan_line = height - 1;
 	}
 
 	// temporary stuff to load PCD

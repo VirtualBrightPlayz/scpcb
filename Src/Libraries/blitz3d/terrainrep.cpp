@@ -191,7 +191,7 @@ void TerrainRep::setHeight( int x,int z,float h,bool realtime ){
 }
 
 Vector TerrainRep::getNormal( int x,int z )const{
-	Vector 
+	Vector
 		vt( x,getHeight(x,z),z ),
 		v0( x,getHeight(x,z-1),z-1 ),
 		v1( x+1,getHeight(x+1,z),z ),
@@ -517,7 +517,7 @@ bool TerrainRep::collide( const Line &line,Collision *curr_coll,const Transform 
 	b.update( v2.v );
 
 	if( id>=end_tri_id || !errors[id].error ){
-		return ::clip( l,b ) ? 
+		return ::clip( l,b ) ?
 		curr_coll->triangleCollide( line,0,tform*v0.v,tform*v2.v,tform*v1.v )
 		: false;
 	}
@@ -566,7 +566,7 @@ bool TerrainRep::collide( const Line &line,float radius,Collision *curr_coll,con
 
 	if( !radius ){
 		Line l=-tform * line;
-		return 
+		return
 		collide( line,curr_coll,tform,2,v1,v2,v0,l )|
 		collide( line,curr_coll,tform,3,v3,v0,v2,l );
 	}
@@ -576,7 +576,7 @@ bool TerrainRep::collide( const Line &line,float radius,Collision *curr_coll,con
 	b.expand( radius );
 	Box box=-tform * b;
 
-	return 
+	return
 	collide( line,radius,curr_coll,tform,2,v1,v2,v0,box )|
 	collide( line,radius,curr_coll,tform,3,v3,v0,v2,box );
 }

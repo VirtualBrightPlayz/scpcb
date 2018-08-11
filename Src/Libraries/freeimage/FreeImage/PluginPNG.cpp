@@ -24,7 +24,7 @@
 #include "Utilities.h"
 
 #include <stdlib.h>
-#include <memory.h> 
+#include <memory.h>
 
 // ----------------------------------------------------------
 
@@ -41,8 +41,8 @@ static FreeImageIO *s_io;
 static fi_handle s_handle;
 
 /////////////////////////////////////////////////////////////////////////////
-// libpng interface 
-// 
+// libpng interface
+//
 
 static void
 _ReadProc(struct png_struct_def *, unsigned char *data, size_t size) {
@@ -134,7 +134,7 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 	s_handle = handle;
 
 	if (handle) {
-		try {		
+		try {
 			// check to see if the file is in fact a PNG file
 
 			unsigned char png_check[PNG_BYTES_TO_CHECK];
@@ -143,13 +143,13 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 
 			if (png_sig_cmp(png_check, (png_size_t)0, PNG_BYTES_TO_CHECK) != 0)
 				return NULL;	// Bad signature
-			
+
 			// create the chunk manage structure
 
 			png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, (png_voidp)error_handler, error_handler, warning_handler);
 
 			if (!png_ptr)
-				return NULL;			
+				return NULL;
 
 			// create the info structure
 
@@ -202,7 +202,7 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 					if ((bpp == 2) || (bpp == 4)) {
 						png_set_packing(png_ptr);
 						bpp = 8;
-					}					
+					}
 
 					break;
 
@@ -236,7 +236,7 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 				else
 					png_set_background(png_ptr, &my_background, PNG_BACKGROUND_GAMMA_SCREEN, 0, 1.0);
 			}
-			
+
 			// if this image has transparency, store the trns values
 
 			png_bytep trans               = NULL;
@@ -290,7 +290,7 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 					// store the transparency table
 
 					if (png_get_valid(png_ptr, info_ptr, PNG_INFO_tRNS))
-						freeimage.set_transparency_table_proc(dib, (BYTE *)trans, num_trans);					
+						freeimage.set_transparency_table_proc(dib, (BYTE *)trans, num_trans);
 
 					break;
 
@@ -310,7 +310,7 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 					// store the transparency table
 
 					if (png_get_valid(png_ptr, info_ptr, PNG_INFO_tRNS))
-						freeimage.set_transparency_table_proc(dib, (BYTE *)trans, num_trans);					
+						freeimage.set_transparency_table_proc(dib, (BYTE *)trans, num_trans);
 
 					break;
 			}
@@ -319,7 +319,7 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 
 			if (png_get_valid(png_ptr,info_ptr,PNG_INFO_pHYs)) {
 				png_uint_32 res_x, res_y;
-				
+
 				// We'll overload this var and use 0 to mean no phys data,
 				// since if it's not in meters we can't use it anyway
 
@@ -341,7 +341,7 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 
 			if (!row_pointers) {
 				if (palette)
-					png_free(png_ptr, palette);				
+					png_free(png_ptr, palette);
 
 				png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
 
@@ -352,8 +352,8 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 
 			// read in the bitmap bits via the pointer table
 
-			for (png_uint_32 k = 0; k < height; k++)				
-				row_pointers[height - 1 - k] = freeimage.get_scanline_proc(dib, k);			
+			for (png_uint_32 k = 0; k < height; k++)
+				row_pointers[height - 1 - k] = freeimage.get_scanline_proc(dib, k);
 
 			png_read_image(png_ptr, row_pointers);
 
@@ -364,7 +364,7 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 					freeimage.set_transparent_proc(dib, TRUE);
 				else
 					freeimage.set_transparent_proc(dib, FALSE);
-				
+
 			// cleanup
 
 			if (row_pointers)
@@ -379,18 +379,18 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 		} catch (const char *text) {
 			if (png_ptr)
 				png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp)NULL);
-			
+
 			if (row_pointers)
 				free(row_pointers);
 
 			if (dib)
-				freeimage.free_proc(dib);			
+				freeimage.free_proc(dib);
 
 			freeimage.output_message_proc(s_format_id, text);
-			
+
 			return NULL;
 		}
-	}			
+	}
 
 	return NULL;
 }
@@ -454,7 +454,7 @@ Save(FreeImage &freeimage, FreeImageIO &io, FIBITMAP *dib, fi_handle handle, int
 			if ((res_x > 0) && (res_y > 0))  {
 				png_set_pHYs(png_ptr, info_ptr, res_x, res_y, 1);
 			}
-	
+
 			// Set the image information here.  Width and height are up to 2^31,
 			// bit_depth is one of 1, 2, 4, 8, or 16, but valid values also depend on
 			// the color_type selected. color_type is one of PNG_COLOR_TYPE_GRAY,
@@ -465,7 +465,7 @@ Save(FreeImage &freeimage, FreeImageIO &io, FIBITMAP *dib, fi_handle handle, int
 
 			width = freeimage.get_width_proc(dib);
 			height = freeimage.get_height_proc(dib);
-			bpp = bit_depth = freeimage.get_bpp_proc(dib);			
+			bpp = bit_depth = freeimage.get_bpp_proc(dib);
 
 			if (bit_depth == 16) {
 				png_destroy_write_struct(&png_ptr, &info_ptr);
@@ -484,15 +484,15 @@ Save(FreeImage &freeimage, FreeImageIO &io, FIBITMAP *dib, fi_handle handle, int
 					png_set_invert_mono(png_ptr);
 
 				case FIC_MINISBLACK:
-					png_set_IHDR(png_ptr, info_ptr, width, height, bit_depth, 
-						PNG_COLOR_TYPE_GRAY, interlace_type, 
+					png_set_IHDR(png_ptr, info_ptr, width, height, bit_depth,
+						PNG_COLOR_TYPE_GRAY, interlace_type,
 						PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
 					break;
 
 				case FIC_PALETTE:
 				{
-					png_set_IHDR(png_ptr, info_ptr, width, height, bit_depth, 
-						PNG_COLOR_TYPE_PALETTE, interlace_type, 
+					png_set_IHDR(png_ptr, info_ptr, width, height, bit_depth,
+						PNG_COLOR_TYPE_PALETTE, interlace_type,
 						PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
 
 					// set the palette
@@ -506,7 +506,7 @@ Save(FreeImage &freeimage, FreeImageIO &io, FIBITMAP *dib, fi_handle handle, int
 						palette[i].green = pal[i].rgbGreen;
 						palette[i].blue  = pal[i].rgbBlue;
 					}
-					
+
 					png_set_PLTE(png_ptr, info_ptr, palette, palette_entries);
 
 					// You must not free palette here, because png_set_PLTE only makes a link to
@@ -520,8 +520,8 @@ Save(FreeImage &freeimage, FreeImageIO &io, FIBITMAP *dib, fi_handle handle, int
 					if (freeimage.is_transparent_proc(dib)) {
 						has_alpha_channel = TRUE;
 
-						png_set_IHDR(png_ptr, info_ptr, width, height, bit_depth, 
-							PNG_COLOR_TYPE_RGBA, interlace_type, 
+						png_set_IHDR(png_ptr, info_ptr, width, height, bit_depth,
+							PNG_COLOR_TYPE_RGBA, interlace_type,
 							PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
 
 						png_set_bgr(png_ptr); // flip BGR pixels to RGB
@@ -529,10 +529,10 @@ Save(FreeImage &freeimage, FreeImageIO &io, FIBITMAP *dib, fi_handle handle, int
 					}
 
 					// intentionally no break here...
-					
+
 				case FIC_RGB:
-					png_set_IHDR(png_ptr, info_ptr, width, height, bit_depth, 
-						PNG_COLOR_TYPE_RGB, interlace_type, 
+					png_set_IHDR(png_ptr, info_ptr, width, height, bit_depth,
+						PNG_COLOR_TYPE_RGB, interlace_type,
 						PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
 
 					png_set_bgr(png_ptr); // flip BGR pixels to RGB
@@ -545,7 +545,7 @@ Save(FreeImage &freeimage, FreeImageIO &io, FIBITMAP *dib, fi_handle handle, int
 
 			if ((freeimage.get_bpp_proc(dib) == 8) && (freeimage.is_transparent_proc(dib)) && (freeimage.get_transparency_count_proc(dib) > 0))
 				png_set_tRNS(png_ptr, info_ptr, freeimage.get_transparency_table_proc(dib), freeimage.get_transparency_count_proc(dib), NULL);
-			
+
 			// Write the file header information.
 
 			png_write_info(png_ptr, info_ptr);
@@ -578,7 +578,7 @@ Save(FreeImage &freeimage, FreeImageIO &io, FIBITMAP *dib, fi_handle handle, int
 			png_destroy_write_struct(&png_ptr, &info_ptr);
 
 			if (palette)
-				png_free(png_ptr, palette);			
+				png_free(png_ptr, palette);
 
 			return TRUE;
 		} catch (const char *text) {

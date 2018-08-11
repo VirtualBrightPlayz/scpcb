@@ -118,14 +118,14 @@ FreeImage_GetColorType(FIBITMAP *dib) {
 				rgb++;
 
 				if ((rgb->rgbRed == 255) && (rgb->rgbGreen == 255) && (rgb->rgbBlue == 255))
-					return FIC_MINISBLACK;				
+					return FIC_MINISBLACK;
 			}
 
 			if ((rgb->rgbRed == 255) && (rgb->rgbGreen == 255) && (rgb->rgbBlue == 255)) {
 				rgb++;
 
 				if ((rgb->rgbRed == 0) && (rgb->rgbGreen == 0) && (rgb->rgbBlue == 0))
-					return FIC_MINISWHITE;				
+					return FIC_MINISWHITE;
 			}
 
 			return FIC_PALETTE;
@@ -138,19 +138,19 @@ FreeImage_GetColorType(FIBITMAP *dib) {
 
 			for (unsigned i = 0; i < FreeImage_GetColorsUsed(dib); i++) {
 				if ((rgb->rgbRed != rgb->rgbGreen) || (rgb->rgbRed != rgb->rgbBlue))
-					return FIC_PALETTE;		
+					return FIC_PALETTE;
 
 				// The DIB has a color palette if the greyscale isn't a linear ramp
 
 				if (rgb->rgbRed != i)
-					return FIC_PALETTE;				
+					return FIC_PALETTE;
 
 				rgb++;
 			}
 
 			return FIC_MINISBLACK;
 		}
-		
+
 		case 16:
 		case 24:
 			return FIC_RGB;
@@ -162,12 +162,12 @@ FreeImage_GetColorType(FIBITMAP *dib) {
 
 				for (unsigned x = 0; x < FreeImage_GetWidth(dib); ++x)
 					if (rgb[x].rgbReserved != 0)
-						return FIC_RGBALPHA;			
+						return FIC_RGBALPHA;
 			}
 
 			return FIC_RGB;
 		}
-				
+
 		default :
 			return FIC_MINISBLACK;
 	}

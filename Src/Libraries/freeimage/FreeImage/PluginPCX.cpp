@@ -55,7 +55,7 @@ typedef struct tagPCXHEADER {
 	WORD  v_screen_size;
 	BYTE  filler[54];		// Reserved filler
 } PCXHEADER;
-		
+
 #ifdef WIN32
 #pragma pack(pop)
 #else
@@ -192,7 +192,7 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 			// if the dib couldn't be allocated, throw an error
 
 			if (!dib)
-				throw "DIB allocation failed";			
+				throw "DIB allocation failed";
 
 			// metrics handling code
 
@@ -295,7 +295,7 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 					// skip trailing garbage at the end of the scanline
 
 					for (int count = written; count < linelength; count++)
-						io.read_proc(&skip, sizeof(BYTE), 1, handle);					
+						io.read_proc(&skip, sizeof(BYTE), 1, handle);
 
 					bits -= pitch;
 				}
@@ -349,7 +349,7 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 
 					for (int plane = 2; plane >= 0; plane--) {
 						for (WORD x = 0; x < width; x++)
-							bits[x * 3 + plane] = pline[x];						
+							bits[x * 3 + plane] = pline[x];
 
 						pline += header.bytes_per_line;
 					}
@@ -377,7 +377,7 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 			return NULL;
 		}
 	}
-	
+
 	return NULL;
 }
 

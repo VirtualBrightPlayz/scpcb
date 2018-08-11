@@ -476,7 +476,7 @@ ddSurf *ddUtil::loadSurface( const String& fi,int flags,gxGraphics *gfx ){
 	bool trans=FreeImage_GetBPP( t_dib )==32 ||	FreeImage_IsTransparent( t_dib );
 
 	FIBITMAP *dib=FreeImage_ConvertTo32Bits( t_dib );
-	
+
 	if( dib ) FreeImage_Unload( t_dib );
 	else dib=t_dib;
 

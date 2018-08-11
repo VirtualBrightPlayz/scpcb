@@ -96,7 +96,7 @@
  *   ALL_STATIC (since we can't #undef something outside our namespace)
  *   PNG_BUILD_DLL
  *   PNG_STATIC
- *   (nothing) == PNG_USE_DLL 
+ *   (nothing) == PNG_USE_DLL
  */
 #if defined(__CYGWIN__)
 #  if defined(ALL_STATIC)
@@ -138,8 +138,8 @@
 #        if !defined(PNG_DLL)
 #          define PNG_DLL
 #        endif
-#      endif  
-#    endif  
+#      endif
+#    endif
 #  endif
 #endif
 
@@ -632,7 +632,7 @@
 #  define PNG_EASY_ACCESS_SUPPORTED
 #endif
 
-/* PNG_ASSEMBLER_CODE was enabled by default in version 1.2.0 
+/* PNG_ASSEMBLER_CODE was enabled by default in version 1.2.0
    even when PNG_USE_PNGVCRD or PNG_USE_PNGGCCRD is not defined */
 /*
 #if defined(PNG_READ_SUPPORTED) && !defined(PNG_NO_ASSEMBLER_CODE)
@@ -1305,7 +1305,7 @@ typedef z_stream FAR *  png_zstreamp;
 #  define PNG_MMX_ROWBYTES_THRESHOLD_DEFAULT  128  /*  >=  */
 #endif
 #ifndef PNG_MMX_BITDEPTH_THRESHOLD_DEFAULT
-#  define PNG_MMX_BITDEPTH_THRESHOLD_DEFAULT  9    /*  >=  */   
+#  define PNG_MMX_BITDEPTH_THRESHOLD_DEFAULT  9    /*  >=  */
 #endif
 
 /* Set this in the makefile for VC++ on Pentium, not here. */

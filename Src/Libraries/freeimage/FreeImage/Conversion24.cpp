@@ -132,8 +132,8 @@ FreeImage_ConvertTo24Bits(FIBITMAP *dib) {
 
 				if (new_dib != NULL)
 					for (int rows = 0; rows < height; rows++)
-						FreeImage_ConvertLine1To24(FreeImage_GetScanLine(new_dib, rows), FreeImage_GetScanLine(dib, rows), width, FreeImage_GetPalette(dib));					
-				
+						FreeImage_ConvertLine1To24(FreeImage_GetScanLine(new_dib, rows), FreeImage_GetScanLine(dib, rows), width, FreeImage_GetPalette(dib));
+
 				return new_dib;
 			}
 
@@ -144,10 +144,10 @@ FreeImage_ConvertTo24Bits(FIBITMAP *dib) {
 				if (new_dib != NULL)
 					for (int rows = 0; rows < height; rows++)
 						FreeImage_ConvertLine4To24(FreeImage_GetScanLine(new_dib, rows), FreeImage_GetScanLine(dib, rows), width, FreeImage_GetPalette(dib));
-			
+
 				return new_dib;
 			}
-				
+
 			case 8 :
 			{
 				FIBITMAP *new_dib = FreeImage_Allocate(width, height, 24, 0xFF, 0xFF00, 0xFF0000);
@@ -155,7 +155,7 @@ FreeImage_ConvertTo24Bits(FIBITMAP *dib) {
 				if (new_dib != NULL)
 					for (int rows = 0; rows < height; rows++)
 						FreeImage_ConvertLine8To24(FreeImage_GetScanLine(new_dib, rows), FreeImage_GetScanLine(dib, rows), width, FreeImage_GetPalette(dib));
-									
+
 				return new_dib;
 			}
 
@@ -183,7 +183,7 @@ FreeImage_ConvertTo24Bits(FIBITMAP *dib) {
 				if (new_dib != NULL)
 					for (int rows = 0; rows < height; rows++)
 						FreeImage_ConvertLine32To24(FreeImage_GetScanLine(new_dib, rows), FreeImage_GetScanLine(dib, rows), width);
-				
+
 				return new_dib;
 			}
 		}

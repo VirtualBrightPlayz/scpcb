@@ -183,7 +183,7 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 					// NON INTERLACED (LBM)
 
 					unsigned line = freeimage.get_line_proc(dib) + 1 & ~1;
-					
+
 					for (unsigned i = 0; i < freeimage.get_height_proc(dib); ++i) {
 						BYTE *bits = freeimage.get_scanline_proc(dib, freeimage.get_height_proc(dib) - i - 1);
 

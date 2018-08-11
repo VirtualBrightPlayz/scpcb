@@ -1,7 +1,7 @@
 // ==========================================================
 // Sun rasterfile Loader
 //
-// Design and implementation by 
+// Design and implementation by
 // - Hervé Drolon (drolon@infonie.fr)
 //
 // This file is part of FreeImage 2
@@ -20,7 +20,7 @@
 // ==========================================================
 
 #include <stdlib.h>
-#include <memory.h> 
+#include <memory.h>
 
 #include "FreeImage.h"
 #include "Utilities.h"
@@ -63,7 +63,7 @@ typedef struct {
 
 #define RT_OLD			0	// Old format (raw image in 68000 byte order)
 #define RT_STANDARD		1	// Raw image in 68000 byte order
-#define RT_BYTE_ENCODED	2	// Run-length encoding of bytes 
+#define RT_BYTE_ENCODED	2	// Run-length encoding of bytes
 #define RT_FORMAT_RGB	3	// XRGB or RGB instead of XBGR or BGR
 #define RT_FORMAT_TIFF	4	// TIFF <-> standard rasterfile
 #define RT_FORMAT_IFF	5	// IFF (TAAC format) <-> standard rasterfile
@@ -138,7 +138,7 @@ ReadData(FreeImageIO &io, fi_handle handle, BYTE *buf, DWORD length, BOOL rle) {
 		}
 	} else {
 		// Normal read
-	
+
 		io.read_proc(buf, length, 1, handle);
 	}
 }
@@ -266,7 +266,7 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 
 			switch(header.maptype) {
 				case RMT_NONE :
-				{				
+				{
 					if (header.depth < 24) {
 						// Create linear color ramp
 
@@ -338,7 +338,7 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 			int pitch = freeimage.get_pitch_proc(dib);
 
 			// Read the image data
-			
+
 			switch(header.depth) {
 				case 1:
 				case 8:
@@ -439,12 +439,12 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 					break;
 				}
 			}
-			
+
 			return dib;
 
 		} catch (char *text) {
 			freeimage.output_message_proc(s_format_id, text);
-	
+
 			return NULL;
 		}
 

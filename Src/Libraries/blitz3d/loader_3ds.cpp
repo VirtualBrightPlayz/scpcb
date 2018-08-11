@@ -327,7 +327,7 @@ static void parseMaterial(){
 		}
 	}
 	if( tex_name.size() ){
-		mat.setTexture( 0,Texture( tex_name,0 ),0 ); 
+		mat.setTexture( 0,Texture( tex_name,0 ),0 );
 		mat.setColor( Vector( 1,1,1 ) );
 	}
 	if( name.size() ){

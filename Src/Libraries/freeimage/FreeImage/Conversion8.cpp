@@ -35,7 +35,7 @@
 void DLL_CALLCONV
 FreeImage_ConvertLine1To8(BYTE *target, BYTE *source, int width_in_pixels) {
 	for (int cols = 0; cols < width_in_pixels; cols++)
-		target[cols] = (source[cols >> 3] & (0x80 >> (cols & 0x07))) != 0;	
+		target[cols] = (source[cols >> 3] & (0x80 >> (cols & 0x07))) != 0;
 }
 
 void DLL_CALLCONV
@@ -77,7 +77,7 @@ FreeImage_ConvertLine16To8_565(BYTE *target, BYTE *source, int width_in_pixels) 
 	for (int cols = 0; cols < width_in_pixels; cols++)
 		target[cols] = GREY1((((bits[cols] & 0xF800) >> 11) * 0xFF) / 0x1F,
 			        (((bits[cols] & 0x7E0) >> 5) * 0xFF) / 0x3F,
-					((bits[cols] & 0x1F) * 0xFF) / 0x1F);	
+					((bits[cols] & 0x1F) * 0xFF) / 0x1F);
 }
 
 void DLL_CALLCONV
@@ -129,7 +129,7 @@ FreeImage_ConvertTo8Bits(FIBITMAP *dib) {
 
 					for (int rows = 0; rows < height; rows++)
 						FreeImage_ConvertLine1To8(FreeImage_GetScanLine(new_dib, rows), FreeImage_GetScanLine(dib, rows), width);
-					
+
 				}
 
 				return new_dib;
@@ -154,7 +154,7 @@ FreeImage_ConvertTo8Bits(FIBITMAP *dib) {
 					// Expand and copy the bitmap data
 
 					for (int rows = 0; rows < height; rows++)
-						FreeImage_ConvertLine4To8(FreeImage_GetScanLine(new_dib, rows), FreeImage_GetScanLine(dib, rows), width);					
+						FreeImage_ConvertLine4To8(FreeImage_GetScanLine(new_dib, rows), FreeImage_GetScanLine(dib, rows), width);
 				}
 
 				return new_dib;
@@ -184,7 +184,7 @@ FreeImage_ConvertTo8Bits(FIBITMAP *dib) {
 							FreeImage_ConvertLine16To8_565(FreeImage_GetScanLine(new_dib, rows), FreeImage_GetScanLine(dib, rows), width);
 						}
 					}
-					
+
 					return new_dib;
 				}
 
@@ -209,7 +209,7 @@ FreeImage_ConvertTo8Bits(FIBITMAP *dib) {
 					// Expand and copy the bitmap data
 
 					for (int rows = 0; rows < height; rows++)
-						FreeImage_ConvertLine24To8(FreeImage_GetScanLine(new_dib, rows), FreeImage_GetScanLine(dib, rows), width);					
+						FreeImage_ConvertLine24To8(FreeImage_GetScanLine(new_dib, rows), FreeImage_GetScanLine(dib, rows), width);
 				}
 
 				return new_dib;
@@ -235,7 +235,7 @@ FreeImage_ConvertTo8Bits(FIBITMAP *dib) {
 					for (int rows = 0; rows < height; rows++)
 						FreeImage_ConvertLine32To8(FreeImage_GetScanLine(new_dib, rows), FreeImage_GetScanLine(dib, rows), width);
 				}
-				
+
 				return new_dib;
 			}
 		}

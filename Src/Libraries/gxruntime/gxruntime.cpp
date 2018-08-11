@@ -347,7 +347,7 @@ LRESULT gxRuntime::windowProc( HWND hwnd,UINT msg,WPARAM wparam,LPARAM lparam ){
 		if( !suspended ){
 			if( gfx_mode==3 ){
 				SetCursor( 0 );
-				return 1; 
+				return 1;
 			}else if( !pointer_visible ){
 				POINT p;
 				GetCursorPos( &p );
@@ -698,7 +698,7 @@ void gxRuntime::backupWindowState(){
 
 void gxRuntime::restoreWindowState(){
 	SetWindowLong( hwnd,GWL_STYLE,t_style );
-	SetWindowPos( 
+	SetWindowPos(
 		hwnd,0,t_rect.left,t_rect.top,
 		t_rect.right-t_rect.left,t_rect.bottom-t_rect.top,
 		SWP_NOZORDER|SWP_FRAMECHANGED );
@@ -753,7 +753,7 @@ gxGraphics *gxRuntime::openWindowedGraphics( int w,int h,int d,bool d3d ){
 			//create clipper
 			IDirectDrawClipper *cp;
 			if( dd->CreateClipper( 0,&cp,0 )>=0 ){
-				//attach clipper 
+				//attach clipper
 				if( ps->SetClipper( cp )>=0 ){
 					//set clipper HWND
 					if( cp->SetHWnd( 0,hwnd )>=0 ){

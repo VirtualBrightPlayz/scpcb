@@ -1,7 +1,7 @@
 // ==========================================================
 // TIFF Loader and Writer
 //
-// Design and implementation by 
+// Design and implementation by
 // - Floris van den Berg (flvdberg@wxs.nl)
 // - Hervé Drolon (drolon@iut.univ-lehavre.fr)
 // - Markus Loibl (markus.loibl@epost.de)
@@ -39,10 +39,10 @@
 static FreeImageIO *g_io = NULL;
 
 // ----------------------------------------------------------
-//   libtiff interface 
+//   libtiff interface
 // ----------------------------------------------------------
 
-static tsize_t 
+static tsize_t
 _tiffReadProc(thandle_t file, tdata_t buf, tsize_t size) {
 	return g_io->read_proc(buf, size, 1, (fi_handle)file) * size;
 }
@@ -187,14 +187,14 @@ CheckPhotometric(FreeImage &freeimage, FIBITMAP *dib, uint16 bitspersample) {
 				rgb++;
 
 				if ((rgb->rgbRed == 255) && (rgb->rgbGreen == 255) && (rgb->rgbBlue == 255))
-					return PHOTOMETRIC_MINISBLACK;				
+					return PHOTOMETRIC_MINISBLACK;
 			}
 
 			if ((rgb->rgbRed == 255) && (rgb->rgbGreen == 255) && (rgb->rgbBlue == 255)) {
 				rgb++;
 
 				if ((rgb->rgbRed == 0) && (rgb->rgbGreen == 0) && (rgb->rgbBlue == 0))
-					return PHOTOMETRIC_MINISWHITE;				
+					return PHOTOMETRIC_MINISWHITE;
 			}
 
 			return PHOTOMETRIC_PALETTE;
@@ -207,19 +207,19 @@ CheckPhotometric(FreeImage &freeimage, FIBITMAP *dib, uint16 bitspersample) {
 			for (i = 0; i < freeimage.get_colors_used_proc(dib); i++) {
 				if ((rgb->rgbRed != rgb->rgbGreen) || (rgb->rgbRed != rgb->rgbBlue))
 					return PHOTOMETRIC_PALETTE;
-				
+
 				// The DIB has a color palette if the greyscale isn't a linear ramp
 
 				if (rgb->rgbRed != i)
-					return PHOTOMETRIC_PALETTE;				
+					return PHOTOMETRIC_PALETTE;
 
 				rgb++;
 			}
 
 			return PHOTOMETRIC_MINISBLACK;
-			
+
 		case 24:
-			return PHOTOMETRIC_RGB;			
+			return PHOTOMETRIC_RGB;
 	}
 
 	return PHOTOMETRIC_MINISBLACK;
@@ -261,7 +261,7 @@ MimeType() {
 }
 
 static BOOL DLL_CALLCONV
-Validate(FreeImageIO &io, fi_handle handle) {	
+Validate(FreeImageIO &io, fi_handle handle) {
 	BYTE tiff_id1[] = { 0x49, 0x49 };
 	BYTE tiff_id2[] = { 0x4D, 0x4D };
 	BYTE signature[2] = { 0, 0 };
@@ -307,7 +307,7 @@ PageCount(FreeImageIO &io, fi_handle handle, void *data) {
 	do {
 		nr_ifd++;
 	} while (TIFFReadDirectory(tif));
-			
+
 	return nr_ifd;
 }
 
@@ -317,40 +317,40 @@ static FIBITMAP * DLL_CALLCONV
 Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flags, void *data) {
 	if ((handle != NULL) && (data != NULL)) {
 		TIFF   *tif;
-		uint32 height; 
-		uint32 width; 
+		uint32 height;
+		uint32 width;
 		uint16 bitspersample;
 		uint16 samplesperpixel;
-		uint32 rowsperstrip;  
+		uint32 rowsperstrip;
 		uint16 photometric;
 		uint16 compression;
 		uint32 x, y;
 		BOOL isRGB;
 
 		int32 nrow;
-		BYTE *buf;          
+		BYTE *buf;
 		FIBITMAP *dib;
 		BYTE *bits;		// pointer to dib data
 		RGBQUAD *pal;	// pointer to dib palette
-    
+
 		if (handle) {
-			try {			
+			try {
 				tif = (TIFF *)data;
-    
+
 				if (page != -1)
 					if (!tif || !TIFFSetDirectory(tif, page))
-						throw "Error encountered while opening TIFF file";			
+						throw "Error encountered while opening TIFF file";
 
 				TIFFGetField(tif, TIFFTAG_COMPRESSION, &compression);
 				TIFFGetField(tif, TIFFTAG_IMAGEWIDTH, &width);
 				TIFFGetField(tif, TIFFTAG_IMAGELENGTH, &height);
 				TIFFGetField(tif, TIFFTAG_SAMPLESPERPIXEL, &samplesperpixel);
 				TIFFGetField(tif, TIFFTAG_BITSPERSAMPLE, &bitspersample);
-				TIFFGetField(tif, TIFFTAG_ROWSPERSTRIP, &rowsperstrip);   
+				TIFFGetField(tif, TIFFTAG_ROWSPERSTRIP, &rowsperstrip);
 				TIFFGetField(tif, TIFFTAG_PHOTOMETRIC, &photometric);
 
 				if (compression == COMPRESSION_LZW)
-					throw "LZW compression is no longer supported due to Unisys patent enforcement";			
+					throw "LZW compression is no longer supported due to Unisys patent enforcement";
 
 				// Convert to 24 or 32 bits RGB if the image is full color
 
@@ -361,7 +361,7 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 					(photometric == PHOTOMETRIC_LOGLUV);
 
 				if (isRGB) {
-					// Read the whole image into one big RGBA buffer and then 
+					// Read the whole image into one big RGBA buffer and then
 					// convert it to a DIB. This is using the traditional
 					// TIFFReadRGBAImage() API that we trust.
 
@@ -373,7 +373,7 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 					if (raster == NULL) {
 						throw "No space for raster buffer";
 					}
-					
+
 					// Read the image in one chunk into an RGBA array
 
 					if(!TIFFReadRGBAImage(tif, width, height, raster, 0)) {
@@ -393,7 +393,7 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 
 						throw "DIB allocation failed";
 					}
-					
+
 					// fill in the metrics (english or universal)
 
 					float	fResX, fResY;
@@ -414,7 +414,7 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 
 					// read the raster lines and save them in the DIB
 					// with RGB mode, we have to change the order of the 3 samples RGB
-					// We use macros for extracting components from the packed ABGR 
+					// We use macros for extracting components from the packed ABGR
 					// form returned by TIFFReadRGBAImage.
 
 					BOOL has_alpha = FALSE;
@@ -438,7 +438,7 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 								bits += 4;
 							} else {
 								bits += 3;
-							}							
+							}
 						}
 
 						row += width;
@@ -483,14 +483,14 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 						pInfoHeader->biYPelsPerMeter = (int) (fResY*100.0 + 0.5);
 					}
 
-					// In the tiff file the lines are save from up to down 
+					// In the tiff file the lines are save from up to down
 					// In a DIB the lines must be save from down to up
 
 					bits = freeimage.get_bits_proc(dib) + height * pitch;
 
 					// now lpBits pointe on the bottom line
 
-					// set up the colormap based on photometric	
+					// set up the colormap based on photometric
 
 					pal = freeimage.get_palette_proc(dib);
 
@@ -540,8 +540,8 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 							uint16 *green;
 							uint16 *blue;
 							BOOL Palette16Bits;
-							
-							TIFFGetField(tif, TIFFTAG_COLORMAP, &red, &green, &blue); 
+
+							TIFFGetField(tif, TIFFTAG_COLORMAP, &red, &green, &blue);
 
 							// Is the palette 16 or 8 bits ?
 
@@ -557,16 +557,16 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 								if (Palette16Bits) {
 									pal[i].rgbRed =(BYTE) CVT(red[i]);
 									pal[i].rgbGreen = (BYTE) CVT(green[i]);
-									pal[i].rgbBlue = (BYTE) CVT(blue[i]);           
+									pal[i].rgbBlue = (BYTE) CVT(blue[i]);
 								} else {
 									pal[i].rgbRed = (BYTE) red[i];
 									pal[i].rgbGreen = (BYTE) green[i];
-									pal[i].rgbBlue = (BYTE) blue[i];        
+									pal[i].rgbBlue = (BYTE) blue[i];
 								}
 							}
 
 							break;
-						
+
 					}
 
 					// read the tiff lines and save them in the DIB
@@ -588,7 +588,7 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 							}
 						}
 					}
-					
+
 					delete [] buf;
 
 					return (FIBITMAP *)dib;
@@ -602,7 +602,7 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 		}
 	}
 
-	return NULL;	   
+	return NULL;
 }
 
 static BOOL DLL_CALLCONV
@@ -639,7 +639,7 @@ Save(FreeImage &freeimage, FreeImageIO &io, FIBITMAP *dib, fi_handle handle, int
 		TIFFSetField(out, TIFFTAG_SAMPLESPERPIXEL, samplesperpixel);
 		TIFFSetField(out, TIFFTAG_BITSPERSAMPLE, ((bitspersample == 32) ? 24 : bitspersample) / samplesperpixel);
 		TIFFSetField(out, TIFFTAG_PHOTOMETRIC, photometric);
-		TIFFSetField(out, TIFFTAG_PLANARCONFIG, PLANARCONFIG_CONTIG);	// single image plane 
+		TIFFSetField(out, TIFFTAG_PLANARCONFIG, PLANARCONFIG_CONTIG);	// single image plane
 		TIFFSetField(out, TIFFTAG_ORIENTATION, ORIENTATION_TOPLEFT);
 		TIFFSetField(out, TIFFTAG_ROWSPERSTRIP, TIFFDefaultStripSize(out, rowsperstrip));
 
@@ -708,10 +708,10 @@ Save(FreeImage &freeimage, FreeImageIO &io, FIBITMAP *dib, fi_handle handle, int
 		// read the DIB lines from bottom to top
 		// and save them in the TIF
 		// -------------------------------------
-		
+
 		pitch = freeimage.get_pitch_proc(dib);
-		
-		switch(bitspersample) {				
+
+		switch(bitspersample) {
 			case 1 :
 			case 4 :
 			case 8 :
@@ -723,7 +723,7 @@ Save(FreeImage &freeimage, FreeImageIO &io, FIBITMAP *dib, fi_handle handle, int
 				}
 
 				break;
-			}				
+			}
 
 			case 24:
 			case 32 :
@@ -758,7 +758,7 @@ Save(FreeImage &freeimage, FreeImageIO &io, FIBITMAP *dib, fi_handle handle, int
 				free(buffer);
 
 				break;
-			}				
+			}
 		}
 
 		return TRUE;

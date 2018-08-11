@@ -306,7 +306,7 @@ jpeg_freeimage_src (j_decompress_ptr cinfo, fi_handle infile, FreeImageIO &io) {
 	}
 
 	// initialize the jpeg pointer struct with pointers to functions
-	
+
 	src = (freeimage_src_ptr) cinfo->src;
 	src->pub.init_source = init_source;
 	src->pub.fill_input_buffer = fill_input_buffer;
@@ -387,7 +387,7 @@ static FIBITMAP * DLL_CALLCONV
 Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flags, void *data) {
 	if (handle) {
 		FIBITMAP *dib = NULL;
-	
+
 		try {
 			struct jpeg_decompress_struct cinfo;
 			struct jpeg_error_mgr jerr;
@@ -445,7 +445,7 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 				pInfoHeader->biXPelsPerMeter = cinfo.X_density * 100;
 				pInfoHeader->biYPelsPerMeter = cinfo.Y_density * 100;
 			}
-			
+
 			// Step 5: start decompressor
 
 			jpeg_start_decompress(&cinfo);
@@ -458,7 +458,7 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 				jpeg_read_scanlines(&cinfo, &b, 1);
 			}
 
-			// Step 7: finish decompression 
+			// Step 7: finish decompression
 
 			jpeg_finish_decompress(&cinfo);
 
@@ -469,7 +469,7 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 			return (FIBITMAP *)dib;
 		} catch (...) {
 			freeimage.unload_proc(dib);
-		}		
+		}
 	}
 
 	return NULL;
@@ -505,8 +505,8 @@ Save(FreeImage &freeimage, FreeImageIO &io, FIBITMAP *dib, fi_handle handle, int
 			/* Step 2: specify data destination (eg, a file) */
 
 			jpeg_freeimage_dst(&cinfo, handle, io);
-			
-			/* Step 3: set parameters for compression */											    
+
+			/* Step 3: set parameters for compression */
 
 			cinfo.image_width = freeimage.get_width_proc(dib);
 			cinfo.image_height = freeimage.get_height_proc(dib);
@@ -591,7 +591,7 @@ Save(FreeImage &freeimage, FreeImageIO &io, FIBITMAP *dib, fi_handle handle, int
 			/* Step 8: release JPEG compression object */
 
 			jpeg_destroy_compress(&cinfo);
-			
+
 			return TRUE;
 
 		} catch (char *text) {

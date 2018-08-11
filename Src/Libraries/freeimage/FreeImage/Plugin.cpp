@@ -131,7 +131,7 @@ PluginList::AddNode(FI_InitProc init_proc, void *instance, const char *format, c
 
 		const char *the_format = NULL;
 
-		if (format != NULL) 
+		if (format != NULL)
 			the_format = format;
 		else if (plugin->format_proc != NULL)
 			the_format = plugin->format_proc();
@@ -173,7 +173,7 @@ PluginList::FindNodeFromFormat(const char *format) {
 		const char *the_format = ((*i).second->m_format != NULL) ? (*i).second->m_format : (*i).second->m_plugin->format_proc();
 
 		if (strcmp(the_format, format) == 0)
-			return (*i).second;		
+			return (*i).second;
 
 		count++;
 	}
@@ -189,7 +189,7 @@ PluginList::FindNodeFromMime(const char *mime) {
 		const char *the_mime = ((*i).second->m_plugin->mime_proc != NULL) ? (*i).second->m_plugin->mime_proc() : "";
 
 		if (strcmp(the_mime, mime) == 0)
-			return (*i).second;		
+			return (*i).second;
 
 		count++;
 	}
@@ -412,7 +412,7 @@ FIBITMAP * DLL_CALLCONV
 FreeImage_Load(FREE_IMAGE_FORMAT fif, const char *filename, int flags) {
 	FreeImageIO io;
 	SetDefaultIO(&io);
-	
+
 	FILE *handle = fopen(filename, "rb");
 
 	if (handle) {
@@ -441,7 +441,7 @@ FreeImage_SaveToHandle(FREE_IMAGE_FORMAT fif, FIBITMAP *dib, FreeImageIO *io, fi
 					result = node->m_plugin->save_proc(s_freeimage, *io, dib, handle, -1, flags, data);
 
 					if (node->m_plugin->close_proc != NULL)
-						node->m_plugin->close_proc(*io, handle, data);				
+						node->m_plugin->close_proc(*io, handle, data);
 				} else {
 					result = node->m_plugin->save_proc(s_freeimage, *io, dib, handle, -1, flags, NULL);
 				}
@@ -459,9 +459,9 @@ BOOL DLL_CALLCONV
 FreeImage_Save(FREE_IMAGE_FORMAT fif, FIBITMAP *dib, const char *filename, int flags) {
 	FreeImageIO io;
 	SetDefaultIO(&io);
-	
+
 	FILE *handle = fopen(filename, "wb");
-	
+
 	if (handle) {
 		BOOL success = FreeImage_SaveToHandle(fif, dib, &io, (fi_handle)handle, flags);
 
@@ -526,7 +526,7 @@ FreeImage_IsPluginEnabled(FREE_IMAGE_FORMAT fif) {
 
 		return (node != NULL) ? node->m_enabled : FALSE;
 	}
-	
+
 	return -1;
 }
 
@@ -667,7 +667,7 @@ FreeImage_GetFIFFromFilename(const char *filename) {
 					if (FreeImage_stricmp(token, extension) == 0) {
 						free(copy);
 
-						if (s_plugins->FindNodeFromFIF(i)->m_enabled) {							
+						if (s_plugins->FindNodeFromFIF(i)->m_enabled) {
 							return (FREE_IMAGE_FORMAT)i;
 						} else {
 							return FIF_UNKNOWN;
@@ -680,7 +680,7 @@ FreeImage_GetFIFFromFilename(const char *filename) {
 				// free the copy of the extension list
 
 				free(copy);
-			}	
+			}
 		}
 	}
 

@@ -118,7 +118,7 @@ void bbWriteLine( bbStream *s,const String& t ){
 
 void bbCopyStream( bbStream *s,bbStream *d,int buff_size ){
 	if( debug ){
-		debugStream( s );debugStream( d ); 
+		debugStream( s );debugStream( d );
 		if( buff_size<1 || buff_size>1024*1024 ) RTEX( "Illegal buffer size" );
 	}
 	char *buff=new char[buff_size];

@@ -19,7 +19,7 @@ static bool isUsing4GBPatch() {
     } else if (f.findLast('/') != -1) {
         f = f.substr(f.findLast('/')+1);
     }
-    
+
     union intUnion {
         int i;
         char c[4];
@@ -33,7 +33,7 @@ static bool isUsing4GBPatch() {
     //look for characteristics
     offset.i+=0x16; stream.seekg(offset.i);
     intUnion flags; flags.i=0; stream.read(flags.c,2);
-    
+
     stream.close();
 
     if ((flags.i&0x20) != 0) {

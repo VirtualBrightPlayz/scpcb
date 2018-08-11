@@ -89,7 +89,7 @@ ScanForResolution(float* hres, float* vres, FreeImageIO &io, fi_handle handle, i
 		// read the image resource block header.
 
 		if (Read32(io, handle) != 0x3842494D /* "8BIM" */)
-			throw "image resource block has unknown signature";		
+			throw "image resource block has unknown signature";
 
 		int	id = Read16(io, handle);
 
@@ -104,7 +104,7 @@ ScanForResolution(float* hres, float* vres, FreeImageIO &io, fi_handle handle, i
 		int	data_size = Read32(io, handle);
 
 		if (data_size & 1 == 1)
-			data_size += 1;	// block size must be even.		
+			data_size += 1;	// block size must be even.
 
 		// account for header size.
 
@@ -129,13 +129,13 @@ ScanForResolution(float* hres, float* vres, FreeImageIO &io, fi_handle handle, i
 			// skip any extra bytes at the end of this block...
 
 			if (data_size > 0)
-				io.seek_proc(handle, data_size, SEEK_CUR);			
+				io.seek_proc(handle, data_size, SEEK_CUR);
 
 			// need to convert resolution figures from fixed point, pixels/inch
 			// to floating point, pixels/meter.
 
 			*hres = hres_fixed * ((float)39.4 / (float)65536.0);
-			*vres = vres_fixed * ((float)39.4 / (float)65536.0);			
+			*vres = vres_fixed * ((float)39.4 / (float)65536.0);
 		} else {
 			// skip the rest of this block.
 
@@ -155,14 +155,14 @@ LoadPSDRGB(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int width, i
 	int	mode_data_count = Read32(io, handle);
 
 	if (mode_data_count)
-		io.seek_proc(handle, mode_data_count, SEEK_CUR);	
+		io.seek_proc(handle, mode_data_count, SEEK_CUR);
 
 	// skip the image resources.  (resolution, pen tool paths, alpha channel names, etc)
 
 	int	resource_data_count = Read32(io, handle);
 
 	if (resource_data_count)
-		io.seek_proc(handle, resource_data_count, SEEK_CUR);	
+		io.seek_proc(handle, resource_data_count, SEEK_CUR);
 
 	// skip the reserved data
 
@@ -178,7 +178,7 @@ LoadPSDRGB(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int width, i
 	unsigned compression = Read16(io, handle);
 
 	if ((compression > 1) || (compression < 0))
-		return NULL;	
+		return NULL;
 
 	// some formatting information about the channels
 
@@ -258,15 +258,15 @@ LoadPSDRGB(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int width, i
 						}
 					}
 				}
-			}			
-		}		
+			}
+		}
 	} else {
 		// we're at the raw image data.  it's each channel in order (Red, Green, Blue, Alpha, ...)
 		// where each channel consists of an 8-bit value for each pixel in the image.
 
 		for (int channel = 0; channel < 4; channel++) {
 			const ChannelInfo &c = Channel[channel];
-			
+
 			BP_START(dib, width, height)
 
 			if (channel > channel_count) {
@@ -288,7 +288,7 @@ LoadPSDRGB(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int width, i
 			}
 		}
 	}
-	
+
 	return dib;
 }
 

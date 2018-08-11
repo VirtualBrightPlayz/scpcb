@@ -38,7 +38,7 @@ FreeImage_ConvertLine1To32(BYTE *target, BYTE *source, int width_in_pixels, RGBQ
 		target[2] = palette[index].rgbRed;
 
 		target += 4;
-	}	
+	}
 }
 
 void DLL_CALLCONV
@@ -140,7 +140,7 @@ FreeImage_ConvertTo32Bits(FIBITMAP *dib) {
 				if (new_dib != NULL)
 					for (int rows = 0; rows < height; rows++)
 						FreeImage_ConvertLine1To32(FreeImage_GetScanLine(new_dib, rows), FreeImage_GetScanLine(dib, rows), width, FreeImage_GetPalette(dib));
-				
+
 				return new_dib;
 			}
 
@@ -151,7 +151,7 @@ FreeImage_ConvertTo32Bits(FIBITMAP *dib) {
 				if (new_dib != NULL) {
 					for (int rows = 0; rows < height; rows++) {
 						FreeImage_ConvertLine4To32(FreeImage_GetScanLine(new_dib, rows), FreeImage_GetScanLine(dib, rows), width, FreeImage_GetPalette(dib));
-				
+
 						if (FreeImage_IsTransparent(dib)) {
 							MapTransparentTableToAlpha((RGBQUAD *)FreeImage_GetScanLine(new_dib, rows), FreeImage_GetScanLine(dib, rows), FreeImage_GetTransparencyTable(dib), FreeImage_GetTransparencyCount(dib), width);
 						}
@@ -160,7 +160,7 @@ FreeImage_ConvertTo32Bits(FIBITMAP *dib) {
 					return new_dib;
 				}
 			}
-				
+
 			case 8 :
 			{
 				FIBITMAP *new_dib = FreeImage_Allocate(width, height, 32, 0xFF, 0xFF00, 0xFF0000);
@@ -204,7 +204,7 @@ FreeImage_ConvertTo32Bits(FIBITMAP *dib) {
 						FreeImage_ConvertLine24To32(FreeImage_GetScanLine(new_dib, rows), FreeImage_GetScanLine(dib, rows), width);
 					}
 				}
-				
+
 				return new_dib;
 			}
 		}

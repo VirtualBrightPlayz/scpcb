@@ -135,7 +135,7 @@ public:
 static Keyboard *keyboard;
 static Mouse *mouse;
 static std::vector<Joystick*> joysticks;
-					  
+
 static Keyboard *createKeyboard( gxInput *input ){
 
 	return new Keyboard(input, 0);

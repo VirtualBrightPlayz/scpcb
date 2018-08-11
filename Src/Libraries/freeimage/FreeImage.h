@@ -98,28 +98,28 @@ typedef long LONG;
 #define BI_BITFIELDS  3L
 
 typedef struct tagRGBQUAD {
-  BYTE    rgbBlue; 
-  BYTE    rgbGreen; 
-  BYTE    rgbRed; 
-  BYTE    rgbReserved; 
-} RGBQUAD; 
+  BYTE    rgbBlue;
+  BYTE    rgbGreen;
+  BYTE    rgbRed;
+  BYTE    rgbReserved;
+} RGBQUAD;
 
 typedef struct tagBITMAPINFOHEADER{
   DWORD  biSize;
-  LONG   biWidth; 
-  LONG   biHeight; 
-  WORD   biPlanes; 
+  LONG   biWidth;
+  LONG   biHeight;
+  WORD   biPlanes;
   WORD   biBitCount;
-  DWORD  biCompression; 
-  DWORD  biSizeImage; 
-  LONG   biXPelsPerMeter; 
-  LONG   biYPelsPerMeter; 
-  DWORD  biClrUsed; 
+  DWORD  biCompression;
+  DWORD  biSizeImage;
+  LONG   biXPelsPerMeter;
+  LONG   biYPelsPerMeter;
+  DWORD  biClrUsed;
   DWORD  biClrImportant;
-} BITMAPINFOHEADER, *PBITMAPINFOHEADER; 
+} BITMAPINFOHEADER, *PBITMAPINFOHEADER;
 
-typedef struct tagBITMAPINFO { 
-  BITMAPINFOHEADER bmiHeader; 
+typedef struct tagBITMAPINFO {
+  BITMAPINFOHEADER bmiHeader;
   RGBQUAD          bmiColors[1];
 } BITMAPINFO, *PBITMAPINFO;
 

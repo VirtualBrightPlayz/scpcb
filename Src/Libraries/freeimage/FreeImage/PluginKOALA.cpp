@@ -42,7 +42,7 @@ typedef struct tagKOALA {
 struct colour_t {
 	int	r;
 	int g;
-	int b;	
+	int b;
 };
 
 #ifdef WIN32
@@ -138,7 +138,7 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 			io.read_proc((BYTE *)&image + 2, 1, 10001 - 2, handle);
 		} else {
 			io.read_proc(&image, 1, 10001, handle);
-		}		
+		}
 
 		// build DIB in memory
 
@@ -176,15 +176,15 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 						case 0: // Background
 							found_color = image.background;
 							break;
-							
+
 						case 1: // Colour 1
 							found_color = image.colour1[colourindex] >> 4;
 							break;
-							
+
 						case 2: // Colour 2
 							found_color = image.colour1[colourindex] & 0xf;
 							break;
-							
+
 						case 3: // Colour 3
 							found_color = image.colour2[colourindex] & 0xf;
 							break;

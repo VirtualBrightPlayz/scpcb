@@ -42,7 +42,7 @@ struct String {
         String resourcePath() const;
 
         String& operator=(const String& other);
-		
+
         bool equals(const String& other) const;
         bool equals(const char* other) const;
         bool equals(char other) const;

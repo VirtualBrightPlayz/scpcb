@@ -55,7 +55,7 @@ FreeImage_ConvertLine4To16_565(BYTE *target, BYTE *source, int width_in_pixels, 
 		if (lonibble) {
 			grab_palette = palette + LOWNIBBLE(source[x++]);
 		} else {
-			grab_palette = palette + (HINIBBLE(source[x]) >> 4);								
+			grab_palette = palette + (HINIBBLE(source[x]) >> 4);
 		}
 
 		new_bits[cols] = RGB565(grab_palette->rgbBlue, grab_palette->rgbGreen, grab_palette->rgbRed);
@@ -130,7 +130,7 @@ FreeImage_ConvertTo16Bits565(FIBITMAP *dib) {
 				if (new_dib) {
 					for (int rows = 0; rows < height; rows++)
 						FreeImage_ConvertLine1To16_565(FreeImage_GetScanLine(new_dib, rows), FreeImage_GetScanLine(dib, rows), width, FreeImage_GetPalette(dib));
-										
+
 					return new_dib;
 				}
 
@@ -144,7 +144,7 @@ FreeImage_ConvertTo16Bits565(FIBITMAP *dib) {
 				if (new_dib) {
 					for (int rows = 0; rows < height; rows++)
 						FreeImage_ConvertLine4To16_565(FreeImage_GetScanLine(new_dib, rows), FreeImage_GetScanLine(dib, rows), width, FreeImage_GetPalette(dib));
-					
+
 					return new_dib;
 				}
 
@@ -158,7 +158,7 @@ FreeImage_ConvertTo16Bits565(FIBITMAP *dib) {
 				if (new_dib) {
 					for (int rows = 0; rows < height; rows++)
 						FreeImage_ConvertLine8To16_565(FreeImage_GetScanLine(new_dib, rows), FreeImage_GetScanLine(dib, rows), width, FreeImage_GetPalette(dib));
-					
+
 					return new_dib;
 				}
 
@@ -173,7 +173,7 @@ FreeImage_ConvertTo16Bits565(FIBITMAP *dib) {
 				if (new_dib) {
 					for (int rows = 0; rows < height; rows++)
 						FreeImage_ConvertLine16_555_To16_565(FreeImage_GetScanLine(new_dib, rows), FreeImage_GetScanLine(dib, rows), width);
-					
+
 					return new_dib;
 				}
 
@@ -187,7 +187,7 @@ FreeImage_ConvertTo16Bits565(FIBITMAP *dib) {
 				if (new_dib) {
 					for (int rows = 0; rows < height; rows++)
 						FreeImage_ConvertLine24To16_565(FreeImage_GetScanLine(new_dib, rows), FreeImage_GetScanLine(dib, rows), width);
-					
+
 					return new_dib;
 				}
 
@@ -201,7 +201,7 @@ FreeImage_ConvertTo16Bits565(FIBITMAP *dib) {
 				if (new_dib) {
 					for (int rows = 0; rows < height; rows++)
 						FreeImage_ConvertLine32To16_565(FreeImage_GetScanLine(new_dib, rows), FreeImage_GetScanLine(dib, rows), width);
-					
+
 					return new_dib;
 				}
 

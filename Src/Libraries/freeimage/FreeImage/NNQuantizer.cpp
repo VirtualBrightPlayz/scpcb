@@ -43,10 +43,10 @@ const int netsize = 256;			// number of colours used
 #define prime3		487
 #define prime4		503
 
-// Prototypes 
+// Prototypes
 // ==========================================================
 
-static void initnet(BYTE *thepic, DWORD len, int sample);	
+static void initnet(BYTE *thepic, DWORD len, int sample);
 static void unbiasnet();	// can edit this function to do output of colour map
 static void inxbuild();
 static int inxsearch(int b, int g, int r);
@@ -77,7 +77,7 @@ static void learn();
 #define initrad			(netsize>>3)	// for 256 cols, radius starts
 #define radiusbiasshift	6				// at 32.0 biased by 6 bits
 #define radiusbias	(((int) 1)<<radiusbiasshift)
-#define initradius	(initrad*radiusbias)	// and decreases by a 
+#define initradius	(initrad*radiusbias)	// and decreases by a
 #define radiusdec	30						// factor of 1/30 each cycle
 
 // defs for decreasing alpha factor
@@ -94,7 +94,7 @@ static void learn();
 
 // Types and Global Variables
 // ==========================================================
-   
+
 static BYTE *thepicture;	// the input image itself
 static DWORD lengthcount;	// lengthcount = H*W*3
 
@@ -116,14 +116,14 @@ static int radpower[initrad];		// radpower for precomputation
 // Initialise network in range (0,0,0) to (255,255,255) and set parameters
 // -----------------------------------------------------------------------
 
-static void initnet(BYTE *thepic, DWORD len, int sample)	
+static void initnet(BYTE *thepic, DWORD len, int sample)
 {
 	int i, *p;
-	
+
 	thepicture = thepic;
 	lengthcount = len;
 	samplefac = sample;
-	
+
 	for (i = 0; i < netsize; i++) {
 		p = network[i];
 		p[0] = p[1] = p[2] = (i << (netbiasshift+8))/netsize;
@@ -132,7 +132,7 @@ static void initnet(BYTE *thepic, DWORD len, int sample)
 	}
 }
 
-///////////////////////////////////////////////////////////////////////////////////////	
+///////////////////////////////////////////////////////////////////////////////////////
 // Unbias network to give byte values 0..255 and record position i to prepare for sort
 // ------------------------------------------------------------------------------------
 
@@ -319,7 +319,7 @@ static int contest(int b, int g, int r)
 
 ///////////////////////////////////////////////////////
 // Move neuron i towards biased (b,g,r) by factor alpha
-// ---------------------------------------------------- 
+// ----------------------------------------------------
 
 static void altersingle(int alpha, int i, int b, int g, int r)
 {
@@ -390,25 +390,25 @@ static void learn()
 	delta = samplepixels / ncycles;
 	alpha = initalpha;
 	radius = initradius;
-	
+
 	rad = radius >> radiusbiasshift;
 	if (rad <= 1) rad = 0;
-	for (i = 0; i < rad; i++) 
+	for (i = 0; i < rad; i++)
 		radpower[i] = alpha*(((rad*rad - i*i)*radbias)/(rad*rad));
-	
+
 	if ((lengthcount % prime1) != 0)
 		step = 3*prime1;
 	else {
 		if ((lengthcount % prime2) != 0)
 			step = 3*prime2;
 		else {
-			if ((lengthcount % prime3) != 0) 
+			if ((lengthcount % prime3) != 0)
 				step = 3*prime3;
 			else
 				step = 3*prime4;
 		}
 	}
-	
+
 	i = 0;
 	while (i < samplepixels) {
 		b = p[0] << netbiasshift;
@@ -417,18 +417,18 @@ static void learn()
 		j = contest(b,g,r);
 
 		altersingle(alpha,j,b,g,r);
-		if (rad) alterneigh(rad,j,b,g,r);   // alter neighbours 
+		if (rad) alterneigh(rad,j,b,g,r);   // alter neighbours
 
 		p += step;
 		if (p >= lim) p -= lengthcount;
-	
+
 		i++;
-		if (i % delta == 0) {	
+		if (i % delta == 0) {
 			alpha -= alpha / alphadec;
 			radius -= radius / radiusdec;
 			rad = radius >> radiusbiasshift;
 			if (rad <= 1) rad = 0;
-			for (j = 0; j < rad; j++) 
+			for (j = 0; j < rad; j++)
 				radpower[j] = alpha * (((rad*rad - j*j) * radbias) / (rad*rad));
 		}
 	}
@@ -438,11 +438,11 @@ static void learn()
 // FreeImage implementation
 // ------------------------
 
-// Input parameters: 
+// Input parameters:
 // - void* dib: DIB 24-bit to be quantized
 // - int sampling: a sampling factor in range 1..30
 //                 1 => slower, 30 => faster. Default value is 15
-// Return value: 
+// Return value:
 // - NULL  if the DIB is not valid or if it's not a 24-bit DIB
 // - the quantized 8-bit (color palette) DIB otherwise
 
@@ -462,7 +462,7 @@ NNQuantizer(FIBITMAP *dib, int sampling)
 
 
 	// 2) Get DIB parameters
-	
+
 	width = FreeImage_GetWidth(dib);	// DIB width
 	height = FreeImage_GetHeight(dib);	// DIB height
 	dib_bits = FreeImage_GetBits(dib);	// pointer to DIB pixels
@@ -496,7 +496,7 @@ NNQuantizer(FIBITMAP *dib, int sampling)
 	// 6) Write output image using inxsearch(b,g,r)
 
 	for (WORD rows = 0; rows < height; rows++) {
-		BYTE *new_bits = FreeImage_GetScanLine(new_dib, rows);			
+		BYTE *new_bits = FreeImage_GetScanLine(new_dib, rows);
 		BYTE *bits = FreeImage_GetScanLine(dib, rows);
 
 		for (WORD cols = 0; cols < FreeImage_GetWidth(dib); cols++) {

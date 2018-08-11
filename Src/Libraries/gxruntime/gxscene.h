@@ -75,7 +75,7 @@ public:
 			int blend,flags;
 		}tex_states[MAX_TEXTURES];
 	};
-	
+
 	//state
 	int  hwTexUnits();
 	int  gfxDriverCaps3D();

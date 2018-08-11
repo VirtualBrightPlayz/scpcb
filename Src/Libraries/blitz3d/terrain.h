@@ -26,7 +26,7 @@ public:
 
 	//object interface
 	bool collide( const Line &line,float radius,Collision *curr_coll,const Transform &tf );
-	
+
 private:
 	TerrainRep *rep;
 };

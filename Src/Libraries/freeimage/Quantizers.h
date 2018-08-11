@@ -34,9 +34,9 @@ typedef long			int32;
 typedef struct {
     int r0;			 // min value, exclusive
     int r1;			 // max value, inclusive
-    int g0;  
-    int g1;  
-    int b0;  
+    int g0;
+    int g1;
+    int b0;
     int b1;
     int vol;
 } Box;
@@ -78,11 +78,11 @@ class WuQuantizer
 // NEUQUANT Neural-Net quantization algorithm by Anthony Dekker
 ////////////////////////////////////////////////////////////////
 
-// Input parameters: 
+// Input parameters:
 // - void* dib: DIB 24-bit to be quantized
 // - int sampling: a sampling factor in range 1..30
 //                 1 => slower, 30 => faster. Default value is 15
-// Return value: 
+// Return value:
 // - NULL  if the DIB is not valid or if it's not a 24-bit DIB
 // - the quantized 8-bit (color palette) DIB otherwise
 

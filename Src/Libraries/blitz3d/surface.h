@@ -22,9 +22,9 @@ public:
 
 		Vertex():color(~0){
 			bone_bones[0]=255;
-			memset(tex_coords,0,sizeof(tex_coords)); 
+			memset(tex_coords,0,sizeof(tex_coords));
 		}
-		
+
 		bool operator<( const Vertex &t )const{
 			return memcmp( this,&t,sizeof(*this) )==-1;
 		}

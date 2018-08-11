@@ -107,7 +107,7 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 		FIBITMAP *dib;
 
 		// we use this offset value to make seemingly absolute seeks relative in the file
-	
+
 		long start_of_file = io.tell_proc(handle);
 
 		// read the icon header
@@ -124,7 +124,7 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 			io.read_proc(icon_list, icon_header.idCount * sizeof(ICONDIRENTRY), 1, handle);
 
 			// load the specified icon
-			
+
 			if (page < icon_header.idCount) {
 				// seek to the start of the bitmap data for the icon
 
@@ -162,7 +162,7 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 
 				// read the palette data
 
-				io.read_proc(freeimage.get_palette_proc(dib), CalculateUsedColors(bit_count) * sizeof(RGBQUAD), 1, handle);				
+				io.read_proc(freeimage.get_palette_proc(dib), CalculateUsedColors(bit_count) * sizeof(RGBQUAD), 1, handle);
 
 				// apply the AND and XOR masks
 

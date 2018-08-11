@@ -320,7 +320,7 @@ String String::trim() const {
         }
     }
     newBuf[newLength]=L'\0';
-        
+
     String retVal = newBuf;
     delete[] newBuf;
     return retVal;

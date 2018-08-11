@@ -26,7 +26,7 @@
 
 #include "FreeImage.h"
 #include "Utilities.h"
- 
+
 // ----------------------------------------------------------
 //   Constants + headers
 // ----------------------------------------------------------
@@ -37,18 +37,18 @@
 #pragma pack(1)
 #endif
 
-typedef struct tagRGBTRIPLE { 
-  BYTE rgbtBlue; 
+typedef struct tagRGBTRIPLE {
+  BYTE rgbtBlue;
   BYTE rgbtGreen;
   BYTE rgbtRed;
-} RGBTRIPLE; 
+} RGBTRIPLE;
 
-typedef struct tagBGRAQUAD { 
-  BYTE bgraBlue; 
-  BYTE bgraGreen; 
+typedef struct tagBGRAQUAD {
+  BYTE bgraBlue;
+  BYTE bgraGreen;
   BYTE bgraRed;
   BYTE bgraAlpha;
-} BGRAQUAD; 
+} BGRAQUAD;
 
 struct tagTGAHEADER {
 	BYTE id_length;
@@ -166,7 +166,7 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 							BGRAQUAD quad;
 
 							io.read_proc(&quad, sizeof(RGBTRIPLE), 1, handle);
-						
+
 							palette[count].rgbBlue = quad.bgraBlue;
 							palette[count].rgbRed = quad.bgraRed;
 							palette[count].rgbGreen = quad.bgraGreen;
@@ -178,13 +178,13 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 							RGBTRIPLE triple;
 
 							io.read_proc(&triple, sizeof(RGBTRIPLE), 1, handle);
-						
+
 							palette[count].rgbRed = triple.rgbtRed;
 							palette[count].rgbGreen = triple.rgbtGreen;
 							palette[count].rgbBlue = triple.rgbtBlue;
 						}
 					}
-					
+
 					// read in the bitmap bits
 					switch (header.image_type) {
 						case 1 :
@@ -200,7 +200,7 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 									io.read_proc(Internal_GetScanLine(freeimage, dib, count, flipvert), line, 1, handle);
 
 							}
-							
+
 							break;
 						}
 
@@ -217,10 +217,10 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 								bits = Internal_GetScanLine(freeimage, dib, y, flipvert);
 
 							BYTE rle;
-							
+
 							while(1) {
 								io.read_proc(&rle,1, 1, handle);
-								
+
 								if (rle>127) {
 									rle -= 127;
 
@@ -238,7 +238,7 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 
 											if (y >= header.is_height)
 												goto done89;
-											
+
 											if(fliphoriz)
 												bits = Internal_GetScanLine(freeimage, dib, header.is_height-y-1, flipvert);
 											else
@@ -249,19 +249,19 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 									rle++;
 
 									for (int ix = 0; ix < rle; ix++) {
-										BYTE triple;		
+										BYTE triple;
 
 										io.read_proc(&triple, 1, 1, handle);
 
 										bits[x++] = triple;
-										
+
 										if (x >= line) {
 											x = 0;
 
 											y++;
 
 											if (y >= header.is_height)
-												goto done89;											
+												goto done89;
 
 											if(fliphoriz)
 												bits = Internal_GetScanLine(freeimage, dib, header.is_height-y-1, flipvert);
@@ -274,7 +274,7 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 					done89 :
 							break;
 						}
-						
+
 						default :
 							freeimage.free_proc(dib);
 							return NULL;
@@ -294,7 +294,7 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 						pixel_bits = 24;
 
 						dib = freeimage.allocate_proc(header.is_width, header.is_height, pixel_bits, 0xFF, 0xFF00, 0xFF0000);
-					} else {			
+					} else {
 						pixel_bits = 16;
 
 						dib = freeimage.allocate_proc(header.is_width, header.is_height, pixel_bits, 0x1F, 0x3E0, 0x7C00);
@@ -308,7 +308,7 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 
 					const unsigned pixel_size = unsigned(pixel_bits) / 8;
 
-					// note header.cm_size is a misleading name, it should be seen as header.cm_bits 
+					// note header.cm_size is a misleading name, it should be seen as header.cm_bits
 					// ignore current position in file and set filepointer explicitly from the beginning of the file
 
 					int garblen = 0;
@@ -324,7 +324,7 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 					// read in the bitmap bits
 
 					WORD pixel;
-							
+
 					switch (header.image_type) {
 						case 2 :
 						{
@@ -337,7 +337,7 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 
 								for (int x = 0; x < line; ) {
 									io.read_proc(&pixel, sizeof(WORD), 1, handle);
-								
+
 									if (TARGA_LOAD_RGB888 & flags) {
 										bits[x + 0] = ((pixel & 0x1F) * 0xFF) / 0x1F;
 										bits[x + 1] = (((pixel & 0x3E0) >> 5) * 0xFF) / 0x1F;
@@ -367,16 +367,16 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 									bits = Internal_GetScanLine(freeimage, dib, header.is_height-y-1, flipvert);
 								else
 									bits = Internal_GetScanLine(freeimage, dib, y, flipvert);
-		
+
 								io.read_proc(&rle,1, 1, handle);
-								
+
 								// compressed block
-								
+
 								if (rle > 127) {
 									rle -= 127;
 
 									io.read_proc(&pixel, sizeof(WORD), 1, handle);
-								
+
 									for (int ix = 0; ix < rle; ix++) {
 										if (TARGA_LOAD_RGB888 & flags) {
 											bits[x + 0] = ((pixel & 0x1F) * 0xFF) / 0x1F;
@@ -387,13 +387,13 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 										}
 
 										x += pixel_size;
-										
+
 										if (x >= line) {
 											x = 0;
 											y++;
 
 											if (y >= header.is_height)
-												goto done2;																
+												goto done2;
 										}
 									}
 								} else {
@@ -417,7 +417,7 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 											y++;
 
 											if (y >= header.is_height)
-												goto done2;																
+												goto done2;
 										}
 									}
 								}
@@ -440,7 +440,7 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 					dib = freeimage.allocate_proc(header.is_width, header.is_height, 24, 0xFF, 0xFF00, 0xFF0000);
 
 					if (dib == 0)
-						throw "DIB allocation failed";					
+						throw "DIB allocation failed";
 
 					// read in the bitmap bits
 
@@ -473,16 +473,16 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 							int y = 0;
 							BYTE rle;
 							BYTE *bits;
-							
+
 							if(fliphoriz)
 								bits = Internal_GetScanLine(freeimage, dib, header.is_height-y-1, flipvert);
 							else
 								bits = Internal_GetScanLine(freeimage, dib, y, flipvert);
-							
+
 							if (alphabits) {
 								while(1) {
 									io.read_proc(&rle,1, 1, handle);
-									
+
 									if (rle>127) {
 										rle -= 127;
 
@@ -521,13 +521,13 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 											bits[x++] = quad.bgraGreen;
 											bits[x++] = quad.bgraRed;
 											bits[x++] = quad.bgraAlpha;
-											
+
 											if (x >= line) {
 												x = 0;
 												y++;
 
 												if (y >= header.is_height)
-													goto done243;											
+													goto done243;
 
 												if(fliphoriz)
 													bits = Internal_GetScanLine(freeimage, dib, header.is_height-y-1, flipvert);
@@ -540,7 +540,7 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 							} else {
 								while (1) {
 									io.read_proc(&rle,1, 1, handle);
-									
+
 									if (rle>127) {
 										rle -= 127;
 
@@ -558,8 +558,8 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 												y++;
 
 												if (y >= header.is_height)
-													goto done243;											
-												
+													goto done243;
+
 												if(fliphoriz)
 													bits = Internal_GetScanLine(freeimage, dib, header.is_height-y-1, flipvert);
 												else
@@ -570,20 +570,20 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 										rle++;
 
 										for (int ix = 0; ix < rle; ix++) {
-											RGBTRIPLE triple;		
+											RGBTRIPLE triple;
 
 											io.read_proc(&triple, sizeof(RGBTRIPLE), 1, handle);
 
 											bits[x++] = triple.rgbtBlue;
 											bits[x++] = triple.rgbtGreen;
 											bits[x++] = triple.rgbtRed;
-											
+
 											if (x >= line) {
 												x = 0;
 												y++;
 
 												if (y >= header.is_height)
-													goto done243;											
+													goto done243;
 
 												if(fliphoriz)
 													bits = Internal_GetScanLine(freeimage, dib, header.is_height-y-1, flipvert);
@@ -605,7 +605,7 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 
 					break;
 				}
-				
+
 				case 32 :
 				{
 					int pixel_bits;
@@ -624,9 +624,9 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 					// Allocate the DIB
 
 					dib = freeimage.allocate_proc(header.is_width, header.is_height, pixel_bits, 0xFF, 0xFF00, 0xFF0000);
-					
+
 					if (dib == 0)
-						throw "DIB allocation failed";					
+						throw "DIB allocation failed";
 
 					// read in the bitmap bits
 
@@ -650,7 +650,7 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 											bits[2] = rgb.rgbRed;
 
 											if ((TARGA_LOAD_RGB888 & flags) != TARGA_LOAD_RGB888)
-												bits[3] = rgb.rgbReserved;											
+												bits[3] = rgb.rgbReserved;
 
 											bits += pixel_size;
 										}
@@ -669,7 +669,7 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 											bits[2] = rgb.rgbRed;
 
 											if ((TARGA_LOAD_RGB888 & flags) != TARGA_LOAD_RGB888)
-												bits[3] = rgb.rgbReserved;											
+												bits[3] = rgb.rgbReserved;
 
 											bits += pixel_size;
 										}
@@ -695,7 +695,7 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 											bits[2] = rgb.rgbRed;
 
 											if ((TARGA_LOAD_RGB888 & flags) != TARGA_LOAD_RGB888)
-												bits[3] = rgb.rgbReserved;											
+												bits[3] = rgb.rgbReserved;
 
 											bits += pixel_size;
 										}
@@ -719,7 +719,7 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 											bits[2] = rgb.rgbRed;
 
 											if ((TARGA_LOAD_RGB888 & flags) != TARGA_LOAD_RGB888)
-												bits[3] = rgb.rgbReserved;											
+												bits[3] = rgb.rgbReserved;
 
 											bits += pixel_size;
 										}
@@ -734,15 +734,15 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 							int y = 0;
 							BYTE rle;
 							BYTE *bits;
-							
+
 							if(fliphoriz)
 								bits = Internal_GetScanLine(freeimage, dib, header.is_height-y-1, flipvert);
 							else
 								bits = Internal_GetScanLine(freeimage, dib, y, flipvert);
-							
+
 							while(1) {
 								io.read_proc(&rle,1, 1, handle);
-									
+
 								if (rle>127) {
 									rle -= 127;
 
@@ -781,13 +781,13 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 										bits[x++] = quad.bgraGreen;
 										bits[x++] = quad.bgraRed;
 										bits[x++] = quad.bgraAlpha;
-											
+
 										if (x >= line) {
 											x = 0;
 											y++;
 
 											if (y >= header.is_height)
-												goto done3210;											
+												goto done3210;
 
 											if(fliphoriz)
 												bits = Internal_GetScanLine(freeimage, dib, header.is_height-y-1, flipvert);

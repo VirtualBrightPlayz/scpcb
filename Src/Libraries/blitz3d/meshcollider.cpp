@@ -98,7 +98,7 @@ bool MeshCollider::collide( const Box &line_box,const Line &line,float radius,co
 
 		curr_coll->surface=tri.surface;
 		curr_coll->index=tri.index;
-		
+
 		hit=true;
 	}
 	return hit;
@@ -170,7 +170,7 @@ MeshCollider::Node *MeshCollider::createNode( const std::vector<int> &tris ){
 bool MeshCollider::intersects( const MeshCollider &c,const Transform &t )const{
 
 	static Vector a[MAX_COLL_TRIS][3],b[3];
-	
+
 	if( !(t * tree->box).overlaps( c.tree->box ) ) return false;
 	for( int k=0;k<leaves.size();++k ){
 		Node *p=leaves[k];

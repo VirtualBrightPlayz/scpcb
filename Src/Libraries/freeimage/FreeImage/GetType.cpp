@@ -32,7 +32,7 @@ FREE_IMAGE_FORMAT DLL_CALLCONV
 FreeImage_GetFileType(const char *filename, int size) {
 	FreeImageIO io;
 	SetDefaultIO(&io);
-	
+
 	FILE *handle = fopen(filename, "rb");
 
 	if (handle != NULL) {

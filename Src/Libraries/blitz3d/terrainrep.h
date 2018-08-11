@@ -10,7 +10,7 @@ struct TerrainRep{
 public:
 	TerrainRep( int cell_shift );
 	~TerrainRep();
-	
+
 	void clear();
 	void setShading( bool shading );
 	void setDetail( int n,bool morph );

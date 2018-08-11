@@ -40,10 +40,10 @@ public:
 	void setFormat( const DDPIXELFORMAT &pf );
 
 	int getDepth()const{
-		return depth; 
+		return depth;
 	}
-	int getPitch()const{ 
-		return pitch; 
+	int getPitch()const{
+		return pitch;
 	}
 	unsigned fromARGB( unsigned n )const{
 		return ( (n>>ashr<<ashl)&amask ) | ( (n>>rshr<<rshl)&rmask ) | ( (n>>gshr<<gshl)&gmask ) | ( (n>>bshr<<bshl)&bmask );

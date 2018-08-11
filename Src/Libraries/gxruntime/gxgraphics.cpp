@@ -256,7 +256,7 @@ gxFont *gxGraphics::loadFont( const String& f,int height,int flags ){
 	SystemParametersInfo( SPI_GETFONTSMOOTHING,0,&smoothing,0 );
 	SystemParametersInfo( SPI_SETFONTSMOOTHING,FALSE,0,0 );
 
-	HFONT hfont=CreateFont( 
+	HFONT hfont=CreateFont(
 		height,0,0,0,
 		bold,italic,underline,strikeout,
 		ANSI_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,DEFAULT_QUALITY,

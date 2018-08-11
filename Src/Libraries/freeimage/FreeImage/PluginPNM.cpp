@@ -219,7 +219,7 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 				// write the bitmap data
 
 				if (id_two == '1') {	// ASCII bitmap
-					for (y = 0; y < height; y++) {				
+					for (y = 0; y < height; y++) {
 						bits = freeimage.get_bits_proc(dib) + (height - 1 - y) * pitch;
 
 						for (x = 0; x < width; x++) {
@@ -232,7 +232,7 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 				}  else {		// Raw bitmap
 					int line = CalculateLine(width, 1);
 
-					for (y = 0; y < height; y++) {				
+					for (y = 0; y < height; y++) {
 						bits = freeimage.get_bits_proc(dib) + (height - 1 - y) * pitch;
 
 						for (x = 0; x < line; x++) {
@@ -248,7 +248,7 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 			case '2':
 			case '5':
 				// Build a greyscale palette
-				
+
 				pal = freeimage.get_palette_proc(dib);
 
 				for (i = 0; i < 256; i++) {
@@ -262,7 +262,7 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 				// write the bitmap data
 
 				if(id_two == '2') {		// ASCII greymap
-					for (y = 0; y < height; y++) {				
+					for (y = 0; y < height; y++) {
 						bits = freeimage.get_bits_proc(dib) + (height - 1 - y) * pitch;
 						for (x = 0; x < width; x++) {
 							level = GetInt(io, handle);
@@ -272,7 +272,7 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 				} else {		// Raw greymap
 					level = 0;
 
-					for (y = 0; y < height; y++) {				
+					for (y = 0; y < height; y++) {
 						bits = freeimage.get_bits_proc(dib) + (height - 1 - y) * pitch;
 
 						for (x = 0; x < width; x++) {
@@ -291,7 +291,7 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 				// write the bitmap data
 
 				if (id_two == '3') {		// ASCII pixmap
-					for (y = 0; y < height; y++) {				
+					for (y = 0; y < height; y++) {
 						bits = freeimage.get_bits_proc(dib) + (height - 1 - y) * pitch;
 
 						for (x = 0; x < width; x++) {
@@ -305,11 +305,11 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 				}  else {			// Raw pixmap
 					level = 0;
 
-					for (y = 0; y < height; y++) {				
+					for (y = 0; y < height; y++) {
 						bits = freeimage.get_bits_proc(dib) + (height - 1 - y) * pitch;
 
 						for (x = 0; x < width; x++) {
-							io.read_proc(&level, 1, 1, handle); 
+							io.read_proc(&level, 1, 1, handle);
 							bits[2] = (BYTE)((255 * level) / max);	// R
 
 							io.read_proc(&level, 1, 1, handle);
@@ -344,7 +344,7 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 
 		return NULL;
 	}
-		
+
 	return NULL;
 }
 
@@ -369,7 +369,7 @@ Save(FreeImage &freeimage, FreeImageIO &io, FIBITMAP *dib, fi_handle handle, int
     int magic, bpp;
 	WORD x, y, width, height;
     BYTE *bits;		// pointer to dib data
-	
+
 	if ((dib) && (handle)) {
 		bpp = freeimage.get_bpp_proc(dib);
 		width = freeimage.get_width_proc(dib);
@@ -383,7 +383,7 @@ Save(FreeImage &freeimage, FreeImageIO &io, FIBITMAP *dib, fi_handle handle, int
 			case 1 :
 				magic = 1;	// PBM file (B & W)
 				break;
-			case 8 : 			
+			case 8 :
 				magic = 2;	// PGM file	(Greyscale)
 				break;
 
@@ -467,7 +467,7 @@ Save(FreeImage &freeimage, FreeImageIO &io, FIBITMAP *dib, fi_handle handle, int
 						// write the scanline to disc
 
 						BYTE *bits = buffer;
-						
+
 						for (x = 0; x < width; x++) {
 							char buffer[20];
 
@@ -486,7 +486,7 @@ Save(FreeImage &freeimage, FreeImageIO &io, FIBITMAP *dib, fi_handle handle, int
 							}
 
 							bits += 3;
-						}					
+						}
 					}
 
 					free(buffer);
@@ -570,7 +570,7 @@ Save(FreeImage &freeimage, FreeImageIO &io, FIBITMAP *dib, fi_handle handle, int
 					}
 				}
 			}
-			
+
 			break;
 		}
 

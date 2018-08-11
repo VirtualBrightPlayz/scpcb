@@ -147,7 +147,7 @@ void Animator::setAnimTime( float time,int seq ){
 
 	//if( time<0 || time>_seq_len ) time=fmod( time,_seq_len );
 	//_time=time;
-		
+
 	if( _time<0 ) _time+=+_seq_len;
 
 	updateAnim();

@@ -182,7 +182,7 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 			mng_handle mng = mng_initialize(mymng, mymngalloc, mymngfree, MNG_NULL);
 
 			if (mng == MNG_NULL)
-				throw "could not initialize libmng";			
+				throw "could not initialize libmng";
 
 			// set the callbacks
 
@@ -215,7 +215,7 @@ Load(FreeImage &freeimage, FreeImageIO &io, fi_handle handle, int page, int flag
 	}
 
 	return NULL;
-}	
+}
 
 // ==========================================================
 //   Init
