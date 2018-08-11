@@ -164,7 +164,7 @@ int EntryPoint() {
 
     InitializeKeyName();
 
-    sndManager = CreateSoundManager();
+    sndManager = new SoundManager();
 
     if (userOptions->launcher) {
         CurrGameState = GAMESTATE_LAUNCHER;

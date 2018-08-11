@@ -13,83 +13,83 @@ class Object;
 namespace CBN {
 
 // Structs.
-struct Sound {
+struct SoundWrapper {
 private:
-    static std::vector<Sound*> list;
+    SoundWrapper();
 
 public:
-    Sound();
-    ~Sound();
-    static int getListSize();
-    static Sound* getObject(int index);
+    static std::vector<SoundWrapper*> list;
+
+    ~SoundWrapper();
 
     gxSound* internal;
     String file;
+
+    static SoundWrapper* Initialize(const String& fileName);
+
+    static SoundWrapper* Load(const String& fileName);
 };
 
-struct SoundManager {
-private:
-    static std::vector<SoundManager*> list;
-
+class SoundManager {
 public:
     SoundManager();
-    ~SoundManager();
-    static int getListSize();
-    static SoundManager* getObject(int index);
+
+    void loadInGameSounds();
+    void deloadInGameSounds();
 
     // Buttons
-    Sound* button;
-    Sound* buttonErr;
+    SoundWrapper* button;
+    SoundWrapper* buttonErr;
 
     // Footsteps
-    Sound* footstep[8];
-    Sound* footstepRun[8];
-    Sound* footstepMetal[8];
-    Sound* footstepMetalRun[8];
-    Sound* footstepPD[3];
-    Sound* footstep8601[3];
+    SoundWrapper* footstep[8];
+    SoundWrapper* footstepRun[8];
+    SoundWrapper* footstepMetal[8];
+    SoundWrapper* footstepMetalRun[8];
+    SoundWrapper* footstepPD[3];
+    SoundWrapper* footstep8601[3];
 
     // Doors
-    Sound* openDoor[3];
-    Sound* openBigDoor[2];
-    Sound* openHCZDoor[3];
+    SoundWrapper* openDoor[3];
+    SoundWrapper* openBigDoor[2];
+    SoundWrapper* openHCZDoor[3];
 
-    Sound* closeDoor[3];
-    Sound* closeBigDoor[2];
-    Sound* closeHCZDoor[3];
+    SoundWrapper* closeDoor[3];
+    SoundWrapper* closeBigDoor[2];
+    SoundWrapper* closeHCZDoor[3];
 
     // Keycards
-    Sound* keycardUse;
-    Sound* keycardErr;
-    Sound* scannerUse;
-    Sound* scannerErr;
+    SoundWrapper* keycardUse;
+    SoundWrapper* keycardErr;
+    SoundWrapper* scannerUse;
+    SoundWrapper* scannerErr;
 
     // Pickups
-    Sound* itemPick[4];
+    SoundWrapper* itemPick[4];
 
     // Elevator
-    Sound* elevatorBeep;
-    Sound* elevatorMove;
+    SoundWrapper* elevatorBeep;
+    SoundWrapper* elevatorMove;
 
     // Tesla
-    Sound* teslaIdle;
-    Sound* teslaActive;
-    Sound* teslaPowerUp;
-    Sound* teslaShock;
+    SoundWrapper* teslaIdle;
+    SoundWrapper* teslaActive;
+    SoundWrapper* teslaPowerUp;
+    SoundWrapper* teslaShock;
 
     // Bullets
-    Sound* gunshot[2];
-    Sound* bulletHit;
-    Sound* bulletMiss;
+    SoundWrapper* gunshot[2];
+    SoundWrapper* bulletHit;
+    SoundWrapper* bulletMiss;
 
-    Sound* alarm;
-    Sound* caution;
-    Sound* hiss;
-    Sound* lightSwitch;
-    Sound* lever;
-    Sound* burst;
-    Sound* camera;
-    Sound* heartbeat;
+    SoundWrapper* alarm;
+    SoundWrapper* caution;
+    SoundWrapper* hiss;
+    SoundWrapper* lightSwitch;
+    SoundWrapper* lever;
+    SoundWrapper* burst;
+    SoundWrapper* camera;
+    SoundWrapper* heartbeat;
 };
 
 struct SoundChannel {
@@ -168,35 +168,23 @@ extern SoundManager* sndManager;
 extern MusicManager* musicManager;
 
 // Functions.
-SoundManager* CreateSoundManager();
-
-void LoadInGameSounds(SoundManager* sndMan);
-
-void DeloadInGameSounds(SoundManager* sndMan);
-
-void AddPositionalChannel(gxChannel* ref, Camera* cam, Object* ent, float range = 10.0f, float vol = 1.0f);
+void AddPositionalChannel(gxChannel* ref, Camera* cam, Object* ent, float range = 10.f, float vol = 1.f);
 
 void UpdateChannelList();
 
-Sound* InitializeSound_SM(const String& fileName);
-
-Sound* LoadSound_SM(const String& fileName);
-
 gxChannel* PlaySound2(gxSound* snd);
 
-gxChannel* PlaySound_SM(Sound* snd);
+gxChannel* PlaySound_SM(SoundWrapper* snd);
 
-void FreeSound_SM(Sound* snd);
+gxChannel* PlayRangedSound(gxSound* soundHandle, Camera* cam, Object* entity, float range = 10.f, float volume = 1.f);
 
-gxChannel* PlayRangedSound(gxSound* soundHandle, Camera* cam, Object* entity, float range = 10.0f, float volume = 1.0f);
+gxChannel* PlayRangedSound_SM(SoundWrapper* snd, Camera* cam, Object* entity, float range = 10, float volume = 1.f);
 
-gxChannel* PlayRangedSound_SM(Sound* snd, Camera* cam, Object* entity, float range = 10, float volume = 1.0);
+gxChannel* LoopRangedSound(gxSound* soundHandle, gxChannel* chn, Camera* cam, Object* entity, float range = 10.f, float volume = 1.f);
 
-gxChannel* LoopRangedSound(gxSound* soundHandle, gxChannel* chn, Camera* cam, Object* entity, float range = 10, float volume = 1.0);
+gxChannel* LoopRangedSound_SM(SoundWrapper* snd, gxChannel* chn, Camera* cam, Object* entity, float range = 10.f, float volume = 1.f);
 
-gxChannel* LoopRangedSound_SM(Sound* snd, gxChannel* chn, Camera* cam, Object* entity, float range = 10, float volume = 1.0);
-
-void UpdateRangedSoundOrigin(gxChannel* chn, Camera* cam, Object* entity, float range = 10.0f, float volume = 1.0f);
+void UpdateRangedSoundOrigin(gxChannel* chn, Camera* cam, Object* entity, float range = 10.f, float volume = 1.f);
 
 void UpdateRangedSoundOrigin_SM(SoundChannel* chn);
 

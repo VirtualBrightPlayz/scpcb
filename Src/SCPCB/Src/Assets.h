@@ -21,14 +21,6 @@ const int HAND_ICON_GRAB = 1;
 // Structs.
 class AssetWrap {
 public:
-    enum class TYPE {
-        ASSET_NONE,
-        ASSET_TEXTURE,
-        ASSET_IMAGE,
-        ASSET_MESH,
-        ASSET_ANIM_MESH
-    };
-
     virtual void drop() =0;
 
     static void update();
@@ -83,7 +75,7 @@ public:
 
     MeshModel* getMesh();
 
-    static MeshAssetWrap* grab(const String& filePath, bool isAnimated = true);
+    static MeshAssetWrap* grab(const String& filePath, bool isAnimated = false);
 
     static void update();
 private:
@@ -92,7 +84,7 @@ private:
     bool animated;
     MeshModel* mesh;
 
-    MeshAssetWrap(const String& filePath, bool isAnimated = true);
+    MeshAssetWrap(const String& filePath, bool isAnimated);
     ~MeshAssetWrap();
 };
 

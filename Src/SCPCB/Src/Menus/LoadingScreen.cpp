@@ -333,7 +333,7 @@ void DrawLoading(int percent, int shortloading) {
             break;
         }
 
-    } while(bbGetKey()!=0 | bbMouseHit(1));
+    } while (bbGetKey()==0 && !bbMouseHit(1));
 
     if (percent >= 100) {
         musicManager->restoreDefaultMusic();

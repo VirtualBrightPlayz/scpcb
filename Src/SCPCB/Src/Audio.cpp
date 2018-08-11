@@ -17,42 +17,40 @@
 namespace CBN {
 
 // Structs.
-std::vector<Sound*> Sound::list;
-Sound::Sound() {
+std::vector<SoundWrapper*> SoundWrapper::list;
+SoundWrapper::SoundWrapper() {
     list.push_back(this);
 }
-Sound::~Sound() {
+SoundWrapper::~SoundWrapper() {
     for (int i = 0; i < list.size(); i++) {
         if (list[i] == this) {
+            if (internal != nullptr) {
+                bbFreeSound(internal);
+            }
+
             list.erase(list.begin() + i);
             break;
         }
     }
-}
-int Sound::getListSize() {
-    return list.size();
-}
-Sound* Sound::getObject(int index) {
-    return list[index];
 }
 
-std::vector<SoundManager*> SoundManager::list;
+SoundWrapper* SoundWrapper::Initialize(const String& fileName) {
+    SoundWrapper* snd = new SoundWrapper();
+    snd->file = fileName;
+
+    return snd;
+}
+
+SoundWrapper* SoundWrapper::Load(const String& fileName) {
+    SoundWrapper* snd = SoundWrapper::Initialize(fileName);
+    snd->internal = bbLoadSound(fileName);
+
+    return snd;
+}
+
 SoundManager::SoundManager() {
-    list.push_back(this);
-}
-SoundManager::~SoundManager() {
-    for (int i = 0; i < list.size(); i++) {
-        if (list[i] == this) {
-            list.erase(list.begin() + i);
-            break;
-        }
-    }
-}
-int SoundManager::getListSize() {
-    return list.size();
-}
-SoundManager* SoundManager::getObject(int index) {
-    return list[index];
+    memset(this, 0, sizeof(SoundManager));
+    button = SoundWrapper::Load("SFX/Interact/Button.ogg");
 }
 
 std::vector<SoundChannel*> SoundChannel::list;
@@ -72,6 +70,74 @@ int SoundChannel::getListSize() {
 }
 SoundChannel* SoundChannel::getObject(int index) {
     return list[index];
+}
+
+void SoundManager::loadInGameSounds() {
+    buttonErr = SoundWrapper::Initialize("SFX/Interact/Button2.ogg");
+
+    for (int i = 0; i < 8; i++) {
+        footstep[i] = SoundWrapper::Load("SFX/Step/Step" + String(i + 1) + ".ogg");
+        footstepRun[i] = SoundWrapper::Load("SFX/Step/Run" + String(i + 1) + ".ogg");
+        footstepMetal[i] = SoundWrapper::Load("SFX/Step/StepMetal" + String(i + 1) + ".ogg");
+        footstepMetalRun[i] = SoundWrapper::Load("SFX/Step/RunMetal" + String(i + 1) + ".ogg");
+    }
+
+    for (int i = 0; i < 3; i++) {
+        footstepPD[i] = SoundWrapper::Initialize("SFX/Step/StepPD" + String(i + 1) + ".ogg");
+        footstep8601[i] = SoundWrapper::Initialize("SFX/Step/StepForest" + String(i + 1) + ".ogg");
+    }
+
+    for (int i = 0; i < 3; i++) {
+        openDoor[i] = SoundWrapper::Load("SFX/Door/DoorOpen" + String(i + 1) + ".ogg");
+        closeDoor[i] = SoundWrapper::Load("SFX/Door/DoorClose" + String(i + 1) + ".ogg");
+        openHCZDoor[i] = SoundWrapper::Load("SFX/Door/Door2Open" + String(i + 1) + ".ogg");
+        closeHCZDoor[i] = SoundWrapper::Load("SFX/Door/Door2Close" + String(i + 1) + ".ogg");
+    }
+
+    for (int i = 0; i < 2; i++) {
+        openBigDoor[i] = SoundWrapper::Initialize("SFX/Door/BigDoorOpen" + String(i + 1) + ".ogg");
+        closeBigDoor[i] = SoundWrapper::Initialize("SFX/Door/BigDoorClose" + String(i + 1) + ".ogg");
+    }
+
+    keycardUse = SoundWrapper::Initialize("SFX/Interact/KeyCardUse1.ogg");
+    keycardErr = SoundWrapper::Initialize("SFX/Interact/KeyCardUse2.ogg");
+    scannerUse = SoundWrapper::Initialize("SFX/Interact/ScannerUse1.ogg");
+    scannerErr = SoundWrapper::Initialize("SFX/Interact/ScannerUse2.ogg");
+
+    for (int i = 0; i < 4; i++) {
+        itemPick[i] = SoundWrapper::Load("SFX/Interact/PickItem" + String(i) + ".ogg");
+    }
+
+    elevatorBeep = SoundWrapper::Initialize("SFX/General/Elevator/Beep.ogg");
+    elevatorMove = SoundWrapper::Initialize("SFX/General/Elevator/Moving.ogg");
+
+    teslaIdle = SoundWrapper::Initialize("SFX/Room/Tesla/Idle.ogg");
+    teslaActive = SoundWrapper::Initialize("SFX/Room/Tesla/WindUp.ogg");
+    teslaPowerUp = SoundWrapper::Initialize("SFX/Room/Tesla/PowerUp.ogg");
+    teslaShock = SoundWrapper::Initialize("SFX/Room/Tesla/Shock.ogg");
+
+    gunshot[0] = SoundWrapper::Initialize("SFX/General/Gunshot.ogg");
+    gunshot[1] = SoundWrapper::Initialize("SFX/General/Gunshot2.ogg");
+    bulletHit = SoundWrapper::Initialize("SFX/General/BulletHit.ogg");
+    bulletMiss = SoundWrapper::Initialize("SFX/General/BulletMiss.ogg");
+
+    alarm = SoundWrapper::Initialize("SFX/General/Alarm.ogg");
+    caution = SoundWrapper::Initialize("SFX/Room/LockroomSiren.ogg");
+    hiss = SoundWrapper::Initialize("SFX/General/Hiss.ogg");
+    lightSwitch = SoundWrapper::Initialize("SFX/General/LightSwitch.ogg");
+    lever = SoundWrapper::Initialize("SFX/Interact/LeverFlip.ogg");
+    burst = SoundWrapper::Initialize("SFX/Room/TunnelBurst.ogg");
+    camera = SoundWrapper::Initialize("SFX/General/Camera.ogg");
+    heartbeat = SoundWrapper::Initialize("SFX/Character/D9341/Heartbeat.ogg");
+}
+
+void SoundManager::deloadInGameSounds() {
+    for (int i = 0; i < SoundWrapper::list.size(); i++)
+    {
+        if (SoundWrapper::list[i] == this->button) { continue; }
+        delete SoundWrapper::list[i];
+        i--;
+    }
 }
 
 // Constants.
@@ -103,133 +169,6 @@ const String MUS_BREATH("SFX/Music/Breath.ogg");
 SoundManager* sndManager;
 MusicManager* musicManager;
 
-// Functions.
-SoundManager* CreateSoundManager() {
-    SoundManager* sndMan = new SoundManager();
-    sndMan->button = LoadSound_SM("SFX/Interact/Button.ogg");
-    return sndMan;
-}
-
-void LoadInGameSounds(SoundManager* sndMan) {
-    int i;
-
-    sndMan->buttonErr = InitializeSound_SM("SFX/Interact/Button2.ogg");
-
-    for (i = 0; i <= 7; i++) {
-        sndMan->footstep[i] = LoadSound_SM("SFX/Step/Step" + String(i + 1) + ".ogg");
-        sndMan->footstepRun[i] = LoadSound_SM("SFX/Step/Run" + String(i + 1) + ".ogg");
-        sndMan->footstepMetal[i] = LoadSound_SM("SFX/Step/StepMetal" + String(i + 1) + ".ogg");
-        sndMan->footstepMetalRun[i] = LoadSound_SM("SFX/Step/RunMetal" + String(i + 1) + ".ogg");
-    }
-
-    for (i = 0; i <= 2; i++) {
-        sndMan->footstepPD[i] = InitializeSound_SM("SFX/Step/StepPD" + String(i + 1) + ".ogg");
-        sndMan->footstep8601[i] = InitializeSound_SM("SFX/Step/StepForest" + String(i + 1) + ".ogg");
-    }
-
-    for (i = 0; i <= 2; i++) {
-        sndMan->openDoor[i] = LoadSound_SM("SFX/Door/DoorOpen" + String(i + 1) + ".ogg");
-        sndMan->closeDoor[i] = LoadSound_SM("SFX/Door/DoorClose" + String(i + 1) + ".ogg");
-        sndMan->openHCZDoor[i] = LoadSound_SM("SFX/Door/Door2Open" + String(i + 1) + ".ogg");
-        sndMan->closeHCZDoor[i] = LoadSound_SM("SFX/Door/Door2Close" + String(i + 1) + ".ogg");
-    }
-
-    for (i = 0; i <= 1; i++) {
-        sndMan->openBigDoor[i] = InitializeSound_SM("SFX/Door/BigDoorOpen" + String(i + 1) + ".ogg");
-        sndMan->closeBigDoor[i] = InitializeSound_SM("SFX/Door/BigDoorClose" + String(i + 1) + ".ogg");
-    }
-
-    sndMan->keycardUse = InitializeSound_SM("SFX/Interact/KeyCardUse1.ogg");
-    sndMan->keycardErr = InitializeSound_SM("SFX/Interact/KeyCardUse2.ogg");
-    sndMan->scannerUse = InitializeSound_SM("SFX/Interact/ScannerUse1.ogg");
-    sndMan->scannerErr = InitializeSound_SM("SFX/Interact/ScannerUse2.ogg");
-
-    for (i = 0; i <= 3; i++) {
-        sndMan->itemPick[i] = LoadSound_SM("SFX/Interact/PickItem" + String(i) + ".ogg");
-    }
-
-    sndMan->elevatorBeep = InitializeSound_SM("SFX/General/Elevator/Beep.ogg");
-    sndMan->elevatorMove = InitializeSound_SM("SFX/General/Elevator/Moving.ogg");
-
-    sndMan->teslaIdle = InitializeSound_SM("SFX/Room/Tesla/Idle.ogg");
-    sndMan->teslaActive = InitializeSound_SM("SFX/Room/Tesla/WindUp.ogg");
-    sndMan->teslaPowerUp = InitializeSound_SM("SFX/Room/Tesla/PowerUp.ogg");
-    sndMan->teslaShock = InitializeSound_SM("SFX/Room/Tesla/Shock.ogg");
-
-    sndMan->gunshot[0] = InitializeSound_SM("SFX/General/Gunshot.ogg");
-    sndMan->gunshot[1] = InitializeSound_SM("SFX/General/Gunshot2.ogg");
-    sndMan->bulletHit = InitializeSound_SM("SFX/General/BulletHit.ogg");
-    sndMan->bulletMiss = InitializeSound_SM("SFX/General/BulletMiss.ogg");
-
-    sndMan->alarm = InitializeSound_SM("SFX/General/Alarm.ogg");
-    sndMan->caution = InitializeSound_SM("SFX/Room/LockroomSiren.ogg");
-    sndMan->hiss = InitializeSound_SM("SFX/General/Hiss.ogg");
-    sndMan->lightSwitch = InitializeSound_SM("SFX/General/LightSwitch.ogg");
-    sndMan->lever = InitializeSound_SM("SFX/Interact/LeverFlip.ogg");
-    sndMan->burst = InitializeSound_SM("SFX/Room/TunnelBurst.ogg");
-    sndMan->camera = InitializeSound_SM("SFX/General/Camera.ogg");
-    sndMan->heartbeat = InitializeSound_SM("SFX/Character/D9341/Heartbeat.ogg");
-}
-
-void DeloadInGameSounds(SoundManager* sndMan) {
-    int i;
-    for (i = 0; i <= 7; i++) {
-        FreeSound_SM(sndMan->footstep[i]);
-        FreeSound_SM(sndMan->footstepRun[i]);
-        FreeSound_SM(sndMan->footstepMetal[i]);
-        FreeSound_SM(sndMan->footstepMetalRun[i]);
-    }
-
-    for (i = 0; i <= 2; i++) {
-        FreeSound_SM(sndMan->footstepPD[i]);
-        FreeSound_SM(sndMan->footstep8601[i]);
-    }
-
-    for (i = 0; i <= 2; i++) {
-        FreeSound_SM(sndMan->openDoor[i]);
-        FreeSound_SM(sndMan->closeDoor[i]);
-        FreeSound_SM(sndMan->openHCZDoor[i]);
-        FreeSound_SM(sndMan->closeHCZDoor[i]);
-    }
-
-    for (i = 0; i <= 1; i++) {
-        FreeSound_SM(sndMan->openBigDoor[i]);
-        FreeSound_SM(sndMan->closeBigDoor[i]);
-    }
-
-    FreeSound_SM(sndMan->keycardErr);
-    FreeSound_SM(sndMan->keycardUse);
-    FreeSound_SM(sndMan->scannerUse);
-    FreeSound_SM(sndMan->scannerErr);
-
-    for (i = 0; i <= 3; i++) {
-        FreeSound_SM(sndMan->itemPick[i]);
-    }
-
-    FreeSound_SM(sndMan->elevatorBeep);
-    FreeSound_SM(sndMan->elevatorMove);
-
-    FreeSound_SM(sndMan->teslaIdle);
-    FreeSound_SM(sndMan->teslaActive);
-    FreeSound_SM(sndMan->teslaPowerUp);
-    FreeSound_SM(sndMan->teslaShock);
-
-    for (i = 0; i <= 1; i++) {
-        FreeSound_SM(sndMan->gunshot[i]);
-    }
-    FreeSound_SM(sndMan->bulletHit);
-    FreeSound_SM(sndMan->bulletMiss);
-
-    FreeSound_SM(sndMan->alarm);
-    FreeSound_SM(sndMan->caution);
-    FreeSound_SM(sndMan->hiss);
-    FreeSound_SM(sndMan->lightSwitch);
-    FreeSound_SM(sndMan->lever);
-    FreeSound_SM(sndMan->burst);
-    FreeSound_SM(sndMan->camera);
-    FreeSound_SM(sndMan->heartbeat);
-}
-
 void AddPositionalChannel(gxChannel* ref, Camera* cam, Object* ent, float range, float vol) {
     if (ref == nullptr) {
         return;
@@ -245,31 +184,16 @@ void AddPositionalChannel(gxChannel* ref, Camera* cam, Object* ent, float range,
 }
 
 void UpdateChannelList() {
-    SoundChannel* chn;
-    for (int iterator19 = 0; iterator19 < SoundChannel::getListSize(); iterator19++) {
-        chn = SoundChannel::getObject(iterator19);
+    for (int i = 0; i < SoundChannel::getListSize(); i++) {
+        SoundChannel* chn = SoundChannel::getObject(i);
 
         if (!bbChannelPlaying(chn->internal)) {
             bbFreeEntity(chn->point);
             delete chn;
-        } else if ((chn->camera != 0)) {
+        } else if (chn->camera != nullptr) {
             UpdateRangedSoundOrigin_SM(chn);
         }
     }
-}
-
-Sound* InitializeSound_SM(const String& fileName) {
-    Sound* snd = new Sound();
-    snd->file = fileName;
-
-    return snd;
-}
-
-Sound* LoadSound_SM(const String& fileName) {
-    Sound* snd = InitializeSound_SM(fileName);
-    snd->internal = bbLoadSound(fileName);
-
-    return snd;
 }
 
 gxChannel* PlaySound2(gxSound* snd) {
@@ -281,7 +205,7 @@ gxChannel* PlaySound2(gxSound* snd) {
     return chn;
 }
 
-gxChannel* PlaySound_SM(Sound* snd) {
+gxChannel* PlaySound_SM(SoundWrapper* snd) {
     //If the sound hasn't been loaded yet then do that.
     if (snd->internal == nullptr) {
         snd->internal = bbLoadSound(snd->file);
@@ -289,15 +213,6 @@ gxChannel* PlaySound_SM(Sound* snd) {
 
     //Play the sound.
     return PlaySound2(snd->internal);
-}
-
-void FreeSound_SM(Sound* snd) {
-    if (snd->internal != 0) {
-        bbFreeSound(snd->internal);
-        snd->internal = 0;
-    }
-
-    delete snd;
 }
 
 gxChannel* PlayRangedSound(gxSound* soundHandle, Camera* cam, Object* entity, float range, float volume) {
@@ -323,7 +238,7 @@ gxChannel* PlayRangedSound(gxSound* soundHandle, Camera* cam, Object* entity, fl
     return soundChn;
 }
 
-gxChannel* PlayRangedSound_SM(Sound* snd, Camera* cam, Object* entity, float range, float volume) {
+gxChannel* PlayRangedSound_SM(SoundWrapper* snd, Camera* cam, Object* entity, float range, float volume) {
     //If the sound hasn't been loaded yet then do that.
     if (snd->internal == nullptr) {
         snd->internal = bbLoadSound(snd->file);
@@ -344,7 +259,7 @@ gxChannel* LoopRangedSound(gxSound* soundHandle, gxChannel* chn, Camera* cam, Ob
     return chn;
 }
 
-gxChannel* LoopRangedSound_SM(Sound* snd, gxChannel* chn, Camera* cam, Object* entity, float range, float volume) {
+gxChannel* LoopRangedSound_SM(SoundWrapper* snd, gxChannel* chn, Camera* cam, Object* entity, float range, float volume) {
     //If the sound hasn't been loaded yet then do that.
     if (snd->internal == 0) {
         snd->internal = bbLoadSound(snd->file);

@@ -275,7 +275,7 @@ void MeshAssetWrap::update() {
     }
 }
 
-void AssetWrap::update() {
+void AssetWrap::update() { // TODO: Re-add decay timer.
     TextureAssetWrap::update();
     ImageAssetWrap::update();
     MeshAssetWrap::update();
@@ -347,7 +347,7 @@ void InitNewGame() {
 
     DebugHUD = true;
 
-    LoadInGameSounds(sndManager);
+    sndManager->loadInGameSounds();
 
     HideDistance = 15.0;
 
@@ -377,20 +377,20 @@ void InitNewGame() {
         Door* d = Door::getObject(i);
 
         bbEntityParent(d->obj, 0);
-        if (d->obj2 > 0) {
+        if (d->obj2 != nullptr) {
             bbEntityParent(d->obj2, 0);
         }
-        if (d->frameobj > 0) {
+        if (d->frameobj != nullptr) {
             bbEntityParent(d->frameobj, 0);
         }
-        if (d->buttons[0] > 0) {
+        if (d->buttons[0] != nullptr) {
             bbEntityParent(d->buttons[0], 0);
         }
-        if (d->buttons[1] > 0) {
+        if (d->buttons[1] != nullptr) {
             bbEntityParent(d->buttons[1], 0);
         }
 
-        if (d->obj2 != 0 && d->typ == DOOR_TYPE_DEF) {
+        if (d->obj2 != nullptr && d->typ == DOOR_TYPE_DEF) {
             bbMoveEntity(d->obj, 0.f, 0.f, 8.0 * RoomScale);
             bbMoveEntity(d->obj2, 0.f, 0.f, 8.0 * RoomScale);
         }
@@ -538,34 +538,29 @@ void InitNewGame() {
 }
 
 void InitLoadGame() {
-    SecurityCam* sc;
-    RoomTemplate* rt;
-    Prop* prop;
-    Texture* planetex;
-
     DrawLoading(80);
 
     for (int i = 0; i < Door::getListSize(); i++) {
         Door* d = Door::getObject(i);
 
         bbEntityParent(d->obj, 0);
-        if (d->obj2 > 0) {
+        if (d->obj2 != nullptr) {
             bbEntityParent(d->obj2, 0);
         }
-        if (d->frameobj > 0) {
+        if (d->frameobj != nullptr) {
             bbEntityParent(d->frameobj, 0);
         }
-        if (d->buttons[0] > 0) {
+        if (d->buttons[0] != nullptr) {
             bbEntityParent(d->buttons[0], 0);
         }
-        if (d->buttons[1] > 0) {
+        if (d->buttons[1] != nullptr) {
             bbEntityParent(d->buttons[1], 0);
         }
 
     }
 
-    for (int iterator10 = 0; iterator10 < SecurityCam::getListSize(); iterator10++) {
-        sc = SecurityCam::getObject(iterator10);
+    for (int i = 0; i < SecurityCam::getListSize(); i++) {
+        SecurityCam* sc = SecurityCam::getObject(i);
 
         sc->angle = bbEntityYaw(sc->obj) + sc->angle;
         bbEntityParent(sc->obj, 0);
@@ -584,16 +579,13 @@ void InitLoadGame() {
     bbHidePointer();
 
     mainPlayer->blinkTimer = mainPlayer->blinkFreq;
-    mainPlayer->stamina = 100;
+    mainPlayer->stamina = 100.f;
 
-    int i;
-    float x;
-    float z;
-    for (int iterator11 = 0; iterator11 < RoomTemplate::getListSize(); iterator11++) {
-        rt = RoomTemplate::getObject(iterator11);
+    for (int i = 0; i < RoomTemplate::getListSize(); i++) {
+        RoomTemplate* rt = RoomTemplate::getObject(i);
 
-        for (i=0;i<rt->collisionObjs.size();i++) {
-            bbFreeEntity(rt->collisionObjs[i]);
+        for (int j = 0; j < rt->collisionObjs.size(); j++) {
+            bbFreeEntity(rt->collisionObjs[j]);
         }
         rt->collisionObjs.clear();
 
@@ -602,14 +594,14 @@ void InitLoadGame() {
             bbFreeEntity(rt->alphaMesh);
         }
 
-        for (i=0;i<rt->props.size();i++) {
-            bbFreeEntity(rt->props[i]->obj);
-            delete rt->props[i];
+        for (int j = 0; j < rt->props.size(); j++) {
+            bbFreeEntity(rt->props[j]->obj);
+            delete rt->props[j];
         }
         rt->props.clear();
     }
 
-    mainPlayer->dropSpeed = 0.0;
+    mainPlayer->dropSpeed = 0.f;
 
     FreeTextureCache();
 
@@ -619,17 +611,7 @@ void InitLoadGame() {
 }
 
 void NullGame() {
-    int i;
-    int x;
-    int y;
-    int lvl;
-    ItemTemplate* itt;
-    Screen* s;
-    Material* m;
-    Room* r;
-    Item* it;
-
-    DeloadInGameSounds(sndManager);
+    sndManager->deloadInGameSounds();
 
     ClearTextureCache();
 
@@ -648,17 +630,17 @@ void NullGame() {
     Curr173->idle = false;
 
     MTFtimer = 0;
-    for (i = 0; i <= 9; i++) {
+    for (int i = 0; i < 10; i++) {
         MTFrooms[i] = nullptr;
         MTFroomState[i] = 0;
     }
 
-    for (int iterator13 = 0; iterator13 < Screen::getListSize(); iterator13++) {
-        s = Screen::getObject(iterator13);
+    for (int i = 0; i < Screen::getListSize(); i++) {
+        Screen* s = Screen::getObject(i);
 
-        if (s->img != 0) {
+        if (s->img != nullptr) {
             bbFreeImage(s->img);
-            s->img = 0;
+            s->img = nullptr;
         }
         delete s;
     }
@@ -668,8 +650,8 @@ void NullGame() {
     Msg = "";
     MsgTimer = 0;
 
-    for (int iterator14 = 0; iterator14 < Room::getListSize(); iterator14++) {
-        r = Room::getObject(iterator14);
+    for (int i = 0; i < Room::getListSize(); i++) {
+        Room* r = Room::getObject(i);
 
         r->collisionObjs.clear();
         r->props.clear();
@@ -680,28 +662,27 @@ void NullGame() {
     }
     delete[] MapRooms;
 
-    for (int iterator15 = 0; iterator15 < ItemTemplate::getListSize(); iterator15++) {
-        itt = ItemTemplate::getObject(iterator15);
+    for (int i = 0; i < ItemTemplate::getListSize(); i++) {
+        ItemTemplate* itt = ItemTemplate::getObject(i);
 
         delete itt;
     }
 
-    for (int iterator16 = 0; iterator16 < Item::getListSize(); iterator16++) {
-        it = Item::getObject(iterator16);
+    for (int i = 0; i < Item::getListSize(); i++) {
+        Item* it = Item::getObject(i);
 
         delete it;
     }
 
-    NPC* n;
-    for (int iterator17 = 0; iterator17 < NPC::getListSize(); iterator17++) {
-        n = NPC::getObject(iterator17);
+    for (int i = 0; i < NPC::getListSize(); i++) {
+        NPC* n = NPC::getObject(i);
 
         RemoveNPC(n);
     }
     Curr173 = nullptr;
     Curr106 = nullptr;
     Curr096 = nullptr;
-    for (i = 0; i <= 6; i++) {
+    for (int i = 0; i < 7; i++) {
         MTFrooms[i] = nullptr;
     }
 
@@ -733,7 +714,7 @@ void NullGame() {
     ark_blur_cam = 0;
     InitFastResize();
 
-    for (i = 0; i <= 9; i++) {
+    for (int i = 0; i < 10; i++) {
         if (TempSounds[i]!=0) {
             bbFreeSound(TempSounds[i]);
             TempSounds[i] = 0;
