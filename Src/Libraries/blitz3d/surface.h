@@ -47,7 +47,7 @@ public:
 	Surface( Monitor *mon );
 	~Surface();
 
-	void setName( String t );
+	void setName( const String& t );
 	void setBrush( const Brush &b );
 
 	void clear( bool verts,bool tris );

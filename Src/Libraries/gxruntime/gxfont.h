@@ -21,7 +21,7 @@ public:
 	~gxFont();
 
 	int charWidth( int c )const;
-	void render( gxCanvas *dest,unsigned color_argb,int x,int y,String t );
+	void render( gxCanvas *dest,unsigned color_argb,int x,int y,const String& t );
 
 private:
 	gxGraphics *graphics;
@@ -40,7 +40,7 @@ public:
 	//ACCESSORS
 	int getWidth()const;							//width of widest char
 	int getHeight()const;							//height of font
-	int getWidth( String text )const;	//width of string
+	int getWidth( const String& text )const;	//width of string
 	bool isPrintable( int chr )const;				//printable char?
 };
 

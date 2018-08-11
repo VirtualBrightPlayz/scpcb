@@ -14,13 +14,13 @@ extern gxGraphics *gx_graphics;
 struct Filter{
 	String t;
 	int flags;
-	Filter( String t,int flags ):t(t),flags(flags){
+	Filter( const String& t,int flags ):t(t),flags(flags){
 	}
 };
 
 static std::vector<Filter> filters;
 
-static int filterFile( String t,int flags ){
+static int filterFile( const String& t,int flags ){
 	//check filters...
 	String l=tolower(t);
 	for( int k=0;k<filters.size();++k ){
@@ -55,7 +55,7 @@ struct Texture::Rep{
 		memset( &matrix,0,sizeof( matrix ) );
 	}
 
-	Rep( String f,int flags,int w,int h,int first,int cnt ):
+	Rep( const String& f,int flags,int w,int h,int first,int cnt ):
 	ref_cnt(1),cached_tex( f,flags,w,h,first,cnt ),
 	tex_blend(gxScene::BLEND_MULTIPLY),tex_flags(0),
 	sx(1),sy(1),tx(0),ty(0),rot(0),mat_used(false){
@@ -78,13 +78,13 @@ struct Texture::Rep{
 Texture::Texture():rep(0){
 }
 
-Texture::Texture( String f,int flags ){
+Texture::Texture( const String& f,int flags ){
 	flags=filterFile( f.cstr(),flags )|gxCanvas::CANVAS_TEXTURE;
 	if( flags & gxCanvas::CANVAS_TEX_MASK ) flags|=gxCanvas::CANVAS_TEX_RGB|gxCanvas::CANVAS_TEX_ALPHA;
 	rep=new Rep( f.cstr(),flags,0,0,0,1 );
 }
 
-Texture::Texture( String f,int flags,int w,int h,int first,int cnt ){
+Texture::Texture( const String& f,int flags,int w,int h,int first,int cnt ){
 	flags=filterFile( f.cstr(),flags )|gxCanvas::CANVAS_TEXTURE;
 	if( flags & gxCanvas::CANVAS_TEX_MASK ) flags|=gxCanvas::CANVAS_TEX_RGB|gxCanvas::CANVAS_TEX_ALPHA;
 	rep=new Rep( f.cstr(),flags,w,h,first,cnt );
@@ -192,6 +192,6 @@ void Texture::clearFilters(){
 	filters.clear();
 }
 
-void Texture::addFilter( String t,int flags ){
+void Texture::addFilter( const String& t,int flags ){
 	filters.push_back( Filter( tolower(t.cstr()),flags ) );
 }

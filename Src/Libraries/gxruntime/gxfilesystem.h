@@ -16,19 +16,19 @@ public:
 		FILE_TYPE_NONE=0,FILE_TYPE_FILE=1,FILE_TYPE_DIR=2
 	};
 
-	bool createDir( String dir );
-	bool deleteDir( String dir );
-	bool createFile( String file );
-	bool deleteFile( String file );
-	bool copyFile( String src,String dest );
-	bool renameFile( String src,String dest );
-	bool setCurrentDir( String dir );
+	bool createDir( const String& dir );
+	bool deleteDir( const String& dir );
+	bool createFile( const String& file );
+	bool deleteFile( const String& file );
+	bool copyFile( const String& src,const String& dest );
+	bool renameFile( const String& src,const String& dest );
+	bool setCurrentDir( const String& dir );
 
 	String getCurrentDir()const;
-	int getFileSize( String name )const;
-	int getFileType( String name )const;
+	int getFileSize( const String& name )const;
+	int getFileType( const String& name )const;
 
-	gxDir *openDir( String name,int flags );
+	gxDir *openDir( const String& name,int flags );
 	gxDir *verifyDir( gxDir *d );
 	void closeDir( gxDir *dir );
 };

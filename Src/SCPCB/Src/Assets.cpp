@@ -610,6 +610,8 @@ void InitLoadGame() {
     FreeTextureCache();
 
     DrawLoading(100);
+
+    bbWireFrame(true);
 }
 
 void NullGame() {

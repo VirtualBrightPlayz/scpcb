@@ -315,7 +315,7 @@ static Object *readObject( Object *parent ){
 	return obj;
 }
 
-MeshModel *Loader_B3D::load( String f,const Transform &conv,int hint ){
+MeshModel *Loader_B3D::load( const String& f,const Transform &conv,int hint ){
 
 	collapse=!!(hint&MeshLoader::HINT_COLLAPSE);
 	animonly=!!(hint&MeshLoader::HINT_ANIMONLY);

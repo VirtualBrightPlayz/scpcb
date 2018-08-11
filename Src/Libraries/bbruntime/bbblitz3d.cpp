@@ -119,7 +119,7 @@ static inline void debugVertex( Surface *s,int n,int t ){
 	}
 }
 
-static MeshModel* loadEntity( String str,int hint ){
+static MeshModel* loadEntity( const String& str,int hint ){
     String t = str;
 	t=tolower(t);
 	int n=t.findLast( "." );if( n==-1 ) return 0;
@@ -186,7 +186,7 @@ static void erase( Object *e ){
 	if( debug ) entity_set.erase( e );
 }
 
-static Object *findChild( Object *e,String t ){
+static Object *findChild( Object *e,const String& t ){
 	if( e->getName().equals(t) ) return e;
 	for( Object *p=e->children();p;p=p->successor() ){
 		if( Object *q=findChild(p,t) ) return q;
@@ -197,7 +197,7 @@ static Object *findChild( Object *e,String t ){
 ///////////////////////////
 // GLOBAL WORLD COMMANDS //
 ///////////////////////////
-void  bbLoaderMatrix( String ext,float xx,float xy,float xz,float yx,float yy,float yz,float zx,float zy,float zz ){
+void  bbLoaderMatrix( const String& ext,float xx,float xy,float xz,float yx,float yy,float yz,float zx,float zy,float zz ){
     //TODO: do we even need this?
     for (int i=0;i<loader_mat_map.size();i++) {
         if (loader_mat_map[i].first.equals(ext)){
@@ -341,7 +341,7 @@ float  bbStats3D( int n ){
 
 //Note: modify canvas->backup() to NOT release backup image!
 //
-Texture *  bbLoadTexture( String file,int flags ){
+Texture *  bbLoadTexture( const String& file,int flags ){
 	debug3d();
 	Texture *t=new Texture( file,flags );
 	if( !t->getCanvas(0) ){ delete t;return 0; }
@@ -349,7 +349,7 @@ Texture *  bbLoadTexture( String file,int flags ){
 	return t;
 }
 
-Texture *  bbLoadAnimTexture( String file,int flags,int w,int h,int first,int cnt ){
+Texture *  bbLoadAnimTexture( const String& file,int flags,int w,int h,int first,int cnt ){
 	debug3d();
 	Texture *t=new Texture( file,flags,w,h,first,cnt );
 	if( !t->getCanvas(0) ){
@@ -454,7 +454,7 @@ void  bbClearTextureFilters(){
 	Texture::clearFilters();
 }
 
-void  bbTextureFilter( String t,int flags ){
+void  bbTextureFilter( const String& t,int flags ){
 	debug3d();
 	Texture::addFilter( t,flags );
 }
@@ -470,7 +470,7 @@ Brush *  bbCreateBrush( float r,float g,float b ){
 	return br;
 }
 
-Brush *  bbLoadBrush( String file,int flags,float u_scale,float v_scale ){
+Brush *  bbLoadBrush( const String& file,int flags,float u_scale,float v_scale ){
 	debug3d();
 	Texture t( file,flags );
 	if( !t.getCanvas(0) ) return 0;
@@ -533,7 +533,7 @@ MeshModel* bbCreateMesh( Object *p ){
 	return insertEntity( m,p )->getModel()->getMeshModel();
 }
 
-MeshModel* bbLoadMesh( String f,Object *p ){
+MeshModel* bbLoadMesh( const String& f,Object *p ){
 	debugParent(p);
 	MeshModel* e=loadEntity( f,MeshLoader::HINT_COLLAPSE );
 
@@ -543,7 +543,7 @@ MeshModel* bbLoadMesh( String f,Object *p ){
 	return insertEntity( m,p )->getModel()->getMeshModel();
 }
 
-MeshModel* bbLoadAnimMesh( String f,Object *p ){
+MeshModel* bbLoadAnimMesh( const String& f,Object *p ){
 	debugParent(p);
 	MeshModel* e=loadEntity( f,0 );
 
@@ -1095,7 +1095,7 @@ Sprite* bbCreateSprite( Object *p ){
 	return insertEntity( s,p )->getModel()->getSprite();
 }
 
-Sprite* bbLoadSprite( String file,int flags,Object *p ){
+Sprite* bbLoadSprite( const String& file,int flags,Object *p ){
 	debugParent(p);
 	Texture t( file,flags );
 	if( !t.getCanvas(0) ) return 0;
@@ -1182,7 +1182,7 @@ Object *  bbCreateTerrain( int n,Object *p ){
 	return insertEntity( t,p );
 }
 
-Object *  bbLoadTerrain( String file,Object *p ){
+Object *  bbLoadTerrain( const String& file,Object *p ){
 	debugParent(p);
 	gxCanvas *c=gx_graphics->loadCanvas( file,gxCanvas::CANVAS_HIGHCOLOR );
 	if( !c ) RTEX( "Unable to load heightmap image" );
@@ -1360,7 +1360,7 @@ Object *  bbGetChild( Object *e,int index ){
 	return p;
 }
 
-Object *  bbFindChild( Object *e,String t ){
+Object *  bbFindChild( Object *e,const String& t ){
 	debugEntity(e);
 	e=findChild( e,t );
 	return e;
@@ -1369,7 +1369,7 @@ Object *  bbFindChild( Object *e,String t ){
 ////////////////////////
 // ANIMATION COMMANDS //
 ////////////////////////
-int  bbLoadAnimSeq( Object *o,String f ){
+int  bbLoadAnimSeq( Object *o,const String& f ){
 	debugObject( o );
 	if( Animator *anim=o->getAnimator() ){
 		Object *t=loadEntity( f,MeshLoader::HINT_ANIMONLY );
@@ -1826,7 +1826,7 @@ void  bbAlignToVector( Object *e,float nx,float ny,float nz,int axis,float rate 
 //////////////////////////
 // ENTITY MISC COMMANDS //
 //////////////////////////
-void  bbNameEntity( Object *e,String t ){
+void  bbNameEntity( Object *e,const String& t ){
 	debugEntity(e);
 	e->setName( t );
 }

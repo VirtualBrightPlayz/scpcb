@@ -20,14 +20,14 @@ void bbDelay(int ms);
 
 void bbruntime_panic( const char *err );
 
-void bbAppTitle(String ti, String cp="");
+void bbAppTitle(const String& ti, const String& cp="");
 void bbEnd();
 void bbStop();
-void bbRuntimeError(String str);
-int bbExecFile(String f);
+void bbRuntimeError(const String& str);
+int bbExecFile(const String& f);
 int bbMilliSecs();
 String bbCommandLine();
-String bbSystemProperty(String p);
+String bbSystemProperty(const String& p);
 class gxTimer* bbCreateTimer(int hertz);
 int bbWaitTimer(class gxTimer* t);
 void bbFreeTimer(class gxTimer* t);

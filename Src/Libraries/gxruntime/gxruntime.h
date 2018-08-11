@@ -34,7 +34,7 @@ public:
 	struct GfxDriver;
 
 private:
-	gxRuntime( HINSTANCE hinst,String cmd_line,HWND hwnd );
+	gxRuntime( HINSTANCE hinst,const String& cmd_line,HWND hwnd );
 	~gxRuntime();
 
 	void paint();
@@ -74,7 +74,7 @@ private:
 
 	/***** APP INTERFACE *****/
 public:
-	static gxRuntime *openRuntime( HINSTANCE hinst,String cmd_line );
+	static gxRuntime *openRuntime( HINSTANCE hinst,const String& cmd_line );
 	static void closeRuntime( gxRuntime *runtime );
 
 	void asyncStop();
@@ -91,14 +91,14 @@ public:
 	bool idle();
 	bool delay( int ms );
 
-	bool execute( String cmd );
-	void setTitle( String title,String close );
+	bool execute( const String& cmd );
+	void setTitle( const String& title,const String& close );
 	int  getMilliSecs();
 	void setPointerVisible( bool vis );
 
 	String commandLine();
 
-	String systemProperty( String t );
+	String systemProperty( const String& t );
 
 	void debugStop();
 	void debugProfile( int per );

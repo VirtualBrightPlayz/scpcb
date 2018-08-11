@@ -294,7 +294,7 @@ static inline void debugTCPServer( TCPServer *p ){
 
 static std::vector<int> host_ips;
 
-int bbCountHostIPs( String host ){
+int bbCountHostIPs( const String& host ){
 	host_ips.clear();
 	HOSTENT *h=gethostbyname( host.cstr() );
 	if( !h ) return 0;
@@ -373,7 +373,7 @@ String bbDottedIP( int ip ){
 		itoa((char)((ip>>8)&255))+"."+itoa((char)(ip&255)) );
 }
 
-static int findHostIP( String t ){
+static int findHostIP( const String& t ){
 	int ip=inet_addr( t.cstr() );
 	if( ip!=INADDR_NONE ) return ip;
 	HOSTENT *h=gethostbyname( t.cstr() );
@@ -385,7 +385,7 @@ static int findHostIP( String t ){
 	return 0;
 }
 
-TCPStream *bbOpenTCPStream( String server,int port,int local_port ){
+TCPStream *bbOpenTCPStream( const String& server,int port,int local_port ){
 	if( !socks_ok ){
 		return 0;
 	}

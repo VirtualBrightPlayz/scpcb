@@ -10,7 +10,7 @@
 class CachedTexture{
 public:
 	CachedTexture( int w,int h,int flags,int cnt );
-	CachedTexture( String f,int flags,int w,int h,int first,int cnt );
+	CachedTexture( const String& f,int flags,int w,int h,int first,int cnt );
 	CachedTexture( const CachedTexture &t );
 	~CachedTexture();
 
@@ -22,13 +22,13 @@ public:
 
 	bool operator<( const CachedTexture &t )const{ return rep<t.rep; }
 
-	static void setPath( String t );
+	static void setPath( const String& t );
 
 private:
 	struct Rep;
 	Rep *rep;
 
-	Rep *findRep( String f,int flags,int w,int h,int first,int cnt );
+	Rep *findRep( const String& f,int flags,int w,int h,int first,int cnt );
 
 	static std::set<Rep*> rep_set;
 };

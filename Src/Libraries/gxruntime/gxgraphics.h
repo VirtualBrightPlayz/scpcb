@@ -45,7 +45,7 @@ private:
 
 	DDSURFACEDESC2 initDesc( int w,int h,int flags );
 	ddSurf *createSurface( int width,int height,int flags );
-	ddSurf *loadSurface( String f,int flags );
+	ddSurf *loadSurface( const String& f,int flags );
 
 	std::set<gxFont*> font_set;
 	std::set<gxCanvas*> canvas_set;
@@ -92,15 +92,15 @@ public:
 
 	//OBJECTS
 	gxCanvas *createCanvas( int width,int height,int flags );
-	gxCanvas *loadCanvas( String file,int flags );
+	gxCanvas *loadCanvas( const String& file,int flags );
 	gxCanvas *verifyCanvas( gxCanvas *canvas );
 	void freeCanvas( gxCanvas *canvas );
 
-	gxMovie *openMovie( String file,int flags );
+	gxMovie *openMovie( const String& file,int flags );
 	gxMovie *verifyMovie( gxMovie *movie );
 	void closeMovie( gxMovie *movie );
 
-	gxFont *loadFont( String font,int height,int flags );
+	gxFont *loadFont( const String& font,int height,int flags );
 	gxFont *verifyFont( gxFont *font );
 	void freeFont( gxFont *font );
 

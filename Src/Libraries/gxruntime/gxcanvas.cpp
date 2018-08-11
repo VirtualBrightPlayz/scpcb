@@ -459,7 +459,7 @@ void gxCanvas::blit( int x,int y,gxCanvas *src,int src_x,int src_y,int src_w,int
 	damage( dest_r );
 }
 
-void gxCanvas::text( int x,int y,String t ){
+void gxCanvas::text( int x,int y,const String& t ){
 
 	int ty=y+origin_y;
 	if( ty>=viewport.bottom ) return;

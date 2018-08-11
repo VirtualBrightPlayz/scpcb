@@ -152,7 +152,7 @@ int gxGraphics::getAvailVidmem()const{
 	return caps.dwVidMemFree;
 }
 
-gxMovie *gxGraphics::openMovie( String file,int flags ){
+gxMovie *gxGraphics::openMovie( const String& file,int flags ){
 
 	IAMMultiMediaStream *iam_stream;
 
@@ -200,7 +200,7 @@ gxCanvas *gxGraphics::createCanvas( int w,int h,int flags ){
 	return c;
 }
 
-gxCanvas *gxGraphics::loadCanvas( String f,int flags ){
+gxCanvas *gxGraphics::loadCanvas( const String& f,int flags ){
 	ddSurf *s=ddUtil::loadSurface( f,flags,this );
 	if( !s ) return 0;
 	gxCanvas *c=new gxCanvas( this,s,flags );
@@ -228,7 +228,7 @@ int gxGraphics::getDepth()const{
 	return front_canvas->getDepth();
 }
 
-gxFont *gxGraphics::loadFont( String f,int height,int flags ){
+gxFont *gxGraphics::loadFont( const String& f,int height,int flags ){
 
 	int bold=flags & gxFont::FONT_BOLD ? FW_BOLD : FW_REGULAR;
 	int italic=flags & gxFont::FONT_ITALIC ? 1 : 0;

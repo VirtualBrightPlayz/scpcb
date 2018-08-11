@@ -13,31 +13,31 @@ gxFileSystem::~gxFileSystem(){
 	while( dir_set.size() ) closeDir( *dir_set.begin() );
 }
 
-bool gxFileSystem::createDir( String dir ){
+bool gxFileSystem::createDir( const String& dir ){
 	return CreateDirectory( dir.cstr(),0 ) ? true : false;
 }
 
-bool gxFileSystem::deleteDir( String dir ){
+bool gxFileSystem::deleteDir( const String& dir ){
 	return RemoveDirectory( dir.cstr() ) ? true : false;
 }
 
-bool gxFileSystem::createFile( String file ){
+bool gxFileSystem::createFile( const String& file ){
 	return false;
 }
 
-bool gxFileSystem::deleteFile( String file ){
+bool gxFileSystem::deleteFile( const String& file ){
 	return DeleteFile( file.cstr() ) ? true : false;
 }
 
-bool gxFileSystem::copyFile( String src,String dest ){
+bool gxFileSystem::copyFile( const String& src,const String& dest ){
 	return CopyFile( src.cstr(),dest.cstr(),false ) ? true : false;
 }
 
-bool gxFileSystem::renameFile( String src,String dest ){
+bool gxFileSystem::renameFile( const String& src,const String& dest ){
 	return MoveFile( src.cstr(),dest.cstr() ) ? true : false;
 }
 
-bool gxFileSystem::setCurrentDir( String dir ){
+bool gxFileSystem::setCurrentDir( const String& dir ){
 	return SetCurrentDirectory( dir.cstr()) ? true : false;
 }
 
@@ -48,7 +48,7 @@ String gxFileSystem::getCurrentDir()const{
 	return t;
 }
 
-int gxFileSystem::getFileSize( String name )const{
+int gxFileSystem::getFileSize( const String& name )const{
 	WIN32_FIND_DATA findData;
 	HANDLE h=FindFirstFile( name.cstr(),&findData );
 	if( h==INVALID_HANDLE_VALUE ) return 0;
@@ -56,13 +56,13 @@ int gxFileSystem::getFileSize( String name )const{
 	FindClose( h );return n & FILE_ATTRIBUTE_DIRECTORY ? 0 : sz;
 }
 
-int gxFileSystem::getFileType( String name )const{
+int gxFileSystem::getFileType( const String& name )const{
 	DWORD t=GetFileAttributes( name.cstr() );
 	return t==-1 ? FILE_TYPE_NONE :
 	(t & FILE_ATTRIBUTE_DIRECTORY ? FILE_TYPE_DIR : FILE_TYPE_FILE);
 }
 
-gxDir *gxFileSystem::openDir( String name,int flags ){
+gxDir *gxFileSystem::openDir( const String& name,int flags ){
 	String t=name.cstr();
 	if( t.charAt(t.size()-1)=='\\' ) t=String(t,"*");
 	else t=String(t,"\\*");

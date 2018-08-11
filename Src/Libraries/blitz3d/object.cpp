@@ -256,7 +256,7 @@ void Object::setParent(Object *p) {
     invalidateWorld();
 }
 
-void Object::setName(String t) {
+void Object::setName(const String& t) {
     _name = t;
 }
 

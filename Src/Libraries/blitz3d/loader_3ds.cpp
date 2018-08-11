@@ -35,7 +35,7 @@ static std::vector<Face3DS> faces;
 //static vector<Surface::Vertex> vertices;
 
 static std::vector<std::pair<String,Brush>> materials_map;
-static int getIndFromMatMap(String name) {
+static int getIndFromMatMap(const String& name) {
     for (int i = 0; i<materials_map.size(); i++) {
         if (materials_map[i].first.equals(name)) {
             return i;
@@ -44,7 +44,7 @@ static int getIndFromMatMap(String name) {
     return -1;
 }
 
-static void addBrushToMatMap(String name, Brush brush) {
+static void addBrushToMatMap(const String& name, Brush brush) {
     for (int i = 0; i<materials_map.size(); i++) {
         if (materials_map[i].first.equals(name)) {
             materials_map[i].second = brush;
@@ -55,7 +55,7 @@ static void addBrushToMatMap(String name, Brush brush) {
 }
 
 static std::vector<std::pair<String, MeshModel*>> name_map;
-static int getIndFromNameMap(String name) {
+static int getIndFromNameMap(const String& name) {
     for (int i = 0; i<name_map.size(); i++) {
         if (name_map[i].first.equals(name)) {
             return i;
@@ -64,7 +64,7 @@ static int getIndFromNameMap(String name) {
     return -1;
 }
 
-static void addMeshModelToNameMap(String name, MeshModel* model) {
+static void addMeshModelToNameMap(const String& name, MeshModel* model) {
     for (int i = 0; i<name_map.size(); i++) {
         if (name_map[i].first.equals(name)) {
             name_map[i].second = model;
@@ -535,7 +535,7 @@ static MeshModel *parseFile(){
 	return root;
 }
 
-MeshModel *Loader_3DS::load( String filename,const Transform &t,int hint ){
+MeshModel *Loader_3DS::load( const String& filename,const Transform &t,int hint ){
 
 	conv_tform=t;
 	conv=flip_tris=false;

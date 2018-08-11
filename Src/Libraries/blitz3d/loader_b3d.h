@@ -8,7 +8,7 @@
 
 class Loader_B3D : public MeshLoader{
 public:
-	MeshModel *load( String f,const Transform &conv,int hint );
+	MeshModel *load( const String& f,const Transform &conv,int hint );
 };
 
 #endif

@@ -22,7 +22,7 @@ int gxFont::charWidth( int c )const{
 	return widths[c-begin_char];
 }
 
-void gxFont::render( gxCanvas *dest,unsigned color_argb,int x,int y,String t ){
+void gxFont::render( gxCanvas *dest,unsigned color_argb,int x,int y,const String& t ){
 	int width=getWidth( t );
 	if( width>t_canvas->getWidth() ){
 		graphics->freeCanvas( t_canvas );
@@ -54,7 +54,7 @@ int gxFont::getHeight()const{
 	return height;
 }
 
-int gxFont::getWidth( String t )const{
+int gxFont::getWidth( const String& t )const{
 	int w=0;
 	for( int k=0;k<t.size();++k ){
 		int c=t.charAt(k)&0xff;

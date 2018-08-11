@@ -43,8 +43,8 @@ void	 bbFlip( int vwait=1 );
 //graphics buffer functions
 void	 bbSetBuffer( gxCanvas *buff );
 gxCanvas * bbGraphicsBuffer();
-int		 bbLoadBuffer( gxCanvas *surf,String str );
-int		 bbSaveBuffer( gxCanvas *surf,String str );
+int		 bbLoadBuffer( gxCanvas *surf,const String& str );
+int		 bbSaveBuffer( gxCanvas *surf,const String& str );
 
 //fast read/write operations...
 void	 bbLockBuffer( gxCanvas *buff );
@@ -65,7 +65,7 @@ void	 bbPlot( int x,int y );
 void	 bbLine( int x1,int y1,int x2,int y2 );
 void	 bbRect( int x,int y,int w,int h,int solid=1 );
 void	 bbOval( int x,int y,int w,int h,int solid=1 );
-void	 bbText( int x,int y,String str,int centre_x=0,int centre_y=0 );
+void	 bbText( int x,int y,const String& str,int centre_x=0,int centre_y=0 );
 void bbCopyRect(int sx, int sy, int w, int h, int dx, int dy,class gxCanvas *src,class gxCanvas *dest);
 void	 bbGetColor( int x,int y );
 int		 bbColorRed();
@@ -73,21 +73,21 @@ int		 bbColorGreen();
 int		 bbColorBlue();
 
 //font functions
-gxFont * bbLoadFont( String name,int height,int bold,int italic,int underline );
+gxFont * bbLoadFont( const String& name,int height,int bold,int italic,int underline );
 void	 bbFreeFont( gxFont *f );
 void	 bbSetFont( gxFont *f );
 int		 bbFontWidth();
 int		 bbFontHeight();
-int		 bbStringWidth( String str );
-int		 bbStringHeight( String str );
+int		 bbStringWidth( const String& str );
+int		 bbStringHeight( const String& str );
 
 //image functions
-bbImage* bbLoadImage( String s );
+bbImage* bbLoadImage( const String& s );
 bbImage* bbCopyImage( bbImage *i );
 bbImage* bbCreateImage( int w,int h,int n=1 );
-bbImage* bbLoadAnimImage( String s,int w,int h,int first,int cnt );
+bbImage* bbLoadAnimImage( const String& s,int w,int h,int first,int cnt );
 void	 bbFreeImage( bbImage *i );
-int		 bbSaveImage( bbImage *i,String filename,int frame );
+int		 bbSaveImage( bbImage *i,const String& filename,int frame );
 void	 bbGrabImage( bbImage *i,int x,int y,int n );
 gxCanvas * bbImageBuffer( bbImage *i,int n=0 );
 void	 bbDrawImage( bbImage *i,int x,int y,int frame=0 );
@@ -116,9 +116,9 @@ int		 bbImageRectOverlap( bbImage *i,int x,int y,int r_x,int r_y,int r_w,int r_h
 int		 bbImageRectCollide( bbImage *i,int x,int y,int f,int r_x,int r_y,int r_w,int r_h );
 
 //simple print functions
-void	 bbWrite( String str );
-void	 bbPrint( String str );
-String 	 bbInput( String prompt );
+void	 bbWrite( const String& str );
+void	 bbPrint( const String& str );
+String 	 bbInput( const String& prompt );
 void	 bbLocate( int x,int y );
 
 //mouse pointer functions

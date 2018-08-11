@@ -103,14 +103,14 @@ void bbWriteFloat( bbStream *s,float n ){
 	s->write( (char*)&n,4 );
 }
 
-void bbWriteString( bbStream *s,String t ){
+void bbWriteString( bbStream *s,const String& t ){
 	if( debug ) debugStream( s );
 	int n=t.size();
 	s->write( (char*)&n,4 );
 	s->write( t.cstr(),t.size() );
 }
 
-void bbWriteLine( bbStream *s,String t ){
+void bbWriteLine( bbStream *s,const String& t ){
 	if( debug ) debugStream( s );
 	s->write( t.cstr(),t.size() );
 	s->write( "\r\n",2 ); //TODO: change to lf only?

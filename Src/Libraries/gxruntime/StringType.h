@@ -44,7 +44,8 @@ struct String {
         String& operator=(const String& other);
 		
         bool equals(const String& other) const;
-        bool equals(const char other) const;
+        bool equals(const char* other) const;
+        bool equals(char other) const;
         bool isEmpty() const;
 
 		std::vector<String> split(const String& needle, bool removeEmptyEntries = false) const;

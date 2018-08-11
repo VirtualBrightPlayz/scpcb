@@ -27,7 +27,7 @@ void Surface::setBrush( const Brush &b ){
 	++mon->brush_changes;
 }
 
-void Surface::setName( String n ){
+void Surface::setName( const String& n ){
 	name=n;
 }
 

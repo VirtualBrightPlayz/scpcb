@@ -70,7 +70,7 @@ const int HIT_APACHE = 4;
 const int HIT_DEAD = 5;
 
 // Globals.
-int WireframeState;
+int WireframeState = 1;
 int HalloweenTex;
 Timing* timing;
 float CurrFrameLimit;

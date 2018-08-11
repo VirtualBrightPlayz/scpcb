@@ -20,7 +20,7 @@ static inline void debugDir( gxDir *d ){
 	}
 }
 
-static bbFile *open( String t,int n ){
+static bbFile *open( const String& t,int n ){
     std::filebuf *buf=new std::filebuf();
 	if( buf->open( t.cstr(),n|std::ios_base::binary ) ){
 		bbFile *f=new bbFile( buf );
@@ -31,15 +31,15 @@ static bbFile *open( String t,int n ){
 	return 0;
 }
 
-bbFile *bbReadFile( String f ){
+bbFile *bbReadFile( const String& f ){
 	return open( f, std::ios_base::in );
 }
 
-bbFile *bbWriteFile( String f ){
+bbFile *bbWriteFile( const String& f ){
 	return open( f, std::ios_base::out| std::ios_base::trunc );
 }
 
-bbFile *bbOpenFile(String f) {
+bbFile *bbOpenFile(const String& f) {
 	return open( f, std::ios_base::in| std::ios_base::out );
 }
 
@@ -57,7 +57,7 @@ int bbSeekFile( bbFile *f,int pos ){
 	return f->buf->pubseekoff( pos, std::ios_base::beg );
 }
 
-gxDir *bbReadDir( String d ){
+gxDir *bbReadDir( const String& d ){
 	return gx_filesys->openDir( d,0 );
 }
 
@@ -74,32 +74,32 @@ String bbCurrentDir(){
 	return gx_filesys->getCurrentDir();
 }
 
-void bbChangeDir( String d ){
+void bbChangeDir( const String& d ){
 	gx_filesys->setCurrentDir( d );
 }
 
-void bbCreateDir( String d ){
+void bbCreateDir( const String& d ){
 	gx_filesys->createDir( d );
 }
 
-void bbDeleteDir( String d ){
+void bbDeleteDir( const String& d ){
 	gx_filesys->deleteDir( d );
 }
 
-int bbFileType( String f ){
+int bbFileType( const String& f ){
 	int n=gx_filesys->getFileType( f );
 	return n==gxFileSystem::FILE_TYPE_FILE ? 1 : (n==gxFileSystem::FILE_TYPE_DIR ? 2 : 0);
 }
 
-int	bbFileSize( String f ){
+int	bbFileSize( const String& f ){
 	return gx_filesys->getFileSize( f );
 }
 
-void bbCopyFile( String src,String dest ){
+void bbCopyFile( const String& src,const String& dest ){
 	gx_filesys->copyFile( src,dest );
 }
 
-void bbDeleteFile( String f ){
+void bbDeleteFile( const String& f ){
 	gx_filesys->deleteFile( f );
 }
 

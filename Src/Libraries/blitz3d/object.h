@@ -88,7 +88,7 @@ public:
     virtual Listener* getListener() { return 0; }
     virtual Pivot* getPivot() { return 0; }
 
-    void setName(String t);
+    void setName(const String& t);
     void setParent(Object *parent);
 
     void setVisible(bool vis);

@@ -182,7 +182,7 @@ static gxCanvas *tformCanvas( gxCanvas *c,float m[2][2],int x_handle,int y_handl
 	return t;
 }
 
-static bool saveCanvas( gxCanvas *c,String f ){
+static bool saveCanvas( gxCanvas *c,const String& f ){
 
     std::ofstream out( f.cstr(), std::ios::binary );
 	if( !out.good() ) return false;
@@ -338,7 +338,7 @@ gxCanvas *bbGraphicsBuffer(){
 	return gx_canvas;
 }
 
-int bbLoadBuffer( gxCanvas *c,String s ){
+int bbLoadBuffer( gxCanvas *c,const String& s ){
 	debugCanvas( c );
 	gxCanvas *t=gx_graphics->loadCanvas( s,0 );
 	if( !t ) return 0;
@@ -355,7 +355,7 @@ int bbLoadBuffer( gxCanvas *c,String s ){
 	return 1;
 }
 
-int bbSaveBuffer( gxCanvas *c,String t ){
+int bbSaveBuffer( gxCanvas *c,const String& t ){
 	debugCanvas( c );
 	return saveCanvas( c,t ) ? 1 : 0;
 }
@@ -586,7 +586,7 @@ void bbOval( int x,int y,int w,int h,int solid ){
 	gx_canvas->oval( x,y,w,h,solid ? true : false );
 }
 
-void bbText( int x,int y,String str,int centre_x,int centre_y ){
+void bbText( int x,int y,const String& str,int centre_x,int centre_y ){
 	if( centre_x ) x-=curr_font->getWidth( str )/2;
 	if( centre_y ) y-=curr_font->getHeight()/2;
 	gx_canvas->text( x,y,str );
@@ -600,7 +600,7 @@ void bbCopyRect( int sx,int sy,int w,int h,int dx,int dy,gxCanvas *src,gxCanvas 
 	dest->blit( dx,dy,src,sx,sy,w,h,true );
 }
 
-gxFont *bbLoadFont( String name,int height,int bold,int italic,int underline ){
+gxFont *bbLoadFont( const String& name,int height,int bold,int italic,int underline ){
 	int flags=
 		(bold ? gxFont::FONT_BOLD : 0 ) |
 		(italic ? gxFont::FONT_ITALIC : 0 ) |
@@ -623,15 +623,15 @@ int bbFontHeight(){
 	return curr_font->getHeight();
 }
 
-int bbStringWidth( String str ){
+int bbStringWidth( const String& str ){
 	return curr_font->getWidth( str );
 }
 
-int bbStringHeight( String str ){
+int bbStringHeight( const String& str ){
 	return curr_font->getHeight();
 }
 
-gxMovie *bbOpenMovie( String s ){
+gxMovie *bbOpenMovie( const String& s ){
 	gxMovie *movie=gx_graphics->openMovie( s,0 );
 	return movie;
 }
@@ -659,7 +659,7 @@ void bbCloseMovie( gxMovie *movie ){
 	gx_graphics->closeMovie( movie );
 }
 
-bbImage *bbLoadImage( String t ){
+bbImage *bbLoadImage( const String& t ){
 	gxCanvas *c=gx_graphics->loadCanvas( t,0 );
 	if( !c ) return 0;
 	if( auto_dirty ) c->backup();
@@ -671,7 +671,7 @@ bbImage *bbLoadImage( String t ){
 	return i;
 }
 
-bbImage *bbLoadAnimImage( String t,int w,int h,int first,int cnt ){
+bbImage *bbLoadAnimImage( const String& t,int w,int h,int first,int cnt ){
 	if( cnt<1 ) RTEX( "Illegal frame count" );
 	if( first<0 ) RTEX( "Illegal first frame" );
 
@@ -763,7 +763,7 @@ void bbFreeImage( bbImage *i ){
 	delete i;
 }
 
-int bbSaveImage( bbImage *i,String str,int n ){
+int bbSaveImage( bbImage *i,const String& str,int n ){
 	debugImage( i,n );
 	gxCanvas *c=i->getFrames()[n];
 	return saveCanvas( c,str ) ? 1 : 0;
@@ -1005,14 +1005,14 @@ static void endPrinting( gxCanvas *c ){
 	if( c==gx_canvas ) c->setColor( curr_color );
 }
 
-void bbWrite( String str ){
+void bbWrite( const String& str ){
 	gxCanvas *c=startPrinting();
 	c->text( curs_x,curs_y,str );
 	curs_x+=curr_font->getWidth( str );
 	endPrinting( c );
 }
 
-void bbPrint( String str ){
+void bbPrint( const String& str ){
 	gxCanvas *c=startPrinting();
 	c->text( curs_x,curs_y,str );
 	curs_x=0;
@@ -1020,7 +1020,7 @@ void bbPrint( String str ){
 	endPrinting( c );
 }
 
-String bbInput( String prompt ){
+String bbInput( const String& prompt ){
 	gxCanvas *c=startPrinting();
 
 	//get temp canvas

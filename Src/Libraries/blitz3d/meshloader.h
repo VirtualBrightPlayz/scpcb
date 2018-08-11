@@ -14,7 +14,7 @@ public:
 		HINT_ANIMONLY=2
 	};
 
-	virtual MeshModel *load( String f,const Transform &conv,int hint )=0;
+	virtual MeshModel *load( const String& f,const Transform &conv,int hint )=0;
 
 	//clear
 	static void beginMesh();

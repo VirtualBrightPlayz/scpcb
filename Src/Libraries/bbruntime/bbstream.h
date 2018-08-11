@@ -40,7 +40,7 @@ void bbWriteByte(class bbStream* s, int n);
 void bbWriteShort(class bbStream* s, int n);
 void bbWriteInt(class bbStream* s, int n);
 void bbWriteFloat(class bbStream* s, float n);
-void bbWriteString(class bbStream* s, String t);
-void bbWriteLine(class bbStream* s, String t);
+void bbWriteString(class bbStream* s, const String& t);
+void bbWriteLine(class bbStream* s, const String& t);
 
 #endif

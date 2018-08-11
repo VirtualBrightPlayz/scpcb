@@ -10,11 +10,11 @@ static inline void debugSound( gxSound *s ){
 	}
 }
 
-static gxSound *loadSound( String f,bool use_3d ){
+static gxSound *loadSound( const String& f,bool use_3d ){
 	return 0;//return gx_audio ? gx_audio->loadSound( f,use_3d ) : 0;
 }
 
-gxSound *bbLoadSound( String f ){
+gxSound *bbLoadSound( const String& f ){
 	return loadSound( f,false );
 }
 
@@ -94,7 +94,7 @@ bool bbChannelPlaying( gxChannel *channel ){
 	return channel ? channel->isPlaying() : false;
 }
 
-gxSound *bbLoad3DSound( String f ){
+gxSound *bbLoad3DSound( const String& f ){
 	return loadSound( f,true );
 }
 

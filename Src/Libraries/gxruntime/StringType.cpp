@@ -145,7 +145,11 @@ bool String::equals(const String& other) const {
     return strcmp(cbuffer, other.cstr()) == 0;
 }
 
-bool String::equals(const char other) const {
+bool String::equals(const char* other) const {
+    return strcmp(cbuffer,other) == 0;
+}
+
+bool String::equals(char other) const {
     return strSize == 1 && cbuffer[0] == other;
 }
 
@@ -291,21 +295,34 @@ String String::toLower() const {
 String String::trim() const {
     if (size()==0) { return ""; }
 
-    String temp = String(wstr());
-    while (temp.findFirst(" ") == 0 || temp.findFirst("\t") == 0) {
-        temp = temp.substr(1);
+    wchar* newBuf = new wchar[capacity];
+    int leadingPos = 0;
+    while (charAt(leadingPos) == ' ' || charAt(leadingPos) == '\t') {
+        leadingPos++;
+        if (leadingPos>=size()) {
+            return *this;
+        }
     }
-    while (temp.findLast(" ") == temp.size()-1 || temp.findLast("\t") == temp.size()-1) {
-        temp = temp.substr(0,temp.size()-1);
-    }
-
-    String retVal = temp.charAt(0);
-    for (int i=1;i<temp.size();i++) {
-        if (temp.charAt(i-1)!=' ' || temp.charAt(i)!=' ') {
-            retVal = retVal+temp.charAt(i);
+    int trailingPos = size()-1;
+    while (charAt(trailingPos) == ' ' || charAt(trailingPos) == '\t') {
+        trailingPos--;
+        if (trailingPos<0) {
+            return *this;
         }
     }
 
+    int newLength = 1;
+    newBuf[0] = charAt(leadingPos);
+    for (int i=leadingPos+1;i<=trailingPos;i++) {
+        if (charAt(i-1)!=' ' || charAt(i)!=' ') {
+            newBuf[newLength]=charAt(i);
+            newLength++;
+        }
+    }
+    newBuf[newLength]=L'\0';
+        
+    String retVal = newBuf;
+    delete[] newBuf;
     return retVal;
 }
 

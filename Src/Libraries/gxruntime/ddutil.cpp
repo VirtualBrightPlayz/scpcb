@@ -454,7 +454,7 @@ IDirectDrawSurface7 *loadDXTC(const char* filename,gxGraphics *gfx)
 	return newSurf;
 }
 
-ddSurf *ddUtil::loadSurface( String fi,int flags,gxGraphics *gfx ){
+ddSurf *ddUtil::loadSurface( const String& fi,int flags,gxGraphics *gfx ){
     String f = fi.cstr();
 	int i=f.findFirst( ".dds" );
 	if( i!=-1 && i+4==f.size() ){

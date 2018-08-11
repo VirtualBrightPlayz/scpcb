@@ -8,7 +8,7 @@
 
 extern gxAudio *gx_audio;
 
-gxSound *	 bbLoadSound( String file );
+gxSound *	 bbLoadSound( const String& file );
 void		 bbFreeSound( gxSound *sound );
 gxChannel *	 bbPlaySound( gxSound *sound );
 void		 bbLoopSound( gxSound *sound );
@@ -22,7 +22,7 @@ void		 bbChannelPitch( gxChannel *channel,int pitch );
 void		 bbChannelVolume( gxChannel *channel,float volume );
 void		 bbChannelPan( gxChannel *channel,float pan );
 bool		 bbChannelPlaying( gxChannel *channel );
-gxSound*     bbLoad3DSound(String f);
+gxSound*     bbLoad3DSound(const String& f);
 
 #endif
 

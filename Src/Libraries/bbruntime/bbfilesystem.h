@@ -31,21 +31,21 @@ struct bbFile : public bbStream {
 
 extern gxFileSystem *gx_filesys;
 
-class bbFile* bbOpenFile(String f);
-class bbFile* bbReadFile(String f);
-class bbFile* bbWriteFile(String f);
+class bbFile* bbOpenFile(const String& f);
+class bbFile* bbReadFile(const String& f);
+class bbFile* bbWriteFile(const String& f);
 void bbCloseFile(bbFile* f);
 int bbFilePos(bbFile* f);
-class gxDir* bbReadDir(String d);
+class gxDir* bbReadDir(const String& d);
 void bbCloseDir(class gxDir* d);
 String bbNextFile(class gxDir* d);
 String bbCurrentDir();
-void bbChangeDir(String d);
-void bbCreateDir(String d);
-void bbDeleteDir(String d);
-int bbFileSize(String f);
-int bbFileType(String f);
-void bbCopyFile(String f, String to);
-void bbDeleteFile(String f);
+void bbChangeDir(const String& d);
+void bbCreateDir(const String& d);
+void bbDeleteDir(const String& d);
+int bbFileSize(const String& f);
+int bbFileType(const String& f);
+void bbCopyFile(const String& f, const String& to);
+void bbDeleteFile(const String& f);
 
 #endif

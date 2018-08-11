@@ -12,7 +12,7 @@ struct ddUtil{
 
 	static void buildMipMaps( ddSurf *surf );
 	static void copy( ddSurf *dest,int dx,int dy,int dw,int dh,ddSurf *src,int sx,int sy,int sw,int sh );
-	static ddSurf *loadSurface( String f,int flags,gxGraphics *gfx );
+	static ddSurf *loadSurface( const String& f,int flags,gxGraphics *gfx );
 	static ddSurf *createSurface( int width,int height,int flags,gxGraphics *gfx );
 };
 

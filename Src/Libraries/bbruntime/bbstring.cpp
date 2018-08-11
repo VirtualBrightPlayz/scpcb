@@ -5,23 +5,23 @@
 #define CHKOFF(x) if( (x)<=0 ) RTEX( "parameter must be greater than 0" );
 
 // TODO: Move all these functions to string type methods?
-String bbString( String s,int n ){
+String bbString( const String& s,int n ){
 	String t="";
 	while( n-- > 0 ) t=String(t,s);
 	return t;
 }
 
-String bbRight( String s,int n ){
+String bbRight( const String& s,int n ){
 	CHKPOS( n );
 	n=s.size()-n;if( n<0 ) n=0;
-	s=s.substr( n );return s;
+	return s.substr( n );
 }
 
-int bbInstr( String s,String t,int from ){
+int bbInstr( const String& s,const String& t,int from ){
 	return s.findFirst(t,from)+1;
 }
 
-String bbMid( String s,int o,int n ){
+String bbMid( const String& s,int o,int n ){
 	return s.substr(o-1,n);
 }
 
@@ -48,7 +48,7 @@ String bbBin( int n ){
 	return String( buff );
 }
 
-int bbAsc( String s ){
+int bbAsc( const String& s ){
 	int n=s.size() ? s.charAt(0) & 255 : -1;
 	return n;
 }

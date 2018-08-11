@@ -10,18 +10,19 @@ void  bbStop(){
 	gx_runtime->debugStop();
 }
 
-void  bbAppTitle( String ti,String cp ){
+void  bbAppTitle( const String& ti,const String& cp ){
 	gx_runtime->setTitle( ti,cp );
 }
 
-void  bbRuntimeError( String str ){
-	if( str.size()>255 ) str = str.substr(0,255);
+void  bbRuntimeError( const String& str ){
+    String s = str;
+	if( s.size()>255 ) s = s.substr(0,255);
 	static char err[256];
-	strcpy( err,str.cstr() );
+	strcpy( err,s.cstr() );
 	RTEX( err );
 }
 
-int bbExecFile( String f ){
+int bbExecFile( const String& f ){
 	int n=gx_runtime->execute( f );
 	return n;
 }
@@ -38,18 +39,18 @@ String  bbCommandLine(){
 	return gx_runtime->commandLine();
 }
 
-String  bbSystemProperty( String p ){
+String  bbSystemProperty( const String& p ){
 	String t=gx_runtime->systemProperty( p );
 	return t;
 }
 
-String   bbGetEnv( String env_var ){
+String   bbGetEnv( const String& env_var ){
 	char *p=getenv( env_var.cstr() );
 	String val=p ? p : "";
 	return val;
 }
 
-void  bbSetEnv( String env_var,String val ){
+void  bbSetEnv( const String& env_var,const String& val ){
 	String t=env_var+"="+val;
 	putenv( t.cstr() );
 }

@@ -5,16 +5,16 @@
 #include "StringType.h"
 
 //TODO: remove the stuff String already implements
-int atoi(String s );
-double atof(String s );
+int atoi(const String& s );
+double atof(const String& s );
 String itoa( int n );
 String ftoa( float n );
-String tolower( String s );
-String toupper( String s );
+String tolower( const String& s );
+String toupper( const String& s );
 
 //keep this tho
-String fullfilename( String t );
-String filenamepath( String t );
-String filenamefile( String t );
+String fullfilename( const String& t );
+String filenamepath( const String& t );
+String filenamefile( const String& t );
 
 #endif

@@ -56,7 +56,7 @@ enum{
 ////////////////////
 // STATIC STARTUP //
 ////////////////////
-gxRuntime *gxRuntime::openRuntime( HINSTANCE hinst,String cmd_line ){
+gxRuntime *gxRuntime::openRuntime( HINSTANCE hinst,const String& cmd_line ){
 	if( runtime ) return 0;
 
 	//create WNDCLASS
@@ -98,7 +98,7 @@ void gxRuntime::closeRuntime( gxRuntime *r ){
 //////////////////////////
 typedef int (_stdcall *SetAppCompatDataFunc)( int x,int y );
 
-gxRuntime::gxRuntime( HINSTANCE hi,String cl,HWND hw ):
+gxRuntime::gxRuntime( HINSTANCE hi,const String& cl,HWND hw ):
 hinst(hi),cmd_line(cl),hwnd(hw),curr_driver(0),enum_all(false),
 pointer_visible(true),audio(0),input(0),graphics(0),fileSystem(0),use_di(false){
 
@@ -570,7 +570,7 @@ String gxRuntime::commandLine(){
 /////////////
 // EXECUTE //
 /////////////
-bool gxRuntime::execute( String cmd_line ){
+bool gxRuntime::execute( const String& cmd_line ){
 
 	if( !cmd_line.size() ) return false;
 
@@ -601,7 +601,7 @@ bool gxRuntime::execute( String cmd_line ){
 ///////////////
 // APP TITLE //
 ///////////////
-void gxRuntime::setTitle( String t,String e ){
+void gxRuntime::setTitle( const String& t,const String& e ){
 	app_title=t;
 	app_close=e;
 	SetWindowText( hwnd,app_title.cstr() );
@@ -1074,12 +1074,12 @@ void gxRuntime::freeTimer( gxTimer *t ){
 	delete t;
 }
 
-static String toDir( String t ){
-	if( t.size() && t.charAt(t.size()-1)!='\\' ) t=String(t,"\\");
+static String toDir( const String& t ){
+	if( t.size() && t.charAt(t.size()-1)!='\\' ) return String(t,"\\");
 	return t;
 }
 
-String gxRuntime::systemProperty( String p ){
+String gxRuntime::systemProperty( const String& p ){
 	char buff[MAX_PATH+1];
 	String t=p.toLower();
 	if( t.equals("cpu") ){

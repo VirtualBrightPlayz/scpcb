@@ -32,7 +32,7 @@ struct CachedTexture::Rep{
 		}
 	}
 
-	Rep( String f,int flags,int w,int h,int first,int cnt ):
+	Rep( const String& f,int flags,int w,int h,int first,int cnt ):
 	ref_cnt(1),file(f),flags(flags),w(w),h(h),first(first){
 		++active_texs;
 		if( !(flags & gxCanvas::CANVAS_TEX_CUBE) ){
@@ -98,7 +98,7 @@ struct CachedTexture::Rep{
 	}
 };
 
-CachedTexture::Rep *CachedTexture::findRep( String f,int flags,int w,int h,int first,int cnt ){
+CachedTexture::Rep *CachedTexture::findRep( const String& f,int flags,int w,int h,int first,int cnt ){
 	std::set<Rep*>::const_iterator it;
 	for( it=rep_set.begin();it!=rep_set.end();++it ){
 		Rep *rep=*it;
@@ -113,7 +113,7 @@ CachedTexture::CachedTexture( int w,int h,int flags,int cnt ):
 rep(new Rep(w,h,flags,cnt)){
 }
 
-CachedTexture::CachedTexture( String f_,int flags,int w,int h,int first,int cnt ){
+CachedTexture::CachedTexture( const String& f_,int flags,int w,int h,int first,int cnt ){
 	String f=f_;
 	if( f.substr(0,2).equals(".\\") ) f=f.substr(2);
 	if( path.size() ){
@@ -162,7 +162,7 @@ const std::vector<gxCanvas*> &CachedTexture::getFrames()const{
 	return rep->frames;
 }
 
-void CachedTexture::setPath( String t ){
+void CachedTexture::setPath( const String& t ){
 	path=tolower(t);
 	if( int sz=path.size() ){
 		if( path.charAt(sz-1)!='/' && path.charAt(sz-1)!='\\' ) path=String(path,"\\");
