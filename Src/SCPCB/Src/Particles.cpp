@@ -1,5 +1,6 @@
 #include <bbblitz3d.h>
 #include <bbmath.h>
+#include <string.h>
 
 #include "Particles.h"
 #include "Assets.h"
@@ -16,6 +17,8 @@ namespace CBN {
 // Structs.
 std::vector<Particle*> Particle::list;
 Particle::Particle() {
+    memset(this,0,sizeof(Particle));
+
     list.push_back(this);
 }
 Particle::~Particle() {
@@ -35,7 +38,7 @@ Particle* Particle::getObject(int index) {
 
 std::vector<Emitter*> Emitter::list;
 Emitter::Emitter() {
-    soundCHN = nullptr;
+    memset(this,0,sizeof(Emitter));
 
     list.push_back(this);
 }

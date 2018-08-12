@@ -341,10 +341,10 @@ void TeleportCloser(NPC* n) {
         if (xtemp < 10.f && xtemp > 1.f) {
             ztemp = abs(bbEntityZ(w->obj,true)-bbEntityZ(n->collider,true));
             if (ztemp < 10.f && ztemp > 1.f) {
-                if (bbEntityDistance(mainPlayer->collider, w->obj)>8) {
+                if (bbEntityDistanceSquared(mainPlayer->collider, w->obj)>64) {
                     if (SelectedDifficulty->aggressiveNPCs) {
                         //teleports to the nearby waypoint that takes it closest to the player
-                        newDist = bbEntityDistance(mainPlayer->collider, w->obj);
+                        newDist = bbEntityDistanceSquared(mainPlayer->collider, w->obj);
                         if (newDist < closestDist || closestWaypoint == nullptr) {
                             closestDist = newDist;
                             closestWaypoint = w;
@@ -372,7 +372,7 @@ int OtherNPCSeesMeNPC(NPC* me, NPC* other) {
         return false;
     }
 
-    if (bbEntityDistance(other->collider,me->collider)<6.f) {
+    if (bbEntityDistanceSquared(other->collider,me->collider)<36.f) {
         if (abs(bbDeltaYaw(other->collider,me->collider))<60.f) {
             return true;
         }
@@ -396,7 +396,8 @@ int MeNPCSeesPlayer(NPC* me, int disableSoundOnCrouch) {
         if (me->blinkTimer<=0.f) {
             return false;
         }
-        if (bbEntityDistance(mainPlayer->collider,me->collider)>(8.f-mainPlayer->crouchState+mainPlayer->loudness)) {
+        float detectDist = (8.f - mainPlayer->crouchState + mainPlayer->loudness);
+        if (bbEntityDistanceSquared(mainPlayer->collider,me->collider)>detectDist*detectDist) {
             return false;
         }
 
@@ -418,7 +419,8 @@ int MeNPCSeesPlayer(NPC* me, int disableSoundOnCrouch) {
         }
         return bbEntityVisible(me->collider,mainPlayer->collider);
     } else {
-        if (bbEntityDistance(mainPlayer->collider,me->collider)>(8.f-mainPlayer->crouchState+mainPlayer->loudness)) {
+        float detectDist = (8.f - mainPlayer->crouchState + mainPlayer->loudness);
+        if (bbEntityDistanceSquared(mainPlayer->collider,me->collider)>detectDist*detectDist) {
             return 3;
         }
         if (bbEntityVisible(me->collider, mainPlayer->cam)) {
@@ -1097,7 +1099,7 @@ void FindNextElevator(NPC* n) {
                     if (eo2 != eo) {
                         if (eo2->inFacility == n->inFacility) {
                             if (abs(bbEntityY(eo2->obj,true)-bbEntityY(n->collider))<10.f) {
-                                if (bbEntityDistance(eo2->obj,n->collider)<bbEntityDistance(eo->obj,n->collider)) {
+                                if (bbEntityDistanceSquared(eo2->obj,n->collider)<bbEntityDistanceSquared(eo->obj,n->collider)) {
                                     n->pathStatus = FindPath(n, bbEntityX(eo2->obj,true),bbEntityY(eo2->obj,true),bbEntityZ(eo2->obj,true));
                                     n->currElevator = eo2;
                                     std::cout << "eo2 found for "+String(n->npcType);
@@ -1140,14 +1142,14 @@ void GoToElevator(NPC* n) {
             }
         }
 
-        dist = bbEntityDistance(n->collider,n->currElevator->door->frameobj);
+        dist = bbEntityDistanceSquared(n->collider,n->currElevator->door->frameobj);
         if (n->currElevator->door->open) {
-            if ((dist > 0.4f && dist < 0.7f) && inside) {
+            if ((dist > 0.4f*0.4f && dist < 0.7f*0.7f) && inside) {
                 UseDoor(n->currElevator->door,false);
                 std::cout << String(n->npcType)+" used elevator";
             }
         } else {
-            if (dist < 0.7f) {
+            if (dist < 0.7f*0.7f) {
                 n->currSpeed = 0.f;
                 if (n->currElevator->door->npcCalledElevator==false) {
                     n->currElevator->door->npcCalledElevator = true;

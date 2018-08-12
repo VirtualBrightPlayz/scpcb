@@ -20,6 +20,13 @@ float Mesh_MagY;
 float Mesh_MagZ;
 
 // Functions.
+float DistanceSquared(float x1, float y1, float x2, float y2) {
+    float x = x2 - x1;
+    float y = y2 - y1;
+
+    return x*x+y*y;
+}
+
 float Distance(float x1, float y1, float x2, float y2) {
     float x = x2 - x1;
     float y = y2 - y1;

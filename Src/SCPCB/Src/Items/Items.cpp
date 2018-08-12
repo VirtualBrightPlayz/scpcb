@@ -364,7 +364,7 @@ void RemoveItem(Item* i) {
 }
 
 void UpdateItems() {
-    float hideDist = HideDistance*0.5f;
+    float hideDist = HideDistance*0.5f; hideDist*=hideDist;
     bool deletedItem = false;
 
     mainPlayer->closestItem = nullptr;
@@ -375,18 +375,18 @@ void UpdateItems() {
 
         if (!item->picked) {
             if (itemDistanceTimer < TimeInPosMilliSecs()) {
-                item->dist = bbEntityDistance(mainPlayer->collider, item->collider);
+                item->dist = bbEntityDistanceSquared(mainPlayer->collider, item->collider);
             }
 
             if (item->dist < hideDist) {
                 bbShowEntity(item->collider);
 
-                if (item->dist < 1.2f) {
+                if (item->dist < 1.2f*1.2f) {
                     if (mainPlayer->closestItem == nullptr) {
                         if (bbEntityInView(item->model, mainPlayer->cam)) {
                             mainPlayer->closestItem = item;
                         }
-                    } else if (item->dist < bbEntityDistance(mainPlayer->collider, mainPlayer->closestItem->collider)) {
+                    } else if (item->dist < bbEntityDistanceSquared(mainPlayer->collider, mainPlayer->closestItem->collider)) {
                         if (bbEntityInView(item->model, mainPlayer->cam)) {
                             mainPlayer->closestItem = item;
                         }

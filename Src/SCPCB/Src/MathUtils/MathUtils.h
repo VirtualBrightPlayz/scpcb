@@ -20,6 +20,8 @@ extern float Mesh_MagY;
 extern float Mesh_MagZ;
 
 // Functions.
+float DistanceSquared(float x1, float y1, float x2, float y2);
+
 float Distance(float x1, float y1, float x2, float y2);
 
 float CurveValue(float number, float old, float smooth);

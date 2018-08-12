@@ -440,9 +440,9 @@ void InitNewGame() {
             }
         }
 
-        if (r->roomTemplate->name.equals("cont_914_1") && !userOptions->introEnabled) {
-            std::cout<<"914_TELEPORT\n";
-            bbPositionEntity(mainPlayer->collider, bbEntityX(r->obj), 1.0f, bbEntityZ(r->obj));
+        if (r->roomTemplate->name.equals("lck_cam_2c") && !userOptions->introEnabled) {
+            std::cout<<"LOCKROOM_TELEPORT\n";
+            bbPositionEntity(mainPlayer->collider, bbEntityX(r->obj)+3.0f, 1.0f, bbEntityZ(r->obj));
             bbResetEntity(mainPlayer->collider);
             mainPlayer->currRoom = r;
         } else if (r->roomTemplate->name.equals("intro") && userOptions->introEnabled) {

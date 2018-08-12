@@ -1742,10 +1742,16 @@ int  bbCollisionTriangle( Object *o,int index ){
 	return o->getCollisions()[index-1]->collision.index;
 }
 
-float  bbEntityDistance( Object *src,Object *dest ){
-	debugEntity(src);
-	debugEntity(dest);
-	return src->getWorldPosition().distance( dest->getWorldPosition() );
+float  bbEntityDistance(Object *src, Object *dest) {
+    debugEntity(src);
+    debugEntity(dest);
+    return src->getWorldPosition().distance(dest->getWorldPosition());
+}
+
+float  bbEntityDistanceSquared(Object *src, Object *dest) {
+    debugEntity(src);
+    debugEntity(dest);
+    return src->getWorldPosition().distanceSquared(dest->getWorldPosition());
 }
 
 ////////////////////////////////////
