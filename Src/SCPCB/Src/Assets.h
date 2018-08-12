@@ -29,7 +29,7 @@ protected:
 
     String file;
 
-    float decayTimer;
+    float decayTimer = ASSET_DECAY_TIMER;
 };
 
 class TextureAssetWrap : public AssetWrap {
