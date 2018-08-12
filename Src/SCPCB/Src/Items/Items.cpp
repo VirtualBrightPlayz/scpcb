@@ -367,85 +367,87 @@ void UpdateItems() {
     int deletedItem = false;
 
     float ed;
+    float hideDist = HideDistance*0.5;
+    bool deletedItem = false;
 
     mainPlayer->closestItem = nullptr;
-    for (int iterator106 = 0; iterator106 < Item::getListSize(); iterator106++) {
-        i = Item::getObject(iterator106);
+    for (int i = 0; i < Item::getListSize(); i++) {
+        Item* item = Item::getObject(i);
 
-        i->dropped = 0;
+        item->dropped = 0;
 
-        if (!i->picked) {
+        if (!item->picked) {
             if (itemDistanceTimer < TimeInPosMilliSecs()) {
-                i->dist = bbEntityDistance(mainPlayer->collider, i->collider);
+                item->dist = bbEntityDistance(mainPlayer->collider, item->collider);
             }
 
-            if (i->dist < HideDist) {
-                bbShowEntity(i->collider);
+            if (item->dist < hideDist) {
+                bbShowEntity(item->collider);
 
-                if (i->dist < 1.2) {
+                if (item->dist < 1.2f) {
                     if (mainPlayer->closestItem == nullptr) {
-                        if (bbEntityInView(i->model, mainPlayer->cam)) {
-                            mainPlayer->closestItem = i;
+                        if (bbEntityInView(item->model, mainPlayer->cam)) {
+                            mainPlayer->closestItem = item;
                         }
-                    } else if ((i->dist < bbEntityDistance(mainPlayer->collider, mainPlayer->closestItem->collider))) {
-                        if (bbEntityInView(i->model, mainPlayer->cam)) {
-                            mainPlayer->closestItem = i;
+                    } else if (item->dist < bbEntityDistance(mainPlayer->collider, mainPlayer->closestItem->collider)) {
+                        if (bbEntityInView(item->model, mainPlayer->cam)) {
+                            mainPlayer->closestItem = item;
                         }
                     }
                 }
 
-                if (bbEntityCollided(i->collider, HIT_MAP)) {
-                    i->dropSpeed = 0;
-                    i->xspeed = 0.0;
-                    i->zspeed = 0.0;
+                if (bbEntityCollided(item->collider, HIT_MAP)) {
+                    item->dropSpeed = 0;
+                    item->xspeed = 0.0;
+                    item->zspeed = 0.0;
                 } else {
-                    i->dropSpeed = i->dropSpeed - 0.0004 * timing->tickDuration;
-                    bbTranslateEntity(i->collider, i->xspeed*timing->tickDuration, i->dropSpeed * timing->tickDuration, i->zspeed*timing->tickDuration);
-                    if (i->wontColl) {
-                        bbResetEntity(i->collider);
+                    item->dropSpeed = item->dropSpeed - 0.0004 * timing->tickDuration;
+                    bbTranslateEntity(item->collider, item->xspeed*timing->tickDuration, item->dropSpeed * timing->tickDuration, item->zspeed*timing->tickDuration);
+                    if (item->wontColl) {
+                        bbResetEntity(item->collider);
                     }
                 }
 
-                if (i->dist<HideDist*0.2) {
-                    for (int iterator107 = 0; iterator107 < Item::getListSize(); iterator107++) {
-                        i2 = Item::getObject(iterator107);
+                if (item->dist < hideDist*0.2) {
+                    for (int j = 0; j < Item::getListSize(); j++) {
+                        Item* collItem = Item::getObject(j);
 
-                        if (i!=i2 & (!i2->picked) & i2->dist<HideDist*0.2) {
+                        if (item != collItem && !collItem->picked && collItem->dist < hideDist*0.2) {
 
-                            xtemp = (bbEntityX(i2->collider,true)-bbEntityX(i->collider,true));
-                            ytemp = (bbEntityY(i2->collider,true)-bbEntityY(i->collider,true));
-                            ztemp = (bbEntityZ(i2->collider,true)-bbEntityZ(i->collider,true));
+                            float xtemp = bbEntityX(collItem->collider,true)-bbEntityX(item->collider,true);
+                            float ytemp = bbEntityY(collItem->collider,true)-bbEntityY(item->collider,true);
+                            float ztemp = bbEntityZ(collItem->collider,true)-bbEntityZ(item->collider,true);
 
-                            ed = (xtemp*xtemp+ztemp*ztemp);
-                            if (ed<0.07 & abs(ytemp)<0.25) {
+                            float ed = (xtemp*xtemp+ztemp*ztemp);
+                            if (ed < 0.07f && abs(ytemp) < 0.25f) {
                                 //items are too close together, push away
 
                                 xtemp = xtemp*(0.07-ed);
                                 ztemp = ztemp*(0.07-ed);
 
-                                while (abs(xtemp)+abs(ztemp)<0.001) {
+                                while (abs(xtemp)+abs(ztemp)<0.001f) {
                                     xtemp = xtemp+bbRnd(-0.002,0.002);
                                     ztemp = ztemp+bbRnd(-0.002,0.002);
                                 }
 
-                                bbTranslateEntity(i2->collider,xtemp,0,ztemp);
-                                bbTranslateEntity(i->collider,-xtemp,0,-ztemp);
+                                bbTranslateEntity(collItem->collider,xtemp,0,ztemp);
+                                bbTranslateEntity(item->collider,-xtemp,0,-ztemp);
                             }
                         }
                     }
                 }
 
-                if (bbEntityY(i->collider) < - 35.0) {
-                    std::cout << "remove: " + i->name;
-                    RemoveItem(i);
+                if (bbEntityY(item->collider) < - 35.0f) {
+                    std::cout << "remove: " + item->name << "\n";
+                    RemoveItem(item);
                 }
             } else {
-                bbHideEntity(i->collider);
+                bbHideEntity(item->collider);
             }
         }
     }
 
-    int canSeePlayer = true;
+    bool canSeePlayer = true;
     if (mainPlayer->closestItem != nullptr) {
         //Can the player see this? (TODO: fix)
         //canSeePlayer = EntityVisible(mainPlayer\closestItem\collider,mainPlayer\cam)
