@@ -1,6 +1,7 @@
 #include <StringType.h>
 #include <bbblitz3d.h>
 #include <bbmath.h>
+#include <string.h>
 
 #include "Decals.h"
 #include "Assets.h"
@@ -12,6 +13,7 @@ namespace CBN {
 // Structs.
 std::vector<Decal*> Decal::list;
 Decal::Decal() {
+    memset(this, 0, sizeof(Decal));
     list.push_back(this);
 }
 Decal::~Decal() {
