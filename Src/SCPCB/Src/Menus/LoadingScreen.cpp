@@ -142,7 +142,7 @@ void DrawLoading(int percent, int shortloading) {
         }
 
         if (shortloading == false) {
-            if (percent > (100.0 / SelectedLoadingScreen->txtamount)*(LoadingScreenText+1)) {
+            if (percent > (100.f / SelectedLoadingScreen->txtamount)*(LoadingScreenText+1)) {
                 LoadingScreenText = LoadingScreenText+1;
             }
         }
@@ -176,7 +176,7 @@ void DrawLoading(int percent, int shortloading) {
         y = userOptions->screenHeight / 2 + 30 - 100;
 
         bbRect(x, y, width+4, height, false);
-        for (i = 1; i <= (int)((width - 2) * (percent / 100.0) / 10); i++) {
+        for (i = 1; i <= (int)((width - 2) * (percent / 100.f) / 10); i++) {
             bbDrawImage(uiAssets->blinkBar, x + 3 + 10 * (i - 1), y + 3);
         }
 
@@ -292,31 +292,31 @@ void DrawLoading(int percent, int shortloading) {
 
         //not by any means a perfect solution
         //Not even proper gamma correction but it's a nice looking alternative that works in windowed mode
-        if (userOptions->screenGamma>1.0) {
+        if (userOptions->screenGamma>1.f) {
             bbCopyRect(0,0,userOptions->screenWidth,userOptions->screenHeight,1024-userOptions->screenWidth/2,1024-userOptions->screenHeight/2,bbBackBuffer(),bbTextureBuffer(fresize_texture));
             bbEntityBlend(fresize_image,1);
             bbClsColor(0,0,0);
             bbCls();
-            ScaleRender(-1.0/(float)(userOptions->screenWidth),1.0/(float)(userOptions->screenWidth),2048.0 / (float)(userOptions->screenWidth),2048.0 / (float)(userOptions->screenWidth));
+            ScaleRender(-1.f/(float)(userOptions->screenWidth),1.f/(float)(userOptions->screenWidth),2048.f / (float)(userOptions->screenWidth),2048.f / (float)(userOptions->screenWidth));
             bbEntityFX(fresize_image,1+32);
             bbEntityBlend(fresize_image,3);
-            bbEntityAlpha(fresize_image,userOptions->screenGamma-1.0);
-            ScaleRender(-1.0/(float)(userOptions->screenWidth),1.0/(float)(userOptions->screenWidth),2048.0 / (float)(userOptions->screenWidth),2048.0 / (float)(userOptions->screenWidth));
+            bbEntityAlpha(fresize_image,userOptions->screenGamma-1.f);
+            ScaleRender(-1.f/(float)(userOptions->screenWidth),1.f/(float)(userOptions->screenWidth),2048.f / (float)(userOptions->screenWidth),2048.f / (float)(userOptions->screenWidth));
             //todo: maybe optimize this if it's too slow, alternatively give players the option to disable gamma
-        } else if ((userOptions->screenGamma<1.0)) {
+        } else if ((userOptions->screenGamma<1.f)) {
             bbCopyRect(0,0,userOptions->screenWidth,userOptions->screenHeight,1024-userOptions->screenWidth/2,1024-userOptions->screenHeight/2,bbBackBuffer(),bbTextureBuffer(fresize_texture));
             bbEntityBlend(fresize_image,1);
             bbClsColor(0,0,0);
             bbCls();
-            ScaleRender(-1.0/(float)(userOptions->screenWidth),1.0/(float)(userOptions->screenWidth),2048.0 / (float)(userOptions->screenWidth),2048.0 / (float)(userOptions->screenWidth));
+            ScaleRender(-1.f/(float)(userOptions->screenWidth),1.f/(float)(userOptions->screenWidth),2048.f / (float)(userOptions->screenWidth),2048.f / (float)(userOptions->screenWidth));
             bbEntityFX(fresize_image,1+32);
             bbEntityBlend(fresize_image,2);
-            bbEntityAlpha(fresize_image,1.0);
+            bbEntityAlpha(fresize_image,1.f);
             bbSetBuffer(bbTextureBuffer(fresize_texture2));
-            bbClsColor((int)(255.0*userOptions->screenGamma),(int)(255.0*userOptions->screenGamma),(int)(255.0*userOptions->screenGamma));
+            bbClsColor((int)(255.f*userOptions->screenGamma),(int)(255.f*userOptions->screenGamma),(int)(255.f*userOptions->screenGamma));
             bbCls();
             bbSetBuffer(bbBackBuffer());
-            ScaleRender(-1.0/(float)(userOptions->screenWidth),1.0/(float)(userOptions->screenWidth),2048.0 / (float)(userOptions->screenWidth),2048.0 / (float)(userOptions->screenWidth));
+            ScaleRender(-1.f/(float)(userOptions->screenWidth),1.f/(float)(userOptions->screenWidth),2048.f / (float)(userOptions->screenWidth),2048.f / (float)(userOptions->screenWidth));
             bbSetBuffer(bbTextureBuffer(fresize_texture2));
             bbClsColor(0,0,0);
             bbCls();
@@ -324,7 +324,7 @@ void DrawLoading(int percent, int shortloading) {
         }
         bbEntityFX(fresize_image,1);
         bbEntityBlend(fresize_image,1);
-        bbEntityAlpha(fresize_image,1.0);
+        bbEntityAlpha(fresize_image,1.f);
 
         bbFlip(false);
 

@@ -61,44 +61,44 @@ void FillRoom_test_860_2(Room* r) {
 
     //the wooden door
     r->objects[2] = bbLoadMesh("GFX/Map/forest/door_frame.b3d");
-    bbPositionEntity(r->objects[2],r->x + 184.0 * RoomScale,0,r->z,true);
-    bbScaleEntity(r->objects[2],45.0*RoomScale,45.0*RoomScale,80.0*RoomScale,true);
+    bbPositionEntity(r->objects[2],r->x + 184.f * RoomScale,0,r->z,true);
+    bbScaleEntity(r->objects[2],45.f*RoomScale,45.f*RoomScale,80.f*RoomScale,true);
     bbEntityParent(r->objects[2],r->obj);
 
     r->objects[3] = bbLoadMesh("GFX/Map/forest/door.b3d");
-    bbPositionEntity(r->objects[3],r->x + 112.0 * RoomScale,0,r->z+0.05,true);
+    bbPositionEntity(r->objects[3],r->x + 112.f * RoomScale,0,r->z+0.05,true);
     bbEntityType(r->objects[3], HIT_MAP);
 
-    bbScaleEntity(r->objects[3],46.0*RoomScale,45.0*RoomScale,46.0*RoomScale,true);
+    bbScaleEntity(r->objects[3],46.f*RoomScale,45.f*RoomScale,46.f*RoomScale,true);
     bbEntityParent(r->objects[3],r->obj);
 
     r->objects[4] = bbCopyMeshModelEntity((MeshModel*)r->objects[3]);
-    bbPositionEntity(r->objects[4],r->x + 256.0 * RoomScale,0,r->z-0.05,true);
+    bbPositionEntity(r->objects[4],r->x + 256.f * RoomScale,0,r->z-0.05,true);
     bbRotateEntity(r->objects[4], 0,180,0);
-    bbScaleEntity(r->objects[4],46.0*RoomScale,45.0*RoomScale,46.0*RoomScale,true);
+    bbScaleEntity(r->objects[4],46.f*RoomScale,45.f*RoomScale,46.f*RoomScale,true);
     bbEntityParent(r->objects[4],r->obj);
 
     //doors to observation booth
-    d = CreateDoor(r->x + 928.0 * RoomScale,0,r->z + 640.0 * RoomScale,0,r,false, DOOR_TYPE_DEF, "", "ABCD");
-    d = CreateDoor(r->x + 928.0 * RoomScale,0,r->z - 640.0 * RoomScale,0,r,true, DOOR_TYPE_DEF, "","ABCD");
+    d = CreateDoor(r->x + 928.f * RoomScale,0,r->z + 640.f * RoomScale,0,r,false, DOOR_TYPE_DEF, "", "ABCD");
+    d = CreateDoor(r->x + 928.f * RoomScale,0,r->z - 640.f * RoomScale,0,r,true, DOOR_TYPE_DEF, "","ABCD");
     d->autoClose = false;
 
     //doors to the room itself
-    d = CreateDoor(r->x+416.0*RoomScale,0,r->z - 640.0 * RoomScale,0,r,false, DOOR_TYPE_DEF, r->roomTemplate->name);
-    d = CreateDoor(r->x+416.0*RoomScale,0,r->z + 640.0 * RoomScale,0,r,false, DOOR_TYPE_DEF, r->roomTemplate->name);
+    d = CreateDoor(r->x+416.f*RoomScale,0,r->z - 640.f * RoomScale,0,r,false, DOOR_TYPE_DEF, r->roomTemplate->name);
+    d = CreateDoor(r->x+416.f*RoomScale,0,r->z + 640.f * RoomScale,0,r,false, DOOR_TYPE_DEF, r->roomTemplate->name);
 
     //the forest
     Forest* fr = new Forest();
     r->fr = fr;
     GenForestGrid(fr);
-    PlaceForest(fr,r->x,r->y+30.0,r->z,r);
+    PlaceForest(fr,r->x,r->y+30.f,r->z,r);
     //EntityParent(fr\forest_Pivot,r\obj)
 
-    it = CreatePaper("doc860", r->x + 672.0 * RoomScale, r->y + 176.0 * RoomScale, r->z + 335.0 * RoomScale);
+    it = CreatePaper("doc860", r->x + 672.f * RoomScale, r->y + 176.f * RoomScale, r->z + 335.f * RoomScale);
     bbRotateEntity(it->collider, 0, r->angle+10, 0);
     bbEntityParent(it->collider, r->obj);
 
-    it = CreatePaper("doc8601", r->x + 1152.0 * RoomScale, r->y + 176.0 * RoomScale, r->z - 384.0 * RoomScale);
+    it = CreatePaper("doc8601", r->x + 1152.f * RoomScale, r->y + 176.f * RoomScale, r->z - 384.f * RoomScale);
     bbRotateEntity(it->collider, 0, r->angle+170, 0);
     bbEntityParent(it->collider, r->obj);
 }
@@ -140,7 +140,7 @@ void UpdateEvent_test_860_2(Event* e) {
 
         //the player is in the forest
         // FIXME
-        if (e->eventState==1.0) {
+        if (e->eventState==1.f) {
             mainPlayer->footstepOverride = 2;
             e->overwriteMusic = true;
 
@@ -180,9 +180,9 @@ void UpdateEvent_test_860_2(Event* e) {
             }
 
             if (e->room->npc[0]!=nullptr) {
-                if (e->room->npc[0]->state == 0 | bbEntityDistance(mainPlayer->collider, e->room->npc[0]->collider)>12.0) {
+                if (e->room->npc[0]->state == 0 | bbEntityDistance(mainPlayer->collider, e->room->npc[0]->collider)>12.f) {
                     e->eventState3 = e->eventState3 + (1+mainPlayer->moveSpeed)* timing->tickDuration;
-                    if (modFloat(e->eventState3, 500) < 10.0 && modFloat(e->eventState3-timing->tickDuration, 500) > 490.0) {
+                    if (modFloat(e->eventState3, 500) < 10.f && modFloat(e->eventState3-timing->tickDuration, 500) > 490.f) {
                         //If (e\eventState3 > 3500 And Rnd(10000)<e\eventState3) Then
                         if (e->eventState3 > 3000 && bbRnd(10000) < e->eventState3) {
                             e->room->npc[0]->state = 2;
@@ -217,8 +217,8 @@ void UpdateEvent_test_860_2(Event* e) {
 
                                 bbRotateEntity(e->room->objects[3], 0, 0, 0);
                                 bbRotateEntity(e->room->objects[4], 0, 180, 0);
-                                //SetAnimTime(e\room\objects[3], 0.0)
-                                //SetAnimTime(e\room\objects[4], 0.0)
+                                //SetAnimTime(e\room\objects[3], 0.f)
+                                //SetAnimTime(e\room\objects[4], 0.f)
 
                                 //dp.DrawPortal=e\room\dp;Object.DrawPortal(e\room\objects[0])
                                 bbPositionEntity(mainPlayer->collider, bbEntityX(e->room->objects[2],true),0.5,bbEntityZ(e->room->objects[2],true));
@@ -231,7 +231,7 @@ void UpdateEvent_test_860_2(Event* e) {
                                 UpdateDoorsTimer = 0;
                                 UpdateDoors();
 
-                                e->eventState = 0.0;
+                                e->eventState = 0.f;
 
                             } else {
                                 PlaySound2(LoadTempSound("SFX/Door/WoodenDoorBudge.ogg"));
@@ -244,14 +244,14 @@ void UpdateEvent_test_860_2(Event* e) {
             }
 
             if (e->room->npc[0]!=nullptr) {
-                x = Max(1.0-(e->room->npc[0]->state3/300.0),0.1);
+                x = Max(1.f-(e->room->npc[0]->state3/300.f),0.1);
             } else {
-                x = 2.0;
+                x = 2.f;
             }
 
             bbCameraClsColor(mainPlayer->cam,98*x,133*x,162*x);
             bbCameraRange(mainPlayer->cam,RoomScale,8.5);
-            bbCameraFogRange(mainPlayer->cam,0.5,8.0);
+            bbCameraFogRange(mainPlayer->cam,0.5,8.f);
             bbCameraFogColor(mainPlayer->cam,98*x,133*x,162*x);
 
         } else {
@@ -265,9 +265,9 @@ void UpdateEvent_test_860_2(Event* e) {
             //HideEntity(fr\detailEntities[0])
             //HideEntity(fr\detailEntities[1])
 
-            if (bbEntityYaw(e->room->objects[3])==0.0) {
+            if (bbEntityYaw(e->room->objects[3])==0.f) {
                 bbHideEntity(fr->forest_Pivot);
-                if (abs(Distance(bbEntityX(e->room->objects[3],true),bbEntityZ(e->room->objects[3],true),bbEntityX(mainPlayer->collider,true),bbEntityZ(mainPlayer->collider,true)))<1.0) {
+                if (abs(Distance(bbEntityX(e->room->objects[3],true),bbEntityZ(e->room->objects[3],true),bbEntityX(mainPlayer->collider,true),bbEntityZ(mainPlayer->collider,true)))<1.f) {
                     DrawHandIcon = true;
 
                     if (mainPlayer->selectedItem == nullptr) {
@@ -284,12 +284,12 @@ void UpdateEvent_test_860_2(Event* e) {
 
                             mainPlayer->blinkTimer = -10;
 
-                            e->eventState = 1.0;
+                            e->eventState = 1.f;
 
                             bbPositionEntity(mainPlayer->collider,bbEntityX(fr->door[0],true),bbEntityY(fr->door[0],true)+bbEntityY(mainPlayer->collider,true)+0.5,bbEntityZ(fr->door[0],true),true);
 
-                            bbRotateEntity(mainPlayer->collider, 0.0, bbEntityYaw(fr->door[0],true)-180, 0.0, true);
-                            bbMoveEntity(mainPlayer->collider, -0.5,0.0,0.5);
+                            bbRotateEntity(mainPlayer->collider, 0.f, bbEntityYaw(fr->door[0],true)-180, 0.f, true);
+                            bbMoveEntity(mainPlayer->collider, -0.5,0.f,0.5);
 
 
 
@@ -580,7 +580,7 @@ void PlaceForest(Forest* fr, float x, float y, float z, Room* r) {
     //local variables
     int tx;
     int ty;
-    float tile_size = 12.0;
+    float tile_size = 12.f;
     int tile_type;
     MeshModel* tile_entity = nullptr;
     MeshModel* detail_entity = nullptr;
@@ -794,24 +794,24 @@ void PlaceForest(Forest* fr, float x, float y, float z, Room* r) {
                                         }
 
                                         bbScaleEntity(detail_entity,tempf2*1.1,tempf2,tempf2*1.1,true);
-                                        bbPositionEntity(detail_entity,lx*tempf4-(tempf3/2.0),bbColorRed()*0.03-bbRnd(3.0,3.2),ly*tempf4-(tempf3/2.0),true);
+                                        bbPositionEntity(detail_entity,lx*tempf4-(tempf3/2.f),bbColorRed()*0.03-bbRnd(3.f,3.2),ly*tempf4-(tempf3/2.f),true);
 
-                                        bbRotateEntity(detail_entity,bbRnd(-5,5),bbRnd(360.0),0.0,true);
+                                        bbRotateEntity(detail_entity,bbRnd(-5,5),bbRnd(360.f),0.f,true);
 
-                                        //EntityAutoFade(detail_entity,4.0,6.0)
+                                        //EntityAutoFade(detail_entity,4.f,6.f)
                                         //add a rock
                                     } break;
                                     case 7: {
                                         detail_entity = bbCopyMeshModelEntity(fr->detailMesh[2]);
                                         //EntityType(detail_entity,HIT_MAP)
                                         tempf2 = bbRnd(0.01,0.012);
-                                        //ScaleEntity(detail_entity,tempf2,tempf2*Rnd(1.0,2.0),tempf2,True)
+                                        //ScaleEntity(detail_entity,tempf2,tempf2*Rnd(1.f,2.f),tempf2,True)
 
-                                        bbPositionEntity(detail_entity,lx*tempf4-(tempf3/2.0),bbColorRed()*0.03-1.3,ly*tempf4-(tempf3/2.0),true);
+                                        bbPositionEntity(detail_entity,lx*tempf4-(tempf3/2.f),bbColorRed()*0.03-1.3,ly*tempf4-(tempf3/2.f),true);
 
                                         bbEntityFX(detail_entity, 1);
 
-                                        bbRotateEntity(detail_entity,0.0,bbRnd(360.0),0.0,true);
+                                        bbRotateEntity(detail_entity,0.f,bbRnd(360.f),0.f,true);
                                         //add a stump
                                     } break;
                                     /*case 6: {
@@ -820,12 +820,12 @@ void PlaceForest(Forest* fr, float x, float y, float z, Room* r) {
                                         tempf2 = bbRnd(0.1,0.12);
                                         bbScaleEntity(detail_entity,tempf2,tempf2,tempf2,true);
 
-                                        bbPositionEntity(detail_entity,lx*tempf4-(tempf3/2.0),bbColorRed()*0.03-1.3,ly*tempf4-(tempf3/2.0),true);
+                                        bbPositionEntity(detail_entity,lx*tempf4-(tempf3/2.f),bbColorRed()*0.03-1.3,ly*tempf4-(tempf3/2.f),true);
                                     }*/
                                 }
 
                                 bbEntityFX(detail_entity, 1);
-                                //PositionEntity(detail_entity,Rnd(0.0,tempf3)-(tempf3/2.0),ColorRed()*0.03-0.05,Rnd(0.0,tempf3)-(tempf3/2.0),True)
+                                //PositionEntity(detail_entity,Rnd(0.f,tempf3)-(tempf3/2.f),ColorRed()*0.03-0.05,Rnd(0.f,tempf3)-(tempf3/2.f),True)
                                 bbEntityParent(detail_entity,tile_entity);
                             }
                         }
@@ -864,14 +864,14 @@ void PlaceForest(Forest* fr, float x, float y, float z, Room* r) {
                 bbScaleEntity(fr->detailEntities[i],RoomScale,RoomScale,RoomScale);
 
                 fr->door[i] = bbCopyMeshModelEntity((MeshModel*)r->objects[3]);
-                bbPositionEntity(fr->door[i],72*RoomScale,32.0*RoomScale,0,true);
+                bbPositionEntity(fr->door[i],72*RoomScale,32.f*RoomScale,0,true);
                 bbRotateEntity(fr->door[i], 0,180,0);
                 bbScaleEntity(fr->door[i],48*RoomScale,45*RoomScale,48*RoomScale,true);
                 bbEntityParent(fr->door[i],fr->detailEntities[i]);
                 //SetAnimTime(fr\door[i], 0)
 
                 frame = bbCopyMeshModelEntity((MeshModel*)r->objects[2],fr->door[i]);
-                bbPositionEntity(frame,0,32.0*RoomScale,0,true);
+                bbPositionEntity(frame,0,32.f*RoomScale,0,true);
                 bbScaleEntity(frame,48*RoomScale,45*RoomScale,48*RoomScale,true);
                 bbEntityParent(frame,fr->detailEntities[i]);
 
@@ -942,12 +942,12 @@ void UpdateForest(Forest* fr, Object* ent) {
     //local variables
     int tx;
     int ty;
-    if (abs(bbEntityY(ent,true)-bbEntityY(fr->forest_Pivot,true))<12.0) {
+    if (abs(bbEntityY(ent,true)-bbEntityY(fr->forest_Pivot,true))<12.f) {
         for (tx = 0; tx <= gridsize-1; tx++) {
             for (ty = 0; ty <= gridsize-1; ty++) {
                 if (fr->tileEntities[tx+(ty*gridsize)]!=0) {
-                    if (abs(bbEntityX(ent,true)-bbEntityX(fr->tileEntities[tx+(ty*gridsize)],true))<20.0) {
-                        if (abs(bbEntityZ(ent,true)-bbEntityZ(fr->tileEntities[tx+(ty*gridsize)],true))<20.0) {
+                    if (abs(bbEntityX(ent,true)-bbEntityX(fr->tileEntities[tx+(ty*gridsize)],true))<20.f) {
+                        if (abs(bbEntityZ(ent,true)-bbEntityZ(fr->tileEntities[tx+(ty*gridsize)],true))<20.f) {
                             bbShowEntity(fr->tileEntities[tx+(ty*gridsize)]);
                         } else {
                             bbHideEntity(fr->tileEntities[tx+(ty*gridsize)]);
@@ -1004,7 +1004,7 @@ MeshModel* load_terrain(bbImage* hmap, float yscale, Texture* t1, Texture* t2, T
     // create some verts for the terrain
     for (ly = 0; ly <= y; ly++) {
         for (lx = 0; lx <= x; lx++) {
-            bbAddVertex(surf,lx,0,ly,1.0/lx,1.0/ly);
+            bbAddVertex(surf,lx,0,ly,1.f/lx,1.f/ly);
         }
     }
     bbRenderWorld();
@@ -1020,8 +1020,8 @@ MeshModel* load_terrain(bbImage* hmap, float yscale, Texture* t1, Texture* t2, T
     // position the terrain to center 0,0,0
     MeshModel* mesh2 = bbDeepCopyMesh(mesh,mesh);
     Surface* surf2 = bbGetSurface(mesh2,1);
-    bbPositionMesh(mesh, -x/2.0,0,-y/2.0);
-    bbPositionMesh(mesh2, -x/2.0,0.01,-y/2.0);
+    bbPositionMesh(mesh, -x/2.f,0,-y/2.f);
+    bbPositionMesh(mesh2, -x/2.f,0.01,-y/2.f);
 
     // alter vertice height to match the heightmap red channel
     bbLockBuffer(bbImageBuffer(hmap));
@@ -1047,7 +1047,7 @@ MeshModel* load_terrain(bbImage* hmap, float yscale, Texture* t1, Texture* t2, T
             index = lx + ((x+1)*ly);
             bbVertexCoords(surf, index , bbVertexX(surf,index), r*yscale,bbVertexZ(surf,index));
             bbVertexCoords(surf2, index , bbVertexX(surf2,index), r*yscale,bbVertexZ(surf2,index));
-            bbVertexColor(surf2, index, 255.0,255.0,255.0,alpha);
+            bbVertexColor(surf2, index, 255.f,255.f,255.f,alpha);
             // set the terrain texture coordinates
             bbVertexTexCoords(surf,index,lx,-ly);
             bbVertexTexCoords(surf2,index,lx,-ly);

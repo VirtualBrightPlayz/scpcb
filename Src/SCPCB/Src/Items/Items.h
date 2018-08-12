@@ -33,13 +33,15 @@ const int ITEMS_PER_ROW = 3;
 // Structs.
 struct ItemTemplate {
 private:
+    ItemTemplate(const String& file, const String& section);
+    ~ItemTemplate();
     static std::vector<ItemTemplate*> list;
 
 public:
-    ItemTemplate();
-    ~ItemTemplate();
     static int getListSize();
     static ItemTemplate* getObject(int index);
+    static void LoadTemplates(const String& file);
+    static void DeloadTemplates();
 
     String name;
     String invName;
@@ -123,10 +125,6 @@ extern int LastItemID;
 extern int itemDistanceTimer;
 
 // Functions.
-void CreateItemTemplate(const String& file, const String& section);
-
-void LoadItemTemplates(const String& file);
-
 Inventory* CreateInventory(int size);
 
 void DeleteInventory(Inventory* inv);

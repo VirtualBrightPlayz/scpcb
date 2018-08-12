@@ -37,15 +37,15 @@ void FillRoom_cont_1162_2c(Room* r) {
     //, Bump
     int t1;
 
-    d = CreateDoor(r->x + 248.0*RoomScale, 0.0, r->z - 736.0*RoomScale, 90, r, false, DOOR_TYPE_DEF, r->roomTemplate->name);
+    d = CreateDoor(r->x + 248.f*RoomScale, 0.f, r->z - 736.f*RoomScale, 90, r, false, DOOR_TYPE_DEF, r->roomTemplate->name);
     r->objects[0] = bbCreatePivot();
-    bbPositionEntity(r->objects[0],r->x+1012.0*RoomScale,r->y+128.0*RoomScale,r->z-640.0*RoomScale);
+    bbPositionEntity(r->objects[0],r->x+1012.f*RoomScale,r->y+128.f*RoomScale,r->z-640.f*RoomScale);
     bbEntityParent(r->objects[0],r->obj);
     bbEntityPickMode(r->objects[0],1);
-    it = CreatePaper("doc1162", r->x + 863.227 * RoomScale, r->y + 152.0 * RoomScale, r->z - 953.231 * RoomScale);
+    it = CreatePaper("doc1162", r->x + 863.227 * RoomScale, r->y + 152.f * RoomScale, r->z - 953.231 * RoomScale);
     bbEntityParent(it->collider, r->obj);
 
-    sc = CreateSecurityCam(r->x-192.0*RoomScale, r->y+704.0*RoomScale, r->z+192.0*RoomScale, r);
+    sc = CreateSecurityCam(r->x-192.f*RoomScale, r->y+704.f*RoomScale, r->z+192.f*RoomScale, r);
     sc->angle = 225;
     sc->turn = 45;
     bbTurnEntity(sc->cameraObj, 20, 0, 0);
@@ -88,18 +88,18 @@ void UpdateEvent_cont_1162_2c(Event* e) {
 
     //[Block]
     //e\eventState = A variable to determine the "nostalgia" items
-    //- 0.0 = No nostalgia item
-    //- 1.0 = Lost key
-    //- 2.0 = Disciplinary Hearing DH-S-4137-17092
-    //- 3.0 = Coin
-    //- 4.0 = Movie Ticket
-    //- 5.0 = Old Badge
+    //- 0.f = No nostalgia item
+    //- 1.f = Lost key
+    //- 2.f = Disciplinary Hearing DH-S-4137-17092
+    //- 3.f = Coin
+    //- 4.f = Movie Ticket
+    //- 5.f = Old Badge
     //e\eventState2 = Defining which slot from the Inventory should be picked
     //e\eventState3 = A check for if a item should be removed
-    //- 0.0 = no item "trade" will happen
-    //- 1.0 = item "trade" will happen
-    //- 2.0 = the player doesn't has any items in the Inventory, giving him heavily injuries and giving him a random item
-    //- 3.0 = player got a memorial item (to explain a bit D-9341's background)
+    //- 0.f = no item "trade" will happen
+    //- 1.f = item "trade" will happen
+    //- 2.f = the player doesn't has any items in the Inventory, giving him heavily injuries and giving him a random item
+    //- 3.f = player got a memorial item (to explain a bit D-9341's background)
     //- 3.1 = player got a memorial item + injuries (because he didn't had any item in his inventory before)
     if (mainPlayer->currRoom == e->room) {
 
@@ -132,7 +132,7 @@ void UpdateEvent_cont_1162_2c(Event* e) {
             e->eventState2 = bbRand(0,mainPlayer->inventory->size-1);
             if (mainPlayer->inventory->items[(int)(e->eventState2)]!=nullptr) {
                 //randomly picked item slot has an item in it, using this slot
-                e->eventState3 = 1.0;
+                e->eventState3 = 1.f;
                 std::cout << "pick1";
             } else {
                 //randomly picked item slot is empty, getting the first available slot
@@ -148,7 +148,7 @@ void UpdateEvent_cont_1162_2c(Event* e) {
                         if (isSlotEmpty) {
                             e->eventState3 = 3.1;
                         } else {
-                            e->eventState3 = 3.0;
+                            e->eventState3 = 3.f;
                         }
 
                         e->eventState = bbRand(1,5);
@@ -179,8 +179,8 @@ void UpdateEvent_cont_1162_2c(Event* e) {
 
                             if (it->name.equals(itemName)) {
                                 itemExists = true;
-                                e->eventState3 = 1.0;
-                                e->eventState = 0.0;
+                                e->eventState3 = 1.f;
+                                e->eventState = 0.f;
                                 break;
                             }
                         }
@@ -190,9 +190,9 @@ void UpdateEvent_cont_1162_2c(Event* e) {
                         }
                     } else {
                         if (isSlotEmpty) {
-                            e->eventState3 = 2.0;
+                            e->eventState3 = 2.f;
                         } else {
-                            e->eventState3 = 1.0;
+                            e->eventState3 = 1.f;
                             break;
                         }
                     }
@@ -202,7 +202,7 @@ void UpdateEvent_cont_1162_2c(Event* e) {
 
 
         //trade successful
-        if (e->eventState3 == 1.0) {
+        if (e->eventState3 == 1.f) {
             shouldCreateItem = false;
 
             for (int iterator161 = 0; iterator161 < ItemTemplate::getListSize(); iterator161++) {
@@ -256,15 +256,15 @@ void UpdateEvent_cont_1162_2c(Event* e) {
                     it = CreateItem(itt->name,bbEntityX(pp,true),bbEntityY(pp,true),bbEntityZ(pp,true));
                     bbEntityType(it->collider, HIT_ITEM);
                     PlaySound2(LoadTempSound("SFX/SCP/1162/Exchange"+String(bbRand(0,4))+".ogg"));
-                    e->eventState3 = 0.0;
+                    e->eventState3 = 0.f;
 
                     MouseHit1 = false;
                     break;
                 }
             }
             //trade not sucessful (player got in return to injuries a new item)
-        } else if ((e->eventState3 == 2.0)) {
-            mainPlayer->injuries = mainPlayer->injuries + 5.0;
+        } else if ((e->eventState3 == 2.f)) {
+            mainPlayer->injuries = mainPlayer->injuries + 5.f;
             pvt = bbCreatePivot();
             bbPositionEntity(pvt, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)-0.05,bbEntityZ(mainPlayer->collider));
             bbTurnEntity(pvt, 90, 0, 0);
@@ -279,17 +279,17 @@ void UpdateEvent_cont_1162_2c(Event* e) {
                 if (IsItemGoodFor1162(itt) & bbRand(6)==1) {
                     it = CreateItem(itt->name, bbEntityX(pp,true),bbEntityY(pp,true),bbEntityZ(pp,true));
                     MouseHit1 = false;
-                    e->eventState3 = 0.0;
+                    e->eventState3 = 0.f;
                     if (mainPlayer->injuries > 15) {
                         DeathMSG = "A dead Class D subject was discovered within the containment chamber of SCP-1162.";
                         DeathMSG = DeathMSG + " An autopsy revealed that his right lung was missing, which suggests";
                         DeathMSG = DeathMSG + " interaction with SCP-1162.";
                         PlaySound2(LoadTempSound("SFX/SCP/1162/BodyHorrorExchange"+String(bbRand(1,4))+".ogg"));
-                        mainPlayer->lightFlash = 5.0;
+                        mainPlayer->lightFlash = 5.f;
                         Kill(mainPlayer);
                     } else {
                         PlaySound2(LoadTempSound("SFX/SCP/1162/BodyHorrorExchange"+String(bbRand(1,4))+".ogg"));
-                        mainPlayer->lightFlash = 5.0;
+                        mainPlayer->lightFlash = 5.f;
                         Msg = "You feel a sudden overwhelming pain in your chest.";
                         MsgTimer = 70*5;
                     }
@@ -297,12 +297,12 @@ void UpdateEvent_cont_1162_2c(Event* e) {
                 }
             }
             //trade with nostalgia item
-        } else if ((e->eventState3 >= 3.0)) {
+        } else if ((e->eventState3 >= 3.f)) {
             if (e->eventState3 < 3.1) {
                 PlaySound2(LoadTempSound("SFX/SCP/1162/Exchange"+String(bbRand(0,4))+".ogg"));
                 RemoveItem(mainPlayer->inventory->items[(int)(e->eventState2)]);
             } else {
-                mainPlayer->injuries = mainPlayer->injuries + 5.0;
+                mainPlayer->injuries = mainPlayer->injuries + 5.f;
                 pvt = bbCreatePivot();
                 bbPositionEntity(pvt, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)-0.05,bbEntityZ(mainPlayer->collider));
                 bbTurnEntity(pvt, 90, 0, 0);
@@ -316,15 +316,15 @@ void UpdateEvent_cont_1162_2c(Event* e) {
                     DeathMSG = DeathMSG + " An autopsy revealed that his right lung was missing, which suggests";
                     DeathMSG = DeathMSG + " interaction with SCP-1162.";
                     PlaySound2(LoadTempSound("SFX/SCP/1162/BodyHorrorExchange"+String(bbRand(1,4))+".ogg"));
-                    mainPlayer->lightFlash = 5.0;
+                    mainPlayer->lightFlash = 5.f;
                     Kill(mainPlayer);
                 } else {
                     PlaySound2(LoadTempSound("SFX/SCP/1162/BodyHorrorExchange"+String(bbRand(1,4))+".ogg"));
-                    mainPlayer->lightFlash = 5.0;
+                    mainPlayer->lightFlash = 5.f;
                     Msg = "You notice something moving in your pockets and a sudden pain in your chest.";
                     MsgTimer = 70*5;
                 }
-                e->eventState2 = 0.0;
+                e->eventState2 = 0.f;
             }
             switch ((int)e->eventState) {
                 case 1: {
@@ -345,7 +345,7 @@ void UpdateEvent_cont_1162_2c(Event* e) {
             }
             bbEntityType(it->collider, HIT_ITEM);
             MouseHit1 = false;
-            e->eventState3 = 0.0;
+            e->eventState3 = 0.f;
         }
         bbFreeEntity(pp);
     }

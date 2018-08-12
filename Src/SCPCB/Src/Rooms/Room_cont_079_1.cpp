@@ -38,23 +38,23 @@ void FillRoom_cont_079_1(Room* r) {
     //, Bump
     int t1;
 
-    d = CreateDoor(r->x, -448.0*RoomScale, r->z + 1136.0 * RoomScale, 0, r, false, DOOR_TYPE_CONT, r->roomTemplate->name);
-    bbPositionEntity(d->buttons[1], r->x + 224.0 * RoomScale, -250*RoomScale, r->z + 918.0 * RoomScale, true);
+    d = CreateDoor(r->x, -448.f*RoomScale, r->z + 1136.f * RoomScale, 0, r, false, DOOR_TYPE_CONT, r->roomTemplate->name);
+    bbPositionEntity(d->buttons[1], r->x + 224.f * RoomScale, -250*RoomScale, r->z + 918.f * RoomScale, true);
     //TurnEntity(d\buttons[0],0,-90,0,True)
-    bbPositionEntity(d->buttons[0], r->x - 240.0 * RoomScale, -250*RoomScale, r->z + 1366.0 * RoomScale, true);
+    bbPositionEntity(d->buttons[0], r->x - 240.f * RoomScale, -250*RoomScale, r->z + 1366.f * RoomScale, true);
     //TurnEntity(d\buttons[1],0, 90,0,True)
 
-    r->doors[0] = CreateDoor(r->x + 1456.0*RoomScale, -448.0*RoomScale, r->z + 976.0 * RoomScale, 0, r, false, DOOR_TYPE_CONT, r->roomTemplate->name);
-    bbPositionEntity(r->doors[0]->buttons[1], r->x + 1760.0 * RoomScale, -250*RoomScale, r->z + 1236.0 * RoomScale, true);
+    r->doors[0] = CreateDoor(r->x + 1456.f*RoomScale, -448.f*RoomScale, r->z + 976.f * RoomScale, 0, r, false, DOOR_TYPE_CONT, r->roomTemplate->name);
+    bbPositionEntity(r->doors[0]->buttons[1], r->x + 1760.f * RoomScale, -250*RoomScale, r->z + 1236.f * RoomScale, true);
     bbTurnEntity(r->doors[0]->buttons[0],0,-90-90,0,true);
-    bbPositionEntity(r->doors[0]->buttons[0], r->x + 1760.0 * RoomScale, -240*RoomScale, r->z + 740.0 * RoomScale, true);
+    bbPositionEntity(r->doors[0]->buttons[0], r->x + 1760.f * RoomScale, -240*RoomScale, r->z + 740.f * RoomScale, true);
     bbTurnEntity(r->doors[0]->buttons[1],0, 90-90,0,true);
 
-    CreateDoor(r->x + 1144.0*RoomScale, -448.0*RoomScale, r->z + 704.0 * RoomScale, 90, r, false, DOOR_TYPE_DEF, r->roomTemplate->name);
+    CreateDoor(r->x + 1144.f*RoomScale, -448.f*RoomScale, r->z + 704.f * RoomScale, 90, r, false, DOOR_TYPE_DEF, r->roomTemplate->name);
 
     r->objects[0] = bbLoadAnimMesh("GFX/Map/079.b3d");
     bbScaleEntity(r->objects[0], 1.3, 1.3, 1.3, true);
-    bbPositionEntity(r->objects[0], r->x + 1856.0*RoomScale, -560.0*RoomScale, r->z-672.0*RoomScale, true);
+    bbPositionEntity(r->objects[0], r->x + 1856.f*RoomScale, -560.f*RoomScale, r->z-672.f*RoomScale, true);
     bbEntityParent(r->objects[0], r->obj);
     bbTurnEntity(r->objects[0],0,180,0,true);
 
@@ -63,7 +63,7 @@ void FillRoom_cont_079_1(Room* r) {
     bbSpriteViewMode((Sprite*)r->objects[1],2);
     bbPositionEntity(r->objects[1], 0.082, 0.119, 0.010);
     bbScaleSprite((Sprite*)r->objects[1],0.18*0.5,0.145*0.5);
-    bbTurnEntity((Sprite*)r->objects[1],0,13.0,0);
+    bbTurnEntity((Sprite*)r->objects[1],0,13.f,0);
     bbMoveEntity(r->objects[1], 0,0,-0.022);
     bbEntityTexture((Sprite*)r->objects[1],aiPic->getTexture());
     aiPic->drop();
@@ -71,9 +71,9 @@ void FillRoom_cont_079_1(Room* r) {
     bbHideEntity(r->objects[1]);
 
     r->objects[2] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[2], r->x + 1184.0*RoomScale, -448.0*RoomScale, r->z+1792.0*RoomScale, true);
+    bbPositionEntity(r->objects[2], r->x + 1184.f*RoomScale, -448.f*RoomScale, r->z+1792.f*RoomScale, true);
 
-    de = CreateDecal(DECAL_BLOOD_SPLATTER,  r->x + 1184.0*RoomScale, -448.0*RoomScale+0.01, r->z+1792.0*RoomScale,90,bbRnd(360),0);
+    de = CreateDecal(DECAL_BLOOD_SPLATTER,  r->x + 1184.f*RoomScale, -448.f*RoomScale+0.01, r->z+1792.f*RoomScale,90,bbRnd(360),0);
     de->size = 0.5;
     bbScaleSprite(de->obj, de->size,de->size);
     bbEntityParent(de->obj, r->obj);
@@ -134,7 +134,7 @@ void UpdateEvent_cont_079_1(Event* e) {
             if (e->eventState == 1) {
                 e->eventState = 2;
             } else if ((e->eventState == 2)) {
-                if (bbEntityDistance(e->room->objects[0], mainPlayer->collider)<3.0) {
+                if (bbEntityDistance(e->room->objects[0], mainPlayer->collider)<3.f) {
                     e->eventState = 3;
                     e->eventState2 = 1;
                     //e\sounds[0] = LoadSound("SFX/SCP/079/Speech.ogg")

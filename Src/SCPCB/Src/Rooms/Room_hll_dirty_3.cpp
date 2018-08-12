@@ -48,7 +48,7 @@ void FillRoom_hll_dirty_3(Room* r) {
     //If (r\objects[0]=0) Then r\objects[0] = LoadMesh("GFX/Map/room3z2_hb.b3d",r\obj)
     //EntityPickMode(r\objects[0],2)
     //EntityType(r\objects[0],HIT_MAP)
-    //EntityAlpha(r\objects[0],0.0)
+    //EntityAlpha(r\objects[0],0.f)
 }
 
 }

@@ -37,16 +37,16 @@ void FillRoom_tnnl_pipes_2(Room* r) {
     int t1;
 
     r->objects[0] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[0], r->x + 368.0 * RoomScale, 0.0, r->z, true);
+    bbPositionEntity(r->objects[0], r->x + 368.f * RoomScale, 0.f, r->z, true);
 
     r->objects[1] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[1], r->x - 368.0 * RoomScale, 0.0, r->z, true);
+    bbPositionEntity(r->objects[1], r->x - 368.f * RoomScale, 0.f, r->z, true);
 
     r->objects[2] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[2], r->x + 224.0 * RoomScale - 0.005, 192.0 * RoomScale, r->z, true);
+    bbPositionEntity(r->objects[2], r->x + 224.f * RoomScale - 0.005, 192.f * RoomScale, r->z, true);
 
     r->objects[3] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[3], r->x - 224.0 * RoomScale + 0.005, 192.0 * RoomScale, r->z, true);
+    bbPositionEntity(r->objects[3], r->x - 224.f * RoomScale + 0.005, 192.f * RoomScale, r->z, true);
 }
 
 void UpdateEventRoom2pipes106(Event* e) {
@@ -91,7 +91,7 @@ void UpdateEventRoom2pipes106(Event* e) {
                 Curr106->idle = true;
                 bbPositionEntity(Curr106->collider, bbEntityX(e->room->objects[0], true), bbEntityY(mainPlayer->collider) - 0.15, bbEntityZ(e->room->objects[0], true));
                 bbPointEntity(Curr106->collider, e->room->objects[1]);
-                bbMoveEntity(Curr106->collider, 0, 0, bbEntityDistance(e->room->objects[0], e->room->objects[1])*0.5 * (e->eventState / 50.0));
+                bbMoveEntity(Curr106->collider, 0, 0, bbEntityDistance(e->room->objects[0], e->room->objects[1])*0.5 * (e->eventState / 50.f));
                 AnimateNPC(Curr106, 284, 333, 0.02*35);
             } else if ((e->eventState < 200)) {
                 Curr106->idle = true;
@@ -99,8 +99,8 @@ void UpdateEventRoom2pipes106(Event* e) {
 
                 bbPositionEntity(Curr106->collider, (bbEntityX(e->room->objects[0], true)+bbEntityX(e->room->objects[1], true))/2, bbEntityY(mainPlayer->collider) - 0.15, (bbEntityZ(e->room->objects[0], true)+bbEntityZ(e->room->objects[1], true))/2);
                 //MoveEntity(Curr106\collider, 0, 0, EntityDistance(e\room\objects[0], e\room\objects[1])*0.5)
-                bbRotateEntity(Curr106->collider,0, CurveValue(e->eventState,bbEntityYaw(Curr106->collider),30.0),0,true);
-                if (bbEntityDistance(Curr106->collider, mainPlayer->collider)<4.0) {
+                bbRotateEntity(Curr106->collider,0, CurveValue(e->eventState,bbEntityYaw(Curr106->collider),30.f),0,true);
+                if (bbEntityDistance(Curr106->collider, mainPlayer->collider)<4.f) {
                     pvt = bbCreatePivot();
                     bbPositionEntity(pvt, bbEntityX(Curr106->collider),bbEntityY(Curr106->collider),bbEntityZ(Curr106->collider));
                     bbPointEntity(pvt, mainPlayer->collider);
@@ -117,7 +117,7 @@ void UpdateEventRoom2pipes106(Event* e) {
                 bbPositionEntity(Curr106->collider, bbEntityX(e->room->objects[0], true), bbEntityY(mainPlayer->collider) - 0.15, bbEntityZ(e->room->objects[0], true));
                 bbPointEntity(Curr106->collider, e->room->objects[1]);
                 //200-250     (- 150)      50-100
-                bbMoveEntity(Curr106->collider, 0, 0, bbEntityDistance(e->room->objects[0], e->room->objects[1]) * ((e->eventState-150.0) / 100.0));
+                bbMoveEntity(Curr106->collider, 0, 0, bbEntityDistance(e->room->objects[0], e->room->objects[1]) * ((e->eventState-150.f) / 100.f));
                 AnimateNPC(Curr106, 284, 333, 0.02*35);
             }
             bbResetEntity(Curr106->collider);
@@ -127,7 +127,7 @@ void UpdateEventRoom2pipes106(Event* e) {
 
             //PositionEntity(Curr106\collider, EntityX(Curr106\collider), EntityY(mainPlayer\collider) - 0.20, EntityZ(Curr106\collider))
 
-            if ((e->eventState / 250.0) > 0.3 & ((e->eventState - timing->tickDuration*0.7) / 250.0) <= 0.3) {
+            if ((e->eventState / 250.f) > 0.3 & ((e->eventState - timing->tickDuration*0.7) / 250.f) <= 0.3) {
                 //e\soundChannels[0] = PlaySound2(HorrorSFX(6))
                 mainPlayer->blurTimer = 800;
                 //90, Rnd(360), 0
@@ -139,7 +139,7 @@ void UpdateEventRoom2pipes106(Event* e) {
                 d->sizeChange = 0.003;
             }
 
-            if ((e->eventState / 250.0) > 0.65 & ((e->eventState - timing->tickDuration*0.7) / 250.0) <= 0.65) {
+            if ((e->eventState / 250.f) > 0.65 & ((e->eventState - timing->tickDuration*0.7) / 250.f) <= 0.65) {
                 d = CreateDecal(DECAL_CORROSION, bbEntityX(e->room->objects[3], true), bbEntityY(e->room->objects[3], true), bbEntityZ(e->room->objects[3], true), 0, e->room->angle + 90, bbRnd(360));
                 d->timer = 90000;
                 d->alpha = 0.01;

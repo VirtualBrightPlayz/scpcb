@@ -83,7 +83,7 @@ NPC* CreateNPC(int NPCtype, float x, float y, float z) {
     n->target = nullptr;
 
     n->npcType = NPCtype;
-    n->gravityMult = 1.0;
+    n->gravityMult = 1.f;
     n->maxGravity = 0.2;
     switch (NPCtype) {
         case NPCtype173: {
@@ -339,9 +339,9 @@ void TeleportCloser(NPC* n) {
 
         //If (w\door = Null) Then ;TODO: fix?
         xtemp = abs(bbEntityX(w->obj,true)-bbEntityX(n->collider,true));
-        if (xtemp < 10.0 & xtemp > 1.0) {
+        if (xtemp < 10.f & xtemp > 1.f) {
             ztemp = abs(bbEntityZ(w->obj,true)-bbEntityZ(n->collider,true));
-            if (ztemp < 10.0 & ztemp > 1.0) {
+            if (ztemp < 10.f & ztemp > 1.f) {
                 if (bbEntityDistance(mainPlayer->collider, w->obj)>8) {
                     if (SelectedDifficulty->aggressiveNPCs) {
                         //teleports to the nearby waypoint that takes it closest to the player
@@ -369,12 +369,12 @@ void TeleportCloser(NPC* n) {
 }
 
 int OtherNPCSeesMeNPC(NPC* me, NPC* other) {
-    if (other->blinkTimer<=0.0) {
+    if (other->blinkTimer<=0.f) {
         return false;
     }
 
-    if (bbEntityDistance(other->collider,me->collider)<6.0) {
-        if (abs(bbDeltaYaw(other->collider,me->collider))<60.0) {
+    if (bbEntityDistance(other->collider,me->collider)<6.f) {
+        if (abs(bbDeltaYaw(other->collider,me->collider))<60.f) {
             return true;
         }
     }
@@ -394,16 +394,16 @@ int MeNPCSeesPlayer(NPC* me, int disableSoundOnCrouch) {
     }
 
     if ((!PlayerDetected) | me->npcType != NPCtypeMTF) {
-        if (me->blinkTimer<=0.0) {
+        if (me->blinkTimer<=0.f) {
             return false;
         }
-        if (bbEntityDistance(mainPlayer->collider,me->collider)>(8.0-mainPlayer->crouchState+mainPlayer->loudness)) {
+        if (bbEntityDistance(mainPlayer->collider,me->collider)>(8.f-mainPlayer->crouchState+mainPlayer->loudness)) {
             return false;
         }
 
         //spots the player if he's either in view or making a loud sound
-        if (mainPlayer->loudness>1.0) {
-            if (abs(bbDeltaYaw(me->collider,mainPlayer->collider))>60.0 && bbEntityVisible(me->collider,mainPlayer->collider)) {
+        if (mainPlayer->loudness>1.f) {
+            if (abs(bbDeltaYaw(me->collider,mainPlayer->collider))>60.f && bbEntityVisible(me->collider,mainPlayer->collider)) {
                 return 1;
             } else if ((!bbEntityVisible(me->collider,mainPlayer->collider))) {
                 if (disableSoundOnCrouch & mainPlayer->crouching) {
@@ -413,13 +413,13 @@ int MeNPCSeesPlayer(NPC* me, int disableSoundOnCrouch) {
                 }
             }
         } else {
-            if (abs(bbDeltaYaw(me->collider,mainPlayer->collider))>60.0) {
+            if (abs(bbDeltaYaw(me->collider,mainPlayer->collider))>60.f) {
                 return false;
             }
         }
         return bbEntityVisible(me->collider,mainPlayer->collider);
     } else {
-        if (bbEntityDistance(mainPlayer->collider,me->collider)>(8.0-mainPlayer->crouchState+mainPlayer->loudness)) {
+        if (bbEntityDistance(mainPlayer->collider,me->collider)>(8.f-mainPlayer->crouchState+mainPlayer->loudness)) {
             return 3;
         }
         if (bbEntityVisible(me->collider, mainPlayer->cam)) {
@@ -427,7 +427,7 @@ int MeNPCSeesPlayer(NPC* me, int disableSoundOnCrouch) {
         }
 
         //spots the player if he's either in view or making a loud sound
-        if (mainPlayer->loudness>1.0) {
+        if (mainPlayer->loudness>1.f) {
             return 2;
         }
         return 3;
@@ -466,7 +466,7 @@ void Shoot(float x, float y, float z, float hitProb, int particles, int instaKil
     Decal* de;
 
     //muzzle flash
-    Particle* p = CreateParticle(x,y,z, PARTICLE_FLASH, bbRnd(0.08,0.1), 0.0, 5);
+    Particle* p = CreateParticle(x,y,z, PARTICLE_FLASH, bbRnd(0.08,0.1), 0.f, 5);
     bbTurnEntity(p->sprite, 0,0,bbRnd(360));
     p->aChange = -0.15;
 
@@ -480,7 +480,7 @@ void Shoot(float x, float y, float z, float hitProb, int particles, int instaKil
             return;
         }
 
-        if (bbRnd(1.0) <= hitProb) {
+        if (bbRnd(1.f) <= hitProb) {
             bbTurnEntity(mainPlayer->cam, bbRnd(-3,3), bbRnd(-3,3), 0);
 
             wearingVest = false;
@@ -562,7 +562,7 @@ void Shoot(float x, float y, float z, float hitProb, int particles, int instaKil
                     case 6: {
                         mainPlayer->blurTimer = 500;
                         shotMessageUpdate = "A bullet hit your right shoulder.";
-                        mainPlayer->injuries = mainPlayer->injuries + bbRnd(2.5,4.0);
+                        mainPlayer->injuries = mainPlayer->injuries + bbRnd(2.5,4.f);
                     } break;
                 }
             }
@@ -573,7 +573,7 @@ void Shoot(float x, float y, float z, float hitProb, int particles, int instaKil
                 MsgTimer = 70*6;
             }
 
-            mainPlayer->injuries = Min(mainPlayer->injuries, 4.0);
+            mainPlayer->injuries = Min(mainPlayer->injuries, 4.f);
 
             //Kill(mainPlayer)
             PlaySound_SM(sndManager->bulletHit);
@@ -586,7 +586,7 @@ void Shoot(float x, float y, float z, float hitProb, int particles, int instaKil
             bbEntityPick(pvt, 2.5);
 
             if (bbPickedEntity() != 0) {
-                PlayRangedSound_SM(sndManager->bulletMiss, mainPlayer->cam, pvt, 0.4, bbRnd(0.8,1.0));
+                PlayRangedSound_SM(sndManager->bulletMiss, mainPlayer->cam, pvt, 0.4, bbRnd(0.8,1.f));
 
                 if (particles) {
                     //dust/smoke particles
@@ -626,7 +626,7 @@ void Shoot(float x, float y, float z, float hitProb, int particles, int instaKil
 
 void PlayMTFSound(gxSound* sound, NPC* n) {
     if (n != nullptr) {
-        n->soundChannels[0] = PlayRangedSound(sound, mainPlayer->cam, n->collider, 8.0);
+        n->soundChannels[0] = PlayRangedSound(sound, mainPlayer->cam, n->collider, 8.f);
     }
 
     //TODO: Re-implement.
@@ -831,18 +831,18 @@ void ManipulateNPCBones() {
                 case 0: {
                     bbPointEntity(bone,mainPlayer->cam);
                     bbPointEntity(pvt,mainPlayer->cam);
-                    n->bonePitch = CurveAngle(bbEntityPitch(pvt),n->bonePitch,10.0);
+                    n->bonePitch = CurveAngle(bbEntityPitch(pvt),n->bonePitch,10.f);
                     switch ((int)TransformNPCManipulationData(n->npcNameInSection,n->boneToManipulate,"yaw")) {
                         case 0: {
-                            n->boneYaw = CurveAngle(bbEntityPitch(bone),n->boneYaw,10.0);
+                            n->boneYaw = CurveAngle(bbEntityPitch(bone),n->boneYaw,10.f);
                             pitchvalue = n->boneYaw;
                         } break;
                         case 1: {
-                            n->boneYaw = CurveAngle(bbEntityYaw(bone),n->boneYaw,10.0);
+                            n->boneYaw = CurveAngle(bbEntityYaw(bone),n->boneYaw,10.f);
                             yawvalue = n->boneYaw;
                         } break;
                         case 2: {
-                            n->boneYaw = CurveAngle(bbEntityRoll(bone),n->boneYaw,10.0);
+                            n->boneYaw = CurveAngle(bbEntityRoll(bone),n->boneYaw,10.f);
                             rollvalue = n->boneYaw;
                         } break;
                     }
@@ -870,7 +870,7 @@ void ManipulateNPCBones() {
                     //<--- looking at player #2
                 } break;
                 case 1: {
-                    n->bonePitch = CurveAngle(bbDeltaPitch(bone2,mainPlayer->cam),n->bonePitch,10.0);
+                    n->bonePitch = CurveAngle(bbDeltaPitch(bone2,mainPlayer->cam),n->bonePitch,10.f);
                     switch ((int)TransformNPCManipulationData(n->npcNameInSection,n->boneToManipulate,"pitch")) {
                         case 0: {
                             pitchvalue = n->bonePitch;
@@ -898,15 +898,15 @@ void ManipulateNPCBones() {
                     bbPointEntity(bone,Curr096->obj);
                     switch ((int)TransformNPCManipulationData(n->npcNameInSection,n->boneToManipulate,"yaw")) {
                         case 0: {
-                            n->boneYaw = CurveAngle(bbEntityPitch(bone),n->boneYaw,10.0);
+                            n->boneYaw = CurveAngle(bbEntityPitch(bone),n->boneYaw,10.f);
                             pitchvalue = -n->boneYaw;
                         }
                         case 1: {
-                            n->boneYaw = CurveAngle(bbEntityYaw(bone),n->boneYaw,10.0);
+                            n->boneYaw = CurveAngle(bbEntityYaw(bone),n->boneYaw,10.f);
                             yawvalue = -n->boneYaw;
                         }
                         case 2: {
-                            n->boneYaw = CurveAngle(bbEntityRoll(bone),n->boneYaw,10.0);
+                            n->boneYaw = CurveAngle(bbEntityRoll(bone),n->boneYaw,10.f);
                             rollvalue = -n->boneYaw;
                         }
                     }
@@ -924,7 +924,7 @@ void ManipulateNPCBones() {
                 } break;
                 case 3: {
                     bbPointEntity(pvt,mainPlayer->cam);
-                    n->boneYaw = CurveAngle(bbEntityPitch(pvt),n->boneYaw,10.0);
+                    n->boneYaw = CurveAngle(bbEntityPitch(pvt),n->boneYaw,10.f);
                     switch ((int)TransformNPCManipulationData(n->npcNameInSection,n->boneToManipulate,"yaw")) {
                         case 0: {
                             pitchvalue = n->boneYaw;
@@ -1044,7 +1044,7 @@ int PlayerInReachableRoom() {
         return false;
     }
     //Player is at GateB and is at the surface, returning false
-    if (RN.equals("exit1") & bbEntityY(mainPlayer->collider)>1040.0*RoomScale) {
+    if (RN.equals("exit1") & bbEntityY(mainPlayer->collider)>1040.f*RoomScale) {
         return false;
     }
     //Player is in 860's test room and inside the forest, returning false
@@ -1052,7 +1052,7 @@ int PlayerInReachableRoom() {
     for (int iterator118 = 0; iterator118 < Event::getListSize(); iterator118++) {
         Event* e = Event::getObject(iterator118);
 
-        if (e->name.equals("room860") & e->eventState == 1.0) {
+        if (e->name.equals("room860") & e->eventState == 1.f) {
             temp = true;
             break;
         }
@@ -1070,13 +1070,13 @@ int CheckForNPCInFacility(NPC* n) {
     //True (=1): NPC is in facility
     //2: NPC is in tunnels (maintenance tunnels/049 tunnels/939 storage room, etc...)
 
-    if (bbEntityY(n->collider)>100.0) {
+    if (bbEntityY(n->collider)>100.f) {
         return false;
     }
-    if (bbEntityY(n->collider)< -10.0) {
+    if (bbEntityY(n->collider)< -10.f) {
         return 2;
     }
-    if (bbEntityY(n->collider)> 7.0 & bbEntityY(n->collider)<=100.0) {
+    if (bbEntityY(n->collider)> 7.f & bbEntityY(n->collider)<=100.f) {
         return 2;
     }
 
@@ -1091,13 +1091,13 @@ void FindNextElevator(NPC* n) {
         eo = ElevatorObj::getObject(iterator119);
 
         if (eo->inFacility == n->inFacility) {
-            if (abs(bbEntityY(eo->obj,true)-bbEntityY(n->collider))<10.0) {
+            if (abs(bbEntityY(eo->obj,true)-bbEntityY(n->collider))<10.f) {
                 for (int iterator120 = 0; iterator120 < ElevatorObj::getListSize(); iterator120++) {
                     eo2 = ElevatorObj::getObject(iterator120);
 
                     if (eo2 != eo) {
                         if (eo2->inFacility == n->inFacility) {
-                            if (abs(bbEntityY(eo2->obj,true)-bbEntityY(n->collider))<10.0) {
+                            if (abs(bbEntityY(eo2->obj,true)-bbEntityY(n->collider))<10.f) {
                                 if (bbEntityDistance(eo2->obj,n->collider)<bbEntityDistance(eo->obj,n->collider)) {
                                     n->pathStatus = FindPath(n, bbEntityX(eo2->obj,true),bbEntityY(eo2->obj,true),bbEntityZ(eo2->obj,true));
                                     n->currElevator = eo2;
@@ -1130,12 +1130,12 @@ void GoToElevator(NPC* n) {
 
     if (n->pathStatus != 1) {
         bbPointEntity(n->obj,n->currElevator->obj);
-        bbRotateEntity(n->collider,0,CurveAngle(bbEntityYaw(n->obj),bbEntityYaw(n->collider),20.0),0);
+        bbRotateEntity(n->collider,0,CurveAngle(bbEntityYaw(n->obj),bbEntityYaw(n->collider),20.f),0);
 
         inside = false;
-        if (abs(bbEntityX(n->collider)-bbEntityX(n->currElevator->obj,true))<280.0*RoomScale) {
-            if (abs(bbEntityZ(n->collider)-bbEntityZ(n->currElevator->obj,true))<280.0*RoomScale) {
-                if (abs(bbEntityY(n->collider)-bbEntityY(n->currElevator->obj,true))<280.0*RoomScale) {
+        if (abs(bbEntityX(n->collider)-bbEntityX(n->currElevator->obj,true))<280.f*RoomScale) {
+            if (abs(bbEntityZ(n->collider)-bbEntityZ(n->currElevator->obj,true))<280.f*RoomScale) {
+                if (abs(bbEntityY(n->collider)-bbEntityY(n->currElevator->obj,true))<280.f*RoomScale) {
                     inside = true;
                 }
             }
@@ -1149,7 +1149,7 @@ void GoToElevator(NPC* n) {
             }
         } else {
             if (dist < 0.7) {
-                n->currSpeed = 0.0;
+                n->currSpeed = 0.f;
                 if (n->currElevator->door->npcCalledElevator==false) {
                     n->currElevator->door->npcCalledElevator = true;
                     std::cout << String(n->npcType)+" called elevator";
@@ -1178,19 +1178,19 @@ void RotateToDirection(NPC* n) {
     int turnToSide;
 
     bbHideEntity(n->collider);
-    bbEntityPick(n->collider, 1.0);
+    bbEntityPick(n->collider, 1.f);
     if (bbPickedEntity() != 0) {
         turnToSide = 0;
         bbTurnEntity(n->collider,0,90,0);
-        bbEntityPick(n->collider,1.0);
+        bbEntityPick(n->collider,1.f);
         if (bbPickedEntity()==0) {
             turnToSide = 1;
         }
         bbTurnEntity(n->collider,0,270,0);
         if (turnToSide == 1) {
-            bbTurnEntity(n->collider,0.0,45,0.0,true);
+            bbTurnEntity(n->collider,0.f,45,0.f,true);
         } else {
-            bbTurnEntity(n->collider,0.0,-45,0.0,true);
+            bbTurnEntity(n->collider,0.f,-45,0.f,true);
         }
     }
     bbShowEntity(n->collider);
@@ -1201,7 +1201,7 @@ void AnimateNPC(NPC* n, float start, float quit, float speed, int loop) {
     float newTime;
     float temp;
 
-    if (speed > 0.0) {
+    if (speed > 0.f) {
         newTime = Max(Min(n->frame + speed * timing->tickDuration, quit), start);
 
         if (loop & newTime >= quit) {

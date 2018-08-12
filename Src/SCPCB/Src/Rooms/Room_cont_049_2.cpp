@@ -38,27 +38,27 @@ void FillRoom_cont_049_2(Room* r) {
     int t1;
 
     r->objects[0] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[0], r->x + 640.0 * RoomScale, 240.0 * RoomScale, r->z + 656.0 * RoomScale, true);
+    bbPositionEntity(r->objects[0], r->x + 640.f * RoomScale, 240.f * RoomScale, r->z + 656.f * RoomScale, true);
 
     r->objects[1] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[1], r->x - 2032.0 * RoomScale, -3280.0 * RoomScale, r->z - 656.0 * RoomScale, true);
+    bbPositionEntity(r->objects[1], r->x - 2032.f * RoomScale, -3280.f * RoomScale, r->z - 656.f * RoomScale, true);
 
     r->objects[2] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[2], r->x - 640.0 * RoomScale, 240.0 * RoomScale, r->z - 656.0 * RoomScale, true);
+    bbPositionEntity(r->objects[2], r->x - 640.f * RoomScale, 240.f * RoomScale, r->z - 656.f * RoomScale, true);
 
     r->objects[3] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[3], r->x + 2040.0 * RoomScale, -3280.0 * RoomScale, r->z + 656.0 * RoomScale, true);
+    bbPositionEntity(r->objects[3], r->x + 2040.f * RoomScale, -3280.f * RoomScale, r->z + 656.f * RoomScale, true);
 
     //storage room (the spawn point of scp-049)
     //r\objects[5] = CreatePivot(r\obj)
-    //PositionEntity(r\objects[5], r\x + 584.0 * RoomScale, -3440.0 * RoomScale, r\z + 104.0 * RoomScale, True)
+    //PositionEntity(r\objects[5], r\x + 584.f * RoomScale, -3440.f * RoomScale, r\z + 104.f * RoomScale, True)
 
     //zombie 1 and 049
     r->objects[4] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[4], r->x + 528.0 * RoomScale, -3440.0 * RoomScale, r->z + 96.0 * RoomScale, true);
+    bbPositionEntity(r->objects[4], r->x + 528.f * RoomScale, -3440.f * RoomScale, r->z + 96.f * RoomScale, true);
     //zombie 2
     r->objects[5] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[5], r->x  + 64.0 * RoomScale, -3440.0 * RoomScale, r->z - 1000.0 * RoomScale, true);
+    bbPositionEntity(r->objects[5], r->x  + 64.f * RoomScale, -3440.f * RoomScale, r->z - 1000.f * RoomScale, true);
 
     int n;
     for (n = 0; n <= 1; n++) {
@@ -69,14 +69,14 @@ void FillRoom_cont_049_2(Room* r) {
 
         switch (n) {
             case 0: {
-                bbPositionEntity(r->levers[n]->obj, r->x - 328.0 * RoomScale, r->y - 3374.0 * RoomScale, r->z + 916 * RoomScale, true);
-                bbPositionEntity(r->levers[n]->baseObj, r->x - 328.0 * RoomScale, r->y - 3374.0 * RoomScale, r->z + 916 * RoomScale, true);
+                bbPositionEntity(r->levers[n]->obj, r->x - 328.f * RoomScale, r->y - 3374.f * RoomScale, r->z + 916 * RoomScale, true);
+                bbPositionEntity(r->levers[n]->baseObj, r->x - 328.f * RoomScale, r->y - 3374.f * RoomScale, r->z + 916 * RoomScale, true);
 
                 //generator
             } break;
             case 1: {
-                bbPositionEntity(r->levers[n]->obj, r->x - 370.0 * RoomScale, r->y - 3400.0 * RoomScale, r->z - 799 * RoomScale, true);
-                bbPositionEntity(r->levers[n]->baseObj, r->x - 370.0 * RoomScale, r->y - 3400.0 * RoomScale, r->z - 799 * RoomScale, true);
+                bbPositionEntity(r->levers[n]->obj, r->x - 370.f * RoomScale, r->y - 3400.f * RoomScale, r->z - 799 * RoomScale, true);
+                bbPositionEntity(r->levers[n]->baseObj, r->x - 370.f * RoomScale, r->y - 3400.f * RoomScale, r->z - 799 * RoomScale, true);
             } break;
         }
 
@@ -91,29 +91,29 @@ void FillRoom_cont_049_2(Room* r) {
     }
 
 
-    r->doors[0] = CreateDoor(r->x + 328.0 * RoomScale, 0.0, r->z + 656.0 * RoomScale, 90, r, true);
+    r->doors[0] = CreateDoor(r->x + 328.f * RoomScale, 0.f, r->z + 656.f * RoomScale, 90, r, true);
     r->doors[0]->autoClose = false;
     r->doors[0]->open = true;
-    bbPositionEntity(r->doors[0]->buttons[1], r->x + 288.0 * RoomScale, 0.7, r->z + 512.0 * RoomScale, true);
-    bbPositionEntity(r->doors[0]->buttons[0], r->x + 368.0 * RoomScale, 0.7, r->z + 840.0 * RoomScale, true);
+    bbPositionEntity(r->doors[0]->buttons[1], r->x + 288.f * RoomScale, 0.7, r->z + 512.f * RoomScale, true);
+    bbPositionEntity(r->doors[0]->buttons[0], r->x + 368.f * RoomScale, 0.7, r->z + 840.f * RoomScale, true);
 
-    r->doors[1] = CreateDoor(r->x - 2328.0 * RoomScale, -3520.0 * RoomScale, r->z - 656.0 * RoomScale, 90, r, false);
+    r->doors[1] = CreateDoor(r->x - 2328.f * RoomScale, -3520.f * RoomScale, r->z - 656.f * RoomScale, 90, r, false);
     r->doors[1]->autoClose = false;
     r->doors[1]->open = false;
-    bbPositionEntity(r->doors[1]->buttons[1], r->x - 2432.0 * RoomScale, bbEntityY(r->doors[1]->buttons[1],true), r->z - 816.0 * RoomScale, true);
-    bbPositionEntity(r->doors[1]->buttons[0], r->x - 2304.0 * RoomScale, bbEntityY(r->doors[1]->buttons[0],true), r->z - 472.0 * RoomScale, true);
+    bbPositionEntity(r->doors[1]->buttons[1], r->x - 2432.f * RoomScale, bbEntityY(r->doors[1]->buttons[1],true), r->z - 816.f * RoomScale, true);
+    bbPositionEntity(r->doors[1]->buttons[0], r->x - 2304.f * RoomScale, bbEntityY(r->doors[1]->buttons[0],true), r->z - 472.f * RoomScale, true);
 
-    r->doors[2] = CreateDoor(r->x - 328.0 * RoomScale, 0.0, r->z - 656.0 * RoomScale, 90, r, true);
+    r->doors[2] = CreateDoor(r->x - 328.f * RoomScale, 0.f, r->z - 656.f * RoomScale, 90, r, true);
     r->doors[2]->autoClose = false;
     r->doors[2]->open = true;
-    bbPositionEntity(r->doors[2]->buttons[0], r->x - 288.0 * RoomScale, 0.7, r->z - 512.0 * RoomScale, true);
-    bbPositionEntity(r->doors[2]->buttons[1], r->x - 368.0 * RoomScale, 0.7, r->z - 840.0 * RoomScale, true);
+    bbPositionEntity(r->doors[2]->buttons[0], r->x - 288.f * RoomScale, 0.7, r->z - 512.f * RoomScale, true);
+    bbPositionEntity(r->doors[2]->buttons[1], r->x - 368.f * RoomScale, 0.7, r->z - 840.f * RoomScale, true);
 
-    r->doors[3] = CreateDoor(r->x + 2360.0 * RoomScale, -3520.0 * RoomScale, r->z + 656.0 * RoomScale, 90, r, false);
+    r->doors[3] = CreateDoor(r->x + 2360.f * RoomScale, -3520.f * RoomScale, r->z + 656.f * RoomScale, 90, r, false);
     r->doors[3]->autoClose = false;
     r->doors[3]->open = false;
-    bbPositionEntity(r->doors[3]->buttons[0], r->x + 2432.0 * RoomScale, bbEntityY(r->doors[3]->buttons[0],true), r->z + 816.0 * RoomScale, true);
-    bbPositionEntity(r->doors[3]->buttons[1], r->x + 2312.0 * RoomScale, bbEntityY(r->doors[3]->buttons[1],true), r->z + 472.0 * RoomScale, true);
+    bbPositionEntity(r->doors[3]->buttons[0], r->x + 2432.f * RoomScale, bbEntityY(r->doors[3]->buttons[0],true), r->z + 816.f * RoomScale, true);
+    bbPositionEntity(r->doors[3]->buttons[1], r->x + 2312.f * RoomScale, bbEntityY(r->doors[3]->buttons[1],true), r->z + 472.f * RoomScale, true);
 
     for (i = 0; i <= 3; i++) {
         if ((i % 2) == 1) {
@@ -124,23 +124,23 @@ void FillRoom_cont_049_2(Room* r) {
     }
 
     //storage room door
-    r->doors[4] = CreateDoor(r->x + 272.0 * RoomScale, -3552.0 * RoomScale, r->z + 104.0 * RoomScale, 90, r, false);
+    r->doors[4] = CreateDoor(r->x + 272.f * RoomScale, -3552.f * RoomScale, r->z + 104.f * RoomScale, 90, r, false);
     r->doors[4]->autoClose = false;
     r->doors[4]->open = false;
     r->doors[4]->locked = true;
 
     d = CreateDoor(r->x,0,r->z, 0, r, false, DOOR_TYPE_HCZ, r->roomTemplate->name);
 
-    it = CreatePaper("doc049", r->x - 608.0 * RoomScale, r->y - 3332.0 * RoomScale, r->z + 876.0 * RoomScale);
+    it = CreatePaper("doc049", r->x - 608.f * RoomScale, r->y - 3332.f * RoomScale, r->z + 876.f * RoomScale);
     bbEntityParent(it->collider, r->obj);
 
-    it = CreateItem("firstaid", r->x +385.0 * RoomScale, r->y - 3412.0 * RoomScale, r->z + 271.0 * RoomScale);
+    it = CreateItem("firstaid", r->x +385.f * RoomScale, r->y - 3412.f * RoomScale, r->z + 271.f * RoomScale);
     bbEntityParent(it->collider, r->obj);
 
     //r\objects[10] = LoadMesh("GFX/Map/room049_hb.b3d",r\obj)
     //EntityPickMode(r\objects[10],2)
     //EntityType(r\objects[10],HIT_MAP)
-    //EntityAlpha(r\objects[10],0.0)
+    //EntityAlpha(r\objects[10],0.f)
 }
 
 void UpdateEvent_cont_049_2(Event* e) {
@@ -236,20 +236,20 @@ void UpdateEvent_cont_049_2(Event* e) {
                         if (e->sounds[1]==0) {
                             LoadEventSound(e,"SFX/General/GeneratorOn.ogg",1);
                         }
-                        e->soundChannels[1] = LoopRangedSound(e->sounds[1], e->soundChannels[1], mainPlayer->cam, e->room->levers[1]->baseObj, 6.0, e->eventState3);
+                        e->soundChannels[1] = LoopRangedSound(e->sounds[1], e->soundChannels[1], mainPlayer->cam, e->room->levers[1]->baseObj, 6.f, e->eventState3);
 
                         if (e->room->npc[0]->idle > 0) {
                             i = 0;
-                            if (bbEntityDistance(mainPlayer->collider,e->room->doors[1]->frameobj)<3.0) {
+                            if (bbEntityDistance(mainPlayer->collider,e->room->doors[1]->frameobj)<3.f) {
                                 i = 1;
-                            } else if ((bbEntityDistance(mainPlayer->collider,e->room->doors[3]->frameobj)<3.0)) {
+                            } else if ((bbEntityDistance(mainPlayer->collider,e->room->doors[3]->frameobj)<3.f)) {
                                 i = 3;
                             }
                             if (i > 0) {
                                 //If EntityVisible(mainPlayer\collider,e\room\doors[i]\frameobj)
                                 bbPositionEntity(e->room->npc[0]->collider,bbEntityX(e->room->objects[i],true),bbEntityY(e->room->objects[i],true),bbEntityZ(e->room->objects[i],true));
                                 bbResetEntity(e->room->npc[0]->collider);
-                                PlayRangedSound_SM(sndManager->elevatorBeep, mainPlayer->cam, e->room->objects[i], 4.0);
+                                PlayRangedSound_SM(sndManager->elevatorBeep, mainPlayer->cam, e->room->objects[i], 4.f);
                                 UseDoor(e->room->doors[i],false);
                                 e->room->doors[i-1]->open = false;
                                 e->room->doors[i]->open = true;
@@ -277,7 +277,7 @@ void UpdateEvent_cont_049_2(Event* e) {
 
                         e->room->doors[4]->open = true;
                         PlaySound_SM(sndManager->teslaPowerUp);
-                        PlayRangedSound_SM(sndManager->openDoor[bbRand(0,2)], mainPlayer->cam, e->room->doors[4]->obj, 6.0);
+                        PlayRangedSound_SM(sndManager->openDoor[bbRand(0,2)], mainPlayer->cam, e->room->doors[4]->obj, 6.f);
 
                         e->room->doors[1]->open = false;
                         e->room->doors[3]->open = false;
@@ -294,7 +294,7 @@ void UpdateEvent_cont_049_2(Event* e) {
                     //break;
                     //	Next
                     //Else
-                    //If (EntityDistance(e\room\npc[0]\collider,mainPlayer\collider)<4.0) Then
+                    //If (EntityDistance(e\room\npc[0]\collider,mainPlayer\collider)<4.f) Then
                     //	e\eventState=e\eventState+timing\tickDuration
                     //	If (e\eventState > 70*195 And e\eventState-timing\tickDuration =< 70*195) Then
                     //		For n.NPC = Each NPC ;awake the zombies
@@ -404,7 +404,7 @@ void UpdateEvent_cont_049_2(Event* e) {
         } else {
             mainPlayer->blurTimer = 800;
             mainPlayer->forceMove = 0.5;
-            mainPlayer->injuries = Max(2.0,mainPlayer->injuries);
+            mainPlayer->injuries = Max(2.f,mainPlayer->injuries);
             mainPlayer->bloodloss = 0;
 
             //Msg = ""
@@ -420,7 +420,7 @@ void UpdateEvent_cont_049_2(Event* e) {
                 if (e->room->npc[2]->state3 > -(70*4)) {
                     e->room->npc[2]->state3 = e->room->npc[2]->state3 - timing->tickDuration;
                 } else {
-                    e->room->npc[2]->state3 = 0.0;
+                    e->room->npc[2]->state3 = 0.f;
                     e->room->npc[2]->reload = 45;
                     e->room->npc[2]->state = 7;
                 }

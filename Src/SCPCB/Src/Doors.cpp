@@ -74,7 +74,7 @@ Door* CreateDoor(float x, float y, float z, float angle, Room* room, int open, i
             d->frameobj = bbCopyMeshModelEntity(doorColl->getMesh());
             bbScaleEntity(d->frameobj, RoomScale, RoomScale, RoomScale);
             bbEntityType(d->frameobj, HIT_MAP);
-            bbEntityAlpha(d->frameobj, 0.0);
+            bbEntityAlpha(d->frameobj, 0.f);
         } break;
         case DOOR_TYPE_HCZ: {
             d->obj = bbCopyMeshModelEntity(hczDoorObj[0]->getMesh());
@@ -86,12 +86,12 @@ Door* CreateDoor(float x, float y, float z, float angle, Room* room, int open, i
         } break;
         default: {
             d->obj = bbCopyMeshModelEntity(doorObj->getMesh());
-            bbScaleEntity(d->obj, (204.0 * RoomScale) / bbMeshWidth(d->obj), 312.0 * RoomScale / bbMeshHeight(d->obj), 16.0 * RoomScale / bbMeshDepth(d->obj));
+            bbScaleEntity(d->obj, (204.f * RoomScale) / bbMeshWidth(d->obj), 312.f * RoomScale / bbMeshHeight(d->obj), 16.f * RoomScale / bbMeshDepth(d->obj));
 
             d->frameobj = bbCopyMeshModelEntity(doorFrameObj->getMesh());
             d->obj2 = bbCopyMeshModelEntity(doorObj->getMesh());
 
-            bbScaleEntity(d->obj2, (204.0 * RoomScale) / bbMeshWidth(d->obj), 312.0 * RoomScale / bbMeshHeight(d->obj), 16.0 * RoomScale / bbMeshDepth(d->obj));
+            bbScaleEntity(d->obj2, (204.f * RoomScale) / bbMeshWidth(d->obj), 312.f * RoomScale / bbMeshHeight(d->obj), 16.f * RoomScale / bbMeshDepth(d->obj));
             //entityType d\obj2, HIT_MAP
         } break;
     }
@@ -125,8 +125,8 @@ Door* CreateDoor(float x, float y, float z, float angle, Room* room, int open, i
     }
 
     if (d->typ == DOOR_TYPE_CONT) {
-        bbPositionEntity(d->buttons[0], x - 432.0 * RoomScale, y + 0.7, z + 192.0 * RoomScale);
-        bbPositionEntity(d->buttons[1], x + 432.0 * RoomScale, y + 0.7, z - 192.0 * RoomScale);
+        bbPositionEntity(d->buttons[0], x - 432.f * RoomScale, y + 0.7, z + 192.f * RoomScale);
+        bbPositionEntity(d->buttons[1], x + 432.f * RoomScale, y + 0.7, z - 192.f * RoomScale);
         bbRotateEntity(d->buttons[0], 0, 90, 0);
         bbRotateEntity(d->buttons[1], 0, 270, 0);
     } else {
@@ -253,8 +253,8 @@ void UpdateDoors() {
             if ((d->openstate >= 180 | d->openstate <= 0) & mainPlayer->grabbedEntity == 0) {
                 for (int j = 0; j < 2; j++) {
                     if (d->buttons[j] != 0) {
-                        if (abs(bbEntityX(mainPlayer->collider)-bbEntityX(d->buttons[j],true)) < 1.0) {
-                            if (abs(bbEntityZ(mainPlayer->collider)-bbEntityZ(d->buttons[j],true)) < 1.0) {
+                        if (abs(bbEntityX(mainPlayer->collider)-bbEntityX(d->buttons[j],true)) < 1.f) {
+                            if (abs(bbEntityZ(mainPlayer->collider)-bbEntityZ(d->buttons[j],true)) < 1.f) {
                                 //entityDistance(collider, d\buttons[i])
                                 float dist = Distance(bbEntityX(mainPlayer->collider, true), bbEntityZ(mainPlayer->collider, true), bbEntityX(d->buttons[j], true), bbEntityZ(d->buttons[j], true));
                                 if (dist < 0.7) {
@@ -288,23 +288,23 @@ void UpdateDoors() {
                     switch (d->typ) {
                         case DOOR_TYPE_CONT: {
                             d->openstate = Min(180, d->openstate + timing->tickDuration * 0.8);
-                            bbMoveEntity(d->obj, bbSin(d->openstate) * timing->tickDuration / 180.0, 0, 0);
+                            bbMoveEntity(d->obj, bbSin(d->openstate) * timing->tickDuration / 180.f, 0, 0);
                             if (d->obj2 != 0) {
-                                bbMoveEntity(d->obj2, -bbSin(d->openstate) * timing->tickDuration / 180.0, 0, 0);
+                                bbMoveEntity(d->obj2, -bbSin(d->openstate) * timing->tickDuration / 180.f, 0, 0);
                             }
                         } break;
                         case DOOR_TYPE_HCZ: {
                             d->openstate = Min(180, d->openstate + timing->tickDuration * 2 * (d->fastopen+1));
-                            bbMoveEntity(d->obj, bbSin(d->openstate) * (d->fastopen+1) * timing->tickDuration / 85.0, 0, 0);
+                            bbMoveEntity(d->obj, bbSin(d->openstate) * (d->fastopen+1) * timing->tickDuration / 85.f, 0, 0);
                             if (d->obj2 != 0) {
-                                bbMoveEntity(d->obj2, bbSin(d->openstate) * (d->fastopen*2+1) * timing->tickDuration / 120.0, 0, 0);
+                                bbMoveEntity(d->obj2, bbSin(d->openstate) * (d->fastopen*2+1) * timing->tickDuration / 120.f, 0, 0);
                             }
                         } break;
                         default: {
                             d->openstate = Min(180, d->openstate + timing->tickDuration * 2 * (d->fastopen+1));
-                            bbMoveEntity(d->obj, bbSin(d->openstate) * (d->fastopen*2+1) * timing->tickDuration / 80.0, 0, 0);
+                            bbMoveEntity(d->obj, bbSin(d->openstate) * (d->fastopen*2+1) * timing->tickDuration / 80.f, 0, 0);
                             if (d->obj2 != 0) {
-                                bbMoveEntity(d->obj2, bbSin(d->openstate) * (d->fastopen+1) * timing->tickDuration / 80.0, 0, 0);
+                                bbMoveEntity(d->obj2, bbSin(d->openstate) * (d->fastopen+1) * timing->tickDuration / 80.f, 0, 0);
                             }
                         } break;
                     }
@@ -359,14 +359,14 @@ void UpdateDoors() {
                     switch (d->typ) {
                         case DOOR_TYPE_CONT: {
                             d->openstate = Max(0, d->openstate - timing->tickDuration*0.8);
-                            bbMoveEntity(d->obj, bbSin(d->openstate) * -timing->tickDuration / 180.0, 0, 0);
+                            bbMoveEntity(d->obj, bbSin(d->openstate) * -timing->tickDuration / 180.f, 0, 0);
                             if (d->obj2 != 0) {
-                                bbMoveEntity(d->obj2, bbSin(d->openstate) * timing->tickDuration / 180.0, 0, 0);
+                                bbMoveEntity(d->obj2, bbSin(d->openstate) * timing->tickDuration / 180.f, 0, 0);
                             }
                             if (d->openstate < 15 && d->openstate+timing->tickDuration >= 15) {
                                 for (int j = 0; j < bbRand(75,99); j++) {
                                     Pivot* tempPvt = bbCreatePivot();
-                                    bbPositionEntity(tempPvt, bbEntityX(d->frameobj,true)+bbRnd(-0.2,0.2), bbEntityY(d->frameobj,true)+bbRnd(0.0,1.2), bbEntityZ(d->frameobj,true)+bbRnd(-0.2,0.2));
+                                    bbPositionEntity(tempPvt, bbEntityX(d->frameobj,true)+bbRnd(-0.2,0.2), bbEntityY(d->frameobj,true)+bbRnd(0.f,1.2), bbEntityZ(d->frameobj,true)+bbRnd(-0.2,0.2));
                                     bbRotateEntity(tempPvt, 0, bbRnd(360), 0);
 
                                     Particle* p = CreateParticle(bbEntityX(tempPvt), bbEntityY(tempPvt), bbEntityZ(tempPvt), PARTICLE_DUST, 0.002, 0, 300);
@@ -387,16 +387,16 @@ void UpdateDoors() {
                         } break;
                         case DOOR_TYPE_HCZ: {
                             d->openstate = Max(0, d->openstate - timing->tickDuration * 2 * (d->fastopen+1));
-                            bbMoveEntity(d->obj, bbSin(d->openstate) * -timing->tickDuration * (d->fastopen+1) / 85.0, 0, 0);
+                            bbMoveEntity(d->obj, bbSin(d->openstate) * -timing->tickDuration * (d->fastopen+1) / 85.f, 0, 0);
                             if (d->obj2 != 0) {
-                                bbMoveEntity(d->obj2, bbSin(d->openstate) * (d->fastopen+1) * -timing->tickDuration / 120.0, 0, 0);
+                                bbMoveEntity(d->obj2, bbSin(d->openstate) * (d->fastopen+1) * -timing->tickDuration / 120.f, 0, 0);
                             }
                         } break;
                         default: {
                             d->openstate = Max(0, d->openstate - timing->tickDuration * 2 * (d->fastopen+1));
-                            bbMoveEntity(d->obj, bbSin(d->openstate) * -timing->tickDuration * (d->fastopen+1) / 80.0, 0, 0);
+                            bbMoveEntity(d->obj, bbSin(d->openstate) * -timing->tickDuration * (d->fastopen+1) / 80.f, 0, 0);
                             if (d->obj2 != 0) {
-                                bbMoveEntity(d->obj2, bbSin(d->openstate) * (d->fastopen+1) * -timing->tickDuration / 80.0, 0, 0);
+                                bbMoveEntity(d->obj2, bbSin(d->openstate) * (d->fastopen+1) * -timing->tickDuration / 80.f, 0, 0);
                             }
                         } break;
                     }
@@ -424,8 +424,8 @@ void UpdateDoors() {
                         bbPositionEntity(d->obj2, bbEntityX(d->frameobj, true), bbEntityY(d->frameobj, true), bbEntityZ(d->frameobj, true));
                     }
                     if (d->obj2 != 0 & d->typ == DOOR_TYPE_DEF) {
-                        bbMoveEntity(d->obj, 0, 0, 8.0 * RoomScale);
-                        bbMoveEntity(d->obj2, 0, 0, 8.0 * RoomScale);
+                        bbMoveEntity(d->obj, 0, 0, 8.f * RoomScale);
+                        bbMoveEntity(d->obj2, 0, 0, 8.f * RoomScale);
                     }
                 }
             }

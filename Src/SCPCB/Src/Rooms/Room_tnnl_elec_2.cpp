@@ -38,10 +38,10 @@ void FillRoom_tnnl_elec_2(Room* r) {
     int t1;
 
     r->objects[0] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[0], r->x, 544.0 * RoomScale, r->z + 512.0 * RoomScale, true);
+    bbPositionEntity(r->objects[0], r->x, 544.f * RoomScale, r->z + 512.f * RoomScale, true);
 
     r->objects[1] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[1], r->x, 544.0 * RoomScale, r->z - 512.0 * RoomScale, true);
+    bbPositionEntity(r->objects[1], r->x, 544.f * RoomScale, r->z - 512.f * RoomScale, true);
 }
 
 void UpdateEventTunnel2smoke(Event* e) {
@@ -135,14 +135,14 @@ void UpdateEvent_tnnl_elec_2(Event* e) {
                 if (Distance(bbEntityX(mainPlayer->collider), bbEntityZ(mainPlayer->collider), bbEntityX(e->room->obj), bbEntityZ(e->room->obj)) < 3.5) {
                     PlaySound_SM(sndManager->lightSwitch);
 
-                    //LightBlink = Rnd(0.0,1.0)*(e\eventState/200)
+                    //LightBlink = Rnd(0.f,1.f)*(e\eventState/200)
                     e->eventState = 1;
                 }
             } else if ((e->eventState < 200)) {
 
                 mainPlayer->blinkTimer = -10;
                 if (e->eventState > 30) {
-                    //LightBlink = 1.0
+                    //LightBlink = 1.f
                     if (e->eventState-timing->tickDuration <= 30) {
                         PlaySound2(LoadTempSound("SFX/ambient/general/ambient3.ogg"));
                     }
@@ -153,7 +153,7 @@ void UpdateEvent_tnnl_elec_2(Event* e) {
                     bbResetEntity(Curr173->collider);
                     Curr173->idle = true;
                 }
-                //LightBlink = 1.0
+                //LightBlink = 1.f
                 e->eventState = e->eventState + timing->tickDuration;
             } else {
                 mainPlayer->blinkTimer = mainPlayer->blinkFreq;

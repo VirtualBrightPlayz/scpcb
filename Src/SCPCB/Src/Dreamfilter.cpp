@@ -38,7 +38,7 @@ void CreateBlurImage() {
     bbAddTriangle(sf, 0, 1, 2);
     bbAddTriangle(sf, 3, 2, 1);
     bbEntityFX(spr, 17);
-    bbScaleEntity(spr, 2048.0 / (float)(ark_sw), 2048.0 / (float)(ark_sw), 1);
+    bbScaleEntity(spr, 2048.f / (float)(ark_sw), 2048.f / (float)(ark_sw), 1);
     bbPositionEntity(spr, 0, 0, 1.0001);
     bbEntityOrder(spr, -100000);
     bbEntityBlend(spr, 1);
@@ -54,7 +54,7 @@ void UpdateBlur(float power) {
     bbEntityAlpha(ark_blur_image, power);
 
     //CopyRect(ark_sw / 2 - 1024, ark_sh / 2 - 1024, 2048, 2048, 0, 0, BackBuffer(), TextureBuffer(ark_blur_texture))
-    bbCopyRect(0, 0, userOptions->screenWidth, userOptions->screenHeight, (int)(1024.0 - userOptions->screenWidth / 2), (int)(1024.0 - userOptions->screenHeight / 2), bbBackBuffer(), bbTextureBuffer(ark_blur_texture));
+    bbCopyRect(0, 0, userOptions->screenWidth, userOptions->screenHeight, (int)(1024.f - userOptions->screenWidth / 2), (int)(1024.f - userOptions->screenHeight / 2), bbBackBuffer(), bbTextureBuffer(ark_blur_texture));
 
 }
 

@@ -37,22 +37,22 @@ void FillRoom_cont_1123_2(Room* r) {
     //, Bump
     int t1;
 
-    it = CreatePaper("doc1123", r->x + 511.0 * RoomScale, r->y + 125.0 * RoomScale, r->z - 936.0 * RoomScale);
+    it = CreatePaper("doc1123", r->x + 511.f * RoomScale, r->y + 125.f * RoomScale, r->z - 936.f * RoomScale);
     bbEntityParent(it->collider, r->obj);
 
-    it = CreateItem("gasmask", r->x + 457.0 * RoomScale, r->y + 150.0 * RoomScale, r->z + 960.0 * RoomScale);
+    it = CreateItem("gasmask", r->x + 457.f * RoomScale, r->y + 150.f * RoomScale, r->z + 960.f * RoomScale);
     bbEntityParent(it->collider, r->obj);
 
-    d = CreateDoor(r->x + 832.0 * RoomScale, 0.0, r->z + 367.0 * RoomScale, 0, r, false, DOOR_TYPE_DEF, r->roomTemplate->name);
-    bbPositionEntity(d->buttons[0], r->x + 956.0 * RoomScale, bbEntityY(d->buttons[0],true), r->z + 352.0 * RoomScale, true);
-    bbPositionEntity(d->buttons[1], r->x + 713.0 * RoomScale, bbEntityY(d->buttons[1],true), r->z + 384.0 * RoomScale, true);
+    d = CreateDoor(r->x + 832.f * RoomScale, 0.f, r->z + 367.f * RoomScale, 0, r, false, DOOR_TYPE_DEF, r->roomTemplate->name);
+    bbPositionEntity(d->buttons[0], r->x + 956.f * RoomScale, bbEntityY(d->buttons[0],true), r->z + 352.f * RoomScale, true);
+    bbPositionEntity(d->buttons[1], r->x + 713.f * RoomScale, bbEntityY(d->buttons[1],true), r->z + 384.f * RoomScale, true);
     bbFreeEntity(d->obj2);
     d->obj2 = 0;
-    d = CreateDoor(r->x + 280.0 * RoomScale, 0.0, r->z - 607.0 * RoomScale, 90, r, false);
+    d = CreateDoor(r->x + 280.f * RoomScale, 0.f, r->z - 607.f * RoomScale, 90, r, false);
     bbPositionEntity(d->buttons[0], bbEntityX(d->buttons[0],true), bbEntityY(d->buttons[0],true), bbEntityZ(d->buttons[0],true), true);
     bbPositionEntity(d->buttons[1], bbEntityX(d->buttons[1],true), bbEntityY(d->buttons[1],true), bbEntityZ(d->buttons[1],true), true);
 
-    d = CreateDoor(r->x + 280.0 * RoomScale, 512.0 * RoomScale, r->z - 607.0 * RoomScale, 90, r, false);
+    d = CreateDoor(r->x + 280.f * RoomScale, 512.f * RoomScale, r->z - 607.f * RoomScale, 90, r, false);
     bbPositionEntity(d->buttons[0], bbEntityX(d->buttons[0],true), bbEntityY(d->buttons[0],true), bbEntityZ(d->buttons[0],true), true);
     bbFreeEntity(d->buttons[1]);
     d->buttons[1] = 0;
@@ -60,60 +60,60 @@ void FillRoom_cont_1123_2(Room* r) {
     //PositionEntity(d\buttons[1], EntityX(d\buttons[1],True), EntityY(d\buttons[1],True), EntityZ(d\buttons[1],True), True)
 
     r->objects[3] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[3], r->x + 832.0 * RoomScale, r->y + 166.0 * RoomScale, r->z + 784.0 * RoomScale, true);
+    bbPositionEntity(r->objects[3], r->x + 832.f * RoomScale, r->y + 166.f * RoomScale, r->z + 784.f * RoomScale, true);
     r->objects[4] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[4], r->x -648.0 * RoomScale, r->y + 592.0 * RoomScale, r->z + 692.0 * RoomScale, true);
+    bbPositionEntity(r->objects[4], r->x -648.f * RoomScale, r->y + 592.f * RoomScale, r->z + 692.f * RoomScale, true);
     r->objects[5] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[5], r->x + 828.0 * RoomScale, r->y + 592.0 * RoomScale, r->z + 592.0 * RoomScale, true);
+    bbPositionEntity(r->objects[5], r->x + 828.f * RoomScale, r->y + 592.f * RoomScale, r->z + 592.f * RoomScale, true);
 
     r->objects[6] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[6], r->x - 76.0 * RoomScale, r->y + 620.0 * RoomScale, r->z + 744.0 * RoomScale, true);
+    bbPositionEntity(r->objects[6], r->x - 76.f * RoomScale, r->y + 620.f * RoomScale, r->z + 744.f * RoomScale, true);
     r->objects[7] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[7], r->x - 640.0 * RoomScale, r->y + 620.0 * RoomScale, r->z - 864.0 * RoomScale, true);
+    bbPositionEntity(r->objects[7], r->x - 640.f * RoomScale, r->y + 620.f * RoomScale, r->z - 864.f * RoomScale, true);
 
     r->objects[8] = bbLoadMesh("GFX/Map/forest/door_frame.b3d");
-    bbPositionEntity(r->objects[8], r->x - 272.0 * RoomScale, 512.0 * RoomScale, r->z + 288.0 * RoomScale,true);
+    bbPositionEntity(r->objects[8], r->x - 272.f * RoomScale, 512.f * RoomScale, r->z + 288.f * RoomScale,true);
     bbRotateEntity(r->objects[8],0,90,0,true);
-    bbScaleEntity(r->objects[8],45.0*RoomScale,45.0*RoomScale,80.0*RoomScale,true);
+    bbScaleEntity(r->objects[8],45.f*RoomScale,45.f*RoomScale,80.f*RoomScale,true);
     bbEntityParent(r->objects[8],r->obj);
 
     r->objects[9] = bbLoadMesh("GFX/Map/forest/door.b3d");
-    bbPositionEntity(r->objects[9],r->x - 272.0 * RoomScale, 512.0 * RoomScale, r->z + (288.0-70) * RoomScale,true);
+    bbPositionEntity(r->objects[9],r->x - 272.f * RoomScale, 512.f * RoomScale, r->z + (288.f-70) * RoomScale,true);
     bbRotateEntity(r->objects[9],0,10,0,true);
     bbEntityType(r->objects[9], HIT_MAP);
-    bbScaleEntity(r->objects[9],46.0*RoomScale,45.0*RoomScale,46.0*RoomScale,true);
+    bbScaleEntity(r->objects[9],46.f*RoomScale,45.f*RoomScale,46.f*RoomScale,true);
     bbEntityParent(r->objects[9],r->obj);
 
     r->objects[10] = bbCopyMeshModelEntity((MeshModel*)r->objects[8]);
-    bbPositionEntity(r->objects[10], r->x - 272.0 * RoomScale, 512.0 * RoomScale, r->z + 736.0 * RoomScale,true);
+    bbPositionEntity(r->objects[10], r->x - 272.f * RoomScale, 512.f * RoomScale, r->z + 736.f * RoomScale,true);
     bbRotateEntity(r->objects[10],0,90,0,true);
-    bbScaleEntity(r->objects[10],45.0*RoomScale,45.0*RoomScale,80.0*RoomScale,true);
+    bbScaleEntity(r->objects[10],45.f*RoomScale,45.f*RoomScale,80.f*RoomScale,true);
     bbEntityParent(r->objects[10],r->obj);
 
     r->objects[11] = bbCopyMeshModelEntity((MeshModel*)r->objects[9]);
-    bbPositionEntity(r->objects[11],r->x - 272.0 * RoomScale, 512.0 * RoomScale, r->z + (736.0-70) * RoomScale,true);
+    bbPositionEntity(r->objects[11],r->x - 272.f * RoomScale, 512.f * RoomScale, r->z + (736.f-70) * RoomScale,true);
     bbRotateEntity(r->objects[11],0,90,0,true);
     bbEntityType(r->objects[11], HIT_MAP);
-    bbScaleEntity(r->objects[11],46.0*RoomScale,45.0*RoomScale,46.0*RoomScale,true);
+    bbScaleEntity(r->objects[11],46.f*RoomScale,45.f*RoomScale,46.f*RoomScale,true);
     bbEntityParent(r->objects[11],r->obj);
 
     r->objects[12] = bbCopyMeshModelEntity((MeshModel*)r->objects[8]);
-    bbPositionEntity(r->objects[12], r->x - 592.0 * RoomScale, 512.0 * RoomScale, r->z - 704.0 * RoomScale,true);
+    bbPositionEntity(r->objects[12], r->x - 592.f * RoomScale, 512.f * RoomScale, r->z - 704.f * RoomScale,true);
     bbRotateEntity(r->objects[12],0,0,0,true);
-    bbScaleEntity(r->objects[12],45.0*RoomScale,45.0*RoomScale,80.0*RoomScale,true);
+    bbScaleEntity(r->objects[12],45.f*RoomScale,45.f*RoomScale,80.f*RoomScale,true);
     bbEntityParent(r->objects[12],r->obj);
 
     r->objects[13] = bbCopyMeshModelEntity((MeshModel*)r->objects[9]);
-    bbPositionEntity(r->objects[13],r->x - (592.0+70.0) * RoomScale, 512.0 * RoomScale, r->z - 704.0 * RoomScale,true);
+    bbPositionEntity(r->objects[13],r->x - (592.f+70.f) * RoomScale, 512.f * RoomScale, r->z - 704.f * RoomScale,true);
     bbRotateEntity(r->objects[13],0,0,0,true);
     bbEntityType(r->objects[13], HIT_MAP);
-    bbScaleEntity(r->objects[13],46.0*RoomScale,45.0*RoomScale,46.0*RoomScale,true);
+    bbScaleEntity(r->objects[13],46.f*RoomScale,45.f*RoomScale,46.f*RoomScale,true);
     bbEntityParent(r->objects[13],r->obj);
 
     //r\objects[14] = LoadMesh("GFX/Map/1123_hb.b3d",r\obj)
     //EntityPickMode(r\objects[14],2)
     //EntityType(r\objects[14],HIT_MAP)
-    //EntityAlpha(r\objects[14],0.0)
+    //EntityAlpha(r\objects[14],0.f)
 }
 
 void UpdateEvent_cont_1123_2(Event* e) {
@@ -179,9 +179,9 @@ void UpdateEvent_cont_1123_2(Event* e) {
             bbPositionEntity(mainPlayer->collider, bbEntityX(e->room->objects[4],true),bbEntityY(e->room->objects[4],true),bbEntityZ(e->room->objects[4],true),true);
             bbResetEntity(mainPlayer->collider);
             //PlaySound2(HorrorSFX(9))
-            mainPlayer->camShake = 1.0;
+            mainPlayer->camShake = 1.f;
             mainPlayer->blurTimer = 1200;
-            mainPlayer->injuries = 1.0;
+            mainPlayer->injuries = 1.f;
             e->eventState = 2;
 
         } else if ((e->eventState == 2)) {
@@ -244,7 +244,7 @@ void UpdateEvent_cont_1123_2(Event* e) {
 
             if (bbEntityYaw(e->room->objects[13],false)==0) {
                 std::cout << "aaaaaaaa";
-                if (bbEntityDistance(mainPlayer->collider, e->room->objects[12])<1.0) {
+                if (bbEntityDistance(mainPlayer->collider, e->room->objects[12])<1.f) {
                     DrawHandIcon = true;
                     if (MouseHit1) {
                         bbRotateEntity(e->room->objects[13], 0, 1, 0, false);
@@ -321,7 +321,7 @@ void UpdateEvent_cont_1123_2(Event* e) {
                 }
 
                 if (e->room->npc[0]->sounds[0]!=0) {
-                    e->room->npc[0]->soundChannels[0] = LoopRangedSound(e->room->npc[0]->sounds[0], e->room->npc[0]->soundChannels[0], mainPlayer->cam, e->room->npc[0]->collider, 7.0);
+                    e->room->npc[0]->soundChannels[0] = LoopRangedSound(e->room->npc[0]->sounds[0], e->room->npc[0]->soundChannels[0], mainPlayer->cam, e->room->npc[0]->collider, 7.f);
                 }
             }
         } else if ((e->eventState==7)) {

@@ -219,7 +219,7 @@ gxChannel* PlayRangedSound(gxSound* soundHandle, Camera* cam, Object* entity, fl
     float dist;
     float panvalue;
 
-    range = Max(range, 1.0);
+    range = Max(range, 1.f);
     gxChannel* soundChn = nullptr;
 
     if (volume > 0) {
@@ -248,7 +248,7 @@ gxChannel* PlayRangedSound_SM(SoundWrapper* snd, Camera* cam, Object* entity, fl
 }
 
 gxChannel* LoopRangedSound(gxSound* soundHandle, gxChannel* chn, Camera* cam, Object* entity, float range, float volume) {
-    range = Max(range,1.0);
+    range = Max(range,1.f);
 
     if (!bbChannelPlaying(chn)) {
         chn = bbPlaySound(soundHandle);
@@ -272,7 +272,7 @@ void UpdateRangedSoundOrigin(gxChannel* chn, Camera* cam, Object* entity, float 
     float dist;
     float panvalue;
 
-    range = Max(range, 1.0);
+    range = Max(range, 1.f);
 
     if (volume > 0) {
 
@@ -634,7 +634,7 @@ void MusicManager::update() {
 
     if (!this->nowPlaying.equals(this->shouldPlay)) {
         if (this->fadeOut && this->currMusicVolume > 0) {
-            this->currMusicVolume -= timing->tickDuration / 250.0;
+            this->currMusicVolume -= timing->tickDuration / 250.f;
         } else {
             if (this->channel != 0) {
                 bbStopChannel(this->channel);

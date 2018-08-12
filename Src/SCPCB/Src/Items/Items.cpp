@@ -23,15 +23,148 @@ namespace CBN {
 
 // Structs.
 std::vector<ItemTemplate*> ItemTemplate::list;
-ItemTemplate::ItemTemplate() {
+ItemTemplate::ItemTemplate(const String& file, const String& section) {
+    name = section;
+    invName = GetINIString(file, section, "invname");
+
+    //The model and inv image are in the specified directory.
+    String dataPath = GetINIString(file, section, "datapath");
+    if (!dataPath.isEmpty()) {
+        if (bbFileType(dataPath) != 2) {
+            throw "Item template directory not found (" + section + ", " + dataPath + ")";
+        }
+
+        objPath = dataPath + name + ".b3d";
+        invImagePath[0] = GetImagePath(dataPath + "inv_" + name);
+    }
+
+    //Otherwise the obj, tex and inv paths are specified in the INI.
+    String objPath = GetINIString(file, section, "objpath");
+    if (!objPath.isEmpty()) {
+        objPath = objPath;
+    }
+
+    String texPath = GetINIString(file, section, "texpath");
+    if (!texPath.isEmpty()) {
+        texPath = texPath;
+    }
+
+    String invImgPath = GetINIString(file, section, "invimgpath");
+    if (!invImgPath.isEmpty()) {
+        invImagePath[0] = invImgPath;
+    }
+
+    String invImgPath2 = GetINIString(file, section, "invimgpath2");
+    if (!invImgPath2.isEmpty()) {
+        invImagePath[1] = invImgPath2;
+    }
+
+    String slot = GetINIString(file, section, "slot").toLower();
+    if (slot.equals("head")) {
+        wornSlot = WORNITEM_SLOT_HEAD;
+    }
+    else if (slot.equals("body")) {
+        wornSlot = WORNITEM_SLOT_BODY;
+    }
+    else {
+        wornSlot = WORNITEM_SLOT_NONE;
+    }
+
+    wornOnly = (GetINIInt(file, section, "wornonly") == 1);
+
+    String sound = GetINIString(file, section, "sound").toLower();
+    if (sound.equals("medium")) {
+        this->sound = ITEMPICK_SOUND::MEDIUM;
+    }
+    else if (sound.equals("large")) {
+        this->sound = ITEMPICK_SOUND::LARGE;
+    }
+    else if (sound.equals("small")) {
+        this->sound = ITEMPICK_SOUND::SMALL;
+    }
+    else {
+        this->sound = ITEMPICK_SOUND::PAPER;
+    }
+
+    //Start loading the assets needed.
+
+    //Does another item already use that model?
+    obj = nullptr;
+    for (int i = 0; i < ItemTemplate::getListSize(); i++) {
+        ItemTemplate* it2 = ItemTemplate::getObject(i);
+
+        if (it2->objPath.equals(objPath) && it2->obj != nullptr) {
+            obj = bbCopyMeshModelEntity(it2->obj);
+            break;
+        }
+    }
+
+    //Otherwise load the model.
+    if (obj == nullptr) {
+        if (GetINIInt(file, section, "animated") == 1) {
+            obj = bbLoadAnimMesh(objPath);
+        }
+        else {
+            obj = bbLoadMesh(objPath);
+        }
+    }
+
+    tex = nullptr;
+    if (!texPath.isEmpty()) {
+        for (int i = 0; i < ItemTemplate::getListSize(); i++) {
+            ItemTemplate* it2 = ItemTemplate::getObject(i);
+
+            if (it2->texPath.equals(texPath) && it2->tex != nullptr) {
+                tex = it2->tex;
+                break;
+            }
+        }
+
+        if (tex == nullptr) {
+            int flags = GetINIInt(file, section, "textureflags", 1 + 8);
+            tex = bbLoadTexture(texPath, flags);
+        }
+
+        bbEntityTexture(obj, tex);
+    }
+
+    for (int i = 0; i < 2; i++) {
+        if (!invImagePath[i].isEmpty()) {
+            for (int j = 0; j < ItemTemplate::getListSize(); j++) {
+                ItemTemplate* it2 = ItemTemplate::getObject(j);
+
+                if (it2->invImagePath[i].equals(invImagePath[i]) && it2->invImage[i] != 0) {
+                    invImage[i] = it2->invImage[i];
+                    break;
+                }
+            }
+
+            if (invImage[i] == 0) {
+                invImage[i] = bbLoadImage(invImagePath[i]);
+                bbMaskImage(invImage[i], 255, 0, 255);
+            }
+        }
+    }
+
+    float scale = GetINIFloat(file, section, "scale", 1.f);
+    scale = scale;
+    bbScaleEntity(obj, scale * RoomScale, scale * RoomScale, scale * RoomScale, true);
+
+    bbHideEntity(obj);
+
     list.push_back(this);
 }
 ItemTemplate::~ItemTemplate() {
-    for (int i = 0; i < list.size(); i++) {
-        if (list[i] == this) {
-            list.erase(list.begin() + i);
-            break;
+    if (obj != nullptr) {
+        bbFreeEntity(obj);
+    }
+    for (int i = 0; i < 2; i++) {
+        if (invImage[i] != nullptr) {
+            bbFreeImage(invImage[i]);
         }
+    }
+    if (tex != nullptr) {
+        bbFreeTexture(tex);
     }
 }
 int ItemTemplate::getListSize() {
@@ -39,6 +172,30 @@ int ItemTemplate::getListSize() {
 }
 ItemTemplate* ItemTemplate::getObject(int index) {
     return list[index];
+}
+
+void ItemTemplate::LoadTemplates(const String& file) {
+    bbFile* f = bbOpenFile(file);
+    String section;
+
+    while (!bbEof(f)) {
+        section = bbReadLine(f).trim();
+        if (section.charAt(0) == '[') {
+            section = bbMid(section, 2, section.size() - 2);
+
+            new ItemTemplate(file, section);
+        }
+    }
+
+    bbCloseFile(f);
+}
+
+void ItemTemplate::DeloadTemplates() {
+    for (int i = 0; i < getListSize(); i++) {
+        ItemTemplate* it = getObject(i);
+        delete it;
+    }
+    list.clear();
 }
 
 std::vector<Item*> Item::list;
@@ -88,151 +245,6 @@ Inventory* Inventory::getObject(int index) {
 // Globals.
 int LastItemID;
 int itemDistanceTimer = 0;
-
-// Functions.
-void CreateItemTemplate(const String& file, const String& section) {
-    ItemTemplate* it = new ItemTemplate();
-    int flags;
-
-    it->name = section;
-    it->invName = GetINIString(file, section, "invname");
-
-    //The model and inv image are in the specified directory.
-    String dataPath = GetINIString(file, section, "datapath");
-    if (!dataPath.isEmpty()) {
-        if (bbFileType(dataPath) != 2) {
-            throw "Item template directory not found ("+section+", "+dataPath+")";
-        }
-
-        it->objPath = dataPath + it->name + ".b3d";
-        it->invImagePath[0] = GetImagePath(dataPath + "inv_" + it->name);
-    }
-
-    //Otherwise the obj, tex and inv paths are specified in the INI.
-    String objPath = GetINIString(file, section, "objpath");
-    if (!objPath.isEmpty()) {
-        it->objPath = objPath;
-    }
-
-    String texPath = GetINIString(file, section, "texpath");
-    if (!texPath.isEmpty()) {
-        it->texPath = texPath;
-    }
-
-    String invImgPath = GetINIString(file, section, "invimgpath");
-    if (!invImgPath.isEmpty()) {
-        it->invImagePath[0] = invImgPath;
-    }
-
-    String invImgPath2 = GetINIString(file, section, "invimgpath2");
-    if (!invImgPath2.isEmpty()) {
-        it->invImagePath[1] = invImgPath2;
-    }
-
-    String slot = GetINIString(file, section, "slot").toLower();
-    if (slot.equals("head")) {
-        it->wornSlot = WORNITEM_SLOT_HEAD;
-    } else if (slot.equals("body")) {
-        it->wornSlot = WORNITEM_SLOT_BODY;
-    } else {
-        it->wornSlot = WORNITEM_SLOT_NONE;
-    }
-
-    it->wornOnly = (GetINIInt(file, section, "wornonly") == 1);
-
-    String sound = GetINIString(file, section, "sound").toLower();
-    if (sound.equals("medium")) {
-        it->sound = ITEMPICK_SOUND::MEDIUM;
-    } else if (sound.equals("large")) {
-        it->sound = ITEMPICK_SOUND::LARGE;
-    } else if (sound.equals("small")) {
-        it->sound = ITEMPICK_SOUND::SMALL;
-    } else {
-        it->sound = ITEMPICK_SOUND::PAPER;
-    }
-
-    //Start loading the assets needed.
-
-    //Does another item already use that model?
-    it->obj = nullptr;
-    for (int i = 0; i < ItemTemplate::getListSize(); i++) {
-        ItemTemplate* it2 = ItemTemplate::getObject(i);
-
-        if (it2->objPath.equals(it->objPath) && it2->obj != nullptr) {
-            it->obj = bbCopyMeshModelEntity(it2->obj);
-            break;
-        }
-    }
-
-    //Otherwise load the model.
-    if (it->obj == nullptr) {
-        if (GetINIInt(file, section, "animated") == 1) {
-            it->obj = bbLoadAnimMesh(it->objPath);
-        } else {
-            it->obj = bbLoadMesh(it->objPath);
-        }
-    }
-
-    it->tex = nullptr;
-    if (!it->texPath.isEmpty()) {
-        for (int i = 0; i < ItemTemplate::getListSize(); i++) {
-            ItemTemplate* it2 = ItemTemplate::getObject(i);
-
-            if (it2->texPath.equals(it->texPath) && it2->tex != 0) {
-                it->tex = it2->tex;
-                break;
-            }
-        }
-
-        if (it->tex == nullptr) {
-            flags = GetINIInt(file, section, "textureflags", 1+8);
-            it->tex = bbLoadTexture(it->texPath, flags);
-        }
-
-        bbEntityTexture(it->obj, it->tex);
-    }
-
-    for (int i = 0; i < 2; i++) {
-        if (!it->invImagePath[i].isEmpty()) {
-            for (int j = 0; j < ItemTemplate::getListSize(); j++) {
-                ItemTemplate* it2 = ItemTemplate::getObject(j);
-
-                if (it2->invImagePath[i].equals(it->invImagePath[i]) && it2->invImage[i] != 0) {
-                    it->invImage[i] = it2->invImage[i];
-                    break;
-                }
-            }
-
-            if (it->invImage[i] == 0) {
-                it->invImage[i] = bbLoadImage(it->invImagePath[i]);
-                bbMaskImage(it->invImage[i], 255, 0, 255);
-            }
-        }
-    }
-
-    float scale = GetINIFloat(file, section, "scale", 1.0);
-    it->scale = scale;
-    bbScaleEntity(it->obj, scale * RoomScale, scale * RoomScale, scale * RoomScale, true);
-
-    bbHideEntity(it->obj);
-}
-
-void LoadItemTemplates(const String& file) {
-    bbFile* f = bbOpenFile(file);
-    ItemTemplate* it;
-    String section;
-
-    while (!bbEof(f)) {
-        section = bbReadLine(f).trim();
-        if (section.charAt(0) == '[') {
-            section = bbMid(section, 2, section.size() - 2);
-
-            CreateItemTemplate(file, section);
-        }
-    }
-
-    bbCloseFile(f);
-}
 
 Inventory* CreateInventory(int size) {
     Inventory* inv = new Inventory();
@@ -289,12 +301,12 @@ Item* CreateItem(const String& name, float x, float y, float z, int invSlots) {
     bbResetEntity(i->collider);
     bbPositionEntity(i->collider, x, y, z, true);
     bbRotateEntity(i->collider, 0, bbRand(360), 0);
-    i->dropSpeed = 0.0;
+    i->dropSpeed = 0.f;
 
     //TODO: Re-implement.
     //	If (tempname="clipboard") And (invSlots=0) Then
     //		invSlots = 20
-    //		SetAnimTime(i\model, 17.0)
+    //		SetAnimTime(i\model, 17.f)
     //		i\invimg = i\template\invimg2 ;<-- this Future Mark.
     //	EndIf
 
@@ -354,7 +366,7 @@ void RemoveItem(Item* i) {
 }
 
 void UpdateItems() {
-    float hideDist = HideDistance*0.5;
+    float hideDist = HideDistance*0.5f;
     bool deletedItem = false;
 
     mainPlayer->closestItem = nullptr;
@@ -385,8 +397,8 @@ void UpdateItems() {
 
                 if (bbEntityCollided(item->collider, HIT_MAP)) {
                     item->dropSpeed = 0;
-                    item->xspeed = 0.0;
-                    item->zspeed = 0.0;
+                    item->xspeed = 0.f;
+                    item->zspeed = 0.f;
                 } else {
                     item->dropSpeed = item->dropSpeed - 0.0004 * timing->tickDuration;
                     bbTranslateEntity(item->collider, item->xspeed*timing->tickDuration, item->dropSpeed * timing->tickDuration, item->zspeed*timing->tickDuration);
@@ -456,7 +468,7 @@ void PickItem(Item* item) {
     if (item->itemTemplate->name.equals("battery")) {
         if (HasTag(item, ITEM_TAG_914VF)) {
             bbShowEntity(mainPlayer->overlays[OVERLAY_WHITE]);
-            mainPlayer->lightFlash = 1.0;
+            mainPlayer->lightFlash = 1.f;
             //TODO: Light
             //PlaySound2(IntroSFX(11))
             DeathMSG = "Subject D-9341 found dead inside SCP-914's output booth next to what appears to be an ordinary nine-volt battery. The subject is covered in severe ";
@@ -712,7 +724,7 @@ void UpdateInventory(Player* player) {
         if (player->selectedItem != nullptr) {
             if (MouseHit2) {
                 //TODO: Move to de-equip function.
-                bbEntityAlpha(player->overlays[OVERLAY_BLACK], 0.0);
+                bbEntityAlpha(player->overlays[OVERLAY_BLACK], 0.f);
 
                 PlaySound_SM(sndManager->itemPick[(int)player->selectedItem->itemTemplate->sound]);
                 player->selectedItem = nullptr;
@@ -782,16 +794,16 @@ void DrawInventory(Player* player) {
 
                     bbRotateEntity(tempObj,0,0,0,true);
 
-                    bbCameraRange(tempCamera,0.01,512.0*RoomScale);
+                    bbCameraRange(tempCamera,0.01,512.f*RoomScale);
                     bbCameraViewport(tempCamera,0,0,64,64);
                     bbCameraClsColor(tempCamera,255,0,255);
-                    bbPositionEntity(tempCamera,10000.0+10.0*RoomScale,10000.0+70.0*RoomScale,10000.0+20.0*RoomScale,true);
-                    bbPositionEntity(tempLight,10000.0,10000.0+20.0*RoomScale,10000.0,true);
+                    bbPositionEntity(tempCamera,10000.f+10.f*RoomScale,10000.f+70.f*RoomScale,10000.f+20.f*RoomScale,true);
+                    bbPositionEntity(tempLight,10000.f,10000.f+20.f*RoomScale,10000.f,true);
                     bbShowEntity(tempObj);
-                    bbPositionEntity(tempObj,10000.0,10000.0,10000.0,true);
+                    bbPositionEntity(tempObj,10000.f,10000.f,10000.f,true);
                     bbPointEntity(tempCamera,tempObj);
                     bbPointEntity(tempLight,tempObj);
-                    bbPositionEntity(tempObj,10000.0,10000.0+12.0*RoomScale,10000.0,true);
+                    bbPositionEntity(tempObj,10000.f,10000.f+12.f*RoomScale,10000.f,true);
                     bbHideEntity(mainPlayer->cam);
 
                     bbSetBuffer(bbBackBuffer());
@@ -856,8 +868,8 @@ void ToggleInventory(Player* player) {
             bbMouseXSpeed();
             bbMouseYSpeed();
             bbMouseZSpeed();
-            mouse_x_speed_1 = 0.0;
-            mouse_y_speed_1 = 0.0;
+            mouse_x_speed_1 = 0.f;
+            mouse_y_speed_1 = 0.f;
         } else {
             mainPlayer->openInventory = mainPlayer->inventory;
         }

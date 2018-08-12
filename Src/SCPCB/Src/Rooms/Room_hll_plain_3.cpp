@@ -54,13 +54,13 @@ void UpdateEvent106victim(Event* e) {
     if (!Contained106) {
         if (mainPlayer->currRoom == e->room) {
             if (e->eventState == 0) {
-                de = CreateDecal(DECAL_CORROSION, bbEntityX(e->room->obj), 799.0*RoomScale, bbEntityZ(e->room->obj), -90, bbRand(360), 0);
+                de = CreateDecal(DECAL_CORROSION, bbEntityX(e->room->obj), 799.f*RoomScale, bbEntityZ(e->room->obj), -90, bbRand(360), 0);
                 de->size = 0.05;
                 de->sizeChange = 0.0015;
                 bbEntityAlpha(de->obj, 0.8);
                 UpdateDecals();
                 //TODO: fix
-                //PlayRangedSound(DecaySFX(3), mainPlayer\cam, de\obj, 15.0)
+                //PlayRangedSound(DecaySFX(3), mainPlayer\cam, de\obj, 15.f)
                 e->eventState = 1;
             }
         }
@@ -71,7 +71,7 @@ void UpdateEvent106victim(Event* e) {
             }
             if (e->eventState>200) {
                 if (e->room->npc[0]==nullptr) {
-                    e->room->npc[0] = CreateNPC(NPCtypeD, bbEntityX(e->room->obj), 900.0*RoomScale, bbEntityZ(e->room->obj));
+                    e->room->npc[0] = CreateNPC(NPCtypeD, bbEntityX(e->room->obj), 900.f*RoomScale, bbEntityZ(e->room->obj));
                     bbRotateEntity(e->room->npc[0]->collider, 0, bbRnd(360), 0, true);
                     tex = bbLoadTexture("GFX/NPCs/classd/106victim.jpg");
                     e->room->npc[0]->texture = "GFX/NPCs/classd/106victim.jpg";
@@ -81,7 +81,7 @@ void UpdateEvent106victim(Event* e) {
 
                     //PlaySound2(HorrorSFX(0))
                     //TODO: fix
-                    //PlayRangedSound(DecaySFX(2), mainPlayer\cam, e\room\npc[0]\collider, 15.0)
+                    //PlayRangedSound(DecaySFX(2), mainPlayer\cam, e\room\npc[0]\collider, 15.f)
                 }
 
                 bbEntityType(e->room->npc[0]->collider,HIT_PLAYER);

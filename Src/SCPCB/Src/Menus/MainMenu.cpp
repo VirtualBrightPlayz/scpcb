@@ -30,8 +30,8 @@ void UpdateMainMenu() {
     if (CurrGameSubstate == GAMESUBSTATE_MAINMENU_MAIN) {
         for (i = 0; i < MAINMENU_BUTTON_COUNT; i++) {
             mouseHitButton = false;
-            x = (int)(159.0 * MenuScale);
-            y = (int)((286.0 + 100.0 * i) * MenuScale);
+            x = (int)(159.f * MenuScale);
+            y = (int)((286.f + 100.f * i) * MenuScale);
 
             width = (int)(400 * MenuScale);
             height = (int)(70 * MenuScale);
@@ -122,13 +122,13 @@ void UpdateMainMenu() {
 
     } else {
 
-        x = (int)(159.0 * MenuScale);
-        y = (int)(286.0 * MenuScale);
+        x = (int)(159.f * MenuScale);
+        y = (int)(286.f * MenuScale);
 
-        width = (int)(400.0 * MenuScale);
-        height = (int)(70.0 * MenuScale);
+        width = (int)(400.f * MenuScale);
+        height = (int)(70.f * MenuScale);
 
-        if (UpdateUIButton(x + width + (int)(20.0 * MenuScale), y, (int)(580.0 * MenuScale - width - 20.0 * MenuScale), height, "BACK")) {
+        if (UpdateUIButton(x + width + (int)(20.f * MenuScale), y, (int)(580.f * MenuScale - width - 20.f * MenuScale), height, "BACK")) {
             switch (CurrGameSubstate) {
                 case GAMESUBSTATE_MAINMENU_NEWGAME: {
                     PutINIValue(OptionFile, "general", "intro enabled", String(userOptions->introEnabled));
@@ -153,42 +153,42 @@ void UpdateMainMenu() {
             case GAMESUBSTATE_MAINMENU_NEWGAME: {
                 //[Block]
 
-                x = (int)(159.0 * MenuScale);
-                y = (int)(286.0 * MenuScale);
+                x = (int)(159.f * MenuScale);
+                y = (int)(286.f * MenuScale);
 
-                width = (int)(400.0 * MenuScale);
-                height = (int)(70.0 * MenuScale);
+                width = (int)(400.f * MenuScale);
+                height = (int)(70.f * MenuScale);
 
-                x = (int)(160.0 * MenuScale);
-                y = (int)(y + height + 20.0 * MenuScale);
-                width = (int)(580.0 * MenuScale);
-                height = (int)(330.0 * MenuScale);
+                x = (int)(160.f * MenuScale);
+                y = (int)(y + height + 20.f * MenuScale);
+                width = (int)(580.f * MenuScale);
+                height = (int)(330.f * MenuScale);
 
-                CurrSave = UpdateInputBox(x + (int)(150.0 * MenuScale), y + (int)(15.0 * MenuScale), (int)(200.0 * MenuScale), (int)(30.0 * MenuScale), CurrSave, 1);
+                CurrSave = UpdateInputBox(x + (int)(150.f * MenuScale), y + (int)(15.f * MenuScale), (int)(200.f * MenuScale), (int)(30.f * MenuScale), CurrSave, 1);
                 CurrSave = CurrSave.substr(0, 15);
 
-                userOptions->introEnabled = UpdateUITick(x + (int)(280.0 * MenuScale), y + (int)(110.0 * MenuScale), userOptions->introEnabled);
+                userOptions->introEnabled = UpdateUITick(x + (int)(280.f * MenuScale), y + (int)(110.f * MenuScale), userOptions->introEnabled);
 
                 for (i = SAFE; i <= CUSTOM; i++) {
-                    if (UpdateUITick(x + (int)(20.0 * MenuScale), y + (int)((180.0+30.0*i) * MenuScale), (SelectedDifficulty == difficulties[i]))) {
+                    if (UpdateUITick(x + (int)(20.f * MenuScale), y + (int)((180.f+30.f*i) * MenuScale), (SelectedDifficulty == difficulties[i]))) {
                         SelectedDifficulty = difficulties[i];
                     }
                 }
 
                 if (SelectedDifficulty->customizable) {
-                    SelectedDifficulty->permaDeath = UpdateUITick(x + (int)(160.0 * MenuScale), y + (int)(165.0 * MenuScale), (SelectedDifficulty->permaDeath));
+                    SelectedDifficulty->permaDeath = UpdateUITick(x + (int)(160.f * MenuScale), y + (int)(165.f * MenuScale), (SelectedDifficulty->permaDeath));
 
-                    if (UpdateUITick(x + (int)(160.0 * MenuScale), y + (int)(195.0 * MenuScale), SelectedDifficulty->saveType == SAVEANYWHERE & (!SelectedDifficulty->permaDeath), SelectedDifficulty->permaDeath)) {
+                    if (UpdateUITick(x + (int)(160.f * MenuScale), y + (int)(195.f * MenuScale), SelectedDifficulty->saveType == SAVEANYWHERE & (!SelectedDifficulty->permaDeath), SelectedDifficulty->permaDeath)) {
                         SelectedDifficulty->saveType = SAVEANYWHERE;
                     } else {
                         SelectedDifficulty->saveType = SAVEONSCREENS;
                     }
 
-                    SelectedDifficulty->aggressiveNPCs = UpdateUITick(x + (int)(160.0 * MenuScale), y + (int)(225.0 * MenuScale), SelectedDifficulty->aggressiveNPCs);
+                    SelectedDifficulty->aggressiveNPCs = UpdateUITick(x + (int)(160.f * MenuScale), y + (int)(225.f * MenuScale), SelectedDifficulty->aggressiveNPCs);
 
                     //Other factor's difficulty
                     if (MouseHit1) {
-                        if (MouseOn(x + (int)(155.0 * MenuScale), y+(int)(251.0*MenuScale), bbImageWidth(uiAssets->arrow[1]), bbImageHeight(uiAssets->arrow[1]))) {
+                        if (MouseOn(x + (int)(155.f * MenuScale), y+(int)(251.f*MenuScale), bbImageWidth(uiAssets->arrow[1]), bbImageHeight(uiAssets->arrow[1]))) {
                             if (SelectedDifficulty->otherFactors < HARD) {
                                 SelectedDifficulty->otherFactors = SelectedDifficulty->otherFactors + 1;
                             } else {
@@ -199,12 +199,12 @@ void UpdateMainMenu() {
                     }
                 }
 
-                if (UpdateUIButton(x, y + height + (int)(20.0 * MenuScale), (int)(160.0 * MenuScale), (int)(70.0 * MenuScale), "Load map")) {
+                if (UpdateUIButton(x, y + height + (int)(20.f * MenuScale), (int)(160.f * MenuScale), (int)(70.f * MenuScale), "Load map")) {
                     CurrGameSubstate = GAMESUBSTATE_MAINMENU_CUSTOMMAP;
                     LoadSavedMaps();
                 }
 
-                if (UpdateUIButton(x + (int)(420.0 * MenuScale), y + height + (int)(20.0 * MenuScale), (int)(160.0 * MenuScale), (int)(70.0 * MenuScale), "START")) {
+                if (UpdateUIButton(x + (int)(420.f * MenuScale), y + height + (int)(20.f * MenuScale), (int)(160.f * MenuScale), (int)(70.f * MenuScale), "START")) {
                     if (!CurrSave.isEmpty()) {
                         CurrSave = "untitled";
                     }
@@ -237,20 +237,20 @@ void UpdateMainMenu() {
             case GAMESUBSTATE_MAINMENU_LOADGAME: {
                 //[Block]
 
-                y = y + height + (int)(20.0 * MenuScale);
-                width = (int)(580.0 * MenuScale);
-                height = (int)(300.0 * MenuScale);
+                y = y + height + (int)(20.f * MenuScale);
+                width = (int)(580.f * MenuScale);
+                height = (int)(300.f * MenuScale);
 
-                x = (int)(159.0 * MenuScale);
-                y = (int)(286.0 * MenuScale);
+                x = (int)(159.f * MenuScale);
+                y = (int)(286.f * MenuScale);
 
-                width = (int)(400.0 * MenuScale);
-                height = (int)(70.0 * MenuScale);
+                width = (int)(400.f * MenuScale);
+                height = (int)(70.f * MenuScale);
 
-                x = (int)(160.0 * MenuScale);
-                y = y + height + (int)(20.0 * MenuScale);
-                width = (int)(580.0 * MenuScale);
-                height = (int)(296.0 * MenuScale);
+                x = (int)(160.f * MenuScale);
+                y = y + height + (int)(20.f * MenuScale);
+                width = (int)(580.f * MenuScale);
+                height = (int)(296.f * MenuScale);
 
                 //[End Block]
                 //options
@@ -258,21 +258,21 @@ void UpdateMainMenu() {
             case GAMESUBSTATE_MAINMENU_OPTIONS: {
                 //[Block]
 
-                x = (int)(159.0 * MenuScale);
-                y = (int)(286.0 * MenuScale);
+                x = (int)(159.f * MenuScale);
+                y = (int)(286.f * MenuScale);
 
-                width = (int)(400.0 * MenuScale);
-                height = (int)(70.0 * MenuScale);
+                width = (int)(400.f * MenuScale);
+                height = (int)(70.f * MenuScale);
 
-                x = (int)(160.0 * MenuScale);
-                y = y + height + (int)(20.0 * MenuScale);
-                width = (int)(580.0 * MenuScale);
-                height = (int)(60.0 * MenuScale);
+                x = (int)(160.f * MenuScale);
+                y = y + height + (int)(20.f * MenuScale);
+                width = (int)(580.f * MenuScale);
+                height = (int)(60.f * MenuScale);
                 //If (UpdateUIButton(x+20*MenuScale,y+15*MenuScale,width/5,height/2, "GRAPHICS", False)) Then MainMenuTab = 3
                 //If (UpdateUIButton(x+160*MenuScale,y+15*MenuScale,width/5,height/2, "AUDIO", False)) Then MainMenuTab = 5
                 //If (UpdateUIButton(x+300*MenuScale,y+15*MenuScale,width/5,height/2, "CONTROLS", False)) Then MainMenuTab = 6
                 //If (UpdateUIButton(x+440*MenuScale,y+15*MenuScale,width/5,height/2, "ADVANCED", False)) Then MainMenuTab = 7
-                y = y + (int)(70.0 * MenuScale);
+                y = y + (int)(70.f * MenuScale);
 
                 //				If MainMenuTab = 3 ;Graphics
                 //					;[Block]
@@ -292,7 +292,7 @@ void UpdateMainMenu() {
                 //
                 //					y=y+40*MenuScale
                 //
-                //					userOptions\screenGamma = (UpdateSlideBar(x + 310*MenuScale, y+6*MenuScale, 150*MenuScale, userOptions\screenGamma*50.0)/50.0)
+                //					userOptions\screenGamma = (UpdateSlideBar(x + 310*MenuScale, y+6*MenuScale, 150*MenuScale, userOptions\screenGamma*50.f)/50.f)
                 //
                 //					y = y + 50*MenuScale
                 //
@@ -304,11 +304,11 @@ void UpdateMainMenu() {
                 //
                 //					y = y + 20*MenuScale
                 //
-                //					userOptions\musicVolume = (UpdateSlideBar(x + 310*MenuScale, y-4*MenuScale, 150*MenuScale, userOptions\musicVolume*100.0)/100.0)
+                //					userOptions\musicVolume = (UpdateSlideBar(x + 310*MenuScale, y-4*MenuScale, 150*MenuScale, userOptions\musicVolume*100.f)/100.f)
                 //
                 //					y = y + 40*MenuScale
                 //
-                //					userOptions\soundVolume = (UpdateSlideBar(x + 310*MenuScale, y-4*MenuScale, 150*MenuScale, userOptions\soundVolume*100.0)/100.0)
+                //					userOptions\soundVolume = (UpdateSlideBar(x + 310*MenuScale, y-4*MenuScale, 150*MenuScale, userOptions\soundVolume*100.f)/100.f)
                 //					;[End Block]
                 //				ElseIf MainMenuTab = 6 ;Controls
                 //					;[Block]
@@ -316,7 +316,7 @@ void UpdateMainMenu() {
                 //
                 //					y = y + 20*MenuScale
                 //
-                //					userOptions\mouseSensitivity = (UpdateSlideBar(x + 310*MenuScale, y-4*MenuScale, 150*MenuScale, (userOptions\mouseSensitivity+0.5)*100.0)/100.0)-0.5
+                //					userOptions\mouseSensitivity = (UpdateSlideBar(x + 310*MenuScale, y-4*MenuScale, 150*MenuScale, (userOptions\mouseSensitivity+0.5)*100.f)/100.f)-0.5
                 //
                 //					y = y + 40*MenuScale
                 //
@@ -393,12 +393,12 @@ void UpdateMainMenu() {
                 //
                 //					y = y + 30*MenuScale
                 //
-                //					If (UpdateUITick(x + 310 * MenuScale, y, CurrFrameLimit > 0.0)) Then
-                //						CurrFrameLimit# = (UpdateSlideBar(x + 150*MenuScale, y+30*MenuScale, 100*MenuScale, CurrFrameLimit#*50.0)/50.0)
+                //					If (UpdateUITick(x + 310 * MenuScale, y, CurrFrameLimit > 0.f)) Then
+                //						CurrFrameLimit# = (UpdateSlideBar(x + 150*MenuScale, y+30*MenuScale, 100*MenuScale, CurrFrameLimit#*50.f)/50.f)
                 //						CurrFrameLimit = Max(CurrFrameLimit, 0.1)
-                //						userOptions\framelimit = CurrFrameLimit#*100.0
+                //						userOptions\framelimit = CurrFrameLimit#*100.f
                 //					Else
-                //						CurrFrameLimit# = 0.0
+                //						CurrFrameLimit# = 0.f
                 //						userOptions\framelimit = 0
                 //					EndIf
                 //
@@ -411,20 +411,20 @@ void UpdateMainMenu() {
             } break;
             case GAMESUBSTATE_MAINMENU_CUSTOMMAP: {
                 //[Block]
-                y = y + height + (int)(20.0 * MenuScale);
-                width = (int)(580.0 * MenuScale);
-                height = (int)(350.0 * MenuScale);
+                y = y + height + (int)(20.f * MenuScale);
+                width = (int)(580.f * MenuScale);
+                height = (int)(350.f * MenuScale);
 
-                x = (int)(159.0 * MenuScale);
-                y = (int)(286.0 * MenuScale);
+                x = (int)(159.f * MenuScale);
+                y = (int)(286.f * MenuScale);
 
-                width = (int)(400.0 * MenuScale);
-                height = (int)(70.0 * MenuScale);
+                width = (int)(400.f * MenuScale);
+                height = (int)(70.f * MenuScale);
 
-                x = (int)(160.0 * MenuScale);
-                y = y + height + (int)(20.0 * MenuScale);
-                width = (int)(580.0 * MenuScale);
-                height = (int)(350.0 * MenuScale);
+                x = (int)(160.f * MenuScale);
+                y = y + height + (int)(20.f * MenuScale);
+                width = (int)(580.f * MenuScale);
+                height = (int)(350.f * MenuScale);
 
                 //[End Block]
             } break;
@@ -523,20 +523,20 @@ void DrawMainMenu() {
 
     bbSetFont(uiAssets->font[1]);
 
-    bbDrawImage(uiAssets->scpText, userOptions->screenWidth / 2 - bbImageWidth(uiAssets->scpText) / 2, userOptions->screenHeight - (int)(20.0 * MenuScale) - bbImageHeight(uiAssets->scpText));
+    bbDrawImage(uiAssets->scpText, userOptions->screenWidth / 2 - bbImageWidth(uiAssets->scpText) / 2, userOptions->screenHeight - (int)(20.f * MenuScale) - bbImageHeight(uiAssets->scpText));
 
     if (userOptions->screenWidth > 1240 * MenuScale) {
-        DrawTiledImageRect(uiAssets->tileWhite, 0, 5, 512, (int)(7.0 * MenuScale), (int)(985.0 * MenuScale), (int)(407.0 * MenuScale), (userOptions->screenWidth - (int)(1240 * MenuScale)) + 300, (int)(7.0 * MenuScale));
+        DrawTiledImageRect(uiAssets->tileWhite, 0, 5, 512, (int)(7.f * MenuScale), (int)(985.f * MenuScale), (int)(407.f * MenuScale), (userOptions->screenWidth - (int)(1240 * MenuScale)) + 300, (int)(7.f * MenuScale));
     }
 
     String txt;
     if (CurrGameSubstate == GAMESUBSTATE_MAINMENU_MAIN) {
         for (i = 0; i <= MAINMENU_BUTTON_COUNT-1; i++) {
-            x = (int)(159.0 * MenuScale);
-            y = (int)((286.0 + 100.0 * i) * MenuScale);
+            x = (int)(159.f * MenuScale);
+            y = (int)((286.f + 100.f * i) * MenuScale);
 
-            width = (int)(400.0 * MenuScale);
-            height = (int)(70.0 * MenuScale);
+            width = (int)(400.f * MenuScale);
+            height = (int)(70.f * MenuScale);
 
             switch (i) {
                 case MAINMENU_BUTTON_NEWGAME: {
@@ -556,176 +556,176 @@ void DrawMainMenu() {
             DrawUIButton(x, y, width, height, txt);
         }
     } else {
-        x = (int)(159.0 * MenuScale);
-        y = (int)(286.0 * MenuScale);
+        x = (int)(159.f * MenuScale);
+        y = (int)(286.f * MenuScale);
 
-        width = (int)(400.0 * MenuScale);
-        height = (int)(70.0 * MenuScale);
+        width = (int)(400.f * MenuScale);
+        height = (int)(70.f * MenuScale);
 
         DrawFrame(x, y, width, height);
 
-        DrawUIButton(x + width + (int)(20.0 * MenuScale), y, (int)(580.0 * MenuScale) - width - (int)(20.0 * MenuScale), height, "BACK", false);
+        DrawUIButton(x + width + (int)(20.f * MenuScale), y, (int)(580.f * MenuScale) - width - (int)(20.f * MenuScale), height, "BACK", false);
 
         switch (CurrGameSubstate) {
             case GAMESUBSTATE_MAINMENU_NEWGAME: {
                 //[Block]
 
-                x = (int)(159.0 * MenuScale);
-                y = (int)(286.0 * MenuScale);
+                x = (int)(159.f * MenuScale);
+                y = (int)(286.f * MenuScale);
 
-                width = (int)(400.0 * MenuScale);
-                height = (int)(70.0 * MenuScale);
+                width = (int)(400.f * MenuScale);
+                height = (int)(70.f * MenuScale);
 
                 bbColor(255, 255, 255);
                 bbSetFont(uiAssets->font[1]);
                 bbText(x + width / 2, y + height / 2, "NEW GAME", true, true);
 
-                x = (int)(160.0 * MenuScale);
-                y = y + height + (int)(20.0 * MenuScale);
-                width = (int)(580.0 * MenuScale);
-                height = (int)(330.0 * MenuScale);
+                x = (int)(160.f * MenuScale);
+                y = y + height + (int)(20.f * MenuScale);
+                width = (int)(580.f * MenuScale);
+                height = (int)(330.f * MenuScale);
 
                 DrawFrame(x, y, width, height);
 
                 bbSetFont(uiAssets->font[0]);
 
-                bbText(x + (int)(20.0 * MenuScale), y + (int)(20.0 * MenuScale), "Name:");
-                DrawInputBox(x + (int)(150.0 * MenuScale), y + (int)(15.0 * MenuScale), (int)(200.0 * MenuScale), (int)(30.0 * MenuScale), CurrSave, 1);
+                bbText(x + (int)(20.f * MenuScale), y + (int)(20.f * MenuScale), "Name:");
+                DrawInputBox(x + (int)(150.f * MenuScale), y + (int)(15.f * MenuScale), (int)(200.f * MenuScale), (int)(30.f * MenuScale), CurrSave, 1);
 
                 bbColor(255,255,255);
                 //				If (SelectedMap = "") Then
-                bbText(x + (int)(20.0 * MenuScale), y + (int)(60.0 * MenuScale), "Map seed:");
-                DrawInputBox(x+(int)(150.0*MenuScale), y+(int)(55.0*MenuScale), (int)(200.0*MenuScale), (int)(30.0*MenuScale), RandomSeed, 3);
+                bbText(x + (int)(20.f * MenuScale), y + (int)(60.f * MenuScale), "Map seed:");
+                DrawInputBox(x+(int)(150.f*MenuScale), y+(int)(55.f*MenuScale), (int)(200.f*MenuScale), (int)(30.f*MenuScale), RandomSeed, 3);
                 //				Else
-                //					Text(x + (int)(20.0 * MenuScale), y + (int)(60.0 * MenuScale), "Selected map:")
+                //					Text(x + (int)(20.f * MenuScale), y + (int)(60.f * MenuScale), "Selected map:")
                 //					Color(255, 255, 255)
-                //					Rect(x+(int)(150.0*MenuScale), y+(int)(55.0*MenuScale), (int)(200.0*MenuScale), (int)(30.0*MenuScale))
+                //					Rect(x+(int)(150.f*MenuScale), y+(int)(55.f*MenuScale), (int)(200.f*MenuScale), (int)(30.f*MenuScale))
                 //					Color(0, 0, 0)
-                //					Rect(x+(int)(150.0*MenuScale)+2, y+(int)(55.0*MenuScale)+2, (int)(200.0*MenuScale)-4, (int)(30.0*MenuScale)-4)
+                //					Rect(x+(int)(150.f*MenuScale)+2, y+(int)(55.f*MenuScale)+2, (int)(200.f*MenuScale)-4, (int)(30.f*MenuScale)-4)
                 //
                 //					Color(255, 0,0)
-                //					Text(x+(int)(150.0*MenuScale + 100.0*MenuScale), y+(int)(55.0*MenuScale + 15.0*MenuScale), SelectedMap, True, True)
+                //					Text(x+(int)(150.f*MenuScale + 100.f*MenuScale), y+(int)(55.f*MenuScale + 15.f*MenuScale), SelectedMap, True, True)
                 //
-                //					DrawUIButton(x+(int)(370.0*MenuScale), y+(int)(55.0*MenuScale), (int)(120.0*MenuScale), (int)(30.0*MenuScale), "Deselect", False)
+                //					DrawUIButton(x+(int)(370.f*MenuScale), y+(int)(55.f*MenuScale), (int)(120.f*MenuScale), (int)(30.f*MenuScale), "Deselect", False)
                 //				EndIf
 
-                bbText(x + (int)(20.0 * MenuScale), y + (int)(110.0 * MenuScale), "Enable intro sequence:");
-                DrawUITick(x + (int)(280.0 * MenuScale), y + (int)(110.0 * MenuScale), userOptions->introEnabled);
+                bbText(x + (int)(20.f * MenuScale), y + (int)(110.f * MenuScale), "Enable intro sequence:");
+                DrawUITick(x + (int)(280.f * MenuScale), y + (int)(110.f * MenuScale), userOptions->introEnabled);
 
                 //Local modeName$, modeDescription$, selectedDescription$
-                bbText(x + (int)(20.0 * MenuScale), y + (int)(150.0 * MenuScale), "Difficulty:");
+                bbText(x + (int)(20.f * MenuScale), y + (int)(150.f * MenuScale), "Difficulty:");
                 for (i = SAFE; i <= CUSTOM; i++) {
-                    DrawUITick(x + (int)(20.0 * MenuScale), y + (int)((180.0+30.0*i) * MenuScale), SelectedDifficulty == difficulties[i]);
+                    DrawUITick(x + (int)(20.f * MenuScale), y + (int)((180.f+30.f*i) * MenuScale), SelectedDifficulty == difficulties[i]);
 
-                    bbText(x + (int)(60.0 * MenuScale), y + (int)((180.0+30.0*i) * MenuScale), difficulties[i]->name);
+                    bbText(x + (int)(60.f * MenuScale), y + (int)((180.f+30.f*i) * MenuScale), difficulties[i]->name);
                 }
 
                 bbColor(255, 255, 255);
-                DrawFrame(x + (int)(150.0 * MenuScale),y + (int)(155.0 * MenuScale), (int)(410.0*MenuScale), (int)(150.0*MenuScale));
+                DrawFrame(x + (int)(150.f * MenuScale),y + (int)(155.f * MenuScale), (int)(410.f*MenuScale), (int)(150.f*MenuScale));
 
                 if (SelectedDifficulty->customizable) {
-                    DrawUITick(x + (int)(160.0 * MenuScale), y + (int)(165.0 * MenuScale), (SelectedDifficulty->permaDeath));
-                    bbText(x + (int)(200.0 * MenuScale), y + (int)(165.0 * MenuScale), "Permadeath");
+                    DrawUITick(x + (int)(160.f * MenuScale), y + (int)(165.f * MenuScale), (SelectedDifficulty->permaDeath));
+                    bbText(x + (int)(200.f * MenuScale), y + (int)(165.f * MenuScale), "Permadeath");
 
-                    DrawUITick(x + (int)(160.0 * MenuScale), y + (int)(195.0 * MenuScale), SelectedDifficulty->saveType = SAVEANYWHERE & (!SelectedDifficulty->permaDeath), SelectedDifficulty->permaDeath);
+                    DrawUITick(x + (int)(160.f * MenuScale), y + (int)(195.f * MenuScale), SelectedDifficulty->saveType = SAVEANYWHERE & (!SelectedDifficulty->permaDeath), SelectedDifficulty->permaDeath);
 
-                    bbText(x + (int)(200.0 * MenuScale), y + (int)(195.0 * MenuScale), "Save anywhere");
+                    bbText(x + (int)(200.f * MenuScale), y + (int)(195.f * MenuScale), "Save anywhere");
 
-                    DrawUITick(x + (int)(160.0 * MenuScale), y + (int)(225.0 * MenuScale), SelectedDifficulty->aggressiveNPCs);
-                    bbText(x + (int)(200.0 * MenuScale), y + (int)(225.0 * MenuScale), "Aggressive NPCs");
+                    DrawUITick(x + (int)(160.f * MenuScale), y + (int)(225.f * MenuScale), SelectedDifficulty->aggressiveNPCs);
+                    bbText(x + (int)(200.f * MenuScale), y + (int)(225.f * MenuScale), "Aggressive NPCs");
 
                     //Other factor's difficulty
                     bbColor(255,255,255);
-                    bbDrawImage(uiAssets->arrow[1],x + (int)(155.0 * MenuScale), y+(int)(251.0*MenuScale));
+                    bbDrawImage(uiAssets->arrow[1],x + (int)(155.f * MenuScale), y+(int)(251.f*MenuScale));
 
                     bbColor(255,255,255);
                     switch (SelectedDifficulty->otherFactors) {
                         case EASY: {
-                            bbText(x + (int)(200.0 * MenuScale), y + (int)(255.0 * MenuScale), "Other difficulty factors: Easy");
+                            bbText(x + (int)(200.f * MenuScale), y + (int)(255.f * MenuScale), "Other difficulty factors: Easy");
                         } break;
                         case NORMAL: {
-                            bbText(x + (int)(200.0 * MenuScale), y + (int)(255.0 * MenuScale), "Other difficulty factors: Normal");
+                            bbText(x + (int)(200.f * MenuScale), y + (int)(255.f * MenuScale), "Other difficulty factors: Normal");
                         } break;
                         case HARD: {
-                            bbText(x + (int)(200.0 * MenuScale), y + (int)(255.0 * MenuScale), "Other difficulty factors: Hard");
+                            bbText(x + (int)(200.f * MenuScale), y + (int)(255.f * MenuScale), "Other difficulty factors: Hard");
                         } break;
                     }
                 } else {
-                    RowText(SelectedDifficulty->description, x+(int)(160.0*MenuScale), y+(int)(160.0*MenuScale), (int)((410.0-20.0)*MenuScale), (int)(200.0*MenuScale));
+                    RowText(SelectedDifficulty->description, x+(int)(160.f*MenuScale), y+(int)(160.f*MenuScale), (int)((410.f-20.f)*MenuScale), (int)(200.f*MenuScale));
                 }
 
-                DrawUIButton(x, y + height + (int)(20.0 * MenuScale), (int)(160.0 * MenuScale), (int)(70.0 * MenuScale), "Load map", false);
+                DrawUIButton(x, y + height + (int)(20.f * MenuScale), (int)(160.f * MenuScale), (int)(70.f * MenuScale), "Load map", false);
 
                 bbSetFont(uiAssets->font[1]);
 
-                DrawUIButton(x + (int)(420.0 * MenuScale), y + height + (int)(20.0 * MenuScale), (int)(160.0 * MenuScale), (int)(70.0 * MenuScale), "START", false);
+                DrawUIButton(x + (int)(420.f * MenuScale), y + height + (int)(20.f * MenuScale), (int)(160.f * MenuScale), (int)(70.f * MenuScale), "START", false);
                 //[End Block]
                 //load game
             } break;
             case GAMESUBSTATE_MAINMENU_LOADGAME: {
                 //[Block]
 
-                y = y + height + (int)(20.0 * MenuScale);
-                width = (int)(580.0 * MenuScale);
-                height = (int)(300.0 * MenuScale);
+                y = y + height + (int)(20.f * MenuScale);
+                width = (int)(580.f * MenuScale);
+                height = (int)(300.f * MenuScale);
 
                 DrawFrame(x, y, width, height);
 
-                x = (int)(159.0 * MenuScale);
-                y = (int)(286.0 * MenuScale);
+                x = (int)(159.f * MenuScale);
+                y = (int)(286.f * MenuScale);
 
-                width = (int)(400.0 * MenuScale);
-                height = (int)(70.0 * MenuScale);
+                width = (int)(400.f * MenuScale);
+                height = (int)(70.f * MenuScale);
 
                 bbColor(255, 255, 255);
                 bbSetFont(uiAssets->font[1]);
                 bbText(x + width / 2, y + height / 2, "LOAD GAME", true, true);
 
-                x = (int)(160.0 * MenuScale);
-                y = y + height + (int)(20.0 * MenuScale);
-                width = (int)(580.0 * MenuScale);
-                height = (int)(296.0 * MenuScale);
+                x = (int)(160.f * MenuScale);
+                y = y + height + (int)(20.f * MenuScale);
+                width = (int)(580.f * MenuScale);
+                height = (int)(296.f * MenuScale);
 
                 bbSetFont(uiAssets->font[0]);
 
                 //				If (SaveGameAmount = 0) Then
-                bbText(x + (int)(20.0 * MenuScale), y + (int)(20.0 * MenuScale), "No saved games.");
+                bbText(x + (int)(20.f * MenuScale), y + (int)(20.f * MenuScale), "No saved games.");
                 //				Else
-                //					x = x + (int)(20.0 * MenuScale)
-                //					y = y + (int)(20.0 * MenuScale)
+                //					x = x + (int)(20.f * MenuScale)
+                //					y = y + (int)(20.f * MenuScale)
                 //					For i = 1 To SaveGameAmount
-                //						DrawFrame(x,y,(int)(540.0*MenuScale), (int)(70.0*MenuScale))
+                //						DrawFrame(x,y,(int)(540.f*MenuScale), (int)(70.f*MenuScale))
                 //
-                //						Text(x + (int)(20.0 * MenuScale), y + (int)(10.0 * MenuScale), SaveGames(i - 1))
-                //						Text(x + (int)(20.0 * MenuScale), y + (int)((10.0+23.0) * MenuScale), SaveGameTime(i - 1))
-                //						Text(x + (int)(120.0 * MenuScale), y + (int)((10.0+23.0) * MenuScale), SaveGameDate(i - 1))
+                //						Text(x + (int)(20.f * MenuScale), y + (int)(10.f * MenuScale), SaveGames(i - 1))
+                //						Text(x + (int)(20.f * MenuScale), y + (int)((10.f+23.f) * MenuScale), SaveGameTime(i - 1))
+                //						Text(x + (int)(120.f * MenuScale), y + (int)((10.f+23.f) * MenuScale), SaveGameDate(i - 1))
                 //
                 //						If (SaveMSG = "") Then
-                //							DrawUIButton(x + (int)(280.0 * MenuScale), y + (int)(20.0 * MenuScale), (int)(100.0 * MenuScale), (int)(30.0 * MenuScale), "Load", False)
+                //							DrawUIButton(x + (int)(280.f * MenuScale), y + (int)(20.f * MenuScale), (int)(100.f * MenuScale), (int)(30.f * MenuScale), "Load", False)
                 //
-                //							DrawUIButton(x + (int)(400.0 * MenuScale), y + (int)(20.0 * MenuScale), (int)(100.0 * MenuScale), (int)(30.0 * MenuScale), "Delete", False)
+                //							DrawUIButton(x + (int)(400.f * MenuScale), y + (int)(20.f * MenuScale), (int)(100.f * MenuScale), (int)(30.f * MenuScale), "Delete", False)
                 //
                 //						Else
-                //							DrawFrame(x + (int)(280.0 * MenuScale), y + (int)(20.0 * MenuScale), (int)(100.0 * MenuScale), (int)(30.0 * MenuScale))
+                //							DrawFrame(x + (int)(280.f * MenuScale), y + (int)(20.f * MenuScale), (int)(100.f * MenuScale), (int)(30.f * MenuScale))
                 //							Color(100, 100, 100)
-                //							Text(x + (int)(330.0 * MenuScale), y + (int)(35.0 * MenuScale), "Load", True, True)
+                //							Text(x + (int)(330.f * MenuScale), y + (int)(35.f * MenuScale), "Load", True, True)
                 //
-                //							DrawFrame(x + (int)(400.0 * MenuScale), y + (int)(20.0 * MenuScale), (int)(100.0 * MenuScale), (int)(30.0 * MenuScale))
+                //							DrawFrame(x + (int)(400.f * MenuScale), y + (int)(20.f * MenuScale), (int)(100.f * MenuScale), (int)(30.f * MenuScale))
                 //							Color(100, 100, 100)
-                //							Text(x + (int)(450.0 * MenuScale), y + (int)(35.0 * MenuScale), "Delete", True, True)
+                //							Text(x + (int)(450.f * MenuScale), y + (int)(35.f * MenuScale), "Delete", True, True)
                 //						EndIf
                 //
-                //						y = y + (int)(80.0 * MenuScale)
+                //						y = y + (int)(80.f * MenuScale)
                 //
                 //					Next
                 //
                 //					If (SaveMSG <> "") Then
                 //						x = userOptions\screenWidth / 2
                 //						y = userOptions\screenHeight / 2
-                //						DrawFrame(x, y, (int)(400.0 * MenuScale), (int)(200.0 * MenuScale))
-                //						Text(x + (int)(20.0 * MenuScale), y + (int)(15.0 * MenuScale), "Are you sure you want to delete this save?")
-                //						DrawUIButton(x + (int)(250.0 * MenuScale), y + (int)(150.0 * MenuScale), (int)(100.0 * MenuScale), (int)(30.0 * MenuScale), "Yes", False)
-                //						DrawUIButton(x + (int)(50.0 * MenuScale), y + (int)(150.0 * MenuScale), (int)(100.0 * MenuScale), (int)(30.0 * MenuScale), "No", False)
+                //						DrawFrame(x, y, (int)(400.f * MenuScale), (int)(200.f * MenuScale))
+                //						Text(x + (int)(20.f * MenuScale), y + (int)(15.f * MenuScale), "Are you sure you want to delete this save?")
+                //						DrawUIButton(x + (int)(250.f * MenuScale), y + (int)(150.f * MenuScale), (int)(100.f * MenuScale), (int)(30.f * MenuScale), "Yes", False)
+                //						DrawUIButton(x + (int)(50.f * MenuScale), y + (int)(150.f * MenuScale), (int)(100.f * MenuScale), (int)(30.f * MenuScale), "No", False)
                 //					EndIf
                 //				EndIf
 
@@ -735,20 +735,20 @@ void DrawMainMenu() {
             case GAMESUBSTATE_MAINMENU_OPTIONS: {
                 //[Block]
 
-                x = (int)(159.0 * MenuScale);
-                y = (int)(286.0 * MenuScale);
+                x = (int)(159.f * MenuScale);
+                y = (int)(286.f * MenuScale);
 
-                width = (int)(400.0 * MenuScale);
-                height = (int)(70.0 * MenuScale);
+                width = (int)(400.f * MenuScale);
+                height = (int)(70.f * MenuScale);
 
                 bbColor(255, 255, 255);
                 bbSetFont(uiAssets->font[1]);
                 bbText(x + width / 2, y + height / 2, "OPTIONS", true, true);
 
-                x = (int)(160.0 * MenuScale);
-                y = y + height + (int)(20.0 * MenuScale);
-                width = (int)(580.0 * MenuScale);
-                height = (int)(60.0 * MenuScale);
+                x = (int)(160.f * MenuScale);
+                y = y + height + (int)(20.f * MenuScale);
+                width = (int)(580.f * MenuScale);
+                height = (int)(60.f * MenuScale);
                 DrawFrame(x, y, width, height);
                 //				DrawUIButton(x+20*MenuScale,y+15*MenuScale,width/5,height/2, "GRAPHICS", False)
                 //				DrawUIButton(x+160*MenuScale,y+15*MenuScale,width/5,height/2, "AUDIO", False)
@@ -765,7 +765,7 @@ void DrawMainMenu() {
                 //					Rect(x+440*MenuScale,y+15*MenuScale,width/5,height/2,False)
                 //				EndIf
                 bbSetFont(uiAssets->font[0]);
-                y = y + (int)(70.0 * MenuScale);
+                y = y + (int)(70.f * MenuScale);
 
                 //				If MainMenuTab = 3 ;Graphics
                 //					;[Block]
@@ -795,7 +795,7 @@ void DrawMainMenu() {
                 //
                 //					y=y+40*MenuScale
                 //
-                //					DrawSlideBar(x + 310*MenuScale, y+6*MenuScale, 150*MenuScale, userOptions\screenGamma*50.0)
+                //					DrawSlideBar(x + 310*MenuScale, y+6*MenuScale, 150*MenuScale, userOptions\screenGamma*50.f)
                 //					Color(255,255,255)
                 //					Text(x + 20 * MenuScale, y, "Screen gamma")
                 //
@@ -819,13 +819,13 @@ void DrawMainMenu() {
                 //
                 //					y = y + 20*MenuScale
                 //
-                //					DrawSlideBar(x + 310*MenuScale, y-4*MenuScale, 150*MenuScale, userOptions\musicVolume*100.0)
+                //					DrawSlideBar(x + 310*MenuScale, y-4*MenuScale, 150*MenuScale, userOptions\musicVolume*100.f)
                 //					Color(255,255,255)
                 //					Text(x + 20 * MenuScale, y, "Music volume:")
                 //
                 //					y = y + 40*MenuScale
                 //
-                //					DrawSlideBar(x + 310*MenuScale, y-4*MenuScale, 150*MenuScale, userOptions\soundVolume*100.0)
+                //					DrawSlideBar(x + 310*MenuScale, y-4*MenuScale, 150*MenuScale, userOptions\soundVolume*100.f)
                 //					Color(255,255,255)
                 //					Text(x + 20 * MenuScale, y, "Sound volume:")
                 //					;[End Block]
@@ -836,7 +836,7 @@ void DrawMainMenu() {
                 //
                 //					y = y + 20*MenuScale
                 //
-                //					DrawSlideBar(x + 310*MenuScale, y-4*MenuScale, 150*MenuScale, (userOptions\mouseSensitivity+0.5)*100.0)
+                //					DrawSlideBar(x + 310*MenuScale, y-4*MenuScale, 150*MenuScale, (userOptions\mouseSensitivity+0.5)*100.f)
                 //					Color(255, 255, 255)
                 //					Text(x + 20 * MenuScale, y, "Mouse sensitivity:")
                 //
@@ -897,7 +897,7 @@ void DrawMainMenu() {
                 //					Color(255,255,255)
                 //					Text(x + 20 * MenuScale, y, "Framelimit:")
                 //					Color(255,255,255)
-                //					DrawUITick(x + 310 * MenuScale, y, CurrFrameLimit > 0.0)
+                //					DrawUITick(x + 310 * MenuScale, y, CurrFrameLimit > 0.f)
                 //
                 //					y = y + 80*MenuScale
                 //
@@ -908,44 +908,44 @@ void DrawMainMenu() {
             } break;
             case GAMESUBSTATE_MAINMENU_CUSTOMMAP: {
                 //[Block]
-                y = y + height + (int)(20.0 * MenuScale);
-                width = (int)(580.0 * MenuScale);
-                height = (int)(350.0 * MenuScale);
+                y = y + height + (int)(20.f * MenuScale);
+                width = (int)(580.f * MenuScale);
+                height = (int)(350.f * MenuScale);
 
                 DrawFrame(x, y, width, height);
 
-                x = (int)(159.0 * MenuScale);
-                y = (int)(286.0 * MenuScale);
+                x = (int)(159.f * MenuScale);
+                y = (int)(286.f * MenuScale);
 
-                width = (int)(400.0 * MenuScale);
-                height = (int)(70.0 * MenuScale);
+                width = (int)(400.f * MenuScale);
+                height = (int)(70.f * MenuScale);
 
                 bbColor(255, 255, 255);
                 bbSetFont(uiAssets->font[1]);
                 bbText(x + width / 2, y + height / 2, "LOAD MAP", true, true);
                 bbSetFont(uiAssets->font[0]);
 
-                x = (int)(160.0 * MenuScale);
-                y = y + height + (int)(20.0 * MenuScale);
-                width = (int)(580.0 * MenuScale);
-                height = (int)(350.0 * MenuScale);
+                x = (int)(160.f * MenuScale);
+                y = y + height + (int)(20.f * MenuScale);
+                width = (int)(580.f * MenuScale);
+                height = (int)(350.f * MenuScale);
 
                 bbSetFont(uiAssets->font[0]);
 
                 //				If (SavedMaps(0)="") Then
-                bbText(x + (int)(20.0 * MenuScale), y + (int)(20.0 * MenuScale), "No saved maps. Use the Map Creator to create new maps.");
+                bbText(x + (int)(20.f * MenuScale), y + (int)(20.f * MenuScale), "No saved maps. Use the Map Creator to create new maps.");
                 //				Else
-                //					x = x + (int)(20.0 * MenuScale)
-                //					y = y + (int)(20.0 * MenuScale)
+                //					x = x + (int)(20.f * MenuScale)
+                //					y = y + (int)(20.f * MenuScale)
                 //					For i = 0 To MAXSAVEDMAPS-1
                 //						If (SavedMaps(i)<>"") Then
                 //
-                //							DrawUIButton(x + (int)(20.0 * MenuScale), y + (int)(20.0 * MenuScale), (int)(170.0 * MenuScale), (int)(25.0 * MenuScale), SavedMaps(i), False)
+                //							DrawUIButton(x + (int)(20.f * MenuScale), y + (int)(20.f * MenuScale), (int)(170.f * MenuScale), (int)(25.f * MenuScale), SavedMaps(i), False)
                 //
-                //							y=y+(int)(30.0*MenuScale)
-                //							If (y > (int)((286.0+230.0) * MenuScale)) Then
-                //								y = (int)(286.0*MenuScale + 2.0*MenuScale)
-                //								x = x+(int)(175.0*MenuScale)
+                //							y=y+(int)(30.f*MenuScale)
+                //							If (y > (int)((286.f+230.f) * MenuScale)) Then
+                //								y = (int)(286.f*MenuScale + 2.f*MenuScale)
+                //								x = x+(int)(175.f*MenuScale)
                 //							EndIf
                 //						Else
                 //							Exit

@@ -38,8 +38,8 @@ void FillRoom_cont_914_1(Room* r) {
     //, Bump
     int t1;
 
-    r->doors[2] = CreateDoor(r->x, 0, r->z-368.0*RoomScale, 0, r, true, DOOR_TYPE_CONT, r->roomTemplate->name);
-    bbPositionEntity(r->doors[2]->buttons[0], r->x - 496.0 * RoomScale, 0.7, r->z - 272.0 * RoomScale, true);
+    r->doors[2] = CreateDoor(r->x, 0, r->z-368.f*RoomScale, 0, r, true, DOOR_TYPE_CONT, r->roomTemplate->name);
+    bbPositionEntity(r->doors[2]->buttons[0], r->x - 496.f * RoomScale, 0.7, r->z - 272.f * RoomScale, true);
     bbTurnEntity(r->doors[2]->buttons[0], 0, 90, 0);
 
     r->objects[0] = bbLoadMesh("GFX/Map/914key.b3d");
@@ -50,12 +50,12 @@ void FillRoom_cont_914_1(Room* r) {
         bbEntityPickMode(r->objects[i], 2);
     }
 
-    bbPositionEntity(r->objects[0], r->x, r->y + 190.0 * RoomScale, r->z + 374.0 * RoomScale);
-    bbPositionEntity(r->objects[1], r->x, r->y + 230.0 * RoomScale, r->z + 374.0 * RoomScale);
+    bbPositionEntity(r->objects[0], r->x, r->y + 190.f * RoomScale, r->z + 374.f * RoomScale);
+    bbPositionEntity(r->objects[1], r->x, r->y + 230.f * RoomScale, r->z + 374.f * RoomScale);
     bbEntityParent(r->objects[0], r->obj);
     bbEntityParent(r->objects[1], r->obj);
 
-    d = CreateDoor(r->x - 624.0 * RoomScale, 0.0, r->z + 528.0 * RoomScale, 180, r, true);
+    d = CreateDoor(r->x - 624.f * RoomScale, 0.f, r->z + 528.f * RoomScale, 180, r, true);
     bbFreeEntity(d->obj2);
     d->obj2 = 0;
     bbFreeEntity(d->buttons[0]);
@@ -65,7 +65,7 @@ void FillRoom_cont_914_1(Room* r) {
     r->doors[0] = d;
     d->autoClose = false;
 
-    d = CreateDoor(r->x + 816.0 * RoomScale, 0.0, r->z + 528.0 * RoomScale, 180, r, true);
+    d = CreateDoor(r->x + 816.f * RoomScale, 0.f, r->z + 528.f * RoomScale, 180, r, true);
     bbFreeEntity(d->obj2);
     d->obj2 = 0;
     bbFreeEntity(d->buttons[0]);
@@ -77,19 +77,19 @@ void FillRoom_cont_914_1(Room* r) {
 
     r->objects[2] = bbCreatePivot();
     r->objects[3] = bbCreatePivot();
-    bbPositionEntity(r->objects[2], r->x - 712.0 * RoomScale, 0.5, r->z + 640.0 * RoomScale);
-    bbPositionEntity(r->objects[3], r->x + 728.0 * RoomScale, 0.5, r->z + 640.0 * RoomScale);
+    bbPositionEntity(r->objects[2], r->x - 712.f * RoomScale, 0.5, r->z + 640.f * RoomScale);
+    bbPositionEntity(r->objects[3], r->x + 728.f * RoomScale, 0.5, r->z + 640.f * RoomScale);
     bbEntityParent(r->objects[2], r->obj);
     bbEntityParent(r->objects[3], r->obj);
 
-    it = CreatePaper("914_organic", r->x +954.0 * RoomScale, r->y +228.0 * RoomScale, r->z + 127.0 * RoomScale);
+    it = CreatePaper("914_organic", r->x +954.f * RoomScale, r->y +228.f * RoomScale, r->z + 127.f * RoomScale);
     bbEntityParent(it->collider, r->obj);
 
-    it = CreateItem("firstaid", r->x + 960.0 * RoomScale, r->y + 112.0 * RoomScale, r->z - 40.0 * RoomScale);
+    it = CreateItem("firstaid", r->x + 960.f * RoomScale, r->y + 112.f * RoomScale, r->z - 40.f * RoomScale);
     bbEntityParent(it->collider, r->obj);
     bbRotateEntity(it->collider, 0, 90, 0);
 
-    it = CreatePaper("drL4", r->x - 928.0 * RoomScale, 160.0 * RoomScale, r->z - 160.0 * RoomScale);
+    it = CreatePaper("drL4", r->x - 928.f * RoomScale, 160.f * RoomScale, r->z - 160.f * RoomScale);
     bbEntityParent(it->collider, r->obj);
 }
 
@@ -130,7 +130,7 @@ void UpdateEvent_cont_914_1(Event* e) {
             e->loaded = true;
         }
 
-        bbEntityPick(mainPlayer->cam, 1.0);
+        bbEntityPick(mainPlayer->cam, 1.f);
         if (bbPickedEntity() == e->room->objects[0]) {
             DrawHandIcon = true;
             if (MouseHit1) {
@@ -158,7 +158,7 @@ void UpdateEvent_cont_914_1(Event* e) {
                         mainPlayer->drawDirectionalArrow[1] = true;
 
                         if (angle < 90) {
-                            bbRotateEntity(mainPlayer->grabbedEntity, 0, 0, 361.0);
+                            bbRotateEntity(mainPlayer->grabbedEntity, 0, 0, 361.f);
                         } else if ((angle < 180)) {
                             bbRotateEntity(mainPlayer->grabbedEntity, 0, 0, 180);
                         }
@@ -168,8 +168,8 @@ void UpdateEvent_cont_914_1(Event* e) {
                                 it = Item::getObject(iterator167);
 
                                 if (it->collider != 0 & it->picked == false) {
-                                    if (abs(bbEntityX(it->collider) - (e->room->x - 712.0 * RoomScale)) < 200.0) {
-                                        if (abs(bbEntityY(it->collider) - (e->room->y + 648.0 * RoomScale)) < 104.0) {
+                                    if (abs(bbEntityX(it->collider) - (e->room->x - 712.f * RoomScale)) < 200.f) {
+                                        if (abs(bbEntityY(it->collider) - (e->room->y + 648.f * RoomScale)) < 104.f) {
                                             e->eventState = 1;
                                             e->soundChannels[0] = PlayRangedSound(e->sounds[0], mainPlayer->cam, e->room->objects[1]);
                                             break;
@@ -190,7 +190,7 @@ void UpdateEvent_cont_914_1(Event* e) {
 
                         if (angle > 90) {
                             if (angle < 180) {
-                                bbRotateEntity(mainPlayer->grabbedEntity, 0, 0, 90.0);
+                                bbRotateEntity(mainPlayer->grabbedEntity, 0, 0, 90.f);
                             } else if ((angle < 270)) {
                                 bbRotateEntity(mainPlayer->grabbedEntity, 0, 0, 270);
                             }
@@ -231,7 +231,7 @@ void UpdateEvent_cont_914_1(Event* e) {
             if (mainPlayer->grabbedEntity == e->room->objects[i]) {
                 if (!bbEntityInView(e->room->objects[i], mainPlayer->cam)) {
                     mainPlayer->grabbedEntity = 0;
-                } else if ((bbEntityDistance(e->room->objects[i], mainPlayer->cam) > 1.0)) {
+                } else if ((bbEntityDistance(e->room->objects[i], mainPlayer->cam) > 1.f)) {
                     mainPlayer->grabbedEntity = 0;
                 }
             }
@@ -245,7 +245,7 @@ void UpdateEvent_cont_914_1(Event* e) {
                 e->room->doors[0]->open = false;
             }
 
-            if (Distance(bbEntityX(mainPlayer->collider), bbEntityZ(mainPlayer->collider), bbEntityX(e->room->objects[2], true), bbEntityZ(e->room->objects[2], true)) < (170.0 * RoomScale)) {
+            if (Distance(bbEntityX(mainPlayer->collider), bbEntityZ(mainPlayer->collider), bbEntityX(e->room->objects[2], true), bbEntityZ(e->room->objects[2], true)) < (170.f * RoomScale)) {
 
                 if (setting.equals("rough") | setting.equals("coarse")) {
                     if (e->eventState > 70 * 2.6 & e->eventState - timing->tickDuration < 70 * 2.6) {
@@ -283,7 +283,7 @@ void UpdateEvent_cont_914_1(Event* e) {
             }
 
             if (e->eventState > (6 * 70)) {
-                bbRotateEntity(e->room->objects[0], bbEntityPitch(e->room->objects[0]), bbEntityYaw(e->room->objects[0]), CurveAngle(0, bbEntityRoll(e->room->objects[0]),10.0));
+                bbRotateEntity(e->room->objects[0], bbEntityPitch(e->room->objects[0]), bbEntityYaw(e->room->objects[0]), CurveAngle(0, bbEntityRoll(e->room->objects[0]),10.f));
             } else {
                 bbRotateEntity(e->room->objects[0], bbEntityPitch(e->room->objects[0]), bbEntityYaw(e->room->objects[0]), 180);
             }
@@ -293,25 +293,25 @@ void UpdateEvent_cont_914_1(Event* e) {
                     it = Item::getObject(iterator168);
 
                     if (it->collider != 0 & it->picked == false) {
-                        if (Distance(bbEntityX(it->collider), bbEntityZ(it->collider), bbEntityX(e->room->objects[2], true), bbEntityZ(e->room->objects[2], true)) < (180.0 * RoomScale)) {
+                        if (Distance(bbEntityX(it->collider), bbEntityZ(it->collider), bbEntityX(e->room->objects[2], true), bbEntityZ(e->room->objects[2], true)) < (180.f * RoomScale)) {
                             //Use914(it, setting, EntityX(e\room\objects[3], True), EntityY(e\room\objects[3], True), EntityZ(e\room\objects[3], True))
 
                         }
                     }
                 }
 
-                if (Distance(bbEntityX(mainPlayer->collider), bbEntityZ(mainPlayer->collider), bbEntityX(e->room->objects[2], true), bbEntityZ(e->room->objects[2], true)) < (160.0 * RoomScale)) {
+                if (Distance(bbEntityX(mainPlayer->collider), bbEntityZ(mainPlayer->collider), bbEntityX(e->room->objects[2], true), bbEntityZ(e->room->objects[2], true)) < (160.f * RoomScale)) {
                     if (setting.equals("coarse")) {
-                        mainPlayer->injuries = 4.0;
+                        mainPlayer->injuries = 4.f;
                         Msg = "You notice countless small incisions all around your body. They are bleeding heavily.";
                         MsgTimer = 70*8;
                     } else if (setting.equals("1:1")) {
                         userOptions->invertMouseY = (!userOptions->invertMouseY);
                     } else if (setting.equals("fine") || setting.equals("very fine")) {
-                        mainPlayer->superMan = 1.0;
+                        mainPlayer->superMan = 1.f;
                     }
                     mainPlayer->blurTimer = 1000;
-                    bbPositionEntity(mainPlayer->collider, bbEntityX(e->room->objects[3], true), bbEntityY(e->room->objects[3], true) + 1.0, bbEntityZ(e->room->objects[3], true));
+                    bbPositionEntity(mainPlayer->collider, bbEntityX(e->room->objects[3], true), bbEntityY(e->room->objects[3], true) + 1.f, bbEntityZ(e->room->objects[3], true));
                     bbResetEntity(mainPlayer->collider);
                     mainPlayer->dropSpeed = 0;
                 }

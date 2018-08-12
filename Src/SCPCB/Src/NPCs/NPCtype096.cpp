@@ -30,9 +30,9 @@ void InitializeNPCtype096(NPC* n) {
     n->obj = bbLoadAnimMesh("GFX/NPCs/scp096/scp096.b3d");
     n->sounds[2] = bbLoadSound("SFX/Door/DoorOpenFast.ogg");
 
-    n->speed = (GetINIFloat("Data/NPCs.ini", "SCP-096", "speed") / 100.0);
+    n->speed = (GetINIFloat("Data/NPCs.ini", "SCP-096", "speed") / 100.f);
 
-    float temp = (GetINIFloat("Data/NPCs.ini", "SCP-096", "scale") / 3.0);
+    float temp = (GetINIFloat("Data/NPCs.ini", "SCP-096", "scale") / 3.f);
     bbScaleEntity(n->obj, temp, temp, temp);
 
     bbMeshCullBox(n->obj, -bbMeshWidth(n->obj)*2, -bbMeshHeight(n->obj)*2, -bbMeshDepth(n->obj)*2, bbMeshWidth(n->obj)*2, bbMeshHeight(n->obj)*4, bbMeshDepth(n->obj)*4);
@@ -47,11 +47,11 @@ void UpdateNPCtype096(NPC* n) {
 
     switch ((int)n->state) {
         case 0: {
-            if (n->playerDistance < 8.0) {
+            if (n->playerDistance < 8.f) {
                 if (n->sounds[0] == 0) {
                     n->sounds[0] = bbLoadSound("SFX/Music/096.ogg");
                 } else {
-                    n->soundChannels[0] = LoopRangedSound(n->sounds[0], n->soundChannels[0], mainPlayer->cam, n->collider, 8.0, 1.0);
+                    n->soundChannels[0] = LoopRangedSound(n->sounds[0], n->soundChannels[0], mainPlayer->cam, n->collider, 8.f, 1.f);
                 }
 
                 //sitting
@@ -90,13 +90,13 @@ void UpdateNPCtype096(NPC* n) {
             }
         }
         case 4: {
-            mainPlayer->camZoom = CurveValue(Max(mainPlayer->camZoom, (bbSin((float)(TimeInPosMilliSecs())/20.0)+1.0) * 10.0),mainPlayer->camZoom,8.0);
+            mainPlayer->camZoom = CurveValue(Max(mainPlayer->camZoom, (bbSin((float)(TimeInPosMilliSecs())/20.f)+1.f) * 10.f),mainPlayer->camZoom,8.f);
 
             if (n->target == nullptr) {
                 if (n->sounds[0] == 0) {
                     n->sounds[0] = bbLoadSound("SFX/SCP/096/Scream.ogg");
                 } else {
-                    n->soundChannels[0] = LoopRangedSound(n->sounds[0], n->soundChannels[0], mainPlayer->cam, n->collider, 7.5, 1.0);
+                    n->soundChannels[0] = LoopRangedSound(n->sounds[0], n->soundChannels[0], mainPlayer->cam, n->collider, 7.5, 1.f);
                 }
 
                 if (n->sounds[1] == 0) {
@@ -108,7 +108,7 @@ void UpdateNPCtype096(NPC* n) {
                         if (!bbChannelPlaying(n->soundChannels[1])) {
                             n->soundChannels[1] = bbPlaySound(n->sounds[1]);
                         }
-                        bbChannelVolume(n->soundChannels[1], Min(Max(8.0-n->playerDistance,0.6),1.0)*userOptions->sndVolume);
+                        bbChannelVolume(n->soundChannels[1], Min(Max(8.f-n->playerDistance,0.6),1.f)*userOptions->sndVolume);
                     }
                 }
             }
@@ -140,14 +140,14 @@ void UpdateNPCtype096(NPC* n) {
                     if (n->playerDistance < 2.8 | n->frame<150) {
                         //go to the start of the jump animation
                         if (n->frame>193) {
-                            n->frame = 2.0;
+                            n->frame = 2.f;
                         }
 
                         AnimateNPC(n, 2, 193, 0.7);
                         //Animate2(n\obj, AnimTime(n\obj), 2, 193, 0.7)
 
-                        if (n->playerDistance > 1.0) {
-                            n->currSpeed = CurveValue(n->speed*2.0,n->currSpeed,15.0);
+                        if (n->playerDistance > 1.f) {
+                            n->currSpeed = CurveValue(n->speed*2.f,n->currSpeed,15.f);
                         } else {
                             n->currSpeed = 0;
 
@@ -168,7 +168,7 @@ void UpdateNPCtype096(NPC* n) {
 
                                         de = CreateDecal(bbRand(DECAL_BLOOD_DROP1, DECAL_BLOOD_DROP2), bbPickedX(), bbPickedY()+0.005, bbPickedZ(), 90, bbRand(360), 0);
                                         de->size = bbRnd(0.2,0.6);
-                                        bbEntityAlpha(de->obj, 1.0);
+                                        bbEntityAlpha(de->obj, 1.f);
                                         bbScaleSprite(de->obj, de->size, de->size);
                                     }
                                     bbFreeEntity(pvt);
@@ -189,10 +189,10 @@ void UpdateNPCtype096(NPC* n) {
                             bbPointEntity(n->obj, n->target->collider);
                         }
 
-                        bbRotateEntity(n->collider, 0, CurveAngle(bbEntityYaw(n->obj), bbEntityYaw(n->collider), 5.0), 0);
+                        bbRotateEntity(n->collider, 0, CurveAngle(bbEntityYaw(n->obj), bbEntityYaw(n->collider), 5.f), 0);
 
                         if (n->frame>1000) {
-                            n->currSpeed = CurveValue(n->speed,n->currSpeed,20.0);
+                            n->currSpeed = CurveValue(n->speed,n->currSpeed,20.f);
                         }
 
                         if (n->frame<1058) {
@@ -220,10 +220,10 @@ void UpdateNPCtype096(NPC* n) {
                         } else {
                             bbPointEntity(n->obj, n->path[n->pathLocation]->obj);
 
-                            bbRotateEntity(n->collider, 0, CurveAngle(bbEntityYaw(n->obj), bbEntityYaw(n->collider), 5.0), 0);
+                            bbRotateEntity(n->collider, 0, CurveAngle(bbEntityYaw(n->obj), bbEntityYaw(n->collider), 5.f), 0);
 
                             if (n->frame>1000) {
-                                n->currSpeed = CurveValue(n->speed*1.5,n->currSpeed,15.0);
+                                n->currSpeed = CurveValue(n->speed*1.5,n->currSpeed,15.f);
                             }
                             bbMoveEntity(n->collider, 0,0,n->currSpeed);
 
@@ -268,7 +268,7 @@ void UpdateNPCtype096(NPC* n) {
                     }
                 }
 
-                if (n->playerDistance > 32.0 | bbEntityY(n->collider)<-50) {
+                if (n->playerDistance > 32.f | bbEntityY(n->collider)<-50) {
                     if (bbRand(50)==1) {
                         TeleportCloser(n);
                     }
@@ -288,7 +288,7 @@ void UpdateNPCtype096(NPC* n) {
             if (n->sounds[0] == 0) {
                 n->sounds[0] = bbLoadSound("SFX/Music/096Angered.ogg");
             } else {
-                n->soundChannels[0] = LoopRangedSound(n->sounds[0], n->soundChannels[0], mainPlayer->cam, n->collider, 10.0, 1.0);
+                n->soundChannels[0] = LoopRangedSound(n->sounds[0], n->soundChannels[0], mainPlayer->cam, n->collider, 10.f, 1.f);
             }
 
             // get up
@@ -339,12 +339,12 @@ void UpdateNPCtype096(NPC* n) {
             }
         }
         case 5: {
-            if (n->playerDistance < 16.0) {
+            if (n->playerDistance < 16.f) {
 
                 if (n->sounds[0] == 0) {
                     n->sounds[0] = bbLoadSound("SFX/Music/096.ogg");
                 } else {
-                    n->soundChannels[0] = LoopRangedSound(n->sounds[0], n->soundChannels[0], mainPlayer->cam, n->collider, 14.0, 1.0);
+                    n->soundChannels[0] = LoopRangedSound(n->sounds[0], n->soundChannels[0], mainPlayer->cam, n->collider, 14.f, 1.f);
                 }
 
                 n->state2 = n->state2+timing->tickDuration;
@@ -358,11 +358,11 @@ void UpdateNPCtype096(NPC* n) {
 
                     //idle to walk
                     if (n->frame<1652) {
-                        n->currSpeed = CurveValue(n->speed*0.1,n->currSpeed,5.0);
+                        n->currSpeed = CurveValue(n->speed*0.1,n->currSpeed,5.f);
                         AnimateNPC(n, 1638,1652, n->currSpeed*45,false);
                         //Animate2(n\obj, AnimTime(n\obj),1638,1652, n\currSpeed*45,False)
                     } else {
-                        n->currSpeed = CurveValue(n->speed*0.1,n->currSpeed,5.0);
+                        n->currSpeed = CurveValue(n->speed*0.1,n->currSpeed,5.f);
                         //walk
                         AnimateNPC(n, 1653,1724, n->currSpeed*45);
                         //Animate2(n\obj, AnimTime(n\obj),1653,1724, n\currSpeed*45) ;walk
@@ -385,23 +385,23 @@ void UpdateNPCtype096(NPC* n) {
 
                     if (n->lastSeen) {
                         bbPointEntity(n->obj, mainPlayer->collider);
-                        bbRotateEntity(n->collider, 0, CurveAngle(bbEntityYaw(n->obj),bbEntityYaw(n->collider),130.0),0);
+                        bbRotateEntity(n->collider, 0, CurveAngle(bbEntityYaw(n->obj),bbEntityYaw(n->collider),130.f),0);
                         if (n->playerDistance < 1.5) {
                             n->state2 = 0;
                         }
                     } else {
-                        bbRotateEntity(n->collider, 0, CurveAngle(n->angle,bbEntityYaw(n->collider),50.0),0);
+                        bbRotateEntity(n->collider, 0, CurveAngle(n->angle,bbEntityYaw(n->collider),50.f),0);
                     }
                 } else {
                     //walk to idle
                     if (n->frame>1638) {
-                        n->currSpeed = CurveValue(n->speed*0.05,n->currSpeed,8.0);
+                        n->currSpeed = CurveValue(n->speed*0.05,n->currSpeed,8.f);
                         AnimateNPC(n, 1652, 1638, -n->currSpeed*45,false);
                         //Animate2(n\obj, AnimTime(n\obj),1652,1638, -n\currSpeed*45,False)
 
                         //idle
                     } else {
-                        n->currSpeed = CurveValue(0,n->currSpeed,4.0);
+                        n->currSpeed = CurveValue(0,n->currSpeed,4.f);
                         //idle
                         AnimateNPC(n, 585, 633, 0.2);
                         //Animate2(n\obj, AnimTime(n\obj),585,633, 0.2) ;idle

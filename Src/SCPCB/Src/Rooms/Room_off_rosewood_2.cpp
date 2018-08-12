@@ -37,20 +37,20 @@ void FillRoom_off_rosewood_2(Room* r) {
     //, Bump
     int t1;
 
-    d = CreateDoor(r->x + 1440.0 * RoomScale, 224.0 * RoomScale, r->z + 32.0 * RoomScale, 90, r, false, DOOR_TYPE_DEF, r->roomTemplate->name);
+    d = CreateDoor(r->x + 1440.f * RoomScale, 224.f * RoomScale, r->z + 32.f * RoomScale, 90, r, false, DOOR_TYPE_DEF, r->roomTemplate->name);
     d->autoClose = false;
     d->open = false;
 
-    it = CreateItem("scp420j", r->x + 1776.0 * RoomScale, r->y + 400.0 * RoomScale, r->z + 427.0 * RoomScale);
+    it = CreateItem("scp420j", r->x + 1776.f * RoomScale, r->y + 400.f * RoomScale, r->z + 427.f * RoomScale);
     bbEntityParent(it->collider, r->obj);
 
-    it = CreateItem("scp420j", r->x + 1808.0 * RoomScale, r->y + 400.0 * RoomScale, r->z + 435.0 * RoomScale);
+    it = CreateItem("scp420j", r->x + 1808.f * RoomScale, r->y + 400.f * RoomScale, r->z + 435.f * RoomScale);
     bbEntityParent(it->collider, r->obj);
 
-    it = CreatePaper("docWar", r->x + 2248.0 * RoomScale, r->y + 440.0 * RoomScale, r->z + 372.0 * RoomScale);
+    it = CreatePaper("docWar", r->x + 2248.f * RoomScale, r->y + 440.f * RoomScale, r->z + 372.f * RoomScale);
     bbEntityParent(it->collider, r->obj);
 
-    it = CreateItem("radio", r->x + 2240.0 * RoomScale, r->y + 320.0 * RoomScale, r->z + 128.0 * RoomScale);
+    it = CreateItem("radio", r->x + 2240.f * RoomScale, r->y + 320.f * RoomScale, r->z + 128.f * RoomScale);
     bbEntityParent(it->collider, r->obj);
 }
 

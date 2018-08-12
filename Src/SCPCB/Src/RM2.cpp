@@ -197,11 +197,11 @@ void LoadRM2(RoomTemplate* rt) {
                     b = bbReadByte(file);
 
                     bbAddVertex(surf,x,y,z);
-                    bbVertexColor(surf,i,r,g,b,1.0);
+                    bbVertexColor(surf,i,r,g,b,1.f);
                     for (j = 0; j <= 1; j++) {
                         u = bbReadFloat(file);
                         v = bbReadFloat(file);
-                        bbVertexTexCoords(surf,i,u,v,0.0,j);
+                        bbVertexTexCoords(surf,i,u,v,0.f,j);
                     }
                 }
 
@@ -231,7 +231,7 @@ void LoadRM2(RoomTemplate* rt) {
                 bbAddMesh(clonedMesh,mesh);
                 bbFreeEntity(clonedMesh);
 
-                bbEntityAlpha(mesh,0.0);
+                bbEntityAlpha(mesh,0.f);
 
                 bbEntityType(mesh,HIT_MAP);
                 collisionObjs.push_back(mesh);
@@ -268,7 +268,7 @@ void LoadRM2(RoomTemplate* rt) {
                 }
 
                 bbEntityFX(mesh,1+2);
-                bbEntityAlpha(mesh,1.0);
+                bbEntityAlpha(mesh,1.f);
                 bbEntityType(mesh,HIT_MAP);
                 bbAddMesh(mesh,opaqueMesh);
                 collisionObjs.push_back(mesh);
@@ -300,7 +300,7 @@ void LoadRM2(RoomTemplate* rt) {
                 waypointTemp->roomtemplate = rt;
                 //did some waypoint-based lifeform just say... ICE
                 //				cuboid% = CreateCube()
-                //				ScaleMesh(cuboid,60.0,60.0,60.0)
+                //				ScaleMesh(cuboid,60.f,60.f,60.f)
                 //				PositionMesh(cuboid,waypointTemp\x,waypointTemp\y,waypointTemp\z)
                 //				AddMesh(cuboid,opaqueMesh)
                 //				FreeEntity(cuboid)
@@ -328,7 +328,7 @@ void LoadRM2(RoomTemplate* rt) {
                 r = bbReadByte(file);
                 g = bbReadByte(file);
                 b = bbReadByte(file);
-                intensity = (float)(bbReadByte(file))/255.0;
+                intensity = (float)(bbReadByte(file))/255.f;
 
                 AddTempLight(rt, x,y,z, LIGHTTYPE_POINT, range, r,g,b);
                 //[End Block]
@@ -344,7 +344,7 @@ void LoadRM2(RoomTemplate* rt) {
                 r = bbReadByte(file);
                 g = bbReadByte(file);
                 b = bbReadByte(file);
-                intensity = (float)(bbReadByte(file))/255.0;
+                intensity = (float)(bbReadByte(file))/255.f;
 
                 pitch = bbReadFloat(file);
                 yaw = bbReadFloat(file);

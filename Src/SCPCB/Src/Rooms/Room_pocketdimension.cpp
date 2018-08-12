@@ -119,18 +119,18 @@ void FillRoom_pocketdimension(Room* r) {
         bbScaleEntity(r->objects[i],RoomScale,RoomScale,RoomScale);
         bbEntityType(r->objects[i], HIT_MAP);
         bbEntityPickMode(r->objects[i], 3);
-        bbPositionEntity(r->objects[i],r->x,r->y,r->z+32.0,true);
+        bbPositionEntity(r->objects[i],r->x,r->y,r->z+32.f,true);
     }
 
     bbScaleEntity(terrain,RoomScale,RoomScale,RoomScale);
     bbEntityType(terrain, HIT_MAP);
     bbEntityPickMode(terrain, 3);
-    bbPositionEntity(terrain,r->x,r->y+2944.0*RoomScale,r->z+32.0,true);
+    bbPositionEntity(terrain,r->x,r->y+2944.f*RoomScale,r->z+32.f,true);
 
-    r->doors[0] = CreateDoor(r->x,2048*RoomScale,r->z+32.0-1024*RoomScale,0,r);
-    r->doors[1] = CreateDoor(r->x,2048*RoomScale,r->z+32.0+1024*RoomScale,180,r);
+    r->doors[0] = CreateDoor(r->x,2048*RoomScale,r->z+32.f-1024*RoomScale,0,r);
+    r->doors[1] = CreateDoor(r->x,2048*RoomScale,r->z+32.f+1024*RoomScale,180,r);
 
-    de = CreateDecal(DECAL_PD6, r->x-(1536*RoomScale), 0.02,r->z+608*RoomScale+32.0, 90,0,0);
+    de = CreateDecal(DECAL_PD6, r->x-(1536*RoomScale), 0.02,r->z+608*RoomScale+32.f, 90,0,0);
     bbEntityParent(de->obj, r->obj);
     de->size = bbRnd(0.8, 0.8);
     de->blendmode = 2;
@@ -139,24 +139,24 @@ void FillRoom_pocketdimension(Room* r) {
     bbEntityFX(de->obj, 1+8);
     bbEntityBlend(de->obj, 2);
 
-    bbScaleEntity(r->objects[10],RoomScale*1.5,RoomScale*2.0,RoomScale*1.5,true);
-    bbPositionEntity(r->objects[11],r->x,r->y,r->z+64.0,true);
+    bbScaleEntity(r->objects[10],RoomScale*1.5,RoomScale*2.f,RoomScale*1.5,true);
+    bbPositionEntity(r->objects[11],r->x,r->y,r->z+64.f,true);
 
     for (i = 0; i <= 7; i++) {
         //CopyMesh
         r->objects[i] = bbCopyMeshModelEntity(hallway);
         bbScaleEntity(r->objects[i],RoomScale,RoomScale,RoomScale);
-        angle = i * (360.0/8.0);
+        angle = i * (360.f/8.f);
 
         bbEntityType(r->objects[i], HIT_MAP);
         bbEntityPickMode(r->objects[i], 3);
 
         bbRotateEntity(r->objects[i],0,angle-90,0);
-        bbPositionEntity(r->objects[i],r->x+bbCos(angle)*(512.0*RoomScale),0.0,r->z+bbSin(angle)*(512.0*RoomScale));
+        bbPositionEntity(r->objects[i],r->x+bbCos(angle)*(512.f*RoomScale),0.f,r->z+bbSin(angle)*(512.f*RoomScale));
         bbEntityParent(r->objects[i], r->obj);
 
         if (i < 5) {
-            de = CreateDecal(i+DECAL_PD1, r->x+bbCos(angle)*(512.0*RoomScale)*3.0, 0.02,r->z+bbSin(angle)*(512.0*RoomScale)*3.0, 90,angle-90,0);
+            de = CreateDecal(i+DECAL_PD1, r->x+bbCos(angle)*(512.f*RoomScale)*3.f, 0.02,r->z+bbSin(angle)*(512.f*RoomScale)*3.f, 90,angle-90,0);
             de->size = bbRnd(0.5, 0.5);
             de->blendmode = 2;
             de->fx = 1+8;
@@ -170,19 +170,19 @@ void FillRoom_pocketdimension(Room* r) {
         r->objects[i] = bbCreatePivot(r->objects[11]);
         switch (i) {
             case 12: {
-                bbPositionEntity(r->objects[i],r->x,r->y+200*RoomScale,r->z+64.0,true);
+                bbPositionEntity(r->objects[i],r->x,r->y+200*RoomScale,r->z+64.f,true);
             } break;
             case 13: {
-                bbPositionEntity(r->objects[i],r->x+390*RoomScale,r->y+200*RoomScale,r->z+64.0+272*RoomScale,true);
+                bbPositionEntity(r->objects[i],r->x+390*RoomScale,r->y+200*RoomScale,r->z+64.f+272*RoomScale,true);
             } break;
             case 14: {
-                bbPositionEntity(r->objects[i],r->x+838*RoomScale,r->y+200*RoomScale,r->z+64.0-551*RoomScale,true);
+                bbPositionEntity(r->objects[i],r->x+838*RoomScale,r->y+200*RoomScale,r->z+64.f-551*RoomScale,true);
             } break;
             case 15: {
-                bbPositionEntity(r->objects[i],r->x-139*RoomScale,r->y+200*RoomScale,r->z+64.0+1201*RoomScale,true);
+                bbPositionEntity(r->objects[i],r->x-139*RoomScale,r->y+200*RoomScale,r->z+64.f+1201*RoomScale,true);
             } break;
             case 16: {
-                bbPositionEntity(r->objects[i],r->x-1238*RoomScale,r->y-1664*RoomScale,r->z+64.0+381*RoomScale,true);
+                bbPositionEntity(r->objects[i],r->x-1238*RoomScale,r->y-1664*RoomScale,r->z+64.f+381*RoomScale,true);
             } break;
         }
 
@@ -201,7 +201,7 @@ void FillRoom_pocketdimension(Room* r) {
     //r->objects[19] = bbLoadTexture("GFX/npcs/pdplaneeye.png", 1+2);
 
     //r->objects[20] = bbCreateSprite();
-    //bbScaleSprite(r->objects[20], 8.0, 8.0);
+    //bbScaleSprite(r->objects[20], 8.f, 8.f);
     //bbEntityTexture(r->objects[20], r->objects[18]);
     //bbEntityOrder(r->objects[20], 100);
     //bbEntityBlend(r->objects[20], 2);
@@ -283,11 +283,11 @@ void UpdateEvent_pocketdimension(Event* e) {
         //		ShouldPlay = 0
         //	EndIf
 
-        bbScaleEntity(e->room->obj,RoomScale, RoomScale*(1.0 + bbSin(e->eventState/14.0)*0.2), RoomScale);
+        bbScaleEntity(e->room->obj,RoomScale, RoomScale*(1.f + bbSin(e->eventState/14.f)*0.2), RoomScale);
         for (i = 0; i <= 7; i++) {
-            bbScaleEntity(e->room->objects[i],RoomScale*(1.0 + abs(bbSin(e->eventState/21.0+i*45.0)*0.1)),RoomScale*(1.0 + bbSin(e->eventState/14.0+i*20.0)*0.1), RoomScale,true);
+            bbScaleEntity(e->room->objects[i],RoomScale*(1.f + abs(bbSin(e->eventState/21.f+i*45.f)*0.1)),RoomScale*(1.f + bbSin(e->eventState/14.f+i*20.f)*0.1), RoomScale,true);
         }
-        bbScaleEntity(e->room->objects[9],RoomScale*(1.5 + abs(bbSin(e->eventState/21.0+i*45.0)*0.1)),RoomScale*(1.0 + bbSin(e->eventState/14.0+i*20.0)*0.1), RoomScale,true);
+        bbScaleEntity(e->room->objects[9],RoomScale*(1.5 + abs(bbSin(e->eventState/21.f+i*45.f)*0.1)),RoomScale*(1.f + bbSin(e->eventState/14.f+i*20.f)*0.1), RoomScale,true);
 
         e->eventState = e->eventState + timing->tickDuration;
 
@@ -304,9 +304,9 @@ void UpdateEvent_pocketdimension(Event* e) {
                 //106 circles around the starting room
             } else if ((Curr106->state > 0)) {
                 angle = modFloat(e->eventState/10, 360);
-                bbPositionEntity(Curr106->collider, bbEntityX(e->room->obj), 0.2+0.35+bbSin(e->eventState/14.0+i*20.0)*0.4, bbEntityX(e->room->obj));
+                bbPositionEntity(Curr106->collider, bbEntityX(e->room->obj), 0.2+0.35+bbSin(e->eventState/14.f+i*20.f)*0.4, bbEntityX(e->room->obj));
                 bbRotateEntity(Curr106->collider, 0,angle,0);
-                bbMoveEntity(Curr106->collider,0,0,6.0-bbSin(e->eventState/10.0));
+                bbMoveEntity(Curr106->collider,0,0,6.f-bbSin(e->eventState/10.f));
                 AnimateNPC(Curr106, 55, 104, 0.5);
                 bbRotateEntity(Curr106->collider, 0,angle+90,0);
                 Curr106->idle = true;
@@ -322,12 +322,12 @@ void UpdateEvent_pocketdimension(Event* e) {
         //in the second room
         if (e->eventState2 == 1) {
 
-            bbPositionEntity(e->room->objects[9], bbEntityX(e->room->objects[8],true)+3384*RoomScale, 0.0, bbEntityZ(e->room->objects[8],true));
+            bbPositionEntity(e->room->objects[9], bbEntityX(e->room->objects[8],true)+3384*RoomScale, 0.f, bbEntityZ(e->room->objects[8],true));
 
             bbTranslateEntity(e->room->objects[9], bbCos(e->eventState*0.8)*5, 0, bbSin(e->eventState*1.6)*4, true);
             bbRotateEntity(e->room->objects[9],0,e->eventState * 2,0);
 
-            bbPositionEntity(e->room->objects[10], bbEntityX(e->room->objects[8],true), 0.0, bbEntityZ(e->room->objects[8],true)+3384*RoomScale);
+            bbPositionEntity(e->room->objects[10], bbEntityX(e->room->objects[8],true), 0.f, bbEntityZ(e->room->objects[8],true)+3384*RoomScale);
 
             bbTranslateEntity(e->room->objects[10], bbSin(e->eventState*1.6)*4, 0, bbCos(e->eventState*0.8)*5, true);
             bbRotateEntity(e->room->objects[10],0,e->eventState * 2,0);
@@ -340,12 +340,12 @@ void UpdateEvent_pocketdimension(Event* e) {
                     e->eventState3 = 2;
                 }
 
-                if (bbEntityY(mainPlayer->collider)<5.0) {
+                if (bbEntityY(mainPlayer->collider)<5.f) {
                     e->eventState3 = 0;
                 }
             } else {
                 //the trenches
-                if (bbEntityY(mainPlayer->collider)>6.0) {
+                if (bbEntityY(mainPlayer->collider)>6.f) {
                     //ShouldPlay = 15
                     //If (Music(15)=0) Then Music(15) = LoadSound("SFX/Music/PDTrench.ogg") ;TODO: fix
 
@@ -355,16 +355,16 @@ void UpdateEvent_pocketdimension(Event* e) {
                     if (bbEntityX(e->room->objects[20],true)<bbEntityX(e->room->objects[8],true)-4000*RoomScale) {
                         e->soundChannels[1] = bbPlaySound(e->sounds[1]);
 
-                        bbPositionEntity(e->room->objects[20], bbEntityX(mainPlayer->collider,true)+4000*RoomScale, 12.0, bbEntityZ(mainPlayer->collider,true));
+                        bbPositionEntity(e->room->objects[20], bbEntityX(mainPlayer->collider,true)+4000*RoomScale, 12.f, bbEntityZ(mainPlayer->collider,true));
                     }
 
-                    bbMoveEntity(mainPlayer->collider, 0, Min((12.0 - bbEntityY(mainPlayer->collider)),0.0)*timing->tickDuration, 0);
+                    bbMoveEntity(mainPlayer->collider, 0, Min((12.f - bbEntityY(mainPlayer->collider)),0.f)*timing->tickDuration, 0);
 
-                    x = -timing->tickDuration*RoomScale*4.0;
-                    y = (17.0-abs(bbEntityX(mainPlayer->collider)-bbEntityX(e->room->objects[20]))*0.5)-bbEntityY(e->room->objects[20]);
+                    x = -timing->tickDuration*RoomScale*4.f;
+                    y = (17.f-abs(bbEntityX(mainPlayer->collider)-bbEntityX(e->room->objects[20]))*0.5)-bbEntityY(e->room->objects[20]);
                     z = bbEntityZ(mainPlayer->collider,true)-bbEntityZ(e->room->objects[20]);
                     bbTranslateEntity(e->room->objects[20], x, y, z,true);
-                    bbRotateEntity(e->room->objects[20], -90-(bbEntityX(mainPlayer->collider)-bbEntityX(e->room->objects[20]))*1.5, -90.0, 0.0, true);
+                    bbRotateEntity(e->room->objects[20], -90-(bbEntityX(mainPlayer->collider)-bbEntityX(e->room->objects[20]))*1.5, -90.f, 0.f, true);
 
 
                     //check if the plane can see the player
@@ -397,29 +397,29 @@ void UpdateEvent_pocketdimension(Event* e) {
                     dist = bbEntityDistance(mainPlayer->collider, e->room->objects[20]);
 
                     if (e->soundChannels[1]!=0 & bbChannelPlaying(e->soundChannels[1])) {
-                        e->soundChannels[1] = LoopRangedSound(e->sounds[1], e->soundChannels[1], mainPlayer->cam, mainPlayer->cam, 10.0, 0.3+(!safe)*0.6);
+                        e->soundChannels[1] = LoopRangedSound(e->sounds[1], e->soundChannels[1], mainPlayer->cam, mainPlayer->cam, 10.f, 0.3+(!safe)*0.6);
                     }
                     // TODO: Fix.
                     //if (safe) {
                     //    bbEntityTexture(e->room->objects[20], e->room->objects[18]);
-                    //} else if (dist < 8.0) {
-                    //    e->soundChannels[0] = LoopRangedSound(e->sounds[0], e->soundChannels[0], mainPlayer->cam, e->room->objects[20], 8.0);
+                    //} else if (dist < 8.f) {
+                    //    e->soundChannels[0] = LoopRangedSound(e->sounds[0], e->soundChannels[0], mainPlayer->cam, e->room->objects[20], 8.f);
                     //    bbEntityTexture(e->room->objects[20], e->room->objects[19]);
-                    //    mainPlayer->injuries = mainPlayer->injuries+(8.0-dist)*timing->tickDuration*0.001;
+                    //    mainPlayer->injuries = mainPlayer->injuries+(8.f-dist)*timing->tickDuration*0.001;
 
-                    //    if (dist<7.0) {
+                    //    if (dist<7.f) {
                     //        pvt = bbCreatePivot();
                     //        bbPositionEntity(pvt, bbEntityX(mainPlayer->cam), bbEntityY(mainPlayer->cam), bbEntityZ(mainPlayer->cam));
                     //        bbPointEntity(pvt, e->room->objects[20]);
                     //        bbTurnEntity(pvt, 90, 0, 0);
-                    //        mainPlayer->headPitch = CurveAngle(bbEntityPitch(pvt), mainPlayer->headPitch + 90.0, 10.0);
+                    //        mainPlayer->headPitch = CurveAngle(bbEntityPitch(pvt), mainPlayer->headPitch + 90.f, 10.f);
                     //        mainPlayer->headPitch = mainPlayer->headPitch-90;
                     //        bbRotateEntity(mainPlayer->collider, bbEntityPitch(mainPlayer->collider), CurveAngle(bbEntityYaw(pvt), bbEntityYaw(mainPlayer->collider), 10), 0);
                     //        bbFreeEntity(pvt);
                     //    }
                     //}
 
-                    mainPlayer->camShake = Max(4.0+((!safe) * 4.0) - dist, 0.0);
+                    mainPlayer->camShake = Max(4.f+((!safe) * 4.f) - dist, 0.f);
 
                     //check if player is at the sinkhole (the exit from the trench room)
                     if (bbEntityY(mainPlayer->collider)<8.5) {
@@ -441,8 +441,8 @@ void UpdateEvent_pocketdimension(Event* e) {
 
                     for (i = 9; i <= 10; i++) {
                         dist = Distance(bbEntityX(mainPlayer->collider), bbEntityZ(mainPlayer->collider),bbEntityX(e->room->objects[i],true),bbEntityZ(e->room->objects[i],true));
-                        if (dist<6.0) {
-                            if (dist<100.0*RoomScale) {
+                        if (dist<6.f) {
+                            if (dist<100.f*RoomScale) {
                                 pvt = bbCreatePivot();
                                 bbPositionEntity(pvt, bbEntityX(e->room->objects[i],true),bbEntityY(mainPlayer->collider),bbEntityZ(e->room->objects[i],true));
 
@@ -461,14 +461,14 @@ void UpdateEvent_pocketdimension(Event* e) {
                                     Kill(mainPlayer);
                                 }
                             }
-                            e->soundChannels[0] = LoopRangedSound(e->sounds[0], e->soundChannels[0], mainPlayer->cam, e->room->objects[i], 6.0);
+                            e->soundChannels[0] = LoopRangedSound(e->sounds[0], e->soundChannels[0], mainPlayer->cam, e->room->objects[i], 6.f);
                         }
                     }
 
                     pvt = bbCreatePivot();
                     bbPositionEntity(pvt, bbEntityX(e->room->objects[8],true)-1536*RoomScale,500*RoomScale,bbEntityZ(e->room->objects[8],true)+608*RoomScale);
-                    if (bbEntityDistance(pvt, mainPlayer->collider)<5.0) {
-                        e->soundChannels[1] = LoopRangedSound(e->sounds[1], e->soundChannels[1], mainPlayer->cam, pvt, 3.0);
+                    if (bbEntityDistance(pvt, mainPlayer->collider)<5.f) {
+                        e->soundChannels[1] = LoopRangedSound(e->sounds[1], e->soundChannels[1], mainPlayer->cam, pvt, 3.f);
                     }
                     bbFreeEntity(pvt);
 
@@ -482,8 +482,8 @@ void UpdateEvent_pocketdimension(Event* e) {
                     if (temp < 2000*RoomScale) {
                         mainPlayer->injuries = mainPlayer->injuries + (timing->tickDuration/4000);
 
-                        if (mainPlayer->injuries > 1.0) {
-                            if (mainPlayer->injuries - (timing->tickDuration/4000)<= 1.0) {
+                        if (mainPlayer->injuries > 1.f) {
+                            if (mainPlayer->injuries - (timing->tickDuration/4000)<= 1.f) {
                                 PlaySound2(LoadTempSound("SFX/Room/PocketDimension/Kneel.ogg"));
                             }
                         }
@@ -491,17 +491,17 @@ void UpdateEvent_pocketdimension(Event* e) {
                         mainPlayer->sanity895 = Max(mainPlayer->sanity895 - timing->tickDuration / temp / 8,-1000);
 
                         //TODO: fix
-                        //e\soundChannels[0] = LoopRangedSound(OldManSFX(4), e\soundChannels[0], mainPlayer\cam, e\room\objects[17], 5.0, 0.6)
+                        //e\soundChannels[0] = LoopRangedSound(OldManSFX(4), e\soundChannels[0], mainPlayer\cam, e\room\objects[17], 5.f, 0.6)
 
-                        mainPlayer->camZoom = Max(mainPlayer->camZoom, (bbSin((float)(TimeInPosMilliSecs()) / 20.0)+1.0)*15.0*Max((6.0-temp)/6.0,0.0));
+                        mainPlayer->camZoom = Max(mainPlayer->camZoom, (bbSin((float)(TimeInPosMilliSecs()) / 20.f)+1.f)*15.f*Max((6.f-temp)/6.f,0.f));
 
                         pvt = bbCreatePivot();
                         bbPositionEntity(pvt, bbEntityX(mainPlayer->cam), bbEntityY(mainPlayer->cam), bbEntityZ(mainPlayer->cam));
                         bbPointEntity(pvt, e->room->objects[17]);
                         bbTurnEntity(pvt, 90, 0, 0);
-                        mainPlayer->headPitch = CurveAngle(bbEntityPitch(pvt), mainPlayer->headPitch + 90.0, Min(Max(15000.0 / (-mainPlayer->sanity895), 15.0), 500.0));
+                        mainPlayer->headPitch = CurveAngle(bbEntityPitch(pvt), mainPlayer->headPitch + 90.f, Min(Max(15000.f / (-mainPlayer->sanity895), 15.f), 500.f));
                         mainPlayer->headPitch = mainPlayer->headPitch-90;
-                        bbRotateEntity(mainPlayer->collider, bbEntityPitch(mainPlayer->collider), CurveAngle(bbEntityYaw(pvt), bbEntityYaw(mainPlayer->collider), Min(Max(15000.0 / (-mainPlayer->sanity895), 15.0), 500.0)), 0);
+                        bbRotateEntity(mainPlayer->collider, bbEntityPitch(mainPlayer->collider), CurveAngle(bbEntityYaw(pvt), bbEntityYaw(mainPlayer->collider), Min(Max(15000.f / (-mainPlayer->sanity895), 15.f), 500.f)), 0);
                         bbFreeEntity(pvt);
 
                         //teleport the player to the trenches
@@ -523,8 +523,8 @@ void UpdateEvent_pocketdimension(Event* e) {
                             mainPlayer->blurTimer = (640*RoomScale-temp)*3000;
 
                             //TODO: fix
-                            //e\soundChannels[1] = LoopRangedSound(DecaySFX(Rand(1, 3)), e\soundChannels[1], mainPlayer\cam, mainPlayer\collider, 2.0, (640*RoomScale-temp)*abs(mainPlayer\moveSpeed)*100)
-                            mainPlayer->moveSpeed = CurveValue(0.0, mainPlayer->moveSpeed, temp*10);
+                            //e\soundChannels[1] = LoopRangedSound(DecaySFX(Rand(1, 3)), e\soundChannels[1], mainPlayer\cam, mainPlayer\collider, 2.f, (640*RoomScale-temp)*abs(mainPlayer\moveSpeed)*100)
+                            mainPlayer->moveSpeed = CurveValue(0.f, mainPlayer->moveSpeed, temp*10);
 
                             if (temp < 130*RoomScale) {
 
@@ -624,7 +624,7 @@ void UpdateEvent_pocketdimension(Event* e) {
                         bbResetEntity(mainPlayer->collider);
 
                         bbMoveEntity(pvt, 0,0,0.8);
-                        bbPositionEntity(e->room->objects[10], bbEntityX(pvt), 0.0, bbEntityZ(pvt));
+                        bbPositionEntity(e->room->objects[10], bbEntityX(pvt), 0.f, bbEntityZ(pvt));
                         bbRotateEntity(e->room->objects[10], 0, bbEntityYaw(pvt), 0, true);
 
                         bbFreeEntity(pvt);
@@ -716,7 +716,7 @@ void UpdateEvent_pocketdimension(Event* e) {
             if (bbRand(800)==1) {
                 //TODO: Not a particle.
                 angle = bbEntityYaw(mainPlayer->cam,true)+bbRnd(150,210);
-                p = CreateParticle(bbEntityX(mainPlayer->collider)+bbCos(angle)*7.5, 0.0, bbEntityZ(mainPlayer->collider)+bbSin(angle)*7.5, PARTICLE_HG, 4.0, 0.0, 2500);
+                p = CreateParticle(bbEntityX(mainPlayer->collider)+bbCos(angle)*7.5, 0.f, bbEntityZ(mainPlayer->collider)+bbSin(angle)*7.5, PARTICLE_HG, 4.f, 0.f, 2500);
                 bbEntityBlend(p->sprite, 2);
                 //EntityFX(p\obj, 1)
                 p->speed = 0.01;
@@ -731,7 +731,7 @@ void UpdateEvent_pocketdimension(Event* e) {
                 bbPositionEntity(Curr106->collider, bbEntityX(e->room->objects[(int)(e->eventState2)],true),0.27, bbEntityZ(e->room->objects[(int)(e->eventState2)],true));
 
                 bbPointEntity(Curr106->collider, mainPlayer->cam);
-                bbTurnEntity(Curr106->collider, 0, bbSin(TimeInPosMilliSecs() / 20) * 6.0, 0, true);
+                bbTurnEntity(Curr106->collider, 0, bbSin(TimeInPosMilliSecs() / 20) * 6.f, 0, true);
                 bbMoveEntity(Curr106->collider, 0, 0, bbSin(TimeInPosMilliSecs() / 15) * 0.06);
 
                 if (bbRand(750)==1 & e->eventState2 > 12) {
@@ -741,8 +741,8 @@ void UpdateEvent_pocketdimension(Event* e) {
                 }
 
                 if (e->eventState2 == 12) {
-                    mainPlayer->camShake = 1.0;
-                    bbPositionEntity(Curr106->collider, bbEntityX(e->room->objects[(int)(e->eventState2)],true),-1.0, bbEntityZ(e->room->objects[(int)(e->eventState2)],true));
+                    mainPlayer->camShake = 1.f;
+                    bbPositionEntity(Curr106->collider, bbEntityX(e->room->objects[(int)(e->eventState2)],true),-1.f, bbEntityZ(e->room->objects[(int)(e->eventState2)],true));
                     Curr106->state = -11;
                     bbResetEntity(Curr106->collider);
                 }

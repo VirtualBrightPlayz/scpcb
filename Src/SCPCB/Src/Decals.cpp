@@ -62,10 +62,10 @@ Decal* CreateDecal(int id, float x, float y, float z, float pitch, float yaw, fl
     d->yaw = yaw;
     d->roll = roll;
 
-    d->maxSize = 1.0;
+    d->maxSize = 1.f;
 
-    d->alpha = 1.0;
-    d->size = 1.0;
+    d->alpha = 1.f;
+    d->size = 1.f;
     d->obj = bbCreateSprite();
     d->blendmode = 1;
 
@@ -103,7 +103,7 @@ void UpdateDecals() {
                         d2->size = bbRnd(0.1, 0.5);
                         bbScaleSprite(d2->obj, d2->size, d2->size);
                         //TODO: fix, and not attach this to the decal
-                        //PlayRangedSound(DecaySFX(Rand(1, 3)), mainPlayer\cam, d2\obj, 10.0, Rnd(0.1, 0.5))
+                        //PlayRangedSound(DecaySFX(Rand(1, 3)), mainPlayer\cam, d2\obj, 10.f, Rnd(0.1, 0.5))
                         //d\timer = d\timer + Rand(50,150)
                         d->timer = bbRand(50, 100);
                     } else {
@@ -122,7 +122,7 @@ void UpdateDecals() {
 
         // FIXME
         if (d->alphaChange != 0) {
-            d->alpha = Min(d->alpha + timing->tickDuration * d->alphaChange, 1.0);
+            d->alpha = Min(d->alpha + timing->tickDuration * d->alphaChange, 1.f);
             bbEntityAlpha(d->obj, d->alpha);
         }
 
@@ -131,7 +131,7 @@ void UpdateDecals() {
         }
 
         // FIXME
-        if (d->size <= 0 || d->alpha <= 0 || d->lifetime==5.0 ) {
+        if (d->size <= 0 || d->alpha <= 0 || d->lifetime==5.f ) {
             bbFreeEntity(d->obj);
             delete d;
         }

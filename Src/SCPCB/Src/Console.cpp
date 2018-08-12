@@ -75,11 +75,11 @@ void DrawConsole() {
         bbSetFont(uiAssets->consoleFont);
 
         int x = 0;
-        int y = userOptions->screenHeight-(int)(300.0*MenuScale);
+        int y = userOptions->screenHeight-(int)(300.f*MenuScale);
         int width = userOptions->screenWidth;
-        int height = (int)(300.0*MenuScale-30.0*MenuScale);
+        int height = (int)(300.f*MenuScale-30.f*MenuScale);
 
-        DrawFrame(x,y,width,height+(int)(30.0*MenuScale));
+        DrawFrame(x,y,width,height+(int)(30.f*MenuScale));
 
         int consoleHeight = 0;
         int scrollbarHeight = 0;
@@ -87,7 +87,7 @@ void DrawConsole() {
         for (int iterator40 = 0; iterator40 < ConsoleMsg::getListSize(); iterator40++) {
             ConsoleMsg* cm = ConsoleMsg::getObject(iterator40);
 
-            consoleHeight = consoleHeight + (int)(15.0*MenuScale);
+            consoleHeight = consoleHeight + (int)(15.f*MenuScale);
         }
         scrollbarHeight = (int)(((float)(height)/(float)(consoleHeight))*height);
         if (scrollbarHeight>height) {
@@ -98,26 +98,26 @@ void DrawConsole() {
         }
 
         bbColor(50,50,50);
-        int inBar = MouseOn(x+width-(int)(26.0*MenuScale),y,(int)(26.0*MenuScale),height);
+        int inBar = MouseOn(x+width-(int)(26.f*MenuScale),y,(int)(26.f*MenuScale),height);
         if (inBar) {
             bbColor(70,70,70);
         }
-        bbRect(x+width-(int)(26.0*MenuScale),y,(int)(26.0*MenuScale),height,true);
+        bbRect(x+width-(int)(26.f*MenuScale),y,(int)(26.f*MenuScale),height,true);
 
 
         bbColor(120,120,120);
-        int inBox = MouseOn(x+width-(int)(23.0*MenuScale),y+height-scrollbarHeight+(int)(ConsoleScroll*scrollbarHeight/height),(int)(20.0*MenuScale),scrollbarHeight);
+        int inBox = MouseOn(x+width-(int)(23.f*MenuScale),y+height-scrollbarHeight+(int)(ConsoleScroll*scrollbarHeight/height),(int)(20.f*MenuScale),scrollbarHeight);
         if (inBox) {
             bbColor(200,200,200);
         }
         if (ConsoleScrollDragging) {
             bbColor(255,255,255);
         }
-        bbRect(x+width-(int)(23.0*MenuScale),y+height-scrollbarHeight+(int)(ConsoleScroll*scrollbarHeight/height),(int)(20.0*MenuScale),scrollbarHeight,true);
+        bbRect(x+width-(int)(23.f*MenuScale),y+height-scrollbarHeight+(int)(ConsoleScroll*scrollbarHeight/height),(int)(20.f*MenuScale),scrollbarHeight,true);
 
         bbColor(255, 255, 255);
 
-        int tempY = y + height - (int)(25.0*MenuScale) - (int)(ConsoleScroll);
+        int tempY = y + height - (int)(25.f*MenuScale) - (int)(ConsoleScroll);
         int count = 0;
         for (int i = 0; i < ConsoleMsg::getListSize(); i++) {
 			ConsoleMsg* cm = ConsoleMsg::getObject(i);
@@ -126,26 +126,26 @@ void DrawConsole() {
             if (count>1000) {
                 delete cm;
             } else {
-                if (tempY >= y && tempY < y + height - (int)(20.0*MenuScale)) {
+                if (tempY >= y && tempY < y + height - (int)(20.f*MenuScale)) {
                     if (i==ConsoleReissue) {
                         bbColor(cm->r/4,cm->g/4,cm->b/4);
-                        bbRect(x, tempY -(int)(2.0*MenuScale),width-(int)(30.0*MenuScale),(int)(24.0*MenuScale),true);
+                        bbRect(x, tempY -(int)(2.f*MenuScale),width-(int)(30.f*MenuScale),(int)(24.f*MenuScale),true);
                     }
                     bbColor(cm->r,cm->g,cm->b);
                     if (cm->isCommand) {
-                        bbText(x + (int)(20.0*MenuScale), tempY, "> "+cm->txt);
+                        bbText(x + (int)(20.f*MenuScale), tempY, "> "+cm->txt);
                     } else {
-                        bbText(x + (int)(20.0*MenuScale), tempY, cm->txt);
+                        bbText(x + (int)(20.f*MenuScale), tempY, cm->txt);
                     }
                 }
-				tempY -= (int)(15.0*MenuScale);
+				tempY -= (int)(15.f*MenuScale);
             }
 
         }
 
         bbColor(255,255,255);
 
-        DrawInputBox(x, y + height, width, (int)(30.0*MenuScale), ConsoleInput, 2);
+        DrawInputBox(x, y + height, width, (int)(30.f*MenuScale), ConsoleInput, 2);
     }
 }
 
@@ -156,16 +156,16 @@ void UpdateConsole() {
         ConsoleB = 255;
 
         int x = 0;
-        int y = userOptions->screenHeight-(int)(300.0*MenuScale);
+        int y = userOptions->screenHeight-(int)(300.f*MenuScale);
         int width = userOptions->screenWidth;
-        int height = (int)(300.0*MenuScale-30.0*MenuScale);
+        int height = (int)(300.f*MenuScale-30.f*MenuScale);
 
         int consoleHeight = 0;
         int scrollbarHeight = 0;
         for (int i = 0; i < ConsoleMsg::getListSize(); i++) {
             ConsoleMsg* cm = ConsoleMsg::getObject(i);
 
-            consoleHeight = consoleHeight + (int)(15.0*MenuScale);
+            consoleHeight = consoleHeight + (int)(15.f*MenuScale);
         }
         scrollbarHeight = (int)(((float)(height)/(float)(consoleHeight))*height);
         if (scrollbarHeight>height) {
@@ -175,9 +175,9 @@ void UpdateConsole() {
             consoleHeight = height;
         }
 
-        int inBar = MouseOn(x+width-(int)(26.0*MenuScale),y,(int)(26.0*MenuScale),height);
+        int inBar = MouseOn(x+width-(int)(26.f*MenuScale),y,(int)(26.f*MenuScale),height);
 
-        int inBox = MouseOn(x+width-(int)(23.0*MenuScale),y+height-scrollbarHeight+(int)(ConsoleScroll*scrollbarHeight/height),(int)(20.0*MenuScale),scrollbarHeight);
+        int inBox = MouseOn(x+width-(int)(23.f*MenuScale),y+height-scrollbarHeight+(int)(ConsoleScroll*scrollbarHeight/height),(int)(20.f*MenuScale),scrollbarHeight);
 
         if (!bbMouseDown(1)) {
             ConsoleScrollDragging = false;
@@ -257,7 +257,7 @@ void UpdateConsole() {
 
         SelectedInputBox = 2;
         String oldConsoleInput = ConsoleInput;
-        ConsoleInput = UpdateInputBox(x, y + height, width, (int)(30.0*MenuScale), ConsoleInput, 2);
+        ConsoleInput = UpdateInputBox(x, y + height, width, (int)(30.f*MenuScale), ConsoleInput, 2);
         if (!oldConsoleInput.equals(ConsoleInput)) {
             ConsoleReissue = -1;
         }

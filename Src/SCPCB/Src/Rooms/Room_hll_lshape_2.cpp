@@ -38,7 +38,7 @@ void FillRoom_hll_lshape_2(Room* r) {
     int t1;
 
     r->objects[6] = bbCreatePivot();
-    bbPositionEntity(r->objects[6], r->x + 640.0 * RoomScale, 8.0 * RoomScale, r->z - 896.0 * RoomScale);
+    bbPositionEntity(r->objects[6], r->x + 640.f * RoomScale, 8.f * RoomScale, r->z - 896.f * RoomScale);
     bbEntityParent(r->objects[6], r->obj);
 }
 

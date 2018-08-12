@@ -56,7 +56,7 @@ void Cmd_Status::execute(std::vector<String> args) {
 
     CreateConsoleMsg("Room: " + mainPlayer->currRoom->roomTemplate->name);
 
-    CreateConsoleMsg("Room coordinates: " + String(bbFloor(bbEntityX(mainPlayer->currRoom->obj) / 8.0 + 0.5)) + ", " + String(bbFloor(bbEntityZ(mainPlayer->currRoom->obj) / 8.0 + 0.5)));
+    CreateConsoleMsg("Room coordinates: " + String(bbFloor(bbEntityX(mainPlayer->currRoom->obj) / 8.f + 0.5)) + ", " + String(bbFloor(bbEntityZ(mainPlayer->currRoom->obj) / 8.f + 0.5)));
     CreateConsoleMsg("Stamina: " + String(mainPlayer->stamina));
     //CreateConsoleMsg("Dead: "+mainPlayer\dead)
     CreateConsoleMsg("Blinktimer: " + String(mainPlayer->blinkTimer));
@@ -96,8 +96,8 @@ case "help": {
         CreateConsoleMsg("HELP - gamma");
         CreateConsoleMsg("******************************");
         CreateConsoleMsg("Sets the gamma correction.");
-        CreateConsoleMsg("Should be set to a value between 0.0 and 2.0.");
-        CreateConsoleMsg("Default is 1.0.");
+        CreateConsoleMsg("Should be set to a value between 0.f and 2.f.");
+        CreateConsoleMsg("Default is 1.f.");
         CreateConsoleMsg("******************************");
     }
     case "noclip", "fly": {

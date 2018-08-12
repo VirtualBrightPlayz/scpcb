@@ -38,7 +38,7 @@ void FillRoom_hll_gas_3(Room* r) {
     //, Bump
     int t1;
 
-    em = CreateEmitter(r->x + 512.0 * RoomScale, -76 * RoomScale, r->z - 688 * RoomScale, 0);
+    em = CreateEmitter(r->x + 512.f * RoomScale, -76 * RoomScale, r->z - 688 * RoomScale, 0);
     bbTurnEntity(em->obj, -90, 0, 0);
     bbEntityParent(em->obj, r->obj);
     em->randAngle = 55;
@@ -46,7 +46,7 @@ void FillRoom_hll_gas_3(Room* r) {
     em->aChange = -0.015;
     em->sizeChange = 0.007;
 
-    em = CreateEmitter(r->x - 512.0 * RoomScale, -76 * RoomScale, r->z - 688 * RoomScale, 0);
+    em = CreateEmitter(r->x - 512.f * RoomScale, -76 * RoomScale, r->z - 688 * RoomScale, 0);
     bbTurnEntity(em->obj, -90, 0, 0);
     bbEntityParent(em->obj, r->obj);
     em->randAngle = 55;
@@ -55,7 +55,7 @@ void FillRoom_hll_gas_3(Room* r) {
     em->sizeChange = 0.007;
 
     r->objects[0] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[0], r->x + 704.0 * RoomScale, 112.0*RoomScale, r->z-416.0*RoomScale, true);
+    bbPositionEntity(r->objects[0], r->x + 704.f * RoomScale, 112.f*RoomScale, r->z-416.f*RoomScale, true);
 }
 
 void UpdateEventRoom3pitduck(Event* e) {
@@ -103,7 +103,7 @@ void UpdateEventRoom3pitduck(Event* e) {
                 e->eventState = e->eventState + timing->tickDuration;
                 if (bbRand(200)==1 & e->eventState > 300) {
                     e->eventState = 0;
-                    e->soundChannels[0] = PlayRangedSound(e->sounds[0], mainPlayer->cam, e->room->objects[2],6.0);
+                    e->soundChannels[0] = PlayRangedSound(e->sounds[0], mainPlayer->cam, e->room->objects[2],6.f);
                 }
             } else {
                 if (e->soundChannels[0] != 0) {
@@ -199,7 +199,7 @@ void UpdateEventRoom3pit1048(Event* e) {
             bbRotateEntity(e->room->objects[2], -90, bbEntityYaw(e->room->objects[2],true),0, true);
 
             if (e->eventState==0) {
-                if (bbEntityDistance(mainPlayer->collider, e->room->objects[2])<3.0) {
+                if (bbEntityDistance(mainPlayer->collider, e->room->objects[2])<3.f) {
                     if (bbEntityInView(e->room->objects[2],mainPlayer->cam)) {
                         e->eventState = 1;
                     }
@@ -210,12 +210,12 @@ void UpdateEventRoom3pit1048(Event* e) {
                     e->eventState = 2;
                 }
             } else if ((e->eventState == 2)) {
-                Animate2((MeshModel*)e->room->objects[2], bbAnimTime(e->room->objects[2]), 543, 692, 1.0);
+                Animate2((MeshModel*)e->room->objects[2], bbAnimTime(e->room->objects[2]), 543, 692, 1.f);
                 if (bbEntityDistance(mainPlayer->collider, e->room->objects[2])<1.5) {
                     DrawHandIcon = true;
 
                     if (MouseHit1) {
-                        mainPlayer->selectedItem = CreateItem("paper", 0.0, 0.0, 0.0);
+                        mainPlayer->selectedItem = CreateItem("paper", 0.f, 0.f, 0.f);
                         //TODO: Maybe not have it automatically eject the first item from your inventory?
                         if (!SpaceInInventory(mainPlayer)) {
                             DropItem(mainPlayer->inventory->items[WORNITEM_SLOT_COUNT], mainPlayer->inventory);

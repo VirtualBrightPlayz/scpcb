@@ -44,7 +44,7 @@ void InitializeNPCtypeD(NPC* n) {
     float temp = 0.5 / bbMeshWidth(n->obj);
     bbScaleEntity(n->obj, temp, temp, temp);
 
-    n->speed = 2.0 / 100;
+    n->speed = 2.f / 100;
 
     bbMeshCullBox(n->obj, -bbMeshWidth(n->obj), -bbMeshHeight(n->obj), -bbMeshDepth(n->obj), bbMeshWidth(n->obj)*2, bbMeshHeight(n->obj)*2, bbMeshDepth(n->obj)*2);
 }
@@ -56,21 +56,21 @@ void UpdateNPCtypeD(NPC* n) {
 
     switch ((int)n->state) {
         case 0: {
-            n->currSpeed = CurveValue(0.0, n->currSpeed, 5.0);
+            n->currSpeed = CurveValue(0.f, n->currSpeed, 5.f);
             Animate2(n->obj, bbAnimTime(n->obj), 210, 235, 0.1);
             //walking
         }
         case 1: {
-            if (n->state2 == 1.0) {
-                n->currSpeed = CurveValue(n->speed*0.7, n->currSpeed, 20.0);
+            if (n->state2 == 1.f) {
+                n->currSpeed = CurveValue(n->speed*0.7, n->currSpeed, 20.f);
             } else {
-                n->currSpeed = CurveValue(0.015, n->currSpeed, 5.0);
+                n->currSpeed = CurveValue(0.015, n->currSpeed, 5.f);
             }
             Animate2(n->obj, bbAnimTime(n->obj), 236, 260, n->currSpeed * 18);
             //running
         }
         case 2: {
-            n->currSpeed = CurveValue(0.03, n->currSpeed, 5.0);
+            n->currSpeed = CurveValue(0.03, n->currSpeed, 5.f);
             Animate2(n->obj, bbAnimTime(n->obj), 301, 319, n->currSpeed * 18);
         }
     }
@@ -79,7 +79,7 @@ void UpdateNPCtypeD(NPC* n) {
 
     bbPositionEntity(n->obj, bbEntityX(n->collider), bbEntityY(n->collider) - 0.32, bbEntityZ(n->collider));
 
-    bbRotateEntity(n->obj, bbEntityPitch(n->collider), bbEntityYaw(n->collider)-180.0, 0);
+    bbRotateEntity(n->obj, bbEntityPitch(n->collider), bbEntityYaw(n->collider)-180.f, 0);
 }
 
 }

@@ -113,7 +113,7 @@ void UpdateLevers() {
 
         float dist = bbEntityDistance(mainPlayer->cam, lever->obj);
 
-        if (dist < 8.0) {
+        if (dist < 8.f) {
             if (dist < 0.8 & (!lever->locked)) {
                 if (bbEntityInView(lever->obj, mainPlayer->cam)) {
 
@@ -133,7 +133,7 @@ void UpdateLevers() {
                             if (mainPlayer->grabbedEntity == lever->obj) {
                                 DrawHandIcon = true;
                                 //TurnEntity(lever\obj, , 0, 0)
-                                bbRotateEntity(mainPlayer->grabbedEntity, Max(Min(bbEntityPitch(lever->obj)+Max(Min(mouse_y_speed_1 * 8,30.0),-30), 80), -80), bbEntityYaw(lever->obj), 0);
+                                bbRotateEntity(mainPlayer->grabbedEntity, Max(Min(bbEntityPitch(lever->obj)+Max(Min(mouse_y_speed_1 * 8,30.f),-30), 80), -80), bbEntityYaw(lever->obj), 0);
 
                                 mainPlayer->drawDirectionalArrow[0] = true;
                                 mainPlayer->drawDirectionalArrow[2] = true;
@@ -144,11 +144,11 @@ void UpdateLevers() {
 
                     if (bbEntityPitch(lever->obj,true) > 75) {
                         if (prevpitch <= 75) {
-                            PlayRangedSound_SM(sndManager->lever, mainPlayer->cam, lever->obj, 1.0);
+                            PlayRangedSound_SM(sndManager->lever, mainPlayer->cam, lever->obj, 1.f);
                         }
                     } else if ((bbEntityPitch(lever->obj,true) < -75)) {
                         if (prevpitch >= -75) {
-                            PlayRangedSound_SM(sndManager->lever, mainPlayer->cam, lever->obj, 1.0);
+                            PlayRangedSound_SM(sndManager->lever, mainPlayer->cam, lever->obj, 1.f);
                         }
                     }
                 }
@@ -212,16 +212,16 @@ float UpdateElevators(float state, Door* door1, Door* door2, class Object* room1
         if (state < 0) {
             state = state - timing->tickDuration;
             //pelaaja hissin sis�ll�
-            if (abs(bbEntityX(mainPlayer->collider)-bbEntityX(room1,true))<280.0*RoomScale) {
-                if (abs(bbEntityZ(mainPlayer->collider)-bbEntityZ(room1,true))<280.0*RoomScale) {
-                    if (abs(bbEntityY(mainPlayer->collider)-bbEntityY(room1,true))<280.0*RoomScale) {
+            if (abs(bbEntityX(mainPlayer->collider)-bbEntityX(room1,true))<280.f*RoomScale) {
+                if (abs(bbEntityZ(mainPlayer->collider)-bbEntityZ(room1,true))<280.f*RoomScale) {
+                    if (abs(bbEntityY(mainPlayer->collider)-bbEntityY(room1,true))<280.f*RoomScale) {
                         inside = true;
 
                         if (!bbChannelPlaying(event->soundChannels[0])) {
                             event->soundChannels[0] = PlaySound_SM(sndManager->elevatorMove);
                         }
 
-                        mainPlayer->camShake = bbSin(abs(state)/3.0)*0.3;
+                        mainPlayer->camShake = bbSin(abs(state)/3.f)*0.3;
                     }
                 }
             }
@@ -230,9 +230,9 @@ float UpdateElevators(float state, Door* door1, Door* door2, class Object* room1
                 NPC* n = NPC::getObject(i);
 
                 if (n->canUseElevator) {
-                    if (abs(bbEntityX(n->collider)-bbEntityX(room1,true))<280.0*RoomScale) {
-                        if (abs(bbEntityZ(n->collider)-bbEntityZ(room1,true))<280.0*RoomScale) {
-                            if (abs(bbEntityY(n->collider)-bbEntityY(room1,true))<280.0*RoomScale) {
+                    if (abs(bbEntityX(n->collider)-bbEntityX(room1,true))<280.f*RoomScale) {
+                        if (abs(bbEntityZ(n->collider)-bbEntityZ(room1,true))<280.f*RoomScale) {
+                            if (abs(bbEntityY(n->collider)-bbEntityY(room1,true))<280.f*RoomScale) {
                                 NPC_inside = n;
                             }
                         }
@@ -281,22 +281,22 @@ float UpdateElevators(float state, Door* door1, Door* door2, class Object* room1
 
                 UseDoor(door2,false);
 
-                PlayRangedSound_SM(sndManager->elevatorBeep, mainPlayer->cam, room2, 4.0);
+                PlayRangedSound_SM(sndManager->elevatorBeep, mainPlayer->cam, room2, 4.f);
             }
             //alhaalta yl�s
         } else {
             state = state + timing->tickDuration;
             //pelaaja hissin sis�ll�
-            if (abs(bbEntityX(mainPlayer->collider)-bbEntityX(room2,true))<280.0*RoomScale) {
-                if (abs(bbEntityZ(mainPlayer->collider)-bbEntityZ(room2,true))<280.0*RoomScale) {
-                    if (abs(bbEntityY(mainPlayer->collider)-bbEntityY(room2,true))<280.0*RoomScale) {
+            if (abs(bbEntityX(mainPlayer->collider)-bbEntityX(room2,true))<280.f*RoomScale) {
+                if (abs(bbEntityZ(mainPlayer->collider)-bbEntityZ(room2,true))<280.f*RoomScale) {
+                    if (abs(bbEntityY(mainPlayer->collider)-bbEntityY(room2,true))<280.f*RoomScale) {
                         inside = true;
 
                         if (!bbChannelPlaying(event->soundChannels[0])) {
                             event->soundChannels[0] = PlaySound_SM(sndManager->elevatorMove);
                         }
 
-                        mainPlayer->camShake = bbSin(abs(state)/3.0)*0.3;
+                        mainPlayer->camShake = bbSin(abs(state)/3.f)*0.3;
                     }
                 }
             }
@@ -305,9 +305,9 @@ float UpdateElevators(float state, Door* door1, Door* door2, class Object* room1
                 NPC* n = NPC::getObject(i);
 
                 if (n->canUseElevator) {
-                    if (abs(bbEntityX(n->collider)-bbEntityX(room2,true))<280.0*RoomScale) {
-                        if (abs(bbEntityZ(n->collider)-bbEntityZ(room2,true))<280.0*RoomScale) {
-                            if (abs(bbEntityY(n->collider)-bbEntityY(room2,true))<280.0*RoomScale) {
+                    if (abs(bbEntityX(n->collider)-bbEntityX(room2,true))<280.f*RoomScale) {
+                        if (abs(bbEntityZ(n->collider)-bbEntityZ(room2,true))<280.f*RoomScale) {
+                            if (abs(bbEntityY(n->collider)-bbEntityY(room2,true))<280.f*RoomScale) {
                                 NPC_inside = n;
                             }
                         }
@@ -357,7 +357,7 @@ float UpdateElevators(float state, Door* door1, Door* door2, class Object* room1
 
                 UseDoor(door1,false);
 
-                PlayRangedSound_SM(sndManager->elevatorBeep, mainPlayer->cam, room1, 4.0);
+                PlayRangedSound_SM(sndManager->elevatorBeep, mainPlayer->cam, room1, 4.f);
             }
 
         }
@@ -402,16 +402,16 @@ float UpdateElevators2(float State, Door* door1, Door* door2, class Object* room
         if (State < 0) {
             State = State - timing->tickDuration;
             //pelaaja hissin sis�ll?
-            if (abs(bbEntityX(mainPlayer->collider)-bbEntityX(room1,true))<280.0*RoomScale) {
-                if (abs(bbEntityZ(mainPlayer->collider)-bbEntityZ(room1,true))<280.0*RoomScale) {
-                    if (abs(bbEntityY(mainPlayer->collider)-bbEntityY(room1,true))<280.0*RoomScale) {
+            if (abs(bbEntityX(mainPlayer->collider)-bbEntityX(room1,true))<280.f*RoomScale) {
+                if (abs(bbEntityZ(mainPlayer->collider)-bbEntityZ(room1,true))<280.f*RoomScale) {
+                    if (abs(bbEntityY(mainPlayer->collider)-bbEntityY(room1,true))<280.f*RoomScale) {
                         inside = true;
 
                         if (!bbChannelPlaying(event->soundChannels[0])) {
                             event->soundChannels[0] = PlaySound_SM(sndManager->elevatorMove);
                         }
 
-                        mainPlayer->camShake = bbSin(abs(State)/3.0)*0.3;
+                        mainPlayer->camShake = bbSin(abs(State)/3.f)*0.3;
                     }
                 }
             }
@@ -430,7 +430,7 @@ float UpdateElevators2(float State, Door* door1, Door* door2, class Object* room
                     dir = GetAngle(bbEntityX(mainPlayer->collider,true),bbEntityZ(mainPlayer->collider,true),bbEntityX(room1,true),bbEntityZ(room1,true));
                     //EntityYaw(room2,True)+angleDist(dir,EntityYaw(room1,True))
                     dir = dir+bbEntityYaw(room2,true)-bbEntityYaw(room1,true);
-                    //dir=dir-90.0
+                    //dir=dir-90.f
 
                     //					dir# = EntityYaw(mainPlayer\collider)-EntityYaw(room1,True)+EntityYaw(room2,True)
 
@@ -452,23 +452,23 @@ float UpdateElevators2(float State, Door* door1, Door* door2, class Object* room
                     UpdateRooms();
                 }
 
-                PlayRangedSound_SM(sndManager->elevatorBeep, mainPlayer->cam, room2, 4.0);
+                PlayRangedSound_SM(sndManager->elevatorBeep, mainPlayer->cam, room2, 4.f);
                 //PlaySound(ElevatorBeepSFX)
             }
             //alhaalta yl�s
         } else {
             State = State + timing->tickDuration;
             //pelaaja hissin sis�ll?
-            if (abs(bbEntityX(mainPlayer->collider)-bbEntityX(room2,true))<280.0*RoomScale) {
-                if (abs(bbEntityZ(mainPlayer->collider)-bbEntityZ(room2,true))<280.0*RoomScale) {
-                    if (abs(bbEntityY(mainPlayer->collider)-bbEntityY(room2,true))<280.0*RoomScale) {
+            if (abs(bbEntityX(mainPlayer->collider)-bbEntityX(room2,true))<280.f*RoomScale) {
+                if (abs(bbEntityZ(mainPlayer->collider)-bbEntityZ(room2,true))<280.f*RoomScale) {
+                    if (abs(bbEntityY(mainPlayer->collider)-bbEntityY(room2,true))<280.f*RoomScale) {
                         inside = true;
 
                         if (!bbChannelPlaying(event->soundChannels[0])) {
                             event->soundChannels[0] = PlaySound_SM(sndManager->elevatorMove);
                         }
 
-                        mainPlayer->camShake = bbSin(abs(State)/3.0)*0.3;
+                        mainPlayer->camShake = bbSin(abs(State)/3.f)*0.3;
                     }
                 }
             }
@@ -488,7 +488,7 @@ float UpdateElevators2(float State, Door* door1, Door* door2, class Object* room
                     dir = GetAngle(bbEntityX(mainPlayer->collider,true),bbEntityZ(mainPlayer->collider,true),bbEntityX(room2,true),bbEntityZ(room2,true));
                     //EntityYaw(room1,True)+angleDist(dir,EntityYaw(room2,True))
                     dir = dir+bbEntityYaw(room1,true)-bbEntityYaw(room2,true);
-                    //dir=dir-90.0
+                    //dir=dir-90.f
 
                     //					dir# = EntityYaw(mainPlayer\collider)-EntityYaw(room2,True)+EntityYaw(room1,True)
 
@@ -510,7 +510,7 @@ float UpdateElevators2(float State, Door* door1, Door* door2, class Object* room
                     UpdateRooms();
                 }
 
-                PlayRangedSound_SM(sndManager->elevatorBeep, mainPlayer->cam, room1, 4.0);
+                PlayRangedSound_SM(sndManager->elevatorBeep, mainPlayer->cam, room1, 4.f);
             }
 
         }

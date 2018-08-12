@@ -37,11 +37,11 @@ void FillRoom_strg_elec_2c(Room* r) {
     //, Bump
     int t1;
 
-    d = CreateDoor(r->x + 64.0 * RoomScale, 0.0, r->z + 368.0 * RoomScale, 180, r, false, DOOR_TYPE_DEF, r->roomTemplate->name);
+    d = CreateDoor(r->x + 64.f * RoomScale, 0.f, r->z + 368.f * RoomScale, 180, r, false, DOOR_TYPE_DEF, r->roomTemplate->name);
     d->autoClose = false;
     d->open = false;
 
-    it = CreatePaper("docdan", r->x-400.0*RoomScale,1040.0*RoomScale,r->z+115.0*RoomScale);
+    it = CreatePaper("docdan", r->x-400.f*RoomScale,1040.f*RoomScale,r->z+115.f*RoomScale);
     bbEntityParent(it->collider, r->obj);
 
     int n;
@@ -50,8 +50,8 @@ void FillRoom_strg_elec_2c(Room* r) {
 
         bbScaleEntity(r->levers[n]->obj, 0.04, 0.04, 0.04);
         bbScaleEntity(r->levers[n]->baseObj, 0.04, 0.04, 0.04);
-        bbPositionEntity(r->levers[n]->obj, r->x - 240.0 * RoomScale, r->y + 1104.0 * RoomScale, r->z + (632.0 - 64.0 * n) * RoomScale, true);
-        bbPositionEntity(r->levers[n]->baseObj, r->x - 240.0 * RoomScale, r->y + 1104.0 * RoomScale, r->z + (632.0 - 64.0 * n) * RoomScale, true);
+        bbPositionEntity(r->levers[n]->obj, r->x - 240.f * RoomScale, r->y + 1104.f * RoomScale, r->z + (632.f - 64.f * n) * RoomScale, true);
+        bbPositionEntity(r->levers[n]->baseObj, r->x - 240.f * RoomScale, r->y + 1104.f * RoomScale, r->z + (632.f - 64.f * n) * RoomScale, true);
 
         bbEntityParent(r->levers[n]->obj, r->obj);
         bbEntityParent(r->levers[n]->baseObj, r->obj);
@@ -63,7 +63,7 @@ void FillRoom_strg_elec_2c(Room* r) {
         bbEntityRadius(r->levers[n]->obj, 0.1);
     }
 
-    sc = CreateSecurityCam(r->x-265.0*RoomScale, r->y+1280.0*RoomScale, r->z+105.0*RoomScale, r);
+    sc = CreateSecurityCam(r->x-265.f*RoomScale, r->y+1280.f*RoomScale, r->z+105.f*RoomScale, r);
     sc->angle = 45;
     sc->turn = 45;
     bbTurnEntity(sc->cameraObj, 20, 0, 0);
@@ -146,7 +146,7 @@ void UpdateEvent_strg_elec_2c(Event* e) {
                     PlayRangedSound_SM(sndManager->lever, mainPlayer->cam, e->room->objects[i]);
                 }
                 if (i == 3) {
-                    SecondaryLightOn = CurveValue(1.0, SecondaryLightOn, 10.0);
+                    SecondaryLightOn = CurveValue(1.f, SecondaryLightOn, 10.f);
                     if (prevpitch <= 83) {
                         PlayRangedSound_SM(sndManager->lightSwitch, mainPlayer->cam, e->room->objects[i]);
                     }
@@ -171,7 +171,7 @@ void UpdateEvent_strg_elec_2c(Event* e) {
                             }
                         }
                     }
-                    SecondaryLightOn = CurveValue(0.0, SecondaryLightOn, 10.0);
+                    SecondaryLightOn = CurveValue(0.f, SecondaryLightOn, 10.f);
                 } else {
                     RemoteDoorOn = false;
                 }

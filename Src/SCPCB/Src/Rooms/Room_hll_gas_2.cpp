@@ -41,7 +41,7 @@ void FillRoom_hll_gas_2(Room* r) {
     i = 0;
     for (xtemp = -1; xtemp <= 1; xtemp += 2) {
         for (ztemp = -1; ztemp <= 1; ztemp++) {
-            em = CreateEmitter(r->x + 202.0 * RoomScale * xtemp, 8.0 * RoomScale, r->z + 256.0 * RoomScale * ztemp, 0);
+            em = CreateEmitter(r->x + 202.f * RoomScale * xtemp, 8.f * RoomScale, r->z + 256.f * RoomScale * ztemp, 0);
             em->randAngle = 30;
             em->speed = 0.0045;
             em->sizeChange = 0.007;
@@ -59,11 +59,11 @@ void FillRoom_hll_gas_2(Room* r) {
     }
 
     r->objects[6] = bbCreatePivot();
-    bbPositionEntity(r->objects[6], r->x + 640.0 * RoomScale, 8.0 * RoomScale, r->z - 896.0 * RoomScale);
+    bbPositionEntity(r->objects[6], r->x + 640.f * RoomScale, 8.f * RoomScale, r->z - 896.f * RoomScale);
     bbEntityParent(r->objects[6], r->obj);
 
     r->objects[7] = bbCreatePivot();
-    bbPositionEntity(r->objects[7], r->x - 864.0 * RoomScale, -400.0 * RoomScale, r->z - 632.0 * RoomScale);
+    bbPositionEntity(r->objects[7], r->x - 864.f * RoomScale, -400.f * RoomScale, r->z - 632.f * RoomScale);
     bbEntityParent(r->objects[7],r->obj);
 }
 
@@ -95,7 +95,7 @@ void UpdateEvent_hll_gas_2(Event* e) {
 
     //[Block]
     if (Curr173->idle == 0) {
-        if (e->room->dist < 8.0  & e->room->dist > 0) {
+        if (e->room->dist < 8.f  & e->room->dist > 0) {
             if (!bbEntityVisible(Curr173->collider, mainPlayer->cam) && !bbEntityVisible(e->room->objects[6], mainPlayer->cam)) {
                 bbPositionEntity(Curr173->collider, bbEntityX(e->room->objects[6], true), 0.5, bbEntityZ(e->room->objects[6], true));
                 bbResetEntity(Curr173->collider);

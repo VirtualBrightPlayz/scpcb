@@ -117,7 +117,7 @@ void UpdateEventEndroom106(Event* e) {
                 if (e->sounds[0] == 0) {
                     e->sounds[0] = bbLoadSound("SFX/Character/Janitor/Idle.ogg");
                 }
-                e->soundChannels[0] = LoopRangedSound(e->sounds[0], e->soundChannels[0], mainPlayer->cam, e->room->npc[0]->obj, 15.0);
+                e->soundChannels[0] = LoopRangedSound(e->sounds[0], e->soundChannels[0], mainPlayer->cam, e->room->npc[0]->obj, 15.f);
             }
         } else if ((e->eventState == 2)) {
             dist = bbEntityDistance(e->room->npc[0]->collider, e->room->obj);
@@ -133,7 +133,7 @@ void UpdateEventEndroom106(Event* e) {
             }
         } else {
             dist = Distance(bbEntityX(e->room->npc[0]->collider),bbEntityZ(e->room->npc[0]->collider), bbEntityX(e->room->obj),bbEntityZ(e->room->obj));
-            bbPositionEntity(Curr106->obj, bbEntityX(e->room->obj, true), 0.0, bbEntityZ(e->room->obj, true));
+            bbPositionEntity(Curr106->obj, bbEntityX(e->room->obj, true), 0.f, bbEntityZ(e->room->obj, true));
             //ResetEntity(Curr106\collider)
             bbPointEntity(Curr106->obj, e->room->npc[0]->collider);
             bbRotateEntity(Curr106->obj, 0, bbEntityYaw(Curr106->obj), 0, true);
@@ -147,14 +147,14 @@ void UpdateEventEndroom106(Event* e) {
                 }
                 e->eventState = e->eventState+timing->tickDuration/2;
                 e->room->npc[0]->state = 6;
-                e->room->npc[0]->currSpeed = CurveValue(0.0, e->room->npc[0]->currSpeed, 25.0);
-                bbPositionEntity(e->room->npc[0]->collider, CurveValue(bbEntityX(e->room->obj, true), bbEntityX(e->room->npc[0]->collider), 25.0), 0.3-e->eventState/70, CurveValue(bbEntityZ(e->room->obj, true), bbEntityZ(e->room->npc[0]->collider), 25.0));
+                e->room->npc[0]->currSpeed = CurveValue(0.f, e->room->npc[0]->currSpeed, 25.f);
+                bbPositionEntity(e->room->npc[0]->collider, CurveValue(bbEntityX(e->room->obj, true), bbEntityX(e->room->npc[0]->collider), 25.f), 0.3-e->eventState/70, CurveValue(bbEntityZ(e->room->obj, true), bbEntityZ(e->room->npc[0]->collider), 25.f));
                 bbResetEntity(e->room->npc[0]->collider);
 
                 //TurnEntity(e\room\npc[0]\collider,0,0,0.5*timing\tickDuration)
                 AnimateNPC(e->room->npc[0], 41, 58, 0.1, false);
 
-                AnimateNPC(Curr106, 206,112, -1.0, false);
+                AnimateNPC(Curr106, 206,112, -1.f, false);
             } else {
                 AnimateNPC(Curr106, 112,206, 1.5, false);
             }
@@ -162,8 +162,8 @@ void UpdateEventEndroom106(Event* e) {
             if (e->eventState > 35) {
                 //PlayRangedSound(OldManSFX(Rand(1,2)), mainPlayer\cam, e\room\npc[0]\collider)
 
-                bbPositionEntity(Curr106->obj, bbEntityX(Curr106->collider), -100.0, bbEntityZ(Curr106->collider), true);
-                bbPositionEntity(Curr106->collider, bbEntityX(Curr106->collider), -100.0, bbEntityZ(Curr106->collider), true);
+                bbPositionEntity(Curr106->obj, bbEntityX(Curr106->collider), -100.f, bbEntityZ(Curr106->collider), true);
+                bbPositionEntity(Curr106->collider, bbEntityX(Curr106->collider), -100.f, bbEntityZ(Curr106->collider), true);
 
                 Curr106->idle = false;
                 if (bbEntityDistance(mainPlayer->collider, e->room->obj)<2.5) {

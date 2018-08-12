@@ -48,7 +48,7 @@ void InitializeNPCtypeMTF(NPC* n) {
         n->obj = bbLoadAnimMesh("GFX/NPCs/MTF/mtf.b3d");
     }
 
-    n->speed = (GetINIFloat("Data/NPCs.ini", "MTF", "speed") / 100.0);
+    n->speed = (GetINIFloat("Data/NPCs.ini", "MTF", "speed") / 100.f);
 
     float temp = (GetINIFloat("Data/NPCs.ini", "MTF", "scale") / 2.5);
 
@@ -125,7 +125,7 @@ void UpdateNPCtypeMTF(NPC* n) {
     float tempDist;
 
     if (n->isDead) {
-        n->blinkTimer = -1.0;
+        n->blinkTimer = -1.f;
         SetNPCFrame(n, 532);
         return;
     }
@@ -133,14 +133,14 @@ void UpdateNPCtypeMTF(NPC* n) {
     n->maxGravity = 0.03;
 
     n->blinkTimer = n->blinkTimer - timing->tickDuration;
-    if (n->blinkTimer<=-5.0) {
+    if (n->blinkTimer<=-5.f) {
         //only play the "blinking" sound clip if searching/containing 173
         if (n->state == 2) {
             if (OtherNPCSeesMeNPC(Curr173,n)) {
                 PlayMTFSound(LoadTempSound("SFX/Character/MTF/173/BLINKING.ogg"),n);
             }
         }
-        n->blinkTimer = 70.0*bbRnd(10.0,15.0);
+        n->blinkTimer = 70.f*bbRnd(10.f,15.f);
     }
 
     n->reload = n->reload - timing->tickDuration;
@@ -157,11 +157,11 @@ void UpdateNPCtypeMTF(NPC* n) {
         n->prevState = 0;
     }
 
-    if (n->idle>0.0) {
+    if (n->idle>0.f) {
         FinishWalking(n,488,522,0.015*26);
         n->idle = n->idle-timing->tickDuration;
-        if (n->idle<=0.0) {
-            n->idle = 0.0;
+        if (n->idle<=0.f) {
+            n->idle = 0.f;
         }
     } else {
         //what is this MTF doing)
@@ -170,7 +170,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                 //[Block]
                 n->speed = 0.015;
                 //update path
-                if (n->pathTimer<=0.0) {
+                if (n->pathTimer<=0.f) {
                     //i'll follow the leader
                     if (n->mtfLeader!=nullptr) {
                         //whatever you say boss
@@ -181,7 +181,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                             for (int iterator140 = 0; iterator140 < Room::getListSize(); iterator140++) {
                                 r = Room::getObject(iterator140);
 
-                                if (((abs(r->x-bbEntityX(n->collider,true))>12.0) | (abs(r->z-bbEntityZ(n->collider,true))>12.0)) & (bbRand(1,(int)(Max(4-(int)(abs(r->z-bbEntityZ(n->collider,true)/8.0)),2)))==1)) {
+                                if (((abs(r->x-bbEntityX(n->collider,true))>12.f) | (abs(r->z-bbEntityZ(n->collider,true))>12.f)) & (bbRand(1,(int)(Max(4-(int)(abs(r->z-bbEntityZ(n->collider,true)/8.f)),2)))==1)) {
                                     x = r->x;
                                     y = 0.1;
                                     z = r->z;
@@ -191,7 +191,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                             }
                         } else {
                             tmp = false;
-                            if (bbEntityDistance(n->collider,Curr173->collider)>4.0) {
+                            if (bbEntityDistance(n->collider,Curr173->collider)>4.f) {
                                 if (!bbEntityVisible(n->collider,Curr173->collider)) {
                                     tmp = true;
                                 }
@@ -211,7 +211,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                                             std::cout << String(Distance(bbEntityX(pvt),bbEntityZ(pvt),bbEntityX(n->collider),bbEntityZ(n->collider)));
                                         }
 
-                                        if (Curr173->idle == 3 & Distance(bbEntityX(pvt),bbEntityZ(pvt),bbEntityX(n->collider),bbEntityZ(n->collider)) > 4.0) {
+                                        if (Curr173->idle == 3 & Distance(bbEntityX(pvt),bbEntityZ(pvt),bbEntityX(n->collider),bbEntityZ(n->collider)) > 4.f) {
                                             if (r->doors[1]->open == true) {
                                                 UseDoor(r->doors[1],false);
                                             }
@@ -275,27 +275,27 @@ void UpdateNPCtypeMTF(NPC* n) {
                         }
                     }
                     //search again after 6-10 seconds
-                    n->pathTimer = 70.0 * bbRnd(6.0,10.0);
-                } else if ((n->pathTimer<=70.0 * 2.5) & (n->mtfLeader==nullptr)) {
+                    n->pathTimer = 70.f * bbRnd(6.f,10.f);
+                } else if ((n->pathTimer<=70.f * 2.5) & (n->mtfLeader==nullptr)) {
                     n->pathTimer = n->pathTimer-timing->tickDuration;
-                    n->currSpeed = 0.0;
+                    n->currSpeed = 0.f;
                     if (bbRand(1,35)==1) {
-                        bbRotateEntity(n->collider,0.0,bbRnd(360.0),0.0,true);
+                        bbRotateEntity(n->collider,0.f,bbRnd(360.f),0.f,true);
                     }
                     FinishWalking(n,488,522,n->speed*26);
-                    n->angle = CurveAngle(bbEntityYaw(n->collider,true),n->angle,20.0);
-                    bbRotateEntity(n->obj,-90.0,n->angle,0.0,true);
+                    n->angle = CurveAngle(bbEntityYaw(n->collider,true),n->angle,20.f);
+                    bbRotateEntity(n->obj,-90.f,n->angle,0.f,true);
                 } else {
                     if (n->pathStatus==2) {
                         //timer goes down fast
-                        n->pathTimer = n->pathTimer-(timing->tickDuration*2.0);
-                        n->currSpeed = 0.0;
+                        n->pathTimer = n->pathTimer-(timing->tickDuration*2.f);
+                        n->currSpeed = 0.f;
                         if (bbRand(1,35)==1) {
-                            bbRotateEntity(n->collider,0.0,bbRnd(360.0),0.0,true);
+                            bbRotateEntity(n->collider,0.f,bbRnd(360.f),0.f,true);
                         }
                         FinishWalking(n,488,522,n->speed*26);
-                        n->angle = CurveAngle(bbEntityYaw(n->collider,true),n->angle,20.0);
-                        bbRotateEntity(n->obj,-90.0,n->angle,0.0,true);
+                        n->angle = CurveAngle(bbEntityYaw(n->collider,true),n->angle,20.f);
+                        bbRotateEntity(n->obj,-90.f,n->angle,0.f,true);
                     } else if ((n->pathStatus==1)) {
                         if (n->path[n->pathLocation]==nullptr) {
                             if (n->pathLocation > 19) {
@@ -308,85 +308,85 @@ void UpdateNPCtypeMTF(NPC* n) {
                             prevDist = bbEntityDistance(n->collider,n->path[n->pathLocation]->obj);
 
                             bbPointEntity(n->collider,n->path[n->pathLocation]->obj);
-                            bbRotateEntity(n->collider,0.0,bbEntityYaw(n->collider,true),0.0,true);
+                            bbRotateEntity(n->collider,0.f,bbEntityYaw(n->collider,true),0.f,true);
 
                             RotateToDirection(n);
 
-                            n->angle = CurveAngle(bbEntityYaw(n->collider,true),n->angle,20.0);
+                            n->angle = CurveAngle(bbEntityYaw(n->collider,true),n->angle,20.f);
 
-                            bbRotateEntity(n->obj,-90.0,n->angle,0.0,true);
+                            bbRotateEntity(n->obj,-90.f,n->angle,0.f,true);
 
-                            n->currSpeed = CurveValue(n->speed,n->currSpeed,20.0);
+                            n->currSpeed = CurveValue(n->speed,n->currSpeed,20.f);
                             //MoveEntity(n\collider, 0, 0, n\currSpeed * timing\tickDuration)
 
-                            bbTranslateEntity(n->collider, bbCos(bbEntityYaw(n->collider,true)+90.0)*n->currSpeed * timing->tickDuration, 0, bbSin(bbEntityYaw(n->collider,true)+90.0)*n->currSpeed * timing->tickDuration, true);
+                            bbTranslateEntity(n->collider, bbCos(bbEntityYaw(n->collider,true)+90.f)*n->currSpeed * timing->tickDuration, 0, bbSin(bbEntityYaw(n->collider,true)+90.f)*n->currSpeed * timing->tickDuration, true);
                             AnimateNPC(n,488, 522, n->currSpeed*26);
 
                             newDist = bbEntityDistance(n->collider,n->path[n->pathLocation]->obj);
 
                             //TODO: fix
-                            //If (newDist<1.0 And n\path[n\pathLocation]\door<>Null) Then
+                            //If (newDist<1.f And n\path[n\pathLocation]\door<>Null) Then
                             //	;open the door and make it automatically close after 5 seconds
                             //	If (Not n\path[n\pathLocation]\door\open)
                             //		PlayMTFSound(MTFSFX(5),n)
                             //	EndIf
                             //	n\path[n\pathLocation]\door\open = True
                             //	If n\path[n\pathLocation]\door\mtfClose
-                            //		n\path[n\pathLocation]\door\timerstate = 70.0*5.0
+                            //		n\path[n\pathLocation]\door\timerstate = 70.f*5.f
                             //	EndIf
                             //EndIf
 
-                            if (newDist<0.2 | (prevDist<newDist & prevDist<1.0)) {
+                            if (newDist<0.2 | (prevDist<newDist & prevDist<1.f)) {
                                 n->pathLocation = n->pathLocation+1;
                             }
                         }
                         //timer goes down slow
                         n->pathTimer = n->pathTimer-timing->tickDuration;
-                    } else if ((n->pathX!=0.0)) {
+                    } else if ((n->pathX!=0.f)) {
                         pvt = bbCreatePivot();
                         bbPositionEntity(pvt,n->pathX,0.5,n->pathZ);
 
                         bbPointEntity(n->collider,pvt);
-                        bbRotateEntity(n->collider,0.0,bbEntityYaw(n->collider,true),0.0,true);
-                        n->angle = CurveAngle(bbEntityYaw(n->collider,true),n->angle,20.0);
-                        bbRotateEntity(n->obj,-90.0,n->angle,0.0,true);
+                        bbRotateEntity(n->collider,0.f,bbEntityYaw(n->collider,true),0.f,true);
+                        n->angle = CurveAngle(bbEntityYaw(n->collider,true),n->angle,20.f);
+                        bbRotateEntity(n->obj,-90.f,n->angle,0.f,true);
 
-                        n->currSpeed = CurveValue(n->speed,n->currSpeed,20.0);
-                        bbTranslateEntity(n->collider, bbCos(bbEntityYaw(n->collider,true)+90.0)*n->currSpeed * timing->tickDuration, 0, bbSin(bbEntityYaw(n->collider,true)+90.0)*n->currSpeed * timing->tickDuration, true);
+                        n->currSpeed = CurveValue(n->speed,n->currSpeed,20.f);
+                        bbTranslateEntity(n->collider, bbCos(bbEntityYaw(n->collider,true)+90.f)*n->currSpeed * timing->tickDuration, 0, bbSin(bbEntityYaw(n->collider,true)+90.f)*n->currSpeed * timing->tickDuration, true);
                         AnimateNPC(n,488, 522, n->currSpeed*26);
 
                         if (Distance(bbEntityX(n->collider),bbEntityZ(n->collider),n->pathX,n->pathZ)<0.2) {
-                            n->pathX = 0.0;
-                            n->pathZ = 0.0;
-                            n->pathTimer = 70.0 * bbRnd(6.0,10.0);
+                            n->pathX = 0.f;
+                            n->pathZ = 0.f;
+                            n->pathTimer = 70.f * bbRnd(6.f,10.f);
                         }
 
                         bbFreeEntity(pvt);
                     } else {
                         //timer goes down fast
-                        n->pathTimer = n->pathTimer-(timing->tickDuration*2.0);
+                        n->pathTimer = n->pathTimer-(timing->tickDuration*2.f);
                         if (n->mtfLeader == nullptr) {
                             if (bbRand(1,35)==1) {
-                                bbRotateEntity(n->collider,0.0,bbRnd(360.0),0.0,true);
+                                bbRotateEntity(n->collider,0.f,bbRnd(360.f),0.f,true);
                             }
                             FinishWalking(n,488,522,n->speed*26);
-                            n->currSpeed = 0.0;
-                        } else if ((bbEntityDistance(n->collider,n->mtfLeader->collider)>1.0)) {
+                            n->currSpeed = 0.f;
+                        } else if ((bbEntityDistance(n->collider,n->mtfLeader->collider)>1.f)) {
                             bbPointEntity(n->collider,n->mtfLeader->collider);
-                            bbRotateEntity(n->collider,0.0,bbEntityYaw(n->collider,true),0.0,true);
+                            bbRotateEntity(n->collider,0.f,bbEntityYaw(n->collider,true),0.f,true);
 
-                            n->currSpeed = CurveValue(n->speed,n->currSpeed,20.0);
-                            bbTranslateEntity(n->collider, bbCos(bbEntityYaw(n->collider,true)+90.0)*n->currSpeed * timing->tickDuration, 0, bbSin(bbEntityYaw(n->collider,true)+90.0)*n->currSpeed * timing->tickDuration, true);
+                            n->currSpeed = CurveValue(n->speed,n->currSpeed,20.f);
+                            bbTranslateEntity(n->collider, bbCos(bbEntityYaw(n->collider,true)+90.f)*n->currSpeed * timing->tickDuration, 0, bbSin(bbEntityYaw(n->collider,true)+90.f)*n->currSpeed * timing->tickDuration, true);
                             AnimateNPC(n,488, 522, n->currSpeed*26);
                         } else {
                             if (bbRand(1,35)==1) {
-                                bbRotateEntity(n->collider,0.0,bbRnd(360.0),0.0,true);
+                                bbRotateEntity(n->collider,0.f,bbRnd(360.f),0.f,true);
                             }
                             FinishWalking(n,488,522,n->speed*26);
-                            n->currSpeed = 0.0;
+                            n->currSpeed = 0.f;
                         }
-                        n->angle = CurveAngle(bbEntityYaw(n->collider,true),n->angle,20.0);
-                        bbRotateEntity(n->obj,-90.0,n->angle,0.0,true);
+                        n->angle = CurveAngle(bbEntityYaw(n->collider,true),n->angle,20.f);
+                        bbRotateEntity(n->obj,-90.f,n->angle,0.f,true);
                     }
                 }
 
@@ -431,9 +431,9 @@ void UpdateNPCtypeMTF(NPC* n) {
                     n->enemyY = bbEntityY(mainPlayer->collider,true);
                     n->enemyZ = bbEntityZ(mainPlayer->collider,true);
                     //give up after 15 seconds (30 seconds if detected by loud noise, over camera: 45)
-                    n->state2 = 70.0*(15.0*temp);
+                    n->state2 = 70.f*(15.f*temp);
                     std::cout << "player spotted :"+String(n->state2);
-                    n->pathTimer = 0.0;
+                    n->pathTimer = 0.f;
                     n->pathStatus = 0;
                     n->reload = 200-(100*SelectedDifficulty->aggressiveNPCs);
 
@@ -444,17 +444,17 @@ void UpdateNPCtypeMTF(NPC* n) {
 
                 //B3D doesn't do short-circuit evaluation, so this retarded nesting is an optimization
                 if (Curr173->idle<2) {
-                    soundVol173 = Max(Min((Distance(bbEntityX(Curr173->collider), bbEntityZ(Curr173->collider), Curr173->prevX, Curr173->prevZ) * 2.5), 1.0), 0.0);
-                    if (OtherNPCSeesMeNPC(Curr173,n) | (soundVol173>0.0 & bbEntityDistance(n->collider,Curr173->collider)<6.0)) {
-                        if (bbEntityVisible(n->collider,Curr173->collider) | soundVol173>0.0) {
+                    soundVol173 = Max(Min((Distance(bbEntityX(Curr173->collider), bbEntityZ(Curr173->collider), Curr173->prevX, Curr173->prevZ) * 2.5), 1.f), 0.f);
+                    if (OtherNPCSeesMeNPC(Curr173,n) | (soundVol173>0.f & bbEntityDistance(n->collider,Curr173->collider)<6.f)) {
+                        if (bbEntityVisible(n->collider,Curr173->collider) | soundVol173>0.f) {
                             n->state = 2;
                             n->enemyX = bbEntityX(Curr173->collider,true);
                             n->enemyY = bbEntityY(Curr173->collider,true);
                             n->enemyZ = bbEntityZ(Curr173->collider,true);
                             //give up after 15 seconds
-                            n->state2 = (int)(70.0*15.0);
-                            n->state3 = 0.0;
-                            n->pathTimer = 0.0;
+                            n->state2 = (int)(70.f*15.f);
+                            n->state3 = 0.f;
+                            n->pathTimer = 0.f;
                             n->pathStatus = 0;
                             std::cout << "173 spotted :"+String(n->state2);
                             if (n->sounds[0] != 0) {
@@ -468,15 +468,15 @@ void UpdateNPCtypeMTF(NPC* n) {
                 }
 
                 if (Curr106->state <= 0) {
-                    if (OtherNPCSeesMeNPC(Curr106,n) | bbEntityDistance(n->collider,Curr106->collider)<3.0) {
+                    if (OtherNPCSeesMeNPC(Curr106,n) | bbEntityDistance(n->collider,Curr106->collider)<3.f) {
                         if (bbEntityVisible(n->collider,Curr106->collider)) {
                             n->state = 4;
                             n->enemyX = bbEntityX(Curr106->collider,true);
                             n->enemyY = bbEntityY(Curr106->collider,true);
                             n->enemyZ = bbEntityZ(Curr106->collider,true);
-                            n->state2 = 70*15.0;
-                            n->state3 = 0.0;
-                            n->pathTimer = 0.0;
+                            n->state2 = 70*15.f;
+                            n->state3 = 0.f;
+                            n->pathTimer = 0.f;
                             n->pathStatus = 0;
                             n->target = Curr106;
                             std::cout << "106 spotted :"+String(n->state2);
@@ -499,9 +499,9 @@ void UpdateNPCtypeMTF(NPC* n) {
                             n->enemyX = bbEntityX(Curr096->collider,true);
                             n->enemyY = bbEntityY(Curr096->collider,true);
                             n->enemyZ = bbEntityZ(Curr096->collider,true);
-                            n->state2 = 70*15.0;
-                            n->state3 = 0.0;
-                            n->pathTimer = 0.0;
+                            n->state2 = 70*15.f;
+                            n->state3 = 0.f;
+                            n->pathTimer = 0.f;
                             n->pathStatus = 0;
                             std::cout << "096 spotted :"+String(n->state2);
                             //If n\mtfLeader=Null
@@ -526,9 +526,9 @@ void UpdateNPCtypeMTF(NPC* n) {
                                 n->enemyX = bbEntityX(n2->collider,true);
                                 n->enemyY = bbEntityY(n2->collider,true);
                                 n->enemyZ = bbEntityZ(n2->collider,true);
-                                n->state2 = 70*15.0;
-                                n->state3 = 0.0;
-                                n->pathTimer = 0.0;
+                                n->state2 = 70*15.f;
+                                n->state3 = 0.f;
+                                n->pathTimer = 0.f;
                                 n->pathStatus = 0;
                                 n->target = n2;
                                 std::cout << "049 spotted :"+String(n->state2);
@@ -548,9 +548,9 @@ void UpdateNPCtypeMTF(NPC* n) {
                                 n->enemyX = bbEntityX(n2->collider,true);
                                 n->enemyY = bbEntityY(n2->collider,true);
                                 n->enemyZ = bbEntityZ(n2->collider,true);
-                                n->state2 = 70*15.0;
-                                n->state3 = 0.0;
-                                n->pathTimer = 0.0;
+                                n->state2 = 70*15.f;
+                                n->state3 = 0.f;
+                                n->pathTimer = 0.f;
                                 n->pathStatus = 0;
                                 n->target = n2;
                                 n->reload = 70*5;
@@ -576,11 +576,11 @@ void UpdateNPCtypeMTF(NPC* n) {
                 if (MeNPCSeesPlayer(n) == true) {
 
                     //if close enough, start shooting at the player
-                    if (n->playerDistance < 4.0) {
+                    if (n->playerDistance < 4.f) {
 
                         angle = bbVectorYaw(bbEntityX(mainPlayer->collider)-bbEntityX(n->collider),0,bbEntityZ(mainPlayer->collider)-bbEntityZ(n->collider));
 
-                        bbRotateEntity(n->collider, 0, CurveAngle(angle, bbEntityYaw(n->collider), 10.0), 0, true);
+                        bbRotateEntity(n->collider, 0, CurveAngle(angle, bbEntityYaw(n->collider), 10.f), 0, true);
                         n->angle = bbEntityYaw(n->collider);
 
                         if (n->reload <= 0 & (!mainPlayer->dead)) {
@@ -597,7 +597,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                                     bbPositionEntity(pvt, bbEntityX(n->obj), bbEntityY(n->obj), bbEntityZ(n->obj));
                                     bbMoveEntity(pvt,0.8*0.079, 10.75*0.079, 6.9*0.079);
 
-                                    Shoot(bbEntityX(pvt),bbEntityY(pvt),bbEntityZ(pvt),5.0/n->playerDistance, false);
+                                    Shoot(bbEntityX(pvt),bbEntityY(pvt),bbEntityZ(pvt),5.f/n->playerDistance, false);
                                     n->reload = 7;
 
                                     bbFreeEntity(pvt);
@@ -618,7 +618,7 @@ void UpdateNPCtypeMTF(NPC* n) {
 
                             if (n2->npcType == NPCtypeMTF & n2 != n) {
                                 if (n2->state == 0) {
-                                    if (bbEntityDistance(n->collider,n2->collider)<6.0) {
+                                    if (bbEntityDistance(n->collider,n2->collider)<6.f) {
                                         n->prevState = 1;
                                         n2->lastSeen = (int)(70*bbRnd(30,40));
                                         n2->lastDist = 1;
@@ -628,7 +628,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                                         n2->enemyY = bbEntityY(mainPlayer->collider,true);
                                         n2->enemyZ = bbEntityZ(mainPlayer->collider,true);
                                         n2->state2 = n->state2;
-                                        n2->pathTimer = 0.0;
+                                        n2->pathTimer = 0.f;
                                         n2->pathStatus = 0;
                                         n2->reload = 200-(100*SelectedDifficulty->aggressiveNPCs);
                                         n2->prevState = 0;
@@ -642,36 +642,36 @@ void UpdateNPCtypeMTF(NPC* n) {
                             n->prevState = 2;
                         } else if ((n->prevState==2)) {
                             if (n->frame>200) {
-                                n->currSpeed = CurveValue(0, n->currSpeed, 20.0);
+                                n->currSpeed = CurveValue(0, n->currSpeed, 20.f);
                                 AnimateNPC(n, 423, 463, 0.4, false);
                                 if (n->frame>462.9) {
                                     n->frame = 78;
                                 }
                             } else {
                                 AnimateNPC(n, 78, 193, 0.2, false);
-                                n->currSpeed = CurveValue(0, n->currSpeed, 20.0);
+                                n->currSpeed = CurveValue(0, n->currSpeed, 20.f);
                             }
                         } else {
                             if (n->frame>958) {
                                 AnimateNPC(n, 1374, 1383, 0.3, false);
-                                n->currSpeed = CurveValue(0, n->currSpeed, 20.0);
+                                n->currSpeed = CurveValue(0, n->currSpeed, 20.f);
                                 if (n->frame>1382.9) {
                                     n->frame = 78;
                                 }
                             } else {
                                 AnimateNPC(n, 78, 193, 0.2, false);
-                                n->currSpeed = CurveValue(0, n->currSpeed, 20.0);
+                                n->currSpeed = CurveValue(0, n->currSpeed, 20.f);
                             }
                         }
                     } else {
                         bbPositionEntity(n->obj,n->enemyX,n->enemyY,n->enemyZ,true);
                         bbPointEntity(n->collider,n->obj);
-                        bbRotateEntity(n->collider,0.0,bbEntityYaw(n->collider,true),0.0,true);
-                        n->angle = CurveAngle(bbEntityYaw(n->collider,true),n->angle,20.0);
-                        bbRotateEntity(n->obj,-90.0,n->angle,0.0,true);
+                        bbRotateEntity(n->collider,0.f,bbEntityYaw(n->collider,true),0.f,true);
+                        n->angle = CurveAngle(bbEntityYaw(n->collider,true),n->angle,20.f);
+                        bbRotateEntity(n->obj,-90.f,n->angle,0.f,true);
 
-                        n->currSpeed = CurveValue(n->speed,n->currSpeed,20.0);
-                        bbTranslateEntity(n->collider, bbCos(bbEntityYaw(n->collider,true)+90.0)*n->currSpeed * timing->tickDuration, 0, bbSin(bbEntityYaw(n->collider,true)+90.0)*n->currSpeed * timing->tickDuration, true);
+                        n->currSpeed = CurveValue(n->speed,n->currSpeed,20.f);
+                        bbTranslateEntity(n->collider, bbCos(bbEntityYaw(n->collider,true)+90.f)*n->currSpeed * timing->tickDuration, 0, bbSin(bbEntityYaw(n->collider,true)+90.f)*n->currSpeed * timing->tickDuration, true);
                         AnimateNPC(n,488, 522, n->currSpeed*26);
                     }
                 } else {
@@ -680,30 +680,30 @@ void UpdateNPCtypeMTF(NPC* n) {
                     n->reload = 200-(100*SelectedDifficulty->aggressiveNPCs);
 
                     //update path
-                    if (n->pathTimer<=0.0) {
+                    if (n->pathTimer<=0.f) {
                         n->pathStatus = FindPath(n,n->enemyX,n->enemyY+0.1,n->enemyZ);
                         //search again after 6 seconds
-                        n->pathTimer = 70.0 * bbRnd(6.0,10.0);
-                    } else if ((n->pathTimer<=70.0 * 2.5)) {
+                        n->pathTimer = 70.f * bbRnd(6.f,10.f);
+                    } else if ((n->pathTimer<=70.f * 2.5)) {
                         n->pathTimer = n->pathTimer-timing->tickDuration;
-                        n->currSpeed = 0.0;
+                        n->currSpeed = 0.f;
                         if (bbRand(1,35)==1) {
-                            bbRotateEntity(n->collider,0.0,bbRnd(360.0),0.0,true);
+                            bbRotateEntity(n->collider,0.f,bbRnd(360.f),0.f,true);
                         }
                         FinishWalking(n,488,522,n->speed*26);
-                        n->angle = CurveAngle(bbEntityYaw(n->collider,true),n->angle,20.0);
-                        bbRotateEntity(n->obj,-90.0,n->angle,0.0,true);
+                        n->angle = CurveAngle(bbEntityYaw(n->collider,true),n->angle,20.f);
+                        bbRotateEntity(n->obj,-90.f,n->angle,0.f,true);
                     } else {
                         if (n->pathStatus==2) {
                             //timer goes down fast
-                            n->pathTimer = n->pathTimer-(timing->tickDuration*2.0);
-                            n->currSpeed = 0.0;
+                            n->pathTimer = n->pathTimer-(timing->tickDuration*2.f);
+                            n->currSpeed = 0.f;
                             if (bbRand(1,35)==1) {
-                                bbRotateEntity(n->collider,0.0,bbRnd(360.0),0.0,true);
+                                bbRotateEntity(n->collider,0.f,bbRnd(360.f),0.f,true);
                             }
                             FinishWalking(n,488,522,n->speed*26);
-                            n->angle = CurveAngle(bbEntityYaw(n->collider,true),n->angle,20.0);
-                            bbRotateEntity(n->obj,-90.0,n->angle,0.0,true);
+                            n->angle = CurveAngle(bbEntityYaw(n->collider,true),n->angle,20.f);
+                            bbRotateEntity(n->obj,-90.f,n->angle,0.f,true);
                         } else if ((n->pathStatus==1)) {
                             if (n->path[n->pathLocation]==nullptr) {
                                 if (n->pathLocation > 19) {
@@ -716,19 +716,19 @@ void UpdateNPCtypeMTF(NPC* n) {
                                 prevDist = bbEntityDistance(n->collider,n->path[n->pathLocation]->obj);
 
                                 bbPointEntity(n->collider,n->path[n->pathLocation]->obj);
-                                bbRotateEntity(n->collider,0.0,bbEntityYaw(n->collider,true),0.0,true);
-                                n->angle = CurveAngle(bbEntityYaw(n->collider,true),n->angle,20.0);
-                                bbRotateEntity(n->obj,-90.0,n->angle,0.0,true);
+                                bbRotateEntity(n->collider,0.f,bbEntityYaw(n->collider,true),0.f,true);
+                                n->angle = CurveAngle(bbEntityYaw(n->collider,true),n->angle,20.f);
+                                bbRotateEntity(n->obj,-90.f,n->angle,0.f,true);
 
-                                n->currSpeed = CurveValue(n->speed,n->currSpeed,20.0);
+                                n->currSpeed = CurveValue(n->speed,n->currSpeed,20.f);
 
-                                bbTranslateEntity(n->collider, bbCos(bbEntityYaw(n->collider,true)+90.0)*n->currSpeed * timing->tickDuration, 0, bbSin(bbEntityYaw(n->collider,true)+90.0)*n->currSpeed * timing->tickDuration, true);
+                                bbTranslateEntity(n->collider, bbCos(bbEntityYaw(n->collider,true)+90.f)*n->currSpeed * timing->tickDuration, 0, bbSin(bbEntityYaw(n->collider,true)+90.f)*n->currSpeed * timing->tickDuration, true);
                                 AnimateNPC(n,488, 522, n->currSpeed*26);
 
                                 newDist = bbEntityDistance(n->collider,n->path[n->pathLocation]->obj);
 
                                 //TODO: fix
-                                //If (newDist<1.0 And n\path[n\pathLocation]\door<>Null) Then
+                                //If (newDist<1.f And n\path[n\pathLocation]\door<>Null) Then
                                 //	;open the door and make it automatically close after 5 seconds
                                 //	If (Not n\path[n\pathLocation]\door\open)
                                 //		sound = 0
@@ -738,11 +738,11 @@ void UpdateNPCtypeMTF(NPC* n) {
                                 //	EndIf
                                 //	n\path[n\pathLocation]\door\open = True
                                 //	If n\path[n\pathLocation]\door\mtfClose
-                                //		n\path[n\pathLocation]\door\timerstate = 70.0*5.0
+                                //		n\path[n\pathLocation]\door\timerstate = 70.f*5.f
                                 //	EndIf
                                 //EndIf
 
-                                if (newDist<0.2 | (prevDist<newDist & prevDist<1.0)) {
+                                if (newDist<0.2 | (prevDist<newDist & prevDist<1.f)) {
                                     n->pathLocation = n->pathLocation+1;
                                 }
                             }
@@ -752,7 +752,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                             bbPositionEntity(n->obj,n->enemyX,n->enemyY,n->enemyZ,true);
                             if (Distance(bbEntityX(n->collider,true),bbEntityZ(n->collider,true),n->enemyX,n->enemyZ)<0.2 | !bbEntityVisible(n->obj,n->collider)) {
                                 if (bbRand(1,35)==1) {
-                                    bbRotateEntity(n->collider,0.0,bbRnd(360.0),0.0,true);
+                                    bbRotateEntity(n->collider,0.f,bbRnd(360.f),0.f,true);
                                 }
                                 FinishWalking(n,488,522,n->speed*26);
                                 if (bbRand(1,35)==1) {
@@ -760,11 +760,11 @@ void UpdateNPCtypeMTF(NPC* n) {
                                         wp = WayPoint::getObject(iterator144);
 
                                         if (bbRand(1,3)==1) {
-                                            if (bbEntityDistance(wp->obj,n->collider)<6.0) {
+                                            if (bbEntityDistance(wp->obj,n->collider)<6.f) {
                                                 n->enemyX = bbEntityX(wp->obj,true);
                                                 n->enemyY = bbEntityY(wp->obj,true);
                                                 n->enemyZ = bbEntityZ(wp->obj,true);
-                                                n->pathTimer = 0.0;
+                                                n->pathTimer = 0.f;
                                                 break;
                                             }
                                         }
@@ -774,12 +774,12 @@ void UpdateNPCtypeMTF(NPC* n) {
                                 n->pathTimer = n->pathTimer-timing->tickDuration;
                             } else {
                                 bbPointEntity(n->collider,n->obj);
-                                bbRotateEntity(n->collider,0.0,bbEntityYaw(n->collider,true),0.0,true);
-                                n->angle = CurveAngle(bbEntityYaw(n->collider,true),n->angle,20.0);
-                                bbRotateEntity(n->obj,-90.0,n->angle,0.0,true);
+                                bbRotateEntity(n->collider,0.f,bbEntityYaw(n->collider,true),0.f,true);
+                                n->angle = CurveAngle(bbEntityYaw(n->collider,true),n->angle,20.f);
+                                bbRotateEntity(n->obj,-90.f,n->angle,0.f,true);
 
-                                n->currSpeed = CurveValue(n->speed,n->currSpeed,20.0);
-                                bbTranslateEntity(n->collider, bbCos(bbEntityYaw(n->collider,true)+90.0)*n->currSpeed * timing->tickDuration, 0, bbSin(bbEntityYaw(n->collider,true)+90.0)*n->currSpeed * timing->tickDuration, true);
+                                n->currSpeed = CurveValue(n->speed,n->currSpeed,20.f);
+                                bbTranslateEntity(n->collider, bbCos(bbEntityYaw(n->collider,true)+90.f)*n->currSpeed * timing->tickDuration, 0, bbSin(bbEntityYaw(n->collider,true)+90.f)*n->currSpeed * timing->tickDuration, true);
                                 AnimateNPC(n,488, 522, n->currSpeed*26);
                             }
                         }
@@ -796,7 +796,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                     //EndIf
                 }
 
-                if (n->state2<=0.0 & n->state2+timing->tickDuration >0.0) {
+                if (n->state2<=0.f & n->state2+timing->tickDuration >0.f) {
                     if (n->mtfLeader == nullptr) {
                         std::cout << "targetlost: "+String(n->state2);
                         PlayMTFSound(LoadTempSound("SFX/Character/MTF/Targetlost"+String(bbRand(1,3))+".ogg"),n);
@@ -806,15 +806,15 @@ void UpdateNPCtypeMTF(NPC* n) {
 
                 //B3D doesn't do short-circuit evaluation, so this retarded nesting is an optimization
                 if (Curr173->idle<2) {
-                    soundVol173 = Max(Min((Distance(bbEntityX(Curr173->collider), bbEntityZ(Curr173->collider), Curr173->prevX, Curr173->prevZ) * 2.5), 1.0), 0.0);
-                    if (OtherNPCSeesMeNPC(Curr173,n) | (soundVol173>0.0 & bbEntityDistance(n->collider,Curr173->collider)<6.0)) {
-                        if (bbEntityVisible(n->collider,Curr173->collider) | soundVol173>0.0) {
+                    soundVol173 = Max(Min((Distance(bbEntityX(Curr173->collider), bbEntityZ(Curr173->collider), Curr173->prevX, Curr173->prevZ) * 2.5), 1.f), 0.f);
+                    if (OtherNPCSeesMeNPC(Curr173,n) | (soundVol173>0.f & bbEntityDistance(n->collider,Curr173->collider)<6.f)) {
+                        if (bbEntityVisible(n->collider,Curr173->collider) | soundVol173>0.f) {
                             n->state = 2;
                             n->enemyX = bbEntityX(Curr173->collider,true);
                             n->enemyY = bbEntityY(Curr173->collider,true);
                             n->enemyZ = bbEntityZ(Curr173->collider,true);
                             //give up after 15 seconds
-                            n->state2 = 70.0*15.0;
+                            n->state2 = 70.f*15.f;
                             std::cout << "173 spotted :"+String(n->state2);
                             if (n->sounds[0] != 0) {
                                 bbFreeSound(n->sounds[0]);
@@ -822,23 +822,23 @@ void UpdateNPCtypeMTF(NPC* n) {
                             }
                             n->sounds[0] = bbLoadSound("SFX/Character/MTF/173/Spotted3.ogg");
                             PlayMTFSound(n->sounds[0], n);
-                            n->state3 = 0.0;
-                            n->pathTimer = 0.0;
+                            n->state3 = 0.f;
+                            n->pathTimer = 0.f;
                             n->pathStatus = 0;
                         }
                     }
                 }
 
                 if (Curr106->state <= 0) {
-                    if (OtherNPCSeesMeNPC(Curr106,n) | bbEntityDistance(n->collider,Curr106->collider)<3.0) {
+                    if (OtherNPCSeesMeNPC(Curr106,n) | bbEntityDistance(n->collider,Curr106->collider)<3.f) {
                         if (bbEntityVisible(n->collider,Curr106->collider)) {
                             n->state = 4;
                             n->enemyX = bbEntityX(Curr106->collider,true);
                             n->enemyY = bbEntityY(Curr106->collider,true);
                             n->enemyZ = bbEntityZ(Curr106->collider,true);
-                            n->state2 = 70*15.0;
-                            n->state3 = 0.0;
-                            n->pathTimer = 0.0;
+                            n->state2 = 70*15.f;
+                            n->state3 = 0.f;
+                            n->pathTimer = 0.f;
                             n->pathStatus = 0;
                             n->target = Curr106;
                             std::cout << "106 spotted :"+String(n->state2);
@@ -861,9 +861,9 @@ void UpdateNPCtypeMTF(NPC* n) {
                             n->enemyX = bbEntityX(Curr096->collider,true);
                             n->enemyY = bbEntityY(Curr096->collider,true);
                             n->enemyZ = bbEntityZ(Curr096->collider,true);
-                            n->state2 = 70*15.0;
-                            n->state3 = 0.0;
-                            n->pathTimer = 0.0;
+                            n->state2 = 70*15.f;
+                            n->state3 = 0.f;
+                            n->pathTimer = 0.f;
                             n->pathStatus = 0;
                             std::cout << "096 spotted :"+String(n->state2);
                             if (n->mtfLeader==nullptr) {
@@ -888,9 +888,9 @@ void UpdateNPCtypeMTF(NPC* n) {
                                 n->enemyX = bbEntityX(n2->collider,true);
                                 n->enemyY = bbEntityY(n2->collider,true);
                                 n->enemyZ = bbEntityZ(n2->collider,true);
-                                n->state2 = 70*15.0;
-                                n->state3 = 0.0;
-                                n->pathTimer = 0.0;
+                                n->state2 = 70*15.f;
+                                n->state3 = 0.f;
+                                n->pathTimer = 0.f;
                                 n->pathStatus = 0;
                                 n->target = n2;
                                 std::cout << "049 spotted :"+String(n->state2);
@@ -910,9 +910,9 @@ void UpdateNPCtypeMTF(NPC* n) {
                                 n->enemyX = bbEntityX(n2->collider,true);
                                 n->enemyY = bbEntityY(n2->collider,true);
                                 n->enemyZ = bbEntityZ(n2->collider,true);
-                                n->state2 = 70*15.0;
-                                n->state3 = 0.0;
-                                n->pathTimer = 0.0;
+                                n->state2 = 70*15.f;
+                                n->state3 = 0.f;
+                                n->pathTimer = 0.f;
                                 n->pathStatus = 0;
                                 n->target = n2;
                                 n->reload = 70*5;
@@ -953,22 +953,22 @@ void UpdateNPCtypeMTF(NPC* n) {
 
                     curr173Dist = Distance(bbEntityX(n->collider,true),bbEntityZ(n->collider,true),bbEntityX(Curr173->collider,true),bbEntityZ(Curr173->collider,true));
 
-                    if (curr173Dist<5.0) {
+                    if (curr173Dist<5.f) {
                         if (Curr173->idle != 2) {
                             Curr173->idle = true;
                         }
-                        n->state2 = 70.0*15.0;
-                        n->pathTimer = 0.0;
-                        tempDist = 1.0;
+                        n->state2 = 70.f*15.f;
+                        n->pathTimer = 0.f;
+                        tempDist = 1.f;
                         if (n->mtfLeader!=nullptr) {
-                            tempDist = 2.0;
+                            tempDist = 2.f;
                         }
                         if (curr173Dist<tempDist) {
                             if (n->mtfLeader == nullptr) {
                                 n->state3 = n->state3+timing->tickDuration;
                                 std::cout << "CONTAINING 173: "+String(n->state3);
-                                //If (n\state3>=70.0*10.0) Then
-                                if (n->state3>=70.0*15.0) {
+                                //If (n\state3>=70.f*10.f) Then
+                                if (n->state3>=70.f*15.f) {
                                     Curr173->idle = 2;
                                     if (n->mtfLeader == nullptr) {
                                         Curr173->target = n;
@@ -983,19 +983,19 @@ void UpdateNPCtypeMTF(NPC* n) {
                             }
                             bbPositionEntity(n->obj,bbEntityX(Curr173->collider,true),bbEntityY(Curr173->collider,true),bbEntityZ(Curr173->collider,true),true);
                             bbPointEntity(n->collider,n->obj);
-                            bbRotateEntity(n->collider,0.0,bbEntityYaw(n->collider,true),0.0,true);
-                            n->angle = CurveAngle(bbEntityYaw(n->collider,true),n->angle,20.0);
+                            bbRotateEntity(n->collider,0.f,bbEntityYaw(n->collider,true),0.f,true);
+                            n->angle = CurveAngle(bbEntityYaw(n->collider,true),n->angle,20.f);
                             FinishWalking(n,488,522,n->speed*26);
-                            bbRotateEntity(n->obj,-90.0,n->angle,0.0,true);
+                            bbRotateEntity(n->obj,-90.f,n->angle,0.f,true);
                         } else {
                             bbPositionEntity(n->obj,bbEntityX(Curr173->collider,true),bbEntityY(Curr173->collider,true),bbEntityZ(Curr173->collider,true),true);
                             bbPointEntity(n->collider,n->obj);
-                            bbRotateEntity(n->collider,0.0,bbEntityYaw(n->collider,true),0.0,true);
-                            n->angle = CurveAngle(bbEntityYaw(n->collider,true),n->angle,20.0);
-                            bbRotateEntity(n->obj,-90.0,n->angle,0.0,true);
+                            bbRotateEntity(n->collider,0.f,bbEntityYaw(n->collider,true),0.f,true);
+                            n->angle = CurveAngle(bbEntityYaw(n->collider,true),n->angle,20.f);
+                            bbRotateEntity(n->obj,-90.f,n->angle,0.f,true);
 
-                            n->currSpeed = CurveValue(n->speed,n->currSpeed,20.0);
-                            bbTranslateEntity(n->collider, bbCos(bbEntityYaw(n->collider,true)+90.0)*n->currSpeed * timing->tickDuration, 0, bbSin(bbEntityYaw(n->collider,true)+90.0)*n->currSpeed * timing->tickDuration, true);
+                            n->currSpeed = CurveValue(n->speed,n->currSpeed,20.f);
+                            bbTranslateEntity(n->collider, bbCos(bbEntityYaw(n->collider,true)+90.f)*n->currSpeed * timing->tickDuration, 0, bbSin(bbEntityYaw(n->collider,true)+90.f)*n->currSpeed * timing->tickDuration, true);
                             AnimateNPC(n,488, 522, n->currSpeed*26);
                         }
                     } else {
@@ -1003,30 +1003,30 @@ void UpdateNPCtypeMTF(NPC* n) {
                             Curr173->idle = false;
                         }
                         //update path
-                        if (n->pathTimer<=0.0) {
+                        if (n->pathTimer<=0.f) {
                             n->pathStatus = FindPath(n,bbEntityX(Curr173->collider,true),bbEntityY(Curr173->collider,true)+0.1,bbEntityZ(Curr173->collider,true));
                             //search again after 6 seconds
-                            n->pathTimer = 70.0 * bbRnd(6.0,10.0);
-                        } else if ((n->pathTimer<=70.0 * 2.5)) {
+                            n->pathTimer = 70.f * bbRnd(6.f,10.f);
+                        } else if ((n->pathTimer<=70.f * 2.5)) {
                             n->pathTimer = n->pathTimer-timing->tickDuration;
-                            n->currSpeed = 0.0;
+                            n->currSpeed = 0.f;
                             if (bbRand(1,35)==1) {
-                                bbRotateEntity(n->collider,0.0,bbRnd(360.0),0.0,true);
+                                bbRotateEntity(n->collider,0.f,bbRnd(360.f),0.f,true);
                             }
                             FinishWalking(n,488,522,n->speed*26);
-                            n->angle = CurveAngle(bbEntityYaw(n->collider,true),n->angle,20.0);
-                            bbRotateEntity(n->obj,-90.0,n->angle,0.0,true);
+                            n->angle = CurveAngle(bbEntityYaw(n->collider,true),n->angle,20.f);
+                            bbRotateEntity(n->obj,-90.f,n->angle,0.f,true);
                         } else {
                             if (n->pathStatus==2) {
                                 //timer goes down fast
-                                n->pathTimer = n->pathTimer-(timing->tickDuration*2.0);
-                                n->currSpeed = 0.0;
+                                n->pathTimer = n->pathTimer-(timing->tickDuration*2.f);
+                                n->currSpeed = 0.f;
                                 if (bbRand(1,35)==1) {
-                                    bbRotateEntity(n->collider,0.0,bbRnd(360.0),0.0,true);
+                                    bbRotateEntity(n->collider,0.f,bbRnd(360.f),0.f,true);
                                 }
                                 FinishWalking(n,488,522,n->speed*26);
-                                n->angle = CurveAngle(bbEntityYaw(n->collider,true),n->angle,20.0);
-                                bbRotateEntity(n->obj,-90.0,n->angle,0.0,true);
+                                n->angle = CurveAngle(bbEntityYaw(n->collider,true),n->angle,20.f);
+                                bbRotateEntity(n->obj,-90.f,n->angle,0.f,true);
                             } else if ((n->pathStatus==1)) {
                                 if (n->path[n->pathLocation]==nullptr) {
                                     if (n->pathLocation > 19) {
@@ -1039,19 +1039,19 @@ void UpdateNPCtypeMTF(NPC* n) {
                                     prevDist = bbEntityDistance(n->collider,n->path[n->pathLocation]->obj);
 
                                     bbPointEntity(n->collider,n->path[n->pathLocation]->obj);
-                                    bbRotateEntity(n->collider,0.0,bbEntityYaw(n->collider,true),0.0,true);
-                                    n->angle = CurveAngle(bbEntityYaw(n->collider,true),n->angle,20.0);
-                                    bbRotateEntity(n->obj,-90.0,n->angle,0.0,true);
+                                    bbRotateEntity(n->collider,0.f,bbEntityYaw(n->collider,true),0.f,true);
+                                    n->angle = CurveAngle(bbEntityYaw(n->collider,true),n->angle,20.f);
+                                    bbRotateEntity(n->obj,-90.f,n->angle,0.f,true);
 
-                                    n->currSpeed = CurveValue(n->speed,n->currSpeed,20.0);
+                                    n->currSpeed = CurveValue(n->speed,n->currSpeed,20.f);
 
-                                    bbTranslateEntity(n->collider, bbCos(bbEntityYaw(n->collider,true)+90.0)*n->currSpeed * timing->tickDuration, 0, bbSin(bbEntityYaw(n->collider,true)+90.0)*n->currSpeed * timing->tickDuration, true);
+                                    bbTranslateEntity(n->collider, bbCos(bbEntityYaw(n->collider,true)+90.f)*n->currSpeed * timing->tickDuration, 0, bbSin(bbEntityYaw(n->collider,true)+90.f)*n->currSpeed * timing->tickDuration, true);
                                     AnimateNPC(n,488, 522, n->currSpeed*26);
 
                                     newDist = bbEntityDistance(n->collider,n->path[n->pathLocation]->obj);
 
                                     //TODO: fix
-                                    //If (newDist<1.0 And n\path[n\pathLocation]\door<>Null) Then
+                                    //If (newDist<1.f And n\path[n\pathLocation]\door<>Null) Then
                                     //	;open the door and make it automatically close after 5 seconds
                                     //	If (Not n\path[n\pathLocation]\door\open)
                                     //		sound = 0
@@ -1061,11 +1061,11 @@ void UpdateNPCtypeMTF(NPC* n) {
                                     //	EndIf
                                     //	n\path[n\pathLocation]\door\open = True
                                     //	If n\path[n\pathLocation]\door\mtfClose
-                                    //		n\path[n\pathLocation]\door\timerstate = 70.0*5.0
+                                    //		n\path[n\pathLocation]\door\timerstate = 70.f*5.f
                                     //	EndIf
                                     //EndIf
 
-                                    if (newDist<0.2 | (prevDist<newDist & prevDist<1.0)) {
+                                    if (newDist<0.2 | (prevDist<newDist & prevDist<1.f)) {
                                         n->pathLocation = n->pathLocation+1;
                                     }
                                 }
@@ -1073,14 +1073,14 @@ void UpdateNPCtypeMTF(NPC* n) {
                                 n->pathTimer = n->pathTimer-timing->tickDuration;
                             } else {
                                 //timer goes down fast
-                                n->pathTimer = n->pathTimer-(timing->tickDuration*2.0);
-                                n->currSpeed = 0.0;
+                                n->pathTimer = n->pathTimer-(timing->tickDuration*2.f);
+                                n->currSpeed = 0.f;
                                 if (bbRand(1,35)==1) {
-                                    bbRotateEntity(n->collider,0.0,bbRnd(360.0),0.0,true);
+                                    bbRotateEntity(n->collider,0.f,bbRnd(360.f),0.f,true);
                                 }
                                 FinishWalking(n,488,522,n->speed*26);
-                                n->angle = CurveAngle(bbEntityYaw(n->collider,true),n->angle,20.0);
-                                bbRotateEntity(n->obj,-90.0,n->angle,0.0,true);
+                                n->angle = CurveAngle(bbEntityYaw(n->collider,true),n->angle,20.f);
+                                bbRotateEntity(n->obj,-90.f,n->angle,0.f,true);
                             }
                         }
                     }
@@ -1091,7 +1091,7 @@ void UpdateNPCtypeMTF(NPC* n) {
             case 3: {
                 //[Block]
 
-                n->angle = CurveValue(0,n->angle,40.0);
+                n->angle = CurveValue(0,n->angle,40.f);
 
                 if (n->pathStatus == 2) {
                     n->state = 5;
@@ -1112,7 +1112,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                         //If (n\path[n\pathLocation]\door <> Null) Then
                         //	If (n\path[n\pathLocation]\door\open = False) Then
                         //		n\path[n\pathLocation]\door\open = True
-                        //		n\path[n\pathLocation]\door\timerstate = 8.0*70.0
+                        //		n\path[n\pathLocation]\door\timerstate = 8.f*70.f
                         //		PlayMTFSound(MTFSFX(5),n)
                         //	EndIf
                         //EndIf
@@ -1132,9 +1132,9 @@ void UpdateNPCtypeMTF(NPC* n) {
 
                             bbPointEntity(n->obj, n->path[n->pathLocation]->obj);
 
-                            bbRotateEntity(n->collider, 0, CurveAngle(bbEntityYaw(n->obj), bbEntityYaw(n->collider), 10.0), 0);
+                            bbRotateEntity(n->collider, 0, CurveAngle(bbEntityYaw(n->obj), bbEntityYaw(n->collider), 10.f), 0);
                             if (n->idle == 0) {
-                                n->currSpeed = CurveValue(n->speed*Max(Min(dist2,1.0),0.1), n->currSpeed, 20.0);
+                                n->currSpeed = CurveValue(n->speed*Max(Min(dist2,1.f),0.1), n->currSpeed, 20.f);
                                 bbMoveEntity(n->collider, 0, 0, n->currSpeed * timing->tickDuration);
 
                                 //If (dist2 < (0.25+((n\path[Min(n\pathLocation+1,19)]=Null)*0.3 * (n\id Mod 3)))) Then
@@ -1187,7 +1187,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                         }
                     }
 
-                    n->currSpeed = CurveValue(0, n->currSpeed, 20.0);
+                    n->currSpeed = CurveValue(0, n->currSpeed, 20.f);
                 }
 
                 n->angle = bbEntityYaw(n->collider);
@@ -1198,7 +1198,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                 //[Block]
                 n->speed = 0.03;
                 n->state2 = n->state2-timing->tickDuration;
-                if (n->state2 > 0.0) {
+                if (n->state2 > 0.f) {
                     if (OtherNPCSeesMeNPC(n->target,n)) {
                         n->state2 = 70*15;
                     }
@@ -1209,47 +1209,47 @@ void UpdateNPCtypeMTF(NPC* n) {
                         }
                     }
 
-                    if (bbEntityDistance(n->target->collider,n->collider)<3.0 & n->state3 >= 0.0) {
+                    if (bbEntityDistance(n->target->collider,n->collider)<3.f & n->state3 >= 0.f) {
                         n->state3 = 70*5;
                     }
 
-                    if (n->state3 > 0.0) {
+                    if (n->state3 > 0.f) {
                         n->pathStatus = 0;
                         n->pathLocation = 0;
                         n->speed = 0.02;
                         bbPointEntity(n->collider,n->target->collider);
-                        bbRotateEntity(n->collider,0.0,bbEntityYaw(n->collider,true),0.0,true);
-                        n->angle = CurveAngle(bbEntityYaw(n->collider,true),n->angle,20.0);
-                        bbRotateEntity(n->obj,-90.0,n->angle,0.0,true);
-                        n->currSpeed = CurveValue(-n->speed,n->currSpeed,20.0);
-                        bbTranslateEntity(n->collider, bbCos(bbEntityYaw(n->collider,true)+90.0)*n->currSpeed * timing->tickDuration, 0, bbSin(bbEntityYaw(n->collider,true)+90.0)*n->currSpeed * timing->tickDuration, true);
+                        bbRotateEntity(n->collider,0.f,bbEntityYaw(n->collider,true),0.f,true);
+                        n->angle = CurveAngle(bbEntityYaw(n->collider,true),n->angle,20.f);
+                        bbRotateEntity(n->obj,-90.f,n->angle,0.f,true);
+                        n->currSpeed = CurveValue(-n->speed,n->currSpeed,20.f);
+                        bbTranslateEntity(n->collider, bbCos(bbEntityYaw(n->collider,true)+90.f)*n->currSpeed * timing->tickDuration, 0, bbSin(bbEntityYaw(n->collider,true)+90.f)*n->currSpeed * timing->tickDuration, true);
                         AnimateNPC(n,522, 488, n->currSpeed*26);
 
-                        n->pathTimer = 1.0;
+                        n->pathTimer = 1.f;
 
                         n->state3 = Max(n->state3-timing->tickDuration,0);
 
                         bbHideEntity(n->collider);
                         bbTurnEntity(n->collider,0,180,0);
-                        bbEntityPick(n->collider, 1.0);
+                        bbEntityPick(n->collider, 1.f);
                         if (bbPickedEntity() != 0) {
                             n->state3 = -70*2;
                         }
                         bbShowEntity(n->collider);
                         bbTurnEntity(n->collider,0,180,0);
-                    } else if ((n->state3 < 0.0)) {
+                    } else if ((n->state3 < 0.f)) {
                         n->state3 = Min(n->state3+timing->tickDuration,0);
                     }
 
-                    if (n->pathTimer<=0.0) {
+                    if (n->pathTimer<=0.f) {
                         if (n->mtfLeader!=nullptr) {
                             n->pathStatus = FindPath(n,bbEntityX(n->mtfLeader->collider,true),bbEntityY(n->mtfLeader->collider,true)+0.1,bbEntityZ(n->mtfLeader->collider,true));
                         } else {
                             for (int iterator147 = 0; iterator147 < Room::getListSize(); iterator147++) {
                                 r = Room::getObject(iterator147);
 
-                                if (((abs(r->x-bbEntityX(n->collider,true))>12.0) | (abs(r->z-bbEntityZ(n->collider,true))>12.0)) & (bbRand(1,(int)(Max(4-(int)(abs(r->z-bbEntityZ(n->collider,true)/8.0)),2)))==1)) {
-                                    if (bbEntityDistance(r->obj,n->target->collider)>6.0) {
+                                if (((abs(r->x-bbEntityX(n->collider,true))>12.f) | (abs(r->z-bbEntityZ(n->collider,true))>12.f)) & (bbRand(1,(int)(Max(4-(int)(abs(r->z-bbEntityZ(n->collider,true)/8.f)),2)))==1)) {
+                                    if (bbEntityDistance(r->obj,n->target->collider)>6.f) {
                                         x = r->x;
                                         y = 0.1;
                                         z = r->z;
@@ -1291,19 +1291,19 @@ void UpdateNPCtypeMTF(NPC* n) {
                                 prevDist = bbEntityDistance(n->collider,n->path[n->pathLocation]->obj);
 
                                 bbPointEntity(n->collider,n->path[n->pathLocation]->obj);
-                                bbRotateEntity(n->collider,0.0,bbEntityYaw(n->collider,true),0.0,true);
-                                n->angle = CurveAngle(bbEntityYaw(n->collider,true),n->angle,20.0);
-                                bbRotateEntity(n->obj,-90.0,n->angle,0.0,true);
+                                bbRotateEntity(n->collider,0.f,bbEntityYaw(n->collider,true),0.f,true);
+                                n->angle = CurveAngle(bbEntityYaw(n->collider,true),n->angle,20.f);
+                                bbRotateEntity(n->obj,-90.f,n->angle,0.f,true);
 
-                                n->currSpeed = CurveValue(n->speed,n->currSpeed,20.0);
-                                bbTranslateEntity(n->collider, bbCos(bbEntityYaw(n->collider,true)+90.0)*n->currSpeed * timing->tickDuration, 0, bbSin(bbEntityYaw(n->collider,true)+90.0)*n->currSpeed * timing->tickDuration, true);
+                                n->currSpeed = CurveValue(n->speed,n->currSpeed,20.f);
+                                bbTranslateEntity(n->collider, bbCos(bbEntityYaw(n->collider,true)+90.f)*n->currSpeed * timing->tickDuration, 0, bbSin(bbEntityYaw(n->collider,true)+90.f)*n->currSpeed * timing->tickDuration, true);
                                 //Placeholder (until running animation has been implemented)
                                 AnimateNPC(n,488, 522, n->currSpeed*26);
 
                                 newDist = bbEntityDistance(n->collider,n->path[n->pathLocation]->obj);
 
                                 //TODO: fix and remove duplicates maybe???
-                                //If (newDist<2.0 And n\path[n\pathLocation]\door<>Null) Then
+                                //If (newDist<2.f And n\path[n\pathLocation]\door<>Null) Then
                                 //	If (Not n\path[n\pathLocation]\door\open)
                                 //		sound = 0
                                 //		If (n\path[n\pathLocation]\door\dir = 1) Then sound = 0 Else sound=Rand(0, 2)
@@ -1312,17 +1312,17 @@ void UpdateNPCtypeMTF(NPC* n) {
                                 //	EndIf
                                 //	n\path[n\pathLocation]\door\open = True
                                 //	If n\path[n\pathLocation]\door\mtfClose
-                                //		n\path[n\pathLocation]\door\timerstate = 70.0*5.0
+                                //		n\path[n\pathLocation]\door\timerstate = 70.f*5.f
                                 //	EndIf
                                 //EndIf
 
-                                if (newDist<0.2 | (prevDist<newDist & prevDist<1.0)) {
+                                if (newDist<0.2 | (prevDist<newDist & prevDist<1.f)) {
                                     n->pathLocation = n->pathLocation+1;
                                 }
                             }
                             n->pathTimer = n->pathTimer-timing->tickDuration;
                         } else {
-                            n->pathTimer = 0.0;
+                            n->pathTimer = 0.f;
                         }
                     }
                 } else {
@@ -1340,22 +1340,22 @@ void UpdateNPCtypeMTF(NPC* n) {
                     AnimateNPC(n, 346, 351, 0.2, false);
                 }
 
-                if (abs(bbEntityX(target)-bbEntityX(n->collider)) < 55.0 & abs(bbEntityZ(target)-bbEntityZ(n->collider)) < 55.0 & abs(bbEntityY(target)-bbEntityY(n->collider))< 20.0) {
+                if (abs(bbEntityX(target)-bbEntityX(n->collider)) < 55.f & abs(bbEntityZ(target)-bbEntityZ(n->collider)) < 55.f & abs(bbEntityY(target)-bbEntityY(n->collider))< 20.f) {
 
                     bbPointEntity(n->obj, target);
-                    bbRotateEntity(n->collider, 0, CurveAngle(bbEntityYaw(n->obj),bbEntityYaw(n->collider),30.0), 0, true);
+                    bbRotateEntity(n->collider, 0, CurveAngle(bbEntityYaw(n->obj),bbEntityYaw(n->collider),30.f), 0, true);
 
                     if (n->pathTimer == 0) {
                         n->pathStatus = bbEntityVisible(n->collider,target);
                         n->pathTimer = bbRand(100,200);
                     } else {
-                        n->pathTimer = Min(n->pathTimer-timing->tickDuration,0.0);
+                        n->pathTimer = Min(n->pathTimer-timing->tickDuration,0.f);
                     }
 
                     if (n->pathStatus == 1 & n->reload <= 0) {
                         dist = Distance(bbEntityX(target),bbEntityZ(target),bbEntityX(n->collider),bbEntityZ(n->collider));
 
-                        //If (dist<20.0) Then
+                        //If (dist<20.f) Then
                         //	pvt = CreatePivot()
                         //
                         //	PositionEntity(pvt, EntityX(n\obj),EntityY(n\obj), EntityZ(n\obj))
@@ -1364,7 +1364,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                         //
                         //	If (WrapAngle(EntityYaw(pvt)-EntityYaw(n\collider))<5) Then
                         //		PlayRangedSound(GunshotSFX, mainPlayer\cam, n\collider, 20)
-                        //		p.Particle = CreateParticle(EntityX(n\obj, True), EntityY(n\obj, True), EntityZ(n\obj, True), 1, 0.2, 0.0, 5)
+                        //		p.Particle = CreateParticle(EntityX(n\obj, True), EntityY(n\obj, True), EntityZ(n\obj, True), 1, 0.2, 0.f, 5)
                         //		PositionEntity(p\pvt, EntityX(pvt), EntityY(pvt), EntityZ(pvt))
                         //
                         //		n\reload = 7
@@ -1386,7 +1386,7 @@ void UpdateNPCtypeMTF(NPC* n) {
 
                 bbPointEntity(n->obj,mainPlayer->collider);
 
-                bbRotateEntity(n->collider,0,CurveAngle(bbEntityYaw(n->obj),bbEntityYaw(n->collider),20.0),0);
+                bbRotateEntity(n->collider,0,CurveAngle(bbEntityYaw(n->obj),bbEntityYaw(n->collider),20.f),0);
                 n->angle = bbEntityYaw(n->collider);
 
                 AnimateNPC(n, 346, 351, 0.2, false);
@@ -1395,7 +1395,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                     if (bbEntityVisible(n->collider, mainPlayer->collider)) {
                         //angle# = WrapAngle(angle - EntityYaw(n\collider))
                         //If (angle < 5 Or angle > 355) Then
-                        if (abs(bbDeltaYaw(n->collider,mainPlayer->collider))<50.0) {
+                        if (abs(bbDeltaYaw(n->collider,mainPlayer->collider))<50.f) {
                             //prev% = KillTimer
 
                             PlayRangedSound_SM(sndManager->gunshot[0], mainPlayer->cam, n->collider, 15);
@@ -1439,7 +1439,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                     bbPositionEntity(pvt, bbEntityX(n->obj), bbEntityY(n->obj), bbEntityZ(n->obj));
                     bbMoveEntity(pvt,0.8*0.079, 10.75*0.079, 6.9*0.079);
 
-                    p = CreateParticle(bbEntityX(pvt), bbEntityY(pvt), bbEntityZ(pvt), PARTICLE_FLASH, bbRnd(0.08,0.1), 0.0, 5);
+                    p = CreateParticle(bbEntityX(pvt), bbEntityY(pvt), bbEntityZ(pvt), PARTICLE_FLASH, bbRnd(0.08,0.1), 0.f, 5);
                     bbTurnEntity(p->sprite, 0,0,bbRnd(360));
                     p->aChange = -0.15;
 
@@ -1456,7 +1456,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                 n->manipulateBone = true;
                 n->manipulationType = 2;
                 //update path
-                if (n->pathTimer<=0.0) {
+                if (n->pathTimer<=0.f) {
                     //i'll follow the leader
                     if (n->mtfLeader!=nullptr) {
                         //whatever you say boss
@@ -1466,7 +1466,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                         for (int iterator148 = 0; iterator148 < Room::getListSize(); iterator148++) {
                             r = Room::getObject(iterator148);
 
-                            if (((abs(r->x-bbEntityX(n->collider,true))>12.0) | (abs(r->z-bbEntityZ(n->collider,true))>12.0)) & (bbRand(1,(int)(Max(4-(int)(abs(r->z-bbEntityZ(n->collider,true)/8.0)),2)))==1)) {
+                            if (((abs(r->x-bbEntityX(n->collider,true))>12.f) | (abs(r->z-bbEntityZ(n->collider,true))>12.f)) & (bbRand(1,(int)(Max(4-(int)(abs(r->z-bbEntityZ(n->collider,true)/8.f)),2)))==1)) {
                                 x = r->x;
                                 y = 0.1;
                                 z = r->z;
@@ -1495,27 +1495,27 @@ void UpdateNPCtypeMTF(NPC* n) {
                         }
                     }
                     //search again after 6-10 seconds
-                    n->pathTimer = 70.0 * bbRnd(6.0,10.0);
-                } else if ((n->pathTimer<=70.0 * 2.5) & (n->mtfLeader==nullptr)) {
+                    n->pathTimer = 70.f * bbRnd(6.f,10.f);
+                } else if ((n->pathTimer<=70.f * 2.5) & (n->mtfLeader==nullptr)) {
                     n->pathTimer = n->pathTimer-timing->tickDuration;
-                    n->currSpeed = 0.0;
+                    n->currSpeed = 0.f;
                     //If (Rand(1,35)=1) Then
-                    //	RotateEntity(n\collider,0.0,Rnd(360.0),0.0,True)
+                    //	RotateEntity(n\collider,0.f,Rnd(360.f),0.f,True)
                     //EndIf
                     FinishWalking(n,488,522,n->speed*26);
-                    n->angle = CurveAngle(bbEntityYaw(n->collider,true),n->angle,20.0);
-                    bbRotateEntity(n->obj,-90.0,n->angle,0.0,true);
+                    n->angle = CurveAngle(bbEntityYaw(n->collider,true),n->angle,20.f);
+                    bbRotateEntity(n->obj,-90.f,n->angle,0.f,true);
                 } else {
                     if (n->pathStatus==2) {
                         //timer goes down fast
-                        n->pathTimer = n->pathTimer-(timing->tickDuration*2.0);
-                        n->currSpeed = 0.0;
+                        n->pathTimer = n->pathTimer-(timing->tickDuration*2.f);
+                        n->currSpeed = 0.f;
                         //If (Rand(1,35)=1) Then
-                        //	RotateEntity(n\collider,0.0,Rnd(360.0),0.0,True)
+                        //	RotateEntity(n\collider,0.f,Rnd(360.f),0.f,True)
                         //EndIf
                         FinishWalking(n,488,522,n->speed*26);
-                        n->angle = CurveAngle(bbEntityYaw(n->collider,true),n->angle,20.0);
-                        bbRotateEntity(n->obj,-90.0,n->angle,0.0,true);
+                        n->angle = CurveAngle(bbEntityYaw(n->collider,true),n->angle,20.f);
+                        bbRotateEntity(n->obj,-90.f,n->angle,0.f,true);
                     } else if ((n->pathStatus==1)) {
                         if (n->path[n->pathLocation]==nullptr) {
                             if (n->pathLocation > 19) {
@@ -1528,19 +1528,19 @@ void UpdateNPCtypeMTF(NPC* n) {
                             prevDist = bbEntityDistance(n->collider,n->path[n->pathLocation]->obj);
 
                             bbPointEntity(n->collider,n->path[n->pathLocation]->obj);
-                            bbRotateEntity(n->collider,0.0,bbEntityYaw(n->collider,true),0.0,true);
-                            n->angle = CurveAngle(bbEntityYaw(n->collider,true),n->angle,20.0);
-                            bbRotateEntity(n->obj,-90.0,n->angle,0.0,true);
+                            bbRotateEntity(n->collider,0.f,bbEntityYaw(n->collider,true),0.f,true);
+                            n->angle = CurveAngle(bbEntityYaw(n->collider,true),n->angle,20.f);
+                            bbRotateEntity(n->obj,-90.f,n->angle,0.f,true);
 
-                            n->currSpeed = CurveValue(n->speed,n->currSpeed,20.0);
+                            n->currSpeed = CurveValue(n->speed,n->currSpeed,20.f);
                             //MoveEntity(n\collider, 0, 0, n\currSpeed * timing\tickDuration)
-                            bbTranslateEntity(n->collider, bbCos(bbEntityYaw(n->collider,true)+90.0)*n->currSpeed * timing->tickDuration, 0, bbSin(bbEntityYaw(n->collider,true)+90.0)*n->currSpeed * timing->tickDuration, true);
+                            bbTranslateEntity(n->collider, bbCos(bbEntityYaw(n->collider,true)+90.f)*n->currSpeed * timing->tickDuration, 0, bbSin(bbEntityYaw(n->collider,true)+90.f)*n->currSpeed * timing->tickDuration, true);
                             AnimateNPC(n,488, 522, n->currSpeed*26);
 
                             newDist = bbEntityDistance(n->collider,n->path[n->pathLocation]->obj);
 
                             //TODO: fix AND REMOVE DUPLICATES OMG
-                            //If (newDist<1.0 And n\path[n\pathLocation]\door<>Null) Then
+                            //If (newDist<1.f And n\path[n\pathLocation]\door<>Null) Then
                             //	;open the door and make it automatically close after 5 seconds
                             //	If (Not n\path[n\pathLocation]\door\open)
                             //		sound = 0
@@ -1550,11 +1550,11 @@ void UpdateNPCtypeMTF(NPC* n) {
                             //	EndIf
                             //	n\path[n\pathLocation]\door\open = True
                             //	If n\path[n\pathLocation]\door\mtfClose
-                            //		n\path[n\pathLocation]\door\timerstate = 70.0*5.0
+                            //		n\path[n\pathLocation]\door\timerstate = 70.f*5.f
                             //	EndIf
                             //EndIf
 
-                            if (newDist<0.2 | (prevDist<newDist & prevDist<1.0)) {
+                            if (newDist<0.2 | (prevDist<newDist & prevDist<1.f)) {
                                 n->pathLocation = n->pathLocation+1;
                             }
                         }
@@ -1562,33 +1562,33 @@ void UpdateNPCtypeMTF(NPC* n) {
                         n->pathTimer = n->pathTimer-timing->tickDuration;
                     } else {
                         //timer goes down fast
-                        n->pathTimer = n->pathTimer-(timing->tickDuration*2.0);
+                        n->pathTimer = n->pathTimer-(timing->tickDuration*2.f);
                         if (n->mtfLeader == nullptr) {
                             //If (Rand(1,35)=1) Then
-                            //	RotateEntity(n\collider,0.0,Rnd(360.0),0.0,True)
+                            //	RotateEntity(n\collider,0.f,Rnd(360.f),0.f,True)
                             //EndIf
                             FinishWalking(n,488,522,n->speed*26);
-                            n->currSpeed = 0.0;
-                        } else if ((bbEntityDistance(n->collider,n->mtfLeader->collider)>1.0)) {
+                            n->currSpeed = 0.f;
+                        } else if ((bbEntityDistance(n->collider,n->mtfLeader->collider)>1.f)) {
                             bbPointEntity(n->collider,n->mtfLeader->collider);
-                            bbRotateEntity(n->collider,0.0,bbEntityYaw(n->collider,true),0.0,true);
+                            bbRotateEntity(n->collider,0.f,bbEntityYaw(n->collider,true),0.f,true);
 
-                            n->currSpeed = CurveValue(n->speed,n->currSpeed,20.0);
-                            bbTranslateEntity(n->collider, bbCos(bbEntityYaw(n->collider,true)+90.0)*n->currSpeed * timing->tickDuration, 0, bbSin(bbEntityYaw(n->collider,true)+90.0)*n->currSpeed * timing->tickDuration, true);
+                            n->currSpeed = CurveValue(n->speed,n->currSpeed,20.f);
+                            bbTranslateEntity(n->collider, bbCos(bbEntityYaw(n->collider,true)+90.f)*n->currSpeed * timing->tickDuration, 0, bbSin(bbEntityYaw(n->collider,true)+90.f)*n->currSpeed * timing->tickDuration, true);
                             AnimateNPC(n,488, 522, n->currSpeed*26);
                         } else {
                             //If (Rand(1,35)=1) Then
-                            //	RotateEntity(n\collider,0.0,Rnd(360.0),0.0,True)
+                            //	RotateEntity(n\collider,0.f,Rnd(360.f),0.f,True)
                             //EndIf
                             FinishWalking(n,488,522,n->speed*26);
-                            n->currSpeed = 0.0;
+                            n->currSpeed = 0.f;
                         }
-                        n->angle = CurveAngle(bbEntityYaw(n->collider,true),n->angle,20.0);
-                        bbRotateEntity(n->obj,-90.0,n->angle,0.0,true);
+                        n->angle = CurveAngle(bbEntityYaw(n->collider,true),n->angle,20.f);
+                        bbRotateEntity(n->obj,-90.f,n->angle,0.f,true);
                     }
                 }
 
-                if ((!bbEntityVisible(n->collider,Curr096->collider)) | bbEntityDistance(n->collider,Curr096->collider)>6.0) {
+                if ((!bbEntityVisible(n->collider,Curr096->collider)) | bbEntityDistance(n->collider,Curr096->collider)>6.f) {
                     n->state = 0;
                 }
                 //[End Block]
@@ -1598,22 +1598,22 @@ void UpdateNPCtypeMTF(NPC* n) {
                 //[Block]
                 if (bbEntityVisible(n->collider, n->target->collider)) {
                     bbPointEntity(n->obj,n->target->collider);
-                    bbRotateEntity(n->collider,0,CurveAngle(bbEntityYaw(n->obj),bbEntityYaw(n->collider),20.0),0);
+                    bbRotateEntity(n->collider,0,CurveAngle(bbEntityYaw(n->obj),bbEntityYaw(n->collider),20.f),0);
                     n->angle = bbEntityYaw(n->collider);
 
                     if (bbEntityDistance(n->target->collider,n->collider)<1.3) {
                         n->state3 = 70*2;
                     }
 
-                    if (n->state3 > 0.0) {
+                    if (n->state3 > 0.f) {
                         n->pathStatus = 0;
                         n->pathLocation = 0;
                         n->speed = 0.02;
-                        n->currSpeed = CurveValue(-n->speed,n->currSpeed,20.0);
-                        bbTranslateEntity(n->collider, bbCos(bbEntityYaw(n->collider,true)+90.0)*n->currSpeed * timing->tickDuration, 0, bbSin(bbEntityYaw(n->collider,true)+90.0)*n->currSpeed * timing->tickDuration, true);
+                        n->currSpeed = CurveValue(-n->speed,n->currSpeed,20.f);
+                        bbTranslateEntity(n->collider, bbCos(bbEntityYaw(n->collider,true)+90.f)*n->currSpeed * timing->tickDuration, 0, bbSin(bbEntityYaw(n->collider,true)+90.f)*n->currSpeed * timing->tickDuration, true);
                         AnimateNPC(n,522, 488, n->currSpeed*26);
 
-                        n->pathTimer = 1.0;
+                        n->pathTimer = 1.f;
 
                         n->state3 = Max(n->state3-timing->tickDuration,0);
                     } else {
@@ -1623,7 +1623,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                     if (n->reload <= 0 & n->target->isDead == false) {
                         //angle# = WrapAngle(angle - EntityYaw(n\collider))
                         //If (angle < 5 Or angle > 355) Then
-                        if (abs(bbDeltaYaw(n->collider,n->target->collider))<50.0) {
+                        if (abs(bbDeltaYaw(n->collider,n->target->collider))<50.f) {
                             //prev% = KillTimer
 
                             PlayRangedSound_SM(sndManager->gunshot[0], mainPlayer->cam, n->collider, 15);
@@ -1634,7 +1634,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                             bbPositionEntity(pvt, bbEntityX(n->obj), bbEntityY(n->obj), bbEntityZ(n->obj));
                             bbMoveEntity(pvt,0.8*0.079, 10.75*0.079, 6.9*0.079);
 
-                            p = CreateParticle(bbEntityX(pvt), bbEntityY(pvt), bbEntityZ(pvt), PARTICLE_FLASH, bbRnd(0.08,0.1), 0.0, 5);
+                            p = CreateParticle(bbEntityX(pvt), bbEntityY(pvt), bbEntityZ(pvt), PARTICLE_FLASH, bbRnd(0.08,0.1), 0.f, 5);
                             bbTurnEntity(p->sprite, 0,0,bbRnd(360));
                             p->aChange = -0.15;
                             if (n->target->hp > 0) {
@@ -1659,7 +1659,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                     }
                     n->pathStatus = 0;
                 } else {
-                    if (n->pathTimer<=0.0) {
+                    if (n->pathTimer<=0.f) {
                         n->pathStatus = FindPath(n,bbEntityX(n->target->collider),bbEntityY(n->target->collider),bbEntityZ(n->target->collider));
                         if (n->pathStatus == 1) {
                             while (n->path[n->pathLocation]==nullptr) {
@@ -1692,34 +1692,34 @@ void UpdateNPCtypeMTF(NPC* n) {
                                 prevDist = bbEntityDistance(n->collider,n->path[n->pathLocation]->obj);
 
                                 bbPointEntity(n->collider,n->path[n->pathLocation]->obj);
-                                bbRotateEntity(n->collider,0.0,bbEntityYaw(n->collider,true),0.0,true);
-                                n->angle = CurveAngle(bbEntityYaw(n->collider,true),n->angle,20.0);
-                                bbRotateEntity(n->obj,-90.0,n->angle,0.0,true);
+                                bbRotateEntity(n->collider,0.f,bbEntityYaw(n->collider,true),0.f,true);
+                                n->angle = CurveAngle(bbEntityYaw(n->collider,true),n->angle,20.f);
+                                bbRotateEntity(n->obj,-90.f,n->angle,0.f,true);
 
-                                n->currSpeed = CurveValue(n->speed,n->currSpeed,20.0);
-                                bbTranslateEntity(n->collider, bbCos(bbEntityYaw(n->collider,true)+90.0)*n->currSpeed * timing->tickDuration, 0, bbSin(bbEntityYaw(n->collider,true)+90.0)*n->currSpeed * timing->tickDuration, true);
+                                n->currSpeed = CurveValue(n->speed,n->currSpeed,20.f);
+                                bbTranslateEntity(n->collider, bbCos(bbEntityYaw(n->collider,true)+90.f)*n->currSpeed * timing->tickDuration, 0, bbSin(bbEntityYaw(n->collider,true)+90.f)*n->currSpeed * timing->tickDuration, true);
                                 AnimateNPC(n,488, 522, n->currSpeed*26);
 
                                 newDist = bbEntityDistance(n->collider,n->path[n->pathLocation]->obj);
 
                                 //TODO: fix
-                                //If (newDist<1.0 And n\path[n\pathLocation]\door<>Null) Then
+                                //If (newDist<1.f And n\path[n\pathLocation]\door<>Null) Then
                                 //	If (Not n\path[n\pathLocation]\door\open)
                                 //		PlayMTFSound(MTFSFX(5),n)
                                 //	EndIf
                                 //	n\path[n\pathLocation]\door\open = True
                                 //	If n\path[n\pathLocation]\door\mtfClose
-                                //		n\path[n\pathLocation]\door\timerstate = 70.0*5.0
+                                //		n\path[n\pathLocation]\door\timerstate = 70.f*5.f
                                 //	EndIf
                                 //EndIf
 
-                                if (newDist<0.2 | (prevDist<newDist & prevDist<1.0)) {
+                                if (newDist<0.2 | (prevDist<newDist & prevDist<1.f)) {
                                     n->pathLocation = n->pathLocation+1;
                                 }
                             }
                             n->pathTimer = n->pathTimer-timing->tickDuration;
                         } else {
-                            n->pathTimer = 0.0;
+                            n->pathTimer = 0.f;
                         }
                     }
                 }
@@ -1730,9 +1730,9 @@ void UpdateNPCtypeMTF(NPC* n) {
 
         if (n->currSpeed > 0.01) {
             if (prevFrame > 500 & n->frame<495) {
-                PlayRangedSound(sndManager->footstepMetal[bbRand(0,7)]->internal, mainPlayer->cam, n->collider, 8.0, bbRnd(0.5,0.7));
+                PlayRangedSound(sndManager->footstepMetal[bbRand(0,7)]->internal, mainPlayer->cam, n->collider, 8.f, bbRnd(0.5,0.7));
             } else if ((prevFrame < 505 & n->frame>=505)) {
-                PlayRangedSound(sndManager->footstepMetal[bbRand(0,7)]->internal, mainPlayer->cam, n->collider, 8.0, bbRnd(0.5,0.7));
+                PlayRangedSound(sndManager->footstepMetal[bbRand(0,7)]->internal, mainPlayer->cam, n->collider, 8.f, bbRnd(0.5,0.7));
             }
         }
 
@@ -1744,8 +1744,8 @@ void UpdateNPCtypeMTF(NPC* n) {
             if (n->mtfLeader!=nullptr) {
                 if (bbEntityDistance(n->collider,n->mtfLeader->collider)<0.7) {
                     bbPointEntity(n->collider,n->mtfLeader->collider);
-                    bbRotateEntity(n->collider,0.0,bbEntityYaw(n->collider,true),0.0,true);
-                    n->angle = CurveAngle(bbEntityYaw(n->collider,true),n->angle,20.0);
+                    bbRotateEntity(n->collider,0.f,bbEntityYaw(n->collider,true),0.f,true);
+                    n->angle = CurveAngle(bbEntityYaw(n->collider,true),n->angle,20.f);
 
                     bbTranslateEntity(n->collider, bbCos(bbEntityYaw(n->collider,true)-45)* 0.01 * timing->tickDuration, 0, bbSin(bbEntityYaw(n->collider,true)-45)* 0.01 * timing->tickDuration, true);
                 }
@@ -1754,7 +1754,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                     n2 = NPC::getObject(iterator149);
 
                     if (n2!=n & n2->isDead==false) {
-                        if (abs(bbDeltaYaw(n->collider,n2->collider))<80.0) {
+                        if (abs(bbDeltaYaw(n->collider,n2->collider))<80.f) {
                             if (bbEntityDistance(n->collider,n2->collider)<0.7) {
                                 bbTranslateEntity(n2->collider, bbCos(bbEntityYaw(n->collider,true)+90)* 0.01 * timing->tickDuration, 0, bbSin(bbEntityYaw(n->collider,true)+90)* 0.01 * timing->tickDuration, true);
                             }
@@ -1766,12 +1766,12 @@ void UpdateNPCtypeMTF(NPC* n) {
 
         //teleport back to the facility if fell through the floor
         if (n->state != 6 & n->state != 7) {
-            if (bbEntityY(n->collider) < -10.0) {
+            if (bbEntityY(n->collider) < -10.f) {
                 TeleportCloser(n);
             }
         }
 
-        bbRotateEntity(n->obj,-90.0,n->angle,0.0,true);
+        bbRotateEntity(n->obj,-90.f,n->angle,0.f,true);
 
         bbPositionEntity(n->obj,bbEntityX(n->collider,true),bbEntityY(n->collider,true)-0.15,bbEntityZ(n->collider,true),true);
 
@@ -1808,7 +1808,7 @@ void UpdateMTF() {
             }
 
             if (entrance != nullptr) {
-                if (abs(bbEntityZ(entrance->obj)-bbEntityZ(mainPlayer->collider))<30.0) {
+                if (abs(bbEntityZ(entrance->obj)-bbEntityZ(mainPlayer->collider))<30.f) {
                     //If (mainPlayer\currRoom\roomTemplate\name<>"room860" And mainPlayer/currRoom/RoomTemplate/Name<>"pocketdimension") Then
                     if (PlayerInReachableRoom()) {
                         PlaySound2(LoadTempSound("SFX/Character/MTF/Announc.ogg"));
@@ -1817,7 +1817,7 @@ void UpdateMTF() {
                     MTFtimer = 1;
 
                     for (i = 0; i <= 2; i++) {
-                        n = CreateNPC(NPCtypeMTF, bbEntityX(entrance->obj)+0.3*(i-1), 1.0,bbEntityZ(entrance->obj)+8.0);
+                        n = CreateNPC(NPCtypeMTF, bbEntityX(entrance->obj)+0.3*(i-1), 1.f,bbEntityZ(entrance->obj)+8.f);
 
                         if (i == 0) {
                             leader = n;

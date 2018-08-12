@@ -328,7 +328,7 @@ void LoadEntities() {
     CamOBJ = bbLoadMesh("GFX/Map/CamHead.b3d");
     bbHideEntity(CamOBJ);
 
-    LoadItemTemplates("Data/Items/templates.ini");
+    ItemTemplate::LoadTemplates("Data/Items/templates.ini");
 
     LoadMaterials("Data/materials.ini");
 
@@ -349,7 +349,7 @@ void InitNewGame() {
 
     sndManager->loadInGameSounds();
 
-    HideDistance = 15.0;
+    HideDistance = 15.f;
 
     mainPlayer->heartbeatIntensity = 70;
     //HeartBeatRate = 70
@@ -369,8 +369,8 @@ void InitNewGame() {
 
     DrawLoading(79);
 
-    Curr173 = CreateNPC(NPCtype173, 0, -30.0, 0);
-    Curr106 = CreateNPC(NPCtype106, 0, -30.0, 0);
+    Curr173 = CreateNPC(NPCtype173, 0, -30.f, 0);
+    Curr106 = CreateNPC(NPCtype106, 0, -30.f, 0);
     Curr106->state = 70 * 60 * bbRand(12,17);
 
     for (int i = 0; i < Door::getListSize(); i++) {
@@ -391,8 +391,8 @@ void InitNewGame() {
         }
 
         if (d->obj2 != nullptr && d->typ == DOOR_TYPE_DEF) {
-            bbMoveEntity(d->obj, 0.f, 0.f, 8.0 * RoomScale);
-            bbMoveEntity(d->obj2, 0.f, 0.f, 8.0 * RoomScale);
+            bbMoveEntity(d->obj, 0.f, 0.f, 8.f * RoomScale);
+            bbMoveEntity(d->obj2, 0.f, 0.f, 8.f * RoomScale);
         }
     }
 
@@ -446,7 +446,7 @@ void InitNewGame() {
             bbResetEntity(mainPlayer->collider);
             mainPlayer->currRoom = r;
         } else if (r->roomTemplate->name.equals("intro") && userOptions->introEnabled) {
-            bbPositionEntity(mainPlayer->collider, bbEntityX(r->obj), 1.0, bbEntityZ(r->obj));
+            bbPositionEntity(mainPlayer->collider, bbEntityX(r->obj), 1.f, bbEntityZ(r->obj));
             bbResetEntity(mainPlayer->collider);
             mainPlayer->currRoom = r;
         }
@@ -613,6 +613,8 @@ void InitLoadGame() {
 void NullGame() {
     sndManager->deloadInGameSounds();
 
+    ItemTemplate::DeloadTemplates();
+
     ClearTextureCache();
 
     delete mainPlayer;
@@ -624,7 +626,7 @@ void NullGame() {
 
     GameSaved = 0;
 
-    HideDistance = 15.0;
+    HideDistance = 15.f;
 
     Contained106 = false;
     Curr173->idle = false;
@@ -662,12 +664,6 @@ void NullGame() {
     }
     delete[] MapRooms;
 
-    for (int i = 0; i < ItemTemplate::getListSize(); i++) {
-        ItemTemplate* itt = ItemTemplate::getObject(i);
-
-        delete itt;
-    }
-
     for (int i = 0; i < Item::getListSize(); i++) {
         Item* it = Item::getObject(i);
 
@@ -693,13 +689,13 @@ void NullGame() {
         RemoveEvent(e);
     }
 
-    NTF_1499PrevX = 0.0;
-    NTF_1499PrevY = 0.0;
-    NTF_1499PrevZ = 0.0;
+    NTF_1499PrevX = 0.f;
+    NTF_1499PrevY = 0.f;
+    NTF_1499PrevZ = 0.f;
     NTF_1499PrevRoom = nullptr;
-    NTF_1499X = 0.0;
-    NTF_1499Y = 0.0;
-    NTF_1499Z = 0.0;
+    NTF_1499X = 0.f;
+    NTF_1499Y = 0.f;
+    NTF_1499Z = 0.f;
 
     NoTarget = false;
 

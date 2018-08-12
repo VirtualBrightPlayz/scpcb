@@ -37,16 +37,16 @@ void FillRoom_off_glss_3(Room* r) {
     //, Bump
     int t1;
 
-    d = CreateDoor(r->x + 736.0 * RoomScale, 0.0, r->z + 240.0 * RoomScale, 0, r, false, DOOR_TYPE_DEF, r->roomTemplate->name);
-    bbPositionEntity(d->buttons[0], r->x + 892.0 * RoomScale, bbEntityY(d->buttons[0],true), r->z + 224.0 * RoomScale, true);
-    bbPositionEntity(d->buttons[1], r->x + 892.0 * RoomScale, bbEntityY(d->buttons[1],true), r->z + 255.0 * RoomScale, true);
+    d = CreateDoor(r->x + 736.f * RoomScale, 0.f, r->z + 240.f * RoomScale, 0, r, false, DOOR_TYPE_DEF, r->roomTemplate->name);
+    bbPositionEntity(d->buttons[0], r->x + 892.f * RoomScale, bbEntityY(d->buttons[0],true), r->z + 224.f * RoomScale, true);
+    bbPositionEntity(d->buttons[1], r->x + 892.f * RoomScale, bbEntityY(d->buttons[1],true), r->z + 255.f * RoomScale, true);
     bbFreeEntity(d->obj2);
     d->obj2 = 0;
 
     //r\objects[0] = LoadMesh("GFX/Map/room3offices_hb.b3d",r\obj)
     //EntityPickMode(r\objects[0],2)
     //EntityType(r\objects[0],HIT_MAP)
-    //EntityAlpha(r\objects[0],0.0)
+    //EntityAlpha(r\objects[0],0.f)
 }
 
 }

@@ -23,8 +23,8 @@ namespace CBN {
 // Functions.
 void InitializeNPCtypeApache(NPC* n) {
     n->nvName = "Human";
-    n->gravityMult = 0.0;
-    n->maxGravity = 0.0;
+    n->gravityMult = 0.f;
+    n->maxGravity = 0.f;
     n->collider = bbCreatePivot();
     bbEntityRadius(n->collider, 0.2);
 
@@ -56,14 +56,14 @@ void InitializeNPCtypeApache(NPC* n) {
     MeshModel* rotor2;
     for (i = -1; i <= 1; i += 2) {
         rotor2 = bbCopyMeshModelEntity(n->obj2,n->obj2);
-        bbRotateEntity(rotor2,0,4.0*i,0);
+        bbRotateEntity(rotor2,0,4.f*i,0);
         bbEntityAlpha(rotor2, 0.5);
     }
 
-    bbPositionEntity(n->obj3, 0.0, 2.15, -5.48);
+    bbPositionEntity(n->obj3, 0.f, 2.15, -5.48);
 
     bbEntityType(n->collider, HIT_APACHE);
-    bbEntityRadius(n->collider, 3.0);
+    bbEntityRadius(n->collider, 3.f);
 
     float temp = 0.6;
     bbScaleEntity(n->obj, temp, temp, temp);
@@ -75,14 +75,14 @@ void UpdateNPCtypeApache(NPC* n) {
     Pivot* target = nullptr;
     Pivot* pvt = nullptr;
 
-    if (n->playerDistance<60.0) {
+    if (n->playerDistance<60.f) {
         if (mainPlayer->currRoom->roomTemplate->name.equals("exit1")) {
-            dist2 = Max(Min(bbEntityDistance(n->collider, mainPlayer->currRoom->objects[3])/(8000.0*RoomScale),1.0),0.0);
+            dist2 = Max(Min(bbEntityDistance(n->collider, mainPlayer->currRoom->objects[3])/(8000.f*RoomScale),1.f),0.f);
         } else {
-            dist2 = 1.0;
+            dist2 = 1.f;
         }
 
-        n->soundChannels[0] = LoopRangedSound(n->sounds[0], n->soundChannels[0], mainPlayer->cam, n->collider, 25.0, dist2);
+        n->soundChannels[0] = LoopRangedSound(n->sounds[0], n->soundChannels[0], mainPlayer->cam, n->collider, 25.f, dist2);
     }
 
     n->dropSpeed = 0;
@@ -90,17 +90,17 @@ void UpdateNPCtypeApache(NPC* n) {
     switch ((int)n->state) {
         case 0:
         case 1: {
-            bbTurnEntity(n->obj2,0,20.0*timing->tickDuration,0);
-            bbTurnEntity(n->obj3,20.0*timing->tickDuration,0,0);
+            bbTurnEntity(n->obj2,0,20.f*timing->tickDuration,0);
+            bbTurnEntity(n->obj3,20.f*timing->tickDuration,0,0);
 
             if (n->state==1 & (!NoTarget)) {
-                if (abs(bbEntityX(mainPlayer->collider)-bbEntityX(n->collider))< 30.0) {
-                    if (abs(bbEntityZ(mainPlayer->collider)-bbEntityZ(n->collider))<30.0) {
-                        if (abs(bbEntityY(mainPlayer->collider)-bbEntityY(n->collider))<20.0) {
+                if (abs(bbEntityX(mainPlayer->collider)-bbEntityX(n->collider))< 30.f) {
+                    if (abs(bbEntityZ(mainPlayer->collider)-bbEntityZ(n->collider))<30.f) {
+                        if (abs(bbEntityY(mainPlayer->collider)-bbEntityY(n->collider))<20.f) {
                             if (bbRand(20)==1) {
                                 if (bbEntityVisible(mainPlayer->collider, n->collider)) {
                                     n->state = 2;
-                                    PlayRangedSound(n->sounds[1], mainPlayer->cam, n->collider, 50, 1.0);
+                                    PlayRangedSound(n->sounds[1], mainPlayer->cam, n->collider, 50, 1.f);
                                 }
                             }
                         }
@@ -123,24 +123,24 @@ void UpdateNPCtypeApache(NPC* n) {
                 n->state = 1;
             }
 
-            bbTurnEntity(n->obj2,0,20.0*timing->tickDuration,0);
-            bbTurnEntity(n->obj3,20.0*timing->tickDuration,0,0);
+            bbTurnEntity(n->obj2,0,20.f*timing->tickDuration,0);
+            bbTurnEntity(n->obj3,20.f*timing->tickDuration,0,0);
 
-            if (abs(bbEntityX(target)-bbEntityX(n->collider)) < 55.0) {
-                if (abs(bbEntityZ(target)-bbEntityZ(n->collider)) < 55.0) {
-                    if (abs(bbEntityY(target)-bbEntityY(n->collider))< 20.0) {
+            if (abs(bbEntityX(target)-bbEntityX(n->collider)) < 55.f) {
+                if (abs(bbEntityZ(target)-bbEntityZ(n->collider)) < 55.f) {
+                    if (abs(bbEntityY(target)-bbEntityY(n->collider))< 20.f) {
                         bbPointEntity(n->obj, target);
-                        bbRotateEntity(n->collider, CurveAngle(Min(WrapAngle(bbEntityPitch(n->obj)),40.0),bbEntityPitch(n->collider),40.0), CurveAngle(bbEntityYaw(n->obj),bbEntityYaw(n->collider),90.0), bbEntityRoll(n->collider), true);
-                        bbPositionEntity(n->collider, bbEntityX(n->collider), CurveValue(bbEntityY(target)+8.0,bbEntityY(n->collider),70.0), bbEntityZ(n->collider));
+                        bbRotateEntity(n->collider, CurveAngle(Min(WrapAngle(bbEntityPitch(n->obj)),40.f),bbEntityPitch(n->collider),40.f), CurveAngle(bbEntityYaw(n->obj),bbEntityYaw(n->collider),90.f), bbEntityRoll(n->collider), true);
+                        bbPositionEntity(n->collider, bbEntityX(n->collider), CurveValue(bbEntityY(target)+8.f,bbEntityY(n->collider),70.f), bbEntityZ(n->collider));
 
                         dist = Distance(bbEntityX(target),bbEntityZ(target),bbEntityX(n->collider),bbEntityZ(n->collider));
 
-                        n->currSpeed = CurveValue(Min(dist-6.5,6.5)*0.008, n->currSpeed, 50.0);
+                        n->currSpeed = CurveValue(Min(dist-6.5,6.5)*0.008, n->currSpeed, 50.f);
 
                         //If (Distance(EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider),EntityX(n\collider),EntityZ(n\collider)) > 6.5) Then
-                        //	n\currspeed = CurveValue(0.08,n\currspeed,50.0)
+                        //	n\currspeed = CurveValue(0.08,n\currspeed,50.f)
                         //Else
-                        //	n\currspeed = CurveValue(0.0,n\currspeed,30.0)
+                        //	n\currspeed = CurveValue(0.f,n\currspeed,30.f)
                         //EndIf
                         bbMoveEntity(n->collider, 0,0,n->currSpeed*timing->tickDuration);
 
@@ -149,7 +149,7 @@ void UpdateNPCtypeApache(NPC* n) {
                             n->pathStatus = bbEntityVisible(n->collider,target);
                             n->pathTimer = bbRand(100,200);
                         } else {
-                            n->pathTimer = Min(n->pathTimer-timing->tickDuration,0.0);
+                            n->pathTimer = Min(n->pathTimer-timing->tickDuration,0.f);
                         }
 
                         //player visible
@@ -157,13 +157,13 @@ void UpdateNPCtypeApache(NPC* n) {
                             bbRotateEntity(n->collider, bbEntityPitch(n->collider), bbEntityYaw(n->collider), CurveAngle(0, bbEntityRoll(n->collider),40), true);
 
                             if (n->reload <= 0) {
-                                if (dist<20.0) {
+                                if (dist<20.f) {
                                     pvt = bbCreatePivot();
 
                                     bbPositionEntity(pvt, bbEntityX(n->collider),bbEntityY(n->collider), bbEntityZ(n->collider));
                                     bbRotateEntity(pvt, bbEntityPitch(n->collider), bbEntityYaw(n->collider),bbEntityRoll(n->collider));
                                     //2.3
-                                    bbMoveEntity(pvt, 0, 8.87*(0.21/9.0), 8.87*(1.7/9.0));
+                                    bbMoveEntity(pvt, 0, 8.87*(0.21/9.f), 8.87*(1.7/9.f));
                                     bbPointEntity(pvt, target);
 
                                     if (WrapAngle(bbEntityYaw(pvt)-bbEntityYaw(n->collider))<10) {
@@ -199,8 +199,8 @@ void UpdateNPCtypeApache(NPC* n) {
         case 4: {
             if (n->state2 < 300) {
 
-                bbTurnEntity(n->obj2,0,20.0*timing->tickDuration,0);
-                bbTurnEntity(n->obj3,20.0*timing->tickDuration,0,0);
+                bbTurnEntity(n->obj2,0,20.f*timing->tickDuration,0);
+                bbTurnEntity(n->obj3,20.f*timing->tickDuration,0,0);
 
                 //Sin(TimeInPosMilliSecs()/40)*timing\tickDuration)
                 bbTurnEntity(n->collider,0,-timing->tickDuration*7,0);
@@ -218,7 +218,7 @@ void UpdateNPCtypeApache(NPC* n) {
                     //                    If (TempSound2 <> 0) Then FreeSound(TempSound2
                     //TempSound2 = 0);
                     //                    TempSound2 = LoadSound("SFX/Character/Apache/Crash"+Rand(1,2)+".ogg")
-                    //                    mainPlayer\camShake = Max(mainPlayer\camShake, 3.0)
+                    //                    mainPlayer\camShake = Max(mainPlayer\camShake, 3.f)
                     //                    PlaySound2(TempSound2)
                     //                    n\state = 5
                 }

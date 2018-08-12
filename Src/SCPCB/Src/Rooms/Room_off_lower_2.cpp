@@ -37,16 +37,16 @@ void FillRoom_off_lower_2(Room* r) {
     //, Bump
     int t1;
 
-    it = CreatePaper("doc895", r->x - 800.0 * RoomScale, r->y - 48.0 * RoomScale, r->z + 368.0 * RoomScale);
+    it = CreatePaper("doc895", r->x - 800.f * RoomScale, r->y - 48.f * RoomScale, r->z + 368.f * RoomScale);
     bbEntityParent(it->collider, r->obj);
     if (bbRand(2) == 1) {
-        it = CreatePaper("doc860", r->x - 800.0 * RoomScale, r->y - 48.0 * RoomScale, r->z - 464.0 * RoomScale);
+        it = CreatePaper("doc860", r->x - 800.f * RoomScale, r->y - 48.f * RoomScale, r->z - 464.f * RoomScale);
     } else {
-        it = CreatePaper("doc093rm", r->x - 800.0 * RoomScale, r->y - 48.0 * RoomScale, r->z - 464.0 * RoomScale);
+        it = CreatePaper("doc093rm", r->x - 800.f * RoomScale, r->y - 48.f * RoomScale, r->z - 464.f * RoomScale);
     }
     bbEntityParent(it->collider, r->obj);
 
-    it = CreateItem("navigator", r->x - 336.0 * RoomScale, r->y - 48.0 * RoomScale, r->z - 480.0 * RoomScale);
+    it = CreateItem("navigator", r->x - 336.f * RoomScale, r->y - 48.f * RoomScale, r->z - 480.f * RoomScale);
     bbEntityParent(it->collider, r->obj);
 
     r->objects[0] = bbLoadMesh("GFX/NPCs/ducks/duck.b3d");
@@ -55,13 +55,13 @@ void FillRoom_off_lower_2(Room* r) {
     bbEntityParent(r->objects[0], r->obj);
 
     r->objects[1] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[1], r->x-808.0 * RoomScale, -72.0 * RoomScale, r->z - 40.0 * RoomScale, true);
+    bbPositionEntity(r->objects[1], r->x-808.f * RoomScale, -72.f * RoomScale, r->z - 40.f * RoomScale, true);
     r->objects[2] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[2], r->x-488.0 * RoomScale, 160.0 * RoomScale, r->z + 700.0 * RoomScale, true);
+    bbPositionEntity(r->objects[2], r->x-488.f * RoomScale, 160.f * RoomScale, r->z + 700.f * RoomScale, true);
     r->objects[3] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[3], r->x-488.0 * RoomScale, 160.0 * RoomScale, r->z - 668.0 * RoomScale, true);
+    bbPositionEntity(r->objects[3], r->x-488.f * RoomScale, 160.f * RoomScale, r->z - 668.f * RoomScale, true);
     r->objects[4] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[4], r->x-572.0 * RoomScale, 350.0 * RoomScale, r->z - 4.0 * RoomScale, true);
+    bbPositionEntity(r->objects[4], r->x-572.f * RoomScale, 350.f * RoomScale, r->z - 4.f * RoomScale, true);
 
     int temp = bbRand(1,4);
     bbPositionEntity(r->objects[0], bbEntityX(r->objects[temp],true),bbEntityY(r->objects[temp],true),bbEntityZ(r->objects[temp],true),true);

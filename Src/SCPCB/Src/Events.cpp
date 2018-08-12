@@ -112,11 +112,11 @@ Event* CreateEvent(const String& eventname, const String& roomname, int id, floa
 
     //the prob-variable can be used to randomly assign events into some rooms
     //0.5 means that there's a 50% chance that event is assigned to the rooms
-    //1.0 means that the event is assigned to every room
-    //the id-variable is ignored if prob <> 0.0
+    //1.f means that the event is assigned to every room
+    //the id-variable is ignored if prob <> 0.f
 
     // FIXME
-    if (prob == 0.0) {
+    if (prob == 0.f) {
         for (int i = 0; i < Room::getListSize(); i++) {
             Room* r = Room::getObject(i);
 
@@ -155,7 +155,7 @@ Event* CreateEvent(const String& eventname, const String& roomname, int id, floa
                     }
                 }
 
-                if (bbRnd(0.0, 1.0) < prob & temp == false) {
+                if (bbRnd(0.f, 1.f) < prob & temp == false) {
                     Event* e = new Event();
                     e->name = eventname;
                     e->room = r;
@@ -211,7 +211,7 @@ void InitEvents() {
 
     CreateEvent("evt_off_l_conf", "off_l_conf_2", 0);
 
-    CreateEvent("evt_hll_fan", "hll_fan_2", 0, 1.0);
+    CreateEvent("evt_hll_fan", "hll_fan_2", 0, 1.f);
 
     CreateEvent("evt_ele_guard", "hll_ele_2", 0);
     CreateEvent("evt_ele_gonzales", "hll_ele_2", bbRand(1,2));
@@ -236,7 +236,7 @@ void InitEvents() {
     CreateEvent("evt_gas_1048", "hll_gas_3", 1);
 
     //the event that causes the door to open by itself in room2offices3
-    CreateEvent("evt_off_2level", "off_2level_2", 0, 1.0);
+    CreateEvent("evt_off_2level", "off_2level_2", 0, 1.f);
 
     CreateEvent("evt_srvr_096", "srvr_096_2", 0);
 
@@ -262,7 +262,7 @@ void InitEvents() {
         }
     }
 
-    CreateEvent("evt_test_173", "test_smallwindow_2", 0, 1.0);
+    CreateEvent("evt_test_173", "test_smallwindow_2", 0, 1.f);
 
     CreateEvent("evt_tesla", "tsl_ez_2", 0, 0.9);
     CreateEvent("evt_tesla", "tsl_lcz_2", 0, 0.9);
@@ -276,8 +276,8 @@ void InitEvents() {
         CreateEvent("evt_cont_895", "coffin", 0, 0);
     }
 
-    CreateEvent("evt_chck", "chck_lcz_hcz_2", 0, 1.0);
-    CreateEvent("evt_chck", "chck_hcz_ez_2", 0, 1.0);
+    CreateEvent("evt_chck", "chck_lcz_hcz_2", 0, 1.f);
+    CreateEvent("evt_chck", "chck_hcz_ez_2", 0, 1.f);
 
     if (bbRand(2)==1) {
         CreateEvent("evt_hll_106_victim", "hll_plain_3", bbRand(1,2));
@@ -334,8 +334,8 @@ void InitEvents() {
 
     CreateEvent("evt_tnnl_plain_4", "tnnl_plain_4",0);
 
-    CreateEvent("evt_lck_air", "lck_air_2",0,1.0);
-    CreateEvent("evt_lck_air", "lck_ez_3",0,1.0);
+    CreateEvent("evt_lck_air", "lck_air_2",0,1.f);
+    CreateEvent("evt_lck_air", "lck_ez_3",0,1.f);
     CreateEvent("evt_lck_air_broke", "lck_air_broke_2",bbRand(0,1));
 
     CreateEvent("evt_hll_sl", "hll_sl_2",0);
@@ -549,26 +549,26 @@ void UpdateEvents() {
     // if (ExplosionTimer > 0) {
     //     ExplosionTimer = ExplosionTimer+timing->tickDuration;
 
-    //     if (ExplosionTimer < 140.0) {
-    //         if (ExplosionTimer-timing->tickDuration < 5.0) {
+    //     if (ExplosionTimer < 140.f) {
+    //         if (ExplosionTimer-timing->tickDuration < 5.f) {
     //             PlaySound2(LoadTempSound("SFX/Ending/GateB/Nuke1.ogg"));
-    //             mainPlayer->camShake = 10.0;
-    //             ExplosionTimer = 5.0;
+    //             mainPlayer->camShake = 10.f;
+    //             ExplosionTimer = 5.f;
     //         }
 
-    //         mainPlayer->camShake = CurveValue(ExplosionTimer/60.0,mainPlayer->camShake, 50.0);
+    //         mainPlayer->camShake = CurveValue(ExplosionTimer/60.f,mainPlayer->camShake, 50.f);
     //     } else {
-    //         mainPlayer->camShake = Min((ExplosionTimer/20.0),20.0);
-    //         if (ExplosionTimer-timing->tickDuration < 140.0) {
-    //             mainPlayer->blinkTimer = 1.0;
+    //         mainPlayer->camShake = Min((ExplosionTimer/20.f),20.f);
+    //         if (ExplosionTimer-timing->tickDuration < 140.f) {
+    //             mainPlayer->blinkTimer = 1.f;
     //             PlaySound2(LoadTempSound("SFX/Ending/GateB/Nuke2.ogg"));
     //             for (i = 0; i <= 40; i++) {
-    //                 p = CreateParticle(bbEntityX(mainPlayer->collider)+bbRnd(-0.5,0.5),bbEntityY(mainPlayer->collider)-bbRnd(0.2,1.5),bbEntityZ(mainPlayer->collider)+bbRnd(-0.5,0.5), PARTICLE_SMOKE_BLACK, bbRnd(0.2,0.6), 0.0, 350);
+    //                 p = CreateParticle(bbEntityX(mainPlayer->collider)+bbRnd(-0.5,0.5),bbEntityY(mainPlayer->collider)-bbRnd(0.2,1.5),bbEntityZ(mainPlayer->collider)+bbRnd(-0.5,0.5), PARTICLE_SMOKE_BLACK, bbRnd(0.2,0.6), 0.f, 350);
     //                 bbRotateEntity(p->pvt,-90,0,0,true);
     //                 p->speed = bbRnd(0.05,0.07);
     //             }
     //         }
-    //         mainPlayer->lightFlash = Min((ExplosionTimer-160.0)/40.0,2.0);
+    //         mainPlayer->lightFlash = Min((ExplosionTimer-160.f)/40.f,2.f);
     //         // : EndingTimer = Min(mainPlayer\fallTimer,-0.1)
     //         if (ExplosionTimer > 160) {
     //             Kill(mainPlayer);

@@ -44,20 +44,20 @@ void FillRoom_hll_caf_2(Room* r) {
 
     //scp-294
     r->objects[0] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[0], r->x+1847.0*RoomScale, -240.0*RoomScale, r->z-321*RoomScale, true);
+    bbPositionEntity(r->objects[0], r->x+1847.f*RoomScale, -240.f*RoomScale, r->z-321*RoomScale, true);
     //"spawnpoint" for the cups
     r->objects[1] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[1], r->x+1780.0*RoomScale, -248.0*RoomScale, r->z-276*RoomScale, true);
+    bbPositionEntity(r->objects[1], r->x+1780.f*RoomScale, -248.f*RoomScale, r->z-276*RoomScale, true);
 
-    //it = CreateItem("cup", "cup", r\x-508.0*RoomScale, -187*RoomScale, r\z+284.0*RoomScale, 240,175,70)
+    //it = CreateItem("cup", "cup", r\x-508.f*RoomScale, -187*RoomScale, r\z+284.f*RoomScale, 240,175,70)
     //EntityParent(it\collider, r\obj)
     // it->name = "Cup of Orange Juice";
 
-    //it = CreateItem("cup", "cup", r\x+1412 * RoomScale, -187*RoomScale, r\z-716.0 * RoomScale, 87,62,45)
+    //it = CreateItem("cup", "cup", r\x+1412 * RoomScale, -187*RoomScale, r\z-716.f * RoomScale, 87,62,45)
     //EntityParent(it\collider, r\obj)
     // it->name = "Cup of Coffee";
 
-    // it = CreateItem("cup", r->x-540*RoomScale, -187*RoomScale, r->z+124.0*RoomScale);
+    // it = CreateItem("cup", r->x-540*RoomScale, -187*RoomScale, r->z+124.f*RoomScale);
     bbEntityParent(it->collider, r->obj);
 }
 
@@ -273,7 +273,7 @@ void Update294() {
                     glow = GetINIInt("Data/SCP-294.ini", Input294, "glow");
                     // FIXME: Float equality.
                     if (alpha == 0) {
-                        alpha = 1.0;
+                        alpha = 1.f;
                     }
                     if (glow) {
                         alpha = -alpha;

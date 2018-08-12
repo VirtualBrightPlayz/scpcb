@@ -37,22 +37,22 @@ void FillRoom_lck_tshape_2(Room* r) {
     //, Bump
     int t1;
 
-    d = CreateDoor(r->x, 0, r->z + 528.0 * RoomScale, 0, r, true);
+    d = CreateDoor(r->x, 0, r->z + 528.f * RoomScale, 0, r, true);
     //: d\buttons[0] = False
     d->autoClose = false;
-    bbPositionEntity(d->buttons[0], r->x - 832.0 * RoomScale, 0.7, r->z + 160.0 * RoomScale, true);
-    bbPositionEntity(d->buttons[1], r->x + 160.0 * RoomScale, 0.7, r->z + 536.0 * RoomScale, true);
+    bbPositionEntity(d->buttons[0], r->x - 832.f * RoomScale, 0.7, r->z + 160.f * RoomScale, true);
+    bbPositionEntity(d->buttons[1], r->x + 160.f * RoomScale, 0.7, r->z + 536.f * RoomScale, true);
     //RotateEntity(d\buttons[1], 0, 90, 0, True)
 
-    d2 = CreateDoor(r->x, 0, r->z - 528.0 * RoomScale, 180, r, true);
+    d2 = CreateDoor(r->x, 0, r->z - 528.f * RoomScale, 180, r, true);
     d2->autoClose = false;
     bbFreeEntity(d2->buttons[0]);
     d2->buttons[0] = 0;
-    bbPositionEntity(d2->buttons[1], r->x +160.0 * RoomScale, 0.7, r->z - 536.0 * RoomScale, true);
+    bbPositionEntity(d2->buttons[1], r->x +160.f * RoomScale, 0.7, r->z - 536.f * RoomScale, true);
     //RotateEntity(d2\buttons[1], 0, 90, 0, True)
 
     r->objects[0] = bbCreatePivot();
-    bbPositionEntity(r->objects[0], r->x - 832.0 * RoomScale, 0.5, r->z);
+    bbPositionEntity(r->objects[0], r->x - 832.f * RoomScale, 0.5, r->z);
     bbEntityParent(r->objects[0], r->obj);
 
     d2->linkedDoor = d;

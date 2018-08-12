@@ -88,12 +88,12 @@ void UpdateEventRoom2fan(Event* e) {
     if (mainPlayer->currRoom == e->room) {
         bbTurnEntity(e->room->objects[0], e->eventState3*timing->tickDuration, 0, 0);
         if (e->eventState3 > 0.01) {
-            e->room->soundCHN = LoopRangedSound (RoomAmbience[9], e->room->soundCHN, mainPlayer->cam, e->room->objects[0], 5.0, (e->eventState3/4.0));
+            e->room->soundCHN = LoopRangedSound (RoomAmbience[9], e->room->soundCHN, mainPlayer->cam, e->room->objects[0], 5.f, (e->eventState3/4.f));
         }
-        e->eventState3 = CurveValue(e->eventState2*5, e->eventState3, 150.0);
+        e->eventState3 = CurveValue(e->eventState2*5, e->eventState3, 150.f);
     }
 
-    if (e->room->dist < 16.0) {
+    if (e->room->dist < 16.f) {
         if (e->eventState < 0) {
             e->eventState = bbRand(15,30)*70;
             temp = (int)(e->eventState2);
@@ -102,11 +102,11 @@ void UpdateEventRoom2fan(Event* e) {
                 e->eventState3 = e->eventState2*5;
             } else {
                 //turn on the fan
-                if (temp == 0 & e->eventState2 == 1.0) {
-                    PlayRangedSound (LoadTempSound("SFX/ambient/Room ambience/FanOn.ogg"), mainPlayer->cam, e->room->objects[0], 8.0);
+                if (temp == 0 & e->eventState2 == 1.f) {
+                    PlayRangedSound (LoadTempSound("SFX/ambient/Room ambience/FanOn.ogg"), mainPlayer->cam, e->room->objects[0], 8.f);
                     //turn off the fan
-                } else if ((temp == 1 & e->eventState2 == 0.0)) {
-                    PlayRangedSound (LoadTempSound("SFX/ambient/Room ambience/FanOff.ogg"), mainPlayer->cam, e->room->objects[0], 8.0);
+                } else if ((temp == 1 & e->eventState2 == 0.f)) {
+                    PlayRangedSound (LoadTempSound("SFX/ambient/Room ambience/FanOff.ogg"), mainPlayer->cam, e->room->objects[0], 8.f);
                 }
             }
         } else {

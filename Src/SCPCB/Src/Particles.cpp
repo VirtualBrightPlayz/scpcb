@@ -108,7 +108,7 @@ Particle* CreateParticle(float x, float y, float z, int image, float size, float
     p->r = 255;
     p->g = 255;
     p->b = 255;
-    p->a = 1.0;
+    p->a = 1.f;
     p->size = size;
     bbScaleSprite(p->sprite, p->size, p->size);
     return p;
@@ -129,7 +129,7 @@ void UpdateParticles() {
         //TurnEntity(p\obj, 0, 0, timing\tickDuration)
 
         if (p->aChange != 0) {
-            p->a = Min(Max(p->a+p->aChange * timing->tickDuration,0.0),1.0);
+            p->a = Min(Max(p->a+p->aChange * timing->tickDuration,0.f),1.f);
             bbEntityAlpha(p->sprite, p->a);
         }
 
@@ -139,7 +139,7 @@ void UpdateParticles() {
         }
 
         bbShowEntity(p->sprite);
-        bbEntityAlpha(p->sprite,1.0);
+        bbEntityAlpha(p->sprite,1.f);
 
         p->lifetime = p->lifetime-timing->tickDuration;
         if (p->lifetime <= 0 | p->size < 0.00001 | p->a <= 0) {
@@ -163,7 +163,7 @@ void UpdateEmitters() {
         Emitter* e = Emitter::getObject(i);
 
         if (timing->tickDuration > 0 && (mainPlayer->currRoom == e->room || e->room->dist < 8)) {
-            //If (EntityDistance(mainPlayer\cam, e\obj) < 6.0) Then
+            //If (EntityDistance(mainPlayer\cam, e\obj) < 6.f) Then
             p = CreateParticle(bbEntityX(e->obj, true), bbEntityY(e->obj, true), bbEntityZ(e->obj, true), PARTICLE_SMOKE_WHITE, e->size, e->gravity, e->lifeTime);
             p->speed = e->speed;
             bbRotateEntity(p->pvt, bbEntityPitch(e->obj, true), bbEntityYaw(e->obj, true), bbEntityRoll(e->obj, true), true);
@@ -181,7 +181,7 @@ void UpdateEmitters() {
                 if (IsPlayerWearingItem(mainPlayer,"gasmask") & IsPlayerWearingItem(mainPlayer,"hazmatsuit")) {
                     dist = Distance(bbEntityX(mainPlayer->cam, true), bbEntityZ(mainPlayer->cam, true), bbEntityX(e->obj, true), bbEntityZ(e->obj, true));
                     if (dist < 0.8) {
-                        if (abs(bbEntityY(mainPlayer->cam, true)-bbEntityY(e->obj,true))<5.0) {
+                        if (abs(bbEntityY(mainPlayer->cam, true)-bbEntityY(e->obj,true))<5.f) {
                             InSmoke = true;
                         }
                     }
@@ -193,7 +193,7 @@ void UpdateEmitters() {
 
     if (InSmoke) {
         if (mainPlayer->blinkEffect > (70 * 6)) {
-            mainPlayer->blurTimer = Max(mainPlayer->blurTimer, (mainPlayer->blinkEffect - (70 * 6)) / (70.0 * 24.0));
+            mainPlayer->blurTimer = Max(mainPlayer->blurTimer, (mainPlayer->blinkEffect - (70 * 6)) / (70.f * 24.f));
         }
         if (mainPlayer->blinkEffect > (70 * 24)) {
             DeathMSG = "Subject D-9341 found dead in [DATA REDACTED]. Cause of death: Suffocation due to decontamination gas.";
@@ -240,7 +240,7 @@ Emitter* CreateEmitter(float x, float y, float z, int emittertype) {
     for (int i = 0; i < Room::getListSize(); i++) {
         Room* r = Room::getObject(i);
 
-        if (abs(bbEntityX(e->obj) - bbEntityX(r->obj)) < 4.0 & abs(bbEntityZ(e->obj) - bbEntityZ(r->obj)) < 4.0) {
+        if (abs(bbEntityX(e->obj) - bbEntityX(r->obj)) < 4.f & abs(bbEntityZ(e->obj) - bbEntityZ(r->obj)) < 4.f) {
             e->room = r;
         }
     }

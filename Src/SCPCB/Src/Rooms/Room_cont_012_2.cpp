@@ -37,16 +37,16 @@ void FillRoom_cont_012_2(Room* r) {
     //, Bump
     int t1;
 
-    d = CreateDoor(r->x + 264.0 * RoomScale, 0.0, r->z + 672.0 * RoomScale, 270, r, false, DOOR_TYPE_DEF, r->roomTemplate->name);
-    bbPositionEntity(d->buttons[0], r->x + 224.0 * RoomScale, bbEntityY(d->buttons[0],true), r->z + 880.0 * RoomScale, true);
-    bbPositionEntity(d->buttons[1], r->x + 304.0 * RoomScale, bbEntityY(d->buttons[1],true), r->z + 840.0 * RoomScale, true);
+    d = CreateDoor(r->x + 264.f * RoomScale, 0.f, r->z + 672.f * RoomScale, 270, r, false, DOOR_TYPE_DEF, r->roomTemplate->name);
+    bbPositionEntity(d->buttons[0], r->x + 224.f * RoomScale, bbEntityY(d->buttons[0],true), r->z + 880.f * RoomScale, true);
+    bbPositionEntity(d->buttons[1], r->x + 304.f * RoomScale, bbEntityY(d->buttons[1],true), r->z + 840.f * RoomScale, true);
     bbTurnEntity(d->buttons[1],0,0,0,true);
 
-    r->doors[0] = CreateDoor(r->x -512.0 * RoomScale, -768.0*RoomScale, r->z -336.0 * RoomScale, 0, r, false);
+    r->doors[0] = CreateDoor(r->x -512.f * RoomScale, -768.f*RoomScale, r->z -336.f * RoomScale, 0, r, false);
     r->doors[0]->autoClose = false;
     r->doors[0]->open = false;
     r->doors[0]->locked = true;
-    bbPositionEntity(r->doors[0]->buttons[0], r->x + 176.0 * RoomScale, -512.0*RoomScale, r->z - 364.0 * RoomScale, true);
+    bbPositionEntity(r->doors[0]->buttons[0], r->x + 176.f * RoomScale, -512.f*RoomScale, r->z - 364.f * RoomScale, true);
     bbFreeEntity(r->doors[0]->buttons[1]);
     r->doors[0]->buttons[1] = 0;
 
@@ -54,8 +54,8 @@ void FillRoom_cont_012_2(Room* r) {
 
     bbScaleEntity(r->levers[0]->baseObj, 0.04, 0.04, 0.04);
     bbScaleEntity(r->levers[0]->obj, 0.04, 0.04, 0.04);
-    bbPositionEntity(r->levers[0]->baseObj, r->x + 240.0 * RoomScale, r->y - 512.0 * RoomScale, r->z - 364 * RoomScale, true);
-    bbPositionEntity(r->levers[0]->obj, r->x + 240.0 * RoomScale, r->y - 512.0 * RoomScale, r->z - 364 * RoomScale, true);
+    bbPositionEntity(r->levers[0]->baseObj, r->x + 240.f * RoomScale, r->y - 512.f * RoomScale, r->z - 364 * RoomScale, true);
+    bbPositionEntity(r->levers[0]->obj, r->x + 240.f * RoomScale, r->y - 512.f * RoomScale, r->z - 364 * RoomScale, true);
 
     bbEntityParent(r->levers[0]->baseObj, r->obj);
     bbEntityParent(r->levers[0]->obj, r->obj);
@@ -68,12 +68,12 @@ void FillRoom_cont_012_2(Room* r) {
 
     r->objects[2] = bbLoadMesh("GFX/Map/room012_2.b3d");
     bbScaleEntity(r->objects[2], RoomScale, RoomScale, RoomScale);
-    bbPositionEntity(r->objects[2], r->x - 360 * RoomScale, - 130 * RoomScale, r->z + 456.0 * RoomScale, 0);
+    bbPositionEntity(r->objects[2], r->x - 360 * RoomScale, - 130 * RoomScale, r->z + 456.f * RoomScale, 0);
     bbEntityParent(r->objects[2], r->obj);
 
     Texture* lightSpriteRed = bbLoadTexture("GFX/Sprites/light_flare_red.jpg", 1);
     r->objects[3] = bbCreateSprite();
-    bbPositionEntity(r->objects[3], r->x - 43.5 * RoomScale, - 574 * RoomScale, r->z - 362.0 * RoomScale);
+    bbPositionEntity(r->objects[3], r->x - 43.5 * RoomScale, - 574 * RoomScale, r->z - 362.f * RoomScale);
     bbScaleSprite((Sprite*)r->objects[3], 0.015, 0.015);
     bbEntityTexture((Sprite*)r->objects[3], lightSpriteRed);
     bbEntityBlend((Sprite*)r->objects[3], 3);
@@ -85,10 +85,10 @@ void FillRoom_cont_012_2(Room* r) {
     Texture* tex = bbLoadTexture("GFX/Map/Rooms/cont_012_2/scp-012_0.jpg");
     bbEntityTexture((MeshModel*)r->objects[4],tex, 0,1);
     bbScaleEntity(r->objects[4], RoomScale, RoomScale, RoomScale);
-    bbPositionEntity(r->objects[4], r->x - 360 * RoomScale, - 130 * RoomScale, r->z + 456.0 * RoomScale, 0);
+    bbPositionEntity(r->objects[4], r->x - 360 * RoomScale, - 130 * RoomScale, r->z + 456.f * RoomScale, 0);
     bbEntityParent(r->objects[4], r->objects[2]);
 
-    it = CreatePaper("doc012", r->x - 56.0 * RoomScale, r->y - 576.0 * RoomScale, r->z - 408.0 * RoomScale);
+    it = CreatePaper("doc012", r->x - 56.f * RoomScale, r->y - 576.f * RoomScale, r->z - 408.f * RoomScale);
     bbEntityParent(it->collider, r->obj);
 
     de = CreateDecal(DECAL_BLOOD_SPLATTER,  r->x - 784*RoomScale, -768*RoomScale+0.01, r->z+640*RoomScale,90,bbRnd(360),0);
@@ -142,7 +142,7 @@ void UpdateEvent_cont_012_2(Event* e) {
             if (e->sounds[0] == 0) {
                 LoadEventSound(e,"SFX/Music/012Golgotha.ogg");
             }
-            e->soundChannels[0] = LoopRangedSound(e->sounds[0], e->soundChannels[0], mainPlayer->cam, e->room->objects[3], 5.0);
+            e->soundChannels[0] = LoopRangedSound(e->sounds[0], e->soundChannels[0], mainPlayer->cam, e->room->objects[3], 5.f);
 
             // TODO: Move to musicmanager.
             //If (e\sounds[1] = 0) Then LoadEventSound(e, "SFX/Music/012.ogg", 1)
@@ -185,32 +185,32 @@ void UpdateEvent_cont_012_2(Event* e) {
                         bbRotateEntity(mainPlayer->collider, bbEntityPitch(mainPlayer->collider), CurveAngle(bbEntityYaw(pvt), bbEntityYaw(mainPlayer->collider), 150), 0);
 
                         angle = WrapAngle(bbEntityYaw(pvt)-bbEntityYaw(mainPlayer->collider));
-                        if (angle<40.0) {
-                            mainPlayer->forceMove = (40.0-angle)*0.008;
-                        } else if ((angle > 310.0)) {
-                            mainPlayer->forceMove = (40.0-abs(360.0-angle))*0.008;
+                        if (angle<40.f) {
+                            mainPlayer->forceMove = (40.f-angle)*0.008;
+                        } else if ((angle > 310.f)) {
+                            mainPlayer->forceMove = (40.f-abs(360.f-angle))*0.008;
                         }
 
                         bbFreeEntity(pvt);
                     }
                 } else {
-                    e->soundChannels[1] = LoopRangedSound(e->sounds[1], e->soundChannels[1], mainPlayer->cam, e->room->objects[3], 10, e->eventState3/(86.0*70.0));
+                    e->soundChannels[1] = LoopRangedSound(e->sounds[1], e->soundChannels[1], mainPlayer->cam, e->room->objects[3], 10, e->eventState3/(86.f*70.f));
 
                     pvt = bbCreatePivot();
                     bbPositionEntity(pvt, bbEntityX(mainPlayer->cam), bbEntityY(e->room->objects[2],true)-0.05, bbEntityZ(mainPlayer->cam));
                     bbPointEntity(pvt, e->room->objects[2]);
-                    bbRotateEntity(mainPlayer->collider, bbEntityPitch(mainPlayer->collider), CurveAngle(bbEntityYaw(pvt), bbEntityYaw(mainPlayer->collider), 80-(e->eventState3/200.0)), 0);
+                    bbRotateEntity(mainPlayer->collider, bbEntityPitch(mainPlayer->collider), CurveAngle(bbEntityYaw(pvt), bbEntityYaw(mainPlayer->collider), 80-(e->eventState3/200.f)), 0);
 
                     bbTurnEntity(pvt, 90, 0, 0);
-                    mainPlayer->headPitch = CurveAngle(bbEntityPitch(pvt)+25, mainPlayer->headPitch + 90.0, 80-(e->eventState3/200.0));
+                    mainPlayer->headPitch = CurveAngle(bbEntityPitch(pvt)+25, mainPlayer->headPitch + 90.f, 80-(e->eventState3/200.f));
                     mainPlayer->headPitch = mainPlayer->headPitch-90;
 
                     dist = Distance(bbEntityX(mainPlayer->collider),bbEntityZ(mainPlayer->collider),bbEntityX(e->room->objects[2],true),bbEntityZ(e->room->objects[2],true));
 
                     mainPlayer->heartbeatIntensity = 150;
-                    //HeartBeatVolume = Max(3.0-dist,0.0)/3.0
-                    mainPlayer->blurTimer = Max((2.0-dist)*(e->eventState3/800.0)*(bbSin((float)(TimeInPosMilliSecs()) / 20.0 + 1.0)),mainPlayer->blurTimer);
-                    mainPlayer->camZoom = Max(mainPlayer->camZoom, (bbSin((float)(TimeInPosMilliSecs()) / 20.0)+1.0)*8.0*Max((3.0-dist),0.0));
+                    //HeartBeatVolume = Max(3.f-dist,0.f)/3.f
+                    mainPlayer->blurTimer = Max((2.f-dist)*(e->eventState3/800.f)*(bbSin((float)(TimeInPosMilliSecs()) / 20.f + 1.f)),mainPlayer->blurTimer);
+                    mainPlayer->camZoom = Max(mainPlayer->camZoom, (bbSin((float)(TimeInPosMilliSecs()) / 20.f)+1.f)*8.f*Max((3.f-dist),0.f));
 
                     if (mainPlayer->breathChn != 0) {
                         if (bbChannelPlaying(mainPlayer->breathChn)) {
@@ -274,10 +274,10 @@ void UpdateEvent_cont_012_2(Event* e) {
 
                     } else {
                         angle = WrapAngle(bbEntityYaw(pvt)-bbEntityYaw(mainPlayer->collider));
-                        if (angle<40.0) {
-                            mainPlayer->forceMove = (40.0-angle)*0.02;
-                        } else if ((angle > 310.0)) {
-                            mainPlayer->forceMove = (40.0-abs(360.0-angle))*0.02;
+                        if (angle<40.f) {
+                            mainPlayer->forceMove = (40.f-angle)*0.02;
+                        } else if ((angle > 310.f)) {
+                            mainPlayer->forceMove = (40.f-abs(360.f-angle))*0.02;
                         }
                     }
 

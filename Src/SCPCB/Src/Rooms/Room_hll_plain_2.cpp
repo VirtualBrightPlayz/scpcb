@@ -49,8 +49,8 @@ void UpdateEventRoom2trick(Event* e) {
 
     //[Block]
     if (mainPlayer->currRoom == e->room) {
-        if (bbEntityDistance(e->room->obj,mainPlayer->collider)<2.0) {
-            if (bbEntityDistance(mainPlayer->collider, Curr173->obj)<6.0 | bbEntityDistance(mainPlayer->collider, Curr106->obj)<6.0) {
+        if (bbEntityDistance(e->room->obj,mainPlayer->collider)<2.f) {
+            if (bbEntityDistance(mainPlayer->collider, Curr173->obj)<6.f | bbEntityDistance(mainPlayer->collider, Curr106->obj)<6.f) {
                 RemoveEvent(e);
             } else {
                 pvt = bbCreatePivot();
@@ -59,7 +59,7 @@ void UpdateEventRoom2trick(Event* e) {
                 bbRotateEntity(pvt, 0, bbEntityYaw(pvt),0,true);
                 bbMoveEntity(pvt, 0,0,bbEntityDistance(pvt,e->room->obj)*2);
 
-                //mainPlayer\camShake = 5.0
+                //mainPlayer\camShake = 5.f
                 //mainPlayer\blurTimer = 100
 
                 mainPlayer->blinkTimer = -10;

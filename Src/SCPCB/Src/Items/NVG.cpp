@@ -19,7 +19,7 @@ void UpdateNVG() {
     //TODO: idfk
     float decayMultiplier = 0.02;
     if (wornItem!=nullptr) {
-        wornItem->state = Max(-1.0,wornItem->state - (timing->tickDuration * decayMultiplier));
+        wornItem->state = Max(-1.f,wornItem->state - (timing->tickDuration * decayMultiplier));
     }
 }
 

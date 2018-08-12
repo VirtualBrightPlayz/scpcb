@@ -46,7 +46,7 @@ void InitializeNPCtypeZombie(NPC* n) {
         bbMeshCullBox(n->obj, -bbMeshWidth(n->obj), -bbMeshHeight(n->obj), -bbMeshDepth(n->obj), bbMeshWidth(n->obj)*2, bbMeshHeight(n->obj)*2, bbMeshDepth(n->obj)*2);
     }
 
-    n->speed = (GetINIFloat("Data/NPCs.ini", "SCP-049-2", "speed") / 100.0);
+    n->speed = (GetINIFloat("Data/NPCs.ini", "SCP-049-2", "speed") / 100.f);
 
     bbSetAnimTime(n->obj, 107);
 
@@ -58,7 +58,7 @@ void InitializeNPCtypeZombie(NPC* n) {
 void UpdateNPCtypeZombie(NPC* n) {
     float prevFrame = n->frame;
 
-    if (abs(bbEntityY(mainPlayer->collider)-bbEntityY(n->collider))<4.0) {
+    if (abs(bbEntityY(mainPlayer->collider)-bbEntityY(n->collider))<4.f) {
         if (!n->isDead) {
             switch ((int)n->state) {
                 case 0: {
@@ -67,7 +67,7 @@ void UpdateNPCtypeZombie(NPC* n) {
                     //Animate2(n\obj, AnimTime(n\obj), 719, 777, 0.2, False)
                     if (n->frame==777) {
                         if (bbRand(700)==1) {
-                            if (bbEntityDistance(mainPlayer->collider, n->collider)<5.0) {
+                            if (bbEntityDistance(mainPlayer->collider, n->collider)<5.f) {
                                 n->frame = 719;
                                 //SetAnimTime(n\obj, 719)
                                 if (bbRand(3)==1) {
@@ -98,7 +98,7 @@ void UpdateNPCtypeZombie(NPC* n) {
                 case 2: {
                     //check if the player is visible every three seconds
                     if (n->state3 < 0) {
-                        if (bbEntityDistance(mainPlayer->collider, n->collider)<5.0) {
+                        if (bbEntityDistance(mainPlayer->collider, n->collider)<5.f) {
                             if (bbEntityVisible(mainPlayer->collider, n->collider)) {
                                 n->state2 = 70*5;
                             }
@@ -110,12 +110,12 @@ void UpdateNPCtypeZombie(NPC* n) {
 
                     //player is visible -> attack
                     if (n->state2 > 0 & (!NoTarget)) {
-                        n->soundChannels[0] = LoopRangedSound(n->sounds[0], n->soundChannels[0], mainPlayer->cam, n->collider, 6.0, 0.6);
+                        n->soundChannels[0] = LoopRangedSound(n->sounds[0], n->soundChannels[0], mainPlayer->cam, n->collider, 6.f, 0.6);
 
                         n->pathStatus = 0;
 
                         bbPointEntity(n->obj, mainPlayer->collider);
-                        bbRotateEntity(n->collider, 0, CurveAngle(bbEntityYaw(n->obj), bbEntityYaw(n->collider), 30.0), 0);
+                        bbRotateEntity(n->collider, 0, CurveAngle(bbEntityYaw(n->obj), bbEntityYaw(n->collider), 30.f), 0);
 
                         if (n->playerDistance < 0.7) {
                             n->state = 3;
@@ -127,7 +127,7 @@ void UpdateNPCtypeZombie(NPC* n) {
                                 //SetAnimTime(n\obj, 66)
                             }
                         } else {
-                            n->currSpeed = CurveValue(n->speed, n->currSpeed, 20.0);
+                            n->currSpeed = CurveValue(n->speed, n->currSpeed, 20.f);
                             bbMoveEntity(n->collider, 0, 0, n->currSpeed * timing->tickDuration);
 
                             AnimateNPC(n, 936, 1017, n->currSpeed*60);
@@ -150,8 +150,8 @@ void UpdateNPCtypeZombie(NPC* n) {
                             } else {
                                 bbPointEntity(n->obj, n->path[n->pathLocation]->obj);
 
-                                bbRotateEntity(n->collider, 0, CurveAngle(bbEntityYaw(n->obj), bbEntityYaw(n->collider), 30.0), 0);
-                                n->currSpeed = CurveValue(n->speed, n->currSpeed, 20.0);
+                                bbRotateEntity(n->collider, 0, CurveAngle(bbEntityYaw(n->obj), bbEntityYaw(n->collider), 30.f), 0);
+                                n->currSpeed = CurveValue(n->speed, n->currSpeed, 20.f);
                                 bbMoveEntity(n->collider, 0, 0, n->currSpeed * timing->tickDuration);
 
                                 AnimateNPC(n, 936, 1017, n->currSpeed*60);
@@ -185,7 +185,7 @@ void UpdateNPCtypeZombie(NPC* n) {
                         //Animate2(n\obj, AnimTime(n\obj), 2, 65, 0.7, False)
                         if (prevFrame < 23 & n->frame>=23) {
                             PlaySound2(mainPlayer->damageSFX[bbRand(5,8)]);
-                            mainPlayer->injuries = mainPlayer->injuries+bbRnd(0.4,1.0);
+                            mainPlayer->injuries = mainPlayer->injuries+bbRnd(0.4,1.f);
                             DeathMSG = "Subject D-9341. Cause of death: multiple lacerations and severe blunt force trauma caused by an instance of SCP-049-2.";
                         } else if ((n->frame==65)) {
                             n->state = 2;
@@ -195,7 +195,7 @@ void UpdateNPCtypeZombie(NPC* n) {
                         //Animate2(n\obj, AnimTime(n\obj), 66, 132, 0.7, False)
                         if (prevFrame < 90 & n->frame>=90) {
                             PlaySound2(mainPlayer->damageSFX[bbRand(5,8)]);
-                            mainPlayer->injuries = mainPlayer->injuries+bbRnd(0.4,1.0);
+                            mainPlayer->injuries = mainPlayer->injuries+bbRnd(0.4,1.f);
                             DeathMSG = "Subject D-9341. Cause of death: multiple lacerations and severe blunt force trauma caused by an instance of SCP-049-2.";
                         } else if ((n->frame==132)) {
                             n->state = 2;

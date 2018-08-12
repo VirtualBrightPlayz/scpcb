@@ -49,17 +49,17 @@ void InitializeNPCtypeTentacle(NPC* n) {
 }
 
 void UpdateNPCtypeTentacle(NPC* n) {
-    if (n->playerDistance < 8.0) {
+    if (n->playerDistance < 8.f) {
 
         switch ((int)n->state) {
             case 0: {
 
                 if (n->frame>283) {
-                    mainPlayer->heartbeatIntensity = Max(CurveValue(1.0, mainPlayer->heartbeatIntensity, 50),mainPlayer->heartbeatIntensity);
+                    mainPlayer->heartbeatIntensity = Max(CurveValue(1.f, mainPlayer->heartbeatIntensity, 50),mainPlayer->heartbeatIntensity);
                     //HeartBeatRate = Max(CurveValue(130, HeartBeatRate, 100),HeartBeatRate)
 
                     bbPointEntity(n->obj, mainPlayer->collider);
-                    bbRotateEntity(n->collider, 0, CurveAngle(bbEntityYaw(n->obj),bbEntityYaw(n->collider),25.0), 0);
+                    bbRotateEntity(n->collider, 0, CurveAngle(bbEntityYaw(n->obj),bbEntityYaw(n->collider),25.f), 0);
 
                     AnimateNPC(n, 283, 389, 0.3, false);
                     //Animate2(n\obj, AnimTime(n\obj), 283, 389, 0.3, False)
@@ -80,7 +80,7 @@ void UpdateNPCtypeTentacle(NPC* n) {
             }
             case 1: {
                 bbPointEntity(n->obj, mainPlayer->collider);
-                bbRotateEntity(n->collider, 0, CurveAngle(bbEntityYaw(n->obj),bbEntityYaw(n->collider),25.0), 0);
+                bbRotateEntity(n->collider, 0, CurveAngle(bbEntityYaw(n->obj),bbEntityYaw(n->collider),25.f), 0);
 
                 AnimateNPC(n, 33, 174, 0.3, true);
                 //Animate2(n\obj, AnimTime(n\obj), 33, 174, 0.3, True)
@@ -89,11 +89,11 @@ void UpdateNPCtypeTentacle(NPC* n) {
 
                 //finish the idle animation before playing the attack animation
                 if (n->frame>33 & n->frame<174) {
-                    AnimateNPC(n, 33, 174, 2.0, false);
-                    //Animate2(n\obj, AnimTime(n\obj), 33, 174, 2.0, False)
+                    AnimateNPC(n, 33, 174, 2.f, false);
+                    //Animate2(n\obj, AnimTime(n\obj), 33, 174, 2.f, False)
                 } else {
                     bbPointEntity(n->obj, mainPlayer->collider);
-                    bbRotateEntity(n->collider, 0, CurveAngle(bbEntityYaw(n->obj),bbEntityYaw(n->collider),10.0), 0);
+                    bbRotateEntity(n->collider, 0, CurveAngle(bbEntityYaw(n->obj),bbEntityYaw(n->collider),10.f), 0);
 
                     if (n->frame>33) {
                         //SetAnimTime(n\obj,2)
@@ -111,10 +111,10 @@ void UpdateNPCtypeTentacle(NPC* n) {
                                     PlaySound2(LoadTempSound("SFX/General/BodyFall.ogg"));
                                 } else {
                                     mainPlayer->blurTimer = 100;
-                                    mainPlayer->injuries = mainPlayer->injuries+bbRnd(1.0,1.5);
+                                    mainPlayer->injuries = mainPlayer->injuries+bbRnd(1.f,1.5);
                                     PlaySound2(mainPlayer->damageSFX[bbRand(3,4)]);
 
-                                    if (mainPlayer->injuries > 3.0) {
+                                    if (mainPlayer->injuries > 3.f) {
                                         DeathMSG = "\"We will need more than the regular cleaning team to care of this. ";
                                         DeathMSG = DeathMSG + "Two large and highly active tentacle-like appendages seem ";
                                         DeathMSG = DeathMSG + "to have formed inside the chamber. Their level of aggression is ";

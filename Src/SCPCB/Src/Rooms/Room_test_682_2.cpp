@@ -40,23 +40,23 @@ void FillRoom_test_682_2(Room* r) {
     for (xtemp = 0; xtemp <= 1; xtemp++) {
         for (ztemp = -1; ztemp <= 1; ztemp++) {
             r->objects[xtemp * 3 + (ztemp + 1)] = bbCreatePivot();
-            bbPositionEntity(r->objects[xtemp * 3 + (ztemp + 1)], r->x + (-236.0 + 280.0 * xtemp) * RoomScale, -700.0 * RoomScale, r->z + 384.0 * ztemp * RoomScale);
+            bbPositionEntity(r->objects[xtemp * 3 + (ztemp + 1)], r->x + (-236.f + 280.f * xtemp) * RoomScale, -700.f * RoomScale, r->z + 384.f * ztemp * RoomScale);
             bbEntityParent(r->objects[xtemp * 3 + (ztemp + 1)], r->obj);
         }
     }
 
     r->objects[6] = bbCreatePivot();
-    bbPositionEntity(r->objects[6], r->x + 754.0 * RoomScale, r->y - 1248.0 * RoomScale, r->z);
+    bbPositionEntity(r->objects[6], r->x + 754.f * RoomScale, r->y - 1248.f * RoomScale, r->z);
     bbEntityParent(r->objects[6], r->obj);
 
-    sc = CreateSecurityCam(r->x + 744.0 * RoomScale, r->y - 856.0 * RoomScale, r->z + 236.0 * RoomScale, r);
+    sc = CreateSecurityCam(r->x + 744.f * RoomScale, r->y - 856.f * RoomScale, r->z + 236.f * RoomScale, r);
     sc->followPlayer = true;
 
-    CreateDoor(r->x + 720.0 * RoomScale, 0, r->z, 0, r, false, DOOR_TYPE_HCZ, r->roomTemplate->name);
+    CreateDoor(r->x + 720.f * RoomScale, 0, r->z, 0, r, false, DOOR_TYPE_HCZ, r->roomTemplate->name);
 
-    CreateDoor(r->x - 624.0 * RoomScale, -1280.0 * RoomScale, r->z, 90, r, true, DOOR_TYPE_HCZ);
+    CreateDoor(r->x - 624.f * RoomScale, -1280.f * RoomScale, r->z, 90, r, true, DOOR_TYPE_HCZ);
 
-    it = CreatePaper("doc682", r->x + 656.0 * RoomScale, r->y - 1200.0 * RoomScale, r->z - 16.0 * RoomScale);
+    it = CreatePaper("doc682", r->x + 656.f * RoomScale, r->y - 1200.f * RoomScale, r->z - 16.f * RoomScale);
     bbEntityParent(it->collider, r->obj);
 }
 

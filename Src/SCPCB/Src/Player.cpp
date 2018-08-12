@@ -38,48 +38,48 @@ Player::Player() {
     Texture* fogTexture = bbLoadTexture("GFX/Overlays/fog.jpg", 1);
     //FogNVTexture = LoadTexture("GFX/fogNV.jpg", 1)
 
-    float scaleWidth = userOptions->screenWidth / 1024.0;
-    float scaleHeight = MenuScale * 0.8;
+    float scaleWidth = userOptions->screenWidth / 1024.f;
+    float scaleHeight = MenuScale * 0.8f;
 
     //TODO: take ownership of ark_blur_cam
     Texture* gasMaskTexture = bbLoadTexture("GFX/Overlays/GasmaskOverlay.jpg", 1);
     this->overlays[OVERLAY_GASMASK] = bbCreateSprite(ark_blur_cam);
-    bbScaleSprite(this->overlays[OVERLAY_GASMASK], Max(scaleWidth, 1.0), Max(scaleHeight, 0.8));
+    bbScaleSprite(this->overlays[OVERLAY_GASMASK], Max(scaleWidth, 1.f), Max(scaleHeight, 0.8));
     bbEntityTexture(this->overlays[OVERLAY_GASMASK], gasMaskTexture);
     bbEntityBlend(this->overlays[OVERLAY_GASMASK], 2);
     bbEntityFX(this->overlays[OVERLAY_GASMASK], 1);
     bbEntityOrder(this->overlays[OVERLAY_GASMASK], -1003);
-    bbMoveEntity(this->overlays[OVERLAY_GASMASK], 0, 0, 1.0);
+    bbMoveEntity(this->overlays[OVERLAY_GASMASK], 0, 0, 1.f);
     bbHideEntity(this->overlays[OVERLAY_GASMASK]);
 
     Texture* infectTexture = bbLoadTexture("GFX/Overlays/InfectOverlay.jpg", 1);
     this->overlays[OVERLAY_008] = bbCreateSprite(ark_blur_cam);
-    bbScaleSprite(this->overlays[OVERLAY_008], Max(scaleWidth, 1.0), Max(scaleHeight, 0.8));
+    bbScaleSprite(this->overlays[OVERLAY_008], Max(scaleWidth, 1.f), Max(scaleHeight, 0.8));
     bbEntityTexture(this->overlays[OVERLAY_008], infectTexture);
     bbEntityBlend(this->overlays[OVERLAY_008], 3);
     bbEntityFX(this->overlays[OVERLAY_008], 1);
     bbEntityOrder(this->overlays[OVERLAY_008], -1003);
-    bbMoveEntity(this->overlays[OVERLAY_008], 0, 0, 1.0);
-    //EntityAlpha(InfectOverlay, 255.0)
+    bbMoveEntity(this->overlays[OVERLAY_008], 0, 0, 1.f);
+    //EntityAlpha(InfectOverlay, 255.f)
     bbHideEntity(this->overlays[OVERLAY_008]);
 
     Texture* nvTexture = bbLoadTexture("GFX/Overlays/NightVisionOverlay.jpg", 1);
     this->overlays[OVERLAY_NIGHTVISION] = bbCreateSprite(ark_blur_cam);
-    bbScaleSprite(this->overlays[OVERLAY_NIGHTVISION], Max(scaleWidth, 1.0), Max(scaleHeight, 0.8));
+    bbScaleSprite(this->overlays[OVERLAY_NIGHTVISION], Max(scaleWidth, 1.f), Max(scaleHeight, 0.8));
     bbEntityTexture(this->overlays[OVERLAY_NIGHTVISION], nvTexture);
     bbEntityBlend(this->overlays[OVERLAY_NIGHTVISION], 2);
     bbEntityFX(this->overlays[OVERLAY_NIGHTVISION], 1);
     bbEntityOrder(this->overlays[OVERLAY_NIGHTVISION], -1003);
-    bbMoveEntity(this->overlays[OVERLAY_NIGHTVISION], 0, 0, 1.0);
+    bbMoveEntity(this->overlays[OVERLAY_NIGHTVISION], 0, 0, 1.f);
     bbHideEntity(this->overlays[OVERLAY_NIGHTVISION]);
 
     //TODO: do we need this?
     //NVBlink = CreateSprite(ark_blur_cam)
-    //ScaleSprite(NVBlink, Max(scaleWidth, 1.0), Max(scaleHeight, 0.8))
+    //ScaleSprite(NVBlink, Max(scaleWidth, 1.f), Max(scaleHeight, 0.8))
     //EntityColor(NVBlink,0,0,0)
     //EntityFX(NVBlink, 1)
     //EntityOrder(NVBlink, -1005)
-    //MoveEntity(NVBlink, 0, 0, 1.0)
+    //MoveEntity(NVBlink, 0, 0, 1.f)
     //HideEntity(NVBlink)
 
     Texture* darkTexture = bbCreateTexture(1024, 1024, 1 + 2);
@@ -87,23 +87,23 @@ Player::Player() {
     bbCls();
     bbSetBuffer(bbBackBuffer());
 
-    scaleWidth = userOptions->screenWidth / 1240.0;
-    scaleHeight = userOptions->screenHeight / 960.0 * 0.8;
+    scaleWidth = userOptions->screenWidth / 1240.f;
+    scaleHeight = userOptions->screenHeight / 960.f * 0.8;
 
     this->overlays[OVERLAY_FOG] = bbCreateSprite(ark_blur_cam);
-    bbScaleSprite(this->overlays[OVERLAY_FOG], Max(scaleWidth, 1.0), Max(scaleHeight, 0.8));
+    bbScaleSprite(this->overlays[OVERLAY_FOG], Max(scaleWidth, 1.f), Max(scaleHeight, 0.8));
     bbEntityTexture(this->overlays[OVERLAY_FOG], fogTexture);
     bbEntityBlend(this->overlays[OVERLAY_FOG], 2);
     bbEntityOrder(this->overlays[OVERLAY_FOG], -1000);
-    bbMoveEntity(this->overlays[OVERLAY_FOG], 0, 0, 1.0);
+    bbMoveEntity(this->overlays[OVERLAY_FOG], 0, 0, 1.f);
 
     this->overlays[OVERLAY_BLACK] = bbCreateSprite(this->cam);
-    bbScaleSprite(this->overlays[OVERLAY_BLACK], Max(scaleWidth, 1.0), Max(scaleHeight, 0.8));
+    bbScaleSprite(this->overlays[OVERLAY_BLACK], Max(scaleWidth, 1.f), Max(scaleHeight, 0.8));
     bbEntityTexture(this->overlays[OVERLAY_BLACK], darkTexture);
     bbEntityBlend(this->overlays[OVERLAY_BLACK], 1);
     bbEntityOrder(this->overlays[OVERLAY_BLACK], -1002);
-    bbMoveEntity(this->overlays[OVERLAY_BLACK], 0, 0, 1.0);
-    bbEntityAlpha(this->overlays[OVERLAY_BLACK], 0.0);
+    bbMoveEntity(this->overlays[OVERLAY_BLACK], 0, 0, 1.f);
+    bbEntityAlpha(this->overlays[OVERLAY_BLACK], 0.f);
 
     Texture* lightTexture = bbCreateTexture(1024, 1024, 1 + 2);
     bbSetBuffer(bbTextureBuffer(lightTexture));
@@ -113,11 +113,11 @@ Player::Player() {
     bbSetBuffer(bbBackBuffer());
 
     this->overlays[OVERLAY_WHITE] = bbCreateSprite(this->cam);
-    bbScaleSprite(this->overlays[OVERLAY_WHITE], Max(scaleWidth, 1.0), Max(scaleHeight, 0.8));
+    bbScaleSprite(this->overlays[OVERLAY_WHITE], Max(scaleWidth, 1.f), Max(scaleHeight, 0.8));
     bbEntityTexture(this->overlays[OVERLAY_WHITE], lightTexture);
     bbEntityBlend(this->overlays[OVERLAY_WHITE], 1);
     bbEntityOrder(this->overlays[OVERLAY_WHITE], -1002);
-    bbMoveEntity(this->overlays[OVERLAY_WHITE], 0, 0, 1.0);
+    bbMoveEntity(this->overlays[OVERLAY_WHITE], 0, 0, 1.f);
     bbHideEntity(this->overlays[OVERLAY_WHITE]);
 
     bbFreeTexture(gasMaskTexture);
@@ -192,16 +192,16 @@ float mouse_y_speed_1;
 
 // Functions.
 void UpdatePlayer() {
-    float Sprint = 1.0;
+    float Sprint = 1.f;
     float Speed = 0.018;
     gxChannel* tempChn = nullptr;
 
-    if (mainPlayer->superMan>0.0) {
+    if (mainPlayer->superMan>0.f) {
         Speed = Speed * 3;
 
         mainPlayer->superMan = mainPlayer->superMan+timing->tickDuration;
 
-        mainPlayer->camShake = bbSin(mainPlayer->superMan / 5.0) * (mainPlayer->superMan / 1500.0);
+        mainPlayer->camShake = bbSin(mainPlayer->superMan / 5.f) * (mainPlayer->superMan / 1500.f);
 
         if (mainPlayer->superMan > 70 * 50) {
             DeathMSG = "A Class D jumpsuit found in [DATA REDACTED]. Upon further examination, the jumpsuit was found to be filled with 12.5 kilograms of blue ash-like substance. ";
@@ -216,17 +216,17 @@ void UpdatePlayer() {
 
     //If (DeathTimer > 0) Then
     //	DeathTimer=DeathTimer-timing\tickDuration
-    //	If (DeathTimer < 1) Then DeathTimer = -1.0
+    //	If (DeathTimer < 1) Then DeathTimer = -1.f
     //ElseIf DeathTimer < 0
     //	Kill(mainPlayer)
     //EndIf
 
-    mainPlayer->stamina = Min(mainPlayer->stamina + 0.15 * timing->tickDuration, 100.0);
+    mainPlayer->stamina = Min(mainPlayer->stamina + 0.15 * timing->tickDuration, 100.f);
 
     if (mainPlayer->staminaEffectTimer > 0) {
         mainPlayer->staminaEffect = mainPlayer->staminaEffect - (timing->tickDuration/70);
     } else {
-        mainPlayer->staminaEffect = 1.0;
+        mainPlayer->staminaEffect = 1.f;
     }
 
     if (mainPlayer->currRoom!=nullptr) {
@@ -241,11 +241,11 @@ void UpdatePlayer() {
                 } else if ((mainPlayer->stamina < 50)) {
                     if (mainPlayer->breathChn == 0) {
                         mainPlayer->breathChn = bbPlaySound(mainPlayer->breathingSFX[IsPlayerWearingItem(mainPlayer,"gasmask")][bbRand(1, 3)]);
-                        bbChannelVolume(mainPlayer->breathChn, Min((70.0-mainPlayer->stamina)/70.0,1.0)*userOptions->sndVolume);
+                        bbChannelVolume(mainPlayer->breathChn, Min((70.f-mainPlayer->stamina)/70.f,1.f)*userOptions->sndVolume);
                     } else {
                         if (!bbChannelPlaying(mainPlayer->breathChn)) {
                             mainPlayer->breathChn = bbPlaySound(mainPlayer->breathingSFX[IsPlayerWearingItem(mainPlayer,"gasmask")][bbRand(1, 3)]);
-                            bbChannelVolume(mainPlayer->breathChn, Min((70.0-mainPlayer->stamina)/70.0,1.0)*userOptions->sndVolume);
+                            bbChannelVolume(mainPlayer->breathChn, Min((70.f-mainPlayer->stamina)/70.f,1.f)*userOptions->sndVolume);
                         }
                     }
                 }
@@ -257,7 +257,7 @@ void UpdatePlayer() {
     for (int i = 0; i < mainPlayer->inventory->size; i++) {
         if (mainPlayer->inventory->items[i]!=nullptr) {
             if (mainPlayer->inventory->items[i]->itemTemplate->name.equals("finevest")) {
-                mainPlayer->stamina = Min(mainPlayer->stamina,60.0);
+                mainPlayer->stamina = Min(mainPlayer->stamina,60.f);
             }
         }
     }
@@ -267,18 +267,18 @@ void UpdatePlayer() {
     if (abs(mainPlayer->crouchState-mainPlayer->crouching)<0.001) {
         mainPlayer->crouchState = mainPlayer->crouching;
     } else {
-        mainPlayer->crouchState = CurveValue(mainPlayer->crouching, mainPlayer->crouchState, 10.0);
+        mainPlayer->crouchState = CurveValue(mainPlayer->crouching, mainPlayer->crouchState, 10.f);
     }
 
     if (!mainPlayer->noclip) {
         if (((bbKeyDown(keyBinds->down) ^ bbKeyDown(keyBinds->up)) | (bbKeyDown(keyBinds->right) ^ bbKeyDown(keyBinds->left)) & (!mainPlayer->disableControls)) | mainPlayer->forceMove>0) {
 
             // And (Not IsZombie)) Then
-            if (mainPlayer->crouching == 0 & (bbKeyDown(keyBinds->sprint)) & mainPlayer->stamina > 0.0) {
+            if (mainPlayer->crouching == 0 & (bbKeyDown(keyBinds->sprint)) & mainPlayer->stamina > 0.f) {
                 Sprint = 2.5;
-                mainPlayer->stamina = mainPlayer->stamina - timing->tickDuration * 0.5 * (1.0/mainPlayer->staminaEffect);
+                mainPlayer->stamina = mainPlayer->stamina - timing->tickDuration * 0.5 * (1.f/mainPlayer->staminaEffect);
                 if (mainPlayer->stamina <= 0) {
-                    mainPlayer->stamina = -20.0;
+                    mainPlayer->stamina = -20.f;
                 }
             }
 
@@ -286,7 +286,7 @@ void UpdatePlayer() {
                 if (bbEntityY(mainPlayer->collider)<2000*RoomScale || bbEntityY(mainPlayer->collider)>2608*RoomScale) {
                     mainPlayer->stamina = 0;
                     Speed = 0.015;
-                    Sprint = 1.0;
+                    Sprint = 1.f;
                 }
             }
 
@@ -303,8 +303,8 @@ void UpdatePlayer() {
                 if (mainPlayer->footstepOverride==0) {
                     temp = GetMaterialStepSound(mainPlayer->collider);
 
-                    if (Sprint == 1.0) {
-                        mainPlayer->loudness = Max(4.0,mainPlayer->loudness);
+                    if (Sprint == 1.f) {
+                        mainPlayer->loudness = Max(4.f,mainPlayer->loudness);
 
                         if (temp == STEPSOUND_METAL) {
                             tempChn = PlaySound_SM(sndManager->footstepMetal[bbRand(0, 7)]);
@@ -312,7 +312,7 @@ void UpdatePlayer() {
                             tempChn = PlaySound_SM(sndManager->footstep[bbRand(0, 7)]);
                         }
 
-                        bbChannelVolume(tempChn, (1.0-(mainPlayer->crouching*0.6))*userOptions->sndVolume);
+                        bbChannelVolume(tempChn, (1.f-(mainPlayer->crouching*0.6))*userOptions->sndVolume);
                     } else {
                         mainPlayer->loudness = Max(2.5-(mainPlayer->crouching*0.6),mainPlayer->loudness);
 
@@ -322,23 +322,23 @@ void UpdatePlayer() {
                             tempChn = PlaySound_SM(sndManager->footstepRun[bbRand(0, 7)]);
                         }
 
-                        bbChannelVolume(tempChn, (1.0-(mainPlayer->crouching*0.6))*userOptions->sndVolume);
+                        bbChannelVolume(tempChn, (1.f-(mainPlayer->crouching*0.6))*userOptions->sndVolume);
                     }
                 } else if (mainPlayer->footstepOverride==1) {
                     tempChn = PlaySound_SM(sndManager->footstepPD[bbRand(0, 2)]);
-                    bbChannelVolume(tempChn, (1.0-(mainPlayer->crouching*0.4))*userOptions->sndVolume);
+                    bbChannelVolume(tempChn, (1.f-(mainPlayer->crouching*0.4))*userOptions->sndVolume);
                 } else if (mainPlayer->footstepOverride==2) {
                     tempChn = PlaySound_SM(sndManager->footstep8601[bbRand(0, 2)]);
-                    bbChannelVolume(tempChn, (1.0-(mainPlayer->crouching*0.4))*userOptions->sndVolume);
+                    bbChannelVolume(tempChn, (1.f-(mainPlayer->crouching*0.4))*userOptions->sndVolume);
                 } else if (mainPlayer->footstepOverride==3) {
-                    if (Sprint == 1.0) {
-                        mainPlayer->loudness = Max(4.0,mainPlayer->loudness);
+                    if (Sprint == 1.f) {
+                        mainPlayer->loudness = Max(4.f,mainPlayer->loudness);
                         tempChn = PlaySound_SM(sndManager->footstep[bbRand(0, 7)]);
-                        bbChannelVolume(tempChn, (1.0-(mainPlayer->crouching*0.6))*userOptions->sndVolume);
+                        bbChannelVolume(tempChn, (1.f-(mainPlayer->crouching*0.6))*userOptions->sndVolume);
                     } else {
                         mainPlayer->loudness = Max(2.5-(mainPlayer->crouching*0.6),mainPlayer->loudness);
                         tempChn = PlaySound_SM(sndManager->footstepRun[bbRand(0, 7)]);
-                        bbChannelVolume(tempChn, (1.0-(mainPlayer->crouching*0.6))*userOptions->sndVolume);
+                        bbChannelVolume(tempChn, (1.f-(mainPlayer->crouching*0.6))*userOptions->sndVolume);
                     }
                 }
 
@@ -357,7 +357,7 @@ void UpdatePlayer() {
         mainPlayer->crouching = (!mainPlayer->crouching);
     }
 
-    float temp2 = (Speed * Sprint) / (1.0+mainPlayer->crouchState);
+    float temp2 = (Speed * Sprint) / (1.f+mainPlayer->crouchState);
 
     if (mainPlayer->noclip) {
         mainPlayer->camAnimState = 0;
@@ -386,9 +386,9 @@ void UpdatePlayer() {
 
         bbResetEntity(mainPlayer->collider);
     } else {
-        temp2 = temp2 / Max((mainPlayer->injuries+3.0)/3.0,1.0);
+        temp2 = temp2 / Max((mainPlayer->injuries+3.f)/3.f,1.f);
         if (mainPlayer->injuries > 0.5) {
-            temp2 = temp2*Min((bbSin(mainPlayer->camAnimState/2)+1.2),1.0);
+            temp2 = temp2*Min((bbSin(mainPlayer->camAnimState/2)+1.2),1.f);
         }
 
         bool temp = false;
@@ -431,12 +431,12 @@ void UpdatePlayer() {
         //	angle = ForceAngle
         //EndIf
 
-        angle = WrapAngle(bbEntityYaw(mainPlayer->collider,true)+angle+90.0);
+        angle = WrapAngle(bbEntityYaw(mainPlayer->collider,true)+angle+90.f);
 
         if ((int)(temp)) {
-            mainPlayer->moveSpeed = CurveValue(temp2, mainPlayer->moveSpeed, 20.0);
+            mainPlayer->moveSpeed = CurveValue(temp2, mainPlayer->moveSpeed, 20.f);
         } else {
-            mainPlayer->moveSpeed = Max(CurveValue(0.0, mainPlayer->moveSpeed-0.1, 1.0),0.0);
+            mainPlayer->moveSpeed = Max(CurveValue(0.f, mainPlayer->moveSpeed-0.1, 1.f),0.f);
         }
 
         if (!mainPlayer->disableControls) {
@@ -465,11 +465,11 @@ void UpdatePlayer() {
                 } else {
                     PlaySound_SM(sndManager->footstep[bbRand(0, 7)]);
                 }
-                mainPlayer->loudness = Max(3.0,mainPlayer->loudness);
+                mainPlayer->loudness = Max(3.f,mainPlayer->loudness);
             }
             mainPlayer->dropSpeed = 0;
         } else {
-            mainPlayer->dropSpeed = Min(Max(mainPlayer->dropSpeed - 0.006 * timing->tickDuration, -2.0), 0.0);
+            mainPlayer->dropSpeed = Min(Max(mainPlayer->dropSpeed - 0.006 * timing->tickDuration, -2.f), 0.f);
         }
 
         if (!mainPlayer->disableControls) {
@@ -477,12 +477,12 @@ void UpdatePlayer() {
         }
     }
 
-    mainPlayer->forceMove = 0.0;
+    mainPlayer->forceMove = 0.f;
 
-    if (mainPlayer->injuries > 1.0) {
+    if (mainPlayer->injuries > 1.f) {
         temp2 = mainPlayer->bloodloss;
-        mainPlayer->blurTimer = Max(Max(bbSin(TimeInPosMilliSecs()/100.0)*mainPlayer->bloodloss*30.0,mainPlayer->bloodloss*2*(2.0-mainPlayer->crouchState)),mainPlayer->blurTimer);
-        mainPlayer->bloodloss = Min(mainPlayer->bloodloss + (Min(mainPlayer->injuries,3.5)/300.0)*timing->tickDuration,100);
+        mainPlayer->blurTimer = Max(Max(bbSin(TimeInPosMilliSecs()/100.f)*mainPlayer->bloodloss*30.f,mainPlayer->bloodloss*2*(2.f-mainPlayer->crouchState)),mainPlayer->blurTimer);
+        mainPlayer->bloodloss = Min(mainPlayer->bloodloss + (Min(mainPlayer->injuries,3.5)/300.f)*timing->tickDuration,100);
 
         if (temp2 <= 60 & mainPlayer->bloodloss > 60) {
             Msg = "You are feeling faint from the amount of blood you loss.";
@@ -493,34 +493,34 @@ void UpdatePlayer() {
     UpdateInfect();
 
     if (mainPlayer->bloodloss > 0) {
-        if (bbRnd(200)<Min(mainPlayer->injuries,4.0)) {
+        if (bbRnd(200)<Min(mainPlayer->injuries,4.f)) {
             Pivot* pvt = bbCreatePivot();
             bbPositionEntity(pvt, bbEntityX(mainPlayer->collider)+bbRnd(-0.05,0.05),bbEntityY(mainPlayer->collider)-0.05,bbEntityZ(mainPlayer->collider)+bbRnd(-0.05,0.05));
             bbTurnEntity(pvt, 90, 0, 0);
             bbEntityPick(pvt,0.3);
 
             Decal* de = CreateDecal(bbRand(DECAL_BLOOD_DROP1, DECAL_BLOOD_DROP2), bbPickedX(), bbPickedY()+0.005, bbPickedZ(), 90, bbRand(360), 0);
-            de->size = bbRnd(0.03,0.08)*Min(mainPlayer->injuries,3.0);
-            bbEntityAlpha(de->obj, 1.0);
+            de->size = bbRnd(0.03,0.08)*Min(mainPlayer->injuries,3.f);
+            bbEntityAlpha(de->obj, 1.f);
             bbScaleSprite(de->obj, de->size, de->size);
             tempChn = PlaySound2(mainPlayer->bloodDripSFX[bbRand(0,3)]);
-            bbChannelVolume(tempChn, bbRnd(0.0,0.8)*userOptions->sndVolume);
+            bbChannelVolume(tempChn, bbRnd(0.f,0.8)*userOptions->sndVolume);
             bbChannelPitch(tempChn, bbRand(20000,30000));
 
             bbFreeEntity(pvt);
         }
 
-        mainPlayer->camZoom = Max(mainPlayer->camZoom, (bbSin((float)(TimeInPosMilliSecs())/20.0)+1.0)*mainPlayer->bloodloss*0.2);
+        mainPlayer->camZoom = Max(mainPlayer->camZoom, (bbSin((float)(TimeInPosMilliSecs())/20.f)+1.f)*mainPlayer->bloodloss*0.2);
 
         if (mainPlayer->bloodloss > 60) {
             mainPlayer->crouching = true;
         }
         if (mainPlayer->bloodloss >= 100) {
             Kill(mainPlayer);
-            mainPlayer->heartbeatIntensity = 0.0;
-        } else if ((mainPlayer->bloodloss > 80.0)) {
+            mainPlayer->heartbeatIntensity = 0.f;
+        } else if ((mainPlayer->bloodloss > 80.f)) {
             mainPlayer->heartbeatIntensity = Max(150-(mainPlayer->bloodloss-80)*5,mainPlayer->heartbeatIntensity);
-        } else if ((mainPlayer->bloodloss > 35.0)) {
+        } else if ((mainPlayer->bloodloss > 35.f)) {
             mainPlayer->heartbeatIntensity = Max(70+mainPlayer->bloodloss,mainPlayer->heartbeatIntensity);
         }
     }
@@ -537,7 +537,7 @@ void UpdatePlayer() {
 
     if (mainPlayer->heartbeatIntensity > 0) {
         tempChn = PlaySound2(mainPlayer->heartbeatSFX);
-        bbChannelVolume(tempChn, Max(Min((mainPlayer->heartbeatIntensity-80.0)/60.0,1.0),0.0)*userOptions->sndVolume);
+        bbChannelVolume(tempChn, Max(Min((mainPlayer->heartbeatIntensity-80.f)/60.f,1.f),0.f)*userOptions->sndVolume);
 
         mainPlayer->heartbeatIntensity -= timing->tickDuration;
     }
@@ -555,8 +555,8 @@ void UpdatePlayer() {
 void MouseLook() {
     mainPlayer->camShake = Max(mainPlayer->camShake - (timing->tickDuration / 10), 0);
 
-    //CameraZoomTemp = CurveValue(mainPlayer\camZoom,CameraZoomTemp, 5.0)
-    bbCameraZoom(mainPlayer->cam, Min(1.0+(mainPlayer->camZoom/400.0),1.1));
+    //CameraZoomTemp = CurveValue(mainPlayer\camZoom,CameraZoomTemp, 5.f)
+    bbCameraZoom(mainPlayer->cam, Min(1.f+(mainPlayer->camZoom/400.f),1.1));
     mainPlayer->camZoom = Max(mainPlayer->camZoom - timing->tickDuration, 0);
 
     float Nan1 = NAN;
@@ -565,46 +565,46 @@ void MouseLook() {
 
         //HeadDropSpeed = 0
 
-        float up = (bbSin(mainPlayer->camAnimState) / (20.0+mainPlayer->crouchState*20.0))*0.6;
-        float roll = Max(Min(bbSin(mainPlayer->camAnimState*0.5)*2.5*Min(mainPlayer->injuries+0.25,3.0),8.0),-8.0);
+        float up = bbSin(mainPlayer->camAnimState) / (20.f+mainPlayer->crouchState*20.f)*0.6f;
+        float roll = Max(Min(bbSin(mainPlayer->camAnimState*0.5)*2.5*Min(mainPlayer->injuries+0.25,3.f),8.f),-8.f);
 
         //tilt the camera to the side if the player is injured
         //RotateEntity(mainPlayer\collider, EntityPitch(mainPlayer\collider), EntityYaw(mainPlayer\collider), Max(Min(up*30*mainPlayer\injuries,50),-50))
         bbPositionEntity(mainPlayer->cam, bbEntityX(mainPlayer->collider), bbEntityY(mainPlayer->collider), bbEntityZ(mainPlayer->collider));
         bbRotateEntity(mainPlayer->cam, 0, bbEntityYaw(mainPlayer->collider), roll*0.5);
 
-        bbMoveEntity(mainPlayer->cam, 0.0, up + 0.6 + mainPlayer->crouchState * -0.3, 0);
+        bbMoveEntity(mainPlayer->cam, 0.f, up + 0.6 + mainPlayer->crouchState * -0.3, 0);
 
         //RotateEntity(mainPlayer\collider, EntityPitch(mainPlayer\collider), EntityYaw(mainPlayer\collider), 0)
         //moveentity player, side, up, 0
         // -- Update the smoothing que To smooth the movement of the mouse.
-        mouse_x_speed_1 = CurveValue(bbMouseXSpeed() * (userOptions->mouseSensitivity + 0.6) , mouse_x_speed_1, 6.0 / (userOptions->mouseSensitivity + 1.0));
+        mouse_x_speed_1 = CurveValue(bbMouseXSpeed() * (userOptions->mouseSensitivity + 0.6) , mouse_x_speed_1, 6.f / (userOptions->mouseSensitivity + 1.f));
         if ((int)(mouse_x_speed_1) == (int)(Nan1)) {
             mouse_x_speed_1 = 0;
         }
 
         if (userOptions->invertMouseY) {
-            mouse_y_speed_1 = CurveValue(-bbMouseYSpeed() * (userOptions->mouseSensitivity + 0.6), mouse_y_speed_1, 6.0/(userOptions->mouseSensitivity+1.0));
+            mouse_y_speed_1 = CurveValue(-bbMouseYSpeed() * (userOptions->mouseSensitivity + 0.6), mouse_y_speed_1, 6.f/(userOptions->mouseSensitivity+1.f));
         } else {
-            mouse_y_speed_1 = CurveValue(bbMouseYSpeed() * (userOptions->mouseSensitivity + 0.6), mouse_y_speed_1, 6.0/(userOptions->mouseSensitivity+1.0));
+            mouse_y_speed_1 = CurveValue(bbMouseYSpeed() * (userOptions->mouseSensitivity + 0.6), mouse_y_speed_1, 6.f/(userOptions->mouseSensitivity+1.f));
         }
         if ((int)(mouse_y_speed_1) == (int)(Nan1)) {
             mouse_y_speed_1 = 0;
         }
 
         //TODO: CHANGE THESE NAMES
-        float the_yaw = ((mouse_x_speed_1)) * mouselook_x_inc / (1.0+IsPlayerWearingItem(mainPlayer,"vest"));
-        float the_pitch = ((mouse_y_speed_1)) * mouselook_y_inc / (1.0+IsPlayerWearingItem(mainPlayer,"vest"));
+        float the_yaw = ((mouse_x_speed_1)) * mouselook_x_inc / (1.f+IsPlayerWearingItem(mainPlayer,"vest"));
+        float the_pitch = ((mouse_y_speed_1)) * mouselook_y_inc / (1.f+IsPlayerWearingItem(mainPlayer,"vest"));
 
         // Turn the user on the Y (yaw) axis.)
-        bbTurnEntity(mainPlayer->collider, 0.0, -the_yaw, 0.0);
+        bbTurnEntity(mainPlayer->collider, 0.f, -the_yaw, 0.f);
         mainPlayer->headPitch = mainPlayer->headPitch + the_pitch;
         // -- Limit the user;s camera To within 180 degrees of pitch rotation. ;EntityPitch(); returns useless values so we need To use a variable To keep track of the camera pitch.
-        if (mainPlayer->headPitch > 70.0) {
-            mainPlayer->headPitch = 70.0;
+        if (mainPlayer->headPitch > 70.f) {
+            mainPlayer->headPitch = 70.f;
         }
-        if (mainPlayer->headPitch < - 70.0) {
-            mainPlayer->headPitch = -70.0;
+        if (mainPlayer->headPitch < - 70.f) {
+            mainPlayer->headPitch = -70.f;
         }
 
         // Pitch the user;s camera up And down.)
@@ -613,7 +613,7 @@ void MouseLook() {
         if (mainPlayer->currRoom->roomTemplate->name.equals("pocketdimension")) {
             if (bbEntityY(mainPlayer->collider)<2000*RoomScale | bbEntityY(mainPlayer->collider)>2608*RoomScale) {
                 // Pitch the user;s camera up And down.)
-                bbRotateEntity(mainPlayer->cam, WrapAngle(bbEntityPitch(mainPlayer->cam)),WrapAngle(bbEntityYaw(mainPlayer->cam)), roll+WrapAngle(bbSin(TimeInPosMilliSecs()/150.0)*30.0));
+                bbRotateEntity(mainPlayer->cam, WrapAngle(bbEntityPitch(mainPlayer->cam)),WrapAngle(bbEntityYaw(mainPlayer->cam)), roll+WrapAngle(bbSin(TimeInPosMilliSecs()/150.f)*30.f));
             }
         }
 
@@ -635,12 +635,12 @@ void MouseLook() {
             //TODO: reimplement head falling
             //If (KillAnim = 0) Then
             //	MoveEntity(Head, 0, 0, HeadDropSpeed)
-            //	RotateEntity(Head, CurveAngle(-90.0, EntityPitch(Head), 20.0), EntityYaw(Head), EntityRoll(Head))
-            //	RotateEntity(mainPlayer\cam, CurveAngle(EntityPitch(Head) - 40.0, EntityPitch(mainPlayer\cam), 40.0), EntityYaw(mainPlayer\cam), EntityRoll(mainPlayer\cam))
+            //	RotateEntity(Head, CurveAngle(-90.f, EntityPitch(Head), 20.f), EntityYaw(Head), EntityRoll(Head))
+            //	RotateEntity(mainPlayer\cam, CurveAngle(EntityPitch(Head) - 40.f, EntityPitch(mainPlayer\cam), 40.f), EntityYaw(mainPlayer\cam), EntityRoll(mainPlayer\cam))
             //Else
             //	MoveEntity(Head, 0, 0, -HeadDropSpeed)
-            //	RotateEntity(Head, CurveAngle(90.0, EntityPitch(Head), 20.0), EntityYaw(Head), EntityRoll(Head))
-            //	RotateEntity(mainPlayer\cam, CurveAngle(EntityPitch(Head) + 40.0, EntityPitch(mainPlayer\cam), 40.0), EntityYaw(mainPlayer\cam), EntityRoll(mainPlayer\cam))
+            //	RotateEntity(Head, CurveAngle(90.f, EntityPitch(Head), 20.f), EntityYaw(Head), EntityRoll(Head))
+            //	RotateEntity(mainPlayer\cam, CurveAngle(EntityPitch(Head) + 40.f, EntityPitch(mainPlayer\cam), 40.f), EntityYaw(mainPlayer\cam), EntityRoll(mainPlayer\cam))
             //EndIf
 
             //HeadDropSpeed# = HeadDropSpeed - 0.002 * timing\tickDuration
@@ -660,9 +660,9 @@ void MouseLook() {
         bbPositionEntity(pvt, bbEntityX(mainPlayer->cam, true), bbEntityY(mainPlayer->cam, true), bbEntityZ(mainPlayer->cam, true));
         bbRotateEntity(pvt, 0, bbRnd(360), 0);
         if (bbRand(2) == 1) {
-            bbMoveEntity(pvt, 0, bbRnd(-0.5, 0.5), bbRnd(0.5, 1.0));
+            bbMoveEntity(pvt, 0, bbRnd(-0.5, 0.5), bbRnd(0.5, 1.f));
         } else {
-            bbMoveEntity(pvt, 0, bbRnd(-0.5, 0.5), bbRnd(0.5, 1.0));
+            bbMoveEntity(pvt, 0, bbRnd(-0.5, 0.5), bbRnd(0.5, 1.f));
         }
 
         Particle* p = CreateParticle(bbEntityX(pvt), bbEntityY(pvt), bbEntityZ(pvt), PARTICLE_DUST, 0.002, 0, 300);
@@ -681,10 +681,10 @@ void MouseLook() {
 
     //TODO: Move this to MovePlayer().
     //If (wearingGasMask Or wearingHazmat Or wearing1499) Then
-    //	If (wearingGasMask = 2) Then mainPlayer\stamina = Min(100, mainPlayer\stamina + (100.0-mainPlayer\stamina)*0.01*timing\tickDuration)
-    //	If (wearing1499 = 2) Then mainPlayer\stamina = Min(100, mainPlayer\stamina + (100.0-mainPlayer\stamina)*0.01*timing\tickDuration)
+    //	If (wearingGasMask = 2) Then mainPlayer\stamina = Min(100, mainPlayer\stamina + (100.f-mainPlayer\stamina)*0.01*timing\tickDuration)
+    //	If (wearing1499 = 2) Then mainPlayer\stamina = Min(100, mainPlayer\stamina + (100.f-mainPlayer\stamina)*0.01*timing\tickDuration)
     //	If (wearingHazmat = 2) Then
-    //		mainPlayer\stamina = Min(100, mainPlayer\stamina + (100.0-mainPlayer\stamina)*0.01*timing\tickDuration)
+    //		mainPlayer\stamina = Min(100, mainPlayer\stamina + (100.f-mainPlayer\stamina)*0.01*timing\tickDuration)
     //	ElseIf ((wearingHazmat=1)) Then
     //		mainPlayer\stamina = Min(60, mainPlayer\stamina)
     //	EndIf

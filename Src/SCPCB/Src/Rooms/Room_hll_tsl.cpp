@@ -38,21 +38,21 @@ void FillRoom_hll_tsl(Room* r) {
     int t1;
 
     r->objects[0] = bbCreatePivot();
-    bbPositionEntity(r->objects[0], r->x - 114.0 * RoomScale, 0.0, r->z);
+    bbPositionEntity(r->objects[0], r->x - 114.f * RoomScale, 0.f, r->z);
     bbEntityParent(r->objects[0], r->obj);
 
     r->objects[1] = bbCreatePivot();
-    bbPositionEntity(r->objects[1], r->x + 114.0 * RoomScale, 0.0, r->z);
+    bbPositionEntity(r->objects[1], r->x + 114.f * RoomScale, 0.f, r->z);
     bbEntityParent(r->objects[1], r->obj);
 
     r->objects[2] = bbCreatePivot();
-    bbPositionEntity(r->objects[2], r->x, 0.0, r->z);
+    bbPositionEntity(r->objects[2], r->x, 0.f, r->z);
     bbEntityParent(r->objects[2], r->obj);
 
     r->objects[3] = bbCreateSprite();
     bbEntityTexture((Sprite*)r->objects[3], TeslaTexture);
     bbSpriteViewMode((Sprite*)r->objects[3],2);
-    //ScaleSprite(r\objects[3],((512.0 * RoomScale)/2.0),((512.0 * RoomScale)/2.0))
+    //ScaleSprite(r\objects[3],((512.f * RoomScale)/2.f),((512.f * RoomScale)/2.f))
     bbEntityBlend((Sprite*)r->objects[3], 3);
     bbEntityFX((Sprite*)r->objects[3], 1 + 8 + 16);
 
@@ -62,8 +62,8 @@ void FillRoom_hll_tsl(Room* r) {
     bbEntityParent(r->objects[3], r->obj);
 
     //TODO: fix?
-    //w.waypoints = CreateWaypoint(r\x, r\y + 66.0 * RoomScale, r\z + 292.0 * RoomScale, Null, r)
-    //w2.waypoints = CreateWaypoint(r\x, r\y + 66.0 * RoomScale, r\z - 284.0 * RoomScale, Null, r)
+    //w.waypoints = CreateWaypoint(r\x, r\y + 66.f * RoomScale, r\z + 292.f * RoomScale, Null, r)
+    //w2.waypoints = CreateWaypoint(r\x, r\y + 66.f * RoomScale, r\z - 284.f * RoomScale, Null, r)
     //w\connected[0] = w2
     // w->dist[0] = bbEntityDistance(w->obj, w2->obj);
     //w2\connected[0] = w
@@ -120,7 +120,7 @@ void UpdateEvent_tesla(Event* e) {
         temp = false;
     }
 
-    if (temp & bbEntityY(mainPlayer->collider, true) > bbEntityY(e->room->obj,true) & bbEntityY(mainPlayer->collider, true) < 4.0) {
+    if (temp & bbEntityY(mainPlayer->collider, true) > bbEntityY(e->room->obj,true) & bbEntityY(mainPlayer->collider, true) < 4.f) {
         if (e->eventState == 0) {
             if ((TimeInPosMilliSecs() % 1500) < 800) {
                 bbShowEntity(e->room->objects[4]);
@@ -130,17 +130,17 @@ void UpdateEvent_tesla(Event* e) {
 
             if (e->room->dist < 8) {
                 if (!bbChannelPlaying(e->soundChannels[0])) {
-                    e->soundChannels[0] = PlayRangedSound_SM(sndManager->teslaIdle, mainPlayer->cam, e->room->objects[3],4.0,0.5);
+                    e->soundChannels[0] = PlayRangedSound_SM(sndManager->teslaIdle, mainPlayer->cam, e->room->objects[3],4.f,0.5);
                 }
             }
 
             for (i = 0; i <= 2; i++) {
-                if (Distance(bbEntityX(mainPlayer->collider),bbEntityZ(mainPlayer->collider),bbEntityX(e->room->objects[i],true),bbEntityZ(e->room->objects[i],true)) < 300.0*RoomScale) {
+                if (Distance(bbEntityX(mainPlayer->collider),bbEntityZ(mainPlayer->collider),bbEntityX(e->room->objects[i],true),bbEntityZ(e->room->objects[i],true)) < 300.f*RoomScale) {
                     //play the activation sound
                     if (!mainPlayer->dead) {
-                        mainPlayer->loudness = Max(8.0,mainPlayer->loudness);
+                        mainPlayer->loudness = Max(8.f,mainPlayer->loudness);
                         bbStopChannel(e->soundChannels[0]);
-                        e->soundChannels[0] = PlayRangedSound_SM(sndManager->teslaActive, mainPlayer->cam, e->room->objects[3],4.0,0.5);
+                        e->soundChannels[0] = PlayRangedSound_SM(sndManager->teslaActive, mainPlayer->cam, e->room->objects[3],4.f,0.5);
                         e->eventState = 1;
                         break;
                     }
@@ -149,11 +149,11 @@ void UpdateEvent_tesla(Event* e) {
 
             if (Curr106->state < -10 & e->eventState == 0) {
                 for (i = 0; i <= 2; i++) {
-                    if (Distance(bbEntityX(Curr106->collider),bbEntityZ(Curr106->collider),bbEntityX(e->room->objects[i],true),bbEntityZ(e->room->objects[i],true)) < 300.0*RoomScale) {
+                    if (Distance(bbEntityX(Curr106->collider),bbEntityZ(Curr106->collider),bbEntityX(e->room->objects[i],true),bbEntityZ(e->room->objects[i],true)) < 300.f*RoomScale) {
                         //play the activation sound
                         if (!mainPlayer->dead) {
                             bbStopChannel(e->soundChannels[0]);
-                            e->soundChannels[0] = PlayRangedSound_SM(sndManager->teslaActive, mainPlayer->cam, e->room->objects[3],4.0,0.5);
+                            e->soundChannels[0] = PlayRangedSound_SM(sndManager->teslaActive, mainPlayer->cam, e->room->objects[3],4.f,0.5);
                             bbHideEntity(e->room->objects[4]);
                             e->eventState = 1;
                             Curr106->state = 70 * 60 * bbRand(10,13);
@@ -184,10 +184,10 @@ void UpdateEvent_tesla(Event* e) {
 
                     if (!mainPlayer->dead) {
                         for (i = 0; i <= 2; i++) {
-                            if (Distance(bbEntityX(mainPlayer->collider),bbEntityZ(mainPlayer->collider),bbEntityX(e->room->objects[i],true),bbEntityZ(e->room->objects[i],true)) < 250.0*RoomScale) {
+                            if (Distance(bbEntityX(mainPlayer->collider),bbEntityZ(mainPlayer->collider),bbEntityX(e->room->objects[i],true),bbEntityZ(e->room->objects[i],true)) < 250.f*RoomScale) {
                                 bbShowEntity(mainPlayer->overlays[OVERLAY_WHITE]);
                                 mainPlayer->lightFlash = 0.4;
-                                mainPlayer->camShake = 1.0;
+                                mainPlayer->camShake = 1.f;
                                 Kill(mainPlayer);
                                 DeathMSG = "Subject D-9341 killed by the Tesla gate at [REDACTED].";
                             }
@@ -196,7 +196,7 @@ void UpdateEvent_tesla(Event* e) {
 
                     if (Curr106->state < -10) {
                         for (i = 0; i <= 2; i++) {
-                            if (Distance(bbEntityX(Curr106->collider),bbEntityZ(Curr106->collider),bbEntityX(e->room->objects[i],true),bbEntityZ(e->room->objects[i],true)) < 250.0*RoomScale) {
+                            if (Distance(bbEntityX(Curr106->collider),bbEntityZ(Curr106->collider),bbEntityX(e->room->objects[i],true),bbEntityZ(e->room->objects[i],true)) < 250.f*RoomScale) {
                                 bbShowEntity(mainPlayer->overlays[OVERLAY_WHITE]);
                                 mainPlayer->lightFlash = 0.3;
                                 for (i = 0; i <= 10; i++) {
@@ -209,7 +209,7 @@ void UpdateEvent_tesla(Event* e) {
                                     bbRotateEntity(p->pvt, bbRnd(360), bbRnd(360), 0, true);
                                 }
                                 Curr106->state = -20000;
-                                bbTranslateEntity(Curr106->collider,0,-50.0,0,true);
+                                bbTranslateEntity(Curr106->collider,0,-50.f,0,true);
                             }
                         }
                     }
@@ -218,13 +218,13 @@ void UpdateEvent_tesla(Event* e) {
                     bbHideEntity(e->room->objects[4]);
 
                     if (bbRand(5)<5) {
-                        bbPositionTexture(TeslaTexture,0.0,bbRnd(0,1.0));
+                        bbPositionTexture(TeslaTexture,0.f,bbRnd(0,1.f));
                         bbShowEntity(e->room->objects[3]);
                     }
                 } else {
                     if (e->eventState-timing->tickDuration < 70) {
                         bbStopChannel(e->soundChannels[0]);
-                        e->soundChannels[0] = PlayRangedSound_SM(sndManager->teslaPowerUp, mainPlayer->cam, e->room->objects[3],4.0,0.5);
+                        e->soundChannels[0] = PlayRangedSound_SM(sndManager->teslaPowerUp, mainPlayer->cam, e->room->objects[3],4.f,0.5);
                     }
                     bbHideEntity(e->room->objects[3]);
 
@@ -244,8 +244,8 @@ void UpdateEvent_tesla(Event* e) {
                     n = NPC::getObject(iterator186);
 
                     if (n->npcType == NPCtypeMTF) {
-                        if (abs(bbEntityX(n->collider)-bbEntityX(e->room->obj,true))<4.0) {
-                            if (abs(bbEntityZ(n->collider)-bbEntityZ(e->room->obj,true))<4.0) {
+                        if (abs(bbEntityX(n->collider)-bbEntityX(e->room->obj,true))<4.f) {
+                            if (abs(bbEntityZ(n->collider)-bbEntityZ(e->room->obj,true))<4.f) {
                                 temp = true;
                                 if (e->eventState2 == 0) {
                                     n->sounds[0] = bbLoadSound("SFX/Character/MTF/Tesla0.ogg");

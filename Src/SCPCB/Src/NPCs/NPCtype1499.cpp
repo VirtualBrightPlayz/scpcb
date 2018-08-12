@@ -41,8 +41,8 @@ void InitializeNPCtype1499(NPC* n) {
         n->obj = bbLoadAnimMesh("GFX/NPCs/scp1499/scp1499.b3d");
     }
 
-    n->speed = (GetINIFloat("Data/NPCs.ini", "SCP-1499-1", "speed") / 100.0) * bbRnd(0.9,1.1);
-    float temp = (GetINIFloat("Data/NPCs.ini", "SCP-1499-1", "scale") / 6.0) * bbRnd(0.8,1.0);
+    n->speed = (GetINIFloat("Data/NPCs.ini", "SCP-1499-1", "speed") / 100.f) * bbRnd(0.9,1.1);
+    float temp = (GetINIFloat("Data/NPCs.ini", "SCP-1499-1", "scale") / 6.f) * bbRnd(0.8,1.f);
 
     bbScaleEntity(n->obj, temp, temp, temp);
 
@@ -73,24 +73,24 @@ void UpdateNPCtype1499(NPC* n) {
 
         switch ((int)n->state) {
             case 0: {
-                if (n->currSpeed == 0.0) {
-                    if (n->state2 < 500.0*bbRnd(1,3)) {
-                        n->currSpeed = 0.0;
+                if (n->currSpeed == 0.f) {
+                    if (n->state2 < 500.f*bbRnd(1,3)) {
+                        n->currSpeed = 0.f;
                         n->state2 = n->state2 + timing->tickDuration;
                     } else {
-                        if (n->currSpeed == 0.0) {
+                        if (n->currSpeed == 0.f) {
                             n->currSpeed = n->currSpeed + 0.0001;
                         }
                     }
                 } else {
-                    if (n->state2 < 10000.0*bbRnd(1,3)) {
-                        n->currSpeed = CurveValue(n->speed,n->currSpeed,10.0);
+                    if (n->state2 < 10000.f*bbRnd(1,3)) {
+                        n->currSpeed = CurveValue(n->speed,n->currSpeed,10.f);
                         n->state2 = n->state2 + timing->tickDuration;
                     } else {
-                        n->currSpeed = CurveValue(0.0,n->currSpeed,50.0);
+                        n->currSpeed = CurveValue(0.f,n->currSpeed,50.f);
                     }
 
-                    bbRotateEntity(n->collider,0,CurveAngle(n->angle,bbEntityYaw(n->collider),10.0),0);
+                    bbRotateEntity(n->collider,0,CurveAngle(n->angle,bbEntityYaw(n->collider),10.f),0);
 
                     if (bbRand(200) == 1) {
                         n->angle = n->angle + bbRnd(-45,45);
@@ -104,7 +104,7 @@ void UpdateNPCtype1499(NPC* n) {
                     bbShowEntity(n->collider);
                 }
 
-                if (n->currSpeed == 0.0) {
+                if (n->currSpeed == 0.f) {
                     AnimateNPC(n,296,317,0.2);
                 } else {
                     if (n->id % 2 == 0) {
@@ -120,29 +120,29 @@ void UpdateNPCtype1499(NPC* n) {
                     n->state2 = 0;
 
                     if (!bbChannelPlaying(n->soundChannels[0])) {
-                        if (n->playerDistance < 20.0) {
+                        if (n->playerDistance < 20.f) {
                             if (n->sounds[0] != 0) {
                                 bbFreeSound(n->sounds[0]);
                                 n->sounds[0] = 0;
                             }
                             n->sounds[0] = bbLoadSound("SFX/SCP/1499/Idle"+String(bbRand(1,4))+".ogg");
-                            n->soundChannels[0] = PlayRangedSound(n->sounds[0], mainPlayer->cam, n->collider, 20.0);
+                            n->soundChannels[0] = PlayRangedSound(n->sounds[0], mainPlayer->cam, n->collider, 20.f);
                         }
                     }
                 }
 
                 if (n->id % 2 == 0 & !NoTarget) {
-                    if (n->playerDistance < 10.0) {
+                    if (n->playerDistance < 10.f) {
                         if (bbEntityVisible(n->collider,mainPlayer->collider)) {
                             //play the "screaming animation"
                             n->state = 2;
-                            if (n->playerDistance < 5.0) {
+                            if (n->playerDistance < 5.f) {
                                 if (n->sounds[0] != 0) {
                                     bbFreeSound(n->sounds[0]);
                                     n->sounds[0] = 0;
                                 }
                                 n->sounds[0] = bbLoadSound("SFX/SCP/1499/Triggered.ogg");
-                                n->soundChannels[0] = PlayRangedSound(n->sounds[0], mainPlayer->cam, n->collider,20.0);
+                                n->soundChannels[0] = PlayRangedSound(n->sounds[0], mainPlayer->cam, n->collider,20.f);
 
                                 //if player is too close, switch to attack after screaming
                                 n->state2 = 1;
@@ -178,10 +178,10 @@ void UpdateNPCtype1499(NPC* n) {
                 }
 
                 bbPointEntity(n->obj,mainPlayer->collider);
-                bbRotateEntity(n->collider,0,CurveAngle(bbEntityYaw(n->obj),bbEntityYaw(n->collider),20.0),0);
+                bbRotateEntity(n->collider,0,CurveAngle(bbEntityYaw(n->obj),bbEntityYaw(n->collider),20.f),0);
 
-                if (n->state2 == 0.0) {
-                    n->currSpeed = CurveValue(n->speed*1.75,n->currSpeed,10.0);
+                if (n->state2 == 0.f) {
+                    n->currSpeed = CurveValue(n->speed*1.75,n->currSpeed,10.f);
 
                     if (n->id % 2 == 0) {
                         AnimateNPC(n,1,62,(n->currSpeed*28));
@@ -206,25 +206,25 @@ void UpdateNPCtype1499(NPC* n) {
                 //play the "screaming animation" and switch to n\state2 after it's finished
             }
             case 2: {
-                n->currSpeed = 0.0;
+                n->currSpeed = 0.f;
                 AnimateNPC(n,203,295,0.1,false);
 
-                if (n->frame > 294.0) {
+                if (n->frame > 294.f) {
                     n->state = n->state2;
                 }
                 //slashing at the player
             }
             case 3: {
-                n->currSpeed = CurveValue(0.0,n->currSpeed,5.0);
+                n->currSpeed = CurveValue(0.f,n->currSpeed,5.f);
                 if (n->state2 == 1) {
                     AnimateNPC(n,63,100,0.6,false);
                     if (prevFrame < 89 & n->frame>=89) {
-                        if (n->playerDistance > 0.85 | abs(bbDeltaYaw(n->collider,mainPlayer->collider))>60.0) {
+                        if (n->playerDistance > 0.85 | abs(bbDeltaYaw(n->collider,mainPlayer->collider))>60.f) {
                             //Miss
                         } else {
                             mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.75,1.5);
                             PlayRangedSound(LoadTempSound("SFX/General/Slash"+String(bbRand(1,2))+".ogg"), mainPlayer->cam, n->collider);
-                            if (mainPlayer->injuries > 10.0) {
+                            if (mainPlayer->injuries > 10.f) {
                                 Kill(mainPlayer);
                                 if (mainPlayer->currRoom->roomTemplate->name.equals("dimension1499")) {
                                     DeathMSG = "All personnel situated within Evacuation Shelter LC-2 during the breach have been administered ";
@@ -238,18 +238,18 @@ void UpdateNPCtype1499(NPC* n) {
                             }
                         }
                     } else if ((n->frame >= 99)) {
-                        n->state2 = 0.0;
+                        n->state2 = 0.f;
                         n->state = 1;
                     }
                 } else {
                     AnimateNPC(n,168,202,0.6,false);
                     if (prevFrame < 189 & n->frame>=189) {
-                        if (n->playerDistance > 0.85 | abs(bbDeltaYaw(n->collider,mainPlayer->collider))>60.0) {
+                        if (n->playerDistance > 0.85 | abs(bbDeltaYaw(n->collider,mainPlayer->collider))>60.f) {
                             //Miss
                         } else {
                             mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.75,1.5);
                             PlayRangedSound(LoadTempSound("SFX/General/Slash"+String(bbRand(1,2))+".ogg"), mainPlayer->cam, n->collider);
-                            if (mainPlayer->injuries > 10.0) {
+                            if (mainPlayer->injuries > 10.f) {
                                 Kill(mainPlayer);
                                 if (mainPlayer->currRoom->roomTemplate->name.equals("dimension1499")) {
                                     DeathMSG = "All personnel situated within Evacuation Shelter LC-2 during the breach have been administered ";
@@ -263,18 +263,18 @@ void UpdateNPCtype1499(NPC* n) {
                             }
                         }
                     } else if ((n->frame >= 201)) {
-                        n->state2 = 0.0;
+                        n->state2 = 0.f;
                         n->state = 1;
                     }
                 }
                 //standing in front of the player
             }
             case 4: {
-                n->currSpeed = CurveValue(0.0,n->currSpeed,5.0);
+                n->currSpeed = CurveValue(0.f,n->currSpeed,5.f);
                 AnimateNPC(n,296,317,0.2);
 
                 bbPointEntity(n->obj,mainPlayer->collider);
-                bbRotateEntity(n->collider,0,CurveAngle(bbEntityYaw(n->obj),bbEntityYaw(n->collider),20.0),0);
+                bbRotateEntity(n->collider,0,CurveAngle(bbEntityYaw(n->obj),bbEntityYaw(n->collider),20.f),0);
 
                 if (n->playerDistance > 0.85) {
                     n->state = 1;
@@ -283,7 +283,7 @@ void UpdateNPCtype1499(NPC* n) {
         }
 
         if (n->soundChannels[0] != 0 & bbChannelPlaying(n->soundChannels[0])) {
-            UpdateRangedSoundOrigin(n->soundChannels[0],mainPlayer->cam,n->collider,20.0);
+            UpdateRangedSoundOrigin(n->soundChannels[0],mainPlayer->cam,n->collider,20.f);
         }
 
         bbMoveEntity(n->collider,0,0,n->currSpeed*timing->tickDuration);

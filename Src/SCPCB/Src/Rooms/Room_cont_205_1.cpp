@@ -37,13 +37,13 @@ void FillRoom_cont_205_1(Room* r) {
     //, Bump
     int t1;
 
-    d = CreateDoor(r->x + 128.0 * RoomScale, 0, r->z + 640.0 *RoomScale, 90, r, true, DOOR_TYPE_DEF, r->roomTemplate->name);
+    d = CreateDoor(r->x + 128.f * RoomScale, 0, r->z + 640.f *RoomScale, 90, r, true, DOOR_TYPE_DEF, r->roomTemplate->name);
     d->autoClose = false;
     d->open = false;
-    //PositionEntity(d\buttons[0], r\x + 320.0 * RoomScale, EntityY(d\buttons[0],True), EntityZ(d\buttons[0],True), True)
-    //PositionEntity(d\buttons[1], r\x + 224.0 * RoomScale, EntityY(d\buttons[1],True), EntityZ(d\buttons[1],True), True)
+    //PositionEntity(d\buttons[0], r\x + 320.f * RoomScale, EntityY(d\buttons[0],True), EntityZ(d\buttons[0],True), True)
+    //PositionEntity(d\buttons[1], r\x + 224.f * RoomScale, EntityY(d\buttons[1],True), EntityZ(d\buttons[1],True), True)
 
-    r->doors[0] = CreateDoor(r->x - 1392.0 * RoomScale, -128.0 * RoomScale, r->z - 384*RoomScale, 0, r, true, DOOR_TYPE_DEF, r->roomTemplate->name);
+    r->doors[0] = CreateDoor(r->x - 1392.f * RoomScale, -128.f * RoomScale, r->z - 384*RoomScale, 0, r, true, DOOR_TYPE_DEF, r->roomTemplate->name);
     r->doors[0]->autoClose = false;
     r->doors[0]->open = false;
     bbFreeEntity(r->doors[0]->buttons[0]);
@@ -51,7 +51,7 @@ void FillRoom_cont_205_1(Room* r) {
     bbFreeEntity(r->doors[0]->buttons[1]);
     r->doors[0]->buttons[1] = 0;
 
-    sc = CreateSecurityCam(r->x - 1152.0 * RoomScale, r->y + 900.0 * RoomScale, r->z + 176.0 * RoomScale, r, true);
+    sc = CreateSecurityCam(r->x - 1152.f * RoomScale, r->y + 900.f * RoomScale, r->z + 176.f * RoomScale, r, true);
     sc->angle = 90;
     sc->turn = 0;
     bbEntityParent(sc->obj, r->obj);
@@ -60,9 +60,9 @@ void FillRoom_cont_205_1(Room* r) {
     sc->renderInterval = 0;
 
     bbEntityParent(sc->scrObj, 0);
-    bbPositionEntity(sc->scrObj, r->x - 1716.0 * RoomScale, r->y + 160.0 * RoomScale, r->z + 176.0 * RoomScale, true);
+    bbPositionEntity(sc->scrObj, r->x - 1716.f * RoomScale, r->y + 160.f * RoomScale, r->z + 176.f * RoomScale, true);
     bbTurnEntity(sc->scrObj, 0, 90, 0);
-    bbScaleSprite(sc->scrObj, 896.0*0.5*RoomScale, 896.0*0.5*RoomScale);
+    bbScaleSprite(sc->scrObj, 896.f*0.5*RoomScale, 896.f*0.5*RoomScale);
 
     bbEntityParent(sc->scrObj, r->obj);
     //EntityBlend(sc\scrObj, 2)
@@ -73,7 +73,7 @@ void FillRoom_cont_205_1(Room* r) {
     bbHideEntity(sc->monitorObj);
 
     r->objects[0] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[0], r->x - 1536.0 * RoomScale, r->y + 730.0 * RoomScale, r->z + 192.0 * RoomScale, true);
+    bbPositionEntity(r->objects[0], r->x - 1536.f * RoomScale, r->y + 730.f * RoomScale, r->z + 192.f * RoomScale, true);
     bbRotateEntity(r->objects[0], 0,-90,0,true);
 
     r->objects[1] = sc->scrObj;
@@ -118,7 +118,7 @@ void UpdateEvent_cont_205_1(Event* e) {
 
                 for (i = 3; i <= 6; i++) {
                     //EntityColor(e\room\objects[i], 30,30,30)
-                    //EntityShininess(e\room\objects[i],0.0)
+                    //EntityShininess(e\room\objects[i],0.f)
                     //vertex color + flatshaded
                     //EntityFX(e\room\objects[i], 2)
 
@@ -139,7 +139,7 @@ void UpdateEvent_cont_205_1(Event* e) {
         } else {
 
             if (e->eventState<65) {
-                if (Distance(bbEntityX(mainPlayer->collider), bbEntityZ(mainPlayer->collider), bbEntityX(e->room->objects[0],true), bbEntityZ(e->room->objects[0],true))<2.0) {
+                if (Distance(bbEntityX(mainPlayer->collider), bbEntityZ(mainPlayer->collider), bbEntityX(e->room->objects[0],true), bbEntityZ(e->room->objects[0],true))<2.f) {
                     PlaySound2(LoadTempSound("SFX/SCP/205/Enter.ogg"));
 
                     e->eventState = Max(e->eventState, 65);
@@ -194,7 +194,7 @@ void UpdateEvent_cont_205_1(Event* e) {
                     bbShowEntity(e->room->objects[5]);
                     //le sexy demon pose
                     Animate2((MeshModel*)e->room->objects[5], bbAnimTime(e->room->objects[5]), 500, 648, 0.2);
-                    //TurnEntity(e\room\objects[6], 0.0, DeltaYaw(e\room\objects[6], e\room\objects[5])*0.01, 0.0, True)
+                    //TurnEntity(e\room\objects[6], 0.f, DeltaYaw(e\room\objects[6], e\room\objects[5])*0.01, 0.f, True)
                     if (e->eventState2 > 60*70) {
                         e->eventState = e->eventState+1;
                         PlayRangedSound(LoadTempSound("SFX/SCP/205/Horror.ogg"), mainPlayer->cam, e->room->objects[6], 10, 0.5);
@@ -207,7 +207,7 @@ void UpdateEvent_cont_205_1(Event* e) {
                     Animate2((MeshModel*)e->room->objects[4], bbAnimTime(e->room->objects[4]), 2, 200, 0.2);
                     Animate2((MeshModel*)e->room->objects[5], bbAnimTime(e->room->objects[5]), 4, 125, 0.2);
 
-                    //TurnEntity(e\room\objects[6], 0.0, DeltaYaw(e\room\objects[6], e\room\objects[4])*0.01, 0.0, True)
+                    //TurnEntity(e\room\objects[6], 0.f, DeltaYaw(e\room\objects[6], e\room\objects[4])*0.01, 0.f, True)
 
                     if (e->eventState2 > 80*70) {
                         e->eventState = e->eventState+1;
@@ -222,7 +222,7 @@ void UpdateEvent_cont_205_1(Event* e) {
                     Animate2((MeshModel*)e->room->objects[4], bbAnimTime(e->room->objects[4]), 2, 200, 0.2);
                     Animate2((MeshModel*)e->room->objects[5], bbAnimTime(e->room->objects[5]), 4, 125, 0.2);
 
-                    //TurnEntity(e\room\objects[6], 0.0, DeltaYaw(e\room\objects[5], e\room\objects[4])*0.01, 0.0, True)
+                    //TurnEntity(e\room\objects[6], 0.f, DeltaYaw(e\room\objects[5], e\room\objects[4])*0.01, 0.f, True)
 
                     if (e->eventState2 > 85*70) {
                         e->eventState = e->eventState+1;
@@ -268,14 +268,14 @@ void UpdateEvent_cont_205_1(Event* e) {
                         e->eventState2 = bbRnd(-0.1, 0.1);
                         e->eventState3 = bbRnd(-0.1, 0.1);
 
-                        if (mainPlayer->injuries>5.0) {
+                        if (mainPlayer->injuries>5.f) {
                             Kill(mainPlayer);
                         }
                     }
 
                     bbTranslateEntity(mainPlayer->collider, e->eventState2,0,e->eventState3);
-                    e->eventState2 = CurveValue(e->eventState2, 0, 10.0);
-                    e->eventState3 = CurveValue(e->eventState3, 0, 10.0);
+                    e->eventState2 = CurveValue(e->eventState2, 0, 10.f);
+                    e->eventState3 = CurveValue(e->eventState3, 0, 10.f);
                 } break;
                 default: {
                     if (bbRand(3)==1) {

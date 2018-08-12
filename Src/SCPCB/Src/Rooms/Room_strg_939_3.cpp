@@ -41,88 +41,88 @@ void FillRoom_strg_939_3(Room* r) {
     int t1;
 
     r->objects[0] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[0], r->x, 240.0 * RoomScale, r->z + 752.0 * RoomScale, true);
+    bbPositionEntity(r->objects[0], r->x, 240.f * RoomScale, r->z + 752.f * RoomScale, true);
 
     r->objects[1] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[1], r->x + 5840.0 * RoomScale, -5392.0 * RoomScale, r->z + 1360.0 * RoomScale, true);
+    bbPositionEntity(r->objects[1], r->x + 5840.f * RoomScale, -5392.f * RoomScale, r->z + 1360.f * RoomScale, true);
 
     r->objects[2] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[2], r->x + 608.0 * RoomScale, 240.0 * RoomScale, r->z - 624.0 * RoomScale, true);
+    bbPositionEntity(r->objects[2], r->x + 608.f * RoomScale, 240.f * RoomScale, r->z - 624.f * RoomScale, true);
 
     r->objects[3] = bbCreatePivot(r->obj);
-    //PositionEntity(r\objects[3], r\x + 720.0 * RoomScale, -5392.0 * RoomScale, r\z + 752.0 * RoomScale, True)
-    bbPositionEntity(r->objects[3], r->x - 456.0 * RoomScale, -5392.0 * RoomScale, r->z - 1136 * RoomScale, true);
+    //PositionEntity(r\objects[3], r\x + 720.f * RoomScale, -5392.f * RoomScale, r\z + 752.f * RoomScale, True)
+    bbPositionEntity(r->objects[3], r->x - 456.f * RoomScale, -5392.f * RoomScale, r->z - 1136 * RoomScale, true);
 
     //"waypoints" # 1
     r->objects[4] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[4], r->x + 2128.0 * RoomScale, -5550.0 * RoomScale, r->z + 2048.0 * RoomScale, true);
+    bbPositionEntity(r->objects[4], r->x + 2128.f * RoomScale, -5550.f * RoomScale, r->z + 2048.f * RoomScale, true);
 
     r->objects[5] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[5], r->x + 2128.0 * RoomScale, -5550.0 * RoomScale, r->z - 1136.0 * RoomScale, true);
+    bbPositionEntity(r->objects[5], r->x + 2128.f * RoomScale, -5550.f * RoomScale, r->z - 1136.f * RoomScale, true);
 
     r->objects[6] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[6], r->x + 3824.0 * RoomScale, -5550.0 * RoomScale, r->z - 1168.0 * RoomScale, true);
+    bbPositionEntity(r->objects[6], r->x + 3824.f * RoomScale, -5550.f * RoomScale, r->z - 1168.f * RoomScale, true);
 
     r->objects[7] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[7], r->x + 3760.0 * RoomScale, -5550.0 * RoomScale, r->z + 2048.0 * RoomScale, true);
+    bbPositionEntity(r->objects[7], r->x + 3760.f * RoomScale, -5550.f * RoomScale, r->z + 2048.f * RoomScale, true);
 
     r->objects[8] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[8], r->x + 4848.0 * RoomScale, -5550.0 * RoomScale, r->z + 112.0 * RoomScale, true);
+    bbPositionEntity(r->objects[8], r->x + 4848.f * RoomScale, -5550.f * RoomScale, r->z + 112.f * RoomScale, true);
 
     //"waypoints" # 2
     r->objects[9] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[9], r->x + 592.0 * RoomScale, -5550.0 * RoomScale, r->z + 6352.0 * RoomScale, true);
+    bbPositionEntity(r->objects[9], r->x + 592.f * RoomScale, -5550.f * RoomScale, r->z + 6352.f * RoomScale, true);
 
     r->objects[10] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[10], r->x + 2928.0 * RoomScale, -5550.0 * RoomScale, r->z + 6352.0 * RoomScale, true);
+    bbPositionEntity(r->objects[10], r->x + 2928.f * RoomScale, -5550.f * RoomScale, r->z + 6352.f * RoomScale, true);
 
     r->objects[11] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[11], r->x + 2928.0 * RoomScale, -5550.0 * RoomScale, r->z + 5200.0 * RoomScale, true);
+    bbPositionEntity(r->objects[11], r->x + 2928.f * RoomScale, -5550.f * RoomScale, r->z + 5200.f * RoomScale, true);
 
     r->objects[12] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[12], r->x + 592.0 * RoomScale, -5550.0 * RoomScale, r->z + 5200.0 * RoomScale, true);
+    bbPositionEntity(r->objects[12], r->x + 592.f * RoomScale, -5550.f * RoomScale, r->z + 5200.f * RoomScale, true);
 
     //"waypoints" # 3
     r->objects[13] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[13], r->x + 1136.0 * RoomScale, -5550.0 * RoomScale, r->z + 2944.0 * RoomScale, true);
+    bbPositionEntity(r->objects[13], r->x + 1136.f * RoomScale, -5550.f * RoomScale, r->z + 2944.f * RoomScale, true);
 
     r->objects[14] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[14], r->x + 1104.0 * RoomScale, -5550.0 * RoomScale, r->z + 1184.0 * RoomScale, true);
+    bbPositionEntity(r->objects[14], r->x + 1104.f * RoomScale, -5550.f * RoomScale, r->z + 1184.f * RoomScale, true);
 
     r->objects[15] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[15], r->x - 464.0 * RoomScale,  -5550.0 * RoomScale, r->z + 1216.0 * RoomScale, true);
+    bbPositionEntity(r->objects[15], r->x - 464.f * RoomScale,  -5550.f * RoomScale, r->z + 1216.f * RoomScale, true);
 
     r->objects[16] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[16], r->x - 432.0 * RoomScale, -5550.0 * RoomScale, r->z + 2976.0 * RoomScale, true);
+    bbPositionEntity(r->objects[16], r->x - 432.f * RoomScale, -5550.f * RoomScale, r->z + 2976.f * RoomScale, true);
 
     //r\objects[20] = LoadMesh("GFX/Map/room3storage_hb.b3d",r\obj)
     //EntityPickMode(r\objects[20],2)
     //EntityType(r\objects[20],HIT_MAP)
-    //EntityAlpha(r\objects[20],0.0)
+    //EntityAlpha(r\objects[20],0.f)
 
     //Doors
-    r->doors[0] = CreateDoor(r->x, 0.0, r->z + 448.0 * RoomScale, 0, r, true);
-    bbPositionEntity(r->doors[0]->buttons[1], r->x - 160.0 * RoomScale, 0.7, r->z + 480.0 * RoomScale, true);
-    bbPositionEntity(r->doors[0]->buttons[0], r->x + 160.0 * RoomScale, 0.7, r->z + 416.0 * RoomScale, true);
+    r->doors[0] = CreateDoor(r->x, 0.f, r->z + 448.f * RoomScale, 0, r, true);
+    bbPositionEntity(r->doors[0]->buttons[1], r->x - 160.f * RoomScale, 0.7, r->z + 480.f * RoomScale, true);
+    bbPositionEntity(r->doors[0]->buttons[0], r->x + 160.f * RoomScale, 0.7, r->z + 416.f * RoomScale, true);
 
-    r->doors[1] = CreateDoor(r->x + 5840.0 * RoomScale,  -5632.0 * RoomScale, r->z + 1048.0 * RoomScale, 0, r);
-    bbPositionEntity(r->doors[1]->buttons[0], r->x + 6000.0 * RoomScale, bbEntityY(r->doors[1]->buttons[0],true), r->z + 1008.0 * RoomScale, true);
-    bbPositionEntity(r->doors[1]->buttons[1], r->x + 5680.0 * RoomScale, bbEntityY(r->doors[1]->buttons[1],true), r->z + 1088.0 * RoomScale, true);
+    r->doors[1] = CreateDoor(r->x + 5840.f * RoomScale,  -5632.f * RoomScale, r->z + 1048.f * RoomScale, 0, r);
+    bbPositionEntity(r->doors[1]->buttons[0], r->x + 6000.f * RoomScale, bbEntityY(r->doors[1]->buttons[0],true), r->z + 1008.f * RoomScale, true);
+    bbPositionEntity(r->doors[1]->buttons[1], r->x + 5680.f * RoomScale, bbEntityY(r->doors[1]->buttons[1],true), r->z + 1088.f * RoomScale, true);
 
-    r->doors[2] = CreateDoor(r->x + 608.0 * RoomScale, 0.0, r->z - 312.0 * RoomScale, 0, r, true);
-    bbPositionEntity(r->doors[2]->buttons[1], r->x + 448.0 * RoomScale, 0.7, r->z - 272.0 * RoomScale, true);
-    bbPositionEntity(r->doors[2]->buttons[0], r->x + 768.0 * RoomScale, 0.7, r->z - 352.0 * RoomScale, true);
+    r->doors[2] = CreateDoor(r->x + 608.f * RoomScale, 0.f, r->z - 312.f * RoomScale, 0, r, true);
+    bbPositionEntity(r->doors[2]->buttons[1], r->x + 448.f * RoomScale, 0.7, r->z - 272.f * RoomScale, true);
+    bbPositionEntity(r->doors[2]->buttons[0], r->x + 768.f * RoomScale, 0.7, r->z - 352.f * RoomScale, true);
 
-    //r\doors[3] = CreateDoor(r\x + 720.0 * RoomScale,  -5632.0 * RoomScale, r\z + 1064.0 * RoomScale, 0, r)
-    //PositionEntity(r\doors[3]\buttons[0], r\x + 896.0 * RoomScale, EntityY(r\doors[3]\buttons[0],True), r\z + 1024.0 * RoomScale, True)
-    //PositionEntity(r\doors[3]\buttons[1], r\x + 544.0 * RoomScale, EntityY(r\doors[3]\buttons[1],True), r\z + 1104.0 * RoomScale, True)
-    r->doors[3] = CreateDoor(r->x - 456.0 * RoomScale,  -5632.0 * RoomScale, r->z - 824.0 * RoomScale, 0, r);
+    //r\doors[3] = CreateDoor(r\x + 720.f * RoomScale,  -5632.f * RoomScale, r\z + 1064.f * RoomScale, 0, r)
+    //PositionEntity(r\doors[3]\buttons[0], r\x + 896.f * RoomScale, EntityY(r\doors[3]\buttons[0],True), r\z + 1024.f * RoomScale, True)
+    //PositionEntity(r\doors[3]\buttons[1], r\x + 544.f * RoomScale, EntityY(r\doors[3]\buttons[1],True), r\z + 1104.f * RoomScale, True)
+    r->doors[3] = CreateDoor(r->x - 456.f * RoomScale,  -5632.f * RoomScale, r->z - 824.f * RoomScale, 0, r);
     //X=+176 | Z=-40
-    bbPositionEntity(r->doors[3]->buttons[0], r->x - 280.0*RoomScale, bbEntityY(r->doors[3]->buttons[0],true), r->z - 864.0 * RoomScale, true);
+    bbPositionEntity(r->doors[3]->buttons[0], r->x - 280.f*RoomScale, bbEntityY(r->doors[3]->buttons[0],true), r->z - 864.f * RoomScale, true);
     //X=-176 | Z=+40
-    bbPositionEntity(r->doors[3]->buttons[1], r->x - 632.0*RoomScale, bbEntityY(r->doors[3]->buttons[1],true), r->z - 784.0 * RoomScale, true);
+    bbPositionEntity(r->doors[3]->buttons[1], r->x - 632.f*RoomScale, bbEntityY(r->doors[3]->buttons[1],true), r->z - 784.f * RoomScale, true);
 
-    em = CreateEmitter(r->x + 5218.0 * RoomScale, -5584.0*RoomScale, r->z - 600* RoomScale, 0);
+    em = CreateEmitter(r->x + 5218.f * RoomScale, -5584.f*RoomScale, r->z - 600* RoomScale, 0);
     bbTurnEntity(em->obj, 20, -100, 0, true);
     bbEntityParent(em->obj, r->obj);
     em->room = r;
@@ -147,10 +147,10 @@ void FillRoom_strg_939_3(Room* r) {
         } break;
     }
 
-    it = CreateItem("nvgoggles", r->x + 1936.0 * RoomScale, r->y - 5496.0 * RoomScale, r->z - 944.0 * RoomScale);
+    it = CreateItem("nvgoggles", r->x + 1936.f * RoomScale, r->y - 5496.f * RoomScale, r->z - 944.f * RoomScale);
     bbEntityParent(it->collider, r->obj);
 
-    de = CreateDecal(DECAL_BLOOD_SPLATTER,  r->x + x*RoomScale, -5632.0*RoomScale+0.01, r->z+z*RoomScale,90,bbRnd(360),0);
+    de = CreateDecal(DECAL_BLOOD_SPLATTER,  r->x + x*RoomScale, -5632.f*RoomScale+0.01, r->z+z*RoomScale,90,bbRnd(360),0);
     de->size = 0.5;
     bbScaleSprite(de->obj, de->size,de->size);
     bbEntityParent(de->obj, r->obj);
@@ -191,7 +191,7 @@ void FillRoom_strg_939_3(Room* r) {
         r->doors[4]->buttons[i] = 0;
     }
 
-    d = CreateDoor(r->x+1157.0*RoomScale,r->y-5632.0*RoomScale,r->z+660.0*RoomScale,0,r,false,DOOR_TYPE_HCZ);
+    d = CreateDoor(r->x+1157.f*RoomScale,r->y-5632.f*RoomScale,r->z+660.f*RoomScale,0,r,false,DOOR_TYPE_HCZ);
     d->locked = true;
     d->open = false;
     d->autoClose = false;
@@ -200,7 +200,7 @@ void FillRoom_strg_939_3(Room* r) {
         d->buttons[i] = 0;
     }
 
-    d = CreateDoor(r->x+234.0*RoomScale,r->y-5632.0*RoomScale,r->z+5239.0*RoomScale,90,r,false,DOOR_TYPE_HCZ);
+    d = CreateDoor(r->x+234.f*RoomScale,r->y-5632.f*RoomScale,r->z+5239.f*RoomScale,90,r,false,DOOR_TYPE_HCZ);
     d->locked = true;
     d->open = false;
     d->autoClose = false;
@@ -209,7 +209,7 @@ void FillRoom_strg_939_3(Room* r) {
         d->buttons[i] = 0;
     }
 
-    d = CreateDoor(r->x+3446.0*RoomScale,r->y-5632.0*RoomScale,r->z+6369.0*RoomScale,90,r,false,DOOR_TYPE_HCZ);
+    d = CreateDoor(r->x+3446.f*RoomScale,r->y-5632.f*RoomScale,r->z+6369.f*RoomScale,90,r,false,DOOR_TYPE_HCZ);
     d->locked = true;
     d->open = false;
     d->autoClose = false;

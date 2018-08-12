@@ -179,7 +179,7 @@ int UpdateUIButton(int x, int y, int width, int height, const String& txt, int w
 }
 
 void DrawUITick(int x, int y, int selected, int locked) {
-    int width = (int)(20.0 * MenuScale);
+    int width = (int)(20.f * MenuScale);
     int height = (int)(20 * MenuScale);
 
     bbColor(255, 255, 255);
@@ -210,8 +210,8 @@ void DrawUITick(int x, int y, int selected, int locked) {
 }
 
 int UpdateUITick(int x, int y, int selected, int locked) {
-    int width = (int)(20.0 * MenuScale);
-    int height = (int)(20.0 * MenuScale);
+    int width = (int)(20.f * MenuScale);
+    int height = (int)(20.f * MenuScale);
 
     int Highlight = MouseOn(x, y, width, height) & (!locked);
 
@@ -239,11 +239,11 @@ void DrawSlideBar(int x, int y, int width, float value) {
     bbColor(255,255,255);
     bbRect(x, y, width + 14, 20,false);
 
-    bbDrawImage(uiAssets->blinkBar, x + (int)(width * value / 100.0)+3, y+3);
+    bbDrawImage(uiAssets->blinkBar, x + (int)(width * value / 100.f)+3, y+3);
 
     bbColor(170,170,170);
-    bbText(x - (int)(50.0 * MenuScale), y + (int)(4.0*MenuScale), "LOW");
-    bbText(x + width + (int)(38.0 * MenuScale), y+(int)(4.0*MenuScale), "HIGH");
+    bbText(x - (int)(50.f * MenuScale), y + (int)(4.f*MenuScale), "LOW");
+    bbText(x + width + (int)(38.f * MenuScale), y+(int)(4.f*MenuScale), "HIGH");
 }
 
 void RowText(const String& A, int X, int Y, int W, int H, int align, float Leading) {
@@ -350,16 +350,16 @@ int LimitText(const String& txt, int x, int y, int width, int usingAA) {
 }
 
 void DrawTooltip(const String& message) {
-    float scale = userOptions->screenHeight/768.0;
+    float scale = userOptions->screenHeight/768.f;
 
-    int width = (bbStringWidth(message))+(int)(20.0*MenuScale);
+    int width = (bbStringWidth(message))+(int)(20.f*MenuScale);
 
     bbColor(25,25,25);
-    bbRect(bbMouseX()+20,bbMouseY(),width,(int)(19.0*scale),true);
+    bbRect(bbMouseX()+20,bbMouseY(),width,(int)(19.f*scale),true);
     bbColor(150,150,150);
-    bbRect(bbMouseX()+20,bbMouseY(),width,(int)(19.0*scale),false);
+    bbRect(bbMouseX()+20,bbMouseY(),width,(int)(19.f*scale),false);
     bbSetFont(uiAssets->font[0]);
-    bbText(bbMouseX()+(int)(20.0*MenuScale)+(width/2),bbMouseY()+(int)(12.0*MenuScale), message, true, true);
+    bbText(bbMouseX()+(int)(20.f*MenuScale)+(width/2),bbMouseY()+(int)(12.f*MenuScale), message, true, true);
 }
 
 void DrawPointer() {

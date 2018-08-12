@@ -37,28 +37,28 @@ void FillRoom_scp_970_2(Room* r) {
     //, Bump
     int t1;
 
-    r->doors[0] = CreateDoor(r->x - 1288.0 * RoomScale, 0, r->z, 270, r);
-    r->doors[1] = CreateDoor(r->x - 760.0 * RoomScale, 0, r->z, 270, r);
-    r->doors[2] = CreateDoor(r->x - 264.0 * RoomScale, 0, r->z, 270, r);
-    r->doors[3] = CreateDoor(r->x + 264.0 * RoomScale, 0, r->z, 270, r);
-    r->doors[4] = CreateDoor(r->x + 760.0 * RoomScale, 0, r->z, 270, r);
-    r->doors[5] = CreateDoor(r->x + 1288.0 * RoomScale, 0, r->z, 270, r);
+    r->doors[0] = CreateDoor(r->x - 1288.f * RoomScale, 0, r->z, 270, r);
+    r->doors[1] = CreateDoor(r->x - 760.f * RoomScale, 0, r->z, 270, r);
+    r->doors[2] = CreateDoor(r->x - 264.f * RoomScale, 0, r->z, 270, r);
+    r->doors[3] = CreateDoor(r->x + 264.f * RoomScale, 0, r->z, 270, r);
+    r->doors[4] = CreateDoor(r->x + 760.f * RoomScale, 0, r->z, 270, r);
+    r->doors[5] = CreateDoor(r->x + 1288.f * RoomScale, 0, r->z, 270, r);
 
     for (i = 0; i <= 5; i++) {
-        bbMoveEntity(r->doors[i]->buttons[0], 0,0,-8.0);
-        bbMoveEntity(r->doors[i]->buttons[1], 0,0,-8.0);
+        bbMoveEntity(r->doors[i]->buttons[0], 0,0,-8.f);
+        bbMoveEntity(r->doors[i]->buttons[1], 0,0,-8.f);
         r->doors[i]->autoClose = false;
         r->doors[i]->open = false;
     }
 
-    it = CreatePaper("doc939", r->x + 352.0 * RoomScale, r->y + 176.0 * RoomScale, r->z + 256.0 * RoomScale);
+    it = CreatePaper("doc939", r->x + 352.f * RoomScale, r->y + 176.f * RoomScale, r->z + 256.f * RoomScale);
     bbRotateEntity(it->collider, 0, r->angle+4, 0);
     bbEntityParent(it->collider, r->obj);
 
-    it = CreateItem("battery", r->x + 352.0 * RoomScale, r->y + 112.0 * RoomScale, r->z + 448.0 * RoomScale);
+    it = CreateItem("battery", r->x + 352.f * RoomScale, r->y + 112.f * RoomScale, r->z + 448.f * RoomScale);
     bbEntityParent(it->collider, r->obj);
 
-    it = CreateItem("cup", r->x-672*RoomScale, 240*RoomScale, r->z+288.0*RoomScale);
+    it = CreateItem("cup", r->x-672*RoomScale, 240*RoomScale, r->z+288.f*RoomScale);
     bbEntityParent(it->collider, r->obj);
 }
 
@@ -99,7 +99,7 @@ void UpdateEvent_scp_970_2(Event* e) {
             e->room->doors[1]->locked = false;
             e->room->doors[4]->locked = false;
 
-            if (bbEntityDistance(mainPlayer->collider, Curr173->obj)<8.0 | bbEntityDistance(mainPlayer->collider, Curr106->obj)<8.0) {
+            if (bbEntityDistance(mainPlayer->collider, Curr173->obj)<8.f | bbEntityDistance(mainPlayer->collider, Curr106->obj)<8.f) {
                 e->room->doors[1]->locked = true;
                 e->room->doors[4]->locked = true;
             } else {
@@ -107,7 +107,7 @@ void UpdateEvent_scp_970_2(Event* e) {
                     n = NPC::getObject(iterator192);
 
                     if (n->npcType == NPCtypeMTF) {
-                        if (bbEntityDistance(mainPlayer->collider, Curr173->obj)<8.0) {
+                        if (bbEntityDistance(mainPlayer->collider, Curr173->obj)<8.f) {
                             e->room->doors[1]->locked = true;
                             e->room->doors[4]->locked = true;
                             break;
@@ -186,7 +186,7 @@ void UpdateEvent_scp_970_2(Event* e) {
             for (int iterator193 = 0; iterator193 < Item::getListSize(); iterator193++) {
                 it = Item::getObject(iterator193);
 
-                if (bbEntityDistance(it->collider,mainPlayer->collider)<5.0) {
+                if (bbEntityDistance(it->collider,mainPlayer->collider)<5.f) {
 
                     bbTFormPoint(bbEntityX(it->collider),bbEntityY(it->collider),bbEntityZ(it->collider),0,e->room->obj);
                     x = bbTFormedX();
@@ -301,10 +301,10 @@ void UpdateEvent_scp_970_2(Event* e) {
             //EndIf
         } else {
             if (e->room->npc[0] != nullptr) {
-                if (bbEntityDistance(mainPlayer->collider, e->room->npc[0]->collider)<3.0) {
+                if (bbEntityDistance(mainPlayer->collider, e->room->npc[0]->collider)<3.f) {
                     if (bbEntityInView(e->room->npc[0]->obj, mainPlayer->cam)) {
-                        mainPlayer->camZoom = (bbSin((float)(TimeInPosMilliSecs())/20.0)+1.0)*15.0;
-                        //HeartBeatVolume = Max(CurveValue(0.3, HeartBeatVolume, 2.0), HeartBeatVolume)
+                        mainPlayer->camZoom = (bbSin((float)(TimeInPosMilliSecs())/20.f)+1.f)*15.f;
+                        //HeartBeatVolume = Max(CurveValue(0.3, HeartBeatVolume, 2.f), HeartBeatVolume)
                         mainPlayer->heartbeatIntensity = Max(mainPlayer->heartbeatIntensity, 120);
                     }
                 }
@@ -338,7 +338,7 @@ void UpdateEvent_scp_970_2(Event* e) {
                         for (int iterator196 = 0; iterator196 < Item::getListSize(); iterator196++) {
                             it2 = Item::getObject(iterator196);
 
-                            if (it2!=it & it2->dist < 15.0) {
+                            if (it2!=it & it2->dist < 15.f) {
 
                                 bbTFormPoint(bbEntityX(it2->collider),bbEntityY(it2->collider),bbEntityZ(it2->collider),0,e->room->obj);
                                 //DebugLog(TFormedZ()+" - "+z)
@@ -361,8 +361,8 @@ void UpdateEvent_scp_970_2(Event* e) {
 
 
     if (e->eventState > 26) {
-        if (abs(bbEntityX(mainPlayer->collider)-e->room->x)<8.0) {
-            if (abs(bbEntityZ(mainPlayer->collider)-e->room->z)<8.0) {
+        if (abs(bbEntityX(mainPlayer->collider)-e->room->x)<8.f) {
+            if (abs(bbEntityZ(mainPlayer->collider)-e->room->z)<8.f) {
                 if (e->sounds[0] == 0) {
                     e->sounds[0] = bbLoadSound("SFX/SCP/970/Corpse.ogg");
                 }
@@ -374,7 +374,7 @@ void UpdateEvent_scp_970_2(Event* e) {
                     AnimateNPC(e->room->npc[0], 80, 61, -0.02, false);
 
                     e->room->npc[0]->dropSpeed = 0;
-                    y = CurveValue(1.5+bbSin((float)(TimeInPosMilliSecs())/20.0)*0.1,bbEntityY(e->room->npc[0]->collider),50.0);
+                    y = CurveValue(1.5+bbSin((float)(TimeInPosMilliSecs())/20.f)*0.1,bbEntityY(e->room->npc[0]->collider),50.f);
 
                     bbPositionEntity(e->room->npc[0]->collider,bbEntityX(e->room->npc[0]->collider),y,bbEntityZ(e->room->npc[0]->collider));
                     bbTurnEntity(e->room->npc[0]->collider,0,0.1*timing->tickDuration,0);

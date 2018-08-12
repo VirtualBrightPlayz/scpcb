@@ -37,7 +37,7 @@ void FillRoom_hll_bench_3(Room* r) {
     //, Bump
     int t1;
 
-    sc = CreateSecurityCam(r->x-320.0*RoomScale, r->y+384.0*RoomScale, r->z+512.25*RoomScale, r);
+    sc = CreateSecurityCam(r->x-320.f*RoomScale, r->y+384.f*RoomScale, r->z+512.25*RoomScale, r);
     sc->angle = 225;
     sc->turn = 45;
     bbTurnEntity(sc->cameraObj, 20, 0, 0);

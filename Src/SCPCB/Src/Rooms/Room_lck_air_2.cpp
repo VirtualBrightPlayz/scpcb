@@ -58,13 +58,13 @@ void FillRoom_lck_air_2(Room* r) {
         bbEntityParent(de->obj, r->obj);
     }
 
-    r->doors[0] = CreateDoor(r->x + 336.0 * RoomScale, 0.0, r->z - 382.0 * RoomScale, 0, r);
+    r->doors[0] = CreateDoor(r->x + 336.f * RoomScale, 0.f, r->z - 382.f * RoomScale, 0, r);
     bbPositionEntity(r->doors[0]->buttons[0], r->x + 580.822 * RoomScale, bbEntityY(r->doors[0]->buttons[0],true), r->z - 606.679 * RoomScale, true);
     bbPositionEntity(r->doors[0]->buttons[1], r->x + 580.822 * RoomScale, bbEntityY(r->doors[0]->buttons[1],true), r->z - 606.679 * RoomScale, true);
     r->doors[0]->locked = true;
     r->doors[0]->mtfClose = false;
 
-    r->doors[1] = CreateDoor(r->x + 336.0 * RoomScale, 0.0, r->z + 462.0 * RoomScale, 180, r);
+    r->doors[1] = CreateDoor(r->x + 336.f * RoomScale, 0.f, r->z + 462.f * RoomScale, 180, r);
     bbPositionEntity(r->doors[1]->buttons[0], r->x + 580.822 * RoomScale, bbEntityY(r->doors[1]->buttons[0],true), r->z - 606.679 * RoomScale, true);
     bbPositionEntity(r->doors[1]->buttons[1], r->x + 580.822 * RoomScale, bbEntityY(r->doors[1]->buttons[1],true), r->z - 606.679 * RoomScale, true);
     r->doors[1]->locked = true;
@@ -88,8 +88,8 @@ void FillRoom_lck_air_2(Room* r) {
 
     if (r->roomTemplate->name.equals("lck_air_2")) {
         r->objects[ROOM_LCKA2_TRIGGERPIVOT] = bbCreatePivot();
-        //PositionEntity(r\objects[ROOM_LCKA2_TRIGGERPIVOT],r\x-48.0*RoomScale,128.0*RoomScale,r\z+320.0*RoomScale)
-        bbPositionEntity(r->objects[ROOM_LCKA2_TRIGGERPIVOT],r->x+344.0*RoomScale,128.0*RoomScale,r->z);
+        //PositionEntity(r\objects[ROOM_LCKA2_TRIGGERPIVOT],r\x-48.f*RoomScale,128.f*RoomScale,r\z+320.f*RoomScale)
+        bbPositionEntity(r->objects[ROOM_LCKA2_TRIGGERPIVOT],r->x+344.f*RoomScale,128.f*RoomScale,r->z);
         bbEntityParent(r->objects[ROOM_LCKA2_TRIGGERPIVOT],r->obj);
 
         bd_temp = false;
@@ -104,12 +104,12 @@ void FillRoom_lck_air_2(Room* r) {
         if ((room2gw_brokendoor == 0 && bbRand(1,2)==1) || bd_temp) {
             //TODO: Not this.
             r->objects[ROOM_LCKA2_BROKENDOOR] = bbLoadMesh("GFX/Map/Meshes/door.b3d");
-            bbScaleEntity(r->objects[ROOM_LCKA2_BROKENDOOR], (204.0 * RoomScale) / bbMeshWidth((MeshModel*)r->objects[ROOM_LCKA2_BROKENDOOR]), 312.0 * RoomScale / bbMeshHeight((MeshModel*)r->objects[ROOM_LCKA2_BROKENDOOR]), 16.0 * RoomScale / bbMeshDepth((MeshModel*)r->objects[ROOM_LCKA2_BROKENDOOR]));
+            bbScaleEntity(r->objects[ROOM_LCKA2_BROKENDOOR], (204.f * RoomScale) / bbMeshWidth((MeshModel*)r->objects[ROOM_LCKA2_BROKENDOOR]), 312.f * RoomScale / bbMeshHeight((MeshModel*)r->objects[ROOM_LCKA2_BROKENDOOR]), 16.f * RoomScale / bbMeshDepth((MeshModel*)r->objects[ROOM_LCKA2_BROKENDOOR]));
             bbEntityType(r->objects[ROOM_LCKA2_BROKENDOOR], HIT_MAP);
-            bbPositionEntity(r->objects[ROOM_LCKA2_BROKENDOOR], r->x + 336.0 * RoomScale, 0.0, r->z + 462.0 * RoomScale);
+            bbPositionEntity(r->objects[ROOM_LCKA2_BROKENDOOR], r->x + 336.f * RoomScale, 0.f, r->z + 462.f * RoomScale);
             bbRotateEntity(r->objects[ROOM_LCKA2_BROKENDOOR], 0, 180 + 180, 0);
             bbEntityParent(r->objects[ROOM_LCKA2_BROKENDOOR], r->obj);
-            bbMoveEntity(r->objects[ROOM_LCKA2_BROKENDOOR],120.0,0,5.0);
+            bbMoveEntity(r->objects[ROOM_LCKA2_BROKENDOOR],120.f,0,5.f);
             room2gw_brokendoor = true;
             room2gw_x = r->x;
             room2gw_z = r->z;
@@ -191,7 +191,7 @@ void UpdateEvent_lck_air_2(Event* e) {
                     if (brokendoor) {
                         pvt = bbCreatePivot();
                         d_ent = (MeshModel*)e->room->objects[ROOM_LCKA2_BROKENDOOR];
-                        bbPositionEntity(pvt, bbEntityX(d_ent,true), bbEntityY(d_ent,true)+bbRnd(0.0,0.05), bbEntityZ(d_ent,true));
+                        bbPositionEntity(pvt, bbEntityX(d_ent,true), bbEntityY(d_ent,true)+bbRnd(0.f,0.05), bbEntityZ(d_ent,true));
                         bbRotateEntity(pvt, 0, bbEntityYaw(d_ent,true)+90, 0);
                         bbMoveEntity(pvt,0,0,0.2);
 
@@ -199,7 +199,7 @@ void UpdateEvent_lck_air_2(Event* e) {
                             p = CreateParticle(bbEntityX(pvt), bbEntityY(pvt), bbEntityZ(pvt), PARTICLE_SPARK, 0.002, 0, 25);
                             p->speed = bbRnd(0.01,0.05);
                             //RotateEntity(p\pvt, Rnd(-20, 20), Rnd(360), 0)
-                            bbRotateEntity(p->pvt, bbRnd(-45,0), bbEntityYaw(pvt)+bbRnd(-10.0,10.0), 0);
+                            bbRotateEntity(p->pvt, bbRnd(-45,0), bbEntityYaw(pvt)+bbRnd(-10.f,10.f), 0);
 
                             p->size = 0.0075;
                             bbScaleSprite(p->sprite,p->size,p->size);
@@ -217,15 +217,15 @@ void UpdateEvent_lck_air_2(Event* e) {
                     for (i = 0; i <= 1; i++) {
                         if (e->room->roomTemplate->name.equals("lck_ez_3")) {
                             if (i == 0) {
-                                bbPositionEntity(pvt,-288.0*RoomScale,416.0*RoomScale,320.0*RoomScale,false);
+                                bbPositionEntity(pvt,-288.f*RoomScale,416.f*RoomScale,320.f*RoomScale,false);
                             } else {
-                                bbPositionEntity(pvt,192.0*RoomScale,416.0*RoomScale,320.0*RoomScale,false);
+                                bbPositionEntity(pvt,192.f*RoomScale,416.f*RoomScale,320.f*RoomScale,false);
                             }
                         } else {
                             if (i == 0) {
-                                bbPositionEntity(pvt,312.0*RoomScale,416.0*RoomScale,-128.0*RoomScale,false);
+                                bbPositionEntity(pvt,312.f*RoomScale,416.f*RoomScale,-128.f*RoomScale,false);
                             } else {
-                                bbPositionEntity(pvt,312.0*RoomScale,416.0*RoomScale,224.0*RoomScale,false);
+                                bbPositionEntity(pvt,312.f*RoomScale,416.f*RoomScale,224.f*RoomScale,false);
                             }
                         }
 
@@ -242,7 +242,7 @@ void UpdateEvent_lck_air_2(Event* e) {
                     }
                 }
             } else {
-                e->floatState[EVENT_LCKA2_TIMER] = 0.0;
+                e->floatState[EVENT_LCKA2_TIMER] = 0.f;
                 e->intState[EVENT_LCKA2_ACTIVE] = false;
                 e->intState[EVENT_LCKA2_LEAVING] = true;
                 if (e->room->doors[0]->open == false) {

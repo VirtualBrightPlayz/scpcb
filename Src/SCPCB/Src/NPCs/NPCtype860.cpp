@@ -45,9 +45,9 @@ void InitializeNPCtype860(NPC* n) {
     bbEntityBlend(n->obj2, BLEND_ADD);
     //bbSpriteViewMode(n->obj2, 2);
 
-    n->speed = (GetINIFloat("Data/NPCs.ini", "forestmonster", "speed") / 100.0);
+    n->speed = (GetINIFloat("Data/NPCs.ini", "forestmonster", "speed") / 100.f);
 
-    float temp = (GetINIFloat("Data/NPCs.ini", "forestmonster", "scale") / 20.0);
+    float temp = (GetINIFloat("Data/NPCs.ini", "forestmonster", "scale") / 20.f);
     bbScaleEntity(n->obj, temp, temp, temp);
 
     bbMeshCullBox(n->obj, -bbMeshWidth(n->obj)*2, -bbMeshHeight(n->obj)*2, -bbMeshDepth(n->obj)*2, bbMeshWidth(n->obj)*2, bbMeshHeight(n->obj)*4, bbMeshDepth(n->obj)*4);
@@ -85,10 +85,10 @@ void UpdateNPCtype860(NPC* n) {
                 if (bbEntityY(n->collider)<= -100) {
                     bbTFormPoint(bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider),bbEntityZ(mainPlayer->collider),0,mainPlayer->currRoom->obj);
 
-                    x = (int)(bbFloor((bbTFormedX()*RoomScale+6.0)/12.0));
-                    z = (int)(bbFloor((bbTFormedZ()*RoomScale+6.0)/12.0));
+                    x = (int)(bbFloor((bbTFormedX()*RoomScale+6.f)/12.f));
+                    z = (int)(bbFloor((bbTFormedZ()*RoomScale+6.f)/12.f));
 
-                    bbTFormPoint(x/RoomScale*12.0,0,z/RoomScale*12.0,fr->forest_Pivot,0);
+                    bbTFormPoint(x/RoomScale*12.f,0,z/RoomScale*12.f,fr->forest_Pivot,0);
 
                     for (x2 = (int)(Max(x-1,0)); x2 <= (int)(Min(x+1,gridsize)); x2 += 2) {
                         for (z2 = (int)(Max(z-1,0)); z2 <= (int)(Min(z+1,gridsize)); z2 += 2) {
@@ -111,7 +111,7 @@ void UpdateNPCtype860(NPC* n) {
                     }
 
                     if (bbEntityY(n->collider)> -100) {
-                        PlayRangedSound(sndManager->footstep8601[bbRand(0, 2)]->internal, mainPlayer->cam, n->collider, 15.0, 0.5);
+                        PlayRangedSound(sndManager->footstep8601[bbRand(0, 2)]->internal, mainPlayer->cam, n->collider, 15.f, 0.5);
 
                         switch (bbRand(3)) {
                             case 1: {
@@ -146,35 +146,35 @@ void UpdateNPCtype860(NPC* n) {
                         if (bbEntityInView(n->collider, mainPlayer->cam)) {
                             n->state2 = 1;
                             if (bbRand(8)==1) {
-                                PlayRangedSound(LoadTempSound("SFX/SCP/860/Cancer"+String(bbRand(0,2))+".ogg"), mainPlayer->cam, n->collider, 20.0);
+                                PlayRangedSound(LoadTempSound("SFX/SCP/860/Cancer"+String(bbRand(0,2))+".ogg"), mainPlayer->cam, n->collider, 20.f);
                             }
                         }
                     } else {
                         if (n->frame<=199) {
                             AnimateNPC(n, 2, 199, 0.5,false);
                             if (n->frame==199) {
-                                //PlayRangedSound(sndManager\footstep8601[Rand(0, 2)]\internal, mainPlayer\cam, n\collider, 15.0)
+                                //PlayRangedSound(sndManager\footstep8601[Rand(0, 2)]\internal, mainPlayer\cam, n\collider, 15.f)
                                 n->frame = 298;
 
                             }
 
                             //Animate2(n\obj, AnimTime(n\obj), 2, 199, 0.5,False)
                             //If (AnimTime(n\obj)=199) Then SetAnimTime(n\obj,298)
-                            PlayRangedSound(sndManager->footstep8601[bbRand(0, 2)]->internal, mainPlayer->cam, n->collider, 15.0);
+                            PlayRangedSound(sndManager->footstep8601[bbRand(0, 2)]->internal, mainPlayer->cam, n->collider, 15.f);
                         } else if ((n->frame <= 297)) {
                             bbPointEntity(n->collider,mainPlayer->collider);
 
                             AnimateNPC(n, 200, 297, 0.5, false);
                             if (n->frame==297) {
                                 n->frame = 298;
-                                PlayRangedSound(sndManager->footstep8601[bbRand(0, 2)]->internal, mainPlayer->cam, n->collider, 15.0);
+                                PlayRangedSound(sndManager->footstep8601[bbRand(0, 2)]->internal, mainPlayer->cam, n->collider, 15.f);
                             }
 
                             //Animate2(n\obj, AnimTime(n\obj), 200, 297, 0.5,False)
                             //If (AnimTime(n\obj)=297) Then SetAnimTime(n\obj,298)
-                            PlayRangedSound(sndManager->footstep8601[bbRand(0, 2)]->internal, mainPlayer->cam, n->collider, 15.0);
+                            PlayRangedSound(sndManager->footstep8601[bbRand(0, 2)]->internal, mainPlayer->cam, n->collider, 15.f);
                         } else {
-                            angle = CurveAngle(GetAngle(bbEntityX(n->collider),bbEntityZ(n->collider),bbEntityX(mainPlayer->collider),bbEntityZ(mainPlayer->collider)),bbEntityYaw(n->collider)+90,20.0);
+                            angle = CurveAngle(GetAngle(bbEntityX(n->collider),bbEntityZ(n->collider),bbEntityX(mainPlayer->collider),bbEntityZ(mainPlayer->collider)),bbEntityYaw(n->collider)+90,20.f);
 
                             bbRotateEntity(n->collider, 0, angle-90, 0, true);
 
@@ -182,10 +182,10 @@ void UpdateNPCtype860(NPC* n) {
 
                             //Animate2(n\obj, AnimTime(n\obj), 298, 316, n\currSpeed*10)
 
-                            n->currSpeed = CurveValue(n->speed, n->currSpeed, 10.0);
+                            n->currSpeed = CurveValue(n->speed, n->currSpeed, 10.f);
                             bbMoveEntity(n->collider, 0,0,n->currSpeed*timing->tickDuration);
 
-                            if (n->playerDistance>15.0) {
+                            if (n->playerDistance>15.f) {
                                 bbPositionEntity(n->collider, 0,-110,0);
                                 n->state = 0;
                                 n->state2 = 0;
@@ -206,8 +206,8 @@ void UpdateNPCtype860(NPC* n) {
 
                 if (bbEntityY(n->collider)<= -100) {
                     bbTFormPoint(bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider),bbEntityZ(mainPlayer->collider),0,mainPlayer->currRoom->obj);
-                    x = (int)(bbFloor((bbTFormedX()*RoomScale+6.0)/12.0));
-                    z = (int)(bbFloor((bbTFormedZ()*RoomScale+6.0)/12.0));
+                    x = (int)(bbFloor((bbTFormedX()*RoomScale+6.f)/12.f));
+                    z = (int)(bbFloor((bbTFormedZ()*RoomScale+6.f)/12.f));
 
                     for (x2 = (int)(Max(x-1,0)); x2 <= (int)(Min(x+1,gridsize)); x2++) {
                         for (z2 = (int)(Max(z-1,0)); z2 <= (int)(Min(z+1,gridsize)); z2++) {
@@ -216,7 +216,7 @@ void UpdateNPCtype860(NPC* n) {
                                 bbTFormPoint((x2*12)/RoomScale,0,(z2*12)/RoomScale,mainPlayer->currRoom->obj,0);
 
                                 //PositionEntity(n\collider, TFormedX(), EntityY(fr\forest_Pivot,True)+0.5, TFormedZ())
-                                bbPositionEntity(n->collider, bbTFormedX(), bbEntityY(fr->forest_Pivot,true)+1.0, bbTFormedZ());
+                                bbPositionEntity(n->collider, bbTFormedX(), bbEntityY(fr->forest_Pivot,true)+1.f, bbTFormedZ());
                                 std::cout << String(bbEntityY(fr->forest_Pivot,true));
 
                                 if (bbEntityInView(n->collider, mainPlayer->cam)) {
@@ -230,11 +230,11 @@ void UpdateNPCtype860(NPC* n) {
                     }
                 } else {
 
-                    angle = CurveAngle(Find860Angle(n, fr),bbEntityYaw(n->collider)+90,80.0);
+                    angle = CurveAngle(Find860Angle(n, fr),bbEntityYaw(n->collider)+90,80.f);
 
                     bbRotateEntity(n->collider, 0, angle-90, 0, true);
 
-                    n->currSpeed = CurveValue(n->speed*0.3, n->currSpeed, 50.0);
+                    n->currSpeed = CurveValue(n->speed*0.3, n->currSpeed, 50.f);
                     bbMoveEntity(n->collider, 0,0,n->currSpeed*timing->tickDuration);
 
                     AnimateNPC(n, 494, 569, n->currSpeed*25);
@@ -242,7 +242,7 @@ void UpdateNPCtype860(NPC* n) {
                     //Animate2(n\obj, AnimTime(n\obj), 494, 569, n\currSpeed*25)
 
                     if (n->state2 == 0) {
-                        if (n->playerDistance<8.0) {
+                        if (n->playerDistance<8.f) {
                             if (bbEntityInView(n->collider,mainPlayer->cam)) {
                                 PlaySound2(LoadTempSound("SFX/SCP/860/Chase"+String(bbRand(1,2))+".ogg"));
 
@@ -275,7 +275,7 @@ void UpdateNPCtype860(NPC* n) {
                         n->state = 3;
                     }
 
-                    if (n->playerDistance > 16.0) {
+                    if (n->playerDistance > 16.f) {
                         n->state = 0;
                         n->state2 = 0;
                         bbPositionEntity(n->collider, 0,-110,0);
@@ -284,7 +284,7 @@ void UpdateNPCtype860(NPC* n) {
 
                 //535, 568
                 if (prevFrame < 533 & n->frame>=533 | prevFrame > 568 & n->frame<2) {
-                    PlayRangedSound(sndManager->footstep8601[bbRand(0, 2)]->internal, mainPlayer->cam, n->collider, 15.0, 0.6);
+                    PlayRangedSound(sndManager->footstep8601[bbRand(0, 2)]->internal, mainPlayer->cam, n->collider, 15.f, 0.6);
                 }
 
                 //runs towards the player and attacks
@@ -295,7 +295,7 @@ void UpdateNPCtype860(NPC* n) {
 
                 prevFrame = (int)(n->frame);
 
-                angle = CurveAngle(Find860Angle(n, fr),bbEntityYaw(n->collider)+90,40.0);
+                angle = CurveAngle(Find860Angle(n, fr),bbEntityYaw(n->collider)+90,40.f);
 
                 bbRotateEntity(n->collider, 0, angle-90, 0, true);
 
@@ -307,20 +307,20 @@ void UpdateNPCtype860(NPC* n) {
                 }
 
                 if (n->playerDistance>1.1 & (!mainPlayer->dead)) {
-                    n->currSpeed = CurveValue(n->speed*0.8, n->currSpeed, 10.0);
+                    n->currSpeed = CurveValue(n->speed*0.8, n->currSpeed, 10.f);
 
                     AnimateNPC(n, 298, 316, n->currSpeed*10);
                     //Animate2(n\obj, AnimTime(n\obj), 298, 316, n\currSpeed*10)
 
                     if (prevFrame < 307 & n->frame>=307) {
-                        PlayRangedSound(sndManager->footstep8601[bbRand(0, 2)]->internal, mainPlayer->cam, n->collider, 10.0);
+                        PlayRangedSound(sndManager->footstep8601[bbRand(0, 2)]->internal, mainPlayer->cam, n->collider, 10.f);
                     }
                 } else {
                     //461, 476
 
                     DeathMSG = "";
 
-                    n->currSpeed = CurveValue(0.0, n->currSpeed, 5.0);
+                    n->currSpeed = CurveValue(0.f, n->currSpeed, 5.f);
 
                     AnimateNPC(n, 451,493, 0.5, false);
 
@@ -350,20 +350,20 @@ void UpdateNPCtype860(NPC* n) {
             bbPositionEntity(n->obj, bbEntityX(n->collider), bbEntityY(n->collider)-0.1, bbEntityZ(n->collider));
             bbRotateEntity(n->obj, bbEntityPitch(n->collider)-90, bbEntityYaw(n->collider), bbEntityRoll(n->collider), true);
 
-            if (n->playerDistance > 8.0) {
+            if (n->playerDistance > 8.f) {
                 bbShowEntity(n->obj2);
-                bbEntityAlpha(n->obj2, Min(n->playerDistance-8.0,1.0));
+                bbEntityAlpha(n->obj2, Min(n->playerDistance-8.f,1.f));
 
                 bbPositionEntity(n->obj2, bbEntityX(n->obj), bbEntityY(n->obj) , bbEntityZ(n->obj));
                 bbRotateEntity(n->obj2, 0, bbEntityYaw(n->collider) - 180, 0);
-                bbMoveEntity(n->obj2, 0, 30.0*0.025, -33.0*0.025);
+                bbMoveEntity(n->obj2, 0, 30.f*0.025, -33.f*0.025);
 
                 //render distance is set to 8.5 inside the forest,
                 //so we need to cheat a bit to make the eyes visible if they're further than that
                 pvt = bbCreatePivot();
                 bbPositionEntity(pvt, bbEntityX(mainPlayer->cam),bbEntityY(mainPlayer->cam),bbEntityZ(mainPlayer->cam));
                 bbPointEntity(pvt, n->obj2);
-                bbMoveEntity(pvt, 0,0,8.0);
+                bbMoveEntity(pvt, 0,0,8.f);
                 bbPositionEntity(n->obj2, bbEntityX(pvt),bbEntityY(pvt),bbEntityZ(pvt));
                 bbFreeEntity(pvt);
             } else {
@@ -375,12 +375,12 @@ void UpdateNPCtype860(NPC* n) {
 
 float Find860Angle(NPC* n, Forest* fr) {
     bbTFormPoint(bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider),bbEntityZ(mainPlayer->collider),0,mainPlayer->currRoom->obj);
-    int playerx = (int)(bbFloor((bbTFormedX()*RoomScale+6.0)/12.0));
-    int playerz = (int)(bbFloor((bbTFormedZ()*RoomScale+6.0)/12.0));
+    int playerx = (int)(bbFloor((bbTFormedX()*RoomScale+6.f)/12.f));
+    int playerz = (int)(bbFloor((bbTFormedZ()*RoomScale+6.f)/12.f));
 
     bbTFormPoint(bbEntityX(n->collider),bbEntityY(n->collider),bbEntityZ(n->collider),0,mainPlayer->currRoom->obj);
-    float x = (bbTFormedX()*RoomScale+6.0)/12.0;
-    float z = (bbTFormedZ()*RoomScale+6.0)/12.0;
+    float x = (bbTFormedX()*RoomScale+6.f)/12.f;
+    float z = (bbTFormedZ()*RoomScale+6.f)/12.f;
 
     int xt = (int)(bbFloor(x));
     int zt = (int)(bbFloor(z));

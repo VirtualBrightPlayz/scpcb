@@ -37,19 +37,19 @@ void FillRoom_exit_gatea_1(Room* r) {
     int t1;
 
     //alempi hissi
-    r->doors[0] = CreateDoor(r->x+744.0*RoomScale, 0, r->z+512.0*RoomScale, 90, r, true);
+    r->doors[0] = CreateDoor(r->x+744.f*RoomScale, 0, r->z+512.f*RoomScale, 90, r, true);
     r->doors[0]->autoClose = false;
     r->doors[0]->open = true;
     bbPositionEntity(r->doors[0]->buttons[1],r->x+688*RoomScale, bbEntityY(r->doors[0]->buttons[1],true), r->z+368*RoomScale, true);
     bbPositionEntity(r->doors[0]->buttons[0],r->x+784*RoomScale, bbEntityY(r->doors[0]->buttons[0],true), r->z+656*RoomScale, true);
     r->objects[0] = bbCreatePivot();
-    bbPositionEntity(r->objects[0], r->x+1048.0*RoomScale, 0, r->z+512.0*RoomScale, true);
+    bbPositionEntity(r->objects[0], r->x+1048.f*RoomScale, 0, r->z+512.f*RoomScale, true);
     bbEntityParent(r->objects[0], r->obj);
 
-    r->doors[1] = CreateDoor(r->x, 0, r->z - 360.0 * RoomScale, 0, r, false, DOOR_TYPE_CONT, r->roomTemplate->name);
+    r->doors[1] = CreateDoor(r->x, 0, r->z - 360.f * RoomScale, 0, r, false, DOOR_TYPE_CONT, r->roomTemplate->name);
     bbPositionEntity(r->doors[1]->buttons[1], r->x+416*RoomScale, bbEntityY(r->doors[0]->buttons[1],true), r->z-576*RoomScale, true);
     bbRotateEntity(r->doors[1]->buttons[1],0,r->angle-90,0,true);
-    bbPositionEntity(r->doors[1]->buttons[0], r->x, 20.0, r->z, true);
+    bbPositionEntity(r->doors[1]->buttons[0], r->x, 20.f, r->z, true);
 }
 
 void UpdateEvent_exit_gatea_1(Event* e) {
@@ -111,7 +111,7 @@ void UpdateEvent_exit_gatea_1(Event* e) {
                 }
             }
 
-            if (bbEntityDistance(mainPlayer->collider, e->room->objects[1])<4.0) {
+            if (bbEntityDistance(mainPlayer->collider, e->room->objects[1])<4.f) {
                 gatea->doors[1]->locked = true;
                 mainPlayer->currRoom = gatea;
                 RemoveEvent(e);

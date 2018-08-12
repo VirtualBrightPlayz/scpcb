@@ -64,7 +64,7 @@ void InitializeNPCtype106(NPC* n) {
     // TODO: Re-implement.
     // Texture* oldManEyes = bbLoadTexture("GFX/NPCs/scp106/oldmaneyes.jpg");
 
-    // n->speed = (GetINIFloat("Data/NPCs.ini", "SCP-106", "speed") / 100.0);
+    // n->speed = (GetINIFloat("Data/NPCs.ini", "SCP-106", "speed") / 100.f);
 
     // n->obj2 = bbCreateSprite();
     // bbScaleSprite(n->obj2, 0.03, 0.03);
@@ -107,11 +107,11 @@ void UpdateNPCtype106(NPC* n) {
             //Check if 106's timer is below 0, if not decrease it.
             if (n->timer >= 0) {
                 n->currSpeed = 0;
-                bbMoveEntity(n->collider, 0, ((bbEntityY(mainPlayer->collider) - 30) - bbEntityY(n->collider)) / 200.0, 0);
+                bbMoveEntity(n->collider, 0, ((bbEntityY(mainPlayer->collider) - 30) - bbEntityY(n->collider)) / 200.f, 0);
                 n->frame = 110;
                 //Otherwise begin spawning 106.
             } else if ((n->timer >= -10)) {
-                if (bbEntityY(n->collider) < bbEntityY(mainPlayer->collider) - 20.0 - 0.55) {
+                if (bbEntityY(n->collider) < bbEntityY(mainPlayer->collider) - 20.f - 0.55) {
                     if (!mainPlayer->currRoom->roomTemplate->disableDecals) {
                         de = CreateDecal(DECAL_CORROSION, bbEntityX(mainPlayer->collider), 0.01, bbEntityZ(mainPlayer->collider), 90, bbRand(360), 0);
                         de->size = 0.05;
@@ -132,7 +132,7 @@ void UpdateNPCtype106(NPC* n) {
                     PlayRangedSound(n->sounds[bbRand(3, 5)], mainPlayer->cam, n->collider);
                 }
                 //Breathing
-                n->soundChannels[0] = LoopRangedSound(n->sounds[1], n->soundChannels[0], mainPlayer->cam, n->collider, 8.0, 0.8);
+                n->soundChannels[0] = LoopRangedSound(n->sounds[1], n->soundChannels[0], mainPlayer->cam, n->collider, 8.f, 0.8);
 
                 //Rising.
                 if (n->timer >= - 10) {
@@ -140,7 +140,7 @@ void UpdateNPCtype106(NPC* n) {
                     if (n->frame < 259) {
                         bbPositionEntity(n->collider, bbEntityX(n->collider), n->prevY-0.15, bbEntityZ(n->collider));
                         bbPointEntity(n->obj, mainPlayer->collider);
-                        bbRotateEntity(n->collider, 0, CurveValue(bbEntityYaw(n->obj),bbEntityYaw(n->collider),100.0), 0, true);
+                        bbRotateEntity(n->collider, 0, CurveValue(bbEntityYaw(n->obj),bbEntityYaw(n->collider),100.f), 0, true);
 
                         AnimateNPC(n, 110, 259, 0.15, false);
                     }
@@ -154,7 +154,7 @@ void UpdateNPCtype106(NPC* n) {
         }
         case STATE106_ATTACK: {
             //TODO: Set music to play 106 theme?
-            if (dist < 8.0 & (!NoTarget)) {
+            if (dist < 8.f & (!NoTarget)) {
                 visible = bbEntityVisible(n->collider, mainPlayer->collider);
             }
 
@@ -164,13 +164,13 @@ void UpdateNPCtype106(NPC* n) {
             //    HideEntity(n\obj2)
             //Else
             //    ShowEntity(n\obj2)
-            //    EntityAlpha(n\obj2, Min(dist-CameraFogFar*LightVolume*0.6,1.0))
+            //    EntityAlpha(n\obj2, Min(dist-CameraFogFar*LightVolume*0.6,1.f))
             //EndIf
 
             if (visible) {
                 if (bbEntityInView(n->collider, mainPlayer->cam)) {
-                    mainPlayer->blurTimer = Max(Max(Min((4.0 - dist) / 6.0, 0.9), 0.1), mainPlayer->blurTimer);
-                    mainPlayer->camZoom = Max(mainPlayer->camZoom, (bbSin((float)(TimeInPosMilliSecs())/20.0)+1.0) * 20.0 * Max((4.0-dist)/4.0,0));
+                    mainPlayer->blurTimer = Max(Max(Min((4.f - dist) / 6.f, 0.9), 0.1), mainPlayer->blurTimer);
+                    mainPlayer->camZoom = Max(mainPlayer->camZoom, (bbSin((float)(TimeInPosMilliSecs())/20.f)+1.f) * 20.f * Max((4.f-dist)/4.f,0));
 
                     if (TimeInPosMilliSecs() - n->lastSeen > 60000) {
                         mainPlayer->camZoom = 40;
@@ -180,7 +180,7 @@ void UpdateNPCtype106(NPC* n) {
                 }
             }
 
-            n->currSpeed = CurveValue(n->speed, n->currSpeed, 10.0);
+            n->currSpeed = CurveValue(n->speed, n->currSpeed, 10.f);
 
             if (dist > 0.8) {
                 prevFrame = n->frame;
@@ -189,14 +189,14 @@ void UpdateNPCtype106(NPC* n) {
                 AnimateNPC(n, 284, 333, n->currSpeed * 43);
 
                 //Footstep sounds.
-                if (prevFrame <= 286 & n->frame > 286 || prevFrame<=311 && n->frame > 311.0) {
-                    PlayRangedSound(sndManager->footstepPD[bbRand(0, 2)]->internal, mainPlayer->cam, n->collider, 6.0, bbRnd(0.8,1.0));
+                if (prevFrame <= 286 & n->frame > 286 || prevFrame<=311 && n->frame > 311.f) {
+                    PlayRangedSound(sndManager->footstepPD[bbRand(0, 2)]->internal, mainPlayer->cam, n->collider, 6.f, bbRnd(0.8,1.f));
                 }
 
-                if (dist > 25.0 || visible || n->pathStatus == 2) {
+                if (dist > 25.f || visible || n->pathStatus == 2) {
 
                     bbPointEntity(n->obj, mainPlayer->collider);
-                    bbRotateEntity(n->collider, 0, CurveAngle(bbEntityYaw(n->obj), bbEntityYaw(n->collider), 10.0), 0);
+                    bbRotateEntity(n->collider, 0, CurveAngle(bbEntityYaw(n->obj), bbEntityYaw(n->collider), 10.f), 0);
 
                     n->pathTimer = Max(n->pathTimer - timing->tickDuration, 0);
                     if (n->pathTimer <= 0) {
@@ -223,13 +223,13 @@ void UpdateNPCtype106(NPC* n) {
                                     n->pathLocation = n->pathLocation + 1;
                                 }
                             } else {
-                                bbTranslateEntity(n->collider, 0, ((bbEntityY(n->path[n->pathLocation]->obj,true) - 0.11) - bbEntityY(n->collider)) / 50.0, 0);
+                                bbTranslateEntity(n->collider, 0, ((bbEntityY(n->path[n->pathLocation]->obj,true) - 0.11) - bbEntityY(n->collider)) / 50.f, 0);
 
                                 bbPointEntity(n->obj, n->path[n->pathLocation]->obj);
 
                                 dist2 = bbEntityDistance(n->collider,n->path[n->pathLocation]->obj);
 
-                                bbRotateEntity(n->collider, 0, CurveAngle(bbEntityYaw(n->obj), bbEntityYaw(n->collider), Min(20.0,dist2*10.0)), 0);
+                                bbRotateEntity(n->collider, 0, CurveAngle(bbEntityYaw(n->obj), bbEntityYaw(n->collider), Min(20.f,dist2*10.f)), 0);
 
                                 if (dist2 < 0.2) {
                                     n->pathLocation = n->pathLocation + 1;
@@ -245,7 +245,7 @@ void UpdateNPCtype106(NPC* n) {
             } else {
                 //Caught.
                 if (dist > 0.5) {
-                    n->currSpeed = CurveValue(n->speed * 2.5, n->currSpeed, 10.0);
+                    n->currSpeed = CurveValue(n->speed * 2.5, n->currSpeed, 10.f);
                 } else {
                     n->currSpeed = 0;
                 }
@@ -253,7 +253,7 @@ void UpdateNPCtype106(NPC* n) {
 
                 if ((!mainPlayer->dead) & mainPlayer->fallTimer >= 0) {
                     bbPointEntity(n->obj, mainPlayer->collider);
-                    bbRotateEntity(n->collider, 0, CurveAngle(bbEntityYaw(n->obj), bbEntityYaw(n->collider), 10.0), 0);
+                    bbRotateEntity(n->collider, 0, CurveAngle(bbEntityYaw(n->obj), bbEntityYaw(n->collider), 10.f), 0);
 
                     //TODO: Teleport to pocket dimension.
                     if (bbCeil(n->frame) == 110 & (!mainPlayer->godMode)) {

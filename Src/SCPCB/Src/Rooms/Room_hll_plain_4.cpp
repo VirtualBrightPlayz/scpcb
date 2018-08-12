@@ -50,12 +50,12 @@ void UpdateEvent_hll_plain_4(Event* e) {
     //[Block]
     if (e->eventState < TimeInPosMilliSecs()) {
         if (mainPlayer->currRoom != e->room) {
-            if (Distance(bbEntityX(mainPlayer->collider),bbEntityZ(mainPlayer->collider),bbEntityX(e->room->obj),bbEntityZ(e->room->obj))<16.0) {
+            if (Distance(bbEntityX(mainPlayer->collider),bbEntityZ(mainPlayer->collider),bbEntityX(e->room->obj),bbEntityZ(e->room->obj))<16.f) {
                 for (int iterator185 = 0; iterator185 < NPC::getListSize(); iterator185++) {
                     n = NPC::getObject(iterator185);
 
                     if (n->npcType == NPCtype049) {
-                        if (n->state == 2 & bbEntityDistance(mainPlayer->collider,n->collider)>16.0) {
+                        if (n->state == 2 & bbEntityDistance(mainPlayer->collider,n->collider)>16.f) {
                             bbTFormVector(368, 528, 176, e->room->obj, 0);
                             bbPositionEntity(n->collider, bbEntityX(e->room->obj)+bbTFormedX(), bbTFormedY(), bbEntityZ(e->room->obj)+bbTFormedZ());
                             std::cout << String(bbTFormedX())+", "+String(bbTFormedY())+", "+String(bbTFormedZ());

@@ -38,21 +38,21 @@ void FillRoom_cont_035_1(Room* r) {
     //, Bump
     int t1;
 
-    d = CreateDoor(r->x - 296.0 * RoomScale, 0, r->z - 672.0 * RoomScale, 180, r, true, DOOR_TYPE_DEF, r->roomTemplate->name);
+    d = CreateDoor(r->x - 296.f * RoomScale, 0, r->z - 672.f * RoomScale, 180, r, true, DOOR_TYPE_DEF, r->roomTemplate->name);
     d->autoClose = false;
     d->locked = true;
     r->doors[0] = d;
-    bbPositionEntity(d->buttons[1], r->x - 164.0 * RoomScale, bbEntityY(d->buttons[1],true), bbEntityZ(d->buttons[1],true), true);
+    bbPositionEntity(d->buttons[1], r->x - 164.f * RoomScale, bbEntityY(d->buttons[1],true), bbEntityZ(d->buttons[1],true), true);
     bbFreeEntity(d->buttons[0]);
     d->buttons[0] = 0;
     bbFreeEntity(d->obj2);
     d->obj2 = 0;
 
-    d2 = CreateDoor(r->x - 296.0 * RoomScale, 0, r->z - 144.0 * RoomScale, 0, r, false);
+    d2 = CreateDoor(r->x - 296.f * RoomScale, 0, r->z - 144.f * RoomScale, 0, r, false);
     d2->autoClose = false;
     d2->locked = true;
     r->doors[1] = d2;
-    bbPositionEntity(d2->buttons[0], r->x - 432.0 * RoomScale, bbEntityY(d2->buttons[0],true), r->z - 480.0 * RoomScale, true);
+    bbPositionEntity(d2->buttons[0], r->x - 432.f * RoomScale, bbEntityY(d2->buttons[0],true), r->z - 480.f * RoomScale, true);
     bbRotateEntity(d2->buttons[0], 0, 90, 0, true);
     bbFreeEntity(d2->buttons[1]);
     d2->buttons[1] = 0;
@@ -60,11 +60,11 @@ void FillRoom_cont_035_1(Room* r) {
     d2->obj2 = 0;
 
     //door to the control room
-    r->doors[2] = CreateDoor(r->x + 384.0 * RoomScale, 0, r->z - 672.0 * RoomScale, 180, r, false, DOOR_TYPE_DEF, r->roomTemplate->name);
+    r->doors[2] = CreateDoor(r->x + 384.f * RoomScale, 0, r->z - 672.f * RoomScale, 180, r, false, DOOR_TYPE_DEF, r->roomTemplate->name);
     r->doors[2]->autoClose = false;
 
     //door to the storage room
-    r->doors[3] = CreateDoor(r->x + 768.0 * RoomScale, 0, r->z +512.0 * RoomScale, 90, r, false, DOOR_TYPE_DEF, "", "5731");
+    r->doors[3] = CreateDoor(r->x + 768.f * RoomScale, 0, r->z +512.f * RoomScale, 90, r, false, DOOR_TYPE_DEF, "", "5731");
     r->doors[3]->autoClose = false;
 
     d->linkedDoor = d2;
@@ -75,8 +75,8 @@ void FillRoom_cont_035_1(Room* r) {
 
         bbScaleEntity(r->levers[i]->baseObj, 0.04, 0.04, 0.04);
         bbScaleEntity(r->levers[i]->obj, 0.04, 0.04, 0.04);
-        bbPositionEntity(r->levers[i]->baseObj, r->x + 210.0 * RoomScale, r->y + 224.0 * RoomScale, r->z - (208-i*76) * RoomScale, true);
-        bbPositionEntity(r->levers[i]->obj, r->x + 210.0 * RoomScale, r->y + 224.0 * RoomScale, r->z - (208-i*76) * RoomScale, true);
+        bbPositionEntity(r->levers[i]->baseObj, r->x + 210.f * RoomScale, r->y + 224.f * RoomScale, r->z - (208-i*76) * RoomScale, true);
+        bbPositionEntity(r->levers[i]->obj, r->x + 210.f * RoomScale, r->y + 224.f * RoomScale, r->z - (208-i*76) * RoomScale, true);
 
         bbEntityParent(r->levers[i]->baseObj, r->obj);
         bbEntityParent(r->levers[i]->obj, r->obj);
@@ -90,13 +90,13 @@ void FillRoom_cont_035_1(Room* r) {
 
     //the control room
     r->objects[3] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[3], r->x + 456 * RoomScale, 0.5, r->z + 400.0 * RoomScale, true);
+    bbPositionEntity(r->objects[3], r->x + 456 * RoomScale, 0.5, r->z + 400.f * RoomScale, true);
 
     r->objects[4] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[4], r->x - 576 * RoomScale, 0.5, r->z + 640.0 * RoomScale, true);
+    bbPositionEntity(r->objects[4], r->x - 576 * RoomScale, 0.5, r->z + 640.f * RoomScale, true);
 
     for (i = 0; i <= 1; i++) {
-        em = CreateEmitter(r->x - 272.0 * RoomScale, 10, r->z + (624.0-i*512) * RoomScale, 0);
+        em = CreateEmitter(r->x - 272.f * RoomScale, 10, r->z + (624.f-i*512) * RoomScale, 0);
         bbTurnEntity(em->obj, 90, 0, 0, true);
         bbEntityParent(em->obj, r->obj);
         em->randAngle = 15;
@@ -110,14 +110,14 @@ void FillRoom_cont_035_1(Room* r) {
 
     //the corners of the cont chamber (needed to calculate whether the player is inside the chamber)
     r->objects[7] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[7], r->x - 720 * RoomScale, 0.5, r->z + 880.0 * RoomScale, true);
+    bbPositionEntity(r->objects[7], r->x - 720 * RoomScale, 0.5, r->z + 880.f * RoomScale, true);
     r->objects[8] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[8], r->x + 176 * RoomScale, 0.5, r->z - 144.0 * RoomScale, true);
+    bbPositionEntity(r->objects[8], r->x + 176 * RoomScale, 0.5, r->z - 144.f * RoomScale, true);
 
-    it = CreatePaper("doc035ad", r->x + 248.0 * RoomScale, r->y + 220.0 * RoomScale, r->z + 576.0 * RoomScale);
+    it = CreatePaper("doc035ad", r->x + 248.f * RoomScale, r->y + 220.f * RoomScale, r->z + 576.f * RoomScale);
     bbEntityParent(it->collider, r->obj);
 
-    it = CreateItem("radio", r->x - 544.0 * RoomScale, 0.5, r->z + 704.0 * RoomScale);
+    it = CreateItem("radio", r->x - 544.f * RoomScale, 0.5, r->z + 704.f * RoomScale);
     bbEntityParent(it->collider, r->obj);
 
     it = CreateItem("scp500", r->x + 1168*RoomScale, 224*RoomScale, r->z+576*RoomScale);
@@ -126,7 +126,7 @@ void FillRoom_cont_035_1(Room* r) {
     it = CreateItem("scp148", r->x - 360 * RoomScale, 0.5, r->z + 644 * RoomScale);
     bbEntityParent(it->collider, r->obj);
 
-    it = CreatePaper("doc035", r->x + 1168.0 * RoomScale, 104.0 * RoomScale, r->z + 608.0 * RoomScale);
+    it = CreatePaper("doc035", r->x + 1168.f * RoomScale, 104.f * RoomScale, r->z + 608.f * RoomScale);
     bbEntityParent(it->collider, r->obj);
 }
 
@@ -204,7 +204,7 @@ void UpdateEvent_cont_035_1(Event* e) {
             }
 
             if (bbChannelPlaying(e->room->npc[0]->soundChannels[0])) {
-                e->room->npc[0]->soundChannels[0] = LoopRangedSound(e->room->npc[0]->sounds[0], e->room->npc[0]->soundChannels[0], mainPlayer->cam, e->room->obj, 6.0);
+                e->room->npc[0]->soundChannels[0] = LoopRangedSound(e->room->npc[0]->sounds[0], e->room->npc[0]->soundChannels[0], mainPlayer->cam, e->room->obj, 6.f);
             }
 
             if (e->eventState==1) {
@@ -230,8 +230,8 @@ void UpdateEvent_cont_035_1(Event* e) {
                     temp = e->room->levers[1]->succ;
                     if (temp | (e->eventState3>25*70 & e->eventState3<50*70)) {
                         if (temp) {
-                            bbPositionEntity(e->room->objects[5], bbEntityX(e->room->objects[5],true), 424.0*RoomScale, bbEntityZ(e->room->objects[5],true),true);
-                            bbPositionEntity(e->room->objects[6], bbEntityX(e->room->objects[6],true), 424.0*RoomScale, bbEntityZ(e->room->objects[6],true),true);
+                            bbPositionEntity(e->room->objects[5], bbEntityX(e->room->objects[5],true), 424.f*RoomScale, bbEntityZ(e->room->objects[5],true),true);
+                            bbPositionEntity(e->room->objects[6], bbEntityX(e->room->objects[6],true), 424.f*RoomScale, bbEntityZ(e->room->objects[6],true),true);
                         } else {
                             bbPositionEntity(e->room->objects[5], bbEntityX(e->room->objects[5],true), 10, bbEntityZ(e->room->objects[5],true),true);
                             bbPositionEntity(e->room->objects[6], bbEntityX(e->room->objects[6],true), 10, bbEntityZ(e->room->objects[6],true),true);
@@ -309,7 +309,7 @@ void UpdateEvent_cont_035_1(Event* e) {
 
                         if (e->room->npc[0]->state == 0) {
                             bbPointEntity(e->room->npc[0]->obj, mainPlayer->collider);
-                            bbRotateEntity(e->room->npc[0]->collider, 0, CurveAngle(bbEntityYaw(e->room->npc[0]->obj), bbEntityYaw(e->room->npc[0]->collider), 15.0), 0);
+                            bbRotateEntity(e->room->npc[0]->collider, 0, CurveAngle(bbEntityYaw(e->room->npc[0]->obj), bbEntityYaw(e->room->npc[0]->collider), 15.f), 0);
 
                             if (bbRand(500)==1) {
                                 if (bbEntityDistance(e->room->npc[0]->collider, e->room->objects[4])>2) {
@@ -332,7 +332,7 @@ void UpdateEvent_cont_035_1(Event* e) {
                                 }
                             }
 
-                            bbRotateEntity(e->room->npc[0]->collider, 0, CurveAngle(bbEntityYaw(e->room->npc[0]->obj), bbEntityYaw(e->room->npc[0]->collider), 15.0), 0);
+                            bbRotateEntity(e->room->npc[0]->collider, 0, CurveAngle(bbEntityYaw(e->room->npc[0]->obj), bbEntityYaw(e->room->npc[0]->collider), 15.f), 0);
 
                         }
 
@@ -529,15 +529,15 @@ void UpdateEvent_cont_035_1(Event* e) {
                         e->room->npc[0]->state = 1;
                         if (dist > 2.5) {
                             bbPointEntity(e->room->npc[0]->obj, e->room->doors[1]->frameobj);
-                            bbRotateEntity(e->room->npc[0]->collider, 0, CurveAngle(bbEntityYaw(e->room->npc[0]->obj), bbEntityYaw(e->room->npc[0]->collider), 15.0), 0);
+                            bbRotateEntity(e->room->npc[0]->collider, 0, CurveAngle(bbEntityYaw(e->room->npc[0]->obj), bbEntityYaw(e->room->npc[0]->collider), 15.f), 0);
                         } else if ((dist > 0.7)) {
                             if (bbChannelPlaying(e->room->npc[0]->soundChannels[0])) {
                                 e->room->npc[0]->state = 0;
                                 bbPointEntity(e->room->npc[0]->obj, mainPlayer->collider);
-                                bbRotateEntity(e->room->npc[0]->collider, 0, CurveAngle(bbEntityYaw(e->room->npc[0]->obj), bbEntityYaw(e->room->npc[0]->collider), 15.0), 0);
+                                bbRotateEntity(e->room->npc[0]->collider, 0, CurveAngle(bbEntityYaw(e->room->npc[0]->obj), bbEntityYaw(e->room->npc[0]->collider), 15.f), 0);
                             } else {
                                 bbPointEntity(e->room->npc[0]->obj, e->room->doors[0]->frameobj);
-                                bbRotateEntity(e->room->npc[0]->collider, 0, CurveAngle(bbEntityYaw(e->room->npc[0]->obj), bbEntityYaw(e->room->npc[0]->collider), 15.0), 0);
+                                bbRotateEntity(e->room->npc[0]->collider, 0, CurveAngle(bbEntityYaw(e->room->npc[0]->obj), bbEntityYaw(e->room->npc[0]->collider), 15.f), 0);
                             }
                         } else {
                             RemoveNPC(e->room->npc[0]);
@@ -573,8 +573,8 @@ void UpdateEvent_cont_035_1(Event* e) {
         } else {
 
             if (e->room->levers[1]->succ) {
-                bbPositionEntity(e->room->objects[5], bbEntityX(e->room->objects[5],true), 424.0*RoomScale, bbEntityZ(e->room->objects[5],true),true);
-                bbPositionEntity(e->room->objects[6], bbEntityX(e->room->objects[6],true), 424.0*RoomScale, bbEntityZ(e->room->objects[6],true),true);
+                bbPositionEntity(e->room->objects[5], bbEntityX(e->room->objects[5],true), 424.f*RoomScale, bbEntityZ(e->room->objects[5],true),true);
+                bbPositionEntity(e->room->objects[6], bbEntityX(e->room->objects[6],true), 424.f*RoomScale, bbEntityZ(e->room->objects[6],true),true);
             } else {
                 bbPositionEntity(e->room->objects[5], bbEntityX(e->room->objects[5],true), 10, bbEntityZ(e->room->objects[5],true),true);
                 bbPositionEntity(e->room->objects[6], bbEntityX(e->room->objects[6],true), 10, bbEntityZ(e->room->objects[6],true),true);
@@ -609,7 +609,7 @@ void UpdateEvent_cont_035_1(Event* e) {
                                 }
                             }
 
-                            mainPlayer->stamina = CurveValue(Min(60,mainPlayer->stamina), mainPlayer->stamina, 20.0);
+                            mainPlayer->stamina = CurveValue(Min(60,mainPlayer->stamina), mainPlayer->stamina, 20.f);
 
                             temp = true;
 
@@ -620,7 +620,7 @@ void UpdateEvent_cont_035_1(Event* e) {
                                 LoadEventSound(e,"SFX/Room/035Chamber/Whispers2.ogg",1);
                             }
 
-                            e->eventState2 = Min(e->eventState2+(timing->tickDuration/6000),1.0);
+                            e->eventState2 = Min(e->eventState2+(timing->tickDuration/6000),1.f);
                             e->eventState3 = CurveValue(e->eventState2, e->eventState3, 50);
 
                             if (!IsPlayerWearingItem(mainPlayer,"hazmatsuit3") & !IsPlayerWearingItem(mainPlayer,"gasmask3")) {

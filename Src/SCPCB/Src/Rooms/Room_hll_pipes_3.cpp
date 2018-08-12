@@ -63,33 +63,33 @@ void UpdateEvent106sinkhole(Event* e) {
             e->soundChannels[0] = LoopRangedSound(e->sounds[0], e->soundChannels[0], mainPlayer->cam, e->room->obj, 4.5, 1.5);
         }
         dist = Distance(bbEntityX(mainPlayer->collider),bbEntityZ(mainPlayer->collider),bbEntityX(e->room->obj),bbEntityZ(e->room->obj));
-        if (dist < 2.0) {
+        if (dist < 2.f) {
             mainPlayer->footstepOverride = 1;
-            mainPlayer->moveSpeed = CurveValue(0.0, mainPlayer->moveSpeed, Max(dist*50,1.0));
-            mainPlayer->crouchState = (2.0-dist)/2.0;
+            mainPlayer->moveSpeed = CurveValue(0.f, mainPlayer->moveSpeed, Max(dist*50,1.f));
+            mainPlayer->crouchState = (2.f-dist)/2.f;
 
             if (dist<0.5) {
                 if (e->eventState2 == 0) {
                     PlaySound2(LoadTempSound("SFX/Room/SinkholeFall.ogg"));
                 }
 
-                mainPlayer->moveSpeed = CurveValue(0.0, mainPlayer->moveSpeed, Max(dist*50,1.0));
+                mainPlayer->moveSpeed = CurveValue(0.f, mainPlayer->moveSpeed, Max(dist*50,1.f));
 
-                x = CurveValue(bbEntityX(e->room->obj),bbEntityX(mainPlayer->collider),10.0);
-                y = CurveValue(bbEntityY(e->room->obj)-e->eventState2,bbEntityY(mainPlayer->collider),25.0);
-                z = CurveValue(bbEntityZ(e->room->obj),bbEntityZ(mainPlayer->collider),10.0);
+                x = CurveValue(bbEntityX(e->room->obj),bbEntityX(mainPlayer->collider),10.f);
+                y = CurveValue(bbEntityY(e->room->obj)-e->eventState2,bbEntityY(mainPlayer->collider),25.f);
+                z = CurveValue(bbEntityZ(e->room->obj),bbEntityZ(mainPlayer->collider),10.f);
                 bbPositionEntity(mainPlayer->collider, x, y, z, true);
 
                 mainPlayer->dropSpeed = 0;
 
                 bbResetEntity(mainPlayer->collider);
 
-                e->eventState2 = Min(e->eventState2+timing->tickDuration/200.0,2.0);
+                e->eventState2 = Min(e->eventState2+timing->tickDuration/200.f,2.f);
 
-                //LightBlink = Min(e\eventState2*5,10.0)
+                //LightBlink = Min(e\eventState2*5,10.f)
                 mainPlayer->blurTimer = e->eventState2*500;
 
-                if (e->eventState2 == 2.0) {
+                if (e->eventState2 == 2.f) {
                     MoveToPocketDimension();
                 }
             }

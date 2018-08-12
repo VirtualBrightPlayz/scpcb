@@ -36,7 +36,7 @@ void InitializeNPCtypeGuard(NPC* n) {
 
     LoadOrCopyMesh(n, "GFX/NPCs/guard/guard.b3d");
 
-    n->speed = (GetINIFloat("Data/NPCs.ini", "Guard", "speed") / 100.0);
+    n->speed = (GetINIFloat("Data/NPCs.ini", "Guard", "speed") / 100.f);
 
     float temp = (GetINIFloat("Data/NPCs.ini", "Guard", "scale") / 2.5);
     bbScaleEntity(n->obj, temp, temp, temp);
@@ -72,23 +72,23 @@ void UpdateNPCtypeGuard(NPC* n) {
             AnimateNPC(n,77,201,0.2);
         }
         case STATEGUARD_MOVE_TO_TARGET: {
-            bbRotateEntity(n->collider, 0, CurveAngle(bbVectorYaw(n->targetX-bbEntityX(n->collider), 0, n->targetZ-bbEntityZ(n->collider))+n->angle, bbEntityYaw(n->collider), 20.0), 0);
+            bbRotateEntity(n->collider, 0, CurveAngle(bbVectorYaw(n->targetX-bbEntityX(n->collider), 0, n->targetZ-bbEntityZ(n->collider))+n->angle, bbEntityYaw(n->collider), 20.f), 0);
 
             dist = Distance(bbEntityX(n->collider), bbEntityZ(n->collider), n->targetX, n->targetZ);
 
             AnimateNPC(n, 1614, 1641, n->currSpeed * 30);
 
-            if (dist > 2.0 | dist < 1.0 ) {
-                n->currSpeed = CurveValue(n->speed * Sgn(dist - 1.5) * 0.75, n->currSpeed, 10.0);
+            if (dist > 2.f | dist < 1.f ) {
+                n->currSpeed = CurveValue(n->speed * Sgn(dist - 1.5) * 0.75, n->currSpeed, 10.f);
             } else {
-                n->currSpeed = CurveValue(0, n->currSpeed, 10.0);
+                n->currSpeed = CurveValue(0, n->currSpeed, 10.f);
             }
 
             if (n->currSpeed > 0.01) {
                 if (prevFrame > 1638 & n->frame < 1620) {
-                    PlayRangedSound(sndManager->footstepMetal[bbRand(0,7)]->internal, mainPlayer->cam, n->collider, 8.0, bbRnd(0.5, 0.7));
+                    PlayRangedSound(sndManager->footstepMetal[bbRand(0,7)]->internal, mainPlayer->cam, n->collider, 8.f, bbRnd(0.5, 0.7));
                 } else if ((prevFrame < 1627 & n->frame>=1627)) {
-                    PlayRangedSound(sndManager->footstepMetal[bbRand(0,7)]->internal, mainPlayer->cam, n->collider, 8.0, bbRnd(0.5, 0.7));
+                    PlayRangedSound(sndManager->footstepMetal[bbRand(0,7)]->internal, mainPlayer->cam, n->collider, 8.f, bbRnd(0.5, 0.7));
                 }
             }
 
@@ -119,7 +119,7 @@ void UpdateNPCtypeGuard(NPC* n) {
 
                 bbPointEntity(pvt, mainPlayer->collider);
 
-                p = CreateParticle(bbEntityX(n->obj, true), bbEntityY(n->obj, true), bbEntityZ(n->obj, true), PARTICLE_FLASH, 0.2, 0.0, 5);
+                p = CreateParticle(bbEntityX(n->obj, true), bbEntityY(n->obj, true), bbEntityZ(n->obj, true), PARTICLE_FLASH, 0.2, 0.f, 5);
                 bbPositionEntity(p->pvt, bbEntityX(n->obj), bbEntityY(n->obj), bbEntityZ(n->obj));
                 bbRotateEntity(p->pvt, bbEntityPitch(n->collider), bbEntityYaw(n->collider), 0, true);
                 bbMoveEntity(p->pvt,0.8*0.079, 10.75*0.079, 6.9*0.079);

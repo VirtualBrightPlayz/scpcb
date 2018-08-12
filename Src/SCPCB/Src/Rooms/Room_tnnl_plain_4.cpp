@@ -47,8 +47,8 @@ void UpdateEvent_tnnl_plain_4(Event* e) {
     float angle;
 
     //[Block]
-    if (e->room->dist < 10.0 & e->room->dist > 0) {
-        e->room->npc[0] = CreateNPC(NPCtypeD, bbEntityX(e->room->obj,true)+1.0, 0.5, bbEntityZ(e->room->obj,true)+1.0);
+    if (e->room->dist < 10.f & e->room->dist > 0) {
+        e->room->npc[0] = CreateNPC(NPCtypeD, bbEntityX(e->room->obj,true)+1.f, 0.5, bbEntityZ(e->room->obj,true)+1.f);
         e->room->npc[0]->texture = "GFX/npcs/body1.jpg";
         tex = bbLoadTexture(e->room->npc[0]->texture);
         bbEntityTexture(e->room->npc[0]->obj, tex);

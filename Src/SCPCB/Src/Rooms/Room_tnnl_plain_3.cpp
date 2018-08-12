@@ -36,7 +36,7 @@ void FillRoom_tnnl_plain_3(Room* r) {
     int t1;
 
     r->objects[0] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[0], r->x - 190.0*RoomScale, 4.0*RoomScale, r->z+190.0*RoomScale, true);
+    bbPositionEntity(r->objects[0], r->x - 190.f*RoomScale, 4.f*RoomScale, r->z+190.f*RoomScale, true);
 }
 
 void UpdateEvent_tnnl_plain_3(Event* e) {

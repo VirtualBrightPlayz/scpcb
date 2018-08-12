@@ -37,7 +37,7 @@ void FillRoom_off_bain_2(Room* r) {
     //, Bump
     int t1;
 
-    d = CreateDoor(r->x - 240.0 * RoomScale, 0.0, r->z, 90, r, false);
+    d = CreateDoor(r->x - 240.f * RoomScale, 0.f, r->z, 90, r, false);
     d->open = false;
     d->autoClose = false;
 }

@@ -29,9 +29,9 @@ float Distance(float x1, float y1, float x2, float y2) {
 
 float CurveValue(float number, float old, float smooth) {
     if (number < old) {
-        return Max(old + (number - old) * (1.0 / smooth * timing->tickDuration), number);
+        return Max(old + (number - old) * (1.f / smooth * timing->tickDuration), number);
     } else {
-        return Min(old + (number - old) * (1.0 / smooth * timing->tickDuration), number);
+        return Min(old + (number - old) * (1.f / smooth * timing->tickDuration), number);
     }
 }
 
@@ -43,12 +43,12 @@ float CurveAngle(float val, float old, float smooth) {
     if (diff < - 180) {
         diff = diff + 360;
     }
-    return WrapAngle(old + diff * (1.0 / smooth * timing->tickDuration));
+    return WrapAngle(old + diff * (1.f / smooth * timing->tickDuration));
 }
 
 float WrapAngle(float angle) {
     if (angle == INFINITY) {
-        return 0.0;
+        return 0.f;
     }
     while (angle < 0) {
         angle = angle + 360;
@@ -160,10 +160,10 @@ float Modf(float a,float div) {
 float angleDist(float a0, float a1) {
     float b = a0-a1;
     float bb;
-    if (b<-180.0) {
-        bb = b+360.0;
-    } else if ((b>180.0)) {
-        bb = b-360.0;
+    if (b<-180.f) {
+        bb = b+360.f;
+    } else if ((b>180.f)) {
+        bb = b-360.f;
     } else {
         bb = b;
     }
@@ -172,7 +172,7 @@ float angleDist(float a0, float a1) {
 
 float Inverse(float number) {
 
-    return (float)(1.0 - number);
+    return (float)(1.f - number);
 
 }
 
