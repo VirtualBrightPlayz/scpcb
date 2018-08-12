@@ -37,8 +37,8 @@ void ScaleRender(float x, float y, float hscale, float vscale) {
     }
     bbWireFrame(0);
     bbShowEntity(fresize_image);
-    bbScaleEntity(fresize_image,hscale,vscale,1.0);
-    bbPositionEntity(fresize_image, x, y, 1.0001);
+    bbScaleEntity(fresize_image,hscale,vscale,1.0,false);
+    bbPositionEntity(fresize_image, x, y, 1.0001,false);
     bbShowEntity(fresize_cam);
     bbRenderWorld();
     bbHideEntity(fresize_cam);
