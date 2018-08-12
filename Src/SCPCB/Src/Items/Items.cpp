@@ -43,6 +43,8 @@ ItemTemplate* ItemTemplate::getObject(int index) {
 
 std::vector<Item*> Item::list;
 Item::Item() {
+    memset(this,0,sizeof(Item));
+
     list.push_back(this);
 }
 Item::~Item() {
@@ -361,7 +363,7 @@ void UpdateItems() {
     int temp;
     NPC* np;
 
-    float HideDist = HideDistance*0.5;
+    float HideDist = HideDistance*0.5f;
     int deletedItem = false;
 
     float ed;

@@ -345,7 +345,7 @@ void LoadEntities() {
 void InitNewGame() {
     DrawLoading(45);
 
-    DebugHUD = true;
+    DebugHUD = false;
 
     sndManager->loadInGameSounds();
 

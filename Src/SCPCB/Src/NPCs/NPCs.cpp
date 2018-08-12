@@ -1,6 +1,7 @@
 #include <bbblitz3d.h>
 #include <bbaudio.h>
 #include <bbmath.h>
+#include <string.h>
 
 #include "NPCs.h"
 #include "NPCtype049.h"
@@ -38,10 +39,7 @@ namespace CBN {
 // Structs.
 std::vector<NPC*> NPC::list;
 NPC::NPC() {
-    manipulateBone = false;
-    for (int i=0;i<NPC_CHANNEL_COUNT;i++) {
-        soundChannels[i] = nullptr;
-    }
+    memset(this,0,sizeof(NPC));
 
     list.push_back(this);
 }
@@ -143,7 +141,7 @@ NPC* CreateNPC(int NPCtype, float x, float y, float z) {
     n->id = 0;
     n->id = FindFreeNPCID();
 
-    std::cout << "Created NPC "+String(n->nvName)+" (ID: "+String(n->id)+")";
+    std::cout << "Created NPC "+String(n->nvName)+" (ID: "+String(n->id)+")\n";
 
     NPCSpeedChange(n);
 
