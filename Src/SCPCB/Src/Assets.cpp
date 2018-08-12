@@ -161,8 +161,11 @@ Texture* TextureAssetWrap::getTexture() {
 void TextureAssetWrap::update() {
     for (int i = 0; i<list.size(); i++) {
         if (list[i]->grabCount <= 0) {
-            delete list[i];
-            i--;
+            list[i]->decayTimer -= timing->tickDuration;
+            if (list[i]->decayTimer < 0) {
+                delete list[i];
+                i--;
+            }
         }
     }
 }
