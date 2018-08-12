@@ -12,7 +12,7 @@ class gxFont;
 namespace CBN {
 
 // Constants.
-const int ASSET_DECAY_TIMER = 10 * 70;
+const float ASSET_DECAY_TIMER = 2.f * 70;
 const int BLEND_ADD = 3;
 const int GORE_PIC_COUNT = 6;
 const int HAND_ICON_TOUCH = 0;
@@ -25,11 +25,13 @@ public:
 
     static void update();
 protected:
+    float decayTimer;
+
     int grabCount;
 
     String file;
 
-    float decayTimer = ASSET_DECAY_TIMER;
+    AssetWrap();
 };
 
 class TextureAssetWrap : public AssetWrap {

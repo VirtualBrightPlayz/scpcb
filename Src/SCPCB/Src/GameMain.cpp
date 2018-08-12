@@ -370,7 +370,6 @@ void UpdateGame() {
                 InFacility = CheckForPlayerInFacility();
                 UpdateDoors();
                 UpdateLevers();
-                AssetWrap::update();
                 UpdateRooms();
                 UpdateEvents();
                 UpdateDecals();
@@ -628,6 +627,7 @@ void UpdateGame() {
                 MsgTimer = MsgTimer-timing->tickDuration;
             }
         }
+        AssetWrap::update();
     }
 
     if (CurrGameState==GAMESTATE_LAUNCHER) {
@@ -1767,7 +1767,7 @@ void RenderWorld2() {
     //render sprites
     bbCameraProjMode(ark_blur_cam,2);
     bbCameraProjMode(mainPlayer->cam,0);
-    bbRenderWorld();
+    //bbRenderWorld();
     bbCameraProjMode(ark_blur_cam,0);
 
     if (mainPlayer->blinkTimer < - 16 || mainPlayer->blinkTimer > - 6) {
