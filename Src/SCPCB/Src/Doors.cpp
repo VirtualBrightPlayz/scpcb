@@ -255,8 +255,8 @@ void UpdateDoors() {
                         if (abs(bbEntityX(mainPlayer->collider)-bbEntityX(d->buttons[j],true)) < 1.f) {
                             if (abs(bbEntityZ(mainPlayer->collider)-bbEntityZ(d->buttons[j],true)) < 1.f) {
                                 //entityDistance(collider, d\buttons[i])
-                                float dist = Distance(bbEntityX(mainPlayer->collider, true), bbEntityZ(mainPlayer->collider, true), bbEntityX(d->buttons[j], true), bbEntityZ(d->buttons[j], true));
-                                if (dist < 0.7f) {
+                                float dist = DistanceSquared(bbEntityX(mainPlayer->collider, true), bbEntityZ(mainPlayer->collider, true), bbEntityX(d->buttons[j], true), bbEntityZ(d->buttons[j], true));
+                                if (dist < 0.7f*0.7f) {
                                     //TODO: use deltayaw as faster way to determine whether the player can press the button or not
                                     Pivot* tempPvt = bbCreatePivot();
                                     bbPositionEntity(tempPvt, bbEntityX(mainPlayer->cam), bbEntityY(mainPlayer->cam), bbEntityZ(mainPlayer->cam));
@@ -267,7 +267,7 @@ void UpdateDoors() {
                                             mainPlayer->closestButton = d->buttons[j];
                                             mainPlayer->closestDoor = d;
                                         } else {
-                                            if (dist < bbEntityDistance(mainPlayer->collider, mainPlayer->closestButton)) {
+                                            if (dist < bbEntityDistanceSquared(mainPlayer->collider, mainPlayer->closestButton)) {
                                                 mainPlayer->closestButton = d->buttons[j];
                                                 mainPlayer->closestDoor = d;
                                             }
@@ -335,7 +335,7 @@ void UpdateDoors() {
                         }
                     }
                     if (d->autoClose && RemoteDoorOn == true) {
-                        if (bbEntityDistance(mainPlayer->cam, d->obj) < 2.1f) {
+                        if (bbEntityDistanceSquared(mainPlayer->cam, d->obj) < 2.1f*2.1f) {
                             //PlaySound2(HorrorSFX(7))) ;TODO: fix
                             d->open = false;
                             switch (d->typ) {

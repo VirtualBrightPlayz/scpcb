@@ -918,8 +918,8 @@ void UpdateRooms() {
         if (x<16 && z < 16) {
             for (i = 0; i <= MaxRoomEmitters-1; i++) {
                 if (r->soundEmitter[i]!=0) {
-                    dist = bbEntityDistance(r->soundEmitterObj[i],mainPlayer->collider);
-                    if (dist < r->soundEmitterRange[i]) {
+                    dist = bbEntityDistanceSquared(r->soundEmitterObj[i],mainPlayer->collider);
+                    if (dist < r->soundEmitterRange[i]*r->soundEmitterRange[i]) {
                         r->soundEmitterCHN[i] = LoopRangedSound(RoomAmbience[r->soundEmitter[i]],r->soundEmitterCHN[i], mainPlayer->cam, r->soundEmitterObj[i],r->soundEmitterRange[i]);
                     }
                 }
@@ -962,8 +962,8 @@ void UpdateRooms() {
             bbShowEntity(r->obj);
             for (i = 0; i <= MaxRoomLights-1; i++) {
                 if (r->lights[i] != 0) {
-                    dist = bbEntityDistance(mainPlayer->collider,r->lights[i]);
-                    if (dist < HideDistance) {
+                    dist = bbEntityDistanceSquared(mainPlayer->collider,r->lights[i]);
+                    if (dist < HideDistance*HideDistance) {
                         //TempLightVolume = TempLightVolume + r\lightIntensity[i]*r\lightIntensity[i]*((HideDistance-dist)/HideDistance)
                         //ShowEntity(r\lights[i])
                     }
@@ -1446,7 +1446,7 @@ void UpdateScreens() {
         s = Screen::getObject(iterator84);
 
         if (s->room == mainPlayer->currRoom) {
-            if (bbEntityDistance(mainPlayer->collider,s->obj)<1.2f) {
+            if (bbEntityDistanceSquared(mainPlayer->collider,s->obj)<1.2f*1.2f) {
                 bbEntityPick(mainPlayer->cam, 1.2f);
                 if (bbPickedEntity()==s->obj && !s->imgpath.equals("")) {
                     DrawHandIcon = true;
@@ -1626,7 +1626,7 @@ void UpdateSecurityCams() {
 
                     if (sc->inSight && sc->allowSaving) {
                         // TODO: Fix.
-                        if (/*SelectedDifficulty->saveType == SAVEONSCREENS && */bbEntityDistance(mainPlayer->cam, sc->scrObj)<1.f) {
+                        if (/*SelectedDifficulty->saveType == SAVEONSCREENS && */bbEntityDistanceSquared(mainPlayer->cam, sc->scrObj)<1.f) {
                             DrawHandIcon = true;
                             if (MouseHit1) {
                                 SelectedMonitor = sc;
@@ -1659,7 +1659,7 @@ void UpdateSecurityCams() {
 
                                 if (!sc->isRoom2slCam) {
                                     if (!sc->specialCam) {
-                                        if (CoffinCam == nullptr | bbRand(5)==5 || sc->coffinEffect != 3) {
+                                        if (CoffinCam == nullptr || bbRand(5)==5 || sc->coffinEffect != 3) {
                                             bbHideEntity(mainPlayer->cam);
                                             bbShowEntity(sc->cam);
                                             bbCls();
@@ -2168,7 +2168,7 @@ void CreateMap() {
                                         if (tempWaypoint->room == r) {
                                             if (roomAWaypoint == nullptr) {
                                                 roomAWaypoint = tempWaypoint;
-                                            } else if ((bbEntityDistance(roomAWaypoint->obj,newWaypoint->obj)>bbEntityDistance(tempWaypoint->obj,newWaypoint->obj))) {
+                                            } else if ((bbEntityDistanceSquared(roomAWaypoint->obj,newWaypoint->obj)>bbEntityDistanceSquared(tempWaypoint->obj,newWaypoint->obj))) {
                                                 roomAWaypoint = tempWaypoint;
                                             }
                                         }
@@ -2176,7 +2176,7 @@ void CreateMap() {
                                         if (tempWaypoint->room == r->adjacent[i]) {
                                             if (roomBWaypoint == nullptr) {
                                                 roomBWaypoint = tempWaypoint;
-                                            } else if ((bbEntityDistance(roomBWaypoint->obj,newWaypoint->obj)>bbEntityDistance(tempWaypoint->obj,newWaypoint->obj))) {
+                                            } else if ((bbEntityDistanceSquared(roomBWaypoint->obj,newWaypoint->obj)>bbEntityDistanceSquared(tempWaypoint->obj,newWaypoint->obj))) {
                                                 roomBWaypoint = tempWaypoint;
                                             }
                                         }

@@ -8,6 +8,7 @@
 #include "../Events.h"
 #include "../Player.h"
 #include "../NPCs/NPCs.h"
+#include "../Items/Items.h"
 #include "Room_lck_cam_2c.h"
 
 namespace CBN {
@@ -59,7 +60,7 @@ void FillRoom_lck_cam_2c(Room* r) {
     sc = CreateSecurityCam(r->x - 688.f * RoomScale, r->y + 384 * RoomScale, r->z + 688.f * RoomScale, r, true);
     sc->angle = 45 + 180;
     sc->turn = 45;
-    sc->scrTexture = 1;
+    sc->scrTexture = 0;
     bbEntityTexture(sc->scrObj, ScreenTexs[sc->scrTexture]);
 
     bbTurnEntity(sc->cameraObj, 40, 0, 0);
@@ -131,7 +132,7 @@ void UpdateEventLockroom173(Event* e) {
         if (Curr173->idle == 2) {
             RemoveEvent(e);
         } else {
-            if ((!bbEntityInView(Curr173->collider, mainPlayer->cam)) || bbEntityDistance(Curr173->collider, mainPlayer->collider)>15.f) {
+            if ((!bbEntityInView(Curr173->collider, mainPlayer->cam)) || bbEntityDistanceSquared(Curr173->collider, mainPlayer->collider)>15.f*15.f) {
                 bbPositionEntity(Curr173->collider, e->room->x + bbCos(225-90 + e->room->angle) * 2, 0.6f, e->room->z + bbSin(225-90 + e->room->angle) * 2);
                 bbResetEntity(Curr173->collider);
                 RemoveEvent(e);

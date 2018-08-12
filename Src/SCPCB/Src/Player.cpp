@@ -190,6 +190,10 @@ float mouse_y_speed_1;
 
 // Functions.
 void UpdatePlayer() {
+    if (bbKeyHit(49)) {
+        mainPlayer->noclip=!mainPlayer->noclip;
+    }
+
     float Sprint = 1.f;
     float Speed = 0.018f;
     gxChannel* tempChn = nullptr;

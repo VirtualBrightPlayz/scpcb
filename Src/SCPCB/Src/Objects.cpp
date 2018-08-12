@@ -73,9 +73,9 @@ MeshModel* CreateButton(float x, float y, float z, float pitch, float yaw, float
 
 void UpdateButton(MeshModel* obj) {
     //entityDistance(collider, d\buttons[i])
-    float dist = bbEntityDistance(mainPlayer->collider, obj);
+    float dist = bbEntityDistanceSquared(mainPlayer->collider, obj);
 
-    if (dist < 0.8f) {
+    if (dist < 0.8f*0.8f) {
         Pivot* tempPvt = bbCreatePivot();
         bbPositionEntity(tempPvt, bbEntityX(mainPlayer->cam), bbEntityY(mainPlayer->cam), bbEntityZ(mainPlayer->cam));
         bbPointEntity(tempPvt,obj);
@@ -84,7 +84,7 @@ void UpdateButton(MeshModel* obj) {
             if (mainPlayer->closestButton == 0) {
                 mainPlayer->closestButton = obj;
             } else {
-                if (dist < bbEntityDistance(mainPlayer->collider, mainPlayer->closestButton)) {
+                if (dist < bbEntityDistanceSquared(mainPlayer->collider, mainPlayer->closestButton)) {
                     mainPlayer->closestButton = obj;
                 }
             }
@@ -111,10 +111,10 @@ void UpdateLevers() {
     for (int i = 0; i < Lever::getListSize(); i++) {
         Lever* lever = Lever::getObject(i);
 
-        float dist = bbEntityDistance(mainPlayer->cam, lever->obj);
+        float dist = bbEntityDistanceSquared(mainPlayer->cam, lever->obj);
 
-        if (dist < 8.f) {
-            if (dist < 0.8f && (!lever->locked)) {
+        if (dist < 64.f) {
+            if (dist < 0.8f*0.8f && (!lever->locked)) {
                 if (bbEntityInView(lever->obj, mainPlayer->cam)) {
 
                     bbEntityPick(mainPlayer->cam, 0.65f);

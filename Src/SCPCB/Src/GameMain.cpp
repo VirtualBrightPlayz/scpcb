@@ -1705,9 +1705,9 @@ void RenderWorld2() {
                 //don't waste your time if the string is empty
                 if (np->nvName.equals("")) {
                     bbPositionEntity(temp2,np->nvX,np->nvY,np->nvZ);
-                    dist = bbEntityDistance(temp2,mainPlayer->collider);
+                    dist = bbEntityDistanceSquared(temp2,mainPlayer->collider);
                     //don't draw text if the NPC is too far away
-                    if (dist<23.5f) {
+                    if (dist<23.5f*23.5f) {
                         bbPointEntity(temp, temp2);
                         yawvalue = WrapAngle(bbEntityYaw(mainPlayer->cam) - bbEntityYaw(temp));
                         xvalue = 0.f;

@@ -95,12 +95,18 @@ public:
 	Vector cross( const Vector &q )const{
 		return Vector( y*q.z-z*q.y,z*q.x-x*q.z,x*q.y-y*q.x );
 	}
-	float length()const{
-		return sqrtf(x*x+y*y+z*z);
-	}
-	float distance( const Vector &q )const{
-		float dx=x-q.x,dy=y-q.y,dz=z-q.z;return sqrtf(dx*dx+dy*dy+dz*dz);
-	}
+    float length()const {
+        return sqrtf(x*x + y * y + z * z);
+    }
+    float lengthSquared()const {
+        return x*x + y * y + z * z;
+    }
+    float distance(const Vector &q)const {
+        float dx = x - q.x, dy = y - q.y, dz = z - q.z; return sqrtf(dx*dx + dy * dy + dz * dz);
+    }
+    float distanceSquared(const Vector &q)const {
+        float dx = x - q.x, dy = y - q.y, dz = z - q.z; return dx*dx + dy * dy + dz * dz;
+    }
 	Vector normalized()const{
 		float l=length();return Vector( x/l,y/l,z/l );
 	}
