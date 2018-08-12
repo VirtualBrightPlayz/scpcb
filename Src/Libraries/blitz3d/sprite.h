@@ -31,7 +31,7 @@ public:
 	void setHandle( float x,float y );
 	void setViewmode( int mode );
 
-    const Transform &getRenderTform()const;
+    //const Transform &getRenderTform()const;
 	bool render( const RenderContext &rc );
 
 private:
@@ -39,7 +39,7 @@ private:
 	float xhandle,yhandle;
 	float rot,xscale,yscale;
 	float r_rot,r_xscale,r_yscale;
-	int view_mode;//,mesh_index;
+	int view_mode,mesh_index;
 	bool captured;
 };
 

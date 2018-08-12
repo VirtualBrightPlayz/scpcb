@@ -38,7 +38,7 @@ namespace CBN {
 // Structs.
 std::vector<Timing*> Timing::list;
 Timing::Timing() {
-    accumulator = 0.0f;
+    memset(this,0,sizeof(Timing));
 
     list.push_back(this);
 }
