@@ -27,7 +27,7 @@ Launcher::Launcher() {
         }
     }
 
-    this->selectedGFXMode = VerifyResolution();
+    verifyResolution();
 
     Graphics3DExt(this->width, this->height, 0, 2);
     bbAppTitle("SCP - Containment Breach Launcher");
@@ -48,24 +48,32 @@ Launcher::~Launcher() {
     delete uiAssets;
 }
 
+void Launcher::verifyResolution() {
+    selectedGFXMode = resWidths.size()-1;
+    for (int i = 0;i<resWidths.size();i++) {
+        if ((userOptions->screenWidth == resWidths[i]) && (userOptions->screenHeight == resHeights[i])) {
+            selectedGFXMode = i;
+            return;
+        }
+    }
+}
+
 void Launcher::update() {
     int x = 40;
     int y = 280 - 65;
 
     int i;
-    for (i = 1; i <= bbCountGfxModes3D(); i++) {
-        if (bbGfxModeDepth(i) == 32) {
-            if (MouseOn(x - 1, y - 1, 100, 20)) {
-                if (MouseHit1) {
-                    this->selectedGFXMode = i-1;
-                }
+    for (int i = 0;i < resWidths.size(); i++) {
+        if (MouseOn(x - 1, y - 1, 100, 20)) {
+            if (MouseHit1) {
+                this->selectedGFXMode = i;
             }
+        }
 
-            y = y+20;
-            if (y >= 240 - 65 + (this->height - 80 - 260)) {
-                y = 280 - 65;
-                x = x + 100;
-            }
+        y = y+20;
+        if (y >= 240 - 65 + (this->height - 80 - 260)) {
+            y = 280 - 65;
+            x = x + 100;
         }
     }
 
@@ -121,26 +129,23 @@ void Launcher::draw() {
     int y = 280 - 65;
 
     int i;
-    for (i = 1; i <= bbCountGfxModes3D(); i++) {
-        if (bbGfxModeDepth(i) == 32) {
-            bbColor(0, (bbSin(bbMilliSecs() / 10)+1)*45, (bbSin(bbMilliSecs() / 10) + 1)*95);
+    for (i = 0; i < resWidths.size(); i++) {
+        if (this->selectedGFXMode == i) {
+            bbColor(0, (bbSin(bbMilliSecs() / 10) + 1) * 45, (bbSin(bbMilliSecs() / 10) + 1) * 95);
+            bbRect(x - 1, y - 1, 100, 20, false);
+        }
 
-            if (this->selectedGFXMode == (i-1)) {
-                bbRect(x - 1, y - 1, 100, 20, false);
-            }
+        bbColor(0, 0, 0);
+        bbText(x, y, String(this->resWidths[i]) + "x" + String(this->resHeights[i]));
+        if (MouseOn(x - 1, y - 1, 100, 20)) {
+            bbColor(100, 100, 100);
+            bbRect(x - 1, y - 1, 100, 20, false);
+        }
 
-            bbColor(0, 0, 0);
-            bbText(x, y, String(this->resWidths[i - 1]) + "x" + String(this->resHeights[i - 1]));
-            if (MouseOn(x - 1, y - 1, 100, 20)) {
-                bbColor(100, 100, 100);
-                bbRect(x - 1, y - 1, 100, 20, false);
-            }
-
-            y = y+20;
-            if (y >= 240 - 65 + (this->height - 80 - 260)) {
-                y = 280 - 65;
-                x = x + 100;
-            }
+        y = y+20;
+        if (y >= 240 - 65 + (this->height - 80 - 260)) {
+            y = 280 - 65;
+            x = x + 100;
         }
     }
 

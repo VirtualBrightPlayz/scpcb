@@ -116,24 +116,6 @@ MeshModel* CamBaseOBJ;
 MeshModel* CamOBJ;
 
 // Functions.
-int VerifyResolution() {
-    int selectedMode = 1;
-
-    for (int i = 1; i <= bbCountGfxModes3D(); i++) {
-        if (bbGfxModeDepth(i) == 32) {
-            if ((userOptions->screenWidth == bbGfxModeWidth(i)) && (userOptions->screenHeight == bbGfxModeHeight(i))) {
-                selectedMode = i;
-                break;
-            }
-        }
-    }
-
-    userOptions->screenWidth = bbGfxModeWidth(selectedMode);
-    userOptions->screenHeight = bbGfxModeHeight(selectedMode);
-
-    return selectedMode-1;
-}
-
 void SetTickrate(int tickrate) {
     timing->tickDuration = 70.f/(float)(tickrate);
 }

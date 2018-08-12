@@ -102,8 +102,6 @@ extern MeshModel* CamBaseOBJ;
 extern MeshModel* CamOBJ;
 
 // Functions.
-int VerifyResolution();
-
 void SetTickrate(int tickrate);
 
 void AddToTimingAccumulator(int milliseconds);

@@ -9,6 +9,7 @@ struct Launcher {
 private:
     static std::vector<Launcher*> list;
 
+    void verifyResolution();
 public:
     Launcher();
     ~Launcher();
