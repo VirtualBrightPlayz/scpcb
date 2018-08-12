@@ -437,8 +437,8 @@ void InitNewGame() {
             }
         }
 
-        if (r->roomTemplate->name.equals("cont_914_1") && !userOptions->introEnabled) {
-            std::cout<<"914_TELEPORT\n";
+        if (r->roomTemplate->name.equals("closets_2") && !userOptions->introEnabled) {
+            std::cout<<"CLOSETS_TELEPORT\n";
             bbPositionEntity(mainPlayer->collider, bbEntityX(r->obj), 1.0f, bbEntityZ(r->obj));
             bbResetEntity(mainPlayer->collider);
             mainPlayer->currRoom = r;
