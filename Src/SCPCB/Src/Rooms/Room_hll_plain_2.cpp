@@ -36,7 +36,7 @@ void UpdateEventRoom2trick(Event* e) {
 
     float angle;
 
-    //[Block]
+
     if (mainPlayer->currRoom == e->room) {
         if (bbEntityDistance(e->room->obj,mainPlayer->collider)<2.f) {
             if (bbEntityDistance(mainPlayer->collider, Curr173->obj)<6.f || bbEntityDistance(mainPlayer->collider, Curr106->obj)<6.f) {
@@ -64,7 +64,7 @@ void UpdateEventRoom2trick(Event* e) {
             }
         }
     }
-    //[End Block]
+
 }
 
 }

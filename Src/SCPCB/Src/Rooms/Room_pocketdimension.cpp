@@ -239,7 +239,7 @@ void UpdateEvent_pocketdimension(Event* e) {
 
     int safe;
 
-    //[Block]
+
 
     //eventstate: a timer for scaling the tunnels in the starting room
     //eventstate2:
@@ -783,7 +783,7 @@ void UpdateEvent_pocketdimension(Event* e) {
         e->eventState2 = 0;
         e->eventState3 = 0;
     }
-    //[End Block]
+
 }
 
 }

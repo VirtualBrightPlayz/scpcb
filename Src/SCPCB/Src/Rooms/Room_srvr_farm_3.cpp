@@ -88,7 +88,7 @@ void UpdateEvent_srvr_farm_3(Event* e) {
 
     float angle;
 
-    //[Block]
+
     if (mainPlayer->currRoom == e->room) {
         if (e->eventState3==0 && Curr173->idle == 0) {
             if (mainPlayer->blinkTimer < -10) {
@@ -123,7 +123,7 @@ void UpdateEvent_srvr_farm_3(Event* e) {
             bbPositionEntity(e->room->objects[3], bbEntityX(e->room->objects[3],true), (-608.f*RoomScale)+0.05f+bbSin(e->eventState+270)*0.05f, bbEntityZ(e->room->objects[3],true), true);
         }
     }
-    //[End Block]
+
 }
 
 }

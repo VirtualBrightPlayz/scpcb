@@ -129,7 +129,7 @@ void UpdateEvent_srvr_096_2(Event* e) {
 
     float angle;
 
-    //[Block]
+
     if (e->eventState==0) {
         if (mainPlayer->currRoom == e->room) {
             //close the doors when the player enters the room
@@ -354,7 +354,7 @@ void UpdateEvent_srvr_096_2(Event* e) {
         }
     }
 
-    //[End Block]
+
 }
 
 }

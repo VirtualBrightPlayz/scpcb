@@ -143,7 +143,7 @@ void UpdateEvent_cont_1123_2(Event* e) {
     MeshModel* nazi;
     float scale;
 
-    //[Block]
+
     if (mainPlayer->currRoom == e->room) {
         //the event is started when the player picks up SCP-1123 (in Items.bb/UpdateItems())
 
@@ -349,7 +349,7 @@ void UpdateEvent_cont_1123_2(Event* e) {
             RemoveEvent(e);
         }
     }
-    //[End Block]
+
 
 
 }

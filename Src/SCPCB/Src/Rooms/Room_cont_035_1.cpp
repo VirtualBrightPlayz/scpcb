@@ -156,7 +156,7 @@ void UpdateEvent_cont_035_1(Event* e) {
 
     float angle;
 
-    //[Block]
+
     if (mainPlayer->currRoom == e->room) {
         //eventstate2 = has 035 told the code to the storage room (true/false)
         //eventstate3 = has the player opened the gas valves (0=no, 0<x<35*70 yes, x>35*70 the host has died)
@@ -686,7 +686,7 @@ void UpdateEvent_cont_035_1(Event* e) {
         }
 
     }
-    //[End Block]
+
 }
 
 }

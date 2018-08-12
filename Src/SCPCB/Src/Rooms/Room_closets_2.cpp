@@ -98,7 +98,7 @@ void UpdateEvent_closets_2(Event* e) {
 
     float angle;
 
-    //[Block]
+
     if (e->eventState == 0) {
         if (!e->loaded) {
             if (e->room->npc[0]==nullptr) {
@@ -176,7 +176,7 @@ void UpdateEvent_closets_2(Event* e) {
             }
         }
     }
-    //[End Block]
+
 }
 
 }

@@ -84,7 +84,7 @@ void UpdateEvent_off_lower_2(Event* e) {
 
     float angle;
 
-    //[Block]
+
     if (mainPlayer->currRoom == e->room) {
         if (mainPlayer->blinkTimer<-8 && mainPlayer->blinkTimer >-12) {
             temp = bbRand(1,4);
@@ -92,7 +92,7 @@ void UpdateEvent_off_lower_2(Event* e) {
             bbRotateEntity(e->room->objects[0], 0, bbRnd(360), 0);
         }
     }
-    //[End Block]
+
 }
 
 }

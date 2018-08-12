@@ -116,7 +116,7 @@ void UpdateEvent_cont_914_1(Event* e) {
     float angle;
     String setting;
 
-    //[Block]
+
     if (mainPlayer->currRoom == e->room) {
         if (!e->loaded) {
             e->sounds[0] = bbLoadSound("SFX/SCP/914/Refining.ogg");
@@ -319,7 +319,7 @@ void UpdateEvent_cont_914_1(Event* e) {
             }
         }
     }
-    //[End Block]
+
 }
 
 }

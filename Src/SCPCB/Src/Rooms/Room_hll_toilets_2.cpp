@@ -70,7 +70,7 @@ void UpdateEventToiletguard(Event* e) {
 
     float angle;
 
-    //[Block]
+
     if (e->eventState == 0) {
         if (e->room->dist < 8.f  && e->room->dist > 0) {
             e->eventState = 1;
@@ -117,7 +117,7 @@ void UpdateEventToiletguard(Event* e) {
             }
         }
     }
-    //[End Block]
+
 
 }
 
@@ -147,7 +147,7 @@ void UpdateEventButtghost(Event* e) {
 
     float angle;
 
-    //[Block]
+
     if (mainPlayer->currRoom == e->room) {
         if (bbEntityDistance(mainPlayer->collider, e->room->objects[0]) < 1.8f) {
             if (e->eventState == 0) {
@@ -160,7 +160,7 @@ void UpdateEventButtghost(Event* e) {
             }
         }
     }
-    //[End Block]
+
 }
 
 }

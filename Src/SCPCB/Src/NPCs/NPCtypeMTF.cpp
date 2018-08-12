@@ -164,7 +164,7 @@ void UpdateNPCtypeMTF(NPC* n) {
         //what is this MTF doing)
         switch ((int)(n->state)) {
             case 0: {
-                //[Block]
+
                 n->speed = 0.015f;
                 //update path
                 if (n->pathTimer<=0.f) {
@@ -563,11 +563,11 @@ void UpdateNPCtypeMTF(NPC* n) {
                         }
                     }
                 }
-                //[End Block]
+
                 //searching for player
             }
             case 1: {
-                //[Block]
+
                 n->speed = 0.015f;
                 n->state2 = n->state2-timing->tickDuration;
                 if (MeNPCSeesPlayer(n) == true) {
@@ -930,11 +930,11 @@ void UpdateNPCtypeMTF(NPC* n) {
 
                 //DebugLog(Distance(EntityX(n\collider,True),EntityZ(n\collider,True),n\enemyX,n\enemyZ))
 
-                //[End Block]
+
                 //searching for/looking at 173
             }
             case 2: {
-                //[Block]
+
                 if (Curr173->idle == 2) {
                     n->state = 0;
                 } else {
@@ -1082,11 +1082,11 @@ void UpdateNPCtypeMTF(NPC* n) {
                         }
                     }
                 }
-                //[End Block]
+
                 //following a path
             }
             case 3: {
-                //[Block]
+
 
                 n->angle = CurveValue(0,n->angle,40.f);
 
@@ -1188,11 +1188,11 @@ void UpdateNPCtypeMTF(NPC* n) {
                 }
 
                 n->angle = bbEntityYaw(n->collider);
-                //[End Block]
+
                 //SCP-106/049 detected
             }
             case 4: {
-                //[Block]
+
                 n->speed = 0.03f;
                 n->state2 = n->state2-timing->tickDuration;
                 if (n->state2 > 0.f) {
@@ -1325,11 +1325,11 @@ void UpdateNPCtypeMTF(NPC* n) {
                 } else {
                     n->state = 0;
                 }
-                //[End Block]
+
                 //looking at some other target than the player
             }
             case 5: {
-                //[Block]
+
                 target = bbCreatePivot();
                 bbPositionEntity(target, n->enemyX, n->enemyY, n->enemyZ, true);
 
@@ -1375,11 +1375,11 @@ void UpdateNPCtypeMTF(NPC* n) {
                 bbFreeEntity(target);
 
                 n->angle = bbEntityYaw(n->collider);
-                //[End Block]
+
                 //seeing the player as a 049-2 instance
             }
             case 6: {
-                //[Block]
+
 
                 bbPointEntity(n->obj,mainPlayer->collider);
 
@@ -1416,11 +1416,11 @@ void UpdateNPCtypeMTF(NPC* n) {
                     }
                 }
 
-                //[End Block]
+
                 //just shooting
             }
             case 7: {
-                //[Block]
+
                 AnimateNPC(n, 346, 351, 0.2f, false);
 
                 bbRotateEntity(n->collider,0,CurveAngle(n->state2,bbEntityYaw(n->collider),20),0);
@@ -1443,11 +1443,11 @@ void UpdateNPCtypeMTF(NPC* n) {
                     bbFreeEntity(pvt);
                     n->reload = 7;
                 }
-                //[End Block]
+
                 //SCP-096 spotted
             }
             case 8: {
-                //[Block]
+
                 n->speed = 0.015f;
                 n->boneToManipulate = "head";
                 n->manipulateBone = true;
@@ -1588,11 +1588,11 @@ void UpdateNPCtypeMTF(NPC* n) {
                 if ((!bbEntityVisible(n->collider,Curr096->collider)) || bbEntityDistance(n->collider,Curr096->collider)>6.f) {
                     n->state = 0;
                 }
-                //[End Block]
+
                 //SCP-049-2 spotted
             }
             case 9: {
-                //[Block]
+
                 if (bbEntityVisible(n->collider, n->target->collider)) {
                     bbPointEntity(n->obj,n->target->collider);
                     bbRotateEntity(n->collider,0,CurveAngle(bbEntityYaw(n->obj),bbEntityYaw(n->collider),20.f),0);
@@ -1721,7 +1721,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                     }
                 }
 
-                //[End Block]
+
             }
         }
 

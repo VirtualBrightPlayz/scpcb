@@ -127,7 +127,7 @@ void UpdateEventLockroom173(Event* e) {
 
     float angle;
 
-    //[Block]
+
     if (e->room->dist < 6.f  && e->room->dist > 0) {
         if (Curr173->idle == 2) {
             RemoveEvent(e);
@@ -139,7 +139,7 @@ void UpdateEventLockroom173(Event* e) {
             }
         }
     }
-    //[End Block]
+
 }
 
 }

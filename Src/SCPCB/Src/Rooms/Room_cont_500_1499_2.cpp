@@ -76,7 +76,7 @@ void UpdateEvent_cont_500_1499_2(Event* e) {
 
     float angle;
 
-    //[Block]
+
     //If mainPlayer\currRoom = e\room
     if (e->room->dist < 15) {
         if (Contained106) {
@@ -113,7 +113,7 @@ void UpdateEvent_cont_500_1499_2(Event* e) {
             RemoveEvent(e);
         }
     }
-    //[End Block]
+
 }
 
 }

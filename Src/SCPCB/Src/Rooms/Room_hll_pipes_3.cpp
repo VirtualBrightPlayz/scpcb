@@ -43,7 +43,7 @@ void UpdateEvent106sinkhole(Event* e) {
 
     float angle;
 
-    //[Block]
+
     if (e->eventState==0) {
         de = CreateDecal(DECAL_CORROSION, bbEntityX(e->room->obj)+bbRnd(-0.5f,0.5f), 0.01f, bbEntityZ(e->room->obj)+bbRnd(-0.5f,0.5f), 90, bbRand(360), 0);
         //
@@ -93,7 +93,7 @@ void UpdateEvent106sinkhole(Event* e) {
         e->eventState2 = 0;
     }
 
-    //[End Block]
+
 
 }
 

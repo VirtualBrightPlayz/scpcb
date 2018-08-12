@@ -90,7 +90,7 @@ void UpdateEvent_scp_970_2(Event* e) {
     float angle;
     int tex970;
 
-    //[Block]
+
     if (mainPlayer->currRoom == e->room) {
         if (e->eventState2 <= 0) {
             e->room->doors[1]->locked = false;
@@ -382,7 +382,7 @@ void UpdateEvent_scp_970_2(Event* e) {
     }
 
 
-    //[End Block]
+
 }
 
 }

@@ -123,7 +123,7 @@ void UpdateEvent_cont_012_2(Event* e) {
 
     float angle;
 
-    //[Block]
+
     if (mainPlayer->currRoom == e->room) {
 
         if (e->eventState==0) {
@@ -286,7 +286,7 @@ void UpdateEvent_cont_012_2(Event* e) {
 
         }
     }
-    //[End Block]
+
 }
 
 }

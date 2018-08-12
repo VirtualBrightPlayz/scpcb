@@ -73,7 +73,7 @@ void UpdateEvent_exit_gatea_1(Event* e) {
     float angle;
     Room* gatea;
 
-    //[Block]
+
     if (mainPlayer->currRoom == e->room) {
         if (RemoteDoorOn==false) {
             e->room->doors[1]->locked = true;
@@ -112,7 +112,7 @@ void UpdateEvent_exit_gatea_1(Event* e) {
             }
         }
     }
-    //[End Block]
+
 }
 
 }

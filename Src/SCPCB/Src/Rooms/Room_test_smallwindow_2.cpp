@@ -105,7 +105,7 @@ void UpdateEventTestroom173(Event* e) {
 
     float angle;
 
-    //[Block]
+
     if (mainPlayer->currRoom == e->room) {
         if (Curr173->idle == 0) {
             if (!e->intState[EVENT_TSW2_173SPAWNED]) {
@@ -141,7 +141,7 @@ void UpdateEventTestroom173(Event* e) {
             }
         }
     }
-    //[End Block]
+
 }
 
 }

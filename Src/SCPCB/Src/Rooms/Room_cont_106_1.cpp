@@ -183,7 +183,7 @@ void UpdateEvent_cont_106_1(Event* e) {
 
     float angle;
 
-    //[Block]
+
 
     //eventstate2 = are the magnets on
 
@@ -383,7 +383,7 @@ void UpdateEvent_cont_106_1(Event* e) {
             bbRotateEntity(e->room->objects[6], 0, bbEntityYaw(e->room->objects[6],true), 0, true);
         }
     }
-    //[End Block]
+
 }
 
 }

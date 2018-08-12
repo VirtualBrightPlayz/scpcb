@@ -130,7 +130,7 @@ void UpdateEvent_test_860_2(Event* e) {
     float angle;
     float ang;
 
-    //[Block]
+
 
     Forest* fr = e->room->fr;
 
@@ -330,7 +330,7 @@ void UpdateEvent_test_860_2(Event* e) {
         }
     }
 
-    //[End Block]
+
 
 }
 

@@ -83,7 +83,7 @@ void UpdateEvent_hll_gas_2(Event* e) {
 
     float angle;
 
-    //[Block]
+
     if (Curr173->idle == 0) {
         if (e->room->dist < 8.f  && e->room->dist > 0) {
             if (!bbEntityVisible(Curr173->collider, mainPlayer->cam) && !bbEntityVisible(e->room->objects[6], mainPlayer->cam)) {
@@ -93,7 +93,7 @@ void UpdateEvent_hll_gas_2(Event* e) {
             }
         }
     }
-    //[End Block]
+
 }
 
 }

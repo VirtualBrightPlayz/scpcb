@@ -302,7 +302,7 @@ void UpdateGame() {
     float darkA;
     int temp;
 
-    //[Block]
+
     while (timing->accumulator>0.f) {
         timing->accumulator = timing->accumulator-timing->tickDuration;
         if (timing->accumulator<=0.f) {
@@ -392,7 +392,7 @@ void UpdateGame() {
             //	mainPlayer\blurTimer = Max(mainPlayer\blurTimer - timing\tickDuration, 0.f)
             //EndIf
 
-            //[Block]
+
 
             darkA = 0.f;
             if (!IsPaused()) {
@@ -524,7 +524,7 @@ void UpdateGame() {
 
             bbEntityColor(mainPlayer->overlays[OVERLAY_WHITE],255,255,255);
 
-            //[End block]
+
 
             if (bbKeyHit(keyBinds->save)) {
                 if (SelectedDifficulty->saveType == SAVEANYWHERE) {
@@ -691,7 +691,7 @@ void UpdateGame() {
     bbEntityAlpha(fresize_image,1.f);
 
     bbFlip(userOptions->vsync!=0);
-    //[End block]
+
 }
 
 void UpdateGUI() {

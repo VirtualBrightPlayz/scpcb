@@ -12,37 +12,10 @@ namespace CBN {
 
 // Functions.
 void UpdateEvent_tnnl_plain_4(Event* e) {
-    float dist;
-    int i;
-    int temp;
-    int pvt;
-    String strtemp;
-    int j;
-    int k;
-    Texture* tex;
-
-    Particle* p;
-    NPC* n;
-    Room* r;
-    Event* e2;
-    Item* it;
-    Emitter* em;
-    SecurityCam* sc;
-    SecurityCam* sc2;
-
-    String CurrTrigger = "";
-
-    float x;
-    float y;
-    float z;
-
-    float angle;
-
-    //[Block]
     if (e->room->dist < 10.f && e->room->dist > 0) {
         e->room->npc[0] = CreateNPC(NPCtypeD, bbEntityX(e->room->obj,true)+1.f, 0.5f, bbEntityZ(e->room->obj,true)+1.f);
         e->room->npc[0]->texture = "GFX/npcs/body1.jpg";
-        tex = bbLoadTexture(e->room->npc[0]->texture);
+        Texture* tex = bbLoadTexture(e->room->npc[0]->texture);
         bbEntityTexture(e->room->npc[0]->obj, tex);
         bbFreeTexture(tex);
 
@@ -54,7 +27,6 @@ void UpdateEvent_tnnl_plain_4(Event* e) {
         //Delete e
         RemoveEvent(e);
     }
-    //[End Block]
 }
 
 }

@@ -180,7 +180,7 @@ void UpdateEvent_extend_gatea_1(Event* e) {
     float ztemp;
     MeshModel* obj;
 
-    //[Block]
+
     if (mainPlayer->currRoom == e->room) {
         for (int iterator180 = 0; iterator180 < Room::getListSize(); iterator180++) {
             r = Room::getObject(iterator180);
@@ -706,7 +706,7 @@ void UpdateEvent_extend_gatea_1(Event* e) {
     } else {
         bbHideEntity(e->room->obj);
     }
-    //[End Block]
+
 }
 
 }

@@ -144,7 +144,7 @@ void UpdateEventCoffin(Event* e) {
     float tempF2;
     float tempF3;
 
-    //[Block]
+
 
     if (e->eventState < TimeInPosMilliSecs()) {
         //SCP-079 starts broadcasting 895 camera feed on monitors after leaving the first zone
@@ -307,7 +307,7 @@ void UpdateEventCoffin(Event* e) {
     } else {
         CoffinDistance = e->room->dist;
     }
-    //[End Block]
+
 }
 
 }

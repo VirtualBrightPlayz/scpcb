@@ -341,7 +341,7 @@ void UpdateEvent_hll_caf_2(Event* e) {
 
     float angle;
 
-    //[Block]
+
     if (mainPlayer->currRoom == e->room) {
         if (CurrGameState!=GAMESTATE_SCP294) {
             if (bbEntityDistance(e->room->objects[0], mainPlayer->collider)<1.5f) {
@@ -375,7 +375,7 @@ void UpdateEvent_hll_caf_2(Event* e) {
         CreateNPC(NPCtype066, bbEntityX(e->room->obj), 0.5f, bbEntityZ(e->room->obj));
         e->eventState = 1;
     }
-    //[End Block]
+
 }
 
 }

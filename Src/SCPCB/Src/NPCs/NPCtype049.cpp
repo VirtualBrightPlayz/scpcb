@@ -75,7 +75,7 @@ void UpdateNPCtype049(NPC* n) {
 
         }
         case STATE049_ATTACK: {
-            //[Block]
+
             //Playing a sound after detecting the player
             if (n->prevState == STATE049_ROAMING && (!bbChannelPlaying(n->soundChannels[0]))) {
                 n->soundChannels[0] = LoopRangedSound(n->sounds[bbRand(1,2)], n->soundChannels[0], mainPlayer->cam, n->obj);
@@ -134,11 +134,11 @@ void UpdateNPCtype049(NPC* n) {
                     }
                 }
             }
-            //[End Block]
+
 
         }
         case STATE049_ROAMING: {
-            //[Block]
+
             //Finding a path to the player
             if (npcDetectsPlayer == 2) {
                 n->lastSeen = 70*15;
@@ -372,7 +372,7 @@ void UpdateNPCtype049(NPC* n) {
                     }
                 }
             }
-            //[End Block]
+
         }
     }
 

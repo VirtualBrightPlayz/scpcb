@@ -242,7 +242,7 @@ void UpdateEvent_strg_939_3(Event* e) {
 
     float angle;
 
-    //[Block]
+
     if (mainPlayer->currRoom == e->room) {
         e->eventState2 = UpdateElevators2(e->eventState2, e->room->doors[0], e->room->doors[1],e->room->objects[0],e->room->objects[1], e);
 
@@ -366,7 +366,7 @@ void UpdateEvent_strg_939_3(Event* e) {
             e->room->npc[2]->state = 66;
         }
     }
-    //[End Block]
+
 }
 
 }

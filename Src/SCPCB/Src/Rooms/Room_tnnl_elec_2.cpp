@@ -64,7 +64,7 @@ void UpdateEventTunnel2smoke(Event* e) {
 
     float angle;
 
-    //[Block]
+
     if (mainPlayer->currRoom == e->room) {
         if (e->room->dist < 3.5f) {
             PlayRangedSound(LoadTempSound("SFX/SCP/914/PlayerUse.ogg"), mainPlayer->cam, e->room->obj);
@@ -91,7 +91,7 @@ void UpdateEventTunnel2smoke(Event* e) {
         }
     }
 
-    //[End Block]
+
 }
 
 void UpdateEvent_tnnl_elec_2(Event* e) {
@@ -120,7 +120,7 @@ void UpdateEvent_tnnl_elec_2(Event* e) {
 
     float angle;
 
-    //[Block]
+
     if (mainPlayer->currRoom == e->room) {
         if (Curr173->idle == 2) {
             RemoveEvent(e);
@@ -157,7 +157,7 @@ void UpdateEvent_tnnl_elec_2(Event* e) {
             }
         }
     }
-    //[End Block]
+
 }
 
 }

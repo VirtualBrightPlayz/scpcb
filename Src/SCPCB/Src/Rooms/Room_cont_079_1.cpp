@@ -100,7 +100,7 @@ void UpdateEvent_cont_079_1(Event* e) {
 
     float angle;
 
-    //[Block]
+
     if (mainPlayer->currRoom == e->room) {
 
         if (e->eventState == 0) {
@@ -188,7 +188,7 @@ void UpdateEvent_cont_079_1(Event* e) {
         }
     }
 
-    //[End Block]
+
 }
 
 }

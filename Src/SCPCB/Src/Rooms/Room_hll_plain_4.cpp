@@ -37,7 +37,7 @@ void UpdateEvent_hll_plain_4(Event* e) {
 
     float angle;
 
-    //[Block]
+
     if (e->eventState < TimeInPosMilliSecs()) {
         if (mainPlayer->currRoom != e->room) {
             if (Distance(bbEntityX(mainPlayer->collider),bbEntityZ(mainPlayer->collider),bbEntityX(e->room->obj),bbEntityZ(e->room->obj))<16.f) {
@@ -64,7 +64,7 @@ void UpdateEvent_hll_plain_4(Event* e) {
             e->eventState = TimeInPosMilliSecs()+5000;
         }
     }
-    //[End Block]
+
 }
 
 }

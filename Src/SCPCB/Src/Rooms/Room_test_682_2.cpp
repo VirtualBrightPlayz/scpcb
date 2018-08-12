@@ -80,7 +80,7 @@ void UpdateEvent_test_682_2(Event* e) {
 
     float angle;
 
-    //[Block]
+
     if (e != nullptr) {
         if (mainPlayer->currRoom == e->room) {
             if (e->eventState == 0) {
@@ -129,7 +129,7 @@ void UpdateEvent_test_682_2(Event* e) {
             }
         }
     }
-    //[End Block]
+
 }
 
 }

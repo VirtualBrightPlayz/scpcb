@@ -93,7 +93,7 @@ void UpdateEvent_off_2level_2(Event* e) {
 
     float angle;
 
-    //[Block]
+
     if (mainPlayer->currRoom == e->room) {
         e->eventState = e->eventState+timing->tickDuration;
         if (e->eventState > 700) {
@@ -105,7 +105,7 @@ void UpdateEvent_off_2level_2(Event* e) {
             }
         }
     }
-    //[End Block]
+
 }
 
 }

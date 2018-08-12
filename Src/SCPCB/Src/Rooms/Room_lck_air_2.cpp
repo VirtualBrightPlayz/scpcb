@@ -142,7 +142,7 @@ void UpdateEvent_lck_air_2(Event* e) {
     float angle;
     MeshModel* d_ent;
 
-    //[Block]
+
     e->room->doors[0]->locked = true;
     e->room->doors[1]->locked = true;
 
@@ -261,7 +261,7 @@ void UpdateEvent_lck_air_2(Event* e) {
     } else {
         e->intState[EVENT_LCKA2_LEAVING] = false;
     }
-    //[End Block]
+
 }
 
 void UpdateEvent_lck_air_broke_2(Event* e) {
@@ -290,7 +290,7 @@ void UpdateEvent_lck_air_broke_2(Event* e) {
 
     float angle;
 
-    //[Block]
+
     if (e->room->dist < 8) {
         if (!e->intState[EVENT_LCKA2_SPAWNEDCORPSE]) {
             e->room->npc[0] = CreateNPC(NPCtypeGuard, bbEntityX(e->room->objects[ROOM_LCKA2_CORPSESPAWN],true), bbEntityY(e->room->objects[ROOM_LCKA2_CORPSESPAWN],true)+0.5f, bbEntityZ(e->room->objects[ROOM_LCKA2_CORPSESPAWN],true));
@@ -302,7 +302,7 @@ void UpdateEvent_lck_air_broke_2(Event* e) {
             e->intState[EVENT_LCKA2_SPAWNEDCORPSE] = true;
         }
     }
-    //[End Block]
+
 }
 
 }

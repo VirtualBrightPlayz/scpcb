@@ -123,13 +123,13 @@ void UpdateEvent_tnnl_nuke_2(Event* e) {
 
     float angle;
 
-    //[Block]
+
     if (mainPlayer->currRoom == e->room) {
         e->eventState2 = UpdateElevators(e->eventState2, e->room->doors[0], e->room->doors[1], e->room->objects[4], e->room->objects[5], e);
 
         e->eventState = e->room->levers[0]->succ;
     }
-    //[End Block]
+
 }
 
 }

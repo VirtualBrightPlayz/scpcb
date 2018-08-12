@@ -151,7 +151,7 @@ void UpdateMainMenu() {
 
         switch (CurrGameSubstate) {
             case GAMESUBSTATE_MAINMENU_NEWGAME: {
-                //[Block]
+
 
                 x = (int)(159.f * MenuScale);
                 y = (int)(286.f * MenuScale);
@@ -231,11 +231,11 @@ void UpdateMainMenu() {
                     PutINIValue(OptionFile, "general", "intro enabled", String(userOptions->introEnabled));
                 }
 
-                //[End Block]
+
                 //load game
             } break;
             case GAMESUBSTATE_MAINMENU_LOADGAME: {
-                //[Block]
+
 
                 y = y + height + (int)(20.f * MenuScale);
                 width = (int)(580.f * MenuScale);
@@ -252,11 +252,11 @@ void UpdateMainMenu() {
                 width = (int)(580.f * MenuScale);
                 height = (int)(296.f * MenuScale);
 
-                //[End Block]
+
                 //options
             } break;
             case GAMESUBSTATE_MAINMENU_OPTIONS: {
-                //[Block]
+
 
                 x = (int)(159.f * MenuScale);
                 y = (int)(286.f * MenuScale);
@@ -406,11 +406,11 @@ void UpdateMainMenu() {
                 //
                 //					;[End Block]
                 //				EndIf
-                //[End Block]
+
                 // load map
             } break;
             case GAMESUBSTATE_MAINMENU_CUSTOMMAP: {
-                //[Block]
+
                 y = y + height + (int)(20.f * MenuScale);
                 width = (int)(580.f * MenuScale);
                 height = (int)(350.f * MenuScale);
@@ -426,7 +426,7 @@ void UpdateMainMenu() {
                 width = (int)(580.f * MenuScale);
                 height = (int)(350.f * MenuScale);
 
-                //[End Block]
+
             } break;
         }
 
@@ -568,7 +568,7 @@ void DrawMainMenu() {
 
         switch (CurrGameSubstate) {
             case GAMESUBSTATE_MAINMENU_NEWGAME: {
-                //[Block]
+
 
                 x = (int)(159.f * MenuScale);
                 y = (int)(286.f * MenuScale);
@@ -659,11 +659,11 @@ void DrawMainMenu() {
                 bbSetFont(uiAssets->font[1]);
 
                 DrawUIButton(x + (int)(420.f * MenuScale), y + height + (int)(20.f * MenuScale), (int)(160.f * MenuScale), (int)(70.f * MenuScale), "START", false);
-                //[End Block]
+
                 //load game
             } break;
             case GAMESUBSTATE_MAINMENU_LOADGAME: {
-                //[Block]
+
 
                 y = y + height + (int)(20.f * MenuScale);
                 width = (int)(580.f * MenuScale);
@@ -729,11 +729,11 @@ void DrawMainMenu() {
                 //					EndIf
                 //				EndIf
 
-                //[End Block]
+
                 //options
             } break;
             case GAMESUBSTATE_MAINMENU_OPTIONS: {
-                //[Block]
+
 
                 x = (int)(159.f * MenuScale);
                 y = (int)(286.f * MenuScale);
@@ -903,11 +903,11 @@ void DrawMainMenu() {
                 //
                 //					;[End Block]
                 //				EndIf
-                //[End Block]
+
                 // load map
             } break;
             case GAMESUBSTATE_MAINMENU_CUSTOMMAP: {
-                //[Block]
+
                 y = y + height + (int)(20.f * MenuScale);
                 width = (int)(580.f * MenuScale);
                 height = (int)(350.f * MenuScale);
@@ -953,7 +953,7 @@ void DrawMainMenu() {
                 //					Next
                 //				EndIf
 
-                //[End Block]
+
             } break;
         }
     }

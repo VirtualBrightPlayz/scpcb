@@ -70,7 +70,7 @@ void UpdateEventRoom2pipes106(Event* e) {
 
     float angle;
 
-    //[Block]
+
     if (!Contained106) {
         if (e->eventState == 0) {
             if (mainPlayer->currRoom == e->room) {
@@ -148,7 +148,7 @@ void UpdateEventRoom2pipes106(Event* e) {
             }
         }
     }
-    //[End Block]
+
 }
 
 }

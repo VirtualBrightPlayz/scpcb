@@ -73,7 +73,7 @@ void UpdateEventRoom2elevator2(Event* e) {
 
     float angle;
 
-    //[Block]
+
     if (e->room->dist < 8.f && e->room->dist > 0) {
 
         de = CreateDecal(DECAL_BLOOD_SPLATTER, bbEntityX(e->room->objects[0],true), 0.0005f, bbEntityZ(e->room->objects[0],true),90,bbRnd(360),0);
@@ -94,7 +94,7 @@ void UpdateEventRoom2elevator2(Event* e) {
 
         RemoveEvent(e);
     }
-    //[End Block]
+
 }
 
 void UpdateEvent_hll_ele_2(Event* e) {
@@ -124,7 +124,7 @@ void UpdateEvent_hll_ele_2(Event* e) {
 
     float angle;
 
-    //[Block]
+
     if (e->eventState == 0) {
         if (e->room->dist < 8.f && e->room->dist > 0) {
             e->room->npc[0] = CreateNPC(NPCtypeGuard, bbEntityX(e->room->obj,true), 0.5f, bbEntityZ(e->room->obj,true));
@@ -183,7 +183,7 @@ void UpdateEvent_hll_ele_2(Event* e) {
             }
         }
     }
-    //[End Block]
+
 }
 
 }

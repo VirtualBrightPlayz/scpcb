@@ -167,7 +167,7 @@ void UpdateEvent_cont_049_2(Event* e) {
 
     float angle;
 
-    //[Block]
+
     if (mainPlayer->currRoom == e->room) {
         if (bbEntityY(mainPlayer->collider) > -2848*RoomScale) {
             e->eventState2 = UpdateElevators(e->eventState2, e->room->doors[0], e->room->doors[1],e->room->objects[0],e->room->objects[1], e);
@@ -449,7 +449,7 @@ void UpdateEvent_cont_049_2(Event* e) {
             }
         }
     }
-    //[End Block]
+
 }
 
 }

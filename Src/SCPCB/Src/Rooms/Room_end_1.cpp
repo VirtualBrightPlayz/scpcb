@@ -69,7 +69,7 @@ void UpdateEventEndroom106(Event* e) {
 
     float angle;
 
-    //[Block]
+
     if (Contained106) {
         if (e->eventState == 0) {
             if (e->room->dist < 8 && e->room->dist > 0) {
@@ -172,7 +172,7 @@ void UpdateEventEndroom106(Event* e) {
             }
         }
     }
-    //[End Block]
+
 }
 
 }

@@ -82,7 +82,7 @@ void UpdateEvent_cont_1162_2c(Event* e) {
     String itemName;
     int shouldCreateItem;
 
-    //[Block]
+
     //e\eventState = A variable to determine the "nostalgia" items
     //- 0.f = No nostalgia item
     //- 1.f = Lost key
@@ -345,7 +345,7 @@ void UpdateEvent_cont_1162_2c(Event* e) {
         }
         bbFreeEntity(pp);
     }
-    //[End Block]
+
 }
 
 int IsItemGoodFor1162(ItemTemplate* itt) {

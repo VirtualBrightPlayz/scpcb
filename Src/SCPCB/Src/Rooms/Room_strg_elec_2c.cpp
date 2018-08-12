@@ -93,7 +93,7 @@ void UpdateEvent_strg_elec_2c(Event* e) {
     float angle;
     float prevpitch;
 
-    //[Block]
+
     if (mainPlayer->currRoom == e->room) {
 
         bbEntityPick(mainPlayer->cam, 1.5f);
@@ -180,7 +180,7 @@ void UpdateEvent_strg_elec_2c(Event* e) {
         }
 
     }
-    //[End Block]
+
 }
 
 }

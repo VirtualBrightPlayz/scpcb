@@ -79,7 +79,7 @@ void UpdateEventRoom2doors173(Event* e) {
 
     float angle;
 
-    //[Block]
+
     if (mainPlayer->currRoom == e->room) {
         if (e->eventState == 0 && Curr173->idle == 0) {
             if (!bbEntityInView(Curr173->obj, mainPlayer->cam)) {
@@ -90,7 +90,7 @@ void UpdateEventRoom2doors173(Event* e) {
             }
         }
     }
-    //[End Block]
+
 }
 
 }

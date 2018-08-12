@@ -149,7 +149,7 @@ void UpdateEvent_cont_008_1(Event* e) {
 
     float angle;
 
-    //[Block]
+
     if (mainPlayer->currRoom == e->room) {
         if (Curr173->idle<2) {
             //container open
@@ -235,7 +235,7 @@ void UpdateEvent_cont_008_1(Event* e) {
         }
 
     }
-    //[End Block]
+
 }
 
 }

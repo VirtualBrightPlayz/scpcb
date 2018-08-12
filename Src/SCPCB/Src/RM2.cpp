@@ -110,7 +110,7 @@ void LoadRM2(RoomTemplate* rt) {
         partType = bbReadByte(file);
         switch (partType) {
             case RM2_TEXTURES: {
-                //[Block]
+
                 count = bbReadByte(file);
                 for (i = 0; i < count; i++) {
                     texName = ReadByteString(file);
@@ -143,11 +143,11 @@ void LoadRM2(RoomTemplate* rt) {
                     usedTextures.push_back(GetCache(texName));
                     std::cout<<"TEXTURE: "<<texName<<"\n";
                 }
-                //[End Block]
+
             } break;
             case RM2_OPAQUE:
             case RM2_ALPHA: {
-                //[Block]
+
                 mesh = bbCreateMesh();
                 brush = 0;
 
@@ -234,10 +234,10 @@ void LoadRM2(RoomTemplate* rt) {
                 bbEntityType(mesh,HIT_MAP);
                 collisionObjs.push_back(mesh);
                 bbHideEntity(mesh);
-                //[End Block]
+
             } break;
             case RM2_INVISIBLE: {
-                //[Block]
+
                 mesh = bbCreateMesh();
 
                 surf = bbCreateSurface(mesh);
@@ -271,20 +271,20 @@ void LoadRM2(RoomTemplate* rt) {
                 bbAddMesh(mesh,opaqueMesh);
                 collisionObjs.push_back(mesh);
                 bbHideEntity(mesh);
-                //[End Block]
+
             } break;
             case RM2_SCREEN: {
-                //[Block]
+
                 tempScreen = new TempScreen();
                 tempScreen->x = bbReadFloat(file);
                 tempScreen->y = bbReadFloat(file);
                 tempScreen->z = bbReadFloat(file);
                 tempScreen->imgpath = ReadByteString(file);
                 tempScreen->roomtemplate = rt;
-                //[End Block]
+
             } break;
             case RM2_WAYPOINT: {
-                //[Block]
+
                 waypointTemp = new TempWayPoint();
                 waypointTemp->x = bbReadFloat(file);
                 waypointTemp->y = bbReadFloat(file);
@@ -313,10 +313,10 @@ void LoadRM2(RoomTemplate* rt) {
                 //        \|/
                 //         v
                 //   THE OCTAHEDRON
-                //[End Block]
+
             } break;
             case RM2_POINTLIGHT: {
-                //[Block]
+
                 x = bbReadFloat(file);
                 y = bbReadFloat(file);
                 z = bbReadFloat(file);
@@ -329,10 +329,10 @@ void LoadRM2(RoomTemplate* rt) {
                 intensity = (float)(bbReadByte(file))/255.f;
 
                 AddTempLight(rt, x,y,z, LIGHTTYPE_POINT, range, r,g,b);
-                //[End Block]
+
             } break;
             case RM2_SPOTLIGHT: {
-                //[Block]
+
                 x = bbReadFloat(file);
                 y = bbReadFloat(file);
                 z = bbReadFloat(file);
@@ -356,10 +356,10 @@ void LoadRM2(RoomTemplate* rt) {
                 lightTemplate->yaw = yaw;
                 lightTemplate->innerconeangle = innerConeAngle;
                 lightTemplate->innerconeangle = outerConeAngle;
-                //[End Block]
+
             } break;
             case RM2_SOUNDEMITTER: {
-                //[Block]
+
                 x = bbReadFloat(file);
                 y = bbReadFloat(file);
                 z = bbReadFloat(file);
@@ -380,10 +380,10 @@ void LoadRM2(RoomTemplate* rt) {
                         break;
                     }
                 }
-                //[End Block]
+
             } break;
             case RM2_PROP: {
-                //[Block]
+
                 propName = ReadByteString(file);
 
                 x = bbReadFloat(file);
@@ -401,7 +401,7 @@ void LoadRM2(RoomTemplate* rt) {
                 prop = LoadProp(propName,x,y,z,pitch,yaw,roll,xScale,yScale,zScale);
 
                 props.push_back(prop);
-                //[End Block]
+
             } break;
             default: {
                 throw ("Error after reading type "+String(prevType));

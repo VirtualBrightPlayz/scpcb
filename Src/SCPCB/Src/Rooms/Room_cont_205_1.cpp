@@ -100,7 +100,7 @@ void UpdateEvent_cont_205_1(Event* e) {
 
     float angle;
 
-    //[Block]
+
     if (mainPlayer->currRoom == e->room) {
         e->overwriteMusic = true;
         if (e->eventState==0 || e->room->objects[0]==0) {
@@ -292,7 +292,7 @@ void UpdateEvent_cont_205_1(Event* e) {
         e->eventState = 0;
         e->overwriteMusic = false;
     }
-    //[End block]
+
 }
 
 }

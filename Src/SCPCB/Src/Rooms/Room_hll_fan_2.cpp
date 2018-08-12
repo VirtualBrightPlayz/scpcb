@@ -74,7 +74,7 @@ void UpdateEventRoom2fan(Event* e) {
 
     float angle;
 
-    //[Block]
+
     //eventstate1 = timer for turning the fan on/off
     //eventstate2 = fan on/off
     //eventstate3 = the speed of the fan
@@ -106,7 +106,7 @@ void UpdateEventRoom2fan(Event* e) {
             e->eventState = e->eventState-timing->tickDuration;
         }
     }
-    //[End Block]
+
 }
 
 }

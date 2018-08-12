@@ -45,7 +45,7 @@ void UpdateEvent106victim(Event* e) {
     float angle;
     float fdir;
 
-    //[Block]
+
     if (!Contained106) {
         if (mainPlayer->currRoom == e->room) {
             if (e->eventState == 0) {
@@ -120,7 +120,7 @@ void UpdateEvent106victim(Event* e) {
 
     }
 
-    //[End Block]
+
 }
 
 }

@@ -80,7 +80,7 @@ void UpdateEventRoom3pitduck(Event* e) {
 
     float angle;
 
-    //[Block]
+
     if (mainPlayer->currRoom == e->room) {
         if (e->room->objects[2] == 0) {
             e->room->objects[2] = bbLoadMesh("GFX/npcs/duck_low_res.b3d");
@@ -109,7 +109,7 @@ void UpdateEventRoom3pitduck(Event* e) {
             }
         }
     }
-    //[End Block]
+
 }
 
 void UpdateEventRoom3pit1048(Event* e) {
@@ -145,7 +145,7 @@ void UpdateEventRoom3pit1048(Event* e) {
     int t;
     String texname;
 
-    //[Block]
+
     if (mainPlayer->currRoom == e->room) {
         if (e->room->objects[2] == 0) {
             e->room->objects[2] = bbLoadAnimMesh("GFX/npcs/scp-1048pp.b3d");
@@ -227,7 +227,7 @@ void UpdateEventRoom3pit1048(Event* e) {
             }
         }
     }
-    //[End Block]
+
 }
 
 }

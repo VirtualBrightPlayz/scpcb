@@ -93,7 +93,7 @@ void UpdateEvent_off_l_conf_2(Event* e) {
 
     float angle;
 
-    //[Block]
+
     if (mainPlayer->currRoom == e->room) {
         if (e->eventState == 0) {
             if (e->room->doors[0]->open == true) {
@@ -119,7 +119,7 @@ void UpdateEvent_off_l_conf_2(Event* e) {
 
         }
     }
-    //[End Block]
+
 }
 
 }

@@ -43,7 +43,7 @@ void UpdateEventTunnel106(Event* e) {
 
     float angle;
 
-    //[Block]
+
     if (e->eventState == 0) {
         if (e->room->dist < 5.f && e->room->dist > 0) {
             if (Curr106->state >= 0) {
@@ -93,7 +93,7 @@ void UpdateEventTunnel106(Event* e) {
         }
 
     }
-    //[End Block]
+
 
 }
 
@@ -123,7 +123,7 @@ void UpdateEvent682roar(Event* e) {
 
     float angle;
 
-    //[Block]
+
     if (e->eventState == 0) {
         if (mainPlayer->currRoom == e->room) {
             e->eventState = 70 * bbRand(300,1000);
@@ -151,7 +151,7 @@ void UpdateEvent682roar(Event* e) {
             }
         }
     }
-    //[End Block]
+
 
 }
 

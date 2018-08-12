@@ -110,7 +110,7 @@ void UpdateEvent_tesla(Event* e) {
 
     float angle;
 
-    //[Block]
+
     temp = true;
     if (e->eventState2 > 70*3.5f && e->eventState2 < 70*90) {
         temp = false;
@@ -268,7 +268,7 @@ void UpdateEvent_tesla(Event* e) {
         }
     }
 
-    //[End Block]
+
 }
 
 }
