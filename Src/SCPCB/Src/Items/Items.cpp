@@ -354,19 +354,6 @@ void RemoveItem(Item* i) {
 }
 
 void UpdateItems() {
-    int n;
-    Item* i;
-    Item* i2;
-    float xtemp;
-    float ytemp;
-    float ztemp;
-    int temp;
-    NPC* np;
-
-    float HideDist = HideDistance*0.5f;
-    int deletedItem = false;
-
-    float ed;
     float hideDist = HideDistance*0.5;
     bool deletedItem = false;
 
