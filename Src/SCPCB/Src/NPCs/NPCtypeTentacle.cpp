@@ -30,7 +30,7 @@ void InitializeNPCtypeTentacle(NPC* n) {
     for (int iterator151 = 0; iterator151 < NPC::getListSize(); iterator151++) {
         n2 = NPC::getObject(iterator151);
 
-        if (n->npcType == n2->npcType & n!=n2) {
+        if (n->npcType == n2->npcType && n!=n2) {
             n->obj = bbCopyMeshModelEntity(n2->obj);
             break;
         }
@@ -38,7 +38,7 @@ void InitializeNPCtypeTentacle(NPC* n) {
 
     if (n->obj == 0) {
         n->obj = bbLoadAnimMesh("GFX/NPCs/tentacle/tentacle.b3d");
-        bbScaleEntity(n->obj, 0.065,0.065,0.065);
+        bbScaleEntity(n->obj, 0.065f,0.065f,0.065f);
     }
 
     n->sounds[0] = bbLoadSound("SFX/Room/035Chamber/TentacleSpawn.ogg");
@@ -61,14 +61,14 @@ void UpdateNPCtypeTentacle(NPC* n) {
                     bbPointEntity(n->obj, mainPlayer->collider);
                     bbRotateEntity(n->collider, 0, CurveAngle(bbEntityYaw(n->obj),bbEntityYaw(n->collider),25.f), 0);
 
-                    AnimateNPC(n, 283, 389, 0.3, false);
-                    //Animate2(n\obj, AnimTime(n\obj), 283, 389, 0.3, False)
+                    AnimateNPC(n, 283, 389, 0.3f, false);
+                    //Animate2(n\obj, AnimTime(n\obj), 283, 389, 0.3f, False)
 
                     if (n->frame>388) {
                         n->state = 1;
                     }
                 } else {
-                    if (n->playerDistance < 2.5) {
+                    if (n->playerDistance < 2.5f) {
                         SetNPCFrame(n, 284);
                         PlaySound2(n->sounds[0]);
                     }
@@ -82,13 +82,13 @@ void UpdateNPCtypeTentacle(NPC* n) {
                 bbPointEntity(n->obj, mainPlayer->collider);
                 bbRotateEntity(n->collider, 0, CurveAngle(bbEntityYaw(n->obj),bbEntityYaw(n->collider),25.f), 0);
 
-                AnimateNPC(n, 33, 174, 0.3, true);
-                //Animate2(n\obj, AnimTime(n\obj), 33, 174, 0.3, True)
+                AnimateNPC(n, 33, 174, 0.3f, true);
+                //Animate2(n\obj, AnimTime(n\obj), 33, 174, 0.3f, True)
             }
             case 2: {
 
                 //finish the idle animation before playing the attack animation
-                if (n->frame>33 & n->frame<174) {
+                if (n->frame>33 && n->frame<174) {
                     AnimateNPC(n, 33, 174, 2.f, false);
                     //Animate2(n\obj, AnimTime(n\obj), 33, 174, 2.f, False)
                 } else {
@@ -100,18 +100,18 @@ void UpdateNPCtypeTentacle(NPC* n) {
                         n->frame = 2;
                         PlaySound2(n->sounds[bbRand(1,2)]);
                     }
-                    AnimateNPC(n, 2, 32, 0.3, false);
-                    //Animate2(n\obj, AnimTime(n\obj), 2, 32, 0.3, False)
+                    AnimateNPC(n, 2, 32, 0.3f, false);
+                    //Animate2(n\obj, AnimTime(n\obj), 2, 32, 0.3f, False)
 
-                    if (n->frame>=5 & n->frame<6) {
-                        if (n->playerDistance < 1.8) {
+                    if (n->frame>=5 && n->frame<6) {
+                        if (n->playerDistance < 1.8f) {
                             if (abs(bbDeltaYaw(n->collider, mainPlayer->collider))<20) {
                                 if (IsPlayerWearingItem(mainPlayer,"hazmatsuit")) {
-                                    mainPlayer->injuries = mainPlayer->injuries+bbRnd(0.5);
+                                    mainPlayer->injuries = mainPlayer->injuries+bbRnd(0.5f);
                                     PlaySound2(LoadTempSound("SFX/General/BodyFall.ogg"));
                                 } else {
                                     mainPlayer->blurTimer = 100;
-                                    mainPlayer->injuries = mainPlayer->injuries+bbRnd(1.f,1.5);
+                                    mainPlayer->injuries = mainPlayer->injuries+bbRnd(1.f,1.5f);
                                     PlaySound2(mainPlayer->damageSFX[bbRand(3,4)]);
 
                                     if (mainPlayer->injuries > 3.f) {

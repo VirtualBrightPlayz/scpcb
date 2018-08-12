@@ -43,7 +43,7 @@ void FillRoom_lck_cam_2c(Room* r) {
     d->open = false;
 
     bbEntityParent(d->buttons[0], 0);
-    bbPositionEntity(d->buttons[0], r->x - 288.f * RoomScale, 0.7, r->z - 640.f * RoomScale);
+    bbPositionEntity(d->buttons[0], r->x - 288.f * RoomScale, 0.7f, r->z - 640.f * RoomScale);
     bbEntityParent(d->buttons[0], r->obj);
 
     bbFreeEntity(d->buttons[1]);
@@ -54,7 +54,7 @@ void FillRoom_lck_cam_2c(Room* r) {
     d2->autoClose = false;
     d2->open = false;
     bbEntityParent(d2->buttons[0], 0);
-    bbPositionEntity(d2->buttons[0], r->x + 640.f * RoomScale, 0.7, r->z + 288.f * RoomScale);
+    bbPositionEntity(d2->buttons[0], r->x + 640.f * RoomScale, 0.7f, r->z + 288.f * RoomScale);
     bbRotateEntity(d2->buttons[0], 0, 90, 0);
     bbEntityParent(d2->buttons[0], r->obj);
 
@@ -73,7 +73,7 @@ void FillRoom_lck_cam_2c(Room* r) {
     bbTurnEntity(sc->cameraObj, 40, 0, 0);
     bbEntityParent(sc->obj, r->obj);
 
-    bbPositionEntity(sc->scrObj, r->x + 668 * RoomScale, 1.1, r->z - 96.f * RoomScale);
+    bbPositionEntity(sc->scrObj, r->x + 668 * RoomScale, 1.1f, r->z - 96.f * RoomScale);
     bbTurnEntity(sc->scrObj, 0, 90, 0);
     bbEntityParent(sc->scrObj, r->obj);
 
@@ -86,26 +86,26 @@ void FillRoom_lck_cam_2c(Room* r) {
     bbTurnEntity(sc->cameraObj, 40, 0, 0);
     bbEntityParent(sc->obj, r->obj);
 
-    bbPositionEntity(sc->scrObj, r->x + 96.f * RoomScale, 1.1, r->z - 668.f * RoomScale);
+    bbPositionEntity(sc->scrObj, r->x + 96.f * RoomScale, 1.1f, r->z - 668.f * RoomScale);
     bbEntityParent(sc->scrObj, r->obj);
 
     Emitter* em = CreateEmitter(r->x - 175.f * RoomScale, 370.f * RoomScale, r->z + 656.f * RoomScale, 0);
     bbTurnEntity(em->obj, 90, 0, 0, true);
     bbEntityParent(em->obj, r->obj);
     em->randAngle = 20;
-    em->speed = 0.05;
-    em->sizeChange = 0.007;
-    em->aChange = -0.006;
-    em->gravity = -0.24;
+    em->speed = 0.05f;
+    em->sizeChange = 0.007f;
+    em->aChange = -0.006f;
+    em->gravity = -0.24f;
 
     em = CreateEmitter(r->x - 655.f * RoomScale, 370.f * RoomScale, r->z + 240.f * RoomScale, 0);
     bbTurnEntity(em->obj, 90, 0, 0, true);
     bbEntityParent(em->obj, r->obj);
     em->randAngle = 20;
-    em->speed = 0.05;
-    em->sizeChange = 0.007;
-    em->aChange = -0.006;
-    em->gravity = -0.24;
+    em->speed = 0.05f;
+    em->sizeChange = 0.007f;
+    em->aChange = -0.006f;
+    em->gravity = -0.24f;
 }
 
 void UpdateEventLockroom173(Event* e) {
@@ -135,12 +135,12 @@ void UpdateEventLockroom173(Event* e) {
     float angle;
 
     //[Block]
-    if (e->room->dist < 6.f  & e->room->dist > 0) {
+    if (e->room->dist < 6.f  && e->room->dist > 0) {
         if (Curr173->idle == 2) {
             RemoveEvent(e);
         } else {
             if ((!bbEntityInView(Curr173->collider, mainPlayer->cam)) | bbEntityDistance(Curr173->collider, mainPlayer->collider)>15.f) {
-                bbPositionEntity(Curr173->collider, e->room->x + bbCos(225-90 + e->room->angle) * 2, 0.6, e->room->z + bbSin(225-90 + e->room->angle) * 2);
+                bbPositionEntity(Curr173->collider, e->room->x + bbCos(225-90 + e->room->angle) * 2, 0.6f, e->room->z + bbSin(225-90 + e->room->angle) * 2);
                 bbResetEntity(Curr173->collider);
                 RemoveEvent(e);
             }

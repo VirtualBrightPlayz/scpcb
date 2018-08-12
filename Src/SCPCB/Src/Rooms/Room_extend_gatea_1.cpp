@@ -245,7 +245,7 @@ void UpdateEvent_extend_gatea_1(Event* e) {
             }
 
             for (i = 7; i <= 8; i++) {
-                e->room->npc[i] = CreateNPC(NPCtypeMTF, bbEntityX(e->room->objects[i],true)+0.8,bbEntityY(e->room->objects[i],true),bbEntityZ(e->room->objects[i],true)+0.8);
+                e->room->npc[i] = CreateNPC(NPCtypeMTF, bbEntityX(e->room->objects[i],true)+0.8f,bbEntityY(e->room->objects[i],true),bbEntityZ(e->room->objects[i],true)+0.8f);
                 e->room->npc[i]->state = 5;
                 e->room->npc[i]->prevState = 1;
                 bbPointEntity(e->room->npc[i]->collider, e->room->objects[3]);
@@ -261,7 +261,7 @@ void UpdateEvent_extend_gatea_1(Event* e) {
             if (Contained106) {
                 e->room->doors[2]->locked = true;
 
-                bbPositionEntity(e->room->npc[5]->collider, bbEntityX(e->room->objects[15],true)+(i-6)*0.2,bbEntityY(e->room->objects[15],true),bbEntityZ(e->room->objects[15],true)+(i-6)*0.2, true);
+                bbPositionEntity(e->room->npc[5]->collider, bbEntityX(e->room->objects[15],true)+(i-6)*0.2f,bbEntityY(e->room->objects[15],true),bbEntityZ(e->room->objects[15],true)+(i-6)*0.2f, true);
                 bbResetEntity(e->room->npc[5]->collider);
 
             }
@@ -284,10 +284,10 @@ void UpdateEvent_extend_gatea_1(Event* e) {
 
             for (temp = 0; temp <= 20; temp++) {
                 for (i = 0; i <= 1; i++) {
-                    bbTranslateEntity(e->room->npc[i]->collider, 0, -0.04, 0);
+                    bbTranslateEntity(e->room->npc[i]->collider, 0, -0.04f, 0);
                 }
                 for (i = 5; i <= 8; i++) {
-                    bbTranslateEntity(e->room->npc[i]->collider, 0, -0.04, 0);
+                    bbTranslateEntity(e->room->npc[i]->collider, 0, -0.04f, 0);
                 }
             }
 
@@ -311,7 +311,7 @@ void UpdateEvent_extend_gatea_1(Event* e) {
             //240,220,200
             bbCameraFogColor(mainPlayer->cam,200+(angle*40),200+(angle*20),200);
             bbCameraClsColor(mainPlayer->cam,200+(angle*40),200+(angle*20),200);
-            bbCameraRange(mainPlayer->cam, 0.05, 30);
+            bbCameraRange(mainPlayer->cam, 0.05f, 30);
 
             bbAmbientLight(140, 140, 140);
 
@@ -329,15 +329,15 @@ void UpdateEvent_extend_gatea_1(Event* e) {
             if (e->eventState>=350) {
                 if (Contained106==false) {
                     if (e->eventState-timing->tickDuration < 350) {
-                        Curr106->state = -0.1;
+                        Curr106->state = -0.1f;
                         //Curr106\idle = True
                         SetNPCFrame(Curr106, 110.f);
                         bbPositionEntity(Curr106->collider, bbEntityX(e->room->objects[3],true),bbEntityY(mainPlayer->collider)-50.f,bbEntityZ(e->room->objects[3],true),true);
                         bbPositionEntity(Curr106->obj, bbEntityX(e->room->objects[3],true),bbEntityY(mainPlayer->collider)-50.f,bbEntityZ(e->room->objects[3],true),true);
-                        de = CreateDecal(DECAL_CORROSION, bbEntityX(e->room->objects[3],true),bbEntityY(e->room->objects[3],true)+0.01,bbEntityZ(e->room->objects[3],true), 90, bbRand(360), 0);
-                        de->size = 0.05;
-                        de->sizeChange = 0.001;
-                        bbEntityAlpha(de->obj, 0.8);
+                        de = CreateDecal(DECAL_CORROSION, bbEntityX(e->room->objects[3],true),bbEntityY(e->room->objects[3],true)+0.01f,bbEntityZ(e->room->objects[3],true), 90, bbRand(360), 0);
+                        de->size = 0.05f;
+                        de->sizeChange = 0.001f;
+                        bbEntityAlpha(de->obj, 0.8f);
                         UpdateDecals();
                         //TODO: fix audio
                         //PlaySound2((HorrorSFX(5)))
@@ -362,7 +362,7 @@ void UpdateEvent_extend_gatea_1(Event* e) {
                                     //Else
                                     //PositionEntity(Curr106\collider, EntityX(e\room\objects[3],True),EntityY(e\room\objects[3],True),EntityZ(e\room\objects[3],True),True)
                                     //Curr106\idle = True
-                                    //Animate2(Curr106\obj, AnimTime(Curr106\obj), 110, 259, 0.15, False)
+                                    //Animate2(Curr106\obj, AnimTime(Curr106\obj), 110, 259, 0.15f, False)
                                     //If (AnimTime(Curr106\obj)=>259) Then Curr106\idle = False
 
                                 }
@@ -379,7 +379,7 @@ void UpdateEvent_extend_gatea_1(Event* e) {
                                 for (i = 5; i <= 8; i++) {
                                     e->room->npc[i]->state = 5;
                                     e->room->npc[i]->enemyX = bbEntityX(Curr106->obj,true);
-                                    e->room->npc[i]->enemyY = bbEntityY(Curr106->obj,true)+0.4;
+                                    e->room->npc[i]->enemyY = bbEntityY(Curr106->obj,true)+0.4f;
                                     e->room->npc[i]->enemyZ = bbEntityZ(Curr106->obj,true);
                                 }
 
@@ -394,11 +394,11 @@ void UpdateEvent_extend_gatea_1(Event* e) {
                                 //decals under 106
                                 if (timing->tickDuration > 0) {
                                     if (modFloat(e->eventState-timing->tickDuration, 100.f)<=50.f && modFloat(e->eventState, 100.f)>50.f) {
-                                        de = CreateDecal(DECAL_CORROSION, bbEntityX(Curr106->collider,true),bbEntityY(e->room->objects[3],true)+0.01,bbEntityZ(Curr106->collider,true), 90, bbRand(360), 0);
-                                        de->size = 0.2;
-                                        de->sizeChange = 0.004;
+                                        de = CreateDecal(DECAL_CORROSION, bbEntityX(Curr106->collider,true),bbEntityY(e->room->objects[3],true)+0.01f,bbEntityZ(Curr106->collider,true), 90, bbRand(360), 0);
+                                        de->size = 0.2f;
+                                        de->sizeChange = 0.004f;
                                         de->timer = 90000;
-                                        bbEntityAlpha(de->obj, 0.8);
+                                        bbEntityAlpha(de->obj, 0.8f);
                                         UpdateDecals();
                                     }
                                 }
@@ -413,7 +413,7 @@ void UpdateEvent_extend_gatea_1(Event* e) {
                                 e->soundChannels[1] = bbPlaySound(LoadTempSound("SFX/Ending/GateA/Franklin.ogg"));
                             }
 
-                            if (dist<0.4) {
+                            if (dist<0.4f) {
                                 Curr106->pathStatus = 0;
                                 Curr106->pathTimer = 70*200;
                                 if (Curr106->state3==0) {
@@ -429,16 +429,16 @@ void UpdateEvent_extend_gatea_1(Event* e) {
                                 //106:n alle ilmestyy decaleita
                                 if (timing->tickDuration > 0) {
                                     if (modFloat(e->eventState-timing->tickDuration, 160.f)<=50.f && modFloat(e->eventState, 160.f)>50.f) {
-                                        de = CreateDecal(DECAL_CORROSION, bbEntityX(Curr106->collider,true),bbEntityY(e->room->objects[3],true)+0.01,bbEntityZ(Curr106->collider,true), 90, bbRand(360), 0);
-                                        de->size = 0.05;
-                                        de->sizeChange = 0.004;
+                                        de = CreateDecal(DECAL_CORROSION, bbEntityX(Curr106->collider,true),bbEntityY(e->room->objects[3],true)+0.01f,bbEntityZ(Curr106->collider,true), 90, bbRand(360), 0);
+                                        de->size = 0.05f;
+                                        de->sizeChange = 0.004f;
                                         de->timer = 90000;
-                                        bbEntityAlpha(de->obj, 0.8);
+                                        bbEntityAlpha(de->obj, 0.8f);
                                         UpdateDecals();
                                     }
                                 }
 
-                                AnimateNPC(Curr106, 259, 110, -0.1, false);
+                                AnimateNPC(Curr106, 259, 110, -0.1f, false);
 
                                 Curr106->state3 = Curr106->state3+timing->tickDuration;
                                 bbPositionEntity(Curr106->collider, bbEntityX(Curr106->collider,true),CurveValue(bbEntityY(e->room->objects[3],true)-(Curr106->state3/4500.f),bbEntityY(Curr106->collider,true),100.f),bbEntityZ(Curr106->collider,true));
@@ -455,39 +455,39 @@ void UpdateEvent_extend_gatea_1(Event* e) {
                                     bbHideEntity(Curr106->obj);
                                 }
                             } else {
-                                if (dist < 8.5) {
+                                if (dist < 8.5f) {
                                     //bbChannelPlaying(e\soundChannels[1]) = 0) Then
                                     if (e->eventState2==0) {
                                         e->soundChannels[1] = bbPlaySound(LoadTempSound("SFX/Ending/GateA/HIDTurret.ogg"));
                                         e->eventState2 = 1;
                                     } else if ((e->eventState2>0)) {
                                         e->eventState2 = e->eventState2+timing->tickDuration;
-                                        if (e->eventState2>= 7.5*70) {
-                                            if (e->eventState2-timing->tickDuration < 7.5*70) {
+                                        if (e->eventState2>= 7.5f*70) {
+                                            if (e->eventState2-timing->tickDuration < 7.5f*70) {
                                                 //TODO: Not use the sun sprite here.
-                                                p = CreateParticle(bbEntityX(Curr106->obj,true),bbEntityY(Curr106->obj,true)+0.4, bbEntityZ(Curr106->obj,true), PARTICLE_SUN, 7.f, 0, (int)(6.7*70));
+                                                p = CreateParticle(bbEntityX(Curr106->obj,true),bbEntityY(Curr106->obj,true)+0.4f, bbEntityZ(Curr106->obj,true), PARTICLE_SUN, 7.f, 0, (int)(6.7f*70));
                                                 p->speed = 0.f;
                                                 p->a = 1.f;
                                                 bbEntityParent(p->pvt, Curr106->collider, true);
 
-                                                p = CreateParticle(bbEntityX(e->room->objects[10],true),bbEntityY(e->room->objects[10],true),bbEntityZ(e->room->objects[10],true), PARTICLE_SUN, 2.f, 0, (int)(6.7*70));
+                                                p = CreateParticle(bbEntityX(e->room->objects[10],true),bbEntityY(e->room->objects[10],true),bbEntityZ(e->room->objects[10],true), PARTICLE_SUN, 2.f, 0, (int)(6.7f*70));
                                                 bbRotateEntity(p->pvt, bbEntityPitch(e->room->objects[10],true),bbEntityYaw(e->room->objects[10],true),0,true);
                                                 bbMoveEntity(p->pvt, 0, 92.f*RoomScale, 512.f*RoomScale);
                                                 p->speed = 0.f;
                                                 p->a = 1.f;
                                                 bbEntityParent(p->pvt, e->room->objects[10], true);
-                                            } else if ((e->eventState2 < 14.3*70)) {
-                                                mainPlayer->camShake = 0.5;
-                                                mainPlayer->lightFlash = 0.3+bbEntityInView(e->room->objects[10],mainPlayer->cam)*0.5;
+                                            } else if ((e->eventState2 < 14.3f*70)) {
+                                                mainPlayer->camShake = 0.5f;
+                                                mainPlayer->lightFlash = 0.3f+bbEntityInView(e->room->objects[10],mainPlayer->cam)*0.5f;
                                             }
                                         }
                                     }
 
                                     for (i = 0; i <= bbRand(2,8)-(int)(dist); i++) {
-                                        p = CreateParticle(bbEntityX(Curr106->obj,true),bbEntityY(Curr106->obj,true)+bbRnd(0.4,0.9), bbEntityZ(Curr106->obj), PARTICLE_SMOKE_BLACK, 0.006, -0.002, 40);
-                                        p->speed = 0.005;
-                                        p->a = 0.8;
-                                        p->aChange = -0.01;
+                                        p = CreateParticle(bbEntityX(Curr106->obj,true),bbEntityY(Curr106->obj,true)+bbRnd(0.4f,0.9f), bbEntityZ(Curr106->obj), PARTICLE_SMOKE_BLACK, 0.006f, -0.002f, 40);
+                                        p->speed = 0.005f;
+                                        p->a = 0.8f;
+                                        p->aChange = -0.01f;
                                         bbRotateEntity(p->pvt, -bbRnd(70,110), bbRnd(360),0);
                                     }
                                 }
@@ -506,10 +506,10 @@ void UpdateEvent_extend_gatea_1(Event* e) {
                                 //MTF spawns at the tunnel entrance
                                 for (i = 5; i <= 8; i++) {
                                     e->room->npc[i]->state = 3;
-                                    bbPositionEntity(e->room->npc[i]->collider, bbEntityX(e->room->objects[15],true)+(i-6)*0.3,bbEntityY(e->room->objects[15],true),bbEntityZ(e->room->objects[15],true)+(i-6)*0.3, true);
+                                    bbPositionEntity(e->room->npc[i]->collider, bbEntityX(e->room->objects[15],true)+(i-6)*0.3f,bbEntityY(e->room->objects[15],true),bbEntityZ(e->room->objects[15],true)+(i-6)*0.3f, true);
                                     bbResetEntity(e->room->npc[i]->collider);
 
-                                    e->room->npc[i]->pathStatus = FindPath(e->room->npc[i], bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2,bbEntityZ(mainPlayer->collider));
+                                    e->room->npc[i]->pathStatus = FindPath(e->room->npc[i], bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2f,bbEntityZ(mainPlayer->collider));
                                     e->room->npc[i]->pathTimer = 70*2;
                                     e->room->npc[i]->lastSeen = 70*100;
                                 }
@@ -538,7 +538,7 @@ void UpdateEvent_extend_gatea_1(Event* e) {
                             if (Distance(bbEntityX(mainPlayer->collider),bbEntityZ(mainPlayer->collider),bbEntityX(e->room->objects[11],true),bbEntityZ(e->room->objects[11],true)) < 7.f) {
                                 e->room->objects[12] = bbLoadMesh("GFX/npcs/CI/CI.b3d");
                                 bbEntityColor((MeshModel*)e->room->objects[12], 0,0,0);
-                                bbScaleMesh((MeshModel*)e->room->objects[12], 0.32/21.3, 0.32/21.3, 0.32/21.3);
+                                bbScaleMesh((MeshModel*)e->room->objects[12], 0.32f/21.3f, 0.32f/21.3f, 0.32f/21.3f);
                                 bbPositionEntity(e->room->objects[12], bbEntityX(e->room->objects[11],true), bbEntityY(e->room->objects[11],true), bbEntityZ(e->room->objects[11],true));
 
                                 // TODO: Isn't this a memory leak?
@@ -555,11 +555,11 @@ void UpdateEvent_extend_gatea_1(Event* e) {
 
                                 //TODO: Not the sun sprite.
                                 p = CreateParticle(bbEntityX(e->room->objects[11],true),bbEntityY(mainPlayer->cam,true), bbEntityZ(e->room->objects[11],true), PARTICLE_SUN, 8.f, 0, 50);
-                                p->speed = 0.15;
-                                p->a = 0.5;
+                                p->speed = 0.15f;
+                                p->a = 0.5f;
                                 p = CreateParticle(bbEntityX(e->room->objects[11],true),bbEntityY(mainPlayer->cam,true), bbEntityZ(e->room->objects[11],true), PARTICLE_SUN, 8.f, 0, 50);
-                                p->speed = 0.25;
-                                p->a = 0.5;
+                                p->speed = 0.25f;
+                                p->a = 0.5f;
                                 bbPointEntity(p->pvt, mainPlayer->collider);
 
                                 mainPlayer->camShake = 1.f;
@@ -575,22 +575,22 @@ void UpdateEvent_extend_gatea_1(Event* e) {
 
                         mainPlayer->stamina = -5.f;
 
-                        mainPlayer->blurTimer = bbSin(e->eventState3*0.7)*1000.f;
+                        mainPlayer->blurTimer = bbSin(e->eventState3*0.7f)*1000.f;
 
                         if (!mainPlayer->dead) {
-                            bbCameraZoom(mainPlayer->cam, 1.f+bbSin(e->eventState3*0.8)*0.2);
+                            bbCameraZoom(mainPlayer->cam, 1.f+bbSin(e->eventState3*0.8f)*0.2f);
 
                             dist = bbEntityDistance(mainPlayer->collider,e->room->objects[11]);
-                            if (dist < 6.5) {
+                            if (dist < 6.5f) {
                                 bbPositionEntity(mainPlayer->collider, CurveValue(bbEntityX(e->room->objects[11],true),bbEntityX(mainPlayer->collider),dist*80),bbEntityY(mainPlayer->collider),CurveValue(bbEntityZ(e->room->objects[0],true),bbEntityZ(mainPlayer->collider),dist*80));
                             }
                         }
 
                         //tunneli menee umpeen
-                        if (e->eventState3>50 & e->eventState3<230) {
+                        if (e->eventState3>50 && e->eventState3<230) {
                             mainPlayer->camShake = bbSin(e->eventState3-50)*3;
-                            bbTurnEntity(e->room->objects[13], 0, bbSin(e->eventState3-50)*-0.85, 0, true);
-                            bbTurnEntity(e->room->objects[14], 0, bbSin(e->eventState3-50)*0.85, 0, true);
+                            bbTurnEntity(e->room->objects[13], 0, bbSin(e->eventState3-50)*-0.85f, 0, true);
+                            bbTurnEntity(e->room->objects[14], 0, bbSin(e->eventState3-50)*0.85f, 0, true);
 
                             for (i = 5; i <= 8; i++) {
                                 bbPositionEntity(e->room->npc[i]->collider, CurveValue(bbEntityX(e->room->doors[2]->frameobj,true), bbEntityX(e->room->npc[i]->collider,true),50.f),bbEntityY(e->room->npc[i]->collider,true),CurveValue(bbEntityZ(e->room->doors[2]->frameobj,true), bbEntityZ(e->room->npc[i]->collider,true),50.f),true);
@@ -608,11 +608,11 @@ void UpdateEvent_extend_gatea_1(Event* e) {
                                 PlaySound2(LoadTempSound("SFX/Ending/GateA/Bell2.ogg"));
 
                                 p = CreateParticle(bbEntityX(e->room->objects[11],true),bbEntityY(mainPlayer->cam,true), bbEntityZ(e->room->objects[11],true), PARTICLE_SUN, 8.f, 0, 50);
-                                p->speed = 0.15;
-                                p->a = 0.5;
+                                p->speed = 0.15f;
+                                p->a = 0.5f;
                                 p = CreateParticle(bbEntityX(e->room->objects[11],true),bbEntityY(mainPlayer->cam,true), bbEntityZ(e->room->objects[11],true), PARTICLE_SUN, 8.f, 0, 50);
-                                p->speed = 0.25;
-                                p->a = 0.5;
+                                p->speed = 0.25f;
+                                p->a = 0.5f;
 
                                 //SelectedEnding = "A1"
                                 mainPlayer->godMode = 0;
@@ -640,7 +640,7 @@ void UpdateEvent_extend_gatea_1(Event* e) {
                         for (i = 5; i <= 8; i++) {
                             e->room->npc[i]->state = 3;
 
-                            e->room->npc[i]->pathStatus = FindPath(e->room->npc[i], bbEntityX(e->room->obj)-1.f+2.f*(i % 2),bbEntityY(mainPlayer->collider)+0.2,bbEntityZ(e->room->obj)-2.f*(i % 2));
+                            e->room->npc[i]->pathStatus = FindPath(e->room->npc[i], bbEntityX(e->room->obj)-1.f+2.f*(i % 2),bbEntityY(mainPlayer->collider)+0.2f,bbEntityZ(e->room->obj)-2.f*(i % 2));
                             e->room->npc[i]->pathTimer = 70*bbRand(15,20);
                             e->room->npc[i]->lastSeen = 70*300;
                         }
@@ -691,7 +691,7 @@ void UpdateEvent_extend_gatea_1(Event* e) {
                                 //SelectedEnding = "A2"
                                 mainPlayer->godMode = 0;
                                 mainPlayer->noclip = 0;
-                                //KillTimer = -0.1
+                                //KillTimer = -0.1f
                                 DeathMSG = "";
                                 Kill(mainPlayer);
                                 mainPlayer->blinkTimer = -10;

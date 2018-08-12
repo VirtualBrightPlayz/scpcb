@@ -99,11 +99,11 @@ void UpdateDecals() {
                     if (d->timer <= 0) {
                         float angle = bbRand(360);
                         float temp = bbRnd(d->size);
-                        Decal* d2 = CreateDecal(DECAL_CRACKS, bbEntityX(d->obj) + bbCos(angle) * temp, bbEntityY(d->obj) - 0.0005, bbEntityZ(d->obj) + bbSin(angle) * temp, bbEntityPitch(d->obj), bbRnd(360), bbEntityRoll(d->obj));
-                        d2->size = bbRnd(0.1, 0.5);
+                        Decal* d2 = CreateDecal(DECAL_CRACKS, bbEntityX(d->obj) + bbCos(angle) * temp, bbEntityY(d->obj) - 0.0005f, bbEntityZ(d->obj) + bbSin(angle) * temp, bbEntityPitch(d->obj), bbRnd(360), bbEntityRoll(d->obj));
+                        d2->size = bbRnd(0.1f, 0.5f);
                         bbScaleSprite(d2->obj, d2->size, d2->size);
                         //TODO: fix, and not attach this to the decal
-                        //PlayRangedSound(DecaySFX(Rand(1, 3)), mainPlayer\cam, d2\obj, 10.f, Rnd(0.1, 0.5))
+                        //PlayRangedSound(DecaySFX(Rand(1, 3)), mainPlayer\cam, d2\obj, 10.f, Rnd(0.1f, 0.5f))
                         //d\timer = d\timer + Rand(50,150)
                         d->timer = bbRand(50, 100);
                     } else {

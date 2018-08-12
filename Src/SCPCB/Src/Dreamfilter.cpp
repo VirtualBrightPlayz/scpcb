@@ -18,9 +18,9 @@ void CreateBlurImage() {
     //Create blur mainPlayer\cam
 	Camera* cam = bbCreateCamera();
     bbCameraProjMode(cam,2);
-    bbCameraZoom(cam,0.1);
+    bbCameraZoom(cam,0.1f);
     bbCameraClsMode(cam, 0, 0);
-    bbCameraRange(cam, 0.1, 1.5);
+    bbCameraRange(cam, 0.1f, 1.5f);
     bbMoveEntity(cam, 0, 0, 10000);
     ark_blur_cam = cam;
 
@@ -39,7 +39,7 @@ void CreateBlurImage() {
     bbAddTriangle(sf, 3, 2, 1);
     bbEntityFX(spr, 17);
     bbScaleEntity(spr, 2048.f / (float)(ark_sw), 2048.f / (float)(ark_sw), 1);
-    bbPositionEntity(spr, 0, 0, 1.0001);
+    bbPositionEntity(spr, 0, 0, 1.0001f);
     bbEntityOrder(spr, -100000);
     bbEntityBlend(spr, 1);
     ark_blur_image = spr;

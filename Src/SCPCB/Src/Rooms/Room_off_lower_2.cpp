@@ -50,7 +50,7 @@ void FillRoom_off_lower_2(Room* r) {
     bbEntityParent(it->collider, r->obj);
 
     r->objects[0] = bbLoadMesh("GFX/NPCs/ducks/duck.b3d");
-    bbScaleEntity(r->objects[0], 0.07, 0.07, 0.07);
+    bbScaleEntity(r->objects[0], 0.07f, 0.07f, 0.07f);
 
     bbEntityParent(r->objects[0], r->obj);
 
@@ -95,7 +95,7 @@ void UpdateEvent_off_lower_2(Event* e) {
 
     //[Block]
     if (mainPlayer->currRoom == e->room) {
-        if (mainPlayer->blinkTimer<-8 & mainPlayer->blinkTimer >-12) {
+        if (mainPlayer->blinkTimer<-8 && mainPlayer->blinkTimer >-12) {
             temp = bbRand(1,4);
             bbPositionEntity(e->room->objects[0], bbEntityX(e->room->objects[temp],true),bbEntityY(e->room->objects[temp],true),bbEntityZ(e->room->objects[temp],true),true);
             bbRotateEntity(e->room->objects[0], 0, bbRnd(360), 0);

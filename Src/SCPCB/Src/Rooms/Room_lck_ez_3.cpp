@@ -42,14 +42,14 @@ void FillRoom_lck_ez_3(Room* r) {
     d = CreateDoor(r->x - 223.f * RoomScale, 0.f, r->z - 736.f * RoomScale, -90, r, false, DOOR_TYPE_DEF, r->roomTemplate->name);
 
     r->doors[0] = CreateDoor(r->x - 459.f * RoomScale, 0.f, r->z + 339.f * RoomScale, 90, r);
-    bbPositionEntity(r->doors[0]->buttons[0], r->x + 580.822 * RoomScale, bbEntityY(r->doors[0]->buttons[0],true), r->z - 606.679 * RoomScale, true);
-    bbPositionEntity(r->doors[0]->buttons[1], r->x + 580.822 * RoomScale, bbEntityY(r->doors[0]->buttons[1],true), r->z - 606.679 * RoomScale, true);
+    bbPositionEntity(r->doors[0]->buttons[0], r->x + 580.822f * RoomScale, bbEntityY(r->doors[0]->buttons[0],true), r->z - 606.679f * RoomScale, true);
+    bbPositionEntity(r->doors[0]->buttons[1], r->x + 580.822f * RoomScale, bbEntityY(r->doors[0]->buttons[1],true), r->z - 606.679f * RoomScale, true);
     r->doors[0]->locked = true;
     r->doors[0]->mtfClose = false;
 
     r->doors[1] = CreateDoor(r->x + 385.f * RoomScale, 0.f, r->z + 339.f * RoomScale, 270, r);
-    bbPositionEntity(r->doors[1]->buttons[0], r->x + 580.822 * RoomScale, bbEntityY(r->doors[1]->buttons[0],true), r->z - 606.679 * RoomScale, true);
-    bbPositionEntity(r->doors[1]->buttons[1], r->x + 580.822 * RoomScale, bbEntityY(r->doors[1]->buttons[1],true), r->z - 606.679 * RoomScale, true);
+    bbPositionEntity(r->doors[1]->buttons[0], r->x + 580.822f * RoomScale, bbEntityY(r->doors[1]->buttons[0],true), r->z - 606.679f * RoomScale, true);
+    bbPositionEntity(r->doors[1]->buttons[1], r->x + 580.822f * RoomScale, bbEntityY(r->doors[1]->buttons[1],true), r->z - 606.679f * RoomScale, true);
     r->doors[1]->locked = true;
     r->doors[1]->mtfClose = false;
     bbFreeEntity(r->doors[1]->obj2);

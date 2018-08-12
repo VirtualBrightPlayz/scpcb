@@ -422,18 +422,18 @@ void InitNewGame() {
         if (!r->roomTemplate->disableDecals) {
             if (bbRand(4) == 1) {
                 Decal* de = CreateDecal(bbRand(DECAL_BLOOD_SPREAD, DECAL_BLOOD_SPLATTER), bbEntityX(r->obj)+bbRnd(- 2,2), 0.003f, bbEntityZ(r->obj)+bbRnd(-2,2), 90, bbRand(360), 0);
-                de->size = bbRnd(0.1, 0.4);
+                de->size = bbRnd(0.1f, 0.4f);
                 bbScaleSprite(de->obj, de->size, de->size);
-                bbEntityAlpha(de->obj, bbRnd(0.85, 0.95));
+                bbEntityAlpha(de->obj, bbRnd(0.85f, 0.95f));
             }
 
             if (bbRand(4) == 1) {
                 Decal* de = CreateDecal(DECAL_CORROSION, bbEntityX(r->obj)+bbRnd(- 2,2), 0.003f, bbEntityZ(r->obj)+bbRnd(-2,2), 90, bbRand(360), 0);
-                de->size = bbRnd(0.5, 0.7);
-                bbEntityAlpha(de->obj, 0.7);
+                de->size = bbRnd(0.5f, 0.7f);
+                bbEntityAlpha(de->obj, 0.7f);
                 de->id = 1;
                 bbScaleSprite(de->obj, de->size, de->size);
-                bbEntityAlpha(de->obj, bbRnd(0.7, 0.85));
+                bbEntityAlpha(de->obj, bbRnd(0.7f, 0.85f));
             }
         }
 
@@ -520,8 +520,8 @@ void InitNewGame() {
         UpdateNPCs();
         bbUpdateWorld();
         //Cls()
-        if ((int)((float)(i)*0.27)!=(int)((float)(i-1)*0.27)) {
-            DrawLoading(80+(int)((float)(i)*0.27));
+        if ((int)((float)(i)*0.27f)!=(int)((float)(i-1)*0.27f)) {
+            DrawLoading(80+(int)((float)(i)*0.27f));
         }
     }
 

@@ -50,7 +50,7 @@ void FillRoom_cont_008_1(Room* r) {
     r->objects[2] = bbCreateSprite();
     bbEntityTexture((Sprite*)r->objects[2],glassTex);
     bbSpriteViewMode((Sprite*)r->objects[2],2);
-    bbScaleSprite((Sprite*)r->objects[2],256.f*RoomScale*0.5, 194.f*RoomScale*0.5);
+    bbScaleSprite((Sprite*)r->objects[2],256.f*RoomScale*0.5f, 194.f*RoomScale*0.5f);
     bbPositionEntity(r->objects[2], r->x - 176.f * RoomScale, 224.f*RoomScale, r->z + 448.f * RoomScale);
     bbTurnEntity(r->objects[2],0,90,0);
     bbEntityParent(r->objects[2], r->obj);
@@ -68,7 +68,7 @@ void FillRoom_cont_008_1(Room* r) {
     Texture* lightSpriteRed = bbLoadTexture("GFX/Sprites/light_flare_red.jpg", 1);
     r->objects[5] = bbCreateSprite();
     bbPositionEntity(r->objects[5], r->x - 158 * RoomScale, 368 * RoomScale, r->z + 298.f * RoomScale);
-    bbScaleSprite((Sprite*)r->objects[5], 0.02, 0.02);
+    bbScaleSprite((Sprite*)r->objects[5], 0.02f, 0.02f);
     bbEntityTexture((Sprite*)r->objects[5], lightSpriteRed);
     bbEntityBlend((Sprite*)r->objects[5], 3);
     bbEntityParent(r->objects[5], r->obj);
@@ -102,7 +102,7 @@ void FillRoom_cont_008_1(Room* r) {
     r->doors[2] = d;
 
 
-    it = CreateItem("hazmatsuit", r->x - 76.f * RoomScale, 0.5, r->z - 396.f * RoomScale);
+    it = CreateItem("hazmatsuit", r->x - 76.f * RoomScale, 0.5f, r->z - 396.f * RoomScale);
     bbEntityParent(it->collider, r->obj);
     bbRotateEntity(it->collider, 0, 90, 0);
 
@@ -116,7 +116,7 @@ void FillRoom_cont_008_1(Room* r) {
     r->objects[7] = bbCreatePivot(r->obj);
     bbPositionEntity(r->objects[7], r->x, 672 * RoomScale, r->z + 352.f * RoomScale, true);
 
-    sc = CreateSecurityCam(r->x+578.956*RoomScale, r->y+444.956*RoomScale, r->z+772.f*RoomScale, r);
+    sc = CreateSecurityCam(r->x+578.956f*RoomScale, r->y+444.956f*RoomScale, r->z+772.f*RoomScale, r);
     sc->angle = 135;
     sc->turn = 45;
     bbTurnEntity(sc->cameraObj, 20, 0, 0);
@@ -155,7 +155,7 @@ void UpdateEvent_cont_008_1(Event* e) {
             //container open
             if (e->eventState == 0) {
 
-                bbPositionEntity(Curr173->collider, bbEntityX(e->room->objects[3],true),0.5,bbEntityZ(e->room->objects[3],true),true);
+                bbPositionEntity(Curr173->collider, bbEntityX(e->room->objects[3],true),0.5f,bbEntityZ(e->room->objects[3],true),true);
                 bbResetEntity(Curr173->collider);
 
                 e->eventState = 1;
@@ -175,14 +175,14 @@ void UpdateEvent_cont_008_1(Event* e) {
 
                     if (e->eventState2==0) {
                         bbShowEntity(e->room->objects[2]);
-                        if (mainPlayer->blinkTimer<-10 & Curr173->idle == 0) {
-                            bbPositionEntity(Curr173->collider, bbEntityX(e->room->objects[4],true),0.5,bbEntityZ(e->room->objects[4],true),true);
+                        if (mainPlayer->blinkTimer<-10 && Curr173->idle == 0) {
+                            bbPositionEntity(Curr173->collider, bbEntityX(e->room->objects[4],true),0.5f,bbEntityZ(e->room->objects[4],true),true);
                             bbResetEntity(Curr173->collider);
 
                             bbHideEntity(e->room->objects[2]);
 
                             if (!IsPlayerWearingItem(mainPlayer,"hazmatsuit")) {
-                                mainPlayer->injuries = mainPlayer->injuries+0.1;
+                                mainPlayer->injuries = mainPlayer->injuries+0.1f;
                                 mainPlayer->infect008 = 1;
                                 Msg = "The window shattered and a piece of glass cut your arm.";
                                 MsgTimer = 70*8;
@@ -209,12 +209,12 @@ void UpdateEvent_cont_008_1(Event* e) {
                     e->eventState = 2;
                     PlaySound_SM(sndManager->lever);
                 } else {
-                    p = CreateParticle(bbEntityX(e->room->objects[0],true),bbEntityY(e->room->objects[0],true),bbEntityZ(e->room->objects[0],true), PARTICLE_SMOKE_WHITE, 0.02, -0.12);
+                    p = CreateParticle(bbEntityX(e->room->objects[0],true),bbEntityY(e->room->objects[0],true),bbEntityZ(e->room->objects[0],true), PARTICLE_SMOKE_WHITE, 0.02f, -0.12f);
                     bbRotateEntity(p->pvt,-90,0,0,true);
                     bbTurnEntity(p->pvt, bbRnd(-26,26), bbRnd(-26,26), bbRnd(360));
 
-                    p->sizeChange = 0.012;
-                    p->aChange = -0.015;
+                    p->sizeChange = 0.012f;
+                    p->aChange = -0.015f;
                 }
             } else {
                 bbHideEntity(e->room->objects[5]);
@@ -229,7 +229,7 @@ void UpdateEvent_cont_008_1(Event* e) {
                 }
             }
         } else {
-            p = CreateParticle(bbEntityX(e->room->objects[0],true),bbEntityY(e->room->objects[0],true),bbEntityZ(e->room->objects[0],true), PARTICLE_SMOKE_WHITE, 0.02, -0.12);
+            p = CreateParticle(bbEntityX(e->room->objects[0],true),bbEntityY(e->room->objects[0],true),bbEntityZ(e->room->objects[0],true), PARTICLE_SMOKE_WHITE, 0.02f, -0.12f);
             bbRotateEntity(p->pvt,-90,0,0,true);
             bbTurnEntity(p->pvt, bbRnd(-26,26), bbRnd(-26,26), bbRnd(360));
         }

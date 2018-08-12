@@ -64,7 +64,7 @@ void UpdateEventRoom2trick(Event* e) {
 
                 mainPlayer->blinkTimer = -10;
 
-                bbPositionEntity(mainPlayer->collider, bbEntityX(pvt),bbEntityY(pvt)+0.05,bbEntityZ(pvt));
+                bbPositionEntity(mainPlayer->collider, bbEntityX(pvt),bbEntityY(pvt)+0.05f,bbEntityZ(pvt));
                 bbUpdateWorld();
                 //ResetEntity(Collider)
 

@@ -861,7 +861,7 @@ void UpdateRooms() {
     //TempLightVolume=0
     int foundPlayerRoom = false;
     if (mainPlayer->currRoom!=nullptr) {
-        if (abs(bbEntityY(mainPlayer->collider) - bbEntityY(mainPlayer->currRoom->obj)) < 1.5) {
+        if (abs(bbEntityY(mainPlayer->collider) - bbEntityY(mainPlayer->currRoom->obj)) < 1.5f) {
             x = abs(mainPlayer->currRoom->x-bbEntityX(mainPlayer->collider,true));
             if (x < 4.f) {
                 z = abs(mainPlayer->currRoom->z-bbEntityZ(mainPlayer->collider,true));
@@ -915,7 +915,7 @@ void UpdateRooms() {
         r->dist = Max(x,z);
 
 
-        if (x<16 & z < 16) {
+        if (x<16 && z < 16) {
             for (i = 0; i <= MaxRoomEmitters-1; i++) {
                 if (r->soundEmitter[i]!=0) {
                     dist = bbEntityDistance(r->soundEmitterObj[i],mainPlayer->collider);
@@ -925,10 +925,10 @@ void UpdateRooms() {
                 }
             }
 
-            if ((!foundPlayerRoom) & (mainPlayer->currRoom!=r)) {
+            if ((!foundPlayerRoom) && (mainPlayer->currRoom!=r)) {
                 if (x < 4.f) {
                     if (z < 4.f) {
-                        if (abs(bbEntityY(mainPlayer->collider) - bbEntityY(r->obj)) < 1.5) {
+                        if (abs(bbEntityY(mainPlayer->collider) - bbEntityY(r->obj)) < 1.5f) {
                             mainPlayer->currRoom = r;
                         }
                         foundPlayerRoom = true;
@@ -977,7 +977,7 @@ void UpdateRooms() {
     //MapFound(Floor(EntityX(mainPlayer\currRoom\obj) / 8.f), Floor(EntityZ(mainPlayer\currRoom\obj) / 8.f)) = 1
     mainPlayer->currRoom->found = true;
 
-    //TempLightVolume = Max(TempLightVolume / 4.5, 1.f)
+    //TempLightVolume = Max(TempLightVolume / 4.5f, 1.f)
 
     if (mainPlayer->currRoom!=nullptr) {
         SetRoomVisibility(mainPlayer->currRoom,true);
@@ -1044,14 +1044,14 @@ Light* AddLight(Room* room, float x, float y, float z, int ltype, float range, i
 
                 room->lightSprites[i] = bbCreateSprite();
                 bbPositionEntity(room->lightSprites[i], x, y, z);
-                bbScaleSprite(room->lightSprites[i], 0.13 , 0.13);
+                bbScaleSprite(room->lightSprites[i], 0.13f , 0.13f);
                 bbEntityTexture(room->lightSprites[i], lightSpriteTex);
                 bbEntityBlend(room->lightSprites[i], 3);
 
                 bbEntityParent(room->lightSprites[i], room->obj);
 
                 room->lightSpritesPivot[i] = bbCreatePivot();
-                bbEntityRadius(room->lightSpritesPivot[i],0.05);
+                bbEntityRadius(room->lightSpritesPivot[i],0.05f);
                 bbPositionEntity(room->lightSpritesPivot[i], x, y, z);
                 bbEntityParent(room->lightSpritesPivot[i], room->obj);
 
@@ -1067,7 +1067,7 @@ Light* AddLight(Room* room, float x, float y, float z, int ltype, float range, i
         bbPositionEntity(light,x,y,z,true);
         sprite = bbCreateSprite();
         bbPositionEntity(sprite, x, y, z);
-        bbScaleSprite(sprite, 0.13 , 0.13);
+        bbScaleSprite(sprite, 0.13f , 0.13f);
         bbEntityTexture(sprite, lightSpriteTex);
         bbEntityBlend(sprite, 3);
         return light;
@@ -1104,19 +1104,11 @@ WayPoint* CreateWaypoint(float x, float y, float z, Room* room) {
 
 void InitWayPoints(int loadingstart) {
     WayPoint* w;
-    WayPoint* w2;
-    Room* r;
 
-    float x;
-    float y;
-    float z;
     int i;
     MeshModel* tline;
 
     int temper = bbMilliSecs();
-
-    float dist;
-    float dist2;
 
     for (int iterator79 = 0; iterator79 < WayPoint::getListSize(); iterator79++) {
         w = WayPoint::getObject(iterator79);
@@ -1163,13 +1155,13 @@ int FindPath(NPC* n, float x, float y, float z) {
 
     int length = 0;
 
-    int StartX = (int)(bbFloor(bbEntityX(n->collider,true) / 8.f + 0.5));
-    int StartZ = (int)(bbFloor(bbEntityZ(n->collider,true) / 8.f + 0.5));
+    int StartX = (int)(bbFloor(bbEntityX(n->collider,true) / 8.f + 0.5f));
+    int StartZ = (int)(bbFloor(bbEntityZ(n->collider,true) / 8.f + 0.5f));
     //If (StartX < 0 Or StartX > MapWidth) Then Return 2
     //If (StartZ < 0 Or StartZ > MapWidth) Then Return 2
 
-    int EndX = (int)(bbFloor(x / 8.f + 0.5));
-    int EndZ = (int)(bbFloor(z / 8.f + 0.5));
+    int EndX = (int)(bbFloor(x / 8.f + 0.5f));
+    int EndZ = (int)(bbFloor(z / 8.f + 0.5f));
     //If (EndX < 0 Or EndX > MapWidth) Then Return 2
     //If (EndZ < 0 Or EndZ > MapWidth) Then Return 2
 
@@ -1198,7 +1190,7 @@ int FindPath(NPC* n, float x, float y, float z) {
     bbPositionEntity(pvt, x,y,z, true);
 
     tempPivot = bbCreatePivot();
-    bbPositionEntity(tempPivot, bbEntityX(n->collider,true), bbEntityY(n->collider,true)+0.15, bbEntityZ(n->collider,true));
+    bbPositionEntity(tempPivot, bbEntityX(n->collider,true), bbEntityY(n->collider,true)+0.15f, bbEntityZ(n->collider,true));
 
     dist = 350.f;
     for (int iterator81 = 0; iterator81 < WayPoint::getListSize(); iterator81++) {
@@ -1260,7 +1252,7 @@ int FindPath(NPC* n, float x, float y, float z) {
     bbFreeEntity(pvt);
 
     if (EndPoint == StartPoint) {
-        if (dist < 0.4) {
+        if (dist < 0.4f) {
             return 0;
         } else {
             n->path[0] = EndPoint;
@@ -1304,7 +1296,7 @@ int FindPath(NPC* n, float x, float y, float z) {
                             gtemp = w->gCost+w->dist[i];
                             //TODO: fix?
                             //If (n\npcType = NPCtypeMTF) Then
-                            //	If (w\connected[i]\door = Null) Then gtemp = gtemp + 0.5
+                            //	If (w\connected[i]\door = Null) Then gtemp = gtemp + 0.5f
                             //EndIf
                             //parempi reitti -> overwrite
                             if (gtemp < w->connected[i]->gCost) {
@@ -1317,7 +1309,7 @@ int FindPath(NPC* n, float x, float y, float z) {
                             gtemp = w->gCost+w->dist[i];
                             //TODO: fix?
                             //If (n\npcType = NPCtypeMTF) Then
-                            //	If (w\connected[i]\door = Null) Then gtemp = gtemp + 0.5
+                            //	If (w\connected[i]\door = Null) Then gtemp = gtemp + 0.5f
                             //EndIf
                             w->connected[i]->gCost = gtemp;
                             w->connected[i]->fCost = w->gCost+w->hCost;
@@ -1431,7 +1423,7 @@ Screen* CreateScreen(float x, float y, float z, const String& imgpath, Room* r) 
     Screen* s = new Screen();
     s->obj = bbCreatePivot();
     bbEntityPickMode(s->obj, 1);
-    bbEntityRadius(s->obj, 0.1);
+    bbEntityRadius(s->obj, 0.1f);
 
     bbPositionEntity(s->obj, x,y,z);
     s->imgpath = imgpath;
@@ -1454,9 +1446,9 @@ void UpdateScreens() {
         s = Screen::getObject(iterator84);
 
         if (s->room == mainPlayer->currRoom) {
-            if (bbEntityDistance(mainPlayer->collider,s->obj)<1.2) {
-                bbEntityPick(mainPlayer->cam, 1.2);
-                if (bbPickedEntity()==s->obj & !s->imgpath.equals("")) {
+            if (bbEntityDistance(mainPlayer->collider,s->obj)<1.2f) {
+                bbEntityPick(mainPlayer->cam, 1.2f);
+                if (bbPickedEntity()==s->obj && !s->imgpath.equals("")) {
                     DrawHandIcon = true;
                     if (MouseUp1) {
                         SelectedScreen = s;
@@ -1478,9 +1470,9 @@ SecurityCam* CreateSecurityCam(float x, float y, float z, Room* r, int screen) {
     float scale;
 
     sc->obj = bbCopyMeshModelEntity(CamBaseOBJ);
-    bbScaleEntity(sc->obj, 0.0015, 0.0015, 0.0015);
+    bbScaleEntity(sc->obj, 0.0015f, 0.0015f, 0.0015f);
     sc->cameraObj = bbCopyMeshModelEntity(CamOBJ);
-    bbScaleEntity(sc->cameraObj, 0.01, 0.01, 0.01);
+    bbScaleEntity(sc->cameraObj, 0.01f, 0.01f, 0.01f);
 
     sc->room = r;
 
@@ -1490,19 +1482,19 @@ SecurityCam* CreateSecurityCam(float x, float y, float z, Room* r, int screen) {
 
         sc->renderInterval = 12;
 
-        scale = RoomScale * 4.5 * 0.4;
+        scale = RoomScale * 4.5f * 0.4f;
 
         sc->scrObj = bbCreateSprite();
         bbEntityFX(sc->scrObj, 17);
         bbSpriteViewMode(sc->scrObj, 2);
         sc->scrTexture = 0;
         bbEntityTexture(sc->scrObj, ScreenTexs[sc->scrTexture]);
-        bbScaleSprite(sc->scrObj, bbMeshWidth(Monitor) * scale * 0.95 * 0.5, bbMeshHeight(Monitor) * scale * 0.95 * 0.5);
+        bbScaleSprite(sc->scrObj, bbMeshWidth(Monitor) * scale * 0.95f * 0.5f, bbMeshHeight(Monitor) * scale * 0.95f * 0.5f);
 
         sc->scrOverlay = bbCreateSprite(sc->scrObj);
-        //	scaleSprite(sc\scrOverlay , 0.5, 0.4)
-        bbScaleSprite(sc->scrOverlay, bbMeshWidth(Monitor) * scale * 0.95 * 0.5, bbMeshHeight(Monitor) * scale * 0.95 * 0.5);
-        bbMoveEntity(sc->scrOverlay, 0, 0, -0.0005);
+        //	scaleSprite(sc\scrOverlay , 0.5f, 0.4f)
+        bbScaleSprite(sc->scrOverlay, bbMeshWidth(Monitor) * scale * 0.95f * 0.5f, bbMeshHeight(Monitor) * scale * 0.95f * 0.5f);
+        bbMoveEntity(sc->scrOverlay, 0, 0, -0.0005f);
         bbEntityTexture(sc->scrOverlay, MonitorTexture);
         bbSpriteViewMode(sc->scrOverlay, 2);
         bbEntityBlend(sc->scrOverlay , 3);
@@ -1513,8 +1505,8 @@ SecurityCam* CreateSecurityCam(float x, float y, float z, Room* r, int screen) {
 
         sc->cam = bbCreateCamera();
         bbCameraViewport(sc->cam, 0, 0, 512, 512);
-        bbCameraRange(sc->cam, 0.05, 6.f);
-        bbCameraZoom(sc->cam, 0.8);
+        bbCameraRange(sc->cam, 0.05f, 6.f);
+        bbCameraZoom(sc->cam, 0.8f);
         bbHideEntity(sc->cam);
     }
 
@@ -1547,7 +1539,7 @@ void UpdateSecurityCams() {
         sc = SecurityCam::getObject(iterator85);
 
         close = false;
-        if (sc->room == nullptr & (!sc->specialCam)) {
+        if (sc->room == nullptr && (!sc->specialCam)) {
             bbHideEntity(sc->cam);
         } else {
             if (!sc->specialCam) {
@@ -1591,31 +1583,31 @@ void UpdateSecurityCams() {
                     }
                     bbRotateEntity(sc->cameraObj, CurveAngle(temp, bbEntityPitch(sc->cameraObj), 75.f), bbEntityYaw(sc->obj), 0);
 
-                    bbPositionEntity(sc->cameraObj, bbEntityX(sc->obj, true), bbEntityY(sc->obj, true) - 0.083, bbEntityZ(sc->obj, true));
+                    bbPositionEntity(sc->cameraObj, bbEntityX(sc->obj, true), bbEntityY(sc->obj, true) - 0.083f, bbEntityZ(sc->obj, true));
                     bbRotateEntity(sc->cameraObj, bbEntityPitch(sc->cameraObj), bbEntityYaw(sc->obj), 0);
                 } else {
                     if (sc->turn > 0) {
                         if (sc->dir == 0) {
-                            sc->currAngle = sc->currAngle+0.2 * timing->tickDuration;
-                            if (sc->currAngle > (sc->turn * 1.3)) {
+                            sc->currAngle = sc->currAngle+0.2f * timing->tickDuration;
+                            if (sc->currAngle > (sc->turn * 1.3f)) {
                                 sc->dir = 1;
                             }
                         } else {
-                            sc->currAngle = sc->currAngle-0.2 * timing->tickDuration;
-                            if (sc->currAngle < (-sc->turn * 1.3)) {
+                            sc->currAngle = sc->currAngle-0.2f * timing->tickDuration;
+                            if (sc->currAngle < (-sc->turn * 1.3f)) {
                                 sc->dir = 0;
                             }
                         }
                     }
                     bbRotateEntity(sc->obj, 0, sc->room->angle + sc->angle + Max(Min(sc->currAngle, sc->turn), -sc->turn), 0);
 
-                    bbPositionEntity(sc->cameraObj, bbEntityX(sc->obj, true), bbEntityY(sc->obj, true) - 0.083, bbEntityZ(sc->obj, true));
+                    bbPositionEntity(sc->cameraObj, bbEntityX(sc->obj, true), bbEntityY(sc->obj, true) - 0.083f, bbEntityZ(sc->obj, true));
                     bbRotateEntity(sc->cameraObj, bbEntityPitch(sc->cameraObj), bbEntityYaw(sc->obj), 0);
 
                     if (sc->cam!=0) {
                         bbPositionEntity(sc->cam, bbEntityX(sc->cameraObj, true), bbEntityY(sc->cameraObj, true), bbEntityZ(sc->cameraObj, true));
                         bbRotateEntity(sc->cam, bbEntityPitch(sc->cameraObj), bbEntityYaw(sc->cameraObj), 0);
-                        bbMoveEntity(sc->cam, 0, 0, 0.1);
+                        bbMoveEntity(sc->cam, 0, 0, 0.1f);
                     }
 
                     if (sc!=CoffinCam) {
@@ -1632,7 +1624,7 @@ void UpdateSecurityCams() {
                 if (sc->screen) {
                     sc->state = sc->state+timing->tickDuration;
 
-                    if (sc->inSight & sc->allowSaving) {
+                    if (sc->inSight && sc->allowSaving) {
                         // TODO: Fix.
                         if (/*SelectedDifficulty->saveType == SAVEONSCREENS && */bbEntityDistance(mainPlayer->cam, sc->scrObj)<1.f) {
                             DrawHandIcon = true;
@@ -1648,7 +1640,7 @@ void UpdateSecurityCams() {
 
                     if (sc->state >= sc->renderInterval) {
                         sc->inSight = false;
-                        if (mainPlayer->blinkTimer > - 5 & bbEntityInView(sc->scrObj, mainPlayer->cam)) {
+                        if (mainPlayer->blinkTimer > - 5 && bbEntityInView(sc->scrObj, mainPlayer->cam)) {
                             if (bbEntityVisible(mainPlayer->cam,sc->scrObj)) {
                                 sc->inSight = true;
 
@@ -1763,7 +1755,7 @@ void UpdateSecurityCams() {
                                         } else {
                                             //If (Not bbChannelPlaying(sc\soundCHN)) Then sc\soundCHN = PlaySound(HorrorSFX(4)) ;TODO: fix
                                         }
-                                        if (sc->coffinEffect==3 & bbRand(200)==1) {
+                                        if (sc->coffinEffect==3 && bbRand(200)==1) {
                                             sc->coffinEffect = 2;
                                             sc->playerState = bbRand(10000, 20000);
                                         }
@@ -1777,7 +1769,7 @@ void UpdateSecurityCams() {
                                         bbEntityTexture(sc->scrOverlay, gorePics[bbRand(0, GORE_PIC_COUNT-1)]->getTexture());
                                         //If (sc\playerState = 0) Then PlaySound(HorrorSFX(0)) ;TODO: fix
                                         sc->playerState = (int)(Max(sc->playerState, 1));
-                                        if (sc->coffinEffect==3 & bbRand(100)==1) {
+                                        if (sc->coffinEffect==3 && bbRand(100)==1) {
                                             sc->coffinEffect = 2;
                                             sc->playerState = bbRand(10000, 20000);
                                         }
@@ -1792,7 +1784,7 @@ void UpdateSecurityCams() {
                         }
                     }
 
-                    if (sc->inSight & sc->coffinEffect==0 | sc->coffinEffect==2) {
+                    if (sc->inSight && sc->coffinEffect==0 | sc->coffinEffect==2) {
                         aiPic = TextureAssetWrap::grab("GFX/079pics/face.jpg");
                         if (sc->playerState == 0) {
                             sc->playerState = bbRand(60000, 65000);
@@ -1859,7 +1851,7 @@ Prop* LoadProp(const String& file, float x, float y, float z, float pitch, float
     for (int iterator86 = 0; iterator86 < Prop::getListSize(); iterator86++) {
         p2 = Prop::getObject(iterator86);
 
-        if ((p!=p2) & (p2->file.equals(file))) {
+        if ((p!=p2) && (p2->file.equals(file))) {
             p->obj = bbCopyMeshModelEntity(p2->obj);
             break;
         }
@@ -1909,7 +1901,7 @@ void CreateMap() {
     for (y = 0; y <= mapDim-1; y++) {
         for (x = 0; x <= mapDim-1; x++) {
             if ((x % rectWidth==1) | (y % rectHeight==1)) {
-                if ((x>=rectWidth & x<mapDim-rectWidth) | (y>=rectHeight & y<mapDim-rectHeight)) {
+                if ((x>=rectWidth & x<mapDim-rectWidth) | (y>=rectHeight && y<mapDim-rectHeight)) {
                     layout[x][y]=1;
                 }
             }
@@ -1924,7 +1916,7 @@ void CreateMap() {
     for (y = 1; y <= mapDim-2; y++) {
         for (x = 0; x <= mapDim-2; x++) {
             if (y>6 | x>6) {
-                if ((y % rectHeight==1) & layout[x][y]==ROOM2) {
+                if ((y % rectHeight==1) && layout[x][y]==ROOM2) {
                     shift = bbRand(0,1);
                     if (nonShiftStreak==0) {
                         shift = 0;
@@ -1958,10 +1950,10 @@ void CreateMap() {
     int roomBelow = 0;
     for (y = 2; y <= mapDim-4; y++) {
         for (x = 0; x <= mapDim-1; x++) {
-            if ((((x/rectWidth) % 2)==punchOffset) & (layout[x][y]==ROOM2)) {
+            if ((((x/rectWidth) % 2)==punchOffset) && (layout[x][y]==ROOM2)) {
                 roomAbove = layout[x][y-1];
                 roomBelow = layout[x][y+1];
-                if (((roomAbove>=ROOM2) & (roomBelow>=ROOM2)) & ((roomAbove+roomBelow)>(ROOM2+ROOM3))) {
+                if (((roomAbove>=ROOM2) & (roomBelow>=ROOM2)) && ((roomAbove+roomBelow)>(ROOM2+ROOM3))) {
                     layout[x][y]=0;
                 }
             }
@@ -2159,7 +2151,7 @@ void CreateMap() {
                         } break;
                     }
 
-                    if ((x+tempX>=0) & (x+tempX<mapDim) & (y+tempY>=0) & (y+tempY<mapDim)) {
+                    if ((x+tempX>=0) & (x+tempX<mapDim) & (y+tempY>=0) && (y+tempY<mapDim)) {
                         r->adjacent[i] = MapRooms[x+tempX][y+tempY];
                         if (r->adjacent[i]!=nullptr) {
                             if (r->adjacent[i]->adjDoor[(i+2) % 4]==nullptr) {
@@ -2192,7 +2184,7 @@ void CreateMap() {
                                 }
 
                                 //std::cout << "step2";
-                                if (roomAWaypoint!=nullptr & roomBWaypoint!=nullptr) {
+                                if (roomAWaypoint!=nullptr && roomBWaypoint!=nullptr) {
                                     for (j = 0; j <= 15; j++) {
                                         if (roomAWaypoint->connected[j]==nullptr) {
                                             roomAWaypoint->connected[j] = newWaypoint;
@@ -2258,7 +2250,7 @@ void DetermineRoomTypes(int** layout, int mapDim) {
                     layout[x][y]=ROOM3;
                 } else if ((horNeighborCount+vertNeighborCount == 4)) {
                     layout[x][y]=ROOM4;
-                } else if ((horNeighborCount == 1) & (vertNeighborCount == 1)) {
+                } else if ((horNeighborCount == 1) && (vertNeighborCount == 1)) {
                     layout[x][y]=ROOM2C;
                 } else if ((horNeighborCount == 2) ^ (vertNeighborCount == 2)) {
                     layout[x][y]=ROOM2;

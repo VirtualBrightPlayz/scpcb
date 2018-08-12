@@ -38,7 +38,7 @@ void FillRoom_cont_1162_2c(Room* r) {
     bbPositionEntity(r->objects[0],r->x+1012.f*RoomScale,r->y+128.f*RoomScale,r->z-640.f*RoomScale);
     bbEntityParent(r->objects[0],r->obj);
     bbEntityPickMode(r->objects[0],1);
-    it = CreatePaper("doc1162", r->x + 863.227 * RoomScale, r->y + 152.f * RoomScale, r->z - 953.231 * RoomScale);
+    it = CreatePaper("doc1162", r->x + 863.227f * RoomScale, r->y + 152.f * RoomScale, r->z - 953.231f * RoomScale);
     bbEntityParent(it->collider, r->obj);
 
     sc = CreateSecurityCam(r->x-192.f*RoomScale, r->y+704.f*RoomScale, r->z+192.f*RoomScale, r);
@@ -96,7 +96,7 @@ void UpdateEvent_cont_1162_2c(Event* e) {
     //- 1.f = item "trade" will happen
     //- 2.f = the player doesn't has any items in the Inventory, giving him heavily injuries and giving him a random item
     //- 3.f = player got a memorial item (to explain a bit D-9341's background)
-    //- 3.1 = player got a memorial item + injuries (because he didn't had any item in his inventory before)
+    //- 3.1f = player got a memorial item + injuries (because he didn't had any item in his inventory before)
     if (mainPlayer->currRoom == e->room) {
 
         mainPlayer->grabbedEntity = 0;
@@ -111,13 +111,13 @@ void UpdateEvent_cont_1162_2c(Event* e) {
             it = Item::getObject(iterator159);
 
             if (!it->picked) {
-                if (bbEntityDistance(it->collider,e->room->objects[0])<0.75) {
+                if (bbEntityDistance(it->collider,e->room->objects[0])<0.75f) {
                     pick1162 = false;
                 }
             }
         }
 
-        if (bbEntityDistance(e->room->objects[0],mainPlayer->collider)<0.75 & pick1162) {
+        if (bbEntityDistance(e->room->objects[0],mainPlayer->collider)<0.75f && pick1162) {
             DrawHandIcon = true;
             if (MouseHit1) {
                 mainPlayer->grabbedEntity = e->room->objects[0];
@@ -142,7 +142,7 @@ void UpdateEvent_cont_1162_2c(Event* e) {
 
                     if (bbRand(8)==1) {
                         if (isSlotEmpty) {
-                            e->eventState3 = 3.1;
+                            e->eventState3 = 3.1f;
                         } else {
                             e->eventState3 = 3.f;
                         }
@@ -181,7 +181,7 @@ void UpdateEvent_cont_1162_2c(Event* e) {
                             }
                         }
 
-                        if ((!itemExists) & (!isSlotEmpty)) {
+                        if ((!itemExists) && (!isSlotEmpty)) {
                             break;
                         }
                     } else {
@@ -208,37 +208,37 @@ void UpdateEvent_cont_1162_2c(Event* e) {
                     // TODO: No.
                     //switch (mainPlayer->inventory->items[(int)(e->eventState2)]->itemTemplate->name) {
                     //    case "key": {
-                    //        if (itt->name.equals("key1") | itt->name.equals("key2") & bbRand(2)==1) {
+                    //        if (itt->name.equals("key1") | itt->name.equals("key2") && bbRand(2)==1) {
                     //            shouldCreateItem = true;
                     //            std::cout << "lostkey";
                     //        }
                     //    }
                     //    case "paper","oldpaper": {
-                    //        if (itt->name.equals("paper") & bbRand(12)==1) {
+                    //        if (itt->name.equals("paper") && bbRand(12)==1) {
                     //            shouldCreateItem = true;
                     //            std::cout << "paper";
                     //        }
                     //    }
                     //    case "gasmask","gasmask3","supergasmask","hazmatsuit","hazmatsuit2","hazmatsuit3": {
-                    //        if (itt->name.equals("gasmask") | itt->name.equals("gasmask3") | itt->name.equals("supergasmask") | itt->name.equals("hazmatsuit") | itt->name.equals("hazmatsuit2") | itt->name.equals("hazmatsuit3") & bbRand(2)==1) {
+                    //        if (itt->name.equals("gasmask") | itt->name.equals("gasmask3") | itt->name.equals("supergasmask") | itt->name.equals("hazmatsuit") | itt->name.equals("hazmatsuit2") | itt->name.equals("hazmatsuit3") && bbRand(2)==1) {
                     //            shouldCreateItem = true;
                     //            std::cout << "gasmask hazmat";
                     //        }
                     //    }
                     //    case "key1","key2","key3": {
-                    //        if (itt->name.equals("key1") | itt->name.equals("key2") | itt->name.equals("key3") | itt->name.equals("misc") & bbRand(6)==1) {
+                    //        if (itt->name.equals("key1") | itt->name.equals("key2") | itt->name.equals("key3") | itt->name.equals("misc") && bbRand(6)==1) {
                     //            shouldCreateItem = true;
                     //            std::cout << "key";
                     //        }
                     //    }
                     //    case "vest","finevest": {
-                    //        if (itt->name.equals("vest") | itt->name.equals("finevest") & bbRand(1)==1) {
+                    //        if (itt->name.equals("vest") | itt->name.equals("finevest") && bbRand(1)==1) {
                     //            shouldCreateItem = true;
                     //            std::cout << "vest";
                     //        }
                     //    }
                     //    default: {
-                    //        if (itt->name.equals("misc") & bbRand(6)==1) {
+                    //        if (itt->name.equals("misc") && bbRand(6)==1) {
                     //            shouldCreateItem = true;
                     //            std::cout << "default";
                     //        }
@@ -262,17 +262,17 @@ void UpdateEvent_cont_1162_2c(Event* e) {
         } else if ((e->eventState3 == 2.f)) {
             mainPlayer->injuries = mainPlayer->injuries + 5.f;
             pvt = bbCreatePivot();
-            bbPositionEntity(pvt, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)-0.05,bbEntityZ(mainPlayer->collider));
+            bbPositionEntity(pvt, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)-0.05f,bbEntityZ(mainPlayer->collider));
             bbTurnEntity(pvt, 90, 0, 0);
-            bbEntityPick(pvt,0.3);
-            de = CreateDecal(DECAL_BLOOD_SPLATTER, bbPickedX(), bbPickedY()+0.005, bbPickedZ(), 90, bbRand(360), 0);
-            de->size = 0.75;
+            bbEntityPick(pvt,0.3f);
+            de = CreateDecal(DECAL_BLOOD_SPLATTER, bbPickedX(), bbPickedY()+0.005f, bbPickedZ(), 90, bbRand(360), 0);
+            de->size = 0.75f;
             bbScaleSprite(de->obj, de->size, de->size);
             bbFreeEntity(pvt);
             for (int iterator162 = 0; iterator162 < ItemTemplate::getListSize(); iterator162++) {
                 itt = ItemTemplate::getObject(iterator162);
 
-                if (IsItemGoodFor1162(itt) & bbRand(6)==1) {
+                if (IsItemGoodFor1162(itt) && bbRand(6)==1) {
                     it = CreateItem(itt->name, bbEntityX(pp,true),bbEntityY(pp,true),bbEntityZ(pp,true));
                     MouseHit1 = false;
                     e->eventState3 = 0.f;
@@ -294,17 +294,17 @@ void UpdateEvent_cont_1162_2c(Event* e) {
             }
             //trade with nostalgia item
         } else if ((e->eventState3 >= 3.f)) {
-            if (e->eventState3 < 3.1) {
+            if (e->eventState3 < 3.1f) {
                 PlaySound2(LoadTempSound("SFX/SCP/1162/Exchange"+String(bbRand(0,4))+".ogg"));
                 RemoveItem(mainPlayer->inventory->items[(int)(e->eventState2)]);
             } else {
                 mainPlayer->injuries = mainPlayer->injuries + 5.f;
                 pvt = bbCreatePivot();
-                bbPositionEntity(pvt, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)-0.05,bbEntityZ(mainPlayer->collider));
+                bbPositionEntity(pvt, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)-0.05f,bbEntityZ(mainPlayer->collider));
                 bbTurnEntity(pvt, 90, 0, 0);
-                bbEntityPick(pvt,0.3);
-                de = CreateDecal(DECAL_BLOOD_SPLATTER, bbPickedX(), bbPickedY()+0.005, bbPickedZ(), 90, bbRand(360), 0);
-                de->size = 0.75;
+                bbEntityPick(pvt,0.3f);
+                de = CreateDecal(DECAL_BLOOD_SPLATTER, bbPickedX(), bbPickedY()+0.005f, bbPickedZ(), 90, bbRand(360), 0);
+                de->size = 0.75f;
                 bbScaleSprite(de->obj, de->size, de->size);
                 bbFreeEntity(pvt);
                 if (mainPlayer->injuries > 15) {

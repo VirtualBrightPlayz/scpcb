@@ -162,7 +162,7 @@ void UpdateEvent_cont_1123_2(Event* e) {
             //e\room\npc[1] = CreateNPC(NPCtypeD, EntityX(e\room\objects[7],True),EntityY(e\room\objects[7],True),EntityZ(e\room\objects[7],True))
 
             nazi = bbLoadAnimMesh("GFX/npcs/naziofficer.b3d");
-            scale = 0.5 / bbMeshWidth(nazi);
+            scale = 0.5f / bbMeshWidth(nazi);
 
             bbFreeEntity(e->room->npc[0]->obj);
             e->room->npc[0]->obj = bbCopyMeshModelEntity(nazi);
@@ -188,7 +188,7 @@ void UpdateEvent_cont_1123_2(Event* e) {
             bbPointEntity(e->room->npc[0]->collider, mainPlayer->collider);
             mainPlayer->blurTimer = Max(mainPlayer->blurTimer, 100);
 
-            if (e->eventState2>200 & e->eventState2-timing->tickDuration<=200) {
+            if (e->eventState2>200 && e->eventState2-timing->tickDuration<=200) {
                 //e\sounds[0] = LoadSound("SFX/Music/1123.ogg");TODO: fix
                 e->soundChannels[0] = bbPlaySound(e->sounds[0]);
             }
@@ -201,13 +201,13 @@ void UpdateEvent_cont_1123_2(Event* e) {
                 }
                 bbRotateEntity(e->room->objects[11], 0, CurveAngle(10, bbEntityYaw(e->room->objects[11],0), 40), 0);
 
-                if (e->eventState2>=1040 & e->eventState2-timing->tickDuration<1040) {
+                if (e->eventState2>=1040 && e->eventState2-timing->tickDuration<1040) {
                     PlayRangedSound(LoadTempSound("SFX/SCP/1123/Officer1.ogg"), mainPlayer->cam, e->room->npc[0]->obj);
-                } else if ((e->eventState2>=1400 & e->eventState2-timing->tickDuration<1400)) {
+                } else if ((e->eventState2>=1400 && e->eventState2-timing->tickDuration<1400)) {
                     PlayRangedSound(LoadTempSound("SFX/SCP/1123/Officer2.ogg"), mainPlayer->cam, e->room->npc[0]->obj);
                 }
 
-                //Animate2(e\room\objects[4], AnimTime(e\room\objects[4]), 0, 8, 0.1, False)
+                //Animate2(e\room\objects[4], AnimTime(e\room\objects[4]), 0, 8, 0.1f, False)
                 if (bbEntityDistance(mainPlayer->collider, e->room->objects[4])>392*RoomScale) {
                     mainPlayer->blinkTimer = -10;
                     mainPlayer->blurTimer = 500;
@@ -236,7 +236,7 @@ void UpdateEvent_cont_1123_2(Event* e) {
 
             bbTFormPoint(bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider),bbEntityZ(mainPlayer->collider),0,e->room->obj);
 
-            if (bbTFormedX()<256 & bbTFormedZ()>-480) {
+            if (bbTFormedX()<256 && bbTFormedZ()>-480) {
                 e->room->doors[0]->open = false;
             }
 
@@ -255,15 +255,15 @@ void UpdateEvent_cont_1123_2(Event* e) {
                 if (bbEntityYaw(e->room->objects[13], false)>30) {
                     e->room->npc[0]->state = 3;
                     bbPointEntity(e->room->npc[0]->collider, mainPlayer->collider);
-                    AnimateNPC(e->room->npc[0], 570, 596, 0.5, false);
+                    AnimateNPC(e->room->npc[0], 570, 596, 0.5f, false);
                     if (e->room->npc[0]->frame >= 596) {
                         e->eventState = 5;
                         e->eventState2 = 0;
-                        bbPositionEntity(mainPlayer->collider, bbEntityX(e->room->obj,true),0.3,bbEntityZ(e->room->obj,true),true);
+                        bbPositionEntity(mainPlayer->collider, bbEntityX(e->room->obj,true),0.3f,bbEntityZ(e->room->obj,true),true);
                         bbResetEntity(mainPlayer->collider);
                         mainPlayer->blinkTimer = -10;
                         mainPlayer->blurTimer = 500;
-                        mainPlayer->injuries = 1.5;
+                        mainPlayer->injuries = 1.5f;
                         mainPlayer->bloodloss = 70;
                         //PlaySound2(LoadTempSound("SFX/Door/WoodenDoorClose.ogg"))
                     }
@@ -289,16 +289,16 @@ void UpdateEvent_cont_1123_2(Event* e) {
                 x = (bbEntityX(mainPlayer->collider, true)+bbEntityX(e->room->objects[12], true))/2;
                 z = (bbEntityZ(mainPlayer->collider, true)+bbEntityZ(e->room->objects[12], true))/2;
 
-                bbPositionEntity(e->room->npc[0]->collider, x,y+0.2,z);
+                bbPositionEntity(e->room->npc[0]->collider, x,y+0.2f,z);
                 bbResetEntity(e->room->npc[0]->collider);
 
-                mainPlayer->injuries = 1.5;
+                mainPlayer->injuries = 1.5f;
                 mainPlayer->bloodloss = 70;
 
                 mainPlayer->blinkTimer = -10;
 
-                de = CreateDecal(DECAL_BLOOD_SPLATTER, bbEntityX(mainPlayer->collider), 512*RoomScale + 0.0005, bbEntityZ(mainPlayer->collider),90,bbRnd(360),0);
-                de->size = 0.5;
+                de = CreateDecal(DECAL_BLOOD_SPLATTER, bbEntityX(mainPlayer->collider), 512*RoomScale + 0.0005f, bbEntityZ(mainPlayer->collider),90,bbRnd(360),0);
+                de->size = 0.5f;
                 bbScaleSprite(de->obj, de->size, de->size);
 
                 e->room->npc[0]->sounds[0] = bbLoadSound("SFX/SCP/1123/Officer3.ogg");
@@ -323,7 +323,7 @@ void UpdateEvent_cont_1123_2(Event* e) {
                 }
             }
         } else if ((e->eventState==7)) {
-            bbPositionEntity(mainPlayer->collider, bbEntityX(e->room->obj,true),0.3,bbEntityZ(e->room->obj,true),true);
+            bbPositionEntity(mainPlayer->collider, bbEntityX(e->room->obj,true),0.3f,bbEntityZ(e->room->obj,true),true);
             bbResetEntity(mainPlayer->collider);
             bbShowEntity(mainPlayer->overlays[OVERLAY_WHITE]);
             mainPlayer->lightFlash = 6;

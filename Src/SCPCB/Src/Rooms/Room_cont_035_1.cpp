@@ -72,8 +72,8 @@ void FillRoom_cont_035_1(Room* r) {
     for (i = 0; i <= 1; i++) {
         r->levers[i] = CreateLever();
 
-        bbScaleEntity(r->levers[i]->baseObj, 0.04, 0.04, 0.04);
-        bbScaleEntity(r->levers[i]->obj, 0.04, 0.04, 0.04);
+        bbScaleEntity(r->levers[i]->baseObj, 0.04f, 0.04f, 0.04f);
+        bbScaleEntity(r->levers[i]->obj, 0.04f, 0.04f, 0.04f);
         bbPositionEntity(r->levers[i]->baseObj, r->x + 210.f * RoomScale, r->y + 224.f * RoomScale, r->z - (208-i*76) * RoomScale, true);
         bbPositionEntity(r->levers[i]->obj, r->x + 210.f * RoomScale, r->y + 224.f * RoomScale, r->z - (208-i*76) * RoomScale, true);
 
@@ -84,45 +84,45 @@ void FillRoom_cont_035_1(Room* r) {
         bbRotateEntity(r->levers[i]->obj, -80, -90, 0);
 
         bbEntityPickMode(r->levers[i]->obj, 1, false);
-        bbEntityRadius(r->levers[i]->obj, 0.1);
+        bbEntityRadius(r->levers[i]->obj, 0.1f);
     }
 
     //the control room
     r->objects[3] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[3], r->x + 456 * RoomScale, 0.5, r->z + 400.f * RoomScale, true);
+    bbPositionEntity(r->objects[3], r->x + 456 * RoomScale, 0.5f, r->z + 400.f * RoomScale, true);
 
     r->objects[4] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[4], r->x - 576 * RoomScale, 0.5, r->z + 640.f * RoomScale, true);
+    bbPositionEntity(r->objects[4], r->x - 576 * RoomScale, 0.5f, r->z + 640.f * RoomScale, true);
 
     for (i = 0; i <= 1; i++) {
         em = CreateEmitter(r->x - 272.f * RoomScale, 10, r->z + (624.f-i*512) * RoomScale, 0);
         bbTurnEntity(em->obj, 90, 0, 0, true);
         bbEntityParent(em->obj, r->obj);
         em->randAngle = 15;
-        em->speed = 0.05;
-        em->sizeChange = 0.007;
-        em->aChange = -0.006;
-        em->gravity = -0.24;
+        em->speed = 0.05f;
+        em->sizeChange = 0.007f;
+        em->aChange = -0.006f;
+        em->gravity = -0.24f;
 
         r->objects[5+i] = em->obj;
     }
 
     //the corners of the cont chamber (needed to calculate whether the player is inside the chamber)
     r->objects[7] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[7], r->x - 720 * RoomScale, 0.5, r->z + 880.f * RoomScale, true);
+    bbPositionEntity(r->objects[7], r->x - 720 * RoomScale, 0.5f, r->z + 880.f * RoomScale, true);
     r->objects[8] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[8], r->x + 176 * RoomScale, 0.5, r->z - 144.f * RoomScale, true);
+    bbPositionEntity(r->objects[8], r->x + 176 * RoomScale, 0.5f, r->z - 144.f * RoomScale, true);
 
     it = CreatePaper("doc035ad", r->x + 248.f * RoomScale, r->y + 220.f * RoomScale, r->z + 576.f * RoomScale);
     bbEntityParent(it->collider, r->obj);
 
-    it = CreateItem("radio", r->x - 544.f * RoomScale, 0.5, r->z + 704.f * RoomScale);
+    it = CreateItem("radio", r->x - 544.f * RoomScale, 0.5f, r->z + 704.f * RoomScale);
     bbEntityParent(it->collider, r->obj);
 
     it = CreateItem("scp500", r->x + 1168*RoomScale, 224*RoomScale, r->z+576*RoomScale);
     bbEntityParent(it->collider, r->obj);
 
-    it = CreateItem("scp148", r->x - 360 * RoomScale, 0.5, r->z + 644 * RoomScale);
+    it = CreateItem("scp148", r->x - 360 * RoomScale, 0.5f, r->z + 644 * RoomScale);
     bbEntityParent(it->collider, r->obj);
 
     it = CreatePaper("doc035", r->x + 1168.f * RoomScale, 104.f * RoomScale, r->z + 608.f * RoomScale);
@@ -163,7 +163,7 @@ void UpdateEvent_cont_035_1(Event* e) {
 
         if (e->eventState == 0) {
             if (bbEntityDistance(mainPlayer->collider, e->room->objects[3])<2) {
-                n = CreateNPC(NPCtypeD, bbEntityX(e->room->objects[4],true),0.5,bbEntityZ(e->room->objects[4],true));
+                n = CreateNPC(NPCtypeD, bbEntityX(e->room->objects[4],true),0.5f,bbEntityZ(e->room->objects[4],true));
 
                 n->texture = "GFX/NPCs/035victim.jpg";
                 bbHideEntity(n->obj);
@@ -188,7 +188,7 @@ void UpdateEvent_cont_035_1(Event* e) {
 
                         bbFreeEntity(e->room->npc[0]->obj);
                         e->room->npc[0]->obj = bbLoadAnimMesh("GFX/NPCs/035.b3d");
-                        x = 0.5 / bbMeshWidth(e->room->npc[0]->obj);
+                        x = 0.5f / bbMeshWidth(e->room->npc[0]->obj);
                         bbScaleEntity(e->room->npc[0]->obj, x,x,x);
 
                         bbSetAnimTime(e->room->npc[0]->obj, temp);
@@ -207,10 +207,10 @@ void UpdateEvent_cont_035_1(Event* e) {
             }
 
             if (e->eventState==1) {
-                if (bbEntityDistance(mainPlayer->collider, e->room->objects[3])<1.2) {
+                if (bbEntityDistance(mainPlayer->collider, e->room->objects[3])<1.2f) {
                     if (bbEntityInView(e->room->npc[0]->obj, mainPlayer->cam)) {
                         PlaySound2(LoadTempSound("SFX/SCP/035/GetUp.ogg"));
-                        e->eventState = 1.5;
+                        e->eventState = 1.5f;
                     }
                 }
             } else {
@@ -227,7 +227,7 @@ void UpdateEvent_cont_035_1(Event* e) {
                 if (!e->room->levers[0]->succ) {
                     //the gas valves are open
                     temp = e->room->levers[1]->succ;
-                    if (temp | (e->eventState3>25*70 & e->eventState3<50*70)) {
+                    if (temp | (e->eventState3>25*70 && e->eventState3<50*70)) {
                         if (temp) {
                             bbPositionEntity(e->room->objects[5], bbEntityX(e->room->objects[5],true), 424.f*RoomScale, bbEntityZ(e->room->objects[5],true),true);
                             bbPositionEntity(e->room->objects[6], bbEntityX(e->room->objects[6],true), 424.f*RoomScale, bbEntityZ(e->room->objects[6],true),true);
@@ -239,7 +239,7 @@ void UpdateEvent_cont_035_1(Event* e) {
 
                         if (e->eventState3 >-30*70) {
                             e->eventState3 = abs(e->eventState3)+timing->tickDuration;
-                            if (e->eventState3 > 1 & e->eventState3-timing->tickDuration<=1) {
+                            if (e->eventState3 > 1 && e->eventState3-timing->tickDuration<=1) {
                                 e->room->npc[0]->state = 0;
                                 if (e->room->npc[0]->sounds[0]!=0) {
                                     bbFreeSound(e->room->npc[0]->sounds[0]);
@@ -247,7 +247,7 @@ void UpdateEvent_cont_035_1(Event* e) {
                                 }
                                 e->room->npc[0]->sounds[0] = bbLoadSound("SFX/SCP/035/Gased1.ogg");
                                 e->room->npc[0]->soundChannels[0] = bbPlaySound(e->room->npc[0]->sounds[0]);
-                            } else if ((e->eventState3>15*70 & e->eventState3<25*70)) {
+                            } else if ((e->eventState3>15*70 && e->eventState3<25*70)) {
                                 if (e->eventState3-timing->tickDuration<=15*70) {
                                     if (e->room->npc[0]->sounds[0]!=0) {
                                         bbFreeSound(e->room->npc[0]->sounds[0]);
@@ -259,14 +259,14 @@ void UpdateEvent_cont_035_1(Event* e) {
                                 }
                                 e->room->npc[0]->state = 6;
 
-                                AnimateNPC(e->room->npc[0], 553, 529, -0.12, false);
-                            } else if ((e->eventState3>25*70 & e->eventState3<35*70)) {
+                                AnimateNPC(e->room->npc[0], 553, 529, -0.12f, false);
+                            } else if ((e->eventState3>25*70 && e->eventState3<35*70)) {
                                 e->room->npc[0]->state = 6;
-                                AnimateNPC(e->room->npc[0], 529, 524, -0.08, false);
+                                AnimateNPC(e->room->npc[0], 529, 524, -0.08f, false);
                             } else if ((e->eventState3>35*70)) {
                                 if (e->room->npc[0]->state == 6) {
                                     mainPlayer->sanity895 = -150*bbSin(bbAnimTime(e->room->npc[0]->obj)-524)*9;
-                                    AnimateNPC(e->room->npc[0], 524, 553, 0.08, false);
+                                    AnimateNPC(e->room->npc[0], 524, 553, 0.08f, false);
                                     if (e->room->npc[0]->frame==553) {
                                         e->room->npc[0]->state = 0;
                                     }
@@ -288,15 +288,15 @@ void UpdateEvent_cont_035_1(Event* e) {
                     } else {
 
                         if (e->room->npc[0]->state == 6) {
-                            if (e->room->npc[0]->frame>=501 & e->room->npc[0]->frame<=523) {
-                                e->room->npc[0]->frame = Animate2(e->room->npc[0]->obj, bbAnimTime(e->room->npc[0]->obj), 501, 523, 0.08, false);
+                            if (e->room->npc[0]->frame>=501 && e->room->npc[0]->frame<=523) {
+                                e->room->npc[0]->frame = Animate2(e->room->npc[0]->obj, bbAnimTime(e->room->npc[0]->obj), 501, 523, 0.08f, false);
                                 if (e->room->npc[0]->frame==523) {
                                     e->room->npc[0]->state = 0;
                                 }
                             }
 
-                            if (e->room->npc[0]->frame>=524 & e->room->npc[0]->frame<=553) {
-                                e->room->npc[0]->frame = Animate2(e->room->npc[0]->obj, bbAnimTime(e->room->npc[0]->obj), 524, 553, 0.08, false);
+                            if (e->room->npc[0]->frame>=524 && e->room->npc[0]->frame<=553) {
+                                e->room->npc[0]->frame = Animate2(e->room->npc[0]->obj, bbAnimTime(e->room->npc[0]->obj), 524, 553, 0.08f, false);
                                 if (e->room->npc[0]->frame==553) {
                                     e->room->npc[0]->state = 0;
                                 }
@@ -321,7 +321,7 @@ void UpdateEvent_cont_035_1(Event* e) {
                         } else if ((e->room->npc[0]->state == 1)) {
                             if (e->room->npc[0]->state2 == 1) {
                                 bbPointEntity(e->room->npc[0]->obj, e->room->objects[4]);
-                                if (bbEntityDistance(e->room->npc[0]->collider, e->room->objects[4])<0.2) {
+                                if (bbEntityDistance(e->room->npc[0]->collider, e->room->objects[4])<0.2f) {
                                     e->room->npc[0]->state = 0;
                                 }
                             } else {
@@ -364,7 +364,7 @@ void UpdateEvent_cont_035_1(Event* e) {
                         } else {
 
                             e->eventState = e->eventState+timing->tickDuration;
-                            if (e->eventState > 4*70 & e->eventState-timing->tickDuration <=4*70) {
+                            if (e->eventState > 4*70 && e->eventState-timing->tickDuration <=4*70) {
                                 if (e->room->npc[0]->sounds[0]!=0) {
                                     bbFreeSound(e->room->npc[0]->sounds[0]);
                                     e->room->npc[0]->sounds[0] = 0;
@@ -372,28 +372,28 @@ void UpdateEvent_cont_035_1(Event* e) {
                                 e->room->npc[0]->sounds[0] = bbLoadSound("SFX/SCP/035/Help1.ogg");
                                 e->room->npc[0]->soundChannels[0] = bbPlaySound(e->room->npc[0]->sounds[0]);
                                 e->eventState = 10*70;
-                            } else if ((e->eventState > 20*70 & e->eventState-timing->tickDuration <=20*70)) {
+                            } else if ((e->eventState > 20*70 && e->eventState-timing->tickDuration <=20*70)) {
                                 if (e->room->npc[0]->sounds[0]!=0) {
                                     bbFreeSound(e->room->npc[0]->sounds[0]);
                                     e->room->npc[0]->sounds[0] = 0;
                                 }
                                 e->room->npc[0]->sounds[0] = bbLoadSound("SFX/SCP/035/Help2.ogg");
                                 e->room->npc[0]->soundChannels[0] = bbPlaySound(e->room->npc[0]->sounds[0]);
-                            } else if ((e->eventState > 40*70 & e->eventState-timing->tickDuration <=40*70)) {
+                            } else if ((e->eventState > 40*70 && e->eventState-timing->tickDuration <=40*70)) {
                                 if (e->room->npc[0]->sounds[0]!=0) {
                                     bbFreeSound(e->room->npc[0]->sounds[0]);
                                     e->room->npc[0]->sounds[0] = 0;
                                 }
                                 e->room->npc[0]->sounds[0] = bbLoadSound("SFX/SCP/035/Idle1.ogg");
                                 e->room->npc[0]->soundChannels[0] = bbPlaySound(e->room->npc[0]->sounds[0]);
-                            } else if ((e->eventState > 50*70 & e->eventState-timing->tickDuration <=50*70)) {
+                            } else if ((e->eventState > 50*70 && e->eventState-timing->tickDuration <=50*70)) {
                                 if (e->room->npc[0]->sounds[0]!=0) {
                                     bbFreeSound(e->room->npc[0]->sounds[0]);
                                     e->room->npc[0]->sounds[0] = 0;
                                 }
                                 e->room->npc[0]->sounds[0] = bbLoadSound("SFX/SCP/035/Idle2.ogg");
                                 e->room->npc[0]->soundChannels[0] = bbPlaySound(e->room->npc[0]->sounds[0]);
-                            } else if ((e->eventState > 80*70 & e->eventState-timing->tickDuration <=80*70)) {
+                            } else if ((e->eventState > 80*70 && e->eventState-timing->tickDuration <=80*70)) {
                                 //skip the closet part if player has already opened it
                                 if ((int)(e->eventState2)) {
                                     e->eventState = 130*70;
@@ -428,7 +428,7 @@ void UpdateEvent_cont_035_1(Event* e) {
                                 if ((int)(e->eventState2)) {
                                     e->eventState = Max(e->eventState,100*70);
                                 }
-                                if (e->eventState>110*70 & e->eventState-timing->tickDuration <=110*70) {
+                                if (e->eventState>110*70 && e->eventState-timing->tickDuration <=110*70) {
                                     if ((int)(e->eventState2)) {
                                         if (e->room->npc[0]->sounds[0]!=0) {
                                             bbFreeSound(e->room->npc[0]->sounds[0]);
@@ -445,7 +445,7 @@ void UpdateEvent_cont_035_1(Event* e) {
                                         e->room->npc[0]->sounds[0] = bbLoadSound("SFX/SCP/035/Idle3.ogg");
                                         e->room->npc[0]->soundChannels[0] = bbPlaySound(e->room->npc[0]->sounds[0]);
                                     }
-                                } else if ((e->eventState>125*70 & e->eventState-timing->tickDuration <=125*70)) {
+                                } else if ((e->eventState>125*70 && e->eventState-timing->tickDuration <=125*70)) {
                                     if ((int)(e->eventState2)) {
                                         if (e->room->npc[0]->sounds[0]!=0) {
                                             bbFreeSound(e->room->npc[0]->sounds[0]);
@@ -461,14 +461,14 @@ void UpdateEvent_cont_035_1(Event* e) {
                                         e->room->npc[0]->sounds[0] = bbLoadSound("SFX/SCP/035/Idle4.ogg");
                                         e->room->npc[0]->soundChannels[0] = bbPlaySound(e->room->npc[0]->sounds[0]);
                                     }
-                                } else if ((e->eventState>150*70 & e->eventState-timing->tickDuration <=150*70)) {
+                                } else if ((e->eventState>150*70 && e->eventState-timing->tickDuration <=150*70)) {
                                     if (e->room->npc[0]->sounds[0]!=0) {
                                         bbFreeSound(e->room->npc[0]->sounds[0]);
                                         e->room->npc[0]->sounds[0] = 0;
                                     }
                                     e->room->npc[0]->sounds[0] = bbLoadSound("SFX/SCP/035/Idle5.ogg");
                                     e->room->npc[0]->soundChannels[0] = bbPlaySound(e->room->npc[0]->sounds[0]);
-                                } else if ((e->eventState>200*70 & e->eventState-timing->tickDuration <=200*70)) {
+                                } else if ((e->eventState>200*70 && e->eventState-timing->tickDuration <=200*70)) {
                                     if (e->room->npc[0]->sounds[0]!=0) {
                                         bbFreeSound(e->room->npc[0]->sounds[0]);
                                         e->room->npc[0]->sounds[0] = 0;
@@ -526,10 +526,10 @@ void UpdateEvent_cont_035_1(Event* e) {
                         dist = bbEntityDistance(e->room->doors[0]->frameobj, e->room->npc[0]->collider);
 
                         e->room->npc[0]->state = 1;
-                        if (dist > 2.5) {
+                        if (dist > 2.5f) {
                             bbPointEntity(e->room->npc[0]->obj, e->room->doors[1]->frameobj);
                             bbRotateEntity(e->room->npc[0]->collider, 0, CurveAngle(bbEntityYaw(e->room->npc[0]->obj), bbEntityYaw(e->room->npc[0]->collider), 15.f), 0);
-                        } else if ((dist > 0.7)) {
+                        } else if ((dist > 0.7f)) {
                             if (bbChannelPlaying(e->room->npc[0]->soundChannels[0])) {
                                 e->room->npc[0]->state = 0;
                                 bbPointEntity(e->room->npc[0]->obj, mainPlayer->collider);
@@ -552,8 +552,8 @@ void UpdateEvent_cont_035_1(Event* e) {
                                 dor = Door::getObject(iterator154);
 
                                 if (dor->typ == DOOR_TYPE_HCZ) {
-                                    if (abs(bbEntityX(e->room->obj)-bbEntityX(dor->frameobj,true))<4.5) {
-                                        if (abs(bbEntityZ(e->room->obj)-bbEntityZ(dor->frameobj,true))<4.5) {
+                                    if (abs(bbEntityX(e->room->obj)-bbEntityX(dor->frameobj,true))<4.5f) {
+                                        if (abs(bbEntityZ(e->room->obj)-bbEntityZ(dor->frameobj,true))<4.5f) {
                                             UseDoor(dor,false);
                                             break;
                                         }
@@ -622,8 +622,8 @@ void UpdateEvent_cont_035_1(Event* e) {
                             e->eventState2 = Min(e->eventState2+(timing->tickDuration/6000),1.f);
                             e->eventState3 = CurveValue(e->eventState2, e->eventState3, 50);
 
-                            if (!IsPlayerWearingItem(mainPlayer,"hazmatsuit3") & !IsPlayerWearingItem(mainPlayer,"gasmask3")) {
-                                mainPlayer->sanity895 = mainPlayer->sanity895-timing->tickDuration*1.1;
+                            if (!IsPlayerWearingItem(mainPlayer,"hazmatsuit3") && !IsPlayerWearingItem(mainPlayer,"gasmask3")) {
+                                mainPlayer->sanity895 = mainPlayer->sanity895-timing->tickDuration*1.1f;
                                 mainPlayer->blurTimer = bbSin(TimeInPosMilliSecs()/10)*abs(mainPlayer->sanity895);
                             }
 
@@ -633,7 +633,7 @@ void UpdateEvent_cont_035_1(Event* e) {
                                 mainPlayer->injuries = mainPlayer->injuries + (timing->tickDuration/10000);
                             }
 
-                            if (mainPlayer->dead == true & mainPlayer->bloodloss >=100) {
+                            if (mainPlayer->dead == true && mainPlayer->bloodloss >=100) {
                                 DeathMSG = "Class D Subject D-9341 found dead inside SCP-035's containment chamber. ";
                                 DeathMSG = DeathMSG + "The subject exhibits heavy hemorrhaging of blood vessels around the eyes and inside the mouth and nose. ";
                                 DeathMSG = DeathMSG + "Sent for autopsy.";
@@ -661,9 +661,9 @@ void UpdateEvent_cont_035_1(Event* e) {
                 e->eventState3 = Max(e->eventState3-(timing->tickDuration/100),0);
             }
 
-            if (e->eventState3 > 0 & (!IsPlayerWearingItem(mainPlayer,"hazmatsuit3")) & (!IsPlayerWearingItem(mainPlayer,"gasmask3"))) {
+            if (e->eventState3 > 0 & (!IsPlayerWearingItem(mainPlayer,"hazmatsuit3")) && (!IsPlayerWearingItem(mainPlayer,"gasmask3"))) {
                 e->soundChannels[0] = LoopRangedSound(e->sounds[0], e->soundChannels[0], mainPlayer->cam, e->room->obj, 10, e->eventState3);
-                e->soundChannels[1] = LoopRangedSound(e->sounds[1], e->soundChannels[1], mainPlayer->cam, e->room->obj, 10, (e->eventState3-0.5)*2);
+                e->soundChannels[1] = LoopRangedSound(e->sounds[1], e->soundChannels[1], mainPlayer->cam, e->room->obj, 10, (e->eventState3-0.5f)*2);
             }
 
         }

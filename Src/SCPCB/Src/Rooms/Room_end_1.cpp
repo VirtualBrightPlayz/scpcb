@@ -76,13 +76,13 @@ void UpdateEventEndroom106(Event* e) {
     //[Block]
     if (Contained106) {
         if (e->eventState == 0) {
-            if (e->room->dist < 8 & e->room->dist > 0) {
+            if (e->room->dist < 8 && e->room->dist > 0) {
                 if (Curr106->state < 0) {
                     RemoveEvent(e);
                 } else {
                     e->room->doors[0]->open = true;
 
-                    e->room->npc[0] = CreateNPC(NPCtypeD, bbEntityX(e->room->doors[0]->obj,true), 0.5, bbEntityZ(e->room->doors[0]->obj,true));
+                    e->room->npc[0] = CreateNPC(NPCtypeD, bbEntityX(e->room->doors[0]->obj,true), 0.5f, bbEntityZ(e->room->doors[0]->obj,true));
 
                     tex = bbLoadTexture("GFX/NPCs/classd/janitor.jpg");
                     e->room->npc[0]->texture = "GFX/NPCs/classd/janitor.jpg";
@@ -91,7 +91,7 @@ void UpdateEventEndroom106(Event* e) {
 
                     bbPointEntity(e->room->npc[0]->collider, e->room->obj);
                     bbRotateEntity(e->room->npc[0]->collider, 0, bbEntityYaw(e->room->npc[0]->collider),0, true);
-                    bbMoveEntity(e->room->npc[0]->collider, 0,0,0.5);
+                    bbMoveEntity(e->room->npc[0]->collider, 0,0,0.5f);
 
                     e->room->doors[0]->open = false;
                     PlayRangedSound(LoadTempSound("SFX/Door/EndroomDoor.ogg"), mainPlayer->cam, e->room->obj, 15);
@@ -121,10 +121,10 @@ void UpdateEventEndroom106(Event* e) {
             }
         } else if ((e->eventState == 2)) {
             dist = bbEntityDistance(e->room->npc[0]->collider, e->room->obj);
-            if (dist<1.5) {
-                de = CreateDecal(DECAL_CORROSION, bbEntityX(e->room->obj), 0.01, bbEntityZ(e->room->obj), 90, bbRand(360), 0);
-                de->size = 0.05;
-                de->sizeChange = 0.008;
+            if (dist<1.5f) {
+                de = CreateDecal(DECAL_CORROSION, bbEntityX(e->room->obj), 0.01f, bbEntityZ(e->room->obj), 90, bbRand(360), 0);
+                de->size = 0.05f;
+                de->sizeChange = 0.008f;
                 de->timer = 10000;
                 UpdateDecals();
                 e->eventState = 3;
@@ -140,7 +140,7 @@ void UpdateEventEndroom106(Event* e) {
 
             Curr106->idle = true;
 
-            if (dist<0.4) {
+            if (dist<0.4f) {
                 if (e->room->npc[0]->state==1) {
                     //PlaySound2(HorrorSFX(10))
                     SetNPCFrame(e->room->npc[0],41);
@@ -148,15 +148,15 @@ void UpdateEventEndroom106(Event* e) {
                 e->eventState = e->eventState+timing->tickDuration/2;
                 e->room->npc[0]->state = 6;
                 e->room->npc[0]->currSpeed = CurveValue(0.f, e->room->npc[0]->currSpeed, 25.f);
-                bbPositionEntity(e->room->npc[0]->collider, CurveValue(bbEntityX(e->room->obj, true), bbEntityX(e->room->npc[0]->collider), 25.f), 0.3-e->eventState/70, CurveValue(bbEntityZ(e->room->obj, true), bbEntityZ(e->room->npc[0]->collider), 25.f));
+                bbPositionEntity(e->room->npc[0]->collider, CurveValue(bbEntityX(e->room->obj, true), bbEntityX(e->room->npc[0]->collider), 25.f), 0.3f-e->eventState/70, CurveValue(bbEntityZ(e->room->obj, true), bbEntityZ(e->room->npc[0]->collider), 25.f));
                 bbResetEntity(e->room->npc[0]->collider);
 
-                //TurnEntity(e\room\npc[0]\collider,0,0,0.5*timing\tickDuration)
-                AnimateNPC(e->room->npc[0], 41, 58, 0.1, false);
+                //TurnEntity(e\room\npc[0]\collider,0,0,0.5f*timing\tickDuration)
+                AnimateNPC(e->room->npc[0], 41, 58, 0.1f, false);
 
                 AnimateNPC(Curr106, 206,112, -1.f, false);
             } else {
-                AnimateNPC(Curr106, 112,206, 1.5, false);
+                AnimateNPC(Curr106, 112,206, 1.5f, false);
             }
 
             if (e->eventState > 35) {
@@ -166,8 +166,8 @@ void UpdateEventEndroom106(Event* e) {
                 bbPositionEntity(Curr106->collider, bbEntityX(Curr106->collider), -100.f, bbEntityZ(Curr106->collider), true);
 
                 Curr106->idle = false;
-                if (bbEntityDistance(mainPlayer->collider, e->room->obj)<2.5) {
-                    Curr106->state = -0.1;
+                if (bbEntityDistance(mainPlayer->collider, e->room->obj)<2.5f) {
+                    Curr106->state = -0.1f;
                 }
 
                 RemoveNPC(e->room->npc[0]);

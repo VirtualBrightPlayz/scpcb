@@ -28,7 +28,7 @@ void InitializeNPCtype049(NPC* n) {
     n->nvName = "SCP-049";
     n->collider = bbCreatePivot();
 
-    bbEntityRadius(n->collider, 0.2);
+    bbEntityRadius(n->collider, 0.2f);
     bbEntityType(n->collider, HIT_PLAYER);
 
     n->obj = bbLoadAnimMesh("GFX/NPCs/scp049/scp-049.b3d");
@@ -71,13 +71,13 @@ void UpdateNPCtype049(NPC* n) {
     switch ((int)n->state) {
         case STATE049_IDLE: {
             //Idle animation.
-            AnimateNPC(n, 231, 344, 0.31, true);
+            AnimateNPC(n, 231, 344, 0.31f, true);
 
         }
         case STATE049_ATTACK: {
             //[Block]
             //Playing a sound after detecting the player
-            if (n->prevState == STATE049_ROAMING & (!bbChannelPlaying(n->soundChannels[0]))) {
+            if (n->prevState == STATE049_ROAMING && (!bbChannelPlaying(n->soundChannels[0]))) {
                 n->soundChannels[0] = LoopRangedSound(n->sounds[bbRand(1,2)], n->soundChannels[0], mainPlayer->cam, n->obj);
             }
 
@@ -89,7 +89,7 @@ void UpdateNPCtype049(NPC* n) {
             bbRotateEntity(n->collider, 0, CurveAngle(bbEntityYaw(n->obj), bbEntityYaw(n->collider), 10.f), 0);
 
             //Now I must only T O U C H...
-            if (n->playerDistance < 0.5) {
+            if (n->playerDistance < 0.5f) {
                 mainPlayer->camZoom = 20.f;
                 mainPlayer->blurTimer = 500.f;
 
@@ -126,7 +126,7 @@ void UpdateNPCtype049(NPC* n) {
                 } else {
                     if (n->frame>428.f) {
                         AnimateNPC(n, Min(bbAnimTime(n->obj),463.f), 498.f, n->currSpeed*38,false);
-                        if (n->frame>497.9) {
+                        if (n->frame>497.9f) {
                             n->frame = 358;
                         }
                     } else {
@@ -161,7 +161,7 @@ void UpdateNPCtype049(NPC* n) {
                                 //TODO: fix
                                 //If (n\path[n\pathLocation-1]\door <> Null) Then
                                 //	If (Not n\path[n\pathLocation-1]\door\isElevatorDoor)
-                                //		If EntityDistance(n\path[n\pathLocation-1]\obj,n\collider)>0.3
+                                //		If EntityDistance(n\path[n\pathLocation-1]\obj,n\collider)>0.3f
                                 //			If (n\path[n\pathLocation-1]\door\open) Then UseDoor(n\path[n\pathLocation-1]\door, False)
                                 //		EndIf
                                 //	EndIf
@@ -176,7 +176,7 @@ void UpdateNPCtype049(NPC* n) {
 
                         //opens doors in front of him
                         dist2 = bbEntityDistance(n->collider,n->path[n->pathLocation]->obj);
-                        if ((dist2 < 0.6)) {
+                        if ((dist2 < 0.6f)) {
                             temp = true;
                             //TODO: fix
                             //If (n\path[n\pathLocation]\door <> Null) Then
@@ -189,9 +189,9 @@ void UpdateNPCtype049(NPC* n) {
                             //		EndIf
                             //	EndIf
                             //EndIf
-                            if (dist2<0.2 & temp) {
+                            if (dist2<0.2f && temp) {
                                 n->pathLocation = n->pathLocation + 1;
-                            } else if ((dist2<0.5 & (!temp))) {
+                            } else if ((dist2<0.5f && (!temp))) {
                                 //Breaking up the path because the door cannot be operated by SCP-049
                                 n->pathStatus = 0;
                                 n->pathTimer = 0.f;
@@ -201,7 +201,7 @@ void UpdateNPCtype049(NPC* n) {
                         AnimateNPC(n, Max(Min(bbAnimTime(n->obj),358.f),346), 393.f, n->currSpeed*38);
 
                         //Playing a sound if he hears the player
-                        if (n->soundTimer < 0 & (!bbChannelPlaying(n->soundChannels[0]))) {
+                        if (n->soundTimer < 0 && (!bbChannelPlaying(n->soundChannels[0]))) {
                             n->soundTimer = bbRand(10, 20) * 70;
 
                             if (bbRand(8)==3) {
@@ -213,14 +213,14 @@ void UpdateNPCtype049(NPC* n) {
 
                         //Updating the path every 7 seconds
                         if (n->timer > 70*7) {
-                            n->pathStatus = FindPath(n, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2,bbEntityZ(mainPlayer->collider));
+                            n->pathStatus = FindPath(n, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2f,bbEntityZ(mainPlayer->collider));
                             n->timer = 0.f;
                         }
                     }
 
                     if (n->currElevator != nullptr) {
                         dist2 = bbEntityDistance(n->collider,n->currElevator->door->frameobj);
-                        if (dist2 < 0.7) {
+                        if (dist2 < 0.7f) {
                             n->pathStatus = 0;
                             n->pathLocation = 0;
                             n->pathTimer = 0.f;
@@ -237,13 +237,13 @@ void UpdateNPCtype049(NPC* n) {
                         }
                         if (n->pathTimer > 70*5-(2*SelectedDifficulty->aggressiveNPCs)) {
                             if (n->inFacility == InFacility) {
-                                n->pathStatus = FindPath(n, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2,bbEntityZ(mainPlayer->collider));
+                                n->pathStatus = FindPath(n, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2f,bbEntityZ(mainPlayer->collider));
                             } else {
                                 FindNextElevator(n);
                             }
                             n->pathTimer = 0.f;
                         }
-                        AnimateNPC(n, 269, 345, 0.2);
+                        AnimateNPC(n, 269, 345, 0.2f);
                         //n\prevState = 0
                     } else {
                         //n\currSpeed = CurveValue(n\speed, n\currSpeed, 20.f)
@@ -254,7 +254,7 @@ void UpdateNPCtype049(NPC* n) {
                             bbMoveEntity(n->collider,0,0,n->currSpeed*timing->tickDuration);
                             AnimateNPC(n, Max(Min(bbAnimTime(n->obj),358.f),346), 393.f, n->currSpeed*38);
                         } else {
-                            AnimateNPC(n, 269, 345, 0.2);
+                            AnimateNPC(n, 269, 345, 0.2f);
                         }
                     }
                 }
@@ -275,7 +275,7 @@ void UpdateNPCtype049(NPC* n) {
                                 //TODO: ffs
                                 //If (n\path[n\pathLocation-1]\door <> Null) Then
                                 //	If (Not n\path[n\pathLocation-1]\door\isElevatorDoor)
-                                //		If EntityDistance(n\path[n\pathLocation-1]\obj,n\collider)>0.3
+                                //		If EntityDistance(n\path[n\pathLocation-1]\obj,n\collider)>0.3f
                                 //			If (n\path[n\pathLocation-1]\door\open) Then UseDoor(n\path[n\pathLocation-1]\door, False)
                                 //		EndIf
                                 //	EndIf
@@ -290,7 +290,7 @@ void UpdateNPCtype049(NPC* n) {
 
                         //opens doors in front of him
                         dist2 = bbEntityDistance(n->collider,n->path[n->pathLocation]->obj);
-                        if (dist2 < 0.6) {
+                        if (dist2 < 0.6f) {
                             temp = true;
                             //TODO: AAAAAHHHHH
                             //If (n\path[n\pathLocation]\door <> Null) Then
@@ -303,9 +303,9 @@ void UpdateNPCtype049(NPC* n) {
                             //		EndIf
                             //	EndIf
                             //EndIf
-                            if (dist2<0.2 & temp) {
+                            if (dist2<0.2f && temp) {
                                 n->pathLocation = n->pathLocation + 1;
-                            } else if ((dist2<0.5 & (!temp))) {
+                            } else if ((dist2<0.5f && (!temp))) {
                                 //Breaking up the path because the door cannot be operated by SCP-049
                                 n->pathStatus = 0;
                                 n->pathTimer = 0.f;
@@ -329,7 +329,7 @@ void UpdateNPCtype049(NPC* n) {
 
                     if (n->currElevator != nullptr) {
                         dist2 = bbEntityDistance(n->collider,n->currElevator->door->frameobj);
-                        if (dist2 < 0.7) {
+                        if (dist2 < 0.7f) {
                             n->pathStatus = 0;
                             n->pathLocation = 0;
                             n->pathTimer = 0.f;
@@ -338,7 +338,7 @@ void UpdateNPCtype049(NPC* n) {
                 } else {
                     if (n->currElevator == nullptr) {
                         n->currSpeed = 0;
-                        AnimateNPC(n, 269, 345, 0.2);
+                        AnimateNPC(n, 269, 345, 0.2f);
                         if (n->pathTimer < 300+bbRand(100,300)) {
                             n->pathTimer = n->pathTimer + timing->tickDuration;
                         } else {
@@ -347,7 +347,7 @@ void UpdateNPCtype049(NPC* n) {
                                     for (int iterator122 = 0; iterator122 < Room::getListSize(); iterator122++) {
                                         r = Room::getObject(iterator122);
 
-                                        if (bbEntityDistance(r->obj,n->collider)<12.f & bbEntityDistance(r->obj,n->collider)>4.f) {
+                                        if (bbEntityDistance(r->obj,n->collider)<12.f && bbEntityDistance(r->obj,n->collider)>4.f) {
                                             n->pathStatus = FindPath(n,bbEntityX(r->obj),bbEntityY(r->obj),bbEntityZ(r->obj));
                                             break;
                                         }
@@ -367,7 +367,7 @@ void UpdateNPCtype049(NPC* n) {
                             bbMoveEntity(n->collider, 0, 0, n->currSpeed*timing->tickDuration);
                             AnimateNPC(n, Max(Min(bbAnimTime(n->obj),358.f),346), 393.f, n->currSpeed*38);
                         } else {
-                            AnimateNPC(n, 269, 345, 0.2);
+                            AnimateNPC(n, 269, 345, 0.2f);
                         }
                     }
                 }
@@ -376,7 +376,7 @@ void UpdateNPCtype049(NPC* n) {
         }
     }
 
-    bbPositionEntity(n->obj, bbEntityX(n->collider), bbEntityY(n->collider)-0.22, bbEntityZ(n->collider));
+    bbPositionEntity(n->obj, bbEntityX(n->collider), bbEntityY(n->collider)-0.22f, bbEntityZ(n->collider));
 
     bbRotateEntity(n->obj, 0, bbEntityYaw(n->collider), 0);
 

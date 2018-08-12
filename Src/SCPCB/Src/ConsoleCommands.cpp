@@ -55,7 +55,7 @@ void Cmd_Status::execute(std::vector<String> args) {
 
     CreateConsoleMsg("Room: " + mainPlayer->currRoom->roomTemplate->name);
 
-    CreateConsoleMsg("Room coordinates: " + String(bbFloor(bbEntityX(mainPlayer->currRoom->obj) / 8.f + 0.5)) + ", " + String(bbFloor(bbEntityZ(mainPlayer->currRoom->obj) / 8.f + 0.5)));
+    CreateConsoleMsg("Room coordinates: " + String(bbFloor(bbEntityX(mainPlayer->currRoom->obj) / 8.f + 0.5f)) + ", " + String(bbFloor(bbEntityZ(mainPlayer->currRoom->obj) / 8.f + 0.5f)));
     CreateConsoleMsg("Stamina: " + String(mainPlayer->stamina));
     //CreateConsoleMsg("Dead: "+mainPlayer\dead)
     CreateConsoleMsg("Blinktimer: " + String(mainPlayer->blinkTimer));
@@ -258,8 +258,8 @@ case "teleport": {
         r = Room::getObject(iterator44);
 
         if (r->roomTemplate->name == StrTemp) {
-            //PositionEntity(mainPlayer\collider, EntityX(r\obj), 0.7, EntityZ(r\obj))
-            bbPositionEntity(mainPlayer->collider, r->x, r->y + 0.7, r->z);
+            //PositionEntity(mainPlayer\collider, EntityX(r\obj), 0.7f, EntityZ(r\obj))
+            bbPositionEntity(mainPlayer->collider, r->x, r->y + 0.7f, r->z);
             bbResetEntity(mainPlayer->collider);
             UpdateDoors();
             UpdateRooms();
@@ -278,8 +278,8 @@ case "guh": {
         r = Room::getObject(iterator45);
 
         if (r->roomTemplate->name.equals("cont_914_1")) {
-            //PositionEntity(mainPlayer\collider, EntityX(r\obj), 0.7, EntityZ(r\obj))
-            bbPositionEntity(mainPlayer->collider, r->x, r->y + 0.7, r->z);
+            //PositionEntity(mainPlayer\collider, EntityX(r\obj), 0.7f, EntityZ(r\obj))
+            bbPositionEntity(mainPlayer->collider, r->x, r->y + 0.7f, r->z);
             bbResetEntity(mainPlayer->collider);
             UpdateDoors();
             UpdateRooms();
@@ -472,7 +472,7 @@ case "godmode": {
 case "revive", "undead", "resurrect": {
     mainPlayer->dead = false;
 
-    mainPlayer->dropSpeed = -0.1;
+    mainPlayer->dropSpeed = -0.1f;
     mainPlayer->camShake = 0;
     mainPlayer->moveSpeed = 0;
 
@@ -744,7 +744,7 @@ case "notarget": {
     }
 }
 case "teleport173": {
-    bbPositionEntity(Curr173->collider, bbEntityX(mainPlayer->collider), bbEntityY(mainPlayer->collider) + 0.2, bbEntityZ(mainPlayer->collider));
+    bbPositionEntity(Curr173->collider, bbEntityX(mainPlayer->collider), bbEntityY(mainPlayer->collider) + 0.2f, bbEntityZ(mainPlayer->collider));
     bbResetEntity(Curr173->collider);
     //TODO
 }

@@ -104,7 +104,7 @@ Particle* CreateParticle(float x, float y, float z, int image, float size, float
     bbPositionEntity(p->pvt, x, y, z, true);
 
     p->image = image;
-    p->gravity = gravity * 0.004;
+    p->gravity = gravity * 0.004f;
     p->r = 255;
     p->g = 255;
     p->b = 255;
@@ -142,7 +142,7 @@ void UpdateParticles() {
         bbEntityAlpha(p->sprite,1.f);
 
         p->lifetime = p->lifetime-timing->tickDuration;
-        if (p->lifetime <= 0 | p->size < 0.00001 | p->a <= 0) {
+        if (p->lifetime <= 0 | p->size < 0.00001f | p->a <= 0) {
             RemoveParticle(p);
         }
     }
@@ -178,9 +178,9 @@ void UpdateEmitters() {
             e->soundCHN = LoopRangedSound_SM(sndManager->hiss, e->soundCHN, mainPlayer->cam, e->obj);
 
             if (InSmoke == false) {
-                if (IsPlayerWearingItem(mainPlayer,"gasmask") & IsPlayerWearingItem(mainPlayer,"hazmatsuit")) {
+                if (IsPlayerWearingItem(mainPlayer,"gasmask") && IsPlayerWearingItem(mainPlayer,"hazmatsuit")) {
                     dist = Distance(bbEntityX(mainPlayer->cam, true), bbEntityZ(mainPlayer->cam, true), bbEntityX(e->obj, true), bbEntityZ(e->obj, true));
-                    if (dist < 0.8) {
+                    if (dist < 0.8f) {
                         if (abs(bbEntityY(mainPlayer->cam, true)-bbEntityY(e->obj,true))<5.f) {
                             InSmoke = true;
                         }
@@ -218,29 +218,29 @@ Emitter* CreateEmitter(float x, float y, float z, int emittertype) {
 
     switch (emittertype) {
         case 0: {
-            e->size = 0.03;
-            e->gravity = -0.2;
+            e->size = 0.03f;
+            e->gravity = -0.2f;
             e->lifeTime = 200;
-            e->sizeChange = 0.005;
-            e->speed = 0.004;
+            e->sizeChange = 0.005f;
+            e->speed = 0.004f;
             e->randAngle = 20;
-            e->aChange = -0.008;
+            e->aChange = -0.008f;
         } break;
         case 1: {
-            e->size = 0.03;
-            e->gravity = -0.2;
+            e->size = 0.03f;
+            e->gravity = -0.2f;
             e->lifeTime = 200;
-            e->sizeChange = 0.008;
-            e->speed = 0.004;
+            e->sizeChange = 0.008f;
+            e->speed = 0.004f;
             e->randAngle = 40;
-            e->aChange = -0.01;
+            e->aChange = -0.01f;
         } break;
     }
 
     for (int i = 0; i < Room::getListSize(); i++) {
         Room* r = Room::getObject(i);
 
-        if (abs(bbEntityX(e->obj) - bbEntityX(r->obj)) < 4.f & abs(bbEntityZ(e->obj) - bbEntityZ(r->obj)) < 4.f) {
+        if (abs(bbEntityX(e->obj) - bbEntityX(r->obj)) < 4.f && abs(bbEntityZ(e->obj) - bbEntityZ(r->obj)) < 4.f) {
             e->room = r;
         }
     }

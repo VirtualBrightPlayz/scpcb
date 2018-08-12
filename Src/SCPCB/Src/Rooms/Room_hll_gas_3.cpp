@@ -42,17 +42,17 @@ void FillRoom_hll_gas_3(Room* r) {
     bbTurnEntity(em->obj, -90, 0, 0);
     bbEntityParent(em->obj, r->obj);
     em->randAngle = 55;
-    em->speed = 0.0005;
-    em->aChange = -0.015;
-    em->sizeChange = 0.007;
+    em->speed = 0.0005f;
+    em->aChange = -0.015f;
+    em->sizeChange = 0.007f;
 
     em = CreateEmitter(r->x - 512.f * RoomScale, -76 * RoomScale, r->z - 688 * RoomScale, 0);
     bbTurnEntity(em->obj, -90, 0, 0);
     bbEntityParent(em->obj, r->obj);
     em->randAngle = 55;
-    em->speed = 0.0005;
-    em->aChange = -0.015;
-    em->sizeChange = 0.007;
+    em->speed = 0.0005f;
+    em->aChange = -0.015f;
+    em->sizeChange = 0.007f;
 
     r->objects[0] = bbCreatePivot(r->obj);
     bbPositionEntity(r->objects[0], r->x + 704.f * RoomScale, 112.f*RoomScale, r->z-416.f*RoomScale, true);
@@ -89,7 +89,7 @@ void UpdateEventRoom3pitduck(Event* e) {
     if (mainPlayer->currRoom == e->room) {
         if (e->room->objects[2] == 0) {
             e->room->objects[2] = bbLoadMesh("GFX/npcs/duck_low_res.b3d");
-            bbScaleEntity(e->room->objects[2], 0.07, 0.07, 0.07);
+            bbScaleEntity(e->room->objects[2], 0.07f, 0.07f, 0.07f);
             tex = bbLoadTexture("GFX/npcs/duck1.png");
             bbEntityTexture((MeshModel*)e->room->objects[2], tex);
             bbFreeTexture(tex);
@@ -101,7 +101,7 @@ void UpdateEventRoom3pitduck(Event* e) {
         } else {
             if (bbEntityInView(e->room->objects[2],mainPlayer->cam)==false) {
                 e->eventState = e->eventState + timing->tickDuration;
-                if (bbRand(200)==1 & e->eventState > 300) {
+                if (bbRand(200)==1 && e->eventState > 300) {
                     e->eventState = 0;
                     e->soundChannels[0] = PlayRangedSound(e->sounds[0], mainPlayer->cam, e->room->objects[2],6.f);
                 }
@@ -154,7 +154,7 @@ void UpdateEventRoom3pit1048(Event* e) {
     if (mainPlayer->currRoom == e->room) {
         if (e->room->objects[2] == 0) {
             e->room->objects[2] = bbLoadAnimMesh("GFX/npcs/scp-1048pp.b3d");
-            bbScaleEntity(e->room->objects[2], 0.05,0.05,0.05);
+            bbScaleEntity(e->room->objects[2], 0.05f,0.05f,0.05f);
             bbSetAnimTime(e->room->objects[2], 414);
 
             //TODO: Redo.
@@ -205,13 +205,13 @@ void UpdateEventRoom3pit1048(Event* e) {
                     }
                 }
             } else if ((e->eventState==1)) {
-                Animate2((MeshModel*)e->room->objects[2], bbAnimTime(e->room->objects[2]), 414, 543, 0.5, false);
+                Animate2((MeshModel*)e->room->objects[2], bbAnimTime(e->room->objects[2]), 414, 543, 0.5f, false);
                 if (bbAnimTime(e->room->objects[2])==543) {
                     e->eventState = 2;
                 }
             } else if ((e->eventState == 2)) {
                 Animate2((MeshModel*)e->room->objects[2], bbAnimTime(e->room->objects[2]), 543, 692, 1.f);
-                if (bbEntityDistance(mainPlayer->collider, e->room->objects[2])<1.5) {
+                if (bbEntityDistance(mainPlayer->collider, e->room->objects[2])<1.5f) {
                     DrawHandIcon = true;
 
                     if (MouseHit1) {

@@ -48,8 +48,8 @@ void FillRoom_strg_elec_2c(Room* r) {
     for (n = 0; n <= 2; n++) {
         r->levers[n] = CreateLever();
 
-        bbScaleEntity(r->levers[n]->obj, 0.04, 0.04, 0.04);
-        bbScaleEntity(r->levers[n]->baseObj, 0.04, 0.04, 0.04);
+        bbScaleEntity(r->levers[n]->obj, 0.04f, 0.04f, 0.04f);
+        bbScaleEntity(r->levers[n]->baseObj, 0.04f, 0.04f, 0.04f);
         bbPositionEntity(r->levers[n]->obj, r->x - 240.f * RoomScale, r->y + 1104.f * RoomScale, r->z + (632.f - 64.f * n) * RoomScale, true);
         bbPositionEntity(r->levers[n]->baseObj, r->x - 240.f * RoomScale, r->y + 1104.f * RoomScale, r->z + (632.f - 64.f * n) * RoomScale, true);
 
@@ -60,7 +60,7 @@ void FillRoom_strg_elec_2c(Room* r) {
         bbRotateEntity(r->levers[n]->obj, 10, -90 - 180, 0);
 
         bbEntityPickMode(r->levers[n]->obj, 1, false);
-        bbEntityRadius(r->levers[n]->obj, 0.1);
+        bbEntityRadius(r->levers[n]->obj, 0.1f);
     }
 
     sc = CreateSecurityCam(r->x-265.f*RoomScale, r->y+1280.f*RoomScale, r->z+105.f*RoomScale, r);
@@ -100,7 +100,7 @@ void UpdateEvent_strg_elec_2c(Event* e) {
     //[Block]
     if (mainPlayer->currRoom == e->room) {
 
-        bbEntityPick(mainPlayer->cam, 1.5);
+        bbEntityPick(mainPlayer->cam, 1.5f);
 
         for (i = 1; i <= 5; i += 2) {
             if (bbPickedEntity() == e->room->objects[i]) {
@@ -124,7 +124,7 @@ void UpdateEvent_strg_elec_2c(Event* e) {
                 if (mainPlayer->grabbedEntity != 0) {
                     if (mainPlayer->grabbedEntity == e->room->objects[i]) {
                         DrawHandIcon = true;
-                        bbTurnEntity(e->room->objects[i], mouse_y_speed_1 * 2.5, 0, 0);
+                        bbTurnEntity(e->room->objects[i], mouse_y_speed_1 * 2.5f, 0, 0);
                         bbRotateEntity(mainPlayer->grabbedEntity, Max(Min(bbEntityPitch(e->room->objects[i]), 85), -85), bbEntityYaw(e->room->objects[i]), 0);
 
                         mainPlayer->drawDirectionalArrow[0] = true;
@@ -178,7 +178,7 @@ void UpdateEvent_strg_elec_2c(Event* e) {
             }
         }
 
-        if (e->eventState > 0 & e->eventState < 200) {
+        if (e->eventState > 0 && e->eventState < 200) {
             e->eventState = e->eventState + timing->tickDuration;
             bbRotateEntity(e->room->levers[1]->obj, CurveValue(-85, bbEntityPitch(e->room->objects[3]), 5), bbEntityYaw(e->room->objects[3]), 0);
         }

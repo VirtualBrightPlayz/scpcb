@@ -283,7 +283,7 @@ Item* CreateItem(const String& name, float x, float y, float z, int invSlots) {
         if (it->name.equals(name)) {
             i->itemTemplate = it;
             i->collider = bbCreatePivot();
-            bbEntityRadius(i->collider, 0.01);
+            bbEntityRadius(i->collider, 0.01f);
             bbEntityPickMode(i->collider, 1, false);
             i->model = bbCopyMeshModelEntity(it->obj, i->collider);
             i->name = it->invName;
@@ -400,18 +400,18 @@ void UpdateItems() {
                     item->xspeed = 0.f;
                     item->zspeed = 0.f;
                 } else {
-                    item->dropSpeed = item->dropSpeed - 0.0004 * timing->tickDuration;
+                    item->dropSpeed = item->dropSpeed - 0.0004f * timing->tickDuration;
                     bbTranslateEntity(item->collider, item->xspeed*timing->tickDuration, item->dropSpeed * timing->tickDuration, item->zspeed*timing->tickDuration);
                     if (item->wontColl) {
                         bbResetEntity(item->collider);
                     }
                 }
 
-                if (item->dist < hideDist*0.2) {
+                if (item->dist < hideDist*0.2f) {
                     for (int j = 0; j < Item::getListSize(); j++) {
                         Item* collItem = Item::getObject(j);
 
-                        if (item != collItem && !collItem->picked && collItem->dist < hideDist*0.2) {
+                        if (item != collItem && !collItem->picked && collItem->dist < hideDist*0.2f) {
 
                             float xtemp = bbEntityX(collItem->collider,true)-bbEntityX(item->collider,true);
                             float ytemp = bbEntityY(collItem->collider,true)-bbEntityY(item->collider,true);
@@ -421,12 +421,12 @@ void UpdateItems() {
                             if (ed < 0.07f && abs(ytemp) < 0.25f) {
                                 //items are too close together, push away
 
-                                xtemp = xtemp*(0.07-ed);
-                                ztemp = ztemp*(0.07-ed);
+                                xtemp = xtemp*(0.07f-ed);
+                                ztemp = ztemp*(0.07f-ed);
 
                                 while (abs(xtemp)+abs(ztemp)<0.001f) {
-                                    xtemp = xtemp+bbRnd(-0.002,0.002);
-                                    ztemp = ztemp+bbRnd(-0.002,0.002);
+                                    xtemp = xtemp+bbRnd(-0.002f,0.002f);
+                                    ztemp = ztemp+bbRnd(-0.002f,0.002f);
                                 }
 
                                 bbTranslateEntity(collItem->collider,xtemp,0,ztemp);
@@ -519,7 +519,7 @@ void DropItem(Item* item, Inventory* inv) {
     bbShowEntity(item->collider);
     bbPositionEntity(item->collider, bbEntityX(mainPlayer->cam), bbEntityY(mainPlayer->cam), bbEntityZ(mainPlayer->cam));
     bbRotateEntity(item->collider, bbEntityPitch(mainPlayer->cam), bbEntityYaw(mainPlayer->cam)+bbRnd(-20,20), 0);
-    bbMoveEntity(item->collider, 0, -0.1, 0.1);
+    bbMoveEntity(item->collider, 0, -0.1f, 0.1f);
     bbRotateEntity(item->collider, 0, bbEntityYaw(mainPlayer->cam)+bbRnd(-110,110), 0);
 
     bbResetEntity(item->collider);
@@ -632,8 +632,8 @@ void UpdateInventory(Player* player) {
 
         for (slotIndex = 0; slotIndex <= player->openInventory->size - 1; slotIndex++) {
             isMouseOn = false;
-            if (bbMouseX() > x & bbMouseX() < x + ITEM_CELL_SIZE) {
-                if (bbMouseY() > y & bbMouseY() < y + ITEM_CELL_SIZE) {
+            if (bbMouseX() > x && bbMouseX() < x + ITEM_CELL_SIZE) {
+                if (bbMouseY() > y && bbMouseY() < y + ITEM_CELL_SIZE) {
                     isMouseOn = true;
                 }
             }
@@ -644,7 +644,7 @@ void UpdateInventory(Player* player) {
                     mouseOnWornItemSlot = true;
                 }
 
-                if (MouseHit1 & player->openInventory->items[slotIndex] != nullptr) {
+                if (MouseHit1 && player->openInventory->items[slotIndex] != nullptr) {
                     //Selecting an item.
                     if (player->selectedItem == nullptr) {
                         player->selectedItem = player->openInventory->items[slotIndex];
@@ -662,7 +662,7 @@ void UpdateInventory(Player* player) {
                         player->selectedItem = nullptr;
                         DoubleClick = false;
                     }
-                } else if ((MouseUp1 & player->selectedItem != nullptr)) {
+                } else if ((MouseUp1 && player->selectedItem != nullptr)) {
                     //Item already selected and mouse release.
 
                     //Hovering over empty slot. Move the item to the empty slot.
@@ -711,7 +711,7 @@ void UpdateInventory(Player* player) {
             }
         }
 
-        if (MouseUp1 & player->selectedItem != nullptr) {
+        if (MouseUp1 && player->selectedItem != nullptr) {
             //Mouse release outside a slot, drop the item.
             if (mouseSlot == 66) {
                 DropItem(player->selectedItem, player->openInventory);
@@ -732,7 +732,7 @@ void UpdateInventory(Player* player) {
         }
     }
 
-    if (prevInvOpen & CurrGameState != GAMESTATE_INVENTORY) {
+    if (prevInvOpen && CurrGameState != GAMESTATE_INVENTORY) {
         bbMoveMouse(viewport_center_x, viewport_center_y);
     }
 }
@@ -760,8 +760,8 @@ void DrawInventory(Player* player) {
 
         for (n = 0; n <= player->openInventory->size - 1; n++) {
             isMouseOn = false;
-            if (bbMouseX() > x & bbMouseX() < x + ITEM_CELL_SIZE) {
-                if (bbMouseY() > y & bbMouseY() < y + ITEM_CELL_SIZE) {
+            if (bbMouseX() > x && bbMouseX() < x + ITEM_CELL_SIZE) {
+                if (bbMouseY() > y && bbMouseY() < y + ITEM_CELL_SIZE) {
                     isMouseOn = true;
                 }
             }
@@ -788,13 +788,13 @@ void DrawInventory(Player* player) {
                     player->openInventory->items[n]->invImage = bbCreateImage(64,64);
                     tempCamera = bbCreateCamera();
                     tempObj = player->openInventory->items[n]->collider;
-                    bbCameraZoom(tempCamera,1.2);
+                    bbCameraZoom(tempCamera,1.2f);
                     tempLight = bbCreateLight(1);
                     bbAmbientLight(40,40,40);
 
                     bbRotateEntity(tempObj,0,0,0,true);
 
-                    bbCameraRange(tempCamera,0.01,512.f*RoomScale);
+                    bbCameraRange(tempCamera,0.01f,512.f*RoomScale);
                     bbCameraViewport(tempCamera,0,0,64,64);
                     bbCameraClsColor(tempCamera,255,0,255);
                     bbPositionEntity(tempCamera,10000.f+10.f*RoomScale,10000.f+70.f*RoomScale,10000.f+20.f*RoomScale,true);
@@ -823,7 +823,7 @@ void DrawInventory(Player* player) {
                 }
             }
 
-            if (player->openInventory->items[n] != nullptr & player->selectedItem != player->openInventory->items[n]) {
+            if (player->openInventory->items[n] != nullptr && player->selectedItem != player->openInventory->items[n]) {
                 if (isMouseOn) {
                     if (player->selectedItem == nullptr) {
                         bbSetFont(uiAssets->font[0]);

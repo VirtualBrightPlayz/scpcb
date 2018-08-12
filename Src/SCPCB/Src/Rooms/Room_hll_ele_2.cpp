@@ -41,7 +41,7 @@ void FillRoom_hll_ele_2(Room* r) {
     bbPositionEntity(r->objects[0], r->x+888.f*RoomScale, 240.f*RoomScale, r->z, true);
 
     r->objects[1] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[1], r->x+1024.f*RoomScale-0.01, 120.f*RoomScale, r->z, true);
+    bbPositionEntity(r->objects[1], r->x+1024.f*RoomScale-0.01f, 120.f*RoomScale, r->z, true);
 
     r->doors[0] = CreateDoor(r->x + 448.f * RoomScale, 0.f, r->z, 90, r);
     bbPositionEntity(r->doors[0]->buttons[1], r->x + 416.f * RoomScale, bbEntityY(r->doors[0]->buttons[1],true), r->z - 208.f * RoomScale,true);
@@ -80,14 +80,14 @@ void UpdateEventRoom2elevator2(Event* e) {
     float angle;
 
     //[Block]
-    if (e->room->dist < 8.f & e->room->dist > 0) {
+    if (e->room->dist < 8.f && e->room->dist > 0) {
 
-        de = CreateDecal(DECAL_BLOOD_SPLATTER, bbEntityX(e->room->objects[0],true), 0.0005, bbEntityZ(e->room->objects[0],true),90,bbRnd(360),0);
+        de = CreateDecal(DECAL_BLOOD_SPLATTER, bbEntityX(e->room->objects[0],true), 0.0005f, bbEntityZ(e->room->objects[0],true),90,bbRnd(360),0);
 
-        de = CreateDecal(DECAL_BLOOD_POOL, bbEntityX(e->room->objects[0],true), 0.002, bbEntityZ(e->room->objects[0],true),90,bbRnd(360),0);
-        de->size = 0.5;
+        de = CreateDecal(DECAL_BLOOD_POOL, bbEntityX(e->room->objects[0],true), 0.002f, bbEntityZ(e->room->objects[0],true),90,bbRnd(360),0);
+        de->size = 0.5f;
 
-        e->room->npc[0] = CreateNPC(NPCtypeD, bbEntityX(e->room->objects[0],true), 0.5, bbEntityZ(e->room->objects[0],true));
+        e->room->npc[0] = CreateNPC(NPCtypeD, bbEntityX(e->room->objects[0],true), 0.5f, bbEntityZ(e->room->objects[0],true));
         e->room->npc[0]->texture = "GFX/NPCs/classd/gonzales.jpg";
         tex = bbLoadTexture(e->room->npc[0]->texture);
         bbEntityTexture(e->room->npc[0]->obj, tex);
@@ -132,8 +132,8 @@ void UpdateEvent_hll_ele_2(Event* e) {
 
     //[Block]
     if (e->eventState == 0) {
-        if (e->room->dist < 8.f & e->room->dist > 0) {
-            e->room->npc[0] = CreateNPC(NPCtypeGuard, bbEntityX(e->room->obj,true), 0.5, bbEntityZ(e->room->obj,true));
+        if (e->room->dist < 8.f && e->room->dist > 0) {
+            e->room->npc[0] = CreateNPC(NPCtypeGuard, bbEntityX(e->room->obj,true), 0.5f, bbEntityZ(e->room->obj,true));
             bbPointEntity(e->room->npc[0]->collider, mainPlayer->collider);
             bbRotateEntity(e->room->npc[0]->collider, 0, bbEntityYaw(e->room->npc[0]->collider),0, true);
 
@@ -156,29 +156,29 @@ void UpdateEvent_hll_ele_2(Event* e) {
 
                 PlaySound2((LoadTempSound("SFX/Room/Room2ElevatorDeath.ogg")));
 
-                e->eventState = 2.05;
+                e->eventState = 2.05f;
             }
         } else if ((e->eventState < 13*70)) {
             e->eventState = e->eventState+timing->tickDuration;
-            //6.7 - 7.4
-            //8.6 - 10
-            if (e->eventState > 6.7*70 & e->eventState < 7.4*70) {
-                mainPlayer->camShake = 7.4-(e->eventState/70.f);
-            } else if ((e->eventState > 8.6*70 & e->eventState < 10.6*70)) {
-                mainPlayer->camShake = 10.6-(e->eventState/70.f);
-            } else if ((e->eventState > 12.6*70)) {
+            //6.7f - 7.4f
+            //8.6f - 10
+            if (e->eventState > 6.7f*70 && e->eventState < 7.4f*70) {
+                mainPlayer->camShake = 7.4f-(e->eventState/70.f);
+            } else if ((e->eventState > 8.6f*70 && e->eventState < 10.6f*70)) {
+                mainPlayer->camShake = 10.6f-(e->eventState/70.f);
+            } else if ((e->eventState > 12.6f*70)) {
                 mainPlayer->camShake = 0;
-                if (e->eventState-timing->tickDuration < 12.6*70 & e->room->npc[0]!=nullptr) {
+                if (e->eventState-timing->tickDuration < 12.6f*70 && e->room->npc[0]!=nullptr) {
                     RemoveNPC(e->room->npc[0]);
                     e->room->npc[0] = nullptr;
 
-                    de = CreateDecal(DECAL_BLOOD_SPLATTER, bbEntityX(e->room->objects[0],true), 0.0005, bbEntityZ(e->room->objects[0],true),90,bbRnd(360),0);
+                    de = CreateDecal(DECAL_BLOOD_SPLATTER, bbEntityX(e->room->objects[0],true), 0.0005f, bbEntityZ(e->room->objects[0],true),90,bbRnd(360),0);
 
-                    de = CreateDecal(DECAL_BLOOD_POOL, bbEntityX(e->room->objects[0],true), 0.002, bbEntityZ(e->room->objects[0],true),90,bbRnd(360),0);
-                    de->size = 0.5;
+                    de = CreateDecal(DECAL_BLOOD_POOL, bbEntityX(e->room->objects[0],true), 0.002f, bbEntityZ(e->room->objects[0],true),90,bbRnd(360),0);
+                    de->size = 0.5f;
 
                     de = CreateDecal(DECAL_BLOOD_SPLATTER, bbEntityX(e->room->objects[1],true), bbEntityY(e->room->objects[1],true), bbEntityZ(e->room->objects[1],true),0,e->room->angle+270,0);
-                    de->size = 0.9;
+                    de->size = 0.9f;
                 }
                 e->room->doors[0]->locked = false;
             }

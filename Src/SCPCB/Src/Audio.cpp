@@ -224,7 +224,7 @@ gxChannel* PlayRangedSound(gxSound* soundHandle, Camera* cam, Object* entity, fl
 
     if (volume > 0) {
         dist = bbEntityDistance(cam, entity) / range;
-        if (1 - dist > 0 & 1 - dist < 1) {
+        if (1 - dist > 0 && 1 - dist < 1) {
             panvalue = bbSin(-bbDeltaYaw(cam, entity));
             soundChn = bbPlaySound(soundHandle);
 
@@ -277,7 +277,7 @@ void UpdateRangedSoundOrigin(gxChannel* chn, Camera* cam, Object* entity, float 
     if (volume > 0) {
 
         dist = bbEntityDistance(cam, entity) / range;
-        if (1 - dist > 0 & 1 - dist < 1) {
+        if (1 - dist > 0 && 1 - dist < 1) {
             panvalue = bbSin(-bbDeltaYaw(cam,entity));
 
             bbChannelVolume(chn, volume * (1 - dist) * userOptions->sndVolume);
@@ -296,7 +296,7 @@ void UpdateRangedSoundOrigin_SM(SoundChannel* chn) {
 
     if (chn->volume > 0) {
         dist = bbEntityDistance(chn->camera, chn->point) / chn->range;
-        if (1 - dist > 0 & 1 - dist < 1) {
+        if (1 - dist > 0 && 1 - dist < 1) {
             panvalue = bbSin(-bbDeltaYaw(chn->camera, chn->point));
 
             bbChannelVolume(chn->internal, chn->volume * (1 - dist) * userOptions->sndVolume);

@@ -55,9 +55,9 @@ void UpdateEvent106victim(Event* e) {
         if (mainPlayer->currRoom == e->room) {
             if (e->eventState == 0) {
                 de = CreateDecal(DECAL_CORROSION, bbEntityX(e->room->obj), 799.f*RoomScale, bbEntityZ(e->room->obj), -90, bbRand(360), 0);
-                de->size = 0.05;
-                de->sizeChange = 0.0015;
-                bbEntityAlpha(de->obj, 0.8);
+                de->size = 0.05f;
+                de->sizeChange = 0.0015f;
+                bbEntityAlpha(de->obj, 0.8f);
                 UpdateDecals();
                 //TODO: fix
                 //PlayRangedSound(DecaySFX(3), mainPlayer\cam, de\obj, 15.f)
@@ -85,29 +85,29 @@ void UpdateEvent106victim(Event* e) {
                 }
 
                 bbEntityType(e->room->npc[0]->collider,HIT_PLAYER);
-                if (bbEntityY(e->room->npc[0]->collider)>0.35) {
-                    AnimateNPC(e->room->npc[0], 1, 10, 0.12, false);
+                if (bbEntityY(e->room->npc[0]->collider)>0.35f) {
+                    AnimateNPC(e->room->npc[0], 1, 10, 0.12f, false);
                     dist = bbEntityDistance(mainPlayer->collider,e->room->npc[0]->collider);
                     //get the player out of the way
-                    if (dist<0.8) {
+                    if (dist<0.8f) {
                         fdir = GetAngle(bbEntityX(mainPlayer->collider,true),bbEntityZ(mainPlayer->collider,true),bbEntityX(e->room->npc[0]->collider,true),bbEntityZ(e->room->npc[0]->collider,true));
-                        bbTranslateEntity(mainPlayer->collider,bbCos(-fdir+90)*(dist-0.8)*(dist-0.8),0,bbSin(-fdir+90)*(dist-0.8)*(dist-0.8));
+                        bbTranslateEntity(mainPlayer->collider,bbCos(-fdir+90)*(dist-0.8f)*(dist-0.8f),0,bbSin(-fdir+90)*(dist-0.8f)*(dist-0.8f));
                     }
 
-                    if (bbEntityY(e->room->npc[0]->collider)>0.6) {
+                    if (bbEntityY(e->room->npc[0]->collider)>0.6f) {
                         bbEntityType(e->room->npc[0]->collider,0);
                     }
                 } else {
                     e->eventState = e->eventState+timing->tickDuration;
-                    AnimateNPC(e->room->npc[0], 11, 19, 0.25, false);
+                    AnimateNPC(e->room->npc[0], 11, 19, 0.25f, false);
                     if (e->sounds[0]==0) {
                         //e\sounds[0] = LoadSound("SFX/General/BodyFall.ogg")
                         LoadEventSound(e,"SFX/General/BodyFall.ogg");
                         PlaySound2(e->sounds[0]);
 
-                        de = CreateDecal(DECAL_CORROSION, bbEntityX(e->room->obj), 0.001, bbEntityZ(e->room->obj), 90, bbRand(360), 0);
-                        de->size = 0.4;
-                        bbEntityAlpha(de->obj, 0.8);
+                        de = CreateDecal(DECAL_CORROSION, bbEntityX(e->room->obj), 0.001f, bbEntityZ(e->room->obj), 90, bbRand(360), 0);
+                        de->size = 0.4f;
+                        bbEntityAlpha(de->obj, 0.8f);
                         UpdateDecals();
                     }
 

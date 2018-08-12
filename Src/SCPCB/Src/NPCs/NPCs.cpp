@@ -84,7 +84,7 @@ NPC* CreateNPC(int NPCtype, float x, float y, float z) {
 
     n->npcType = NPCtype;
     n->gravityMult = 1.f;
-    n->maxGravity = 0.2;
+    n->maxGravity = 0.2f;
     switch (NPCtype) {
         case NPCtype173: {
             InitializeNPCtype173(n);
@@ -153,7 +153,7 @@ void LoadOrCopyMesh(NPC* n, const String& filePath) {
     for (int iterator110 = 0; iterator110 < NPC::getListSize(); iterator110++) {
         n2 = NPC::getObject(iterator110);
 
-        if (n->npcType == n2->npcType & n != n2) {
+        if (n->npcType == n2->npcType && n != n2) {
             if ((n2->obj != 0)) {
                 n->obj = bbCopyMeshModelEntity(n2->obj);
                 return;
@@ -289,13 +289,13 @@ void UpdateNPCs() {
         //TODO: Rework.
         gravityDist = Distance(bbEntityX(mainPlayer->collider),bbEntityZ(mainPlayer->collider),bbEntityX(n->collider),bbEntityZ(n->collider));
 
-        if (gravityDist<HideDistance*0.7 | n->npcType == NPCtype1499) {
+        if (gravityDist<HideDistance*0.7f | n->npcType == NPCtype1499) {
             if (n->inFacility == InFacility) {
                 bbTranslateEntity(n->collider, 0, n->dropSpeed, 0);
 
                 collidedFloor = false;
                 for (i = 1; i <= bbCountCollisions(n->collider); i++) {
-                    if (bbCollisionY(n->collider, i) < bbEntityY(n->collider) - 0.01) {
+                    if (bbCollisionY(n->collider, i) < bbEntityY(n->collider) - 0.01f) {
                         collidedFloor = true;
                         break;
                     }
@@ -304,7 +304,7 @@ void UpdateNPCs() {
                 if (collidedFloor == true) {
                     n->dropSpeed = 0;
                 } else {
-                    n->dropSpeed = Max(n->dropSpeed - 0.005*timing->tickDuration*n->gravityMult,-n->maxGravity);
+                    n->dropSpeed = Max(n->dropSpeed - 0.005f*timing->tickDuration*n->gravityMult,-n->maxGravity);
                 }
             } else {
                 n->dropSpeed = 0;
@@ -339,9 +339,9 @@ void TeleportCloser(NPC* n) {
 
         //If (w\door = Null) Then ;TODO: fix?
         xtemp = abs(bbEntityX(w->obj,true)-bbEntityX(n->collider,true));
-        if (xtemp < 10.f & xtemp > 1.f) {
+        if (xtemp < 10.f && xtemp > 1.f) {
             ztemp = abs(bbEntityZ(w->obj,true)-bbEntityZ(n->collider,true));
-            if (ztemp < 10.f & ztemp > 1.f) {
+            if (ztemp < 10.f && ztemp > 1.f) {
                 if (bbEntityDistance(mainPlayer->collider, w->obj)>8) {
                     if (SelectedDifficulty->aggressiveNPCs) {
                         //teleports to the nearby waypoint that takes it closest to the player
@@ -362,7 +362,7 @@ void TeleportCloser(NPC* n) {
     }
 
     if (closestWaypoint!=nullptr) {
-        bbPositionEntity(n->collider, bbEntityX(closestWaypoint->obj,true), bbEntityY(closestWaypoint->obj,true)+0.15, bbEntityZ(closestWaypoint->obj,true), true);
+        bbPositionEntity(n->collider, bbEntityX(closestWaypoint->obj,true), bbEntityY(closestWaypoint->obj,true)+0.15f, bbEntityZ(closestWaypoint->obj,true), true);
         bbResetEntity(n->collider);
     }
 
@@ -406,7 +406,7 @@ int MeNPCSeesPlayer(NPC* me, int disableSoundOnCrouch) {
             if (abs(bbDeltaYaw(me->collider,mainPlayer->collider))>60.f && bbEntityVisible(me->collider,mainPlayer->collider)) {
                 return 1;
             } else if ((!bbEntityVisible(me->collider,mainPlayer->collider))) {
-                if (disableSoundOnCrouch & mainPlayer->crouching) {
+                if (disableSoundOnCrouch && mainPlayer->crouching) {
                     return false;
                 } else {
                     return 2;
@@ -449,7 +449,7 @@ void TeleportMTFGroup(NPC* n) {
 
         if (n2->npcType == NPCtypeMTF) {
             if (n2->mtfLeader != nullptr) {
-                bbPositionEntity(n2->collider,bbEntityX(n2->mtfLeader->collider),bbEntityY(n2->mtfLeader->collider)+0.1,bbEntityZ(n2->mtfLeader->collider));
+                bbPositionEntity(n2->collider,bbEntityX(n2->mtfLeader->collider),bbEntityY(n2->mtfLeader->collider)+0.1f,bbEntityZ(n2->mtfLeader->collider));
             }
         }
     }
@@ -466,11 +466,11 @@ void Shoot(float x, float y, float z, float hitProb, int particles, int instaKil
     Decal* de;
 
     //muzzle flash
-    Particle* p = CreateParticle(x,y,z, PARTICLE_FLASH, bbRnd(0.08,0.1), 0.f, 5);
+    Particle* p = CreateParticle(x,y,z, PARTICLE_FLASH, bbRnd(0.08f,0.1f), 0.f, 5);
     bbTurnEntity(p->sprite, 0,0,bbRnd(360));
-    p->aChange = -0.15;
+    p->aChange = -0.15f;
 
-    //LightVolume = TempLightVolume*1.2
+    //LightVolume = TempLightVolume*1.2f
 
     if (!mainPlayer->godMode) {
 
@@ -498,23 +498,23 @@ void Shoot(float x, float y, float z, float hitProb, int particles, int instaKil
                             mainPlayer->blurTimer = 500;
                             mainPlayer->stamina = 0;
                             shotMessageUpdate = "A bullet penetrated your vest, making you gasp.";
-                            mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.1,0.5);
+                            mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.1f,0.5f);
                         } break;
                         case 6: {
                             mainPlayer->blurTimer = 500;
                             shotMessageUpdate = "A bullet hit your left leg.";
-                            mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.8,1.2);
+                            mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.8f,1.2f);
                         } break;
                         case 7: {
                             mainPlayer->blurTimer = 500;
                             shotMessageUpdate = "A bullet hit your right leg.";
-                            mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.8,1.2);
+                            mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.8f,1.2f);
                         } break;
                         case 8: {
                             mainPlayer->blurTimer = 500;
                             mainPlayer->stamina = 0;
                             shotMessageUpdate = "A bullet struck your neck, making you gasp.";
-                            mainPlayer->injuries = mainPlayer->injuries + bbRnd(1.2,1.6);
+                            mainPlayer->injuries = mainPlayer->injuries + bbRnd(1.2f,1.6f);
                         } break;
                     }
                 } else {
@@ -522,10 +522,10 @@ void Shoot(float x, float y, float z, float hitProb, int particles, int instaKil
                         mainPlayer->blurTimer = 500;
                         mainPlayer->stamina = mainPlayer->stamina - 1;
                         shotMessageUpdate = "A bullet hit your chest. The vest absorbed some of the damage.";
-                        mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.8,1.1);
+                        mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.8f,1.1f);
                     } else {
                         shotMessageUpdate = "A bullet hit your chest. The vest absorbed most of the damage.";
-                        mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.1,0.5);
+                        mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.1f,0.5f);
                     }
                 }
 
@@ -542,27 +542,27 @@ void Shoot(float x, float y, float z, float hitProb, int particles, int instaKil
                     case 2: {
                         mainPlayer->blurTimer = 500;
                         shotMessageUpdate = "A bullet hit your left leg.";
-                        mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.8,1.2);
+                        mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.8f,1.2f);
                     } break;
                     case 3: {
                         mainPlayer->blurTimer = 500;
                         shotMessageUpdate = "A bullet hit your right leg.";
-                        mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.8,1.2);
+                        mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.8f,1.2f);
                     } break;
                     case 4: {
                         mainPlayer->blurTimer = 500;
                         shotMessageUpdate = "A bullet hit your right shoulder.";
-                        mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.8,1.2);
+                        mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.8f,1.2f);
                     } break;
                     case 5: {
                         mainPlayer->blurTimer = 500;
                         shotMessageUpdate = "A bullet hit your left shoulder.";
-                        mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.8,1.2);
+                        mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.8f,1.2f);
                     } break;
                     case 6: {
                         mainPlayer->blurTimer = 500;
                         shotMessageUpdate = "A bullet hit your right shoulder.";
-                        mainPlayer->injuries = mainPlayer->injuries + bbRnd(2.5,4.f);
+                        mainPlayer->injuries = mainPlayer->injuries + bbRnd(2.5f,4.f);
                     } break;
                 }
             }
@@ -583,36 +583,36 @@ void Shoot(float x, float y, float z, float hitProb, int particles, int instaKil
             bbPointEntity(pvt, p->sprite);
             bbTurnEntity(pvt, 0, 180, 0);
 
-            bbEntityPick(pvt, 2.5);
+            bbEntityPick(pvt, 2.5f);
 
             if (bbPickedEntity() != 0) {
-                PlayRangedSound_SM(sndManager->bulletMiss, mainPlayer->cam, pvt, 0.4, bbRnd(0.8,1.f));
+                PlayRangedSound_SM(sndManager->bulletMiss, mainPlayer->cam, pvt, 0.4f, bbRnd(0.8f,1.f));
 
                 if (particles) {
                     //dust/smoke particles
-                    p = CreateParticle(bbPickedX(),bbPickedY(),bbPickedZ(), PARTICLE_SMOKE_BLACK, 0.03, 0, 80);
-                    p->speed = 0.001;
-                    p->sizeChange = 0.003;
-                    p->a = 0.8;
-                    p->aChange = -0.01;
+                    p = CreateParticle(bbPickedX(),bbPickedY(),bbPickedZ(), PARTICLE_SMOKE_BLACK, 0.03f, 0, 80);
+                    p->speed = 0.001f;
+                    p->sizeChange = 0.003f;
+                    p->a = 0.8f;
+                    p->aChange = -0.01f;
                     bbRotateEntity(p->pvt, bbEntityPitch(pvt)-180, bbEntityYaw(pvt),0);
 
                     for (i = 0; i <= bbRand(2,3); i++) {
-                        p = CreateParticle(bbPickedX(),bbPickedY(),bbPickedZ(), PARTICLE_SMOKE_BLACK, 0.006, 0.003, 80);
-                        p->speed = 0.02;
-                        p->a = 0.8;
-                        p->aChange = -0.01;
+                        p = CreateParticle(bbPickedX(),bbPickedY(),bbPickedZ(), PARTICLE_SMOKE_BLACK, 0.006f, 0.003f, 80);
+                        p->speed = 0.02f;
+                        p->a = 0.8f;
+                        p->aChange = -0.01f;
                         bbRotateEntity(p->pvt, bbEntityPitch(pvt)+bbRnd(170,190), bbEntityYaw(pvt)+bbRnd(-10,10),0);
                     }
 
                     //bullet hole decal
                     de = CreateDecal(bbRand(DECAL_BULLET_HOLE1, DECAL_BULLET_HOLE2), bbPickedX(),bbPickedY(),bbPickedZ(), 0,0,0);
                     bbAlignToVector(de->obj,-bbPickedNX(),-bbPickedNY(),-bbPickedNZ(),3);
-                    bbMoveEntity(de->obj, 0,0,-0.001);
+                    bbMoveEntity(de->obj, 0,0,-0.001f);
                     bbEntityFX(de->obj, 1);
                     de->lifetime = 70*20;
                     bbEntityBlend(de->obj, 2);
-                    de->size = bbRnd(0.028,0.034);
+                    de->size = bbRnd(0.028f,0.034f);
                     bbScaleSprite(de->obj, de->size, de->size);
                 }
             }
@@ -655,13 +655,13 @@ void MoveToPocketDimension() {
             bbShowEntity(mainPlayer->collider);
             PlaySound2(LoadTempSound("SFX/SCP/914/PlayerUse.ogg"));
             //PlaySound2(OldManSFX(5)) ;TODO: fix
-            bbPositionEntity(mainPlayer->collider, bbEntityX(r->obj),0.8,bbEntityZ(r->obj));
+            bbPositionEntity(mainPlayer->collider, bbEntityX(r->obj),0.8f,bbEntityZ(r->obj));
             mainPlayer->dropSpeed = 0;
             bbResetEntity(mainPlayer->collider);
 
             mainPlayer->blinkTimer = -10;
 
-            mainPlayer->injuries = mainPlayer->injuries+0.5;
+            mainPlayer->injuries = mainPlayer->injuries+0.5f;
 
             mainPlayer->currRoom = r;
 
@@ -699,7 +699,7 @@ void ForceSetNPCID(NPC* n, int newID) {
     for (int iterator116 = 0; iterator116 < NPC::getListSize(); iterator116++) {
         n2 = NPC::getObject(iterator116);
 
-        if (n2 != n & n2->id == newID) {
+        if (n2 != n && n2->id == newID) {
             n2->id = FindFreeNPCID();
         }
     }
@@ -710,67 +710,67 @@ void Console_SpawnNPC(const String& npcName, int state) {
 
     // switch (c_input) {
     //     case "mtf": {
-    //         n = CreateNPC(NPCtypeMTF, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2,bbEntityZ(mainPlayer->collider));
+    //         n = CreateNPC(NPCtypeMTF, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2f,bbEntityZ(mainPlayer->collider));
     //     }
     //     case "173","scp173","scp-173": {
-    //         n = CreateNPC(NPCtype173, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2,bbEntityZ(mainPlayer->collider));
+    //         n = CreateNPC(NPCtype173, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2f,bbEntityZ(mainPlayer->collider));
     //     }
     //     case "106","scp106","scp-106","larry": {
-    //         n = CreateNPC(NPCtype106, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2,bbEntityZ(mainPlayer->collider));
+    //         n = CreateNPC(NPCtype106, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2f,bbEntityZ(mainPlayer->collider));
     //     }
     //     case "guard": {
-    //         n = CreateNPC(NPCtypeGuard, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2,bbEntityZ(mainPlayer->collider));
+    //         n = CreateNPC(NPCtypeGuard, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2f,bbEntityZ(mainPlayer->collider));
     //     }
     //     case "096","scp096","scp-096": {
-    //         n = CreateNPC(NPCtype096, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2,bbEntityZ(mainPlayer->collider));
+    //         n = CreateNPC(NPCtype096, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2f,bbEntityZ(mainPlayer->collider));
     //         if (Curr096 == nullptr) {
     //             Curr096 = n;
     //         }
     //     }
     //     case "049","scp049","scp-049": {
-    //         n = CreateNPC(NPCtype049, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2,bbEntityZ(mainPlayer->collider));
+    //         n = CreateNPC(NPCtype049, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2f,bbEntityZ(mainPlayer->collider));
     //         if (state==-9999) {
     //             n->state = 2;
     //         }
     //     }
     //     case "zombie","scp-049-2": {
-    //         n = CreateNPC(NPCtypeZombie, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2,bbEntityZ(mainPlayer->collider));
+    //         n = CreateNPC(NPCtypeZombie, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2f,bbEntityZ(mainPlayer->collider));
     //         if (state==-9999) {
     //             n->state = 1;
     //         }
     //     }
     //     case "966", "scp966", "scp-966": {
-    //         n = CreateNPC(NPCtype966, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2,bbEntityZ(mainPlayer->collider));
+    //         n = CreateNPC(NPCtype966, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2f,bbEntityZ(mainPlayer->collider));
     //     }
     //     case "class-d","classd","d": {
-    //         n = CreateNPC(NPCtypeD, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2,bbEntityZ(mainPlayer->collider));
+    //         n = CreateNPC(NPCtypeD, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2f,bbEntityZ(mainPlayer->collider));
     //     }
     //     case "apache": {
-    //         n = CreateNPC(NPCtypeApache, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2,bbEntityZ(mainPlayer->collider));
+    //         n = CreateNPC(NPCtypeApache, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2f,bbEntityZ(mainPlayer->collider));
     //     }
     //     case "513-1","scp513-1","scp-513-1": {
-    //         n = CreateNPC(NPCtype5131, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2,bbEntityZ(mainPlayer->collider));
+    //         n = CreateNPC(NPCtype5131, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2f,bbEntityZ(mainPlayer->collider));
     //     }
     //     case "tentacle": {
     //         n = CreateNPC(NPCtypeTentacle, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider),bbEntityZ(mainPlayer->collider));
     //     }
     //     case "860-2","scp860-2","scp-860-2": {
-    //         n = CreateNPC(NPCtype860, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2,bbEntityZ(mainPlayer->collider));
+    //         n = CreateNPC(NPCtype860, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2f,bbEntityZ(mainPlayer->collider));
     //     }
     //     case "939","scp939","scp-939": {
-    //         n = CreateNPC(NPCtype939, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2,bbEntityZ(mainPlayer->collider));
+    //         n = CreateNPC(NPCtype939, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2f,bbEntityZ(mainPlayer->collider));
     //         if (state==-9999) {
     //             n->state = 1;
     //         }
     //     }
     //     case "066","scp066","scp-066": {
-    //         n = CreateNPC(NPCtype066, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2,bbEntityZ(mainPlayer->collider));
+    //         n = CreateNPC(NPCtype066, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2f,bbEntityZ(mainPlayer->collider));
     //     }
     //     case "pdplane": {
-    //         n = CreateNPC(NPCtypePdPlane, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2,bbEntityZ(mainPlayer->collider));
+    //         n = CreateNPC(NPCtypePdPlane, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2f,bbEntityZ(mainPlayer->collider));
     //     }
     //     case "scp-1499-1","scp1499-1","1499-1": {
-    //         n = CreateNPC(NPCtype1499, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2,bbEntityZ(mainPlayer->collider));
+    //         n = CreateNPC(NPCtype1499, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2f,bbEntityZ(mainPlayer->collider));
     //     }
     //     default: {
     //         CreateConsoleMsg("NPC type not found.");
@@ -1024,10 +1024,10 @@ void NPCSpeedChange(NPC* n) {
         case NPCtypeMTF: {
             switch (SelectedDifficulty->otherFactors) {
                 case NORMAL: {
-                    n->speed = n->speed * 1.1;
+                    n->speed = n->speed * 1.1f;
                 } break;
                 case HARD: {
-                    n->speed = n->speed * 1.2;
+                    n->speed = n->speed * 1.2f;
                 } break;
             }
         } break;
@@ -1044,7 +1044,7 @@ int PlayerInReachableRoom() {
         return false;
     }
     //Player is at GateB and is at the surface, returning false
-    if (RN.equals("exit1") & bbEntityY(mainPlayer->collider)>1040.f*RoomScale) {
+    if (RN.equals("exit1") && bbEntityY(mainPlayer->collider)>1040.f*RoomScale) {
         return false;
     }
     //Player is in 860's test room and inside the forest, returning false
@@ -1052,12 +1052,12 @@ int PlayerInReachableRoom() {
     for (int iterator118 = 0; iterator118 < Event::getListSize(); iterator118++) {
         Event* e = Event::getObject(iterator118);
 
-        if (e->name.equals("room860") & e->eventState == 1.f) {
+        if (e->name.equals("room860") && e->eventState == 1.f) {
             temp = true;
             break;
         }
     }
-    if (RN.equals("room860") & temp) {
+    if (RN.equals("room860") && temp) {
         return false;
     }
     //Return true, this means player is in reachable room
@@ -1076,7 +1076,7 @@ int CheckForNPCInFacility(NPC* n) {
     if (bbEntityY(n->collider)< -10.f) {
         return 2;
     }
-    if (bbEntityY(n->collider)> 7.f & bbEntityY(n->collider)<=100.f) {
+    if (bbEntityY(n->collider)> 7.f && bbEntityY(n->collider)<=100.f) {
         return 2;
     }
 
@@ -1143,12 +1143,12 @@ void GoToElevator(NPC* n) {
 
         dist = bbEntityDistance(n->collider,n->currElevator->door->frameobj);
         if (n->currElevator->door->open) {
-            if ((dist > 0.4 & dist < 0.7) & inside) {
+            if ((dist > 0.4f & dist < 0.7f) && inside) {
                 UseDoor(n->currElevator->door,false);
                 std::cout << String(n->npcType)+" used elevator";
             }
         } else {
-            if (dist < 0.7) {
+            if (dist < 0.7f) {
                 n->currSpeed = 0.f;
                 if (n->currElevator->door->npcCalledElevator==false) {
                     n->currElevator->door->npcCalledElevator = true;
@@ -1204,7 +1204,7 @@ void AnimateNPC(NPC* n, float start, float quit, float speed, int loop) {
     if (speed > 0.f) {
         newTime = Max(Min(n->frame + speed * timing->tickDuration, quit), start);
 
-        if (loop & newTime >= quit) {
+        if (loop && newTime >= quit) {
             newTime = start;
         }
     } else {
@@ -1231,7 +1231,7 @@ void AnimateNPC(NPC* n, float start, float quit, float speed, int loop) {
 }
 
 void SetNPCFrame(NPC* n, float frame) {
-    if (abs(n->frame-frame)<0.001) {
+    if (abs(n->frame-frame)<0.001f) {
         return;
     }
 

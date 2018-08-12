@@ -61,7 +61,7 @@ MeshModel* CreateButton(float x, float y, float z, float pitch, float yaw, float
     MeshModel* obj = bbDeepCopyMesh(buttonObj->getMesh());
     buttonObj->drop();
 
-    bbScaleEntity(obj, 0.03, 0.03, 0.03);
+    bbScaleEntity(obj, 0.03f, 0.03f, 0.03f);
 
     bbPositionEntity(obj, x,y,z);
     bbRotateEntity(obj, pitch,yaw,roll);
@@ -75,12 +75,12 @@ void UpdateButton(MeshModel* obj) {
     //entityDistance(collider, d\buttons[i])
     float dist = bbEntityDistance(mainPlayer->collider, obj);
 
-    if (dist < 0.8) {
+    if (dist < 0.8f) {
         Pivot* tempPvt = bbCreatePivot();
         bbPositionEntity(tempPvt, bbEntityX(mainPlayer->cam), bbEntityY(mainPlayer->cam), bbEntityZ(mainPlayer->cam));
         bbPointEntity(tempPvt,obj);
 
-        if (bbEntityPick(tempPvt, 0.65) == obj) {
+        if (bbEntityPick(tempPvt, 0.65f) == obj) {
             if (mainPlayer->closestButton == 0) {
                 mainPlayer->closestButton = obj;
             } else {
@@ -114,10 +114,10 @@ void UpdateLevers() {
         float dist = bbEntityDistance(mainPlayer->cam, lever->obj);
 
         if (dist < 8.f) {
-            if (dist < 0.8 & (!lever->locked)) {
+            if (dist < 0.8f && (!lever->locked)) {
                 if (bbEntityInView(lever->obj, mainPlayer->cam)) {
 
-                    bbEntityPick(mainPlayer->cam, 0.65);
+                    bbEntityPick(mainPlayer->cam, 0.65f);
 
                     if (bbPickedEntity() == lever->obj) {
                         DrawHandIcon = true;
@@ -154,7 +154,7 @@ void UpdateLevers() {
                 }
             }
 
-            if (MouseDown1==false & MouseHit1==false) {
+            if (MouseDown1==false && MouseHit1==false) {
                 if (bbEntityPitch(lever->obj,true) > 0) {
                     bbRotateEntity(lever->obj, CurveValue(80, bbEntityPitch(lever->obj), 10), bbEntityYaw(lever->obj), 0);
                 } else {
@@ -176,25 +176,25 @@ void UpdateLevers() {
 float UpdateElevators(float state, Door* door1, Door* door2, class Object* room1, class Object* room2, Event* event) {
     door1->isElevatorDoor = 1;
     door2->isElevatorDoor = 1;
-    if (door1->open == true & door2->open == false) {
+    if (door1->open == true && door2->open == false) {
         state = -1;
-        if ((mainPlayer->closestButton == door2->buttons[0] | mainPlayer->closestButton == door2->buttons[1]) & MouseHit1) {
+        if ((mainPlayer->closestButton == door2->buttons[0] | mainPlayer->closestButton == door2->buttons[1]) && MouseHit1) {
             UseDoor(door1,false);
         }
         if (door2->npcCalledElevator == true) {
             UseDoor(door1,false);
             door2->npcCalledElevator = 2;
         }
-    } else if ((door2->open == true & door1->open == false)) {
+    } else if ((door2->open == true && door1->open == false)) {
         state = 1;
-        if ((mainPlayer->closestButton == door1->buttons[0] | mainPlayer->closestButton == door1->buttons[1]) & MouseHit1) {
+        if ((mainPlayer->closestButton == door1->buttons[0] | mainPlayer->closestButton == door1->buttons[1]) && MouseHit1) {
             UseDoor(door2,false);
         }
         if (door1->npcCalledElevator == true) {
             UseDoor(door2,false);
             door1->npcCalledElevator = 2;
         }
-    } else if ((abs(door1->openstate-door2->openstate)<0.2)) {
+    } else if ((abs(door1->openstate-door2->openstate)<0.2f)) {
         door1->isElevatorDoor = 2;
         door2->isElevatorDoor = 2;
     }
@@ -203,7 +203,7 @@ float UpdateElevators(float state, Door* door1, Door* door2, class Object* room1
     NPC* NPC_inside = nullptr;
 
     //molemmat ovet kiinni = hissi liikkuu
-    if (door1->open == false & door2->open == false) {
+    if (door1->open == false && door2->open == false) {
         door1->locked = true;
         door2->locked = true;
         door1->npcCalledElevator = 2;
@@ -221,7 +221,7 @@ float UpdateElevators(float state, Door* door1, Door* door2, class Object* room1
                             event->soundChannels[0] = PlaySound_SM(sndManager->elevatorMove);
                         }
 
-                        mainPlayer->camShake = bbSin(abs(state)/3.f)*0.3;
+                        mainPlayer->camShake = bbSin(abs(state)/3.f)*0.3f;
                     }
                 }
             }
@@ -240,9 +240,9 @@ float UpdateElevators(float state, Door* door1, Door* door2, class Object* room1
                 }
             }
 
-            if (NPC_inside != nullptr & (!inside)) {
+            if (NPC_inside != nullptr && (!inside)) {
                 NPC_inside->idle = true;
-            } else if ((NPC_inside != nullptr & inside)) {
+            } else if ((NPC_inside != nullptr && inside)) {
                 NPC_inside->idle = false;
             }
 
@@ -254,9 +254,9 @@ float UpdateElevators(float state, Door* door1, Door* door2, class Object* room1
                 state = 0;
 
                 if (inside) {
-                    float x = Max(Min((bbEntityX(mainPlayer->collider)-bbEntityX(room1,true)),280*RoomScale-0.17),-280*RoomScale+0.17);
-                    float z = Max(Min((bbEntityZ(mainPlayer->collider)-bbEntityZ(room1,true)),280*RoomScale-0.17),-280*RoomScale+0.17);
-                    bbPositionEntity(mainPlayer->collider, bbEntityX(room2,true)+x,0.1+bbEntityY(room2,true)+(bbEntityY(mainPlayer->collider)-bbEntityY(room1,true)),bbEntityZ(room2,true)+z,true);
+                    float x = Max(Min((bbEntityX(mainPlayer->collider)-bbEntityX(room1,true)),280*RoomScale-0.17f),-280*RoomScale+0.17f);
+                    float z = Max(Min((bbEntityZ(mainPlayer->collider)-bbEntityZ(room1,true)),280*RoomScale-0.17f),-280*RoomScale+0.17f);
+                    bbPositionEntity(mainPlayer->collider, bbEntityX(room2,true)+x,0.1f+bbEntityY(room2,true)+(bbEntityY(mainPlayer->collider)-bbEntityY(room1,true)),bbEntityZ(room2,true)+z,true);
                     bbResetEntity(mainPlayer->collider);
                     UpdateDoorsTimer = 0;
                     mainPlayer->dropSpeed = 0;
@@ -265,9 +265,9 @@ float UpdateElevators(float state, Door* door1, Door* door2, class Object* room1
                 }
 
                 if (NPC_inside != nullptr) {
-                    float x = Max(Min((bbEntityX(NPC_inside->collider)-bbEntityX(room1,true)),280*RoomScale-0.17),-280*RoomScale+0.17);
-                    float z = Max(Min((bbEntityZ(NPC_inside->collider)-bbEntityZ(room1,true)),280*RoomScale-0.17),-280*RoomScale+0.17);
-                    bbPositionEntity(NPC_inside->collider, bbEntityX(room2,true)+x,0.1+bbEntityY(room2,true)+(bbEntityY(NPC_inside->collider)-bbEntityY(room1,true)),bbEntityZ(room2,true)+z,true);
+                    float x = Max(Min((bbEntityX(NPC_inside->collider)-bbEntityX(room1,true)),280*RoomScale-0.17f),-280*RoomScale+0.17f);
+                    float z = Max(Min((bbEntityZ(NPC_inside->collider)-bbEntityZ(room1,true)),280*RoomScale-0.17f),-280*RoomScale+0.17f);
+                    bbPositionEntity(NPC_inside->collider, bbEntityX(room2,true)+x,0.1f+bbEntityY(room2,true)+(bbEntityY(NPC_inside->collider)-bbEntityY(room1,true)),bbEntityZ(room2,true)+z,true);
                     bbResetEntity(NPC_inside->collider);
                     UpdateDoorsTimer = 0;
                     NPC_inside->dropSpeed = 0;
@@ -296,7 +296,7 @@ float UpdateElevators(float state, Door* door1, Door* door2, class Object* room1
                             event->soundChannels[0] = PlaySound_SM(sndManager->elevatorMove);
                         }
 
-                        mainPlayer->camShake = bbSin(abs(state)/3.f)*0.3;
+                        mainPlayer->camShake = bbSin(abs(state)/3.f)*0.3f;
                     }
                 }
             }
@@ -315,9 +315,9 @@ float UpdateElevators(float state, Door* door1, Door* door2, class Object* room1
                 }
             }
 
-            if (NPC_inside != nullptr & (!inside)) {
+            if (NPC_inside != nullptr && (!inside)) {
                 NPC_inside->idle = true;
-            } else if ((NPC_inside != nullptr & inside)) {
+            } else if ((NPC_inside != nullptr && inside)) {
                 NPC_inside->idle = false;
             }
 
@@ -330,9 +330,9 @@ float UpdateElevators(float state, Door* door1, Door* door2, class Object* room1
 
                 //pelaaja hissin sis�ll�, siirret��n
                 if (inside) {
-                    float x = Max(Min((bbEntityX(mainPlayer->collider)-bbEntityX(room2,true)),280*RoomScale-0.17),-280*RoomScale+0.17);
-                    float z = Max(Min((bbEntityZ(mainPlayer->collider)-bbEntityZ(room2,true)),280*RoomScale-0.17),-280*RoomScale+0.17);
-                    bbPositionEntity(mainPlayer->collider, bbEntityX(room1,true)+x,0.1+bbEntityY(room1,true)+(bbEntityY(mainPlayer->collider)-bbEntityY(room2,true)),bbEntityZ(room1,true)+z,true);
+                    float x = Max(Min((bbEntityX(mainPlayer->collider)-bbEntityX(room2,true)),280*RoomScale-0.17f),-280*RoomScale+0.17f);
+                    float z = Max(Min((bbEntityZ(mainPlayer->collider)-bbEntityZ(room2,true)),280*RoomScale-0.17f),-280*RoomScale+0.17f);
+                    bbPositionEntity(mainPlayer->collider, bbEntityX(room1,true)+x,0.1f+bbEntityY(room1,true)+(bbEntityY(mainPlayer->collider)-bbEntityY(room2,true)),bbEntityZ(room1,true)+z,true);
                     bbResetEntity(mainPlayer->collider);
                     UpdateDoorsTimer = 0;
                     mainPlayer->dropSpeed = 0;
@@ -341,9 +341,9 @@ float UpdateElevators(float state, Door* door1, Door* door2, class Object* room1
                 }
 
                 if (NPC_inside != nullptr) {
-                    float x = Max(Min((bbEntityX(NPC_inside->collider)-bbEntityX(room2,true)),280*RoomScale-0.17),-280*RoomScale+0.17);
-                    float z = Max(Min((bbEntityZ(NPC_inside->collider)-bbEntityZ(room2,true)),280*RoomScale-0.17),-280*RoomScale+0.17);
-                    bbPositionEntity(NPC_inside->collider, bbEntityX(room1,true)+x,0.1+bbEntityY(room1,true)+(bbEntityY(NPC_inside->collider)-bbEntityY(room2,true)),bbEntityZ(room1,true)+z,true);
+                    float x = Max(Min((bbEntityX(NPC_inside->collider)-bbEntityX(room2,true)),280*RoomScale-0.17f),-280*RoomScale+0.17f);
+                    float z = Max(Min((bbEntityZ(NPC_inside->collider)-bbEntityZ(room2,true)),280*RoomScale-0.17f),-280*RoomScale+0.17f);
+                    bbPositionEntity(NPC_inside->collider, bbEntityX(room1,true)+x,0.1f+bbEntityY(room1,true)+(bbEntityY(NPC_inside->collider)-bbEntityY(room2,true)),bbEntityZ(room1,true)+z,true);
                     bbResetEntity(NPC_inside->collider);
                     UpdateDoorsTimer = 0;
                     NPC_inside->dropSpeed = 0;
@@ -373,19 +373,19 @@ float UpdateElevators2(float State, Door* door1, Door* door2, class Object* room
 
     door1->isElevatorDoor = 1;
     door2->isElevatorDoor = 1;
-    if (door1->open == true & door2->open == false) {
+    if (door1->open == true && door2->open == false) {
         State = -1;
         door2->isElevatorDoor = 2;
-        if ((mainPlayer->closestButton == door2->buttons[0] | mainPlayer->closestButton == door2->buttons[1]) & MouseHit1) {
+        if ((mainPlayer->closestButton == door2->buttons[0] | mainPlayer->closestButton == door2->buttons[1]) && MouseHit1) {
             UseDoor(door1,false);
         }
-    } else if ((door2->open == true & door1->open == false)) {
+    } else if ((door2->open == true && door1->open == false)) {
         State = 1;
         door1->isElevatorDoor = 2;
-        if ((mainPlayer->closestButton == door1->buttons[0] | mainPlayer->closestButton == door1->buttons[1]) & MouseHit1) {
+        if ((mainPlayer->closestButton == door1->buttons[0] | mainPlayer->closestButton == door1->buttons[1]) && MouseHit1) {
             UseDoor(door2,false);
         }
-    } else if ((abs(door1->openstate-door2->openstate)<0.2)) {
+    } else if ((abs(door1->openstate-door2->openstate)<0.2f)) {
         door1->isElevatorDoor = 2;
         door2->isElevatorDoor = 2;
     }
@@ -395,7 +395,7 @@ float UpdateElevators2(float State, Door* door1, Door* door2, class Object* room
     float dir;
 
     //molemmat ovet kiinni = hissi liikkuu
-    if (door1->open == false & door2->open == false) {
+    if (door1->open == false && door2->open == false) {
         door1->locked = true;
         door2->locked = true;
         //ylh��lt?alas
@@ -411,7 +411,7 @@ float UpdateElevators2(float State, Door* door1, Door* door2, class Object* room
                             event->soundChannels[0] = PlaySound_SM(sndManager->elevatorMove);
                         }
 
-                        mainPlayer->camShake = bbSin(abs(State)/3.f)*0.3;
+                        mainPlayer->camShake = bbSin(abs(State)/3.f)*0.3f;
                     }
                 }
             }
@@ -436,16 +436,16 @@ float UpdateElevators2(float State, Door* door1, Door* door2, class Object* room
 
                     dir = WrapAngle(dir);
 
-                    x = Max(Min(bbCos(dir)*dist,280*RoomScale-0.17),-280*RoomScale+0.17);
-                    z = Max(Min(bbSin(dir)*dist,280*RoomScale-0.17),-280*RoomScale+0.17);
+                    x = Max(Min(bbCos(dir)*dist,280*RoomScale-0.17f),-280*RoomScale+0.17f);
+                    z = Max(Min(bbSin(dir)*dist,280*RoomScale-0.17f),-280*RoomScale+0.17f);
 
-                    //x# = Max(Min((EntityX(mainPlayer\collider)-EntityX(room1,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
-                    //z# = Max(Min((EntityZ(mainPlayer\collider)-EntityZ(room1,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
+                    //x# = Max(Min((EntityX(mainPlayer\collider)-EntityX(room1,True)),280*RoomScale-0.17f),-280*RoomScale+0.17f)
+                    //z# = Max(Min((EntityZ(mainPlayer\collider)-EntityZ(room1,True)),280*RoomScale-0.17f),-280*RoomScale+0.17f)
 
                     //dir
                     bbRotateEntity(mainPlayer->collider,bbEntityPitch(mainPlayer->collider,true),bbEntityYaw(room2,true)+angleDist(bbEntityYaw(mainPlayer->collider,true),bbEntityYaw(room1,true)),bbEntityRoll(mainPlayer->collider,true),true);
 
-                    bbPositionEntity(mainPlayer->collider, bbEntityX(room2,true)+x,0.05+bbEntityY(room2,true)+(bbEntityY(mainPlayer->collider)-bbEntityY(room1,true)),bbEntityZ(room2,true)+z,true);
+                    bbPositionEntity(mainPlayer->collider, bbEntityX(room2,true)+x,0.05f+bbEntityY(room2,true)+(bbEntityY(mainPlayer->collider)-bbEntityY(room1,true)),bbEntityZ(room2,true)+z,true);
 
                     bbResetEntity(mainPlayer->collider);
                     UpdateDoors();
@@ -468,7 +468,7 @@ float UpdateElevators2(float State, Door* door1, Door* door2, class Object* room
                             event->soundChannels[0] = PlaySound_SM(sndManager->elevatorMove);
                         }
 
-                        mainPlayer->camShake = bbSin(abs(State)/3.f)*0.3;
+                        mainPlayer->camShake = bbSin(abs(State)/3.f)*0.3f;
                     }
                 }
             }
@@ -494,16 +494,16 @@ float UpdateElevators2(float State, Door* door1, Door* door2, class Object* room
 
                     //dir=WrapAngle(dir)
 
-                    x = Max(Min(bbCos(dir)*dist,280*RoomScale-0.17),-280*RoomScale+0.17);
-                    z = Max(Min(bbSin(dir)*dist,280*RoomScale-0.17),-280*RoomScale+0.17);
+                    x = Max(Min(bbCos(dir)*dist,280*RoomScale-0.17f),-280*RoomScale+0.17f);
+                    z = Max(Min(bbSin(dir)*dist,280*RoomScale-0.17f),-280*RoomScale+0.17f);
 
-                    //x# = Max(Min((EntityX(mainPlayer\collider)-EntityX(room2,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
-                    //z# = Max(Min((EntityZ(mainPlayer\collider)-EntityZ(room2,True)),280*RoomScale-0.17),-280*RoomScale+0.17)
+                    //x# = Max(Min((EntityX(mainPlayer\collider)-EntityX(room2,True)),280*RoomScale-0.17f),-280*RoomScale+0.17f)
+                    //z# = Max(Min((EntityZ(mainPlayer\collider)-EntityZ(room2,True)),280*RoomScale-0.17f),-280*RoomScale+0.17f)
 
                     //dir
                     bbRotateEntity(mainPlayer->collider, bbEntityPitch(mainPlayer->collider,true),bbEntityYaw(room2,true)+angleDist(bbEntityYaw(mainPlayer->collider,true),bbEntityYaw(room1,true)),bbEntityRoll(mainPlayer->collider,true),true);
 
-                    bbPositionEntity(mainPlayer->collider, bbEntityX(room1,true)+x,0.05+bbEntityY(room1,true)+(bbEntityY(mainPlayer->collider)-bbEntityY(room2,true)),bbEntityZ(room1,true)+z,true);
+                    bbPositionEntity(mainPlayer->collider, bbEntityX(room1,true)+x,0.05f+bbEntityY(room1,true)+(bbEntityY(mainPlayer->collider)-bbEntityY(room2,true)),bbEntityZ(room1,true)+z,true);
 
                     bbResetEntity(mainPlayer->collider);
                     UpdateDoors();

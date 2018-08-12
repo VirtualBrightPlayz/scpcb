@@ -52,7 +52,7 @@ void FillRoom_off_2level_2(Room* r) {
     bbEntityParent(it->collider, r->obj);
 
     for (i = 0; i <= bbRand(0,1); i++) {
-        it = CreateItem("eyedrops", r->x - 1529.f*RoomScale, r->y + 563.f * RoomScale, r->z - 572.f*RoomScale + i*0.05);
+        it = CreateItem("eyedrops", r->x - 1529.f*RoomScale, r->y + 563.f * RoomScale, r->z - 572.f*RoomScale + i*0.05f);
         bbEntityParent(it->collider, r->obj);
     }
 
@@ -104,7 +104,7 @@ void UpdateEvent_off_2level_2(Event* e) {
     if (mainPlayer->currRoom == e->room) {
         e->eventState = e->eventState+timing->tickDuration;
         if (e->eventState > 700) {
-            if (bbEntityDistance(e->room->doors[0]->obj, mainPlayer->collider)>0.5) {
+            if (bbEntityDistance(e->room->doors[0]->obj, mainPlayer->collider)>0.5f) {
                 if (bbEntityInView(e->room->doors[0]->obj, mainPlayer->cam)==false) {
                     e->room->doors[0]->open = false;
                     RemoveEvent(e);

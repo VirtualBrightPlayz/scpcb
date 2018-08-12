@@ -62,8 +62,8 @@ void FillRoom_cont_049_2(Room* r) {
     for (n = 0; n <= 1; n++) {
         r->levers[n] = CreateLever();
 
-        bbScaleEntity(r->levers[n]->obj, 0.03, 0.03, 0.03);
-        bbScaleEntity(r->levers[n]->baseObj, 0.03, 0.03, 0.03);
+        bbScaleEntity(r->levers[n]->obj, 0.03f, 0.03f, 0.03f);
+        bbScaleEntity(r->levers[n]->baseObj, 0.03f, 0.03f, 0.03f);
 
         switch (n) {
             case 0: {
@@ -85,15 +85,15 @@ void FillRoom_cont_049_2(Room* r) {
         bbRotateEntity(r->levers[n]->obj, 81-92*n, -180*(!n), 0);
 
         bbEntityPickMode(r->levers[n]->obj, 1, false);
-        bbEntityRadius(r->levers[n]->obj, 0.1);
+        bbEntityRadius(r->levers[n]->obj, 0.1f);
     }
 
 
     r->doors[0] = CreateDoor(r->x + 328.f * RoomScale, 0.f, r->z + 656.f * RoomScale, 90, r, true);
     r->doors[0]->autoClose = false;
     r->doors[0]->open = true;
-    bbPositionEntity(r->doors[0]->buttons[1], r->x + 288.f * RoomScale, 0.7, r->z + 512.f * RoomScale, true);
-    bbPositionEntity(r->doors[0]->buttons[0], r->x + 368.f * RoomScale, 0.7, r->z + 840.f * RoomScale, true);
+    bbPositionEntity(r->doors[0]->buttons[1], r->x + 288.f * RoomScale, 0.7f, r->z + 512.f * RoomScale, true);
+    bbPositionEntity(r->doors[0]->buttons[0], r->x + 368.f * RoomScale, 0.7f, r->z + 840.f * RoomScale, true);
 
     r->doors[1] = CreateDoor(r->x - 2328.f * RoomScale, -3520.f * RoomScale, r->z - 656.f * RoomScale, 90, r, false);
     r->doors[1]->autoClose = false;
@@ -104,8 +104,8 @@ void FillRoom_cont_049_2(Room* r) {
     r->doors[2] = CreateDoor(r->x - 328.f * RoomScale, 0.f, r->z - 656.f * RoomScale, 90, r, true);
     r->doors[2]->autoClose = false;
     r->doors[2]->open = true;
-    bbPositionEntity(r->doors[2]->buttons[0], r->x - 288.f * RoomScale, 0.7, r->z - 512.f * RoomScale, true);
-    bbPositionEntity(r->doors[2]->buttons[1], r->x - 368.f * RoomScale, 0.7, r->z - 840.f * RoomScale, true);
+    bbPositionEntity(r->doors[2]->buttons[0], r->x - 288.f * RoomScale, 0.7f, r->z - 512.f * RoomScale, true);
+    bbPositionEntity(r->doors[2]->buttons[1], r->x - 368.f * RoomScale, 0.7f, r->z - 840.f * RoomScale, true);
 
     r->doors[3] = CreateDoor(r->x + 2360.f * RoomScale, -3520.f * RoomScale, r->z + 656.f * RoomScale, 90, r, false);
     r->doors[3]->autoClose = false;
@@ -225,7 +225,7 @@ void UpdateEvent_cont_049_2(Event* e) {
                     //049 appears when either of the levers is turned
                     e->eventState = Max(e->eventState,70*180);
 
-                    if (temp & (int)(x)) {
+                    if (temp && (int)(x)) {
                         e->room->doors[1]->locked = false;
                         e->room->doors[3]->locked = false;
                         e->eventState2 = UpdateElevators(e->eventState2, e->room->doors[0], e->room->doors[1],e->room->objects[0],e->room->objects[1], e);
@@ -315,7 +315,7 @@ void UpdateEvent_cont_049_2(Event* e) {
                     for (int iterator156 = 0; iterator156 < NPC::getListSize(); iterator156++) {
                         n = NPC::getObject(iterator156);
 
-                        if (n->npcType == NPCtypeZombie & n->state == 0) {
+                        if (n->npcType == NPCtypeZombie && n->state == 0) {
                             n->state = 1;
                             SetNPCFrame(n, 155);
                         }
@@ -350,7 +350,7 @@ void UpdateEvent_cont_049_2(Event* e) {
                     mainPlayer->dropSpeed = 0;
                     mainPlayer->blinkTimer = -10;
                     mainPlayer->fallTimer = 0;
-                    bbPositionEntity(mainPlayer->collider, bbEntityX(e->room->obj,true), bbEntityY(e->room->objects[5],true)+0.2, bbEntityZ(e->room->obj,true));
+                    bbPositionEntity(mainPlayer->collider, bbEntityX(e->room->obj,true), bbEntityY(e->room->objects[5],true)+0.2f, bbEntityZ(e->room->obj,true));
                     bbResetEntity(mainPlayer->collider);
 
                     bbPositionEntity(e->room->npc[0]->collider, bbEntityX(e->room->objects[0],true),bbEntityY(e->room->objects[0],true),bbEntityZ(e->room->objects[0],true),true);
@@ -367,29 +367,29 @@ void UpdateEvent_cont_049_2(Event* e) {
                         }
                     }
 
-                    n = CreateNPC(NPCtypeMTF, bbEntityX(e->room->objects[5],true), bbEntityY(e->room->objects[5],true)+0.2, bbEntityZ(e->room->objects[5],true));
+                    n = CreateNPC(NPCtypeMTF, bbEntityX(e->room->objects[5],true), bbEntityY(e->room->objects[5],true)+0.2f, bbEntityZ(e->room->objects[5],true));
                     n->state = 6;
                     n->reload = 6*70;
                     bbPointEntity(n->collider,mainPlayer->collider);
                     e->room->npc[1] = n;
 
-                    n = CreateNPC(NPCtypeMTF, bbEntityX(e->room->objects[5],true), bbEntityY(e->room->objects[5],true)+0.2, bbEntityZ(e->room->objects[5],true));
+                    n = CreateNPC(NPCtypeMTF, bbEntityX(e->room->objects[5],true), bbEntityY(e->room->objects[5],true)+0.2f, bbEntityZ(e->room->objects[5],true));
                     n->state = 6;
                     n->reload = (6*70)+bbRnd(15,30);
                     bbRotateEntity(n->collider,0,bbEntityYaw(e->room->npc[1]->collider),0);
-                    bbMoveEntity(n->collider,0.5,0,0);
+                    bbMoveEntity(n->collider,0.5f,0,0);
                     bbPointEntity(n->collider,mainPlayer->collider);
 
-                    n = CreateNPC(NPCtypeMTF, bbEntityX(e->room->objects[5],true), bbEntityY(e->room->objects[5],true)+0.2, bbEntityZ(e->room->objects[5],true));
+                    n = CreateNPC(NPCtypeMTF, bbEntityX(e->room->objects[5],true), bbEntityY(e->room->objects[5],true)+0.2f, bbEntityZ(e->room->objects[5],true));
                     n->state = 6;
-                    //n\reload = 70*4.75
+                    //n\reload = 70*4.75f
                     n->reload = 10000;
                     bbRotateEntity(n->collider,0,bbEntityYaw(e->room->npc[1]->collider),0);
                     n->state2 = bbEntityYaw(n->collider);
-                    bbMoveEntity(n->collider,-0.65,0,0);
+                    bbMoveEntity(n->collider,-0.65f,0,0);
                     e->room->npc[2] = n;
 
-                    bbMoveEntity(e->room->npc[1]->collider,0,0,0.1);
+                    bbMoveEntity(e->room->npc[1]->collider,0,0,0.1f);
                     bbPointEntity(mainPlayer->collider, e->room->npc[1]->collider);
 
                     PlaySound2(LoadTempSound("SFX/Character/MTF/049/Player0492_1.ogg"));
@@ -401,20 +401,20 @@ void UpdateEvent_cont_049_2(Event* e) {
             }
         } else {
             mainPlayer->blurTimer = 800;
-            mainPlayer->forceMove = 0.5;
+            mainPlayer->forceMove = 0.5f;
             mainPlayer->injuries = Max(2.f,mainPlayer->injuries);
             mainPlayer->bloodloss = 0;
 
             //Msg = ""
 
             if (e->room->npc[2]->state == 7) {
-                if (e->room->npc[2]->state3 < 70*1.75) {
+                if (e->room->npc[2]->state3 < 70*1.75f) {
                     e->room->npc[2]->state3 = e->room->npc[2]->state3 + timing->tickDuration;
                 } else {
                     e->room->npc[2]->state = 6;
                     e->room->npc[2]->reload = e->room->npc[1]->reload+bbRnd(5,10);
                 }
-            } else if ((e->room->npc[2]->state == 6 & e->room->npc[2]->reload > 70*4)) {
+            } else if ((e->room->npc[2]->state == 6 && e->room->npc[2]->reload > 70*4)) {
                 if (e->room->npc[2]->state3 > -(70*4)) {
                     e->room->npc[2]->state3 = e->room->npc[2]->state3 - timing->tickDuration;
                 } else {
@@ -425,7 +425,7 @@ void UpdateEvent_cont_049_2(Event* e) {
             }
 
             pvt = bbCreatePivot();
-            bbPositionEntity(pvt,bbEntityX(e->room->npc[1]->collider),bbEntityY(e->room->npc[1]->collider)+0.2,bbEntityZ(e->room->npc[1]->collider));
+            bbPositionEntity(pvt,bbEntityX(e->room->npc[1]->collider),bbEntityY(e->room->npc[1]->collider)+0.2f,bbEntityZ(e->room->npc[1]->collider));
 
             bbPointEntity(mainPlayer->collider, e->room->npc[1]->collider);
             bbPointEntity(mainPlayer->cam, pvt);

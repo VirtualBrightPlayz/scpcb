@@ -37,7 +37,7 @@ void FillRoom_closets_2(Room* r) {
     bbEntityParent(it->collider, r->obj);
 
     it = CreateItem("gasmask", r->x + 736.f * RoomScale, r->y + 176.f * RoomScale, r->z + 544.f * RoomScale);
-    bbScaleEntity(it->collider, 0.02, 0.02, 0.02);
+    bbScaleEntity(it->collider, 0.02f, 0.02f, 0.02f);
     bbEntityParent(it->collider, r->obj);
 
     it = CreateItem("battery", r->x + 736.f * RoomScale, r->y + 176.f * RoomScale, r->z - 448.f * RoomScale);
@@ -133,19 +133,19 @@ void UpdateEvent_closets_2(Event* e) {
         }
     } else {
         e->eventState = e->eventState+timing->tickDuration;
-        if (e->eventState < 70*3.5) {
+        if (e->eventState < 70*3.5f) {
             bbRotateEntity(e->room->npc[1]->collider,0,CurveAngle(e->room->angle+90,bbEntityYaw(e->room->npc[1]->collider),100.f),0,true);
 
             e->room->npc[0]->state = 1;
             //TODO: 173Vent
-            //If (e\eventState > 70*3.2 And e\eventState-timing\tickDuration =< 70*3.2) Then PlayRangedSound(IntroSFX(15),mainPlayer\cam,e\room\obj,15.f)
-        } else if ((e->eventState < 70*6.5)) {
-            if (e->eventState-timing->tickDuration < 70*3.5) {
+            //If (e\eventState > 70*3.2f And e\eventState-timing\tickDuration =< 70*3.2f) Then PlayRangedSound(IntroSFX(15),mainPlayer\cam,e\room\obj,15.f)
+        } else if ((e->eventState < 70*6.5f)) {
+            if (e->eventState-timing->tickDuration < 70*3.5f) {
                 e->room->npc[0]->state = 0;
                 e->room->npc[1]->soundChannels[0] = PlayRangedSound(e->room->npc[1]->sounds[0], mainPlayer->cam, e->room->npc[1]->collider,12.f);
             }
 
-            if (e->eventState > 70*4.5) {
+            if (e->eventState > 70*4.5f) {
                 bbPointEntity(e->room->npc[0]->obj, e->room->obj);
                 bbRotateEntity(e->room->npc[0]->collider,0,CurveAngle(bbEntityYaw(e->room->npc[0]->obj),bbEntityYaw(e->room->npc[0]->collider),30.f),0,true);
             }
@@ -153,13 +153,13 @@ void UpdateEvent_closets_2(Event* e) {
             bbTurnEntity(e->room->npc[1]->obj, 0, bbSin(e->eventState)*25, 0);
             bbRotateEntity(e->room->npc[1]->collider,0,CurveAngle(bbEntityYaw(e->room->npc[1]->obj),bbEntityYaw(e->room->npc[1]->collider),30.f),0,true);
         } else {
-            if (e->eventState-timing->tickDuration < 70*6.5) {
+            if (e->eventState-timing->tickDuration < 70*6.5f) {
                 PlaySound_SM(sndManager->lightSwitch);
             }
-            mainPlayer->blinkTimer = Max((70*6.5-e->eventState)/5.f - bbRnd(0.f,2.f),-10);
+            mainPlayer->blinkTimer = Max((70*6.5f-e->eventState)/5.f - bbRnd(0.f,2.f),-10);
             if (mainPlayer->blinkTimer ==-10) {
                 //TODO: fix
-                //If (e\eventState > 70*7.5 And e\eventState-timing\tickDuration =< 70*7.5) Then PlayRangedSound(NeckSnapSFX(0),mainPlayer\cam,e\room\npc[0]\collider,8.f)
+                //If (e\eventState > 70*7.5f And e\eventState-timing\tickDuration =< 70*7.5f) Then PlayRangedSound(NeckSnapSFX(0),mainPlayer\cam,e\room\npc[0]\collider,8.f)
                 //If (e\eventState > 70*8.f And e\eventState-timing\tickDuration =< 70*8.f) Then PlayRangedSound(NeckSnapSFX(1),mainPlayer\cam,e\room\npc[1]\collider,8.f)
                 SetNPCFrame(e->room->npc[0], 60);
                 e->room->npc[0]->state = 8;
@@ -168,7 +168,7 @@ void UpdateEvent_closets_2(Event* e) {
                 e->room->npc[1]->state = 6;
             }
 
-            if (e->eventState > 70*8.5) {
+            if (e->eventState > 70*8.5f) {
                 bbPositionEntity(Curr173->collider, (bbEntityX(e->room->objects[0],true)+bbEntityX(e->room->objects[1],true))/2,bbEntityY(e->room->objects[0],true),(bbEntityZ(e->room->objects[0],true)+bbEntityZ(e->room->objects[1],true))/2);
                 bbPointEntity(Curr173->collider, mainPlayer->collider);
                 bbResetEntity(Curr173->collider);

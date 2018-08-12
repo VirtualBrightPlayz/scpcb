@@ -120,17 +120,17 @@ Door* CreateDoor(float x, float y, float z, float angle, Room* room, int open, i
             d->buttons[i] = bbCopyMeshModelEntity(buttonObj->getMesh());
         }
 
-        bbScaleEntity(d->buttons[i], 0.03, 0.03, 0.03);
+        bbScaleEntity(d->buttons[i], 0.03f, 0.03f, 0.03f);
     }
 
     if (d->typ == DOOR_TYPE_CONT) {
-        bbPositionEntity(d->buttons[0], x - 432.f * RoomScale, y + 0.7, z + 192.f * RoomScale);
-        bbPositionEntity(d->buttons[1], x + 432.f * RoomScale, y + 0.7, z - 192.f * RoomScale);
+        bbPositionEntity(d->buttons[0], x - 432.f * RoomScale, y + 0.7f, z + 192.f * RoomScale);
+        bbPositionEntity(d->buttons[1], x + 432.f * RoomScale, y + 0.7f, z - 192.f * RoomScale);
         bbRotateEntity(d->buttons[0], 0, 90, 0);
         bbRotateEntity(d->buttons[1], 0, 270, 0);
     } else {
-        bbPositionEntity(d->buttons[0], x + 0.6, y + 0.7, z - 0.1);
-        bbPositionEntity(d->buttons[1], x - 0.6, y + 0.7, z + 0.1);
+        bbPositionEntity(d->buttons[0], x + 0.6f, y + 0.7f, z - 0.1f);
+        bbPositionEntity(d->buttons[1], x - 0.6f, y + 0.7f, z + 0.1f);
         bbRotateEntity(d->buttons[1], 0, 180, 0);
     }
     bbEntityParent(d->buttons[0], d->frameobj);
@@ -249,20 +249,20 @@ void UpdateDoors() {
 
         if (d->dist < HideDistance*2) {
 
-            if ((d->openstate >= 180 | d->openstate <= 0) & mainPlayer->grabbedEntity == 0) {
+            if ((d->openstate >= 180 | d->openstate <= 0) && mainPlayer->grabbedEntity == 0) {
                 for (int j = 0; j < 2; j++) {
                     if (d->buttons[j] != 0) {
                         if (abs(bbEntityX(mainPlayer->collider)-bbEntityX(d->buttons[j],true)) < 1.f) {
                             if (abs(bbEntityZ(mainPlayer->collider)-bbEntityZ(d->buttons[j],true)) < 1.f) {
                                 //entityDistance(collider, d\buttons[i])
                                 float dist = Distance(bbEntityX(mainPlayer->collider, true), bbEntityZ(mainPlayer->collider, true), bbEntityX(d->buttons[j], true), bbEntityZ(d->buttons[j], true));
-                                if (dist < 0.7) {
+                                if (dist < 0.7f) {
                                     //TODO: use deltayaw as faster way to determine whether the player can press the button or not
                                     Pivot* tempPvt = bbCreatePivot();
                                     bbPositionEntity(tempPvt, bbEntityX(mainPlayer->cam), bbEntityY(mainPlayer->cam), bbEntityZ(mainPlayer->cam));
                                     bbPointEntity(tempPvt,d->buttons[j]);
 
-                                    if (bbEntityPick(tempPvt, 0.6) == d->buttons[j]) {
+                                    if (bbEntityPick(tempPvt, 0.6f) == d->buttons[j]) {
                                         if (mainPlayer->closestButton == 0) {
                                             mainPlayer->closestButton = d->buttons[j];
                                             mainPlayer->closestDoor = d;
@@ -286,7 +286,7 @@ void UpdateDoors() {
                 if (d->openstate < 180) {
                     switch (d->typ) {
                         case DOOR_TYPE_CONT: {
-                            d->openstate = Min(180, d->openstate + timing->tickDuration * 0.8);
+                            d->openstate = Min(180, d->openstate + timing->tickDuration * 0.8f);
                             bbMoveEntity(d->obj, bbSin(d->openstate) * timing->tickDuration / 180.f, 0, 0);
                             if (d->obj2 != 0) {
                                 bbMoveEntity(d->obj2, -bbSin(d->openstate) * timing->tickDuration / 180.f, 0, 0);
@@ -334,8 +334,8 @@ void UpdateDoors() {
                             }
                         }
                     }
-                    if (d->autoClose & RemoteDoorOn == true) {
-                        if (bbEntityDistance(mainPlayer->cam, d->obj) < 2.1) {
+                    if (d->autoClose && RemoteDoorOn == true) {
+                        if (bbEntityDistance(mainPlayer->cam, d->obj) < 2.1f) {
                             //PlaySound2(HorrorSFX(7))) ;TODO: fix
                             d->open = false;
                             switch (d->typ) {
@@ -357,7 +357,7 @@ void UpdateDoors() {
                 if (d->openstate > 0) {
                     switch (d->typ) {
                         case DOOR_TYPE_CONT: {
-                            d->openstate = Max(0, d->openstate - timing->tickDuration*0.8);
+                            d->openstate = Max(0, d->openstate - timing->tickDuration*0.8f);
                             bbMoveEntity(d->obj, bbSin(d->openstate) * -timing->tickDuration / 180.f, 0, 0);
                             if (d->obj2 != 0) {
                                 bbMoveEntity(d->obj2, bbSin(d->openstate) * timing->tickDuration / 180.f, 0, 0);
@@ -365,18 +365,18 @@ void UpdateDoors() {
                             if (d->openstate < 15 && d->openstate+timing->tickDuration >= 15) {
                                 for (int j = 0; j < bbRand(75,99); j++) {
                                     Pivot* tempPvt = bbCreatePivot();
-                                    bbPositionEntity(tempPvt, bbEntityX(d->frameobj,true)+bbRnd(-0.2,0.2), bbEntityY(d->frameobj,true)+bbRnd(0.f,1.2), bbEntityZ(d->frameobj,true)+bbRnd(-0.2,0.2));
+                                    bbPositionEntity(tempPvt, bbEntityX(d->frameobj,true)+bbRnd(-0.2f,0.2f), bbEntityY(d->frameobj,true)+bbRnd(0.f,1.2f), bbEntityZ(d->frameobj,true)+bbRnd(-0.2f,0.2f));
                                     bbRotateEntity(tempPvt, 0, bbRnd(360), 0);
 
-                                    Particle* p = CreateParticle(bbEntityX(tempPvt), bbEntityY(tempPvt), bbEntityZ(tempPvt), PARTICLE_DUST, 0.002, 0, 300);
-                                    p->speed = 0.005;
+                                    Particle* p = CreateParticle(bbEntityX(tempPvt), bbEntityY(tempPvt), bbEntityZ(tempPvt), PARTICLE_DUST, 0.002f, 0, 300);
+                                    p->speed = 0.005f;
                                     bbRotateEntity(p->pvt, bbRnd(-20, 20), bbRnd(360), 0);
 
-                                    p->sizeChange = -0.00001;
-                                    p->size = 0.01;
+                                    p->sizeChange = -0.00001f;
+                                    p->size = 0.01f;
                                     bbScaleSprite(p->sprite,p->size,p->size);
 
-                                    p->aChange = -0.01;
+                                    p->aChange = -0.01f;
 
                                     bbEntityOrder(p->sprite,-1);
 
@@ -401,16 +401,16 @@ void UpdateDoors() {
                     }
 
                     if (d->angle == 0 | d->angle==180) {
-                        if (abs(bbEntityZ(d->frameobj, true)-bbEntityZ(mainPlayer->collider))<0.15) {
-                            if (abs(bbEntityX(d->frameobj, true)-bbEntityX(mainPlayer->collider))<0.7*(d->typ*2+1)) {
-                                float z = CurveValue(bbEntityZ(d->frameobj,true)+0.15*Sgn(bbEntityZ(mainPlayer->collider)-bbEntityZ(d->frameobj, true)), bbEntityZ(mainPlayer->collider), 5);
+                        if (abs(bbEntityZ(d->frameobj, true)-bbEntityZ(mainPlayer->collider))<0.15f) {
+                            if (abs(bbEntityX(d->frameobj, true)-bbEntityX(mainPlayer->collider))<0.7f*(d->typ*2+1)) {
+                                float z = CurveValue(bbEntityZ(d->frameobj,true)+0.15f*Sgn(bbEntityZ(mainPlayer->collider)-bbEntityZ(d->frameobj, true)), bbEntityZ(mainPlayer->collider), 5);
                                 bbPositionEntity(mainPlayer->collider, bbEntityX(mainPlayer->collider), bbEntityY(mainPlayer->collider), z);
                             }
                         }
                     } else {
-                        if (abs(bbEntityX(d->frameobj, true)-bbEntityX(mainPlayer->collider))<0.15) {
-                            if (abs(bbEntityZ(d->frameobj, true)-bbEntityZ(mainPlayer->collider))<0.7*(d->typ*2+1)) {
-                                float x = CurveValue(bbEntityX(d->frameobj,true)+0.15*Sgn(bbEntityX(mainPlayer->collider)-bbEntityX(d->frameobj, true)), bbEntityX(mainPlayer->collider), 5);
+                        if (abs(bbEntityX(d->frameobj, true)-bbEntityX(mainPlayer->collider))<0.15f) {
+                            if (abs(bbEntityZ(d->frameobj, true)-bbEntityZ(mainPlayer->collider))<0.7f*(d->typ*2+1)) {
+                                float x = CurveValue(bbEntityX(d->frameobj,true)+0.15f*Sgn(bbEntityX(mainPlayer->collider)-bbEntityX(d->frameobj, true)), bbEntityX(mainPlayer->collider), 5);
                                 bbPositionEntity(mainPlayer->collider, x, bbEntityY(mainPlayer->collider), bbEntityZ(mainPlayer->collider));
                             }
                         }
@@ -422,7 +422,7 @@ void UpdateDoors() {
                     if (d->obj2 != 0) {
                         bbPositionEntity(d->obj2, bbEntityX(d->frameobj, true), bbEntityY(d->frameobj, true), bbEntityZ(d->frameobj, true));
                     }
-                    if (d->obj2 != 0 & d->typ == DOOR_TYPE_DEF) {
+                    if (d->obj2 != 0 && d->typ == DOOR_TYPE_DEF) {
                         bbMoveEntity(d->obj, 0, 0, 8.f * RoomScale);
                         bbMoveEntity(d->obj2, 0, 0, 8.f * RoomScale);
                     }

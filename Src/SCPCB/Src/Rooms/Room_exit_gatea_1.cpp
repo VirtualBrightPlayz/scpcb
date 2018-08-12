@@ -83,10 +83,10 @@ void UpdateEvent_exit_gatea_1(Event* e) {
     if (mainPlayer->currRoom == e->room) {
         if (RemoteDoorOn==false) {
             e->room->doors[1]->locked = true;
-        } else if ((RemoteDoorOn & e->eventState3==0)) {
+        } else if ((RemoteDoorOn && e->eventState3==0)) {
             e->room->doors[1]->locked = false;
             if (e->room->doors[1]->open) {
-                if (e->room->doors[1]->openstate > 50 | bbEntityDistance(mainPlayer->collider, e->room->doors[1]->frameobj)<0.5) {
+                if (e->room->doors[1]->openstate > 50 | bbEntityDistance(mainPlayer->collider, e->room->doors[1]->frameobj)<0.5f) {
                     e->room->doors[1]->openstate = Min(e->room->doors[1]->openstate,50);
                     e->room->doors[1]->open = false;
                     PlayRangedSound (LoadTempSound("SFX/Door/DoorError.ogg"), mainPlayer->cam, e->room->doors[1]->frameobj);
@@ -106,7 +106,7 @@ void UpdateEvent_exit_gatea_1(Event* e) {
 
             e->eventState = UpdateElevators(e->eventState, e->room->doors[0], gatea->doors[1], e->room->objects[0], e->room->objects[1], e);
             if (Contained106 == false) {
-                if (e->eventState < -1.5 & e->eventState+timing->tickDuration>= -1.5) {
+                if (e->eventState < -1.5f && e->eventState+timing->tickDuration>= -1.5f) {
                     //PlaySound2(OldManSFX(3)) ;TODO: fix
                 }
             }

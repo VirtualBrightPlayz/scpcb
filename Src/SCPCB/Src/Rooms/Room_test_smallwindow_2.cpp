@@ -45,18 +45,18 @@ void FillRoom_test_smallwindow_2(Room* r) {
     int t1;
 
     r->objects[ROOM_TSW2_173SPAWN] = bbCreatePivot();
-    bbPositionEntity(r->objects[0], r->x - 640.f * RoomScale, 0.5, r->z - 912.f * RoomScale);
+    bbPositionEntity(r->objects[0], r->x - 640.f * RoomScale, 0.5f, r->z - 912.f * RoomScale);
     bbEntityParent(r->objects[0], r->obj);
 
     r->objects[ROOM_TSW2_173JUMP] = bbCreatePivot();
-    bbPositionEntity(r->objects[1], r->x - 632.f * RoomScale, 0.5, r->z - 16.f * RoomScale);
+    bbPositionEntity(r->objects[1], r->x - 632.f * RoomScale, 0.5f, r->z - 16.f * RoomScale);
     bbEntityParent(r->objects[1], r->obj);
 
     Texture* Glasstex = bbLoadTexture("GFX/Map/Textures/glass.png",1+2);
     r->objects[ROOM_TSW2_GLASS] = bbCreateSprite();
     bbEntityTexture((Sprite*)r->objects[ROOM_TSW2_GLASS],Glasstex);
     bbSpriteViewMode((Sprite*)r->objects[ROOM_TSW2_GLASS],2);
-    bbScaleSprite((Sprite*)r->objects[ROOM_TSW2_GLASS],182.f*RoomScale*0.5, 192.f*RoomScale*0.5);
+    bbScaleSprite((Sprite*)r->objects[ROOM_TSW2_GLASS],182.f*RoomScale*0.5f, 192.f*RoomScale*0.5f);
     bbPositionEntity(r->objects[ROOM_TSW2_GLASS], r->x - 595.f * RoomScale, 224.f*RoomScale, r->z - 208.f * RoomScale);
     bbTurnEntity(r->objects[ROOM_TSW2_GLASS],0,180,0);
     bbEntityParent(r->objects[ROOM_TSW2_GLASS], r->obj);
@@ -115,7 +115,7 @@ void UpdateEventTestroom173(Event* e) {
         if (Curr173->idle == 0) {
             if (!e->intState[EVENT_TSW2_173SPAWNED]) {
                 if (e->room->doors[0]->open) {
-                    bbPositionEntity(Curr173->collider, bbEntityX(e->room->objects[0], true), 0.5, bbEntityZ(e->room->objects[0], true));
+                    bbPositionEntity(Curr173->collider, bbEntityX(e->room->objects[0], true), 0.5f, bbEntityZ(e->room->objects[0], true));
                     bbResetEntity(Curr173->collider);
                     e->intState[EVENT_TSW2_173SPAWNED] = true;
                 }
@@ -127,9 +127,9 @@ void UpdateEventTestroom173(Event* e) {
                 if (dist<1.f) {
                     //if close, increase the timer so that 173 is ready to attack
                     e->floatState[EVENT_TSW2_173JUMPTIMER] = Max(e->floatState[EVENT_TSW2_173JUMPTIMER], 70*12);
-                } else if ((dist > 1.4)) {
+                } else if ((dist > 1.4f)) {
                     //if the player moves a bit further and blinks, 173 attacks
-                    if (e->floatState[EVENT_TSW2_173JUMPTIMER] > 70*12 & mainPlayer->blinkTimer <= -10) {
+                    if (e->floatState[EVENT_TSW2_173JUMPTIMER] > 70*12 && mainPlayer->blinkTimer <= -10) {
                         if (bbEntityDistance(Curr173->collider, e->room->objects[ROOM_TSW2_173SPAWN]) > 5.f) {
                             //if 173 is far away from the room (perhaps because the player
                             //left and 173 moved to some other room?) -> disable the event
@@ -137,7 +137,7 @@ void UpdateEventTestroom173(Event* e) {
                         } else {
                             PlayRangedSound(LoadTempSound("SFX/General/GlassBreak.ogg"), mainPlayer->cam, Curr173->obj);
                             bbFreeEntity(e->room->objects[ROOM_TSW2_GLASS]);
-                            bbPositionEntity(Curr173->collider, bbEntityX(e->room->objects[ROOM_TSW2_173SPAWN], true), 0.5, bbEntityZ(e->room->objects[1], true));
+                            bbPositionEntity(Curr173->collider, bbEntityX(e->room->objects[ROOM_TSW2_173SPAWN], true), 0.5f, bbEntityZ(e->room->objects[1], true));
                             bbResetEntity(Curr173->collider);
                             RemoveEvent(e);
                         }

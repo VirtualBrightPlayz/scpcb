@@ -24,14 +24,14 @@ namespace CBN {
 void InitializeNPCtypeD(NPC* n) {
     n->nvName = "Human";
     n->collider = bbCreatePivot();
-    bbEntityRadius(n->collider, 0.32);
+    bbEntityRadius(n->collider, 0.32f);
     bbEntityType(n->collider, HIT_PLAYER);
 
     NPC* n2;
     for (int iterator137 = 0; iterator137 < NPC::getListSize(); iterator137++) {
         n2 = NPC::getObject(iterator137);
 
-        if (n2->npcType == n->npcType & n2->obj != 0) {
+        if (n2->npcType == n->npcType && n2->obj != 0) {
             n->obj = bbCopyMeshModelEntity(n2->obj);
             break;
         }
@@ -41,7 +41,7 @@ void InitializeNPCtypeD(NPC* n) {
         n->obj = bbLoadAnimMesh("GFX/NPCs/classd/classd.b3d");
     }
 
-    float temp = 0.5 / bbMeshWidth(n->obj);
+    float temp = 0.5f / bbMeshWidth(n->obj);
     bbScaleEntity(n->obj, temp, temp, temp);
 
     n->speed = 2.f / 100;
@@ -57,27 +57,27 @@ void UpdateNPCtypeD(NPC* n) {
     switch ((int)n->state) {
         case 0: {
             n->currSpeed = CurveValue(0.f, n->currSpeed, 5.f);
-            Animate2(n->obj, bbAnimTime(n->obj), 210, 235, 0.1);
+            Animate2(n->obj, bbAnimTime(n->obj), 210, 235, 0.1f);
             //walking
         }
         case 1: {
             if (n->state2 == 1.f) {
-                n->currSpeed = CurveValue(n->speed*0.7, n->currSpeed, 20.f);
+                n->currSpeed = CurveValue(n->speed*0.7f, n->currSpeed, 20.f);
             } else {
-                n->currSpeed = CurveValue(0.015, n->currSpeed, 5.f);
+                n->currSpeed = CurveValue(0.015f, n->currSpeed, 5.f);
             }
             Animate2(n->obj, bbAnimTime(n->obj), 236, 260, n->currSpeed * 18);
             //running
         }
         case 2: {
-            n->currSpeed = CurveValue(0.03, n->currSpeed, 5.f);
+            n->currSpeed = CurveValue(0.03f, n->currSpeed, 5.f);
             Animate2(n->obj, bbAnimTime(n->obj), 301, 319, n->currSpeed * 18);
         }
     }
 
     bbMoveEntity(n->collider, 0, 0, n->currSpeed * timing->tickDuration);
 
-    bbPositionEntity(n->obj, bbEntityX(n->collider), bbEntityY(n->collider) - 0.32, bbEntityZ(n->collider));
+    bbPositionEntity(n->obj, bbEntityX(n->collider), bbEntityY(n->collider) - 0.32f, bbEntityZ(n->collider));
 
     bbRotateEntity(n->obj, bbEntityPitch(n->collider), bbEntityYaw(n->collider)-180.f, 0);
 }

@@ -52,18 +52,18 @@ void FillRoom_cont_966_3(Room* r) {
     sc->id = 9;
 
     r->objects[0] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[0], r->x, 0.5, r->z + 512.f * RoomScale, true);
+    bbPositionEntity(r->objects[0], r->x, 0.5f, r->z + 512.f * RoomScale, true);
 
     r->objects[1] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[1], r->x + 64.f * RoomScale, 0.5, r->z - 640.f * RoomScale, true);
+    bbPositionEntity(r->objects[1], r->x + 64.f * RoomScale, 0.5f, r->z - 640.f * RoomScale, true);
 
     r->objects[2] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[2], r->x - 608.f * RoomScale, 0.5, r->z, true);
+    bbPositionEntity(r->objects[2], r->x - 608.f * RoomScale, 0.5f, r->z, true);
 
     r->objects[3] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[3], r->x + 320.f * RoomScale, 0.5, r->z + 704.f * RoomScale, true);
+    bbPositionEntity(r->objects[3], r->x + 320.f * RoomScale, 0.5f, r->z + 704.f * RoomScale, true);
 
-    it = CreateItem("nvgoggles", r->x + 320.f * RoomScale, 0.5, r->z + 704.f * RoomScale);
+    it = CreateItem("nvgoggles", r->x + 320.f * RoomScale, 0.5f, r->z + 704.f * RoomScale);
     bbEntityParent(it->collider, r->obj);
 }
 

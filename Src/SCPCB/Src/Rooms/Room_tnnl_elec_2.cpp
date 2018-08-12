@@ -72,24 +72,24 @@ void UpdateEventTunnel2smoke(Event* e) {
 
     //[Block]
     if (mainPlayer->currRoom == e->room) {
-        if (e->room->dist < 3.5) {
+        if (e->room->dist < 3.5f) {
             PlayRangedSound(LoadTempSound("SFX/SCP/914/PlayerUse.ogg"), mainPlayer->cam, e->room->obj);
             for (i = 0; i <= 1; i++) {
                 em = CreateEmitter(bbEntityX(e->room->objects[i],true),bbEntityY(e->room->objects[i],true), bbEntityZ(e->room->objects[i],true),0);
                 bbTurnEntity(em->obj, 90, 0, 0, true);
                 bbEntityParent(em->obj, e->room->obj);
-                em->size = 0.05;
+                em->size = 0.05f;
                 em->randAngle = 10;
-                em->speed = 0.06;
-                em->sizeChange = 0.007;
+                em->speed = 0.06f;
+                em->sizeChange = 0.007f;
                 //EntityParent(em\obj, e\room\obj)
 
                 for (z = 0; z <= 10; z++) {
                     p = CreateParticle(bbEntityX(em->obj, true), 448*RoomScale, bbEntityZ(em->obj, true), PARTICLE_SMOKE_WHITE, em->size, em->gravity, em->lifeTime);
                     p->speed = em->speed;
                     bbRotateEntity(p->pvt, bbRnd(360), bbRnd(360), 0, true);
-                    p->size = 0.05;
-                    p->sizeChange = 0.008;
+                    p->size = 0.05f;
+                    p->sizeChange = 0.008f;
                 }
 
             }
@@ -132,7 +132,7 @@ void UpdateEvent_tnnl_elec_2(Event* e) {
             RemoveEvent(e);
         } else {
             if (e->eventState == 0) {
-                if (Distance(bbEntityX(mainPlayer->collider), bbEntityZ(mainPlayer->collider), bbEntityX(e->room->obj), bbEntityZ(e->room->obj)) < 3.5) {
+                if (Distance(bbEntityX(mainPlayer->collider), bbEntityZ(mainPlayer->collider), bbEntityX(e->room->obj), bbEntityZ(e->room->obj)) < 3.5f) {
                     PlaySound_SM(sndManager->lightSwitch);
 
                     //LightBlink = Rnd(0.f,1.f)*(e\eventState/200)
@@ -147,9 +147,9 @@ void UpdateEvent_tnnl_elec_2(Event* e) {
                         PlaySound2(LoadTempSound("SFX/ambient/general/ambient3.ogg"));
                     }
                 }
-                if (e->eventState-timing->tickDuration <= 100 & e->eventState > 100) {
+                if (e->eventState-timing->tickDuration <= 100 && e->eventState > 100) {
                     PlaySound2(LoadTempSound("SFX/ambient/general/ambient6.ogg"));
-                    bbPositionEntity(Curr173->collider, bbEntityX(e->room->obj), 0.6, bbEntityZ(e->room->obj));
+                    bbPositionEntity(Curr173->collider, bbEntityX(e->room->obj), 0.6f, bbEntityZ(e->room->obj));
                     bbResetEntity(Curr173->collider);
                     Curr173->idle = true;
                 }

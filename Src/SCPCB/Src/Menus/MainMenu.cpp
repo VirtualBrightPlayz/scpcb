@@ -178,7 +178,7 @@ void UpdateMainMenu() {
                 if (SelectedDifficulty->customizable) {
                     SelectedDifficulty->permaDeath = UpdateUITick(x + (int)(160.f * MenuScale), y + (int)(165.f * MenuScale), (SelectedDifficulty->permaDeath));
 
-                    if (UpdateUITick(x + (int)(160.f * MenuScale), y + (int)(195.f * MenuScale), SelectedDifficulty->saveType == SAVEANYWHERE & (!SelectedDifficulty->permaDeath), SelectedDifficulty->permaDeath)) {
+                    if (UpdateUITick(x + (int)(160.f * MenuScale), y + (int)(195.f * MenuScale), SelectedDifficulty->saveType == SAVEANYWHERE && (!SelectedDifficulty->permaDeath), SelectedDifficulty->permaDeath)) {
                         SelectedDifficulty->saveType = SAVEANYWHERE;
                     } else {
                         SelectedDifficulty->saveType = SAVEONSCREENS;
@@ -316,7 +316,7 @@ void UpdateMainMenu() {
                 //
                 //					y = y + 20*MenuScale
                 //
-                //					userOptions\mouseSensitivity = (UpdateSlideBar(x + 310*MenuScale, y-4*MenuScale, 150*MenuScale, (userOptions\mouseSensitivity+0.5)*100.f)/100.f)-0.5
+                //					userOptions\mouseSensitivity = (UpdateSlideBar(x + 310*MenuScale, y-4*MenuScale, 150*MenuScale, (userOptions\mouseSensitivity+0.5f)*100.f)/100.f)-0.5f
                 //
                 //					y = y + 40*MenuScale
                 //
@@ -395,7 +395,7 @@ void UpdateMainMenu() {
                 //
                 //					If (UpdateUITick(x + 310 * MenuScale, y, CurrFrameLimit > 0.f)) Then
                 //						CurrFrameLimit# = (UpdateSlideBar(x + 150*MenuScale, y+30*MenuScale, 100*MenuScale, CurrFrameLimit#*50.f)/50.f)
-                //						CurrFrameLimit = Max(CurrFrameLimit, 0.1)
+                //						CurrFrameLimit = Max(CurrFrameLimit, 0.1f)
                 //						userOptions\framelimit = CurrFrameLimit#*100.f
                 //					Else
                 //						CurrFrameLimit# = 0.f
@@ -836,7 +836,7 @@ void DrawMainMenu() {
                 //
                 //					y = y + 20*MenuScale
                 //
-                //					DrawSlideBar(x + 310*MenuScale, y-4*MenuScale, 150*MenuScale, (userOptions\mouseSensitivity+0.5)*100.f)
+                //					DrawSlideBar(x + 310*MenuScale, y-4*MenuScale, 150*MenuScale, (userOptions\mouseSensitivity+0.5f)*100.f)
                 //					Color(255, 255, 255)
                 //					Text(x + 20 * MenuScale, y, "Mouse sensitivity:")
                 //

@@ -91,7 +91,7 @@ void UpdateEvent_test_682_2(Event* e) {
         if (mainPlayer->currRoom == e->room) {
             if (e->eventState == 0) {
                 e->room->objects[7] = bbLoadAnimMesh("GFX/npcs/scp-1048.b3d");
-                bbScaleEntity(e->room->objects[7], 0.05,0.05,0.05);
+                bbScaleEntity(e->room->objects[7], 0.05f,0.05f,0.05f);
 
                 bbTFormPoint(bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider),bbEntityZ(mainPlayer->collider),0,e->room->obj);
                 if (bbTFormedZ()==0) {
@@ -106,22 +106,22 @@ void UpdateEvent_test_682_2(Event* e) {
                 bbSetAnimTime(e->room->objects[7],297);
                 e->eventState = 1;
             }
-            if (bbEntityDistance(mainPlayer->collider, e->room->objects[6]) < 2.5 & e->eventState > 0) {
+            if (bbEntityDistance(mainPlayer->collider, e->room->objects[6]) < 2.5f && e->eventState > 0) {
                 PlaySound2(LoadTempSound("SFX/SCP/079/TestroomWarning.ogg"));
                 for (i = 0; i <= 5; i++) {
                     em = CreateEmitter(bbEntityX(e->room->objects[i], true), bbEntityY(e->room->objects[i], true), bbEntityZ(e->room->objects[i], true), 0);
                     bbTurnEntity(em->obj, 90, 0, 0, true);
                     //entityParent(em\obj, e\room\obj)
                     em->randAngle = 5;
-                    em->speed = 0.042;
-                    em->sizeChange = 0.0025;
+                    em->speed = 0.042f;
+                    em->sizeChange = 0.0025f;
                 }
                 //Delete e
                 e->eventState = e->eventState * -1;
             }
             if (e->room->objects[7]!=0) {
-                Animate2((MeshModel*)e->room->objects[7],bbAnimTime(e->room->objects[7]),284,308,0.3);
-                bbMoveEntity(e->room->objects[7],0,-0.008*timing->tickDuration,0);
+                Animate2((MeshModel*)e->room->objects[7],bbAnimTime(e->room->objects[7]),284,308,0.3f);
+                bbMoveEntity(e->room->objects[7],0,-0.008f*timing->tickDuration,0);
                 bbTFormPoint(bbEntityX(e->room->objects[7]),bbEntityY(e->room->objects[7]),bbEntityZ(e->room->objects[7]),0,e->room->obj);
 
                 if (abs(bbTFormedX())>725) {

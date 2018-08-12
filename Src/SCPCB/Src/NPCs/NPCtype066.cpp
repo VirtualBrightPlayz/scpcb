@@ -23,11 +23,11 @@ namespace CBN {
 void InitializeNPCtype066(NPC* n) {
     n->nvName = "SCP-066";
     n->collider = bbCreatePivot();
-    bbEntityRadius(n->collider, 0.2);
+    bbEntityRadius(n->collider, 0.2f);
     bbEntityType(n->collider, HIT_PLAYER);
 
     n->obj = bbLoadAnimMesh("GFX/NPCs/scp066/scp-066.b3d");
-    float temp = GetINIFloat("Data/NPCs.ini", "SCP-066", "scale")/2.5;
+    float temp = GetINIFloat("Data/NPCs.ini", "SCP-066", "scale")/2.5f;
     bbScaleEntity(n->obj, temp, temp, temp);
 
     n->speed = (GetINIFloat("Data/NPCs.ini", "SCP-066", "speed") / 100.f);
@@ -45,8 +45,8 @@ void UpdateNPCtype066(NPC* n) {
             //starts staring at the player when the player is close enough
 
             if (n->playerDistance > 20.f) {
-                AnimateNPC(n, 451, 612, 0.2, true);
-                //Animate2(n\obj, AnimTime(n\obj), 451, 612, 0.2, True)
+                AnimateNPC(n, 451, 612, 0.2f, true);
+                //Animate2(n\obj, AnimTime(n\obj), 451, 612, 0.2f, True)
 
                 if (n->state2 < TimeInPosMilliSecs()) {
                     for (int iterator123 = 0; iterator123 < WayPoint::getListSize(); iterator123++) {
@@ -55,7 +55,7 @@ void UpdateNPCtype066(NPC* n) {
                         //If (w\door = Null) Then ;TODO: fix?
                         if (abs(bbEntityX(w->obj,true)-bbEntityX(n->collider))<4.f) {
                             if (abs(bbEntityZ(w->obj,true)-bbEntityZ(n->collider))<4.f) {
-                                bbPositionEntity(n->collider, bbEntityX(w->obj,true), bbEntityY(w->obj,true)+0.3, bbEntityZ(w->obj,true));
+                                bbPositionEntity(n->collider, bbEntityX(w->obj,true), bbEntityY(w->obj,true)+0.3f, bbEntityZ(w->obj,true));
                                 bbResetEntity(n->collider);
                                 break;
                             }
@@ -65,7 +65,7 @@ void UpdateNPCtype066(NPC* n) {
                     n->state2 = TimeInPosMilliSecs()+5000;
                 }
             } else if (n->playerDistance < 8.f) {
-                n->lastDist = bbRnd(1.f, 2.5);
+                n->lastDist = bbRnd(1.f, 2.5f);
                 n->state = 1;
             }
             //staring at the player
@@ -73,17 +73,17 @@ void UpdateNPCtype066(NPC* n) {
         case 1: {
 
             if (n->frame<451) {
-                angle = WrapAngle(CurveAngle(bbDeltaYaw(n->collider, mainPlayer->collider)-180, (bbAnimTime(n->obj)-2.f)/1.2445, 15.f));
+                angle = WrapAngle(CurveAngle(bbDeltaYaw(n->collider, mainPlayer->collider)-180, (bbAnimTime(n->obj)-2.f)/1.2445f, 15.f));
                 //0->360 = 2->450
-                SetNPCFrame(n,angle*1.2445+2.f);
+                SetNPCFrame(n,angle*1.2445f+2.f);
 
-                //SetAnimTime(n\obj, angle*1.2445+2.f)
+                //SetAnimTime(n\obj, angle*1.2445f+2.f)
             } else {
-                AnimateNPC(n, 636, 646, 0.4, false);
+                AnimateNPC(n, 636, 646, 0.4f, false);
                 if (n->frame == 646) {
                     SetNPCFrame(n,2);
                 }
-                //Animate2(n\obj, AnimTime(n\obj), 636, 646, 0.4, False)
+                //Animate2(n\obj, AnimTime(n\obj), 636, 646, 0.4f, False)
                 //If (AnimTime(n\obj)=646) Then SetAnimTime(n\obj, 2)
             }
 
@@ -98,14 +98,14 @@ void UpdateNPCtype066(NPC* n) {
         }
         case 2: {
             if (n->frame < 647) {
-                angle = CurveAngle(0, (bbAnimTime(n->obj)-2.f)/1.2445, 5.f);
+                angle = CurveAngle(0, (bbAnimTime(n->obj)-2.f)/1.2445f, 5.f);
 
                 if (angle < 5 | angle > 355) {
                     SetNPCFrame(n,647);
                 } else {
-                    SetNPCFrame(n,angle*1.2445+2.f);
+                    SetNPCFrame(n,angle*1.2445f+2.f);
                 }
-                //SetAnimTime(n\obj, angle*1.2445+2.f)
+                //SetAnimTime(n\obj, angle*1.2445f+2.f)
                 //If (angle < 5 Or angle > 355) Then SetAnimTime(n\obj, 647)
             } else {
                 if (n->frame==683) {
@@ -143,12 +143,12 @@ void UpdateNPCtype066(NPC* n) {
                             case 4: {
                                 if (mainPlayer->currRoom->roomTemplate->disableDecals == false) {
                                     mainPlayer->camShake = 5.f;
-                                    de = CreateDecal(DECAL_CRACKS, bbEntityX(n->collider), 0.01, bbEntityZ(n->collider), 90, bbRand(360), 0);
-                                    de->size = 0.3;
+                                    de = CreateDecal(DECAL_CRACKS, bbEntityX(n->collider), 0.01f, bbEntityZ(n->collider), 90, bbRand(360), 0);
+                                    de->size = 0.3f;
                                     UpdateDecals();
                                     PlaySound2(LoadTempSound("SFX/General/BodyFall.ogg"));
-                                    if (Distance(bbEntityX(mainPlayer->collider),bbEntityZ(mainPlayer->collider),bbEntityX(n->collider),bbEntityZ(n->collider))<0.8) {
-                                        mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.3,0.5);
+                                    if (Distance(bbEntityX(mainPlayer->collider),bbEntityZ(mainPlayer->collider),bbEntityX(n->collider),bbEntityZ(n->collider))<0.8f) {
+                                        mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.3f,0.5f);
                                     }
                                 }
                             }
@@ -161,9 +161,9 @@ void UpdateNPCtype066(NPC* n) {
                         n->state2 = 0;
                     }
                 } else {
-                    n->currSpeed = CurveValue(n->speed*1.5, n->currSpeed, 10.f);
+                    n->currSpeed = CurveValue(n->speed*1.5f, n->currSpeed, 10.f);
                     bbPointEntity(n->obj,mainPlayer->collider);
-                    //angle = CurveAngle(EntityYaw(n\obj), EntityYaw(n\collider), 10);1.f/Max(n\currSpeed,0.0001))
+                    //angle = CurveAngle(EntityYaw(n\obj), EntityYaw(n\collider), 10);1.f/Max(n\currSpeed,0.0001f))
                     bbRotateEntity(n->collider, 0, CurveAngle(bbEntityYaw(n->obj)-180, bbEntityYaw(n->collider), 10), 0);
 
                     AnimateNPC(n, 647, 683, n->currSpeed*25, false);
@@ -176,7 +176,7 @@ void UpdateNPCtype066(NPC* n) {
         }
         case 3: {
             bbPointEntity(n->obj,mainPlayer->collider);
-            //1.f/Max(n\currSpeed,0.0001))
+            //1.f/Max(n\currSpeed,0.0001f))
             angle = CurveAngle(bbEntityYaw(n->obj)+n->angle-180, bbEntityYaw(n->collider), 10);
             bbRotateEntity(n->collider, 0, angle, 0);
 
@@ -229,7 +229,7 @@ void UpdateNPCtype066(NPC* n) {
 
     if (n->state3 > 0) {
         n->state3 = n->state3-timing->tickDuration;
-        //LightVolume = TempLightVolume-TempLightVolume*Min(Max(n\state3/500,0.01),0.6)
+        //LightVolume = TempLightVolume-TempLightVolume*Min(Max(n\state3/500,0.01f),0.6f)
         mainPlayer->heartbeatIntensity = Max(mainPlayer->heartbeatIntensity, 130);
         //HeartBeatVolume = Max(HeartBeatVolume,Min(n\state3/1000,1.f))
     }
@@ -238,7 +238,7 @@ void UpdateNPCtype066(NPC* n) {
         mainPlayer->blurTimer = Max((5.f-n->playerDistance)*300,0);
     }
 
-    bbPositionEntity(n->obj, bbEntityX(n->collider), bbEntityY(n->collider) - 0.2, bbEntityZ(n->collider));
+    bbPositionEntity(n->obj, bbEntityX(n->collider), bbEntityY(n->collider) - 0.2f, bbEntityZ(n->collider));
 
     bbRotateEntity(n->obj, bbEntityPitch(n->collider)-90, bbEntityYaw(n->collider), 0);
 }

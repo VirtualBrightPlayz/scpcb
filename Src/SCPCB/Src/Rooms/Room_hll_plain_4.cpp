@@ -55,7 +55,7 @@ void UpdateEvent_hll_plain_4(Event* e) {
                     n = NPC::getObject(iterator185);
 
                     if (n->npcType == NPCtype049) {
-                        if (n->state == 2 & bbEntityDistance(mainPlayer->collider,n->collider)>16.f) {
+                        if (n->state == 2 && bbEntityDistance(mainPlayer->collider,n->collider)>16.f) {
                             bbTFormVector(368, 528, 176, e->room->obj, 0);
                             bbPositionEntity(n->collider, bbEntityX(e->room->obj)+bbTFormedX(), bbTFormedY(), bbEntityZ(e->room->obj)+bbTFormedZ());
                             std::cout << String(bbTFormedX())+", "+String(bbTFormedY())+", "+String(bbTFormedZ());

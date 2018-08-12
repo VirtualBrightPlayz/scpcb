@@ -93,7 +93,7 @@ Event* CreateEvent(const String& eventname, const String& roomname, int id, floa
     //0 will assign it to the first generated room, 1 to the second, etc
 
     //the prob-variable can be used to randomly assign events into some rooms
-    //0.5 means that there's a 50% chance that event is assigned to the rooms
+    //0.5f means that there's a 50% chance that event is assigned to the rooms
     //1.f means that the event is assigned to every room
     //the id-variable is ignored if prob <> 0.f
 
@@ -137,7 +137,7 @@ Event* CreateEvent(const String& eventname, const String& roomname, int id, floa
                     }
                 }
 
-                if (bbRnd(0.f, 1.f) < prob & temp == false) {
+                if (bbRnd(0.f, 1.f) < prob && temp == false) {
                     Event* e = new Event();
                     e->name = eventname;
                     e->room = r;
@@ -176,16 +176,16 @@ void InitEvents() {
     CreateEvent("evt_pd", "pocketdimension", 0);
 
     //there's a 7% chance that 106 appears in the rooms named "tnnl_plain_2"
-    CreateEvent("evt_tunnl_106", "tnnl_plain_2", 0, 0.07);
+    CreateEvent("evt_tunnl_106", "tnnl_plain_2", 0, 0.07f);
 
     //the chance for 173 appearing in the first lockroom is about 66%
     //there's a 30% chance that it appears in the later lockrooms
     if (bbRand(3)<3) {
         CreateEvent("evt_lck_173", "lck_cam_2c", 0);
     }
-    CreateEvent("evt_lck_173", "lck_cam_2c", 0, 0.3);
+    CreateEvent("evt_lck_173", "lck_cam_2c", 0, 0.3f);
 
-    CreateEvent("evt_hll_trick", "hll_plain_2", 0, 0.15);
+    CreateEvent("evt_hll_trick", "hll_plain_2", 0, 0.15f);
 
     CreateEvent("evt_hll_970", "scp_970_2", 0);
 
@@ -200,15 +200,15 @@ void InitEvents() {
 
     CreateEvent("evt_strg_939", "strg_939_3", 0, 0);
 
-    CreateEvent("evt_tnnl_smoke", "tnnl_elec_2", 0, 0.2);
+    CreateEvent("evt_tnnl_smoke", "tnnl_elec_2", 0, 0.2f);
     CreateEvent("evt_tnnl_blackout", "tnnl_elec_2", bbRand(0,2), 0);
     CreateEvent("evt_tnnl_blackout", "tnnl_elec_2", 0, 0);
 
     //173 appears in half of the "lck_tshape_2" -rooms
-    CreateEvent("evt_lck_tshape_173", "lck_tshape_2", 0, 0.5);
+    CreateEvent("evt_lck_tshape_173", "lck_tshape_2", 0, 0.5f);
 
     //the anomalous duck in room2offices2-rooms
-    CreateEvent("evt_off_lower", "off_lower_2", 0, 0.7);
+    CreateEvent("evt_off_lower", "off_lower_2", 0, 0.7f);
 
     CreateEvent("evt_closets_173", "closets_2", 0);
 
@@ -226,7 +226,7 @@ void InitEvents() {
     CreateEvent("evt_srvr", "srvr_lshape_3", 0);
 
     //the dead guard
-    CreateEvent("evt_tnnl_plain_3", "tnnl_plain_3", 0, 0.08);
+    CreateEvent("evt_tnnl_plain_3", "tnnl_plain_3", 0, 0.08f);
 
     CreateEvent("evt_hll_plain_4","hll_plain_4", 0);
 
@@ -246,9 +246,9 @@ void InitEvents() {
 
     CreateEvent("evt_test_173", "test_smallwindow_2", 0, 1.f);
 
-    CreateEvent("evt_tesla", "tsl_ez_2", 0, 0.9);
-    CreateEvent("evt_tesla", "tsl_lcz_2", 0, 0.9);
-    CreateEvent("evt_tesla", "tsl_hcz_2", 0, 0.9);
+    CreateEvent("evt_tesla", "tsl_ez_2", 0, 0.9f);
+    CreateEvent("evt_tesla", "tsl_lcz_2", 0, 0.9f);
+    CreateEvent("evt_tesla", "tsl_hcz_2", 0, 0.9f);
 
     CreateEvent("evt_tnnl_nuke", "tnnl_nuke_2", 0, 0);
 
@@ -285,12 +285,12 @@ void InitEvents() {
     CreateEvent("evt_cont_914", "cont_914_1", 0, 0);
 
     CreateEvent("evt_toilets_suicide", "hll_toilets_2", 1);
-    CreateEvent("evt_toilets_789j", "hll_toilets_2", 0, 0.8);
+    CreateEvent("evt_toilets_789j", "hll_toilets_2", 0, 0.8f);
 
     CreateEvent("evt_106_pass", "tnnl_pipes_2", bbRand(0, 3));
 
-    CreateEvent("evt_hll_gas", "hll_gas_2", 0, 0.4);
-    CreateEvent("evt_hll_gas", "hll_lshape_2",0,0.4);
+    CreateEvent("evt_hll_gas", "hll_gas_2", 0, 0.4f);
+    CreateEvent("evt_hll_gas", "hll_lshape_2",0,0.4f);
 
     CreateEvent("evt_test_682", "test_682_2", 0);
 
@@ -545,13 +545,13 @@ void UpdateEvents() {
     //             mainPlayer->blinkTimer = 1.f;
     //             PlaySound2(LoadTempSound("SFX/Ending/GateB/Nuke2.ogg"));
     //             for (i = 0; i <= 40; i++) {
-    //                 p = CreateParticle(bbEntityX(mainPlayer->collider)+bbRnd(-0.5,0.5),bbEntityY(mainPlayer->collider)-bbRnd(0.2,1.5),bbEntityZ(mainPlayer->collider)+bbRnd(-0.5,0.5), PARTICLE_SMOKE_BLACK, bbRnd(0.2,0.6), 0.f, 350);
+    //                 p = CreateParticle(bbEntityX(mainPlayer->collider)+bbRnd(-0.5f,0.5f),bbEntityY(mainPlayer->collider)-bbRnd(0.2f,1.5f),bbEntityZ(mainPlayer->collider)+bbRnd(-0.5f,0.5f), PARTICLE_SMOKE_BLACK, bbRnd(0.2f,0.6f), 0.f, 350);
     //                 bbRotateEntity(p->pvt,-90,0,0,true);
-    //                 p->speed = bbRnd(0.05,0.07);
+    //                 p->speed = bbRnd(0.05f,0.07f);
     //             }
     //         }
     //         mainPlayer->lightFlash = Min((ExplosionTimer-160.f)/40.f,2.f);
-    //         // : EndingTimer = Min(mainPlayer\fallTimer,-0.1)
+    //         // : EndingTimer = Min(mainPlayer\fallTimer,-0.1f)
     //         if (ExplosionTimer > 160) {
     //             Kill(mainPlayer);
     //         }

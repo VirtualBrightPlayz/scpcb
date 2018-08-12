@@ -67,7 +67,7 @@ void UpdateEvent_tnnl_plain_3(Event* e) {
 
     //[Block]
     if (e->eventState == 0) {
-        e->room->npc[0] = CreateNPC(NPCtypeGuard, bbEntityX(e->room->objects[0],true), bbEntityY(e->room->objects[0],true)+0.5, bbEntityZ(e->room->objects[0],true));
+        e->room->npc[0] = CreateNPC(NPCtypeGuard, bbEntityX(e->room->objects[0],true), bbEntityY(e->room->objects[0],true)+0.5f, bbEntityZ(e->room->objects[0],true));
         bbPointEntity(e->room->npc[0]->collider, e->room->obj);
         bbRotateEntity(e->room->npc[0]->collider, 0, bbEntityYaw(e->room->npc[0]->collider)+bbRnd(-20,20),0, true);
         SetNPCFrame(e->room->npc[0], 906);

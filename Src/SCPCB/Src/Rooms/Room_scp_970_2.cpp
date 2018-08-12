@@ -120,7 +120,7 @@ void UpdateEvent_scp_970_2(Event* e) {
             e->eventState2 = e->eventState2 - timing->tickDuration;
         }
 
-        //LightVolume = TempLightVolume*0.5
+        //LightVolume = TempLightVolume*0.5f
 
         bbTFormPoint(bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider),bbEntityZ(mainPlayer->collider),0,e->room->obj);
 
@@ -214,10 +214,10 @@ void UpdateEvent_scp_970_2(Event* e) {
                     }
                 } break;
                 case 5: {
-                    mainPlayer->injuries = mainPlayer->injuries + 0.3;
+                    mainPlayer->injuries = mainPlayer->injuries + 0.3f;
                 } break;
                 case 10: {
-                    de = CreateDecal(DECAL_BLOOD_SPLATTER, bbEntityX(e->room->obj)+bbCos(e->room->angle-90)*760*RoomScale, 0.0005, bbEntityZ(e->room->obj)+bbSin(e->room->angle-90)*760*RoomScale,90,bbRnd(360),0);
+                    de = CreateDecal(DECAL_BLOOD_SPLATTER, bbEntityX(e->room->obj)+bbCos(e->room->angle-90)*760*RoomScale, 0.0005f, bbEntityZ(e->room->obj)+bbSin(e->room->angle-90)*760*RoomScale,90,bbRnd(360),0);
                 } break;
                 case 14: {
                     for (i = 0; i <= mainPlayer->inventory->size-1; i++) {
@@ -245,7 +245,7 @@ void UpdateEvent_scp_970_2(Event* e) {
                     bbEntityType(it->collider, HIT_ITEM);
                 } break;
                 case 25: {
-                    e->room->npc[0] = CreateNPC(NPCtypeD, bbEntityX(e->room->obj)+bbCos(e->room->angle-90)*760*RoomScale, 0.35, bbEntityZ(e->room->obj)+bbSin(e->room->angle-90)*760*RoomScale);
+                    e->room->npc[0] = CreateNPC(NPCtypeD, bbEntityX(e->room->obj)+bbCos(e->room->angle-90)*760*RoomScale, 0.35f, bbEntityZ(e->room->obj)+bbSin(e->room->angle-90)*760*RoomScale);
                     bbRotateEntity(e->room->npc[0]->collider, 0, e->room->angle-200, 0, true);
                     Texture* tex = bbLoadTexture("GFX/NPCs/corpse.jpg");
                     e->room->npc[0]->texture = "GFX/NPCs/corpse.jpg";
@@ -266,9 +266,9 @@ void UpdateEvent_scp_970_2(Event* e) {
                 case 35: {
                     for (i = 0; i <= 3; i++) {
                         de = CreateDecal(DECAL_BLOOD_POOL, e->room->x+bbRnd(-2,2), 700*RoomScale, e->room->z+bbRnd(-2,2), 270, bbRand(360), 0);
-                        de->size = 0.05;
-                        de->sizeChange = 0.0005;
-                        bbEntityAlpha(de->obj, 0.8);
+                        de->size = 0.05f;
+                        de->sizeChange = 0.0005f;
+                        bbEntityAlpha(de->obj, 0.8f);
                         UpdateDecals();
                     }
                 } break;
@@ -276,7 +276,7 @@ void UpdateEvent_scp_970_2(Event* e) {
                     PlaySound2(LoadTempSound("SFX/radio/franklin4.ogg"));
                 } break;
                 case 50: {
-                    e->room->npc[1] = CreateNPC(NPCtypeGuard, bbEntityX(e->room->obj)+bbCos(e->room->angle+90)*600*RoomScale, 0.35, bbEntityZ(e->room->obj)+bbSin(e->room->angle+90)*600*RoomScale);
+                    e->room->npc[1] = CreateNPC(NPCtypeGuard, bbEntityX(e->room->obj)+bbCos(e->room->angle+90)*600*RoomScale, 0.35f, bbEntityZ(e->room->obj)+bbSin(e->room->angle+90)*600*RoomScale);
                     e->room->npc[1]->state = 7;
                 } break;
                 case 52: {
@@ -304,7 +304,7 @@ void UpdateEvent_scp_970_2(Event* e) {
                 if (bbEntityDistance(mainPlayer->collider, e->room->npc[0]->collider)<3.f) {
                     if (bbEntityInView(e->room->npc[0]->obj, mainPlayer->cam)) {
                         mainPlayer->camZoom = (bbSin((float)(TimeInPosMilliSecs())/20.f)+1.f)*15.f;
-                        //HeartBeatVolume = Max(CurveValue(0.3, HeartBeatVolume, 2.f), HeartBeatVolume)
+                        //HeartBeatVolume = Max(CurveValue(0.3f, HeartBeatVolume, 2.f), HeartBeatVolume)
                         mainPlayer->heartbeatIntensity = Max(mainPlayer->heartbeatIntensity, 120);
                     }
                 }
@@ -319,7 +319,7 @@ void UpdateEvent_scp_970_2(Event* e) {
             for (int iterator195 = 0; iterator195 < Item::getListSize(); iterator195++) {
                 it = Item::getObject(iterator195);
 
-                if ((it->dropped==1 & abs(bbTFormedX())<264) | it->dropped==-1) {
+                if ((it->dropped==1 && abs(bbTFormedX())<264) | it->dropped==-1) {
                     //DebugLog("dropping/picking: "+it\dropped+" - "+EntityX(it\collider)+", "+EntityY(it\collider)+", "+EntityZ(it\collider))
 
                     bbTFormPoint(bbEntityX(it->collider),bbEntityY(it->collider),bbEntityZ(it->collider),0,e->room->obj);
@@ -338,7 +338,7 @@ void UpdateEvent_scp_970_2(Event* e) {
                         for (int iterator196 = 0; iterator196 < Item::getListSize(); iterator196++) {
                             it2 = Item::getObject(iterator196);
 
-                            if (it2!=it & it2->dist < 15.f) {
+                            if (it2!=it && it2->dist < 15.f) {
 
                                 bbTFormPoint(bbEntityX(it2->collider),bbEntityY(it2->collider),bbEntityZ(it2->collider),0,e->room->obj);
                                 //DebugLog(TFormedZ()+" - "+z)
@@ -369,15 +369,15 @@ void UpdateEvent_scp_970_2(Event* e) {
                 //
                 e->soundChannels[0] = LoopRangedSound(e->sounds[0], e->soundChannels[0], mainPlayer->cam, e->room->npc[0]->obj);
                 if (e->eventState < 30) {
-                    //LightVolume = TempLightVolume*0.4
+                    //LightVolume = TempLightVolume*0.4f
                 } else if ((e->eventState > 60)) {
-                    AnimateNPC(e->room->npc[0], 80, 61, -0.02, false);
+                    AnimateNPC(e->room->npc[0], 80, 61, -0.02f, false);
 
                     e->room->npc[0]->dropSpeed = 0;
-                    y = CurveValue(1.5+bbSin((float)(TimeInPosMilliSecs())/20.f)*0.1,bbEntityY(e->room->npc[0]->collider),50.f);
+                    y = CurveValue(1.5f+bbSin((float)(TimeInPosMilliSecs())/20.f)*0.1f,bbEntityY(e->room->npc[0]->collider),50.f);
 
                     bbPositionEntity(e->room->npc[0]->collider,bbEntityX(e->room->npc[0]->collider),y,bbEntityZ(e->room->npc[0]->collider));
-                    bbTurnEntity(e->room->npc[0]->collider,0,0.1*timing->tickDuration,0);
+                    bbTurnEntity(e->room->npc[0]->collider,0,0.1f*timing->tickDuration,0);
                 }
             }
 

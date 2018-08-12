@@ -295,7 +295,7 @@ void UpdateGame() {
 
     //Counting the fps
     float instantFramerate = 1000.f/Max(1,elapsedMilliseconds);
-    timing->fps = Max(0,timing->fps*0.99 + instantFramerate*0.01);
+    timing->fps = Max(0,timing->fps*0.99f + instantFramerate*0.01f);
 
     int prevmousedown1;
     String rn;
@@ -322,7 +322,7 @@ void UpdateGame() {
 
         prevmousedown1 = MouseDown1;
         MouseDown1 = bbMouseDown(1);
-        if (prevmousedown1 == true & MouseDown1==false) {
+        if (prevmousedown1 == true && MouseDown1==false) {
             MouseUp1 = true;
         } else {
             MouseUp1 = false;
@@ -358,7 +358,7 @@ void UpdateGame() {
                 //CameraFogRange(mainPlayer\cam, mainPlayer\camFogNear*LightVolume,mainPlayer\camFogFar*LightVolume)
                 //CameraFogColor(mainPlayer\cam, 0,0,0)
                 //CameraFogMode(mainPlayer\cam,1)
-                //CameraRange(mainPlayer\cam, 0.05, Min(mainPlayer\camFogFar*LightVolume*1.5,28))
+                //CameraRange(mainPlayer\cam, 0.05f, Min(mainPlayer\camFogFar*LightVolume*1.5f,28))
 
                 bbAmbientLight(Brightness, Brightness, Brightness);
                 mainPlayer->loudness = CurveValue(0.f, mainPlayer->loudness, 5.f);
@@ -382,14 +382,14 @@ void UpdateGame() {
                 //TimeCheckpointMonitors()
             }
 
-            //If (InfiniteStamina) Then mainPlayer\stamina = Min(100, mainPlayer\stamina + (100.f-mainPlayer\stamina)*0.01*timing\tickDuration)
+            //If (InfiniteStamina) Then mainPlayer\stamina = Min(100, mainPlayer\stamina + (100.f-mainPlayer\stamina)*0.01f*timing\tickDuration)
 
             bbUpdateWorld();
             ManipulateNPCBones();
 
             mainPlayer->blurTimer = Min(CurveValue(0.f, mainPlayer->blurTimer, 20.f),1000.f);
             //If (mainPlayer\blurTimer > 0.f) Then
-            //	mainPlayer\blurTimer = Max(Min(0.95, mainPlayer\blurTimer / 1000.f), mainPlayer\blurTimer)
+            //	mainPlayer\blurTimer = Max(Min(0.95f, mainPlayer\blurTimer / 1000.f), mainPlayer\blurTimer)
             //	mainPlayer\blurTimer = Max(mainPlayer\blurTimer - timing\tickDuration, 0.f)
             //EndIf
 
@@ -400,7 +400,7 @@ void UpdateGame() {
                 if (mainPlayer->sanity895 < 0) {
                     mainPlayer->sanity895 = Min(mainPlayer->sanity895 + timing->tickDuration, 0.f);
                     if (mainPlayer->sanity895 < (-200)) {
-                        darkA = Max(Min((-mainPlayer->sanity895 - 200) / 700.f, 0.6), darkA);
+                        darkA = Max(Min((-mainPlayer->sanity895 - 200) / 700.f, 0.6f), darkA);
                         if (!mainPlayer->dead) {
                             //HeartBeatVolume = Min(abs(mainPlayer\sanity895+200)/500.f,1.f)
                             mainPlayer->heartbeatIntensity = Max(70 + abs(mainPlayer->sanity895+200)/6.f,mainPlayer->heartbeatIntensity);
@@ -413,7 +413,7 @@ void UpdateGame() {
                 //				mainPlayer\blinkTimer = mainPlayer\blinkFreq
                 //				EyeStuck = Max(EyeStuck-timing\tickDuration,0)
                 //
-                //				If (EyeStuck < 9000) Then mainPlayer\blurTimer = Max(mainPlayer\blurTimer, (9000-EyeStuck)*0.5)
+                //				If (EyeStuck < 9000) Then mainPlayer\blurTimer = Max(mainPlayer\blurTimer, (9000-EyeStuck)*0.5f)
                 //				If (EyeStuck < 6000) Then darkA = Min(Max(darkA, (6000-EyeStuck)/5000.f),1.f)
                 //				If (EyeStuck < 9000 And EyeStuck+timing\tickDuration =>9000) Then
                 //					Msg = "The eyedrops are causing your eyes to tear up."
@@ -448,7 +448,7 @@ void UpdateGame() {
 
                     mainPlayer->blinkTimer = mainPlayer->blinkTimer - timing->tickDuration;
                 } else {
-                    mainPlayer->blinkTimer = mainPlayer->blinkTimer - timing->tickDuration * 0.6 * mainPlayer->blinkEffect;
+                    mainPlayer->blinkTimer = mainPlayer->blinkTimer - timing->tickDuration * 0.6f * mainPlayer->blinkEffect;
                     //TODO: fix
                     //If (EyeIrritation > 0) Then mainPlayer\blinkTimer=BlinkTimer-Min(EyeIrritation / 100.f + 1.f, 4.f) * timing\tickDuration
 
@@ -466,14 +466,14 @@ void UpdateGame() {
 
                 //TODO: reimplement
                 //LightBlink = Max(LightBlink - (timing\tickDuration / 35.f), 0)
-                //If (LightBlink > 0) Then darkA = Min(Max(darkA, LightBlink * Rnd(0.3, 0.8)), 1.f)
+                //If (LightBlink > 0) Then darkA = Min(Max(darkA, LightBlink * Rnd(0.3f, 0.8f)), 1.f)
 
                 if (CurrGameState==GAMESTATE_SCP294) {
                     darkA = 1.f;
                 }
 
                 if (!IsPlayerWearingItem(mainPlayer,"nvgoggles")) {
-                    darkA = Max((1.f-SecondaryLightOn)*0.9, darkA);
+                    darkA = Max((1.f-SecondaryLightOn)*0.9f, darkA);
                 }
 
                 if (mainPlayer->dead) {
@@ -483,11 +483,11 @@ void UpdateGame() {
                     SelectedScreen = nullptr;
                     SelectedMonitor = nullptr;
                     //mainPlayer\blurTimer = abs(mainPlayer\fallTimer*5)
-                    //mainPlayer\fallTimer=mainPlayer\fallTimer-(timing\tickDuration*0.8)
+                    //mainPlayer\fallTimer=mainPlayer\fallTimer-(timing\tickDuration*0.8f)
                     if (mainPlayer->fallTimer < - 360) {
                         CurrGameState = GAMESTATE_PAUSED;
                         //TODO: fix
-                        //If (SelectedEnding <> "") Then EndingTimer = Min(mainPlayer\fallTimer,-0.1)
+                        //If (SelectedEnding <> "") Then EndingTimer = Min(mainPlayer\fallTimer,-0.1f)
                     }
                     darkA = Max(darkA, Min(abs(mainPlayer->fallTimer / 400.f), 1.f));
                 }
@@ -504,11 +504,11 @@ void UpdateGame() {
 
                 if (mainPlayer->selectedItem != nullptr) {
                     if (mainPlayer->selectedItem->itemTemplate->name.equals("navigator") || mainPlayer->selectedItem->itemTemplate->name.equals("nav")) {
-                        darkA = Max(darkA, 0.5);
+                        darkA = Max(darkA, 0.5f);
                     }
                 }
                 if (SelectedScreen != nullptr) {
-                    darkA = Max(darkA, 0.5);
+                    darkA = Max(darkA, 0.5f);
                 }
 
                 bbEntityAlpha(mainPlayer->overlays[OVERLAY_BLACK], darkA);
@@ -516,7 +516,7 @@ void UpdateGame() {
 
             if (mainPlayer->lightFlash > 0) {
                 bbShowEntity(mainPlayer->overlays[OVERLAY_WHITE]);
-                bbEntityAlpha(mainPlayer->overlays[OVERLAY_WHITE], Max(Min(mainPlayer->lightFlash + bbRnd(-0.2, 0.2), 1.f), 0.f));
+                bbEntityAlpha(mainPlayer->overlays[OVERLAY_WHITE], Max(Min(mainPlayer->lightFlash + bbRnd(-0.2f, 0.2f), 1.f), 0.f));
                 mainPlayer->lightFlash = Max(mainPlayer->lightFlash - (timing->tickDuration / 70.f), 0);
             } else {
                 bbHideEntity(mainPlayer->overlays[OVERLAY_WHITE]);
@@ -540,7 +540,7 @@ void UpdateGame() {
                         SaveGame(SavePath + CurrSave + "/");
                     }
                 } else if ((SelectedDifficulty->saveType == SAVEONSCREENS)) {
-                    if (SelectedScreen==nullptr & SelectedMonitor==nullptr) {
+                    if (SelectedScreen==nullptr && SelectedMonitor==nullptr) {
                         Msg = "Saving is only permitted on clickable monitors scattered throughout the facility.";
                         MsgTimer = 70 * 4;
                     } else {
@@ -559,7 +559,7 @@ void UpdateGame() {
                     Msg = "Quick saving is disabled.";
                     MsgTimer = 70 * 4;
                 }
-            } else if ((SelectedDifficulty->saveType == SAVEONSCREENS & (SelectedScreen!=nullptr | SelectedMonitor!=nullptr))) {
+            } else if ((SelectedDifficulty->saveType == SAVEONSCREENS && (SelectedScreen!=nullptr | SelectedMonitor!=nullptr))) {
                 if ((!Msg.equals("Game progress saved.") && !Msg.equals("You cannot save in this location.") && !Msg.equals("You cannot save at this moment.")) || MsgTimer<=0) {
                     Msg = "Press "+KeyName[keyBinds->save]+" to save.";
                     MsgTimer = 70*4;
@@ -619,11 +619,11 @@ void UpdateGame() {
                 } else {
                     bbColor(0,0,0);
                     //, Min(MsgTimer / 2, 255)/255.f)
-                    bbText((userOptions->screenWidth / 2)+1, (int)((userOptions->screenHeight * 0.94) + 1), Msg, true, false);
+                    bbText((userOptions->screenWidth / 2)+1, (int)((userOptions->screenHeight * 0.94f) + 1), Msg, true, false);
                     //Min(MsgTimer / 2, 255), Min(MsgTimer / 2, 255), Min(MsgTimer / 2, 255))
                     bbColor(255,255,255);
                     //, Min(MsgTimer / 2, 255)/255.f)
-                    bbText((userOptions->screenWidth / 2), (int)((userOptions->screenHeight * 0.94)), Msg, true, false);
+                    bbText((userOptions->screenWidth / 2), (int)((userOptions->screenHeight * 0.94f)), Msg, true, false);
                 }
                 MsgTimer = MsgTimer-timing->tickDuration;
             }
@@ -714,7 +714,7 @@ void UpdateGUI() {
     float projY;
     float scale;
 
-    if (mainPlayer->closestButton != 0 & mainPlayer->selectedDoor == nullptr & CurrGameState==GAMESTATE_PLAYING) {
+    if (mainPlayer->closestButton != 0 & mainPlayer->selectedDoor == nullptr && CurrGameState==GAMESTATE_PLAYING) {
         if (MouseUp1) {
             MouseUp1 = false;
             if (mainPlayer->closestDoor != nullptr) {
@@ -750,14 +750,14 @@ void UpdateGUI() {
             pvt = bbCreatePivot();
             bbPositionEntity(pvt, bbEntityX(mainPlayer->closestButton,true),bbEntityY(mainPlayer->closestButton,true),bbEntityZ(mainPlayer->closestButton,true));
             bbRotateEntity(pvt, 0, bbEntityYaw(mainPlayer->closestButton,true)-180,0);
-            bbMoveEntity(pvt, 0,0,0.22);
+            bbMoveEntity(pvt, 0,0,0.22f);
             bbPositionEntity(mainPlayer->head, bbEntityX(pvt),bbEntityY(pvt),bbEntityZ(pvt));
             bbPointEntity(mainPlayer->head, mainPlayer->closestButton);
             bbFreeEntity(pvt);
 
-            bbCameraProject(mainPlayer->cam, bbEntityX(mainPlayer->closestButton,true),bbEntityY(mainPlayer->closestButton,true)+bbMeshHeight(buttonObj->getMesh())*0.015,bbEntityZ(mainPlayer->closestButton,true));
+            bbCameraProject(mainPlayer->cam, bbEntityX(mainPlayer->closestButton,true),bbEntityY(mainPlayer->closestButton,true)+bbMeshHeight(buttonObj->getMesh())*0.015f,bbEntityZ(mainPlayer->closestButton,true));
             projY = bbProjectedY();
-            bbCameraProject(mainPlayer->cam, bbEntityX(mainPlayer->closestButton,true),bbEntityY(mainPlayer->closestButton,true)-bbMeshHeight(buttonObj->getMesh())*0.015,bbEntityZ(mainPlayer->closestButton,true));
+            bbCameraProject(mainPlayer->cam, bbEntityX(mainPlayer->closestButton,true),bbEntityY(mainPlayer->closestButton,true)-bbMeshHeight(buttonObj->getMesh())*0.015f,bbEntityZ(mainPlayer->closestButton,true));
             scale = (bbProjectedY()-projY)/462.f;
 
             x = (int)(userOptions->screenWidth/2-bbImageWidth(uiAssets->keypadHUD)*scale/2);
@@ -788,11 +788,11 @@ void UpdateGUI() {
 
             for (n = 0; n <= 3; n++) {
                 for (i = 0; i <= 2; i++) {
-                    xtemp = x + (int)(58.5*scale*n);
+                    xtemp = x + (int)(58.5f*scale*n);
                     ytemp = y + (int)((67*scale)*i);
 
                     temp = false;
-                    if (MouseOn(xtemp, ytemp, (int)(54*scale), (int)(65*scale)) & KeypadMSG.isEmpty()) {
+                    if (MouseOn(xtemp, ytemp, (int)(54*scale), (int)(65*scale)) && KeypadMSG.isEmpty()) {
                         if (MouseUp1) {
                             PlaySound_SM(sndManager->button);
 
@@ -947,19 +947,19 @@ void DrawGUI() {
     //		Next
     //	EndIf
 
-    if (mainPlayer->closestButton != 0 & mainPlayer->selectedDoor == nullptr & CurrGameState==GAMESTATE_PLAYING) {
+    if (mainPlayer->closestButton != 0 & mainPlayer->selectedDoor == nullptr && CurrGameState==GAMESTATE_PLAYING) {
         yawvalue = WrapAngle(-bbDeltaYaw(mainPlayer->cam,mainPlayer->closestButton));
-        if (yawvalue > 90 & yawvalue <= 180) {
+        if (yawvalue > 90 && yawvalue <= 180) {
             yawvalue = 90;
         }
-        if (yawvalue > 180 & yawvalue < 270) {
+        if (yawvalue > 180 && yawvalue < 270) {
             yawvalue = 270;
         }
         pitchvalue = WrapAngle(-bbDeltaPitch(mainPlayer->cam,mainPlayer->closestButton));
-        if (pitchvalue > 90 & pitchvalue <= 180) {
+        if (pitchvalue > 90 && pitchvalue <= 180) {
             pitchvalue = 90;
         }
-        if (pitchvalue > 180 & pitchvalue < 270) {
+        if (pitchvalue > 180 && pitchvalue < 270) {
             pitchvalue = 270;
         }
 
@@ -968,17 +968,17 @@ void DrawGUI() {
 
     if (mainPlayer->closestItem != nullptr) {
         yawvalue = -bbDeltaYaw(mainPlayer->cam, mainPlayer->closestItem->collider);
-        if (yawvalue > 90 & yawvalue <= 180) {
+        if (yawvalue > 90 && yawvalue <= 180) {
             yawvalue = 90;
         }
-        if (yawvalue > 180 & yawvalue < 270) {
+        if (yawvalue > 180 && yawvalue < 270) {
             yawvalue = 270;
         }
         pitchvalue = -bbDeltaPitch(mainPlayer->cam, mainPlayer->closestItem->collider);
-        if (pitchvalue > 90 & pitchvalue <= 180) {
+        if (pitchvalue > 90 && pitchvalue <= 180) {
             pitchvalue = 90;
         }
-        if (pitchvalue > 180 & pitchvalue < 270) {
+        if (pitchvalue > 180 && pitchvalue < 270) {
             pitchvalue = 270;
         }
 
@@ -1085,7 +1085,7 @@ void DrawGUI() {
                     break;
                 }
             }
-            bbText(x - 50, 250, "Room coordinates: (" + String(bbFloor(bbEntityX(mainPlayer->currRoom->obj) / 8.f + 0.5)) + ", " + String(bbFloor(bbEntityZ(mainPlayer->currRoom->obj) / 8.f + 0.5)) + ")");
+            bbText(x - 50, 250, "Room coordinates: (" + String(bbFloor(bbEntityX(mainPlayer->currRoom->obj) / 8.f + 0.5f)) + ", " + String(bbFloor(bbEntityZ(mainPlayer->currRoom->obj) / 8.f + 0.5f)) + ")");
             bbText(x - 50, 280, "Stamina: " + f2s(mainPlayer->stamina, 3));
             bbText(x - 50, 300, "Dead: " + String(mainPlayer->dead));
             bbText(x - 50, 320, "Blink timer: " + f2s(mainPlayer->blinkTimer, 3));
@@ -1136,14 +1136,14 @@ void DrawGUI() {
             pvt = bbCreatePivot();
             bbPositionEntity(pvt, bbEntityX(mainPlayer->closestButton,true),bbEntityY(mainPlayer->closestButton,true),bbEntityZ(mainPlayer->closestButton,true));
             bbRotateEntity(pvt, 0, bbEntityYaw(mainPlayer->closestButton,true)-180,0);
-            bbMoveEntity(pvt, 0,0,0.22);
+            bbMoveEntity(pvt, 0,0,0.22f);
             bbPositionEntity(mainPlayer->head, bbEntityX(pvt),bbEntityY(pvt),bbEntityZ(pvt));
             bbPointEntity(mainPlayer->head, mainPlayer->closestButton);
             bbFreeEntity(pvt);
 
-            bbCameraProject(mainPlayer->cam, bbEntityX(mainPlayer->closestButton,true),bbEntityY(mainPlayer->closestButton,true)+bbMeshHeight(buttonObj->getMesh())*0.015,bbEntityZ(mainPlayer->closestButton,true));
+            bbCameraProject(mainPlayer->cam, bbEntityX(mainPlayer->closestButton,true),bbEntityY(mainPlayer->closestButton,true)+bbMeshHeight(buttonObj->getMesh())*0.015f,bbEntityZ(mainPlayer->closestButton,true));
             projY = bbProjectedY();
-            bbCameraProject(mainPlayer->cam, bbEntityX(mainPlayer->closestButton,true),bbEntityY(mainPlayer->closestButton,true)-bbMeshHeight(buttonObj->getMesh())*0.015,bbEntityZ(mainPlayer->closestButton,true));
+            bbCameraProject(mainPlayer->cam, bbEntityX(mainPlayer->closestButton,true),bbEntityY(mainPlayer->closestButton,true)-bbMeshHeight(buttonObj->getMesh())*0.015f,bbEntityZ(mainPlayer->closestButton,true));
             scale = (bbProjectedY()-projY)/462.f;
 
             x = (int)(userOptions->screenWidth/2-bbImageWidth(uiAssets->keypadHUD)*scale/2);
@@ -1219,7 +1219,7 @@ void DrawPauseMenu() {
             DrawUIButton(x, y, (int)(390*MenuScale), (int)(60*MenuScale), "Quit");
         } else {
             y = (int)(y+104*MenuScale);
-            if (GameSaved & (!SelectedDifficulty->permaDeath)) {
+            if (GameSaved && (!SelectedDifficulty->permaDeath)) {
                 DrawUIButton(x, y, (int)(390*MenuScale), (int)(60*MenuScale), "Load Game");
             } else {
                 DrawUIButton(x, y, (int)(390*MenuScale), (int)(60*MenuScale), "");
@@ -1309,10 +1309,10 @@ void UpdatePauseMenu() {
                             x = (int)(abs(bbEntityX(mainPlayer->collider) - bbEntityX(r->obj)));
                             z = (int)(abs(bbEntityZ(mainPlayer->collider) - bbEntityZ(r->obj)));
 
-                            if (x < 12.f & z < 12.f) {
+                            if (x < 12.f && z < 12.f) {
                                 //MapFound(Floor(EntityX(r\obj) / 8.f), Floor(EntityZ(r\obj) / 8.f)) = Max(MapFound(Floor(EntityX(r\obj) / 8.f), Floor(EntityZ(r\obj) / 8.f)), 1)
-                                if (x < 4.f & z < 4.f) {
-                                    if (abs(bbEntityY(mainPlayer->collider) - bbEntityY(r->obj)) < 1.5) {
+                                if (x < 4.f && z < 4.f) {
+                                    if (abs(bbEntityY(mainPlayer->collider) - bbEntityY(r->obj)) < 1.5f) {
                                         mainPlayer->currRoom = r;
                                     }
                                     //MapFound(Floor(EntityX(r\obj) / 8.f), Floor(EntityZ(r\obj) / 8.f)) = 1
@@ -1342,7 +1342,7 @@ void UpdatePauseMenu() {
             }
         } else {
             y = (int)(y+104*MenuScale);
-            if (GameSaved & (!SelectedDifficulty->permaDeath)) {
+            if (GameSaved && (!SelectedDifficulty->permaDeath)) {
                 if (UpdateUIButton(x, y, (int)(390*MenuScale), (int)(60*MenuScale), "Load Game")) {
                     DrawLoading(0);
 
@@ -1365,10 +1365,10 @@ void UpdatePauseMenu() {
                         x = (int)(abs(bbEntityX(mainPlayer->collider) - bbEntityX(r->obj)));
                         z = (int)(abs(bbEntityZ(mainPlayer->collider) - bbEntityZ(r->obj)));
 
-                        if (x < 12.f & z < 12.f) {
+                        if (x < 12.f && z < 12.f) {
                             //MapFound(Floor(EntityX(r\obj) / 8.f), Floor(EntityZ(r\obj) / 8.f)) = Max(MapFound(Floor(EntityX(r\obj) / 8.f), Floor(EntityZ(r\obj) / 8.f)), 1)
-                            if (x < 4.f & z < 4.f) {
-                                if (abs(bbEntityY(mainPlayer->collider) - bbEntityY(r->obj)) < 1.5) {
+                            if (x < 4.f && z < 4.f) {
+                                if (abs(bbEntityY(mainPlayer->collider) - bbEntityY(r->obj)) < 1.5f) {
                                     mainPlayer->currRoom = r;
                                 }
                                 //MapFound(Floor(EntityX(r\obj) / 8.f), Floor(EntityZ(r\obj) / 8.f)) = 1
@@ -1462,17 +1462,17 @@ void UpdateInfect() {
 
         if (mainPlayer->infect008 < 93.f) {
             temp = mainPlayer->infect008;
-            mainPlayer->infect008 = Min(mainPlayer->infect008+timing->tickDuration*0.002,100);
+            mainPlayer->infect008 = Min(mainPlayer->infect008+timing->tickDuration*0.002f,100);
 
             mainPlayer->blurTimer = Max(mainPlayer->infect008*3*(2.f-mainPlayer->crouchState),mainPlayer->blurTimer);
 
             //HeartBeatRate = Max(HeartBeatRate, 100)
             mainPlayer->heartbeatIntensity = Max(100, mainPlayer->infect008/120.f);
 
-            bbEntityAlpha(mainPlayer->overlays[OVERLAY_008], Min((pow((mainPlayer->infect008*0.2),2))/1000.f,0.5) * (bbSin(TimeInPosMilliSecs()/8.f)+2.f));
+            bbEntityAlpha(mainPlayer->overlays[OVERLAY_008], Min((pow((mainPlayer->infect008*0.2f),2))/1000.f,0.5f) * (bbSin(TimeInPosMilliSecs()/8.f)+2.f));
 
             for (i = 0; i <= 6; i++) {
-                if (mainPlayer->infect008>i*15+10 & temp <= i*15+10) {
+                if (mainPlayer->infect008>i*15+10 && temp <= i*15+10) {
                     PlaySound2(LoadTempSound("SFX/SCP/008/Voices" + String(i) + ".ogg"));
                 }
             }
@@ -1489,16 +1489,16 @@ void UpdateInfect() {
             } else if ((mainPlayer->infect008 > 80 && temp <= 80.f)) {
                 Msg = "You feel very faint.";
                 MsgTimer = 70*6;
-            } else if (mainPlayer->infect008 >= 91.5) {
-                mainPlayer->blinkTimer = Max(Min(-10*(mainPlayer->infect008-91.5),mainPlayer->blinkTimer),-10);
-                if (mainPlayer->infect008 >= 92.7 & temp < 92.7) {
+            } else if (mainPlayer->infect008 >= 91.5f) {
+                mainPlayer->blinkTimer = Max(Min(-10*(mainPlayer->infect008-91.5f),mainPlayer->blinkTimer),-10);
+                if (mainPlayer->infect008 >= 92.7f && temp < 92.7f) {
                     for (int iterator68 = 0; iterator68 < Room::getListSize(); iterator68++) {
                         r = Room::getObject(iterator68);
 
                         if (r->roomTemplate->name.equals("008")) {
                             bbPositionEntity(mainPlayer->collider, bbEntityX(r->objects[7],true),bbEntityY(r->objects[7],true),bbEntityZ(r->objects[7],true),true);
                             bbResetEntity(mainPlayer->collider);
-                            r->npc[0] = CreateNPC(NPCtypeD, bbEntityX(r->objects[6],true),bbEntityY(r->objects[6],true)+0.2,bbEntityZ(r->objects[6],true));
+                            r->npc[0] = CreateNPC(NPCtypeD, bbEntityX(r->objects[6],true),bbEntityY(r->objects[6],true)+0.2f,bbEntityZ(r->objects[6],true));
                             r->npc[0]->sounds[0] = bbLoadSound("SFX/SCP/008/KillScientist1.ogg");
                             r->npc[0]->soundChannels[0] = bbPlaySound(r->npc[0]->sounds[0]);
                             tex = bbLoadTexture("GFX/NPCs/classd/scientist2.jpg");
@@ -1513,28 +1513,28 @@ void UpdateInfect() {
             }
         } else {
             temp = mainPlayer->infect008;
-            mainPlayer->infect008 = Min(mainPlayer->infect008+timing->tickDuration*0.004,100);
+            mainPlayer->infect008 = Min(mainPlayer->infect008+timing->tickDuration*0.004f,100);
 
-            if (mainPlayer->infect008 < 94.7) {
-                bbEntityAlpha(mainPlayer->overlays[OVERLAY_008], 0.5 * (bbSin(TimeInPosMilliSecs()/8.f)+2.f));
+            if (mainPlayer->infect008 < 94.7f) {
+                bbEntityAlpha(mainPlayer->overlays[OVERLAY_008], 0.5f * (bbSin(TimeInPosMilliSecs()/8.f)+2.f));
                 mainPlayer->blurTimer = 900;
 
-                if (mainPlayer->infect008 > 94.5) {
-                    mainPlayer->blinkTimer = Max(Min(-50*(mainPlayer->infect008-94.5),mainPlayer->blinkTimer),-10);
+                if (mainPlayer->infect008 > 94.5f) {
+                    mainPlayer->blinkTimer = Max(Min(-50*(mainPlayer->infect008-94.5f),mainPlayer->blinkTimer),-10);
                 }
                 bbPointEntity(mainPlayer->collider, mainPlayer->currRoom->npc[0]->collider);
                 bbPointEntity(mainPlayer->currRoom->npc[0]->collider, mainPlayer->collider);
-                mainPlayer->forceMove = 0.4;
-                mainPlayer->injuries = 2.5;
+                mainPlayer->forceMove = 0.4f;
+                mainPlayer->injuries = 2.5f;
                 mainPlayer->bloodloss = 0;
 
-                Animate2(mainPlayer->currRoom->npc[0]->obj, bbAnimTime(mainPlayer->currRoom->npc[0]->obj), 357, 381, 0.3);
-            } else if ((mainPlayer->infect008 < 98.5)) {
+                Animate2(mainPlayer->currRoom->npc[0]->obj, bbAnimTime(mainPlayer->currRoom->npc[0]->obj), 357, 381, 0.3f);
+            } else if ((mainPlayer->infect008 < 98.5f)) {
 
-                bbEntityAlpha(mainPlayer->overlays[OVERLAY_008], 0.5 * (bbSin(TimeInPosMilliSecs()/5.f)+2.f));
+                bbEntityAlpha(mainPlayer->overlays[OVERLAY_008], 0.5f * (bbSin(TimeInPosMilliSecs()/5.f)+2.f));
                 mainPlayer->blurTimer = 950;
 
-                if (temp < 94.7) {
+                if (temp < 94.7f) {
                     mainPlayer->currRoom->npc[0]->sounds[0] = bbLoadSound("SFX/SCP/008/KillScientist2.ogg");
                     mainPlayer->currRoom->npc[0]->soundChannels[0] = bbPlaySound(mainPlayer->currRoom->npc[0]->sounds[0]);
 
@@ -1542,8 +1542,8 @@ void UpdateInfect() {
                     DeathMSG = DeathMSG + "SCP-008 infection was confirmed, after which the body was incinerated.";
 
                     Kill(mainPlayer);
-                    de = CreateDecal(DECAL_BLOOD_SPLATTER, bbEntityX(mainPlayer->currRoom->npc[0]->collider), 544*RoomScale + 0.01, bbEntityZ(mainPlayer->currRoom->npc[0]->collider),90,bbRnd(360),0);
-                    de->size = 0.8;
+                    de = CreateDecal(DECAL_BLOOD_SPLATTER, bbEntityX(mainPlayer->currRoom->npc[0]->collider), 544*RoomScale + 0.01f, bbEntityZ(mainPlayer->currRoom->npc[0]->collider),90,bbRnd(360),0);
+                    de->size = 0.8f;
                     bbScaleSprite(de->obj, de->size,de->size);
                 } else if (mainPlayer->infect008 > 96) {
                     mainPlayer->blinkTimer = Max(Min(-10*(mainPlayer->infect008-96),mainPlayer->blinkTimer),-10);
@@ -1554,29 +1554,29 @@ void UpdateInfect() {
 
                 //TODO: this could break
                 if (mainPlayer->currRoom->npc[0]->state2==0) {
-                    Animate2(mainPlayer->currRoom->npc[0]->obj, bbAnimTime(mainPlayer->currRoom->npc[0]->obj), 13, 19, 0.3,false);
+                    Animate2(mainPlayer->currRoom->npc[0]->obj, bbAnimTime(mainPlayer->currRoom->npc[0]->obj), 13, 19, 0.3f,false);
                     if (bbAnimTime(mainPlayer->currRoom->npc[0]->obj) >= 19) {
                         mainPlayer->currRoom->npc[0]->state2 = 1;
                     }
                 } else {
-                    Animate2(mainPlayer->currRoom->npc[0]->obj, bbAnimTime(mainPlayer->currRoom->npc[0]->obj), 19, 13, -0.3);
+                    Animate2(mainPlayer->currRoom->npc[0]->obj, bbAnimTime(mainPlayer->currRoom->npc[0]->obj), 19, 13, -0.3f);
                     if (bbAnimTime(mainPlayer->currRoom->npc[0]->obj) <= 13) {
                         mainPlayer->currRoom->npc[0]->state2 = 0;
                     }
                 }
 
                 if (bbRand(50)==1) {
-                    p = CreateParticle(bbEntityX(mainPlayer->currRoom->npc[0]->collider),bbEntityY(mainPlayer->currRoom->npc[0]->collider),bbEntityZ(mainPlayer->currRoom->npc[0]->collider), PARTICLE_BLOOD, bbRnd(0.05,0.1), 0.15, 200);
-                    p->speed = 0.01;
-                    p->sizeChange = 0.01;
-                    p->a = 0.5;
-                    p->aChange = -0.01;
+                    p = CreateParticle(bbEntityX(mainPlayer->currRoom->npc[0]->collider),bbEntityY(mainPlayer->currRoom->npc[0]->collider),bbEntityZ(mainPlayer->currRoom->npc[0]->collider), PARTICLE_BLOOD, bbRnd(0.05f,0.1f), 0.15f, 200);
+                    p->speed = 0.01f;
+                    p->sizeChange = 0.01f;
+                    p->a = 0.5f;
+                    p->aChange = -0.01f;
                     bbRotateEntity(p->pvt, bbRnd(360),bbRnd(360),0);
                 }
 
-                bbPositionEntity(mainPlayer->head, bbEntityX(mainPlayer->currRoom->npc[0]->collider,true), bbEntityY(mainPlayer->currRoom->npc[0]->collider,true)+0.65,bbEntityZ(mainPlayer->currRoom->npc[0]->collider,true),true);
+                bbPositionEntity(mainPlayer->head, bbEntityX(mainPlayer->currRoom->npc[0]->collider,true), bbEntityY(mainPlayer->currRoom->npc[0]->collider,true)+0.65f,bbEntityZ(mainPlayer->currRoom->npc[0]->collider,true),true);
                 bbRotateEntity(mainPlayer->head, (1.f+bbSin(TimeInPosMilliSecs()/5.f))*15, mainPlayer->currRoom->angle-180, 0, true);
-                bbMoveEntity(mainPlayer->head, 0,0,0.4);
+                bbMoveEntity(mainPlayer->head, 0,0,0.4f);
                 bbTurnEntity(mainPlayer->head, 80+(bbSin(TimeInPosMilliSecs()/5.f))*30,(bbSin(TimeInPosMilliSecs()/5.f))*40,0);
             }
         }
@@ -1665,7 +1665,7 @@ void RenderWorld2() {
 
     if (mainPlayer->blinkTimer < - 16 | mainPlayer->blinkTimer > - 6) {
         //show a HUD
-        if (IsPlayerWearingItem(mainPlayer,"supernv") & hasBattery!=0) {
+        if (IsPlayerWearingItem(mainPlayer,"supernv") && hasBattery!=0) {
             //NVTimer=NVTimer-timing\tickDuration
 
             //If (NVTimer<=0.f) Then
@@ -1707,13 +1707,13 @@ void RenderWorld2() {
                     bbPositionEntity(temp2,np->nvX,np->nvY,np->nvZ);
                     dist = bbEntityDistance(temp2,mainPlayer->collider);
                     //don't draw text if the NPC is too far away
-                    if (dist<23.5) {
+                    if (dist<23.5f) {
                         bbPointEntity(temp, temp2);
                         yawvalue = WrapAngle(bbEntityYaw(mainPlayer->cam) - bbEntityYaw(temp));
                         xvalue = 0.f;
-                        if (yawvalue > 90 & yawvalue <= 180) {
+                        if (yawvalue > 90 && yawvalue <= 180) {
                             xvalue = bbSin(90)/90*yawvalue;
-                        } else if ((yawvalue > 180 & yawvalue < 270)) {
+                        } else if ((yawvalue > 180 && yawvalue < 270)) {
                             xvalue = bbSin(270)/yawvalue*270;
                         } else {
                             xvalue = bbSin(yawvalue);
@@ -1721,9 +1721,9 @@ void RenderWorld2() {
 
                         pitchvalue = WrapAngle(bbEntityPitch(mainPlayer->cam) - bbEntityPitch(temp));
                         yvalue = 0.f;
-                        if (pitchvalue > 90 & pitchvalue <= 180) {
+                        if (pitchvalue > 90 && pitchvalue <= 180) {
                             yvalue = bbSin(90)/90*pitchvalue;
-                        } else if ((pitchvalue > 180 & pitchvalue < 270)) {
+                        } else if ((pitchvalue > 180 && pitchvalue < 270)) {
                             yvalue = bbSin(270)/pitchvalue*270;
                         } else {
                             yvalue = bbSin(pitchvalue);
@@ -1742,25 +1742,25 @@ void RenderWorld2() {
 
             bbColor(0,0,55);
             for (k = 0; k <= 10; k++) {
-                bbRect(45, (int)(userOptions->screenHeight*0.5-(k*20)), 54, 10, true);
+                bbRect(45, (int)(userOptions->screenHeight*0.5f-(k*20)), 54, 10, true);
             }
             bbColor(0,0,255);
-            for (l = 0; l <= (int)(bbFloor((power+50)*0.01)); l++) {
-                bbRect(45, (int)(userOptions->screenHeight*0.5-(l*20)), 54, 10, true);
+            for (l = 0; l <= (int)(bbFloor((power+50)*0.01f)); l++) {
+                bbRect(45, (int)(userOptions->screenHeight*0.5f-(l*20)), 54, 10, true);
             }
-            //DrawImage(NVGImages,40,userOptions\screenHeight*0.5+30,1)
+            //DrawImage(NVGImages,40,userOptions\screenHeight*0.5f+30,1)
 
             bbColor(255,255,255);
-        } else if ((IsPlayerWearingItem(mainPlayer,"nvgoggles") & hasBattery!=0)) {
+        } else if ((IsPlayerWearingItem(mainPlayer,"nvgoggles") && hasBattery!=0)) {
             bbColor(0,55,0);
             for (k = 0; k <= 10; k++) {
-                bbRect(45, (int)(userOptions->screenHeight*0.5-(k*20)), 54, 10, true);
+                bbRect(45, (int)(userOptions->screenHeight*0.5f-(k*20)), 54, 10, true);
             }
             bbColor(0,255,0);
-            for (l = 0; l <= (int)(bbFloor((power+50)*0.01)); l++) {
-                bbRect(45, (int)(userOptions->screenHeight*0.5-(l*20)), 54, 10, true);
+            for (l = 0; l <= (int)(bbFloor((power+50)*0.01f)); l++) {
+                bbRect(45, (int)(userOptions->screenHeight*0.5f-(l*20)), 54, 10, true);
             }
-            //DrawImage(NVGImages,40,userOptions\screenHeight*0.5+30,0)
+            //DrawImage(NVGImages,40,userOptions\screenHeight*0.5f+30,0)
         }
     }
 
@@ -1792,7 +1792,7 @@ int CheckForPlayerInFacility() {
     if (bbEntityY(mainPlayer->collider)< -10.f) {
         return 2;
     }
-    if (bbEntityY(mainPlayer->collider)> 7.f & bbEntityY(mainPlayer->collider)<=100.f) {
+    if (bbEntityY(mainPlayer->collider)> 7.f && bbEntityY(mainPlayer->collider)<=100.f) {
         return 2;
     }
 

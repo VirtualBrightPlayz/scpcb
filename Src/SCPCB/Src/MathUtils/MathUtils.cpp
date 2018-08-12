@@ -98,7 +98,7 @@ int CircleToLineSegIsect(float cx, float cy, float r, float l1x, float l1y, floa
     //Checks whether the value of another point is 0
     //tai molempien merkki sama
     if (dp1 == 0 | dp2 == 0) {
-    } else if ((dp1 > 0 & dp2 > 0) || (dp1 < 0 & dp2 < 0)) { // TODO: wtf
+    } else if ((dp1 > 0 & dp2 > 0) || (dp1 < 0 && dp2 < 0)) { // TODO: wtf
     } else {
         //Neither -> no cutting
         return false;
@@ -197,7 +197,7 @@ int TimeInPosMilliSecs() {
 
 void MakeCollBox(class MeshModel* mesh) {
     float sx = EntityScaleX(mesh, 1);
-    float sy = Max(EntityScaleY(mesh, 1), 0.001);
+    float sy = Max(EntityScaleY(mesh, 1), 0.001f);
     float sz = EntityScaleZ(mesh, 1);
     GetMeshExtents(mesh);
     bbEntityBox(mesh, Mesh_MinX * sx, Mesh_MinY * sy, Mesh_MinZ * sz, Mesh_MagX * sx, Mesh_MagY * sy, Mesh_MagZ * sz);

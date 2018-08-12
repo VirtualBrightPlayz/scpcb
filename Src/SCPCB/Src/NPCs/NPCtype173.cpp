@@ -32,7 +32,7 @@ const int STATE173_CONTAINED = 4;
 void InitializeNPCtype173(NPC* n) {
     n->nvName = "SCP-173";
     n->collider = bbCreatePivot();
-    bbEntityRadius(n->collider, 0.32);
+    bbEntityRadius(n->collider, 0.32f);
     bbEntityType(n->collider, HIT_PLAYER);
 
     //TODO: Remove this?
@@ -95,7 +95,7 @@ void UpdateNPCtype173(NPC* n) {
     switch ((int)n->state) {
         case STATE173_ATTACK: {
             dist = bbEntityDistance(n->collider, mainPlayer->collider);
-            bbPositionEntity(n->obj, bbEntityX(n->collider), bbEntityY(n->collider) - 0.32, bbEntityZ(n->collider));
+            bbPositionEntity(n->obj, bbEntityX(n->collider), bbEntityY(n->collider) - 0.32f, bbEntityZ(n->collider));
             bbRotateEntity(n->obj, 0, bbEntityYaw(n->collider) - 180, 0);
 
             playerVisible = false;
@@ -127,20 +127,20 @@ void UpdateNPCtype173(NPC* n) {
             //player is looking at it -> doesn't move
             if (!canMove) {
                 //Blur and zoom camera slightly when looking at 173.
-                mainPlayer->blurTimer = Max(Max(Min((4.f - dist) / 6.f, 0.9), 0.1), mainPlayer->blurTimer);
-                mainPlayer->camZoom = Max(mainPlayer->camZoom, (bbSin((float)(TimeInPosMilliSecs())/20.f)+1.f)*15.f*Max((3.5-dist)/3.5,0.f));
+                mainPlayer->blurTimer = Max(Max(Min((4.f - dist) / 6.f, 0.9f), 0.1f), mainPlayer->blurTimer);
+                mainPlayer->camZoom = Max(mainPlayer->camZoom, (bbSin((float)(TimeInPosMilliSecs())/20.f)+1.f)*15.f*Max((3.5f-dist)/3.5f,0.f));
 
                 //If it's close spoopy horror sound.
-                if (dist < 3.5 && TimeInPosMilliSecs() - n->lastSeen > 60000 && playerVisible) {
+                if (dist < 3.5f && TimeInPosMilliSecs() - n->lastSeen > 60000 && playerVisible) {
                     PlaySound2(n->sounds[bbRand(1,3)]);
 
                     n->lastSeen = TimeInPosMilliSecs();
                 }
 
-                if (dist < 1.5 && n->lastDist > 2.f && playerVisible) {
+                if (dist < 1.5f && n->lastDist > 2.f && playerVisible) {
                     mainPlayer->camZoom = 40.f;
                     mainPlayer->heartbeatIntensity = Max(mainPlayer->heartbeatIntensity, 140);
-                    //HeartBeatVolume = 0.5
+                    //HeartBeatVolume = 0.5f
 
                     //Jumpscare.
                     PlaySound2(n->sounds[bbRand(4,8)]);
@@ -165,7 +165,7 @@ void UpdateNPCtype173(NPC* n) {
                                         z = abs(bbEntityZ(mainPlayer->collider)-bbEntityZ(w->obj,true));
                                         if (z < 25 && z > 15.f) {
                                             std::cout << "MOVING 173 TO " + w->room->roomTemplate->name;
-                                            bbPositionEntity(n->collider, bbEntityX(w->obj,true), bbEntityY(w->obj,true)+0.25,bbEntityZ(w->obj,true));
+                                            bbPositionEntity(n->collider, bbEntityX(w->obj,true), bbEntityY(w->obj,true)+0.25f,bbEntityZ(w->obj,true));
                                             bbResetEntity(n->collider);
                                             break;
                                         }
@@ -175,7 +175,7 @@ void UpdateNPCtype173(NPC* n) {
                         }
                     }
                     //3-6 rooms away from the player -> move randomly from waypoint to another
-                } else if ((dist > HideDistance*0.8)) {
+                } else if ((dist > HideDistance*0.8f)) {
                     if (bbRand(70)==1) {
                         TeleportCloser(n);
                     }
@@ -190,8 +190,8 @@ void UpdateNPCtype173(NPC* n) {
                             if ((!d->locked) && d->open == false && d->code.isEmpty() && d->tag.isEmpty()) {
                                 for (i = 0; i <= 1; i++) {
                                     if (d->buttons[i] != 0) {
-                                        if (abs(bbEntityX(n->collider) - bbEntityX(d->buttons[i])) < 0.5) {
-                                            if (abs(bbEntityZ(n->collider) - bbEntityZ(d->buttons[i])) < 0.5) {
+                                        if (abs(bbEntityX(n->collider) - bbEntityX(d->buttons[i])) < 0.5f) {
+                                            if (abs(bbEntityZ(n->collider) - bbEntityZ(d->buttons[i])) < 0.5f) {
                                                 if (d->openstate >= 180 | d->openstate <= 0) {
                                                     if (bbDeltaYaw(n->collider, d->buttons[i]) < 60 && bbDeltaYaw(d->buttons[i], n->collider) < 60) {
                                                         PlaySound2(LoadTempSound("SFX/Door/DoorOpen173.ogg"));
@@ -215,7 +215,7 @@ void UpdateNPCtype173(NPC* n) {
 
                     //player is not looking and is visible from 173's position -> attack
                     if (playerVisible) {
-                        if (dist < 0.65) {
+                        if (dist < 0.65f) {
                             if ((!mainPlayer->dead) && (!mainPlayer->godMode)) {
                                 // TODO: Fix.
                                 // switch (mainPlayer->currRoom->roomTemplate->name) {
@@ -258,7 +258,7 @@ void UpdateNPCtype173(NPC* n) {
                         //player is not visible -> move to the location where he was last seen
                     } else {
                         if (n->targetX != 0) {
-                            if (Distance(bbEntityX(n->collider), bbEntityZ(n->collider), n->targetX, n->targetZ) > 0.5) {
+                            if (Distance(bbEntityX(n->collider), bbEntityZ(n->collider), n->targetX, n->targetZ) > 0.5f) {
                                 bbAlignToVector(n->collider, n->targetX-bbEntityX(n->collider), 0, n->targetZ-bbEntityZ(n->collider), 3);
                                 bbMoveEntity(n->collider, 0, 0, n->speed * timing->tickDuration);
                                 if (bbRand(500) == 1) {
@@ -284,7 +284,7 @@ void UpdateNPCtype173(NPC* n) {
                 }
 
                 //TODO: Why random Y?
-                //PositionEntity(n\collider, EntityX(n\collider), Min(EntityY(n\collider),0.35), EntityZ(n\collider))
+                //PositionEntity(n\collider, EntityX(n\collider), Min(EntityY(n\collider),0.35f), EntityZ(n\collider))
             }
         }
         case STATE173_MOVE_TO_TARGET: {
@@ -296,7 +296,7 @@ void UpdateNPCtype173(NPC* n) {
             }
 
             if (n->targetX != 0) {
-                if (Distance(bbEntityX(n->collider), bbEntityZ(n->collider), n->targetX, n->targetZ) > 0.5) {
+                if (Distance(bbEntityX(n->collider), bbEntityZ(n->collider), n->targetX, n->targetZ) > 0.5f) {
                     bbAlignToVector(n->collider, n->targetX-bbEntityX(n->collider), 0, n->targetZ-bbEntityZ(n->collider), 3);
                     bbMoveEntity(n->collider, 0, 0, n->speed * timing->tickDuration);
                 } else {
@@ -312,7 +312,7 @@ void UpdateNPCtype173(NPC* n) {
         case STATE173_BEING_CONTAINED: {
             if (n->target != nullptr) {
                 tmp = false;
-                if (dist > HideDistance*0.7) {
+                if (dist > HideDistance*0.7f) {
                     if (bbEntityVisible(n->obj,mainPlayer->collider)==false) {
                         tmp = true;
                     }
@@ -321,23 +321,23 @@ void UpdateNPCtype173(NPC* n) {
                     bbPointEntity(n->obj, n->target->collider);
                     bbRotateEntity(n->collider, 0, CurveAngle(bbEntityYaw(n->obj),bbEntityYaw(n->collider),10.f), 0, true);
                     dist = bbEntityDistance(n->collider, n->target->collider);
-                    bbMoveEntity(n->collider, 0, 0, 0.016*timing->tickDuration*Max(Min((dist*2-1.f)*0.5,1.f),-0.5));
+                    bbMoveEntity(n->collider, 0, 0, 0.016f*timing->tickDuration*Max(Min((dist*2-1.f)*0.5f,1.f),-0.5f));
                 } else {
-                    bbPositionEntity(n->collider,bbEntityX(n->target->collider),bbEntityY(n->target->collider)+0.3,bbEntityZ(n->target->collider));
+                    bbPositionEntity(n->collider,bbEntityX(n->target->collider),bbEntityY(n->target->collider)+0.3f,bbEntityZ(n->target->collider));
                     bbResetEntity(n->collider);
                     //PointEntity(n\collider, n\target\collider)
                     //RotateEntity(n\collider, 0, CurveAngle(EntityYaw(n\obj),EntityYaw(n\collider),10.f), 0, True)
                     //dist = EntityDistance(n\collider, n\target\collider)
-                    //MoveEntity(n\collider, 0, 0, dist-0.6)
+                    //MoveEntity(n\collider, 0, 0, dist-0.6f)
                 }
             }
 
-            bbPositionEntity(n->obj, bbEntityX(n->collider), bbEntityY(n->collider) + 0.05 + bbSin(TimeInPosMilliSecs()*0.08)*0.02, bbEntityZ(n->collider));
+            bbPositionEntity(n->obj, bbEntityX(n->collider), bbEntityY(n->collider) + 0.05f + bbSin(TimeInPosMilliSecs()*0.08f)*0.02f, bbEntityZ(n->collider));
             bbRotateEntity(n->obj, 0, bbEntityYaw(n->collider)-180, 0);
 
             bbShowEntity(n->obj2);
 
-            bbPositionEntity(n->obj2, bbEntityX(n->collider), bbEntityY(n->collider) - 0.05 + bbSin(TimeInPosMilliSecs()*0.08)*0.02, bbEntityZ(n->collider));
+            bbPositionEntity(n->obj2, bbEntityX(n->collider), bbEntityY(n->collider) - 0.05f + bbSin(TimeInPosMilliSecs()*0.08f)*0.02f, bbEntityZ(n->collider));
             bbRotateEntity(n->obj2, 0, bbEntityYaw(n->collider)-180, 0);
         }
     }

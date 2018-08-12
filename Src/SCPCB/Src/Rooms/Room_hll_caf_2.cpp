@@ -110,8 +110,8 @@ void Update294() {
 
     if (temp) {
         if (MouseHit1) {
-            xtemp = (int)(bbFloor((bbMouseX()-x-228) / 35.5));
-            ytemp = (int)(bbFloor((bbMouseY()-y-342) / 36.5));
+            xtemp = (int)(bbFloor((bbMouseX()-x-228) / 35.5f));
+            ytemp = (int)(bbFloor((bbMouseY()-y-342) / 36.5f));
 
             if (ytemp >= 0 && ytemp < 5) {
                 if (xtemp >= 0 && xtemp < 10) {
@@ -346,7 +346,7 @@ void UpdateEvent_hll_caf_2(Event* e) {
     //[Block]
     if (mainPlayer->currRoom == e->room) {
         if (CurrGameState!=GAMESTATE_SCP294) {
-            if (bbEntityDistance(e->room->objects[0], mainPlayer->collider)<1.5) {
+            if (bbEntityDistance(e->room->objects[0], mainPlayer->collider)<1.5f) {
                 if (bbEntityInView(e->room->objects[0], mainPlayer->cam)) {
                     DrawHandIcon = true;
                     if (MouseHit1) {
@@ -374,7 +374,7 @@ void UpdateEvent_hll_caf_2(Event* e) {
     }
 
     if (e->eventState == 0) {
-        CreateNPC(NPCtype066, bbEntityX(e->room->obj), 0.5, bbEntityZ(e->room->obj));
+        CreateNPC(NPCtype066, bbEntityX(e->room->obj), 0.5f, bbEntityZ(e->room->obj));
         e->eventState = 1;
     }
     //[End Block]

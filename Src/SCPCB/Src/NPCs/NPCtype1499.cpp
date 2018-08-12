@@ -24,14 +24,14 @@ namespace CBN {
 void InitializeNPCtype1499(NPC* n) {
     n->nvName = "Unidentified";
     n->collider = bbCreatePivot();
-    bbEntityRadius(n->collider, 0.2);
+    bbEntityRadius(n->collider, 0.2f);
     bbEntityType(n->collider, HIT_PLAYER);
 
     NPC* n2;
     for (int iterator125 = 0; iterator125 < NPC::getListSize(); iterator125++) {
         n2 = NPC::getObject(iterator125);
 
-        if ((n->npcType == n2->npcType) & (n!=n2)) {
+        if ((n->npcType == n2->npcType) && (n!=n2)) {
             n->obj = bbCopyMeshModelEntity(n2->obj);
             break;
         }
@@ -41,8 +41,8 @@ void InitializeNPCtype1499(NPC* n) {
         n->obj = bbLoadAnimMesh("GFX/NPCs/scp1499/scp1499.b3d");
     }
 
-    n->speed = (GetINIFloat("Data/NPCs.ini", "SCP-1499-1", "speed") / 100.f) * bbRnd(0.9,1.1);
-    float temp = (GetINIFloat("Data/NPCs.ini", "SCP-1499-1", "scale") / 6.f) * bbRnd(0.8,1.f);
+    n->speed = (GetINIFloat("Data/NPCs.ini", "SCP-1499-1", "speed") / 100.f) * bbRnd(0.9f,1.1f);
+    float temp = (GetINIFloat("Data/NPCs.ini", "SCP-1499-1", "scale") / 6.f) * bbRnd(0.8f,1.f);
 
     bbScaleEntity(n->obj, temp, temp, temp);
 
@@ -56,13 +56,13 @@ void UpdateNPCtype1499(NPC* n) {
     NPC* n2;
     int prevFrame = (int)(n->frame);
 
-    if ((!n->idle) & bbEntityDistance(n->collider,mainPlayer->collider)<HideDistance*2) {
+    if ((!n->idle) && bbEntityDistance(n->collider,mainPlayer->collider)<HideDistance*2) {
         if (n->state == 0 | n->state == 2) {
             for (int iterator126 = 0; iterator126 < NPC::getListSize(); iterator126++) {
                 n2 = NPC::getObject(iterator126);
 
-                if (n2->npcType == n->npcType & n2 != n) {
-                    if (n2->state != 0 & n2->state != 2) {
+                if (n2->npcType == n->npcType && n2 != n) {
+                    if (n2->state != 0 && n2->state != 2) {
                         n->state = 1;
                         n->state2 = 0;
                         break;
@@ -79,7 +79,7 @@ void UpdateNPCtype1499(NPC* n) {
                         n->state2 = n->state2 + timing->tickDuration;
                     } else {
                         if (n->currSpeed == 0.f) {
-                            n->currSpeed = n->currSpeed + 0.0001;
+                            n->currSpeed = n->currSpeed + 0.0001f;
                         }
                     }
                 } else {
@@ -97,7 +97,7 @@ void UpdateNPCtype1499(NPC* n) {
                     }
 
                     bbHideEntity(n->collider);
-                    bbEntityPick(n->collider, 1.5);
+                    bbEntityPick(n->collider, 1.5f);
                     if (bbPickedEntity() != 0) {
                         n->angle = bbEntityYaw(n->collider)+bbRnd(80,110);
                     }
@@ -105,7 +105,7 @@ void UpdateNPCtype1499(NPC* n) {
                 }
 
                 if (n->currSpeed == 0.f) {
-                    AnimateNPC(n,296,317,0.2);
+                    AnimateNPC(n,296,317,0.2f);
                 } else {
                     if (n->id % 2 == 0) {
                         AnimateNPC(n,1,62,(n->currSpeed*28));
@@ -131,7 +131,7 @@ void UpdateNPCtype1499(NPC* n) {
                     }
                 }
 
-                if (n->id % 2 == 0 & !NoTarget) {
+                if (n->id % 2 == 0 && !NoTarget) {
                     if (n->playerDistance < 10.f) {
                         if (bbEntityVisible(n->collider,mainPlayer->collider)) {
                             //play the "screaming animation"
@@ -151,7 +151,7 @@ void UpdateNPCtype1499(NPC* n) {
                                     n2 = NPC::getObject(iterator127);
 
                                     //If (n2\npctype = n\npcType And n2 <> n And (n\id Mod 2 = 0)) Then
-                                    if (n2->npcType == n->npcType & n2 != n) {
+                                    if (n2->npcType == n->npcType && n2 != n) {
                                         n2->state = 1;
                                         n2->state2 = 0;
                                     }
@@ -181,7 +181,7 @@ void UpdateNPCtype1499(NPC* n) {
                 bbRotateEntity(n->collider,0,CurveAngle(bbEntityYaw(n->obj),bbEntityYaw(n->collider),20.f),0);
 
                 if (n->state2 == 0.f) {
-                    n->currSpeed = CurveValue(n->speed*1.75,n->currSpeed,10.f);
+                    n->currSpeed = CurveValue(n->speed*1.75f,n->currSpeed,10.f);
 
                     if (n->id % 2 == 0) {
                         AnimateNPC(n,1,62,(n->currSpeed*28));
@@ -190,7 +190,7 @@ void UpdateNPCtype1499(NPC* n) {
                     }
                 }
 
-                if (n->playerDistance < 0.75) {
+                if (n->playerDistance < 0.75f) {
                     if ((n->id % 2 == 0) | n->state3 == 1) {
                         n->state2 = bbRand(1,2);
                         n->state = 3;
@@ -207,7 +207,7 @@ void UpdateNPCtype1499(NPC* n) {
             }
             case 2: {
                 n->currSpeed = 0.f;
-                AnimateNPC(n,203,295,0.1,false);
+                AnimateNPC(n,203,295,0.1f,false);
 
                 if (n->frame > 294.f) {
                     n->state = n->state2;
@@ -217,12 +217,12 @@ void UpdateNPCtype1499(NPC* n) {
             case 3: {
                 n->currSpeed = CurveValue(0.f,n->currSpeed,5.f);
                 if (n->state2 == 1) {
-                    AnimateNPC(n,63,100,0.6,false);
-                    if (prevFrame < 89 & n->frame>=89) {
-                        if (n->playerDistance > 0.85 | abs(bbDeltaYaw(n->collider,mainPlayer->collider))>60.f) {
+                    AnimateNPC(n,63,100,0.6f,false);
+                    if (prevFrame < 89 && n->frame>=89) {
+                        if (n->playerDistance > 0.85f | abs(bbDeltaYaw(n->collider,mainPlayer->collider))>60.f) {
                             //Miss
                         } else {
-                            mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.75,1.5);
+                            mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.75f,1.5f);
                             PlayRangedSound(LoadTempSound("SFX/General/Slash"+String(bbRand(1,2))+".ogg"), mainPlayer->cam, n->collider);
                             if (mainPlayer->injuries > 10.f) {
                                 Kill(mainPlayer);
@@ -242,12 +242,12 @@ void UpdateNPCtype1499(NPC* n) {
                         n->state = 1;
                     }
                 } else {
-                    AnimateNPC(n,168,202,0.6,false);
-                    if (prevFrame < 189 & n->frame>=189) {
-                        if (n->playerDistance > 0.85 | abs(bbDeltaYaw(n->collider,mainPlayer->collider))>60.f) {
+                    AnimateNPC(n,168,202,0.6f,false);
+                    if (prevFrame < 189 && n->frame>=189) {
+                        if (n->playerDistance > 0.85f | abs(bbDeltaYaw(n->collider,mainPlayer->collider))>60.f) {
                             //Miss
                         } else {
-                            mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.75,1.5);
+                            mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.75f,1.5f);
                             PlayRangedSound(LoadTempSound("SFX/General/Slash"+String(bbRand(1,2))+".ogg"), mainPlayer->cam, n->collider);
                             if (mainPlayer->injuries > 10.f) {
                                 Kill(mainPlayer);
@@ -271,25 +271,25 @@ void UpdateNPCtype1499(NPC* n) {
             }
             case 4: {
                 n->currSpeed = CurveValue(0.f,n->currSpeed,5.f);
-                AnimateNPC(n,296,317,0.2);
+                AnimateNPC(n,296,317,0.2f);
 
                 bbPointEntity(n->obj,mainPlayer->collider);
                 bbRotateEntity(n->collider,0,CurveAngle(bbEntityYaw(n->obj),bbEntityYaw(n->collider),20.f),0);
 
-                if (n->playerDistance > 0.85) {
+                if (n->playerDistance > 0.85f) {
                     n->state = 1;
                 }
             }
         }
 
-        if (n->soundChannels[0] != 0 & bbChannelPlaying(n->soundChannels[0])) {
+        if (n->soundChannels[0] != 0 && bbChannelPlaying(n->soundChannels[0])) {
             UpdateRangedSoundOrigin(n->soundChannels[0],mainPlayer->cam,n->collider,20.f);
         }
 
         bbMoveEntity(n->collider,0,0,n->currSpeed*timing->tickDuration);
 
         bbRotateEntity(n->obj,0,bbEntityYaw(n->collider)-180,0);
-        bbPositionEntity(n->obj,bbEntityX(n->collider),bbEntityY(n->collider)-0.2,bbEntityZ(n->collider));
+        bbPositionEntity(n->obj,bbEntityX(n->collider),bbEntityY(n->collider)-0.2f,bbEntityZ(n->collider));
 
         bbShowEntity(n->obj);
     } else {

@@ -56,8 +56,8 @@ void FillRoom_srvr_096_2(Room* r) {
     for (n = 0; n <= 2; n++) {
         r->levers[n] = CreateLever();
 
-        bbScaleEntity(r->levers[n]->obj, 0.03, 0.03, 0.03);
-        bbScaleEntity(r->levers[n]->baseObj, 0.03, 0.03, 0.03);
+        bbScaleEntity(r->levers[n]->obj, 0.03f, 0.03f, 0.03f);
+        bbScaleEntity(r->levers[n]->baseObj, 0.03f, 0.03f, 0.03f);
 
         switch (n) {
             case 0: {
@@ -84,7 +84,7 @@ void FillRoom_srvr_096_2(Room* r) {
 
         //EntityPickMode(r\levers[n]\obj, 2)
         bbEntityPickMode(r->levers[n]->obj, 1, false);
-        bbEntityRadius(r->levers[n]->obj, 0.1);
+        bbEntityRadius(r->levers[n]->obj, 0.1f);
         //makecollbox(r\levers[n]\obj)
     }
 
@@ -93,16 +93,16 @@ void FillRoom_srvr_096_2(Room* r) {
 
     //096 spawnpoint
     r->objects[6] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[6], r->x - 848*RoomScale, 0.5, r->z-576*RoomScale, true);
+    bbPositionEntity(r->objects[6], r->x - 848*RoomScale, 0.5f, r->z-576*RoomScale, true);
     //guard spawnpoint
     r->objects[7] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[7], r->x - 1328.f * RoomScale, 0.5, r->z + 528*RoomScale, true);
+    bbPositionEntity(r->objects[7], r->x - 1328.f * RoomScale, 0.5f, r->z + 528*RoomScale, true);
     //the point where the guard walks to
     r->objects[8] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[8], r->x - 1376.f * RoomScale, 0.5, r->z + 32*RoomScale, true);
+    bbPositionEntity(r->objects[8], r->x - 1376.f * RoomScale, 0.5f, r->z + 32*RoomScale, true);
 
     r->objects[9] = bbCreatePivot(r->obj);
-    bbPositionEntity(r->objects[9], r->x - 848*RoomScale, 0.5, r->z+576*RoomScale, true);
+    bbPositionEntity(r->objects[9], r->x - 848*RoomScale, 0.5f, r->z+576*RoomScale, true);
 }
 
 void UpdateEvent_srvr_096_2(Event* e) {
@@ -142,9 +142,9 @@ void UpdateEvent_srvr_096_2(Event* e) {
             e->room->doors[1]->locked = true;
 
             if (Curr096==nullptr) {
-                Curr096 = CreateNPC(NPCtype096, bbEntityX(e->room->objects[6],true),bbEntityY(e->room->objects[6],true)+0.1,bbEntityZ(e->room->objects[6],true));
+                Curr096 = CreateNPC(NPCtype096, bbEntityX(e->room->objects[6],true),bbEntityY(e->room->objects[6],true)+0.1f,bbEntityZ(e->room->objects[6],true));
             } else {
-                bbPositionEntity(Curr096->collider, bbEntityX(e->room->objects[6],true),bbEntityY(e->room->objects[6],true)+0.1,bbEntityZ(e->room->objects[6],true),true);
+                bbPositionEntity(Curr096->collider, bbEntityX(e->room->objects[6],true),bbEntityY(e->room->objects[6],true)+0.1f,bbEntityZ(e->room->objects[6],true),true);
             }
 
             bbRotateEntity(Curr096->collider, 0, e->room->angle, 0, true);
@@ -160,10 +160,10 @@ void UpdateEvent_srvr_096_2(Event* e) {
             e->eventState = 1;
         }
     } else if ((e->eventState < 70*45)) {
-        if (bbRand(200)<5 & mainPlayer->currRoom == e->room) {
+        if (bbRand(200)<5 && mainPlayer->currRoom == e->room) {
             //TODO: Light 1-3
             //LightBlink = Rnd(1.f,2.f)
-            //If (Rand(5)=1) Then PlayRangedSound(IntroSFX(Rand(10,12)), mainPlayer\cam, e\room\obj, 8.f, Rnd(0.1,0.3))
+            //If (Rand(5)=1) Then PlayRangedSound(IntroSFX(Rand(10,12)), mainPlayer\cam, e\room\obj, 8.f, Rnd(0.1f,0.3f))
         }
 
         e->eventState = Min(e->eventState+timing->tickDuration,70*43);
@@ -178,7 +178,7 @@ void UpdateEvent_srvr_096_2(Event* e) {
                     Curr096->state = 5;
                     bbPointEntity(Curr096->collider, e->room->objects[9]);
                     bbRotateEntity(Curr096->collider, 0, bbEntityYaw(Curr096->collider,true),0,true);
-                    if (bbEntityDistance(Curr096->collider, e->room->objects[8])<2.4) {
+                    if (bbEntityDistance(Curr096->collider, e->room->objects[8])<2.4f) {
                         Curr096->state2 = 0;
                     } else {
                         Curr096->state2 = 1001;
@@ -192,7 +192,7 @@ void UpdateEvent_srvr_096_2(Event* e) {
             } else if ((e->eventState-timing->tickDuration <= 70*15)) {
                 if (e->eventState > 70*15) {
                     e->room->npc[0]->state = 3;
-                    e->room->npc[0]->pathStatus = FindPath(e->room->npc[0], bbEntityX(e->room->objects[8],true),0.5,bbEntityZ(e->room->objects[8],true));
+                    e->room->npc[0]->pathStatus = FindPath(e->room->npc[0], bbEntityX(e->room->objects[8],true),0.5f,bbEntityZ(e->room->objects[8],true));
                     e->room->npc[0]->pathTimer = 300;
                 }
             } else if ((e->eventState<70*20)) {
@@ -215,7 +215,7 @@ void UpdateEvent_srvr_096_2(Event* e) {
                     e->room->npc[0]->state = 2;
                     bbPointEntity(e->room->npc[0]->obj, Curr096->collider);
                     bbRotateEntity(e->room->npc[0]->collider, 0, CurveAngle(bbEntityYaw(e->room->npc[0]->obj),bbEntityYaw(e->room->npc[0]->collider),30),0);
-                    //If (mainPlayer\currRoom = e\room) Then LightBlink = (e\room\npc[0]\reload)+Rnd(0.5,2.f)
+                    //If (mainPlayer\currRoom = e\room) Then LightBlink = (e\room\npc[0]\reload)+Rnd(0.5f,2.f)
                     Curr096->target = e->room->npc[0];
                 } else {
                     if (e->eventState>70*22) {
@@ -223,14 +223,14 @@ void UpdateEvent_srvr_096_2(Event* e) {
                     }
                     if (e->room->npc[0]->state==7) {
                         e->room->npc[0]->state = 3;
-                        e->room->npc[0]->pathStatus = FindPath(e->room->npc[0], bbEntityX(e->room->obj,true),0.4,bbEntityZ(e->room->obj,true));
+                        e->room->npc[0]->pathStatus = FindPath(e->room->npc[0], bbEntityX(e->room->obj,true),0.4f,bbEntityZ(e->room->obj,true));
                         e->room->npc[0]->pathTimer = 300;
                     }
                 }
             }
 
             Curr096->target = e->room->npc[0];
-            if (bbAnimTime(Curr096->obj)>25 & bbAnimTime(Curr096->obj)<150) {
+            if (bbAnimTime(Curr096->obj)>25 && bbAnimTime(Curr096->obj)<150) {
                 bbFreeSound(e->sounds[0]);
                 e->sounds[0] = 0;
                 e->sounds[0] = bbLoadSound("SFX/Character/Guard/096ServerRoom2.ogg");
@@ -241,23 +241,23 @@ void UpdateEvent_srvr_096_2(Event* e) {
                 for (i = 0; i <= 6; i++) {
                     if (e->room->angle == 0 | e->room->angle == 180) {
                         de = CreateDecal(bbRand(DECAL_BLOOD_SPREAD, DECAL_BLOOD_SPLATTER), e->room->x-bbRnd(197,199)*bbCos(e->room->angle)*RoomScale, 1.f, e->room->z+(140.f*(i-3))*RoomScale,0,e->room->angle+90,bbRnd(360));
-                        de->size = bbRnd(0.8,0.85);
-                        de->sizeChange = 0.001;
+                        de->size = bbRnd(0.8f,0.85f);
+                        de->sizeChange = 0.001f;
                         de = CreateDecal(bbRand(DECAL_BLOOD_SPREAD, DECAL_BLOOD_SPLATTER), e->room->x-bbRnd(197,199)*bbCos(e->room->angle)*RoomScale, 1.f, e->room->z+(140.f*(i-3))*RoomScale,0,e->room->angle-90,bbRnd(360));
-                        de->size = bbRnd(0.8,0.85);
-                        de->sizeChange = 0.001;
+                        de->size = bbRnd(0.8f,0.85f);
+                        de->sizeChange = 0.001f;
                     } else {
-                        de = CreateDecal(bbRand(DECAL_BLOOD_SPREAD, DECAL_BLOOD_SPLATTER), e->room->x+(140.f*(i-3))*RoomScale, 1.f, e->room->z-bbRnd(197,199)*bbSin(e->room->angle)*RoomScale-bbRnd(0.001,0.003),0,e->room->angle+90,bbRnd(360));
-                        de->size = bbRnd(0.8,0.85);
-                        de->sizeChange = 0.001;
-                        de = CreateDecal(bbRand(DECAL_BLOOD_SPREAD, DECAL_BLOOD_SPLATTER), e->room->x+(140.f*(i-3))*RoomScale, 1.f, e->room->z-bbRnd(197,199)*bbSin(e->room->angle)*RoomScale-bbRnd(0.001,0.003),0,e->room->angle-90,bbRnd(360));
-                        de->size = bbRnd(0.8,0.85);
-                        de->sizeChange = 0.001;
+                        de = CreateDecal(bbRand(DECAL_BLOOD_SPREAD, DECAL_BLOOD_SPLATTER), e->room->x+(140.f*(i-3))*RoomScale, 1.f, e->room->z-bbRnd(197,199)*bbSin(e->room->angle)*RoomScale-bbRnd(0.001f,0.003f),0,e->room->angle+90,bbRnd(360));
+                        de->size = bbRnd(0.8f,0.85f);
+                        de->sizeChange = 0.001f;
+                        de = CreateDecal(bbRand(DECAL_BLOOD_SPREAD, DECAL_BLOOD_SPLATTER), e->room->x+(140.f*(i-3))*RoomScale, 1.f, e->room->z-bbRnd(197,199)*bbSin(e->room->angle)*RoomScale-bbRnd(0.001f,0.003f),0,e->room->angle-90,bbRnd(360));
+                        de->size = bbRnd(0.8f,0.85f);
+                        de->sizeChange = 0.001f;
                     }
-                    de = CreateDecal(bbRand(DECAL_BLOOD_SPREAD, DECAL_BLOOD_SPLATTER), bbEntityX(e->room->npc[0]->collider)+bbRnd(-2,2),bbRnd(0.001,0.003),bbEntityZ(e->room->npc[0]->collider)+bbRnd(-2,2),90,bbRnd(360),0);
+                    de = CreateDecal(bbRand(DECAL_BLOOD_SPREAD, DECAL_BLOOD_SPLATTER), bbEntityX(e->room->npc[0]->collider)+bbRnd(-2,2),bbRnd(0.001f,0.003f),bbEntityZ(e->room->npc[0]->collider)+bbRnd(-2,2),90,bbRnd(360),0);
 
                 }
-                de->size = bbRnd(0.5,0.7);
+                de->size = bbRnd(0.5f,0.7f);
                 bbScaleSprite(de->obj, de->size,de->size);
 
                 Curr096->state = 5;
@@ -269,7 +269,7 @@ void UpdateEvent_srvr_096_2(Event* e) {
         } else {
 
             //open them again to let the player in
-            if (e->eventState >= 70*40 & e->eventState-timing->tickDuration < 70*40) {
+            if (e->eventState >= 70*40 && e->eventState-timing->tickDuration < 70*40) {
                 e->room->doors[0]->locked = false;
                 e->room->doors[1]->locked = false;
                 UseDoor(e->room->doors[0],false);
@@ -284,19 +284,19 @@ void UpdateEvent_srvr_096_2(Event* e) {
                 if (e->soundChannels[0]!=0) {
                     if (bbChannelPlaying(e->soundChannels[0])) {
                         //TODO: Light 1-3
-                        //LightBlink = Rnd(0.5,6.f)
-                        //If (Rand(50)=1) Then PlayRangedSound(IntroSFX(Rand(10,12)), mainPlayer\cam, e\room\obj, 8.f, Rnd(0.1,0.3))
+                        //LightBlink = Rnd(0.5f,6.f)
+                        //If (Rand(50)=1) Then PlayRangedSound(IntroSFX(Rand(10,12)), mainPlayer\cam, e\room\obj, 8.f, Rnd(0.1f,0.3f))
                     }
                 }
 
                 //lock the player inside
                 if (e->room->angle == 0 | e->room->angle == 180) {
-                    if (abs(bbEntityX(mainPlayer->collider)-bbEntityX(e->room->obj,true))> 1.3) {
+                    if (abs(bbEntityX(mainPlayer->collider)-bbEntityX(e->room->obj,true))> 1.3f) {
                         e->eventState = 70*50;
                         e->sounds[0] = 0;
                     }
                 } else {
-                    if (abs(bbEntityZ(mainPlayer->collider)-bbEntityZ(e->room->obj,true))> 1.3) {
+                    if (abs(bbEntityZ(mainPlayer->collider)-bbEntityZ(e->room->obj,true))> 1.3f) {
                         e->eventState = 70*50;
                         e->sounds[0] = 0;
                     }
@@ -332,17 +332,17 @@ void UpdateEvent_srvr_096_2(Event* e) {
         }
 
         if (e->eventState2>0) {
-            e->soundChannels[0] = LoopRangedSound(RoomAmbience[8], e->soundChannels[0], mainPlayer->cam, e->room->levers[1]->obj, 5.f, e->eventState2*0.8);
+            e->soundChannels[0] = LoopRangedSound(RoomAmbience[8], e->soundChannels[0], mainPlayer->cam, e->room->levers[1]->obj, 5.f, e->eventState2*0.8f);
         }
         if (e->eventState3>0) {
             e->soundChannels[1] = LoopRangedSound(e->sounds[1], e->soundChannels[1], mainPlayer->cam, e->room->levers[2]->obj, 6.f, e->eventState3);
         }
 
-        if (temp==0 & (int)(x) & (int)(z)) {
+        if (temp==0 & (int)(x) && (int)(z)) {
             e->room->doors[0]->locked = false;
             e->room->doors[1]->locked = false;
         } else {
-            //If (Rand(200)<5) Then LightBlink = Rnd(0.5,1.f)
+            //If (Rand(200)<5) Then LightBlink = Rnd(0.5f,1.f)
 
             if (e->room->doors[0]->open) {
                 e->room->doors[0]->locked = false;

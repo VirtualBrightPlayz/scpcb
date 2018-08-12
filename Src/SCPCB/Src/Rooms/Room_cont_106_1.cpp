@@ -99,8 +99,8 @@ void FillRoom_cont_106_1(Room* r) {
     for (n = 0; n <= 1; n++) {
         r->levers[n] = CreateLever();
 
-        bbScaleEntity(r->levers[n]->baseObj, 0.04, 0.04, 0.04);
-        bbScaleEntity(r->levers[n]->obj, 0.04, 0.04, 0.04);
+        bbScaleEntity(r->levers[n]->baseObj, 0.04f, 0.04f, 0.04f);
+        bbScaleEntity(r->levers[n]->obj, 0.04f, 0.04f, 0.04f);
         bbPositionEntity(r->levers[n]->baseObj, r->x - (555.f - 81.f * (n)) * RoomScale, r->y - 576.f * RoomScale, r->z + 3040.f * RoomScale, true);
         bbPositionEntity(r->levers[n]->obj, r->x - (555.f - 81.f * (n)) * RoomScale, r->y - 576.f * RoomScale, r->z + 3040.f * RoomScale, true);
 
@@ -112,7 +112,7 @@ void FillRoom_cont_106_1(Room* r) {
 
         //EntityPickMode(r\objects[n * 2 + 1], 2)
         bbEntityPickMode(r->levers[n]->obj, 1, false);
-        bbEntityRadius(r->levers[n]->obj, 0.1);
+        bbEntityRadius(r->levers[n]->obj, 0.1f);
         //makecollbox(r\objects[n * 2 + 1])
     }
 
@@ -203,7 +203,7 @@ void UpdateEvent_cont_106_1(Event* e) {
         bbTurnEntity(e->room->npc[0]->collider,0,e->room->angle+90,0,true);
     }
 
-    if (mainPlayer->currRoom == e->room & e->room->npc[0]!=nullptr) {
+    if (mainPlayer->currRoom == e->room && e->room->npc[0]!=nullptr) {
         if (!e->loaded) {
             e->sounds[2] = bbLoadSound("SFX/Room/106Chamber/MagnetUp.ogg");
             e->sounds[3] = bbLoadSound("SFX/Room/106Chamber/MagnetDown.ogg");
@@ -216,29 +216,29 @@ void UpdateEvent_cont_106_1(Event* e) {
 
         e->room->npc[0]->state = 6;
         if (e->room->npc[0]->idle == 0) {
-            AnimateNPC(e->room->npc[0], 17.f, 19.f, 0.01, false);
+            AnimateNPC(e->room->npc[0], 17.f, 19.f, 0.01f, false);
             if (e->room->npc[0]->frame == 19.f) {
                 e->room->npc[0]->idle = 1;
             }
         } else {
-            AnimateNPC(e->room->npc[0], 19.f, 17.f, -0.01, false);
+            AnimateNPC(e->room->npc[0], 19.f, 17.f, -0.01f, false);
             if (e->room->npc[0]->frame == 17.f) {
                 e->room->npc[0]->idle = 0;
             }
         }
 
-        bbPositionEntity(e->room->npc[0]->collider, bbEntityX(e->room->objects[5],true),bbEntityY(e->room->objects[5],true)+0.1,bbEntityZ(e->room->objects[5],true),true);
+        bbPositionEntity(e->room->npc[0]->collider, bbEntityX(e->room->objects[5],true),bbEntityY(e->room->objects[5],true)+0.1f,bbEntityZ(e->room->objects[5],true),true);
         bbRotateEntity(e->room->npc[0]->collider,bbEntityPitch(e->room->objects[5],true),bbEntityYaw(e->room->objects[5],true),0,true);
         bbResetEntity(e->room->npc[0]->collider);
 
         temp = (int)(e->eventState2);
 
-        if ((bbEntityY(e->room->objects[6],true)<-990*RoomScale) & (bbEntityY(e->room->objects[6],true)>-1275.f*RoomScale)) {
+        if ((bbEntityY(e->room->objects[6],true)<-990*RoomScale) && (bbEntityY(e->room->objects[6],true)>-1275.f*RoomScale)) {
             e->room->levers[0]->locked = true;
         }
 
         leverstate = e->room->levers[0]->succ;
-        if (mainPlayer->grabbedEntity == e->room->objects[1] & DrawHandIcon == true) {
+        if (mainPlayer->grabbedEntity == e->room->objects[1] && DrawHandIcon == true) {
             e->eventState2 = leverstate;
         }
 
@@ -264,7 +264,7 @@ void UpdateEvent_cont_106_1(Event* e) {
         }
 
         if (e->eventState == 0) {
-            if (SoundTransmission & bbRand(100)==1) {
+            if (SoundTransmission && bbRand(100)==1) {
                 if (e->soundChannels[1] == 0) {
                     LoadEventSound(e,"SFX/Character/LureSubject/Idle"+String(bbRand(1,6))+".ogg",1);
                     e->soundChannels[1] = bbPlaySound(e->sounds[1]);
@@ -276,7 +276,7 @@ void UpdateEvent_cont_106_1(Event* e) {
             }
 
             UpdateButton((MeshModel*)e->room->objects[4]);
-            if (mainPlayer->closestButton == e->room->objects[4] & MouseHit1) {
+            if (mainPlayer->closestButton == e->room->objects[4] && MouseHit1) {
                 //start the femur breaker
                 e->eventState = 1;
                 //only play sounds if transmission is on
@@ -290,7 +290,7 @@ void UpdateEvent_cont_106_1(Event* e) {
             }
             //nut BUSTED
         } else if ((e->eventState == 1)) {
-            if (SoundTransmission & e->eventState3 < 2000) {
+            if (SoundTransmission && e->eventState3 < 2000) {
                 if (e->soundChannels[1] == 0) {
                     LoadEventSound(e,"SFX/Character/LureSubject/Sniffling.ogg",1);
                     e->soundChannels[1] = bbPlaySound(e->sounds[1]);
@@ -303,7 +303,7 @@ void UpdateEvent_cont_106_1(Event* e) {
 
             if (e->eventState3 >= 2500) {
 
-                if (e->eventState2 == 1 & e->eventState3-timing->tickDuration < 2500) {
+                if (e->eventState2 == 1 && e->eventState3-timing->tickDuration < 2500) {
                     bbPositionEntity(Curr106->collider, bbEntityX(e->room->objects[6], true), bbEntityY(e->room->objects[6], true), bbEntityZ(e->room->objects[6], true));
                     Contained106 = false;
                     bbShowEntity(Curr106->obj);
@@ -319,16 +319,16 @@ void UpdateEvent_cont_106_1(Event* e) {
                 //PointEntity(Curr106\collider, mainPlayer\cam)
                 bbRotateEntity(Curr106->collider,0, bbEntityYaw(e->room->objects[5],true)+180.f, 0, true);
                 Curr106->state = -11;
-                AnimateNPC(Curr106, 206, 250, 0.1);
+                AnimateNPC(Curr106, 206, 250, 0.1f);
                 Curr106->idle = true;
 
                 if (e->eventState3-timing->tickDuration < 2500) {
                     d = CreateDecal(DECAL_CORROSION, bbEntityX(e->room->objects[5], true), 936.f*RoomScale, bbEntityZ(e->room->objects[5], true), 90, 0, bbRnd(360));
                     d->timer = 90000;
-                    d->alpha = 0.01;
-                    d->alphaChange = 0.005;
-                    d->size = 0.1;
-                    d->sizeChange = 0.003;
+                    d->alpha = 0.01f;
+                    d->alphaChange = 0.005f;
+                    d->size = 0.1f;
+                    d->sizeChange = 0.003f;
 
                     if (bbChannelPlaying(e->soundChannels[1])) {
                         bbStopChannel(e->soundChannels[1]);
@@ -336,20 +336,20 @@ void UpdateEvent_cont_106_1(Event* e) {
 
                     LoadEventSound(e,"SFX/Character/LureSubject/106Bait.ogg",1);
                     e->soundChannels[1] = bbPlaySound(e->sounds[1]);
-                } else if ((e->eventState3-timing->tickDuration < 2900 & e->eventState3 >= 2900)) {
+                } else if ((e->eventState3-timing->tickDuration < 2900 && e->eventState3 >= 2900)) {
                     d = CreateDecal(DECAL_CORROSION, bbEntityX(e->room->objects[7], true), bbEntityY(e->room->objects[7], true) , bbEntityZ(e->room->objects[7], true), 0, 0, 0);
                     bbRotateEntity(d->obj, bbEntityPitch(e->room->objects[7], true)+bbRand(10,20), bbEntityYaw(e->room->objects[7], true)+30, bbEntityRoll(d->obj));
-                    bbMoveEntity(d->obj, 0,0,0.15);
+                    bbMoveEntity(d->obj, 0,0,0.15f);
                     bbRotateEntity(d->obj, bbEntityPitch(e->room->objects[7], true), bbEntityYaw(e->room->objects[7], true), bbEntityRoll(d->obj));
 
                     bbEntityParent(d->obj, e->room->objects[7]);
                     //TurnEntity(d\obj, 0, 180, 0)
 
                     d->timer = 90000;
-                    d->alpha = 0.01;
-                    d->alphaChange = 0.005;
-                    d->size = 0.05;
-                    d->sizeChange = 0.002;
+                    d->alpha = 0.01f;
+                    d->alphaChange = 0.005f;
+                    d->size = 0.05f;
+                    d->sizeChange = 0.002f;
                 } else if ((e->eventState3 > 3200)) {
                     bbPositionEntity(e->room->objects[8], 0, 1000.f, 0, true);
                     bbPositionEntity(e->room->objects[7], 0, 1000.f, 0, true);
@@ -376,8 +376,8 @@ void UpdateEvent_cont_106_1(Event* e) {
         }
 
         if ((int)(e->eventState2)) {
-            bbPositionEntity(e->room->objects[6],bbEntityX(e->room->objects[6],true),CurveValue(-980.f*RoomScale + bbSin((float)(TimeInPosMilliSecs())*0.04)*0.07,bbEntityY(e->room->objects[6],true),200.f),bbEntityZ(e->room->objects[6],true),true);
-            bbRotateEntity(e->room->objects[6], bbSin((float)(TimeInPosMilliSecs())*0.03), bbEntityYaw(e->room->objects[6],true), -bbSin((float)(TimeInPosMilliSecs())*0.025), true);
+            bbPositionEntity(e->room->objects[6],bbEntityX(e->room->objects[6],true),CurveValue(-980.f*RoomScale + bbSin((float)(TimeInPosMilliSecs())*0.04f)*0.07f,bbEntityY(e->room->objects[6],true),200.f),bbEntityZ(e->room->objects[6],true),true);
+            bbRotateEntity(e->room->objects[6], bbSin((float)(TimeInPosMilliSecs())*0.03f), bbEntityYaw(e->room->objects[6],true), -bbSin((float)(TimeInPosMilliSecs())*0.025f), true);
         } else {
             bbPositionEntity(e->room->objects[6],bbEntityX(e->room->objects[6],true),CurveValue(-1280.f*RoomScale,bbEntityY(e->room->objects[6],true),200.f),bbEntityZ(e->room->objects[6],true),true);
             bbRotateEntity(e->room->objects[6], 0, bbEntityYaw(e->room->objects[6],true), 0, true);

@@ -49,7 +49,7 @@ void UpdateEventTunnel106(Event* e) {
 
     //[Block]
     if (e->eventState == 0) {
-        if (e->room->dist < 5.f & e->room->dist > 0) {
+        if (e->room->dist < 5.f && e->room->dist > 0) {
             if (Curr106->state >= 0) {
                 e->eventState = 1;
             }
@@ -61,11 +61,11 @@ void UpdateEventTunnel106(Event* e) {
         if (e->room->dist < 3.f | bbRand(7000)==1) {
             e->eventState = 2;
             d = CreateDecal(DECAL_CORROSION, bbEntityX(e->room->obj), 445.f*RoomScale, bbEntityZ(e->room->obj), -90, bbRand(360), 0);
-            d->size = bbRnd(0.5, 0.7);
-            bbEntityAlpha(d->obj, 0.7);
+            d->size = bbRnd(0.5f, 0.7f);
+            bbEntityAlpha(d->obj, 0.7f);
             d->id = 1;
             bbScaleSprite(d->obj, d->size, d->size);
-            bbEntityAlpha(d->obj, bbRnd(0.7, 0.85));
+            bbEntityAlpha(d->obj, bbRnd(0.7f, 0.85f));
 
             //PlaySound2(HorrorSFX(10))
         } else if ((e->room->dist > 8.f)) {
@@ -81,12 +81,12 @@ void UpdateEventTunnel106(Event* e) {
     } else {
         e->eventState = e->eventState+timing->tickDuration;
 
-        bbPositionEntity(Curr106->collider, bbEntityX(e->room->obj, true) - bbSin(TimeInPosMilliSecs() / 150.f) / 4.f, bbEntityY(mainPlayer->collider) + 1.f - Min(bbSin(e->eventState)*1.5,1.1), bbEntityZ(e->room->obj, true) - bbSin(TimeInPosMilliSecs() / 190.f) / 4.f);
+        bbPositionEntity(Curr106->collider, bbEntityX(e->room->obj, true) - bbSin(TimeInPosMilliSecs() / 150.f) / 4.f, bbEntityY(mainPlayer->collider) + 1.f - Min(bbSin(e->eventState)*1.5f,1.1f), bbEntityZ(e->room->obj, true) - bbSin(TimeInPosMilliSecs() / 190.f) / 4.f);
 
         //TranslateEntity(Curr106\collider, 0, -Max((3.f-dist),0), 0, True)
         bbPointEntity(Curr106->collider, mainPlayer->cam);
         Curr106->state = -11;
-        AnimateNPC(Curr106, 55, 104, 0.1);
+        AnimateNPC(Curr106, 55, 104, 0.1f);
         Curr106->idle = true;
 
         if (e->eventState > 180) {
@@ -142,9 +142,9 @@ void UpdateEvent682roar(Event* e) {
                 e->soundChannels[0] = bbPlaySound(e->sounds[0]);
             }
             if (e->eventState > 17*70 - 3*70) {
-                mainPlayer->camShake = 0.5;
+                mainPlayer->camShake = 0.5f;
             }
-            if (e->eventState < 17*70 - 7.5*70 & e->eventState > 17*70 - 11*70) {
+            if (e->eventState < 17*70 - 7.5f*70 && e->eventState > 17*70 - 11*70) {
                 mainPlayer->camShake = 2.f;
             }
             if (e->eventState < 70) {

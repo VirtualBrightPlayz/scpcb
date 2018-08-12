@@ -69,14 +69,14 @@ void FillRoom_off_l_conf_2(Room* r) {
     r->doors[0]->open = false;
     r->doors[0]->locked = true;
 
-    de = CreateDecal(DECAL_CORROSION, r->x - 808.f * RoomScale, 0.005, r->z - 72.f * RoomScale, 90, bbRand(360), 0);
+    de = CreateDecal(DECAL_CORROSION, r->x - 808.f * RoomScale, 0.005f, r->z - 72.f * RoomScale, 90, bbRand(360), 0);
     bbEntityParent(de->obj, r->obj);
-    de = CreateDecal(DECAL_BLOOD_SPREAD, r->x - 808.f * RoomScale, 0.01, r->z - 72.f * RoomScale, 90, bbRand(360), 0);
-    de->size = 0.3;
+    de = CreateDecal(DECAL_BLOOD_SPREAD, r->x - 808.f * RoomScale, 0.01f, r->z - 72.f * RoomScale, 90, bbRand(360), 0);
+    de->size = 0.3f;
     bbScaleSprite(de->obj, de->size, de->size);
     bbEntityParent(de->obj, r->obj);
 
-    de = CreateDecal(DECAL_CORROSION, r->x - 432.f * RoomScale, 0.01, r->z, 90, bbRand(360), 0);
+    de = CreateDecal(DECAL_CORROSION, r->x - 432.f * RoomScale, 0.01f, r->z, 90, bbRand(360), 0);
     bbEntityParent(de->obj, r->obj);
 
     r->objects[0] = bbCreatePivot(r->obj);
@@ -126,16 +126,16 @@ void UpdateEvent_off_l_conf_2(Event* e) {
                     //PlaySound2(HorrorSFX(5))
                 }
             } else {
-                if (bbEntityDistance(mainPlayer->collider, e->room->doors[0]->obj)<1.5 && RemoteDoorOn) {
+                if (bbEntityDistance(mainPlayer->collider, e->room->doors[0]->obj)<1.5f && RemoteDoorOn) {
                     e->room->doors[0]->open = true;
                 }
             }
         } else {
             if (bbEntityDistance(e->room->objects[0], mainPlayer->collider) < 2.f) {
-                //HeartBeatVolume = CurveValue(0.5, HeartBeatVolume, 5)
+                //HeartBeatVolume = CurveValue(0.5f, HeartBeatVolume, 5)
                 mainPlayer->heartbeatIntensity = CurveValue(120, mainPlayer->heartbeatIntensity, 150);
                 //TODO: fix
-                //e\soundChannels[0] = LoopRangedSound(OldManSFX(4), e\soundChannels[0], mainPlayer\cam, e\room\obj, 5.f, 0.3)
+                //e\soundChannels[0] = LoopRangedSound(OldManSFX(4), e\soundChannels[0], mainPlayer\cam, e\room\obj, 5.f, 0.3f)
                 Curr106->state = Curr106->state-timing->tickDuration*3;
             }
 

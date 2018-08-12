@@ -26,13 +26,13 @@ void InitializeNPCtypeApache(NPC* n) {
     n->gravityMult = 0.f;
     n->maxGravity = 0.f;
     n->collider = bbCreatePivot();
-    bbEntityRadius(n->collider, 0.2);
+    bbEntityRadius(n->collider, 0.2f);
 
     NPC* n2;
     for (int iterator136 = 0; iterator136 < NPC::getListSize(); iterator136++) {
         n2 = NPC::getObject(iterator136);
 
-        if (n->npcType == n2->npcType & n != n2) {
+        if (n->npcType == n2->npcType && n != n2) {
             n->obj = bbCopyMeshModelEntity(n2->obj);
             n->obj2 = bbCopyMeshModelEntity(n2->obj2);
             n->obj3 = bbCopyMeshModelEntity(n2->obj3);
@@ -57,15 +57,15 @@ void InitializeNPCtypeApache(NPC* n) {
     for (i = -1; i <= 1; i += 2) {
         rotor2 = bbCopyMeshModelEntity(n->obj2,n->obj2);
         bbRotateEntity(rotor2,0,4.f*i,0);
-        bbEntityAlpha(rotor2, 0.5);
+        bbEntityAlpha(rotor2, 0.5f);
     }
 
-    bbPositionEntity(n->obj3, 0.f, 2.15, -5.48);
+    bbPositionEntity(n->obj3, 0.f, 2.15f, -5.48f);
 
     bbEntityType(n->collider, HIT_APACHE);
     bbEntityRadius(n->collider, 3.f);
 
-    float temp = 0.6;
+    float temp = 0.6f;
     bbScaleEntity(n->obj, temp, temp, temp);
 }
 
@@ -93,7 +93,7 @@ void UpdateNPCtypeApache(NPC* n) {
             bbTurnEntity(n->obj2,0,20.f*timing->tickDuration,0);
             bbTurnEntity(n->obj3,20.f*timing->tickDuration,0,0);
 
-            if (n->state==1 & (!NoTarget)) {
+            if (n->state==1 && (!NoTarget)) {
                 if (abs(bbEntityX(mainPlayer->collider)-bbEntityX(n->collider))< 30.f) {
                     if (abs(bbEntityZ(mainPlayer->collider)-bbEntityZ(n->collider))<30.f) {
                         if (abs(bbEntityY(mainPlayer->collider)-bbEntityY(n->collider))<20.f) {
@@ -119,7 +119,7 @@ void UpdateNPCtypeApache(NPC* n) {
                 bbPositionEntity(target, n->enemyX, n->enemyY, n->enemyZ, true);
             }
 
-            if (NoTarget & n->state == 2) {
+            if (NoTarget && n->state == 2) {
                 n->state = 1;
             }
 
@@ -135,10 +135,10 @@ void UpdateNPCtypeApache(NPC* n) {
 
                         dist = Distance(bbEntityX(target),bbEntityZ(target),bbEntityX(n->collider),bbEntityZ(n->collider));
 
-                        n->currSpeed = CurveValue(Min(dist-6.5,6.5)*0.008, n->currSpeed, 50.f);
+                        n->currSpeed = CurveValue(Min(dist-6.5f,6.5f)*0.008f, n->currSpeed, 50.f);
 
-                        //If (Distance(EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider),EntityX(n\collider),EntityZ(n\collider)) > 6.5) Then
-                        //	n\currspeed = CurveValue(0.08,n\currspeed,50.f)
+                        //If (Distance(EntityX(mainPlayer\collider),EntityZ(mainPlayer\collider),EntityX(n\collider),EntityZ(n\collider)) > 6.5f) Then
+                        //	n\currspeed = CurveValue(0.08f,n\currspeed,50.f)
                         //Else
                         //	n\currspeed = CurveValue(0.f,n\currspeed,30.f)
                         //EndIf
@@ -162,8 +162,8 @@ void UpdateNPCtypeApache(NPC* n) {
 
                                     bbPositionEntity(pvt, bbEntityX(n->collider),bbEntityY(n->collider), bbEntityZ(n->collider));
                                     bbRotateEntity(pvt, bbEntityPitch(n->collider), bbEntityYaw(n->collider),bbEntityRoll(n->collider));
-                                    //2.3
-                                    bbMoveEntity(pvt, 0, 8.87*(0.21/9.f), 8.87*(1.7/9.f));
+                                    //2.3f
+                                    bbMoveEntity(pvt, 0, 8.87f*(0.21f/9.f), 8.87f*(1.7f/9.f));
                                     bbPointEntity(pvt, target);
 
                                     if (WrapAngle(bbEntityYaw(pvt)-bbEntityYaw(n->collider))<10) {
@@ -182,7 +182,7 @@ void UpdateNPCtypeApache(NPC* n) {
                         } else {
                             bbRotateEntity(n->collider, bbEntityPitch(n->collider), bbEntityYaw(n->collider), CurveAngle(-20, bbEntityRoll(n->collider),40), true);
                         }
-                        bbMoveEntity(n->collider, -bbEntityRoll(n->collider)*0.002,0,0);
+                        bbMoveEntity(n->collider, -bbEntityRoll(n->collider)*0.002f,0,0);
 
                         n->reload = n->reload-timing->tickDuration;
 
@@ -204,16 +204,16 @@ void UpdateNPCtypeApache(NPC* n) {
 
                 //Sin(TimeInPosMilliSecs()/40)*timing\tickDuration)
                 bbTurnEntity(n->collider,0,-timing->tickDuration*7,0);
-                n->state2 = n->state2+timing->tickDuration*0.3;
+                n->state2 = n->state2+timing->tickDuration*0.3f;
 
                 target = bbCreatePivot();
                 bbPositionEntity(target, n->enemyX, n->enemyY, n->enemyZ, true);
 
                 bbPointEntity(n->obj, target);
-                bbMoveEntity(n->obj, 0,0,timing->tickDuration*0.001*n->state2);
+                bbMoveEntity(n->obj, 0,0,timing->tickDuration*0.001f*n->state2);
                 bbPositionEntity(n->collider, bbEntityX(n->obj), bbEntityY(n->obj), bbEntityZ(n->obj));
 
-                if (bbEntityDistance(n->obj, target) <0.3) {
+                if (bbEntityDistance(n->obj, target) <0.3f) {
                     //TODO:
                     //                    If (TempSound2 <> 0) Then FreeSound(TempSound2
                     //TempSound2 = 0);

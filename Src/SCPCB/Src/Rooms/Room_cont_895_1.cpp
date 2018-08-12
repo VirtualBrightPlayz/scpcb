@@ -40,7 +40,7 @@ void FillRoom_cont_895_1(Room* r) {
     d = CreateDoor(r->x, 0, r->z - 448.f * RoomScale, 0, r, false, DOOR_TYPE_CONT, r->roomTemplate->name);
     d->autoClose = false;
     d->open = false;
-    bbPositionEntity(d->buttons[0], r->x - 384.f * RoomScale, 0.7, r->z - 280.f * RoomScale, true);
+    bbPositionEntity(d->buttons[0], r->x - 384.f * RoomScale, 0.7f, r->z - 280.f * RoomScale, true);
 
     sc = CreateSecurityCam(r->x - 320.f * RoomScale, r->y + 704 * RoomScale, r->z + 288.f * RoomScale, r, true);
     sc->angle = 45 + 180;
@@ -57,8 +57,8 @@ void FillRoom_cont_895_1(Room* r) {
 
     r->levers[0] = CreateLever();
 
-    bbScaleEntity(r->levers[0]->baseObj, 0.04, 0.04, 0.04);
-    bbScaleEntity(r->levers[0]->obj, 0.04, 0.04, 0.04);
+    bbScaleEntity(r->levers[0]->baseObj, 0.04f, 0.04f, 0.04f);
+    bbScaleEntity(r->levers[0]->obj, 0.04f, 0.04f, 0.04f);
     bbPositionEntity(r->levers[0]->baseObj, r->x - 800.f * RoomScale, r->y + 180.f * RoomScale, r->z - 336 * RoomScale, true);
     bbPositionEntity(r->levers[0]->obj, r->x - 800.f * RoomScale, r->y + 180.f * RoomScale, r->z - 336 * RoomScale, true);
 
@@ -69,7 +69,7 @@ void FillRoom_cont_895_1(Room* r) {
     bbRotateEntity(r->levers[0]->obj, 10, 0, 0);
 
     bbEntityPickMode(r->levers[0]->obj, 1, false);
-    bbEntityRadius(r->levers[0]->obj, 0.1);
+    bbEntityRadius(r->levers[0]->obj, 0.1f);
 
     r->objects[0] = bbCreatePivot();
     bbPositionEntity(r->objects[0], r->x, -1320.f * RoomScale, r->z + 2304.f * RoomScale);
@@ -187,17 +187,17 @@ void UpdateEventCoffin(Event* e) {
 
     if (mainPlayer->currRoom == e->room) {
         CoffinDistance = bbEntityDistance(mainPlayer->collider, e->room->objects[1]);
-        if (CoffinDistance < 1.5) {
-            if ((!Contained106) & e->name.equals("coffin106") & e->eventState2 == 0) {
+        if (CoffinDistance < 1.5f) {
+            if ((!Contained106) & e->name.equals("coffin106") && e->eventState2 == 0) {
                 de = CreateDecal(DECAL_CORROSION, bbEntityX(e->room->objects[1],true), -1531.f*RoomScale, bbEntityZ(e->room->objects[1],true), 90, bbRand(360), 0);
-                de->size = 0.05;
-                de->sizeChange = 0.001;
-                bbEntityAlpha(de->obj, 0.8);
+                de->size = 0.05f;
+                de->sizeChange = 0.001f;
+                bbEntityAlpha(de->obj, 0.8f);
                 UpdateDecals();
 
                 if (Curr106->state > 0) {
                     bbPositionEntity(Curr106->collider, bbEntityX(e->room->objects[1],true), -10240*RoomScale, bbEntityZ(e->room->objects[1],true));
-                    Curr106->state = -0.1;
+                    Curr106->state = -0.1f;
                     bbShowEntity(Curr106->obj);
                     e->eventState2 = 1;
                 }
@@ -223,7 +223,7 @@ void UpdateEventCoffin(Event* e) {
             if (CoffinDistance < 4.f && hasBatteryFor895) {
 
                 ///WearingNightVision)
-                mainPlayer->sanity895 = mainPlayer->sanity895-(timing->tickDuration*1.1);
+                mainPlayer->sanity895 = mainPlayer->sanity895-(timing->tickDuration*1.1f);
                 mainPlayer->blurTimer = bbSin(TimeInPosMilliSecs()/10)*abs(mainPlayer->sanity895);
 
                 tempF = GetAngle(bbEntityX(mainPlayer->collider,true),bbEntityZ(mainPlayer->collider,true),bbEntityX(e->room->objects[1],true),bbEntityZ(e->room->objects[1],true));
@@ -235,7 +235,7 @@ void UpdateEventCoffin(Event* e) {
                 tempF = abs(Distance(bbEntityX(mainPlayer->collider,true),bbEntityZ(mainPlayer->collider,true),bbEntityX(e->room->objects[1],true),bbEntityZ(e->room->objects[1],true)));
                 tempF2 = -60.f * Min(Max((2.f-tempF)/2.f,0.f),1.f);
 
-                mainPlayer->headPitch = (mainPlayer->headPitch * 0.8)+(tempF2 * 0.2);
+                mainPlayer->headPitch = (mainPlayer->headPitch * 0.8f)+(tempF2 * 0.2f);
 
                 //TODO: fix
                 //If (Rand((int)(Max(tempF*100.f,1.f)))=1) And (e\eventState3<0.f) Then

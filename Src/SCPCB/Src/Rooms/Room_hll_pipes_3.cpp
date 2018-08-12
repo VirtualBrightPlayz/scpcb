@@ -50,9 +50,9 @@ void UpdateEvent106sinkhole(Event* e) {
 
     //[Block]
     if (e->eventState==0) {
-        de = CreateDecal(DECAL_CORROSION, bbEntityX(e->room->obj)+bbRnd(-0.5,0.5), 0.01, bbEntityZ(e->room->obj)+bbRnd(-0.5,0.5), 90, bbRand(360), 0);
+        de = CreateDecal(DECAL_CORROSION, bbEntityX(e->room->obj)+bbRnd(-0.5f,0.5f), 0.01f, bbEntityZ(e->room->obj)+bbRnd(-0.5f,0.5f), 90, bbRand(360), 0);
         //
-        de->size = 2.5;
+        de->size = 2.5f;
         bbScaleSprite(de->obj, de->size, de->size);
 
         e->eventState = 1;
@@ -60,7 +60,7 @@ void UpdateEvent106sinkhole(Event* e) {
         if (e->sounds[0]==0) {
             e->sounds[0] = bbLoadSound("SFX/Room/Sinkhole.ogg");
         } else {
-            e->soundChannels[0] = LoopRangedSound(e->sounds[0], e->soundChannels[0], mainPlayer->cam, e->room->obj, 4.5, 1.5);
+            e->soundChannels[0] = LoopRangedSound(e->sounds[0], e->soundChannels[0], mainPlayer->cam, e->room->obj, 4.5f, 1.5f);
         }
         dist = Distance(bbEntityX(mainPlayer->collider),bbEntityZ(mainPlayer->collider),bbEntityX(e->room->obj),bbEntityZ(e->room->obj));
         if (dist < 2.f) {
@@ -68,7 +68,7 @@ void UpdateEvent106sinkhole(Event* e) {
             mainPlayer->moveSpeed = CurveValue(0.f, mainPlayer->moveSpeed, Max(dist*50,1.f));
             mainPlayer->crouchState = (2.f-dist)/2.f;
 
-            if (dist<0.5) {
+            if (dist<0.5f) {
                 if (e->eventState2 == 0) {
                     PlaySound2(LoadTempSound("SFX/Room/SinkholeFall.ogg"));
                 }

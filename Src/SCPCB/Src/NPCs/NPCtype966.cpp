@@ -28,19 +28,19 @@ void InitializeNPCtype966(NPC* n) {
     for (int iterator133 = 0; iterator133 < NPC::getListSize(); iterator133++) {
         n2 = NPC::getObject(iterator133);
 
-        if ((n->npcType == n2->npcType) & (n!=n2)) {
+        if ((n->npcType == n2->npcType) && (n!=n2)) {
             i = i + bbRand(1,3);
         }
     }
     n->nvName = "SCP-966-"+String(i);
 
     n->collider = bbCreatePivot();
-    bbEntityRadius(n->collider,0.2);
+    bbEntityRadius(n->collider,0.2f);
 
     for (int iterator134 = 0; iterator134 < NPC::getListSize(); iterator134++) {
         n2 = NPC::getObject(iterator134);
 
-        if ((n->npcType == n2->npcType) & (n!=n2)) {
+        if ((n->npcType == n2->npcType) && (n!=n2)) {
             n->obj = bbCopyMeshModelEntity(n2->obj);
             break;
         }
@@ -61,7 +61,7 @@ void InitializeNPCtype966(NPC* n) {
 
     bbEntityType(n->collider,HIT_PLAYER);
 
-    n->speed = 0.02;
+    n->speed = 0.02f;
 }
 
 void UpdateNPCtype966(NPC* n) {
@@ -79,7 +79,7 @@ void UpdateNPCtype966(NPC* n) {
         prevFrame = (int)(n->frame);
 
         if (n->sounds[0] > 0) {
-            temp = 0.5;
+            temp = 0.5f;
             //the ambient sound gets louder when the npcs are attacking
             if (n->state > 0) {
                 temp = 1.f;
@@ -89,12 +89,12 @@ void UpdateNPCtype966(NPC* n) {
         }
 
         temp = bbRnd(-1.f,1.f);
-        bbPositionEntity(n->obj,bbEntityX(n->collider,true),bbEntityY(n->collider,true)-0.2,bbEntityZ(n->collider,true));
+        bbPositionEntity(n->obj,bbEntityX(n->collider,true),bbEntityY(n->collider,true)-0.2f,bbEntityZ(n->collider,true));
         bbRotateEntity(n->obj,-90.f,bbEntityYaw(n->collider),0.f);
 
         if (!IsPlayerWearingItem(mainPlayer,"nvgoggles")) {
             bbHideEntity(n->obj);
-            if (n->playerDistance<1 & n->reload <= 0 & MsgTimer <= 0) {
+            if (n->playerDistance<1 & n->reload <= 0 && MsgTimer <= 0) {
                 switch (bbRand(6)) {
                     case 1: {
                         Msg = "You feel something breathing right next to you.";
@@ -144,7 +144,7 @@ void UpdateNPCtype966(NPC* n) {
         if (mainPlayer->stamina<10) {
             n->state3 = n->state3+timing->tickDuration;
         } else if ((n->state3 < 900.f)) {
-            n->state3 = Max(n->state3-timing->tickDuration*0.2,0.f);
+            n->state3 = Max(n->state3-timing->tickDuration*0.2f,0.f);
         }
 
         if (n->state != 10) {
@@ -163,7 +163,7 @@ void UpdateNPCtype966(NPC* n) {
 
                     //echo/stare/walk around periodically
                     if (n->frame>1014.f) {
-                        if (bbRand(3)==1 & n->playerDistance<4) {
+                        if (bbRand(3)==1 && n->playerDistance<4) {
                             n->state = bbRand(1,4);
                         } else {
                             n->state = bbRand(5,6);
@@ -196,7 +196,7 @@ void UpdateNPCtype966(NPC* n) {
                     }
                 }
 
-                if (n->frame>1029.f & prevFrame<=1029.f | n->frame>1203.f & prevFrame<=1203.f) {
+                if (n->frame>1029.f & prevFrame<=1029.f | n->frame>1203.f && prevFrame<=1203.f) {
                     PlayRangedSound(LoadTempSound("SFX/SCP/966/Echo"+String(bbRand(1,3))+".ogg"), mainPlayer->cam, n->collider);
                 }
 
@@ -207,13 +207,13 @@ void UpdateNPCtype966(NPC* n) {
                     mainPlayer->blurTimer = ((bbSin(TimeInPosMilliSecs()/50)+1.f)*200)/n->playerDistance;
 
                     if (n->playerDistance<16) {
-                        mainPlayer->blinkEffect = Max(mainPlayer->blinkEffect, 1.5);
+                        mainPlayer->blinkEffect = Max(mainPlayer->blinkEffect, 1.5f);
                         //BlinkEffectTimer = 1000
 
                         mainPlayer->staminaEffect = 2.f;
                         //StaminaEffectTimer = 1000
 
-                        if (MsgTimer<=0 & mainPlayer->staminaEffect<1.5) {
+                        if (MsgTimer<=0 && mainPlayer->staminaEffect<1.5f) {
                             switch (bbRand(4)) {
                                 case 1: {
                                     Msg = "You feel exhausted.";
@@ -252,7 +252,7 @@ void UpdateNPCtype966(NPC* n) {
                     }
                 }
 
-                if (n->frame>1393.f & prevFrame<=1393.f | n->frame>1589.f & prevFrame<=1589.f | n->frame>2000.f & prevFrame<=2000.f) {
+                if (n->frame>1393.f & prevFrame<=1393.f | n->frame>1589.f & prevFrame<=1589.f | n->frame>2000.f && prevFrame<=2000.f) {
                     PlayRangedSound(LoadTempSound("SFX/SCP/966/Idle"+String(bbRand(1,3))+".ogg"), mainPlayer->cam, n->collider);
                 }
 
@@ -265,12 +265,12 @@ void UpdateNPCtype966(NPC* n) {
             case 8: {
                 //start walking
                 if (n->frame<2343.f) {
-                    AnimateNPC(n, 2319, 2343, 0.5, false);
+                    AnimateNPC(n, 2319, 2343, 0.5f, false);
                 } else {
                     AnimateNPC(n, 2343, 2391, n->currSpeed*25.f);
 
                     //chasing the player
-                    if (n->state == 8 & n->playerDistance<32) {
+                    if (n->state == 8 && n->playerDistance<32) {
                         if (n->pathTimer <= 0) {
                             n->pathStatus = FindPath (n, bbEntityX(mainPlayer->collider,true), bbEntityY(mainPlayer->collider,true), bbEntityZ(mainPlayer->collider,true));
                             n->pathTimer = 40*10;
@@ -297,12 +297,12 @@ void UpdateNPCtype966(NPC* n) {
 
                                     dist2 = bbEntityDistance(n->collider,n->path[n->pathLocation]->obj);
 
-                                    if (dist2 < 0.8) {
+                                    if (dist2 < 0.8f) {
                                         //TODO: fix
                                         //If (n\path[n\pathLocation]\door<>Null) Then
                                         //    If (Not n\path[n\pathLocation]\door\open) Then UseDoor(n\path[n\pathLocation]\door,False)
                                         //EndIf
-                                        if (n->playerDistance < 0.2) {
+                                        if (n->playerDistance < 0.2f) {
                                             n->pathLocation = n->pathLocation + 1;
                                         }
                                     }
@@ -322,9 +322,9 @@ void UpdateNPCtype966(NPC* n) {
 
                         n->currSpeed = CurveValue(n->speed,n->currSpeed,10.f);
                     } else {
-                        if (TimeInPosMilliSecs() > n->state2 & n->playerDistance<16.f) {
+                        if (TimeInPosMilliSecs() > n->state2 && n->playerDistance<16.f) {
                             bbHideEntity(n->collider);
-                            bbEntityPick(n->collider, 1.5);
+                            bbEntityPick(n->collider, 1.5f);
                             if (bbPickedEntity() != 0) {
                                 n->angle = bbEntityYaw(n->collider)+bbRnd(80,110);
                             }
@@ -337,7 +337,7 @@ void UpdateNPCtype966(NPC* n) {
                             }
                         }
 
-                        n->currSpeed = CurveValue(n->speed*0.5, n->currSpeed, 20.f);
+                        n->currSpeed = CurveValue(n->speed*0.5f, n->currSpeed, 20.f);
 
                     }
 
@@ -371,17 +371,17 @@ void UpdateNPCtype966(NPC* n) {
                     }
                 } else {
                     if (n->frame <= 2191) {
-                        AnimateNPC(n, 2160, 2191, 0.3, false);
+                        AnimateNPC(n, 2160, 2191, 0.3f, false);
                         if (n->frame > 2190) {
                             n->state = 8;
                         }
                     } else if ((n->frame <= 2220)) {
-                        AnimateNPC(n, 2192, 2220, 0.3, false);
+                        AnimateNPC(n, 2192, 2220, 0.3f, false);
                         if (n->frame > 2219) {
                             n->state = 8;
                         }
                     } else if ((n->frame <= 2260)) {
-                        AnimateNPC(n, 2221, 2260, 0.3, false);
+                        AnimateNPC(n, 2221, 2260, 0.3f, false);
                         if (n->frame > 2259) {
                             n->state = 8;
                         }
@@ -389,9 +389,9 @@ void UpdateNPCtype966(NPC* n) {
                 }
 
                 if (n->playerDistance<1.f) {
-                    if (n->frame>2173.f & prevFrame<=2173.f | n->frame>2203.f & prevFrame<=2203.f | n->frame>2227.f & prevFrame<=2227.f) {
+                    if (n->frame>2173.f & prevFrame<=2173.f | n->frame>2203.f & prevFrame<=2203.f | n->frame>2227.f && prevFrame<=2227.f) {
                         PlayRangedSound(LoadTempSound("SFX/General/Slash"+String(bbRand(1,2))+".ogg"), mainPlayer->cam, n->collider);
-                        mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.5,1.f);
+                        mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.5f,1.f);
                     }
                 }
 

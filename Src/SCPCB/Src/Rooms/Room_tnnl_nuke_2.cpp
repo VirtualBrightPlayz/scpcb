@@ -71,8 +71,8 @@ void FillRoom_tnnl_nuke_2(Room* r) {
     for (n = 0; n <= 1; n++) {
         r->levers[n] = CreateLever();
 
-        bbScaleEntity(r->levers[n]->obj, 0.04, 0.04, 0.04);
-        bbScaleEntity(r->levers[n]->baseObj, 0.04, 0.04, 0.04);
+        bbScaleEntity(r->levers[n]->obj, 0.04f, 0.04f, 0.04f);
+        bbScaleEntity(r->levers[n]->baseObj, 0.04f, 0.04f, 0.04f);
         bbPositionEntity(r->levers[n]->obj, r->x - 975.f * RoomScale, r->y + 1712.f * RoomScale, r->z - (502.f-132.f*n) * RoomScale, true);
         bbPositionEntity(r->levers[n]->baseObj, r->x - 975.f * RoomScale, r->y + 1712.f * RoomScale, r->z - (502.f-132.f*n) * RoomScale, true);
 
@@ -84,7 +84,7 @@ void FillRoom_tnnl_nuke_2(Room* r) {
 
         //EntityPickMode(r\levers[n]\obj, 2)
         bbEntityPickMode(r->levers[n]->obj, 1, false);
-        bbEntityRadius(r->levers[n]->obj, 0.1);
+        bbEntityRadius(r->levers[n]->obj, 0.1f);
         //makecollbox(r\levers[n]\obj)
     }
 

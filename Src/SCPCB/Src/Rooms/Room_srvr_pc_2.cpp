@@ -44,7 +44,7 @@ void FillRoom_srvr_pc_2(Room* r) {
     d = CreateDoor(r->x -512.f * RoomScale, -768.f*RoomScale, r->z -336.f * RoomScale, 0, r, false, DOOR_TYPE_DEF, r->roomTemplate->name);
     d = CreateDoor(r->x -509.f * RoomScale, -768.f*RoomScale, r->z -1037.f * RoomScale, 0, r, false, DOOR_TYPE_DEF, r->roomTemplate->name);
     d->locked = true;
-    it = CreateItem("nvgoggles", r->x + 56.0154 * RoomScale, r->y - 648.f * RoomScale, r->z + 749.638 * RoomScale);
+    it = CreateItem("nvgoggles", r->x + 56.0154f * RoomScale, r->y - 648.f * RoomScale, r->z + 749.638f * RoomScale);
     it->state = 20;
     bbRotateEntity(it->collider, 0, r->angle+bbRand(245), 0);
     bbEntityParent(it->collider, r->obj);

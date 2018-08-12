@@ -4,7 +4,7 @@
 #include <vector>
 
 class bbBank;
-class bbFile;
+struct bbFile;
 
 namespace CBN {
 

@@ -38,7 +38,7 @@ void ScaleRender(float x, float y, float hscale, float vscale) {
     bbWireFrame(0);
     bbShowEntity(fresize_image);
     bbScaleEntity(fresize_image,hscale,vscale,1.f,false);
-    bbPositionEntity(fresize_image, x, y, 1.0001,false);
+    bbPositionEntity(fresize_image, x, y, 1.0001f,false);
     bbShowEntity(fresize_cam);
     bbRenderWorld();
     bbHideEntity(fresize_cam);
@@ -53,9 +53,9 @@ void InitFastResize() {
     //Create Camera
     Camera* cam = bbCreateCamera();
     bbCameraProjMode(cam, 2);
-    bbCameraZoom(cam, 0.1);
+    bbCameraZoom(cam, 0.1f);
     bbCameraClsMode(cam, 0, 0);
-    bbCameraRange(cam, 0.1, 1.5);
+    bbCameraRange(cam, 0.1f, 1.5f);
     bbMoveEntity(cam, 0, 0, -10000);
 
     fresize_cam = cam;
@@ -74,7 +74,7 @@ void InitFastResize() {
     bbAddTriangle(sf, 3, 2, 1);
     bbEntityFX(spr, 17);
     bbScaleEntity(spr, 2048.f / (float)(userOptions->screenWidth), 2048.f / (float)(userOptions->screenHeight), 1);
-    bbPositionEntity(spr, 0, 0, 1.0001);
+    bbPositionEntity(spr, 0, 0, 1.0001f);
     bbEntityOrder(spr, -100001);
     bbEntityBlend(spr, 1);
     fresize_image = spr;

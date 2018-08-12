@@ -50,23 +50,23 @@ void FillRoom_lck_air_2(Room* r) {
 
     if (r->roomTemplate->name.equals("lck_air_broke_2")) {
         r->objects[ROOM_LCKA2_CORPSESPAWN] = bbCreatePivot(r->obj);
-        bbPositionEntity(r->objects[ROOM_LCKA2_CORPSESPAWN], r->x - 156.825*RoomScale, -37.3458*RoomScale, r->z+121.364*RoomScale, true);
+        bbPositionEntity(r->objects[ROOM_LCKA2_CORPSESPAWN], r->x - 156.825f*RoomScale, -37.3458f*RoomScale, r->z+121.364f*RoomScale, true);
 
-        de = CreateDecal(DECAL_BLOOD_SPLATTER,  r->x - 156.825*RoomScale, -37.3458*RoomScale, r->z+121.364*RoomScale,90,bbRnd(360),0);
-        de->size = 0.5;
+        de = CreateDecal(DECAL_BLOOD_SPLATTER,  r->x - 156.825f*RoomScale, -37.3458f*RoomScale, r->z+121.364f*RoomScale,90,bbRnd(360),0);
+        de->size = 0.5f;
         bbScaleSprite(de->obj, de->size,de->size);
         bbEntityParent(de->obj, r->obj);
     }
 
     r->doors[0] = CreateDoor(r->x + 336.f * RoomScale, 0.f, r->z - 382.f * RoomScale, 0, r);
-    bbPositionEntity(r->doors[0]->buttons[0], r->x + 580.822 * RoomScale, bbEntityY(r->doors[0]->buttons[0],true), r->z - 606.679 * RoomScale, true);
-    bbPositionEntity(r->doors[0]->buttons[1], r->x + 580.822 * RoomScale, bbEntityY(r->doors[0]->buttons[1],true), r->z - 606.679 * RoomScale, true);
+    bbPositionEntity(r->doors[0]->buttons[0], r->x + 580.822f * RoomScale, bbEntityY(r->doors[0]->buttons[0],true), r->z - 606.679f * RoomScale, true);
+    bbPositionEntity(r->doors[0]->buttons[1], r->x + 580.822f * RoomScale, bbEntityY(r->doors[0]->buttons[1],true), r->z - 606.679f * RoomScale, true);
     r->doors[0]->locked = true;
     r->doors[0]->mtfClose = false;
 
     r->doors[1] = CreateDoor(r->x + 336.f * RoomScale, 0.f, r->z + 462.f * RoomScale, 180, r);
-    bbPositionEntity(r->doors[1]->buttons[0], r->x + 580.822 * RoomScale, bbEntityY(r->doors[1]->buttons[0],true), r->z - 606.679 * RoomScale, true);
-    bbPositionEntity(r->doors[1]->buttons[1], r->x + 580.822 * RoomScale, bbEntityY(r->doors[1]->buttons[1],true), r->z - 606.679 * RoomScale, true);
+    bbPositionEntity(r->doors[1]->buttons[0], r->x + 580.822f * RoomScale, bbEntityY(r->doors[1]->buttons[0],true), r->z - 606.679f * RoomScale, true);
+    bbPositionEntity(r->doors[1]->buttons[1], r->x + 580.822f * RoomScale, bbEntityY(r->doors[1]->buttons[1],true), r->z - 606.679f * RoomScale, true);
     r->doors[1]->locked = true;
     r->doors[1]->mtfClose = false;
 
@@ -157,7 +157,7 @@ void UpdateEvent_lck_air_2(Event* e) {
 
     if (mainPlayer->currRoom == e->room) {
         if (!e->intState[EVENT_LCKA2_ACTIVE]) {
-            if (bbEntityDistance(e->room->objects[ROOM_LCKA2_TRIGGERPIVOT],mainPlayer->collider)<1.4 & (!e->intState[EVENT_LCKA2_LEAVING])) {
+            if (bbEntityDistance(e->room->objects[ROOM_LCKA2_TRIGGERPIVOT],mainPlayer->collider)<1.4f && (!e->intState[EVENT_LCKA2_LEAVING])) {
                 e->intState[EVENT_LCKA2_ACTIVE] = true;
                 if (brokendoor) {
                     if (e->sounds[1] != 0) {
@@ -178,7 +178,7 @@ void UpdateEvent_lck_air_2(Event* e) {
                 e->room->doors[1]->locked = false;
                 UseDoor(e->room->doors[0]);
                 UseDoor(e->room->doors[1]);
-            } else if ((bbEntityDistance(e->room->objects[ROOM_LCKA2_TRIGGERPIVOT],mainPlayer->collider)>2.4)) {
+            } else if ((bbEntityDistance(e->room->objects[ROOM_LCKA2_TRIGGERPIVOT],mainPlayer->collider)>2.4f)) {
                 e->intState[EVENT_LCKA2_LEAVING] = false;
             }
         } else {
@@ -191,28 +191,28 @@ void UpdateEvent_lck_air_2(Event* e) {
                     if (brokendoor) {
                         pvt = bbCreatePivot();
                         d_ent = (MeshModel*)e->room->objects[ROOM_LCKA2_BROKENDOOR];
-                        bbPositionEntity(pvt, bbEntityX(d_ent,true), bbEntityY(d_ent,true)+bbRnd(0.f,0.05), bbEntityZ(d_ent,true));
+                        bbPositionEntity(pvt, bbEntityX(d_ent,true), bbEntityY(d_ent,true)+bbRnd(0.f,0.05f), bbEntityZ(d_ent,true));
                         bbRotateEntity(pvt, 0, bbEntityYaw(d_ent,true)+90, 0);
-                        bbMoveEntity(pvt,0,0,0.2);
+                        bbMoveEntity(pvt,0,0,0.2f);
 
                         for (i = 0; i <= 3; i++) {
-                            p = CreateParticle(bbEntityX(pvt), bbEntityY(pvt), bbEntityZ(pvt), PARTICLE_SPARK, 0.002, 0, 25);
-                            p->speed = bbRnd(0.01,0.05);
+                            p = CreateParticle(bbEntityX(pvt), bbEntityY(pvt), bbEntityZ(pvt), PARTICLE_SPARK, 0.002f, 0, 25);
+                            p->speed = bbRnd(0.01f,0.05f);
                             //RotateEntity(p\pvt, Rnd(-20, 20), Rnd(360), 0)
                             bbRotateEntity(p->pvt, bbRnd(-45,0), bbEntityYaw(pvt)+bbRnd(-10.f,10.f), 0);
 
-                            p->size = 0.0075;
+                            p->size = 0.0075f;
                             bbScaleSprite(p->sprite,p->size,p->size);
 
                             //EntityOrder(p\obj,-1)
 
-                            p->aChange = -0.05;
+                            p->aChange = -0.05f;
                         }
 
                         bbFreeEntity(pvt);
                     }
 
-                } else if ((e->floatState[EVENT_LCKA2_TIMER] > 70*3 & e->floatState[EVENT_LCKA2_TIMER] < 70*5.5)) {
+                } else if ((e->floatState[EVENT_LCKA2_TIMER] > 70*3 && e->floatState[EVENT_LCKA2_TIMER] < 70*5.5f)) {
                     pvt = bbCreatePivot(e->room->obj);
                     for (i = 0; i <= 1; i++) {
                         if (e->room->roomTemplate->name.equals("lck_ez_3")) {
@@ -229,11 +229,11 @@ void UpdateEvent_lck_air_2(Event* e) {
                             }
                         }
 
-                        p = CreateParticle(bbEntityX(pvt,true), bbEntityY(pvt,true), bbEntityZ(pvt,true), PARTICLE_SMOKE_WHITE, 0.8, 0, 50);
-                        p->speed = 0.025;
+                        p = CreateParticle(bbEntityX(pvt,true), bbEntityY(pvt,true), bbEntityZ(pvt,true), PARTICLE_SMOKE_WHITE, 0.8f, 0, 50);
+                        p->speed = 0.025f;
                         bbRotateEntity(p->pvt, 90, 0, 0);
 
-                        p->aChange = -0.02;
+                        p->aChange = -0.02f;
                     }
 
                     bbFreeEntity(pvt);
@@ -297,7 +297,7 @@ void UpdateEvent_lck_air_broke_2(Event* e) {
     //[Block]
     if (e->room->dist < 8) {
         if (!e->intState[EVENT_LCKA2_SPAWNEDCORPSE]) {
-            e->room->npc[0] = CreateNPC(NPCtypeGuard, bbEntityX(e->room->objects[ROOM_LCKA2_CORPSESPAWN],true), bbEntityY(e->room->objects[ROOM_LCKA2_CORPSESPAWN],true)+0.5, bbEntityZ(e->room->objects[ROOM_LCKA2_CORPSESPAWN],true));
+            e->room->npc[0] = CreateNPC(NPCtypeGuard, bbEntityX(e->room->objects[ROOM_LCKA2_CORPSESPAWN],true), bbEntityY(e->room->objects[ROOM_LCKA2_CORPSESPAWN],true)+0.5f, bbEntityZ(e->room->objects[ROOM_LCKA2_CORPSESPAWN],true));
             bbPointEntity(e->room->npc[0]->collider, e->room->obj);
             bbRotateEntity(e->room->npc[0]->collider, 0, bbEntityYaw(e->room->npc[0]->collider),0, true);
             SetNPCFrame(e->room->npc[0], 906);

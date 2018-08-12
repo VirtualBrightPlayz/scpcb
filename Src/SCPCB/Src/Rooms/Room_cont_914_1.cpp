@@ -39,7 +39,7 @@ void FillRoom_cont_914_1(Room* r) {
     int t1;
 
     r->doors[2] = CreateDoor(r->x, 0, r->z-368.f*RoomScale, 0, r, true, DOOR_TYPE_CONT, r->roomTemplate->name);
-    bbPositionEntity(r->doors[2]->buttons[0], r->x - 496.f * RoomScale, 0.7, r->z - 272.f * RoomScale, true);
+    bbPositionEntity(r->doors[2]->buttons[0], r->x - 496.f * RoomScale, 0.7f, r->z - 272.f * RoomScale, true);
     bbTurnEntity(r->doors[2]->buttons[0], 0, 90, 0);
 
     r->objects[0] = bbLoadMesh("GFX/Map/914key.b3d");
@@ -77,8 +77,8 @@ void FillRoom_cont_914_1(Room* r) {
 
     r->objects[2] = bbCreatePivot();
     r->objects[3] = bbCreatePivot();
-    bbPositionEntity(r->objects[2], r->x - 712.f * RoomScale, 0.5, r->z + 640.f * RoomScale);
-    bbPositionEntity(r->objects[3], r->x + 728.f * RoomScale, 0.5, r->z + 640.f * RoomScale);
+    bbPositionEntity(r->objects[2], r->x - 712.f * RoomScale, 0.5f, r->z + 640.f * RoomScale);
+    bbPositionEntity(r->objects[3], r->x + 728.f * RoomScale, 0.5f, r->z + 640.f * RoomScale);
     bbEntityParent(r->objects[2], r->obj);
     bbEntityParent(r->objects[3], r->obj);
 
@@ -149,7 +149,7 @@ void UpdateEvent_cont_914_1(Event* e) {
                 if (mainPlayer->grabbedEntity == e->room->objects[0]) {
                     if (e->eventState == 0) {
                         DrawHandIcon = true;
-                        bbTurnEntity(mainPlayer->grabbedEntity, 0, 0, -mouse_x_speed_1 * 2.5);
+                        bbTurnEntity(mainPlayer->grabbedEntity, 0, 0, -mouse_x_speed_1 * 2.5f);
 
                         angle = WrapAngle(bbEntityRoll(e->room->objects[0]));
                         if (angle > 181) {
@@ -163,11 +163,11 @@ void UpdateEvent_cont_914_1(Event* e) {
                             bbRotateEntity(mainPlayer->grabbedEntity, 0, 0, 180);
                         }
 
-                        if (angle < 181 & angle > 90) {
+                        if (angle < 181 && angle > 90) {
                             for (int iterator167 = 0; iterator167 < Item::getListSize(); iterator167++) {
                                 it = Item::getObject(iterator167);
 
-                                if (it->collider != 0 & it->picked == false) {
+                                if (it->collider != 0 && it->picked == false) {
                                     if (abs(bbEntityX(it->collider) - (e->room->x - 712.f * RoomScale)) < 200.f) {
                                         if (abs(bbEntityY(it->collider) - (e->room->y + 648.f * RoomScale)) < 104.f) {
                                             e->eventState = 1;
@@ -182,7 +182,7 @@ void UpdateEvent_cont_914_1(Event* e) {
                 } else if ((mainPlayer->grabbedEntity == e->room->objects[1])) {
                     if (e->eventState == 0) {
                         DrawHandIcon = true;
-                        bbTurnEntity(mainPlayer->grabbedEntity, 0, 0, -mouse_x_speed_1 * 2.5);
+                        bbTurnEntity(mainPlayer->grabbedEntity, 0, 0, -mouse_x_speed_1 * 2.5f);
 
                         angle = WrapAngle(bbEntityRoll(e->room->objects[1]));
                         mainPlayer->drawDirectionalArrow[3] = true;
@@ -205,19 +205,19 @@ void UpdateEvent_cont_914_1(Event* e) {
 
         if (mainPlayer->grabbedEntity != e->room->objects[1]) {
             angle = WrapAngle(bbEntityRoll(e->room->objects[1]));
-            if (angle < 22.5) {
+            if (angle < 22.5f) {
                 angle = 0;
                 setting = "1:1";
-            } else if ((angle < 67.5)) {
+            } else if ((angle < 67.5f)) {
                 angle = 40;
                 setting = "coarse";
             } else if ((angle < 180)) {
                 angle = 90;
                 setting = "rough";
-            } else if ((angle > 337.5)) {
+            } else if ((angle > 337.5f)) {
                 angle = 359 - 360;
                 setting = "1:1";
-            } else if ((angle > 292.5)) {
+            } else if ((angle > 292.5f)) {
                 angle = 320 - 360;
                 setting = "fine";
             } else {
@@ -248,7 +248,7 @@ void UpdateEvent_cont_914_1(Event* e) {
             if (Distance(bbEntityX(mainPlayer->collider), bbEntityZ(mainPlayer->collider), bbEntityX(e->room->objects[2], true), bbEntityZ(e->room->objects[2], true)) < (170.f * RoomScale)) {
 
                 if (setting.equals("rough") | setting.equals("coarse")) {
-                    if (e->eventState > 70 * 2.6 & e->eventState - timing->tickDuration < 70 * 2.6) {
+                    if (e->eventState > 70 * 2.6f && e->eventState - timing->tickDuration < 70 * 2.6f) {
                         PlaySound2(e->sounds[2]);
                     }
                 }
@@ -292,7 +292,7 @@ void UpdateEvent_cont_914_1(Event* e) {
                 for (int iterator168 = 0; iterator168 < Item::getListSize(); iterator168++) {
                     it = Item::getObject(iterator168);
 
-                    if (it->collider != 0 & it->picked == false) {
+                    if (it->collider != 0 && it->picked == false) {
                         if (Distance(bbEntityX(it->collider), bbEntityZ(it->collider), bbEntityX(e->room->objects[2], true), bbEntityZ(e->room->objects[2], true)) < (180.f * RoomScale)) {
                             //Use914(it, setting, EntityX(e\room\objects[3], True), EntityY(e\room\objects[3], True), EntityZ(e\room\objects[3], True))
 
