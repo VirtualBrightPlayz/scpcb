@@ -1,13 +1,10 @@
 #include <iostream>
 #include <bbruntime.h>
-#include <bbstream.h>
 #include <bbfilesystem.h>
 #include <bbaudio.h>
 #include <bbblitz3d.h>
 #include <bbmath.h>
 #include <bbgraphics.h>
-#include <cstdlib>
-#include <string.h>
 
 #include "MapSystem.h"
 #include "Audio.h"
@@ -41,7 +38,6 @@
 #include "Rooms/Room_cont_895_1.h"
 #include "Rooms/Room_cont_914_1.h"
 #include "Rooms/Room_cont_966_3.h"
-#include "Rooms/Room_dimension1499.h"
 #include "Rooms/Room_end_1.h"
 #include "Rooms/Room_exit_gatea_1.h"
 #include "Rooms/Room_exit_gateb_1.h"
@@ -54,10 +50,6 @@
 #include "Rooms/Room_hll_gas_2.h"
 #include "Rooms/Room_hll_gas_3.h"
 #include "Rooms/Room_hll_lshape_2.h"
-#include "Rooms/Room_hll_pipes_3.h"
-#include "Rooms/Room_hll_plain_2.h"
-#include "Rooms/Room_hll_plain_3.h"
-#include "Rooms/Room_hll_plain_4.h"
 #include "Rooms/Room_hll_sl_2.h"
 #include "Rooms/Room_hll_toilets_2.h"
 #include "Rooms/Room_intro.h"
@@ -90,9 +82,7 @@
 #include "Rooms/Room_tnnl_elec_2.h"
 #include "Rooms/Room_tnnl_maintenance_2.h"
 #include "Rooms/Room_tnnl_pipes_2.h"
-#include "Rooms/Room_tnnl_plain_2.h"
 #include "Rooms/Room_tnnl_plain_3.h"
-#include "Rooms/Room_tnnl_plain_4.h"
 #include "Rooms/Room_hll_tsl.h"
 #include "Rooms/Room_tnnl_nuke_2.h"
 

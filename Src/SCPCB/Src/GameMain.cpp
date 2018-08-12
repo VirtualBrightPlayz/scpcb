@@ -4,9 +4,6 @@
 #include <bbaudio.h>
 #include <bbinput.h>
 #include <bbmath.h>
-#include <gxaudio.h>
-#include <gxsound.h>
-#include <StringType.h>
 
 #include "GameMain.h"
 #include "Options.h"
@@ -34,7 +31,6 @@
 #include "Dreamfilter.h"
 #include "FastResize.h"
 
-#include "Rooms/Room_dimension1499.h"
 #include "Rooms/Room_hll_caf_2.h"
 
 namespace CBN {

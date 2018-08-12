@@ -1,6 +1,5 @@
 #include "Options.h"
 
-#include <StringType.h>
 
 #include "INI.h"
 #include "MathUtils/MathUtils.h"

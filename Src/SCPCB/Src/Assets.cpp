@@ -6,7 +6,6 @@
 #include <bbaudio.h>
 #include <bbfilesystem.h>
 #include <bbmath.h>
-#include <iostream>
 
 //project includes
 #include "Assets.h"
@@ -24,12 +23,10 @@
 #include "Menus/LoadingScreen.h"
 #include "Options.h"
 #include "Events.h"
-#include "Skybox.h"
 #include "NPCs/NPCtypeMTF.h"
 #include "Console.h"
 #include "FastResize.h"
 
-#include "Rooms/Room_dimension1499.h" //TODO: AAAAAA
 
 namespace CBN {
 

@@ -1,11 +1,7 @@
 #include <iostream>
-#include <bbbank.h>
 #include <bbfilesystem.h>
-#include <StringType.h>
-#include <bbstring.h>
 
 #include "INI.h"
-#include "MathUtils/MathUtils.h"
 
 namespace CBN {
 

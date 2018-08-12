@@ -1,7 +1,5 @@
 #include <Windows.h>
 #include <bbruntime.h>
-#include <bbgraphics.h>
-#include <bbblitz3d.h>
 #include <fstream>
 
 #include "Src/GameMain.h"

@@ -1,7 +1,6 @@
 //library includes
 #include <bbgraphics.h>
 #include <bbinput.h>
-#include <StringType.h>
 
 //project includes
 #include "Assets.h"

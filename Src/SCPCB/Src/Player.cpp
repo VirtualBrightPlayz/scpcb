@@ -3,8 +3,6 @@
 #include <bbgraphics.h>
 #include <bbinput.h>
 #include <bbmath.h>
-#include <bbfilesystem.h>
-#include <string.h>
 
 #include "Player.h"
 #include "Audio.h"

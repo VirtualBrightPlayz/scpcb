@@ -1,7 +1,6 @@
 #include <StringType.h>
 #include <bbblitz3d.h>
 #include <bbmath.h>
-#include <string.h>
 
 #include "Doors.h"
 #include "MapSystem.h"

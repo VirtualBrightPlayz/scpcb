@@ -34,40 +34,40 @@ ItemTemplate::ItemTemplate(const String& file, const String& section) {
             throw "Item template directory not found (" + section + ", " + dataPath + ")";
         }
 
-        objPath = dataPath + name + ".b3d";
+        this->objPath = dataPath + name + ".b3d";
         invImagePath[0] = GetImagePath(dataPath + "inv_" + name);
     }
 
     //Otherwise the obj, tex and inv paths are specified in the INI.
-    String objPath = GetINIString(file, section, "objpath");
-    if (!objPath.isEmpty()) {
-        objPath = objPath;
+    String objectPath = GetINIString(file, section, "objpath");
+    if (!objectPath.isEmpty()) {
+        this->objPath = objectPath;
     }
 
-    String texPath = GetINIString(file, section, "texpath");
-    if (!texPath.isEmpty()) {
-        texPath = texPath;
+    String texturePath = GetINIString(file, section, "texpath");
+    if (!texturePath.isEmpty()) {
+        this->texPath = texturePath;
     }
 
     String invImgPath = GetINIString(file, section, "invimgpath");
     if (!invImgPath.isEmpty()) {
-        invImagePath[0] = invImgPath;
+        this->invImagePath[0] = invImgPath;
     }
 
     String invImgPath2 = GetINIString(file, section, "invimgpath2");
     if (!invImgPath2.isEmpty()) {
-        invImagePath[1] = invImgPath2;
+        this->invImagePath[1] = invImgPath2;
     }
 
     String slot = GetINIString(file, section, "slot").toLower();
     if (slot.equals("head")) {
-        wornSlot = WORNITEM_SLOT_HEAD;
+        this->wornSlot = WORNITEM_SLOT_HEAD;
     }
     else if (slot.equals("body")) {
-        wornSlot = WORNITEM_SLOT_BODY;
+        this->wornSlot = WORNITEM_SLOT_BODY;
     }
     else {
-        wornSlot = WORNITEM_SLOT_NONE;
+        this->wornSlot = WORNITEM_SLOT_NONE;
     }
 
     wornOnly = (GetINIInt(file, section, "wornonly") == 1);
@@ -93,7 +93,7 @@ ItemTemplate::ItemTemplate(const String& file, const String& section) {
     for (int i = 0; i < ItemTemplate::getListSize(); i++) {
         ItemTemplate* it2 = ItemTemplate::getObject(i);
 
-        if (it2->objPath.equals(objPath) && it2->obj != nullptr) {
+        if (it2->objPath.equals(this->objPath) && it2->obj != nullptr) {
             obj = bbCopyMeshModelEntity(it2->obj);
             break;
         }
@@ -147,10 +147,10 @@ ItemTemplate::ItemTemplate(const String& file, const String& section) {
     }
 
     float scale = GetINIFloat(file, section, "scale", 1.f);
-    scale = scale;
-    bbScaleEntity(obj, scale * RoomScale, scale * RoomScale, scale * RoomScale, true);
+    this->scale = scale;
+    bbScaleEntity(this->obj, this->scale * RoomScale, this->scale * RoomScale, this->scale * RoomScale, true);
 
-    bbHideEntity(obj);
+    bbHideEntity(this->obj);
 
     list.push_back(this);
 }

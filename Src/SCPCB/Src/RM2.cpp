@@ -1,8 +1,6 @@
 #include <StringType.h>
-#include <bbstream.h>
 #include <bbblitz3d.h>
 #include <bbfilesystem.h>
-#include <iostream>
 
 #include "RM2.h"
 #include "MapSystem.h"

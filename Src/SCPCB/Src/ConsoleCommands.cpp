@@ -2,7 +2,6 @@
 #include <bbmath.h>
 
 #include "ConsoleCommands.h"
-#include "Console.h"
 #include "Player.h"
 #include "MapSystem.h"
 

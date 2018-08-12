@@ -1,13 +1,10 @@
 #include <bbblitz3d.h>
 #include <bbmath.h>
-#include <bbgraphics.h>
 #include <bbaudio.h>
 
-#include "../GameMain.h"
 #include "../MapSystem.h"
 #include "../Doors.h"
 #include "../Assets.h"
-#include "../Items/Items.h"
 #include "../Decals.h"
 #include "../Particles.h"
 #include "../Events.h"
@@ -15,8 +12,6 @@
 #include "../NPCs/NPCs.h"
 #include "../Audio.h"
 #include "../MathUtils/MathUtils.h"
-#include "../Menus/Menu.h"
-#include "../Objects.h"
 #include "Room_cont_079_1.h"
 
 namespace CBN {
