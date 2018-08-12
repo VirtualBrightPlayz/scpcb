@@ -17,23 +17,7 @@ namespace CBN {
 
 // Functions.
 void FillRoom_hll_gas_3(Room* r) {
-    Door* d;
-    Door* d2;
-    SecurityCam* sc;
-    Decal* de;
-    Room* r2;
-    SecurityCam* sc2;
-    Emitter* em;
-    Item* it;
-    int i;
-    int xtemp;
-    int ytemp;
-    int ztemp;
-
-    //, Bump
-    int t1;
-
-    em = CreateEmitter(r->x + 512.f * RoomScale, -76 * RoomScale, r->z - 688 * RoomScale, 0);
+    Emitter* em = CreateEmitter(r->x + 512.f * RoomScale, -76 * RoomScale, r->z - 688 * RoomScale, 0);
     bbTurnEntity(em->obj, -90, 0, 0);
     bbEntityParent(em->obj, r->obj);
     em->randAngle = 55;
@@ -54,38 +38,11 @@ void FillRoom_hll_gas_3(Room* r) {
 }
 
 void UpdateEventRoom3pitduck(Event* e) {
-    float dist;
-    int i;
-    int temp;
-    int pvt;
-    String strtemp;
-    int j;
-    int k;
-    Texture* tex;
-
-    Particle* p;
-    NPC* n;
-    Room* r;
-    Event* e2;
-    Item* it;
-    Emitter* em;
-    SecurityCam* sc;
-    SecurityCam* sc2;
-
-    String CurrTrigger = "";
-
-    float x;
-    float y;
-    float z;
-
-    float angle;
-
-
     if (mainPlayer->currRoom == e->room) {
         if (e->room->objects[2] == 0) {
             e->room->objects[2] = bbLoadMesh("GFX/npcs/duck_low_res.b3d");
             bbScaleEntity(e->room->objects[2], 0.07f, 0.07f, 0.07f);
-            tex = bbLoadTexture("GFX/npcs/duck1.png");
+            Texture* tex = bbLoadTexture("GFX/npcs/duck1.png");
             bbEntityTexture((MeshModel*)e->room->objects[2], tex);
             bbFreeTexture(tex);
             bbPositionEntity(e->room->objects[2], bbEntityX(e->room->objects[0],true), bbEntityY(e->room->objects[0],true), bbEntityZ(e->room->objects[0],true));
@@ -113,39 +70,6 @@ void UpdateEventRoom3pitduck(Event* e) {
 }
 
 void UpdateEventRoom3pit1048(Event* e) {
-    float dist;
-    int i;
-    int temp;
-    int pvt;
-    String strtemp;
-    int j;
-    int k;
-    int tex;
-
-    Particle* p;
-    NPC* n;
-    Room* r;
-    Event* e2;
-    Item* it;
-    ItemTemplate* itt;
-    Emitter* em;
-    SecurityCam* sc;
-    SecurityCam* sc2;
-
-    String CurrTrigger = "";
-
-    float x;
-    float y;
-    float z;
-
-    float angle;
-    String imgPath;
-    int sf;
-    int b;
-    int t;
-    String texname;
-
-
     if (mainPlayer->currRoom == e->room) {
         if (e->room->objects[2] == 0) {
             e->room->objects[2] = bbLoadAnimMesh("GFX/npcs/scp-1048pp.b3d");

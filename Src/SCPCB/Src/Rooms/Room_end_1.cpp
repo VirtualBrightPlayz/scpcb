@@ -18,20 +18,6 @@ namespace CBN {
 
 // Functions.
 void FillRoom_end_1(Room* r) {
-    Door* d2;
-    SecurityCam* sc;
-    Decal* de;
-    Room* r2;
-    SecurityCam* sc2;
-    Item* it;
-    int i;
-    int xtemp;
-    int ytemp;
-    int ztemp;
-
-    //, Bump
-    int t1;
-
     r->doors[0] = CreateDoor(r->x, 0, r->z + 1136 * RoomScale, 0, r, false, DOOR_TYPE_CONT, r->roomTemplate->name);
     r->doors[0]->autoClose = false;
     r->doors[0]->open = false;
@@ -42,34 +28,6 @@ void FillRoom_end_1(Room* r) {
 }
 
 void UpdateEventEndroom106(Event* e) {
-    float dist;
-    int i;
-    int temp;
-    int pvt;
-    String strtemp;
-    int j;
-    int k;
-    Texture* tex;
-
-    Particle* p;
-    NPC* n;
-    Room* r;
-    Event* e2;
-    Item* it;
-    Emitter* em;
-    SecurityCam* sc;
-    SecurityCam* sc2;
-    Decal* de;
-
-    String CurrTrigger = "";
-
-    float x;
-    float y;
-    float z;
-
-    float angle;
-
-
     if (Contained106) {
         if (e->eventState == 0) {
             if (e->room->dist < 8 && e->room->dist > 0) {
@@ -80,7 +38,7 @@ void UpdateEventEndroom106(Event* e) {
 
                     e->room->npc[0] = CreateNPC(NPCtypeD, bbEntityX(e->room->doors[0]->obj,true), 0.5f, bbEntityZ(e->room->doors[0]->obj,true));
 
-                    tex = bbLoadTexture("GFX/NPCs/classd/janitor.jpg");
+                    Texture* tex = bbLoadTexture("GFX/NPCs/classd/janitor.jpg");
                     e->room->npc[0]->texture = "GFX/NPCs/classd/janitor.jpg";
                     bbEntityTexture(e->room->npc[0]->obj, tex);
                     bbFreeTexture(tex);
@@ -116,9 +74,9 @@ void UpdateEventEndroom106(Event* e) {
                 e->soundChannels[0] = LoopRangedSound(e->sounds[0], e->soundChannels[0], mainPlayer->cam, e->room->npc[0]->obj, 15.f);
             }
         } else if ((e->eventState == 2)) {
-            dist = bbEntityDistance(e->room->npc[0]->collider, e->room->obj);
+            float dist = bbEntityDistance(e->room->npc[0]->collider, e->room->obj);
             if (dist<1.5f) {
-                de = CreateDecal(DECAL_CORROSION, bbEntityX(e->room->obj), 0.01f, bbEntityZ(e->room->obj), 90, bbRand(360), 0);
+                Decal* de = CreateDecal(DECAL_CORROSION, bbEntityX(e->room->obj), 0.01f, bbEntityZ(e->room->obj), 90, bbRand(360), 0);
                 de->size = 0.05f;
                 de->sizeChange = 0.008f;
                 de->timer = 10000;
@@ -128,7 +86,7 @@ void UpdateEventEndroom106(Event* e) {
                 //PlaySound2(DecaySFX(1))
             }
         } else {
-            dist = Distance(bbEntityX(e->room->npc[0]->collider),bbEntityZ(e->room->npc[0]->collider), bbEntityX(e->room->obj),bbEntityZ(e->room->obj));
+            float dist = Distance(bbEntityX(e->room->npc[0]->collider),bbEntityZ(e->room->npc[0]->collider), bbEntityX(e->room->obj),bbEntityZ(e->room->obj));
             bbPositionEntity(Curr106->obj, bbEntityX(e->room->obj, true), 0.f, bbEntityZ(e->room->obj, true));
             //ResetEntity(Curr106\collider)
             bbPointEntity(Curr106->obj, e->room->npc[0]->collider);

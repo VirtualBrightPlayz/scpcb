@@ -14,23 +14,8 @@ namespace CBN {
 
 // Functions.
 void FillRoom_tnnl_nuke_2(Room* r) {
-    Door* d;
-    Door* d2;
-    SecurityCam* sc;
-    Decal* de;
-    Room* r2;
-    SecurityCam* sc2;
-    Item* it;
-    int i;
-    int xtemp;
-    int ytemp;
-    int ztemp;
-
-    //, Bump
-    int t1;
-
-    //"tuulikaapin" ovi
-    d = CreateDoor(r->x + 576.f * RoomScale, 0.f, r->z - 152.f * RoomScale, 90, r, false, DOOR_TYPE_DEF, r->roomTemplate->name);
+    //the "window" door
+    Door* d = CreateDoor(r->x + 576.f * RoomScale, 0.f, r->z - 152.f * RoomScale, 90, r, false, DOOR_TYPE_DEF, r->roomTemplate->name);
     d->autoClose = false;
     d->open = false;
     bbPositionEntity(d->buttons[0], r->x + 608.f * RoomScale, bbEntityY(d->buttons[0],true), r->z - 284.f * RoomScale,true);
@@ -42,25 +27,24 @@ void FillRoom_tnnl_nuke_2(Room* r) {
     bbPositionEntity(d->buttons[0], bbEntityX(d->buttons[0],true), bbEntityY(d->buttons[0],true), r->z + 608.f * RoomScale,true);
     bbPositionEntity(d->buttons[1], bbEntityX(d->buttons[1],true), bbEntityY(d->buttons[1],true), r->z + 608.f * RoomScale,true);
 
-    //yl�kerran hissin ovi
+    //the upper elevator door
     r->doors[0] = CreateDoor(r->x + 1192.f * RoomScale, 0.f, r->z, 90, r, true);
     r->doors[0]->autoClose = false;
     r->doors[0]->open = true;
-    //yl�kerran hissi
+    //feeling of fatigue (I don't think this translated properly.)
     r->objects[4] = bbCreatePivot();
     bbPositionEntity(r->objects[4], r->x + 1496.f * RoomScale, 240.f * RoomScale, r->z);
     bbEntityParent(r->objects[4], r->obj);
-    //alakerran hissin ovi
+    //downstairs elevator door
     r->doors[1] = CreateDoor(r->x + 680.f * RoomScale, 1504.f * RoomScale, r->z, 90, r);
     r->doors[1]->autoClose = false;
     r->doors[1]->open = false;
-    //alakerran hissi
+    //downstairs lift
     r->objects[5] = bbCreatePivot();
     bbPositionEntity(r->objects[5], r->x + 984.f * RoomScale, 1744.f * RoomScale, r->z);
     bbEntityParent(r->objects[5], r->obj);
 
-    int n;
-    for (n = 0; n <= 1; n++) {
+    for (int n = 0; n < 2; n++) {
         r->levers[n] = CreateLever();
 
         bbScaleEntity(r->levers[n]->obj, 0.04f, 0.04f, 0.04f);
@@ -80,7 +64,7 @@ void FillRoom_tnnl_nuke_2(Room* r) {
         //makecollbox(r\levers[n]\obj)
     }
 
-    it = CreatePaper("docWar", r->x - 768.f * RoomScale, r->y + 1684.f * RoomScale, r->z - 768.f * RoomScale);
+    Item* it = CreatePaper("docWar", r->x - 768.f * RoomScale, r->y + 1684.f * RoomScale, r->z - 768.f * RoomScale);
     bbEntityParent(it->collider, r->obj);
 
     it = CreateItem("vest", r->x - 944.f * RoomScale, r->y + 1652.f * RoomScale, r->z - 656.f * RoomScale);
@@ -90,7 +74,7 @@ void FillRoom_tnnl_nuke_2(Room* r) {
     it = CreatePaper("drL5", r->x + 800.f * RoomScale, 88.f * RoomScale, r->z + 256.f * RoomScale);
     bbEntityParent(it->collider, r->obj);
 
-    sc = CreateSecurityCam(r->x+624.f*RoomScale, r->y+1888.f*RoomScale, r->z-312.f*RoomScale, r);
+    SecurityCam* sc = CreateSecurityCam(r->x+624.f*RoomScale, r->y+1888.f*RoomScale, r->z-312.f*RoomScale, r);
     sc->angle = 90;
     sc->turn = 45;
     bbTurnEntity(sc->cameraObj, 20, 0, 0);

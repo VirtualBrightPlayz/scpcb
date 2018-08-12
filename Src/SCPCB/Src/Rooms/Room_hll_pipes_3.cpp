@@ -17,35 +17,8 @@ namespace CBN {
 
 // Functions.
 void UpdateEvent106sinkhole(Event* e) {
-    float dist;
-    int i;
-    int temp;
-    int pvt;
-    String strtemp;
-    int j;
-    int k;
-
-    Particle* p;
-    NPC* n;
-    Room* r;
-    Event* e2;
-    Item* it;
-    Emitter* em;
-    SecurityCam* sc;
-    SecurityCam* sc2;
-    Decal* de;
-
-    String CurrTrigger = "";
-
-    float x;
-    float y;
-    float z;
-
-    float angle;
-
-
     if (e->eventState==0) {
-        de = CreateDecal(DECAL_CORROSION, bbEntityX(e->room->obj)+bbRnd(-0.5f,0.5f), 0.01f, bbEntityZ(e->room->obj)+bbRnd(-0.5f,0.5f), 90, bbRand(360), 0);
+        Decal* de = CreateDecal(DECAL_CORROSION, bbEntityX(e->room->obj)+bbRnd(-0.5f,0.5f), 0.01f, bbEntityZ(e->room->obj)+bbRnd(-0.5f,0.5f), 90, bbRand(360), 0);
         //
         de->size = 2.5f;
         bbScaleSprite(de->obj, de->size, de->size);
@@ -57,7 +30,7 @@ void UpdateEvent106sinkhole(Event* e) {
         } else {
             e->soundChannels[0] = LoopRangedSound(e->sounds[0], e->soundChannels[0], mainPlayer->cam, e->room->obj, 4.5f, 1.5f);
         }
-        dist = Distance(bbEntityX(mainPlayer->collider),bbEntityZ(mainPlayer->collider),bbEntityX(e->room->obj),bbEntityZ(e->room->obj));
+        float dist = Distance(bbEntityX(mainPlayer->collider),bbEntityZ(mainPlayer->collider),bbEntityX(e->room->obj),bbEntityZ(e->room->obj));
         if (dist < 2.f) {
             mainPlayer->footstepOverride = 1;
             mainPlayer->moveSpeed = CurveValue(0.f, mainPlayer->moveSpeed, Max(dist*50,1.f));
@@ -70,9 +43,9 @@ void UpdateEvent106sinkhole(Event* e) {
 
                 mainPlayer->moveSpeed = CurveValue(0.f, mainPlayer->moveSpeed, Max(dist*50,1.f));
 
-                x = CurveValue(bbEntityX(e->room->obj),bbEntityX(mainPlayer->collider),10.f);
-                y = CurveValue(bbEntityY(e->room->obj)-e->eventState2,bbEntityY(mainPlayer->collider),25.f);
-                z = CurveValue(bbEntityZ(e->room->obj),bbEntityZ(mainPlayer->collider),10.f);
+                float x = CurveValue(bbEntityX(e->room->obj),bbEntityX(mainPlayer->collider),10.f);
+                float y = CurveValue(bbEntityY(e->room->obj)-e->eventState2,bbEntityY(mainPlayer->collider),25.f);
+                float z = CurveValue(bbEntityZ(e->room->obj),bbEntityZ(mainPlayer->collider),10.f);
                 bbPositionEntity(mainPlayer->collider, x, y, z, true);
 
                 mainPlayer->dropSpeed = 0;
@@ -92,9 +65,6 @@ void UpdateEvent106sinkhole(Event* e) {
     } else {
         e->eventState2 = 0;
     }
-
-
-
 }
 
 }

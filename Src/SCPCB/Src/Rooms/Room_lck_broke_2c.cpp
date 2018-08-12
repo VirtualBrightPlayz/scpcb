@@ -11,21 +11,6 @@ namespace CBN {
 
 // Functions.
 void FillRoom_lck_broke_2c(Room* r) {
-    Door* d;
-    Door* d2;
-    SecurityCam* sc;
-    Decal* de;
-    Room* r2;
-    SecurityCam* sc2;
-    Item* it;
-    int i;
-    int xtemp;
-    int ytemp;
-    int ztemp;
-
-    //, Bump
-    int t1;
-
     d = CreateDoor(r->x - 736.f * RoomScale, 0, r->z - 104.f * RoomScale, 0, r, true);
     d->timer = 70 * 5;
     d->autoClose = false;

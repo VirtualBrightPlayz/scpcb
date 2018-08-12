@@ -9,23 +9,8 @@ namespace CBN {
 
 // Functions.
 void FillRoom_hll_dirty_3(Room* r) {
-    Door* d;
-    Door* d2;
-    SecurityCam* sc;
-    Decal* de;
-    Room* r2;
-    SecurityCam* sc2;
-    Item* it;
-    int i;
-    int xtemp;
-    int ytemp;
-    int ztemp;
-
-    //, Bump
-    int t1;
-
     for (int iterator183 = 0; iterator183 < Room::getListSize(); iterator183++) {
-        r2 = Room::getObject(iterator183);
+        Room* r2 = Room::getObject(iterator183);
 
         if (r2->roomTemplate->name.equals(r->roomTemplate->name) && r2 != r) {
             r->objects[0] = bbCopyMeshModelEntity((MeshModel*)r2->objects[0],r->obj);

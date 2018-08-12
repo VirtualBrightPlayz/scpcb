@@ -12,21 +12,6 @@ namespace CBN {
 
 // Functions.
 void FillRoom_tnnl_maintenance_2(Room* r) {
-    Door* d;
-    Door* d2;
-    SecurityCam* sc;
-    Decal* de;
-    Room* r2;
-    SecurityCam* sc2;
-    Item* it;
-    int i;
-    int xtemp;
-    int ytemp;
-    int ztemp;
-
-    //, Bump
-    int t1;
-
     r->objects[0] = bbCreatePivot();
     bbPositionEntity(r->objects[0], r->x + 2640.f * RoomScale, -2496.f * RoomScale, r->z + 400.f * RoomScale);
     bbEntityParent(r->objects[0], r->obj);
@@ -60,15 +45,15 @@ void FillRoom_tnnl_maintenance_2(Room* r) {
     if (temp < 1000) {
         temp = temp+1000;
     }
-    d = CreateDoor(r->x,r->y,r->z,0, r, false, DOOR_TYPE_CONT, "", String(temp));
+    Door* d = CreateDoor(r->x,r->y,r->z,0, r, false, DOOR_TYPE_CONT, "", String(temp));
     bbPositionEntity(d->buttons[0], r->x + 224.f * RoomScale, r->y + 0.7f, r->z - 384.f * RoomScale, true);
     bbRotateEntity(d->buttons[0], 0,-90,0,true);
     bbPositionEntity(d->buttons[1], r->x - 224.f * RoomScale, r->y + 0.7f, r->z + 384.f * RoomScale, true);
     bbRotateEntity(d->buttons[1], 0,90,0,true);
 
-    de = CreateDecal(DECAL_CORROSION, r->x + 64.f * RoomScale, 0.005f, r->z + 144.f * RoomScale, 90, bbRand(360), 0);
+    Decal* de = CreateDecal(DECAL_CORROSION, r->x + 64.f * RoomScale, 0.005f, r->z + 144.f * RoomScale, 90, bbRand(360), 0);
     bbEntityParent(de->obj, r->obj);
-    it = CreatePaper("drL6", r->x + 64.f * RoomScale, r->y +144.f * RoomScale, r->z - 384.f * RoomScale);
+    Item* it = CreatePaper("drL6", r->x + 64.f * RoomScale, r->y +144.f * RoomScale, r->z - 384.f * RoomScale);
     bbEntityParent(it->collider, r->obj);
 }
 

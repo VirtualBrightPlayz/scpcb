@@ -20,22 +20,7 @@ namespace CBN {
 
 // Functions.
 void FillRoom_cont_012_2(Room* r) {
-    Door* d;
-    Door* d2;
-    SecurityCam* sc;
-    Decal* de;
-    Room* r2;
-    SecurityCam* sc2;
-    Item* it;
-    int i;
-    int xtemp;
-    int ytemp;
-    int ztemp;
-
-    //, Bump
-    int t1;
-
-    d = CreateDoor(r->x + 264.f * RoomScale, 0.f, r->z + 672.f * RoomScale, 270, r, false, DOOR_TYPE_DEF, r->roomTemplate->name);
+    Door* d = CreateDoor(r->x + 264.f * RoomScale, 0.f, r->z + 672.f * RoomScale, 270, r, false, DOOR_TYPE_DEF, r->roomTemplate->name);
     bbPositionEntity(d->buttons[0], r->x + 224.f * RoomScale, bbEntityY(d->buttons[0],true), r->z + 880.f * RoomScale, true);
     bbPositionEntity(d->buttons[1], r->x + 304.f * RoomScale, bbEntityY(d->buttons[1],true), r->z + 840.f * RoomScale, true);
     bbTurnEntity(d->buttons[1],0,0,0,true);
@@ -86,44 +71,16 @@ void FillRoom_cont_012_2(Room* r) {
     bbPositionEntity(r->objects[4], r->x - 360 * RoomScale, - 130 * RoomScale, r->z + 456.f * RoomScale, 0);
     bbEntityParent(r->objects[4], r->objects[2]);
 
-    it = CreatePaper("doc012", r->x - 56.f * RoomScale, r->y - 576.f * RoomScale, r->z - 408.f * RoomScale);
+    Item* it = CreatePaper("doc012", r->x - 56.f * RoomScale, r->y - 576.f * RoomScale, r->z - 408.f * RoomScale);
     bbEntityParent(it->collider, r->obj);
 
-    de = CreateDecal(DECAL_BLOOD_SPLATTER,  r->x - 784*RoomScale, -768*RoomScale+0.01f, r->z+640*RoomScale,90,bbRnd(360),0);
+    Decal* de = CreateDecal(DECAL_BLOOD_SPLATTER,  r->x - 784*RoomScale, -768*RoomScale+0.01f, r->z+640*RoomScale,90,bbRnd(360),0);
     de->size = 0.5f;
     bbScaleSprite(de->obj, de->size,de->size);
     bbEntityParent(de->obj, r->obj);
 }
 
 void UpdateEvent_cont_012_2(Event* e) {
-    float dist;
-    int i;
-    int temp;
-    Pivot* pvt;
-    String strtemp;
-    int j;
-    int k;
-    Texture* tex;
-
-    Particle* p;
-    NPC* n;
-    Room* r;
-    Event* e2;
-    Item* it;
-    Emitter* em;
-    SecurityCam* sc;
-    SecurityCam* sc2;
-    Decal* de;
-
-    String CurrTrigger = "";
-
-    float x;
-    float y;
-    float z;
-
-    float angle;
-
-
     if (mainPlayer->currRoom == e->room) {
 
         if (e->eventState==0) {
@@ -166,15 +123,15 @@ void UpdateEvent_cont_012_2(Event* e) {
             }
 
             if (!IsPlayerWearingItem(mainPlayer,"hazmatsuit3") && !IsPlayerWearingItem(mainPlayer,"gasmask3") && !IsPlayerWearingItem(mainPlayer,"nvgoggles")) {
-                temp = false;
+                bool temp = false;
                 if (bbEntityVisible(e->room->objects[2],mainPlayer->cam)) {
                     temp = true;
                 }
 
                 //012 not visible, walk to the door
-                if (temp==false) {
+                if (!temp) {
                     if (bbEntityVisible(e->room->doors[0]->frameobj,mainPlayer->cam)) {
-                        pvt = bbCreatePivot();
+                        Pivot* pvt = bbCreatePivot();
                         bbPositionEntity(pvt, bbEntityX(mainPlayer->cam), bbEntityY(mainPlayer->collider), bbEntityZ(mainPlayer->cam));
                         bbPointEntity(pvt, e->room->doors[0]->frameobj);
                         //TurnEntity(pvt, 90, 0, 0)
@@ -182,7 +139,7 @@ void UpdateEvent_cont_012_2(Event* e) {
                         mainPlayer->headPitch = mainPlayer->headPitch-90;
                         bbRotateEntity(mainPlayer->collider, bbEntityPitch(mainPlayer->collider), CurveAngle(bbEntityYaw(pvt), bbEntityYaw(mainPlayer->collider), 150), 0);
 
-                        angle = WrapAngle(bbEntityYaw(pvt)-bbEntityYaw(mainPlayer->collider));
+                        float angle = WrapAngle(bbEntityYaw(pvt)-bbEntityYaw(mainPlayer->collider));
                         if (angle<40.f) {
                             mainPlayer->forceMove = (40.f-angle)*0.008f;
                         } else if ((angle > 310.f)) {
@@ -194,7 +151,7 @@ void UpdateEvent_cont_012_2(Event* e) {
                 } else {
                     e->soundChannels[1] = LoopRangedSound(e->sounds[1], e->soundChannels[1], mainPlayer->cam, e->room->objects[3], 10, e->eventState3/(86.f*70.f));
 
-                    pvt = bbCreatePivot();
+                    Pivot* pvt = bbCreatePivot();
                     bbPositionEntity(pvt, bbEntityX(mainPlayer->cam), bbEntityY(e->room->objects[2],true)-0.05f, bbEntityZ(mainPlayer->cam));
                     bbPointEntity(pvt, e->room->objects[2]);
                     bbRotateEntity(mainPlayer->collider, bbEntityPitch(mainPlayer->collider), CurveAngle(bbEntityYaw(pvt), bbEntityYaw(mainPlayer->collider), 80-(e->eventState3/200.f)), 0);
@@ -203,7 +160,7 @@ void UpdateEvent_cont_012_2(Event* e) {
                     mainPlayer->headPitch = CurveAngle(bbEntityPitch(pvt)+25, mainPlayer->headPitch + 90.f, 80-(e->eventState3/200.f));
                     mainPlayer->headPitch = mainPlayer->headPitch-90;
 
-                    dist = Distance(bbEntityX(mainPlayer->collider),bbEntityZ(mainPlayer->collider),bbEntityX(e->room->objects[2],true),bbEntityZ(e->room->objects[2],true));
+                    float dist = Distance(bbEntityX(mainPlayer->collider),bbEntityZ(mainPlayer->collider),bbEntityX(e->room->objects[2],true),bbEntityZ(e->room->objects[2],true));
 
                     mainPlayer->heartbeatIntensity = 150;
                     //HeartBeatVolume = Max(3.f-dist,0.f)/3.f
@@ -220,13 +177,13 @@ void UpdateEvent_cont_012_2(Event* e) {
                         e->eventState3 = Min(e->eventState3+timing->tickDuration,86*70);
                         if (e->eventState3>70 && e->eventState3-timing->tickDuration<=70) {
                             PlaySound2(LoadTempSound("SFX/SCP/012/Speech1.ogg"));
-                        } else if ((e->eventState3>13*70 && e->eventState3-timing->tickDuration<=13*70)) {
+                        } else if (e->eventState3>13*70 && e->eventState3-timing->tickDuration<=13*70) {
                             Msg = "You start pushing your nails into your wrist, drawing blood.";
                             MsgTimer = 7*70;
                             mainPlayer->injuries = mainPlayer->injuries+0.5f;
                             PlaySound2(LoadTempSound("SFX/SCP/012/Speech2.ogg"));
-                        } else if ((e->eventState3>31*70 && e->eventState3-timing->tickDuration<=31*70)) {
-                            tex = bbLoadTexture("GFX/Map/Textures/scp-012_1.jpg");
+                        } else if (e->eventState3>31*70 && e->eventState3-timing->tickDuration<=31*70) {
+                            Texture* tex = bbLoadTexture("GFX/Map/Textures/scp-012_1.jpg");
                             bbEntityTexture((MeshModel*)e->room->objects[4], tex,0,1);
                             bbFreeTexture(tex);
 
@@ -234,20 +191,20 @@ void UpdateEvent_cont_012_2(Event* e) {
                             MsgTimer = 7*70;
                             mainPlayer->injuries = Max(mainPlayer->injuries,1.5f);
                             PlaySound2(LoadTempSound("SFX/SCP/012/Speech"+String(bbRand(3,4))+".ogg"));
-                        } else if ((e->eventState3>49*70 && e->eventState3-timing->tickDuration<=49*70)) {
+                        } else if (e->eventState3>49*70 && e->eventState3-timing->tickDuration<=49*70) {
                             Msg = "You push your fingers deeper into the wound.";
                             MsgTimer = 8*70;
                             mainPlayer->injuries = mainPlayer->injuries+0.3f;
                             PlaySound2(LoadTempSound("SFX/SCP/012/Speech5.ogg"));
-                        } else if ((e->eventState3>63*70 && e->eventState3-timing->tickDuration<=63*70)) {
-                            tex = bbLoadTexture("GFX/Map/Textures/scp-012_2.jpg");
+                        } else if (e->eventState3>63*70 && e->eventState3-timing->tickDuration<=63*70) {
+                            Texture* tex = bbLoadTexture("GFX/Map/Textures/scp-012_2.jpg");
                             bbEntityTexture((MeshModel*)e->room->objects[4], tex,0,1);
                             bbFreeTexture(tex);
 
                             mainPlayer->injuries = mainPlayer->injuries+0.5f;
                             PlaySound2(LoadTempSound("SFX/SCP/012/Speech6.ogg"));
-                        } else if ((e->eventState3>74*70 && e->eventState3-timing->tickDuration<=74*70)) {
-                            tex = bbLoadTexture("GFX/Map/Textures/scp-012_3.jpg");
+                        } else if (e->eventState3>74*70 && e->eventState3-timing->tickDuration<=74*70) {
+                            Texture* tex = bbLoadTexture("GFX/Map/Textures/scp-012_3.jpg");
                             bbEntityTexture((MeshModel*)e->room->objects[4], tex,0,1);
                             bbFreeTexture(tex);
 
@@ -257,7 +214,7 @@ void UpdateEvent_cont_012_2(Event* e) {
                             PlaySound2(LoadTempSound("SFX/SCP/012/Speech7.ogg"));
                             mainPlayer->crouching = true;
 
-                            de = CreateDecal(DECAL_BLOOD_POOL,  bbEntityX(mainPlayer->collider), -768*RoomScale+0.01f, bbEntityZ(mainPlayer->collider),90,bbRnd(360),0);
+                            Decal* de = CreateDecal(DECAL_BLOOD_POOL,  bbEntityX(mainPlayer->collider), -768*RoomScale+0.01f, bbEntityZ(mainPlayer->collider),90,bbRnd(360),0);
                             de->size = 0.1f;
                             de->maxSize = 0.45f;
                             de->sizeChange = 0.0002f;
@@ -271,10 +228,10 @@ void UpdateEvent_cont_012_2(Event* e) {
                         bbRotateEntity(mainPlayer->collider, bbEntityPitch(mainPlayer->collider), CurveAngle(bbEntityYaw(mainPlayer->collider)+bbSin(e->eventState3*(e->eventState3/2000))*(e->eventState3/300), bbEntityYaw(mainPlayer->collider), 80), 0);
 
                     } else {
-                        angle = WrapAngle(bbEntityYaw(pvt)-bbEntityYaw(mainPlayer->collider));
+                        float angle = WrapAngle(bbEntityYaw(pvt)-bbEntityYaw(mainPlayer->collider));
                         if (angle<40.f) {
                             mainPlayer->forceMove = (40.f-angle)*0.02f;
-                        } else if ((angle > 310.f)) {
+                        } else if (angle > 310.f) {
                             mainPlayer->forceMove = (40.f-abs(360.f-angle))*0.02f;
                         }
                     }

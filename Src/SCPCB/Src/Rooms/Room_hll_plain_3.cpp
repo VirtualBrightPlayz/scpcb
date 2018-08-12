@@ -17,39 +17,10 @@ namespace CBN {
 
 // Functions.
 void UpdateEvent106victim(Event* e) {
-    float dist;
-    int i;
-    int temp;
-    int pvt;
-    String strtemp;
-    int j;
-    int k;
-    Texture* tex;
-
-    Particle* p;
-    NPC* n;
-    Room* r;
-    Event* e2;
-    Item* it;
-    Emitter* em;
-    SecurityCam* sc;
-    SecurityCam* sc2;
-    Decal* de;
-
-    String CurrTrigger = "";
-
-    float x;
-    float y;
-    float z;
-
-    float angle;
-    float fdir;
-
-
     if (!Contained106) {
         if (mainPlayer->currRoom == e->room) {
             if (e->eventState == 0) {
-                de = CreateDecal(DECAL_CORROSION, bbEntityX(e->room->obj), 799.f*RoomScale, bbEntityZ(e->room->obj), -90, bbRand(360), 0);
+                Decal* de = CreateDecal(DECAL_CORROSION, bbEntityX(e->room->obj), 799.f*RoomScale, bbEntityZ(e->room->obj), -90, bbRand(360), 0);
                 de->size = 0.05f;
                 de->sizeChange = 0.0015f;
                 bbEntityAlpha(de->obj, 0.8f);
@@ -68,7 +39,7 @@ void UpdateEvent106victim(Event* e) {
                 if (e->room->npc[0]==nullptr) {
                     e->room->npc[0] = CreateNPC(NPCtypeD, bbEntityX(e->room->obj), 900.f*RoomScale, bbEntityZ(e->room->obj));
                     bbRotateEntity(e->room->npc[0]->collider, 0, bbRnd(360), 0, true);
-                    tex = bbLoadTexture("GFX/NPCs/classd/106victim.jpg");
+                    Texture* tex = bbLoadTexture("GFX/NPCs/classd/106victim.jpg");
                     e->room->npc[0]->texture = "GFX/NPCs/classd/106victim.jpg";
                     bbEntityTexture(e->room->npc[0]->obj, tex);
                     bbFreeTexture(tex);
@@ -82,10 +53,10 @@ void UpdateEvent106victim(Event* e) {
                 bbEntityType(e->room->npc[0]->collider,HIT_PLAYER);
                 if (bbEntityY(e->room->npc[0]->collider)>0.35f) {
                     AnimateNPC(e->room->npc[0], 1, 10, 0.12f, false);
-                    dist = bbEntityDistance(mainPlayer->collider,e->room->npc[0]->collider);
+                    float dist = bbEntityDistance(mainPlayer->collider,e->room->npc[0]->collider);
                     //get the player out of the way
                     if (dist<0.8f) {
-                        fdir = GetAngle(bbEntityX(mainPlayer->collider,true),bbEntityZ(mainPlayer->collider,true),bbEntityX(e->room->npc[0]->collider,true),bbEntityZ(e->room->npc[0]->collider,true));
+                        float fdir = GetAngle(bbEntityX(mainPlayer->collider,true),bbEntityZ(mainPlayer->collider,true),bbEntityX(e->room->npc[0]->collider,true),bbEntityZ(e->room->npc[0]->collider,true));
                         bbTranslateEntity(mainPlayer->collider,bbCos(-fdir+90)*(dist-0.8f)*(dist-0.8f),0,bbSin(-fdir+90)*(dist-0.8f)*(dist-0.8f));
                     }
 
@@ -100,7 +71,7 @@ void UpdateEvent106victim(Event* e) {
                         LoadEventSound(e,"SFX/General/BodyFall.ogg");
                         PlaySound2(e->sounds[0]);
 
-                        de = CreateDecal(DECAL_CORROSION, bbEntityX(e->room->obj), 0.001f, bbEntityZ(e->room->obj), 90, bbRand(360), 0);
+                        Decal* de = CreateDecal(DECAL_CORROSION, bbEntityX(e->room->obj), 0.001f, bbEntityZ(e->room->obj), 90, bbRand(360), 0);
                         de->size = 0.4f;
                         bbEntityAlpha(de->obj, 0.8f);
                         UpdateDecals();

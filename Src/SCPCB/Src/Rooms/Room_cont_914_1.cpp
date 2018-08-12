@@ -19,21 +19,6 @@ namespace CBN {
 
 // Functions.
 void FillRoom_cont_914_1(Room* r) {
-    Door* d;
-    Door* d2;
-    SecurityCam* sc;
-    Decal* de;
-    Room* r2;
-    SecurityCam* sc2;
-    Item* it;
-    int i;
-    int xtemp;
-    int ytemp;
-    int ztemp;
-
-    //, Bump
-    int t1;
-
     r->doors[2] = CreateDoor(r->x, 0, r->z-368.f*RoomScale, 0, r, true, DOOR_TYPE_CONT, r->roomTemplate->name);
     bbPositionEntity(r->doors[2]->buttons[0], r->x - 496.f * RoomScale, 0.7f, r->z - 272.f * RoomScale, true);
     bbTurnEntity(r->doors[2]->buttons[0], 0, 90, 0);
@@ -41,7 +26,7 @@ void FillRoom_cont_914_1(Room* r) {
     r->objects[0] = bbLoadMesh("GFX/Map/914key.b3d");
     r->objects[1] = bbLoadMesh("GFX/Map/914knob.b3d");
 
-    for (i = 0; i <= 1; i++) {
+    for (int i = 0; i < 2; i++) {
         bbScaleEntity(r->objects[i], RoomScale, RoomScale, RoomScale);
         bbEntityPickMode(r->objects[i], 2);
     }
@@ -51,7 +36,7 @@ void FillRoom_cont_914_1(Room* r) {
     bbEntityParent(r->objects[0], r->obj);
     bbEntityParent(r->objects[1], r->obj);
 
-    d = CreateDoor(r->x - 624.f * RoomScale, 0.f, r->z + 528.f * RoomScale, 180, r, true);
+    Door* d = CreateDoor(r->x - 624.f * RoomScale, 0.f, r->z + 528.f * RoomScale, 180, r, true);
     bbFreeEntity(d->obj2);
     d->obj2 = 0;
     bbFreeEntity(d->buttons[0]);
@@ -78,7 +63,7 @@ void FillRoom_cont_914_1(Room* r) {
     bbEntityParent(r->objects[2], r->obj);
     bbEntityParent(r->objects[3], r->obj);
 
-    it = CreatePaper("914_organic", r->x +954.f * RoomScale, r->y +228.f * RoomScale, r->z + 127.f * RoomScale);
+    Item* it = CreatePaper("914_organic", r->x +954.f * RoomScale, r->y +228.f * RoomScale, r->z + 127.f * RoomScale);
     bbEntityParent(it->collider, r->obj);
 
     it = CreateItem("firstaid", r->x + 960.f * RoomScale, r->y + 112.f * RoomScale, r->z - 40.f * RoomScale);
@@ -90,33 +75,6 @@ void FillRoom_cont_914_1(Room* r) {
 }
 
 void UpdateEvent_cont_914_1(Event* e) {
-    float dist;
-    int i;
-    int temp;
-    int pvt;
-    String strtemp;
-    int j;
-    int k;
-
-    Particle* p;
-    NPC* n;
-    Room* r;
-    Event* e2;
-    Item* it;
-    Emitter* em;
-    SecurityCam* sc;
-    SecurityCam* sc2;
-
-    String CurrTrigger = "";
-
-    float x;
-    float y;
-    float z;
-
-    float angle;
-    String setting;
-
-
     if (mainPlayer->currRoom == e->room) {
         if (!e->loaded) {
             e->sounds[0] = bbLoadSound("SFX/SCP/914/Refining.ogg");
@@ -147,7 +105,7 @@ void UpdateEvent_cont_914_1(Event* e) {
                         DrawHandIcon = true;
                         bbTurnEntity(mainPlayer->grabbedEntity, 0, 0, -mouse_x_speed_1 * 2.5f);
 
-                        angle = WrapAngle(bbEntityRoll(e->room->objects[0]));
+                        float angle = WrapAngle(bbEntityRoll(e->room->objects[0]));
                         if (angle > 181) {
                             mainPlayer->drawDirectionalArrow[3] = true;
                         }
@@ -155,13 +113,13 @@ void UpdateEvent_cont_914_1(Event* e) {
 
                         if (angle < 90) {
                             bbRotateEntity(mainPlayer->grabbedEntity, 0, 0, 361.f);
-                        } else if ((angle < 180)) {
+                        } else if (angle < 180) {
                             bbRotateEntity(mainPlayer->grabbedEntity, 0, 0, 180);
                         }
 
                         if (angle < 181 && angle > 90) {
                             for (int iterator167 = 0; iterator167 < Item::getListSize(); iterator167++) {
-                                it = Item::getObject(iterator167);
+                                Item* it = Item::getObject(iterator167);
 
                                 if (it->collider != 0 && it->picked == false) {
                                     if (abs(bbEntityX(it->collider) - (e->room->x - 712.f * RoomScale)) < 200.f) {
@@ -180,14 +138,14 @@ void UpdateEvent_cont_914_1(Event* e) {
                         DrawHandIcon = true;
                         bbTurnEntity(mainPlayer->grabbedEntity, 0, 0, -mouse_x_speed_1 * 2.5f);
 
-                        angle = WrapAngle(bbEntityRoll(e->room->objects[1]));
+                        float angle = WrapAngle(bbEntityRoll(e->room->objects[1]));
                         mainPlayer->drawDirectionalArrow[3] = true;
                         mainPlayer->drawDirectionalArrow[1] = true;
 
                         if (angle > 90) {
                             if (angle < 180) {
                                 bbRotateEntity(mainPlayer->grabbedEntity, 0, 0, 90.f);
-                            } else if ((angle < 270)) {
+                            } else if (angle < 270) {
                                 bbRotateEntity(mainPlayer->grabbedEntity, 0, 0, 270);
                             }
                         }
@@ -199,21 +157,22 @@ void UpdateEvent_cont_914_1(Event* e) {
             mainPlayer->grabbedEntity = 0;
         }
 
+        String setting = ""; // TODO: Enum.
         if (mainPlayer->grabbedEntity != e->room->objects[1]) {
-            angle = WrapAngle(bbEntityRoll(e->room->objects[1]));
+            float angle = WrapAngle(bbEntityRoll(e->room->objects[1]));
             if (angle < 22.5f) {
                 angle = 0;
                 setting = "1:1";
-            } else if ((angle < 67.5f)) {
+            } else if (angle < 67.5f) {
                 angle = 40;
                 setting = "coarse";
-            } else if ((angle < 180)) {
+            } else if (angle < 180) {
                 angle = 90;
                 setting = "rough";
-            } else if ((angle > 337.5f)) {
+            } else if (angle > 337.5f) {
                 angle = 359 - 360;
                 setting = "1:1";
-            } else if ((angle > 292.5f)) {
+            } else if (angle > 292.5f) {
                 angle = 320 - 360;
                 setting = "fine";
             } else {
@@ -223,7 +182,7 @@ void UpdateEvent_cont_914_1(Event* e) {
             bbRotateEntity(e->room->objects[1], 0, 0, CurveValue(angle, bbEntityRoll(e->room->objects[1]), 20));
         }
 
-        for (i = 0; i <= 1; i++) {
+        for (int i = 0; i <= 1; i++) {
             if (mainPlayer->grabbedEntity == e->room->objects[i]) {
                 if (!bbEntityInView(e->room->objects[i], mainPlayer->cam)) {
                     mainPlayer->grabbedEntity = 0;
@@ -286,7 +245,7 @@ void UpdateEvent_cont_914_1(Event* e) {
 
             if (e->eventState > (12 * 70)) {
                 for (int iterator168 = 0; iterator168 < Item::getListSize(); iterator168++) {
-                    it = Item::getObject(iterator168);
+                    Item* it = Item::getObject(iterator168);
 
                     if (it->collider != 0 && it->picked == false) {
                         if (Distance(bbEntityX(it->collider), bbEntityZ(it->collider), bbEntityX(e->room->objects[2], true), bbEntityZ(e->room->objects[2], true)) < (180.f * RoomScale)) {

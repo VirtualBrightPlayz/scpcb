@@ -16,21 +16,6 @@ namespace CBN {
 
 // Functions.
 void FillRoom_hll_ele_2(Room* r) {
-    Door* d;
-    Door* d2;
-    SecurityCam* sc;
-    Decal* de;
-    Room* r2;
-    SecurityCam* sc2;
-    Item* it;
-    int i;
-    int xtemp;
-    int ytemp;
-    int ztemp;
-
-    //, Bump
-    int t1;
-
     r->objects[0] = bbCreatePivot(r->obj);
     bbPositionEntity(r->objects[0], r->x+888.f*RoomScale, 240.f*RoomScale, r->z, true);
 
@@ -46,44 +31,16 @@ void FillRoom_hll_ele_2(Room* r) {
 }
 
 void UpdateEventRoom2elevator2(Event* e) {
-    float dist;
-    int i;
-    int temp;
-    int pvt;
-    String strtemp;
-    int j;
-    int k;
-    Texture* tex;
-
-    Particle* p;
-    NPC* n;
-    Room* r;
-    Event* e2;
-    Item* it;
-    Emitter* em;
-    SecurityCam* sc;
-    SecurityCam* sc2;
-    Decal* de;
-
-    String CurrTrigger = "";
-
-    float x;
-    float y;
-    float z;
-
-    float angle;
-
-
     if (e->room->dist < 8.f && e->room->dist > 0) {
 
-        de = CreateDecal(DECAL_BLOOD_SPLATTER, bbEntityX(e->room->objects[0],true), 0.0005f, bbEntityZ(e->room->objects[0],true),90,bbRnd(360),0);
+        Decal* de = CreateDecal(DECAL_BLOOD_SPLATTER, bbEntityX(e->room->objects[0],true), 0.0005f, bbEntityZ(e->room->objects[0],true),90,bbRnd(360),0);
 
         de = CreateDecal(DECAL_BLOOD_POOL, bbEntityX(e->room->objects[0],true), 0.002f, bbEntityZ(e->room->objects[0],true),90,bbRnd(360),0);
         de->size = 0.5f;
 
         e->room->npc[0] = CreateNPC(NPCtypeD, bbEntityX(e->room->objects[0],true), 0.5f, bbEntityZ(e->room->objects[0],true));
         e->room->npc[0]->texture = "GFX/NPCs/classd/gonzales.jpg";
-        tex = bbLoadTexture(e->room->npc[0]->texture);
+        Texture* tex = bbLoadTexture(e->room->npc[0]->texture);
         bbEntityTexture(e->room->npc[0]->obj, tex);
         bbFreeTexture(tex);
 
@@ -98,33 +55,6 @@ void UpdateEventRoom2elevator2(Event* e) {
 }
 
 void UpdateEvent_hll_ele_2(Event* e) {
-    float dist;
-    int i;
-    int temp;
-    int pvt;
-    String strtemp;
-    int j;
-    int k;
-
-    Particle* p;
-    NPC* n;
-    Room* r;
-    Event* e2;
-    Item* it;
-    Emitter* em;
-    SecurityCam* sc;
-    SecurityCam* sc2;
-    Decal* de;
-
-    String CurrTrigger = "";
-
-    float x;
-    float y;
-    float z;
-
-    float angle;
-
-
     if (e->eventState == 0) {
         if (e->room->dist < 8.f && e->room->dist > 0) {
             e->room->npc[0] = CreateNPC(NPCtypeGuard, bbEntityX(e->room->obj,true), 0.5f, bbEntityZ(e->room->obj,true));
@@ -166,7 +96,7 @@ void UpdateEvent_hll_ele_2(Event* e) {
                     RemoveNPC(e->room->npc[0]);
                     e->room->npc[0] = nullptr;
 
-                    de = CreateDecal(DECAL_BLOOD_SPLATTER, bbEntityX(e->room->objects[0],true), 0.0005f, bbEntityZ(e->room->objects[0],true),90,bbRnd(360),0);
+                    Decal* de = CreateDecal(DECAL_BLOOD_SPLATTER, bbEntityX(e->room->objects[0],true), 0.0005f, bbEntityZ(e->room->objects[0],true),90,bbRnd(360),0);
 
                     de = CreateDecal(DECAL_BLOOD_POOL, bbEntityX(e->room->objects[0],true), 0.002f, bbEntityZ(e->room->objects[0],true),90,bbRnd(360),0);
                     de->size = 0.5f;

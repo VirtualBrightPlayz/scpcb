@@ -16,22 +16,7 @@ namespace CBN {
 
 // Functions.
 void FillRoom_srvr_farm_3(Room* r) {
-    Door* d;
-    Door* d2;
-    SecurityCam* sc;
-    Decal* de;
-    Room* r2;
-    SecurityCam* sc2;
-    Item* it;
-    int i;
-    int xtemp;
-    int ytemp;
-    int ztemp;
-
-    //, Bump
-    int t1;
-
-    it = CreateItem("battery", r->x - 132.f * RoomScale, r->y - 368.f * RoomScale, r->z - 648.f * RoomScale);
+    Item* it = CreateItem("battery", r->x - 132.f * RoomScale, r->y - 368.f * RoomScale, r->z - 648.f * RoomScale);
     bbEntityParent(it->collider, r->obj);
     if (bbRand(2) == 1) {
         it = CreateItem("battery", r->x - 76.f * RoomScale, r->y - 368.f * RoomScale, r->z - 648.f * RoomScale);
@@ -63,36 +48,10 @@ void FillRoom_srvr_farm_3(Room* r) {
 }
 
 void UpdateEvent_srvr_farm_3(Event* e) {
-    float dist;
-    int i;
-    int temp;
-    int pvt;
-    String strtemp;
-    int j;
-    int k;
-
-    Particle* p;
-    NPC* n;
-    Room* r;
-    Event* e2;
-    Item* it;
-    Emitter* em;
-    SecurityCam* sc;
-    SecurityCam* sc2;
-
-    String CurrTrigger = "";
-
-    float x;
-    float y;
-    float z;
-
-    float angle;
-
-
     if (mainPlayer->currRoom == e->room) {
         if (e->eventState3==0 && Curr173->idle == 0) {
             if (mainPlayer->blinkTimer < -10) {
-                temp = bbRand(0,2);
+                int temp = bbRand(0,2);
                 bbPositionEntity(Curr173->collider, bbEntityX(e->room->objects[temp],true),bbEntityY(e->room->objects[temp],true),bbEntityZ(e->room->objects[temp],true));
                 bbResetEntity(Curr173->collider);
                 e->eventState3 = 1;

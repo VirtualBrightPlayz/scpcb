@@ -21,28 +21,13 @@ namespace CBN {
 
 // Functions.
 void FillRoom_cont_106_1(Room* r) {
-    Door* d;
-    Door* d2;
-    SecurityCam* sc;
-    Decal* de;
-    Room* r2;
-    SecurityCam* sc2;
-    Item* it;
-    int i;
-    int xtemp;
-    int ytemp;
-    int ztemp;
-
-    //, Bump
-    int t1;
-
-    it = CreatePaper("106_treats", r->x - 416.f * RoomScale, r->y - 576 * RoomScale, r->z + 2492.f * RoomScale);
+    Item* it = CreatePaper("106_treats", r->x - 416.f * RoomScale, r->y - 576 * RoomScale, r->z + 2492.f * RoomScale);
     bbEntityParent(it->collider, r->obj);
 
     it = CreatePaper("docRecall", r->x + 268.f * RoomScale, r->y - 576 * RoomScale, r->z + 2593.f * RoomScale);
     bbEntityParent(it->collider, r->obj);
 
-    d = CreateDoor(r->x - 968.f * RoomScale, -764.f * RoomScale, r->z + 1392.f * RoomScale, 0, r, false, DOOR_TYPE_DEF, r->roomTemplate->name);
+    Door* d = CreateDoor(r->x - 968.f * RoomScale, -764.f * RoomScale, r->z + 1392.f * RoomScale, 0, r, false, DOOR_TYPE_DEF, r->roomTemplate->name);
     d->autoClose = false;
     d->open = false;
 
@@ -95,8 +80,7 @@ void FillRoom_cont_106_1(Room* r) {
 
     bbEntityParent(r->objects[6], r->obj);
 
-    int n;
-    for (n = 0; n <= 1; n++) {
+    for (int n = 0; n < 2; n++) {
         r->levers[n] = CreateLever();
 
         bbScaleEntity(r->levers[n]->baseObj, 0.04f, 0.04f, 0.04f);
@@ -122,7 +106,7 @@ void FillRoom_cont_106_1(Room* r) {
     r->objects[4] = CreateButton(r->x - 146.f*RoomScale, r->y - 576.f * RoomScale, r->z + 3045.f * RoomScale, 0,0,0);
     bbEntityParent(r->objects[4],r->obj);
 
-    sc = CreateSecurityCam(r->x + 768.f * RoomScale, r->y + 1392.f * RoomScale, r->z + 1696.f * RoomScale, r, true);
+    SecurityCam* sc = CreateSecurityCam(r->x + 768.f * RoomScale, r->y + 1392.f * RoomScale, r->z + 1696.f * RoomScale, r, true);
     sc->angle = 45 + 90 + 180;
     sc->turn = 20;
     bbTurnEntity(sc->cameraObj, 45, 0, 0);

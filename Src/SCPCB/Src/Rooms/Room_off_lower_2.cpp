@@ -13,22 +13,7 @@ namespace CBN {
 
 // Functions.
 void FillRoom_off_lower_2(Room* r) {
-    Door* d;
-    Door* d2;
-    SecurityCam* sc;
-    Decal* de;
-    Room* r2;
-    SecurityCam* sc2;
-    Item* it;
-    int i;
-    int xtemp;
-    int ytemp;
-    int ztemp;
-
-    //, Bump
-    int t1;
-
-    it = CreatePaper("doc895", r->x - 800.f * RoomScale, r->y - 48.f * RoomScale, r->z + 368.f * RoomScale);
+    Item* it = CreatePaper("doc895", r->x - 800.f * RoomScale, r->y - 48.f * RoomScale, r->z + 368.f * RoomScale);
     bbEntityParent(it->collider, r->obj);
     if (bbRand(2) == 1) {
         it = CreatePaper("doc860", r->x - 800.f * RoomScale, r->y - 48.f * RoomScale, r->z - 464.f * RoomScale);
@@ -59,40 +44,13 @@ void FillRoom_off_lower_2(Room* r) {
 }
 
 void UpdateEvent_off_lower_2(Event* e) {
-    float dist;
-    int i;
-    int temp;
-    int pvt;
-    String strtemp;
-    int j;
-    int k;
-
-    Particle* p;
-    NPC* n;
-    Room* r;
-    Event* e2;
-    Item* it;
-    Emitter* em;
-    SecurityCam* sc;
-    SecurityCam* sc2;
-
-    String CurrTrigger = "";
-
-    float x;
-    float y;
-    float z;
-
-    float angle;
-
-
     if (mainPlayer->currRoom == e->room) {
         if (mainPlayer->blinkTimer<-8 && mainPlayer->blinkTimer >-12) {
-            temp = bbRand(1,4);
+            int temp = bbRand(1,4);
             bbPositionEntity(e->room->objects[0], bbEntityX(e->room->objects[temp],true),bbEntityY(e->room->objects[temp],true),bbEntityZ(e->room->objects[temp],true),true);
             bbRotateEntity(e->room->objects[0], 0, bbRnd(360), 0);
         }
     }
-
 }
 
 }

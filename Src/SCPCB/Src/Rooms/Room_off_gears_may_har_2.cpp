@@ -11,22 +11,7 @@ namespace CBN {
 
 // Functions.
 void FillRoom_off_gears_may_har_2(Room* r) {
-    Door* d;
-    Door* d2;
-    SecurityCam* sc;
-    Decal* de;
-    Room* r2;
-    SecurityCam* sc2;
-    Item* it;
-    int i;
-    int xtemp;
-    int ytemp;
-    int ztemp;
-
-    //, Bump
-    int t1;
-
-    d = CreateDoor(r->x + 240.f * RoomScale, 0.f, r->z + 448.f * RoomScale, 90, r, false, DOOR_TYPE_DEF, "", String(AccessCode));
+    Door* d = CreateDoor(r->x + 240.f * RoomScale, 0.f, r->z + 448.f * RoomScale, 90, r, false, DOOR_TYPE_DEF, "", String(AccessCode));
     bbPositionEntity(d->buttons[0], r->x + 248.f * RoomScale, bbEntityY(d->buttons[0],true), bbEntityZ(d->buttons[0],true),true);
     bbPositionEntity(d->buttons[1], r->x + 232.f * RoomScale, bbEntityY(d->buttons[1],true), bbEntityZ(d->buttons[1],true),true);
     d->autoClose = false;
@@ -45,7 +30,7 @@ void FillRoom_off_gears_may_har_2(Room* r) {
     d->autoClose = false;
     d->open = false;
 
-    it = CreatePaper("big_reveal", r->x + 736.f * RoomScale, r->y + 224.f * RoomScale, r->z + 544.f * RoomScale);
+    Item* it = CreatePaper("big_reveal", r->x + 736.f * RoomScale, r->y + 224.f * RoomScale, r->z + 544.f * RoomScale);
     bbEntityParent(it->collider, r->obj);
     it = CreateItem("vest", r->x + 608.f * RoomScale, r->y + 112.f * RoomScale, r->z + 32.f * RoomScale);
     bbEntityParent(it->collider, r->obj);

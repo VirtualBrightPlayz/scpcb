@@ -15,22 +15,7 @@ namespace CBN {
 
 // Functions.
 void FillRoom_lck_cam_2c(Room* r) {
-    Door* d;
-    Door* d2;
-    SecurityCam* sc;
-    Decal* de;
-    Room* r2;
-    SecurityCam* sc2;
-    Item* it;
-    int i;
-    int xtemp;
-    int ytemp;
-    int ztemp;
-
-    //, Bump
-    int t1;
-
-    d = CreateDoor(r->x - 736.f * RoomScale, 0, r->z - 104.f * RoomScale, 0, r, true);
+    Door* d = CreateDoor(r->x - 736.f * RoomScale, 0, r->z - 104.f * RoomScale, 0, r, true);
     d->timer = 70 * 5;
     d->autoClose = false;
     d->open = false;
@@ -42,7 +27,7 @@ void FillRoom_lck_cam_2c(Room* r) {
     bbFreeEntity(d->buttons[1]);
     d->buttons[1] = 0;
 
-    d2 = CreateDoor(r->x + 104.f * RoomScale, 0, r->z + 736.f * RoomScale, 270, r, true);
+    Door* d2 = CreateDoor(r->x + 104.f * RoomScale, 0, r->z + 736.f * RoomScale, 270, r, true);
     d2->timer = 70 * 5;
     d2->autoClose = false;
     d2->open = false;
@@ -57,7 +42,7 @@ void FillRoom_lck_cam_2c(Room* r) {
     d->linkedDoor = d2;
     d2->linkedDoor = d;
 
-    sc = CreateSecurityCam(r->x - 688.f * RoomScale, r->y + 384 * RoomScale, r->z + 688.f * RoomScale, r, true);
+    SecurityCam* sc = CreateSecurityCam(r->x - 688.f * RoomScale, r->y + 384 * RoomScale, r->z + 688.f * RoomScale, r, true);
     sc->angle = 45 + 180;
     sc->turn = 45;
     sc->scrTexture = 0;
@@ -102,32 +87,6 @@ void FillRoom_lck_cam_2c(Room* r) {
 }
 
 void UpdateEventLockroom173(Event* e) {
-    float dist;
-    int i;
-    int temp;
-    int pvt;
-    String strtemp;
-    int j;
-    int k;
-
-    Particle* p;
-    NPC* n;
-    Room* r;
-    Event* e2;
-    Item* it;
-    Emitter* em;
-    SecurityCam* sc;
-    SecurityCam* sc2;
-
-    String CurrTrigger = "";
-
-    float x;
-    float y;
-    float z;
-
-    float angle;
-
-
     if (e->room->dist < 6.f  && e->room->dist > 0) {
         if (Curr173->idle == 2) {
             RemoveEvent(e);

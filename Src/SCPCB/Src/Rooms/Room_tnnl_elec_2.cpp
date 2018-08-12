@@ -16,21 +16,6 @@ namespace CBN {
 
 // Functions.
 void FillRoom_tnnl_elec_2(Room* r) {
-    Door* d;
-    Door* d2;
-    SecurityCam* sc;
-    Decal* de;
-    Room* r2;
-    SecurityCam* sc2;
-    Item* it;
-    int i;
-    int xtemp;
-    int ytemp;
-    int ztemp;
-
-    //, Bump
-    int t1;
-
     r->objects[0] = bbCreatePivot(r->obj);
     bbPositionEntity(r->objects[0], r->x, 544.f * RoomScale, r->z + 512.f * RoomScale, true);
 
@@ -39,37 +24,11 @@ void FillRoom_tnnl_elec_2(Room* r) {
 }
 
 void UpdateEventTunnel2smoke(Event* e) {
-    float dist;
-    int i;
-    int temp;
-    int pvt;
-    String strtemp;
-    int j;
-    int k;
-
-    Particle* p;
-    NPC* n;
-    Room* r;
-    Event* e2;
-    Item* it;
-    Emitter* em;
-    SecurityCam* sc;
-    SecurityCam* sc2;
-
-    String CurrTrigger = "";
-
-    float x;
-    float y;
-    float z;
-
-    float angle;
-
-
     if (mainPlayer->currRoom == e->room) {
         if (e->room->dist < 3.5f) {
             PlayRangedSound(LoadTempSound("SFX/SCP/914/PlayerUse.ogg"), mainPlayer->cam, e->room->obj);
-            for (i = 0; i <= 1; i++) {
-                em = CreateEmitter(bbEntityX(e->room->objects[i],true),bbEntityY(e->room->objects[i],true), bbEntityZ(e->room->objects[i],true),0);
+            for (int i = 0; i < 2; i++) {
+                Emitter* em = CreateEmitter(bbEntityX(e->room->objects[i],true),bbEntityY(e->room->objects[i],true), bbEntityZ(e->room->objects[i],true),0);
                 bbTurnEntity(em->obj, 90, 0, 0, true);
                 bbEntityParent(em->obj, e->room->obj);
                 em->size = 0.05f;
@@ -78,8 +37,8 @@ void UpdateEventTunnel2smoke(Event* e) {
                 em->sizeChange = 0.007f;
                 //EntityParent(em\obj, e\room\obj)
 
-                for (z = 0; z <= 10; z++) {
-                    p = CreateParticle(bbEntityX(em->obj, true), 448*RoomScale, bbEntityZ(em->obj, true), PARTICLE_SMOKE_WHITE, em->size, em->gravity, em->lifeTime);
+                for (int z = 0; z < 11; z++) {
+                    Particle* p = CreateParticle(bbEntityX(em->obj, true), 448*RoomScale, bbEntityZ(em->obj, true), PARTICLE_SMOKE_WHITE, em->size, em->gravity, em->lifeTime);
                     p->speed = em->speed;
                     bbRotateEntity(p->pvt, bbRnd(360), bbRnd(360), 0, true);
                     p->size = 0.05f;
@@ -95,32 +54,6 @@ void UpdateEventTunnel2smoke(Event* e) {
 }
 
 void UpdateEvent_tnnl_elec_2(Event* e) {
-    float dist;
-    int i;
-    int temp;
-    int pvt;
-    String strtemp;
-    int j;
-    int k;
-
-    Particle* p;
-    NPC* n;
-    Room* r;
-    Event* e2;
-    Item* it;
-    Emitter* em;
-    SecurityCam* sc;
-    SecurityCam* sc2;
-
-    String CurrTrigger = "";
-
-    float x;
-    float y;
-    float z;
-
-    float angle;
-
-
     if (mainPlayer->currRoom == e->room) {
         if (Curr173->idle == 2) {
             RemoveEvent(e);

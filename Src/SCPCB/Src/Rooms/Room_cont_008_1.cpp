@@ -19,21 +19,6 @@ namespace CBN {
 
 // Functions.
 void FillRoom_cont_008_1(Room* r) {
-    Door* d;
-    Door* d2;
-    SecurityCam* sc;
-    Decal* de;
-    Room* r2;
-    SecurityCam* sc2;
-    Item* it;
-    int i;
-    int xtemp;
-    int ytemp;
-    int ztemp;
-
-    //, Bump
-    int t1;
-
     //the container
     r->objects[0] = bbCreatePivot(r->obj);
     bbPositionEntity(r->objects[0], r->x + 292.f * RoomScale, 130.f*RoomScale, r->z + 516.f * RoomScale, true);
@@ -75,7 +60,7 @@ void FillRoom_cont_008_1(Room* r) {
     bbHideEntity(r->objects[5]);
     bbFreeTexture(lightSpriteRed);
 
-    d = CreateDoor(r->x + 296.f * RoomScale, 0, r->z - 672.f * RoomScale, 180, r, true, DOOR_TYPE_DEF, r->roomTemplate->name);
+    Door* d = CreateDoor(r->x + 296.f * RoomScale, 0, r->z - 672.f * RoomScale, 180, r, true, DOOR_TYPE_DEF, r->roomTemplate->name);
     d->autoClose = false;
     bbPositionEntity(d->buttons[1], r->x + 164.f * RoomScale, bbEntityY(d->buttons[1],true), bbEntityZ(d->buttons[1],true), true);
     bbFreeEntity(d->buttons[0]);
@@ -84,7 +69,7 @@ void FillRoom_cont_008_1(Room* r) {
     d->obj2 = 0;
     r->doors[0] = d;
 
-    d2 = CreateDoor(r->x + 296.f * RoomScale, 0, r->z - 144.f * RoomScale, 0, r, false);
+    Door* d2 = CreateDoor(r->x + 296.f * RoomScale, 0, r->z - 144.f * RoomScale, 0, r, false);
     d2->autoClose = false;
     bbPositionEntity(d2->buttons[0], r->x + 432.f * RoomScale, bbEntityY(d2->buttons[0],true), r->z - 480.f * RoomScale, true);
     bbRotateEntity(d2->buttons[0], 0, -90, 0, true);
@@ -102,7 +87,7 @@ void FillRoom_cont_008_1(Room* r) {
     r->doors[2] = d;
 
 
-    it = CreateItem("hazmatsuit", r->x - 76.f * RoomScale, 0.5f, r->z - 396.f * RoomScale);
+    Item* it = CreateItem("hazmatsuit", r->x - 76.f * RoomScale, 0.5f, r->z - 396.f * RoomScale);
     bbEntityParent(it->collider, r->obj);
     bbRotateEntity(it->collider, 0, 90, 0);
 
@@ -116,7 +101,7 @@ void FillRoom_cont_008_1(Room* r) {
     r->objects[7] = bbCreatePivot(r->obj);
     bbPositionEntity(r->objects[7], r->x, 672 * RoomScale, r->z + 352.f * RoomScale, true);
 
-    sc = CreateSecurityCam(r->x+578.956f*RoomScale, r->y+444.956f*RoomScale, r->z+772.f*RoomScale, r);
+    SecurityCam* sc = CreateSecurityCam(r->x+578.956f*RoomScale, r->y+444.956f*RoomScale, r->z+772.f*RoomScale, r);
     sc->angle = 135;
     sc->turn = 45;
     bbTurnEntity(sc->cameraObj, 20, 0, 0);
@@ -124,32 +109,6 @@ void FillRoom_cont_008_1(Room* r) {
 }
 
 void UpdateEvent_cont_008_1(Event* e) {
-    float dist;
-    int i;
-    int temp;
-    int pvt;
-    String strtemp;
-    int j;
-    int k;
-
-    Particle* p;
-    NPC* n;
-    Room* r;
-    Event* e2;
-    Item* it;
-    Emitter* em;
-    SecurityCam* sc;
-    SecurityCam* sc2;
-
-    String CurrTrigger = "";
-
-    float x;
-    float y;
-    float z;
-
-    float angle;
-
-
     if (mainPlayer->currRoom == e->room) {
         if (Curr173->idle<2) {
             //container open
@@ -168,7 +127,7 @@ void UpdateEvent_cont_008_1(Event* e) {
                     bbHideEntity(e->room->objects[5]);
                 }
 
-                dist = bbEntityDistance(mainPlayer->collider, e->room->objects[0]);
+                float dist = bbEntityDistance(mainPlayer->collider, e->room->objects[0]);
                 if (dist<2.f) {
                     e->room->doors[0]->locked = true;
                     e->room->doors[1]->locked = true;
@@ -209,7 +168,7 @@ void UpdateEvent_cont_008_1(Event* e) {
                     e->eventState = 2;
                     PlaySound_SM(sndManager->lever);
                 } else {
-                    p = CreateParticle(bbEntityX(e->room->objects[0],true),bbEntityY(e->room->objects[0],true),bbEntityZ(e->room->objects[0],true), PARTICLE_SMOKE_WHITE, 0.02f, -0.12f);
+                    Particle* p = CreateParticle(bbEntityX(e->room->objects[0],true),bbEntityY(e->room->objects[0],true),bbEntityZ(e->room->objects[0],true), PARTICLE_SMOKE_WHITE, 0.02f, -0.12f);
                     bbRotateEntity(p->pvt,-90,0,0,true);
                     bbTurnEntity(p->pvt, bbRnd(-26,26), bbRnd(-26,26), bbRnd(360));
 
@@ -229,7 +188,7 @@ void UpdateEvent_cont_008_1(Event* e) {
                 }
             }
         } else {
-            p = CreateParticle(bbEntityX(e->room->objects[0],true),bbEntityY(e->room->objects[0],true),bbEntityZ(e->room->objects[0],true), PARTICLE_SMOKE_WHITE, 0.02f, -0.12f);
+            Particle* p = CreateParticle(bbEntityX(e->room->objects[0],true),bbEntityY(e->room->objects[0],true),bbEntityZ(e->room->objects[0],true), PARTICLE_SMOKE_WHITE, 0.02f, -0.12f);
             bbRotateEntity(p->pvt,-90,0,0,true);
             bbTurnEntity(p->pvt, bbRnd(-26,26), bbRnd(-26,26), bbRnd(360));
         }

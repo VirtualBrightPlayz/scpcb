@@ -18,21 +18,6 @@ namespace CBN {
 
 // Functions.
 void FillRoom_hll_tsl(Room* r) {
-    Door* d;
-    Door* d2;
-    SecurityCam* sc;
-    Decal* de;
-    Room* r2;
-    SecurityCam* sc2;
-    Item* it;
-    int i;
-    int xtemp;
-    int ytemp;
-    int ztemp;
-
-    //, Bump
-    int t1;
-
     r->objects[0] = bbCreatePivot();
     bbPositionEntity(r->objects[0], r->x - 114.f * RoomScale, 0.f, r->z);
     bbEntityParent(r->objects[0], r->obj);
@@ -85,33 +70,7 @@ void FillRoom_hll_tsl(Room* r) {
 }
 
 void UpdateEvent_tesla(Event* e) {
-    float dist;
-    int i;
-    int temp;
-    int pvt;
-    String strtemp;
-    int j;
-    int k;
-
-    Particle* p;
-    NPC* n;
-    Room* r;
-    Event* e2;
-    Item* it;
-    Emitter* em;
-    SecurityCam* sc;
-    SecurityCam* sc2;
-
-    String CurrTrigger = "";
-
-    float x;
-    float y;
-    float z;
-
-    float angle;
-
-
-    temp = true;
+    float temp = true;
     if (e->eventState2 > 70*3.5f && e->eventState2 < 70*90) {
         temp = false;
     }
@@ -130,7 +89,7 @@ void UpdateEvent_tesla(Event* e) {
                 }
             }
 
-            for (i = 0; i <= 2; i++) {
+            for (int i = 0; i < 3; i++) {
                 if (Distance(bbEntityX(mainPlayer->collider),bbEntityZ(mainPlayer->collider),bbEntityX(e->room->objects[i],true),bbEntityZ(e->room->objects[i],true)) < 300.f*RoomScale) {
                     //play the activation sound
                     if (!mainPlayer->dead) {
@@ -144,7 +103,7 @@ void UpdateEvent_tesla(Event* e) {
             }
 
             if (Curr106->state < -10 && e->eventState == 0) {
-                for (i = 0; i <= 2; i++) {
+                for (int i = 0; i < 3; i++) {
                     if (Distance(bbEntityX(Curr106->collider),bbEntityZ(Curr106->collider),bbEntityX(e->room->objects[i],true),bbEntityZ(e->room->objects[i],true)) < 300.f*RoomScale) {
                         //play the activation sound
                         if (!mainPlayer->dead) {
@@ -179,7 +138,7 @@ void UpdateEvent_tesla(Event* e) {
                 if (e->eventState < 70) {
 
                     if (!mainPlayer->dead) {
-                        for (i = 0; i <= 2; i++) {
+                        for (int i = 0; i < 3; i++) {
                             if (Distance(bbEntityX(mainPlayer->collider),bbEntityZ(mainPlayer->collider),bbEntityX(e->room->objects[i],true),bbEntityZ(e->room->objects[i],true)) < 250.f*RoomScale) {
                                 bbShowEntity(mainPlayer->overlays[OVERLAY_WHITE]);
                                 mainPlayer->lightFlash = 0.4f;
@@ -191,12 +150,12 @@ void UpdateEvent_tesla(Event* e) {
                     }
 
                     if (Curr106->state < -10) {
-                        for (i = 0; i <= 2; i++) {
+                        for (int i = 0; i < 3; i++) {
                             if (Distance(bbEntityX(Curr106->collider),bbEntityZ(Curr106->collider),bbEntityX(e->room->objects[i],true),bbEntityZ(e->room->objects[i],true)) < 250.f*RoomScale) {
                                 bbShowEntity(mainPlayer->overlays[OVERLAY_WHITE]);
                                 mainPlayer->lightFlash = 0.3f;
                                 for (i = 0; i <= 10; i++) {
-                                    p = CreateParticle(bbEntityX(Curr106->collider, true), bbEntityY(Curr106->collider, true), bbEntityZ(Curr106->collider, true), PARTICLE_SMOKE_BLACK, 0.015f, -0.2f, 250);
+                                    Particle* p = CreateParticle(bbEntityX(Curr106->collider, true), bbEntityY(Curr106->collider, true), bbEntityZ(Curr106->collider, true), PARTICLE_SMOKE_BLACK, 0.015f, -0.2f, 250);
                                     p->size = 0.03f;
                                     p->gravity = -0.2f;
                                     p->lifetime = 200;
@@ -237,7 +196,7 @@ void UpdateEvent_tesla(Event* e) {
             if (e->eventState3 <=0) {
                 temp = false;
                 for (int iterator186 = 0; iterator186 < NPC::getListSize(); iterator186++) {
-                    n = NPC::getObject(iterator186);
+                    NPC* n = NPC::getObject(iterator186);
 
                     if (n->npcType == NPCtypeMTF) {
                         if (abs(bbEntityX(n->collider)-bbEntityX(e->room->obj,true))<4.f) {

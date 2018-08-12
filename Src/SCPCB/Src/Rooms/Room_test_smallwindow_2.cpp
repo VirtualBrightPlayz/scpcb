@@ -24,21 +24,6 @@ const int EVENT_TSW2_173JUMPTIMER = 0;
 
 // Functions.
 void FillRoom_test_smallwindow_2(Room* r) {
-    Door* d;
-    Door* d2;
-    SecurityCam* sc;
-    Decal* de;
-    Room* r2;
-    SecurityCam* sc2;
-    Item* it;
-    int i;
-    int xtemp;
-    int ytemp;
-    int ztemp;
-
-    //, Bump
-    int t1;
-
     r->objects[ROOM_TSW2_173SPAWN] = bbCreatePivot();
     bbPositionEntity(r->objects[0], r->x - 640.f * RoomScale, 0.5f, r->z - 912.f * RoomScale);
     bbEntityParent(r->objects[0], r->obj);
@@ -63,7 +48,7 @@ void FillRoom_test_smallwindow_2(Room* r) {
     r->doors[0]->autoClose = false;
     r->doors[0]->open = false;
 
-    d = CreateDoor(r->x - 512.f * RoomScale, 0.f, r->z + 384.f * RoomScale, 0, r);
+    Door* d = CreateDoor(r->x - 512.f * RoomScale, 0.f, r->z + 384.f * RoomScale, 0, r);
     d->autoClose = false;
     d->open = false;
 
@@ -75,37 +60,11 @@ void FillRoom_test_smallwindow_2(Room* r) {
     bbFreeEntity(d->buttons[1]);
     d->buttons[1] = 0;
 
-    it = CreateItem("navigator", r->x - 312.f * RoomScale, r->y + 264.f * RoomScale, r->z + 176.f * RoomScale);
+    Item* it = CreateItem("navigator", r->x - 312.f * RoomScale, r->y + 264.f * RoomScale, r->z + 176.f * RoomScale);
     bbEntityParent(it->collider, r->obj);
 }
 
 void UpdateEventTestroom173(Event* e) {
-    float dist;
-    int i;
-    int temp;
-    int pvt;
-    String strtemp;
-    int j;
-    int k;
-
-    Particle* p;
-    NPC* n;
-    Room* r;
-    Event* e2;
-    Item* it;
-    Emitter* em;
-    SecurityCam* sc;
-    SecurityCam* sc2;
-
-    String CurrTrigger = "";
-
-    float x;
-    float y;
-    float z;
-
-    float angle;
-
-
     if (mainPlayer->currRoom == e->room) {
         if (Curr173->idle == 0) {
             if (!e->intState[EVENT_TSW2_173SPAWNED]) {
@@ -118,7 +77,7 @@ void UpdateEventTestroom173(Event* e) {
                 bbShowEntity(e->room->objects[ROOM_TSW2_GLASS]);
                 //start a timer for 173 breaking through the window
                 e->floatState[EVENT_TSW2_173JUMPTIMER] = e->floatState[EVENT_TSW2_173JUMPTIMER]+timing->tickDuration;
-                dist = bbEntityDistance(mainPlayer->collider, e->room->objects[1]);
+                float dist = bbEntityDistance(mainPlayer->collider, e->room->objects[1]);
                 if (dist<1.f) {
                     //if close, increase the timer so that 173 is ready to attack
                     e->floatState[EVENT_TSW2_173JUMPTIMER] = Max(e->floatState[EVENT_TSW2_173JUMPTIMER], 70*12);

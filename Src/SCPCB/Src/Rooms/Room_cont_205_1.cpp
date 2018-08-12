@@ -17,22 +17,7 @@ namespace CBN {
 
 // Functions.
 void FillRoom_cont_205_1(Room* r) {
-    Door* d;
-    Door* d2;
-    SecurityCam* sc;
-    Decal* de;
-    Room* r2;
-    SecurityCam* sc2;
-    Item* it;
-    int i;
-    int xtemp;
-    int ytemp;
-    int ztemp;
-
-    //, Bump
-    int t1;
-
-    d = CreateDoor(r->x + 128.f * RoomScale, 0, r->z + 640.f *RoomScale, 90, r, true, DOOR_TYPE_DEF, r->roomTemplate->name);
+    Door* d = CreateDoor(r->x + 128.f * RoomScale, 0, r->z + 640.f *RoomScale, 90, r, true, DOOR_TYPE_DEF, r->roomTemplate->name);
     d->autoClose = false;
     d->open = false;
     //PositionEntity(d\buttons[0], r\x + 320.f * RoomScale, EntityY(d\buttons[0],True), EntityZ(d\buttons[0],True), True)
@@ -46,7 +31,7 @@ void FillRoom_cont_205_1(Room* r) {
     bbFreeEntity(r->doors[0]->buttons[1]);
     r->doors[0]->buttons[1] = 0;
 
-    sc = CreateSecurityCam(r->x - 1152.f * RoomScale, r->y + 900.f * RoomScale, r->z + 176.f * RoomScale, r, true);
+    SecurityCam* sc = CreateSecurityCam(r->x - 1152.f * RoomScale, r->y + 900.f * RoomScale, r->z + 176.f * RoomScale, r, true);
     sc->angle = 90;
     sc->turn = 0;
     bbEntityParent(sc->obj, r->obj);
@@ -75,32 +60,6 @@ void FillRoom_cont_205_1(Room* r) {
 }
 
 void UpdateEvent_cont_205_1(Event* e) {
-    float dist;
-    int i;
-    int temp;
-    int pvt;
-    String strtemp;
-    int j;
-    int k;
-
-    Particle* p;
-    NPC* n;
-    Room* r;
-    Event* e2;
-    Item* it;
-    Emitter* em;
-    SecurityCam* sc;
-    SecurityCam* sc2;
-
-    String CurrTrigger = "";
-
-    float x;
-    float y;
-    float z;
-
-    float angle;
-
-
     if (mainPlayer->currRoom == e->room) {
         e->overwriteMusic = true;
         if (e->eventState==0 || e->room->objects[0]==0) {
@@ -111,7 +70,7 @@ void UpdateEvent_cont_205_1(Event* e) {
                 e->room->objects[5] = bbLoadAnimMesh("GFX/npcs/205_demon3.b3d");
                 e->room->objects[6] = bbLoadAnimMesh("GFX/npcs/205_woman.b3d");
 
-                for (i = 3; i <= 6; i++) {
+                for (int i = 3; i <= 6; i++) {
                     //EntityColor(e\room\objects[i], 30,30,30)
                     //EntityShininess(e\room\objects[i],0.f)
                     //vertex color + flatshaded

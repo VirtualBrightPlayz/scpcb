@@ -21,23 +21,7 @@ namespace CBN {
 
 // Functions.
 void FillRoom_cont_035_1(Room* r) {
-    Door* d;
-    Door* d2;
-    SecurityCam* sc;
-    Decal* de;
-    Emitter* em;
-    Room* r2;
-    SecurityCam* sc2;
-    Item* it;
-    int i;
-    int xtemp;
-    int ytemp;
-    int ztemp;
-
-    //, Bump
-    int t1;
-
-    d = CreateDoor(r->x - 296.f * RoomScale, 0, r->z - 672.f * RoomScale, 180, r, true, DOOR_TYPE_DEF, r->roomTemplate->name);
+    Door* d = CreateDoor(r->x - 296.f * RoomScale, 0, r->z - 672.f * RoomScale, 180, r, true, DOOR_TYPE_DEF, r->roomTemplate->name);
     d->autoClose = false;
     d->locked = true;
     r->doors[0] = d;
@@ -47,7 +31,7 @@ void FillRoom_cont_035_1(Room* r) {
     bbFreeEntity(d->obj2);
     d->obj2 = 0;
 
-    d2 = CreateDoor(r->x - 296.f * RoomScale, 0, r->z - 144.f * RoomScale, 0, r, false);
+    Door* d2 = CreateDoor(r->x - 296.f * RoomScale, 0, r->z - 144.f * RoomScale, 0, r, false);
     d2->autoClose = false;
     d2->locked = true;
     r->doors[1] = d2;
@@ -69,7 +53,7 @@ void FillRoom_cont_035_1(Room* r) {
     d->linkedDoor = d2;
     d2->linkedDoor = d;
 
-    for (i = 0; i <= 1; i++) {
+    for (int i = 0; i < 2; i++) {
         r->levers[i] = CreateLever();
 
         bbScaleEntity(r->levers[i]->baseObj, 0.04f, 0.04f, 0.04f);
@@ -94,8 +78,8 @@ void FillRoom_cont_035_1(Room* r) {
     r->objects[4] = bbCreatePivot(r->obj);
     bbPositionEntity(r->objects[4], r->x - 576 * RoomScale, 0.5f, r->z + 640.f * RoomScale, true);
 
-    for (i = 0; i <= 1; i++) {
-        em = CreateEmitter(r->x - 272.f * RoomScale, 10, r->z + (624.f-i*512) * RoomScale, 0);
+    for (int i = 0; i < 2; i++) {
+        Emitter* em = CreateEmitter(r->x - 272.f * RoomScale, 10, r->z + (624.f-i*512) * RoomScale, 0);
         bbTurnEntity(em->obj, 90, 0, 0, true);
         bbEntityParent(em->obj, r->obj);
         em->randAngle = 15;
@@ -113,7 +97,7 @@ void FillRoom_cont_035_1(Room* r) {
     r->objects[8] = bbCreatePivot(r->obj);
     bbPositionEntity(r->objects[8], r->x + 176 * RoomScale, 0.5f, r->z - 144.f * RoomScale, true);
 
-    it = CreatePaper("doc035ad", r->x + 248.f * RoomScale, r->y + 220.f * RoomScale, r->z + 576.f * RoomScale);
+    Item* it = CreatePaper("doc035ad", r->x + 248.f * RoomScale, r->y + 220.f * RoomScale, r->z + 576.f * RoomScale);
     bbEntityParent(it->collider, r->obj);
 
     it = CreateItem("radio", r->x - 544.f * RoomScale, 0.5f, r->z + 704.f * RoomScale);

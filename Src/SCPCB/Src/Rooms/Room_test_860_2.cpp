@@ -44,21 +44,6 @@ int LastForestID = 0;
 
 // Functions.
 void FillRoom_test_860_2(Room* r) {
-    Door* d;
-    Door* d2;
-    SecurityCam* sc;
-    Decal* de;
-    Room* r2;
-    SecurityCam* sc2;
-    Item* it;
-    int i;
-    int xtemp;
-    int ytemp;
-    int ztemp;
-
-    //, Bump
-    int t1;
-
     //the wooden door
     r->objects[2] = bbLoadMesh("GFX/Map/forest/door_frame.b3d");
     bbPositionEntity(r->objects[2],r->x + 184.f * RoomScale,0,r->z,true);
@@ -79,7 +64,7 @@ void FillRoom_test_860_2(Room* r) {
     bbEntityParent(r->objects[4],r->obj);
 
     //doors to observation booth
-    d = CreateDoor(r->x + 928.f * RoomScale,0,r->z + 640.f * RoomScale,0,r,false, DOOR_TYPE_DEF, "", "ABCD");
+    Door* d = CreateDoor(r->x + 928.f * RoomScale,0,r->z + 640.f * RoomScale,0,r,false, DOOR_TYPE_DEF, "", "ABCD");
     d = CreateDoor(r->x + 928.f * RoomScale,0,r->z - 640.f * RoomScale,0,r,true, DOOR_TYPE_DEF, "","ABCD");
     d->autoClose = false;
 
@@ -94,7 +79,7 @@ void FillRoom_test_860_2(Room* r) {
     PlaceForest(fr,r->x,r->y+30.f,r->z,r);
     //EntityParent(fr\forest_Pivot,r\obj)
 
-    it = CreatePaper("doc860", r->x + 672.f * RoomScale, r->y + 176.f * RoomScale, r->z + 335.f * RoomScale);
+    Item* it = CreatePaper("doc860", r->x + 672.f * RoomScale, r->y + 176.f * RoomScale, r->z + 335.f * RoomScale);
     bbRotateEntity(it->collider, 0, r->angle+10, 0);
     bbEntityParent(it->collider, r->obj);
 
@@ -104,34 +89,6 @@ void FillRoom_test_860_2(Room* r) {
 }
 
 void UpdateEvent_test_860_2(Event* e) {
-    float dist;
-    int i;
-    int temp;
-    Pivot* pvt;
-    String strtemp;
-    int j;
-    int k;
-
-    Particle* p;
-    NPC* n;
-    Room* r;
-    Event* e2;
-    Item* it;
-    Emitter* em;
-    SecurityCam* sc;
-    SecurityCam* sc2;
-
-    String CurrTrigger = "";
-
-    float x;
-    float y;
-    float z;
-
-    float angle;
-    float ang;
-
-
-
     Forest* fr = e->room->fr;
 
     if (mainPlayer->currRoom == e->room && fr!=nullptr) {
@@ -205,7 +162,7 @@ void UpdateEvent_test_860_2(Event* e) {
             //	e\eventState3=e\eventState3-Rnd(2000,3000)
             //EndIf
 
-            for (i = 0; i <= 1; i++) {
+            for (int i = 0; i < 2; i++) {
                 if (bbEntityDistance(fr->door[i], mainPlayer->collider)<0.5f) {
                     if (bbEntityInView(fr->door[i], mainPlayer->cam)) {
                         DrawHandIcon = true;
@@ -243,6 +200,7 @@ void UpdateEvent_test_860_2(Event* e) {
                 }
             }
 
+            int x;
             if (e->room->npc[0]!=nullptr) {
                 x = Max(1.f-(e->room->npc[0]->state3/300.f),0.1f);
             } else {
@@ -293,10 +251,10 @@ void UpdateEvent_test_860_2(Event* e) {
 
 
 
-                            pvt = bbCreatePivot();
+                            Pivot* pvt = bbCreatePivot();
                             bbPositionEntity(pvt, bbEntityX(mainPlayer->cam),bbEntityY(mainPlayer->cam),bbEntityZ(mainPlayer->cam));
                             bbPointEntity(pvt, e->room->obj);
-                            ang = WrapAngle(bbEntityYaw(pvt)-bbEntityYaw(e->room->obj,true));
+                            float ang = WrapAngle(bbEntityYaw(pvt)-bbEntityYaw(e->room->obj,true));
                             if (ang > 90 && ang < 270) {
                                 //TurnEntity(mainPlayer\collider,0,180+90,0,True)
                                 e->eventState2 = 1;

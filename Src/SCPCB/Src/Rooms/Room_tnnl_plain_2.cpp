@@ -17,33 +17,6 @@ namespace CBN {
 
 // Functions.
 void UpdateEventTunnel106(Event* e) {
-    float dist;
-    int i;
-    int temp;
-    int pvt;
-    String strtemp;
-    int j;
-    int k;
-
-    Particle* p;
-    NPC* n;
-    Room* r;
-    Event* e2;
-    Item* it;
-    Emitter* em;
-    SecurityCam* sc;
-    SecurityCam* sc2;
-    Decal* d;
-
-    String CurrTrigger = "";
-
-    float x;
-    float y;
-    float z;
-
-    float angle;
-
-
     if (e->eventState == 0) {
         if (e->room->dist < 5.f && e->room->dist > 0) {
             if (Curr106->state >= 0) {
@@ -56,7 +29,7 @@ void UpdateEventTunnel106(Event* e) {
 
         if (e->room->dist < 3.f || bbRand(7000)==1) {
             e->eventState = 2;
-            d = CreateDecal(DECAL_CORROSION, bbEntityX(e->room->obj), 445.f*RoomScale, bbEntityZ(e->room->obj), -90, bbRand(360), 0);
+            Decal* d = CreateDecal(DECAL_CORROSION, bbEntityX(e->room->obj), 445.f*RoomScale, bbEntityZ(e->room->obj), -90, bbRand(360), 0);
             d->size = bbRnd(0.5f, 0.7f);
             bbEntityAlpha(d->obj, 0.7f);
             d->id = 1;
@@ -98,32 +71,6 @@ void UpdateEventTunnel106(Event* e) {
 }
 
 void UpdateEvent682roar(Event* e) {
-    float dist;
-    int i;
-    int temp;
-    int pvt;
-    String strtemp;
-    int j;
-    int k;
-
-    Particle* p;
-    NPC* n;
-    Room* r;
-    Event* e2;
-    Item* it;
-    Emitter* em;
-    SecurityCam* sc;
-    SecurityCam* sc2;
-
-    String CurrTrigger = "";
-
-    float x;
-    float y;
-    float z;
-
-    float angle;
-
-
     if (e->eventState == 0) {
         if (mainPlayer->currRoom == e->room) {
             e->eventState = 70 * bbRand(300,1000);
@@ -151,8 +98,6 @@ void UpdateEvent682roar(Event* e) {
             }
         }
     }
-
-
 }
 
 }

@@ -28,27 +28,11 @@ const int EVENT_LCKA2_SPAWNEDCORPSE = 0;
 
 // Functions.
 void FillRoom_lck_air_2(Room* r) {
-    Door* d;
-    Door* d2;
-    SecurityCam* sc;
-    Decal* de;
-    Room* r2;
-    SecurityCam* sc2;
-    Item* it;
-    int i;
-    int xtemp;
-    int ytemp;
-    int ztemp;
-
-    //, Bump
-    int t1;
-    int bd_temp;
-
     if (r->roomTemplate->name.equals("lck_air_broke_2")) {
         r->objects[ROOM_LCKA2_CORPSESPAWN] = bbCreatePivot(r->obj);
         bbPositionEntity(r->objects[ROOM_LCKA2_CORPSESPAWN], r->x - 156.825f*RoomScale, -37.3458f*RoomScale, r->z+121.364f*RoomScale, true);
 
-        de = CreateDecal(DECAL_BLOOD_SPLATTER,  r->x - 156.825f*RoomScale, -37.3458f*RoomScale, r->z+121.364f*RoomScale,90,bbRnd(360),0);
+        Decal* de = CreateDecal(DECAL_BLOOD_SPLATTER,  r->x - 156.825f*RoomScale, -37.3458f*RoomScale, r->z+121.364f*RoomScale,90,bbRnd(360),0);
         de->size = 0.5f;
         bbScaleSprite(de->obj, de->size,de->size);
         bbEntityParent(de->obj, r->obj);
@@ -67,7 +51,7 @@ void FillRoom_lck_air_2(Room* r) {
     r->doors[1]->mtfClose = false;
 
     for (int iterator187 = 0; iterator187 < Room::getListSize(); iterator187++) {
-        r2 = Room::getObject(iterator187);
+        Room* r2 = Room::getObject(iterator187);
 
         if (r2!=r) {
             if (r2->roomTemplate->name.equals("lck_air_2") || r2->roomTemplate->name.equals("lck_air_broke_2")) {
@@ -88,7 +72,7 @@ void FillRoom_lck_air_2(Room* r) {
         bbPositionEntity(r->objects[ROOM_LCKA2_TRIGGERPIVOT],r->x+344.f*RoomScale,128.f*RoomScale,r->z);
         bbEntityParent(r->objects[ROOM_LCKA2_TRIGGERPIVOT],r->obj);
 
-        bd_temp = false;
+        bool bd_temp = false;
         if (room2gw_brokendoor) {
             if (room2gw_x == r->x) {
                 if (room2gw_z == r->z) {
@@ -116,33 +100,6 @@ void FillRoom_lck_air_2(Room* r) {
 }
 
 void UpdateEvent_lck_air_2(Event* e) {
-    float dist;
-    int i;
-    int temp;
-    Pivot* pvt;
-    String strtemp;
-    int j;
-    int k;
-
-    Particle* p;
-    NPC* n;
-    Room* r;
-    Event* e2;
-    Item* it;
-    Emitter* em;
-    SecurityCam* sc;
-    SecurityCam* sc2;
-
-    String CurrTrigger = "";
-
-    float x;
-    float y;
-    float z;
-
-    float angle;
-    MeshModel* d_ent;
-
-
     e->room->doors[0]->locked = true;
     e->room->doors[1]->locked = true;
 
@@ -185,14 +142,14 @@ void UpdateEvent_lck_air_2(Event* e) {
                 if (e->floatState[EVENT_LCKA2_TIMER] < 70*1) {
 
                     if (brokendoor) {
-                        pvt = bbCreatePivot();
-                        d_ent = (MeshModel*)e->room->objects[ROOM_LCKA2_BROKENDOOR];
+                        Pivot* pvt = bbCreatePivot();
+                        MeshModel* d_ent = (MeshModel*)e->room->objects[ROOM_LCKA2_BROKENDOOR];
                         bbPositionEntity(pvt, bbEntityX(d_ent,true), bbEntityY(d_ent,true)+bbRnd(0.f,0.05f), bbEntityZ(d_ent,true));
                         bbRotateEntity(pvt, 0, bbEntityYaw(d_ent,true)+90, 0);
                         bbMoveEntity(pvt,0,0,0.2f);
 
-                        for (i = 0; i <= 3; i++) {
-                            p = CreateParticle(bbEntityX(pvt), bbEntityY(pvt), bbEntityZ(pvt), PARTICLE_SPARK, 0.002f, 0, 25);
+                        for (int i = 0; i < 4; i++) {
+                            Particle* p = CreateParticle(bbEntityX(pvt), bbEntityY(pvt), bbEntityZ(pvt), PARTICLE_SPARK, 0.002f, 0, 25);
                             p->speed = bbRnd(0.01f,0.05f);
                             //RotateEntity(p\pvt, Rnd(-20, 20), Rnd(360), 0)
                             bbRotateEntity(p->pvt, bbRnd(-45,0), bbEntityYaw(pvt)+bbRnd(-10.f,10.f), 0);
@@ -209,8 +166,8 @@ void UpdateEvent_lck_air_2(Event* e) {
                     }
 
                 } else if ((e->floatState[EVENT_LCKA2_TIMER] > 70*3 && e->floatState[EVENT_LCKA2_TIMER] < 70*5.5f)) {
-                    pvt = bbCreatePivot(e->room->obj);
-                    for (i = 0; i <= 1; i++) {
+                    Pivot* pvt = bbCreatePivot(e->room->obj);
+                    for (int i = 0; i < 2; i++) {
                         if (e->room->roomTemplate->name.equals("lck_ez_3")) {
                             if (i == 0) {
                                 bbPositionEntity(pvt,-288.f*RoomScale,416.f*RoomScale,320.f*RoomScale,false);
@@ -225,7 +182,7 @@ void UpdateEvent_lck_air_2(Event* e) {
                             }
                         }
 
-                        p = CreateParticle(bbEntityX(pvt,true), bbEntityY(pvt,true), bbEntityZ(pvt,true), PARTICLE_SMOKE_WHITE, 0.8f, 0, 50);
+                        Particle* p = CreateParticle(bbEntityX(pvt,true), bbEntityY(pvt,true), bbEntityZ(pvt,true), PARTICLE_SMOKE_WHITE, 0.8f, 0, 50);
                         p->speed = 0.025f;
                         bbRotateEntity(p->pvt, 90, 0, 0);
 

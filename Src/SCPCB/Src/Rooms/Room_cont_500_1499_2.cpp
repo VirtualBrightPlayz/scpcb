@@ -17,31 +17,16 @@ namespace CBN {
 
 // Functions.
 void FillRoom_cont_500_1499_2(Room* r) {
-    Door* d;
-    Door* d2;
-    SecurityCam* sc;
-    Decal* de;
-    Room* r2;
-    SecurityCam* sc2;
-    Item* it;
-    int i;
-    int xtemp;
-    int ytemp;
-    int ztemp;
-
-    //, Bump
-    int t1;
-
     r->doors[0] = CreateDoor(r->x + 288.f*RoomScale, r->y, r->z + 576.f*RoomScale, 90, r, false, DOOR_TYPE_DEF, r->roomTemplate->name);
     r->doors[0]->open = false;
     r->doors[0]->locked = true;
-    d = CreateDoor(r->x + 777.f*RoomScale, r->y, r->z + 671.f*RoomScale, 90, r);
+    Door* d = CreateDoor(r->x + 777.f*RoomScale, r->y, r->z + 671.f*RoomScale, 90, r);
     d = CreateDoor(r->x + 556.f*RoomScale, r->y, r->z + 296.f*RoomScale, 0, r);
     r->objects[0] = bbCreatePivot();
     bbPositionEntity(r->objects[0],r->x + 576.f*RoomScale,r->y+160.f*RoomScale,r->z+632.f*RoomScale);
     bbEntityParent(r->objects[0],r->obj);
 
-    it = CreateItem("scp1499", r->x + 600.f * RoomScale, r->y + 176.f * RoomScale, r->z - 228.f * RoomScale);
+    Item* it = CreateItem("scp1499", r->x + 600.f * RoomScale, r->y + 176.f * RoomScale, r->z - 228.f * RoomScale);
     bbRotateEntity(it->collider, 0, r->angle, 0);
     bbEntityParent(it->collider, r->obj);
 
@@ -50,33 +35,6 @@ void FillRoom_cont_500_1499_2(Room* r) {
 }
 
 void UpdateEvent_cont_500_1499_2(Event* e) {
-    float dist;
-    int i;
-    int temp;
-    int pvt;
-    String strtemp;
-    int j;
-    int k;
-
-    Particle* p;
-    NPC* n;
-    Room* r;
-    Event* e2;
-    Item* it;
-    Emitter* em;
-    SecurityCam* sc;
-    SecurityCam* sc2;
-    Decal* de;
-
-    String CurrTrigger = "";
-
-    float x;
-    float y;
-    float z;
-
-    float angle;
-
-
     //If mainPlayer\currRoom = e\room
     if (e->room->dist < 15) {
         if (Contained106) {

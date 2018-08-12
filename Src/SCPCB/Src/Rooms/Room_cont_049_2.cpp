@@ -20,21 +20,6 @@ namespace CBN {
 
 // Functions.
 void FillRoom_cont_049_2(Room* r) {
-    Door* d;
-    Door* d2;
-    SecurityCam* sc;
-    Decal* de;
-    Room* r2;
-    SecurityCam* sc2;
-    Item* it;
-    int i;
-    int xtemp;
-    int ytemp;
-    int ztemp;
-
-    //, Bump
-    int t1;
-
     r->objects[0] = bbCreatePivot(r->obj);
     bbPositionEntity(r->objects[0], r->x + 640.f * RoomScale, 240.f * RoomScale, r->z + 656.f * RoomScale, true);
 
@@ -58,8 +43,7 @@ void FillRoom_cont_049_2(Room* r) {
     r->objects[5] = bbCreatePivot(r->obj);
     bbPositionEntity(r->objects[5], r->x  + 64.f * RoomScale, -3440.f * RoomScale, r->z - 1000.f * RoomScale, true);
 
-    int n;
-    for (n = 0; n <= 1; n++) {
+    for (int n = 0; n < 2; n++) {
         r->levers[n] = CreateLever();
 
         bbScaleEntity(r->levers[n]->obj, 0.03f, 0.03f, 0.03f);
@@ -113,7 +97,7 @@ void FillRoom_cont_049_2(Room* r) {
     bbPositionEntity(r->doors[3]->buttons[0], r->x + 2432.f * RoomScale, bbEntityY(r->doors[3]->buttons[0],true), r->z + 816.f * RoomScale, true);
     bbPositionEntity(r->doors[3]->buttons[1], r->x + 2312.f * RoomScale, bbEntityY(r->doors[3]->buttons[1],true), r->z + 472.f * RoomScale, true);
 
-    for (i = 0; i <= 3; i++) {
+    for (int i = 0; i < 4; i++) {
         if ((i % 2) == 1) {
             AssignElevatorObj((MeshModel*)r->objects[i],r->doors[i],2);
         } else {
@@ -127,9 +111,9 @@ void FillRoom_cont_049_2(Room* r) {
     r->doors[4]->open = false;
     r->doors[4]->locked = true;
 
-    d = CreateDoor(r->x,0,r->z, 0, r, false, DOOR_TYPE_HCZ, r->roomTemplate->name);
+    Door* d = CreateDoor(r->x,0,r->z, 0, r, false, DOOR_TYPE_HCZ, r->roomTemplate->name);
 
-    it = CreatePaper("doc049", r->x - 608.f * RoomScale, r->y - 3332.f * RoomScale, r->z + 876.f * RoomScale);
+    Item* it = CreatePaper("doc049", r->x - 608.f * RoomScale, r->y - 3332.f * RoomScale, r->z + 876.f * RoomScale);
     bbEntityParent(it->collider, r->obj);
 
     it = CreateItem("firstaid", r->x +385.f * RoomScale, r->y - 3412.f * RoomScale, r->z + 271.f * RoomScale);
@@ -142,32 +126,6 @@ void FillRoom_cont_049_2(Room* r) {
 }
 
 void UpdateEvent_cont_049_2(Event* e) {
-    float dist;
-    int i;
-    int temp;
-    Pivot* pvt;
-    String strtemp;
-    int j;
-    int k;
-
-    Particle* p;
-    NPC* n;
-    Room* r;
-    Event* e2;
-    Item* it;
-    Emitter* em;
-    SecurityCam* sc;
-    SecurityCam* sc2;
-
-    String CurrTrigger = "";
-
-    float x;
-    float y;
-    float z;
-
-    float angle;
-
-
     if (mainPlayer->currRoom == e->room) {
         if (bbEntityY(mainPlayer->collider) > -2848*RoomScale) {
             e->eventState2 = UpdateElevators(e->eventState2, e->room->doors[0], e->room->doors[1],e->room->objects[0],e->room->objects[1], e);
@@ -178,7 +136,7 @@ void UpdateEvent_cont_049_2(Event* e) {
 
             if (e->eventState == 0) {
                 if (!e->loaded) {
-                    n = CreateNPC(NPCtypeZombie, bbEntityX(e->room->objects[4],true),bbEntityY(e->room->objects[4],true),bbEntityZ(e->room->objects[4],true));
+                    NPC* n = CreateNPC(NPCtypeZombie, bbEntityX(e->room->objects[4],true),bbEntityY(e->room->objects[4],true),bbEntityZ(e->room->objects[4],true));
                     bbPointEntity(n->collider, e->room->obj);
                     bbTurnEntity(n->collider, 0, 190, 0);
 
@@ -213,19 +171,19 @@ void UpdateEvent_cont_049_2(Event* e) {
             } else if ((e->eventState > 0)) {
 
                 //power feed
-                temp = (!e->room->levers[0]->succ);
+                bool powerOff = !e->room->levers[0]->succ;
                 //generator
-                x = e->room->levers[1]->succ;
+                bool genOn = e->room->levers[1]->succ;
 
                 e->room->doors[1]->locked = true;
                 e->room->doors[3]->locked = true;
 
                 //TODO: really
-                if (temp || (int)(x)) {
+                if (powerOff || genOn) {
                     //049 appears when either of the levers is turned
                     e->eventState = Max(e->eventState,70*180);
 
-                    if (temp && (int)(x)) {
+                    if (powerOff && genOn) {
                         e->room->doors[1]->locked = false;
                         e->room->doors[3]->locked = false;
                         e->eventState2 = UpdateElevators(e->eventState2, e->room->doors[0], e->room->doors[1],e->room->objects[0],e->room->objects[1], e);
@@ -237,7 +195,7 @@ void UpdateEvent_cont_049_2(Event* e) {
                         e->soundChannels[1] = LoopRangedSound(e->sounds[1], e->soundChannels[1], mainPlayer->cam, e->room->levers[1]->baseObj, 6.f, e->eventState3);
 
                         if (e->room->npc[0]->idle > 0) {
-                            i = 0;
+                            int i = 0;
                             if (bbEntityDistance(mainPlayer->collider,e->room->doors[1]->frameobj)<3.f) {
                                 i = 1;
                             } else if ((bbEntityDistance(mainPlayer->collider,e->room->doors[3]->frameobj)<3.f)) {
@@ -313,7 +271,7 @@ void UpdateEvent_cont_049_2(Event* e) {
 
                     //awake the zombies
                     for (int iterator156 = 0; iterator156 < NPC::getListSize(); iterator156++) {
-                        n = NPC::getObject(iterator156);
+                        NPC* n = NPC::getObject(iterator156);
 
                         if (n->npcType == NPCtypeZombie && n->state == 0) {
                             n->state = 1;
@@ -357,7 +315,7 @@ void UpdateEvent_cont_049_2(Event* e) {
                     bbResetEntity(e->room->npc[0]->collider);
 
                     for (int iterator157 = 0; iterator157 < NPC::getListSize(); iterator157++) {
-                        n = NPC::getObject(iterator157);
+                        NPC* n = NPC::getObject(iterator157);
 
                         if (n->npcType == NPCtypeZombie) {
                             bbPositionEntity(n->collider, bbEntityX(e->room->objects[4],true),bbEntityY(e->room->objects[4],true),bbEntityZ(e->room->objects[4],true),true);
@@ -367,7 +325,7 @@ void UpdateEvent_cont_049_2(Event* e) {
                         }
                     }
 
-                    n = CreateNPC(NPCtypeMTF, bbEntityX(e->room->objects[5],true), bbEntityY(e->room->objects[5],true)+0.2f, bbEntityZ(e->room->objects[5],true));
+                    NPC* n = CreateNPC(NPCtypeMTF, bbEntityX(e->room->objects[5],true), bbEntityY(e->room->objects[5],true)+0.2f, bbEntityZ(e->room->objects[5],true));
                     n->state = 6;
                     n->reload = 6*70;
                     bbPointEntity(n->collider,mainPlayer->collider);
@@ -424,7 +382,7 @@ void UpdateEvent_cont_049_2(Event* e) {
                 }
             }
 
-            pvt = bbCreatePivot();
+            Pivot* pvt = bbCreatePivot();
             bbPositionEntity(pvt,bbEntityX(e->room->npc[1]->collider),bbEntityY(e->room->npc[1]->collider)+0.2f,bbEntityZ(e->room->npc[1]->collider));
 
             bbPointEntity(mainPlayer->collider, e->room->npc[1]->collider);

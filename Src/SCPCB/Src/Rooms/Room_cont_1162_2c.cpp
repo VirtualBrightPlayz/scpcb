@@ -18,30 +18,15 @@ namespace CBN {
 
 // Functions.
 void FillRoom_cont_1162_2c(Room* r) {
-    Door* d;
-    Door* d2;
-    SecurityCam* sc;
-    Decal* de;
-    Room* r2;
-    SecurityCam* sc2;
-    Item* it;
-    int i;
-    int xtemp;
-    int ytemp;
-    int ztemp;
-
-    //, Bump
-    int t1;
-
-    d = CreateDoor(r->x + 248.f*RoomScale, 0.f, r->z - 736.f*RoomScale, 90, r, false, DOOR_TYPE_DEF, r->roomTemplate->name);
+    Door* d = CreateDoor(r->x + 248.f*RoomScale, 0.f, r->z - 736.f*RoomScale, 90, r, false, DOOR_TYPE_DEF, r->roomTemplate->name);
     r->objects[0] = bbCreatePivot();
     bbPositionEntity(r->objects[0],r->x+1012.f*RoomScale,r->y+128.f*RoomScale,r->z-640.f*RoomScale);
     bbEntityParent(r->objects[0],r->obj);
     bbEntityPickMode(r->objects[0],1);
-    it = CreatePaper("doc1162", r->x + 863.227f * RoomScale, r->y + 152.f * RoomScale, r->z - 953.231f * RoomScale);
+    Item* it = CreatePaper("doc1162", r->x + 863.227f * RoomScale, r->y + 152.f * RoomScale, r->z - 953.231f * RoomScale);
     bbEntityParent(it->collider, r->obj);
 
-    sc = CreateSecurityCam(r->x-192.f*RoomScale, r->y+704.f*RoomScale, r->z+192.f*RoomScale, r);
+    SecurityCam* sc = CreateSecurityCam(r->x-192.f*RoomScale, r->y+704.f*RoomScale, r->z+192.f*RoomScale, r);
     sc->angle = 225;
     sc->turn = 45;
     bbTurnEntity(sc->cameraObj, 20, 0, 0);
@@ -49,40 +34,6 @@ void FillRoom_cont_1162_2c(Room* r) {
 }
 
 void UpdateEvent_cont_1162_2c(Event* e) {
-    float dist;
-    int i;
-    int temp;
-    Pivot* pvt;
-    String strtemp;
-    int j;
-    int k;
-
-    Particle* p;
-    NPC* n;
-    Room* r;
-    Event* e2;
-    Item* it = nullptr;
-    ItemTemplate* itt;
-    Emitter* em;
-    SecurityCam* sc;
-    SecurityCam* sc2;
-    Decal* de;
-
-    String CurrTrigger = "";
-
-    float x;
-    float y;
-    float z;
-
-    float angle;
-    int pick1162;
-    Pivot* pp = nullptr;
-    int isSlotEmpty;
-    int itemExists;
-    String itemName;
-    int shouldCreateItem;
-
-
     //e\eventState = A variable to determine the "nostalgia" items
     //- 0.f = No nostalgia item
     //- 1.f = Lost key
@@ -103,12 +54,12 @@ void UpdateEvent_cont_1162_2c(Event* e) {
 
         e->eventState = 0;
 
-        pick1162 = true;
-        pp = bbCreatePivot(e->room->obj);
+        bool pick1162 = true;
+        Pivot* pp = bbCreatePivot(e->room->obj);
         bbPositionEntity(pp,976,128,-640,false);
 
         for (int iterator159 = 0; iterator159 < Item::getListSize(); iterator159++) {
-            it = Item::getObject(iterator159);
+            Item* it = Item::getObject(iterator159);
 
             if (!it->picked) {
                 if (bbEntityDistance(it->collider,e->room->objects[0])<0.75f) {
@@ -132,8 +83,8 @@ void UpdateEvent_cont_1162_2c(Event* e) {
                 std::cout << "pick1";
             } else {
                 //randomly picked item slot is empty, getting the first available slot
-                for (i = 0; i <= mainPlayer->inventory->size-1; i++) {
-                    isSlotEmpty = (mainPlayer->inventory->items[(int)(i+e->eventState2) % mainPlayer->inventory->size] == nullptr);
+                for (int i = 0; i < mainPlayer->inventory->size; i++) {
+                    bool isSlotEmpty = (mainPlayer->inventory->items[(int)(i+e->eventState2) % mainPlayer->inventory->size] == nullptr);
 
                     if (!isSlotEmpty) {
                         //successful
@@ -150,7 +101,7 @@ void UpdateEvent_cont_1162_2c(Event* e) {
                         e->eventState = bbRand(1,5);
 
                         //Checking if the selected nostalgia item already exists or not
-                        itemName = "";
+                        String itemName = "";
                         switch ((int)e->eventState) {
                             case 1: {
                                 itemName = "Lost Key";
@@ -169,9 +120,9 @@ void UpdateEvent_cont_1162_2c(Event* e) {
                             } break;
                         }
 
-                        itemExists = false;
+                        bool itemExists = false;
                         for (int iterator160 = 0; iterator160 < Item::getListSize(); iterator160++) {
-                            it = Item::getObject(iterator160);
+                            Item* it = Item::getObject(iterator160);
 
                             if (it->name.equals(itemName)) {
                                 itemExists = true;
@@ -199,10 +150,10 @@ void UpdateEvent_cont_1162_2c(Event* e) {
 
         //trade successful
         if (e->eventState3 == 1.f) {
-            shouldCreateItem = false;
+            bool shouldCreateItem = false;
 
             for (int iterator161 = 0; iterator161 < ItemTemplate::getListSize(); iterator161++) {
-                itt = ItemTemplate::getObject(iterator161);
+                ItemTemplate* itt = ItemTemplate::getObject(iterator161);
 
                 if (IsItemGoodFor1162(itt)) {
                     // TODO: No.
@@ -249,7 +200,7 @@ void UpdateEvent_cont_1162_2c(Event* e) {
                 if (shouldCreateItem) {
                     //TODO: This was a float-int cast, redo.
                     //RemoveItem(mainPlayer\inventory\items[e\eventState2])
-                    it = CreateItem(itt->name,bbEntityX(pp,true),bbEntityY(pp,true),bbEntityZ(pp,true));
+                    Item* it = CreateItem(itt->name,bbEntityX(pp,true),bbEntityY(pp,true),bbEntityZ(pp,true));
                     bbEntityType(it->collider, HIT_ITEM);
                     PlaySound2(LoadTempSound("SFX/SCP/1162/Exchange"+String(bbRand(0,4))+".ogg"));
                     e->eventState3 = 0.f;
@@ -261,19 +212,19 @@ void UpdateEvent_cont_1162_2c(Event* e) {
             //trade not sucessful (player got in return to injuries a new item)
         } else if ((e->eventState3 == 2.f)) {
             mainPlayer->injuries = mainPlayer->injuries + 5.f;
-            pvt = bbCreatePivot();
+            Pivot* pvt = bbCreatePivot();
             bbPositionEntity(pvt, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)-0.05f,bbEntityZ(mainPlayer->collider));
             bbTurnEntity(pvt, 90, 0, 0);
             bbEntityPick(pvt,0.3f);
-            de = CreateDecal(DECAL_BLOOD_SPLATTER, bbPickedX(), bbPickedY()+0.005f, bbPickedZ(), 90, bbRand(360), 0);
+            Decal* de = CreateDecal(DECAL_BLOOD_SPLATTER, bbPickedX(), bbPickedY()+0.005f, bbPickedZ(), 90, bbRand(360), 0);
             de->size = 0.75f;
             bbScaleSprite(de->obj, de->size, de->size);
             bbFreeEntity(pvt);
             for (int iterator162 = 0; iterator162 < ItemTemplate::getListSize(); iterator162++) {
-                itt = ItemTemplate::getObject(iterator162);
+                ItemTemplate* itt = ItemTemplate::getObject(iterator162);
 
                 if (IsItemGoodFor1162(itt) && bbRand(6)==1) {
-                    it = CreateItem(itt->name, bbEntityX(pp,true),bbEntityY(pp,true),bbEntityZ(pp,true));
+                    Item* it = CreateItem(itt->name, bbEntityX(pp,true),bbEntityY(pp,true),bbEntityZ(pp,true));
                     MouseHit1 = false;
                     e->eventState3 = 0.f;
                     if (mainPlayer->injuries > 15) {
@@ -299,11 +250,11 @@ void UpdateEvent_cont_1162_2c(Event* e) {
                 RemoveItem(mainPlayer->inventory->items[(int)(e->eventState2)]);
             } else {
                 mainPlayer->injuries = mainPlayer->injuries + 5.f;
-                pvt = bbCreatePivot();
+                Pivot* pvt = bbCreatePivot();
                 bbPositionEntity(pvt, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)-0.05f,bbEntityZ(mainPlayer->collider));
                 bbTurnEntity(pvt, 90, 0, 0);
                 bbEntityPick(pvt,0.3f);
-                de = CreateDecal(DECAL_BLOOD_SPLATTER, bbPickedX(), bbPickedY()+0.005f, bbPickedZ(), 90, bbRand(360), 0);
+                Decal* de = CreateDecal(DECAL_BLOOD_SPLATTER, bbPickedX(), bbPickedY()+0.005f, bbPickedZ(), 90, bbRand(360), 0);
                 de->size = 0.75f;
                 bbScaleSprite(de->obj, de->size, de->size);
                 bbFreeEntity(pvt);
@@ -322,6 +273,7 @@ void UpdateEvent_cont_1162_2c(Event* e) {
                 }
                 e->eventState2 = 0.f;
             }
+            Item* it = nullptr;
             switch ((int)e->eventState) {
                 case 1: {
                     it = CreateItem("key",bbEntityX(pp,true),bbEntityY(pp,true),bbEntityZ(pp,true));
@@ -339,7 +291,10 @@ void UpdateEvent_cont_1162_2c(Event* e) {
                     it = CreateItem("badge9341",bbEntityX(pp,true),bbEntityY(pp,true),bbEntityZ(pp,true));
                 } break;
             }
-            bbEntityType(it->collider, HIT_ITEM);
+
+            if (it != nullptr) {
+                bbEntityType(it->collider, HIT_ITEM);
+            }
             MouseHit1 = false;
             e->eventState3 = 0.f;
         }

@@ -18,22 +18,7 @@ namespace CBN {
 
 // Functions.
 void FillRoom_cont_079_1(Room* r) {
-    Door* d;
-    Door* d2;
-    SecurityCam* sc;
-    Decal* de;
-    Room* r2;
-    SecurityCam* sc2;
-    Item* it;
-    int i;
-    int xtemp;
-    int ytemp;
-    int ztemp;
-
-    //, Bump
-    int t1;
-
-    d = CreateDoor(r->x, -448.f*RoomScale, r->z + 1136.f * RoomScale, 0, r, false, DOOR_TYPE_CONT, r->roomTemplate->name);
+    Door* d = CreateDoor(r->x, -448.f*RoomScale, r->z + 1136.f * RoomScale, 0, r, false, DOOR_TYPE_CONT, r->roomTemplate->name);
     bbPositionEntity(d->buttons[1], r->x + 224.f * RoomScale, -250*RoomScale, r->z + 918.f * RoomScale, true);
     //TurnEntity(d\buttons[0],0,-90,0,True)
     bbPositionEntity(d->buttons[0], r->x - 240.f * RoomScale, -250*RoomScale, r->z + 1366.f * RoomScale, true);
@@ -68,39 +53,13 @@ void FillRoom_cont_079_1(Room* r) {
     r->objects[2] = bbCreatePivot(r->obj);
     bbPositionEntity(r->objects[2], r->x + 1184.f*RoomScale, -448.f*RoomScale, r->z+1792.f*RoomScale, true);
 
-    de = CreateDecal(DECAL_BLOOD_SPLATTER,  r->x + 1184.f*RoomScale, -448.f*RoomScale+0.01f, r->z+1792.f*RoomScale,90,bbRnd(360),0);
+    Decal* de = CreateDecal(DECAL_BLOOD_SPLATTER,  r->x + 1184.f*RoomScale, -448.f*RoomScale+0.01f, r->z+1792.f*RoomScale,90,bbRnd(360),0);
     de->size = 0.5f;
     bbScaleSprite(de->obj, de->size,de->size);
     bbEntityParent(de->obj, r->obj);
 }
 
 void UpdateEvent_cont_079_1(Event* e) {
-    float dist;
-    int i;
-    int temp;
-    int pvt;
-    String strtemp;
-    int j;
-    int k;
-
-    Particle* p;
-    NPC* n;
-    Room* r;
-    Event* e2;
-    Item* it;
-    Emitter* em;
-    SecurityCam* sc;
-    SecurityCam* sc2;
-
-    String CurrTrigger = "";
-
-    float x;
-    float y;
-    float z;
-
-    float angle;
-
-
     if (mainPlayer->currRoom == e->room) {
 
         if (e->eventState == 0) {
@@ -179,7 +138,7 @@ void UpdateEvent_cont_079_1(Event* e) {
             e->eventState2 = 2;
 
             for (int iterator158 = 0; iterator158 < Event::getListSize(); iterator158++) {
-                e2 = Event::getObject(iterator158);
+                Event* e2 = Event::getObject(iterator158);
 
                 if (e2->name.equals("exit1") || e2->name.equals("gateaentrance")) {
                     e2->eventState3 = 1;

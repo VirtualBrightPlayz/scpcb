@@ -11,38 +11,12 @@ namespace CBN {
 
 // Functions.
 void UpdateEventRoom2trick(Event* e) {
-    float dist;
-    int i;
-    int temp;
-    Pivot* pvt;
-    String strtemp;
-    int j;
-    int k;
-
-    Particle* p;
-    NPC* n;
-    Room* r;
-    Event* e2;
-    Item* it;
-    Emitter* em;
-    SecurityCam* sc;
-    SecurityCam* sc2;
-
-    String CurrTrigger = "";
-
-    float x;
-    float y;
-    float z;
-
-    float angle;
-
-
     if (mainPlayer->currRoom == e->room) {
         if (bbEntityDistance(e->room->obj,mainPlayer->collider)<2.f) {
             if (bbEntityDistance(mainPlayer->collider, Curr173->obj)<6.f || bbEntityDistance(mainPlayer->collider, Curr106->obj)<6.f) {
                 RemoveEvent(e);
             } else {
-                pvt = bbCreatePivot();
+                Pivot* pvt = bbCreatePivot();
                 bbPositionEntity(pvt, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider),bbEntityZ(mainPlayer->collider));
                 bbPointEntity(pvt, e->room->obj);
                 bbRotateEntity(pvt, 0, bbEntityYaw(pvt),0,true);

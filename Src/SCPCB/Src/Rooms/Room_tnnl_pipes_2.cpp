@@ -15,21 +15,6 @@ namespace CBN {
 
 // Functions.
 void FillRoom_tnnl_pipes_2(Room* r) {
-    Door* d;
-    Door* d2;
-    SecurityCam* sc;
-    Decal* de;
-    Room* r2;
-    SecurityCam* sc2;
-    Item* it;
-    int i;
-    int xtemp;
-    int ytemp;
-    int ztemp;
-
-    //, Bump
-    int t1;
-
     r->objects[0] = bbCreatePivot(r->obj);
     bbPositionEntity(r->objects[0], r->x + 368.f * RoomScale, 0.f, r->z, true);
 
@@ -44,33 +29,6 @@ void FillRoom_tnnl_pipes_2(Room* r) {
 }
 
 void UpdateEventRoom2pipes106(Event* e) {
-    float dist;
-    int i;
-    int temp;
-    Pivot* pvt;
-    String strtemp;
-    int j;
-    int k;
-
-    Particle* p;
-    NPC* n;
-    Room* r;
-    Event* e2;
-    Item* it;
-    Emitter* em;
-    SecurityCam* sc;
-    SecurityCam* sc2;
-    Decal* d;
-
-    String CurrTrigger = "";
-
-    float x;
-    float y;
-    float z;
-
-    float angle;
-
-
     if (!Contained106) {
         if (e->eventState == 0) {
             if (mainPlayer->currRoom == e->room) {
@@ -95,7 +53,7 @@ void UpdateEventRoom2pipes106(Event* e) {
                 //MoveEntity(Curr106\collider, 0, 0, EntityDistance(e\room\objects[0], e\room\objects[1])*0.5f)
                 bbRotateEntity(Curr106->collider,0, CurveValue(e->eventState,bbEntityYaw(Curr106->collider),30.f),0,true);
                 if (bbEntityDistance(Curr106->collider, mainPlayer->collider)<4.f) {
-                    pvt = bbCreatePivot();
+                    Pivot* pvt = bbCreatePivot();
                     bbPositionEntity(pvt, bbEntityX(Curr106->collider),bbEntityY(Curr106->collider),bbEntityZ(Curr106->collider));
                     bbPointEntity(pvt, mainPlayer->collider);
                     if (WrapAngle(bbEntityYaw(pvt)-bbEntityYaw(Curr106->collider))<80) {
@@ -125,7 +83,7 @@ void UpdateEventRoom2pipes106(Event* e) {
                 //e\soundChannels[0] = PlaySound2(HorrorSFX(6))
                 mainPlayer->blurTimer = 800;
                 //90, Rnd(360), 0
-                d = CreateDecal(DECAL_CORROSION, bbEntityX(e->room->objects[2], true), bbEntityY(e->room->objects[2], true), bbEntityZ(e->room->objects[2], true), 0, e->room->angle - 90, bbRnd(360));
+                Decal* d = CreateDecal(DECAL_CORROSION, bbEntityX(e->room->objects[2], true), bbEntityY(e->room->objects[2], true), bbEntityZ(e->room->objects[2], true), 0, e->room->angle - 90, bbRnd(360));
                 d->timer = 90000;
                 d->alpha = 0.01f;
                 d->alphaChange = 0.005f;
@@ -134,7 +92,7 @@ void UpdateEventRoom2pipes106(Event* e) {
             }
 
             if ((e->eventState / 250.f) > 0.65f && ((e->eventState - timing->tickDuration*0.7f) / 250.f) <= 0.65f) {
-                d = CreateDecal(DECAL_CORROSION, bbEntityX(e->room->objects[3], true), bbEntityY(e->room->objects[3], true), bbEntityZ(e->room->objects[3], true), 0, e->room->angle + 90, bbRnd(360));
+                Decal* d = CreateDecal(DECAL_CORROSION, bbEntityX(e->room->objects[3], true), bbEntityY(e->room->objects[3], true), bbEntityZ(e->room->objects[3], true), 0, e->room->angle + 90, bbRnd(360));
                 d->timer = 90000;
                 d->alpha = 0.01f;
                 d->alphaChange = 0.005f;

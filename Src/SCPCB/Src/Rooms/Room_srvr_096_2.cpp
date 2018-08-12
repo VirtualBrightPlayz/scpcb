@@ -19,22 +19,7 @@ namespace CBN {
 
 // Functions.
 void FillRoom_srvr_096_2(Room* r) {
-    Door* d;
-    Door* d2;
-    SecurityCam* sc;
-    Decal* de;
-    Room* r2;
-    SecurityCam* sc2;
-    Item* it;
-    int i;
-    int xtemp;
-    int ytemp;
-    int ztemp;
-
-    //, Bump
-    int t1;
-
-    d = CreateDoor(r->x,0,r->z, 0, r, false, DOOR_TYPE_HCZ);
+    Door* d = CreateDoor(r->x,0,r->z, 0, r, false, DOOR_TYPE_HCZ);
     d->locked = true;
 
     r->doors[0] = CreateDoor(r->x - 208.f * RoomScale, 0.f, r->z - 736.f * RoomScale, 90, r, true);
@@ -49,8 +34,7 @@ void FillRoom_srvr_096_2(Room* r) {
     bbFreeEntity(r->doors[2]->buttons[1]);
     r->doors[2]->buttons[1] = 0;
 
-    int n;
-    for (n = 0; n <= 2; n++) {
+    for (int n = 0; n < 3; n++) {
         r->levers[n] = CreateLever();
 
         bbScaleEntity(r->levers[n]->obj, 0.03f, 0.03f, 0.03f);
@@ -103,33 +87,6 @@ void FillRoom_srvr_096_2(Room* r) {
 }
 
 void UpdateEvent_srvr_096_2(Event* e) {
-    float dist;
-    int i;
-    int temp;
-    int pvt;
-    String strtemp;
-    int j;
-    int k;
-
-    Particle* p;
-    NPC* n;
-    Room* r;
-    Event* e2;
-    Item* it;
-    Emitter* em;
-    SecurityCam* sc;
-    SecurityCam* sc2;
-    Decal* de;
-
-    String CurrTrigger = "";
-
-    float x;
-    float y;
-    float z;
-
-    float angle;
-
-
     if (e->eventState==0) {
         if (mainPlayer->currRoom == e->room) {
             //close the doors when the player enters the room
@@ -235,7 +192,9 @@ void UpdateEvent_srvr_096_2(Event* e) {
 
                 Curr096->currSpeed = 0;
 
-                for (i = 0; i <= 6; i++) {
+                // TODO: probably shouldn't randomize this since some angles let the player see deloading.
+                Decal* de = nullptr;
+                for (int i = 0; i < 7; i++) {
                     if (e->room->angle == 0 || e->room->angle == 180) {
                         de = CreateDecal(bbRand(DECAL_BLOOD_SPREAD, DECAL_BLOOD_SPLATTER), e->room->x-bbRnd(197,199)*bbCos(e->room->angle)*RoomScale, 1.f, e->room->z+(140.f*(i-3))*RoomScale,0,e->room->angle+90,bbRnd(360));
                         de->size = bbRnd(0.8f,0.85f);
@@ -304,18 +263,18 @@ void UpdateEvent_srvr_096_2(Event* e) {
 
     } else if ((mainPlayer->currRoom == e->room)) {
         //power switch
-        temp = e->room->levers[0]->succ;
+        bool powerOn = e->room->levers[0]->succ;
         //fuel pump
-        x = e->room->levers[1]->succ;
+        bool fuelOn = e->room->levers[1]->succ;
         //generator
-        z = e->room->levers[2]->succ;
+        bool genOn = e->room->levers[2]->succ;
 
         //fuel pump on
-        if ((int)(x)) {
+        if (fuelOn) {
             e->eventState2 = Min(1.f, e->eventState2+timing->tickDuration/350);
 
             //generator on
-            if ((int)(z)) {
+            if (fuelOn) {
                 if (e->sounds[1]==0) {
                     LoadEventSound(e,"SFX/General/GeneratorOn.ogg",1);
                 }
@@ -335,7 +294,7 @@ void UpdateEvent_srvr_096_2(Event* e) {
             e->soundChannels[1] = LoopRangedSound(e->sounds[1], e->soundChannels[1], mainPlayer->cam, e->room->levers[2]->obj, 6.f, e->eventState3);
         }
 
-        if (temp==0 && (int)(x) && (int)(z)) {
+        if (!powerOn && fuelOn && genOn) {
             e->room->doors[0]->locked = false;
             e->room->doors[1]->locked = false;
         } else {
@@ -353,8 +312,6 @@ void UpdateEvent_srvr_096_2(Event* e) {
             e->room->doors[1]->locked = true;
         }
     }
-
-
 }
 
 }

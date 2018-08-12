@@ -19,27 +19,12 @@ namespace CBN {
 
 // Functions.
 void FillRoom_cont_895_1(Room* r) {
-    Door* d;
-    Door* d2;
-    SecurityCam* sc;
-    Decal* de;
-    Room* r2;
-    SecurityCam* sc2;
-    Item* it;
-    int i;
-    int xtemp;
-    int ytemp;
-    int ztemp;
-
-    //, Bump
-    int t1;
-
-    d = CreateDoor(r->x, 0, r->z - 448.f * RoomScale, 0, r, false, DOOR_TYPE_CONT, r->roomTemplate->name);
+    Door* d = CreateDoor(r->x, 0, r->z - 448.f * RoomScale, 0, r, false, DOOR_TYPE_CONT, r->roomTemplate->name);
     d->autoClose = false;
     d->open = false;
     bbPositionEntity(d->buttons[0], r->x - 384.f * RoomScale, 0.7f, r->z - 280.f * RoomScale, true);
 
-    sc = CreateSecurityCam(r->x - 320.f * RoomScale, r->y + 704 * RoomScale, r->z + 288.f * RoomScale, r, true);
+    SecurityCam* sc = CreateSecurityCam(r->x - 320.f * RoomScale, r->y + 704 * RoomScale, r->z + 288.f * RoomScale, r, true);
     sc->angle = 45 + 180;
     sc->turn = 45;
     sc->coffinEffect = true;
@@ -72,7 +57,7 @@ void FillRoom_cont_895_1(Room* r) {
     bbPositionEntity(r->objects[0], r->x, -1320.f * RoomScale, r->z + 2304.f * RoomScale);
     bbEntityParent(r->objects[0], r->obj);
 
-    it = CreatePaper("doc895", r->x - 688.f * RoomScale, r->y + 133.f * RoomScale, r->z - 304.f * RoomScale);
+    Item* it = CreatePaper("doc895", r->x - 688.f * RoomScale, r->y + 133.f * RoomScale, r->z - 304.f * RoomScale);
     bbEntityParent(it->collider, r->obj);
 
     it = CreateItem("nvgoggles", r->x + 280.f * RoomScale, r->y -1456.f * RoomScale, r->z + 2164.f * RoomScale);
@@ -86,73 +71,17 @@ void FillRoom_cont_895_1(Room* r) {
 }
 
 void UpdateEventCoffin106(Event* e) {
-    float dist;
-    int i;
-    int temp;
-    int pvt;
-    String strtemp;
-    int j;
-    int k;
-
-    Particle* p;
-    NPC* n;
-    Room* r;
-    Event* e2;
-    Item* it;
-    Emitter* em;
-    SecurityCam* sc;
-    SecurityCam* sc2;
-
-    String CurrTrigger = "";
-
-    float x;
-    float y;
-    float z;
-
-    float angle;
-
+    // TODO:
 }
 
 void UpdateEventCoffin(Event* e) {
-    float dist;
-    int i;
-    int temp;
-    int pvt;
-    String strtemp;
-    int j;
-    int k;
-
-    Particle* p;
-    NPC* n;
-    Room* r;
-    Event* e2;
-    Item* it;
-    Emitter* em;
-    SecurityCam* sc;
-    SecurityCam* sc2;
-    Decal* de;
-
-    String CurrTrigger = "";
-
-    float x;
-    float y;
-    float z;
-
-    float angle;
-    int hasBatteryFor895;
-    float tempF;
-    float tempF2;
-    float tempF3;
-
-
-
     if (e->eventState < TimeInPosMilliSecs()) {
         //SCP-079 starts broadcasting 895 camera feed on monitors after leaving the first zone
         //TODO: rewrite this to adjust for separate zone loading
         //camera feed on
         if (bbEntityPitch(e->room->levers[0]->obj, true) > 0) {
             for (int iterator163 = 0; iterator163 < SecurityCam::getListSize(); iterator163++) {
-                sc = SecurityCam::getObject(iterator163);
+                SecurityCam* sc = SecurityCam::getObject(iterator163);
 
                 if (!sc->specialCam) {
                     if (!sc->coffinEffect==0 && sc->room->roomTemplate->name.equals("room106") && !sc->room->roomTemplate->name.equals("room205")) {
@@ -166,7 +95,7 @@ void UpdateEventCoffin(Event* e) {
             //camera feed off
         } else {
             for (int iterator164 = 0; iterator164 < SecurityCam::getListSize(); iterator164++) {
-                sc = SecurityCam::getObject(iterator164);
+                SecurityCam* sc = SecurityCam::getObject(iterator164);
 
                 if (!sc->specialCam) {
                     if (sc->coffinEffect!=1) {
@@ -186,7 +115,7 @@ void UpdateEventCoffin(Event* e) {
         CoffinDistance = bbEntityDistance(mainPlayer->collider, e->room->objects[1]);
         if (CoffinDistance < 1.5f) {
             if ((!Contained106) && e->name.equals("coffin106") && e->eventState2 == 0) {
-                de = CreateDecal(DECAL_CORROSION, bbEntityX(e->room->objects[1],true), -1531.f*RoomScale, bbEntityZ(e->room->objects[1],true), 90, bbRand(360), 0);
+                Decal* de = CreateDecal(DECAL_CORROSION, bbEntityX(e->room->objects[1],true), -1531.f*RoomScale, bbEntityZ(e->room->objects[1],true), 90, bbRand(360), 0);
                 de->size = 0.05f;
                 de->sizeChange = 0.001f;
                 bbEntityAlpha(de->obj, 0.8f);
@@ -203,8 +132,8 @@ void UpdateEventCoffin(Event* e) {
 
         //TODO: cleanup
         if (IsPlayerWearingItem(mainPlayer,"nvgoggles")) {
-            hasBatteryFor895 = 0;
-            for (i = 0; i <= mainPlayer->inventory->size - 1; i++) {
+            bool hasBatteryFor895 = false;
+            for (int i = 0; i < mainPlayer->inventory->size; i++) {
                 if (mainPlayer->inventory->items[i] != nullptr) {
                     if (mainPlayer->inventory->items[i]->itemTemplate->name.equals("nvgoggles") || mainPlayer->inventory->items[i]->itemTemplate->name.equals("supernv")) {
                         if (mainPlayer->inventory->items[i]->state > 0.f) {
@@ -223,9 +152,9 @@ void UpdateEventCoffin(Event* e) {
                 mainPlayer->sanity895 = mainPlayer->sanity895-(timing->tickDuration*1.1f);
                 mainPlayer->blurTimer = bbSin(TimeInPosMilliSecs()/10)*abs(mainPlayer->sanity895);
 
-                tempF = GetAngle(bbEntityX(mainPlayer->collider,true),bbEntityZ(mainPlayer->collider,true),bbEntityX(e->room->objects[1],true),bbEntityZ(e->room->objects[1],true));
-                tempF2 = bbEntityYaw(mainPlayer->collider);
-                tempF3 = angleDist(tempF+90+bbSin(WrapAngle(e->eventState3/10)),tempF2);
+                float tempF = GetAngle(bbEntityX(mainPlayer->collider,true),bbEntityZ(mainPlayer->collider,true),bbEntityX(e->room->objects[1],true),bbEntityZ(e->room->objects[1],true));
+                float tempF2 = bbEntityYaw(mainPlayer->collider);
+                float tempF3 = angleDist(tempF+90+bbSin(WrapAngle(e->eventState3/10)),tempF2);
 
                 bbTurnEntity(mainPlayer->collider, 0,tempF3/4,0,true);
 
@@ -273,7 +202,7 @@ void UpdateEventCoffin(Event* e) {
 
         if (e->room->levers[0]->succ) {
             for (int iterator165 = 0; iterator165 < SecurityCam::getListSize(); iterator165++) {
-                sc = SecurityCam::getObject(iterator165);
+                SecurityCam* sc = SecurityCam::getObject(iterator165);
 
                 if (!sc->specialCam) {
                     if (sc->coffinEffect==0 && !sc->room->roomTemplate->name.equals("room106")) {
@@ -289,7 +218,7 @@ void UpdateEventCoffin(Event* e) {
             }
         } else {
             for (int iterator166 = 0; iterator166 < SecurityCam::getListSize(); iterator166++) {
-                sc = SecurityCam::getObject(iterator166);
+                SecurityCam* sc = SecurityCam::getObject(iterator166);
 
                 if (!sc->specialCam) {
                     if (sc->coffinEffect != 1) {

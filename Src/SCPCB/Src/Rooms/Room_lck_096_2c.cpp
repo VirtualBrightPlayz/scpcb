@@ -10,23 +10,8 @@ namespace CBN {
 
 // Functions.
 void FillRoom_lck_096_2c(Room* r) {
-    Door* d;
-    Door* d2;
-    SecurityCam* sc;
-    Decal* de;
-    Room* r2;
-    SecurityCam* sc2;
-    Item* it;
-    int i;
-    int xtemp;
-    int ytemp;
-    int ztemp;
-
-    //, Bump
-    int t1;
-
-    for (i = 0; i <= 5; i++) {
-        de = CreateDecal(bbRand(DECAL_BLOOD_SPREAD, DECAL_BLOOD_SPLATTER), r->x+bbRnd(-392,520)*RoomScale, 3.f*RoomScale+bbRnd(0,0.001f), r->z+bbRnd(-392,520)*RoomScale,90,bbRnd(360),0);
+    for (int i = 0; i < 6; i++) {
+        Decal* de = CreateDecal(bbRand(DECAL_BLOOD_SPREAD, DECAL_BLOOD_SPLATTER), r->x+bbRnd(-392,520)*RoomScale, 3.f*RoomScale+bbRnd(0,0.001f), r->z+bbRnd(-392,520)*RoomScale,90,bbRnd(360),0);
         de->size = bbRnd(0.3f,0.6f);
         bbScaleSprite(de->obj, de->size,de->size);
         CreateDecal(bbRand(DECAL_BLOOD_DROP1, DECAL_BLOOD_DROP2), r->x+bbRnd(-392,520)*RoomScale, 3.f*RoomScale+bbRnd(0,0.001f), r->z+bbRnd(-392,520)*RoomScale,90,bbRnd(360),0);
@@ -37,7 +22,7 @@ void FillRoom_lck_096_2c(Room* r) {
         bbScaleSprite(de->obj, de->size,de->size);
     }
 
-    sc = CreateSecurityCam(r->x + 512.f * RoomScale, r->y + 384 * RoomScale, r->z + 384.f * RoomScale, r, true);
+    SecurityCam* sc = CreateSecurityCam(r->x + 512.f * RoomScale, r->y + 384 * RoomScale, r->z + 384.f * RoomScale, r, true);
     sc->angle = 45 + 90;
     sc->turn = 45;
     bbTurnEntity(sc->cameraObj, 40, 0, 0);

@@ -10,22 +10,7 @@ namespace CBN {
 
 // Functions.
 void FillRoom_lck_ez_3(Room* r) {
-    Door* d;
-    Door* d2;
-    SecurityCam* sc;
-    Decal* de;
-    Room* r2;
-    SecurityCam* sc2;
-    Item* it;
-    int i;
-    int xtemp;
-    int ytemp;
-    int ztemp;
-
-    //, Bump
-    int t1;
-
-    d = CreateDoor(r->x - 728.f * RoomScale, 0.f, r->z - 458.f * RoomScale, 0, r, false, DOOR_TYPE_DEF, r->roomTemplate->name);
+    Door* d = CreateDoor(r->x - 728.f * RoomScale, 0.f, r->z - 458.f * RoomScale, 0, r, false, DOOR_TYPE_DEF, r->roomTemplate->name);
 
     d = CreateDoor(r->x - 223.f * RoomScale, 0.f, r->z - 736.f * RoomScale, -90, r, false, DOOR_TYPE_DEF, r->roomTemplate->name);
 
@@ -48,7 +33,7 @@ void FillRoom_lck_ez_3(Room* r) {
     bbEntityParent(r->objects[0],r->obj);
 
     for (int iterator188 = 0; iterator188 < Room::getListSize(); iterator188++) {
-        r2 = Room::getObject(iterator188);
+        Room* r2 = Room::getObject(iterator188);
 
         if (r2!=r) {
             if (r2->roomTemplate->name.equals("room3gw")) {

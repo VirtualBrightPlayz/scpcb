@@ -19,24 +19,6 @@ namespace CBN {
 
 // Functions.
 void FillRoom_strg_939_3(Room* r) {
-    Door* d;
-    Door* d2;
-    SecurityCam* sc;
-    Decal* de;
-    Room* r2;
-    SecurityCam* sc2;
-    Emitter* em;
-    Item* it;
-    int i;
-    float x;
-    float z;
-    int xtemp;
-    int ytemp;
-    int ztemp;
-
-    //, Bump
-    int t1;
-
     r->objects[0] = bbCreatePivot(r->obj);
     bbPositionEntity(r->objects[0], r->x, 240.f * RoomScale, r->z + 752.f * RoomScale, true);
 
@@ -119,7 +101,7 @@ void FillRoom_strg_939_3(Room* r) {
     //X=-176 | Z=+40
     bbPositionEntity(r->doors[3]->buttons[1], r->x - 632.f*RoomScale, bbEntityY(r->doors[3]->buttons[1],true), r->z - 784.f * RoomScale, true);
 
-    em = CreateEmitter(r->x + 5218.f * RoomScale, -5584.f*RoomScale, r->z - 600* RoomScale, 0);
+    Emitter* em = CreateEmitter(r->x + 5218.f * RoomScale, -5584.f*RoomScale, r->z - 600* RoomScale, 0);
     bbTurnEntity(em->obj, 20, -100, 0, true);
     bbEntityParent(em->obj, r->obj);
     em->room = r;
@@ -129,6 +111,8 @@ void FillRoom_strg_939_3(Room* r) {
     em->aChange = -0.006f;
     em->gravity = -0.2f;
 
+    int x = 0;
+    int z = 0;
     switch (bbRand(3)) {
         case 1: {
             x = 2312;
@@ -144,10 +128,10 @@ void FillRoom_strg_939_3(Room* r) {
         } break;
     }
 
-    it = CreateItem("nvgoggles", r->x + 1936.f * RoomScale, r->y - 5496.f * RoomScale, r->z - 944.f * RoomScale);
+    Item* it = CreateItem("nvgoggles", r->x + 1936.f * RoomScale, r->y - 5496.f * RoomScale, r->z - 944.f * RoomScale);
     bbEntityParent(it->collider, r->obj);
 
-    de = CreateDecal(DECAL_BLOOD_SPLATTER,  r->x + x*RoomScale, -5632.f*RoomScale+0.01f, r->z+z*RoomScale,90,bbRnd(360),0);
+    Decal* de = CreateDecal(DECAL_BLOOD_SPLATTER,  r->x + x*RoomScale, -5632.f*RoomScale+0.01f, r->z+z*RoomScale,90,bbRnd(360),0);
     de->size = 0.5f;
     bbScaleSprite(de->obj, de->size,de->size);
     bbEntityParent(de->obj, r->obj);
@@ -183,16 +167,16 @@ void FillRoom_strg_939_3(Room* r) {
     r->doors[4] = CreateDoor(r->x+56*RoomScale,r->y-5632*RoomScale,r->z+6344*RoomScale,90,r,false,DOOR_TYPE_HCZ);
     r->doors[4]->autoClose = false;
     r->doors[4]->open = false;
-    for (i = 0; i <= 1; i++) {
+    for (int i = 0; i < 2; i++) {
         bbFreeEntity(r->doors[4]->buttons[i]);
         r->doors[4]->buttons[i] = 0;
     }
 
-    d = CreateDoor(r->x+1157.f*RoomScale,r->y-5632.f*RoomScale,r->z+660.f*RoomScale,0,r,false,DOOR_TYPE_HCZ);
+    Door* d = CreateDoor(r->x+1157.f*RoomScale,r->y-5632.f*RoomScale,r->z+660.f*RoomScale,0,r,false,DOOR_TYPE_HCZ);
     d->locked = true;
     d->open = false;
     d->autoClose = false;
-    for (i = 0; i <= 1; i++) {
+    for (int i = 0; i < 2; i++) {
         bbFreeEntity(d->buttons[i]);
         d->buttons[i] = 0;
     }
@@ -201,7 +185,7 @@ void FillRoom_strg_939_3(Room* r) {
     d->locked = true;
     d->open = false;
     d->autoClose = false;
-    for (i = 0; i <= 1; i++) {
+    for (int i = 0; i < 2; i++) {
         bbFreeEntity(d->buttons[i]);
         d->buttons[i] = 0;
     }
@@ -210,39 +194,13 @@ void FillRoom_strg_939_3(Room* r) {
     d->locked = true;
     d->open = false;
     d->autoClose = false;
-    for (i = 0; i <= 1; i++) {
+    for (int i = 0; i < 2; i++) {
         bbFreeEntity(d->buttons[i]);
         d->buttons[i] = 0;
     }
 }
 
 void UpdateEvent_strg_939_3(Event* e) {
-    float dist;
-    int i;
-    int temp;
-    int pvt;
-    String strtemp;
-    int j;
-    int k;
-
-    Particle* p;
-    NPC* n;
-    Room* r;
-    Event* e2;
-    Item* it;
-    Emitter* em;
-    SecurityCam* sc;
-    SecurityCam* sc2;
-
-    String CurrTrigger = "";
-
-    float x;
-    float y;
-    float z;
-
-    float angle;
-
-
     if (mainPlayer->currRoom == e->room) {
         e->eventState2 = UpdateElevators2(e->eventState2, e->room->doors[0], e->room->doors[1],e->room->objects[0],e->room->objects[1], e);
 

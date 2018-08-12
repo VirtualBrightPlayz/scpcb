@@ -12,26 +12,10 @@ namespace CBN {
 
 // Functions.
 void FillRoom_hll_gas_2(Room* r) {
-    Door* d;
-    Door* d2;
-    SecurityCam* sc;
-    Decal* de;
-    Room* r2;
-    SecurityCam* sc2;
-    Emitter* em;
-    Item* it;
-    int i;
-    int xtemp;
-    int ytemp;
-    int ztemp;
-
-    //, Bump
-    int t1;
-
-    i = 0;
-    for (xtemp = -1; xtemp <= 1; xtemp += 2) {
-        for (ztemp = -1; ztemp <= 1; ztemp++) {
-            em = CreateEmitter(r->x + 202.f * RoomScale * xtemp, 8.f * RoomScale, r->z + 256.f * RoomScale * ztemp, 0);
+    int i = 0;
+    for (int xtemp = -1; xtemp <= 1; xtemp += 2) {
+        for (int ztemp = -1; ztemp < 2; ztemp++) {
+            Emitter* em = CreateEmitter(r->x + 202.f * RoomScale * xtemp, 8.f * RoomScale, r->z + 256.f * RoomScale * ztemp, 0);
             em->randAngle = 30;
             em->speed = 0.0045f;
             em->sizeChange = 0.007f;
@@ -44,7 +28,7 @@ void FillRoom_hll_gas_2(Room* r) {
             }
             bbTurnEntity(em->obj, -45, 0, 0, true);
             bbEntityParent(em->obj, r->obj);
-            i = i+1;
+            i++;
         }
     }
 
@@ -58,32 +42,6 @@ void FillRoom_hll_gas_2(Room* r) {
 }
 
 void UpdateEvent_hll_gas_2(Event* e) {
-    float dist;
-    int i;
-    int temp;
-    int pvt;
-    String strtemp;
-    int j;
-    int k;
-
-    Particle* p;
-    NPC* n;
-    Room* r;
-    Event* e2;
-    Item* it;
-    Emitter* em;
-    SecurityCam* sc;
-    SecurityCam* sc2;
-
-    String CurrTrigger = "";
-
-    float x;
-    float y;
-    float z;
-
-    float angle;
-
-
     if (Curr173->idle == 0) {
         if (e->room->dist < 8.f  && e->room->dist > 0) {
             if (!bbEntityVisible(Curr173->collider, mainPlayer->cam) && !bbEntityVisible(e->room->objects[6], mainPlayer->cam)) {
@@ -93,7 +51,6 @@ void UpdateEvent_hll_gas_2(Event* e) {
             }
         }
     }
-
 }
 
 }

@@ -25,21 +25,6 @@ namespace CBN {
 
 // Functions.
 void FillRoom_hll_caf_2(Room* r) {
-    Door* d;
-    Door* d2;
-    SecurityCam* sc;
-    Decal* de;
-    Room* r2;
-    SecurityCam* sc2;
-    Item* it = nullptr;
-    int i;
-    int xtemp;
-    int ytemp;
-    int ztemp;
-
-    //, Bump
-    int t1;
-
     //scp-294
     r->objects[0] = bbCreatePivot(r->obj);
     bbPositionEntity(r->objects[0], r->x+1847.f*RoomScale, -240.f*RoomScale, r->z-321*RoomScale, true);
@@ -56,60 +41,36 @@ void FillRoom_hll_caf_2(Room* r) {
     // it->name = "Cup of Coffee";
 
     // it = CreateItem("cup", r->x-540*RoomScale, -187*RoomScale, r->z+124.f*RoomScale);
-    bbEntityParent(it->collider, r->obj);
+    // bbEntityParent(it->collider, r->obj);
 }
 
 void Draw294() {
-    int x;
-    int y;
-    int xtemp;
-    int ytemp;
-    String strtemp;
-    int temp;
-
     ImageAssetWrap* panel294 = ImageAssetWrap::grab("GFX/HUD/294panel.jpg");
-    x = userOptions->screenWidth/2 - (bbImageWidth(panel294->getImage())/2);
-    y = userOptions->screenHeight/2 - (bbImageHeight(panel294->getImage())/2);
+    int x = userOptions->screenWidth/2 - (bbImageWidth(panel294->getImage())/2);
+    int y = userOptions->screenHeight/2 - (bbImageHeight(panel294->getImage())/2);
 
     bbMaskImage(panel294->getImage(), 255, 0, 255);
     bbDrawImage(panel294->getImage(), x, y);
     panel294->drop();
 
     bbText(x+907, y+185, Input294, true,true);
-
-
 }
 
 void Update294() {
-    float x;
-    float y;
-    int xtemp;
-    int ytemp;
-    String strtemp;
-    int temp;
-    int sep1;
-    int sep2;
-    int r;
-    int g;
-    int b;
-
-    float alpha;
-    int glow;
-
     ImageAssetWrap* panel294 = ImageAssetWrap::grab("GFX/HUD/294panel.jpg");
-    x = userOptions->screenWidth/2 - (bbImageWidth(panel294->getImage())/2);
-    y = userOptions->screenHeight/2 - (bbImageHeight(panel294->getImage())/2);
+    int x = userOptions->screenWidth/2 - (bbImageWidth(panel294->getImage())/2);
+    int y = userOptions->screenHeight/2 - (bbImageHeight(panel294->getImage())/2);
     panel294->drop();
 
-    temp = true;
+    bool temp = true;
     if (mainPlayer->currRoom->soundCHN!=0) {
         temp = false;
     }
 
     if (temp) {
         if (MouseHit1) {
-            xtemp = (int)(bbFloor((bbMouseX()-x-228) / 35.5f));
-            ytemp = (int)(bbFloor((bbMouseY()-y-342) / 36.5f));
+            int xtemp = (int)(bbFloor((bbMouseX()-x-228) / 35.5f));
+            int ytemp = (int)(bbFloor((bbMouseY()-y-342) / 36.5f));
 
             if (ytemp >= 0 && ytemp < 5) {
                 if (xtemp >= 0 && xtemp < 10) {
@@ -117,7 +78,7 @@ void Update294() {
                 }
             }
 
-            strtemp = "";
+            String strtemp = "";
 
             temp = false;
 
@@ -249,11 +210,11 @@ void Update294() {
                 strtemp = GetINIString("Data/SCP-294.ini", Input294, "color", "N/A");
 
                 if (!strtemp.equals("N/A")) {
-                    sep1 = bbInstr(strtemp, ",", 1);
-                    sep2 = bbInstr(strtemp, ",", sep1 + 1);
-                    r = strtemp.substr(0, sep1 - 1).trim().toInt();
-                    g = bbMid(strtemp, sep1 + 1, sep2 - sep1 - 1).trim().toInt();
-                    b = bbRight(strtemp, strtemp.size() - sep2).trim().toInt();
+                    int sep1 = bbInstr(strtemp, ",", 1);
+                    int sep2 = bbInstr(strtemp, ",", sep1 + 1);
+                    int r = strtemp.substr(0, sep1 - 1).trim().toInt();
+                    int g = bbMid(strtemp, sep1 + 1, sep2 - sep1 - 1).trim().toInt();
+                    int b = bbRight(strtemp, strtemp.size() - sep2).trim().toInt();
 
                     strtemp = GetINIString("Data/SCP-294.ini", Input294, "dispensesound");
                     if (strtemp.isEmpty()) {
@@ -267,8 +228,8 @@ void Update294() {
                         DeathMSG = GetINIString("Data/SCP-294.ini", Input294, "deathmessage");
                     }
 
-                    alpha = GetINIString("Data/SCP-294.ini", Input294, "alpha").toFloat();
-                    glow = GetINIInt("Data/SCP-294.ini", Input294, "glow");
+                    float alpha = GetINIString("Data/SCP-294.ini", Input294, "alpha").toFloat();
+                    bool glow = GetINIInt("Data/SCP-294.ini", Input294, "glow");
                     // FIXME: Float equality.
                     if (alpha == 0) {
                         alpha = 1.f;
@@ -316,41 +277,15 @@ void Update294() {
 }
 
 void UpdateEvent_hll_caf_2(Event* e) {
-    float dist;
-    int i;
-    int temp;
-    int pvt;
-    String strtemp;
-    int j;
-    int k;
-
-    Particle* p;
-    NPC* n;
-    Room* r;
-    Event* e2;
-    Item* it;
-    Emitter* em;
-    SecurityCam* sc;
-    SecurityCam* sc2;
-
-    String CurrTrigger = "";
-
-    float x;
-    float y;
-    float z;
-
-    float angle;
-
-
     if (mainPlayer->currRoom == e->room) {
         if (CurrGameState!=GAMESTATE_SCP294) {
             if (bbEntityDistance(e->room->objects[0], mainPlayer->collider)<1.5f) {
                 if (bbEntityInView(e->room->objects[0], mainPlayer->cam)) {
                     DrawHandIcon = true;
                     if (MouseHit1) {
-                        temp = true;
+                        bool temp = true;
                         for (int iterator182 = 0; iterator182 < Item::getListSize(); iterator182++) {
-                            it = Item::getObject(iterator182);
+                            Item* it = Item::getObject(iterator182);
 
                             if (it->picked==false) {
                                 if (bbEntityX(it->collider)-bbEntityX(e->room->objects[1],true)==0) {

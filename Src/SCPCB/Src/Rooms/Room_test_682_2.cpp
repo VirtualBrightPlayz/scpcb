@@ -16,23 +16,8 @@ namespace CBN {
 
 // Functions.
 void FillRoom_test_682_2(Room* r) {
-    Door* d;
-    Door* d2;
-    SecurityCam* sc;
-    Decal* de;
-    Room* r2;
-    SecurityCam* sc2;
-    Item* it;
-    int i;
-    int xtemp;
-    int ytemp;
-    int ztemp;
-
-    //, Bump
-    int t1;
-
-    for (xtemp = 0; xtemp <= 1; xtemp++) {
-        for (ztemp = -1; ztemp <= 1; ztemp++) {
+    for (int xtemp = 0; xtemp < 2; xtemp++) {
+        for (int ztemp = -1; ztemp < 2; ztemp++) {
             r->objects[xtemp * 3 + (ztemp + 1)] = bbCreatePivot();
             bbPositionEntity(r->objects[xtemp * 3 + (ztemp + 1)], r->x + (-236.f + 280.f * xtemp) * RoomScale, -700.f * RoomScale, r->z + 384.f * ztemp * RoomScale);
             bbEntityParent(r->objects[xtemp * 3 + (ztemp + 1)], r->obj);
@@ -43,45 +28,19 @@ void FillRoom_test_682_2(Room* r) {
     bbPositionEntity(r->objects[6], r->x + 754.f * RoomScale, r->y - 1248.f * RoomScale, r->z);
     bbEntityParent(r->objects[6], r->obj);
 
-    sc = CreateSecurityCam(r->x + 744.f * RoomScale, r->y - 856.f * RoomScale, r->z + 236.f * RoomScale, r);
+    SecurityCam* sc = CreateSecurityCam(r->x + 744.f * RoomScale, r->y - 856.f * RoomScale, r->z + 236.f * RoomScale, r);
     sc->followPlayer = true;
 
     CreateDoor(r->x + 720.f * RoomScale, 0, r->z, 0, r, false, DOOR_TYPE_HCZ, r->roomTemplate->name);
 
     CreateDoor(r->x - 624.f * RoomScale, -1280.f * RoomScale, r->z, 90, r, true, DOOR_TYPE_HCZ);
 
-    it = CreatePaper("doc682", r->x + 656.f * RoomScale, r->y - 1200.f * RoomScale, r->z - 16.f * RoomScale);
+    Item* it = CreatePaper("doc682", r->x + 656.f * RoomScale, r->y - 1200.f * RoomScale, r->z - 16.f * RoomScale);
     bbEntityParent(it->collider, r->obj);
 }
 
 void UpdateEvent_test_682_2(Event* e) {
-    float dist;
-    int i;
-    int temp;
-    int pvt;
-    String strtemp;
-    int j;
-    int k;
-
-    Particle* p;
-    NPC* n;
-    Room* r;
-    Event* e2;
-    Item* it;
-    Emitter* em;
-    SecurityCam* sc;
-    SecurityCam* sc2;
-
-    String CurrTrigger = "";
-
-    float x;
-    float y;
-    float z;
-
-    float angle;
-
-
-    if (e != nullptr) {
+    if (e != nullptr) { // TODO: Wtf?
         if (mainPlayer->currRoom == e->room) {
             if (e->eventState == 0) {
                 e->room->objects[7] = bbLoadAnimMesh("GFX/npcs/scp-1048.b3d");

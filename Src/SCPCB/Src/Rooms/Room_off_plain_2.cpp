@@ -9,22 +9,7 @@ namespace CBN {
 
 // Functions.
 void FillRoom_off_plain_2(Room* r) {
-    Door* d;
-    Door* d2;
-    SecurityCam* sc;
-    Decal* de;
-    Room* r2;
-    SecurityCam* sc2;
-    Item* it;
-    int i;
-    int xtemp;
-    int ytemp;
-    int ztemp;
-
-    //, Bump
-    int t1;
-
-    it = CreatePaper("doc106", r->x + 404.f * RoomScale, r->y + 145.f * RoomScale, r->z + 559.f * RoomScale);
+    Item* it = CreatePaper("doc106", r->x + 404.f * RoomScale, r->y + 145.f * RoomScale, r->z + 559.f * RoomScale);
     bbEntityParent(it->collider, r->obj);
 
     it = CreateItem("navigator", r->x + 305.f * RoomScale, r->y + 153.f * RoomScale, r->z + 944.f * RoomScale);

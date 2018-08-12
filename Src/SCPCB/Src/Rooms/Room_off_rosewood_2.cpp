@@ -10,26 +10,11 @@ namespace CBN {
 
 // Functions.
 void FillRoom_off_rosewood_2(Room* r) {
-    Door* d;
-    Door* d2;
-    SecurityCam* sc;
-    Decal* de;
-    Room* r2;
-    SecurityCam* sc2;
-    Item* it;
-    int i;
-    int xtemp;
-    int ytemp;
-    int ztemp;
-
-    //, Bump
-    int t1;
-
-    d = CreateDoor(r->x + 1440.f * RoomScale, 224.f * RoomScale, r->z + 32.f * RoomScale, 90, r, false, DOOR_TYPE_DEF, r->roomTemplate->name);
+    Door* d = CreateDoor(r->x + 1440.f * RoomScale, 224.f * RoomScale, r->z + 32.f * RoomScale, 90, r, false, DOOR_TYPE_DEF, r->roomTemplate->name);
     d->autoClose = false;
     d->open = false;
 
-    it = CreateItem("scp420j", r->x + 1776.f * RoomScale, r->y + 400.f * RoomScale, r->z + 427.f * RoomScale);
+    Item* it = CreateItem("scp420j", r->x + 1776.f * RoomScale, r->y + 400.f * RoomScale, r->z + 427.f * RoomScale);
     bbEntityParent(it->collider, r->obj);
 
     it = CreateItem("scp420j", r->x + 1808.f * RoomScale, r->y + 400.f * RoomScale, r->z + 435.f * RoomScale);

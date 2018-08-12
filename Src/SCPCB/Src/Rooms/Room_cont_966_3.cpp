@@ -13,29 +13,14 @@ namespace CBN {
 
 // Functions.
 void FillRoom_cont_966_3(Room* r) {
-    Door* d;
-    Door* d2;
-    SecurityCam* sc;
-    Decal* de;
-    Room* r2;
-    SecurityCam* sc2;
-    Item* it;
-    int i;
-    int xtemp;
-    int ytemp;
-    int ztemp;
-
-    //, Bump
-    int t1;
-
-    d = CreateDoor(r->x - 400.f * RoomScale, 0, r->z, -90, r, false, DOOR_TYPE_DEF, r->roomTemplate->name);
+    Door* d = CreateDoor(r->x - 400.f * RoomScale, 0, r->z, -90, r, false, DOOR_TYPE_DEF, r->roomTemplate->name);
     //: d\buttons[0] = False
     d = CreateDoor(r->x, 0, r->z - 480.f * RoomScale, 180, r, false, DOOR_TYPE_DEF, r->roomTemplate->name);
 
     //PositionEntity(d\buttons[0], EntityX(d\buttons[0],True), EntityY(d\buttons[0],True), r\z + 288.f * RoomScale, True)
     //PositionEntity(d\buttons[1], EntityX(d\buttons[1],True), EntityY(d\buttons[1],True), r\z + 320.f * RoomScale, True)
 
-    sc = CreateSecurityCam(r->x-312.f * RoomScale, r->y + 414*RoomScale, r->z + 656*RoomScale, r);
+    SecurityCam* sc = CreateSecurityCam(r->x-312.f * RoomScale, r->y + 414*RoomScale, r->z + 656*RoomScale, r);
     sc->angle = 225;
     sc->turn = 45;
     bbTurnEntity(sc->cameraObj, 20, 0, 0);
@@ -54,7 +39,7 @@ void FillRoom_cont_966_3(Room* r) {
     r->objects[3] = bbCreatePivot(r->obj);
     bbPositionEntity(r->objects[3], r->x + 320.f * RoomScale, 0.5f, r->z + 704.f * RoomScale, true);
 
-    it = CreateItem("nvgoggles", r->x + 320.f * RoomScale, 0.5f, r->z + 704.f * RoomScale);
+    Item* it = CreateItem("nvgoggles", r->x + 320.f * RoomScale, 0.5f, r->z + 704.f * RoomScale);
     bbEntityParent(it->collider, r->obj);
 }
 

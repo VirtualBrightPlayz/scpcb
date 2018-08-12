@@ -19,21 +19,7 @@ namespace CBN {
 
 // Functions.
 void FillRoom_closets_2(Room* r) {
-    Door* d;
-    Door* d2;
-    SecurityCam* sc;
-    Decal* de;
-    Room* r2;
-    SecurityCam* sc2;
-    Item* it;
-    int i;
-    int xtemp;
-    int ytemp;
-    int ztemp;
-
-    //, Bump
-    int t1;
-    it = CreatePaper("doc173", r->x + 736.f * RoomScale, r->y + 176.f * RoomScale, r->z + 736.f * RoomScale);
+    Item* it = CreatePaper("doc173", r->x + 736.f * RoomScale, r->y + 176.f * RoomScale, r->z + 736.f * RoomScale);
     bbEntityParent(it->collider, r->obj);
 
     it = CreateItem("gasmask", r->x + 736.f * RoomScale, r->y + 176.f * RoomScale, r->z + 544.f * RoomScale);
@@ -59,13 +45,13 @@ void FillRoom_closets_2(Room* r) {
     r->objects[1] = bbCreatePivot(r->obj);
     bbPositionEntity(r->objects[1], r->x-1232*RoomScale, -256*RoomScale, r->z-160*RoomScale, true);
 
-    d = CreateDoor(r->x - 240.f * RoomScale, 0.f, r->z, 90, r, false);
+    Door* d = CreateDoor(r->x - 240.f * RoomScale, 0.f, r->z, 90, r, false);
     d->open = false;
     d->autoClose = false;
     bbMoveEntity(d->buttons[0], 0.f, 0.f, 22.f * RoomScale);
     bbMoveEntity(d->buttons[1], 0.f, 0.f, 22.f * RoomScale);
 
-    sc = CreateSecurityCam(r->x, r->y + 704*RoomScale, r->z + 863*RoomScale, r);
+    SecurityCam* sc = CreateSecurityCam(r->x, r->y + 704*RoomScale, r->z + 863*RoomScale, r);
     sc->angle = 180;
     sc->turn = 45;
     bbTurnEntity(sc->cameraObj, 20, 0, 0);
@@ -74,38 +60,13 @@ void FillRoom_closets_2(Room* r) {
 }
 
 void UpdateEvent_closets_2(Event* e) {
-    float dist;
-    int i;
-    int temp;
-    int pvt;
-    String strtemp;
-    int j;
-    int k;
-    Texture* tex;
-
-    Particle* p;
-    NPC* n;
-    Room* r;
-    Emitter* em;
-    SecurityCam* sc;
-    SecurityCam* sc2;
-
-    String CurrTrigger = "";
-
-    float x;
-    float y;
-    float z;
-
-    float angle;
-
-
     if (e->eventState == 0) {
         if (!e->loaded) {
             if (e->room->npc[0]==nullptr) {
                 e->room->npc[0] = CreateNPC(NPCtypeD, bbEntityX(e->room->objects[0],true),bbEntityY(e->room->objects[0],true),bbEntityZ(e->room->objects[0],true));
             }
             e->room->npc[0]->texture = "GFX/NPCs/classd/janitor.jpg";
-            tex = bbLoadTexture(e->room->npc[0]->texture);
+            Texture* tex = bbLoadTexture(e->room->npc[0]->texture);
 
             bbEntityTexture(e->room->npc[0]->obj, tex);
             bbFreeTexture(tex);

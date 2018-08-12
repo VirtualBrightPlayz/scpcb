@@ -20,28 +20,13 @@ namespace CBN {
 
 // Functions.
 void FillRoom_cont_1123_2(Room* r) {
-    Door* d;
-    Door* d2;
-    SecurityCam* sc;
-    Decal* de;
-    Room* r2;
-    SecurityCam* sc2;
-    Item* it;
-    int i;
-    int xtemp;
-    int ytemp;
-    int ztemp;
-
-    //, Bump
-    int t1;
-
-    it = CreatePaper("doc1123", r->x + 511.f * RoomScale, r->y + 125.f * RoomScale, r->z - 936.f * RoomScale);
+    Item* it = CreatePaper("doc1123", r->x + 511.f * RoomScale, r->y + 125.f * RoomScale, r->z - 936.f * RoomScale);
     bbEntityParent(it->collider, r->obj);
 
     it = CreateItem("gasmask", r->x + 457.f * RoomScale, r->y + 150.f * RoomScale, r->z + 960.f * RoomScale);
     bbEntityParent(it->collider, r->obj);
 
-    d = CreateDoor(r->x + 832.f * RoomScale, 0.f, r->z + 367.f * RoomScale, 0, r, false, DOOR_TYPE_DEF, r->roomTemplate->name);
+    Door* d = CreateDoor(r->x + 832.f * RoomScale, 0.f, r->z + 367.f * RoomScale, 0, r, false, DOOR_TYPE_DEF, r->roomTemplate->name);
     bbPositionEntity(d->buttons[0], r->x + 956.f * RoomScale, bbEntityY(d->buttons[0],true), r->z + 352.f * RoomScale, true);
     bbPositionEntity(d->buttons[1], r->x + 713.f * RoomScale, bbEntityY(d->buttons[1],true), r->z + 384.f * RoomScale, true);
     bbFreeEntity(d->obj2);
@@ -115,35 +100,6 @@ void FillRoom_cont_1123_2(Room* r) {
 }
 
 void UpdateEvent_cont_1123_2(Event* e) {
-    float dist;
-    int i;
-    int temp;
-    int pvt;
-    String strtemp;
-    int j;
-    int k;
-
-    Particle* p;
-    NPC* n;
-    Room* r;
-    Event* e2;
-    Item* it;
-    Emitter* em;
-    SecurityCam* sc;
-    SecurityCam* sc2;
-    Decal* de;
-
-    String CurrTrigger = "";
-
-    float x;
-    float y;
-    float z;
-
-    float angle;
-    MeshModel* nazi;
-    float scale;
-
-
     if (mainPlayer->currRoom == e->room) {
         //the event is started when the player picks up SCP-1123 (in Items.bb/UpdateItems())
 
@@ -161,8 +117,8 @@ void UpdateEvent_cont_1123_2(Event* e) {
             e->room->npc[0] = CreateNPC(NPCtypeD, bbEntityX(e->room->objects[6],true),bbEntityY(e->room->objects[6],true),bbEntityZ(e->room->objects[6],true));
             //e\room\npc[1] = CreateNPC(NPCtypeD, EntityX(e\room\objects[7],True),EntityY(e\room\objects[7],True),EntityZ(e\room\objects[7],True))
 
-            nazi = bbLoadAnimMesh("GFX/npcs/naziofficer.b3d");
-            scale = 0.5f / bbMeshWidth(nazi);
+            MeshModel* nazi = bbLoadAnimMesh("GFX/npcs/naziofficer.b3d");
+            float scale = 0.5f / bbMeshWidth(nazi);
 
             bbFreeEntity(e->room->npc[0]->obj);
             e->room->npc[0]->obj = bbCopyMeshModelEntity(nazi);
@@ -280,9 +236,9 @@ void UpdateEvent_cont_1123_2(Event* e) {
                 bbRotateEntity(e->room->objects[9],0,90,0,false);
                 bbRotateEntity(e->room->objects[13],0,0,0,false);
 
-                x = (bbEntityX(e->room->objects[8], true)+bbEntityX(e->room->objects[12], true))/2;
-                y = bbEntityY(e->room->objects[5], true);
-                z = (bbEntityZ(e->room->objects[8], true)+bbEntityZ(e->room->objects[12], true))/2;
+                float x = bbEntityX(e->room->objects[8], true)+bbEntityX(e->room->objects[12], true)/2;
+                float y = bbEntityY(e->room->objects[5], true);
+                float z = bbEntityZ(e->room->objects[8], true)+bbEntityZ(e->room->objects[12], true)/2;
                 bbPositionEntity(mainPlayer->collider, x,y,z, true);
                 bbResetEntity(mainPlayer->collider);
 
@@ -297,7 +253,7 @@ void UpdateEvent_cont_1123_2(Event* e) {
 
                 mainPlayer->blinkTimer = -10;
 
-                de = CreateDecal(DECAL_BLOOD_SPLATTER, bbEntityX(mainPlayer->collider), 512*RoomScale + 0.0005f, bbEntityZ(mainPlayer->collider),90,bbRnd(360),0);
+                Decal* de = CreateDecal(DECAL_BLOOD_SPLATTER, bbEntityX(mainPlayer->collider), 512*RoomScale + 0.0005f, bbEntityZ(mainPlayer->collider),90,bbRnd(360),0);
                 de->size = 0.5f;
                 bbScaleSprite(de->obj, de->size, de->size);
 
@@ -335,7 +291,7 @@ void UpdateEvent_cont_1123_2(Event* e) {
             PrevInjuries = 0;
             PrevBloodloss = 0;
 
-            for (i = 0; i <= mainPlayer->inventory->size-1; i++) {
+            for (int i = 0; i < mainPlayer->inventory->size; i++) {
                 if (mainPlayer->inventory->items[i] != nullptr) {
                     if (mainPlayer->inventory->items[i]->itemTemplate->name.equals("Leaflet")) {
                         mainPlayer->inventory->items[i] = nullptr;

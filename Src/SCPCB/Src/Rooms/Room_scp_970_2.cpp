@@ -19,21 +19,6 @@ namespace CBN {
 
 // Functions.
 void FillRoom_scp_970_2(Room* r) {
-    Door* d;
-    Door* d2;
-    SecurityCam* sc;
-    Decal* de;
-    Room* r2;
-    SecurityCam* sc2;
-    Item* it;
-    int i;
-    int xtemp;
-    int ytemp;
-    int ztemp;
-
-    //, Bump
-    int t1;
-
     r->doors[0] = CreateDoor(r->x - 1288.f * RoomScale, 0, r->z, 270, r);
     r->doors[1] = CreateDoor(r->x - 760.f * RoomScale, 0, r->z, 270, r);
     r->doors[2] = CreateDoor(r->x - 264.f * RoomScale, 0, r->z, 270, r);
@@ -41,14 +26,14 @@ void FillRoom_scp_970_2(Room* r) {
     r->doors[4] = CreateDoor(r->x + 760.f * RoomScale, 0, r->z, 270, r);
     r->doors[5] = CreateDoor(r->x + 1288.f * RoomScale, 0, r->z, 270, r);
 
-    for (i = 0; i <= 5; i++) {
+    for (int i = 0; i < 6; i++) {
         bbMoveEntity(r->doors[i]->buttons[0], 0,0,-8.f);
         bbMoveEntity(r->doors[i]->buttons[1], 0,0,-8.f);
         r->doors[i]->autoClose = false;
         r->doors[i]->open = false;
     }
 
-    it = CreatePaper("doc939", r->x + 352.f * RoomScale, r->y + 176.f * RoomScale, r->z + 256.f * RoomScale);
+    Item* it = CreatePaper("doc939", r->x + 352.f * RoomScale, r->y + 176.f * RoomScale, r->z + 256.f * RoomScale);
     bbRotateEntity(it->collider, 0, r->angle+4, 0);
     bbEntityParent(it->collider, r->obj);
 
@@ -60,37 +45,6 @@ void FillRoom_scp_970_2(Room* r) {
 }
 
 void UpdateEvent_scp_970_2(Event* e) {
-    float dist;
-    int i;
-    int temp;
-    int pvt;
-    String strtemp;
-    int j;
-    int k;
-    int tex;
-
-    Particle* p;
-    NPC* n;
-    Room* r;
-    Event* e2;
-    Item* it;
-    Item* it2;
-    ItemTemplate* itt;
-    Emitter* em;
-    SecurityCam* sc;
-    SecurityCam* sc2;
-    Decal* de;
-
-    String CurrTrigger = "";
-
-    float x;
-    float y;
-    float z;
-
-    float angle;
-    int tex970;
-
-
     if (mainPlayer->currRoom == e->room) {
         if (e->eventState2 <= 0) {
             e->room->doors[1]->locked = false;
@@ -100,8 +54,8 @@ void UpdateEvent_scp_970_2(Event* e) {
                 e->room->doors[1]->locked = true;
                 e->room->doors[4]->locked = true;
             } else {
-                for (int iterator192 = 0; iterator192 < NPC::getListSize(); iterator192++) {
-                    n = NPC::getObject(iterator192);
+                for (int i = 0; i < NPC::getListSize(); i++) {
+                    NPC* n = NPC::getObject(i);
 
                     if (n->npcType == NPCtypeMTF) {
                         if (bbEntityDistance(mainPlayer->collider, Curr173->obj)<8.f) {
@@ -121,14 +75,14 @@ void UpdateEvent_scp_970_2(Event* e) {
 
         bbTFormPoint(bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider),bbEntityZ(mainPlayer->collider),0,e->room->obj);
 
-        temp = 0;
+        bool temp = false;
         if (bbTFormedX()>730) {
             bbUpdateWorld();
             bbTFormPoint(bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider),bbEntityZ(mainPlayer->collider),0,e->room->obj);
 
             //1->3, 2->4
             //3->0, 4->0
-            for (i = 1; i <= 2; i++) {
+            for (int i = 1; i < 3; i++) {
                 e->room->doors[i]->open = e->room->doors[i+2]->open;
                 e->room->doors[i]->openstate = e->room->doors[i+2]->openstate;
                 bbPositionEntity(e->room->doors[i]->obj, bbEntityX(e->room->doors[i+2]->obj),bbEntityY(e->room->doors[i+2]->obj),bbEntityZ(e->room->doors[i+2]->obj));
@@ -153,7 +107,7 @@ void UpdateEvent_scp_970_2(Event* e) {
 
             //3->1, 4->2
             //1->0, 2->0
-            for (i = 1; i <= 2; i++) {
+            for (int i = 1; i < 3; i++) {
                 e->room->doors[i+2]->open = e->room->doors[i]->open;
                 e->room->doors[i+2]->openstate = e->room->doors[i]->openstate;
                 bbPositionEntity(e->room->doors[i+2]->obj, bbEntityX(e->room->doors[i]->obj),bbEntityY(e->room->doors[i]->obj),bbEntityZ(e->room->doors[i]->obj));
@@ -175,20 +129,20 @@ void UpdateEvent_scp_970_2(Event* e) {
             temp = true;
         }
 
-        if (temp == true) {
+        if (temp) {
 
             //Rand(1,2)
             e->eventState = e->eventState+1;
 
-            for (int iterator193 = 0; iterator193 < Item::getListSize(); iterator193++) {
-                it = Item::getObject(iterator193);
+            for (int i = 0; i < Item::getListSize(); i++) {
+                Item* it = Item::getObject(i);
 
                 if (bbEntityDistance(it->collider,mainPlayer->collider)<5.f) {
 
                     bbTFormPoint(bbEntityX(it->collider),bbEntityY(it->collider),bbEntityZ(it->collider),0,e->room->obj);
-                    x = bbTFormedX();
-                    y = bbTFormedY();
-                    z = bbTFormedZ();
+                    float x = bbTFormedX();
+                    float y = bbTFormedY();
+                    float z = bbTFormedZ();
                     if (bbTFormedX()>264) {
                         bbTFormPoint(x-1024,y,z,e->room->obj,0);
                         bbPositionEntity(it->collider, bbTFormedX(), bbTFormedY(), bbTFormedZ());
@@ -205,7 +159,7 @@ void UpdateEvent_scp_970_2(Event* e) {
             // FIXME
             switch ((int)e->eventState) {
                 case 2: {
-                    i = bbRand(mainPlayer->inventory->size);
+                    int i = bbRand(mainPlayer->inventory->size);
                     if (mainPlayer->inventory->items[i]!=nullptr) {
                         RemoveItem(mainPlayer->inventory->items[i]);
                     }
@@ -214,15 +168,16 @@ void UpdateEvent_scp_970_2(Event* e) {
                     mainPlayer->injuries = mainPlayer->injuries + 0.3f;
                 } break;
                 case 10: {
-                    de = CreateDecal(DECAL_BLOOD_SPLATTER, bbEntityX(e->room->obj)+bbCos(e->room->angle-90)*760*RoomScale, 0.0005f, bbEntityZ(e->room->obj)+bbSin(e->room->angle-90)*760*RoomScale,90,bbRnd(360),0);
+                    Decal* de = CreateDecal(DECAL_BLOOD_SPLATTER, bbEntityX(e->room->obj)+bbCos(e->room->angle-90)*760*RoomScale, 0.0005f, bbEntityZ(e->room->obj)+bbSin(e->room->angle-90)*760*RoomScale,90,bbRnd(360),0);
                 } break;
                 case 14: {
-                    for (i = 0; i <= mainPlayer->inventory->size-1; i++) {
+                    for (int i = 0; i < mainPlayer->inventory->size; i++) {
                         if (mainPlayer->inventory->items[i]!= nullptr) {
+                            // TODO: Use Paper class.
                             if (mainPlayer->inventory->items[i]->itemTemplate->name.equals("paper")) {
                                 RemoveItem(mainPlayer->inventory->items[i]);
                                 for (int iterator194 = 0; iterator194 < ItemTemplate::getListSize(); iterator194++) {
-                                    itt = ItemTemplate::getObject(iterator194);
+                                    ItemTemplate* itt = ItemTemplate::getObject(iterator194);
 
                                     if (itt->name.equals("paper") && bbRand(6)==1) {
                                         mainPlayer->inventory->items[i] = CreateItem(itt->name, 1,1,1);
@@ -238,7 +193,7 @@ void UpdateEvent_scp_970_2(Event* e) {
                 } break;
                 case 18: {
                     bbTFormPoint(-344,176, 272, e->room->obj,0);
-                    it = CreatePaper("docStrange", bbTFormedX(), bbTFormedY(), bbTFormedZ());
+                    Item* it = CreatePaper("docStrange", bbTFormedX(), bbTFormedY(), bbTFormedZ());
                     bbEntityType(it->collider, HIT_ITEM);
                 } break;
                 case 25: {
@@ -252,7 +207,7 @@ void UpdateEvent_scp_970_2(Event* e) {
                     e->room->npc[0]->state = 10;
                 } break;
                 case 30: {
-                    i = bbRand(0,mainPlayer->inventory->size);
+                    int i = bbRand(0,mainPlayer->inventory->size);
                     if (mainPlayer->inventory->items[i]!=nullptr) {
                         RemoveItem(mainPlayer->inventory->items[i]);
                     }
@@ -261,8 +216,8 @@ void UpdateEvent_scp_970_2(Event* e) {
                     mainPlayer->inventory->items[i]->picked = true;
                 } break;
                 case 35: {
-                    for (i = 0; i <= 3; i++) {
-                        de = CreateDecal(DECAL_BLOOD_POOL, e->room->x+bbRnd(-2,2), 700*RoomScale, e->room->z+bbRnd(-2,2), 270, bbRand(360), 0);
+                    for (int i = 0; i < 4; i++) {
+                        Decal* de = CreateDecal(DECAL_BLOOD_POOL, e->room->x+bbRnd(-2,2), 700*RoomScale, e->room->z+bbRnd(-2,2), 270, bbRand(360), 0);
                         de->size = 0.05f;
                         de->sizeChange = 0.0005f;
                         bbEntityAlpha(de->obj, 0.8f);
@@ -313,27 +268,27 @@ void UpdateEvent_scp_970_2(Event* e) {
             }
 
             //If (abs(TFormedX())<264) Then
-            for (int iterator195 = 0; iterator195 < Item::getListSize(); iterator195++) {
-                it = Item::getObject(iterator195);
+            for (int i = 0; i < Item::getListSize(); i++) {
+                Item* it = Item::getObject(i);
 
                 if ((it->dropped==1 && abs(bbTFormedX())<264) || it->dropped==-1) {
                     //DebugLog("dropping/picking: "+it\dropped+" - "+EntityX(it\collider)+", "+EntityY(it\collider)+", "+EntityZ(it\collider))
 
                     bbTFormPoint(bbEntityX(it->collider),bbEntityY(it->collider),bbEntityZ(it->collider),0,e->room->obj);
-                    x = bbTFormedX();
-                    y = bbTFormedY();
-                    z = bbTFormedZ();
+                    float x = bbTFormedX();
+                    float y = bbTFormedY();
+                    float z = bbTFormedZ();
 
                     if (it->dropped==1) {
-                        for (i = - 1; i <= 1; i += 2) {
-                            bbTFormPoint(x+1024*i,y,z,e->room->obj,0);
-                            it2 = CreateItem(it->itemTemplate->name, bbTFormedX(), bbEntityY(it->collider), bbTFormedZ());
+                        for (int j = - 1; j <= 1; j += 2) {
+                            bbTFormPoint(x+1024*j,y,z,e->room->obj,0);
+                            Item* it2 = CreateItem(it->itemTemplate->name, bbTFormedX(), bbEntityY(it->collider), bbTFormedZ());
                             bbRotateEntity(it2->collider, bbEntityPitch(it->collider),bbEntityYaw(it->collider),0);
                             bbEntityType(it2->collider, HIT_ITEM);
                         }
                     } else {
-                        for (int iterator196 = 0; iterator196 < Item::getListSize(); iterator196++) {
-                            it2 = Item::getObject(iterator196);
+                        for (int i = 0; i < Item::getListSize(); i++) {
+                            Item* it2 = Item::getObject(i);
 
                             if (it2!=it && it2->dist < 15.f) {
 
@@ -371,7 +326,7 @@ void UpdateEvent_scp_970_2(Event* e) {
                     AnimateNPC(e->room->npc[0], 80, 61, -0.02f, false);
 
                     e->room->npc[0]->dropSpeed = 0;
-                    y = CurveValue(1.5f+bbSin((float)(TimeInPosMilliSecs())/20.f)*0.1f,bbEntityY(e->room->npc[0]->collider),50.f);
+                    float y = CurveValue(1.5f+bbSin((float)(TimeInPosMilliSecs())/20.f)*0.1f,bbEntityY(e->room->npc[0]->collider),50.f);
 
                     bbPositionEntity(e->room->npc[0]->collider,bbEntityX(e->room->npc[0]->collider),y,bbEntityZ(e->room->npc[0]->collider));
                     bbTurnEntity(e->room->npc[0]->collider,0,0.1f*timing->tickDuration,0);

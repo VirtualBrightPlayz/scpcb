@@ -18,22 +18,7 @@ namespace CBN {
 
 // Functions.
 void FillRoom_off_l_conf_2(Room* r) {
-    Door* d;
-    Door* d2;
-    SecurityCam* sc;
-    Decal* de;
-    Room* r2;
-    SecurityCam* sc2;
-    Item* it;
-    int i;
-    int xtemp;
-    int ytemp;
-    int ztemp;
-
-    //, Bump
-    int t1;
-
-    d = CreateDoor(r->x + 240.f * RoomScale, 0.f, r->z + 48.f * RoomScale, 270, r, false, DOOR_TYPE_DEF, r->roomTemplate->name);
+    Door* d = CreateDoor(r->x + 240.f * RoomScale, 0.f, r->z + 48.f * RoomScale, 270, r, false, DOOR_TYPE_DEF, r->roomTemplate->name);
     bbPositionEntity(d->buttons[0], r->x + 224.f * RoomScale, bbEntityY(d->buttons[0],true), r->z + 176.f * RoomScale,true);
     bbPositionEntity(d->buttons[1], r->x + 256.f * RoomScale, bbEntityY(d->buttons[1],true), bbEntityZ(d->buttons[1],true),true);
     d->autoClose = false;
@@ -47,7 +32,7 @@ void FillRoom_off_l_conf_2(Room* r) {
     r->doors[0]->open = false;
     r->doors[0]->locked = true;
 
-    de = CreateDecal(DECAL_CORROSION, r->x - 808.f * RoomScale, 0.005f, r->z - 72.f * RoomScale, 90, bbRand(360), 0);
+    Decal* de = CreateDecal(DECAL_CORROSION, r->x - 808.f * RoomScale, 0.005f, r->z - 72.f * RoomScale, 90, bbRand(360), 0);
     bbEntityParent(de->obj, r->obj);
     de = CreateDecal(DECAL_BLOOD_SPREAD, r->x - 808.f * RoomScale, 0.01f, r->z - 72.f * RoomScale, 90, bbRand(360), 0);
     de->size = 0.3f;
@@ -60,7 +45,7 @@ void FillRoom_off_l_conf_2(Room* r) {
     r->objects[0] = bbCreatePivot(r->obj);
     bbPositionEntity(r->objects[0], r->x - 808.f * RoomScale, 1.f, r->z - 72.f * RoomScale, true);
 
-    it = CreatePaper("drL1", r->x - 688.f * RoomScale, 1.f, r->z - 16.f * RoomScale);
+    Item* it = CreatePaper("drL1", r->x - 688.f * RoomScale, 1.f, r->z - 16.f * RoomScale);
     bbEntityParent(it->collider, r->obj);
 
     it = CreatePaper("drL5", r->x - 808.f * RoomScale, 1.f, r->z - 72.f * RoomScale);
@@ -68,32 +53,6 @@ void FillRoom_off_l_conf_2(Room* r) {
 }
 
 void UpdateEvent_off_l_conf_2(Event* e) {
-    float dist;
-    int i;
-    int temp;
-    int pvt;
-    String strtemp;
-    int j;
-    int k;
-
-    Particle* p;
-    NPC* n;
-    Room* r;
-    Event* e2;
-    Item* it;
-    Emitter* em;
-    SecurityCam* sc;
-    SecurityCam* sc2;
-
-    String CurrTrigger = "";
-
-    float x;
-    float y;
-    float z;
-
-    float angle;
-
-
     if (mainPlayer->currRoom == e->room) {
         if (e->eventState == 0) {
             if (e->room->doors[0]->open == true) {

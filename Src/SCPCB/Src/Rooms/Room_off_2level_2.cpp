@@ -15,21 +15,7 @@ namespace CBN {
 
 // Functions.
 void FillRoom_off_2level_2(Room* r) {
-    Door* d;
-    Door* d2;
-    SecurityCam* sc;
-    Decal* de;
-    Room* r2;
-    SecurityCam* sc2;
-    Item* it;
-    int i;
-    int xtemp;
-    int ytemp;
-    int ztemp;
-
-    //, Bump
-    int t1;
-
+    Item* it = nullptr;
     if (bbRand(2)==1) {
         it = CreatePaper("docMTF", r->x + 744.f * RoomScale, r->y +240.f * RoomScale, r->z + 944.f * RoomScale);
         bbEntityParent(it->collider, r->obj);
@@ -44,7 +30,7 @@ void FillRoom_off_2level_2(Room* r) {
     it = CreateItem("radio", r->x - 1184.f * RoomScale, r->y + 480.f * RoomScale, r->z - 800.f * RoomScale);
     bbEntityParent(it->collider, r->obj);
 
-    for (i = 0; i <= bbRand(0,1); i++) {
+    for (int i = 0; i < bbRand(1,2); i++) {
         it = CreateItem("eyedrops", r->x - 1529.f*RoomScale, r->y + 563.f * RoomScale, r->z - 572.f*RoomScale + i*0.05f);
         bbEntityParent(it->collider, r->obj);
     }
@@ -68,32 +54,6 @@ void FillRoom_off_2level_2(Room* r) {
 }
 
 void UpdateEvent_off_2level_2(Event* e) {
-    float dist;
-    int i;
-    int temp;
-    int pvt;
-    String strtemp;
-    int j;
-    int k;
-
-    Particle* p;
-    NPC* n;
-    Room* r;
-    Event* e2;
-    Item* it;
-    Emitter* em;
-    SecurityCam* sc;
-    SecurityCam* sc2;
-
-    String CurrTrigger = "";
-
-    float x;
-    float y;
-    float z;
-
-    float angle;
-
-
     if (mainPlayer->currRoom == e->room) {
         e->eventState = e->eventState+timing->tickDuration;
         if (e->eventState > 700) {

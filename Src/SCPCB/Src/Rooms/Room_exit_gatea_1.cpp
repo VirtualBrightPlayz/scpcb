@@ -16,21 +16,7 @@ namespace CBN {
 
 // Functions.
 void FillRoom_exit_gatea_1(Room* r) {
-    Door* d2;
-    SecurityCam* sc;
-    Decal* de;
-    Room* r2;
-    SecurityCam* sc2;
-    Item* it;
-    int i;
-    int xtemp;
-    int ytemp;
-    int ztemp;
-
-    //, Bump
-    int t1;
-
-    //alempi hissi
+    //lower elevator
     r->doors[0] = CreateDoor(r->x+744.f*RoomScale, 0, r->z+512.f*RoomScale, 90, r, true);
     r->doors[0]->autoClose = false;
     r->doors[0]->open = true;
@@ -47,33 +33,6 @@ void FillRoom_exit_gatea_1(Room* r) {
 }
 
 void UpdateEvent_exit_gatea_1(Event* e) {
-    float dist;
-    int i;
-    int temp;
-    int pvt;
-    String strtemp;
-    int j;
-    int k;
-
-    Particle* p;
-    NPC* n;
-    Room* r;
-    Event* e2;
-    Item* it;
-    Emitter* em;
-    SecurityCam* sc;
-    SecurityCam* sc2;
-
-    String CurrTrigger = "";
-
-    float x;
-    float y;
-    float z;
-
-    float angle;
-    Room* gatea;
-
-
     if (mainPlayer->currRoom == e->room) {
         if (RemoteDoorOn==false) {
             e->room->doors[1]->locked = true;
@@ -88,9 +47,9 @@ void UpdateEvent_exit_gatea_1(Event* e) {
             }
         } else {
             e->room->doors[1]->locked = false;
-            gatea = nullptr;
+            Room* gatea = nullptr;
             for (int iterator178 = 0; iterator178 < Room::getListSize(); iterator178++) {
-                r = Room::getObject(iterator178);
+                Room* r = Room::getObject(iterator178);
 
                 if (r->roomTemplate->name.equals("gatea")) {
                     gatea = r;
@@ -112,7 +71,6 @@ void UpdateEvent_exit_gatea_1(Event* e) {
             }
         }
     }
-
 }
 
 }

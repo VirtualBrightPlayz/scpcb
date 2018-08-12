@@ -18,30 +18,14 @@ namespace CBN {
 
 // Functions.
 void FillRoom_strg_elec_2c(Room* r) {
-    Door* d;
-    Door* d2;
-    SecurityCam* sc;
-    Decal* de;
-    Room* r2;
-    SecurityCam* sc2;
-    Item* it;
-    int i;
-    int xtemp;
-    int ytemp;
-    int ztemp;
-
-    //, Bump
-    int t1;
-
-    d = CreateDoor(r->x + 64.f * RoomScale, 0.f, r->z + 368.f * RoomScale, 180, r, false, DOOR_TYPE_DEF, r->roomTemplate->name);
+    Door* d = CreateDoor(r->x + 64.f * RoomScale, 0.f, r->z + 368.f * RoomScale, 180, r, false, DOOR_TYPE_DEF, r->roomTemplate->name);
     d->autoClose = false;
     d->open = false;
 
-    it = CreatePaper("docdan", r->x-400.f*RoomScale,1040.f*RoomScale,r->z+115.f*RoomScale);
+    Item* it = CreatePaper("docdan", r->x-400.f*RoomScale,1040.f*RoomScale,r->z+115.f*RoomScale);
     bbEntityParent(it->collider, r->obj);
 
-    int n;
-    for (n = 0; n <= 2; n++) {
+    for (int n = 0; n < 3; n++) {
         r->levers[n] = CreateLever();
 
         bbScaleEntity(r->levers[n]->obj, 0.04f, 0.04f, 0.04f);
@@ -59,7 +43,7 @@ void FillRoom_strg_elec_2c(Room* r) {
         bbEntityRadius(r->levers[n]->obj, 0.1f);
     }
 
-    sc = CreateSecurityCam(r->x-265.f*RoomScale, r->y+1280.f*RoomScale, r->z+105.f*RoomScale, r);
+    SecurityCam* sc = CreateSecurityCam(r->x-265.f*RoomScale, r->y+1280.f*RoomScale, r->z+105.f*RoomScale, r);
     sc->angle = 45;
     sc->turn = 45;
     bbTurnEntity(sc->cameraObj, 20, 0, 0);
@@ -67,38 +51,11 @@ void FillRoom_strg_elec_2c(Room* r) {
 }
 
 void UpdateEvent_strg_elec_2c(Event* e) {
-    float dist;
-    int i;
-    int temp;
-    int pvt;
-    String strtemp;
-    int j;
-    int k;
-
-    Particle* p;
-    NPC* n;
-    Room* r;
-    Event* e2;
-    Item* it;
-    Emitter* em;
-    SecurityCam* sc;
-    SecurityCam* sc2;
-
-    String CurrTrigger = "";
-
-    float x;
-    float y;
-    float z;
-
-    float angle;
-    float prevpitch;
-
-
     if (mainPlayer->currRoom == e->room) {
 
         bbEntityPick(mainPlayer->cam, 1.5f);
 
-        for (i = 1; i <= 5; i += 2) {
+        for (int i = 1; i <= 5; i += 2) {
             if (bbPickedEntity() == e->room->objects[i]) {
                 DrawHandIcon = true;
                 if (MouseHit1) {
@@ -114,7 +71,7 @@ void UpdateEvent_strg_elec_2c(Event* e) {
                 }
             }
 
-            prevpitch = bbEntityPitch(e->room->objects[i]);
+            float prevpitch = bbEntityPitch(e->room->objects[i]);
 
             if (MouseDown1 || MouseHit1) {
                 if (mainPlayer->grabbedEntity != 0) {
@@ -158,9 +115,9 @@ void UpdateEvent_strg_elec_2c(Event* e) {
                     if (prevpitch >= -83) {
                         PlayRangedSound_SM(sndManager->lightSwitch, mainPlayer->cam, e->room->objects[i]);
                         for (int iterator197 = 0; iterator197 < Room::getListSize(); iterator197++) {
-                            r = Room::getObject(iterator197);
+                            Room* r = Room::getObject(iterator197);
 
-                            for (z = 0; z <= 19; z++) {
+                            for (int z = 0; z < 20; z++) {
                                 if (r->lightSprites[(int)(z)] != 0) {
                                     bbHideEntity(r->lightSprites[(int)(z)]);
                                 }
