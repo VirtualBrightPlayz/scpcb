@@ -6,17 +6,11 @@
 #include "NPCs.h"
 #include "../INI.h"
 #include "../GameMain.h"
-#include "../Events.h"
-#include "../Menus/Menu.h"
 #include "../Audio.h"
 #include "../MapSystem.h"
 #include "../Player.h"
 #include "../MathUtils/MathUtils.h"
-#include "../Difficulty.h"
-#include "../Objects.h"
 #include "../Doors.h"
-#include "../Decals.h"
-#include "../Particles.h"
 #include "NPCtype173.h"
 
 namespace CBN {
@@ -87,7 +81,7 @@ void UpdateNPCtype173(NPC* n) {
     int playerVisible;
     int canMove;
 
-    if (n->state == STATE173_IDLE | n->state == STATE173_CONTAINED) {
+    if (n->state == STATE173_IDLE || n->state == STATE173_CONTAINED) {
         return;
     }
 
@@ -113,7 +107,7 @@ void UpdateNPCtype173(NPC* n) {
                 n->prevX = bbEntityX(n->collider);
                 n->prevZ = bbEntityZ(n->collider);
 
-                if (mainPlayer->blinkTimer < - 16 | mainPlayer->blinkTimer > - 6) {
+                if (mainPlayer->blinkTimer < - 16 || mainPlayer->blinkTimer > - 6) {
                     if (bbEntityInView(n->obj, mainPlayer->cam)) {
                         canMove = false;
                     }
@@ -192,7 +186,7 @@ void UpdateNPCtype173(NPC* n) {
                                     if (d->buttons[i] != 0) {
                                         if (abs(bbEntityX(n->collider) - bbEntityX(d->buttons[i])) < 0.5f) {
                                             if (abs(bbEntityZ(n->collider) - bbEntityZ(d->buttons[i])) < 0.5f) {
-                                                if (d->openstate >= 180 | d->openstate <= 0) {
+                                                if (d->openstate >= 180 || d->openstate <= 0) {
                                                     if (bbDeltaYaw(n->collider, d->buttons[i]) < 60 && bbDeltaYaw(d->buttons[i], n->collider) < 60) {
                                                         PlaySound2(LoadTempSound("SFX/Door/DoorOpen173.ogg"));
                                                         UseDoor(d,false);

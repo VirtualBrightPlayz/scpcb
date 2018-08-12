@@ -1,7 +1,6 @@
 #include <bbblitz3d.h>
 #include <bbaudio.h>
 #include <bbmath.h>
-#include <string.h>
 
 #include "NPCs.h"
 #include "NPCtype049.h"
@@ -289,7 +288,7 @@ void UpdateNPCs() {
         //TODO: Rework.
         gravityDist = Distance(bbEntityX(mainPlayer->collider),bbEntityZ(mainPlayer->collider),bbEntityX(n->collider),bbEntityZ(n->collider));
 
-        if (gravityDist<HideDistance*0.7f | n->npcType == NPCtype1499) {
+        if (gravityDist<HideDistance*0.7f || n->npcType == NPCtype1499) {
             if (n->inFacility == InFacility) {
                 bbTranslateEntity(n->collider, 0, n->dropSpeed, 0);
 
@@ -346,7 +345,7 @@ void TeleportCloser(NPC* n) {
                     if (SelectedDifficulty->aggressiveNPCs) {
                         //teleports to the nearby waypoint that takes it closest to the player
                         newDist = bbEntityDistance(mainPlayer->collider, w->obj);
-                        if (newDist < closestDist | closestWaypoint == nullptr) {
+                        if (newDist < closestDist || closestWaypoint == nullptr) {
                             closestDist = newDist;
                             closestWaypoint = w;
                         }
@@ -393,7 +392,7 @@ int MeNPCSeesPlayer(NPC* me, int disableSoundOnCrouch) {
         return false;
     }
 
-    if ((!PlayerDetected) | me->npcType != NPCtypeMTF) {
+    if ((!PlayerDetected) || me->npcType != NPCtypeMTF) {
         if (me->blinkTimer<=0.f) {
             return false;
         }
@@ -969,7 +968,7 @@ String GetNPCManipulationValue(const String& NPC, const String& bone, const Stri
             return value;
         } break;
         case 3: {
-            if (value.equals("true") | value.equals("1")) {
+            if (value.equals("true") || value.equals("1")) {
                 return "1";
             } else {
                 return "0";
@@ -1040,7 +1039,7 @@ int PlayerInReachableRoom() {
     int temp;
 
     //Player is in these rooms, returning false
-    if (RN.equals("pocketdimension") | RN.equals("gatea") | RN.equals("dimension1499") | RN.equals("173")) {
+    if (RN.equals("pocketdimension") | RN.equals("gatea") | RN.equals("dimension1499") || RN.equals("173")) {
         return false;
     }
     //Player is at GateB and is at the surface, returning false
@@ -1143,7 +1142,7 @@ void GoToElevator(NPC* n) {
 
         dist = bbEntityDistance(n->collider,n->currElevator->door->frameobj);
         if (n->currElevator->door->open) {
-            if ((dist > 0.4f & dist < 0.7f) && inside) {
+            if ((dist > 0.4f && dist < 0.7f) && inside) {
                 UseDoor(n->currElevator->door,false);
                 std::cout << String(n->npcType)+" used elevator";
             }

@@ -1,21 +1,14 @@
 #include <bbblitz3d.h>
-#include <bbaudio.h>
 #include <bbmath.h>
 
 #include "NPCs.h"
 #include "../INI.h"
 #include "../GameMain.h"
-#include "../Events.h"
 #include "../Menus/Menu.h"
 #include "../Audio.h"
 #include "../MapSystem.h"
 #include "../Player.h"
 #include "../MathUtils/MathUtils.h"
-#include "../Difficulty.h"
-#include "../Objects.h"
-#include "../Doors.h"
-#include "../Decals.h"
-#include "../Particles.h"
 #include "../Items/Items.h"
 #include "NPCtype966.h"
 
@@ -94,7 +87,7 @@ void UpdateNPCtype966(NPC* n) {
 
         if (!IsPlayerWearingItem(mainPlayer,"nvgoggles")) {
             bbHideEntity(n->obj);
-            if (n->playerDistance<1 & n->reload <= 0 && MsgTimer <= 0) {
+            if (n->playerDistance<1 && n->reload <= 0 && MsgTimer <= 0) {
                 switch (bbRand(6)) {
                     case 1: {
                         Msg = "You feel something breathing right next to you.";
@@ -196,7 +189,7 @@ void UpdateNPCtype966(NPC* n) {
                     }
                 }
 
-                if (n->frame>1029.f & prevFrame<=1029.f | n->frame>1203.f && prevFrame<=1203.f) {
+                if (n->frame>1029.f && prevFrame<=1029.f || n->frame>1203.f && prevFrame<=1203.f) {
                     PlayRangedSound(LoadTempSound("SFX/SCP/966/Echo"+String(bbRand(1,3))+".ogg"), mainPlayer->cam, n->collider);
                 }
 
@@ -252,7 +245,7 @@ void UpdateNPCtype966(NPC* n) {
                     }
                 }
 
-                if (n->frame>1393.f & prevFrame<=1393.f | n->frame>1589.f & prevFrame<=1589.f | n->frame>2000.f && prevFrame<=2000.f) {
+                if (n->frame>1393.f & prevFrame<=1393.f | n->frame>1589.f && prevFrame<=1589.f || n->frame>2000.f && prevFrame<=2000.f) {
                     PlayRangedSound(LoadTempSound("SFX/SCP/966/Idle"+String(bbRand(1,3))+".ogg"), mainPlayer->cam, n->collider);
                 }
 
@@ -389,7 +382,7 @@ void UpdateNPCtype966(NPC* n) {
                 }
 
                 if (n->playerDistance<1.f) {
-                    if (n->frame>2173.f & prevFrame<=2173.f | n->frame>2203.f & prevFrame<=2203.f | n->frame>2227.f && prevFrame<=2227.f) {
+                    if (n->frame>2173.f & prevFrame<=2173.f | n->frame>2203.f && prevFrame<=2203.f || n->frame>2227.f && prevFrame<=2227.f) {
                         PlayRangedSound(LoadTempSound("SFX/General/Slash"+String(bbRand(1,2))+".ogg"), mainPlayer->cam, n->collider);
                         mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.5f,1.f);
                     }

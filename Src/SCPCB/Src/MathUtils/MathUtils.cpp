@@ -97,8 +97,8 @@ int CircleToLineSegIsect(float cx, float cy, float r, float l1x, float l1y, floa
 
     //Checks whether the value of another point is 0
     //tai molempien merkki sama
-    if (dp1 == 0 | dp2 == 0) {
-    } else if ((dp1 > 0 & dp2 > 0) || (dp1 < 0 && dp2 < 0)) { // TODO: wtf
+    if (dp1 == 0 || dp2 == 0) {
+    } else if ((dp1 > 0 && dp2 > 0) || (dp1 < 0 && dp2 < 0)) { // TODO: wtf
     } else {
         //Neither -> no cutting
         return false;

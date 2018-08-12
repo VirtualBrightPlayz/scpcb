@@ -208,7 +208,7 @@ void UpdateEvent_cont_1162_2c(Event* e) {
                     // TODO: No.
                     //switch (mainPlayer->inventory->items[(int)(e->eventState2)]->itemTemplate->name) {
                     //    case "key": {
-                    //        if (itt->name.equals("key1") | itt->name.equals("key2") && bbRand(2)==1) {
+                    //        if (itt->name.equals("key1") || itt->name.equals("key2") && bbRand(2)==1) {
                     //            shouldCreateItem = true;
                     //            std::cout << "lostkey";
                     //        }
@@ -220,19 +220,19 @@ void UpdateEvent_cont_1162_2c(Event* e) {
                     //        }
                     //    }
                     //    case "gasmask","gasmask3","supergasmask","hazmatsuit","hazmatsuit2","hazmatsuit3": {
-                    //        if (itt->name.equals("gasmask") | itt->name.equals("gasmask3") | itt->name.equals("supergasmask") | itt->name.equals("hazmatsuit") | itt->name.equals("hazmatsuit2") | itt->name.equals("hazmatsuit3") && bbRand(2)==1) {
+                    //        if (itt->name.equals("gasmask") | itt->name.equals("gasmask3") | itt->name.equals("supergasmask") | itt->name.equals("hazmatsuit") | itt->name.equals("hazmatsuit2") || itt->name.equals("hazmatsuit3") && bbRand(2)==1) {
                     //            shouldCreateItem = true;
                     //            std::cout << "gasmask hazmat";
                     //        }
                     //    }
                     //    case "key1","key2","key3": {
-                    //        if (itt->name.equals("key1") | itt->name.equals("key2") | itt->name.equals("key3") | itt->name.equals("misc") && bbRand(6)==1) {
+                    //        if (itt->name.equals("key1") | itt->name.equals("key2") | itt->name.equals("key3") || itt->name.equals("misc") && bbRand(6)==1) {
                     //            shouldCreateItem = true;
                     //            std::cout << "key";
                     //        }
                     //    }
                     //    case "vest","finevest": {
-                    //        if (itt->name.equals("vest") | itt->name.equals("finevest") && bbRand(1)==1) {
+                    //        if (itt->name.equals("vest") || itt->name.equals("finevest") && bbRand(1)==1) {
                     //            shouldCreateItem = true;
                     //            std::cout << "vest";
                     //        }

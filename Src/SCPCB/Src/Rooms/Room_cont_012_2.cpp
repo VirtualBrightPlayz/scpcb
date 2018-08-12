@@ -165,7 +165,7 @@ void UpdateEvent_cont_012_2(Event* e) {
                 }
             }
 
-            if (!IsPlayerWearingItem(mainPlayer,"hazmatsuit3") & !IsPlayerWearingItem(mainPlayer,"gasmask3") && !IsPlayerWearingItem(mainPlayer,"nvgoggles")) {
+            if (!IsPlayerWearingItem(mainPlayer,"hazmatsuit3") && !IsPlayerWearingItem(mainPlayer,"gasmask3") && !IsPlayerWearingItem(mainPlayer,"nvgoggles")) {
                 temp = false;
                 if (bbEntityVisible(e->room->objects[2],mainPlayer->cam)) {
                     temp = true;

@@ -1,9 +1,7 @@
 #include <bbblitz3d.h>
 #include <bbmath.h>
-#include <bbgraphics.h>
 #include <bbaudio.h>
 
-#include "../GameMain.h"
 #include "../MapSystem.h"
 #include "../Doors.h"
 #include "../Items/Items.h"
@@ -13,9 +11,6 @@
 #include "../Player.h"
 #include "../NPCs/NPCs.h"
 #include "../Audio.h"
-#include "../MathUtils/MathUtils.h"
-#include "../Menus/Menu.h"
-#include "../Objects.h"
 #include "Room_cont_500_1499_2.h"
 
 namespace CBN {

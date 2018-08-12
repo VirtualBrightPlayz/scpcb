@@ -8,7 +8,6 @@
 #include "../GameMain.h"
 #include "../Assets.h"
 #include "../MapSystem.h"
-#include "../Doors.h"
 #include "../Items/Items.h"
 #include "../Decals.h"
 #include "../Particles.h"
@@ -19,7 +18,6 @@
 #include "../INI.h"
 #include "../MathUtils/MathUtils.h"
 #include "../Menus/Menu.h"
-#include "../Objects.h"
 #include "../Options.h"
 #include "Room_hll_caf_2.h"
 

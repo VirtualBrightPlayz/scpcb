@@ -139,7 +139,7 @@ void SetTickrate(int tickrate) {
 }
 
 void AddToTimingAccumulator(int milliseconds) {
-    if (milliseconds<1 | milliseconds>500) {
+    if (milliseconds<1 || milliseconds>500) {
         //DebugLog(milliseconds)
         return;
     }
@@ -559,7 +559,7 @@ void UpdateGame() {
                     Msg = "Quick saving is disabled.";
                     MsgTimer = 70 * 4;
                 }
-            } else if ((SelectedDifficulty->saveType == SAVEONSCREENS && (SelectedScreen!=nullptr | SelectedMonitor!=nullptr))) {
+            } else if ((SelectedDifficulty->saveType == SAVEONSCREENS && (SelectedScreen!=nullptr || SelectedMonitor!=nullptr))) {
                 if ((!Msg.equals("Game progress saved.") && !Msg.equals("You cannot save in this location.") && !Msg.equals("You cannot save at this moment.")) || MsgTimer<=0) {
                     Msg = "Press "+KeyName[keyBinds->save]+" to save.";
                     MsgTimer = 70*4;
@@ -714,7 +714,7 @@ void UpdateGUI() {
     float projY;
     float scale;
 
-    if (mainPlayer->closestButton != 0 & mainPlayer->selectedDoor == nullptr && CurrGameState==GAMESTATE_PLAYING) {
+    if (mainPlayer->closestButton != 0 && mainPlayer->selectedDoor == nullptr && CurrGameState==GAMESTATE_PLAYING) {
         if (MouseUp1) {
             MouseUp1 = false;
             if (mainPlayer->closestDoor != nullptr) {
@@ -733,7 +733,7 @@ void UpdateGUI() {
     }
 
     if (SelectedScreen != nullptr) {
-        if (MouseUp1 | MouseHit2) {
+        if (MouseUp1 || MouseHit2) {
             bbFreeImage(SelectedScreen->img);
             SelectedScreen->img = 0;
             SelectedScreen = nullptr;
@@ -947,7 +947,7 @@ void DrawGUI() {
     //		Next
     //	EndIf
 
-    if (mainPlayer->closestButton != 0 & mainPlayer->selectedDoor == nullptr && CurrGameState==GAMESTATE_PLAYING) {
+    if (mainPlayer->closestButton != 0 && mainPlayer->selectedDoor == nullptr && CurrGameState==GAMESTATE_PLAYING) {
         yawvalue = WrapAngle(-bbDeltaYaw(mainPlayer->cam,mainPlayer->closestButton));
         if (yawvalue > 90 && yawvalue <= 180) {
             yawvalue = 90;
@@ -1663,7 +1663,7 @@ void RenderWorld2() {
     //	ShowEntity(NVBlink%)
     //EndIf
 
-    if (mainPlayer->blinkTimer < - 16 | mainPlayer->blinkTimer > - 6) {
+    if (mainPlayer->blinkTimer < - 16 || mainPlayer->blinkTimer > - 6) {
         //show a HUD
         if (IsPlayerWearingItem(mainPlayer,"supernv") && hasBattery!=0) {
             //NVTimer=NVTimer-timing\tickDuration
@@ -1770,7 +1770,7 @@ void RenderWorld2() {
     bbRenderWorld();
     bbCameraProjMode(ark_blur_cam,0);
 
-    if (mainPlayer->blinkTimer < - 16 | mainPlayer->blinkTimer > - 6) {
+    if (mainPlayer->blinkTimer < - 16 || mainPlayer->blinkTimer > - 6) {
         if ((wornItem!=nullptr) && (hasBattery==1) && ((TimeInPosMilliSecs() % 800) < 400)) {
             bbColor(255,0,0);
             bbSetFont(uiAssets->font[2]);

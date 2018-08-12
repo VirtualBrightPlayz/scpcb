@@ -249,7 +249,7 @@ void UpdateDoors() {
 
         if (d->dist < HideDistance*2) {
 
-            if ((d->openstate >= 180 | d->openstate <= 0) && mainPlayer->grabbedEntity == 0) {
+            if ((d->openstate >= 180 || d->openstate <= 0) && mainPlayer->grabbedEntity == 0) {
                 for (int j = 0; j < 2; j++) {
                     if (d->buttons[j] != 0) {
                         if (abs(bbEntityX(mainPlayer->collider)-bbEntityX(d->buttons[j],true)) < 1.f) {
@@ -400,7 +400,7 @@ void UpdateDoors() {
                         } break;
                     }
 
-                    if (d->angle == 0 | d->angle==180) {
+                    if (d->angle == 0 || d->angle==180) {
                         if (abs(bbEntityZ(d->frameobj, true)-bbEntityZ(mainPlayer->collider))<0.15f) {
                             if (abs(bbEntityX(d->frameobj, true)-bbEntityX(mainPlayer->collider))<0.7f*(d->typ*2+1)) {
                                 float z = CurveValue(bbEntityZ(d->frameobj,true)+0.15f*Sgn(bbEntityZ(mainPlayer->collider)-bbEntityZ(d->frameobj, true)), bbEntityZ(mainPlayer->collider), 5);
@@ -453,7 +453,7 @@ void UseDoor(Door* d, int showmsg) {
                     }
 
                     playerHasKeycard = true;
-                    if (HasTag(item, d->tag) | HasTag(item, ITEM_TAG_OMNI)) {
+                    if (HasTag(item, d->tag) || HasTag(item, ITEM_TAG_OMNI)) {
                         playerHasRightKeycard = true;
                         break;
                     }

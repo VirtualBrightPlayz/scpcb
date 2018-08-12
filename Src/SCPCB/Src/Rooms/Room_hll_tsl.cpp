@@ -1,12 +1,9 @@
 #include <bbblitz3d.h>
 #include <bbmath.h>
-#include <bbgraphics.h>
 #include <bbaudio.h>
 
 #include "../GameMain.h"
 #include "../MapSystem.h"
-#include "../Doors.h"
-#include "../Items/Items.h"
 #include "../Decals.h"
 #include "../Particles.h"
 #include "../Events.h"
@@ -15,7 +12,6 @@
 #include "../Audio.h"
 #include "../MathUtils/MathUtils.h"
 #include "../Menus/Menu.h"
-#include "../Objects.h"
 #include "Room_hll_tsl.h"
 
 namespace CBN {
@@ -120,7 +116,7 @@ void UpdateEvent_tesla(Event* e) {
         temp = false;
     }
 
-    if (temp & bbEntityY(mainPlayer->collider, true) > bbEntityY(e->room->obj,true) && bbEntityY(mainPlayer->collider, true) < 4.f) {
+    if (temp && bbEntityY(mainPlayer->collider, true) > bbEntityY(e->room->obj,true) && bbEntityY(mainPlayer->collider, true) < 4.f) {
         if (e->eventState == 0) {
             if ((TimeInPosMilliSecs() % 1500) < 800) {
                 bbShowEntity(e->room->objects[4]);

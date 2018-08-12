@@ -1,20 +1,12 @@
 #include <bbblitz3d.h>
-#include <bbaudio.h>
 #include <bbmath.h>
 
 #include "NPCs.h"
 #include "../INI.h"
 #include "../GameMain.h"
-#include "../Events.h"
-#include "../Menus/Menu.h"
 #include "../Audio.h"
-#include "../MapSystem.h"
 #include "../Player.h"
 #include "../MathUtils/MathUtils.h"
-#include "../Difficulty.h"
-#include "../Objects.h"
-#include "../Doors.h"
-#include "../Decals.h"
 #include "../Particles.h"
 #include "NPCtypeGuard.h"
 
@@ -78,7 +70,7 @@ void UpdateNPCtypeGuard(NPC* n) {
 
             AnimateNPC(n, 1614, 1641, n->currSpeed * 30);
 
-            if (dist > 2.f | dist < 1.f ) {
+            if (dist > 2.f || dist < 1.f ) {
                 n->currSpeed = CurveValue(n->speed * Sgn(dist - 1.5f) * 0.75f, n->currSpeed, 10.f);
             } else {
                 n->currSpeed = CurveValue(0, n->currSpeed, 10.f);

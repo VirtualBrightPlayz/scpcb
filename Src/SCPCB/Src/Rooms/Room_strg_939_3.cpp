@@ -1,9 +1,7 @@
 #include <bbblitz3d.h>
 #include <bbmath.h>
-#include <bbgraphics.h>
 #include <bbaudio.h>
 
-#include "../GameMain.h"
 #include "../MapSystem.h"
 #include "../Doors.h"
 #include "../Items/Items.h"
@@ -13,7 +11,6 @@
 #include "../Player.h"
 #include "../NPCs/NPCs.h"
 #include "../Audio.h"
-#include "../MathUtils/MathUtils.h"
 #include "../Menus/Menu.h"
 #include "../Objects.h"
 #include "Room_strg_939_3.h"
@@ -268,7 +265,7 @@ void UpdateEvent_strg_939_3(Event* e) {
 
             //DrawLoading(100, True)
             //EndIf
-            if (e->room->npc[2]==nullptr | e->eventState == 3) {
+            if (e->room->npc[2]==nullptr || e->eventState == 3) {
                 if (e->eventState == 0) {
                     e->eventState = 1;
                 } else if ((e->eventState == 1)) {
@@ -306,7 +303,7 @@ void UpdateEvent_strg_939_3(Event* e) {
                 }
 
                 if (e->room->doors[4]->open == false) {
-                    if (e->room->levers[0]->succ | e->room->levers[1]->succ) {
+                    if (e->room->levers[0]->succ || e->room->levers[1]->succ) {
                         e->room->doors[4]->open = true;
                         if (e->sounds[1] != 0) {
                             bbFreeSound(e->sounds[1]);

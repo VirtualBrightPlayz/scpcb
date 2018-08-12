@@ -1,12 +1,10 @@
 #include <bbblitz3d.h>
 #include <bbmath.h>
-#include <bbgraphics.h>
 #include <bbaudio.h>
 
 #include "../GameMain.h"
 #include "../MapSystem.h"
 #include "../Doors.h"
-#include "../Items/Items.h"
 #include "../Decals.h"
 #include "../Particles.h"
 #include "../Events.h"
@@ -14,7 +12,6 @@
 #include "../NPCs/NPCs.h"
 #include "../Audio.h"
 #include "../MathUtils/MathUtils.h"
-#include "../Menus/Menu.h"
 #include "../Objects.h"
 #include "Room_srvr_096_2.h"
 
@@ -239,7 +236,7 @@ void UpdateEvent_srvr_096_2(Event* e) {
                 Curr096->currSpeed = 0;
 
                 for (i = 0; i <= 6; i++) {
-                    if (e->room->angle == 0 | e->room->angle == 180) {
+                    if (e->room->angle == 0 || e->room->angle == 180) {
                         de = CreateDecal(bbRand(DECAL_BLOOD_SPREAD, DECAL_BLOOD_SPLATTER), e->room->x-bbRnd(197,199)*bbCos(e->room->angle)*RoomScale, 1.f, e->room->z+(140.f*(i-3))*RoomScale,0,e->room->angle+90,bbRnd(360));
                         de->size = bbRnd(0.8f,0.85f);
                         de->sizeChange = 0.001f;
@@ -290,7 +287,7 @@ void UpdateEvent_srvr_096_2(Event* e) {
                 }
 
                 //lock the player inside
-                if (e->room->angle == 0 | e->room->angle == 180) {
+                if (e->room->angle == 0 || e->room->angle == 180) {
                     if (abs(bbEntityX(mainPlayer->collider)-bbEntityX(e->room->obj,true))> 1.3f) {
                         e->eventState = 70*50;
                         e->sounds[0] = 0;
@@ -338,7 +335,7 @@ void UpdateEvent_srvr_096_2(Event* e) {
             e->soundChannels[1] = LoopRangedSound(e->sounds[1], e->soundChannels[1], mainPlayer->cam, e->room->levers[2]->obj, 6.f, e->eventState3);
         }
 
-        if (temp==0 & (int)(x) && (int)(z)) {
+        if (temp==0 && (int)(x) && (int)(z)) {
             e->room->doors[0]->locked = false;
             e->room->doors[1]->locked = false;
         } else {

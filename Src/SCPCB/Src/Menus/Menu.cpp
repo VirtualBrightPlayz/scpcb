@@ -76,7 +76,7 @@ String rInput(const String& aString) {
 
     if (value == 13 || value == 0) {
         return retVal;
-    } else if (value > 0 & value < 7 || value > 26 && value < 32 || value == 9) {
+    } else if (value > 0 && value < 7 || value > 26 && value < 32 || value == 9) {
         return retVal;
     } else {
         retVal = retVal + (char)value;
@@ -227,7 +227,7 @@ int UpdateUITick(int x, int y, int selected, int locked) {
 
 float UpdateSlideBar(int x, int y, int width, float value) {
     if (MouseDown1) {
-        if (bbMouseX() >= x & bbMouseX() <= x + width + 14 & bbMouseY() >= y && bbMouseY() <= y + 20) {
+        if (bbMouseX() >= x & bbMouseX() <= x + width + 14 && bbMouseY() >= y && bbMouseY() <= y + 20) {
             value = Min(Max((bbMouseX() - x) * 100 / width, 0), 100);
         }
     }

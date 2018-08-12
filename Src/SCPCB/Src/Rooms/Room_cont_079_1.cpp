@@ -119,7 +119,7 @@ void UpdateEvent_cont_079_1(Event* e) {
         //ShouldPlay = 4
         if (RemoteDoorOn) {
             if (e->room->doors[0]->open) {
-                if (e->room->doors[0]->openstate > 50 | bbEntityDistance(mainPlayer->collider, e->room->doors[0]->frameobj)<0.5f) {
+                if (e->room->doors[0]->openstate > 50 || bbEntityDistance(mainPlayer->collider, e->room->doors[0]->frameobj)<0.5f) {
                     e->room->doors[0]->openstate = Min(e->room->doors[0]->openstate,50);
                     e->room->doors[0]->open = false;
                     PlaySound2((LoadTempSound("SFX/Door/DoorError.ogg")));
@@ -181,7 +181,7 @@ void UpdateEvent_cont_079_1(Event* e) {
             for (int iterator158 = 0; iterator158 < Event::getListSize(); iterator158++) {
                 e2 = Event::getObject(iterator158);
 
-                if (e2->name.equals("exit1") | e2->name.equals("gateaentrance")) {
+                if (e2->name.equals("exit1") || e2->name.equals("gateaentrance")) {
                     e2->eventState3 = 1;
                 }
             }

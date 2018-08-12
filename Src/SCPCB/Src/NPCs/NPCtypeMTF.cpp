@@ -5,16 +5,13 @@
 #include "NPCs.h"
 #include "../INI.h"
 #include "../GameMain.h"
-#include "../Events.h"
 #include "../Menus/Menu.h"
 #include "../Audio.h"
 #include "../MapSystem.h"
 #include "../Player.h"
 #include "../MathUtils/MathUtils.h"
 #include "../Difficulty.h"
-#include "../Objects.h"
 #include "../Doors.h"
-#include "../Decals.h"
 #include "../Particles.h"
 #include "NPCtypeMTF.h"
 
@@ -181,7 +178,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                             for (int iterator140 = 0; iterator140 < Room::getListSize(); iterator140++) {
                                 r = Room::getObject(iterator140);
 
-                                if (((abs(r->x-bbEntityX(n->collider,true))>12.f) | (abs(r->z-bbEntityZ(n->collider,true))>12.f)) && (bbRand(1,(int)(Max(4-(int)(abs(r->z-bbEntityZ(n->collider,true)/8.f)),2)))==1)) {
+                                if (((abs(r->x-bbEntityX(n->collider,true))>12.f) || (abs(r->z-bbEntityZ(n->collider,true))>12.f)) && (bbRand(1,(int)(Max(4-(int)(abs(r->z-bbEntityZ(n->collider,true)/8.f)),2)))==1)) {
                                     x = r->x;
                                     y = 0.1f;
                                     z = r->z;
@@ -336,7 +333,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                             //	EndIf
                             //EndIf
 
-                            if (newDist<0.2f | (prevDist<newDist && prevDist<1.f)) {
+                            if (newDist<0.2f || (prevDist<newDist && prevDist<1.f)) {
                                 n->pathLocation = n->pathLocation+1;
                             }
                         }
@@ -445,8 +442,8 @@ void UpdateNPCtypeMTF(NPC* n) {
                 //B3D doesn't do short-circuit evaluation, so this retarded nesting is an optimization
                 if (Curr173->idle<2) {
                     soundVol173 = Max(Min((Distance(bbEntityX(Curr173->collider), bbEntityZ(Curr173->collider), Curr173->prevX, Curr173->prevZ) * 2.5f), 1.f), 0.f);
-                    if (OtherNPCSeesMeNPC(Curr173,n) | (soundVol173>0.f && bbEntityDistance(n->collider,Curr173->collider)<6.f)) {
-                        if (bbEntityVisible(n->collider,Curr173->collider) | soundVol173>0.f) {
+                    if (OtherNPCSeesMeNPC(Curr173,n) || (soundVol173>0.f && bbEntityDistance(n->collider,Curr173->collider)<6.f)) {
+                        if (bbEntityVisible(n->collider,Curr173->collider) || soundVol173>0.f) {
                             n->state = 2;
                             n->enemyX = bbEntityX(Curr173->collider,true);
                             n->enemyY = bbEntityY(Curr173->collider,true);
@@ -468,7 +465,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                 }
 
                 if (Curr106->state <= 0) {
-                    if (OtherNPCSeesMeNPC(Curr106,n) | bbEntityDistance(n->collider,Curr106->collider)<3.f) {
+                    if (OtherNPCSeesMeNPC(Curr106,n) || bbEntityDistance(n->collider,Curr106->collider)<3.f) {
                         if (bbEntityVisible(n->collider,Curr106->collider)) {
                             n->state = 4;
                             n->enemyX = bbEntityX(Curr106->collider,true);
@@ -586,7 +583,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                         if (n->reload <= 0 && (!mainPlayer->dead)) {
                             if (bbEntityVisible(n->collider, mainPlayer->cam)) {
                                 angle = WrapAngle(angle - bbEntityYaw(n->collider));
-                                if (angle < 5 | angle > 355) {
+                                if (angle < 5 || angle > 355) {
                                     prev = (!mainPlayer->dead);
 
                                     PlayRangedSound_SM(sndManager->gunshot[0], mainPlayer->cam, n->collider, 15);
@@ -742,7 +739,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                                 //	EndIf
                                 //EndIf
 
-                                if (newDist<0.2f | (prevDist<newDist && prevDist<1.f)) {
+                                if (newDist<0.2f || (prevDist<newDist && prevDist<1.f)) {
                                     n->pathLocation = n->pathLocation+1;
                                 }
                             }
@@ -750,7 +747,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                             n->pathTimer = n->pathTimer-timing->tickDuration;
                         } else {
                             bbPositionEntity(n->obj,n->enemyX,n->enemyY,n->enemyZ,true);
-                            if (Distance(bbEntityX(n->collider,true),bbEntityZ(n->collider,true),n->enemyX,n->enemyZ)<0.2f | !bbEntityVisible(n->obj,n->collider)) {
+                            if (Distance(bbEntityX(n->collider,true),bbEntityZ(n->collider,true),n->enemyX,n->enemyZ)<0.2f || !bbEntityVisible(n->obj,n->collider)) {
                                 if (bbRand(1,35)==1) {
                                     bbRotateEntity(n->collider,0.f,bbRnd(360.f),0.f,true);
                                 }
@@ -785,7 +782,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                         }
                     }
 
-                    if (n->mtfLeader==nullptr & n->lastSeen<70*30 && n->lastSeen+timing->tickDuration>=70*30) {
+                    if (n->mtfLeader==nullptr && n->lastSeen<70*30 && n->lastSeen+timing->tickDuration>=70*30) {
                         if (bbRand(2)==1) {
                             PlayMTFSound(LoadTempSound("SFX/Character/MTF/Searching"+String(bbRand(1,6))+".ogg"),n);
                         }
@@ -807,8 +804,8 @@ void UpdateNPCtypeMTF(NPC* n) {
                 //B3D doesn't do short-circuit evaluation, so this retarded nesting is an optimization
                 if (Curr173->idle<2) {
                     soundVol173 = Max(Min((Distance(bbEntityX(Curr173->collider), bbEntityZ(Curr173->collider), Curr173->prevX, Curr173->prevZ) * 2.5f), 1.f), 0.f);
-                    if (OtherNPCSeesMeNPC(Curr173,n) | (soundVol173>0.f && bbEntityDistance(n->collider,Curr173->collider)<6.f)) {
-                        if (bbEntityVisible(n->collider,Curr173->collider) | soundVol173>0.f) {
+                    if (OtherNPCSeesMeNPC(Curr173,n) || (soundVol173>0.f && bbEntityDistance(n->collider,Curr173->collider)<6.f)) {
+                        if (bbEntityVisible(n->collider,Curr173->collider) || soundVol173>0.f) {
                             n->state = 2;
                             n->enemyX = bbEntityX(Curr173->collider,true);
                             n->enemyY = bbEntityY(Curr173->collider,true);
@@ -830,7 +827,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                 }
 
                 if (Curr106->state <= 0) {
-                    if (OtherNPCSeesMeNPC(Curr106,n) | bbEntityDistance(n->collider,Curr106->collider)<3.f) {
+                    if (OtherNPCSeesMeNPC(Curr106,n) || bbEntityDistance(n->collider,Curr106->collider)<3.f) {
                         if (bbEntityVisible(n->collider,Curr106->collider)) {
                             n->state = 4;
                             n->enemyX = bbEntityX(Curr106->collider,true);
@@ -1065,7 +1062,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                                     //	EndIf
                                     //EndIf
 
-                                    if (newDist<0.2f | (prevDist<newDist && prevDist<1.f)) {
+                                    if (newDist<0.2f || (prevDist<newDist && prevDist<1.f)) {
                                         n->pathLocation = n->pathLocation+1;
                                     }
                                 }
@@ -1248,7 +1245,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                             for (int iterator147 = 0; iterator147 < Room::getListSize(); iterator147++) {
                                 r = Room::getObject(iterator147);
 
-                                if (((abs(r->x-bbEntityX(n->collider,true))>12.f) | (abs(r->z-bbEntityZ(n->collider,true))>12.f)) && (bbRand(1,(int)(Max(4-(int)(abs(r->z-bbEntityZ(n->collider,true)/8.f)),2)))==1)) {
+                                if (((abs(r->x-bbEntityX(n->collider,true))>12.f) || (abs(r->z-bbEntityZ(n->collider,true))>12.f)) && (bbRand(1,(int)(Max(4-(int)(abs(r->z-bbEntityZ(n->collider,true)/8.f)),2)))==1)) {
                                     if (bbEntityDistance(r->obj,n->target->collider)>6.f) {
                                         x = r->x;
                                         y = 0.1f;
@@ -1316,7 +1313,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                                 //	EndIf
                                 //EndIf
 
-                                if (newDist<0.2f | (prevDist<newDist && prevDist<1.f)) {
+                                if (newDist<0.2f || (prevDist<newDist && prevDist<1.f)) {
                                     n->pathLocation = n->pathLocation+1;
                                 }
                             }
@@ -1340,7 +1337,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                     AnimateNPC(n, 346, 351, 0.2f, false);
                 }
 
-                if (abs(bbEntityX(target)-bbEntityX(n->collider)) < 55.f & abs(bbEntityZ(target)-bbEntityZ(n->collider)) < 55.f && abs(bbEntityY(target)-bbEntityY(n->collider))< 20.f) {
+                if (abs(bbEntityX(target)-bbEntityX(n->collider)) < 55.f && abs(bbEntityZ(target)-bbEntityZ(n->collider)) < 55.f && abs(bbEntityY(target)-bbEntityY(n->collider))< 20.f) {
 
                     bbPointEntity(n->obj, target);
                     bbRotateEntity(n->collider, 0, CurveAngle(bbEntityYaw(n->obj),bbEntityYaw(n->collider),30.f), 0, true);
@@ -1466,7 +1463,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                         for (int iterator148 = 0; iterator148 < Room::getListSize(); iterator148++) {
                             r = Room::getObject(iterator148);
 
-                            if (((abs(r->x-bbEntityX(n->collider,true))>12.f) | (abs(r->z-bbEntityZ(n->collider,true))>12.f)) && (bbRand(1,(int)(Max(4-(int)(abs(r->z-bbEntityZ(n->collider,true)/8.f)),2)))==1)) {
+                            if (((abs(r->x-bbEntityX(n->collider,true))>12.f) || (abs(r->z-bbEntityZ(n->collider,true))>12.f)) && (bbRand(1,(int)(Max(4-(int)(abs(r->z-bbEntityZ(n->collider,true)/8.f)),2)))==1)) {
                                 x = r->x;
                                 y = 0.1f;
                                 z = r->z;
@@ -1554,7 +1551,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                             //	EndIf
                             //EndIf
 
-                            if (newDist<0.2f | (prevDist<newDist && prevDist<1.f)) {
+                            if (newDist<0.2f || (prevDist<newDist && prevDist<1.f)) {
                                 n->pathLocation = n->pathLocation+1;
                             }
                         }
@@ -1588,7 +1585,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                     }
                 }
 
-                if ((!bbEntityVisible(n->collider,Curr096->collider)) | bbEntityDistance(n->collider,Curr096->collider)>6.f) {
+                if ((!bbEntityVisible(n->collider,Curr096->collider)) || bbEntityDistance(n->collider,Curr096->collider)>6.f) {
                     n->state = 0;
                 }
                 //[End Block]
@@ -1713,7 +1710,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                                 //	EndIf
                                 //EndIf
 
-                                if (newDist<0.2f | (prevDist<newDist && prevDist<1.f)) {
+                                if (newDist<0.2f || (prevDist<newDist && prevDist<1.f)) {
                                     n->pathLocation = n->pathLocation+1;
                                 }
                             }
@@ -1740,7 +1737,7 @@ void UpdateNPCtypeMTF(NPC* n) {
             n->state = 0;
         }
 
-        if (n->state != 3 & n->state != 5 & n->state != 6 && n->state != 7) {
+        if (n->state != 3 & n->state != 5 && n->state != 6 && n->state != 7) {
             if (n->mtfLeader!=nullptr) {
                 if (bbEntityDistance(n->collider,n->mtfLeader->collider)<0.7f) {
                     bbPointEntity(n->collider,n->mtfLeader->collider);

@@ -128,7 +128,7 @@ void UpdateLevers() {
 
                     float prevpitch = bbEntityPitch(lever->obj);
 
-                    if (MouseDown1 | MouseHit1) {
+                    if (MouseDown1 || MouseHit1) {
                         if (mainPlayer->grabbedEntity != 0) {
                             if (mainPlayer->grabbedEntity == lever->obj) {
                                 DrawHandIcon = true;
@@ -178,7 +178,7 @@ float UpdateElevators(float state, Door* door1, Door* door2, class Object* room1
     door2->isElevatorDoor = 1;
     if (door1->open == true && door2->open == false) {
         state = -1;
-        if ((mainPlayer->closestButton == door2->buttons[0] | mainPlayer->closestButton == door2->buttons[1]) && MouseHit1) {
+        if ((mainPlayer->closestButton == door2->buttons[0] || mainPlayer->closestButton == door2->buttons[1]) && MouseHit1) {
             UseDoor(door1,false);
         }
         if (door2->npcCalledElevator == true) {
@@ -187,7 +187,7 @@ float UpdateElevators(float state, Door* door1, Door* door2, class Object* room1
         }
     } else if ((door2->open == true && door1->open == false)) {
         state = 1;
-        if ((mainPlayer->closestButton == door1->buttons[0] | mainPlayer->closestButton == door1->buttons[1]) && MouseHit1) {
+        if ((mainPlayer->closestButton == door1->buttons[0] || mainPlayer->closestButton == door1->buttons[1]) && MouseHit1) {
             UseDoor(door2,false);
         }
         if (door1->npcCalledElevator == true) {
@@ -376,13 +376,13 @@ float UpdateElevators2(float State, Door* door1, Door* door2, class Object* room
     if (door1->open == true && door2->open == false) {
         State = -1;
         door2->isElevatorDoor = 2;
-        if ((mainPlayer->closestButton == door2->buttons[0] | mainPlayer->closestButton == door2->buttons[1]) && MouseHit1) {
+        if ((mainPlayer->closestButton == door2->buttons[0] || mainPlayer->closestButton == door2->buttons[1]) && MouseHit1) {
             UseDoor(door1,false);
         }
     } else if ((door2->open == true && door1->open == false)) {
         State = 1;
         door1->isElevatorDoor = 2;
-        if ((mainPlayer->closestButton == door1->buttons[0] | mainPlayer->closestButton == door1->buttons[1]) && MouseHit1) {
+        if ((mainPlayer->closestButton == door1->buttons[0] || mainPlayer->closestButton == door1->buttons[1]) && MouseHit1) {
             UseDoor(door2,false);
         }
     } else if ((abs(door1->openstate-door2->openstate)<0.2f)) {

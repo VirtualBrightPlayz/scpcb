@@ -5,17 +5,11 @@
 #include "NPCs.h"
 #include "../INI.h"
 #include "../GameMain.h"
-#include "../Events.h"
 #include "../Menus/Menu.h"
 #include "../Audio.h"
 #include "../MapSystem.h"
 #include "../Player.h"
 #include "../MathUtils/MathUtils.h"
-#include "../Difficulty.h"
-#include "../Objects.h"
-#include "../Doors.h"
-#include "../Decals.h"
-#include "../Particles.h"
 #include "../Assets.h"
 #include "../Rooms/Room_test_860_2.h"
 #include "NPCtype860.h"
@@ -211,7 +205,7 @@ void UpdateNPCtype860(NPC* n) {
 
                     for (x2 = (int)(Max(x-1,0)); x2 <= (int)(Min(x+1,gridsize)); x2++) {
                         for (z2 = (int)(Max(z-1,0)); z2 <= (int)(Min(z+1,gridsize)); z2++) {
-                            if (fr->grid[(z2*gridsize)+x2]>0 & (x2!=x | z2!=z) && (x2==x | z2==z)) {
+                            if (fr->grid[(z2*gridsize)+x2]>0 && (x2!=x | z2!=z) && (x2==x || z2==z)) {
 
                                 bbTFormPoint((x2*12)/RoomScale,0,(z2*12)/RoomScale,mainPlayer->currRoom->obj,0);
 
@@ -270,7 +264,7 @@ void UpdateNPCtype860(NPC* n) {
                         n->state3 = Max(n->state3 - timing->tickDuration,0);
                     }
 
-                    if (n->playerDistance<4.5f | n->state3 > bbRnd(200,250)) {
+                    if (n->playerDistance<4.5f || n->state3 > bbRnd(200,250)) {
                         n->soundChannels[0] = PlayRangedSound(LoadTempSound("SFX/SCP/860/Cancer"+String(bbRand(3,5))+".ogg"), mainPlayer->cam, n->collider);
                         n->state = 3;
                     }
@@ -283,7 +277,7 @@ void UpdateNPCtype860(NPC* n) {
                 }
 
                 //535, 568
-                if (prevFrame < 533 & n->frame>=533 | prevFrame > 568 && n->frame<2) {
+                if (prevFrame < 533 && n->frame>=533 || prevFrame > 568 && n->frame<2) {
                     PlayRangedSound(sndManager->footstep8601[bbRand(0, 2)]->internal, mainPlayer->cam, n->collider, 15.f, 0.6f);
                 }
 
@@ -388,10 +382,10 @@ float Find860Angle(NPC* n, Forest* fr) {
     int x2;
     int z2;
     //the monster is not on the same tile as the player
-    if (xt!=playerx | zt!=playerz) {
+    if (xt!=playerx || zt!=playerz) {
         for (x2 = (int)(Max(xt-1,0)); x2 <= (int)(Min(xt+1,gridsize-1)); x2++) {
             for (z2 = (int)(Max(zt-1,0)); z2 <= (int)(Min(zt+1,gridsize-1)); z2++) {
-                if (fr->grid[(z2*gridsize)+x2]>0 & (x2!=xt | z2!=zt) && (x2==xt | z2==zt)) {
+                if (fr->grid[(z2*gridsize)+x2]>0 && (x2!=xt | z2!=zt) && (x2==xt || z2==zt)) {
 
                     //tile (x2,z2) is closer to the player than the monsters current tile
                     if ((abs(playerx-x2)+abs(playerz-z2))<(abs(playerx-xt)+abs(playerz-zt))) {

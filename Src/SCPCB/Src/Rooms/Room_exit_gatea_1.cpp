@@ -1,20 +1,14 @@
 #include <bbblitz3d.h>
-#include <bbmath.h>
-#include <bbgraphics.h>
-#include <bbaudio.h>
 
 #include "../GameMain.h"
 #include "../MapSystem.h"
 #include "../Doors.h"
-#include "../Items/Items.h"
 #include "../Decals.h"
 #include "../Particles.h"
 #include "../Events.h"
 #include "../Player.h"
-#include "../NPCs/NPCs.h"
 #include "../Audio.h"
 #include "../MathUtils/MathUtils.h"
-#include "../Menus/Menu.h"
 #include "../Objects.h"
 #include "Room_exit_gatea_1.h"
 
@@ -86,7 +80,7 @@ void UpdateEvent_exit_gatea_1(Event* e) {
         } else if ((RemoteDoorOn && e->eventState3==0)) {
             e->room->doors[1]->locked = false;
             if (e->room->doors[1]->open) {
-                if (e->room->doors[1]->openstate > 50 | bbEntityDistance(mainPlayer->collider, e->room->doors[1]->frameobj)<0.5f) {
+                if (e->room->doors[1]->openstate > 50 || bbEntityDistance(mainPlayer->collider, e->room->doors[1]->frameobj)<0.5f) {
                     e->room->doors[1]->openstate = Min(e->room->doors[1]->openstate,50);
                     e->room->doors[1]->open = false;
                     PlayRangedSound (LoadTempSound("SFX/Door/DoorError.ogg"), mainPlayer->cam, e->room->doors[1]->frameobj);

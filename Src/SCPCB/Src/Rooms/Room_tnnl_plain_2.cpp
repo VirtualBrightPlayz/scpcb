@@ -1,12 +1,9 @@
 #include <bbblitz3d.h>
 #include <bbmath.h>
-#include <bbgraphics.h>
 #include <bbaudio.h>
 
 #include "../GameMain.h"
 #include "../MapSystem.h"
-#include "../Doors.h"
-#include "../Items/Items.h"
 #include "../Decals.h"
 #include "../Particles.h"
 #include "../Events.h"
@@ -14,7 +11,6 @@
 #include "../NPCs/NPCs.h"
 #include "../Audio.h"
 #include "../MathUtils/MathUtils.h"
-#include "../Menus/Menu.h"
 #include "Room_tnnl_plain_2.h"
 
 namespace CBN {
@@ -58,7 +54,7 @@ void UpdateEventTunnel106(Event* e) {
         }
     } else if (e->eventState == 1) {
 
-        if (e->room->dist < 3.f | bbRand(7000)==1) {
+        if (e->room->dist < 3.f || bbRand(7000)==1) {
             e->eventState = 2;
             d = CreateDecal(DECAL_CORROSION, bbEntityX(e->room->obj), 445.f*RoomScale, bbEntityZ(e->room->obj), -90, bbRand(360), 0);
             d->size = bbRnd(0.5f, 0.7f);

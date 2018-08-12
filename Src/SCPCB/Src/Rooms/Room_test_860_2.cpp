@@ -180,7 +180,7 @@ void UpdateEvent_test_860_2(Event* e) {
             }
 
             if (e->room->npc[0]!=nullptr) {
-                if (e->room->npc[0]->state == 0 | bbEntityDistance(mainPlayer->collider, e->room->npc[0]->collider)>12.f) {
+                if (e->room->npc[0]->state == 0 || bbEntityDistance(mainPlayer->collider, e->room->npc[0]->collider)>12.f) {
                     e->eventState3 = e->eventState3 + (1+mainPlayer->moveSpeed)* timing->tickDuration;
                     if (modFloat(e->eventState3, 500) < 10.f && modFloat(e->eventState3-timing->tickDuration, 500) > 490.f) {
                         //If (e\eventState3 > 3500 And Rnd(10000)<e\eventState3) Then
@@ -426,7 +426,7 @@ void GenForestGrid(Forest* fr) {
             //we are going to the side, so determine whether to keep going or go forward again
             dir = turn_if_deviating(max_deviation_distance,pathx,center,dir);
             deviated = turn_if_deviating(max_deviation_distance,pathx,center,dir,1);
-            if (deviated | chance(return_chance)) {
+            if (deviated || chance(return_chance)) {
                 dir = 1;
             }
 
@@ -505,7 +505,7 @@ void GenForestGrid(Forest* fr) {
                 new_x = rightmost+1;
             }
             //before creating a branch make sure there are no 1's above or below
-            if ((temp_y!=0 && fr->grid[((gridsize-1-temp_y+1)*gridsize)+new_x]==1) | fr->grid[((gridsize-1-temp_y-1)*gridsize)+new_x]==1) {
+            if ((temp_y!=0 && fr->grid[((gridsize-1-temp_y+1)*gridsize)+new_x]==1) || fr->grid[((gridsize-1-temp_y-1)*gridsize)+new_x]==1) {
                 //break simply to stop creating the branch
                 break;
             }

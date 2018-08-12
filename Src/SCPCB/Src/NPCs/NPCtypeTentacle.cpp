@@ -3,19 +3,11 @@
 #include <bbmath.h>
 
 #include "NPCs.h"
-#include "../INI.h"
-#include "../GameMain.h"
-#include "../Events.h"
 #include "../Menus/Menu.h"
 #include "../Audio.h"
-#include "../MapSystem.h"
 #include "../Player.h"
 #include "../Items/Items.h"
 #include "../MathUtils/MathUtils.h"
-#include "../Difficulty.h"
-#include "../Objects.h"
-#include "../Doors.h"
-#include "../Decals.h"
 #include "NPCtypeTentacle.h"
 
 namespace CBN {

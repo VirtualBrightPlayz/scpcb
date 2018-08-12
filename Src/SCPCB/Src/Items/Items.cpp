@@ -3,8 +3,6 @@
 #include <bbstring.h>
 #include <bbmath.h>
 #include <bbgraphics.h>
-#include <iostream>
-#include <StringType.h>
 #include <bbinput.h>
 
 #include "Items.h"
@@ -818,7 +816,7 @@ void DrawInventory(Player* player) {
                     bbAmbientLight(Brightness, Brightness, Brightness);
                 }
 
-                if (player->selectedItem != player->openInventory->items[n] | isMouseOn) {
+                if (player->selectedItem != player->openInventory->items[n] || isMouseOn) {
                     bbDrawImage(player->openInventory->items[n]->invImage, x + ITEM_CELL_SIZE / 2 - 32, y + ITEM_CELL_SIZE / 2 - 32);
                 }
             }

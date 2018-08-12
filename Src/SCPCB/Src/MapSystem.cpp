@@ -1543,7 +1543,7 @@ void UpdateSecurityCams() {
             bbHideEntity(sc->cam);
         } else {
             if (!sc->specialCam) {
-                if (sc->room->dist < 6.f | mainPlayer->currRoom==sc->room) {
+                if (sc->room->dist < 6.f || mainPlayer->currRoom==sc->room) {
                     close = true;
                 } else if ((sc->isRoom2slCam)) {
                     close = true;
@@ -1564,7 +1564,7 @@ void UpdateSecurityCams() {
                 sc->coffinEffect = 0;
             }
 
-            if (close | sc==CoffinCam | sc->isRoom2slCam) {
+            if (close | sc==CoffinCam || sc->isRoom2slCam) {
                 if (sc->followPlayer) {
                     if (sc!=CoffinCam) {
                         if (bbEntityVisible(sc->cameraObj,mainPlayer->cam)) {
@@ -1620,7 +1620,7 @@ void UpdateSecurityCams() {
                 }
             }
 
-            if (close == true | sc->isRoom2slCam | sc->specialCam) {
+            if (close == true | sc->isRoom2slCam || sc->specialCam) {
                 if (sc->screen) {
                     sc->state = sc->state+timing->tickDuration;
 
@@ -1644,7 +1644,7 @@ void UpdateSecurityCams() {
                             if (bbEntityVisible(mainPlayer->cam,sc->scrObj)) {
                                 sc->inSight = true;
 
-                                if (sc->coffinEffect==1 | sc->coffinEffect==3) {
+                                if (sc->coffinEffect==1 || sc->coffinEffect==3) {
                                     if (mainPlayer->blinkTimer > - 5) {
                                         mainPlayer->sanity895 = mainPlayer->sanity895-(timing->tickDuration * 16);
                                     }
@@ -1659,7 +1659,7 @@ void UpdateSecurityCams() {
 
                                 if (!sc->isRoom2slCam) {
                                     if (!sc->specialCam) {
-                                        if (CoffinCam == nullptr | bbRand(5)==5 | sc->coffinEffect != 3) {
+                                        if (CoffinCam == nullptr | bbRand(5)==5 || sc->coffinEffect != 3) {
                                             bbHideEntity(mainPlayer->cam);
                                             bbShowEntity(sc->cam);
                                             bbCls();
@@ -1719,7 +1719,7 @@ void UpdateSecurityCams() {
                         sc->state = 0;
                     }
 
-                    if (SelectedMonitor == sc | sc->coffinEffect==1 | sc->coffinEffect==3) {
+                    if (SelectedMonitor == sc | sc->coffinEffect==1 || sc->coffinEffect==3) {
                         if (sc->inSight) {
                             //If ((Not NoClip)) Then
                             pvt = bbCreatePivot();
@@ -1738,7 +1738,7 @@ void UpdateSecurityCams() {
 
                             bbFreeEntity(pvt);
                             //EndIf
-                            if (sc->coffinEffect==1 | sc->coffinEffect==3) {
+                            if (sc->coffinEffect==1 || sc->coffinEffect==3) {
                                 for (i = 0; i <= GORE_PIC_COUNT-1; i++) {
                                     gorePics[i] = TextureAssetWrap::grab("GFX/895pics/pic" + String(i + 1) + ".jpg");
                                 }
@@ -1784,7 +1784,7 @@ void UpdateSecurityCams() {
                         }
                     }
 
-                    if (sc->inSight && sc->coffinEffect==0 | sc->coffinEffect==2) {
+                    if (sc->inSight && sc->coffinEffect==0 || sc->coffinEffect==2) {
                         aiPic = TextureAssetWrap::grab("GFX/079pics/face.jpg");
                         if (sc->playerState == 0) {
                             sc->playerState = bbRand(60000, 65000);
@@ -1900,8 +1900,8 @@ void CreateMap() {
 
     for (y = 0; y <= mapDim-1; y++) {
         for (x = 0; x <= mapDim-1; x++) {
-            if ((x % rectWidth==1) | (y % rectHeight==1)) {
-                if ((x>=rectWidth & x<mapDim-rectWidth) | (y>=rectHeight && y<mapDim-rectHeight)) {
+            if ((x % rectWidth==1) || (y % rectHeight==1)) {
+                if ((x>=rectWidth && x<mapDim-rectWidth) || (y>=rectHeight && y<mapDim-rectHeight)) {
                     layout[x][y]=1;
                 }
             }
@@ -1915,7 +1915,7 @@ void CreateMap() {
     int nonShiftStreak = bbRand(0,5);
     for (y = 1; y <= mapDim-2; y++) {
         for (x = 0; x <= mapDim-2; x++) {
-            if (y>6 | x>6) {
+            if (y>6 || x>6) {
                 if ((y % rectHeight==1) && layout[x][y]==ROOM2) {
                     shift = bbRand(0,1);
                     if (nonShiftStreak==0) {
@@ -1953,7 +1953,7 @@ void CreateMap() {
             if ((((x/rectWidth) % 2)==punchOffset) && (layout[x][y]==ROOM2)) {
                 roomAbove = layout[x][y-1];
                 roomBelow = layout[x][y+1];
-                if (((roomAbove>=ROOM2) & (roomBelow>=ROOM2)) && ((roomAbove+roomBelow)>(ROOM2+ROOM3))) {
+                if (((roomAbove>=ROOM2) && (roomBelow>=ROOM2)) && ((roomAbove+roomBelow)>(ROOM2+ROOM3))) {
                     layout[x][y]=0;
                 }
             }
@@ -2078,8 +2078,8 @@ void CreateMap() {
 
     RoomTemplate* tempTemplate;
 
-    for (y = 0; y <= mapDim - 1; y++) {
-        for (x = 0; x <= mapDim - 1; x++) {
+    for (y = 0; y < mapDim; y++) {
+        for (x = 0; x < mapDim; x++) {
             commonnessAccumulator = 0;
             currType = layout[x][y];
             if (currType>0) {
@@ -2151,7 +2151,7 @@ void CreateMap() {
                         } break;
                     }
 
-                    if ((x+tempX>=0) & (x+tempX<mapDim) & (y+tempY>=0) && (y+tempY<mapDim)) {
+                    if ((x+tempX>=0) & (x+tempX<mapDim) && (y+tempY>=0) && (y+tempY<mapDim)) {
                         r->adjacent[i] = MapRooms[x+tempX][y+tempY];
                         if (r->adjacent[i]!=nullptr) {
                             if (r->adjacent[i]->adjDoor[(i+2) % 4]==nullptr) {

@@ -1,21 +1,13 @@
 #include <bbblitz3d.h>
 #include <bbmath.h>
-#include <bbgraphics.h>
-#include <bbaudio.h>
 
-#include "../GameMain.h"
 #include "../MapSystem.h"
 #include "../Doors.h"
-#include "../Items/Items.h"
 #include "../Decals.h"
 #include "../Particles.h"
 #include "../Events.h"
 #include "../Player.h"
 #include "../NPCs/NPCs.h"
-#include "../Audio.h"
-#include "../MathUtils/MathUtils.h"
-#include "../Menus/Menu.h"
-#include "../Objects.h"
 #include "Room_lck_cam_2c.h"
 
 namespace CBN {
@@ -139,7 +131,7 @@ void UpdateEventLockroom173(Event* e) {
         if (Curr173->idle == 2) {
             RemoveEvent(e);
         } else {
-            if ((!bbEntityInView(Curr173->collider, mainPlayer->cam)) | bbEntityDistance(Curr173->collider, mainPlayer->collider)>15.f) {
+            if ((!bbEntityInView(Curr173->collider, mainPlayer->cam)) || bbEntityDistance(Curr173->collider, mainPlayer->collider)>15.f) {
                 bbPositionEntity(Curr173->collider, e->room->x + bbCos(225-90 + e->room->angle) * 2, 0.6f, e->room->z + bbSin(225-90 + e->room->angle) * 2);
                 bbResetEntity(Curr173->collider);
                 RemoveEvent(e);

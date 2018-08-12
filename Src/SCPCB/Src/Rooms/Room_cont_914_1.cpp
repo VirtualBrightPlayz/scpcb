@@ -1,6 +1,4 @@
 #include <bbblitz3d.h>
-#include <bbmath.h>
-#include <bbgraphics.h>
 #include <bbaudio.h>
 
 #include "../GameMain.h"
@@ -12,11 +10,9 @@
 #include "../Events.h"
 #include "../Options.h"
 #include "../Player.h"
-#include "../NPCs/NPCs.h"
 #include "../Audio.h"
 #include "../MathUtils/MathUtils.h"
 #include "../Menus/Menu.h"
-#include "../Objects.h"
 #include "Room_cont_914_1.h"
 
 namespace CBN {
@@ -143,7 +139,7 @@ void UpdateEvent_cont_914_1(Event* e) {
             }
         }
 
-        if (MouseDown1 | MouseHit1) {
+        if (MouseDown1 || MouseHit1) {
             //avain
             if (mainPlayer->grabbedEntity != 0) {
                 if (mainPlayer->grabbedEntity == e->room->objects[0]) {
@@ -247,7 +243,7 @@ void UpdateEvent_cont_914_1(Event* e) {
 
             if (Distance(bbEntityX(mainPlayer->collider), bbEntityZ(mainPlayer->collider), bbEntityX(e->room->objects[2], true), bbEntityZ(e->room->objects[2], true)) < (170.f * RoomScale)) {
 
-                if (setting.equals("rough") | setting.equals("coarse")) {
+                if (setting.equals("rough") || setting.equals("coarse")) {
                     if (e->eventState > 70 * 2.6f && e->eventState - timing->tickDuration < 70 * 2.6f) {
                         PlaySound2(e->sounds[2]);
                     }

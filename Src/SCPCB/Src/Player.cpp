@@ -269,10 +269,10 @@ void UpdatePlayer() {
     }
 
     if (!mainPlayer->noclip) {
-        if (((bbKeyDown(keyBinds->down) ^ bbKeyDown(keyBinds->up)) | (bbKeyDown(keyBinds->right) ^ bbKeyDown(keyBinds->left)) && (!mainPlayer->disableControls)) | mainPlayer->forceMove>0) {
+        if (((bbKeyDown(keyBinds->down) ^ bbKeyDown(keyBinds->up)) | (bbKeyDown(keyBinds->right) ^ bbKeyDown(keyBinds->left)) && (!mainPlayer->disableControls)) || mainPlayer->forceMove>0) {
 
             // And (Not IsZombie)) Then
-            if (mainPlayer->crouching == 0 & (bbKeyDown(keyBinds->sprint)) && mainPlayer->stamina > 0.f) {
+            if (mainPlayer->crouching == 0 && (bbKeyDown(keyBinds->sprint)) && mainPlayer->stamina > 0.f) {
                 Sprint = 2.5f;
                 mainPlayer->stamina = mainPlayer->stamina - timing->tickDuration * 0.5f * (1.f/mainPlayer->staminaEffect);
                 if (mainPlayer->stamina <= 0) {
@@ -609,7 +609,7 @@ void MouseLook() {
         bbRotateEntity(mainPlayer->cam, WrapAngle(mainPlayer->headPitch + bbRnd(-mainPlayer->camShake, mainPlayer->camShake)), WrapAngle(bbEntityYaw(mainPlayer->collider) + bbRnd(-mainPlayer->camShake, mainPlayer->camShake)), roll);
 
         if (mainPlayer->currRoom->roomTemplate->name.equals("pocketdimension")) {
-            if (bbEntityY(mainPlayer->collider)<2000*RoomScale | bbEntityY(mainPlayer->collider)>2608*RoomScale) {
+            if (bbEntityY(mainPlayer->collider)<2000*RoomScale || bbEntityY(mainPlayer->collider)>2608*RoomScale) {
                 // Pitch the user;s camera up And down.)
                 bbRotateEntity(mainPlayer->cam, WrapAngle(bbEntityPitch(mainPlayer->cam)),WrapAngle(bbEntityYaw(mainPlayer->cam)), roll+WrapAngle(bbSin(TimeInPosMilliSecs()/150.f)*30.f));
             }

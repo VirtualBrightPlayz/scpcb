@@ -5,17 +5,11 @@
 #include "NPCs.h"
 #include "../INI.h"
 #include "../GameMain.h"
-#include "../Events.h"
 #include "../Menus/Menu.h"
 #include "../Audio.h"
 #include "../MapSystem.h"
 #include "../Player.h"
 #include "../MathUtils/MathUtils.h"
-#include "../Difficulty.h"
-#include "../Objects.h"
-#include "../Doors.h"
-#include "../Decals.h"
-#include "../Particles.h"
 #include "NPCtype1499.h"
 
 namespace CBN {
@@ -57,7 +51,7 @@ void UpdateNPCtype1499(NPC* n) {
     int prevFrame = (int)(n->frame);
 
     if ((!n->idle) && bbEntityDistance(n->collider,mainPlayer->collider)<HideDistance*2) {
-        if (n->state == 0 | n->state == 2) {
+        if (n->state == 0 || n->state == 2) {
             for (int iterator126 = 0; iterator126 < NPC::getListSize(); iterator126++) {
                 n2 = NPC::getObject(iterator126);
 
@@ -191,7 +185,7 @@ void UpdateNPCtype1499(NPC* n) {
                 }
 
                 if (n->playerDistance < 0.75f) {
-                    if ((n->id % 2 == 0) | n->state3 == 1) {
+                    if ((n->id % 2 == 0) || n->state3 == 1) {
                         n->state2 = bbRand(1,2);
                         n->state = 3;
                         if (n->state2 == 1) {
@@ -219,7 +213,7 @@ void UpdateNPCtype1499(NPC* n) {
                 if (n->state2 == 1) {
                     AnimateNPC(n,63,100,0.6f,false);
                     if (prevFrame < 89 && n->frame>=89) {
-                        if (n->playerDistance > 0.85f | abs(bbDeltaYaw(n->collider,mainPlayer->collider))>60.f) {
+                        if (n->playerDistance > 0.85f || abs(bbDeltaYaw(n->collider,mainPlayer->collider))>60.f) {
                             //Miss
                         } else {
                             mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.75f,1.5f);
@@ -244,7 +238,7 @@ void UpdateNPCtype1499(NPC* n) {
                 } else {
                     AnimateNPC(n,168,202,0.6f,false);
                     if (prevFrame < 189 && n->frame>=189) {
-                        if (n->playerDistance > 0.85f | abs(bbDeltaYaw(n->collider,mainPlayer->collider))>60.f) {
+                        if (n->playerDistance > 0.85f || abs(bbDeltaYaw(n->collider,mainPlayer->collider))>60.f) {
                             //Miss
                         } else {
                             mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.75f,1.5f);

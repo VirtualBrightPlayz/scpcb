@@ -5,17 +5,12 @@
 #include "NPCs.h"
 #include "../INI.h"
 #include "../GameMain.h"
-#include "../Events.h"
 #include "../Menus/Menu.h"
 #include "../Audio.h"
 #include "../MapSystem.h"
 #include "../Player.h"
 #include "../MathUtils/MathUtils.h"
-#include "../Difficulty.h"
-#include "../Objects.h"
-#include "../Doors.h"
 #include "../Decals.h"
-#include "../Particles.h"
 #include "../Options.h"
 #include "NPCtype096.h"
 
@@ -62,13 +57,13 @@ void UpdateNPCtype096(NPC* n) {
                 angle = WrapAngle(bbDeltaYaw(n->collider, mainPlayer->collider));
 
                 if (!NoTarget) {
-                    if (angle<90 | angle>270) {
+                    if (angle<90 || angle>270) {
                         bbCameraProject(mainPlayer->cam,bbEntityX(n->collider), bbEntityY(n->collider)+0.25f, bbEntityZ(n->collider));
 
                         if (bbProjectedX()>0 && bbProjectedX()<userOptions->screenWidth) {
                             if (bbProjectedY()>0 && bbProjectedY()<userOptions->screenHeight) {
                                 if (bbEntityVisible(mainPlayer->collider, n->collider)) {
-                                    if (mainPlayer->blinkTimer < - 16 | mainPlayer->blinkTimer > - 6) {
+                                    if (mainPlayer->blinkTimer < - 16 || mainPlayer->blinkTimer > - 6) {
                                         PlaySound2(LoadTempSound("SFX/SCP/096/Triggered.ogg"));
 
                                         mainPlayer->camZoom = 10;
@@ -137,7 +132,7 @@ void UpdateNPCtype096(NPC* n) {
                     n->pathTimer = Max(70*3, n->pathTimer);
                     n->pathStatus = 0;
 
-                    if (n->playerDistance < 2.8f | n->frame<150) {
+                    if (n->playerDistance < 2.8f || n->frame<150) {
                         //go to the start of the jump animation
                         if (n->frame>193) {
                             n->frame = 2.f;
@@ -268,7 +263,7 @@ void UpdateNPCtype096(NPC* n) {
                     }
                 }
 
-                if (n->playerDistance > 32.f | bbEntityY(n->collider)<-50) {
+                if (n->playerDistance > 32.f || bbEntityY(n->collider)<-50) {
                     if (bbRand(50)==1) {
                         TeleportCloser(n);
                     }
@@ -411,13 +406,13 @@ void UpdateNPCtype096(NPC* n) {
                 //-EntityYaw(n\collider))
                 angle = WrapAngle(bbDeltaYaw(n->collider, mainPlayer->cam));
                 if (!NoTarget) {
-                    if (angle<55 | angle>360-55) {
+                    if (angle<55 || angle>360-55) {
                         bbCameraProject(mainPlayer->cam,bbEntityX(n->collider), bbEntityY(mainPlayer->collider)+5.8f*0.2f-0.25f, bbEntityZ(n->collider));
 
                         if (bbProjectedX()>0 && bbProjectedX()<userOptions->screenWidth) {
                             if (bbProjectedY()>0 && bbProjectedY()<userOptions->screenHeight) {
                                 if (bbEntityVisible(mainPlayer->collider, n->collider)) {
-                                    if (mainPlayer->blinkTimer < - 16 | mainPlayer->blinkTimer > - 6) {
+                                    if (mainPlayer->blinkTimer < - 16 || mainPlayer->blinkTimer > - 6) {
                                         PlaySound2(LoadTempSound("SFX/SCP/096/Triggered.ogg"));
 
                                         mainPlayer->camZoom = 10;

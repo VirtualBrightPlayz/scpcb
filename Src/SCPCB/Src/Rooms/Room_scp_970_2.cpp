@@ -1,6 +1,5 @@
 #include <bbblitz3d.h>
 #include <bbmath.h>
-#include <bbgraphics.h>
 #include <bbaudio.h>
 
 #include "../GameMain.h"
@@ -14,8 +13,6 @@
 #include "../NPCs/NPCs.h"
 #include "../Audio.h"
 #include "../MathUtils/MathUtils.h"
-#include "../Menus/Menu.h"
-#include "../Objects.h"
 #include "Room_scp_970_2.h"
 
 namespace CBN {
@@ -99,7 +96,7 @@ void UpdateEvent_scp_970_2(Event* e) {
             e->room->doors[1]->locked = false;
             e->room->doors[4]->locked = false;
 
-            if (bbEntityDistance(mainPlayer->collider, Curr173->obj)<8.f | bbEntityDistance(mainPlayer->collider, Curr106->obj)<8.f) {
+            if (bbEntityDistance(mainPlayer->collider, Curr173->obj)<8.f || bbEntityDistance(mainPlayer->collider, Curr106->obj)<8.f) {
                 e->room->doors[1]->locked = true;
                 e->room->doors[4]->locked = true;
             } else {
@@ -319,7 +316,7 @@ void UpdateEvent_scp_970_2(Event* e) {
             for (int iterator195 = 0; iterator195 < Item::getListSize(); iterator195++) {
                 it = Item::getObject(iterator195);
 
-                if ((it->dropped==1 && abs(bbTFormedX())<264) | it->dropped==-1) {
+                if ((it->dropped==1 && abs(bbTFormedX())<264) || it->dropped==-1) {
                     //DebugLog("dropping/picking: "+it\dropped+" - "+EntityX(it\collider)+", "+EntityY(it\collider)+", "+EntityZ(it\collider))
 
                     bbTFormPoint(bbEntityX(it->collider),bbEntityY(it->collider),bbEntityZ(it->collider),0,e->room->obj);

@@ -1,6 +1,5 @@
 #include <bbblitz3d.h>
 #include <bbmath.h>
-#include <bbgraphics.h>
 #include <bbaudio.h>
 
 #include "../GameMain.h"
@@ -15,7 +14,6 @@
 #include "../Audio.h"
 #include "../MathUtils/MathUtils.h"
 #include "../Menus/Menu.h"
-#include "../Objects.h"
 #include "Room_pocketdimension.h"
 
 namespace CBN {
@@ -259,7 +257,7 @@ void UpdateEvent_pocketdimension(Event* e) {
 
         mainPlayer->injuries = mainPlayer->injuries+timing->tickDuration*0.00005f;
 
-        if (bbEntityY(mainPlayer->collider)<2000*RoomScale | bbEntityY(mainPlayer->collider)>2608*RoomScale) {
+        if (bbEntityY(mainPlayer->collider)<2000*RoomScale || bbEntityY(mainPlayer->collider)>2608*RoomScale) {
             mainPlayer->footstepOverride = 1;
         }
 
@@ -333,8 +331,8 @@ void UpdateEvent_pocketdimension(Event* e) {
             bbRotateEntity(e->room->objects[10],0,e->eventState * 2,0);
 
             //the "trick room"
-            if (e->eventState3 == 1 | e->eventState3 == 2) {
-                if (e->eventState3 == 1 && (e->room->doors[0]->openstate>150 | e->room->doors[1]->openstate>150)) {
+            if (e->eventState3 == 1 || e->eventState3 == 2) {
+                if (e->eventState3 == 1 && (e->room->doors[0]->openstate>150 || e->room->doors[1]->openstate>150)) {
                     PlaySound2(LoadTempSound("SFX/Horror/Horror16.ogg"));
                     mainPlayer->blurTimer = 800;
                     e->eventState3 = 2;

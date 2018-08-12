@@ -1,21 +1,15 @@
 #include <bbblitz3d.h>
 #include <bbmath.h>
-#include <bbgraphics.h>
-#include <bbaudio.h>
 
 #include "../GameMain.h"
 #include "../MapSystem.h"
 #include "../Doors.h"
-#include "../Items/Items.h"
 #include "../Decals.h"
 #include "../Particles.h"
 #include "../Events.h"
 #include "../Player.h"
 #include "../NPCs/NPCs.h"
 #include "../Audio.h"
-#include "../MathUtils/MathUtils.h"
-#include "../Menus/Menu.h"
-#include "../Objects.h"
 #include "Room_hll_ele_2.h"
 
 namespace CBN {
@@ -141,7 +135,7 @@ void UpdateEvent_hll_ele_2(Event* e) {
         }
     } else {
         if (e->eventState == 1) {
-            if (e->room->dist<5.f | bbRand(700)==1) {
+            if (e->room->dist<5.f || bbRand(700)==1) {
                 e->eventState = 2;
 
                 e->room->npc[0]->state = 5;

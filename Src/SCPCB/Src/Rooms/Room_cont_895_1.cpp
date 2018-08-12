@@ -1,7 +1,5 @@
 #include <bbblitz3d.h>
 #include <bbmath.h>
-#include <bbgraphics.h>
-#include <bbaudio.h>
 
 #include "../GameMain.h"
 #include "../MapSystem.h"
@@ -12,7 +10,6 @@
 #include "../Events.h"
 #include "../Player.h"
 #include "../NPCs/NPCs.h"
-#include "../Audio.h"
 #include "../MathUtils/MathUtils.h"
 #include "../Menus/Menu.h"
 #include "../Objects.h"
@@ -158,7 +155,7 @@ void UpdateEventCoffin(Event* e) {
                 sc = SecurityCam::getObject(iterator163);
 
                 if (!sc->specialCam) {
-                    if (!sc->coffinEffect==0 & sc->room->roomTemplate->name.equals("room106") && !sc->room->roomTemplate->name.equals("room205")) {
+                    if (!sc->coffinEffect==0 && sc->room->roomTemplate->name.equals("room106") && !sc->room->roomTemplate->name.equals("room205")) {
                         sc->coffinEffect = 2;
                     }
                     if (sc->room == e->room) {
@@ -188,7 +185,7 @@ void UpdateEventCoffin(Event* e) {
     if (mainPlayer->currRoom == e->room) {
         CoffinDistance = bbEntityDistance(mainPlayer->collider, e->room->objects[1]);
         if (CoffinDistance < 1.5f) {
-            if ((!Contained106) & e->name.equals("coffin106") && e->eventState2 == 0) {
+            if ((!Contained106) && e->name.equals("coffin106") && e->eventState2 == 0) {
                 de = CreateDecal(DECAL_CORROSION, bbEntityX(e->room->objects[1],true), -1531.f*RoomScale, bbEntityZ(e->room->objects[1],true), 90, bbRand(360), 0);
                 de->size = 0.05f;
                 de->sizeChange = 0.001f;
@@ -209,7 +206,7 @@ void UpdateEventCoffin(Event* e) {
             hasBatteryFor895 = 0;
             for (i = 0; i <= mainPlayer->inventory->size - 1; i++) {
                 if (mainPlayer->inventory->items[i] != nullptr) {
-                    if (mainPlayer->inventory->items[i]->itemTemplate->name.equals("nvgoggles") | mainPlayer->inventory->items[i]->itemTemplate->name.equals("supernv")) {
+                    if (mainPlayer->inventory->items[i]->itemTemplate->name.equals("nvgoggles") || mainPlayer->inventory->items[i]->itemTemplate->name.equals("supernv")) {
                         if (mainPlayer->inventory->items[i]->state > 0.f) {
                             hasBatteryFor895 = 1;
                             break;

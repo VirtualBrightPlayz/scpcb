@@ -221,7 +221,7 @@ void UpdateEvent_cont_049_2(Event* e) {
                 e->room->doors[3]->locked = true;
 
                 //TODO: really
-                if (temp | (int)(x)) {
+                if (temp || (int)(x)) {
                     //049 appears when either of the levers is turned
                     e->eventState = Max(e->eventState,70*180);
 

@@ -5,14 +5,10 @@
 #include "NPCs.h"
 #include "../INI.h"
 #include "../GameMain.h"
-#include "../Events.h"
-#include "../Menus/Menu.h"
 #include "../Audio.h"
 #include "../MapSystem.h"
 #include "../Player.h"
 #include "../MathUtils/MathUtils.h"
-#include "../Difficulty.h"
-#include "../Objects.h"
 #include "../Doors.h"
 #include "../Decals.h"
 #include "NPCtype066.h"
@@ -100,7 +96,7 @@ void UpdateNPCtype066(NPC* n) {
             if (n->frame < 647) {
                 angle = CurveAngle(0, (bbAnimTime(n->obj)-2.f)/1.2445f, 5.f);
 
-                if (angle < 5 | angle > 355) {
+                if (angle < 5 || angle > 355) {
                     SetNPCFrame(n,647);
                 } else {
                     SetNPCFrame(n,angle*1.2445f+2.f);

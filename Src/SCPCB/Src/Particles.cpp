@@ -142,7 +142,7 @@ void UpdateParticles() {
         bbEntityAlpha(p->sprite,1.f);
 
         p->lifetime = p->lifetime-timing->tickDuration;
-        if (p->lifetime <= 0 | p->size < 0.00001f | p->a <= 0) {
+        if (p->lifetime <= 0 | p->size < 0.00001f || p->a <= 0) {
             RemoveParticle(p);
         }
     }

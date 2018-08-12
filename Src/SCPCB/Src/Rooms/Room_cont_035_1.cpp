@@ -227,7 +227,7 @@ void UpdateEvent_cont_035_1(Event* e) {
                 if (!e->room->levers[0]->succ) {
                     //the gas valves are open
                     temp = e->room->levers[1]->succ;
-                    if (temp | (e->eventState3>25*70 && e->eventState3<50*70)) {
+                    if (temp || (e->eventState3>25*70 && e->eventState3<50*70)) {
                         if (temp) {
                             bbPositionEntity(e->room->objects[5], bbEntityX(e->room->objects[5],true), 424.f*RoomScale, bbEntityZ(e->room->objects[5],true),true);
                             bbPositionEntity(e->room->objects[6], bbEntityX(e->room->objects[6],true), 424.f*RoomScale, bbEntityZ(e->room->objects[6],true),true);
@@ -661,7 +661,7 @@ void UpdateEvent_cont_035_1(Event* e) {
                 e->eventState3 = Max(e->eventState3-(timing->tickDuration/100),0);
             }
 
-            if (e->eventState3 > 0 & (!IsPlayerWearingItem(mainPlayer,"hazmatsuit3")) && (!IsPlayerWearingItem(mainPlayer,"gasmask3"))) {
+            if (e->eventState3 > 0 && (!IsPlayerWearingItem(mainPlayer,"hazmatsuit3")) && (!IsPlayerWearingItem(mainPlayer,"gasmask3"))) {
                 e->soundChannels[0] = LoopRangedSound(e->sounds[0], e->soundChannels[0], mainPlayer->cam, e->room->obj, 10, e->eventState3);
                 e->soundChannels[1] = LoopRangedSound(e->sounds[1], e->soundChannels[1], mainPlayer->cam, e->room->obj, 10, (e->eventState3-0.5f)*2);
             }

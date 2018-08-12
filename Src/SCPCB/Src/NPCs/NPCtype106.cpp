@@ -5,17 +5,12 @@
 #include "NPCs.h"
 #include "../INI.h"
 #include "../GameMain.h"
-#include "../Events.h"
-#include "../Menus/Menu.h"
 #include "../Audio.h"
 #include "../MapSystem.h"
 #include "../Player.h"
 #include "../MathUtils/MathUtils.h"
 #include "../Difficulty.h"
-#include "../Objects.h"
-#include "../Doors.h"
 #include "../Decals.h"
-#include "../Particles.h"
 #include "NPCtype106.h"
 
 namespace CBN {
@@ -189,7 +184,7 @@ void UpdateNPCtype106(NPC* n) {
                 AnimateNPC(n, 284, 333, n->currSpeed * 43);
 
                 //Footstep sounds.
-                if (prevFrame <= 286 & n->frame > 286 || prevFrame<=311 && n->frame > 311.f) {
+                if (prevFrame <= 286 && n->frame > 286 || prevFrame<=311 && n->frame > 311.f) {
                     PlayRangedSound(sndManager->footstepPD[bbRand(0, 2)]->internal, mainPlayer->cam, n->collider, 6.f, bbRnd(0.8f,1.f));
                 }
 

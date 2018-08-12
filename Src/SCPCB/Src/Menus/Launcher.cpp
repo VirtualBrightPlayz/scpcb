@@ -1,8 +1,6 @@
 #include <bbruntime.h>
 #include <bbgraphics.h>
-#include <bbblitz3d.h>
 #include <bbmath.h>
-#include <StringType.h>
 
 #include "Launcher.h"
 #include "../MathUtils/MathUtils.h"

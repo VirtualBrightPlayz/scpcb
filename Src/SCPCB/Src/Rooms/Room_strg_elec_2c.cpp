@@ -1,7 +1,4 @@
 #include <bbblitz3d.h>
-#include <bbmath.h>
-#include <bbgraphics.h>
-#include <bbaudio.h>
 
 #include "../GameMain.h"
 #include "../MapSystem.h"
@@ -11,7 +8,6 @@
 #include "../Particles.h"
 #include "../Events.h"
 #include "../Player.h"
-#include "../NPCs/NPCs.h"
 #include "../Audio.h"
 #include "../MathUtils/MathUtils.h"
 #include "../Menus/Menu.h"
@@ -120,7 +116,7 @@ void UpdateEvent_strg_elec_2c(Event* e) {
 
             prevpitch = bbEntityPitch(e->room->objects[i]);
 
-            if (MouseDown1 | MouseHit1) {
+            if (MouseDown1 || MouseHit1) {
                 if (mainPlayer->grabbedEntity != 0) {
                     if (mainPlayer->grabbedEntity == e->room->objects[i]) {
                         DrawHandIcon = true;

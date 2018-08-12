@@ -4,7 +4,6 @@
 #include "../GameMain.h"
 #include "../MapSystem.h"
 #include "../Doors.h"
-#include "../Items/Items.h"
 #include "../Decals.h"
 #include "../Particles.h"
 #include "../Events.h"
@@ -104,7 +103,7 @@ void UpdateEvent_cont_205_1(Event* e) {
     //[Block]
     if (mainPlayer->currRoom == e->room) {
         e->overwriteMusic = true;
-        if (e->eventState==0 | e->room->objects[0]==0) {
+        if (e->eventState==0 || e->room->objects[0]==0) {
             if (!e->loaded) {
 
                 e->room->objects[3] = bbLoadAnimMesh("GFX/npcs/205_demon1.b3d");

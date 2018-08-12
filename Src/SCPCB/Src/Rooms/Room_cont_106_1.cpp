@@ -250,7 +250,7 @@ void UpdateEvent_cont_106_1(Event* e) {
             }
         }
 
-        if (e->eventState3>3200 | e->eventState3<2500 | e->eventState!=1) {
+        if (e->eventState3>3200 | e->eventState3<2500 || e->eventState!=1) {
             SoundTransmission = e->room->levers[1]->succ;
         }
         if (!SoundTransmission) {
