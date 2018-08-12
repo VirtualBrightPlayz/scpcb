@@ -17,12 +17,11 @@ static float tex_coords3[2][2]={ {0,1},{0,1} };
 extern gxRuntime *gx_runtime;
 extern gxGraphics *gx_graphics;
 
-static gxMesh* mesh;
-static int mesh_size = 0;
+static gxMesh* mesh = nullptr;
 static Vector verts[4];
 
 static void allocIndex(){
-	if( !mesh_size ){
+	if( !mesh ){
 		mesh=gx_graphics->createMesh( 4,2,0 );
 
         verts[0] = Vector(-1, 1, 0);

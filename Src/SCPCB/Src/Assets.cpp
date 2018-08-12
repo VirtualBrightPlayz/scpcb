@@ -122,6 +122,7 @@ TextureAssetWrap::TextureAssetWrap(const String& filePath, int flag) {
     file = filePath;
     flags = flag;
     grabCount = 1;
+    decayTimer = 140.0f;
 
     list.push_back(this);
 }
@@ -140,6 +141,7 @@ TextureAssetWrap* TextureAssetWrap::grab(const String& filePath, int flag) {
     for (int i = 0; i<list.size(); i++) {
         if (list[i]->file.equals(filePath)) {
             list[i]->grabCount++;
+            list[i]->decayTimer = 140.0f;
             return list[i];
         }
     }
@@ -161,8 +163,11 @@ Texture* TextureAssetWrap::getTexture() {
 void TextureAssetWrap::update() {
     for (int i = 0; i<list.size(); i++) {
         if (list[i]->grabCount <= 0) {
-            delete list[i];
-            i--;
+            list[i]->decayTimer -= timing->tickDuration;
+            if (list[i]->decayTimer <= 0.0f) {
+                delete list[i];
+                i--;
+            }
         }
     }
 }
@@ -171,6 +176,7 @@ ImageAssetWrap::ImageAssetWrap(const String& filePath) {
     image = bbLoadImage(filePath);
     file = filePath;
     grabCount = 1;
+    decayTimer = 140.0f;
 
     list.push_back(this);
 }
@@ -189,6 +195,7 @@ ImageAssetWrap* ImageAssetWrap::grab(const String& filePath) {
     for (int i = 0; i<list.size(); i++) {
         if (list[i]->file.equals(filePath)) {
             list[i]->grabCount++;
+            list[i]->decayTimer = 140.0f;
             return list[i];
         }
     }
@@ -210,8 +217,11 @@ bbImage* ImageAssetWrap::getImage() {
 void ImageAssetWrap::update() {
     for (int i = 0; i<list.size(); i++) {
         if (list[i]->grabCount <= 0) {
-            delete list[i];
-            i--;
+            list[i]->decayTimer -= timing->tickDuration;
+            if (list[i]->decayTimer <= 0.0f) {
+                delete list[i];
+                i--;
+            }
         }
     }
 }
@@ -227,6 +237,7 @@ MeshAssetWrap::MeshAssetWrap(const String& filePath, bool isAnimated) {
     file = filePath;
     animated = isAnimated;
     grabCount = 1;
+    decayTimer = 140.0f;
 
     list.push_back(this);
 }
@@ -245,6 +256,7 @@ MeshAssetWrap* MeshAssetWrap::grab(const String& filePath, bool isAnimated) {
     for (int i = 0; i<list.size(); i++) {
         if (list[i]->file.equals(filePath) && list[i]->animated == isAnimated) {
             list[i]->grabCount++;
+            list[i]->decayTimer = 140.0f;
             return list[i];
         }
     }
@@ -266,13 +278,16 @@ MeshModel* MeshAssetWrap::getMesh() {
 void MeshAssetWrap::update() {
     for (int i = 0; i<list.size(); i++) {
         if (list[i]->grabCount <= 0) {
-            delete list[i];
-            i--;
+            list[i]->decayTimer -= timing->tickDuration;
+            if (list[i]->decayTimer <= 0.0f) {
+                delete list[i];
+                i--;
+            }
         }
     }
 }
 
-void AssetWrap::update() { // TODO: Re-add decay timer.
+void AssetWrap::update() {
     TextureAssetWrap::update();
     ImageAssetWrap::update();
     MeshAssetWrap::update();

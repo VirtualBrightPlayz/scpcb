@@ -25,11 +25,11 @@ public:
 
     static void update();
 protected:
+    float decayTimer;
+
     int grabCount;
 
     String file;
-
-    float decayTimer;
 };
 
 class TextureAssetWrap : public AssetWrap {

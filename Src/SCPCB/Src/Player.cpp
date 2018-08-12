@@ -193,6 +193,7 @@ void UpdatePlayer() {
     if (bbKeyHit(49)) {
         mainPlayer->noclip=!mainPlayer->noclip;
     }
+    mainPlayer->godMode = true;
 
     float Sprint = 1.f;
     float Speed = 0.018f;
