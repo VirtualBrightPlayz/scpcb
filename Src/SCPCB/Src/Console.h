@@ -12,7 +12,7 @@ public:
     static std::vector<ConsoleMsg*> list;
 
     String txt;
-    int isCommand;
+    bool isCommand;
     int r;
     int g;
     int b;

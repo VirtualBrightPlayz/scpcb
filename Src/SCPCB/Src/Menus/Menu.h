@@ -52,7 +52,7 @@ void DrawTiledImageRect(bbImage* img, int srcX, int srcY, int srcwidth, int srch
 
 String rInput(const String& aString);
 
-int MouseOn(int x, int y, int width, int height);
+bool MouseOn(int x, int y, int width, int height);
 
 String UpdateInputBox(int x, int y, int width, int height, const String& txt, int ID = 0);
 

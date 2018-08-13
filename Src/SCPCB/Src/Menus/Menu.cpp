@@ -84,7 +84,7 @@ String rInput(const String& aString) {
     }
 }
 
-int MouseOn(int x, int y, int width, int height) {
+bool MouseOn(int x, int y, int width, int height) {
     if (bbMouseX() > x && bbMouseX() < x + width) {
         if (bbMouseY() > y && bbMouseY() < y + height) {
             return true;

@@ -169,9 +169,9 @@ void UpdateConsole() {
             consoleHeight = height;
         }
 
-        int inBar = MouseOn(x+width-(int)(26.f*MenuScale),y,(int)(26.f*MenuScale),height);
+        bool inBar = MouseOn(x+width-(int)(26.f*MenuScale),y,(int)(26.f*MenuScale),height);
 
-        int inBox = MouseOn(x+width-(int)(23.f*MenuScale),y+height-scrollbarHeight+(int)(ConsoleScroll*scrollbarHeight/height),(int)(20.f*MenuScale),scrollbarHeight);
+        bool inBox = MouseOn(x+width-(int)(23.f*MenuScale),y+height-scrollbarHeight+(int)(ConsoleScroll*scrollbarHeight/height),(int)(20.f*MenuScale),scrollbarHeight);
 
         if (!bbMouseDown(1)) {
             ConsoleScrollDragging = false;
@@ -195,7 +195,7 @@ void UpdateConsole() {
         int mouseScroll = bbMouseZSpeed();
         if (mouseScroll==1) {
             ConsoleScroll = ConsoleScroll - 15*MenuScale;
-        } else if ((mouseScroll==-1)) {
+        } else if (mouseScroll==-1) {
             ConsoleScroll = ConsoleScroll + 15*MenuScale;
         }
 
