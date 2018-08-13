@@ -942,7 +942,7 @@ void gxRuntime::closeFileSystem( gxFileSystem *f ){
 ////////////////////
 static HRESULT WINAPI enumMode( DDSURFACEDESC2 *desc,void *context ){
 	int dp=desc->ddpfPixelFormat.dwRGBBitCount;
-	if( dp==16 || dp==24 || dp==32 ){
+	if( dp==32 ){
 		gxRuntime::GfxMode *m=new gxRuntime::GfxMode;
 		m->desc=*desc;
 		gxRuntime::GfxDriver *d=(gxRuntime::GfxDriver*)context;

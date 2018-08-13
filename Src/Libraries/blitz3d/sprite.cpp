@@ -131,14 +131,8 @@ bool Sprite::render(const RenderContext &rc) {
     mesh->setVertex(fv + 1, &verts[1].x, null, tex_coords1);
     mesh->setVertex(fv + 2, &verts[2].x, null, tex_coords2);
     mesh->setVertex(fv + 3, &verts[3].x, null, tex_coords3);
-    if (rc.isReflected()) {
-        mesh->setTriangle(ft + 0, 0, 2, 1);
-        mesh->setTriangle(ft + 1, 0, 3, 2);
-    }
-    else {
-        mesh->setTriangle(ft + 0, 0, 1, 2);
-        mesh->setTriangle(ft + 1, 0, 2, 3);
-    }
+    mesh->setTriangle(ft + 0, 0, 1, 2);
+    mesh->setTriangle(ft + 1, 0, 2, 3);
     mesh->unlock();
 
     enqueue(mesh, fv, 4, ft, 2);

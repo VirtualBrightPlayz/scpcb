@@ -7,7 +7,6 @@
 #include "model.h"
 #include "camera.h"
 #include "light.h"
-#include "mirror.h"
 #include "listener.h"
 
 class World{
@@ -47,7 +46,7 @@ private:
     std::vector<Object*> _objsByType[1000];
 
 	void collide( Object *src );
-	void render( Camera *c,Mirror *m );
+	void render( Camera *c );
 	void render( Model *m,const RenderContext &rc );
 	void flushTransparent();
 

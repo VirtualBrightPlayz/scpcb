@@ -1129,15 +1129,6 @@ void  bbSpriteViewMode( Sprite *s,int mode ){
 	s->setViewmode( mode );
 }
 
-/////////////////////
-// MIRROR COMMANDS //
-/////////////////////
-Object *  bbCreateMirror( Object *p ){
-	debugParent(p);
-	Mirror *t=new Mirror();
-	return insertEntity( t,p );
-}
-
 ////////////////////
 // PLANE COMMANDS //
 ////////////////////
@@ -1846,7 +1837,6 @@ String bbEntityClass( Object *e ){
 	const char *p="Pivot";
 	if( e->getLight() ) p="Light";
 	else if( e->getCamera() ) p="Camera";
-	else if( e->getMirror() ) p="Mirror";
 	else if( e->getListener() ) p="Listener";
 	else if( Model *t=e->getModel() ){
 		if( t->getSprite() ) p="Sprite";
