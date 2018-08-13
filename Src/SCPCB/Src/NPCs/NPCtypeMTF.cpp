@@ -1737,7 +1737,7 @@ void UpdateNPCtypeMTF(NPC* n) {
             n->state = 0;
         }
 
-        if (n->state != 3 & n->state != 5 && n->state != 6 && n->state != 7) {
+        if (n->state != 3 && n->state != 5 && n->state != 6 && n->state != 7) {
             if (n->mtfLeader!=nullptr) {
                 if (bbEntityDistance(n->collider,n->mtfLeader->collider)<0.7f) {
                     bbPointEntity(n->collider,n->mtfLeader->collider);
@@ -1786,7 +1786,6 @@ void UpdateMTF() {
     Room* r;
     NPC* n;
     NPC* leader = nullptr;
-    float dist;
     int i;
     Room* entrance;
 

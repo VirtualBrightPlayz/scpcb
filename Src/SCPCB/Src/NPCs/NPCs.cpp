@@ -66,14 +66,6 @@ NPC* Curr096;
 // Functions.
 NPC* CreateNPC(int NPCtype, float x, float y, float z) {
     NPC* n = new NPC();
-    NPC* n2;
-    float temp;
-    int i;
-    int diff1;
-    int spec1;
-    int sf;
-    int b;
-    int t1;
 
     n->obj = nullptr;
     n->obj2 = nullptr;
@@ -792,9 +784,6 @@ void ManipulateNPCBones() {
     Object* bone = nullptr;
     Object* bone2 = nullptr;
     Pivot* pvt;
-    float pitch;
-    float yaw;
-    float roll;
     String bonename;
     String bonename2;
     float pitchvalue;

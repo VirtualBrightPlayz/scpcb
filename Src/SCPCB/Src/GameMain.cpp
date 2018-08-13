@@ -204,7 +204,6 @@ void InitializeMainGame() {
 
     DrawLoading(20, true);
 
-    int i;
     RadioSquelch = bbLoadSound("SFX/Radio/squelch.ogg");
     RadioStatic = bbLoadSound("SFX/Radio/static.ogg");
     RadioBuzz = bbLoadSound("SFX/Radio/buzz.ogg");
@@ -680,13 +679,7 @@ void UpdateGUI() {
     int temp;
     int x;
     int y;
-    int z;
     int i;
-    float yawvalue;
-    float pitchvalue;
-    float x2;
-    float y2;
-    float z2;
     int n;
     int xtemp;
     int ytemp;
@@ -882,19 +875,11 @@ void UpdateGUI() {
 }
 
 void DrawGUI() {
-    int temp;
     int x;
     int y;
-    int z;
     int i;
     float yawvalue;
     float pitchvalue;
-    float x2;
-    float y2;
-    float z2;
-    int n;
-    int xtemp;
-    int ytemp;
     String strtemp;
     int width;
     int height;

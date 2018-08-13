@@ -222,32 +222,6 @@ void UpdateEvent_lck_air_2(Event* e) {
 }
 
 void UpdateEvent_lck_air_broke_2(Event* e) {
-    float dist;
-    int i;
-    int temp;
-    int pvt;
-    String strtemp;
-    int j;
-    int k;
-
-    Particle* p;
-    NPC* n;
-    Room* r;
-    Event* e2;
-    Item* it;
-    Emitter* em;
-    SecurityCam* sc;
-    SecurityCam* sc2;
-
-    String CurrTrigger = "";
-
-    float x;
-    float y;
-    float z;
-
-    float angle;
-
-
     if (e->room->dist < 8) {
         if (!e->intState[EVENT_LCKA2_SPAWNEDCORPSE]) {
             e->room->npc[0] = CreateNPC(NPCtypeGuard, bbEntityX(e->room->objects[ROOM_LCKA2_CORPSESPAWN],true), bbEntityY(e->room->objects[ROOM_LCKA2_CORPSESPAWN],true)+0.5f, bbEntityZ(e->room->objects[ROOM_LCKA2_CORPSESPAWN],true));
@@ -259,7 +233,6 @@ void UpdateEvent_lck_air_broke_2(Event* e) {
             e->intState[EVENT_LCKA2_SPAWNEDCORPSE] = true;
         }
     }
-
 }
 
 }

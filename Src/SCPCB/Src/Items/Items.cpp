@@ -614,8 +614,6 @@ void UpdateInventory(Player* player) {
     int mouseSlot = 66;
     int mouseOnWornItemSlot = false;
 
-    Item* item;
-
     int x;
     int y;
     int isMouseOn;
@@ -744,7 +742,6 @@ void DrawInventory(Player* player) {
 
     int x;
     int y;
-    int i;
 
     int n;
 

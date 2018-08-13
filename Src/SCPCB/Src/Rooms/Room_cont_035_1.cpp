@@ -114,40 +114,13 @@ void FillRoom_cont_035_1(Room* r) {
 }
 
 void UpdateEvent_cont_035_1(Event* e) {
-    float dist;
-    int i;
-    int temp;
-    int pvt;
-    String strtemp;
-    int j;
-    int k;
-
-    Particle* p;
-    NPC* n;
-    Room* r;
-    Event* e2;
-    Item* it;
-    Emitter* em;
-    SecurityCam* sc;
-    SecurityCam* sc2;
-    Door* dor;
-
-    String CurrTrigger = "";
-
-    float x;
-    float y;
-    float z;
-
-    float angle;
-
-
     if (mainPlayer->currRoom == e->room) {
         //eventstate2 = has 035 told the code to the storage room (true/false)
         //eventstate3 = has the player opened the gas valves (0=no, 0<x<35*70 yes, x>35*70 the host has died)
 
         if (e->eventState == 0) {
             if (bbEntityDistance(mainPlayer->collider, e->room->objects[3])<2) {
-                n = CreateNPC(NPCtypeD, bbEntityX(e->room->objects[4],true),0.5f,bbEntityZ(e->room->objects[4],true));
+                NPC* n = CreateNPC(NPCtypeD, bbEntityX(e->room->objects[4],true),0.5f,bbEntityZ(e->room->objects[4],true));
 
                 n->texture = "GFX/NPCs/035victim.jpg";
                 bbHideEntity(n->obj);
@@ -163,16 +136,16 @@ void UpdateEvent_cont_035_1(Event* e) {
         } else if ((e->eventState > 0)) {
             if (e->room->npc[0]==nullptr) {
                 for (int iterator153 = 0; iterator153 < NPC::getListSize(); iterator153++) {
-                    n = NPC::getObject(iterator153);
+                    NPC* n = NPC::getObject(iterator153);
 
                     if (n->texture.equals("GFX/NPCs/035victim.jpg")) {
                         e->room->npc[0] = n;
 
-                        temp = (int)(e->room->npc[0]->frame);
+                        int temp = (int)(e->room->npc[0]->frame);
 
                         bbFreeEntity(e->room->npc[0]->obj);
                         e->room->npc[0]->obj = bbLoadAnimMesh("GFX/NPCs/035.b3d");
-                        x = 0.5f / bbMeshWidth(e->room->npc[0]->obj);
+                        float x = 0.5f / bbMeshWidth(e->room->npc[0]->obj);
                         bbScaleEntity(e->room->npc[0]->obj, x,x,x);
 
                         bbSetAnimTime(e->room->npc[0]->obj, temp);
@@ -210,7 +183,7 @@ void UpdateEvent_cont_035_1(Event* e) {
 
                 if (!e->room->levers[0]->succ) {
                     //the gas valves are open
-                    temp = e->room->levers[1]->succ;
+                    bool temp = e->room->levers[1]->succ;
                     if (temp || (e->eventState3>25*70 && e->eventState3<50*70)) {
                         if (temp) {
                             bbPositionEntity(e->room->objects[5], bbEntityX(e->room->objects[5],true), 424.f*RoomScale, bbEntityZ(e->room->objects[5],true),true);
@@ -507,7 +480,7 @@ void UpdateEvent_cont_035_1(Event* e) {
                     }
 
                     if (e->eventState2 == 20) {
-                        dist = bbEntityDistance(e->room->doors[0]->frameobj, e->room->npc[0]->collider);
+                        float dist = bbEntityDistance(e->room->doors[0]->frameobj, e->room->npc[0]->collider);
 
                         e->room->npc[0]->state = 1;
                         if (dist > 2.5f) {
@@ -533,7 +506,7 @@ void UpdateEvent_cont_035_1(Event* e) {
                             e->room->doors[2]->locked = false;
                             UseDoor(e->room->doors[1],false);
                             for (int iterator154 = 0; iterator154 < Door::getListSize(); iterator154++) {
-                                dor = Door::getObject(iterator154);
+                                Door* dor = Door::getObject(iterator154);
 
                                 if (dor->typ == DOOR_TYPE_HCZ) {
                                     if (abs(bbEntityX(e->room->obj)-bbEntityX(dor->frameobj,true))<4.5f) {
@@ -569,7 +542,7 @@ void UpdateEvent_cont_035_1(Event* e) {
             //	If (e\room\doors[0]\open = False) Then UseDoor(e\room\doors[1])
             //EndIf
 
-            temp = false;
+            bool temp = false;
 
             //player is inside the containment chamber
             if (bbEntityX(mainPlayer->collider)>Min(bbEntityX(e->room->objects[7],true),bbEntityX(e->room->objects[8],true))) {
@@ -629,7 +602,7 @@ void UpdateEvent_cont_035_1(Event* e) {
 
             if (e->room->npc[1]!=nullptr) {
                 bbPositionEntity(e->room->npc[1]->collider, bbEntityX(e->room->obj,true), 0, bbEntityZ(e->room->obj,true));
-                angle = WrapAngle(bbEntityYaw(e->room->npc[1]->collider)-e->room->angle);
+                float angle = WrapAngle(bbEntityYaw(e->room->npc[1]->collider)-e->room->angle);
 
                 if (angle>90) {
                     if (angle < 225) {
@@ -660,8 +633,8 @@ void UpdateEvent_cont_035_1(Event* e) {
                     PlaySound2(e->sounds[0]);
                 }
             }
-        } else if ((e->eventState < 0)) {
-            for (i = 0; i <= 1; i++) {
+        } else if (e->eventState < 0) {
+            for (int i = 0; i < 2; i++) {
                 if (e->room->npc[i]!=nullptr) {
                     RemoveNPC(e->room->npc[i]);
                     e->room->npc[i] = nullptr;

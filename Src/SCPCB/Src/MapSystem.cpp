@@ -1564,7 +1564,7 @@ void UpdateSecurityCams() {
                 sc->coffinEffect = 0;
             }
 
-            if (close | sc==CoffinCam || sc->isRoom2slCam) {
+            if (close || sc==CoffinCam || sc->isRoom2slCam) {
                 if (sc->followPlayer) {
                     if (sc!=CoffinCam) {
                         if (bbEntityVisible(sc->cameraObj,mainPlayer->cam)) {
@@ -1620,7 +1620,7 @@ void UpdateSecurityCams() {
                 }
             }
 
-            if (close == true | sc->isRoom2slCam || sc->specialCam) {
+            if (close == true || sc->isRoom2slCam || sc->specialCam) {
                 if (sc->screen) {
                     sc->state = sc->state+timing->tickDuration;
 
@@ -1719,7 +1719,7 @@ void UpdateSecurityCams() {
                         sc->state = 0;
                     }
 
-                    if (SelectedMonitor == sc | sc->coffinEffect==1 || sc->coffinEffect==3) {
+                    if (SelectedMonitor == sc || sc->coffinEffect==1 || sc->coffinEffect==3) {
                         if (sc->inSight) {
                             //If ((Not NoClip)) Then
                             pvt = bbCreatePivot();

@@ -99,7 +99,7 @@ void UpdateDecals() {
             switch (d->id) {
                 case DECAL_CORROSION: {
                     if (d->timer <= 0) {
-                        float angle = bbRand(360);
+                        float angle = bbRnd(360);
                         float temp = bbRnd(d->size);
                         Decal* d2 = CreateDecal(DECAL_CRACKS, bbEntityX(d->obj) + bbCos(angle) * temp, bbEntityY(d->obj) - 0.0005f, bbEntityZ(d->obj) + bbSin(angle) * temp, bbEntityPitch(d->obj), bbRnd(360), bbEntityRoll(d->obj));
                         d2->size = bbRnd(0.1f, 0.5f);

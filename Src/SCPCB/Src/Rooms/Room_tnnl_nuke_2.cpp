@@ -82,38 +82,11 @@ void FillRoom_tnnl_nuke_2(Room* r) {
 }
 
 void UpdateEvent_tnnl_nuke_2(Event* e) {
-    float dist;
-    int i;
-    int temp;
-    int pvt;
-    String strtemp;
-    int j;
-    int k;
-
-    Particle* p;
-    NPC* n;
-    Room* r;
-    Event* e2;
-    Item* it;
-    Emitter* em;
-    SecurityCam* sc;
-    SecurityCam* sc2;
-
-    String CurrTrigger = "";
-
-    float x;
-    float y;
-    float z;
-
-    float angle;
-
-
     if (mainPlayer->currRoom == e->room) {
         e->eventState2 = UpdateElevators(e->eventState2, e->room->doors[0], e->room->doors[1], e->room->objects[4], e->room->objects[5], e);
 
         e->eventState = e->room->levers[0]->succ;
     }
-
 }
 
 }

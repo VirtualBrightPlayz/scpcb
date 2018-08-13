@@ -205,7 +205,7 @@ void UpdateNPCtype860(NPC* n) {
 
                     for (x2 = (int)(Max(x-1,0)); x2 <= (int)(Min(x+1,gridsize)); x2++) {
                         for (z2 = (int)(Max(z-1,0)); z2 <= (int)(Min(z+1,gridsize)); z2++) {
-                            if (fr->grid[(z2*gridsize)+x2]>0 && (x2!=x | z2!=z) && (x2==x || z2==z)) {
+                            if (fr->grid[(z2*gridsize)+x2]>0 && (x2!=x || z2!=z) && (x2==x || z2==z)) {
 
                                 bbTFormPoint((x2*12)/RoomScale,0,(z2*12)/RoomScale,mainPlayer->currRoom->obj,0);
 
@@ -385,7 +385,7 @@ float Find860Angle(NPC* n, Forest* fr) {
     if (xt!=playerx || zt!=playerz) {
         for (x2 = (int)(Max(xt-1,0)); x2 <= (int)(Min(xt+1,gridsize-1)); x2++) {
             for (z2 = (int)(Max(zt-1,0)); z2 <= (int)(Min(zt+1,gridsize-1)); z2++) {
-                if (fr->grid[(z2*gridsize)+x2]>0 && (x2!=xt | z2!=zt) && (x2==xt || z2==zt)) {
+                if (fr->grid[(z2*gridsize)+x2]>0 && (x2!=xt || z2!=zt) && (x2==xt || z2==zt)) {
 
                     //tile (x2,z2) is closer to the player than the monsters current tile
                     if ((abs(playerx-x2)+abs(playerz-z2))<(abs(playerx-xt)+abs(playerz-zt))) {

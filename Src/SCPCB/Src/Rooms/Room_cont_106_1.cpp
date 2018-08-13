@@ -140,35 +140,6 @@ void FillRoom_cont_106_1(Room* r) {
 }
 
 void UpdateEvent_cont_106_1(Event* e) {
-    float dist;
-    int i;
-    int temp;
-    int pvt;
-    String strtemp;
-    int j;
-    int k;
-    int leverstate;
-
-    Particle* p;
-    NPC* n;
-    Room* r;
-    Event* e2;
-    Item* it;
-    Emitter* em;
-    SecurityCam* sc;
-    SecurityCam* sc2;
-    Decal* d;
-
-    String CurrTrigger = "";
-
-    float x;
-    float y;
-    float z;
-
-    float angle;
-
-
-
     //eventstate2 = are the magnets on
 
     if (SoundTransmission) {
@@ -215,13 +186,13 @@ void UpdateEvent_cont_106_1(Event* e) {
         bbRotateEntity(e->room->npc[0]->collider,bbEntityPitch(e->room->objects[5],true),bbEntityYaw(e->room->objects[5],true),0,true);
         bbResetEntity(e->room->npc[0]->collider);
 
-        temp = (int)(e->eventState2);
+        int temp = (int)(e->eventState2);
 
         if ((bbEntityY(e->room->objects[6],true)<-990*RoomScale) && (bbEntityY(e->room->objects[6],true)>-1275.f*RoomScale)) {
             e->room->levers[0]->locked = true;
         }
 
-        leverstate = e->room->levers[0]->succ;
+        bool leverstate = e->room->levers[0]->succ;
         if (mainPlayer->grabbedEntity == e->room->objects[1] && DrawHandIcon == true) {
             e->eventState2 = leverstate;
         }
@@ -234,7 +205,7 @@ void UpdateEvent_cont_106_1(Event* e) {
             }
         }
 
-        if (e->eventState3>3200 | e->eventState3<2500 || e->eventState!=1) {
+        if (e->eventState3>3200 || e->eventState3<2500 || e->eventState!=1) {
             SoundTransmission = e->room->levers[1]->succ;
         }
         if (!SoundTransmission) {
@@ -307,7 +278,7 @@ void UpdateEvent_cont_106_1(Event* e) {
                 Curr106->idle = true;
 
                 if (e->eventState3-timing->tickDuration < 2500) {
-                    d = CreateDecal(DECAL_CORROSION, bbEntityX(e->room->objects[5], true), 936.f*RoomScale, bbEntityZ(e->room->objects[5], true), 90, 0, bbRnd(360));
+                    Decal* d = CreateDecal(DECAL_CORROSION, bbEntityX(e->room->objects[5], true), 936.f*RoomScale, bbEntityZ(e->room->objects[5], true), 90, 0, bbRnd(360));
                     d->timer = 90000;
                     d->alpha = 0.01f;
                     d->alphaChange = 0.005f;
@@ -321,7 +292,7 @@ void UpdateEvent_cont_106_1(Event* e) {
                     LoadEventSound(e,"SFX/Character/LureSubject/106Bait.ogg",1);
                     e->soundChannels[1] = bbPlaySound(e->sounds[1]);
                 } else if ((e->eventState3-timing->tickDuration < 2900 && e->eventState3 >= 2900)) {
-                    d = CreateDecal(DECAL_CORROSION, bbEntityX(e->room->objects[7], true), bbEntityY(e->room->objects[7], true) , bbEntityZ(e->room->objects[7], true), 0, 0, 0);
+                    Decal* d = CreateDecal(DECAL_CORROSION, bbEntityX(e->room->objects[7], true), bbEntityY(e->room->objects[7], true) , bbEntityZ(e->room->objects[7], true), 0, 0, 0);
                     bbRotateEntity(d->obj, bbEntityPitch(e->room->objects[7], true)+bbRand(10,20), bbEntityYaw(e->room->objects[7], true)+30, bbEntityRoll(d->obj));
                     bbMoveEntity(d->obj, 0,0,0.15f);
                     bbRotateEntity(d->obj, bbEntityPitch(e->room->objects[7], true), bbEntityYaw(e->room->objects[7], true), bbEntityRoll(d->obj));
