@@ -364,12 +364,12 @@ void InitNewGame() {
 
     HideDistance = 15.f;
 
-    mainPlayer->heartbeatIntensity = 70;
+    mainPlayer->heartbeatIntensity = 70.f;
     //HeartBeatRate = 70
 
     AccessCode = 0;
     for (int i = 0; i < 4; i++) {
-        AccessCode = AccessCode + (int)(bbRand(1,9)*(10^i));
+        AccessCode = AccessCode + bbRand(1,9)*(10^i);
     }
 
     //TODO:
