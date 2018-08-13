@@ -41,10 +41,22 @@ public:
     virtual void execute(std::vector<String> args);
 };
 
+class Cmd_Wireframe : public ConsoleCmd {
+private:
+    bool wireframeState = false;
+public:
+    Cmd_Wireframe() {
+        name = "wireframe";
+        description = "Only renders the edges of polygons.";
+    }
+    virtual void execute(std::vector<String> args);
+};
+
 class Cmd_Noclip : public ConsoleCmd {
 public:
     Cmd_Noclip() {
         name = "noclip";
+        aliases = { "fly" };
         description = "Disables collision detection for the player.";
     }
     virtual void execute(std::vector<String> args);
@@ -56,6 +68,16 @@ public:
         name = "godmode";
         aliases = { "god" };
         description = "Makes the player invincible.";
+    }
+    virtual void execute(std::vector<String> args);
+};
+
+class Cmd_Teleport : public ConsoleCmd {
+public:
+    Cmd_Teleport() {
+        name = "teleport";
+        aliases = { "tele" };
+        description = "Teleports the player to the specified room.";
     }
     virtual void execute(std::vector<String> args);
 };

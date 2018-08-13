@@ -255,8 +255,7 @@ void UpdateConsole() {
         if (!oldConsoleInput.equals(ConsoleInput)) {
             ConsoleReissue = -1;
         }
-        ConsoleInput = ConsoleInput.substr(0, 100);
-        ConsoleInput = ConsoleInput.toLower();
+        ConsoleInput = ConsoleInput.substr(0, 100).toLower();
 
         if (bbKeyHit(28) && !ConsoleInput.isEmpty()) {
             ConsoleInput = ConsoleInput.trim(); 
@@ -268,7 +267,7 @@ void UpdateConsole() {
 			std::vector<String> args;
             if (ConsoleInput.findFirst(" ") > 0) {
 				input = ConsoleInput.substr(0, ConsoleInput.findFirst(" "));
-                args = ConsoleInput.substr(0, ConsoleInput.findFirst(" ")).split(" ", true);
+                args = ConsoleInput.substr(input.size()).split(" ", true);
             } else {
 				input = ConsoleInput;
             }

@@ -102,7 +102,6 @@ void InitLoadingScreens(const String& file) {
 void DrawLoading(int percent, int shortloading) {
     int x;
     int y;
-    int i;
     String strtemp;
     int temp;
     LoadingScreen* ls = nullptr;
@@ -153,7 +152,7 @@ void DrawLoading(int percent, int shortloading) {
 
         if (SelectedLoadingScreen->alignx == 0) {
             x = userOptions->screenWidth/2 - bbImageWidth(SelectedLoadingScreen->img)/2;
-        } else if (( SelectedLoadingScreen->alignx == 1)) {
+        } else if (SelectedLoadingScreen->alignx == 1) {
             x = userOptions->screenWidth - bbImageWidth(SelectedLoadingScreen->img);
         } else {
             x = 0;
@@ -161,7 +160,7 @@ void DrawLoading(int percent, int shortloading) {
 
         if (SelectedLoadingScreen->aligny == 0) {
             y = userOptions->screenHeight/2 - bbImageHeight(SelectedLoadingScreen->img)/2;
-        } else if (( SelectedLoadingScreen->aligny == 1)) {
+        } else if (SelectedLoadingScreen->aligny == 1) {
             y = userOptions->screenHeight - bbImageHeight(SelectedLoadingScreen->img);
         } else {
             y = 0;
@@ -175,7 +174,7 @@ void DrawLoading(int percent, int shortloading) {
         y = userOptions->screenHeight / 2 + 30 - 100;
 
         bbRect(x, y, width+4, height, false);
-        for (i = 1; i <= (int)((width - 2) * (percent / 100.f) / 10); i++) {
+        for (int i = 1; i <= (int)std::ceil((width - 2) * (percent / 100.f) / 10); i++) {
             bbDrawImage(uiAssets->blinkBar, x + 3 + 10 * (i - 1), y + 3);
         }
 
@@ -185,7 +184,7 @@ void DrawLoading(int percent, int shortloading) {
                 if (firstloop) {
                     if (percent == 0) {
                         PlaySound2(LoadTempSound("SFX/SCP/990/cwm1.cwm"));
-                    } else if ((percent == 100)) {
+                    } else if (percent == 100) {
                         PlaySound2(LoadTempSound("SFX/SCP/990/cwm2.cwm"));
                     }
                 }
@@ -193,7 +192,7 @@ void DrawLoading(int percent, int shortloading) {
 
             bbSetFont(uiAssets->font[1]);
             temp = bbRand(2,9);
-            for (i = 0; i <= temp; i++) {
+            for (int i = 0; i <= temp; i++) {
                 strtemp = strtemp + bbChr(bbRand(48,122));
             }
             bbText(userOptions->screenWidth / 2, userOptions->screenHeight / 2 + 80, strtemp, true, true);
@@ -254,7 +253,7 @@ void DrawLoading(int percent, int shortloading) {
             strtemp = SelectedLoadingScreen->txt[0];
             temp = (int)(SelectedLoadingScreen->txt[0].size()-bbRand(5));
             //temp
-            for (i = 0; i <= bbRand(10,15); i++) {
+            for (int i = 0; i <= bbRand(10,15); i++) {
                 strtemp = SelectedLoadingScreen->txt[0].replace(bbMid(SelectedLoadingScreen->txt[0],bbRand(1,strtemp.size()-1),1),bbChr(bbRand(130,250)));
             }
             bbSetFont(uiAssets->font[0]);

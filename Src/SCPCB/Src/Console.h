@@ -32,9 +32,9 @@ extern int ConsoleB;
 extern bool DebugHUD;
 
 // Functions.
-void UpdateConsole();
-
 void DrawConsole();
+
+void UpdateConsole();
 
 }
 #endif // CONSOLE_H_INCLUDED
