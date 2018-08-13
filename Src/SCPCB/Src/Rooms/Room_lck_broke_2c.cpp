@@ -11,7 +11,7 @@ namespace CBN {
 
 // Functions.
 void FillRoom_lck_broke_2c(Room* r) {
-    d = CreateDoor(r->x - 736.f * RoomScale, 0, r->z - 104.f * RoomScale, 0, r, true);
+    Door* d = CreateDoor(r->x - 736.f * RoomScale, 0, r->z - 104.f * RoomScale, 0, r, true);
     d->timer = 70 * 5;
     d->autoClose = false;
     d->open = false;
@@ -24,7 +24,7 @@ void FillRoom_lck_broke_2c(Room* r) {
     bbFreeEntity(d->buttons[1]);
     d->buttons[1] = 0;
 
-    d2 = CreateDoor(r->x + 104.f * RoomScale, 0, r->z + 736.f * RoomScale, 270, r, true);
+    Door* d2 = CreateDoor(r->x + 104.f * RoomScale, 0, r->z + 736.f * RoomScale, 270, r, true);
     d2->timer = 70 * 5;
     d2->autoClose = false;
     d2->open = false;

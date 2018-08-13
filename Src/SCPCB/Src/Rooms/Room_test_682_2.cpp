@@ -47,6 +47,7 @@ void UpdateEvent_test_682_2(Event* e) {
                 bbScaleEntity(e->room->objects[7], 0.05f,0.05f,0.05f);
 
                 bbTFormPoint(bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider),bbEntityZ(mainPlayer->collider),0,e->room->obj);
+                int temp = 0;
                 if (bbTFormedZ()==0) {
                     temp = -1;
                 } else {
@@ -61,8 +62,8 @@ void UpdateEvent_test_682_2(Event* e) {
             }
             if (bbEntityDistance(mainPlayer->collider, e->room->objects[6]) < 2.5f && e->eventState > 0) {
                 PlaySound2(LoadTempSound("SFX/SCP/079/TestroomWarning.ogg"));
-                for (i = 0; i <= 5; i++) {
-                    em = CreateEmitter(bbEntityX(e->room->objects[i], true), bbEntityY(e->room->objects[i], true), bbEntityZ(e->room->objects[i], true), 0);
+                for (int i = 0; i < 6; i++) {
+                    Emitter* em = CreateEmitter(bbEntityX(e->room->objects[i], true), bbEntityY(e->room->objects[i], true), bbEntityZ(e->room->objects[i], true), 0);
                     bbTurnEntity(em->obj, 90, 0, 0, true);
                     //entityParent(em\obj, e\room\obj)
                     em->randAngle = 5;
