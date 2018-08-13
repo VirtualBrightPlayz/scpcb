@@ -4,7 +4,6 @@
 
 #include "model.h"
 #include "frustum.h"
-#include "mirror.h"
 
 class Camera : public Object{
 public:

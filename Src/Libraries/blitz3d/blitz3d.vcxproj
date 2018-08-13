@@ -265,7 +265,6 @@
     <ClCompile Include="meshloader.cpp" />
     <ClCompile Include="meshmodel.cpp" />
     <ClCompile Include="meshutil.cpp" />
-    <ClCompile Include="mirror.cpp" />
     <ClCompile Include="model.cpp" />
     <ClCompile Include="object.cpp" />
     <ClCompile Include="pivot.cpp" />
@@ -295,7 +294,6 @@
     <ClInclude Include="meshloader.h" />
     <ClInclude Include="meshmodel.h" />
     <ClInclude Include="meshutil.h" />
-    <ClInclude Include="mirror.h" />
     <ClInclude Include="model.h" />
     <ClInclude Include="object.h" />
     <ClInclude Include="pivot.h" />

@@ -152,7 +152,6 @@ class Sprite* bbLoadSprite(const String& file, int flags, Object *p=nullptr);
 void bbRotateSprite(class Sprite* s, float angle);
 void bbScaleSprite(class Sprite *s, float x, float y);
 void bbSpriteViewMode(class Sprite *s, int mode);
-class Object* bbCreateMirror(class Object* p=nullptr);
 class Object* bbCreatePlane(int segs=1, class Object* p=nullptr);
 void bbTerrainShading(class Terrain* t, int enable);
 int bbTerrainSize(class Terrain* t);

@@ -22,7 +22,6 @@ class Object;
 class Camera;
 class Light;
 class Model;
-class Mirror;
 class Listener;
 class Pivot;
 
@@ -85,7 +84,6 @@ public:
     virtual Camera* getCamera() { return 0; }
     virtual Light* getLight() { return 0; }
     virtual Model* getModel() { return 0; }
-    virtual Mirror* getMirror() { return 0; }
     virtual Listener* getListener() { return 0; }
     virtual Pivot* getPivot() { return 0; }
 

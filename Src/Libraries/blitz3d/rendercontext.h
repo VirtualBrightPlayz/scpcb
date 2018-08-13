@@ -6,12 +6,11 @@
 
 class RenderContext{
 public:
-	RenderContext( const Transform &t,const Frustum &f,bool r ):
-	camera_tform( t ),camera_frustum(f),ref(r){
+	RenderContext( const Transform &t,const Frustum &f ):
+	camera_tform( t ),camera_frustum(f){
 		new( &world_frustum ) Frustum( f,t );
 	}
 
-	bool isReflected()const{ return ref; }
 	const Transform &getCameraTform()const{ return camera_tform; }
 	const Frustum &getWorldFrustum()const{ return world_frustum; }
 	const Frustum &getCameraFrustum()const{ return camera_frustum; }
@@ -19,7 +18,6 @@ public:
 private:
 	Transform camera_tform;
 	Frustum world_frustum,camera_frustum;
-	bool ref;
 };
 
 #endif

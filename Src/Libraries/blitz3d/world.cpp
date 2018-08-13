@@ -505,7 +505,6 @@ void World::update( float elapsed ){
 static Transform cam_tform;		//current camera transform
 
 static std::vector<gxLight*> _lights;
-static std::vector<Mirror*> _mirrors;
 static std::vector<Listener*> _listeners;
 
 struct OrderComp{
@@ -548,7 +547,6 @@ void World::render( float tween ){
 
 	_visible.clear();
 	_lights.clear();
-	_mirrors.clear();
 	_listeners.clear();
 
 	enumVisible();
@@ -561,7 +559,6 @@ void World::render( float tween ){
 
 		if( Light *t=o->getLight() ) _lights.push_back(t->getGxLight());
 		else if( Camera *t=o->getCamera() ) cam_que.push(t);
-		else if( Mirror *t=o->getMirror() ) _mirrors.push_back(t);
 		else if( Listener *t=o->getListener() ) _listeners.push_back(t);
 		else if( Model *t=o->getModel() ){
 			if( t->getOrder() ) ord_que.push( t );
@@ -581,12 +578,7 @@ void World::render( float tween ){
 
 		if( !cam->beginRenderFrame() ) continue;
 
-        std::vector<Mirror*>::const_iterator mir_it;
-		for( mir_it=_mirrors.begin();mir_it!=_mirrors.end();++mir_it ){
-			render( cam,*mir_it );
-		}
-
-		render( cam,0 );
+		render( cam );
 	}
 
 	gx_scene->end();
@@ -599,22 +591,16 @@ void World::render( float tween ){
 	}
 }
 
-void World::render( Camera *cam,Mirror *mirror ){
+void World::render( Camera *cam ){
 
-	if( mirror ){
-		const Transform &t=mirror->getRenderTform();
-		cam_tform=t * Transform( scaleMatrix( 1,-1,1 ) ) * -t * cam->getRenderTform();
-		gx_scene->setFlippedTris( true );
-	}else{
-		cam_tform=cam->getRenderTform();
-		gx_scene->setFlippedTris( false );
-	}
+	cam_tform=cam->getRenderTform();
+	gx_scene->setFlippedTris( false );
 
 	//set camera matrix
 	gx_scene->setViewMatrix( (gxScene::Matrix*)&(-cam_tform) );
 
 	//initialize render context
-	RenderContext rc( cam_tform,cam->getFrustum(),mirror!=0 );
+	RenderContext rc( cam_tform,cam->getFrustum() );
 
 	//draw everything in order
 	int ord=0;
