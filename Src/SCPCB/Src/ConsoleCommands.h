@@ -22,6 +22,17 @@ public:
 
 extern std::vector<ConsoleCmd*> commandList;
 
+class Cmd_Help : public ConsoleCmd {
+public:
+    Cmd_Help() {
+        name = "help";
+        description = String("Prints help information for each console command. ")
+            + "Type \"help\" to see a list of available console commands. "
+            + "You can also type \"help teleport\" to see a description of a particular command.";
+    }
+    virtual void execute(std::vector<String> args);
+};
+
 class Cmd_Status : public ConsoleCmd {
 public:
     Cmd_Status() {

@@ -34,6 +34,7 @@ void ConsoleCmd::executeCommand(const String& name, std::vector<String> args) {
     }
 }
 void ConsoleCmd::generateCommands() {
+    commandList.push_back(new Cmd_Help());
     commandList.push_back(new Cmd_Status());
     commandList.push_back(new Cmd_DebugHUD());
     commandList.push_back(new Cmd_Wireframe());
@@ -46,6 +47,42 @@ void ConsoleCmd::clearCommands() {
         delete commandList[i];
     }
     commandList.clear();
+}
+
+// TODO: Maybe turn help descriptions into a vector to allow multi-line support.
+void Cmd_Help::execute(std::vector<String> args) {
+    ConsoleR = 0;
+    ConsoleG = 255;
+    ConsoleB = 255;
+    if (args.size() <= 0) {
+        ConsoleMsg::create("List of Available Commands:");
+        for (int i = 0; i < commandList.size(); i++) {
+            ConsoleMsg::create("- " + commandList[i]->name);
+        }
+    } else {
+        ConsoleCmd* foundCmd = nullptr;
+        for (int i = 0; i < commandList.size(); i++) {
+            if (commandList[i]->name.equals(args[0])) {
+                foundCmd = commandList[i];
+                break;
+            } else {
+                for (int j = 0; j < commandList[i]->aliases.size(); j++) {
+                    if (commandList[i]->aliases[j].equals(args[0])) {
+                        foundCmd = commandList[i];
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (foundCmd != nullptr) {
+            ConsoleMsg::create("HELP - " + foundCmd->name);
+            ConsoleMsg::create(foundCmd->description);
+        } else {
+            ConsoleMsg::create("Command not found.", 255, 0, 0);
+        }
+    }
+
 }
 
 // Command execute definitions.
