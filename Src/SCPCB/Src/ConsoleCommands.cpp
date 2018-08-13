@@ -9,7 +9,7 @@ namespace CBN {
 
 std::vector<ConsoleCmd*> commandList;
 
-void executeConsoleCommand(const String& name, std::vector<String> args) {
+void ConsoleCmd::executeCommand(const String& name, std::vector<String> args) {
     ConsoleCmd* foundCmd = nullptr;
     for (int i = 0; i < commandList.size(); i++) {
         if (commandList[i]->name.equals(name)) {
@@ -31,10 +31,16 @@ void executeConsoleCommand(const String& name, std::vector<String> args) {
         CreateConsoleMsg("Command not found.", 255, 0, 0);
     }
 }
-void generateConsoleCommands() {
+void ConsoleCmd::generateCommands() {
     commandList.push_back(new Cmd_Status());
+    commandList.push_back(new Cmd_DebugHUD());
+    commandList.push_back(new Cmd_Noclip());
+    commandList.push_back(new Cmd_GodMode());
 }
-void clearConsoleCommands() {
+void ConsoleCmd::clearCommands() {
+    for (int i = 0; i < commandList.size(); i++) {
+        delete commandList[i];
+    }
     commandList.clear();
 }
 
@@ -62,6 +68,33 @@ void Cmd_Status::execute(std::vector<String> args) {
     CreateConsoleMsg("Injuries: " + String(mainPlayer->injuries));
     CreateConsoleMsg("Bloodloss: " + String(mainPlayer->bloodloss));
     CreateConsoleMsg("******************************");
+}
+
+void Cmd_DebugHUD::execute(std::vector<String> args) {
+    DebugHUD = !DebugHUD;
+    if (DebugHUD) {
+        CreateConsoleMsg("DebugHUD ON");
+    } else {
+        CreateConsoleMsg("DebugHUD OFF");
+    }
+}
+
+void Cmd_Noclip::execute(std::vector<String> args) {
+    mainPlayer->noclip = !mainPlayer->noclip;
+    if (mainPlayer->noclip) {
+        CreateConsoleMsg("Noclip ON");
+    } else {
+        CreateConsoleMsg("Noclip OFF");
+    }
+}
+
+void Cmd_GodMode::execute(std::vector<String> args) {
+    mainPlayer->godMode = !mainPlayer->godMode;
+    if (mainPlayer->godMode) {
+        CreateConsoleMsg("GodMode ON");
+    } else {
+        CreateConsoleMsg("GodMode OFF");
+    }
 }
 
 }

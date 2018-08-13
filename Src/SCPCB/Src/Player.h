@@ -127,8 +127,8 @@ public:
     //other states
     struct Room* currRoom;
 
-    int godMode;
-    int noclip;
+    bool godMode;
+    bool noclip;
     //------
 };
 

@@ -6,14 +6,10 @@ namespace CBN {
 
 // Structs.
 struct ConsoleMsg {
-private:
-    static std::vector<ConsoleMsg*> list;
-
 public:
     ConsoleMsg();
     ~ConsoleMsg();
-    static int getListSize();
-    static ConsoleMsg* getObject(int index);
+    static std::vector<ConsoleMsg*> list;
 
     String txt;
     int isCommand;

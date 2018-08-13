@@ -7,6 +7,7 @@
 #include "Console.h"
 #include "GameMain.h"
 #include "Menus/Menu.h"
+#include "ConsoleCommands.h"
 #include "Options.h"
 
 namespace CBN {
@@ -23,12 +24,6 @@ ConsoleMsg::~ConsoleMsg() {
             break;
         }
     }
-}
-int ConsoleMsg::getListSize() {
-    return list.size();
-}
-ConsoleMsg* ConsoleMsg::getObject(int index) {
-    return list[index];
 }
 
 // Globals.
@@ -49,7 +44,7 @@ int DebugHUD;
 void CreateConsoleMsg(const String& txt, int r, int g, int b, int isCommand) {
     ConsoleMsg* c = new ConsoleMsg();
     //TODO: Re-implement.
-    //Insert c Before First ConsoleMsg
+    ConsoleMsg::list.insert(ConsoleMsg::list.begin(), c);
 
     c->txt = txt;
     c->isCommand = isCommand;
@@ -83,8 +78,8 @@ void DrawConsole() {
         int consoleHeight = 0;
         int scrollbarHeight = 0;
 
-        for (int iterator40 = 0; iterator40 < ConsoleMsg::getListSize(); iterator40++) {
-            ConsoleMsg* cm = ConsoleMsg::getObject(iterator40);
+        for (int i = 0; i < ConsoleMsg::list.size(); i++) {
+            ConsoleMsg* cm = ConsoleMsg::list[i];
 
             consoleHeight = consoleHeight + (int)(15.f*MenuScale);
         }
@@ -118,8 +113,8 @@ void DrawConsole() {
 
         int tempY = y + height - (int)(25.f*MenuScale) - (int)(ConsoleScroll);
         int count = 0;
-        for (int i = 0; i < ConsoleMsg::getListSize(); i++) {
-			ConsoleMsg* cm = ConsoleMsg::getObject(i);
+        for (int i = 0; i < ConsoleMsg::list.size(); i++) {
+			ConsoleMsg* cm = ConsoleMsg::list[i];
 
             count++;
             if (count>1000) {
@@ -161,8 +156,8 @@ void UpdateConsole() {
 
         int consoleHeight = 0;
         int scrollbarHeight = 0;
-        for (int i = 0; i < ConsoleMsg::getListSize(); i++) {
-            ConsoleMsg* cm = ConsoleMsg::getObject(i);
+        for (int i = 0; i < ConsoleMsg::list.size(); i++) {
+            ConsoleMsg* cm = ConsoleMsg::list[i];
 
             consoleHeight = consoleHeight + (int)(15.f*MenuScale);
         }
@@ -180,7 +175,7 @@ void UpdateConsole() {
 
         if (!bbMouseDown(1)) {
             ConsoleScrollDragging = false;
-        } else if ((ConsoleScrollDragging)) {
+        } else if (ConsoleScrollDragging) {
             ConsoleScroll = ConsoleScroll+((bbMouseY()-ConsoleMouseMem)*height/scrollbarHeight);
             ConsoleMouseMem = bbMouseY();
         }
@@ -190,7 +185,7 @@ void UpdateConsole() {
                 if (inBox) {
                     ConsoleScrollDragging = true;
                     ConsoleMouseMem = bbMouseY();
-                } else if ((inBar)) {
+                } else if (inBar) {
                     ConsoleScroll = ConsoleScroll+((bbMouseY()-(y+height))*consoleHeight/height+(height/2));
                     ConsoleScroll = ConsoleScroll/2;
                 }
@@ -206,42 +201,42 @@ void UpdateConsole() {
 
         if (bbKeyHit(200)) {
             int initIndex = ConsoleReissue;
-            if (initIndex<0 || initIndex >= ConsoleMsg::getListSize()) {
+            if (initIndex<0 || initIndex >= ConsoleMsg::list.size()) {
                 initIndex = 0;
             }
             int index = ConsoleReissue + 1;
 
             while (index != ConsoleReissue) {
-                index %= ConsoleMsg::getListSize();
-                if (ConsoleMsg::getObject(index)->isCommand) {
+                index %= ConsoleMsg::list.size();
+                if (ConsoleMsg::list[index]->isCommand) {
                     break;
                 }
                 index++;
             }
-            if (ConsoleMsg::getObject(index)->isCommand) {
+            if (ConsoleMsg::list[index]->isCommand) {
                 ConsoleReissue = index;
-                ConsoleInput = ConsoleMsg::getObject(index)->txt;
+                ConsoleInput = ConsoleMsg::list[index]->txt;
                 ConsoleScroll = -ConsoleReissue * (15.0f*MenuScale) + (height / 2);
             }
         }
 
         if (bbKeyHit(208)) {
             int initIndex = ConsoleReissue;
-            if (initIndex<0 || initIndex >= ConsoleMsg::getListSize()) {
+            if (initIndex<0 || initIndex >= ConsoleMsg::list.size()) {
                 initIndex = 0;
             }
             int index = ConsoleReissue - 1;
 
             while (index != initIndex) {
-                if (index<0) { index += ConsoleMsg::getListSize(); }
-                if (ConsoleMsg::getObject(index)->isCommand) {
+                if (index<0) { index += ConsoleMsg::list.size(); }
+                if (ConsoleMsg::list[index]->isCommand) {
                     break;
                 }
                 index--;
             }
-            if (ConsoleMsg::getObject(index)->isCommand) {
+            if (ConsoleMsg::list[index]->isCommand) {
                 ConsoleReissue = index;
-                ConsoleInput = ConsoleMsg::getObject(index)->txt;
+                ConsoleInput = ConsoleMsg::list[index]->txt;
                 ConsoleScroll = -ConsoleReissue * (15.0f*MenuScale) + (height / 2);
             }
         }
@@ -261,6 +256,7 @@ void UpdateConsole() {
             ConsoleReissue = -1;
         }
         ConsoleInput = ConsoleInput.substr(0, 100);
+        ConsoleInput = ConsoleInput.trim();
 
         if (bbKeyHit(28) && !ConsoleInput.isEmpty()) {
             ConsoleReissue = -1;
@@ -271,12 +267,12 @@ void UpdateConsole() {
 			std::vector<String> args;
             if (ConsoleInput.findFirst(" ") > 0) {
 				input = ConsoleInput.substr(0, ConsoleInput.findFirst(" ")).toLower();
+                args = ConsoleInput.substr(0, ConsoleInput.findFirst(" ")).toLower().split(" ", true);
             } else {
 				input = ConsoleInput.toLower();
             }
 
-            // TODO: Execute commands here.
-
+            ConsoleCmd::executeCommand(input, args);
             ConsoleInput = "";
         }
     }

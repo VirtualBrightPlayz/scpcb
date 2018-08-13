@@ -20,6 +20,7 @@
 #include "Audio.h"
 #include "NPCs/NPCs.h"
 #include "Menus/Menu.h"
+#include "ConsoleCommands.h"
 #include "Menus/LoadingScreen.h"
 #include "Options.h"
 #include "Events.h"
@@ -359,6 +360,8 @@ void InitNewGame() {
 
     sndManager->loadInGameSounds();
 
+    ConsoleCmd::generateCommands();
+
     HideDistance = 15.f;
 
     mainPlayer->heartbeatIntensity = 70;
@@ -624,6 +627,8 @@ void NullGame() {
     sndManager->deloadInGameSounds();
 
     ItemTemplate::DeloadTemplates();
+
+    ConsoleCmd::clearCommands();
 
     ClearTextureCache();
 
