@@ -15,7 +15,11 @@ namespace CBN {
 // Structs.
 std::vector<ConsoleMsg*> ConsoleMsg::list;
 ConsoleMsg::ConsoleMsg() {
-    list.push_back(this);
+    txt = "";
+    isCommand = false;
+    r = -1;
+    g = -1;
+    b = -1;
 }
 ConsoleMsg::~ConsoleMsg() {
     for (int i = 0; i < list.size(); i++) {
@@ -27,23 +31,19 @@ ConsoleMsg::~ConsoleMsg() {
 }
 
 // Globals.
-String ConsoleInput;
-float ConsoleScroll;
-int ConsoleScrollDragging;
-int ConsoleMouseMem;
+String ConsoleInput = "";
+float ConsoleScroll = 0.f;
+int ConsoleScrollDragging = 0;
+int ConsoleMouseMem = 0;
 int ConsoleReissue = -1;
 int ConsoleR = 255;
 int ConsoleG = 255;
 int ConsoleB = 255;
-int ConsoleFlush;
-int ConsoleFlushSnd = 0;
-int ConsoleMusFlush = 0;
-int DebugHUD;
+bool DebugHUD = false;
 
 // Functions.
-void CreateConsoleMsg(const String& txt, int r, int g, int b, int isCommand) {
+void ConsoleMsg::create(const String& txt, int r, int g, int b, bool isCommand) {
     ConsoleMsg* c = new ConsoleMsg();
-    //TODO: Re-implement.
     ConsoleMsg::list.insert(ConsoleMsg::list.begin(), c);
 
     c->txt = txt;
@@ -199,7 +199,7 @@ void UpdateConsole() {
             ConsoleScroll = ConsoleScroll + 15*MenuScale;
         }
 
-        if (bbKeyHit(200)) {
+        if (bbKeyHit(200) && ConsoleMsg::list.size() > 0) {
             int initIndex = ConsoleReissue;
             if (initIndex<0 || initIndex >= ConsoleMsg::list.size()) {
                 initIndex = 0;
@@ -220,7 +220,7 @@ void UpdateConsole() {
             }
         }
 
-        if (bbKeyHit(208)) {
+        if (bbKeyHit(208) && ConsoleMsg::list.size() > 0) {
             int initIndex = ConsoleReissue;
             if (initIndex<0 || initIndex >= ConsoleMsg::list.size()) {
                 initIndex = 0;
@@ -256,20 +256,21 @@ void UpdateConsole() {
             ConsoleReissue = -1;
         }
         ConsoleInput = ConsoleInput.substr(0, 100);
-        ConsoleInput = ConsoleInput.trim();
+        ConsoleInput = ConsoleInput.toLower();
 
         if (bbKeyHit(28) && !ConsoleInput.isEmpty()) {
+            ConsoleInput = ConsoleInput.trim(); 
             ConsoleReissue = -1;
             ConsoleScroll = 0;
-            CreateConsoleMsg(ConsoleInput,255,255,0,true);
+            ConsoleMsg::create(ConsoleInput,255,255,0,true);
 
 			String input;
 			std::vector<String> args;
             if (ConsoleInput.findFirst(" ") > 0) {
-				input = ConsoleInput.substr(0, ConsoleInput.findFirst(" ")).toLower();
-                args = ConsoleInput.substr(0, ConsoleInput.findFirst(" ")).toLower().split(" ", true);
+				input = ConsoleInput.substr(0, ConsoleInput.findFirst(" "));
+                args = ConsoleInput.substr(0, ConsoleInput.findFirst(" ")).split(" ", true);
             } else {
-				input = ConsoleInput.toLower();
+				input = ConsoleInput;
             }
 
             ConsoleCmd::executeCommand(input, args);

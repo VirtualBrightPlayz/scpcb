@@ -6,10 +6,12 @@ namespace CBN {
 
 // Structs.
 struct ConsoleMsg {
-public:
+private:
     ConsoleMsg();
+public:
     ~ConsoleMsg();
     static std::vector<ConsoleMsg*> list;
+    static void create(const String& txt, int r = -1, int g = -1, int b = -1, bool isCommand = false);
 
     String txt;
     bool isCommand;
@@ -27,17 +29,12 @@ extern int ConsoleReissue;
 extern int ConsoleR;
 extern int ConsoleG;
 extern int ConsoleB;
-extern int ConsoleFlush;
-extern int ConsoleFlushSnd;
-extern int ConsoleMusFlush;
-extern int DebugHUD;
+extern bool DebugHUD;
 
 // Functions.
-void CreateConsoleMsg(const String& txt, int r = -1, int g = -1, int b = -1, int isCommand = false);
+void UpdateConsole();
 
 void DrawConsole();
-
-void UpdateConsole();
 
 }
 #endif // CONSOLE_H_INCLUDED

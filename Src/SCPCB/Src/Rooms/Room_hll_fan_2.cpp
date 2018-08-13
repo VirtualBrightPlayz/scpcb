@@ -39,7 +39,7 @@ void UpdateEventRoom2fan(Event* e) {
     //eventstate2 = fan on/off
     //eventstate3 = the speed of the fan
     if (mainPlayer->currRoom == e->room) {
-        bbTurnEntity(e->room->objects[0], 0, 0, e->eventState3*timing->tickDuration);
+        bbTurnEntity(e->room->objects[0], e->eventState3*timing->tickDuration, 0, 0, false);
         if (e->eventState3 > 0.01f) {
             e->room->soundCHN = LoopRangedSound(RoomAmbience[9], e->room->soundCHN, mainPlayer->cam, e->room->objects[0], 5.f, (e->eventState3/4.f));
         }

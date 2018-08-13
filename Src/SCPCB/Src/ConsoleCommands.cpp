@@ -1,5 +1,6 @@
 #include <bbblitz3d.h>
 #include <bbmath.h>
+#include <iostream>
 
 #include "ConsoleCommands.h"
 #include "Player.h"
@@ -12,6 +13,8 @@ std::vector<ConsoleCmd*> commandList;
 void ConsoleCmd::executeCommand(const String& name, std::vector<String> args) {
     ConsoleCmd* foundCmd = nullptr;
     for (int i = 0; i < commandList.size(); i++) {
+        ConsoleCmd* checker = commandList[i];
+        std::cout << checker->name << "\n";
         if (commandList[i]->name.equals(name)) {
             foundCmd = commandList[i];
             break;
@@ -28,7 +31,7 @@ void ConsoleCmd::executeCommand(const String& name, std::vector<String> args) {
     if (foundCmd != nullptr) {
         foundCmd->execute(args);
     } else {
-        CreateConsoleMsg("Command not found.", 255, 0, 0);
+        ConsoleMsg::create("Command not found.", 255, 0, 0);
     }
 }
 void ConsoleCmd::generateCommands() {
@@ -49,51 +52,51 @@ void Cmd_Status::execute(std::vector<String> args) {
     ConsoleR = 0;
     ConsoleG = 255;
     ConsoleB = 0;
-    CreateConsoleMsg("******************************");
-    CreateConsoleMsg("Status: ");
-    CreateConsoleMsg("Coordinates: ");
-    CreateConsoleMsg("    - collider: " + String(bbEntityX(mainPlayer->collider)) + ", " + String(bbEntityY(mainPlayer->collider)) + ", " + String(bbEntityZ(mainPlayer->collider)));
-    CreateConsoleMsg("    - camera: " + String(bbEntityX(mainPlayer->cam)) + ", " + String(bbEntityY(mainPlayer->cam)) + ", " + String(bbEntityZ(mainPlayer->cam)));
+    ConsoleMsg::create("******************************");
+    ConsoleMsg::create("Status: ");
+    ConsoleMsg::create("Coordinates: ");
+    ConsoleMsg::create("    - collider: " + String(bbEntityX(mainPlayer->collider)) + ", " + String(bbEntityY(mainPlayer->collider)) + ", " + String(bbEntityZ(mainPlayer->collider)));
+    ConsoleMsg::create("    - camera: " + String(bbEntityX(mainPlayer->cam)) + ", " + String(bbEntityY(mainPlayer->cam)) + ", " + String(bbEntityZ(mainPlayer->cam)));
 
-    CreateConsoleMsg("Rotation: ");
-    CreateConsoleMsg("    - collider: " + String(bbEntityPitch(mainPlayer->collider)) + ", " + String(bbEntityYaw(mainPlayer->collider)) + ", " + String(bbEntityRoll(mainPlayer->collider)));
-    CreateConsoleMsg("    - camera: " + String(bbEntityPitch(mainPlayer->cam)) + ", " + String(bbEntityYaw(mainPlayer->cam)) + ", " + String(bbEntityRoll(mainPlayer->cam)));
+    ConsoleMsg::create("Rotation: ");
+    ConsoleMsg::create("    - collider: " + String(bbEntityPitch(mainPlayer->collider)) + ", " + String(bbEntityYaw(mainPlayer->collider)) + ", " + String(bbEntityRoll(mainPlayer->collider)));
+    ConsoleMsg::create("    - camera: " + String(bbEntityPitch(mainPlayer->cam)) + ", " + String(bbEntityYaw(mainPlayer->cam)) + ", " + String(bbEntityRoll(mainPlayer->cam)));
 
-    CreateConsoleMsg("Room: " + mainPlayer->currRoom->roomTemplate->name);
+    ConsoleMsg::create("Room: " + mainPlayer->currRoom->roomTemplate->name);
 
-    CreateConsoleMsg("Room coordinates: " + String(bbFloor(bbEntityX(mainPlayer->currRoom->obj) / 8.f + 0.5f)) + ", " + String(bbFloor(bbEntityZ(mainPlayer->currRoom->obj) / 8.f + 0.5f)));
-    CreateConsoleMsg("Stamina: " + String(mainPlayer->stamina));
-    //CreateConsoleMsg("Dead: "+mainPlayer\dead)
-    CreateConsoleMsg("Blinktimer: " + String(mainPlayer->blinkTimer));
-    CreateConsoleMsg("Injuries: " + String(mainPlayer->injuries));
-    CreateConsoleMsg("Bloodloss: " + String(mainPlayer->bloodloss));
-    CreateConsoleMsg("******************************");
+    ConsoleMsg::create("Room coordinates: " + String(bbFloor(bbEntityX(mainPlayer->currRoom->obj) / 8.f + 0.5f)) + ", " + String(bbFloor(bbEntityZ(mainPlayer->currRoom->obj) / 8.f + 0.5f)));
+    ConsoleMsg::create("Stamina: " + String(mainPlayer->stamina));
+    //ConsoleMsg::create("Dead: "+mainPlayer\dead)
+    ConsoleMsg::create("Blinktimer: " + String(mainPlayer->blinkTimer));
+    ConsoleMsg::create("Injuries: " + String(mainPlayer->injuries));
+    ConsoleMsg::create("Bloodloss: " + String(mainPlayer->bloodloss));
+    ConsoleMsg::create("******************************");
 }
 
 void Cmd_DebugHUD::execute(std::vector<String> args) {
     DebugHUD = !DebugHUD;
     if (DebugHUD) {
-        CreateConsoleMsg("DebugHUD ON");
+        ConsoleMsg::create("DebugHUD ON");
     } else {
-        CreateConsoleMsg("DebugHUD OFF");
+        ConsoleMsg::create("DebugHUD OFF");
     }
 }
 
 void Cmd_Noclip::execute(std::vector<String> args) {
     mainPlayer->noclip = !mainPlayer->noclip;
     if (mainPlayer->noclip) {
-        CreateConsoleMsg("Noclip ON");
+        ConsoleMsg::create("Noclip ON");
     } else {
-        CreateConsoleMsg("Noclip OFF");
+        ConsoleMsg::create("Noclip OFF");
     }
 }
 
 void Cmd_GodMode::execute(std::vector<String> args) {
     mainPlayer->godMode = !mainPlayer->godMode;
     if (mainPlayer->godMode) {
-        CreateConsoleMsg("GodMode ON");
+        ConsoleMsg::create("GodMode ON");
     } else {
-        CreateConsoleMsg("GodMode OFF");
+        ConsoleMsg::create("GodMode OFF");
     }
 }
 
@@ -115,106 +118,106 @@ case "help": {
 
     switch (StrTemp.toLower()) {
     case "camerafog": {
-        CreateConsoleMsg("HELP - camerafog");
-        CreateConsoleMsg("******************************");
-        CreateConsoleMsg("Sets the draw distance of the fog.");
-        CreateConsoleMsg("The fog begins generating at 'CameraFogNear' units");
-        CreateConsoleMsg("away from the camera and becomes completely opaque");
-        CreateConsoleMsg("at 'CameraFogFar' units away from the camera.");
-        CreateConsoleMsg("Example: camerafog 20 40");
-        CreateConsoleMsg("******************************");
+        ConsoleMsg::create("HELP - camerafog");
+        ConsoleMsg::create("******************************");
+        ConsoleMsg::create("Sets the draw distance of the fog.");
+        ConsoleMsg::create("The fog begins generating at 'CameraFogNear' units");
+        ConsoleMsg::create("away from the camera and becomes completely opaque");
+        ConsoleMsg::create("at 'CameraFogFar' units away from the camera.");
+        ConsoleMsg::create("Example: camerafog 20 40");
+        ConsoleMsg::create("******************************");
     }
     case "gamma": {
-        CreateConsoleMsg("HELP - gamma");
-        CreateConsoleMsg("******************************");
-        CreateConsoleMsg("Sets the gamma correction.");
-        CreateConsoleMsg("Should be set to a value between 0.f and 2.f.");
-        CreateConsoleMsg("Default is 1.f.");
-        CreateConsoleMsg("******************************");
+        ConsoleMsg::create("HELP - gamma");
+        ConsoleMsg::create("******************************");
+        ConsoleMsg::create("Sets the gamma correction.");
+        ConsoleMsg::create("Should be set to a value between 0.f and 2.f.");
+        ConsoleMsg::create("Default is 1.f.");
+        ConsoleMsg::create("******************************");
     }
     case "noclip", "fly": {
-        CreateConsoleMsg("HELP - noclip");
-        CreateConsoleMsg("******************************");
-        CreateConsoleMsg("Toggles noclip, unless a valid parameter");
-        CreateConsoleMsg("is specified (on/off).");
-        CreateConsoleMsg("Allows the camera to move in any direction while");
-        CreateConsoleMsg("bypassing collision.");
-        CreateConsoleMsg("******************************");
+        ConsoleMsg::create("HELP - noclip");
+        ConsoleMsg::create("******************************");
+        ConsoleMsg::create("Toggles noclip, unless a valid parameter");
+        ConsoleMsg::create("is specified (on/off).");
+        ConsoleMsg::create("Allows the camera to move in any direction while");
+        ConsoleMsg::create("bypassing collision.");
+        ConsoleMsg::create("******************************");
     }
     case "godmode": {
-        CreateConsoleMsg("HELP - godmode");
-        CreateConsoleMsg("******************************");
-        CreateConsoleMsg("Toggles godmode, unless a valid parameter");
-        CreateConsoleMsg("is specified (on/off).");
-        CreateConsoleMsg("Prevents player death under normal circumstances.");
-        CreateConsoleMsg("******************************");
+        ConsoleMsg::create("HELP - godmode");
+        ConsoleMsg::create("******************************");
+        ConsoleMsg::create("Toggles godmode, unless a valid parameter");
+        ConsoleMsg::create("is specified (on/off).");
+        ConsoleMsg::create("Prevents player death under normal circumstances.");
+        ConsoleMsg::create("******************************");
     }
     case "wireframe": {
-        CreateConsoleMsg("HELP - wireframe");
-        CreateConsoleMsg("******************************");
-        CreateConsoleMsg("Toggles wireframe, unless a valid parameter");
-        CreateConsoleMsg("is specified (on/off).");
-        CreateConsoleMsg("Allows only the edges of geometry to be rendered,");
-        CreateConsoleMsg("making everything else transparent.");
-        CreateConsoleMsg("******************************");
+        ConsoleMsg::create("HELP - wireframe");
+        ConsoleMsg::create("******************************");
+        ConsoleMsg::create("Toggles wireframe, unless a valid parameter");
+        ConsoleMsg::create("is specified (on/off).");
+        ConsoleMsg::create("Allows only the edges of geometry to be rendered,");
+        ConsoleMsg::create("making everything else transparent.");
+        ConsoleMsg::create("******************************");
     }
     case "spawnitem": {
-        CreateConsoleMsg("HELP - spawnitem");
-        CreateConsoleMsg("******************************");
-        CreateConsoleMsg("Spawns an item at the player's location.");
-        CreateConsoleMsg("Any name that can appear in your inventory");
-        CreateConsoleMsg("is a valid parameter.");
-        CreateConsoleMsg("Example: spawnitem key5");
-        CreateConsoleMsg("******************************");
+        ConsoleMsg::create("HELP - spawnitem");
+        ConsoleMsg::create("******************************");
+        ConsoleMsg::create("Spawns an item at the player's location.");
+        ConsoleMsg::create("Any name that can appear in your inventory");
+        ConsoleMsg::create("is a valid parameter.");
+        ConsoleMsg::create("Example: spawnitem key5");
+        ConsoleMsg::create("******************************");
     }
     case "spawn": {
-        CreateConsoleMsg("HELP - spawn");
-        CreateConsoleMsg("******************************");
-        CreateConsoleMsg("Spawns an NPC at the player's location.");
-        CreateConsoleMsg("Valid parameters are:");
-        CreateConsoleMsg("049 / zombie (049-2) / 096 / 106 / 173 / 513-1");
-        CreateConsoleMsg("/ 966 / 1499-1 / guard / mtf");
-        CreateConsoleMsg("******************************");
+        ConsoleMsg::create("HELP - spawn");
+        ConsoleMsg::create("******************************");
+        ConsoleMsg::create("Spawns an NPC at the player's location.");
+        ConsoleMsg::create("Valid parameters are:");
+        ConsoleMsg::create("049 / zombie (049-2) / 096 / 106 / 173 / 513-1");
+        ConsoleMsg::create("/ 966 / 1499-1 / guard / mtf");
+        ConsoleMsg::create("******************************");
     }
     case "revive", "undead", "resurrect": {
-        CreateConsoleMsg("HELP - revive");
-        CreateConsoleMsg("******************************");
-        CreateConsoleMsg("Resets the player's death timer after the dying");
-        CreateConsoleMsg("animation triggers.");
-        CreateConsoleMsg("Does not affect injury, blood loss");
-        CreateConsoleMsg("or 008 infection values.");
-        CreateConsoleMsg("******************************");
+        ConsoleMsg::create("HELP - revive");
+        ConsoleMsg::create("******************************");
+        ConsoleMsg::create("Resets the player's death timer after the dying");
+        ConsoleMsg::create("animation triggers.");
+        ConsoleMsg::create("Does not affect injury, blood loss");
+        ConsoleMsg::create("or 008 infection values.");
+        ConsoleMsg::create("******************************");
     }
     case "teleport": {
-        CreateConsoleMsg("HELP - teleport");
-        CreateConsoleMsg("******************************");
-        CreateConsoleMsg("Teleports the player to the first instance");
-        CreateConsoleMsg("of the specified room. Any room that appears");
-        CreateConsoleMsg("in rooms.ini is a valid parameter.");
-        CreateConsoleMsg("******************************");
+        ConsoleMsg::create("HELP - teleport");
+        ConsoleMsg::create("******************************");
+        ConsoleMsg::create("Teleports the player to the first instance");
+        ConsoleMsg::create("of the specified room. Any room that appears");
+        ConsoleMsg::create("in rooms.ini is a valid parameter.");
+        ConsoleMsg::create("******************************");
     }
     case "stopsound", "stfu": {
-        CreateConsoleMsg("HELP - stopsound");
-        CreateConsoleMsg("******************************");
-        CreateConsoleMsg("Stops all currently playing sounds.");
-        CreateConsoleMsg("******************************");
+        ConsoleMsg::create("HELP - stopsound");
+        ConsoleMsg::create("******************************");
+        ConsoleMsg::create("Stops all currently playing sounds.");
+        ConsoleMsg::create("******************************");
     }
     case "camerapick": {
-        CreateConsoleMsg("HELP - camerapick");
-        CreateConsoleMsg("******************************");
-        CreateConsoleMsg("Prints the texture name and coordinates of");
-        CreateConsoleMsg("the model the camera is pointing at.");
-        CreateConsoleMsg("******************************");
+        ConsoleMsg::create("HELP - camerapick");
+        ConsoleMsg::create("******************************");
+        ConsoleMsg::create("Prints the texture name and coordinates of");
+        ConsoleMsg::create("the model the camera is pointing at.");
+        ConsoleMsg::create("******************************");
     }
     case "weed", "scp-420-j", "420": {
-        CreateConsoleMsg("HELP - 420");
-        CreateConsoleMsg("******************************");
-        CreateConsoleMsg("Generates dank memes.");
-        CreateConsoleMsg("******************************");
+        ConsoleMsg::create("HELP - 420");
+        ConsoleMsg::create("******************************");
+        ConsoleMsg::create("Generates dank memes.");
+        ConsoleMsg::create("******************************");
 
     }
     default: {
-        CreateConsoleMsg("There is no help available for that command.", 255, 150, 0);
+        ConsoleMsg::create("There is no help available for that command.", 255, 150, 0);
     }
     }
 
@@ -229,20 +232,20 @@ case "camerapick": {
     ConsoleB = 0;
     c = bbCameraPick(mainPlayer->cam, userOptions->screenWidth / 2, userOptions->screenHeight / 2);
     if (c == 0) {
-        CreateConsoleMsg("******************************");
-        CreateConsoleMsg("No entity picked");
-        CreateConsoleMsg("******************************");
+        ConsoleMsg::create("******************************");
+        ConsoleMsg::create("No entity picked");
+        ConsoleMsg::create("******************************");
     }
     else {
-        CreateConsoleMsg("******************************");
-        CreateConsoleMsg("Picked entity:");
+        ConsoleMsg::create("******************************");
+        ConsoleMsg::create("Picked entity:");
         sf = bbGetSurface(c, 1);
         b = bbGetSurfaceBrush(sf);
         t = bbGetBrushTexture(b, 0);
         texname = StripPath(bbTextureName(t));
-        CreateConsoleMsg("Texture name: " + texname);
-        CreateConsoleMsg("Coordinates: " + String(bbEntityX(c)) + ", " + String(bbEntityY(c)) + ", " + String(bbEntityZ(c)));
-        CreateConsoleMsg("******************************");
+        ConsoleMsg::create("Texture name: " + texname);
+        ConsoleMsg::create("Coordinates: " + String(bbEntityX(c)) + ", " + String(bbEntityY(c)) + ", " + String(bbEntityZ(c)));
+        ConsoleMsg::create("******************************");
         bbFreeTexture(t);
         bbFreeBrush(b);
     }
@@ -250,7 +253,7 @@ case "camerapick": {
 }
 case "hidedistance": {
     HideDistance = (float)(bbRight(ConsoleInput, ConsoleInput.size() - bbInstr(ConsoleInput, " ")));
-    CreateConsoleMsg("Hidedistance set to " + String(HideDistance));
+    ConsoleMsg::create("Hidedistance set to " + String(HideDistance));
 
 }
 case "ending": {
@@ -302,7 +305,7 @@ case "teleport": {
     }
 
     if (mainPlayer->currRoom->roomTemplate->name != StrTemp) {
-        CreateConsoleMsg("Room not found.", 255, 150, 0);
+        ConsoleMsg::create("Room not found.", 255, 150, 0);
     }
 
 }
@@ -331,14 +334,14 @@ case "spawnitem": {
 
         if (itt->name.toLower().equals(StrTemp)) {
             temp = true;
-            CreateConsoleMsg(itt->name + " spawned.");
+            ConsoleMsg::create(itt->name + " spawned.");
             it = CreateItem(itt->name, bbEntityX(mainPlayer->collider), bbEntityY(mainPlayer->cam, true), bbEntityZ(mainPlayer->collider));
             break;
         }
     }
 
     if (temp == false) {
-        CreateConsoleMsg("Item not found.", 255, 150, 0);
+        ConsoleMsg::create("Item not found.", 255, 150, 0);
     }
 
 }
@@ -355,7 +358,7 @@ case "test914key": {
 case "spawnomni": {
     it = CreateItem("keycard", bbEntityX(mainPlayer->collider), bbEntityY(mainPlayer->cam, true), bbEntityZ(mainPlayer->collider));
     AssignTag(it, ITEM_TAG_OMNI);
-    CreateConsoleMsg("Nerd.", 255, 150, 0);
+    ConsoleMsg::create("Nerd.", 255, 150, 0);
 
 }
 case "wireframe": {
@@ -374,10 +377,10 @@ case "wireframe": {
     }
 
     if (WireframeState) {
-        CreateConsoleMsg("WIREFRAME ON");
+        ConsoleMsg::create("WIREFRAME ON");
     }
     else {
-        CreateConsoleMsg("WIREFRAME OFF");
+        ConsoleMsg::create("WIREFRAME OFF");
     }
 
     bbWireFrame(WireframeState);
@@ -386,27 +389,27 @@ case "wireframe": {
 case "173speed": {
     StrTemp = bbRight(ConsoleInput, ConsoleInput.size() - bbInstr(ConsoleInput, " ")).toLower();
     Curr173->speed = StrTemp.toFloat();
-    CreateConsoleMsg("173's speed set to " + StrTemp);
+    ConsoleMsg::create("173's speed set to " + StrTemp);
 
 }
 case "106speed": {
     StrTemp = bbRight(ConsoleInput, ConsoleInput.size() - bbInstr(ConsoleInput, " ")).toLower();
     Curr106->speed = StrTemp.toFloat();
-    CreateConsoleMsg("106's speed set to " + StrTemp);
+    ConsoleMsg::create("106's speed set to " + StrTemp);
 
 }
 case "173state": {
-    CreateConsoleMsg("SCP-173");
-    CreateConsoleMsg("Position: " + String(bbEntityX(Curr173->obj)) + ", " + String(bbEntityY(Curr173->obj)) + ", " + String(bbEntityZ(Curr173->obj)));
-    CreateConsoleMsg("Idle: " + String(Curr173->idle));
-    CreateConsoleMsg("State: " + String(Curr173->state));
+    ConsoleMsg::create("SCP-173");
+    ConsoleMsg::create("Position: " + String(bbEntityX(Curr173->obj)) + ", " + String(bbEntityY(Curr173->obj)) + ", " + String(bbEntityZ(Curr173->obj)));
+    ConsoleMsg::create("Idle: " + String(Curr173->idle));
+    ConsoleMsg::create("State: " + String(Curr173->state));
 
 }
 case "106state": {
-    CreateConsoleMsg("SCP-106");
-    CreateConsoleMsg("Position: " + String(bbEntityX(Curr106->obj)) + ", " + String(bbEntityY(Curr106->obj)) + ", " + String(bbEntityZ(Curr106->obj)));
-    CreateConsoleMsg("Idle: " + String(Curr106->idle));
-    CreateConsoleMsg("State: " + String(Curr106->state));
+    ConsoleMsg::create("SCP-106");
+    ConsoleMsg::create("Position: " + String(bbEntityX(Curr106->obj)) + ", " + String(bbEntityY(Curr106->obj)) + ", " + String(bbEntityZ(Curr106->obj)));
+    ConsoleMsg::create("Idle: " + String(Curr106->idle));
+    ConsoleMsg::create("State: " + String(Curr106->state));
 
 }
 case "spawn513-1": {
@@ -461,23 +464,23 @@ case "halloween": {
         tex = bbLoadTexture("GFX/npcs/173h.pt", 1);
         bbEntityTexture(Curr173->obj, tex, 0, 0);
         bbFreeTexture(tex);
-        CreateConsoleMsg("173 JACK-O-LANTERN ON");
+        ConsoleMsg::create("173 JACK-O-LANTERN ON");
     }
     else {
         tex2 = bbLoadTexture("GFX/npcs/173texture.png", 1);
         bbEntityTexture(Curr173->obj, tex2, 0, 0);
         bbFreeTexture(tex2);
-        CreateConsoleMsg("173 JACK-O-LANTERN OFF");
+        ConsoleMsg::create("173 JACK-O-LANTERN OFF");
     }
 
 }
 case "sanic": {
     mainPlayer->superMan = !mainPlayer->superMan;
     if (mainPlayer->superMan == true) {
-        CreateConsoleMsg("GOTTA GO FAST");
+        ConsoleMsg::create("GOTTA GO FAST");
     }
     else {
-        CreateConsoleMsg("WHOA SLOW DOWN");
+        ConsoleMsg::create("WHOA SLOW DOWN");
     }
 }
 case "godmode": {
@@ -495,10 +498,10 @@ case "godmode": {
     }
     }
     if (mainPlayer->godMode) {
-        CreateConsoleMsg("GODMODE ON");
+        ConsoleMsg::create("GODMODE ON");
     }
     else {
-        CreateConsoleMsg("GODMODE OFF");
+        ConsoleMsg::create("GODMODE OFF");
     }
 
 }
@@ -546,10 +549,10 @@ case "noclip", "fly": {
     }
 
     if (mainPlayer->noclip) {
-        CreateConsoleMsg("NOCLIP ON");
+        ConsoleMsg::create("NOCLIP ON");
     }
     else {
-        CreateConsoleMsg("NOCLIP OFF");
+        ConsoleMsg::create("NOCLIP OFF");
     }
 
     mainPlayer->dropSpeed = 0;
@@ -557,7 +560,7 @@ case "noclip", "fly": {
 }
 case "showfps": {
     userOptions->showFPS = !userOptions->showFPS;
-    CreateConsoleMsg("ShowFPS: " + String(userOptions->showFPS));
+    ConsoleMsg::create("ShowFPS: " + String(userOptions->showFPS));
 
 }
 case "096state": {
@@ -565,14 +568,14 @@ case "096state": {
         n = NPC::getObject(iterator48);
 
         if (n->npcType == NPCtype096) {
-            CreateConsoleMsg("SCP-096");
-            CreateConsoleMsg("Position: " + String(bbEntityX(n->obj)) + ", " + String(bbEntityY(n->obj)) + ", " + String(bbEntityZ(n->obj)));
-            CreateConsoleMsg("Idle: " + String(n->idle));
-            CreateConsoleMsg("State: " + String(n->state));
+            ConsoleMsg::create("SCP-096");
+            ConsoleMsg::create("Position: " + String(bbEntityX(n->obj)) + ", " + String(bbEntityY(n->obj)) + ", " + String(bbEntityZ(n->obj)));
+            ConsoleMsg::create("Idle: " + String(n->idle));
+            ConsoleMsg::create("State: " + String(n->state));
             break;
         }
     }
-    CreateConsoleMsg("SCP-096 has not spawned.");
+    ConsoleMsg::create("SCP-096 has not spawned.");
 
 }
 case "debughud": {
@@ -590,10 +593,10 @@ case "debughud": {
     }
 
     if (DebugHUD) {
-        CreateConsoleMsg("Debug Mode On");
+        ConsoleMsg::create("Debug Mode On");
     }
     else {
-        CreateConsoleMsg("Debug Mode Off");
+        ConsoleMsg::create("Debug Mode Off");
     }
 
 }
@@ -606,13 +609,13 @@ case "camerafog": {
     //args$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
     //CameraFogNear = (float)(Left(args, Len(args) - Instr(args, " ")))
     //CameraFogFar = (float)(Right(args, Len(args) - Instr(args, " ")))
-    //CreateConsoleMsg("Near set to: " + CameraFogNear + ", far set to: " + CameraFogFar)
+    //ConsoleMsg::create("Near set to: " + CameraFogNear + ", far set to: " + CameraFogFar)
 
 }
 case "gamma": {
     StrTemp = bbRight(ConsoleInput, ConsoleInput.size() - bbInstr(ConsoleInput, " ")).toLower();
     userOptions->screenGamma = (float)(StrTemp);
-    CreateConsoleMsg("Gamma set to " + String(userOptions->screenGamma));
+    ConsoleMsg::create("Gamma set to " + String(userOptions->screenGamma));
 
 }
 case "spawn": {
@@ -635,9 +638,9 @@ case "infinitestamina", "infstam": {
     //End Select
 
     //If InfiniteStamina
-    //	CreateConsoleMsg("INFINITE STAMINA ON")
+    //	ConsoleMsg::create("INFINITE STAMINA ON")
     //Else
-    //	CreateConsoleMsg("INFINITE STAMINA OFF")
+    //	ConsoleMsg::create("INFINITE STAMINA OFF")
     //EndIf
 
 }
@@ -673,7 +676,7 @@ case "unlockexits": {
                 break;
             }
         }
-        CreateConsoleMsg("Gate A is now unlocked.");
+        ConsoleMsg::create("Gate A is now unlocked.");
     }
     case "b": {
         for (int iterator51 = 0; iterator51 < Event::getListSize(); iterator51++) {
@@ -685,7 +688,7 @@ case "unlockexits": {
                 break;
             }
         }
-        CreateConsoleMsg("Gate B is now unlocked.");
+        ConsoleMsg::create("Gate B is now unlocked.");
     }
     default: {
         for (int iterator52 = 0; iterator52 < Event::getListSize(); iterator52++) {
@@ -700,7 +703,7 @@ case "unlockexits": {
                 ev->room->doors[4]->open = true;
             }
         }
-        CreateConsoleMsg("Gate A and B are now unlocked.");
+        ConsoleMsg::create("Gate A and B are now unlocked.");
     }
     }
 
@@ -751,7 +754,7 @@ case "tele": {
     // StrTemp3 = Piece(args,3," ");
     bbPositionEntity(mainPlayer->collider, (float)(StrTemp), (float)(StrTemp2), (float)(StrTemp3));
     bbPositionEntity(mainPlayer->cam, (float)(StrTemp), (float)(StrTemp2), (float)(StrTemp3));
-    CreateConsoleMsg("Teleported to coordinates (X|Y|Z): " + String(bbEntityX(mainPlayer->collider)) + "|" + String(bbEntityY(mainPlayer->collider)) + "|" + String(bbEntityZ(mainPlayer->collider)));
+    ConsoleMsg::create("Teleported to coordinates (X|Y|Z): " + String(bbEntityX(mainPlayer->collider)) + "|" + String(bbEntityY(mainPlayer->collider)) + "|" + String(bbEntityZ(mainPlayer->collider)));
 
 }
 case "notarget": {
@@ -770,10 +773,10 @@ case "notarget": {
     }
 
     if (NoTarget == false) {
-        CreateConsoleMsg("NOTARGET OFF");
+        ConsoleMsg::create("NOTARGET OFF");
     }
     else {
-        CreateConsoleMsg("NOTARGET ON");
+        ConsoleMsg::create("NOTARGET ON");
     }
 }
 case "teleport173": {
@@ -785,7 +788,7 @@ case Chr($6A) + Chr($6F) + Chr($72) + Chr($67) + Chr($65): {
     throw ("Implement");
 }
 default: {
-    CreateConsoleMsg("Command not found.", 255, 0, 0);
+    ConsoleMsg::create("Command not found.", 255, 0, 0);
 }
 }
 #endif

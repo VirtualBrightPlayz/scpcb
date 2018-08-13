@@ -766,7 +766,7 @@ void Console_SpawnNPC(const String& npcName, int state) {
     //         n = CreateNPC(NPCtype1499, bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider)+0.2f,bbEntityZ(mainPlayer->collider));
     //     }
     //     default: {
-    //         CreateConsoleMsg("NPC type not found.");
+    //         ConsoleMsg::create("NPC type not found.");
     //     }
     // }
 

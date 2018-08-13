@@ -23,33 +23,40 @@ public:
 extern std::vector<ConsoleCmd*> commandList;
 
 class Cmd_Status : public ConsoleCmd {
-protected:
-    String name = "status";
-    String description = "Prints player, camera, and room information.";
 public:
+    Cmd_Status() {
+        name = "status";
+        description = "Prints player, camera, and room information.";
+    }
     virtual void execute(std::vector<String> args);
 };
 
 class Cmd_DebugHUD : public ConsoleCmd {
 public:
-    String name = "debug";
-    std::vector<String> aliases = { "debughud" };
-    String description = "Displays various debug states of the game's properties.";
+    Cmd_DebugHUD() {
+        name = "debug";
+        aliases = { "debughud" };
+        description = "Displays various debug states of the game's properties.";
+    }
     virtual void execute(std::vector<String> args);
 };
 
 class Cmd_Noclip : public ConsoleCmd {
 public:
-    String name = "noclip";
-    String description = "Disables collision detection for the player.";
+    Cmd_Noclip() {
+        name = "noclip";
+        description = "Disables collision detection for the player.";
+    }
     virtual void execute(std::vector<String> args);
 };
 
 class Cmd_GodMode : public ConsoleCmd {
 public:
-    String name = "godmode";
-    std::vector<String> aliases = { "god" };
-    String description = "Makes the player invincible.";
+    Cmd_GodMode() {
+        name = "godmode";
+        aliases = { "god" };
+        description = "Makes the player invincible.";
+    }
     virtual void execute(std::vector<String> args);
 };
 
