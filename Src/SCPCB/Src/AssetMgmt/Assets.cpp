@@ -356,8 +356,6 @@ void LoadEntities() {
 void InitNewGame() {
     DrawLoading(45);
 
-    DebugHUD = false;
-
     sndManager->loadInGameSounds();
 
     ConsoleCmd::generateCommands();
@@ -430,7 +428,7 @@ void InitNewGame() {
         std::cout << "NAME: " << r->roomTemplate->name << "\n";
 
         for (int j = 0; j < MaxRoomLights; j++) {
-            if (r->lights[j]!=0) {
+            if (r->lights[j]!=nullptr) {
                 bbEntityParent(r->lights[j],0);
             }
         }
@@ -697,9 +695,9 @@ void NullGame() {
         MTFrooms[i] = nullptr;
     }
 
-    Event* e;
-    /*for (int iterator18 = 0; iterator18 < Event::getListSize(); iterator18++) {
-        e = Event::getObject(iterator18);
+    /*TODO: aaaa
+    for (int i = 0; i < Event::getListSize(); i++) {
+        Event* e = Event::getObject(i);
 
         RemoveEvent(e);
     }*/
@@ -726,9 +724,9 @@ void NullGame() {
     InitFastResize();
 
     for (int i = 0; i < 10; i++) {
-        if (TempSounds[i]!=0) {
+        if (TempSounds[i]!=nullptr) {
             bbFreeSound(TempSounds[i]);
-            TempSounds[i] = 0;
+            TempSounds[i] = nullptr;
         }
     }
 
