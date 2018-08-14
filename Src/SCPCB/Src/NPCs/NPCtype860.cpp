@@ -404,6 +404,7 @@ float Find860Angle(NPC* n, Forest* fr) {
         return GetAngle(bbEntityX(n->collider),bbEntityZ(n->collider),bbEntityX(mainPlayer->collider),bbEntityZ(mainPlayer->collider))+180;
     }
 #endif
+    return 0.0f;
 }
 
 }

@@ -108,10 +108,14 @@ public:
         float dx = x - q.x, dy = y - q.y, dz = z - q.z; return dx*dx + dy * dy + dz * dz;
     }
 	Vector normalized()const{
-		float l=length();return Vector( x/l,y/l,z/l );
+		float l=length();
+        if (l <= 0.0001f) return Vector(0, 0, 0);
+        return Vector( x/l,y/l,z/l );
 	}
 	void normalize(){
-		float l=length();x/=l;y/=l;z/=l;
+		float l=length();
+        if (l <= 0.0001f) return;
+        x/=l;y/=l;z/=l;
 	}
 	float yaw()const{
 		return -atan2f( x,z );
@@ -221,9 +225,13 @@ struct Quat{
 		return sqrtf( w*w+v.x*v.x+v.y*v.y+v.z*v.z );
 	}
 	void normalize(){
+        float l=length();
+        if (l <= 0.0001f) return;
 		*this=*this/length();
 	}
 	Quat normalized()const{
+        float l = length();
+        if (l <= 0.0001f) return *this;
 		return *this/length();
 	}
 	Quat slerpTo( const Quat &q,float a )const{

@@ -323,6 +323,7 @@ gxSound* LoadTempSound(const String& file) {
 gxSound* LoadEventSound(Event* e, const String& file, int i) {
     //TODO: redo
 
+    return nullptr;
     /*if (e->sounds[i] != 0) {
         bbFreeSound(e->sounds[i]);
         e->sounds[i] = 0;
