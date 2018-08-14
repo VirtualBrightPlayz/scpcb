@@ -13,6 +13,7 @@
 namespace CBN {
 
 // Structs.
+Console* console;
 Console::Console() {
     input = "";
     scroll = 0.f;

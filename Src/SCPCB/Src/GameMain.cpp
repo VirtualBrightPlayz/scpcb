@@ -65,9 +65,7 @@ const int HIT_DEAD = 5;
 
 // Globals.
 // TODO: Move these to console struct.
-int WireframeState = 0;
 int HalloweenTex;
-int NoTarget;
 
 Timing* timing;
 float CurrFrameLimit;

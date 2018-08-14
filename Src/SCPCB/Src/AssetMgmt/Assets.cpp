@@ -619,7 +619,7 @@ void InitLoadGame() {
 
     DrawLoading(100);
 
-    bbWireFrame(WireframeState);
+    bbWireFrame(console->wireframeState);
 }
 
 void NullGame() {
@@ -709,7 +709,7 @@ void NullGame() {
     NTF_1499Y = 0.f;
     NTF_1499Z = 0.f;
 
-    NoTarget = false;
+    console->noTarget = false;
 
     //OptionsMenu% = -1
     //QuitMSG% = -1

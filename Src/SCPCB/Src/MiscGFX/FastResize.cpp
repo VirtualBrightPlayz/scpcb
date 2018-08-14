@@ -3,6 +3,7 @@
 
 #include "FastResize.h"
 #include "../Config/Options.h"
+#include "../Menus/Console/Console.h"
 #include "../Player/Player.h"
 #include "../GameMain.h"
 
@@ -43,7 +44,7 @@ void ScaleRender(float x, float y, float hscale, float vscale) {
     bbRenderWorld();
     bbHideEntity(fresize_cam);
     bbHideEntity(fresize_image);
-    bbWireFrame(WireframeState);
+    bbWireFrame(console->wireframeState);
     if (mainPlayer!=nullptr) {
         bbShowEntity(mainPlayer->cam);
     }
