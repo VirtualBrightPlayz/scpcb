@@ -83,12 +83,42 @@ public:
     virtual void execute(std::vector<String> args);
 };
 
+class Cmd_Heal : public ConsoleCmd {
+public:
+    Cmd_Heal() {
+        name = "heal";
+        description = "Removes all bloodloss and injuries.";
+    }
+    virtual void execute(std::vector<String> args);
+};
+
 class Cmd_Teleport : public ConsoleCmd {
 public:
     Cmd_Teleport() {
         name = "teleport";
         aliases = { "tele" };
         description = "Teleports the player to the specified room.";
+    }
+    virtual void execute(std::vector<String> args);
+};
+
+// TODO: Itemlist command.
+class Cmd_SpawnItem : public ConsoleCmd {
+public:
+    Cmd_SpawnItem() {
+        name = "spawnitem";
+        aliases = { "giveitem, item" };
+        description = "Creates the specified item at the player's position.";
+    }
+    virtual void execute(std::vector<String> args);
+};
+
+class Cmd_Omni : public ConsoleCmd {
+public:
+    Cmd_Omni() {
+        name = "spawnomni";
+        aliases = { "omni" };
+        description = "Creates an omni card.";
     }
     virtual void execute(std::vector<String> args);
 };

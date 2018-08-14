@@ -4,6 +4,7 @@
 
 #include "ConsoleCommands.h"
 #include "Player.h"
+#include "Items/Items.h"
 #include "MapSystem.h"
 #include "Doors.h"
 
@@ -40,7 +41,10 @@ void ConsoleCmd::generateCommands() {
     commandList.push_back(new Cmd_Wireframe());
     commandList.push_back(new Cmd_Noclip());
     commandList.push_back(new Cmd_GodMode());
+    commandList.push_back(new Cmd_Heal());
     commandList.push_back(new Cmd_Teleport());
+    commandList.push_back(new Cmd_SpawnItem());
+    commandList.push_back(new Cmd_Omni());
 }
 void ConsoleCmd::clearCommands() {
     for (int i = 0; i < commandList.size(); i++) {
@@ -148,6 +152,11 @@ void Cmd_GodMode::execute(std::vector<String> args) {
     }
 }
 
+void Cmd_Heal::execute(std::vector<String> args) {
+    mainPlayer->injuries = 0;
+    mainPlayer->bloodloss = 0;
+}
+
 void Cmd_Teleport::execute(std::vector<String> args) {
     if (args.size() <= 0) {
         ConsoleMsg::create("Please specify a room. (e.g. teleport cont_914_1)", 255, 150, 0);
@@ -168,6 +177,31 @@ void Cmd_Teleport::execute(std::vector<String> args) {
     }
 
     ConsoleMsg::create("Room not found.", 255, 150, 0);
+}
+
+void Cmd_SpawnItem::execute(std::vector<String> args) {
+    if (args.size() <= 0) {
+        ConsoleMsg::create("Please specify an item. (e.g. spawnitem gasmask)", 255, 150, 0);
+        return;
+    }
+
+    for (int i = 0; i < ItemTemplate::getListSize(); i++) {
+        ItemTemplate* itt = ItemTemplate::getObject(i);
+
+        if (itt->name.equals(args[0])) {
+            ConsoleMsg::create(itt->invName + " spawned.");
+            CreateItem(itt->name, bbEntityX(mainPlayer->collider), bbEntityY(mainPlayer->cam), bbEntityZ(mainPlayer->collider));
+            return;
+        }
+    }
+
+    ConsoleMsg::create("Item not found.", 255, 150, 0);
+}
+
+void Cmd_Omni::execute(std::vector<String> args) {
+    Item* it = CreateItem("keycard", bbEntityX(mainPlayer->collider), bbEntityY(mainPlayer->cam, true), bbEntityZ(mainPlayer->collider));
+    AssignTag(it, ITEM_TAG_OMNI);
+    ConsoleMsg::create("Nerd.", 255, 150, 0);
 }
 
 }
@@ -314,86 +348,15 @@ case "infect": {
     mainPlayer->infect008 = (float)(StrTemp);
 
 }
-case "heal": {
-    mainPlayer->injuries = 0;
-    mainPlayer->bloodloss = 0;
-
-}
-case "guh": {
-    for (int iterator45 = 0; iterator45 < Room::getListSize(); iterator45++) {
-        r = Room::getObject(iterator45);
-
-        if (r->roomTemplate->name.equals("cont_914_1")) {
-            //PositionEntity(mainPlayer\collider, EntityX(r\obj), 0.7f, EntityZ(r\obj))
-            bbPositionEntity(mainPlayer->collider, r->x, r->y + 0.7f, r->z);
-            bbResetEntity(mainPlayer->collider);
-            UpdateDoors();
-            UpdateRooms();
-            mainPlayer->currRoom = r;
-            CreateItem("gasmask", r->x, r->y + 2, r->z);
-            break;
-        }
-    }
-
-}
-case "spawnitem": {
-    StrTemp = bbRight(ConsoleInput, ConsoleInput.size() - bbInstr(ConsoleInput, " ")).toLower();
-    temp = false;
-    for (int iterator46 = 0; iterator46 < ItemTemplate::getListSize(); iterator46++) {
-        itt = ItemTemplate::getObject(iterator46);
-
-        if (itt->name.toLower().equals(StrTemp)) {
-            temp = true;
-            ConsoleMsg::create(itt->name + " spawned.");
-            it = CreateItem(itt->name, bbEntityX(mainPlayer->collider), bbEntityY(mainPlayer->cam, true), bbEntityZ(mainPlayer->collider));
-            break;
-        }
-    }
-
-    if (temp == false) {
-        ConsoleMsg::create("Item not found.", 255, 150, 0);
-    }
-
-}
 case "spawndoc": {
     StrTemp = bbRight(ConsoleInput, ConsoleInput.size() - bbInstr(ConsoleInput, " ")).toLower();
     CreatePaper(StrTemp, bbEntityX(mainPlayer->collider), bbEntityY(mainPlayer->cam, true), bbEntityZ(mainPlayer->collider));
-
-}
-case "test914key": {
-    it = CreateItem("keycard", bbEntityX(mainPlayer->collider), bbEntityY(mainPlayer->cam, true), bbEntityZ(mainPlayer->collider));
-    AssignTag(it, "cont_914_1");
 
 }
 case "spawnomni": {
     it = CreateItem("keycard", bbEntityX(mainPlayer->collider), bbEntityY(mainPlayer->cam, true), bbEntityZ(mainPlayer->collider));
     AssignTag(it, ITEM_TAG_OMNI);
     ConsoleMsg::create("Nerd.", 255, 150, 0);
-
-}
-case "wireframe": {
-    StrTemp = bbRight(ConsoleInput, ConsoleInput.size() - bbInstr(ConsoleInput, " ")).toLower();
-
-    switch (StrTemp) {
-    case "on", "1", "true": {
-        WireframeState = true;
-    }
-    case "off", "0", "false": {
-        WireframeState = false;
-    }
-    default: {
-        WireframeState = !WireframeState;
-    }
-    }
-
-    if (WireframeState) {
-        ConsoleMsg::create("WIREFRAME ON");
-    }
-    else {
-        ConsoleMsg::create("WIREFRAME OFF");
-    }
-
-    bbWireFrame(WireframeState);
 
 }
 case "halloween": {
@@ -439,11 +402,6 @@ case "revive", "undead", "resurrect": {
     mainPlayer->noclip = 0;
 
     bbShowEntity(mainPlayer->collider);
-
-}
-case "showfps": {
-    userOptions->showFPS = !userOptions->showFPS;
-    ConsoleMsg::create("ShowFPS: " + String(userOptions->showFPS));
 
 }
 case "stopsound", "stfu": {
