@@ -20,6 +20,7 @@
 #include "Audio.h"
 #include "../NPCs/NPCs.h"
 #include "../Menus/Menu.h"
+#include "../Menus/Console/Console.h"
 #include "../Menus/Console/ConsoleCommands.h"
 #include "../Menus/LoadingScreen.h"
 #include "../Config/Options.h"
@@ -358,7 +359,7 @@ void InitNewGame() {
 
     sndManager->loadInGameSounds();
 
-    ConsoleCmd::generateCommands();
+    console = new Console();
 
     HideDistance = 15.f;
 
@@ -626,7 +627,7 @@ void NullGame() {
 
     ItemTemplate::DeloadTemplates();
 
-    ConsoleCmd::clearCommands();
+    delete console;
 
     ClearTextureCache();
 
@@ -659,8 +660,6 @@ void NullGame() {
         }
         delete s;
     }
-
-    ConsoleInput = "";
 
     Msg = "";
     MsgTimer = 0;

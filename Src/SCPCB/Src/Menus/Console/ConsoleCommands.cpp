@@ -55,9 +55,9 @@ void ConsoleCmd::clearCommands() {
 
 // TODO: Maybe turn help descriptions into a vector to allow multi-line support.
 void Cmd_Help::execute(std::vector<String> args) {
-    ConsoleR = 0;
-    ConsoleG = 255;
-    ConsoleB = 255;
+    console->msgR = 0;
+    console->msgG = 255;
+    console->msgB = 255;
     if (args.size() <= 0) {
         ConsoleMsg::create("List of Available Commands:");
         for (int i = 0; i < commandList.size(); i++) {
@@ -91,9 +91,9 @@ void Cmd_Help::execute(std::vector<String> args) {
 
 // Command execute definitions.
 void Cmd_Status::execute(std::vector<String> args) {
-    ConsoleR = 0;
-    ConsoleG = 255;
-    ConsoleB = 0;
+    console->msgR = 0;
+    console->msgG = 255;
+    console->msgB = 0;
     ConsoleMsg::create("******************************");
     ConsoleMsg::create("Status: ");
     ConsoleMsg::create("Coordinates: ");
@@ -210,15 +210,15 @@ void Cmd_Omni::execute(std::vector<String> args) {
 //TODO: Overhaul this. Move all of the argument stuff to dedicated functions so this is actually readable/maintainable.
 switch (StrTemp.toLower()) {
 case "help": {
-    if (bbInstr(ConsoleInput, " ") != 0) {
-        StrTemp = bbRight(ConsoleInput, ConsoleInput.size() - bbInstr(ConsoleInput, " ")).toLower();
+    if (bbInstr(console->input, " ") != 0) {
+        StrTemp = bbRight(console->input, console->input.size() - bbInstr(console->input, " ")).toLower();
     }
     else {
         StrTemp = "";
     }
-    ConsoleR = 0;
-    ConsoleG = 255;
-    ConsoleB = 255;
+    console->msgR = 0;
+    console->msgG = 255;
+    console->msgB = 255;
 
     switch (StrTemp.toLower()) {
     case "camerafog": {
@@ -293,9 +293,9 @@ case "help": {
 
 }
 case "camerapick": {
-    ConsoleR = 0;
-    ConsoleG = 255;
-    ConsoleB = 0;
+    console->msgR = 0;
+    console->msgG = 255;
+    console->msgB = 0;
     c = bbCameraPick(mainPlayer->cam, userOptions->screenWidth / 2, userOptions->screenHeight / 2);
     if (c == 0) {
         ConsoleMsg::create("******************************");
@@ -318,38 +318,38 @@ case "camerapick": {
 
 }
 case "hidedistance": {
-    HideDistance = (float)(bbRight(ConsoleInput, ConsoleInput.size() - bbInstr(ConsoleInput, " ")));
+    HideDistance = (float)(bbRight(console->input, console->input.size() - bbInstr(console->input, " ")));
     ConsoleMsg::create("Hidedistance set to " + String(HideDistance));
 
 }
 case "ending": {
     CurrGameState = GAMESTATE_ENDING;
-    StrTemp = bbRight(ConsoleInput, ConsoleInput.size() - bbInstr(ConsoleInput, " ")).toLower();
+    StrTemp = bbRight(console->input, console->input.size() - bbInstr(console->input, " ")).toLower();
 
     Kill(mainPlayer);
 
 }
 case "noclipspeed": {
     throw ("TODO: reimplement?");
-    //StrTemp$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
+    //StrTemp$ = Lower(Right(console->input, Len(console->input) - Instr(console->input, " ")))
 
     //NoClipSpeed = (float)(StrTemp)
 
 }
 case "injure": {
-    StrTemp = bbRight(ConsoleInput, ConsoleInput.size() - bbInstr(ConsoleInput, " ")).toLower();
+    StrTemp = bbRight(console->input, console->input.size() - bbInstr(console->input, " ")).toLower();
 
     mainPlayer->injuries = (float)(StrTemp);
 
 }
 case "infect": {
-    StrTemp = bbRight(ConsoleInput, ConsoleInput.size() - bbInstr(ConsoleInput, " ")).toLower();
+    StrTemp = bbRight(console->input, console->input.size() - bbInstr(console->input, " ")).toLower();
 
     mainPlayer->infect008 = (float)(StrTemp);
 
 }
 case "spawndoc": {
-    StrTemp = bbRight(ConsoleInput, ConsoleInput.size() - bbInstr(ConsoleInput, " ")).toLower();
+    StrTemp = bbRight(console->input, console->input.size() - bbInstr(console->input, " ")).toLower();
     CreatePaper(StrTemp, bbEntityX(mainPlayer->collider), bbEntityY(mainPlayer->cam, true), bbEntityZ(mainPlayer->collider));
 
 }
@@ -410,14 +410,14 @@ case "stopsound", "stfu": {
 }
 case "camerafog": {
     throw ("TODO: reimplement?");
-    //args$ = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
+    //args$ = Lower(Right(console->input, Len(console->input) - Instr(console->input, " ")))
     //CameraFogNear = (float)(Left(args, Len(args) - Instr(args, " ")))
     //CameraFogFar = (float)(Right(args, Len(args) - Instr(args, " ")))
     //ConsoleMsg::create("Near set to: " + CameraFogNear + ", far set to: " + CameraFogFar)
 
 }
 case "spawn": {
-    StrTemp = bbRight(ConsoleInput, ConsoleInput.size() - bbInstr(ConsoleInput, " ")).toLower();
+    StrTemp = bbRight(console->input, console->input.size() - bbInstr(console->input, " ")).toLower();
     Console_SpawnNPC(StrTemp);
 
 }

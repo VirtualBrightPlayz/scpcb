@@ -13,7 +13,24 @@
 namespace CBN {
 
 // Structs.
-std::vector<ConsoleMsg*> ConsoleMsg::list;
+Console::Console() {
+    input = "";
+    scroll = 0.f;
+    scrollDragging = false;
+    mouseMem = 0;
+    reissue = 0;
+    msgR = 255;
+    msgG = 255;
+    msgB = 255;
+
+    ConsoleCmd::generateCommands();
+}
+
+Console::~Console() {
+    msgList.clear();
+    ConsoleCmd::clearCommands();
+}
+
 ConsoleMsg::ConsoleMsg() {
     txt = "";
     isCommand = false;
@@ -22,29 +39,18 @@ ConsoleMsg::ConsoleMsg() {
     b = -1;
 }
 ConsoleMsg::~ConsoleMsg() {
-    for (int i = 0; i < list.size(); i++) {
-        if (list[i] == this) {
-            list.erase(list.begin() + i);
+    for (int i = 0; i < console->msgList.size(); i++) {
+        if (console->msgList[i] == this) {
+            console->msgList.erase(console->msgList.begin() + i);
             break;
         }
     }
 }
 
-// Globals.
-String ConsoleInput = "";
-float ConsoleScroll = 0.f;
-int ConsoleScrollDragging = 0;
-int ConsoleMouseMem = 0;
-int ConsoleReissue = -1;
-int ConsoleR = 255;
-int ConsoleG = 255;
-int ConsoleB = 255;
-bool DebugHUD = false;
-
 // Functions.
 void ConsoleMsg::create(const String& txt, int r, int g, int b, bool isCommand) {
     ConsoleMsg* c = new ConsoleMsg();
-    ConsoleMsg::list.insert(ConsoleMsg::list.begin(), c);
+    console->msgList.insert(console->msgList.begin(), c);
 
     c->txt = txt;
     c->isCommand = isCommand;
@@ -54,17 +60,155 @@ void ConsoleMsg::create(const String& txt, int r, int g, int b, bool isCommand) 
     c->b = b;
 
     if (c->r<0) {
-        c->r = ConsoleR;
+        c->r = console->msgR;
     }
     if (c->g<0) {
-        c->g = ConsoleG;
+        c->g = console->msgG;
     }
     if (c->b<0) {
-        c->b = ConsoleB;
+        c->b = console->msgB;
     }
 }
 
-void DrawConsole() {
+void Console::update() {
+    if (CurrGameState==GAMESTATE_CONSOLE) {
+        console->msgR = 255;
+        console->msgG = 255;
+        console->msgB = 255;
+
+        int x = 0;
+        int y = userOptions->screenHeight-(int)(300.f*MenuScale);
+        int width = userOptions->screenWidth;
+        int height = (int)(300.f*MenuScale-30.f*MenuScale);
+
+        int consoleHeight = 0;
+        int scrollbarHeight = 0;
+        for (int i = 0; i < console->msgList.size(); i++) {
+            ConsoleMsg* cm = console->msgList[i];
+
+            consoleHeight = consoleHeight + (int)(15.f*MenuScale);
+        }
+        scrollbarHeight = (int)(((float)(height)/(float)(consoleHeight))*height);
+        if (scrollbarHeight>height) {
+            scrollbarHeight = height;
+        }
+        if (consoleHeight<height) {
+            consoleHeight = height;
+        }
+
+        bool inBar = MouseOn(x+width-(int)(26.f*MenuScale),y,(int)(26.f*MenuScale),height);
+
+        bool inBox = MouseOn(x+width-(int)(23.f*MenuScale),y+height-scrollbarHeight+(int)(console->scroll*scrollbarHeight/height),(int)(20.f*MenuScale),scrollbarHeight);
+
+        if (!bbMouseDown(1)) {
+            console->scrollDragging = false;
+        } else if (console->scrollDragging) {
+            console->scroll = console->scroll+((bbMouseY()-console->mouseMem)*height/scrollbarHeight);
+            console->mouseMem = bbMouseY();
+        }
+
+        if (!console->scrollDragging) {
+            if (MouseHit1) {
+                if (inBox) {
+                    console->scrollDragging = true;
+                    console->mouseMem = bbMouseY();
+                } else if (inBar) {
+                    console->scroll = console->scroll+((bbMouseY()-(y+height))*consoleHeight/height+(height/2));
+                    console->scroll = console->scroll/2;
+                }
+            }
+        }
+
+        int mouseScroll = bbMouseZSpeed();
+        if (mouseScroll==1) {
+            console->scroll = console->scroll - 15*MenuScale;
+        } else if (mouseScroll==-1) {
+            console->scroll = console->scroll + 15*MenuScale;
+        }
+
+        if (bbKeyHit(200) && console->msgList.size() > 0) {
+            int initIndex = console->reissue;
+            if (initIndex<0 || initIndex >= console->msgList.size()) {
+                initIndex = 0;
+            }
+            int index = console->reissue + 1;
+
+            while (index != console->reissue) {
+                index %= console->msgList.size();
+                if (console->msgList[index]->isCommand) {
+                    break;
+                }
+                index++;
+            }
+            if (console->msgList[index]->isCommand) {
+                console->reissue = index;
+                console->input = console->msgList[index]->txt;
+                console->scroll = -console->reissue * (15.0f*MenuScale) + (height / 2);
+            }
+        }
+
+        if (bbKeyHit(208) && console->msgList.size() > 0) {
+            int initIndex = console->reissue;
+            if (initIndex<0 || initIndex >= console->msgList.size()) {
+                initIndex = 0;
+            }
+            int index = console->reissue - 1;
+
+            while (index != initIndex) {
+                if (index<0) { index += console->msgList.size(); }
+                if (console->msgList[index]->isCommand) {
+                    break;
+                }
+                index--;
+            }
+            if (console->msgList[index]->isCommand) {
+                console->reissue = index;
+                console->input = console->msgList[index]->txt;
+                console->scroll = -console->reissue * (15.0f*MenuScale) + (height / 2);
+            }
+        }
+
+
+        if (console->scroll<-consoleHeight+height) {
+            console->scroll = (float)(-consoleHeight+height);
+        }
+        if (console->scroll>0) {
+            console->scroll = 0;
+        }
+
+        SelectedInputBox = 2;
+        String oldConsoleInput = console->input;
+        console->input = UpdateInputBox(x, y + height, width, (int)(30.f*MenuScale), console->input, 2);
+        if (!oldConsoleInput.equals(console->input)) {
+            console->reissue = -1;
+        }
+        console->input = console->input.substr(0, 100).toLower();
+
+        if (bbKeyHit(28) && !console->input.isEmpty()) {
+            console->input = console->input.trim();
+            console->reissue = -1;
+            console->scroll = 0;
+            ConsoleMsg::create(console->input,255,255,0,true);
+
+			String input;
+			std::vector<String> args;
+            if (console->input.findFirst(" ") > 0) {
+				input = console->input.substr(0, console->input.findFirst(" "));
+                args = console->input.substr(input.size()).split(" ", true);
+            } else {
+				input = console->input;
+            }
+
+            ConsoleCmd::executeCommand(input, args);
+            console->input = "";
+        }
+    }
+
+    bbSetFont(uiAssets->font[0]);
+
+}
+
+void Console::draw() {
     if (CurrGameState==GAMESTATE_CONSOLE) {
         bbSetFont(uiAssets->consoleFont);
 
@@ -78,8 +222,8 @@ void DrawConsole() {
         int consoleHeight = 0;
         int scrollbarHeight = 0;
 
-        for (int i = 0; i < ConsoleMsg::list.size(); i++) {
-            ConsoleMsg* cm = ConsoleMsg::list[i];
+        for (int i = 0; i < console->msgList.size(); i++) {
+            ConsoleMsg* cm = console->msgList[i];
 
             consoleHeight = consoleHeight + (int)(15.f*MenuScale);
         }
@@ -100,28 +244,28 @@ void DrawConsole() {
 
 
         bbColor(120,120,120);
-        int inBox = MouseOn(x+width-(int)(23.f*MenuScale),y+height-scrollbarHeight+(int)(ConsoleScroll*scrollbarHeight/height),(int)(20.f*MenuScale),scrollbarHeight);
+        bool inBox = MouseOn(x+width-(int)(23.f*MenuScale),y+height-scrollbarHeight+(int)(console->scroll*scrollbarHeight/height),(int)(20.f*MenuScale),scrollbarHeight);
         if (inBox) {
             bbColor(200,200,200);
         }
-        if (ConsoleScrollDragging) {
+        if (console->scrollDragging) {
             bbColor(255,255,255);
         }
-        bbRect(x+width-(int)(23.f*MenuScale),y+height-scrollbarHeight+(int)(ConsoleScroll*scrollbarHeight/height),(int)(20.f*MenuScale),scrollbarHeight,true);
+        bbRect(x+width-(int)(23.f*MenuScale),y+height-scrollbarHeight+(int)(console->scroll*scrollbarHeight/height),(int)(20.f*MenuScale),scrollbarHeight,true);
 
         bbColor(255, 255, 255);
 
-        int tempY = y + height - (int)(25.f*MenuScale) - (int)(ConsoleScroll);
+        int tempY = y + height - (int)(25.f*MenuScale) - (int)(console->scroll);
         int count = 0;
-        for (int i = 0; i < ConsoleMsg::list.size(); i++) {
-			ConsoleMsg* cm = ConsoleMsg::list[i];
+        for (int i = 0; i < console->msgList.size(); i++) {
+			ConsoleMsg* cm = console->msgList[i];
 
             count++;
             if (count>1000) {
                 delete cm;
             } else {
                 if (tempY >= y && tempY < y + height - (int)(20.f*MenuScale)) {
-                    if (i==ConsoleReissue) {
+                    if (i==console->reissue) {
                         bbColor(cm->r/4,cm->g/4,cm->b/4);
                         bbRect(x, tempY -(int)(2.f*MenuScale),width-(int)(30.f*MenuScale),(int)(24.f*MenuScale),true);
                     }
@@ -139,146 +283,8 @@ void DrawConsole() {
 
         bbColor(255,255,255);
 
-        DrawInputBox(x, y + height, width, (int)(30.f*MenuScale), ConsoleInput, 2);
+        DrawInputBox(x, y + height, width, (int)(30.f*MenuScale), console->input, 2);
     }
-}
-
-void UpdateConsole() {
-    if (CurrGameState==GAMESTATE_CONSOLE) {
-        ConsoleR = 255;
-        ConsoleG = 255;
-        ConsoleB = 255;
-
-        int x = 0;
-        int y = userOptions->screenHeight-(int)(300.f*MenuScale);
-        int width = userOptions->screenWidth;
-        int height = (int)(300.f*MenuScale-30.f*MenuScale);
-
-        int consoleHeight = 0;
-        int scrollbarHeight = 0;
-        for (int i = 0; i < ConsoleMsg::list.size(); i++) {
-            ConsoleMsg* cm = ConsoleMsg::list[i];
-
-            consoleHeight = consoleHeight + (int)(15.f*MenuScale);
-        }
-        scrollbarHeight = (int)(((float)(height)/(float)(consoleHeight))*height);
-        if (scrollbarHeight>height) {
-            scrollbarHeight = height;
-        }
-        if (consoleHeight<height) {
-            consoleHeight = height;
-        }
-
-        bool inBar = MouseOn(x+width-(int)(26.f*MenuScale),y,(int)(26.f*MenuScale),height);
-
-        bool inBox = MouseOn(x+width-(int)(23.f*MenuScale),y+height-scrollbarHeight+(int)(ConsoleScroll*scrollbarHeight/height),(int)(20.f*MenuScale),scrollbarHeight);
-
-        if (!bbMouseDown(1)) {
-            ConsoleScrollDragging = false;
-        } else if (ConsoleScrollDragging) {
-            ConsoleScroll = ConsoleScroll+((bbMouseY()-ConsoleMouseMem)*height/scrollbarHeight);
-            ConsoleMouseMem = bbMouseY();
-        }
-
-        if (!ConsoleScrollDragging) {
-            if (MouseHit1) {
-                if (inBox) {
-                    ConsoleScrollDragging = true;
-                    ConsoleMouseMem = bbMouseY();
-                } else if (inBar) {
-                    ConsoleScroll = ConsoleScroll+((bbMouseY()-(y+height))*consoleHeight/height+(height/2));
-                    ConsoleScroll = ConsoleScroll/2;
-                }
-            }
-        }
-
-        int mouseScroll = bbMouseZSpeed();
-        if (mouseScroll==1) {
-            ConsoleScroll = ConsoleScroll - 15*MenuScale;
-        } else if (mouseScroll==-1) {
-            ConsoleScroll = ConsoleScroll + 15*MenuScale;
-        }
-
-        if (bbKeyHit(200) && ConsoleMsg::list.size() > 0) {
-            int initIndex = ConsoleReissue;
-            if (initIndex<0 || initIndex >= ConsoleMsg::list.size()) {
-                initIndex = 0;
-            }
-            int index = ConsoleReissue + 1;
-
-            while (index != ConsoleReissue) {
-                index %= ConsoleMsg::list.size();
-                if (ConsoleMsg::list[index]->isCommand) {
-                    break;
-                }
-                index++;
-            }
-            if (ConsoleMsg::list[index]->isCommand) {
-                ConsoleReissue = index;
-                ConsoleInput = ConsoleMsg::list[index]->txt;
-                ConsoleScroll = -ConsoleReissue * (15.0f*MenuScale) + (height / 2);
-            }
-        }
-
-        if (bbKeyHit(208) && ConsoleMsg::list.size() > 0) {
-            int initIndex = ConsoleReissue;
-            if (initIndex<0 || initIndex >= ConsoleMsg::list.size()) {
-                initIndex = 0;
-            }
-            int index = ConsoleReissue - 1;
-
-            while (index != initIndex) {
-                if (index<0) { index += ConsoleMsg::list.size(); }
-                if (ConsoleMsg::list[index]->isCommand) {
-                    break;
-                }
-                index--;
-            }
-            if (ConsoleMsg::list[index]->isCommand) {
-                ConsoleReissue = index;
-                ConsoleInput = ConsoleMsg::list[index]->txt;
-                ConsoleScroll = -ConsoleReissue * (15.0f*MenuScale) + (height / 2);
-            }
-        }
-
-
-        if (ConsoleScroll<-consoleHeight+height) {
-            ConsoleScroll = (float)(-consoleHeight+height);
-        }
-        if (ConsoleScroll>0) {
-            ConsoleScroll = 0;
-        }
-
-        SelectedInputBox = 2;
-        String oldConsoleInput = ConsoleInput;
-        ConsoleInput = UpdateInputBox(x, y + height, width, (int)(30.f*MenuScale), ConsoleInput, 2);
-        if (!oldConsoleInput.equals(ConsoleInput)) {
-            ConsoleReissue = -1;
-        }
-        ConsoleInput = ConsoleInput.substr(0, 100).toLower();
-
-        if (bbKeyHit(28) && !ConsoleInput.isEmpty()) {
-            ConsoleInput = ConsoleInput.trim(); 
-            ConsoleReissue = -1;
-            ConsoleScroll = 0;
-            ConsoleMsg::create(ConsoleInput,255,255,0,true);
-
-			String input;
-			std::vector<String> args;
-            if (ConsoleInput.findFirst(" ") > 0) {
-				input = ConsoleInput.substr(0, ConsoleInput.findFirst(" "));
-                args = ConsoleInput.substr(input.size()).split(" ", true);
-            } else {
-				input = ConsoleInput;
-            }
-
-            ConsoleCmd::executeCommand(input, args);
-            ConsoleInput = "";
-        }
-    }
-
-    bbSetFont(uiAssets->font[0]);
-
 }
 
 }

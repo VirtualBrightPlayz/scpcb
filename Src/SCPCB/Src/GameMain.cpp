@@ -64,8 +64,11 @@ const int HIT_APACHE = 4;
 const int HIT_DEAD = 5;
 
 // Globals.
+// TODO: Move these to console struct.
 int WireframeState = 0;
 int HalloweenTex;
+int NoTarget;
+
 Timing* timing;
 float CurrFrameLimit;
 int GameSaved;
@@ -76,23 +79,29 @@ bool MouseHit2;
 bool DoubleClick;
 bool LastMouseHit1;
 bool MouseUp1;
+int Brightness;
+Object* SoundEmitter;
+
+// TODO: Sound manager this.
+gxSound* TempSounds[10];
+int TempSoundIndex = 0;
+
+// TODO: Radio class.
+gxSound* RadioSquelch;
+gxSound* RadioStatic;
+gxSound* RadioBuzz;
+
+float PrevInjuries;
+float PrevBloodloss;
+Texture* AmbientLightRoomTex;
+int AmbientLightRoomVal;
+
+// TODO: Remove everything below.
+int PlayerDetected;
 float CoffinDistance;
 float ExplosionTimer;
 int LightsOn = true;
 int SoundTransmission;
-int Brightness;
-Object* SoundEmitter;
-gxSound* TempSounds[10];
-int TempSoundIndex = 0;
-gxSound* RadioSquelch;
-gxSound* RadioStatic;
-gxSound* RadioBuzz;
-int PlayerDetected;
-float PrevInjuries;
-float PrevBloodloss;
-int NoTarget;
-Texture* AmbientLightRoomTex;
-int AmbientLightRoomVal;
 float NTF_1499PrevX;
 float NTF_1499PrevY;
 float NTF_1499PrevZ;
@@ -571,7 +580,7 @@ void UpdateGame() {
             UpdatePauseMenu();
             //EndIf
 
-            UpdateConsole();
+            console->update();
 
             if (MsgTimer > 0) {
                 //TODO: change this variable's name because it's dumb as hell
@@ -620,7 +629,7 @@ void UpdateGame() {
 
         DrawGUI();
         DrawPauseMenu();
-        DrawConsole();
+        console->draw();
 
         bbColor(255, 255, 255);
         if (userOptions->showFPS) {
@@ -1025,7 +1034,7 @@ void DrawGUI() {
             bbDrawImage(uiAssets->sprintIcon, x - 50, y);
         }
 
-        if (DebugHUD) {
+        if (console->debugHUD) {
             bbColor(255, 255, 255);
             bbSetFont(uiAssets->consoleFont);
 
