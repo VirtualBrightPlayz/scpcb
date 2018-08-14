@@ -2,7 +2,7 @@
 
 
 #include "INI.h"
-#include "MathUtils/MathUtils.h"
+#include "../MathUtils/MathUtils.h"
 
 namespace CBN {
 
