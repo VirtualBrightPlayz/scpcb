@@ -125,7 +125,7 @@ void UpdateNPCtype096(NPC* n) {
                             n->lastSeen = 1;
                         }
                     }
-                    n->state3 = TimeInPosMilliSecs()+3000;
+                    n->state3 = TimeInPosMilliSecs()+3000.f;
                 }
 
                 if (n->lastSeen==1) {
@@ -161,7 +161,7 @@ void UpdateNPCtype096(NPC* n) {
                                         bbTurnEntity(pvt, 90, 0, 0);
                                         bbEntityPick(pvt,0.3f);
 
-                                        de = CreateDecal(bbRand(DECAL_BLOOD_DROP1, DECAL_BLOOD_DROP2), bbPickedX(), bbPickedY()+0.005f, bbPickedZ(), 90, bbRand(360), 0);
+                                        de = CreateDecal(bbRand(DECAL_BLOOD_DROP1, DECAL_BLOOD_DROP2), bbPickedX(), bbPickedY()+0.005f, bbPickedZ(), 90.f, (float)bbRand(360), 0.f);
                                         de->size = bbRnd(0.2f,0.6f);
                                         bbEntityAlpha(de->obj, 1.f);
                                         bbScaleSprite(de->obj, de->size, de->size);
@@ -347,7 +347,7 @@ void UpdateNPCtype096(NPC* n) {
                 if (n->state2>1000) {
                     if (n->state2>1600) {
                         //: SetAnimTime(n\obj, 1652)
-                        n->state2 = bbRand(0,500);
+                        n->state2 = (float)bbRand(0,500);
                         n->frame = 1652;
                     }
 
@@ -375,7 +375,7 @@ void UpdateNPCtype096(NPC* n) {
                             }
                             bbShowEntity(n->collider);
                         }
-                        n->state3 = TimeInPosMilliSecs()+3000;
+                        n->state3 = TimeInPosMilliSecs()+3000.f;
                     }
 
                     if (n->lastSeen) {

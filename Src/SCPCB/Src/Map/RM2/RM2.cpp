@@ -195,7 +195,7 @@ void LoadRM2(RoomTemplate* rt) {
                     b = bbReadByte(file);
 
                     bbAddVertex(surf,x,y,z);
-                    bbVertexColor(surf,i,r,g,b,1.f);
+                    bbVertexColor(surf,i, (float)r, (float)g, (float)b,1.f);
                     for (j = 0; j <= 1; j++) {
                         u = bbReadFloat(file);
                         v = bbReadFloat(file);

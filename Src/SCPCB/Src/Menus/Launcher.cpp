@@ -16,8 +16,8 @@ namespace CBN {
 Launcher* launcher = nullptr;
 
 Launcher::Launcher() {
-    this->width = (int)(Min(GetINIInt(OptionFile, "launcher", "launcher width"), 1024));
-    this->height = (int)(Min(GetINIInt(OptionFile, "launcher", "launcher height"), 768));
+    this->width = (int)(Min((float)GetINIInt(OptionFile, "launcher", "launcher width"), 1024.f));
+    this->height = (int)(Min((float)GetINIInt(OptionFile, "launcher", "launcher height"), 768.f));
 
     int i;
     for (i = 1; i <= bbCountGfxModes3D(); i++) {
@@ -131,7 +131,7 @@ void Launcher::draw() {
     int i;
     for (i = 0; i < resWidths.size(); i++) {
         if (this->selectedGFXMode == i) {
-            bbColor(0, (bbSin(bbMilliSecs() / 10) + 1) * 45, (bbSin(bbMilliSecs() / 10) + 1) * 95);
+            bbColor(0, (int)((bbSin(bbMilliSecs() / 10.f) + 1) * 45), (int)((bbSin(bbMilliSecs() / 10.f) + 1) * 95));
             bbRect(x - 1, y - 1, 100, 20, false);
         }
 

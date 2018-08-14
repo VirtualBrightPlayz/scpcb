@@ -24,10 +24,10 @@ void LoadOptionsINI() {
     userOptions->consoleOpenOnError = GetINIInt(OptionFile, optGen, "open console on error");
 
     //Min is 640x480.
-    userOptions->screenWidth = (int)(Max(GetINIInt(OptionFile, optGra, "screen width"), 640));
-    userOptions->screenHeight = (int)(Max(GetINIInt(OptionFile, optGra, "screen height"), 480));
+    userOptions->screenWidth = (int)(Max((float)GetINIInt(OptionFile, optGra, "screen width"), 640.f));
+    userOptions->screenHeight = (int)(Max((float)GetINIInt(OptionFile, optGra, "screen height"), 480.f));
     userOptions->fullscreen = GetINIInt(OptionFile, optGra, "fullscreen");
-    userOptions->gfxDriver = (int)(Max(GetINIInt(OptionFile, optGra, "gfx driver"), 1));
+    userOptions->gfxDriver = (int)(Max((float)GetINIInt(OptionFile, optGra, "gfx driver"), 1.f));
     userOptions->screenGamma = GetINIFloat(OptionFile, optGra, "screengamma");
     userOptions->framelimit = GetINIInt(OptionFile, optGra, "framelimit");
     userOptions->vsync = GetINIInt(OptionFile, optGra, "vsync");

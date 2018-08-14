@@ -243,7 +243,7 @@ void UpdateConsole() {
 
 
         if (ConsoleScroll<-consoleHeight+height) {
-            ConsoleScroll = -consoleHeight+height;
+            ConsoleScroll = (float)(-consoleHeight+height);
         }
         if (ConsoleScroll>0) {
             ConsoleScroll = 0;

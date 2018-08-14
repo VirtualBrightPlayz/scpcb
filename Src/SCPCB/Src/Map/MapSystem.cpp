@@ -296,7 +296,7 @@ gxSound* RoomAmbience[20];
 MeshModel* Sky;
 float HideDistance = 15.f;
 float SecondaryLightOn;
-int RemoteDoorOn;
+bool RemoteDoorOn;
 int Contained106;
 Screen* SelectedScreen;
 SecurityCam* SelectedMonitor;
@@ -563,7 +563,7 @@ Room* CreateRoom(RoomTemplate* rt, float x, float y, float z, float angle) {
 
     bbPositionEntity(r->obj, x, y, z);
     bbRotateEntity(r->obj, 0.0f, angle, 0.0f, true);
-    r->angle = angle;
+    r->angle = (int)angle;
 
     //TODO: assign event here
 
@@ -776,7 +776,7 @@ Light* AddLight(Room* room, float x, float y, float z, int ltype, float range, i
                 room->lights[i] = bbCreateLight(ltype);
                 //room\lightDist[i] = range
                 bbLightRange(room->lights[i],range);
-                bbLightColor(room->lights[i],r,g,b);
+                bbLightColor(room->lights[i], (float)r, (float)g, (float)b);
                 bbPositionEntity(room->lights[i],x,y,z,true);
                 bbEntityParent(room->lights[i],room->obj);
 
@@ -800,10 +800,11 @@ Light* AddLight(Room* room, float x, float y, float z, int ltype, float range, i
                 return room->lights[i];
             }
         }
+        return nullptr;
     } else {
         light = bbCreateLight(ltype);
         bbLightRange(light,range);
-        bbLightColor(light,r,g,b);
+        bbLightColor(light, (float)r, (float)g, (float)b);
         bbPositionEntity(light,x,y,z,true);
         sprite = bbCreateSprite();
         bbPositionEntity(sprite, x, y, z);
@@ -1093,7 +1094,7 @@ int FindPath(NPC* n, float x, float y, float z) {
 
         currpoint = EndPoint;
         while (twentiethpoint!=nullptr) {
-            length = (int)(Min(length-1,19));
+            length = (int)(Min(length-1.f,19.f));
             //DebugLog("LENGTH "+length)
             twentiethpoint = twentiethpoint->parent;
             n->path[length] = twentiethpoint;
@@ -1261,7 +1262,7 @@ SecurityCam* CreateSecurityCam(float x, float y, float z, Room* r, int screen) {
 
 void UpdateSecurityCams() {
     SecurityCam* sc;
-    int close;
+    bool close;
     float temp;
     Pivot* pvt;
     int i;
@@ -1360,7 +1361,7 @@ void UpdateSecurityCams() {
                 }
             }
 
-            if (close == true || sc->isRoom2slCam || sc->specialCam) {
+            if (close || sc->isRoom2slCam || sc->specialCam) {
                 if (sc->screen) {
                     sc->state = sc->state+timing->tickDuration;
 
@@ -1508,7 +1509,7 @@ void UpdateSecurityCams() {
                                     if (bbRand(50) == 1) {
                                         bbEntityTexture(sc->scrOverlay, gorePics[bbRand(0, GORE_PIC_COUNT-1)]->getTexture());
                                         //If (sc\playerState = 0) Then PlaySound(HorrorSFX(0)) ;TODO: fix
-                                        sc->playerState = (int)(Max(sc->playerState, 1));
+                                        sc->playerState = (int)(Max((float)sc->playerState, 1.f));
                                         if (sc->coffinEffect==3 && bbRand(100)==1) {
                                             sc->coffinEffect = 2;
                                             sc->playerState = bbRand(10000, 20000);
@@ -1754,10 +1755,10 @@ void CreateMap() {
         std::cout << "trying to place "+String(placementCount)+" "+rt->name;
 
         for (c = 1; c <= placementCount; c++) {
-            loopStartX = (int)(Min(bbFloor((float)(mapDim)*rt->xRangeStart),mapDim-1));
-            loopStartY = (int)(Min(bbFloor((float)(mapDim)*rt->yRangeStart),mapDim-1));
-            loopEndX = (int)(Min(bbFloor((float)(mapDim)*rt->xRangeEnd),mapDim-1));
-            loopEndY = (int)(Min(bbFloor((float)(mapDim)*rt->yrangeEnd),mapDim-1));
+            loopStartX = (int)(Min(bbFloor((float)(mapDim)*rt->xRangeStart),mapDim-1.f));
+            loopStartY = (int)(Min(bbFloor((float)(mapDim)*rt->yRangeStart),mapDim-1.f));
+            loopEndX = (int)(Min(bbFloor((float)(mapDim)*rt->xRangeEnd),mapDim-1.f));
+            loopEndY = (int)(Min(bbFloor((float)(mapDim)*rt->yrangeEnd),mapDim-1.f));
 
             loopX = loopEndX-loopStartX;
             loopY = loopEndY-loopStartY;
@@ -1772,7 +1773,7 @@ void CreateMap() {
                     x = ((i+offsetX) % (loopX+1)) + loopStartX;
                     y = ((j+offsetY) % (loopY+1)) + loopStartY;
                     if ((layout[x][y]>0) && (layout[x][y]==rt->shape)) {
-                        float angle = DetermineRotation(layout, mapDim, x, y);
+                        float angle = (float)DetermineRotation(layout, mapDim, x, y);
                         r = CreateRoom(rt,x*8.f,0.f,y*8.f,angle);
                         //mark as used
                         layout[x][y]=-1;
@@ -1829,7 +1830,7 @@ void CreateMap() {
                     if (tempTemplate->shape == currType) {
                         commonnessAccumulator = commonnessAccumulator+(int)(tempTemplate->commonness);
                         if (commonnessAccumulator>=targetCommonness) {
-                            float angle = DetermineRotation(layout,mapDim,x,y);
+                            float angle = (float)DetermineRotation(layout,mapDim,x,y);
                             r = CreateRoom(tempTemplate,x*8.f,0.f,y*8.f,angle);
                             //mark as used
                             layout[x][y]=-1;

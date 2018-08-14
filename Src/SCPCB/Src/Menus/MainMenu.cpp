@@ -450,8 +450,8 @@ void DrawMainMenu() {
     }
 
     if (bbRand(300) == 1) {
-        MenuBlinkTimer[0] = bbRand(4000, 8000);
-        MenuBlinkDuration[0] = bbRand(200, 500);
+        MenuBlinkTimer[0] = (float)bbRand(4000, 8000);
+        MenuBlinkDuration[0] = (float)bbRand(200, 500);
     }
 
     bbSetFont(uiAssets->font[0]);
@@ -461,8 +461,8 @@ void DrawMainMenu() {
         bbColor(50, 50, 50);
         bbText(MenuStrX + bbRand(-5, 5), MenuStrY + bbRand(-5, 5), MenuStr, true);
         if (MenuBlinkTimer[1] < 0) {
-            MenuBlinkTimer[1] = bbRand(700, 800);
-            MenuBlinkDuration[1] = bbRand(10, 35);
+            MenuBlinkTimer[1] = (float)bbRand(700, 800);
+            MenuBlinkDuration[1] = (float)bbRand(10, 35);
             MenuStrX = (int)(bbRand(700, 1000) * MenuScale);
             MenuStrY = (int)(bbRand(100, 600) * MenuScale);
 

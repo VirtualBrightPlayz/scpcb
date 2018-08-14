@@ -163,7 +163,7 @@ void InitializeMainGame() {
 
     MenuScale = (userOptions->screenHeight / 1024.f);
 
-    CurrFrameLimit = userOptions->framelimit;
+    CurrFrameLimit = (float)userOptions->framelimit;
 
     bbSetBuffer(bbBackBuffer());
 
@@ -273,10 +273,9 @@ void UpdateGame() {
     //EndIf
 
     //Counting the fps
-    float instantFramerate = 1000.f/Max(1,elapsedMilliseconds);
+    float instantFramerate = 1000.f/Max(1.f, (float)elapsedMilliseconds);
     timing->fps = Max(0,timing->fps*0.99f + instantFramerate*0.01f);
 
-    int prevmousedown1;
     String rn;
     float darkA;
     int temp;
@@ -299,9 +298,9 @@ void UpdateGame() {
             LastMouseHit1 = TimeInPosMilliSecs();
         }
 
-        prevmousedown1 = MouseDown1;
+        bool prevmousedown1 = MouseDown1;
         MouseDown1 = bbMouseDown(1);
-        if (prevmousedown1 == true && MouseDown1==false) {
+        if (prevmousedown1 && !MouseDown1) {
             MouseUp1 = true;
         } else {
             MouseUp1 = false;
@@ -339,7 +338,7 @@ void UpdateGame() {
                 //CameraFogMode(mainPlayer\cam,1)
                 //CameraRange(mainPlayer\cam, 0.05f, Min(mainPlayer\camFogFar*LightVolume*1.5f,28))
 
-                bbAmbientLight(Brightness, Brightness, Brightness);
+                bbAmbientLight((float)Brightness, (float)Brightness, (float)Brightness);
                 mainPlayer->loudness = CurveValue(0.f, mainPlayer->loudness, 5.f);
 
                 CanSave = true;
@@ -881,7 +880,6 @@ void DrawGUI() {
     int width;
     int height;
 
-    Event* ev;
     NPC* npc;
     int offset;
     MeshAssetWrap* buttonObj;
@@ -1373,12 +1371,12 @@ float Animate2(MeshModel* entity, float curr, int start, int quit, float speed, 
     int temp;
 
     if (speed > 0.f) {
-        newTime = Max(Min(curr + speed * timing->tickDuration,quit),start);
+        newTime = Max(Min(curr + speed * timing->tickDuration, (float)quit), (float)start);
 
         if (loop) {
             if (newTime >= quit) {
                 //SetAnimTime(entity, start)
-                newTime = start;
+                newTime = (float)start;
             } else {
                 //SetAnimTime(entity, newTime)
             }
@@ -1396,16 +1394,16 @@ float Animate2(MeshModel* entity, float curr, int start, int quit, float speed, 
             newTime = curr + speed * timing->tickDuration;
 
             if (newTime < quit) {
-                newTime = start;
+                newTime = (float)start;
             }
             if (newTime > start) {
-                newTime = quit;
+                newTime = (float)quit;
             }
 
             //SetAnimTime(entity, newTime)
         } else {
             //SetAnimTime(entity, Max(Min(curr + speed * timing\tickDuration,start),quit))
-            newTime = Max(Min(curr + speed * timing->tickDuration,start),quit);
+            newTime = Max(Min(curr + speed * timing->tickDuration, (float)start), (float)quit);
         }
     }
 

@@ -186,7 +186,7 @@ void UpdateNPCtype1499(NPC* n) {
 
                 if (n->playerDistance < 0.75f) {
                     if ((n->id % 2 == 0) || n->state3 == 1) {
-                        n->state2 = bbRand(1,2);
+                        n->state2 = (float)bbRand(1,2);
                         n->state = 3;
                         if (n->state2 == 1) {
                             SetNPCFrame(n,63);

@@ -56,7 +56,7 @@ UIAssets::UIAssets() {
 
 	for (int i = 0; i < 4; i++) {
 		arrow[i] = bbLoadImage("GFX/menu/arrow.png");
-		bbRotateImage(arrow[i], 90 * i);
+		bbRotateImage(arrow[i], 90.f * i);
 		bbHandleImage(arrow[i], 0, 0);
 	}
 
@@ -318,7 +318,7 @@ void LoadEntities() {
 
     mainPlayer = new Player();
 
-    bbAmbientLight(Brightness, Brightness, Brightness);
+    bbAmbientLight((float)Brightness, (float)Brightness, (float)Brightness);
 
     ScreenTexs[0] = bbCreateTexture(512, 512, 1+256);
     ScreenTexs[1] = bbCreateTexture(512, 512, 1+256);
@@ -382,7 +382,7 @@ void InitNewGame() {
 
     Curr173 = CreateNPC(NPCtype173, 0, -30.f, 0);
     Curr106 = CreateNPC(NPCtype106, 0, -30.f, 0);
-    Curr106->state = 70 * 60 * bbRand(12,17);
+    Curr106->state = 70.f * 60.f * bbRand(12,17);
 
     for (int i = 0; i < Door::getListSize(); i++) {
         Door* d = Door::getObject(i);
@@ -435,14 +435,14 @@ void InitNewGame() {
 
         if (!r->roomTemplate->disableDecals) {
             if (bbRand(4) == 1) {
-                Decal* de = CreateDecal(bbRand(DECAL_BLOOD_SPREAD, DECAL_BLOOD_SPLATTER), bbEntityX(r->obj)+bbRnd(- 2,2), 0.003f, bbEntityZ(r->obj)+bbRnd(-2,2), 90, bbRand(360), 0);
+                Decal* de = CreateDecal(bbRand(DECAL_BLOOD_SPREAD, DECAL_BLOOD_SPLATTER), bbEntityX(r->obj)+bbRnd(- 2,2), 0.003f, bbEntityZ(r->obj)+bbRnd(-2,2), 90.f, (float)bbRand(360), 0.f);
                 de->size = bbRnd(0.1f, 0.4f);
                 bbScaleSprite(de->obj, de->size, de->size);
                 bbEntityAlpha(de->obj, bbRnd(0.85f, 0.95f));
             }
 
             if (bbRand(4) == 1) {
-                Decal* de = CreateDecal(DECAL_CORROSION, bbEntityX(r->obj)+bbRnd(- 2,2), 0.003f, bbEntityZ(r->obj)+bbRnd(-2,2), 90, bbRand(360), 0);
+                Decal* de = CreateDecal(DECAL_CORROSION, bbEntityX(r->obj)+bbRnd(- 2,2), 0.003f, bbEntityZ(r->obj)+bbRnd(-2,2), 90.f, (float)bbRand(360), 0.f);
                 de->size = bbRnd(0.5f, 0.7f);
                 bbEntityAlpha(de->obj, 0.7f);
                 de->id = 1;
@@ -493,7 +493,7 @@ void InitNewGame() {
         delete tw;
     }
 
-    bbTurnEntity(mainPlayer->collider, 0, bbRand(160, 200), 0);
+    bbTurnEntity(mainPlayer->collider, 0.f, (float)bbRand(160, 200), 0.f);
 
     bbResetEntity(mainPlayer->collider);
 

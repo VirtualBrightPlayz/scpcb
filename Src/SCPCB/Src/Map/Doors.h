@@ -28,8 +28,8 @@ public:
 	MeshModel* obj2;
 	MeshModel* frameobj;
     MeshModel* buttons[2];
-    int locked;
-    int open;
+    bool locked;
+    bool open;
     float angle;
     float openstate;
     int fastopen;
@@ -65,7 +65,7 @@ Door* CreateDoor(float x, float y, float z, float angle, Room* room, int open = 
 
 void UpdateDoors();
 
-void UseDoor(Door* d, int showmsg = true);
+void UseDoor(Door* d, bool showmsg = true);
 
 void RemoveDoor(Door* d);
 

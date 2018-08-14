@@ -469,7 +469,6 @@ void StopSounds() {
     SoundChannel* chn;
     SecurityCam* sc;
     Room* r;
-    Event* e;
     NPC* n;
     Emitter* em;
     int i;

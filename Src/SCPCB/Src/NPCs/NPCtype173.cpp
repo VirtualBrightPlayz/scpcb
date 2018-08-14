@@ -236,9 +236,9 @@ void UpdateNPCtype173(NPC* n) {
 
                                 //TODO: Remove?
                                 if (bbRand(2) == 1) {
-                                    bbTurnEntity(mainPlayer->cam, 0, bbRand(80,100), 0);
+                                    bbTurnEntity(mainPlayer->cam, 0.f, (float)bbRand(80,100), 0.f);
                                 } else {
-                                    bbTurnEntity(mainPlayer->cam, 0, bbRand(-100,-80), 0);
+                                    bbTurnEntity(mainPlayer->cam, 0.f, (float)bbRand(-100,-80), 0.f);
                                 }
 
                                 Kill(mainPlayer);

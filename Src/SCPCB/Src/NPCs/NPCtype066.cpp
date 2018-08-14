@@ -58,7 +58,7 @@ void UpdateNPCtype066(NPC* n) {
                         }
                         //EndIf
                     }
-                    n->state2 = TimeInPosMilliSecs()+5000;
+                    n->state2 = TimeInPosMilliSecs()+5000.f;
                 }
             } else if (n->playerDistance < 8.f) {
                 n->lastDist = bbRnd(1.f, 2.5f);
@@ -88,7 +88,7 @@ void UpdateNPCtype066(NPC* n) {
             }
 
             if (n->playerDistance < 1.f+n->lastDist) {
-                n->state = bbRand(2,3);
+                n->state = (float)bbRand(2,3);
             }
             //roll towards the player and make a sound, and then escape
         }
@@ -121,7 +121,7 @@ void UpdateNPCtype066(NPC* n) {
                                 mainPlayer->camShake = 10.f;
                             }
                             case 2: {
-                                n->state3 = bbRand(700,1400);
+                                n->state3 = (float)bbRand(700,1400);
                             }
                             case 3: {
                                 for (int iterator124 = 0; iterator124 < Door::getListSize(); iterator124++) {
@@ -139,7 +139,7 @@ void UpdateNPCtype066(NPC* n) {
                             case 4: {
                                 if (mainPlayer->currRoom->roomTemplate->disableDecals == false) {
                                     mainPlayer->camShake = 5.f;
-                                    de = CreateDecal(DECAL_CRACKS, bbEntityX(n->collider), 0.01f, bbEntityZ(n->collider), 90, bbRand(360), 0);
+                                    de = CreateDecal(DECAL_CRACKS, bbEntityX(n->collider), 0.01f, bbEntityZ(n->collider), 90.f, (float)bbRand(360), 0.f);
                                     de->size = 0.3f;
                                     UpdateDecals();
                                     PlaySound2(LoadTempSound("SFX/General/BodyFall.ogg"));
