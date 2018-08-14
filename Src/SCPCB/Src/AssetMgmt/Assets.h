@@ -19,6 +19,52 @@ const int HAND_ICON_TOUCH = 0;
 const int HAND_ICON_GRAB = 1;
 
 // Structs.
+struct UIAssets {
+public:
+	UIAssets();
+	~UIAssets();
+
+    //Misc. Interface
+    bbImage* back;
+	bbImage* scpText;
+	bbImage* tileWhite;
+	bbImage* tileBlack;
+	bbImage* scp173;
+
+	bbImage* pauseMenuBG;
+
+	bbImage* cursorIMG;
+	bbImage* arrow[4];
+
+	gxFont* font[4];
+	gxFont* consoleFont;
+
+    //HUD
+	bbImage* sprintIcon;
+	bbImage* blinkIcon;
+	bbImage* crouchIcon;
+	bbImage* handIcon[2];
+	bbImage* blinkBar;
+	bbImage* staminaBar;
+	bbImage* keypadHUD;
+};
+extern UIAssets* uiAssets;
+
+// TODO: Localization stuff here.
+class TxtManager {
+private:
+    String displayMsg;
+    float displayTimer;
+
+public:
+    TxtManager();
+    ~TxtManager();
+
+    void setMsg(const String& msg, float time = 70 * 5);
+    void update();
+};
+extern TxtManager* txtManager;
+
 class AssetWrap {
 public:
     virtual void drop() =0;
@@ -89,39 +135,6 @@ private:
     MeshAssetWrap(const String& filePath, bool isAnimated);
     ~MeshAssetWrap();
 };
-
-struct UIAssets {
-public:
-	UIAssets();
-	~UIAssets();
-
-    //Misc. Interface
-    bbImage* back;
-	bbImage* scpText;
-	bbImage* tileWhite;
-	bbImage* tileBlack;
-	bbImage* scp173;
-
-	bbImage* pauseMenuBG;
-
-	bbImage* cursorIMG;
-	bbImage* arrow[4];
-
-	gxFont* font[4];
-	gxFont* consoleFont;
-
-    //HUD
-	bbImage* sprintIcon;
-	bbImage* blinkIcon;
-	bbImage* crouchIcon;
-	bbImage* handIcon[2];
-	bbImage* blinkBar;
-	bbImage* staminaBar;
-	bbImage* keypadHUD;
-};
-
-// Globals.
-extern UIAssets* uiAssets;
 
 // Functions.
 void LoadEntities();

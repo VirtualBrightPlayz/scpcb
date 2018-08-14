@@ -144,6 +144,8 @@ int EntryPoint() {
     userOptions = new Options();
     LoadOptionsINI();
 
+    txtManager = new TxtManager();
+
     timing = new Timing();
     SetTickrate(60);
 
@@ -289,7 +291,7 @@ void UpdateGame() {
     float darkA;
     int temp;
 
-
+    // Start FixedUpdate.
     while (timing->accumulator>0.f) {
         timing->accumulator = timing->accumulator-timing->tickDuration;
         if (timing->accumulator<=0.f) {
@@ -301,6 +303,7 @@ void UpdateGame() {
         DoubleClick = false;
         MouseHit1 = bbMouseHit(1);
         if (MouseHit1) {
+            // TODO: Make this a constant or modifyable through the options.
             if (TimeInPosMilliSecs() - LastMouseHit1 < 400) {
                 DoubleClick = true;
             }
@@ -316,7 +319,7 @@ void UpdateGame() {
         }
 
         MouseHit2 = bbMouseHit(2);
-        //TODO: A better way?
+        //TODO: Add the ability to play no music.
         if (CurrGameState != GAMESTATE_LAUNCHER) {
             musicManager->update();
         }
@@ -511,7 +514,7 @@ void UpdateGame() {
             bbEntityColor(mainPlayer->overlays[OVERLAY_WHITE],255,255,255);
 
 
-
+            // TODO: Not make this trash.
             if (bbKeyHit(keyBinds->save)) {
                 if (SelectedDifficulty->saveType == SAVEANYWHERE) {
                     rn = mainPlayer->currRoom->roomTemplate->name;
@@ -581,46 +584,15 @@ void UpdateGame() {
             //EndIf
 
             console->update();
-
-            if (MsgTimer > 0) {
-                //TODO: change this variable's name because it's dumb as hell
-                temp = false;
-                if (CurrGameState!=GAMESTATE_INVENTORY) {
-                    if (mainPlayer->selectedItem != nullptr) {
-                        if (mainPlayer->selectedItem->itemTemplate->name.equals("paper") || mainPlayer->selectedItem->itemTemplate->name.equals("oldpaper")) {
-                            temp = true;
-                        }
-                    }
-                }
-
-                if (!temp) {
-                    bbColor(0,0,0);
-                    //, Min(MsgTimer / 2, 255)/255.f)
-                    bbText((userOptions->screenWidth / 2)+1, (userOptions->screenHeight / 2) + 201, Msg, true, false);
-                    //Min(MsgTimer / 2, 255), Min(MsgTimer / 2, 255), Min(MsgTimer / 2, 255))
-                    bbColor(255,255,255);
-                    //, Min(MsgTimer / 2, 255)/255.f)
-                    bbText((userOptions->screenWidth / 2), (userOptions->screenHeight / 2) + 200, Msg, true, false);
-                } else {
-                    bbColor(0,0,0);
-                    //, Min(MsgTimer / 2, 255)/255.f)
-                    bbText((userOptions->screenWidth / 2)+1, (int)((userOptions->screenHeight * 0.94f) + 1), Msg, true, false);
-                    //Min(MsgTimer / 2, 255), Min(MsgTimer / 2, 255), Min(MsgTimer / 2, 255))
-                    bbColor(255,255,255);
-                    //, Min(MsgTimer / 2, 255)/255.f)
-                    bbText((userOptions->screenWidth / 2), (int)((userOptions->screenHeight * 0.94f)), Msg, true, false);
-                }
-                MsgTimer = MsgTimer-timing->tickDuration;
-            }
         }
         AssetWrap::update();
-    }
+    } // End FixedUpdate.
 
     if (CurrGameState==GAMESTATE_LAUNCHER) {
         if (launcher!=nullptr) {
             launcher->draw();
         }
-    } else if ((CurrGameState==GAMESTATE_MAINMENU)) {
+    } else if (CurrGameState==GAMESTATE_MAINMENU) {
         DrawMainMenu();
     } else {
         RenderWorld2();
@@ -653,7 +625,7 @@ void UpdateGame() {
         bbEntityAlpha(fresize_image,userOptions->screenGamma-1.f);
         ScaleRender(-1.f/(float)(userOptions->screenWidth),1.f/(float)(userOptions->screenWidth),2048.f / (float)(userOptions->screenWidth),2048.f / (float)(userOptions->screenWidth));
         //todo: maybe optimize this if it's too slow, alternatively give players the option to disable gamma
-    } else if ((userOptions->screenGamma<1.f)) {
+    } else if (userOptions->screenGamma<1.f) {
         bbCopyRect(0,0,userOptions->screenWidth,userOptions->screenHeight,1024-userOptions->screenWidth/2,1024-userOptions->screenHeight/2,bbBackBuffer(),bbTextureBuffer(fresize_texture));
         bbEntityBlend(fresize_image,1);
         bbClsColor(0,0,0);
