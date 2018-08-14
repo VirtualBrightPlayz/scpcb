@@ -87,7 +87,7 @@ void UpdateNPCtypeApache(NPC* n) {
             bbTurnEntity(n->obj2,0,20.f*timing->tickDuration,0);
             bbTurnEntity(n->obj3,20.f*timing->tickDuration,0,0);
 
-            if (n->state==1 && (!NoTarget)) {
+            if (n->state==1 && (!console->noTarget)) {
                 if (abs(bbEntityX(mainPlayer->collider)-bbEntityX(n->collider))< 30.f) {
                     if (abs(bbEntityZ(mainPlayer->collider)-bbEntityZ(n->collider))<30.f) {
                         if (abs(bbEntityY(mainPlayer->collider)-bbEntityY(n->collider))<20.f) {
@@ -113,7 +113,7 @@ void UpdateNPCtypeApache(NPC* n) {
                 bbPositionEntity(target, n->enemyX, n->enemyY, n->enemyZ, true);
             }
 
-            if (NoTarget && n->state == 2) {
+            if (console->noTarget && n->state == 2) {
                 n->state = 1;
             }
 

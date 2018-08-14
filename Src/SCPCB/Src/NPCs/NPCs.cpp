@@ -19,6 +19,7 @@
 #include "NPCtypeTentacle.h"
 #include "NPCtypeZombie.h"
 #include "../Player/Player.h"
+#include "../Menus/Console/Console.h"
 #include "../GameMain.h"
 #include "../Map/MapSystem.h"
 #include "../AssetMgmt/Audio.h"
@@ -380,7 +381,7 @@ int MeNPCSeesPlayer(NPC* me, int disableSoundOnCrouch) {
     //3: Player is detected by a camera (only for MTF Units!)
     //4: Player is detected through glass
 
-    if (NoTarget) {
+    if (console->noTarget) {
         return false;
     }
 

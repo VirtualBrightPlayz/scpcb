@@ -174,7 +174,7 @@ void UpdateNPCtype939(NPC* n) {
                     n->lastSeen = 10*7;
                 }
 
-                if (n->lastSeen > 0 && (!NoTarget)) {
+                if (n->lastSeen > 0 && (!console->noTarget)) {
                     prevFrame = (int)(n->frame);
 
                     if (n->frame>=18.f && n->frame<68.f) {
@@ -263,7 +263,7 @@ void UpdateNPCtype939(NPC* n) {
             }
         }
 
-        if (n->state < 3 && (!NoTarget) && (!n->ignorePlayer)) {
+        if (n->state < 3 && (!console->noTarget) && (!n->ignorePlayer)) {
             dist = bbEntityDistance(n->collider, mainPlayer->collider);
 
             if (dist < 4.f) {

@@ -13,7 +13,7 @@ public:
 
     String name;
     std::vector<String> aliases;
-    String description;
+    std::vector<String> helpDesc;
 
     static void generateCommands();
     static void clearCommands();
@@ -26,9 +26,9 @@ class Cmd_Help : public ConsoleCmd {
 public:
     Cmd_Help() {
         name = "help";
-        description = String("Prints help information for each console command. ")
-            + "Type \"help\" to see a list of available console commands. "
-            + "You can also type \"help teleport\" to see a description of a particular command.";
+        helpDesc = { "Prints help information for each console command.",
+            "Type \"help\" to see a list of available console commands.",
+            "Type \"help [command]\" to see a description of a particular command. (e.g. help teleport)" };
     }
     virtual void execute(std::vector<String> args);
 };
@@ -37,7 +37,7 @@ class Cmd_Status : public ConsoleCmd {
 public:
     Cmd_Status() {
         name = "status";
-        description = "Prints player, camera, and room information.";
+        helpDesc = { "Prints player, camera, and room information." };
     }
     virtual void execute(std::vector<String> args);
 };
@@ -47,18 +47,16 @@ public:
     Cmd_DebugHUD() {
         name = "debug";
         aliases = { "debughud" };
-        description = "Displays various debug states of the game's properties.";
+        helpDesc = { "Displays various debug states of the game's properties." };
     }
     virtual void execute(std::vector<String> args);
 };
 
 class Cmd_Wireframe : public ConsoleCmd {
-private:
-    bool wireframeState = false;
 public:
     Cmd_Wireframe() {
         name = "wireframe";
-        description = "Only renders the edges of polygons.";
+        helpDesc = { "Only renders the edges of polygons." };
     }
     virtual void execute(std::vector<String> args);
 };
@@ -68,7 +66,7 @@ public:
     Cmd_Noclip() {
         name = "noclip";
         aliases = { "fly" };
-        description = "Disables collision detection for the player.";
+        helpDesc = { "Disables collision detection for the player." };
     }
     virtual void execute(std::vector<String> args);
 };
@@ -78,7 +76,16 @@ public:
     Cmd_GodMode() {
         name = "godmode";
         aliases = { "god" };
-        description = "Makes the player invincible.";
+        helpDesc = { "Makes the player invincible." };
+    }
+    virtual void execute(std::vector<String> args);
+};
+
+class Cmd_NoTarget : public ConsoleCmd {
+public:
+    Cmd_NoTarget() {
+        name = "notarget";
+        helpDesc = { "Makes the player unable to be targeted by NPCs." };
     }
     virtual void execute(std::vector<String> args);
 };
@@ -87,7 +94,7 @@ class Cmd_Heal : public ConsoleCmd {
 public:
     Cmd_Heal() {
         name = "heal";
-        description = "Removes all bloodloss and injuries.";
+        helpDesc = { "Removes all bloodloss and injuries." };
     }
     virtual void execute(std::vector<String> args);
 };
@@ -97,7 +104,7 @@ public:
     Cmd_Teleport() {
         name = "teleport";
         aliases = { "tele" };
-        description = "Teleports the player to the specified room.";
+        helpDesc = { "Teleports the player to the specified room." };
     }
     virtual void execute(std::vector<String> args);
 };
@@ -108,7 +115,7 @@ public:
     Cmd_SpawnItem() {
         name = "spawnitem";
         aliases = { "giveitem, item" };
-        description = "Creates the specified item at the player's position.";
+        helpDesc = { "Creates the specified item at the player's position." };
     }
     virtual void execute(std::vector<String> args);
 };
@@ -118,7 +125,7 @@ public:
     Cmd_Omni() {
         name = "spawnomni";
         aliases = { "omni" };
-        description = "Creates an omni card.";
+        helpDesc = { "Creates an omni card." };
     }
     virtual void execute(std::vector<String> args);
 };

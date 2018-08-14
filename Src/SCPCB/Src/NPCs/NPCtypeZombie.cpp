@@ -9,6 +9,7 @@
 #include "../AssetMgmt/Audio.h"
 #include "../Map/MapSystem.h"
 #include "../Player/Player.h"
+#include "../Menus/Console/Console.h"
 #include "../MathUtils/MathUtils.h"
 #include "NPCtypeZombie.h"
 
@@ -104,7 +105,7 @@ void UpdateNPCtypeZombie(NPC* n) {
                     }
 
                     //player is visible -> attack
-                    if (n->state2 > 0 && (!NoTarget)) {
+                    if (n->state2 > 0 && !console->noTarget) {
                         n->soundChannels[0] = LoopRangedSound(n->sounds[0], n->soundChannels[0], mainPlayer->cam, n->collider, 6.f, 0.6f);
 
                         n->pathStatus = 0;
@@ -171,7 +172,7 @@ void UpdateNPCtypeZombie(NPC* n) {
                     }
                 }
                 case 3: {
-                    if (NoTarget) {
+                    if (console->noTarget) {
                         n->state = 2;
                     }
                     if (n->frame < 66) {

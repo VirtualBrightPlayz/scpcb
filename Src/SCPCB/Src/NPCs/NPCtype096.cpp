@@ -9,6 +9,7 @@
 #include "../AssetMgmt/Audio.h"
 #include "../Map/MapSystem.h"
 #include "../Player/Player.h"
+#include "../Menus/Console/Console.h"
 #include "../MathUtils/MathUtils.h"
 #include "../Map/Decals.h"
 #include "../Config/Options.h"
@@ -56,7 +57,7 @@ void UpdateNPCtype096(NPC* n) {
                 //-EntityYaw(n\collider,True))
                 angle = WrapAngle(bbDeltaYaw(n->collider, mainPlayer->collider));
 
-                if (!NoTarget) {
+                if (!console->noTarget) {
                     if (angle<90 || angle>270) {
                         bbCameraProject(mainPlayer->cam,bbEntityX(n->collider), bbEntityY(n->collider)+0.25f, bbEntityZ(n->collider));
 
@@ -108,7 +109,7 @@ void UpdateNPCtype096(NPC* n) {
                 }
             }
 
-            if (NoTarget && n->target == nullptr) {
+            if (console->noTarget && n->target == nullptr) {
                 n->state = 5;
             }
 
@@ -405,7 +406,7 @@ void UpdateNPCtype096(NPC* n) {
 
                 //-EntityYaw(n\collider))
                 angle = WrapAngle(bbDeltaYaw(n->collider, mainPlayer->cam));
-                if (!NoTarget) {
+                if (!console->noTarget) {
                     if (angle<55 || angle>360-55) {
                         bbCameraProject(mainPlayer->cam,bbEntityX(n->collider), bbEntityY(mainPlayer->collider)+5.8f*0.2f-0.25f, bbEntityZ(n->collider));
 

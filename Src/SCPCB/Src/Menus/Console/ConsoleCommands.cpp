@@ -53,7 +53,6 @@ void ConsoleCmd::clearCommands() {
     commandList.clear();
 }
 
-// TODO: Maybe turn help descriptions into a vector to allow multi-line support.
 void Cmd_Help::execute(std::vector<String> args) {
     console->msgR = 0;
     console->msgG = 255;
@@ -81,7 +80,9 @@ void Cmd_Help::execute(std::vector<String> args) {
 
         if (foundCmd != nullptr) {
             ConsoleMsg::create("HELP - " + foundCmd->name);
-            ConsoleMsg::create(foundCmd->description);
+            for (int i = 0; i < foundCmd->helpDesc.size(); i++) {
+                ConsoleMsg::create(" - " + foundCmd->helpDesc[i]);
+            }
         } else {
             ConsoleMsg::create("Command not found.", 255, 0, 0);
         }
@@ -116,8 +117,8 @@ void Cmd_Status::execute(std::vector<String> args) {
 }
 
 void Cmd_DebugHUD::execute(std::vector<String> args) {
-    DebugHUD = !DebugHUD;
-    if (DebugHUD) {
+    console->debugHUD = !console->debugHUD;
+    if (console->debugHUD) {
         ConsoleMsg::create("DebugHUD ON");
     } else {
         ConsoleMsg::create("DebugHUD OFF");
@@ -125,9 +126,9 @@ void Cmd_DebugHUD::execute(std::vector<String> args) {
 }
 
 void Cmd_Wireframe::execute(std::vector<String> args) {
-    wireframeState = !wireframeState;
-    bbWireFrame(wireframeState);
-    if (wireframeState) {
+    console->wireframeState = !console->wireframeState;
+    bbWireFrame(console->wireframeState);
+    if (console->wireframeState) {
         ConsoleMsg::create("Wireframe ON");
     } else {
         ConsoleMsg::create("Wireframe OFF");
@@ -149,6 +150,15 @@ void Cmd_GodMode::execute(std::vector<String> args) {
         ConsoleMsg::create("GodMode ON");
     } else {
         ConsoleMsg::create("GodMode OFF");
+    }
+}
+
+void Cmd_NoTarget::execute(std::vector<String> args) {
+    console->noTarget = !console->noTarget;
+    if (console->noTarget) {
+        ConsoleMsg::create("NoTarget ON");
+    } else {
+        ConsoleMsg::create("NoTarget OFF");
     }
 }
 

@@ -13,6 +13,7 @@
 #include "../Config/Difficulty.h"
 #include "../Map/Doors.h"
 #include "../Map/Particles.h"
+#include "../Menus/Console/Console.h"
 #include "NPCtypeMTF.h"
 
 namespace CBN {
@@ -390,7 +391,7 @@ void UpdateNPCtypeMTF(NPC* n) {
 
                 temp = MeNPCSeesPlayer(n);
 
-                if (NoTarget) {
+                if (console->noTarget) {
                     temp = false;
                 }
 
@@ -1734,7 +1735,7 @@ void UpdateNPCtypeMTF(NPC* n) {
             }
         }
 
-        if (NoTarget && n->state == 1) {
+        if (console->noTarget && n->state == 1) {
             n->state = 0;
         }
 

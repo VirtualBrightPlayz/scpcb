@@ -21,7 +21,7 @@ public:
     Console();
     ~Console();
 
-    std::vector<ConsoleMsg*> msgList;
+    std::vector<struct ConsoleMsg*> msgList;
     void update();
     void draw();
 

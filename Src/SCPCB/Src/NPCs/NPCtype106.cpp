@@ -8,6 +8,7 @@
 #include "../AssetMgmt/Audio.h"
 #include "../Map/MapSystem.h"
 #include "../Player/Player.h"
+#include "../Menus/Console/Console.h"
 #include "../MathUtils/MathUtils.h"
 #include "../Config/Difficulty.h"
 #include "../Map/Decals.h"
@@ -149,7 +150,7 @@ void UpdateNPCtype106(NPC* n) {
         }
         case STATE106_ATTACK: {
             //TODO: Set music to play 106 theme?
-            if (dist < 8.f && (!NoTarget)) {
+            if (dist < 8.f && !console->noTarget) {
                 visible = bbEntityVisible(n->collider, mainPlayer->collider);
             }
 
