@@ -2,12 +2,12 @@
 #include <bbmath.h>
 
 #include "NPCs.h"
-#include "../INI.h"
+#include "../Config/INI.h"
 #include "../GameMain.h"
-#include "../Audio.h"
-#include "../Player.h"
+#include "../AssetMgmt/Audio.h"
+#include "../Player/Player.h"
 #include "../MathUtils/MathUtils.h"
-#include "../Particles.h"
+#include "../Map/Particles.h"
 #include "NPCtypeGuard.h"
 
 namespace CBN {

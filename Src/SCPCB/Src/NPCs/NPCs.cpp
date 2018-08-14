@@ -18,20 +18,20 @@
 #include "NPCtypeMTF.h"
 #include "NPCtypeTentacle.h"
 #include "NPCtypeZombie.h"
-#include "../Player.h"
+#include "../Player/Player.h"
 #include "../GameMain.h"
-#include "../MapSystem.h"
-#include "../Audio.h"
+#include "../Map/MapSystem.h"
+#include "../AssetMgmt/Audio.h"
 #include "../MathUtils/MathUtils.h"
-#include "../Difficulty.h"
-#include "../Decals.h"
-#include "../Particles.h"
+#include "../Config/Difficulty.h"
+#include "../Map/Decals.h"
+#include "../Map/Particles.h"
 #include "../Items/Items.h"
 #include "../Menus/Menu.h"
-#include "../Doors.h"
-#include "../INI.h"
-#include "../Events.h"
-#include "../Objects.h"
+#include "../Map/Doors.h"
+#include "../Config/INI.h"
+#include "../Map/Events/Events.h"
+#include "../Map/Objects.h"
 
 namespace CBN {
 
@@ -1039,7 +1039,7 @@ int PlayerInReachableRoom() {
     }
     //Player is in 860's test room and inside the forest, returning false
     temp = false;
-    for (int iterator118 = 0; iterator118 < Event::getListSize(); iterator118++) {
+    /*for (int iterator118 = 0; iterator118 < Event::getListSize(); iterator118++) {
         Event* e = Event::getObject(iterator118);
 
         if (e->name.equals("room860") && e->eventState == 1.f) {
@@ -1049,7 +1049,7 @@ int PlayerInReachableRoom() {
     }
     if (RN.equals("room860") && temp) {
         return false;
-    }
+    }TODO: this is ridiculous*/
     //Return true, this means player is in reachable room
     return true;
 

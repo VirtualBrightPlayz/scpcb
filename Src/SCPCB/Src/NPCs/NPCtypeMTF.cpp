@@ -3,16 +3,16 @@
 #include <bbmath.h>
 
 #include "NPCs.h"
-#include "../INI.h"
+#include "../Config/INI.h"
 #include "../GameMain.h"
 #include "../Menus/Menu.h"
-#include "../Audio.h"
-#include "../MapSystem.h"
-#include "../Player.h"
+#include "../AssetMgmt/Audio.h"
+#include "../Map/MapSystem.h"
+#include "../Player/Player.h"
 #include "../MathUtils/MathUtils.h"
-#include "../Difficulty.h"
-#include "../Doors.h"
-#include "../Particles.h"
+#include "../Config/Difficulty.h"
+#include "../Map/Doors.h"
+#include "../Map/Particles.h"
 #include "NPCtypeMTF.h"
 
 namespace CBN {
@@ -209,9 +209,10 @@ void UpdateNPCtypeMTF(NPC* n) {
                                         }
 
                                         if (Curr173->idle == 3 && Distance(bbEntityX(pvt),bbEntityZ(pvt),bbEntityX(n->collider),bbEntityZ(n->collider)) > 4.f) {
-                                            if (r->doors[1]->open == true) {
+                                            /*if (r->doors[1]->open == true) {
                                                 UseDoor(r->doors[1],false);
                                             }
+                                            TODO: IHH*/
                                         }
 
                                         bbFreeEntity(pvt);
@@ -1364,7 +1365,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                         //		p.Particle = CreateParticle(EntityX(n\obj, True), EntityY(n\obj, True), EntityZ(n\obj, True), 1, 0.2f, 0.f, 5)
                         //		PositionEntity(p\pvt, EntityX(pvt), EntityY(pvt), EntityZ(pvt))
                         //
-                        //		n\reload = 7
+                        //		neload = 7
                         //	EndIf
                         //
                         //	FreeEntity(pvt)
@@ -1805,7 +1806,7 @@ void UpdateMTF() {
 
             if (entrance != nullptr) {
                 if (abs(bbEntityZ(entrance->obj)-bbEntityZ(mainPlayer->collider))<30.f) {
-                    //If (mainPlayer\currRoom\roomTemplate\name<>"room860" And mainPlayer/currRoom/RoomTemplate/Name<>"pocketdimension") Then
+                    //If (mainPlayer\currRoomoomTemplate\name<>"room860" And mainPlayer/currRoom/RoomTemplate/Name<>"pocketdimension") Then
                     if (PlayerInReachableRoom()) {
                         PlaySound2(LoadTempSound("SFX/Character/MTF/Announc.ogg"));
                     }

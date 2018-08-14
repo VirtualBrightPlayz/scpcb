@@ -1,6 +1,6 @@
 #include "NVG.h"
 #include "Items.h"
-#include "../Player.h"
+#include "../Player/Player.h"
 #include "../MathUtils/MathUtils.h"
 #include "../GameMain.h"
 

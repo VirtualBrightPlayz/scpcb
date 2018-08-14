@@ -6,9 +6,9 @@
 #include "MainMenu.h"
 #include "../MathUtils/MathUtils.h"
 #include "../GameMain.h"
-#include "../Assets.h"
-#include "../Audio.h"
-#include "../Options.h"
+#include "../AssetMgmt/Assets.h"
+#include "../AssetMgmt/Audio.h"
+#include "../Config/Options.h"
 
 namespace CBN {
 

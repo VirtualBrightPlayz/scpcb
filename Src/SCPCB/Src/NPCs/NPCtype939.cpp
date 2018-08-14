@@ -3,12 +3,12 @@
 #include <bbmath.h>
 
 #include "NPCs.h"
-#include "../INI.h"
+#include "../Config/INI.h"
 #include "../GameMain.h"
 #include "../Menus/Menu.h"
-#include "../Audio.h"
-#include "../MapSystem.h"
-#include "../Player.h"
+#include "../AssetMgmt/Audio.h"
+#include "../Map/MapSystem.h"
+#include "../Player/Player.h"
 #include "../MathUtils/MathUtils.h"
 #include "../Items/Items.h"
 #include "NPCtype939.h"
@@ -71,6 +71,7 @@ void InitializeNPCtype939(NPC* n) {
 }
 
 void UpdateNPCtype939(NPC* n) {
+#if 0
     float dist;
     int prevFrame;
     int temp;
@@ -309,6 +310,7 @@ void UpdateNPCtype939(NPC* n) {
         bbPositionEntity(n->obj, bbEntityX(n->collider), bbEntityY(n->collider)-0.28f, bbEntityZ(n->collider));
         bbRotateEntity(n->obj, bbEntityPitch(n->collider)-90, bbEntityYaw(n->collider), bbEntityRoll(n->collider), true);
     }
+#endif
 }
 
 }

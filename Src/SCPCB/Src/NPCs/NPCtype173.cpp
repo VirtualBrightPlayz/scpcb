@@ -4,13 +4,13 @@
 #include <bbstring.h>
 
 #include "NPCs.h"
-#include "../INI.h"
+#include "../Config/INI.h"
 #include "../GameMain.h"
-#include "../Audio.h"
-#include "../MapSystem.h"
-#include "../Player.h"
+#include "../AssetMgmt/Audio.h"
+#include "../Map/MapSystem.h"
+#include "../Player/Player.h"
 #include "../MathUtils/MathUtils.h"
-#include "../Doors.h"
+#include "../Map/Doors.h"
 #include "NPCtype173.h"
 
 namespace CBN {

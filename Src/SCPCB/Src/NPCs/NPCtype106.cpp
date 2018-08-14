@@ -3,14 +3,14 @@
 #include <bbmath.h>
 
 #include "NPCs.h"
-#include "../INI.h"
+#include "../Config/INI.h"
 #include "../GameMain.h"
-#include "../Audio.h"
-#include "../MapSystem.h"
-#include "../Player.h"
+#include "../AssetMgmt/Audio.h"
+#include "../Map/MapSystem.h"
+#include "../Player/Player.h"
 #include "../MathUtils/MathUtils.h"
-#include "../Difficulty.h"
-#include "../Decals.h"
+#include "../Config/Difficulty.h"
+#include "../Map/Decals.h"
 #include "NPCtype106.h"
 
 namespace CBN {

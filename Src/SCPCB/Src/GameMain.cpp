@@ -6,32 +6,30 @@
 #include <bbmath.h>
 
 #include "GameMain.h"
-#include "Options.h"
-#include "Audio.h"
+#include "Config/Options.h"
+#include "AssetMgmt/Audio.h"
 #include "Menus/Menu.h"
 #include "Menus/LoadingScreen.h"
 #include "Menus/Launcher.h"
 #include "Menus/MainMenu.h"
 #include "MathUtils/MathUtils.h"
-#include "Player.h"
-#include "Assets.h"
-#include "Decals.h"
-#include "Particles.h"
-#include "MapSystem.h"
+#include "Player/Player.h"
+#include "AssetMgmt/Assets.h"
+#include "Map/Decals.h"
+#include "Map/Particles.h"
+#include "Map/MapSystem.h"
 #include "Items/Items.h"
-#include "Doors.h"
-#include "Objects.h"
-#include "Events.h"
+#include "Map/Doors.h"
+#include "Map/Objects.h"
+#include "Map/Events/Events.h"
 #include "NPCs/NPCs.h"
 #include "NPCs/NPCtypeMTF.h"
-#include "Difficulty.h"
-#include "Save.h"
-#include "KeyName.h"
-#include "Console.h"
-#include "Dreamfilter.h"
-#include "FastResize.h"
-
-#include "Rooms/Room_hll_caf_2.h"
+#include "Config/Difficulty.h"
+#include "Save/Save.h"
+#include "Config/KeyName.h"
+#include "Menus/Console/Console.h"
+#include "MiscGFX/Dreamfilter.h"
+#include "MiscGFX/FastResize.h"
 
 namespace CBN {
 
@@ -352,7 +350,6 @@ void UpdateGame() {
                 UpdateDoors();
                 UpdateLevers();
                 UpdateRooms();
-                UpdateEvents();
                 UpdateDecals();
                 UpdateMTF();
                 UpdateNPCs();
@@ -703,9 +700,9 @@ void UpdateGUI() {
         }
     }
 
-    if (CurrGameState == GAMESTATE_SCP294) {
-        Update294();
-    }
+    /*if (CurrGameState == GAMESTATE_SCP294) {
+        Update294(); //TODO: fix
+    }*/
 
     if (SelectedScreen != nullptr) {
         if (MouseUp1 || MouseHit2) {
@@ -893,9 +890,9 @@ void DrawGUI() {
     float scale;
 
     //TODO: Re-implement.
-    //	If (mainPlayer\currRoom\roomTemplate\name = "pocketdimension") Then
+    //	If (mainPlayer\currRoomoomTemplate\name = "pocketdimension") Then
     //		For e = Each Event
-    //			If (e\room = mainPlayer\currRoom And e\eventState > 600) Then
+    //			If (eoom = mainPlayer\currRoom And e\eventState > 600) Then
     //				If (mainPlayer\blinkTimer < -3 And mainPlayer\blinkTimer > -11) Then
     //					If (e\img = 0) Then
     //						If (mainPlayer\blinkTimer > -5 And Rand(30)=1) Then
@@ -981,9 +978,10 @@ void DrawGUI() {
         }
     }
 
-    if (CurrGameState == GAMESTATE_SCP294) {
+    /*if (CurrGameState == GAMESTATE_SCP294) {
         Draw294();
     }
+    TODO: ahfshfgsd*/
 
     if (userOptions->hudEnabled) {
 
@@ -1041,7 +1039,7 @@ void DrawGUI() {
             bbText(x - 50, 150, "Room: " + mainPlayer->currRoom->roomTemplate->name);
 
 
-            for (int iterator64 = 0; iterator64 < Event::getListSize(); iterator64++) {
+            /*for (int iterator64 = 0; iterator64 < Event::getListSize(); iterator64++) {
                 ev = Event::getObject(iterator64);
 
                 if (ev->room == mainPlayer->currRoom) {
@@ -1051,7 +1049,7 @@ void DrawGUI() {
                     bbText(x - 50, 230, "state3: " + String(ev->eventState3));
                     break;
                 }
-            }
+            }*/
             bbText(x - 50, 250, "Room coordinates: (" + String(bbFloor(bbEntityX(mainPlayer->currRoom->obj) / 8.f + 0.5f)) + ", " + String(bbFloor(bbEntityZ(mainPlayer->currRoom->obj) / 8.f + 0.5f)) + ")");
             bbText(x - 50, 280, "Stamina: " + f2s(mainPlayer->stamina, 3));
             bbText(x - 50, 300, "Dead: " + String(mainPlayer->dead));
@@ -1417,6 +1415,7 @@ float Animate2(MeshModel* entity, float curr, int start, int quit, float speed, 
 }
 
 void UpdateInfect() {
+#if 0
     float temp;
     int i;
     Room* r;
@@ -1552,6 +1551,8 @@ void UpdateInfect() {
     } else {
         bbHideEntity(mainPlayer->overlays[OVERLAY_008]);
     }
+#endif
+//TODO: bleh
 }
 
 void Graphics3DExt(int width, int height, int depth, int mode) {
@@ -1585,7 +1586,7 @@ void RenderWorld2() {
     //ElseIf WearingNightVision=3
     //	AmbientLight(255,255,255)
     //ElseIf mainPlayer\currRoom<>Null
-    //	If (mainPlayer\currRoom\roomTemplate\name<>"173") And (mainPlayer/currRoom\roomTemplate\name<>"exit1") And (mainPlayer/currRoom\roomTemplate/Name<>"gatea") Then
+    //	If (mainPlayer\currRoomoomTemplate\name<>"173") And (mainPlayer/currRoomoomTemplate\name<>"exit1") And (mainPlayer/currRoomoomTemplate/Name<>"gatea") Then
     //		AmbientLight(Brightness, Brightness, Brightness)
     //	EndIf
     //EndIf

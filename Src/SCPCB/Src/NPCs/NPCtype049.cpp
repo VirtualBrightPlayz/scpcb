@@ -3,17 +3,17 @@
 #include <bbmath.h>
 
 #include "NPCs.h"
-#include "../INI.h"
+#include "../Config/INI.h"
 #include "../GameMain.h"
-#include "../Events.h"
+#include "../Map/Events/Events.h"
 #include "../Menus/Menu.h"
-#include "../Audio.h"
-#include "../MapSystem.h"
-#include "../Player.h"
+#include "../AssetMgmt/Audio.h"
+#include "../Map/MapSystem.h"
+#include "../Player/Player.h"
 #include "../MathUtils/MathUtils.h"
-#include "../Difficulty.h"
-#include "../Objects.h"
-#include "../Doors.h"
+#include "../Config/Difficulty.h"
+#include "../Map/Objects.h"
+#include "../Map/Doors.h"
 #include "NPCtype049.h"
 
 namespace CBN {
@@ -97,7 +97,7 @@ void UpdateNPCtype049(NPC* n) {
                     if (mainPlayer->currRoom->roomTemplate->name.equals("room049")) {
                         DeathMSG = "Three (3) active instances of SCP-049-2 discovered in the tunnel outside SCP-049's containment chamber. Terminated by Nine-Tailed Fox.";
 
-                        for (int iterator121 = 0; iterator121 < Event::getListSize(); iterator121++) {
+                        /*for (int iterator121 = 0; iterator121 < Event::getListSize(); iterator121++) {
                             e = Event::getObject(iterator121);
 
                             if (e->name.equals("room049")) {
@@ -105,6 +105,7 @@ void UpdateNPCtype049(NPC* n) {
                                 break;
                             }
                         }
+                        TODO ashfjaidfjas*/
                     } else {
                         DeathMSG = "An active instance of SCP-049-2 was discovered in [REDACTED]. Terminated by Nine-Tailed Fox.";
                         Kill(mainPlayer);

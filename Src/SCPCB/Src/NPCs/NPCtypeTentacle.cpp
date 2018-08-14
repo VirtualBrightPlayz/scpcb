@@ -4,8 +4,8 @@
 
 #include "NPCs.h"
 #include "../Menus/Menu.h"
-#include "../Audio.h"
-#include "../Player.h"
+#include "../AssetMgmt/Audio.h"
+#include "../Player/Player.h"
 #include "../Items/Items.h"
 #include "../MathUtils/MathUtils.h"
 #include "NPCtypeTentacle.h"

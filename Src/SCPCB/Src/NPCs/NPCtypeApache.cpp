@@ -5,9 +5,9 @@
 #include "NPCs.h"
 #include "../GameMain.h"
 #include "../Menus/Menu.h"
-#include "../Audio.h"
-#include "../MapSystem.h"
-#include "../Player.h"
+#include "../AssetMgmt/Audio.h"
+#include "../Map/MapSystem.h"
+#include "../Player/Player.h"
 #include "../MathUtils/MathUtils.h"
 #include "NPCtypeApache.h"
 
@@ -63,6 +63,7 @@ void InitializeNPCtypeApache(NPC* n) {
 }
 
 void UpdateNPCtypeApache(NPC* n) {
+#if 0
     float dist2;
     float dist;
     Pivot* target = nullptr;
@@ -223,6 +224,7 @@ void UpdateNPCtypeApache(NPC* n) {
 
     bbPositionEntity(n->obj, bbEntityX(n->collider), bbEntityY(n->collider), bbEntityZ(n->collider));
     bbRotateEntity(n->obj, bbEntityPitch(n->collider), bbEntityYaw(n->collider), bbEntityRoll(n->collider), true);
+#endif
 }
 
 }

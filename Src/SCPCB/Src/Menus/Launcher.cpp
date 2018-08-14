@@ -4,11 +4,11 @@
 
 #include "Launcher.h"
 #include "../MathUtils/MathUtils.h"
-#include "../INI.h"
-#include "../Options.h"
+#include "../Config/INI.h"
+#include "../Config/Options.h"
 #include "../GameMain.h"
 #include "../Menus/Menu.h"
-#include "../Assets.h"
+#include "../AssetMgmt/Assets.h"
 
 namespace CBN {
 

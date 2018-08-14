@@ -5,14 +5,14 @@
 
 #include "MainMenu.h"
 #include "Menu.h"
-#include "../INI.h"
-#include "../Options.h"
+#include "../Config/INI.h"
+#include "../Config/Options.h"
 #include "../GameMain.h"
-#include "../Audio.h"
-#include "../Save.h"
-#include "../Difficulty.h"
+#include "../AssetMgmt/Audio.h"
+#include "../Save/Save.h"
+#include "../Config/Difficulty.h"
 #include "../MathUtils/MathUtils.h"
-#include "../Assets.h"
+#include "../AssetMgmt/Assets.h"
 
 namespace CBN {
 
@@ -332,7 +332,7 @@ void UpdateMainMenu() {
                 //
                 //					UpdateInputBox(x + 160 * MenuScale, y + 60 * MenuScale,100*MenuScale,20*MenuScale,KeyName[Min(keyBinds\down,210)],6)
                 //
-                //					UpdateInputBox(x + 160 * MenuScale, y + 80 * MenuScale,100*MenuScale,20*MenuScale,KeyName[Min(keyBinds\right,210)],4)
+                //					UpdateInputBox(x + 160 * MenuScale, y + 80 * MenuScale,100*MenuScale,20*MenuScale,KeyName[Min(keyBindsight,210)],4)
                 //
                 //					UpdateInputBox(x + 160 * MenuScale, y + 100 * MenuScale,100*MenuScale,20*MenuScale,KeyName[Min(keyBinds\save,210)],11)
                 //
@@ -356,7 +356,7 @@ void UpdateMainMenu() {
                 //							Case 3
                 //								keyBinds\left = key
                 //							Case 4
-                //								keyBinds\right = key
+                //								keyBindsight = key
                 //							Case 5
                 //								keyBinds\up = key
                 //							Case 6
@@ -857,7 +857,7 @@ void DrawMainMenu() {
                 //					Text(x + 20 * MenuScale, y + 60 * MenuScale, "Move Backward")
                 //					DrawInputBox(x + 160 * MenuScale, y + 60 * MenuScale,100*MenuScale,20*MenuScale,KeyName[Min(keyBinds\down,210)],6)
                 //					Text(x + 20 * MenuScale, y + 80 * MenuScale, "Strafe Right")
-                //					DrawInputBox(x + 160 * MenuScale, y + 80 * MenuScale,100*MenuScale,20*MenuScale,KeyName[Min(keyBinds\right,210)],4)
+                //					DrawInputBox(x + 160 * MenuScale, y + 80 * MenuScale,100*MenuScale,20*MenuScale,KeyName[Min(keyBindsight,210)],4)
                 //					Text(x + 20 * MenuScale, y + 100 * MenuScale, "Quick Save")
                 //					DrawInputBox(x + 160 * MenuScale, y + 100 * MenuScale,100*MenuScale,20*MenuScale,KeyName[Min(keyBinds\save,210)],11)
                 //

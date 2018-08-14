@@ -6,16 +6,16 @@
 #include <bbinput.h>
 
 #include "Items.h"
-#include "../Assets.h"
-#include "../INI.h"
-#include "../Player.h"
-#include "../MapSystem.h"
-#include "../FastResize.h"
+#include "../AssetMgmt/Assets.h"
+#include "../Config/INI.h"
+#include "../Player/Player.h"
+#include "../Map/MapSystem.h"
+#include "../MiscGFX/FastResize.h"
 #include "../GameMain.h"
 #include "../MathUtils/MathUtils.h"
 #include "../Menus/Menu.h"
-#include "../Audio.h"
-#include "../Options.h"
+#include "../AssetMgmt/Audio.h"
+#include "../Config/Options.h"
 
 namespace CBN {
 

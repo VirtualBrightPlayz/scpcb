@@ -3,16 +3,18 @@
 #include <bbmath.h>
 
 #include "NPCs.h"
-#include "../INI.h"
+#include "../Config/INI.h"
 #include "../GameMain.h"
 #include "../Menus/Menu.h"
-#include "../Audio.h"
-#include "../MapSystem.h"
-#include "../Player.h"
+#include "../AssetMgmt/Audio.h"
+#include "../Map/MapSystem.h"
+#include "../Player/Player.h"
 #include "../MathUtils/MathUtils.h"
-#include "../Assets.h"
-#include "../Rooms/Room_test_860_2.h"
+#include "../AssetMgmt/Assets.h"
+//#include "../Rooms/Room_test_860_2.h"
 #include "NPCtype860.h"
+
+//TODO: fix
 
 namespace CBN {
 
@@ -48,6 +50,7 @@ void InitializeNPCtype860(NPC* n) {
 }
 
 void UpdateNPCtype860(NPC* n) {
+#if 0
     int x;
     int z;
     int x2;
@@ -59,7 +62,7 @@ void UpdateNPCtype860(NPC* n) {
     Forest* fr;
 
     if (mainPlayer->currRoom->roomTemplate->name.equals("room860")) {
-        //Object.Forest(e\room\objects[1])
+        //Object.Forest(eoom\objects[1])
         fr = mainPlayer->currRoom->fr;
 
         switch ((int)n->state) {
@@ -365,9 +368,11 @@ void UpdateNPCtype860(NPC* n) {
             }
         }
     }
+#endif
 }
 
 float Find860Angle(NPC* n, Forest* fr) {
+#if 0
     bbTFormPoint(bbEntityX(mainPlayer->collider),bbEntityY(mainPlayer->collider),bbEntityZ(mainPlayer->collider),0,mainPlayer->currRoom->obj);
     int playerx = (int)(bbFloor((bbTFormedX()*RoomScale+6.f)/12.f));
     int playerz = (int)(bbFloor((bbTFormedZ()*RoomScale+6.f)/12.f));
@@ -398,6 +403,7 @@ float Find860Angle(NPC* n, Forest* fr) {
     } else {
         return GetAngle(bbEntityX(n->collider),bbEntityZ(n->collider),bbEntityX(mainPlayer->collider),bbEntityZ(mainPlayer->collider))+180;
     }
+#endif
 }
 
 }

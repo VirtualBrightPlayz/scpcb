@@ -8,12 +8,12 @@
 
 #include "LoadingScreen.h"
 #include "../GameMain.h"
-#include "../INI.h"
-#include "../Audio.h"
-#include "../Options.h"
-#include "../Assets.h"
+#include "../Config/INI.h"
+#include "../AssetMgmt/Audio.h"
+#include "../Config/Options.h"
+#include "../AssetMgmt/Assets.h"
 #include "../Menus/Menu.h"
-#include "../FastResize.h"
+#include "../MiscGFX/FastResize.h"
 #include "../MathUtils/MathUtils.h"
 
 namespace CBN {
