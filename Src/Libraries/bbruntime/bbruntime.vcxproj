@@ -253,10 +253,6 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="basic.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="bbaudio.cpp" />
     <ClCompile Include="bbblitz3d.cpp" />
     <ClCompile Include="bbfilesystem.cpp" />
@@ -275,7 +271,6 @@
     <ClCompile Include="bbsys.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="basic.h" />
     <ClInclude Include="bbaudio.h" />
     <ClInclude Include="bbblitz3d.h" />
     <ClInclude Include="bbfilesystem.h" />
