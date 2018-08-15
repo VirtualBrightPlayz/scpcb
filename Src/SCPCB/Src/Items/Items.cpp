@@ -384,11 +384,17 @@ void UpdateItems() {
                 if (item->dist < 1.2f*1.2f) {
                     if (mainPlayer->closestItem == nullptr) {
                         if (bbEntityInView(item->model, mainPlayer->cam)) {
-                            mainPlayer->closestItem = item;
+                            Object* pick = bbLinePick(bbEntityX(mainPlayer->cam),bbEntityY(item->collider),bbEntityZ(mainPlayer->cam),bbEntityX(item->collider)-bbEntityX(mainPlayer->cam),0,bbEntityZ(item->collider)-bbEntityZ(mainPlayer->cam),0.f);
+                            if (pick == item->collider || pick == nullptr) {
+                                mainPlayer->closestItem = item;
+                            }
                         }
-                    } else if (item->dist < bbEntityDistanceSquared(mainPlayer->collider, mainPlayer->closestItem->collider)) {
+                    } else if (item != mainPlayer->closestItem && item->dist < mainPlayer->closestItem->dist) {
                         if (bbEntityInView(item->model, mainPlayer->cam)) {
-                            mainPlayer->closestItem = item;
+                            Object* pick = bbLinePick(bbEntityX(mainPlayer->cam),bbEntityY(item->collider),bbEntityZ(mainPlayer->cam),bbEntityX(item->collider)-bbEntityX(mainPlayer->cam),0,bbEntityZ(item->collider)-bbEntityZ(mainPlayer->cam),0.f);
+                            if (pick == item->collider || pick == nullptr) {
+                                mainPlayer->closestItem = item;
+                            }
                         }
                     }
                 }
