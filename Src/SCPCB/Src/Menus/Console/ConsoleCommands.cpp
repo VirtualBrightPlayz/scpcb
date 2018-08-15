@@ -7,6 +7,10 @@
 #include "../../Items/Items.h"
 #include "../../Map/MapSystem.h"
 #include "../../Map/Doors.h"
+#include "../../AssetMgmt/Audio.h"
+#include "../../Menus/Menu.h"
+#include "../../NPCs/NPCs.h"
+#include "../../Config/Options.h"
 
 namespace CBN {
 
@@ -37,14 +41,19 @@ void ConsoleCmd::executeCommand(const String& name, std::vector<String> args) {
 void ConsoleCmd::generateCommands() {
     commandList.push_back(new Cmd_Help());
     commandList.push_back(new Cmd_Status());
+    commandList.push_back(new Cmd_CameraPick());
     commandList.push_back(new Cmd_DebugHUD());
     commandList.push_back(new Cmd_Wireframe());
     commandList.push_back(new Cmd_Noclip());
     commandList.push_back(new Cmd_GodMode());
     commandList.push_back(new Cmd_Heal());
+    commandList.push_back(new Cmd_Kill());
+    commandList.push_back(new Cmd_Heal());
     commandList.push_back(new Cmd_Teleport());
     commandList.push_back(new Cmd_SpawnItem());
     commandList.push_back(new Cmd_Omni());
+    commandList.push_back(new Cmd_StopSound());
+    commandList.push_back(new Cmd_Halloween());
 }
 void ConsoleCmd::clearCommands() {
     for (int i = 0; i < commandList.size(); i++) {
@@ -83,6 +92,9 @@ void Cmd_Help::execute(std::vector<String> args) {
             for (int i = 0; i < foundCmd->helpDesc.size(); i++) {
                 ConsoleMsg::create(" - " + foundCmd->helpDesc[i]);
             }
+            if (foundCmd->helpDesc.size() <= 0) {
+                ConsoleMsg::create("No help description available for this command.", 255, 0, 0);
+            }
         } else {
             ConsoleMsg::create("Command not found.", 255, 0, 0);
         }
@@ -114,6 +126,30 @@ void Cmd_Status::execute(std::vector<String> args) {
     ConsoleMsg::create("Injuries: " + String(mainPlayer->injuries));
     ConsoleMsg::create("Bloodloss: " + String(mainPlayer->bloodloss));
     ConsoleMsg::create("******************************");
+}
+
+void Cmd_CameraPick::execute(std::vector<String> args) {
+    console->msgR = 0;
+    console->msgG = 255;
+    console->msgB = 0;
+    Object* c = bbCameraPick(mainPlayer->cam, userOptions->screenWidth / 2, userOptions->screenHeight / 2);
+    if (c == nullptr) {
+        ConsoleMsg::create("******************************");
+        ConsoleMsg::create("No entity picked");
+        ConsoleMsg::create("******************************");
+    } else {
+        ConsoleMsg::create("******************************");
+        ConsoleMsg::create("Picked entity:");
+        Surface* sf = bbGetSurface(c->getModel()->getMeshModel(), 1);
+        Brush* b = bbGetSurfaceBrush(sf);
+        Texture* t = bbGetBrushTexture(b, 0);
+        String texname = StripPath(bbTextureName(t));
+        ConsoleMsg::create("Texture name: " + texname);
+        ConsoleMsg::create("Coordinates: " + String(bbEntityX(c)) + ", " + String(bbEntityY(c)) + ", " + String(bbEntityZ(c)));
+        ConsoleMsg::create("******************************");
+        bbFreeTexture(t);
+        bbFreeBrush(b);
+    }
 }
 
 void Cmd_DebugHUD::execute(std::vector<String> args) {
@@ -167,6 +203,53 @@ void Cmd_Heal::execute(std::vector<String> args) {
     mainPlayer->bloodloss = 0;
 }
 
+void Cmd_Kill::execute(std::vector<String> args) {
+    Kill(mainPlayer);
+
+    switch (bbRand(1, 4)) {
+        case 1: {
+            DeathMSG = "[REDACTED]";
+        }
+        case 2: {
+            DeathMSG = "Subject D-9341 found dead in Sector [REDACTED]. ";
+            DeathMSG = DeathMSG + "The subject appears to have attained no physical damage, and there is no visible indication as to what killed him. ";
+            DeathMSG = DeathMSG + "Body was sent for autopsy.";
+        }
+        case 3: {
+            DeathMSG = "EXCP_ACCESS_VIOLATION";
+        }
+        case 4: {
+            DeathMSG = "Subject D-9341 found dead in Sector [REDACTED]. ";
+            DeathMSG = DeathMSG + "The subject appears to have scribbled the letters \"kys\" in his own blood beside him. ";
+            DeathMSG = DeathMSG + "No other signs of physical trauma or struggle can be observed. Body was sent for autopsy.";
+        }
+    }
+}
+
+void Cmd_Revive::execute(std::vector<String> args) {
+    if (!mainPlayer->dead) {
+        ConsoleMsg::create("Player is not dead.", 255, 0, 0);
+        return;
+    }
+
+    mainPlayer->dead = false;
+
+    mainPlayer->dropSpeed = -0.1f;
+    mainPlayer->camShake = 0;
+    mainPlayer->moveSpeed = 0;
+
+    mainPlayer->heartbeatIntensity = 0;
+
+    mainPlayer->lightFlash = 0;
+    mainPlayer->blurTimer = 0;
+
+    mainPlayer->fallTimer = 0;
+
+    bbShowEntity(mainPlayer->collider);
+
+    ConsoleMsg::create("Player revived.");
+}
+
 void Cmd_Teleport::execute(std::vector<String> args) {
     if (args.size() <= 0) {
         ConsoleMsg::create("Please specify a room. (e.g. teleport cont_914_1)", 255, 150, 0);
@@ -214,208 +297,36 @@ void Cmd_Omni::execute(std::vector<String> args) {
     ConsoleMsg::create("Nerd.", 255, 150, 0);
 }
 
+void Cmd_StopSound::execute(std::vector<String> args) {
+    StopSounds();
+    ConsoleMsg::create("Stopped all sounds.");
+}
+
+void Cmd_Halloween::execute(std::vector<String> args) {
+    console->halloween173Tex = !console->halloween173Tex;
+
+    if (console->halloween173Tex) {
+        Texture* tex = bbLoadTexture("GFX/npcs/173h.pt", 1);
+        bbEntityTexture(Curr173->obj, tex);
+        bbFreeTexture(tex);
+        ConsoleMsg::create("173 JACK-O-LANTERN ON");
+    }
+    else {
+        Texture* tex = bbLoadTexture("GFX/npcs/173texture.png", 1);
+        bbEntityTexture(Curr173->obj, tex);
+        bbFreeTexture(tex);
+        ConsoleMsg::create("173 JACK-O-LANTERN OFF");
+    }
+}
+
 }
 
 #if 0
 //TODO: Overhaul this. Move all of the argument stuff to dedicated functions so this is actually readable/maintainable.
 switch (StrTemp.toLower()) {
-case "help": {
-    if (bbInstr(console->input, " ") != 0) {
-        StrTemp = bbRight(console->input, console->input.size() - bbInstr(console->input, " ")).toLower();
-    }
-    else {
-        StrTemp = "";
-    }
-    console->msgR = 0;
-    console->msgG = 255;
-    console->msgB = 255;
-
-    switch (StrTemp.toLower()) {
-    case "camerafog": {
-        ConsoleMsg::create("HELP - camerafog");
-        ConsoleMsg::create("******************************");
-        ConsoleMsg::create("Sets the draw distance of the fog.");
-        ConsoleMsg::create("The fog begins generating at 'CameraFogNear' units");
-        ConsoleMsg::create("away from the camera and becomes completely opaque");
-        ConsoleMsg::create("at 'CameraFogFar' units away from the camera.");
-        ConsoleMsg::create("Example: camerafog 20 40");
-        ConsoleMsg::create("******************************");
-    }
-    case "spawnitem": {
-        ConsoleMsg::create("HELP - spawnitem");
-        ConsoleMsg::create("******************************");
-        ConsoleMsg::create("Spawns an item at the player's location.");
-        ConsoleMsg::create("Any name that can appear in your inventory");
-        ConsoleMsg::create("is a valid parameter.");
-        ConsoleMsg::create("Example: spawnitem key5");
-        ConsoleMsg::create("******************************");
-    }
-    case "spawn": {
-        ConsoleMsg::create("HELP - spawn");
-        ConsoleMsg::create("******************************");
-        ConsoleMsg::create("Spawns an NPC at the player's location.");
-        ConsoleMsg::create("Valid parameters are:");
-        ConsoleMsg::create("049 / zombie (049-2) / 096 / 106 / 173 / 513-1");
-        ConsoleMsg::create("/ 966 / 1499-1 / guard / mtf");
-        ConsoleMsg::create("******************************");
-    }
-    case "revive", "undead", "resurrect": {
-        ConsoleMsg::create("HELP - revive");
-        ConsoleMsg::create("******************************");
-        ConsoleMsg::create("Resets the player's death timer after the dying");
-        ConsoleMsg::create("animation triggers.");
-        ConsoleMsg::create("Does not affect injury, blood loss");
-        ConsoleMsg::create("or 008 infection values.");
-        ConsoleMsg::create("******************************");
-    }
-    case "teleport": {
-        ConsoleMsg::create("HELP - teleport");
-        ConsoleMsg::create("******************************");
-        ConsoleMsg::create("Teleports the player to the first instance");
-        ConsoleMsg::create("of the specified room. Any room that appears");
-        ConsoleMsg::create("in rooms.ini is a valid parameter.");
-        ConsoleMsg::create("******************************");
-    }
-    case "stopsound", "stfu": {
-        ConsoleMsg::create("HELP - stopsound");
-        ConsoleMsg::create("******************************");
-        ConsoleMsg::create("Stops all currently playing sounds.");
-        ConsoleMsg::create("******************************");
-    }
-    case "camerapick": {
-        ConsoleMsg::create("HELP - camerapick");
-        ConsoleMsg::create("******************************");
-        ConsoleMsg::create("Prints the texture name and coordinates of");
-        ConsoleMsg::create("the model the camera is pointing at.");
-        ConsoleMsg::create("******************************");
-    }
-    case "weed", "scp-420-j", "420": {
-        ConsoleMsg::create("HELP - 420");
-        ConsoleMsg::create("******************************");
-        ConsoleMsg::create("Generates dank memes.");
-        ConsoleMsg::create("******************************");
-
-    }
-    default: {
-        ConsoleMsg::create("There is no help available for that command.", 255, 150, 0);
-    }
-    }
-
-}
-case "camerapick": {
-    console->msgR = 0;
-    console->msgG = 255;
-    console->msgB = 0;
-    c = bbCameraPick(mainPlayer->cam, userOptions->screenWidth / 2, userOptions->screenHeight / 2);
-    if (c == 0) {
-        ConsoleMsg::create("******************************");
-        ConsoleMsg::create("No entity picked");
-        ConsoleMsg::create("******************************");
-    }
-    else {
-        ConsoleMsg::create("******************************");
-        ConsoleMsg::create("Picked entity:");
-        sf = bbGetSurface(c, 1);
-        b = bbGetSurfaceBrush(sf);
-        t = bbGetBrushTexture(b, 0);
-        texname = StripPath(bbTextureName(t));
-        ConsoleMsg::create("Texture name: " + texname);
-        ConsoleMsg::create("Coordinates: " + String(bbEntityX(c)) + ", " + String(bbEntityY(c)) + ", " + String(bbEntityZ(c)));
-        ConsoleMsg::create("******************************");
-        bbFreeTexture(t);
-        bbFreeBrush(b);
-    }
-
-}
-case "hidedistance": {
-    HideDistance = (float)(bbRight(console->input, console->input.size() - bbInstr(console->input, " ")));
-    ConsoleMsg::create("Hidedistance set to " + String(HideDistance));
-
-}
-case "ending": {
-    CurrGameState = GAMESTATE_ENDING;
-    StrTemp = bbRight(console->input, console->input.size() - bbInstr(console->input, " ")).toLower();
-
-    Kill(mainPlayer);
-
-}
-case "noclipspeed": {
-    throw ("TODO: reimplement?");
-    //StrTemp$ = Lower(Right(console->input, Len(console->input) - Instr(console->input, " ")))
-
-    //NoClipSpeed = (float)(StrTemp)
-
-}
-case "injure": {
-    StrTemp = bbRight(console->input, console->input.size() - bbInstr(console->input, " ")).toLower();
-
-    mainPlayer->injuries = (float)(StrTemp);
-
-}
-case "infect": {
-    StrTemp = bbRight(console->input, console->input.size() - bbInstr(console->input, " ")).toLower();
-
-    mainPlayer->infect008 = (float)(StrTemp);
-
-}
 case "spawndoc": {
     StrTemp = bbRight(console->input, console->input.size() - bbInstr(console->input, " ")).toLower();
     CreatePaper(StrTemp, bbEntityX(mainPlayer->collider), bbEntityY(mainPlayer->cam, true), bbEntityZ(mainPlayer->collider));
-
-}
-case "spawnomni": {
-    it = CreateItem("keycard", bbEntityX(mainPlayer->collider), bbEntityY(mainPlayer->cam, true), bbEntityZ(mainPlayer->collider));
-    AssignTag(it, ITEM_TAG_OMNI);
-    ConsoleMsg::create("Nerd.", 255, 150, 0);
-
-}
-case "halloween": {
-    HalloweenTex = !HalloweenTex;
-    if (HalloweenTex) {
-        tex = bbLoadTexture("GFX/npcs/173h.pt", 1);
-        bbEntityTexture(Curr173->obj, tex, 0, 0);
-        bbFreeTexture(tex);
-        ConsoleMsg::create("173 JACK-O-LANTERN ON");
-    }
-    else {
-        tex2 = bbLoadTexture("GFX/npcs/173texture.png", 1);
-        bbEntityTexture(Curr173->obj, tex2, 0, 0);
-        bbFreeTexture(tex2);
-        ConsoleMsg::create("173 JACK-O-LANTERN OFF");
-    }
-
-}
-case "sanic": {
-    mainPlayer->superMan = !mainPlayer->superMan;
-    if (mainPlayer->superMan == true) {
-        ConsoleMsg::create("GOTTA GO FAST");
-    }
-    else {
-        ConsoleMsg::create("WHOA SLOW DOWN");
-    }
-}
-case "revive", "undead", "resurrect": {
-    mainPlayer->dead = false;
-
-    mainPlayer->dropSpeed = -0.1f;
-    mainPlayer->camShake = 0;
-    mainPlayer->moveSpeed = 0;
-
-    mainPlayer->heartbeatIntensity = 0;
-
-    mainPlayer->lightFlash = 0;
-    mainPlayer->blurTimer = 0;
-
-    mainPlayer->fallTimer = 0;
-
-    mainPlayer->godMode = 0;
-    mainPlayer->noclip = 0;
-
-    bbShowEntity(mainPlayer->collider);
-
-}
-case "stopsound", "stfu": {
-    StopSounds();
 
 }
 case "camerafog": {
@@ -433,29 +344,6 @@ case "spawn": {
 }
 case "infinitestamina", "infstam": {
     throw ("TODO: reimplement?");
-}
-case "kill", "suicide": {
-    Kill(mainPlayer);
-
-    switch (bbRand(4)) {
-    case 1: {
-        DeathMSG = "[REDACTED]";
-    }
-    case 2: {
-        DeathMSG = "Subject D-9341 found dead in Sector [REDACTED]. ";
-        DeathMSG = DeathMSG + "The subject appears to have attained no physical damage, and there is no visible indication as to what killed him. ";
-        DeathMSG = DeathMSG + "Body was sent for autopsy.";
-    }
-    case 3: {
-        DeathMSG = "EXCP_ACCESS_VIOLATION";
-    }
-    case 4: {
-        DeathMSG = "Subject D-9341 found dead in Sector [REDACTED]. ";
-        DeathMSG = DeathMSG + "The subject appears to have scribbled the letters \"kys\" in his own blood beside him. ";
-        DeathMSG = DeathMSG + "No other signs of physical trauma or struggle can be observed. Body was sent for autopsy.";
-    }
-    }
-
 }
 case Chr($6A) + Chr($6F) + Chr($72) + Chr($67) + Chr($65): {
     throw ("Implement");

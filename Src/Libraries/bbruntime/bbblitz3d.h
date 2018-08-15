@@ -126,6 +126,7 @@ int bbCameraProject(class Camera* c, float x, float y, float z);
 float bbProjectedX();
 float bbProjectedY();
 float bbProjectedZ();
+Object* bbCameraPick(Camera *c, float x, float y);
 int bbEntityInView(class Object* e, Camera* c);
 class Object* bbEntityPick(class Object* src, float range);
 int bbEntityVisible(class Object *src,class Object *dest);

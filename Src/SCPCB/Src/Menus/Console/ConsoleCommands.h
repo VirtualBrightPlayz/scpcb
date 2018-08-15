@@ -42,6 +42,15 @@ public:
     virtual void execute(std::vector<String> args);
 };
 
+class Cmd_CameraPick : public ConsoleCmd {
+public:
+    Cmd_CameraPick() {
+        name = "camerapick";
+        helpDesc = { "Prints texture data and coordinates of the entity the playing is looking at." };
+    }
+    virtual void execute(std::vector<String> args);
+};
+
 class Cmd_DebugHUD : public ConsoleCmd {
 public:
     Cmd_DebugHUD() {
@@ -99,6 +108,26 @@ public:
     virtual void execute(std::vector<String> args);
 };
 
+class Cmd_Kill : public ConsoleCmd {
+public:
+    Cmd_Kill() {
+        name = "kill";
+        aliases = { "suicide" };
+        helpDesc = { "Self-explanatory." };
+    }
+    virtual void execute(std::vector<String> args);
+};
+
+class Cmd_Revive : public ConsoleCmd {
+public:
+    Cmd_Revive() {
+        name = "revive";
+        aliases = { "undead" };
+        helpDesc = { "Revives the player after being killed." };
+    }
+    virtual void execute(std::vector<String> args);
+};
+
 class Cmd_Teleport : public ConsoleCmd {
 public:
     Cmd_Teleport() {
@@ -126,6 +155,25 @@ public:
         name = "spawnomni";
         aliases = { "omni" };
         helpDesc = { "Creates an omni card." };
+    }
+    virtual void execute(std::vector<String> args);
+};
+
+class Cmd_StopSound : public ConsoleCmd {
+public:
+    Cmd_StopSound() {
+        name = "stopsound";
+        aliases = { "stfu" };
+        helpDesc = { "Stops all currently playing sounds." };
+    }
+    virtual void execute(std::vector<String> args);
+};
+
+class Cmd_Halloween : public ConsoleCmd {
+public:
+    Cmd_Halloween() {
+        name = "halloween";
+        helpDesc = { "Spooks." };
     }
     virtual void execute(std::vector<String> args);
 };
