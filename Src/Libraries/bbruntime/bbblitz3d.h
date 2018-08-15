@@ -34,7 +34,7 @@ void bbCollisions(int src_type, int dest_type, int method, int response);
 void bbUpdateWorld (float eslapsed=1.f);
 void bbCaptureWorld ();
 void bbRenderWorld(float tween=1.f);
-void bbClearWorld(int e=1, int b=1, int t=1);
+void bbPrintWorldAssetList();
 int bbActiveTextures();
 int bbTrisRendered();
 float bbStats3D(int n);
