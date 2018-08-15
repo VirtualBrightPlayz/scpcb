@@ -1849,16 +1849,27 @@ String bbEntityClass( Object *e ){
 	return String(p);
 }
 
-void  bbClearWorld( int e,int b,int t ){
-	if( e ){
-		while( Object::orphans() ) bbFreeEntity( Object::orphans() );
-	}
-	if( b ){
-		while( brush_set.size() ) bbFreeBrush( *brush_set.begin() );
-	}
-	if( t ){
-		while( texture_set.size() ) bbFreeTexture( *texture_set.begin() );
-	}
+void  bbPrintWorldAssetList(){
+    Object* o = Object::orphans();
+    for (;o->successor!=nullptr;o=o->successor) {
+        std::cout<<"ORPHAN: "<<o->getName()<<"\n";
+    }
+    std::set<Brush*>::iterator bi = brush_set.begin();
+    for (;bi!=brush_set.end();bi++) {
+        if ((*bi)->getTexture(0).getCachedTexture()) {
+            std::cout<<"BRUSH: "<<(*bi)->getTexture(0).getCachedTexture()->getName()<<"\n";
+        } else {
+            std::cout << "BRUSH: " << (*bi) << "\n";
+        }
+    }
+    std::set<Texture*>::iterator ti = texture_set.begin();
+    for (; ti != texture_set.end(); ti++) {
+        if ((*ti)->getCachedTexture()) {
+            std::cout << "TEXTURE: " << (*ti)->getCachedTexture()->getName() << "\n";
+        } else {
+            std::cout << "TEXTURE: " << (*ti) << "\n";
+        }
+    }
 }
 
 extern int active_texs;
@@ -1884,7 +1895,9 @@ void blitz3d_open(){
 
 void blitz3d_close(){
 	if( !gx_scene ) return;
-	bbClearWorld( 1,1,1 );
+    while (Object::orphans()) bbFreeEntity(Object::orphans());
+    while (brush_set.size()) bbFreeBrush(*brush_set.begin());
+    while (texture_set.size()) bbFreeTexture(*texture_set.begin());
 	Texture::clearFilters();
 	loader_mat_map.clear();
 	delete world;

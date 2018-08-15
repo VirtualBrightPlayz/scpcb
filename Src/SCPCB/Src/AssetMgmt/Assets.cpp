@@ -719,7 +719,8 @@ void NullGame() {
 
     //DeInitExt
 
-    bbClearWorld();
+    bbPrintWorldAssetList(); //TODO: MASSIVE MEMORY LEAK BECAUSE THIS DOESN'T DO CLEANUP ANYMORE
+
     ark_blur_cam = 0;
     InitFastResize();
 
