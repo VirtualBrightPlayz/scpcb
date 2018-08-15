@@ -2,7 +2,6 @@
 #ifndef BBSTRING_H
 #define BBSTRING_H
 
-#include "basic.h"
 #include "../gxruntime/StringType.h"
 
 String   bbString( const String& s,int n );
