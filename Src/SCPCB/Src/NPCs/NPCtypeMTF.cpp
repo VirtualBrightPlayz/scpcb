@@ -13,6 +13,7 @@
 #include "../Config/Difficulty.h"
 #include "../Map/Doors.h"
 #include "../Map/Particles.h"
+#include "../Menus/Console/Console.h"
 #include "NPCtypeMTF.h"
 
 namespace CBN {
@@ -178,7 +179,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                             for (int iterator140 = 0; iterator140 < Room::getListSize(); iterator140++) {
                                 r = Room::getObject(iterator140);
 
-                                if (((abs(r->x-bbEntityX(n->collider,true))>12.f) || (abs(r->z-bbEntityZ(n->collider,true))>12.f)) && (bbRand(1,(int)(Max(4-(int)(abs(r->z-bbEntityZ(n->collider,true)/8.f)),2)))==1)) {
+                                if (((abs(r->x-bbEntityX(n->collider,true))>12.f) || (abs(r->z-bbEntityZ(n->collider,true))>12.f)) && (bbRand(1,(int)(Max(4-(int)(abs(r->z-bbEntityZ(n->collider,true)/8.f)),2.f)))==1)) {
                                     x = r->x;
                                     y = 0.1f;
                                     z = r->z;
@@ -390,11 +391,11 @@ void UpdateNPCtypeMTF(NPC* n) {
 
                 temp = MeNPCSeesPlayer(n);
 
-                if (NoTarget) {
+                if (console->noTarget) {
                     temp = false;
                 }
 
-                if (temp>false) {
+                if (temp == 1) {
                     if (n->lastSeen > 0 && n->lastSeen < 70*15) {
                         if (temp < 2) {
                             if (n->sounds[0] != 0) {
@@ -405,14 +406,14 @@ void UpdateNPCtypeMTF(NPC* n) {
                             PlayMTFSound(n->sounds[0], n);
                         }
                     } else {
-                        if (temp == true) {
+                        if (temp) {
                             if (n->sounds[0] != 0) {
                                 bbFreeSound(n->sounds[0]);
                                 n->sounds[0] = 0;
                             }
                             n->sounds[0] = bbLoadSound("SFX/Character/MTF/bbStop"+String(bbRand(1,6))+".ogg");
                             PlayMTFSound(n->sounds[0], n);
-                        } else if ((temp == 2)) {
+                        } else if (temp == 2) {
                             //If (n\sounds[0] <> 0) Then FreeSound(n\sounds[0]
                             //n->sounds[0] = 0);
                             //n\sounds[0] = MTFSFX(Rand(0,3))
@@ -433,7 +434,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                     std::cout << "player spotted :"+String(n->state2);
                     n->pathTimer = 0.f;
                     n->pathStatus = 0;
-                    n->reload = 200-(100*SelectedDifficulty->aggressiveNPCs);
+                    n->reload = 200.f-(100.f*SelectedDifficulty->aggressiveNPCs);
 
                     //If EntityDistance(n\collider,mainPlayer\collider)>HideDistance*0.7f
                     //	TeleportMTFGroup(n)
@@ -571,7 +572,7 @@ void UpdateNPCtypeMTF(NPC* n) {
 
                 n->speed = 0.015f;
                 n->state2 = n->state2-timing->tickDuration;
-                if (MeNPCSeesPlayer(n) == true) {
+                if (MeNPCSeesPlayer(n) == 1) {
 
                     //if close enough, start shooting at the player
                     if (n->playerDistance < 4.f) {
@@ -628,7 +629,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                                         n2->state2 = n->state2;
                                         n2->pathTimer = 0.f;
                                         n2->pathStatus = 0;
-                                        n2->reload = 200-(100*SelectedDifficulty->aggressiveNPCs);
+                                        n2->reload = 200.f-(100.f*SelectedDifficulty->aggressiveNPCs);
                                         n2->prevState = 0;
                                     }
                                 }
@@ -675,7 +676,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                 } else {
                     n->lastSeen = (int)(n->lastSeen - timing->tickDuration);
 
-                    n->reload = 200-(100*SelectedDifficulty->aggressiveNPCs);
+                    n->reload = 200.f-(100.f*SelectedDifficulty->aggressiveNPCs);
 
                     //update path
                     if (n->pathTimer<=0.f) {
@@ -1246,7 +1247,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                             for (int iterator147 = 0; iterator147 < Room::getListSize(); iterator147++) {
                                 r = Room::getObject(iterator147);
 
-                                if (((abs(r->x-bbEntityX(n->collider,true))>12.f) || (abs(r->z-bbEntityZ(n->collider,true))>12.f)) && (bbRand(1,(int)(Max(4-(int)(abs(r->z-bbEntityZ(n->collider,true)/8.f)),2)))==1)) {
+                                if (((abs(r->x-bbEntityX(n->collider,true))>12.f) || (abs(r->z-bbEntityZ(n->collider,true))>12.f)) && (bbRand(1,(int)(Max(4-(int)(abs(r->z-bbEntityZ(n->collider,true)/8.f)),2.f)))==1)) {
                                     if (bbEntityDistance(r->obj,n->target->collider)>6.f) {
                                         x = r->x;
                                         y = 0.1f;
@@ -1345,7 +1346,7 @@ void UpdateNPCtypeMTF(NPC* n) {
 
                     if (n->pathTimer == 0) {
                         n->pathStatus = bbEntityVisible(n->collider,target);
-                        n->pathTimer = bbRand(100,200);
+                        n->pathTimer = (float)bbRand(100,200);
                     } else {
                         n->pathTimer = Min(n->pathTimer-timing->tickDuration,0.f);
                     }
@@ -1464,7 +1465,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                         for (int iterator148 = 0; iterator148 < Room::getListSize(); iterator148++) {
                             r = Room::getObject(iterator148);
 
-                            if (((abs(r->x-bbEntityX(n->collider,true))>12.f) || (abs(r->z-bbEntityZ(n->collider,true))>12.f)) && (bbRand(1,(int)(Max(4-(int)(abs(r->z-bbEntityZ(n->collider,true)/8.f)),2)))==1)) {
+                            if (((abs(r->x-bbEntityX(n->collider,true))>12.f) || (abs(r->z-bbEntityZ(n->collider,true))>12.f)) && (bbRand(1,(int)(Max(4-(int)(abs(r->z-bbEntityZ(n->collider,true)/8.f)),2.f)))==1)) {
                                 x = r->x;
                                 y = 0.1f;
                                 z = r->z;
@@ -1636,7 +1637,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                             bbTurnEntity(p->sprite, 0,0,bbRnd(360));
                             p->aChange = -0.15f;
                             if (n->target->hp > 0) {
-                                n->target->hp = (int)(Max(n->target->hp-bbRand(5,10),0));
+                                n->target->hp = (int)(Max((float)(n->target->hp-bbRand(5,10)),0.f));
                             } else {
                                 if (!n->target->isDead) {
                                     if (n->sounds[0] != 0) {
@@ -1734,7 +1735,7 @@ void UpdateNPCtypeMTF(NPC* n) {
             }
         }
 
-        if (NoTarget && n->state == 1) {
+        if (console->noTarget && n->state == 1) {
             n->state = 0;
         }
 
@@ -1822,7 +1823,7 @@ void UpdateMTF() {
                             n->mtfLeader = leader;
                         }
 
-                        n->prevX = i;
+                        n->prevX = (float)i;
                     }
                 }
             }

@@ -49,10 +49,10 @@ void DrawTiledImageRect(bbImage* img, int srcX, int srcY, int srcwidth, int srch
         y2 = y;
         while (y2 < y+height) {
             if (x2 + srcwidth > x + width) {
-                srcwidth = srcwidth - (int)(Max((x2 + srcwidth) - (x + width), 1));
+                srcwidth = srcwidth - (int)(Max((float)((x2 + srcwidth) - (x + width)), 1.f));
             }
             if (y2 + srcheight > y + height) {
-                srcheight = srcheight - (int)(Max((y2 + srcheight) - (y + height), 1));
+                srcheight = srcheight - (int)(Max((float)((y2 + srcheight) - (y + height)), 1.f));
             }
             bbDrawImageRect(img, x2, y2, srcX, srcY, srcwidth, srcheight);
             y2 = y2 + srcheight;
@@ -227,8 +227,8 @@ int UpdateUITick(int x, int y, int selected, int locked) {
 
 float UpdateSlideBar(int x, int y, int width, float value) {
     if (MouseDown1) {
-        if (bbMouseX() >= x & bbMouseX() <= x + width + 14 && bbMouseY() >= y && bbMouseY() <= y + 20) {
-            value = Min(Max((bbMouseX() - x) * 100 / width, 0), 100);
+        if (bbMouseX() >= x && bbMouseX() <= x + width + 14 && bbMouseY() >= y && bbMouseY() <= y + 20) {
+            value = Min(Max((bbMouseX() - x) * 100.f / width, 0.f), 100.f);
         }
     }
 
@@ -312,13 +312,13 @@ void RowText(const String& A, int X, int Y, int W, int H, int align, float Leadi
     }
 }
 
-int LimitText(const String& txt, int x, int y, int width, int usingAA) {
+void LimitText(const String& txt, int x, int y, int width, bool usingAA) {
     int TextLength;
     int UnFitting;
     int LetterWidth;
     if (usingAA) {
         if (txt.isEmpty() || width == 0) {
-            return 0;
+            return;
         }
         TextLength = bbStringWidth(txt);
         UnFitting = TextLength - width;
@@ -329,11 +329,11 @@ int LimitText(const String& txt, int x, int y, int width, int usingAA) {
         } else {
             LetterWidth = TextLength / txt.size();
 
-            bbText(x, y, txt.substr(0, (int)(Max(txt.size() - UnFitting / LetterWidth - 4, 1))) + "...");
+            bbText(x, y, txt.substr(0, (int)(Max((float)(txt.size() - UnFitting / LetterWidth - 4), 1.f))) + "...");
         }
     } else {
         if (txt.isEmpty() || width == 0) {
-            return 0;
+            return;
         }
         TextLength = bbStringWidth(txt);
         UnFitting = TextLength - width;
@@ -344,7 +344,7 @@ int LimitText(const String& txt, int x, int y, int width, int usingAA) {
         } else {
             LetterWidth = TextLength / txt.size();
 
-            bbText(x, y, txt.substr(0, (int)(Max(txt.size() - UnFitting / LetterWidth - 4, 1))) + "...");
+            bbText(x, y, txt.substr(0, (int)(Max((float)(txt.size() - UnFitting / LetterWidth - 4), 1.f))) + "...");
         }
     }
 }

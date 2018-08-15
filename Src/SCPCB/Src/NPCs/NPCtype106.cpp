@@ -8,6 +8,7 @@
 #include "../AssetMgmt/Audio.h"
 #include "../Map/MapSystem.h"
 #include "../Player/Player.h"
+#include "../Menus/Console/Console.h"
 #include "../MathUtils/MathUtils.h"
 #include "../Config/Difficulty.h"
 #include "../Map/Decals.h"
@@ -80,7 +81,7 @@ void InitializeNPCtype106(NPC* n) {
     n->sounds[6] = bbLoadSound("SFX/SCP/106/Laugh.ogg");
     n->sounds[7] = bbLoadSound("SFX/SCP/106/Catch.ogg");
 
-    n->timer = bbRand(22000, 27000);
+    n->timer = (float)bbRand(22000, 27000);
 }
 
 void UpdateNPCtype106(NPC* n) {
@@ -108,7 +109,7 @@ void UpdateNPCtype106(NPC* n) {
             } else if ((n->timer >= -10)) {
                 if (bbEntityY(n->collider) < bbEntityY(mainPlayer->collider) - 20.f - 0.55f) {
                     if (!mainPlayer->currRoom->roomTemplate->disableDecals) {
-                        de = CreateDecal(DECAL_CORROSION, bbEntityX(mainPlayer->collider), 0.01f, bbEntityZ(mainPlayer->collider), 90, bbRand(360), 0);
+                        de = CreateDecal(DECAL_CORROSION, bbEntityX(mainPlayer->collider), 0.01f, bbEntityZ(mainPlayer->collider), 90.f, (float)bbRand(360), 0.f);
                         de->size = 0.05f;
                         de->sizeChange = 0.001f;
                         bbEntityAlpha(de->obj, 0.8f);
@@ -149,7 +150,7 @@ void UpdateNPCtype106(NPC* n) {
         }
         case STATE106_ATTACK: {
             //TODO: Set music to play 106 theme?
-            if (dist < 8.f && (!NoTarget)) {
+            if (dist < 8.f && !console->noTarget) {
                 visible = bbEntityVisible(n->collider, mainPlayer->collider);
             }
 
@@ -269,7 +270,7 @@ void UpdateNPCtype106(NPC* n) {
             if (dist > 48) {
                 //Reset state.
                 if (!bbEntityInView(n->obj,mainPlayer->cam) && bbRand(5)==1) {
-                    n->timer = bbRand(22000, 27000);
+                    n->timer = (float)bbRand(22000, 27000);
                     n->state = STATE106_RISE;
                     //Flank.
                 } else {

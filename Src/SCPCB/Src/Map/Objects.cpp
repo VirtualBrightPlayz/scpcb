@@ -176,12 +176,12 @@ void UpdateLevers() {
 float UpdateElevators(float state, Door* door1, Door* door2, class Object* room1, class Object* room2, Event* event) {
     door1->isElevatorDoor = 1;
     door2->isElevatorDoor = 1;
-    if (door1->open == true && door2->open == false) {
+    if (door1->open && door2->open) {
         state = -1;
         if ((mainPlayer->closestButton == door2->buttons[0] || mainPlayer->closestButton == door2->buttons[1]) && MouseHit1) {
             UseDoor(door1,false);
         }
-        if (door2->npcCalledElevator == true) {
+        if (door2->npcCalledElevator == 1) {
             UseDoor(door1,false);
             door2->npcCalledElevator = 2;
         }
@@ -190,7 +190,7 @@ float UpdateElevators(float state, Door* door1, Door* door2, class Object* room1
         if ((mainPlayer->closestButton == door1->buttons[0] || mainPlayer->closestButton == door1->buttons[1]) && MouseHit1) {
             UseDoor(door2,false);
         }
-        if (door1->npcCalledElevator == true) {
+        if (door1->npcCalledElevator == 1) {
             UseDoor(door2,false);
             door1->npcCalledElevator = 2;
         }
@@ -375,19 +375,19 @@ float UpdateElevators2(float State, Door* door1, Door* door2, class Object* room
 
     door1->isElevatorDoor = 1;
     door2->isElevatorDoor = 1;
-    if (door1->open == true && door2->open == false) {
+    if (door1->open && !door2->open) {
         State = -1;
         door2->isElevatorDoor = 2;
         if ((mainPlayer->closestButton == door2->buttons[0] || mainPlayer->closestButton == door2->buttons[1]) && MouseHit1) {
             UseDoor(door1,false);
         }
-    } else if ((door2->open == true && door1->open == false)) {
+    } else if (door2->open && !door1->open) {
         State = 1;
         door1->isElevatorDoor = 2;
         if ((mainPlayer->closestButton == door1->buttons[0] || mainPlayer->closestButton == door1->buttons[1]) && MouseHit1) {
             UseDoor(door2,false);
         }
-    } else if ((abs(door1->openstate-door2->openstate)<0.2f)) {
+    } else if (abs(door1->openstate-door2->openstate)<0.2f) {
         door1->isElevatorDoor = 2;
         door2->isElevatorDoor = 2;
     }

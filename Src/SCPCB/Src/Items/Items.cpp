@@ -298,7 +298,7 @@ Item* CreateItem(const String& name, float x, float y, float z, int invSlots) {
 
     bbResetEntity(i->collider);
     bbPositionEntity(i->collider, x, y, z, true);
-    bbRotateEntity(i->collider, 0, bbRand(360), 0);
+    bbRotateEntity(i->collider, 0.f, (float)bbRand(360), 0.f);
     i->dropSpeed = 0.f;
 
     //TODO: Re-implement.
@@ -810,7 +810,7 @@ void DrawInventory(Player* player) {
                     bbShowEntity(mainPlayer->cam);
                     bbFreeEntity(tempCamera);
                     bbFreeEntity(tempLight);
-                    bbAmbientLight(Brightness, Brightness, Brightness);
+                    bbAmbientLight((float)Brightness, (float)Brightness, (float)Brightness);
                 }
 
                 if (player->selectedItem != player->openInventory->items[n] || isMouseOn) {

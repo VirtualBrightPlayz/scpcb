@@ -157,15 +157,15 @@ void UpdateNPCtype966(NPC* n) {
                     //echo/stare/walk around periodically
                     if (n->frame>1014.f) {
                         if (bbRand(3)==1 && n->playerDistance<4) {
-                            n->state = bbRand(1,4);
+                            n->state = (float)bbRand(1,4);
                         } else {
-                            n->state = bbRand(5,6);
+                            n->state = (float)bbRand(5,6);
                         }
                     }
 
                     //echo if player gets close
                     if (n->playerDistance<2.f) {
-                        n->state = bbRand(1,4);
+                        n->state = (float)bbRand(1,4);
                     }
                 }
 
@@ -197,7 +197,7 @@ void UpdateNPCtype966(NPC* n) {
                 bbRotateEntity(n->collider,0.f,CurveAngle(angle,bbEntityYaw(n->collider),20.f),0.f);
 
                 if (n->state3<900) {
-                    mainPlayer->blurTimer = ((bbSin(TimeInPosMilliSecs()/50)+1.f)*200)/n->playerDistance;
+                    mainPlayer->blurTimer = ((bbSin(TimeInPosMilliSecs()/50.f)+1.f)*200.f)/n->playerDistance;
 
                     if (n->playerDistance<16) {
                         mainPlayer->blinkEffect = Max(mainPlayer->blinkEffect, 1.5f);
@@ -323,7 +323,7 @@ void UpdateNPCtype966(NPC* n) {
                             }
                             bbShowEntity(n->collider);
 
-                            n->state2 = TimeInPosMilliSecs()+1000;
+                            n->state2 = TimeInPosMilliSecs()+1000.f;
 
                             if (bbRand(5)==1) {
                                 n->state = 0;

@@ -107,7 +107,7 @@ void UpdateDecals() {
                         //TODO: fix, and not attach this to the decal
                         //PlayRangedSound(DecaySFX(Rand(1, 3)), mainPlayer\cam, d2\obj, 10.f, Rnd(0.1f, 0.5f))
                         //d\timer = d\timer + Rand(50,150)
-                        d->timer = bbRand(50, 100);
+                        d->timer = (float)bbRand(50, 100);
                     } else {
                         d->timer = d->timer-timing->tickDuration;
                     }

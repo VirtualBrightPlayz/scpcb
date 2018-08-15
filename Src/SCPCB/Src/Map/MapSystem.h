@@ -333,7 +333,7 @@ extern gxSound* RoomAmbience[20];
 extern MeshModel* Sky;
 extern float HideDistance;
 extern float SecondaryLightOn;
-extern int RemoteDoorOn;
+extern bool RemoteDoorOn;
 extern int Contained106;
 extern Screen* SelectedScreen;
 extern SecurityCam* SelectedMonitor;

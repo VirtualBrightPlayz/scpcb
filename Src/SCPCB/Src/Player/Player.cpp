@@ -304,7 +304,7 @@ void UpdatePlayer() {
             if (temp < 180 && modFloat(mainPlayer->camAnimState, 360) >= 180 && !mainPlayer->dead) {
                 //TODO: define constants for each override state
                 if (mainPlayer->footstepOverride==0) {
-                    temp = GetMaterialStepSound(mainPlayer->collider);
+                    temp = (float)GetMaterialStepSound(mainPlayer->collider);
 
                     if (Sprint == 1.f) {
                         mainPlayer->loudness = Max(4.f,mainPlayer->loudness);
@@ -502,7 +502,7 @@ void UpdatePlayer() {
             bbTurnEntity(pvt, 90, 0, 0);
             bbEntityPick(pvt,0.3f);
 
-            Decal* de = CreateDecal(bbRand(DECAL_BLOOD_DROP1, DECAL_BLOOD_DROP2), bbPickedX(), bbPickedY()+0.005f, bbPickedZ(), 90, bbRand(360), 0);
+            Decal* de = CreateDecal(bbRand(DECAL_BLOOD_DROP1, DECAL_BLOOD_DROP2), bbPickedX(), bbPickedY()+0.005f, bbPickedZ(), 90.f, (float)bbRand(360), 0.f);
             de->size = bbRnd(0.03f,0.08f)*Min(mainPlayer->injuries,3.f);
             bbEntityAlpha(de->obj, 1.f);
             bbScaleSprite(de->obj, de->size, de->size);

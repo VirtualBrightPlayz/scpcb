@@ -9,6 +9,7 @@
 #include "../AssetMgmt/Audio.h"
 #include "../Map/MapSystem.h"
 #include "../Player/Player.h"
+#include "../Menus/Console/Console.h"
 #include "../MathUtils/MathUtils.h"
 #include "../Map/Decals.h"
 #include "../Config/Options.h"
@@ -56,7 +57,7 @@ void UpdateNPCtype096(NPC* n) {
                 //-EntityYaw(n\collider,True))
                 angle = WrapAngle(bbDeltaYaw(n->collider, mainPlayer->collider));
 
-                if (!NoTarget) {
+                if (!console->noTarget) {
                     if (angle<90 || angle>270) {
                         bbCameraProject(mainPlayer->cam,bbEntityX(n->collider), bbEntityY(n->collider)+0.25f, bbEntityZ(n->collider));
 
@@ -108,7 +109,7 @@ void UpdateNPCtype096(NPC* n) {
                 }
             }
 
-            if (NoTarget && n->target == nullptr) {
+            if (console->noTarget && n->target == nullptr) {
                 n->state = 5;
             }
 
@@ -125,7 +126,7 @@ void UpdateNPCtype096(NPC* n) {
                             n->lastSeen = 1;
                         }
                     }
-                    n->state3 = TimeInPosMilliSecs()+3000;
+                    n->state3 = TimeInPosMilliSecs()+3000.f;
                 }
 
                 if (n->lastSeen==1) {
@@ -161,7 +162,7 @@ void UpdateNPCtype096(NPC* n) {
                                         bbTurnEntity(pvt, 90, 0, 0);
                                         bbEntityPick(pvt,0.3f);
 
-                                        de = CreateDecal(bbRand(DECAL_BLOOD_DROP1, DECAL_BLOOD_DROP2), bbPickedX(), bbPickedY()+0.005f, bbPickedZ(), 90, bbRand(360), 0);
+                                        de = CreateDecal(bbRand(DECAL_BLOOD_DROP1, DECAL_BLOOD_DROP2), bbPickedX(), bbPickedY()+0.005f, bbPickedZ(), 90.f, (float)bbRand(360), 0.f);
                                         de->size = bbRnd(0.2f,0.6f);
                                         bbEntityAlpha(de->obj, 1.f);
                                         bbScaleSprite(de->obj, de->size, de->size);
@@ -347,7 +348,7 @@ void UpdateNPCtype096(NPC* n) {
                 if (n->state2>1000) {
                     if (n->state2>1600) {
                         //: SetAnimTime(n\obj, 1652)
-                        n->state2 = bbRand(0,500);
+                        n->state2 = (float)bbRand(0,500);
                         n->frame = 1652;
                     }
 
@@ -375,7 +376,7 @@ void UpdateNPCtype096(NPC* n) {
                             }
                             bbShowEntity(n->collider);
                         }
-                        n->state3 = TimeInPosMilliSecs()+3000;
+                        n->state3 = TimeInPosMilliSecs()+3000.f;
                     }
 
                     if (n->lastSeen) {
@@ -405,7 +406,7 @@ void UpdateNPCtype096(NPC* n) {
 
                 //-EntityYaw(n\collider))
                 angle = WrapAngle(bbDeltaYaw(n->collider, mainPlayer->cam));
-                if (!NoTarget) {
+                if (!console->noTarget) {
                     if (angle<55 || angle>360-55) {
                         bbCameraProject(mainPlayer->cam,bbEntityX(n->collider), bbEntityY(mainPlayer->collider)+5.8f*0.2f-0.25f, bbEntityZ(n->collider));
 

@@ -52,7 +52,6 @@ void InitializeNPCtype049(NPC* n) {
 void UpdateNPCtype049(NPC* n) {
     float prevFrame = n->frame;
     Room* r;
-    Event* e;
     int npcDetectsPlayer;
     float dist2;
     int temp;
@@ -203,7 +202,7 @@ void UpdateNPCtype049(NPC* n) {
 
                         //Playing a sound if he hears the player
                         if (n->soundTimer < 0 && (!bbChannelPlaying(n->soundChannels[0]))) {
-                            n->soundTimer = bbRand(10, 20) * 70;
+                            n->soundTimer = (float)bbRand(10, 20) * 70;
 
                             if (bbRand(8)==3) {
                                 n->soundChannels[0] = LoopRangedSound(n->sounds[6], n->soundChannels[0], mainPlayer->cam, n->obj);
@@ -317,7 +316,7 @@ void UpdateNPCtype049(NPC* n) {
 
                         n->timer = n->timer + timing->tickDuration;
 
-                        if (n->inFacility == true) {
+                        if (n->inFacility == 1) {
                             //Breaking the path after 14 seconds
                             if (n->state3 > 70*14) {
                                 n->pathStatus = 0;
@@ -343,7 +342,7 @@ void UpdateNPCtype049(NPC* n) {
                         if (n->pathTimer < 300+bbRand(100,300)) {
                             n->pathTimer = n->pathTimer + timing->tickDuration;
                         } else {
-                            if (n->inFacility == true) {
+                            if (n->inFacility == 1) {
                                 if (bbRand(2)==1) {
                                     for (int iterator122 = 0; iterator122 < Room::getListSize(); iterator122++) {
                                         r = Room::getObject(iterator122);

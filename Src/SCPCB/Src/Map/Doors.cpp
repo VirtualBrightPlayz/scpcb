@@ -334,7 +334,7 @@ void UpdateDoors() {
                             }
                         }
                     }
-                    if (d->autoClose && RemoteDoorOn == true) {
+                    if (d->autoClose && RemoteDoorOn) {
                         if (bbEntityDistanceSquared(mainPlayer->cam, d->obj) < 2.1f*2.1f) {
                             //PlaySound2(HorrorSFX(7))) ;TODO: fix
                             d->open = false;
@@ -432,7 +432,7 @@ void UpdateDoors() {
     }
 }
 
-void UseDoor(Door* d, int showmsg) {
+void UseDoor(Door* d, bool showmsg) {
     int i;
     Item* item;
     int playerHasKeycard = false;
@@ -479,7 +479,7 @@ void UseDoor(Door* d, int showmsg) {
         }
     } else {
         if (d->locked) {
-            if (showmsg == true) {
+            if (showmsg) {
                 if (!(d->isElevatorDoor>0)) {
                     PlaySound_SM(sndManager->buttonErr);
                     Msg = "The door appears to be locked.";
@@ -527,9 +527,9 @@ void UseDoor(Door* d, int showmsg) {
 
     if (d->open) {
         if (d->linkedDoor != nullptr) {
-            d->linkedDoor->timerstate = d->linkedDoor->timer;
+            d->linkedDoor->timerstate = (float)d->linkedDoor->timer;
         }
-        d->timerstate = d->timer;
+        d->timerstate = (float)d->timer;
         switch (d->typ) {
             case DOOR_TYPE_CONT: {
                 PlayRangedSound_SM(sndManager->openBigDoor[bbRand(0, 1)], mainPlayer->cam, d->obj);

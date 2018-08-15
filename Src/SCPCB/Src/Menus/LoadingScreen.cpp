@@ -144,7 +144,7 @@ void DrawLoading(int percent, int shortloading) {
                 LoadingScreenText = LoadingScreenText+1;
             }
         }
-        LoadingScreenText = (int)Min(LoadingScreenText,4);
+        LoadingScreenText = (int)Min((float)LoadingScreenText,4.f);
 
         if (!SelectedLoadingScreen->disablebackground) {
             bbDrawImage(LoadingBack, userOptions->screenWidth/2 - bbImageWidth(LoadingBack)/2, userOptions->screenHeight/2 - bbImageHeight(LoadingBack)/2);

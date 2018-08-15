@@ -8,6 +8,7 @@
 #include "../GameMain.h"
 #include "../AssetMgmt/Audio.h"
 #include "../Map/MapSystem.h"
+#include "../Menus/Console/Console.h"
 #include "../Player/Player.h"
 #include "../MathUtils/MathUtils.h"
 #include "../Map/Doors.h"
@@ -114,7 +115,7 @@ void UpdateNPCtype173(NPC* n) {
                 }
             }
 
-            if (NoTarget) {
+            if (console->noTarget) {
                 canMove = true;
             }
 
@@ -200,7 +201,7 @@ void UpdateNPCtype173(NPC* n) {
                         }
                     }
 
-                    if (NoTarget) {
+                    if (console->noTarget) {
                         playerVisible = false;
                         n->targetX = 0;
                         n->targetY = 0;
@@ -236,9 +237,9 @@ void UpdateNPCtype173(NPC* n) {
 
                                 //TODO: Remove?
                                 if (bbRand(2) == 1) {
-                                    bbTurnEntity(mainPlayer->cam, 0, bbRand(80,100), 0);
+                                    bbTurnEntity(mainPlayer->cam, 0.f, (float)bbRand(80,100), 0.f);
                                 } else {
-                                    bbTurnEntity(mainPlayer->cam, 0, bbRand(-100,-80), 0);
+                                    bbTurnEntity(mainPlayer->cam, 0.f, (float)bbRand(-100,-80), 0.f);
                                 }
 
                                 Kill(mainPlayer);

@@ -9,6 +9,7 @@
 #include "../AssetMgmt/Audio.h"
 #include "../Map/MapSystem.h"
 #include "../Player/Player.h"
+#include "../Menus/Console/Console.h"
 #include "../MathUtils/MathUtils.h"
 #include "NPCtype1499.h"
 
@@ -125,7 +126,7 @@ void UpdateNPCtype1499(NPC* n) {
                     }
                 }
 
-                if (n->id % 2 == 0 && !NoTarget) {
+                if (n->id % 2 == 0 && !console->noTarget) {
                     if (n->playerDistance < 10.f) {
                         if (bbEntityVisible(n->collider,mainPlayer->collider)) {
                             //play the "screaming animation"
@@ -162,7 +163,7 @@ void UpdateNPCtype1499(NPC* n) {
                 //attacking the player
             }
             case 1: {
-                if (NoTarget) {
+                if (console->noTarget) {
                     n->state = 0;
                 }
 
@@ -186,7 +187,7 @@ void UpdateNPCtype1499(NPC* n) {
 
                 if (n->playerDistance < 0.75f) {
                     if ((n->id % 2 == 0) || n->state3 == 1) {
-                        n->state2 = bbRand(1,2);
+                        n->state2 = (float)bbRand(1,2);
                         n->state = 3;
                         if (n->state2 == 1) {
                             SetNPCFrame(n,63);

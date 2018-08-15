@@ -52,7 +52,6 @@ extern const int HIT_APACHE;
 extern const int HIT_DEAD;
 
 // Globals.
-extern int WireframeState;
 extern int HalloweenTex;
 extern Timing* timing;
 extern float CurrFrameLimit;
@@ -78,7 +77,6 @@ extern gxSound* RadioBuzz;
 extern int PlayerDetected;
 extern float PrevInjuries;
 extern float PrevBloodloss;
-extern int NoTarget;
 extern Texture* AmbientLightRoomTex;
 extern int AmbientLightRoomVal;
 extern float NTF_1499PrevX;

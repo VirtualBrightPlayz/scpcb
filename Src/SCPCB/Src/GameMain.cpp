@@ -64,8 +64,9 @@ const int HIT_APACHE = 4;
 const int HIT_DEAD = 5;
 
 // Globals.
-int WireframeState = 0;
+// TODO: Move these to console struct.
 int HalloweenTex;
+
 Timing* timing;
 float CurrFrameLimit;
 int GameSaved;
@@ -76,23 +77,29 @@ bool MouseHit2;
 bool DoubleClick;
 bool LastMouseHit1;
 bool MouseUp1;
+int Brightness;
+Object* SoundEmitter;
+
+// TODO: Sound manager this.
+gxSound* TempSounds[10];
+int TempSoundIndex = 0;
+
+// TODO: Radio class.
+gxSound* RadioSquelch;
+gxSound* RadioStatic;
+gxSound* RadioBuzz;
+
+float PrevInjuries;
+float PrevBloodloss;
+Texture* AmbientLightRoomTex;
+int AmbientLightRoomVal;
+
+// TODO: Remove everything below.
+int PlayerDetected;
 float CoffinDistance;
 float ExplosionTimer;
 int LightsOn = true;
 int SoundTransmission;
-int Brightness;
-Object* SoundEmitter;
-gxSound* TempSounds[10];
-int TempSoundIndex = 0;
-gxSound* RadioSquelch;
-gxSound* RadioStatic;
-gxSound* RadioBuzz;
-int PlayerDetected;
-float PrevInjuries;
-float PrevBloodloss;
-int NoTarget;
-Texture* AmbientLightRoomTex;
-int AmbientLightRoomVal;
 float NTF_1499PrevX;
 float NTF_1499PrevY;
 float NTF_1499PrevZ;
@@ -135,6 +142,8 @@ int EntryPoint() {
     userOptions = new Options();
     LoadOptionsINI();
 
+    txtManager = new TxtManager();
+
     timing = new Timing();
     SetTickrate(60);
 
@@ -163,7 +172,7 @@ void InitializeMainGame() {
 
     MenuScale = (userOptions->screenHeight / 1024.f);
 
-    CurrFrameLimit = userOptions->framelimit;
+    CurrFrameLimit = (float)userOptions->framelimit;
 
     bbSetBuffer(bbBackBuffer());
 
@@ -273,15 +282,14 @@ void UpdateGame() {
     //EndIf
 
     //Counting the fps
-    float instantFramerate = 1000.f/Max(1,elapsedMilliseconds);
+    float instantFramerate = 1000.f/Max(1.f, (float)elapsedMilliseconds);
     timing->fps = Max(0,timing->fps*0.99f + instantFramerate*0.01f);
 
-    int prevmousedown1;
     String rn;
     float darkA;
     int temp;
 
-
+    // Start FixedUpdate.
     while (timing->accumulator>0.f) {
         timing->accumulator = timing->accumulator-timing->tickDuration;
         if (timing->accumulator<=0.f) {
@@ -293,22 +301,23 @@ void UpdateGame() {
         DoubleClick = false;
         MouseHit1 = bbMouseHit(1);
         if (MouseHit1) {
+            // TODO: Make this a constant or modifyable through the options.
             if (TimeInPosMilliSecs() - LastMouseHit1 < 400) {
                 DoubleClick = true;
             }
             LastMouseHit1 = TimeInPosMilliSecs();
         }
 
-        prevmousedown1 = MouseDown1;
+        bool prevmousedown1 = MouseDown1;
         MouseDown1 = bbMouseDown(1);
-        if (prevmousedown1 == true && MouseDown1==false) {
+        if (prevmousedown1 && !MouseDown1) {
             MouseUp1 = true;
         } else {
             MouseUp1 = false;
         }
 
         MouseHit2 = bbMouseHit(2);
-        //TODO: A better way?
+        //TODO: Add the ability to play no music.
         if (CurrGameState != GAMESTATE_LAUNCHER) {
             musicManager->update();
         }
@@ -339,7 +348,7 @@ void UpdateGame() {
                 //CameraFogMode(mainPlayer\cam,1)
                 //CameraRange(mainPlayer\cam, 0.05f, Min(mainPlayer\camFogFar*LightVolume*1.5f,28))
 
-                bbAmbientLight(Brightness, Brightness, Brightness);
+                bbAmbientLight((float)Brightness, (float)Brightness, (float)Brightness);
                 mainPlayer->loudness = CurveValue(0.f, mainPlayer->loudness, 5.f);
 
                 CanSave = true;
@@ -503,7 +512,7 @@ void UpdateGame() {
             bbEntityColor(mainPlayer->overlays[OVERLAY_WHITE],255,255,255);
 
 
-
+            // TODO: Not make this trash.
             if (bbKeyHit(keyBinds->save)) {
                 if (SelectedDifficulty->saveType == SAVEANYWHERE) {
                     rn = mainPlayer->currRoom->roomTemplate->name;
@@ -572,47 +581,16 @@ void UpdateGame() {
             UpdatePauseMenu();
             //EndIf
 
-            UpdateConsole();
-
-            if (MsgTimer > 0) {
-                //TODO: change this variable's name because it's dumb as hell
-                temp = false;
-                if (CurrGameState!=GAMESTATE_INVENTORY) {
-                    if (mainPlayer->selectedItem != nullptr) {
-                        if (mainPlayer->selectedItem->itemTemplate->name.equals("paper") || mainPlayer->selectedItem->itemTemplate->name.equals("oldpaper")) {
-                            temp = true;
-                        }
-                    }
-                }
-
-                if (!temp) {
-                    bbColor(0,0,0);
-                    //, Min(MsgTimer / 2, 255)/255.f)
-                    bbText((userOptions->screenWidth / 2)+1, (userOptions->screenHeight / 2) + 201, Msg, true, false);
-                    //Min(MsgTimer / 2, 255), Min(MsgTimer / 2, 255), Min(MsgTimer / 2, 255))
-                    bbColor(255,255,255);
-                    //, Min(MsgTimer / 2, 255)/255.f)
-                    bbText((userOptions->screenWidth / 2), (userOptions->screenHeight / 2) + 200, Msg, true, false);
-                } else {
-                    bbColor(0,0,0);
-                    //, Min(MsgTimer / 2, 255)/255.f)
-                    bbText((userOptions->screenWidth / 2)+1, (int)((userOptions->screenHeight * 0.94f) + 1), Msg, true, false);
-                    //Min(MsgTimer / 2, 255), Min(MsgTimer / 2, 255), Min(MsgTimer / 2, 255))
-                    bbColor(255,255,255);
-                    //, Min(MsgTimer / 2, 255)/255.f)
-                    bbText((userOptions->screenWidth / 2), (int)((userOptions->screenHeight * 0.94f)), Msg, true, false);
-                }
-                MsgTimer = MsgTimer-timing->tickDuration;
-            }
+            console->update();
         }
         AssetWrap::update();
-    }
+    } // End FixedUpdate.
 
     if (CurrGameState==GAMESTATE_LAUNCHER) {
         if (launcher!=nullptr) {
             launcher->draw();
         }
-    } else if ((CurrGameState==GAMESTATE_MAINMENU)) {
+    } else if (CurrGameState==GAMESTATE_MAINMENU) {
         DrawMainMenu();
     } else {
         RenderWorld2();
@@ -621,7 +599,7 @@ void UpdateGame() {
 
         DrawGUI();
         DrawPauseMenu();
-        DrawConsole();
+        console->draw();
 
         bbColor(255, 255, 255);
         if (userOptions->showFPS) {
@@ -645,7 +623,7 @@ void UpdateGame() {
         bbEntityAlpha(fresize_image,userOptions->screenGamma-1.f);
         ScaleRender(-1.f/(float)(userOptions->screenWidth),1.f/(float)(userOptions->screenWidth),2048.f / (float)(userOptions->screenWidth),2048.f / (float)(userOptions->screenWidth));
         //todo: maybe optimize this if it's too slow, alternatively give players the option to disable gamma
-    } else if ((userOptions->screenGamma<1.f)) {
+    } else if (userOptions->screenGamma<1.f) {
         bbCopyRect(0,0,userOptions->screenWidth,userOptions->screenHeight,1024-userOptions->screenWidth/2,1024-userOptions->screenHeight/2,bbBackBuffer(),bbTextureBuffer(fresize_texture));
         bbEntityBlend(fresize_image,1);
         bbClsColor(0,0,0);
@@ -881,7 +859,6 @@ void DrawGUI() {
     int width;
     int height;
 
-    Event* ev;
     NPC* npc;
     int offset;
     MeshAssetWrap* buttonObj;
@@ -1027,7 +1004,7 @@ void DrawGUI() {
             bbDrawImage(uiAssets->sprintIcon, x - 50, y);
         }
 
-        if (DebugHUD) {
+        if (console->debugHUD) {
             bbColor(255, 255, 255);
             bbSetFont(uiAssets->consoleFont);
 
@@ -1373,12 +1350,12 @@ float Animate2(MeshModel* entity, float curr, int start, int quit, float speed, 
     int temp;
 
     if (speed > 0.f) {
-        newTime = Max(Min(curr + speed * timing->tickDuration,quit),start);
+        newTime = Max(Min(curr + speed * timing->tickDuration, (float)quit), (float)start);
 
         if (loop) {
             if (newTime >= quit) {
                 //SetAnimTime(entity, start)
-                newTime = start;
+                newTime = (float)start;
             } else {
                 //SetAnimTime(entity, newTime)
             }
@@ -1396,16 +1373,16 @@ float Animate2(MeshModel* entity, float curr, int start, int quit, float speed, 
             newTime = curr + speed * timing->tickDuration;
 
             if (newTime < quit) {
-                newTime = start;
+                newTime = (float)start;
             }
             if (newTime > start) {
-                newTime = quit;
+                newTime = (float)quit;
             }
 
             //SetAnimTime(entity, newTime)
         } else {
             //SetAnimTime(entity, Max(Min(curr + speed * timing\tickDuration,start),quit))
-            newTime = Max(Min(curr + speed * timing->tickDuration,start),quit);
+            newTime = Max(Min(curr + speed * timing->tickDuration, (float)start), (float)quit);
         }
     }
 

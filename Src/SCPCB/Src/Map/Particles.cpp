@@ -77,7 +77,7 @@ void LoadParticles() {
 Particle* CreateParticle(float x, float y, float z, int image, float size, float gravity, int lifetime) {
     TextureAssetWrap* tex = TextureAssetWrap::grab("GFX/" + particleList[image], 1+2);
     Particle* p = new Particle();
-    p->lifetime = lifetime;
+    p->lifetime = (float)lifetime;
 
     p->sprite = bbCreateSprite();
     bbPositionEntity(p->sprite, x, y, z, true);

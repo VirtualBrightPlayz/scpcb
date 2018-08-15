@@ -74,7 +74,7 @@ void DrawSlideBar(int x, int y, int width, float value);
 
 void RowText(const String& A, int X, int Y, int W, int H, int align = 0, float Leading = 1);
 
-int LimitText(const String& txt, int x, int y, int width, int usingAA = true);
+void LimitText(const String& txt, int x, int y, int width, bool usingAA = true);
 
 void DrawTooltip(const String& message);
 

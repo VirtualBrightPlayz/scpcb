@@ -20,6 +20,7 @@
 #include "Audio.h"
 #include "../NPCs/NPCs.h"
 #include "../Menus/Menu.h"
+#include "../Menus/Console/Console.h"
 #include "../Menus/Console/ConsoleCommands.h"
 #include "../Menus/LoadingScreen.h"
 #include "../Config/Options.h"
@@ -32,6 +33,44 @@
 namespace CBN {
 
 // Structs.
+TxtManager::TxtManager() {
+    displayMsg = "";
+    displayTimer = 0.f;
+    deathMsg = "";
+}
+
+void TxtManager::setMsg(const String& msg, float time) {
+    displayMsg = msg;
+    displayTimer = time;
+}
+
+void TxtManager::update() {
+    if (displayTimer > 0) {
+        bool paperSelected = false;
+        if (CurrGameState!=GAMESTATE_INVENTORY) {
+            if (mainPlayer->selectedItem != nullptr) {
+                if (mainPlayer->selectedItem->itemTemplate->name.equals("paper") || mainPlayer->selectedItem->itemTemplate->name.equals("oldpaper")) {
+                    paperSelected = true;
+                }
+            }
+        }
+
+        // If a paper is being looked at then move the text down.
+        if (!paperSelected) {
+            bbColor(0,0,0);
+            bbText((userOptions->screenWidth / 2)+1, (userOptions->screenHeight / 2) + 201, displayMsg, true, false);
+            bbColor(255,255,255);
+            bbText((userOptions->screenWidth / 2), (userOptions->screenHeight / 2) + 200, displayMsg, true, false);
+        } else {
+            bbColor(0,0,0);
+            bbText((userOptions->screenWidth / 2)+1, (int)((userOptions->screenHeight * 0.94f) + 1), displayMsg, true, false);
+            bbColor(255,255,255);
+            bbText((userOptions->screenWidth / 2), (int)((userOptions->screenHeight * 0.94f)), displayMsg, true, false);
+        }
+        displayTimer -= timing->tickDuration;
+    }
+}
+
 std::vector<TextureAssetWrap*> TextureAssetWrap::list;
 std::vector<ImageAssetWrap*> ImageAssetWrap::list;
 std::vector<MeshAssetWrap*> MeshAssetWrap::list;
@@ -39,6 +78,7 @@ std::vector<MeshAssetWrap*> MeshAssetWrap::list;
 UIAssets::UIAssets() {
 	back = bbLoadImage("GFX/menu/back.jpg");
 	scpText = bbLoadImage("GFX/menu/scptext.jpg");
+    // TODO: Remove this and add support for multiple SCPS.
 	scp173 = bbLoadImage("GFX/menu/173back.jpg");
 	tileWhite = bbLoadImage("GFX/menu/menuwhite.jpg");
 	tileBlack = bbLoadImage("GFX/menu/menublack.jpg");
@@ -56,7 +96,7 @@ UIAssets::UIAssets() {
 
 	for (int i = 0; i < 4; i++) {
 		arrow[i] = bbLoadImage("GFX/menu/arrow.png");
-		bbRotateImage(arrow[i], 90 * i);
+		bbRotateImage(arrow[i], 90.f * i);
 		bbHandleImage(arrow[i], 0, 0);
 	}
 
@@ -69,7 +109,7 @@ UIAssets::UIAssets() {
 	font[1] = bbLoadFont("GFX/font/courbd/Courier New.ttf", (int)(58 * MenuScale), 0, 0, 0);
 	font[2] = bbLoadFont("GFX/font/DS-DIGI/DS-Digital.ttf", (int)(22 * MenuScale), 0, 0, 0);
 	font[3] = bbLoadFont("GFX/font/DS-DIGI/DS-Digital.ttf", (int)(60 * MenuScale), 0, 0, 0);
-	consoleFont = bbLoadFont("Blitz", (int)(20 * MenuScale), 0, 0, 0);
+	consoleFont = bbLoadFont("Arial", (int)(18 * MenuScale), 0, 0, 0);
 
 	sprintIcon = bbLoadImage("GFX/HUD/sprinticon.png");
 	blinkIcon = bbLoadImage("GFX/HUD/blinkicon.png");
@@ -115,6 +155,7 @@ UIAssets::~UIAssets() {
 
 // Globals.
 UIAssets* uiAssets;
+TxtManager* txtManager;
 
 // Functions.
 AssetWrap::AssetWrap() {
@@ -318,7 +359,7 @@ void LoadEntities() {
 
     mainPlayer = new Player();
 
-    bbAmbientLight(Brightness, Brightness, Brightness);
+    bbAmbientLight((float)Brightness, (float)Brightness, (float)Brightness);
 
     ScreenTexs[0] = bbCreateTexture(512, 512, 1+256);
     ScreenTexs[1] = bbCreateTexture(512, 512, 1+256);
@@ -358,7 +399,7 @@ void InitNewGame() {
 
     sndManager->loadInGameSounds();
 
-    ConsoleCmd::generateCommands();
+    console = new Console();
 
     HideDistance = 15.f;
 
@@ -382,7 +423,7 @@ void InitNewGame() {
 
     Curr173 = CreateNPC(NPCtype173, 0, -30.f, 0);
     Curr106 = CreateNPC(NPCtype106, 0, -30.f, 0);
-    Curr106->state = 70 * 60 * bbRand(12,17);
+    Curr106->state = 70.f * 60.f * bbRand(12,17);
 
     for (int i = 0; i < Door::getListSize(); i++) {
         Door* d = Door::getObject(i);
@@ -435,14 +476,14 @@ void InitNewGame() {
 
         if (!r->roomTemplate->disableDecals) {
             if (bbRand(4) == 1) {
-                Decal* de = CreateDecal(bbRand(DECAL_BLOOD_SPREAD, DECAL_BLOOD_SPLATTER), bbEntityX(r->obj)+bbRnd(- 2,2), 0.003f, bbEntityZ(r->obj)+bbRnd(-2,2), 90, bbRand(360), 0);
+                Decal* de = CreateDecal(bbRand(DECAL_BLOOD_SPREAD, DECAL_BLOOD_SPLATTER), bbEntityX(r->obj)+bbRnd(- 2,2), 0.003f, bbEntityZ(r->obj)+bbRnd(-2,2), 90.f, (float)bbRand(360), 0.f);
                 de->size = bbRnd(0.1f, 0.4f);
                 bbScaleSprite(de->obj, de->size, de->size);
                 bbEntityAlpha(de->obj, bbRnd(0.85f, 0.95f));
             }
 
             if (bbRand(4) == 1) {
-                Decal* de = CreateDecal(DECAL_CORROSION, bbEntityX(r->obj)+bbRnd(- 2,2), 0.003f, bbEntityZ(r->obj)+bbRnd(-2,2), 90, bbRand(360), 0);
+                Decal* de = CreateDecal(DECAL_CORROSION, bbEntityX(r->obj)+bbRnd(- 2,2), 0.003f, bbEntityZ(r->obj)+bbRnd(-2,2), 90.f, (float)bbRand(360), 0.f);
                 de->size = bbRnd(0.5f, 0.7f);
                 bbEntityAlpha(de->obj, 0.7f);
                 de->id = 1;
@@ -493,7 +534,7 @@ void InitNewGame() {
         delete tw;
     }
 
-    bbTurnEntity(mainPlayer->collider, 0, bbRand(160, 200), 0);
+    bbTurnEntity(mainPlayer->collider, 0.f, (float)bbRand(160, 200), 0.f);
 
     bbResetEntity(mainPlayer->collider);
 
@@ -618,7 +659,7 @@ void InitLoadGame() {
 
     DrawLoading(100);
 
-    bbWireFrame(WireframeState);
+    bbWireFrame(console->wireframeState);
 }
 
 void NullGame() {
@@ -626,7 +667,7 @@ void NullGame() {
 
     ItemTemplate::DeloadTemplates();
 
-    ConsoleCmd::clearCommands();
+    delete console;
 
     ClearTextureCache();
 
@@ -659,8 +700,6 @@ void NullGame() {
         }
         delete s;
     }
-
-    ConsoleInput = "";
 
     Msg = "";
     MsgTimer = 0;
@@ -710,7 +749,7 @@ void NullGame() {
     NTF_1499Y = 0.f;
     NTF_1499Z = 0.f;
 
-    NoTarget = false;
+    console->noTarget = false;
 
     //OptionsMenu% = -1
     //QuitMSG% = -1
