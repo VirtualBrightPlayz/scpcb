@@ -258,7 +258,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="bbaudio.cpp" />
-    <ClCompile Include="bbbank.cpp" />
     <ClCompile Include="bbblitz3d.cpp" />
     <ClCompile Include="bbfilesystem.cpp" />
     <ClCompile Include="bbgraphics.cpp" />
@@ -278,7 +277,6 @@
   <ItemGroup>
     <ClInclude Include="basic.h" />
     <ClInclude Include="bbaudio.h" />
-    <ClInclude Include="bbbank.h" />
     <ClInclude Include="bbblitz3d.h" />
     <ClInclude Include="bbfilesystem.h" />
     <ClInclude Include="bbgraphics.h" />

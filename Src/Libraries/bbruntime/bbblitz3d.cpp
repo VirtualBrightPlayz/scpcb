@@ -1851,7 +1851,7 @@ String bbEntityClass( Object *e ){
 
 void  bbPrintWorldAssetList(){
     Object* o = Object::orphans();
-    for (;o->successor!=nullptr;o=o->successor) {
+    for (;o->successor()!=nullptr;o=o->successor()) {
         std::cout<<"ORPHAN: "<<o->getName()<<"\n";
     }
     std::set<Brush*>::iterator bi = brush_set.begin();

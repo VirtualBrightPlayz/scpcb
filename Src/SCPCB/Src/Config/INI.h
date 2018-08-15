@@ -3,7 +3,6 @@
 #include <StringType.h>
 #include <vector>
 
-class bbBank;
 struct bbFile;
 
 namespace CBN {

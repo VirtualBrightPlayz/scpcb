@@ -81,8 +81,6 @@ void  _bbDebugLeave(){
 	gx_runtime->debugLeave();
 }
 
-bool basic_create();
-bool basic_destroy();
 bool math_create();
 bool math_destroy();
 bool string_create();
@@ -93,8 +91,6 @@ bool sockets_create();
 bool sockets_destroy();
 bool filesystem_create();
 bool filesystem_destroy();
-bool bank_create();
-bool bank_destroy();
 bool graphics_create();
 bool graphics_destroy();
 bool input_create();
@@ -113,51 +109,31 @@ static void sue( const char *t ){
 
 bool bbruntime_create(HINSTANCE hinst){
     gx_runtime = gxRuntime::openRuntime(hinst, "");
-	if( basic_create() ){
-        printf("basic_create()\n");
-		if( math_create() ){
-            printf("math_create()\n");
-			if( string_create() ){
-                printf("string_create()\n");
-				if( stream_create() ){
-                    printf("stream_create()\n");
-					if( sockets_create() ){
-                        printf("sockets_create()\n");
-						if( filesystem_create() ){
-                            printf("filesystem_create()\n");
-							if( bank_create() ){
-                                printf("bank_create()\n");
-								if( graphics_create() ){
-                                    printf("graphics_create()\n");
-									if( input_create() ){
-                                        printf("input_create()\n");
-										if( audio_create() ){
-                                            printf("audio_create()\n");
-											if( blitz3d_create() ){
-                                                printf("blitz3d_create()\n");
-												return true;
-											}else sue( "blitz3d_create failed" );
-											audio_destroy();
-										}else sue( "audio_create failed" );
-										input_destroy();
-									}else sue( "input_create failed" );
-									graphics_destroy();
-								}else sue( "graphics_create failed" );
-								bank_destroy();
-							}else sue( "bank_create failed" );
-							filesystem_destroy();
-						}else sue( "filesystem_create failed" );
-						sockets_destroy();
-					}else sue( "sockets_create failed" );
-					stream_destroy();
-				}else sue( "stream_create failed" );
-				string_destroy();
-			}else sue( "string_create failed" );
-			math_destroy();
-		}else sue( "math_create failed" );
-		basic_destroy();
-	}else sue( "basic_create failed" );
+
+    bool math_state = math_create(); if (!math_state) sue("math_create failed");
+    bool string_state = string_create(); if (!string_state) sue("string_create failed");
+    bool stream_state = stream_create(); if (!stream_state) sue("stream_create failed");
+    bool sockets_state = sockets_create(); if (!sockets_state) sue("sockets_create failed");
+    bool filesystem_state = filesystem_create(); if (!filesystem_state) sue("filesystem_create failed");
+    bool graphics_state = graphics_create(); if (!graphics_state) sue("graphics_create failed");
+    bool input_state = input_create(); if (!input_state) sue("input_create failed");
+    bool audio_state = audio_create(); if (!audio_state) sue("audio_create failed");
+    bool blitz3d_state = blitz3d_create(); if (!blitz3d_state) sue("blitz3d_create failed");
+
+    if (math_state && string_state && stream_state && sockets_state && filesystem_state &&
+        graphics_state && input_state && audio_state && blitz3d_state) return true;
+
+    if (blitz3d_state) blitz3d_destroy();
+    if (audio_state) audio_destroy();
+    if (input_state) input_destroy();
+    if (graphics_state) graphics_destroy();
+    if (filesystem_state) filesystem_destroy();
+    if (sockets_state) sockets_destroy();
+    if (stream_state) stream_destroy();
+    if (string_state) string_destroy();
+    if (math_state) math_destroy();
     gxRuntime::closeRuntime(gx_runtime); gx_runtime = nullptr;
+
 	return false;
 }
 
@@ -166,13 +142,11 @@ bool bbruntime_destroy(){
 	audio_destroy();
 	input_destroy();
 	graphics_destroy();
-	bank_destroy();
 	filesystem_destroy();
 	sockets_destroy();
 	stream_destroy();
 	string_destroy();
 	math_destroy();
-	basic_destroy();
     gxRuntime::closeRuntime(gx_runtime); gx_runtime = nullptr;
 	return true;
 }
