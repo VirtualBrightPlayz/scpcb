@@ -119,7 +119,7 @@ void UpdateEvent_cont_008_1(Event* e) {
 
                 e->eventState = 1;
             } else if ((e->eventState == 1)) {
-                e->soundChannels[0] = LoopRangedSound_SM(sndManager->alarm, e->soundChannels[0], mainPlayer->cam, e->room->objects[0], 5.f);
+                e->soundChannels[0] = LoopRangedSound_SM(sndMgmt->alarm, e->soundChannels[0], mainPlayer->cam, e->room->objects[0], 5.f);
 
                 if ((TimeInPosMilliSecs() % 1000)<500) {
                     bbShowEntity(e->room->objects[5]);
@@ -166,7 +166,7 @@ void UpdateEvent_cont_008_1(Event* e) {
 
                 if (bbEntityPitch(e->room->objects[1],true)<40) {
                     e->eventState = 2;
-                    PlaySound_SM(sndManager->lever);
+                    PlaySound_SM(sndMgmt->lever);
                 } else {
                     Particle* p = CreateParticle(bbEntityX(e->room->objects[0],true),bbEntityY(e->room->objects[0],true),bbEntityZ(e->room->objects[0],true), PARTICLE_SMOKE_WHITE, 0.02f, -0.12f);
                     bbRotateEntity(p->pvt,-90,0,0,true);

@@ -136,7 +136,7 @@ void DrawLoading(int percent, int shortloading) {
         //Cls(True,False)
 
         if (percent > 24) {
-            musicManager->update();
+            musicMgmt->update();
         }
 
         if (shortloading == false) {
@@ -334,7 +334,7 @@ void DrawLoading(int percent, int shortloading) {
     } while (bbGetKey()==0 && !bbMouseHit(1));
 
     if (percent >= 100) {
-        musicManager->restoreDefaultMusic();
+        musicMgmt->restoreDefaultMusic();
     }
 }
 

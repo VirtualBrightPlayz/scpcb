@@ -194,7 +194,7 @@ void UpdateMainMenu() {
                             } else {
                                 SelectedDifficulty->otherFactors = EASY;
                             }
-                            PlaySound_SM(sndManager->button);
+                            PlaySound_SM(sndMgmt->button);
                         }
                     }
                 }

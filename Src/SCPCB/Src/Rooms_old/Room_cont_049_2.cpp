@@ -205,7 +205,7 @@ void UpdateEvent_cont_049_2(Event* e) {
                                 //If EntityVisible(mainPlayer\collider,e\room\doors[i]\frameobj)
                                 bbPositionEntity(e->room->npc[0]->collider,bbEntityX(e->room->objects[i],true),bbEntityY(e->room->objects[i],true),bbEntityZ(e->room->objects[i],true));
                                 bbResetEntity(e->room->npc[0]->collider);
-                                PlayRangedSound_SM(sndManager->elevatorBeep, mainPlayer->cam, e->room->objects[i], 4.f);
+                                PlayRangedSound_SM(sndMgmt->elevatorBeep, mainPlayer->cam, e->room->objects[i], 4.f);
                                 UseDoor(e->room->doors[i],false);
                                 e->room->doors[i-1]->open = false;
                                 e->room->doors[i]->open = true;
@@ -232,8 +232,8 @@ void UpdateEvent_cont_049_2(Event* e) {
                         //e\room\npc[0]\state = 1
 
                         e->room->doors[4]->open = true;
-                        PlaySound_SM(sndManager->teslaPowerUp);
-                        PlayRangedSound_SM(sndManager->openDoor[bbRand(0,2)], mainPlayer->cam, e->room->doors[4]->obj, 6.f);
+                        PlaySound_SM(sndMgmt->teslaPowerUp);
+                        PlayRangedSound_SM(sndMgmt->openDoor[bbRand(0,2)], mainPlayer->cam, e->room->doors[4]->obj, 6.f);
 
                         e->room->doors[1]->open = false;
                         e->room->doors[3]->open = false;

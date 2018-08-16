@@ -470,7 +470,7 @@ void Shoot(float x, float y, float z, float hitProb, int particles, int instaKil
 
         if (instaKill) {
             Kill(mainPlayer);
-            PlaySound_SM(sndManager->bulletHit);
+            PlaySound_SM(sndMgmt->bulletHit);
             return;
         }
 
@@ -570,7 +570,7 @@ void Shoot(float x, float y, float z, float hitProb, int particles, int instaKil
             mainPlayer->injuries = Min(mainPlayer->injuries, 4.f);
 
             //Kill(mainPlayer)
-            PlaySound_SM(sndManager->bulletHit);
+            PlaySound_SM(sndMgmt->bulletHit);
         } else if ((particles)) {
             pvt = bbCreatePivot();
             bbPositionEntity(pvt, bbEntityX(mainPlayer->collider),(bbEntityY(mainPlayer->collider)+bbEntityY(mainPlayer->cam))/2,bbEntityZ(mainPlayer->collider));
@@ -580,7 +580,7 @@ void Shoot(float x, float y, float z, float hitProb, int particles, int instaKil
             bbEntityPick(pvt, 2.5f);
 
             if (bbPickedEntity() != 0) {
-                PlayRangedSound_SM(sndManager->bulletMiss, mainPlayer->cam, pvt, 0.4f, bbRnd(0.8f,1.f));
+                PlayRangedSound_SM(sndMgmt->bulletMiss, mainPlayer->cam, pvt, 0.4f, bbRnd(0.8f,1.f));
 
                 if (particles) {
                     //dust/smoke particles

@@ -316,20 +316,20 @@ void UpdateDoors() {
                     if (d->timerstate > 0) {
                         d->timerstate = Max(0, d->timerstate - timing->tickDuration);
                         if (d->timerstate + timing->tickDuration > 110 && d->timerstate <= 110) {
-                            PlayRangedSound_SM(sndManager->caution, mainPlayer->cam, d->obj);
+                            PlayRangedSound_SM(sndMgmt->caution, mainPlayer->cam, d->obj);
                         }
 
                         if (d->timerstate == 0) {
                             d->open = (!d->open);
                             switch (d->typ) {
                                 case DOOR_TYPE_CONT: {
-                                    PlayRangedSound_SM(sndManager->closeBigDoor[bbRand(0, 1)], mainPlayer->cam, d->obj);
+                                    PlayRangedSound_SM(sndMgmt->closeBigDoor[bbRand(0, 1)], mainPlayer->cam, d->obj);
                                 } break;
                                 case DOOR_TYPE_HCZ: {
-                                    PlayRangedSound_SM(sndManager->closeHCZDoor[bbRand(0, 2)], mainPlayer->cam, d->obj);
+                                    PlayRangedSound_SM(sndMgmt->closeHCZDoor[bbRand(0, 2)], mainPlayer->cam, d->obj);
                                 } break;
                                 default: {
-                                    PlayRangedSound_SM(sndManager->closeDoor[bbRand(0, 2)], mainPlayer->cam, d->obj);
+                                    PlayRangedSound_SM(sndMgmt->closeDoor[bbRand(0, 2)], mainPlayer->cam, d->obj);
                                 } break;
                             }
                         }
@@ -340,13 +340,13 @@ void UpdateDoors() {
                             d->open = false;
                             switch (d->typ) {
                                 case DOOR_TYPE_CONT: {
-                                    PlayRangedSound_SM(sndManager->closeBigDoor[bbRand(0, 1)], mainPlayer->cam, d->obj);
+                                    PlayRangedSound_SM(sndMgmt->closeBigDoor[bbRand(0, 1)], mainPlayer->cam, d->obj);
                                 } break;
                                 case DOOR_TYPE_HCZ: {
-                                    PlayRangedSound_SM(sndManager->closeHCZDoor[bbRand(0, 2)], mainPlayer->cam, d->obj);
+                                    PlayRangedSound_SM(sndMgmt->closeHCZDoor[bbRand(0, 2)], mainPlayer->cam, d->obj);
                                 } break;
                                 default: {
-                                    PlayRangedSound_SM(sndManager->closeDoor[bbRand(0, 2)], mainPlayer->cam, d->obj);
+                                    PlayRangedSound_SM(sndMgmt->closeDoor[bbRand(0, 2)], mainPlayer->cam, d->obj);
                                 } break;
                             }
                             d->autoClose = false;
@@ -446,7 +446,7 @@ void UseDoor(Door* d, bool showmsg) {
             if (item != nullptr) {
                 if (item->itemTemplate->name.equals("keycard")) {
                     if (d->locked) {
-                        PlaySound_SM(sndManager->keycardErr);
+                        PlaySound_SM(sndMgmt->keycardErr);
                         Msg = "The keycard was inserted into the slot but nothing happened.";
                         MsgTimer = 70 * 5;
                         return;
@@ -462,13 +462,13 @@ void UseDoor(Door* d, bool showmsg) {
         }
 
         if (playerHasRightKeycard) {
-            PlaySound_SM(sndManager->keycardUse);
+            PlaySound_SM(sndMgmt->keycardUse);
             if (showmsg) {
                 Msg = "The keycard was inserted into the slot.";
                 MsgTimer = 70 * 5;
             }
         } else if ((playerHasKeycard)) {
-            PlaySound_SM(sndManager->keycardErr);
+            PlaySound_SM(sndMgmt->keycardErr);
             Msg = "A keycard with a higher security clearance is required to operate this door.";
             MsgTimer = 70 * 5;
             return;
@@ -481,7 +481,7 @@ void UseDoor(Door* d, bool showmsg) {
         if (d->locked) {
             if (showmsg) {
                 if (!(d->isElevatorDoor>0)) {
-                    PlaySound_SM(sndManager->buttonErr);
+                    PlaySound_SM(sndMgmt->buttonErr);
                     Msg = "The door appears to be locked.";
                     MsgTimer = 70 * 5;
                 } else {
@@ -532,25 +532,25 @@ void UseDoor(Door* d, bool showmsg) {
         d->timerstate = (float)d->timer;
         switch (d->typ) {
             case DOOR_TYPE_CONT: {
-                PlayRangedSound_SM(sndManager->openBigDoor[bbRand(0, 1)], mainPlayer->cam, d->obj);
+                PlayRangedSound_SM(sndMgmt->openBigDoor[bbRand(0, 1)], mainPlayer->cam, d->obj);
             } break;
             case DOOR_TYPE_HCZ: {
-                PlayRangedSound_SM(sndManager->openHCZDoor[bbRand(0, 2)], mainPlayer->cam, d->obj);
+                PlayRangedSound_SM(sndMgmt->openHCZDoor[bbRand(0, 2)], mainPlayer->cam, d->obj);
             } break;
             default: {
-                PlayRangedSound_SM(sndManager->openDoor[bbRand(0, 2)], mainPlayer->cam, d->obj);
+                PlayRangedSound_SM(sndMgmt->openDoor[bbRand(0, 2)], mainPlayer->cam, d->obj);
             } break;
         }
     } else {
         switch (d->typ) {
             case DOOR_TYPE_CONT: {
-                PlayRangedSound_SM(sndManager->closeBigDoor[bbRand(0, 1)], mainPlayer->cam, d->obj);
+                PlayRangedSound_SM(sndMgmt->closeBigDoor[bbRand(0, 1)], mainPlayer->cam, d->obj);
             } break;
             case DOOR_TYPE_HCZ: {
-                PlayRangedSound_SM(sndManager->closeHCZDoor[bbRand(0, 2)], mainPlayer->cam, d->obj);
+                PlayRangedSound_SM(sndMgmt->closeHCZDoor[bbRand(0, 2)], mainPlayer->cam, d->obj);
             } break;
             default: {
-                PlayRangedSound_SM(sndManager->closeDoor[bbRand(0, 2)], mainPlayer->cam, d->obj);
+                PlayRangedSound_SM(sndMgmt->closeDoor[bbRand(0, 2)], mainPlayer->cam, d->obj);
             } break;
         }
     }

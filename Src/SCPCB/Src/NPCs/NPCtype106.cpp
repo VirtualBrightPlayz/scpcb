@@ -186,7 +186,7 @@ void UpdateNPCtype106(NPC* n) {
 
                 //Footstep sounds.
                 if (prevFrame <= 286 && n->frame > 286 || prevFrame<=311 && n->frame > 311.f) {
-                    PlayRangedSound(sndManager->footstepPD[bbRand(0, 2)]->internal, mainPlayer->cam, n->collider, 6.f, bbRnd(0.8f,1.f));
+                    PlayRangedSound(sndMgmt->footstepPD[bbRand(0, 2)]->internal, mainPlayer->cam, n->collider, 6.f, bbRnd(0.8f,1.f));
                 }
 
                 if (dist > 25.f || visible || n->pathStatus == 2) {

@@ -171,7 +171,7 @@ int UpdateUIButton(int x, int y, int width, int height, const String& txt, int w
     if (MouseOn(x, y, width, height)) {
         if ((MouseHit1 && (!waitForMouseUp)) || (MouseUp1 && waitForMouseUp)) {
             clicked = true;
-            PlaySound_SM(sndManager->button);
+            PlaySound_SM(sndMgmt->button);
         }
     }
 
@@ -218,7 +218,7 @@ int UpdateUITick(int x, int y, int selected, int locked) {
     if (Highlight) {
         if (MouseHit1) {
             selected = (!selected);
-            PlaySound_SM(sndManager->button);
+            PlaySound_SM(sndMgmt->button);
         }
     }
 

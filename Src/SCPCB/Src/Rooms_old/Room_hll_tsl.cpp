@@ -85,7 +85,7 @@ void UpdateEvent_tesla(Event* e) {
 
             if (e->room->dist < 8) {
                 if (!bbChannelPlaying(e->soundChannels[0])) {
-                    e->soundChannels[0] = PlayRangedSound_SM(sndManager->teslaIdle, mainPlayer->cam, e->room->objects[3],4.f,0.5f);
+                    e->soundChannels[0] = PlayRangedSound_SM(sndMgmt->teslaIdle, mainPlayer->cam, e->room->objects[3],4.f,0.5f);
                 }
             }
 
@@ -95,7 +95,7 @@ void UpdateEvent_tesla(Event* e) {
                     if (!mainPlayer->dead) {
                         mainPlayer->loudness = Max(8.f,mainPlayer->loudness);
                         bbStopChannel(e->soundChannels[0]);
-                        e->soundChannels[0] = PlayRangedSound_SM(sndManager->teslaActive, mainPlayer->cam, e->room->objects[3],4.f,0.5f);
+                        e->soundChannels[0] = PlayRangedSound_SM(sndMgmt->teslaActive, mainPlayer->cam, e->room->objects[3],4.f,0.5f);
                         e->eventState = 1;
                         break;
                     }
@@ -108,7 +108,7 @@ void UpdateEvent_tesla(Event* e) {
                         //play the activation sound
                         if (!mainPlayer->dead) {
                             bbStopChannel(e->soundChannels[0]);
-                            e->soundChannels[0] = PlayRangedSound_SM(sndManager->teslaActive, mainPlayer->cam, e->room->objects[3],4.f,0.5f);
+                            e->soundChannels[0] = PlayRangedSound_SM(sndMgmt->teslaActive, mainPlayer->cam, e->room->objects[3],4.f,0.5f);
                             bbHideEntity(e->room->objects[4]);
                             e->eventState = 1;
                             Curr106->state = 70 * 60 * bbRand(10,13);
@@ -128,11 +128,11 @@ void UpdateEvent_tesla(Event* e) {
             } else {
                 if (e->room->dist < 2) {
                     if (e->eventState-timing->tickDuration <= 40) {
-                        PlaySound_SM(sndManager->teslaShock);
+                        PlaySound_SM(sndMgmt->teslaShock);
                     }
                 } else {
                     if (e->eventState-timing->tickDuration <= 40) {
-                        PlayRangedSound_SM(sndManager->teslaShock,mainPlayer->cam,e->room->objects[2]);
+                        PlayRangedSound_SM(sndMgmt->teslaShock,mainPlayer->cam,e->room->objects[2]);
                     }
                 }
                 if (e->eventState < 70) {
@@ -179,7 +179,7 @@ void UpdateEvent_tesla(Event* e) {
                 } else {
                     if (e->eventState-timing->tickDuration < 70) {
                         bbStopChannel(e->soundChannels[0]);
-                        e->soundChannels[0] = PlayRangedSound_SM(sndManager->teslaPowerUp, mainPlayer->cam, e->room->objects[3],4.f,0.5f);
+                        e->soundChannels[0] = PlayRangedSound_SM(sndMgmt->teslaPowerUp, mainPlayer->cam, e->room->objects[3],4.f,0.5f);
                     }
                     bbHideEntity(e->room->objects[3]);
 

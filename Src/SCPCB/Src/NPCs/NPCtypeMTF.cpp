@@ -588,7 +588,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                                 if (angle < 5 || angle > 355) {
                                     prev = (!mainPlayer->dead);
 
-                                    PlayRangedSound_SM(sndManager->gunshot[0], mainPlayer->cam, n->collider, 15);
+                                    PlayRangedSound_SM(sndMgmt->gunshot[0], mainPlayer->cam, n->collider, 15);
 
                                     pvt = bbCreatePivot();
 
@@ -1397,7 +1397,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                         if (abs(bbDeltaYaw(n->collider,mainPlayer->collider))<50.f) {
                             //prev% = KillTimer
 
-                            PlayRangedSound_SM(sndManager->gunshot[0], mainPlayer->cam, n->collider, 15);
+                            PlayRangedSound_SM(sndMgmt->gunshot[0], mainPlayer->cam, n->collider, 15);
 
                             pvt = bbCreatePivot();
 
@@ -1430,7 +1430,7 @@ void UpdateNPCtypeMTF(NPC* n) {
 
                 if (n->reload <= 0) {
                     //LightVolume = TempLightVolume*1.2f
-                    PlayRangedSound_SM(sndManager->gunshot[0], mainPlayer->cam, n->collider, 20);
+                    PlayRangedSound_SM(sndMgmt->gunshot[0], mainPlayer->cam, n->collider, 20);
 
                     pvt = bbCreatePivot();
 
@@ -1625,7 +1625,7 @@ void UpdateNPCtypeMTF(NPC* n) {
                         if (abs(bbDeltaYaw(n->collider,n->target->collider))<50.f) {
                             //prev% = KillTimer
 
-                            PlayRangedSound_SM(sndManager->gunshot[0], mainPlayer->cam, n->collider, 15);
+                            PlayRangedSound_SM(sndMgmt->gunshot[0], mainPlayer->cam, n->collider, 15);
 
                             pvt = bbCreatePivot();
 
@@ -1729,9 +1729,9 @@ void UpdateNPCtypeMTF(NPC* n) {
 
         if (n->currSpeed > 0.01f) {
             if (prevFrame > 500 && n->frame<495) {
-                PlayRangedSound(sndManager->footstepMetal[bbRand(0,7)]->internal, mainPlayer->cam, n->collider, 8.f, bbRnd(0.5f,0.7f));
+                PlayRangedSound(sndMgmt->footstepMetal[bbRand(0,7)]->internal, mainPlayer->cam, n->collider, 8.f, bbRnd(0.5f,0.7f));
             } else if ((prevFrame < 505 && n->frame>=505)) {
-                PlayRangedSound(sndManager->footstepMetal[bbRand(0,7)]->internal, mainPlayer->cam, n->collider, 8.f, bbRnd(0.5f,0.7f));
+                PlayRangedSound(sndMgmt->footstepMetal[bbRand(0,7)]->internal, mainPlayer->cam, n->collider, 8.f, bbRnd(0.5f,0.7f));
             }
         }
 

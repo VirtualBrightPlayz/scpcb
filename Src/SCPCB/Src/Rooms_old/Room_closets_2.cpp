@@ -117,7 +117,7 @@ void UpdateEvent_closets_2(Event* e) {
                 bbRotateEntity(e->room->npc[1]->collider, 0, CurveAngle(bbEntityYaw(e->room->npc[1]->obj), bbEntityYaw(e->room->npc[1]->collider), 30.f), 0, true);
             } else {
                 if (e->eventState - timing->tickDuration < 70 * 6.5f) {
-                    PlaySound_SM(sndManager->lightSwitch);
+                    PlaySound_SM(sndMgmt->lightSwitch);
                 }
                 mainPlayer->blinkTimer = Max((70 * 6.5f - e->eventState) / 5.f - bbRnd(0.f, 2.f), -10);
                 if (mainPlayer->blinkTimer == -10) {

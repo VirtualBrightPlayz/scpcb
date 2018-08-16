@@ -66,7 +66,7 @@ void UpdateEvent_strg_elec_2c(Event* e) {
                     if (i == 3) {
                         e->eventState = Max(e->eventState,1);
                         //PlaySound2(HorrorSFX(7))
-                        PlaySound_SM(sndManager->lever);
+                        PlaySound_SM(sndMgmt->lever);
                     }
                 }
             }
@@ -96,12 +96,12 @@ void UpdateEvent_strg_elec_2c(Event* e) {
 
             if (bbEntityPitch(e->room->objects[i]) > 83) {
                 if (prevpitch <= 83) {
-                    PlayRangedSound_SM(sndManager->lever, mainPlayer->cam, e->room->objects[i]);
+                    PlayRangedSound_SM(sndMgmt->lever, mainPlayer->cam, e->room->objects[i]);
                 }
                 if (i == 3) {
                     SecondaryLightOn = CurveValue(1.f, SecondaryLightOn, 10.f);
                     if (prevpitch <= 83) {
-                        PlayRangedSound_SM(sndManager->lightSwitch, mainPlayer->cam, e->room->objects[i]);
+                        PlayRangedSound_SM(sndMgmt->lightSwitch, mainPlayer->cam, e->room->objects[i]);
                     }
                 } else {
                     RemoteDoorOn = true;
@@ -109,11 +109,11 @@ void UpdateEvent_strg_elec_2c(Event* e) {
             } else if ((bbEntityPitch(e->room->objects[i]) < -83)) {
 
                 if (prevpitch >= -83) {
-                    PlayRangedSound_SM(sndManager->lever, mainPlayer->cam, e->room->objects[i]);
+                    PlayRangedSound_SM(sndMgmt->lever, mainPlayer->cam, e->room->objects[i]);
                 }
                 if (i == 3) {
                     if (prevpitch >= -83) {
-                        PlayRangedSound_SM(sndManager->lightSwitch, mainPlayer->cam, e->room->objects[i]);
+                        PlayRangedSound_SM(sndMgmt->lightSwitch, mainPlayer->cam, e->room->objects[i]);
                         for (int iterator197 = 0; iterator197 < Room::getListSize(); iterator197++) {
                             Room* r = Room::getObject(iterator197);
 

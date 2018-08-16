@@ -178,7 +178,7 @@ void UpdateEmitters() {
 
             p->aChange = e->aChange;
 
-            e->soundCHN = LoopRangedSound_SM(sndManager->hiss, e->soundCHN, mainPlayer->cam, e->obj);
+            e->soundCHN = LoopRangedSound_SM(sndMgmt->hiss, e->soundCHN, mainPlayer->cam, e->obj);
 
             if (InSmoke == false) {
                 if (IsPlayerWearingItem(mainPlayer,"gasmask") && IsPlayerWearingItem(mainPlayer,"hazmatsuit")) {

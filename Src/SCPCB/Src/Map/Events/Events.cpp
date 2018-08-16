@@ -228,11 +228,11 @@ void UpdateEvents() {
 
         // Does the event have music to play?
         if (e->overwriteMusic) {
-            musicManager->setNextMusicTrack(e->musicTrack);
-        } else if (!musicManager->useDefault) {
+            musicMgmt->setNextMusicTrack(e->musicTrack);
+        } else if (!musicMgmt->useDefault) {
             // If the event was previously playing music then go back to the default.
-            if (e->musicTrack.equals(musicManager->nowPlaying)) {
-                musicManager->restoreDefaultMusic();
+            if (e->musicTrack.equals(musicMgmt->nowPlaying)) {
+                musicMgmt->restoreDefaultMusic();
             }
         }
 

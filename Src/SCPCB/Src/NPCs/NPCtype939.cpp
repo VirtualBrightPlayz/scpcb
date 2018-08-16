@@ -134,7 +134,7 @@ void UpdateNPCtype939(NPC* n) {
                 //Animate2(n\obj,AnimTime(n\obj),644,683,28*n\currSpeed) ;walk
 
                 if (prevFrame<664 && n->frame>=664 || prevFrame>673 && n->frame<654) {
-                    PlayRangedSound(sndManager->footstepMetal[bbRand(0,7)]->internal, mainPlayer->cam, n->collider, 12.f);
+                    PlayRangedSound(sndMgmt->footstepMetal[bbRand(0,7)]->internal, mainPlayer->cam, n->collider, 12.f);
                     if (bbRand(10)==1) {
                         temp = false;
                         if (!bbChannelPlaying(n->soundChannels[0])) {
@@ -219,7 +219,7 @@ void UpdateNPCtype939(NPC* n) {
                             //Animate2(n\obj,AnimTime(n\obj),449,464,6*n\currSpeed) ;run
 
                             if (prevFrame<452 && n->frame>=452 || prevFrame<459 && n->frame>=459) {
-                                PlayRangedSound(sndManager->footstepMetalRun[bbRand(0,7)]->internal, mainPlayer->cam, n->collider, 12.f);
+                                PlayRangedSound(sndMgmt->footstepMetalRun[bbRand(0,7)]->internal, mainPlayer->cam, n->collider, 12.f);
                             }
 
                             //player is visible

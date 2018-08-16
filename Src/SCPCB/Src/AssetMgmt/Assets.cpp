@@ -397,7 +397,7 @@ void LoadEntities() {
 void InitNewGame() {
     DrawLoading(45);
 
-    sndManager->loadInGameSounds();
+    sndMgmt->loadInGameSounds();
 
     console = new Console();
 
@@ -663,7 +663,7 @@ void InitLoadGame() {
 }
 
 void NullGame() {
-    sndManager->deloadInGameSounds();
+    sndMgmt->deloadInGameSounds();
 
     ItemTemplate::DeloadTemplates();
 

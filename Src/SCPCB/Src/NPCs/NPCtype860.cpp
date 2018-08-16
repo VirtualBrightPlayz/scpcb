@@ -108,7 +108,7 @@ void UpdateNPCtype860(NPC* n) {
                     }
 
                     if (bbEntityY(n->collider)> -100) {
-                        PlayRangedSound(sndManager->footstep8601[bbRand(0, 2)]->internal, mainPlayer->cam, n->collider, 15.f, 0.5f);
+                        PlayRangedSound(sndMgmt->footstep8601[bbRand(0, 2)]->internal, mainPlayer->cam, n->collider, 15.f, 0.5f);
 
                         switch (bbRand(3)) {
                             case 1: {
@@ -150,26 +150,26 @@ void UpdateNPCtype860(NPC* n) {
                         if (n->frame<=199) {
                             AnimateNPC(n, 2, 199, 0.5f,false);
                             if (n->frame==199) {
-                                //PlayRangedSound(sndManager\footstep8601[Rand(0, 2)]\internal, mainPlayer\cam, n\collider, 15.f)
+                                //PlayRangedSound(sndMgmt\footstep8601[Rand(0, 2)]\internal, mainPlayer\cam, n\collider, 15.f)
                                 n->frame = 298;
 
                             }
 
                             //Animate2(n\obj, AnimTime(n\obj), 2, 199, 0.5f,False)
                             //If (AnimTime(n\obj)=199) Then SetAnimTime(n\obj,298)
-                            PlayRangedSound(sndManager->footstep8601[bbRand(0, 2)]->internal, mainPlayer->cam, n->collider, 15.f);
+                            PlayRangedSound(sndMgmt->footstep8601[bbRand(0, 2)]->internal, mainPlayer->cam, n->collider, 15.f);
                         } else if ((n->frame <= 297)) {
                             bbPointEntity(n->collider,mainPlayer->collider);
 
                             AnimateNPC(n, 200, 297, 0.5f, false);
                             if (n->frame==297) {
                                 n->frame = 298;
-                                PlayRangedSound(sndManager->footstep8601[bbRand(0, 2)]->internal, mainPlayer->cam, n->collider, 15.f);
+                                PlayRangedSound(sndMgmt->footstep8601[bbRand(0, 2)]->internal, mainPlayer->cam, n->collider, 15.f);
                             }
 
                             //Animate2(n\obj, AnimTime(n\obj), 200, 297, 0.5f,False)
                             //If (AnimTime(n\obj)=297) Then SetAnimTime(n\obj,298)
-                            PlayRangedSound(sndManager->footstep8601[bbRand(0, 2)]->internal, mainPlayer->cam, n->collider, 15.f);
+                            PlayRangedSound(sndMgmt->footstep8601[bbRand(0, 2)]->internal, mainPlayer->cam, n->collider, 15.f);
                         } else {
                             angle = CurveAngle(GetAngle(bbEntityX(n->collider),bbEntityZ(n->collider),bbEntityX(mainPlayer->collider),bbEntityZ(mainPlayer->collider)),bbEntityYaw(n->collider)+90,20.f);
 
@@ -281,7 +281,7 @@ void UpdateNPCtype860(NPC* n) {
 
                 //535, 568
                 if (prevFrame < 533 && n->frame>=533 || prevFrame > 568 && n->frame<2) {
-                    PlayRangedSound(sndManager->footstep8601[bbRand(0, 2)]->internal, mainPlayer->cam, n->collider, 15.f, 0.6f);
+                    PlayRangedSound(sndMgmt->footstep8601[bbRand(0, 2)]->internal, mainPlayer->cam, n->collider, 15.f, 0.6f);
                 }
 
                 //runs towards the player and attacks
@@ -310,7 +310,7 @@ void UpdateNPCtype860(NPC* n) {
                     //Animate2(n\obj, AnimTime(n\obj), 298, 316, n\currSpeed*10)
 
                     if (prevFrame < 307 && n->frame>=307) {
-                        PlayRangedSound(sndManager->footstep8601[bbRand(0, 2)]->internal, mainPlayer->cam, n->collider, 10.f);
+                        PlayRangedSound(sndMgmt->footstep8601[bbRand(0, 2)]->internal, mainPlayer->cam, n->collider, 10.f);
                     }
                 } else {
                     //461, 476

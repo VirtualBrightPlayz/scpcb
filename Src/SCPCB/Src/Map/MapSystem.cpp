@@ -1196,7 +1196,7 @@ void UpdateScreens() {
                         s->img = bbLoadImage("GFX/screens/"+s->imgpath);
                         s->img = ResizeImage2(s->img, (int)(bbImageWidth(s->img) * MenuScale), (int)(bbImageHeight(s->img) * MenuScale));
                         bbMaskImage(s->img, 255,0,255);
-                        PlaySound_SM(sndManager->button);
+                        PlaySound_SM(sndMgmt->button);
                         MouseUp1 = false;
                     }
                 }
@@ -1560,7 +1560,7 @@ void UpdateSecurityCams() {
                 }
 
                 if (!sc->inSight) {
-                    sc->soundCHN = LoopRangedSound_SM(sndManager->camera, sc->soundCHN, mainPlayer->cam, sc->cameraObj, 4.f);
+                    sc->soundCHN = LoopRangedSound_SM(sndMgmt->camera, sc->soundCHN, mainPlayer->cam, sc->cameraObj, 4.f);
                 }
             } else {
                 if (SelectedMonitor==sc) {

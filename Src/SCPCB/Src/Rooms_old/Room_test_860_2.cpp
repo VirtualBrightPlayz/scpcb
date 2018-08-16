@@ -122,7 +122,7 @@ void UpdateEvent_test_860_2(Event* e) {
                 //the monster is chasing the player
                 if (e->room->npc[0]->state2 == 1 && e->room->npc[0]->state>1) {
                     e->overwriteMusic = false;
-                    musicManager->setNextMusicTrack(MUS_8602, false);
+                    musicMgmt->setNextMusicTrack(MUS_8602, false);
                 } else {
                     e->overwriteMusic = true;
                 }

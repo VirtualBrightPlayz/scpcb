@@ -86,7 +86,7 @@ void UpdateEvent_cont_012_2(Event* e) {
         if (e->eventState==0) {
             if (bbEntityDistance(mainPlayer->collider, e->room->doors[0]->obj)<2.5f && RemoteDoorOn) {
                 //PlaySound2(HorrorSFX(7))
-                PlayRangedSound_SM(sndManager->lever,mainPlayer->cam,e->room->doors[0]->obj);
+                PlayRangedSound_SM(sndMgmt->lever,mainPlayer->cam,e->room->doors[0]->obj);
                 e->eventState = 1;
                 e->room->doors[0]->locked = false;
                 UseDoor(e->room->doors[0],false);
@@ -99,7 +99,7 @@ void UpdateEvent_cont_012_2(Event* e) {
             }
             e->soundChannels[0] = LoopRangedSound(e->sounds[0], e->soundChannels[0], mainPlayer->cam, e->room->objects[3], 5.f);
 
-            // TODO: Move to musicmanager.
+            // TODO: Move to musicMgmt.
             //If (e\sounds[1] = 0) Then LoadEventSound(e, "SFX/Music/012.ogg", 1)
 
             if (e->eventState<90) {

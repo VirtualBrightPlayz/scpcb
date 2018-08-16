@@ -60,7 +60,7 @@ void UpdateEvent_tnnl_elec_2(Event* e) {
         } else {
             if (e->eventState == 0) {
                 if (Distance(bbEntityX(mainPlayer->collider), bbEntityZ(mainPlayer->collider), bbEntityX(e->room->obj), bbEntityZ(e->room->obj)) < 3.5f) {
-                    PlaySound_SM(sndManager->lightSwitch);
+                    PlaySound_SM(sndMgmt->lightSwitch);
 
                     //LightBlink = Rnd(0.f,1.f)*(e\eventState/200)
                     e->eventState = 1;

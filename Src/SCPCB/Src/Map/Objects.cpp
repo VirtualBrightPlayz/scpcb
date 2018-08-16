@@ -144,11 +144,11 @@ void UpdateLevers() {
 
                     if (bbEntityPitch(lever->obj,true) > 75) {
                         if (prevpitch <= 75) {
-                            PlayRangedSound_SM(sndManager->lever, mainPlayer->cam, lever->obj, 1.f);
+                            PlayRangedSound_SM(sndMgmt->lever, mainPlayer->cam, lever->obj, 1.f);
                         }
                     } else if ((bbEntityPitch(lever->obj,true) < -75)) {
                         if (prevpitch >= -75) {
-                            PlayRangedSound_SM(sndManager->lever, mainPlayer->cam, lever->obj, 1.f);
+                            PlayRangedSound_SM(sndMgmt->lever, mainPlayer->cam, lever->obj, 1.f);
                         }
                     }
                 }
@@ -219,7 +219,7 @@ float UpdateElevators(float state, Door* door1, Door* door2, class Object* room1
 
                         /*TODO: AHH
                         if (!bbChannelPlaying(event->soundChannels[0])) {
-                            event->soundChannels[0] = PlaySound_SM(sndManager->elevatorMove);
+                            event->soundChannels[0] = PlaySound_SM(sndMgmt->elevatorMove);
                         }*/
 
                         mainPlayer->camShake = bbSin(abs(state)/3.f)*0.3f;
@@ -282,7 +282,7 @@ float UpdateElevators(float state, Door* door1, Door* door2, class Object* room1
 
                 UseDoor(door2,false);
 
-                PlayRangedSound_SM(sndManager->elevatorBeep, mainPlayer->cam, room2, 4.f);
+                PlayRangedSound_SM(sndMgmt->elevatorBeep, mainPlayer->cam, room2, 4.f);
             }
             //alhaalta yl�s
         } else {
@@ -295,7 +295,7 @@ float UpdateElevators(float state, Door* door1, Door* door2, class Object* room1
 
                         /*TODO: OHH
                         if (!bbChannelPlaying(event->soundChannels[0])) {
-                            event->soundChannels[0] = PlaySound_SM(sndManager->elevatorMove);
+                            event->soundChannels[0] = PlaySound_SM(sndMgmt->elevatorMove);
                         }*/
 
                         mainPlayer->camShake = bbSin(abs(state)/3.f)*0.3f;
@@ -359,7 +359,7 @@ float UpdateElevators(float state, Door* door1, Door* door2, class Object* room1
 
                 UseDoor(door1,false);
 
-                PlayRangedSound_SM(sndManager->elevatorBeep, mainPlayer->cam, room1, 4.f);
+                PlayRangedSound_SM(sndMgmt->elevatorBeep, mainPlayer->cam, room1, 4.f);
             }
 
         }
@@ -411,7 +411,7 @@ float UpdateElevators2(float State, Door* door1, Door* door2, class Object* room
 
                         /*TODO: EHH
                         if (!bbChannelPlaying(event->soundChannels[0])) {
-                            event->soundChannels[0] = PlaySound_SM(sndManager->elevatorMove);
+                            event->soundChannels[0] = PlaySound_SM(sndMgmt->elevatorMove);
                         }*/
 
                         mainPlayer->camShake = bbSin(abs(State)/3.f)*0.3f;
@@ -455,7 +455,7 @@ float UpdateElevators2(float State, Door* door1, Door* door2, class Object* room
                     UpdateRooms();
                 }
 
-                PlayRangedSound_SM(sndManager->elevatorBeep, mainPlayer->cam, room2, 4.f);
+                PlayRangedSound_SM(sndMgmt->elevatorBeep, mainPlayer->cam, room2, 4.f);
                 //PlaySound(ElevatorBeepSFX)
             }
             //alhaalta yl�s
@@ -469,7 +469,7 @@ float UpdateElevators2(float State, Door* door1, Door* door2, class Object* room
 
                         /*TODO: UHH
                         if (!bbChannelPlaying(event->soundChannels[0])) {
-                            event->soundChannels[0] = PlaySound_SM(sndManager->elevatorMove);
+                            event->soundChannels[0] = PlaySound_SM(sndMgmt->elevatorMove);
                         }*/
 
                         mainPlayer->camShake = bbSin(abs(State)/3.f)*0.3f;
@@ -514,7 +514,7 @@ float UpdateElevators2(float State, Door* door1, Door* door2, class Object* room
                     UpdateRooms();
                 }
 
-                PlayRangedSound_SM(sndManager->elevatorBeep, mainPlayer->cam, room1, 4.f);
+                PlayRangedSound_SM(sndMgmt->elevatorBeep, mainPlayer->cam, room1, 4.f);
             }
 
         }

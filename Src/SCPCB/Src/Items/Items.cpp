@@ -493,7 +493,7 @@ void PickItem(Item* item) {
     if (SpaceInInventory(mainPlayer)) {
         for (int n = WORNITEM_SLOT_COUNT; n <= mainPlayer->inventory->size - 1; n++) {
             if (mainPlayer->inventory->items[n] == nullptr) {
-                PlaySound_SM(sndManager->itemPick[(int)item->itemTemplate->sound]);
+                PlaySound_SM(sndMgmt->itemPick[(int)item->itemTemplate->sound]);
                 item->picked = true;
                 item->dropped = -1;
 
@@ -516,7 +516,7 @@ void DropItem(Item* item, Inventory* inv) {
         }
     }
 
-    PlaySound_SM(sndManager->itemPick[(int)item->itemTemplate->sound]);
+    PlaySound_SM(sndMgmt->itemPick[(int)item->itemTemplate->sound]);
 
     item->dropped = 1;
 
@@ -592,7 +592,7 @@ int IsPlayerWearingItem(Player* player, const String& itemName) {
 
 void UseItem(Inventory* inv, int index) {
     Item* item = inv->items[index];
-    PlaySound_SM(sndManager->itemPick[(int)item->itemTemplate->sound]);
+    PlaySound_SM(sndMgmt->itemPick[(int)item->itemTemplate->sound]);
 
     if (item->itemTemplate->wornSlot != WORNITEM_SLOT_NONE) {
         //If the equip slot is already filled then swap the items.
@@ -675,7 +675,7 @@ void UpdateInventory(Player* player) {
                                 player->selectedItem = nullptr;
                                 return;
                             } else {
-                                PlaySound_SM(sndManager->itemPick[(int)player->selectedItem->itemTemplate->sound]);
+                                PlaySound_SM(sndMgmt->itemPick[(int)player->selectedItem->itemTemplate->sound]);
                             }
                         }
 
@@ -683,7 +683,7 @@ void UpdateInventory(Player* player) {
                         for (i = 0; i <= player->openInventory->size - 1; i++) {
                             if (player->openInventory->items[i] == player->selectedItem) {
                                 if (i < WORNITEM_SLOT_COUNT) {
-                                    PlaySound_SM(sndManager->itemPick[(int)player->selectedItem->itemTemplate->sound]);
+                                    PlaySound_SM(sndMgmt->itemPick[(int)player->selectedItem->itemTemplate->sound]);
                                 }
                                 player->openInventory->items[i] = nullptr;
                                 break;
@@ -728,7 +728,7 @@ void UpdateInventory(Player* player) {
                 //TODO: Move to de-equip function.
                 bbEntityAlpha(player->overlays[OVERLAY_BLACK], 0.f);
 
-                PlaySound_SM(sndManager->itemPick[(int)player->selectedItem->itemTemplate->sound]);
+                PlaySound_SM(sndMgmt->itemPick[(int)player->selectedItem->itemTemplate->sound]);
                 player->selectedItem = nullptr;
             }
         }

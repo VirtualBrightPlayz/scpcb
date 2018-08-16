@@ -310,9 +310,9 @@ void UpdatePlayer() {
                         mainPlayer->loudness = Max(4.f,mainPlayer->loudness);
 
                         if (temp == STEPSOUND_METAL) {
-                            tempChn = PlaySound_SM(sndManager->footstepMetal[bbRand(0, 7)]);
+                            tempChn = PlaySound_SM(sndMgmt->footstepMetal[bbRand(0, 7)]);
                         } else {
-                            tempChn = PlaySound_SM(sndManager->footstep[bbRand(0, 7)]);
+                            tempChn = PlaySound_SM(sndMgmt->footstep[bbRand(0, 7)]);
                         }
 
                         bbChannelVolume(tempChn, (1.f-(mainPlayer->crouching*0.6f))*userOptions->sndVolume);
@@ -320,27 +320,27 @@ void UpdatePlayer() {
                         mainPlayer->loudness = Max(2.5f-(mainPlayer->crouching*0.6f),mainPlayer->loudness);
 
                         if (temp == 1) {
-                            tempChn = PlaySound_SM(sndManager->footstepMetalRun[bbRand(0, 7)]);
+                            tempChn = PlaySound_SM(sndMgmt->footstepMetalRun[bbRand(0, 7)]);
                         } else {
-                            tempChn = PlaySound_SM(sndManager->footstepRun[bbRand(0, 7)]);
+                            tempChn = PlaySound_SM(sndMgmt->footstepRun[bbRand(0, 7)]);
                         }
 
                         bbChannelVolume(tempChn, (1.f-(mainPlayer->crouching*0.6f))*userOptions->sndVolume);
                     }
                 } else if (mainPlayer->footstepOverride==1) {
-                    tempChn = PlaySound_SM(sndManager->footstepPD[bbRand(0, 2)]);
+                    tempChn = PlaySound_SM(sndMgmt->footstepPD[bbRand(0, 2)]);
                     bbChannelVolume(tempChn, (1.f-(mainPlayer->crouching*0.4f))*userOptions->sndVolume);
                 } else if (mainPlayer->footstepOverride==2) {
-                    tempChn = PlaySound_SM(sndManager->footstep8601[bbRand(0, 2)]);
+                    tempChn = PlaySound_SM(sndMgmt->footstep8601[bbRand(0, 2)]);
                     bbChannelVolume(tempChn, (1.f-(mainPlayer->crouching*0.4f))*userOptions->sndVolume);
                 } else if (mainPlayer->footstepOverride==3) {
                     if (Sprint == 1.f) {
                         mainPlayer->loudness = Max(4.f,mainPlayer->loudness);
-                        tempChn = PlaySound_SM(sndManager->footstep[bbRand(0, 7)]);
+                        tempChn = PlaySound_SM(sndMgmt->footstep[bbRand(0, 7)]);
                         bbChannelVolume(tempChn, (1.f-(mainPlayer->crouching*0.6f))*userOptions->sndVolume);
                     } else {
                         mainPlayer->loudness = Max(2.5f-(mainPlayer->crouching*0.6f),mainPlayer->loudness);
-                        tempChn = PlaySound_SM(sndManager->footstepRun[bbRand(0, 7)]);
+                        tempChn = PlaySound_SM(sndMgmt->footstepRun[bbRand(0, 7)]);
                         bbChannelVolume(tempChn, (1.f-(mainPlayer->crouching*0.6f))*userOptions->sndVolume);
                     }
                 }
@@ -457,16 +457,16 @@ void UpdatePlayer() {
             if (mainPlayer->dropSpeed < - 0.07f) {
                 if (mainPlayer->footstepOverride==0) {
                     if (GetMaterialStepSound(mainPlayer->collider) == 1) {
-                        PlaySound_SM(sndManager->footstepMetal[bbRand(0, 7)]);
+                        PlaySound_SM(sndMgmt->footstepMetal[bbRand(0, 7)]);
                     } else {
-                        PlaySound_SM(sndManager->footstep[bbRand(0, 7)]);
+                        PlaySound_SM(sndMgmt->footstep[bbRand(0, 7)]);
                     }
                 } else if ((mainPlayer->footstepOverride==1)) {
-                    PlaySound_SM(sndManager->footstepPD[bbRand(0, 2)]);
+                    PlaySound_SM(sndMgmt->footstepPD[bbRand(0, 2)]);
                 } else if ((mainPlayer->footstepOverride==2)) {
-                    PlaySound_SM(sndManager->footstep8601[bbRand(0, 2)]);
+                    PlaySound_SM(sndMgmt->footstep8601[bbRand(0, 2)]);
                 } else {
-                    PlaySound_SM(sndManager->footstep[bbRand(0, 7)]);
+                    PlaySound_SM(sndMgmt->footstep[bbRand(0, 7)]);
                 }
                 mainPlayer->loudness = Max(3.f,mainPlayer->loudness);
             }

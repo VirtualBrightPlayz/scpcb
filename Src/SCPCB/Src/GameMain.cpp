@@ -149,7 +149,7 @@ int EntryPoint() {
 
     InitializeKeyName();
 
-    sndManager = new SoundManager();
+    sndMgmt = new SoundManager();
 
     if (userOptions->launcher) {
         CurrGameState = GAMESTATE_LAUNCHER;
@@ -185,8 +185,8 @@ void InitializeMainGame() {
 
     uiAssets = new UIAssets();
 
-    musicManager = new MusicManager();
-    musicManager->setNextMusicTrack(MUS_EZ, false);
+    musicMgmt = new musicMgmt();
+    musicMgmt->setNextMusicTrack(MUS_EZ, false);
 
     bbSetFont(uiAssets->font[1]);
 
@@ -319,7 +319,7 @@ void UpdateGame() {
         MouseHit2 = bbMouseHit(2);
         //TODO: Add the ability to play no music.
         if (CurrGameState != GAMESTATE_LAUNCHER) {
-            musicManager->update();
+            musicMgmt->update();
         }
 
         if (CurrGameState==GAMESTATE_LAUNCHER) {
@@ -671,7 +671,7 @@ void UpdateGUI() {
                 if (!mainPlayer->closestDoor->code.isEmpty()) {
                     mainPlayer->selectedDoor = mainPlayer->closestDoor;
                 } else if ((!mainPlayer->disableControls)) {
-                    PlayRangedSound_SM(sndManager->button, mainPlayer->cam, mainPlayer->closestButton);
+                    PlayRangedSound_SM(sndMgmt->button, mainPlayer->cam, mainPlayer->closestButton);
                     UseDoor(mainPlayer->closestDoor,true);
                 }
             }
@@ -744,7 +744,7 @@ void UpdateGUI() {
                     temp = false;
                     if (MouseOn(xtemp, ytemp, (int)(54*scale), (int)(65*scale)) && KeypadMSG.isEmpty()) {
                         if (MouseUp1) {
-                            PlaySound_SM(sndManager->button);
+                            PlaySound_SM(sndMgmt->button);
 
                             switch ((n+1)+(i*4)) {
                                 case 1:
@@ -763,7 +763,7 @@ void UpdateGUI() {
                                 } break;
                                 case 8: {
                                     if (KeypadInput.equals(mainPlayer->selectedDoor->code)) {
-                                        PlaySound_SM(sndManager->scannerUse);
+                                        PlaySound_SM(sndMgmt->scannerUse);
 
                                         mainPlayer->selectedDoor->locked = 0;
                                         UseDoor(mainPlayer->selectedDoor,true);
@@ -774,7 +774,7 @@ void UpdateGUI() {
                                         mouse_x_speed_1 = 0.f;
                                         mouse_y_speed_1 = 0.f;
                                     } else {
-                                        PlaySound_SM(sndManager->scannerErr);
+                                        PlaySound_SM(sndMgmt->scannerErr);
                                         KeypadMSG = "ACCESS DENIED";
                                         KeypadTimer = 210;
                                         KeypadInput = "";

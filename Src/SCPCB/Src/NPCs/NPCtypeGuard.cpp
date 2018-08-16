@@ -78,9 +78,9 @@ void UpdateNPCtypeGuard(NPC* n) {
 
             if (n->currSpeed > 0.01f) {
                 if (prevFrame > 1638 && n->frame < 1620) {
-                    PlayRangedSound(sndManager->footstepMetal[bbRand(0,7)]->internal, mainPlayer->cam, n->collider, 8.f, bbRnd(0.5f, 0.7f));
+                    PlayRangedSound(sndMgmt->footstepMetal[bbRand(0,7)]->internal, mainPlayer->cam, n->collider, 8.f, bbRnd(0.5f, 0.7f));
                 } else if ((prevFrame < 1627 && n->frame>=1627)) {
-                    PlayRangedSound(sndManager->footstepMetal[bbRand(0,7)]->internal, mainPlayer->cam, n->collider, 8.f, bbRnd(0.5f, 0.7f));
+                    PlayRangedSound(sndMgmt->footstepMetal[bbRand(0,7)]->internal, mainPlayer->cam, n->collider, 8.f, bbRnd(0.5f, 0.7f));
                 }
             }
 
@@ -103,7 +103,7 @@ void UpdateNPCtypeGuard(NPC* n) {
 
             //Start shooting once the aiming animation is done.
             if (n->timer < 0 && n->frame>1550) {
-                PlayRangedSound_SM(sndManager->gunshot[0], mainPlayer->cam, n->collider, 35);
+                PlayRangedSound_SM(sndMgmt->gunshot[0], mainPlayer->cam, n->collider, 35);
 
                 bbRotateEntity(pvt, bbEntityPitch(n->collider), bbEntityYaw(n->collider), 0, true);
                 bbPositionEntity(pvt, bbEntityX(n->obj), bbEntityY(n->obj), bbEntityZ(n->obj));

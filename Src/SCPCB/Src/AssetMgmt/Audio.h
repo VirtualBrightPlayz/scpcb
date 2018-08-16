@@ -164,8 +164,8 @@ extern const String MUS_END;
 extern const String MUS_BREATH;
 
 // Globals.
-extern SoundManager* sndManager;
-extern MusicManager* musicManager;
+extern SoundManager* sndMgmt;
+extern musicMgmt* musicMgmt;
 
 // Functions.
 void AddPositionalChannel(gxChannel* ref, Camera* cam, Object* ent, float range = 10.f, float vol = 1.f);

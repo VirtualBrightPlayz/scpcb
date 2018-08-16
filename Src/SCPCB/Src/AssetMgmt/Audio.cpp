@@ -166,8 +166,8 @@ const String MUS_END("SFX/Music/Ending.ogg");
 const String MUS_BREATH("SFX/Music/Breath.ogg");
 
 // Globals.
-SoundManager* sndManager;
-MusicManager* musicManager;
+SoundManager* sndMgmt;
+MusicManager* musicMgmt;
 
 void AddPositionalChannel(gxChannel* ref, Camera* cam, Object* ent, float range, float vol) {
     if (ref == nullptr) {
@@ -365,7 +365,7 @@ void PauseSounds() {
     }
 
     /*TODO: asdasdasdasd
-    
+
     for (int i = 0; i < Event::getListSize(); i++) {
         Event* e = Event::getObject(i);
 
@@ -431,7 +431,7 @@ void ResumeSounds() {
     }
 
     /*TODO: everything is broken
-    
+
     for (int i = 0; i < Event::getListSize(); i++) {
         Event* e = Event::getObject(i);
 
@@ -504,7 +504,7 @@ void StopSounds() {
     }
 
     /*TODO: a
-    
+
     for (int iterator35 = 0; iterator35 < Event::getListSize(); iterator35++) {
         e = Event::getObject(iterator35);
 

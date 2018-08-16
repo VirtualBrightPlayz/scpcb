@@ -74,7 +74,7 @@ void Update294() {
 
             if (ytemp >= 0 && ytemp < 5) {
                 if (xtemp >= 0 && xtemp < 10) {
-                    PlaySound_SM(sndManager->button);
+                    PlaySound_SM(sndMgmt->button);
                 }
             }
 
