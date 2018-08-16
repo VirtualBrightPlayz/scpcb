@@ -97,6 +97,12 @@
     <Filter Include="Source Files\Src\Save">
       <UniqueIdentifier>{836166c2-8910-4f9d-b1a0-15f0bb8e5797}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Src\Menus\GUI">
+      <UniqueIdentifier>{a98c973c-2ae1-412d-ab20-e8d569f25556}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Src\Menus\GUI">
+      <UniqueIdentifier>{fcb7ef52-900e-4c11-a76c-6c519edf194f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -243,6 +249,12 @@
     <ClCompile Include="Src\AssetMgmt\TextMgmt.cpp">
       <Filter>Source Files\Src\AssetMgmt</Filter>
     </ClCompile>
+    <ClCompile Include="Src\Menus\GUI\GUIButton.cpp">
+      <Filter>Source Files\Src\Menus\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Menus\GUI\GUIFrame.cpp">
+      <Filter>Source Files\Src\Menus\GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\NPCs\NPCtype860.h">
@@ -388,6 +400,12 @@
     </ClInclude>
     <ClInclude Include="Src\AssetMgmt\TextMgmt.h">
       <Filter>Header Files\Src\AssetMgmt</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Menus\GUI\GUIButton.h">
+      <Filter>Header Files\Src\Menus\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Menus\GUI\GUIFrame.h">
+      <Filter>Header Files\Src\Menus\GUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -180,6 +180,8 @@
     <ClCompile Include="Src\MathUtils\MathUtils.cpp" />
     <ClCompile Include="Src\Menus\Console\Console.cpp" />
     <ClCompile Include="Src\Menus\Console\ConsoleCommands.cpp" />
+    <ClCompile Include="Src\Menus\GUI\GUIButton.cpp" />
+    <ClCompile Include="Src\Menus\GUI\GUIFrame.cpp" />
     <ClCompile Include="Src\Menus\Launcher.cpp" />
     <ClCompile Include="Src\Menus\LoadingScreen.cpp" />
     <ClCompile Include="Src\Menus\MainMenu.cpp" />
@@ -230,6 +232,8 @@
     <ClInclude Include="Src\MathUtils\MathUtils.h" />
     <ClInclude Include="Src\Menus\Console\Console.h" />
     <ClInclude Include="Src\Menus\Console\ConsoleCommands.h" />
+    <ClInclude Include="Src\Menus\GUI\GUIButton.h" />
+    <ClInclude Include="Src\Menus\GUI\GUIFrame.h" />
     <ClInclude Include="Src\Menus\Launcher.h" />
     <ClInclude Include="Src\Menus\LoadingScreen.h" />
     <ClInclude Include="Src\Menus\MainMenu.h" />

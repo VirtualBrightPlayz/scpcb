@@ -7,6 +7,7 @@ class GUIFrame {
 private:
     int xoffset;
     int yoffset;
+    bool relative;
 
     bool mouseHover;
     bool mouseHit;

@@ -7,7 +7,7 @@
 
 namespace CBN {
 
-GUIButton::GUIButton(int x, int y, int width, int height, const String& txt, bool bigFont, bool relative = true)
+GUIButton::GUIButton(int x, int y, int width, int height, const String& txt, bool bigFont, bool relative)
     : GUIFrame(x, y, width, height, 0, 0, relative) {
     text = txt;
     this->bigFont = bigFont;

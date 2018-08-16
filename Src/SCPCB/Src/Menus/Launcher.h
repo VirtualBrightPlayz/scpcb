@@ -8,8 +8,8 @@ class GUIButton;
 
 struct Launcher {
 private:
-    GUIButton* btn_launch;
-    GUIButton* btn_exit;
+    GUIButton* btnLaunch;
+    GUIButton* btnExit;
     void verifyResolution();
 public:
     Launcher();
