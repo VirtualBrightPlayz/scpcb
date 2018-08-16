@@ -8,13 +8,13 @@
 
 namespace CBN {
 
-GUIFrame::GUIFrame(int x, int y, int width, int height, int xoffset, int yoffset, bool relative) {
-    this->x = x * (relative ? MenuScale : 1);
-    this->y = y * (relative ? MenuScale : 1);
-    this->width = width * (relative ? MenuScale : 1);
-    this->height = height * (relative ? MenuScale : 1);
-    this->xoffset = xoffset;
-    this->yoffset = yoffset;
+GUIFrame::GUIFrame(int x, int y, int width, int height, bool relative) {
+    this->x = x * (relative ? (int)MenuScale : 1);
+    this->y = y * (relative ? (int)MenuScale : 1);
+    this->width = width * (relative ? (int)MenuScale : 1);
+    this->height = height * (relative ? (int)MenuScale : 1);
+    this->xoffset = 0;
+    this->yoffset = 0;
     this->relative = relative;
 
     mouseHover = false;
@@ -51,7 +51,7 @@ void GUIFrame::update() {
 }
 
 void GUIFrame::draw() {
-    int scale = relative ? MenuScale : 1;
+    int scale = relative ? (int)MenuScale : 1;
     bbColor(255, 255, 255);
     DrawTiledImageRect(uiAssets->tileWhite, xoffset, (y % 256), 512, 512, x, y, width, height);
 

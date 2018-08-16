@@ -2,31 +2,21 @@
 
 #include "GUIButton.h"
 #include "GUIFrame.h"
-#include "../../Assetmgmt/Audio.h"
 #include "../../Assetmgmt/Assets.h"
 
 namespace CBN {
 
 GUIButton::GUIButton(int x, int y, int width, int height, const String& txt, bool bigFont, bool relative)
-    : GUIFrame(x, y, width, height, 0, 0, relative) {
-    text = txt;
+    : GUIButtonBase(x, y, width, height, txt, relative) {
     this->bigFont = bigFont;
 }
 
 void GUIButton::update() {
-    GUIFrame::update();
-    if (isMouseHit()) {
-        PlaySound_SM(sndMgmt->button);
-    }
+    GUIButtonBase::update();
 }
 
 void GUIButton::draw() {
-    GUIFrame::draw();
-    if (isMouseHover()) {
-        bbColor(30, 30, 30);
-        bbRect(x + 4, y + 4, width - 8, height - 8);
-    }
-
+    GUIButtonBase::draw();
     bbColor(255, 255, 255);
     if (bigFont) {
         bbSetFont(uiAssets->font[1]);

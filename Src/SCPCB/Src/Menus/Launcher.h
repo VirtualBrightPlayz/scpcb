@@ -5,11 +5,14 @@
 namespace CBN {
 
 class GUIButton;
+class GUITick;
 
 struct Launcher {
 private:
     GUIButton* btnLaunch;
     GUIButton* btnExit;
+    GUITick* tckUseLauncher;
+    GUITick* tckFullscreen;
     void verifyResolution();
 public:
     Launcher();

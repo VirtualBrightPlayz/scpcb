@@ -54,7 +54,7 @@ UIAssets::UIAssets() {
 	bbMaskImage(pauseMenuBG, 255, 255, 0);
 	bbScaleImage(pauseMenuBG, MenuScale, MenuScale);
 
-	cursorIMG = bbLoadImage("GFX/cursor.png");
+	cursorIMG = bbLoadImage("GFX/Menu/cursor.png");
 
 	for (int i = 0; i < 4; i++) {
 		arrow[i] = bbLoadImage("GFX/menu/arrow.png");

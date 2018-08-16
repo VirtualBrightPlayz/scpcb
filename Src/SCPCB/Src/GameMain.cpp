@@ -546,7 +546,7 @@ void UpdateGame() {
                     Msg = "Quick saving is disabled.";
                     MsgTimer = 70 * 4;
                 }
-            } else if ((SelectedDifficulty->saveType == SAVEONSCREENS && (SelectedScreen!=nullptr || SelectedMonitor!=nullptr))) {
+            } else if (SelectedDifficulty->saveType == SAVEONSCREENS && (SelectedScreen!=nullptr || SelectedMonitor!=nullptr)) {
                 if ((!Msg.equals("Game progress saved.") && !Msg.equals("You cannot save in this location.") && !Msg.equals("You cannot save at this moment.")) || MsgTimer<=0) {
                     Msg = "Press "+KeyName[keyBinds->save]+" to save.";
                     MsgTimer = 70*4;

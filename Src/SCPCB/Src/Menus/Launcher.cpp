@@ -10,6 +10,7 @@
 #include "../Menus/Menu.h"
 #include "../AssetMgmt/Assets.h"
 #include "GUI/GUIButton.h"
+#include "GUI/GUITick.h"
 
 namespace CBN {
 
@@ -41,6 +42,8 @@ Launcher::Launcher() {
 
     btnLaunch = new GUIButton(this->width - 30 - 90, this->height - 50 - 55, 100, 30, "LAUNCH", false, false);
     btnExit = new GUIButton(this->width - 30 - 90, this->height - 50, 100, 30, "EXIT", false, false);
+    tckFullscreen = new GUITick(40 + 430 - 15, 260 - 55 + 5 - 8, "Fullscreen", userOptions->fullscreen, false);
+    tckUseLauncher = new GUITick(40 + 430 - 15, 260 - 55 + 95 + 8, "Use launcher", userOptions->launcher, false);
 
     bbSetBuffer(bbBackBuffer());
 
@@ -50,12 +53,16 @@ Launcher::Launcher() {
 Launcher::~Launcher() {
     bbFreeImage(this->background);
     delete uiAssets;
+    delete btnLaunch;
+    delete btnExit;
+    delete tckFullscreen;
+    delete tckUseLauncher;
 }
 
 void Launcher::verifyResolution() {
     selectedGFXMode = resWidths.size()-1;
     for (int i = 0;i<resWidths.size();i++) {
-        if ((userOptions->screenWidth == resWidths[i]) && (userOptions->screenHeight == resHeights[i])) {
+        if (userOptions->screenWidth == resWidths[i] && userOptions->screenHeight == resHeights[i]) {
             selectedGFXMode = i;
             return;
         }
@@ -67,7 +74,7 @@ void Launcher::update() {
     int y = 280 - 65;
 
     int i;
-    for (int i = 0;i < resWidths.size(); i++) {
+    for (int i = 0; i < resWidths.size(); i++) {
         if (MouseOn(x - 1, y - 1, 100, 20)) {
             if (MouseHit1) {
                 this->selectedGFXMode = i;
@@ -96,12 +103,13 @@ void Launcher::update() {
         y = y + 20;
     }
 
-    userOptions->fullscreen = UpdateUITick(40 + 430 - 15, 260 - 55 + 5 - 8, userOptions->fullscreen);
-
-    userOptions->launcher = UpdateUITick(40 + 430 - 15, 260 - 55 + 95 + 8, userOptions->launcher);
-
     btnLaunch->update();
     btnExit->update();
+    tckFullscreen->update();
+    tckUseLauncher->update();
+
+    userOptions->fullscreen = tckFullscreen->ticked;
+    userOptions->launcher = tckUseLauncher->ticked;
 
     if (btnLaunch->isMouseHit()) {
         userOptions->screenWidth = this->resWidths[this->selectedGFXMode];
@@ -179,14 +187,10 @@ void Launcher::draw() {
         y = y + 20;
     }
 
-    DrawUITick(40 + 430 - 15, 260 - 55 + 5 - 8, userOptions->fullscreen);
+    tckFullscreen->draw();
     bbText(40 + 430 + 15,       262 - 55 + 5 - 8, "Fullscreen");
 
-    bbColor(255, 255, 255);
-    //Text(40 + 430 + 15, 262 - 55 + 35 - 8, "Borderless",False,False)
-    //Text(40 + 430 + 15, 262 - 55 + 35 + 12, "windowed mode",False,False)
-
-    DrawUITick(40 + 430 - 15, 260 - 55 + 95 + 8, userOptions->launcher);
+    tckUseLauncher->draw();
     bbText(40 + 430 + 15,       262 - 55 + 95 + 8, "Use launcher");
 
     bbText(40+ 260 + 15, 262 - 55 + 140, "Current Resolution: "+String(this->resWidths[launcher->selectedGFXMode]) + "x" + String(this->resHeights[launcher->selectedGFXMode]));

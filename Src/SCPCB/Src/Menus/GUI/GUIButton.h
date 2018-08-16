@@ -2,18 +2,16 @@
 #define GUIBUTTON_H_INCLUDED
 
 #include <StringType.h>
-#include "GUIFrame.h"
+#include "GUIButtonBase.h"
 
 namespace CBN {
 
-class GUIButton : public GUIFrame {
+class GUIButton : public GUIButtonBase {
 private:
-    String text;
     bool bigFont;
 
 public:
     GUIButton(int x, int y, int width, int height, const String& txt, bool bigFont = false, bool relative = true);
-    ~GUIButton();
 
     void update();
     void draw();

@@ -5,8 +5,6 @@ namespace CBN {
 
 class GUIFrame {
 private:
-    int xoffset;
-    int yoffset;
     bool relative;
 
     bool mouseHover;
@@ -14,13 +12,16 @@ private:
     bool mouseUp;
 
 protected:
+    int xoffset;
+    int yoffset;
+
     int x;
     int y;
     int width;
     int height;
 
 public:
-    GUIFrame(int x, int y, int width, int height, int xoffset = 0, int yoffset = 0, bool relative = true);
+    GUIFrame(int x, int y, int width, int height, bool relative = true);
 
     bool isMouseHover();
     bool isMouseHit();
