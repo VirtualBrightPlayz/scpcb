@@ -17,7 +17,7 @@ TxtManager::TxtManager() {
 
 void TxtManager::setMsg(const String& msg, float time) {
     displayMsg = msg;
-    displayTimer = time;
+    displayTimer = time * 70;
 }
 
 void TxtManager::setDeathMsg(const String& msg) {
@@ -53,6 +53,7 @@ void TxtManager::update() {
             bbText((userOptions->screenWidth / 2), (int)((userOptions->screenHeight * 0.94f)), displayMsg, true, false);
         }
         displayTimer -= timing->tickDuration;
+        std::cout << String(displayTimer);
     }
 }
 

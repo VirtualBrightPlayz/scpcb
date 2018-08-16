@@ -5,7 +5,7 @@
 
 namespace CBN {
 
-// TODO: Localization stuff here. Also DeathMSG,
+// TODO: Localization stuff here. Also DeathMSG.
 class TxtManager {
 private:
     String displayMsg;

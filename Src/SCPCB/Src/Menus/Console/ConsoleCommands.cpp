@@ -64,7 +64,7 @@ void ConsoleCmd::clearCommands() {
 }
 
 void Cmd_Help::execute(std::vector<String> args) {
-    txtMgmt->setMsg("JORGE", 70 * 8);
+    txtMgmt->setMsg("JORGE", 8);
     console->msgR = 0;
     console->msgG = 255;
     console->msgB = 255;
