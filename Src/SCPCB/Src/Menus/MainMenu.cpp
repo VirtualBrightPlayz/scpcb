@@ -205,7 +205,7 @@ void UpdateMainMenu() {
                 }
 
                 if (UpdateUIButton(x + (int)(420.f * MenuScale), y + height + (int)(20.f * MenuScale), (int)(160.f * MenuScale), (int)(70.f * MenuScale), "START")) {
-                    if (!CurrSave.isEmpty()) {
+                    if (CurrSave.isEmpty()) {
                         CurrSave = "untitled";
                     }
 

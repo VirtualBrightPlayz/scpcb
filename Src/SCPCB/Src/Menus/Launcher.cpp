@@ -9,6 +9,7 @@
 #include "../GameMain.h"
 #include "../Menus/Menu.h"
 #include "../AssetMgmt/Assets.h"
+#include "GUI/GUIButton.h"
 
 namespace CBN {
 
@@ -37,6 +38,9 @@ Launcher::Launcher() {
     this->background = bbLoadImage("GFX/menu/launcher.jpg");
 
     uiAssets = new UIAssets();
+
+    btnLaunch = new GUIButton(this->width - 30 - 90, this->height - 50 - 55, 100, 30, "LAUNCH", false, false);
+    btnExit = new GUIButton(this->width - 30 - 90, this->height - 50, 100, 30, "EXIT", false, false);
 
     bbSetBuffer(bbBackBuffer());
 
@@ -96,7 +100,10 @@ void Launcher::update() {
 
     userOptions->launcher = UpdateUITick(40 + 430 - 15, 260 - 55 + 95 + 8, userOptions->launcher);
 
-    if (UpdateUIButton(this->width - 30 - 90, this->height - 50 - 55, 100, 30, "LAUNCH", false)) {
+    btnLaunch->update();
+    btnExit->update();
+
+    if (btnLaunch->isMouseHit()) {
         userOptions->screenWidth = this->resWidths[this->selectedGFXMode];
         userOptions->screenHeight = this->resHeights[this->selectedGFXMode];
 
@@ -109,7 +116,7 @@ void Launcher::update() {
         return;
     }
 
-    if (UpdateUIButton(this->width - 30 - 90, this->height - 50, 100, 30, "EXIT", false)) {
+    if (btnExit->isMouseHit()) {
         //End(); TODO: Re-implement.
     }
 }
@@ -153,7 +160,7 @@ void Launcher::draw() {
     x = 30;
     y = 369;
     bbRect(x - 10, y, 340, 95);
-    bbText(x - 10, y - 25, "bbGraphics:");
+    bbText(x - 10, y - 25, "Graphics:");
 
     y = y + 10;
     for (i = 1; i <= bbCountGfxDrivers(); i++) {
@@ -192,9 +199,8 @@ void Launcher::draw() {
 
     //Text(40+ 260 + 65, 262 - 55 + 180, G_viewport_width + "x" + G_viewport_height + ")")
 
-    DrawUIButton(launcher->width - 30 - 90, launcher->height - 50 - 55, 100, 30, "LAUNCH", false);
-
-    DrawUIButton(launcher->width - 30 - 90, launcher->height - 50, 100, 30, "EXIT", false);
+    btnLaunch->draw();
+    btnExit->draw();
     bbFlip();
 }
 

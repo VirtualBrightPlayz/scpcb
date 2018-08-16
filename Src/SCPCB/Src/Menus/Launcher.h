@@ -4,11 +4,12 @@
 
 namespace CBN {
 
-// Structs.
+class GUIButton;
+
 struct Launcher {
 private:
-    static std::vector<Launcher*> list;
-
+    GUIButton* btn_launch;
+    GUIButton* btn_exit;
     void verifyResolution();
 public:
     Launcher();
