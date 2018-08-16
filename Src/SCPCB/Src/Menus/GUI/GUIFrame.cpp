@@ -53,7 +53,7 @@ void GUIFrame::update() {
 void GUIFrame::draw() {
     int scale = relative ? MenuScale : 1;
     bbColor(255, 255, 255);
-    DrawTiledImageRect(uiAssets->tileWhite, xoffset, (y % 256), 512, 512, x+3 * scale, y+3 * scale, width-6 * scale, height-6 * scale);
+    DrawTiledImageRect(uiAssets->tileWhite, xoffset, (y % 256), 512, 512, x, y, width, height);
 
     DrawTiledImageRect(uiAssets->tileBlack, yoffset, (y % 256), 512, 512, x+3 * scale, y+3 * scale, width-6 * scale, height-6 * scale);
 }
