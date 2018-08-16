@@ -50,23 +50,6 @@ public:
 };
 extern UIAssets* uiAssets;
 
-// TODO: Localization stuff here. Also DeathMSG,
-class TxtManager {
-private:
-    String displayMsg;
-    float displayTimer;
-    String deathMsg;
-
-public:
-    TxtManager();
-    ~TxtManager();
-
-    void setMsg(const String& msg, float time = 70 * 5);
-    void setDeathMsg(const String& msg);
-    void update();
-};
-extern TxtManager* txtManager;
-
 class AssetWrap {
 public:
     virtual void drop() =0;
