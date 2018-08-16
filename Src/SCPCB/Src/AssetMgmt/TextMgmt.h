@@ -23,6 +23,7 @@ public:
 
     // localization text
     // launcher
+
 };
 extern TxtManager* txtMgmt;
 
