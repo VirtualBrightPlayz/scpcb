@@ -159,6 +159,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Src\AssetMgmt\Assets.cpp" />
     <ClCompile Include="Src\AssetMgmt\Audio.cpp" />
+    <ClCompile Include="Src\AssetMgmt\TextMgmt.cpp" />
     <ClCompile Include="Src\Config\Difficulty.cpp" />
     <ClCompile Include="Src\Config\INI.cpp" />
     <ClCompile Include="Src\Config\KeyName.cpp" />
@@ -208,6 +209,7 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="Src\AssetMgmt\Assets.h" />
     <ClInclude Include="Src\AssetMgmt\Audio.h" />
+    <ClInclude Include="Src\AssetMgmt\TextMgmt.h" />
     <ClInclude Include="Src\Config\Difficulty.h" />
     <ClInclude Include="Src\Config\INI.h" />
     <ClInclude Include="Src\Config\KeyName.h" />

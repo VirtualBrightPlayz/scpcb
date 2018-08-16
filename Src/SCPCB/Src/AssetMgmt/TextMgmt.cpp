@@ -56,5 +56,5 @@ void TxtManager::update() {
     }
 }
 
-TxtManager* txtManager;
+TxtManager* txtMgmt;
 }

@@ -11,6 +11,7 @@
 #include "../../Menus/Menu.h"
 #include "../../NPCs/NPCs.h"
 #include "../../Config/Options.h"
+#include "../../AssetMgmt/TextMgmt.h"
 
 namespace CBN {
 
@@ -63,6 +64,7 @@ void ConsoleCmd::clearCommands() {
 }
 
 void Cmd_Help::execute(std::vector<String> args) {
+    txtMgmt->setMsg("JORGE", 70 * 8);
     console->msgR = 0;
     console->msgG = 255;
     console->msgB = 255;

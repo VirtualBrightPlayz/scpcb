@@ -30,6 +30,7 @@
 #include "Menus/Console/Console.h"
 #include "MiscGFX/Dreamfilter.h"
 #include "MiscGFX/FastResize.h"
+#include "AssetMgmt/TextMgmt.h"
 
 namespace CBN {
 
@@ -142,7 +143,7 @@ int EntryPoint() {
     userOptions = new Options();
     LoadOptionsINI();
 
-    txtManager = new TxtManager();
+    txtMgmt = new TxtManager();
 
     timing = new Timing();
     SetTickrate(60);
@@ -185,7 +186,7 @@ void InitializeMainGame() {
 
     uiAssets = new UIAssets();
 
-    musicMgmt = new musicMgmt();
+    musicMgmt = new MusicManager();
     musicMgmt->setNextMusicTrack(MUS_EZ, false);
 
     bbSetFont(uiAssets->font[1]);
@@ -818,6 +819,8 @@ void UpdateGUI() {
         KeypadTimer = 0;
         KeypadMSG = "";
     }
+
+    txtMgmt->update();
 
     //TODO: fix ;And EndingTimer = 0 Then
     if (bbKeyHit(1)) {

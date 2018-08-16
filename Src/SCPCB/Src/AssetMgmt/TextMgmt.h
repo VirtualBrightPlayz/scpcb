@@ -20,8 +20,11 @@ public:
     void setDeathMsg(const String& msg);
     String getDeathMsg();
     void update();
+
+    // localization text
+    // launcher
 };
-extern TxtManager* txtManager;
+extern TxtManager* txtMgmt;
 
 }
 #endif // TEXTMGMT_H_INCLUDED
