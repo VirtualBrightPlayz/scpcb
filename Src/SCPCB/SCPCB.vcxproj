@@ -182,7 +182,7 @@
     <ClCompile Include="Src\Menus\Console\ConsoleCommands.cpp" />
     <ClCompile Include="Src\Menus\GUI\GUIButton.cpp" />
     <ClCompile Include="Src\Menus\GUI\GUIButtonBase.cpp" />
-    <ClCompile Include="Src\Menus\GUI\GUIFrame.cpp" />
+    <ClCompile Include="Src\Menus\GUI\GUIBase.cpp" />
     <ClCompile Include="Src\Menus\GUI\GUITick.cpp" />
     <ClCompile Include="Src\Menus\Launcher.cpp" />
     <ClCompile Include="Src\Menus\LoadingScreen.cpp" />
@@ -236,7 +236,7 @@
     <ClInclude Include="Src\Menus\Console\ConsoleCommands.h" />
     <ClInclude Include="Src\Menus\GUI\GUIButton.h" />
     <ClInclude Include="Src\Menus\GUI\GUIButtonBase.h" />
-    <ClInclude Include="Src\Menus\GUI\GUIFrame.h" />
+    <ClInclude Include="Src\Menus\GUI\GUIBase.h" />
     <ClInclude Include="Src\Menus\GUI\GUITick.h" />
     <ClInclude Include="Src\Menus\Launcher.h" />
     <ClInclude Include="Src\Menus\LoadingScreen.h" />

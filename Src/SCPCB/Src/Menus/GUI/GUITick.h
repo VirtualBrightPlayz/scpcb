@@ -12,8 +12,8 @@ public:
     bool ticked;
     bool locked;
 
-    void update();
-    void draw();
+    virtual void update();
+    virtual void draw();
 };
 
 }

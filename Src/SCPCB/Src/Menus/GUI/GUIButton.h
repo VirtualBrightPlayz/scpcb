@@ -13,8 +13,8 @@ private:
 public:
     GUIButton(int x, int y, int width, int height, const String& txt, bool bigFont = false, bool relative = true);
 
-    void update();
-    void draw();
+    virtual void update();
+    virtual void draw();
 };
 
 }

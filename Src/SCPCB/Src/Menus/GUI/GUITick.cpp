@@ -1,3 +1,5 @@
+#include <bbgraphics.h>
+
 #include "GUITick.h"
 #include "../Menu.h"
 #include "../../AssetMgmt/Assets.h"
@@ -23,7 +25,14 @@ void GUITick::update() {
 }
 
 void GUITick::draw() {
+    bbColor(0, 0, 0);
+    DrawTiledImageRect(uiAssets->tileWhite, (x % 256), (y % 256), 512, 512, x, y, width, height);
+
+    bbRect(x + 2, y + 2, width - 4, height - 4);
+    bbColor(255, 255, 255);
+
     GUIButtonBase::draw();
+
     if (ticked) {
         DrawTiledImageRect(uiAssets->tileWhite, (x % 256), (y % 256), 512, 512, x + 4, y + 4, width - 8, height - 8);
     }

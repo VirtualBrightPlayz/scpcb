@@ -2,19 +2,19 @@
 #define GUIBUTTONBASE_H_INCLUDED
 
 #include <StringType.h>
-#include "GUIFrame.h"
+#include "GUIBase.h"
 
 namespace CBN {
 
-class GUIButtonBase : public GUIFrame {
+class GUIButtonBase : public GUIBase {
 protected:
     String text;
 
 public:
     GUIButtonBase(int x, int y, int width, int height, const String& txt, bool relative = true);
 
-    void update();
-    virtual void draw() = 0;
+    virtual void update();
+    virtual void draw();
 };
 
 }

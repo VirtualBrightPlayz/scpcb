@@ -138,7 +138,7 @@ void Launcher::draw() {
     bbColor(255, 255, 255);
     bbDrawImage(launcher->background, 0, 0);
 
-    bbText(20, 240 - 65, "Resolution: ");
+    bbText(20, 240 - 65, "Resolution:");
 
     int x = 40;
     int y = 280 - 65;
