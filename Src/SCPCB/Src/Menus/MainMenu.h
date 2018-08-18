@@ -1,25 +1,50 @@
 #ifndef MAINMENU_H_INCLUDED
 #define MAINMENU_H_INCLUDED
 #include <vector>
+#include "GUI/GUIButton.h"
+#include "GUI/GUITick.h"
 
 namespace CBN {
 
-// Constants.
-const int GAMESUBSTATE_MAINMENU_MAIN = 0;
-const int GAMESUBSTATE_MAINMENU_NEWGAME = 1;
-const int GAMESUBSTATE_MAINMENU_CUSTOMMAP = 2;
-const int GAMESUBSTATE_MAINMENU_LOADGAME = 3;
-const int GAMESUBSTATE_MAINMENU_OPTIONS = 4;
-const int MAINMENU_BUTTON_NEWGAME = 0;
-const int MAINMENU_BUTTON_LOADGAME = 1;
-const int MAINMENU_BUTTON_OPTIONS = 2;
-const int MAINMENU_BUTTON_QUIT = 3;
-const int MAINMENU_BUTTON_COUNT = 4;
+enum MainMenuState {
+    Main = 0,
+    NewGame = 1,
+    LoadGame = 2,
+    CustomMap = 3,
+    Options = 4
+};
 
-// Functions.
-void UpdateMainMenu();
+class MainMenu {
+private:
+    MainMenuState currState;
 
-void DrawMainMenu();
+    float blinkTimer[2];
+    float blinkDuration[2];
+    String flashStr;
+    int flashStrX;
+    int flashStrY;
+public:
+    MainMenu();
+
+    // TODO: Input text.
+    GUIButton btnNewGame;
+    GUIButton btnStartGame;
+    GUIButton btnLoadMap;
+    GUITick tckIntro;
+
+    GUIButton btnLoadGame;
+    std::vector<std::pair<GUIButton, GUIButton>> btnSaveFiles;
+
+    GUIButton btnOptions;
+
+    GUIButton btnQuit;
+    GUIButton btnBack;
+
+    void setCurrState(MainMenuState state);
+    void update();
+    void draw();
+};
+extern MainMenu* mainMenu;
 
 }
 #endif // MAINMENU_H_INCLUDED

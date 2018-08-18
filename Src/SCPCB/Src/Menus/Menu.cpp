@@ -15,7 +15,7 @@ namespace CBN {
 // Globals.
 String SelectedEnding;
 int CurrGameState = GAMESTATE_MAINMENU;
-int CurrGameSubstate = GAMESUBSTATE_MAINMENU_MAIN;
+int CurrGameSubstate = MainMenuState::Main;
 int CurrGameStatePage = 0;
 float MsgTimer;
 String Msg;
@@ -27,11 +27,6 @@ String KeypadMSG;
 int DrawHandIcon;
 float MenuScale;
 String RandomSeed;
-float MenuBlinkTimer[2];
-float MenuBlinkDuration[2];
-String MenuStr;
-int MenuStrX;
-int MenuStrY;
 int SelectedInputBox;
 String SavePath = "Saves/";
 String SaveMSG;
@@ -44,9 +39,8 @@ int IsPaused() {
 
 void DrawTiledImageRect(bbImage* img, int srcX, int srcY, int srcwidth, int srcheight, int x, int y, int width, int height) {
     int x2 = x;
-    int y2;
     while (x2 < x+width) {
-        y2 = y;
+        int y2 = y;
         while (y2 < y+height) {
             if (x2 + srcwidth > x + width) {
                 srcwidth = srcwidth - (int)(Max((float)((x2 + srcwidth) - (x + width)), 1.f));

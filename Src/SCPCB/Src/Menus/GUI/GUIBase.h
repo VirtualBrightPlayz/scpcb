@@ -20,6 +20,7 @@ protected:
 public:
     GUIBase(int x, int y, int width, int height, bool relative = true);
 
+    bool visible;
     bool isMouseHover();
     bool isMouseHit();
     bool isMouseUp();

@@ -14,7 +14,6 @@
 
 namespace CBN {
 
-// Globals.
 Launcher* launcher = nullptr;
 
 Launcher::Launcher() {
@@ -40,10 +39,10 @@ Launcher::Launcher() {
 
     uiAssets = new UIAssets();
 
-    btnLaunch = new GUIButton(this->width - 30 - 90, this->height - 50 - 55, 100, 30, "LAUNCH", false, false);
-    btnExit = new GUIButton(this->width - 30 - 90, this->height - 50, 100, 30, "EXIT", false, false);
-    tckFullscreen = new GUITick(40 + 430 - 15, 260 - 55 + 5 - 8, "Fullscreen", userOptions->fullscreen, false);
-    tckUseLauncher = new GUITick(40 + 430 - 15, 260 - 55 + 95 + 8, "Use launcher", userOptions->launcher, false);
+    btnLaunch = GUIButton(this->width - 30 - 90, this->height - 50 - 55, 100, 30, "LAUNCH", false, false);
+    btnExit = GUIButton(this->width - 30 - 90, this->height - 50, 100, 30, "EXIT", false, false);
+    tckFullscreen = GUITick(40 + 430 - 15, 260 - 55 + 5 - 8, "Fullscreen", userOptions->fullscreen, false);
+    tckUseLauncher = GUITick(40 + 430 - 15, 260 - 55 + 95 + 8, "Use launcher", userOptions->launcher, false);
 
     bbSetBuffer(bbBackBuffer());
 
@@ -53,10 +52,6 @@ Launcher::Launcher() {
 Launcher::~Launcher() {
     bbFreeImage(this->background);
     delete uiAssets;
-    delete btnLaunch;
-    delete btnExit;
-    delete tckFullscreen;
-    delete tckUseLauncher;
 }
 
 void Launcher::verifyResolution() {
@@ -103,15 +98,15 @@ void Launcher::update() {
         y = y + 20;
     }
 
-    btnLaunch->update();
-    btnExit->update();
-    tckFullscreen->update();
-    tckUseLauncher->update();
+    btnLaunch.update();
+    btnExit.update();
+    tckFullscreen.update();
+    tckUseLauncher.update();
 
-    userOptions->fullscreen = tckFullscreen->ticked;
-    userOptions->launcher = tckUseLauncher->ticked;
+    userOptions->fullscreen = tckFullscreen.ticked;
+    userOptions->launcher = tckUseLauncher.ticked;
 
-    if (btnLaunch->isMouseHit()) {
+    if (btnLaunch.isMouseHit()) {
         userOptions->screenWidth = this->resWidths[this->selectedGFXMode];
         userOptions->screenHeight = this->resHeights[this->selectedGFXMode];
 
@@ -124,7 +119,7 @@ void Launcher::update() {
         return;
     }
 
-    if (btnExit->isMouseHit()) {
+    if (btnExit.isMouseHit()) {
         //End(); TODO: Re-implement.
     }
 }
@@ -187,10 +182,10 @@ void Launcher::draw() {
         y = y + 20;
     }
 
-    tckFullscreen->draw();
+    tckFullscreen.draw();
     bbText(40 + 430 + 15,       262 - 55 + 5 - 8, "Fullscreen");
 
-    tckUseLauncher->draw();
+    tckUseLauncher.draw();
     bbText(40 + 430 + 15,       262 - 55 + 95 + 8, "Use launcher");
 
     bbText(40+ 260 + 15, 262 - 55 + 140, "Current Resolution: "+String(this->resWidths[launcher->selectedGFXMode]) + "x" + String(this->resHeights[launcher->selectedGFXMode]));
@@ -203,8 +198,8 @@ void Launcher::draw() {
 
     //Text(40+ 260 + 65, 262 - 55 + 180, G_viewport_width + "x" + G_viewport_height + ")")
 
-    btnLaunch->draw();
-    btnExit->draw();
+    btnLaunch.draw();
+    btnExit.draw();
     bbFlip();
 }
 

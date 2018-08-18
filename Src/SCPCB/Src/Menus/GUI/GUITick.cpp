@@ -6,6 +6,8 @@
 
 namespace CBN {
 
+GUITick::GUITick() : GUITick(0, 0, "") { };
+
 GUITick::GUITick(int x, int y, const String& txt, bool ticked, bool relative)
     : GUIButtonBase(x, y, 0, 0, txt, relative) {
     this->width = 20 * (relative ? (int)MenuScale : 1);
@@ -16,6 +18,7 @@ GUITick::GUITick(int x, int y, const String& txt, bool ticked, bool relative)
 }
 
 void GUITick::update() {
+    if (!visible) { return; }
     if (!locked) {
         GUIButtonBase::update();
         if (isMouseHit()) {
@@ -25,6 +28,7 @@ void GUITick::update() {
 }
 
 void GUITick::draw() {
+    if (!visible) { return; }
     bbColor(0, 0, 0);
     DrawTiledImageRect(uiAssets->tileWhite, (x % 256), (y % 256), 512, 512, x, y, width, height);
 

@@ -33,6 +33,7 @@ bool GUIBase::isMouseUp() {
 }
 
 void GUIBase::update() {
+    if (!visible) { return; }
     mouseHover = false;
     mouseHit = false;
     mouseUp = false;

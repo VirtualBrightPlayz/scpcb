@@ -6,16 +6,20 @@
 
 namespace CBN {
 
+GUIButton::GUIButton() : GUIButton(0, 0, 0, 0, "") { };
+
 GUIButton::GUIButton(int x, int y, int width, int height, const String& txt, bool bigFont, bool relative)
     : GUIButtonBase(x, y, width, height, txt, relative) {
     this->bigFont = bigFont;
 }
 
 void GUIButton::update() {
+    if (!visible) { return; }
     GUIButtonBase::update();
 }
 
 void GUIButton::draw() {
+    if (!visible) { return; }
     GUIButtonBase::draw();
     int scale = relative ? (int)MenuScale : 1;
     DrawTiledImageRect(uiAssets->tileWhite, 0, (y % 256), 512, 512, x, y, width, height);

@@ -166,12 +166,12 @@ int EntryPoint() {
 
 void InitializeMainGame() {
     CurrGameState = GAMESTATE_MAINMENU;
-    CurrGameSubstate = GAMESUBSTATE_MAINMENU_MAIN;
 
     Graphics3DExt(userOptions->screenWidth, userOptions->screenHeight, 0, (1 + (!userOptions->fullscreen)));
     bbAppTitle("SCP - Containment Breach v"+VERSION);
 
     MenuScale = (userOptions->screenHeight / 1024.f);
+    mainMenu = new MainMenu();
 
     CurrFrameLimit = (float)userOptions->framelimit;
 
@@ -259,9 +259,6 @@ void InitializeMainGame() {
 
     bbFlushKeys();
     bbFlushMouse();
-
-    MenuBlinkTimer[0] = 1;
-    MenuBlinkDuration[0] = 1;
 
     DrawLoading(100, true);
 }
@@ -1281,7 +1278,7 @@ void UpdatePauseMenu() {
                 //TODO: ask for saving
                 NullGame();
                 CurrGameState = GAMESTATE_MAINMENU;
-                CurrGameSubstate = GAMESUBSTATE_MAINMENU_MAIN;
+                mainMenu = new MainMenu();
                 CurrSave = "";
                 bbFlushKeys();
             }
@@ -1331,7 +1328,7 @@ void UpdatePauseMenu() {
             if (UpdateUIButton(x, (int)(y + 80*MenuScale), (int)(390*MenuScale), (int)(60*MenuScale), "Quit to Menu")) {
                 NullGame();
                 CurrGameState = GAMESTATE_MAINMENU;
-                CurrGameSubstate = GAMESUBSTATE_MAINMENU_MAIN;
+                mainMenu = new MainMenu();
                 CurrSave = "";
                 bbFlushKeys();
             }

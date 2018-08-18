@@ -13,151 +13,167 @@
 #include "../Config/Difficulty.h"
 #include "../MathUtils/MathUtils.h"
 #include "../AssetMgmt/Assets.h"
+#include "GUI/GUIButton.h"
+#include "GUI/GUITick.h"
 
 namespace CBN {
 
-// Functions.
-void UpdateMainMenu() {
+MainMenu* mainMenu = nullptr;
+
+MainMenu::MainMenu() {
+    int x = 159;
+    int y = 286;
+    int width = 400;
+    int height = 70;
+
+    btnNewGame = GUIButton(x, y, width, height, "NEW GAME", true);
+    y += 100;
+    btnLoadGame = GUIButton(x, y, width, height, "LOAD GAME", true);
+    y += 100;
+    btnOptions = GUIButton(x, y, width, height, "OPTIONS", true);
+    y += 100;
+    btnQuit = GUIButton(x, y, width, height, "QUIT", true);
+
+    // Max magic numbers. Since the back button is always in the same spot,
+    // this places it at the bottom right of any subscreen.
+    y = 286;
+    btnBack = GUIButton(x + width + 20, y, 580 - width - 20, height, "BACK");
+
+    x = 160;
+    y = y + height + 20.f;
+    width = 580;
+    height = 330;
+    btnStartGame = GUIButton(x + 420, y + height + 20, 160, 70, "START");
+    btnLoadMap = GUIButton(x, y + height + 20, 160, 70, "Load map");
+    tckIntro = GUITick(x + 280, y + 110, "Intro enabled", userOptions->introEnabled);
+
+    setCurrState(MainMenuState::Main);
+    blinkTimer[0] = 1;
+    blinkDuration[0] = 1;
+    flashStr = "";
+    flashStrX = 0;
+    flashStrY = 0;
+}
+
+void MainMenu::setCurrState(MainMenuState state) {
+    currState = state;
+    btnNewGame.visible = currState == MainMenuState::Main;
+    btnLoadGame.visible = currState == MainMenuState::Main;
+    btnOptions.visible = currState == MainMenuState::Main;
+    btnQuit.visible = currState == MainMenuState::Main;
+
+    btnBack.visible = currState != MainMenuState::Main;
+
+    btnStartGame.visible = currState == MainMenuState::NewGame;
+    btnLoadMap.visible = currState == MainMenuState::NewGame;
+    tckIntro.visible = currState == MainMenuState::NewGame;
+}
+
+void MainMenu::update() {
     int x;
     int y;
     int width;
     int height;
-    int n;
-    int i;
     String strtemp;
 
-    int mouseHitButton;
-    if (CurrGameSubstate == GAMESUBSTATE_MAINMENU_MAIN) {
-        for (i = 0; i < MAINMENU_BUTTON_COUNT; i++) {
-            mouseHitButton = false;
-            x = (int)(159.f * MenuScale);
-            y = (int)((286.f + 100.f * i) * MenuScale);
+    if (currState == MainMenuState::Main) {
+        btnNewGame.update();
+        btnLoadGame.update();
+        btnOptions.update();
+        btnQuit.update();
 
-            width = (int)(400 * MenuScale);
-            height = (int)(70 * MenuScale);
-
-            mouseHitButton = UpdateUIButton(x, y, width, height);
-
-            switch (i) {
-                case MAINMENU_BUTTON_NEWGAME: {
-                    RandomSeed = "";
-                    if (mouseHitButton) {
-                        if (bbRand(15)==1) {
-                            switch (bbRand(14)) {
-                                case 1: {
-                                    RandomSeed = "NIL";
-                                } break;
-                                case 2: {
-                                    RandomSeed = "NO";
-                                } break;
-                                case 3: {
-                                    RandomSeed = "d9341";
-                                } break;
-                                case 4: {
-                                    RandomSeed = "5CP_I73";
-                                } break;
-                                case 5: {
-                                    RandomSeed = "DONTBLINK";
-                                } break;
-                                case 6: {
-                                    RandomSeed = "CRUNCH";
-                                } break;
-                                case 7: {
-                                    RandomSeed = "die";
-                                } break;
-                                case 8: {
-                                    RandomSeed = "HTAED";
-                                } break;
-                                case 9: {
-                                    RandomSeed = "rustledjim";
-                                } break;
-                                case 10: {
-                                    RandomSeed = "larry";
-                                } break;
-                                case 11: {
-                                    RandomSeed = "JORGE";
-                                } break;
-                                case 12: {
-                                    RandomSeed = "dirtymetal";
-                                } break;
-                                case 13: {
-                                    RandomSeed = "whatpumpkin";
-                                } break;
-                                case 14: {
-                                    RandomSeed = "BOYO";
-                                } break;
-                            }
-                        } else {
-                            n = bbRand(4,8);
-                            for (i = 0; i < n; i++) {
-                                if (bbRand(3)==1) {
-                                    RandomSeed = RandomSeed + String(bbRand(0,9));
-                                } else {
-                                    RandomSeed = RandomSeed + (char)bbRand(97,122);
-                                }
-                            }
-                        }
-
-                        //RandomSeed = MilliSecs()
-                        CurrGameSubstate = GAMESUBSTATE_MAINMENU_NEWGAME;
+        if (btnNewGame.isMouseHit()) {
+            if (bbRand(15)==1) {
+                switch (bbRand(14)) {
+                    case 1: {
+                        RandomSeed = "NIL";
+                    } break;
+                    case 2: {
+                        RandomSeed = "NO";
+                    } break;
+                    case 3: {
+                        RandomSeed = "d9341";
+                    } break;
+                    case 4: {
+                        RandomSeed = "5CP_I73";
+                    } break;
+                    case 5: {
+                        RandomSeed = "DONTBLINK";
+                    } break;
+                    case 6: {
+                        RandomSeed = "CRUNCH";
+                    } break;
+                    case 7: {
+                        RandomSeed = "die";
+                    } break;
+                    case 8: {
+                        RandomSeed = "HTAED";
+                    } break;
+                    case 9: {
+                        RandomSeed = "rustledjim";
+                    } break;
+                    case 10: {
+                        RandomSeed = "larry";
+                    } break;
+                    case 11: {
+                        RandomSeed = "JORGE";
+                    } break;
+                    case 12: {
+                        RandomSeed = "dirtymetal";
+                    } break;
+                    case 13: {
+                        RandomSeed = "whatpumpkin";
+                    } break;
+                    case 14: {
+                        RandomSeed = "BOYO";
+                    } break;
+                }
+            } else {
+                int n = bbRand(4,8);
+                for (int i = 0; i < n; i++) {
+                    if (bbRand(3)==1) {
+                        RandomSeed = RandomSeed + String(bbRand(0,9));
+                    } else {
+                        RandomSeed = RandomSeed + (char)bbRand(97,122);
                     }
-                } break;
-                case MAINMENU_BUTTON_LOADGAME: {
-                    if (mouseHitButton) {
-                        CurrGameSubstate = GAMESUBSTATE_MAINMENU_LOADGAME;
-                    }
-                } break;
-                case MAINMENU_BUTTON_OPTIONS: {
-                    if (mouseHitButton) {
-                        CurrGameSubstate = GAMESUBSTATE_MAINMENU_OPTIONS;
-                    }
-                } break;
-                case MAINMENU_BUTTON_QUIT: {
-                    if (mouseHitButton) {
-                        //End(); // TODO: Fix.
-                    }
-                } break;
+                }
             }
-        }
 
+            //RandomSeed = MilliSecs()
+            setCurrState(MainMenuState::NewGame);
+        } else if (btnLoadGame.isMouseHit()) {
+            setCurrState(MainMenuState::LoadGame);
+        } else if (btnOptions.isMouseHit()) {
+            setCurrState(MainMenuState::Options);
+        } else if (btnQuit.isMouseHit()) {
+            //BrokenItem(); // TODO: Fix.
+        }
     } else {
-
-        x = (int)(159.f * MenuScale);
-        y = (int)(286.f * MenuScale);
-
-        width = (int)(400.f * MenuScale);
-        height = (int)(70.f * MenuScale);
-
-        if (UpdateUIButton(x + width + (int)(20.f * MenuScale), y, (int)(580.f * MenuScale - width - 20.f * MenuScale), height, "BACK")) {
-            switch (CurrGameSubstate) {
-                case GAMESUBSTATE_MAINMENU_NEWGAME: {
+        btnBack.update();
+        if (btnBack.isMouseHit()) {
+            switch (currState) {
+                case MainMenuState::NewGame: {
                     PutINIValue(OptionFile, "general", "intro enabled", String(userOptions->introEnabled));
-                    CurrGameSubstate = GAMESUBSTATE_MAINMENU_MAIN;
+                    setCurrState(MainMenuState::Main);
                 } break;
-                case GAMESUBSTATE_MAINMENU_OPTIONS: {
-                    SaveOptionsINI();
 
-                    CurrGameSubstate = GAMESUBSTATE_MAINMENU_MAIN;
+                case MainMenuState::CustomMap: {
+                    setCurrState(MainMenuState::NewGame);
                 } break;
-                case GAMESUBSTATE_MAINMENU_CUSTOMMAP: {
-                    CurrGameSubstate = GAMESUBSTATE_MAINMENU_NEWGAME;
-                    MouseHit1 = false;
-                } break;
+
+                case MainMenuState::Options:
+                    SaveOptionsINI();
                 default: {
-                    CurrGameSubstate = GAMESUBSTATE_MAINMENU_MAIN;
+                    setCurrState(MainMenuState::Main);
                 } break;
             }
         }
 
-        switch (CurrGameSubstate) {
-            case GAMESUBSTATE_MAINMENU_NEWGAME: {
-
-
-                x = (int)(159.f * MenuScale);
-                y = (int)(286.f * MenuScale);
-
-                width = (int)(400.f * MenuScale);
-                height = (int)(70.f * MenuScale);
+        switch (currState) {
+            case MainMenuState::NewGame: {
+                btnStartGame.update();
+                btnLoadMap.update();
+                tckIntro.update();
 
                 x = (int)(160.f * MenuScale);
                 y = (int)(y + height + 20.f * MenuScale);
@@ -167,44 +183,44 @@ void UpdateMainMenu() {
                 CurrSave = UpdateInputBox(x + (int)(150.f * MenuScale), y + (int)(15.f * MenuScale), (int)(200.f * MenuScale), (int)(30.f * MenuScale), CurrSave, 1);
                 CurrSave = CurrSave.substr(0, 15);
 
-                userOptions->introEnabled = UpdateUITick(x + (int)(280.f * MenuScale), y + (int)(110.f * MenuScale), userOptions->introEnabled);
+                userOptions->introEnabled = tckIntro.ticked;
 
-                for (i = SAFE; i <= CUSTOM; i++) {
-                    if (UpdateUITick(x + (int)(20.f * MenuScale), y + (int)((180.f+30.f*i) * MenuScale), (SelectedDifficulty == difficulties[i]))) {
-                        SelectedDifficulty = difficulties[i];
-                    }
-                }
+                // for (i = SAFE; i <= CUSTOM; i++) {
+                //     if (UpdateUITick(x + (int)(20.f * MenuScale), y + (int)((180.f+30.f*i) * MenuScale), (SelectedDifficulty == difficulties[i]))) {
+                //         SelectedDifficulty = difficulties[i];
+                //     }
+                // }
 
-                if (SelectedDifficulty->customizable) {
-                    SelectedDifficulty->permaDeath = UpdateUITick(x + (int)(160.f * MenuScale), y + (int)(165.f * MenuScale), (SelectedDifficulty->permaDeath));
+                // if (SelectedDifficulty->customizable) {
+                //     SelectedDifficulty->permaDeath = UpdateUITick(x + (int)(160.f * MenuScale), y + (int)(165.f * MenuScale), (SelectedDifficulty->permaDeath));
 
-                    if (UpdateUITick(x + (int)(160.f * MenuScale), y + (int)(195.f * MenuScale), SelectedDifficulty->saveType == SAVEANYWHERE && (!SelectedDifficulty->permaDeath), SelectedDifficulty->permaDeath)) {
-                        SelectedDifficulty->saveType = SAVEANYWHERE;
-                    } else {
-                        SelectedDifficulty->saveType = SAVEONSCREENS;
-                    }
+                //     if (UpdateUITick(x + (int)(160.f * MenuScale), y + (int)(195.f * MenuScale), SelectedDifficulty->saveType == SAVEANYWHERE && (!SelectedDifficulty->permaDeath), SelectedDifficulty->permaDeath)) {
+                //         SelectedDifficulty->saveType = SAVEANYWHERE;
+                //     } else {
+                //         SelectedDifficulty->saveType = SAVEONSCREENS;
+                //     }
 
-                    SelectedDifficulty->aggressiveNPCs = UpdateUITick(x + (int)(160.f * MenuScale), y + (int)(225.f * MenuScale), SelectedDifficulty->aggressiveNPCs);
+                //     SelectedDifficulty->aggressiveNPCs = UpdateUITick(x + (int)(160.f * MenuScale), y + (int)(225.f * MenuScale), SelectedDifficulty->aggressiveNPCs);
 
-                    //Other factor's difficulty
-                    if (MouseHit1) {
-                        if (MouseOn(x + (int)(155.f * MenuScale), y+(int)(251.f*MenuScale), bbImageWidth(uiAssets->arrow[1]), bbImageHeight(uiAssets->arrow[1]))) {
-                            if (SelectedDifficulty->otherFactors < HARD) {
-                                SelectedDifficulty->otherFactors = SelectedDifficulty->otherFactors + 1;
-                            } else {
-                                SelectedDifficulty->otherFactors = EASY;
-                            }
-                            PlaySound_SM(sndMgmt->button);
-                        }
-                    }
-                }
+                //     //Other factor's difficulty
+                //     if (MouseHit1) {
+                //         if (MouseOn(x + (int)(155.f * MenuScale), y+(int)(251.f*MenuScale), bbImageWidth(uiAssets->arrow[1]), bbImageHeight(uiAssets->arrow[1]))) {
+                //             if (SelectedDifficulty->otherFactors < HARD) {
+                //                 SelectedDifficulty->otherFactors = SelectedDifficulty->otherFactors + 1;
+                //             } else {
+                //                 SelectedDifficulty->otherFactors = EASY;
+                //             }
+                //             PlaySound_SM(sndMgmt->button);
+                //         }
+                //     }
+                // }
 
-                if (UpdateUIButton(x, y + height + (int)(20.f * MenuScale), (int)(160.f * MenuScale), (int)(70.f * MenuScale), "Load map")) {
-                    CurrGameSubstate = GAMESUBSTATE_MAINMENU_CUSTOMMAP;
+                if (btnLoadMap.isMouseHit()) {
+                    CurrGameSubstate = MainMenuState::CustomMap;
                     LoadSavedMaps();
                 }
 
-                if (UpdateUIButton(x + (int)(420.f * MenuScale), y + height + (int)(20.f * MenuScale), (int)(160.f * MenuScale), (int)(70.f * MenuScale), "START")) {
+                if (btnStartGame.isMouseHit()) {
                     if (CurrSave.isEmpty()) {
                         CurrSave = "untitled";
                     }
@@ -214,7 +230,7 @@ void UpdateMainMenu() {
                     }
                     strtemp = "";
                     bbSeedRnd(SeedStringToInt(RandomSeed));
-
+                    // TODO: Checks for conflicting file names.
                     //					SameFound = False
                     //					For i = 1 To SaveGameAmount
                     //						If (SaveGames(i - 1) = CurrSave) Then SameFound=SameFound+1
@@ -229,14 +245,16 @@ void UpdateMainMenu() {
                     bbFlushMouse();
 
                     PutINIValue(OptionFile, "general", "intro enabled", String(userOptions->introEnabled));
+
+                    delete this;
+                    return;
                 }
 
 
                 //load game
             } break;
-            case GAMESUBSTATE_MAINMENU_LOADGAME: {
 
-
+            case MainMenuState::LoadGame: {
                 y = y + height + (int)(20.f * MenuScale);
                 width = (int)(580.f * MenuScale);
                 height = (int)(300.f * MenuScale);
@@ -255,9 +273,8 @@ void UpdateMainMenu() {
 
                 //options
             } break;
-            case GAMESUBSTATE_MAINMENU_OPTIONS: {
 
-
+            case MainMenuState::Options: {
                 x = (int)(159.f * MenuScale);
                 y = (int)(286.f * MenuScale);
 
@@ -409,8 +426,8 @@ void UpdateMainMenu() {
 
                 // load map
             } break;
-            case GAMESUBSTATE_MAINMENU_CUSTOMMAP: {
 
+            case MainMenuState::CustomMap: {
                 y = y + height + (int)(20.f * MenuScale);
                 width = (int)(580.f * MenuScale);
                 height = (int)(350.f * MenuScale);
@@ -429,93 +446,91 @@ void UpdateMainMenu() {
 
             } break;
         }
-
     }
 }
 
-void DrawMainMenu() {
+void MainMenu::draw() {
     int x;
     int y;
     int width;
     int height;
-    int i;
 
     bbColor(0,0,0);
     bbRect(0,0,userOptions->screenWidth,userOptions->screenHeight,true);
 
     bbDrawImage(uiAssets->back, 0, 0);
 
-    if (TimeInPosMilliSecs() % (int)(MenuBlinkTimer[0]) >= bbRand((int)(MenuBlinkDuration[0]))) {
+    if (TimeInPosMilliSecs() % (int)(blinkTimer[0]) >= bbRand((int)(blinkDuration[0]))) {
         bbDrawImage(uiAssets->scp173, userOptions->screenWidth - bbImageWidth(uiAssets->scp173), userOptions->screenHeight - bbImageHeight(uiAssets->scp173));
     }
 
     if (bbRand(300) == 1) {
-        MenuBlinkTimer[0] = (float)bbRand(4000, 8000);
-        MenuBlinkDuration[0] = (float)bbRand(200, 500);
+        blinkTimer[0] = (float)bbRand(4000, 8000);
+        blinkDuration[0] = (float)bbRand(200, 500);
     }
 
     bbSetFont(uiAssets->font[0]);
 
-    MenuBlinkTimer[1] = MenuBlinkTimer[1]-timing->tickDuration;
-    if (MenuBlinkTimer[1] < MenuBlinkDuration[1]) {
+    blinkTimer[1] -= timing->tickDuration;
+    if (blinkTimer[1] < blinkDuration[1]) {
         bbColor(50, 50, 50);
-        bbText(MenuStrX + bbRand(-5, 5), MenuStrY + bbRand(-5, 5), MenuStr, true);
-        if (MenuBlinkTimer[1] < 0) {
-            MenuBlinkTimer[1] = (float)bbRand(700, 800);
-            MenuBlinkDuration[1] = (float)bbRand(10, 35);
-            MenuStrX = (int)(bbRand(700, 1000) * MenuScale);
-            MenuStrY = (int)(bbRand(100, 600) * MenuScale);
+        bbText(flashStrX + bbRand(-5, 5), flashStrY + bbRand(-5, 5), flashStr, true);
+        if (blinkTimer[1] < 0) {
+            blinkTimer[1] = bbRnd(700, 800);
+            blinkDuration[1] = bbRnd(10, 35);
+            flashStrX = (int)(bbRand(700, 1000) * MenuScale);
+            flashStrY = (int)(bbRand(100, 600) * MenuScale);
 
             switch (bbRand(0, 22)) {
                 case 0:
                 case 2:
                 case 3: {
-                    MenuStr = "DON'T BLINK";
+                    flashStr = "DON'T BLINK";
                 } break;
                 case 4:
                 case 5: {
-                    MenuStr = "Secure. Contain. Protect.";
+                    flashStr = "Secure. Contain. Protect.";
                 } break;
                 case 6:
                 case 7:
                 case 8: {
-                    MenuStr = "You want happy endings? Fuck you.";
+                    flashStr = "You want happy endings? Fuck you.";
                 } break;
                 case 9:
                 case 10:
                 case 11: {
-                    MenuStr = "Sometimes we would have had time to scream.";
+                    flashStr = "Sometimes we would have had time to scream.";
                 } break;
                 case 12:
                 case 19: {
-                    MenuStr = "NIL";
+                    flashStr = "NIL";
                 } break;
                 case 13: {
-                    MenuStr = "NO";
+                    flashStr = "NO";
                 } break;
                 case 14: {
-                    MenuStr = "black white black white black white gray";
+                    flashStr = "black white black white black white gray";
                 } break;
                 case 15: {
-                    MenuStr = "Stone does not care";
+                    flashStr = "Stone does not care";
                 } break;
                 case 16: {
-                    MenuStr = "9341";
+                    flashStr = "9341";
                 } break;
                 case 17: {
-                    MenuStr = "It controls the doors";
+                    flashStr = "It controls the doors";
                 } break;
                 case 18: {
-                    MenuStr = "e8m106]af173o+079m895w914";
+                    flashStr = "e8m106]af173o+079m895w914";
                 } break;
                 case 20: {
-                    MenuStr = "It has taken over everything";
+                    flashStr = "It has taken over everything";
                 } break;
                 case 21: {
-                    MenuStr = "The spiral is growing";
+                    flashStr = "The spiral is growing";
                 } break;
                 case 22: {
-                    MenuStr = "\"Some kind of gestalt effect due to massive reality damage.\"";
+                    flashStr = "\"Some kind of gestalt effect due to massive reality damage.\"";
                 } break;
             }
         }
@@ -529,32 +544,11 @@ void DrawMainMenu() {
         DrawTiledImageRect(uiAssets->tileWhite, 0, 5, 512, (int)(7.f * MenuScale), (int)(985.f * MenuScale), (int)(407.f * MenuScale), (userOptions->screenWidth - (int)(1240 * MenuScale)) + 300, (int)(7.f * MenuScale));
     }
 
-    String txt;
-    if (CurrGameSubstate == GAMESUBSTATE_MAINMENU_MAIN) {
-        for (i = 0; i <= MAINMENU_BUTTON_COUNT-1; i++) {
-            x = (int)(159.f * MenuScale);
-            y = (int)((286.f + 100.f * i) * MenuScale);
-
-            width = (int)(400.f * MenuScale);
-            height = (int)(70.f * MenuScale);
-
-            switch (i) {
-                case MAINMENU_BUTTON_NEWGAME: {
-                    txt = "NEW GAME";
-                } break;
-                case MAINMENU_BUTTON_LOADGAME: {
-                    txt = "LOAD GAME";
-                } break;
-                case MAINMENU_BUTTON_OPTIONS: {
-                    txt = "OPTIONS";
-                } break;
-                case MAINMENU_BUTTON_QUIT: {
-                    txt = "QUIT";
-                } break;
-            }
-
-            DrawUIButton(x, y, width, height, txt);
-        }
+    if (CurrGameSubstate == MainMenuState::Main) {
+        btnNewGame.draw();
+        btnLoadGame.draw();
+        btnOptions.draw();
+        btnQuit.draw();
     } else {
         x = (int)(159.f * MenuScale);
         y = (int)(286.f * MenuScale);
@@ -564,10 +558,10 @@ void DrawMainMenu() {
 
         DrawFrame(x, y, width, height);
 
-        DrawUIButton(x + width + (int)(20.f * MenuScale), y, (int)(580.f * MenuScale) - width - (int)(20.f * MenuScale), height, "BACK", false);
+        btnBack.draw();
 
         switch (CurrGameSubstate) {
-            case GAMESUBSTATE_MAINMENU_NEWGAME: {
+            case MainMenuState::NewGame: {
 
 
                 x = (int)(159.f * MenuScale);
@@ -610,59 +604,59 @@ void DrawMainMenu() {
                 //				EndIf
 
                 bbText(x + (int)(20.f * MenuScale), y + (int)(110.f * MenuScale), "Enable intro sequence:");
-                DrawUITick(x + (int)(280.f * MenuScale), y + (int)(110.f * MenuScale), userOptions->introEnabled);
+                tckIntro.draw();
 
                 //Local modeName$, modeDescription$, selectedDescription$
-                bbText(x + (int)(20.f * MenuScale), y + (int)(150.f * MenuScale), "Difficulty:");
-                for (i = SAFE; i <= CUSTOM; i++) {
-                    DrawUITick(x + (int)(20.f * MenuScale), y + (int)((180.f+30.f*i) * MenuScale), SelectedDifficulty == difficulties[i]);
+                // bbText(x + (int)(20.f * MenuScale), y + (int)(150.f * MenuScale), "Difficulty:");
+                // for (i = SAFE; i <= CUSTOM; i++) {
+                //     DrawUITick(x + (int)(20.f * MenuScale), y + (int)((180.f+30.f*i) * MenuScale), SelectedDifficulty == difficulties[i]);
 
-                    bbText(x + (int)(60.f * MenuScale), y + (int)((180.f+30.f*i) * MenuScale), difficulties[i]->name);
-                }
+                //     bbText(x + (int)(60.f * MenuScale), y + (int)((180.f+30.f*i) * MenuScale), difficulties[i]->name);
+                // }
 
-                bbColor(255, 255, 255);
-                DrawFrame(x + (int)(150.f * MenuScale),y + (int)(155.f * MenuScale), (int)(410.f*MenuScale), (int)(150.f*MenuScale));
+                // bbColor(255, 255, 255);
+                // DrawFrame(x + (int)(150.f * MenuScale),y + (int)(155.f * MenuScale), (int)(410.f*MenuScale), (int)(150.f*MenuScale));
 
-                if (SelectedDifficulty->customizable) {
-                    DrawUITick(x + (int)(160.f * MenuScale), y + (int)(165.f * MenuScale), (SelectedDifficulty->permaDeath));
-                    bbText(x + (int)(200.f * MenuScale), y + (int)(165.f * MenuScale), "Permadeath");
+                // if (SelectedDifficulty->customizable) {
+                //     DrawUITick(x + (int)(160.f * MenuScale), y + (int)(165.f * MenuScale), (SelectedDifficulty->permaDeath));
+                //     bbText(x + (int)(200.f * MenuScale), y + (int)(165.f * MenuScale), "Permadeath");
 
-                    DrawUITick(x + (int)(160.f * MenuScale), y + (int)(195.f * MenuScale), SelectedDifficulty->saveType = SAVEANYWHERE & (!SelectedDifficulty->permaDeath), SelectedDifficulty->permaDeath);
+                //     DrawUITick(x + (int)(160.f * MenuScale), y + (int)(195.f * MenuScale), SelectedDifficulty->saveType = SAVEANYWHERE & (!SelectedDifficulty->permaDeath), SelectedDifficulty->permaDeath);
 
-                    bbText(x + (int)(200.f * MenuScale), y + (int)(195.f * MenuScale), "Save anywhere");
+                //     bbText(x + (int)(200.f * MenuScale), y + (int)(195.f * MenuScale), "Save anywhere");
 
-                    DrawUITick(x + (int)(160.f * MenuScale), y + (int)(225.f * MenuScale), SelectedDifficulty->aggressiveNPCs);
-                    bbText(x + (int)(200.f * MenuScale), y + (int)(225.f * MenuScale), "Aggressive NPCs");
+                //     DrawUITick(x + (int)(160.f * MenuScale), y + (int)(225.f * MenuScale), SelectedDifficulty->aggressiveNPCs);
+                //     bbText(x + (int)(200.f * MenuScale), y + (int)(225.f * MenuScale), "Aggressive NPCs");
 
-                    //Other factor's difficulty
-                    bbColor(255,255,255);
-                    bbDrawImage(uiAssets->arrow[1],x + (int)(155.f * MenuScale), y+(int)(251.f*MenuScale));
+                //     //Other factor's difficulty
+                //     bbColor(255,255,255);
+                //     bbDrawImage(uiAssets->arrow[1],x + (int)(155.f * MenuScale), y+(int)(251.f*MenuScale));
 
-                    bbColor(255,255,255);
-                    switch (SelectedDifficulty->otherFactors) {
-                        case EASY: {
-                            bbText(x + (int)(200.f * MenuScale), y + (int)(255.f * MenuScale), "Other difficulty factors: Easy");
-                        } break;
-                        case NORMAL: {
-                            bbText(x + (int)(200.f * MenuScale), y + (int)(255.f * MenuScale), "Other difficulty factors: Normal");
-                        } break;
-                        case HARD: {
-                            bbText(x + (int)(200.f * MenuScale), y + (int)(255.f * MenuScale), "Other difficulty factors: Hard");
-                        } break;
-                    }
-                } else {
-                    RowText(SelectedDifficulty->description, x+(int)(160.f*MenuScale), y+(int)(160.f*MenuScale), (int)((410.f-20.f)*MenuScale), (int)(200.f*MenuScale));
-                }
+                //     bbColor(255,255,255);
+                //     switch (SelectedDifficulty->otherFactors) {
+                //         case EASY: {
+                //             bbText(x + (int)(200.f * MenuScale), y + (int)(255.f * MenuScale), "Other difficulty factors: Easy");
+                //         } break;
+                //         case NORMAL: {
+                //             bbText(x + (int)(200.f * MenuScale), y + (int)(255.f * MenuScale), "Other difficulty factors: Normal");
+                //         } break;
+                //         case HARD: {
+                //             bbText(x + (int)(200.f * MenuScale), y + (int)(255.f * MenuScale), "Other difficulty factors: Hard");
+                //         } break;
+                //     }
+                // } else {
+                //     RowText(SelectedDifficulty->description, x+(int)(160.f*MenuScale), y+(int)(160.f*MenuScale), (int)((410.f-20.f)*MenuScale), (int)(200.f*MenuScale));
+                // }
 
-                DrawUIButton(x, y + height + (int)(20.f * MenuScale), (int)(160.f * MenuScale), (int)(70.f * MenuScale), "Load map", false);
+                btnLoadMap.draw();
 
                 bbSetFont(uiAssets->font[1]);
 
-                DrawUIButton(x + (int)(420.f * MenuScale), y + height + (int)(20.f * MenuScale), (int)(160.f * MenuScale), (int)(70.f * MenuScale), "START", false);
+                btnStartGame.draw();
 
                 //load game
             } break;
-            case GAMESUBSTATE_MAINMENU_LOADGAME: {
+            case MainMenuState::LoadGame: {
 
 
                 y = y + height + (int)(20.f * MenuScale);
@@ -732,7 +726,7 @@ void DrawMainMenu() {
 
                 //options
             } break;
-            case GAMESUBSTATE_MAINMENU_OPTIONS: {
+            case MainMenuState::Options: {
 
 
                 x = (int)(159.f * MenuScale);
@@ -906,7 +900,7 @@ void DrawMainMenu() {
 
                 // load map
             } break;
-            case GAMESUBSTATE_MAINMENU_CUSTOMMAP: {
+            case MainMenuState::CustomMap: {
 
                 y = y + height + (int)(20.f * MenuScale);
                 width = (int)(580.f * MenuScale);
