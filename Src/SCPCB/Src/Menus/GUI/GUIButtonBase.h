@@ -7,11 +7,8 @@
 namespace CBN {
 
 class GUIButtonBase : public GUIBase {
-protected:
-    String text;
-
 public:
-    GUIButtonBase(int x, int y, int width, int height, const String& txt, bool relative = true);
+    GUIButtonBase(int x, int y, int width, int height, bool relative = true);
 
     virtual void update();
     virtual void draw();

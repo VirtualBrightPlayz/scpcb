@@ -9,6 +9,7 @@ namespace CBN {
 class GUIButton : public GUIButtonBase {
 private:
     bool bigFont;
+    String text;
 
 public:
     GUIButton();

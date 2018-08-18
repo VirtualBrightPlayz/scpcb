@@ -7,9 +7,8 @@
 
 namespace CBN {
 
-GUIButtonBase::GUIButtonBase(int x, int y, int width, int height, const String& txt, bool relative)
+GUIButtonBase::GUIButtonBase(int x, int y, int width, int height, bool relative)
     : GUIBase(x, y, width, height, relative) {
-    text = txt;
 }
 
 void GUIButtonBase::update() {

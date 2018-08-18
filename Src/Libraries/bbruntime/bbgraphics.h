@@ -65,7 +65,7 @@ void	 bbPlot( int x,int y );
 void	 bbLine( int x1,int y1,int x2,int y2 );
 void	 bbRect( int x,int y,int w,int h,int solid=1 );
 void	 bbOval( int x,int y,int w,int h,int solid=1 );
-void	 bbText( int x,int y,const String& str,int centre_x=0,int centre_y=0 );
+void	 bbText( int x,int y,const String& str,bool centre_x=false,bool centre_y=false );
 void bbCopyRect(int sx, int sy, int w, int h, int dx, int dy,class gxCanvas *src,class gxCanvas *dest);
 void	 bbGetColor( int x,int y );
 int		 bbColorRed();

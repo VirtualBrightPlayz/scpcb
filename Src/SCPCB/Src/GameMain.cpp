@@ -323,7 +323,7 @@ void UpdateGame() {
         if (CurrGameState==GAMESTATE_LAUNCHER) {
             launcher->update();
         } else if (CurrGameState==GAMESTATE_MAINMENU) {
-            UpdateMainMenu();
+            mainMenu->update();
         } else {
             if (!MouseDown1 && !MouseHit1) {
                 mainPlayer->grabbedEntity = 0;
@@ -589,7 +589,7 @@ void UpdateGame() {
             launcher->draw();
         }
     } else if (CurrGameState==GAMESTATE_MAINMENU) {
-        DrawMainMenu();
+        mainMenu->draw();
     } else {
         RenderWorld2();
 

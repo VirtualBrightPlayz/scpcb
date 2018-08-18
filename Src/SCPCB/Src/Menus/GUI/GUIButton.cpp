@@ -9,7 +9,8 @@ namespace CBN {
 GUIButton::GUIButton() : GUIButton(0, 0, 0, 0, "") { };
 
 GUIButton::GUIButton(int x, int y, int width, int height, const String& txt, bool bigFont, bool relative)
-    : GUIButtonBase(x, y, width, height, txt, relative) {
+    : GUIButtonBase(x, y, width, height, relative) {
+    text = txt;
     this->bigFont = bigFont;
 }
 
@@ -20,12 +21,12 @@ void GUIButton::update() {
 
 void GUIButton::draw() {
     if (!visible) { return; }
-    GUIButtonBase::draw();
-    int scale = relative ? (int)MenuScale : 1;
-    DrawTiledImageRect(uiAssets->tileWhite, 0, (y % 256), 512, 512, x, y, width, height);
-    DrawTiledImageRect(uiAssets->tileBlack, 0, (y % 256), 512, 512, x + 3 * scale, y + 3 * scale, width - 6 * scale, height - 6 * scale);
 
-    bbColor(255, 255, 255);
+    // White border and black inside.
+    DrawTiledImageRect(uiAssets->tileWhite, 0, (y % 256), 512, 512, x, y, width, height);
+    DrawTiledImageRect(uiAssets->tileBlack, 0, (y % 256), 512, 512, (int)(x + 3 * MenuScale), (int)(y + 3 * MenuScale), (int)(width - 6 * MenuScale), (int)(height - 6 * MenuScale));
+    GUIButtonBase::draw();
+
     if (bigFont) {
         bbSetFont(uiAssets->font[1]);
     } else {

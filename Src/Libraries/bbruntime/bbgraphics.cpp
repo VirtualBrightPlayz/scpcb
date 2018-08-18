@@ -586,7 +586,7 @@ void bbOval( int x,int y,int w,int h,int solid ){
 	gx_canvas->oval( x,y,w,h,solid ? true : false );
 }
 
-void bbText( int x,int y,const String& str,int centre_x,int centre_y ){
+void bbText( int x,int y,const String& str,bool centre_x,bool centre_y ){
 	if( centre_x ) x-=curr_font->getWidth( str )/2;
 	if( centre_y ) y-=curr_font->getHeight()/2;
 	gx_canvas->text( x,y,str );

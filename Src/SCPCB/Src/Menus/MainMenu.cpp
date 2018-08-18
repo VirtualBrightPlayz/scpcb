@@ -40,12 +40,12 @@ MainMenu::MainMenu() {
     btnBack = GUIButton(x + width + 20, y, 580 - width - 20, height, "BACK");
 
     x = 160;
-    y = y + height + 20.f;
+    y = y + height + 20;
     width = 580;
     height = 330;
     btnStartGame = GUIButton(x + 420, y + height + 20, 160, 70, "START");
     btnLoadMap = GUIButton(x, y + height + 20, 160, 70, "Load map");
-    tckIntro = GUITick(x + 280, y + 110, "Intro enabled", userOptions->introEnabled);
+    tckIntro = GUITick(x + 280, y + 110, "Enable intro enabled", -260, userOptions->introEnabled);
 
     setCurrState(MainMenuState::Main);
     blinkTimer[0] = 1;
@@ -70,12 +70,6 @@ void MainMenu::setCurrState(MainMenuState state) {
 }
 
 void MainMenu::update() {
-    int x;
-    int y;
-    int width;
-    int height;
-    String strtemp;
-
     if (currState == MainMenuState::Main) {
         btnNewGame.update();
         btnLoadGame.update();
@@ -175,10 +169,10 @@ void MainMenu::update() {
                 btnLoadMap.update();
                 tckIntro.update();
 
-                x = (int)(160.f * MenuScale);
-                y = (int)(y + height + 20.f * MenuScale);
-                width = (int)(580.f * MenuScale);
-                height = (int)(330.f * MenuScale);
+                int x = (int)(160.f * MenuScale);
+                int y = (int)(20.f * MenuScale);
+                int width = (int)(580.f * MenuScale);
+                int height = (int)(330.f * MenuScale);
 
                 CurrSave = UpdateInputBox(x + (int)(150.f * MenuScale), y + (int)(15.f * MenuScale), (int)(200.f * MenuScale), (int)(30.f * MenuScale), CurrSave, 1);
                 CurrSave = CurrSave.substr(0, 15);
@@ -216,7 +210,7 @@ void MainMenu::update() {
                 // }
 
                 if (btnLoadMap.isMouseHit()) {
-                    CurrGameSubstate = MainMenuState::CustomMap;
+                    setCurrState(MainMenuState::CustomMap);
                     LoadSavedMaps();
                 }
 
@@ -228,7 +222,7 @@ void MainMenu::update() {
                     if (RandomSeed.isEmpty()) {
                         RandomSeed = String(TimeInPosMilliSecs());
                     }
-                    strtemp = "";
+
                     bbSeedRnd(SeedStringToInt(RandomSeed));
                     // TODO: Checks for conflicting file names.
                     //					SameFound = False
@@ -255,11 +249,11 @@ void MainMenu::update() {
             } break;
 
             case MainMenuState::LoadGame: {
-                y = y + height + (int)(20.f * MenuScale);
-                width = (int)(580.f * MenuScale);
-                height = (int)(300.f * MenuScale);
+                int y = (int)(20.f * MenuScale);
+                int width = (int)(580.f * MenuScale);
+                int height = (int)(300.f * MenuScale);
 
-                x = (int)(159.f * MenuScale);
+                int x = (int)(159.f * MenuScale);
                 y = (int)(286.f * MenuScale);
 
                 width = (int)(400.f * MenuScale);
@@ -275,11 +269,11 @@ void MainMenu::update() {
             } break;
 
             case MainMenuState::Options: {
-                x = (int)(159.f * MenuScale);
-                y = (int)(286.f * MenuScale);
+                int x = (int)(159.f * MenuScale);
+                int y = (int)(286.f * MenuScale);
 
-                width = (int)(400.f * MenuScale);
-                height = (int)(70.f * MenuScale);
+                int width = (int)(400.f * MenuScale);
+                int height = (int)(70.f * MenuScale);
 
                 x = (int)(160.f * MenuScale);
                 y = y + height + (int)(20.f * MenuScale);
@@ -428,11 +422,11 @@ void MainMenu::update() {
             } break;
 
             case MainMenuState::CustomMap: {
-                y = y + height + (int)(20.f * MenuScale);
-                width = (int)(580.f * MenuScale);
-                height = (int)(350.f * MenuScale);
+                int y = (int)(20.f * MenuScale);
+                int width = (int)(580.f * MenuScale);
+                int height = (int)(350.f * MenuScale);
 
-                x = (int)(159.f * MenuScale);
+                int x = (int)(159.f * MenuScale);
                 y = (int)(286.f * MenuScale);
 
                 width = (int)(400.f * MenuScale);
@@ -544,7 +538,7 @@ void MainMenu::draw() {
         DrawTiledImageRect(uiAssets->tileWhite, 0, 5, 512, (int)(7.f * MenuScale), (int)(985.f * MenuScale), (int)(407.f * MenuScale), (userOptions->screenWidth - (int)(1240 * MenuScale)) + 300, (int)(7.f * MenuScale));
     }
 
-    if (CurrGameSubstate == MainMenuState::Main) {
+    if (currState == MainMenuState::Main) {
         btnNewGame.draw();
         btnLoadGame.draw();
         btnOptions.draw();
@@ -560,10 +554,8 @@ void MainMenu::draw() {
 
         btnBack.draw();
 
-        switch (CurrGameSubstate) {
+        switch (currState) {
             case MainMenuState::NewGame: {
-
-
                 x = (int)(159.f * MenuScale);
                 y = (int)(286.f * MenuScale);
 
@@ -603,7 +595,6 @@ void MainMenu::draw() {
                 //					DrawUIButton(x+(int)(370.f*MenuScale), y+(int)(55.f*MenuScale), (int)(120.f*MenuScale), (int)(30.f*MenuScale), "Deselect", False)
                 //				EndIf
 
-                bbText(x + (int)(20.f * MenuScale), y + (int)(110.f * MenuScale), "Enable intro sequence:");
                 tckIntro.draw();
 
                 //Local modeName$, modeDescription$, selectedDescription$
@@ -657,8 +648,6 @@ void MainMenu::draw() {
                 //load game
             } break;
             case MainMenuState::LoadGame: {
-
-
                 y = y + height + (int)(20.f * MenuScale);
                 width = (int)(580.f * MenuScale);
                 height = (int)(300.f * MenuScale);
@@ -727,8 +716,6 @@ void MainMenu::draw() {
                 //options
             } break;
             case MainMenuState::Options: {
-
-
                 x = (int)(159.f * MenuScale);
                 y = (int)(286.f * MenuScale);
 
@@ -901,7 +888,6 @@ void MainMenu::draw() {
                 // load map
             } break;
             case MainMenuState::CustomMap: {
-
                 y = y + height + (int)(20.f * MenuScale);
                 width = (int)(580.f * MenuScale);
                 height = (int)(350.f * MenuScale);
@@ -953,8 +939,6 @@ void MainMenu::draw() {
     }
 
     //DrawTiledImageRect(MenuBack, 985 * MenuScale, 860 * MenuScale, 200 * MenuScale, 20 * MenuScale, 1200 * MenuScale, 866 * MenuScale, 300, 20 * MenuScale)
-
-
 
     bbSetFont(uiAssets->font[0]);
 }

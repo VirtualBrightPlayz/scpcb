@@ -15,7 +15,7 @@ namespace CBN {
 // Globals.
 String SelectedEnding;
 int CurrGameState = GAMESTATE_MAINMENU;
-int CurrGameSubstate = MainMenuState::Main;
+int CurrGameSubstate = 0;
 int CurrGameStatePage = 0;
 float MsgTimer;
 String Msg;

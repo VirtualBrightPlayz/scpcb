@@ -6,7 +6,7 @@
 
 namespace CBN {
 
-enum MainMenuState {
+enum class MainMenuState {
     Main = 0,
     NewGame = 1,
     LoadGame = 2,

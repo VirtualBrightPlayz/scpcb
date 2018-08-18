@@ -20,8 +20,7 @@ Launcher::Launcher() {
     this->width = (int)(Min((float)GetINIInt(OptionFile, "launcher", "launcher width"), 1024.f));
     this->height = (int)(Min((float)GetINIInt(OptionFile, "launcher", "launcher height"), 768.f));
 
-    int i;
-    for (i = 1; i <= bbCountGfxModes3D(); i++) {
+    for (int i = 1; i <= bbCountGfxModes3D(); i++) {
         if (bbGfxModeDepth(i) == 32) {
             this->resWidths.push_back(bbGfxModeWidth(i));
             this->resHeights.push_back(bbGfxModeHeight(i));
@@ -41,8 +40,8 @@ Launcher::Launcher() {
 
     btnLaunch = GUIButton(this->width - 30 - 90, this->height - 50 - 55, 100, 30, "LAUNCH", false, false);
     btnExit = GUIButton(this->width - 30 - 90, this->height - 50, 100, 30, "EXIT", false, false);
-    tckFullscreen = GUITick(40 + 430 - 15, 260 - 55 + 5 - 8, "Fullscreen", userOptions->fullscreen, false);
-    tckUseLauncher = GUITick(40 + 430 - 15, 260 - 55 + 95 + 8, "Use launcher", userOptions->launcher, false);
+    tckFullscreen = GUITick(455, 202, "Fullscreen", 30, userOptions->fullscreen, false);
+    tckUseLauncher = GUITick(455, 308, "Use launcher", 30, userOptions->launcher, false);
 
     bbSetBuffer(bbBackBuffer());
 
@@ -182,24 +181,10 @@ void Launcher::draw() {
         y = y + 20;
     }
 
-    tckFullscreen.draw();
-    bbText(40 + 430 + 15,       262 - 55 + 5 - 8, "Fullscreen");
-
-    tckUseLauncher.draw();
-    bbText(40 + 430 + 15,       262 - 55 + 95 + 8, "Use launcher");
-
-    bbText(40+ 260 + 15, 262 - 55 + 140, "Current Resolution: "+String(this->resWidths[launcher->selectedGFXMode]) + "x" + String(this->resHeights[launcher->selectedGFXMode]));
-
-    //If (GfxModeWidths(SelectedGFXMode)<G_viewport_width) Then
-    //	Text(40+ 260 + 65, 262 - 55 + 160, "(upscaled to")
-    //ElseIf ((GfxModeWidths(SelectedGFXMode)>G_viewport_width)) Then
-    //	Text(40+ 260 + 65, 262 - 55 + 160, "(downscaled to")
-    //EndIf
-
-    //Text(40+ 260 + 65, 262 - 55 + 180, G_viewport_width + "x" + G_viewport_height + ")")
-
     btnLaunch.draw();
     btnExit.draw();
+    tckFullscreen.draw();
+    tckUseLauncher.draw();
     bbFlip();
 }
 

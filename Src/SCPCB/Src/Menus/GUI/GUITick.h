@@ -6,9 +6,12 @@
 namespace CBN {
 
 class GUITick : public GUIButtonBase {
+private:
+    String text;
+    int textOffset;
 public:
     GUITick();
-    GUITick(int x, int y, const String& txt, bool ticked = false, bool relative = true);
+    GUITick(int x, int y, const String& txt, int txtOffset, bool ticked = false, bool relative = true);
 
     bool ticked;
     bool locked;
