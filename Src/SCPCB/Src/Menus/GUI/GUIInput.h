@@ -11,14 +11,15 @@ private:
     String displayText;
     int textOffset;
     int caretPos;
-    bool selected;
     int caretTimer;
+    int charLimit;
 
 public:
     GUIInput();
-    GUIInput(int x, int y, int width, int height, const String& displayTxt, int txtOffset, const String& defaultTxt = "", bool relative = true);
+    GUIInput(int x, int y, int width, int height, const String& displayTxt, int txtOffset, int limit, const String& defaultTxt = "", bool relative = true);
 
     String input;
+    bool selected;
 
     virtual void update();
     virtual void draw();

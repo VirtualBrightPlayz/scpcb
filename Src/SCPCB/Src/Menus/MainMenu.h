@@ -3,6 +3,7 @@
 #include <vector>
 #include "GUI/GUIButton.h"
 #include "GUI/GUITick.h"
+#include "GUI/GUIInput.h"
 
 namespace CBN {
 
@@ -26,11 +27,12 @@ private:
 public:
     MainMenu();
 
-    // TODO: Input text.
     GUIButton btnNewGame;
     GUIButton btnStartGame;
     GUIButton btnLoadMap;
     GUITick tckIntro;
+    GUIInput txtName;
+    GUIInput txtSeed;
 
     GUIButton btnLoadGame;
     std::vector<std::pair<GUIButton, GUIButton>> btnSaveFiles;

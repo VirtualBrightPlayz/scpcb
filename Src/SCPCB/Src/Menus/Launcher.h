@@ -3,7 +3,6 @@
 #include <vector>
 #include "GUI/GUIButton.h"
 #include "GUI/GUITick.h"
-#include "GUI/GUIInput.h"
 
 namespace CBN {
 
@@ -11,9 +10,9 @@ struct Launcher {
 private:
     GUIButton btnLaunch;
     GUIButton btnExit;
-    GUIInput test;
     GUITick tckUseLauncher;
     GUITick tckFullscreen;
+
     void verifyResolution();
 public:
     Launcher();

@@ -46,6 +46,8 @@ MainMenu::MainMenu() {
     btnStartGame = GUIButton(x + 420, y + height + 20, 160, 70, "START");
     btnLoadMap = GUIButton(x, y + height + 20, 160, 70, "Load map");
     tckIntro = GUITick(x + 280, y + 110, "Enable intro enabled", -260, userOptions->introEnabled);
+    txtName = GUIInput(x + 150, y + 15, 200, 30, "Name:", -130, 15);
+    txtSeed = GUIInput(x + 150, y + 55, 200, 30, "Map seed:", -130, 15);
 
     setCurrState(MainMenuState::Main);
     blinkTimer[0] = 1;
@@ -67,6 +69,8 @@ void MainMenu::setCurrState(MainMenuState state) {
     btnStartGame.visible = currState == MainMenuState::NewGame;
     btnLoadMap.visible = currState == MainMenuState::NewGame;
     tckIntro.visible = currState == MainMenuState::NewGame;
+    txtName.visible = currState == MainMenuState::NewGame;
+    txtSeed.visible = currState == MainMenuState::NewGame;
 }
 
 void MainMenu::update() {
@@ -77,6 +81,7 @@ void MainMenu::update() {
         btnQuit.update();
 
         if (btnNewGame.isMouseHit()) {
+            RandomSeed = "";
             if (bbRand(15)==1) {
                 switch (bbRand(14)) {
                     case 1: {
@@ -132,8 +137,7 @@ void MainMenu::update() {
                     }
                 }
             }
-
-            //RandomSeed = MilliSecs()
+            txtSeed.input = RandomSeed;
             setCurrState(MainMenuState::NewGame);
         } else if (btnLoadGame.isMouseHit()) {
             setCurrState(MainMenuState::LoadGame);
@@ -148,6 +152,8 @@ void MainMenu::update() {
             switch (currState) {
                 case MainMenuState::NewGame: {
                     PutINIValue(OptionFile, "general", "intro enabled", String(userOptions->introEnabled));
+                    txtName.selected = false;
+                    txtSeed.selected = false;
                     setCurrState(MainMenuState::Main);
                 } break;
 
@@ -168,14 +174,8 @@ void MainMenu::update() {
                 btnStartGame.update();
                 btnLoadMap.update();
                 tckIntro.update();
-
-                int x = (int)(160.f * MenuScale);
-                int y = (int)(20.f * MenuScale);
-                int width = (int)(580.f * MenuScale);
-                int height = (int)(330.f * MenuScale);
-
-                CurrSave = UpdateInputBox(x + (int)(150.f * MenuScale), y + (int)(15.f * MenuScale), (int)(200.f * MenuScale), (int)(30.f * MenuScale), CurrSave, 1);
-                CurrSave = CurrSave.substr(0, 15);
+                txtName.update();
+                txtSeed.update();
 
                 userOptions->introEnabled = tckIntro.ticked;
 
@@ -215,6 +215,8 @@ void MainMenu::update() {
                 }
 
                 if (btnStartGame.isMouseHit()) {
+                    CurrSave = txtName.input;
+                    RandomSeed = txtSeed.input;
                     if (CurrSave.isEmpty()) {
                         CurrSave = "untitled";
                     }
@@ -575,13 +577,10 @@ void MainMenu::draw() {
 
                 bbSetFont(uiAssets->font[0]);
 
-                bbText(x + (int)(20.f * MenuScale), y + (int)(20.f * MenuScale), "Name:");
-                DrawInputBox(x + (int)(150.f * MenuScale), y + (int)(15.f * MenuScale), (int)(200.f * MenuScale), (int)(30.f * MenuScale), CurrSave, 1);
-
-                bbColor(255,255,255);
+                txtName.draw();
+                txtSeed.draw();
                 //				If (SelectedMap = "") Then
-                bbText(x + (int)(20.f * MenuScale), y + (int)(60.f * MenuScale), "Map seed:");
-                DrawInputBox(x+(int)(150.f*MenuScale), y+(int)(55.f*MenuScale), (int)(200.f*MenuScale), (int)(30.f*MenuScale), RandomSeed, 3);
+                
                 //				Else
                 //					Text(x + (int)(20.f * MenuScale), y + (int)(60.f * MenuScale), "Selected map:")
                 //					Color(255, 255, 255)

@@ -31,8 +31,8 @@ void GUITick::draw() {
     if (!visible) { return; }
 
     // White border and black inside.
-    bbColor(0, 0, 0);
     DrawTiledImageRect(uiAssets->tileWhite, (x % 256), (y % 256), 512, 512, x, y, width, height);
+    bbColor(0, 0, 0);
     bbRect(x + 2, y + 2, width - 4, height - 4);
     bbColor(255, 255, 255);
 
