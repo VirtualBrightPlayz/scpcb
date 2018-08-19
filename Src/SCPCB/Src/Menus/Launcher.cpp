@@ -43,6 +43,8 @@ Launcher::Launcher() {
     tckFullscreen = GUITick(455, 202, "Fullscreen", 30, userOptions->fullscreen, false);
     tckUseLauncher = GUITick(455, 308, "Use launcher", 30, userOptions->launcher, false);
 
+    test = GUIInput(455, 308, 150, 30, "Test", -100, "this is test", false);
+
     bbSetBuffer(bbBackBuffer());
 
     bbSetFont(uiAssets->font[0]);
@@ -100,7 +102,7 @@ void Launcher::update() {
     btnLaunch.update();
     btnExit.update();
     tckFullscreen.update();
-    tckUseLauncher.update();
+    //tckUseLauncher.update();
 
     userOptions->fullscreen = tckFullscreen.ticked;
     userOptions->launcher = tckUseLauncher.ticked;
@@ -121,6 +123,7 @@ void Launcher::update() {
     if (btnExit.isMouseHit()) {
         //End(); TODO: Re-implement.
     }
+    test.update();
 }
 
 void Launcher::draw() {
@@ -184,7 +187,8 @@ void Launcher::draw() {
     btnLaunch.draw();
     btnExit.draw();
     tckFullscreen.draw();
-    tckUseLauncher.draw();
+    //tckUseLauncher.draw();
+    test.draw();
     bbFlip();
 }
 

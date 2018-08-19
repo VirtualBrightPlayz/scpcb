@@ -12,8 +12,10 @@ private:
     int textOffset;
     int caretPos;
     bool selected;
+    int caretTimer;
 
 public:
+    GUIInput();
     GUIInput(int x, int y, int width, int height, const String& displayTxt, int txtOffset, const String& defaultTxt = "", bool relative = true);
 
     String input;

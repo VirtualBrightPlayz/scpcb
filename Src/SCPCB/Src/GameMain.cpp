@@ -285,7 +285,6 @@ void UpdateGame() {
 
     String rn;
     float darkA;
-    int temp;
 
     // Start FixedUpdate.
     while (timing->accumulator>0.f) {
