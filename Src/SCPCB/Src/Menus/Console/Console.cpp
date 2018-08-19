@@ -15,7 +15,11 @@ namespace CBN {
 // Structs.
 Console* console;
 Console::Console() {
-    input = "";
+    int x = 0;
+    int y = userOptions->screenHeight - (int)(300.f * MenuScale);
+    int width = userOptions->screenWidth;
+    int height = (int)(270.f * MenuScale);
+    cmdInput = GUIInput(x, y + height, width, (int)(30.f * MenuScale), "", 0, 100, "", false);
     scroll = 0.f;
     scrollDragging = false;
     mouseMem = 0;
@@ -72,6 +76,7 @@ void ConsoleMsg::create(const String& txt, int r, int g, int b, bool isCommand) 
 }
 
 void Console::update() {
+    cmdInput.selected = CurrGameState == GAMESTATE_CONSOLE;
     if (CurrGameState==GAMESTATE_CONSOLE) {
         console->msgR = 255;
         console->msgG = 255;
@@ -143,7 +148,7 @@ void Console::update() {
             }
             if (console->msgList[index]->isCommand) {
                 console->reissue = index;
-                console->input = console->msgList[index]->txt;
+                console->cmdInput.setInput(console->msgList[index]->txt);
                 console->scroll = -console->reissue * (15.0f*MenuScale) + (height / 2);
             }
         }
@@ -164,7 +169,7 @@ void Console::update() {
             }
             if (console->msgList[index]->isCommand) {
                 console->reissue = index;
-                console->input = console->msgList[index]->txt;
+                console->cmdInput.setInput(console->msgList[index]->txt);
                 console->scroll = -console->reissue * (15.0f*MenuScale) + (height / 2);
             }
         }
@@ -178,35 +183,33 @@ void Console::update() {
         }
 
         SelectedInputBox = 2;
-        String oldConsoleInput = console->input;
-        console->input = UpdateInputBox(x, y + height, width, (int)(30.f*MenuScale), console->input, 2);
-        if (!oldConsoleInput.equals(console->input)) {
+        String oldConsoleInput = console->cmdInput.getInput();
+        console->cmdInput.update();
+        if (!oldConsoleInput.equals(console->cmdInput.getInput())) {
             console->reissue = -1;
         }
-        console->input = console->input.substr(0, 100).toLower();
+        console->cmdInput.toLower();
 
-        if (bbKeyHit(28) && !console->input.isEmpty()) {
-            console->input = console->input.trim();
+        if (bbKeyHit(28) && !console->cmdInput.getInput().isEmpty()) {
+            String consoleCommand = console->cmdInput.getInput().trim();
             console->reissue = -1;
             console->scroll = 0;
-            ConsoleMsg::create(console->input,255,255,0,true);
+            ConsoleMsg::create(consoleCommand,255,255,0,true);
 
-			String input;
+			String commandName;
 			std::vector<String> args;
-            if (console->input.findFirst(" ") > 0) {
-				input = console->input.substr(0, console->input.findFirst(" "));
-                args = console->input.substr(input.size()).split(" ", true);
+            if (consoleCommand.findFirst(" ") > 0) {
+                commandName = consoleCommand.substr(0, consoleCommand.findFirst(" "));
+                args = consoleCommand.substr(commandName.size()).split(" ", true);
             } else {
-				input = console->input;
+                commandName = console->cmdInput.getInput();
             }
 
-            ConsoleCmd::executeCommand(input, args);
-            console->input = "";
+            ConsoleCmd::executeCommand(commandName, args);
+            console->cmdInput.clear();
         }
+        bbSetFont(uiAssets->font[0]);
     }
-
-    bbSetFont(uiAssets->font[0]);
-
 }
 
 void Console::draw() {
@@ -284,7 +287,7 @@ void Console::draw() {
 
         bbColor(255,255,255);
 
-        DrawInputBox(x, y + height, width, (int)(30.f*MenuScale), console->input, 2);
+        console->cmdInput.draw();
     }
 }
 

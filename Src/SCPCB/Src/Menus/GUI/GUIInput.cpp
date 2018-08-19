@@ -22,6 +22,24 @@ GUIInput::GUIInput(int x, int y, int width, int height, const String& displayTxt
     caretTimer = 0;
 }
 
+void GUIInput::toLower() {
+    input = input.toLower();
+}
+
+void GUIInput::setInput(const String& txt) {
+    input = txt;
+    caretPos = input.size();
+}
+
+String GUIInput::getInput() {
+    return input;
+}
+
+void GUIInput::clear() {
+    input = "";
+    caretPos = 0;
+}
+
 void GUIInput::update() {
     GUIButtonBase::update();
     if (isMouseHit()) {

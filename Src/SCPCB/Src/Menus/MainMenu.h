@@ -42,7 +42,6 @@ public:
     GUIButton btnQuit;
     GUIButton btnBack;
 
-    void setCurrState(MainMenuState state);
     void update();
     void draw();
 };

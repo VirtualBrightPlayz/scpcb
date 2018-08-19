@@ -71,7 +71,7 @@ UIAssets::UIAssets() {
 	font[1] = bbLoadFont("GFX/font/courbd/Courier New.ttf", (int)(58 * MenuScale), 0, 0, 0);
 	font[2] = bbLoadFont("GFX/font/DS-DIGI/DS-Digital.ttf", (int)(22 * MenuScale), 0, 0, 0);
 	font[3] = bbLoadFont("GFX/font/DS-DIGI/DS-Digital.ttf", (int)(60 * MenuScale), 0, 0, 0);
-	consoleFont = bbLoadFont("Arial", (int)(18 * MenuScale), 0, 0, 0);
+	consoleFont = bbLoadFont("Arial", (int)(20 * MenuScale), 0, 0, 0);
 
 	sprintIcon = bbLoadImage("GFX/HUD/sprinticon.png");
 	blinkIcon = bbLoadImage("GFX/HUD/blinkicon.png");

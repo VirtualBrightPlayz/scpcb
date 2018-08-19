@@ -1,12 +1,13 @@
 #ifndef CONSOLE_H_INCLUDED
 #define CONSOLE_H_INCLUDED
 #include <vector>
+#include "../GUI/GUIInput.h"
 
 namespace CBN {
 
 class Console {
 private:
-    String input;
+    GUIInput cmdInput;
     float scroll;
     bool scrollDragging;
     int mouseMem;

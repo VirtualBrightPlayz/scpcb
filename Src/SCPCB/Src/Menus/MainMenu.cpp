@@ -49,28 +49,12 @@ MainMenu::MainMenu() {
     txtName = GUIInput(x + 150, y + 15, 200, 30, "Name:", -130, 15);
     txtSeed = GUIInput(x + 150, y + 55, 200, 30, "Map seed:", -130, 15);
 
-    setCurrState(MainMenuState::Main);
+    currState = MainMenuState::Main;
     blinkTimer[0] = 1;
     blinkDuration[0] = 1;
     flashStr = "";
     flashStrX = 0;
     flashStrY = 0;
-}
-
-void MainMenu::setCurrState(MainMenuState state) {
-    currState = state;
-    btnNewGame.visible = currState == MainMenuState::Main;
-    btnLoadGame.visible = currState == MainMenuState::Main;
-    btnOptions.visible = currState == MainMenuState::Main;
-    btnQuit.visible = currState == MainMenuState::Main;
-
-    btnBack.visible = currState != MainMenuState::Main;
-
-    btnStartGame.visible = currState == MainMenuState::NewGame;
-    btnLoadMap.visible = currState == MainMenuState::NewGame;
-    tckIntro.visible = currState == MainMenuState::NewGame;
-    txtName.visible = currState == MainMenuState::NewGame;
-    txtSeed.visible = currState == MainMenuState::NewGame;
 }
 
 void MainMenu::update() {
@@ -137,12 +121,12 @@ void MainMenu::update() {
                     }
                 }
             }
-            txtSeed.input = RandomSeed;
-            setCurrState(MainMenuState::NewGame);
+            txtSeed.setInput(RandomSeed);
+            currState = MainMenuState::NewGame;
         } else if (btnLoadGame.isMouseHit()) {
-            setCurrState(MainMenuState::LoadGame);
+            currState = MainMenuState::LoadGame;
         } else if (btnOptions.isMouseHit()) {
-            setCurrState(MainMenuState::Options);
+            currState = MainMenuState::Options;
         } else if (btnQuit.isMouseHit()) {
             //BrokenItem(); // TODO: Fix.
         }
@@ -154,17 +138,17 @@ void MainMenu::update() {
                     PutINIValue(OptionFile, "general", "intro enabled", String(userOptions->introEnabled));
                     txtName.selected = false;
                     txtSeed.selected = false;
-                    setCurrState(MainMenuState::Main);
+                    currState = MainMenuState::Main;
                 } break;
 
                 case MainMenuState::CustomMap: {
-                    setCurrState(MainMenuState::NewGame);
+                    currState = MainMenuState::NewGame;
                 } break;
 
                 case MainMenuState::Options:
                     SaveOptionsINI();
                 default: {
-                    setCurrState(MainMenuState::Main);
+                    currState = MainMenuState::Main;
                 } break;
             }
         }
@@ -210,13 +194,13 @@ void MainMenu::update() {
                 // }
 
                 if (btnLoadMap.isMouseHit()) {
-                    setCurrState(MainMenuState::CustomMap);
+                    currState = MainMenuState::CustomMap;
                     LoadSavedMaps();
                 }
 
                 if (btnStartGame.isMouseHit()) {
-                    CurrSave = txtName.input;
-                    RandomSeed = txtSeed.input;
+                    CurrSave = txtName.getInput();
+                    RandomSeed = txtSeed.getInput();
                     if (CurrSave.isEmpty()) {
                         CurrSave = "untitled";
                     }
