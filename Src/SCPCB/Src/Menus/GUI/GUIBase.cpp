@@ -9,16 +9,36 @@
 namespace CBN {
 
 GUIBase::GUIBase(int x, int y, int width, int height, bool relative) {
-    this->x = relative ? (int)(x * MenuScale) : x;
-    this->y = relative ? (int)(y * MenuScale) : y;
-    this->width = relative ? (int)(width * MenuScale) : width;
-    this->height = relative ? (int)(height * MenuScale) : height;
+    this->x = x;
+    this->y = y;
+    this->width =  width;
+    this->height = height;
     this->relative = relative;
 
     mouseHover = false;
     mouseHit = false;
     mouseUp = false;
     visible = true;
+}
+
+int GUIBase::getRelativeVal(int val) {
+    return relative ? (int)(val * MenuScale) : val;
+}
+
+int GUIBase::getX() {
+    return getRelativeVal(x);
+}
+
+int GUIBase::getY() {
+    return getRelativeVal(y);
+}
+
+int GUIBase::getWidth() {
+    return getRelativeVal(width);
+}
+
+int GUIBase::getHeight() {
+    return getRelativeVal(height);
 }
 
 bool GUIBase::isMouseHover() {

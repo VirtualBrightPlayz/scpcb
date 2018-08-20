@@ -45,7 +45,7 @@ void GUIInput::update() {
     if (isMouseHit()) {
         selected = true;
 
-        int x = this->x + width / 2 + bbStringWidth(input) / 2;
+        int x = getX() + getWidth() / 2 + bbStringWidth(input) / 2;
         for (caretPos = input.size(); caretPos > 0; caretPos--) {
             if (bbMouseX() > x - (bbStringWidth(input.charAt(caretPos - 1))/2)) {
                 break;
@@ -104,9 +104,11 @@ void GUIInput::draw() {
     if (!visible) { return; }
 
     // White border and black inside.
-    DrawTiledImageRect(uiAssets->tileWhite, (x % 256), (y % 256), 512, 512, x, y, width, height);
+    DrawTiledImageRect(uiAssets->tileWhite, (getX() % 256), (getY() % 256), 512, 512, getX(), getY(), getWidth(), getHeight());
     bbColor(0, 0, 0);
-    bbRect(x + 2, y + 2, width - 4, height - 4);
+    int coordOff = getRelativeVal(2);
+    int sizeOff = getRelativeVal(-4);
+    bbRect(getX() + coordOff, getY() + coordOff, getWidth() + sizeOff, getHeight() + sizeOff);
     bbColor(255, 255, 255);
 
     GUIButtonBase::draw();
@@ -114,21 +116,21 @@ void GUIInput::draw() {
     // Caret.
      if (selected) {
          if (caretTimer + 500 > TimeInPosMilliSecs()) {
-             int pos = x + width / 2 + bbStringWidth(input) / 2;
+             int pos = getX() + getWidth() / 2 + bbStringWidth(input) / 2;
              if (caretPos == 0) {
                  pos -= bbStringWidth(input);
              } else {
                  pos -= bbStringWidth(input.substr(caretPos, input.size() - caretPos));
              }
-             bbRect(pos, y + height / 2 - 5, 2, 12);
+             bbRect(pos, getY() + getHeight() / 2 - getRelativeVal(5), getRelativeVal(2), getRelativeVal(12));
          } else if (caretTimer + 1000 < TimeInPosMilliSecs()) {
              caretTimer = TimeInPosMilliSecs();
          }
      }
 
-    bbText(x + width / 2, y + height / 2, input, true, true);
+    bbText(getX() + getWidth() / 2, getY() + getHeight() / 2, input, true, true);
     if (!displayText.isEmpty()) {
-        bbText(x + textOffset, y, displayText);
+        bbText(getX() + getRelativeVal(textOffset), getY(), displayText);
     }
 }
 

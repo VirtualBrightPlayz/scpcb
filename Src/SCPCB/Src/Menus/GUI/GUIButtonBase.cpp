@@ -28,7 +28,9 @@ void GUIButtonBase::draw() {
         bbColor(0, 0, 0);
     }
 
-    bbRect(x + 4, y + 4, width - 8, height - 8);
+    int coordOff = getRelativeVal(4);
+    int sizeOff = getRelativeVal(-8);
+    bbRect(getX() + coordOff, getY() + coordOff, getWidth() + sizeOff, getHeight() + sizeOff);
     bbColor(255, 255, 255);
 }
 

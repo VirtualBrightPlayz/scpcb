@@ -5,15 +5,21 @@ namespace CBN {
 
 class GUIBase {
 private:
+    int x;
+    int y;
+    int width;
+    int height;
+
     bool mouseHover;
     bool mouseHit;
     bool mouseUp;
 
 protected:
-    int x;
-    int y;
-    int width;
-    int height;
+    int getRelativeVal(int val);
+    int getX();
+    int getY();
+    int getWidth();
+    int getHeight();
 
     bool relative;
 

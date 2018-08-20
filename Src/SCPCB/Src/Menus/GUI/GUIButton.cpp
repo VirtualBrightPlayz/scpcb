@@ -23,8 +23,10 @@ void GUIButton::draw() {
     if (!visible) { return; }
 
     // White border and black inside.
-    DrawTiledImageRect(uiAssets->tileWhite, 0, (y % 256), 512, 512, x, y, width, height);
-    DrawTiledImageRect(uiAssets->tileBlack, 0, (y % 256), 512, 512, (int)(x + 3 * MenuScale), (int)(y + 3 * MenuScale), (int)(width - 6 * MenuScale), (int)(height - 6 * MenuScale));
+    int coordOff = getRelativeVal(3);
+    int sizeOff = getRelativeVal(-6);
+    DrawTiledImageRect(uiAssets->tileWhite, 0, (getY() % 256), 512, 512, getX(), getY(), getWidth(), getHeight());
+    DrawTiledImageRect(uiAssets->tileBlack, 0, (getY() % 256), 512, 512, getX() + coordOff, getY() + coordOff, getWidth() + sizeOff, getHeight() + sizeOff);
     GUIButtonBase::draw();
 
     if (bigFont) {
@@ -37,7 +39,7 @@ void GUIButton::draw() {
         bbColor(37, 37, 38);
     }
 
-    bbText(x + width / 2, y + height / 2, text, true, true);
+    bbText(getX() + getWidth() / 2, getY() + getHeight() / 2, text, true, true);
     bbSetFont(uiAssets->font[0]);
     bbColor(255, 255, 255);
 }

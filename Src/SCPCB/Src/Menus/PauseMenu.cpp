@@ -19,8 +19,8 @@ PauseMenu::PauseMenu() {
 
     int width = (int)(390 * MenuScale);
     int height = (int)(60 * MenuScale);
-    int x = userOptions->screenWidth / 2 - bbImageWidth(uiAssets->pauseMenuBG) / 2;
-    int y = userOptions->screenHeight / 2 - bbImageHeight(uiAssets->pauseMenuBG) / 2;
+    int x = userOptions->screenWidth / 2 - 600 / 2;
+    int y = userOptions->screenHeight / 2 - 600 / 2;
     x += (int)(132 * MenuScale);
     y += (int)(132 * MenuScale);
 

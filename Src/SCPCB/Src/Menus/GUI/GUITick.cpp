@@ -29,22 +29,26 @@ void GUITick::draw() {
     if (!visible) { return; }
 
     // White border and black inside.
-    DrawTiledImageRect(uiAssets->tileWhite, (x % 256), (y % 256), 512, 512, x, y, width, height);
+    DrawTiledImageRect(uiAssets->tileWhite, (getX() % 256), (getY() % 256), 512, 512, getX(), getY(), getWidth(), getHeight());
     bbColor(0, 0, 0);
-    bbRect(x + 2, y + 2, width - 4, height - 4);
+    int coordOff = getRelativeVal(2);
+    int sizeOff = getRelativeVal(-4);
+    bbRect(getX() + coordOff, getY() + coordOff, getWidth() + sizeOff, getHeight() + sizeOff);
     bbColor(255, 255, 255);
 
     GUIButtonBase::draw();
 
     if (ticked) {
-        DrawTiledImageRect(uiAssets->tileWhite, (x % 256), (y % 256), 512, 512, x + 4, y + 4, width - 8, height - 8);
+        coordOff = getRelativeVal(4);
+        sizeOff = getRelativeVal(-8);
+        DrawTiledImageRect(uiAssets->tileWhite, (getX() % 256), (getY() % 256), 512, 512, getX() + coordOff, getY() + coordOff, getWidth() + sizeOff, getHeight() + sizeOff);
     }
 
     if (!text.isEmpty()) {
         if (locked) {
             bbColor(37, 37, 38);
         }
-        bbText(x + textOffset, y, text);
+        bbText(getX() + getRelativeVal(textOffset), getY(), text);
         bbColor(255, 255, 255);
     }
 }
