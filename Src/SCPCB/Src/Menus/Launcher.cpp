@@ -112,7 +112,6 @@ void Launcher::update() {
         userOptions->gfxDriver = userOptions->gfxDriver;
 
         SaveOptionsINI();
-        delete this; //TODO: wtf am i doing here
         InitializeMainGame();
 
         return;

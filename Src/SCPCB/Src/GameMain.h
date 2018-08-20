@@ -112,6 +112,8 @@ void InitializeMainGame();
 
 void UpdateGame();
 
+void updateGameState();
+
 void UpdateGUI();
 
 void DrawGUI();

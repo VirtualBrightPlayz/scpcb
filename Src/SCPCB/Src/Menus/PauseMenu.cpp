@@ -50,7 +50,6 @@ void PauseMenu::update() {
             //TODO: ask for saving
             NullGame();
             CurrGameState = GAMESTATE_MAINMENU;
-            mainMenu = new MainMenu();
             CurrSave = "";
             bbFlushKeys();
         }

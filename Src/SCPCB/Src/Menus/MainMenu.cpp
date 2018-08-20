@@ -226,7 +226,6 @@ void MainMenu::update() {
 
                     PutINIValue(OptionFile, "general", "intro enabled", String(userOptions->introEnabled));
 
-                    delete this;
                     return;
                 }
 
@@ -564,7 +563,7 @@ void MainMenu::draw() {
                 txtName.draw();
                 txtSeed.draw();
                 //				If (SelectedMap = "") Then
-                
+
                 //				Else
                 //					Text(x + (int)(20.f * MenuScale), y + (int)(60.f * MenuScale), "Selected map:")
                 //					Color(255, 255, 255)

@@ -12,6 +12,7 @@
 #include "Menus/LoadingScreen.h"
 #include "Menus/Launcher.h"
 #include "Menus/MainMenu.h"
+#include "Menus/PauseMenu.h"
 #include "MathUtils/MathUtils.h"
 #include "Player/Player.h"
 #include "AssetMgmt/Assets.h"
@@ -154,7 +155,6 @@ int EntryPoint() {
 
     if (userOptions->launcher) {
         CurrGameState = GAMESTATE_LAUNCHER;
-        launcher = new Launcher();
     } else {
         InitializeMainGame();
     }
@@ -171,7 +171,6 @@ void InitializeMainGame() {
     bbAppTitle("SCP - Containment Breach v"+VERSION);
 
     MenuScale = (userOptions->screenHeight / 1024.f);
-    mainMenu = new MainMenu();
 
     CurrFrameLimit = (float)userOptions->framelimit;
 
@@ -286,6 +285,8 @@ void UpdateGame() {
     String rn;
     float darkA;
 
+    updateGameState();
+
     // Start FixedUpdate.
     while (timing->accumulator>0.f) {
         timing->accumulator = timing->accumulator-timing->tickDuration;
@@ -379,6 +380,7 @@ void UpdateGame() {
 
 
             darkA = 0.f;
+            // TODO: Move all this to player update.
             if (!IsPaused()) {
                 if (mainPlayer->sanity895 < 0) {
                     mainPlayer->sanity895 = Min(mainPlayer->sanity895 + timing->tickDuration, 0.f);
@@ -645,6 +647,38 @@ void UpdateGame() {
 
     bbFlip(userOptions->vsync!=0);
 
+}
+
+void updateGameState() {
+    if (CurrGameState == prevGameState) { return; }
+
+    // Remove previous resources.
+    switch (prevGameState) {
+        case GAMESTATE_LAUNCHER: {
+            delete launcher;
+            launcher = nullptr;
+        } break;
+        case GAMESTATE_MAINMENU: {
+            delete mainMenu;
+            mainMenu = nullptr;
+        } break;
+        case GAMESTATE_PLAYING: {
+            delete pauseMenu;
+            pauseMenu = nullptr;
+        } break;
+    }
+
+    // Create new resources.
+    switch (CurrGameState) {
+        case GAMESTATE_LAUNCHER:
+            launcher = new Launcher(); break;
+        case GAMESTATE_MAINMENU:
+            mainMenu = new MainMenu(); break;
+        case GAMESTATE_PLAYING:
+            pauseMenu = new PauseMenu(); break;
+    }
+
+    prevGameState = CurrGameState;
 }
 
 void UpdateGUI() {
@@ -1277,7 +1311,6 @@ void UpdatePauseMenu() {
                 //TODO: ask for saving
                 NullGame();
                 CurrGameState = GAMESTATE_MAINMENU;
-                mainMenu = new MainMenu();
                 CurrSave = "";
                 bbFlushKeys();
             }
@@ -1327,7 +1360,6 @@ void UpdatePauseMenu() {
             if (UpdateUIButton(x, (int)(y + 80*MenuScale), (int)(390*MenuScale), (int)(60*MenuScale), "Quit to Menu")) {
                 NullGame();
                 CurrGameState = GAMESTATE_MAINMENU;
-                mainMenu = new MainMenu();
                 CurrSave = "";
                 bbFlushKeys();
             }
