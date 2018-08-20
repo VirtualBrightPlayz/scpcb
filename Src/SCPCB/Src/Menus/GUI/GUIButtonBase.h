@@ -10,6 +10,8 @@ class GUIButtonBase : public GUIBase {
 public:
     GUIButtonBase(int x, int y, int width, int height, bool relative = true);
 
+    bool locked;
+
     virtual void update();
     virtual void draw();
 };

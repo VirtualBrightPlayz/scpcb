@@ -14,7 +14,6 @@ public:
     GUITick(int x, int y, const String& txt, int txtOffset, bool ticked = false, bool relative = true);
 
     bool ticked;
-    bool locked;
 
     virtual void update();
     virtual void draw();

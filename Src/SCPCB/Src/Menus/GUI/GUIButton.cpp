@@ -15,7 +15,7 @@ GUIButton::GUIButton(int x, int y, int width, int height, const String& txt, boo
 }
 
 void GUIButton::update() {
-    if (!visible) { return; }
+    if (!visible || locked) { return; }
     GUIButtonBase::update();
 }
 
@@ -33,8 +33,13 @@ void GUIButton::draw() {
         bbSetFont(uiAssets->font[0]);
     }
 
+    if (locked) {
+        bbColor(37, 37, 38);
+    }
+
     bbText(x + width / 2, y + height / 2, text, true, true);
     bbSetFont(uiAssets->font[0]);
+    bbColor(255, 255, 255);
 }
 
 }

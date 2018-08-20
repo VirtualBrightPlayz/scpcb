@@ -8,7 +8,9 @@
 namespace CBN {
 
 GUIButtonBase::GUIButtonBase(int x, int y, int width, int height, bool relative)
-    : GUIBase(x, y, width, height, relative) { }
+    : GUIBase(x, y, width, height, relative) {
+    locked = false;
+}
 
 void GUIButtonBase::update() {
     GUIBase::update();

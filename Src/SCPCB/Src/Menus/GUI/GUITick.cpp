@@ -14,16 +14,14 @@ GUITick::GUITick(int x, int y, const String& txt, int txtOffset, bool ticked, bo
     textOffset = relative ? (int)(txtOffset * MenuScale) : txtOffset;
 
     this->ticked = ticked;
-    locked = false;
 }
 
 void GUITick::update() {
-    if (!visible) { return; }
-    if (!locked) {
-        GUIButtonBase::update();
-        if (isMouseHit()) {
-            ticked = !ticked;
-        }
+    if (!visible || locked) { return; }
+
+    GUIButtonBase::update();
+    if (isMouseHit()) {
+        ticked = !ticked;
     }
 }
 
@@ -43,7 +41,11 @@ void GUITick::draw() {
     }
 
     if (!text.isEmpty()) {
+        if (locked) {
+            bbColor(37, 37, 38);
+        }
         bbText(x + textOffset, y, text);
+        bbColor(255, 255, 255);
     }
 }
 

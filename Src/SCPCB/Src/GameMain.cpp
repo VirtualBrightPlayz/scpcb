@@ -463,7 +463,6 @@ void UpdateGame() {
 
                 if (mainPlayer->dead) {
                     CurrGameState = GAMESTATE_PLAYING;
-                    CurrGameSubstate = GAMESUBSTATE_PAUSED_DEAD;
                     mainPlayer->selectedItem = nullptr;
                     SelectedScreen = nullptr;
                     SelectedMonitor = nullptr;
@@ -471,6 +470,7 @@ void UpdateGame() {
                     //mainPlayer\fallTimer=mainPlayer\fallTimer-(timing\tickDuration*0.8f)
                     if (mainPlayer->fallTimer < - 360) {
                         CurrGameState = GAMESTATE_PAUSED;
+                        pauseMenu->currState = PauseMenuState::Dead;
                         //TODO: fix
                         //If (SelectedEnding <> "") Then EndingTimer = Min(mainPlayer\fallTimer,-0.1f)
                     }
@@ -577,7 +577,7 @@ void UpdateGame() {
             //If (EndingTimer < 0) Then
             //	If (SelectedEnding <> "") Then DrawEnding()
             //Else
-            UpdatePauseMenu();
+            pauseMenu->update();
             //EndIf
 
             console->update();
@@ -586,7 +586,7 @@ void UpdateGame() {
     } // End FixedUpdate.
 
     if (CurrGameState==GAMESTATE_LAUNCHER) {
-        if (launcher!=nullptr) {
+        if (launcher != nullptr) {
             launcher->draw();
         }
     } else if (CurrGameState==GAMESTATE_MAINMENU) {
@@ -597,7 +597,7 @@ void UpdateGame() {
         UpdateBlur(bbSqr(mainPlayer->blurTimer/1400.f));
 
         DrawGUI();
-        DrawPauseMenu();
+        pauseMenu->draw();
         console->draw();
 
         bbColor(255, 255, 255);
