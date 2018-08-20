@@ -17,23 +17,23 @@ PauseMenu* pauseMenu = nullptr;
 PauseMenu::PauseMenu() {
     currState = PauseMenuState::Main;
 
-    int width = (int)(390 * MenuScale);
-    int height = (int)(60 * MenuScale);
-    int x = userOptions->screenWidth / 2 - 600 / 2;
-    int y = userOptions->screenHeight / 2 - 600 / 2;
-    x += (int)(132 * MenuScale);
-    y += (int)(132 * MenuScale);
+    int width = 390;
+    int height = 60;
+    int x = 1024 / 2 - 600 / 2;
+    int y = 1024 / 2 - 600 / 2;
+    x += 132;
+    y += 132;
 
-    y += (int)(72 * MenuScale);
-    btnResume = GUIButton(x, y, width, height, "Resume", true, false);
-    btnDeadLoadGame = GUIButton(x, y, width, height, "Load Game", true, false);
-    y += (int)(75 * MenuScale);
-    btnLoadGame = GUIButton(x, y, width, height, "Load Game", true, false);
-    btnDeadQuit = GUIButton(x, y, width, height, "Quit", true, false);
-    y += (int)(75 * MenuScale);
-    btnOptions = GUIButton(x, y, width, height, "Options", true, false);
-    y += (int)(75 * MenuScale);
-    btnQuit = GUIButton(x, y, width, height, "Quit", true, false);
+    y += 72;
+    btnResume = GUIButton(x, y, width, height, "Resume", true);
+    btnDeadLoadGame = GUIButton(x, y, width, height, "Load Game", true);
+    y += 75;
+    btnLoadGame = GUIButton(x, y, width, height, "Load Game", true);
+    btnDeadQuit = GUIButton(x, y, width, height, "Quit", true);
+    y += 75;
+    btnOptions = GUIButton(x, y, width, height, "Options", true);
+    y += 75;
+    btnQuit = GUIButton(x, y, width, height, "Quit", true);
 }
 
 void PauseMenu::update() {

@@ -16,10 +16,10 @@ namespace CBN {
 Console* console;
 Console::Console() {
     int x = 0;
-    int y = userOptions->screenHeight - (int)(300.f * MenuScale);
-    int width = userOptions->screenWidth;
-    int height = (int)(270.f * MenuScale);
-    cmdInput = GUIInput(x, y + height, width, (int)(30.f * MenuScale), "", 0, 100, "", false);
+    int y = 1024 - 300;
+    int width = userOptions->screenWidth; // TODO: Doesn't work.
+    int height = 270;
+    cmdInput = GUIInput(x, y + height, width, 30, "", 0, 100);
     scroll = 0.f;
     scrollDragging = false;
     mouseMem = 0;
