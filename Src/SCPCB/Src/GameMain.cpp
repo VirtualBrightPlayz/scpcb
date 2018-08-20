@@ -43,7 +43,7 @@ Timing::Timing() {
     list.push_back(this);
 }
 Timing::~Timing() {
-    for (int i = 0; i < list.size(); i++) {
+    for (int i = 0; i < (int)list.size(); i++) {
         if (list[i] == this) {
             list.erase(list.begin() + i);
             break;
@@ -171,6 +171,10 @@ void InitializeMainGame() {
     bbAppTitle("SCP - Containment Breach v"+VERSION);
 
     MenuScale = (userOptions->screenHeight / 1024.f);
+    if (uiAssets != nullptr) {
+        delete uiAssets;
+    }
+    uiAssets = new UIAssets();
 
     CurrFrameLimit = (float)userOptions->framelimit;
 
@@ -182,8 +186,6 @@ void InitializeMainGame() {
 
     LoadingBack = bbLoadImage("Loadingscreens/loadingback.jpg");
     InitLoadingScreens("Loadingscreens/loadingscreens.ini");
-
-    uiAssets = new UIAssets();
 
     musicMgmt = new MusicManager();
     musicMgmt->setNextMusicTrack(MUS_EZ, false);
@@ -585,6 +587,8 @@ void UpdateGame() {
         AssetWrap::update();
     } // End FixedUpdate.
 
+    updateGameState(); // Call this again here incase its state was updated in FixedUpdate.
+
     if (CurrGameState==GAMESTATE_LAUNCHER) {
         if (launcher != nullptr) {
             launcher->draw();
@@ -662,18 +666,19 @@ void updateGameState() {
             delete mainMenu;
             mainMenu = nullptr;
         } break;
-        case GAMESTATE_PLAYING: {
-            delete pauseMenu;
-            pauseMenu = nullptr;
-        } break;
     }
 
     // Create new resources.
     switch (CurrGameState) {
         case GAMESTATE_LAUNCHER:
             launcher = new Launcher(); break;
-        case GAMESTATE_MAINMENU:
-            mainMenu = new MainMenu(); break;
+        case GAMESTATE_MAINMENU: {
+            mainMenu = new MainMenu();
+            if (prevGameState == GAMESTATE_PLAYING) {
+                delete pauseMenu;
+                pauseMenu = nullptr;
+            }
+        } break;
         case GAMESTATE_PLAYING:
             pauseMenu = new PauseMenu(); break;
     }
@@ -1136,239 +1141,6 @@ void DrawGUI() {
     }
 
     DrawInventory(mainPlayer);
-}
-
-void DrawPauseMenu() {
-    String titleText = "PAUSED";
-    int x;
-    int y;
-    int width;
-    int height;
-
-    if (CurrGameState == GAMESTATE_PAUSED) {
-        width = bbImageWidth(uiAssets->pauseMenuBG);
-        height = bbImageHeight(uiAssets->pauseMenuBG);
-        x = userOptions->screenWidth / 2 - width / 2;
-        y = userOptions->screenHeight / 2 - height / 2;
-
-        bbDrawImage(uiAssets->pauseMenuBG, x, y);
-
-        bbColor(255, 255, 255);
-
-        x = (int)(x+132*MenuScale);
-        y = (int)(y+122*MenuScale);
-
-        if (mainPlayer->dead) {
-            titleText = "YOU DIED";
-        }
-        bbSetFont(uiAssets->font[1]);
-        bbText(x, (int)(y-(122-45)*MenuScale), titleText,false,true);
-
-        bbSetFont(uiAssets->font[0]);
-        bbText(x, y, "Difficulty: "+SelectedDifficulty->name);
-        bbText(x, (int)(y+20*MenuScale), "Save: "+CurrSave);
-        bbText(x, (int)(y+40*MenuScale), "Map seed: "+RandomSeed);
-
-        y = y+10;
-
-        if (!mainPlayer->dead) {
-            y = (int)(y+72*MenuScale);
-
-            DrawUIButton(x, y, (int)(390*MenuScale), (int)(60*MenuScale), "Resume", true);
-            y = y + (int)(75*MenuScale);
-            if (!SelectedDifficulty->permaDeath) {
-                if (GameSaved) {
-                    DrawUIButton(x, y, (int)(390*MenuScale), (int)(60*MenuScale), "Load Game");
-                } else {
-                    DrawFrame(x,y,(int)(390*MenuScale), (int)(60*MenuScale));
-                    bbColor(100, 100, 100);
-                    bbSetFont(uiAssets->font[1]);
-                    bbText((int)(x + (390*MenuScale) / 2), (int)(y + (60*MenuScale) / 2), "Load Game", true, true);
-                }
-                y = (int)(y + 75*MenuScale);
-            }
-
-            DrawUIButton(x, y, (int)(390*MenuScale), (int)(60*MenuScale), "Options");
-            y = (int)(y + 75*MenuScale);
-
-            DrawUIButton(x, y, (int)(390*MenuScale), (int)(60*MenuScale), "Quit");
-        } else {
-            y = (int)(y+104*MenuScale);
-            if (GameSaved && (!SelectedDifficulty->permaDeath)) {
-                DrawUIButton(x, y, (int)(390*MenuScale), (int)(60*MenuScale), "Load Game");
-            } else {
-                DrawUIButton(x, y, (int)(390*MenuScale), (int)(60*MenuScale), "");
-                bbColor(50,50,50);
-                bbText((int)(x + 185*MenuScale), (int)(y + 30*MenuScale), "Load Game", true, true);
-            }
-            DrawUIButton(x, (int)(y + 80*MenuScale), (int)(390*MenuScale), (int)(60*MenuScale), "Quit to Menu");
-            y = (int)(y + 80*MenuScale);
-        }
-
-        bbSetFont(uiAssets->font[0]);
-        if (mainPlayer->dead) {
-            RowText(DeathMSG, x, (int)(y + 80*MenuScale), (int)(390*MenuScale), (int)(600*MenuScale));
-        }
-        //EndIf
-
-
-    }
-
-    bbSetFont(uiAssets->font[0]);
-
-}
-
-void UpdatePauseMenu() {
-    int x;
-    int y;
-    int z;
-    int width;
-    int height;
-    Room* r;
-    int achvXImg;
-    float scale;
-    int separationConst;
-    int imgSize;
-
-    if (CurrGameState == GAMESTATE_PAUSED) {
-        width = bbImageWidth(uiAssets->pauseMenuBG);
-        height = bbImageHeight(uiAssets->pauseMenuBG);
-        x = userOptions->screenWidth / 2 - width / 2;
-        y = userOptions->screenHeight / 2 - height / 2;
-
-        x = (int)(x+132*MenuScale);
-        y = (int)(y+122*MenuScale);
-
-        achvXImg = (int)(x + (22*MenuScale));
-        scale = userOptions->screenHeight/768.f;
-        separationConst = (int)(76*scale);
-        imgSize = 64;
-
-        y = y+10;
-
-        if (!mainPlayer->dead) {
-            y = (int)(y+72*MenuScale);
-
-            if (UpdateUIButton(x, y, (int)(390*MenuScale), (int)(60*MenuScale), "Resume", true)) {
-                CurrGameState = GAMESTATE_PLAYING;
-                ResumeSounds();
-                bbMouseXSpeed();
-                bbMouseYSpeed();
-                bbMouseZSpeed();
-                mouse_x_speed_1 = 0.f;
-                mouse_y_speed_1 = 0.f;
-            }
-
-            y = (int)(y + 75*MenuScale);
-            if (!SelectedDifficulty->permaDeath) {
-                if (GameSaved) {
-                    if (UpdateUIButton(x, y, (int)(390*MenuScale), (int)(60*MenuScale), "Load Game")) {
-                        DrawLoading(0);
-
-                        CurrGameState = GAMESTATE_PLAYING;
-                        LoadGame(SavePath + CurrSave + "/",true);
-
-                        bbMoveMouse(viewport_center_x,viewport_center_y);
-                        bbSetFont(uiAssets->font[0]);
-                        bbHidePointer();
-
-                        bbFlushKeys();
-                        bbFlushMouse();
-                        mainPlayer->disableControls = false;
-
-                        UpdateRooms();
-
-                        for (int iterator66 = 0; iterator66 < Room::getListSize(); iterator66++) {
-                            r = Room::getObject(iterator66);
-
-                            x = (int)(abs(bbEntityX(mainPlayer->collider) - bbEntityX(r->obj)));
-                            z = (int)(abs(bbEntityZ(mainPlayer->collider) - bbEntityZ(r->obj)));
-
-                            if (x < 12.f && z < 12.f) {
-                                //MapFound(Floor(EntityX(r\obj) / 8.f), Floor(EntityZ(r\obj) / 8.f)) = Max(MapFound(Floor(EntityX(r\obj) / 8.f), Floor(EntityZ(r\obj) / 8.f)), 1)
-                                if (x < 4.f && z < 4.f) {
-                                    if (abs(bbEntityY(mainPlayer->collider) - bbEntityY(r->obj)) < 1.5f) {
-                                        mainPlayer->currRoom = r;
-                                    }
-                                    //MapFound(Floor(EntityX(r\obj) / 8.f), Floor(EntityZ(r\obj) / 8.f)) = 1
-                                }
-                            }
-                        }
-
-                        DrawLoading(100);
-
-                        mainPlayer->dropSpeed = 0;
-
-                        bbUpdateWorld(0.f);
-                    }
-                }
-                y = (int)(y + 75*MenuScale);
-            }
-
-            //If (UpdateUIButton(x, y, (int)(390*MenuScale), (int)(60*MenuScale), "Options")) Then OptionsMenu = 1 ;TODO: fix
-            y = (int)(y + 75*MenuScale);
-            if (UpdateUIButton(x, y, (int)(390*MenuScale), (int)(60*MenuScale), "Quit")) {
-                //TODO: ask for saving
-                NullGame();
-                CurrGameState = GAMESTATE_MAINMENU;
-                CurrSave = "";
-                bbFlushKeys();
-            }
-        } else {
-            y = (int)(y+104*MenuScale);
-            if (GameSaved) {
-                if (UpdateUIButton(x, y, (int)(390*MenuScale), (int)(60*MenuScale), "Load Game")) {
-                    DrawLoading(0);
-
-                    CurrGameState = GAMESTATE_PLAYING;
-                    LoadGame(SavePath + CurrSave + "/",true);
-
-                    bbMoveMouse(viewport_center_x,viewport_center_y);
-                    bbSetFont(uiAssets->font[0]);
-                    bbHidePointer();
-
-                    bbFlushKeys();
-                    bbFlushMouse();
-                    mainPlayer->disableControls = false;
-
-                    UpdateRooms();
-
-                    for (int iterator67 = 0; iterator67 < Room::getListSize(); iterator67++) {
-                        r = Room::getObject(iterator67);
-
-                        x = (int)(abs(bbEntityX(mainPlayer->collider) - bbEntityX(r->obj)));
-                        z = (int)(abs(bbEntityZ(mainPlayer->collider) - bbEntityZ(r->obj)));
-
-                        if (x < 12.f && z < 12.f) {
-                            //MapFound(Floor(EntityX(r\obj) / 8.f), Floor(EntityZ(r\obj) / 8.f)) = Max(MapFound(Floor(EntityX(r\obj) / 8.f), Floor(EntityZ(r\obj) / 8.f)), 1)
-                            if (x < 4.f && z < 4.f) {
-                                if (abs(bbEntityY(mainPlayer->collider) - bbEntityY(r->obj)) < 1.5f) {
-                                    mainPlayer->currRoom = r;
-                                }
-                                //MapFound(Floor(EntityX(r\obj) / 8.f), Floor(EntityZ(r\obj) / 8.f)) = 1
-                            }
-                        }
-                    }
-
-                    DrawLoading(100);
-
-                    mainPlayer->dropSpeed = 0;
-
-                    bbUpdateWorld(0.f);
-                }
-            }
-            if (UpdateUIButton(x, (int)(y + 80*MenuScale), (int)(390*MenuScale), (int)(60*MenuScale), "Quit to Menu")) {
-                NullGame();
-                CurrGameState = GAMESTATE_MAINMENU;
-                CurrSave = "";
-                bbFlushKeys();
-            }
-            y = (int)(y + 80*MenuScale);
-        }
-    }
-
-    bbSetFont(uiAssets->font[0]);
-
 }
 
 String f2s(float n, int count) {

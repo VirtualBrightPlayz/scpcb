@@ -44,7 +44,7 @@ ConsoleMsg::ConsoleMsg() {
     b = -1;
 }
 ConsoleMsg::~ConsoleMsg() {
-    for (int i = 0; i < console->msgList.size(); i++) {
+    for (int i = 0; i < (int)console->msgList.size(); i++) {
         if (console->msgList[i] == this) {
             console->msgList.erase(console->msgList.begin() + i);
             break;
@@ -89,7 +89,7 @@ void Console::update() {
 
         int consoleHeight = 0;
         int scrollbarHeight = 0;
-        for (int i = 0; i < console->msgList.size(); i++) {
+        for (int i = 0; i < (int)console->msgList.size(); i++) {
             ConsoleMsg* cm = console->msgList[i];
 
             consoleHeight = consoleHeight + (int)(15.f*MenuScale);
@@ -134,7 +134,7 @@ void Console::update() {
 
         if (bbKeyHit(200) && console->msgList.size() > 0) {
             int initIndex = console->reissue;
-            if (initIndex<0 || initIndex >= console->msgList.size()) {
+            if (initIndex<0 || initIndex >= (int)console->msgList.size()) {
                 initIndex = 0;
             }
             int index = console->reissue + 1;
@@ -155,7 +155,7 @@ void Console::update() {
 
         if (bbKeyHit(208) && console->msgList.size() > 0) {
             int initIndex = console->reissue;
-            if (initIndex<0 || initIndex >= console->msgList.size()) {
+            if (initIndex<0 || initIndex >= (int)console->msgList.size()) {
                 initIndex = 0;
             }
             int index = console->reissue - 1;
@@ -225,7 +225,7 @@ void Console::draw() {
         int consoleHeight = 0;
         int scrollbarHeight = 0;
 
-        for (int i = 0; i < console->msgList.size(); i++) {
+        for (int i = 0; i < (int)console->msgList.size(); i++) {
             ConsoleMsg* cm = console->msgList[i];
 
             consoleHeight = consoleHeight + (int)(15.f*MenuScale);
@@ -260,7 +260,7 @@ void Console::draw() {
 
         int tempY = y + height - (int)(25.f*MenuScale) - (int)(console->scroll);
         int count = 0;
-        for (int i = 0; i < console->msgList.size(); i++) {
+        for (int i = 0; i < (int)console->msgList.size(); i++) {
 			ConsoleMsg* cm = console->msgList[i];
 
             count++;

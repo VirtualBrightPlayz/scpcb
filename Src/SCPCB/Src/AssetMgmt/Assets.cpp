@@ -116,7 +116,7 @@ UIAssets::~UIAssets() {
 }
 
 // Globals.
-UIAssets* uiAssets;
+UIAssets* uiAssets = nullptr;
 
 // Functions.
 AssetWrap::AssetWrap() {
@@ -133,7 +133,7 @@ TextureAssetWrap::TextureAssetWrap(const String& filePath, int flag) : AssetWrap
 }
 
 TextureAssetWrap::~TextureAssetWrap() {
-    for (int i=0;i<list.size();i++) {
+    for (int i=0;i<(int)list.size();i++) {
         if (list[i]==this) {
             list.erase(list.begin()+i);
             break;
@@ -143,7 +143,7 @@ TextureAssetWrap::~TextureAssetWrap() {
 }
 
 TextureAssetWrap* TextureAssetWrap::grab(const String& filePath, int flag) {
-    for (int i = 0; i<list.size(); i++) {
+    for (int i = 0; i< (int)list.size(); i++) {
         if (list[i]->file.equals(filePath)) {
             list[i]->grabCount++;
             list[i]->decayTimer = ASSET_DECAY_TIMER;
@@ -166,7 +166,7 @@ Texture* TextureAssetWrap::getTexture() {
 }
 
 void TextureAssetWrap::update() {
-    for (int i = 0; i<list.size(); i++) {
+    for (int i = 0; i< (int)list.size(); i++) {
         if (list[i]->grabCount <= 0) {
             list[i]->decayTimer -= timing->tickDuration;
             if (list[i]->decayTimer <= 0.0f) {
@@ -185,7 +185,7 @@ ImageAssetWrap::ImageAssetWrap(const String& filePath) : AssetWrap() {
 }
 
 ImageAssetWrap::~ImageAssetWrap() {
-    for (int i = 0; i<list.size(); i++) {
+    for (int i = 0; i< (int)list.size(); i++) {
         if (list[i] == this) {
             list.erase(list.begin() + i);
             break;
@@ -195,7 +195,7 @@ ImageAssetWrap::~ImageAssetWrap() {
 }
 
 ImageAssetWrap* ImageAssetWrap::grab(const String& filePath) {
-    for (int i = 0; i<list.size(); i++) {
+    for (int i = 0; i< (int)list.size(); i++) {
         if (list[i]->file.equals(filePath)) {
             list[i]->grabCount++;
             list[i]->decayTimer = ASSET_DECAY_TIMER;
@@ -218,7 +218,7 @@ bbImage* ImageAssetWrap::getImage() {
 }
 
 void ImageAssetWrap::update() {
-    for (int i = 0; i<list.size(); i++) {
+    for (int i = 0; i< (int)list.size(); i++) {
         if (list[i]->grabCount <= 0) {
             list[i]->decayTimer -= timing->tickDuration;
             if (list[i]->decayTimer <= 0.0f) {
@@ -244,7 +244,7 @@ MeshAssetWrap::MeshAssetWrap(const String& filePath, bool isAnimated) : AssetWra
 }
 
 MeshAssetWrap::~MeshAssetWrap() {
-    for (int i = 0; i<list.size(); i++) {
+    for (int i = 0; i< (int)list.size(); i++) {
         if (list[i] == this) {
             list.erase(list.begin() + i);
             break;
@@ -254,7 +254,7 @@ MeshAssetWrap::~MeshAssetWrap() {
 }
 
 MeshAssetWrap* MeshAssetWrap::grab(const String& filePath, bool isAnimated) {
-    for (int i = 0; i<list.size(); i++) {
+    for (int i = 0; i<(int)list.size(); i++) {
         if (list[i]->file.equals(filePath) && list[i]->animated == isAnimated) {
             list[i]->grabCount++;
             list[i]->decayTimer = ASSET_DECAY_TIMER;
@@ -277,7 +277,7 @@ MeshModel* MeshAssetWrap::getMesh() {
 }
 
 void MeshAssetWrap::update() {
-    for (int i = 0; i<list.size(); i++) {
+    for (int i = 0; i< (int)list.size(); i++) {
         if (list[i]->grabCount <= 0) {
             list[i]->decayTimer -= timing->tickDuration;
             if (list[i]->decayTimer <= 0.0f) {
@@ -469,7 +469,7 @@ void InitNewGame() {
     for (int i = 0; i < RoomTemplate::getListSize(); i++) {
 		RoomTemplate* rt = RoomTemplate::getObject(i);
 
-        for (int j = 0; j < rt->collisionObjs.size(); j++) {
+        for (int j = 0; j < (int)rt->collisionObjs.size(); j++) {
             bbFreeEntity(rt->collisionObjs[j]);
         }
         rt->collisionObjs.clear();
@@ -481,7 +481,7 @@ void InitNewGame() {
             bbFreeEntity(rt->alphaMesh);
         }
 
-        for (int j = 0; j < rt->props.size(); j++) {
+        for (int j = 0; j < (int)rt->props.size(); j++) {
             Prop* prop = rt->props[j];
             bbFreeEntity(prop->obj);
             delete prop;
@@ -597,7 +597,7 @@ void InitLoadGame() {
     for (int i = 0; i < RoomTemplate::getListSize(); i++) {
         RoomTemplate* rt = RoomTemplate::getObject(i);
 
-        for (int j = 0; j < rt->collisionObjs.size(); j++) {
+        for (int j = 0; j < (int)rt->collisionObjs.size(); j++) {
             bbFreeEntity(rt->collisionObjs[j]);
         }
         rt->collisionObjs.clear();
@@ -607,7 +607,7 @@ void InitLoadGame() {
             bbFreeEntity(rt->alphaMesh);
         }
 
-        for (int j = 0; j < rt->props.size(); j++) {
+        for (int j = 0; j < (int)rt->props.size(); j++) {
             bbFreeEntity(rt->props[j]->obj);
             delete rt->props[j];
         }

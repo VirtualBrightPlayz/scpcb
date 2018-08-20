@@ -22,7 +22,7 @@ SoundWrapper::SoundWrapper() {
     list.push_back(this);
 }
 SoundWrapper::~SoundWrapper() {
-    for (int i = 0; i < list.size(); i++) {
+    for (int i = 0; i < (int)list.size(); i++) {
         if (list[i] == this) {
             if (internal != nullptr) {
                 bbFreeSound(internal);
@@ -58,7 +58,7 @@ SoundChannel::SoundChannel() {
     list.push_back(this);
 }
 SoundChannel::~SoundChannel() {
-    for (int i = 0; i < list.size(); i++) {
+    for (int i = 0; i < (int)list.size(); i++) {
         if (list[i] == this) {
             list.erase(list.begin() + i);
             break;
@@ -132,7 +132,7 @@ void SoundManager::loadInGameSounds() {
 }
 
 void SoundManager::deloadInGameSounds() {
-    for (int i = 0; i < SoundWrapper::list.size(); i++)
+    for (int i = 0; i < (int)SoundWrapper::list.size(); i++)
     {
         if (SoundWrapper::list[i] == this->button) { continue; }
         delete SoundWrapper::list[i];

@@ -118,10 +118,6 @@ void UpdateGUI();
 
 void DrawGUI();
 
-void DrawPauseMenu();
-
-void UpdatePauseMenu();
-
 String f2s(float n, int count);
 
 float Animate2(MeshModel* entity, float curr, int start, int quit, float speed, int loop = true);

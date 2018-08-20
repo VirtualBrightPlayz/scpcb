@@ -22,7 +22,7 @@ Particle::Particle() {
     list.push_back(this);
 }
 Particle::~Particle() {
-    for (int i = 0; i < list.size(); i++) {
+    for (int i = 0; i < (int)list.size(); i++) {
         if (list[i] == this) {
             list.erase(list.begin() + i);
             break;
@@ -43,7 +43,7 @@ Emitter::Emitter() {
     list.push_back(this);
 }
 Emitter::~Emitter() {
-    for (int i = 0; i < list.size(); i++) {
+    for (int i = 0; i < (int)list.size(); i++) {
         if (list[i] == this) {
             list.erase(list.begin() + i);
             break;

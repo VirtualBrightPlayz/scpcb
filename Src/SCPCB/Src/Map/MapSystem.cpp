@@ -97,7 +97,7 @@ Material::Material() {
     list.push_back(this);
 }
 Material::~Material() {
-    for (int i = 0; i < list.size(); i++) {
+    for (int i = 0; i < (int)list.size(); i++) {
         if (list[i] == this) {
             list.erase(list.begin() + i);
             break;
@@ -118,7 +118,7 @@ RoomTemplate::RoomTemplate() {
     list.push_back(this);
 }
 RoomTemplate::~RoomTemplate() {
-    for (int i = 0; i < list.size(); i++) {
+    for (int i = 0; i < (int)list.size(); i++) {
         if (list[i] == this) {
             list.erase(list.begin() + i);
             break;
@@ -139,7 +139,7 @@ Room::Room() {
     list.push_back(this);
 }
 Room::~Room() {
-    for (int i = 0; i < list.size(); i++) {
+    for (int i = 0; i < (int)list.size(); i++) {
         if (list[i] == this) {
             list.erase(list.begin() + i);
             break;
@@ -158,7 +158,7 @@ LightTemplate::LightTemplate() {
     list.push_back(this);
 }
 LightTemplate::~LightTemplate() {
-    for (int i = 0; i < list.size(); i++) {
+    for (int i = 0; i < (int)list.size(); i++) {
         if (list[i] == this) {
             list.erase(list.begin() + i);
             break;
@@ -177,7 +177,7 @@ TempWayPoint::TempWayPoint() {
     list.push_back(this);
 }
 TempWayPoint::~TempWayPoint() {
-    for (int i = 0; i < list.size(); i++) {
+    for (int i = 0; i < (int)list.size(); i++) {
         if (list[i] == this) {
             list.erase(list.begin() + i);
             break;
@@ -198,7 +198,7 @@ WayPoint::WayPoint() {
     list.push_back(this);
 }
 WayPoint::~WayPoint() {
-    for (int i = 0; i < list.size(); i++) {
+    for (int i = 0; i < (int)list.size(); i++) {
         if (list[i] == this) {
             list.erase(list.begin() + i);
             break;
@@ -217,7 +217,7 @@ Screen::Screen() {
     list.push_back(this);
 }
 Screen::~Screen() {
-    for (int i = 0; i < list.size(); i++) {
+    for (int i = 0; i < (int)list.size(); i++) {
         if (list[i] == this) {
             list.erase(list.begin() + i);
             break;
@@ -236,7 +236,7 @@ TempScreen::TempScreen() {
     list.push_back(this);
 }
 TempScreen::~TempScreen() {
-    for (int i = 0; i < list.size(); i++) {
+    for (int i = 0; i < (int)list.size(); i++) {
         if (list[i] == this) {
             list.erase(list.begin() + i);
             break;
@@ -257,7 +257,7 @@ SecurityCam::SecurityCam() {
     list.push_back(this);
 }
 SecurityCam::~SecurityCam() {
-    for (int i = 0; i < list.size(); i++) {
+    for (int i = 0; i < (int)list.size(); i++) {
         if (list[i] == this) {
             list.erase(list.begin() + i);
             break;
@@ -276,7 +276,7 @@ Prop::Prop() {
     list.push_back(this);
 }
 Prop::~Prop() {
-    for (int i = 0; i < list.size(); i++) {
+    for (int i = 0; i < (int)list.size(); i++) {
         if (list[i] == this) {
             list.erase(list.begin() + i);
             break;
@@ -541,7 +541,7 @@ Room* CreateRoom(RoomTemplate* rt, float x, float y, float z, float angle) {
     }
     r->collisionObjs.clear();
     int i;
-    for (i = 0; i < rt->collisionObjs.size(); i++) {
+    for (i = 0; i < (int)rt->collisionObjs.size(); i++) {
         tempObj = bbCopyMeshModelEntity(rt->collisionObjs[i]);
         bbScaleEntity(tempObj, RoomScale, RoomScale, RoomScale);
         r->collisionObjs.push_back(tempObj);
@@ -550,7 +550,7 @@ Room* CreateRoom(RoomTemplate* rt, float x, float y, float z, float angle) {
         bbEntityParent(tempObj,r->obj);
     }
     r->props.clear();
-    for (i = 0; i < rt->props.size(); i++) {
+    for (i = 0; i < (int)rt->props.size(); i++) {
         tempProp = rt->props[i];
         tempObj = bbCopyMeshModelEntity(tempProp->obj);
         r->props.push_back(tempObj);
@@ -1747,7 +1747,7 @@ void CreateMap() {
     int placed = 0;
 
     int k;
-    for (k = 0; k < prioritizedTemplates.size(); k++) {
+    for (k = 0; k < (int)prioritizedTemplates.size(); k++) {
         rt = prioritizedTemplates[k];
 
         placementCount = bbRand(rt->minAmount,rt->maxAmount);
@@ -1825,7 +1825,7 @@ void CreateMap() {
             if (currType>0) {
                 targetCommonness = bbRand(0,totalCommonness[currType]);
 
-                for (i = 0; i < randomTemplates.size(); i++) {
+                for (i = 0; i < (int)randomTemplates.size(); i++) {
                     tempTemplate = randomTemplates[i];
                     if (tempTemplate->shape == currType) {
                         commonnessAccumulator = commonnessAccumulator+(int)(tempTemplate->commonness);

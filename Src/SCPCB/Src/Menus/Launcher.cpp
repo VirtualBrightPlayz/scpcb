@@ -33,10 +33,9 @@ Launcher::Launcher() {
     bbAppTitle("SCP - Containment Breach Launcher");
 
     MenuScale = 1;
+    uiAssets = new UIAssets();
 
     this->background = bbLoadImage("GFX/menu/launcher.jpg");
-
-    uiAssets = new UIAssets();
 
     btnLaunch = GUIButton(this->width - 30 - 90, this->height - 50 - 55, 100, 30, "LAUNCH", false, false);
     btnExit = GUIButton(this->width - 30 - 90, this->height - 50, 100, 30, "EXIT", false, false);
@@ -50,12 +49,11 @@ Launcher::Launcher() {
 
 Launcher::~Launcher() {
     bbFreeImage(this->background);
-    delete uiAssets;
 }
 
 void Launcher::verifyResolution() {
     selectedGFXMode = resWidths.size()-1;
-    for (int i = 0;i<resWidths.size();i++) {
+    for (int i = 0;i< (int)resWidths.size();i++) {
         if (userOptions->screenWidth == resWidths[i] && userOptions->screenHeight == resHeights[i]) {
             selectedGFXMode = i;
             return;
@@ -68,7 +66,7 @@ void Launcher::update() {
     int y = 280 - 65;
 
     int i;
-    for (int i = 0; i < resWidths.size(); i++) {
+    for (int i = 0; i < (int)resWidths.size(); i++) {
         if (MouseOn(x - 1, y - 1, 100, 20)) {
             if (MouseHit1) {
                 this->selectedGFXMode = i;
@@ -137,7 +135,7 @@ void Launcher::draw() {
     int y = 280 - 65;
 
     int i;
-    for (i = 0; i < resWidths.size(); i++) {
+    for (i = 0; i < (int)resWidths.size(); i++) {
         if (this->selectedGFXMode == i) {
             bbColor(0, (int)((bbSin(bbMilliSecs() / 10.f) + 1) * 45), (int)((bbSin(bbMilliSecs() / 10.f) + 1) * 95));
             bbRect(x - 1, y - 1, 100, 20, false);

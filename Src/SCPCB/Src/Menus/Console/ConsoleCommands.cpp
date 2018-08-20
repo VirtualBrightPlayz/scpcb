@@ -19,12 +19,12 @@ std::vector<ConsoleCmd*> commandList;
 
 void ConsoleCmd::executeCommand(const String& name, std::vector<String> args) {
     ConsoleCmd* foundCmd = nullptr;
-    for (int i = 0; i < commandList.size(); i++) {
+    for (int i = 0; i < (int)commandList.size(); i++) {
         if (commandList[i]->name.equals(name)) {
             foundCmd = commandList[i];
             break;
         } else {
-            for (int j = 0; j < commandList[i]->aliases.size(); j++) {
+            for (int j = 0; j < (int)commandList[i]->aliases.size(); j++) {
                 if (commandList[i]->aliases[j].equals(name)) {
                     foundCmd = commandList[i];
                     break;
@@ -57,7 +57,7 @@ void ConsoleCmd::generateCommands() {
     commandList.push_back(new Cmd_Halloween());
 }
 void ConsoleCmd::clearCommands() {
-    for (int i = 0; i < commandList.size(); i++) {
+    for (int i = 0; i < (int)commandList.size(); i++) {
         delete commandList[i];
     }
     commandList.clear();
@@ -70,17 +70,17 @@ void Cmd_Help::execute(std::vector<String> args) {
     console->msgB = 255;
     if (args.size() <= 0) {
         ConsoleMsg::create("List of Available Commands:");
-        for (int i = 0; i < commandList.size(); i++) {
+        for (int i = 0; i < (int)commandList.size(); i++) {
             ConsoleMsg::create("- " + commandList[i]->name);
         }
     } else {
         ConsoleCmd* foundCmd = nullptr;
-        for (int i = 0; i < commandList.size(); i++) {
+        for (int i = 0; i < (int)commandList.size(); i++) {
             if (commandList[i]->name.equals(args[0])) {
                 foundCmd = commandList[i];
                 break;
             } else {
-                for (int j = 0; j < commandList[i]->aliases.size(); j++) {
+                for (int j = 0; j < (int)commandList[i]->aliases.size(); j++) {
                     if (commandList[i]->aliases[j].equals(args[0])) {
                         foundCmd = commandList[i];
                         break;
@@ -91,7 +91,7 @@ void Cmd_Help::execute(std::vector<String> args) {
 
         if (foundCmd != nullptr) {
             ConsoleMsg::create("HELP - " + foundCmd->name);
-            for (int i = 0; i < foundCmd->helpDesc.size(); i++) {
+            for (int i = 0; i < (int)foundCmd->helpDesc.size(); i++) {
                 ConsoleMsg::create(" - " + foundCmd->helpDesc[i]);
             }
             if (foundCmd->helpDesc.size() <= 0) {

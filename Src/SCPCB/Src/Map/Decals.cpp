@@ -17,7 +17,7 @@ Decal::Decal() {
     list.push_back(this);
 }
 Decal::~Decal() {
-    for (int i = 0; i < list.size(); i++) {
+    for (int i = 0; i < (int)list.size(); i++) {
         if (list[i] == this) {
             list.erase(list.begin() + i);
             break;
