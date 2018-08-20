@@ -22,6 +22,7 @@ const int GAMESUBSTATE_PAUSED_OPTIONS = 2;
 
 // Globals.
 extern String SelectedEnding;
+extern int prevGameState;
 extern int CurrGameState;
 extern int CurrGameSubstate;
 extern int CurrGameStatePage;
@@ -35,7 +36,6 @@ extern String KeypadMSG;
 extern int DrawHandIcon;
 extern float MenuScale;
 extern String RandomSeed;
-extern int SelectedInputBox;
 extern String SavePath;
 extern String SaveMSG;
 extern String CurrSave;
@@ -48,10 +48,6 @@ void DrawTiledImageRect(bbImage* img, int srcX, int srcY, int srcwidth, int srch
 String rInput(const String& aString);
 
 bool MouseOn(int x, int y, int width, int height);
-
-String UpdateInputBox(int x, int y, int width, int height, const String& txt, int ID = 0);
-
-void DrawInputBox(int x, int y, int width, int height, const String& txt, int ID = 0);
 
 void DrawFrame(int x, int y, int width, int height, int xoffset = 0, int yoffset = 0);
 

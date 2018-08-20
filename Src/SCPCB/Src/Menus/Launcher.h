@@ -8,18 +8,6 @@ namespace CBN {
 
 struct Launcher {
 private:
-    GUIButton btnLaunch;
-    GUIButton btnExit;
-    GUITick tckUseLauncher;
-    GUITick tckFullscreen;
-
-    void verifyResolution();
-public:
-    Launcher();
-    ~Launcher();
-    void update();
-    void draw();
-
     int width;
     int height;
 
@@ -29,6 +17,19 @@ public:
     std::vector<int> resHeights;
 
     int selectedGFXMode;
+
+    GUIButton btnLaunch;
+    GUIButton btnExit;
+    GUITick tckUseLauncher;
+    GUITick tckFullscreen;
+
+    void verifyResolution();
+public:
+    Launcher();
+    ~Launcher();
+
+    void update();
+    void draw();
 };
 extern Launcher* launcher;
 

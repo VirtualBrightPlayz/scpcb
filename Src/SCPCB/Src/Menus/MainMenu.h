@@ -24,8 +24,6 @@ private:
     String flashStr;
     int flashStrX;
     int flashStrY;
-public:
-    MainMenu();
 
     GUIButton btnNewGame;
     GUIButton btnStartGame;
@@ -41,6 +39,8 @@ public:
 
     GUIButton btnQuit;
     GUIButton btnBack;
+public:
+    MainMenu();
 
     void update();
     void draw();

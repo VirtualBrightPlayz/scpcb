@@ -15,6 +15,7 @@ namespace CBN {
 // Globals.
 String SelectedEnding;
 int CurrGameState = GAMESTATE_MAINMENU;
+int prevGameState = CurrGameState;
 int CurrGameSubstate = 0;
 int CurrGameStatePage = 0;
 float MsgTimer;
@@ -27,7 +28,6 @@ String KeypadMSG;
 int DrawHandIcon;
 float MenuScale;
 String RandomSeed;
-int SelectedInputBox;
 String SavePath = "Saves/";
 String SaveMSG;
 String CurrSave;
@@ -85,51 +85,6 @@ bool MouseOn(int x, int y, int width, int height) {
         }
     }
     return false;
-}
-
-String UpdateInputBox(int x, int y, int width, int height, const String& txt, int ID) {
-    bool mouseOnBox = false;
-    if (MouseOn(x, y, width, height)) {
-        mouseOnBox = true;
-        if (MouseHit1) {
-            SelectedInputBox = ID;
-            bbFlushKeys();
-        }
-    }
-
-    if (!mouseOnBox && MouseHit1 && SelectedInputBox == ID) {
-        SelectedInputBox = 0;
-    }
-
-    String retVal = txt;
-    if (SelectedInputBox == ID) {
-        retVal = rInput(txt);
-    }
-
-    return retVal;
-}
-
-void DrawInputBox(int x, int y, int width, int height, const String& txt, int ID) {
-    //TextBox(x,y,width,height,Txt$)
-    bbColor(255, 255, 255);
-    DrawTiledImageRect(uiAssets->tileWhite, (x % 256), (y % 256), 512, 512, x, y, width, height);
-    //Rect(x, y, width, height)
-    bbColor(0, 0, 0);
-
-    if (MouseOn(x, y, width, height)) {
-        bbColor(50, 50, 50);
-    }
-
-    bbRect(x + 2, y + 2, width - 4, height - 4);
-    bbColor(255, 255, 255);
-
-    if (SelectedInputBox == ID) {
-        if ((TimeInPosMilliSecs() % 800) < 400) {
-            bbRect(x + width / 2 + bbStringWidth(txt) / 2 + 2, y + height / 2 - 5, 2, 12);
-        }
-    }
-
-    bbText(x + width / 2, y + height / 2, txt, true, true);
 }
 
 void DrawFrame(int x, int y, int width, int height, int xoffset, int yoffset) {

@@ -134,7 +134,7 @@ void Cmd_CameraPick::execute(std::vector<String> args) {
     console->msgR = 0;
     console->msgG = 255;
     console->msgB = 0;
-    Object* c = bbCameraPick(mainPlayer->cam, userOptions->screenWidth / 2, userOptions->screenHeight / 2);
+    Object* c = bbCameraPick(mainPlayer->cam, userOptions->screenWidth / 2.f, userOptions->screenHeight / 2.f);
     if (c == nullptr) {
         ConsoleMsg::create("******************************");
         ConsoleMsg::create("No entity picked");

@@ -182,7 +182,6 @@ void Console::update() {
             console->scroll = 0;
         }
 
-        SelectedInputBox = 2;
         String oldConsoleInput = console->cmdInput.getInput();
         console->cmdInput.update();
         if (!oldConsoleInput.equals(console->cmdInput.getInput())) {

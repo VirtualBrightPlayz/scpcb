@@ -1283,7 +1283,7 @@ void UpdatePauseMenu() {
             }
         } else {
             y = (int)(y+104*MenuScale);
-            if (GameSaved && (!SelectedDifficulty->permaDeath)) {
+            if (GameSaved) {
                 if (UpdateUIButton(x, y, (int)(390*MenuScale), (int)(60*MenuScale), "Load Game")) {
                     DrawLoading(0);
 

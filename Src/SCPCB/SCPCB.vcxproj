@@ -189,6 +189,7 @@
     <ClCompile Include="Src\Menus\LoadingScreen.cpp" />
     <ClCompile Include="Src\Menus\MainMenu.cpp" />
     <ClCompile Include="Src\Menus\Menu.cpp" />
+    <ClCompile Include="Src\Menus\PauseMenu.cpp" />
     <ClCompile Include="Src\MiscGFX\Dreamfilter.cpp" />
     <ClCompile Include="Src\MiscGFX\FastResize.cpp" />
     <ClCompile Include="Src\NPCs\NPCs.cpp" />
@@ -244,6 +245,7 @@
     <ClInclude Include="Src\Menus\LoadingScreen.h" />
     <ClInclude Include="Src\Menus\MainMenu.h" />
     <ClInclude Include="Src\Menus\Menu.h" />
+    <ClInclude Include="Src\Menus\PauseMenu.h" />
     <ClInclude Include="Src\MiscGFX\Dreamfilter.h" />
     <ClInclude Include="Src\MiscGFX\FastResize.h" />
     <ClInclude Include="Src\NPCs\NPCs.h" />

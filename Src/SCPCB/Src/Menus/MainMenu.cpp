@@ -45,7 +45,7 @@ MainMenu::MainMenu() {
     height = 330;
     btnStartGame = GUIButton(x + 420, y + height + 20, 160, 70, "START");
     btnLoadMap = GUIButton(x, y + height + 20, 160, 70, "Load map");
-    tckIntro = GUITick(x + 280, y + 110, "Enable intro enabled", -260, userOptions->introEnabled);
+    tckIntro = GUITick(x + 280, y + 110, "Enable intro sequence:", -260, userOptions->introEnabled);
     txtName = GUIInput(x + 150, y + 15, 200, 30, "Name:", -130, 15);
     txtSeed = GUIInput(x + 150, y + 55, 200, 30, "Map seed:", -130, 15);
 

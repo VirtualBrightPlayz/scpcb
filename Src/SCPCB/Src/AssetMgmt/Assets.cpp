@@ -20,6 +20,7 @@
 #include "Audio.h"
 #include "../NPCs/NPCs.h"
 #include "../Menus/Menu.h"
+#include "../Menus/PauseMenu.h"
 #include "../Menus/Console/Console.h"
 #include "../Menus/Console/ConsoleCommands.h"
 #include "../Menus/LoadingScreen.h"
@@ -361,6 +362,7 @@ void InitNewGame() {
     sndMgmt->loadInGameSounds();
 
     console = new Console();
+    pauseMenu = new PauseMenu();
 
     HideDistance = 15.f;
 
@@ -634,6 +636,8 @@ void NullGame() {
 
     delete mainPlayer;
     mainPlayer = nullptr;
+
+    delete pauseMenu;
 
     DeathMSG = "";
 
