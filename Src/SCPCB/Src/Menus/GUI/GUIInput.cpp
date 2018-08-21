@@ -14,7 +14,7 @@ GUIInput::GUIInput() : GUIInput(0, 0, 0, 0, "", 0, 0) { };
 GUIInput::GUIInput(int x, int y, int width, int height, const String& displayTxt, int txtOffset, int limit, const String& defaultTxt, bool relative)
     : GUIButtonBase(x, y, width, height, relative) {
     displayText = displayTxt;
-    textOffset = relative ? (int)(txtOffset * MenuScale) : txtOffset;
+    textOffset = txtOffset;
     input = defaultTxt;
     selected = false;
     charLimit = limit;
@@ -45,12 +45,12 @@ void GUIInput::update() {
     if (isMouseHit()) {
         selected = true;
 
-        int x = getX() + getWidth() / 2 + bbStringWidth(input) / 2;
+        int caretX = getX() + getWidth() / 2 + bbStringWidth(input) / 2;
         for (caretPos = input.size(); caretPos > 0; caretPos--) {
-            if (bbMouseX() > x - (bbStringWidth(input.charAt(caretPos - 1))/2)) {
+            if (bbMouseX() > caretX - (bbStringWidth(input.charAt(caretPos - 1))/2)) {
                 break;
             }
-            x -= bbStringWidth(input.charAt(caretPos-1));
+            caretX -= bbStringWidth(input.charAt(caretPos-1));
         }
         bbFlushKeys();
         caretTimer = TimeInPosMilliSecs();
@@ -106,8 +106,8 @@ void GUIInput::draw() {
     // White border and black inside.
     DrawTiledImageRect(uiAssets->tileWhite, (getX() % 256), (getY() % 256), 512, 512, getX(), getY(), getWidth(), getHeight());
     bbColor(0, 0, 0);
-    int coordOff = getRelativeVal(2);
-    int sizeOff = getRelativeVal(-4);
+    int coordOff = 2;
+    int sizeOff = -4;
     bbRect(getX() + coordOff, getY() + coordOff, getWidth() + sizeOff, getHeight() + sizeOff);
     bbColor(255, 255, 255);
 

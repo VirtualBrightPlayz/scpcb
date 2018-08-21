@@ -11,7 +11,7 @@ GUITick::GUITick() : GUITick(0, 0, "", 0, 0) { };
 GUITick::GUITick(int x, int y, const String& txt, int txtOffset, bool ticked, bool relative)
     : GUIButtonBase(x, y, 20, 20, relative) {
     text = txt;
-    textOffset = relative ? (int)(txtOffset * MenuScale) : txtOffset;
+    textOffset = txtOffset;
 
     this->ticked = ticked;
 }
@@ -31,16 +31,16 @@ void GUITick::draw() {
     // White border and black inside.
     DrawTiledImageRect(uiAssets->tileWhite, (getX() % 256), (getY() % 256), 512, 512, getX(), getY(), getWidth(), getHeight());
     bbColor(0, 0, 0);
-    int coordOff = getRelativeVal(2);
-    int sizeOff = getRelativeVal(-4);
+    int coordOff = 2;
+    int sizeOff = -4;
     bbRect(getX() + coordOff, getY() + coordOff, getWidth() + sizeOff, getHeight() + sizeOff);
     bbColor(255, 255, 255);
 
     GUIButtonBase::draw();
 
     if (ticked) {
-        coordOff = getRelativeVal(4);
-        sizeOff = getRelativeVal(-8);
+        coordOff = 4;
+        sizeOff = -8;
         DrawTiledImageRect(uiAssets->tileWhite, (getX() % 256), (getY() % 256), 512, 512, getX() + coordOff, getY() + coordOff, getWidth() + sizeOff, getHeight() + sizeOff);
     }
 

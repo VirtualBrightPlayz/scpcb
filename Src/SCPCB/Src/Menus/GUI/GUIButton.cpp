@@ -23,8 +23,8 @@ void GUIButton::draw() {
     if (!visible) { return; }
 
     // White border and black inside.
-    int coordOff = getRelativeVal(3);
-    int sizeOff = getRelativeVal(-6);
+    int coordOff = 3;
+    int sizeOff = -6;
     DrawTiledImageRect(uiAssets->tileWhite, 0, (getY() % 256), 512, 512, getX(), getY(), getWidth(), getHeight());
     DrawTiledImageRect(uiAssets->tileBlack, 0, (getY() % 256), 512, 512, getX() + coordOff, getY() + coordOff, getWidth() + sizeOff, getHeight() + sizeOff);
     GUIButtonBase::draw();

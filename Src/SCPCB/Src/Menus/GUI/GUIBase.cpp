@@ -4,9 +4,14 @@
 #include "GUIBase.h"
 #include "../Menu.h"
 #include "../../AssetMgmt/Assets.h"
+#include "../../Config/Options.h"
 #include "../../GameMain.h"
 
 namespace CBN {
+
+float GUIBase::getScreenWidthScale() {
+    return userOptions->screenWidth / 1024.f;
+}
 
 GUIBase::GUIBase(int x, int y, int width, int height, bool relative) {
     this->x = x;
@@ -14,6 +19,8 @@ GUIBase::GUIBase(int x, int y, int width, int height, bool relative) {
     this->width =  width;
     this->height = height;
     this->relative = relative;
+    this->xRelativeToScreenWidth = false;
+    this->widthRelativeToScreenWidth = false;
 
     mouseHover = false;
     mouseHit = false;
@@ -26,7 +33,9 @@ int GUIBase::getRelativeVal(int val) {
 }
 
 int GUIBase::getX() {
-    return getRelativeVal(x);
+    return xRelativeToScreenWidth
+        ? (int)(x * getScreenWidthScale())
+        : getRelativeVal(x);
 }
 
 int GUIBase::getY() {
@@ -34,7 +43,9 @@ int GUIBase::getY() {
 }
 
 int GUIBase::getWidth() {
-    return getRelativeVal(width);
+    return widthRelativeToScreenWidth
+        ? (int)(width * getScreenWidthScale())
+        : getRelativeVal(width);
 }
 
 int GUIBase::getHeight() {
@@ -59,7 +70,7 @@ void GUIBase::update() {
     mouseHit = false;
     mouseUp = false;
 
-    if (MouseOn(x, y, width, height)) {
+    if (MouseOn(getX(), getY(), getWidth(), getHeight())) {
         mouseHover = true;
         if (MouseHit1) {
             mouseHit = true;

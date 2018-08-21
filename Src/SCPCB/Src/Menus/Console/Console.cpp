@@ -17,9 +17,10 @@ Console* console;
 Console::Console() {
     int x = 0;
     int y = 1024 - 300;
-    int width = userOptions->screenWidth; // TODO: Doesn't work.
+    int width = 1024;
     int height = 270;
     cmdInput = GUIInput(x, y + height, width, 30, "", 0, 100);
+    cmdInput.widthRelativeToScreenWidth = true;
     scroll = 0.f;
     scrollDragging = false;
     mouseMem = 0;
@@ -183,7 +184,9 @@ void Console::update() {
         }
 
         String oldConsoleInput = console->cmdInput.getInput();
+        bbSetFont(uiAssets->consoleFont);
         console->cmdInput.update();
+        bbSetFont(uiAssets->font[0]);
         if (!oldConsoleInput.equals(console->cmdInput.getInput())) {
             console->reissue = -1;
         }
@@ -207,14 +210,12 @@ void Console::update() {
             ConsoleCmd::executeCommand(commandName, args);
             console->cmdInput.clear();
         }
-        bbSetFont(uiAssets->font[0]);
     }
 }
 
 void Console::draw() {
     if (CurrGameState==GAMESTATE_CONSOLE) {
         bbSetFont(uiAssets->consoleFont);
-
         int x = 0;
         int y = userOptions->screenHeight-(int)(300.f*MenuScale);
         int width = userOptions->screenWidth;
@@ -230,7 +231,11 @@ void Console::draw() {
 
             consoleHeight = consoleHeight + (int)(15.f*MenuScale);
         }
-        scrollbarHeight = (int)(((float)(height)/(float)(consoleHeight))*height);
+        if (consoleHeight == 0) {
+            scrollbarHeight = 0;
+        } else {
+            scrollbarHeight = (int)(((float)(height) / (float)(consoleHeight))*height);
+        }
         if (scrollbarHeight>height) {
             scrollbarHeight = height;
         }
@@ -287,6 +292,7 @@ void Console::draw() {
         bbColor(255,255,255);
 
         console->cmdInput.draw();
+        bbSetFont(uiAssets->font[0]);
     }
 }
 

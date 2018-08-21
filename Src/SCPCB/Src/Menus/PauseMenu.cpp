@@ -21,19 +21,25 @@ PauseMenu::PauseMenu() {
     int height = 60;
     int x = 1024 / 2 - 600 / 2;
     int y = 1024 / 2 - 600 / 2;
-    x += 132;
+    x += 200;
     y += 132;
 
     y += 72;
     btnResume = GUIButton(x, y, width, height, "Resume", true);
+    btnResume.xRelativeToScreenWidth = true;
     btnDeadLoadGame = GUIButton(x, y, width, height, "Load Game", true);
+    btnDeadLoadGame.xRelativeToScreenWidth = true;
     y += 75;
     btnLoadGame = GUIButton(x, y, width, height, "Load Game", true);
+    btnLoadGame.xRelativeToScreenWidth = true;
     btnDeadQuit = GUIButton(x, y, width, height, "Quit", true);
+    btnDeadQuit.xRelativeToScreenWidth = true;
     y += 75;
     btnOptions = GUIButton(x, y, width, height, "Options", true);
+    btnOptions.xRelativeToScreenWidth = true;
     y += 75;
     btnQuit = GUIButton(x, y, width, height, "Quit", true);
+    btnQuit.xRelativeToScreenWidth = true;
 }
 
 void PauseMenu::update() {

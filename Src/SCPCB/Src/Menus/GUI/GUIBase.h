@@ -13,6 +13,7 @@ private:
     bool mouseHover;
     bool mouseHit;
     bool mouseUp;
+    static float getScreenWidthScale();
 
 protected:
     int getRelativeVal(int val);
@@ -27,6 +28,8 @@ public:
     GUIBase(int x, int y, int width, int height, bool relative = true);
 
     bool visible;
+    bool xRelativeToScreenWidth;
+    bool widthRelativeToScreenWidth;
     bool isMouseHover();
     bool isMouseHit();
     bool isMouseUp();
