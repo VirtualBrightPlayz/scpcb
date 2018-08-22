@@ -66,8 +66,6 @@ const int HIT_APACHE = 4;
 const int HIT_DEAD = 5;
 
 // Globals.
-// TODO: Move these to console struct.
-int HalloweenTex;
 
 Timing* timing;
 float CurrFrameLimit;
@@ -144,7 +142,7 @@ int EntryPoint() {
     userOptions = new Options();
     LoadOptionsINI();
 
-    txtMgmt = new TxtManager();
+    txtMgmt = new TxtManager("en");
 
     timing = new Timing();
     SetTickrate(60);
@@ -855,7 +853,7 @@ void UpdateGUI() {
         KeypadMSG = "";
     }
 
-    txtMgmt->update();
+    txtMgmt->updateMsg();
 
     //TODO: fix ;And EndingTimer = 0 Then
     if (bbKeyHit(1)) {
@@ -1139,6 +1137,8 @@ void DrawGUI() {
             }
         }
     }
+
+    txtMgmt->drawMsg();
 
     DrawInventory(mainPlayer);
 }

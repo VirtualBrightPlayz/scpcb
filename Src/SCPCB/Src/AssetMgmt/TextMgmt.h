@@ -2,6 +2,7 @@
 #define TEXTMGMT_H_INCLUDED
 
 #include <StringType.h>
+#include <map>
 
 namespace CBN {
 
@@ -13,17 +14,17 @@ private:
     String deathMsg;
 
 public:
-    TxtManager();
+    TxtManager(const String& langCode);
     ~TxtManager();
 
     void setMsg(const String& msg, float time = 70 * 5);
     void setDeathMsg(const String& msg);
     String getDeathMsg();
-    void update();
+    void updateMsg();
+    void drawMsg();
 
-    // localization text
-    // launcher
-
+    std::map<String, String> lang;
+    void changeLocalization(const String& langCode);
 };
 extern TxtManager* txtMgmt;
 

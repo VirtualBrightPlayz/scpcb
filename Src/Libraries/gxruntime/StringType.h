@@ -45,7 +45,6 @@ struct String {
 
         bool equals(const String& other) const;
         bool equals(const char* other) const;
-        bool equals(char other) const;
         bool isEmpty() const;
 
 		std::vector<String> split(const String& needle, bool removeEmptyEntries = false) const;
@@ -64,6 +63,7 @@ struct String {
 
 String operator+(const String& a, const String& b);
 String operator+(const char* a, const String& b);
+String operator<(const String& a, const String& b);
 std::ostream& operator<<(std::ostream &os, const String& s);
 
 #endif

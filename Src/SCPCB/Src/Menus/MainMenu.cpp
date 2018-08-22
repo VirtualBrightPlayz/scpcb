@@ -26,28 +26,28 @@ MainMenu::MainMenu() {
     int width = 400;
     int height = 70;
 
-    btnNewGame = GUIButton(x, y, width, height, "NEW GAME", true);
+    btnNewGame = GUIButton(x, y, width, height, "mnu_new", true);
     y += 100;
-    btnLoadGame = GUIButton(x, y, width, height, "LOAD GAME", true);
+    btnLoadGame = GUIButton(x, y, width, height, "mnu_load", true);
     y += 100;
-    btnOptions = GUIButton(x, y, width, height, "OPTIONS", true);
+    btnOptions = GUIButton(x, y, width, height, "mnu_opt", true);
     y += 100;
-    btnQuit = GUIButton(x, y, width, height, "QUIT", true);
+    btnQuit = GUIButton(x, y, width, height, "mnu_quit", true);
 
     // Max magic numbers. Since the back button is always in the same spot,
     // this places it at the bottom right of any subscreen.
     y = 286;
-    btnBack = GUIButton(x + width + 20, y, 580 - width - 20, height, "BACK");
+    btnBack = GUIButton(x + width + 20, y, 580 - width - 20, height, "mnu_back");
 
     x = 160;
     y = y + height + 20;
     width = 580;
     height = 330;
-    btnStartGame = GUIButton(x + 420, y + height + 20, 160, 70, "START");
-    btnLoadMap = GUIButton(x, y + height + 20, 160, 70, "Load map");
-    tckIntro = GUITick(x + 280, y + 110, "Enable intro sequence:", -260, userOptions->introEnabled);
-    txtName = GUIInput(x + 150, y + 15, 200, 30, "Name:", -130, 15);
-    txtSeed = GUIInput(x + 150, y + 55, 200, 30, "Map seed:", -130, 15);
+    btnStartGame = GUIButton(x + 420, y + height + 20, 160, 70, "mnu_start");
+    btnLoadMap = GUIButton(x, y + height + 20, 160, 70, "mnu_loadmap");
+    tckIntro = GUITick(x + 280, y + 110, "mnu_intro", -260, userOptions->introEnabled);
+    txtName = GUIInput(x + 150, y + 15, 200, 30, "mnu_name", -130, 15);
+    txtSeed = GUIInput(x + 150, y + 55, 200, 30, "mnu_seed", -130, 15);
 
     currState = MainMenuState::Main;
     blinkTimer[0] = 1;

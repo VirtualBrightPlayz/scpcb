@@ -25,20 +25,20 @@ PauseMenu::PauseMenu() {
     y += 132;
 
     y += 72;
-    btnResume = GUIButton(x, y, width, height, "Resume", true);
+    btnResume = GUIButton(x, y, width, height, "pau_resume", true);
     btnResume.xRelativeToScreenWidth = true;
-    btnDeadLoadGame = GUIButton(x, y, width, height, "Load Game", true);
+    btnDeadLoadGame = GUIButton(x, y, width, height, "pau_load", true);
     btnDeadLoadGame.xRelativeToScreenWidth = true;
     y += 75;
-    btnLoadGame = GUIButton(x, y, width, height, "Load Game", true);
+    btnLoadGame = GUIButton(x, y, width, height, "pau_load", true);
     btnLoadGame.xRelativeToScreenWidth = true;
-    btnDeadQuit = GUIButton(x, y, width, height, "Quit", true);
+    btnDeadQuit = GUIButton(x, y, width, height, "pau_quit", true);
     btnDeadQuit.xRelativeToScreenWidth = true;
     y += 75;
-    btnOptions = GUIButton(x, y, width, height, "Options", true);
+    btnOptions = GUIButton(x, y, width, height, "pau_opt", true);
     btnOptions.xRelativeToScreenWidth = true;
     y += 75;
-    btnQuit = GUIButton(x, y, width, height, "Quit", true);
+    btnQuit = GUIButton(x, y, width, height, "pau_quit", true);
     btnQuit.xRelativeToScreenWidth = true;
 }
 

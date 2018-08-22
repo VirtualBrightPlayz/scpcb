@@ -1,7 +1,8 @@
 #include <bbgraphics.h>
 
 #include "GUIButton.h"
-#include "../../Assetmgmt/Assets.h"
+#include "../../AssetMgmt/Assets.h"
+#include "../../AssetMgmt/TextMgmt.h"
 #include "../Menu.h"
 
 namespace CBN {
@@ -29,6 +30,7 @@ void GUIButton::draw() {
     DrawTiledImageRect(uiAssets->tileBlack, 0, (getY() % 256), 512, 512, getX() + coordOff, getY() + coordOff, getWidth() + sizeOff, getHeight() + sizeOff);
     GUIButtonBase::draw();
 
+    if (text.isEmpty()) { return; }
     if (bigFont) {
         bbSetFont(uiAssets->font[1]);
     } else {
@@ -39,7 +41,7 @@ void GUIButton::draw() {
         bbColor(37, 37, 38);
     }
 
-    bbText(getX() + getWidth() / 2, getY() + getHeight() / 2, text, true, true);
+    bbText(getX() + getWidth() / 2, getY() + getHeight() / 2, txtMgmt->lang[text], true, true);
     bbSetFont(uiAssets->font[0]);
     bbColor(255, 255, 255);
 }

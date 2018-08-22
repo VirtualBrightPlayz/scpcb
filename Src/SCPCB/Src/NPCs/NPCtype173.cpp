@@ -36,10 +36,9 @@ void InitializeNPCtype173(NPC* n) {
     n->obj = bbLoadMesh("GFX/NPCs/scp173/173.b3d");
 
     //On Halloween set jack-o-latern texture.
-    Texture* texFestive;
     if (bbCurrentDate().substr(0, 6).equals("31 Oct")) {
-        HalloweenTex = true;
-        texFestive = bbLoadTexture("GFX/NPCs/scp173/173h.png", 1);
+        console->halloween173Tex = true;
+        Texture* texFestive = bbLoadTexture("GFX/NPCs/scp173/173h.png", 1);
         bbEntityTexture(n->obj, texFestive, 0, 0);
         bbFreeTexture(texFestive);
     }

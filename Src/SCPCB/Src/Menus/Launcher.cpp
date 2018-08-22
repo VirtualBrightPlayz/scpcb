@@ -9,6 +9,7 @@
 #include "../GameMain.h"
 #include "../Menus/Menu.h"
 #include "../AssetMgmt/Assets.h"
+#include "../AssetMgmt/TextMgmt.h"
 #include "GUI/GUIButton.h"
 #include "GUI/GUITick.h"
 
@@ -37,10 +38,10 @@ Launcher::Launcher() {
 
     this->background = bbLoadImage("GFX/menu/launcher.jpg");
 
-    btnLaunch = GUIButton(this->width - 30 - 90, this->height - 50 - 55, 100, 30, "LAUNCH", false, false);
-    btnExit = GUIButton(this->width - 30 - 90, this->height - 50, 100, 30, "EXIT", false, false);
-    tckFullscreen = GUITick(455, 202, "Fullscreen", 30, userOptions->fullscreen, false);
-    tckUseLauncher = GUITick(455, 308, "Use launcher", 30, userOptions->launcher, false);
+    btnLaunch = GUIButton(this->width - 30 - 90, this->height - 50 - 55, 100, 30, "lch_start", false, false);
+    btnExit = GUIButton(this->width - 30 - 90, this->height - 50, 100, 30, "lch_quit", false, false);
+    tckFullscreen = GUITick(455, 202, "lch_fullscreen", 30, userOptions->fullscreen, false);
+    tckUseLauncher = GUITick(455, 308, "lch_launcher", 30, userOptions->launcher, false);
 
     bbSetBuffer(bbBackBuffer());
 

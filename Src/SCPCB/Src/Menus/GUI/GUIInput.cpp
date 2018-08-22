@@ -3,7 +3,8 @@
 
 #include "GUIInput.h"
 #include "../Menu.h"
-#include "../../Assetmgmt/Assets.h"
+#include "../../AssetMgmt/Assets.h"
+#include "../../AssetMgmt/TextMgmt.h"
 #include "../../MathUtils/MathUtils.h"
 #include "../../GameMain.h"
 
@@ -41,6 +42,8 @@ void GUIInput::clear() {
 }
 
 void GUIInput::update() {
+    if (!visible || locked) { return; }
+
     GUIButtonBase::update();
     if (isMouseHit()) {
         selected = true;
@@ -114,7 +117,7 @@ void GUIInput::draw() {
     GUIButtonBase::draw();
 
     // Caret.
-     if (selected) {
+     if (!locked && selected) {
          if (caretTimer + 500 > TimeInPosMilliSecs()) {
              int pos = getX() + getWidth() / 2 + bbStringWidth(input) / 2;
              if (caretPos == 0) {
@@ -128,10 +131,14 @@ void GUIInput::draw() {
          }
      }
 
+    if (locked) {
+        bbColor(37, 37, 38);
+    }
     bbText(getX() + getWidth() / 2, getY() + getHeight() / 2, input, true, true);
     if (!displayText.isEmpty()) {
-        bbText(getX() + getRelativeVal(textOffset), getY(), displayText);
+        bbText(getX() + getRelativeVal(textOffset), getY(), txtMgmt->lang[displayText]);
     }
+    bbColor(255, 255, 255);
 }
 
 }

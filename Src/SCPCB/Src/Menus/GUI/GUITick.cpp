@@ -3,6 +3,7 @@
 #include "GUITick.h"
 #include "../Menu.h"
 #include "../../AssetMgmt/Assets.h"
+#include "../../AssetMgmt/TextMgmt.h"
 
 namespace CBN {
 
@@ -48,7 +49,7 @@ void GUITick::draw() {
         if (locked) {
             bbColor(37, 37, 38);
         }
-        bbText(getX() + getRelativeVal(textOffset), getY(), text);
+        bbText(getX() + getRelativeVal(textOffset), getY(), txtMgmt->lang[text]);
         bbColor(255, 255, 255);
     }
 }

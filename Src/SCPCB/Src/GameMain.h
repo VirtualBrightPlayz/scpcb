@@ -52,7 +52,6 @@ extern const int HIT_APACHE;
 extern const int HIT_DEAD;
 
 // Globals.
-extern int HalloweenTex;
 extern Timing* timing;
 extern float CurrFrameLimit;
 extern int GameSaved;

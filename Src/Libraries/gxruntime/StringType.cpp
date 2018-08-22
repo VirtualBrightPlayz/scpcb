@@ -137,6 +137,10 @@ String operator+(const char* a, const String& b) {
     return String(String(a), b);
 }
 
+String operator<(const String& a, const String& b) {
+    return strcmp(a.cstr(), b.cstr()) > 0;
+}
+
 std::ostream& operator<<(std::ostream& os, const String& s) {
 	return os << s.cstr();
 }
@@ -147,10 +151,6 @@ bool String::equals(const String& other) const {
 
 bool String::equals(const char* other) const {
     return strcmp(cbuffer,other) == 0;
-}
-
-bool String::equals(char other) const {
-    return strSize == 1 && cbuffer[0] == other;
 }
 
 bool String::isEmpty() const {
@@ -327,25 +327,7 @@ String String::trim() const {
 }
 
 String String::resourcePath() const {
-#ifdef __APPLE__
-    char resource[64]; //TODO: use wchar instead
-
-    CFURLRef cfBundleURL = CFBundleCopyResourceURL(CFBundleGetMainBundle(),
-        CFStringCreateWithCString(kCFAllocatorDefault,
-            cbuffer,
-            kCFStringEncodingISOLatin1),
-        NULL,
-        NULL);
-
-    CFStringGetCString(CFURLCopyPath(cfBundleURL),
-        resource,
-        63,
-        kCFStringEncodingISOLatin1);
-
-    return String(resource).unHex();
-#else
     return *this;
-#endif
 }
 
 String String::unHex() const {
