@@ -31,7 +31,7 @@ INIFile::INIFile(const String& filename) {
                 if (split.size()>=2) {
                     currSection->keys.push_back(split[0].trim());
                     String value = "";
-                    for (int i=1;i<split.size();i++) {
+                    for (int i=1;i< (int)split.size();i++) {
                         value = split[i];
                     }
                     currSection->values.push_back(value.trim());
@@ -45,13 +45,13 @@ INIFile::INIFile(const String& filename) {
     bbCloseFile(file);
 }
 INIFile::~INIFile() {
-    for (int i = 0; i < list.size(); i++) {
+    for (int i = 0; i < (int)list.size(); i++) {
         if (list[i] == this) {
             list.erase(list.begin() + i);
             break;
         }
     }
-    for (int i=0;i<sections.size();i++) {
+    for (int i=0;i< (int)sections.size();i++) {
         delete sections[i];
     }
 }
@@ -67,10 +67,10 @@ String INIFile::getName() {
 }
 
 String INIFile::getValue(const String& section, const String& key, const String& defaultValue) {
-    for (int i = 0; i<sections.size(); i++) {
-        for (int j = 0; j<sections[i]->names.size(); j++) {
+    for (int i = 0; i< (int)sections.size(); i++) {
+        for (int j = 0; j< (int)sections[i]->names.size(); j++) {
             if (section.toLower().equals(sections[i]->names[j].toLower())) {
-                for (int k = 0; k<sections[i]->keys.size(); k++) {
+                for (int k = 0; k< (int)sections[i]->keys.size(); k++) {
                     if (sections[i]->keys[k].toLower().equals(key.toLower())) {
                         return sections[i]->values[k];
                     }
@@ -83,10 +83,10 @@ String INIFile::getValue(const String& section, const String& key, const String&
 }
 
 void INIFile::setValue(const String& section, const String& key, const String& value) {
-    for (int i = 0; i<sections.size(); i++) {
-        for (int j = 0; j<sections[i]->names.size(); j++) {
+    for (int i = 0; i< (int)sections.size(); i++) {
+        for (int j = 0; j< (int)sections[i]->names.size(); j++) {
             if (section.toLower().equals(sections[i]->names[j])) {
-                for (int k = 0; k<sections[i]->keys.size(); k++) {
+                for (int k = 0; k< (int)sections[i]->keys.size(); k++) {
                     if (sections[i]->keys[k].toLower().equals(key.toLower())) {
                         sections[i]->values[k] = value;
                         return;
@@ -100,13 +100,13 @@ void INIFile::setValue(const String& section, const String& key, const String& v
 
 void INIFile::save() {
     bbFile* f = bbWriteFile(name);
-    for (int i = 0; i<sections.size(); i++) {
+    for (int i = 0; i< (int)sections.size(); i++) {
         String secName = sections[i]->names[0];
-        for (int j = 1; j<sections[i]->names.size(); j++) {
+        for (int j = 1; j< (int)sections[i]->names.size(); j++) {
             secName = secName+"|"+sections[i]->names[j];
         }
         bbWriteLine(f,"["+secName+"]");
-        for (int j=0;j<sections[i]->keys.size();j++) {
+        for (int j=0;j< (int)sections[i]->keys.size();j++) {
             bbWriteLine(f, sections[i]->keys[j]+" = "+sections[i]->values[j]);
         }
         bbWriteLine(f,"");

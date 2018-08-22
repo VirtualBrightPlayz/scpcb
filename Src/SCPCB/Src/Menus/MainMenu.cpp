@@ -13,6 +13,7 @@
 #include "../Config/Difficulty.h"
 #include "../MathUtils/MathUtils.h"
 #include "../AssetMgmt/Assets.h"
+#include "../AssetMgmt/TextMgmt.h"
 #include "GUI/GUIButton.h"
 #include "GUI/GUITick.h"
 
@@ -44,7 +45,7 @@ MainMenu::MainMenu() {
     width = 580;
     height = 330;
     btnStartGame = GUIButton(x + 420, y + height + 20, 160, 70, "mnu_start");
-    btnLoadMap = GUIButton(x, y + height + 20, 160, 70, "mnu_loadmap");
+    btnLoadMap = GUIButton(x, y + height + 20, 160, 70, "mnu_loadmap_btn");
     tckIntro = GUITick(x + 280, y + 110, "mnu_intro", -260, userOptions->introEnabled);
     txtName = GUIInput(x + 150, y + 15, 200, 30, "mnu_name", -130, 15);
     txtSeed = GUIInput(x + 150, y + 55, 200, 30, "mnu_seed", -130, 15);
@@ -58,6 +59,9 @@ MainMenu::MainMenu() {
 }
 
 void MainMenu::update() {
+    if (bbKeyHit(21)) {
+        txtMgmt->changeLocalization("test");
+    }
     if (currState == MainMenuState::Main) {
         btnNewGame.update();
         btnLoadGame.update();
@@ -549,7 +553,7 @@ void MainMenu::draw() {
 
                 bbColor(255, 255, 255);
                 bbSetFont(uiAssets->font[1]);
-                bbText(x + width / 2, y + height / 2, "NEW GAME", true, true);
+                bbText(x + width / 2, y + height / 2, txtMgmt->lang["mnu_new"], true, true);
 
                 x = (int)(160.f * MenuScale);
                 y = y + height + (int)(20.f * MenuScale);
@@ -644,7 +648,7 @@ void MainMenu::draw() {
 
                 bbColor(255, 255, 255);
                 bbSetFont(uiAssets->font[1]);
-                bbText(x + width / 2, y + height / 2, "LOAD GAME", true, true);
+                bbText(x + width / 2, y + height / 2, txtMgmt->lang["mnu_load"], true, true);
 
                 x = (int)(160.f * MenuScale);
                 y = y + height + (int)(20.f * MenuScale);
@@ -654,7 +658,7 @@ void MainMenu::draw() {
                 bbSetFont(uiAssets->font[0]);
 
                 //				If (SaveGameAmount = 0) Then
-                bbText(x + (int)(20.f * MenuScale), y + (int)(20.f * MenuScale), "No saved games.");
+                bbText(x + (int)(20.f * MenuScale), y + (int)(20.f * MenuScale), txtMgmt->lang["mnu_nosav"]);
                 //				Else
                 //					x = x + (int)(20.f * MenuScale)
                 //					y = y + (int)(20.f * MenuScale)
@@ -706,7 +710,7 @@ void MainMenu::draw() {
 
                 bbColor(255, 255, 255);
                 bbSetFont(uiAssets->font[1]);
-                bbText(x + width / 2, y + height / 2, "OPTIONS", true, true);
+                bbText(x + width / 2, y + height / 2, txtMgmt->lang["mnu_opt"], true, true);
 
                 x = (int)(160.f * MenuScale);
                 y = y + height + (int)(20.f * MenuScale);
@@ -884,7 +888,7 @@ void MainMenu::draw() {
 
                 bbColor(255, 255, 255);
                 bbSetFont(uiAssets->font[1]);
-                bbText(x + width / 2, y + height / 2, "LOAD MAP", true, true);
+                bbText(x + width / 2, y + height / 2, txtMgmt->lang["mnu_loadmap"], true, true);
                 bbSetFont(uiAssets->font[0]);
 
                 x = (int)(160.f * MenuScale);
@@ -895,7 +899,7 @@ void MainMenu::draw() {
                 bbSetFont(uiAssets->font[0]);
 
                 //				If (SavedMaps(0)="") Then
-                bbText(x + (int)(20.f * MenuScale), y + (int)(20.f * MenuScale), "No saved maps. Use the Map Creator to create new maps.");
+                bbText(x + (int)(20.f * MenuScale), y + (int)(20.f * MenuScale), txtMgmt->lang["mnu_nomap"]);
                 //				Else
                 //					x = x + (int)(20.f * MenuScale)
                 //					y = y + (int)(20.f * MenuScale)

@@ -66,7 +66,7 @@ void TxtManager::drawMsg() {
 }
 
 void TxtManager::changeLocalization(const String& langCode) {
-    String path = "Data/lang" + langCode + ".ini";
+    String path = "Data/lang/" + langCode + ".ini";
     if (bbFileType(path) != 1) {
         throw "Language file \"" + path + "\" not found!";
     }
@@ -76,19 +76,25 @@ void TxtManager::changeLocalization(const String& langCode) {
     lang["lch_quit"] = GetINIString(path, "launcher", "quit");
     lang["lch_fullscreen"] = GetINIString(path, "launcher", "fullscreen");
     lang["lch_launcher"] = GetINIString(path, "launcher", "launcher");
+    lang["lch_res"] = GetINIString(path, "launcher", "resolution");
+    lang["lch_graphics"] = GetINIString(path, "launcher", "graphics");
 
     // menu
     lang["mnu_new"] = GetINIString(path, "menu", "new");
     lang["mnu_load"] = GetINIString(path, "menu", "load");
     lang["mnu_opt"] = GetINIString(path, "menu", "options");
     lang["mnu_quit"] = GetINIString(path, "menu", "quit");
+    lang["mnu_loadmap"] = GetINIString(path, "menu", "loadmap");
     lang["mnu_back"] = GetINIString(path, "menu", "back");
 
     lang["mnu_start"] = GetINIString(path, "menu", "start");
-    lang["mnu_loadmap"] = GetINIString(path, "menu", "loadmap");
+    lang["mnu_loadmap_btn"] = GetINIString(path, "menu", "loadmap_btn");
     lang["mnu_intro"] = GetINIString(path, "menu", "intro");
     lang["mnu_name"] = GetINIString(path, "menu", "name");
     lang["mnu_seed"] = GetINIString(path, "menu", "seed");
+
+    lang["mnu_nosav"] = GetINIString(path, "menu", "nosav");
+    lang["mnu_nomap"] = GetINIString(path, "menu", "nomap");
 
     lang["pau_resume"] = GetINIString(path, "menu", "resume");
     lang["pau_load"] = GetINIString(path, "menu", "pau_load");

@@ -203,7 +203,7 @@ Item::Item() {
     list.push_back(this);
 }
 Item::~Item() {
-    for (int i = 0; i < list.size(); i++) {
+    for (int i = 0; i < (int)list.size(); i++) {
         if (list[i] == this) {
             list.erase(list.begin() + i);
             break;
@@ -226,7 +226,7 @@ Inventory::Inventory() {
     list.push_back(this);
 }
 Inventory::~Inventory() {
-    for (int i = 0; i < list.size(); i++) {
+    for (int i = 0; i < (int)list.size(); i++) {
         if (list[i] == this) {
             list.erase(list.begin() + i);
             break;

@@ -15,7 +15,6 @@ private:
 
 public:
     TxtManager(const String& langCode);
-    ~TxtManager();
 
     void setMsg(const String& msg, float time = 70 * 5);
     void setDeathMsg(const String& msg);

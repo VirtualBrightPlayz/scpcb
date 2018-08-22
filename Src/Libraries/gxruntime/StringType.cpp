@@ -137,7 +137,11 @@ String operator+(const char* a, const String& b) {
     return String(String(a), b);
 }
 
-String operator<(const String& a, const String& b) {
+bool operator<(const String& a, const String& b) {
+    return 0 < strcmp(a.cstr(), b.cstr());
+}
+
+bool operator>(const String& a, const String& b) {
     return strcmp(a.cstr(), b.cstr()) > 0;
 }
 

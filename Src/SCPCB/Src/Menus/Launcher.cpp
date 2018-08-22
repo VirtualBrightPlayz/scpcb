@@ -130,7 +130,7 @@ void Launcher::draw() {
     bbColor(255, 255, 255);
     bbDrawImage(launcher->background, 0, 0);
 
-    bbText(20, 240 - 65, "Resolution:");
+    bbText(20, 240 - 65, txtMgmt->lang["lch_res"]);
 
     int x = 40;
     int y = 280 - 65;
@@ -160,7 +160,7 @@ void Launcher::draw() {
     x = 30;
     y = 369;
     bbRect(x - 10, y, 340, 95);
-    bbText(x - 10, y - 25, "Graphics:");
+    bbText(x - 10, y - 25, txtMgmt->lang["lch_graphics"]);
 
     y = y + 10;
     for (i = 1; i <= bbCountGfxDrivers(); i++) {
