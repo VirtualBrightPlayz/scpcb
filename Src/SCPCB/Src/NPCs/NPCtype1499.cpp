@@ -221,15 +221,15 @@ void UpdateNPCtype1499(NPC* n) {
                             PlayRangedSound(LoadTempSound("SFX/General/Slash"+String(bbRand(1,2))+".ogg"), mainPlayer->cam, n->collider);
                             if (mainPlayer->injuries > 10.f) {
                                 Kill(mainPlayer);
-                                if (mainPlayer->currRoom->roomTemplate->name.equals("dimension1499")) {
-                                    DeathMSG = "All personnel situated within Evacuation Shelter LC-2 during the breach have been administered ";
-                                    DeathMSG = DeathMSG + "Class-B amnestics due to Incident 1499-E. The Class D subject involved in the event ";
-                                    DeathMSG = DeathMSG + "died shortly after being shot by Agent [REDACTED].";
-                                } else {
-                                    DeathMSG = "An unidentified male and a deceased Class D subject were discovered in [REDACTED] by the Nine-Tailed Fox. ";
-                                    DeathMSG = DeathMSG + "The man was described as highly agitated and seemed to only speak Russian. ";
-                                    DeathMSG = DeathMSG + "He's been taken into a temporary holding area at [REDACTED] while waiting for a translator to arrive.";
-                                }
+                                //if (mainPlayer->currRoom->roomTemplate->name.equals("dimension1499")) {
+                                //    DeathMSG = "All personnel situated within Evacuation Shelter LC-2 during the breach have been administered ";
+                                //    DeathMSG = DeathMSG + "Class-B amnestics due to Incident 1499-E. The Class D subject involved in the event ";
+                                //    DeathMSG = DeathMSG + "died shortly after being shot by Agent [REDACTED].";
+                                //} else {
+                                //    DeathMSG = "An unidentified male and a deceased Class D subject were discovered in [REDACTED] by the Nine-Tailed Fox. ";
+                                //    DeathMSG = DeathMSG + "The man was described as highly agitated and seemed to only speak Russian. ";
+                                //    DeathMSG = DeathMSG + "He's been taken into a temporary holding area at [REDACTED] while waiting for a translator to arrive.";
+                                //}
                             }
                         }
                     } else if ((n->frame >= 99)) {
@@ -246,15 +246,15 @@ void UpdateNPCtype1499(NPC* n) {
                             PlayRangedSound(LoadTempSound("SFX/General/Slash"+String(bbRand(1,2))+".ogg"), mainPlayer->cam, n->collider);
                             if (mainPlayer->injuries > 10.f) {
                                 Kill(mainPlayer);
-                                if (mainPlayer->currRoom->roomTemplate->name.equals("dimension1499")) {
-                                    DeathMSG = "All personnel situated within Evacuation Shelter LC-2 during the breach have been administered ";
-                                    DeathMSG = DeathMSG + "Class-B amnestics due to Incident 1499-E. The Class D subject involved in the event ";
-                                    DeathMSG = DeathMSG + "died shortly after being shot by Agent [REDACTED].";
-                                } else {
-                                    DeathMSG = "An unidentified male and a deceased Class D subject were discovered in [REDACTED] by the Nine-Tailed Fox. ";
-                                    DeathMSG = DeathMSG + "The man was described as highly agitated and seemed to only speak Russian. ";
-                                    DeathMSG = DeathMSG + "He's been taken into a temporary holding area at [REDACTED] while waiting for a translator to arrive.";
-                                }
+                                //if (mainPlayer->currRoom->roomTemplate->name.equals("dimension1499")) {
+                                //    DeathMSG = "All personnel situated within Evacuation Shelter LC-2 during the breach have been administered ";
+                                //    DeathMSG = DeathMSG + "Class-B amnestics due to Incident 1499-E. The Class D subject involved in the event ";
+                                //    DeathMSG = DeathMSG + "died shortly after being shot by Agent [REDACTED].";
+                                //} else {
+                                //    DeathMSG = "An unidentified male and a deceased Class D subject were discovered in [REDACTED] by the Nine-Tailed Fox. ";
+                                //    DeathMSG = DeathMSG + "The man was described as highly agitated and seemed to only speak Russian. ";
+                                //    DeathMSG = DeathMSG + "He's been taken into a temporary holding area at [REDACTED] while waiting for a translator to arrive.";
+                                //}
                             }
                         }
                     } else if ((n->frame >= 201)) {

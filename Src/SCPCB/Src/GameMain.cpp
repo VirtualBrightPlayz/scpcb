@@ -296,6 +296,10 @@ void UpdateGame() {
 
         bbCls();
 
+        if (bbKeyHit(21)) {
+            txtMgmt->setMsg("Oof.");
+        }
+
         DoubleClick = false;
         MouseHit1 = bbMouseHit(1);
         if (MouseHit1) {
@@ -363,6 +367,8 @@ void UpdateGame() {
                 UpdateItems();
                 UpdateParticles();
                 UpdateScreens();
+
+                txtMgmt->updateMsg();
                 //TimeCheckpointMonitors()
             }
 
@@ -813,8 +819,6 @@ void UpdateGUI() {
         KeypadTimer = 0;
         KeypadMSG = "";
     }
-
-    txtMgmt->updateMsg();
 
     //TODO: fix ;And EndingTimer = 0 Then
     if (bbKeyHit(1)) {
@@ -1349,17 +1353,6 @@ void RenderWorld2() {
         if (wornItem->itemTemplate->name.equals("supernv")) {
             decayMultiplier = 2.f;
         }
-
-        //this nvg can't be used
-        if (wornItem->state <= 0.f) {
-            hasBattery = 0;
-            Msg = "The batteries in these night vision goggles died.";
-            mainPlayer->blinkTimer = -1.f;
-            MsgTimer = 350;
-        } else if ((wornItem->state <= 100.f)) {
-            hasBattery = 1;
-        }
-
         if (hasBattery) {
             bbRenderWorld(Max(0.f,1.f+(timing->accumulator/timing->tickDuration)));
         }

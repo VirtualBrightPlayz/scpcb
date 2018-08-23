@@ -182,7 +182,7 @@ void UpdateNPCtypeZombie(NPC* n) {
                         if (prevFrame < 23 && n->frame>=23) {
                             PlaySound2(mainPlayer->damageSFX[bbRand(5,8)]);
                             mainPlayer->injuries = mainPlayer->injuries+bbRnd(0.4f,1.f);
-                            DeathMSG = "Subject D-9341. Cause of death: multiple lacerations and severe blunt force trauma caused by an instance of SCP-049-2.";
+                            //DeathMSG = "Subject D-9341. Cause of death: multiple lacerations and severe blunt force trauma caused by an instance of SCP-049-2.";
                         } else if ((n->frame==65)) {
                             n->state = 2;
                         }
@@ -192,7 +192,7 @@ void UpdateNPCtypeZombie(NPC* n) {
                         if (prevFrame < 90 && n->frame>=90) {
                             PlaySound2(mainPlayer->damageSFX[bbRand(5,8)]);
                             mainPlayer->injuries = mainPlayer->injuries+bbRnd(0.4f,1.f);
-                            DeathMSG = "Subject D-9341. Cause of death: multiple lacerations and severe blunt force trauma caused by an instance of SCP-049-2.";
+                            //DeathMSG = "Subject D-9341. Cause of death: multiple lacerations and severe blunt force trauma caused by an instance of SCP-049-2.";
                         } else if ((n->frame==132)) {
                             n->state = 2;
                         }

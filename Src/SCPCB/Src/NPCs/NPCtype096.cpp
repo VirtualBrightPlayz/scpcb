@@ -154,7 +154,7 @@ void UpdateNPCtype096(NPC* n) {
                                     pvt = bbCreatePivot();
                                     mainPlayer->camShake = 30;
                                     mainPlayer->blurTimer = 2000;
-                                    DeathMSG = "A large amount of blood found in [DATA REDACTED]. DNA indentified as Subject D-9341. Most likely [DATA REDACTED] by SCP-096.";
+                                    //DeathMSG = "A large amount of blood found in [DATA REDACTED]. DNA indentified as Subject D-9341. Most likely [DATA REDACTED] by SCP-096.";
                                     Kill(mainPlayer);
                                     //KillAnim = 1 ;TODO: idk
                                     for (i = 0; i <= 6; i++) {

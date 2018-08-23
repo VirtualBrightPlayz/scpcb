@@ -199,7 +199,7 @@ void UpdateEmitters() {
             mainPlayer->blurTimer = Max(mainPlayer->blurTimer, (mainPlayer->blinkEffect - (70 * 6)) / (70.f * 24.f));
         }
         if (mainPlayer->blinkEffect > (70 * 24)) {
-            DeathMSG = "Subject D-9341 found dead in [DATA REDACTED]. Cause of death: Suffocation due to decontamination gas.";
+            //DeathMSG = "Subject D-9341 found dead in [DATA REDACTED]. Cause of death: Suffocation due to decontamination gas.";
             Kill(mainPlayer);
         }
 

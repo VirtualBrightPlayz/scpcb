@@ -36,9 +36,7 @@ String TxtManager::getDeathMsg() {
 
 void TxtManager::updateMsg() {
     if (displayTimer <= 0) { return; }
-
     displayTimer -= timing->tickDuration;
-    std::cout << String(displayTimer) + "\n";
 }
 
 void TxtManager::drawMsg() {
@@ -52,17 +50,21 @@ void TxtManager::drawMsg() {
         }
     }
 
+    // TODO: Re-implement.
     // If a paper is being looked at then move the text down.
-    bbColor(0,0,0);
+    int x, y;
     if (!paperSelected) {
-        bbText((userOptions->screenWidth / 2)+1, (userOptions->screenHeight / 2) + 201, displayMsg, true, false);
-        bbColor(255,255,255);
-        bbText((userOptions->screenWidth / 2), (userOptions->screenHeight / 2) + 200, displayMsg, true, false);
+        x = userOptions->screenWidth / 2;
+        y = (userOptions->screenHeight / 2) + (int)(200 * MenuScale);
     } else {
-        bbText((userOptions->screenWidth / 2)+1, (int)((userOptions->screenHeight * 0.94f) + 1), displayMsg, true, false);
-        bbColor(255,255,255);
-        bbText((userOptions->screenWidth / 2), (int)((userOptions->screenHeight * 0.94f)), displayMsg, true, false);
+        //bbText((userOptions->screenWidth / 2)+1, (int)((userOptions->screenHeight * 0.94f) + 1), displayMsg, true, false);
+        //bbColor(255,255,255);
+        //bbText((userOptions->screenWidth / 2), (int)((userOptions->screenHeight * 0.94f)), displayMsg, true, false);
     }
+    bbColor(0, 0, 0);
+    bbText(x + 1, y + 1, displayMsg, true);
+    bbColor(255, 255, 255);
+    bbText(x, y, displayMsg, true);
 }
 
 void TxtManager::changeLocalization(const String& langCode) {

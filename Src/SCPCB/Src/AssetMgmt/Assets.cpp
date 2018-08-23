@@ -635,8 +635,6 @@ void NullGame() {
     delete mainPlayer;
     mainPlayer = nullptr;
 
-    DeathMSG = "";
-
     DoorTempID = 0;
 
     GameSaved = 0;

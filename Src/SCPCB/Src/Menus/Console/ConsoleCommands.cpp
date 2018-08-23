@@ -207,25 +207,6 @@ void Cmd_Heal::execute(std::vector<String> args) {
 
 void Cmd_Kill::execute(std::vector<String> args) {
     Kill(mainPlayer);
-
-    switch (bbRand(1, 4)) {
-        case 1: {
-            DeathMSG = "[REDACTED]";
-        }
-        case 2: {
-            DeathMSG = "Subject D-9341 found dead in Sector [REDACTED]. ";
-            DeathMSG = DeathMSG + "The subject appears to have attained no physical damage, and there is no visible indication as to what killed him. ";
-            DeathMSG = DeathMSG + "Body was sent for autopsy.";
-        }
-        case 3: {
-            DeathMSG = "EXCP_ACCESS_VIOLATION";
-        }
-        case 4: {
-            DeathMSG = "Subject D-9341 found dead in Sector [REDACTED]. ";
-            DeathMSG = DeathMSG + "The subject appears to have scribbled the letters \"kys\" in his own blood beside him. ";
-            DeathMSG = DeathMSG + "No other signs of physical trauma or struggle can be observed. Body was sent for autopsy.";
-        }
-    }
 }
 
 void Cmd_Revive::execute(std::vector<String> args) {

@@ -1391,8 +1391,8 @@ void UpdateSecurityCams() {
                                     }
 
                                     if (mainPlayer->sanity895 < (-1000)) {
-                                        DeathMSG = "\"What we know is that he died of cardiac arrest. My guess is that it was caused by SCP-895, although it has never been observed affecting video equipment from this far before. ";
-                                        DeathMSG = DeathMSG + "Further testing is needed to determine whether SCP-895's \"Red Zone\" is increasing.\"";
+                                        //DeathMSG = "\"What we know is that he died of cardiac arrest. My guess is that it was caused by SCP-895, although it has never been observed affecting video equipment from this far before. ";
+                                        //DeathMSG = DeathMSG + "Further testing is needed to determine whether SCP-895's \"Red Zone\" is increasing.\"";
 
                                         Kill(mainPlayer);
                                     }

@@ -601,11 +601,11 @@ void UpdateNPCtypeMTF(NPC* n) {
 
                                     bbFreeEntity(pvt);
 
-                                    DeathMSG = "Subject D-9341. Died of blood loss after being shot by Nine-Tailed Fox.";
+                                    //DeathMSG = "Subject D-9341. Died of blood loss after being shot by Nine-Tailed Fox.";
 
                                     //player killed -> "target terminated"
                                     if ((!prev) && mainPlayer->dead) {
-                                        DeathMSG = "Subject D-9341. Terminated by Nine-Tailed Fox.";
+                                        //DeathMSG = "Subject D-9341. Terminated by Nine-Tailed Fox.";
                                         PlayMTFSound(LoadTempSound("SFX/Character/MTF/Targetterminated"+String(bbRand(1,4))+".ogg"),n);
                                     }
                                 }

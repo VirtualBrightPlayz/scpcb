@@ -94,7 +94,7 @@ void UpdateNPCtype049(NPC* n) {
 
                 if (!mainPlayer->godMode) {
                     if (mainPlayer->currRoom->roomTemplate->name.equals("room049")) {
-                        DeathMSG = "Three (3) active instances of SCP-049-2 discovered in the tunnel outside SCP-049's containment chamber. Terminated by Nine-Tailed Fox.";
+                        //DeathMSG = "Three (3) active instances of SCP-049-2 discovered in the tunnel outside SCP-049's containment chamber. Terminated by Nine-Tailed Fox.";
 
                         /*for (int iterator121 = 0; iterator121 < Event::getListSize(); iterator121++) {
                             e = Event::getObject(iterator121);
@@ -106,7 +106,7 @@ void UpdateNPCtype049(NPC* n) {
                         }
                         TODO ashfjaidfjas*/
                     } else {
-                        DeathMSG = "An active instance of SCP-049-2 was discovered in [REDACTED]. Terminated by Nine-Tailed Fox.";
+                        //DeathMSG = "An active instance of SCP-049-2 was discovered in [REDACTED]. Terminated by Nine-Tailed Fox.";
                         Kill(mainPlayer);
                     }
 
