@@ -474,104 +474,105 @@ void Shoot(float x, float y, float z, float hitProb, int particles, int instaKil
             return;
         }
 
+        // TODO: Re-implement.
         if (bbRnd(1.f) <= hitProb) {
-            bbTurnEntity(mainPlayer->cam, bbRnd(-3,3), bbRnd(-3,3), 0);
+            // bbTurnEntity(mainPlayer->cam, bbRnd(-3,3), bbRnd(-3,3), 0);
 
-            wearingVest = false;
-            wearingVest |= IsPlayerWearingItem(mainPlayer,"vest");
-            wearingVest |= IsPlayerWearingItem(mainPlayer,"finevest");
-            wearingVest |= IsPlayerWearingItem(mainPlayer,"veryfinevest");
-            if (wearingVest) {
-                if (IsPlayerWearingItem(mainPlayer,"vest")) {
-                    switch (bbRand(8)) {
-                        case 1:
-                        case 2:
-                        case 3:
-                        case 4:
-                        case 5: {
-                            mainPlayer->blurTimer = 500;
-                            mainPlayer->stamina = 0;
-                            shotMessageUpdate = "A bullet penetrated your vest, making you gasp.";
-                            mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.1f,0.5f);
-                        } break;
-                        case 6: {
-                            mainPlayer->blurTimer = 500;
-                            shotMessageUpdate = "A bullet hit your left leg.";
-                            mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.8f,1.2f);
-                        } break;
-                        case 7: {
-                            mainPlayer->blurTimer = 500;
-                            shotMessageUpdate = "A bullet hit your right leg.";
-                            mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.8f,1.2f);
-                        } break;
-                        case 8: {
-                            mainPlayer->blurTimer = 500;
-                            mainPlayer->stamina = 0;
-                            shotMessageUpdate = "A bullet struck your neck, making you gasp.";
-                            mainPlayer->injuries = mainPlayer->injuries + bbRnd(1.2f,1.6f);
-                        } break;
-                    }
-                } else {
-                    if (bbRand(10)==1) {
-                        mainPlayer->blurTimer = 500;
-                        mainPlayer->stamina = mainPlayer->stamina - 1;
-                        shotMessageUpdate = "A bullet hit your chest. The vest absorbed some of the damage.";
-                        mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.8f,1.1f);
-                    } else {
-                        shotMessageUpdate = "A bullet hit your chest. The vest absorbed most of the damage.";
-                        mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.1f,0.5f);
-                    }
-                }
+            // wearingVest = false;
+            // wearingVest |= IsPlayerWearingItem(mainPlayer,"vest");
+            // wearingVest |= IsPlayerWearingItem(mainPlayer,"finevest");
+            // wearingVest |= IsPlayerWearingItem(mainPlayer,"veryfinevest");
+            // if (wearingVest) {
+            //     if (IsPlayerWearingItem(mainPlayer,"vest")) {
+            //         switch (bbRand(8)) {
+            //             case 1:
+            //             case 2:
+            //             case 3:
+            //             case 4:
+            //             case 5: {
+            //                 mainPlayer->blurTimer = 500;
+            //                 mainPlayer->stamina = 0;
+            //                 shotMessageUpdate = "A bullet penetrated your vest, making you gasp.";
+            //                 mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.1f,0.5f);
+            //             } break;
+            //             case 6: {
+            //                 mainPlayer->blurTimer = 500;
+            //                 shotMessageUpdate = "A bullet hit your left leg.";
+            //                 mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.8f,1.2f);
+            //             } break;
+            //             case 7: {
+            //                 mainPlayer->blurTimer = 500;
+            //                 shotMessageUpdate = "A bullet hit your right leg.";
+            //                 mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.8f,1.2f);
+            //             } break;
+            //             case 8: {
+            //                 mainPlayer->blurTimer = 500;
+            //                 mainPlayer->stamina = 0;
+            //                 shotMessageUpdate = "A bullet struck your neck, making you gasp.";
+            //                 mainPlayer->injuries = mainPlayer->injuries + bbRnd(1.2f,1.6f);
+            //             } break;
+            //         }
+            //     } else {
+            //         if (bbRand(10)==1) {
+            //             mainPlayer->blurTimer = 500;
+            //             mainPlayer->stamina = mainPlayer->stamina - 1;
+            //             shotMessageUpdate = "A bullet hit your chest. The vest absorbed some of the damage.";
+            //             mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.8f,1.1f);
+            //         } else {
+            //             shotMessageUpdate = "A bullet hit your chest. The vest absorbed most of the damage.";
+            //             mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.1f,0.5f);
+            //         }
+            //     }
 
-                if (mainPlayer->injuries >= 3) {
-                    if (bbRand(3) == 1) {
-                        Kill(mainPlayer);
-                    }
-                }
-            } else {
-                switch (bbRand(6)) {
-                    case 1: {
-                        Kill(mainPlayer);
-                    } break;
-                    case 2: {
-                        mainPlayer->blurTimer = 500;
-                        shotMessageUpdate = "A bullet hit your left leg.";
-                        mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.8f,1.2f);
-                    } break;
-                    case 3: {
-                        mainPlayer->blurTimer = 500;
-                        shotMessageUpdate = "A bullet hit your right leg.";
-                        mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.8f,1.2f);
-                    } break;
-                    case 4: {
-                        mainPlayer->blurTimer = 500;
-                        shotMessageUpdate = "A bullet hit your right shoulder.";
-                        mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.8f,1.2f);
-                    } break;
-                    case 5: {
-                        mainPlayer->blurTimer = 500;
-                        shotMessageUpdate = "A bullet hit your left shoulder.";
-                        mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.8f,1.2f);
-                    } break;
-                    case 6: {
-                        mainPlayer->blurTimer = 500;
-                        shotMessageUpdate = "A bullet hit your right shoulder.";
-                        mainPlayer->injuries = mainPlayer->injuries + bbRnd(2.5f,4.f);
-                    } break;
-                }
-            }
+            //     if (mainPlayer->injuries >= 3) {
+            //         if (bbRand(3) == 1) {
+            //             Kill(mainPlayer);
+            //         }
+            //     }
+            // } else {
+            //     switch (bbRand(6)) {
+            //         case 1: {
+            //             Kill(mainPlayer);
+            //         } break;
+            //         case 2: {
+            //             mainPlayer->blurTimer = 500;
+            //             shotMessageUpdate = "A bullet hit your left leg.";
+            //             mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.8f,1.2f);
+            //         } break;
+            //         case 3: {
+            //             mainPlayer->blurTimer = 500;
+            //             shotMessageUpdate = "A bullet hit your right leg.";
+            //             mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.8f,1.2f);
+            //         } break;
+            //         case 4: {
+            //             mainPlayer->blurTimer = 500;
+            //             shotMessageUpdate = "A bullet hit your right shoulder.";
+            //             mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.8f,1.2f);
+            //         } break;
+            //         case 5: {
+            //             mainPlayer->blurTimer = 500;
+            //             shotMessageUpdate = "A bullet hit your left shoulder.";
+            //             mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.8f,1.2f);
+            //         } break;
+            //         case 6: {
+            //             mainPlayer->blurTimer = 500;
+            //             shotMessageUpdate = "A bullet hit your right shoulder.";
+            //             mainPlayer->injuries = mainPlayer->injuries + bbRnd(2.5f,4.f);
+            //         } break;
+            //     }
+            // }
 
-            //Only updates the message if it's been more than two seconds.
-            if (MsgTimer < 64*4) {
-                Msg = shotMessageUpdate;
-                MsgTimer = 70*6;
-            }
+            // //Only updates the message if it's been more than two seconds.
+            // if (MsgTimer < 64*4) {
+            //     Msg = shotMessageUpdate;
+            //     MsgTimer = 70*6;
+            // }
 
-            mainPlayer->injuries = Min(mainPlayer->injuries, 4.f);
+            // mainPlayer->injuries = Min(mainPlayer->injuries, 4.f);
 
-            //Kill(mainPlayer)
-            PlaySound_SM(sndMgmt->bulletHit);
-        } else if ((particles)) {
+            // //Kill(mainPlayer)
+            // PlaySound_SM(sndMgmt->bulletHit);
+        } else if (particles) {
             pvt = bbCreatePivot();
             bbPositionEntity(pvt, bbEntityX(mainPlayer->collider),(bbEntityY(mainPlayer->collider)+bbEntityY(mainPlayer->cam))/2,bbEntityZ(mainPlayer->collider));
             bbPointEntity(pvt, p->sprite);

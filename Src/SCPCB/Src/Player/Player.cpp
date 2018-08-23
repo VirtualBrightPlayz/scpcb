@@ -199,24 +199,6 @@ void UpdatePlayer() {
     float Speed = 0.018f;
     gxChannel* tempChn = nullptr;
 
-    if (mainPlayer->superMan>0.f) {
-        Speed = Speed * 3;
-
-        mainPlayer->superMan = mainPlayer->superMan+timing->tickDuration;
-
-        mainPlayer->camShake = bbSin(mainPlayer->superMan / 5.f) * (mainPlayer->superMan / 1500.f);
-
-        if (mainPlayer->superMan > 70 * 50) {
-            DeathMSG = "A Class D jumpsuit found in [DATA REDACTED]. Upon further examination, the jumpsuit was found to be filled with 12.5f kilograms of blue ash-like substance. ";
-            DeathMSG = DeathMSG + "Chemical analysis of the substance remains non-conclusive. Most likely related to SCP-914.";
-            Kill(mainPlayer);
-            bbShowEntity(mainPlayer->overlays[OVERLAY_FOG]);
-        } else {
-            mainPlayer->blurTimer = 500;
-            bbHideEntity(mainPlayer->overlays[OVERLAY_FOG]);
-        }
-    }
-
     //If (DeathTimer > 0) Then
     //	DeathTimer=DeathTimer-timing\tickDuration
     //	If (DeathTimer < 1) Then DeathTimer = -1.f
@@ -482,16 +464,16 @@ void UpdatePlayer() {
 
     mainPlayer->forceMove = 0.f;
 
-    if (mainPlayer->injuries > 1.f) {
-        temp2 = mainPlayer->bloodloss;
-        mainPlayer->blurTimer = Max(Max(bbSin(TimeInPosMilliSecs()/100.f)*mainPlayer->bloodloss*30.f,mainPlayer->bloodloss*2*(2.f-mainPlayer->crouchState)),mainPlayer->blurTimer);
-        mainPlayer->bloodloss = Min(mainPlayer->bloodloss + (Min(mainPlayer->injuries,3.5f)/300.f)*timing->tickDuration,100);
+    // if (mainPlayer->injuries > 1.f) {
+    //     temp2 = mainPlayer->bloodloss;
+    //     mainPlayer->blurTimer = Max(Max(bbSin(TimeInPosMilliSecs()/100.f)*mainPlayer->bloodloss*30.f,mainPlayer->bloodloss*2*(2.f-mainPlayer->crouchState)),mainPlayer->blurTimer);
+    //     mainPlayer->bloodloss = Min(mainPlayer->bloodloss + (Min(mainPlayer->injuries,3.5f)/300.f)*timing->tickDuration,100);
 
-        if (temp2 <= 60 && mainPlayer->bloodloss > 60) {
-            Msg = "You are feeling faint from the amount of blood you loss.";
-            MsgTimer = 70*4;
-        }
-    }
+    //     if (temp2 <= 60 && mainPlayer->bloodloss > 60) {
+    //         Msg = "You are feeling faint from the amount of blood you loss.";
+    //         MsgTimer = 70*4;
+    //     }
+    // }
 
     UpdateInfect();
 

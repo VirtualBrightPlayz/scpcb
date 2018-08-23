@@ -96,9 +96,22 @@ void TxtManager::changeLocalization(const String& langCode) {
     lang["mnu_nosav"] = GetINIString(path, "menu", "nosav");
     lang["mnu_nomap"] = GetINIString(path, "menu", "nomap");
 
+    lang["pau_title"] = GetINIString(path, "menu", "pau_title");
+    lang["pau_dead"] = GetINIString(path, "menu", "pau_dead");
     lang["pau_resume"] = GetINIString(path, "menu", "resume");
     lang["pau_load"] = GetINIString(path, "menu", "pau_load");
     lang["pau_opt"] = GetINIString(path, "menu", "pau_opt");
     lang["pau_quit"] = GetINIString(path, "menu", "pau_quit");
+
+    lang["mnu_loadimg"] = GetINIString(path, "menu", "loading");
+    lang["mnu_loaddone"] = GetINIString(path, "menu", "loaddone");
+
+    // items
+    lang["invfull"] = GetINIString(path, "items", "invfull");
+    lang["dor_locked"] = GetINIString(path, "items", "locked");
+    lang["dor_keyinsert"] = GetINIString(path, "items", "keyinsert");
+    lang["dor_keylocked"] = GetINIString(path, "items", "keylocked");
+    lang["dor_keyhigher"] = GetINIString(path, "items", "keyhigher");
+    lang["dor_keyneeded"] = GetINIString(path, "items", "keyneeded");
 }
 }

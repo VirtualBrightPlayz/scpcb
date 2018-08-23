@@ -87,8 +87,6 @@ public:
 
     float heartbeatIntensity;
 
-    float superMan;
-
     float infect008;
 
     float sanity895;

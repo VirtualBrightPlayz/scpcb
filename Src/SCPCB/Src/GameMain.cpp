@@ -513,46 +513,7 @@ void UpdateGame() {
 
             // TODO: Not make this trash.
             if (bbKeyHit(keyBinds->save)) {
-                if (SelectedDifficulty->saveType == SAVEANYWHERE) {
-                    rn = mainPlayer->currRoom->roomTemplate->name;
-                    if (rn.equals("173") || rn.equals("exit1") || rn.equals("gatea")) { //TODO: make CanSave a member of roomtemplate
-                        Msg = "You cannot save in this location.";
-                        MsgTimer = 70 * 4;
-                    } else if ((!CanSave)) {
-                        Msg = "You cannot save at this moment.";
-                        MsgTimer = 70 * 4;
-                    } else {
-                        SaveGame(SavePath + CurrSave + "/");
-                    }
-                } else if ((SelectedDifficulty->saveType == SAVEONSCREENS)) {
-                    if (SelectedScreen==nullptr && SelectedMonitor==nullptr) {
-                        Msg = "Saving is only permitted on clickable monitors scattered throughout the facility.";
-                        MsgTimer = 70 * 4;
-                    } else {
-                        rn = mainPlayer->currRoom->roomTemplate->name;
-                        if (rn.equals("173") || rn.equals("exit1") || rn.equals("gatea")) { //TODO: make CanSave a member of roomtemplate
-                            Msg = "You cannot save in this location.";
-                            MsgTimer = 70 * 4;
-                        } else if ((!CanSave)) {
-                            Msg = "You cannot save at this moment.";
-                            MsgTimer = 70 * 4;
-                        } else {
-                            SaveGame(SavePath + CurrSave + "/");
-                        }
-                    }
-                } else {
-                    Msg = "Quick saving is disabled.";
-                    MsgTimer = 70 * 4;
-                }
-            } else if (SelectedDifficulty->saveType == SAVEONSCREENS && (SelectedScreen!=nullptr || SelectedMonitor!=nullptr)) {
-                if ((!Msg.equals("Game progress saved.") && !Msg.equals("You cannot save in this location.") && !Msg.equals("You cannot save at this moment.")) || MsgTimer<=0) {
-                    Msg = "Press "+KeyName[keyBinds->save]+" to save.";
-                    MsgTimer = 70*4;
-                }
-
-                if (MouseHit2) {
-                    SelectedMonitor = nullptr;
-                }
+                txtMgmt->setMsg("No saving yet.");
             }
 
             if (bbKeyHit(keyBinds->console)) {

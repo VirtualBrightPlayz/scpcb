@@ -10,6 +10,7 @@
 #include "../GameMain.h"
 #include "../Config/INI.h"
 #include "../AssetMgmt/Audio.h"
+#include "../AssetMgmt/TextMgmt.h"
 #include "../Config/Options.h"
 #include "../AssetMgmt/Assets.h"
 #include "../Menus/Menu.h"
@@ -275,14 +276,14 @@ void DrawLoading(int percent, int shortloading) {
         }
 
         bbColor(0,0,0);
-        bbText(userOptions->screenWidth / 2 + 1, userOptions->screenHeight / 2 - 100 + 1, "LOADING - " + String(percent) + " %", true, true);
+        bbText(userOptions->screenWidth / 2 + 1, userOptions->screenHeight / 2 - 100 + 1, txtMgmt->lang["mnu_loadimg"] + " - " + String(percent) + " %", true, true);
         bbColor(255,255,255);
-        bbText(userOptions->screenWidth / 2, userOptions->screenHeight / 2 - 100, "LOADING - " + String(percent) + " %", true, true);
+        bbText(userOptions->screenWidth / 2, userOptions->screenHeight / 2 - 100, txtMgmt->lang["mnu_loadimg"] + " - " + String(percent) + " %", true, true);
 
         if (percent == 100) {
             //If (firstloop And SelectedLoadingScreen\title <> "CWM") Then PlaySound2(HorrorSFX(8) ;TODO: fix)
             timing->prevTime = bbMilliSecs();
-            bbText(userOptions->screenWidth / 2, userOptions->screenHeight - 50, "PRESS ANY KEY TO CONTINUE", true, true);
+            bbText(userOptions->screenWidth / 2, userOptions->screenHeight - 50, txtMgmt->lang["mnu_loaddone"], true, true);
         } else {
             bbFlushKeys();
             bbFlushMouse();

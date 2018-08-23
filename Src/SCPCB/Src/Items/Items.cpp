@@ -7,6 +7,7 @@
 
 #include "Items.h"
 #include "../AssetMgmt/Assets.h"
+#include "../AssetMgmt/TextMgmt.h"
 #include "../Config/INI.h"
 #include "../Player/Player.h"
 #include "../Map/MapSystem.h"
@@ -469,27 +470,6 @@ void UpdateItems() {
 
 // TODO: Make all of these instance methods.
 void PickItem(Item* item) {
-    if (item->itemTemplate->name.equals("battery")) {
-        if (HasTag(item, ITEM_TAG_914VF)) {
-            bbShowEntity(mainPlayer->overlays[OVERLAY_WHITE]);
-            mainPlayer->lightFlash = 1.f;
-            //TODO: Light
-            //PlaySound2(IntroSFX(11))
-            DeathMSG = "Subject D-9341 found dead inside SCP-914's output booth next to what appears to be an ordinary nine-volt battery. The subject is covered in severe ";
-            DeathMSG = DeathMSG + "electrical burns, and assumed to be killed via an electrical shock caused by the battery. The battery has been stored for further study.";
-            Kill(mainPlayer);
-
-            return;
-        }
-    } else if (item->itemTemplate->name.equals("vest")) {
-        if (HasTag(item, ITEM_TAG_914VF)) {
-            Msg = "The vest is too heavy to pick up.";
-            MsgTimer = 70*6;
-
-            return;
-        }
-    }
-
     if (SpaceInInventory(mainPlayer)) {
         for (int n = WORNITEM_SLOT_COUNT; n <= mainPlayer->inventory->size - 1; n++) {
             if (mainPlayer->inventory->items[n] == nullptr) {
@@ -503,8 +483,7 @@ void PickItem(Item* item) {
             }
         }
     } else {
-        Msg = "You cannot carry any more items.";
-        MsgTimer = 70 * 5;
+        txtMgmt->setMsg(txtMgmt->lang["invfull"]);
     }
 }
 

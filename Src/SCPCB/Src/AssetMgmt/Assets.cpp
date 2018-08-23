@@ -662,9 +662,6 @@ void NullGame() {
         delete s;
     }
 
-    Msg = "";
-    MsgTimer = 0;
-
     for (int i = 0; i < Room::getListSize(); i++) {
         Room* r = Room::getObject(i);
 

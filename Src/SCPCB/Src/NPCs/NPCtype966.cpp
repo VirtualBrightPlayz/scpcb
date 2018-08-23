@@ -87,30 +87,31 @@ void UpdateNPCtype966(NPC* n) {
 
         if (!IsPlayerWearingItem(mainPlayer,"nvgoggles")) {
             bbHideEntity(n->obj);
-            if (n->playerDistance<1 && n->reload <= 0 && MsgTimer <= 0) {
-                switch (bbRand(6)) {
-                    case 1: {
-                        Msg = "You feel something breathing right next to you.";
-                    }
-                    case 2: {
-                        Msg = "\"It feels like something's in this room with me.\"";
-                    }
-                    case 3: {
-                        Msg = "You feel like something is here with you, but you do not see anything.";
-                    }
-                    case 4: {
-                        Msg = "\"Is my mind playing tricks on me or is there someone else here?\"";
-                    }
-                    case 5: {
-                        Msg = "You feel like something is following you.";
-                    }
-                    case 6: {
-                        Msg = "You can feel something near you, but you are unable to see it. Perhaps its time is now.";
-                    }
-                }
-                n->reload = 20*70;
-                MsgTimer = 8*70;
-            }
+            // TODO:
+            // if (n->playerDistance<1 && n->reload <= 0 && MsgTimer <= 0) {
+            //     switch (bbRand(6)) {
+            //         case 1: {
+            //             Msg = "You feel something breathing right next to you.";
+            //         }
+            //         case 2: {
+            //             Msg = "\"It feels like something's in this room with me.\"";
+            //         }
+            //         case 3: {
+            //             Msg = "You feel like something is here with you, but you do not see anything.";
+            //         }
+            //         case 4: {
+            //             Msg = "\"Is my mind playing tricks on me or is there someone else here?\"";
+            //         }
+            //         case 5: {
+            //             Msg = "You feel like something is following you.";
+            //         }
+            //         case 6: {
+            //             Msg = "You can feel something near you, but you are unable to see it. Perhaps its time is now.";
+            //         }
+            //     }
+            //     n->reload = 20*70;
+            //     MsgTimer = 8*70;
+            // }
             n->reload = n->reload - timing->tickDuration;
 
         } else {
@@ -206,24 +207,25 @@ void UpdateNPCtype966(NPC* n) {
                         mainPlayer->staminaEffect = 2.f;
                         //StaminaEffectTimer = 1000
 
-                        if (MsgTimer<=0 && mainPlayer->staminaEffect<1.5f) {
-                            switch (bbRand(4)) {
-                                case 1: {
-                                    Msg = "You feel exhausted.";
-                                }
-                                case 2: {
-                                    Msg = "\"Could really go for a nap now...\"";
-                                }
-                                case 3: {
-                                    Msg = "\"If I wasn't in this situation I would take a nap somewhere.\"";
-                                }
-                                case 4: {
-                                    Msg = "You feel restless.";
-                                }
-                            }
+                        // TODO:
+                        // if (MsgTimer<=0 && mainPlayer->staminaEffect<1.5f) {
+                        //     switch (bbRand(4)) {
+                        //         case 1: {
+                        //             Msg = "You feel exhausted.";
+                        //         }
+                        //         case 2: {
+                        //             Msg = "\"Could really go for a nap now...\"";
+                        //         }
+                        //         case 3: {
+                        //             Msg = "\"If I wasn't in this situation I would take a nap somewhere.\"";
+                        //         }
+                        //         case 4: {
+                        //             Msg = "You feel restless.";
+                        //         }
+                        //     }
 
-                            MsgTimer = 7*70;
-                        }
+                        //     MsgTimer = 7*70;
+                        // }
                     }
                 }
 

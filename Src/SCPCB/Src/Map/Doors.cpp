@@ -5,6 +5,7 @@
 #include "Doors.h"
 #include "MapSystem.h"
 #include "../AssetMgmt/Assets.h"
+#include "../AssetMgmt/TextMgmt.h"
 #include "../GameMain.h"
 #include "../MathUtils/MathUtils.h"
 #include "../Items/Items.h"
@@ -447,8 +448,7 @@ void UseDoor(Door* d, bool showmsg) {
                 if (item->itemTemplate->name.equals("keycard")) {
                     if (d->locked) {
                         PlaySound_SM(sndMgmt->keycardErr);
-                        Msg = "The keycard was inserted into the slot but nothing happened.";
-                        MsgTimer = 70 * 5;
+                        txtMgmt->setMsg(txtMgmt->lang["dor_keylocked"]);
                         return;
                     }
 
@@ -464,56 +464,21 @@ void UseDoor(Door* d, bool showmsg) {
         if (playerHasRightKeycard) {
             PlaySound_SM(sndMgmt->keycardUse);
             if (showmsg) {
-                Msg = "The keycard was inserted into the slot.";
-                MsgTimer = 70 * 5;
+                txtMgmt->setMsg(txtMgmt->lang["dor_keyinsert"]);
             }
         } else if ((playerHasKeycard)) {
             PlaySound_SM(sndMgmt->keycardErr);
-            Msg = "A keycard with a higher security clearance is required to operate this door.";
-            MsgTimer = 70 * 5;
+            txtMgmt->setMsg(txtMgmt->lang["dor_keyhigher"]);
             return;
         } else {
-            Msg = "A keycard is required to operate this door.";
-            MsgTimer = 70 * 5;
+            txtMgmt->setMsg(txtMgmt->lang["dor_keyneeded"]);
             return;
         }
     } else {
         if (d->locked) {
             if (showmsg) {
-                if (!(d->isElevatorDoor>0)) {
-                    PlaySound_SM(sndMgmt->buttonErr);
-                    Msg = "The door appears to be locked.";
-                    MsgTimer = 70 * 5;
-                } else {
-                    if (d->isElevatorDoor == 1) {
-                        Msg = "You called the elevator.";
-                        MsgTimer = 70 * 5;
-                    } else if (!Msg.equals("You called the elevator.")) {
-                        if (Msg.equals("You already called the elevator.") || MsgTimer<70*3) {
-                            switch (bbRand(10)) {
-                                case 1: {
-                                    Msg = "Stop spamming the button.";
-                                    MsgTimer = 70 * 7;
-                                } break;
-                                case 2: {
-                                    Msg = "Pressing it harder does not make the elevator come faster.";
-                                    MsgTimer = 70 * 7;
-                                } break;
-                                case 3: {
-                                    Msg = "If you continue pressing this button I will generate a Memory Access- oh wait I can't do that anymore.";
-                                    MsgTimer = 70 * 7;
-                                } break;
-                                default: {
-                                    Msg = "You already called the elevator.";
-                                    MsgTimer = 70 * 7;
-                                } break;
-                            }
-                        }
-                    } else {
-                        Msg = "You already called the elevator.";
-                        MsgTimer = 70 * 7;
-                    }
-                }
+                PlaySound_SM(sndMgmt->buttonErr);
+                txtMgmt->setMsg(txtMgmt->lang["dor_locked"]);
 
             }
             return;

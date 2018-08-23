@@ -5,6 +5,7 @@
 #include "../Player/Player.h"
 #include "../AssetMgmt/Assets.h"
 #include "../AssetMgmt/Audio.h"
+#include "../AssetMgmt/TextMgmt.h"
 #include "../Config/Options.h"
 #include "../GameMain.h"
 #include "Menu.h"
@@ -95,23 +96,23 @@ void PauseMenu::draw() {
         int y = userOptions->screenHeight / 2 - bbImageHeight(uiAssets->pauseMenuBG) / 2;
         bbDrawImage(uiAssets->pauseMenuBG, x, y);
 
-        x = (int)(x + 132 * MenuScale);
-        y = (int)(y + 122 * MenuScale);
-
         switch (currState) {
             case PauseMenuState::Main: {
-                titleText = "PAUSED";
+                titleText = txtMgmt->lang["pau_title"];
                 btnResume.draw();
                 btnLoadGame.draw();
                 btnOptions.draw();
                 btnQuit.draw();
             } break;
             case PauseMenuState::Dead: {
-                titleText = "YOU DIED";
+                titleText = txtMgmt->lang["pau_dead"];
                 btnDeadLoadGame.draw();
                 btnDeadQuit.draw();
             } break;
         }
+
+        x = (int)(x + 132 * MenuScale);
+        y = (int)(y + 122 * MenuScale);
         bbSetFont(uiAssets->font[1]);
         bbText(x, (int)(y - 77 * MenuScale), titleText, false, true);
         bbSetFont(uiAssets->font[0]);
