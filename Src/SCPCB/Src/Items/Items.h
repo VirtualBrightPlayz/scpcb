@@ -2,7 +2,6 @@
 #define ITEMS_H_INCLUDED
 #include <StringType.h>
 #include <vector>
-#include <StringType.h>
 
 class MeshModel;
 class bbImage;
