@@ -11,6 +11,8 @@ class Pivot;
 
 namespace CBN {
 
+class Inventory;
+
 // FIXME: MOVE SOMEWHERE RELEVANT
 enum class Setting914 {
     Rough,
@@ -30,6 +32,9 @@ enum class WornItemSlot {
 class Item {
 private:
     static std::vector<Item*> list;
+    static int ID;
+    void addID();
+    void setID(int id);
 protected:
     enum class ItemPickSound {
         Tiny,
@@ -41,6 +46,8 @@ protected:
     ~Item();
 
     int id; // TODO:
+    Inventory* parentInv;
+    bool markedForRemoval;
 
     ItemPickSound pickSound;
     WornItemSlot wornSlot;
@@ -50,12 +57,10 @@ protected:
 
     String meshPath;
     MeshModel* mesh;
-    bool needInvImg;
+    bool needsInvImg;
     bbImage* invImg;
     float scale;
     float dist;
-    bool picked;
-    bool dropped;
 
     Pivot* collider;
     bool wontColl;
@@ -64,6 +69,8 @@ protected:
     float dropSpeed;
 
 public:
+    static int itemDistanceTimer;
+
     virtual String getType()=0;
     virtual String getInvName()=0;
 
@@ -76,6 +83,7 @@ public:
     virtual void On914Use(Setting914 setting);
 
     virtual void update();
+    virtual void draw();
     // Functions to call when the item's selected.
     // (I.E. the first aid kit.)
     virtual void updateUse()=0;
@@ -83,7 +91,6 @@ public:
 
     // TODO: tinyxml2
     virtual void saveXML();
-    virtual void loadXML();
 
     static void updateAll();
     static void drawAll();

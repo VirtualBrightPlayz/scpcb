@@ -121,7 +121,7 @@ public:
 
 // Globals.
 extern int LastItemID;
-extern int itemDistanceTimer;
+// extern int itemDistanceTimer;
 
 // Functions.
 Inventory* CreateInventory(int size);
