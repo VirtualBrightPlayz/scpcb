@@ -9,7 +9,8 @@
 #include "../MiscGFX/Dreamfilter.h"
 #include "../Map/Decals.h"
 #include "../GameMain.h"
-#include "../Items/Items.h"
+#include "../Items/Item.h"
+#include "../Items/Inventory.h"
 #include "../MathUtils/MathUtils.h"
 #include "../Map/MapSystem.h"
 #include "../Menus/Menu.h"
@@ -22,7 +23,7 @@ namespace CBN {
 Player::Player() {
     memset(this, 0, sizeof(Player));
 
-    this->inventory = CreateInventory(PLAYER_INV_COUNT + WORNITEM_SLOT_COUNT);
+    this->inventory = new Inventory(PLAYER_INV_COUNT + WORNITEM_SLOT_COUNT);
 
     this->cam = bbCreateCamera();
     bbCameraViewport(this->cam, 0, 0, userOptions->screenWidth, userOptions->screenHeight);

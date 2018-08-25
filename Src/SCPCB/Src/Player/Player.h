@@ -14,11 +14,6 @@ class Sprite;
 namespace CBN {
 
 // Constants.
-const int WORNITEM_SLOT_COUNT = 3;
-const int WORNITEM_SLOT_NONE = WORNITEM_SLOT_COUNT;
-const int WORNITEM_SLOT_HEAD = 0;
-const int WORNITEM_SLOT_BODY = 1;
-const int WORNITEM_SLOT_HAND = 2;
 const int PLAYER_INV_COUNT = 6;
 const int OVERLAY_COUNT = 6;
 const int OVERLAY_BLACK = 0;

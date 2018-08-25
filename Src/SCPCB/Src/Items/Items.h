@@ -62,47 +62,47 @@ public:
     float scale;
 };
 
-struct Item {
-private:
-    static std::vector<Item*> list;
+// struct Item {
+// private:
+//     static std::vector<Item*> list;
 
-public:
-    Item();
-    ~Item();
-    static int getListSize();
-    static Item* getObject(int index);
+// public:
+//     Item();
+//     ~Item();
+//     static int getListSize();
+//     static Item* getObject(int index);
 
-    String name;
-    Pivot* collider;
-    MeshModel* model;
-    struct ItemTemplate* itemTemplate;
-    bbImage* img;
-    int id;
+//     String name;
+//     Pivot* collider;
+//     MeshModel* model;
+//     struct ItemTemplate* itemTemplate;
+//     bbImage* img;
+//     int id;
 
-    int r;
-    int g;
-    int b;
-    float a;
+//     int r;
+//     int g;
+//     int b;
+//     float a;
 
-    float dist;
+//     float dist;
 
-    float state;
-    //TODO: Deprecate
-    float state2;
+//     float state;
+//     //TODO: Deprecate
+//     float state2;
 
-    int picked;
-    int dropped;
+//     int picked;
+//     int dropped;
 
-    bbImage* invImage;
+//     bbImage* invImage;
 
-    int wontColl = false;
-    float xspeed;
-    float zspeed;
-    float dropSpeed;
+//     int wontColl = false;
+//     float xspeed;
+//     float zspeed;
+//     float dropSpeed;
 
-    String tags[5];
-    struct Inventory* subInventory = nullptr;
-};
+//     String tags[5];
+//     struct Inventory* subInventory = nullptr;
+// };
 
 struct Inventory {
 private:

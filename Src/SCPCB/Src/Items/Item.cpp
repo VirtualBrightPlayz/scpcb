@@ -160,7 +160,7 @@ void Item::update() {
 
 void Item::updateAll() {
     for (int i = 0; i < list.size(); i++) {
-        if (list[i] != nullptr && list[i]->markedForRemoval) {
+        if (list[i]->markedForRemoval) {
             delete list[i];
             i--;
             continue;

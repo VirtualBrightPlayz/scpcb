@@ -22,19 +22,24 @@ enum class Setting914 {
     VeryFine
 };
 
+const int WORNITEM_SLOT_COUNT = 3;
 enum class WornItemSlot {
     None,
-    Hand,
-    Body,
-    Head
+    Hand = 0,
+    Body = 1,
+    Head = 2
 };
 
 class Item {
 private:
+    Item(const String& meshPath, enum ItemPickSound sound, WornItemSlot slot = WornItemSlot::None);
+
     static std::vector<Item*> list;
+
     static int ID;
     void addID();
     void setID(int id);
+
 protected:
     enum class ItemPickSound {
         Tiny,
@@ -42,11 +47,8 @@ protected:
         Heafty,
         Paper
     };
-    Item(const String& meshPath, ItemPickSound sound, WornItemSlot slot = WornItemSlot::None);
-    ~Item();
 
-    int id; // TODO:
-    Inventory* parentInv;
+    int id;
     bool markedForRemoval;
 
     ItemPickSound pickSound;
@@ -69,7 +71,9 @@ protected:
     float dropSpeed;
 
 public:
+    ~Item();
     static int itemDistanceTimer;
+    Inventory* parentInv;
 
     virtual String getType()=0;
     virtual String getInvName()=0;
