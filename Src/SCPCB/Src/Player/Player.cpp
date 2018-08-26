@@ -23,7 +23,7 @@ namespace CBN {
 Player::Player() {
     memset(this, 0, sizeof(Player));
 
-    this->inventory = new Inventory(PLAYER_INV_COUNT + WORNITEM_SLOT_COUNT);
+    inventory = new Inventory(PLAYER_INV_COUNT);
 
     this->cam = bbCreateCamera();
     bbCameraViewport(this->cam, 0, 0, userOptions->screenWidth, userOptions->screenHeight);

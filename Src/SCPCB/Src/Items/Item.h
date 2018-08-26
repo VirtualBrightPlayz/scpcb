@@ -30,9 +30,16 @@ enum class WornItemSlot {
     Head = 2
 };
 
+enum class ItemPickSound {
+    Tiny,
+    Metallic,
+    Heafty,
+    Paper
+};
+
 class Item {
 private:
-    Item(const String& meshPath, enum ItemPickSound sound, WornItemSlot slot = WornItemSlot::None);
+    Item(const String& meshPath, ItemPickSound sound, WornItemSlot slot = WornItemSlot::None);
 
     static std::vector<Item*> list;
 
@@ -41,30 +48,16 @@ private:
     void setID(int id);
 
 protected:
-    enum class ItemPickSound {
-        Tiny,
-        Metallic,
-        Heafty,
-        Paper
-    };
-
     int id;
     bool markedForRemoval;
-
-    ItemPickSound pickSound;
-    WornItemSlot wornSlot;
-    bool wornOnly;
 
     std::vector<String> tags;
 
     String meshPath;
     MeshModel* mesh;
-    bool needsInvImg;
-    bbImage* invImg;
     float scale;
     float dist;
 
-    Pivot* collider;
     bool wontColl;
     float xSpeed;
     float zSpeed;
@@ -74,6 +67,13 @@ public:
     ~Item();
     static int itemDistanceTimer;
     Inventory* parentInv;
+    Pivot* collider;
+    bool needsInvImg;
+    bbImage* invImg;
+
+    ItemPickSound pickSound;
+    WornItemSlot wornSlot;
+    bool wornOnly;
 
     virtual String getType()=0;
     virtual String getInvName()=0;

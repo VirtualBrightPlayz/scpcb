@@ -1034,31 +1034,15 @@ void DrawGUI() {
             bbText(x - 50, 320, "Blink timer: " + f2s(mainPlayer->blinkTimer, 3));
             bbText(x - 50, 340, "Injuries: " + String(mainPlayer->injuries));
             bbText(x - 50, 360, "Bloodloss: " + String(mainPlayer->bloodloss));
-            bbText(x - 50, 390, "SCP - 173 Position (collider): (" + f2s(bbEntityX(Curr173->collider), 3) + ", " + f2s(bbEntityY(Curr173->collider), 3) + ", " + f2s(bbEntityZ(Curr173->collider), 3) + ")");
-            bbText(x - 50, 410, "SCP - 173 Position (obj): (" + f2s(bbEntityX(Curr173->obj), 3) + ", " + f2s(bbEntityY(Curr173->obj), 3) + ", " + f2s(bbEntityZ(Curr173->obj), 3) + ")");
-            //Text(x - 50, 410, "SCP - 173 Idle: " + Curr173\idle)
-            bbText(x - 50, 430, "SCP - 173 State: " + String(Curr173->state));
-            bbText(x - 50, 450, "SCP - 106 Position: (" + f2s(bbEntityX(Curr106->obj), 3) + ", " + f2s(bbEntityY(Curr106->obj), 3) + ", " + f2s(bbEntityZ(Curr106->obj), 3) + ")");
-            bbText(x - 50, 470, "SCP - 106 Idle: " + String(Curr106->idle));
-            bbText(x - 50, 490, "SCP - 106 State: " + String(Curr106->state));
-            offset = 0;
-
-            for (int iterator65 = 0; iterator65 < NPC::getListSize(); iterator65++) {
-                npc = NPC::getObject(iterator65);
-
-                if (npc->npcType == NPCtype096) {
-                    bbText(x - 50, 510, "SCP - 096 Position: (" + f2s(bbEntityX(npc->obj), 3) + ", " + f2s(bbEntityY(npc->obj), 3) + ", " + f2s(bbEntityZ(npc->obj), 3) + ")");
-                    bbText(x - 50, 530, "SCP - 096 Idle: " + String(npc->idle));
-                    bbText(x - 50, 550, "SCP - 096 State: " + String(npc->state));
-                    bbText(x - 50, 570, "SCP - 096 Speed: " + f2s(npc->currSpeed, 5));
-                }
-                if (npc->npcType == NPCtypeMTF) {
-                    bbText(x - 50, 600 + 60 * offset, "MTF " + String(offset) + " Position: (" + f2s(bbEntityX(npc->obj), 3) + ", " + f2s(bbEntityY(npc->obj), 3) + ", " + f2s(bbEntityZ(npc->obj), 3) + ")");
-                    bbText(x - 50, 640 + 60 * offset, "MTF " + String(offset) + " State: " + String(npc->state));
-                    bbText(x - 50, 620 + 60 * offset, "MTF " + String(offset) + " LastSeen: " + String(npc->lastSeen));
-                    offset = offset + 1;
-                }
-            }
+            bbText(x - 50, 380, "Relative MouseX: " + String(bbMouseX() / (userOptions->screenWidth / 1024.f)));
+            bbText(x - 50, 400, "Relatvie MouseY: " + String(bbMouseY() / MenuScale));
+            // bbText(x - 50, 390, "SCP - 173 Position (collider): (" + f2s(bbEntityX(Curr173->collider), 3) + ", " + f2s(bbEntityY(Curr173->collider), 3) + ", " + f2s(bbEntityZ(Curr173->collider), 3) + ")");
+            // bbText(x - 50, 410, "SCP - 173 Position (obj): (" + f2s(bbEntityX(Curr173->obj), 3) + ", " + f2s(bbEntityY(Curr173->obj), 3) + ", " + f2s(bbEntityZ(Curr173->obj), 3) + ")");
+            // //Text(x - 50, 410, "SCP - 173 Idle: " + Curr173\idle)
+            // bbText(x - 50, 430, "SCP - 173 State: " + String(Curr173->state));
+            // bbText(x - 50, 450, "SCP - 106 Position: (" + f2s(bbEntityX(Curr106->obj), 3) + ", " + f2s(bbEntityY(Curr106->obj), 3) + ", " + f2s(bbEntityZ(Curr106->obj), 3) + ")");
+            // bbText(x - 50, 470, "SCP - 106 Idle: " + String(Curr106->idle));
+            // bbText(x - 50, 490, "SCP - 106 State: " + String(Curr106->state));
 
             bbSetFont(uiAssets->font[0]);
         }

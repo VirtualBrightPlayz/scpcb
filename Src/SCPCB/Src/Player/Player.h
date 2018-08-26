@@ -23,7 +23,6 @@ const int OVERLAY_GASMASK = 3;
 const int OVERLAY_NIGHTVISION = 4;
 const int OVERLAY_008 = 5;
 
-
 // Structs.
 struct Player {
 public:
@@ -51,7 +50,7 @@ public:
 
     struct Item* closestItem;
     struct Item* selectedItem;
-
+    class ItemCell* hoveredItemCell;
     MeshModel* closestButton;
     struct Door* closestDoor;
     struct Door* selectedDoor;
@@ -104,6 +103,7 @@ public:
 
     //items
     struct Inventory* inventory;
+    struct Inventory* wornInventory;
     struct Inventory* openInventory;
     //------
 
