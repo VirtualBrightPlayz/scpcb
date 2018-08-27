@@ -135,6 +135,8 @@ public:
     void useItem(Inventory* inv, Item* it = nullptr);
     void dropItem(Item* it, Inventory* inv);
     void moveItem(Item* it, Inventory* from, Inventory* to, int toIndex);
+    void equipItem(Item* it, Inventory* from, Inventory* to, int toIndex);
+    void moveItem(Item* it, Inventory* from, Inventory* to, int toIndex);
 };
 
 // Globals.
@@ -152,8 +154,6 @@ extern float mouse_y_speed_1;
 
 // Functions.
 void MouseLook();
-
-int SpaceInInventory(Player* player);
 
 void Kill(Player* player);
 
