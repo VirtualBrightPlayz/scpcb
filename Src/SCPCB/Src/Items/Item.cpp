@@ -3,6 +3,7 @@
 #include <bbmath.h>
 
 #include "Item.h"
+#include "Inventory.h"
 #include "../GameMain.h"
 #include "../Map/MapSystem.h"
 #include "../MathUtils/MathUtils.h"
@@ -39,6 +40,10 @@ Item::~Item() {
         bbFreeImage(invImg);
     }
     bbFreeEntity(collider);
+
+    if (parentInv != nullptr) {
+        parentInv->removeItem(this);
+    }
 
     for (int i = 0; i < (int)list.size(); i++) {
         if (list[i] == this) {

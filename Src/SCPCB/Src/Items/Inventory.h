@@ -44,7 +44,8 @@ public:
     int getSize();
     void addItem(Item* it, int slot = -1);
     Item* getItem(int slot);
-    void removeItem(int slot);
+    int getIndex(Item* it);
+    void removeItem(Item* it);
     bool anyRoom();
 
     void update();

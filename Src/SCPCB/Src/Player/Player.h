@@ -132,9 +132,9 @@ public:
     void update();
 
     void pickItem(Item* it = nullptr);
-    void useItem(Item* it);
-    void moveItem(Item* it, Inventory* from, Inventory* to, int toIndex);
+    void useItem(Inventory* inv, Item* it = nullptr);
     void dropItem(Item* it, Inventory* inv);
+    void moveItem(Item* it, Inventory* from, Inventory* to, int toIndex);
 };
 
 // Globals.

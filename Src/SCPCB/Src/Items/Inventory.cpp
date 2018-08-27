@@ -117,13 +117,9 @@ void Inventory::addItem(Item* it, int slot) {
         throw ("Invalid inventory slot. Slot \"" + String(slot) + "\" when only \"" + String(size) + "\" are available.");
     }
     if (slot >= 0) {
-        if (items[slot].val != nullptr) {
-            throw ("Attempted to overwrite an item slot in an inventory. Item: " + it->getType());
-        }
         items[slot].val = it;
-
-    // First available slot.
     } else {
+        // First available slot.
         bool spaceFound = false;
         for (int i = 0; i < size; i++) {
             if (items[i].val == nullptr) {
@@ -150,15 +146,25 @@ Item* Inventory::getItem(int slot) {
     return items[slot].val;
 }
 
-void Inventory::removeItem(int slot) {
-    if (slot >= size || slot < 0) {
-        throw ("Invalid inventory slot. Slot \"" + String(slot) + "\" when only \"" + String(size) + "\" are available.");
+int Inventory::getIndex(Item* it) {
+    for (int i = 0; i < size; i++) {
+        if (items[i].val == it) {
+            return i;
+        }
     }
-    if (items[slot].val == nullptr) {
-        throw ("Attempted to remove non-existant item at slot \"" + String(slot) + ".\"");
+
+    return -1;
+}
+
+void Inventory::removeItem(Item* it) {
+    for (int i = 0; i < size; i++) {
+        if (items[i].val == it) {
+            items[i].val = nullptr;
+            return;
+        }
     }
-    delete items[slot].val;
-    items[slot].val = nullptr;
+
+    throw ("Attempted to remove non-existant item \"" + it->getType() + " from inventory.\"");
 }
 
 bool Inventory::anyRoom() {
@@ -188,7 +194,7 @@ void Inventory::update() {
                 MouseHit1 = false;
                 if (DoubleClick) {
                     // Using the item.
-                    mainPlayer->useItem(it);
+                    mainPlayer->useItem();
 
                     mainPlayer->selectedItem = nullptr;
                     DoubleClick = false;

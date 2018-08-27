@@ -703,11 +703,48 @@ void Player::pickItem(Item* it) {
         return;
     }
 
+    bbHideEntity(it->collider);
     inventory->addItem(it);
     PlaySound_SM(sndMgmt->itemPick[it->pickSound]);
+    it->OnPick();
 }
 
-void Player::useItem(Item* it) {
+void Player::useItem(Inventory* inv, Item* it) {
+    if (it == nullptr) {
+        it = selectedItem;
+    }
+
+    // In the equip slots then unequip the item.
+    if (inv == wornInventory) {
+        // item, slot=-1
+        unEquipItem(it->wornSlot);
+        return;
+    }
+
+    if (it->wornSlot != WornItemSlot::None) {
+        // TODO: inv optional.
+        equipItem(it, inv);
+        // Swap places with the currently equipped item.
+        // if (wornInventory->getItem((int)it->wornSlot) != nullptr) {
+        //     int index = inv->getIndex(it);
+        //     inv->addItem(it);
+        // }
+        // wornInventory->addItem(it, (int)it->wornSlot);
+    }
+    it->OnUse();
+}
+
+void Player::dropItem(Item* it, Inventory* inv) {
+    inv->removeItem(it);
+    it->parentInv = nullptr;
+
+    bbShowEntity(it->collider);
+    bbPositionEntity(it->collider, bbEntityX(cam), bbEntityY(cam), bbEntityZ(cam));
+    bbRotateEntity(it->collider, bbEntityPitch(cam), bbEntityYaw(cam)+bbRnd(-20,20), 0);
+    bbMoveEntity(it->collider, 0, -0.1f, 0.1f);
+    bbRotateEntity(it->collider, 0, bbEntityYaw(cam)+bbRnd(-110,110), 0);
+
+    bbResetEntity(it->collider);
 }
 
 void Kill(Player* player) {
